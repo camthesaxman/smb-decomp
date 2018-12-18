@@ -15,9 +15,9 @@
 800075d4 0000003c 800075d4 extmath_translate_mtx__Ffff
 
 800080fc 00000078 800080fc extmath_normalize__Fpf
-80008174 00000078 80008174 extmath_normalize__Fpfpf
+80008174 00000078 80008174 extmath_set_length__Ffpfpf
 800081ec 00000070 800081ec extmath_vec_cos_safe__Fpfpf
-8000825c 000000a8 8000825c extmath_householder__Fpf
+8000825c 000000a8 8000825c extmath_reflect_mtx__Fpf
 80008304 00000074 80008304 extmath_weird_cross_dot__Fpfpfpf
 80008628 00000098 80008628 extmath_ray_to_euler__Fpfpfps
 800086c0 0000009c 800086c0 extmath_ray_to_euler__Fpfpfpsps
