@@ -4,8 +4,8 @@
 80007138 00000034 80007138 extmath_rsqrt__Ff
 8000716c 00000074 8000716c extmath_sqrt__Ffpf
 800071e0 00000030 800071e0 extmath_sin_angle__Fs
-80007210 00000064 80007210 extmath_sin_cos_angle__Fspfpf
-8000721c 00000058 8000721c __extmath_sin_cos_angle
+80007210 00000064 80007210 extmath_sin_cos_angle__Fspf
+8000721c 00000058 8000721c extmath_sin_cos_angle__Fspfpf
 80007274 00000020 80007274 extmath_tan_angle__Fs
 800072a4 00000180 800072a4 extmath_atan2__Fff
 
@@ -23,15 +23,15 @@
 ;80007754 0000009c 80007754
 800077f0 00000044 800077f0 extmath_push_mtx_a__Fv
 80007834 00000044 80007834 extmath_push_mtx_b__Fv
-80007878 00000038 80007878 extmath_get_cur_mtx_3x4__Fpf
-800078b0 00000038 800078b0 extmath_set_cur_mtx_3x4__Fpf
-800078e8 0000003c 800078e8 extmath_get_stack_mtx_3x4__Fpf
-80007924 00000014 80007924 extmath_pop_mtx_3x4__Fpf
-8000793c 00000038 8000793c extmath_get_cur_mtx_3x3__Fpf
-80007974 00000038 80007974 extmath_set_cur_mtx_3x3__Fpf
-800079ac 00000038 800079ac extmath_copy_b_to_a_mtx_3x4__Fv
-800079e4 00000038 800079e4 extmath_copy_a_to_b_mtx_3x4__Fv
-80007a1c 00000034 80007a1c extmath_copy_mtx_3x4__Fpfpf
+80007878 00000038 80007878 extmath_get_a_mtx_3x4__Fpf
+800078b0 00000038 800078b0 extmath_set_a_mtx_3x4__Fpf
+800078e8 0000003c 800078e8 extmath_get_stack_mtx__Fpf
+80007924 00000014 80007924 extmath_pop_mtx__Fpf
+8000793c 00000038 8000793c extmath_get_a_mtx_3x3__Fpf
+80007974 00000038 80007974 extmath_set_a_mtx_3x3__Fpf
+800079ac 00000038 800079ac extmath_copy_b_to_a_mtx__Fv
+800079e4 00000038 800079e4 extmath_copy_a_to_b_mtx__Fv
+80007a1c 00000034 80007a1c extmath_copy_mtx__Fpfpf
 ;80007a50 00000170 80007a50
 
 
