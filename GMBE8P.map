@@ -1,0 +1,28 @@
+;extmath
+800070b0 00000038 800070b0 __extmath_rsqrt
+800070f8 00000034 800070f8 extmath_sqrt__Ff
+80007138 00000034 80007138 extmath_rsqrt__Ff
+8000716c 00000074 8000716c extmath_sqrt__Ffpf
+800071e0 00000030 800071e0 extmath_sin_angle__Fs
+80007210 00000064 80007210 extmath_sin_cos_angle__Fspfpf
+8000721c 00000058 8000721c __extmath_sin_cos_angle
+80007274 00000020 80007274 extmath_tan_angle__Fs
+800072a4 00000180 800072a4 extmath_atan2__Fff
+
+800074dc 0000005c 800074dc extmath_vec_cos__Fpfpf
+
+800075bc 00000054 800075bc extmath_translate_mtx__Fpf
+800075d4 0000003c 800075d4 extmath_translate_mtx__Ffff
+
+800080fc 00000078 800080fc extmath_normalize__Fpf
+80008174 00000078 80008174 extmath_normalize__Fpfpf
+800081ec 00000070 800081ec extmath_vec_cos_safe__Fpfpf
+8000825c 000000a8 8000825c extmath_householder__Fpf
+80008304 00000074 80008304 extmath_weird_cross_dot__Fpfpfpf
+80008628 00000098 80008628 extmath_ray_to_euler__Fpfpfps
+800086c0 0000009c 800086c0 extmath_ray_to_euler__Fpfpfpsps
+8000875c 00000088 8000875c extmath_vec_to_euler__Fpfps
+800087e4 0000008c 800087e4 extmath_vec_to_euler__Fpfpsps
+
+80008c24 00000070 80008c24 extmath_normalize_and_acos_w__Fpfpf
+80008c94 0000009c 80008c94 extmath_normalize_vec4__Fpf
