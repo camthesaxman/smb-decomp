@@ -9,6 +9,7 @@
   write the sine to s_a, and the cosine to c_a.
 80007274: float extmath_tan_angle(short a);
   Returns the tangent of the angle a, which is in s16 format.
+
 800074DC: float extmath_vec_cos(float * v1,float * v2);
   Returns the cosine of the angle between the three-component vectors v1 and v2.
 
@@ -19,8 +20,8 @@
 
 800080FC: float extmath_normalize(float * v);
   Normalizes the three-component vector v, and returns its original length.
-80008174: float extmath_normalize(float * v,float * dst);
-  Writes the normalized three-component vector v to dst, and returns its original length.
+80008174: void extmath_set_length(float len,float * v,float * dst);
+  Writes the resized three-component vector v to dst.
 800081EC: float extmath_vec_cos_safe(float * v1,float * v2);
   Returns the cosine of the angle between the three-component vectors v1 and v2.
 8000825C: void extmath_reflect_mtx(float * v);
