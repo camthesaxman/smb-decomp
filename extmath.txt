@@ -1,0 +1,49 @@
+800070F8: float extmath_sqrt(float a);
+  Returns the square root of a.
+80007138: float extmath_rsqrt(float a);
+  Returns the reciprocal square root of a.
+800071E0: float extmath_sin_angle(short a);
+  Returns the sine of the angle a, which is in s16 format.
+80007210: void extmath_sin_cos_angle(short a,float * s_a,float * c_a);
+  Using the sine of the angle a, which is in s16 format,
+  write the sine to s_a, and the cosine to c_a.
+80007274: float extmath_tan_angle(short a);
+  Returns the tangent of the angle a, which is in s16 format.
+800074DC: float extmath_vec_cos(float * v1,float * v2);
+  Returns the cosine of the angle between the three-component vectors v1 and v2.
+
+800075BC: void extmath_translate_mtx(float * v);
+  Writes the translation matrix using the three-component vector v to cache.
+800075D4: void extmath_translate_mtx(float x,float y,float z);
+  Writes the translation matrix using the xyz values to cache.
+
+800080FC: float extmath_normalize(float * v);
+  Normalizes the three-component vector v, and returns its original length.
+80008174: float extmath_normalize(float * v,float * dst);
+  Writes the normalized three-component vector v to dst, and returns its original length.
+800081EC: float extmath_vec_cos_safe(float * v1,float * v2);
+  Returns the cosine of the angle between the three-component vectors v1 and v2.
+8000825C: void extmath_reflect_mtx(float * v);
+  Writes the reflection matrix using the four-component plane equation vector v to cache.
+80008304: void extmath_weird_cross_dot(float * dst,float * v1,float * v2);
+  This one is a bit weird. It basically does the following:
+  dst.xyz = cross(v2.xyz,v1.xyz)+(v1.xyz*v2.w)+(v1.w*v2.xyz);
+  dst.w = dot(v1,v2);
+80008628: void extmath_ray_to_euler(float * vs,float * ve,short * r);
+  Converts the ray from the three-component vector from vs to ve to xyz Euler angles,
+  and writes them to r in s16 format.
+800086C0: void extmath_ray_to_euler(float * vs,float * ve,short * rx,short * ry);
+  Converts the ray from the three-component vector from vs to ve to xyz Euler angles,
+  and writes the x component to rx and the y component to ry, both in s16 format.
+8000875C: void extmath_vec_to_euler(float * vs,float * ve,short * r);
+  Converts the three-component vector v xyz Euler angles,
+  and writes them to r in s16 format.
+800087E4: void extmath_vec_to_euler(float * vs,float * ve,short * rx,short * ry);
+  Converts the three-component vector v xyz Euler angles,
+  and writes the x component to rx and the y component to ry, both in s16 format.
+
+80008C24: float extmath_normalize_and_acos_w(float * v,float * dst);
+  Writes the result of normalizing the first three components of the four-component vector v to dst,
+  and returns the arccosine of the fourth component.
+80008C94: void extmath_normalize_vec4(float * v);
+  Normalizes the four-component vector v.
