@@ -1,7 +1,7 @@
 ifneq (,$(findstring Windows,$(OS)))
   EXE := .exe
 else
-  WINE := wine
+  WINE ?= wine
 endif
 
 ### Tools ###
@@ -13,17 +13,29 @@ HOSTCC  := cc
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
 
-ASFLAGS := -mgekko
+ASFLAGS := -mgekko -I asm
 
 ### Files ###
 BASEROM  := baserom.bin
 DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
-MAP      := ssbm.map
+MAP      := supermonkeyball.map
 LDSCRIPT := ldscript.lcf
-S_FILES  := asm/code.s
-C_FILES  :=
-O_FILES  := $(S_FILES:.s=.o) $(C_FILES:.c=.o)
+# NOTE: the order of files listed here determines the link order
+SOURCE_FILES := \
+	asm/init.s \
+	asm/main.s \
+	asm/mathutil.s \
+	asm/game.s \
+	asm/camera.s \
+	asm/code_1.s \
+	asm/sound.s \
+	asm/code_2.s \
+	asm/ball.s \
+	asm/code.s \
+	asm/lib_code.s \
+	asm/data.s
+O_FILES := $(patsubst %.s,%.o,$(patsubst %.c,%.o,$(SOURCE_FILES)))
 
 #-------------------------------------------------------------------------------
 # Recipes
@@ -36,7 +48,7 @@ $(DOL): $(ELF) | tools
 	$(SHA1SUM) -c supermonkeyball.sha1
 
 $(ELF): $(LDSCRIPT) $(O_FILES)
-	$(LD) $(O_FILES) -map disasm.map -lcf $(LDSCRIPT) -o $@
+	$(LD) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
 # The Metrowerks linker doesn't generate physical addresses in the ELF program headers. This fixes it somehow.
 	$(OBJCOPY) $(ELF) $(ELF)
 
@@ -44,7 +56,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 clean:
-	$(RM) $(DOL) $(ELF) $(O_FILES)
+	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP)
 	$(MAKE) -C tools clean
 
 tools:
