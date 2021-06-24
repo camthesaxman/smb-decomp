@@ -1017,7 +1017,7 @@ extabindex section layout
 800ca8a0 0000003c 800ca8a0 0 PSVECCrossProduct
 800ca8dc 00000040 800ca8dc 0 __DVDInitWA
 800ca91c 000002f4 800ca91c 0 __DVDInterruptHandler
-800cac10 00000084 800cac10 0 AlarmHandler
+800cac10 00000084 800cac10 0 AlarmHandler_2
 800cac94 00000070 800cac94 0 AlarmHandlerForTimeout
 800cad04 00000110 800cad04 0 Read
 800cae14 00000080 800cae14 0 SeekTwiceBeforeRead
@@ -1068,7 +1068,7 @@ extabindex section layout
 800ccbbc 00000114 800ccbbc 0 cbForStateCheckID1
 800cccd0 000000a4 800cccd0 0 cbForStateCheckID2
 800ccd74 000000fc 800ccd74 0 cbForStateCheckID3
-800cce70 00000044 800cce70 0 AlarmHandler
+800cce70 00000044 800cce70 0 AlarmHandler_3
 800cceb4 000000cc 800cceb4 0 stateCoverClosed
 800ccf80 00000030 800ccf80 0 stateCoverClosed_CMD
 800ccfb0 00000070 800ccfb0 0 cbForStateCoverClosed
@@ -1226,8 +1226,8 @@ extabindex section layout
 800d7c58 0000009c 800d7c58 0 __CARDFreeBlock
 800d7cf4 000000ac 800d7cf4 0 __CARDUpdateFatBlock
 800d7da0 00000008 800d7da0 0 __CARDGetDirBlock
-800d7da8 000000d0 800d7da8 0 WriteCallback
-800d7e78 000000c8 800d7e78 0 EraseCallback
+800d7da8 000000d0 800d7da8 0 WriteCallback_2
+800d7e78 000000c8 800d7e78 0 EraseCallback_2
 800d7f40 000000c4 800d7f40 0 __CARDUpdateDir
 800d8004 000001b0 800d8004 0 __CARDUpdateSum
 800d81b4 00000284 800d81b4 0 VerifyID
@@ -1259,8 +1259,8 @@ extabindex section layout
 800daac8 00000130 800daac8 0 ReadCallback
 800dabf8 00000144 800dabf8 0 CARDReadAsync
 800dad3c 0000008c 800dad3c 0 CARDCancel
-800dadc8 00000170 800dadc8 0 WriteCallback
-800daf38 000000b0 800daf38 0 EraseCallback
+800dadc8 00000170 800dadc8 0 WriteCallback_3
+800daf38 000000b0 800daf38 0 EraseCallback_3
 800dafe8 00000110 800dafe8 0 CARDWriteAsync
 800db0f8 000000a4 800db0f8 0 DeleteCallback
 800db19c 00000128 800db19c 0 CARDFastDeleteAsync
@@ -2379,7 +2379,7 @@ extabindex section layout
 802f25ec 00000004 802f25ec 0 seqFreeRoot
 802f25f0 00000004 802f25f0 0 seqPausedRoot
 802f25f4 00000004 802f25f4 0 seqActiveRoot
-802f25f8 00000001 802f25f8 0 sndActive
+802f25f8 00000001 802f25f8 0 sndActive_2
 802f25f9 00000001 802f25f9 0 synthJobTableIndex
 802f25fc 00000008 802f25fc 0 synthITDDefault
 802f2604 00000004 802f2604 0 synthAuxBMIDISet

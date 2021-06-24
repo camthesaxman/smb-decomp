@@ -1,0 +1,14 @@
+# Compiler binaries
+mwcc_compiler/
+
+# Build artifacts
+*.o
+*.elf
+supermonkeyball.map
+*.dol
+tools/elf2dol
+*.exe
+
+# Temporary files
+*.swp
+
