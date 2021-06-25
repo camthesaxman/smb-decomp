@@ -728,3 +728,48 @@ init_cache_ptrs:
 /* 80007028 00002F48  38 21 00 08 */	addi r1, r1, 8
 /* 8000702C 00002F4C  7C 08 03 A6 */	mtlr r0
 /* 80007030 00002F50  4E 80 00 20 */	blr 
+
+.section .sdata2
+
+.global lbl_802F2800
+lbl_802F2800:
+	.incbin "baserom.dol", 0x1EC220, 0x4
+.global lbl_802F2804
+lbl_802F2804:
+	.incbin "baserom.dol", 0x1EC224, 0x4
+.global lbl_802F2808
+lbl_802F2808:
+	.incbin "baserom.dol", 0x1EC228, 0x4
+.global lbl_802F280C
+lbl_802F280C:
+	.incbin "baserom.dol", 0x1EC22C, 0x4
+.global lbl_802F2810
+lbl_802F2810:
+	.incbin "baserom.dol", 0x1EC230, 0x8
+.global lbl_802F2818
+lbl_802F2818:
+	.incbin "baserom.dol", 0x1EC238, 0x4
+.global lbl_802F281C
+lbl_802F281C:
+	.incbin "baserom.dol", 0x1EC23C, 0x4
+.global lbl_802F2820
+lbl_802F2820:
+	.incbin "baserom.dol", 0x1EC240, 0x4
+.global lbl_802F2824
+lbl_802F2824:
+	.incbin "baserom.dol", 0x1EC244, 0x4
+.global lbl_802F2828
+lbl_802F2828:
+	.incbin "baserom.dol", 0x1EC248, 0x8
+.global lbl_802F2830
+lbl_802F2830:
+	.float 0.0
+.global lbl_802F2834
+lbl_802F2834:
+	.float 1.0
+.global lbl_802F2838
+lbl_802F2838:
+	.float 0.5
+.global lbl_802F283C
+lbl_802F283C:
+	.float 1.5

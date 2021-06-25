@@ -12,6 +12,6 @@ SECTIONS
     .rodata     BIND(0x8010F8A0) : {}
     .data       BIND(0x80172380) : {}
     .sdata      BIND(0x802F01E0) : {}
-    .data7      BIND(0x802F2800) : {}
+    .sdata2     BIND(0x802F2800) : {}
     .bss        BIND(0x801ED920) : {}
 }
