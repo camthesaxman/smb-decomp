@@ -11,4 +11,5 @@ tools/elf2dol
 
 # Temporary files
 *.swp
+*.dump
 

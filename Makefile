@@ -14,9 +14,10 @@ HOSTCC  := cc
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
 
-ASFLAGS := -mgekko -I asm
-CFLAGS  := -O4 -proc gekko -fp hard -fp fmadd -fp_contract on
-LDFLAGS := -fp hard
+ASFLAGS  := -mgekko -I asm
+CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -msgstyle gcc
+CPPFLAGS := -I- -i include
+LDFLAGS  := -fp hard -nodefaults
 
 ### Files ###
 BASEROM  := baserom.bin
@@ -28,6 +29,7 @@ LDSCRIPT := ldscript.lcf
 SOURCE_FILES := \
 	asm/init.s \
 	asm/main.s \
+	src/main_.c \
 	asm/mathutil.s \
 	asm/game.s \
 	asm/camera.s \
@@ -59,7 +61,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP)

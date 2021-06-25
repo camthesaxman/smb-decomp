@@ -11,7 +11,8 @@ SECTIONS
     .dtors      BIND(0x8010F880) : {}
     .rodata     BIND(0x8010F8A0) : {}
     .data       BIND(0x80172380) : {}
-    .sdata      BIND(0x802F01E0) : {}
-    .sdata2     BIND(0x802F2800) : {}
     .bss        BIND(0x801ED920) : {}
+    .sdata      BIND(0x802F01E0) : {}
+    .sbss       BIND(0x802F1AE0) : {}
+    .sdata2     BIND(0x802F2800) : {}
 }

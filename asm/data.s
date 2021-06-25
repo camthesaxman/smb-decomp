@@ -311,21 +311,7 @@ lbl_80172368:
 	.incbin "baserom.dol", 0x16F368, 0x18
 
 .section .data, "wa"  # 0x80172380 - 0x801ED920
-.global lbl_80172380
-lbl_80172380:
-	.incbin "baserom.dol", 0x16F380, 0x40
-.global lbl_801723C0
-lbl_801723C0:
-	.incbin "baserom.dol", 0x16F3C0, 0x20
-.global lbl_801723E0
-lbl_801723E0:
-	.incbin "baserom.dol", 0x16F3E0, 0xCC
-.global lbl_801724AC
-lbl_801724AC:
-	.incbin "baserom.dol", 0x16F4AC, 0xC
-.global lbl_801724B8
-lbl_801724B8:
-	.incbin "baserom.dol", 0x16F4B8, 0x18
+    .balign 0x10  # TODO: align in linker script
 .global lbl_801724D0
 lbl_801724D0:
 	.incbin "baserom.dol", 0x16F4D0, 0x58
@@ -3396,6 +3382,9 @@ lbl_802F01C0:
 .global lbl_802F01C8
 lbl_802F01C8:
 	.skip 0x1918
+
+.section .sbss
+
 .global lbl_802F1AE0
 lbl_802F1AE0:
 	.skip 0x4
