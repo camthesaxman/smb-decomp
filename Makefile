@@ -5,18 +5,19 @@ else
 endif
 
 ### Tools ###
-COMPILER_DIR := mwcc_compiler
+COMPILER_DIR := mwcc_compiler/1.0
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
 CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
 OBJCOPY := $(DEVKITPPC)/bin/powerpc-eabi-objcopy
+OBJDUMP := $(DEVKITPPC)/bin/powerpc-eabi-objdump
 HOSTCC  := cc
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
 
 ASFLAGS  := -mgekko -I asm
 CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -msgstyle gcc
-CPPFLAGS := -I- -i include
+CPPFLAGS := -i src -I- -i include
 LDFLAGS  := -fp hard -nodefaults
 
 ### Files ###
@@ -29,6 +30,7 @@ LDSCRIPT := ldscript.lcf
 SOURCE_FILES := \
 	asm/init.s \
 	asm/main.s \
+	src/main_1.c \
 	src/main_.c \
 	asm/mathutil.s \
 	asm/game.s \
@@ -62,6 +64,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+	$(OBJDUMP) -D $@ > $(@:.o=.dump)
 
 clean:
 	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP)

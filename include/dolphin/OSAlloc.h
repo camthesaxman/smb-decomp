@@ -5,6 +5,10 @@
 
 typedef int  OSHeapHandle;
 
+void *OSInitAlloc(void *, void *, int);
+OSHeapHandle OSCreateHeap(void *, void *);
+OSHeapHandle OSSetCurrentHeap(OSHeapHandle);
 void *OSAllocFromHeap(OSHeapHandle, u32);
+long OSCheckHeap(OSHeapHandle);
 
 #endif

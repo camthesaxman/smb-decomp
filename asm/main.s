@@ -383,6 +383,7 @@ lbl_80006AFC:
 /* 80006B28 00002A48  7C 08 03 A6 */	mtlr r0
 /* 80006B2C 00002A4C  4E 80 00 20 */	blr 
 
+.if 0
 .global init_vi
 init_vi:
 /* 80006B30 00002A50  7C 08 02 A6 */	mflr r0
@@ -618,6 +619,7 @@ lbl_80006CE8:
 /* 80006E9C 00002DBC  38 21 00 20 */	addi r1, r1, 0x20
 /* 80006EA0 00002DC0  7C 08 03 A6 */	mtlr r0
 /* 80006EA4 00002DC4  4E 80 00 20 */	blr 
+.endif
 
 .section .sdata2
 
@@ -636,21 +638,24 @@ lbl_802F280C:
 .global lbl_802F2810
 lbl_802F2810:
 	.incbin "baserom.dol", 0x1EC230, 0x8
+.if 0
 .global lbl_802F2818
 lbl_802F2818:
 	.incbin "baserom.dol", 0x1EC238, 0x4
 .global lbl_802F281C
 lbl_802F281C:
-	.incbin "baserom.dol", 0x1EC23C, 0x4
+	.float 60.0
 .global lbl_802F2820
 lbl_802F2820:
-	.incbin "baserom.dol", 0x1EC240, 0x4
+	.float 1.3333333
 .global lbl_802F2824
 lbl_802F2824:
-	.incbin "baserom.dol", 0x1EC244, 0x4
+	.float 0.1
 .global lbl_802F2828
 lbl_802F2828:
-	.incbin "baserom.dol", 0x1EC248, 0x8
+    .float 1000000
+    .space 4
+.endif
 
 .section .data
 .global lbl_80172380
@@ -665,3 +670,8 @@ lbl_801723E0:
 .global lbl_801724AC
 lbl_801724AC:
 	.incbin "baserom.dol", 0x16F4AC, 0xC
+
+.section .sdata
+.global lbl_802F01E0
+lbl_802F01E0:
+	.incbin "baserom.dol", 0x1EA920, 0x8

@@ -43,5 +43,6 @@ struct DVDFileInfo
 
 BOOL DVDOpen(char *, DVDFileInfo *);
 BOOL DVDClose(DVDFileInfo *);
+BOOL DVDChangeDir(char *);
 
 #endif

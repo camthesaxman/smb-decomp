@@ -2,8 +2,10 @@
 #define _DOLPHIN_H_
 
 #include <dolphin/types.h>
-#include <dolphin/OSAlloc.h>
-#include <dolphin/OSCache.h>
+#include <dolphin/os.h>
 #include <dolphin/dvd.h>
+#include <dolphin/gx.h>
+#include <dolphin/mtx.h>
+#include <dolphin/vi.h>
 
 #endif

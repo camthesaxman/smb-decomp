@@ -1598,12 +1598,8 @@ lbl_801ED8F8:
 	.incbin "baserom.dol", 0x1EA8F8, 0x28
 
 .section .sdata, "wa"  # 0x802F01E0 - 0x802F1AE0
-.global lbl_802F01E0
-lbl_802F01E0:
-	.incbin "baserom.dol", 0x1EA920, 0x8
-.global lbl_802F01E8
-lbl_802F01E8:
-	.incbin "baserom.dol", 0x1EA928, 0x34
+    .space 3  # TODO: align
+    .incbin "baserom.dol", 0x1EA930, 0x2C
 .global lbl_802F021C
 lbl_802F021C:
 	.incbin "baserom.dol", 0x1EA95C, 0x10
