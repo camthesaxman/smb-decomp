@@ -7,5 +7,6 @@
 #include <dolphin/gx.h>
 #include <dolphin/mtx.h>
 #include <dolphin/vi.h>
+#include <dolphin/card.h>
 
 #endif

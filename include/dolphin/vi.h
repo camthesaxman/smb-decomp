@@ -3,8 +3,10 @@
 
 #include <dolphin/GXStruct.h>
 
+void VIInit(void);
 void VIConfigure(GXRenderModeObj *rm);
 void VIFlush(void);
+u32 VIGetTvFormat(void);
 void VISetNextFrameBuffer(void *fb);
 void VIWaitForRetrace(void);
 

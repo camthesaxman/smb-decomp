@@ -16,7 +16,7 @@ SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
 
 ASFLAGS  := -mgekko -I asm
-CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -msgstyle gcc
+CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -msgstyle gcc -enum int
 CPPFLAGS := -i src -I- -i include
 LDFLAGS  := -fp hard -nodefaults
 
@@ -42,7 +42,7 @@ SOURCE_FILES := \
 	asm/code.s \
 	asm/lib_code.s \
 	asm/data.s
-O_FILES := $(patsubst %.s,%.o,$(patsubst %.c,%.o,$(SOURCE_FILES)))
+O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 
 #-------------------------------------------------------------------------------
 # Recipes

@@ -30,4 +30,31 @@ typedef enum
     GX_MAX_ALPHAOP,
 } GXAlphaOp;
 
+typedef enum
+{
+    GX_ZC_LINEAR,
+    GX_ZC_NEAR,
+    GX_ZC_MID,
+    GX_ZC_FAR,
+} GXZFmt16;
+
+typedef enum
+{
+    GX_GM_1_0,
+    GX_GM_1_7,
+    GX_GM_2_2,
+} GXGamma;
+
+typedef enum
+{
+    GX_PF_RGB8_Z24,
+    GX_PF_RGBA6_Z24,
+    GX_PF_RGB565_Z16,
+    GX_PF_Z24,
+    GX_PF_Y8,
+    GX_PF_U8,
+    GX_PF_V8,
+    GX_PF_YUV420,
+} GXPixelFmt;
+
 #endif

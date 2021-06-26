@@ -5,5 +5,8 @@
 #include <dolphin/GXTransform.h>
 #include <dolphin/GXTev.h>
 #include <dolphin/GXPixel.h>
+#include <dolphin/GXManage.h>
+#include <dolphin/GXFifo.h>
+#include <dolphin/GXCull.h>
 
 #endif

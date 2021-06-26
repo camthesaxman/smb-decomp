@@ -26,7 +26,6 @@ extern void *lbl_802F1B50;
 extern void *lbl_802F1B54;
 extern BOOL lbl_802F1B58;
 
-extern OSHeapHandle __OSCurrHeap;
 extern OSHeapHandle lbl_802F1B28;
 extern OSHeapHandle lbl_802F1B24;
 extern OSHeapHandle lbl_802F1B20;
@@ -37,7 +36,6 @@ extern void mathutil_set_a_mtx_identity(void);
 extern void mathutil_set_b_mtx_a_mtx(void);
 
 extern char lbl_801724B8[];
-extern char lbl_801724AC[];
 
 extern int printf(const char *, ...);
 
@@ -57,6 +55,10 @@ void init_dvd(void)
 {
     DVDChangeDir("test");
 }
+
+char lbl_80172400[] = "\n===================================================\n\n";
+char msg2[] = "  System memory exists more than 24MB. Clamp 24MB.\n";
+char msg3[] = "  Program can use memory of high-order 24MB than 0x%x freely.\n";
 
 #ifdef NONMATCHING
 struct Struct801723C0
@@ -164,10 +166,10 @@ void init_heap(void)
     
     init_cache_ptrs();
     
-    lbl_802F1CA4[1] = r30;
-    lbl_802F1CA4[2] = r29;
-    lbl_802F1CA4[0] = r29;
-    lbl_802F1CA4[3] = 0;
+    lbl_802F1CA4[1] = (void *)r30;
+    lbl_802F1CA4[2] = (void *)r29;
+    lbl_802F1CA4[0] = (void *)r29;
+    lbl_802F1CA4[3] = (void *)0;
 }
 #else
 extern struct Struct801723C0 lbl_801723C0;
@@ -336,7 +338,7 @@ void init_rel(void)
 {
     DVDFileInfo fileInfo;
 
-    if (DVDOpen(lbl_801724AC /*"mkbe.str"*/, &fileInfo))
+    if (DVDOpen("mkbe.str", &fileInfo))
     {
         u32 size = (fileInfo.length + 0x1F) & ~0x1F;
         void *strTable = OSAllocFromHeap(__OSCurrHeap, size);

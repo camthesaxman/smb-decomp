@@ -41,6 +41,7 @@ struct DVDFileInfo
     DVDCallback callback;
 };
 
+void DVDInit(void);
 BOOL DVDOpen(char *, DVDFileInfo *);
 BOOL DVDClose(DVDFileInfo *);
 BOOL DVDChangeDir(char *);

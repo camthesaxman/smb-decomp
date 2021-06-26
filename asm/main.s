@@ -202,6 +202,7 @@ lbl_80006828:
 /* 80006890 000027B0  90 0D 99 54 */	stw r0, lbl_802F1B34-_SDA_BASE_(r13)
 /* 80006894 000027B4  4B FF FE 0C */	b lbl_800066A0
 
+.if 0
 .global initialize
 initialize:
 /* 80006898 000027B8  7C 08 02 A6 */	mflr r0
@@ -262,7 +263,7 @@ init_gx:
 /* 80006968 00002888  48 0D 67 B1 */	bl GXInitFifoPtrs
 /* 8000696C 0000288C  80 8D 99 50 */	lwz r4, lbl_802F1B30-_SDA_BASE_(r13)
 /* 80006970 00002890  3F E0 43 30 */	lis r31, 0x4330
-/* 80006974 00002894  C0 22 80 08 */	lfs f1, lbl_802F2808-_SDA2_BASE_(r2)
+/* 80006974 00002894  C0 22 80 08 */	lfs f1, lbl_802F2808-_SDA2_BASE_(r2)  # 0.0f
 /* 80006978 00002898  A0 64 00 04 */	lhz r3, 4(r4)
 /* 8000697C 0000289C  A0 04 00 08 */	lhz r0, 8(r4)
 /* 80006980 000028A0  FC 40 08 90 */	fmr f2, f1
@@ -346,12 +347,12 @@ lbl_80006AA8:
 /* 80006AA8 000029C8  2C 03 00 03 */	cmpwi r3, 3
 /* 80006AAC 000029CC  40 80 00 38 */	bge lbl_80006AE4
 /* 80006AB0 000029D0  48 00 00 24 */	b lbl_80006AD4
-lbl_80006AB4:
+lbl_80006AB4:   # 0
 /* 80006AB4 000029D4  3C 60 80 1F */	lis r3, lbl_801E8E98@ha
 /* 80006AB8 000029D8  38 03 8E 98 */	addi r0, r3, lbl_801E8E98@l
 /* 80006ABC 000029DC  90 0D 99 50 */	stw r0, lbl_802F1B30-_SDA_BASE_(r13)
 /* 80006AC0 000029E0  48 00 00 3C */	b lbl_80006AFC
-lbl_80006AC4:
+lbl_80006AC4:   # 1
 /* 80006AC4 000029E4  3C 60 80 1F */	lis r3, lbl_801E8F10@ha
 /* 80006AC8 000029E8  38 03 8F 10 */	addi r0, r3, lbl_801E8F10@l
 /* 80006ACC 000029EC  90 0D 99 50 */	stw r0, lbl_802F1B30-_SDA_BASE_(r13)
@@ -383,7 +384,6 @@ lbl_80006AFC:
 /* 80006B28 00002A48  7C 08 03 A6 */	mtlr r0
 /* 80006B2C 00002A4C  4E 80 00 20 */	blr 
 
-.if 0
 .global init_vi
 init_vi:
 /* 80006B30 00002A50  7C 08 02 A6 */	mflr r0
@@ -628,34 +628,7 @@ lbl_802F2800:
 	.incbin "baserom.dol", 0x1EC220, 0x4
 .global lbl_802F2804
 lbl_802F2804:
-	.incbin "baserom.dol", 0x1EC224, 0x4
-.global lbl_802F2808
-lbl_802F2808:
-	.incbin "baserom.dol", 0x1EC228, 0x4
-.global lbl_802F280C
-lbl_802F280C:
-	.incbin "baserom.dol", 0x1EC22C, 0x4
-.global lbl_802F2810
-lbl_802F2810:
-	.incbin "baserom.dol", 0x1EC230, 0x8
-.if 0
-.global lbl_802F2818
-lbl_802F2818:
-	.incbin "baserom.dol", 0x1EC238, 0x4
-.global lbl_802F281C
-lbl_802F281C:
-	.float 60.0
-.global lbl_802F2820
-lbl_802F2820:
-	.float 1.3333333
-.global lbl_802F2824
-lbl_802F2824:
-	.float 0.1
-.global lbl_802F2828
-lbl_802F2828:
-    .float 1000000
-    .space 4
-.endif
+	.float 400
 
 .section .data
 .global lbl_80172380
@@ -664,14 +637,3 @@ lbl_80172380:
 .global lbl_801723C0
 lbl_801723C0:
 	.incbin "baserom.dol", 0x16F3C0, 0x20
-.global lbl_801723E0
-lbl_801723E0:
-	.incbin "baserom.dol", 0x16F3E0, 0xCC
-.global lbl_801724AC
-lbl_801724AC:
-	.incbin "baserom.dol", 0x16F4AC, 0xC
-
-.section .sdata
-.global lbl_802F01E0
-lbl_802F01E0:
-	.incbin "baserom.dol", 0x1EA920, 0x8

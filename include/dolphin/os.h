@@ -5,6 +5,8 @@
 #include <dolphin/OSCache.h>
 #include <dolphin/OSModule.h>
 
+void OSInit(void);
+
 void *OSGetArenaHi(void);
 void *OSGetArenaLo(void);
 void OSSetArenaHi(void *);
@@ -13,5 +15,6 @@ void OSSetArenaLo(void *);
 u32 OSGetPhysicalMemSize(void);
 
 void OSReport(char *, ...);
+void OSPanic(char *file, int line, char *msg, ...);
 
 #endif
