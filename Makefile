@@ -24,13 +24,13 @@ LDFLAGS  := -fp hard -nodefaults
 BASEROM  := baserom.bin
 DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
-MAP      := supermonkeyball.map
+MAP      := $(DOL:.dol=.map)
 LDSCRIPT := ldscript.lcf
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
 	asm/init.s \
-	asm/main.s \
 	src/main_1.c \
+	asm/main.s \
 	src/main_.c \
 	asm/mathutil.s \
 	asm/game.s \

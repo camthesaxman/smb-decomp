@@ -8,5 +8,6 @@
 #include <dolphin/mtx.h>
 #include <dolphin/vi.h>
 #include <dolphin/card.h>
+#include <dolphin/perf.h>
 
 #endif

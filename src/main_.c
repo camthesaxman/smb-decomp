@@ -1,79 +1,16 @@
 #include <dolphin.h>
 
 #include "variables.h"
+#include "functions.h"
 
-struct Struct802F1B60
-{
-    u8 filler0[0x90];
-    u8 *unk90;
-    u8 *unk94;
-    u8 filler98[0x198-0x98];
-    float unk198;
-    float unk19C;
-    float unk1A0;
-    float unk1A4;
-    s32 unk1A8;
-    u8 unk1AC;
-    u8 unk1AD;
-    u8 unk1AE;
-    u8 unk1AF;
-};
 
-extern struct Struct802F1B60 *lbl_802F1B60;
-extern void *lbl_802F1B3C;
-extern void *lbl_802F21A0;
-extern void *lbl_802F1B50;
-extern void *lbl_802F1B54;
-extern BOOL lbl_802F1B58;
 
-extern OSHeapHandle lbl_802F1B28;
-extern OSHeapHandle lbl_802F1B24;
-extern OSHeapHandle lbl_802F1B20;
-extern OSHeapHandle lbl_802F1B1C;
-extern OSHeapHandle lbl_802F1B2C;
-
-extern void mathutil_set_a_mtx_identity(void);
-extern void mathutil_set_b_mtx_a_mtx(void);
-
-extern char lbl_801724B8[];
-
-extern int printf(const char *, ...);
-
-extern int func_800ACBBC();
-
-extern long lbl_802F1B18;
-extern long lbl_802F1B14;
-extern long lbl_802F1B10;
-extern long lbl_802F1B0C;
-extern long lbl_802F1B08;
-
-void init_cache_ptrs(void);
-
-static float unused() { return 0.0f; }
-
-void init_dvd(void)
-{
-    DVDChangeDir("test");
-}
-
+/*0x16F400*/
 char lbl_80172400[] = "\n===================================================\n\n";
 char msg2[] = "  System memory exists more than 24MB. Clamp 24MB.\n";
 char msg3[] = "  Program can use memory of high-order 24MB than 0x%x freely.\n";
 
 #ifdef NONMATCHING
-struct Struct801723C0
-{
-    u32 *unk0;
-    u32 unk4;
-    u32 *unk8;
-    u32 unkC;
-    u32 *unk10;
-    u32 unk14;
-    u32 *unk18;
-    u32 unk1C;
-    u8 filler20[0x20];
-};
-static struct Struct801723C0 lbl_801723C0 = {0};
 void init_heap(void)
 {
     u32 r30 = (u32)OSGetArenaLo();
@@ -360,7 +297,7 @@ void init_cache(void)
 
 void init_cache_ptrs(void)
 {
-    lbl_802F1B60->unk198 = 0.0f;
+    lbl_802F1B60->unk198 = 0.0f /*0x1EC250*/;
     lbl_802F1B60->unk19C = 1.0f;
     lbl_802F1B60->unk1A0 = 0.5f;
     lbl_802F1B60->unk1A4 = 1.5f;

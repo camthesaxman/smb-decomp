@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global main
 main:
 /* 800065A0 000024C0  7C 08 02 A6 */	mflr r0
@@ -202,7 +203,6 @@ lbl_80006828:
 /* 80006890 000027B0  90 0D 99 54 */	stw r0, lbl_802F1B34-_SDA_BASE_(r13)
 /* 80006894 000027B4  4B FF FE 0C */	b lbl_800066A0
 
-.if 0
 .global initialize
 initialize:
 /* 80006898 000027B8  7C 08 02 A6 */	mflr r0
@@ -271,7 +271,7 @@ init_gx:
 /* 80006988 000028A8  FC A0 08 90 */	fmr f5, f1
 /* 8000698C 000028AC  C8 82 80 10 */	lfd f4, lbl_802F2810-_SDA2_BASE_(r2)
 /* 80006990 000028B0  90 01 00 1C */	stw r0, 0x1c(r1)
-/* 80006994 000028B4  C0 C2 80 0C */	lfs f6, lbl_802F280C-_SDA2_BASE_(r2)
+/* 80006994 000028B4  C0 C2 80 0C */	lfs f6, lbl_802F280C-_SDA2_BASE_(r2)  # 1.0f
 /* 80006998 000028B8  93 E1 00 20 */	stw r31, 0x20(r1)
 /* 8000699C 000028BC  93 E1 00 18 */	stw r31, 0x18(r1)
 /* 800069A0 000028C0  C8 61 00 20 */	lfd f3, 0x20(r1)
@@ -623,17 +623,22 @@ lbl_80006CE8:
 
 .section .sdata2
 
+.if 0
 .global lbl_802F2800
 lbl_802F2800:
 	.incbin "baserom.dol", 0x1EC220, 0x4
 .global lbl_802F2804
 lbl_802F2804:
 	.float 400
+.endif
 
 .section .data
+.if 0
 .global lbl_80172380
 lbl_80172380:
 	.incbin "baserom.dol", 0x16F380, 0x40
-.global lbl_801723C0
+
+.global lbl_801723C0   # init_heap
 lbl_801723C0:
 	.incbin "baserom.dol", 0x16F3C0, 0x20
+.endif
