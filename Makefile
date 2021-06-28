@@ -29,9 +29,9 @@ LDSCRIPT := ldscript.lcf
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
 	asm/init.s \
-	src/main_1.c \
-	asm/main.s \
-	src/main_.c \
+	src/main.c \
+	src/init.c \
+	src/init_2.c \
 	asm/mathutil.s \
 	asm/game.s \
 	asm/camera.s \

@@ -16,4 +16,4 @@ SECTIONS
     .sbss       BIND(0x802F1AE0) : {}
     .sdata2     BIND(0x802F2800) : {}
 }
-FORCEACTIVE { lbl_80172400 msg2 msg3 a}
+FORCEACTIVE { lbl_80172400 msg2 msg3 unkData}
