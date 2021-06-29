@@ -178,7 +178,30 @@ SOURCE_FILES := \
 	asm/lib/PowerPC_EABI_Support/math/inverse_trig.s \
 	asm/lib/PowerPC_EABI_Support/math/trigf.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/exponentialsf.s \
-	asm/lib_code.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/mainloop.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/nubevent.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/nubinit.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/msg.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/msgbuf.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/serpoll.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/usr_put.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/dispatch.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/msghndlr.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/support.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/mutex_TRK.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/notify.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/flush_cache.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/mem_TRK.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/targimpl.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/dolphin_trk.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/mpc_7xx_603e.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/main_TRK.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/dolphin_trk_glue.s \
+	asm/lib/TRK_MINNOW_DOLPHIN/targcont.s \
+	asm/lib/amcstubs/AmcExi2Stubs.s \
+	asm/lib/odemustubs/odemustubs.s \
+	asm/lib/amcnotstub/amcnotstub.s \
+	asm/lib/data.s \
 	asm/data.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 
