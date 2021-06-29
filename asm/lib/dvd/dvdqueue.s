@@ -1,0 +1,153 @@
+.include "macros.inc"
+
+.section .text, "ax"  # 0x800065A0 - 0x8010F860
+
+.global __DVDClearWaitingQueue
+__DVDClearWaitingQueue:
+/* 800CE874 000CA794  3C 60 80 2C */	lis r3, WaitingQueue@ha
+/* 800CE878 000CA798  38 63 7A 18 */	addi r3, r3, WaitingQueue@l
+/* 800CE87C 000CA79C  90 63 00 00 */	stw r3, 0(r3)
+/* 800CE880 000CA7A0  38 A3 00 08 */	addi r5, r3, 8
+/* 800CE884 000CA7A4  38 83 00 10 */	addi r4, r3, 0x10
+/* 800CE888 000CA7A8  90 63 00 04 */	stw r3, 4(r3)
+/* 800CE88C 000CA7AC  38 63 00 18 */	addi r3, r3, 0x18
+/* 800CE890 000CA7B0  90 A5 00 00 */	stw r5, 0(r5)
+/* 800CE894 000CA7B4  90 A5 00 04 */	stw r5, 4(r5)
+/* 800CE898 000CA7B8  90 84 00 00 */	stw r4, 0(r4)
+/* 800CE89C 000CA7BC  90 84 00 04 */	stw r4, 4(r4)
+/* 800CE8A0 000CA7C0  90 63 00 00 */	stw r3, 0(r3)
+/* 800CE8A4 000CA7C4  90 63 00 04 */	stw r3, 4(r3)
+/* 800CE8A8 000CA7C8  4E 80 00 20 */	blr 
+
+.global __DVDPushWaitingQueue
+__DVDPushWaitingQueue:
+/* 800CE8AC 000CA7CC  7C 08 02 A6 */	mflr r0
+/* 800CE8B0 000CA7D0  90 01 00 04 */	stw r0, 4(r1)
+/* 800CE8B4 000CA7D4  94 21 FF E8 */	stwu r1, -0x18(r1)
+/* 800CE8B8 000CA7D8  93 E1 00 14 */	stw r31, 0x14(r1)
+/* 800CE8BC 000CA7DC  3B E4 00 00 */	addi r31, r4, 0
+/* 800CE8C0 000CA7E0  93 C1 00 10 */	stw r30, 0x10(r1)
+/* 800CE8C4 000CA7E4  3B C3 00 00 */	addi r30, r3, 0
+/* 800CE8C8 000CA7E8  4B FF 77 F5 */	bl OSDisableInterrupts
+/* 800CE8CC 000CA7EC  3C 80 80 2C */	lis r4, WaitingQueue@ha
+/* 800CE8D0 000CA7F0  57 C5 18 38 */	slwi r5, r30, 3
+/* 800CE8D4 000CA7F4  38 04 7A 18 */	addi r0, r4, WaitingQueue@l
+/* 800CE8D8 000CA7F8  7C A0 2A 14 */	add r5, r0, r5
+/* 800CE8DC 000CA7FC  80 85 00 04 */	lwz r4, 4(r5)
+/* 800CE8E0 000CA800  93 E4 00 00 */	stw r31, 0(r4)
+/* 800CE8E4 000CA804  80 05 00 04 */	lwz r0, 4(r5)
+/* 800CE8E8 000CA808  90 1F 00 04 */	stw r0, 4(r31)
+/* 800CE8EC 000CA80C  90 BF 00 00 */	stw r5, 0(r31)
+/* 800CE8F0 000CA810  93 E5 00 04 */	stw r31, 4(r5)
+/* 800CE8F4 000CA814  4B FF 77 F1 */	bl OSRestoreInterrupts
+/* 800CE8F8 000CA818  80 01 00 1C */	lwz r0, 0x1c(r1)
+/* 800CE8FC 000CA81C  38 60 00 01 */	li r3, 1
+/* 800CE900 000CA820  83 E1 00 14 */	lwz r31, 0x14(r1)
+/* 800CE904 000CA824  83 C1 00 10 */	lwz r30, 0x10(r1)
+/* 800CE908 000CA828  7C 08 03 A6 */	mtlr r0
+/* 800CE90C 000CA82C  38 21 00 18 */	addi r1, r1, 0x18
+/* 800CE910 000CA830  4E 80 00 20 */	blr 
+
+.global __DVDPopWaitingQueue
+__DVDPopWaitingQueue:
+/* 800CE914 000CA834  7C 08 02 A6 */	mflr r0
+/* 800CE918 000CA838  90 01 00 04 */	stw r0, 4(r1)
+/* 800CE91C 000CA83C  94 21 FF F0 */	stwu r1, -0x10(r1)
+/* 800CE920 000CA840  93 E1 00 0C */	stw r31, 0xc(r1)
+/* 800CE924 000CA844  4B FF 77 99 */	bl OSDisableInterrupts
+/* 800CE928 000CA848  38 00 00 04 */	li r0, 4
+/* 800CE92C 000CA84C  3C 80 80 2C */	lis r4, WaitingQueue@ha
+/* 800CE930 000CA850  7C 09 03 A6 */	mtctr r0
+/* 800CE934 000CA854  38 84 7A 18 */	addi r4, r4, WaitingQueue@l
+/* 800CE938 000CA858  3B E0 00 00 */	li r31, 0
+lbl_800CE93C:
+/* 800CE93C 000CA85C  80 04 00 00 */	lwz r0, 0(r4)
+/* 800CE940 000CA860  7C 00 20 40 */	cmplw r0, r4
+/* 800CE944 000CA864  41 82 00 48 */	beq lbl_800CE98C
+/* 800CE948 000CA868  4B FF 77 9D */	bl OSRestoreInterrupts
+/* 800CE94C 000CA86C  4B FF 77 71 */	bl OSDisableInterrupts
+/* 800CE950 000CA870  3C 80 80 2C */	lis r4, WaitingQueue@ha
+/* 800CE954 000CA874  57 E5 18 38 */	slwi r5, r31, 3
+/* 800CE958 000CA878  38 04 7A 18 */	addi r0, r4, WaitingQueue@l
+/* 800CE95C 000CA87C  7C A0 2A 14 */	add r5, r0, r5
+/* 800CE960 000CA880  83 E5 00 00 */	lwz r31, 0(r5)
+/* 800CE964 000CA884  80 1F 00 00 */	lwz r0, 0(r31)
+/* 800CE968 000CA888  90 05 00 00 */	stw r0, 0(r5)
+/* 800CE96C 000CA88C  80 9F 00 00 */	lwz r4, 0(r31)
+/* 800CE970 000CA890  90 A4 00 04 */	stw r5, 4(r4)
+/* 800CE974 000CA894  4B FF 77 71 */	bl OSRestoreInterrupts
+/* 800CE978 000CA898  38 00 00 00 */	li r0, 0
+/* 800CE97C 000CA89C  90 1F 00 00 */	stw r0, 0(r31)
+/* 800CE980 000CA8A0  7F E3 FB 78 */	mr r3, r31
+/* 800CE984 000CA8A4  90 1F 00 04 */	stw r0, 4(r31)
+/* 800CE988 000CA8A8  48 00 00 18 */	b lbl_800CE9A0
+lbl_800CE98C:
+/* 800CE98C 000CA8AC  38 84 00 08 */	addi r4, r4, 8
+/* 800CE990 000CA8B0  3B FF 00 01 */	addi r31, r31, 1
+/* 800CE994 000CA8B4  42 00 FF A8 */	bdnz lbl_800CE93C
+/* 800CE998 000CA8B8  4B FF 77 4D */	bl OSRestoreInterrupts
+/* 800CE99C 000CA8BC  38 60 00 00 */	li r3, 0
+lbl_800CE9A0:
+/* 800CE9A0 000CA8C0  80 01 00 14 */	lwz r0, 0x14(r1)
+/* 800CE9A4 000CA8C4  83 E1 00 0C */	lwz r31, 0xc(r1)
+/* 800CE9A8 000CA8C8  38 21 00 10 */	addi r1, r1, 0x10
+/* 800CE9AC 000CA8CC  7C 08 03 A6 */	mtlr r0
+/* 800CE9B0 000CA8D0  4E 80 00 20 */	blr 
+
+.global __DVDCheckWaitingQueue
+__DVDCheckWaitingQueue:
+/* 800CE9B4 000CA8D4  7C 08 02 A6 */	mflr r0
+/* 800CE9B8 000CA8D8  90 01 00 04 */	stw r0, 4(r1)
+/* 800CE9BC 000CA8DC  94 21 FF F8 */	stwu r1, -8(r1)
+/* 800CE9C0 000CA8E0  4B FF 76 FD */	bl OSDisableInterrupts
+/* 800CE9C4 000CA8E4  38 00 00 04 */	li r0, 4
+/* 800CE9C8 000CA8E8  3C 80 80 2C */	lis r4, WaitingQueue@ha
+/* 800CE9CC 000CA8EC  7C 09 03 A6 */	mtctr r0
+/* 800CE9D0 000CA8F0  38 84 7A 18 */	addi r4, r4, WaitingQueue@l
+lbl_800CE9D4:
+/* 800CE9D4 000CA8F4  80 04 00 00 */	lwz r0, 0(r4)
+/* 800CE9D8 000CA8F8  7C 00 20 40 */	cmplw r0, r4
+/* 800CE9DC 000CA8FC  41 82 00 10 */	beq lbl_800CE9EC
+/* 800CE9E0 000CA900  4B FF 77 05 */	bl OSRestoreInterrupts
+/* 800CE9E4 000CA904  38 60 00 01 */	li r3, 1
+/* 800CE9E8 000CA908  48 00 00 14 */	b lbl_800CE9FC
+lbl_800CE9EC:
+/* 800CE9EC 000CA90C  38 84 00 08 */	addi r4, r4, 8
+/* 800CE9F0 000CA910  42 00 FF E4 */	bdnz lbl_800CE9D4
+/* 800CE9F4 000CA914  4B FF 76 F1 */	bl OSRestoreInterrupts
+/* 800CE9F8 000CA918  38 60 00 00 */	li r3, 0
+lbl_800CE9FC:
+/* 800CE9FC 000CA91C  80 01 00 0C */	lwz r0, 0xc(r1)
+/* 800CEA00 000CA920  38 21 00 08 */	addi r1, r1, 8
+/* 800CEA04 000CA924  7C 08 03 A6 */	mtlr r0
+/* 800CEA08 000CA928  4E 80 00 20 */	blr 
+
+.global __DVDDequeueWaitingQueue
+__DVDDequeueWaitingQueue:
+/* 800CEA0C 000CA92C  7C 08 02 A6 */	mflr r0
+/* 800CEA10 000CA930  90 01 00 04 */	stw r0, 4(r1)
+/* 800CEA14 000CA934  94 21 FF E8 */	stwu r1, -0x18(r1)
+/* 800CEA18 000CA938  93 E1 00 14 */	stw r31, 0x14(r1)
+/* 800CEA1C 000CA93C  7C 7F 1B 78 */	mr r31, r3
+/* 800CEA20 000CA940  4B FF 76 9D */	bl OSDisableInterrupts
+/* 800CEA24 000CA944  80 9F 00 04 */	lwz r4, 4(r31)
+/* 800CEA28 000CA948  80 BF 00 00 */	lwz r5, 0(r31)
+/* 800CEA2C 000CA94C  28 04 00 00 */	cmplwi r4, 0
+/* 800CEA30 000CA950  41 82 00 0C */	beq lbl_800CEA3C
+/* 800CEA34 000CA954  28 05 00 00 */	cmplwi r5, 0
+/* 800CEA38 000CA958  40 82 00 10 */	bne lbl_800CEA48
+lbl_800CEA3C:
+/* 800CEA3C 000CA95C  4B FF 76 A9 */	bl OSRestoreInterrupts
+/* 800CEA40 000CA960  38 60 00 00 */	li r3, 0
+/* 800CEA44 000CA964  48 00 00 14 */	b lbl_800CEA58
+lbl_800CEA48:
+/* 800CEA48 000CA968  90 A4 00 00 */	stw r5, 0(r4)
+/* 800CEA4C 000CA96C  90 85 00 04 */	stw r4, 4(r5)
+/* 800CEA50 000CA970  4B FF 76 95 */	bl OSRestoreInterrupts
+/* 800CEA54 000CA974  38 60 00 01 */	li r3, 1
+lbl_800CEA58:
+/* 800CEA58 000CA978  80 01 00 1C */	lwz r0, 0x1c(r1)
+/* 800CEA5C 000CA97C  83 E1 00 14 */	lwz r31, 0x14(r1)
+/* 800CEA60 000CA980  38 21 00 18 */	addi r1, r1, 0x18
+/* 800CEA64 000CA984  7C 08 03 A6 */	mtlr r0
+/* 800CEA68 000CA988  4E 80 00 20 */	blr 
