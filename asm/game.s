@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global gm_init
 gm_init:
 /* 800094B8 000053D8  38 80 00 00 */	li r4, 0
@@ -21,7 +22,9 @@ gm_init:
 /* 800094F0 00005410  90 83 00 1C */	stw r4, 0x1c(r3)
 /* 800094F4 00005414  90 83 00 20 */	stw r4, 0x20(r3)
 /* 800094F8 00005418  4E 80 00 20 */	blr 
+.endif
 
+.if 0
 .global gm_main
 gm_main:
 /* 800094FC 0000541C  7C 08 02 A6 */	mflr r0
@@ -132,6 +135,7 @@ lbl_8000966C:
 /* 80009678 00005598  7C 08 03 A6 */	mtlr r0
 /* 8000967C 0000559C  38 21 00 10 */	addi r1, r1, 0x10
 /* 80009680 000055A0  4E 80 00 20 */	blr 
+.endif
 
 .global unkFunc80009684
 unkFunc80009684:
@@ -873,6 +877,8 @@ lbl_8000A098:
 /* 8000A0A4 00005FC4  7C 08 03 A6 */	mtlr r0
 /* 8000A0A8 00005FC8  38 21 00 10 */	addi r1, r1, 0x10
 /* 8000A0AC 00005FCC  4E 80 00 20 */	blr 
+.global func_8000A0B0
+func_8000A0B0:
 /* 8000A0B0 00005FD0  7C 08 02 A6 */	mflr r0
 /* 8000A0B4 00005FD4  3C 60 80 17 */	lis r3, lbl_80173908@ha
 /* 8000A0B8 00005FD8  90 01 00 04 */	stw r0, 4(r1)

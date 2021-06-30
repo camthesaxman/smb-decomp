@@ -33,6 +33,7 @@ SOURCE_FILES := \
 	src/init.c \
 	src/init_2.c \
 	asm/mathutil.s \
+	src/game.c \
 	asm/game.s \
 	asm/camera.s \
 	asm/code_1.s \
@@ -225,7 +226,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-	$(OBJDUMP) -D $@ > $(@:.o=.dump)
+	$(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:
 	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP)
