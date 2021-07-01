@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global event_init
 event_init:
 /* 8000B228 00007148  38 00 00 03 */	li r0, 3
@@ -20,7 +21,9 @@ lbl_8000B23C:
 /* 8000B258 00007178  38 63 00 A8 */	addi r3, r3, 0xa8
 /* 8000B25C 0000717C  42 00 FF E0 */	bdnz lbl_8000B23C
 /* 8000B260 00007180  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global event_main
 event_main:
 /* 8000B264 00007184  7C 08 02 A6 */	mflr r0
@@ -50,18 +53,18 @@ lbl_8000B2BC:
 /* 8000B2BC 000071DC  2C 00 00 04 */	cmpwi r0, 4
 /* 8000B2C0 000071E0  40 80 00 28 */	bge lbl_8000B2E8
 /* 8000B2C4 000071E4  48 00 00 1C */	b lbl_8000B2E0
-lbl_8000B2C8:
+lbl_8000B2C8:  ;# case 1
 /* 8000B2C8 000071E8  7F C3 F3 78 */	mr r3, r30
 /* 8000B2CC 000071EC  48 00 00 5D */	bl ev_run_init
-lbl_8000B2D0:
+lbl_8000B2D0:  ;# case 2
 /* 8000B2D0 000071F0  81 9F 00 0C */	lwz r12, 0xc(r31)
 /* 8000B2D4 000071F4  7D 88 03 A6 */	mtlr r12
 /* 8000B2D8 000071F8  4E 80 00 21 */	blrl
 /* 8000B2DC 000071FC  48 00 00 0C */	b lbl_8000B2E8
-lbl_8000B2E0:
+lbl_8000B2E0:  ;# case 3
 /* 8000B2E0 00007200  7F C3 F3 78 */	mr r3, r30
 /* 8000B2E4 00007204  48 00 00 B1 */	bl ev_run_dest
-lbl_8000B2E8:
+lbl_8000B2E8:  ;# end
 /* 8000B2E8 00007208  38 60 00 05 */	li r3, 5
 /* 8000B2EC 0000720C  48 01 BD FD */	bl perf_stop_timer
 /* 8000B2F0 00007210  3B DE 00 01 */	addi r30, r30, 1
@@ -78,7 +81,9 @@ lbl_8000B2E8:
 /* 8000B31C 0000723C  7C 08 03 A6 */	mtlr r0
 /* 8000B320 00007240  38 21 00 10 */	addi r1, r1, 0x10
 /* 8000B324 00007244  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global ev_run_init
 ev_run_init:
 /* 8000B328 00007248  7C 08 02 A6 */	mflr r0
@@ -109,7 +114,9 @@ lbl_8000B35C:
 /* 8000B388 000072A8  7C 08 03 A6 */	mtlr r0
 /* 8000B38C 000072AC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8000B390 000072B0  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global ev_run_dest
 ev_run_dest:
 /* 8000B394 000072B4  7C 08 02 A6 */	mflr r0
@@ -144,7 +151,8 @@ ev_suspend:
 /* 8000B3F8 00007318  38 00 00 04 */	li r0, 4
 /* 8000B3FC 0000731C  98 03 00 00 */	stb r0, 0(r3)
 /* 8000B400 00007320  4E 80 00 20 */	blr
-
+.endif
+.if 0
 .global ev_restart
 ev_restart:
 /* 8000B404 00007324  7C 08 02 A6 */	mflr r0
@@ -171,7 +179,8 @@ lbl_8000B44C:
 /* 8000B450 00007370  38 21 00 08 */	addi r1, r1, 8
 /* 8000B454 00007374  7C 08 03 A6 */	mtlr r0
 /* 8000B458 00007378  4E 80 00 20 */	blr
-
+.endif
+.if 0
 .global event_clear
 event_clear:
 /* 8000B45C 0000737C  7C 08 02 A6 */	mflr r0
@@ -211,6 +220,7 @@ lbl_8000B4B4:
 /* 8000B4DC 000073FC  83 81 00 08 */	lwz r28, 8(r1)
 /* 8000B4E0 00007400  38 21 00 18 */	addi r1, r1, 0x18
 /* 8000B4E4 00007404  4E 80 00 20 */	blr
+.endif
 
 .global polydisp_init
 polydisp_init:

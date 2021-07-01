@@ -2171,148 +2171,64 @@ lbl_80173C70:
 	.asciz "sub_mode: error %s.\n"
 	.balign 4
 
-.global lbl_80173C88
-lbl_80173C88:
-	# ROM: 0x170C88
-	.asciz "OBJ_COLLISION"
+.section .sdata
+
+    .balign 0x10
+	# ROM: 0x1EA930
+	.4byte 0
+	.asciz "MD_ADV"
 	.balign 4
-	.asciz "NAME_ENTRY"
+	.asciz "MD_SEL"
 	.balign 4
-	.asciz "VIBRATION"
-	.balign 4
-	.asciz "BACKGROUND"
-	.balign 4
-	.asciz "REND_EFC"
+	.asciz "MD_GAME"
+	.asciz "MD_TEST"
+	.asciz "MD_MINI"
+
+.global lbl_802F021C
+lbl_802F021C:
+	# ROM: 0x1EA95C
+	.4byte 0
+	.4byte 0
+	.asciz "OPTION"
 	.balign 4
 
-.global lbl_80173CC8
-lbl_80173CC8:
-	# ROM: 0x170CC8
+.global lbl_802F022C
+lbl_802F022C:
+	# ROM: 0x1EA96C
+	.byte 0x25, 0x73, 0x0A, 0x00
+
+.global lbl_802F0230
+lbl_802F0230:
+	# ROM: 0x1EA970
+	.byte 0x2A, 0x00, 0x00, 0x00
+
+.global lbl_802F0234
+lbl_802F0234:
+	# ROM: 0x1EA974
+	.byte 0x18, 0x00, 0x00, 0x00
+
+.global lbl_802F0238
+lbl_802F0238:
+	# ROM: 0x1EA978
+	.byte 0x16, 0x00, 0x00, 0x00
+
+.global lbl_802F023C
+lbl_802F023C:
+	# ROM: 0x1EA97C
+	.byte 0x19, 0x00, 0x00, 0x00
+
+.global lbl_802F0240
+lbl_802F0240:
+	# ROM: 0x1EA980
+	.byte 0x17, 0x0A, 0x00, 0x00
+
+.global lbl_802F0244
+lbl_802F0244:
+	# ROM: 0x1EA984
+	.byte 0x1A, 0x00, 0x00, 0x00
+
+.global lbl_802F0248
+lbl_802F0248:
+	# ROM: 0x1EA988
+	.byte 0x1B, 0x00, 0x00, 0x00
 	.4byte 0
-	.4byte 0x802F0250  ;# ptr
-	.4byte 0x800A3DE8  ;# ptr
-	.4byte 0x800A4050  ;# ptr
-	.4byte 0x800A428C  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0258  ;# ptr
-	.4byte 0x80043A74  ;# ptr
-	.4byte 0x80043B48  ;# ptr
-	.4byte 0x80044104  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0260  ;# ptr
-	.4byte 0x80042BD4  ;# ptr
-	.4byte 0x80042C4C  ;# ptr
-	.4byte 0x80042E84  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0268  ;# ptr
-	.4byte 0x80037B84  ;# ptr
-	.4byte 0x80038150  ;# ptr
-	.4byte 0x800387BC  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0270  ;# ptr
-	.4byte 0x8006AE20  ;# ptr
-	.4byte 0x8006AF44  ;# ptr
-	.4byte 0x8006B108  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0278  ;# ptr
-	.4byte 0x80068048  ;# ptr
-	.4byte 0x800681E4  ;# ptr
-	.4byte 0x800682E0  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0280  ;# ptr
-	.4byte 0x80048C44  ;# ptr
-	.4byte 0x80048C6C  ;# ptr
-	.4byte 0x80048E40  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x80173C88  ;# ptr
-	.4byte 0x8006A624  ;# ptr
-	.4byte 0x8006A628  ;# ptr
-	.4byte 0x8006A654  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x80173C98  ;# ptr
-	.4byte 0x800AD3AC  ;# ptr
-	.4byte 0x800AD644  ;# ptr
-	.4byte 0x800AE3E4  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0288  ;# ptr
-	.4byte 0x80022F58  ;# ptr
-	.4byte 0x8002303C  ;# ptr
-	.4byte 0x80023AD4  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0290  ;# ptr
-	.4byte 0x80066910  ;# ptr
-	.4byte 0x80066964  ;# ptr
-	.4byte 0x80066C74  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x80173CA4  ;# ptr
-	.4byte 0x800B5EDC  ;# ptr
-	.4byte 0x800B5F20  ;# ptr
-	.4byte 0x800B6094  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F0298  ;# ptr
-	.4byte 0x800A5734  ;# ptr
-	.4byte 0x800A5860  ;# ptr
-	.4byte 0x800A5AEC  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F02A0  ;# ptr
-	.4byte 0x8004CADC  ;# ptr
-	.4byte 0x8004CBD0  ;# ptr
-	.4byte 0x8004CCD0  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F02A8  ;# ptr
-	.4byte 0x80084264  ;# ptr
-	.4byte 0x8008433C  ;# ptr
-	.4byte 0x8008468C  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F02B0  ;# ptr
-	.4byte 0x800178FC  ;# ptr
-	.4byte 0x80017990  ;# ptr
-	.4byte 0x80017FC8  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F02B8  ;# ptr
-	.4byte 0x8006FED8  ;# ptr
-	.4byte 0x8006FF70  ;# ptr
-	.4byte 0x80070028  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F02C0  ;# ptr
-	.4byte 0x80094CD4  ;# ptr
-	.4byte 0x80094CF8  ;# ptr
-	.4byte 0x80095020  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x802F02C8  ;# ptr
-	.4byte 0x800298D8  ;# ptr
-	.4byte 0x80029AC4  ;# ptr
-	.4byte 0x8002A044  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x80173CB0  ;# ptr
-	.4byte 0x80054E04  ;# ptr
-	.4byte 0x80054F1C  ;# ptr
-	.4byte 0x80054F88  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0x80173CBC  ;# ptr
-	.4byte 0x8009523C  ;# ptr
-	.4byte 0x8009526C  ;# ptr
-	.4byte 0x80095314  ;# ptr
-	.4byte 0
-	.asciz "ev_restart: event %s is not suspended\n"
-	.balign 4

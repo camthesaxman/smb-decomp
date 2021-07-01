@@ -16,7 +16,7 @@ SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
 
 ASFLAGS  := -mgekko -I asm
-CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -msgstyle gcc -enum int
+CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -enum int
 CPPFLAGS := -i src -I- -i include
 LDFLAGS  := -fp hard -nodefaults
 
@@ -35,6 +35,7 @@ SOURCE_FILES := \
 	asm/mathutil.s \
 	src/game.c \
 	asm/game.s \
+	src/event.c \
 	asm/event.s \
 	asm/camera.s \
 	asm/code_1.s \
