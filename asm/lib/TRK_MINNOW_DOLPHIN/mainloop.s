@@ -13,7 +13,7 @@ TRKHandleRequestEvent:
 /* 801098AC 001057CC  38 21 00 08 */	addi r1, r1, 8
 /* 801098B0 001057D0  80 01 00 04 */	lwz r0, 4(r1)
 /* 801098B4 001057D4  7C 08 03 A6 */	mtlr r0
-/* 801098B8 001057D8  4E 80 00 20 */	blr 
+/* 801098B8 001057D8  4E 80 00 20 */	blr
 
 .global TRKHandleSupportEvent
 TRKHandleSupportEvent:
@@ -24,7 +24,7 @@ TRKHandleSupportEvent:
 /* 801098CC 001057EC  38 21 00 08 */	addi r1, r1, 8
 /* 801098D0 001057F0  80 01 00 04 */	lwz r0, 4(r1)
 /* 801098D4 001057F4  7C 08 03 A6 */	mtlr r0
-/* 801098D8 001057F8  4E 80 00 20 */	blr 
+/* 801098D8 001057F8  4E 80 00 20 */	blr
 
 .global TRKIdle
 TRKIdle:
@@ -39,7 +39,7 @@ lbl_801098F8:
 /* 801098F8 00105818  38 21 00 08 */	addi r1, r1, 8
 /* 801098FC 0010581C  80 01 00 04 */	lwz r0, 4(r1)
 /* 80109900 00105820  7C 08 03 A6 */	mtlr r0
-/* 80109904 00105824  4E 80 00 20 */	blr 
+/* 80109904 00105824  4E 80 00 20 */	blr
 
 .global TRKNubMainLoop
 TRKNubMainLoop:
@@ -114,4 +114,4 @@ lbl_801099D8:
 /* 801099EC 0010590C  38 21 00 20 */	addi r1, r1, 0x20
 /* 801099F0 00105910  80 01 00 04 */	lwz r0, 4(r1)
 /* 801099F4 00105914  7C 08 03 A6 */	mtlr r0
-/* 801099F8 00105918  4E 80 00 20 */	blr 
+/* 801099F8 00105918  4E 80 00 20 */	blr

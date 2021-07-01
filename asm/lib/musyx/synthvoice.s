@@ -74,7 +74,7 @@ lbl_800F5F90:
 /* 800F5F9C 000F1EBC  42 00 FF 40 */	bdnz lbl_800F5EDC
 /* 800F5FA0 000F1EC0  38 00 00 00 */	li r0, 0
 /* 800F5FA4 000F1EC4  90 05 00 00 */	stw r0, 0(r5)
-/* 800F5FA8 000F1EC8  4E 80 00 20 */	blr 
+/* 800F5FA8 000F1EC8  4E 80 00 20 */	blr
 
 .global get_vidlist
 get_vidlist:
@@ -85,7 +85,7 @@ lbl_800F5FB4:
 /* 800F5FB8 000F1ED8  7C 00 18 40 */	cmplw r0, r3
 /* 800F5FBC 000F1EDC  40 82 00 0C */	bne lbl_800F5FC8
 /* 800F5FC0 000F1EE0  7C 83 23 78 */	mr r3, r4
-/* 800F5FC4 000F1EE4  4E 80 00 20 */	blr 
+/* 800F5FC4 000F1EE4  4E 80 00 20 */	blr
 lbl_800F5FC8:
 /* 800F5FC8 000F1EE8  41 81 00 10 */	bgt lbl_800F5FD8
 /* 800F5FCC 000F1EEC  80 84 00 00 */	lwz r4, 0(r4)
@@ -94,7 +94,7 @@ lbl_800F5FD0:
 /* 800F5FD4 000F1EF4  40 82 FF E0 */	bne lbl_800F5FB4
 lbl_800F5FD8:
 /* 800F5FD8 000F1EF8  38 60 00 00 */	li r3, 0
-/* 800F5FDC 000F1EFC  4E 80 00 20 */	blr 
+/* 800F5FDC 000F1EFC  4E 80 00 20 */	blr
 
 .global vidRemoveVoiceReferences
 vidRemoveVoiceReferences:
@@ -336,7 +336,7 @@ lbl_800F6320:
 /* 800F6324 000F2244  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F6328 000F2248  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F632C 000F224C  7C 08 03 A6 */	mtlr r0
-/* 800F6330 000F2250  4E 80 00 20 */	blr 
+/* 800F6330 000F2250  4E 80 00 20 */	blr
 
 .global vidMakeRoot
 vidMakeRoot:
@@ -344,7 +344,7 @@ vidMakeRoot:
 /* 800F6338 000F2258  90 03 00 FC */	stw r0, 0xfc(r3)
 /* 800F633C 000F225C  80 63 00 F8 */	lwz r3, 0xf8(r3)
 /* 800F6340 000F2260  80 63 00 08 */	lwz r3, 8(r3)
-/* 800F6344 000F2264  4E 80 00 20 */	blr 
+/* 800F6344 000F2264  4E 80 00 20 */	blr
 
 .global vidMakeNew
 vidMakeNew:
@@ -382,7 +382,7 @@ lbl_800F63AC:
 /* 800F63B0 000F22D0  7C A9 2B 79 */	or. r9, r5, r5
 /* 800F63B4 000F22D4  40 82 00 0C */	bne lbl_800F63C0
 /* 800F63B8 000F22D8  38 60 FF FF */	li r3, -1
-/* 800F63BC 000F22DC  4E 80 00 20 */	blr 
+/* 800F63BC 000F22DC  4E 80 00 20 */	blr
 lbl_800F63C0:
 /* 800F63C0 000F22E0  80 05 00 00 */	lwz r0, 0(r5)
 /* 800F63C4 000F22E4  28 00 00 00 */	cmplwi r0, 0
@@ -420,10 +420,10 @@ lbl_800F6424:
 /* 800F642C 000F234C  91 23 00 F8 */	stw r9, 0xf8(r3)
 /* 800F6430 000F2350  41 82 00 0C */	beq lbl_800F643C
 /* 800F6434 000F2354  7C C3 33 78 */	mr r3, r6
-/* 800F6438 000F2358  4E 80 00 20 */	blr 
+/* 800F6438 000F2358  4E 80 00 20 */	blr
 lbl_800F643C:
 /* 800F643C 000F235C  80 63 00 F4 */	lwz r3, 0xf4(r3)
-/* 800F6440 000F2360  4E 80 00 20 */	blr 
+/* 800F6440 000F2360  4E 80 00 20 */	blr
 
 .global vidGetInternalId
 vidGetInternalId:
@@ -449,10 +449,10 @@ lbl_800F647C:
 /* 800F647C 000F239C  28 04 00 00 */	cmplwi r4, 0
 /* 800F6480 000F23A0  41 82 00 0C */	beq lbl_800F648C
 /* 800F6484 000F23A4  80 64 00 0C */	lwz r3, 0xc(r4)
-/* 800F6488 000F23A8  4E 80 00 20 */	blr 
+/* 800F6488 000F23A8  4E 80 00 20 */	blr
 lbl_800F648C:
 /* 800F648C 000F23AC  38 60 FF FF */	li r3, -1
-/* 800F6490 000F23B0  4E 80 00 20 */	blr 
+/* 800F6490 000F23B0  4E 80 00 20 */	blr
 
 .global voiceRemovePriority
 voiceRemovePriority:
@@ -464,7 +464,7 @@ voiceRemovePriority:
 /* 800F64A8 000F23C8  A0 07 08 C2 */	lhz r0, 0x8c2(r7)
 /* 800F64AC 000F23CC  38 E7 08 C0 */	addi r7, r7, 0x8c0
 /* 800F64B0 000F23D0  28 00 00 01 */	cmplwi r0, 1
-/* 800F64B4 000F23D4  4C 82 00 20 */	bnelr 
+/* 800F64B4 000F23D4  4C 82 00 20 */	bnelr
 /* 800F64B8 000F23D8  88 07 00 00 */	lbz r0, 0(r7)
 /* 800F64BC 000F23DC  28 00 00 FF */	cmplwi r0, 0xff
 /* 800F64C0 000F23E0  41 82 00 18 */	beq lbl_800F64D8
@@ -517,7 +517,7 @@ lbl_800F654C:
 lbl_800F6568:
 /* 800F6568 000F2488  38 00 00 00 */	li r0, 0
 /* 800F656C 000F248C  B0 07 00 02 */	sth r0, 2(r7)
-/* 800F6570 000F2490  4E 80 00 20 */	blr 
+/* 800F6570 000F2490  4E 80 00 20 */	blr
 
 .global voiceSetPriority
 voiceSetPriority:
@@ -629,7 +629,7 @@ lbl_800F66F0:
 /* 800F66F4 000F2614  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F66F8 000F2618  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F66FC 000F261C  7C 08 03 A6 */	mtlr r0
-/* 800F6700 000F2620  4E 80 00 20 */	blr 
+/* 800F6700 000F2620  4E 80 00 20 */	blr
 
 .global voiceAllocate
 voiceAllocate:
@@ -948,7 +948,7 @@ lbl_800F6B3C:
 lbl_800F6B40:
 /* 800F6B40 000F2A60  BB 01 00 10 */	lmw r24, 0x10(r1)
 /* 800F6B44 000F2A64  38 21 00 30 */	addi r1, r1, 0x30
-/* 800F6B48 000F2A68  4E 80 00 20 */	blr 
+/* 800F6B48 000F2A68  4E 80 00 20 */	blr
 
 .global voiceFree
 voiceFree:
@@ -1012,7 +1012,7 @@ lbl_800F6C14:
 /* 800F6C20 000F2B40  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F6C24 000F2B44  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F6C28 000F2B48  7C 08 03 A6 */	mtlr r0
-/* 800F6C2C 000F2B4C  4E 80 00 20 */	blr 
+/* 800F6C2C 000F2B4C  4E 80 00 20 */	blr
 
 .global synthInitAllocationAids
 synthInitAllocationAids:
@@ -1231,7 +1231,7 @@ lbl_800F6F50:
 /* 800F6F50 000F2E70  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 800F6F54 000F2E74  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 800F6F58 000F2E78  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F6F5C 000F2E7C  4E 80 00 20 */	blr 
+/* 800F6F5C 000F2E7C  4E 80 00 20 */	blr
 
 .global voiceBlock
 voiceBlock:
@@ -1294,7 +1294,7 @@ lbl_800F7028:
 /* 800F7038 000F2F58  7C 08 03 A6 */	mtlr r0
 /* 800F703C 000F2F5C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F7040 000F2F60  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F7044 000F2F64  4E 80 00 20 */	blr 
+/* 800F7044 000F2F64  4E 80 00 20 */	blr
 
 .global voiceUnblock
 voiceUnblock:
@@ -1331,7 +1331,7 @@ lbl_800F70B0:
 /* 800F70B8 000F2FD8  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800F70BC 000F2FDC  7C 08 03 A6 */	mtlr r0
 /* 800F70C0 000F2FE0  38 21 00 18 */	addi r1, r1, 0x18
-/* 800F70C4 000F2FE4  4E 80 00 20 */	blr 
+/* 800F70C4 000F2FE4  4E 80 00 20 */	blr
 
 .global voiceKill
 voiceKill:
@@ -1376,7 +1376,7 @@ lbl_800F7148:
 /* 800F7158 000F3078  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800F715C 000F307C  7C 08 03 A6 */	mtlr r0
 /* 800F7160 000F3080  38 21 00 18 */	addi r1, r1, 0x18
-/* 800F7164 000F3084  4E 80 00 20 */	blr 
+/* 800F7164 000F3084  4E 80 00 20 */	blr
 
 .global voiceKillSound
 voiceKillSound:
@@ -1454,7 +1454,7 @@ lbl_800F7254:
 /* 800F7268 000F3188  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F726C 000F318C  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800F7270 000F3190  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F7274 000F3194  4E 80 00 20 */	blr 
+/* 800F7274 000F3194  4E 80 00 20 */	blr
 
 .global synthKillVoicesByMacroReferences
 synthKillVoicesByMacroReferences:
@@ -1547,7 +1547,7 @@ lbl_800F7398:
 /* 800F73A8 000F32C8  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F73AC 000F32CC  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F73B0 000F32D0  7C 08 03 A6 */	mtlr r0
-/* 800F73B4 000F32D4  4E 80 00 20 */	blr 
+/* 800F73B4 000F32D4  4E 80 00 20 */	blr
 
 .global voiceIsLastStarted
 voiceIsLastStarted:
@@ -1569,7 +1569,7 @@ voiceIsLastStarted:
 /* 800F73F4 000F3314  7C 00 30 40 */	cmplw r0, r6
 /* 800F73F8 000F3318  40 82 00 34 */	bne lbl_800F742C
 /* 800F73FC 000F331C  38 60 00 01 */	li r3, 1
-/* 800F7400 000F3320  4E 80 00 20 */	blr 
+/* 800F7400 000F3320  4E 80 00 20 */	blr
 lbl_800F7404:
 /* 800F7404 000F3324  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
 /* 800F7408 000F3328  54 04 20 36 */	slwi r4, r0, 4
@@ -1580,20 +1580,20 @@ lbl_800F7404:
 /* 800F741C 000F333C  7C 06 00 40 */	cmplw r6, r0
 /* 800F7420 000F3340  40 82 00 0C */	bne lbl_800F742C
 /* 800F7424 000F3344  38 60 00 01 */	li r3, 1
-/* 800F7428 000F3348  4E 80 00 20 */	blr 
+/* 800F7428 000F3348  4E 80 00 20 */	blr
 lbl_800F742C:
 /* 800F742C 000F334C  38 60 00 00 */	li r3, 0
-/* 800F7430 000F3350  4E 80 00 20 */	blr 
+/* 800F7430 000F3350  4E 80 00 20 */	blr
 
 .global voiceSetLastStarted
 voiceSetLastStarted:
 /* 800F7434 000F3354  80 83 00 F4 */	lwz r4, 0xf4(r3)
 /* 800F7438 000F3358  3C 04 00 01 */	addis r0, r4, 1
 /* 800F743C 000F335C  28 00 FF FF */	cmplwi r0, 0xffff
-/* 800F7440 000F3360  4D 82 00 20 */	beqlr 
+/* 800F7440 000F3360  4D 82 00 20 */	beqlr
 /* 800F7444 000F3364  88 A3 01 21 */	lbz r5, 0x121(r3)
 /* 800F7448 000F3368  28 05 00 FF */	cmplwi r5, 0xff
-/* 800F744C 000F336C  4D 82 00 20 */	beqlr 
+/* 800F744C 000F336C  4D 82 00 20 */	beqlr
 /* 800F7450 000F3370  88 03 01 22 */	lbz r0, 0x122(r3)
 /* 800F7454 000F3374  54 86 06 3E */	clrlwi r6, r4, 0x18
 /* 800F7458 000F3378  28 00 00 FF */	cmplwi r0, 0xff
@@ -1602,7 +1602,7 @@ voiceSetLastStarted:
 /* 800F7464 000F3384  38 03 36 70 */	addi r0, r3, lbl_802E3670@l
 /* 800F7468 000F3388  7C 60 32 14 */	add r3, r0, r6
 /* 800F746C 000F338C  98 C3 00 00 */	stb r6, 0(r3)
-/* 800F7470 000F3390  4E 80 00 20 */	blr 
+/* 800F7470 000F3390  4E 80 00 20 */	blr
 lbl_800F7474:
 /* 800F7474 000F3394  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
 /* 800F7478 000F3398  54 04 20 36 */	slwi r4, r0, 4
@@ -1610,17 +1610,17 @@ lbl_800F7474:
 /* 800F7480 000F33A0  7C 00 22 14 */	add r0, r0, r4
 /* 800F7484 000F33A4  7C 60 2A 14 */	add r3, r0, r5
 /* 800F7488 000F33A8  98 C3 00 00 */	stb r6, 0(r3)
-/* 800F748C 000F33AC  4E 80 00 20 */	blr 
+/* 800F748C 000F33AC  4E 80 00 20 */	blr
 
 .global voiceResetLastStarted
 voiceResetLastStarted:
 /* 800F7490 000F33B0  80 83 00 F4 */	lwz r4, 0xf4(r3)
 /* 800F7494 000F33B4  3C 04 00 01 */	addis r0, r4, 1
 /* 800F7498 000F33B8  28 00 FF FF */	cmplwi r0, 0xffff
-/* 800F749C 000F33BC  4D 82 00 20 */	beqlr 
+/* 800F749C 000F33BC  4D 82 00 20 */	beqlr
 /* 800F74A0 000F33C0  88 A3 01 21 */	lbz r5, 0x121(r3)
 /* 800F74A4 000F33C4  28 05 00 FF */	cmplwi r5, 0xff
-/* 800F74A8 000F33C8  4D 82 00 20 */	beqlr 
+/* 800F74A8 000F33C8  4D 82 00 20 */	beqlr
 /* 800F74AC 000F33CC  88 03 01 22 */	lbz r0, 0x122(r3)
 /* 800F74B0 000F33D0  54 86 06 3E */	clrlwi r6, r4, 0x18
 /* 800F74B4 000F33D4  28 00 00 FF */	cmplwi r0, 0xff
@@ -1630,10 +1630,10 @@ voiceResetLastStarted:
 /* 800F74C4 000F33E4  7C 60 32 14 */	add r3, r0, r6
 /* 800F74C8 000F33E8  88 03 00 00 */	lbz r0, 0(r3)
 /* 800F74CC 000F33EC  7C 00 30 40 */	cmplw r0, r6
-/* 800F74D0 000F33F0  4C 82 00 20 */	bnelr 
+/* 800F74D0 000F33F0  4C 82 00 20 */	bnelr
 /* 800F74D4 000F33F4  38 00 00 FF */	li r0, 0xff
 /* 800F74D8 000F33F8  98 03 00 00 */	stb r0, 0(r3)
-/* 800F74DC 000F33FC  4E 80 00 20 */	blr 
+/* 800F74DC 000F33FC  4E 80 00 20 */	blr
 lbl_800F74E0:
 /* 800F74E0 000F3400  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
 /* 800F74E4 000F3404  54 04 20 36 */	slwi r4, r0, 4
@@ -1642,10 +1642,10 @@ lbl_800F74E0:
 /* 800F74F0 000F3410  7C 60 2A 14 */	add r3, r0, r5
 /* 800F74F4 000F3414  88 03 00 00 */	lbz r0, 0(r3)
 /* 800F74F8 000F3418  7C 06 00 40 */	cmplw r6, r0
-/* 800F74FC 000F341C  4C 82 00 20 */	bnelr 
+/* 800F74FC 000F341C  4C 82 00 20 */	bnelr
 /* 800F7500 000F3420  38 00 00 FF */	li r0, 0xff
 /* 800F7504 000F3424  98 03 00 00 */	stb r0, 0(r3)
-/* 800F7508 000F3428  4E 80 00 20 */	blr 
+/* 800F7508 000F3428  4E 80 00 20 */	blr
 
 .global voiceInitLastStarted
 voiceInitLastStarted:
@@ -1757,4 +1757,4 @@ lbl_800F7520:
 /* 800F76AC 000F35CC  98 03 00 3D */	stb r0, 0x3d(r3)
 /* 800F76B0 000F35D0  98 03 00 3E */	stb r0, 0x3e(r3)
 /* 800F76B4 000F35D4  98 03 00 3F */	stb r0, 0x3f(r3)
-/* 800F76B8 000F35D8  4E 80 00 20 */	blr 
+/* 800F76B8 000F35D8  4E 80 00 20 */	blr

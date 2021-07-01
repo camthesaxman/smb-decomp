@@ -216,7 +216,7 @@ lbl_800F268C:
 /* 800F269C 000EE5BC  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800F26A0 000EE5C0  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800F26A4 000EE5C4  38 21 00 28 */	addi r1, r1, 0x28
-/* 800F26A8 000EE5C8  4E 80 00 20 */	blr 
+/* 800F26A8 000EE5C8  4E 80 00 20 */	blr
 
 .global mcmdLoop
 mcmdLoop:
@@ -313,7 +313,7 @@ lbl_800F27E8:
 /* 800F27F4 000EE714  7C 08 03 A6 */	mtlr r0
 /* 800F27F8 000EE718  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F27FC 000EE71C  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F2800 000EE720  4E 80 00 20 */	blr 
+/* 800F2800 000EE720  4E 80 00 20 */	blr
 
 .global mcmdPlayMacro
 mcmdPlayMacro:
@@ -425,7 +425,7 @@ lbl_800F2984:
 /* 800F298C 000EE8AC  83 C1 00 30 */	lwz r30, 0x30(r1)
 /* 800F2990 000EE8B0  7C 08 03 A6 */	mtlr r0
 /* 800F2994 000EE8B4  38 21 00 38 */	addi r1, r1, 0x38
-/* 800F2998 000EE8B8  4E 80 00 20 */	blr 
+/* 800F2998 000EE8B8  4E 80 00 20 */	blr
 
 .global mcmdStartSample
 mcmdStartSample:
@@ -558,7 +558,7 @@ lbl_800F2B60:
 /* 800F2B70 000EEA90  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F2B74 000EEA94  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800F2B78 000EEA98  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F2B7C 000EEA9C  4E 80 00 20 */	blr 
+/* 800F2B7C 000EEA9C  4E 80 00 20 */	blr
 
 .global mcmdVibrato
 mcmdVibrato:
@@ -669,7 +669,7 @@ lbl_800F2CE8:
 /* 800F2CF0 000EEC10  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 800F2CF4 000EEC14  7C 08 03 A6 */	mtlr r0
 /* 800F2CF8 000EEC18  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F2CFC 000EEC1C  4E 80 00 20 */	blr 
+/* 800F2CFC 000EEC1C  4E 80 00 20 */	blr
 
 .global DoSetPitch
 DoSetPitch:
@@ -685,7 +685,7 @@ DoSetPitch:
 /* 800F2D24 000EEC44  B0 03 01 30 */	sth r0, 0x130(r3)
 /* 800F2D28 000EEC48  38 00 00 00 */	li r0, 0
 /* 800F2D2C 000EEC4C  98 03 01 32 */	stb r0, 0x132(r3)
-/* 800F2D30 000EEC50  4E 80 00 20 */	blr 
+/* 800F2D30 000EEC50  4E 80 00 20 */	blr
 lbl_800F2D34:
 /* 800F2D34 000EEC54  40 80 00 A4 */	bge lbl_800F2DD8
 /* 800F2D38 000EEC58  54 80 60 26 */	slwi r0, r4, 0xc
@@ -731,7 +731,7 @@ lbl_800F2D98:
 /* 800F2DC8 000EECE8  7C 04 03 96 */	divwu r0, r4, r0
 /* 800F2DCC 000EECEC  7C 00 07 74 */	extsb r0, r0
 /* 800F2DD0 000EECF0  98 03 01 32 */	stb r0, 0x132(r3)
-/* 800F2DD4 000EECF4  4E 80 00 20 */	blr 
+/* 800F2DD4 000EECF4  4E 80 00 20 */	blr
 lbl_800F2DD8:
 /* 800F2DD8 000EECF8  54 C0 60 26 */	slwi r0, r6, 0xc
 /* 800F2DDC 000EECFC  7C C0 23 96 */	divwu r6, r0, r4
@@ -769,7 +769,7 @@ lbl_800F2E38:
 /* 800F2E4C 000EED6C  38 00 00 00 */	li r0, 0
 /* 800F2E50 000EED70  98 03 01 32 */	stb r0, 0x132(r3)
 /* 800F2E54 000EED74  B0 03 01 30 */	sth r0, 0x130(r3)
-/* 800F2E58 000EED78  4E 80 00 20 */	blr 
+/* 800F2E58 000EED78  4E 80 00 20 */	blr
 lbl_800F2E5C:
 /* 800F2E5C 000EED7C  7C 00 20 50 */	subf r0, r0, r4
 /* 800F2E60 000EED80  B0 03 01 30 */	sth r0, 0x130(r3)
@@ -783,7 +783,7 @@ lbl_800F2E5C:
 /* 800F2E80 000EEDA0  7C 04 03 96 */	divwu r0, r4, r0
 /* 800F2E84 000EEDA4  7C 00 07 74 */	extsb r0, r0
 /* 800F2E88 000EEDA8  98 03 01 32 */	stb r0, 0x132(r3)
-/* 800F2E8C 000EEDAC  4E 80 00 20 */	blr 
+/* 800F2E8C 000EEDAC  4E 80 00 20 */	blr
 
 .global mcmdSetADSR
 mcmdSetADSR:
@@ -941,7 +941,7 @@ lbl_800F30D0:
 /* 800F30D8 000EEFF8  83 C1 00 40 */	lwz r30, 0x40(r1)
 /* 800F30DC 000EEFFC  7C 08 03 A6 */	mtlr r0
 /* 800F30E0 000EF000  38 21 00 48 */	addi r1, r1, 0x48
-/* 800F30E4 000EF004  4E 80 00 20 */	blr 
+/* 800F30E4 000EF004  4E 80 00 20 */	blr
 
 .global mcmdSetPitchADSR
 mcmdSetPitchADSR:
@@ -1110,7 +1110,7 @@ lbl_800F3354:
 /* 800F3358 000EF278  80 01 00 5C */	lwz r0, 0x5c(r1)
 /* 800F335C 000EF27C  38 21 00 58 */	addi r1, r1, 0x58
 /* 800F3360 000EF280  7C 08 03 A6 */	mtlr r0
-/* 800F3364 000EF284  4E 80 00 20 */	blr 
+/* 800F3364 000EF284  4E 80 00 20 */	blr
 
 .global DoPanningSetup
 DoPanningSetup:
@@ -1155,7 +1155,7 @@ lbl_800F33E8:
 /* 800F33F8 000EF318  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800F33FC 000EF31C  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F3400 000EF320  7C 08 03 A6 */	mtlr r0
-/* 800F3404 000EF324  4E 80 00 20 */	blr 
+/* 800F3404 000EF324  4E 80 00 20 */	blr
 
 .global TranslateVolume
 TranslateVolume:
@@ -1192,7 +1192,7 @@ lbl_800F3470:
 /* 800F3478 000EF398  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 800F347C 000EF39C  38 21 00 20 */	addi r1, r1, 0x20
 /* 800F3480 000EF3A0  7C 08 03 A6 */	mtlr r0
-/* 800F3484 000EF3A4  4E 80 00 20 */	blr 
+/* 800F3484 000EF3A4  4E 80 00 20 */	blr
 
 .global DoEnvelopeCalculation
 DoEnvelopeCalculation:
@@ -1276,7 +1276,7 @@ lbl_800F3574:
 /* 800F35A4 000EF4C4  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800F35A8 000EF4C8  38 21 00 38 */	addi r1, r1, 0x38
 /* 800F35AC 000EF4CC  7C 08 03 A6 */	mtlr r0
-/* 800F35B0 000EF4D0  4E 80 00 20 */	blr 
+/* 800F35B0 000EF4D0  4E 80 00 20 */	blr
 
 .global mcmdRandomKey
 mcmdRandomKey:
@@ -1394,7 +1394,7 @@ lbl_800F372C:
 /* 800F3744 000EF664  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F3748 000EF668  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F374C 000EF66C  7C 08 03 A6 */	mtlr r0
-/* 800F3750 000EF670  4E 80 00 20 */	blr 
+/* 800F3750 000EF670  4E 80 00 20 */	blr
 
 .global SelectSource
 SelectSource:
@@ -1480,7 +1480,7 @@ lbl_800F3870:
 /* 800F3878 000EF798  83 C1 00 28 */	lwz r30, 0x28(r1)
 /* 800F387C 000EF79C  7C 08 03 A6 */	mtlr r0
 /* 800F3880 000EF7A0  38 21 00 30 */	addi r1, r1, 0x30
-/* 800F3884 000EF7A4  4E 80 00 20 */	blr 
+/* 800F3884 000EF7A4  4E 80 00 20 */	blr
 
 .global mcmdPortamento
 mcmdPortamento:
@@ -1560,7 +1560,7 @@ lbl_800F398C:
 /* 800F3994 000EF8B4  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 800F3998 000EF8B8  7C 08 03 A6 */	mtlr r0
 /* 800F399C 000EF8BC  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F39A0 000EF8C0  4E 80 00 20 */	blr 
+/* 800F39A0 000EF8C0  4E 80 00 20 */	blr
 
 .global varGet32
 varGet32:
@@ -1591,7 +1591,7 @@ lbl_800F39F8:
 /* 800F39F8 000EF918  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F39FC 000EF91C  38 21 00 08 */	addi r1, r1, 8
 /* 800F3A00 000EF920  7C 08 03 A6 */	mtlr r0
-/* 800F3A04 000EF924  4E 80 00 20 */	blr 
+/* 800F3A04 000EF924  4E 80 00 20 */	blr
 
 .global varGet
 varGet:
@@ -1623,7 +1623,7 @@ lbl_800F3A5C:
 /* 800F3A60 000EF980  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F3A64 000EF984  38 21 00 08 */	addi r1, r1, 8
 /* 800F3A68 000EF988  7C 08 03 A6 */	mtlr r0
-/* 800F3A6C 000EF98C  4E 80 00 20 */	blr 
+/* 800F3A6C 000EF98C  4E 80 00 20 */	blr
 
 .global varSet32
 varSet32:
@@ -1654,7 +1654,7 @@ lbl_800F3AC4:
 /* 800F3AC4 000EF9E4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F3AC8 000EF9E8  38 21 00 08 */	addi r1, r1, 8
 /* 800F3ACC 000EF9EC  7C 08 03 A6 */	mtlr r0
-/* 800F3AD0 000EF9F0  4E 80 00 20 */	blr 
+/* 800F3AD0 000EF9F0  4E 80 00 20 */	blr
 
 .global mcmdVarCalculation
 mcmdVarCalculation:
@@ -1746,7 +1746,7 @@ lbl_800F3BE4:
 /* 800F3BF4 000EFB14  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800F3BF8 000EFB18  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F3BFC 000EFB1C  7C 08 03 A6 */	mtlr r0
-/* 800F3C00 000EFB20  4E 80 00 20 */	blr 
+/* 800F3C00 000EFB20  4E 80 00 20 */	blr
 
 .global mcmdSendMessage
 mcmdSendMessage:
@@ -1843,7 +1843,7 @@ lbl_800F3D48:
 /* 800F3D54 000EFC74  80 63 00 F8 */	lwz r3, 0xf8(r3)
 /* 800F3D58 000EFC78  7D 88 03 A6 */	mtlr r12
 /* 800F3D5C 000EFC7C  80 63 00 08 */	lwz r3, 8(r3)
-/* 800F3D60 000EFC80  4E 80 00 21 */	blrl 
+/* 800F3D60 000EFC80  4E 80 00 21 */	blrl
 /* 800F3D64 000EFC84  48 00 00 C0 */	b lbl_800F3E24
 lbl_800F3D68:
 /* 800F3D68 000EFC88  54 C0 06 FE */	clrlwi r0, r6, 0x1b
@@ -1900,7 +1900,7 @@ lbl_800F3E24:
 /* 800F3E28 000EFD48  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800F3E2C 000EFD4C  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F3E30 000EFD50  7C 08 03 A6 */	mtlr r0
-/* 800F3E34 000EFD54  4E 80 00 20 */	blr 
+/* 800F3E34 000EFD54  4E 80 00 20 */	blr
 
 .global mcmdSetKeyGroup
 mcmdSetKeyGroup:
@@ -1961,7 +1961,7 @@ lbl_800F3EF8:
 /* 800F3EFC 000EFE1C  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F3F00 000EFE20  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F3F04 000EFE24  7C 08 03 A6 */	mtlr r0
-/* 800F3F08 000EFE28  4E 80 00 20 */	blr 
+/* 800F3F08 000EFE28  4E 80 00 20 */	blr
 
 .global macHandleActive
 macHandleActive:
@@ -2166,7 +2166,7 @@ lbl_800F41C0:
 /* 800F4210 000F0130  54 00 10 3A */	slwi r0, r0, 2
 /* 800F4214 000F0134  7C 12 00 2E */	lwzx r0, r18, r0
 /* 800F4218 000F0138  7C 09 03 A6 */	mtctr r0
-/* 800F421C 000F013C  4E 80 04 20 */	bctr 
+/* 800F421C 000F013C  4E 80 04 20 */	bctr
 /* 800F4220 000F0140  7F E3 FB 78 */	mr r3, r31
 /* 800F4224 000F0144  48 00 1D BD */	bl vidRemoveVoiceReferences
 /* 800F4228 000F0148  7F E3 FB 78 */	mr r3, r31
@@ -3359,7 +3359,7 @@ lbl_800F53A0:
 /* 800F53B0 000F12D0  7C 08 03 A6 */	mtlr r0
 /* 800F53B4 000F12D4  CB A1 00 C8 */	lfd f29, 0xc8(r1)
 /* 800F53B8 000F12D8  38 21 00 E0 */	addi r1, r1, 0xe0
-/* 800F53BC 000F12DC  4E 80 00 20 */	blr 
+/* 800F53BC 000F12DC  4E 80 00 20 */	blr
 
 .global macHandle
 macHandle:
@@ -3452,7 +3452,7 @@ lbl_800F54D0:
 /* 800F54F8 000F1418  BB 41 00 18 */	lmw r26, 0x18(r1)
 /* 800F54FC 000F141C  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F5500 000F1420  7C 08 03 A6 */	mtlr r0
-/* 800F5504 000F1424  4E 80 00 20 */	blr 
+/* 800F5504 000F1424  4E 80 00 20 */	blr
 
 .global macSampleEndNotify
 macSampleEndNotify:
@@ -3502,7 +3502,7 @@ lbl_800F55A4:
 /* 800F55A8 000F14C8  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F55AC 000F14CC  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F55B0 000F14D0  7C 08 03 A6 */	mtlr r0
-/* 800F55B4 000F14D4  4E 80 00 20 */	blr 
+/* 800F55B4 000F14D4  4E 80 00 20 */	blr
 
 .global macSetExternalKeyoff
 macSetExternalKeyoff:
@@ -3570,7 +3570,7 @@ lbl_800F5698:
 /* 800F569C 000F15BC  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F56A0 000F15C0  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F56A4 000F15C4  7C 08 03 A6 */	mtlr r0
-/* 800F56A8 000F15C8  4E 80 00 20 */	blr 
+/* 800F56A8 000F15C8  4E 80 00 20 */	blr
 
 .global macSetPedalState
 macSetPedalState:
@@ -3645,7 +3645,7 @@ lbl_800F57A4:
 /* 800F57A8 000F16C8  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F57AC 000F16CC  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F57B0 000F16D0  7C 08 03 A6 */	mtlr r0
-/* 800F57B4 000F16D4  4E 80 00 20 */	blr 
+/* 800F57B4 000F16D4  4E 80 00 20 */	blr
 
 .global TimeQueueAdd
 TimeQueueAdd:
@@ -3676,13 +3676,13 @@ lbl_800F57F8:
 /* 800F580C 000F172C  38 00 00 00 */	li r0, 0
 /* 800F5810 000F1730  90 03 00 44 */	stw r0, 0x44(r3)
 /* 800F5814 000F1734  90 03 00 48 */	stw r0, 0x48(r3)
-/* 800F5818 000F1738  4E 80 00 20 */	blr 
+/* 800F5818 000F1738  4E 80 00 20 */	blr
 lbl_800F581C:
 /* 800F581C 000F173C  90 68 00 44 */	stw r3, 0x44(r8)
 /* 800F5820 000F1740  38 00 00 00 */	li r0, 0
 /* 800F5824 000F1744  91 03 00 48 */	stw r8, 0x48(r3)
 /* 800F5828 000F1748  90 03 00 44 */	stw r0, 0x44(r3)
-/* 800F582C 000F174C  4E 80 00 20 */	blr 
+/* 800F582C 000F174C  4E 80 00 20 */	blr
 lbl_800F5830:
 /* 800F5830 000F1750  90 E3 00 44 */	stw r7, 0x44(r3)
 /* 800F5834 000F1754  80 07 00 48 */	lwz r0, 0x48(r7)
@@ -3696,7 +3696,7 @@ lbl_800F5850:
 /* 800F5850 000F1770  90 6D A4 B0 */	stw r3, macTimeQueueRoot-_SDA_BASE_(r13)
 lbl_800F5854:
 /* 800F5854 000F1774  90 67 00 48 */	stw r3, 0x48(r7)
-/* 800F5858 000F1778  4E 80 00 20 */	blr 
+/* 800F5858 000F1778  4E 80 00 20 */	blr
 
 .global UnYieldMacro
 UnYieldMacro:
@@ -3759,7 +3759,7 @@ lbl_800F5924:
 /* 800F5928 000F1848  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F592C 000F184C  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F5930 000F1850  7C 08 03 A6 */	mtlr r0
-/* 800F5934 000F1854  4E 80 00 20 */	blr 
+/* 800F5934 000F1854  4E 80 00 20 */	blr
 
 .global macMakeActive
 macMakeActive:
@@ -3834,13 +3834,13 @@ lbl_800F5A2C:
 /* 800F5A30 000F1950  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F5A34 000F1954  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F5A38 000F1958  7C 08 03 A6 */	mtlr r0
-/* 800F5A3C 000F195C  4E 80 00 20 */	blr 
+/* 800F5A3C 000F195C  4E 80 00 20 */	blr
 
 .global macMakeInactive
 macMakeInactive:
 /* 800F5A40 000F1960  80 03 00 4C */	lwz r0, 0x4c(r3)
 /* 800F5A44 000F1964  7C 00 20 00 */	cmpw r0, r4
-/* 800F5A48 000F1968  4D 82 00 20 */	beqlr 
+/* 800F5A48 000F1968  4D 82 00 20 */	beqlr
 /* 800F5A4C 000F196C  2C 00 00 00 */	cmpwi r0, 0
 /* 800F5A50 000F1970  40 82 00 38 */	bne lbl_800F5A88
 /* 800F5A54 000F1974  80 A3 00 40 */	lwz r5, 0x40(r3)
@@ -3907,7 +3907,7 @@ lbl_800F5AF4:
 /* 800F5B30 000F1A50  90 03 01 14 */	stw r0, 0x114(r3)
 lbl_800F5B34:
 /* 800F5B34 000F1A54  90 83 00 4C */	stw r4, 0x4c(r3)
-/* 800F5B38 000F1A58  4E 80 00 20 */	blr 
+/* 800F5B38 000F1A58  4E 80 00 20 */	blr
 
 .global macStart
 macStart:
@@ -4124,7 +4124,7 @@ lbl_800F5E38:
 /* 800F5E3C 000F1D5C  80 01 00 64 */	lwz r0, 0x64(r1)
 /* 800F5E40 000F1D60  38 21 00 60 */	addi r1, r1, 0x60
 /* 800F5E44 000F1D64  7C 08 03 A6 */	mtlr r0
-/* 800F5E48 000F1D68  4E 80 00 20 */	blr 
+/* 800F5E48 000F1D68  4E 80 00 20 */	blr
 
 .global macInit
 macInit:
@@ -4155,4 +4155,4 @@ lbl_800F5EA4:
 /* 800F5EA4 000F1DC4  88 03 02 10 */	lbz r0, 0x210(r3)
 /* 800F5EA8 000F1DC8  7C 09 00 40 */	cmplw r9, r0
 /* 800F5EAC 000F1DCC  41 80 FF CC */	blt lbl_800F5E78
-/* 800F5EB0 000F1DD0  4E 80 00 20 */	blr 
+/* 800F5EB0 000F1DD0  4E 80 00 20 */	blr

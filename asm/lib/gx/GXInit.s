@@ -36,7 +36,7 @@ lbl_800DBFFC:
 /* 800DBFFC 000D7F1C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800DC000 000D7F20  38 21 00 08 */	addi r1, r1, 8
 /* 800DC004 000D7F24  7C 08 03 A6 */	mtlr r0
-/* 800DC008 000D7F28  4E 80 00 20 */	blr 
+/* 800DC008 000D7F28  4E 80 00 20 */	blr
 
 .global __GXDefaultTlutRegionCallback
 __GXDefaultTlutRegionCallback:
@@ -50,7 +50,7 @@ lbl_800DC01C:
 /* 800DC024 000D7F44  38 63 02 D0 */	addi r3, r3, 0x2d0
 /* 800DC028 000D7F48  7C 60 1A 14 */	add r3, r0, r3
 lbl_800DC02C:
-/* 800DC02C 000D7F4C  4E 80 00 20 */	blr 
+/* 800DC02C 000D7F4C  4E 80 00 20 */	blr
 
 .global GXInit
 GXInit:
@@ -1064,4 +1064,4 @@ lbl_800DCE6C:
 /* 800DCF60 000D8E80  80 01 00 A4 */	lwz r0, 0xa4(r1)
 /* 800DCF64 000D8E84  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 800DCF68 000D8E88  7C 08 03 A6 */	mtlr r0
-/* 800DCF6C 000D8E8C  4E 80 00 20 */	blr 
+/* 800DCF6C 000D8E8C  4E 80 00 20 */	blr

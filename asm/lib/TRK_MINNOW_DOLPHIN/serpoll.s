@@ -63,7 +63,7 @@ lbl_8010A714:
 /* 8010A71C 0010663C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010A720 00106640  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010A724 00106644  7C 08 03 A6 */	mtlr r0
-/* 8010A728 00106648  4E 80 00 20 */	blr 
+/* 8010A728 00106648  4E 80 00 20 */	blr
 
 .global TRKGetInput
 TRKGetInput:
@@ -99,7 +99,7 @@ lbl_8010A790:
 /* 8010A798 001066B8  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010A79C 001066BC  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010A7A0 001066C0  7C 08 03 A6 */	mtlr r0
-/* 8010A7A4 001066C4  4E 80 00 20 */	blr 
+/* 8010A7A4 001066C4  4E 80 00 20 */	blr
 
 .global TRKProcessInput
 TRKProcessInput:
@@ -122,7 +122,7 @@ TRKProcessInput:
 /* 8010A7E8 00106708  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010A7EC 0010670C  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010A7F0 00106710  7C 08 03 A6 */	mtlr r0
-/* 8010A7F4 00106714  4E 80 00 20 */	blr 
+/* 8010A7F4 00106714  4E 80 00 20 */	blr
 
 .global TRKInitializeSerialHandler
 TRKInitializeSerialHandler:
@@ -134,9 +134,9 @@ TRKInitializeSerialHandler:
 /* 8010A80C 0010672C  38 60 00 00 */	li r3, 0
 /* 8010A810 00106730  98 04 00 08 */	stb r0, 8(r4)
 /* 8010A814 00106734  90 04 00 0C */	stw r0, 0xc(r4)
-/* 8010A818 00106738  4E 80 00 20 */	blr 
+/* 8010A818 00106738  4E 80 00 20 */	blr
 
 .global TRKTerminateSerialHandler
 TRKTerminateSerialHandler:
 /* 8010A81C 0010673C  38 60 00 00 */	li r3, 0
-/* 8010A820 00106740  4E 80 00 20 */	blr 
+/* 8010A820 00106740  4E 80 00 20 */	blr

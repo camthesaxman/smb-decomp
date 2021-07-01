@@ -45,14 +45,14 @@ lbl_80104988:
 /* 801049D0 001008F0  94 0C FF FC */	stwu r0, -4(r12)
 lbl_801049D4:
 /* 801049D4 001008F4  54 A5 07 BF */	clrlwi. r5, r5, 0x1e
-/* 801049D8 001008F8  4D 82 00 20 */	beqlr 
+/* 801049D8 001008F8  4D 82 00 20 */	beqlr
 /* 801049DC 001008FC  7D 6B 4A 14 */	add r11, r11, r9
 lbl_801049E0:
 /* 801049E0 00100900  8C 0B FF FF */	lbzu r0, -1(r11)
 /* 801049E4 00100904  34 A5 FF FF */	addic. r5, r5, -1
 /* 801049E8 00100908  9C 0C FF FF */	stbu r0, -1(r12)
 /* 801049EC 0010090C  40 82 FF F4 */	bne lbl_801049E0
-/* 801049F0 00100910  4E 80 00 20 */	blr 
+/* 801049F0 00100910  4E 80 00 20 */	blr
 
 .global __copy_longs_unaligned
 __copy_longs_unaligned:
@@ -101,7 +101,7 @@ lbl_80104A8C:
 /* 80104A8C 001009AC  54 A5 07 BF */	clrlwi. r5, r5, 0x1e
 /* 80104A90 001009B0  38 88 00 03 */	addi r4, r8, 3
 /* 80104A94 001009B4  38 66 00 03 */	addi r3, r6, 3
-/* 80104A98 001009B8  4D 82 00 20 */	beqlr 
+/* 80104A98 001009B8  4D 82 00 20 */	beqlr
 /* 80104A9C 001009BC  20 0B 00 04 */	subfic r0, r11, 4
 /* 80104AA0 001009C0  7C 80 20 50 */	subf r4, r0, r4
 lbl_80104AA4:
@@ -109,7 +109,7 @@ lbl_80104AA4:
 /* 80104AA8 001009C8  34 A5 FF FF */	addic. r5, r5, -1
 /* 80104AAC 001009CC  9C 03 00 01 */	stbu r0, 1(r3)
 /* 80104AB0 001009D0  40 82 FF F4 */	bne lbl_80104AA4
-/* 80104AB4 001009D4  4E 80 00 20 */	blr 
+/* 80104AB4 001009D4  4E 80 00 20 */	blr
 
 .global __copy_longs_rev_aligned
 __copy_longs_rev_aligned:
@@ -156,13 +156,13 @@ lbl_80104B38:
 /* 80104B44 00100A64  40 82 FF F4 */	bne lbl_80104B38
 lbl_80104B48:
 /* 80104B48 00100A68  54 A5 07 BF */	clrlwi. r5, r5, 0x1e
-/* 80104B4C 00100A6C  4D 82 00 20 */	beqlr 
+/* 80104B4C 00100A6C  4D 82 00 20 */	beqlr
 lbl_80104B50:
 /* 80104B50 00100A70  8C 04 FF FF */	lbzu r0, -1(r4)
 /* 80104B54 00100A74  34 A5 FF FF */	addic. r5, r5, -1
 /* 80104B58 00100A78  9C 06 FF FF */	stbu r0, -1(r6)
 /* 80104B5C 00100A7C  40 82 FF F4 */	bne lbl_80104B50
-/* 80104B60 00100A80  4E 80 00 20 */	blr 
+/* 80104B60 00100A80  4E 80 00 20 */	blr
 
 .global __copy_longs_aligned
 __copy_longs_aligned:
@@ -213,10 +213,10 @@ lbl_80104BFC:
 /* 80104BFC 00100B1C  54 A5 07 BF */	clrlwi. r5, r5, 0x1e
 /* 80104C00 00100B20  38 86 00 03 */	addi r4, r6, 3
 /* 80104C04 00100B24  38 63 00 03 */	addi r3, r3, 3
-/* 80104C08 00100B28  4D 82 00 20 */	beqlr 
+/* 80104C08 00100B28  4D 82 00 20 */	beqlr
 lbl_80104C0C:
 /* 80104C0C 00100B2C  8C 04 00 01 */	lbzu r0, 1(r4)
 /* 80104C10 00100B30  34 A5 FF FF */	addic. r5, r5, -1
 /* 80104C14 00100B34  9C 03 00 01 */	stbu r0, 1(r3)
 /* 80104C18 00100B38  40 82 FF F4 */	bne lbl_80104C0C
-/* 80104C1C 00100B3C  4E 80 00 20 */	blr 
+/* 80104C1C 00100B3C  4E 80 00 20 */	blr

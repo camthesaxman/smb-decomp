@@ -13,7 +13,7 @@ DBInit:
 /* 800CA09C 000C5FBC  90 04 00 48 */	stw r0, 0x48(r4)
 /* 800CA0A0 000C5FC0  38 00 00 01 */	li r0, 1
 /* 800CA0A4 000C5FC4  90 0D A1 84 */	stw r0, DBVerbose-_SDA_BASE_(r13)
-/* 800CA0A8 000C5FC8  4E 80 00 20 */	blr 
+/* 800CA0A8 000C5FC8  4E 80 00 20 */	blr
 
 .global __DBExceptionDestinationAux
 __DBExceptionDestinationAux:
@@ -34,7 +34,7 @@ __DBExceptionDestinationAux:
 /* 800CA0E4 000C6004  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800CA0E8 000C6008  38 21 00 18 */	addi r1, r1, 0x18
 /* 800CA0EC 000C600C  7C 08 03 A6 */	mtlr r0
-/* 800CA0F0 000C6010  4E 80 00 20 */	blr 
+/* 800CA0F0 000C6010  4E 80 00 20 */	blr
 
 .global __DBExceptionDestination
 __DBExceptionDestination:
@@ -51,7 +51,7 @@ __DBIsExceptionMarked:
 /* 800CA110 000C6030  80 84 00 04 */	lwz r4, 4(r4)
 /* 800CA114 000C6034  7C 60 00 30 */	slw r0, r3, r0
 /* 800CA118 000C6038  7C 83 00 38 */	and r3, r4, r0
-/* 800CA11C 000C603C  4E 80 00 20 */	blr 
+/* 800CA11C 000C603C  4E 80 00 20 */	blr
 
 .global DBPrintf
 DBPrintf:
@@ -75,4 +75,4 @@ lbl_800CA148:
 /* 800CA160 000C6080  91 21 00 20 */	stw r9, 0x20(r1)
 /* 800CA164 000C6084  91 41 00 24 */	stw r10, 0x24(r1)
 /* 800CA168 000C6088  38 21 00 70 */	addi r1, r1, 0x70
-/* 800CA16C 000C608C  4E 80 00 20 */	blr 
+/* 800CA16C 000C608C  4E 80 00 20 */	blr

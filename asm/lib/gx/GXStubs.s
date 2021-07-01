@@ -4,4 +4,4 @@
 
 .global __GXSetRange
 __GXSetRange:
-/* 800E4198 000E00B8  4E 80 00 20 */	blr 
+/* 800E4198 000E00B8  4E 80 00 20 */	blr

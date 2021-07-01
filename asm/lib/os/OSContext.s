@@ -78,7 +78,7 @@ lbl_800C3514:
 /* 800C358C 000BF4AC  CB C4 01 80 */	lfd f30, 0x180(r4)
 /* 800C3590 000BF4B0  CB E4 01 88 */	lfd f31, 0x188(r4)
 lbl_800C3594:
-/* 800C3594 000BF4B4  4E 80 00 20 */	blr 
+/* 800C3594 000BF4B4  4E 80 00 20 */	blr
 
 .global __OSSaveFPUContext
 __OSSaveFPUContext:
@@ -156,7 +156,7 @@ __OSSaveFPUContext:
 /* 800C36B4 000BF5D4  F3 C5 02 B8 */	psq_st f30, 696(r5), 0, qr0
 /* 800C36B8 000BF5D8  F3 E5 02 C0 */	psq_st f31, 704(r5), 0, qr0
 lbl_800C36BC:
-/* 800C36BC 000BF5DC  4E 80 00 20 */	blr 
+/* 800C36BC 000BF5DC  4E 80 00 20 */	blr
 
 .global OSSetCurrentContext
 OSSetCurrentContext:
@@ -173,7 +173,7 @@ OSSetCurrentContext:
 /* 800C36E8 000BF608  7C C0 00 A6 */	mfmsr r6
 /* 800C36EC 000BF60C  60 C6 00 02 */	ori r6, r6, 2
 /* 800C36F0 000BF610  7C C0 01 24 */	mtmsr r6
-/* 800C36F4 000BF614  4E 80 00 20 */	blr 
+/* 800C36F4 000BF614  4E 80 00 20 */	blr
 lbl_800C36F8:
 /* 800C36F8 000BF618  80 C3 01 9C */	lwz r6, 0x19c(r3)
 /* 800C36FC 000BF61C  54 C6 04 E2 */	rlwinm r6, r6, 0, 0x13, 0x11
@@ -182,14 +182,14 @@ lbl_800C36F8:
 /* 800C3708 000BF628  54 C6 04 E2 */	rlwinm r6, r6, 0, 0x13, 0x11
 /* 800C370C 000BF62C  60 C6 00 02 */	ori r6, r6, 2
 /* 800C3710 000BF630  7C C0 01 24 */	mtmsr r6
-/* 800C3714 000BF634  4C 00 01 2C */	isync 
-/* 800C3718 000BF638  4E 80 00 20 */	blr 
+/* 800C3714 000BF634  4C 00 01 2C */	isync
+/* 800C3718 000BF638  4E 80 00 20 */	blr
 
 .global OSGetCurrentContext
 OSGetCurrentContext:
 /* 800C371C 000BF63C  3C 60 80 00 */	lis r3, 0x800000D4@ha
 /* 800C3720 000BF640  80 63 00 D4 */	lwz r3, 0x800000D4@l(r3)
-/* 800C3724 000BF644  4E 80 00 20 */	blr 
+/* 800C3724 000BF644  4E 80 00 20 */	blr
 
 .global OSSaveContext
 OSSaveContext:
@@ -224,7 +224,7 @@ OSSaveContext:
 /* 800C3798 000BF6B8  38 00 00 01 */	li r0, 1
 /* 800C379C 000BF6BC  90 03 00 0C */	stw r0, 0xc(r3)
 /* 800C37A0 000BF6C0  38 60 00 00 */	li r3, 0
-/* 800C37A4 000BF6C4  4E 80 00 20 */	blr 
+/* 800C37A4 000BF6C4  4E 80 00 20 */	blr
 
 .global OSLoadContext
 OSLoadContext:
@@ -284,12 +284,12 @@ lbl_800C37FC:
 /* 800C3870 000BF790  7C 9B 03 A6 */	mtspr 0x1b, r4
 /* 800C3874 000BF794  80 83 00 10 */	lwz r4, 0x10(r3)
 /* 800C3878 000BF798  80 63 00 0C */	lwz r3, 0xc(r3)
-/* 800C387C 000BF79C  4C 00 00 64 */	rfi 
+/* 800C387C 000BF79C  4C 00 00 64 */	rfi
 
 .global OSGetStackPointer
 OSGetStackPointer:
 /* 800C3880 000BF7A0  7C 23 0B 78 */	mr r3, r1
-/* 800C3884 000BF7A4  4E 80 00 20 */	blr 
+/* 800C3884 000BF7A4  4E 80 00 20 */	blr
 
 .global OSClearContext
 OSClearContext:
@@ -302,7 +302,7 @@ OSClearContext:
 /* 800C38A0 000BF7C0  40 82 00 08 */	bne lbl_800C38A8
 /* 800C38A4 000BF7C4  90 A4 00 D8 */	stw r5, 0xd8(r4)
 lbl_800C38A8:
-/* 800C38A8 000BF7C8  4E 80 00 20 */	blr 
+/* 800C38A8 000BF7C8  4E 80 00 20 */	blr
 
 .global OSDumpContext
 OSDumpContext:
@@ -495,14 +495,14 @@ lbl_800C3B40:
 /* 800C3B44 000BFA64  80 01 02 FC */	lwz r0, 0x2fc(r1)
 /* 800C3B48 000BFA68  38 21 02 F8 */	addi r1, r1, 0x2f8
 /* 800C3B4C 000BFA6C  7C 08 03 A6 */	mtlr r0
-/* 800C3B50 000BFA70  4E 80 00 20 */	blr 
+/* 800C3B50 000BFA70  4E 80 00 20 */	blr
 
 .global OSSwitchFPUContext
 OSSwitchFPUContext:
 /* 800C3B54 000BFA74  7C A0 00 A6 */	mfmsr r5
 /* 800C3B58 000BFA78  60 A5 20 00 */	ori r5, r5, 0x2000
 /* 800C3B5C 000BFA7C  7C A0 01 24 */	mtmsr r5
-/* 800C3B60 000BFA80  4C 00 01 2C */	isync 
+/* 800C3B60 000BFA80  4C 00 01 2C */	isync
 /* 800C3B64 000BFA84  80 A4 01 9C */	lwz r5, 0x19c(r4)
 /* 800C3B68 000BFA88  60 A5 20 00 */	ori r5, r5, 0x2000
 /* 800C3B6C 000BFA8C  7C BB 03 A6 */	mtspr 0x1b, r5
@@ -533,7 +533,7 @@ lbl_800C3B94:
 /* 800C3BC8 000BFAE8  80 A4 00 14 */	lwz r5, 0x14(r4)
 /* 800C3BCC 000BFAEC  80 64 00 0C */	lwz r3, 0xc(r4)
 /* 800C3BD0 000BFAF0  80 84 00 10 */	lwz r4, 0x10(r4)
-/* 800C3BD4 000BFAF4  4C 00 00 64 */	rfi 
+/* 800C3BD4 000BFAF4  4C 00 00 64 */	rfi
 
 .global __OSContextInit
 __OSContextInit:
@@ -554,4 +554,4 @@ __OSContextInit:
 /* 800C3C10 000BFB30  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800C3C14 000BFB34  38 21 00 08 */	addi r1, r1, 8
 /* 800C3C18 000BFB38  7C 08 03 A6 */	mtlr r0
-/* 800C3C1C 000BFB3C  4E 80 00 20 */	blr 
+/* 800C3C1C 000BFB3C  4E 80 00 20 */	blr

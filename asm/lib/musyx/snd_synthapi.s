@@ -27,7 +27,7 @@ sndFXCtrl:
 /* 800EEADC 000EA9FC  7C 08 03 A6 */	mtlr r0
 /* 800EEAE0 000EAA00  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800EEAE4 000EAA04  38 21 00 20 */	addi r1, r1, 0x20
-/* 800EEAE8 000EAA08  4E 80 00 20 */	blr 
+/* 800EEAE8 000EAA08  4E 80 00 20 */	blr
 
 .global sndFXCtrl14
 sndFXCtrl14:
@@ -54,7 +54,7 @@ sndFXCtrl14:
 /* 800EEB3C 000EAA5C  7C 08 03 A6 */	mtlr r0
 /* 800EEB40 000EAA60  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800EEB44 000EAA64  38 21 00 20 */	addi r1, r1, 0x20
-/* 800EEB48 000EAA68  4E 80 00 20 */	blr 
+/* 800EEB48 000EAA68  4E 80 00 20 */	blr
 
 .global sndFXKeyOff
 sndFXKeyOff:
@@ -73,7 +73,7 @@ sndFXKeyOff:
 /* 800EEB7C 000EAA9C  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800EEB80 000EAAA0  38 21 00 18 */	addi r1, r1, 0x18
 /* 800EEB84 000EAAA4  7C 08 03 A6 */	mtlr r0
-/* 800EEB88 000EAAA8  4E 80 00 20 */	blr 
+/* 800EEB88 000EAAA8  4E 80 00 20 */	blr
 
 .global sndFXStartParaInfo
 sndFXStartParaInfo:
@@ -135,7 +135,7 @@ lbl_800EEC44:
 /* 800EEC50 000EAB70  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800EEC54 000EAB74  38 21 00 30 */	addi r1, r1, 0x30
 /* 800EEC58 000EAB78  7C 08 03 A6 */	mtlr r0
-/* 800EEC5C 000EAB7C  4E 80 00 20 */	blr 
+/* 800EEC5C 000EAB7C  4E 80 00 20 */	blr
 
 .global sndFXCheck
 sndFXCheck:
@@ -157,7 +157,7 @@ lbl_800EEC90:
 /* 800EEC94 000EABB4  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800EEC98 000EABB8  38 21 00 18 */	addi r1, r1, 0x18
 /* 800EEC9C 000EABBC  7C 08 03 A6 */	mtlr r0
-/* 800EECA0 000EABC0  4E 80 00 20 */	blr 
+/* 800EECA0 000EABC0  4E 80 00 20 */	blr
 
 .global sndVolume
 sndVolume:
@@ -184,7 +184,7 @@ sndVolume:
 /* 800EECF4 000EAC14  7C 08 03 A6 */	mtlr r0
 /* 800EECF8 000EAC18  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800EECFC 000EAC1C  38 21 00 20 */	addi r1, r1, 0x20
-/* 800EED00 000EAC20  4E 80 00 20 */	blr 
+/* 800EED00 000EAC20  4E 80 00 20 */	blr
 
 .global sndMasterVolume
 sndMasterVolume:
@@ -226,7 +226,7 @@ lbl_800EED74:
 /* 800EED88 000EACA8  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800EED8C 000EACAC  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800EED90 000EACB0  38 21 00 20 */	addi r1, r1, 0x20
-/* 800EED94 000EACB4  4E 80 00 20 */	blr 
+/* 800EED94 000EACB4  4E 80 00 20 */	blr
 
 .global sndOutputMode
 sndOutputMode:
@@ -266,7 +266,7 @@ lbl_800EEE08:
 /* 800EEE08 000EAD28  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800EEE0C 000EAD2C  38 21 00 08 */	addi r1, r1, 8
 /* 800EEE10 000EAD30  7C 08 03 A6 */	mtlr r0
-/* 800EEE14 000EAD34  4E 80 00 20 */	blr 
+/* 800EEE14 000EAD34  4E 80 00 20 */	blr
 
 .global sndSetAuxProcessingCallbacks
 sndSetAuxProcessingCallbacks:
@@ -363,7 +363,7 @@ lbl_800EEF50:
 /* 800EEF70 000EAE90  80 01 00 54 */	lwz r0, 0x54(r1)
 /* 800EEF74 000EAE94  38 21 00 50 */	addi r1, r1, 0x50
 /* 800EEF78 000EAE98  7C 08 03 A6 */	mtlr r0
-/* 800EEF7C 000EAE9C  4E 80 00 20 */	blr 
+/* 800EEF7C 000EAE9C  4E 80 00 20 */	blr
 
 .global synthActivateStudio
 synthActivateStudio:
@@ -409,7 +409,7 @@ synthActivateStudio:
 /* 800EF01C 000EAF3C  7C 08 03 A6 */	mtlr r0
 /* 800EF020 000EAF40  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800EF024 000EAF44  38 21 00 28 */	addi r1, r1, 0x28
-/* 800EF028 000EAF48  4E 80 00 20 */	blr 
+/* 800EF028 000EAF48  4E 80 00 20 */	blr
 
 .global synthDeactivateStudio
 synthDeactivateStudio:
@@ -476,7 +476,7 @@ lbl_800EF0AC:
 /* 800EF10C 000EB02C  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800EF110 000EB030  38 21 00 28 */	addi r1, r1, 0x28
 /* 800EF114 000EB034  7C 08 03 A6 */	mtlr r0
-/* 800EF118 000EB038  4E 80 00 20 */	blr 
+/* 800EF118 000EB038  4E 80 00 20 */	blr
 
 .global synthAddStudioInput
 synthAddStudioInput:
@@ -487,7 +487,7 @@ synthAddStudioInput:
 /* 800EF12C 000EB04C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800EF130 000EB050  38 21 00 08 */	addi r1, r1, 8
 /* 800EF134 000EB054  7C 08 03 A6 */	mtlr r0
-/* 800EF138 000EB058  4E 80 00 20 */	blr 
+/* 800EF138 000EB058  4E 80 00 20 */	blr
 
 .global synthRemoveStudioInput
 synthRemoveStudioInput:
@@ -498,4 +498,4 @@ synthRemoveStudioInput:
 /* 800EF14C 000EB06C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800EF150 000EB070  38 21 00 08 */	addi r1, r1, 8
 /* 800EF154 000EB074  7C 08 03 A6 */	mtlr r0
-/* 800EF158 000EB078  4E 80 00 20 */	blr 
+/* 800EF158 000EB078  4E 80 00 20 */	blr

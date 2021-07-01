@@ -11,7 +11,7 @@ __init_user:
 /* 800CA000 000C5F20  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800CA004 000C5F24  38 21 00 08 */	addi r1, r1, 8
 /* 800CA008 000C5F28  7C 08 03 A6 */	mtlr r0
-/* 800CA00C 000C5F2C  4E 80 00 20 */	blr 
+/* 800CA00C 000C5F2C  4E 80 00 20 */	blr
 
 .global __init_cpp
 __init_cpp:
@@ -29,7 +29,7 @@ lbl_800CA034:
 /* 800CA034 000C5F54  48 00 00 10 */	b lbl_800CA044
 lbl_800CA038:
 /* 800CA038 000C5F58  7D 88 03 A6 */	mtlr r12
-/* 800CA03C 000C5F5C  4E 80 00 21 */	blrl 
+/* 800CA03C 000C5F5C  4E 80 00 21 */	blrl
 /* 800CA040 000C5F60  3B FF 00 04 */	addi r31, r31, 4
 lbl_800CA044:
 /* 800CA044 000C5F64  81 9F 00 00 */	lwz r12, 0(r31)
@@ -39,7 +39,7 @@ lbl_800CA044:
 /* 800CA054 000C5F74  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800CA058 000C5F78  38 21 00 10 */	addi r1, r1, 0x10
 /* 800CA05C 000C5F7C  7C 08 03 A6 */	mtlr r0
-/* 800CA060 000C5F80  4E 80 00 20 */	blr 
+/* 800CA060 000C5F80  4E 80 00 20 */	blr
 
 .global _ExitProcess
 _ExitProcess:
@@ -50,4 +50,4 @@ _ExitProcess:
 /* 800CA074 000C5F94  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800CA078 000C5F98  38 21 00 08 */	addi r1, r1, 8
 /* 800CA07C 000C5F9C  7C 08 03 A6 */	mtlr r0
-/* 800CA080 000C5FA0  4E 80 00 20 */	blr 
+/* 800CA080 000C5FA0  4E 80 00 20 */	blr

@@ -63,7 +63,7 @@ lbl_80109D10:
 /* 80109D1C 00105C3C  38 21 00 10 */	addi r1, r1, 0x10
 /* 80109D20 00105C40  80 01 00 04 */	lwz r0, 4(r1)
 /* 80109D24 00105C44  7C 08 03 A6 */	mtlr r0
-/* 80109D28 00105C48  4E 80 00 20 */	blr 
+/* 80109D28 00105C48  4E 80 00 20 */	blr
 
 .global TRKTerminateNub
 TRKTerminateNub:
@@ -75,7 +75,7 @@ TRKTerminateNub:
 /* 80109D40 00105C60  38 21 00 08 */	addi r1, r1, 8
 /* 80109D44 00105C64  80 01 00 04 */	lwz r0, 4(r1)
 /* 80109D48 00105C68  7C 08 03 A6 */	mtlr r0
-/* 80109D4C 00105C6C  4E 80 00 20 */	blr 
+/* 80109D4C 00105C6C  4E 80 00 20 */	blr
 
 .global TRKNubWelcome
 TRKNubWelcome:
@@ -88,7 +88,7 @@ TRKNubWelcome:
 /* 80109D68 00105C88  38 21 00 08 */	addi r1, r1, 8
 /* 80109D6C 00105C8C  80 01 00 04 */	lwz r0, 4(r1)
 /* 80109D70 00105C90  7C 08 03 A6 */	mtlr r0
-/* 80109D74 00105C94  4E 80 00 20 */	blr 
+/* 80109D74 00105C94  4E 80 00 20 */	blr
 
 .global TRKInitializeEndian
 TRKInitializeEndian:
@@ -123,4 +123,4 @@ lbl_80109DE0:
 /* 80109DE0 00105D00  38 60 00 01 */	li r3, 1
 lbl_80109DE4:
 /* 80109DE4 00105D04  38 21 00 10 */	addi r1, r1, 0x10
-/* 80109DE8 00105D08  4E 80 00 20 */	blr 
+/* 80109DE8 00105D08  4E 80 00 20 */	blr

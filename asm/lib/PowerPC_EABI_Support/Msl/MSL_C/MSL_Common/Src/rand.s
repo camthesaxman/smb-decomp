@@ -5,7 +5,7 @@
 .global srand
 srand:
 /* 8010685C 0010277C  90 6D 98 C8 */	stw r3, next-_SDA_BASE_(r13)
-/* 80106860 00102780  4E 80 00 20 */	blr 
+/* 80106860 00102780  4E 80 00 20 */	blr
 
 .global rand
 rand:
@@ -17,4 +17,4 @@ rand:
 /* 80106878 00102798  90 0D 98 C8 */	stw r0, next-_SDA_BASE_(r13)
 /* 8010687C 0010279C  80 0D 98 C8 */	lwz r0, next-_SDA_BASE_(r13)
 /* 80106880 001027A0  54 03 84 7E */	rlwinm r3, r0, 0x10, 0x11, 0x1f
-/* 80106884 001027A4  4E 80 00 20 */	blr 
+/* 80106884 001027A4  4E 80 00 20 */	blr

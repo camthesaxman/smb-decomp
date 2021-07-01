@@ -107,7 +107,7 @@ lbl_800D6664:
 /* 800D6664 000D2584  39 08 00 01 */	addi r8, r8, 1
 /* 800D6668 000D2588  42 00 FE C0 */	bdnz lbl_800D6528
 /* 800D666C 000D258C  7C E3 3B 78 */	mr r3, r7
-/* 800D6670 000D2590  4E 80 00 20 */	blr 
+/* 800D6670 000D2590  4E 80 00 20 */	blr
 
 .global ReadArrayUnlock
 ReadArrayUnlock:
@@ -196,7 +196,7 @@ lbl_800D67A4:
 /* 800D67A8 000D26C8  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800D67AC 000D26CC  38 21 00 40 */	addi r1, r1, 0x40
 /* 800D67B0 000D26D0  7C 08 03 A6 */	mtlr r0
-/* 800D67B4 000D26D4  4E 80 00 20 */	blr 
+/* 800D67B4 000D26D4  4E 80 00 20 */	blr
 
 .global DummyLen
 DummyLen:
@@ -241,7 +241,7 @@ lbl_800D6834:
 /* 800D683C 000D275C  83 C1 00 08 */	lwz r30, 8(r1)
 /* 800D6840 000D2760  7C 08 03 A6 */	mtlr r0
 /* 800D6844 000D2764  38 21 00 10 */	addi r1, r1, 0x10
-/* 800D6848 000D2768  4E 80 00 20 */	blr 
+/* 800D6848 000D2768  4E 80 00 20 */	blr
 
 .global __CARDUnlock
 __CARDUnlock:
@@ -981,7 +981,7 @@ lbl_800D7374:
 /* 800D7378 000D3298  80 01 01 14 */	lwz r0, 0x114(r1)
 /* 800D737C 000D329C  38 21 01 10 */	addi r1, r1, 0x110
 /* 800D7380 000D32A0  7C 08 03 A6 */	mtlr r0
-/* 800D7384 000D32A4  4E 80 00 20 */	blr 
+/* 800D7384 000D32A4  4E 80 00 20 */	blr
 
 .global InitCallback
 InitCallback:
@@ -1015,7 +1015,7 @@ lbl_800D73D8:
 /* 800D73E8 000D3308  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800D73EC 000D330C  38 21 00 18 */	addi r1, r1, 0x18
 /* 800D73F0 000D3310  7C 08 03 A6 */	mtlr r0
-/* 800D73F4 000D3314  4E 80 00 20 */	blr 
+/* 800D73F4 000D3314  4E 80 00 20 */	blr
 
 .global DoneCallback
 DoneCallback:
@@ -1229,4 +1229,4 @@ lbl_800D76FC:
 /* 800D770C 000D362C  83 A1 00 7C */	lwz r29, 0x7c(r1)
 /* 800D7710 000D3630  83 81 00 78 */	lwz r28, 0x78(r1)
 /* 800D7714 000D3634  38 21 00 88 */	addi r1, r1, 0x88
-/* 800D7718 000D3638  4E 80 00 20 */	blr 
+/* 800D7718 000D3638  4E 80 00 20 */	blr

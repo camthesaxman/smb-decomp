@@ -78,7 +78,7 @@ lbl_800DFB10:
 /* 800DFB34 000DBA54  A0 63 00 0C */	lhz r3, 0xc(r3)
 /* 800DFB38 000DBA58  7C 03 02 14 */	add r0, r3, r0
 /* 800DFB3C 000DBA5C  B0 04 00 0C */	sth r0, 0xc(r4)
-/* 800DFB40 000DBA60  4E 80 00 20 */	blr 
+/* 800DFB40 000DBA60  4E 80 00 20 */	blr
 
 .global GXSetDispCopySrc
 GXSetDispCopySrc:
@@ -129,7 +129,7 @@ GXSetDispCopySrc:
 /* 800DFBF4 000DBB14  54 00 02 3E */	clrlwi r0, r0, 8
 /* 800DFBF8 000DBB18  64 00 4A 00 */	oris r0, r0, 0x4a00
 /* 800DFBFC 000DBB1C  90 03 00 00 */	stw r0, 0(r3)
-/* 800DFC00 000DBB20  4E 80 00 20 */	blr 
+/* 800DFC00 000DBB20  4E 80 00 20 */	blr
 
 .global GXSetTexCopySrc
 GXSetTexCopySrc:
@@ -180,7 +180,7 @@ GXSetTexCopySrc:
 /* 800DFCB4 000DBBD4  54 00 02 3E */	clrlwi r0, r0, 8
 /* 800DFCB8 000DBBD8  64 00 4A 00 */	oris r0, r0, 0x4a00
 /* 800DFCBC 000DBBDC  90 03 00 00 */	stw r0, 0(r3)
-/* 800DFCC0 000DBBE0  4E 80 00 20 */	blr 
+/* 800DFCC0 000DBBE0  4E 80 00 20 */	blr
 
 .global GXSetDispCopyDst
 GXSetDispCopyDst:
@@ -200,7 +200,7 @@ GXSetDispCopyDst:
 /* 800DFCF8 000DBC18  54 00 02 3E */	clrlwi r0, r0, 8
 /* 800DFCFC 000DBC1C  64 00 4D 00 */	oris r0, r0, 0x4d00
 /* 800DFD00 000DBC20  90 03 00 00 */	stw r0, 0(r3)
-/* 800DFD04 000DBC24  4E 80 00 20 */	blr 
+/* 800DFD04 000DBC24  4E 80 00 20 */	blr
 
 .global GXSetTexCopyDst
 GXSetTexCopyDst:
@@ -299,7 +299,7 @@ lbl_800DFD94:
 /* 800DFE68 000DBD88  83 C1 00 28 */	lwz r30, 0x28(r1)
 /* 800DFE6C 000DBD8C  7C 08 03 A6 */	mtlr r0
 /* 800DFE70 000DBD90  38 21 00 30 */	addi r1, r1, 0x30
-/* 800DFE74 000DBD94  4E 80 00 20 */	blr 
+/* 800DFE74 000DBD94  4E 80 00 20 */	blr
 
 .global GXSetDispCopyFrame2Field
 GXSetDispCopyFrame2Field:
@@ -313,7 +313,7 @@ GXSetDispCopyFrame2Field:
 /* 800DFE94 000DBDB4  84 03 01 FC */	lwzu r0, 0x1fc(r3)
 /* 800DFE98 000DBDB8  54 00 05 22 */	rlwinm r0, r0, 0, 0x14, 0x11
 /* 800DFE9C 000DBDBC  90 03 00 00 */	stw r0, 0(r3)
-/* 800DFEA0 000DBDC0  4E 80 00 20 */	blr 
+/* 800DFEA0 000DBDC0  4E 80 00 20 */	blr
 
 .global GXSetCopyClamp
 GXSetCopyClamp:
@@ -347,7 +347,7 @@ GXSetCopyClamp:
 /* 800DFF10 000DBE30  54 00 07 FA */	rlwinm r0, r0, 0, 0x1f, 0x1d
 /* 800DFF14 000DBE34  7C 00 33 78 */	or r0, r0, r6
 /* 800DFF18 000DBE38  90 03 00 00 */	stw r0, 0(r3)
-/* 800DFF1C 000DBE3C  4E 80 00 20 */	blr 
+/* 800DFF1C 000DBE3C  4E 80 00 20 */	blr
 
 .global GXSetDispCopyYScale
 GXSetDispCopyYScale:
@@ -397,7 +397,7 @@ GXSetDispCopyYScale:
 /* 800DFFCC 000DBEEC  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800DFFD0 000DBEF0  38 21 00 28 */	addi r1, r1, 0x28
 /* 800DFFD4 000DBEF4  7C 08 03 A6 */	mtlr r0
-/* 800DFFD8 000DBEF8  4E 80 00 20 */	blr 
+/* 800DFFD8 000DBEF8  4E 80 00 20 */	blr
 
 .global GXSetCopyClear
 GXSetCopyClear:
@@ -426,7 +426,7 @@ GXSetCopyClear:
 /* 800E0034 000DBF54  98 C5 80 00 */	stb r6, -0x8000(r5)
 /* 800E0038 000DBF58  90 E5 80 00 */	stw r7, -0x8000(r5)
 /* 800E003C 000DBF5C  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E0040 000DBF60  4E 80 00 20 */	blr 
+/* 800E0040 000DBF60  4E 80 00 20 */	blr
 
 .global GXSetCopyFilter
 GXSetCopyFilter:
@@ -571,7 +571,7 @@ lbl_800E023C:
 /* 800E025C 000DC17C  B0 03 00 02 */	sth r0, 2(r3)
 /* 800E0260 000DC180  BA E1 00 2C */	lmw r23, 0x2c(r1)
 /* 800E0264 000DC184  38 21 00 50 */	addi r1, r1, 0x50
-/* 800E0268 000DC188  4E 80 00 20 */	blr 
+/* 800E0268 000DC188  4E 80 00 20 */	blr
 
 .global GXSetDispCopyGamma
 GXSetDispCopyGamma:
@@ -581,7 +581,7 @@ GXSetDispCopyGamma:
 /* 800E0278 000DC198  54 63 06 6C */	rlwinm r3, r3, 0, 0x19, 0x16
 /* 800E027C 000DC19C  7C 60 03 78 */	or r0, r3, r0
 /* 800E0280 000DC1A0  90 04 00 00 */	stw r0, 0(r4)
-/* 800E0284 000DC1A4  4E 80 00 20 */	blr 
+/* 800E0284 000DC1A4  4E 80 00 20 */	blr
 
 .global GXCopyDisp
 GXCopyDisp:
@@ -681,7 +681,7 @@ lbl_800E03E8:
 /* 800E03E8 000DC308  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
 /* 800E03EC 000DC30C  38 00 00 01 */	li r0, 1
 /* 800E03F0 000DC310  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E03F4 000DC314  4E 80 00 20 */	blr 
+/* 800E03F4 000DC314  4E 80 00 20 */	blr
 
 .global GXCopyTex
 GXCopyTex:
@@ -791,7 +791,7 @@ lbl_800E0578:
 /* 800E0578 000DC498  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
 /* 800E057C 000DC49C  38 00 00 01 */	li r0, 1
 /* 800E0580 000DC4A0  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E0584 000DC4A4  4E 80 00 20 */	blr 
+/* 800E0584 000DC4A4  4E 80 00 20 */	blr
 
 .global GXClearBoundingBox
 GXClearBoundingBox:
@@ -808,4 +808,4 @@ GXClearBoundingBox:
 /* 800E05B0 000DC4D0  38 00 00 01 */	li r0, 1
 /* 800E05B4 000DC4D4  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E05B8 000DC4D8  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E05BC 000DC4DC  4E 80 00 20 */	blr 
+/* 800E05BC 000DC4DC  4E 80 00 20 */	blr

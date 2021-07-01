@@ -46,7 +46,7 @@ salApplyMatrix:
 /* 800FD750 000F9670  EC 01 00 2A */	fadds f0, f1, f0
 /* 800FD754 000F9674  EC 04 00 2A */	fadds f0, f4, f0
 /* 800FD758 000F9678  D0 05 00 08 */	stfs f0, 8(r5)
-/* 800FD75C 000F967C  4E 80 00 20 */	blr 
+/* 800FD75C 000F967C  4E 80 00 20 */	blr
 
 .global salNormalizeVector
 salNormalizeVector:
@@ -95,4 +95,4 @@ lbl_800FD7E8:
 /* 800FD804 000F9724  C0 03 00 08 */	lfs f0, 8(r3)
 /* 800FD808 000F9728  EC 00 08 24 */	fdivs f0, f0, f1
 /* 800FD80C 000F972C  D0 03 00 08 */	stfs f0, 8(r3)
-/* 800FD810 000F9730  4E 80 00 20 */	blr 
+/* 800FD810 000F9730  4E 80 00 20 */	blr

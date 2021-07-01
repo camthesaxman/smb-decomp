@@ -28,7 +28,7 @@ lbl_801035AC:
 /* 801035BC 000FF4DC  3C 63 80 00 */	addis r3, r3, 0x8000
 lbl_801035C0:
 /* 801035C0 000FF4E0  38 21 00 10 */	addi r1, r1, 0x10
-/* 801035C4 000FF4E4  4E 80 00 20 */	blr 
+/* 801035C4 000FF4E4  4E 80 00 20 */	blr
 
 .global __div2u
 __div2u:
@@ -95,11 +95,11 @@ lbl_80103698:
 /* 80103698 000FF5B8  42 00 FF D8 */	bdnz lbl_80103670
 /* 8010369C 000FF5BC  7C 84 21 14 */	adde r4, r4, r4
 /* 801036A0 000FF5C0  7C 63 19 14 */	adde r3, r3, r3
-/* 801036A4 000FF5C4  4E 80 00 20 */	blr 
+/* 801036A4 000FF5C4  4E 80 00 20 */	blr
 lbl_801036A8:
 /* 801036A8 000FF5C8  38 80 00 00 */	li r4, 0
 /* 801036AC 000FF5CC  38 60 00 00 */	li r3, 0
-/* 801036B0 000FF5D0  4E 80 00 20 */	blr 
+/* 801036B0 000FF5D0  4E 80 00 20 */	blr
 
 .global __div2i
 __div2i:
@@ -193,7 +193,7 @@ lbl_801037DC:
 /* 801037E0 000FF700  38 60 00 00 */	li r3, 0
 lbl_801037E4:
 /* 801037E4 000FF704  38 21 00 10 */	addi r1, r1, 0x10
-/* 801037E8 000FF708  4E 80 00 20 */	blr 
+/* 801037E8 000FF708  4E 80 00 20 */	blr
 
 .global __mod2u
 __mod2u:
@@ -260,9 +260,9 @@ lbl_801038BC:
 /* 801038BC 000FF7DC  42 00 FF D8 */	bdnz lbl_80103894
 /* 801038C0 000FF7E0  7D 04 43 78 */	mr r4, r8
 /* 801038C4 000FF7E4  7C E3 3B 78 */	mr r3, r7
-/* 801038C8 000FF7E8  4E 80 00 20 */	blr 
+/* 801038C8 000FF7E8  4E 80 00 20 */	blr
 lbl_801038CC:
-/* 801038CC 000FF7EC  4E 80 00 20 */	blr 
+/* 801038CC 000FF7EC  4E 80 00 20 */	blr
 
 .global __mod2i
 __mod2i:
@@ -344,7 +344,7 @@ lbl_801039CC:
 /* 801039D0 000FF8F0  20 84 00 00 */	subfic r4, r4, 0
 /* 801039D4 000FF8F4  7C 63 01 90 */	subfze r3, r3
 lbl_801039D8:
-/* 801039D8 000FF8F8  4E 80 00 20 */	blr 
+/* 801039D8 000FF8F8  4E 80 00 20 */	blr
 
 .global __shl2i
 __shl2i:
@@ -356,7 +356,7 @@ __shl2i:
 /* 801039F0 000FF910  7C 8A 48 30 */	slw r10, r4, r9
 /* 801039F4 000FF914  7C 63 53 78 */	or r3, r3, r10
 /* 801039F8 000FF918  7C 84 28 30 */	slw r4, r4, r5
-/* 801039FC 000FF91C  4E 80 00 20 */	blr 
+/* 801039FC 000FF91C  4E 80 00 20 */	blr
 
 .global __shr2u
 __shr2u:
@@ -368,7 +368,7 @@ __shr2u:
 /* 80103A14 000FF934  7C 6A 4C 30 */	srw r10, r3, r9
 /* 80103A18 000FF938  7C 84 53 78 */	or r4, r4, r10
 /* 80103A1C 000FF93C  7C 63 2C 30 */	srw r3, r3, r5
-/* 80103A20 000FF940  4E 80 00 20 */	blr 
+/* 80103A20 000FF940  4E 80 00 20 */	blr
 
 .global __shr2i
 __shr2i:
@@ -382,7 +382,7 @@ __shr2i:
 /* 80103A40 000FF960  7C 84 53 78 */	or r4, r4, r10
 lbl_80103A44:
 /* 80103A44 000FF964  7C 63 2E 30 */	sraw r3, r3, r5
-/* 80103A48 000FF968  4E 80 00 20 */	blr 
+/* 80103A48 000FF968  4E 80 00 20 */	blr
 
 .global __cvt_sll_flt
 __cvt_sll_flt:
@@ -434,7 +434,7 @@ lbl_80103AE8:
 /* 80103AF0 000FFA10  C8 21 00 08 */	lfd f1, 8(r1)
 /* 80103AF4 000FFA14  FC 20 08 18 */	frsp f1, f1
 /* 80103AF8 000FFA18  38 21 00 10 */	addi r1, r1, 0x10
-/* 80103AFC 000FFA1C  4E 80 00 20 */	blr 
+/* 80103AFC 000FFA1C  4E 80 00 20 */	blr
 
 .global __cvt_dbl_usll
 __cvt_dbl_usll:
@@ -494,4 +494,4 @@ lbl_80103BB4:
 /* 80103BC0 000FFAE0  7C 63 01 90 */	subfze r3, r3
 lbl_80103BC4:
 /* 80103BC4 000FFAE4  38 21 00 10 */	addi r1, r1, 0x10
-/* 80103BC8 000FFAE8  4E 80 00 20 */	blr 
+/* 80103BC8 000FFAE8  4E 80 00 20 */	blr

@@ -43,7 +43,7 @@ lbl_800DF6DC:
 /* 800DF6E8 000DB608  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800DF6EC 000DB60C  38 21 00 08 */	addi r1, r1, 8
 /* 800DF6F0 000DB610  7C 08 03 A6 */	mtlr r0
-/* 800DF6F4 000DB614  4E 80 00 20 */	blr 
+/* 800DF6F4 000DB614  4E 80 00 20 */	blr
 
 .global GXBegin
 GXBegin:
@@ -108,7 +108,7 @@ lbl_800DF7A8:
 /* 800DF7C4 000DB6E4  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800DF7C8 000DB6E8  38 21 00 28 */	addi r1, r1, 0x28
 /* 800DF7CC 000DB6EC  7C 08 03 A6 */	mtlr r0
-/* 800DF7D0 000DB6F0  4E 80 00 20 */	blr 
+/* 800DF7D0 000DB6F0  4E 80 00 20 */	blr
 
 .global __GXSendFlushPrim
 __GXSendFlushPrim:
@@ -149,7 +149,7 @@ lbl_800DF84C:
 /* 800DF84C 000DB76C  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
 /* 800DF850 000DB770  38 00 00 00 */	li r0, 0
 /* 800DF854 000DB774  B0 03 00 02 */	sth r0, 2(r3)
-/* 800DF858 000DB778  4E 80 00 20 */	blr 
+/* 800DF858 000DB778  4E 80 00 20 */	blr
 
 .global GXSetLineWidth
 GXSetLineWidth:
@@ -174,7 +174,7 @@ GXSetLineWidth:
 /* 800DF8A4 000DB7C4  80 64 00 7C */	lwz r3, 0x7c(r4)
 /* 800DF8A8 000DB7C8  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800DF8AC 000DB7CC  B0 04 00 02 */	sth r0, 2(r4)
-/* 800DF8B0 000DB7D0  4E 80 00 20 */	blr 
+/* 800DF8B0 000DB7D0  4E 80 00 20 */	blr
 
 .global GXSetPointSize
 GXSetPointSize:
@@ -198,7 +198,7 @@ GXSetPointSize:
 /* 800DF8F8 000DB818  80 64 00 7C */	lwz r3, 0x7c(r4)
 /* 800DF8FC 000DB81C  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800DF900 000DB820  B0 04 00 02 */	sth r0, 2(r4)
-/* 800DF904 000DB824  4E 80 00 20 */	blr 
+/* 800DF904 000DB824  4E 80 00 20 */	blr
 
 .global GXEnableTexOffsets
 GXEnableTexOffsets:
@@ -226,7 +226,7 @@ GXEnableTexOffsets:
 /* 800DF95C 000DB87C  80 63 00 B8 */	lwz r3, 0xb8(r3)
 /* 800DF960 000DB880  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800DF964 000DB884  B0 04 00 02 */	sth r0, 2(r4)
-/* 800DF968 000DB888  4E 80 00 20 */	blr 
+/* 800DF968 000DB888  4E 80 00 20 */	blr
 
 .global GXSetCullMode
 GXSetCullMode:
@@ -252,7 +252,7 @@ lbl_800DF990:
 /* 800DF9AC 000DB8CC  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800DF9B0 000DB8D0  60 00 00 04 */	ori r0, r0, 4
 /* 800DF9B4 000DB8D4  90 03 04 F0 */	stw r0, 0x4f0(r3)
-/* 800DF9B8 000DB8D8  4E 80 00 20 */	blr 
+/* 800DF9B8 000DB8D8  4E 80 00 20 */	blr
 
 .global GXSetCoPlanar
 GXSetCoPlanar:
@@ -272,7 +272,7 @@ GXSetCoPlanar:
 /* 800DF9F0 000DB910  98 A4 80 00 */	stb r5, -0x8000(r4)
 /* 800DF9F4 000DB914  80 03 02 04 */	lwz r0, 0x204(r3)
 /* 800DF9F8 000DB918  90 04 80 00 */	stw r0, -0x8000(r4)
-/* 800DF9FC 000DB91C  4E 80 00 20 */	blr 
+/* 800DF9FC 000DB91C  4E 80 00 20 */	blr
 
 .global __GXSetGenMode
 __GXSetGenMode:
@@ -284,4 +284,4 @@ __GXSetGenMode:
 /* 800DFA14 000DB934  80 64 02 04 */	lwz r3, 0x204(r4)
 /* 800DFA18 000DB938  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800DFA1C 000DB93C  B0 04 00 02 */	sth r0, 2(r4)
-/* 800DFA20 000DB940  4E 80 00 20 */	blr 
+/* 800DFA20 000DB940  4E 80 00 20 */	blr

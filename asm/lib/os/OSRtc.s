@@ -28,7 +28,7 @@ lbl_800C78B8:
 /* 800C78C0 000C37E0  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800C78C4 000C37E4  7C 08 03 A6 */	mtlr r0
 /* 800C78C8 000C37E8  38 21 00 18 */	addi r1, r1, 0x18
-/* 800C78CC 000C37EC  4E 80 00 20 */	blr 
+/* 800C78CC 000C37EC  4E 80 00 20 */	blr
 
 .global WriteSram
 WriteSram:
@@ -104,7 +104,7 @@ lbl_800C79CC:
 /* 800C79D8 000C38F8  7C 08 03 A6 */	mtlr r0
 /* 800C79DC 000C38FC  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800C79E0 000C3900  38 21 00 28 */	addi r1, r1, 0x28
-/* 800C79E4 000C3904  4E 80 00 20 */	blr 
+/* 800C79E4 000C3904  4E 80 00 20 */	blr
 
 .global __OSInitSram
 __OSInitSram:
@@ -187,7 +187,7 @@ lbl_800C7AF8:
 /* 800C7B0C 000C3A2C  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800C7B10 000C3A30  38 21 00 18 */	addi r1, r1, 0x18
 /* 800C7B14 000C3A34  7C 08 03 A6 */	mtlr r0
-/* 800C7B18 000C3A38  4E 80 00 20 */	blr 
+/* 800C7B18 000C3A38  4E 80 00 20 */	blr
 
 .global __OSLockSram
 __OSLockSram:
@@ -215,7 +215,7 @@ lbl_800C7B60:
 /* 800C7B68 000C3A88  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800C7B6C 000C3A8C  38 21 00 10 */	addi r1, r1, 0x10
 /* 800C7B70 000C3A90  7C 08 03 A6 */	mtlr r0
-/* 800C7B74 000C3A94  4E 80 00 20 */	blr 
+/* 800C7B74 000C3A94  4E 80 00 20 */	blr
 
 .global __OSLockSramEx
 __OSLockSramEx:
@@ -243,7 +243,7 @@ lbl_800C7BC0:
 /* 800C7BC4 000C3AE4  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800C7BC8 000C3AE8  38 21 00 10 */	addi r1, r1, 0x10
 /* 800C7BCC 000C3AEC  7C 08 03 A6 */	mtlr r0
-/* 800C7BD0 000C3AF0  4E 80 00 20 */	blr 
+/* 800C7BD0 000C3AF0  4E 80 00 20 */	blr
 
 .global UnlockSram
 UnlockSram:
@@ -450,7 +450,7 @@ lbl_800C7EB4:
 /* 800C7ECC 000C3DEC  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800C7ED0 000C3DF0  38 21 00 30 */	addi r1, r1, 0x30
 /* 800C7ED4 000C3DF4  7C 08 03 A6 */	mtlr r0
-/* 800C7ED8 000C3DF8  4E 80 00 20 */	blr 
+/* 800C7ED8 000C3DF8  4E 80 00 20 */	blr
 
 .global __OSUnlockSram
 __OSUnlockSram:
@@ -462,7 +462,7 @@ __OSUnlockSram:
 /* 800C7EF0 000C3E10  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800C7EF4 000C3E14  38 21 00 08 */	addi r1, r1, 8
 /* 800C7EF8 000C3E18  7C 08 03 A6 */	mtlr r0
-/* 800C7EFC 000C3E1C  4E 80 00 20 */	blr 
+/* 800C7EFC 000C3E1C  4E 80 00 20 */	blr
 
 .global __OSUnlockSramEx
 __OSUnlockSramEx:
@@ -474,14 +474,14 @@ __OSUnlockSramEx:
 /* 800C7F14 000C3E34  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800C7F18 000C3E38  38 21 00 08 */	addi r1, r1, 8
 /* 800C7F1C 000C3E3C  7C 08 03 A6 */	mtlr r0
-/* 800C7F20 000C3E40  4E 80 00 20 */	blr 
+/* 800C7F20 000C3E40  4E 80 00 20 */	blr
 
 .global __OSSyncSram
 __OSSyncSram:
 /* 800C7F24 000C3E44  3C 60 80 2C */	lis r3, Scb@ha
 /* 800C7F28 000C3E48  38 63 6D 00 */	addi r3, r3, Scb@l
 /* 800C7F2C 000C3E4C  80 63 00 4C */	lwz r3, 0x4c(r3)
-/* 800C7F30 000C3E50  4E 80 00 20 */	blr 
+/* 800C7F30 000C3E50  4E 80 00 20 */	blr
 
 .global __OSReadRom
 __OSReadRom:
@@ -560,7 +560,7 @@ lbl_800C803C:
 /* 800C8048 000C3F68  7C 08 03 A6 */	mtlr r0
 /* 800C804C 000C3F6C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800C8050 000C3F70  38 21 00 28 */	addi r1, r1, 0x28
-/* 800C8054 000C3F74  4E 80 00 20 */	blr 
+/* 800C8054 000C3F74  4E 80 00 20 */	blr
 
 .global OSGetSoundMode
 OSGetSoundMode:
@@ -599,7 +599,7 @@ lbl_800C80B4:
 /* 800C80C8 000C3FE8  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 800C80CC 000C3FEC  38 21 00 20 */	addi r1, r1, 0x20
 /* 800C80D0 000C3FF0  7C 08 03 A6 */	mtlr r0
-/* 800C80D4 000C3FF4  4E 80 00 20 */	blr 
+/* 800C80D4 000C3FF4  4E 80 00 20 */	blr
 
 .global OSSetSoundMode
 OSSetSoundMode:
@@ -647,4 +647,4 @@ lbl_800C8164:
 /* 800C816C 000C408C  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 800C8170 000C4090  7C 08 03 A6 */	mtlr r0
 /* 800C8174 000C4094  38 21 00 20 */	addi r1, r1, 0x20
-/* 800C8178 000C4098  4E 80 00 20 */	blr 
+/* 800C8178 000C4098  4E 80 00 20 */	blr

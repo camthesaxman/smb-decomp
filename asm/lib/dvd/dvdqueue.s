@@ -17,7 +17,7 @@ __DVDClearWaitingQueue:
 /* 800CE89C 000CA7BC  90 84 00 04 */	stw r4, 4(r4)
 /* 800CE8A0 000CA7C0  90 63 00 00 */	stw r3, 0(r3)
 /* 800CE8A4 000CA7C4  90 63 00 04 */	stw r3, 4(r3)
-/* 800CE8A8 000CA7C8  4E 80 00 20 */	blr 
+/* 800CE8A8 000CA7C8  4E 80 00 20 */	blr
 
 .global __DVDPushWaitingQueue
 __DVDPushWaitingQueue:
@@ -46,7 +46,7 @@ __DVDPushWaitingQueue:
 /* 800CE904 000CA824  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800CE908 000CA828  7C 08 03 A6 */	mtlr r0
 /* 800CE90C 000CA82C  38 21 00 18 */	addi r1, r1, 0x18
-/* 800CE910 000CA830  4E 80 00 20 */	blr 
+/* 800CE910 000CA830  4E 80 00 20 */	blr
 
 .global __DVDPopWaitingQueue
 __DVDPopWaitingQueue:
@@ -92,7 +92,7 @@ lbl_800CE9A0:
 /* 800CE9A4 000CA8C4  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800CE9A8 000CA8C8  38 21 00 10 */	addi r1, r1, 0x10
 /* 800CE9AC 000CA8CC  7C 08 03 A6 */	mtlr r0
-/* 800CE9B0 000CA8D0  4E 80 00 20 */	blr 
+/* 800CE9B0 000CA8D0  4E 80 00 20 */	blr
 
 .global __DVDCheckWaitingQueue
 __DVDCheckWaitingQueue:
@@ -120,7 +120,7 @@ lbl_800CE9FC:
 /* 800CE9FC 000CA91C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800CEA00 000CA920  38 21 00 08 */	addi r1, r1, 8
 /* 800CEA04 000CA924  7C 08 03 A6 */	mtlr r0
-/* 800CEA08 000CA928  4E 80 00 20 */	blr 
+/* 800CEA08 000CA928  4E 80 00 20 */	blr
 
 .global __DVDDequeueWaitingQueue
 __DVDDequeueWaitingQueue:
@@ -150,4 +150,4 @@ lbl_800CEA58:
 /* 800CEA5C 000CA97C  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800CEA60 000CA980  38 21 00 18 */	addi r1, r1, 0x18
 /* 800CEA64 000CA984  7C 08 03 A6 */	mtlr r0
-/* 800CEA68 000CA988  4E 80 00 20 */	blr 
+/* 800CEA68 000CA988  4E 80 00 20 */	blr

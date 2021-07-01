@@ -57,7 +57,7 @@ lbl_800D065C:
 /* 800D0664 000CC584  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800D0668 000CC588  7C 08 03 A6 */	mtlr r0
 /* 800D066C 000CC58C  38 21 00 18 */	addi r1, r1, 0x18
-/* 800D0670 000CC590  4E 80 00 20 */	blr 
+/* 800D0670 000CC590  4E 80 00 20 */	blr
 
 .global PADProbeCallback
 PADProbeCallback:
@@ -185,7 +185,7 @@ lbl_800D0834:
 /* 800D0840 000CC760  7C 08 03 A6 */	mtlr r0
 /* 800D0844 000CC764  83 A1 00 34 */	lwz r29, 0x34(r1)
 /* 800D0848 000CC768  38 21 00 40 */	addi r1, r1, 0x40
-/* 800D084C 000CC76C  4E 80 00 20 */	blr 
+/* 800D084C 000CC76C  4E 80 00 20 */	blr
 
 .global UpdateOrigin
 UpdateOrigin:
@@ -280,11 +280,11 @@ lbl_800D0968:
 /* 800D0994 000CC8B4  98 A4 00 05 */	stb r5, 5(r4)
 /* 800D0998 000CC8B8  80 AD 97 9C */	lwz r5, XPatchBits-_SDA_BASE_(r13)
 /* 800D099C 000CC8BC  7C A0 00 39 */	and. r0, r5, r0
-/* 800D09A0 000CC8C0  4D 82 00 20 */	beqlr 
+/* 800D09A0 000CC8C0  4D 82 00 20 */	beqlr
 /* 800D09A4 000CC8C4  88 04 00 02 */	lbz r0, 2(r4)
 /* 800D09A8 000CC8C8  7C 00 07 74 */	extsb r0, r0
 /* 800D09AC 000CC8CC  2C 00 00 40 */	cmpwi r0, 0x40
-/* 800D09B0 000CC8D0  4C 81 00 20 */	blelr 
+/* 800D09B0 000CC8D0  4C 81 00 20 */	blelr
 /* 800D09B4 000CC8D4  3C A0 80 2C */	lis r5, Type@ha
 /* 800D09B8 000CC8D8  54 63 10 3A */	slwi r3, r3, 2
 /* 800D09BC 000CC8DC  38 05 7C 00 */	addi r0, r5, Type@l
@@ -293,10 +293,10 @@ lbl_800D0968:
 /* 800D09C8 000CC8E8  54 03 00 1E */	rlwinm r3, r0, 0, 0, 0xf
 /* 800D09CC 000CC8EC  3C 03 F7 00 */	addis r0, r3, 0xf700
 /* 800D09D0 000CC8F0  28 00 00 00 */	cmplwi r0, 0
-/* 800D09D4 000CC8F4  4C 82 00 20 */	bnelr 
+/* 800D09D4 000CC8F4  4C 82 00 20 */	bnelr
 /* 800D09D8 000CC8F8  38 00 00 00 */	li r0, 0
 /* 800D09DC 000CC8FC  98 04 00 02 */	stb r0, 2(r4)
-/* 800D09E0 000CC900  4E 80 00 20 */	blr 
+/* 800D09E0 000CC900  4E 80 00 20 */	blr
 
 .global PADOriginCallback
 PADOriginCallback:
@@ -372,7 +372,7 @@ lbl_800D0AE8:
 /* 800D0AF0 000CCA10  83 C1 00 28 */	lwz r30, 0x28(r1)
 /* 800D0AF4 000CCA14  7C 08 03 A6 */	mtlr r0
 /* 800D0AF8 000CCA18  38 21 00 30 */	addi r1, r1, 0x30
-/* 800D0AFC 000CCA1C  4E 80 00 20 */	blr 
+/* 800D0AFC 000CCA1C  4E 80 00 20 */	blr
 
 .global PADOriginUpdateCallback
 PADOriginUpdateCallback:
@@ -391,7 +391,7 @@ lbl_800D0B2C:
 /* 800D0B2C 000CCA4C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800D0B30 000CCA50  38 21 00 08 */	addi r1, r1, 8
 /* 800D0B34 000CCA54  7C 08 03 A6 */	mtlr r0
-/* 800D0B38 000CCA58  4E 80 00 20 */	blr 
+/* 800D0B38 000CCA58  4E 80 00 20 */	blr
 
 .global PADFixCallback
 PADFixCallback:
@@ -548,7 +548,7 @@ lbl_800D0D74:
 /* 800D0D80 000CCCA0  7C 08 03 A6 */	mtlr r0
 /* 800D0D84 000CCCA4  83 A1 00 2C */	lwz r29, 0x2c(r1)
 /* 800D0D88 000CCCA8  38 21 00 38 */	addi r1, r1, 0x38
-/* 800D0D8C 000CCCAC  4E 80 00 20 */	blr 
+/* 800D0D8C 000CCCAC  4E 80 00 20 */	blr
 
 .global PADResetCallback
 PADResetCallback:
@@ -1038,7 +1038,7 @@ lbl_800D14AC:
 /* 800D14B0 000CD3D0  80 01 00 64 */	lwz r0, 0x64(r1)
 /* 800D14B4 000CD3D4  38 21 00 60 */	addi r1, r1, 0x60
 /* 800D14B8 000CD3D8  7C 08 03 A6 */	mtlr r0
-/* 800D14BC 000CD3DC  4E 80 00 20 */	blr 
+/* 800D14BC 000CD3DC  4E 80 00 20 */	blr
 
 .global PADReset
 PADReset:
@@ -1135,7 +1135,7 @@ lbl_800D1600:
 /* 800D161C 000CD53C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D1620 000CD540  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800D1624 000CD544  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D1628 000CD548  4E 80 00 20 */	blr 
+/* 800D1628 000CD548  4E 80 00 20 */	blr
 
 .global PADRecalibrate
 PADRecalibrate:
@@ -1225,7 +1225,7 @@ lbl_800D1754:
 /* 800D1770 000CD690  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D1774 000CD694  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800D1778 000CD698  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D177C 000CD69C  4E 80 00 20 */	blr 
+/* 800D177C 000CD69C  4E 80 00 20 */	blr
 
 .global PADInit
 PADInit:
@@ -1346,7 +1346,7 @@ lbl_800D1924:
 /* 800D1934 000CD854  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800D1938 000CD858  38 21 00 38 */	addi r1, r1, 0x38
 /* 800D193C 000CD85C  7C 08 03 A6 */	mtlr r0
-/* 800D1940 000CD860  4E 80 00 20 */	blr 
+/* 800D1940 000CD860  4E 80 00 20 */	blr
 
 .global PADReceiveCheckCallback
 PADReceiveCheckCallback:
@@ -1440,7 +1440,7 @@ lbl_800D1A84:
 /* 800D1A90 000CD9B0  7C 08 03 A6 */	mtlr r0
 /* 800D1A94 000CD9B4  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D1A98 000CD9B8  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D1A9C 000CD9BC  4E 80 00 20 */	blr 
+/* 800D1A9C 000CD9BC  4E 80 00 20 */	blr
 
 .global PADRead
 PADRead:
@@ -1625,7 +1625,7 @@ lbl_800D1D2C:
 /* 800D1D34 000CDC54  38 95 00 00 */	addi r4, r21, 0
 /* 800D1D38 000CDC58  7D 88 03 A6 */	mtlr r12
 /* 800D1D3C 000CDC5C  38 A1 00 0C */	addi r5, r1, 0xc
-/* 800D1D40 000CDC60  4E 80 00 21 */	blrl 
+/* 800D1D40 000CDC60  4E 80 00 21 */	blrl
 /* 800D1D44 000CDC64  A0 15 00 00 */	lhz r0, 0(r21)
 /* 800D1D48 000CDC68  54 00 04 A5 */	rlwinm. r0, r0, 0, 0x12, 0x12
 /* 800D1D4C 000CDC6C  41 82 00 44 */	beq lbl_800D1D90
@@ -1664,7 +1664,7 @@ lbl_800D1DA4:
 /* 800D1DC8 000CDCE8  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 800D1DCC 000CDCEC  38 21 00 48 */	addi r1, r1, 0x48
 /* 800D1DD0 000CDCF0  7C 08 03 A6 */	mtlr r0
-/* 800D1DD4 000CDCF4  4E 80 00 20 */	blr 
+/* 800D1DD4 000CDCF4  4E 80 00 20 */	blr
 
 .global PADSetSamplingRate
 PADSetSamplingRate:
@@ -1717,7 +1717,7 @@ lbl_800D1E50:
 /* 800D1E78 000CDD98  7C 08 03 A6 */	mtlr r0
 /* 800D1E7C 000CDD9C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800D1E80 000CDDA0  38 21 00 20 */	addi r1, r1, 0x20
-/* 800D1E84 000CDDA4  4E 80 00 20 */	blr 
+/* 800D1E84 000CDDA4  4E 80 00 20 */	blr
 
 .global PADControlAllMotors
 PADControlAllMotors:
@@ -1775,7 +1775,7 @@ lbl_800D1F38:
 /* 800D1F44 000CDE64  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800D1F48 000CDE68  38 21 00 28 */	addi r1, r1, 0x28
 /* 800D1F4C 000CDE6C  7C 08 03 A6 */	mtlr r0
-/* 800D1F50 000CDE70  4E 80 00 20 */	blr 
+/* 800D1F50 000CDE70  4E 80 00 20 */	blr
 
 .global PADControlMotor
 PADControlMotor:
@@ -1827,7 +1827,7 @@ lbl_800D1FEC:
 /* 800D2000 000CDF20  7C 08 03 A6 */	mtlr r0
 /* 800D2004 000CDF24  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800D2008 000CDF28  38 21 00 20 */	addi r1, r1, 0x20
-/* 800D200C 000CDF2C  4E 80 00 20 */	blr 
+/* 800D200C 000CDF2C  4E 80 00 20 */	blr
 
 .global PADSetSpec
 PADSetSpec:
@@ -1859,7 +1859,7 @@ lbl_800D205C:
 /* 800D2064 000CDF84  90 0D 97 A8 */	stw r0, lbl_802F1988-_SDA_BASE_(r13)
 lbl_800D2068:
 /* 800D2068 000CDF88  90 6D 97 A4 */	stw r3, MakeStatus-_SDA_BASE_(r13)
-/* 800D206C 000CDF8C  4E 80 00 20 */	blr 
+/* 800D206C 000CDF8C  4E 80 00 20 */	blr
 
 .global SPEC0_MakeStatus
 SPEC0_MakeStatus:
@@ -1966,7 +1966,7 @@ lbl_800D21B0:
 /* 800D21D4 000CE0F4  88 64 00 05 */	lbz r3, 5(r4)
 /* 800D21D8 000CE0F8  38 03 FF 80 */	addi r0, r3, -128
 /* 800D21DC 000CE0FC  98 04 00 05 */	stb r0, 5(r4)
-/* 800D21E0 000CE100  4E 80 00 20 */	blr 
+/* 800D21E0 000CE100  4E 80 00 20 */	blr
 
 .global SPEC1_MakeStatus
 SPEC1_MakeStatus:
@@ -2073,7 +2073,7 @@ lbl_800D2324:
 /* 800D2348 000CE268  88 64 00 05 */	lbz r3, 5(r4)
 /* 800D234C 000CE26C  38 03 FF 80 */	addi r0, r3, -128
 /* 800D2350 000CE270  98 04 00 05 */	stb r0, 5(r4)
-/* 800D2354 000CE274  4E 80 00 20 */	blr 
+/* 800D2354 000CE274  4E 80 00 20 */	blr
 
 .global SPEC2_MakeStatus
 SPEC2_MakeStatus:
@@ -2349,7 +2349,7 @@ lbl_800D2728:
 lbl_800D2744:
 /* 800D2744 000CE664  7C 60 18 50 */	subf r3, r0, r3
 /* 800D2748 000CE668  98 64 00 07 */	stb r3, 7(r4)
-/* 800D274C 000CE66C  4E 80 00 20 */	blr 
+/* 800D274C 000CE66C  4E 80 00 20 */	blr
 
 .global PADSetAnalogMode
 PADSetAnalogMode:
@@ -2382,7 +2382,7 @@ PADSetAnalogMode:
 /* 800D27B8 000CE6D8  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800D27BC 000CE6DC  38 21 00 18 */	addi r1, r1, 0x18
 /* 800D27C0 000CE6E0  7C 08 03 A6 */	mtlr r0
-/* 800D27C4 000CE6E4  4E 80 00 20 */	blr 
+/* 800D27C4 000CE6E4  4E 80 00 20 */	blr
 /* 800D27C8 000CE6E8  7C 08 02 A6 */	mflr r0
 /* 800D27CC 000CE6EC  2C 03 00 00 */	cmpwi r3, 0
 /* 800D27D0 000CE6F0  90 01 00 04 */	stw r0, 4(r1)
@@ -2459,4 +2459,4 @@ lbl_800D28C8:
 /* 800D28D4 000CE7F4  7C 08 03 A6 */	mtlr r0
 /* 800D28D8 000CE7F8  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D28DC 000CE7FC  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D28E0 000CE800  4E 80 00 20 */	blr 
+/* 800D28E0 000CE800  4E 80 00 20 */	blr

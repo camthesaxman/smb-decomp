@@ -24,7 +24,7 @@ adsrConvertTimeCents:
 /* 800F782C 000F374C  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800F7830 000F3750  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F7834 000F3754  7C 08 03 A6 */	mtlr r0
-/* 800F7838 000F3758  4E 80 00 20 */	blr 
+/* 800F7838 000F3758  4E 80 00 20 */	blr
 
 .global salChangeADSRState
 salChangeADSRState:
@@ -197,7 +197,7 @@ lbl_800F7A94:
 /* 800F7A9C 000F39BC  38 00 00 01 */	li r0, 1
 lbl_800F7AA0:
 /* 800F7AA0 000F39C0  7C 03 03 78 */	mr r3, r0
-/* 800F7AA4 000F39C4  4E 80 00 20 */	blr 
+/* 800F7AA4 000F39C4  4E 80 00 20 */	blr
 
 .global adsrSetup
 adsrSetup:
@@ -210,7 +210,7 @@ adsrSetup:
 /* 800F7AC0 000F39E0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F7AC4 000F39E4  38 21 00 08 */	addi r1, r1, 8
 /* 800F7AC8 000F39E8  7C 08 03 A6 */	mtlr r0
-/* 800F7ACC 000F39EC  4E 80 00 20 */	blr 
+/* 800F7ACC 000F39EC  4E 80 00 20 */	blr
 
 .global adsrStartRelease
 adsrStartRelease:
@@ -305,7 +305,7 @@ lbl_800F7C10:
 /* 800F7C14 000F3B34  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 800F7C18 000F3B38  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F7C1C 000F3B3C  7C 08 03 A6 */	mtlr r0
-/* 800F7C20 000F3B40  4E 80 00 20 */	blr 
+/* 800F7C20 000F3B40  4E 80 00 20 */	blr
 
 .global adsrRelease
 adsrRelease:
@@ -328,7 +328,7 @@ lbl_800F7C58:
 /* 800F7C58 000F3B78  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F7C5C 000F3B7C  38 21 00 08 */	addi r1, r1, 8
 /* 800F7C60 000F3B80  7C 08 03 A6 */	mtlr r0
-/* 800F7C64 000F3B84  4E 80 00 20 */	blr 
+/* 800F7C64 000F3B84  4E 80 00 20 */	blr
 
 .global adsrHandle
 adsrHandle:
@@ -447,7 +447,7 @@ lbl_800F7DF4:
 /* 800F7DF8 000F3D18  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F7DFC 000F3D1C  38 21 00 08 */	addi r1, r1, 8
 /* 800F7E00 000F3D20  7C 08 03 A6 */	mtlr r0
-/* 800F7E04 000F3D24  4E 80 00 20 */	blr 
+/* 800F7E04 000F3D24  4E 80 00 20 */	blr
 
 .global adsrHandleLowPrecision
 adsrHandleLowPrecision:
@@ -487,4 +487,4 @@ lbl_800F7E6C:
 /* 800F7E7C 000F3D9C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800F7E80 000F3DA0  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800F7E84 000F3DA4  38 21 00 28 */	addi r1, r1, 0x28
-/* 800F7E88 000F3DA8  4E 80 00 20 */	blr 
+/* 800F7E88 000F3DA8  4E 80 00 20 */	blr

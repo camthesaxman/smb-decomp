@@ -7,14 +7,14 @@ __OSSystemCallVectorStart:
 /* 800C8AFC 000C4A1C  7D 30 FA A6 */	mfspr r9, 0x3f0
 /* 800C8B00 000C4A20  61 2A 00 08 */	ori r10, r9, 8
 /* 800C8B04 000C4A24  7D 50 FB A6 */	mtspr 0x3f0, r10
-/* 800C8B08 000C4A28  4C 00 01 2C */	isync 
+/* 800C8B08 000C4A28  4C 00 01 2C */	isync
 /* 800C8B0C 000C4A2C  7C 00 04 AC */	sync 0
 /* 800C8B10 000C4A30  7D 30 FB A6 */	mtspr 0x3f0, r9
-/* 800C8B14 000C4A34  4C 00 00 64 */	rfi 
+/* 800C8B14 000C4A34  4C 00 00 64 */	rfi
 
 .global __OSSystemCallVectorEnd
 __OSSystemCallVectorEnd:
-/* 800C8B18 000C4A38  60 00 00 00 */	nop 
+/* 800C8B18 000C4A38  60 00 00 00 */	nop
 
 .global __OSInitSystemCall
 __OSInitSystemCall:
@@ -42,4 +42,4 @@ __OSInitSystemCall:
 /* 800C8B70 000C4A90  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800C8B74 000C4A94  38 21 00 10 */	addi r1, r1, 0x10
 /* 800C8B78 000C4A98  7C 08 03 A6 */	mtlr r0
-/* 800C8B7C 000C4A9C  4E 80 00 20 */	blr 
+/* 800C8B7C 000C4A9C  4E 80 00 20 */	blr

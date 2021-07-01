@@ -336,7 +336,7 @@ lbl_80101800:
 /* 80101824 000FD744  CB 21 00 88 */	lfd f25, 0x88(r1)
 /* 80101828 000FD748  CB 01 00 80 */	lfd f24, 0x80(r1)
 /* 8010182C 000FD74C  38 21 00 C0 */	addi r1, r1, 0xc0
-/* 80101830 000FD750  4E 80 00 20 */	blr 
+/* 80101830 000FD750  4E 80 00 20 */	blr
 
 .global DoCrossTalk
 DoCrossTalk:
@@ -440,7 +440,7 @@ lbl_801018CC:
 /* 801019B4 000FD8D4  7D CB 27 AE */	stfiwx f14, r11, r4
 /* 801019B8 000FD8D8  C9 C1 00 28 */	lfd f14, 0x28(r1)
 /* 801019BC 000FD8DC  38 21 00 30 */	addi r1, r1, 0x30
-/* 801019C0 000FD8E0  4E 80 00 20 */	blr 
+/* 801019C0 000FD8E0  4E 80 00 20 */	blr
 
 .global HandleReverb
 HandleReverb:
@@ -795,7 +795,7 @@ lbl_80101E28:
 /* 80101EC0 000FDDE0  CB 21 00 B8 */	lfd f25, 0xb8(r1)
 /* 80101EC4 000FDDE4  B9 C1 00 08 */	lmw r14, 8(r1)
 /* 80101EC8 000FDDE8  38 21 00 C0 */	addi r1, r1, 0xc0
-/* 80101ECC 000FDDEC  4E 80 00 20 */	blr 
+/* 80101ECC 000FDDEC  4E 80 00 20 */	blr
 
 .global ReverbHICallback
 ReverbHICallback:
@@ -870,4 +870,4 @@ lbl_80101F9C:
 /* 80101FB8 000FDED8  7C 08 03 A6 */	mtlr r0
 /* 80101FBC 000FDEDC  CB A1 00 30 */	lfd f29, 0x30(r1)
 /* 80101FC0 000FDEE0  38 21 00 48 */	addi r1, r1, 0x48
-/* 80101FC4 000FDEE4  4E 80 00 20 */	blr 
+/* 80101FC4 000FDEE4  4E 80 00 20 */	blr

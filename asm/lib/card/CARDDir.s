@@ -5,7 +5,7 @@
 .global __CARDGetDirBlock
 __CARDGetDirBlock:
 /* 800D7DA0 000D3CC0  80 63 00 84 */	lwz r3, 0x84(r3)
-/* 800D7DA4 000D3CC4  4E 80 00 20 */	blr 
+/* 800D7DA4 000D3CC4  4E 80 00 20 */	blr
 
 .global WriteCallback_2
 WriteCallback_2:
@@ -56,7 +56,7 @@ lbl_800D7E34:
 /* 800D7E4C 000D3D6C  90 1F 00 D8 */	stw r0, 0xd8(r31)
 /* 800D7E50 000D3D70  38 7D 00 00 */	addi r3, r29, 0
 /* 800D7E54 000D3D74  38 9E 00 00 */	addi r4, r30, 0
-/* 800D7E58 000D3D78  4E 80 00 21 */	blrl 
+/* 800D7E58 000D3D78  4E 80 00 21 */	blrl
 lbl_800D7E5C:
 /* 800D7E5C 000D3D7C  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 800D7E60 000D3D80  83 E1 00 1C */	lwz r31, 0x1c(r1)
@@ -64,7 +64,7 @@ lbl_800D7E5C:
 /* 800D7E68 000D3D88  7C 08 03 A6 */	mtlr r0
 /* 800D7E6C 000D3D8C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800D7E70 000D3D90  38 21 00 20 */	addi r1, r1, 0x20
-/* 800D7E74 000D3D94  4E 80 00 20 */	blr 
+/* 800D7E74 000D3D94  4E 80 00 20 */	blr
 
 .global EraseCallback_2
 EraseCallback_2:
@@ -112,7 +112,7 @@ lbl_800D7EFC:
 /* 800D7F14 000D3E34  90 1E 00 D8 */	stw r0, 0xd8(r30)
 /* 800D7F18 000D3E38  38 7F 00 00 */	addi r3, r31, 0
 /* 800D7F1C 000D3E3C  38 9D 00 00 */	addi r4, r29, 0
-/* 800D7F20 000D3E40  4E 80 00 21 */	blrl 
+/* 800D7F20 000D3E40  4E 80 00 21 */	blrl
 lbl_800D7F24:
 /* 800D7F24 000D3E44  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800D7F28 000D3E48  83 E1 00 24 */	lwz r31, 0x24(r1)
@@ -120,7 +120,7 @@ lbl_800D7F24:
 /* 800D7F30 000D3E50  7C 08 03 A6 */	mtlr r0
 /* 800D7F34 000D3E54  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D7F38 000D3E58  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D7F3C 000D3E5C  4E 80 00 20 */	blr 
+/* 800D7F3C 000D3E5C  4E 80 00 20 */	blr
 
 .global __CARDUpdateDir
 __CARDUpdateDir:
@@ -174,4 +174,4 @@ lbl_800D7FE4:
 /* 800D7FF4 000D3F14  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D7FF8 000D3F18  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800D7FFC 000D3F1C  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D8000 000D3F20  4E 80 00 20 */	blr 
+/* 800D8000 000D3F20  4E 80 00 20 */	blr

@@ -94,7 +94,7 @@ lbl_800FF684:
 /* 800FF68C 000FB5AC  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800FF690 000FB5B0  7C 08 03 A6 */	mtlr r0
 /* 800FF694 000FB5B4  38 21 00 18 */	addi r1, r1, 0x18
-/* 800FF698 000FB5B8  4E 80 00 20 */	blr 
+/* 800FF698 000FB5B8  4E 80 00 20 */	blr
 
 .global hwInit
 hwInit:
@@ -144,17 +144,17 @@ lbl_800FF734:
 /* 800FF740 000FB660  7C 08 03 A6 */	mtlr r0
 /* 800FF744 000FB664  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800FF748 000FB668  38 21 00 28 */	addi r1, r1, 0x28
-/* 800FF74C 000FB66C  4E 80 00 20 */	blr 
+/* 800FF74C 000FB66C  4E 80 00 20 */	blr
 
 .global hwSetTimeOffset
 hwSetTimeOffset:
 /* 800FF750 000FB670  98 6D A5 48 */	stb r3, salTimeOffset-_SDA_BASE_(r13)
-/* 800FF754 000FB674  4E 80 00 20 */	blr 
+/* 800FF754 000FB674  4E 80 00 20 */	blr
 
 .global hwGetTimeOffset
 hwGetTimeOffset:
 /* 800FF758 000FB678  88 6D A5 48 */	lbz r3, salTimeOffset-_SDA_BASE_(r13)
-/* 800FF75C 000FB67C  4E 80 00 20 */	blr 
+/* 800FF75C 000FB67C  4E 80 00 20 */	blr
 
 .global hwIsActive
 hwIsActive:
@@ -165,12 +165,12 @@ hwIsActive:
 /* 800FF770 000FB690  7C 60 00 D0 */	neg r3, r0
 /* 800FF774 000FB694  30 03 FF FF */	addic r0, r3, -1
 /* 800FF778 000FB698  7C 60 19 10 */	subfe r3, r0, r3
-/* 800FF77C 000FB69C  4E 80 00 20 */	blr 
+/* 800FF77C 000FB69C  4E 80 00 20 */	blr
 
 .global hwSetMesgCallback
 hwSetMesgCallback:
 /* 800FF780 000FB6A0  90 6D A5 20 */	stw r3, salMessageCallback-_SDA_BASE_(r13)
-/* 800FF784 000FB6A4  4E 80 00 20 */	blr 
+/* 800FF784 000FB6A4  4E 80 00 20 */	blr
 
 .global hwSetPriority
 hwSetPriority:
@@ -178,7 +178,7 @@ hwSetPriority:
 /* 800FF78C 000FB6AC  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
 /* 800FF790 000FB6B0  7C 63 02 14 */	add r3, r3, r0
 /* 800FF794 000FB6B4  90 83 00 1C */	stw r4, 0x1c(r3)
-/* 800FF798 000FB6B8  4E 80 00 20 */	blr 
+/* 800FF798 000FB6B8  4E 80 00 20 */	blr
 
 .global hwInitSamplePlayback
 hwInitSamplePlayback:
@@ -292,7 +292,7 @@ lbl_800FF928:
 /* 800FF938 000FB858  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800FF93C 000FB85C  38 21 00 40 */	addi r1, r1, 0x40
 /* 800FF940 000FB860  7C 08 03 A6 */	mtlr r0
-/* 800FF944 000FB864  4E 80 00 20 */	blr 
+/* 800FF944 000FB864  4E 80 00 20 */	blr
 
 .global hwRelease
 hwRelease:
@@ -302,9 +302,9 @@ hwRelease:
 /* 800FF954 000FB874  88 03 00 A4 */	lbz r0, 0xa4(r3)
 /* 800FF958 000FB878  2C 00 00 01 */	cmpwi r0, 1
 /* 800FF95C 000FB87C  41 82 00 3C */	beq lbl_800FF998
-/* 800FF960 000FB880  4C 80 00 20 */	bgelr 
+/* 800FF960 000FB880  4C 80 00 20 */	bgelr
 /* 800FF964 000FB884  2C 00 00 00 */	cmpwi r0, 0
-/* 800FF968 000FB888  4D 80 00 20 */	bltlr 
+/* 800FF968 000FB888  4D 80 00 20 */	bltlr
 /* 800FF96C 000FB88C  38 00 00 0A */	li r0, 0xa
 /* 800FF970 000FB890  90 03 00 C4 */	stw r0, 0xc4(r3)
 /* 800FF974 000FB894  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
@@ -315,7 +315,7 @@ hwRelease:
 /* 800FF988 000FB8A8  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FF98C 000FB8AC  60 00 00 40 */	ori r0, r0, 0x40
 /* 800FF990 000FB8B0  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FF994 000FB8B4  4E 80 00 20 */	blr 
+/* 800FF994 000FB8B4  4E 80 00 20 */	blr
 lbl_800FF998:
 /* 800FF998 000FB8B8  38 00 00 0A */	li r0, 0xa
 /* 800FF99C 000FB8BC  90 03 00 C4 */	stw r0, 0xc4(r3)
@@ -327,7 +327,7 @@ lbl_800FF998:
 /* 800FF9B4 000FB8D4  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FF9B8 000FB8D8  60 00 00 40 */	ori r0, r0, 0x40
 /* 800FF9BC 000FB8DC  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FF9C0 000FB8E0  4E 80 00 20 */	blr 
+/* 800FF9C0 000FB8E0  4E 80 00 20 */	blr
 
 .global hwBreak
 hwBreak:
@@ -340,7 +340,7 @@ hwBreak:
 /* 800FF9DC 000FB8FC  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FF9E0 000FB900  60 00 00 20 */	ori r0, r0, 0x20
 /* 800FF9E4 000FB904  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FF9E8 000FB908  4E 80 00 20 */	blr 
+/* 800FF9E8 000FB908  4E 80 00 20 */	blr
 
 .global hwSetADSR
 hwSetADSR:
@@ -458,7 +458,7 @@ lbl_800FFB68:
 /* 800FFB8C 000FBAAC  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800FFB90 000FBAB0  38 21 00 28 */	addi r1, r1, 0x28
 /* 800FFB94 000FBAB4  7C 08 03 A6 */	mtlr r0
-/* 800FFB98 000FBAB8  4E 80 00 20 */	blr 
+/* 800FFB98 000FBAB8  4E 80 00 20 */	blr
 
 .global hwSetStreamLoopPS
 hwSetStreamLoopPS:
@@ -466,7 +466,7 @@ hwSetStreamLoopPS:
 /* 800FFBA0 000FBAC0  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
 /* 800FFBA4 000FBAC4  7C 63 02 14 */	add r3, r3, r0
 /* 800FFBA8 000FBAC8  98 83 00 A0 */	stb r4, 0xa0(r3)
-/* 800FFBAC 000FBACC  4E 80 00 20 */	blr 
+/* 800FFBAC 000FBACC  4E 80 00 20 */	blr
 
 .global hwStart
 hwStart:
@@ -484,7 +484,7 @@ hwStart:
 /* 800FFBDC 000FBAFC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800FFBE0 000FBB00  38 21 00 08 */	addi r1, r1, 8
 /* 800FFBE4 000FBB04  7C 08 03 A6 */	mtlr r0
-/* 800FFBE8 000FBB08  4E 80 00 20 */	blr 
+/* 800FFBE8 000FBB08  4E 80 00 20 */	blr
 
 .global hwKeyOff
 hwKeyOff:
@@ -497,7 +497,7 @@ hwKeyOff:
 /* 800FFC04 000FBB24  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FFC08 000FBB28  60 00 00 40 */	ori r0, r0, 0x40
 /* 800FFC0C 000FBB2C  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FFC10 000FBB30  4E 80 00 20 */	blr 
+/* 800FFC10 000FBB30  4E 80 00 20 */	blr
 
 .global hwSetPitch
 hwSetPitch:
@@ -517,7 +517,7 @@ lbl_800FFC30:
 /* 800FFC44 000FBB64  80 63 00 38 */	lwz r3, 0x38(r3)
 /* 800FFC48 000FBB68  54 80 23 36 */	rlwinm r0, r4, 4, 0xc, 0x1b
 /* 800FFC4C 000FBB6C  7C 03 00 40 */	cmplw r3, r0
-/* 800FFC50 000FBB70  4D 82 00 20 */	beqlr 
+/* 800FFC50 000FBB70  4D 82 00 20 */	beqlr
 lbl_800FFC54:
 /* 800FFC54 000FBB74  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
 /* 800FFC58 000FBB78  54 84 23 36 */	rlwinm r4, r4, 4, 0xc, 0x1b
@@ -532,7 +532,7 @@ lbl_800FFC54:
 /* 800FFC7C 000FBB9C  90 03 00 24 */	stw r0, 0x24(r3)
 /* 800FFC80 000FBBA0  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
 /* 800FFC84 000FBBA4  98 05 00 E4 */	stb r0, 0xe4(r5)
-/* 800FFC88 000FBBA8  4E 80 00 20 */	blr 
+/* 800FFC88 000FBBA8  4E 80 00 20 */	blr
 
 .global hwSetSRCType
 hwSetSRCType:
@@ -546,7 +546,7 @@ hwSetSRCType:
 /* 800FFCA8 000FBBC8  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FFCAC 000FBBCC  60 00 01 00 */	ori r0, r0, 0x100
 /* 800FFCB0 000FBBD0  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FFCB4 000FBBD4  4E 80 00 20 */	blr 
+/* 800FFCB4 000FBBD4  4E 80 00 20 */	blr
 
 .global hwSetPolyPhaseFilter
 hwSetPolyPhaseFilter:
@@ -560,7 +560,7 @@ hwSetPolyPhaseFilter:
 /* 800FFCD4 000FBBF4  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FFCD8 000FBBF8  60 00 00 80 */	ori r0, r0, 0x80
 /* 800FFCDC 000FBBFC  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FFCE0 000FBC00  4E 80 00 20 */	blr 
+/* 800FFCE0 000FBC00  4E 80 00 20 */	blr
 
 .global hwSetITDMode
 hwSetITDMode:
@@ -579,7 +579,7 @@ hwSetITDMode:
 /* 800FFD14 000FBC34  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
 /* 800FFD18 000FBC38  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFD1C 000FBC3C  B0 83 00 D2 */	sth r4, 0xd2(r3)
-/* 800FFD20 000FBC40  4E 80 00 20 */	blr 
+/* 800FFD20 000FBC40  4E 80 00 20 */	blr
 lbl_800FFD24:
 /* 800FFD24 000FBC44  1C 03 00 F0 */	mulli r0, r3, 0xf0
 /* 800FFD28 000FBC48  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
@@ -587,7 +587,7 @@ lbl_800FFD24:
 /* 800FFD30 000FBC50  80 03 00 EC */	lwz r0, 0xec(r3)
 /* 800FFD34 000FBC54  54 00 00 7E */	clrlwi r0, r0, 1
 /* 800FFD38 000FBC58  90 03 00 EC */	stw r0, 0xec(r3)
-/* 800FFD3C 000FBC5C  4E 80 00 20 */	blr 
+/* 800FFD3C 000FBC5C  4E 80 00 20 */	blr
 
 .global hwSetVolume
 hwSetVolume:
@@ -780,7 +780,7 @@ lbl_800FFFF8:
 /* 80100000 000FBF20  83 C1 00 60 */	lwz r30, 0x60(r1)
 /* 80100004 000FBF24  7C 08 03 A6 */	mtlr r0
 /* 80100008 000FBF28  38 21 00 68 */	addi r1, r1, 0x68
-/* 8010000C 000FBF2C  4E 80 00 20 */	blr 
+/* 8010000C 000FBF2C  4E 80 00 20 */	blr
 
 .global hwOff
 hwOff:
@@ -794,7 +794,7 @@ hwOff:
 /* 8010002C 000FBF4C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100030 000FBF50  38 21 00 08 */	addi r1, r1, 8
 /* 80100034 000FBF54  7C 08 03 A6 */	mtlr r0
-/* 80100038 000FBF58  4E 80 00 20 */	blr 
+/* 80100038 000FBF58  4E 80 00 20 */	blr
 
 .global hwSetAUXProcessingCallbacks
 hwSetAUXProcessingCallbacks:
@@ -807,7 +807,7 @@ hwSetAUXProcessingCallbacks:
 /* 80100054 000FBF74  90 A3 00 B4 */	stw r5, 0xb4(r3)
 /* 80100058 000FBF78  90 C3 00 B0 */	stw r6, 0xb0(r3)
 /* 8010005C 000FBF7C  90 E3 00 B8 */	stw r7, 0xb8(r3)
-/* 80100060 000FBF80  4E 80 00 20 */	blr 
+/* 80100060 000FBF80  4E 80 00 20 */	blr
 
 .global hwActivateStudio
 hwActivateStudio:
@@ -818,7 +818,7 @@ hwActivateStudio:
 /* 80100074 000FBF94  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100078 000FBF98  38 21 00 08 */	addi r1, r1, 8
 /* 8010007C 000FBF9C  7C 08 03 A6 */	mtlr r0
-/* 80100080 000FBFA0  4E 80 00 20 */	blr 
+/* 80100080 000FBFA0  4E 80 00 20 */	blr
 
 .global hwDeactivateStudio
 hwDeactivateStudio:
@@ -829,7 +829,7 @@ hwDeactivateStudio:
 /* 80100094 000FBFB4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100098 000FBFB8  38 21 00 08 */	addi r1, r1, 8
 /* 8010009C 000FBFBC  7C 08 03 A6 */	mtlr r0
-/* 801000A0 000FBFC0  4E 80 00 20 */	blr 
+/* 801000A0 000FBFC0  4E 80 00 20 */	blr
 
 .global hwAddInput
 hwAddInput:
@@ -845,7 +845,7 @@ hwAddInput:
 /* 801000C8 000FBFE8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 801000CC 000FBFEC  38 21 00 08 */	addi r1, r1, 8
 /* 801000D0 000FBFF0  7C 08 03 A6 */	mtlr r0
-/* 801000D4 000FBFF4  4E 80 00 20 */	blr 
+/* 801000D4 000FBFF4  4E 80 00 20 */	blr
 
 .global hwRemoveInput
 hwRemoveInput:
@@ -861,7 +861,7 @@ hwRemoveInput:
 /* 801000FC 000FC01C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100100 000FC020  38 21 00 08 */	addi r1, r1, 8
 /* 80100104 000FC024  7C 08 03 A6 */	mtlr r0
-/* 80100108 000FC028  4E 80 00 20 */	blr 
+/* 80100108 000FC028  4E 80 00 20 */	blr
 
 .global hwGetPos
 hwGetPos:
@@ -872,7 +872,7 @@ hwGetPos:
 /* 8010011C 000FC03C  28 00 00 02 */	cmplwi r0, 2
 /* 80100120 000FC040  41 82 00 0C */	beq lbl_8010012C
 /* 80100124 000FC044  38 60 00 00 */	li r3, 0
-/* 80100128 000FC048  4E 80 00 20 */	blr 
+/* 80100128 000FC048  4E 80 00 20 */	blr
 lbl_8010012C:
 /* 8010012C 000FC04C  88 04 00 90 */	lbz r0, 0x90(r4)
 /* 80100130 000FC050  2C 00 00 03 */	cmpwi r0, 3
@@ -882,10 +882,10 @@ lbl_8010012C:
 /* 80100140 000FC060  40 80 00 5C */	bge lbl_8010019C
 /* 80100144 000FC064  2C 00 00 00 */	cmpwi r0, 0
 /* 80100148 000FC068  40 80 00 10 */	bge lbl_80100158
-/* 8010014C 000FC06C  4E 80 00 20 */	blr 
+/* 8010014C 000FC06C  4E 80 00 20 */	blr
 lbl_80100150:
 /* 80100150 000FC070  2C 00 00 06 */	cmpwi r0, 6
-/* 80100154 000FC074  4C 80 00 20 */	bgelr 
+/* 80100154 000FC074  4C 80 00 20 */	bgelr
 lbl_80100158:
 /* 80100158 000FC078  7C 66 2A 14 */	add r3, r6, r5
 /* 8010015C 000FC07C  80 03 00 78 */	lwz r0, 0x78(r3)
@@ -896,21 +896,21 @@ lbl_80100158:
 /* 80100170 000FC090  54 64 07 3E */	clrlwi r4, r3, 0x1c
 /* 80100174 000FC094  28 04 00 02 */	cmplwi r4, 2
 /* 80100178 000FC098  1C 60 00 0E */	mulli r3, r0, 0xe
-/* 8010017C 000FC09C  4D 80 00 20 */	bltlr 
+/* 8010017C 000FC09C  4D 80 00 20 */	bltlr
 /* 80100180 000FC0A0  7C 64 1A 14 */	add r3, r4, r3
 /* 80100184 000FC0A4  38 63 FF FE */	addi r3, r3, -2
-/* 80100188 000FC0A8  4E 80 00 20 */	blr 
+/* 80100188 000FC0A8  4E 80 00 20 */	blr
 lbl_8010018C:
 /* 8010018C 000FC0AC  80 64 00 78 */	lwz r3, 0x78(r4)
 /* 80100190 000FC0B0  80 04 00 20 */	lwz r0, 0x20(r4)
 /* 80100194 000FC0B4  7C 63 00 50 */	subf r3, r3, r0
-/* 80100198 000FC0B8  4E 80 00 20 */	blr 
+/* 80100198 000FC0B8  4E 80 00 20 */	blr
 lbl_8010019C:
 /* 8010019C 000FC0BC  80 64 00 78 */	lwz r3, 0x78(r4)
 /* 801001A0 000FC0C0  80 04 00 20 */	lwz r0, 0x20(r4)
 /* 801001A4 000FC0C4  54 63 F8 7E */	srwi r3, r3, 1
 /* 801001A8 000FC0C8  7C 63 00 50 */	subf r3, r3, r0
-/* 801001AC 000FC0CC  4E 80 00 20 */	blr 
+/* 801001AC 000FC0CC  4E 80 00 20 */	blr
 
 .global hwFlushStream
 hwFlushStream:
@@ -949,7 +949,7 @@ hwFlushStream:
 /* 80100230 000FC150  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 80100234 000FC154  83 81 00 20 */	lwz r28, 0x20(r1)
 /* 80100238 000FC158  38 21 00 30 */	addi r1, r1, 0x30
-/* 8010023C 000FC15C  4E 80 00 20 */	blr 
+/* 8010023C 000FC15C  4E 80 00 20 */	blr
 
 .global hwInitStream
 hwInitStream:
@@ -960,7 +960,7 @@ hwInitStream:
 /* 80100250 000FC170  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100254 000FC174  38 21 00 08 */	addi r1, r1, 8
 /* 80100258 000FC178  7C 08 03 A6 */	mtlr r0
-/* 8010025C 000FC17C  4E 80 00 20 */	blr 
+/* 8010025C 000FC17C  4E 80 00 20 */	blr
 
 .global hwExitStream
 hwExitStream:
@@ -971,7 +971,7 @@ hwExitStream:
 /* 80100270 000FC190  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100274 000FC194  38 21 00 08 */	addi r1, r1, 8
 /* 80100278 000FC198  7C 08 03 A6 */	mtlr r0
-/* 8010027C 000FC19C  4E 80 00 20 */	blr 
+/* 8010027C 000FC19C  4E 80 00 20 */	blr
 
 .global hwGetStreamPlayBuffer
 hwGetStreamPlayBuffer:
@@ -983,11 +983,11 @@ hwGetStreamPlayBuffer:
 /* 80100294 000FC1B4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100298 000FC1B8  38 21 00 08 */	addi r1, r1, 8
 /* 8010029C 000FC1BC  7C 08 03 A6 */	mtlr r0
-/* 801002A0 000FC1C0  4E 80 00 20 */	blr 
+/* 801002A0 000FC1C0  4E 80 00 20 */	blr
 
 .global hwTransAddr
 hwTransAddr:
-/* 801002A4 000FC1C4  4E 80 00 20 */	blr 
+/* 801002A4 000FC1C4  4E 80 00 20 */	blr
 
 .global hwFrq2Pitch
 hwFrq2Pitch:
@@ -1013,7 +1013,7 @@ hwFrq2Pitch:
 /* 801002F4 000FC214  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 801002F8 000FC218  38 21 00 20 */	addi r1, r1, 0x20
 /* 801002FC 000FC21C  7C 08 03 A6 */	mtlr r0
-/* 80100300 000FC220  4E 80 00 20 */	blr 
+/* 80100300 000FC220  4E 80 00 20 */	blr
 
 .global hwInitSampleMem
 hwInitSampleMem:
@@ -1025,7 +1025,7 @@ hwInitSampleMem:
 /* 80100318 000FC238  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010031C 000FC23C  38 21 00 08 */	addi r1, r1, 8
 /* 80100320 000FC240  7C 08 03 A6 */	mtlr r0
-/* 80100324 000FC244  4E 80 00 20 */	blr 
+/* 80100324 000FC244  4E 80 00 20 */	blr
 
 .global hwSaveSample
 hwSaveSample:
@@ -1069,7 +1069,7 @@ lbl_8010039C:
 /* 801003AC 000FC2CC  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 801003B0 000FC2D0  38 21 00 20 */	addi r1, r1, 0x20
 /* 801003B4 000FC2D4  7C 08 03 A6 */	mtlr r0
-/* 801003B8 000FC2D8  4E 80 00 20 */	blr 
+/* 801003B8 000FC2D8  4E 80 00 20 */	blr
 
 .global hwRemoveSample
 hwRemoveSample:
@@ -1109,7 +1109,7 @@ lbl_80100424:
 /* 80100430 000FC350  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100434 000FC354  38 21 00 08 */	addi r1, r1, 8
 /* 80100438 000FC358  7C 08 03 A6 */	mtlr r0
-/* 8010043C 000FC35C  4E 80 00 20 */	blr 
+/* 8010043C 000FC35C  4E 80 00 20 */	blr
 
 .global hwSyncSampleMem
 hwSyncSampleMem:
@@ -1120,11 +1120,11 @@ hwSyncSampleMem:
 /* 80100450 000FC370  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100454 000FC374  38 21 00 08 */	addi r1, r1, 8
 /* 80100458 000FC378  7C 08 03 A6 */	mtlr r0
-/* 8010045C 000FC37C  4E 80 00 20 */	blr 
+/* 8010045C 000FC37C  4E 80 00 20 */	blr
 
 .global hwFrameDone
 hwFrameDone:
-/* 80100460 000FC380  4E 80 00 20 */	blr 
+/* 80100460 000FC380  4E 80 00 20 */	blr
 
 .global sndSetHooks
 sndSetHooks:
@@ -1132,10 +1132,10 @@ sndSetHooks:
 /* 80100468 000FC388  80 03 00 04 */	lwz r0, 4(r3)
 /* 8010046C 000FC38C  90 8D A5 4C */	stw r4, salHooks-_SDA_BASE_(r13)
 /* 80100470 000FC390  90 0D A5 50 */	stw r0, lbl_802F2730-_SDA_BASE_(r13)
-/* 80100474 000FC394  4E 80 00 20 */	blr 
+/* 80100474 000FC394  4E 80 00 20 */	blr
 
 .global hwDisableHRTF
 hwDisableHRTF:
 /* 80100478 000FC398  38 00 00 00 */	li r0, 0
 /* 8010047C 000FC39C  90 0D A5 0C */	stw r0, dspHRTFOn-_SDA_BASE_(r13)
-/* 80100480 000FC3A0  4E 80 00 20 */	blr 
+/* 80100480 000FC3A0  4E 80 00 20 */	blr

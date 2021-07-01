@@ -12,7 +12,7 @@ OSDisableInterrupts:
 /* 800C60C8 000C1FE8  54 63 8F FE */	rlwinm r3, r3, 0x11, 0x1f, 0x1f
 .global lbl_800C60CC
 lbl_800C60CC:
-/* 800C60CC 000C1FEC  4E 80 00 20 */	blr 
+/* 800C60CC 000C1FEC  4E 80 00 20 */	blr
 
 .global OSEnableInterrupts
 OSEnableInterrupts:
@@ -20,7 +20,7 @@ OSEnableInterrupts:
 /* 800C60D4 000C1FF4  60 64 80 00 */	ori r4, r3, 0x8000
 /* 800C60D8 000C1FF8  7C 80 01 24 */	mtmsr r4
 /* 800C60DC 000C1FFC  54 63 8F FE */	rlwinm r3, r3, 0x11, 0x1f, 0x1f
-/* 800C60E0 000C2000  4E 80 00 20 */	blr 
+/* 800C60E0 000C2000  4E 80 00 20 */	blr
 
 .global OSRestoreInterrupts
 OSRestoreInterrupts:
@@ -34,7 +34,7 @@ lbl_800C60F8:
 lbl_800C60FC:
 /* 800C60FC 000C201C  7C A0 01 24 */	mtmsr r5
 /* 800C6100 000C2020  54 84 8F FE */	rlwinm r4, r4, 0x11, 0x1f, 0x1f
-/* 800C6104 000C2024  4E 80 00 20 */	blr 
+/* 800C6104 000C2024  4E 80 00 20 */	blr
 
 .global __OSSetInterruptHandler
 __OSSetInterruptHandler:
@@ -44,7 +44,7 @@ __OSSetInterruptHandler:
 /* 800C6114 000C2034  7C A3 02 14 */	add r5, r3, r0
 /* 800C6118 000C2038  80 65 00 00 */	lwz r3, 0(r5)
 /* 800C611C 000C203C  90 85 00 00 */	stw r4, 0(r5)
-/* 800C6120 000C2040  4E 80 00 20 */	blr 
+/* 800C6120 000C2040  4E 80 00 20 */	blr
 
 .global __OSGetInterruptHandler
 __OSGetInterruptHandler:
@@ -52,7 +52,7 @@ __OSGetInterruptHandler:
 /* 800C6128 000C2048  80 6D A1 30 */	lwz r3, InterruptHandlerTable-_SDA_BASE_(r13)
 /* 800C612C 000C204C  54 00 10 3A */	slwi r0, r0, 2
 /* 800C6130 000C2050  7C 63 00 2E */	lwzx r3, r3, r0
-/* 800C6134 000C2054  4E 80 00 20 */	blr 
+/* 800C6134 000C2054  4E 80 00 20 */	blr
 
 .global __OSInterruptInit
 __OSInterruptInit:
@@ -84,7 +84,7 @@ __OSInterruptInit:
 /* 800C619C 000C20BC  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800C61A0 000C20C0  38 21 00 10 */	addi r1, r1, 0x10
 /* 800C61A4 000C20C4  7C 08 03 A6 */	mtlr r0
-/* 800C61A8 000C20C8  4E 80 00 20 */	blr 
+/* 800C61A8 000C20C8  4E 80 00 20 */	blr
 
 .global SetInterruptMask
 SetInterruptMask:
@@ -96,7 +96,7 @@ SetInterruptMask:
 /* 800C61C0 000C20E0  54 00 10 3A */	slwi r0, r0, 2
 /* 800C61C4 000C20E4  7C 05 00 2E */	lwzx r0, r5, r0
 /* 800C61C8 000C20E8  7C 09 03 A6 */	mtctr r0
-/* 800C61CC 000C20EC  4E 80 04 20 */	bctr 
+/* 800C61CC 000C20EC  4E 80 04 20 */	bctr
 /* 800C61D0 000C20F0  54 80 00 00 */	rlwinm r0, r4, 0, 0, 0
 /* 800C61D4 000C20F4  28 00 00 00 */	cmplwi r0, 0
 /* 800C61D8 000C20F8  38 A0 00 00 */	li r5, 0
@@ -287,7 +287,7 @@ lbl_800C6448:
 /* 800C6450 000C2370  90 A4 00 04 */	stw r5, 4(r4)
 /* 800C6454 000C2374  54 63 06 E0 */	rlwinm r3, r3, 0, 0x1b, 0x10
 lbl_800C6458:
-/* 800C6458 000C2378  4E 80 00 20 */	blr 
+/* 800C6458 000C2378  4E 80 00 20 */	blr
 
 .global __OSMaskInterrupts
 __OSMaskInterrupts:
@@ -328,7 +328,7 @@ lbl_800C64B4:
 /* 800C64D4 000C23F4  7C 08 03 A6 */	mtlr r0
 /* 800C64D8 000C23F8  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800C64DC 000C23FC  38 21 00 20 */	addi r1, r1, 0x20
-/* 800C64E0 000C2400  4E 80 00 20 */	blr 
+/* 800C64E0 000C2400  4E 80 00 20 */	blr
 
 .global __OSUnmaskInterrupts
 __OSUnmaskInterrupts:
@@ -369,7 +369,7 @@ lbl_800C653C:
 /* 800C655C 000C247C  7C 08 03 A6 */	mtlr r0
 /* 800C6560 000C2480  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800C6564 000C2484  38 21 00 20 */	addi r1, r1, 0x20
-/* 800C6568 000C2488  4E 80 00 20 */	blr 
+/* 800C6568 000C2488  4E 80 00 20 */	blr
 
 .global __OSDispatchInterrupt
 __OSDispatchInterrupt:
@@ -593,7 +593,7 @@ lbl_800C6830:
 /* 800C684C 000C276C  7F C4 F3 78 */	mr r4, r30
 /* 800C6850 000C2770  7F EC FB 78 */	mr r12, r31
 /* 800C6854 000C2774  7D 88 03 A6 */	mtlr r12
-/* 800C6858 000C2778  4E 80 00 21 */	blrl 
+/* 800C6858 000C2778  4E 80 00 21 */	blrl
 /* 800C685C 000C277C  48 00 24 A9 */	bl OSEnableScheduler
 /* 800C6860 000C2780  48 00 29 49 */	bl __OSReschedule
 /* 800C6864 000C2784  7F C3 F3 78 */	mr r3, r30
@@ -607,7 +607,7 @@ lbl_800C686C:
 /* 800C6880 000C27A0  7C 08 03 A6 */	mtlr r0
 /* 800C6884 000C27A4  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800C6888 000C27A8  38 21 00 28 */	addi r1, r1, 0x28
-/* 800C688C 000C27AC  4E 80 00 20 */	blr 
+/* 800C688C 000C27AC  4E 80 00 20 */	blr
 
 .global ExternalInterruptHandler
 ExternalInterruptHandler:

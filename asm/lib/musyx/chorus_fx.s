@@ -110,7 +110,7 @@ lbl_80102128:
 /* 80102150 000FE070  90 A3 00 10 */	stw r5, 0x10(r3)
 /* 80102154 000FE074  BB 41 00 28 */	lmw r26, 0x28(r1)
 /* 80102158 000FE078  38 21 00 40 */	addi r1, r1, 0x40
-/* 8010215C 000FE07C  4E 80 00 20 */	blr 
+/* 8010215C 000FE07C  4E 80 00 20 */	blr
 
 .global do_src2
 do_src2:
@@ -242,7 +242,7 @@ lbl_8010230C:
 /* 8010233C 000FE25C  90 A3 00 10 */	stw r5, 0x10(r3)
 /* 80102340 000FE260  BB 41 00 28 */	lmw r26, 0x28(r1)
 /* 80102344 000FE264  38 21 00 40 */	addi r1, r1, 0x40
-/* 80102348 000FE268  4E 80 00 20 */	blr 
+/* 80102348 000FE268  4E 80 00 20 */	blr
 
 .global sndAuxCallbackChorus
 sndAuxCallbackChorus:
@@ -481,7 +481,7 @@ lbl_801026A4:
 /* 801026A8 000FE5C8  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 801026AC 000FE5CC  38 21 00 40 */	addi r1, r1, 0x40
 /* 801026B0 000FE5D0  7C 08 03 A6 */	mtlr r0
-/* 801026B4 000FE5D4  4E 80 00 20 */	blr 
+/* 801026B4 000FE5D4  4E 80 00 20 */	blr
 
 .global sndAuxCallbackPrepareChorus
 sndAuxCallbackPrepareChorus:
@@ -641,4 +641,4 @@ lbl_80102904:
 /* 80102908 000FE828  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 8010290C 000FE82C  38 21 00 28 */	addi r1, r1, 0x28
 /* 80102910 000FE830  7C 08 03 A6 */	mtlr r0
-/* 80102914 000FE834  4E 80 00 20 */	blr 
+/* 80102914 000FE834  4E 80 00 20 */	blr

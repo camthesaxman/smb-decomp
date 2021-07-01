@@ -5,7 +5,7 @@
 .global fabsf__Ff
 fabsf__Ff:
 /* 801089CC 001048EC  FC 20 0A 10 */	fabs f1, f1
-/* 801089D0 001048F0  4E 80 00 20 */	blr 
+/* 801089D0 001048F0  4E 80 00 20 */	blr
 
 .global atanf
 atanf:
@@ -146,7 +146,7 @@ lbl_80108BB0:
 /* 80108BBC 00104ADC  C0 21 00 0C */	lfs f1, 0xc(r1)
 lbl_80108BC0:
 /* 80108BC0 00104AE0  38 21 00 10 */	addi r1, r1, 0x10
-/* 80108BC4 00104AE4  4E 80 00 20 */	blr 
+/* 80108BC4 00104AE4  4E 80 00 20 */	blr
 
 .global atan__Ff
 atan__Ff:
@@ -157,7 +157,7 @@ atan__Ff:
 /* 80108BD8 00104AF8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80108BDC 00104AFC  38 21 00 08 */	addi r1, r1, 8
 /* 80108BE0 00104B00  7C 08 03 A6 */	mtlr r0
-/* 80108BE4 00104B04  4E 80 00 20 */	blr 
+/* 80108BE4 00104B04  4E 80 00 20 */	blr
 
 .global _inv_sqrtf
 _inv_sqrtf:
@@ -180,17 +180,17 @@ _inv_sqrtf:
 /* 80108C28 00104B48  EC 44 00 B2 */	fmuls f2, f4, f2
 /* 80108C2C 00104B4C  EC 01 18 3C */	fnmsubs f0, f1, f0, f3
 /* 80108C30 00104B50  EC 22 00 32 */	fmuls f1, f2, f0
-/* 80108C34 00104B54  4E 80 00 20 */	blr 
+/* 80108C34 00104B54  4E 80 00 20 */	blr
 lbl_80108C38:
 /* 80108C38 00104B58  FC 01 00 00 */	fcmpu cr0, f1, f0
 /* 80108C3C 00104B5C  41 82 00 10 */	beq lbl_80108C4C
 /* 80108C40 00104B60  3C 60 80 1F */	lis r3, lbl_801ED2F8@ha
 /* 80108C44 00104B64  C0 23 D2 F8 */	lfs f1, lbl_801ED2F8@l(r3)
-/* 80108C48 00104B68  4E 80 00 20 */	blr 
+/* 80108C48 00104B68  4E 80 00 20 */	blr
 lbl_80108C4C:
 /* 80108C4C 00104B6C  3C 60 80 1F */	lis r3, lbl_801ED2FC@ha
 /* 80108C50 00104B70  C0 23 D2 FC */	lfs f1, lbl_801ED2FC@l(r3)
-/* 80108C54 00104B74  4E 80 00 20 */	blr 
+/* 80108C54 00104B74  4E 80 00 20 */	blr
 
 .global acosf
 acosf:
@@ -210,4 +210,4 @@ acosf:
 /* 80108C8C 00104BAC  CB E1 00 10 */	lfd f31, 0x10(r1)
 /* 80108C90 00104BB0  7C 08 03 A6 */	mtlr r0
 /* 80108C94 00104BB4  38 21 00 18 */	addi r1, r1, 0x18
-/* 80108C98 00104BB8  4E 80 00 20 */	blr 
+/* 80108C98 00104BB8  4E 80 00 20 */	blr

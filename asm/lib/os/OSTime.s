@@ -9,12 +9,12 @@ OSGetTime:
 /* 800C9984 000C58A4  7C AD 42 E6 */	mftbu r5
 /* 800C9988 000C58A8  7C 03 28 00 */	cmpw r3, r5
 /* 800C998C 000C58AC  40 82 FF F0 */	bne OSGetTime
-/* 800C9990 000C58B0  4E 80 00 20 */	blr 
+/* 800C9990 000C58B0  4E 80 00 20 */	blr
 
 .global OSGetTick
 OSGetTick:
 /* 800C9994 000C58B4  7C 6C 42 E6 */	mftb r3, 0x10c
-/* 800C9998 000C58B8  4E 80 00 20 */	blr 
+/* 800C9998 000C58B8  4E 80 00 20 */	blr
 
 .global __OSGetSystemTime
 __OSGetSystemTime:
@@ -42,7 +42,7 @@ __OSGetSystemTime:
 /* 800C99F0 000C5910  7C 08 03 A6 */	mtlr r0
 /* 800C99F4 000C5914  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800C99F8 000C5918  38 21 00 20 */	addi r1, r1, 0x20
-/* 800C99FC 000C591C  4E 80 00 20 */	blr 
+/* 800C99FC 000C591C  4E 80 00 20 */	blr
 
 .global GetDates
 GetDates:
@@ -160,7 +160,7 @@ lbl_800C9B70:
 /* 800C9B8C 000C5AAC  7C 63 00 50 */	subf r3, r3, r0
 /* 800C9B90 000C5AB0  38 03 00 01 */	addi r0, r3, 1
 /* 800C9B94 000C5AB4  90 04 00 0C */	stw r0, 0xc(r4)
-/* 800C9B98 000C5AB8  4E 80 00 20 */	blr 
+/* 800C9B98 000C5AB8  4E 80 00 20 */	blr
 
 .global OSTicksToCalendarTime
 OSTicksToCalendarTime:
@@ -294,4 +294,4 @@ lbl_800C9D1C:
 /* 800C9D90 000C5CB0  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800C9D94 000C5CB4  38 21 00 38 */	addi r1, r1, 0x38
 /* 800C9D98 000C5CB8  7C 08 03 A6 */	mtlr r0
-/* 800C9D9C 000C5CBC  4E 80 00 20 */	blr 
+/* 800C9D9C 000C5CBC  4E 80 00 20 */	blr

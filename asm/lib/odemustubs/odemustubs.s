@@ -181,7 +181,7 @@ lbl_8010F050:
 lbl_8010F058:
 /* 8010F058 0010AF78  BA C1 00 20 */	lmw r22, 0x20(r1)
 /* 8010F05C 0010AF7C  38 21 00 48 */	addi r1, r1, 0x48
-/* 8010F060 0010AF80  4E 80 00 20 */	blr 
+/* 8010F060 0010AF80  4E 80 00 20 */	blr
 
 .global DBGReadMailbox
 DBGReadMailbox:
@@ -229,7 +229,7 @@ lbl_8010F0DC:
 /* 8010F100 0010B020  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 8010F104 0010B024  38 21 00 38 */	addi r1, r1, 0x38
 /* 8010F108 0010B028  7C 08 03 A6 */	mtlr r0
-/* 8010F10C 0010B02C  4E 80 00 20 */	blr 
+/* 8010F10C 0010B02C  4E 80 00 20 */	blr
 
 .global DBGRead
 DBGRead:
@@ -291,7 +291,7 @@ lbl_8010F1BC:
 /* 8010F1DC 0010B0FC  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 8010F1E0 0010B100  38 21 00 40 */	addi r1, r1, 0x40
 /* 8010F1E4 0010B104  7C 08 03 A6 */	mtlr r0
-/* 8010F1E8 0010B108  4E 80 00 20 */	blr 
+/* 8010F1E8 0010B108  4E 80 00 20 */	blr
 
 .global DBGWrite
 DBGWrite:
@@ -353,7 +353,7 @@ lbl_8010F298:
 /* 8010F2B8 0010B1D8  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 8010F2BC 0010B1DC  38 21 00 40 */	addi r1, r1, 0x40
 /* 8010F2C0 0010B1E0  7C 08 03 A6 */	mtlr r0
-/* 8010F2C4 0010B1E4  4E 80 00 20 */	blr 
+/* 8010F2C4 0010B1E4  4E 80 00 20 */	blr
 
 .global DBGReadStatus
 DBGReadStatus:
@@ -401,7 +401,7 @@ lbl_8010F340:
 /* 8010F364 0010B284  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 8010F368 0010B288  38 21 00 38 */	addi r1, r1, 0x38
 /* 8010F36C 0010B28C  7C 08 03 A6 */	mtlr r0
-/* 8010F370 0010B290  4E 80 00 20 */	blr 
+/* 8010F370 0010B290  4E 80 00 20 */	blr
 
 .global MWCallback
 MWCallback:
@@ -415,12 +415,12 @@ MWCallback:
 /* 8010F390 0010B2B0  41 82 00 10 */	beq lbl_8010F3A0
 /* 8010F394 0010B2B4  7D 88 03 A6 */	mtlr r12
 /* 8010F398 0010B2B8  38 60 00 00 */	li r3, 0
-/* 8010F39C 0010B2BC  4E 80 00 21 */	blrl 
+/* 8010F39C 0010B2BC  4E 80 00 21 */	blrl
 lbl_8010F3A0:
 /* 8010F3A0 0010B2C0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010F3A4 0010B2C4  38 21 00 08 */	addi r1, r1, 8
 /* 8010F3A8 0010B2C8  7C 08 03 A6 */	mtlr r0
-/* 8010F3AC 0010B2CC  4E 80 00 20 */	blr 
+/* 8010F3AC 0010B2CC  4E 80 00 20 */	blr
 
 .global DBGHandler
 DBGHandler:
@@ -435,12 +435,12 @@ DBGHandler:
 /* 8010F3D0 0010B2F0  41 82 00 10 */	beq lbl_8010F3E0
 /* 8010F3D4 0010B2F4  7D 88 03 A6 */	mtlr r12
 /* 8010F3D8 0010B2F8  7C 63 07 34 */	extsh r3, r3
-/* 8010F3DC 0010B2FC  4E 80 00 21 */	blrl 
+/* 8010F3DC 0010B2FC  4E 80 00 21 */	blrl
 lbl_8010F3E0:
 /* 8010F3E0 0010B300  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010F3E4 0010B304  38 21 00 08 */	addi r1, r1, 8
 /* 8010F3E8 0010B308  7C 08 03 A6 */	mtlr r0
-/* 8010F3EC 0010B30C  4E 80 00 20 */	blr 
+/* 8010F3EC 0010B30C  4E 80 00 20 */	blr
 
 .global DBInitComm
 DBInitComm:
@@ -473,7 +473,7 @@ DBInitComm:
 /* 8010F458 0010B378  7C 08 03 A6 */	mtlr r0
 /* 8010F45C 0010B37C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 8010F460 0010B380  38 21 00 20 */	addi r1, r1, 0x20
-/* 8010F464 0010B384  4E 80 00 20 */	blr 
+/* 8010F464 0010B384  4E 80 00 20 */	blr
 
 .global DBInitInterrupts
 DBInitInterrupts:
@@ -497,7 +497,7 @@ DBInitInterrupts:
 /* 8010F4AC 0010B3CC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010F4B0 0010B3D0  38 21 00 08 */	addi r1, r1, 8
 /* 8010F4B4 0010B3D4  7C 08 03 A6 */	mtlr r0
-/* 8010F4B8 0010B3D8  4E 80 00 20 */	blr 
+/* 8010F4B8 0010B3D8  4E 80 00 20 */	blr
 
 .global DBQueryData
 DBQueryData:
@@ -540,7 +540,7 @@ lbl_8010F538:
 /* 8010F548 0010B468  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010F54C 0010B46C  80 6D A6 0C */	lwz r3, RecvDataLeng-_SDA_BASE_(r13)
 /* 8010F550 0010B470  7C 08 03 A6 */	mtlr r0
-/* 8010F554 0010B474  4E 80 00 20 */	blr 
+/* 8010F554 0010B474  4E 80 00 20 */	blr
 
 .global DBRead
 DBRead:
@@ -580,7 +580,7 @@ lbl_8010F598:
 /* 8010F5D4 0010B4F4  7C 08 03 A6 */	mtlr r0
 /* 8010F5D8 0010B4F8  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 8010F5DC 0010B4FC  38 21 00 20 */	addi r1, r1, 0x20
-/* 8010F5E0 0010B500  4E 80 00 20 */	blr 
+/* 8010F5E0 0010B500  4E 80 00 20 */	blr
 
 .global DBWrite
 DBWrite:
@@ -749,12 +749,12 @@ lbl_8010F7F8:
 /* 8010F834 0010B754  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 8010F838 0010B758  38 21 00 78 */	addi r1, r1, 0x78
 /* 8010F83C 0010B75C  7C 08 03 A6 */	mtlr r0
-/* 8010F840 0010B760  4E 80 00 20 */	blr 
+/* 8010F840 0010B760  4E 80 00 20 */	blr
 
 .global DBOpen
 DBOpen:
-/* 8010F844 0010B764  4E 80 00 20 */	blr 
+/* 8010F844 0010B764  4E 80 00 20 */	blr
 
 .global DBClose
 DBClose:
-/* 8010F848 0010B768  4E 80 00 20 */	blr 
+/* 8010F848 0010B768  4E 80 00 20 */	blr

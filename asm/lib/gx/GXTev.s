@@ -116,7 +116,7 @@ lbl_800E2368:
 /* 800E23A8 000DE2C8  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800E23AC 000DE2CC  7C 08 03 A6 */	mtlr r0
 /* 800E23B0 000DE2D0  38 21 00 18 */	addi r1, r1, 0x18
-/* 800E23B4 000DE2D4  4E 80 00 20 */	blr 
+/* 800E23B4 000DE2D4  4E 80 00 20 */	blr
 
 .global GXSetTevColorIn
 GXSetTevColorIn:
@@ -151,7 +151,7 @@ GXSetTevColorIn:
 /* 800E2428 000DE348  80 89 00 00 */	lwz r4, 0(r9)
 /* 800E242C 000DE34C  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E2430 000DE350  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E2434 000DE354  4E 80 00 20 */	blr 
+/* 800E2434 000DE354  4E 80 00 20 */	blr
 
 .global GXSetTevAlphaIn
 GXSetTevAlphaIn:
@@ -187,7 +187,7 @@ GXSetTevAlphaIn:
 /* 800E24AC 000DE3CC  80 89 00 00 */	lwz r4, 0(r9)
 /* 800E24B0 000DE3D0  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E24B4 000DE3D4  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E24B8 000DE3D8  4E 80 00 20 */	blr 
+/* 800E24B8 000DE3D8  4E 80 00 20 */	blr
 
 .global GXSetTevColorOp
 GXSetTevColorOp:
@@ -240,7 +240,7 @@ lbl_800E2530:
 /* 800E256C 000DE48C  80 63 00 00 */	lwz r3, 0(r3)
 /* 800E2570 000DE490  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2574 000DE494  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2578 000DE498  4E 80 00 20 */	blr 
+/* 800E2578 000DE498  4E 80 00 20 */	blr
 
 .global GXSetTevAlphaOp
 GXSetTevAlphaOp:
@@ -293,7 +293,7 @@ lbl_800E25F0:
 /* 800E262C 000DE54C  80 63 00 00 */	lwz r3, 0(r3)
 /* 800E2630 000DE550  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2634 000DE554  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2638 000DE558  4E 80 00 20 */	blr 
+/* 800E2638 000DE558  4E 80 00 20 */	blr
 
 .global GXSetTevColor
 GXSetTevColor:
@@ -325,7 +325,7 @@ GXSetTevColor:
 /* 800E26A0 000DE5C0  98 A4 80 00 */	stb r5, -0x8000(r4)
 /* 800E26A4 000DE5C4  90 C4 80 00 */	stw r6, -0x8000(r4)
 /* 800E26A8 000DE5C8  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E26AC 000DE5CC  4E 80 00 20 */	blr 
+/* 800E26AC 000DE5CC  4E 80 00 20 */	blr
 
 .global GXSetTevKColor
 GXSetTevKColor:
@@ -357,7 +357,7 @@ GXSetTevKColor:
 /* 800E2714 000DE634  90 04 80 00 */	stw r0, -0x8000(r4)
 /* 800E2718 000DE638  38 00 00 01 */	li r0, 1
 /* 800E271C 000DE63C  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E2720 000DE640  4E 80 00 20 */	blr 
+/* 800E2720 000DE640  4E 80 00 20 */	blr
 
 .global GXSetTevKColorSel
 GXSetTevKColorSel:
@@ -389,7 +389,7 @@ lbl_800E276C:
 /* 800E2780 000DE6A0  80 87 00 00 */	lwz r4, 0(r7)
 /* 800E2784 000DE6A4  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E2788 000DE6A8  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E278C 000DE6AC  4E 80 00 20 */	blr 
+/* 800E278C 000DE6AC  4E 80 00 20 */	blr
 
 .global GXSetTevKAlphaSel
 GXSetTevKAlphaSel:
@@ -421,7 +421,7 @@ lbl_800E27D8:
 /* 800E27EC 000DE70C  80 87 00 00 */	lwz r4, 0(r7)
 /* 800E27F0 000DE710  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E27F4 000DE714  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E27F8 000DE718  4E 80 00 20 */	blr 
+/* 800E27F8 000DE718  4E 80 00 20 */	blr
 
 .global GXSetTevSwapMode
 GXSetTevSwapMode:
@@ -446,7 +446,7 @@ GXSetTevSwapMode:
 /* 800E2844 000DE764  80 87 00 00 */	lwz r4, 0(r7)
 /* 800E2848 000DE768  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E284C 000DE76C  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E2850 000DE770  4E 80 00 20 */	blr 
+/* 800E2850 000DE770  4E 80 00 20 */	blr
 
 .global GXSetTevSwapModeTable
 GXSetTevSwapModeTable:
@@ -489,7 +489,7 @@ GXSetTevSwapModeTable:
 /* 800E28E4 000DE804  80 8A 00 00 */	lwz r4, 0(r10)
 /* 800E28E8 000DE808  90 88 80 00 */	stw r4, -0x8000(r8)
 /* 800E28EC 000DE80C  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E28F0 000DE810  4E 80 00 20 */	blr 
+/* 800E28F0 000DE810  4E 80 00 20 */	blr
 
 .global GXSetAlphaCompare
 GXSetAlphaCompare:
@@ -512,7 +512,7 @@ GXSetAlphaCompare:
 /* 800E2934 000DE854  38 00 00 01 */	li r0, 1
 /* 800E2938 000DE858  90 83 80 00 */	stw r4, -0x8000(r3)
 /* 800E293C 000DE85C  B0 08 00 02 */	sth r0, 2(r8)
-/* 800E2940 000DE860  4E 80 00 20 */	blr 
+/* 800E2940 000DE860  4E 80 00 20 */	blr
 
 .global GXSetZTexture
 GXSetZTexture:
@@ -554,7 +554,7 @@ lbl_800E298C:
 /* 800E29B8 000DE8D8  38 00 00 01 */	li r0, 1
 /* 800E29BC 000DE8DC  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E29C0 000DE8E0  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E29C4 000DE8E4  4E 80 00 20 */	blr 
+/* 800E29C4 000DE8E4  4E 80 00 20 */	blr
 
 .global GXSetTevOrder
 GXSetTevOrder:
@@ -672,7 +672,7 @@ lbl_800E2B34:
 /* 800E2B58 000DEA78  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800E2B5C 000DEA7C  60 00 00 01 */	ori r0, r0, 1
 /* 800E2B60 000DEA80  90 03 04 F0 */	stw r0, 0x4f0(r3)
-/* 800E2B64 000DEA84  4E 80 00 20 */	blr 
+/* 800E2B64 000DEA84  4E 80 00 20 */	blr
 
 .global GXSetNumTevStages
 GXSetNumTevStages:
@@ -688,4 +688,4 @@ GXSetNumTevStages:
 /* 800E2B8C 000DEAAC  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800E2B90 000DEAB0  60 00 00 04 */	ori r0, r0, 4
 /* 800E2B94 000DEAB4  90 03 04 F0 */	stw r0, 0x4f0(r3)
-/* 800E2B98 000DEAB8  4E 80 00 20 */	blr 
+/* 800E2B98 000DEAB8  4E 80 00 20 */	blr

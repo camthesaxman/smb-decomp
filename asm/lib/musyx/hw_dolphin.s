@@ -34,7 +34,7 @@ salCallback:
 /* 80100E54 000FCD74  4B FC 52 7D */	bl OSEnableInterrupts
 /* 80100E58 000FCD78  81 8D A5 78 */	lwz r12, userCallback-_SDA_BASE_(r13)
 /* 80100E5C 000FCD7C  7D 88 03 A6 */	mtlr r12
-/* 80100E60 000FCD80  4E 80 00 21 */	blrl 
+/* 80100E60 000FCD80  4E 80 00 21 */	blrl
 /* 80100E64 000FCD84  4B FC 52 59 */	bl OSDisableInterrupts
 /* 80100E68 000FCD88  38 00 00 00 */	li r0, 0
 /* 80100E6C 000FCD8C  90 0D A5 88 */	stw r0, salLogicActive-_SDA_BASE_(r13)
@@ -46,14 +46,14 @@ lbl_80100E7C:
 /* 80100E7C 000FCD9C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100E80 000FCDA0  38 21 00 08 */	addi r1, r1, 8
 /* 80100E84 000FCDA4  7C 08 03 A6 */	mtlr r0
-/* 80100E88 000FCDA8  4E 80 00 20 */	blr 
+/* 80100E88 000FCDA8  4E 80 00 20 */	blr
 
 .global dspInitCallback
 dspInitCallback:
 /* 80100E8C 000FCDAC  38 00 00 01 */	li r0, 1
 /* 80100E90 000FCDB0  90 0D A5 80 */	stw r0, salDspIsDone-_SDA_BASE_(r13)
 /* 80100E94 000FCDB4  90 0D A5 90 */	stw r0, salDspInitIsDone-_SDA_BASE_(r13)
-/* 80100E98 000FCDB8  4E 80 00 20 */	blr 
+/* 80100E98 000FCDB8  4E 80 00 20 */	blr
 
 .global dspResumeCallback
 dspResumeCallback:
@@ -75,7 +75,7 @@ dspResumeCallback:
 /* 80100ED8 000FCDF8  4B FC 51 F9 */	bl OSEnableInterrupts
 /* 80100EDC 000FCDFC  81 8D A5 78 */	lwz r12, userCallback-_SDA_BASE_(r13)
 /* 80100EE0 000FCE00  7D 88 03 A6 */	mtlr r12
-/* 80100EE4 000FCE04  4E 80 00 21 */	blrl 
+/* 80100EE4 000FCE04  4E 80 00 21 */	blrl
 /* 80100EE8 000FCE08  4B FC 51 D5 */	bl OSDisableInterrupts
 /* 80100EEC 000FCE0C  93 ED A5 88 */	stw r31, salLogicActive-_SDA_BASE_(r13)
 lbl_80100EF0:
@@ -83,7 +83,7 @@ lbl_80100EF0:
 /* 80100EF4 000FCE14  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 80100EF8 000FCE18  38 21 00 18 */	addi r1, r1, 0x18
 /* 80100EFC 000FCE1C  7C 08 03 A6 */	mtlr r0
-/* 80100F00 000FCE20  4E 80 00 20 */	blr 
+/* 80100F00 000FCE20  4E 80 00 20 */	blr
 
 .global salInitAi
 salInitAi:
@@ -139,7 +139,7 @@ lbl_80100FB8:
 /* 80100FC0 000FCEE0  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 80100FC4 000FCEE4  7C 08 03 A6 */	mtlr r0
 /* 80100FC8 000FCEE8  38 21 00 20 */	addi r1, r1, 0x20
-/* 80100FCC 000FCEEC  4E 80 00 20 */	blr 
+/* 80100FCC 000FCEEC  4E 80 00 20 */	blr
 
 .global salStartAi
 salStartAi:
@@ -150,7 +150,7 @@ salStartAi:
 /* 80100FE0 000FCF00  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100FE4 000FCF04  38 21 00 08 */	addi r1, r1, 8
 /* 80100FE8 000FCF08  7C 08 03 A6 */	mtlr r0
-/* 80100FEC 000FCF0C  4E 80 00 20 */	blr 
+/* 80100FEC 000FCF0C  4E 80 00 20 */	blr
 
 .global salAiGetDest
 salAiGetDest:
@@ -164,7 +164,7 @@ salAiGetDest:
 /* 8010100C 000FCF2C  54 00 06 3E */	clrlwi r0, r0, 0x18
 /* 80101010 000FCF30  1C 00 02 80 */	mulli r0, r0, 0x280
 /* 80101014 000FCF34  7C 64 02 14 */	add r3, r4, r0
-/* 80101018 000FCF38  4E 80 00 20 */	blr 
+/* 80101018 000FCF38  4E 80 00 20 */	blr
 
 .global salInitDsp
 salInitDsp:
@@ -216,7 +216,7 @@ lbl_801010B0:
 /* 801010CC 000FCFEC  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 801010D0 000FCFF0  7C 08 03 A6 */	mtlr r0
 /* 801010D4 000FCFF4  38 21 00 18 */	addi r1, r1, 0x18
-/* 801010D8 000FCFF8  4E 80 00 20 */	blr 
+/* 801010D8 000FCFF8  4E 80 00 20 */	blr
 
 .global salCtrlDsp
 salCtrlDsp:
@@ -250,7 +250,7 @@ lbl_80101130:
 /* 80101140 000FD060  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 80101144 000FD064  38 21 00 18 */	addi r1, r1, 0x18
 /* 80101148 000FD068  7C 08 03 A6 */	mtlr r0
-/* 8010114C 000FD06C  4E 80 00 20 */	blr 
+/* 8010114C 000FD06C  4E 80 00 20 */	blr
 
 .global salGetStartDelay
 salGetStartDelay:
@@ -272,7 +272,7 @@ salGetStartDelay:
 /* 8010118C 000FD0AC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80101190 000FD0B0  38 21 00 08 */	addi r1, r1, 8
 /* 80101194 000FD0B4  7C 08 03 A6 */	mtlr r0
-/* 80101198 000FD0B8  4E 80 00 20 */	blr 
+/* 80101198 000FD0B8  4E 80 00 20 */	blr
 
 .global hwInitIrq
 hwInitIrq:
@@ -286,7 +286,7 @@ hwInitIrq:
 /* 801011B8 000FD0D8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 801011BC 000FD0DC  38 21 00 08 */	addi r1, r1, 8
 /* 801011C0 000FD0E0  7C 08 03 A6 */	mtlr r0
-/* 801011C4 000FD0E4  4E 80 00 20 */	blr 
+/* 801011C4 000FD0E4  4E 80 00 20 */	blr
 
 .global hwEnableIrq
 hwEnableIrq:
@@ -304,7 +304,7 @@ lbl_801011F0:
 /* 801011F0 000FD110  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 801011F4 000FD114  38 21 00 08 */	addi r1, r1, 8
 /* 801011F8 000FD118  7C 08 03 A6 */	mtlr r0
-/* 801011FC 000FD11C  4E 80 00 20 */	blr 
+/* 801011FC 000FD11C  4E 80 00 20 */	blr
 
 .global hwDisableIrq
 hwDisableIrq:
@@ -322,7 +322,7 @@ lbl_80101228:
 /* 80101228 000FD148  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010122C 000FD14C  38 21 00 08 */	addi r1, r1, 8
 /* 80101230 000FD150  7C 08 03 A6 */	mtlr r0
-/* 80101234 000FD154  4E 80 00 20 */	blr 
+/* 80101234 000FD154  4E 80 00 20 */	blr
 
 .global hwIRQEnterCritical
 hwIRQEnterCritical:
@@ -333,7 +333,7 @@ hwIRQEnterCritical:
 /* 80101248 000FD168  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010124C 000FD16C  38 21 00 08 */	addi r1, r1, 8
 /* 80101250 000FD170  7C 08 03 A6 */	mtlr r0
-/* 80101254 000FD174  4E 80 00 20 */	blr 
+/* 80101254 000FD174  4E 80 00 20 */	blr
 
 .global hwIRQLeaveCritical
 hwIRQLeaveCritical:
@@ -344,4 +344,4 @@ hwIRQLeaveCritical:
 /* 80101268 000FD188  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010126C 000FD18C  38 21 00 08 */	addi r1, r1, 8
 /* 80101270 000FD190  7C 08 03 A6 */	mtlr r0
-/* 80101274 000FD194  4E 80 00 20 */	blr 
+/* 80101274 000FD194  4E 80 00 20 */	blr

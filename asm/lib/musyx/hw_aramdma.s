@@ -7,7 +7,7 @@ aramQueueCallback:
 /* 80100484 000FC3A4  88 6D A5 65 */	lbz r3, aramQueueValid-_SDA_BASE_(r13)
 /* 80100488 000FC3A8  38 03 FF FF */	addi r0, r3, -1
 /* 8010048C 000FC3AC  98 0D A5 65 */	stb r0, aramQueueValid-_SDA_BASE_(r13)
-/* 80100490 000FC3B0  4E 80 00 20 */	blr 
+/* 80100490 000FC3B0  4E 80 00 20 */	blr
 
 .global aramUploadData
 aramUploadData:
@@ -104,14 +104,14 @@ lbl_80100504:
 /* 801005F4 000FC514  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 801005F8 000FC518  38 21 00 30 */	addi r1, r1, 0x30
 /* 801005FC 000FC51C  7C 08 03 A6 */	mtlr r0
-/* 80100600 000FC520  4E 80 00 20 */	blr 
+/* 80100600 000FC520  4E 80 00 20 */	blr
 
 .global aramSyncTransferQueue
 aramSyncTransferQueue:
 /* 80100604 000FC524  88 0D A5 65 */	lbz r0, aramQueueValid-_SDA_BASE_(r13)
 /* 80100608 000FC528  28 00 00 00 */	cmplwi r0, 0
 /* 8010060C 000FC52C  40 82 FF F8 */	bne aramSyncTransferQueue
-/* 80100610 000FC530  4E 80 00 20 */	blr 
+/* 80100610 000FC530  4E 80 00 20 */	blr
 
 .global aramInit
 aramInit:
@@ -317,7 +317,7 @@ lbl_80100910:
 /* 80100920 000FC840  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 80100924 000FC844  38 21 00 30 */	addi r1, r1, 0x30
 /* 80100928 000FC848  7C 08 03 A6 */	mtlr r0
-/* 8010092C 000FC84C  4E 80 00 20 */	blr 
+/* 8010092C 000FC84C  4E 80 00 20 */	blr
 
 .global aramGetZeroBuffer
 aramGetZeroBuffer:
@@ -328,7 +328,7 @@ aramGetZeroBuffer:
 /* 80100940 000FC860  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100944 000FC864  38 21 00 08 */	addi r1, r1, 8
 /* 80100948 000FC868  7C 08 03 A6 */	mtlr r0
-/* 8010094C 000FC86C  4E 80 00 20 */	blr 
+/* 8010094C 000FC86C  4E 80 00 20 */	blr
 
 .global aramStoreData
 aramStoreData:
@@ -426,7 +426,7 @@ lbl_80100980:
 /* 80100AB8 000FC9D8  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 80100ABC 000FC9DC  38 21 00 28 */	addi r1, r1, 0x28
 /* 80100AC0 000FC9E0  7C 08 03 A6 */	mtlr r0
-/* 80100AC4 000FC9E4  4E 80 00 20 */	blr 
+/* 80100AC4 000FC9E4  4E 80 00 20 */	blr
 
 .global aramRemoveData
 aramRemoveData:
@@ -435,7 +435,7 @@ aramRemoveData:
 /* 80100AD0 000FC9F0  54 63 00 34 */	rlwinm r3, r3, 0, 0, 0x1a
 /* 80100AD4 000FC9F4  7C 03 00 50 */	subf r0, r3, r0
 /* 80100AD8 000FC9F8  90 0D A5 5C */	stw r0, aramWrite-_SDA_BASE_(r13)
-/* 80100ADC 000FC9FC  4E 80 00 20 */	blr 
+/* 80100ADC 000FC9FC  4E 80 00 20 */	blr
 
 .global InitStreamBuffers
 InitStreamBuffers:
@@ -487,13 +487,13 @@ lbl_80100B78:
 /* 80100B84 000FCAA4  90 03 01 F0 */	stw r0, 0x1f0(r3)
 /* 80100B88 000FCAA8  80 0D A5 58 */	lwz r0, aramTop-_SDA_BASE_(r13)
 /* 80100B8C 000FCAAC  90 0D A5 60 */	stw r0, aramStream-_SDA_BASE_(r13)
-/* 80100B90 000FCAB0  4E 80 00 20 */	blr 
+/* 80100B90 000FCAB0  4E 80 00 20 */	blr
 lbl_80100B94:
 /* 80100B94 000FCAB4  55 00 20 36 */	slwi r0, r8, 4
 /* 80100B98 000FCAB8  7C 66 02 14 */	add r3, r6, r0
 /* 80100B9C 000FCABC  38 63 02 00 */	addi r3, r3, 0x200
 /* 80100BA0 000FCAC0  4B FF FF B8 */	b lbl_80100B58
-/* 80100BA4 000FCAC4  4E 80 00 20 */	blr 
+/* 80100BA4 000FCAC4  4E 80 00 20 */	blr
 
 .global aramAllocateStreamBuffer
 aramAllocateStreamBuffer:
@@ -565,7 +565,7 @@ lbl_80100C88:
 /* 80100C88 000FCBA8  28 05 00 00 */	cmplwi r5, 0
 /* 80100C8C 000FCBAC  40 82 00 0C */	bne lbl_80100C98
 /* 80100C90 000FCBB0  38 60 00 FF */	li r3, 0xff
-/* 80100C94 000FCBB4  4E 80 00 20 */	blr 
+/* 80100C94 000FCBB4  4E 80 00 20 */	blr
 lbl_80100C98:
 /* 80100C98 000FCBB8  3C 60 80 2F */	lis r3, lbl_802EBA70@ha
 /* 80100C9C 000FCBBC  38 03 BA 70 */	addi r0, r3, lbl_802EBA70@l
@@ -573,7 +573,7 @@ lbl_80100C98:
 /* 80100CA4 000FCBC4  7C 00 26 70 */	srawi r0, r0, 4
 /* 80100CA8 000FCBC8  7C 00 01 94 */	addze r0, r0
 /* 80100CAC 000FCBCC  54 03 06 3E */	clrlwi r3, r0, 0x18
-/* 80100CB0 000FCBD0  4E 80 00 20 */	blr 
+/* 80100CB0 000FCBD0  4E 80 00 20 */	blr
 
 .global aramGetStreamBufferAddress
 aramGetStreamBufferAddress:
@@ -591,7 +591,7 @@ lbl_80100CD4:
 /* 80100CDC 000FCBFC  54 60 25 36 */	rlwinm r0, r3, 4, 0x14, 0x1b
 /* 80100CE0 000FCC00  7C 64 02 14 */	add r3, r4, r0
 /* 80100CE4 000FCC04  80 63 00 04 */	lwz r3, 4(r3)
-/* 80100CE8 000FCC08  4E 80 00 20 */	blr 
+/* 80100CE8 000FCC08  4E 80 00 20 */	blr
 
 .global aramFreeStreamBuffer
 aramFreeStreamBuffer:
@@ -666,9 +666,9 @@ lbl_80100DCC:
 /* 80100DCC 000FCCEC  80 0D A5 58 */	lwz r0, aramTop-_SDA_BASE_(r13)
 lbl_80100DD0:
 /* 80100DD0 000FCCF0  90 0D A5 60 */	stw r0, aramStream-_SDA_BASE_(r13)
-/* 80100DD4 000FCCF4  4E 80 00 20 */	blr 
+/* 80100DD4 000FCCF4  4E 80 00 20 */	blr
 lbl_80100DD8:
 /* 80100DD8 000FCCF8  80 0D A5 6C */	lwz r0, aramFreeStreamBuffers-_SDA_BASE_(r13)
 /* 80100DDC 000FCCFC  90 04 00 00 */	stw r0, 0(r4)
 /* 80100DE0 000FCD00  90 8D A5 6C */	stw r4, aramFreeStreamBuffers-_SDA_BASE_(r13)
-/* 80100DE4 000FCD04  4E 80 00 20 */	blr 
+/* 80100DE4 000FCD04  4E 80 00 20 */	blr

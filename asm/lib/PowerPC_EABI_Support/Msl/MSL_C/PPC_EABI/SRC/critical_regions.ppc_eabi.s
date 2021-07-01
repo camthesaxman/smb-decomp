@@ -4,4 +4,4 @@
 
 .global __kill_critical_regions
 __kill_critical_regions:
-/* 801044B4 001003D4  4E 80 00 20 */	blr 
+/* 801044B4 001003D4  4E 80 00 20 */	blr

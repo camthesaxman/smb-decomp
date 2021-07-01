@@ -42,7 +42,7 @@ C_MTXFrustum:
 /* 800CA6E0 000C6600  C0 02 BF 4C */	lfs f0, lbl_802F674C-_SDA2_BASE_(r2)
 /* 800CA6E4 000C6604  D0 03 00 38 */	stfs f0, 0x38(r3)
 /* 800CA6E8 000C6608  D0 83 00 3C */	stfs f4, 0x3c(r3)
-/* 800CA6EC 000C660C  4E 80 00 20 */	blr 
+/* 800CA6EC 000C660C  4E 80 00 20 */	blr
 
 .global C_MTXPerspective
 C_MTXPerspective:
@@ -97,7 +97,7 @@ C_MTXPerspective:
 /* 800CA7B0 000C66D0  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 800CA7B4 000C66D4  38 21 00 40 */	addi r1, r1, 0x40
 /* 800CA7B8 000C66D8  7C 08 03 A6 */	mtlr r0
-/* 800CA7BC 000C66DC  4E 80 00 20 */	blr 
+/* 800CA7BC 000C66DC  4E 80 00 20 */	blr
 
 .global C_MTXOrtho
 C_MTXOrtho:
@@ -138,4 +138,4 @@ C_MTXOrtho:
 /* 800CA848 000C6768  D0 63 00 34 */	stfs f3, 0x34(r3)
 /* 800CA84C 000C676C  D0 63 00 38 */	stfs f3, 0x38(r3)
 /* 800CA850 000C6770  D1 23 00 3C */	stfs f9, 0x3c(r3)
-/* 800CA854 000C6774  4E 80 00 20 */	blr 
+/* 800CA854 000C6774  4E 80 00 20 */	blr

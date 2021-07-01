@@ -60,7 +60,7 @@ lbl_800FC06C:
 /* 800FC070 000F7F90  40 82 FF 80 */	bne lbl_800FBFF0
 lbl_800FC074:
 /* 800FC074 000F7F94  38 21 00 20 */	addi r1, r1, 0x20
-/* 800FC078 000F7F98  4E 80 00 20 */	blr 
+/* 800FC078 000F7F98  4E 80 00 20 */	blr
 
 .global CheckRoomStatus
 CheckRoomStatus:
@@ -213,7 +213,7 @@ lbl_800FC268:
 /* 800FC278 000F8198  41 82 00 10 */	beq lbl_800FC288
 /* 800FC27C 000F819C  88 7E 00 1C */	lbz r3, 0x1c(r30)
 /* 800FC280 000F81A0  7D 88 03 A6 */	mtlr r12
-/* 800FC284 000F81A4  4E 80 00 21 */	blrl 
+/* 800FC284 000F81A4  4E 80 00 21 */	blrl
 lbl_800FC288:
 /* 800FC288 000F81A8  88 7E 00 1C */	lbz r3, 0x1c(r30)
 /* 800FC28C 000F81AC  4B FF 2D A1 */	bl synthDeactivateStudio
@@ -259,7 +259,7 @@ lbl_800FC30C:
 /* 800FC318 000F8238  88 7D 00 1C */	lbz r3, 0x1c(r29)
 /* 800FC31C 000F823C  7D 88 03 A6 */	mtlr r12
 /* 800FC320 000F8240  80 9D 00 28 */	lwz r4, 0x28(r29)
-/* 800FC324 000F8244  4E 80 00 21 */	blrl 
+/* 800FC324 000F8244  4E 80 00 21 */	blrl
 /* 800FC328 000F8248  48 00 01 00 */	b lbl_800FC428
 lbl_800FC32C:
 /* 800FC32C 000F824C  80 1D 00 08 */	lwz r0, 8(r29)
@@ -344,7 +344,7 @@ lbl_800FC434:
 /* 800FC448 000F8368  CB A1 00 48 */	lfd f29, 0x48(r1)
 /* 800FC44C 000F836C  CB 81 00 40 */	lfd f28, 0x40(r1)
 /* 800FC450 000F8370  38 21 00 60 */	addi r1, r1, 0x60
-/* 800FC454 000F8374  4E 80 00 20 */	blr 
+/* 800FC454 000F8374  4E 80 00 20 */	blr
 
 .global CheckDoorStatus
 CheckDoorStatus:
@@ -477,7 +477,7 @@ lbl_800FC60C:
 /* 800FC624 000F8544  83 E1 00 2C */	lwz r31, 0x2c(r1)
 /* 800FC628 000F8548  83 C1 00 28 */	lwz r30, 0x28(r1)
 /* 800FC62C 000F854C  38 21 00 40 */	addi r1, r1, 0x40
-/* 800FC630 000F8550  4E 80 00 20 */	blr 
+/* 800FC630 000F8550  4E 80 00 20 */	blr
 
 .global CalcEmitter
 CalcEmitter:
@@ -803,7 +803,7 @@ lbl_800FCABC:
 /* 800FCAE0 000F8A00  CB 21 00 B0 */	lfd f25, 0xb0(r1)
 /* 800FCAE4 000F8A04  CB 01 00 A8 */	lfd f24, 0xa8(r1)
 /* 800FCAE8 000F8A08  38 21 00 E8 */	addi r1, r1, 0xe8
-/* 800FCAEC 000F8A0C  4E 80 00 20 */	blr 
+/* 800FCAEC 000F8A0C  4E 80 00 20 */	blr
 
 .global SetFXParameters
 SetFXParameters:
@@ -959,7 +959,7 @@ lbl_800FCCE4:
 /* 800FCD00 000F8C20  83 A1 00 34 */	lwz r29, 0x34(r1)
 /* 800FCD04 000F8C24  83 81 00 30 */	lwz r28, 0x30(r1)
 /* 800FCD08 000F8C28  38 21 00 58 */	addi r1, r1, 0x58
-/* 800FCD0C 000F8C2C  4E 80 00 20 */	blr 
+/* 800FCD0C 000F8C2C  4E 80 00 20 */	blr
 
 .global EmitterShutdown
 EmitterShutdown:
@@ -994,7 +994,7 @@ lbl_800FCD70:
 /* 800FCD70 000F8C90  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800FCD74 000F8C94  38 21 00 08 */	addi r1, r1, 8
 /* 800FCD78 000F8C98  7C 08 03 A6 */	mtlr r0
-/* 800FCD7C 000F8C9C  4E 80 00 20 */	blr 
+/* 800FCD7C 000F8C9C  4E 80 00 20 */	blr
 
 .global s3dKillEmitterByFXID
 s3dKillEmitterByFXID:
@@ -1047,7 +1047,7 @@ lbl_800FCE08:
 /* 800FCE20 000F8D40  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800FCE24 000F8D44  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800FCE28 000F8D48  38 21 00 20 */	addi r1, r1, 0x20
-/* 800FCE2C 000F8D4C  4E 80 00 20 */	blr 
+/* 800FCE2C 000F8D4C  4E 80 00 20 */	blr
 
 .global AddRunningEmitter
 AddRunningEmitter:
@@ -1122,7 +1122,7 @@ lbl_800FCF00:
 /* 800FCF20 000F8E40  98 6D A5 44 */	stb r3, runListNum-_SDA_BASE_(r13)
 /* 800FCF24 000F8E44  7C 65 02 14 */	add r3, r5, r0
 /* 800FCF28 000F8E48  D0 23 05 54 */	stfs f1, 0x554(r3)
-/* 800FCF2C 000F8E4C  4E 80 00 20 */	blr 
+/* 800FCF2C 000F8E4C  4E 80 00 20 */	blr
 
 .global AddStartingEmitter
 AddStartingEmitter:
@@ -1148,7 +1148,7 @@ lbl_800FCF6C:
 /* 800FCF74 000F8E94  28 07 00 20 */	cmplwi r7, 0x20
 /* 800FCF78 000F8E98  40 82 00 0C */	bne lbl_800FCF84
 /* 800FCF7C 000F8E9C  38 60 00 00 */	li r3, 0
-/* 800FCF80 000F8EA0  4E 80 00 20 */	blr 
+/* 800FCF80 000F8EA0  4E 80 00 20 */	blr
 lbl_800FCF84:
 /* 800FCF84 000F8EA4  1C 08 00 0C */	mulli r0, r8, 0xc
 /* 800FCF88 000F8EA8  7C 85 02 14 */	add r4, r5, r0
@@ -1165,7 +1165,7 @@ lbl_800FCFAC:
 /* 800FCFB0 000F8ED0  28 06 00 20 */	cmplwi r6, 0x20
 /* 800FCFB4 000F8ED4  40 82 00 0C */	bne lbl_800FCFC0
 /* 800FCFB8 000F8ED8  38 60 00 00 */	li r3, 0
-/* 800FCFBC 000F8EDC  4E 80 00 20 */	blr 
+/* 800FCFBC 000F8EDC  4E 80 00 20 */	blr
 lbl_800FCFC0:
 /* 800FCFC0 000F8EE0  1C 08 00 0C */	mulli r0, r8, 0xc
 /* 800FCFC4 000F8EE4  7C E5 02 14 */	add r7, r5, r0
@@ -1210,7 +1210,7 @@ lbl_800FD01C:
 /* 800FD04C 000F8F6C  98 8D A5 43 */	stb r4, startListNumnum-_SDA_BASE_(r13)
 /* 800FD050 000F8F70  7C 85 02 14 */	add r4, r5, r0
 /* 800FD054 000F8F74  D0 24 01 D4 */	stfs f1, 0x1d4(r4)
-/* 800FD058 000F8F78  4E 80 00 20 */	blr 
+/* 800FD058 000F8F78  4E 80 00 20 */	blr
 
 .global StartContinousEmitters
 StartContinousEmitters:
@@ -1350,7 +1350,7 @@ lbl_800FD20C:
 /* 800FD238 000F9158  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 800FD23C 000F915C  83 81 00 08 */	lwz r28, 8(r1)
 /* 800FD240 000F9160  38 21 00 38 */	addi r1, r1, 0x38
-/* 800FD244 000F9164  4E 80 00 20 */	blr 
+/* 800FD244 000F9164  4E 80 00 20 */	blr
 
 .global s3dHandle
 s3dHandle:
@@ -1595,7 +1595,7 @@ lbl_800FD584:
 /* 800FD59C 000F94BC  83 C1 00 28 */	lwz r30, 0x28(r1)
 /* 800FD5A0 000F94C0  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 800FD5A4 000F94C4  38 21 00 48 */	addi r1, r1, 0x48
-/* 800FD5A8 000F94C8  4E 80 00 20 */	blr 
+/* 800FD5A8 000F94C8  4E 80 00 20 */	blr
 
 .global s3dInit
 s3dInit:
@@ -1610,4 +1610,4 @@ s3dInit:
 /* 800FD5CC 000F94EC  98 6D A5 40 */	stb r3, snd_base_studio-_SDA_BASE_(r13)
 /* 800FD5D0 000F94F0  98 0D A5 41 */	stb r0, snd_max_studios-_SDA_BASE_(r13)
 /* 800FD5D4 000F94F4  98 8D A5 28 */	stb r4, s3dCallCnt-_SDA_BASE_(r13)
-/* 800FD5D8 000F94F8  4E 80 00 20 */	blr 
+/* 800FD5D8 000F94F8  4E 80 00 20 */	blr

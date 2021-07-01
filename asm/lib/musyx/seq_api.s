@@ -21,7 +21,7 @@ sndSeqSpeed:
 /* 800EE964 000EA884  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800EE968 000EA888  7C 08 03 A6 */	mtlr r0
 /* 800EE96C 000EA88C  38 21 00 18 */	addi r1, r1, 0x18
-/* 800EE970 000EA890  4E 80 00 20 */	blr 
+/* 800EE970 000EA890  4E 80 00 20 */	blr
 
 .global sndSeqContinue
 sndSeqContinue:
@@ -38,7 +38,7 @@ sndSeqContinue:
 /* 800EE99C 000EA8BC  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800EE9A0 000EA8C0  38 21 00 18 */	addi r1, r1, 0x18
 /* 800EE9A4 000EA8C4  7C 08 03 A6 */	mtlr r0
-/* 800EE9A8 000EA8C8  4E 80 00 20 */	blr 
+/* 800EE9A8 000EA8C8  4E 80 00 20 */	blr
 
 .global sndSeqMute
 sndSeqMute:
@@ -63,7 +63,7 @@ sndSeqMute:
 /* 800EE9F4 000EA914  7C 08 03 A6 */	mtlr r0
 /* 800EE9F8 000EA918  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800EE9FC 000EA91C  38 21 00 28 */	addi r1, r1, 0x28
-/* 800EEA00 000EA920  4E 80 00 20 */	blr 
+/* 800EEA00 000EA920  4E 80 00 20 */	blr
 
 .global sndSeqVolume
 sndSeqVolume:
@@ -92,7 +92,7 @@ sndSeqVolume:
 /* 800EEA5C 000EA97C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800EEA60 000EA980  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800EEA64 000EA984  38 21 00 28 */	addi r1, r1, 0x28
-/* 800EEA68 000EA988  4E 80 00 20 */	blr 
+/* 800EEA68 000EA988  4E 80 00 20 */	blr
 
 .global seqGetMIDIPriority
 seqGetMIDIPriority:
@@ -103,4 +103,4 @@ seqGetMIDIPriority:
 /* 800EEA7C 000EA99C  54 80 0D FC */	rlwinm r0, r4, 1, 0x17, 0x1e
 /* 800EEA80 000EA9A0  7C 63 02 14 */	add r3, r3, r0
 /* 800EEA84 000EA9A4  A0 63 00 00 */	lhz r3, 0(r3)
-/* 800EEA88 000EA9A8  4E 80 00 20 */	blr 
+/* 800EEA88 000EA9A8  4E 80 00 20 */	blr

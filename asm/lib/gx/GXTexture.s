@@ -13,7 +13,7 @@ GXGetTexBufferSize:
 /* 800E0F1C 000DCE3C  54 A0 10 3A */	slwi r0, r5, 2
 /* 800E0F20 000DCE40  7C 08 00 2E */	lwzx r0, r8, r0
 /* 800E0F24 000DCE44  7C 09 03 A6 */	mtctr r0
-/* 800E0F28 000DCE48  4E 80 04 20 */	bctr 
+/* 800E0F28 000DCE48  4E 80 04 20 */	bctr
 /* 800E0F2C 000DCE4C  38 00 00 03 */	li r0, 3
 /* 800E0F30 000DCE50  39 00 00 03 */	li r8, 3
 /* 800E0F34 000DCE54  48 00 00 24 */	b lbl_800E0F58
@@ -103,7 +103,7 @@ lbl_800E1050:
 /* 800E1050 000DCF70  7F E3 FB 78 */	mr r3, r31
 /* 800E1054 000DCF74  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 800E1058 000DCF78  38 21 00 28 */	addi r1, r1, 0x28
-/* 800E105C 000DCF7C  4E 80 00 20 */	blr 
+/* 800E105C 000DCF7C  4E 80 00 20 */	blr
 
 .global __GetImageTileCount
 __GetImageTileCount:
@@ -114,7 +114,7 @@ __GetImageTileCount:
 /* 800E1070 000DCF90  54 60 10 3A */	slwi r0, r3, 2
 /* 800E1074 000DCF94  7C 09 00 2E */	lwzx r0, r9, r0
 /* 800E1078 000DCF98  7C 09 03 A6 */	mtctr r0
-/* 800E107C 000DCF9C  4E 80 04 20 */	bctr 
+/* 800E107C 000DCF9C  4E 80 04 20 */	bctr
 /* 800E1080 000DCFA0  39 60 00 03 */	li r11, 3
 /* 800E1084 000DCFA4  39 80 00 03 */	li r12, 3
 /* 800E1088 000DCFA8  48 00 00 24 */	b lbl_800E10AC
@@ -163,7 +163,7 @@ lbl_800E111C:
 /* 800E111C 000DD03C  38 00 00 01 */	li r0, 1
 lbl_800E1120:
 /* 800E1120 000DD040  90 08 00 00 */	stw r0, 0(r8)
-/* 800E1124 000DD044  4E 80 00 20 */	blr 
+/* 800E1124 000DD044  4E 80 00 20 */	blr
 
 .global GXInitTexObj
 GXInitTexObj:
@@ -268,7 +268,7 @@ lbl_800E1230:
 /* 800E12A0 000DD1C0  54 E0 10 3A */	slwi r0, r7, 2
 /* 800E12A4 000DD1C4  7C 05 00 2E */	lwzx r0, r5, r0
 /* 800E12A8 000DD1C8  7C 09 03 A6 */	mtctr r0
-/* 800E12AC 000DD1CC  4E 80 04 20 */	bctr 
+/* 800E12AC 000DD1CC  4E 80 04 20 */	bctr
 /* 800E12B0 000DD1D0  38 00 00 01 */	li r0, 1
 /* 800E12B4 000DD1D4  98 1F 00 1E */	stb r0, 0x1e(r31)
 /* 800E12B8 000DD1D8  38 00 00 03 */	li r0, 3
@@ -321,7 +321,7 @@ lbl_800E1324:
 /* 800E136C 000DD28C  BB 01 00 40 */	lmw r24, 0x40(r1)
 /* 800E1370 000DD290  38 21 00 60 */	addi r1, r1, 0x60
 /* 800E1374 000DD294  7C 08 03 A6 */	mtlr r0
-/* 800E1378 000DD298  4E 80 00 20 */	blr 
+/* 800E1378 000DD298  4E 80 00 20 */	blr
 
 .global GXInitTexObjLOD
 GXInitTexObjLOD:
@@ -435,7 +435,7 @@ lbl_800E14D4:
 /* 800E1500 000DD420  38 21 00 38 */	addi r1, r1, 0x38
 /* 800E1504 000DD424  50 04 44 2E */	rlwimi r4, r0, 8, 0x10, 0x17
 /* 800E1508 000DD428  90 83 00 04 */	stw r4, 4(r3)
-/* 800E150C 000DD42C  4E 80 00 20 */	blr 
+/* 800E150C 000DD42C  4E 80 00 20 */	blr
 
 .global GXInitTexObjWrapMode
 GXInitTexObjWrapMode:
@@ -448,44 +448,44 @@ GXInitTexObjWrapMode:
 /* 800E1528 000DD448  54 84 07 B6 */	rlwinm r4, r4, 0, 0x1e, 0x1b
 /* 800E152C 000DD44C  7C 80 03 78 */	or r0, r4, r0
 /* 800E1530 000DD450  90 03 00 00 */	stw r0, 0(r3)
-/* 800E1534 000DD454  4E 80 00 20 */	blr 
+/* 800E1534 000DD454  4E 80 00 20 */	blr
 
 .global GXGetTexObjData
 GXGetTexObjData:
 /* 800E1538 000DD458  80 03 00 0C */	lwz r0, 0xc(r3)
 /* 800E153C 000DD45C  54 03 29 B4 */	rlwinm r3, r0, 5, 6, 0x1a
-/* 800E1540 000DD460  4E 80 00 20 */	blr 
+/* 800E1540 000DD460  4E 80 00 20 */	blr
 
 .global GXGetTexObjWidth
 GXGetTexObjWidth:
 /* 800E1544 000DD464  80 03 00 08 */	lwz r0, 8(r3)
 /* 800E1548 000DD468  54 03 05 BE */	clrlwi r3, r0, 0x16
 /* 800E154C 000DD46C  38 63 00 01 */	addi r3, r3, 1
-/* 800E1550 000DD470  4E 80 00 20 */	blr 
+/* 800E1550 000DD470  4E 80 00 20 */	blr
 
 .global GXGetTexObjHeight
 GXGetTexObjHeight:
 /* 800E1554 000DD474  80 03 00 08 */	lwz r0, 8(r3)
 /* 800E1558 000DD478  54 03 B5 BE */	rlwinm r3, r0, 0x16, 0x16, 0x1f
 /* 800E155C 000DD47C  38 63 00 01 */	addi r3, r3, 1
-/* 800E1560 000DD480  4E 80 00 20 */	blr 
+/* 800E1560 000DD480  4E 80 00 20 */	blr
 
 .global GXGetTexObjFmt
 GXGetTexObjFmt:
 /* 800E1564 000DD484  80 63 00 14 */	lwz r3, 0x14(r3)
-/* 800E1568 000DD488  4E 80 00 20 */	blr 
+/* 800E1568 000DD488  4E 80 00 20 */	blr
 
 .global GXGetTexObjWrapS
 GXGetTexObjWrapS:
 /* 800E156C 000DD48C  80 03 00 00 */	lwz r0, 0(r3)
 /* 800E1570 000DD490  54 03 07 BE */	clrlwi r3, r0, 0x1e
-/* 800E1574 000DD494  4E 80 00 20 */	blr 
+/* 800E1574 000DD494  4E 80 00 20 */	blr
 
 .global GXGetTexObjWrapT
 GXGetTexObjWrapT:
 /* 800E1578 000DD498  80 03 00 00 */	lwz r0, 0(r3)
 /* 800E157C 000DD49C  54 03 F7 BE */	rlwinm r3, r0, 0x1e, 0x1e, 0x1f
-/* 800E1580 000DD4A0  4E 80 00 20 */	blr 
+/* 800E1580 000DD4A0  4E 80 00 20 */	blr
 
 .global GXGetTexObjMipMap
 GXGetTexObjMipMap:
@@ -494,7 +494,7 @@ GXGetTexObjMipMap:
 /* 800E158C 000DD4AC  38 03 FF FF */	addi r0, r3, -1
 /* 800E1590 000DD4B0  7C 00 00 34 */	cntlzw r0, r0
 /* 800E1594 000DD4B4  54 03 DE 3E */	rlwinm r3, r0, 0x1b, 0x18, 0x1f
-/* 800E1598 000DD4B8  4E 80 00 20 */	blr 
+/* 800E1598 000DD4B8  4E 80 00 20 */	blr
 
 .global GXLoadTexObjPreLoaded
 GXLoadTexObjPreLoaded:
@@ -570,7 +570,7 @@ GXLoadTexObjPreLoaded:
 /* 800E16B0 000DD5D0  80 7C 00 18 */	lwz r3, 0x18(r28)
 /* 800E16B4 000DD5D4  81 84 04 14 */	lwz r12, 0x414(r4)
 /* 800E16B8 000DD5D8  7D 88 03 A6 */	mtlr r12
-/* 800E16BC 000DD5DC  4E 80 00 21 */	blrl 
+/* 800E16BC 000DD5DC  4E 80 00 21 */	blrl
 /* 800E16C0 000DD5E0  38 8D 98 10 */	addi r4, r13, GXTexTlutIds-_SDA_BASE_
 /* 800E16C4 000DD5E4  80 A3 00 04 */	lwz r5, 4(r3)
 /* 800E16C8 000DD5E8  7C 04 E8 AE */	lbzx r0, r4, r29
@@ -604,7 +604,7 @@ lbl_800E16E4:
 /* 800E1734 000DD654  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800E1738 000DD658  38 21 00 28 */	addi r1, r1, 0x28
 /* 800E173C 000DD65C  7C 08 03 A6 */	mtlr r0
-/* 800E1740 000DD660  4E 80 00 20 */	blr 
+/* 800E1740 000DD660  4E 80 00 20 */	blr
 
 .global GXLoadTexObj
 GXLoadTexObj:
@@ -618,7 +618,7 @@ GXLoadTexObj:
 /* 800E1760 000DD680  80 AD 97 C8 */	lwz r5, gx-_SDA_BASE_(r13)
 /* 800E1764 000DD684  81 85 04 10 */	lwz r12, 0x410(r5)
 /* 800E1768 000DD688  7D 88 03 A6 */	mtlr r12
-/* 800E176C 000DD68C  4E 80 00 21 */	blrl 
+/* 800E176C 000DD68C  4E 80 00 21 */	blrl
 /* 800E1770 000DD690  38 83 00 00 */	addi r4, r3, 0
 /* 800E1774 000DD694  38 7E 00 00 */	addi r3, r30, 0
 /* 800E1778 000DD698  38 BF 00 00 */	addi r5, r31, 0
@@ -628,7 +628,7 @@ GXLoadTexObj:
 /* 800E1788 000DD6A8  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800E178C 000DD6AC  7C 08 03 A6 */	mtlr r0
 /* 800E1790 000DD6B0  38 21 00 18 */	addi r1, r1, 0x18
-/* 800E1794 000DD6B4  4E 80 00 20 */	blr 
+/* 800E1794 000DD6B4  4E 80 00 20 */	blr
 
 .global GXInitTexCacheRegion
 GXInitTexCacheRegion:
@@ -714,7 +714,7 @@ lbl_800E1864:
 /* 800E18A8 000DD7C8  90 A3 00 04 */	stw r5, 4(r3)
 /* 800E18AC 000DD7CC  98 83 00 0C */	stb r4, 0xc(r3)
 /* 800E18B0 000DD7D0  98 03 00 0D */	stb r0, 0xd(r3)
-/* 800E18B4 000DD7D4  4E 80 00 20 */	blr 
+/* 800E18B4 000DD7D4  4E 80 00 20 */	blr
 
 .global GXInitTlutObj
 GXInitTlutObj:
@@ -735,7 +735,7 @@ GXInitTlutObj:
 /* 800E18F0 000DD810  54 00 02 3E */	clrlwi r0, r0, 8
 /* 800E18F4 000DD814  64 00 65 00 */	oris r0, r0, 0x6500
 /* 800E18F8 000DD818  90 03 00 00 */	stw r0, 0(r3)
-/* 800E18FC 000DD81C  4E 80 00 20 */	blr 
+/* 800E18FC 000DD81C  4E 80 00 20 */	blr
 
 .global GXInvalidateTexAll
 GXInvalidateTexAll:
@@ -756,7 +756,7 @@ GXInvalidateTexAll:
 /* 800E1938 000DD858  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800E193C 000DD85C  38 21 00 08 */	addi r1, r1, 8
 /* 800E1940 000DD860  7C 08 03 A6 */	mtlr r0
-/* 800E1944 000DD864  4E 80 00 20 */	blr 
+/* 800E1944 000DD864  4E 80 00 20 */	blr
 
 .global GXSetTexRegionCallback
 GXSetTexRegionCallback:
@@ -764,7 +764,7 @@ GXSetTexRegionCallback:
 /* 800E194C 000DD86C  84 04 04 10 */	lwzu r0, 0x410(r4)
 /* 800E1950 000DD870  90 64 00 00 */	stw r3, 0(r4)
 /* 800E1954 000DD874  7C 03 03 78 */	mr r3, r0
-/* 800E1958 000DD878  4E 80 00 20 */	blr 
+/* 800E1958 000DD878  4E 80 00 20 */	blr
 
 .global GXSetTlutRegionCallback
 GXSetTlutRegionCallback:
@@ -772,7 +772,7 @@ GXSetTlutRegionCallback:
 /* 800E1960 000DD880  84 04 04 14 */	lwzu r0, 0x414(r4)
 /* 800E1964 000DD884  90 64 00 00 */	stw r3, 0(r4)
 /* 800E1968 000DD888  7C 03 03 78 */	mr r3, r0
-/* 800E196C 000DD88C  4E 80 00 20 */	blr 
+/* 800E196C 000DD88C  4E 80 00 20 */	blr
 
 .global __SetSURegs
 __SetSURegs:
@@ -826,7 +826,7 @@ __SetSURegs:
 /* 800E1A2C 000DD94C  80 04 00 D8 */	lwz r0, 0xd8(r4)
 /* 800E1A30 000DD950  90 06 80 00 */	stw r0, -0x8000(r6)
 /* 800E1A34 000DD954  B0 65 00 02 */	sth r3, 2(r5)
-/* 800E1A38 000DD958  4E 80 00 20 */	blr 
+/* 800E1A38 000DD958  4E 80 00 20 */	blr
 
 .global __GXSetSUTexSize
 __GXSetSUTexSize:
@@ -935,4 +935,4 @@ lbl_800E1B94:
 /* 800E1B98 000DDAB8  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800E1B9C 000DDABC  38 21 00 28 */	addi r1, r1, 0x28
 /* 800E1BA0 000DDAC0  7C 08 03 A6 */	mtlr r0
-/* 800E1BA4 000DDAC4  4E 80 00 20 */	blr 
+/* 800E1BA4 000DDAC4  4E 80 00 20 */	blr

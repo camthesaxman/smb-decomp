@@ -5,12 +5,12 @@
 .global __DTKCallbackForStreamStatus
 __DTKCallbackForStreamStatus:
 /* 80102918 000FE838  54 60 06 3F */	clrlwi. r0, r3, 0x18
-/* 8010291C 000FE83C  4C 82 00 20 */	bnelr 
+/* 8010291C 000FE83C  4C 82 00 20 */	bnelr
 /* 80102920 000FE840  38 00 00 01 */	li r0, 1
 /* 80102924 000FE844  90 0D A5 C4 */	stw r0, __DTKTrackEnded-_SDA_BASE_(r13)
 /* 80102928 000FE848  38 00 00 00 */	li r0, 0
 /* 8010292C 000FE84C  90 0D A5 B8 */	stw r0, __DTKPosition-_SDA_BASE_(r13)
-/* 80102930 000FE850  4E 80 00 20 */	blr 
+/* 80102930 000FE850  4E 80 00 20 */	blr
 
 .global __DTKCallbackForRun
 __DTKCallbackForRun:
@@ -42,12 +42,12 @@ __DTKCallbackForRun:
 /* 80102998 000FE8B8  54 03 07 FF */	clrlwi. r3, r0, 0x1f
 /* 8010299C 000FE8BC  41 82 00 0C */	beq lbl_801029A8
 /* 801029A0 000FE8C0  7D 88 03 A6 */	mtlr r12
-/* 801029A4 000FE8C4  4E 80 00 21 */	blrl 
+/* 801029A4 000FE8C4  4E 80 00 21 */	blrl
 lbl_801029A8:
 /* 801029A8 000FE8C8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 801029AC 000FE8CC  38 21 00 08 */	addi r1, r1, 8
 /* 801029B0 000FE8D0  7C 08 03 A6 */	mtlr r0
-/* 801029B4 000FE8D4  4E 80 00 20 */	blr 
+/* 801029B4 000FE8D4  4E 80 00 20 */	blr
 
 .global __DTKCallbackForPreparePaused
 __DTKCallbackForPreparePaused:
@@ -76,12 +76,12 @@ __DTKCallbackForPreparePaused:
 /* 80102A10 000FE930  54 03 06 B5 */	rlwinm. r3, r0, 0, 0x1a, 0x1a
 /* 80102A14 000FE934  41 82 00 0C */	beq lbl_80102A20
 /* 80102A18 000FE938  7D 88 03 A6 */	mtlr r12
-/* 80102A1C 000FE93C  4E 80 00 21 */	blrl 
+/* 80102A1C 000FE93C  4E 80 00 21 */	blrl
 lbl_80102A20:
 /* 80102A20 000FE940  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102A24 000FE944  38 21 00 08 */	addi r1, r1, 8
 /* 80102A28 000FE948  7C 08 03 A6 */	mtlr r0
-/* 80102A2C 000FE94C  4E 80 00 20 */	blr 
+/* 80102A2C 000FE94C  4E 80 00 20 */	blr
 
 .global __DTKCallbackForPlaylist
 __DTKCallbackForPlaylist:
@@ -104,7 +104,7 @@ __DTKCallbackForPlaylist:
 /* 80102A70 000FE990  54 03 06 F7 */	rlwinm. r3, r0, 0, 0x1b, 0x1b
 /* 80102A74 000FE994  41 82 00 0C */	beq lbl_80102A80
 /* 80102A78 000FE998  7D 88 03 A6 */	mtlr r12
-/* 80102A7C 000FE99C  4E 80 00 21 */	blrl 
+/* 80102A7C 000FE99C  4E 80 00 21 */	blrl
 lbl_80102A80:
 /* 80102A80 000FE9A0  38 00 00 03 */	li r0, 3
 /* 80102A84 000FE9A4  90 0D A5 AC */	stw r0, __DTKState-_SDA_BASE_(r13)
@@ -220,7 +220,7 @@ lbl_80102C1C:
 /* 80102C1C 000FEB3C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102C20 000FEB40  38 21 00 08 */	addi r1, r1, 8
 /* 80102C24 000FEB44  7C 08 03 A6 */	mtlr r0
-/* 80102C28 000FEB48  4E 80 00 20 */	blr 
+/* 80102C28 000FEB48  4E 80 00 20 */	blr
 
 .global __DTKCallbackForAIInterrupt
 __DTKCallbackForAIInterrupt:
@@ -242,7 +242,7 @@ lbl_80102C64:
 /* 80102C64 000FEB84  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102C68 000FEB88  38 21 00 08 */	addi r1, r1, 8
 /* 80102C6C 000FEB8C  7C 08 03 A6 */	mtlr r0
-/* 80102C70 000FEB90  4E 80 00 20 */	blr 
+/* 80102C70 000FEB90  4E 80 00 20 */	blr
 
 .global __DTKCallbackForStop
 __DTKCallbackForStop:
@@ -259,14 +259,14 @@ __DTKCallbackForStop:
 /* 80102C9C 000FEBBC  54 03 07 BD */	rlwinm. r3, r0, 0, 0x1e, 0x1e
 /* 80102CA0 000FEBC0  41 82 00 0C */	beq lbl_80102CAC
 /* 80102CA4 000FEBC4  7D 88 03 A6 */	mtlr r12
-/* 80102CA8 000FEBC8  4E 80 00 21 */	blrl 
+/* 80102CA8 000FEBC8  4E 80 00 21 */	blrl
 lbl_80102CAC:
 /* 80102CAC 000FEBCC  38 00 00 00 */	li r0, 0
 /* 80102CB0 000FEBD0  90 0D A5 AC */	stw r0, __DTKState-_SDA_BASE_(r13)
 /* 80102CB4 000FEBD4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102CB8 000FEBD8  38 21 00 08 */	addi r1, r1, 8
 /* 80102CBC 000FEBDC  7C 08 03 A6 */	mtlr r0
-/* 80102CC0 000FEBE0  4E 80 00 20 */	blr 
+/* 80102CC0 000FEBE0  4E 80 00 20 */	blr
 
 .global __DTKCallbackForNextTrack
 __DTKCallbackForNextTrack:
@@ -292,7 +292,7 @@ lbl_80102CF8:
 /* 80102D0C 000FEC2C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102D10 000FEC30  38 21 00 08 */	addi r1, r1, 8
 /* 80102D14 000FEC34  7C 08 03 A6 */	mtlr r0
-/* 80102D18 000FEC38  4E 80 00 20 */	blr 
+/* 80102D18 000FEC38  4E 80 00 20 */	blr
 
 .global __DTKCallbackForPrevTrack
 __DTKCallbackForPrevTrack:
@@ -318,7 +318,7 @@ lbl_80102D50:
 /* 80102D64 000FEC84  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102D68 000FEC88  38 21 00 08 */	addi r1, r1, 8
 /* 80102D6C 000FEC8C  7C 08 03 A6 */	mtlr r0
-/* 80102D70 000FEC90  4E 80 00 20 */	blr 
+/* 80102D70 000FEC90  4E 80 00 20 */	blr
 
 .global DTKInit
 DTKInit:
@@ -351,7 +351,7 @@ DTKInit:
 /* 80102DDC 000FECFC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80102DE0 000FED00  38 21 00 08 */	addi r1, r1, 8
 /* 80102DE4 000FED04  7C 08 03 A6 */	mtlr r0
-/* 80102DE8 000FED08  4E 80 00 20 */	blr 
+/* 80102DE8 000FED08  4E 80 00 20 */	blr
 
 .global DTKQueueTrack
 DTKQueueTrack:
@@ -412,7 +412,7 @@ lbl_80102E98:
 /* 80102EB4 000FEDD4  54 03 07 39 */	rlwinm. r3, r0, 0, 0x1c, 0x1c
 /* 80102EB8 000FEDD8  41 82 00 0C */	beq lbl_80102EC4
 /* 80102EBC 000FEDDC  7D 88 03 A6 */	mtlr r12
-/* 80102EC0 000FEDE0  4E 80 00 21 */	blrl 
+/* 80102EC0 000FEDE0  4E 80 00 21 */	blrl
 lbl_80102EC4:
 /* 80102EC4 000FEDE4  28 1F 00 00 */	cmplwi r31, 0
 /* 80102EC8 000FEDE8  41 82 00 28 */	beq lbl_80102EF0
@@ -432,7 +432,7 @@ lbl_80102EF4:
 /* 80102EF8 000FEE18  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 80102EFC 000FEE1C  38 21 00 30 */	addi r1, r1, 0x30
 /* 80102F00 000FEE20  7C 08 03 A6 */	mtlr r0
-/* 80102F04 000FEE24  4E 80 00 20 */	blr 
+/* 80102F04 000FEE24  4E 80 00 20 */	blr
 
 .global DTKRemoveTrack
 DTKRemoveTrack:
@@ -520,12 +520,12 @@ lbl_80103028:
 /* 80103030 000FEF50  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 80103034 000FEF54  7C 08 03 A6 */	mtlr r0
 /* 80103038 000FEF58  38 21 00 18 */	addi r1, r1, 0x18
-/* 8010303C 000FEF5C  4E 80 00 20 */	blr 
+/* 8010303C 000FEF5C  4E 80 00 20 */	blr
 
 .global DTKSetRepeatMode
 DTKSetRepeatMode:
 /* 80103040 000FEF60  90 6D A5 B4 */	stw r3, __DTKRepeatMode-_SDA_BASE_(r13)
-/* 80103044 000FEF64  4E 80 00 20 */	blr 
+/* 80103044 000FEF64  4E 80 00 20 */	blr
 
 .global DTKSetState
 DTKSetState:
@@ -595,7 +595,7 @@ lbl_801030DC:
 /* 80103134 000FF054  54 03 07 FF */	clrlwi. r3, r0, 0x1f
 /* 80103138 000FF058  41 82 00 48 */	beq lbl_80103180
 /* 8010313C 000FF05C  7D 88 03 A6 */	mtlr r12
-/* 80103140 000FF060  4E 80 00 21 */	blrl 
+/* 80103140 000FF060  4E 80 00 21 */	blrl
 /* 80103144 000FF064  48 00 00 3C */	b lbl_80103180
 lbl_80103148:
 /* 80103148 000FF068  80 8D A5 A0 */	lwz r4, __DTKCurrentTrack-_SDA_BASE_(r13)
@@ -655,12 +655,12 @@ lbl_801031EC:
 /* 80103208 000FF128  54 03 07 7B */	rlwinm. r3, r0, 0, 0x1d, 0x1d
 /* 8010320C 000FF12C  41 82 00 0C */	beq lbl_80103218
 /* 80103210 000FF130  7D 88 03 A6 */	mtlr r12
-/* 80103214 000FF134  4E 80 00 21 */	blrl 
+/* 80103214 000FF134  4E 80 00 21 */	blrl
 lbl_80103218:
 /* 80103218 000FF138  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010321C 000FF13C  38 21 00 08 */	addi r1, r1, 8
 /* 80103220 000FF140  7C 08 03 A6 */	mtlr r0
-/* 80103224 000FF144  4E 80 00 20 */	blr 
+/* 80103224 000FF144  4E 80 00 20 */	blr
 
 .global DTKNextTrack
 DTKNextTrack:
@@ -707,7 +707,7 @@ lbl_801032BC:
 /* 801032BC 000FF1DC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 801032C0 000FF1E0  38 21 00 08 */	addi r1, r1, 8
 /* 801032C4 000FF1E4  7C 08 03 A6 */	mtlr r0
-/* 801032C8 000FF1E8  4E 80 00 20 */	blr 
+/* 801032C8 000FF1E8  4E 80 00 20 */	blr
 
 .global DTKPrevTrack
 DTKPrevTrack:
@@ -754,12 +754,12 @@ lbl_80103360:
 /* 80103360 000FF280  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80103364 000FF284  38 21 00 08 */	addi r1, r1, 8
 /* 80103368 000FF288  7C 08 03 A6 */	mtlr r0
-/* 8010336C 000FF28C  4E 80 00 20 */	blr 
+/* 8010336C 000FF28C  4E 80 00 20 */	blr
 
 .global DTKGetState
 DTKGetState:
 /* 80103370 000FF290  80 6D A5 AC */	lwz r3, __DTKState-_SDA_BASE_(r13)
-/* 80103374 000FF294  4E 80 00 20 */	blr 
+/* 80103374 000FF294  4E 80 00 20 */	blr
 
 .global func_80103378
 func_80103378:
@@ -781,4 +781,4 @@ lbl_801033AC:
 /* 801033B0 000FF2D0  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 801033B4 000FF2D4  38 21 00 18 */	addi r1, r1, 0x18
 /* 801033B8 000FF2D8  7C 08 03 A6 */	mtlr r0
-/* 801033BC 000FF2DC  4E 80 00 20 */	blr 
+/* 801033BC 000FF2DC  4E 80 00 20 */	blr

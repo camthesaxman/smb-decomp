@@ -120,7 +120,7 @@ lbl_800E2C44:
 /* 800E2D40 000DEC60  83 A1 00 3C */	lwz r29, 0x3c(r1)
 /* 800E2D44 000DEC64  83 81 00 38 */	lwz r28, 0x38(r1)
 /* 800E2D48 000DEC68  38 21 00 48 */	addi r1, r1, 0x48
-/* 800E2D4C 000DEC6C  4E 80 00 20 */	blr 
+/* 800E2D4C 000DEC6C  4E 80 00 20 */	blr
 
 .global GXSetFogRangeAdj
 GXSetFogRangeAdj:
@@ -188,7 +188,7 @@ lbl_800E2E14:
 /* 800E2E40 000DED60  38 00 00 01 */	li r0, 1
 /* 800E2E44 000DED64  90 A3 80 00 */	stw r5, -0x8000(r3)
 /* 800E2E48 000DED68  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2E4C 000DED6C  4E 80 00 20 */	blr 
+/* 800E2E4C 000DED6C  4E 80 00 20 */	blr
 
 .global GXSetBlendMode
 GXSetBlendMode:
@@ -257,7 +257,7 @@ lbl_800E2E68:
 /* 800E2F44 000DEE64  80 64 01 D0 */	lwz r3, 0x1d0(r4)
 /* 800E2F48 000DEE68  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2F4C 000DEE6C  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2F50 000DEE70  4E 80 00 20 */	blr 
+/* 800E2F50 000DEE70  4E 80 00 20 */	blr
 
 .global GXSetColorUpdate
 GXSetColorUpdate:
@@ -276,7 +276,7 @@ GXSetColorUpdate:
 /* 800E2F84 000DEEA4  80 64 01 D0 */	lwz r3, 0x1d0(r4)
 /* 800E2F88 000DEEA8  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2F8C 000DEEAC  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2F90 000DEEB0  4E 80 00 20 */	blr 
+/* 800E2F90 000DEEB0  4E 80 00 20 */	blr
 
 .global GXSetAlphaUpdate
 GXSetAlphaUpdate:
@@ -295,7 +295,7 @@ GXSetAlphaUpdate:
 /* 800E2FC4 000DEEE4  80 64 01 D0 */	lwz r3, 0x1d0(r4)
 /* 800E2FC8 000DEEE8  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2FCC 000DEEEC  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2FD0 000DEEF0  4E 80 00 20 */	blr 
+/* 800E2FD0 000DEEF0  4E 80 00 20 */	blr
 
 .global GXSetZMode
 GXSetZMode:
@@ -328,7 +328,7 @@ GXSetZMode:
 /* 800E303C 000DEF5C  80 64 01 D8 */	lwz r3, 0x1d8(r4)
 /* 800E3040 000DEF60  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E3044 000DEF64  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E3048 000DEF68  4E 80 00 20 */	blr 
+/* 800E3048 000DEF68  4E 80 00 20 */	blr
 
 .global GXSetZCompLoc
 GXSetZCompLoc:
@@ -347,7 +347,7 @@ GXSetZCompLoc:
 /* 800E307C 000DEF9C  80 64 01 DC */	lwz r3, 0x1dc(r4)
 /* 800E3080 000DEFA0  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E3084 000DEFA4  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E3088 000DEFA8  4E 80 00 20 */	blr 
+/* 800E3088 000DEFA8  4E 80 00 20 */	blr
 
 .global GXSetPixelFmt
 GXSetPixelFmt:
@@ -422,7 +422,7 @@ lbl_800E318C:
 /* 800E318C 000DF0AC  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
 /* 800E3190 000DF0B0  38 00 00 01 */	li r0, 1
 /* 800E3194 000DF0B4  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E3198 000DF0B8  4E 80 00 20 */	blr 
+/* 800E3198 000DF0B8  4E 80 00 20 */	blr
 
 .global GXSetDither
 GXSetDither:
@@ -441,7 +441,7 @@ GXSetDither:
 /* 800E31CC 000DF0EC  80 64 01 D0 */	lwz r3, 0x1d0(r4)
 /* 800E31D0 000DF0F0  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E31D4 000DF0F4  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E31D8 000DF0F8  4E 80 00 20 */	blr 
+/* 800E31D8 000DF0F8  4E 80 00 20 */	blr
 
 .global GXSetDstAlpha
 GXSetDstAlpha:
@@ -465,7 +465,7 @@ GXSetDstAlpha:
 /* 800E3220 000DF140  80 64 01 D4 */	lwz r3, 0x1d4(r4)
 /* 800E3224 000DF144  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E3228 000DF148  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E322C 000DF14C  4E 80 00 20 */	blr 
+/* 800E322C 000DF14C  4E 80 00 20 */	blr
 
 .global GXSetFieldMask
 GXSetFieldMask:
@@ -482,7 +482,7 @@ GXSetFieldMask:
 /* 800E3258 000DF178  38 00 00 01 */	li r0, 1
 /* 800E325C 000DF17C  90 A3 80 00 */	stw r5, -0x8000(r3)
 /* 800E3260 000DF180  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E3264 000DF184  4E 80 00 20 */	blr 
+/* 800E3264 000DF184  4E 80 00 20 */	blr
 
 .global GXSetFieldMode
 GXSetFieldMode:
@@ -517,4 +517,4 @@ GXSetFieldMode:
 /* 800E32D8 000DF1F8  7C 08 03 A6 */	mtlr r0
 /* 800E32DC 000DF1FC  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800E32E0 000DF200  38 21 00 20 */	addi r1, r1, 0x20
-/* 800E32E4 000DF204  4E 80 00 20 */	blr 
+/* 800E32E4 000DF204  4E 80 00 20 */	blr

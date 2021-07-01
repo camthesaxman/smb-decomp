@@ -36,7 +36,7 @@ lbl_800C3C50:
 /* 800C3C90 000BFBB0  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 800C3C94 000BFBB4  38 21 00 78 */	addi r1, r1, 0x78
 /* 800C3C98 000BFBB8  7C 08 03 A6 */	mtlr r0
-/* 800C3C9C 000BFBBC  4E 80 00 20 */	blr 
+/* 800C3C9C 000BFBBC  4E 80 00 20 */	blr
 
 .global OSPanic
 OSPanic:
@@ -118,7 +118,7 @@ lbl_800C3DA8:
 /* 800C3DBC 000BFCDC  83 A1 00 84 */	lwz r29, 0x84(r1)
 /* 800C3DC0 000BFCE0  83 81 00 80 */	lwz r28, 0x80(r1)
 /* 800C3DC4 000BFCE4  38 21 00 90 */	addi r1, r1, 0x90
-/* 800C3DC8 000BFCE8  4E 80 00 20 */	blr 
+/* 800C3DC8 000BFCE8  4E 80 00 20 */	blr
 
 .global OSSetErrorHandler
 OSSetErrorHandler:
@@ -128,7 +128,7 @@ OSSetErrorHandler:
 /* 800C3DD8 000BFCF8  7C A0 1A 14 */	add r5, r0, r3
 /* 800C3DDC 000BFCFC  80 65 00 00 */	lwz r3, 0(r5)
 /* 800C3DE0 000BFD00  90 85 00 00 */	stw r4, 0(r5)
-/* 800C3DE4 000BFD04  4E 80 00 20 */	blr 
+/* 800C3DE4 000BFD04  4E 80 00 20 */	blr
 
 .global __OSUnhandledException
 __OSUnhandledException:
@@ -164,7 +164,7 @@ lbl_800C3E30:
 /* 800C3E58 000BFD78  38 BD 00 00 */	addi r5, r29, 0
 /* 800C3E5C 000BFD7C  4C C6 31 82 */	crclr 6
 /* 800C3E60 000BFD80  38 DE 00 00 */	addi r6, r30, 0
-/* 800C3E64 000BFD84  4E 80 00 21 */	blrl 
+/* 800C3E64 000BFD84  4E 80 00 21 */	blrl
 /* 800C3E68 000BFD88  7F 83 E3 78 */	mr r3, r28
 /* 800C3E6C 000BFD8C  4B FF F9 3D */	bl OSLoadContext
 lbl_800C3E70:
@@ -234,4 +234,4 @@ lbl_800C3F44:
 /* 800C3F4C 000BFE6C  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800C3F50 000BFE70  38 21 00 30 */	addi r1, r1, 0x30
 /* 800C3F54 000BFE74  7C 08 03 A6 */	mtlr r0
-/* 800C3F58 000BFE78  4E 80 00 20 */	blr 
+/* 800C3F58 000BFE78  4E 80 00 20 */	blr

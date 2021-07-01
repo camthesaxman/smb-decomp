@@ -42,7 +42,7 @@ GXSetTevIndirect:
 /* 800E1C34 000DDB54  38 00 00 01 */	li r0, 1
 /* 800E1C38 000DDB58  38 21 00 28 */	addi r1, r1, 0x28
 /* 800E1C3C 000DDB5C  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E1C40 000DDB60  4E 80 00 20 */	blr 
+/* 800E1C40 000DDB60  4E 80 00 20 */	blr
 
 .global GXSetIndTexMtx
 GXSetIndTexMtx:
@@ -139,7 +139,7 @@ lbl_800E1C94:
 /* 800E1D94 000DDCB4  50 A4 C0 0E */	rlwimi r4, r5, 0x18, 0, 7
 /* 800E1D98 000DDCB8  90 89 80 00 */	stw r4, -0x8000(r9)
 /* 800E1D9C 000DDCBC  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E1DA0 000DDCC0  4E 80 00 20 */	blr 
+/* 800E1DA0 000DDCC0  4E 80 00 20 */	blr
 
 .global GXSetIndTexCoordScale
 GXSetIndTexCoordScale:
@@ -265,7 +265,7 @@ lbl_800E1F68:
 /* 800E1F68 000DDE88  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
 /* 800E1F6C 000DDE8C  38 00 00 01 */	li r0, 1
 /* 800E1F70 000DDE90  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E1F74 000DDE94  4E 80 00 20 */	blr 
+/* 800E1F74 000DDE94  4E 80 00 20 */	blr
 
 .global GXSetIndTexOrder
 GXSetIndTexOrder:
@@ -352,7 +352,7 @@ lbl_800E207C:
 /* 800E20A0 000DDFC0  90 64 04 F0 */	stw r3, 0x4f0(r4)
 /* 800E20A4 000DDFC4  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
 /* 800E20A8 000DDFC8  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E20AC 000DDFCC  4E 80 00 20 */	blr 
+/* 800E20AC 000DDFCC  4E 80 00 20 */	blr
 
 .global GXSetNumIndStages
 GXSetNumIndStages:
@@ -366,7 +366,7 @@ GXSetNumIndStages:
 /* 800E20CC 000DDFEC  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800E20D0 000DDFF0  60 00 00 06 */	ori r0, r0, 6
 /* 800E20D4 000DDFF4  90 03 04 F0 */	stw r0, 0x4f0(r3)
-/* 800E20D8 000DDFF8  4E 80 00 20 */	blr 
+/* 800E20D8 000DDFF8  4E 80 00 20 */	blr
 
 .global GXSetTevDirect
 GXSetTevDirect:
@@ -387,7 +387,7 @@ GXSetTevDirect:
 /* 800E2114 000DE034  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800E2118 000DE038  38 21 00 18 */	addi r1, r1, 0x18
 /* 800E211C 000DE03C  7C 08 03 A6 */	mtlr r0
-/* 800E2120 000DE040  4E 80 00 20 */	blr 
+/* 800E2120 000DE040  4E 80 00 20 */	blr
 
 .global __GXUpdateBPMask
 __GXUpdateBPMask:
@@ -437,7 +437,7 @@ lbl_800E21AC:
 /* 800E21B0 000DE0D0  80 63 01 24 */	lwz r3, 0x124(r3)
 /* 800E21B4 000DE0D4  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800E21B8 000DE0D8  7C 00 30 40 */	cmplw r0, r6
-/* 800E21BC 000DE0DC  4D 82 00 20 */	beqlr 
+/* 800E21BC 000DE0DC  4D 82 00 20 */	beqlr
 /* 800E21C0 000DE0E0  54 60 00 2E */	rlwinm r0, r3, 0, 0, 0x17
 /* 800E21C4 000DE0E4  7C 00 33 78 */	or r0, r0, r6
 /* 800E21C8 000DE0E8  90 04 00 00 */	stw r0, 0(r4)
@@ -449,7 +449,7 @@ lbl_800E21AC:
 /* 800E21E0 000DE100  80 64 01 24 */	lwz r3, 0x124(r4)
 /* 800E21E4 000DE104  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E21E8 000DE108  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E21EC 000DE10C  4E 80 00 20 */	blr 
+/* 800E21EC 000DE10C  4E 80 00 20 */	blr
 
 .global __GXFlushTextureState
 __GXFlushTextureState:
@@ -461,4 +461,4 @@ __GXFlushTextureState:
 /* 800E2204 000DE124  80 64 01 24 */	lwz r3, 0x124(r4)
 /* 800E2208 000DE128  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E220C 000DE12C  B0 04 00 02 */	sth r0, 2(r4)
-/* 800E2210 000DE130  4E 80 00 20 */	blr 
+/* 800E2210 000DE130  4E 80 00 20 */	blr

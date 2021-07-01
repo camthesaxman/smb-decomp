@@ -160,7 +160,7 @@ lbl_8010E318:
 /* 8010E31C 0010A23C  80 01 00 54 */	lwz r0, 0x54(r1)
 /* 8010E320 0010A240  38 21 00 50 */	addi r1, r1, 0x50
 /* 8010E324 0010A244  7C 08 03 A6 */	mtlr r0
-/* 8010E328 0010A248  4E 80 00 20 */	blr 
+/* 8010E328 0010A248  4E 80 00 20 */	blr
 
 .global AmcEXISync
 AmcEXISync:
@@ -274,7 +274,7 @@ lbl_8010E4B0:
 /* 8010E4B4 0010A3D4  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 8010E4B8 0010A3D8  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010E4BC 0010A3DC  7C 08 03 A6 */	mtlr r0
-/* 8010E4C0 0010A3E0  4E 80 00 20 */	blr 
+/* 8010E4C0 0010A3E0  4E 80 00 20 */	blr
 
 .global AmcEXIClearInterrupts
 AmcEXIClearInterrupts:
@@ -287,14 +287,14 @@ AmcEXIClearInterrupts:
 /* 8010E4DC 0010A3FC  90 03 30 00 */	stw r0, 0x3000(r3)
 lbl_8010E4E0:
 /* 8010E4E0 0010A400  2C 04 00 00 */	cmpwi r4, 0
-/* 8010E4E4 0010A404  4D 82 00 20 */	beqlr 
+/* 8010E4E4 0010A404  4D 82 00 20 */	beqlr
 /* 8010E4E8 0010A408  3C 60 CC 00 */	lis r3, 0xCC006800@ha
 /* 8010E4EC 0010A40C  38 63 68 00 */	addi r3, r3, 0xCC006800@l
 /* 8010E4F0 0010A410  80 03 00 28 */	lwz r0, 0x28(r3)
 /* 8010E4F4 0010A414  70 00 07 F5 */	andi. r0, r0, 0x7f5
 /* 8010E4F8 0010A418  60 00 00 08 */	ori r0, r0, 8
 /* 8010E4FC 0010A41C  90 03 00 28 */	stw r0, 0x28(r3)
-/* 8010E500 0010A420  4E 80 00 20 */	blr 
+/* 8010E500 0010A420  4E 80 00 20 */	blr
 
 .global AmcEXISetExiCallback
 AmcEXISetExiCallback:
@@ -326,7 +326,7 @@ lbl_8010E540:
 /* 8010E560 0010A480  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 8010E564 0010A484  7C 08 03 A6 */	mtlr r0
 /* 8010E568 0010A488  38 21 00 18 */	addi r1, r1, 0x18
-/* 8010E56C 0010A48C  4E 80 00 20 */	blr 
+/* 8010E56C 0010A48C  4E 80 00 20 */	blr
 
 .global AmcEXISelect
 AmcEXISelect:
@@ -363,7 +363,7 @@ lbl_8010E5DC:
 /* 8010E5E0 0010A500  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 8010E5E4 0010A504  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010E5E8 0010A508  7C 08 03 A6 */	mtlr r0
-/* 8010E5EC 0010A50C  4E 80 00 20 */	blr 
+/* 8010E5EC 0010A50C  4E 80 00 20 */	blr
 
 .global AmcEXIDeselect
 AmcEXIDeselect:
@@ -394,7 +394,7 @@ lbl_8010E648:
 /* 8010E648 0010A568  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010E64C 0010A56C  38 21 00 08 */	addi r1, r1, 8
 /* 8010E650 0010A570  7C 08 03 A6 */	mtlr r0
-/* 8010E654 0010A574  4E 80 00 20 */	blr 
+/* 8010E654 0010A574  4E 80 00 20 */	blr
 
 .global AmcDebugIntHandler
 AmcDebugIntHandler:
@@ -413,12 +413,12 @@ AmcDebugIntHandler:
 /* 8010E688 0010A5A8  41 82 00 10 */	beq lbl_8010E698
 /* 8010E68C 0010A5AC  7D 88 03 A6 */	mtlr r12
 /* 8010E690 0010A5B0  38 60 00 02 */	li r3, 2
-/* 8010E694 0010A5B4  4E 80 00 21 */	blrl 
+/* 8010E694 0010A5B4  4E 80 00 21 */	blrl
 lbl_8010E698:
 /* 8010E698 0010A5B8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010E69C 0010A5BC  38 21 00 08 */	addi r1, r1, 8
 /* 8010E6A0 0010A5C0  7C 08 03 A6 */	mtlr r0
-/* 8010E6A4 0010A5C4  4E 80 00 20 */	blr 
+/* 8010E6A4 0010A5C4  4E 80 00 20 */	blr
 
 .global AmcEXIEnableInterrupts
 AmcEXIEnableInterrupts:
@@ -437,7 +437,7 @@ AmcEXIEnableInterrupts:
 /* 8010E6D8 0010A5F8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010E6DC 0010A5FC  38 21 00 08 */	addi r1, r1, 8
 /* 8010E6E0 0010A600  7C 08 03 A6 */	mtlr r0
-/* 8010E6E4 0010A604  4E 80 00 20 */	blr 
+/* 8010E6E4 0010A604  4E 80 00 20 */	blr
 
 .global AmcEXIInit
 AmcEXIInit:
@@ -456,7 +456,7 @@ AmcEXIInit:
 /* 8010E718 0010A638  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010E71C 0010A63C  38 21 00 08 */	addi r1, r1, 8
 /* 8010E720 0010A640  7C 08 03 A6 */	mtlr r0
-/* 8010E724 0010A644  4E 80 00 20 */	blr 
+/* 8010E724 0010A644  4E 80 00 20 */	blr
 
 .global EXI2_CallBack
 EXI2_CallBack:
@@ -471,12 +471,12 @@ EXI2_CallBack:
 /* 8010E748 0010A668  41 82 00 10 */	beq lbl_8010E758
 /* 8010E74C 0010A66C  7D 88 03 A6 */	mtlr r12
 /* 8010E750 0010A670  38 60 00 00 */	li r3, 0
-/* 8010E754 0010A674  4E 80 00 21 */	blrl 
+/* 8010E754 0010A674  4E 80 00 21 */	blrl
 lbl_8010E758:
 /* 8010E758 0010A678  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010E75C 0010A67C  38 21 00 08 */	addi r1, r1, 8
 /* 8010E760 0010A680  7C 08 03 A6 */	mtlr r0
-/* 8010E764 0010A684  4E 80 00 20 */	blr 
+/* 8010E764 0010A684  4E 80 00 20 */	blr
 
 .global EXI2_Init
 EXI2_Init:
@@ -528,7 +528,7 @@ lbl_8010E7B4:
 /* 8010E814 0010A734  83 E1 00 2C */	lwz r31, 0x2c(r1)
 /* 8010E818 0010A738  38 21 00 30 */	addi r1, r1, 0x30
 /* 8010E81C 0010A73C  7C 08 03 A6 */	mtlr r0
-/* 8010E820 0010A740  4E 80 00 20 */	blr 
+/* 8010E820 0010A740  4E 80 00 20 */	blr
 
 .global EXI2_EnableInterrupts
 EXI2_EnableInterrupts:
@@ -542,7 +542,7 @@ EXI2_EnableInterrupts:
 /* 8010E840 0010A760  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010E844 0010A764  38 21 00 08 */	addi r1, r1, 8
 /* 8010E848 0010A768  7C 08 03 A6 */	mtlr r0
-/* 8010E84C 0010A76C  4E 80 00 20 */	blr 
+/* 8010E84C 0010A76C  4E 80 00 20 */	blr
 
 .global EXI2_Poll
 EXI2_Poll:
@@ -617,7 +617,7 @@ lbl_8010E944:
 /* 8010E948 0010A868  80 61 00 18 */	lwz r3, 0x18(r1)
 /* 8010E94C 0010A86C  38 21 00 20 */	addi r1, r1, 0x20
 /* 8010E950 0010A870  7C 08 03 A6 */	mtlr r0
-/* 8010E954 0010A874  4E 80 00 20 */	blr 
+/* 8010E954 0010A874  4E 80 00 20 */	blr
 
 .global EXI2_ReadN
 EXI2_ReadN:
@@ -816,7 +816,7 @@ lbl_8010EC00:
 /* 8010EC04 0010AB24  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8010EC08 0010AB28  38 21 00 48 */	addi r1, r1, 0x48
 /* 8010EC0C 0010AB2C  7C 08 03 A6 */	mtlr r0
-/* 8010EC10 0010AB30  4E 80 00 20 */	blr 
+/* 8010EC10 0010AB30  4E 80 00 20 */	blr
 
 .global EXI2_WriteN
 EXI2_WriteN:
@@ -942,12 +942,12 @@ lbl_8010EDA4:
 /* 8010EDB4 0010ACD4  83 A1 00 34 */	lwz r29, 0x34(r1)
 /* 8010EDB8 0010ACD8  83 81 00 30 */	lwz r28, 0x30(r1)
 /* 8010EDBC 0010ACDC  38 21 00 40 */	addi r1, r1, 0x40
-/* 8010EDC0 0010ACE0  4E 80 00 20 */	blr 
+/* 8010EDC0 0010ACE0  4E 80 00 20 */	blr
 
 .global EXI2_Reserve
 EXI2_Reserve:
-/* 8010EDC4 0010ACE4  4E 80 00 20 */	blr 
+/* 8010EDC4 0010ACE4  4E 80 00 20 */	blr
 
 .global EXI2_Unreserve
 EXI2_Unreserve:
-/* 8010EDC8 0010ACE8  4E 80 00 20 */	blr 
+/* 8010EDC8 0010ACE8  4E 80 00 20 */	blr

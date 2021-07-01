@@ -8,7 +8,7 @@ TRKInitializeDispatcher:
 /* 8010A82C 0010674C  38 00 00 20 */	li r0, 0x20
 /* 8010A830 00106750  90 03 FC 38 */	stw r0, lbl_802EFC38@l(r3)
 /* 8010A834 00106754  38 60 00 00 */	li r3, 0
-/* 8010A838 00106758  4E 80 00 20 */	blr 
+/* 8010A838 00106758  4E 80 00 20 */	blr
 
 .global TRKDispatchMessage
 TRKDispatchMessage:
@@ -36,7 +36,7 @@ TRKDispatchMessage:
 /* 8010A890 001067B0  81 83 00 00 */	lwz r12, 0(r3)
 /* 8010A894 001067B4  38 7E 00 00 */	addi r3, r30, 0
 /* 8010A898 001067B8  7D 88 03 A6 */	mtlr r12
-/* 8010A89C 001067BC  4E 80 00 21 */	blrl 
+/* 8010A89C 001067BC  4E 80 00 21 */	blrl
 /* 8010A8A0 001067C0  7C 7F 1B 78 */	mr r31, r3
 lbl_8010A8A4:
 /* 8010A8A4 001067C4  7F E3 FB 78 */	mr r3, r31
@@ -45,4 +45,4 @@ lbl_8010A8A4:
 /* 8010A8B0 001067D0  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010A8B4 001067D4  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010A8B8 001067D8  7C 08 03 A6 */	mtlr r0
-/* 8010A8BC 001067DC  4E 80 00 20 */	blr 
+/* 8010A8BC 001067DC  4E 80 00 20 */	blr

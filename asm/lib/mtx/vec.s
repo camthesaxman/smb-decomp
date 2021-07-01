@@ -21,7 +21,7 @@ PSVECNormalize:
 /* 800CA890 000C67B0  F0 44 00 00 */	psq_st f2, 0(r4), 0, qr0
 /* 800CA894 000C67B4  10 63 01 58 */	ps_muls0 f3, f3, f5
 /* 800CA898 000C67B8  F0 64 80 08 */	psq_st f3, 8(r4), 1, qr0
-/* 800CA89C 000C67BC  4E 80 00 20 */	blr 
+/* 800CA89C 000C67BC  4E 80 00 20 */	blr
 
 .global PSVECCrossProduct
 PSVECCrossProduct:
@@ -39,4 +39,4 @@ PSVECCrossProduct:
 /* 800CA8CC 000C67EC  F1 25 80 00 */	psq_st f9, 0(r5), 1, qr0
 /* 800CA8D0 000C67F0  11 40 50 50 */	ps_neg f10, f10
 /* 800CA8D4 000C67F4  F1 45 00 04 */	psq_st f10, 4(r5), 0, qr0
-/* 800CA8D8 000C67F8  4E 80 00 20 */	blr 
+/* 800CA8D8 000C67F8  4E 80 00 20 */	blr

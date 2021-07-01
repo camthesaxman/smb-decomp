@@ -115,7 +115,7 @@ lbl_8010DAEC:
 /* 8010DB48 00109A68  7F F6 02 A6 */	mfspr r31, 0x16
 /* 8010DB4C 00109A6C  93 E2 02 78 */	stw r31, 0x278(r2)
 lbl_8010DB50:
-/* 8010DB50 00109A70  4E 80 00 20 */	blr 
+/* 8010DB50 00109A70  4E 80 00 20 */	blr
 
 .global TRKRestoreExtended1Block
 TRKRestoreExtended1Block:
@@ -232,9 +232,9 @@ lbl_8010DC48:
 /* 8010DCFC 00109C1C  7F 93 43 A6 */	mtspr 0x113, r28
 /* 8010DD00 00109C20  7F D2 FB A6 */	mtspr 0x3f2, r30
 /* 8010DD04 00109C24  7F FA 43 A6 */	mtspr 0x11a, r31
-/* 8010DD08 00109C28  4E 80 00 20 */	blr 
+/* 8010DD08 00109C28  4E 80 00 20 */	blr
 
 .global TRKTargetCPUMinorType
 TRKTargetCPUMinorType:
 /* 8010DD0C 00109C2C  38 60 00 54 */	li r3, 0x54
-/* 8010DD10 00109C30  4E 80 00 20 */	blr 
+/* 8010DD10 00109C30  4E 80 00 20 */	blr

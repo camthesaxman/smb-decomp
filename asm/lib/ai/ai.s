@@ -20,7 +20,7 @@ AIRegisterDMACallback:
 /* 800D2918 000CE838  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800D291C 000CE83C  7C 08 03 A6 */	mtlr r0
 /* 800D2920 000CE840  38 21 00 18 */	addi r1, r1, 0x18
-/* 800D2924 000CE844  4E 80 00 20 */	blr 
+/* 800D2924 000CE844  4E 80 00 20 */	blr
 
 .global AIInitDMA
 AIInitDMA:
@@ -57,7 +57,7 @@ AIInitDMA:
 /* 800D29A0 000CE8C0  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800D29A4 000CE8C4  7C 08 03 A6 */	mtlr r0
 /* 800D29A8 000CE8C8  38 21 00 18 */	addi r1, r1, 0x18
-/* 800D29AC 000CE8CC  4E 80 00 20 */	blr 
+/* 800D29AC 000CE8CC  4E 80 00 20 */	blr
 
 .global AIStartDMA
 AIStartDMA:
@@ -66,7 +66,7 @@ AIStartDMA:
 /* 800D29B8 000CE8D8  A0 03 00 36 */	lhz r0, 0x36(r3)
 /* 800D29BC 000CE8DC  60 00 80 00 */	ori r0, r0, 0x8000
 /* 800D29C0 000CE8E0  B0 03 00 36 */	sth r0, 0x36(r3)
-/* 800D29C4 000CE8E4  4E 80 00 20 */	blr 
+/* 800D29C4 000CE8E4  4E 80 00 20 */	blr
 
 .global AIRegisterStreamCallback
 AIRegisterStreamCallback:
@@ -86,14 +86,14 @@ AIRegisterStreamCallback:
 /* 800D29FC 000CE91C  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800D2A00 000CE920  7C 08 03 A6 */	mtlr r0
 /* 800D2A04 000CE924  38 21 00 18 */	addi r1, r1, 0x18
-/* 800D2A08 000CE928  4E 80 00 20 */	blr 
+/* 800D2A08 000CE928  4E 80 00 20 */	blr
 
 .global AIGetStreamSampleCount
 AIGetStreamSampleCount:
 /* 800D2A0C 000CE92C  3C 60 CC 00 */	lis r3, 0xCC006C00@ha
 /* 800D2A10 000CE930  38 63 6C 00 */	addi r3, r3, 0xCC006C00@l
 /* 800D2A14 000CE934  80 63 00 08 */	lwz r3, 8(r3)
-/* 800D2A18 000CE938  4E 80 00 20 */	blr 
+/* 800D2A18 000CE938  4E 80 00 20 */	blr
 
 .global AIResetStreamSampleCount
 AIResetStreamSampleCount:
@@ -102,13 +102,13 @@ AIResetStreamSampleCount:
 /* 800D2A24 000CE944  54 00 06 F2 */	rlwinm r0, r0, 0, 0x1b, 0x19
 /* 800D2A28 000CE948  60 00 00 20 */	ori r0, r0, 0x20
 /* 800D2A2C 000CE94C  90 03 6C 00 */	stw r0, 0x6c00(r3)
-/* 800D2A30 000CE950  4E 80 00 20 */	blr 
+/* 800D2A30 000CE950  4E 80 00 20 */	blr
 
 .global AISetStreamTrigger
 AISetStreamTrigger:
 /* 800D2A34 000CE954  3C 80 CC 00 */	lis r4, 0xCC006C0C@ha
 /* 800D2A38 000CE958  90 64 6C 0C */	stw r3, 0xCC006C0C@l(r4)
-/* 800D2A3C 000CE95C  4E 80 00 20 */	blr 
+/* 800D2A3C 000CE95C  4E 80 00 20 */	blr
 
 .global AISetStreamPlayState
 AISetStreamPlayState:
@@ -167,14 +167,14 @@ lbl_800D2AFC:
 /* 800D2B08 000CEA28  7C 08 03 A6 */	mtlr r0
 /* 800D2B0C 000CEA2C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800D2B10 000CEA30  38 21 00 20 */	addi r1, r1, 0x20
-/* 800D2B14 000CEA34  4E 80 00 20 */	blr 
+/* 800D2B14 000CEA34  4E 80 00 20 */	blr
 
 .global AIGetStreamPlayState
 AIGetStreamPlayState:
 /* 800D2B18 000CEA38  3C 60 CC 00 */	lis r3, 0xCC006C00@ha
 /* 800D2B1C 000CEA3C  80 03 6C 00 */	lwz r0, 0xCC006C00@l(r3)
 /* 800D2B20 000CEA40  54 03 07 FE */	clrlwi r3, r0, 0x1f
-/* 800D2B24 000CEA44  4E 80 00 20 */	blr 
+/* 800D2B24 000CEA44  4E 80 00 20 */	blr
 
 .global AISetDSPSampleRate
 AISetDSPSampleRate:
@@ -234,7 +234,7 @@ lbl_800D2BF4:
 /* 800D2BF8 000CEB18  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800D2BFC 000CEB1C  38 21 00 28 */	addi r1, r1, 0x28
 /* 800D2C00 000CEB20  7C 08 03 A6 */	mtlr r0
-/* 800D2C04 000CEB24  4E 80 00 20 */	blr 
+/* 800D2C04 000CEB24  4E 80 00 20 */	blr
 
 .global AIGetDSPSampleRate
 AIGetDSPSampleRate:
@@ -242,7 +242,7 @@ AIGetDSPSampleRate:
 /* 800D2C0C 000CEB2C  80 03 6C 00 */	lwz r0, 0xCC006C00@l(r3)
 /* 800D2C10 000CEB30  54 00 D7 FE */	rlwinm r0, r0, 0x1a, 0x1f, 0x1f
 /* 800D2C14 000CEB34  68 03 00 01 */	xori r3, r0, 1
-/* 800D2C18 000CEB38  4E 80 00 20 */	blr 
+/* 800D2C18 000CEB38  4E 80 00 20 */	blr
 
 .global AISetStreamSampleRate
 AISetStreamSampleRate:
@@ -256,7 +256,7 @@ lbl_800D2C34:
 /* 800D2C34 000CEB54  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800D2C38 000CEB58  38 21 00 08 */	addi r1, r1, 8
 /* 800D2C3C 000CEB5C  7C 08 03 A6 */	mtlr r0
-/* 800D2C40 000CEB60  4E 80 00 20 */	blr 
+/* 800D2C40 000CEB60  4E 80 00 20 */	blr
 
 .global __AI_set_stream_sample_rate
 __AI_set_stream_sample_rate:
@@ -313,14 +313,14 @@ lbl_800D2D04:
 /* 800D2D08 000CEC28  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800D2D0C 000CEC2C  38 21 00 30 */	addi r1, r1, 0x30
 /* 800D2D10 000CEC30  7C 08 03 A6 */	mtlr r0
-/* 800D2D14 000CEC34  4E 80 00 20 */	blr 
+/* 800D2D14 000CEC34  4E 80 00 20 */	blr
 
 .global AIGetStreamSampleRate
 AIGetStreamSampleRate:
 /* 800D2D18 000CEC38  3C 60 CC 00 */	lis r3, 0xCC006C00@ha
 /* 800D2D1C 000CEC3C  80 03 6C 00 */	lwz r0, 0xCC006C00@l(r3)
 /* 800D2D20 000CEC40  54 03 FF FE */	rlwinm r3, r0, 0x1f, 0x1f, 0x1f
-/* 800D2D24 000CEC44  4E 80 00 20 */	blr 
+/* 800D2D24 000CEC44  4E 80 00 20 */	blr
 
 .global AISetStreamVolLeft
 AISetStreamVolLeft:
@@ -330,14 +330,14 @@ AISetStreamVolLeft:
 /* 800D2D34 000CEC54  54 00 00 2E */	rlwinm r0, r0, 0, 0, 0x17
 /* 800D2D38 000CEC58  50 60 06 3E */	rlwimi r0, r3, 0, 0x18, 0x1f
 /* 800D2D3C 000CEC5C  90 04 00 04 */	stw r0, 4(r4)
-/* 800D2D40 000CEC60  4E 80 00 20 */	blr 
+/* 800D2D40 000CEC60  4E 80 00 20 */	blr
 
 .global AIGetStreamVolLeft
 AIGetStreamVolLeft:
 /* 800D2D44 000CEC64  3C 60 CC 00 */	lis r3, 0xCC006C04@ha
 /* 800D2D48 000CEC68  80 03 6C 04 */	lwz r0, 0xCC006C04@l(r3)
 /* 800D2D4C 000CEC6C  54 03 06 3E */	clrlwi r3, r0, 0x18
-/* 800D2D50 000CEC70  4E 80 00 20 */	blr 
+/* 800D2D50 000CEC70  4E 80 00 20 */	blr
 
 .global AISetStreamVolRight
 AISetStreamVolRight:
@@ -347,14 +347,14 @@ AISetStreamVolRight:
 /* 800D2D60 000CEC80  54 00 06 1E */	rlwinm r0, r0, 0, 0x18, 0xf
 /* 800D2D64 000CEC84  50 60 44 2E */	rlwimi r0, r3, 8, 0x10, 0x17
 /* 800D2D68 000CEC88  90 04 00 04 */	stw r0, 4(r4)
-/* 800D2D6C 000CEC8C  4E 80 00 20 */	blr 
+/* 800D2D6C 000CEC8C  4E 80 00 20 */	blr
 
 .global AIGetStreamVolRight
 AIGetStreamVolRight:
 /* 800D2D70 000CEC90  3C 60 CC 00 */	lis r3, 0xCC006C04@ha
 /* 800D2D74 000CEC94  80 03 6C 04 */	lwz r0, 0xCC006C04@l(r3)
 /* 800D2D78 000CEC98  54 03 C6 3E */	rlwinm r3, r0, 0x18, 0x18, 0x1f
-/* 800D2D7C 000CEC9C  4E 80 00 20 */	blr 
+/* 800D2D7C 000CEC9C  4E 80 00 20 */	blr
 
 .global AIInit
 AIInit:
@@ -414,11 +414,11 @@ AIInit:
 /* 800D2E54 000CED74  80 A6 6C 04 */	lwz r5, 0x6c04(r6)
 /* 800D2E58 000CED78  90 06 6C 00 */	stw r0, 0x6c00(r6)
 /* 800D2E5C 000CED7C  54 A0 06 1E */	rlwinm r0, r5, 0, 0x18, 0xf
-/* 800D2E60 000CED80  60 00 00 00 */	nop 
+/* 800D2E60 000CED80  60 00 00 00 */	nop
 /* 800D2E64 000CED84  90 06 6C 04 */	stw r0, 0x6c04(r6)
 /* 800D2E68 000CED88  80 06 6C 04 */	lwz r0, 0x6c04(r6)
 /* 800D2E6C 000CED8C  54 00 00 2E */	rlwinm r0, r0, 0, 0, 0x17
-/* 800D2E70 000CED90  60 00 00 00 */	nop 
+/* 800D2E70 000CED90  60 00 00 00 */	nop
 /* 800D2E74 000CED94  90 06 6C 04 */	stw r0, 0x6c04(r6)
 /* 800D2E78 000CED98  93 E6 6C 0C */	stw r31, 0x6c0c(r6)
 /* 800D2E7C 000CED9C  4B FF FD C9 */	bl __AI_set_stream_sample_rate
@@ -447,7 +447,7 @@ lbl_800D2ECC:
 /* 800D2ED4 000CEDF4  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800D2ED8 000CEDF8  7C 08 03 A6 */	mtlr r0
 /* 800D2EDC 000CEDFC  38 21 00 18 */	addi r1, r1, 0x18
-/* 800D2EE0 000CEE00  4E 80 00 20 */	blr 
+/* 800D2EE0 000CEE00  4E 80 00 20 */	blr
 
 .global __AISHandler
 __AISHandler:
@@ -471,7 +471,7 @@ __AISHandler:
 /* 800D2F28 000CEE48  38 7F 6C 00 */	addi r3, r31, 0x6c00
 /* 800D2F2C 000CEE4C  7D 88 03 A6 */	mtlr r12
 /* 800D2F30 000CEE50  80 63 00 08 */	lwz r3, 8(r3)
-/* 800D2F34 000CEE54  4E 80 00 21 */	blrl 
+/* 800D2F34 000CEE54  4E 80 00 21 */	blrl
 lbl_800D2F38:
 /* 800D2F38 000CEE58  38 61 00 10 */	addi r3, r1, 0x10
 /* 800D2F3C 000CEE5C  4B FF 09 4D */	bl OSClearContext
@@ -482,7 +482,7 @@ lbl_800D2F38:
 /* 800D2F50 000CEE70  83 C1 02 D8 */	lwz r30, 0x2d8(r1)
 /* 800D2F54 000CEE74  7C 08 03 A6 */	mtlr r0
 /* 800D2F58 000CEE78  38 21 02 E0 */	addi r1, r1, 0x2e0
-/* 800D2F5C 000CEE7C  4E 80 00 20 */	blr 
+/* 800D2F5C 000CEE7C  4E 80 00 20 */	blr
 
 .global __AIDHandler
 __AIDHandler:
@@ -513,7 +513,7 @@ __AIDHandler:
 lbl_800D2FC0:
 /* 800D2FC0 000CEEE0  39 83 00 00 */	addi r12, r3, 0
 /* 800D2FC4 000CEEE4  7D 88 03 A6 */	mtlr r12
-/* 800D2FC8 000CEEE8  4E 80 00 21 */	blrl 
+/* 800D2FC8 000CEEE8  4E 80 00 21 */	blrl
 lbl_800D2FCC:
 /* 800D2FCC 000CEEEC  38 61 00 10 */	addi r3, r1, 0x10
 /* 800D2FD0 000CEEF0  4B FF 08 B9 */	bl OSClearContext
@@ -523,7 +523,7 @@ lbl_800D2FCC:
 /* 800D2FE0 000CEF00  83 E1 02 DC */	lwz r31, 0x2dc(r1)
 /* 800D2FE4 000CEF04  38 21 02 E0 */	addi r1, r1, 0x2e0
 /* 800D2FE8 000CEF08  7C 08 03 A6 */	mtlr r0
-/* 800D2FEC 000CEF0C  4E 80 00 20 */	blr 
+/* 800D2FEC 000CEF0C  4E 80 00 20 */	blr
 
 .global __AICallbackStackSwitch
 __AICallbackStackSwitch:
@@ -540,7 +540,7 @@ __AICallbackStackSwitch:
 /* 800D3018 000CEF38  80 25 00 00 */	lwz r1, 0(r5)
 /* 800D301C 000CEF3C  38 21 FF F8 */	addi r1, r1, -8
 /* 800D3020 000CEF40  7F E8 03 A6 */	mtlr r31
-/* 800D3024 000CEF44  4E 80 00 21 */	blrl 
+/* 800D3024 000CEF44  4E 80 00 21 */	blrl
 /* 800D3028 000CEF48  3C A0 80 2F */	lis r5, __OldStack@ha
 /* 800D302C 000CEF4C  38 A5 24 A4 */	addi r5, r5, __OldStack@l
 /* 800D3030 000CEF50  80 25 00 00 */	lwz r1, 0(r5)
@@ -548,7 +548,7 @@ __AICallbackStackSwitch:
 /* 800D3038 000CEF58  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800D303C 000CEF5C  38 21 00 18 */	addi r1, r1, 0x18
 /* 800D3040 000CEF60  7C 08 03 A6 */	mtlr r0
-/* 800D3044 000CEF64  4E 80 00 20 */	blr 
+/* 800D3044 000CEF64  4E 80 00 20 */	blr
 
 .global __AI_SRC_INIT
 __AI_SRC_INIT:
@@ -684,4 +684,4 @@ lbl_800D31F4:
 /* 800D321C 000CF13C  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800D3220 000CF140  38 21 00 30 */	addi r1, r1, 0x30
 /* 800D3224 000CF144  7C 08 03 A6 */	mtlr r0
-/* 800D3228 000CF148  4E 80 00 20 */	blr 
+/* 800D3228 000CF148  4E 80 00 20 */	blr

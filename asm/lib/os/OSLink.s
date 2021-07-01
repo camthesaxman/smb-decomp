@@ -4,17 +4,17 @@
 
 .global func_800C68DC
 func_800C68DC:
-/* 800C68DC 000C27FC  4E 80 00 20 */	blr 
+/* 800C68DC 000C27FC  4E 80 00 20 */	blr
 
 .global OSNotifyLink
 OSNotifyLink:
-/* 800C68E0 000C2800  4E 80 00 20 */	blr 
+/* 800C68E0 000C2800  4E 80 00 20 */	blr
 
 .global OSSetStringTable
 OSSetStringTable:
 /* 800C68E4 000C2804  3C 80 80 00 */	lis r4, 0x800030D0@ha
 /* 800C68E8 000C2808  90 64 30 D0 */	stw r3, 0x800030D0@l(r4)
-/* 800C68EC 000C280C  4E 80 00 20 */	blr 
+/* 800C68EC 000C280C  4E 80 00 20 */	blr
 
 .global Relocate
 Relocate:
@@ -203,7 +203,7 @@ lbl_800C6B50:
 /* 800C6B54 000C2A74  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800C6B58 000C2A78  38 21 00 40 */	addi r1, r1, 0x40
 /* 800C6B5C 000C2A7C  7C 08 03 A6 */	mtlr r0
-/* 800C6B60 000C2A80  4E 80 00 20 */	blr 
+/* 800C6B60 000C2A80  4E 80 00 20 */	blr
 
 .global OSLink
 OSLink:
@@ -349,7 +349,7 @@ lbl_800C6D38:
 /* 800C6D54 000C2C74  7C 08 03 A6 */	mtlr r0
 /* 800C6D58 000C2C78  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800C6D5C 000C2C7C  38 21 00 20 */	addi r1, r1, 0x20
-/* 800C6D60 000C2C80  4E 80 00 20 */	blr 
+/* 800C6D60 000C2C80  4E 80 00 20 */	blr
 
 .global Undo
 Undo:
@@ -507,7 +507,7 @@ lbl_800C6F5C:
 /* 800C6F60 000C2E80  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800C6F64 000C2E84  38 21 00 38 */	addi r1, r1, 0x38
 /* 800C6F68 000C2E88  7C 08 03 A6 */	mtlr r0
-/* 800C6F6C 000C2E8C  4E 80 00 20 */	blr 
+/* 800C6F6C 000C2E8C  4E 80 00 20 */	blr
 
 .global OSUnlink
 OSUnlink:
@@ -553,7 +553,7 @@ lbl_800C6FDC:
 /* 800C6FF4 000C2F14  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800C6FF8 000C2F18  7C 08 03 A6 */	mtlr r0
 /* 800C6FFC 000C2F1C  38 21 00 18 */	addi r1, r1, 0x18
-/* 800C7000 000C2F20  4E 80 00 20 */	blr 
+/* 800C7000 000C2F20  4E 80 00 20 */	blr
 
 .global __OSModuleInit
 __OSModuleInit:
@@ -562,4 +562,4 @@ __OSModuleInit:
 /* 800C700C 000C2F2C  90 04 30 CC */	stw r0, 0x800030CC@l(r4)
 /* 800C7010 000C2F30  90 04 30 C8 */	stw r0, 0x30c8(r4)
 /* 800C7014 000C2F34  90 04 30 D0 */	stw r0, 0x30d0(r4)
-/* 800C7018 000C2F38  4E 80 00 20 */	blr 
+/* 800C7018 000C2F38  4E 80 00 20 */	blr

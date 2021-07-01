@@ -5,7 +5,7 @@
 .global __CARDGetFatBlock
 __CARDGetFatBlock:
 /* 800D799C 000D38BC  80 63 00 88 */	lwz r3, 0x88(r3)
-/* 800D79A0 000D38C0  4E 80 00 20 */	blr 
+/* 800D79A0 000D38C0  4E 80 00 20 */	blr
 
 .global WriteCallback
 WriteCallback:
@@ -57,7 +57,7 @@ lbl_800D7A34:
 /* 800D7A4C 000D396C  90 1F 00 D8 */	stw r0, 0xd8(r31)
 /* 800D7A50 000D3970  38 7D 00 00 */	addi r3, r29, 0
 /* 800D7A54 000D3974  38 9E 00 00 */	addi r4, r30, 0
-/* 800D7A58 000D3978  4E 80 00 21 */	blrl 
+/* 800D7A58 000D3978  4E 80 00 21 */	blrl
 lbl_800D7A5C:
 /* 800D7A5C 000D397C  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 800D7A60 000D3980  83 E1 00 1C */	lwz r31, 0x1c(r1)
@@ -65,7 +65,7 @@ lbl_800D7A5C:
 /* 800D7A68 000D3988  7C 08 03 A6 */	mtlr r0
 /* 800D7A6C 000D398C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800D7A70 000D3990  38 21 00 20 */	addi r1, r1, 0x20
-/* 800D7A74 000D3994  4E 80 00 20 */	blr 
+/* 800D7A74 000D3994  4E 80 00 20 */	blr
 
 .global EraseCallback
 EraseCallback:
@@ -113,7 +113,7 @@ lbl_800D7AFC:
 /* 800D7B14 000D3A34  90 1E 00 D8 */	stw r0, 0xd8(r30)
 /* 800D7B18 000D3A38  38 7F 00 00 */	addi r3, r31, 0
 /* 800D7B1C 000D3A3C  38 9D 00 00 */	addi r4, r29, 0
-/* 800D7B20 000D3A40  4E 80 00 21 */	blrl 
+/* 800D7B20 000D3A40  4E 80 00 21 */	blrl
 lbl_800D7B24:
 /* 800D7B24 000D3A44  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800D7B28 000D3A48  83 E1 00 24 */	lwz r31, 0x24(r1)
@@ -121,7 +121,7 @@ lbl_800D7B24:
 /* 800D7B30 000D3A50  7C 08 03 A6 */	mtlr r0
 /* 800D7B34 000D3A54  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D7B38 000D3A58  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D7B3C 000D3A5C  4E 80 00 20 */	blr 
+/* 800D7B3C 000D3A5C  4E 80 00 20 */	blr
 
 .global __CARDAllocBlock
 __CARDAllocBlock:
@@ -204,7 +204,7 @@ lbl_800D7C40:
 /* 800D7C48 000D3B68  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 800D7C4C 000D3B6C  7C 08 03 A6 */	mtlr r0
 /* 800D7C50 000D3B70  38 21 00 20 */	addi r1, r1, 0x20
-/* 800D7C54 000D3B74  4E 80 00 20 */	blr 
+/* 800D7C54 000D3B74  4E 80 00 20 */	blr
 
 .global __CARDFreeBlock
 __CARDFreeBlock:
@@ -252,7 +252,7 @@ lbl_800D7CE4:
 /* 800D7CE4 000D3C04  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800D7CE8 000D3C08  38 21 00 08 */	addi r1, r1, 8
 /* 800D7CEC 000D3C0C  7C 08 03 A6 */	mtlr r0
-/* 800D7CF0 000D3C10  4E 80 00 20 */	blr 
+/* 800D7CF0 000D3C10  4E 80 00 20 */	blr
 
 .global __CARDUpdateFatBlock
 __CARDUpdateFatBlock:
@@ -298,4 +298,4 @@ __CARDUpdateFatBlock:
 /* 800D7D90 000D3CB0  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800D7D94 000D3CB4  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800D7D98 000D3CB8  38 21 00 28 */	addi r1, r1, 0x28
-/* 800D7D9C 000D3CBC  4E 80 00 20 */	blr 
+/* 800D7D9C 000D3CBC  4E 80 00 20 */	blr

@@ -22,7 +22,7 @@ lbl_800EB950:
 /* 800EB978 000E7898  54 C4 C9 FE */	srwi r4, r6, 7
 /* 800EB97C 000E789C  7C 63 02 14 */	add r3, r3, r0
 /* 800EB980 000E78A0  90 83 00 00 */	stw r4, 0(r3)
-/* 800EB984 000E78A4  4E 80 00 20 */	blr 
+/* 800EB984 000E78A4  4E 80 00 20 */	blr
 
 .global synthGetTicksPerSecond
 synthGetTicksPerSecond:
@@ -39,7 +39,7 @@ lbl_800EB998:
 /* 800EB9AC 000E78CC  54 00 10 3A */	slwi r0, r0, 2
 /* 800EB9B0 000E78D0  7C 63 02 14 */	add r3, r3, r0
 /* 800EB9B4 000E78D4  80 63 00 00 */	lwz r3, 0(r3)
-/* 800EB9B8 000E78D8  4E 80 00 20 */	blr 
+/* 800EB9B8 000E78D8  4E 80 00 20 */	blr
 
 .global synthInitPortamento
 synthInitPortamento:
@@ -90,7 +90,7 @@ lbl_800EBA58:
 /* 800EBA58 000E7978  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800EBA5C 000E797C  38 21 00 08 */	addi r1, r1, 8
 /* 800EBA60 000E7980  7C 08 03 A6 */	mtlr r0
-/* 800EBA64 000E7984  4E 80 00 20 */	blr 
+/* 800EBA64 000E7984  4E 80 00 20 */	blr
 
 .global do_voice_portamento
 do_voice_portamento:
@@ -224,7 +224,7 @@ lbl_800EBC48:
 /* 800EBC50 000E7B70  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 800EBC54 000E7B74  38 21 00 48 */	addi r1, r1, 0x48
 /* 800EBC58 000E7B78  7C 08 03 A6 */	mtlr r0
-/* 800EBC5C 000E7B7C  4E 80 00 20 */	blr 
+/* 800EBC5C 000E7B7C  4E 80 00 20 */	blr
 
 .global StartLayer
 StartLayer:
@@ -499,7 +499,7 @@ lbl_800EC038:
 /* 800EC03C 000E7F5C  80 01 00 8C */	lwz r0, 0x8c(r1)
 /* 800EC040 000E7F60  38 21 00 88 */	addi r1, r1, 0x88
 /* 800EC044 000E7F64  7C 08 03 A6 */	mtlr r0
-/* 800EC048 000E7F68  4E 80 00 20 */	blr 
+/* 800EC048 000E7F68  4E 80 00 20 */	blr
 
 .global StartKeymap
 StartKeymap:
@@ -662,7 +662,7 @@ lbl_800EC27C:
 /* 800EC280 000E81A0  80 01 00 84 */	lwz r0, 0x84(r1)
 /* 800EC284 000E81A4  38 21 00 80 */	addi r1, r1, 0x80
 /* 800EC288 000E81A8  7C 08 03 A6 */	mtlr r0
-/* 800EC28C 000E81AC  4E 80 00 20 */	blr 
+/* 800EC28C 000E81AC  4E 80 00 20 */	blr
 
 .global synthStartSound
 synthStartSound:
@@ -790,7 +790,7 @@ lbl_800EC448:
 /* 800EC44C 000E836C  80 01 00 74 */	lwz r0, 0x74(r1)
 /* 800EC450 000E8370  38 21 00 70 */	addi r1, r1, 0x70
 /* 800EC454 000E8374  7C 08 03 A6 */	mtlr r0
-/* 800EC458 000E8378  4E 80 00 20 */	blr 
+/* 800EC458 000E8378  4E 80 00 20 */	blr
 
 .global LowPrecisionHandler
 LowPrecisionHandler:
@@ -1335,7 +1335,7 @@ lbl_800ECC14:
 /* 800ECC18 000E8B38  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800ECC1C 000E8B3C  38 21 00 30 */	addi r1, r1, 0x30
 /* 800ECC20 000E8B40  7C 08 03 A6 */	mtlr r0
-/* 800ECC24 000E8B44  4E 80 00 20 */	blr 
+/* 800ECC24 000E8B44  4E 80 00 20 */	blr
 
 .global ZeroOffsetHandler
 ZeroOffsetHandler:
@@ -1788,7 +1788,7 @@ lbl_800ED294:
 /* 800ED2B0 000E91D0  83 A1 00 54 */	lwz r29, 0x54(r1)
 /* 800ED2B4 000E91D4  83 81 00 50 */	lwz r28, 0x50(r1)
 /* 800ED2B8 000E91D8  38 21 00 78 */	addi r1, r1, 0x78
-/* 800ED2BC 000E91DC  4E 80 00 20 */	blr 
+/* 800ED2BC 000E91DC  4E 80 00 20 */	blr
 
 .global EventHandler
 EventHandler:
@@ -1895,7 +1895,7 @@ lbl_800ED430:
 /* 800ED440 000E9360  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800ED444 000E9364  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800ED448 000E9368  38 21 00 20 */	addi r1, r1, 0x20
-/* 800ED44C 000E936C  4E 80 00 20 */	blr 
+/* 800ED44C 000E936C  4E 80 00 20 */	blr
 
 .global synthAddJob
 synthAddJob:
@@ -1925,7 +1925,7 @@ lbl_800ED49C:
 /* 800ED4A4 000E93C4  28 00 00 FF */	cmplwi r0, 0xff
 /* 800ED4A8 000E93C8  41 82 00 4C */	beq lbl_800ED4F4
 /* 800ED4AC 000E93CC  7C 00 30 40 */	cmplw r0, r6
-/* 800ED4B0 000E93D0  4D 82 00 20 */	beqlr 
+/* 800ED4B0 000E93D0  4D 82 00 20 */	beqlr
 /* 800ED4B4 000E93D4  80 C3 00 00 */	lwz r6, 0(r3)
 /* 800ED4B8 000E93D8  28 06 00 00 */	cmplwi r6, 0
 /* 800ED4BC 000E93DC  41 82 00 0C */	beq lbl_800ED4C8
@@ -1954,7 +1954,7 @@ lbl_800ED4FC:
 /* 800ED508 000E9428  41 82 00 50 */	beq lbl_800ED558
 /* 800ED50C 000E942C  88 04 00 09 */	lbz r0, 9(r4)
 /* 800ED510 000E9430  7C 00 30 40 */	cmplw r0, r6
-/* 800ED514 000E9434  4D 82 00 20 */	beqlr 
+/* 800ED514 000E9434  4D 82 00 20 */	beqlr
 /* 800ED518 000E9438  80 64 00 00 */	lwz r3, 0(r4)
 /* 800ED51C 000E943C  28 03 00 00 */	cmplwi r3, 0
 /* 800ED520 000E9440  41 82 00 0C */	beq lbl_800ED52C
@@ -1980,7 +1980,7 @@ lbl_800ED560:
 /* 800ED560 000E9480  88 03 00 21 */	lbz r0, 0x21(r3)
 /* 800ED564 000E9484  38 83 00 18 */	addi r4, r3, 0x18
 /* 800ED568 000E9488  28 00 00 FF */	cmplwi r0, 0xff
-/* 800ED56C 000E948C  4C 82 00 20 */	bnelr 
+/* 800ED56C 000E948C  4C 82 00 20 */	bnelr
 /* 800ED570 000E9490  39 25 00 04 */	addi r9, r5, 4
 lbl_800ED574:
 /* 800ED574 000E9494  99 04 00 09 */	stb r8, 9(r4)
@@ -1994,7 +1994,7 @@ lbl_800ED590:
 /* 800ED590 000E94B0  38 00 00 00 */	li r0, 0
 /* 800ED594 000E94B4  90 04 00 04 */	stw r0, 4(r4)
 /* 800ED598 000E94B8  90 89 00 00 */	stw r4, 0(r9)
-/* 800ED59C 000E94BC  4E 80 00 20 */	blr 
+/* 800ED59C 000E94BC  4E 80 00 20 */	blr
 
 .global synthStartSynthJobHandling
 synthStartSynthJobHandling:
@@ -2022,7 +2022,7 @@ synthStartSynthJobHandling:
 /* 800ED5F4 000E9514  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800ED5F8 000E9518  38 21 00 18 */	addi r1, r1, 0x18
 /* 800ED5FC 000E951C  7C 08 03 A6 */	mtlr r0
-/* 800ED600 000E9520  4E 80 00 20 */	blr 
+/* 800ED600 000E9520  4E 80 00 20 */	blr
 
 .global synthForceLowPrecisionUpdate
 synthForceLowPrecisionUpdate:
@@ -2042,7 +2042,7 @@ synthForceLowPrecisionUpdate:
 /* 800ED638 000E9558  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800ED63C 000E955C  38 21 00 18 */	addi r1, r1, 0x18
 /* 800ED640 000E9560  7C 08 03 A6 */	mtlr r0
-/* 800ED644 000E9564  4E 80 00 20 */	blr 
+/* 800ED644 000E9564  4E 80 00 20 */	blr
 
 .global synthKeyStateUpdate
 synthKeyStateUpdate:
@@ -2055,7 +2055,7 @@ synthKeyStateUpdate:
 /* 800ED660 000E9580  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800ED664 000E9584  38 21 00 08 */	addi r1, r1, 8
 /* 800ED668 000E9588  7C 08 03 A6 */	mtlr r0
-/* 800ED66C 000E958C  4E 80 00 20 */	blr 
+/* 800ED66C 000E958C  4E 80 00 20 */	blr
 
 .global HandleJobQueue
 HandleJobQueue:
@@ -2077,7 +2077,7 @@ lbl_800ED6A0:
 /* 800ED6A8 000E95C8  7D 88 03 A6 */	mtlr r12
 /* 800ED6AC 000E95CC  9B E3 00 09 */	stb r31, 9(r3)
 /* 800ED6B0 000E95D0  88 63 00 08 */	lbz r3, 8(r3)
-/* 800ED6B4 000E95D4  4E 80 00 21 */	blrl 
+/* 800ED6B4 000E95D4  4E 80 00 21 */	blrl
 /* 800ED6B8 000E95D8  7F C3 F3 78 */	mr r3, r30
 lbl_800ED6BC:
 /* 800ED6BC 000E95DC  28 03 00 00 */	cmplwi r3, 0
@@ -2091,7 +2091,7 @@ lbl_800ED6BC:
 /* 800ED6DC 000E95FC  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800ED6E0 000E9600  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800ED6E4 000E9604  38 21 00 20 */	addi r1, r1, 0x20
-/* 800ED6E8 000E9608  4E 80 00 20 */	blr 
+/* 800ED6E8 000E9608  4E 80 00 20 */	blr
 
 .global HandleFaderTermination
 HandleFaderTermination:
@@ -2126,7 +2126,7 @@ lbl_800ED748:
 /* 800ED748 000E9668  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800ED74C 000E966C  38 21 00 08 */	addi r1, r1, 8
 /* 800ED750 000E9670  7C 08 03 A6 */	mtlr r0
-/* 800ED754 000E9674  4E 80 00 20 */	blr 
+/* 800ED754 000E9674  4E 80 00 20 */	blr
 
 .global synthHandle
 synthHandle:
@@ -2293,7 +2293,7 @@ lbl_800ED97C:
 /* 800ED9AC 000E98CC  80 BA 00 00 */	lwz r5, 0(r26)
 /* 800ED9B0 000E98D0  38 60 00 01 */	li r3, 1
 /* 800ED9B4 000E98D4  7D 88 03 A6 */	mtlr r12
-/* 800ED9B8 000E98D8  4E 80 00 21 */	blrl 
+/* 800ED9B8 000E98D8  4E 80 00 21 */	blrl
 lbl_800ED9BC:
 /* 800ED9BC 000E98DC  88 18 00 00 */	lbz r0, 0(r24)
 /* 800ED9C0 000E98E0  28 00 00 FF */	cmplwi r0, 0xff
@@ -2316,7 +2316,7 @@ lbl_800ED9D0:
 /* 800EDA00 000E9920  80 B6 00 00 */	lwz r5, 0(r22)
 /* 800EDA04 000E9924  38 60 00 01 */	li r3, 1
 /* 800EDA08 000E9928  7D 88 03 A6 */	mtlr r12
-/* 800EDA0C 000E992C  4E 80 00 21 */	blrl 
+/* 800EDA0C 000E992C  4E 80 00 21 */	blrl
 lbl_800EDA10:
 /* 800EDA10 000E9930  3B DE 00 01 */	addi r30, r30, 1
 /* 800EDA14 000E9934  28 1E 00 04 */	cmplwi r30, 4
@@ -2343,7 +2343,7 @@ lbl_800EDA58:
 /* 800EDA60 000E9980  CB E1 00 58 */	lfd f31, 0x58(r1)
 /* 800EDA64 000E9984  38 21 00 60 */	addi r1, r1, 0x60
 /* 800EDA68 000E9988  7C 08 03 A6 */	mtlr r0
-/* 800EDA6C 000E998C  4E 80 00 20 */	blr 
+/* 800EDA6C 000E998C  4E 80 00 20 */	blr
 
 .global synthFXStart
 synthFXStart:
@@ -2488,7 +2488,7 @@ lbl_800EDC5C:
 /* 800EDC64 000E9B84  80 01 00 64 */	lwz r0, 0x64(r1)
 /* 800EDC68 000E9B88  38 21 00 60 */	addi r1, r1, 0x60
 /* 800EDC6C 000E9B8C  7C 08 03 A6 */	mtlr r0
-/* 800EDC70 000E9B90  4E 80 00 20 */	blr 
+/* 800EDC70 000E9B90  4E 80 00 20 */	blr
 
 .global synthFXSetCtrl
 synthFXSetCtrl:
@@ -2555,7 +2555,7 @@ lbl_800EDD3C:
 /* 800EDD4C 000E9C6C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800EDD50 000E9C70  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800EDD54 000E9C74  38 21 00 20 */	addi r1, r1, 0x20
-/* 800EDD58 000E9C78  4E 80 00 20 */	blr 
+/* 800EDD58 000E9C78  4E 80 00 20 */	blr
 
 .global synthFXSetCtrl14
 synthFXSetCtrl14:
@@ -2622,7 +2622,7 @@ lbl_800EDE24:
 /* 800EDE34 000E9D54  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800EDE38 000E9D58  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800EDE3C 000E9D5C  38 21 00 20 */	addi r1, r1, 0x20
-/* 800EDE40 000E9D60  4E 80 00 20 */	blr 
+/* 800EDE40 000E9D60  4E 80 00 20 */	blr
 
 .global synthFXCloneMidiSetup
 synthFXCloneMidiSetup:
@@ -2658,7 +2658,7 @@ synthFXCloneMidiSetup:
 /* 800EDEB8 000E9DD8  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800EDEBC 000E9DDC  7C 08 03 A6 */	mtlr r0
 /* 800EDEC0 000E9DE0  38 21 00 18 */	addi r1, r1, 0x18
-/* 800EDEC4 000E9DE4  4E 80 00 20 */	blr 
+/* 800EDEC4 000E9DE4  4E 80 00 20 */	blr
 
 .global synthSendKeyOff
 synthSendKeyOff:
@@ -2700,7 +2700,7 @@ lbl_800EDF38:
 /* 800EDF44 000E9E64  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800EDF48 000E9E68  7C 08 03 A6 */	mtlr r0
 /* 800EDF4C 000E9E6C  38 21 00 18 */	addi r1, r1, 0x18
-/* 800EDF50 000E9E70  4E 80 00 20 */	blr 
+/* 800EDF50 000E9E70  4E 80 00 20 */	blr
 
 .global synthVolume
 synthVolume:
@@ -2990,7 +2990,7 @@ lbl_800EE340:
 /* 800EE354 000EA274  CB A1 00 48 */	lfd f29, 0x48(r1)
 /* 800EE358 000EA278  CB 81 00 40 */	lfd f28, 0x40(r1)
 /* 800EE35C 000EA27C  38 21 00 60 */	addi r1, r1, 0x60
-/* 800EE360 000EA280  4E 80 00 20 */	blr 
+/* 800EE360 000EA280  4E 80 00 20 */	blr
 
 .global synthIsFadeOutActive
 synthIsFadeOutActive:
@@ -3012,23 +3012,23 @@ synthIsFadeOutActive:
 /* 800EE3A0 000EA2C0  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800EE3A4 000EA2C4  40 81 00 0C */	ble lbl_800EE3B0
 /* 800EE3A8 000EA2C8  38 60 00 01 */	li r3, 1
-/* 800EE3AC 000EA2CC  4E 80 00 20 */	blr 
+/* 800EE3AC 000EA2CC  4E 80 00 20 */	blr
 lbl_800EE3B0:
 /* 800EE3B0 000EA2D0  38 60 00 00 */	li r3, 0
-/* 800EE3B4 000EA2D4  4E 80 00 20 */	blr 
+/* 800EE3B4 000EA2D4  4E 80 00 20 */	blr
 
 .global synthSetMusicVolumeType
 synthSetMusicVolumeType:
 /* 800EE3B8 000EA2D8  88 0D A4 18 */	lbz r0, sndActive_2-_SDA_BASE_(r13)
 /* 800EE3BC 000EA2DC  28 00 00 00 */	cmplwi r0, 0
-/* 800EE3C0 000EA2E0  4D 82 00 20 */	beqlr 
+/* 800EE3C0 000EA2E0  4D 82 00 20 */	beqlr
 /* 800EE3C4 000EA2E4  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800EE3C8 000EA2E8  1C 00 00 30 */	mulli r0, r0, 0x30
 /* 800EE3CC 000EA2EC  3C 60 80 2D */	lis r3, lbl_802D6454@ha
 /* 800EE3D0 000EA2F0  38 63 64 54 */	addi r3, r3, lbl_802D6454@l
 /* 800EE3D4 000EA2F4  7C 63 02 14 */	add r3, r3, r0
 /* 800EE3D8 000EA2F8  98 83 00 2D */	stb r4, 0x2d(r3)
-/* 800EE3DC 000EA2FC  4E 80 00 20 */	blr 
+/* 800EE3DC 000EA2FC  4E 80 00 20 */	blr
 
 .global synthHWMessageHandler
 synthHWMessageHandler:
@@ -3058,7 +3058,7 @@ lbl_800EE430:
 /* 800EE430 000EA350  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800EE434 000EA354  38 21 00 08 */	addi r1, r1, 8
 /* 800EE438 000EA358  7C 08 03 A6 */	mtlr r0
-/* 800EE43C 000EA35C  4E 80 00 20 */	blr 
+/* 800EE43C 000EA35C  4E 80 00 20 */	blr
 
 .global synthInit
 synthInit:
@@ -3381,4 +3381,4 @@ lbl_800EE8F8:
 /* 800EE91C 000EA83C  80 01 00 84 */	lwz r0, 0x84(r1)
 /* 800EE920 000EA840  38 21 00 80 */	addi r1, r1, 0x80
 /* 800EE924 000EA844  7C 08 03 A6 */	mtlr r0
-/* 800EE928 000EA848  4E 80 00 20 */	blr 
+/* 800EE928 000EA848  4E 80 00 20 */	blr

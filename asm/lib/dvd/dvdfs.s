@@ -10,14 +10,14 @@ __DVDFSInit:
 /* 800CB73C 000C765C  90 0D A1 D4 */	stw r0, FstStart-_SDA_BASE_(r13)
 /* 800CB740 000C7660  80 6D A1 D4 */	lwz r3, FstStart-_SDA_BASE_(r13)
 /* 800CB744 000C7664  28 03 00 00 */	cmplwi r3, 0
-/* 800CB748 000C7668  4D 82 00 20 */	beqlr 
+/* 800CB748 000C7668  4D 82 00 20 */	beqlr
 /* 800CB74C 000C766C  80 03 00 08 */	lwz r0, 8(r3)
 /* 800CB750 000C7670  90 0D A1 DC */	stw r0, MaxEntryNum-_SDA_BASE_(r13)
 /* 800CB754 000C7674  80 0D A1 DC */	lwz r0, MaxEntryNum-_SDA_BASE_(r13)
 /* 800CB758 000C7678  1C 00 00 0C */	mulli r0, r0, 0xc
 /* 800CB75C 000C767C  7C 03 02 14 */	add r0, r3, r0
 /* 800CB760 000C7680  90 0D A1 D8 */	stw r0, FstStringStart-_SDA_BASE_(r13)
-/* 800CB764 000C7684  4E 80 00 20 */	blr 
+/* 800CB764 000C7684  4E 80 00 20 */	blr
 
 .global DVDConvertPathToEntrynum
 DVDConvertPathToEntrynum:
@@ -243,7 +243,7 @@ lbl_800CBA34:
 /* 800CBA38 000C7958  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 800CBA3C 000C795C  38 21 00 48 */	addi r1, r1, 0x48
 /* 800CBA40 000C7960  7C 08 03 A6 */	mtlr r0
-/* 800CBA44 000C7964  4E 80 00 20 */	blr 
+/* 800CBA44 000C7964  4E 80 00 20 */	blr
 
 .global DVDFastOpen
 DVDFastOpen:
@@ -266,7 +266,7 @@ lbl_800CBA7C:
 /* 800CBA80 000C79A0  41 82 00 0C */	beq lbl_800CBA8C
 lbl_800CBA84:
 /* 800CBA84 000C79A4  38 60 00 00 */	li r3, 0
-/* 800CBA88 000C79A8  4E 80 00 20 */	blr 
+/* 800CBA88 000C79A8  4E 80 00 20 */	blr
 lbl_800CBA8C:
 /* 800CBA8C 000C79AC  7C 63 32 14 */	add r3, r3, r6
 /* 800CBA90 000C79B0  80 A3 00 04 */	lwz r5, 4(r3)
@@ -279,7 +279,7 @@ lbl_800CBA8C:
 /* 800CBAAC 000C79CC  90 A4 00 34 */	stw r5, 0x34(r4)
 /* 800CBAB0 000C79D0  90 04 00 38 */	stw r0, 0x38(r4)
 /* 800CBAB4 000C79D4  90 04 00 0C */	stw r0, 0xc(r4)
-/* 800CBAB8 000C79D8  4E 80 00 20 */	blr 
+/* 800CBAB8 000C79D8  4E 80 00 20 */	blr
 
 .global DVDOpen
 DVDOpen:
@@ -337,7 +337,7 @@ lbl_800CBB6C:
 /* 800CBB74 000C7A94  83 C1 00 90 */	lwz r30, 0x90(r1)
 /* 800CBB78 000C7A98  7C 08 03 A6 */	mtlr r0
 /* 800CBB7C 000C7A9C  38 21 00 98 */	addi r1, r1, 0x98
-/* 800CBB80 000C7AA0  4E 80 00 20 */	blr 
+/* 800CBB80 000C7AA0  4E 80 00 20 */	blr
 
 .global DVDClose
 DVDClose:
@@ -349,7 +349,7 @@ DVDClose:
 /* 800CBB98 000C7AB8  38 60 00 01 */	li r3, 1
 /* 800CBB9C 000C7ABC  38 21 00 08 */	addi r1, r1, 8
 /* 800CBBA0 000C7AC0  7C 08 03 A6 */	mtlr r0
-/* 800CBBA4 000C7AC4  4E 80 00 20 */	blr 
+/* 800CBBA4 000C7AC4  4E 80 00 20 */	blr
 
 .global entryToPath
 entryToPath:
@@ -452,7 +452,7 @@ lbl_800CBCE8:
 /* 800CBCF8 000C7C18  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 800CBCFC 000C7C1C  83 81 00 20 */	lwz r28, 0x20(r1)
 /* 800CBD00 000C7C20  38 21 00 30 */	addi r1, r1, 0x30
-/* 800CBD04 000C7C24  4E 80 00 20 */	blr 
+/* 800CBD04 000C7C24  4E 80 00 20 */	blr
 
 .global DVDGetCurrentDir
 DVDGetCurrentDir:
@@ -510,7 +510,7 @@ lbl_800CBDAC:
 /* 800CBDBC 000C7CDC  7C 08 03 A6 */	mtlr r0
 /* 800CBDC0 000C7CE0  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800CBDC4 000C7CE4  38 21 00 20 */	addi r1, r1, 0x20
-/* 800CBDC8 000C7CE8  4E 80 00 20 */	blr 
+/* 800CBDC8 000C7CE8  4E 80 00 20 */	blr
 
 .global DVDChangeDir
 DVDChangeDir:
@@ -542,7 +542,7 @@ lbl_800CBE1C:
 /* 800CBE1C 000C7D3C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800CBE20 000C7D40  38 21 00 08 */	addi r1, r1, 8
 /* 800CBE24 000C7D44  7C 08 03 A6 */	mtlr r0
-/* 800CBE28 000C7D48  4E 80 00 20 */	blr 
+/* 800CBE28 000C7D48  4E 80 00 20 */	blr
 
 .global DVDReadAsyncPrio
 DVDReadAsyncPrio:
@@ -597,7 +597,7 @@ lbl_800CBEAC:
 /* 800CBEDC 000C7DFC  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800CBEE0 000C7E00  38 21 00 38 */	addi r1, r1, 0x38
 /* 800CBEE4 000C7E04  7C 08 03 A6 */	mtlr r0
-/* 800CBEE8 000C7E08  4E 80 00 20 */	blr 
+/* 800CBEE8 000C7E08  4E 80 00 20 */	blr
 
 .global cbForReadAsync
 cbForReadAsync:
@@ -608,12 +608,12 @@ cbForReadAsync:
 /* 800CBEFC 000C7E1C  28 0C 00 00 */	cmplwi r12, 0
 /* 800CBF00 000C7E20  41 82 00 0C */	beq lbl_800CBF0C
 /* 800CBF04 000C7E24  7D 88 03 A6 */	mtlr r12
-/* 800CBF08 000C7E28  4E 80 00 21 */	blrl 
+/* 800CBF08 000C7E28  4E 80 00 21 */	blrl
 lbl_800CBF0C:
 /* 800CBF0C 000C7E2C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800CBF10 000C7E30  38 21 00 08 */	addi r1, r1, 8
 /* 800CBF14 000C7E34  7C 08 03 A6 */	mtlr r0
-/* 800CBF18 000C7E38  4E 80 00 20 */	blr 
+/* 800CBF18 000C7E38  4E 80 00 20 */	blr
 
 .global DVDOpenDir
 DVDOpenDir:
@@ -654,7 +654,7 @@ lbl_800CBF8C:
 /* 800CBF90 000C7EB0  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800CBF94 000C7EB4  38 21 00 18 */	addi r1, r1, 0x18
 /* 800CBF98 000C7EB8  7C 08 03 A6 */	mtlr r0
-/* 800CBF9C 000C7EBC  4E 80 00 20 */	blr 
+/* 800CBF9C 000C7EBC  4E 80 00 20 */	blr
 
 .global DVDReadDir
 DVDReadDir:
@@ -667,7 +667,7 @@ DVDReadDir:
 /* 800CBFB8 000C7ED8  41 81 00 0C */	bgt lbl_800CBFC4
 lbl_800CBFBC:
 /* 800CBFBC 000C7EDC  38 60 00 00 */	li r3, 0
-/* 800CBFC0 000C7EE0  4E 80 00 20 */	blr 
+/* 800CBFC0 000C7EE0  4E 80 00 20 */	blr
 lbl_800CBFC4:
 /* 800CBFC4 000C7EE4  90 E4 00 00 */	stw r7, 0(r4)
 /* 800CBFC8 000C7EE8  1D 07 00 0C */	mulli r8, r7, 0xc
@@ -706,12 +706,12 @@ lbl_800CC034:
 lbl_800CC038:
 /* 800CC038 000C7F58  90 03 00 04 */	stw r0, 4(r3)
 /* 800CC03C 000C7F5C  38 60 00 01 */	li r3, 1
-/* 800CC040 000C7F60  4E 80 00 20 */	blr 
+/* 800CC040 000C7F60  4E 80 00 20 */	blr
 
 .global DVDCloseDir
 DVDCloseDir:
 /* 800CC044 000C7F64  38 60 00 01 */	li r3, 1
-/* 800CC048 000C7F68  4E 80 00 20 */	blr 
+/* 800CC048 000C7F68  4E 80 00 20 */	blr
 
 .global DVDPrepareStreamAsync
 DVDPrepareStreamAsync:
@@ -778,7 +778,7 @@ lbl_800CC104:
 /* 800CC128 000C8048  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800CC12C 000C804C  38 21 00 38 */	addi r1, r1, 0x38
 /* 800CC130 000C8050  7C 08 03 A6 */	mtlr r0
-/* 800CC134 000C8054  4E 80 00 20 */	blr 
+/* 800CC134 000C8054  4E 80 00 20 */	blr
 
 .global cbForPrepareStreamAsync
 cbForPrepareStreamAsync:
@@ -789,9 +789,9 @@ cbForPrepareStreamAsync:
 /* 800CC148 000C8068  28 0C 00 00 */	cmplwi r12, 0
 /* 800CC14C 000C806C  41 82 00 0C */	beq lbl_800CC158
 /* 800CC150 000C8070  7D 88 03 A6 */	mtlr r12
-/* 800CC154 000C8074  4E 80 00 21 */	blrl 
+/* 800CC154 000C8074  4E 80 00 21 */	blrl
 lbl_800CC158:
 /* 800CC158 000C8078  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800CC15C 000C807C  38 21 00 08 */	addi r1, r1, 8
 /* 800CC160 000C8080  7C 08 03 A6 */	mtlr r0
-/* 800CC164 000C8084  4E 80 00 20 */	blr 
+/* 800CC164 000C8084  4E 80 00 20 */	blr

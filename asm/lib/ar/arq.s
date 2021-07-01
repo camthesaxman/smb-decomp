@@ -74,11 +74,11 @@ lbl_800D44D4:
 /* 800D44D4 000D03F4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800D44D8 000D03F8  38 21 00 08 */	addi r1, r1, 8
 /* 800D44DC 000D03FC  7C 08 03 A6 */	mtlr r0
-/* 800D44E0 000D0400  4E 80 00 20 */	blr 
+/* 800D44E0 000D0400  4E 80 00 20 */	blr
 
 .global __ARQCallbackHack
 __ARQCallbackHack:
-/* 800D44E4 000D0404  4E 80 00 20 */	blr 
+/* 800D44E4 000D0404  4E 80 00 20 */	blr
 
 .global __ARQInterruptServiceRoutine
 __ARQInterruptServiceRoutine:
@@ -90,7 +90,7 @@ __ARQInterruptServiceRoutine:
 /* 800D44FC 000D041C  41 82 00 20 */	beq lbl_800D451C
 /* 800D4500 000D0420  80 6D A3 20 */	lwz r3, __ARQRequestPendingHi-_SDA_BASE_(r13)
 /* 800D4504 000D0424  7D 88 03 A6 */	mtlr r12
-/* 800D4508 000D0428  4E 80 00 21 */	blrl 
+/* 800D4508 000D0428  4E 80 00 21 */	blrl
 /* 800D450C 000D042C  38 00 00 00 */	li r0, 0
 /* 800D4510 000D0430  90 0D A3 20 */	stw r0, __ARQRequestPendingHi-_SDA_BASE_(r13)
 /* 800D4514 000D0434  90 0D A3 28 */	stw r0, __ARQCallbackHi-_SDA_BASE_(r13)
@@ -101,7 +101,7 @@ lbl_800D451C:
 /* 800D4524 000D0444  41 82 00 1C */	beq lbl_800D4540
 /* 800D4528 000D0448  80 6D A3 24 */	lwz r3, __ARQRequestPendingLo-_SDA_BASE_(r13)
 /* 800D452C 000D044C  7D 88 03 A6 */	mtlr r12
-/* 800D4530 000D0450  4E 80 00 21 */	blrl 
+/* 800D4530 000D0450  4E 80 00 21 */	blrl
 /* 800D4534 000D0454  38 00 00 00 */	li r0, 0
 /* 800D4538 000D0458  90 0D A3 24 */	stw r0, __ARQRequestPendingLo-_SDA_BASE_(r13)
 /* 800D453C 000D045C  90 0D A3 2C */	stw r0, __ARQCallbackLo-_SDA_BASE_(r13)
@@ -138,7 +138,7 @@ lbl_800D45A4:
 /* 800D45A4 000D04C4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800D45A8 000D04C8  38 21 00 08 */	addi r1, r1, 8
 /* 800D45AC 000D04CC  7C 08 03 A6 */	mtlr r0
-/* 800D45B0 000D04D0  4E 80 00 20 */	blr 
+/* 800D45B0 000D04D0  4E 80 00 20 */	blr
 
 .global ARQInit
 ARQInit:
@@ -168,7 +168,7 @@ lbl_800D4608:
 /* 800D460C 000D052C  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800D4610 000D0530  38 21 00 10 */	addi r1, r1, 0x10
 /* 800D4614 000D0534  7C 08 03 A6 */	mtlr r0
-/* 800D4618 000D0538  4E 80 00 20 */	blr 
+/* 800D4618 000D0538  4E 80 00 20 */	blr
 
 .global ARQPostRequest
 ARQPostRequest:
@@ -271,4 +271,4 @@ lbl_800D4754:
 /* 800D4768 000D0688  7C 08 03 A6 */	mtlr r0
 /* 800D476C 000D068C  83 A1 00 2C */	lwz r29, 0x2c(r1)
 /* 800D4770 000D0690  38 21 00 38 */	addi r1, r1, 0x38
-/* 800D4774 000D0694  4E 80 00 20 */	blr 
+/* 800D4774 000D0694  4E 80 00 20 */	blr

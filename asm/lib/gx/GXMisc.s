@@ -31,7 +31,7 @@ lbl_800DF0DC:
 /* 800DF104 000DB024  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800DF108 000DB028  38 21 00 08 */	addi r1, r1, 8
 /* 800DF10C 000DB02C  7C 08 03 A6 */	mtlr r0
-/* 800DF110 000DB030  4E 80 00 20 */	blr 
+/* 800DF110 000DB030  4E 80 00 20 */	blr
 
 .global GXSetDrawSync
 GXSetDrawSync:
@@ -84,7 +84,7 @@ lbl_800DF184:
 /* 800DF1C4 000DB0E4  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800DF1C8 000DB0E8  38 21 00 18 */	addi r1, r1, 0x18
 /* 800DF1CC 000DB0EC  7C 08 03 A6 */	mtlr r0
-/* 800DF1D0 000DB0F0  4E 80 00 20 */	blr 
+/* 800DF1D0 000DB0F0  4E 80 00 20 */	blr
 
 .global GXSetDrawDone
 GXSetDrawDone:
@@ -129,7 +129,7 @@ lbl_800DF228:
 /* 800DF264 000DB184  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800DF268 000DB188  38 21 00 18 */	addi r1, r1, 0x18
 /* 800DF26C 000DB18C  7C 08 03 A6 */	mtlr r0
-/* 800DF270 000DB190  4E 80 00 20 */	blr 
+/* 800DF270 000DB190  4E 80 00 20 */	blr
 
 .global GXDrawDone
 GXDrawDone:
@@ -166,7 +166,7 @@ lbl_800DF2CC:
 /* 800DF2E4 000DB204  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800DF2E8 000DB208  38 21 00 18 */	addi r1, r1, 0x18
 /* 800DF2EC 000DB20C  7C 08 03 A6 */	mtlr r0
-/* 800DF2F0 000DB210  4E 80 00 20 */	blr 
+/* 800DF2F0 000DB210  4E 80 00 20 */	blr
 /* 800DF2F4 000DB214  38 00 00 61 */	li r0, 0x61
 /* 800DF2F8 000DB218  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
 /* 800DF2FC 000DB21C  3C A0 CC 01 */	lis r5, 0xCC008000@ha
@@ -175,7 +175,7 @@ lbl_800DF2CC:
 /* 800DF308 000DB228  80 64 01 DC */	lwz r3, 0x1dc(r4)
 /* 800DF30C 000DB22C  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800DF310 000DB230  B0 04 00 02 */	sth r0, 2(r4)
-/* 800DF314 000DB234  4E 80 00 20 */	blr 
+/* 800DF314 000DB234  4E 80 00 20 */	blr
 
 .global GXPokeAlphaMode
 GXPokeAlphaMode:
@@ -183,7 +183,7 @@ GXPokeAlphaMode:
 /* 800DF31C 000DB23C  54 80 06 3E */	clrlwi r0, r4, 0x18
 /* 800DF320 000DB240  50 60 40 2E */	rlwimi r0, r3, 8, 0, 0x17
 /* 800DF324 000DB244  B0 05 00 06 */	sth r0, 6(r5)
-/* 800DF328 000DB248  4E 80 00 20 */	blr 
+/* 800DF328 000DB248  4E 80 00 20 */	blr
 
 .global GXPokeAlphaRead
 GXPokeAlphaRead:
@@ -191,7 +191,7 @@ GXPokeAlphaRead:
 /* 800DF330 000DB250  80 6D A3 68 */	lwz r3, __peReg-_SDA_BASE_(r13)
 /* 800DF334 000DB254  60 00 00 04 */	ori r0, r0, 4
 /* 800DF338 000DB258  B0 03 00 08 */	sth r0, 8(r3)
-/* 800DF33C 000DB25C  4E 80 00 20 */	blr 
+/* 800DF33C 000DB25C  4E 80 00 20 */	blr
 
 .global GXPokeAlphaUpdate
 GXPokeAlphaUpdate:
@@ -201,7 +201,7 @@ GXPokeAlphaUpdate:
 /* 800DF34C 000DB26C  54 63 07 34 */	rlwinm r3, r3, 0, 0x1c, 0x1a
 /* 800DF350 000DB270  7C 60 03 78 */	or r0, r3, r0
 /* 800DF354 000DB274  B0 04 00 00 */	sth r0, 0(r4)
-/* 800DF358 000DB278  4E 80 00 20 */	blr 
+/* 800DF358 000DB278  4E 80 00 20 */	blr
 
 .global GXPokeBlendMode
 GXPokeBlendMode:
@@ -239,7 +239,7 @@ lbl_800DF380:
 /* 800DF3D4 000DB2F4  54 00 02 3E */	clrlwi r0, r0, 8
 /* 800DF3D8 000DB2F8  64 00 41 00 */	oris r0, r0, 0x4100
 /* 800DF3DC 000DB2FC  B0 0A 00 00 */	sth r0, 0(r10)
-/* 800DF3E0 000DB300  4E 80 00 20 */	blr 
+/* 800DF3E0 000DB300  4E 80 00 20 */	blr
 
 .global GXPokeColorUpdate
 GXPokeColorUpdate:
@@ -249,7 +249,7 @@ GXPokeColorUpdate:
 /* 800DF3F0 000DB310  54 63 07 76 */	rlwinm r3, r3, 0, 0x1d, 0x1b
 /* 800DF3F4 000DB314  7C 60 03 78 */	or r0, r3, r0
 /* 800DF3F8 000DB318  B0 04 00 00 */	sth r0, 0(r4)
-/* 800DF3FC 000DB31C  4E 80 00 20 */	blr 
+/* 800DF3FC 000DB31C  4E 80 00 20 */	blr
 
 .global GXPokeDstAlpha
 GXPokeDstAlpha:
@@ -257,7 +257,7 @@ GXPokeDstAlpha:
 /* 800DF404 000DB324  54 60 44 2E */	rlwinm r0, r3, 8, 0x10, 0x17
 /* 800DF408 000DB328  50 80 06 3E */	rlwimi r0, r4, 0, 0x18, 0x1f
 /* 800DF40C 000DB32C  B0 05 00 04 */	sth r0, 4(r5)
-/* 800DF410 000DB330  4E 80 00 20 */	blr 
+/* 800DF410 000DB330  4E 80 00 20 */	blr
 
 .global GXPokeDither
 GXPokeDither:
@@ -267,7 +267,7 @@ GXPokeDither:
 /* 800DF420 000DB340  54 63 07 B8 */	rlwinm r3, r3, 0, 0x1e, 0x1c
 /* 800DF424 000DB344  7C 60 03 78 */	or r0, r3, r0
 /* 800DF428 000DB348  B0 04 00 00 */	sth r0, 0(r4)
-/* 800DF42C 000DB34C  4E 80 00 20 */	blr 
+/* 800DF42C 000DB34C  4E 80 00 20 */	blr
 
 .global GXPokeZMode
 GXPokeZMode:
@@ -280,7 +280,7 @@ GXPokeZMode:
 /* 800DF448 000DB368  54 A0 25 36 */	rlwinm r0, r5, 4, 0x14, 0x1b
 /* 800DF44C 000DB36C  7C 80 03 78 */	or r0, r4, r0
 /* 800DF450 000DB370  B0 03 00 00 */	sth r0, 0(r3)
-/* 800DF454 000DB374  4E 80 00 20 */	blr 
+/* 800DF454 000DB374  4E 80 00 20 */	blr
 
 .global GXSetDrawSyncCallback
 GXSetDrawSyncCallback:
@@ -300,7 +300,7 @@ GXSetDrawSyncCallback:
 /* 800DF48C 000DB3AC  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800DF490 000DB3B0  7C 08 03 A6 */	mtlr r0
 /* 800DF494 000DB3B4  38 21 00 18 */	addi r1, r1, 0x18
-/* 800DF498 000DB3B8  4E 80 00 20 */	blr 
+/* 800DF498 000DB3B8  4E 80 00 20 */	blr
 
 .global GXTokenInterruptHandler
 GXTokenInterruptHandler:
@@ -322,7 +322,7 @@ GXTokenInterruptHandler:
 /* 800DF4D8 000DB3F8  81 8D A3 90 */	lwz r12, TokenCB-_SDA_BASE_(r13)
 /* 800DF4DC 000DB3FC  38 7F 00 00 */	addi r3, r31, 0
 /* 800DF4E0 000DB400  7D 88 03 A6 */	mtlr r12
-/* 800DF4E4 000DB404  4E 80 00 21 */	blrl 
+/* 800DF4E4 000DB404  4E 80 00 21 */	blrl
 /* 800DF4E8 000DB408  38 61 00 10 */	addi r3, r1, 0x10
 /* 800DF4EC 000DB40C  4B FE 43 9D */	bl OSClearContext
 /* 800DF4F0 000DB410  7F C3 F3 78 */	mr r3, r30
@@ -338,7 +338,7 @@ lbl_800DF4F8:
 /* 800DF514 000DB434  83 C1 02 D8 */	lwz r30, 0x2d8(r1)
 /* 800DF518 000DB438  7C 08 03 A6 */	mtlr r0
 /* 800DF51C 000DB43C  38 21 02 E0 */	addi r1, r1, 0x2e0
-/* 800DF520 000DB440  4E 80 00 20 */	blr 
+/* 800DF520 000DB440  4E 80 00 20 */	blr
 
 .global GXSetDrawDoneCallback
 GXSetDrawDoneCallback:
@@ -358,7 +358,7 @@ GXSetDrawDoneCallback:
 /* 800DF558 000DB478  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800DF55C 000DB47C  7C 08 03 A6 */	mtlr r0
 /* 800DF560 000DB480  38 21 00 18 */	addi r1, r1, 0x18
-/* 800DF564 000DB484  4E 80 00 20 */	blr 
+/* 800DF564 000DB484  4E 80 00 20 */	blr
 
 .global GXFinishInterruptHandler
 GXFinishInterruptHandler:
@@ -383,7 +383,7 @@ GXFinishInterruptHandler:
 /* 800DF5B0 000DB4D0  4B FE 41 11 */	bl OSSetCurrentContext
 /* 800DF5B4 000DB4D4  81 8D A3 94 */	lwz r12, DrawDoneCB-_SDA_BASE_(r13)
 /* 800DF5B8 000DB4D8  7D 88 03 A6 */	mtlr r12
-/* 800DF5BC 000DB4DC  4E 80 00 21 */	blrl 
+/* 800DF5BC 000DB4DC  4E 80 00 21 */	blrl
 /* 800DF5C0 000DB4E0  38 61 00 10 */	addi r3, r1, 0x10
 /* 800DF5C4 000DB4E4  4B FE 42 C5 */	bl OSClearContext
 /* 800DF5C8 000DB4E8  7F E3 FB 78 */	mr r3, r31
@@ -395,7 +395,7 @@ lbl_800DF5D0:
 /* 800DF5DC 000DB4FC  83 E1 02 DC */	lwz r31, 0x2dc(r1)
 /* 800DF5E0 000DB500  38 21 02 E0 */	addi r1, r1, 0x2e0
 /* 800DF5E4 000DB504  7C 08 03 A6 */	mtlr r0
-/* 800DF5E8 000DB508  4E 80 00 20 */	blr 
+/* 800DF5E8 000DB508  4E 80 00 20 */	blr
 
 .global __GXPEInit
 __GXPEInit:
@@ -430,4 +430,4 @@ __GXPEInit:
 /* 800DF65C 000DB57C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800DF660 000DB580  38 21 00 08 */	addi r1, r1, 8
 /* 800DF664 000DB584  7C 08 03 A6 */	mtlr r0
-/* 800DF668 000DB588  4E 80 00 20 */	blr 
+/* 800DF668 000DB588  4E 80 00 20 */	blr

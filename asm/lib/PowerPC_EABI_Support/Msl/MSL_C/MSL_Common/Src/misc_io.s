@@ -4,4 +4,4 @@
 
 .global __stdio_atexit
 __stdio_atexit:
-/* 80104C20 00100B40  4E 80 00 20 */	blr 
+/* 80104C20 00100B40  4E 80 00 20 */	blr

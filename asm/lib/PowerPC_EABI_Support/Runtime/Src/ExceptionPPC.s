@@ -17,7 +17,7 @@ __unregister_fragment:
 /* 80103524 000FF444  90 03 00 04 */	stw r0, 4(r3)
 /* 80103528 000FF448  90 03 00 08 */	stw r0, 8(r3)
 lbl_8010352C:
-/* 8010352C 000FF44C  4E 80 00 20 */	blr 
+/* 8010352C 000FF44C  4E 80 00 20 */	blr
 
 .global __register_fragment
 __register_fragment:
@@ -39,4 +39,4 @@ lbl_80103540:
 lbl_80103564:
 /* 80103564 000FF484  38 60 FF FF */	li r3, -1
 lbl_80103568:
-/* 80103568 000FF488  4E 80 00 20 */	blr 
+/* 80103568 000FF488  4E 80 00 20 */	blr

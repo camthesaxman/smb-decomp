@@ -234,7 +234,7 @@ lbl_800F8974:
 /* 800F8978 000F4898  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800F897C 000F489C  38 21 00 38 */	addi r1, r1, 0x38
 /* 800F8980 000F48A0  7C 08 03 A6 */	mtlr r0
-/* 800F8984 000F48A4  4E 80 00 20 */	blr 
+/* 800F8984 000F48A4  4E 80 00 20 */	blr
 
 .global salInitHRTFBuffer
 salInitHRTFBuffer:
@@ -251,7 +251,7 @@ salInitHRTFBuffer:
 /* 800F89B0 000F48D0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F89B4 000F48D4  38 21 00 08 */	addi r1, r1, 8
 /* 800F89B8 000F48D8  7C 08 03 A6 */	mtlr r0
-/* 800F89BC 000F48DC  4E 80 00 20 */	blr 
+/* 800F89BC 000F48DC  4E 80 00 20 */	blr
 
 .global salActivateStudio
 salActivateStudio:
@@ -320,7 +320,7 @@ salActivateStudio:
 /* 800F8AB8 000F49D8  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800F8ABC 000F49DC  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F8AC0 000F49E0  7C 08 03 A6 */	mtlr r0
-/* 800F8AC4 000F49E4  4E 80 00 20 */	blr 
+/* 800F8AC4 000F49E4  4E 80 00 20 */	blr
 
 .global salDeactivateStudio
 salDeactivateStudio:
@@ -331,7 +331,7 @@ salDeactivateStudio:
 /* 800F8AD8 000F49F8  7C 63 02 14 */	add r3, r3, r0
 /* 800F8ADC 000F49FC  38 00 00 00 */	li r0, 0
 /* 800F8AE0 000F4A00  98 03 00 50 */	stb r0, 0x50(r3)
-/* 800F8AE4 000F4A04  4E 80 00 20 */	blr 
+/* 800F8AE4 000F4A04  4E 80 00 20 */	blr
 
 .global HandleDepopVoice
 HandleDepopVoice:
@@ -480,7 +480,7 @@ lbl_800F8CC4:
 /* 800F8CCC 000F4BEC  40 82 00 EC */	bne lbl_800F8DB8
 /* 800F8CD0 000F4BF0  A0 04 00 0C */	lhz r0, 0xc(r4)
 /* 800F8CD4 000F4BF4  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
-/* 800F8CD8 000F4BF8  4D 82 00 20 */	beqlr 
+/* 800F8CD8 000F4BF8  4D 82 00 20 */	beqlr
 /* 800F8CDC 000F4BFC  80 C3 00 1C */	lwz r6, 0x1c(r3)
 /* 800F8CE0 000F4C00  3C A0 00 80 */	lis r5, 0x007FFFFF@ha
 /* 800F8CE4 000F4C04  A8 04 00 56 */	lha r0, 0x56(r4)
@@ -523,7 +523,7 @@ lbl_800F8D60:
 /* 800F8D60 000F4C80  90 C3 00 20 */	stw r6, 0x20(r3)
 /* 800F8D64 000F4C84  A0 04 00 0C */	lhz r0, 0xc(r4)
 /* 800F8D68 000F4C88  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
-/* 800F8D6C 000F4C8C  4D 82 00 20 */	beqlr 
+/* 800F8D6C 000F4C8C  4D 82 00 20 */	beqlr
 /* 800F8D70 000F4C90  80 C3 00 24 */	lwz r6, 0x24(r3)
 /* 800F8D74 000F4C94  3C A0 00 80 */	lis r5, 0x007FFFFF@ha
 /* 800F8D78 000F4C98  A8 04 00 62 */	lha r0, 0x62(r4)
@@ -544,7 +544,7 @@ lbl_800F8DAC:
 /* 800F8DAC 000F4CCC  7C 04 03 78 */	mr r4, r0
 lbl_800F8DB0:
 /* 800F8DB0 000F4CD0  90 83 00 24 */	stw r4, 0x24(r3)
-/* 800F8DB4 000F4CD4  4E 80 00 20 */	blr 
+/* 800F8DB4 000F4CD4  4E 80 00 20 */	blr
 lbl_800F8DB8:
 /* 800F8DB8 000F4CD8  80 C3 00 1C */	lwz r6, 0x1c(r3)
 /* 800F8DBC 000F4CDC  3C A0 00 80 */	lis r5, 0x007FFFFF@ha
@@ -586,7 +586,7 @@ lbl_800F8E38:
 /* 800F8E38 000F4D58  7C 06 03 78 */	mr r6, r0
 lbl_800F8E3C:
 /* 800F8E3C 000F4D5C  90 C3 00 20 */	stw r6, 0x20(r3)
-/* 800F8E40 000F4D60  4E 80 00 20 */	blr 
+/* 800F8E40 000F4D60  4E 80 00 20 */	blr
 
 .global SortVoices
 SortVoices:
@@ -656,7 +656,7 @@ lbl_800F8F24:
 /* 800F8F30 000F4E50  7C 08 03 A6 */	mtlr r0
 /* 800F8F34 000F4E54  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800F8F38 000F4E58  38 21 00 28 */	addi r1, r1, 0x28
-/* 800F8F3C 000F4E5C  4E 80 00 20 */	blr 
+/* 800F8F3C 000F4E5C  4E 80 00 20 */	blr
 
 .global salBuildCommandList
 salBuildCommandList:
@@ -3250,7 +3250,7 @@ lbl_800FB438:
 /* 800FB44C 000F736C  80 01 00 CC */	lwz r0, 0xcc(r1)
 /* 800FB450 000F7370  38 21 00 C8 */	addi r1, r1, 0xc8
 /* 800FB454 000F7374  7C 08 03 A6 */	mtlr r0
-/* 800FB458 000F7378  4E 80 00 20 */	blr 
+/* 800FB458 000F7378  4E 80 00 20 */	blr
 
 .global salSynthSendMessage
 salSynthSendMessage:
@@ -3264,12 +3264,12 @@ salSynthSendMessage:
 /* 800FB478 000F7398  80 83 00 18 */	lwz r4, 0x18(r3)
 /* 800FB47C 000F739C  7D 88 03 A6 */	mtlr r12
 /* 800FB480 000F73A0  7C 03 03 78 */	mr r3, r0
-/* 800FB484 000F73A4  4E 80 00 21 */	blrl 
+/* 800FB484 000F73A4  4E 80 00 21 */	blrl
 lbl_800FB488:
 /* 800FB488 000F73A8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800FB48C 000F73AC  38 21 00 08 */	addi r1, r1, 8
 /* 800FB490 000F73B0  7C 08 03 A6 */	mtlr r0
-/* 800FB494 000F73B4  4E 80 00 20 */	blr 
+/* 800FB494 000F73B4  4E 80 00 20 */	blr
 
 .global salActivateVoice
 salActivateVoice:
@@ -3314,13 +3314,13 @@ lbl_800FB508:
 /* 800FB528 000F7448  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800FB52C 000F744C  38 21 00 18 */	addi r1, r1, 0x18
 /* 800FB530 000F7450  7C 08 03 A6 */	mtlr r0
-/* 800FB534 000F7454  4E 80 00 20 */	blr 
+/* 800FB534 000F7454  4E 80 00 20 */	blr
 
 .global salDeactivateVoice
 salDeactivateVoice:
 /* 800FB538 000F7458  88 03 00 E8 */	lbz r0, 0xe8(r3)
 /* 800FB53C 000F745C  28 00 00 00 */	cmplwi r0, 0
-/* 800FB540 000F7460  4D 82 00 20 */	beqlr 
+/* 800FB540 000F7460  4D 82 00 20 */	beqlr
 /* 800FB544 000F7464  80 83 00 10 */	lwz r4, 0x10(r3)
 /* 800FB548 000F7468  28 04 00 00 */	cmplwi r4, 0
 /* 800FB54C 000F746C  41 82 00 10 */	beq lbl_800FB55C
@@ -3344,7 +3344,7 @@ lbl_800FB578:
 lbl_800FB58C:
 /* 800FB58C 000F74AC  38 00 00 00 */	li r0, 0
 /* 800FB590 000F74B0  98 03 00 E8 */	stb r0, 0xe8(r3)
-/* 800FB594 000F74B4  4E 80 00 20 */	blr 
+/* 800FB594 000F74B4  4E 80 00 20 */	blr
 
 .global salAddStudioInput
 salAddStudioInput:
@@ -3387,10 +3387,10 @@ salAddStudioInput:
 /* 800FB628 000F7548  38 04 00 01 */	addi r0, r4, 1
 /* 800FB62C 000F754C  98 03 00 52 */	stb r0, 0x52(r3)
 /* 800FB630 000F7550  38 60 00 01 */	li r3, 1
-/* 800FB634 000F7554  4E 80 00 20 */	blr 
+/* 800FB634 000F7554  4E 80 00 20 */	blr
 lbl_800FB638:
 /* 800FB638 000F7558  38 60 00 00 */	li r3, 0
-/* 800FB63C 000F755C  4E 80 00 20 */	blr 
+/* 800FB63C 000F755C  4E 80 00 20 */	blr
 
 .global salRemoveStudioInput
 salRemoveStudioInput:
@@ -3424,14 +3424,14 @@ lbl_800FB690:
 /* 800FB6A0 000F75C0  38 04 FF FF */	addi r0, r4, -1
 /* 800FB6A4 000F75C4  98 03 00 52 */	stb r0, 0x52(r3)
 /* 800FB6A8 000F75C8  38 60 00 01 */	li r3, 1
-/* 800FB6AC 000F75CC  4E 80 00 20 */	blr 
+/* 800FB6AC 000F75CC  4E 80 00 20 */	blr
 lbl_800FB6B0:
 /* 800FB6B0 000F75D0  38 A5 00 0C */	addi r5, r5, 0xc
 /* 800FB6B4 000F75D4  38 C6 00 01 */	addi r6, r6, 1
 /* 800FB6B8 000F75D8  42 00 FF A0 */	bdnz lbl_800FB658
 lbl_800FB6BC:
 /* 800FB6BC 000F75DC  38 60 00 00 */	li r3, 0
-/* 800FB6C0 000F75E0  4E 80 00 20 */	blr 
+/* 800FB6C0 000F75E0  4E 80 00 20 */	blr
 
 .global salHandleAuxProcessing
 salHandleAuxProcessing:
@@ -3476,7 +3476,7 @@ lbl_800FB6FC:
 /* 800FB758 000F7678  81 9E 00 AC */	lwz r12, 0xac(r30)
 /* 800FB75C 000F767C  80 BE 00 B4 */	lwz r5, 0xb4(r30)
 /* 800FB760 000F7680  7D 88 03 A6 */	mtlr r12
-/* 800FB764 000F7684  4E 80 00 21 */	blrl 
+/* 800FB764 000F7684  4E 80 00 21 */	blrl
 /* 800FB768 000F7688  38 7C 00 00 */	addi r3, r28, 0
 /* 800FB76C 000F768C  38 80 07 80 */	li r4, 0x780
 /* 800FB770 000F7690  4B FC 78 59 */	bl DCFlushRangeNoSync
@@ -3507,7 +3507,7 @@ lbl_800FB774:
 /* 800FB7D0 000F76F0  81 9E 00 B0 */	lwz r12, 0xb0(r30)
 /* 800FB7D4 000F76F4  80 BE 00 B8 */	lwz r5, 0xb8(r30)
 /* 800FB7D8 000F76F8  7D 88 03 A6 */	mtlr r12
-/* 800FB7DC 000F76FC  4E 80 00 21 */	blrl 
+/* 800FB7DC 000F76FC  4E 80 00 21 */	blrl
 /* 800FB7E0 000F7700  38 7C 00 00 */	addi r3, r28, 0
 /* 800FB7E4 000F7704  38 80 07 80 */	li r4, 0x780
 /* 800FB7E8 000F7708  4B FC 77 E1 */	bl DCFlushRangeNoSync
@@ -3525,4 +3525,4 @@ lbl_800FB7F4:
 /* 800FB810 000F7730  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800FB814 000F7734  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800FB818 000F7738  38 21 00 28 */	addi r1, r1, 0x28
-/* 800FB81C 000F773C  4E 80 00 20 */	blr 
+/* 800FB81C 000F773C  4E 80 00 20 */	blr

@@ -28,7 +28,7 @@ lbl_80101318:
 /* 80101318 000FD238  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010131C 000FD23C  38 21 00 08 */	addi r1, r1, 8
 /* 80101320 000FD240  7C 08 03 A6 */	mtlr r0
-/* 80101324 000FD244  4E 80 00 20 */	blr 
+/* 80101324 000FD244  4E 80 00 20 */	blr
 
 .global sndAuxCallbackPrepareReverbHI
 sndAuxCallbackPrepareReverbHI:
@@ -47,4 +47,4 @@ sndAuxCallbackPrepareReverbHI:
 /* 80101358 000FD278  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010135C 000FD27C  38 21 00 08 */	addi r1, r1, 8
 /* 80101360 000FD280  7C 08 03 A6 */	mtlr r0
-/* 80101364 000FD284  4E 80 00 20 */	blr 
+/* 80101364 000FD284  4E 80 00 20 */	blr

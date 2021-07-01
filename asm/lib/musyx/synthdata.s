@@ -140,7 +140,7 @@ lbl_800F07B8:
 /* 800F07C4 000EC6E4  7C 08 03 A6 */	mtlr r0
 /* 800F07C8 000EC6E8  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F07CC 000EC6EC  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F07D0 000EC6F0  4E 80 00 20 */	blr 
+/* 800F07D0 000EC6F0  4E 80 00 20 */	blr
 
 .global dataRemoveKeymap
 dataRemoveKeymap:
@@ -249,7 +249,7 @@ lbl_800F0940:
 /* 800F0948 000EC868  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800F094C 000EC86C  7C 08 03 A6 */	mtlr r0
 /* 800F0950 000EC870  38 21 00 18 */	addi r1, r1, 0x18
-/* 800F0954 000EC874  4E 80 00 20 */	blr 
+/* 800F0954 000EC874  4E 80 00 20 */	blr
 
 .global dataInsertLayer
 dataInsertLayer:
@@ -411,7 +411,7 @@ lbl_800F0B80:
 /* 800F0B90 000ECAB0  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800F0B94 000ECAB4  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800F0B98 000ECAB8  38 21 00 28 */	addi r1, r1, 0x28
-/* 800F0B9C 000ECABC  4E 80 00 20 */	blr 
+/* 800F0B9C 000ECABC  4E 80 00 20 */	blr
 
 .global dataRemoveLayer
 dataRemoveLayer:
@@ -538,7 +538,7 @@ lbl_800F0D54:
 /* 800F0D5C 000ECC7C  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800F0D60 000ECC80  7C 08 03 A6 */	mtlr r0
 /* 800F0D64 000ECC84  38 21 00 18 */	addi r1, r1, 0x18
-/* 800F0D68 000ECC88  4E 80 00 20 */	blr 
+/* 800F0D68 000ECC88  4E 80 00 20 */	blr
 
 .global dataInsertCurve
 dataInsertCurve:
@@ -680,7 +680,7 @@ lbl_800F0F44:
 /* 800F0F54 000ECE74  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F0F58 000ECE78  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800F0F5C 000ECE7C  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F0F60 000ECE80  4E 80 00 20 */	blr 
+/* 800F0F60 000ECE80  4E 80 00 20 */	blr
 
 .global dataRemoveCurve
 dataRemoveCurve:
@@ -789,7 +789,7 @@ lbl_800F10D0:
 /* 800F10D8 000ECFF8  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800F10DC 000ECFFC  7C 08 03 A6 */	mtlr r0
 /* 800F10E0 000ED000  38 21 00 18 */	addi r1, r1, 0x18
-/* 800F10E4 000ED004  4E 80 00 20 */	blr 
+/* 800F10E4 000ED004  4E 80 00 20 */	blr
 
 .global dataInsertSDir
 dataInsertSDir:
@@ -899,7 +899,7 @@ lbl_800F1240:
 /* 800F1244 000ED164  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F1248 000ED168  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F124C 000ED16C  7C 08 03 A6 */	mtlr r0
-/* 800F1250 000ED170  4E 80 00 20 */	blr 
+/* 800F1250 000ED170  4E 80 00 20 */	blr
 
 .global dataRemoveSDir
 dataRemoveSDir:
@@ -1084,7 +1084,7 @@ lbl_800F14C0:
 /* 800F14CC 000ED3EC  7C 08 03 A6 */	mtlr r0
 /* 800F14D0 000ED3F0  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F14D4 000ED3F4  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F14D8 000ED3F8  4E 80 00 20 */	blr 
+/* 800F14D8 000ED3F8  4E 80 00 20 */	blr
 
 .global dataAddSampleReference
 dataAddSampleReference:
@@ -1147,7 +1147,7 @@ lbl_800F1590:
 /* 800F15A4 000ED4C4  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F15A8 000ED4C8  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F15AC 000ED4CC  7C 08 03 A6 */	mtlr r0
-/* 800F15B0 000ED4D0  4E 80 00 20 */	blr 
+/* 800F15B0 000ED4D0  4E 80 00 20 */	blr
 
 .global dataRemoveSampleReference
 dataRemoveSampleReference:
@@ -1218,7 +1218,7 @@ lbl_800F1688:
 /* 800F168C 000ED5AC  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F1690 000ED5B0  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F1694 000ED5B4  7C 08 03 A6 */	mtlr r0
-/* 800F1698 000ED5B8  4E 80 00 20 */	blr 
+/* 800F1698 000ED5B8  4E 80 00 20 */	blr
 
 .global dataInsertFX
 dataInsertFX:
@@ -1304,7 +1304,7 @@ lbl_800F17A4:
 /* 800F17B4 000ED6D4  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800F17B8 000ED6D8  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800F17BC 000ED6DC  38 21 00 28 */	addi r1, r1, 0x28
-/* 800F17C0 000ED6E0  4E 80 00 20 */	blr 
+/* 800F17C0 000ED6E0  4E 80 00 20 */	blr
 
 .global dataRemoveFX
 dataRemoveFX:
@@ -1403,7 +1403,7 @@ lbl_800F190C:
 /* 800F1910 000ED830  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F1914 000ED834  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F1918 000ED838  7C 08 03 A6 */	mtlr r0
-/* 800F191C 000ED83C  4E 80 00 20 */	blr 
+/* 800F191C 000ED83C  4E 80 00 20 */	blr
 
 .global dataInsertMacro
 dataInsertMacro:
@@ -1623,7 +1623,7 @@ lbl_800F1C14:
 /* 800F1C20 000EDB40  7C 08 03 A6 */	mtlr r0
 /* 800F1C24 000EDB44  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F1C28 000EDB48  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F1C2C 000EDB4C  4E 80 00 20 */	blr 
+/* 800F1C2C 000EDB4C  4E 80 00 20 */	blr
 
 .global dataRemoveMacro
 dataRemoveMacro:
@@ -1810,14 +1810,14 @@ lbl_800F1EAC:
 /* 800F1EBC 000EDDDC  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800F1EC0 000EDDE0  7C 08 03 A6 */	mtlr r0
 /* 800F1EC4 000EDDE4  38 21 00 18 */	addi r1, r1, 0x18
-/* 800F1EC8 000EDDE8  4E 80 00 20 */	blr 
+/* 800F1EC8 000EDDE8  4E 80 00 20 */	blr
 
 .global maccmp
 maccmp:
 /* 800F1ECC 000EDDEC  A0 84 00 04 */	lhz r4, 4(r4)
 /* 800F1ED0 000EDDF0  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800F1ED4 000EDDF4  7C 64 00 50 */	subf r3, r4, r0
-/* 800F1ED8 000EDDF8  4E 80 00 20 */	blr 
+/* 800F1ED8 000EDDF8  4E 80 00 20 */	blr
 
 .global dataGetMacro
 dataGetMacro:
@@ -1859,14 +1859,14 @@ lbl_800F1F60:
 /* 800F1F60 000EDE80  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F1F64 000EDE84  38 21 00 08 */	addi r1, r1, 8
 /* 800F1F68 000EDE88  7C 08 03 A6 */	mtlr r0
-/* 800F1F6C 000EDE8C  4E 80 00 20 */	blr 
+/* 800F1F6C 000EDE8C  4E 80 00 20 */	blr
 
 .global smpcmp
 smpcmp:
 /* 800F1F70 000EDE90  A0 84 00 00 */	lhz r4, 0(r4)
 /* 800F1F74 000EDE94  A0 03 00 00 */	lhz r0, 0(r3)
 /* 800F1F78 000EDE98  7C 64 00 50 */	subf r3, r4, r0
-/* 800F1F7C 000EDE9C  4E 80 00 20 */	blr 
+/* 800F1F7C 000EDE9C  4E 80 00 20 */	blr
 
 .global dataGetSample
 dataGetSample:
@@ -1948,14 +1948,14 @@ lbl_800F2094:
 /* 800F2098 000EDFB8  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800F209C 000EDFBC  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F20A0 000EDFC0  7C 08 03 A6 */	mtlr r0
-/* 800F20A4 000EDFC4  4E 80 00 20 */	blr 
+/* 800F20A4 000EDFC4  4E 80 00 20 */	blr
 
 .global curvecmp
 curvecmp:
 /* 800F20A8 000EDFC8  A0 84 00 04 */	lhz r4, 4(r4)
 /* 800F20AC 000EDFCC  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800F20B0 000EDFD0  7C 64 00 50 */	subf r3, r4, r0
-/* 800F20B4 000EDFD4  4E 80 00 20 */	blr 
+/* 800F20B4 000EDFD4  4E 80 00 20 */	blr
 
 .global dataGetCurve
 dataGetCurve:
@@ -1984,7 +1984,7 @@ lbl_800F2108:
 /* 800F2108 000EE028  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F210C 000EE02C  38 21 00 08 */	addi r1, r1, 8
 /* 800F2110 000EE030  7C 08 03 A6 */	mtlr r0
-/* 800F2114 000EE034  4E 80 00 20 */	blr 
+/* 800F2114 000EE034  4E 80 00 20 */	blr
 
 .global dataGetKeymap
 dataGetKeymap:
@@ -2013,14 +2013,14 @@ lbl_800F2168:
 /* 800F2168 000EE088  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F216C 000EE08C  38 21 00 08 */	addi r1, r1, 8
 /* 800F2170 000EE090  7C 08 03 A6 */	mtlr r0
-/* 800F2174 000EE094  4E 80 00 20 */	blr 
+/* 800F2174 000EE094  4E 80 00 20 */	blr
 
 .global layercmp
 layercmp:
 /* 800F2178 000EE098  A0 84 00 04 */	lhz r4, 4(r4)
 /* 800F217C 000EE09C  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800F2180 000EE0A0  7C 64 00 50 */	subf r3, r4, r0
-/* 800F2184 000EE0A4  4E 80 00 20 */	blr 
+/* 800F2184 000EE0A4  4E 80 00 20 */	blr
 
 .global dataGetLayer
 dataGetLayer:
@@ -2057,14 +2057,14 @@ lbl_800F21F4:
 /* 800F21F8 000EE118  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800F21FC 000EE11C  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F2200 000EE120  7C 08 03 A6 */	mtlr r0
-/* 800F2204 000EE124  4E 80 00 20 */	blr 
+/* 800F2204 000EE124  4E 80 00 20 */	blr
 
 .global fxcmp
 fxcmp:
 /* 800F2208 000EE128  A0 84 00 00 */	lhz r4, 0(r4)
 /* 800F220C 000EE12C  A0 03 00 00 */	lhz r0, 0(r3)
 /* 800F2210 000EE130  7C 64 00 50 */	subf r3, r4, r0
-/* 800F2214 000EE134  4E 80 00 20 */	blr 
+/* 800F2214 000EE134  4E 80 00 20 */	blr
 
 .global dataGetFX
 dataGetFX:
@@ -2113,7 +2113,7 @@ lbl_800F22A0:
 /* 800F22B0 000EE1D0  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800F22B4 000EE1D4  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 800F22B8 000EE1D8  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F22BC 000EE1DC  4E 80 00 20 */	blr 
+/* 800F22BC 000EE1DC  4E 80 00 20 */	blr
 
 .global dataInit
 dataInit:
@@ -2175,4 +2175,4 @@ lbl_800F2390:
 /* 800F2394 000EE2B4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F2398 000EE2B8  38 21 00 08 */	addi r1, r1, 8
 /* 800F239C 000EE2BC  7C 08 03 A6 */	mtlr r0
-/* 800F23A0 000EE2C0  4E 80 00 20 */	blr 
+/* 800F23A0 000EE2C0  4E 80 00 20 */	blr

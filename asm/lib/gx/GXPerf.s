@@ -7,7 +7,7 @@ GXClearGPMetric:
 /* 800E499C 000E08BC  80 6D A3 64 */	lwz r3, __cpReg-_SDA_BASE_(r13)
 /* 800E49A0 000E08C0  38 00 00 04 */	li r0, 4
 /* 800E49A4 000E08C4  B0 03 00 04 */	sth r0, 4(r3)
-/* 800E49A8 000E08C8  4E 80 00 20 */	blr 
+/* 800E49A8 000E08C8  4E 80 00 20 */	blr
 
 .global GXInitXfRasMetric
 GXInitXfRasMetric:
@@ -27,7 +27,7 @@ GXInitXfRasMetric:
 /* 800E49E0 000E0900  38 00 00 00 */	li r0, 0
 /* 800E49E4 000E0904  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E49E8 000E0908  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E49EC 000E090C  4E 80 00 20 */	blr 
+/* 800E49EC 000E090C  4E 80 00 20 */	blr
 
 .global GXReadXfRasMetric
 GXReadXfRasMetric:
@@ -51,4 +51,4 @@ GXReadXfRasMetric:
 /* 800E4A34 000E0954  A0 05 00 4C */	lhz r0, 0x4c(r5)
 /* 800E4A38 000E0958  50 60 80 1E */	rlwimi r0, r3, 0x10, 0, 0xf
 /* 800E4A3C 000E095C  90 04 00 00 */	stw r0, 0(r4)
-/* 800E4A40 000E0960  4E 80 00 20 */	blr 
+/* 800E4A40 000E0960  4E 80 00 20 */	blr

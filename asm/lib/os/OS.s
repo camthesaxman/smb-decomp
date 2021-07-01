@@ -15,7 +15,7 @@ lbl_800C17C4:
 /* 800C17C8 000BD6E8  38 63 00 02 */	addi r3, r3, 0x10000002@l
 /* 800C17CC 000BD6EC  48 00 00 04 */	b lbl_800C17D0
 lbl_800C17D0:
-/* 800C17D0 000BD6F0  4E 80 00 20 */	blr 
+/* 800C17D0 000BD6F0  4E 80 00 20 */	blr
 
 .global OSInit
 OSInit:
@@ -219,7 +219,7 @@ lbl_800C1A98:
 /* 800C1AA0 000BD9C0  83 C1 00 08 */	lwz r30, 8(r1)
 /* 800C1AA4 000BD9C4  7C 08 03 A6 */	mtlr r0
 /* 800C1AA8 000BD9C8  38 21 00 10 */	addi r1, r1, 0x10
-/* 800C1AAC 000BD9CC  4E 80 00 20 */	blr 
+/* 800C1AAC 000BD9CC  4E 80 00 20 */	blr
 
 .global OSExceptionInit
 OSExceptionInit:
@@ -399,7 +399,7 @@ lbl_800C1D00:
 /* 800C1D20 000BDC40  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800C1D24 000BDC44  38 21 00 38 */	addi r1, r1, 0x38
 /* 800C1D28 000BDC48  7C 08 03 A6 */	mtlr r0
-/* 800C1D2C 000BDC4C  4E 80 00 20 */	blr 
+/* 800C1D2C 000BDC4C  4E 80 00 20 */	blr
 
 .global __OSDBINITSTART
 __OSDBINITSTART:
@@ -411,7 +411,7 @@ __OSDBINITSTART:
 /* 800C1D44 000BDC64  7C 68 03 A6 */	mtlr r3
 /* 800C1D48 000BDC68  38 60 00 30 */	li r3, 0x30
 /* 800C1D4C 000BDC6C  7C 60 01 24 */	mtmsr r3
-/* 800C1D50 000BDC70  4E 80 00 20 */	blr 
+/* 800C1D50 000BDC70  4E 80 00 20 */	blr
 
 .global __OSDBJUMPSTART
 __OSDBJUMPSTART:
@@ -425,7 +425,7 @@ __OSDBJUMPEND:
 /* 800C1D64 000BDC84  7C A3 02 14 */	add r5, r3, r0
 /* 800C1D68 000BDC88  80 65 00 00 */	lwz r3, 0(r5)
 /* 800C1D6C 000BDC8C  90 85 00 00 */	stw r4, 0(r5)
-/* 800C1D70 000BDC90  4E 80 00 20 */	blr 
+/* 800C1D70 000BDC90  4E 80 00 20 */	blr
 
 .global __OSGetExceptionHandler
 __OSGetExceptionHandler:
@@ -433,7 +433,7 @@ __OSGetExceptionHandler:
 /* 800C1D78 000BDC98  80 6D A0 FC */	lwz r3, OSExceptionTable-_SDA_BASE_(r13)
 /* 800C1D7C 000BDC9C  54 00 10 3A */	slwi r0, r0, 2
 /* 800C1D80 000BDCA0  7C 63 00 2E */	lwzx r3, r3, r0
-/* 800C1D84 000BDCA4  4E 80 00 20 */	blr 
+/* 800C1D84 000BDCA4  4E 80 00 20 */	blr
 
 .global __OSEVStart
 __OSEVStart:
@@ -460,7 +460,7 @@ __OSEVStart:
 /* 800C1DD8 000BDCF8  90 64 01 9C */	stw r3, 0x19c(r4)
 /* 800C1DDC 000BDCFC  7C 65 1B 78 */	mr r5, r3
 lbl_800C1DE0:
-/* 800C1DE0 000BDD00  60 00 00 00 */	nop 
+/* 800C1DE0 000BDD00  60 00 00 00 */	nop
 /* 800C1DE4 000BDD04  7C 60 00 A6 */	mfmsr r3
 /* 800C1DE8 000BDD08  60 63 00 30 */	ori r3, r3, 0x30
 /* 800C1DEC 000BDD0C  7C 7B 03 A6 */	mtspr 0x1b, r3
@@ -472,16 +472,16 @@ lbl_800C1DF0:
 /* 800C1E00 000BDD20  3C A0 80 0C */	lis r5, OSDefaultExceptionHandler@ha
 /* 800C1E04 000BDD24  38 A5 1E 24 */	addi r5, r5, OSDefaultExceptionHandler@l
 /* 800C1E08 000BDD28  7C BA 03 A6 */	mtspr 0x1a, r5
-/* 800C1E0C 000BDD2C  4C 00 00 64 */	rfi 
+/* 800C1E0C 000BDD2C  4C 00 00 64 */	rfi
 lbl_800C1E10:
 /* 800C1E10 000BDD30  54 65 15 BA */	rlwinm r5, r3, 2, 0x16, 0x1d
 /* 800C1E14 000BDD34  80 A5 30 00 */	lwz r5, 0x3000(r5)
 /* 800C1E18 000BDD38  7C BA 03 A6 */	mtspr 0x1a, r5
-/* 800C1E1C 000BDD3C  4C 00 00 64 */	rfi 
+/* 800C1E1C 000BDD3C  4C 00 00 64 */	rfi
 
 .global __OSEVEnd
 __OSEVEnd:
-/* 800C1E20 000BDD40  60 00 00 00 */	nop 
+/* 800C1E20 000BDD40  60 00 00 00 */	nop
 
 .global OSDefaultExceptionHandler
 OSDefaultExceptionHandler:
@@ -522,7 +522,7 @@ __OSPSInit:
 /* 800C1EA0 000BDDC0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800C1EA4 000BDDC4  38 21 00 08 */	addi r1, r1, 8
 /* 800C1EA8 000BDDC8  7C 08 03 A6 */	mtlr r0
-/* 800C1EAC 000BDDCC  4E 80 00 20 */	blr 
+/* 800C1EAC 000BDDCC  4E 80 00 20 */	blr
 
 .global __OSGetDIConfig
 __OSGetDIConfig:
@@ -530,5 +530,5 @@ __OSGetDIConfig:
 /* 800C1EB4 000BDDD4  38 63 60 00 */	addi r3, r3, 0xCC006000@l
 /* 800C1EB8 000BDDD8  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800C1EBC 000BDDDC  54 03 06 3E */	clrlwi r3, r0, 0x18
-/* 800C1EC0 000BDDE0  4E 80 00 20 */	blr 
+/* 800C1EC0 000BDDE0  4E 80 00 20 */	blr
 

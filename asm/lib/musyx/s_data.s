@@ -6,7 +6,7 @@
 dataInitStack:
 /* 800F7E8C 000F3DAC  38 00 00 00 */	li r0, 0
 /* 800F7E90 000F3DB0  B0 0D A4 E0 */	sth r0, lbl_802F26C0-_SDA_BASE_(r13)
-/* 800F7E94 000F3DB4  4E 80 00 20 */	blr 
+/* 800F7E94 000F3DB4  4E 80 00 20 */	blr
 
 .global InsertData
 InsertData:
@@ -161,7 +161,7 @@ lbl_800F8078:
 /* 800F8078 000F3F98  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F807C 000F3F9C  38 21 00 08 */	addi r1, r1, 8
 /* 800F8080 000F3FA0  7C 08 03 A6 */	mtlr r0
-/* 800F8084 000F3FA4  4E 80 00 20 */	blr 
+/* 800F8084 000F3FA4  4E 80 00 20 */	blr
 
 .global ScanIDList
 ScanIDList:
@@ -208,7 +208,7 @@ lbl_800F8104:
 /* 800F8114 000F4034  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800F8118 000F4038  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F811C 000F403C  7C 08 03 A6 */	mtlr r0
-/* 800F8120 000F4040  4E 80 00 20 */	blr 
+/* 800F8120 000F4040  4E 80 00 20 */	blr
 
 .global ScanIDListReverse
 ScanIDListReverse:
@@ -280,7 +280,7 @@ lbl_800F8200:
 /* 800F8204 000F4124  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800F8208 000F4128  38 21 00 30 */	addi r1, r1, 0x30
 /* 800F820C 000F412C  7C 08 03 A6 */	mtlr r0
-/* 800F8210 000F4130  4E 80 00 20 */	blr 
+/* 800F8210 000F4130  4E 80 00 20 */	blr
 
 .global sndPushGroup
 sndPushGroup:
@@ -381,7 +381,7 @@ lbl_800F836C:
 /* 800F8370 000F4290  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800F8374 000F4294  38 21 00 38 */	addi r1, r1, 0x38
 /* 800F8378 000F4298  7C 08 03 A6 */	mtlr r0
-/* 800F837C 000F429C  4E 80 00 20 */	blr 
+/* 800F837C 000F429C  4E 80 00 20 */	blr
 
 .global sndPopGroup
 sndPopGroup:
@@ -461,7 +461,7 @@ lbl_800F848C:
 /* 800F8498 000F43B8  83 C1 00 08 */	lwz r30, 8(r1)
 /* 800F849C 000F43BC  7C 08 03 A6 */	mtlr r0
 /* 800F84A0 000F43C0  38 21 00 10 */	addi r1, r1, 0x10
-/* 800F84A4 000F43C4  4E 80 00 20 */	blr 
+/* 800F84A4 000F43C4  4E 80 00 20 */	blr
 
 .global seqPlaySong
 seqPlaySong:
@@ -554,7 +554,7 @@ lbl_800F85D4:
 /* 800F85D8 000F44F8  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800F85DC 000F44FC  38 21 00 40 */	addi r1, r1, 0x40
 /* 800F85E0 000F4500  7C 08 03 A6 */	mtlr r0
-/* 800F85E4 000F4504  4E 80 00 20 */	blr 
+/* 800F85E4 000F4504  4E 80 00 20 */	blr
 
 .global sndSeqPlayEx
 sndSeqPlayEx:
@@ -567,4 +567,4 @@ sndSeqPlayEx:
 /* 800F8600 000F4520  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800F8604 000F4524  38 21 00 08 */	addi r1, r1, 8
 /* 800F8608 000F4528  7C 08 03 A6 */	mtlr r0
-/* 800F860C 000F452C  4E 80 00 20 */	blr 
+/* 800F860C 000F452C  4E 80 00 20 */	blr

@@ -18,7 +18,7 @@ sndPitchUpOne:
 /* 800F76E8 000F3608  D8 01 00 10 */	stfd f0, 0x10(r1)
 /* 800F76EC 000F360C  80 61 00 14 */	lwz r3, 0x14(r1)
 /* 800F76F0 000F3610  38 21 00 20 */	addi r1, r1, 0x20
-/* 800F76F4 000F3614  4E 80 00 20 */	blr 
+/* 800F76F4 000F3614  4E 80 00 20 */	blr
 
 .global sndGetPitch
 sndGetPitch:
@@ -86,4 +86,4 @@ lbl_800F77A4:
 /* 800F77D8 000F36F8  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800F77DC 000F36FC  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F77E0 000F3700  7C 08 03 A6 */	mtlr r0
-/* 800F77E4 000F3704  4E 80 00 20 */	blr 
+/* 800F77E4 000F3704  4E 80 00 20 */	blr

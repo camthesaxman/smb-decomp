@@ -75,7 +75,7 @@ lbl_800DD028:
 /* 800DD078 000D8F98  4B FE 66 49 */	bl OSSetCurrentContext
 /* 800DD07C 000D8F9C  81 8D A3 7C */	lwz r12, BreakPointCB-_SDA_BASE_(r13)
 /* 800DD080 000D8FA0  7D 88 03 A6 */	mtlr r12
-/* 800DD084 000D8FA4  4E 80 00 21 */	blrl 
+/* 800DD084 000D8FA4  4E 80 00 21 */	blrl
 /* 800DD088 000D8FA8  38 61 00 10 */	addi r3, r1, 0x10
 /* 800DD08C 000D8FAC  4B FE 67 FD */	bl OSClearContext
 /* 800DD090 000D8FB0  7F E3 FB 78 */	mr r3, r31
@@ -85,7 +85,7 @@ lbl_800DD098:
 /* 800DD09C 000D8FBC  83 E1 02 DC */	lwz r31, 0x2dc(r1)
 /* 800DD0A0 000D8FC0  38 21 02 E0 */	addi r1, r1, 0x2e0
 /* 800DD0A4 000D8FC4  7C 08 03 A6 */	mtlr r0
-/* 800DD0A8 000D8FC8  4E 80 00 20 */	blr 
+/* 800DD0A8 000D8FC8  4E 80 00 20 */	blr
 
 .global GXInitFifoBase
 GXInitFifoBase:
@@ -115,7 +115,7 @@ GXInitFifoBase:
 /* 800DD108 000D9028  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 800DD10C 000D902C  7C 08 03 A6 */	mtlr r0
 /* 800DD110 000D9030  38 21 00 20 */	addi r1, r1, 0x20
-/* 800DD114 000D9034  4E 80 00 20 */	blr 
+/* 800DD114 000D9034  4E 80 00 20 */	blr
 
 .global GXInitFifoPtrs
 GXInitFifoPtrs:
@@ -147,13 +147,13 @@ lbl_800DD168:
 /* 800DD178 000D9098  7C 08 03 A6 */	mtlr r0
 /* 800DD17C 000D909C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800DD180 000D90A0  38 21 00 28 */	addi r1, r1, 0x28
-/* 800DD184 000D90A4  4E 80 00 20 */	blr 
+/* 800DD184 000D90A4  4E 80 00 20 */	blr
 
 .global GXInitFifoLimits
 GXInitFifoLimits:
 /* 800DD188 000D90A8  90 83 00 0C */	stw r4, 0xc(r3)
 /* 800DD18C 000D90AC  90 A3 00 10 */	stw r5, 0x10(r3)
-/* 800DD190 000D90B0  4E 80 00 20 */	blr 
+/* 800DD190 000D90B0  4E 80 00 20 */	blr
 
 .global GXSetCPUFifo
 GXSetCPUFifo:
@@ -227,7 +227,7 @@ lbl_800DD280:
 /* 800DD294 000D91B4  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800DD298 000D91B8  7C 08 03 A6 */	mtlr r0
 /* 800DD29C 000D91BC  38 21 00 18 */	addi r1, r1, 0x18
-/* 800DD2A0 000D91C0  4E 80 00 20 */	blr 
+/* 800DD2A0 000D91C0  4E 80 00 20 */	blr
 
 .global GXSetGPFifo
 GXSetGPFifo:
@@ -326,7 +326,7 @@ lbl_800DD3EC:
 /* 800DD40C 000D932C  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800DD410 000D9330  7C 08 03 A6 */	mtlr r0
 /* 800DD414 000D9334  38 21 00 18 */	addi r1, r1, 0x18
-/* 800DD418 000D9338  4E 80 00 20 */	blr 
+/* 800DD418 000D9338  4E 80 00 20 */	blr
 
 .global GXSaveCPUFifo
 GXSaveCPUFifo:
@@ -337,7 +337,7 @@ GXSaveCPUFifo:
 /* 800DD42C 000D934C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800DD430 000D9350  38 21 00 08 */	addi r1, r1, 8
 /* 800DD434 000D9354  7C 08 03 A6 */	mtlr r0
-/* 800DD438 000D9358  4E 80 00 20 */	blr 
+/* 800DD438 000D9358  4E 80 00 20 */	blr
 
 .global __GXSaveCPUFifoAux
 __GXSaveCPUFifoAux:
@@ -397,7 +397,7 @@ lbl_800DD4F8:
 /* 800DD508 000D9428  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800DD50C 000D942C  7C 08 03 A6 */	mtlr r0
 /* 800DD510 000D9430  38 21 00 18 */	addi r1, r1, 0x18
-/* 800DD514 000D9434  4E 80 00 20 */	blr 
+/* 800DD514 000D9434  4E 80 00 20 */	blr
 
 .global GXGetGPStatus
 GXGetGPStatus:
@@ -425,7 +425,7 @@ GXGetGPStatus:
 /* 800DD56C 000D948C  80 03 00 0C */	lwz r0, 0xc(r3)
 /* 800DD570 000D9490  54 00 E7 FE */	rlwinm r0, r0, 0x1c, 0x1f, 0x1f
 /* 800DD574 000D9494  98 07 00 00 */	stb r0, 0(r7)
-/* 800DD578 000D9498  4E 80 00 20 */	blr 
+/* 800DD578 000D9498  4E 80 00 20 */	blr
 
 .global GXGetFifoPtrs
 GXGetFifoPtrs:
@@ -469,7 +469,7 @@ lbl_800DD600:
 /* 800DD604 000D9524  90 04 00 00 */	stw r0, 0(r4)
 /* 800DD608 000D9528  80 03 00 18 */	lwz r0, 0x18(r3)
 /* 800DD60C 000D952C  90 05 00 00 */	stw r0, 0(r5)
-/* 800DD610 000D9530  4E 80 00 20 */	blr 
+/* 800DD610 000D9530  4E 80 00 20 */	blr
 
 .global __GXFifoInit
 __GXFifoInit:
@@ -489,7 +489,7 @@ __GXFifoInit:
 /* 800DD648 000D9568  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800DD64C 000D956C  38 21 00 08 */	addi r1, r1, 8
 /* 800DD650 000D9570  7C 08 03 A6 */	mtlr r0
-/* 800DD654 000D9574  4E 80 00 20 */	blr 
+/* 800DD654 000D9574  4E 80 00 20 */	blr
 
 .global __GXFifoReadEnable
 __GXFifoReadEnable:
@@ -502,7 +502,7 @@ __GXFifoReadEnable:
 /* 800DD670 000D9590  80 6D A3 64 */	lwz r3, __cpReg-_SDA_BASE_(r13)
 /* 800DD674 000D9594  80 04 00 08 */	lwz r0, 8(r4)
 /* 800DD678 000D9598  B0 03 00 02 */	sth r0, 2(r3)
-/* 800DD67C 000D959C  4E 80 00 20 */	blr 
+/* 800DD67C 000D959C  4E 80 00 20 */	blr
 
 .global __GXFifoReadDisable
 __GXFifoReadDisable:
@@ -514,7 +514,7 @@ __GXFifoReadDisable:
 /* 800DD694 000D95B4  80 6D A3 64 */	lwz r3, __cpReg-_SDA_BASE_(r13)
 /* 800DD698 000D95B8  80 04 00 08 */	lwz r0, 8(r4)
 /* 800DD69C 000D95BC  B0 03 00 02 */	sth r0, 2(r3)
-/* 800DD6A0 000D95C0  4E 80 00 20 */	blr 
+/* 800DD6A0 000D95C0  4E 80 00 20 */	blr
 
 .global __GXFifoLink
 __GXFifoLink:
@@ -536,7 +536,7 @@ lbl_800DD6B8:
 /* 800DD6D8 000D95F8  80 6D A3 64 */	lwz r3, __cpReg-_SDA_BASE_(r13)
 /* 800DD6DC 000D95FC  80 04 00 08 */	lwz r0, 8(r4)
 /* 800DD6E0 000D9600  B0 03 00 02 */	sth r0, 2(r3)
-/* 800DD6E4 000D9604  4E 80 00 20 */	blr 
+/* 800DD6E4 000D9604  4E 80 00 20 */	blr
 
 .global __GXWriteFifoIntEnable
 __GXWriteFifoIntEnable:
@@ -558,7 +558,7 @@ __GXWriteFifoIntEnable:
 /* 800DD724 000D9644  80 6D A3 64 */	lwz r3, __cpReg-_SDA_BASE_(r13)
 /* 800DD728 000D9648  80 04 00 08 */	lwz r0, 8(r4)
 /* 800DD72C 000D964C  B0 03 00 02 */	sth r0, 2(r3)
-/* 800DD730 000D9650  4E 80 00 20 */	blr 
+/* 800DD730 000D9650  4E 80 00 20 */	blr
 
 .global __GXWriteFifoIntReset
 __GXWriteFifoIntReset:
@@ -580,14 +580,14 @@ __GXWriteFifoIntReset:
 /* 800DD770 000D9690  80 6D A3 64 */	lwz r3, __cpReg-_SDA_BASE_(r13)
 /* 800DD774 000D9694  80 04 00 10 */	lwz r0, 0x10(r4)
 /* 800DD778 000D9698  B0 03 00 04 */	sth r0, 4(r3)
-/* 800DD77C 000D969C  4E 80 00 20 */	blr 
+/* 800DD77C 000D969C  4E 80 00 20 */	blr
 
 .global GXGetCPUFifo
 GXGetCPUFifo:
 /* 800DD780 000D96A0  80 6D A3 88 */	lwz r3, CPUFifo-_SDA_BASE_(r13)
-/* 800DD784 000D96A4  4E 80 00 20 */	blr 
+/* 800DD784 000D96A4  4E 80 00 20 */	blr
 
 .global GXGetGPFifo
 GXGetGPFifo:
 /* 800DD788 000D96A8  80 6D A3 84 */	lwz r3, GPFifo-_SDA_BASE_(r13)
-/* 800DD78C 000D96AC  4E 80 00 20 */	blr 
+/* 800DD78C 000D96AC  4E 80 00 20 */	blr

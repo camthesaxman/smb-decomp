@@ -23,13 +23,13 @@ lbl_800C1F00:
 /* 800C1F00 000BDE20  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800C1F04 000BDE24  38 21 00 08 */	addi r1, r1, 8
 /* 800C1F08 000BDE28  7C 08 03 A6 */	mtlr r0
-/* 800C1F0C 000BDE2C  4E 80 00 20 */	blr 
+/* 800C1F0C 000BDE2C  4E 80 00 20 */	blr
 
 .global OSCreateAlarm
 OSCreateAlarm:
 /* 800C1F10 000BDE30  38 00 00 00 */	li r0, 0
 /* 800C1F14 000BDE34  90 03 00 00 */	stw r0, 0(r3)
-/* 800C1F18 000BDE38  4E 80 00 20 */	blr 
+/* 800C1F18 000BDE38  4E 80 00 20 */	blr
 
 .global InsertAlarm
 InsertAlarm:
@@ -191,7 +191,7 @@ lbl_800C2158:
 /* 800C215C 000BE07C  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800C2160 000BE080  38 21 00 40 */	addi r1, r1, 0x40
 /* 800C2164 000BE084  7C 08 03 A6 */	mtlr r0
-/* 800C2168 000BE088  4E 80 00 20 */	blr 
+/* 800C2168 000BE088  4E 80 00 20 */	blr
 
 .global OSSetAlarm
 OSSetAlarm:
@@ -220,7 +220,7 @@ OSSetAlarm:
 /* 800C21C4 000BE0E4  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800C21C8 000BE0E8  38 21 00 38 */	addi r1, r1, 0x38
 /* 800C21CC 000BE0EC  7C 08 03 A6 */	mtlr r0
-/* 800C21D0 000BE0F0  4E 80 00 20 */	blr 
+/* 800C21D0 000BE0F0  4E 80 00 20 */	blr
 
 .global OSSetAbsAlarm
 OSSetAbsAlarm:
@@ -248,7 +248,7 @@ OSSetAbsAlarm:
 /* 800C2228 000BE148  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800C222C 000BE14C  38 21 00 38 */	addi r1, r1, 0x38
 /* 800C2230 000BE150  7C 08 03 A6 */	mtlr r0
-/* 800C2234 000BE154  4E 80 00 20 */	blr 
+/* 800C2234 000BE154  4E 80 00 20 */	blr
 
 .global OSSetPeriodicAlarm
 OSSetPeriodicAlarm:
@@ -279,7 +279,7 @@ OSSetPeriodicAlarm:
 /* 800C2298 000BE1B8  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800C229C 000BE1BC  38 21 00 40 */	addi r1, r1, 0x40
 /* 800C22A0 000BE1C0  7C 08 03 A6 */	mtlr r0
-/* 800C22A4 000BE1C4  4E 80 00 20 */	blr 
+/* 800C22A4 000BE1C4  4E 80 00 20 */	blr
 
 .global OSCancelAlarm
 OSCancelAlarm:
@@ -361,7 +361,7 @@ lbl_800C23A8:
 /* 800C23B4 000BE2D4  7C 08 03 A6 */	mtlr r0
 /* 800C23B8 000BE2D8  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800C23BC 000BE2DC  38 21 00 20 */	addi r1, r1, 0x20
-/* 800C23C0 000BE2E0  4E 80 00 20 */	blr 
+/* 800C23C0 000BE2E0  4E 80 00 20 */	blr
 
 .global DecrementerExceptionCallback
 DecrementerExceptionCallback:
@@ -495,7 +495,7 @@ lbl_800C258C:
 /* 800C2594 000BE4B4  7D 88 03 A6 */	mtlr r12
 /* 800C2598 000BE4B8  38 7F 00 00 */	addi r3, r31, 0
 /* 800C259C 000BE4BC  38 9D 00 00 */	addi r4, r29, 0
-/* 800C25A0 000BE4C0  4E 80 00 21 */	blrl 
+/* 800C25A0 000BE4C0  4E 80 00 21 */	blrl
 /* 800C25A4 000BE4C4  48 00 67 61 */	bl OSEnableScheduler
 /* 800C25A8 000BE4C8  48 00 6C 01 */	bl __OSReschedule
 /* 800C25AC 000BE4CC  7F A3 EB 78 */	mr r3, r29
@@ -507,7 +507,7 @@ lbl_800C258C:
 /* 800C25C4 000BE4E4  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800C25C8 000BE4E8  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800C25CC 000BE4EC  38 21 00 28 */	addi r1, r1, 0x28
-/* 800C25D0 000BE4F0  4E 80 00 20 */	blr 
+/* 800C25D0 000BE4F0  4E 80 00 20 */	blr
 
 .global DecrementerExceptionHandler
 DecrementerExceptionHandler:

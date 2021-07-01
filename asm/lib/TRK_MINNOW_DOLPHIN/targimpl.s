@@ -5,12 +5,12 @@
 .global __TRK_get_MSR
 __TRK_get_MSR:
 /* 8010C1CC 001080EC  7C 60 00 A6 */	mfmsr r3
-/* 8010C1D0 001080F0  4E 80 00 20 */	blr 
+/* 8010C1D0 001080F0  4E 80 00 20 */	blr
 
 .global __TRK_set_MSR
 __TRK_set_MSR:
 /* 8010C1D4 001080F4  7C 60 01 24 */	mtmsr r3
-/* 8010C1D8 001080F8  4E 80 00 20 */	blr 
+/* 8010C1D8 001080F8  4E 80 00 20 */	blr
 
 .global TRKValidMemory32
 TRKValidMemory32:
@@ -100,7 +100,7 @@ lbl_8010C2F8:
 /* 8010C304 00108224  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010C308 00108228  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010C30C 0010822C  7C 08 03 A6 */	mtlr r0
-/* 8010C310 00108230  4E 80 00 20 */	blr 
+/* 8010C310 00108230  4E 80 00 20 */	blr
 
 .global TRK_ppc_memcpy
 TRK_ppc_memcpy:
@@ -120,7 +120,7 @@ lbl_8010C31C:
 lbl_8010C344:
 /* 8010C344 00108264  7D 00 01 24 */	mtmsr r8
 /* 8010C348 00108268  7C 00 04 AC */	sync 0
-/* 8010C34C 0010826C  4E 80 00 20 */	blr 
+/* 8010C34C 0010826C  4E 80 00 20 */	blr
 
 .global TRKTargetAccessMemory
 TRKTargetAccessMemory:
@@ -218,7 +218,7 @@ lbl_8010C474:
 /* 8010C4A4 001083C4  38 21 00 38 */	addi r1, r1, 0x38
 /* 8010C4A8 001083C8  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010C4AC 001083CC  7C 08 03 A6 */	mtlr r0
-/* 8010C4B0 001083D0  4E 80 00 20 */	blr 
+/* 8010C4B0 001083D0  4E 80 00 20 */	blr
 
 .global TRKTargetReadInstruction
 TRKTargetReadInstruction:
@@ -241,7 +241,7 @@ lbl_8010C4F0:
 /* 8010C4F0 00108410  38 21 00 10 */	addi r1, r1, 0x10
 /* 8010C4F4 00108414  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010C4F8 00108418  7C 08 03 A6 */	mtlr r0
-/* 8010C4FC 0010841C  4E 80 00 20 */	blr 
+/* 8010C4FC 0010841C  4E 80 00 20 */	blr
 
 .global TRKTargetAccessDefault
 TRKTargetAccessDefault:
@@ -312,7 +312,7 @@ lbl_8010C5E4:
 /* 8010C5EC 0010850C  38 21 00 20 */	addi r1, r1, 0x20
 /* 8010C5F0 00108510  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010C5F4 00108514  7C 08 03 A6 */	mtlr r0
-/* 8010C5F8 00108518  4E 80 00 20 */	blr 
+/* 8010C5F8 00108518  4E 80 00 20 */	blr
 
 .global TRKTargetAccessFP
 TRKTargetAccessFP:
@@ -407,7 +407,7 @@ lbl_8010C730:
 /* 8010C734 00108654  38 21 00 40 */	addi r1, r1, 0x40
 /* 8010C738 00108658  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010C73C 0010865C  7C 08 03 A6 */	mtlr r0
-/* 8010C740 00108660  4E 80 00 20 */	blr 
+/* 8010C740 00108660  4E 80 00 20 */	blr
 
 .global TRKTargetAccessExtended1
 TRKTargetAccessExtended1:
@@ -511,7 +511,7 @@ lbl_8010C8A4:
 /* 8010C8AC 001087CC  38 21 00 20 */	addi r1, r1, 0x20
 /* 8010C8B0 001087D0  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010C8B4 001087D4  7C 08 03 A6 */	mtlr r0
-/* 8010C8B8 001087D8  4E 80 00 20 */	blr 
+/* 8010C8B8 001087D8  4E 80 00 20 */	blr
 
 .global TRKTargetAccessExtended2
 TRKTargetAccessExtended2:
@@ -619,7 +619,7 @@ lbl_8010CA24:
 /* 8010CA28 00108948  38 21 00 40 */	addi r1, r1, 0x40
 /* 8010CA2C 0010894C  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010CA30 00108950  7C 08 03 A6 */	mtlr r0
-/* 8010CA34 00108954  4E 80 00 20 */	blr 
+/* 8010CA34 00108954  4E 80 00 20 */	blr
 
 .global TRKTargetVersions
 TRKTargetVersions:
@@ -632,7 +632,7 @@ TRKTargetVersions:
 /* 8010CA50 00108970  98 83 00 02 */	stb r4, 2(r3)
 /* 8010CA54 00108974  98 03 00 03 */	stb r0, 3(r3)
 /* 8010CA58 00108978  38 60 00 00 */	li r3, 0
-/* 8010CA5C 0010897C  4E 80 00 20 */	blr 
+/* 8010CA5C 0010897C  4E 80 00 20 */	blr
 
 .global TRKTargetSupportMask
 TRKTargetSupportMask:
@@ -676,7 +676,7 @@ TRKTargetSupportMask:
 /* 8010CAF4 00108A14  98 E3 00 1E */	stb r7, 0x1e(r3)
 /* 8010CAF8 00108A18  98 03 00 1F */	stb r0, 0x1f(r3)
 /* 8010CAFC 00108A1C  38 60 00 00 */	li r3, 0
-/* 8010CB00 00108A20  4E 80 00 20 */	blr 
+/* 8010CB00 00108A20  4E 80 00 20 */	blr
 
 .global TRKTargetCPUType
 TRKTargetCPUType:
@@ -705,7 +705,7 @@ TRKTargetCPUType:
 /* 8010CB5C 00108A7C  38 21 00 10 */	addi r1, r1, 0x10
 /* 8010CB60 00108A80  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010CB64 00108A84  7C 08 03 A6 */	mtlr r0
-/* 8010CB68 00108A88  4E 80 00 20 */	blr 
+/* 8010CB68 00108A88  4E 80 00 20 */	blr
 .global lbl_8010CB6C
 lbl_8010CB6C:
 /* 8010CB6C 00108A8C  7C 5A 03 A6 */	mtspr 0x1a, r2
@@ -758,7 +758,7 @@ lbl_8010CC18:
 /* 8010CC24 00108B44  7C 6F F1 20 */	mtcrf 0xff, r3
 /* 8010CC28 00108B48  80 62 00 0C */	lwz r3, 0xc(r2)
 /* 8010CC2C 00108B4C  80 42 00 08 */	lwz r2, 8(r2)
-/* 8010CC30 00108B50  4C 00 00 64 */	rfi 
+/* 8010CC30 00108B50  4C 00 00 64 */	rfi
 lbl_8010CC34:
 /* 8010CC34 00108B54  3C 40 80 2E */	lis r2, lbl_802EFC40@h
 /* 8010CC38 00108B58  60 42 FC 40 */	ori r2, r2, lbl_802EFC40@l
@@ -852,7 +852,7 @@ lbl_8010CD78:
 /* 8010CD8C 00108CAC  7C 6F F1 20 */	mtcrf 0xff, r3
 /* 8010CD90 00108CB0  7C 51 42 A6 */	mfspr r2, 0x111
 /* 8010CD94 00108CB4  7C 72 42 A6 */	mfspr r3, 0x112
-/* 8010CD98 00108CB8  4C 00 00 64 */	rfi 
+/* 8010CD98 00108CB8  4C 00 00 64 */	rfi
 
 .global TRKPostInterruptEvent
 TRKPostInterruptEvent:
@@ -905,7 +905,7 @@ lbl_8010CE3C:
 /* 8010CE3C 00108D5C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010CE40 00108D60  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010CE44 00108D64  7C 08 03 A6 */	mtlr r0
-/* 8010CE48 00108D68  4E 80 00 20 */	blr 
+/* 8010CE48 00108D68  4E 80 00 20 */	blr
 
 .global TRKSwapAndGo
 TRKSwapAndGo:
@@ -958,7 +958,7 @@ lbl_8010CEC8:
 /* 8010CF00 00108E20  80 02 00 00 */	lwz r0, 0(r2)
 /* 8010CF04 00108E24  80 22 00 04 */	lwz r1, 4(r2)
 /* 8010CF08 00108E28  80 42 00 08 */	lwz r2, 8(r2)
-/* 8010CF0C 00108E2C  4C 00 00 64 */	rfi 
+/* 8010CF0C 00108E2C  4C 00 00 64 */	rfi
 lbl_8010CF10:
 /* 8010CF10 00108E30  3C 40 80 2E */	lis r2, lbl_802EFCE8@h
 /* 8010CF14 00108E34  60 42 FC E8 */	ori r2, r2, lbl_802EFCE8@l
@@ -1010,7 +1010,7 @@ lbl_8010CFB0:
 /* 8010CFB8 00108ED8  38 21 00 10 */	addi r1, r1, 0x10
 /* 8010CFBC 00108EDC  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010CFC0 00108EE0  7C 08 03 A6 */	mtlr r0
-/* 8010CFC4 00108EE4  4E 80 00 20 */	blr 
+/* 8010CFC4 00108EE4  4E 80 00 20 */	blr
 
 .global TRKTargetAddStopInfo
 TRKTargetAddStopInfo:
@@ -1052,7 +1052,7 @@ lbl_8010D040:
 /* 8010D048 00108F68  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010D04C 00108F6C  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D050 00108F70  7C 08 03 A6 */	mtlr r0
-/* 8010D054 00108F74  4E 80 00 20 */	blr 
+/* 8010D054 00108F74  4E 80 00 20 */	blr
 
 .global TRKTargetAddExceptionInfo
 TRKTargetAddExceptionInfo:
@@ -1092,7 +1092,7 @@ lbl_8010D0C8:
 /* 8010D0D0 00108FF0  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010D0D4 00108FF4  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D0D8 00108FF8  7C 08 03 A6 */	mtlr r0
-/* 8010D0DC 00108FFC  4E 80 00 20 */	blr 
+/* 8010D0DC 00108FFC  4E 80 00 20 */	blr
 
 .global TRKTargetEnableTrace
 TRKTargetEnableTrace:
@@ -1112,7 +1112,7 @@ lbl_8010D100:
 /* 8010D110 00109030  90 03 01 F8 */	stw r0, 0x1f8(r3)
 lbl_8010D114:
 /* 8010D114 00109034  38 60 00 00 */	li r3, 0
-/* 8010D118 00109038  4E 80 00 20 */	blr 
+/* 8010D118 00109038  4E 80 00 20 */	blr
 
 .global TRKTargetStepDone
 TRKTargetStepDone:
@@ -1151,7 +1151,7 @@ lbl_8010D17C:
 /* 8010D194 001090B4  41 81 00 08 */	bgt lbl_8010D19C
 /* 8010D198 001090B8  38 60 00 00 */	li r3, 0
 lbl_8010D19C:
-/* 8010D19C 001090BC  4E 80 00 20 */	blr 
+/* 8010D19C 001090BC  4E 80 00 20 */	blr
 
 .global TRKTargetDoStep
 TRKTargetDoStep:
@@ -1184,7 +1184,7 @@ lbl_8010D1F0:
 /* 8010D200 00109120  38 21 00 10 */	addi r1, r1, 0x10
 /* 8010D204 00109124  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D208 00109128  7C 08 03 A6 */	mtlr r0
-/* 8010D20C 0010912C  4E 80 00 20 */	blr 
+/* 8010D20C 0010912C  4E 80 00 20 */	blr
 
 .global TRKTargetCheckStep
 TRKTargetCheckStep:
@@ -1215,7 +1215,7 @@ lbl_8010D258:
 /* 8010D268 00109188  38 21 00 10 */	addi r1, r1, 0x10
 /* 8010D26C 0010918C  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D270 00109190  7C 08 03 A6 */	mtlr r0
-/* 8010D274 00109194  4E 80 00 20 */	blr 
+/* 8010D274 00109194  4E 80 00 20 */	blr
 
 .global TRKTargetSingleStep
 TRKTargetSingleStep:
@@ -1237,7 +1237,7 @@ lbl_8010D2AC:
 /* 8010D2AC 001091CC  38 21 00 08 */	addi r1, r1, 8
 /* 8010D2B0 001091D0  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D2B4 001091D4  7C 08 03 A6 */	mtlr r0
-/* 8010D2B8 001091D8  4E 80 00 20 */	blr 
+/* 8010D2B8 001091D8  4E 80 00 20 */	blr
 
 .global TRKTargetStepOutOfRange
 TRKTargetStepOutOfRange:
@@ -1260,14 +1260,14 @@ lbl_8010D2F4:
 /* 8010D2F4 00109214  38 21 00 08 */	addi r1, r1, 8
 /* 8010D2F8 00109218  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D2FC 0010921C  7C 08 03 A6 */	mtlr r0
-/* 8010D300 00109220  4E 80 00 20 */	blr 
+/* 8010D300 00109220  4E 80 00 20 */	blr
 
 .global TRKTargetGetPC
 TRKTargetGetPC:
 /* 8010D304 00109224  3C 60 80 2F */	lis r3, lbl_802EFD90@ha
 /* 8010D308 00109228  38 63 FD 90 */	addi r3, r3, lbl_802EFD90@l
 /* 8010D30C 0010922C  80 63 00 80 */	lwz r3, 0x80(r3)
-/* 8010D310 00109230  4E 80 00 20 */	blr 
+/* 8010D310 00109230  4E 80 00 20 */	blr
 
 .global TRKTargetSupportRequest
 TRKTargetSupportRequest:
@@ -1334,7 +1334,7 @@ lbl_8010D3F0:
 /* 8010D3F4 00109314  38 21 00 30 */	addi r1, r1, 0x30
 /* 8010D3F8 00109318  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D3FC 0010931C  7C 08 03 A6 */	mtlr r0
-/* 8010D400 00109320  4E 80 00 20 */	blr 
+/* 8010D400 00109320  4E 80 00 20 */	blr
 
 .global TRKTargetFlushCache
 TRKTargetFlushCache:
@@ -1354,21 +1354,21 @@ lbl_8010D430:
 /* 8010D430 00109350  38 21 00 08 */	addi r1, r1, 8
 /* 8010D434 00109354  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D438 00109358  7C 08 03 A6 */	mtlr r0
-/* 8010D43C 0010935C  4E 80 00 20 */	blr 
+/* 8010D43C 0010935C  4E 80 00 20 */	blr
 
 .global TRKTargetStopped
 TRKTargetStopped:
 /* 8010D440 00109360  3C 60 80 2F */	lis r3, lbl_802EFCE8@ha
 /* 8010D444 00109364  38 63 FC E8 */	addi r3, r3, lbl_802EFCE8@l
 /* 8010D448 00109368  80 63 00 98 */	lwz r3, 0x98(r3)
-/* 8010D44C 0010936C  4E 80 00 20 */	blr 
+/* 8010D44C 0010936C  4E 80 00 20 */	blr
 
 .global TRKTargetSetStopped
 TRKTargetSetStopped:
 /* 8010D450 00109370  3C 80 80 2F */	lis r4, lbl_802EFCE8@ha
 /* 8010D454 00109374  38 84 FC E8 */	addi r4, r4, lbl_802EFCE8@l
 /* 8010D458 00109378  90 64 00 98 */	stw r3, 0x98(r4)
-/* 8010D45C 0010937C  4E 80 00 20 */	blr 
+/* 8010D45C 0010937C  4E 80 00 20 */	blr
 
 .global TRKTargetStop
 TRKTargetStop:
@@ -1381,7 +1381,7 @@ TRKTargetStop:
 /* 8010D478 00109398  38 21 00 08 */	addi r1, r1, 8
 /* 8010D47C 0010939C  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D480 001093A0  7C 08 03 A6 */	mtlr r0
-/* 8010D484 001093A4  4E 80 00 20 */	blr 
+/* 8010D484 001093A4  4E 80 00 20 */	blr
 
 .global TRKPPCAccessSPR
 TRKPPCAccessSPR:
@@ -1430,7 +1430,7 @@ lbl_8010D520:
 /* 8010D528 00109448  38 21 00 20 */	addi r1, r1, 0x20
 /* 8010D52C 0010944C  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D530 00109450  7C 08 03 A6 */	mtlr r0
-/* 8010D534 00109454  4E 80 00 20 */	blr 
+/* 8010D534 00109454  4E 80 00 20 */	blr
 
 .global TRKPPCAccessPairedSingleRegister
 TRKPPCAccessPairedSingleRegister:
@@ -1465,7 +1465,7 @@ lbl_8010D598:
 /* 8010D5A0 001094C0  38 21 00 20 */	addi r1, r1, 0x20
 /* 8010D5A4 001094C4  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D5A8 001094C8  7C 08 03 A6 */	mtlr r0
-/* 8010D5AC 001094CC  4E 80 00 20 */	blr 
+/* 8010D5AC 001094CC  4E 80 00 20 */	blr
 
 .global TRKPPCAccessFPRegister
 TRKPPCAccessFPRegister:
@@ -1572,7 +1572,7 @@ lbl_8010D718:
 /* 8010D720 00109640  38 21 00 28 */	addi r1, r1, 0x28
 /* 8010D724 00109644  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D728 00109648  7C 08 03 A6 */	mtlr r0
-/* 8010D72C 0010964C  4E 80 00 20 */	blr 
+/* 8010D72C 0010964C  4E 80 00 20 */	blr
 
 .global TRKPPCAccessSpecialReg
 TRKPPCAccessSpecialReg:
@@ -1594,18 +1594,18 @@ TRKPPCAccessSpecialReg:
 /* 8010D76C 0010968C  7F C3 F3 78 */	mr r3, r30
 /* 8010D770 00109690  7F EC FB 78 */	mr r12, r31
 /* 8010D774 00109694  7D 88 03 A6 */	mtlr r12
-/* 8010D778 00109698  4E 80 00 21 */	blrl 
+/* 8010D778 00109698  4E 80 00 21 */	blrl
 /* 8010D77C 0010969C  38 60 00 00 */	li r3, 0
 /* 8010D780 001096A0  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 8010D784 001096A4  83 C1 00 08 */	lwz r30, 8(r1)
 /* 8010D788 001096A8  38 21 00 10 */	addi r1, r1, 0x10
 /* 8010D78C 001096AC  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D790 001096B0  7C 08 03 A6 */	mtlr r0
-/* 8010D794 001096B4  4E 80 00 20 */	blr 
+/* 8010D794 001096B4  4E 80 00 20 */	blr
 
 .global TRKTargetSetInputPendingPtr
 TRKTargetSetInputPendingPtr:
 /* 8010D798 001096B8  3C 80 80 2F */	lis r4, lbl_802EFCE8@ha
 /* 8010D79C 001096BC  38 84 FC E8 */	addi r4, r4, lbl_802EFCE8@l
 /* 8010D7A0 001096C0  90 64 00 A0 */	stw r3, 0xa0(r4)
-/* 8010D7A4 001096C4  4E 80 00 20 */	blr 
+/* 8010D7A4 001096C4  4E 80 00 20 */	blr
