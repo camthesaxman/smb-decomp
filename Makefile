@@ -35,6 +35,7 @@ SOURCE_FILES := \
 	asm/mathutil.s \
 	src/game.c \
 	asm/game.s \
+	asm/event.s \
 	asm/camera.s \
 	asm/code_1.s \
 	asm/sound.s \

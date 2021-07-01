@@ -10,6 +10,6 @@ tools/elf2dol
 *.exe
 
 # Temporary files
-*.swp
+*.sw*
 *.dump
 
