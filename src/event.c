@@ -3,7 +3,7 @@
 #include "functions.h"
 #include "variables.h"
 
-struct UnkStruct lbl_80173CC8[] =
+struct Event eventInfo[] =
 {
     {0, "MEMCARD",       (void *)0x800A3DE8, (void *)0x800A4050, (void *)0x800A428C, 0},
     {0, "STAGE",         (void *)0x80043A74, (void *)0x80043B48, (void *)0x80044104, 0},
@@ -28,10 +28,6 @@ struct UnkStruct lbl_80173CC8[] =
     {0, "REND_EFC",      (void *)0x8009523C, (void *)0x8009526C, (void *)0x80095314, 0},
 };
 
-extern void perf_init_timer(int);
-extern int perf_stop_timer(int);
-extern void func_8008D158();
-
 void ev_run_init(int);
 void ev_run_dest(int);
 
@@ -40,8 +36,8 @@ void ev_run_dest(int);
 void event_init(void)
 {
     int i;
-    for (i = 0; i < 21; i++)
-        lbl_80173CC8[i].unk0 = 0;
+    for (i = 0; i < ARRAY_COUNT(eventInfo); i++)
+        eventInfo[i].state = EV_STATE_INACTIVE;
 }
 
 #ifdef NONMATCHING
@@ -50,21 +46,21 @@ void event_main(void)
     int i;  // r30
     
     func_8008D158(0x00FFFFEF);
-    for (i = 0; i < 21; i++)
+    for (i = 0; i < ARRAY_COUNT(eventInfo); i++)
     {
         perf_init_timer(5);
-        switch (lbl_80173CC8[i].unk0)
+        switch (eventInfo[i].state)
         {
         case 1:
             ev_run_init(i);
-        case 2:
-            lbl_80173CC8[i].unkC();
+        case EV_STATE_RUNNING:
+            eventInfo[i].main();
             break;
         case 3:
             ev_run_dest(i);
             break;
         }
-        lbl_80173CC8[i].unk14 = perf_stop_timer(5);
+        eventInfo[i].time = perf_stop_timer(5);
     }
     func_8008D158(0x00FFFFDF);
 }
@@ -80,8 +76,8 @@ asm void event_main(void)
 /* 8000B278 00007198  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 8000B27C 0000719C  93 C1 00 08 */	stw r30, 8(r1)
 /* 8000B280 000071A0  48 08 1E D9 */	bl func_8008D158
-/* 8000B284 000071A4  3C 60 80 17 */	lis r3, lbl_80173CC8@ha
-/* 8000B288 000071A8  38 03 3C C8 */	addi r0, r3, lbl_80173CC8@l
+/* 8000B284 000071A4  3C 60 80 17 */	lis r3, eventInfo@ha
+/* 8000B288 000071A8  38 03 3C C8 */	addi r0, r3, eventInfo@l
 /* 8000B28C 000071AC  7C 1F 03 78 */	mr r31, r0
 /* 8000B290 000071B0  3B C0 00 00 */	li r30, 0
 lbl_8000B294:
@@ -131,52 +127,47 @@ lbl_8000B2E8:  // end
 #pragma peephole on
 #endif
 
-void ev_run_init(int a)
+void ev_run_init(int id)
 {
-    if (lbl_80173CC8[a].unk0 != 0)
-        ev_run_dest(a);
-    lbl_80173CC8[a].unk8();
-    lbl_80173CC8[a].unk0 = 2;
+    if (eventInfo[id].state != EV_STATE_INACTIVE)
+        ev_run_dest(id);
+    eventInfo[id].start();
+    eventInfo[id].state = EV_STATE_RUNNING;
 }
 
-void ev_run_dest(int a)
+void ev_run_dest(int id)
 {
-    if (lbl_80173CC8[a].unk0 != 0)
+    if (eventInfo[id].state != EV_STATE_INACTIVE)
     {
-        lbl_80173CC8[a].unk10();
-        lbl_80173CC8[a].unk0 = 0;
+        eventInfo[id].finish();
+        eventInfo[id].state = EV_STATE_INACTIVE;
     }
 }
 
-void ev_suspend(int a)
+void ev_suspend(int id)
 {
-    lbl_80173CC8[a].unk0 = 4;
+    eventInfo[id].state = EV_STATE_SUSPENDED;
 }
 
-void ev_restart(int a)
+void ev_restart(int id)
 {
-    if (lbl_80173CC8[a].unk0 == 4)
-        lbl_80173CC8[a].unk0 = 2;
+    if (eventInfo[id].state == EV_STATE_SUSPENDED)
+        eventInfo[id].state = EV_STATE_RUNNING;
     else
-        printf("ev_restart: event %s is not suspended\n", lbl_80173CC8[a].unk4);
+        printf("ev_restart: event %s is not suspended\n", eventInfo[id].name);
 }
 
 void event_clear(void)
 {
-    struct UnkStruct *s = lbl_80173CC8;
+    struct Event *ev = eventInfo;
     int i;
 
-    for (i = 0; i < 21; i++, s++)
+    for (i = 0; i < ARRAY_COUNT(eventInfo); i++, ev++)
     {
-        if (s->unk0 != 0 && lbl_80173CC8[i].unk0 != 0)
+        if (ev->state != EV_STATE_INACTIVE && eventInfo[i].state != EV_STATE_INACTIVE)
         {
-            lbl_80173CC8[i].unk10();
-            lbl_80173CC8[i].unk0 = 0;
+            eventInfo[i].finish();
+            eventInfo[i].state = EV_STATE_INACTIVE;
         }
     }
-}
-
-void polydisp_init(void)
-{
-    func_8009AAB0();
 }

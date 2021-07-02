@@ -278,7 +278,6 @@ extern u8 lbl_802F0238[];
 extern u8 lbl_802F0230[];
 extern u8 lbl_802F0234[];
 extern void func_80030244();
-extern void func_800301AC();
 
 // pls help...
 #if 0

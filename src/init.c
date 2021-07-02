@@ -33,12 +33,12 @@ void init_gx(void)
     r31 = OSAllocFromHeap(__OSCurrHeap, 0x100000);
     GXInitFifoBase(lbl_802F1CA4[5], r31, 0x100000);
     GXInitFifoPtrs(lbl_802F1CA4[5], r31, r31);
-    GXSetViewport(0.0f, 0.0f, lbl_802F1B30->fbWidth, lbl_802F1B30->xfbHeight, 0.0f, 1.0f);
-    GXSetScissor(0, 0, lbl_802F1B30->fbWidth, lbl_802F1B30->efbHeight);
-    GXSetDispCopySrc(0, 0, lbl_802F1B30->fbWidth, lbl_802F1B30->efbHeight);
-    GXSetDispCopyDst(lbl_802F1B30->fbWidth, lbl_802F1B30->xfbHeight);
-    GXSetDispCopyYScale((float)lbl_802F1B30->xfbHeight / (float)lbl_802F1B30->efbHeight);
-    GXSetCopyFilter(lbl_802F1B30->aa, lbl_802F1B30->sample_pattern, 1, lbl_802F1B30->vfilter);
+    GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
+    GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
+    GXSetDispCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
+    GXSetDispCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight);
+    GXSetDispCopyYScale((float)currRenderMode->xfbHeight / (float)currRenderMode->efbHeight);
+    GXSetCopyFilter(currRenderMode->aa, currRenderMode->sample_pattern, 1, currRenderMode->vfilter);
     GXSetPixelFmt(GX_PF_RGB8_Z24, GX_ZC_LINEAR);
     GXCopyDisp(lbl_802F1CA4[0], 1);
     GXSetDispCopyGamma(GX_GM_1_0);
@@ -57,30 +57,30 @@ void init_tv(void)
     switch (VIGetTvFormat())
     {
     case 0:
-        lbl_802F1B30 = &lbl_801E8E98;
+        currRenderMode = &lbl_801E8E98;
         break;
     case 1:
-        lbl_802F1B30 = &lbl_801E8F10;
+        currRenderMode = &lbl_801E8F10;
         break;
     case 2:
-        lbl_802F1B30 = &lbl_801E8ED4;
+        currRenderMode = &lbl_801E8ED4;
         break;
     default:
         OSPanic("init.c", 0x8E, "init_system: invalid TV format\n");
         break;
     }
-    GXAdjustForOverscan(lbl_802F1B30, &lbl_801EEB60, 0, 16);
-    lbl_802F1B30 = &lbl_801EEB60;
+    GXAdjustForOverscan(currRenderMode, &lbl_801EEB60, 0, 16);
+    currRenderMode = &lbl_801EEB60;
 }
 
 void init_vi(void)
 {
-    VIConfigure(lbl_802F1B30);
+    VIConfigure(currRenderMode);
     VISetNextFrameBuffer(lbl_802F1CA4[1]);
     lbl_802F1CA4[0] = lbl_802F1CA4[2];
     VIFlush();
     VIWaitForRetrace();
-    if (lbl_802F1B30->viTVmode & 1)
+    if (currRenderMode->viTVmode & 1)
         VIWaitForRetrace();
 }
 
@@ -135,7 +135,7 @@ void init_heap(void)
     //lbl_80006CE8
     r30 = (r30 + 0x1F) & ~0x1F;
     r28 = r27 & ~0x1F;
-    r3 = ((lbl_802F1B30->fbWidth + 0xF) & 0xfff0) * lbl_802F1B30->xfbHeight * 2 + 0x1F;
+    r3 = ((currRenderMode->fbWidth + 0xF) & 0xfff0) * currRenderMode->xfbHeight * 2 + 0x1F;
     r29 = (r30 + r3) & ~0x1F;
     r0 = (u32)OSInitAlloc((void *)((r29 + r3) & ~0x1F), (void *)r28, 5);
     r27 = (r0 + 0x1F) & ~0x1F;
@@ -253,7 +253,7 @@ asm void init_heap(void)
 /* 80006CE0 00002C00  4C C6 31 82 */	crclr 6
 /* 80006CE4 00002C04  48 0B CF 3D */	bl OSReport
 lbl_80006CE8:
-/* 80006CE8 00002C08  80 8D 99 50 */	lwz r4, lbl_802F1B30-_SDA_BASE_(r13)
+/* 80006CE8 00002C08  80 8D 99 50 */	lwz r4, currRenderMode-_SDA_BASE_(r13)
 /* 80006CEC 00002C0C  38 1E 00 1F */	addi r0, r30, 0x1f
 /* 80006CF0 00002C10  54 1E 00 34 */	rlwinm r30, r0, 0, 0, 0x1a
 /* 80006CF4 00002C14  A0 64 00 04 */	lhz r3, 4(r4)

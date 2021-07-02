@@ -1,4 +1,4 @@
-extern GXRenderModeObj *lbl_802F1B30;
+extern GXRenderModeObj *currRenderMode;
 extern void **lbl_802F1CA4;
 extern OSHeapHandle __OSCurrHeap;
 
@@ -113,13 +113,32 @@ struct ModeControl
 };
 extern struct ModeControl modeCtrl;
 
-struct UnkStruct
+enum
 {
-    s8 unk0;
-    void *unk4;
-    void (*unk8)(void);
-    void (*unkC)(void);
-    void (*unk10)(void);
-    u32 unk14;
+    EV_STATE_INACTIVE = 0,
+    EV_STATE_RUNNING = 2,
+    EV_STATE_SUSPENDED = 4
 };
-extern struct UnkStruct lbl_80173CC8[];
+
+struct Event
+{
+    s8 state;
+    char *name;
+    void (*start)(void);
+    void (*main)(void);
+    void (*finish)(void);
+    u32 time;
+};
+extern struct Event eventInfo[];
+
+struct Struct801EEC80
+{
+    u8 filler0[0x10];
+    u32 unk10;
+};
+extern struct Struct801EEC80 lbl_801EEC80;
+
+extern u32 lbl_802F2000;
+
+extern s16 gameMode;
+extern s16 gameSubmode;
