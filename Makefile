@@ -213,11 +213,13 @@ O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 # Recipes
 #-------------------------------------------------------------------------------
 
-.PHONY: tools
+.PHONY: tools default
+
+default: $(DOL)
+	@ $(SHA1SUM) -c supermonkeyball.sha1
 
 $(DOL): $(ELF) | tools
 	$(ELF2DOL) $(ELF) $(DOL)
-	$(SHA1SUM) -c supermonkeyball.sha1
 
 $(ELF): $(LDSCRIPT) $(O_FILES)
 	$(LD) $(LDFLAGS) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
@@ -229,7 +231,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-	$(OBJDUMP) -D -r $@ > $(@:.o=.dump)
+	@ $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:
 	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP)
