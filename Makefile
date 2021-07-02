@@ -36,6 +36,7 @@ SOURCE_FILES := \
 	src/game.c \
 	asm/game.s \
 	src/event.c \
+	src/polydisp.c \
 	asm/event.s \
 	asm/camera.s \
 	asm/code_1.s \

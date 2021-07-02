@@ -3,16 +3,6 @@
 #include "functions.h"
 #include "variables.h"
 
-struct UnkStruct
-{
-    s8 unk0;
-    void *unk4;
-    void (*unk8)(void);
-    void (*unkC)(void);
-    void (*unk10)(void);
-    u32 unk14;
-};
-
 struct UnkStruct lbl_80173CC8[] =
 {
     {0, "MEMCARD",       (void *)0x800A3DE8, (void *)0x800A4050, (void *)0x800A428C, 0},
@@ -173,7 +163,6 @@ void ev_restart(int a)
 
 void event_clear(void)
 {
-
     struct UnkStruct *s = lbl_80173CC8;
     int i;
 
@@ -185,4 +174,9 @@ void event_clear(void)
             lbl_80173CC8[i].unk0 = 0;
         }
     }
+}
+
+void polydisp_init(void)
+{
+    func_8009AAB0();
 }

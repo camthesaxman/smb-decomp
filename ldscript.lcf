@@ -18,4 +18,4 @@ SECTIONS
 }
 FORCEACTIVE { lbl_80172400 msg2 msg3 unkData GetR2__Fv }
 
-FORCEFILES { game.o }
+FORCEFILES { game.o event.o }

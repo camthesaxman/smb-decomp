@@ -221,7 +221,7 @@ lbl_8000B4B4:
 /* 8000B4E0 00007400  38 21 00 18 */	addi r1, r1, 0x18
 /* 8000B4E4 00007404  4E 80 00 20 */	blr
 .endif
-
+.if 0
 .global polydisp_init
 polydisp_init:
 /* 8000B4E8 00007408  7C 08 02 A6 */	mflr r0
@@ -232,7 +232,8 @@ polydisp_init:
 /* 8000B4FC 0000741C  38 21 00 08 */	addi r1, r1, 8
 /* 8000B500 00007420  7C 08 03 A6 */	mtlr r0
 /* 8000B504 00007424  4E 80 00 20 */	blr
-
+.endif
+.if 0
 .global polydisp_main
 polydisp_main:
 /* 8000B508 00007428  7C 08 02 A6 */	mflr r0
@@ -368,7 +369,7 @@ lbl_8000B6D8:
 /* 8000B6E4 00007604  7C 08 03 A6 */	mtlr r0
 /* 8000B6E8 00007608  38 21 00 18 */	addi r1, r1, 0x18
 /* 8000B6EC 0000760C  4E 80 00 20 */	blr
-
+.endif
 .global func_8000B6F0
 func_8000B6F0:
 /* 8000B6F0 00007610  7C 08 02 A6 */	mflr r0
@@ -13686,11 +13687,7 @@ lbl_8001776C:
 
 .section .sdata2
 
-.global lbl_802F28B8
-lbl_802F28B8:
-	# ROM: 0x1EC2D8
-	.asciz "-\\|/"
-	.balign 4
+    .4byte 0
 
 .global lbl_802F28C0
 lbl_802F28C0:
@@ -14993,11 +14990,6 @@ lbl_8011021C:
 	.byte 0x00, 0x00, 0x01, 0x8A
 
 .section .data
-
-.global lbl_80173EE8
-lbl_80173EE8:
-	# ROM: 0x170EE8
-	.asciz "NOW LOADING"
 
 .global lbl_80173EF4
 lbl_80173EF4:

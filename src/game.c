@@ -13,20 +13,6 @@ extern u32 lbl_802F1B7C;
 extern void (*lbl_802F1B80)(void);
 extern void (*lbl_802F1B74)(void);
 
-struct ModeControl
-{
-    u32 unk0;
-    u8 filler4[4];
-    u32 unk8;
-    u8 fillerC[0x1C-0xC];
-    u32 unk1C;
-    s32 unk20;
-    u8 filler24[0x42-0x24];
-    u8 unk42;
-};
-
-extern struct ModeControl modeCtrl;
-
 #ifdef NONMATCHING
 void gm_init(void)
 {

@@ -97,3 +97,29 @@ struct Struct801723C0
     u32 unk1C;
 };
 extern struct Struct801723C0 lbl_801723C0;
+
+struct ModeControl
+{
+    u32 unk0;
+    u8 filler4[4];
+    u32 unk8;
+    u8 fillerC[0x1C-0xC];
+    u32 unk1C;
+    s32 unk20;
+    u8 filler24[0x30-0x24];
+    s32 unk30;
+    u8 filler34[0x42-0x34];
+    u8 unk42;
+};
+extern struct ModeControl modeCtrl;
+
+struct UnkStruct
+{
+    s8 unk0;
+    void *unk4;
+    void (*unk8)(void);
+    void (*unkC)(void);
+    void (*unk10)(void);
+    u32 unk14;
+};
+extern struct UnkStruct lbl_80173CC8[];
