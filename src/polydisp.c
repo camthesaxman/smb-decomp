@@ -3,6 +3,8 @@
 #include "functions.h"
 #include "variables.h"
 
+#include "game.h"
+
 // this file's functions
 void func_8000B6F0(void);
 void func_8000B8AC(void);
@@ -38,8 +40,8 @@ void polydisp_main(void)
 {
     struct Struct801EEC80 *unk = &lbl_801EEC80;
 
-    if (gameMode == 1
-     && (gameSubmode == 29 || gameSubmode == 30)
+    if (gameMode == MD_SEL
+     && (gameSubmode == SMD_SEL_STAGE_INIT || gameSubmode == SMD_SEL_STAGE_MAIN)
      && func_80092444() != 0)
         show_loading_msg();
 
@@ -86,55 +88,55 @@ void func_8000B6F0(void)
     default:
         func_8000D220();
         break;
-    case 0:
+    case MD_ADV:
         func_8000B8AC();
         break;
-    case 1:
+    case MD_SEL:
         func_8000E0FC();
         func_8000D220();
         func_800125A4();
         break;
-    case 2:
-        switch (gameSubmode - 61)
+    case MD_GAME:
+        switch (gameSubmode)
         {
         default:
-        case 2:
-        case 3:
-        case 6:
-        case 8:
-        case 9:
-        case 10:
-        case 20:
-        case 21:
+        case SMD_GAME_NAMEENTRY_INIT:
+        case SMD_GAME_NAMEENTRY_MAIN:
+        case SMD_GAME_RESTART_INIT:
+        case SMD_GAME_NAMEENTRY_READY_MAIN:
+        case SMD_GAME_BONUS_CLEAR_INIT:
+        case SMD_GAME_BONUS_CLEAR_MAIN:
+        case SMD_GAME_OVER_SAVE:
+        case SMD_GAME_OVER_DEST:
             func_8000C5A4();
             break;
-        case 15:
-        case 16:
-        case 17:
+        case SMD_GAME_RESULT_INIT:
+        case SMD_GAME_RESULT_MAIN:
+        case SMD_GAME_RESULT_MENU:
             func_8000D018();
             break;
-        case 11:
-        case 12:
+        case SMD_GAME_ENDING_INIT:
+        case SMD_GAME_ENDING_MAIN:
             func_800B64B0();
             func_8000D220();
             break;
-        case 22:
-        case 23:
+        case SMD_GAME_ROLL_INIT:
+        case SMD_GAME_ROLL_MAIN:
             func_80093E28();
             break;
-        case 4:
-        case 5:
+        case SMD_GAME_CONTINUE_INIT:
+        case SMD_GAME_CONTINUE_MAIN:
             func_8000CA9C();
             func_8000D220();
             break;
-        case 13:
-        case 14:
+        case SMD_GAME_EXTRA_INIT:
+        case SMD_GAME_EXTRA_WAIT:
             func_8000CF94();
             func_8000D220();
             break;
-        case 0:
-        case 1:
-        case 7:
+        case SMD_GAME_OVER_INIT:
+        case SMD_GAME_OVER_MAIN:
+        case SMD_GAME_NAMEENTRY_READY_INIT:
             switch (modeCtrl.unk28)
             {
             case 1:
@@ -146,43 +148,43 @@ void func_8000B6F0(void)
                 break;
             }
             break;
-        case 18:
-        case 19:
-        case 24:
-        case 25:
+        case SMD_GAME_INTR_SEL_INIT:
+        case SMD_GAME_INTR_SEL_MAIN:
+        case SMD_GAME_OVER_POINT_INIT:
+        case SMD_GAME_OVER_POINT_MAIN:
             break;
         }
         break;
-    case 3:
+    case MD_TEST:
         func_8000E0FC();
         if (lbl_802F1B70 != NULL)
             lbl_802F1B70();
         func_8000D220();
         break;
-    case 4:
+    case MD_MINI:
         switch (gameSubmode)
         {
-        case 0x92:
-        case 0x93:
+        case SMD_MINI_TEST0_INIT:
+        case SMD_MINI_TEST0_MAIN:
             func_80093E28();
             break;
-        case 0xA2:
-        case 0xA3:
+        case SMD_MINI_COMMEND_INIT:
+        case SMD_MINI_COMMEND_MAIN:
             func_8009BEF8();
             break;
-        case 0xA7:
+        case SMD_MINI_ENDING_MAIN:
             func_80094028();
             break;
         default:
             func_80093B54();
             break;
-        case 0x90:
-        case 0x91:
+        case SMD_MINI_SELECT_INIT:
+        case SMD_MINI_SELECT_MAIN:
             break;
         }
         func_8000D220();
         break;
-    case 5:
+    case MD_OPTION:
         if (lbl_802F1B70 != NULL)
             lbl_802F1B70();
         func_8000D220();

@@ -2173,23 +2173,6 @@ lbl_80173C70:
 
 .section .sdata
 
-    .balign 0x10
-	# ROM: 0x1EA930
-	.4byte 0
-	.asciz "MD_ADV"
-	.balign 4
-	.asciz "MD_SEL"
-	.balign 4
-	.asciz "MD_GAME"
-	.asciz "MD_TEST"
-	.asciz "MD_MINI"
-
-.global lbl_802F021C
-lbl_802F021C:
-	# ROM: 0x1EA95C
-	.4byte 0
-	.4byte 0
-	.asciz "OPTION"
 	.balign 4
 
 .global lbl_802F022C
