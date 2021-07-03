@@ -144,3 +144,5 @@ extern u32 lbl_802F2000;
 
 extern s16 gameMode;
 extern s16 gameSubmode;
+
+extern u32 lbl_802F1BC8;

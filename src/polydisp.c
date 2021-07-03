@@ -3,7 +3,10 @@
 #include "functions.h"
 #include "variables.h"
 
+// this file's functions
 void func_8000B6F0(void);
+void func_8000B8AC(void);
+void func_8000B918(void);
 
 void polydisp_init(void)
 {
@@ -188,3 +191,47 @@ void func_8000B6F0(void)
     func_800188D4();
     func_800858CC();
 }
+
+void func_8000B8AC(void)
+{
+    switch (lbl_802F1BC8)
+    {
+    case 4:
+        func_8000B918();
+        func_8000D220();
+        break;
+    case 2:
+        func_8000B96C();
+        break;
+    case 14:
+        func_8000C5A4();
+        func_8000BCA4();
+        break;
+    case 11:
+    case 12:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+        func_8000C5A4();
+        func_800858CC();
+        func_8000C388();
+        break;
+    }
+}
+
+/*
+extern s16 lbl_801EED04[];
+
+u8 lbl_802F1B04[0xB4];
+u32 lbl_802F1BB8;
+
+void func_8000B918(void)
+{
+    mathutil_set_a_mtx_b_mtx();
+    mathutil_tf_point_by_a_mtx_trans_v(lbl_801EED04);
+    mathutil_mult_a_mtx_by_rotate_x(lbl_801EED04[6]);
+    mathutil_mult_a_mtx_by_rotate_z(lbl_801EED04[7]);
+    func_80033AD4(lbl_802F1BB8);
+}
+*/
