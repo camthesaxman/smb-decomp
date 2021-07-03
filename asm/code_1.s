@@ -245,6 +245,8 @@ func_80022F14:
 /* 80022F4C 0001EE6C  90 8D 9A CC */	stw r4, lbl_802F1CAC-_SDA_BASE_(r13)
 /* 80022F50 0001EE70  90 8D 9A C8 */	stw r4, lbl_802F1CA8-_SDA_BASE_(r13)
 /* 80022F54 0001EE74  4E 80 00 20 */	blr
+.global ev_info_init
+ev_info_init:
 /* 80022F58 0001EE78  7C 08 02 A6 */	mflr r0
 /* 80022F5C 0001EE7C  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 80022F60 0001EE80  90 01 00 04 */	stw r0, 4(r1)
@@ -307,6 +309,8 @@ lbl_80023020:
 /* 80023030 0001EF50  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 80023034 0001EF54  38 21 00 18 */	addi r1, r1, 0x18
 /* 80023038 0001EF58  4E 80 00 20 */	blr
+.global ev_info_main
+ev_info_main:
 /* 8002303C 0001EF5C  7C 08 02 A6 */	mflr r0
 /* 80023040 0001EF60  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 80023044 0001EF64  90 01 00 04 */	stw r0, 4(r1)
@@ -1055,6 +1059,8 @@ lbl_80023AC0:
 /* 80023AC8 0001F9E8  38 21 01 10 */	addi r1, r1, 0x110
 /* 80023ACC 0001F9EC  7C 08 03 A6 */	mtlr r0
 /* 80023AD0 0001F9F0  4E 80 00 20 */	blr
+.global ev_info_dest
+ev_info_dest:
 /* 80023AD4 0001F9F4  7C 08 02 A6 */	mflr r0
 /* 80023AD8 0001F9F8  90 01 00 04 */	stw r0, 4(r1)
 /* 80023ADC 0001F9FC  94 21 FF F8 */	stwu r1, -8(r1)

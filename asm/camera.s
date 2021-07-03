@@ -99,6 +99,8 @@ camera_init:
 /* 800178F0 00013810  38 21 00 08 */	addi r1, r1, 8
 /* 800178F4 00013814  7C 08 03 A6 */	mtlr r0
 /* 800178F8 00013818  4E 80 00 20 */	blr
+.global ev_camera_init
+ev_camera_init:
 /* 800178FC 0001381C  7C 08 02 A6 */	mflr r0
 /* 80017900 00013820  3C 60 80 1F */	lis r3, cameraInfo@ha
 /* 80017904 00013824  90 01 00 04 */	stw r0, 4(r1)
@@ -137,6 +139,8 @@ lbl_80017938:
 /* 80017984 000138A4  83 81 00 08 */	lwz r28, 8(r1)
 /* 80017988 000138A8  38 21 00 20 */	addi r1, r1, 0x20
 /* 8001798C 000138AC  4E 80 00 20 */	blr
+.global ev_camera_main
+ev_camera_main:
 /* 80017990 000138B0  7C 08 02 A6 */	mflr r0
 /* 80017994 000138B4  90 01 00 04 */	stw r0, 4(r1)
 /* 80017998 000138B8  94 21 FF 40 */	stwu r1, -0xc0(r1)
@@ -581,6 +585,8 @@ lbl_80017F64:
 /* 80017FBC 00013EDC  CA A1 00 68 */	lfd f21, 0x68(r1)
 /* 80017FC0 00013EE0  38 21 00 C0 */	addi r1, r1, 0xc0
 /* 80017FC4 00013EE4  4E 80 00 20 */	blr
+.global ev_camera_dest
+ev_camera_dest:
 /* 80017FC8 00013EE8  4E 80 00 20 */	blr
 
 .global func_80017FCC
