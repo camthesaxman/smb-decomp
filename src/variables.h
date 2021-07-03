@@ -106,7 +106,9 @@ struct ModeControl
     u8 fillerC[0x1C-0xC];
     u32 unk1C;
     s32 unk20;
-    u8 filler24[0x30-0x24];
+    u8 filler24[0x28-0x24];
+    s32 unk28;
+    u8 filler2C[4];
     s32 unk30;
     u8 filler34[0x42-0x34];
     u8 unk42;
