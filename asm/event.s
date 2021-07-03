@@ -13256,6 +13256,40 @@ lbl_8001776C:
 /* 80017778 00013698  38 60 00 00 */	li r3, 0
 /* 8001777C 0001369C  4E 80 00 20 */	blr
 
+.section .sdata
+
+.global lbl_802F02E0
+lbl_802F02E0:
+	# ROM: 0x1EAA20
+	.byte 0x00, 0x54, 0x00, 0x55
+	.byte 0x00, 0x56, 0x00, 0x57
+
+.global lbl_802F02E8
+lbl_802F02E8:
+	# ROM: 0x1EAA28
+	.byte 0x20, 0x0A, 0x20, 0x00
+
+.global lbl_802F02EC
+lbl_802F02EC:
+	# ROM: 0x1EAA2C
+	.byte 0x00, 0x00, 0x00, 0x06
+
+.global lbl_802F02F0
+lbl_802F02F0:
+	# ROM: 0x1EAA30
+	.byte 0x00, 0x00, 0x00, 0x06
+	.4byte 0
+
+.global lbl_802F02F8
+lbl_802F02F8:
+	# ROM: 0x1EAA38
+	.byte 0x05, 0x05, 0x04, 0x03
+	.byte 0x04, 0x02, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.asciz "k/CHU!"
+	.balign 4
+
 .section .sdata2
 
     .4byte 0
