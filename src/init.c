@@ -3,6 +3,8 @@
 #include "variables.h"
 #include "functions.h"
 
+u8 lbl_801EEBA0[0x80];
+
 void initialize(void)
 {
     OSInit();
@@ -56,13 +58,13 @@ void init_tv(void)
 {
     switch (VIGetTvFormat())
     {
-    case 0:
+    case VI_NTSC:
         currRenderMode = &lbl_801E8E98;
         break;
-    case 1:
+    case VI_PAL:
         currRenderMode = &lbl_801E8F10;
         break;
-    case 2:
+    case VI_MPAL:
         currRenderMode = &lbl_801E8ED4;
         break;
     default:

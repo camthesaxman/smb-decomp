@@ -8056,3 +8056,2783 @@ lbl_801147CC:
 	.4byte 0x801147D8  ;# ptr
 	.4byte 0x801147F4  ;# ptr
 	.4byte 0x801147F4  ;# ptr
+
+.section .data
+
+.global lbl_801AC960
+lbl_801AC960:
+	# ROM: 0x1A9960
+	.asciz "GRPbil_set"
+	.balign 4
+	.asciz "GRPbow_set"
+	.balign 4
+	.asciz "GRPfight_set"
+	.balign 4
+	.asciz "GRPgolf_set"
+	.asciz "GRPrace_set"
+	.asciz "GRPtarget_set"
+	.balign 4
+	.asciz "GRPcomn_set"
+	.asciz "GRPending"
+	.balign 4
+	.asciz "GRPstream"
+	.balign 4
+	.asciz "SND_SEB_SE_COIN_SEPCM_2"
+	.asciz "SND_SEB_SE_COIN_SEPCM_3"
+	.asciz "SND_SEB_SE_START_SEPCM"
+	.balign 4
+	.asciz "SND_SNGA_SNG_BNK0_FX_TEST"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM"
+	.balign 4
+	.asciz "DMY_CODE"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_1"
+	.asciz "SND_SEB_SE_BALL_SEPCM_2"
+	.asciz "SND_SEB_SE_BALL_SEPCM_3"
+	.asciz "SND_SEB_SE_BALL_SEPCM_4"
+	.asciz "SND_SEB_SE_BALL_SEPCM_5"
+	.asciz "SND_SEB_SE_BALL_SEPCM_6"
+	.asciz "SND_SEB_SE_BALL_SEPCM_7"
+	.asciz "SND_SEB_SE_BALL_SEPCM_8"
+	.asciz "SND_SEB_SE_BALL_SEPCM_9"
+	.asciz "SND_SEB_SE_BALL_SEPCM_10"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_18"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_19"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_20"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_21"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_22"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_23"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_25"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_11"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_12"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_13"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_14"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_15"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_16"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_17"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_26"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_27"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_28"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_29"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_30"
+	.balign 4
+	.asciz "SND_SEB_SE_BALL_SEPCM_31"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_2"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_3"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_5"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_6"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_7"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_8"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_9"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_10"
+	.asciz "SND_SEB_SE_ETC_SEPCM_11"
+	.asciz "SND_SEB_SE_ETC_SEPCM_12"
+	.asciz "SND_SEB_SE_ETC_SEPCM_22"
+	.asciz "SND_SEB_SE_ETC_SEPCM_14"
+	.asciz "SND_SEB_SE_ETC_SEPCM_OFF"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_15"
+	.asciz "SND_SEB_SE_ETC_SEPCM_16"
+	.asciz "SND_SEB_SE_ETC_SEPCM_17"
+	.asciz "SND_SEB_SE_ETC_SEPCM_18"
+	.asciz "SND_SEB_SE_ETC_SEPCM_OFF_1"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_19"
+	.asciz "SND_SEB_SE_ETC_SEPCM_OFF_2"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_SEPCM_20"
+	.asciz "SND_SEB_SE_ETC_SEPCM_21"
+	.asciz "SND_SEB_SE_ETC_SEPCM_24"
+	.asciz "SND_SEB_SE_JGL_SEPCM_2"
+	.balign 4
+	.asciz "SND_SEB_SE_JGL_SEPCM_3"
+	.balign 4
+	.asciz "SND_SEB_SE_JGL_SE034UP_1"
+	.balign 4
+	.asciz "SND_SEB_SE_JGL_JGL01A_AIF_1"
+	.asciz "SND_SE01_RUN01"
+	.balign 4
+	.asciz "SND_SE01_RUN02"
+	.balign 4
+	.asciz "SND_SE01_RUN03"
+	.balign 4
+	.asciz "SND_SE01_FORPOP01_FPD"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_25"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_27"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_31"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_32"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_33"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_34"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_35"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_36"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_37"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_OFF_3"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_38"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_OFF_4"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_39"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_40"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_41"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_42"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_43"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_44"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_45"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_46"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_47"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_48"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_49"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_50"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_51"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_52"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_56"
+	.balign 4
+	.asciz "SND_SEB_SE_ETC_0_SEPCM_13"
+	.balign 4
+	.asciz "SND_SEB_RACKA_31_01_2"
+	.balign 4
+	.asciz "SND_SEB_RACKA_C_0003_WAV_2"
+	.balign 4
+	.asciz "SND_SEB_RACKA_C_0004_WAV"
+	.balign 4
+	.asciz "SND_SEB_YUKA_SEPCM_1_1"
+	.balign 4
+	.asciz "SND_SEB_YUKA_SEPCM_3_2"
+	.balign 4
+	.asciz "SND_SEB_YUKA_SEPCM_5_3"
+	.balign 4
+	.asciz "SFXse162"
+	.balign 4
+	.asciz "SFXse163"
+	.balign 4
+	.asciz "SFXse188"
+	.balign 4
+	.asciz "SFXse189"
+	.balign 4
+	.asciz "SFXse161"
+	.balign 4
+	.asciz "SND_SED_NAR_SEGA"
+	.balign 4
+	.asciz "SND_SED_NAR_TITTLE1"
+	.asciz "SND_SED_NAR_TITTLE2"
+	.asciz "SND_SED_NAR_0"
+	.balign 4
+	.asciz "SND_SED_NAR_1"
+	.balign 4
+	.asciz "SND_SED_NAR_2"
+	.balign 4
+	.asciz "SND_SED_NAR_3"
+	.balign 4
+	.asciz "SND_SED_NAR_4"
+	.balign 4
+	.asciz "SND_SED_NAR_5"
+	.balign 4
+	.asciz "SND_SED_NAR_6"
+	.balign 4
+	.asciz "SND_SED_NAR_7"
+	.balign 4
+	.asciz "SND_SED_NAR_8"
+	.balign 4
+	.asciz "SND_SED_NAR_9"
+	.balign 4
+	.asciz "SND_SED_NAR_READY"
+	.balign 4
+	.asciz "SND_SED_NAR_GO"
+	.balign 4
+	.asciz "SND_SED_NAR_GO2"
+	.asciz "SND_SED_NAR_RINGOUT"
+	.asciz "SND_SED_NAR_HURRY"
+	.balign 4
+	.asciz "SND_SED_NAR_CLEAR"
+	.balign 4
+	.asciz "SND_SED_NAR_TIMEOVER"
+	.balign 4
+	.asciz "SND_SED_NAR_GAMEOVER"
+	.balign 4
+	.asciz "SND_SED_NAR_BONUSFIN"
+	.balign 4
+	.asciz "SND_SED_NAR_CLEAR_FLOOR"
+	.asciz "SND_SED_NAR_CLEAR_GAME"
+	.balign 4
+	.asciz "SND_SED_NAR_CONGLA"
+	.balign 4
+	.asciz "SND_SED_NAR_CONTINUE"
+	.balign 4
+	.asciz "SND_SED_NAR_FALLOUT"
+	.asciz "SND_SED_NAR_GOAL"
+	.balign 4
+	.asciz "SND_SED_NAR_PERFECT"
+	.asciz "SND_SED_NAR_PRESS"
+	.balign 4
+	.asciz "SND_SED_NAR_READY2"
+	.balign 4
+	.asciz "SND_SED_NAR_SEL_LV"
+	.balign 4
+	.asciz "SND_SED_NAR_SEL_MK"
+	.balign 4
+	.asciz "SND_SED_NAR_THANKYOU"
+	.balign 4
+	.asciz "SND_SED_NAR_FALL00"
+	.balign 4
+	.asciz "SND_SED_NAR_FALL01"
+	.balign 4
+	.asciz "SND_SED_NAR_FALL02"
+	.balign 4
+	.asciz "SND_SED_NAR_N4_ES"
+	.balign 4
+	.asciz "SND_SED_NAR_OP_TRN"
+	.balign 4
+	.asciz "SND_SED_NAR_RST5"
+	.balign 4
+	.asciz "SND_SED_NAR_HAMMER1"
+	.asciz "SND_SED_NAR_HAMMER2"
+	.asciz "SND_SED_NAR_RAIN1"
+	.balign 4
+	.asciz "SND_SED_NAR_RAIN1_OFF"
+	.balign 4
+	.asciz "SND_SED_NAR_RAIN2"
+	.balign 4
+	.asciz "SND_SED_NAR_RAIN2_OFF"
+	.balign 4
+	.asciz "SND_SED_NAR_BOYM_START2"
+	.asciz "SND_SED_NAR_BOYM_START3"
+	.asciz "SND_SED_NAR_GIRLM_GOAL3"
+	.asciz "SND_SED_NAR_BABYM_START3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_START1"
+	.asciz "SND_SED_VO1_BOYM_START2"
+	.asciz "SND_SED_VO1_BOYM_START3"
+	.asciz "SND_SED_VO1_BOYM_START4"
+	.asciz "SND_SED_VO1_BOYM_TIMEOVER1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_TIMEOVER2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_OCHISOU1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_OCHISOU2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_OCHISOU3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_BGET"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_BBGET1"
+	.asciz "SND_SED_VO1_BOYM_BBGET2"
+	.asciz "SND_SED_VO1_BOYM_COLI1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_COLI2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_COLI3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_COLI4"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_COLI5"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_COLI6"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_COLI7"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_QUEST1"
+	.asciz "SND_SED_VO1_BOYM_ANGLY"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_LAUGH"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_CRY"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_GOAL1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_GOAL2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_GOAL3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_FALL1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_FALL2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_FALL3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_FALL4"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_HELLO"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_BYE"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYM_SEEYOU"
+	.asciz "SND_SED_VO1_BOYH_START1"
+	.asciz "SND_SED_VO1_BOYH_OCHISOU1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_OCHISOU2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_OCHISOU3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_OCHISOU5"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_OCHISOU7"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_OCHISOU8"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_OCHISOU9"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_LAUGH2"
+	.asciz "SND_SED_VO1_BOYH_GOAL1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_GOAL2"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_GOAL3"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_FALL1"
+	.balign 4
+	.asciz "SND_SED_VO1_BOYH_FALL1L"
+	.asciz "SND_SED_VO2_GIRLM_START"
+	.asciz "SND_SED_VO2_GIRLM_TIMEOVER"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_OCHISOU1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_OCHISOU2"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_OCHISOU3"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_BGET1"
+	.asciz "SND_SED_VO2_GIRLM_BGET2"
+	.asciz "SND_SED_VO2_GIRLM_BGET3"
+	.asciz "SND_SED_VO2_GIRLM_BGET4"
+	.asciz "SND_SED_VO2_GIRLM_BGET5"
+	.asciz "SND_SED_VO2_GIRLM_BBGET1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_BBGET2"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_BBGET3"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_BBGET4"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_COLI1"
+	.asciz "SND_SED_VO2_GIRLM_COLI2"
+	.asciz "SND_SED_VO2_GIRLM_COLI3"
+	.asciz "SND_SED_VO2_GIRLM_COLI4"
+	.asciz "SND_SED_VO2_GIRLM_COLI5"
+	.asciz "SND_SED_VO2_GIRLM_COLI6"
+	.asciz "SND_SED_VO2_GIRLM_COLI7"
+	.asciz "SND_SED_VO2_GIRLM_COLI8"
+	.asciz "SND_SED_VO2_GIRLM_COLI9"
+	.asciz "SND_SED_VO2_GIRLM_QUEST1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_QUEST2"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_ANGLY1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_ANGLY2"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_CRY1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_GOAL1"
+	.asciz "SND_SED_VO2_GIRLM_GOAL2"
+	.asciz "SND_SED_VO2_GIRLM_GOAL3"
+	.asciz "SND_SED_VO2_GIRLM_GOAL4"
+	.asciz "SND_SED_VO2_GIRLM_FALL1"
+	.asciz "SND_SED_VO2_GIRLM_FALL2"
+	.asciz "SND_SED_VO2_GIRLM_HELLO"
+	.asciz "SND_SED_VO2_GIRLM_BYE1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_BYE2"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLM_SEEYOU"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_START1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_OCHISOU1"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_OCHISOU2"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_OCHISOU3"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_OCHISOU5"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_OCHISOU8"
+	.balign 4
+	.asciz "SND_SED_VO2_GIRLH_FALL2"
+	.asciz "SND_SED_VO2_GIRLH_FALL2L"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_START2"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_START3"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_TIMEOVER"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_OCHISOU1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_OCHISOU2"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_OCHISOU3"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_BGET1"
+	.asciz "SND_SED_VO3_BABYM_BGET2"
+	.asciz "SND_SED_VO3_BABYM_BGET3"
+	.asciz "SND_SED_VO3_BABYM_BBGET1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_BBGET2"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_BBGET3"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_COLI1"
+	.asciz "SND_SED_VO3_BABYM_COLI2"
+	.asciz "SND_SED_VO3_BABYM_COLI4"
+	.asciz "SND_SED_VO3_BABYM_COLI5"
+	.asciz "SND_SED_VO3_BABYM_COLI6"
+	.asciz "SND_SED_VO3_BABYM_QUEST1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_QUEST2"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_ANGLY"
+	.asciz "SND_SED_VO3_BABYM_LAUGH"
+	.asciz "SND_SED_VO3_BABYM_CRY1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_CRY2"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYM_GOAL1"
+	.asciz "SND_SED_VO3_BABYM_GOAL2"
+	.asciz "SND_SED_VO3_BABYM_FALL1"
+	.asciz "SND_SED_VO3_BABYM_FALL2"
+	.asciz "SND_SED_VO3_BABYM_FALL3"
+	.asciz "SND_SED_VO3_BABYM_FALL4"
+	.asciz "SND_SED_VO3_BABYH_START1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_TIMEOVER3"
+	.asciz "SND_SED_VO3_BABYH_OCHISOU1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_OCHISOU2"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_OCHISOU3"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_OCHISOU4"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_OCHISOU6"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_OCHISOU7"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_BGET4"
+	.asciz "SND_SED_VO3_BABYH_COLI4"
+	.asciz "SND_SED_VO3_BABYH_LAUGH1"
+	.balign 4
+	.asciz "SND_SED_VO3_BABYH_FALL1"
+	.asciz "SND_SED_VO3_BABYH_FALL1L"
+	.balign 4
+	.asciz "SFXgoli_1up_basic_macro"
+	.asciz "SFXgoli_bumper1_basic_macro"
+	.asciz "SFXgoli_bumper2_basic_macro"
+	.asciz "SFXgoli_bumper3_basic_macro"
+	.asciz "SFXgoli_bumper4_basic_macro"
+	.asciz "SFXgoli_bumper5_basic_macro"
+	.asciz "SFXgoli_bumper6_basic_macro"
+	.asciz "SFXgoli_conte_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_fall1_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_fall2_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_gameover_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_get1_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_goal_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_goal2_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_goal3_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_goal4_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_husaget1_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_select_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_shock1_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_shock2_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_shock3_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_shock4_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_start_basic_macro"
+	.balign 4
+	.asciz "SFXgoli_timeover_basic_macro"
+	.balign 4
+	.asciz "SFXcushion01_basic_macro"
+	.balign 4
+	.asciz "SFXcushion02_basic_macro"
+	.balign 4
+	.asciz "SFXcushion03_basic_macro"
+	.balign 4
+	.asciz "SFXhit01_basic_macro"
+	.balign 4
+	.asciz "SFXhit02_basic_macro"
+	.balign 4
+	.asciz "SFXhit03_basic_macro"
+	.balign 4
+	.asciz "SFXhit04_basic_macro"
+	.balign 4
+	.asciz "SFXhit05_basic_macro"
+	.balign 4
+	.asciz "SFXhit06_basic_macro"
+	.balign 4
+	.asciz "SFXhit07_basic_macro"
+	.balign 4
+	.asciz "SFXhit08_basic_macro"
+	.balign 4
+	.asciz "SFXhit09_basic_macro"
+	.balign 4
+	.asciz "SFXhit10_basic_macro"
+	.balign 4
+	.asciz "SFXhit11_basic_macro"
+	.balign 4
+	.asciz "SFXpoket01_basic_macro"
+	.balign 4
+	.asciz "SFXpoket02_basic_macro"
+	.balign 4
+	.asciz "SFXpoket03_basic_macro"
+	.balign 4
+	.asciz "SFXshot01_basic_macro"
+	.balign 4
+	.asciz "SFXshot02_basic_macro"
+	.balign 4
+	.asciz "SFXshot03_basic_macro"
+	.balign 4
+	.asciz "SFXshot04_basic_macro"
+	.balign 4
+	.asciz "SFXbillose_basic_macro"
+	.balign 4
+	.asciz "SFXbilwin_basic_macro"
+	.balign 4
+	.asciz "SFXapplaudb_basic_macro"
+	.asciz "SFXbilstr_basic_macro"
+	.balign 4
+	.asciz "SFXtoogoodb_basic_macro"
+	.asciz "SFXcushion04_basic_macro"
+	.balign 4
+	.asciz "SFXcushion05_basic_macro"
+	.balign 4
+	.asciz "SFXshot_moresoft_basic_macro"
+	.balign 4
+	.asciz "SFXshot_soft_basic_macro"
+	.balign 4
+	.asciz "SFXapplaudbbig_basic_macro"
+	.balign 4
+	.asciz "SFXapplaudbnocl_basic_macro"
+	.asciz "SFXapplaudbnol_basic_macro"
+	.balign 4
+	.asciz "SFXbill_foul_l_basic_macro"
+	.balign 4
+	.asciz "SFXbill_foul_r_basic_macro"
+	.balign 4
+	.asciz "SFXbill_lose_l_basic_macro"
+	.balign 4
+	.asciz "SFXbill_lose_r_basic_macro"
+	.balign 4
+	.asciz "SFXbill_senkou_l_basic_macro"
+	.balign 4
+	.asciz "SFXbill_senkou_r_basic_macro"
+	.balign 4
+	.asciz "SFXbill_win_l_basic_macro"
+	.balign 4
+	.asciz "SFXbill_win_r_basic_macro"
+	.balign 4
+	.asciz "SFXboob_basic_macro"
+	.asciz "SFXcushion06_basic_macro"
+	.balign 4
+	.asciz "SFXshotshift_basic_macro"
+	.balign 4
+	.asciz "SFX1st_match_basic_macro"
+	.balign 4
+	.asciz "SFX2nd_match_basic_macro"
+	.balign 4
+	.asciz "SFX3rd_match_basic_macro"
+	.balign 4
+	.asciz "SFXbreak_ace_01_basic_macro"
+	.asciz "SFXbreak_ace_02_basic_macro"
+	.asciz "SFXbreak_ace_03_basic_macro"
+	.asciz "SFXbreak_shot_basic_macro"
+	.balign 4
+	.asciz "SFXcanon_shot_basic_macro"
+	.balign 4
+	.asciz "SFXcombination_shot_basic_macro"
+	.asciz "SFXfinal_match_basic_macro"
+	.balign 4
+	.asciz "SFXfoul_basic_macro"
+	.asciz "SFXfree_ball_basic_macro"
+	.balign 4
+	.asciz "SFXfree_drop_basic_macro"
+	.balign 4
+	.asciz "SFXkiss_shot_basic_macro"
+	.balign 4
+	.asciz "SFXpocket_01_basic_macro"
+	.balign 4
+	.asciz "SFXpocket_02_basic_macro"
+	.balign 4
+	.asciz "SFXpocket_03_basic_macro"
+	.balign 4
+	.asciz "SFXpocket_04_basic_macro"
+	.balign 4
+	.asciz "SFXsafety_basic_macro"
+	.balign 4
+	.asciz "SFXspecial_match_basic_macro"
+	.balign 4
+	.asciz "SFXballpin_heavy_basic_macro"
+	.balign 4
+	.asciz "SFXballpin_light_basic_macro"
+	.balign 4
+	.asciz "SFXballpin_normal_basic_macro"
+	.balign 4
+	.asciz "SFXhit_after01_basic_macro"
+	.balign 4
+	.asciz "SFXpinfloor_heavy_basic_macro"
+	.balign 4
+	.asciz "SFXpinfloor_light_basic_macro"
+	.balign 4
+	.asciz "SFXpinfloor_normal02_basic_macro"
+	.balign 4
+	.asciz "SFXpinfloor_normal_basic_macro"
+	.balign 4
+	.asciz "SFXpinpin01_basic_macro"
+	.asciz "SFXpinpin02_basic_macro"
+	.asciz "SFXpinpin03_basic_macro"
+	.asciz "SFXpinpin04_basic_macro"
+	.asciz "SFXpinpin05_basic_macro"
+	.asciz "SFXpinpin06_basic_macro"
+	.asciz "SFXroll_basic_macro"
+	.asciz "SFXstrike01_basic_macro"
+	.asciz "SFXstrike02_basic_macro"
+	.asciz "SFXstrike03_basic_macro"
+	.asciz "SFXstrike04_basic_macro"
+	.asciz "SFXthrow01_basic_macro"
+	.balign 4
+	.asciz "SFXscorechange_basic_macro"
+	.balign 4
+	.asciz "SFXgutter_basic_macro"
+	.balign 4
+	.asciz "SFXmachine1_basic_macro"
+	.asciz "SFXmachine2_basic_macro"
+	.asciz "SFXgutterbuzzer_basic_macro"
+	.asciz "SFXnyuinyui_basic_macro"
+	.asciz "SFXsparebuzzer_basic_macro"
+	.balign 4
+	.asciz "SFXstrikebuzzer_basic_macro"
+	.asciz "SFXcourse_basic_macro"
+	.balign 4
+	.asciz "SFXdecision_basic_macro"
+	.asciz "SFXmachine3_basic_macro"
+	.asciz "SFXmachine4_basic_macro"
+	.asciz "SFXmachine5_basic_macro"
+	.asciz "SFXbowl_miss_l_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_miss_r_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_normal_l_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_normal_r_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_perfect_l_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_perfect_r_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_spare_l_basic_macro"
+	.asciz "SFXbowl_spare_r_basic_macro"
+	.asciz "SFXbowl_strike_l_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_strike_r_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_turkey_l_basic_macro"
+	.balign 4
+	.asciz "SFXbowl_turkey_r_basic_macro"
+	.balign 4
+	.asciz "SFXpinpinhigh_basic_macro"
+	.balign 4
+	.asciz "SFXtick_basic_macro"
+	.asciz "SFXtock_basic_macro"
+	.asciz "SFXfirework1_basic_macro"
+	.balign 4
+	.asciz "SFXfirework2_basic_macro"
+	.balign 4
+	.asciz "SFXdouble_basic_macro"
+	.balign 4
+	.asciz "SFXexcellent_basic_macro"
+	.balign 4
+	.asciz "SFXgutter_basic_macro_1"
+	.asciz "SFXmiss_basic_macro"
+	.asciz "SFXpunch_out_01_basic_macro"
+	.asciz "SFXpunch_out_02_basic_macro"
+	.asciz "SFXspare_basic_macro"
+	.balign 4
+	.asciz "SFXstrike_basic_macro"
+	.balign 4
+	.asciz "SFXtry_again_basic_macro"
+	.balign 4
+	.asciz "SFXturkey_basic_macro"
+	.balign 4
+	.asciz "SFXclear2_basic_macro"
+	.balign 4
+	.asciz "SFXperfect2_basic_macro"
+	.asciz "SFXboxdrop_basic_macro"
+	.balign 4
+	.asciz "SFXelectricalshock01_basic_macro"
+	.balign 4
+	.asciz "SFXelectricalshock02_basic_macro"
+	.balign 4
+	.asciz "SFXgong_bell04_basic_macro"
+	.balign 4
+	.asciz "SFXgong_bell05_basic_macro"
+	.balign 4
+	.asciz "SFXgong_bell_a_basic_macro"
+	.balign 4
+	.asciz "SFXitemboxbreak_basic_macro"
+	.asciz "SFXitemboxbroke_basic_macro"
+	.asciz "SFXpunch04_basic_macro"
+	.balign 4
+	.asciz "SFXpunch05_basic_macro"
+	.balign 4
+	.asciz "SFXpunch06_basic_macro"
+	.balign 4
+	.asciz "SFXpunch07_basic_macro"
+	.balign 4
+	.asciz "SFXpunch08_basic_macro"
+	.balign 4
+	.asciz "SFXpunch_longbig01_basic_macro"
+	.balign 4
+	.asciz "SFXpunch_longbig02_basic_macro"
+	.balign 4
+	.asciz "SFXspring01_basic_macro"
+	.asciz "SFXspring02_basic_macro"
+	.asciz "SFXswing01_basic_macro"
+	.balign 4
+	.asciz "SFXtouchdown01_basic_macro"
+	.balign 4
+	.asciz "SFXtouchdown03_basic_macro"
+	.balign 4
+	.asciz "SFXspinpunch_basic_macro"
+	.balign 4
+	.asciz "SFXbigpunch_basic_macro"
+	.asciz "SFXrevive_basic_macro"
+	.balign 4
+	.asciz "SFXstar_basic_macro"
+	.asciz "SFXfight_win_l_basic_macro"
+	.balign 4
+	.asciz "SFXfight_win_r_basic_macro"
+	.balign 4
+	.asciz "SFXfight_01_basic_macro"
+	.asciz "SFXfight_02_basic_macro"
+	.asciz "SFXfinal_round_01_basic_macro"
+	.balign 4
+	.asciz "SFXfinal_round_02_basic_macro"
+	.balign 4
+	.asciz "SFXfinal_round_03_basic_macro"
+	.balign 4
+	.asciz "SFXfinal_round_04_basic_macro"
+	.balign 4
+	.asciz "SFXringout_01_basic_macro"
+	.balign 4
+	.asciz "SFXringout_02_basic_macro"
+	.balign 4
+	.asciz "SFXround01_basic_macro"
+	.balign 4
+	.asciz "SFXround02_basic_macro"
+	.balign 4
+	.asciz "SFXround03_basic_macro"
+	.balign 4
+	.asciz "SFXround04_basic_macro"
+	.balign 4
+	.asciz "SFXround05_basic_macro"
+	.balign 4
+	.asciz "SFXround06_basic_macro"
+	.balign 4
+	.asciz "SFXround07_basic_macro"
+	.balign 4
+	.asciz "SFXround08_basic_macro"
+	.balign 4
+	.asciz "SFXround09_basic_macro"
+	.balign 4
+	.asciz "SFXround10_basic_macro"
+	.balign 4
+	.asciz "SFXround11_basic_macro"
+	.balign 4
+	.asciz "SFXround12_basic_macro"
+	.balign 4
+	.asciz "SFXround13_basic_macro"
+	.balign 4
+	.asciz "SFXround14_basic_macro"
+	.balign 4
+	.asciz "SFXround15_basic_macro"
+	.balign 4
+	.asciz "SFXround16_basic_macro"
+	.balign 4
+	.asciz "SFXround17_basic_macro"
+	.balign 4
+	.asciz "SFXround18_basic_macro"
+	.balign 4
+	.asciz "SFXround19_basic_macro"
+	.balign 4
+	.asciz "SFXround20_basic_macro"
+	.balign 4
+	.asciz "SFXsudden_death_01_basic_macro"
+	.balign 4
+	.asciz "SFXsudden_death_02_basic_macro"
+	.balign 4
+	.asciz "SFXfight_01_basic_macro_1"
+	.balign 4
+	.asciz "SFXfight_02_basic_macro_1"
+	.balign 4
+	.asciz "SFXfinal_round_01_basic_macro_1"
+	.asciz "SFXfinal_round_02_basic_macro_1"
+	.asciz "SFXfinal_round_03_basic_macro_1"
+	.asciz "SFXfinal_round_04_basic_macro_1"
+	.asciz "SFXringout_01_basic_macro_1"
+	.asciz "SFXringout_02_basic_macro_1"
+	.asciz "SFXround01_basic_macro_1"
+	.balign 4
+	.asciz "SFXround02_basic_macro_1"
+	.balign 4
+	.asciz "SFXround03_basic_macro_1"
+	.balign 4
+	.asciz "SFXround04_basic_macro_1"
+	.balign 4
+	.asciz "SFXround05_basic_macro_1"
+	.balign 4
+	.asciz "SFXround06_basic_macro_1"
+	.balign 4
+	.asciz "SFXround07_basic_macro_1"
+	.balign 4
+	.asciz "SFXround08_basic_macro_1"
+	.balign 4
+	.asciz "SFXround09_basic_macro_1"
+	.balign 4
+	.asciz "SFXround10_basic_macro_1"
+	.balign 4
+	.asciz "SFXround11_basic_macro_1"
+	.balign 4
+	.asciz "SFXround12_basic_macro_1"
+	.balign 4
+	.asciz "SFXround13_basic_macro_1"
+	.balign 4
+	.asciz "SFXround14_basic_macro_1"
+	.balign 4
+	.asciz "SFXround15_basic_macro_1"
+	.balign 4
+	.asciz "SFXround16_basic_macro_1"
+	.balign 4
+	.asciz "SFXround17_basic_macro_1"
+	.balign 4
+	.asciz "SFXround18_basic_macro_1"
+	.balign 4
+	.asciz "SFXround19_basic_macro_1"
+	.balign 4
+	.asciz "SFXround20_basic_macro_1"
+	.balign 4
+	.asciz "SFXsudden_death_01_basic_macro_1"
+	.balign 4
+	.asciz "SFXsudden_death_02_basic_macro_1"
+	.balign 4
+	.asciz "SFXin1_basic_macro"
+	.balign 4
+	.asciz "SFXlawn_a_basic_macro"
+	.balign 4
+	.asciz "SFXlawn_b_basic_macro"
+	.balign 4
+	.asciz "SFXswisha_a_basic_macro"
+	.asciz "SFXswish_b_basic_macro"
+	.balign 4
+	.asciz "SFXtrip_basic_macro"
+	.asciz "SFXapplaud_basic_macro"
+	.balign 4
+	.asciz "SFXapplaud_big_basic_macro"
+	.balign 4
+	.asciz "SFXbird_basic_macro"
+	.asciz "SFXbird_loop_basic_macro"
+	.balign 4
+	.asciz "SFXboo_basic_macro"
+	.balign 4
+	.asciz "SFXcheer_basic_macro"
+	.balign 4
+	.asciz "SFXputter_normal_basic_macro"
+	.balign 4
+	.asciz "SFXputter_soft_basic_macro"
+	.balign 4
+	.asciz "SFXscorechange02_basic_macro"
+	.balign 4
+	.asciz "SFXtoogood1_basic_macro"
+	.asciz "SFXtoogood2_basic_macro"
+	.asciz "SFXawkward_basic_macro"
+	.balign 4
+	.asciz "SFXflag_basic_macro"
+	.asciz "SFXafterob_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_birdie_l_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_birdie_r_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_bogie_l_basic_macro"
+	.asciz "SFXgolf_bogie_r_basic_macro"
+	.asciz "SFXgolf_giveup1_l_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_giveup1_r_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_giveup2_l_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_giveup2_r_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_holein1_l_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_holein1_r_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_ob_l_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_ob_r_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_par_l_basic_macro"
+	.balign 4
+	.asciz "SFXgolf_par_r_basic_macro"
+	.balign 4
+	.asciz "SFXpolehit_basic_macro"
+	.balign 4
+	.asciz "SFXbirdie_basic_macro_1"
+	.asciz "SFXbogey_basic_macro_1"
+	.balign 4
+	.asciz "SFXdouble_bogey_basic_macro_1"
+	.balign 4
+	.asciz "SFXgive_up_basic_macro_1"
+	.balign 4
+	.asciz "SFXhole_in_one_basic_macro_1"
+	.balign 4
+	.asciz "SFXnice_on_basic_macro_1"
+	.balign 4
+	.asciz "SFXnice_touch_basic_macro_1"
+	.asciz "SFXob_basic_macro_1"
+	.asciz "SFXpar_basic_macro_1"
+	.balign 4
+	.asciz "SFXbanana_basic_macro"
+	.balign 4
+	.asciz "SFXbanana_big_basic_macro"
+	.balign 4
+	.asciz "SFXdash_a_basic_macro"
+	.balign 4
+	.asciz "SFXdash_b_basic_macro"
+	.balign 4
+	.asciz "SFXdash_c_basic_macro"
+	.balign 4
+	.asciz "SFXhit_basic_macro"
+	.balign 4
+	.asciz "SFXjumpstand_basic_macro"
+	.balign 4
+	.asciz "SFXjumpstand_close_basic_macro"
+	.balign 4
+	.asciz "SFXrecover_basic_macro"
+	.balign 4
+	.asciz "SFXreverse_basic_macro"
+	.balign 4
+	.asciz "SFXsignal1_basic_macro"
+	.balign 4
+	.asciz "SFXsignal2_basic_macro"
+	.balign 4
+	.asciz "SFXstick_basic_macro"
+	.balign 4
+	.asciz "SFXstick_close_basic_macro"
+	.balign 4
+	.asciz "SFXthrow_basic_macro"
+	.balign 4
+	.asciz "SFXbrake_basic_macro"
+	.balign 4
+	.asciz "SFXcrack_basic_macro"
+	.balign 4
+	.asciz "SFXcrackcrash_basic_macro"
+	.balign 4
+	.asciz "SFXrun_basic_macro"
+	.balign 4
+	.asciz "SFXsandrun_basic_macro"
+	.balign 4
+	.asciz "SFXitem_hit_basic_macro"
+	.asciz "SFXboxdrop_r_basic_macro"
+	.balign 4
+	.asciz "SFXdrumcan_basic_macro"
+	.balign 4
+	.asciz "SFXsignal_a_basic_macro"
+	.asciz "SFXracelast_l_basic_macro"
+	.balign 4
+	.asciz "SFXracelast_r_basic_macro"
+	.balign 4
+	.asciz "SFXracetop_l_basic_macro"
+	.balign 4
+	.asciz "SFXracetop_r_basic_macro"
+	.balign 4
+	.asciz "SFXcure_basic_macro"
+	.asciz "SFXalright_01_basic_macro"
+	.balign 4
+	.asciz "SFXalright_02_basic_macro"
+	.balign 4
+	.asciz "SFXalright_03_basic_macro"
+	.balign 4
+	.asciz "SFXbest_lap_basic_macro"
+	.asciz "SFXbest_record_01_basic_macro"
+	.balign 4
+	.asciz "SFXbest_record_02_basic_macro"
+	.balign 4
+	.asciz "SFXfastest_lap_basic_macro"
+	.balign 4
+	.asciz "SFXfinal_lap_01_basic_macro"
+	.asciz "SFXfinal_lap_02_basic_macro"
+	.asciz "SFXkeep_on_01_basic_macro"
+	.balign 4
+	.asciz "SFXkeep_on_02_basic_macro"
+	.balign 4
+	.asciz "SFXkeep_on_03_basic_macro"
+	.balign 4
+	.asciz "SFXnew_record_01_basic_macro"
+	.balign 4
+	.asciz "SFXnew_record_02_basic_macro"
+	.balign 4
+	.asciz "SFXtime_extension_basic_macro"
+	.balign 4
+	.asciz "SFXgo_001_basic_macro"
+	.balign 4
+	.asciz "SFXgo_002_basic_macro"
+	.balign 4
+	.asciz "SFXgo_003_basic_macro"
+	.balign 4
+	.asciz "SFXready_001_basic_macro"
+	.balign 4
+	.asciz "SFXready_002_basic_macro"
+	.balign 4
+	.asciz "SFXround01_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround02_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround03_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround04_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround05_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround06_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXfinal_round_01_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXfinal_round_03_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXfinal_round_04_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXblow1_basic_macro"
+	.balign 4
+	.asciz "SFXblow2_basic_macro"
+	.balign 4
+	.asciz "SFXblow3_basic_macro"
+	.balign 4
+	.asciz "SFXblow4_basic_macro"
+	.balign 4
+	.asciz "SFXbubble_baby01_basic_macro"
+	.balign 4
+	.asciz "SFXbubble_baby02_basic_macro"
+	.balign 4
+	.asciz "SFXbubble_boy01_basic_macro"
+	.asciz "SFXbubble_boy02_basic_macro"
+	.asciz "SFXbubble_girl01_basic_macro"
+	.balign 4
+	.asciz "SFXbubble_girl02_basic_macro"
+	.balign 4
+	.asciz "SFXfly_basic_macro"
+	.balign 4
+	.asciz "SFXopen_a_basic_macro"
+	.balign 4
+	.asciz "SFXopen_b_basic_macro"
+	.balign 4
+	.asciz "SFXtouchdown02_basic_macro"
+	.balign 4
+	.asciz "SFXalart_basic_macro"
+	.balign 4
+	.asciz "SFXtarget_miss_l_basic_macro"
+	.balign 4
+	.asciz "SFXsplash_ball_basic_macro"
+	.balign 4
+	.asciz "SFXsplash_open_basic_macro"
+	.balign 4
+	.asciz "SFXtarget_miss_r_basic_macro"
+	.balign 4
+	.asciz "SFXcloud_basic_macro"
+	.balign 4
+	.asciz "SFXwave_small_basic_macro"
+	.balign 4
+	.asciz "SFXaid_basic_macro"
+	.balign 4
+	.asciz "SFXbarbball_basic_macro"
+	.asciz "SFXhindrance_basic_macro"
+	.balign 4
+	.asciz "SFXhindrance2_basic_macro"
+	.balign 4
+	.asciz "SFXmarkbig_basic_macro"
+	.balign 4
+	.asciz "SFXpanel_basic_macro"
+	.balign 4
+	.asciz "SFXwindwall_basic_macro"
+	.asciz "SFXtarget_score_hi_basic_macro"
+	.balign 4
+	.asciz "SFXroulette_basic_macro"
+	.asciz "SFXtarget_score_hi_l_basic_macro"
+	.balign 4
+	.asciz "SFXheavydrop_basic_macro"
+	.balign 4
+	.asciz "SFXtarget_score_hi_r_basic_macro"
+	.balign 4
+	.asciz "SFXtarget_score_normal_l_basic_macro"
+	.balign 4
+	.asciz "SFXtarget_score_normal_r_basic_macro"
+	.balign 4
+	.asciz "SFXtarget_score_super_l_basic_macro"
+	.asciz "SFXtarget_score_super_r_basic_macro"
+	.asciz "SFXbond_basic_macro"
+	.asciz "SFXbubble_goli_basic_macro"
+	.balign 4
+	.asciz "SFXkurukuru_basic_macro"
+	.asciz "SFXalright_basic_macro"
+	.balign 4
+	.asciz "SFXbomb_basic_macro_1"
+	.balign 4
+	.asciz "SFXbrake_ball_basic_macro"
+	.balign 4
+	.asciz "SFXclowd_basic_macro"
+	.balign 4
+	.asciz "SFXdouble_score_basic_macro"
+	.asciz "SFXgood_basic_macro"
+	.asciz "SFXmagnet_ball_basic_macro"
+	.balign 4
+	.asciz "SFXno_wind_basic_macro"
+	.balign 4
+	.asciz "SFXoh_no_01_basic_macro"
+	.asciz "SFXoh_no_02_basic_macro"
+	.asciz "SFXout_jp_basic_macro"
+	.balign 4
+	.asciz "SFXout_us_basic_macro"
+	.balign 4
+	.asciz "SFXsafe_jp_basic_macro"
+	.balign 4
+	.asciz "SFXsafe_us_basic_macro"
+	.balign 4
+	.asciz "SFXspike_ball_jp_basic_macro"
+	.balign 4
+	.asciz "SFXspike_ball_us_basic_macro"
+	.balign 4
+	.asciz "SFXstrong_wind_basic_macro"
+	.balign 4
+	.asciz "SFXtriple_score_basic_macro"
+	.asciz "SFXvery_good_basic_macro"
+	.balign 4
+	.asciz "SFXexcellent2_basic_macro"
+	.balign 4
+	.asciz "SFXmiss2_basic_macro"
+	.balign 4
+	.asciz "SFXalright_basic_macro_1"
+	.balign 4
+	.asciz "SFXbomb_basic_macro_1_1"
+	.asciz "SFXbrake_ball_basic_macro_1"
+	.asciz "SFXclowd_basic_macro_1"
+	.balign 4
+	.asciz "SFXdouble_score_basic_macro_1"
+	.balign 4
+	.asciz "SFXgood_basic_macro_1"
+	.balign 4
+	.asciz "SFXmagnet_ball_basic_macro_1"
+	.balign 4
+	.asciz "SFXno_wind_basic_macro_1"
+	.balign 4
+	.asciz "SFXoh_no_01_basic_macro_1"
+	.balign 4
+	.asciz "SFXoh_no_02_basic_macro_1"
+	.balign 4
+	.asciz "SFXout_jp_basic_macro_1"
+	.asciz "SFXout_us_basic_macro_1"
+	.asciz "SFXsafe_jp_basic_macro_1"
+	.balign 4
+	.asciz "SFXsafe_us_basic_macro_1"
+	.balign 4
+	.asciz "SFXspike_ball_jp_basic_macro_1"
+	.balign 4
+	.asciz "SFXspike_ball_us_basic_macro_1"
+	.balign 4
+	.asciz "SFXstrong_wind_basic_macro_1"
+	.balign 4
+	.asciz "SFXtriple_score_basic_macro_1"
+	.balign 4
+	.asciz "SFXvery_good_basic_macro_1"
+	.balign 4
+	.asciz "SFXexcellent2_basic_macro_1"
+	.asciz "SFXmiss2_basic_macro_1"
+	.balign 4
+	.asciz "SFXround01_basic_macro_2"
+	.balign 4
+	.asciz "SFXround02_basic_macro_2"
+	.balign 4
+	.asciz "SFXround03_basic_macro_2"
+	.balign 4
+	.asciz "SFXround04_basic_macro_2"
+	.balign 4
+	.asciz "SFXround05_basic_macro_2"
+	.balign 4
+	.asciz "SFXround06_basic_macro_2"
+	.balign 4
+	.asciz "SFXround07_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround08_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround09_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround10_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround11_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround12_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround13_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround14_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXround15_basic_macro_1_1"
+	.balign 4
+	.asciz "SFXfinal_round_01_basic_macro_2"
+	.asciz "SFXfinal_round_03_basic_macro_2"
+	.asciz "SFXfinal_round_04_basic_macro_2"
+	.asciz "SFXball_bump_basic_macro"
+	.balign 4
+	.asciz "SFXbomb_basic_macro"
+	.asciz "SFXcamera_switch1_basic_macro"
+	.balign 4
+	.asciz "SFXcamera_switch2_basic_macro"
+	.balign 4
+	.asciz "SFXitem_basic_macro"
+	.asciz "SFXnormalitem_get_basic_macro"
+	.balign 4
+	.asciz "SFXpowerscale1_basic_macro"
+	.balign 4
+	.asciz "SFXpowerscale2_basic_macro"
+	.balign 4
+	.asciz "SFXshot_power_basic_macro"
+	.balign 4
+	.asciz "SFXspitem_get_basic_macro"
+	.balign 4
+	.asciz "SFX1up_basic_macro"
+	.balign 4
+	.asciz "SFXfinishfly2_basic_macro"
+	.balign 4
+	.asciz "SFXtapecut_basic_macro"
+	.balign 4
+	.asciz "SFXball_bumpbig_basic_macro"
+	.asciz "SFXpower1_basic_macro"
+	.balign 4
+	.asciz "SFXpower2_basic_macro"
+	.balign 4
+	.asciz "SFXgauge1_basic_macro"
+	.balign 4
+	.asciz "SFXgauge2_basic_macro"
+	.balign 4
+	.asciz "SFXcancell_basic_macro"
+	.balign 4
+	.asciz "SFXcomdecision_basic_macro"
+	.balign 4
+	.asciz "SFXgauge3_basic_macro"
+	.balign 4
+	.asciz "SFXgauge4_basic_macro"
+	.balign 4
+	.asciz "SFXbirdc_basic_macro"
+	.balign 4
+	.asciz "SFXbirdc_loop_basic_macro"
+	.balign 4
+	.asciz "SFXbonus_finish_basic_macro"
+	.asciz "SFXcount_00_basic_macro"
+	.asciz "SFXcount_01_basic_macro"
+	.asciz "SFXcount_02_basic_macro"
+	.asciz "SFXcount_03_basic_macro"
+	.asciz "SFXcount_04_basic_macro"
+	.asciz "SFXcount_05_basic_macro"
+	.asciz "SFXcount_06_basic_macro"
+	.asciz "SFXcount_07_basic_macro"
+	.asciz "SFXcount_08_basic_macro"
+	.asciz "SFXcount_09_basic_macro"
+	.asciz "SFXcount_10_basic_macro"
+	.asciz "SFXcount_11_basic_macro"
+	.asciz "SFXcount_12_basic_macro"
+	.asciz "SFXcount_13_basic_macro"
+	.asciz "SFXcount_14_basic_macro"
+	.asciz "SFXcount_15_basic_macro"
+	.asciz "SFXcount_16_basic_macro"
+	.asciz "SFXcount_17_basic_macro"
+	.asciz "SFXcount_18_basic_macro"
+	.asciz "SFXcount_19_basic_macro"
+	.asciz "SFXcount_20_basic_macro"
+	.asciz "SFXfallout_01_basic_macro"
+	.balign 4
+	.asciz "SFXfallout_02_basic_macro"
+	.balign 4
+	.asciz "SFXfallout_03_basic_macro"
+	.balign 4
+	.asciz "SFXfloor_clear_basic_macro"
+	.balign 4
+	.asciz "SFXgame_clear_basic_macro"
+	.balign 4
+	.asciz "SFXgame_over_basic_macro"
+	.balign 4
+	.asciz "SFXgo_01_basic_macro"
+	.balign 4
+	.asciz "SFXgo_02_basic_macro"
+	.balign 4
+	.asciz "SFXgo_03_basic_macro"
+	.balign 4
+	.asciz "SFXgo_04_basic_macro"
+	.balign 4
+	.asciz "SFXgoal_01_basic_macro"
+	.balign 4
+	.asciz "SFXgoal_02_basic_macro"
+	.balign 4
+	.asciz "SFXgoal_03_basic_macro"
+	.balign 4
+	.asciz "SFXgoal_04_basic_macro"
+	.balign 4
+	.asciz "SFXhurry_up_basic_macro"
+	.asciz "SFXready_01_basic_macro"
+	.asciz "SFXready_02_basic_macro"
+	.asciz "SFXstage_clear_basic_macro"
+	.balign 4
+	.asciz "SFXtime_over_basic_macro"
+	.balign 4
+	.asciz "SFXcontinue2_basic_macro"
+	.balign 4
+	.asciz "SFXenter_your_name_basic_macro"
+	.balign 4
+	.asciz "SFXsee_you_again_basic_macro"
+	.balign 4
+	.asciz "SFXthanx_for_playn_basic_macro"
+	.balign 4
+	.asciz "SFXhow_many_players_basic_macro"
+	.asciz "SFXselect_course_basic_macro"
+	.balign 4
+	.asciz "SFXselect_game_basic_macro"
+	.balign 4
+	.asciz "SFXselect_level_basic_macro"
+	.asciz "SFXselect_mode_basic_macro"
+	.balign 4
+	.asciz "SFXselect_stage_basic_macro"
+	.asciz "SFXselect_your_monkey_basic_macro"
+	.balign 4
+	.asciz "SFXadvanced_basic_macro"
+	.asciz "SFXbiginner_basic_macro"
+	.asciz "SFXcompetition_mode_basic_macro"
+	.asciz "SFXexpert_basic_macro"
+	.balign 4
+	.asciz "SFXextra_basic_macro"
+	.balign 4
+	.asciz "SFXmain_game_basic_macro"
+	.balign 4
+	.asciz "SFXmaster_basic_macro"
+	.balign 4
+	.asciz "SFXnormal_mode_basic_macro"
+	.balign 4
+	.asciz "SFXpractice_mode_basic_macro"
+	.balign 4
+	.asciz "SFXgrandprix_basic_macro"
+	.balign 4
+	.asciz "SFXmonkey_fight_basic_macro"
+	.asciz "SFXmonkey_target_basic_macro"
+	.balign 4
+	.asciz "SFXmonky_race_basic_macro"
+	.balign 4
+	.asciz "SFXonecourse_race_basic_macro"
+	.balign 4
+	.asciz "SFXparty_game_basic_macro"
+	.balign 4
+	.asciz "SFXtime_attack_basic_macro"
+	.balign 4
+	.asciz "SFXchallenge_mode_basic_macro"
+	.balign 4
+	.asciz "SFXmatch_play_basic_macro"
+	.balign 4
+	.asciz "SFXmini_game_basic_macro"
+	.balign 4
+	.asciz "SFXmonkey_billiards_basic_macro"
+	.asciz "SFXmonkey_bowling_basic_macro"
+	.balign 4
+	.asciz "SFXmonkey_golf_basic_macro"
+	.balign 4
+	.asciz "SFXstandard_mode_basic_macro"
+	.balign 4
+	.asciz "SFXstroke_play_basic_macro"
+	.balign 4
+	.asciz "SFXtournament_mode_basic_macro"
+	.balign 4
+	.asciz "SFXversus_mode_basic_macro"
+	.balign 4
+	.asciz "SFXgamesettings_basic_macro"
+	.asciz "SFXchamp_01_basic_macro"
+	.asciz "SFXchamp_02_basic_macro"
+	.asciz "SFXcongra_01_basic_macro"
+	.balign 4
+	.asciz "SFXcongra_02_basic_macro"
+	.balign 4
+	.asciz "SFXcongra_03_basic_macro"
+	.balign 4
+	.asciz "SFXdraw_basic_macro"
+	.asciz "SFXfinish_01_basic_macro"
+	.balign 4
+	.asciz "SFXfinish_02_basic_macro"
+	.balign 4
+	.asciz "SFXfinish_03_basic_macro"
+	.balign 4
+	.asciz "SFXlose_01_basic_macro"
+	.balign 4
+	.asciz "SFXlose_02_basic_macro"
+	.balign 4
+	.asciz "SFXplayer1_basic_macro"
+	.balign 4
+	.asciz "SFXplayer1win_basic_macro"
+	.balign 4
+	.asciz "SFXplayer2_basic_macro"
+	.balign 4
+	.asciz "SFXplayer2win_basic_macro"
+	.balign 4
+	.asciz "SFXplayer3_basic_macro"
+	.balign 4
+	.asciz "SFXplayer3win_basic_macro"
+	.balign 4
+	.asciz "SFXplayer4_basic_macro"
+	.balign 4
+	.asciz "SFXplayer4win_basic_macro"
+	.balign 4
+	.asciz "SFXrank_in_basic_macro"
+	.balign 4
+	.asciz "SFXresult_01_basic_macro"
+	.balign 4
+	.asciz "SFXresult_02_basic_macro"
+	.balign 4
+	.asciz "SFXstart_basic_macro"
+	.balign 4
+	.asciz "SFXtoobad_01_basic_macro"
+	.balign 4
+	.asciz "SFXtoobad_02_basic_macro"
+	.balign 4
+	.asciz "SFXwin_01_basic_macro"
+	.balign 4
+	.asciz "SFXwinner_01_basic_macro"
+	.balign 4
+	.asciz "SFXyou_lose_03_basic_macro"
+	.balign 4
+	.asciz "SFXyou_win_01_basic_macro"
+	.balign 4
+	.asciz "SFXyou_win_02_basic_macro"
+	.balign 4
+	.asciz "SFXav_basic_macro"
+	.balign 4
+	.asciz "SFXsmb_basic_macro"
+	.balign 4
+	.asciz "SFXsega2_basic_macro"
+	.balign 4
+	.asciz "SFXperfect3_basic_macro"
+	.asciz "SFXpressstart_basic_macro"
+	.balign 4
+	.asciz "SFXringout_03_basic_macro"
+	.balign 4
+	.asciz "SFXdropstone_basic_macro"
+	.balign 4
+	.asciz "SFXfly1_basic_macro"
+	.asciz "SFXfly2_basic_macro"
+	.asciz "SFXheavydrope_basic_macro"
+	.balign 4
+	.asciz "SFXopen_c_basic_macro"
+	.balign 4
+	.asciz "SFXsit_basic_macro"
+	.balign 4
+	.asciz "SFXcharge_basic_macro"
+	.balign 4
+	.asciz "SFXdoorclose_basic_macro"
+	.balign 4
+	.asciz "SFXdooropen_basic_macro"
+	.asciz "SFXknock1_basic_macro"
+	.balign 4
+	.asciz "SFXbananadorop_basic_macro"
+	.balign 4
+	.asciz "STRM_THEME_INT"
+	.balign 4
+	.asciz "STRM_THEME_LP"
+	.balign 4
+	.asciz "STRM_ADV_INT"
+	.balign 4
+	.asciz "STRM_ADV_LP"
+	.asciz "STRM_SEL_INT"
+	.balign 4
+	.asciz "STRM_SEL_LP"
+	.asciz "STRM_SEL2_INT"
+	.balign 4
+	.asciz "STRM_SEL2_LP"
+	.balign 4
+	.asciz "STRM_SEL_RACE_INT"
+	.balign 4
+	.asciz "STRM_SEL_RACE_LP"
+	.balign 4
+	.asciz "STRM_SEL_FIGHT_INT"
+	.balign 4
+	.asciz "STRM_SEL_FIGHT_LP"
+	.balign 4
+	.asciz "STRM_SEL_TARGET_INT"
+	.asciz "STRM_SEL_TARGET_LP"
+	.balign 4
+	.asciz "STRM_SEL_BILL_INT"
+	.balign 4
+	.asciz "STRM_SEL_BILL_LP"
+	.balign 4
+	.asciz "STRM_SEL_BOWL_INT"
+	.balign 4
+	.asciz "STRM_SEL_BOWL_LP"
+	.balign 4
+	.asciz "STRM_SEL_GOLF_INT"
+	.balign 4
+	.asciz "STRM_SEL_GOLF_LP"
+	.balign 4
+	.asciz "STRM_ST1_INT"
+	.balign 4
+	.asciz "STRM_ST1_LP"
+	.asciz "STRM_ST2_INT"
+	.balign 4
+	.asciz "STRM_ST2_LP"
+	.asciz "STRM_ST3_INT"
+	.balign 4
+	.asciz "STRM_ST3_LP"
+	.asciz "STRM_ST4_INT"
+	.balign 4
+	.asciz "STRM_ST4_LP"
+	.asciz "STRM_ST5_INT"
+	.balign 4
+	.asciz "STRM_ST5_LP"
+	.asciz "STRM_ST6_INT"
+	.balign 4
+	.asciz "STRM_ST6_LP"
+	.asciz "STRM_ST7_INT"
+	.balign 4
+	.asciz "STRM_ST7_LP"
+	.asciz "STRM_ST8_INT"
+	.balign 4
+	.asciz "STRM_ST8_LP"
+	.asciz "STRM_STB_INT"
+	.balign 4
+	.asciz "STRM_STB_LP"
+	.asciz "STRM_STM_INT"
+	.balign 4
+	.asciz "STRM_STM_LP"
+	.asciz "STRM_CNT_INT"
+	.balign 4
+	.asciz "STRM_CNT_LP"
+	.asciz "STRM_OVR_INT"
+	.balign 4
+	.asciz "STRM_OVR_LP"
+	.asciz "STRM_RACE_INT"
+	.balign 4
+	.asciz "STRM_RACE_LP"
+	.balign 4
+	.asciz "STRM_FIGHT_INT"
+	.balign 4
+	.asciz "STRM_FIGHT_LP"
+	.balign 4
+	.asciz "STRM_OMK_INT"
+	.balign 4
+	.asciz "STRM_OMK_LP"
+	.asciz "STRM_PILOT_INT"
+	.balign 4
+	.asciz "STRM_PILOT_LP"
+	.balign 4
+	.asciz "STRM_BILI_INT"
+	.balign 4
+	.asciz "STRM_BILI_LP"
+	.balign 4
+	.asciz "STRM_BWL_INT"
+	.balign 4
+	.asciz "STRM_BWL_LP"
+	.asciz "STRM_GLF_INT"
+	.balign 4
+	.asciz "STRM_GLF_LP"
+	.asciz "STRM_OMK2_INT"
+	.balign 4
+	.asciz "STRM_OMK2_LP"
+	.balign 4
+	.asciz "STRM_GREP_INT"
+	.balign 4
+	.asciz "STRM_GREP_LP"
+	.balign 4
+	.asciz "STRM_RESULT_INT"
+	.asciz "STRM_RESULT_LP"
+	.balign 4
+	.asciz "STRM_HYO_INT"
+	.balign 4
+	.asciz "STRM_HYO_LP"
+	.asciz "STRM_ENT_INT"
+	.balign 4
+	.asciz "STRM_ENT_LP"
+	.asciz "STRM_END_INT"
+	.balign 4
+	.asciz "STRM_END_LP"
+	.asciz "STRM_ROLL_INT"
+	.balign 4
+	.asciz "STRM_ROLL_LP"
+	.balign 4
+	.asciz "STRM_OPT_INT"
+	.balign 4
+	.asciz "STRM_OPT_LP"
+	.asciz "sel2_all"
+	.balign 4
+	.asciz "sel_race"
+	.balign 4
+	.asciz "sel_Fight"
+	.balign 4
+	.asciz "sel_target"
+	.balign 4
+	.asciz "sel_billiard"
+	.balign 4
+	.asciz "sel_bowling"
+	.asciz "sel_golf"
+	.balign 4
+	.asciz "fight_int"
+	.balign 4
+	.asciz "fight_lp"
+	.balign 4
+	.asciz "tget_int"
+	.balign 4
+	.asciz "bili_int"
+	.balign 4
+	.asciz "grep_int"
+	.balign 4
+	.asciz "roll_int"
+	.balign 4
+	.asciz "advm_int"
+	.balign 4
+	.asciz "selm_int"
+	.balign 4
+	.asciz "sel2m_all"
+	.balign 4
+	.asciz "sel2m_lp"
+	.balign 4
+	.asciz "selm_race"
+	.balign 4
+	.asciz "selm_Fight"
+	.balign 4
+	.asciz "selm_target"
+	.asciz "selm_billiard"
+	.balign 4
+	.asciz "selm_bowling"
+	.balign 4
+	.asciz "selm_golf"
+	.balign 4
+	.asciz "st2m_all"
+	.balign 4
+	.asciz "st3m_int"
+	.balign 4
+	.asciz "st4m_int"
+	.balign 4
+	.asciz "st5m_int"
+	.balign 4
+	.asciz "st6m_int"
+	.balign 4
+	.asciz "st8m_int"
+	.balign 4
+	.asciz "stbm_int"
+	.balign 4
+	.asciz "stmm_int"
+	.balign 4
+	.asciz "fightm_int"
+	.balign 4
+	.asciz "fightm_lp"
+	.balign 4
+	.asciz "tgetm_int"
+	.balign 4
+	.asciz "tgetm_lp"
+	.balign 4
+	.asciz "bilim_int"
+	.balign 4
+	.asciz "bilim_lp"
+	.balign 4
+	.asciz "bwlm_int"
+	.balign 4
+	.asciz "grepm_int"
+	.balign 4
+	.asciz "grepm_lp"
+	.balign 4
+	.asciz "entm_int"
+	.balign 4
+	.asciz "endm_int"
+	.balign 4
+	.asciz "rollm_int"
+	.balign 4
+	.asciz "rollm_lp"
+	.balign 4
+
+.global lbl_801B2A5C
+lbl_801B2A5C:
+	# ROM: 0x1AFA5C
+	.4byte 0x802F05BC  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2C, 0xE4, 0x00
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F05BC  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2C, 0xE4, 0x00
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F05C4  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x05, 0x51, 0x00
+	.byte 0x03, 0x00, 0x00, 0x00
+	.4byte 0x802F05CC  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x1A, 0xFE, 0x00
+	.byte 0x03, 0x00, 0x00, 0x00
+	.4byte 0x802F05D4  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0x49, 0x00
+	.byte 0x05, 0x00, 0x00, 0x00
+	.4byte 0x802F05DC  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0A, 0xE9, 0x00
+	.byte 0x05, 0x00, 0x00, 0x00
+	.4byte 0x801B2840  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x17, 0x57, 0x00
+	.byte 0x07, 0x00, 0x00, 0x00
+	.4byte 0x802F05E4  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x14, 0xC3, 0x00
+	.byte 0x07, 0x00, 0x00, 0x00
+	.4byte 0x801B284C  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x08, 0xB7, 0x00
+	.byte 0x09, 0x00, 0x00, 0x00
+	.4byte 0x801B284C  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x08, 0xB7, 0x00
+	.byte 0x09, 0x00, 0x00, 0x00
+	.4byte 0x801B2858  ;# ptr
+	.byte 0xA0, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0D, 0xFC, 0x00
+	.byte 0x0B, 0x00, 0x00, 0x00
+	.4byte 0x801B2858  ;# ptr
+	.byte 0xA0, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0D, 0xFC, 0x00
+	.byte 0x0B, 0x00, 0x00, 0x00
+	.4byte 0x801B2864  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0C, 0xBD, 0x00
+	.byte 0x0D, 0x00, 0x00, 0x00
+	.4byte 0x801B2864  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0C, 0xBD, 0x00
+	.byte 0x0D, 0x00, 0x00, 0x00
+	.4byte 0x801B2870  ;# ptr
+	.byte 0xA0, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0D, 0x1F, 0x00
+	.byte 0x0F, 0x00, 0x00, 0x00
+	.4byte 0x801B2870  ;# ptr
+	.byte 0xA0, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0D, 0x1F, 0x00
+	.byte 0x0F, 0x00, 0x00, 0x00
+	.4byte 0x801B2880  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0A, 0x48, 0x00
+	.byte 0x11, 0x00, 0x00, 0x00
+	.4byte 0x801B2880  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0A, 0x48, 0x00
+	.byte 0x11, 0x00, 0x00, 0x00
+	.4byte 0x801B288C  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0C, 0x2A, 0x00
+	.byte 0x13, 0x00, 0x00, 0x00
+	.4byte 0x801B288C  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0C, 0x2A, 0x00
+	.byte 0x13, 0x00, 0x00, 0x00
+	.4byte 0x802F05EC  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2E, 0xD1, 0x00
+	.byte 0x15, 0x00, 0x00, 0x00
+	.4byte 0x802F05EC  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2E, 0xD1, 0x00
+	.byte 0x15, 0x00, 0x00, 0x00
+	.4byte 0x802F05F0  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x33, 0x3F, 0x00
+	.byte 0x17, 0x00, 0x00, 0x00
+	.4byte 0x802F05F8  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x31, 0x8F, 0x00
+	.byte 0x17, 0x00, 0x00, 0x00
+	.4byte 0x802F0600  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0x4E, 0x9C
+	.byte 0x19, 0x00, 0x00, 0x00
+	.4byte 0x802F0608  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x35, 0x37, 0x00
+	.byte 0x19, 0x00, 0x00, 0x00
+	.4byte 0x802F0610  ;# ptr
+	.byte 0x87, 0x00, 0x00, 0x00
+	.byte 0x00, 0x04, 0x68, 0xA8
+	.byte 0x1B, 0x00, 0x00, 0x00
+	.4byte 0x802F0618  ;# ptr
+	.byte 0x87, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2D, 0x01, 0x00
+	.byte 0x1B, 0x00, 0x00, 0x00
+	.4byte 0x802F0620  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x00, 0x37, 0x00
+	.byte 0x1D, 0x00, 0x00, 0x00
+	.4byte 0x802F0628  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x40, 0xDA, 0x00
+	.byte 0x1D, 0x00, 0x00, 0x00
+	.4byte 0x802F0630  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0x5E, 0x00
+	.byte 0x1F, 0x00, 0x00, 0x00
+	.4byte 0x802F0638  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x39, 0x17, 0x00
+	.byte 0x1F, 0x00, 0x00, 0x00
+	.4byte 0x802F0640  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x3A, 0x0C, 0x00
+	.byte 0x21, 0x00, 0x00, 0x00
+	.4byte 0x802F0640  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x3A, 0x0C, 0x00
+	.byte 0x21, 0x00, 0x00, 0x00
+	.4byte 0x802F0644  ;# ptr
+	.byte 0xA0, 0x00, 0x00, 0x00
+	.byte 0x00, 0x04, 0xB0, 0x00
+	.byte 0x23, 0x00, 0x00, 0x00
+	.4byte 0x802F064C  ;# ptr
+	.byte 0xA0, 0x00, 0x00, 0x00
+	.byte 0x00, 0x3B, 0xBE, 0x00
+	.byte 0x23, 0x00, 0x00, 0x00
+	.4byte 0x802F0654  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0x1E, 0x00
+	.byte 0x25, 0x00, 0x00, 0x00
+	.4byte 0x802F065C  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x34, 0xF1, 0x00
+	.byte 0x25, 0x00, 0x00, 0x00
+	.4byte 0x802F0664  ;# ptr
+	.byte 0x78, 0x00, 0x00, 0x00
+	.byte 0x00, 0x02, 0x8B, 0x00
+	.byte 0x27, 0x00, 0x00, 0x00
+	.4byte 0x802F066C  ;# ptr
+	.byte 0x78, 0x00, 0x00, 0x00
+	.byte 0x00, 0x29, 0xA1, 0x00
+	.byte 0x27, 0x00, 0x00, 0x00
+	.4byte 0x802F0674  ;# ptr
+	.byte 0x7D, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0A, 0xC2, 0x00
+	.byte 0x29, 0x00, 0x00, 0x00
+	.4byte 0x802F0674  ;# ptr
+	.byte 0x7D, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0A, 0xC2, 0x00
+	.byte 0x29, 0x00, 0x00, 0x00
+	.4byte 0x802F0678  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x02, 0x90, 0x00
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F0678  ;# ptr
+	.byte 0x96, 0x00, 0x00, 0x00
+	.byte 0x00, 0x02, 0x90, 0x00
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F0594  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x4C, 0xF0, 0x00
+	.byte 0x2D, 0x00, 0x00, 0x00
+	.4byte 0x802F0594  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x4C, 0xF0, 0x00
+	.byte 0x2D, 0x00, 0x00, 0x00
+	.4byte 0x801B2898  ;# ptr
+	.byte 0x82, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0xE3, 0x67
+	.byte 0x2F, 0x00, 0x00, 0x00
+	.4byte 0x801B28A4  ;# ptr
+	.byte 0x82, 0x00, 0x00, 0x00
+	.byte 0x00, 0x35, 0x3F, 0x00
+	.byte 0x2F, 0x00, 0x00, 0x00
+	.4byte 0x802F067C  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0B, 0x9E, 0x00
+	.byte 0x31, 0x00, 0x00, 0x00
+	.4byte 0x802F067C  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0B, 0x9E, 0x00
+	.byte 0x31, 0x00, 0x00, 0x00
+	.4byte 0x801B28B0  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x08, 0xB4, 0x00
+	.byte 0x33, 0x00, 0x00, 0x00
+	.4byte 0x802F0680  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x46, 0x3F, 0x00
+	.byte 0x33, 0x00, 0x00, 0x00
+	.4byte 0x801B28BC  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x03, 0xB8, 0x00
+	.byte 0x35, 0x00, 0x00, 0x00
+	.4byte 0x802F0688  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2D, 0xCE, 0x00
+	.byte 0x35, 0x00, 0x00, 0x00
+	.4byte 0x802F0690  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x03, 0x19, 0x00
+	.byte 0x37, 0x00, 0x00, 0x00
+	.4byte 0x802F0698  ;# ptr
+	.byte 0x8C, 0x00, 0x00, 0x00
+	.byte 0x00, 0x2D, 0x49, 0x00
+	.byte 0x37, 0x00, 0x00, 0x00
+	.4byte 0x802F06A0  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x38, 0x2B, 0x00
+	.byte 0x39, 0x00, 0x00, 0x00
+	.4byte 0x802F06A0  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x38, 0x2B, 0x00
+	.byte 0x39, 0x00, 0x00, 0x00
+	.4byte 0x802F06A4  ;# ptr
+	.byte 0x87, 0x00, 0x00, 0x00
+	.byte 0x00, 0x07, 0xD4, 0x00
+	.byte 0x3B, 0x00, 0x00, 0x00
+	.4byte 0x802F06A4  ;# ptr
+	.byte 0x87, 0x00, 0x00, 0x00
+	.byte 0x00, 0x07, 0xD4, 0x00
+	.byte 0x3B, 0x00, 0x00, 0x00
+	.4byte 0x801B28C8  ;# ptr
+	.byte 0x82, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0x46, 0x00
+	.byte 0x3D, 0x00, 0x00, 0x00
+	.4byte 0x802F06AC  ;# ptr
+	.byte 0x82, 0x00, 0x00, 0x00
+	.byte 0x00, 0x05, 0x4A, 0x00
+	.byte 0x3D, 0x00, 0x00, 0x00
+	.4byte 0x802F06B4  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x16, 0x73, 0x00
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x802F06B4  ;# ptr
+	.byte 0x9B, 0x00, 0x00, 0x00
+	.byte 0x00, 0x16, 0x73, 0x00
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x802F06BC  ;# ptr
+	.byte 0x73, 0x00, 0x00, 0x00
+	.byte 0x00, 0x13, 0x7A, 0x00
+	.byte 0x41, 0x00, 0x00, 0x00
+	.4byte 0x802F06BC  ;# ptr
+	.byte 0x73, 0x00, 0x00, 0x00
+	.byte 0x00, 0x13, 0x7A, 0x00
+	.byte 0x41, 0x00, 0x00, 0x00
+	.4byte 0x802F06C0  ;# ptr
+	.byte 0x87, 0x00, 0x00, 0x00
+	.byte 0x00, 0x00, 0xCA, 0x00
+	.byte 0x43, 0x00, 0x00, 0x00
+	.4byte 0x802F06C8  ;# ptr
+	.byte 0x87, 0x00, 0x00, 0x00
+	.byte 0x00, 0x18, 0x62, 0x00
+	.byte 0x43, 0x00, 0x00, 0x00
+	.4byte 0x802F06D0  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x01, 0x4D, 0x00
+	.byte 0x45, 0x00, 0x00, 0x00
+	.4byte 0x802F06D8  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x16, 0x15, 0x00
+	.byte 0x45, 0x00, 0x00, 0x00
+	.4byte 0x801B28D4  ;# ptr
+	.byte 0xBE, 0x00, 0x00, 0x00
+	.byte 0x00, 0x05, 0x3A, 0x00
+	.byte 0x47, 0x00, 0x00, 0x00
+	.4byte 0x802F06E0  ;# ptr
+	.byte 0xBE, 0x00, 0x00, 0x00
+	.byte 0x00, 0x45, 0x31, 0x00
+	.byte 0x47, 0x00, 0x00, 0x00
+	.4byte 0x802F06E8  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0D, 0xDA, 0x00
+	.byte 0x49, 0x00, 0x00, 0x00
+	.4byte 0x802F06E8  ;# ptr
+	.byte 0x91, 0x00, 0x00, 0x00
+	.byte 0x00, 0x0D, 0xDA, 0x00
+	.byte 0x49, 0x00, 0x00, 0x00
+	.4byte 0x802F06EC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F06EC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x801B28E0  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x03, 0x00, 0x00, 0x00
+	.4byte 0x802F06F4  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x03, 0x00, 0x00, 0x00
+	.4byte 0x801B28EC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x05, 0x00, 0x00, 0x00
+	.4byte 0x802F06FC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x05, 0x00, 0x00, 0x00
+	.4byte 0x801B28F8  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x07, 0x00, 0x00, 0x00
+	.4byte 0x801B2904  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x07, 0x00, 0x00, 0x00
+	.4byte 0x801B2910  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x09, 0x00, 0x00, 0x00
+	.4byte 0x801B2910  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x09, 0x00, 0x00, 0x00
+	.4byte 0x801B291C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x0B, 0x00, 0x00, 0x00
+	.4byte 0x801B291C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x0B, 0x00, 0x00, 0x00
+	.4byte 0x801B2928  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x0D, 0x00, 0x00, 0x00
+	.4byte 0x801B2928  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x0D, 0x00, 0x00, 0x00
+	.4byte 0x801B2934  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x0F, 0x00, 0x00, 0x00
+	.4byte 0x801B2934  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x0F, 0x00, 0x00, 0x00
+	.4byte 0x801B2944  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x11, 0x00, 0x00, 0x00
+	.4byte 0x801B2944  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x11, 0x00, 0x00, 0x00
+	.4byte 0x801B2954  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x13, 0x00, 0x00, 0x00
+	.4byte 0x801B2954  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x13, 0x00, 0x00, 0x00
+	.4byte 0x802F0704  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x15, 0x00, 0x00, 0x00
+	.4byte 0x802F0704  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x15, 0x00, 0x00, 0x00
+	.4byte 0x801B2960  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x17, 0x00, 0x00, 0x00
+	.4byte 0x802F070C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x17, 0x00, 0x00, 0x00
+	.4byte 0x801B296C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x19, 0x00, 0x00, 0x00
+	.4byte 0x802F0714  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x19, 0x00, 0x00, 0x00
+	.4byte 0x801B2978  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x1B, 0x00, 0x00, 0x00
+	.4byte 0x802F071C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x1B, 0x00, 0x00, 0x00
+	.4byte 0x801B2984  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x1D, 0x00, 0x00, 0x00
+	.4byte 0x802F0724  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x1D, 0x00, 0x00, 0x00
+	.4byte 0x801B2990  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x1F, 0x00, 0x00, 0x00
+	.4byte 0x802F072C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x1F, 0x00, 0x00, 0x00
+	.4byte 0x802F0734  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x21, 0x00, 0x00, 0x00
+	.4byte 0x802F0734  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x21, 0x00, 0x00, 0x00
+	.4byte 0x801B299C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x23, 0x00, 0x00, 0x00
+	.4byte 0x802F073C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x23, 0x00, 0x00, 0x00
+	.4byte 0x801B29A8  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x25, 0x00, 0x00, 0x00
+	.4byte 0x802F0744  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x25, 0x00, 0x00, 0x00
+	.4byte 0x801B29B4  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x27, 0x00, 0x00, 0x00
+	.4byte 0x802F074C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x27, 0x00, 0x00, 0x00
+	.4byte 0x802F0754  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x29, 0x00, 0x00, 0x00
+	.4byte 0x802F0754  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x29, 0x00, 0x00, 0x00
+	.4byte 0x802F075C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F075C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0xFF, 0x00, 0x00, 0x00
+	.4byte 0x802F0764  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x2D, 0x00, 0x00, 0x00
+	.4byte 0x802F0764  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x2D, 0x00, 0x00, 0x00
+	.4byte 0x801B29C0  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x2F, 0x00, 0x00, 0x00
+	.4byte 0x801B29CC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x2F, 0x00, 0x00, 0x00
+	.4byte 0x802F076C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x31, 0x00, 0x00, 0x00
+	.4byte 0x802F076C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x31, 0x00, 0x00, 0x00
+	.4byte 0x801B29D8  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x33, 0x00, 0x00, 0x00
+	.4byte 0x801B29E4  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x33, 0x00, 0x00, 0x00
+	.4byte 0x801B29F0  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x35, 0x00, 0x00, 0x00
+	.4byte 0x801B29FC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x35, 0x00, 0x00, 0x00
+	.4byte 0x801B2A08  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x37, 0x00, 0x00, 0x00
+	.4byte 0x802F0774  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x37, 0x00, 0x00, 0x00
+	.4byte 0x802F077C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x39, 0x00, 0x00, 0x00
+	.4byte 0x802F077C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x39, 0x00, 0x00, 0x00
+	.4byte 0x802F0784  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3B, 0x00, 0x00, 0x00
+	.4byte 0x802F0784  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3B, 0x00, 0x00, 0x00
+	.4byte 0x801B2A14  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3D, 0x00, 0x00, 0x00
+	.4byte 0x801B2A20  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3D, 0x00, 0x00, 0x00
+	.4byte 0x802F078C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x802F078C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x802F0794  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x41, 0x00, 0x00, 0x00
+	.4byte 0x802F0794  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x41, 0x00, 0x00, 0x00
+	.4byte 0x801B2A2C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x43, 0x00, 0x00, 0x00
+	.4byte 0x802F079C  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x43, 0x00, 0x00, 0x00
+	.4byte 0x801B2A38  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x45, 0x00, 0x00, 0x00
+	.4byte 0x802F07A4  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x45, 0x00, 0x00, 0x00
+	.4byte 0x801B2A44  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x47, 0x00, 0x00, 0x00
+	.4byte 0x801B2A50  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x47, 0x00, 0x00, 0x00
+	.4byte 0x802F07AC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x49, 0x00, 0x00, 0x00
+	.4byte 0x802F07AC  ;# ptr
+	.byte 0x01, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x49, 0x00, 0x00, 0x00
+
+.global lbl_801B339C
+lbl_801B339C:
+	# ROM: 0x1B039C
+	.asciz "### Sound ERROR ### at "
+	.asciz "/test/snd/adp/%s.adp"
+	.balign 4
+	.asciz "ReadMusyXData\n"
+	.balign 4
+	.asciz "Unable to open '%s'\n"
+	.balign 4
+	.asciz "Zero length file '%s'\n"
+	.balign 4
+	.asciz "unable to allocate buffer '%s'\n"
+	.asciz "Failed to read data from '%s'\n"
+	.balign 4
+
+.global lbl_801B344C
+lbl_801B344C:
+	# ROM: 0x1B044C
+	.4byte lbl_80028FA0  ;# ptr
+	.4byte lbl_80028FE4  ;# ptr
+	.4byte lbl_80029064  ;# ptr
+	.4byte lbl_80029094  ;# ptr
+	.4byte lbl_800290B4  ;# ptr
+	.4byte lbl_80029160  ;# ptr
+	.4byte lbl_800291AC  ;# ptr
+	.4byte lbl_800291AC  ;# ptr
+	.4byte lbl_800291AC  ;# ptr
+	.4byte lbl_80029180  ;# ptr
+	.asciz "SoundGroupLoad\n"
+	.asciz "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n"
+	.balign 4
+	.asciz "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n"
+	.asciz "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n"
+	.asciz "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n"
+	.asciz "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n"
+	.balign 4
+	.asciz "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n"
+	.balign 4
+	.asciz "--> but SUCCESS !! use CharaHeap\n"
+	.balign 4
+	.asciz "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n"
+	.balign 4
+
+.global lbl_801B35F0
+lbl_801B35F0:
+	# ROM: 0x1B05F0
+	.4byte lbl_80029D74  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029DC0  ;# ptr
+	.4byte lbl_80029DC0  ;# ptr
+	.4byte lbl_80029D74  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029DC0  ;# ptr
+	.4byte lbl_80029DC0  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029D88  ;# ptr
+	.4byte lbl_80029DC0  ;# ptr
+
+.global lbl_801B3630
+lbl_801B3630:
+	# ROM: 0x1B0630
+	.4byte 0x802F07E4  ;# ptr
+	.4byte 0x802F07EC  ;# ptr
+	.4byte 0x802F07F4  ;# ptr
+	.4byte 0x802F07FC  ;# ptr
+	.4byte 0x802F07E4  ;# ptr
+	.4byte 0x802F07EC  ;# ptr
+	.4byte 0x802F0804  ;# ptr
+	.4byte 0x802F07FC  ;# ptr
+	.4byte 0x802F07E4  ;# ptr
+	.4byte 0x802F07EC  ;# ptr
+	.4byte 0x802F080C  ;# ptr
+	.4byte 0x802F07FC  ;# ptr
+	.4byte 0x802F07E4  ;# ptr
+	.4byte 0x802F07EC  ;# ptr
+	.4byte 0x802F0814  ;# ptr
+	.4byte 0x802F07FC  ;# ptr
+
+.global lbl_801B3670
+lbl_801B3670:
+	# ROM: 0x1B0670
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_801B3694
+lbl_801B3694:
+	# ROM: 0x1B0694
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE44  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+	.4byte lbl_8002AE2C  ;# ptr
+
+.global lbl_801B36E4
+lbl_801B36E4:
+	# ROM: 0x1B06E4
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002AE00  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+	.4byte lbl_8002ACB4  ;# ptr
+
+.global lbl_801B3734
+lbl_801B3734:
+	# ROM: 0x1B0734
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AEA0  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AEA8  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AF14  ;# ptr
+	.4byte lbl_8002AEA8  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AEA8  ;# ptr
+	.4byte lbl_8002AFB8  ;# ptr
+	.4byte lbl_8002AF14  ;# ptr
+	.4byte lbl_8002AF14  ;# ptr
+	.4byte lbl_8002AED4  ;# ptr
+	.4byte lbl_8002AED4  ;# ptr
+	.4byte lbl_8002AED4  ;# ptr
+	.4byte lbl_8002AED4  ;# ptr
+	.4byte lbl_8002AED4  ;# ptr
+
+.global lbl_801B3784
+lbl_801B3784:
+	# ROM: 0x1B0784
+	.asciz "SoundReq %s nowball is NULL. --> pid = 0\n"
+	.balign 4
+
+.global lbl_801B37B0
+lbl_801B37B0:
+	# ROM: 0x1B07B0
+	.asciz "warning : SoundReq() cue over %s\n"
+	.balign 4
+
+.global lbl_801B37D4
+lbl_801B37D4:
+	# ROM: 0x1B07D4
+	.asciz "SoundReqDirect %s ape is NULL. --> pid = 0\n"
+
+.global lbl_801B3800
+lbl_801B3800:
+	# ROM: 0x1B0800
+	.asciz "SoundReqID %s ERROR !! ape is NULL.\n"
+	.balign 4
+
+.global lbl_801B3828
+lbl_801B3828:
+	# ROM: 0x1B0828
+	.asciz "%s %s nowball is NULL. --> pid = 0\n"
+
+.global lbl_801B384C
+lbl_801B384C:
+	# ROM: 0x1B084C
+	.asciz "SoundOff"
+	.balign 4
+
+.global lbl_801B3858
+lbl_801B3858:
+	# ROM: 0x1B0858
+	.asciz "SoundVol"
+	.balign 4
+
+.global lbl_801B3864
+lbl_801B3864:
+	# ROM: 0x1B0864
+	.asciz "SoundPan"
+	.balign 4
+
+.global lbl_801B3870
+lbl_801B3870:
+	# ROM: 0x1B0870
+	.asciz "SoundPitch"
+	.balign 4
+
+.global lbl_801B387C
+lbl_801B387C:
+	# ROM: 0x1B087C
+	.asciz "SoundDop"
+	.balign 4
+	.asciz "SoundMod"
+	.balign 4
+
+.global lbl_801B3894
+lbl_801B3894:
+	# ROM: 0x1B0894
+	.asciz "SoundRev"
+	.balign 4
+
+.global lbl_801B38A0
+lbl_801B38A0:
+	# ROM: 0x1B08A0
+	.asciz "SoundCho"
+	.balign 4
+
+.global lbl_801B38AC
+lbl_801B38AC:
+	# ROM: 0x1B08AC
+	.asciz "SoundSearchID %s ERROR !! ape is NULL.\n"
+
+.global lbl_801B38D4
+lbl_801B38D4:
+	# ROM: 0x1B08D4
+	.asciz "SoundOffID"
+	.balign 4
+	.asciz "SoundVolID"
+	.balign 4
+	.asciz "SoundPanID"
+	.balign 4
+	.asciz "SoundPitchID"
+	.balign 4
+	.asciz "SoundDopID"
+	.balign 4
+	.asciz "SoundModID"
+	.balign 4
+
+.global lbl_801B3920
+lbl_801B3920:
+	# ROM: 0x1B0920
+	.asciz "SoundRevID"
+	.balign 4
+
+.global lbl_801B392C
+lbl_801B392C:
+	# ROM: 0x1B092C
+	.asciz "SoundChoID"
+	.balign 4
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x51
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x52
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x53
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x51
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x52
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x53
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x51
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x52
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x53
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x51
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x52
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x53
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.byte 0x00, 0x00, 0x00, 0x7F
+	.byte 0x42, 0xFE, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.byte 0x42, 0xFE, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.byte 0x00, 0x00, 0x00, 0x7F
+	.byte 0x42, 0xFE, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.byte 0x00, 0x00, 0x00, 0x7F
+	.byte 0x42, 0xFE, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.4byte 0x801B3998  ;# ptr
+	.4byte 0x801B39B8  ;# ptr
+	.4byte 0x801B39D8  ;# ptr
+	.4byte 0
+	.byte 0x45, 0x90, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.byte 0x00, 0x00, 0x00, 0x7F
+	.byte 0x46, 0x7F, 0xFC, 0x00
+	.4byte 0
+	.4byte 0
+
+.global lbl_801B3A24
+lbl_801B3A24:
+	# ROM: 0x1B0A24
+	.4byte lbl_8002CF78  ;# ptr
+	.4byte lbl_8002CFF8  ;# ptr
+	.4byte lbl_8002D020  ;# ptr
+	.4byte lbl_8002D048  ;# ptr
+	.4byte lbl_8002D070  ;# ptr
+	.4byte lbl_8002D17C  ;# ptr
+	.4byte lbl_8002D104  ;# ptr
+	.4byte lbl_8002D334  ;# ptr
+	.4byte lbl_8002D190  ;# ptr
+	.4byte lbl_8002D1C8  ;# ptr
+	.4byte lbl_8002D1E4  ;# ptr
+	.4byte lbl_8002D2A4  ;# ptr
+
+.global lbl_801B3A54
+lbl_801B3A54:
+	# ROM: 0x1B0A54
+	.asciz "DVDReadAsync result %x\n"
+	.asciz "restL %d\n"
+	.balign 4
+	.asciz "extraL %d\n"
+	.balign 4
+	.asciz "restR %d\n"
+	.balign 4
+	.asciz "extraR %d\n"
+	.balign 4
+	.asciz "/test/snd/test/streamL.pcm"
+	.balign 4
+	.asciz "SoundStreamStart\n"
+	.balign 4
+	.asciz "can't open data\n"
+	.balign 4
+	.asciz "/test/snd/test/streamR.pcm"
+	.balign 4
+	.asciz "can't allocate stream\n"
+	.balign 4
+	.4byte 0
+
+.section .sdata
+
+.global lbl_802F07B4
+lbl_802F07B4:
+	# ROM: 0x1EAEF4
+	.asciz "%s.pool"
+
+.global lbl_802F07BC
+lbl_802F07BC:
+	# ROM: 0x1EAEFC
+	.asciz "%s.proj"
+
+.global lbl_802F07C4
+lbl_802F07C4:
+	# ROM: 0x1EAF04
+	.asciz "%s.samp"
+
+.global lbl_802F07CC
+lbl_802F07CC:
+	# ROM: 0x1EAF0C
+	.asciz "%s.sdir"
+
+.global lbl_802F07D4
+lbl_802F07D4:
+	# ROM: 0x1EAF14
+	.asciz "snd/mkb"
+
+.global lbl_802F07DC
+lbl_802F07DC:
+	# ROM: 0x1EAF1C
+	.asciz "/test"
+	.balign 4
+	.4byte 0
+	.4byte 0
+	.byte 0x00, 0x00, 0x00, 0xC0
+	.4byte 0
+	.byte 0x00, 0x00, 0xC0, 0xC0
+	.byte 0x3F, 0xC0, 0x00, 0x00
+	.byte 0xC0, 0x00, 0x3F, 0x00
+	.byte 0xC0, 0xC0, 0x3F, 0xC0
+	.byte 0xC0, 0xC0, 0x00, 0x00
+	.byte 0x3F, 0xC0, 0x00, 0x00
+	.byte 0xC0, 0x00, 0x3F, 0x00
+	.byte 0x00, 0xC0, 0x00, 0x00
+	.byte 0xC0, 0x00, 0x3F, 0x00
+	.byte 0xC0, 0xC0, 0x00, 0x00
+
+.global lbl_802F081C
+lbl_802F081C:
+	# ROM: 0x1EAF5C
+	.byte 0x00, 0x01, 0xFF, 0x02

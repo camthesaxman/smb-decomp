@@ -3,6 +3,10 @@
 #include "variables.h"
 #include "functions.h"
 
+// bss
+u8 lbl_801ED920[0x1240];  // unknown type
+GXRenderModeObj lbl_801EEB60;
+
 void main(void)
 {
     lbl_802F1B38 = 0;
