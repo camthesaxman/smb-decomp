@@ -40,10 +40,25 @@ SOURCE_FILES := \
 	asm/event.s \
 	asm/camera.s \
 	asm/code_1.s \
+	asm/input.s \
 	asm/sound.s \
 	asm/code_2.s \
+	asm/nl2ngc.s \
+	asm/motload.s \
 	asm/ball.s \
 	asm/code.s \
+	asm/background.s \
+	asm/stage.s \
+	asm/ord_tbl.s \
+	asm/mot_ape.s \
+	asm/avdisp.s \
+	asm/load.s \
+	asm/relocation.s \
+	asm/mini_commend.s \
+	asm/memcard.s \
+	asm/DEMOPuts.s \
+	asm/view.s \
+	asm/preview.s \
 	asm/lib/base/PPCArch.s \
 	asm/lib/os/OS.s \
 	asm/lib/os/OSAlarm.s \

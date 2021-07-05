@@ -23,7 +23,7 @@ extern u32 dipSwitches;
 extern void *modeStringPtr;
 extern void *submodeStringPtr;
 
-char *lbl_801724D0_24[] = {
+char *gameModeRelNames[] = {
     "",
     "",
     "",
@@ -31,7 +31,7 @@ char *lbl_801724D0_24[] = {
     "",
     "mkbe.option.rel"
 };
-void (*lbl_801724D0_3C[])(void) = {
+void (*gameModeFuncs[])(void) = {
     func_8000E5A8,
     func_8001236C,
     func_8001260C,
@@ -92,7 +92,7 @@ void (*lbl_80172528 /*lbl_801724D0_58*/[]) = {
     func_8000A0B0, func_8000A0B0, func_8000A0B0, func_8000A0B0,
     func_8000A0B0, func_8000A0B0, func_8000A0B0, NULL,
 };
-void *lbl_801724D0_384[] = {
+void *gameModeNames[] = {
     "MD_ADV",
     "MD_SEL",
     "MD_GAME",
@@ -101,7 +101,7 @@ void *lbl_801724D0_384[] = {
     "MD_OPTION",
      NULL,
 };
-char *lbl_80173908[] = {
+char *gameSubmodeNames[] = {
     "SMD_ADV_TOP",
     "SMD_ADV_DEMO_INIT",
     "SMD_ADV_DEMO_MAIN",
@@ -378,7 +378,7 @@ void gm_main(void)
         }
         gameMode = gameModeRequest;
         r4 = gameMode;
-        modeStringPtr = lbl_801724D0_384[gameMode];
+        modeStringPtr = gameModeNames[gameMode];
         gameModeRequest = -1;
         if (r4 == MD_TEST || r4 == MD_OPTION)
             modeCtrl.unk8 |= 0x200;
@@ -387,7 +387,7 @@ void gm_main(void)
     if (gameSubmodeRequest != -1)
     {
         gameSubmode = gameSubmodeRequest;
-        submodeStringPtr = lbl_80173908[gameSubmode];
+        submodeStringPtr = gameSubmodeNames[gameSubmode];
         gameSubmodeRequest = -1;
     }
 
@@ -397,13 +397,13 @@ void gm_main(void)
         {
             event_clear();
             func_800705E4();
-            minigame_link(lbl_801724D0_24[gameMode], &lbl_802F021C);
+            minigame_link(gameModeRelNames[gameMode], &lbl_802F021C);
         }
         if (lbl_802F1B74 != 0)
             lbl_802F1B74();
     }
     else
-        lbl_801724D0_3C[gameMode]();
+        gameModeFuncs[gameMode]();
 }
 
 extern struct

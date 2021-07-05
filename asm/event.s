@@ -16124,3 +16124,29 @@ lbl_801761F0:
 	.byte 0x00, 0x00, 0x01, 0xDE
 	.byte 0x00, 0x00, 0x01, 0xDF
 
+.section .bss
+
+.global lbl_801EECF8
+lbl_801EECF8:
+	.skip 0xC
+.global lbl_801EED04
+lbl_801EED04:
+	.skip 0x28
+.global lbl_801EED2C
+lbl_801EED2C:
+	.skip 0x10
+.global lbl_801EED3C
+lbl_801EED3C:
+	.skip 0x14
+.global lbl_801EED50
+lbl_801EED50:
+	.skip 0x38
+.global lbl_801EED88
+lbl_801EED88:
+	.skip 0x20
+.global lbl_801EEDA8
+lbl_801EEDA8:
+	.skip 0x118
+.global lbl_801EEEC0
+lbl_801EEEC0:
+	.skip 0x40

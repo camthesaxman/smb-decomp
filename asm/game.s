@@ -880,14 +880,14 @@ lbl_8000A098:
 .global func_8000A0B0
 func_8000A0B0:
 /* 8000A0B0 00005FD0  7C 08 02 A6 */	mflr r0
-/* 8000A0B4 00005FD4  3C 60 80 17 */	lis r3, lbl_80173908@ha
+/* 8000A0B4 00005FD4  3C 60 80 17 */	lis r3, gameSubmodeNames@ha
 /* 8000A0B8 00005FD8  90 01 00 04 */	stw r0, 4(r1)
 /* 8000A0BC 00005FDC  3C A0 80 17 */	lis r5, lbl_80173C70@ha
 /* 8000A0C0 00005FE0  4C C6 31 82 */	crclr 6
 /* 8000A0C4 00005FE4  94 21 FF F8 */	stwu r1, -8(r1)
 /* 8000A0C8 00005FE8  A8 0D 99 AE */	lha r0, gameSubmode-_SDA_BASE_(r13)
 /* 8000A0CC 00005FEC  54 04 10 3A */	slwi r4, r0, 2
-/* 8000A0D0 00005FF0  38 03 39 08 */	addi r0, r3, lbl_80173908@l
+/* 8000A0D0 00005FF0  38 03 39 08 */	addi r0, r3, gameSubmodeNames@l
 /* 8000A0D4 00005FF4  7C 80 22 14 */	add r4, r0, r4
 /* 8000A0D8 00005FF8  80 84 00 00 */	lwz r4, 0(r4)
 /* 8000A0DC 00005FFC  38 65 3C 70 */	addi r3, r5, lbl_80173C70@l
@@ -2215,3 +2215,18 @@ lbl_802F0248:
 	# ROM: 0x1EA988
 	.byte 0x1B, 0x00, 0x00, 0x00
 	.4byte 0
+
+.section .bss
+
+.global modeCtrl
+modeCtrl:
+	.skip 0x48
+.global lbl_801EEC68
+lbl_801EEC68:
+	.skip 0x18
+.global lbl_801EEC80
+lbl_801EEC80:
+	.skip 0x10
+.global lbl_801EEC90
+lbl_801EEC90:
+	.skip 0x68

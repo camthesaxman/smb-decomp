@@ -18,42 +18,8 @@ lbl_8010F880:
 	.incbin "baserom.dol", 0x10C880, 0x20
 
 .section .bss, "wa"  # 0x801ED920 - 0x802F27F5
-.global modeCtrl
-modeCtrl:
-	.skip 0x48
-.global lbl_801EEC68
-lbl_801EEC68:
-	.skip 0x18
-.global lbl_801EEC80
-lbl_801EEC80:
-	.skip 0x10
-.global lbl_801EEC90
-lbl_801EEC90:
-	.skip 0x68
-.global lbl_801EECF8
-lbl_801EECF8:
-	.skip 0xC
-.global lbl_801EED04
-lbl_801EED04:
-	.skip 0x28
-.global lbl_801EED2C
-lbl_801EED2C:
-	.skip 0x10
-.global lbl_801EED3C
-lbl_801EED3C:
-	.skip 0x14
-.global lbl_801EED50
-lbl_801EED50:
-	.skip 0x38
-.global lbl_801EED88
-lbl_801EED88:
-	.skip 0x20
-.global lbl_801EEDA8
-lbl_801EEDA8:
-	.skip 0x118
-.global lbl_801EEEC0
-lbl_801EEEC0:
-	.skip 0x40
+
+# event
 .global cameraInfo
 cameraInfo:
 	.skip 0xC94
@@ -441,6 +407,7 @@ lbl_802BA210:
 .global lbl_802BA2A0
 lbl_802BA2A0:
 	.skip 0x70
+# memcard.s
 .global lbl_802BA310
 lbl_802BA310:
 	.skip 0x70
@@ -762,12 +729,6 @@ lbl_802F01C8:
 
 .section .sbss
 
-.global lbl_802F1AE0
-lbl_802F1AE0:
-	.skip 0x4
-.global lbl_802F1AE4
-lbl_802F1AE4:
-	.skip 0x4
 .global lbl_802F1AE8
 lbl_802F1AE8:
 	.skip 0x4
