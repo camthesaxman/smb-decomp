@@ -3,6 +3,10 @@
 
 #define OS_FONT_ENCODE_ANSI 0u
 #define OS_FONT_ENCODE_SJIS 1u
+#define OS_FONT_SIZE_ANSI (288 + 131072)    // 9 sheets
+#define OS_FONT_SIZE_SJIS (3840 + 1179648)  // 1 sheet
+#define OS_FONT_ROM_SIZE_ANSI 0x03000
+#define OS_FONT_ROM_SIZE_SJIS 0x4D000
 
 typedef struct
 {
@@ -34,5 +38,7 @@ typedef struct
 u16 OSGetFontEncode(void);
 BOOL OSInitFont(OSFontHeader *fontData);
 char *OSGetFontTexture(char *string, void **image, s32 *x, s32 *y, s32 *width);
+char *OSGetFontWidth(char *string, s32 *width);
+char *OSGetFontTexel(char *string, void *image, s32 pos, s32 stride, s32 *width);
 
 #endif

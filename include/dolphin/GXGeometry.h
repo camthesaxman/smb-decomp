@@ -8,4 +8,10 @@ void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts);
 void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func,
     GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx);
 
+static inline void GXSetTexCoordGen(GXTexCoordID dst_coord, GXTexGenType func,
+    GXTexGenSrc src_param, u32 mtx)
+{
+    GXSetTexCoordGen2(dst_coord, func, src_param, mtx, GX_FALSE, GX_PTIDENTITY);
+}
+
 #endif

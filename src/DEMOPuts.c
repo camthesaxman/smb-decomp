@@ -1,3 +1,5 @@
+#include <stdarg.h>
+#include <string.h>
 #include <dolphin.h>
 
 #include "functions.h"
@@ -97,7 +99,7 @@ static inline void DEMOLoadFont(GXTexMapID texMap, GXTexMtx texMtx, DMTexFlt tex
 
     GXLoadTexMtxImm(fontTMtx, texMtx, GX_MTX2x4);
     GXSetNumTexGens(1);
-    GXSetTexCoordGen2(0, 1, 4, 0x1E, 0, 0x7D);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
 static inline void DEMOSetupScrnSpc(s32 width, s32 height, float depth)
@@ -105,7 +107,7 @@ static inline void DEMOSetupScrnSpc(s32 width, s32 height, float depth)
     Mtx44 pMtx;
     Mtx mMtx;
 
-    C_MTXOrtho(pMtx, 0.0f, (float)height, 0.0f, (float)width, 0.0f, /*-depth*/ -100.0f);
+    C_MTXOrtho(pMtx, 0.0f, (float)height, 0.0f, (float)width, 0.0f, -depth);
     GXSetProjection(pMtx, GX_ORTHOGRAPHIC);
     PSMTXIdentity(mMtx);
     GXLoadPosMtxImm(mMtx, GX_PNMTX0);
@@ -136,16 +138,19 @@ void DEMOInitCaption(s32 font_type, s32 width, s32 height)
 
 OSFontHeader *DEMOInitROMFont(void)
 {
-    if (OSGetFontEncode() == 1)
-        FontData = OSAllocFromHeap(__OSCurrHeap, 0x00120F00);
+    if (OSGetFontEncode() == OS_FONT_ENCODE_SJIS)
+        FontData = OSAlloc(OS_FONT_SIZE_SJIS);
     else
-        FontData = OSAllocFromHeap(__OSCurrHeap, 0x00020120);
+        FontData = OSAlloc(OS_FONT_SIZE_ANSI);
+
     if (FontData == NULL)
         OSPanic("DEMOPuts.c", 413, "Ins. memory to load ROM font.");
     if (!OSInitFont(FontData))
         OSPanic("DEMOPuts.c", 417, "ROM font is available in boot ROM ver 0.8 or later.");
+
     FontSize = FontData->cellWidth * 16;
     FontSpace = -16;
+
     return FontData;
 }
 
@@ -217,8 +222,7 @@ static inline void LoadSheet(void* image, GXTexMapID texMapID)
                   1.0f);
     GXLoadTexMtxImm(mtx, GX_TEXMTX0, GX_MTX2x4);
     GXSetNumTexGens(1);
-    //GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
-    GXSetTexCoordGen2(0, 1, 4, 0x1E, 0, 0x7D);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
 int DEMORFPuts(s16 x, s16 y, s16 z, char* string)
@@ -261,4 +265,81 @@ int DEMORFPuts(s16 x, s16 y, s16 z, char* string)
         width += FontSize * cx / FontData->cellWidth + FontSpace;
     }
     return (width + 15) / 16;
+}
+
+void DEMORFPrintf(s16 x, s16 y, s16 z, char *fmt, ...)
+{
+    va_list  vlist;
+    char     buf[256];
+
+    // Get output string
+    va_start(vlist, fmt);
+    vsprintf(buf, fmt, vlist);
+    va_end(vlist);
+
+    // Feed to puts
+    DEMORFPuts(x, y, z, buf);
+}
+
+// unused
+char* DEMODumpROMFont(char* string)
+{
+    u32   image[48/2*48/4];   // 48 x 48
+    void* temp;
+    int   i, j;
+    s32   width;
+
+    ASSERT(FontData);
+
+    if (OSGetFontEncode() == OS_FONT_ENCODE_SJIS)
+    {
+        temp = (u8*) FontData + OS_FONT_SIZE_SJIS - OS_FONT_ROM_SIZE_SJIS;
+    }
+    else
+    {
+        temp = (u8*) FontData + OS_FONT_SIZE_ANSI - OS_FONT_ROM_SIZE_ANSI;
+    }
+    temp = (void*) OSRoundDown32B(temp);
+    OSLoadFont(FontData, temp);
+
+    // Clear image buffer by zero since OSGetFontTexel() copies out
+    // font texels using logical OR.
+    memset(image, 0x00, sizeof(image));
+
+    // OSGetFontTexel() only works with the compressed font data
+    // read by OSLoadFont().
+    string = OSGetFontTexel(string, image, 0, 48 / 4, &width);
+
+    for (i = 0; i < 48; i++)
+    {
+        j = 48 * (i / 8) + (i % 8);
+        OSReport("%08x%08x%08x%08x%08x%08x\n",
+                 image[j],        image[j + 32/4],  image[j + 64/4],
+                 image[j + 96/4], image[j + 128/4], image[j + 160/4]);
+    }
+
+    OSReport("\nwidth %d\n", width);
+
+    OSInitFont(FontData);   // To re-expand compressed data
+
+    return string;
+}
+
+int DEMOGetRFTextWidth(char *string)
+{
+    s32 width;
+    s32 cx = 0;
+
+    while (*string != 0)
+    {
+        string = OSGetFontWidth(string, &width);
+        cx += FontSize * width / FontData->cellWidth + FontSpace;
+    }
+    return (cx + 15) / 16;
+}
+
+void func_800A5704(void)
+{
+    OSFree(FontData);
+    FontData = NULL;
 }

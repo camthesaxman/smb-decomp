@@ -57,7 +57,6 @@ SOURCE_FILES := \
 	asm/mini_commend.s \
 	asm/memcard.s \
 	src/DEMOPuts.c \
-	asm/DEMOPuts.s \
 	asm/view.s \
 	asm/preview.s \
 	asm/lib/base/PPCArch.s \
