@@ -1,8 +1,7 @@
 #ifndef _DOLPHIN_DVD_H_
 #define _DOLPHIN_DVD_H_
 
-typedef struct DVDDiskID DVDDiskID;
-struct DVDDiskID
+typedef struct
 {
     char gameName[4];
     char company[2];
@@ -11,10 +10,10 @@ struct DVDDiskID
     u8 streaming;
     u8 streamingBufSize;
     u8 padding[22];
-};
+} DVDDiskID;
 
 typedef struct DVDCommandBlock DVDCommandBlock;
-typedef void (*DVDCBCallback)(s32, DVDCommandBlock *);
+typedef void (*DVDCBCallback)(s32 result, DVDCommandBlock *block);
 struct DVDCommandBlock
 {
     /*0x00*/ DVDCommandBlock *next;
@@ -32,7 +31,7 @@ struct DVDCommandBlock
 };
 
 typedef struct DVDFileInfo  DVDFileInfo;
-typedef void (*DVDCallback)(s32, DVDFileInfo *);
+typedef void (*DVDCallback)(s32 result, DVDFileInfo *fileInfo);
 struct DVDFileInfo
 {
 	/*0x00*/ DVDCommandBlock cb;
@@ -48,5 +47,6 @@ BOOL DVDChangeDir(char *);
 BOOL DVDFastOpen(s32 entrynum, DVDFileInfo *fileInfo);
 BOOL DVDReadAsyncPrio(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset,
     DVDCallback callback, s32 prio);
+s32 DVDConvertPathToEntrynum(char *pathPtr);
 
 #endif
