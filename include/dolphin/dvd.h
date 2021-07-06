@@ -17,33 +17,36 @@ typedef struct DVDCommandBlock DVDCommandBlock;
 typedef void (*DVDCBCallback)(s32, DVDCommandBlock *);
 struct DVDCommandBlock
 {
-    DVDCommandBlock *next;
-    DVDCommandBlock *prev;
-    u32 command;
-    s32 state;
-    u32 offset;
-    u32 length;
-    void *addr;
-    u32 currTransferSize;
-    u32 transferredSize;
-    DVDDiskID *id;
-    DVDCBCallback callback;
-    void *userData;
+    /*0x00*/ DVDCommandBlock *next;
+    /*0x04*/ DVDCommandBlock *prev;
+    /*0x08*/ u32 command;
+    /*0x0C*/ s32 state;
+    /*0x10*/ u32 offset;
+    /*0x14*/ u32 length;
+    /*0x18*/ void *addr;
+    /*0x1C*/ u32 currTransferSize;
+    /*0x20*/ u32 transferredSize;
+    /*0x24*/ DVDDiskID *id;
+    /*0x28*/ DVDCBCallback callback;
+    /*0x2C*/ void *userData;
 };
 
 typedef struct DVDFileInfo  DVDFileInfo;
 typedef void (*DVDCallback)(s32, DVDFileInfo *);
 struct DVDFileInfo
 {
-	DVDCommandBlock cb;
-    u32 startAddr;
-    u32 length;
-    DVDCallback callback;
+	/*0x00*/ DVDCommandBlock cb;
+    /*0x30*/ u32 startAddr;
+    /*0x34*/ u32 length;
+    /*0x38*/ DVDCallback callback;
 };
 
 void DVDInit(void);
 BOOL DVDOpen(char *, DVDFileInfo *);
 BOOL DVDClose(DVDFileInfo *);
 BOOL DVDChangeDir(char *);
+BOOL DVDFastOpen(s32 entrynum, DVDFileInfo *fileInfo);
+BOOL DVDReadAsyncPrio(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset,
+    DVDCallback callback, s32 prio);
 
 #endif
