@@ -56,6 +56,7 @@ SOURCE_FILES := \
 	asm/relocation.s \
 	asm/mini_commend.s \
 	asm/memcard.s \
+	src/DEMOPuts.c \
 	asm/DEMOPuts.s \
 	asm/view.s \
 	asm/preview.s \

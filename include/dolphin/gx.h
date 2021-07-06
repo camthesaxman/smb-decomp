@@ -8,5 +8,7 @@
 #include <dolphin/GXManage.h>
 #include <dolphin/GXFifo.h>
 #include <dolphin/GXCull.h>
+#include <dolphin/GXGeometry.h>
+#include <dolphin/GXVert.h>
 
 #endif

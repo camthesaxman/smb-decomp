@@ -4,6 +4,7 @@
 #include <dolphin/OSAlloc.h>
 #include <dolphin/OSCache.h>
 #include <dolphin/OSModule.h>
+#include <dolphin/OSFont.h>
 
 typedef s64 OSTime;
 

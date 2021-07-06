@@ -57,4 +57,28 @@ typedef enum
     GX_PF_YUV420,
 } GXPixelFmt;
 
+typedef enum
+{
+    GX_QUADS         = 0x80,
+    GX_TRIANGLES     = 0x90,
+    GX_TRIANGLESTRIP = 0x98,
+    GX_TRIANGLEFAN   = 0xA0,
+    GX_LINES         = 0xA8,
+    GX_LINESTRIP     = 0xB0,
+    GX_POINTS        = 0xB8,
+} GXPrimitive;
+
+typedef enum
+{
+    GX_VTXFMT0,
+    GX_VTXFMT1,
+    GX_VTXFMT2,
+    GX_VTXFMT3,
+    GX_VTXFMT4,
+    GX_VTXFMT5,
+    GX_VTXFMT6,
+    GX_VTXFMT7,
+    GX_MAX_VTXFMT,
+} GXVtxFmt;
+
 #endif

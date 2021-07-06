@@ -20,4 +20,6 @@ typedef int BOOL;
 
 #define NULL ((void *)0)
 
+#define AT_ADDRESS(addr) : (addr)
+
 #endif
