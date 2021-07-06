@@ -417,8 +417,8 @@ lbl_802BA380:
 .global lbl_802C4480
 lbl_802C4480:
 	.skip 0x4C0
-.global lbl_802C4940
-lbl_802C4940:
+.global fontTexObj
+fontTexObj:
 	.skip 0x1420
 .global lbl_802C5D60
 lbl_802C5D60:
@@ -1899,20 +1899,20 @@ lbl_802F21C4:
 .global lbl_802F21C8
 lbl_802F21C8:
 	.skip 0x8
-.global lbl_802F21D0
-lbl_802F21D0:
+.global fontShift
+fontShift:
 	.skip 0x4
 .global lbl_802F21D4
 lbl_802F21D4:
 	.skip 0x4
-.global lbl_802F21D8
-lbl_802F21D8:
+.global LastSheet
+LastSheet:
 	.skip 0x4
-.global lbl_802F21DC
-lbl_802F21DC:
+.global FontSize
+FontSize:
 	.skip 0x2
-.global lbl_802F21DE
-lbl_802F21DE:
+.global FontSpace
+FontSpace:
 	.skip 0x2
 .global lbl_802F21E0
 lbl_802F21E0:

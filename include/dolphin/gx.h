@@ -10,5 +10,7 @@
 #include <dolphin/GXCull.h>
 #include <dolphin/GXGeometry.h>
 #include <dolphin/GXVert.h>
+#include <dolphin/GXTexture.h>
+#include <dolphin/GXLighting.h>
 
 #endif

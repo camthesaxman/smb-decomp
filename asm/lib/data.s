@@ -3103,8 +3103,8 @@ lbl_801E7C50:
 	.4byte 0
 	.4byte 0
 
-.global lbl_801E7C80
-lbl_801E7C80:
+.global DEMOFontBitmap
+DEMOFontBitmap:
 	# ROM: 0x1E4C80
 	.4byte 0
 	.4byte 0

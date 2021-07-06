@@ -61,4 +61,9 @@ typedef struct
     u8 a;
 } GXColor;
 
+typedef struct
+{
+    u32 dummy[8];
+} GXTexObj;
+
 #endif

@@ -245,8 +245,11 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
+src/DEMOPuts.o: CFLAGS += -inline auto
+
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+	#$(CC) -c $(CFLAGS) $(CPPFLAGS) -S -o $(@:.o=.dump2) $<
 	@ $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:
