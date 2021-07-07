@@ -20,7 +20,7 @@ struct PerfInfo
     u32 unk34;
 };
 
-extern struct PerfInfo lbl_801F8DE0;
+extern struct PerfInfo perfInfo;
 
 extern u32 lbl_802F1EE0;
 extern u32 lbl_802F1B34;
@@ -28,7 +28,7 @@ extern u32 lbl_802F1B34;
 extern u32 lbl_802F1B44;
 extern u32 lbl_802F1B38;
 
-extern u32 lbl_802F1D28;
+extern u32 perfEnabled;
 
 extern u16 loadingStageIdRequest;
 extern u16 lbl_802F1F40;

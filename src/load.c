@@ -3,196 +3,224 @@
 #include "functions.h"
 #include "variables.h"
 
-extern s32 transfer1InProgress;
-extern s32 lbl_802F2138;
-extern s32 lbl_802F2134;
-extern volatile s32 dvdReadStatus;
-extern void *lbl_802F1B48;
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-struct UnkStruct3
+extern s32 mramToAramInProgress;
+extern s32 loadQueueHead;  // index of first added file
+extern s32 loadQueueTail;  // index of most recently added file
+extern volatile s32 dvdReadStatus;
+extern void *dvdReadBuffer;
+
+struct ARAMBlock
 {
     s32 unk0;
     s32 entryNum;
-    u32 unk8;
-    u32 unkC;
+    u32 aramAddr;
+    u32 aramSize;
 };
-extern struct UnkStruct3 lbl_802B5580[];
+extern struct ARAMBlock lbl_802B5580[];
 
-struct FileRelatedThing
+struct File
+{
+    u32 unk0;
+    DVDFileInfo dvdFile;
+    struct ARAMBlock unk40;
+};
+
+struct FileLoadInfo
 {
     u32 state;
-    u32 unk4;
-    DVDFileInfo fileInfo;
+    u32 entryNum;
+    DVDFileInfo dvdFile;
     u8 filler44[4];
-    u32 unk48;
-    u32 unk4C;
-    u32 unk50;
-    u32 unk54;
-    struct UnkStruct3 *unk58;
+    /*0x48*/ u32 fileSize;
+    /*0x4C*/ u32 fileOffset;
+    /*0x50*/ u32 bytesLeft;
+    /*0x54*/ u32 transferSize;
+    /*0x58*/ struct ARAMBlock *aramBlock;
 };
-extern struct FileRelatedThing lbl_802B4FC0[];
+extern struct FileLoadInfo fileLoadQueue[];
 
-void lbl_800921B8(s32, DVDFileInfo *);
-struct UnkStruct3 *alloc_file_buffer(s32);
+void dvd_read_callback(s32, DVDFileInfo *);
+struct ARAMBlock *alloc_aram_block(s32);
 
 extern ARQRequest lbl_802B5780;
 
-u32 lbl_802F12F0 = 0x700000;
+#define ARAM_BASE 0x700000
+#define ARAM_SIZE 0x400000 
 
-void arq_callback_1(u32 arqRequestPtr)
+u32 aramAllocEnd = ARAM_BASE;
+
+void mram_to_aram_callback(u32 arqRequestPtr)
 {
-    transfer1InProgress = FALSE;
+    mramToAramInProgress = FALSE;
 }
 
 void load_main(void)
 {
-    struct FileRelatedThing *r30;
+    struct FileLoadInfo *info;
 
-    if (lbl_802F2138 == lbl_802F2134)
+    if (loadQueueHead == loadQueueTail)
         return;
-    r30 = &lbl_802B4FC0[lbl_802F2138];
-    switch (r30->state)
+    info = &fileLoadQueue[loadQueueHead];
+    switch (info->state)
     {
     case 0:
-        r30->state = 1;
+        info->state = 1;
         // fall through
-    case 1:
+    case 1: // Initialize
         if (dvdReadStatus < 0)  // error
         {
-            lbl_802F2138 = lbl_802F2134;
+            loadQueueHead = loadQueueTail;
             break;
         }
-        if (dvdReadStatus != 0)
+        if (dvdReadStatus != 0)  // read in progress
             break;
-        if (DVDFastOpen(r30->unk4, &r30->fileInfo) != 1)
+        if (DVDFastOpen(info->entryNum, &info->dvdFile) != 1)
             OSPanic("load.c", 115, "cannot open file\n");
-        r30->unk48 = (r30->fileInfo.length + 0x1F) & ~0x1F;
-        r30->unk4C = 0;
-        r30->unk50 = r30->unk48;
-        r30->unk54 = (r30->unk50 < 0x18000) ? r30->unk50 : 0x18000;
-        r30->unk58 = alloc_file_buffer(r30->unk48);
-        r30->unk58->entryNum = r30->unk4;
+        info->fileSize = OSRoundUp32B(info->dvdFile.length);
+        info->fileOffset = 0;
+        info->bytesLeft = info->fileSize;
+        info->transferSize = MIN(info->bytesLeft, 0x18000);
+        info->aramBlock = alloc_aram_block(info->fileSize);
+        info->aramBlock->entryNum = info->entryNum;
         // fall through
     case 2:
+        // Read from DVD
         dvdReadStatus = 1;
-        if (DVDReadAsync(&r30->fileInfo, lbl_802F1B48, r30->unk54, r30->unk4C, lbl_800921B8) != 1)
+        if (DVDReadAsync(&info->dvdFile, dvdReadBuffer, info->transferSize, info->fileOffset, dvd_read_callback) != 1)
             OSPanic("load.c", 128, "cannot read file\n");
-        r30->state = 4;
+        info->state = 4;
         break;
     case 4:
+        // Check DVD status
         if (dvdReadStatus < 0)  // error
         {
-            lbl_802F2138 = lbl_802F2134;
+            loadQueueHead = loadQueueTail;
             break;
         }
-        if (dvdReadStatus != 0)
+        if (dvdReadStatus != 0)  // read in progress
             break;
         // fall through
     case 5:
-        transfer1InProgress = TRUE;
-        ARQPostRequest(&lbl_802B5780, 0, 0, 1, (u32)lbl_802F1B48, r30->unk58->unk8 + r30->unk4C, r30->unk54, arq_callback_1);
-        r30->state = 6;
+        // Copy data to ARAM
+        mramToAramInProgress = TRUE;
+        ARQPostRequest(
+            &lbl_802B5780,
+            0,
+            ARQ_TYPE_MRAM_TO_ARAM,
+            ARQ_PRIORITY_HIGH,
+            (u32)dvdReadBuffer,
+            info->aramBlock->aramAddr + info->fileOffset,
+            info->transferSize,
+            mram_to_aram_callback);
+        info->state = 6;
         break;
     case 6:
-        if (transfer1InProgress)
+        // Wait for transfer to ARAM
+        if (mramToAramInProgress)
             break;
-        r30->unk50 -= r30->unk54;
-        r30->unk4C += r30->unk54;
+        info->bytesLeft -= info->transferSize;
+        info->fileOffset += info->transferSize;
         // fall through
     case 3:
-        if (r30->unk50 != 0)
+        if (info->bytesLeft != 0)
         {
-            r30->unk54 = (r30->unk50 < 0x18000) ? r30->unk50 : 0x18000;
+            info->transferSize = MIN(info->bytesLeft, 0x18000);
             dvdReadStatus = 1;
-            if (DVDReadAsync(&r30->fileInfo, lbl_802F1B48, r30->unk54, r30->unk4C, lbl_800921B8) != 1)
+            if (DVDReadAsync(&info->dvdFile, dvdReadBuffer, info->transferSize, info->fileOffset, dvd_read_callback) != 1)
                 OSPanic("load.c", 155, "cannot read file\n");
-            r30->state = 4;
+            info->state = 4;
         }
         else
         {
-            r30->unk58->unk0 = 1;
-            DVDClose(&r30->fileInfo);
-            lbl_802F2138 = func_80092430(lbl_802F2138);
+            // Done reading
+            info->aramBlock->unk0 = 1;
+            DVDClose(&info->dvdFile);
+            // Move to the next file
+            loadQueueHead = get_next_file_id(loadQueueHead);
         }
         break;
     }
 }
 
-struct UnkStruct4
-{
-    u32 unk0;
-    DVDFileInfo fileInfo;
-    struct UnkStruct3 unk40;
-};
-
-BOOL file_open(char *filename, struct UnkStruct4 *b)
+BOOL file_open(char *filename, struct File *file)
 {
     int i;
     int entryNum = DVDConvertPathToEntrynum(filename);
-    struct UnkStruct3 *r5 = lbl_802B5580;
+    struct ARAMBlock *block = lbl_802B5580;
 
-    for (i = 0; i < 32; i++, r5++)
+    for (i = 0; i < 32; i++, block++)
     {
-        if (r5->unk0 == 1 && r5->entryNum == entryNum)
+        if (block->unk0 == 1 && block->entryNum == entryNum)
         {
-            b->unk0 = 1;
-            b->unk40 = *r5;
+            file->unk0 = 1;
+            file->unk40 = *block;
             return 1;
         }
     }
-    b->unk0 = 0;
-    return DVDOpen(filename, &b->fileInfo);
+    file->unk0 = 0;
+    return DVDOpen(filename, &file->dvdFile);
 }
 
-BOOL file_close(struct UnkStruct4 *a)
+BOOL file_close(struct File *file)
 {
-    switch (a->unk0)
+    switch (file->unk0)
     {
     case 1:
         return TRUE;
     case 0:
         break;
     }
-    return DVDClose(&a->fileInfo);
+    return DVDClose(&file->dvdFile);
 }
 
-extern volatile s32 transfer2InProgress;
+extern volatile s32 aramToMramInProgress;
 
-void arq_callback_2(u32 arqRequestPtr)
+void aram_to_mram_callback(u32 arqRequestPtr)
 {
-    transfer2InProgress = FALSE;
+    aramToMramInProgress = FALSE;
 }
 
-u32 func_800920D4(struct UnkStruct4 *a, void *b, u32 c, u32 d)
+u32 file_read(struct File *file, void *dest, u32 size, u32 offset)
 {
     ARQRequest req;
 
-    switch (a->unk0)
+    switch (file->unk0)
     {
     case 1:
-        transfer2InProgress = TRUE;
-        DCInvalidateRange(b, c);
-        ARQPostRequest(&req, 0, 1, 1, a->unk40.unk8 + d, (u32)b, c, arq_callback_2);
-        while (transfer2InProgress)
+        // Copy data from ARAM to dest
+        aramToMramInProgress = TRUE;
+        DCInvalidateRange(dest, size);
+        ARQPostRequest(
+            &req,
+            0,
+            ARQ_TYPE_ARAM_TO_MRAM,
+            ARQ_PRIORITY_HIGH,
+            file->unk40.aramAddr + offset,
+            (u32)dest,
+            size,
+            aram_to_mram_callback);
+        while (aramToMramInProgress)
             ;
-        return c;
+        return size;
     default:
-        return func_800ACBBC(&a->fileInfo, b, c, d);
+        return func_800ACBBC(&file->dvdFile, dest, size, offset);
     }
 }
 
-u32 func_80092198(struct UnkStruct4 *a)
+u32 file_size(struct File *file)
 {
-    switch (a->unk0)
+    switch (file->unk0)
     {
     case 1:
-        return a->unk40.unkC;
+        return file->unk40.aramSize;
     default:
-        return a->fileInfo.length;
+        return file->dvdFile.length;
     }
 }
 
-void lbl_800921B8(s32 result, DVDFileInfo *fileInfo)
+void dvd_read_callback(s32 result, DVDFileInfo *dvdFile)
 {
     if (result == DVD_RESULT_FATAL_ERROR)
         dvdReadStatus = -1;
@@ -204,95 +232,98 @@ extern s32 lbl_802F2144;
 
 void func_80092284(u32 a, u32 b);
 
-struct UnkStruct3 *alloc_file_buffer(s32 size)
+struct ARAMBlock *alloc_aram_block(s32 size)
 {
-    u32 r31;
-    struct UnkStruct3 *r3;
+    u32 aramAddr;
+    struct ARAMBlock *r3;
 
     size = OSRoundUp32B(size);
-    if (0xB00000 - lbl_802F12F0 > size)
+    if (ARAM_BASE + ARAM_SIZE - aramAllocEnd > size)
     {
-        r31 = lbl_802F12F0;
-        lbl_802F12F0 += size;
+        // Add to end
+        aramAddr = aramAllocEnd;
+        aramAllocEnd += size;
     }
     else
     {
-        r31 = 0x700000;
-        lbl_802F12F0 = size + 0x700000;
+        aramAddr = ARAM_BASE;
+        aramAllocEnd = ARAM_BASE + size;
     }
-    func_80092284(r31, size);
+    func_80092284(aramAddr, size);
     r3 = &lbl_802B5580[lbl_802F2144];
     if (++lbl_802F2144 >= 32)
         lbl_802F2144 = 0;
     r3->unk0 = 0;
-    r3->unk8 = r31;
-    r3->unkC = size;
+    r3->aramAddr = aramAddr;
+    r3->aramSize = size;
     return r3;
 }
 
-void func_80092284(u32 a, u32 b)
+void func_80092284(u32 addr, u32 size)
 {
-    struct UnkStruct3 *r7 = lbl_802B5580;
+    struct ARAMBlock *r7 = lbl_802B5580;
     int i;
 
     for (i = 0; i < 32; i++, r7++)
     {
-        if (r7->unk0 != 0 && r7->unk8 < (a + b) && r7->unk8 + r7->unkC > a)
+        if (r7->unk0 != 0
+         && r7->aramAddr < (addr + size)
+         && r7->aramAddr + r7->aramSize > addr)
             r7->unk0 = 0;
     }
 }
 
-int func_8009236C(char *filename)
+int file_preload(char *filename)
 {
     int entryNum = DVDConvertPathToEntrynum(filename);
     if (entryNum < 0)
         return 0;
-    if (lbl_802F2134 == lbl_802F2138)
+    if (loadQueueTail == loadQueueHead)
         perf_init_timer(2);
-    return func_800923C4(entryNum);
+    return add_entrynum_to_load_queue(entryNum);
 }
 
-int func_800923C4(int entryNum)
+int add_entrynum_to_load_queue(int entryNum)
 {
-    int r3 = func_80092430(lbl_802F2134);
-    if (lbl_802F2138 == r3)
+    int nextId = get_next_file_id(loadQueueTail);
+    if (loadQueueHead == nextId)
         return 0;
-    lbl_802B4FC0[lbl_802F2134].state = 0;
-    lbl_802B4FC0[lbl_802F2134].unk4 = entryNum;
-    lbl_802F2134 = r3;
+    fileLoadQueue[loadQueueTail].state = 0;
+    fileLoadQueue[loadQueueTail].entryNum = entryNum;
+    loadQueueTail = nextId;
     return 1;
 }
 
-int func_80092430(int a)
+int get_next_file_id(int id)
 {
-    a++;
-    if (a < 16)
-        return a;
+    id++;
+    if (id < 16)
+        return id;
     else
         return 0;
 }
 
 int func_80092444(void)
 {
-    return lbl_802F2134 != lbl_802F2138;
+    return loadQueueTail != loadQueueHead;
 }
 
 void func_8009245C(void)
 {
-    lbl_802F2138 = lbl_802F2134;
+    loadQueueHead = loadQueueTail;
 }
 
 int func_80092468(void)
 {
-    if (lbl_802F2134 < lbl_802F2138)
-        return lbl_802F2134 + 16 - lbl_802F2138;
+    if (loadQueueTail < loadQueueHead)
+        return loadQueueTail + 16 - loadQueueHead;
     else
-        return lbl_802F2134 - lbl_802F2138;
+        return loadQueueTail - loadQueueHead;
 }
 
 void func_8009248C(void)
 {
-    lbl_802F12F0 = 0x700000;
+    aramAllocEnd = ARAM_BASE;
 }
 
 extern void *lbl_802F2154;

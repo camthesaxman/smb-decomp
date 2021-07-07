@@ -9,6 +9,7 @@
 #include <dolphin/vi.h>
 #include <dolphin/card.h>
 #include <dolphin/perf.h>
+#include <dolphin/ar.h>
 #include <dolphin/arq.h>
 
 #endif

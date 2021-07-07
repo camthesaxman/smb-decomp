@@ -43,82 +43,82 @@ void main(void)
 
     while (1)
     {
-        if (lbl_802F1D28)
+        if (perfEnabled)
             PERFEventStart(0);
             
         perf_init_timer(4);
         func_80026394();
         preproc_main();
-        lbl_801F8DE0.unk0 = perf_stop_timer(4);
+        perfInfo.unk0 = perf_stop_timer(4);
         
         func_800ACA40();
         
         perf_init_timer(4);
         sound_main();
-        lbl_801F8DE0.unk4 = perf_stop_timer(4);
+        perfInfo.unk4 = perf_stop_timer(4);
         
         perf_init_timer(4);
         input_main();
-        lbl_801F8DE0.unk8 = perf_stop_timer(4);
+        perfInfo.unk8 = perf_stop_timer(4);
         
         perf_init_timer(4);
         debug_main();
-        lbl_801F8DE0.unkC = perf_stop_timer(4);
+        perfInfo.unkC = perf_stop_timer(4);
         
         perf_init_timer(4);
         load_main();
-        lbl_801F8DE0.unk10 = perf_stop_timer(4);
+        perfInfo.unk10 = perf_stop_timer(4);
         
         perf_init_timer(4);
         gm_main();
-        lbl_801F8DE0.unk14 = perf_stop_timer(4);  
+        perfInfo.unk14 = perf_stop_timer(4);  
         
-        if (lbl_802F1D28)
+        if (perfEnabled)
             PERFEventEnd(0);
             
-        if (lbl_802F1D28)
+        if (perfEnabled)
             PERFEventStart(1);
         
         perf_init_timer(4);
         chkstatus_main();
-        lbl_801F8DE0.unk18 = perf_stop_timer(4);
+        perfInfo.unk18 = perf_stop_timer(4);
         
         perf_init_timer(4);
         event_main();
-        lbl_801F8DE0.unk1C = perf_stop_timer(4);
+        perfInfo.unk1C = perf_stop_timer(4);
         
-        if (lbl_802F1D28)
+        if (perfEnabled)
             PERFEventEnd(1);
             
-        if (lbl_802F1D28)
+        if (perfEnabled)
             PERFEventStart(2);
             
         perf_init_timer(4);
         polydisp_main();
-        lbl_801F8DE0.unk20 = perf_stop_timer(4);
+        perfInfo.unk20 = perf_stop_timer(4);
         
         perf_init_timer(4);
         bmpdisp_main();
-        lbl_801F8DE0.unk24 = perf_stop_timer(4);
+        perfInfo.unk24 = perf_stop_timer(4);
         
         perf_init_timer(4);
         window_main();
-        lbl_801F8DE0.unk28 = perf_stop_timer(4);
+        perfInfo.unk28 = perf_stop_timer(4);
         
-        if (lbl_802F1D28)
+        if (perfEnabled)
             PERFEventEnd(2);
 
         perf_init_timer(4);
         epiproc_main();
-        lbl_801F8DE0.unk2C = perf_stop_timer(4);
+        perfInfo.unk2C = perf_stop_timer(4);
         
         perf_init_timer(4);
         syncwait_main();
-        lbl_801F8DE0.unk30 = perf_stop_timer(4);
+        perfInfo.unk30 = perf_stop_timer(4);
         
         perf_init_timer(4);
         shadowerase_main();
-        lbl_801F8DE0.unk34 = perf_stop_timer(4);
+        perfInfo.unk34 = perf_stop_timer(4);
         
         lbl_802F1B38++;
         if ((lbl_802F1EE0 & 0xA) == 0)

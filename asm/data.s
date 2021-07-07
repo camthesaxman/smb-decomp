@@ -89,8 +89,8 @@ lbl_801F3DC0:
 .global lbl_801F8DC0
 lbl_801F8DC0:
 	.skip 0x20
-.global lbl_801F8DE0
-lbl_801F8DE0:
+.global perfInfo
+perfInfo:
 	.skip 0x38
 .global lbl_801F8E18
 lbl_801F8E18:
@@ -365,8 +365,8 @@ lbl_802B4E9C:
 .global lbl_802B4ECC
 lbl_802B4ECC:
 	.skip 0xF4
-.global lbl_802B4FC0
-lbl_802B4FC0:
+.global fileLoadQueue
+fileLoadQueue:
 	.skip 0x5C0
 .global lbl_802B5580
 lbl_802B5580:
@@ -801,8 +801,8 @@ lbl_802F1B40:
 .global lbl_802F1B44
 lbl_802F1B44:
 	.skip 0x4
-.global lbl_802F1B48
-lbl_802F1B48:
+.global dvdReadBuffer
+dvdReadBuffer:
 	.skip 0x4
 .global lbl_802F1B4C
 lbl_802F1B4C:
@@ -1125,8 +1125,8 @@ lbl_802F1D20:
 .global lbl_802F1D24
 lbl_802F1D24:
 	.skip 0x4
-.global lbl_802F1D28
-lbl_802F1D28:
+.global perfEnabled
+perfEnabled:
 	.skip 0x8
 .global lbl_802F1D30
 lbl_802F1D30:
@@ -1797,23 +1797,23 @@ lbl_802F2128:
 .global lbl_802F212C
 lbl_802F212C:
 	.skip 0x8
-.global lbl_802F2134
-lbl_802F2134:
+.global loadQueueTail
+loadQueueTail:
 	.skip 0x4
-.global lbl_802F2138
-lbl_802F2138:
+.global loadQueueHead
+loadQueueHead:
 	.skip 0x4
 .global dvdReadStatus
 dvdReadStatus:
 	.skip 0x4
-.global transfer1InProgress
-transfer1InProgress:
+.global mramToAramInProgress
+mramToAramInProgress:
 	.skip 0x4
 .global lbl_802F2144
 lbl_802F2144:
 	.skip 0x4
-.global transfer2InProgress
-transfer2InProgress:
+.global aramToMramInProgress
+aramToMramInProgress:
 	.skip 0x8
 .global lbl_802F2150
 lbl_802F2150:
