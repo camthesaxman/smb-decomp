@@ -49,4 +49,12 @@ BOOL DVDReadAsyncPrio(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset,
     DVDCallback callback, s32 prio);
 s32 DVDConvertPathToEntrynum(char *pathPtr);
 
+#define DVDReadAsync(fileInfo, addr, length, offset, callback) \
+    DVDReadAsyncPrio((fileInfo), (addr), (length), (offset), (callback), 2)
+
+#define DVD_RESULT_GOOD        0
+#define DVD_RESULT_FATAL_ERROR -1
+#define DVD_RESULT_IGNORED     -2
+#define DVD_RESULT_CANCELED    -3
+
 #endif

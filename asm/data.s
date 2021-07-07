@@ -1803,17 +1803,17 @@ lbl_802F2134:
 .global lbl_802F2138
 lbl_802F2138:
 	.skip 0x4
-.global lbl_802F213C
-lbl_802F213C:
+.global dvdReadStatus
+dvdReadStatus:
 	.skip 0x4
-.global lbl_802F2140
-lbl_802F2140:
+.global transfer1InProgress
+transfer1InProgress:
 	.skip 0x4
 .global lbl_802F2144
 lbl_802F2144:
 	.skip 0x4
-.global lbl_802F2148
-lbl_802F2148:
+.global transfer2InProgress
+transfer2InProgress:
 	.skip 0x8
 .global lbl_802F2150
 lbl_802F2150:
