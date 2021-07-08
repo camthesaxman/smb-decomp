@@ -22537,42 +22537,6 @@ lbl_801C7DB0:
 	.4byte 0x801C7D90  ;# ptr
 	.4byte 0x801C7D98  ;# ptr
 
-.global lbl_801C7DD0
-lbl_801C7DD0:
-	# ROM: 0x1C4DD0
-	.asciz "Invalid Model"
-	.balign 4
-
-.global lbl_801C7DE0
-lbl_801C7DE0:
-	# ROM: 0x1C4DE0
-	.asciz "avdisp.c"
-	.balign 4
-
-.global lbl_801C7DEC
-lbl_801C7DEC:
-	# ROM: 0x1C4DEC
-	.asciz "cannot OSAlloc"
-	.balign 4
-	.asciz "invalid model format <%s>\n"
-	.balign 4
-	.asciz "cannot dvd_read"
-	.asciz "cannot OSAlloc\n"
-	.asciz "cannot OSAlooc\n"
-	.asciz "cannot DVDClose"
-
-.global lbl_801C7E58
-lbl_801C7E58:
-	# ROM: 0x1C4E58
-	.asciz "non effective model.\n"
-	.balign 4
-
-.global lbl_801C7E70
-lbl_801C7E70:
-	# ROM: 0x1C4E70
-	.asciz "invalid texture!!\n...stopped\n"
-	.balign 4
-
 .section .sdata
 
 .global lbl_802F0990
@@ -23567,4 +23531,4 @@ lbl_802F12E8:
 .global lbl_802F12EC
 lbl_802F12EC:
 	# ROM: 0x1EBA2C
-	.byte 0x2E, 0x6C, 0x7A, 0x00
+    .asciz ".lz"

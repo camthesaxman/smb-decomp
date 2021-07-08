@@ -3,6 +3,8 @@
 #include "functions.h"
 #include "variables.h"
 
+#include "load.h"
+
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 extern s32 mramToAramInProgress;
@@ -11,21 +13,7 @@ extern s32 loadQueueTail;  // index of most recently added file
 extern volatile s32 dvdReadStatus;
 extern void *dvdReadBuffer;
 
-struct ARAMBlock
-{
-    s32 unk0;
-    s32 entryNum;
-    u32 aramAddr;
-    u32 aramSize;
-};
 extern struct ARAMBlock lbl_802B5580[];
-
-struct File
-{
-    u32 unk0;
-    DVDFileInfo dvdFile;
-    struct ARAMBlock unk40;
-};
 
 struct FileLoadInfo
 {
@@ -182,7 +170,7 @@ void aram_to_mram_callback(u32 arqRequestPtr)
     aramToMramInProgress = FALSE;
 }
 
-u32 file_read(struct File *file, void *dest, u32 size, u32 offset)
+s32 file_read(struct File *file, void *dest, u32 size, u32 offset)
 {
     ARQRequest req;
 

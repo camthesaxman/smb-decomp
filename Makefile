@@ -51,6 +51,7 @@ SOURCE_FILES := \
 	asm/stage.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
+	src/avdisp.c \
 	asm/avdisp.s \
 	src/load.c \
 	asm/load.s \
@@ -245,6 +246,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
+src/avdisp.o: CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 
 %.o: %.c
