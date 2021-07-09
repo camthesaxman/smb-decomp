@@ -376,7 +376,6 @@ lbl_8008DDA0:
 /* 8008DDA8 00089CC8  38 21 00 78 */	addi r1, r1, 0x78
 /* 8008DDAC 00089CCC  7C 08 03 A6 */	mtlr r0
 /* 8008DDB0 00089CD0  4E 80 00 20 */	blr
-.endif
 
 .global func_8008DDB4
 func_8008DDB4:
@@ -833,6 +832,7 @@ lbl_8008E3D0:
 /* 8008E3EC 0008A30C  38 21 00 40 */	addi r1, r1, 0x40
 /* 8008E3F0 0008A310  7C 08 03 A6 */	mtlr r0
 /* 8008E3F4 0008A314  4E 80 00 20 */	blr
+.endif
 
 .global free_tpl
 free_tpl:
