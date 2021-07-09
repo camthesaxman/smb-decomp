@@ -4982,16 +4982,7 @@ func_80091D0C:
 
 .section .sdata2
 
-.global lbl_802F5740
-lbl_802F5740:
-	# ROM: 0x1EF160
-	.byte 0x3F, 0x80, 0x00, 0x00
-
-.global lbl_802F5744
-lbl_802F5744:
-	# ROM: 0x1EF164
-	.4byte 0
-
+.if 0
 .global lbl_802F5748
 lbl_802F5748:
 	# ROM: 0x1EF168
@@ -5003,7 +4994,7 @@ lbl_802F5750:
 	# ROM: 0x1EF170
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
-
+.endif
 .global lbl_802F5758
 lbl_802F5758:
 	# ROM: 0x1EF178

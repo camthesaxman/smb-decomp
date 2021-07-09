@@ -251,7 +251,6 @@ src/DEMOPuts.o: CFLAGS += -inline auto
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-	#$(CC) -c $(CFLAGS) $(CPPFLAGS) -S -o $(@:.o=.dump2) $<
 	@ $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:

@@ -4336,6 +4336,7 @@ lbl_8008D724:
 /* 8008D780 000896A0  90 E9 00 00 */	stw r7, 0(r9)
 /* 8008D784 000896A4  4E 80 00 20 */	blr
 
+.if 0
 .global func_8008D788
 func_8008D788:
 /* 8008D788 000896A8  7C 08 02 A6 */	mflr r0
@@ -4402,6 +4403,7 @@ func_8008D788:
 /* 8008D87C 0008979C  38 21 00 20 */	addi r1, r1, 0x20
 /* 8008D880 000897A0  7C 08 03 A6 */	mtlr r0
 /* 8008D884 000897A4  4E 80 00 20 */	blr
+.endif
 
 .section .sdata2
 
@@ -4555,6 +4557,17 @@ lbl_802F5738:
 	.byte 0x43, 0x30, 0x00, 0x00
 	.byte 0x80, 0x00, 0x00, 0x00
 
+.if 0
+.global lbl_802F5740
+lbl_802F5740:
+	# ROM: 0x1EF160
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F5744
+lbl_802F5744:
+	# ROM: 0x1EF164
+	.4byte 0
+.endif
 .section .rodata
 
 .global lbl_801719D0

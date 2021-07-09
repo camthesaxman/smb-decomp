@@ -35,7 +35,7 @@ extern void **lbl_802F20C8;
 
 u8 lbl_802B4E60[0xC];
 u8 lbl_802B4E6C[0x30];
-u8 lbl_802B4E9C[0x30];
+Mtx lbl_802B4E9C;
 u8 lbl_802B4ECC[0x94];
 u32 lbl_802B4E60_100[8+16];  //4F60
 
@@ -48,6 +48,50 @@ FORCE_BSS_ORDERING(lbl_802B4ECC)
 FORCE_BSS_ORDERING(lbl_802B4E60_100)
 
 #pragma peephole off
+
+extern u32 lbl_802F20EC;
+extern float lbl_802F20D8;
+extern float lbl_802F20D4;
+extern float lbl_802F20D0;
+extern float lbl_802F20E4;
+extern float lbl_802F20DC;
+extern u32 lbl_802F20E0;
+extern u32 lbl_802F20F0;
+extern u32 lbl_802F2108;
+
+extern void func_8008E5B8(float, float, float);
+extern void func_8008F714(float, float, float, float);
+extern void func_8008F7C8(float, float, float, float);
+extern void func_8008F880(int, float, float);
+extern void mathutil_set_a_mtx_translate(float, float, float);
+
+void func_8008D788(void)
+{
+    float sp8[3];
+    lbl_802F20EC = 0;
+    lbl_802F20D8 = 1.0f;
+    lbl_802F20D4 = 1.0f;
+    lbl_802F20D0 = 1.0f;
+    lbl_802F20E4 = 1.0f;
+    lbl_802F20DC = 1.0f;
+    lbl_802F20E0 = 1;
+    lbl_802F20F0 = 0;
+    func_80090474();
+    sp8[0] = 0.0f;
+    sp8[1] = 1.0f;
+    sp8[2] = 0.0f;
+    func_8008E574(sp8);
+    func_8008E5B8(1.0f, 1.0f, 1.0f);
+    func_8008E5C8(1, 3, 1);
+    lbl_802F2108 = 0;
+    mathutil_set_a_mtx_translate(0.0f, 0.0f, 1.0f);
+    mathutil_get_a_mtx(lbl_802B4E9C);
+    func_8008F714(1.0f, 1.0f, 1.0f, 1.0f);
+    func_8008F7C8(0.0f, 0.0f, 0.0f, 0.0f);
+    func_8008F878(0);
+    func_8008F880(2, 0.0f, 100.0f);
+    func_8008F890(0, 0, 0);
+}
 
 void func_8008D888(int a)
 {
@@ -370,13 +414,7 @@ struct UnkStruct8
     u8 *unk8;
 };
 
-static u8 get_r25(struct UnkStruct9 *r27)
-{
-    if (r27->unk8 != r27->unkA)
-        return 0;
-    else
-        return func_8008EF9C();
-}
+int func_8008EF9C();
 
 // register swaps
 void *func_8008E2D0(struct UnkStruct8 *a)
@@ -384,25 +422,15 @@ void *func_8008E2D0(struct UnkStruct8 *a)
     int i;
     struct UnkStruct9 *r26 = a->unk4;
     GXTexObj *r30 = OSAlloc(a->unk0 * 32);
-    //struct UnkStruct9 *r27;
     
-    //r26 = a->unk4;
-    //r30 = OSAlloc(a->unk0 * 32);
-    //r27 = r26;
     for (i = 0; i < a->unk0; i++)
     {
-        //struct UnkStruct9 *r27 = &r26[i];
-        // r26 is r30[i]
-        //struct UnkStruct9 *r27 = &a->unk4[i];
         u8 r25;
         void *r24 = a->unk8 + r26[i].unk4;
-        /*
         if (r26[i].unk8 != r26[i].unkA)
             r25 = 0;
         else
-            r25 = func_8008EF9C();
-        */
-        r25 = get_r25(&r26[i]);
+            r25 = func_8008EF9C(r26[i].unk8, r26[i].unkA);
         GXInitTexObj(&r30[i], (void *)r24, r26[i].unk8, r26[i].unkA, r26[i].unk0 & 0x1F, 1, 1, 0);
         GXInitTexObjLOD(
             &r30[i],
@@ -414,42 +442,6 @@ void *func_8008E2D0(struct UnkStruct8 *a)
             0,
             1,
             0);
-        //r27++;
     }
     return r30;
 }
-
-/*
-void *func_8008E2D0(struct UnkStruct8 *a)
-{
-    int i;
-    void *r26 = a->unk4;
-    GXTexObj *r30 = OSAlloc(a->unk0 * 32);
-    
-    struct UnkStruct9 *r27 = r26;
-    for (i = 0; i < a->unk0; i++)
-    {
-        // r26 is r30[i]
-        //struct UnkStruct9 *r27 = &a->unk4[i];
-        u8 r25;
-        u32 r24 = a->unk8 + r27->unk4;
-        if (r27->unk8 != r27->unkA)
-            r25 = 0;
-        else
-            r25 = func_8008EF9C();
-        GXInitTexObj(&r30[i], (void *)r24, r27->unk8, r27->unkA, r27->unk0 & 0x1F, 1, 1, 0);
-        GXInitTexObjLOD(
-            &r30[i],
-            (r25 != 0) ? 5 : 3,
-            1,
-            0.0f,
-            r25,
-            0.0f,
-            0,
-            1,
-            0);
-        r27++;
-    }
-    return r30;
-}
-*/
