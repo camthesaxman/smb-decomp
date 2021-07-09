@@ -14,7 +14,7 @@ struct UnkStruct3
 struct UnkStruct1
 {
     u32 unk0;
-    u8 *unk4;
+    char *unk4;
 };
 
 struct UnkStruct2
@@ -23,15 +23,29 @@ struct UnkStruct2
     u8 *unk4;
     //u8 *unk8;
     struct UnkStruct1 *unk8;
-    u8 *unkC;
+    u32 unkC;
     u8 filler10[0x20-0x10];
     struct UnkStruct1 unk20;
 };
 
-extern u8 lbl_802F12E8[];
+char *lbl_802F12E8 = "Invalid Model";
 extern void *lbl_802F20CC;
 
 extern void **lbl_802F20C8;
+
+u8 lbl_802B4E60[0xC];
+u8 lbl_802B4E6C[0x30];
+u8 lbl_802B4E9C[0x30];
+u8 lbl_802B4ECC[0x94];
+u32 lbl_802B4E60_100[8+16];  //4F60
+
+#define FORCE_BSS_ORDERING(var) void *force_##var(){return var;}
+
+FORCE_BSS_ORDERING(lbl_802B4E60)
+FORCE_BSS_ORDERING(lbl_802B4E6C)
+FORCE_BSS_ORDERING(lbl_802B4E9C)
+FORCE_BSS_ORDERING(lbl_802B4ECC)
+FORCE_BSS_ORDERING(lbl_802B4E60_100)
 
 #pragma peephole off
 
@@ -80,17 +94,6 @@ void func_8008D8D0(struct UnkStruct4 *a, void **b)
     }
 }
 
-extern u8 lbl_802B4E60[];
-
-u8 lbl_802B4E60_[0x100];
-u32 lbl_802B4E60_100[0x100];
-
-void *unused(void)
-{
-    printf("Invalid Model");
-    return lbl_802B4E60_;
-}
-
 void *func_8008D9A8(char *a, u32 b)
 {
     u32 *r30;
@@ -128,40 +131,14 @@ void func_8008DA9C(struct UnkStruct5 *a)
     OSFree(a);
 }
 
-//int __lwbrx(const void *, int)
-
-static inline void inline_stuff(struct UnkStruct2 *r29, u32 c)
-{
-    int i;
-
-    for (i = 0; i < r29->unk0; i++)
-    {
-        struct UnkStruct1 *r7 = &r29->unk8[i];
-        u32 r3 = r7->unk0;
-        if (r7->unk0 + 0x10000 == 0xFFFF)
-        {
-            r7->unk0 = 0;
-            r7->unk4 = lbl_802F12E8;
-        }
-        else
-        {
-            r3 += (u32)r29->unk4;
-            r7->unk0 = r3;
-            r7->unk4 += (u32)r29->unkC;
-            func_8008F1E8(r3, c, 0);
-        }
-        //r31 += 8;
-        //r30++;
-    }
-}
-
 void *load_gma(char *a, u32 b)
 {
+    int i;
     struct UnkStruct2 *r29;
     struct UnkStruct1 *r27_;
     struct File sp10;
     int len = strlen(a);
-    if (len >= 3 && strncmp(a + len - 3, ".lz", 3) == 0)
+    if (len >= 3 && strncmp(a + (len - 3), ".lz", 3) == 0)
     {
         void *r31;
         u32 r27;
@@ -200,7 +177,7 @@ void *load_gma(char *a, u32 b)
         r31 = file_size(&sp10);
         r29 = OSAlloc(OSRoundUp32B(r31) + 32);
         if (r29 == NULL)
-            OSPanic("avdisp.c", 0x2BE, "cannot OSAlloc\n");
+            OSPanic("avdisp.c", 0x2BE, "cannot OSAlloc");
         //lbl_8008DCD0
         r27_ = &r29->unk20;
         file_read(&sp10, r27_, r31, 0);
@@ -208,75 +185,30 @@ void *load_gma(char *a, u32 b)
     }
     //lbl_8008DCF0
     r29->unk0 = r27_->unk0;
-    r29->unk4 = r27_->unk4 + (u32)r27_;
+    r29->unk4 = (void *)((u32)r27_ + (u32)r27_->unk4);
     r29->unk8 = r27_ + 1;
-    r29->unkC = (void *)(r29->unk8 + r27_->unk0);
+    r29->unkC = (u32)(r29->unk8 + r27_->unk0);
     //lbl_8008DD34
-    inline_stuff((struct UnkStruct2 *)r29, b);
+
+    for (i = 0; i < r29->unk0; i++)
+    {
+        struct UnkStruct1 *r7 = &r29->unk8[i];
+        u32 r3 = r7->unk0;
+        if (r7->unk0 + 0x10000 == 0xFFFF)
+        {
+            r7->unk0 = 0;
+            r7->unk4 = lbl_802F12E8;
+        }
+        else
+        {
+            r3 = (u32)r29->unk4 + r3;
+            r7->unk0 = r3;
+            r7->unk4 = (char *)((u32)r29->unkC + (u32)r7->unk4);
+            func_8008F1E8(r3, b, 0);
+        }
+    }
     return r29;
 }
-
-/*
-void *load_gma(char *a, u32 b)
-{
-    u32 *r29;
-    u32 *r27_;
-    struct File sp10;
-    int len = strlen(a);
-    if (len >= 3 && strncmp(a + len - 3, ".lz", 3) == 0)
-    {
-        void *r31;
-        u32 r27;
-
-        if (file_open(a, &sp10) == 0)
-            return 0;
-        if (file_read(&sp10, lbl_802B4E60_100, 32, 0) < 0)
-            OSPanic("avdisp.c", 0x2AC, "cannot dvd_read");
-        //lbl_8008DB84
-        //r27 = OSRoundUp32B(lbl_802B4E60_100[0] | (lbl_802B4E60_100[1] << 8) | (lbl_802B4E60_100[2] << 16) | (lbl_802B4E60_100[3] << 24));
-        r27 = OSRoundUp32B(__lwbrx(lbl_802B4E60_100, 0));
-        //r29 = OSAlloc(OSRoundUp32B(lbl_802B4E60_100[4] | (lbl_802B4E60_100[5] << 8) | (lbl_802B4E60_100[6] << 16) | (lbl_802B4E60_100[7] << 24)) + 32);
-        r29 = OSAlloc(OSRoundUp32B(__lwbrx((void *)(lbl_802B4E60_100), 4)) + 32);
-        if (r29 == NULL)
-            OSPanic("avdisp.c", 0x2B0, "cannot OSAlloc\n");
-        //lbl_8008DBD0
-        r31 = OSAlloc(r27);
-        if (r31 == NULL)
-            OSPanic("avdisp.c", 0x2B1, "cannot OSAlooc\n");
-        r27_ = r29 + (32/4);
-        if (file_read(&sp10, r31, r27, 0) < 0)
-            OSPanic("avdisp.c", 0x2B4, "cannot dvd_read");
-        //lbl_8008DC30
-        if (file_close(&sp10) != 1)
-            OSPanic("avdisp.c", 0x2B5, "cannot DVDClose");
-        //lbl_8008DC54
-        func_8008D3E4(r31, r27_);
-        OSFree(r31);
-    }
-    //lbl_8008DC70
-    else
-    {
-        u32 r31;
-        if (file_open(a, &sp10) == 0)
-            return 0;
-        r31 = file_size(&sp10);
-        r29 = OSAlloc(OSRoundUp32B(r31) + 32);
-        if (r29 == NULL)
-            OSPanic("avdisp.c", 0x2BE, "cannot OSAlloc\n");
-        //lbl_8008DCD0
-        file_read(&sp10, r29 + (32/4), r31, 0);
-        file_close(&sp10);
-    }
-    //lbl_8008DCF0
-    r29[0] = r27_[0];
-    r29[1] = r27_[1] + r29[0];
-    r29[2] = (u32)(r27_ + 2);
-    r29[3] = r29[2] + r27_[0] * 8;
-    //lbl_8008DD34
-    inline_shit((struct UnkStruct2 *)r29, b);
-    return r29;
-}
-*/
 
 #if 0
 static inline void wait_dma(void)

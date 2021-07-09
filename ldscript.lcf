@@ -16,7 +16,7 @@ SECTIONS
     .sbss       BIND(0x802F1AE0) : {}
     .sdata2     BIND(0x802F2800) : {}
 }
-FORCEACTIVE { lbl_80172400 msg2 msg3 unkData GetR2__Fv func_8008D888 func_8008D8D0 func_8008D9A8 func_8008DA9C }
+FORCEACTIVE { lbl_80172400 msg2 msg3 unkData GetR2__Fv func_8008D888 func_8008D8D0 func_8008D9A8 func_8008DA9C lbl_802B4E6C }
 
 FORCEFILES { game.o event.o load.o }
 
@@ -24,3 +24,5 @@ FORCEFILES { game.o event.o load.o }
 lbl_801C7DD0 = 0x801C7DD0;
 lbl_801C7DE0 = 0x801C7DE0;
 lbl_801C7DEC = 0x801C7DEC;
+lbl_802F12EC = 0x802F12EC;
+
