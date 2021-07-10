@@ -33,13 +33,13 @@ extern void *lbl_802F20CC;
 
 extern void **lbl_802F20C8;
 
-u8 lbl_802B4E60[0xC];
-u8 lbl_802B4E6C[0x30];
+Vec lbl_802B4E60;
+Mtx lbl_802B4E6C;
 Mtx lbl_802B4E9C;
 u8 lbl_802B4ECC[0x94];
 u32 lbl_802B4E60_100[8+16];  //4F60
 
-#define FORCE_BSS_ORDERING(var) void *force_##var(){return var;}
+#define FORCE_BSS_ORDERING(var) void *force_##var(){return &var;}
 
 FORCE_BSS_ORDERING(lbl_802B4E60)
 FORCE_BSS_ORDERING(lbl_802B4E6C)
@@ -47,7 +47,7 @@ FORCE_BSS_ORDERING(lbl_802B4E9C)
 FORCE_BSS_ORDERING(lbl_802B4ECC)
 FORCE_BSS_ORDERING(lbl_802B4E60_100)
 
-#pragma peephole off
+//#pragma peephole off
 
 extern u32 lbl_802F20EC;
 extern float lbl_802F20D8;
@@ -65,9 +65,78 @@ extern void func_8008F7C8(float, float, float, float);
 extern void func_8008F880(int, float, float);
 extern void mathutil_set_a_mtx_translate(float, float, float);
 
+void func_8008E574(Vec *a);
+void func_8008E5C8(u8 a, u32 b, u8 c);
+
+asm void func_8008D6BC(register u32 arg)
+{
+    nofralloc
+    lis r5, GXWGFifo@h
+    li r4, 0x61
+    ori r5, r5, GXWGFifo@l
+    stb r4, 0(r5)
+    stw arg, 0(r5)
+    blr
+}
+
+asm void func_8008D6D4(register void *arg)
+{
+    nofralloc
+#define qr0 0
+#define qr2 2
+    lis r10, 0xE0000000@h
+    psq_l f5, 424(r10), 0, qr2
+    li r6, 0x10
+    lis r9, GXWGFifo@h
+    ori r9, r9, GXWGFifo@l
+    lwz r5, 0(arg)
+    andi. r7, r5, 8
+    bne lbl_8008D710
+    ps_mr f0, f5
+    ps_mr f1, f5
+    andi. r7, r5, 0x80
+    bne lbl_8008D71C
+    li r4, -1
+    ps_mr f4, f5
+    b lbl_8008D724
+lbl_8008D710:
+    psq_l f0, 8(arg), 0, qr2
+    psq_l f1, 10(arg), 1, qr2
+    ps_merge00 f1, f1, f5
+lbl_8008D71C:
+    lhz r4, 4(arg)
+    psq_l f4, 6(arg), 1, qr2
+lbl_8008D724:
+    lis r7, lbl_802F20D0@h
+    ori r7, r7, lbl_802F20D0@l
+    psq_l f2, 0(r7), 0, qr0
+    psq_l f3, 8(r7), 0, qr0
+    ps_mul f0, f0, f2
+    ps_mul f1, f1, f3
+    psq_l f2, 17(arg), 1, qr2
+    ps_merge10 f2, f2, f2
+    psq_st f0, 152(r10), 0, qr2
+    psq_st f1, 154(r10), 0, qr2
+    lwz r7, 0x98(r10)
+    li r8, 0x100a
+    stb r6, 0(r9)
+    stw r8, 0(r9)
+    stw r7, 0(r9)
+    ps_merge01 f4, f4, f3
+    ps_mul f4, f4, f2
+    sth r4, 0x98(r10)
+    psq_st f4, 154(r10), 0, qr2
+    lwz r7, 0x98(r10)
+    li r8, 0x100c
+    stb r6, 0(r9)
+    stw r8, 0(r9)
+    stw r7, 0(r9)
+    blr
+}
+
 void func_8008D788(void)
 {
-    float sp8[3];
+    Vec sp8;
     lbl_802F20EC = 0;
     lbl_802F20D8 = 1.0f;
     lbl_802F20D4 = 1.0f;
@@ -77,10 +146,10 @@ void func_8008D788(void)
     lbl_802F20E0 = 1;
     lbl_802F20F0 = 0;
     func_80090474();
-    sp8[0] = 0.0f;
-    sp8[1] = 1.0f;
-    sp8[2] = 0.0f;
-    func_8008E574(sp8);
+    sp8.x = 0.0f;
+    sp8.y = 1.0f;
+    sp8.z = 0.0f;
+    func_8008E574(&sp8);
     func_8008E5B8(1.0f, 1.0f, 1.0f);
     func_8008E5C8(1, 3, 1);
     lbl_802F2108 = 0;
@@ -444,4 +513,475 @@ void *func_8008E2D0(struct UnkStruct8 *a)
             0);
     }
     return r30;
+}
+
+void free_tpl(void *a)
+{
+    OSFree(a);
+}
+
+void func_8008E420(float a)
+{
+    lbl_802F20E4 = a;
+}
+
+void func_8008E428(float a, float b, float c)
+{
+    lbl_802F20D0 = a;
+    lbl_802F20D4 = b;
+    lbl_802F20D8 = c;
+}
+
+struct UnkStruct10
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 unk8[0x14-0x8];
+    float unk14;
+    u8 filler18[0x1A-0x18];
+    u16 unk1A;
+    u16 unk1C;
+    u32 unk20;
+    u32 unk24;
+};
+
+void func_8008E7AC(struct UnkStruct10 *a);
+
+void func_8008E438(struct UnkStruct10 *a)
+{
+    if (func_80020FD0(a->unk8, a->unk14, lbl_802F20E4) == 0)
+    {
+        lbl_802F20E4 = 1.0f;
+        GXSetCurrentMtx(0);
+        lbl_802F20DC = 1.0f;
+    }
+    else
+        func_8008E7AC(a);
+}
+
+void func_8008E49C(struct UnkStruct10 *a)
+{
+    if (func_80020FD0(a->unk8, a->unk14, lbl_802F20E4) == 0)
+    {
+        lbl_802F20E4 = 1.0f;
+        GXSetCurrentMtx(0);
+        lbl_802F20DC = 1.0f;
+    }
+    else
+        func_8008EA64(a);
+}
+
+void func_8008E500(struct UnkStruct10 *a)
+{
+    if (func_80020FD0(a->unk8, a->unk14, lbl_802F20E4) == 0)
+    {
+        lbl_802F20E4 = 1.0f;
+        GXSetCurrentMtx(0);
+        lbl_802F20DC = 1.0f;
+    }
+    else
+        func_8008EB94(a);
+}
+
+void func_8008E564(float a)
+{
+    lbl_802F20DC = a;
+}
+
+void func_8008E56C(u32 a)
+{
+    lbl_802F20E0 = a;
+}
+
+void func_8008E574(Vec *a)
+{
+    lbl_802B4E60 = *a;
+    mathutil_vec_normalize_clamp(&lbl_802B4E60);
+}
+
+extern float lbl_802F20F4;
+extern float lbl_802F20F8;
+extern float lbl_802F20FC;
+
+void func_8008E5B8(float a, float b, float c)
+{
+    lbl_802F20F4 = a;
+    lbl_802F20F8 = b;
+    lbl_802F20FC = c;
+}
+
+extern u8 lbl_802F2100;
+extern u8 lbl_802F2101;
+extern u32 lbl_802F2104;
+
+void func_8008E5C8(u8 a, u32 b, u8 c)
+{
+    lbl_802F2100 = a;
+    lbl_802F2104 = b;
+    lbl_802F2101 = c;
+}
+
+extern u32 lbl_802F20EC;
+extern u32 lbl_802F20F0;
+
+u32 func_8008E5D8(u32 a)
+{
+    u32 temp = lbl_802F20EC;
+    lbl_802F20EC = a;
+    return temp;
+}
+
+u32 func_8008E5E8(u32 a)
+{
+    u32 temp = lbl_802F20F0;
+    lbl_802F20F0 = a;
+    return temp;
+}
+
+struct UnkStruct11
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 filler8[0x20-0x8];
+    u32 unk20;
+};
+
+struct UnkStruct12
+{
+    u8 filler0[8];
+    u32 unk8;
+};
+
+void *func_8008E5F8(struct UnkStruct11 *a)
+{
+    struct UnkStruct12 *r3 = (struct UnkStruct12 *)((u8 *)a + a->unk20);
+    if (a->unk4 & 0x18)
+        return (u8 *)r3 + r3->unk8;
+    else
+    {
+        printf("non effective model.\n");
+        return 0;
+    }
+}
+
+void *func_8008E64C(struct UnkStruct11 *a)
+{
+    if (a->unk4 & 0x18)
+        return (u8 *)a + a->unk20;
+    else
+    {
+        printf("non effective model.\n");
+        return 0;
+    }
+}
+
+struct UnkStruct13
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 filler8[0x1A-8];
+    u16 unk1A;
+    u16 unk1C;
+    u32 unk20;
+};
+
+struct UnkStruct14
+{
+    u32 unk0;
+    u8 filler4[0x60-4];
+};
+
+struct UnkStruct15
+{
+    u32 unk0;
+    u8 filler4[0x13-4];
+    u8 unk13;
+    u8 filler14[0x28-0x14];
+    u32 unk28[2];
+    u8 filler30[0x60-0x30];
+    // maybe another struct?
+    u8 unk60[1];
+};
+
+struct UnkStruct16
+{
+    u8 filler0[8];
+    u32 unk8;
+    u32 unkC;
+};
+
+#ifdef NONMATCHING
+void func_8008E698(struct UnkStruct13 *a, u32 b)
+{
+    //u32 i;
+    u32 r5 = ((u32)a + a->unk20);
+    if (a->unk4 & 0x18)
+    {
+        u32 i;
+        struct UnkStruct14 *r6 = (struct UnkStruct14 *)(r5 + 32);
+        for (i = 0; i < a->unk1A + a->unk1C; i++)
+            r6[i].unk0 |= b;
+    }
+    //lbl_8008E6F0
+    else
+    {
+        u32 r8;
+        s32 j; // r7
+        u32 i;
+        struct UnkStruct15 *r11 = (struct UnkStruct15 *)r5;
+        for (i = 0; i < a->unk1A + a->unk1C; i++)
+        {
+            //lbl_8008E704
+            r11->unk0 |= b;
+            r8 = (u32)r11->unk60;
+            //r11->unk0 |= b;
+            for (j = 0; j < 2; j++)
+            {
+                if (r11->unk13 & (1 << j))
+                    r8 += r11->unk28[j];
+            }
+            //lbl_8008E764
+            if (r11->unk13 & 0xC)
+            {
+                u32 *r6 = (u32 *)r8;
+                r8 += 32;
+                r8 += r6[2];
+                r8 += r6[3];
+                /*
+                struct UnkStruct16 *r6 = (void *)r8;
+                r8 += 32;
+                r8 += r6->unk8;
+                r8 += r6->unkC;
+                */
+            }
+            //lbl_8008E78C
+            r11 = (struct UnkStruct15 *)r8;
+        }
+    }
+    //lbl_8008E7A8
+}
+#else
+asm void func_8008E698(struct UnkStruct13 *a, u32 b)
+{
+    nofralloc
+/* 8008E698 0008A5B8  80 03 00 04 */	lwz r0, 4(r3)
+/* 8008E69C 0008A5BC  80 A3 00 20 */	lwz r5, 0x20(r3)
+/* 8008E6A0 0008A5C0  54 00 06 F8 */	rlwinm r0, r0, 0, 0x1b, 0x1c
+/* 8008E6A4 0008A5C4  28 00 00 00 */	cmplwi r0, 0
+/* 8008E6A8 0008A5C8  7C A3 2A 14 */	add r5, r3, r5
+/* 8008E6AC 0008A5CC  41 82 00 44 */	beq lbl_8008E6F0
+/* 8008E6B0 0008A5D0  38 C5 00 20 */	addi r6, r5, 0x20
+/* 8008E6B4 0008A5D4  38 E0 00 00 */	li r7, 0
+/* 8008E6B8 0008A5D8  48 00 00 04 */	b lbl_8008E6BC
+lbl_8008E6BC:
+/* 8008E6BC 0008A5DC  48 00 00 04 */	b lbl_8008E6C0
+lbl_8008E6C0:
+/* 8008E6C0 0008A5E0  48 00 00 18 */	b lbl_8008E6D8
+lbl_8008E6C4:
+/* 8008E6C4 0008A5E4  80 06 00 00 */	lwz r0, 0(r6)
+/* 8008E6C8 0008A5E8  38 E7 00 01 */	addi r7, r7, 1
+/* 8008E6CC 0008A5EC  7C 00 23 78 */	or r0, r0, r4
+/* 8008E6D0 0008A5F0  90 06 00 00 */	stw r0, 0(r6)
+/* 8008E6D4 0008A5F4  38 C6 00 60 */	addi r6, r6, 0x60
+lbl_8008E6D8:
+/* 8008E6D8 0008A5F8  A0 A3 00 1A */	lhz r5, 0x1a(r3)
+/* 8008E6DC 0008A5FC  A0 03 00 1C */	lhz r0, 0x1c(r3)
+/* 8008E6E0 0008A600  7C 05 02 14 */	add r0, r5, r0
+/* 8008E6E4 0008A604  7C 07 00 40 */	cmplw r7, r0
+/* 8008E6E8 0008A608  41 80 FF DC */	blt lbl_8008E6C4
+/* 8008E6EC 0008A60C  48 00 00 BC */	b lbl_8008E7A8
+lbl_8008E6F0:
+/* 8008E6F0 0008A610  7C AB 2B 78 */	mr r11, r5
+/* 8008E6F4 0008A614  39 40 00 00 */	li r10, 0
+/* 8008E6F8 0008A618  48 00 00 04 */	b lbl_8008E6FC
+lbl_8008E6FC:
+/* 8008E6FC 0008A61C  48 00 00 04 */	b lbl_8008E700
+lbl_8008E700:
+/* 8008E700 0008A620  48 00 00 94 */	b lbl_8008E794
+lbl_8008E704:
+/* 8008E704 0008A624  80 0B 00 00 */	lwz r0, 0(r11)
+/* 8008E708 0008A628  39 0B 00 60 */	addi r8, r11, 0x60
+/* 8008E70C 0008A62C  38 E0 00 00 */	li r7, 0
+/* 8008E710 0008A630  7C 00 23 78 */	or r0, r0, r4
+/* 8008E714 0008A634  90 0B 00 00 */	stw r0, 0(r11)
+/* 8008E718 0008A638  48 00 00 04 */	b lbl_8008E71C
+lbl_8008E71C:
+/* 8008E71C 0008A63C  38 A0 00 01 */	li r5, 1
+/* 8008E720 0008A640  48 00 00 04 */	b lbl_8008E724
+lbl_8008E724:
+/* 8008E724 0008A644  88 CB 00 13 */	lbz r6, 0x13(r11)
+/* 8008E728 0008A648  7C A0 38 30 */	slw r0, r5, r7
+/* 8008E72C 0008A64C  7C C0 00 38 */	and r0, r6, r0
+/* 8008E730 0008A650  2C 00 00 00 */	cmpwi r0, 0
+/* 8008E734 0008A654  41 82 00 0C */	beq lbl_8008E740
+/* 8008E738 0008A658  80 0B 00 28 */	lwz r0, 0x28(r11)
+/* 8008E73C 0008A65C  7D 08 02 14 */	add r8, r8, r0
+lbl_8008E740:
+/* 8008E740 0008A660  39 2B 00 04 */	addi r9, r11, 4
+/* 8008E744 0008A664  38 E0 00 01 */	li r7, 1
+/* 8008E748 0008A668  88 CB 00 13 */	lbz r6, 0x13(r11)
+/* 8008E74C 0008A66C  7C A0 38 30 */	slw r0, r5, r7
+/* 8008E750 0008A670  7C C0 00 38 */	and r0, r6, r0
+/* 8008E754 0008A674  2C 00 00 00 */	cmpwi r0, 0
+/* 8008E758 0008A678  41 82 00 0C */	beq lbl_8008E764
+/* 8008E75C 0008A67C  80 09 00 28 */	lwz r0, 0x28(r9)
+/* 8008E760 0008A680  7D 08 02 14 */	add r8, r8, r0
+lbl_8008E764:
+/* 8008E764 0008A684  88 0B 00 13 */	lbz r0, 0x13(r11)
+/* 8008E768 0008A688  54 00 07 3A */	rlwinm r0, r0, 0, 0x1c, 0x1d
+/* 8008E76C 0008A68C  2C 00 00 00 */	cmpwi r0, 0
+/* 8008E770 0008A690  41 82 00 1C */	beq lbl_8008E78C
+/* 8008E774 0008A694  7D 06 43 78 */	mr r6, r8
+/* 8008E778 0008A698  80 A6 00 08 */	lwz r5, 8(r6)
+/* 8008E77C 0008A69C  39 08 00 20 */	addi r8, r8, 0x20
+/* 8008E780 0008A6A0  80 06 00 0C */	lwz r0, 0xc(r6)
+/* 8008E784 0008A6A4  7D 08 2A 14 */	add r8, r8, r5
+/* 8008E788 0008A6A8  7D 08 02 14 */	add r8, r8, r0
+lbl_8008E78C:
+/* 8008E78C 0008A6AC  7D 0B 43 78 */	mr r11, r8
+/* 8008E790 0008A6B0  39 4A 00 01 */	addi r10, r10, 1
+lbl_8008E794:
+/* 8008E794 0008A6B4  A0 A3 00 1A */	lhz r5, 0x1a(r3)
+/* 8008E798 0008A6B8  A0 03 00 1C */	lhz r0, 0x1c(r3)
+/* 8008E79C 0008A6BC  7C 05 02 14 */	add r0, r5, r0
+/* 8008E7A0 0008A6C0  7C 0A 00 40 */	cmplw r10, r0
+/* 8008E7A4 0008A6C4  41 80 FF 60 */	blt lbl_8008E704
+lbl_8008E7A8:
+/* 8008E7A8 0008A6C8  4E 80 00 20 */	blr
+}
+#endif
+
+struct UnkStruct17
+{
+    u8 filler0[4];
+    void (*unk4)(u32);
+    void *unk8;
+    Mtx unkC;
+    void *unk3C;
+    void *unk40;
+    u32 unk44;
+    u32 unk48;
+    float unk4C;
+    u32 unk50;
+    u32 unk54;
+    u8 unk58;
+    u8 unk59;
+    u32 unk5C;
+    u8 unk60;
+    u8 unk61;
+    u8 unk62;
+    Mtx *unk64;
+    u32 unk68;
+    u32 unk6C;
+    u32 unk70;
+};
+
+struct UnkStruct18
+{
+    u8 filler0[0x13];
+    u8 unk13;
+    u8 unk14;
+    u8 filler15[0x28-0x15];
+    u32 unk28[2];
+    u8 unk30[1];
+};
+
+extern void lbl_8008F528(u32);
+extern u32 lbl_802F20E8;
+
+extern u32 lbl_802F210C;
+extern u32 lbl_802F2114;
+extern u32 lbl_802F2118;
+extern u32 lbl_802F2110;
+extern u32 lbl_802F211C;
+
+void *func_8008E9E0(struct UnkStruct18 *a);
+
+static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct18 *r26, void *r25)
+{
+    u32 r28;
+    u32 r23 = lbl_802F20E8;
+    struct UnkStruct17 *r29 = (void *)func_80085B88(0x74);
+    //lbl_8008E884
+    if (r26->unk14 != 0xFF)
+        r28 = func_800857A4(r26->unk30, -1);
+    else
+        r28 = func_80085698(r26->unk30);
+    //lbl_8008E8C0
+    r29->unk4 = lbl_8008F528;
+    r29->unk8 = a;
+    r29->unk40 = r26;
+    r29->unk3C = r25;
+    r29->unk44 = r23;
+    r29->unk48 = func_800223D0();
+    r29->unk4C = lbl_802F20DC;
+    r29->unk50 = lbl_802F20EC;
+    r29->unk54 = lbl_802F20F0;
+    r29->unk58 = lbl_802F2100;
+    r29->unk59 = lbl_802F2101;
+    r29->unk5C = lbl_802F2104;
+    r29->unk60 = lbl_802F2108;
+    r29->unk61 = lbl_802F210C;
+    r29->unk62 = lbl_802F2114;
+    if (r29->unk60 != 0)
+    {
+        r29->unk64 = (void *)func_80085B88(0x30);
+        mathutil_copy_mtx(lbl_802B4E6C, r29->unk64);
+    }
+    if (r29->unk61 != 0)
+        r29->unk68 = lbl_802F2110;
+    if (r29->unk62 != 0)
+        r29->unk6C = lbl_802F2118;
+    r29->unk70 = lbl_802F211C;
+    mathutil_get_a_mtx(r29->unkC);
+    func_80085B78(r28, r29);
+    return (void *)func_8008E9E0(r26);
+}
+
+void func_8008E7AC(struct UnkStruct10 *a)
+{
+    struct UnkStruct18 *r26 = (struct UnkStruct18 *)((u32)a + a->unk20);
+    void *r25 = (void *)((u32)a + 0x40);
+     int i;  // r23
+
+    lbl_802F20E8 = 2;
+    func_8009E094(lbl_802F20E8);
+    if (a->unk4 & 4)
+        func_8008F498(a);
+    if (lbl_802F20F0 == 0)
+        func_8008FE44(a, r26);
+    //lbl_8008E80C
+    if (a->unk4 & 0x18)
+        func_8008FD90(a, r26, r25);
+    else
+    {
+    
+        for (i = 0; i < a->unk1A; i++)
+            r26 = (void *)func_8008F914(a, r26, r25);
+        for (i = 0; i < a->unk1C; i++)
+            r26 = func_8008E7AC_inline(a, r26, r25);
+    }
+    //lbl_8008E9B4
+    lbl_802F20E4 = 1.0f;
+    GXSetCurrentMtx(0);
+    lbl_802F20DC = 1.0f;
+}
+
+void *func_8008E9E0(struct UnkStruct18 *a)
+{
+    u32 r7 = (u32)a + 0x60;
+    int i;
+    for (i = 0; i < 2; i++)
+    {
+        if (a->unk13 & (1 << i))
+            r7 += a->unk28[i];
+    }
+    if (a->unk13 & 0xC)
+    {
+        u32 *r4 = (u32 *)r7;
+        r7 += 32;
+        r7 += r4[2];
+        r7 += r4[3];
+    }
+    return (void *)r7;
 }

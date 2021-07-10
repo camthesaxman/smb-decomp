@@ -1,5 +1,6 @@
 #define ARRAY_COUNT(arr) ((int)(sizeof(arr)/sizeof(arr[0])))
 
+void mathutil_copy_mtx(void *, void *);
 extern void mathutil_set_a_mtx_identity(void);
 extern void mathutil_set_b_mtx_a_mtx(void);
 

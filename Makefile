@@ -5,7 +5,7 @@ else
 endif
 
 ### Tools ###
-COMPILER_DIR := mwcc_compiler/1.0
+COMPILER_DIR := mwcc_compiler/1.1
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
 CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe

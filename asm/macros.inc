@@ -92,3 +92,8 @@ Entry Point: 0x80003100
 .set _SDA_BASE_, 0x802F81E0
 # Small Data Area (read only) Base
 .set _SDA2_BASE_, 0x802FA800
+
+.macro glabel name
+    .global \name
+    \name:
+.endm

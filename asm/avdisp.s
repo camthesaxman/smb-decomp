@@ -832,7 +832,6 @@ lbl_8008E3D0:
 /* 8008E3EC 0008A30C  38 21 00 40 */	addi r1, r1, 0x40
 /* 8008E3F0 0008A310  7C 08 03 A6 */	mtlr r0
 /* 8008E3F4 0008A314  4E 80 00 20 */	blr
-.endif
 
 .global free_tpl
 free_tpl:
@@ -1006,6 +1005,7 @@ func_8008E5E8:
 /* 8008E5EC 0008A50C  90 6D 9F 10 */	stw r3, lbl_802F20F0-_SDA_BASE_(r13)
 /* 8008E5F0 0008A510  7C 03 03 78 */	mr r3, r0
 /* 8008E5F4 0008A514  4E 80 00 20 */	blr
+
 /* 8008E5F8 0008A518  7C 08 02 A6 */	mflr r0
 /* 8008E5FC 0008A51C  90 01 00 04 */	stw r0, 4(r1)
 /* 8008E600 0008A520  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1029,6 +1029,7 @@ lbl_8008E63C:
 /* 8008E640 0008A560  38 21 00 08 */	addi r1, r1, 8
 /* 8008E644 0008A564  7C 08 03 A6 */	mtlr r0
 /* 8008E648 0008A568  4E 80 00 20 */	blr
+
 /* 8008E64C 0008A56C  7C 08 02 A6 */	mflr r0
 /* 8008E650 0008A570  90 01 00 04 */	stw r0, 4(r1)
 /* 8008E654 0008A574  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1050,6 +1051,7 @@ lbl_8008E688:
 /* 8008E68C 0008A5AC  38 21 00 08 */	addi r1, r1, 8
 /* 8008E690 0008A5B0  7C 08 03 A6 */	mtlr r0
 /* 8008E694 0008A5B4  4E 80 00 20 */	blr
+
 /* 8008E698 0008A5B8  80 03 00 04 */	lwz r0, 4(r3)
 /* 8008E69C 0008A5BC  80 A3 00 20 */	lwz r5, 0x20(r3)
 /* 8008E6A0 0008A5C0  54 00 06 F8 */	rlwinm r0, r0, 0, 0x1b, 0x1c
@@ -1336,6 +1338,7 @@ lbl_8008EA34:
 lbl_8008EA5C:
 /* 8008EA5C 0008A97C  7C E3 3B 78 */	mr r3, r7
 /* 8008EA60 0008A980  4E 80 00 20 */	blr
+.endif
 
 .global func_8008EA64
 func_8008EA64:
@@ -2147,6 +2150,7 @@ lbl_8008F4F4:
 /* 8008F51C 0008B43C  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 8008F520 0008B440  38 21 00 20 */	addi r1, r1, 0x20
 /* 8008F524 0008B444  4E 80 00 20 */	blr
+.global lbl_8008F528
 lbl_8008F528:
 /* 8008F528 0008B448  7C 08 02 A6 */	mflr r0
 /* 8008F52C 0008B44C  90 01 00 04 */	stw r0, 4(r1)
@@ -5087,13 +5091,13 @@ lbl_801C7DEC:
 	.asciz "cannot OSAlloc\n"
 	.asciz "cannot OSAlooc\n"
 	.asciz "cannot DVDClose"
-.endif
 
 .global lbl_801C7E58
 lbl_801C7E58:
 	# ROM: 0x1C4E58
 	.asciz "non effective model.\n"
 	.balign 4
+.endif
 
 .global lbl_801C7E70
 lbl_801C7E70:
