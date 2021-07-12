@@ -17,9 +17,9 @@ struct UnkStruct1
     char *unk4;
 };
 
-struct UnkStruct2
+struct GMA
 {
-    u32 unk0;
+    u32 numModels;
     u8 *unk4;
     //u8 *unk8;
     struct UnkStruct1 *unk8;
@@ -207,28 +207,28 @@ void func_8008D8D0(struct UnkStruct4 *a, void **b)
     }
 }
 
-void *func_8008D9A8(char *a, u32 b)
+void *func_8008D9A8(char *fileName, u32 b)
 {
-    u32 *r30;
-    u32 r29;
-    struct File sp10;
+    u32 *buffer;
+    u32 size;
+    struct File file;
     
-    if (!file_open(a, &sp10))
+    if (!file_open(fileName, &file))
         return NULL;
-    r29 = file_size(&sp10);
-    r30 = OSAlloc(OSRoundUp32B(r29));
-    if (r30 == NULL)
-        OSPanic("avdisp.c", 0x27E, "cannot OSAlloc");
-    file_read(&sp10, r30, r29, 0);
-    file_close(&sp10);
-    if (*r30 + 0xB8BD0000 != 0x4D46)
+    size = file_size(&file);
+    buffer = OSAlloc(OSRoundUp32B(size));
+    if (buffer == NULL)
+        OSPanic("avdisp.c", 638, "cannot OSAlloc");
+    file_read(&file, buffer, size, 0);
+    file_close(&file);
+    if (*buffer + 0xB8BD0000 != 0x4D46)
     {
-        printf("invalid model format <%s>\n", a);
-        OSFree(r30);
+        printf("invalid model format <%s>\n", fileName);
+        OSFree(buffer);
         return NULL;
     }
-    func_8008F1E8(r30, b, 0);
-    return r30;
+    func_8008F1E8(buffer, b, 0);
+    return buffer;
 }
 
 struct UnkStruct5
@@ -244,68 +244,61 @@ void func_8008DA9C(struct UnkStruct5 *a)
     OSFree(a);
 }
 
-void *load_gma(char *a, u32 b)
+struct GMA *load_gma(char *fileName, u32 b)
 {
     int i;
-    struct UnkStruct2 *r29;
-    struct UnkStruct1 *r27_;
-    struct File sp10;
-    int len = strlen(a);
-    if (len >= 3 && strncmp(a + (len - 3), ".lz", 3) == 0)
+    struct GMA *gma;
+    struct UnkStruct1 *fileData;
+    struct File file;
+    int len = strlen(fileName);
+    if (len >= 3 && strncmp(fileName + (len - 3), ".lz", 3) == 0)
     {
-        void *r31;
+        void *lzData;
         u32 r27;
         u32 foo;
 
-        if (file_open(a, &sp10) == 0)
+        if (file_open(fileName, &file) == 0)
             return NULL;
-        if (file_read(&sp10, lbl_802B4E60_100, 32, 0) < 0)
-            OSPanic("avdisp.c", 0x2AC, "cannot dvd_read");
-        //lbl_8008DB84
+        if (file_read(&file, lbl_802B4E60_100, 32, 0) < 0)
+            OSPanic("avdisp.c", 684, "cannot dvd_read");
         r27 = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 0));
         foo = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 4));
-        r29 = OSAlloc(foo + 32);
-        if (r29 == NULL)
-            OSPanic("avdisp.c", 0x2B0, "cannot OSAlloc\n");
-        //lbl_8008DBD0
-        r31 = OSAlloc(r27);
-        if (r31 == NULL)
-            OSPanic("avdisp.c", 0x2B1, "cannot OSAlooc\n");
-        r27_ = &r29->unk20;
-        if (file_read(&sp10, r31, r27, 0) < 0)
-            OSPanic("avdisp.c", 0x2B4, "cannot dvd_read");
-        //lbl_8008DC30
-        if (file_close(&sp10) != 1)
-            OSPanic("avdisp.c", 0x2B5, "cannot DVDClose");
-        //lbl_8008DC54
-        func_8008D3E4(r31, r27_);
-        OSFree(r31);
+        gma = OSAlloc(foo + 32);
+        if (gma == NULL)
+            OSPanic("avdisp.c", 688, "cannot OSAlloc\n");
+        lzData = OSAlloc(r27);
+        if (lzData == NULL)
+            OSPanic("avdisp.c", 689, "cannot OSAlooc\n");
+        fileData = &gma->unk20;
+        if (file_read(&file, lzData, r27, 0) < 0)
+            OSPanic("avdisp.c", 692, "cannot dvd_read");
+        if (file_close(&file) != 1)
+            OSPanic("avdisp.c", 693, "cannot DVDClose");
+        decompress_lz(lzData, fileData);
+        OSFree(lzData);
     }
-    //lbl_8008DC70
     else
     {
-        u32 r31;
-        if (file_open(a, &sp10) == 0)
+        u32 size;
+        if (file_open(fileName, &file) == 0)
             return NULL;
-        r31 = file_size(&sp10);
-        r29 = OSAlloc(OSRoundUp32B(r31) + 32);
-        if (r29 == NULL)
-            OSPanic("avdisp.c", 0x2BE, "cannot OSAlloc");
-        //lbl_8008DCD0
-        r27_ = &r29->unk20;
-        file_read(&sp10, r27_, r31, 0);
-        file_close(&sp10);
+        size = file_size(&file);
+        gma = OSAlloc(OSRoundUp32B(size) + 32);
+        if (gma == NULL)
+            OSPanic("avdisp.c", 702, "cannot OSAlloc");
+        fileData = &gma->unk20;
+        file_read(&file, fileData, size, 0);
+        file_close(&file);
     }
-    //lbl_8008DCF0
-    r29->unk0 = r27_->unk0;
-    r29->unk4 = (void *)((u32)r27_ + (u32)r27_->unk4);
-    r29->unk8 = r27_ + 1;
-    r29->unkC = (u32)(r29->unk8 + r27_->unk0);
-    //lbl_8008DD34
 
-    for (i = 0; i < r29->unk0; i++)
+    gma->numModels = fileData->unk0;
+    gma->unk4 = (void *)((u32)fileData + (u32)fileData->unk4);
+    gma->unk8 = fileData + 1;
+    gma->unkC = (u32)(gma->unk8 + fileData->unk0);
+
+    for (i = 0; i < gma->numModels; i++)
     {
-        struct UnkStruct1 *r7 = &r29->unk8[i];
+        struct UnkStruct1 *r7 = &gma->unk8[i];
         u32 r3 = r7->unk0;
         if (r7->unk0 + 0x10000 == 0xFFFF)
         {
@@ -314,25 +307,25 @@ void *load_gma(char *a, u32 b)
         }
         else
         {
-            r3 = (u32)r29->unk4 + r3;
+            r3 = (u32)gma->unk4 + r3;
             r7->unk0 = r3;
-            r7->unk4 = (char *)((u32)r29->unkC + (u32)r7->unk4);
+            r7->unk4 = (char *)((u32)gma->unkC + (u32)r7->unk4);
             func_8008F1E8(r3, b, 0);
         }
     }
-    return r29;
+    return gma;
 }
 
-void *func_8008DDB4(u32 a, u32 b, u32 c)
+struct GMA *func_8008DDB4(u32 a, u32 b, u32 c)
 {
     u32 r31;
     u32 r30 = OSRoundUp32B(b);
     int i;
     struct UnkStruct1 *r27;
-    struct UnkStruct2 *r29 = OSAlloc(r30 + 0x20);
-    if (r29 == NULL)
-        OSPanic("avdisp.c", 0x2EE, "cannot OSAlloc");
-    r27 = &r29->unk20;
+    struct GMA *gma = OSAlloc(r30 + 0x20);
+    if (gma == NULL)
+        OSPanic("avdisp.c", 750, "cannot OSAlloc");
+    r27 = &gma->unk20;
     DCInvalidateRange(r27, r30);
     while (ARGetDMAStatus() != 0)
         ;
@@ -340,14 +333,14 @@ void *func_8008DDB4(u32 a, u32 b, u32 c)
     while (ARGetDMAStatus() != 0)
         ;
 
-    r29->unk0 = r27->unk0;
-    r29->unk4 = (void *)((u32)r27 + (u32)r27->unk4);
-    r29->unk8 = r27 + 1;
-    r29->unkC = (u32)(r29->unk8 + r27->unk0);
+    gma->numModels = r27->unk0;
+    gma->unk4 = (void *)((u32)r27 + (u32)r27->unk4);
+    gma->unk8 = r27 + 1;
+    gma->unkC = (u32)(gma->unk8 + r27->unk0);
 
-    for (i = 0; i < r29->unk0; i++)
+    for (i = 0; i < gma->numModels; i++)
     {
-        struct UnkStruct1 *r7 = &r29->unk8[i];
+        struct UnkStruct1 *r7 = &gma->unk8[i];
         u32 r3 = r7->unk0;
         if (r7->unk0 + 0x10000 == 0xFFFF)
         {
@@ -356,13 +349,13 @@ void *func_8008DDB4(u32 a, u32 b, u32 c)
         }
         else
         {
-            r3 = (u32)r29->unk4 + r3;
+            r3 = (u32)gma->unk4 + r3;
             r7->unk0 = r3;
-            r7->unk4 = (char *)((u32)r29->unkC + (u32)r7->unk4);
+            r7->unk4 = (char *)((u32)gma->unkC + (u32)r7->unk4);
             func_8008F1E8(r3, c, 0);
         }
     }
-    return r29;
+    return gma;
 }
 
 struct UnkStruct6
@@ -371,102 +364,20 @@ struct UnkStruct6
     void *unk24;
 };
 
-void free_gma(struct UnkStruct2 *a)
+void free_gma(struct GMA *gma)
 {
     int i;
     
-    for (i = 0; i < (s32)a->unk0; i++)
+    for (i = 0; i < (s32)gma->numModels; i++)
     {
-        struct UnkStruct6 *r3 = (struct UnkStruct6 *)a->unk8[i].unk0;
+        struct UnkStruct6 *r3 = (struct UnkStruct6 *)gma->unk8[i].unk0;
         if (r3 != NULL && r3->unk24 != NULL)
             OSFree(r3->unk24);
     }
-    OSFree(a);
+    OSFree(gma);
 }
 
-struct UnkStruct7
-{
-    u32 unk0;
-    void *unk4;
-    void *unk8;
-};
-
-void *load_tpl(char *a)
-{
-    void *r30;
-    struct UnkStruct7 *r29;
-    u32 *r28_;
-    struct File spC;
-    int len = strlen(a);
-    if (len >= 3 && strncmp(a + (len - 3), ".lz", 3) == 0)
-    {
-        u32 r28;
-        u32 foo;
-
-        if (file_open(a, &spC) == 0)
-            return NULL;
-        if (file_read(&spC, lbl_802B4E60_100, 32, 0) < 0)
-            OSPanic("avdisp.c", 0x336, "cannot dvd_read");
-        r28 = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 0));
-        foo = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 4));
-        r29 = OSAlloc(foo + 12);
-        if (r29 == NULL)
-            OSPanic("avdisp.c", 0x33A, "cannot OSAlloc\n");
-        r30 = OSAlloc(r28);
-        if (r30 == NULL)
-            OSPanic("avdisp.c", 0x33B, "cannot OSAlooc\n");
-        r28_ = (void *)OSRoundUp32B((u32)r29 + (0x2B-0x1F));
-        if (file_read(&spC, r30, r28, 0) < 0)
-            OSPanic("avdisp.c", 0x33E, "cannot dvd_read");
-        if (file_close(&spC) != 1)
-            OSPanic("avdisp.c", 0x33F, "cannot DVDClose");
-        func_8008D3E4(r30, r28_);
-        OSFree(r30);
-    }
-    //lbl_8008E144
-    else
-    {
-        u32 r30;
-        if (file_open(a, &spC) == 0)
-            return NULL;
-        r30 = file_size(&spC);
-        r29 = OSAlloc(OSRoundUp32B(r30) + 32);
-        if (r29 == NULL)
-            OSPanic("avdisp.c", 0x348, "cannot OSAlloc");
-        r28_ = (void *)OSRoundUp32B((u32)r29 + (0x2B-0x1F));
-        file_read(&spC, r28_, r30, 0);
-        file_close(&spC);
-    }
-    r29->unk0 = *r28_;
-    r29->unk4 = r28_ + 1;
-    r29->unk8 = r28_;
-    return r29;
-}
-
-void *func_8008E200(u32 a, u32 b)
-{
-    u32 r31;
-    struct UnkStruct7 *r30;
-    u32 *r29;
-
-    r31 = OSRoundUp32B(b);
-    r30 = OSAlloc(r31 + 32);
-    if (r30 == NULL)
-        OSPanic("avdisp.c", 0x361, "cannot OSAlloc");
-    r29 = (void *)OSRoundUp32B((u32)r30 + (0x2B-0x1F));
-    DCInvalidateRange(r29, r31);
-    while (ARGetDMAStatus() != 0)
-        ;
-    ARStartDMA(1, (u32)r29, a, b);
-    while (ARGetDMAStatus() != 0)
-        ;
-    r30->unk0 = *r29;
-    r30->unk4 = r29 + 1;
-    r30->unk8 = r29;
-    return r30;
-}
-
-struct UnkStruct9  // r27
+struct TPLTextureHeader  // r27
 {
     u32 unk0;
     u32 unk4;
@@ -475,34 +386,107 @@ struct UnkStruct9  // r27
     u8 fillerC[4];
 };  // size = 0x10
 
-struct UnkStruct8
+struct TPL
 {
-    u32 unk0;
-    //void *unk4;
-    struct UnkStruct9 *unk4;
-    u8 *unk8;
+    u32 numTextures;
+    struct TPLTextureHeader *texHeaders;
+    u8 *fileData;
 };
 
-int func_8008EF9C();
+struct TPL *load_tpl(char *fileName)
+{
+    void *r30;
+    struct TPL *tpl;
+    u32 *fileData;
+    struct File file;
+    int len = strlen(fileName);
+    if (len >= 3 && strncmp(fileName + (len - 3), ".lz", 3) == 0)
+    {
+        u32 r28;
+        u32 foo;
 
-// register swaps
-void *func_8008E2D0(struct UnkStruct8 *a)
+        if (file_open(fileName, &file) == 0)
+            return NULL;
+        if (file_read(&file, lbl_802B4E60_100, 32, 0) < 0)
+            OSPanic("avdisp.c", 822, "cannot dvd_read");
+        r28 = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 0));
+        foo = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 4));
+        tpl = OSAlloc(foo + 12);
+        if (tpl == NULL)
+            OSPanic("avdisp.c", 826, "cannot OSAlloc\n");
+        r30 = OSAlloc(r28);
+        if (r30 == NULL)
+            OSPanic("avdisp.c", 827, "cannot OSAlooc\n");
+        fileData = (void *)OSRoundUp32B((u32)tpl + 12);
+        if (file_read(&file, r30, r28, 0) < 0)
+            OSPanic("avdisp.c", 830, "cannot dvd_read");
+        if (file_close(&file) != 1)
+            OSPanic("avdisp.c", 831, "cannot DVDClose");
+        decompress_lz(r30, fileData);
+        OSFree(r30);
+    }
+    else
+    {
+        u32 size;
+        if (file_open(fileName, &file) == 0)
+            return NULL;
+        size = file_size(&file);
+        tpl = OSAlloc(OSRoundUp32B(size) + 32);
+        if (tpl == NULL)
+            OSPanic("avdisp.c", 840, "cannot OSAlloc");
+        fileData = (void *)OSRoundUp32B((u32)tpl + 12);
+        file_read(&file, fileData, size, 0);
+        file_close(&file);
+    }
+    tpl->numTextures = *fileData;
+    tpl->texHeaders = (struct TPLTextureHeader *)(fileData + 1);
+    tpl->fileData = (void *)fileData;
+    return tpl;
+}
+
+struct TPL *func_8008E200(u32 a, u32 b)
+{
+    u32 r31;
+    struct TPL *tpl;
+    u32 *r29;
+
+    r31 = OSRoundUp32B(b);
+    tpl = OSAlloc(r31 + 32);
+    if (tpl == NULL)
+        OSPanic("avdisp.c", 865, "cannot OSAlloc");
+    r29 = (void *)OSRoundUp32B((u32)tpl + 12);
+    DCInvalidateRange(r29, r31);
+    while (ARGetDMAStatus() != 0)
+        ;
+    ARStartDMA(1, (u32)r29, a, b);
+    while (ARGetDMAStatus() != 0)
+        ;
+    tpl->numTextures = *r29;
+    tpl->texHeaders = (struct TPLTextureHeader *)(r29 + 1);
+    tpl->fileData = (void *)r29;
+    return tpl;
+}
+
+
+int func_8008EF9C(int a, int b);
+
+GXTexObj *func_8008E2D0(struct TPL *tpl)
 {
     int i;
-    struct UnkStruct9 *r26 = a->unk4;
-    GXTexObj *r30 = OSAlloc(a->unk0 * 32);
+    struct TPLTextureHeader *thdrs = tpl->texHeaders;
+    GXTexObj *tobjs = OSAlloc(tpl->numTextures * sizeof(GXTexObj));
     
-    for (i = 0; i < a->unk0; i++)
+    for (i = 0; i < tpl->numTextures; i++)
     {
         u8 r25;
-        void *r24 = a->unk8 + r26[i].unk4;
-        if (r26[i].unk8 != r26[i].unkA)
+        void *r24 = tpl->fileData + thdrs[i].unk4;
+        if (thdrs[i].unk8 != thdrs[i].unkA)
             r25 = 0;
         else
-            r25 = func_8008EF9C(r26[i].unk8, r26[i].unkA);
-        GXInitTexObj(&r30[i], (void *)r24, r26[i].unk8, r26[i].unkA, r26[i].unk0 & 0x1F, 1, 1, 0);
+            r25 = func_8008EF9C(thdrs[i].unk8, thdrs[i].unkA);
+        GXInitTexObj(&tobjs[i], (void *)r24, thdrs[i].unk8, thdrs[i].unkA, thdrs[i].unk0 & 0x1F, 1, 1, 0);
         GXInitTexObjLOD(
-            &r30[i],
+            &tobjs[i],
             (r25 != 0) ? 5 : 3,
             1,
             0.0f,
@@ -512,12 +496,12 @@ void *func_8008E2D0(struct UnkStruct8 *a)
             1,
             0);
     }
-    return r30;
+    return tobjs;
 }
 
-void free_tpl(void *a)
+void free_tpl(struct TPL *tpl)
 {
-    OSFree(a);
+    OSFree(tpl);
 }
 
 void func_8008E420(float a)
@@ -546,6 +530,8 @@ struct UnkStruct10
 };
 
 void func_8008E7AC(struct UnkStruct10 *a);
+void func_8008EA64(struct UnkStruct10 *a);
+void func_8008EB94(struct UnkStruct10 *a);
 
 void func_8008E438(struct UnkStruct10 *a)
 {
@@ -984,4 +970,194 @@ void *func_8008E9E0(struct UnkStruct18 *a)
         r7 += r4[3];
     }
     return (void *)r7;
+}
+
+void func_8008EA64(struct UnkStruct10 *a)
+{
+    int i;
+    u32 r30 = (u32)a + a->unk20;
+    u32 r29 = (u32)a + 0x40;
+    lbl_802F20E8 = 2;
+    func_8009E094(lbl_802F20E8);
+    if (a->unk4 & 0x4)
+        func_8008F498(a);
+    if (lbl_802F20F0 == 0)
+        func_8008FE44(a, r30);
+    if (a->unk4 & 0x18)
+        func_8008FD90(a, r30, r29);
+    else
+    {
+        for (i = 0; i < a->unk1A; i++)
+            r30 = func_8008F914(a, r30, r29);
+        for (i = 0; i < a->unk1C; i++)
+            r30 = func_8008F914(a, r30, r29);
+    }
+    lbl_802F20E4 = 1.0f;
+    GXSetCurrentMtx(0);
+    lbl_802F20DC = 1.0f;
+}
+
+void func_8008EB94(struct UnkStruct10 *a)
+{
+    struct UnkStruct18 *r24 = (struct UnkStruct18 *)((u32)a + a->unk20);
+    u32 r31 = (u32)a + 0x40;
+    int i; // r25
+    lbl_802F20E8 = 2;
+    func_8009E094(lbl_802F20E8);
+    if (a->unk4 & 0x4)
+        func_8008F498(a);
+    if (lbl_802F20F0 == 0)
+        func_8008FE44(a, r24);
+    for (i = 0; i < a->unk1A; i++)
+        r24 = (void *)func_8008E7AC_inline(a, r24, (void *)r31);
+    //lbl_8008ED4C
+    for (i = 0; i < a->unk1C; i++)
+        r24 = (void *)func_8008E7AC_inline(a, r24, (void *)r31);
+    lbl_802F20E4 = 1.0f;
+    GXSetCurrentMtx(0);
+    lbl_802F20DC = 1.0f;
+}
+
+void func_8008EEC0(struct UnkStruct10 *a)
+{
+    struct UnkStruct18 *r31 = (struct UnkStruct18 *)((u32)a + a->unk20);
+    u32 r30 = (u32)a + 0x40;
+    int i;
+    lbl_802F20E8 = 2;
+    if (a->unk4 & 0x4)
+        func_8008F498(a);
+    if (a->unk4 & 0x18)
+        func_8008FD90(a, r31, r30);
+    else
+    {
+        for (i = 0; i < a->unk1A; i++)
+            r31 = (void *)func_8008F914(a, r31, r30);
+    }
+    lbl_802F20E4 = 1.0f;
+    GXSetCurrentMtx(0);
+    lbl_802F20DC = 1.0f;
+}
+
+int func_8008EF9C(int a, int b)
+{
+    int r4;
+    if (a > b)
+        a = b;
+    r4 = 0;
+    while (a > 16)
+    {
+        a >>= 1;
+        r4++;
+    }
+    return r4;
+}
+
+struct UnkStruct20
+{
+    u32 unk0;
+    u8 filler4[2];
+    s8 unk6;
+    u8 unk7;
+    GXTexObj *unk8;
+};
+
+struct UnkStruct19
+{
+    u32 unk0;
+    u32 unk4;
+    //u8 filler4[4];
+    u16 unk8;
+    u16 unkA;
+};
+
+struct UnkStruct21
+{
+    u8 filler0[8];
+    u32 unk8;
+};
+
+void func_8008EFD0(struct UnkStruct20 *a, struct UnkStruct19 *b, struct UnkStruct21 *c)
+{
+    u8 r31;
+    int r8;
+    int r9;
+    u32 r7 = c->unk8 + b->unk4;
+    int r4;
+    int r5;
+
+    if (b->unk0 & 0x40)
+    {
+        OSPanic("avdisp.c", 1340, "invalid texture!!\n...stopped\n");
+        a->unk8 = 0;
+        return;
+    }
+
+    switch ((a->unk0 >> 2) & 3)
+    {
+    case 2:
+        r8 = 2;
+        break;
+    case 1:
+        r8 = 1;
+        break;
+    default:
+        r8 = 0;
+        break;
+    }
+    switch ((a->unk0 >> 4) & 3)
+    {
+    case 2:
+        r9 = 2;
+        break;
+    case 1:
+        r9 = 1;
+        break;
+    default:
+        r9 = 0;
+        break;
+    }
+    if (b->unk8 != b->unkA)
+        r31 = 0;
+    else
+    {
+        r31 = (a->unk0 >> 7) & 0xF;
+        if (r31 == 15)
+            r31 = func_8008EF9C(b->unk8, b->unkA);  // inlined
+    }
+    GXInitTexObj(
+        a->unk8,
+        (void *)r7,
+        b->unk8,
+        b->unkA,
+        b->unk0 & 0x1F,
+        r8,
+        r9,
+        r31 != 0);
+
+    if (a->unk0 & 0x800)
+    {
+        r5 = 0;
+        if (r31 != 0)
+            r4 = 4;
+        else
+            r4 = 2;
+    }
+    else
+    {
+        r5 = 1;
+        if (r31 != 0)
+            r4 = 5;
+        else
+            r4 = 3;
+    }
+    GXInitTexObjLOD(
+        a->unk8,
+        r4,
+        r5,
+        0.0f,
+        (float)r31,
+        a->unk6 / 10.0f,
+        0,
+        (a->unk0 & 0x40) != 0,
+        a->unk7);
 }

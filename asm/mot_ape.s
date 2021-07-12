@@ -4076,8 +4076,8 @@ lbl_8008D3D4:
 /* 8008D3DC 000892FC  40 82 FF D4 */	bne lbl_8008D3B0
 /* 8008D3E0 00089300  4E 80 00 20 */	blr
 
-.global func_8008D3E4
-func_8008D3E4:
+.global decompress_lz
+decompress_lz:
 /* 8008D3E4 00089304  94 21 EF B8 */	stwu r1, -0x1048(r1)
 /* 8008D3E8 00089308  BF 41 10 30 */	stmw r26, 0x1030(r1)
 /* 8008D3EC 0008930C  7D 80 1C 2C */	lwbrx r12, 0, r3

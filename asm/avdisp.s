@@ -279,7 +279,7 @@ lbl_8008DC30:
 lbl_8008DC54:
 /* 8008DC54 00089B74  7F E3 FB 78 */	mr r3, r31
 /* 8008DC58 00089B78  7F 64 DB 78 */	mr r4, r27
-/* 8008DC5C 00089B7C  4B FF F7 89 */	bl func_8008D3E4
+/* 8008DC5C 00089B7C  4B FF F7 89 */	bl decompress_lz
 /* 8008DC60 00089B80  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
 /* 8008DC64 00089B84  7F E4 FB 78 */	mr r4, r31
 /* 8008DC68 00089B88  48 03 4B 61 */	bl OSFreeToHeap
@@ -630,7 +630,7 @@ lbl_8008E104:
 lbl_8008E128:
 /* 8008E128 0008A048  7F C3 F3 78 */	mr r3, r30
 /* 8008E12C 0008A04C  7F 84 E3 78 */	mr r4, r28
-/* 8008E130 0008A050  4B FF F2 B5 */	bl func_8008D3E4
+/* 8008E130 0008A050  4B FF F2 B5 */	bl decompress_lz
 /* 8008E134 0008A054  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
 /* 8008E138 0008A058  7F C4 F3 78 */	mr r4, r30
 /* 8008E13C 0008A05C  48 03 46 8D */	bl OSFreeToHeap
@@ -1338,7 +1338,6 @@ lbl_8008EA34:
 lbl_8008EA5C:
 /* 8008EA5C 0008A97C  7C E3 3B 78 */	mr r3, r7
 /* 8008EA60 0008A980  4E 80 00 20 */	blr
-.endif
 
 .global func_8008EA64
 func_8008EA64:
@@ -1778,13 +1777,13 @@ lbl_8008F030:
 /* 8008F044 0008AF64  2C 03 00 01 */	cmpwi r3, 1
 /* 8008F048 0008AF68  40 80 00 10 */	bge lbl_8008F058
 /* 8008F04C 0008AF6C  48 00 00 14 */	b lbl_8008F060
-lbl_8008F050:
+lbl_8008F050:  ;# case 2
 /* 8008F050 0008AF70  39 00 00 02 */	li r8, 2
 /* 8008F054 0008AF74  48 00 00 10 */	b lbl_8008F064
-lbl_8008F058:
+lbl_8008F058:  ;# case 1
 /* 8008F058 0008AF78  39 00 00 01 */	li r8, 1
 /* 8008F05C 0008AF7C  48 00 00 08 */	b lbl_8008F064
-lbl_8008F060:
+lbl_8008F060:  ;# default
 /* 8008F060 0008AF80  39 00 00 00 */	li r8, 0
 lbl_8008F064:
 /* 8008F064 0008AF84  55 43 E7 BE */	rlwinm r3, r10, 0x1c, 0x1e, 0x1f
@@ -1875,20 +1874,20 @@ lbl_8008F160:
 /* 8008F17C 0008B09C  90 61 00 1C */	stw r3, 0x1c(r1)
 /* 8008F180 0008B0A0  54 C0 06 72 */	rlwinm r0, r6, 0, 0x19, 0x19
 /* 8008F184 0008B0A4  7C C0 00 D0 */	neg r6, r0
-/* 8008F188 0008B0A8  C0 02 AF 58 */	lfs f0, lbl_802F5758-_SDA2_BASE_(r2)
+/* 8008F188 0008B0A8  C0 02 AF 58 */	lfs f0, lbl_802F5758-_SDA2_BASE_(r2)  ;# 10.0f
 /* 8008F18C 0008B0AC  90 E1 00 18 */	stw r7, 0x18(r1)
 /* 8008F190 0008B0B0  30 06 FF FF */	addic r0, r6, -1
 /* 8008F194 0008B0B4  C8 82 AF 50 */	lfd f4, lbl_802F5750-_SDA2_BASE_(r2)
-/* 8008F198 0008B0B8  C8 21 00 18 */	lfd f1, 0x18(r1)
+/* 8008F198 0008B0B8  C8 21 00 18 */	lfd f1, 0x18(r1)        ;# (float)unk6
 /* 8008F19C 0008B0BC  7C 00 31 10 */	subfe r0, r0, r6
 /* 8008F1A0 0008B0C0  90 E1 00 20 */	stw r7, 0x20(r1)
 /* 8008F1A4 0008B0C4  54 07 06 3E */	clrlwi r7, r0, 0x18
-/* 8008F1A8 0008B0C8  EC 41 10 28 */	fsubs f2, f1, f2
+/* 8008F1A8 0008B0C8  EC 41 10 28 */	fsubs f2, f1, f2        ;# (float)unk6 ?
 /* 8008F1AC 0008B0CC  80 7E 00 08 */	lwz r3, 8(r30)
 /* 8008F1B0 0008B0D0  38 C0 00 00 */	li r6, 0
 /* 8008F1B4 0008B0D4  C0 22 AF 44 */	lfs f1, lbl_802F5744-_SDA2_BASE_(r2)
 /* 8008F1B8 0008B0D8  EC 62 00 24 */	fdivs f3, f2, f0
-/* 8008F1BC 0008B0DC  C8 01 00 20 */	lfd f0, 0x20(r1)
+/* 8008F1BC 0008B0DC  C8 01 00 20 */	lfd f0, 0x20(r1)        ;# (float)r31
 /* 8008F1C0 0008B0E0  89 1E 00 07 */	lbz r8, 7(r30)
 /* 8008F1C4 0008B0E4  EC 40 20 28 */	fsubs f2, f0, f4
 /* 8008F1C8 0008B0E8  48 05 21 B5 */	bl GXInitTexObjLOD
@@ -1900,6 +1899,7 @@ lbl_8008F1CC:
 /* 8008F1DC 0008B0FC  83 A1 00 2C */	lwz r29, 0x2c(r1)
 /* 8008F1E0 0008B100  38 21 00 38 */	addi r1, r1, 0x38
 /* 8008F1E4 0008B104  4E 80 00 20 */	blr
+.endif
 
 .global func_8008F1E8
 func_8008F1E8:
@@ -4998,7 +4998,7 @@ lbl_802F5750:
 	# ROM: 0x1EF170
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
-.endif
+
 .global lbl_802F5758
 lbl_802F5758:
 	# ROM: 0x1EF178
@@ -5010,6 +5010,7 @@ lbl_802F5760:
 	# ROM: 0x1EF180
 	.byte 0x43, 0x30, 0x00, 0x00
 	.byte 0x80, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F5768
 lbl_802F5768:
@@ -5097,13 +5098,13 @@ lbl_801C7E58:
 	# ROM: 0x1C4E58
 	.asciz "non effective model.\n"
 	.balign 4
-.endif
 
 .global lbl_801C7E70
 lbl_801C7E70:
 	# ROM: 0x1C4E70
 	.asciz "invalid texture!!\n...stopped\n"
 	.balign 4
+.endif
 
 .section .bss
 
