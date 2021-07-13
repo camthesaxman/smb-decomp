@@ -207,7 +207,43 @@ void func_8008D8D0(struct UnkStruct4 *a, void **b)
     }
 }
 
-void *func_8008D9A8(char *fileName, u32 b)
+struct UnkStruct23
+{
+    u8 filler0[0x20];
+};
+
+struct UnkStruct22
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 filler8[0x18-0x8];
+    u16 unk18;
+    u16 unk1A;
+    u16 unk1C;
+    u8 filler1E[2];
+    u32 unk20;
+    struct UnkStruct23 *unk24;
+};
+
+struct UnkStruct19
+{
+    u32 unk0;
+    u32 unk4;
+    u16 unk8;
+    u16 unkA;
+    u8 fillerC[4];
+};  // size = 0x10
+
+struct UnkStruct21
+{
+    u8 filler0[4];
+    struct UnkStruct19 *unk4;
+    u32 unk8;
+};
+
+void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c);
+
+void *func_8008D9A8(char *fileName, struct UnkStruct21 *b)
 {
     u32 *buffer;
     u32 size;
@@ -227,7 +263,7 @@ void *func_8008D9A8(char *fileName, u32 b)
         OSFree(buffer);
         return NULL;
     }
-    func_8008F1E8(buffer, b, 0);
+    func_8008F1E8((struct UnkStruct22 *)buffer, b, NULL);
     return buffer;
 }
 
@@ -244,7 +280,7 @@ void func_8008DA9C(struct UnkStruct5 *a)
     OSFree(a);
 }
 
-struct GMA *load_gma(char *fileName, u32 b)
+struct GMA *load_gma(char *fileName, struct UnkStruct21 *b)
 {
     int i;
     struct GMA *gma;
@@ -310,13 +346,13 @@ struct GMA *load_gma(char *fileName, u32 b)
             r3 = (u32)gma->unk4 + r3;
             r7->unk0 = r3;
             r7->unk4 = (char *)((u32)gma->unkC + (u32)r7->unk4);
-            func_8008F1E8(r3, b, 0);
+            func_8008F1E8((struct UnkStruct22 *)r3, b, NULL);
         }
     }
     return gma;
 }
 
-struct GMA *func_8008DDB4(u32 a, u32 b, u32 c)
+struct GMA *func_8008DDB4(u32 a, u32 b, struct UnkStruct21 *c)
 {
     u32 r31;
     u32 r30 = OSRoundUp32B(b);
@@ -352,7 +388,7 @@ struct GMA *func_8008DDB4(u32 a, u32 b, u32 c)
             r3 = (u32)gma->unk4 + r3;
             r7->unk0 = r3;
             r7->unk4 = (char *)((u32)gma->unkC + (u32)r7->unk4);
-            func_8008F1E8(r3, c, 0);
+            func_8008F1E8((struct UnkStruct22 *)r3, c, NULL);
         }
     }
     return gma;
@@ -1055,26 +1091,27 @@ int func_8008EF9C(int a, int b)
 struct UnkStruct20
 {
     u32 unk0;
-    u8 filler4[2];
+    u16 unk4;
     s8 unk6;
     u8 unk7;
     GXTexObj *unk8;
+    u8 fillerC[0x20-0xC];
 };
 
-struct UnkStruct19
+/*
+struct UnkStruct20
 {
     u32 unk0;
-    u32 unk4;
-    //u8 filler4[4];
-    u16 unk8;
-    u16 unkA;
-};
-
-struct UnkStruct21
-{
-    u8 filler0[8];
-    u32 unk8;
-};
+    u16 unk4;
+    s8 unk6;
+    u8 unk7;
+    GXTexObj *unk8;
+    u8 fillerC[0x12-0xC];
+    u8 unk12;
+    u8 filler13[0x1C-0x13];
+    u32 unk1C;
+};  // size = 0x20
+*/
 
 void func_8008EFD0(struct UnkStruct20 *a, struct UnkStruct19 *b, struct UnkStruct21 *c)
 {
@@ -1160,4 +1197,82 @@ void func_8008EFD0(struct UnkStruct20 *a, struct UnkStruct19 *b, struct UnkStruc
         0,
         (a->unk0 & 0x40) != 0,
         a->unk7);
+}
+
+struct UnkStruct24
+{
+    u32 unk0;
+    u8 filler4[0x12-0x4];
+    u8 unk12;
+    u8 filler13[0x1C-0x13];
+    u32 unk1C;
+};  // size = 0x20
+
+static void *func_8008F1E8_inline(struct UnkStruct24 *r30)
+{
+    if (r30->unk1C & 0x800)
+        r30->unk0 |= 0x100;
+    if (r30->unk12 == 0)
+        r30->unk0 |= 0x80;
+    return func_8008E9E0((void *)r30);
+}
+
+void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
+{
+    struct UnkStruct20 *r30;
+    struct UnkStruct24 *r30_2;
+    int i;
+
+    if (b == 0)
+        a->unk18 = 0;
+    r30 = (void *)((u32)a + 0x40);
+    if (a->unk18 != 0)
+    {
+        if (c != 0)
+        {
+            a->unk24 = (void *)c;
+            c += a->unk18 * 32;
+        }
+        else
+            a->unk24 = OSAlloc(a->unk18 * 32);
+        if (a->unk24 == NULL)
+            OSPanic("avdisp.c", 0x58B, "cannot OSAlloc");
+    }
+    else
+        a->unk24 = 0;
+    for (i = 0; i < a->unk18; i++)
+    {
+        r30[i].unk8 = (void *)&a->unk24[i];
+        func_8008EFD0(&r30[i], &b->unk4[r30[i].unk4], b);
+    }
+    r30_2 = (void *)((u32)a + a->unk20);
+    if (a->unk4 & 0x18)
+        r30_2++;
+    for (i = 0; i < a->unk1A; i++)
+    {
+        if (b == NULL)
+            r30_2->unk12 = 0;
+        if (a->unk4 & 0x18)
+        {
+            struct UnkStruct24 *r3 = r30_2;
+            r30_2 += 3;
+            func_8008F1E8_inline(r3);
+        }
+        else
+            r30_2 = func_8008F1E8_inline(r30_2);
+    }
+    for (i = 0; i < a->unk1C; i++)
+    {
+        if (b == NULL)
+            r30_2->unk12 = 0;
+        if (a->unk4 & 0x18)
+        {
+            struct UnkStruct24 *r3 = r30_2;
+            r30_2 += 3;
+            func_8008F1E8_inline(r3);
+        }
+        else
+            r30_2 = func_8008F1E8_inline(r30_2);
+    }
+    return c;
 }
