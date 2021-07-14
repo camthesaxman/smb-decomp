@@ -740,7 +740,41 @@ struct UnkStruct16
     u32 unkC;
 };
 
-#ifdef NONMATCHING
+struct UnkStruct18
+{
+    u32 unk0;
+    u8 filler4[0x13-0x4];
+    u8 unk13;
+    u8 unk14;
+    u8 filler15[0x1C-0x15];
+    u32 unk1C;
+    u8 unk20[8];
+    u32 unk28[2];  // display list sizes
+    u8 unk30[0x60-0x30];
+    u8 unk60[1];
+};
+
+static inline void *func_8008E9E0(struct UnkStruct18 *a);
+
+static inline void *func_8008E9E0_inlined(struct UnkStruct18 *a)
+{
+    u8 *r7 = a->unk60;
+    int i;
+    for (i = 0; i < 2; i++)
+    {
+        if (a->unk13 & (1 << i))
+            r7 += a->unk28[i];
+    }
+    if (a->unk13 & 0xC)
+    {
+        u32 *r4 = (u32 *)r7;
+        r7 += 32;
+        r7 += r4[2];
+        r7 += r4[3];
+    }
+    return (void *)r7;
+}
+
 void func_8008E698(struct UnkStruct13 *a, u32 b)
 {
     //u32 i;
@@ -755,145 +789,21 @@ void func_8008E698(struct UnkStruct13 *a, u32 b)
     //lbl_8008E6F0
     else
     {
-        u32 r8;
-        s32 j; // r7
         u32 i;
-        struct UnkStruct15 *r11 = (struct UnkStruct15 *)r5;
+        struct UnkStruct18 *r11 = (struct UnkStruct18 *)r5;
         for (i = 0; i < a->unk1A + a->unk1C; i++)
         {
             //lbl_8008E704
             r11->unk0 |= b;
-            r8 = (u32)r11->unk60;
-            //r11->unk0 |= b;
-            for (j = 0; j < 2; j++)
-            {
-                if (r11->unk13 & (1 << j))
-                    r8 += r11->unk28[j];
-            }
-            //lbl_8008E764
-            if (r11->unk13 & 0xC)
-            {
-                u32 *r6 = (u32 *)r8;
-                r8 += 32;
-                r8 += r6[2];
-                r8 += r6[3];
-                /*
-                struct UnkStruct16 *r6 = (void *)r8;
-                r8 += 32;
-                r8 += r6->unk8;
-                r8 += r6->unkC;
-                */
-            }
-            //lbl_8008E78C
-            r11 = (struct UnkStruct15 *)r8;
+#ifdef NONMATCHING
+	    r11 = func_8008E9E0(r11);
+#else
+	    r11 = func_8008E9E0_inlined(r11);
+#endif
         }
     }
     //lbl_8008E7A8
 }
-#else
-asm void func_8008E698(struct UnkStruct13 *a, u32 b)
-{
-    nofralloc
-/* 8008E698 0008A5B8  80 03 00 04 */	lwz r0, 4(r3)
-/* 8008E69C 0008A5BC  80 A3 00 20 */	lwz r5, 0x20(r3)
-/* 8008E6A0 0008A5C0  54 00 06 F8 */	rlwinm r0, r0, 0, 0x1b, 0x1c
-/* 8008E6A4 0008A5C4  28 00 00 00 */	cmplwi r0, 0
-/* 8008E6A8 0008A5C8  7C A3 2A 14 */	add r5, r3, r5
-/* 8008E6AC 0008A5CC  41 82 00 44 */	beq lbl_8008E6F0
-/* 8008E6B0 0008A5D0  38 C5 00 20 */	addi r6, r5, 0x20
-/* 8008E6B4 0008A5D4  38 E0 00 00 */	li r7, 0
-/* 8008E6B8 0008A5D8  48 00 00 04 */	b lbl_8008E6BC
-lbl_8008E6BC:
-/* 8008E6BC 0008A5DC  48 00 00 04 */	b lbl_8008E6C0
-lbl_8008E6C0:
-/* 8008E6C0 0008A5E0  48 00 00 18 */	b lbl_8008E6D8
-lbl_8008E6C4:
-/* 8008E6C4 0008A5E4  80 06 00 00 */	lwz r0, 0(r6)
-/* 8008E6C8 0008A5E8  38 E7 00 01 */	addi r7, r7, 1
-/* 8008E6CC 0008A5EC  7C 00 23 78 */	or r0, r0, r4
-/* 8008E6D0 0008A5F0  90 06 00 00 */	stw r0, 0(r6)
-/* 8008E6D4 0008A5F4  38 C6 00 60 */	addi r6, r6, 0x60
-lbl_8008E6D8:
-/* 8008E6D8 0008A5F8  A0 A3 00 1A */	lhz r5, 0x1a(r3)
-/* 8008E6DC 0008A5FC  A0 03 00 1C */	lhz r0, 0x1c(r3)
-/* 8008E6E0 0008A600  7C 05 02 14 */	add r0, r5, r0
-/* 8008E6E4 0008A604  7C 07 00 40 */	cmplw r7, r0
-/* 8008E6E8 0008A608  41 80 FF DC */	blt lbl_8008E6C4
-/* 8008E6EC 0008A60C  48 00 00 BC */	b lbl_8008E7A8
-lbl_8008E6F0:
-/* 8008E6F0 0008A610  7C AB 2B 78 */	mr r11, r5
-/* 8008E6F4 0008A614  39 40 00 00 */	li r10, 0
-/* 8008E6F8 0008A618  48 00 00 04 */	b lbl_8008E6FC
-lbl_8008E6FC:
-/* 8008E6FC 0008A61C  48 00 00 04 */	b lbl_8008E700
-lbl_8008E700:
-/* 8008E700 0008A620  48 00 00 94 */	b lbl_8008E794
-lbl_8008E704:
-/* 8008E704 0008A624  80 0B 00 00 */	lwz r0, 0(r11)
-/* 8008E708 0008A628  39 0B 00 60 */	addi r8, r11, 0x60
-/* 8008E70C 0008A62C  38 E0 00 00 */	li r7, 0
-/* 8008E710 0008A630  7C 00 23 78 */	or r0, r0, r4
-/* 8008E714 0008A634  90 0B 00 00 */	stw r0, 0(r11)
-/* 8008E718 0008A638  48 00 00 04 */	b lbl_8008E71C
-lbl_8008E71C:
-/* 8008E71C 0008A63C  38 A0 00 01 */	li r5, 1
-/* 8008E720 0008A640  48 00 00 04 */	b lbl_8008E724
-lbl_8008E724:
-/* 8008E724 0008A644  88 CB 00 13 */	lbz r6, 0x13(r11)
-/* 8008E728 0008A648  7C A0 38 30 */	slw r0, r5, r7
-/* 8008E72C 0008A64C  7C C0 00 38 */	and r0, r6, r0
-/* 8008E730 0008A650  2C 00 00 00 */	cmpwi r0, 0
-/* 8008E734 0008A654  41 82 00 0C */	beq lbl_8008E740
-/* 8008E738 0008A658  80 0B 00 28 */	lwz r0, 0x28(r11)
-/* 8008E73C 0008A65C  7D 08 02 14 */	add r8, r8, r0
-lbl_8008E740:
-/* 8008E740 0008A660  39 2B 00 04 */	addi r9, r11, 4
-/* 8008E744 0008A664  38 E0 00 01 */	li r7, 1
-/* 8008E748 0008A668  88 CB 00 13 */	lbz r6, 0x13(r11)
-/* 8008E74C 0008A66C  7C A0 38 30 */	slw r0, r5, r7
-/* 8008E750 0008A670  7C C0 00 38 */	and r0, r6, r0
-/* 8008E754 0008A674  2C 00 00 00 */	cmpwi r0, 0
-/* 8008E758 0008A678  41 82 00 0C */	beq lbl_8008E764
-/* 8008E75C 0008A67C  80 09 00 28 */	lwz r0, 0x28(r9)
-/* 8008E760 0008A680  7D 08 02 14 */	add r8, r8, r0
-lbl_8008E764:
-/* 8008E764 0008A684  88 0B 00 13 */	lbz r0, 0x13(r11)
-/* 8008E768 0008A688  54 00 07 3A */	rlwinm r0, r0, 0, 0x1c, 0x1d
-/* 8008E76C 0008A68C  2C 00 00 00 */	cmpwi r0, 0
-/* 8008E770 0008A690  41 82 00 1C */	beq lbl_8008E78C
-/* 8008E774 0008A694  7D 06 43 78 */	mr r6, r8
-/* 8008E778 0008A698  80 A6 00 08 */	lwz r5, 8(r6)
-/* 8008E77C 0008A69C  39 08 00 20 */	addi r8, r8, 0x20
-/* 8008E780 0008A6A0  80 06 00 0C */	lwz r0, 0xc(r6)
-/* 8008E784 0008A6A4  7D 08 2A 14 */	add r8, r8, r5
-/* 8008E788 0008A6A8  7D 08 02 14 */	add r8, r8, r0
-lbl_8008E78C:
-/* 8008E78C 0008A6AC  7D 0B 43 78 */	mr r11, r8
-/* 8008E790 0008A6B0  39 4A 00 01 */	addi r10, r10, 1
-lbl_8008E794:
-/* 8008E794 0008A6B4  A0 A3 00 1A */	lhz r5, 0x1a(r3)
-/* 8008E798 0008A6B8  A0 03 00 1C */	lhz r0, 0x1c(r3)
-/* 8008E79C 0008A6BC  7C 05 02 14 */	add r0, r5, r0
-/* 8008E7A0 0008A6C0  7C 0A 00 40 */	cmplw r10, r0
-/* 8008E7A4 0008A6C4  41 80 FF 60 */	blt lbl_8008E704
-lbl_8008E7A8:
-/* 8008E7A8 0008A6C8  4E 80 00 20 */	blr
-}
-#endif
-
-struct UnkStruct18
-{
-    u32 unk0;
-    u8 filler4[0x13-0x4];
-    u8 unk13;
-    u8 unk14;
-    u8 filler15[0x1C-0x15];
-    u32 unk1C;
-    u8 unk20[8];
-    u32 unk28[2];  // display list sizes
-    u8 unk30[0x60-0x30];
-    u8 unk60[1];
-};
 
 struct UnkStruct17
 {
@@ -922,7 +832,6 @@ struct UnkStruct17
 
 void lbl_8008F528(struct UnkStruct17 *a);
 
-void *func_8008E9E0(struct UnkStruct18 *a);
 void func_8008F498(struct UnkStruct10 *a);
 
 static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct18 *r26, void *r25)
@@ -997,7 +906,7 @@ void func_8008E7AC(struct UnkStruct10 *a)
     lbl_802F20DC = 1.0f;
 }
 
-void *func_8008E9E0(struct UnkStruct18 *a)
+static inline void *func_8008E9E0(struct UnkStruct18 *a)
 {
     u8 *r7 = a->unk60;
     int i;
@@ -1546,7 +1455,7 @@ u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
     r31 = b->unk60;
 
     //lbl_8008F9DC
-    if (func_8008F914_inline_alt(b, c) != 0)
+    if (func_8008F914_inline(b, c) != 0)
     {
         for (i = 0; i < 2; i++)
         {
