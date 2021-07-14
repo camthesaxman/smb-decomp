@@ -694,3 +694,71 @@ lbl_800E0EEC:
 /* 800E0EF8 000DCE18  83 81 00 28 */	lwz r28, 0x28(r1)
 /* 800E0EFC 000DCE1C  38 21 00 38 */	addi r1, r1, 0x38
 /* 800E0F00 000DCE20  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F67A0
+lbl_802F67A0:
+	# ROM: 0x1F01C0
+	.4byte 0
+
+.global lbl_802F67A4
+lbl_802F67A4:
+	# ROM: 0x1F01C4
+	.byte 0x42, 0xB4, 0x00, 0x00
+
+.global lbl_802F67A8
+lbl_802F67A8:
+	# ROM: 0x1F01C8
+	.byte 0x40, 0x49, 0x0F, 0xDB
+
+.global lbl_802F67AC
+lbl_802F67AC:
+	# ROM: 0x1F01CC
+	.byte 0x43, 0x34, 0x00, 0x00
+
+.global lbl_802F67B0
+lbl_802F67B0:
+	# ROM: 0x1F01D0
+	.byte 0xC4, 0x7A, 0x00, 0x00
+
+.global lbl_802F67B4
+lbl_802F67B4:
+	# ROM: 0x1F01D4
+	.byte 0x44, 0x7A, 0x00, 0x00
+
+.global lbl_802F67B8
+lbl_802F67B8:
+	# ROM: 0x1F01D8
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F67BC
+lbl_802F67BC:
+	# ROM: 0x1F01DC
+	.byte 0x40, 0x00, 0x00, 0x00
+
+.global lbl_802F67C0
+lbl_802F67C0:
+	# ROM: 0x1F01E0
+	.byte 0xBF, 0x80, 0x00, 0x00
+
+.global lbl_802F67C4
+lbl_802F67C4:
+	# ROM: 0x1F01E4
+	.byte 0xC0, 0x80, 0x00, 0x00
+
+.global lbl_802F67C8
+lbl_802F67C8:
+	# ROM: 0x1F01E8
+	.byte 0x40, 0x80, 0x00, 0x00
+
+.global lbl_802F67CC
+lbl_802F67CC:
+	# ROM: 0x1F01EC
+	.byte 0xC0, 0x00, 0x00, 0x00
+
+.global lbl_802F67D0
+lbl_802F67D0:
+	# ROM: 0x1F01F0
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0

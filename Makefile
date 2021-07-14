@@ -28,6 +28,7 @@ MAP      := $(DOL:.dol=.map)
 LDSCRIPT := ldscript.lcf
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
+	asm/data.s \
 	asm/init.s \
 	src/main.c \
 	src/init.c \
@@ -222,8 +223,7 @@ SOURCE_FILES := \
 	asm/lib/amcstubs/AmcExi2Stubs.s \
 	asm/lib/odemustubs/odemustubs.s \
 	asm/lib/amcnotstub/amcnotstub.s \
-	asm/lib/data.s \
-	asm/data.s
+	asm/lib/data.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 
 #-------------------------------------------------------------------------------

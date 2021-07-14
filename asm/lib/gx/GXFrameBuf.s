@@ -809,3 +809,17 @@ GXClearBoundingBox:
 /* 800E05B4 000DC4D4  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E05B8 000DC4D8  B0 03 00 02 */	sth r0, 2(r3)
 /* 800E05BC 000DC4DC  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6790
+lbl_802F6790:
+	# ROM: 0x1F01B0
+	.byte 0x43, 0x80, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6798
+lbl_802F6798:
+	# ROM: 0x1F01B8
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0

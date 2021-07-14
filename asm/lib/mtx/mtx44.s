@@ -139,3 +139,35 @@ C_MTXOrtho:
 /* 800CA84C 000C676C  D0 63 00 38 */	stfs f3, 0x38(r3)
 /* 800CA850 000C6770  D1 23 00 3C */	stfs f9, 0x3c(r3)
 /* 800CA854 000C6774  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6740
+lbl_802F6740:
+	# ROM: 0x1F0160
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F6744
+lbl_802F6744:
+	# ROM: 0x1F0164
+	.byte 0x40, 0x00, 0x00, 0x00
+
+.global lbl_802F6748
+lbl_802F6748:
+	# ROM: 0x1F0168
+	.4byte 0
+
+.global lbl_802F674C
+lbl_802F674C:
+	# ROM: 0x1F016C
+	.byte 0xBF, 0x80, 0x00, 0x00
+
+.global lbl_802F6750
+lbl_802F6750:
+	# ROM: 0x1F0170
+	.byte 0x3F, 0x00, 0x00, 0x00
+
+.global lbl_802F6754
+lbl_802F6754:
+	# ROM: 0x1F0174
+	.byte 0x3C, 0x8E, 0xFA, 0x35

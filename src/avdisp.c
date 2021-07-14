@@ -29,35 +29,49 @@ struct GMA
 };
 
 char *lbl_802F12E8 = "Invalid Model";
-extern void *lbl_802F20CC;
 
-extern void **lbl_802F20C8;
+// .sbss
+float lbl_802F212C;
+float lbl_802F2128;
+GXColor lbl_802F2124;
+u32 lbl_802F2120;
+u32 lbl_802F211C;
+GXColor lbl_802F2118;
+u32 lbl_802F2114;
+GXColor lbl_802F2110;
+u32 lbl_802F210C;
+u32 lbl_802F2108;
+u32 lbl_802F2104;
+u8 lbl_802F2101;
+u8 lbl_802F2100;
+float lbl_802F20FC;
+float lbl_802F20F8;
+float lbl_802F20F4;
+typedef u32 (*Func802F20F0)();
+Func802F20F0 lbl_802F20F0;
+u32 lbl_802F20EC;
+s32 lbl_802F20E8;
+float lbl_802F20E4;
+u32 lbl_802F20E0;
+float lbl_802F20DC;
+float lbl_802F20D8;
+float lbl_802F20D4;
+float lbl_802F20D0;
+Mtx *lbl_802F20CC;
+void **lbl_802F20C8;
 
+// .bss
 Vec lbl_802B4E60;
 Mtx lbl_802B4E6C;
 Mtx lbl_802B4E9C;
 u8 lbl_802B4ECC[0x94];
 u32 lbl_802B4E60_100[8+16];  //4F60
 
-#define FORCE_BSS_ORDERING(var) void *force_##var(){return &var;}
-
-FORCE_BSS_ORDERING(lbl_802B4E60)
-FORCE_BSS_ORDERING(lbl_802B4E6C)
-FORCE_BSS_ORDERING(lbl_802B4E9C)
-FORCE_BSS_ORDERING(lbl_802B4ECC)
-FORCE_BSS_ORDERING(lbl_802B4E60_100)
-
-//#pragma peephole off
-
-extern u32 lbl_802F20EC;
-extern float lbl_802F20D8;
-extern float lbl_802F20D4;
-extern float lbl_802F20D0;
-extern float lbl_802F20E4;
-extern float lbl_802F20DC;
-extern u32 lbl_802F20E0;
-extern u32 lbl_802F20F0;
-extern u32 lbl_802F2108;
+FORCE_BSS_ORDER(lbl_802B4E60)
+FORCE_BSS_ORDER(lbl_802B4E6C)
+FORCE_BSS_ORDER(lbl_802B4E9C)
+FORCE_BSS_ORDER(lbl_802B4ECC)
+FORCE_BSS_ORDER(lbl_802B4E60_100)
 
 extern void func_8008E5B8(float, float, float);
 extern void func_8008F714(float, float, float, float);
@@ -134,6 +148,9 @@ lbl_8008D724:
     blr
 }
 
+void func_8008F878(u32 a);
+void func_8008F890(u8 a, u8 b, u8 c);
+
 void func_8008D788(void)
 {
     Vec sp8;
@@ -144,7 +161,7 @@ void func_8008D788(void)
     lbl_802F20E4 = 1.0f;
     lbl_802F20DC = 1.0f;
     lbl_802F20E0 = 1;
-    lbl_802F20F0 = 0;
+    lbl_802F20F0 = NULL;
     func_80090474();
     sp8.x = 0.0f;
     sp8.y = 1.0f;
@@ -191,7 +208,7 @@ void func_8008D8D0(struct UnkStruct4 *a, void **b)
         for (i = 0; i < a->unk1E; i++)
         {
             *b = pMtx;
-            mathutil_copy_mtx(pMtx, *b);
+            mathutil_copy_mtx(*pMtx, *b);
             pMtx++;
             b++;
         }
@@ -200,7 +217,7 @@ void func_8008D8D0(struct UnkStruct4 *a, void **b)
     {
         for (i = 0; i < a->unk1E; i++)
         {
-            mathutil_copy_mtx(pMtx, *b);
+            mathutil_copy_mtx(*pMtx, *b);
             pMtx++;
             b++;
         }
@@ -561,8 +578,10 @@ struct UnkStruct10
     u8 filler18[0x1A-0x18];
     u16 unk1A;
     u16 unk1C;
+    u8 unk1E;
     u32 unk20;
     u32 unk24;
+    u8 unk28[10];
 };
 
 void func_8008E7AC(struct UnkStruct10 *a);
@@ -621,20 +640,12 @@ void func_8008E574(Vec *a)
     mathutil_vec_normalize_clamp(&lbl_802B4E60);
 }
 
-extern float lbl_802F20F4;
-extern float lbl_802F20F8;
-extern float lbl_802F20FC;
-
 void func_8008E5B8(float a, float b, float c)
 {
     lbl_802F20F4 = a;
     lbl_802F20F8 = b;
     lbl_802F20FC = c;
 }
-
-extern u8 lbl_802F2100;
-extern u8 lbl_802F2101;
-extern u32 lbl_802F2104;
 
 void func_8008E5C8(u8 a, u32 b, u8 c)
 {
@@ -643,9 +654,6 @@ void func_8008E5C8(u8 a, u32 b, u8 c)
     lbl_802F2101 = c;
 }
 
-extern u32 lbl_802F20EC;
-extern u32 lbl_802F20F0;
-
 u32 func_8008E5D8(u32 a)
 {
     u32 temp = lbl_802F20EC;
@@ -653,9 +661,9 @@ u32 func_8008E5D8(u32 a)
     return temp;
 }
 
-u32 func_8008E5E8(u32 a)
+Func802F20F0 func_8008E5E8(Func802F20F0 a)
 {
-    u32 temp = lbl_802F20F0;
+    Func802F20F0 temp = lbl_802F20F0;
     lbl_802F20F0 = a;
     return temp;
 }
@@ -873,19 +881,33 @@ lbl_8008E7A8:
 }
 #endif
 
+struct UnkStruct18
+{
+    u32 unk0;
+    u8 filler4[0x13-0x4];
+    u8 unk13;
+    u8 unk14;
+    u8 filler15[0x1C-0x15];
+    u32 unk1C;
+    u8 unk20[8];
+    u32 unk28[2];  // display list sizes
+    u8 unk30[0x60-0x30];
+    u8 unk60[1];
+};
+
 struct UnkStruct17
 {
     u8 filler0[4];
-    void (*unk4)(u32);
+    void (*unk4)(struct UnkStruct17 *);
     void *unk8;
     Mtx unkC;
     void *unk3C;
-    void *unk40;
+    struct UnkStruct18 *unk40;
     u32 unk44;
     u32 unk48;
     float unk4C;
     u32 unk50;
-    u32 unk54;
+    Func802F20F0 unk54;
     u8 unk58;
     u8 unk59;
     u32 unk5C;
@@ -893,31 +915,15 @@ struct UnkStruct17
     u8 unk61;
     u8 unk62;
     Mtx *unk64;
-    u32 unk68;
-    u32 unk6C;
+    GXColor unk68;
+    GXColor unk6C;
     u32 unk70;
 };
 
-struct UnkStruct18
-{
-    u8 filler0[0x13];
-    u8 unk13;
-    u8 unk14;
-    u8 filler15[0x28-0x15];
-    u32 unk28[2];
-    u8 unk30[1];
-};
-
-extern void lbl_8008F528(u32);
-extern u32 lbl_802F20E8;
-
-extern u32 lbl_802F210C;
-extern u32 lbl_802F2114;
-extern u32 lbl_802F2118;
-extern u32 lbl_802F2110;
-extern u32 lbl_802F211C;
+void lbl_8008F528(struct UnkStruct17 *a);
 
 void *func_8008E9E0(struct UnkStruct18 *a);
+void func_8008F498(struct UnkStruct10 *a);
 
 static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct18 *r26, void *r25)
 {
@@ -948,7 +954,7 @@ static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct
     if (r29->unk60 != 0)
     {
         r29->unk64 = (void *)func_80085B88(0x30);
-        mathutil_copy_mtx(lbl_802B4E6C, r29->unk64);
+        mathutil_copy_mtx(lbl_802B4E6C, *r29->unk64);
     }
     if (r29->unk61 != 0)
         r29->unk68 = lbl_802F2110;
@@ -960,6 +966,8 @@ static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct
     return (void *)func_8008E9E0(r26);
 }
 
+u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c);
+
 void func_8008E7AC(struct UnkStruct10 *a)
 {
     struct UnkStruct18 *r26 = (struct UnkStruct18 *)((u32)a + a->unk20);
@@ -970,7 +978,7 @@ void func_8008E7AC(struct UnkStruct10 *a)
     func_8009E094(lbl_802F20E8);
     if (a->unk4 & 4)
         func_8008F498(a);
-    if (lbl_802F20F0 == 0)
+    if (lbl_802F20F0 == NULL)
         func_8008FE44(a, r26);
     //lbl_8008E80C
     if (a->unk4 & 0x18)
@@ -991,7 +999,7 @@ void func_8008E7AC(struct UnkStruct10 *a)
 
 void *func_8008E9E0(struct UnkStruct18 *a)
 {
-    u32 r7 = (u32)a + 0x60;
+    u8 *r7 = a->unk60;
     int i;
     for (i = 0; i < 2; i++)
     {
@@ -1017,16 +1025,16 @@ void func_8008EA64(struct UnkStruct10 *a)
     func_8009E094(lbl_802F20E8);
     if (a->unk4 & 0x4)
         func_8008F498(a);
-    if (lbl_802F20F0 == 0)
+    if (lbl_802F20F0 == NULL)
         func_8008FE44(a, r30);
     if (a->unk4 & 0x18)
         func_8008FD90(a, r30, r29);
     else
     {
         for (i = 0; i < a->unk1A; i++)
-            r30 = func_8008F914(a, r30, r29);
+            r30 = func_8008F914(a, (void *)r30, (void *)r29);
         for (i = 0; i < a->unk1C; i++)
-            r30 = func_8008F914(a, r30, r29);
+            r30 = func_8008F914(a, (void *)r30, (void *)r29);
     }
     lbl_802F20E4 = 1.0f;
     GXSetCurrentMtx(0);
@@ -1042,7 +1050,7 @@ void func_8008EB94(struct UnkStruct10 *a)
     func_8009E094(lbl_802F20E8);
     if (a->unk4 & 0x4)
         func_8008F498(a);
-    if (lbl_802F20F0 == 0)
+    if (lbl_802F20F0 == NULL)
         func_8008FE44(a, r24);
     for (i = 0; i < a->unk1A; i++)
         r24 = (void *)func_8008E7AC_inline(a, r24, (void *)r31);
@@ -1067,7 +1075,7 @@ void func_8008EEC0(struct UnkStruct10 *a)
     else
     {
         for (i = 0; i < a->unk1A; i++)
-            r31 = (void *)func_8008F914(a, r31, r30);
+            r31 = (void *)func_8008F914(a, r31, (void *)r30);
     }
     lbl_802F20E4 = 1.0f;
     GXSetCurrentMtx(0);
@@ -1208,7 +1216,7 @@ struct UnkStruct24
     u32 unk1C;
 };  // size = 0x20
 
-static void *func_8008F1E8_inline(struct UnkStruct24 *r30)
+static struct UnkStruct24 *func_8008F1E8_inline(struct UnkStruct24 *r30)
 {
     if (r30->unk1C & 0x800)
         r30->unk0 |= 0x100;
@@ -1223,12 +1231,12 @@ void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
     struct UnkStruct24 *r30_2;
     int i;
 
-    if (b == 0)
+    if (b == NULL)
         a->unk18 = 0;
     r30 = (void *)((u32)a + 0x40);
     if (a->unk18 != 0)
     {
-        if (c != 0)
+        if (c != NULL)
         {
             a->unk24 = (void *)c;
             c += a->unk18 * 32;
@@ -1239,7 +1247,8 @@ void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
             OSPanic("avdisp.c", 0x58B, "cannot OSAlloc");
     }
     else
-        a->unk24 = 0;
+        a->unk24 = NULL;
+
     for (i = 0; i < a->unk18; i++)
     {
         r30[i].unk8 = (void *)&a->unk24[i];
@@ -1275,4 +1284,300 @@ void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
             r30_2 = func_8008F1E8_inline(r30_2);
     }
     return c;
+}
+
+void func_8008F8A4(u8 *a);
+
+void func_8008F498(struct UnkStruct10 *a)
+{
+    unsigned int i;
+    for (i = 0; i < a->unk1E; i++)
+        mathutil_mult_mtx(lbl_802F1B60->unk0, lbl_802F20C8[i], lbl_802F20CC[i]);
+    func_8008F8A4(a->unk28);
+}
+
+void lbl_8008F528(struct UnkStruct17 *a)
+{
+    u32 r31;
+    Func802F20F0 r30;
+    u8 r29;
+    u8 r28;
+    u32 r27;
+    u32 r26;
+    u32 r25;
+    u32 r23;
+    u32 r22;
+    GXColor sp10;
+    GXColor spC;
+    
+    if ((a->unk40->unk0 & 0x1) == 0)
+        func_800223D8(a->unk48);
+    func_8009AA24(a->unkC, 0);
+    mathutil_set_a_mtx(a->unkC);
+    func_8009E094(a->unk44);
+    lbl_802F20E8 = a->unk44;
+    r31 = lbl_802F20EC;
+    r30 = lbl_802F20F0;
+    r29 = lbl_802F2100;
+    r28 = lbl_802F2101;
+    r27 = lbl_802F2104;
+    r26 = lbl_802F2108;
+    lbl_802F20DC = a->unk4C;
+    lbl_802F20EC = a->unk50;
+    lbl_802F20F0 = a->unk54;
+    lbl_802F2100 = a->unk58;
+    lbl_802F2101 = a->unk59;
+    lbl_802F2104 = a->unk5C;
+    lbl_802F2108 = a->unk60;
+    if (a->unk60 != 0)
+        mathutil_copy_mtx(*a->unk64, lbl_802B4E6C);
+    r25 = lbl_802F210C;
+    lbl_802F210C = a->unk61;
+    if (a->unk61 != 0)
+    {
+        sp10 = lbl_802F2110;
+        lbl_802F2110 = a->unk68;
+    }
+    r23 = lbl_802F2114;
+    lbl_802F2114 = a->unk62;
+    if (a->unk62 != 0)
+    {
+        spC = lbl_802F2118;
+        lbl_802F2118 = a->unk6C;
+    }
+    r22 = lbl_802F211C;
+    lbl_802F211C = a->unk70;
+    if (lbl_802F20F0 == NULL)
+        func_8008FE44(a->unk8, a->unk40);
+    func_8008F914(a->unk8, a->unk40, a->unk3C);
+    lbl_802F20EC = r31;
+    lbl_802F20F0 = r30;
+    lbl_802F2100 = r29;
+    lbl_802F2101 = r28;
+    lbl_802F2104 = r27;
+    lbl_802F2108 = r26;
+    lbl_802F210C = r25;
+    if (a->unk61 != 0)
+        lbl_802F2110 = sp10;
+    lbl_802F2114 = r23;
+    if (a->unk62 != 0)
+        lbl_802F2118 = spC;
+    lbl_802F211C = r22;
+    lbl_802F20DC = 1.0f;
+}
+
+u32 func_8008F6D4(u32 a)
+{
+    u32 old = lbl_802F2108;
+    lbl_802F2108 = a;
+    return old;
+}
+
+void func_8008F6E4(int unused, Mtx b)
+{
+    mathutil_copy_mtx(b, lbl_802B4E6C);
+}
+
+void func_8008F714(float a, float b, float c, float d)
+{
+    if (a != 1.0f || b != 1.0f || c != 1.0f || d != 1.0f)
+    {
+        lbl_802F210C = 1;
+        lbl_802F2110.r = a * 255.0f;
+        lbl_802F2110.g = b * 255.0f;
+        lbl_802F2110.b = c * 255.0f;
+        lbl_802F2110.a = d * 255.0f;
+    }
+    else
+    {
+        lbl_802F210C = 0;
+        lbl_802F2110.r = 255;
+        lbl_802F2110.g = 255;
+        lbl_802F2110.b = 255;
+        lbl_802F2110.a = 255;
+    }
+}
+
+void func_8008F7C8(float a, float b, float c, float d)
+{
+    if (a != 0.0f || b != 0.0f || c != 0.0f || d != 0.0f)
+    {
+        lbl_802F2114 = 1;
+        lbl_802F2118.r = a * 255.0f;
+        lbl_802F2118.g = b * 255.0f;
+        lbl_802F2118.b = c * 255.0f;
+        lbl_802F2118.a = d * 255.0f;
+    }
+    else
+    {
+        lbl_802F2114 = 0;
+        lbl_802F2118.r = 0;
+        lbl_802F2118.g = 0;
+        lbl_802F2118.b = 0;
+        lbl_802F2118.a = 0;
+    }
+}
+
+void func_8008F878(u32 a)
+{
+    lbl_802F211C = a;
+}
+
+void func_8008F880(int a, float b, float c)
+{
+    lbl_802F2120 = a;
+    lbl_802F2128 = b;
+    lbl_802F212C = c;
+}
+
+void func_8008F890(u8 a, u8 b, u8 c)
+{
+    lbl_802F2124.r = a;
+    lbl_802F2124.g = b;
+    lbl_802F2124.b = c;
+}
+
+void func_8008F8A4(u8 *a)
+{
+    int i;
+    for (i = 0; i < 8; i++)
+    {
+        if ((s32)a[i] != 0xFF)
+            func_8009AA24(&lbl_802F20CC[a[i]], i + 1);
+    }
+}
+
+struct UnkStruct25
+{
+    u8 filler0[8];
+    u32 unk8[2];
+    u8 filler10[0x20-0x10];
+    u8 unk20[1];
+};
+
+struct UnkStruct26
+{
+    u8 filler0[8];
+    u32 unk8;
+    u32 unkC;
+};
+
+struct UnkStruct27
+{
+    u8 filler0[4];
+    struct UnkStruct18 *unk4;
+    void *unk8;
+    u8 fillerC[0x18-0xC];
+};
+
+struct UnkStruct28
+{
+    u8 filler0_[8];
+    u8 filler0[4];
+    struct UnkStruct18 *unk4;
+    void *unk8;
+    u8 fillerC[0x38-0xC];
+};
+
+static u8 func_8008F914_inline(void *b, void *c)
+{
+    // Not sure about this stack usage and what struct this is supposed to be.
+#if 0
+    struct UnkStruct27 sp20;
+#else
+    struct UnkStruct28 sp20;
+#endif
+    if (lbl_802F20F0 != NULL)
+    {
+        sp20.unk4 = b;
+        sp20.unk8 = c;
+#if 0
+        return lbl_802F20F0(&sp20);
+#else
+        return lbl_802F20F0(sp20.filler0);
+#endif
+    }
+    else
+    {
+        func_80090524(b, c);
+        return 1;
+    }
+}
+
+static void *func_8008E9E0_(struct UnkStruct18 *a)
+{
+    u8 *r7 = a->unk60;
+    int i;
+    for (i = 0; i < 2; i++)
+    {
+        if (a->unk13 & (1 << i))
+            r7 += a->unk28[i];
+    }
+    if (a->unk13 & 0xC)
+    {
+        u32 *r4 = (u32 *)r7;
+        r7 += 32;
+        r7 += r4[2];
+        r7 += r4[3];
+    }
+    return (void *)r7;
+}
+
+u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
+{
+    int i;
+    u8 *r31;
+    s32 r30;
+
+    if (b->unk0 & 2)
+        r30 = 0;
+    else
+        r30 = 1;
+    if (a->unk4 & 4)
+        func_8008F8A4(b->unk20);  // inlined
+    //lbl_8008F998
+    func_8009A9B4(b->unk1C);
+    r31 = b->unk60;
+
+    //lbl_8008F9DC
+    if (func_8008F914_inline(b, c) != 0)
+    {
+        for (i = 0; i < 2; i++)
+        {
+            if (b->unk13 & (1 << i))
+            {
+                if (lbl_802F20E8 != r30)
+                {
+                    lbl_802F20E8 = r30;
+                    func_8009E094(r30);
+                }
+                GXCallDisplayList(r31, b->unk28[i]);
+                r31 += b->unk28[i];
+            }
+            //lbl_8008FA44
+            if (r30 != 0)
+                r30 = 2;
+        }
+        if ((b->unk13 & (0xC)) != 0)
+        {
+            struct UnkStruct25 *r26 = (void *)r31;
+            func_8008F8A4(r26->filler0);  // inlined
+            r31 = r26->unk20;
+            for (i = 0; i < 2; i++)
+            {
+                if (i == 0)
+                    func_8009E094(1);
+                else
+                    func_8009E094(2);
+                GXCallDisplayList(r31, r26->unk8[i]);
+                r31 += r26->unk8[i];
+            }
+        }
+    }
+    //lbl_8008FB18
+    else
+    {
+        return (u32)func_8008E9E0_(b);  // inlined
+    }
+    return (u32)r31;
 }

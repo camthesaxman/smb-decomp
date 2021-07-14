@@ -40,3 +40,15 @@ PSVECCrossProduct:
 /* 800CA8D0 000C67F0  11 40 50 50 */	ps_neg f10, f10
 /* 800CA8D4 000C67F4  F1 45 00 04 */	psq_st f10, 4(r5), 0, qr0
 /* 800CA8D8 000C67F8  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6758
+lbl_802F6758:
+	# ROM: 0x1F0178
+	.byte 0x3F, 0x00, 0x00, 0x00
+
+.global lbl_802F675C
+lbl_802F675C:
+	# ROM: 0x1F017C
+	.byte 0x40, 0x40, 0x00, 0x00

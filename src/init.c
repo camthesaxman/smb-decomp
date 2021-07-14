@@ -5,6 +5,8 @@
 
 u8 lbl_801EEBA0[0x80];
 
+#pragma force_active on
+
 void initialize(void)
 {
     OSInit();

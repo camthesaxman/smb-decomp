@@ -1065,3 +1065,41 @@ lbl_800DCE6C:
 /* 800DCF64 000D8E84  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 800DCF68 000D8E88  7C 08 03 A6 */	mtlr r0
 /* 800DCF6C 000D8E8C  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6770
+lbl_802F6770:
+	# ROM: 0x1F0190
+	.byte 0x40, 0x40, 0x40, 0xFF
+
+.global lbl_802F6774
+lbl_802F6774:
+	# ROM: 0x1F0194
+	.4byte 0
+
+.global lbl_802F6778
+lbl_802F6778:
+	# ROM: 0x1F0198
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+
+.global lbl_802F677C
+lbl_802F677C:
+	# ROM: 0x1F019C
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F6780
+lbl_802F6780:
+	# ROM: 0x1F01A0
+	.4byte 0
+
+.global lbl_802F6784
+lbl_802F6784:
+	# ROM: 0x1F01A4
+	.byte 0x3D, 0xCC, 0xCC, 0xCD
+
+.global lbl_802F6788
+lbl_802F6788:
+	# ROM: 0x1F01A8
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0

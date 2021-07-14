@@ -12,5 +12,6 @@
 #include <dolphin/GXVert.h>
 #include <dolphin/GXTexture.h>
 #include <dolphin/GXLighting.h>
+#include <dolphin/GXDispList.h>
 
 #endif

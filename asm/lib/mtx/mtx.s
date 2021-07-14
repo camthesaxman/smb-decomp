@@ -327,3 +327,21 @@ C_MTXLookAt:
 /* 800CA648 000C6568  83 A1 00 44 */	lwz r29, 0x44(r1)
 /* 800CA64C 000C656C  38 21 00 50 */	addi r1, r1, 0x50
 /* 800CA650 000C6570  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6730
+lbl_802F6730:
+	# ROM: 0x1F0150
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F6734
+lbl_802F6734:
+	# ROM: 0x1F0154
+	.4byte 0
+
+.global lbl_802F6738
+lbl_802F6738:
+	# ROM: 0x1F0158
+	.byte 0x40, 0x00, 0x00, 0x00
+	.4byte 0
