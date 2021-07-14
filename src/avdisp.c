@@ -1467,7 +1467,7 @@ struct UnkStruct27
     u8 filler0[4];
     struct UnkStruct18 *unk4;
     void *unk8;
-    u8 fillerC[0x18-0xC];
+    u8 fillerC[0x38-0xC];
 };
 
 struct UnkStruct28
@@ -1504,23 +1504,29 @@ static u8 func_8008F914_inline(void *b, void *c)
     }
 }
 
-static void *func_8008E9E0_(struct UnkStruct18 *a)
+static u8 func_8008F914_inline_alt(void *b, void *c)
 {
-    u8 *r7 = a->unk60;
-    int i;
-    for (i = 0; i < 2; i++)
+    // Not sure about this stack usage and what struct this is supposed to be.
+#if 1
+    struct UnkStruct27 sp20;
+#else
+    struct UnkStruct28 sp20;
+#endif
+    if (lbl_802F20F0 != NULL)
     {
-        if (a->unk13 & (1 << i))
-            r7 += a->unk28[i];
+        sp20.unk4 = b;
+        sp20.unk8 = c;
+#if 1
+        return lbl_802F20F0(&sp20);
+#else
+        return lbl_802F20F0(sp20.filler0);
+#endif
     }
-    if (a->unk13 & 0xC)
+    else
     {
-        u32 *r4 = (u32 *)r7;
-        r7 += 32;
-        r7 += r4[2];
-        r7 += r4[3];
+        func_80090524(b, c);
+        return 1;
     }
-    return (void *)r7;
 }
 
 u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
@@ -1540,7 +1546,7 @@ u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
     r31 = b->unk60;
 
     //lbl_8008F9DC
-    if (func_8008F914_inline(b, c) != 0)
+    if (func_8008F914_inline_alt(b, c) != 0)
     {
         for (i = 0; i < 2; i++)
         {
@@ -1577,7 +1583,107 @@ u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
     //lbl_8008FB18
     else
     {
-        return (u32)func_8008E9E0_(b);  // inlined
+        return (u32)func_8008E9E0(b);  // inlined
     }
     return (u32)r31;
+}
+
+asm void func_8008FBB0(u32 a, void *b, void *c, u32 d)
+{
+    nofralloc
+    lis r9, GXWGFifo@h
+    ori r9, r9, GXWGFifo@l
+    addi r5, r5, -4
+lbl_8008FBBC:
+    lwzu r7, 4(r5)
+    addi r8, r7, 1
+    li r10, 0x98
+    stb r10, 0(r9)
+    sth r7, 0(r9)
+lbl_8008FBD0:
+    lwzu r11, 4(r5)
+    add r10, r4, r11
+    psq_l f0, 0(r10), 0, qr0
+    psq_l f1, 8(r10), 1, qr0
+    psq_st f0, 0(r9), 0, qr0
+    psq_st f1, 0(r9), 1, qr0
+    psq_l f2, 12(r10), 0, qr0
+    psq_l f3, 20(r10), 1, qr0
+    psq_st f2, 0(r9), 0, qr0
+    psq_st f3, 0(r9), 1, qr0
+    rlwinm. r12, r3, 0x15, 0x1f, 0x1f
+    beq+ lbl_8008FC08
+    psq_l f0, 48(r10), 1, qr0
+    psq_st f0, 0(r9), 1, qr0
+lbl_8008FC08:
+    rlwinm. r12, r3, 0x13, 0x1f, 0x1f
+    beq lbl_8008FC18
+    psq_l f0, 24(r10), 0, qr0
+    psq_st f0, 0(r9), 0, qr0
+lbl_8008FC18:
+    rlwinm. r12, r3, 0x12, 0x1f, 0x1f
+    beq+ lbl_8008FC28
+    psq_l f1, 32(r10), 0, qr0
+    psq_st f1, 0(r9), 0, qr0
+lbl_8008FC28:
+    rlwinm. r12, r3, 0x11, 0x1f, 0x1f
+    beq+ lbl_8008FC38
+    psq_l f2, 40(r10), 0, qr0
+    psq_st f2, 0(r9), 0, qr0
+lbl_8008FC38:
+    addic. r7, r7, -1
+    bgt lbl_8008FBD0
+    subf. r6, r8, r6
+    bgt lbl_8008FBBC
+    blr
+}
+
+void __GXSetDirtyState(void);  // Undocumented GX function?
+
+struct UnkStruct29
+{
+    u8 filler0[8];
+    u32 unk8;
+};
+
+extern struct PrivateGXStuff
+{
+    u8 filler0[0x204];
+    u32 unk204;
+} *gx;
+
+void *func_8008FC4C(struct UnkStruct18 *a, void *b, struct UnkStruct29 *c, u8 *d)
+{
+    int i;
+    int r30;
+    void *r29 = (void *)((u32)c + c->unk8);
+
+    if (a->unk0 & 2)
+        r30 = 0;
+    else
+        r30 = 2;
+    func_8009A9B4(a->unk1C);
+    if (func_8008F914_inline_alt(a, b) != 0)
+    {
+        __GXSetDirtyState();
+        for (i = 0; i < 2; i++)
+        {
+            if (a->unk13 & (1 << i))
+            {
+                if (lbl_802F20E8 != r30)
+                {
+                    u32 r3;
+                    lbl_802F20E8 = r30;
+                    r3 = (gx->unk204 & ~0xC000) | r30 << 14;
+                    gx->unk204 = r3;
+                    func_8008D6BC(r3);
+                }
+                func_8008FBB0(a->unk1C, r29, d, a->unk28[i]);
+                d += a->unk28[i] * 4;
+            }
+            if (r30 != 0)
+                r30 = 1;
+        }
+    }
+    return d;
 }

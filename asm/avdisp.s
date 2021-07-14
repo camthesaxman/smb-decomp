@@ -2646,7 +2646,6 @@ lbl_8008FB9C:
 /* 8008FBA4 0008BAC4  38 21 00 70 */	addi r1, r1, 0x70
 /* 8008FBA8 0008BAC8  7C 08 03 A6 */	mtlr r0
 /* 8008FBAC 0008BACC  4E 80 00 20 */	blr
-.endif
 
 .global func_8008FBB0
 func_8008FBB0:
@@ -2790,6 +2789,7 @@ lbl_8008FD78:
 /* 8008FD84 0008BCA4  38 21 00 68 */	addi r1, r1, 0x68
 /* 8008FD88 0008BCA8  7C 08 03 A6 */	mtlr r0
 /* 8008FD8C 0008BCAC  4E 80 00 20 */	blr
+.endif
 
 .global func_8008FD90
 func_8008FD90:
