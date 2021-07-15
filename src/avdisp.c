@@ -35,13 +35,13 @@ float lbl_802F212C;
 float lbl_802F2128;
 GXColor lbl_802F2124;
 u32 lbl_802F2120;
-u32 lbl_802F211C;
+s32 lbl_802F211C;
 GXColor lbl_802F2118;
-u32 lbl_802F2114;
+s32 lbl_802F2114;
 GXColor lbl_802F2110;
-u32 lbl_802F210C;
-u32 lbl_802F2108;
-u32 lbl_802F2104;
+s32 lbl_802F210C;
+s32 lbl_802F2108;
+s32 lbl_802F2104;
 u8 lbl_802F2101;
 u8 lbl_802F2100;
 float lbl_802F20FC;
@@ -60,18 +60,60 @@ float lbl_802F20D0;
 Mtx *lbl_802F20CC;
 void **lbl_802F20C8;
 
+struct Struct802B4ECC
+{
+    u8 unk0;  // 0x6c
+    s8 unk1;
+    u8 unk2;
+    s8 unk3;
+    s8 unk4;
+    s8 unk5;
+    u8 filler6[2];
+    u32 unk8;
+    u32 unkC;
+    GXColor unk10;  // 0x7C
+    GXColor unk14;
+    u8 unk18;
+    u8 unk19;
+    u8 unk1A;
+    u32 unk1C;
+    u32 unk20;
+    u32 unk24;
+    u32 unk28;
+    u32 unk2C;  // 0x98
+    u32 unk30;  // 0x9C
+    u32 unk34;  // 0xA0
+    u32 unk38;  // 0xA4
+    u16 unk3C;  // 0xA8
+    u16 unk3E;  // 0xAA
+    u16 unk40;  // 0xAC
+    u32 unk44;  // 0xB0
+    u32 unk48;  // 0xB4
+    u32 unk4C;  // 0xB8
+    u32 unk50;  // 0xBC
+    u32 unk54;  // 0xC0
+    Point3d unk58;
+};
+
 // .bss
 Vec lbl_802B4E60;
 Mtx lbl_802B4E6C;
 Mtx lbl_802B4E9C;
-u8 lbl_802B4ECC[0x94];
-u32 lbl_802B4E60_100[8+16];  //4F60
+struct Struct802B4ECC lbl_802B4ECC;
+u8 lbl_802B4F30[0x30];
+u8 lbl_802B4F60[0x20];  //802B4F60
+u8 lbl_802B4F80[0x20];
+u8 lbl_802B4FA0[0x20];
+//struct Struct802B4F60 lbl_802B4F60;
 
 FORCE_BSS_ORDER(lbl_802B4E60)
 FORCE_BSS_ORDER(lbl_802B4E6C)
 FORCE_BSS_ORDER(lbl_802B4E9C)
 FORCE_BSS_ORDER(lbl_802B4ECC)
-FORCE_BSS_ORDER(lbl_802B4E60_100)
+FORCE_BSS_ORDER(lbl_802B4F30)
+FORCE_BSS_ORDER(lbl_802B4F60)
+FORCE_BSS_ORDER(lbl_802B4F80)
+FORCE_BSS_ORDER(lbl_802B4FA0)
 
 extern void func_8008E5B8(float, float, float);
 extern void func_8008F714(float, float, float, float);
@@ -312,10 +354,10 @@ struct GMA *load_gma(char *fileName, struct UnkStruct21 *b)
 
         if (file_open(fileName, &file) == 0)
             return NULL;
-        if (file_read(&file, lbl_802B4E60_100, 32, 0) < 0)
+        if (file_read(&file, lbl_802B4F60, 32, 0) < 0)
             OSPanic("avdisp.c", 684, "cannot dvd_read");
-        r27 = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 0));
-        foo = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 4));
+        r27 = OSRoundUp32B(__lwbrx(lbl_802B4F60, 0));
+        foo = OSRoundUp32B(__lwbrx(lbl_802B4F60, 4));
         gma = OSAlloc(foo + 32);
         if (gma == NULL)
             OSPanic("avdisp.c", 688, "cannot OSAlloc\n");
@@ -460,10 +502,10 @@ struct TPL *load_tpl(char *fileName)
 
         if (file_open(fileName, &file) == 0)
             return NULL;
-        if (file_read(&file, lbl_802B4E60_100, 32, 0) < 0)
+        if (file_read(&file, lbl_802B4F60, 32, 0) < 0)
             OSPanic("avdisp.c", 822, "cannot dvd_read");
-        r28 = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 0));
-        foo = OSRoundUp32B(__lwbrx(&lbl_802B4E60_100[0], 4));
+        r28 = OSRoundUp32B(__lwbrx(lbl_802B4F60, 0));
+        foo = OSRoundUp32B(__lwbrx(lbl_802B4F60, 4));
         tpl = OSAlloc(foo + 12);
         if (tpl == NULL)
             OSPanic("avdisp.c", 826, "cannot OSAlloc\n");
@@ -740,10 +782,30 @@ struct UnkStruct16
     u32 unkC;
 };
 
+/*
+struct UnkStruct30
+{
+    u32 unk0;
+    GXColor unk4;
+    GXColor unk8;
+    u8 unkC;
+    u8 unkD;
+    u8 unkE;
+    u8 fillerF[0x11-0xF];
+    u8 unk11;
+    u8 filler12[0x40-0x12];
+    u32 unk40;
+};
+*/
+
 struct UnkStruct18
 {
     u32 unk0;
-    u8 filler4[0x13-0x4];
+    //u8 filler4[0xC-0x4];
+    GXColor unk4;
+    GXColor unk8;
+    u32 unkC;
+    u8 filler10[3];
     u8 unk13;
     u8 unk14;
     u8 filler15[0x1C-0x15];
@@ -753,6 +815,24 @@ struct UnkStruct18
     u8 unk30[0x60-0x30];
     u8 unk60[1];
 };
+
+/*
+struct UnkStruct18
+{
+    u32 unk0;
+    u8 filler4[0xC-0x4];
+    u32 unkC;
+    u8 filler10[3];
+    u8 unk13;
+    u8 unk14;
+    u8 filler15[0x1C-0x15];
+    u32 unk1C;
+    u8 unk20[8];
+    u32 unk28[2];  // display list sizes
+    u8 unk30[0x60-0x30];
+    u8 unk60[1];
+};
+*/
 
 static inline void *func_8008E9E0(struct UnkStruct18 *a);
 
@@ -796,9 +876,9 @@ void func_8008E698(struct UnkStruct13 *a, u32 b)
             //lbl_8008E704
             r11->unk0 |= b;
 #ifdef NONMATCHING
-	    r11 = func_8008E9E0(r11);
+            r11 = func_8008E9E0(r11);
 #else
-	    r11 = func_8008E9E0_inlined(r11);
+            r11 = func_8008E9E0_inlined(r11);
 #endif
         }
     }
@@ -876,19 +956,21 @@ static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct
 }
 
 u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c);
+void func_8008FD90(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c);
+void func_8008FE44(struct UnkStruct10 *a, u8 *b);
 
 void func_8008E7AC(struct UnkStruct10 *a)
 {
     struct UnkStruct18 *r26 = (struct UnkStruct18 *)((u32)a + a->unk20);
     void *r25 = (void *)((u32)a + 0x40);
-     int i;  // r23
+    int i;  // r23
 
     lbl_802F20E8 = 2;
     func_8009E094(lbl_802F20E8);
     if (a->unk4 & 4)
         func_8008F498(a);
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(a, r26);
+        func_8008FE44(a, (void *)r26);
     //lbl_8008E80C
     if (a->unk4 & 0x18)
         func_8008FD90(a, r26, r25);
@@ -935,9 +1017,9 @@ void func_8008EA64(struct UnkStruct10 *a)
     if (a->unk4 & 0x4)
         func_8008F498(a);
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(a, r30);
+        func_8008FE44(a, (void *)r30);
     if (a->unk4 & 0x18)
-        func_8008FD90(a, r30, r29);
+        func_8008FD90(a, (void *)r30, (void *)r29);
     else
     {
         for (i = 0; i < a->unk1A; i++)
@@ -960,7 +1042,7 @@ void func_8008EB94(struct UnkStruct10 *a)
     if (a->unk4 & 0x4)
         func_8008F498(a);
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(a, r24);
+        func_8008FE44(a, (void *)r24);
     for (i = 0; i < a->unk1A; i++)
         r24 = (void *)func_8008E7AC_inline(a, r24, (void *)r31);
     //lbl_8008ED4C
@@ -980,7 +1062,7 @@ void func_8008EEC0(struct UnkStruct10 *a)
     if (a->unk4 & 0x4)
         func_8008F498(a);
     if (a->unk4 & 0x18)
-        func_8008FD90(a, r31, r30);
+        func_8008FD90(a, r31, (void *)r30);
     else
     {
         for (i = 0; i < a->unk1A; i++)
@@ -1257,7 +1339,7 @@ void lbl_8008F528(struct UnkStruct17 *a)
     r22 = lbl_802F211C;
     lbl_802F211C = a->unk70;
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(a->unk8, a->unk40);
+        func_8008FE44(a->unk8, (void *)a->unk40);
     func_8008F914(a->unk8, a->unk40, a->unk3C);
     lbl_802F20EC = r31;
     lbl_802F20F0 = r30;
@@ -1595,4 +1677,221 @@ void *func_8008FC4C(struct UnkStruct18 *a, void *b, struct UnkStruct29 *c, u8 *d
         }
     }
     return d;
+}
+
+void func_8008FD90(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
+{
+    int i;  // r31
+    u8 *r30 = b->unk20;
+    u8 *r6 = (u8 *)b + b->unkC;
+    lbl_802F20E8 = 1;
+    for (i = 0; i < a->unk1A; i++)
+    {
+        r6 = func_8008FC4C((void *)r30, c, (void *)b, (void *)r6);
+        r30 += 0x60;
+    }
+    for (i = 0; i < a->unk1C; i++)
+    {
+        r6 = func_8008FC4C((void *)r30, c, (void *)b, r6);
+        r30 += 0x60;
+    }
+}
+
+extern void func_8009E398(u32, GXColor *, float, float, float, float);
+
+struct UnkStruct30
+{
+    u32 unk0;
+    GXColor unk4;
+    GXColor unk8;
+    u8 unkC;
+    u8 unkD;
+    u8 unkE;
+    u8 fillerF[0x11-0xF];
+    u8 unk11;
+    u8 filler12[0x40-0x12];
+    u32 unk40;
+};
+
+static inline void func_8008FE44_inline_1(struct UnkStruct30 *r30)
+{
+    if (r30->unk0 & 0x88)
+        lbl_802B4ECC.unk10 = r30->unk4;
+    else
+    {
+        lbl_802B4ECC.unk10.r = 255;
+        lbl_802B4ECC.unk10.g = 255;
+        lbl_802B4ECC.unk10.b = 255;
+    }
+    lbl_802B4ECC.unk10.a = r30->unk11;
+    if (r30->unk0 & 0x8)
+        lbl_802B4ECC.unk14 = r30->unk8;
+    else
+    {
+        lbl_802B4ECC.unk14.r = 255;
+        lbl_802B4ECC.unk14.g = 255;
+        lbl_802B4ECC.unk14.b = 255;
+    }
+    lbl_802B4ECC.unk14.a = 255;
+    func_8008D6D4(r30);
+    lbl_802B4ECC.unk18 = r30->unkC;
+    lbl_802B4ECC.unk19 = r30->unkD;
+    lbl_802B4ECC.unk1A = r30->unkE;
+    lbl_802B4ECC.unk2 = 0;
+    lbl_802B4ECC.unk1C = 15;
+    lbl_802B4ECC.unk20 = 7;
+    lbl_802B4ECC.unk3 = -1;
+    lbl_802B4ECC.unk4 = -1;
+    lbl_802B4ECC.unk5 = -1;
+    lbl_802B4ECC.unk8 = 16;
+    lbl_802B4ECC.unkC = 16;
+}
+
+static inline void func_8008FE44_inline_2(struct UnkStruct30 *r30)
+{
+    lbl_802B4ECC.unk24 = 4;
+    lbl_802B4ECC.unk28 = 5;
+    //lbl_802B4E60_100.unk0 = 5;
+    if (r30->unk0 & 0x20)
+        lbl_802B4ECC.unk24 = r30->unk40 & 0xF;
+    if (r30->unk0 & 0x40)
+        lbl_802B4ECC.unk28 = (r30->unk40 >> 4) & 0xF;
+    func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
+}
+
+void func_8008FE44(struct UnkStruct10 *a, u8 *b)
+{
+    //u8 *r30 = (u8 *)b;
+    //struct UnkStruct30 *r30 = (struct UnkStruct30 *)b;
+    lbl_802B4ECC.unk0 = 1;
+    if (a->unk4 & 0x18)
+        //r30 += 0x20;
+        //r30++;
+        //r30 = (struct UnkStruct30 *)((u8 *)r30 + 0x20);
+        b += 0x20;
+    if (lbl_802F2108 != 0)
+        GXLoadTexMtxImm(lbl_802B4E6C, 0x21, 0);
+    else
+        GXLoadTexMtxImm(lbl_802B4E9C, 0x21, 0);
+    //lbl_8008FEB8
+    if (lbl_802F2101 != lbl_802F21A0->unk8
+     || lbl_802F2104 != lbl_802F21A0->unk4
+     || lbl_802F2100 != lbl_802F21A0->unk0)
+    {
+        GXSetZMode(lbl_802F2100, lbl_802F2104, lbl_802F2101);
+        lbl_802F21A0->unk0 = lbl_802F2100;
+        lbl_802F21A0->unk4 = lbl_802F2104;
+        lbl_802F21A0->unk8 = lbl_802F2101;
+    }
+    if (lbl_802F211C != 0)
+    {
+        GXColor sp1C = lbl_802F2124;
+        func_8009E398(lbl_802F2120, &sp1C, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+    }
+    else
+    {
+        GXColor sp18 = lbl_802F2124;
+        func_8009E398(0, &sp18, 0.0f, 100.0f, 0.1f, 20000.0f);
+    }
+    //lbl_8008FF74
+    func_8008FE44_inline_1((void *)b);
+    if (lbl_802F210C != 0)
+    {
+        GXColor sp14 = lbl_802F2110;
+        func_8009F33C(2, &sp14);
+    }
+    if (lbl_802F2114 != 0)
+    {
+        GXColor sp10 = lbl_802F2118;
+        func_8009F33C(3, &sp10);
+    }
+    func_8008FE44_inline_2((void *)b);
+    lbl_802B4ECC.unk1 = -1;
+    lbl_802B4ECC.unk2C = -1;
+    lbl_802B4ECC.unk30 = -1;
+    lbl_802B4ECC.unk34 = -1;
+    lbl_802B4ECC.unk38 = -1;
+
+    lbl_802B4ECC.unk3C = 0xFFFF;
+    lbl_802B4ECC.unk3E = 0xFFFF;
+    lbl_802B4ECC.unk40 = 0xFFFF;
+    
+    lbl_802B4ECC.unk44 = 0;
+    lbl_802B4ECC.unk48 = 0;
+    lbl_802B4ECC.unk4C = 0;
+    lbl_802B4ECC.unk50 = 0;
+    lbl_802B4ECC.unk54 = 0;
+    mathutil_tf_point_by_a_mtx_v(a->unk8, &lbl_802B4ECC.unk58);
+    lbl_802B4ECC.unk58.z -= a->unk14;
+    mathutil_vec_normalize_clamp(&lbl_802B4ECC.unk58);
+}
+
+void mathutil_scale_a_mtx_sq_s(float);
+
+void func_8009015C(void)
+{
+    Point3d sp44 = {0.0f, 0.0f, 0.0f}; // lbl_801719E0
+    Vec sp38 = {0.0f, 1.0f, 0.0f}; // lbl_801719EC
+    Mtx sp8;
+
+    mathutil_push_a_mtx();
+    C_MTXLookAt(sp8, &sp44, &sp38, &lbl_802B4ECC.unk58);
+    mathutil_set_a_mtx(sp8);    
+    lbl_802F1B60->unk0[0][3] = 0.5f;
+    lbl_802F1B60->unk0[1][0] *= -1.0f;
+    lbl_802F1B60->unk0[1][1] *= -1.0f;
+    lbl_802F1B60->unk0[1][2] *= -1.0f;
+    lbl_802F1B60->unk0[1][3] = 0.5f;
+    lbl_802F1B60->unk0[2][0] = 0.0f;
+    lbl_802F1B60->unk0[2][1] = 0.0f;
+    lbl_802F1B60->unk0[2][2] = 0.0f;
+    lbl_802F1B60->unk0[2][3] = 1.0f;
+    mathutil_scale_a_mtx_sq_s(0.5f);
+    GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x40, 0);
+    mathutil_pop_a_mtx();
+}
+
+void func_80090268(void)
+{
+    Point3d sp5C = {0.0f, 0.0f, 0.0f};  // lbl_801719F8
+    Point3d sp50;
+    Vec sp44;
+    Vec sp38;
+    Mtx sp8;
+
+    mathutil_push_a_mtx();
+    sp50 = lbl_802B4E60;
+    sp44 = lbl_802B4ECC.unk58;
+    sp44.x *= -0.9f;
+    sp44.y *= -0.9f;
+    sp44.z *= -0.9f;
+    sp50.x = (sp44.x + sp50.x) * 0.5f;
+    sp50.y = (sp44.y + sp50.y) * 0.5f;
+    sp50.z = (sp44.z + sp50.z) * 0.5f;
+    sp38.x = sp50.x - sp44.x; 
+    sp38.y = sp50.y - sp44.y; 
+    sp38.z = sp50.z - sp44.z; 
+    C_MTXLookAt(sp8, &sp5C, &sp38, &sp50);
+    mathutil_set_a_mtx(sp8);
+    lbl_802F1B60->unk0[0][3] = 0.5f;
+    lbl_802F1B60->unk0[1][0] *= -1.0f;
+    lbl_802F1B60->unk0[1][1] *= -1.0f;
+    lbl_802F1B60->unk0[1][2] *= -1.0f;
+    lbl_802F1B60->unk0[1][3] = 0.5f;
+    lbl_802F1B60->unk0[2][0] = 0.0f;
+    lbl_802F1B60->unk0[2][1] = 0.0f;
+    lbl_802F1B60->unk0[2][2] = 0.0f;
+    lbl_802F1B60->unk0[2][3] = 1.0f;
+    mathutil_scale_a_mtx_sq_s(0.5f);
+    GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x43, 0);
+    mathutil_set_a_mtx_identity();
+    lbl_802F1B60->unk0[0][0] = 0.0f;
+    lbl_802F1B60->unk0[0][2] = 0.5f;
+    lbl_802F1B60->unk0[0][3] = 0.5f;
+    lbl_802F1B60->unk0[1][1] = 0.0f;
+    lbl_802F1B60->unk0[2][2] = 0.0f;
+    lbl_802F1B60->unk0[2][3] = 1.0f;
+    mathutil_set_a_mtx_mult_a_mtx_by(sp8);
+    GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x46, 0);
+    mathutil_pop_a_mtx();
 }
