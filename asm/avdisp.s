@@ -748,8 +748,8 @@ lbl_8008E298:
 /* 8008E2C8 0008A1E8  7C 08 03 A6 */	mtlr r0
 /* 8008E2CC 0008A1EC  4E 80 00 20 */	blr
 
-.global func_8008E2D0
-func_8008E2D0:
+.global create_tpl_tex_objs
+create_tpl_tex_objs:
 /* 8008E2D0 0008A1F0  7C 08 02 A6 */	mflr r0
 /* 8008E2D4 0008A1F4  90 01 00 04 */	stw r0, 4(r1)
 /* 8008E2D8 0008A1F8  94 21 FF C0 */	stwu r1, -0x40(r1)
@@ -784,7 +784,7 @@ lbl_8008E324:
 /* 8008E340 0008A260  3B 20 00 00 */	li r25, 0
 /* 8008E344 0008A264  48 00 00 0C */	b lbl_8008E350
 lbl_8008E348:
-/* 8008E348 0008A268  48 00 0C 55 */	bl func_8008EF9C
+/* 8008E348 0008A268  48 00 0C 55 */	bl get_texture_max_lod
 /* 8008E34C 0008A26C  54 79 06 3E */	clrlwi r25, r3, 0x18
 lbl_8008E350:
 /* 8008E350 0008A270  80 1B 00 00 */	lwz r0, 0(r27)
@@ -1722,8 +1722,8 @@ lbl_8008EF64:
 /* 8008EF94 0008AEB4  38 21 00 20 */	addi r1, r1, 0x20
 /* 8008EF98 0008AEB8  4E 80 00 20 */	blr
 
-.global func_8008EF9C
-func_8008EF9C:
+.global get_texture_max_lod
+get_texture_max_lod:
 /* 8008EF9C 0008AEBC  7C 03 20 00 */	cmpw r3, r4
 /* 8008EFA0 0008AEC0  40 81 00 08 */	ble lbl_8008EFA8
 /* 8008EFA4 0008AEC4  7C 83 23 78 */	mr r3, r4

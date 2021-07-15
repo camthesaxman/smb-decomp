@@ -17,11 +17,26 @@ struct UnkStruct1
     char *unk4;
 };
 
+struct TPLTextureHeader
+{
+    u32 format;
+    u32 imageOffset;
+    u16 width;
+    u16 height;
+    u8 fillerC[4];
+};  // size = 0x10
+
+struct TPL
+{
+    u32 numTextures;
+    struct TPLTextureHeader *texHeaders;
+    u8 *fileData;
+};
+
 struct GMA
 {
     u32 numModels;
     u8 *unk4;
-    //u8 *unk8;
     struct UnkStruct1 *unk8;
     u32 unkC;
     u8 filler10[0x20-0x10];
@@ -284,25 +299,9 @@ struct UnkStruct22
     struct UnkStruct23 *unk24;
 };
 
-struct UnkStruct19
-{
-    u32 unk0;
-    u32 unk4;
-    u16 unk8;
-    u16 unkA;
-    u8 fillerC[4];
-};  // size = 0x10
+void *func_8008F1E8(struct UnkStruct22 *a, struct TPL *b, u8 *c);
 
-struct UnkStruct21
-{
-    u8 filler0[4];
-    struct UnkStruct19 *unk4;
-    u32 unk8;
-};
-
-void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c);
-
-void *func_8008D9A8(char *fileName, struct UnkStruct21 *b)
+void *func_8008D9A8(char *fileName, struct TPL *tpl)
 {
     u32 *buffer;
     u32 size;
@@ -322,7 +321,7 @@ void *func_8008D9A8(char *fileName, struct UnkStruct21 *b)
         OSFree(buffer);
         return NULL;
     }
-    func_8008F1E8((struct UnkStruct22 *)buffer, b, NULL);
+    func_8008F1E8((struct UnkStruct22 *)buffer, tpl, NULL);
     return buffer;
 }
 
@@ -339,7 +338,7 @@ void func_8008DA9C(struct UnkStruct5 *a)
     OSFree(a);
 }
 
-struct GMA *load_gma(char *fileName, struct UnkStruct21 *b)
+struct GMA *load_gma(char *fileName, struct TPL *tpl)
 {
     int i;
     struct GMA *gma;
@@ -405,13 +404,13 @@ struct GMA *load_gma(char *fileName, struct UnkStruct21 *b)
             r3 = (u32)gma->unk4 + r3;
             r7->unk0 = r3;
             r7->unk4 = (char *)((u32)gma->unkC + (u32)r7->unk4);
-            func_8008F1E8((struct UnkStruct22 *)r3, b, NULL);
+            func_8008F1E8((struct UnkStruct22 *)r3, tpl, NULL);
         }
     }
     return gma;
 }
 
-struct GMA *func_8008DDB4(u32 a, u32 b, struct UnkStruct21 *c)
+struct GMA *func_8008DDB4(u32 a, u32 b, struct TPL *tpl)
 {
     u32 r31;
     u32 r30 = OSRoundUp32B(b);
@@ -447,7 +446,7 @@ struct GMA *func_8008DDB4(u32 a, u32 b, struct UnkStruct21 *c)
             r3 = (u32)gma->unk4 + r3;
             r7->unk0 = r3;
             r7->unk4 = (char *)((u32)gma->unkC + (u32)r7->unk4);
-            func_8008F1E8((struct UnkStruct22 *)r3, c, NULL);
+            func_8008F1E8((struct UnkStruct22 *)r3, tpl, NULL);
         }
     }
     return gma;
@@ -471,22 +470,6 @@ void free_gma(struct GMA *gma)
     }
     OSFree(gma);
 }
-
-struct TPLTextureHeader  // r27
-{
-    u32 unk0;
-    u32 unk4;
-    u16 unk8;
-    u16 unkA;
-    u8 fillerC[4];
-};  // size = 0x10
-
-struct TPL
-{
-    u32 numTextures;
-    struct TPLTextureHeader *texHeaders;
-    u8 *fileData;
-};
 
 struct TPL *load_tpl(char *fileName)
 {
@@ -563,35 +546,43 @@ struct TPL *func_8008E200(u32 a, u32 b)
 }
 
 
-int func_8008EF9C(int a, int b);
+int get_texture_max_lod(int width, int height);
 
-GXTexObj *func_8008E2D0(struct TPL *tpl)
+GXTexObj *create_tpl_tex_objs(struct TPL *tpl)
 {
     int i;
-    struct TPLTextureHeader *thdrs = tpl->texHeaders;
-    GXTexObj *tobjs = OSAlloc(tpl->numTextures * sizeof(GXTexObj));
+    struct TPLTextureHeader *texHdrs = tpl->texHeaders;
+    GXTexObj *texObjs = OSAlloc(tpl->numTextures * sizeof(GXTexObj));
     
     for (i = 0; i < tpl->numTextures; i++)
     {
-        u8 r25;
-        void *r24 = tpl->fileData + thdrs[i].unk4;
-        if (thdrs[i].unk8 != thdrs[i].unkA)
-            r25 = 0;
+        u8 maxLOD;
+        void *imagePtr = tpl->fileData + texHdrs[i].imageOffset;
+        if (texHdrs[i].width != texHdrs[i].height)
+            maxLOD = 0;
         else
-            r25 = func_8008EF9C(thdrs[i].unk8, thdrs[i].unkA);
-        GXInitTexObj(&tobjs[i], (void *)r24, thdrs[i].unk8, thdrs[i].unkA, thdrs[i].unk0 & 0x1F, 1, 1, 0);
+            maxLOD = get_texture_max_lod(texHdrs[i].width, texHdrs[i].height);
+        GXInitTexObj(
+            &texObjs[i],  // obj
+            (void *)imagePtr,  // image_ptr
+            texHdrs[i].width,  // width
+            texHdrs[i].height,  // height
+            texHdrs[i].format & 0x1F,  // format
+            GX_REPEAT,  // wrap_s
+            GX_REPEAT,  // wrap_t
+            FALSE);  // mipmap
         GXInitTexObjLOD(
-            &tobjs[i],
-            (r25 != 0) ? 5 : 3,
-            1,
-            0.0f,
-            r25,
-            0.0f,
-            0,
-            1,
-            0);
+            &texObjs[i],  // obj
+            (maxLOD != 0) ? GX_LIN_MIP_LIN : GX_LIN_MIP_NEAR,  // min_filt
+            GX_LINEAR,  // mag_filt
+            0.0f,  // min_lod
+            maxLOD,  // max_lod
+            0.0f,  // lod_bias
+            FALSE,  // bias_clamp
+            TRUE,  // do_edge_lod
+            GX_ANISO_1);  // max_aniso
     }
-    return tobjs;
+    return texObjs;
 }
 
 void free_tpl(struct TPL *tpl)
@@ -1073,18 +1064,18 @@ void func_8008EEC0(struct UnkStruct10 *a)
     lbl_802F20DC = 1.0f;
 }
 
-int func_8008EF9C(int a, int b)
+int get_texture_max_lod(int width, int height)
 {
-    int r4;
-    if (a > b)
-        a = b;
-    r4 = 0;
-    while (a > 16)
+    int lod;
+    if (width > height)
+        width = height;
+    lod = 0;
+    while (width > 16)
     {
-        a >>= 1;
-        r4++;
+        width >>= 1;
+        lod++;
     }
-    return r4;
+    return lod;
 }
 
 struct UnkStruct20
@@ -1097,31 +1088,16 @@ struct UnkStruct20
     u8 fillerC[0x20-0xC];
 };
 
-/*
-struct UnkStruct20
+void func_8008EFD0(struct UnkStruct20 *a, struct TPLTextureHeader *texHdr, struct TPL *tpl)
 {
-    u32 unk0;
-    u16 unk4;
-    s8 unk6;
-    u8 unk7;
-    GXTexObj *unk8;
-    u8 fillerC[0x12-0xC];
-    u8 unk12;
-    u8 filler13[0x1C-0x13];
-    u32 unk1C;
-};  // size = 0x20
-*/
+    u8 maxLOD;
+    int wrapS;
+    int wrapT;
+    void *imagePtr = tpl->fileData + texHdr->imageOffset;
+    int minFilt;
+    int magFilt;
 
-void func_8008EFD0(struct UnkStruct20 *a, struct UnkStruct19 *b, struct UnkStruct21 *c)
-{
-    u8 r31;
-    int r8;
-    int r9;
-    u32 r7 = c->unk8 + b->unk4;
-    int r4;
-    int r5;
-
-    if (b->unk0 & 0x40)
+    if (texHdr->format & 0x40)
     {
         OSPanic("avdisp.c", 1340, "invalid texture!!\n...stopped\n");
         a->unk8 = 0;
@@ -1131,71 +1107,71 @@ void func_8008EFD0(struct UnkStruct20 *a, struct UnkStruct19 *b, struct UnkStruc
     switch ((a->unk0 >> 2) & 3)
     {
     case 2:
-        r8 = 2;
+        wrapS = GX_MIRROR;
         break;
     case 1:
-        r8 = 1;
+        wrapS = GX_REPEAT;
         break;
     default:
-        r8 = 0;
+        wrapS = GX_CLAMP;
         break;
     }
     switch ((a->unk0 >> 4) & 3)
     {
     case 2:
-        r9 = 2;
+        wrapT = GX_MIRROR;
         break;
     case 1:
-        r9 = 1;
+        wrapT = GX_REPEAT;
         break;
     default:
-        r9 = 0;
+        wrapT = GX_CLAMP;
         break;
     }
-    if (b->unk8 != b->unkA)
-        r31 = 0;
+    if (texHdr->width != texHdr->height)
+        maxLOD = 0;
     else
     {
-        r31 = (a->unk0 >> 7) & 0xF;
-        if (r31 == 15)
-            r31 = func_8008EF9C(b->unk8, b->unkA);  // inlined
+        maxLOD = (a->unk0 >> 7) & 0xF;
+        if (maxLOD == 15)
+            maxLOD = get_texture_max_lod(texHdr->width, texHdr->height);  // inlined
     }
     GXInitTexObj(
-        a->unk8,
-        (void *)r7,
-        b->unk8,
-        b->unkA,
-        b->unk0 & 0x1F,
-        r8,
-        r9,
-        r31 != 0);
+        a->unk8,  // obj
+        (void *)imagePtr,  // image_ptr
+        texHdr->width,  // width
+        texHdr->height,  // height
+        texHdr->format & 0x1F,  // format
+        wrapS,  // wrap_s
+        wrapT,  // wrap_t
+        maxLOD != 0);  // mipmap
 
     if (a->unk0 & 0x800)
     {
-        r5 = 0;
-        if (r31 != 0)
-            r4 = 4;
+        magFilt = GX_NEAR;
+        if (maxLOD != 0)
+            minFilt = GX_NEAR_MIP_LIN;
         else
-            r4 = 2;
+            minFilt = GX_NEAR_MIP_NEAR;
     }
     else
     {
-        r5 = 1;
-        if (r31 != 0)
-            r4 = 5;
+        magFilt = GX_LINEAR;
+        if (maxLOD != 0)
+            minFilt = GX_LIN_MIP_LIN;
         else
-            r4 = 3;
+            minFilt = GX_LIN_MIP_NEAR;
     }
     GXInitTexObjLOD(
-        a->unk8,
-        r4,
-        r5,
-        0.0f,
-        (float)r31,
-        a->unk6 / 10.0f,
-        0,
-        (a->unk0 & 0x40) != 0,
-        a->unk7);
+        a->unk8,  // obj
+        minFilt,  // min_filt
+        magFilt,  // mag_filt
+        0.0f,  // min_lod
+        (float)maxLOD,  // max_lod
+        a->unk6 / 10.0f,  // lod_bias
+        FALSE,  // bias_clamp
+        (a->unk0 & 0x40) != 0,  // do_edge_lod
+        a->unk7);  // max_aniso
 }
 
 struct UnkStruct24
@@ -1216,13 +1192,13 @@ static struct UnkStruct24 *func_8008F1E8_inline(struct UnkStruct24 *r30)
     return func_8008E9E0((void *)r30);
 }
 
-void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
+void *func_8008F1E8(struct UnkStruct22 *a, struct TPL *tpl, u8 *c)
 {
     struct UnkStruct20 *r30;
     struct UnkStruct24 *r30_2;
     int i;
 
-    if (b == NULL)
+    if (tpl == NULL)
         a->unk18 = 0;
     r30 = (void *)((u32)a + 0x40);
     if (a->unk18 != 0)
@@ -1243,14 +1219,14 @@ void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
     for (i = 0; i < a->unk18; i++)
     {
         r30[i].unk8 = (void *)&a->unk24[i];
-        func_8008EFD0(&r30[i], &b->unk4[r30[i].unk4], b);
+        func_8008EFD0(&r30[i], &tpl->texHeaders[r30[i].unk4], tpl);
     }
     r30_2 = (void *)((u32)a + a->unk20);
     if (a->unk4 & 0x18)
         r30_2++;
     for (i = 0; i < a->unk1A; i++)
     {
-        if (b == NULL)
+        if (tpl == NULL)
             r30_2->unk12 = 0;
         if (a->unk4 & 0x18)
         {
@@ -1263,7 +1239,7 @@ void *func_8008F1E8(struct UnkStruct22 *a, struct UnkStruct21 *b, u8 *c)
     }
     for (i = 0; i < a->unk1C; i++)
     {
-        if (b == NULL)
+        if (tpl == NULL)
             r30_2->unk12 = 0;
         if (a->unk4 & 0x18)
         {
@@ -1826,17 +1802,15 @@ void func_8008FE44(struct UnkStruct10 *a, u8 *b)
     mathutil_vec_normalize_clamp(&lbl_802B4ECC.unk58);
 }
 
-void mathutil_scale_a_mtx_sq_s(float);
-
 void func_8009015C(void)
 {
-    Point3d sp44 = {0.0f, 0.0f, 0.0f}; // lbl_801719E0
-    Vec sp38 = {0.0f, 1.0f, 0.0f}; // lbl_801719EC
-    Mtx sp8;
+    Point3d cameraPos = {0.0f, 0.0f, 0.0f};
+    Vec cameraUp = {0.0f, 1.0f, 0.0f};
+    Mtx mtx;
 
     mathutil_push_a_mtx();
-    C_MTXLookAt(sp8, &sp44, &sp38, &lbl_802B4ECC.unk58);
-    mathutil_set_a_mtx(sp8);    
+    C_MTXLookAt(mtx, &cameraPos, &cameraUp, &lbl_802B4ECC.unk58);
+    mathutil_set_a_mtx(mtx);    
     lbl_802F1B60->unk0[0][3] = 0.5f;
     lbl_802F1B60->unk0[1][0] *= -1.0f;
     lbl_802F1B60->unk0[1][1] *= -1.0f;
@@ -1853,26 +1827,26 @@ void func_8009015C(void)
 
 void func_80090268(void)
 {
-    Point3d sp5C = {0.0f, 0.0f, 0.0f};  // lbl_801719F8
-    Point3d sp50;
+    Point3d cameraPos = {0.0f, 0.0f, 0.0f};  // lbl_801719F8
+    Point3d target;
     Vec sp44;
-    Vec sp38;
-    Mtx sp8;
+    Vec cameraUp;
+    Mtx mtx;
 
     mathutil_push_a_mtx();
-    sp50 = lbl_802B4E60;
+    target = lbl_802B4E60;
     sp44 = lbl_802B4ECC.unk58;
     sp44.x *= -0.9f;
     sp44.y *= -0.9f;
     sp44.z *= -0.9f;
-    sp50.x = (sp44.x + sp50.x) * 0.5f;
-    sp50.y = (sp44.y + sp50.y) * 0.5f;
-    sp50.z = (sp44.z + sp50.z) * 0.5f;
-    sp38.x = sp50.x - sp44.x; 
-    sp38.y = sp50.y - sp44.y; 
-    sp38.z = sp50.z - sp44.z; 
-    C_MTXLookAt(sp8, &sp5C, &sp38, &sp50);
-    mathutil_set_a_mtx(sp8);
+    target.x = (sp44.x + target.x) * 0.5f;
+    target.y = (sp44.y + target.y) * 0.5f;
+    target.z = (sp44.z + target.z) * 0.5f;
+    cameraUp.x = target.x - sp44.x; 
+    cameraUp.y = target.y - sp44.y; 
+    cameraUp.z = target.z - sp44.z; 
+    C_MTXLookAt(mtx, &cameraPos, &cameraUp, &target);
+    mathutil_set_a_mtx(mtx);
     lbl_802F1B60->unk0[0][3] = 0.5f;
     lbl_802F1B60->unk0[1][0] *= -1.0f;
     lbl_802F1B60->unk0[1][1] *= -1.0f;
@@ -1891,7 +1865,7 @@ void func_80090268(void)
     lbl_802F1B60->unk0[1][1] = 0.0f;
     lbl_802F1B60->unk0[2][2] = 0.0f;
     lbl_802F1B60->unk0[2][3] = 1.0f;
-    mathutil_set_a_mtx_mult_a_mtx_by(sp8);
+    mathutil_set_a_mtx_mult_a_mtx_by(mtx);
     GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x46, 0);
     mathutil_pop_a_mtx();
 }

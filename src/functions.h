@@ -8,6 +8,7 @@ void mathutil_copy_mtx(Mtx a, Mtx b);
 extern void mathutil_set_a_mtx_identity(void);
 extern void mathutil_set_b_mtx_a_mtx(void);
 void mathutil_set_a_mtx_mult_a_mtx_by(Mtx a);
+void mathutil_scale_a_mtx_sq_s(float);
 
 extern int printf(const char *, ...);
 
