@@ -434,4 +434,13 @@ typedef enum
     GX_PTIDENTITY = 125,
 } GXPTTexMtx;
 
+typedef enum
+{
+    GX_TEVPREV,
+    GX_TEVREG0,
+    GX_TEVREG1,
+    GX_TEVREG2,
+    GX_MAX_TEVREG,
+} GXTevRegID;
+
 #endif

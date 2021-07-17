@@ -64,7 +64,8 @@ float lbl_802F20F8;
 float lbl_802F20F4;
 typedef u32 (*Func802F20F0)();
 Func802F20F0 lbl_802F20F0;
-u32 lbl_802F20EC;
+typedef void (*Func802F20EC)();
+Func802F20EC lbl_802F20EC;
 s32 lbl_802F20E8;
 float lbl_802F20E4;
 u32 lbl_802F20E0;
@@ -88,14 +89,17 @@ struct Struct802B4ECC
     u32 unkC;
     GXColor unk10;  // 0x7C
     GXColor unk14;
+    GXColor unk18;
+    /*
     u8 unk18;
     u8 unk19;
     u8 unk1A;
+    */
     u32 unk1C;
     u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    u32 unk2C;  // 0x98
+    s32 unk24;
+    s32 unk28;
+    u32 unk2C;  // 0x98  array?
     u32 unk30;  // 0x9C
     u32 unk34;  // 0xA0
     u32 unk38;  // 0xA4
@@ -105,7 +109,7 @@ struct Struct802B4ECC
     u32 unk44;  // 0xB0
     u32 unk48;  // 0xB4
     u32 unk4C;  // 0xB8
-    u32 unk50;  // 0xBC
+    s32 unk50;  // 0xBC
     u32 unk54;  // 0xC0
     Point3d unk58;
 };
@@ -115,10 +119,11 @@ Vec lbl_802B4E60;
 Mtx lbl_802B4E6C;
 Mtx lbl_802B4E9C;
 struct Struct802B4ECC lbl_802B4ECC;
-u8 lbl_802B4F30[0x30];
+GXTexObj lbl_802B4F30;
+u8 filler_802B4F50[0x10];
 u8 lbl_802B4F60[0x20];  //802B4F60
-u8 lbl_802B4F80[0x20];
-u8 lbl_802B4FA0[0x20];
+u8 lbl_802B4F80[0x40];
+//u8 lbl_802B4FA0[0x20];
 //struct Struct802B4F60 lbl_802B4F60;
 
 FORCE_BSS_ORDER(lbl_802B4E60)
@@ -126,9 +131,10 @@ FORCE_BSS_ORDER(lbl_802B4E6C)
 FORCE_BSS_ORDER(lbl_802B4E9C)
 FORCE_BSS_ORDER(lbl_802B4ECC)
 FORCE_BSS_ORDER(lbl_802B4F30)
+FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lbl_802B4F60)
 FORCE_BSS_ORDER(lbl_802B4F80)
-FORCE_BSS_ORDER(lbl_802B4FA0)
+//FORCE_BSS_ORDER(lbl_802B4FA0)
 
 extern void func_8008E5B8(float, float, float);
 extern void func_8008F714(float, float, float, float);
@@ -143,7 +149,7 @@ asm void func_8008D6BC(register u32 arg)
 {
     nofralloc
     lis r5, GXWGFifo@h
-    li r4, 0x61
+    li r4, GX_LOAD_BP_REG
     ori r5, r5, GXWGFifo@l
     stb r4, 0(r5)
     stw arg, 0(r5)
@@ -207,11 +213,12 @@ lbl_8008D724:
 
 void func_8008F878(u32 a);
 void func_8008F890(u8 a, u8 b, u8 c);
+void func_80090474(void);
 
 void func_8008D788(void)
 {
     Vec sp8;
-    lbl_802F20EC = 0;
+    lbl_802F20EC = NULL;
     lbl_802F20D8 = 1.0f;
     lbl_802F20D4 = 1.0f;
     lbl_802F20D0 = 1.0f;
@@ -687,9 +694,9 @@ void func_8008E5C8(u8 a, u32 b, u8 c)
     lbl_802F2101 = c;
 }
 
-u32 func_8008E5D8(u32 a)
+Func802F20EC func_8008E5D8(Func802F20EC a)
 {
-    u32 temp = lbl_802F20EC;
+    Func802F20EC temp = lbl_802F20EC;
     lbl_802F20EC = a;
     return temp;
 }
@@ -887,7 +894,7 @@ struct UnkStruct17
     u32 unk44;
     u32 unk48;
     float unk4C;
-    u32 unk50;
+    Func802F20EC unk50;
     Func802F20F0 unk54;
     u8 unk58;
     u8 unk59;
@@ -948,7 +955,7 @@ static inline void *func_8008E7AC_inline(struct UnkStruct10 *a, struct UnkStruct
 
 u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c);
 void func_8008FD90(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c);
-void func_8008FE44(struct UnkStruct10 *a, u8 *b);
+void func_8008FE44(struct UnkStruct10 *a, struct UnkStruct30 *b);
 
 void func_8008E7AC(struct UnkStruct10 *a)
 {
@@ -1265,7 +1272,7 @@ void func_8008F498(struct UnkStruct10 *a)
 
 void lbl_8008F528(struct UnkStruct17 *a)
 {
-    u32 r31;
+    Func802F20EC r31;
     Func802F20F0 r30;
     u8 r29;
     u8 r28;
@@ -1446,6 +1453,21 @@ struct UnkStruct28
     u8 fillerC[0x38-0xC];
 };
 
+struct UnkStruct21
+{
+    u32 unk0;
+};
+
+struct UnkStruct31
+{
+    u32 unk0;
+    u8 filler4[4];
+    u32 unk8;
+    u8 fillerC[0x20-0xC];
+};
+
+void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b);
+
 static u8 func_8008F914_inline(void *b, void *c)
 {
     // Not sure about this stack usage and what struct this is supposed to be.
@@ -1555,53 +1577,59 @@ u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
     return (u32)r31;
 }
 
-asm void func_8008FBB0(u32 a, void *b, void *c, u32 d)
+asm void func_8008FBB0(register u32 _flags, register void *_base, void *c, u32 d)
 {
     nofralloc
     lis r9, GXWGFifo@h
-    ori r9, r9, GXWGFifo@l
+    ori r9, r9, GXWGFifo@l  // r9 = GX FIFO
     addi r5, r5, -4
-lbl_8008FBBC:
-    lwzu r7, 4(r5)
+next_strip:
+    lwzu r7, 4(r5)  // vertex count
     addi r8, r7, 1
-    li r10, 0x98
+    li r10, GX_DRAW_TRIANGLE_STRIP
     stb r10, 0(r9)
     sth r7, 0(r9)
-lbl_8008FBD0:
+next_tri:
     lwzu r11, 4(r5)
-    add r10, r4, r11
+    add r10, _base, r11
+    // copy vertex
     psq_l f0, 0(r10), 0, qr0
     psq_l f1, 8(r10), 1, qr0
     psq_st f0, 0(r9), 0, qr0
     psq_st f1, 0(r9), 1, qr0
+    // copy vertex
     psq_l f2, 12(r10), 0, qr0
     psq_l f3, 20(r10), 1, qr0
     psq_st f2, 0(r9), 0, qr0
     psq_st f3, 0(r9), 1, qr0
-    rlwinm. r12, r3, 0x15, 0x1f, 0x1f
+    extrwi. r12, r3, 1, (31-11)
     beq+ lbl_8008FC08
+    // if flags & (1<<11)
     psq_l f0, 48(r10), 1, qr0
     psq_st f0, 0(r9), 1, qr0
 lbl_8008FC08:
-    rlwinm. r12, r3, 0x13, 0x1f, 0x1f
+    extrwi. r12, _flags, 1, (31-13)
     beq lbl_8008FC18
+    // if flags & (1<<13)
     psq_l f0, 24(r10), 0, qr0
     psq_st f0, 0(r9), 0, qr0
 lbl_8008FC18:
-    rlwinm. r12, r3, 0x12, 0x1f, 0x1f
+    extrwi. r12, _flags, 1, (31-14)
     beq+ lbl_8008FC28
+    // if flags & (1<<14)
     psq_l f1, 32(r10), 0, qr0
     psq_st f1, 0(r9), 0, qr0
 lbl_8008FC28:
-    rlwinm. r12, r3, 0x11, 0x1f, 0x1f
+    extrwi. r12, _flags, 1, (31-15)
     beq+ lbl_8008FC38
+    // if flags & (1<<15)
     psq_l f2, 40(r10), 0, qr0
     psq_st f2, 0(r9), 0, qr0
 lbl_8008FC38:
     addic. r7, r7, -1
-    bgt lbl_8008FBD0
+    bgt next_tri
     subf. r6, r8, r6
-    bgt lbl_8008FBBC
+    bgt next_strip
     blr
 }
 
@@ -1673,7 +1701,7 @@ void func_8008FD90(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
     }
 }
 
-extern void func_8009E398(u32, GXColor *, float, float, float, float);
+extern void func_8009E398(u32, GXColor, float, float, float, float);
 
 struct UnkStruct30
 {
@@ -1685,66 +1713,19 @@ struct UnkStruct30
     u8 unkE;
     u8 fillerF[0x11-0xF];
     u8 unk11;
-    u8 filler12[0x40-0x12];
+    u8 unk12;
+    //u8 filler13[0x40-0x13];
+    u8 filler13[0x16-0x13];
+    u16 unk16;
+    u8 filler18[0x40-0x18];
     u32 unk40;
 };
 
-static inline void func_8008FE44_inline_1(struct UnkStruct30 *r30)
+void func_8008FE44(struct UnkStruct10 *a, struct UnkStruct30 *b)
 {
-    if (r30->unk0 & 0x88)
-        lbl_802B4ECC.unk10 = r30->unk4;
-    else
-    {
-        lbl_802B4ECC.unk10.r = 255;
-        lbl_802B4ECC.unk10.g = 255;
-        lbl_802B4ECC.unk10.b = 255;
-    }
-    lbl_802B4ECC.unk10.a = r30->unk11;
-    if (r30->unk0 & 0x8)
-        lbl_802B4ECC.unk14 = r30->unk8;
-    else
-    {
-        lbl_802B4ECC.unk14.r = 255;
-        lbl_802B4ECC.unk14.g = 255;
-        lbl_802B4ECC.unk14.b = 255;
-    }
-    lbl_802B4ECC.unk14.a = 255;
-    func_8008D6D4(r30);
-    lbl_802B4ECC.unk18 = r30->unkC;
-    lbl_802B4ECC.unk19 = r30->unkD;
-    lbl_802B4ECC.unk1A = r30->unkE;
-    lbl_802B4ECC.unk2 = 0;
-    lbl_802B4ECC.unk1C = 15;
-    lbl_802B4ECC.unk20 = 7;
-    lbl_802B4ECC.unk3 = -1;
-    lbl_802B4ECC.unk4 = -1;
-    lbl_802B4ECC.unk5 = -1;
-    lbl_802B4ECC.unk8 = 16;
-    lbl_802B4ECC.unkC = 16;
-}
-
-static inline void func_8008FE44_inline_2(struct UnkStruct30 *r30)
-{
-    lbl_802B4ECC.unk24 = 4;
-    lbl_802B4ECC.unk28 = 5;
-    //lbl_802B4E60_100.unk0 = 5;
-    if (r30->unk0 & 0x20)
-        lbl_802B4ECC.unk24 = r30->unk40 & 0xF;
-    if (r30->unk0 & 0x40)
-        lbl_802B4ECC.unk28 = (r30->unk40 >> 4) & 0xF;
-    func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
-}
-
-void func_8008FE44(struct UnkStruct10 *a, u8 *b)
-{
-    //u8 *r30 = (u8 *)b;
-    //struct UnkStruct30 *r30 = (struct UnkStruct30 *)b;
     lbl_802B4ECC.unk0 = 1;
     if (a->unk4 & 0x18)
-        //r30 += 0x20;
-        //r30++;
-        //r30 = (struct UnkStruct30 *)((u8 *)r30 + 0x20);
-        b += 0x20;
+        b = (struct UnkStruct30 *)((u8 *)b + 0x20);
     if (lbl_802F2108 != 0)
         GXLoadTexMtxImm(lbl_802B4E6C, 0x21, 0);
     else
@@ -1760,38 +1741,58 @@ void func_8008FE44(struct UnkStruct10 *a, u8 *b)
         lbl_802F21A0->unk8 = lbl_802F2101;
     }
     if (lbl_802F211C != 0)
-    {
-        GXColor sp1C = lbl_802F2124;
-        func_8009E398(lbl_802F2120, &sp1C, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
-    }
+        func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+    else
+        func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+    if (b->unk0 & 0x88)
+        lbl_802B4ECC.unk10 = b->unk4;
     else
     {
-        GXColor sp18 = lbl_802F2124;
-        func_8009E398(0, &sp18, 0.0f, 100.0f, 0.1f, 20000.0f);
+        lbl_802B4ECC.unk10.r = 255;
+        lbl_802B4ECC.unk10.g = 255;
+        lbl_802B4ECC.unk10.b = 255;
     }
-    //lbl_8008FF74
-    func_8008FE44_inline_1((void *)b);
+    lbl_802B4ECC.unk10.a = b->unk11;
+    if (b->unk0 & 0x8)
+        lbl_802B4ECC.unk14 = b->unk8;
+    else
+    {
+        lbl_802B4ECC.unk14.r = 255;
+        lbl_802B4ECC.unk14.g = 255;
+        lbl_802B4ECC.unk14.b = 255;
+    }
+    lbl_802B4ECC.unk14.a = 255;
+    func_8008D6D4(b);
+    lbl_802B4ECC.unk18.r = b->unkC;
+    lbl_802B4ECC.unk18.g = b->unkD;
+    lbl_802B4ECC.unk18.b = b->unkE;
+    lbl_802B4ECC.unk2 = 0;
+    lbl_802B4ECC.unk1C = 15;
+    lbl_802B4ECC.unk20 = 7;
+    lbl_802B4ECC.unk3 = -1;
+    lbl_802B4ECC.unk4 = -1;
+    lbl_802B4ECC.unk5 = -1;
+    lbl_802B4ECC.unk8 = 16;
+    lbl_802B4ECC.unkC = 16;
     if (lbl_802F210C != 0)
-    {
-        GXColor sp14 = lbl_802F2110;
-        func_8009F33C(2, &sp14);
-    }
+        func_8009F33C(2, lbl_802F2110);
     if (lbl_802F2114 != 0)
-    {
-        GXColor sp10 = lbl_802F2118;
-        func_8009F33C(3, &sp10);
-    }
-    func_8008FE44_inline_2((void *)b);
+        func_8009F33C(3, lbl_802F2118);
+    lbl_802B4ECC.unk24 = 4;
+    lbl_802B4ECC.unk28 = 5;
+    if (b->unk0 & 0x20)
+        lbl_802B4ECC.unk24 = b->unk40 & 0xF;
+    if (b->unk0 & 0x40)
+        lbl_802B4ECC.unk28 = (b->unk40 >> 4) & 0xF;
+    func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
     lbl_802B4ECC.unk1 = -1;
     lbl_802B4ECC.unk2C = -1;
     lbl_802B4ECC.unk30 = -1;
     lbl_802B4ECC.unk34 = -1;
     lbl_802B4ECC.unk38 = -1;
-
     lbl_802B4ECC.unk3C = 0xFFFF;
     lbl_802B4ECC.unk3E = 0xFFFF;
     lbl_802B4ECC.unk40 = 0xFFFF;
-    
     lbl_802B4ECC.unk44 = 0;
     lbl_802B4ECC.unk48 = 0;
     lbl_802B4ECC.unk4C = 0;
@@ -1827,7 +1828,7 @@ void func_8009015C(void)
 
 void func_80090268(void)
 {
-    Point3d cameraPos = {0.0f, 0.0f, 0.0f};  // lbl_801719F8
+    Point3d cameraPos = {0.0f, 0.0f, 0.0f};
     Point3d target;
     Vec sp44;
     Vec cameraUp;
@@ -1868,4 +1869,546 @@ void func_80090268(void)
     mathutil_set_a_mtx_mult_a_mtx_by(mtx);
     GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x46, 0);
     mathutil_pop_a_mtx();
+}
+
+void func_80090474(void)
+{
+    u8 *imagePtr = lbl_802B4F80;
+    memset(imagePtr, 0xFF, 32);
+    memset(imagePtr+32, 0, 32);
+    DCFlushRange(imagePtr, 64);
+    GXInitTexObj(
+        &lbl_802B4F30,  // obj
+        lbl_802B4F80,  // image_ptr
+        16,  // width
+        4,  // height
+        GX_TF_I8,  // format
+        0,  // wrap_s
+        0,  // wrap_t
+        0);  // mipmap
+    GXInitTexObjLOD(
+        &lbl_802B4F30,  // obj
+        1,  // min_filt
+        1,  // mag_filt
+        0.0f,  // min_lod
+        0.0f,  // max_lod
+        0.0f,  // lod_bias
+        0,  // bias_clamp
+        0,  // do_edge_lod
+        0);  // max_aniso
+}
+
+struct UnkStruct32
+{
+    u32 unk0;  // 7C
+    u32 unk4;  // 80
+    u32 unk8;  // 84
+    u32 unkC;  // 88
+
+    u32 unk10;  // 8C
+    u32 unk14;  // 90
+    
+    u32 unk18;  // 94
+    u32 unk1C;  // 98
+    u32 unk20;  // 9C
+    u32 unk24;  // A0
+    
+    u8 filler28[4];
+};
+
+struct UnkStruct33
+{
+    u32 unk0; // 3C
+    void *unk4; // 40
+    void *unk8; // 44
+    struct UnkStruct32 unkC;  // 48
+};
+
+//extern void func_8009F2C8(u8);
+
+void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
+{
+    struct UnkStruct32 sp7C;
+    GXColor sp78;
+    GXColor sp38;
+    u32 r23;
+    u32 r22;
+    s32 r21;
+    u32 r14;
+    u32 r3;
+    u32 r0;
+    s32 r15_;
+    s32 r16_;
+    
+    sp7C.unk0 = 0;  // 7C
+    sp7C.unk4 = 0;  // 80
+    sp7C.unk8 = 0x1E;  // 84
+    sp7C.unkC = 0;  // 88
+    sp7C.unk10 = 0;  // 8C
+    r21 = 0;
+    sp7C.unk14 = 0x40;  // 0x90
+    r14 = 0;
+    sp7C.unk18 = 0;  // 94
+    sp7C.unk20 = 1;  // 98
+    sp7C.unk24 = 0;  // 9C
+    
+    sp7C.unkC = 1;  // 88
+    sp7C.unk8 = 0x24;  // 84
+    sp7C.unk14 = 0x49;  // 90
+    sp7C.unk18 = 4;  // 94
+    
+    if (lbl_802B4ECC.unk18.r != a->unkC
+     || lbl_802B4ECC.unk18.g != a->unkD
+     || lbl_802B4ECC.unk18.b != a->unkE)
+    {
+        lbl_802B4ECC.unk50 = 0;
+        lbl_802B4ECC.unk54 = 0;
+        lbl_802B4ECC.unk18.r = a->unkC;
+        lbl_802B4ECC.unk18.g = a->unkD;
+        lbl_802B4ECC.unk18.b = a->unkE;
+    }
+    //lbl_800905F8
+    if ((a->unk0 & 1) == 0)
+    {
+        /*
+        u8 r5;
+        u8 r6;
+        u8 r7;
+        */
+        GXColor color_r5;
+        #define r5 color_r5.r
+        #define r6 color_r5.g
+        #define r7 color_r5.b
+        r0 = 0;
+        //r3 = a->unk0 & 0x88;
+        if (a->unk0 & 0x88)
+        {
+            sp78.r = a->unk4.r;
+            sp78.g = a->unk4.g;
+            sp78.b = a->unk4.b;
+        }
+        else
+        {
+            sp78.r = 255;
+            sp78.g = 255;
+            sp78.b = 255;
+        }
+        //lbl_80090644
+        sp78.a = a->unk11;
+        if (lbl_802B4ECC.unk10.r != sp78.r
+         || lbl_802B4ECC.unk10.g != sp78.g
+         || lbl_802B4ECC.unk10.b != sp78.b
+         || lbl_802B4ECC.unk10.a != sp78.a)
+        {
+            r0 = 1;
+            lbl_802B4ECC.unk10 = sp78;
+        }
+        //lbl_8009069C
+        if (a->unk0 & 8)
+        {
+            r5 = a->unk8.r;
+            r6 = a->unk8.g;
+            r7 = a->unk8.b;
+        }
+        else
+        {
+            r5 = 255;
+            r6 = 255;
+            r7 = 255;
+            //r5 = r6 = r7 = 255;
+        }
+        //lbl_800906C8
+        if (lbl_802B4ECC.unk14.r != r5
+         || lbl_802B4ECC.unk14.g != r6
+         || lbl_802B4ECC.unk14.b != r7)
+        {
+            r0 = 1;
+            lbl_802B4ECC.unk14.r = r5;
+            lbl_802B4ECC.unk14.g = r6;
+            lbl_802B4ECC.unk14.b = r7;
+        }
+        //lbl_8009070C
+        if (r0)
+            func_8008D6D4(a);
+        #undef r5
+        #undef r6
+        #undef r7
+    }
+    //lbl_8009071C
+    r23 = 10;
+    r22 = 5;
+    if (a->unk0 & 1)
+    {
+        if (a->unk0 & 0x100)
+        {
+            if (lbl_802B4ECC.unk2 != 2)
+            {
+                lbl_802B4ECC.unk2 = 2;
+                GXSetChanCtrl(4, 0, 1, 1, 0, 0, 2);
+            }
+            //to lbl_800908D4
+        }
+        //lbl_8009077C
+        else
+        {
+            lbl_802B4ECC.unk2 = 1;
+            if (a->unk0 & 0x88)
+            {
+                sp78.r = a->unk4.r;
+                sp78.g = a->unk4.g;
+                sp78.b = a->unk4.b;
+            }
+            else
+            {
+                sp78.r = 255;
+                sp78.g = 255;
+                sp78.b = 255;
+            }
+            //lbl_800907C0
+            sp78.a = (float)a->unk11 * lbl_802F20DC;
+            //sp38 = sp78;
+            GXSetTevColor(1, sp78);
+            r23 = 2;
+            r22 = 1;
+            //to lbl_800908D4
+        }
+    }
+    //lbl_80090814
+    else
+    {
+        if (a->unk0 & 0x100)
+        {
+            if (lbl_802B4ECC.unk2 != 4)
+            {
+                lbl_802B4ECC.unk2 = 4;
+                GXSetChanCtrl(2, 0, 0, 1, 0, 0, 2);
+                GXSetChanCtrl(0, 1, 0, 1, lbl_802F20E0, 2, 1);
+            }
+            //to lbl_800908D4
+        }
+        //lbl_8009087C
+        else
+        {
+            if (lbl_802B4ECC.unk2 != 3)
+            {
+                lbl_802B4ECC.unk2 = 3;
+                GXSetChanCtrl(2, 0, 0, 0, 0, 0, 2);
+                GXSetChanCtrl(0, 1, 0, 0, lbl_802F20E0, 2, 1);
+            }
+        }
+    }
+    //lbl_800908D4
+    
+    if (lbl_802F211C != 0)
+    {
+        if (a->unk0 & 4)
+            func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+        else
+            func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+    }
+    //lbl_8009093C
+    if (lbl_802B4ECC.unk1C != r23)
+    {
+        lbl_802B4ECC.unk1C = r23;
+        r21 = 1;
+    }
+    if (lbl_802B4ECC.unk20 != r22)
+    {
+        lbl_802B4ECC.unk20 = r22;
+        r14 = 1;
+    }
+    if (a->unk0 & 0x80)
+    {
+        if (lbl_802B4ECC.unk1 != 0 || r21 != 0 || r14 != 0)
+        {
+            func_8009EFF4(sp7C.unk0, 0xFF, 0xFF, 4);
+            func_8009E618(sp7C.unk0, 15, 15, 15, r23);
+            func_8009E800(sp7C.unk0, 0, 0, 0, 1, 0);
+            func_8009E70C(sp7C.unk0, 7, 7, 7, r22);
+            func_8009E918(sp7C.unk0, 0, 0, 0, 1, 0);
+        }
+        //lbl_80090A1C
+        else
+        {
+            if (r21 != 0)
+            {
+                if (r21 != 0)
+                    func_8009E618(sp7C.unk0, 15, 15, 15, r23);
+                //lbl_80090A40
+                if (r14 != 0)
+                    func_8009E70C(sp7C.unk0, 7, 7, 7, r22);
+            }
+        }
+        //lbl_80090A60
+        lbl_802B4ECC.unk2C = -1;
+        sp7C.unk0++;
+        //to lbl_80091020
+    }
+    //lbl_80090A78
+    else
+    {
+        s32 r20 = a->unk12;
+        u32 r19 = 4;
+        // loop:
+        // r18 = &a->unk16
+        // r17 = &lbl_802B4ECC.unk2C
+        // r15 = &lbl_802B4ECC.unk3C
+        // r24 = &lbl_802B4ECC.unk54 doesn't change
+        // r14 = &sp2C doesn't change
+        // r25 = &lbl_802B4ECC.unk50  doesn't change
+        // maybe indexed instead?
+        u16 *r18 = &a->unk16;
+        u32 *r17 = &lbl_802B4ECC.unk2C;
+        u16 *r15 = &lbl_802B4ECC.unk3C;
+        while (r20 > 0)
+        {
+            struct UnkStruct31 *r3 = &b[*r18];
+            u32 r16 = r3->unk0;
+            r16 &= 0xA003;
+            if (*r17 != r16)
+                break;
+            if (*r15 != *r18 || (r3->unk0 & 0x10000))
+            {
+                func_8009F430(r3->unk8, sp7C.unkC);
+                *r15 = *r18;
+            }
+            //lbl_80090B00
+            if (r16 == 0)
+            {
+                if (r21 != 0)
+                {
+                    func_80091500(&sp7C, r23, r22);
+                    r21 = 0;
+                }
+                func_80091564(&sp7C);
+                //to lbl_80090D3C
+            }
+            //lbl_80090B30
+            else if (r16 & 0x2000)
+            {
+                if (r21 != 0)
+                {
+                    func_8009167C(&sp7C, r23, r22);
+                    r21 = 0;
+                }
+                func_800916E0(&sp7C);
+                //to lbl_80090D3C
+            }
+            else if (r16 & 0x2)
+            {
+                if (r21 != 0)
+                {
+                    func_80091CA8(&sp7C, r23, r22);
+                    r21 = 0;
+                }
+                func_80091D0C(&sp7C);
+                //to lbl_80090D3C
+            }
+            //lbl_80090B98
+            else if (r16 & 1)
+            {
+                if (lbl_802B4ECC.unk50 == 0)
+                {
+                    GXColor sp28 = lbl_802B4ECC.unk18;
+                    if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
+                    {
+                        sp28.r = 255;
+                        sp28.g = 255;
+                        sp28.b = 255;
+                    }
+                    //lbl_80090BEC
+                    func_8009F33C(0, sp28);
+                    lbl_802B4ECC.unk50 = 1;
+                }
+                //lbl_80090C08
+                if (r21 != 0)
+                {
+                    func_80091878(&sp7C, r23, r22);
+                    r21 = 0;
+                }
+                func_800918DC(&sp7C);
+                //to lbl_80090D3C
+            }
+            //lbl_80090C30
+            else
+            {
+                if (lbl_802B4ECC.unk54 == 0)
+                {
+                    GXColor sp20 = lbl_802B4ECC.unk18;
+                    if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
+                    {
+                        sp20.r = 255;
+                        sp20.g = 255;
+                        sp20.b = 255;
+                    }
+                    sp20.r = (float)sp20.r * lbl_802F20F4;
+                    sp20.g = (float)sp20.g * lbl_802F20F8;
+                    sp20.b = (float)sp20.b * lbl_802F20FC;
+                    func_8009F33C(1, sp20);
+                    lbl_802B4ECC.unk54 = 1;
+                }
+                //lbl_80090D18
+                if (r21 != 0)
+                {
+                    func_80091B1C(&sp7C, r23, r22);
+                    r21 = 0;
+                }
+                func_80091B88(&sp7C);
+            }
+            //lbl_80090D3C
+            sp7C.unkC++;
+            r19++;
+            r20--;
+            r18++;
+            r17++;
+            r15++;
+            r23 = 0;
+            r22 = 0;
+        }
+        //lbl_80090D70
+        while (r20 > 0)
+        {
+            struct UnkStruct31 *r3 = &b[*r18];  // r4
+            u32 r16 = r3->unk0;  // actually, r27
+            r16 &= 0xA003;
+            *r17 = r16;
+            //r16 = r3->unk0;
+            //if (*r17 != r3->unk0)
+            //    break;
+            if (*r15 != *r18 || (r3->unk0 & 0x10000))
+            {
+                func_8009F430(r3->unk8, sp7C.unkC);
+                *r15 = *r18;
+            }
+            if (r16 == 0)
+            {
+                func_80091404(&sp7C, r23, r22, r19);
+                func_80091564(&sp7C);
+            }
+            else if (r16 & 0x2000)
+            {
+                func_80091580(&sp7C, r23, r22, r19);
+                func_800916E0(&sp7C);
+            }
+            else if (r16 & 0x2000)  // same thing
+            {
+                func_80091BA4(&sp7C, r23, r22, r19);
+                func_80091D0C(&sp7C);
+            }
+            //lbl_80090E54
+            else if (r16 & 1)
+            {
+                if (lbl_802B4ECC.unk50 == 0)
+                {
+                    GXColor sp28 = lbl_802B4ECC.unk18;
+                    if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
+                    {
+                        sp28.r = 255;
+                        sp28.g = 255;
+                        sp28.b = 255;
+                    }
+                    func_8009F33C(0, sp28);
+                    lbl_802B4ECC.unk50 = 1;
+                }
+                func_800916FC(&sp7C, r23, r22, r19);
+                func_800918DC(&sp7C);
+            }
+            else
+            {
+                if (lbl_802B4ECC.unk54 == 0)
+                {
+                    GXColor sp20 = lbl_802B4ECC.unk18;
+                    if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
+                    {
+                        sp20.r = 255;
+                        sp20.g = 255;
+                        sp20.b = 255;
+                    }
+                    sp20.r = (float)sp20.r * lbl_802F20F4;
+                    sp20.g = (float)sp20.g * lbl_802F20F8;
+                    sp20.b = (float)sp20.b * lbl_802F20FC;
+                    func_8009F33C(1, sp20);
+                    lbl_802B4ECC.unk54 = 1;
+                }
+                func_800918F8(&sp7C, r23, r22, r19);
+                func_80091B88(&sp7C);
+            }
+            sp7C.unkC++;
+            r19++;
+            r20--;
+            r18++;
+            r17++;
+            r15++;
+            r23 = 0;
+            r22 = 0;
+        }
+        *r17 = -1;
+    }
+    //lbl_80091020
+    if (lbl_802F20EC != NULL)
+    {
+        struct UnkStruct33 sp3C;
+        sp3C.unk0 = lbl_802B4ECC.unk0;
+        sp3C.unk4 = a;
+        sp3C.unk8 = b;
+        sp3C.unkC = sp7C;
+        lbl_802F20EC(&sp3C);
+        sp7C = sp3C.unkC;
+    }
+    //lbl_800910F8
+    if (lbl_802F210C != 0)
+    {
+        if (lbl_802B4ECC.unk8 != sp7C.unk0)
+        {
+            lbl_802B4ECC.unk8 = sp7C.unk0;
+            func_8009127C(sp7C.unk0);
+        }
+        sp7C.unk0++;
+    }
+    //lbl_8009112C
+    if (lbl_802F2114 != 0)
+    {
+        if (lbl_802B4ECC.unkC != sp7C.unk0)
+        {
+            lbl_802B4ECC.unk8 = sp7C.unk0;
+            func_80091340(sp7C.unk0);
+        }
+        sp7C.unk0++;
+    }
+    //lbl_8009115C
+    GXSetNumChans(1);
+    if (lbl_802B4ECC.unk3 != (s8)sp7C.unk0)
+    {
+        lbl_802B4ECC.unk3 = (s8)sp7C.unk0;
+        func_8009F2C8((s8)sp7C.unk0);
+    }
+    if (lbl_802B4ECC.unk4 != (s8)sp7C.unk4)
+    {
+        lbl_802B4ECC.unk4 = (s8)sp7C.unk4;
+        GXSetNumTexGens((s8)sp7C.unk4);
+    }
+    if (lbl_802B4ECC.unk5 != (s8)sp7C.unk10)
+    {
+        lbl_802B4ECC.unk5 = (s8)sp7C.unk10;
+        GXSetNumIndStages((s8)sp7C.unk10);
+    }
+    //lbl_800911D0
+    r15_ = 4;
+    r16_ = 5;
+    if (a->unk0 & 0x20)
+        r15_ = a->unk40 & 0xF;
+    if (a->unk0 & 0x40)
+        r16_ = (a->unk40 >> 4) & 0xF;
+    if (lbl_802B4ECC.unk24 != r15_ || lbl_802B4ECC.unk28 != r16_)
+    {
+        func_8009E110(1, r15_, r16_, 0);
+        lbl_802B4ECC.unk24 = r15_;
+        lbl_802B4ECC.unk28 = r16_;
+    }
+    //lbl_8009123C
+    lbl_802B4ECC.unk0 = 0;
+    if (a->unk0 & 0x80)
+        lbl_802B4ECC.unk1 = 0;
+    else
+        lbl_802B4ECC.unk1 = a->unk12;
 }
