@@ -85,8 +85,8 @@ struct Struct802B4ECC
     s8 unk4;
     s8 unk5;
     u8 filler6[2];
-    u32 unk8;
-    u32 unkC;
+    s32 unk8;
+    s32 unkC;
     GXColor unk10;  // 0x7C
     GXColor unk14;
     GXColor unk18;
@@ -95,22 +95,22 @@ struct Struct802B4ECC
     u8 unk19;
     u8 unk1A;
     */
-    u32 unk1C;
-    u32 unk20;
+    s32 unk1C;
+    s32 unk20;
     s32 unk24;
     s32 unk28;
-    u32 unk2C;  // 0x98  array?
-    u32 unk30;  // 0x9C
-    u32 unk34;  // 0xA0
+    u32 unk2C[3];  // 0x98  array?
+    //u32 unk30;  // 0x9C
+    //u32 unk34;  // 0xA0
     u32 unk38;  // 0xA4
-    u16 unk3C;  // 0xA8
-    u16 unk3E;  // 0xAA
-    u16 unk40;  // 0xAC
+    u16 unk3C[3];  // 0xA8
+    //u16 unk3E;  // 0xAA
+    //u16 unk40;  // 0xAC
     u32 unk44;  // 0xB0
     u32 unk48;  // 0xB4
     u32 unk4C;  // 0xB8
     s32 unk50;  // 0xBC
-    u32 unk54;  // 0xC0
+    s32 unk54;  // 0xC0
     Point3d unk58;
 };
 
@@ -1786,13 +1786,13 @@ void func_8008FE44(struct UnkStruct10 *a, struct UnkStruct30 *b)
         lbl_802B4ECC.unk28 = (b->unk40 >> 4) & 0xF;
     func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
     lbl_802B4ECC.unk1 = -1;
-    lbl_802B4ECC.unk2C = -1;
-    lbl_802B4ECC.unk30 = -1;
-    lbl_802B4ECC.unk34 = -1;
+    lbl_802B4ECC.unk2C[0] = -1;
+    lbl_802B4ECC.unk2C[1] = -1;
+    lbl_802B4ECC.unk2C[2] = -1;
     lbl_802B4ECC.unk38 = -1;
-    lbl_802B4ECC.unk3C = 0xFFFF;
-    lbl_802B4ECC.unk3E = 0xFFFF;
-    lbl_802B4ECC.unk40 = 0xFFFF;
+    lbl_802B4ECC.unk3C[0] = 0xFFFF;
+    lbl_802B4ECC.unk3C[1] = 0xFFFF;
+    lbl_802B4ECC.unk3C[2] = 0xFFFF;
     lbl_802B4ECC.unk44 = 0;
     lbl_802B4ECC.unk48 = 0;
     lbl_802B4ECC.unk4C = 0;
@@ -1900,7 +1900,7 @@ void func_80090474(void)
 
 struct UnkStruct32
 {
-    u32 unk0;  // 7C
+    s32 unk0;  // 7C
     u32 unk4;  // 80
     u32 unk8;  // 84
     u32 unkC;  // 88
@@ -1926,17 +1926,67 @@ struct UnkStruct33
 
 //extern void func_8009F2C8(u8);
 
+static inline void inline_test1(GXColor sp28)  // 40 -> 44
+{
+                    if (sp28.r == 0 && sp28.g == 0 && sp28.b == 0)
+                    {
+                        sp28.r = 255;
+                        sp28.g = 255;
+                        sp28.b = 255;
+                    }
+                    //lbl_80090BEC
+                    func_8009F33C(0, sp28);
+}
+
+static inline void inline_test2(GXColor sp20)  // 32 -> 40
+{
+                    if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
+                    {
+                        sp20.r = 255;
+                        sp20.g = 255;
+                        sp20.b = 255;
+                    }
+                    sp20.r = (float)sp20.r * lbl_802F20F4;
+                    sp20.g = (float)sp20.g * lbl_802F20F8;
+                    sp20.b = (float)sp20.b * lbl_802F20FC;
+                    func_8009F33C(1, sp20);
+}
+
+static inline void inline_test3(s8 a)
+{
+    if (lbl_802B4ECC.unk3 != a)
+    {
+        lbl_802B4ECC.unk3 = a;
+        func_8009F2C8(a);
+    }
+}
+
+static inline void inline_test4(s8 b)
+{
+    if (lbl_802B4ECC.unk4 != b)
+    {
+        lbl_802B4ECC.unk4 = b;
+        GXSetNumTexGens(b);
+    }
+}
+
+static inline void inline_test5(s8 c)
+{
+    if (lbl_802B4ECC.unk5 != c)
+    {
+        lbl_802B4ECC.unk5 = c;
+        GXSetNumIndStages(c);
+    }
+}
+
 void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
 {
-    struct UnkStruct32 sp7C;
-    GXColor sp78;
-    GXColor sp38;
-    u32 r23;
-    u32 r22;
+    struct UnkStruct32 sp7C;  // correct
+    GXColor sp78;  // correct
+    s32 r23;
+    s32 r22;
     s32 r21;
-    u32 r14;
-    u32 r3;
-    u32 r0;
+    s32 r14;
     s32 r15_;
     s32 r16_;
     
@@ -1949,8 +1999,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     sp7C.unk14 = 0x40;  // 0x90
     r14 = 0;
     sp7C.unk18 = 0;  // 94
-    sp7C.unk20 = 1;  // 98
-    sp7C.unk24 = 0;  // 9C
+    sp7C.unk1C = 1;  // 98
+    sp7C.unk20 = 0;  // 9C
     
     sp7C.unkC = 1;  // 88
     sp7C.unk8 = 0x24;  // 84
@@ -1970,17 +2020,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     //lbl_800905F8
     if ((a->unk0 & 1) == 0)
     {
-        /*
-        u8 r5;
-        u8 r6;
-        u8 r7;
-        */
         GXColor color_r5;
-        #define r5 color_r5.r
-        #define r6 color_r5.g
-        #define r7 color_r5.b
-        r0 = 0;
-        //r3 = a->unk0 & 0x88;
+        int r0 = 0;
         if (a->unk0 & 0x88)
         {
             sp78.r = a->unk4.r;
@@ -2006,33 +2047,29 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
         //lbl_8009069C
         if (a->unk0 & 8)
         {
-            r5 = a->unk8.r;
-            r6 = a->unk8.g;
-            r7 = a->unk8.b;
+            color_r5.r = a->unk8.r;
+            color_r5.g = a->unk8.g;
+            color_r5.b = a->unk8.b;
         }
         else
         {
-            r5 = 255;
-            r6 = 255;
-            r7 = 255;
-            //r5 = r6 = r7 = 255;
+            color_r5.r = 255;
+            color_r5.g = 255;
+            color_r5.b = 255;
         }
         //lbl_800906C8
-        if (lbl_802B4ECC.unk14.r != r5
-         || lbl_802B4ECC.unk14.g != r6
-         || lbl_802B4ECC.unk14.b != r7)
+        if (lbl_802B4ECC.unk14.r != color_r5.r
+         || lbl_802B4ECC.unk14.g != color_r5.g
+         || lbl_802B4ECC.unk14.b != color_r5.b)
         {
             r0 = 1;
-            lbl_802B4ECC.unk14.r = r5;
-            lbl_802B4ECC.unk14.g = r6;
-            lbl_802B4ECC.unk14.b = r7;
+            lbl_802B4ECC.unk14.r = color_r5.r;
+            lbl_802B4ECC.unk14.g = color_r5.g;
+            lbl_802B4ECC.unk14.b = color_r5.b;
         }
         //lbl_8009070C
         if (r0)
             func_8008D6D4(a);
-        #undef r5
-        #undef r6
-        #undef r7
     }
     //lbl_8009071C
     r23 = 10;
@@ -2140,7 +2177,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             }
         }
         //lbl_80090A60
-        lbl_802B4ECC.unk2C = -1;
+        lbl_802B4ECC.unk2C[0] = -1;
         sp7C.unk0++;
         //to lbl_80091020
     }
@@ -2148,7 +2185,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     else
     {
         s32 r20 = a->unk12;
-        u32 r19 = 4;
+        s32 r19 = 4;
         // loop:
         // r18 = &a->unk16
         // r17 = &lbl_802B4ECC.unk2C
@@ -2158,12 +2195,13 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
         // r25 = &lbl_802B4ECC.unk50  doesn't change
         // maybe indexed instead?
         u16 *r18 = &a->unk16;
-        u32 *r17 = &lbl_802B4ECC.unk2C;
-        u16 *r15 = &lbl_802B4ECC.unk3C;
+        u32 *r17 = lbl_802B4ECC.unk2C;
+        u32 r16;
+        u16 *r15 = lbl_802B4ECC.unk3C;
         while (r20 > 0)
         {
             struct UnkStruct31 *r3 = &b[*r18];
-            u32 r16 = r3->unk0;
+            r16 = r3->unk0;
             r16 &= 0xA003;
             if (*r17 != r16)
                 break;
@@ -2209,7 +2247,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             {
                 if (lbl_802B4ECC.unk50 == 0)
                 {
-                    GXColor sp28 = lbl_802B4ECC.unk18;
+                    /*
+                    GXColor sp28 = lbl_802B4ECC.unk18;  // 40 -> 112
                     if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
                     {
                         sp28.r = 255;
@@ -2218,6 +2257,9 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     }
                     //lbl_80090BEC
                     func_8009F33C(0, sp28);
+                    lbl_802B4ECC.unk50 = 1;
+                    */
+                    inline_test1(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk50 = 1;
                 }
                 //lbl_80090C08
@@ -2234,7 +2276,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             {
                 if (lbl_802B4ECC.unk54 == 0)
                 {
-                    GXColor sp20 = lbl_802B4ECC.unk18;
+                    /*
+                    GXColor sp20 = lbl_802B4ECC.unk18;  // 32 -> 108
                     if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
                     {
                         sp20.r = 255;
@@ -2245,6 +2288,9 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
                     func_8009F33C(1, sp20);
+                    lbl_802B4ECC.unk54 = 1;
+                    */
+                    inline_test2(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk54 = 1;
                 }
                 //lbl_80090D18
@@ -2300,6 +2346,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             {
                 if (lbl_802B4ECC.unk50 == 0)
                 {
+                    /*
                     GXColor sp28 = lbl_802B4ECC.unk18;
                     if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
                     {
@@ -2309,6 +2356,9 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     }
                     func_8009F33C(0, sp28);
                     lbl_802B4ECC.unk50 = 1;
+                    */
+                    inline_test1(lbl_802B4ECC.unk18);
+                    lbl_802B4ECC.unk50 = 1;
                 }
                 func_800916FC(&sp7C, r23, r22, r19);
                 func_800918DC(&sp7C);
@@ -2317,6 +2367,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             {
                 if (lbl_802B4ECC.unk54 == 0)
                 {
+                    /*
                     GXColor sp20 = lbl_802B4ECC.unk18;
                     if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
                     {
@@ -2328,6 +2379,9 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
                     func_8009F33C(1, sp20);
+                    lbl_802B4ECC.unk54 = 1;
+                    */
+                    inline_test2(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk54 = 1;
                 }
                 func_800918F8(&sp7C, r23, r22, r19);
@@ -2377,6 +2431,10 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     }
     //lbl_8009115C
     GXSetNumChans(1);
+    inline_test3(sp7C.unk0);
+    inline_test4(sp7C.unk4);
+    inline_test5(sp7C.unk10);
+    /*
     if (lbl_802B4ECC.unk3 != (s8)sp7C.unk0)
     {
         lbl_802B4ECC.unk3 = (s8)sp7C.unk0;
@@ -2392,6 +2450,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
         lbl_802B4ECC.unk5 = (s8)sp7C.unk10;
         GXSetNumIndStages((s8)sp7C.unk10);
     }
+    */
     //lbl_800911D0
     r15_ = 4;
     r16_ = 5;
