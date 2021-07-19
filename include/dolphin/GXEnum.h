@@ -443,4 +443,24 @@ typedef enum
     GX_MAX_TEVREG,
 } GXTevRegID;
 
+typedef enum
+{
+    GX_DF_NONE,
+    GX_DF_SIGN,
+    GX_DF_CLAMP,
+} GXDiffuseFn;
+
+typedef enum
+{
+    GX_SRC_REG,
+    GX_SRC_VTX,
+} GXColorSrc;
+
+typedef enum
+{
+    GX_AF_SPEC,
+    GX_AF_SPOT,
+    GX_AF_NONE,
+} GXAttnFn;
+
 #endif

@@ -1926,7 +1926,7 @@ struct UnkStruct33
 
 //extern void func_8009F2C8(u8);
 
-static inline void inline_test1(GXColor sp28)  // 40 -> 44
+static inline void inline_test1(GXColor sp28)
 {
                     if (sp28.r == 0 && sp28.g == 0 && sp28.b == 0)
                     {
@@ -1938,7 +1938,7 @@ static inline void inline_test1(GXColor sp28)  // 40 -> 44
                     func_8009F33C(0, sp28);
 }
 
-static inline void inline_test2(GXColor sp20)  // 32 -> 40
+static inline void inline_test2(GXColor sp20)
 {
                     if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
                     {
@@ -1979,6 +1979,32 @@ static inline void inline_test5(s8 c)
     }
 }
 
+extern void func_80091340();
+extern void func_8009127C();
+extern void func_800918F8();
+extern void func_800916FC();
+extern void func_80091BA4();
+extern void func_80091580();
+extern void func_80091404();
+extern void func_80091B88();
+extern void func_80091B1C();
+extern void func_800918DC();
+extern void func_80091878();
+extern void func_80091D0C();
+extern void func_80091CA8();
+extern void func_800916E0();
+extern void func_8009167C();
+extern void func_80091564();
+extern void func_80091500();
+extern void func_8009F430();
+extern void func_8009E918();
+extern void func_8009E70C();
+extern void func_8009E800();
+extern void func_8009E618();
+extern void func_8009EFF4();
+
+#ifdef NONMATCHING
+// stack differences
 void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
 {
     struct UnkStruct32 sp7C;  // correct
@@ -2248,7 +2274,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                 if (lbl_802B4ECC.unk50 == 0)
                 {
                     /*
-                    GXColor sp28 = lbl_802B4ECC.unk18;  // 40 -> 112
+                    GXColor sp28 = lbl_802B4ECC.unk18;
                     if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
                     {
                         sp28.r = 255;
@@ -2259,6 +2285,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     func_8009F33C(0, sp28);
                     lbl_802B4ECC.unk50 = 1;
                     */
+                    // 40 -> 44 (lbl_802B4ECC.unk18 temp)
+                    // r14 44 -> 28 (arg to func_8009F33C)
                     inline_test1(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk50 = 1;
                 }
@@ -2277,7 +2305,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                 if (lbl_802B4ECC.unk54 == 0)
                 {
                     /*
-                    GXColor sp20 = lbl_802B4ECC.unk18;  // 32 -> 108
+                    GXColor sp20 = lbl_802B4ECC.unk18;
                     if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
                     {
                         sp20.r = 255;
@@ -2290,6 +2318,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     func_8009F33C(1, sp20);
                     lbl_802B4ECC.unk54 = 1;
                     */
+                    // 32 -> 40 (lbl_802B4ECC.unk18 temp)
+                    // r27 36 -> 24 (arg to func_8009F33C)
                     inline_test2(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk54 = 1;
                 }
@@ -2318,9 +2348,6 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             u32 r16 = r3->unk0;  // actually, r27
             r16 &= 0xA003;
             *r17 = r16;
-            //r16 = r3->unk0;
-            //if (*r17 != r3->unk0)
-            //    break;
             if (*r15 != *r18 || (r3->unk0 & 0x10000))
             {
                 func_8009F430(r3->unk8, sp7C.unkC);
@@ -2357,6 +2384,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     func_8009F33C(0, sp28);
                     lbl_802B4ECC.unk50 = 1;
                     */
+                    // 24 -> 36 (lbl_802B4ECC.unk18 temp)
+                    // 28 -> 20 (arg to func_8009F33C)
                     inline_test1(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk50 = 1;
                 }
@@ -2381,6 +2410,8 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
                     func_8009F33C(1, sp20);
                     lbl_802B4ECC.unk54 = 1;
                     */
+                    // 16 -> 32 (lbl_802B4ECC.unk18 temp)
+                    // r21 20 -> 16 (arg to func_8009F33C)
                     inline_test2(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk54 = 1;
                 }
@@ -2434,23 +2465,6 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     inline_test3(sp7C.unk0);
     inline_test4(sp7C.unk4);
     inline_test5(sp7C.unk10);
-    /*
-    if (lbl_802B4ECC.unk3 != (s8)sp7C.unk0)
-    {
-        lbl_802B4ECC.unk3 = (s8)sp7C.unk0;
-        func_8009F2C8((s8)sp7C.unk0);
-    }
-    if (lbl_802B4ECC.unk4 != (s8)sp7C.unk4)
-    {
-        lbl_802B4ECC.unk4 = (s8)sp7C.unk4;
-        GXSetNumTexGens((s8)sp7C.unk4);
-    }
-    if (lbl_802B4ECC.unk5 != (s8)sp7C.unk10)
-    {
-        lbl_802B4ECC.unk5 = (s8)sp7C.unk10;
-        GXSetNumIndStages((s8)sp7C.unk10);
-    }
-    */
     //lbl_800911D0
     r15_ = 4;
     r16_ = 5;
@@ -2471,3 +2485,17 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     else
         lbl_802B4ECC.unk1 = a->unk12;
 }
+#else
+extern double lbl_802F5750;
+extern float lbl_802F5744;
+extern float lbl_802F5748;
+extern float lbl_802F576C;
+extern float lbl_802F5770;
+asm void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
+{
+#define _SDA_BASE_ 0
+#define _SDA2_BASE_ 0
+    nofralloc
+#include "../asm/nonmatchings/func_80090524.s"
+}
+#endif
