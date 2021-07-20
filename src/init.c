@@ -393,7 +393,7 @@ void init_cache(void)
     lbl_802F1B60 = (void *)0xE0000000;
     lbl_802F1CA4 = (void *)0xE00001B0;
     lbl_802F1B3C = (void *)0xE00001C8;
-    lbl_802F21A0 = (void *)0xE00002D8;
+    zMode = (void *)0xE00002D8;
     printf("locked cache size: %d\n", 0xA0C);
 }
 

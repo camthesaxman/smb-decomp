@@ -16,4 +16,6 @@ void C_MTXLookAt(Mtx m, Point3dPtr camPos, VecPtr camUp, Point3dPtr target);
 
 void PSMTXIdentity(Mtx m);
 
+#define MTXLookAt C_MTXLookAt
+
 #endif
