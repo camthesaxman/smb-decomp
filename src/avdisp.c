@@ -106,9 +106,9 @@ struct Struct802B4ECC
     u16 unk3C[3];  // 0xA8
     //u16 unk3E;  // 0xAA
     //u16 unk40;  // 0xAC
-    u32 unk44;  // 0xB0
-    u32 unk48;  // 0xB4
-    u32 unk4C;  // 0xB8
+    s32 unk44;  // 0xB0
+    s32 unk48;  // 0xB4
+    s32 unk4C;  // 0xB8
     s32 unk50;  // 0xBC
     s32 unk54;  // 0xC0
     Point3d unk58;
@@ -1453,11 +1453,6 @@ struct UnkStruct28
     u8 fillerC[0x38-0xC];
 };
 
-struct UnkStruct21
-{
-    u32 unk0;
-};
-
 struct UnkStruct31
 {
     u32 unk0;
@@ -1470,21 +1465,13 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b);
 
 static u8 func_8008F914_inline(void *b, void *c)
 {
-    // Not sure about this stack usage and what struct this is supposed to be.
-#if 0
     struct UnkStruct27 sp20;
-#else
-    struct UnkStruct28 sp20;
-#endif
+
     if (lbl_802F20F0 != NULL)
     {
         sp20.unk4 = b;
         sp20.unk8 = c;
-#if 0
         return lbl_802F20F0(&sp20);
-#else
-        return lbl_802F20F0(sp20.filler0);
-#endif
     }
     else
     {
@@ -1493,23 +1480,23 @@ static u8 func_8008F914_inline(void *b, void *c)
     }
 }
 
-static u8 func_8008F914_inline_alt(void *b, void *c)
+static u8 call_lbl_802F20F0(void *a)
 {
-    // Not sure about this stack usage and what struct this is supposed to be.
-#if 1
+    void *dummy = a;
+    void *dummy2 = a;
+    return lbl_802F20F0(dummy);
+}
+
+// Should really be func_8008F914_inline, but different stack usage
+static u8 func_8008F914_inline_hack(void *b, void *c)
+{
     struct UnkStruct27 sp20;
-#else
-    struct UnkStruct28 sp20;
-#endif
+
     if (lbl_802F20F0 != NULL)
     {
         sp20.unk4 = b;
         sp20.unk8 = c;
-#if 1
-        return lbl_802F20F0(&sp20);
-#else
-        return lbl_802F20F0(sp20.filler0);
-#endif
+        return call_lbl_802F20F0(&sp20);
     }
     else
     {
@@ -1535,7 +1522,11 @@ u32 func_8008F914(struct UnkStruct10 *a, struct UnkStruct18 *b, void *c)
     r31 = b->unk60;
 
     //lbl_8008F9DC
+#ifdef NONMATCHING
     if (func_8008F914_inline(b, c) != 0)
+#else
+    if (func_8008F914_inline_hack(b, c) != 0)
+#endif
     {
         for (i = 0; i < 2; i++)
         {
@@ -1658,7 +1649,7 @@ void *func_8008FC4C(struct UnkStruct18 *a, void *b, struct UnkStruct29 *c, u8 *d
     else
         r30 = 2;
     func_8009A9B4(a->unk1C);
-    if (func_8008F914_inline_alt(a, b) != 0)
+    if (func_8008F914_inline(a, b) != 0)
     {
         __GXSetDirtyState();
         for (i = 0; i < 2; i++)
@@ -1912,8 +1903,7 @@ struct UnkStruct32
     u32 unk1C;  // 98
     u32 unk20;  // 9C
     u32 unk24;  // A0
-    
-    u8 filler28[4];
+    u32 unk28;
 };
 
 struct UnkStruct33
@@ -1979,23 +1969,23 @@ static inline void inline_test5(s8 c)
     }
 }
 
-extern void func_80091340();
-extern void func_8009127C();
-extern void func_800918F8();
-extern void func_800916FC();
-extern void func_80091BA4();
-extern void func_80091580();
-extern void func_80091404();
-extern void func_80091B88();
-extern void func_80091B1C();
-extern void func_800918DC();
-extern void func_80091878();
-extern void func_80091D0C();
-extern void func_80091CA8();
-extern void func_800916E0();
-extern void func_8009167C();
-extern void func_80091564();
-extern void func_80091500();
+extern void func_80091340(u32 a);
+extern void func_8009127C(u32 a);
+extern void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
+extern void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
+extern void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
+extern void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
+extern void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
+extern void func_80091B88(struct UnkStruct32 *a);
+extern void func_80091B1C(struct UnkStruct32 *a, u32 b, u32 c);
+extern void func_800918DC(struct UnkStruct32 *a);
+extern void func_80091878(struct UnkStruct32 *a, u32 b, u32 c);
+extern void func_80091D0C(struct UnkStruct32 *a);
+extern void func_80091CA8(struct UnkStruct32 *a, u32 b, u32 c);
+extern void func_800916E0(struct UnkStruct32 *a);
+extern void func_8009167C(struct UnkStruct32 *a, u32 b, u32 c);
+extern void func_80091564(struct UnkStruct32 *a);
+extern void func_80091500(struct UnkStruct32 *a, u32 b, u32 c);
 extern void func_8009F430();
 extern void func_8009E918();
 extern void func_8009E70C();
@@ -2499,3 +2489,199 @@ asm void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
 #include "../asm/nonmatchings/func_80090524.s"
 }
 #endif
+
+void func_8009127C(u32 a)
+{
+    func_8009F180(a, 14);
+    func_8009F224(a, 30);
+    GXSetTevDirect(a);
+    func_8009EFF4(a, 0xFF, 0xFF, 4);
+    func_8009E618(a, 15, 0, 14, 15);
+    func_8009E800(a, 0, 0, 0, 1, 0);
+    func_8009E70C(a, 7, 0, 6, 7);
+    func_8009E918(a, 0, 0, 0, 1, 0);
+}
+
+void func_80091340(u32 a)
+{
+    func_8009F180(a, 15);
+    func_8009F224(a, 31);
+    GXSetTevDirect(a);
+    func_8009EFF4(a, 0xFF, 0xFF, 4);
+    func_8009E618(a, 0, 15, 15, 14);
+    func_8009E800(a, 0, 0, 0, 1, 0);
+    func_8009E70C(a, 0, 7, 7, 6);
+    func_8009E918(a, 0, 0, 0, 1, 0);
+}
+
+void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+{
+    GXSetTevDirect(a->unk0);
+    func_8009E2C8(a->unk0, 0, 0);
+    GXSetTexCoordGen2(a->unk4, 1, d, 33, 0, 0x7D);
+    func_8009EFF4(a->unk0, a->unk4, a->unkC, 4);
+    func_8009E618(a->unk0, 15, 8, b, 15);
+    func_8009E800(a->unk0, 0, 0, 0, 1, 0);
+    func_8009E70C(a->unk0, 7, 4, c, 7);
+    func_8009E918(a->unk0, 0, 0, 0, 1, 0);
+}
+
+void func_80091500(struct UnkStruct32 *a, u32 b, u32 c)
+{
+    func_8009E618(a->unk0, 15, 8, b, 15);
+    func_8009E70C(a->unk0, 7, 4, c, 7);
+}
+
+void func_80091564(struct UnkStruct32 *a)
+{
+    a->unk0++;
+    a->unk4++;
+}
+
+void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+{
+    GXSetTevDirect(a->unk0);
+    GXSetTexCoordGen2(a->unk4, 1, d, 33, 0, 0x7D);
+    func_8009EFF4(a->unk0, a->unk4, a->unkC, 4);
+    func_8009E2C8(a->unk0, 0, 1);
+    func_8009E618(a->unk0, 15, 15, 15, b);
+    func_8009E800(a->unk0, 0, 0, 0, 1, 0);
+    func_8009E70C(a->unk0, 7, 4, c, 7);
+    func_8009E918(a->unk0, 0, 0, 0, 1, 0);
+}
+
+void func_8009167C(struct UnkStruct32 *a, u32 b, u32 c)
+{
+    func_8009E618(a->unk0, 15, 15, 15, b);
+    func_8009E70C(a->unk0, 7, 4, c, 7);
+}
+
+// duplicate of func_80091564
+void func_800916E0(struct UnkStruct32 *a)
+{
+    a->unk0++;
+    a->unk4++;
+}
+
+void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+{
+    GXSetTevDirect(a->unk0);
+    func_8009E2C8(a->unk0, 0, 0);
+    if (lbl_802B4ECC.unk44 == 0)
+    {
+        mathutil_push_a_mtx();
+        lbl_802F1B60->unk0[0][3] = 0.0f;
+        lbl_802F1B60->unk0[1][3] = 0.0f;
+        lbl_802F1B60->unk0[2][3] = 0.0f;
+        GXLoadTexMtxImm(lbl_802F1B60->unk0, 30, 0);
+        mathutil_pop_a_mtx();
+        lbl_802B4ECC.unk44 = 1;
+    }
+    if (lbl_802B4ECC.unk48 == 0)
+    {
+        func_8009015C();
+        lbl_802B4ECC.unk48 = 1;
+    }
+    func_8009F180(a->unk0, 12);
+    GXSetTexCoordGen2(a->unk4, 0, 1, 30, 1, 64);
+    func_8009EFF4(a->unk0, a->unk4, a->unkC, 4);
+    func_8009E618(a->unk0, 15, 8, 14, b);
+    func_8009E800(a->unk0, 0, 0, 0, 1, 0);
+    func_8009E70C(a->unk0, 7, 7, 7, c);
+    func_8009E918(a->unk0, 0, 0, 0, 1, 0);
+}
+
+void func_80091878(struct UnkStruct32 *a, u32 b, u32 c)
+{
+    func_8009E618(a->unk0, 15, 8, 14, b);
+    func_8009E70C(a->unk0, 7, 7, 7, c);
+}
+
+// duplicate of func_80091564
+void func_800918DC(struct UnkStruct32 *a)
+{
+    a->unk0++;
+    a->unk4++;
+}
+
+void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+{
+    u32 r30;
+
+    if (lbl_802B4ECC.unk44 == 0)
+    {
+        mathutil_push_a_mtx();
+        lbl_802F1B60->unk0[0][3] = 0.0f;
+        lbl_802F1B60->unk0[1][3] = 0.0f;
+        lbl_802F1B60->unk0[2][3] = 0.0f;
+        GXLoadTexMtxImm(lbl_802F1B60->unk0, 30, 0);
+        mathutil_pop_a_mtx();
+        lbl_802B4ECC.unk44 = 1;
+    }
+    if (lbl_802B4ECC.unk4C == 0)
+    {
+        func_8009F430(&lbl_802B4F30, 0);
+        func_80090268();
+        lbl_802B4ECC.unk4C = 1;
+    }
+    // unrolled loop?
+    r30 = a->unk0;
+    
+    GXSetTevDirect(r30);
+    func_8009E2C8(a->unk0, 0, 0);
+    func_8009F180(r30, 13);
+    GXSetTexCoordGen2(a->unk4, 0, 1, 30, 1, 70);
+    func_8009EFF4(r30, a->unk4, 0, 4);
+    func_8009E618(r30, 15, 8, 14, 15);
+    func_8009E800(r30, 0, 0, 0, 1, 3);
+    func_8009E70C(r30, 7, 7, 7, c);
+    func_8009E918(r30, 0, 0, 0, 1, 3);
+    
+    GXSetTevDirect(r30 + 1);
+    func_8009E2C8(a->unk0, 0, 0);
+    GXSetTexCoordGen2(a->unk4 + 1, 0, 1, 30, 1, 67);
+    func_8009EFF4(r30 + 1, a->unk4 + 1, a->unkC, 4);
+    func_8009E618(r30 + 1, 15, 8, 6, b);
+    func_8009E800(r30 + 1, 0, 0, 0, 1, 0);
+    func_8009E70C(r30 + 1, 7, 7, 7, c);
+    func_8009E918(r30 + 1, 0, 0, 0, 1, 0);
+}
+
+void func_80091B1C(struct UnkStruct32 *a, u32 b, u32 c)
+{
+    func_8009E618(a->unk0 + 1, 15, 8, 6, b);
+    func_8009E70C(a->unk0 + 1, 7, 7, 7, c);
+}
+
+void func_80091B88(struct UnkStruct32 *a)
+{
+    a->unk0 += 2;
+    a->unk4 += 2;
+}
+
+void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+{
+    GXSetTevDirect(a->unk0);
+    GXSetTexCoordGen2(a->unk4, 1, d, 33, 0, 0x7D);
+    func_8009EFF4(a->unk0, a->unk4, a->unkC, 4);
+    func_8009E618(a->unk0, 15, 15, 15, b);
+    func_8009E800(a->unk0, 0, 0, 0, 1, 0);
+    func_8009E70C(a->unk0, 7, 7, 7, c);
+    func_8009E918(a->unk0, 0, 0, 0, 1, 0);
+    a->unk20 = 1;
+    a->unk24 = a->unk4;
+    a->unk28 = a->unkC;
+}
+
+void func_80091CA8(struct UnkStruct32 *a, u32 b, u32 c)
+{
+    func_8009E618(a->unk0, 15, 15, 15, b);
+    func_8009E70C(a->unk0, 7, 7, 7, c);
+}
+
+// duplicate of func_80091564
+void func_80091D0C(struct UnkStruct32 *a)
+{
+    a->unk0++;
+    a->unk4++;
+}

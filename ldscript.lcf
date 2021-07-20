@@ -24,14 +24,3 @@ FORCEACTIVE {
 }
 
 FORCEFILES { game.o }
-
-/* temporary until avdisp.s is fully decompiled */
-lbl_802F5740 = 0x802F5740;
-lbl_802F5744 = 0x802F5744;
-lbl_802F5748 = 0x802F5748;
-lbl_802F5750 = 0x802F5750;
-lbl_802F5768 = 0x802F5768;
-lbl_802F576C = 0x802F576C;
-lbl_802F5770 = 0x802F5770;
-lbl_802F5774 = 0x802F5774;
-lbl_802F5778 = 0x802F5778;

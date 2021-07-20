@@ -53,7 +53,6 @@ SOURCE_FILES := \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
 	src/avdisp.c \
-	asm/avdisp.s \
 	src/load.c \
 	asm/load.s \
 	asm/relocation.s \

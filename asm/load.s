@@ -9502,6 +9502,7 @@ lbl_802F59A8:
 
 .section .rodata
 
+    .balign 8
 .global lbl_80171A08
 lbl_80171A08:
 	# ROM: 0x16EA08
