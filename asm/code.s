@@ -23522,15 +23522,3 @@ lbl_802F12E0:
 	# ROM: 0x1EBA20
 	.byte 0x01, 0x01, 0x03, 0x05
 	.byte 0x07, 0x00, 0x00, 0x00
-
-.if 0
-.global lbl_802F12E8
-lbl_802F12E8:
-	# ROM: 0x1EBA28
-	.4byte 0x801C7DD0  ;# ptr
-
-.global lbl_802F12EC
-lbl_802F12EC:
-	# ROM: 0x1EBA2C
-    .asciz ".lz"
-.endif

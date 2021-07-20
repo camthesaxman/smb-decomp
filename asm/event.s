@@ -14728,31 +14728,6 @@ lbl_8011021C:
 
 .section .data
 
-.if 0
-.global lbl_80173F5C
-lbl_80173F5C:
-	# ROM: 0x170F5C
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B8E8  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B8DC  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B8FC  ;# ptr
-	.4byte lbl_8000B8FC  ;# ptr
-	.4byte lbl_8000B908  ;# ptr
-	.4byte lbl_8000B8F0  ;# ptr
-	.4byte lbl_8000B8FC  ;# ptr
-	.4byte lbl_8000B8FC  ;# ptr
-	.4byte lbl_8000B8FC  ;# ptr
-	.4byte lbl_8000B8FC  ;# ptr
-.endif
-
 .global lbl_80173FA8
 lbl_80173FA8:
 	# ROM: 0x170FA8
