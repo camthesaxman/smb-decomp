@@ -1196,3 +1196,21 @@ lbl_800D43C4:
 /* 800D43D8 000D02F8  38 21 01 40 */	addi r1, r1, 0x140
 /* 800D43DC 000D02FC  7C 08 03 A6 */	mtlr r0
 /* 800D43E0 000D0300  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6760
+lbl_802F6760:
+	# ROM: 0x1F0180
+	.byte 0x43, 0x44, 0x00, 0x00
+
+.global lbl_802F6764
+lbl_802F6764:
+	# ROM: 0x1F0184
+	.byte 0x4D, 0x41, 0x1E, 0x7A
+
+.global lbl_802F6768
+lbl_802F6768:
+	# ROM: 0x1F0188
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0

@@ -5,7 +5,7 @@ else
 endif
 
 ### Tools ###
-COMPILER_DIR := mwcc_compiler/1.0
+COMPILER_DIR := mwcc_compiler/1.1
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
 CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
@@ -28,6 +28,7 @@ MAP      := $(DOL:.dol=.map)
 LDSCRIPT := ldscript.lcf
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
+	asm/data.s \
 	asm/init.s \
 	src/main.c \
 	src/init.c \
@@ -51,7 +52,7 @@ SOURCE_FILES := \
 	asm/stage.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
-	asm/avdisp.s \
+	src/avdisp.c \
 	src/load.c \
 	asm/load.s \
 	asm/relocation.s \
@@ -221,8 +222,7 @@ SOURCE_FILES := \
 	asm/lib/amcstubs/AmcExi2Stubs.s \
 	asm/lib/odemustubs/odemustubs.s \
 	asm/lib/amcnotstub/amcnotstub.s \
-	asm/lib/data.s \
-	asm/data.s
+	asm/lib/data.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 
 #-------------------------------------------------------------------------------
@@ -245,11 +245,11 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
+src/avdisp.o: CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-	#$(CC) -c $(CFLAGS) $(CPPFLAGS) -S -o $(@:.o=.dump2) $<
 	@ $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:

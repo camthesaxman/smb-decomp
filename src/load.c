@@ -3,29 +3,11 @@
 #include "functions.h"
 #include "variables.h"
 
+#include "load.h"
+
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-extern s32 mramToAramInProgress;
-extern s32 loadQueueHead;  // index of first added file
-extern s32 loadQueueTail;  // index of most recently added file
-extern volatile s32 dvdReadStatus;
 extern void *dvdReadBuffer;
-
-struct ARAMBlock
-{
-    s32 unk0;
-    s32 entryNum;
-    u32 aramAddr;
-    u32 aramSize;
-};
-extern struct ARAMBlock lbl_802B5580[];
-
-struct File
-{
-    u32 unk0;
-    DVDFileInfo dvdFile;
-    struct ARAMBlock unk40;
-};
 
 struct FileLoadInfo
 {
@@ -39,17 +21,34 @@ struct FileLoadInfo
     /*0x54*/ u32 transferSize;
     /*0x58*/ struct ARAMBlock *aramBlock;
 };
-extern struct FileLoadInfo fileLoadQueue[];
+
+// .bss
+struct FileLoadInfo fileLoadQueue[16];
+struct ARAMBlock lbl_802B5580[32];
+ARQRequest lbl_802B5780;
+
+FORCE_BSS_ORDER(fileLoadQueue)
+FORCE_BSS_ORDER(lbl_802B5580)
+FORCE_BSS_ORDER(lbl_802B5780)
+
+// .sbss
+volatile s32 aramToMramInProgress;
+s32 lbl_802F2144;
+volatile s32 mramToAramInProgress;
+volatile s32 dvdReadStatus;
+s32 loadQueueHead;  // index of first added file
+s32 loadQueueTail;  // index of most recently added file
+u32 unusedPadding;
 
 void dvd_read_callback(s32, DVDFileInfo *);
 struct ARAMBlock *alloc_aram_block(s32);
-
-extern ARQRequest lbl_802B5780;
 
 #define ARAM_BASE 0x700000
 #define ARAM_SIZE 0x400000 
 
 u32 aramAllocEnd = ARAM_BASE;
+
+#pragma force_active on
 
 void mram_to_aram_callback(u32 arqRequestPtr)
 {
@@ -175,14 +174,13 @@ BOOL file_close(struct File *file)
     return DVDClose(&file->dvdFile);
 }
 
-extern volatile s32 aramToMramInProgress;
 
 void aram_to_mram_callback(u32 arqRequestPtr)
 {
     aramToMramInProgress = FALSE;
 }
 
-u32 file_read(struct File *file, void *dest, u32 size, u32 offset)
+s32 file_read(struct File *file, void *dest, u32 size, u32 offset)
 {
     ARQRequest req;
 
@@ -228,7 +226,6 @@ void dvd_read_callback(s32 result, DVDFileInfo *dvdFile)
         dvdReadStatus = 0;
 }
 
-extern s32 lbl_802F2144;
 
 void func_80092284(u32 a, u32 b);
 

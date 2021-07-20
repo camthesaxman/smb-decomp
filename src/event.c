@@ -33,6 +33,8 @@ void ev_run_dest(int);
 
 #pragma opt_findoptimalunrollfactor off
 #pragma opt_unroll_count 1
+#pragma force_active on
+
 void event_init(void)
 {
     int i;

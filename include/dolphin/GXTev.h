@@ -6,5 +6,6 @@ void GXSetNumTevStages(u8 nStages);
 void GXSetTevOp(GXTevStageID id, GXTevMode mode);
 void GXSetTevOrder(GXTevStageID stage,  GXTexCoordID coord, GXTexMapID map,
     GXChannelID color);
+void GXSetTevColor(GXTevRegID id, GXColor color);
 
 #endif

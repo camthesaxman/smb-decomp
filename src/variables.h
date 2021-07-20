@@ -1,3 +1,8 @@
+// .bss variables seem to be ordered in the file based on their usage.
+// This macro generates a dummy function that forces the order and will be
+// stripped by the linker.
+#define FORCE_BSS_ORDER(var) void *force_##var(){return &var;}
+
 extern GXRenderModeObj *currRenderMode;
 extern void **lbl_802F1CA4;
 extern OSHeapHandle __OSCurrHeap;
@@ -49,7 +54,8 @@ extern u8 lbl_80292E70[];
 
 struct Struct802F1B60
 {
-    u8 filler0[0x90];
+    Mtx unk0;
+    u8 filler30[0x90-0x30];
     u8 *unk90;
     u8 *unk94;
     u8 filler98[0x198-0x98];
@@ -64,9 +70,16 @@ struct Struct802F1B60
     u8 unk1AF;
 };
 
+struct ZMode
+{
+    GXBool compareEnable;
+    GXCompare compareFunc;
+    GXBool updateEnable;
+};
+
 extern struct Struct802F1B60 *lbl_802F1B60;
 extern void *lbl_802F1B3C;
-extern void *lbl_802F21A0;
+extern struct ZMode *zMode;
 extern void *lbl_802F1B50;
 extern void *lbl_802F1B54;
 extern BOOL lbl_802F1B58;

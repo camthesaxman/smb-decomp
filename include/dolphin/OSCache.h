@@ -3,5 +3,6 @@
 
 void LCEnable();
 void DCInvalidateRange(void *addr, u32 nBytes);
+void DCFlushRange(void *addr, u32 nBytes);
 
 #endif

@@ -961,3 +961,47 @@ lbl_800E1B94:
 /* 800E1B9C 000DDABC  38 21 00 28 */	addi r1, r1, 0x28
 /* 800E1BA0 000DDAC0  7C 08 03 A6 */	mtlr r0
 /* 800E1BA4 000DDAC4  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F67D8
+lbl_802F67D8:
+	# ROM: 0x1F01F8
+	.byte 0x41, 0x80, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F67E0
+lbl_802F67E0:
+	# ROM: 0x1F0200
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F67E8
+lbl_802F67E8:
+	# ROM: 0x1F0208
+	.byte 0xC0, 0x80, 0x00, 0x00
+
+.global lbl_802F67EC
+lbl_802F67EC:
+	# ROM: 0x1F020C
+	.byte 0x40, 0x80, 0x00, 0x00
+
+.global lbl_802F67F0
+lbl_802F67F0:
+	# ROM: 0x1F0210
+	.byte 0x40, 0x7F, 0x5C, 0x29
+
+.global lbl_802F67F4
+lbl_802F67F4:
+	# ROM: 0x1F0214
+	.byte 0x42, 0x00, 0x00, 0x00
+
+.global lbl_802F67F8
+lbl_802F67F8:
+	# ROM: 0x1F0218
+	.4byte 0
+
+.global lbl_802F67FC
+lbl_802F67FC:
+	# ROM: 0x1F021C
+	.byte 0x41, 0x20, 0x00, 0x00

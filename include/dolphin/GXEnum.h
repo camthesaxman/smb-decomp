@@ -434,4 +434,47 @@ typedef enum
     GX_PTIDENTITY = 125,
 } GXPTTexMtx;
 
+typedef enum
+{
+    GX_TEVPREV,
+    GX_TEVREG0,
+    GX_TEVREG1,
+    GX_TEVREG2,
+    GX_MAX_TEVREG,
+} GXTevRegID;
+
+typedef enum
+{
+    GX_DF_NONE,
+    GX_DF_SIGN,
+    GX_DF_CLAMP,
+} GXDiffuseFn;
+
+typedef enum
+{
+    GX_SRC_REG,
+    GX_SRC_VTX,
+} GXColorSrc;
+
+typedef enum
+{
+    GX_AF_SPEC,
+    GX_AF_SPOT,
+    GX_AF_NONE,
+} GXAttnFn;
+
+typedef enum
+{
+    GX_LIGHT0     = 0x001,
+    GX_LIGHT1     = 0x002,
+    GX_LIGHT2     = 0x004,
+    GX_LIGHT3     = 0x008,
+    GX_LIGHT4     = 0x010,
+    GX_LIGHT5     = 0x020,
+    GX_LIGHT6     = 0x040,
+    GX_LIGHT7     = 0x080,
+    GX_MAX_LIGHT  = 0x100,
+    GX_LIGHT_NULL = 0,
+} GXLightID;
+
 #endif
