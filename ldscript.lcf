@@ -18,8 +18,8 @@ SECTIONS
 }
 FORCEACTIVE {
     unkData GetR2__Fv
-    func_8008D888 func_8008D8D0 func_8008D9A8
-    func_8008DA9C
+    func_8008D888 func_8008D8D0 load_model
+    free_model
     func_8008E5F8 func_8008E64C func_8008E698
 }
 
