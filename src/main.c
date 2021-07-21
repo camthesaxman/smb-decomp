@@ -1,7 +1,7 @@
+#include <stdlib.h>
 #include <dolphin.h>
 
-#include "variables.h"
-#include "functions.h"
+#include "global.h"
 
 // bss
 u8 lbl_801ED920[0x1240];  // unknown type

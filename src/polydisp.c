@@ -1,14 +1,8 @@
 #include <dolphin.h>
 
-#include "functions.h"
-#include "variables.h"
+#include "global.h"
 
 #include "game.h"
-
-// this file's functions
-void func_8000B6F0(void);
-void func_8000B8AC(void);
-void func_8000B918(void);
 
 void polydisp_init(void)
 {
@@ -76,8 +70,6 @@ void polydisp_main(void)
     if (lbl_802F2000 & 4)
         func_8000D5E4();
 }
-
-extern void (*lbl_802F1B70)(void);
 
 void func_8000B6F0(void)
 {

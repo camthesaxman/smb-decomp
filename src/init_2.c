@@ -1,7 +1,6 @@
 #include <dolphin.h>
 
-#include "variables.h"
-#include "functions.h"
+#include "global.h"
 
 void init_cache_ptrs(void)
 {

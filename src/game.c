@@ -1,27 +1,14 @@
 #include <dolphin.h>
 
-#include "functions.h"
-#include "variables.h"
+#include "global.h"
 
 #include "game.h"
-
-extern s16 gameMode;
-extern s16 gameSubmode;
-extern s16 gameModeRequest;
-extern s16 gameSubmodeRequest;
-extern u32 lbl_802F1B7C;
-extern void (*lbl_802F1B80)(void);
-extern void (*lbl_802F1B74)(void);
 
 struct MinigameLink
 {
     u32 unk0;
     u32 unk4;
 };
-
-extern u32 dipSwitches;
-extern void *modeStringPtr;
-extern void *submodeStringPtr;
 
 char *gameModeRelNames[] = {
     "",
@@ -406,6 +393,7 @@ void gm_main(void)
         gameModeFuncs[gameMode]();
 }
 
+/*
 extern struct
 {
     u16 unk0;
@@ -429,7 +417,7 @@ extern u8 lbl_802F023C[];
 extern u8 lbl_802F0238[];
 extern u8 lbl_802F0230[];
 extern u8 lbl_802F0234[];
-extern void func_80030244();
+*/
 
 // pls help...
 #if 0

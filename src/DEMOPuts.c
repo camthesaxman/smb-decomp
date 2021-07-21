@@ -2,21 +2,10 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include "functions.h"
-#include "variables.h"
-
-extern void *LastSheet;
+#include "global.h"
 
 // TODO: avoid duplicate symbol name
 #define FontData lbl_802F21D4
-
-extern OSFontHeader *FontData;
-extern s16 FontSpace;
-extern s16 FontSize;
-
-extern GXTexObj fontTexObj;
-extern u8 DEMOFontBitmap[];
-extern s32 fontShift;
 
 typedef enum
 {

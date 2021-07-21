@@ -1,13 +1,8 @@
 #include <dolphin.h>
 
-#include "functions.h"
-#include "variables.h"
+#include "global.h"
 
 #include "load.h"
-
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-
-extern void *dvdReadBuffer;
 
 struct FileLoadInfo
 {
@@ -21,6 +16,9 @@ struct FileLoadInfo
     /*0x54*/ u32 transferSize;
     /*0x58*/ struct ARAMBlock *aramBlock;
 };
+
+#define ARAM_BASE 0x700000
+#define ARAM_SIZE 0x400000 
 
 // .bss
 struct FileLoadInfo fileLoadQueue[16];
@@ -39,12 +37,6 @@ volatile s32 dvdReadStatus;
 s32 loadQueueHead;  // index of first added file
 s32 loadQueueTail;  // index of most recently added file
 u32 unusedPadding;
-
-void dvd_read_callback(s32, DVDFileInfo *);
-struct ARAMBlock *alloc_aram_block(s32);
-
-#define ARAM_BASE 0x700000
-#define ARAM_SIZE 0x400000 
 
 u32 aramAllocEnd = ARAM_BASE;
 
@@ -174,7 +166,6 @@ BOOL file_close(struct File *file)
     return DVDClose(&file->dvdFile);
 }
 
-
 void aram_to_mram_callback(u32 arqRequestPtr)
 {
     aramToMramInProgress = FALSE;
@@ -225,9 +216,6 @@ void dvd_read_callback(s32 result, DVDFileInfo *dvdFile)
     else
         dvdReadStatus = 0;
 }
-
-
-void func_80092284(u32 a, u32 b);
 
 struct ARAMBlock *alloc_aram_block(s32 size)
 {
@@ -322,10 +310,6 @@ void func_8009248C(void)
 {
     aramAllocEnd = ARAM_BASE;
 }
-
-extern void *lbl_802F2154;
-extern u8 lbl_802B57A0[];
-extern u32 lbl_802F2150;
 
 void func_80092498(void)
 {

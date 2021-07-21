@@ -1,7 +1,7 @@
+#include <stdio.h>
 #include <dolphin.h>
 
-#include "functions.h"
-#include "variables.h"
+#include "global.h"
 
 struct Event eventInfo[] =
 {
@@ -27,9 +27,6 @@ struct Event eventInfo[] =
     {0, "BACKGROUND",    ev_background_init,    ev_background_main,    ev_background_dest,    0},
     {0, "REND_EFC",      ev_rend_efc_init,      ev_rend_efc_main,      ev_rend_efc_dest,      0},
 };
-
-void ev_run_init(int);
-void ev_run_dest(int);
 
 #pragma opt_findoptimalunrollfactor off
 #pragma opt_unroll_count 1

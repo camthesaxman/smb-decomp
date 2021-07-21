@@ -1,8 +1,8 @@
+#include <stdio.h>
 #include <string.h>
 #include <dolphin.h>
 
-#include "functions.h"
-#include "variables.h"
+#include "global.h"
 
 #include "load.h"
 
@@ -98,6 +98,34 @@ struct UnkStruct4
     u8 unk40[100];  // What type is this?
 };
 
+typedef u32 (*Func802F20F0)();
+typedef void (*Func802F20EC)();
+
+struct UnkStruct17
+{
+    u8 filler0[4];
+    void (*unk4)(struct UnkStruct17 *);
+    void *unk8;
+    Mtx unkC;
+    void *unk3C;
+    struct GMAMeshHeader *unk40;
+    u32 unk44;
+    u32 unk48;
+    float unk4C;
+    Func802F20EC unk50;
+    Func802F20F0 unk54;
+    u8 unk58;
+    u8 unk59;
+    u32 unk5C;
+    u8 unk60;
+    u8 unk61;
+    u8 unk62;
+    Mtx *unk64;
+    GXColor unk68;
+    GXColor unk6C;
+    u32 unk70;
+};
+
 char *invalidModelName = "Invalid Model";
 
 // .sbss
@@ -117,9 +145,7 @@ GXBool zModeCompareEnable;
 float lbl_802F20FC;
 float lbl_802F20F8;
 float lbl_802F20F4;
-typedef u32 (*Func802F20F0)();
 Func802F20F0 lbl_802F20F0;
-typedef void (*Func802F20EC)();
 Func802F20EC lbl_802F20EC;
 s32 lbl_802F20E8;
 float lbl_802F20E4;
@@ -178,15 +204,6 @@ FORCE_BSS_ORDER(unknownTexObj)
 FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lzHeaderBuf)
 FORCE_BSS_ORDER(unknownTexImg)
-
-extern void func_8008E5B8(float, float, float);
-extern void func_8008F714(float, float, float, float);
-extern void func_8008F7C8(float, float, float, float);
-extern void func_8008F880(int, float, float);
-extern void mathutil_set_a_mtx_translate(float, float, float);
-
-void func_8008E574(Vec *a);
-void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updateEnable);
 
 asm void func_8008D6BC(register u32 arg)
 {
@@ -254,10 +271,6 @@ lbl_8008D724:
     blr
 }
 
-void func_8008F878(u32 a);
-void func_8008F890(u8 a, u8 b, u8 c);
-void init_some_texture(void);
-
 void func_8008D788(void)
 {
     Vec sp8;
@@ -320,8 +333,6 @@ void func_8008D8D0(struct UnkStruct4 *a, Mtx **dest)
         }
     }
 }
-
-void *init_model(struct GMAModelHeader *a, struct TPL *b, u8 *c);
 
 struct GMAModelHeader *load_model(char *fileName, struct TPL *tpl)
 {
@@ -556,9 +567,6 @@ struct TPL *load_tpl_from_aram(u32 aramSrc, u32 size)
     return tpl;
 }
 
-
-int get_texture_max_lod(int width, int height);
-
 GXTexObj *create_tpl_tex_objs(struct TPL *tpl)
 {
     int i;
@@ -612,10 +620,6 @@ void func_8008E428(float a, float b, float c)
     lbl_802F20D4 = b;
     lbl_802F20D8 = c;
 }
-
-void func_8008E7AC(struct GMAModelHeader *a);
-void func_8008EA64(struct GMAModelHeader *a);
-void func_8008EB94(struct GMAModelHeader *a);
 
 void func_8008E438(struct GMAModelHeader *model)
 {
@@ -726,12 +730,6 @@ void *func_8008E64C(struct GMAModelHeader *model)
     }
 }
 
-struct UnkStruct14
-{
-    u32 unk0;
-    u8 filler4[0x60-4];
-};
-
 static inline void *skip_mesh(struct GMAMeshHeader *a);
 
 static inline void *skip_mesh_inlined(struct GMAMeshHeader *a)
@@ -752,6 +750,12 @@ static inline void *skip_mesh_inlined(struct GMAMeshHeader *a)
     }
     return (void *)r7;
 }
+
+struct UnkStruct14
+{
+    u32 unk0;
+    u8 filler4[0x60-4];
+};
 
 void func_8008E698(struct GMAModelHeader *model, u32 b)
 {
@@ -778,35 +782,6 @@ void func_8008E698(struct GMAModelHeader *model, u32 b)
         }
     }
 }
-
-struct UnkStruct17
-{
-    u8 filler0[4];
-    void (*unk4)(struct UnkStruct17 *);
-    void *unk8;
-    Mtx unkC;
-    void *unk3C;
-    struct GMAMeshHeader *unk40;
-    u32 unk44;
-    u32 unk48;
-    float unk4C;
-    Func802F20EC unk50;
-    Func802F20F0 unk54;
-    u8 unk58;
-    u8 unk59;
-    u32 unk5C;
-    u8 unk60;
-    u8 unk61;
-    u8 unk62;
-    Mtx *unk64;
-    GXColor unk68;
-    GXColor unk6C;
-    u32 unk70;
-};
-
-void lbl_8008F528(struct UnkStruct17 *a);
-
-void func_8008F498(struct GMAModelHeader *a);
 
 static inline void *func_8008E7AC_inline(struct GMAModelHeader *model, struct GMAMeshHeader *r26, struct GMAMaterial *mtrl)
 {
@@ -846,10 +821,6 @@ static inline void *func_8008E7AC_inline(struct GMAModelHeader *model, struct GM
     func_80085B78(r28, r29);
     return (void *)skip_mesh(r26);
 }
-
-u32 draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *c);
-void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, struct GMAMaterial *mtrl);
-void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b);
 
 void func_8008E7AC(struct GMAModelHeader *model)
 {
@@ -1136,8 +1107,6 @@ void *init_model(struct GMAModelHeader *model, struct TPL *tpl, u8 *c)
     return c;
 }
 
-void func_8008F8A4(u8 *a);
-
 void func_8008F498(struct GMAModelHeader *model)
 {
     unsigned int i;
@@ -1321,8 +1290,6 @@ struct UnkStruct31
     u8 fillerC[0x20-0xC];
 };
 
-void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b);
-
 static u8 func_8008F914_inline(void *b, void *c)
 {
     struct UnkStruct27 sp20;
@@ -1484,19 +1451,11 @@ lbl_8008FC38:
     blr
 }
 
-void __GXSetDirtyState(void);  // Undocumented GX function?
-
 struct UnkStruct29
 {
     u8 filler0[8];
     u32 unk8;
 };
-
-extern struct PrivateGXStuff
-{
-    u8 filler0[0x204];
-    u32 unk204;
-} *gx;
 
 void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *b, struct UnkStruct29 *c, u8 *d)
 {
@@ -1552,8 +1511,6 @@ void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, stru
     }
 }
 
-extern void func_8009E398(u32, GXColor, float, float, float, float);
-
 struct UnkStruct30
 {
     u32 unk0;
@@ -1565,7 +1522,6 @@ struct UnkStruct30
     u8 fillerF[0x11-0xF];
     u8 unk11;
     u8 unk12;
-    //u8 filler13[0x40-0x13];
     u8 filler13[0x16-0x13];
     u16 unk16;
     u8 filler18[0x40-0x18];
@@ -1581,7 +1537,6 @@ void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
         GXLoadTexMtxImm(lbl_802B4E6C, GX_TEXMTX1, GX_MTX3x4);
     else
         GXLoadTexMtxImm(lbl_802B4E9C, GX_TEXMTX1, GX_MTX3x4);
-    //lbl_8008FEB8
     if (zModeUpdateEnable  != zMode->updateEnable
      || zModeCompareFunc   != zMode->compareFunc
      || zModeCompareEnable != zMode->compareEnable)
@@ -1673,7 +1628,7 @@ void func_8009015C(void)
     lbl_802F1B60->unk0[2][2] = 0.0f;
     lbl_802F1B60->unk0[2][3] = 1.0f;
     mathutil_scale_a_mtx_sq_s(0.5f);
-    GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x40 /*huh?*/, GX_MTX3x4);
+    GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_PTTEXMTX0, GX_MTX3x4);
     mathutil_pop_a_mtx();
 }
 
@@ -1709,7 +1664,7 @@ void func_80090268(void)
     lbl_802F1B60->unk0[2][2] = 0.0f;
     lbl_802F1B60->unk0[2][3] = 1.0f;
     mathutil_scale_a_mtx_sq_s(0.5f);
-    GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x43 /*huh?*/, GX_MTX3x4);
+    GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_PTTEXMTX1, GX_MTX3x4);
     mathutil_set_a_mtx_identity();
     lbl_802F1B60->unk0[0][0] = 0.0f;
     lbl_802F1B60->unk0[0][2] = 0.5f;
@@ -1718,7 +1673,7 @@ void func_80090268(void)
     lbl_802F1B60->unk0[2][2] = 0.0f;
     lbl_802F1B60->unk0[2][3] = 1.0f;
     mathutil_set_a_mtx_mult_a_mtx_by(mtx);
-    GXLoadTexMtxImm(lbl_802F1B60->unk0, 0x46 /*huh?*/, GX_MTX3x4);
+    GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_PTTEXMTX2, GX_MTX3x4);
     mathutil_pop_a_mtx();
 }
 
@@ -1826,30 +1781,6 @@ static inline void inline_test5(s8 c)
         GXSetNumIndStages(c);
     }
 }
-
-extern void func_80091340(GXTevStageID a);
-extern void func_8009127C(GXTevStageID a);
-extern void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
-extern void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
-extern void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
-extern void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
-extern void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
-extern void func_80091B88(struct UnkStruct32 *a);
-extern void func_80091B1C(struct UnkStruct32 *a, u32 b, u32 c);
-extern void func_800918DC(struct UnkStruct32 *a);
-extern void func_80091878(struct UnkStruct32 *a, u32 b, u32 c);
-extern void func_80091D0C(struct UnkStruct32 *a);
-extern void func_80091CA8(struct UnkStruct32 *a, u32 b, u32 c);
-extern void func_800916E0(struct UnkStruct32 *a);
-extern void func_8009167C(struct UnkStruct32 *a, u32 b, u32 c);
-extern void func_80091564(struct UnkStruct32 *a);
-extern void func_80091500(struct UnkStruct32 *a, u32 b, u32 c);
-extern void func_8009F430();
-extern void func_8009E918();
-extern void func_8009E70C();
-extern void func_8009E800();
-extern void func_8009E618();
-extern void func_8009EFF4();
 
 #ifdef NONMATCHING
 //#if 1

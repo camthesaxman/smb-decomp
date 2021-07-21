@@ -1,7 +1,7 @@
+#include <stdio.h>
 #include <dolphin.h>
 
-#include "variables.h"
-#include "functions.h"
+#include "global.h"
 
 u8 lbl_801EEBA0[0x80];
 
