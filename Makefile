@@ -33,7 +33,10 @@ SOURCE_FILES := \
 	src/main.c \
 	src/init.c \
 	src/init_2.c \
+	asm/mathutil_asm.s \
+	src/mathutil_1.c \
 	asm/mathutil.s \
+	src/mathutil.c \
 	src/game.c \
 	asm/game.s \
 	src/event.c \
@@ -245,6 +248,7 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
+src/mathutil.o: CFLAGS += -inline auto -fp_contract off
 src/avdisp.o: CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 

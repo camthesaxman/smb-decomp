@@ -1,6 +1,6 @@
 // .rodata section
 // extern ? lbl_8010F8A0;
-// extern ? lbl_8010F8AC;
+// extern ? crcTable;
 // extern ? lbl_8010FAB0;
 // extern ? lbl_8010FF84;
 // extern ? lbl_8010FF90;
