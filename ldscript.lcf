@@ -26,13 +26,14 @@ FORCEACTIVE {
     func_80007924
     func_800083C0
     func_80008378
-    func_80007610
+    mathutil_mtxA_from_rotate_x
     func_80007424
     func_80008458
     mathutil_vec_set_length
+    mathutil_mtx_from_identity
 }
 
-FORCEFILES { game.o }
+FORCEFILES { game.o mathutil_1.o }
 
 /* mathutil.s */
 lbl_802F2840 = 0x802F2840;

@@ -13,8 +13,8 @@ void init_cache_ptrs(void)
     lbl_802F1B60->unk1AD = 1;
     lbl_802F1B60->unk1AE = 1;
     lbl_802F1B60->unk1AF = 0;
-    mathutil_set_a_mtx_identity();
-    mathutil_set_b_mtx_a_mtx();
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_to_mtxB();
     lbl_802F1B60->unk90 = OSAllocFromHeap(__OSCurrHeap, 0x600);
     lbl_802F1B60->unk94 = lbl_802F1B60->unk90 + 0x600;
 }

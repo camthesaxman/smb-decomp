@@ -671,7 +671,7 @@ func_8009B048:
 /* 8009B110 00097030  90 03 00 14 */	stw r0, 0x14(r3)
 /* 8009B114 00097034  90 7F 00 40 */	stw r3, 0x40(r31)
 /* 8009B118 00097038  38 7F 00 08 */	addi r3, r31, 8
-/* 8009B11C 0009703C  4B F6 C7 5D */	bl mathutil_get_a_mtx
+/* 8009B11C 0009703C  4B F6 C7 5D */	bl mathutil_mtxA_to_mtx
 /* 8009B120 00097040  38 7E 00 00 */	addi r3, r30, 0
 /* 8009B124 00097044  38 9F 00 00 */	addi r4, r31, 0
 /* 8009B128 00097048  4B FE AA 51 */	bl func_80085B78
@@ -1001,7 +1001,7 @@ func_8009B538:
 /* 8009B610 00097530  90 03 00 1C */	stw r0, 0x1c(r3)
 /* 8009B614 00097534  90 7F 00 40 */	stw r3, 0x40(r31)
 /* 8009B618 00097538  38 7F 00 08 */	addi r3, r31, 8
-/* 8009B61C 0009753C  4B F6 C2 5D */	bl mathutil_get_a_mtx
+/* 8009B61C 0009753C  4B F6 C2 5D */	bl mathutil_mtxA_to_mtx
 /* 8009B620 00097540  38 7E 00 00 */	addi r3, r30, 0
 /* 8009B624 00097544  38 9F 00 00 */	addi r4, r31, 0
 /* 8009B628 00097548  4B FE A5 51 */	bl func_80085B78
@@ -1587,13 +1587,13 @@ lbl_8009BE90:
 /* 8009BE90 00097DB0  C0 2D 9C EC */	lfs f1, lbl_802F1ECC-_SDA_BASE_(r13)
 /* 8009BE94 00097DB4  C0 4D 9C E8 */	lfs f2, lbl_802F1EC8-_SDA_BASE_(r13)
 /* 8009BE98 00097DB8  C0 6D 9C E4 */	lfs f3, lbl_802F1EC4-_SDA_BASE_(r13)
-/* 8009BE9C 00097DBC  4B F6 B7 39 */	bl mathutil_set_a_mtx_translate
+/* 8009BE9C 00097DBC  4B F6 B7 39 */	bl mathutil_mtxA_from_translate_xyz
 /* 8009BEA0 00097DC0  A0 6D 9C F2 */	lhz r3, lbl_802F1ED2-_SDA_BASE_(r13)
-/* 8009BEA4 00097DC4  4B F6 C1 59 */	bl mathutil_mult_a_mtx_by_rotate_y
+/* 8009BEA4 00097DC4  4B F6 C1 59 */	bl mathutil_mtxA_rotate_y
 /* 8009BEA8 00097DC8  A0 6D 9C F4 */	lhz r3, lbl_802F1ED4-_SDA_BASE_(r13)
-/* 8009BEAC 00097DCC  4B F6 C0 DD */	bl mathutil_mult_a_mtx_by_rotate_x
+/* 8009BEAC 00097DCC  4B F6 C0 DD */	bl mathutil_mtxA_rotate_x
 /* 8009BEB0 00097DD0  A0 6D 9C F0 */	lhz r3, lbl_802F1ED0-_SDA_BASE_(r13)
-/* 8009BEB4 00097DD4  4B F6 C1 D5 */	bl mathutil_mult_a_mtx_by_rotate_z
+/* 8009BEB4 00097DD4  4B F6 C1 D5 */	bl mathutil_mtxA_rotate_z
 /* 8009BEB8 00097DD8  80 6D 99 80 */	lwz r3, lbl_802F1B60-_SDA_BASE_(r13)
 /* 8009BEBC 00097DDC  48 00 1C 85 */	bl func_8009DB40
 lbl_8009BEC0:

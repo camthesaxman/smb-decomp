@@ -143,7 +143,7 @@ const u16 crcTable[] = {
 /*
 void unkFunc80009380(u32 a, Vec *b)
 {
-    mathutil_tf_point_by_a_mtx_v(a, b);
+    mathutil_mtxA_tf_point(a, b);
     if (fabs(b->y) > 1.0)
     {
         
