@@ -1149,7 +1149,7 @@ extern void *dvdReadBuffer;
 extern void *lbl_802F1B50;
 extern void *lbl_802F1B54;
 extern BOOL lbl_802F1B58;
-extern struct Struct802F1B60 *lbl_802F1B60;
+extern struct MathutilData *mathutilData;
 // extern ? lbl_802F1B68;
 // extern ? lbl_802F1B6C;
 extern void (*lbl_802F1B70)(void);

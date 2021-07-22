@@ -2,19 +2,20 @@
 
 #include "global.h"
 
+// probably belongs in mathutil.c
 void init_cache_ptrs(void)
 {
-    lbl_802F1B60->unk198 = 0.0f;
-    lbl_802F1B60->unk19C = 1.0f;
-    lbl_802F1B60->unk1A0 = 0.5f;
-    lbl_802F1B60->unk1A4 = 1.5f;
-    lbl_802F1B60->unk1A8 = -1;
-    lbl_802F1B60->unk1AC = 0;
-    lbl_802F1B60->unk1AD = 1;
-    lbl_802F1B60->unk1AE = 1;
-    lbl_802F1B60->unk1AF = 0;
+    mathutilData->constZero = 0.0f;
+    mathutilData->constOne = 1.0f;
+    mathutilData->constOneHalf = 0.5f;
+    mathutilData->constThreeHalves = 1.5f;
+    mathutilData->unk1A8 = -1;
+    mathutilData->unk1AC = 0;
+    mathutilData->unk1AD = 1;
+    mathutilData->unk1AE = 1;
+    mathutilData->unk1AF = 0;
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtxB();
-    lbl_802F1B60->unk90 = OSAllocFromHeap(__OSCurrHeap, 0x600);
-    lbl_802F1B60->unk94 = lbl_802F1B60->unk90 + 0x600;
+    mathutilData->mtxStack = OSAllocFromHeap(__OSCurrHeap, 32 * sizeof(Mtx));
+    mathutilData->mtxStackPtr = mathutilData->mtxStack + 32;
 }

@@ -670,7 +670,7 @@ void func_8008E56C(u32 a)
 void func_8008E574(Vec *a)
 {
     lbl_802B4E60 = *a;
-    mathutil_vec_normalize_clamp(&lbl_802B4E60);
+    mathutil_vec_normalize_len(&lbl_802B4E60);
 }
 
 void func_8008E5B8(float a, float b, float c)
@@ -1111,7 +1111,7 @@ void func_8008F498(struct GMAModelHeader *model)
 {
     unsigned int i;
     for (i = 0; i < model->unk1E; i++)
-        mathutil_mtx_mult(lbl_802F1B60->unk0, *avdispMatrixList[i], lbl_802F20CC[i]);
+        mathutil_mtx_mult(mathutilData->mtxA, *avdispMatrixList[i], lbl_802F20CC[i]);
     func_8008F8A4(model->unk28);
 }
 
@@ -1606,7 +1606,7 @@ void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
     lbl_802B4ECC.unk54 = 0;
     mathutil_mtxA_tf_point(&model->unk8, &lbl_802B4ECC.unk58);
     lbl_802B4ECC.unk58.z -= model->unk14;
-    mathutil_vec_normalize_clamp(&lbl_802B4ECC.unk58);
+    mathutil_vec_normalize_len(&lbl_802B4ECC.unk58);
 }
 
 void func_8009015C(void)
@@ -1618,17 +1618,17 @@ void func_8009015C(void)
     mathutil_mtxA_push();
     MTXLookAt(mtx, &cameraPos, &cameraUp, &lbl_802B4ECC.unk58);
     mathutil_mtxA_from_mtx(mtx);    
-    lbl_802F1B60->unk0[0][3] = 0.5f;
-    lbl_802F1B60->unk0[1][0] *= -1.0f;
-    lbl_802F1B60->unk0[1][1] *= -1.0f;
-    lbl_802F1B60->unk0[1][2] *= -1.0f;
-    lbl_802F1B60->unk0[1][3] = 0.5f;
-    lbl_802F1B60->unk0[2][0] = 0.0f;
-    lbl_802F1B60->unk0[2][1] = 0.0f;
-    lbl_802F1B60->unk0[2][2] = 0.0f;
-    lbl_802F1B60->unk0[2][3] = 1.0f;
+    mathutilData->mtxA[0][3] = 0.5f;
+    mathutilData->mtxA[1][0] *= -1.0f;
+    mathutilData->mtxA[1][1] *= -1.0f;
+    mathutilData->mtxA[1][2] *= -1.0f;
+    mathutilData->mtxA[1][3] = 0.5f;
+    mathutilData->mtxA[2][0] = 0.0f;
+    mathutilData->mtxA[2][1] = 0.0f;
+    mathutilData->mtxA[2][2] = 0.0f;
+    mathutilData->mtxA[2][3] = 1.0f;
     mathutil_mtxA_scale_s(0.5f);
-    GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_PTTEXMTX0, GX_MTX3x4);
+    GXLoadTexMtxImm(mathutilData->mtxA, GX_PTTEXMTX0, GX_MTX3x4);
     mathutil_mtxA_pop();
 }
 
@@ -1654,26 +1654,26 @@ void func_80090268(void)
     cameraUp.z = target.z - sp44.z; 
     MTXLookAt(mtx, &cameraPos, &cameraUp, &target);
     mathutil_mtxA_from_mtx(mtx);
-    lbl_802F1B60->unk0[0][3] = 0.5f;
-    lbl_802F1B60->unk0[1][0] *= -1.0f;
-    lbl_802F1B60->unk0[1][1] *= -1.0f;
-    lbl_802F1B60->unk0[1][2] *= -1.0f;
-    lbl_802F1B60->unk0[1][3] = 0.5f;
-    lbl_802F1B60->unk0[2][0] = 0.0f;
-    lbl_802F1B60->unk0[2][1] = 0.0f;
-    lbl_802F1B60->unk0[2][2] = 0.0f;
-    lbl_802F1B60->unk0[2][3] = 1.0f;
+    mathutilData->mtxA[0][3] = 0.5f;
+    mathutilData->mtxA[1][0] *= -1.0f;
+    mathutilData->mtxA[1][1] *= -1.0f;
+    mathutilData->mtxA[1][2] *= -1.0f;
+    mathutilData->mtxA[1][3] = 0.5f;
+    mathutilData->mtxA[2][0] = 0.0f;
+    mathutilData->mtxA[2][1] = 0.0f;
+    mathutilData->mtxA[2][2] = 0.0f;
+    mathutilData->mtxA[2][3] = 1.0f;
     mathutil_mtxA_scale_s(0.5f);
-    GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_PTTEXMTX1, GX_MTX3x4);
+    GXLoadTexMtxImm(mathutilData->mtxA, GX_PTTEXMTX1, GX_MTX3x4);
     mathutil_mtxA_from_identity();
-    lbl_802F1B60->unk0[0][0] = 0.0f;
-    lbl_802F1B60->unk0[0][2] = 0.5f;
-    lbl_802F1B60->unk0[0][3] = 0.5f;
-    lbl_802F1B60->unk0[1][1] = 0.0f;
-    lbl_802F1B60->unk0[2][2] = 0.0f;
-    lbl_802F1B60->unk0[2][3] = 1.0f;
+    mathutilData->mtxA[0][0] = 0.0f;
+    mathutilData->mtxA[0][2] = 0.5f;
+    mathutilData->mtxA[0][3] = 0.5f;
+    mathutilData->mtxA[1][1] = 0.0f;
+    mathutilData->mtxA[2][2] = 0.0f;
+    mathutilData->mtxA[2][3] = 1.0f;
     mathutil_mtxA_mult_right(mtx);
-    GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_PTTEXMTX2, GX_MTX3x4);
+    GXLoadTexMtxImm(mathutilData->mtxA, GX_PTTEXMTX2, GX_MTX3x4);
     mathutil_mtxA_pop();
 }
 
@@ -2391,10 +2391,10 @@ void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     if (lbl_802B4ECC.unk44 == 0)
     {
         mathutil_mtxA_push();
-        lbl_802F1B60->unk0[0][3] = 0.0f;
-        lbl_802F1B60->unk0[1][3] = 0.0f;
-        lbl_802F1B60->unk0[2][3] = 0.0f;
-        GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_TEXMTX0, GX_MTX3x4);
+        mathutilData->mtxA[0][3] = 0.0f;
+        mathutilData->mtxA[1][3] = 0.0f;
+        mathutilData->mtxA[2][3] = 0.0f;
+        GXLoadTexMtxImm(mathutilData->mtxA, GX_TEXMTX0, GX_MTX3x4);
         mathutil_mtxA_pop();
         lbl_802B4ECC.unk44 = 1;
     }
@@ -2432,10 +2432,10 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     if (lbl_802B4ECC.unk44 == 0)
     {
         mathutil_mtxA_push();
-        lbl_802F1B60->unk0[0][3] = 0.0f;
-        lbl_802F1B60->unk0[1][3] = 0.0f;
-        lbl_802F1B60->unk0[2][3] = 0.0f;
-        GXLoadTexMtxImm(lbl_802F1B60->unk0, GX_TEXMTX0, GX_MTX3x4);
+        mathutilData->mtxA[0][3] = 0.0f;
+        mathutilData->mtxA[1][3] = 0.0f;
+        mathutilData->mtxA[2][3] = 0.0f;
+        GXLoadTexMtxImm(mathutilData->mtxA, GX_TEXMTX0, GX_MTX3x4);
         mathutil_mtxA_pop();
         lbl_802B4ECC.unk44 = 1;
     }

@@ -12,6 +12,13 @@
 #define qr2 2
 #define qr3 3
 
+// GQR registers used for conversion
+#define GQR_F32 0
+#define GQR_U8  2
+#define GQR_U16 3
+#define GQR_S8  4
+#define GQR_S16 5
+
 #include "types.h"
 #include "functions.h"
 #include "variables.h"

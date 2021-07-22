@@ -3,8 +3,8 @@
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
 .if 0
-.global func_800083C0
-func_800083C0:
+.global g_math_unk6
+g_math_unk6:
 /* 800083C0 000042E0  C0 83 00 00 */	lfs f4, 0(r3)
 /* 800083C4 000042E4  C0 03 00 04 */	lfs f0, 4(r3)
 /* 800083C8 000042E8  EC 24 01 32 */	fmuls f1, f4, f4
@@ -131,7 +131,7 @@ lbl_8000851C:
 /* 80008590 000044B0  D0 21 00 1C */	stfs f1, 0x1c(r1)
 /* 80008594 000044B4  EC 07 01 7C */	fnmsubs f0, f7, f5, f0
 /* 80008598 000044B8  D0 01 00 20 */	stfs f0, 0x20(r1)
-/* 8000859C 000044BC  4B FF FB 61 */	bl mathutil_vec_normalize_clamp
+/* 8000859C 000044BC  4B FF FB 61 */	bl mathutil_vec_normalize_len
 /* 800085A0 000044C0  C0 3F 00 00 */	lfs f1, 0(r31)
 /* 800085A4 000044C4  C0 5F 00 04 */	lfs f2, 4(r31)
 /* 800085A8 000044C8  C0 1F 00 08 */	lfs f0, 8(r31)
@@ -334,7 +334,7 @@ unkFunc80008870:
 /* 8000887C 0000479C  BF 21 00 2C */	stmw r25, 0x2c(r1)
 /* 80008880 000047A0  7C 7F 1B 78 */	mr r31, r3
 /* 80008884 000047A4  3C 60 80 11 */	lis r3, lbl_8010F8A0@ha
-/* 80008888 000047A8  80 AD 99 80 */	lwz r5, lbl_802F1B60-_SDA_BASE_(r13)
+/* 80008888 000047A8  80 AD 99 80 */	lwz r5, mathutilData-_SDA_BASE_(r13)
 /* 8000888C 000047AC  38 83 F8 A0 */	addi r4, r3, lbl_8010F8A0@l
 /* 80008890 000047B0  C0 02 80 48 */	lfs f0, lbl_802F2848-_SDA2_BASE_(r2)
 /* 80008894 000047B4  80 64 00 00 */	lwz r3, 0(r4)
@@ -357,19 +357,19 @@ unkFunc80008870:
 /* 800088D8 000047F8  EC 40 08 24 */	fdivs f2, f0, f1
 /* 800088DC 000047FC  EC 00 00 72 */	fmuls f0, f0, f1
 /* 800088E0 00004800  D0 1F 00 0C */	stfs f0, 0xc(r31)
-/* 800088E4 00004804  80 6D 99 80 */	lwz r3, lbl_802F1B60-_SDA_BASE_(r13)
+/* 800088E4 00004804  80 6D 99 80 */	lwz r3, mathutilData-_SDA_BASE_(r13)
 /* 800088E8 00004808  C0 23 00 24 */	lfs f1, 0x24(r3)
 /* 800088EC 0000480C  C0 03 00 18 */	lfs f0, 0x18(r3)
 /* 800088F0 00004810  EC 01 00 28 */	fsubs f0, f1, f0
 /* 800088F4 00004814  EC 02 00 32 */	fmuls f0, f2, f0
 /* 800088F8 00004818  D0 1F 00 00 */	stfs f0, 0(r31)
-/* 800088FC 0000481C  80 6D 99 80 */	lwz r3, lbl_802F1B60-_SDA_BASE_(r13)
+/* 800088FC 0000481C  80 6D 99 80 */	lwz r3, mathutilData-_SDA_BASE_(r13)
 /* 80008900 00004820  C0 23 00 08 */	lfs f1, 8(r3)
 /* 80008904 00004824  C0 03 00 20 */	lfs f0, 0x20(r3)
 /* 80008908 00004828  EC 01 00 28 */	fsubs f0, f1, f0
 /* 8000890C 0000482C  EC 02 00 32 */	fmuls f0, f2, f0
 /* 80008910 00004830  D0 1F 00 04 */	stfs f0, 4(r31)
-/* 80008914 00004834  80 6D 99 80 */	lwz r3, lbl_802F1B60-_SDA_BASE_(r13)
+/* 80008914 00004834  80 6D 99 80 */	lwz r3, mathutilData-_SDA_BASE_(r13)
 /* 80008918 00004838  C0 23 00 10 */	lfs f1, 0x10(r3)
 /* 8000891C 0000483C  C0 03 00 04 */	lfs f0, 4(r3)
 /* 80008920 00004840  EC 01 00 28 */	fsubs f0, f1, f0
@@ -419,7 +419,7 @@ lbl_8000895C:
 /* 800089C4 000048E4  41 82 00 08 */	beq lbl_800089CC
 /* 800089C8 000048E8  EC 22 08 24 */	fdivs f1, f2, f1
 lbl_800089CC:
-/* 800089CC 000048EC  80 0D 99 80 */	lwz r0, lbl_802F1B60-_SDA_BASE_(r13)
+/* 800089CC 000048EC  80 0D 99 80 */	lwz r0, mathutilData-_SDA_BASE_(r13)
 /* 800089D0 000048F0  38 61 00 18 */	addi r3, r1, 0x18
 /* 800089D4 000048F4  7C C0 D2 14 */	add r6, r0, r26
 /* 800089D8 000048F8  7C 80 DA 14 */	add r4, r0, r27
@@ -598,7 +598,7 @@ mathutil_normalize_vec_clamp_length:
 /* 80008C60 00004B80  D0 1F 00 04 */	stfs f0, 4(r31)
 /* 80008C64 00004B84  C0 1E 00 08 */	lfs f0, 8(r30)
 /* 80008C68 00004B88  D0 1F 00 08 */	stfs f0, 8(r31)
-/* 80008C6C 00004B8C  4B FF F4 91 */	bl mathutil_vec_normalize_clamp
+/* 80008C6C 00004B8C  4B FF F4 91 */	bl mathutil_vec_normalize_len
 /* 80008C70 00004B90  C8 02 80 78 */	lfd f0, lbl_802F2878-_SDA2_BASE_(r2)
 /* 80008C74 00004B94  FC 20 07 F2 */	fmul f1, f0, f31
 /* 80008C78 00004B98  80 01 00 34 */	lwz r0, 0x34(r1)

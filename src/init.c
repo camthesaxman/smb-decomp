@@ -390,7 +390,7 @@ void init_rel(void)
 void init_cache(void)
 {
     LCEnable();
-    lbl_802F1B60 = (void *)0xE0000000;
+    mathutilData = (void *)0xE0000000;
     lbl_802F1CA4 = (void *)0xE00001B0;
     lbl_802F1B3C = (void *)0xE00001C8;
     zMode = (void *)0xE00002D8;

@@ -24,12 +24,12 @@ FORCEACTIVE {
     // mathutil
     func_8000716C
     func_80007924
-    func_800083C0
+    g_math_unk6
     func_80008378
     mathutil_mtxA_from_rotate_x
     func_80007424
     func_80008458
-    mathutil_vec_set_length
+    mathutil_vec_set_len
     mathutil_mtx_from_identity
 }
 

@@ -832,7 +832,7 @@ bmpdisp_main:
 /* 80026580 000224A0  93 C1 00 70 */	stw r30, 0x70(r1)
 /* 80026584 000224A4  4B FF FE 21 */	bl func_800263A4
 /* 80026588 000224A8  4B FE 0F DD */	bl mathutil_mtxA_from_identity
-/* 8002658C 000224AC  80 6D 99 80 */	lwz r3, lbl_802F1B60-_SDA_BASE_(r13)
+/* 8002658C 000224AC  80 6D 99 80 */	lwz r3, mathutilData-_SDA_BASE_(r13)
 /* 80026590 000224B0  38 80 00 00 */	li r4, 0
 /* 80026594 000224B4  48 0B DF ED */	bl GXLoadPosMtxImm
 /* 80026598 000224B8  C0 22 88 F0 */	lfs f1, lbl_802F30F0-_SDA2_BASE_(r2)
@@ -2249,8 +2249,8 @@ lbl_802F1B54:
 .global lbl_802F1B58
 lbl_802F1B58:
 	.skip 0x8
-.global lbl_802F1B60
-lbl_802F1B60:
+.global mathutilData
+mathutilData:
 	.skip 0x8
 .global lbl_802F1B68
 lbl_802F1B68:
