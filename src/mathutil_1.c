@@ -1798,14 +1798,148 @@ void g_math_unk6(Quaternion *q)
     }
 }
 
-void mathutil_normalize_vec_clamp_length();
+float mathutil_normalize_vec_clamp_length(Vec *a, Vec *b);
 
-/*
-void func_80008458(void *a, void *b, void *c)
+#pragma force_active on
+#pragma novrsave
+
+static inline float dot_product(Vec *a, Vec *b)
+{
+    register float ax, ay, az, bx, by, bz, temp;
+
+    ax = a->x;
+    bx = b->x;
+    ay = a->y;
+    by = b->y;
+    az = a->z;
+    bz = b->z;
+
+    asm
+    {
+        fmuls temp, ax, bx
+        fmadds temp, ay, by, temp
+        fmadds temp, az, bz, temp
+    }
+    return temp;
+}
+
+static inline void cross_product(Vec *a, Vec *b, register Vec *result)
+{
+    register float ax = a->x;
+    register float ay = a->y;
+    register float az = a->z;
+    register float bx = b->x;
+    register float by = b->y;
+    register float bz = b->z;
+    register float temp1, temp2, temp3;
+
+    asm
+    {
+        fmuls temp1, ay, bz
+        fmuls temp2, az, bx
+        fmuls temp3, ax, by
+        fnmsubs temp1, az, by, temp1
+        stfs temp1, result->x
+        fnmsubs temp2, ax, bz, temp2
+        stfs temp2, result->y
+        fnmsubs temp3, ay, bx, temp3
+        stfs temp3, result->z 
+    }
+}
+
+void func_80008458(Vec *a, Vec *b, Vec *c, float d)
 {
     Vec sp24;
+    double var1 = mathutil_normalize_vec_clamp_length(a, &sp24);
 
-    mathutil_normalize_vec_clamp_length(a, &sp24);
+    if (__fabs(dot_product(&sp24, c)) < 0.9999989867210388)
+    {
+        Vec sp18;
+        float var2;
 
+        cross_product(&sp24, c, &sp18);
+        var2 = d * var1;
+        b->x = sp18.x * var2;
+        b->y = sp18.y * var2;
+        b->z = sp18.z * var2;
+    }
+    else
+    {
+        b->x = b->y = b->z = 0.0f;
+    }
 }
-*/
+
+void mathutil_quat_axis_angle();
+
+
+#if 0
+#ifdef NONMATCHING
+//TODO
+#else
+asm void func_00004458()
+{
+    nofralloc
+/* 80008538 00004458  7C 08 02 A6 */	mflr r0
+/* 8000853C 0000445C  90 01 00 04 */	stw r0, 4(r1)
+/* 80008540 00004460  94 21 FF C0 */	stwu r1, -0x40(r1)
+/* 80008544 00004464  DB E1 00 38 */	stfd f31, 0x38(r1)
+/* 80008548 00004468  93 E1 00 34 */	stw r31, 0x34(r1)
+/* 8000854C 0000446C  93 C1 00 30 */	stw r30, 0x30(r1)
+/* 80008550 00004470  FF E0 08 90 */	fmr f31, f1
+/* 80008554 00004474  7C 7E 1B 78 */	mr r30, r3
+/* 80008558 00004478  7C 9F 23 78 */	mr r31, r4
+/* 8000855C 0000447C  38 61 00 18 */	addi r3, r1, 0x18
+/* 80008560 00004480  C0 FF 00 04 */	lfs f7, 4(r31)
+/* 80008564 00004484  C0 65 00 08 */	lfs f3, 8(r5)
+/* 80008568 00004488  C0 DF 00 08 */	lfs f6, 8(r31)
+/* 8000856C 0000448C  C0 A5 00 00 */	lfs f5, 0(r5)
+/* 80008570 00004490  C1 1F 00 00 */	lfs f8, 0(r31)
+/* 80008574 00004494  C0 85 00 04 */	lfs f4, 4(r5)
+/* 80008578 00004498  EC 47 00 F2 */	fmuls f2, f7, f3
+/* 8000857C 0000449C  EC 26 01 72 */	fmuls f1, f6, f5
+/* 80008580 000044A0  EC 08 01 32 */	fmuls f0, f8, f4
+/* 80008584 000044A4  EC 46 11 3C */	fnmsubs f2, f6, f4, f2
+/* 80008588 000044A8  D0 41 00 18 */	stfs f2, 0x18(r1)
+/* 8000858C 000044AC  EC 28 08 FC */	fnmsubs f1, f8, f3, f1
+/* 80008590 000044B0  D0 21 00 1C */	stfs f1, 0x1c(r1)
+/* 80008594 000044B4  EC 07 01 7C */	fnmsubs f0, f7, f5, f0
+/* 80008598 000044B8  D0 01 00 20 */	stfs f0, 0x20(r1)
+/* 8000859C 000044BC  4B FF FB 61 */	bl mathutil_vec_normalize_len
+/* 800085A0 000044C0  C0 3F 00 00 */	lfs f1, 0(r31)
+/* 800085A4 000044C4  C0 5F 00 04 */	lfs f2, 4(r31)
+/* 800085A8 000044C8  C0 1F 00 08 */	lfs f0, 8(r31)
+/* 800085AC 000044CC  EC 21 00 72 */	fmuls f1, f1, f1
+/* 800085B0 000044D0  EC 22 08 BA */	fmadds f1, f2, f2, f1
+/* 800085B4 000044D4  EC 20 08 3A */	fmadds f1, f0, f0, f1
+/* 800085B8 000044D8  4B FF EB 41 */	bl mathutil_sqrt
+/* 800085BC 000044DC  C0 42 80 60 */	lfs f2, 3.14159265358979323846264338327950288f //lbl_802F2860-_SDA2_BASE_(r2)
+/* 800085C0 000044E0  C0 02 80 50 */	lfs f0, 1.19209289551e-07f //lbl_802F2850-_SDA2_BASE_(r2)
+/* 800085C4 000044E4  EC 42 07 F2 */	fmuls f2, f2, f31
+/* 800085C8 000044E8  EC 02 00 28 */	fsubs f0, f2, f0
+/* 800085CC 000044EC  FC 01 00 40 */	fcmpo cr0, f1, f0
+/* 800085D0 000044F0  40 81 00 08 */	ble lbl_800085D8
+/* 800085D4 000044F4  FC 20 00 90 */	fmr f1, f0
+lbl_800085D8:
+/* 800085D8 000044F8  C0 02 80 68 */	lfs f0, 0.159154936671f //lbl_802F2868-_SDA2_BASE_(r2)
+/* 800085DC 000044FC  7F C3 F3 78 */	mr r3, r30
+/* 800085E0 00004500  C0 42 80 64 */	lfs f2, 65536.0f //lbl_802F2864-_SDA2_BASE_(r2)
+/* 800085E4 00004504  38 81 00 18 */	addi r4, r1, 0x18
+/* 800085E8 00004508  EC 00 00 72 */	fmuls f0, f0, f1
+/* 800085EC 0000450C  EC 00 F8 24 */	fdivs f0, f0, f31
+/* 800085F0 00004510  EC 02 00 32 */	fmuls f0, f2, f0
+/* 800085F4 00004514  FC 00 00 1E */	fctiwz f0, f0
+/* 800085F8 00004518  D8 01 00 28 */	stfd f0, 0x28(r1)
+/* 800085FC 0000451C  80 01 00 2C */	lwz r0, 0x2c(r1)
+/* 80008600 00004520  7C 00 07 34 */	extsh r0, r0
+/* 80008604 00004524  7C A0 00 D0 */	neg r5, r0
+/* 80008608 00004528  48 00 04 49 */	bl mathutil_quat_axis_angle
+/* 8000860C 0000452C  80 01 00 44 */	lwz r0, 0x44(r1)
+/* 80008610 00004530  CB E1 00 38 */	lfd f31, 0x38(r1)
+/* 80008614 00004534  83 E1 00 34 */	lwz r31, 0x34(r1)
+/* 80008618 00004538  7C 08 03 A6 */	mtlr r0
+/* 8000861C 0000453C  83 C1 00 30 */	lwz r30, 0x30(r1)
+/* 80008620 00004540  38 21 00 40 */	addi r1, r1, 0x40
+/* 80008624 00004544  4E 80 00 20 */	blr
+}
+#endif
+#endif
