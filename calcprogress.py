@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-################################################################################
-#                                 Description                                  #
-################################################################################
-# calcprogress: Used to calculate the progress of the OGWS decomp.             #
-# Prints to stdout for now, but eventually will have some form of storage,     #
-# i.e. CSV, so that it can be used for a webpage display.                      #
-#                                                                              #
-# Usage: No arguments needed                                                   #
-################################################################################
+#################################################################################
+#                                 Description                                   #
+#################################################################################
+# calcprogress: Used to calculate the progress of the Super Monkey Ball decomp. #
+# Prints to stdout for now, but eventually will have some form of storage,      #
+# i.e. CSV, so that it can be used for a webpage display.                       #
+#                                                                               #
+# Usage: No arguments needed                                                    #
+#################################################################################
 
 
 
