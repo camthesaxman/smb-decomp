@@ -324,7 +324,6 @@ mathutil_vec_to_euler_xz:
 /* 80008864 00004784  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 80008868 00004788  38 21 00 38 */	addi r1, r1, 0x38
 /* 8000886C 0000478C  4E 80 00 20 */	blr
-.endif
 
 .global unkFunc80008870
 unkFunc80008870:
@@ -393,9 +392,9 @@ lbl_8000895C:
 /* 8000895C 0000487C  54 9D 10 3A */	slwi r29, r4, 2
 /* 80008960 00004880  C0 62 80 4C */	lfs f3, lbl_802F284C-_SDA2_BASE_(r2)
 /* 80008964 00004884  38 61 00 0C */	addi r3, r1, 0xc
-/* 80008968 00004888  7C C3 E8 2E */	lwzx r6, r3, r29
+/* 80008968 00004888  7C C3 E8 2E */	lwzx r6, r3, r29  ;# spC[r4]
 /* 8000896C 0000488C  54 99 20 36 */	slwi r25, r4, 4
-/* 80008970 00004890  7C 19 EA 14 */	add r0, r25, r29
+/* 80008970 00004890  7C 19 EA 14 */	add r0, r25, r29  ;# [r4][r4]
 /* 80008974 00004894  54 DE 10 3A */	slwi r30, r6, 2
 /* 80008978 00004898  7C 45 04 2E */	lfsx f2, r5, r0
 /* 8000897C 0000489C  7C 63 F0 2E */	lwzx r3, r3, r30
@@ -421,21 +420,21 @@ lbl_8000895C:
 lbl_800089CC:
 /* 800089CC 000048EC  80 0D 99 80 */	lwz r0, mathutilData-_SDA_BASE_(r13)
 /* 800089D0 000048F0  38 61 00 18 */	addi r3, r1, 0x18
-/* 800089D4 000048F4  7C C0 D2 14 */	add r6, r0, r26
-/* 800089D8 000048F8  7C 80 DA 14 */	add r4, r0, r27
-/* 800089DC 000048FC  7C 46 F4 2E */	lfsx f2, r6, r30
-/* 800089E0 00004900  7C 04 E4 2E */	lfsx f0, r4, r28
-/* 800089E4 00004904  7C A0 CA 14 */	add r5, r0, r25
+/* 800089D4 000048F4  7C C0 D2 14 */	add r6, r0, r26  ;# mtxA[r3]
+/* 800089D8 000048F8  7C 80 DA 14 */	add r4, r0, r27  ;# mtxA[r6]
+/* 800089DC 000048FC  7C 46 F4 2E */	lfsx f2, r6, r30  ;# mtxA[r3][r6]
+/* 800089E0 00004900  7C 04 E4 2E */	lfsx f0, r4, r28  ;# mtxA[r6][r3]
+/* 800089E4 00004904  7C A0 CA 14 */	add r5, r0, r25  ;# mtxA[r4]
 /* 800089E8 00004908  EC 02 00 28 */	fsubs f0, f2, f0
 /* 800089EC 0000490C  EC 01 00 32 */	fmuls f0, f1, f0
 /* 800089F0 00004910  D0 01 00 24 */	stfs f0, 0x24(r1)
-/* 800089F4 00004914  7C 44 EC 2E */	lfsx f2, r4, r29
-/* 800089F8 00004918  7C 05 F4 2E */	lfsx f0, r5, r30
+/* 800089F4 00004914  7C 44 EC 2E */	lfsx f2, r4, r29  ;# mtxA[r6][r4]
+/* 800089F8 00004918  7C 05 F4 2E */	lfsx f0, r5, r30  ;# mtxA[r4][r6]
 /* 800089FC 0000491C  EC 02 00 2A */	fadds f0, f2, f0
 /* 80008A00 00004920  EC 01 00 32 */	fmuls f0, f1, f0
 /* 80008A04 00004924  7C 03 F5 2E */	stfsx f0, r3, r30
-/* 80008A08 00004928  7C 46 EC 2E */	lfsx f2, r6, r29
-/* 80008A0C 0000492C  7C 05 E4 2E */	lfsx f0, r5, r28
+/* 80008A08 00004928  7C 46 EC 2E */	lfsx f2, r6, r29  ;# mtxA[r3][r4]
+/* 80008A0C 0000492C  7C 05 E4 2E */	lfsx f0, r5, r28  ;# mtxA[r4][r3]
 /* 80008A10 00004930  EC 02 00 2A */	fadds f0, f2, f0
 /* 80008A14 00004934  EC 01 00 32 */	fmuls f0, f1, f0
 /* 80008A18 00004938  7C 03 E5 2E */	stfsx f0, r3, r28
@@ -453,6 +452,7 @@ lbl_80008A3C:
 /* 80008A44 00004964  38 21 00 48 */	addi r1, r1, 0x48
 /* 80008A48 00004968  7C 08 03 A6 */	mtlr r0
 /* 80008A4C 0000496C  4E 80 00 20 */	blr
+.endif
 
 .global mathutil_quat_axis_angle
 mathutil_quat_axis_angle:
@@ -1221,12 +1221,12 @@ lbl_802F2864:
 lbl_802F2868:
 	# ROM: 0x1EC288
 	.byte 0x3E, 0x22, 0xF9, 0x83  ;# 0.159154936671f
-.endif
 
 .global lbl_802F286C
 lbl_802F286C:
 	# ROM: 0x1EC28C
 	.byte 0x3F, 0x00, 0x00, 0x00  ;# 0.5f
+.endif
 
 .global lbl_802F2870
 lbl_802F2870:
@@ -1290,12 +1290,14 @@ lbl_802F28A8:
 
 .section .rodata
 
+.if 0
 .global lbl_8010F8A0
 lbl_8010F8A0:
 	# ROM: 0x10C8A0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x00, 0x00, 0x02
 	.4byte 0
+.endif
 
 .global crcTable
 crcTable:

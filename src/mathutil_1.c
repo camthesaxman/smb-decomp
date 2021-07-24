@@ -1842,7 +1842,7 @@ static inline void cross_product(Vec *a, Vec *b, register Vec *result)
         fnmsubs temp2, ax, bz, temp2
         stfs temp2, result->y
         fnmsubs temp3, ay, bx, temp3
-        stfs temp3, result->z 
+        stfs temp3, result->z
     }
 }
 
@@ -1893,7 +1893,7 @@ static inline void cross_product_alt(register Vec *result, register Vec *a, regi
         fnmsubs temp2, ax, bz, temp2
         stfs temp2, result->y
         fnmsubs temp3, ay, bx, temp3
-        stfs temp3, result->z 
+        stfs temp3, result->z
     }
 }
 
@@ -1978,4 +1978,54 @@ void mathutil_vec_to_euler_xz(Vec *a, u16 *b, u16 *c)
     var += (negZ * negZ);
     *b = mathutil_atan2(y, mathutil_sqrt(var));
     *c = mathutil_atan2(negX, negZ);
+}
+
+//#pragma fp_contract off
+
+void unkFunc80008870(Quaternion *q)
+{
+    float sp18[4];
+    int spC[] = {1, 2, 0};
+    float var1 = mathutilData->mtxA[0][0]
+             + mathutilData->mtxA[1][1]
+             + mathutilData->mtxA[2][2];
+    if (var1 > 0.0f)
+    {
+        float var2 = mathutil_sqrt(var1 + 1.0f);
+        float var3 = 0.5f / var2;
+
+        q->w = 0.5f * var2;
+        q->x = var3 * (mathutilData->mtxA[2][1] - mathutilData->mtxA[1][2]);
+        q->y = var3 * (mathutilData->mtxA[0][2] - mathutilData->mtxA[2][0]);
+        q->z = var3 * (mathutilData->mtxA[1][0] - mathutilData->mtxA[0][1]);
+    }
+    else
+    {
+        float f1;
+        int r4;
+        int r6;
+        int r3;
+
+        r4 = 0;
+        if (mathutilData->mtxA[1][1] > mathutilData->mtxA[0][0])
+            r4 = 1;
+        if (mathutilData->mtxA[2][2] > mathutilData->mtxA[r4][r4])
+            r4 = 2;
+        r6 = spC[r4];
+        r3 = spC[r6];
+
+        f1 = mathutil_sqrt(mathutilData->mtxA[r4][r4] - (mathutilData->mtxA[r6][r6] + mathutilData->mtxA[r3][r3]) + 1.0f);
+        sp18[r4] = 0.5f * f1;
+        if (f1 != 0.0f)
+            f1 = 0.5f / f1;
+
+        sp18[3] = f1 * (mathutilData->mtxA[r3][r6] - mathutilData->mtxA[r6][r3]);
+        sp18[r6] = f1 * (mathutilData->mtxA[r6][r4] + mathutilData->mtxA[r4][r6]);
+        sp18[r3] = f1 * (mathutilData->mtxA[r3][r4] + mathutilData->mtxA[r4][r3]);
+
+        q->x = sp18[0];
+        q->y = sp18[1];
+        q->z = sp18[2];
+        q->w = sp18[3];
+    }
 }
