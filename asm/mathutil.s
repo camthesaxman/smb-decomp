@@ -452,7 +452,6 @@ lbl_80008A3C:
 /* 80008A44 00004964  38 21 00 48 */	addi r1, r1, 0x48
 /* 80008A48 00004968  7C 08 03 A6 */	mtlr r0
 /* 80008A4C 0000496C  4E 80 00 20 */	blr
-.endif
 
 .global mathutil_quat_axis_angle
 mathutil_quat_axis_angle:
@@ -516,6 +515,7 @@ lbl_80008B14:
 /* 80008B2C 00004A4C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 80008B30 00004A50  38 21 00 38 */	addi r1, r1, 0x38
 /* 80008B34 00004A54  4E 80 00 20 */	blr
+
 /* 80008B38 00004A58  7C 08 02 A6 */	mflr r0
 /* 80008B3C 00004A5C  90 01 00 04 */	stw r0, 4(r1)
 /* 80008B40 00004A60  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -652,6 +652,7 @@ lbl_80008CEC:
 /* 80008D24 00004C44  38 21 00 18 */	addi r1, r1, 0x18
 /* 80008D28 00004C48  7C 08 03 A6 */	mtlr r0
 /* 80008D2C 00004C4C  4E 80 00 20 */	blr
+.endif
 
 .global unkFunc80008D30
 unkFunc80008D30:
@@ -869,6 +870,7 @@ lbl_80008FD8:
 /* 80009054 00004F74  83 C1 00 30 */	lwz r30, 0x30(r1)
 /* 80009058 00004F78  38 21 00 78 */	addi r1, r1, 0x78
 /* 8000905C 00004F7C  4E 80 00 20 */	blr
+
 /* 80009060 00004F80  7C 08 02 A6 */	mflr r0
 /* 80009064 00004F84  90 01 00 04 */	stw r0, 4(r1)
 /* 80009068 00004F88  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -887,6 +889,7 @@ lbl_80008FD8:
 /* 8000909C 00004FBC  7C 08 03 A6 */	mtlr r0
 /* 800090A0 00004FC0  38 21 00 18 */	addi r1, r1, 0x18
 /* 800090A4 00004FC4  4E 80 00 20 */	blr
+
 /* 800090A8 00004FC8  7C 08 02 A6 */	mflr r0
 /* 800090AC 00004FCC  90 01 00 04 */	stw r0, 4(r1)
 /* 800090B0 00004FD0  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -1198,7 +1201,7 @@ lbl_802F284C:
 .global lbl_802F2850
 lbl_802F2850:
 	# ROM: 0x1EC270
-	.byte 0x34, 0x00, 0x00, 0x00  ;# 1.19209289551e-07
+	.byte 0x34, 0x00, 0x00, 0x00  ;# 1.19209289551e-07f
 	.4byte 0
 
 .global lbl_802F2858
@@ -1226,19 +1229,20 @@ lbl_802F2868:
 lbl_802F286C:
 	# ROM: 0x1EC28C
 	.byte 0x3F, 0x00, 0x00, 0x00  ;# 0.5f
-.endif
 
 .global lbl_802F2870
 lbl_802F2870:
 	# ROM: 0x1EC290
-	.byte 0x3F, 0xE0, 0x00, 0x00  ;# 1.75
+	.byte 0x3F, 0xE0, 0x00, 0x00  ;# 0.5
 	.4byte 0
 
 .global lbl_802F2878
 lbl_802F2878:
 	# ROM: 0x1EC298
-	.byte 0x40, 0x00, 0x00, 0x00
+	.byte 0x40, 0x00, 0x00, 0x00  ;# 2.0
 	.4byte 0
+
+.endif
 
 .global lbl_802F2880
 lbl_802F2880:
