@@ -276,7 +276,7 @@ asm float mathutil_tan(register u32 angle)
     blr
 }
 
-asm u32 mathutil_atan2(double angle)
+asm s16 mathutil_atan2(double a, double b)
 {
     nofralloc
 
@@ -1910,4 +1910,72 @@ void func_80008538(Quaternion *a, Vec *b, Vec *c, float d)
         f1 = PI * d - 1.19209289551e-07f;
     var = (0.159154936671f * f1 / d) * 65536.0f;
     mathutil_quat_axis_angle(a, &sp18, -var);
+}
+
+void mathutil_ray_to_euler(Vec *a, Vec *b, u16 *c)
+{
+    register float dx = a->x - b->x;
+    register float dy = b->y - a->y;
+    register float dz = a->z - b->z;
+    register float var;
+
+#ifdef NONMATCHING
+    var = (dz * dz) + (dx * dx);
+#else
+    asm
+    {
+        fmuls var, dx, dx
+        fmadds var, dz, dz, var
+    }
+#endif
+    c[0] = mathutil_atan2(dy, mathutil_sqrt(var));
+    c[1] = mathutil_atan2(dx, dz);
+    c[2] = 0;
+}
+
+void mathutil_ray_to_euler_xz(Vec *a, Vec *b, u16 *c, u16 *d)
+{
+    register float dx = a->x - b->x;
+    register float dy = b->y - a->y;
+    register float dz = a->z - b->z;
+    register float var;
+
+#ifdef NONMATCHING
+    var = (dz * dz) + (dx * dx);
+#else
+    asm
+    {
+        fmuls var, dx, dx
+        fmadds var, dz, dz, var
+    }
+#endif
+    *c = mathutil_atan2(dy, mathutil_sqrt(var));
+    *d = mathutil_atan2(dx, dz);
+}
+
+#pragma fp_contract on
+
+void mathutil_vec_to_euler(Vec *a, u16 *b)
+{
+    float negX = -a->x;
+    float y = a->y;
+    float negZ = -a->z;
+    float var = (negX * negX);
+
+    var += (negZ * negZ);
+    b[0] = mathutil_atan2(y, mathutil_sqrt(var));
+    b[1] = mathutil_atan2(negX, negZ);
+    b[2] = 0;
+}
+
+void mathutil_vec_to_euler_xz(Vec *a, u16 *b, u16 *c)
+{
+    float negX = -a->x;
+    float y = a->y;
+    float negZ = -a->z;
+    float var = (negX * negX);
+
+    var += (negZ * negZ);
+    *b = mathutil_atan2(y, mathutil_sqrt(var));
+    *c = mathutil_atan2(negX, negZ);
 }

@@ -19,7 +19,7 @@ float mathutil_sin(register u32 angle);
 void mathutil_sin_cos_v(s16 a, float *b);
 void mathutil_sin_cos(s16 angle);
 float mathutil_tan(u32 angle);
-u32 mathutil_atan2(double angle);
+s16 mathutil_atan2(double a, double b);
 u32 mathutil_atan(double angle);
 u32 func_80007424(float a);
 void mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB);
