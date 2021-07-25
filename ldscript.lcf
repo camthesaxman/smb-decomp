@@ -28,7 +28,7 @@ FORCEACTIVE {
     func_80008378
     mathutil_mtxA_from_rotate_x
     func_80007424
-    func_80008458
+    g_math_unk7
     mathutil_vec_set_len
     mathutil_mtx_from_identity
     

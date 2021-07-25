@@ -1302,7 +1302,7 @@ lbl_800A6950:
 /* 800A69E0 000A2900  38 BB 00 00 */	addi r5, r27, 0
 /* 800A69E4 000A2904  38 61 00 50 */	addi r3, r1, 0x50
 /* 800A69E8 000A2908  38 81 00 08 */	addi r4, r1, 8
-/* 800A69EC 000A290C  4B F6 23 45 */	bl unkFunc80008D30
+/* 800A69EC 000A290C  4B F6 23 45 */	bl mathutil_quat_from_dirs
 /* 800A69F0 000A2910  38 61 00 50 */	addi r3, r1, 0x50
 /* 800A69F4 000A2914  4B F6 18 69 */	bl mathutil_mtxA_from_quat
 /* 800A69F8 000A2918  38 61 00 20 */	addi r3, r1, 0x20

@@ -3,8 +3,8 @@
 #include <dolphin.h>
 
 #include "global.h"
-
 #include "load.h"
+#include "mathutil.h"
 
 struct GMAMeshHeader
 {

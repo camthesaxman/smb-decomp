@@ -2,6 +2,9 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "mathutil.h"
+
+#define PI 3.14159265358979323846f
 
 #define LC_CACHE_BASE 0xE0000000
 
@@ -15,6 +18,13 @@
 #define OFFSET_UNK1AC         0x1AC
 #define OFFSET_UNK1AE         0x1AE
 
+// GQR registers used for conversion
+#define GQR_F32 0
+#define GQR_U8  2
+#define GQR_U16 3
+#define GQR_S8  4
+#define GQR_S16 5
+
 extern float lbl_802F1B68;
 extern u32 lbl_802F1B6C;
 
@@ -26,6 +36,9 @@ extern float lbl_80184920[];
 void _return_nan();
 void _return_zero();
 void _return_inf();
+void _return_neg_inf();
+float _sqrt_return_special();
+float _rsqrt_return_special();
 
 #pragma force_active on
 
@@ -59,13 +72,20 @@ asm void mathutil_init(void)
     oris r3, r3, 7
     mtspr GQR5, r3
 
+    // GQR6 not used
     li r3, 0
     mtspr GQR6, r3
 
+    // GQR7 not used
     li r3, 0
     mtspr GQR7, r3
 
     blr
+}
+
+asm float float_return_values()
+{
+    nofralloc
 
 entry _return_nan
     lis r0, 0x7FFF
@@ -76,7 +96,7 @@ entry _return_zero
 entry _return_inf
     lis r0, 0x7F80
     b @return
-// unused?
+entry _return_neg_inf  // unused?
     lis r0, 0xFF80
     b @return
 @return:
@@ -114,26 +134,23 @@ asm float approx_rsqrt(register float num, register float oneHalf)
     blr
 }
 
-asm float lbl_800070EC()
+asm float mathutil_sqrt_(double n)
 {
     nofralloc
 
+entry _sqrt_return_special
     bgt cr1, _return_inf
     blt cr1, _return_zero
     b _return_nan
-}
-
-asm float mathutil_sqrt(double n)
-{
-    nofralloc
-
+// float mathutil_sqrt(double n)
+entry mathutil_sqrt
     frsp f0, f1
     lis r4, LC_CACHE_BASE@ha
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
     lfs f2, OFFSET_CONST_ONE_HALF(r4)
-    bso cr1, lbl_800070EC
-    bso _return_zero
+    bso cr1, _sqrt_return_special
+    bso cr0, _return_zero
     ble cr1, _return_zero
     mflr r3
     bl approx_rsqrt
@@ -141,19 +158,19 @@ asm float mathutil_sqrt(double n)
     fmuls f1, f1, f0
     blr
 
-lbl_8000712C:
+_rsqrt_return_special:
     bgt cr1, _return_zero
     blt cr1, _return_inf
     b _return_nan
-
+// float mathutil_rsqrt(double n);
 entry mathutil_rsqrt
     frsp f1, f1
     lis r4, LC_CACHE_BASE@ha
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
     lfs f2, OFFSET_CONST_ONE_HALF(r4)
-    bso cr1, lbl_8000712C
-    bso _return_inf
+    bso cr1, _rsqrt_return_special
+    bso cr0, _return_inf
     ble cr1, _return_inf
     mflr r3
     bl approx_rsqrt
@@ -1658,7 +1675,7 @@ asm float mathutil_vec_dot_normalized_safe(register Vec *a, register Vec *b)
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
     lfs f2, OFFSET_CONST_ONE_HALF(r6)
-    bso cr1, lbl_800070EC
+    bso cr1, _sqrt_return_special
     bso _return_zero
     ble cr1, _return_zero
     mflr r5
@@ -1669,17 +1686,17 @@ asm float mathutil_vec_dot_normalized_safe(register Vec *a, register Vec *b)
     blr
 }
 
-asm void mathutil_mtxA_from_quat(register Quaternion *q)
+asm void mathutil_mtxA_from_quat(register Quaternion *quat)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha
-    lfs f0, q->x
-    lfs f1, q->y
+    lfs f0, quat->x
+    lfs f1, quat->y
     lfs f5, OFFSET_CONST_ONE(r4)
-    lfs f2, q->z
+    lfs f2, quat->z
     fsubs f4, f5, f5
-    lfs f3, q->w
+    lfs f3, quat->w
     fadds f6, f5, f5
     stfs f4, OFFSET_MTX_A+12(r4)
     stfs f4, OFFSET_MTX_A+28(r4)
@@ -1717,19 +1734,19 @@ asm void mathutil_mtxA_from_quat(register Quaternion *q)
     blr
 }
 
-asm void mathutil_quat_mult(register Quaternion *a, register Quaternion *b, register Quaternion *c)
+asm void mathutil_quat_mult(register Quaternion *result, register Quaternion *quat1, register Quaternion *quat2)
 {
     nofralloc
 
-    lfs f4, b->x
-    lfs f5, b->y
-    lfs f6, b->z
-    lfs f7, b->w
+    lfs f4,  quat1->x
+    lfs f5,  quat1->y
+    lfs f6,  quat1->z
+    lfs f7,  quat1->w
 
-    lfs f8,  c->x
-    lfs f9,  c->y
-    lfs f10, c->z
-    lfs f11, c->w
+    lfs f8,  quat2->x
+    lfs f9,  quat2->y
+    lfs f10, quat2->z
+    lfs f11, quat2->w
 
     fmul f0, f6, f9
     fmul f1, f4, f10
@@ -1748,10 +1765,10 @@ asm void mathutil_quat_mult(register Quaternion *a, register Quaternion *b, regi
     fmadds f2, f7, f10, f2
     fmsubs f3, f7, f11, f3
 
-    stfs f0, a->x
-    stfs f1, a->y
-    stfs f2, a->z
-    stfs f3, a->w
+    stfs f0, result->x
+    stfs f1, result->y
+    stfs f2, result->z
+    stfs f3, result->w
     blr
 }
 
@@ -1781,27 +1798,28 @@ lbl_800083B4:
     blr
 }
 
-void g_math_unk6(Quaternion *q)
+void g_math_unk6(Quaternion *quat)
 {
-    float f2 = q->x * q->x + q->y * q->y + q->z * q->z + q->w * q->w;
-    if (f2 < 1.19209289551e-07f)
+    float var1 = quat->x * quat->x
+               + quat->y * quat->y
+               + quat->z * quat->z
+               + quat->w * quat->w;
+    if (var1 < 1.19209289551e-07f)
     {
-        q->x = 0.0f;
-        q->y = 0.0f;
-        q->z = 0.0f;
-        q->w = 1.0f;
+        quat->x = 0.0f;
+        quat->y = 0.0f;
+        quat->z = 0.0f;
+        quat->w = 1.0f;
     }
     else
     {
-        float recip = 1.0f / f2;
-        q->x = -q->x * recip;
-        q->y = -q->y * recip;
-        q->z = -q->z * recip;
-        q->w =  q->w * recip;
+        float recip = 1.0f / var1;
+        quat->x = -quat->x * recip;
+        quat->y = -quat->y * recip;
+        quat->z = -quat->z * recip;
+        quat->w =  quat->w * recip;
     }
 }
-
-double mathutil_normalize_vec_clamp_length(Quaternion *a, Vec *b);
 
 static inline float dot_product(Vec *a, Vec *b)
 {
@@ -1839,6 +1857,22 @@ static inline float sq_mag(register Vec *vec)
     return x;
 }
 
+static inline float sq_mag2(Vec *v)
+{
+    register float result;
+    register float x = v->x;
+    register float y = v->y;
+    register float z = v->z;
+
+    asm
+    {
+        fmuls result, x, x
+        fmadds result, y, y, result
+        fmadds result, z, z, result
+    }
+    return result;
+}
+
 static inline void cross_product(Vec *a, Vec *b, register Vec *result)
 {
     register float ax = a->x;
@@ -1862,30 +1896,6 @@ static inline void cross_product(Vec *a, Vec *b, register Vec *result)
         stfs temp3, result->z
     }
 }
-
-void func_80008458(Quaternion *a, Vec *b, Vec *c, float d)
-{
-    Vec sp24;
-    double var1 = mathutil_normalize_vec_clamp_length(a, &sp24);
-
-    if (__fabs(dot_product(&sp24, c)) < 0.9999989867210388)
-    {
-        Vec sp18;
-        float var2;
-
-        cross_product(&sp24, c, &sp18);
-        var2 = d * var1;
-        b->x = sp18.x * var2;
-        b->y = sp18.y * var2;
-        b->z = sp18.z * var2;
-    }
-    else
-    {
-        b->x = b->y = b->z = 0.0f;
-    }
-}
-
-#define PI 3.14159265358979323846f
 
 static inline void cross_product_alt(register Vec *result, register Vec *a, register Vec *b)
 {
@@ -1912,7 +1922,29 @@ static inline void cross_product_alt(register Vec *result, register Vec *a, regi
     }
 }
 
-void func_80008538(Quaternion *a, Vec *b, Vec *c, float d)
+void g_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
+{
+    Vec sp24;
+    double var1 = mathutil_quat_to_axis_angle(a, &sp24);
+
+    if (__fabs(dot_product(&sp24, c)) < 0.9999989867210388)
+    {
+        Vec sp18;
+        float var2;
+
+        cross_product(&sp24, c, &sp18);
+        var2 = d * var1;
+        b->x = sp18.x * var2;
+        b->y = sp18.y * var2;
+        b->z = sp18.z * var2;
+    }
+    else
+    {
+        b->x = b->y = b->z = 0.0f;
+    }
+}
+
+void g_math_unk8(Quaternion *a, Vec *b, Vec *c, float d)
 {
     Vec sp18;
     float f1;
@@ -1924,80 +1956,80 @@ void func_80008538(Quaternion *a, Vec *b, Vec *c, float d)
     if (f1 > PI * d - 1.19209289551e-07f)
         f1 = PI * d - 1.19209289551e-07f;
     var = (int)((0.159154936671f * f1 / d) * 65536.0f);
-    mathutil_quat_axis_angle(a, &sp18, -var);
+    mathutil_quat_from_axis_angle(a, &sp18, -var);
 }
 
-void mathutil_ray_to_euler(Vec *a, Vec *b, u16 *c)
+void mathutil_ray_to_euler(Vec *rayStart, Vec *rayEnd, S16Vec *rot)
 {
-    register float dx = a->x - b->x;
-    register float dy = b->y - a->y;
-    register float dz = a->z - b->z;
-    register float var;
+    register float negX = rayStart->x - rayEnd->x;
+    register float y    = rayEnd->y - rayStart->y;
+    register float negZ = rayStart->z - rayEnd->z;
+    register float sqMag;
 
 #ifdef NONMATCHING
-    var = (dz * dz) + (dx * dx);
+    sqMag = (negZ * negZ) + (negX * negX);
 #else
     asm
     {
-        fmuls var, dx, dx
-        fmadds var, dz, dz, var
+        fmuls sqMag, negX, negX
+        fmadds sqMag, negZ, negZ, sqMag
     }
 #endif
-    c[0] = mathutil_atan2(dy, mathutil_sqrt(var));
-    c[1] = mathutil_atan2(dx, dz);
-    c[2] = 0;
+
+    rot->x = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    rot->y = mathutil_atan2(negX, negZ);
+    rot->z = 0;
 }
 
-void mathutil_ray_to_euler_xz(Vec *a, Vec *b, u16 *c, u16 *d)
+void mathutil_ray_to_euler_xy(Vec *rayStart, Vec *rayEnd, s16 *rotX, s16 *rotY)
 {
-    register float dx = a->x - b->x;
-    register float dy = b->y - a->y;
-    register float dz = a->z - b->z;
-    register float var;
+    register float negX = rayStart->x - rayEnd->x;
+    register float y    = rayEnd->y - rayStart->y;
+    register float negZ = rayStart->z - rayEnd->z;
+    register float sqMag;
 
 #ifdef NONMATCHING
-    var = (dz * dz) + (dx * dx);
+    sqMag = (negZ * negZ) + (negX * negX);
 #else
     asm
     {
-        fmuls var, dx, dx
-        fmadds var, dz, dz, var
+        fmuls sqMag, negX, negX
+        fmadds sqMag, negZ, negZ, sqMag
     }
 #endif
-    *c = mathutil_atan2(dy, mathutil_sqrt(var));
-    *d = mathutil_atan2(dx, dz);
+
+    *rotX = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    *rotY = mathutil_atan2(negX, negZ);
 }
 
 #pragma fp_contract on
 
-void mathutil_vec_to_euler(Vec *a, u16 *b)
+void mathutil_vec_to_euler(Vec *vec, S16Vec *rot)
 {
-    float negX = -a->x;
-    float y = a->y;
-    float negZ = -a->z;
-    float var = (negX * negX);
+    float negX = -vec->x;
+    float y = vec->y;
+    float negZ = -vec->z;
+    float sqMag = (negX * negX); sqMag += (negZ * negZ);
 
-    var += (negZ * negZ);
-    b[0] = mathutil_atan2(y, mathutil_sqrt(var));
-    b[1] = mathutil_atan2(negX, negZ);
-    b[2] = 0;
+    rot->x = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    rot->y = mathutil_atan2(negX, negZ);
+    rot->z = 0;
 }
 
-void mathutil_vec_to_euler_xz(Vec *a, u16 *b, u16 *c)
+void mathutil_vec_to_euler_xy(Vec *vec, s16 *rotX, s16 *rotY)
 {
-    float negX = -a->x;
-    float y = a->y;
-    float negZ = -a->z;
-    float var = (negX * negX);
+    float negX = -vec->x;
+    float y    = vec->y;
+    float negZ = -vec->z;
+    float sqMag = (negX * negX); sqMag += (negZ * negZ);
 
-    var += (negZ * negZ);
-    *b = mathutil_atan2(y, mathutil_sqrt(var));
-    *c = mathutil_atan2(negX, negZ);
+    *rotX = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    *rotY = mathutil_atan2(negX, negZ);
 }
 
-//#pragma fp_contract off
-
-void unkFunc80008870(Quaternion *q)
+// This appears to write a quaternion value of the character's rotation in the
+// character heap, but appears to be called by other things too...
+void mathutil_mtxA_to_quat(Quaternion *quat)
 {
     float sp18[4];
     int spC[] = {1, 2, 0};
@@ -2009,10 +2041,10 @@ void unkFunc80008870(Quaternion *q)
         float var2 = mathutil_sqrt(var1 + 1.0f);
         float var3 = 0.5f / var2;
 
-        q->w = 0.5f * var2;
-        q->x = var3 * (mathutilData->mtxA[2][1] - mathutilData->mtxA[1][2]);
-        q->y = var3 * (mathutilData->mtxA[0][2] - mathutilData->mtxA[2][0]);
-        q->z = var3 * (mathutilData->mtxA[1][0] - mathutilData->mtxA[0][1]);
+        quat->w = 0.5f * var2;
+        quat->x = var3 * (mathutilData->mtxA[2][1] - mathutilData->mtxA[1][2]);
+        quat->y = var3 * (mathutilData->mtxA[0][2] - mathutilData->mtxA[2][0]);
+        quat->z = var3 * (mathutilData->mtxA[1][0] - mathutilData->mtxA[0][1]);
     }
     else
     {
@@ -2038,54 +2070,38 @@ void unkFunc80008870(Quaternion *q)
         sp18[r6] = f1 * (mathutilData->mtxA[r6][r4] + mathutilData->mtxA[r4][r6]);
         sp18[r3] = f1 * (mathutilData->mtxA[r3][r4] + mathutilData->mtxA[r4][r3]);
 
-        q->x = sp18[0];
-        q->y = sp18[1];
-        q->z = sp18[2];
-        q->w = sp18[3];
+        quat->x = sp18[0];
+        quat->y = sp18[1];
+        quat->z = sp18[2];
+        quat->w = sp18[3];
     }
 }
 
-void mathutil_quat_axis_angle(Quaternion *a, Vec *b, s16 c)
+void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle)
 {
-    float f30;
+    float var1;
 
-    c >>= 1;
+    angle >>= 1;
 
-    f30 = sq_mag(b);
-    if (f30 < 1.19209289551e-07f)
+    var1 = sq_mag(axis);
+    if (var1 < 1.19209289551e-07f)
     {
-        a->x = 0.0f;
-        a->y = 0.0f;
-        a->z = 0.0f;
-        a->w = 1.0f;
+        quat->x = 0.0f;
+        quat->y = 0.0f;
+        quat->z = 0.0f;
+        quat->w = 1.0f;
     }
     else
     {
-        f30 = mathutil_rsqrt(f30) * mathutil_sin(c);
-        a->x = b->x * f30;
-        a->y = b->y * f30;
-        a->z = b->z * f30;
-        a->w = mathutil_sin(c + 0x4000);
+        var1 = mathutil_rsqrt(var1) * mathutil_sin(angle);
+        quat->x = axis->x * var1;
+        quat->y = axis->y * var1;
+        quat->z = axis->z * var1;
+        quat->w = mathutil_sin(angle + 0x4000);
     }
 }
 
-static inline float sq_mag2(Vec *v)
-{
-    register float result;
-    register float x = v->x;
-    register float y = v->y;
-    register float z = v->z;
-
-    asm
-    {
-        fmuls result, x, x
-        fmadds result, y, y, result
-        fmadds result, z, z, result
-    }
-    return result;
-}
-
-void func_00004A58(Quaternion *a, register Vec *b, register double c)
+void g_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c)
 {
     register double var1;
 
@@ -2107,63 +2123,71 @@ void func_00004A58(Quaternion *a, register Vec *b, register double c)
     }
     else
     {
-        float _f2 = mathutil_rsqrt(sq_mag2(b)) * (float)sin(var1);
-        a->x = b->x * _f2;
-        a->y = b->y * _f2;
-        a->z = b->z * _f2;
+        float var2 = mathutil_rsqrt(sq_mag2(b)) * (float)sin(var1);
+        a->x = b->x * var2;
+        a->y = b->y * var2;
+        a->z = b->z * var2;
         a->w = cos(var1);
     }
 }
 
-double mathutil_normalize_vec_clamp_length(Quaternion *a, Vec *b)
+double mathutil_quat_to_axis_angle(Quaternion *quat, Vec *axis)
 {
-    float f31 = acosf(a->w);
+    float angle = acosf(quat->w);
     u8 filler[12];  // unused variable needed to match
 
-    b->x = a->x;
-    b->y = a->y;
-    b->z = a->z;
-    mathutil_vec_normalize_len(b);
-    return 2.0 * f31;
+    axis->x = quat->x;
+    axis->y = quat->y;
+    axis->z = quat->z;
+    mathutil_vec_normalize_len(axis);
+    return 2.0 * angle;
 }
 
-void mathutil_normalize_quat(Quaternion *a)
+void mathutil_quat_normalize(Quaternion *quat)
 {
-    float var1 = a->x * a->x + a->y * a->y + a->z * a->z + a->w * a->w;
-    if (var1 > 0.0f)
-        var1 = mathutil_rsqrt(var1);
+    float sqMag = quat->x * quat->x
+                + quat->y * quat->y
+                + quat->z * quat->z
+                + quat->w * quat->w;
+    float invMag;
+
+    if (sqMag > 0.0f)
+        invMag = mathutil_rsqrt(sqMag);
     else
-        var1 = 1.0f;
-    a->x *= var1;
-    a->y *= var1;
-    a->z *= var1;
-    a->w *= var1;
+        invMag = 1.0f;
+    quat->x *= invMag;
+    quat->y *= invMag;
+    quat->z *= invMag;
+    quat->w *= invMag;
 }
 
 #pragma fp_contract off
 
-void unkFunc80008D30(Quaternion *a, Vec *b, Vec *c)
+// Computes the rotation between two vectors
+void mathutil_quat_from_dirs(Quaternion *quat, Vec *start, Vec *end)
 {
     float var1;
     float x, y, z;
-    float var2 = (b->x * c->x) + (b->y * c->y) + (b->z * c->z);
+    float var2 = start->x * end->x
+               + start->y * end->y
+               + start->z * end->z;
 
     if (var2 > 0.99998998642f)
     {
-        a->x = a->y = a->z = 0.0f;
-        a->w = 1.0f;
+        quat->x = quat->y = quat->z = 0.0f;
+        quat->w = 1.0f;
     }
     else if (var2 < -0.99998998642f)
     {
         x = 0.0f;
-        y = b->x;
-        z = -b->y;
+        y = start->x;
+        z = -start->y;
 
         if (mathutil_sqrt(y * y + z * z) < 0.000001)
         {
-            x = -b->z;
+            x = -start->z;
             y = 0.0f;
-            z = b->x;
+            z = start->x;
         }
 
         var1 = mathutil_rsqrt(x * x + y * y + z * z);
@@ -2171,16 +2195,16 @@ void unkFunc80008D30(Quaternion *a, Vec *b, Vec *c)
         y *= var1;
         z *= var1;
 
-        a->x = x;
-        a->y = y;
-        a->z = z;
-        a->w = 0.0f;
+        quat->x = x;
+        quat->y = y;
+        quat->z = z;
+        quat->w = 0.0f;
     }
     else
     {
-        x = (b->y * c->z - b->z * c->y);
-        y = (b->z * c->x - b->x * c->z);
-        z = (b->x * c->y - b->y * c->x);
+        x = start->y * end->z - start->z * end->y;
+        y = start->z * end->x - start->x * end->z;
+        z = start->x * end->y - start->y * end->x;
 
         var1 = mathutil_rsqrt(x * x + y * y + z * z);
         x *= var1;
@@ -2192,35 +2216,38 @@ void unkFunc80008D30(Quaternion *a, Vec *b, Vec *c)
         y *= var1;
         z *= var1;
 
-        a->x = x;
-        a->y = y;
-        a->z = z;
-        a->w = mathutil_sqrt(0.5f * (1.0f + var2));
+        quat->x = x;
+        quat->y = y;
+        quat->z = z;
+        quat->w = mathutil_sqrt(0.5f * (1.0f + var2));
     }
 }
 
-void mathutil_quat_slerp(Quaternion *a, Quaternion *b, Quaternion *c, float d)
+void mathutil_quat_slerp(Quaternion *result, Quaternion *start, Quaternion *end, float t)
 {
     Quaternion temp;
     u8 filler[8];
-    float var1 = b->x * c->x + b->y * c->y + b->z * c->z + b->w * c->w;
-    float var2;
-    float var3;
+    float var1 = start->x * end->x
+               + start->y * end->y
+               + start->z * end->z
+               + start->w * end->w;
+    float startMul;
+    float endMul;
 
     if (var1 < 0.0f)
     {
         var1 = -var1;
-        temp.x = -c->x;
-        temp.y = -c->y;
-        temp.z = -c->z;
-        temp.w = -c->w;
+        temp.x = -end->x;
+        temp.y = -end->y;
+        temp.z = -end->z;
+        temp.w = -end->w;
     }
     else
     {
-        temp.x = c->x;
-        temp.y = c->y;
-        temp.z = c->z;
-        temp.w = c->w;
+        temp.x = end->x;
+        temp.y = end->y;
+        temp.z = end->z;
+        temp.w = end->w;
     }
 
     if (1.0f - var1 > 0.000001)
@@ -2228,28 +2255,28 @@ void mathutil_quat_slerp(Quaternion *a, Quaternion *b, Quaternion *c, float d)
         float var4 = acosf(var1);
         float var5 = sinf(var4);
 
-        var2 = sinf((1.0f - d) * var4) / var5;
-        var3 = sinf(d * var4) / var5;
+        startMul = sinf((1.0f - t) * var4) / var5;
+        endMul = sinf(t * var4) / var5;
     }
     else
     {
-        var2 = 1.0f - d;
-        var3 = d;
+        startMul = 1.0f - t;
+        endMul = t;
     }
 
-    a->x = var2 * b->x + var3 * temp.x;
-    a->y = var2 * b->y + var3 * temp.y;
-    a->z = var2 * b->z + var3 * temp.z;
-    a->w = var2 * b->w + var3 * temp.w;
+    result->x = startMul * start->x + endMul * temp.x;
+    result->y = startMul * start->y + endMul * temp.y;
+    result->z = startMul * start->z + endMul * temp.z;
+    result->w = startMul * start->w + endMul * temp.w;
 }
 
-void func_80009060(Quaternion *a, Quaternion *b)
+void g_math_unk10(Quaternion *a, Quaternion *b)
 {
     mathutil_mtxA_tf_vec((Vec *)a, (Vec *)b);
     b->w = a->w;
 }
 
-void func_800090A8(Quaternion *a, Quaternion *b)
+void g_math_unk11(Quaternion *a, Quaternion *b)
 {
     mathutil_mtxA_rigid_inv_tf_vec((Vec *)a, (Vec *)b);
     b->w = a->w;
@@ -2257,7 +2284,7 @@ void func_800090A8(Quaternion *a, Quaternion *b)
 
 #pragma force_active off
 
-static inline float test(register float a, register float b)
+static inline float sum_of_squares(register float a, register float b)
 {
     asm
     {
@@ -2272,40 +2299,42 @@ static int is_large_enough(float n)  // inlined
     return __fabs(n) > 1.1920928955078125e-7;
 }
 
-void unkFunc800090F0(s16 *a, s16 *b, s16 *c)
+// Should the angles be called `yaw`, `pitch`, and `roll`? Not sure if they
+// directly correspond
+void mathutil_mtxA_to_euler_yxz(s16 *rotY, s16 *rotX, s16 *rotZ)
 {
-    Vec sp20;
-    Vec sp14;
+    Vec forward;
+    Vec up;
 
     mathutil_mtxA_push();
-    sp20.x = 0.0f;
-    sp20.y = 0.0f;
-    sp20.z = -1.0f;
-    sp14.x = 0.0f;
-    sp14.y = 1.0f;
-    sp14.z = 0.0f;
-    mathutil_mtxA_tf_vec(&sp20, &sp20);
-    mathutil_mtxA_tf_vec(&sp14, &sp14);
+    forward.x = 0.0f;
+    forward.y = 0.0f;
+    forward.z = -1.0f;
+    up.x = 0.0f;
+    up.y = 1.0f;
+    up.z = 0.0f;
+    mathutil_mtxA_tf_vec(&forward, &forward);
+    mathutil_mtxA_tf_vec(&up, &up);
 #ifdef NONMATCHING
-    *b = mathutil_atan2(sp20.y, mathutil_sqrt(sp20.x * sp20.x + sp20.z * sp20.z));
+    *rotX = mathutil_atan2(forward.y, mathutil_sqrt(forward.x * forward.x + forward.z * forward.z));
 #else
-    *b = mathutil_atan2(sp20.y, mathutil_sqrt(test(sp20.x, sp20.z)));
+    *rotX = mathutil_atan2(forward.y, mathutil_sqrt(sum_of_squares(forward.x, forward.z)));
 #endif
-    *a = mathutil_atan2(sp20.x, sp20.z) - 0x8000;
-    mathutil_mtxA_from_rotate_y(*a);
-    mathutil_mtxA_rotate_x(*b);
-    mathutil_mtxA_rigid_inv_tf_vec(&sp14, &sp14);
-    *c = -mathutil_atan2(sp14.x, sp14.y);
+    *rotY = mathutil_atan2(forward.x, forward.z) - 0x8000;
+    mathutil_mtxA_from_rotate_y(*rotY);
+    mathutil_mtxA_rotate_x(*rotX);
+    mathutil_mtxA_rigid_inv_tf_vec(&up, &up);
+    *rotZ = -mathutil_atan2(up.x, up.y);
     mathutil_mtxA_pop();
 }
 
-void unkFunc800091DC(s16 *a)
+void mathutil_mtxA_to_euler(S16Vec *rot)
 {
-    unkFunc800090F0(&a[1], &a[0], &a[2]);
+    mathutil_mtxA_to_euler_yxz(&rot->y, &rot->x, &rot->z);
 }
 
 #pragma force_active on
-void func_80009208(s16 *a, s16 *b, s16 *c)
+void g_math_unk14(s16 *a, s16 *b, s16 *c)
 {
     Vec sp20;
     Vec sp14;
@@ -2323,7 +2352,7 @@ void func_80009208(s16 *a, s16 *b, s16 *c)
 #ifdef NONMATCHING
     *b = -mathutil_atan2(sp20.z, mathutil_sqrt(sp20.y * sp20.y + sp20.x * sp20.x));
 #else
-    *b = -mathutil_atan2(sp20.z, mathutil_sqrt(test(sp20.y, sp20.x)));
+    *b = -mathutil_atan2(sp20.z, mathutil_sqrt(sum_of_squares(sp20.y, sp20.x)));
 #endif
     mathutil_mtxA_from_rotate_z(*a);
     mathutil_mtxA_rotate_y(*b);
@@ -2333,7 +2362,7 @@ void func_80009208(s16 *a, s16 *b, s16 *c)
 }
 #pragma force_active off
 
-void unkFunc800092EC(Vec *a, Vec *b, float c)
+void g_math_unk15(Vec *a, Vec *b, float c)
 {
     mathutil_mtxA_tf_point(a, b);
     if (is_large_enough(b->z))
@@ -2349,7 +2378,7 @@ void unkFunc800092EC(Vec *a, Vec *b, float c)
     }
 }
 
-void unkFunc80009380(Vec *a, Vec *b, float c)
+void g_math_unk16(Vec *a, Vec *b, float c)
 {
     mathutil_mtxA_tf_point(a, b);
     if (is_large_enough(b->z))
@@ -2365,142 +2394,47 @@ void unkFunc80009380(Vec *a, Vec *b, float c)
     }
 }
 
-void mathutil_scale_ray(Vec *a, Vec *b, Vec *c, float scale)
+void mathutil_scale_ray(Vec *rayStart, Vec *rayEnd, Vec *outRayEnd, float scale)
 {
-    c->x = (b->x - a->x) * scale + a->x;
-    c->y = (b->y - a->y) * scale + a->y;
-    c->z = (b->z - a->z) * scale + a->z;
+    outRayEnd->x = (rayEnd->x - rayStart->x) * scale + rayStart->x;
+    outRayEnd->y = (rayEnd->y - rayStart->y) * scale + rayStart->y;
+    outRayEnd->z = (rayEnd->z - rayStart->z) * scale + rayStart->z;
 }
 
-const u16 crcTable[] = {
-    0x0000, 0x1021,
-    0x2042, 0x3063,
-    0x4084, 0x50A5,
-    0x60C6, 0x70E7,
-    0x8108, 0x9129,
-    0xA14A, 0xB16B,
-    0xC18C, 0xD1AD,
-    0xE1CE, 0xF1EF,
-    0x1231, 0x0210,
-    0x3273, 0x2252,
-    0x52B5, 0x4294,
-    0x72F7, 0x62D6,
-    0x9339, 0x8318,
-    0xB37B, 0xA35A,
-    0xD3BD, 0xC39C,
-    0xF3FF, 0xE3DE,
-    0x2462, 0x3443,
-    0x0420, 0x1401,
-    0x64E6, 0x74C7,
-    0x44A4, 0x5485,
-    0xA56A, 0xB54B,
-    0x8528, 0x9509,
-    0xE5EE, 0xF5CF,
-    0xC5AC, 0xD58D,
-    0x3653, 0x2672,
-    0x1611, 0x0630,
-    0x76D7, 0x66F6,
-    0x5695, 0x46B4,
-    0xB75B, 0xA77A,
-    0x9719, 0x8738,
-    0xF7DF, 0xE7FE,
-    0xD79D, 0xC7BC,
-    0x48C4, 0x58E5,
-    0x6886, 0x78A7,
-    0x0840, 0x1861,
-    0x2802, 0x3823,
-    0xC9CC, 0xD9ED,
-    0xE98E, 0xF9AF,
-    0x8948, 0x9969,
-    0xA90A, 0xB92B,
-    0x5AF5, 0x4AD4,
-    0x7AB7, 0x6A96,
-    0x1A71, 0x0A50,
-    0x3A33, 0x2A12,
-    0xDBFD, 0xCBDC,
-    0xFBBF, 0xEB9E,
-    0x9B79, 0x8B58,
-    0xBB3B, 0xAB1A,
-    0x6CA6, 0x7C87,
-    0x4CE4, 0x5CC5,
-    0x2C22, 0x3C03,
-    0x0C60, 0x1C41,
-    0xEDAE, 0xFD8F,
-    0xCDEC, 0xDDCD,
-    0xAD2A, 0xBD0B,
-    0x8D68, 0x9D49,
-    0x7E97, 0x6EB6,
-    0x5ED5, 0x4EF4,
-    0x3E13, 0x2E32,
-    0x1E51, 0x0E70,
-    0xFF9F, 0xEFBE,
-    0xDFDD, 0xCFFC,
-    0xBF1B, 0xAF3A,
-    0x9F59, 0x8F78,
-    0x9188, 0x81A9,
-    0xB1CA, 0xA1EB,
-    0xD10C, 0xC12D,
-    0xF14E, 0xE16F,
-    0x1080, 0x00A1,
-    0x30C2, 0x20E3,
-    0x5004, 0x4025,
-    0x7046, 0x6067,
-    0x83B9, 0x9398,
-    0xA3FB, 0xB3DA,
-    0xC33D, 0xD31C,
-    0xE37F, 0xF35E,
-    0x02B1, 0x1290,
-    0x22F3, 0x32D2,
-    0x4235, 0x5214,
-    0x6277, 0x7256,
-    0xB5EA, 0xA5CB,
-    0x95A8, 0x8589,
-    0xF56E, 0xE54F,
-    0xD52C, 0xC50D,
-    0x34E2, 0x24C3,
-    0x14A0, 0x0481,
-    0x7466, 0x6447,
-    0x5424, 0x4405,
-    0xA7DB, 0xB7FA,
-    0x8799, 0x97B8,
-    0xE75F, 0xF77E,
-    0xC71D, 0xD73C,
-    0x26D3, 0x36F2,
-    0x0691, 0x16B0,
-    0x6657, 0x7676,
-    0x4615, 0x5634,
-    0xD94C, 0xC96D,
-    0xF90E, 0xE92F,
-    0x99C8, 0x89E9,
-    0xB98A, 0xA9AB,
-    0x5844, 0x4865,
-    0x7806, 0x6827,
-    0x18C0, 0x08E1,
-    0x3882, 0x28A3,
-    0xCB7D, 0xDB5C,
-    0xEB3F, 0xFB1E,
-    0x8BF9, 0x9BD8,
-    0xABBB, 0xBB9A,
-    0x4A75, 0x5A54,
-    0x6A37, 0x7A16,
-    0x0AF1, 0x1AD0,
-    0x2AB3, 0x3A92,
-    0xFD2E, 0xED0F,
-    0xDD6C, 0xCD4D,
-    0xBDAA, 0xAD8B,
-    0x9DE8, 0x8DC9,
-    0x7C26, 0x6C07,
-    0x5C64, 0x4C45,
-    0x3CA2, 0x2C83,
-    0x1CE0, 0x0CC1,
-    0xEF1F, 0xFF3E,
-    0xCF5D, 0xDF7C,
-    0xAF9B, 0xBFBA,
-    0x8FD9, 0x9FF8,
-    0x6E17, 0x7E36,
-    0x4E55, 0x5E74,
-    0x2E93, 0x3EB2,
-    0x0ED1, 0x1EF0,
+const u16 crcTable[] =
+{
+    0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7,
+    0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF,
+    0x1231, 0x0210, 0x3273, 0x2252, 0x52B5, 0x4294, 0x72F7, 0x62D6,
+    0x9339, 0x8318, 0xB37B, 0xA35A, 0xD3BD, 0xC39C, 0xF3FF, 0xE3DE,
+    0x2462, 0x3443, 0x0420, 0x1401, 0x64E6, 0x74C7, 0x44A4, 0x5485,
+    0xA56A, 0xB54B, 0x8528, 0x9509, 0xE5EE, 0xF5CF, 0xC5AC, 0xD58D,
+    0x3653, 0x2672, 0x1611, 0x0630, 0x76D7, 0x66F6, 0x5695, 0x46B4,
+    0xB75B, 0xA77A, 0x9719, 0x8738, 0xF7DF, 0xE7FE, 0xD79D, 0xC7BC,
+    0x48C4, 0x58E5, 0x6886, 0x78A7, 0x0840, 0x1861, 0x2802, 0x3823,
+    0xC9CC, 0xD9ED, 0xE98E, 0xF9AF, 0x8948, 0x9969, 0xA90A, 0xB92B,
+    0x5AF5, 0x4AD4, 0x7AB7, 0x6A96, 0x1A71, 0x0A50, 0x3A33, 0x2A12,
+    0xDBFD, 0xCBDC, 0xFBBF, 0xEB9E, 0x9B79, 0x8B58, 0xBB3B, 0xAB1A,
+    0x6CA6, 0x7C87, 0x4CE4, 0x5CC5, 0x2C22, 0x3C03, 0x0C60, 0x1C41,
+    0xEDAE, 0xFD8F, 0xCDEC, 0xDDCD, 0xAD2A, 0xBD0B, 0x8D68, 0x9D49,
+    0x7E97, 0x6EB6, 0x5ED5, 0x4EF4, 0x3E13, 0x2E32, 0x1E51, 0x0E70,
+    0xFF9F, 0xEFBE, 0xDFDD, 0xCFFC, 0xBF1B, 0xAF3A, 0x9F59, 0x8F78,
+    0x9188, 0x81A9, 0xB1CA, 0xA1EB, 0xD10C, 0xC12D, 0xF14E, 0xE16F,
+    0x1080, 0x00A1, 0x30C2, 0x20E3, 0x5004, 0x4025, 0x7046, 0x6067,
+    0x83B9, 0x9398, 0xA3FB, 0xB3DA, 0xC33D, 0xD31C, 0xE37F, 0xF35E,
+    0x02B1, 0x1290, 0x22F3, 0x32D2, 0x4235, 0x5214, 0x6277, 0x7256,
+    0xB5EA, 0xA5CB, 0x95A8, 0x8589, 0xF56E, 0xE54F, 0xD52C, 0xC50D,
+    0x34E2, 0x24C3, 0x14A0, 0x0481, 0x7466, 0x6447, 0x5424, 0x4405,
+    0xA7DB, 0xB7FA, 0x8799, 0x97B8, 0xE75F, 0xF77E, 0xC71D, 0xD73C,
+    0x26D3, 0x36F2, 0x0691, 0x16B0, 0x6657, 0x7676, 0x4615, 0x5634,
+    0xD94C, 0xC96D, 0xF90E, 0xE92F, 0x99C8, 0x89E9, 0xB98A, 0xA9AB,
+    0x5844, 0x4865, 0x7806, 0x6827, 0x18C0, 0x08E1, 0x3882, 0x28A3,
+    0xCB7D, 0xDB5C, 0xEB3F, 0xFB1E, 0x8BF9, 0x9BD8, 0xABBB, 0xBB9A,
+    0x4A75, 0x5A54, 0x6A37, 0x7A16, 0x0AF1, 0x1AD0, 0x2AB3, 0x3A92,
+    0xFD2E, 0xED0F, 0xDD6C, 0xCD4D, 0xBDAA, 0xAD8B, 0x9DE8, 0x8DC9,
+    0x7C26, 0x6C07, 0x5C64, 0x4C45, 0x3CA2, 0x2C83, 0x1CE0, 0x0CC1,
+    0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8,
+    0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0,
 
     0, 0  // TODO: align .rodata sections and remove
 };

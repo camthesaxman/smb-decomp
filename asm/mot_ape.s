@@ -101,7 +101,7 @@ lbl_80089C0C:
 /* 80089C0C 00085B2C  38 7D 02 08 */	addi r3, r29, 0x208
 /* 80089C10 00085B30  4B F7 DC A1 */	bl mathutil_mtxA_from_mtx
 /* 80089C14 00085B34  38 7D 01 B0 */	addi r3, r29, 0x1b0
-/* 80089C18 00085B38  4B F7 EC 59 */	bl unkFunc80008870
+/* 80089C18 00085B38  4B F7 EC 59 */	bl mathutil_mtxA_to_quat
 /* 80089C1C 00085B3C  80 7D 01 A0 */	lwz r3, 0x1a0(r29)
 /* 80089C20 00085B40  3C 03 00 01 */	addis r0, r3, 1
 /* 80089C24 00085B44  28 00 FF FF */	cmplwi r0, 0xffff
@@ -494,14 +494,14 @@ lbl_8008A160:
 /* 8008A160 00086080  38 7D 02 08 */	addi r3, r29, 0x208
 /* 8008A164 00086084  4B F7 D7 4D */	bl mathutil_mtxA_from_mtx
 /* 8008A168 00086088  38 61 00 10 */	addi r3, r1, 0x10
-/* 8008A16C 0008608C  4B F7 E7 05 */	bl unkFunc80008870
+/* 8008A16C 0008608C  4B F7 E7 05 */	bl mathutil_mtxA_to_quat
 /* 8008A170 00086090  FC 20 F8 90 */	fmr f1, f31
 /* 8008A174 00086094  38 61 00 10 */	addi r3, r1, 0x10
 /* 8008A178 00086098  38 A3 00 00 */	addi r5, r3, 0
 /* 8008A17C 0008609C  38 9D 01 B0 */	addi r4, r29, 0x1b0
 /* 8008A180 000860A0  4B F7 ED 65 */	bl mathutil_quat_slerp
 /* 8008A184 000860A4  38 61 00 10 */	addi r3, r1, 0x10
-/* 8008A188 000860A8  4B F7 EB 0D */	bl mathutil_normalize_quat
+/* 8008A188 000860A8  4B F7 EB 0D */	bl mathutil_quat_normalize
 /* 8008A18C 000860AC  80 7D 01 A0 */	lwz r3, 0x1a0(r29)
 /* 8008A190 000860B0  3C 03 00 01 */	addis r0, r3, 1
 /* 8008A194 000860B4  28 00 FF FF */	cmplwi r0, 0xffff
@@ -678,18 +678,18 @@ lbl_8008A3E8:
 /* 8008A3E8 00086308  38 7D 02 08 */	addi r3, r29, 0x208
 /* 8008A3EC 0008630C  4B F7 D4 C5 */	bl mathutil_mtxA_from_mtx
 /* 8008A3F0 00086310  38 7D 01 B0 */	addi r3, r29, 0x1b0
-/* 8008A3F4 00086314  4B F7 E4 7D */	bl unkFunc80008870
+/* 8008A3F4 00086314  4B F7 E4 7D */	bl mathutil_mtxA_to_quat
 /* 8008A3F8 00086318  38 7C 02 08 */	addi r3, r28, 0x208
 /* 8008A3FC 0008631C  4B F7 D4 B5 */	bl mathutil_mtxA_from_mtx
 /* 8008A400 00086320  38 61 00 20 */	addi r3, r1, 0x20
-/* 8008A404 00086324  4B F7 E4 6D */	bl unkFunc80008870
+/* 8008A404 00086324  4B F7 E4 6D */	bl mathutil_mtxA_to_quat
 /* 8008A408 00086328  FC 20 F8 90 */	fmr f1, f31
 /* 8008A40C 0008632C  38 61 00 20 */	addi r3, r1, 0x20
 /* 8008A410 00086330  38 A3 00 00 */	addi r5, r3, 0
 /* 8008A414 00086334  38 9D 01 B0 */	addi r4, r29, 0x1b0
 /* 8008A418 00086338  4B F7 EA CD */	bl mathutil_quat_slerp
 /* 8008A41C 0008633C  38 61 00 20 */	addi r3, r1, 0x20
-/* 8008A420 00086340  4B F7 E8 75 */	bl mathutil_normalize_quat
+/* 8008A420 00086340  4B F7 E8 75 */	bl mathutil_quat_normalize
 /* 8008A424 00086344  80 7C 01 A0 */	lwz r3, 0x1a0(r28)
 /* 8008A428 00086348  3C 03 00 01 */	addis r0, r3, 1
 /* 8008A42C 0008634C  28 00 FF FF */	cmplwi r0, 0xffff
@@ -2900,7 +2900,7 @@ lbl_8008C2F8:
 /* 8008C364 00088284  FC 00 00 1E */	fctiwz f0, f0
 /* 8008C368 00088288  D8 01 00 38 */	stfd f0, 0x38(r1)
 /* 8008C36C 0008828C  80 A1 00 3C */	lwz r5, 0x3c(r1)
-/* 8008C370 00088290  4B F7 C6 E1 */	bl mathutil_quat_axis_angle
+/* 8008C370 00088290  4B F7 C6 E1 */	bl mathutil_quat_from_axis_angle
 /* 8008C374 00088294  38 7C 00 00 */	addi r3, r28, 0
 /* 8008C378 00088298  38 BC 00 00 */	addi r5, r28, 0
 /* 8008C37C 0008829C  38 81 00 10 */	addi r4, r1, 0x10
@@ -2926,7 +2926,7 @@ lbl_8008C384:
 /* 8008C3C8 000882E8  38 A1 00 2C */	addi r5, r1, 0x2c
 /* 8008C3CC 000882EC  D0 01 00 24 */	stfs f0, 0x24(r1)
 /* 8008C3D0 000882F0  D0 01 00 28 */	stfs f0, 0x28(r1)
-/* 8008C3D4 000882F4  4B F7 C9 5D */	bl unkFunc80008D30
+/* 8008C3D4 000882F4  4B F7 C9 5D */	bl mathutil_quat_from_dirs
 /* 8008C3D8 000882F8  38 61 00 10 */	addi r3, r1, 0x10
 /* 8008C3DC 000882FC  4B F7 BE 81 */	bl mathutil_mtxA_from_quat
 /* 8008C3E0 00088300  38 7E 02 08 */	addi r3, r30, 0x208
@@ -2975,7 +2975,7 @@ func_8008C408:
 /* 8008C47C 0008839C  C0 02 AE AC */	lfs f0, lbl_802F56AC-_SDA2_BASE_(r2)
 /* 8008C480 000883A0  D0 1F 00 A4 */	stfs f0, 0xa4(r31)
 /* 8008C484 000883A4  D0 1F 00 A8 */	stfs f0, 0xa8(r31)
-/* 8008C488 000883A8  4B F7 C3 E9 */	bl unkFunc80008870
+/* 8008C488 000883A8  4B F7 C3 E9 */	bl mathutil_mtxA_to_quat
 /* 8008C48C 000883AC  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 8008C490 000883B0  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 8008C494 000883B4  38 21 00 28 */	addi r1, r1, 0x28

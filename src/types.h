@@ -35,25 +35,6 @@ struct PerfInfo
     u32 unk34;
 };
 
-struct MathutilData
-{
-    /*0x00*/ Mtx mtxA;
-    /*0x30*/ Mtx mtxB;
-    u8 filler60[0x90-0x60];
-    /*0x90*/ Mtx *mtxStack;
-    /*0x94*/ Mtx *mtxStackPtr;
-    u8 filler98[0x198-0x98];
-    /*0x198*/ float constZero;
-    /*0x19C*/ float constOne;
-    /*0x1A0*/ float constOneHalf;
-    /*0x1A4*/ float constThreeHalves;
-    s32 unk1A8;
-    u8 unk1AC;
-    u8 unk1AD;
-    u8 unk1AE;
-    u8 unk1AF;
-};
-
 struct ZMode
 {
     GXBool compareEnable;

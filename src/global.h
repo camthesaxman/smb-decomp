@@ -7,19 +7,6 @@
 // stripped by the linker.
 #define FORCE_BSS_ORDER(var) void *force_##var(){return &var;}
 
-// paired-single registers
-#define qr0 0
-#define qr1 1
-#define qr2 2
-#define qr3 3
-
-// GQR registers used for conversion
-#define GQR_F32 0
-#define GQR_U8  2
-#define GQR_U16 3
-#define GQR_S8  4
-#define GQR_S16 5
-
 #include "types.h"
 #include "functions.h"
 #include "variables.h"

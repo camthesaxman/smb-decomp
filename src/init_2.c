@@ -1,8 +1,8 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "mathutil.h"
 
-// probably belongs in mathutil.c
 void init_cache_ptrs(void)
 {
     mathutilData->constZero = 0.0f;
