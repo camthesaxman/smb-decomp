@@ -35,24 +35,6 @@ struct PerfInfo
     u32 unk34;
 };
 
-struct Struct802F1B60
-{
-    Mtx unk0;
-    u8 filler30[0x90-0x30];
-    u8 *unk90;
-    u8 *unk94;
-    u8 filler98[0x198-0x98];
-    float unk198;
-    float unk19C;
-    float unk1A0;
-    float unk1A4;
-    s32 unk1A8;
-    u8 unk1AC;
-    u8 unk1AD;
-    u8 unk1AE;
-    u8 unk1AF;
-};
-
 struct ZMode
 {
     GXBool compareEnable;

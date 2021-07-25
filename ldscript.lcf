@@ -21,6 +21,8 @@ FORCEACTIVE {
     func_8008D888 func_8008D8D0 load_model
     free_model
     func_8008E5F8 func_8008E64C func_8008E698
+    
+    mathutil_alignment
 }
 
 FORCEFILES { game.o }

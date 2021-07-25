@@ -831,8 +831,8 @@ bmpdisp_main:
 /* 8002657C 0002249C  93 E1 00 74 */	stw r31, 0x74(r1)
 /* 80026580 000224A0  93 C1 00 70 */	stw r30, 0x70(r1)
 /* 80026584 000224A4  4B FF FE 21 */	bl func_800263A4
-/* 80026588 000224A8  4B FE 0F DD */	bl mathutil_set_a_mtx_identity
-/* 8002658C 000224AC  80 6D 99 80 */	lwz r3, lbl_802F1B60-_SDA_BASE_(r13)
+/* 80026588 000224A8  4B FE 0F DD */	bl mathutil_mtxA_from_identity
+/* 8002658C 000224AC  80 6D 99 80 */	lwz r3, mathutilData-_SDA_BASE_(r13)
 /* 80026590 000224B0  38 80 00 00 */	li r4, 0
 /* 80026594 000224B4  48 0B DF ED */	bl GXLoadPosMtxImm
 /* 80026598 000224B8  C0 22 88 F0 */	lfs f1, lbl_802F30F0-_SDA2_BASE_(r2)
@@ -1146,16 +1146,16 @@ lbl_800269D8:
 /* 800269E4 00022904  D0 21 00 30 */	stfs f1, 0x30(r1)
 /* 800269E8 00022908  A8 1E 00 12 */	lha r0, 0x12(r30)
 /* 800269EC 0002290C  7C 60 00 D0 */	neg r3, r0
-/* 800269F0 00022910  4B FE 0C AD */	bl mathutil_set_a_mtx_rotate_z
+/* 800269F0 00022910  4B FE 0C AD */	bl mathutil_mtxA_from_rotate_z
 /* 800269F4 00022914  38 61 00 44 */	addi r3, r1, 0x44
 /* 800269F8 00022918  38 83 00 00 */	addi r4, r3, 0
-/* 800269FC 0002291C  4B FE 14 41 */	bl mathutil_tf_vec_by_a_mtx_v
+/* 800269FC 0002291C  4B FE 14 41 */	bl mathutil_mtxA_tf_vec
 /* 80026A00 00022920  38 61 00 38 */	addi r3, r1, 0x38
 /* 80026A04 00022924  38 83 00 00 */	addi r4, r3, 0
-/* 80026A08 00022928  4B FE 14 35 */	bl mathutil_tf_vec_by_a_mtx_v
+/* 80026A08 00022928  4B FE 14 35 */	bl mathutil_mtxA_tf_vec
 /* 80026A0C 0002292C  38 61 00 2C */	addi r3, r1, 0x2c
 /* 80026A10 00022930  38 83 00 00 */	addi r4, r3, 0
-/* 80026A14 00022934  4B FE 14 29 */	bl mathutil_tf_vec_by_a_mtx_v
+/* 80026A14 00022934  4B FE 14 29 */	bl mathutil_mtxA_tf_vec
 /* 80026A18 00022938  A8 BE 00 10 */	lha r5, 0x10(r30)
 /* 80026A1C 0002293C  38 80 00 00 */	li r4, 0
 /* 80026A20 00022940  54 A0 C6 3E */	rlwinm r0, r5, 0x18, 0x18, 0x1f
@@ -2249,8 +2249,8 @@ lbl_802F1B54:
 .global lbl_802F1B58
 lbl_802F1B58:
 	.skip 0x8
-.global lbl_802F1B60
-lbl_802F1B60:
+.global mathutilData
+mathutilData:
 	.skip 0x8
 .global lbl_802F1B68
 lbl_802F1B68:

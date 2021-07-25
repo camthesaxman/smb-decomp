@@ -222,10 +222,10 @@ u32 lbl_802F1BB8;
 
 void func_8000B918(void)
 {
-    mathutil_set_a_mtx_b_mtx();
-    mathutil_tf_point_by_a_mtx_trans_v(lbl_801EED04);
-    mathutil_mult_a_mtx_by_rotate_x(lbl_801EED04[6]);
-    mathutil_mult_a_mtx_by_rotate_z(lbl_801EED04[7]);
+    mathutil_mtxA_from_mtxB();
+    mathutil_mtxA_translate(lbl_801EED04);
+    mathutil_mtxA_rotate_x(lbl_801EED04[6]);
+    mathutil_mtxA_rotate_z(lbl_801EED04[7]);
     func_80033AD4(lbl_802F1BB8);
 }
 */
