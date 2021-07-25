@@ -31,9 +31,11 @@ FORCEACTIVE {
     func_80008458
     mathutil_vec_set_len
     mathutil_mtx_from_identity
+    
+    mathutil_alignment
 }
 
-FORCEFILES { game.o mathutil_1.o }
+FORCEFILES { game.o }
 
 /* mathutil.s */
 lbl_802F2840 = 0x802F2840;
@@ -42,3 +44,6 @@ lbl_802F284C = 0x802F284C;
 lbl_802F2850 = 0x802F2850;
 lbl_802F286C = 0x802F286C;
 lbl_802F2888 = 0x802F2888;
+lbl_802F2890 = 0x802F2890;
+lbl_802F2898 = 0x802F2898;
+lbl_802F28A4 = 0x802F28A4;

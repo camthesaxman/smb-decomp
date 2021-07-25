@@ -58,7 +58,7 @@ void mathutil_mtxA_scale(Vec *vec);
 void mathutil_mtxA_scale_s(float scale);
 void mathutil_mtxA_scale_xyz(float x, float y, float z);
 void mathutil_mtxA_tf_point(Vec *src, Vec *dest);
-void mathutil_mtxA_tf_vec(Vec *vec);
+void mathutil_mtxA_tf_vec(Vec *src, Vec *dest);
 void mathutil_mtxA_tf_point_xyz(Vec *vec);
 void mathutil_mtxA_tf_vec_xyz(Vec *vec);
 void mathutil_mtxA_rigid_inv_tf_point(Vec *vec);

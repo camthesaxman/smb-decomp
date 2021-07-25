@@ -33,8 +33,6 @@ SOURCE_FILES := \
 	src/main.c \
 	src/init.c \
 	src/init_2.c \
-	src/mathutil_1.c \
-	asm/mathutil.s \
 	src/mathutil.c \
 	src/game.c \
 	asm/game.s \
