@@ -12,13 +12,18 @@ LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
 OBJCOPY := $(DEVKITPPC)/bin/powerpc-eabi-objcopy
 OBJDUMP := $(DEVKITPPC)/bin/powerpc-eabi-objdump
 HOSTCC  := cc
+HOSTCPP := cpp
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
 
-ASFLAGS  := -mgekko -I asm
-CFLAGS   := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -enum int
-CPPFLAGS := -i src -I- -i include
-LDFLAGS  := -fp hard -nodefaults
+INCLUDE_DIRS := src
+SYSTEM_INCLUDE_DIRS := include
+
+ASFLAGS      := -mgekko -I asm
+CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -enum int
+CPPFLAGS     := $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+HOSTCPPFLAGS := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS))
+LDFLAGS      := -fp hard -nodefaults
 
 ### Files ###
 BASEROM  := baserom.bin
@@ -224,6 +229,7 @@ SOURCE_FILES := \
 	asm/lib/amcnotstub/amcnotstub.s \
 	asm/lib/data.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
+DEP_FILES := $(addsuffix .dep,$(basename $(SOURCE_FILES)))
 
 #-------------------------------------------------------------------------------
 # Recipes
@@ -245,12 +251,12 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 %.o: %.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
-src/mathutil.o: CFLAGS += -inline auto -fp_contract off
-src/avdisp.o: CFLAGS += -inline auto
-src/DEMOPuts.o: CFLAGS += -inline auto
-
 %.o: %.c
+# Generate dependencies
+	$(HOSTCPP) $(HOSTCPPFLAGS) -M -MF $(@:.o=.dep) -MT $@ $<
+# Compile
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+# Disassemble file
 	@ $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:
@@ -259,3 +265,11 @@ clean:
 
 tools:
 	$(MAKE) -C tools
+
+# File-specific compiler flags
+src/mathutil.o: CFLAGS += -inline auto -fp_contract off
+src/avdisp.o:   CFLAGS += -inline auto
+src/DEMOPuts.o: CFLAGS += -inline auto
+
+# Automatic dependency files
+-include $(DEP_FILES)
