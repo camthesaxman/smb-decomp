@@ -652,7 +652,6 @@ lbl_80008CEC:
 /* 80008D24 00004C44  38 21 00 18 */	addi r1, r1, 0x18
 /* 80008D28 00004C48  7C 08 03 A6 */	mtlr r0
 /* 80008D2C 00004C4C  4E 80 00 20 */	blr
-.endif
 
 .global unkFunc80008D30
 unkFunc80008D30:
@@ -667,14 +666,14 @@ unkFunc80008D30:
 /* 80008D50 00004C70  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 80008D54 00004C74  7C 7E 1B 78 */	mr r30, r3
 /* 80008D58 00004C78  7C 9F 23 78 */	mr r31, r4
-/* 80008D5C 00004C7C  C0 9F 00 00 */	lfs f4, 0(r31)
-/* 80008D60 00004C80  C1 25 00 00 */	lfs f9, 0(r5)
-/* 80008D64 00004C84  C0 BF 00 04 */	lfs f5, 4(r31)
-/* 80008D68 00004C88  C0 C5 00 04 */	lfs f6, 4(r5)
+/* 80008D5C 00004C7C  C0 9F 00 00 */	lfs f4, 0(r31)  ;# b->x
+/* 80008D60 00004C80  C1 25 00 00 */	lfs f9, 0(r5)   ;# c->x
+/* 80008D64 00004C84  C0 BF 00 04 */	lfs f5, 4(r31)  ;# b->y
+/* 80008D68 00004C88  C0 C5 00 04 */	lfs f6, 4(r5)   ;# c->y
 /* 80008D6C 00004C8C  EC 44 02 72 */	fmuls f2, f4, f9
-/* 80008D70 00004C90  C0 FF 00 08 */	lfs f7, 8(r31)
+/* 80008D70 00004C90  C0 FF 00 08 */	lfs f7, 8(r31)  ;# b->z
 /* 80008D74 00004C94  EC 25 01 B2 */	fmuls f1, f5, f6
-/* 80008D78 00004C98  C1 05 00 08 */	lfs f8, 8(r5)
+/* 80008D78 00004C98  C1 05 00 08 */	lfs f8, 8(r5)  ;# c->z
 /* 80008D7C 00004C9C  C0 02 80 80 */	lfs f0, lbl_802F2880-_SDA2_BASE_(r2)
 /* 80008D80 00004CA0  EC 67 02 32 */	fmuls f3, f7, f8
 /* 80008D84 00004CA4  EC 22 08 2A */	fadds f1, f2, f1
@@ -723,19 +722,19 @@ lbl_80008DF4:
 /* 80008E28 00004D48  D0 1E 00 0C */	stfs f0, 0xc(r30)
 /* 80008E2C 00004D4C  48 00 00 90 */	b lbl_80008EBC
 lbl_80008E30:
-/* 80008E30 00004D50  EC 65 02 32 */	fmuls f3, f5, f8
-/* 80008E34 00004D54  EC 47 01 B2 */	fmuls f2, f7, f6
-/* 80008E38 00004D58  EC 27 02 72 */	fmuls f1, f7, f9
-/* 80008E3C 00004D5C  EC 04 02 32 */	fmuls f0, f4, f8
+/* 80008E30 00004D50  EC 65 02 32 */	fmuls f3, f5, f8  ;# b->y * c->z
+/* 80008E34 00004D54  EC 47 01 B2 */	fmuls f2, f7, f6  ;# b->z * c->y
+/* 80008E38 00004D58  EC 27 02 72 */	fmuls f1, f7, f9  ;# b->z * c->x
+/* 80008E3C 00004D5C  EC 04 02 32 */	fmuls f0, f4, f8  ;# b->x * c->z
 /* 80008E40 00004D60  EF C3 10 28 */	fsubs f30, f3, f2
-/* 80008E44 00004D64  EC 64 01 B2 */	fmuls f3, f4, f6
+/* 80008E44 00004D64  EC 64 01 B2 */	fmuls f3, f4, f6  ;# b->x * c->y
 /* 80008E48 00004D68  EF A1 00 28 */	fsubs f29, f1, f0
-/* 80008E4C 00004D6C  EC 45 02 72 */	fmuls f2, f5, f9
-/* 80008E50 00004D70  EC 3E 07 B2 */	fmuls f1, f30, f30
-/* 80008E54 00004D74  EC 1D 07 72 */	fmuls f0, f29, f29
+/* 80008E4C 00004D6C  EC 45 02 72 */	fmuls f2, f5, f9  ;# b->y * c->x
+/* 80008E50 00004D70  EC 3E 07 B2 */	fmuls f1, f30, f30  ;# (b->y * c->z - b->z * c->y) ^ 2
+/* 80008E54 00004D74  EC 1D 07 72 */	fmuls f0, f29, f29  ;# (b->z * c->x - b->x * c->z) ^ 2
 /* 80008E58 00004D78  EF 83 10 28 */	fsubs f28, f3, f2
 /* 80008E5C 00004D7C  EC 01 00 2A */	fadds f0, f1, f0
-/* 80008E60 00004D80  EC 3C 07 32 */	fmuls f1, f28, f28
+/* 80008E60 00004D80  EC 3C 07 32 */	fmuls f1, f28, f28  ;# (b->x * c->y - b->y * c->x) ^ 2
 /* 80008E64 00004D84  EC 21 00 2A */	fadds f1, f1, f0
 /* 80008E68 00004D88  4B FF E2 D1 */	bl mathutil_rsqrt
 /* 80008E6C 00004D8C  C0 02 80 4C */	lfs f0, lbl_802F284C-_SDA2_BASE_(r2)
@@ -769,6 +768,7 @@ lbl_80008EBC:
 /* 80008ED8 00004DF8  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 80008EDC 00004DFC  38 21 00 40 */	addi r1, r1, 0x40
 /* 80008EE0 00004E00  4E 80 00 20 */	blr
+.endif
 
 .global mathutil_quat_slerp
 mathutil_quat_slerp:
@@ -1242,8 +1242,6 @@ lbl_802F2878:
 	.byte 0x40, 0x00, 0x00, 0x00  ;# 2.0
 	.4byte 0
 
-.endif
-
 .global lbl_802F2880
 lbl_802F2880:
 	# ROM: 0x1EC2A0
@@ -1257,8 +1255,9 @@ lbl_802F2884:
 .global lbl_802F2888
 lbl_802F2888:
 	# ROM: 0x1EC2A8
-	.byte 0x3E, 0xB0, 0xC6, 0xF7
+	.byte 0x3E, 0xB0, 0xC6, 0xF7  ;# 0.000001
 	.byte 0xA0, 0xB5, 0xED, 0x8D
+.endif
 
 .global lbl_802F2890
 lbl_802F2890:

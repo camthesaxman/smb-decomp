@@ -2188,3 +2188,62 @@ void mathutil_normalize_quat(Quaternion *a)
     a->z *= var1;
     a->w *= var1;
 }
+
+#pragma fp_contract off
+
+void unkFunc80008D30(Quaternion *a, Vec *b, Vec *c)
+{
+    float var1;
+    float x, y, z;
+    float var2 = (b->x * c->x) + (b->y * c->y) + (b->z * c->z);
+
+    if (var2 > 0.99998998642f)
+    {
+        a->x = a->y = a->z = 0.0f;
+        a->w = 1.0f;
+    }
+    else if (var2 < -0.99998998642f)  // dead code. var2 can't be negative
+    {
+        x = 0.0f;
+        y = b->x;
+        z = -b->y;
+
+        if (mathutil_sqrt(y * y + z * z) < 0.000001)
+        {
+            x = -b->z;
+            y = 0.0f;
+            z = b->x;
+        }
+
+        var1 = mathutil_rsqrt(x * x + y * y + z * z);
+        x *= var1;
+        y *= var1;
+        z *= var1;
+
+        a->x = x;
+        a->y = y;
+        a->z = z;
+        a->w = 0.0f;
+    }
+    else
+    {
+        x = (b->y * c->z - b->z * c->y);
+        y = (b->z * c->x - b->x * c->z);
+        z = (b->x * c->y - b->y * c->x);
+
+        var1 = mathutil_rsqrt(x * x + y * y + z * z);
+        x *= var1;
+        y *= var1;
+        z *= var1;
+
+        var1 = mathutil_sqrt(0.5f * (1.0f - var2));
+        x *= var1;
+        y *= var1;
+        z *= var1;
+
+        a->x = x;
+        a->y = y;
+        a->z = z;
+        a->w = mathutil_sqrt(0.5f * (1.0f + var2));
+    }
+}
