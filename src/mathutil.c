@@ -2069,14 +2069,36 @@ void mathutil_quat_axis_angle(Quaternion *a, Vec *b, s16 c)
     }
 }
 
-#pragma fp_contract on
+static inline float sq_mag2(Vec *v)
+{
+    register float result;
+    register float x = v->x;
+    register float y = v->y;
+    register float z = v->z;
+
+    asm
+    {
+        fmuls result, x, x
+        fmadds result, y, y, result
+        fmadds result, z, z, result
+    }
+    return result;
+}
+
+void func_00004A58(Quaternion *a, register Vec *b, register double c)
+{
+    register double var1;
 
 #ifdef NONMATCHING
-void func_00004A58(Quaternion *a, Vec *b, float c)
-{
-    float f29 = 0.5 * c;
+    var1 = c * 0.5;
+#else
+    {
+        register double oneHalf = 0.5;
+        asm { fmul var1, c, oneHalf }
+    }
+#endif
 
-    if (sq_mag(b) < 1.19209289551e-07f)
+    if (sq_mag2(b) < 1.19209289551e-07f)
     {
         a->x = 0.0f;
         a->y = 0.0f;
@@ -2085,84 +2107,13 @@ void func_00004A58(Quaternion *a, Vec *b, float c)
     }
     else
     {
-        float f31;
-        float f2;
-        float f30 = sq_mag(b);
-        f31 = sin(f29);
-        f2 = mathutil_rsqrt(f30) * f31;
-        a->x = b->x * f2;
-        a->y = b->y * f2;
-        a->z = b->z * f2;
-        a->w = cos(f29);
+        float _f2 = mathutil_rsqrt(sq_mag2(b)) * (float)sin(var1);
+        a->x = b->x * _f2;
+        a->y = b->y * _f2;
+        a->z = b->z * _f2;
+        a->w = cos(var1);
     }
 }
-#else
-asm void func_00004A58(Quaternion *a, Vec *b, float c)
-{
-    nofralloc
-/* 80008B38 00004A58  7C 08 02 A6 */	mflr r0
-/* 80008B3C 00004A5C  90 01 00 04 */	stw r0, 4(r1)
-/* 80008B40 00004A60  94 21 FF C8 */	stwu r1, -0x38(r1)
-/* 80008B44 00004A64  DB E1 00 30 */	stfd f31, 0x30(r1)
-/* 80008B48 00004A68  DB C1 00 28 */	stfd f30, 0x28(r1)
-/* 80008B4C 00004A6C  DB A1 00 20 */	stfd f29, 0x20(r1)
-/* 80008B50 00004A70  93 E1 00 1C */	stw r31, 0x1c(r1)
-/* 80008B54 00004A74  93 C1 00 18 */	stw r30, 0x18(r1)
-/* 80008B58 00004A78  7C 7E 1B 78 */	mr r30, r3
-/* 80008B5C 00004A7C  7C 9F 23 78 */	mr r31, r4
-/* 80008B60 00004A80  C8 02 80 70 */	lfd f0, 0.5
-/* 80008B64 00004A84  FF A1 00 32 */	fmul f29, f1, f0
-/* 80008B68 00004A88  C0 7F 00 00 */	lfs f3, 0(r31)
-/* 80008B6C 00004A8C  C0 5F 00 04 */	lfs f2, 4(r31)
-/* 80008B70 00004A90  C0 3F 00 08 */	lfs f1, 8(r31)
-/* 80008B74 00004A94  EC 83 00 F2 */	fmuls f4, f3, f3
-/* 80008B78 00004A98  EC 82 20 BA */	fmadds f4, f2, f2, f4
-/* 80008B7C 00004A9C  EC 81 20 7A */	fmadds f4, f1, f1, f4
-/* 80008B80 00004AA0  C0 02 80 50 */	lfs f0, 1.19209289551e-07f
-/* 80008B84 00004AA4  FC 04 00 40 */	fcmpo cr0, f4, f0
-/* 80008B88 00004AA8  40 80 00 20 */	bge lbl_80008BA8
-/* 80008B8C 00004AAC  C0 02 80 48 */	lfs f0, 0.0f
-/* 80008B90 00004AB0  D0 1E 00 00 */	stfs f0, 0(r30)
-/* 80008B94 00004AB4  D0 1E 00 04 */	stfs f0, 4(r30)
-/* 80008B98 00004AB8  D0 1E 00 08 */	stfs f0, 8(r30)
-/* 80008B9C 00004ABC  C0 02 80 4C */	lfs f0, 1.0f
-/* 80008BA0 00004AC0  D0 1E 00 0C */	stfs f0, 0xc(r30)
-/* 80008BA4 00004AC4  48 00 00 5C */	b lbl_80008C00
-lbl_80008BA8:
-/* 80008BA8 00004AC8  EF C3 00 F2 */	fmuls f30, f3, f3
-/* 80008BAC 00004ACC  EF C2 F0 BA */	fmadds f30, f2, f2, f30
-/* 80008BB0 00004AD0  EF C1 F0 7A */	fmadds f30, f1, f1, f30
-/* 80008BB4 00004AD4  FC 20 E8 90 */	fmr f1, f29
-/* 80008BB8 00004AD8  48 0F FD 31 */	bl sin
-/* 80008BBC 00004ADC  FF E0 08 18 */	frsp f31, f1
-/* 80008BC0 00004AE0  FC 20 F0 90 */	fmr f1, f30
-/* 80008BC4 00004AE4  4B FF E5 75 */	bl mathutil_rsqrt
-/* 80008BC8 00004AE8  EC 41 07 F2 */	fmuls f2, f1, f31
-/* 80008BCC 00004AEC  C0 1F 00 00 */	lfs f0, 0(r31)
-/* 80008BD0 00004AF0  FC 20 E8 90 */	fmr f1, f29
-/* 80008BD4 00004AF4  EC 00 00 B2 */	fmuls f0, f0, f2
-/* 80008BD8 00004AF8  D0 1E 00 00 */	stfs f0, 0(r30)
-/* 80008BDC 00004AFC  C0 1F 00 04 */	lfs f0, 4(r31)
-/* 80008BE0 00004B00  EC 00 00 B2 */	fmuls f0, f0, f2
-/* 80008BE4 00004B04  D0 1E 00 04 */	stfs f0, 4(r30)
-/* 80008BE8 00004B08  C0 1F 00 08 */	lfs f0, 8(r31)
-/* 80008BEC 00004B0C  EC 00 00 B2 */	fmuls f0, f0, f2
-/* 80008BF0 00004B10  D0 1E 00 08 */	stfs f0, 8(r30)
-/* 80008BF4 00004B14  48 0F F8 95 */	bl cos
-/* 80008BF8 00004B18  FC 00 08 18 */	frsp f0, f1
-/* 80008BFC 00004B1C  D0 1E 00 0C */	stfs f0, 0xc(r30)
-lbl_80008C00:
-/* 80008C00 00004B20  80 01 00 3C */	lwz r0, 0x3c(r1)
-/* 80008C04 00004B24  CB E1 00 30 */	lfd f31, 0x30(r1)
-/* 80008C08 00004B28  CB C1 00 28 */	lfd f30, 0x28(r1)
-/* 80008C0C 00004B2C  7C 08 03 A6 */	mtlr r0
-/* 80008C10 00004B30  CB A1 00 20 */	lfd f29, 0x20(r1)
-/* 80008C14 00004B34  83 E1 00 1C */	lwz r31, 0x1c(r1)
-/* 80008C18 00004B38  83 C1 00 18 */	lwz r30, 0x18(r1)
-/* 80008C1C 00004B3C  38 21 00 38 */	addi r1, r1, 0x38
-/* 80008C20 00004B40  4E 80 00 20 */	blr
-}
-#endif
 
 double mathutil_normalize_vec_clamp_length(Quaternion *a, Vec *b)
 {
