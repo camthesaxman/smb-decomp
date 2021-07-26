@@ -205,6 +205,7 @@ FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lzHeaderBuf)
 FORCE_BSS_ORDER(unknownTexImg)
 
+#ifdef __MWERKS__
 asm void func_8008D6BC(register u32 arg)
 {
     nofralloc
@@ -215,7 +216,15 @@ asm void func_8008D6BC(register u32 arg)
     stw arg, 0(r5)
     blr
 }
+#else
+void func_8008D6BC(u32 arg)
+{
+    GXWGFifo.u8 = GX_LOAD_BP_REG;
+    GXWGFifo.u32 = arg;
+}
+#endif
 
+#ifdef __MWERKS__
 asm void func_8008D6D4(register void *arg)
 {
     nofralloc
@@ -270,6 +279,12 @@ lbl_8008D724:
     stw r7, 0(r9)
     blr
 }
+#else
+void func_8008D6D4(register void *arg)
+{
+    // TODO
+}
+#endif
 
 void func_8008D788(void)
 {
@@ -589,7 +604,7 @@ GXTexObj *create_tpl_tex_objs(struct TPL *tpl)
             texHdrs[i].format & 0x1F,  // format
             GX_REPEAT,  // wrap_s
             GX_REPEAT,  // wrap_t
-            FALSE);  // mipmap
+            0);  // mipmap
         GXInitTexObjLOD(
             &texObjs[i],  // obj
             (maxLOD != 0) ? GX_LIN_MIP_LIN : GX_LIN_MIP_NEAR,  // min_filt
@@ -597,7 +612,7 @@ GXTexObj *create_tpl_tex_objs(struct TPL *tpl)
             0.0f,  // min_lod
             maxLOD,  // max_lod
             0.0f,  // lod_bias
-            FALSE,  // bias_clamp
+            GX_FALSE,  // bias_clamp
             TRUE,  // do_edge_lod
             GX_ANISO_1);  // max_aniso
     }
@@ -1395,6 +1410,7 @@ u32 draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh
     return (u32)dlist;
 }
 
+#ifdef __MWERKS__
 asm void func_8008FBB0(register u32 _flags, register void *_base, void *c, u32 d)
 {
     nofralloc
@@ -1450,6 +1466,12 @@ lbl_8008FC38:
     bgt next_strip
     blr
 }
+#else
+void func_8008FBB0(u32 _flags, void *_base, void *c, u32 d)
+{
+    // TODO
+}
+#endif
 
 struct UnkStruct29
 {

@@ -9,6 +9,7 @@ enum
 struct GMAModelHeader;
 struct GMAMeshHeader;
 struct GMAMaterial;
+struct TPL;
 struct UnkStruct17;
 struct UnkStruct30;
 struct UnkStruct31;

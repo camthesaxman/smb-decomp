@@ -42,6 +42,7 @@ float _rsqrt_return_special();
 
 #pragma force_active on
 
+#ifdef __MWERKS__
 asm void mathutil_init(void)
 {
     nofralloc
@@ -416,8 +417,7 @@ lbl_8000741C:
     mtcrf 0xff, r6
     blr
 }
-
-#pragma fp_contract off
+#endif  //__MWERKS__
 
 u32 func_80007424(float a)
 {
@@ -450,6 +450,7 @@ u32 func_80007424(float a)
     return (0x4000 - r3) & 0xFFFF;
 }
 
+#ifdef __MWERKS__
 asm void mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
 {
     nofralloc
@@ -1797,6 +1798,7 @@ lbl_800083B4:
     psq_st f1, 8(r3), 0, GQR_F32
     blr
 }
+#endif  //__MWERKS__
 
 void g_math_unk6(Quaternion *quat)
 {
@@ -1823,6 +1825,7 @@ void g_math_unk6(Quaternion *quat)
 
 static inline float dot_product(Vec *a, Vec *b)
 {
+#ifdef __MWERKS__
     register float ax, ay, az, bx, by, bz, temp;
 
     ax = a->x;
@@ -1839,10 +1842,14 @@ static inline float dot_product(Vec *a, Vec *b)
         fmadds temp, az, bz, temp
     }
     return temp;
+#else
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+#endif
 }
 
 static inline float sq_mag(register Vec *vec)
 {
+#ifdef __MWERKS__
     register float x, y, z;
 
     asm
@@ -1855,14 +1862,18 @@ static inline float sq_mag(register Vec *vec)
         fmadds x, z, z, x
     }
     return x;
+#else
+    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
+#endif
 }
 
-static inline float sq_mag2(Vec *v)
+static inline float sq_mag2(Vec *vec)
 {
+#ifdef __MWERKS__
     register float result;
-    register float x = v->x;
-    register float y = v->y;
-    register float z = v->z;
+    register float x = vec->x;
+    register float y = vec->y;
+    register float z = vec->z;
 
     asm
     {
@@ -1871,10 +1882,14 @@ static inline float sq_mag2(Vec *v)
         fmadds result, z, z, result
     }
     return result;
+#else
+    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
+#endif
 }
 
 static inline void cross_product(Vec *a, Vec *b, register Vec *result)
 {
+#ifdef __MWERKS__
     register float ax = a->x;
     register float ay = a->y;
     register float az = a->z;
@@ -1895,10 +1910,16 @@ static inline void cross_product(Vec *a, Vec *b, register Vec *result)
         fnmsubs temp3, ay, bx, temp3
         stfs temp3, result->z
     }
+#else
+    result->x = a->y * b->z - a->z * b->y;
+    result->y = a->z * b->x - a->x * b->z;
+    result->z = a->x * b->y - a->y * b->x;
+#endif
 }
 
 static inline void cross_product_alt(register Vec *result, register Vec *a, register Vec *b)
 {
+#ifdef __MWERKS__
     register float ax, ay, az, bx, by, bz;
     register float temp1, temp2, temp3;
 
@@ -1920,6 +1941,11 @@ static inline void cross_product_alt(register Vec *result, register Vec *a, regi
         fnmsubs temp3, ay, bx, temp3
         stfs temp3, result->z
     }
+#else
+    result->x = a->y * b->z - a->z * b->y;
+    result->y = a->z * b->x - a->x * b->z;
+    result->z = a->x * b->y - a->y * b->x;
+#endif
 }
 
 void g_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
@@ -2286,12 +2312,16 @@ void g_math_unk11(Quaternion *a, Quaternion *b)
 
 static inline float sum_of_squares(register float a, register float b)
 {
+#ifdef __MWERKS__
     asm
     {
         fmuls a, a, a
         fmadds a, b, b, a
     }
     return a;
+#else
+    return a * a + b * b;
+#endif
 }
 
 static int is_large_enough(float n)  // inlined
@@ -2440,7 +2470,6 @@ const u16 crcTable[] =
 };
 
 const u32 mathutil_alignment = 0;  // TODO: align .sdata2 sections and remove
-
 
 u16 mathutil_calc_crc16(s32 length, u8 *data)
 {

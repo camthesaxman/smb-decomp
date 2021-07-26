@@ -303,7 +303,7 @@ char *lbl_80173C5C[] = {
 void gm_init(void)
 {
     gameMode = MD_ADV;
-    gameSubmode = MD_WARNING_INIT;
+    gameSubmode = SMD_ADV_WARNING_INIT;
     gameModeRequest = -1;
     gameSubmodeRequest = -1;
     lbl_802F1B80 = 0;

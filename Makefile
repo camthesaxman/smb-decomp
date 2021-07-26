@@ -11,7 +11,7 @@ CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
 OBJCOPY := $(DEVKITPPC)/bin/powerpc-eabi-objcopy
 OBJDUMP := $(DEVKITPPC)/bin/powerpc-eabi-objdump
-HOSTCC  := cc
+GCC     := $(DEVKITPPC)/bin/powerpc-eabi-gcc
 HOSTCPP := cpp
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol
@@ -22,8 +22,9 @@ SYSTEM_INCLUDE_DIRS := include
 ASFLAGS      := -mgekko -I asm
 CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -enum int
 CPPFLAGS     := $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
-HOSTCPPFLAGS := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS))
 LDFLAGS      := -fp hard -nodefaults
+
+CC_CHECK     := $(GCC) -Wall -Wextra -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -fsyntax-only -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
 ### Files ###
 BASEROM  := baserom.bin
@@ -252,8 +253,8 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 %.o: %.c
-# Generate dependencies
-	$(HOSTCPP) $(HOSTCPPFLAGS) -M -MF $(@:.o=.dep) -MT $@ $<
+# Generate dependencies and check syntax
+	$(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 # Compile
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 # Disassemble file

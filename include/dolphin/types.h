@@ -20,6 +20,13 @@ typedef int BOOL;
 
 #define NULL ((void *)0)
 
+#if defined(__MWERKS__)
 #define AT_ADDRESS(addr) : (addr)
+#elif defined(__GNUC__)
+//#define AT_ADDRESS(addr) __attribute__((address((addr))))
+#define AT_ADDRESS(addr)  // was removed in GCC. define in linker script instead.
+#else
+#error unknown compiler
+#endif
 
 #endif

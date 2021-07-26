@@ -28,7 +28,6 @@ struct Event eventInfo[] =
     {0, "REND_EFC",      ev_rend_efc_init,      ev_rend_efc_main,      ev_rend_efc_dest,      0},
 };
 
-#pragma opt_findoptimalunrollfactor off
 #pragma opt_unroll_count 1
 #pragma force_active on
 

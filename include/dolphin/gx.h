@@ -11,9 +11,11 @@
 #include <dolphin/GXGeometry.h>
 #include <dolphin/GXVert.h>
 #include <dolphin/GXTexture.h>
+#include <dolphin/GXTev.h>
 #include <dolphin/GXLighting.h>
 #include <dolphin/GXDispList.h>
 #include <dolphin/GXCommandList.h>
 #include <dolphin/GXBump.h>
+#include <dolphin/GXFrameBuffer.h>
 
 #endif
