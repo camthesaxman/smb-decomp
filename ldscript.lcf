@@ -26,3 +26,8 @@ FORCEACTIVE {
 }
 
 FORCEFILES { game.o }
+
+/* sprite.s */
+lbl_802F4A70 = 0x802F4A70;
+lbl_802F4A74 = 0x802F4A74;
+lbl_802F4A78 = 0x802F4A78;

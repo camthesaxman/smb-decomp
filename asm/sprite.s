@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global ev_sprite_init
 ev_sprite_init:
 /* 8006FED8 0006BDF8  7C 08 02 A6 */	mflr r0
@@ -44,6 +45,7 @@ lbl_8006FF10:
 /* 8006FF64 0006BE84  38 21 00 08 */	addi r1, r1, 8
 /* 8006FF68 0006BE88  7C 08 03 A6 */	mtlr r0
 /* 8006FF6C 0006BE8C  4E 80 00 20 */	blr
+
 .global ev_sprite_main
 ev_sprite_main:
 /* 8006FF70 0006BE90  7C 08 02 A6 */	mflr r0
@@ -96,6 +98,7 @@ lbl_80070014:
 /* 8007001C 0006BF3C  38 21 00 20 */	addi r1, r1, 0x20
 /* 80070020 0006BF40  7C 08 03 A6 */	mtlr r0
 /* 80070024 0006BF44  4E 80 00 20 */	blr
+
 .global ev_sprite_dest
 ev_sprite_dest:
 /* 80070028 0006BF48  7C 08 02 A6 */	mflr r0
@@ -145,6 +148,7 @@ lbl_8007008C:
 /* 800700CC 0006BFEC  83 81 00 08 */	lwz r28, 8(r1)
 /* 800700D0 0006BFF0  38 21 00 18 */	addi r1, r1, 0x18
 /* 800700D4 0006BFF4  4E 80 00 20 */	blr
+.endif
 
 .global func_800700D8
 func_800700D8:
@@ -24306,6 +24310,7 @@ func_80085B78:
 
 .section .sdata2
 
+.if 0
 .global lbl_802F4A70
 lbl_802F4A70:
 	# ROM: 0x1EE490
@@ -24314,12 +24319,13 @@ lbl_802F4A70:
 .global lbl_802F4A74
 lbl_802F4A74:
 	# ROM: 0x1EE494
-	.byte 0x3D, 0xCC, 0xCC, 0xCD
+	.byte 0x3D, 0xCC, 0xCC, 0xCD  ;# 0.1f
 
 .global lbl_802F4A78
 lbl_802F4A78:
 	# ROM: 0x1EE498
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
+.endif
 	.4byte 0
 
 .global lbl_802F4A80

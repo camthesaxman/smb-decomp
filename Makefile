@@ -57,6 +57,7 @@ SOURCE_FILES := \
 	asm/code.s \
 	asm/background.s \
 	asm/stage.s \
+	src/sprite.c \
 	asm/sprite.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
