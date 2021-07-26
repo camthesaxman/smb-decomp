@@ -3829,41 +3829,6 @@ lbl_802F3128:
 	.byte 0x3D, 0x80, 0x00, 0x00
 	.4byte 0
 
-.global lbl_802F3130
-lbl_802F3130:
-	# ROM: 0x1ECB50
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
-
-.global lbl_802F3134
-lbl_802F3134:
-	# ROM: 0x1ECB54
-	.byte 0x00, 0x00, 0x00, 0xFF
-
-.global lbl_802F3138
-lbl_802F3138:
-	# ROM: 0x1ECB58
-	.4byte 0
-
-.global lbl_802F313C
-lbl_802F313C:
-	# ROM: 0x1ECB5C
-	.byte 0x42, 0xC8, 0x00, 0x00
-
-.global lbl_802F3140
-lbl_802F3140:
-	# ROM: 0x1ECB60
-	.byte 0x3D, 0xCC, 0xCC, 0xCD
-
-.global lbl_802F3144
-lbl_802F3144:
-	# ROM: 0x1ECB64
-	.byte 0x46, 0x9C, 0x40, 0x00
-
-.global lbl_802F3148
-lbl_802F3148:
-	# ROM: 0x1ECB68
-	.byte 0x3F, 0x80, 0x00, 0x00
-	.4byte 0
 
 .section .rodata
 

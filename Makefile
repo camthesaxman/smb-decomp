@@ -48,6 +48,7 @@ SOURCE_FILES := \
 	asm/camera.s \
 	asm/code_1.s \
 	asm/input.s \
+	asm/perf.s \
 	asm/sound.s \
 	asm/code_2.s \
 	asm/nl2ngc.s \
@@ -56,6 +57,7 @@ SOURCE_FILES := \
 	asm/code.s \
 	asm/background.s \
 	asm/stage.s \
+	asm/sprite.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
 	src/avdisp.c \
