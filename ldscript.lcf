@@ -23,6 +23,8 @@ FORCEACTIVE {
     func_8008E5F8 func_8008E64C func_8008E698
     
     mathutil_alignment
+    
+    lbl_8028FE58
 }
 
 FORCEFILES { game.o }
