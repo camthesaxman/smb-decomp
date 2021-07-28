@@ -107,14 +107,18 @@ entry _return_neg_inf  // unused?
     blr
 }
 
+// Returns an approximation of the inverse square root of `num`
 asm float approx_rsqrt(register float num, register float oneHalf)
 {
     nofralloc
 
-    fmul f4, oneHalf, num  // f4 = 0.5 * num
-    fadd f3, oneHalf, oneHalf
-    frsqrte f1, num        // f1 = initial estimate
-    fadd f3, f3, oneHalf   // f3 = 1.5
+    // f1 = num
+    // f2 = 0.5
+
+    fmul f4, f2, f1  // f4 = 0.5 * num
+    fadd f3, f2, f2
+    frsqrte f1, f1   // f1 = initial estimate
+    fadd f3, f3, f2  // f3 = 1.5
 
     // Perform 3 iterations of Newton's Method to get a better approximation
     // xₙ₊₁ = xₙ * (1.5 - 0.5 * num * xₙ²)
@@ -1612,7 +1616,7 @@ asm void mathutil_vec_set_len(register Vec *src, register Vec *dest, register fl
     nofralloc
 
     lis r6, LC_CACHE_BASE@ha
-    fmr f0, len
+    fmr f0, f1  // len
     lfs f6, src->x
     lfs f7, src->y
     lfs f8, src->z

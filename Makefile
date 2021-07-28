@@ -4,8 +4,10 @@ else
   WINE ?= wine
 endif
 
+COMPILER_VERSION ?= 1.1
+
 ### Tools ###
-COMPILER_DIR := mwcc_compiler/1.1
+COMPILER_DIR := mwcc_compiler/$(COMPILER_VERSION)
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
 CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
