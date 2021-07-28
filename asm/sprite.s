@@ -327,7 +327,6 @@ lbl_80070328:
 /* 80070330 0006C250  38 21 00 18 */	addi r1, r1, 0x18
 /* 80070334 0006C254  7C 08 03 A6 */	mtlr r0
 /* 80070338 0006C258  4E 80 00 20 */	blr
-.endif
 
 .global g_something_with_sprites
 g_something_with_sprites:
@@ -382,10 +381,10 @@ lbl_800703D4:  ;# 1
 /* 800703EC 0006C30C  80 03 00 00 */	lwz r0, 0(r3)
 /* 800703F0 0006C310  2C 00 00 00 */	cmpwi r0, 0
 /* 800703F4 0006C314  40 82 00 40 */	bne lbl_80070434
-/* 800703F8 0006C318  7C E6 46 70 */	srawi r6, r7, 8
+/* 800703F8 0006C318  7C E6 46 70 */	srawi r6, r7, 8  ;# unk3C >> 8
 /* 800703FC 0006C31C  4C C6 31 82 */	crclr 6
 /* 80070400 0006C320  1C 06 00 18 */	mulli r0, r6, 0x18
-/* 80070404 0006C324  7C 65 02 14 */	add r3, r5, r0
+/* 80070404 0006C324  7C 65 02 14 */	add r3, r5, r0      ;# &lbl_80181CB4[unk3C>>8]
 /* 80070408 0006C328  3C 80 80 18 */	lis r4, lbl_80181E04@ha
 /* 8007040C 0006C32C  80 A3 00 08 */	lwz r5, 8(r3)
 /* 80070410 0006C330  54 C6 10 3A */	slwi r6, r6, 2
@@ -405,14 +404,14 @@ lbl_80070440:  ;# 2
 /* 80070440 0006C360  A3 BC 00 3C */	lhz r29, 0x3c(r28)
 /* 80070444 0006C364  3C 60 80 18 */	lis r3, lbl_80181CB4@ha
 /* 80070448 0006C368  38 A3 1C B4 */	addi r5, r3, lbl_80181CB4@l
-/* 8007044C 0006C36C  57 A0 C6 3E */	rlwinm r0, r29, 0x18, 0x18, 0x1f
+/* 8007044C 0006C36C  57 A0 C6 3E */	rlwinm r0, r29, 0x18, 0x18, 0x1f  ;# (r29 >> 8) & 0xFF
 /* 80070450 0006C370  1C 00 00 18 */	mulli r0, r0, 0x18
 /* 80070454 0006C374  7C 65 02 14 */	add r3, r5, r0
 /* 80070458 0006C378  80 03 00 00 */	lwz r0, 0(r3)
 /* 8007045C 0006C37C  57 BF 04 2E */	rlwinm r31, r29, 0, 0x10, 0x17
 /* 80070460 0006C380  2C 00 00 00 */	cmpwi r0, 0
 /* 80070464 0006C384  40 82 00 40 */	bne lbl_800704A4
-/* 80070468 0006C388  7F A6 46 70 */	srawi r6, r29, 8
+/* 80070468 0006C388  7F A6 46 70 */	srawi r6, r29, 8  ;# (r29 >> 8)
 /* 8007046C 0006C38C  4C C6 31 82 */	crclr 6
 /* 80070470 0006C390  1C 06 00 18 */	mulli r0, r6, 0x18
 /* 80070474 0006C394  7C 65 02 14 */	add r3, r5, r0
@@ -445,7 +444,7 @@ lbl_800704D4:
 /* 800704D8 0006C3F8  B0 1C 00 3C */	sth r0, 0x3c(r28)
 /* 800704DC 0006C3FC  38 7C 00 00 */	addi r3, r28, 0
 /* 800704E0 0006C400  38 9C 00 58 */	addi r4, r28, 0x58
-/* 800704E4 0006C404  80 1E 00 00 */	lwz r0, 0(r30)
+/* 800704E4 0006C404  80 1E 00 00 */	lwz r0, 0(r30)  ;# lbl_801BE470[i].unk0
 /* 800704E8 0006C408  38 BC 00 5C */	addi r5, r28, 0x5c
 /* 800704EC 0006C40C  38 DC 00 60 */	addi r6, r28, 0x60
 /* 800704F0 0006C410  7C 18 02 14 */	add r0, r24, r0
@@ -494,6 +493,7 @@ lbl_8007058C:
 /* 80070598 0006C4B8  38 21 00 50 */	addi r1, r1, 0x50
 /* 8007059C 0006C4BC  7C 08 03 A6 */	mtlr r0
 /* 800705A0 0006C4C0  4E 80 00 20 */	blr
+.endif
 
 .global func_800705A4
 func_800705A4:
@@ -24325,7 +24325,6 @@ lbl_802F4A74:
 lbl_802F4A78:
 	# ROM: 0x1EE498
 	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
-.endif
 	.4byte 0
 
 .global lbl_802F4A80
@@ -24333,6 +24332,7 @@ lbl_802F4A80:
 	# ROM: 0x1EE4A0
 	.byte 0x43, 0x30, 0x00, 0x00
 	.byte 0x80, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F4A88
 lbl_802F4A88:
@@ -26818,12 +26818,14 @@ lbl_802B4E10:
 
 .section .data
 
+.if  0
 .global lbl_801C1264
 lbl_801C1264:
 	# ROM: 0x1BE264
 glabel string_SPRITE_WARNING____s_s_category__s_is_not_load_n
 	.asciz "SPRITE WARNING!! %s's category %s is not load\n"
 	.balign 4
+.endif
 
 .global lbl_801C1294
 lbl_801C1294:

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdio.h>
 #include <dolphin.h>
 
 #include "global.h"
@@ -32,7 +33,10 @@ struct Sprite
     s8 unk0;
     u8 filler1[1];
     s8 unk2;
-    u8 filler3[0xF-3];
+    u8 filler3[1];
+    float unk4;
+    float unk8;
+    u8 fillerC[0xF-0xC];
     s8 unkF;
     u8 filler10[0x30-0x10];
     void (*unk30)();
@@ -263,9 +267,9 @@ void func_800702C8(struct Sprite *sprite)
 
 struct Struct80181CB4
 {
-    u32 unk0;
+    s32 unk0;
     void *unk4;
-    void *unk8;
+    char *unk8;
     u8 fillerC[0x18-0xC];
 };
 
@@ -273,8 +277,8 @@ extern struct Struct80181CB4 lbl_80181CB4[];
 
 struct Struct801BE470
 {
-    u32 unk0;
-    u32 unk4;
+    s32 unk0;
+    s32 unk4;
 };
 
 struct Struct801BE470 lbl_801BE470[] =
@@ -899,9 +903,36 @@ struct Struct801C0B94 lbl_801C108C[] =
     {"DMY",        0xFFFFFFFF},
 };
 
-/*
+extern char **lbl_80181E04[];
+
+static inline void test(struct Sprite *a)
+{
+        u16 r31 = a->unk3C & 0xFF00;
+        u16 r26 = a->unk3C & 0xFF;
+        int i;
+        int r24 = a->unk4;
+        int r23 = a->unk8;
+        for (i = 0; i < 8; i++)
+        {
+            a->unk3C = r31 | r26;
+            a->unk4 = (float)(r24 + lbl_801BE470[i].unk0);
+            a->unk8 = (float)(r23 + lbl_801BE470[i].unk4);
+            func_80070A08(a, &a->unk58, &a->unk5C, &a->unk60, &a->unk64);
+            func_80072C68(a);
+            r26++;
+        }
+        a->unk4 = r24;
+        a->unk8 = r23;
+}
+
 void g_something_with_sprites(struct Sprite *a)
 {
+    u32 r29;
+    u32 r26;
+    int i;
+    int r24;
+    int r23;
+
     if (a->unk78 & 1)
         return;
     func_80070A08(a, &a->unk58, &a->unk5C, &a->unk60, &a->unk64);
@@ -910,17 +941,43 @@ void g_something_with_sprites(struct Sprite *a)
         a->unk38(a);
         return;
     }
-    //lbl_8007039C
     switch (a->unk0)
     {
     case 0:
         func_80072B50(a);
         break;
     case 1:
-        if (lbl_80181CB4[a->unk3C].unk0 == 0)
+        if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
         {
-            
+            int r6 = a->unk3C >> 8;
+            printf("SPRITE WARNING!! %s's category %s is not load\n",
+                lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
+            break;
         }
+        func_80072C68(a);
+        break;
+    case 2:
+        if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
+        {
+            printf("SPRITE WARNING!! %s's category %s is not load\n",
+                lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
+            break;
+        }
+        r26 = a->unk3C & 0xFF;
+        r29 = a->unk3C;
+        r24 = a->unk4;
+        r23 = a->unk8;
+        for (i = 0; i < 8; i++)
+        {
+            a->unk3C = (r29 & 0xFF00) | r26;
+            a->unk4 = (float)(r24 + lbl_801BE470[i].unk0);
+            a->unk8 = (float)(r23 + lbl_801BE470[i].unk4);
+            func_80070A08(a, &a->unk58, &a->unk5C, &a->unk60, &a->unk64);
+            func_80072C68(a);
+            r26++;
+        }
+        a->unk3C = r29;
+        a->unk4 = r24;
+        a->unk8 = r23;
     }
 }
-*/

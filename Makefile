@@ -272,6 +272,7 @@ tools:
 
 # File-specific compiler flags
 src/mathutil.o: CFLAGS += -inline auto -fp_contract off
+src/sprite.o:   CFLAGS += -inline auto
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 
