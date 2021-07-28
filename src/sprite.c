@@ -132,7 +132,7 @@ void ev_sprite_dest(void)
 {
     struct Sprite *r30;
     s8 *r29;
-    int i = 0;  // r28
+    int i = 0;
 
     r30 = lbl_8028CF58;
     r29 = lbl_80205988.unk3C;
@@ -281,16 +281,17 @@ struct Struct801BE470
     s32 unk4;
 };
 
+// tile coordinates?
 struct Struct801BE470 lbl_801BE470[] =
 {
-    {0xFFFFFFC0, 0xFFFFFF90},
-    {0xFFFFFFC0, 0x00000050},
-    {0xFFFFFFC0, 0x000000B0},
-    {0xFFFFFFC0, 0x000000E0},
-    {0x00000100, 0xFFFFFF90},
-    {0x00000100, 0x00000050},
-    {0x00000100, 0x000000B0},
-    {0x00000100, 0x000000E0},
+    {-64, -112},
+    {-64,   80},
+    {-64,  176},
+    {-64,  224},
+    {256, -112},
+    {256,   80},
+    {256,  176},
+    {256,  224},
 };
 
 struct Struct801BE4B0
@@ -312,6 +313,7 @@ struct Struct801BE4B0
     s8 unk23;
 };
 
+// font parameters?
 struct Struct801BE4B0 lbl_801BE4B0[] =
 {
     {0, 8, 8, 0, 127, 16, 8, 0.0625, 0.125, 0.0078125, 0.015625, 0, 0, 0, 0},
@@ -702,6 +704,7 @@ struct Struct801C0B94
     u32 unk4;
 };
 
+// symbols?
 struct Struct801C0B94 lbl_801C0B94[] =
 {
     {"MARU",       0x00000140},
@@ -738,6 +741,7 @@ struct Struct801C0B94 lbl_801C0B94[] =
     {"DMY",        0xFFFFFFFF},
 };
 
+// button icons?
 struct Struct801C0B94 lbl_801C0D24[] =
 {
     {"BOTANN_A", 0},
@@ -756,6 +760,7 @@ struct Struct801C0B94 lbl_801C0D24[] =
     {"DMY",     -1},
 };
 
+// kanji? capitalized part seems to be the actual kanji
 struct Struct801C0B94 lbl_801C0DAC[] =
 {
     {"SHOkyuu",  0x00000168},
@@ -840,6 +845,7 @@ struct Struct801C0B94 lbl_801C0DAC[] =
     {"DMY",      0xFFFFFFFF},
 };
 
+// Japanese words composed of two kanji?
 struct Struct801C0B94 lbl_801C108C[] =
 {
     {"SHOKYUU",    0x0168016B},
@@ -905,26 +911,6 @@ struct Struct801C0B94 lbl_801C108C[] =
 
 extern char **lbl_80181E04[];
 
-static inline void test(struct Sprite *a)
-{
-        u16 r31 = a->unk3C & 0xFF00;
-        u16 r26 = a->unk3C & 0xFF;
-        int i;
-        int r24 = a->unk4;
-        int r23 = a->unk8;
-        for (i = 0; i < 8; i++)
-        {
-            a->unk3C = r31 | r26;
-            a->unk4 = (float)(r24 + lbl_801BE470[i].unk0);
-            a->unk8 = (float)(r23 + lbl_801BE470[i].unk4);
-            func_80070A08(a, &a->unk58, &a->unk5C, &a->unk60, &a->unk64);
-            func_80072C68(a);
-            r26++;
-        }
-        a->unk4 = r24;
-        a->unk8 = r23;
-}
-
 void g_something_with_sprites(struct Sprite *a)
 {
     u32 r29;
@@ -949,7 +935,6 @@ void g_something_with_sprites(struct Sprite *a)
     case 1:
         if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
         {
-            int r6 = a->unk3C >> 8;
             printf("SPRITE WARNING!! %s's category %s is not load\n",
                 lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
             break;

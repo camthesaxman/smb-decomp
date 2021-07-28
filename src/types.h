@@ -86,3 +86,5 @@ struct Struct801EEC80
     u8 filler0[0x10];
     u32 unk10;
 };
+
+struct Sprite;

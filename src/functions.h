@@ -1105,12 +1105,14 @@ void ev_stobj_dest(void);
 // ? func_8006FB20();
 // ? func_8006FCD0();
 // ? func_8006FD44();
+
+// sprite.c
 void ev_sprite_init(void);
 void ev_sprite_main(void);
 void ev_sprite_dest(void);
-// ? func_800700D8();
-// ? func_800702C8();
-void g_something_with_sprites();
+void func_800700D8(int a);
+void func_800702C8(struct Sprite *sprite);
+void g_something_with_sprites(struct Sprite *a);
 // ? func_800705A4();
 // ? func_800705C4();
 void func_800705E4(void);
@@ -1135,8 +1137,8 @@ void func_80070A08();
 // ? func_80071E58();
 // ? func_800726A8();
 // ? func_80072AC0();
-// ? func_80072B50();
-// ? func_80072C68();
+void func_80072B50(struct Sprite *a);
+void func_80072C68(struct Sprite *a);
 // ? func_80072DA8();
 // ? func_80073058();
 // ? func_80073084();
