@@ -26279,6 +26279,7 @@ lbl_802F52AC:
 .global lbl_802F52B0
 lbl_802F52B0:
 	# ROM: 0x1EECD0
+glabel string__333
 	.asciz "?333"
 	.balign 4
 
@@ -26817,308 +26818,319 @@ lbl_802B4E10:
 
 .section .data
 
+glabel string_RENNshuu
 	.asciz "RENNshuu"
 	.balign 4
+glabel string_rennSHUU
 	.asciz "rennSHUU"
 	.balign 4
-	.4byte 0x802F0BE8  ;# ptr
+	.4byte shokyuu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x68
-	.4byte 0x802F0BF0  ;# ptr
+	.4byte chukyuu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x69
-	.4byte 0x802F0BF8  ;# ptr
+	.4byte naka  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x69
-	.4byte 0x802F0C00  ;# ptr
+	.4byte jyokyuu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6A
-	.4byte 0x802F0C08  ;# ptr
+	.4byte string_UE  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6A
-	.4byte 0x802F0C0C  ;# ptr
+	.4byte string_KYUU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6B
-	.4byte 0x802F0C14  ;# ptr
+	.4byte string_NANI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6C
-	.4byte 0x802F0C1C  ;# ptr
+	.4byte string_HONN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6D
-	.4byte 0x802F0C24  ;# ptr
+	.4byte string_KAchi  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6E
-	.4byte 0x802F0C2C  ;# ptr
+	.4byte string_MAke  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x6F
-	.4byte 0x802F0C34  ;# ptr
+	.4byte string_SHIyou  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x70
-	.4byte 0x802F0C3C  ;# ptr
+	.4byte string_TSUKAu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x70
-	.4byte 0x802F0C44  ;# ptr
+	.4byte string_shiYOU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x71
-	.4byte 0x802F0C4C  ;# ptr
+	.4byte string_YOU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x71
-	.4byte 0x802F0C50  ;# ptr
+	.4byte string_JIbunn  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x72
-	.4byte 0x802F0C58  ;# ptr
+	.4byte string_jiBUNN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x73
-	.4byte 0x802F0C60  ;# ptr
+	.4byte string_HITO  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x74
-	.4byte 0x802F0C68  ;# ptr
+	.4byte string_NINN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x74
-	.4byte 0x802F0C70  ;# ptr
+	.4byte string_GENzai  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x75
-	.4byte 0x802F0C78  ;# ptr
+	.4byte string_genZAI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x76
-	.4byte 0x802F0C80  ;# ptr
+	.4byte string_KOsuu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x77
-	.4byte 0x802F0C88  ;# ptr
+	.4byte string_DOUji  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x78
-	.4byte 0x802F0C90  ;# ptr
+	.4byte string_douJI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x79
-	.4byte 0x802F0C98  ;# ptr
+	.4byte string_TOKI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x79
-	.4byte 0x802F0CA0  ;# ptr
+	.4byte string_TAIsenn  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7A
-	.4byte 0x802F0CA8  ;# ptr
+	.4byte string_taiSENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7B
-	.4byte 0x802F0CB0  ;# ptr
+	.4byte string_SENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7B
-	.4byte 0x802F0CB8  ;# ptr
+	.4byte string_KAIsuu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7C
-	.4byte 0x802F0CC0  ;# ptr
+	.4byte string_KAI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7C
-	.4byte 0x802F0CC4  ;# ptr
+	.4byte string_TSUGI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7D
-	.4byte 0x801C0D94  ;# ptr
+	.4byte string_RENNshuu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7E
-	.4byte 0x801C0DA0  ;# ptr
+	.4byte string_rennSHUU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x7F
-	.4byte 0x802F0CCC  ;# ptr
+	.4byte string_KYOUsou  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x80
-	.4byte 0x802F0CD4  ;# ptr
+	.4byte string_kyouSOU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x81
-	.4byte 0x802F0CDC  ;# ptr
+	.4byte string_SAKI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x82
-	.4byte 0x802F0CE4  ;# ptr
+	.4byte string_HOKA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x83
-	.4byte 0x802F0CEC  ;# ptr
+	.4byte string_KURAI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x84
-	.4byte 0x802F0CF4  ;# ptr
+	.4byte string_KAZU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x85
-	.4byte 0x802F0CFC  ;# ptr
+	.4byte string_SUU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x85
-	.4byte 0x802F0D00  ;# ptr
+	.4byte string_OSU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x86
-	.4byte 0x802F0D04  ;# ptr
+	.4byte string_HAI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x87
-	.4byte 0x802F0D08  ;# ptr
+	.4byte string_KEttei  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x88
-	.4byte 0x802F0D10  ;# ptr
+	.4byte string_keTTEI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x89
-	.4byte 0x802F0D18  ;# ptr
+	.4byte string_Au  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8A
-	.4byte 0x802F0D1C  ;# ptr
+	.4byte string_MIGI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8B
-	.4byte 0x802F0D24  ;# ptr
+	.4byte string_SHITA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8C
-	.4byte 0x802F0D2C  ;# ptr
+	.4byte string_KUDA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8C
-	.4byte 0x802F0D34  ;# ptr
+	.4byte string_HIDARI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8D
-	.4byte 0x802F0D3C  ;# ptr
+	.4byte string_TAberu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8E
-	.4byte 0x802F0D44  ;# ptr
+	.4byte string_IMA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x8F
-	.4byte 0x802F0D48  ;# ptr
+	.4byte string_DOU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x90
-	.4byte 0x802F0D4C  ;# ptr
+	.4byte string_UGOku  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x90
-	.4byte 0x802F0D54  ;# ptr
+	.4byte string_DAI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x91
-	.4byte 0x802F0D58  ;# ptr
+	.4byte string_OOkii  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x91
-	.4byte 0x802F0D60  ;# ptr
+	.4byte string_KIbunn  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x92
-	.4byte 0x802F0D68  ;# ptr
+	.4byte string_HENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x93
-	.4byte 0x802F0D70  ;# ptr
+	.4byte string_KAwaru  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x93
-	.4byte 0x802F0D78  ;# ptr
+	.4byte string_CHIkei  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x94
-	.4byte 0x802F0D80  ;# ptr
+	.4byte string_chiKEI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x95
-	.4byte 0x802F0D88  ;# ptr
+	.4byte string_chiTENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x96
-	.4byte 0x802F0D90  ;# ptr
+	.4byte string_TENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x96
-	.4byte 0x802F0D98  ;# ptr
+	.4byte string_SAKA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x97
-	.4byte 0x802F0DA0  ;# ptr
+	.4byte string_MICHI  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x98
-	.4byte 0x802F0DA8  ;# ptr
+	.4byte string_Ochiru  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x99
-	.4byte 0x802F0DB0  ;# ptr
+	.4byte string_TOru  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x9A
-	.4byte 0x802F0DB8  ;# ptr
+	.4byte string_KIkann  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x9B
-	.4byte 0x802F0DC0  ;# ptr
+	.4byte string_MOUkeru  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x9C
-	.4byte 0x802F0DC8  ;# ptr
+	.4byte string_TUku  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x9D
-	.4byte 0x802F0DD0  ;# ptr
+	.4byte string_YOmu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x9E
-	.4byte 0x802F0DD8  ;# ptr
+	.4byte string_KARADA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x9F
-	.4byte 0x802F0DE0  ;# ptr
+	.4byte string_ATUKAu  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xA0
-	.4byte 0x802F0DE8  ;# ptr
+	.4byte string_SETSU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xA1
-	.4byte 0x802F0DF0  ;# ptr
+	.4byte string_AKArui  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xA2
-	.4byte 0x802F0DF8  ;# ptr
+	.4byte string_KAku  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xA3
-	.4byte 0x802F0E00  ;# ptr
+	.4byte string_DENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x66
-	.4byte 0x802F0E08  ;# ptr
+	.4byte string_GENN  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x67
-	.4byte 0x802F0E10  ;# ptr
+	.4byte string_NUku  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x65
-	.4byte 0x802F0E18  ;# ptr
+	.4byte string_SOU  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x64
-	.4byte 0x802F0E1C  ;# ptr
+	.4byte string_TAMA  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0x63
 	.4byte 0x802F0BDC  ;# ptr
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
+glabel string_NANNBONN
 	.asciz "NANNBONN"
 	.balign 4
+glabel string_RENNSHUU
 	.asciz "RENNSHUU"
 	.balign 4
+glabel string_SAKAMICHI
 	.asciz "SAKAMICHI"
 	.balign 4
+glabel string_CHAKUCHI
 	.asciz "CHAKUCHI"
 	.balign 4
+glabel string_TORIATUKAI
 	.asciz "TORIATUKAI"
 	.balign 4
+glabel string_DENNGENN
 	.asciz "DENNGENN"
 	.balign 4
+glabel string_TAIKETSU
 	.asciz "TAIKETSU"
 	.balign 4
+glabel string_KYOUSOU2
 	.asciz "KYOUSOU2"
 	.balign 4
-	.4byte 0x802F0E24  ;# ptr
+	.4byte string_SHOKYUU  ;# ptr
 	.byte 0x01, 0x68, 0x01, 0x6B
-	.4byte 0x802F0E2C  ;# ptr
+	.4byte string_CHUKYUU  ;# ptr
 	.byte 0x01, 0x69, 0x01, 0x6B
-	.4byte 0x802F0E34  ;# ptr
+	.4byte string_JYOKYUU  ;# ptr
 	.byte 0x01, 0x6A, 0x01, 0x6B
-	.4byte 0x801C102C  ;# ptr
+	.4byte string_NANNBONN  ;# ptr
 	.byte 0x01, 0x6C, 0x01, 0x6D
-	.4byte 0x802F0E3C  ;# ptr
+	.4byte string_SHOUBU  ;# ptr
 	.byte 0x01, 0x6E, 0x01, 0x6F
-	.4byte 0x802F0E44  ;# ptr
+	.4byte string_SYOUBU  ;# ptr
 	.byte 0x01, 0x6E, 0x01, 0x6F
-	.4byte 0x802F0E4C  ;# ptr
+	.4byte string_SHIYOU  ;# ptr
 	.byte 0x01, 0x70, 0x01, 0x71
-	.4byte 0x802F0E54  ;# ptr
+	.4byte string_JIBUNN  ;# ptr
 	.byte 0x01, 0x72, 0x01, 0x73
-	.4byte 0x802F0E5C  ;# ptr
+	.4byte string_GENZAI  ;# ptr
 	.byte 0x01, 0x75, 0x01, 0x76
-	.4byte 0x802F0E64  ;# ptr
+	.4byte string_DOUJI  ;# ptr
 	.byte 0x01, 0x78, 0x01, 0x79
-	.4byte 0x802F0E6C  ;# ptr
+	.4byte string_TAISENN  ;# ptr
 	.byte 0x01, 0x7A, 0x01, 0x7B
-	.4byte 0x801C1038  ;# ptr
+	.4byte string_RENNSHUU  ;# ptr
 	.byte 0x01, 0x7E, 0x01, 0x7F
-	.4byte 0x802F0E74  ;# ptr
+	.4byte string_KYOUSOU  ;# ptr
 	.byte 0x01, 0x80, 0x01, 0x81
-	.4byte 0x802F0E7C  ;# ptr
+	.4byte string_HONNSUU  ;# ptr
 	.byte 0x01, 0x6D, 0x01, 0x85
-	.4byte 0x802F0E84  ;# ptr
+	.4byte string_KOSUU  ;# ptr
 	.byte 0x01, 0x77, 0x01, 0x85
-	.4byte 0x802F0E8C  ;# ptr
+	.4byte string_KETTEI  ;# ptr
 	.byte 0x01, 0x88, 0x01, 0x89
-	.4byte 0x802F0E94  ;# ptr
+	.4byte string_CHIKEI  ;# ptr
 	.byte 0x01, 0x94, 0x01, 0x95
-	.4byte 0x802F0E9C  ;# ptr
+	.4byte string_CHITENN  ;# ptr
 	.byte 0x01, 0x94, 0x01, 0x96
-	.4byte 0x801C1044  ;# ptr
+	.4byte string_SAKAMICHI  ;# ptr
 	.byte 0x01, 0x97, 0x01, 0x98
-	.4byte 0x802F0EA4  ;# ptr
+	.4byte string_RAKKA  ;# ptr
 	.byte 0x01, 0x99, 0x01, 0x8C
-	.4byte 0x802F0EAC  ;# ptr
+	.4byte string_IRE  ;# ptr
 	.byte 0x01, 0x87, 0x00, 0x58
-	.4byte 0x802F0EB0  ;# ptr
+	.4byte string_SENNSHU  ;# ptr
 	.byte 0x01, 0x82, 0x01, 0x9A
-	.4byte 0x802F0EB8  ;# ptr
+	.4byte string_TORU  ;# ptr
 	.byte 0x01, 0x9A, 0x00, 0x57
-	.4byte 0x802F0EC0  ;# ptr
+	.4byte string_TORE  ;# ptr
 	.byte 0x01, 0x9A, 0x00, 0x58
-	.4byte 0x802F0EC8  ;# ptr
+	.4byte string_NANNKAI  ;# ptr
 	.byte 0x01, 0x6C, 0x01, 0x7C
-	.4byte 0x802F0ED0  ;# ptr
+	.4byte string_KAISUU  ;# ptr
 	.byte 0x01, 0x7C, 0x01, 0x85
-	.4byte 0x802F0ED8  ;# ptr
+	.4byte string_KATE  ;# ptr
 	.byte 0x01, 0x6E, 0x00, 0x26
-	.4byte 0x802F0EE0  ;# ptr
+	.4byte string_SHOKI  ;# ptr
 	.byte 0x01, 0x68, 0x01, 0x9B
-	.4byte 0x802F0EE8  ;# ptr
+	.4byte string_SETTEI  ;# ptr
 	.byte 0x01, 0x9C, 0x01, 0x89
-	.4byte 0x801C1050  ;# ptr
+	.4byte string_CHAKUCHI  ;# ptr
 	.byte 0x01, 0x9D, 0x01, 0x94
-	.4byte 0x802F0EF0  ;# ptr
+	.4byte string_HONNTAI  ;# ptr
 	.byte 0x01, 0x6D, 0x01, 0x9F
-	.4byte 0x801C105C  ;# ptr
+	.4byte string_TORIATUKAI  ;# ptr
 	.byte 0x01, 0x9A, 0x01, 0xA0
-	.4byte 0x802F0EF8  ;# ptr
+	.4byte string_SETUMEI  ;# ptr
 	.byte 0x01, 0xA1, 0x01, 0xA2
-	.4byte 0x801C1068  ;# ptr
+	.4byte string_DENNGENN  ;# ptr
 	.byte 0x01, 0x66, 0x01, 0x67
-	.4byte 0x802F0F00  ;# ptr
+	.4byte string_KACHI  ;# ptr
 	.byte 0x01, 0x6E, 0x00, 0x24
-	.4byte 0x801C1074  ;# ptr
+	.4byte string_TAIKETSU  ;# ptr
 	.byte 0x01, 0x7A, 0x01, 0x88
-	.4byte 0x802F0F08  ;# ptr
+	.4byte string_TATAKAU  ;# ptr
 	.byte 0x01, 0x7B, 0x00, 0x02
-	.4byte 0x802F0F10  ;# ptr
+	.4byte string_TATAKAI  ;# ptr
 	.byte 0x01, 0x7B, 0x00, 0x01
-	.4byte 0x802F0F18  ;# ptr
+	.4byte string_SENNSOU  ;# ptr
 	.byte 0x01, 0x7B, 0x01, 0x81
-	.4byte 0x802F0F20  ;# ptr
+	.4byte string_NUKU  ;# ptr
 	.byte 0x01, 0x65, 0x00, 0x11
-	.4byte 0x802F0F28  ;# ptr
+	.4byte string_HASHIRU  ;# ptr
 	.byte 0x01, 0x64, 0x00, 0x57
-	.4byte 0x801C1080  ;# ptr
+	.4byte string_KYOUSOU2  ;# ptr
 	.byte 0x01, 0x80, 0x01, 0x64
-	.4byte 0x802F0F30  ;# ptr
+	.4byte string_NUKI  ;# ptr
 	.byte 0x01, 0x65, 0x00, 0x10
-	.4byte 0x802F0F38  ;# ptr
+	.4byte string_TSUKAU  ;# ptr
 	.byte 0x01, 0x70, 0x00, 0x02
-	.4byte 0x802F0F40  ;# ptr
+	.4byte string_OTOSU  ;# ptr
 	.byte 0x01, 0x99, 0x00, 0x1B
-	.4byte 0x802F0F48  ;# ptr
+	.4byte string_OTO  ;# ptr
 	.byte 0x01, 0x99, 0x00, 0x27
-	.4byte 0x802F0F4C  ;# ptr
+	.4byte string_TSUKAI  ;# ptr
 	.byte 0x01, 0x70, 0x00, 0x01
-	.4byte 0x802F0F54  ;# ptr
+	.4byte string_OCHI  ;# ptr
 	.byte 0x01, 0x99, 0x00, 0x24
-	.4byte 0x802F0F5C  ;# ptr
+	.4byte string_KIME  ;# ptr
 	.byte 0x01, 0x88, 0x00, 0x49
-	.4byte 0x802F0F64  ;# ptr
+	.4byte string_JITENN  ;# ptr
 	.byte 0x01, 0x79, 0x01, 0x96
-	.4byte 0x802F0F6C  ;# ptr
+	.4byte string_OSHI  ;# ptr
 	.byte 0x01, 0x86, 0x00, 0x1A
-	.4byte 0x802F0F74  ;# ptr
+	.4byte string_DOUTENN  ;# ptr
 	.byte 0x01, 0x78, 0x01, 0x96
-	.4byte 0x802F0F7C  ;# ptr
+	.4byte string_HENNKEI  ;# ptr
 	.byte 0x01, 0x93, 0x01, 0x95
-	.4byte 0x802F0F84  ;# ptr
+	.4byte string_TSUKAE  ;# ptr
 	.byte 0x01, 0x70, 0x00, 0x03
-	.4byte 0x802F0F8C  ;# ptr
+	.4byte string_SAYUU  ;# ptr
 	.byte 0x01, 0x8D, 0x01, 0x8B
-	.4byte 0x802F0F94  ;# ptr
+	.4byte string_KIMA  ;# ptr
 	.byte 0x01, 0x88, 0x00, 0x46
-	.4byte 0x802F0F9C  ;# ptr
+	.4byte string_MAKE  ;# ptr
 	.byte 0x01, 0x6F, 0x00, 0x12
-	.4byte 0x802F0FA4  ;# ptr
+	.4byte string_JYOUGE  ;# ptr
 	.byte 0x01, 0x6A, 0x01, 0x8C
-	.4byte 0x802F0BDC  ;# ptr
+	.4byte 0x802F0BDC  ;# ptr  "DMY"
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 
 .global lbl_801C1264
 lbl_801C1264:
 	# ROM: 0x1BE264
+glabel string_SPRITE_WARNING____s_s_category__s_is_not_load_n
 	.asciz "SPRITE WARNING!! %s's category %s is not load\n"
 	.balign 4
 
@@ -27208,12 +27220,14 @@ lbl_801C12E4:
 	.4byte lbl_80071314  ;# ptr
 	.4byte lbl_8007131C  ;# ptr
 	.4byte lbl_80071324  ;# ptr
+glabel string_nlSprPut___SPRITE_BUFFER_OVER____bmp__d_n
 	.asciz "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n"
 	.balign 4
 
 .global lbl_801C13EC
 lbl_801C13EC:
 	# ROM: 0x1BE3EC
+glabel string_SPRITE_WARNING___bmp__s_s_category__s_is_not_load_n
 	.asciz "SPRITE WARNING!! bmp_%s's category %s is not load\n"
 	.balign 4
 
@@ -27302,55 +27316,63 @@ lbl_801C14FC:
 .global lbl_801C1518
 lbl_801C1518:
 	# ROM: 0x1BE518
+glabel string_pause_menu
 	.asciz "pause menu"
 	.balign 4
 
 .global lbl_801C1524
 lbl_801C1524:
 	# ROM: 0x1BE524
+glabel string_GAME_OVER
 	.asciz "GAME OVER"
 	.balign 4
+glabel string_a_Continue_game
 	.asciz "a/Continue game"
+glabel string_a_How_to_play
 	.asciz "a/How to play"
 	.balign 4
+glabel string_a_Exit_game
 	.asciz "a/Exit game"
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C1550  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
+glabel string_a_View_stage
 	.asciz "a/View stage"
 	.balign 4
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x801C1568  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C1550  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_View_stage  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
+glabel string_a_Save_replay
 	.asciz "a/Save replay"
 	.balign 4
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x801C1588  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C1550  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_Save_replay  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
+glabel string_a_Stage_select
 	.asciz "a/Stage select"
 	.balign 4
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x802F0FF0  ;# ptr
-	.4byte 0x801C1568  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C15A8  ;# ptr
-	.4byte 0x801C1550  ;# ptr
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x802F0FF0  ;# ptr
-	.4byte 0x801C1588  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C15A8  ;# ptr
-	.4byte 0x801C1550  ;# ptr
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x802F0FF0  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C1550  ;# ptr
-	.4byte 0x801C1530  ;# ptr
-	.4byte 0x802F0FF8  ;# ptr
-	.4byte 0x801C1540  ;# ptr
-	.4byte 0x801C1550  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_Retry  ;# ptr
+	.4byte string_a_View_stage  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Stage_select  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_Retry  ;# ptr
+	.4byte string_a_Save_replay  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Stage_select  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_Retry  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
+	.4byte string_a_Continue_game  ;# ptr
+	.4byte string_a_Guide  ;# ptr
+	.4byte string_a_How_to_play  ;# ptr
+	.4byte string_a_Exit_game  ;# ptr
 
 .global lbl_801C1608
 lbl_801C1608:
@@ -27369,24 +27391,28 @@ lbl_801C1608:
 .global lbl_801C1630
 lbl_801C1630:
 	# ROM: 0x1BE630
+glabel string_b_Select_using_the_c_0xffffff_p_BUTTON_A_c_0x000000__Button_
 	.asciz "b/Select using the c/0xffffff/p/BUTTON_A/c/0x000000/ Button!"
 	.balign 4
 
 .global lbl_801C1670
 lbl_801C1670:
 	# ROM: 0x1BE670
+glabel string_b_Press_Start
 	.asciz "b/Press Start"
 	.balign 4
 
 .global lbl_801C1680
 lbl_801C1680:
 	# ROM: 0x1BE680
+glabel string_logo_plus
 	.asciz "logo plus"
 	.balign 4
 
 .global lbl_801C168C
 lbl_801C168C:
 	# ROM: 0x1BE68C
+glabel string_AMUSEMENT_VISION_LTD__SEGA_2001
 	.asciz "AMUSEMENT VISION,LTD./SEGA,2001"
 
 .global lbl_801C16AC
@@ -27445,34 +27471,41 @@ lbl_801C16E8:
 .global lbl_801C1760
 lbl_801C1760:
 	# ROM: 0x1BE760
+glabel string_p_SANNKAKU_R__a_Game_Start_p_SANNKAKU_L_
 	.asciz "p/SANNKAKU_R/ a/Game Start p/SANNKAKU_L/"
 	.balign 4
 
 .global lbl_801C178C
 lbl_801C178C:
 	# ROM: 0x1BE78C
+glabel string_a_Game_Start
 	.asciz "a/Game Start"
 	.balign 4
 
 .global lbl_801C179C
 lbl_801C179C:
 	# ROM: 0x1BE79C
+glabel string_p_SANNKAKU_R__a_Options_p_SANNKAKU_L_
 	.asciz "p/SANNKAKU_R/ a/Options p/SANNKAKU_L/"
 	.balign 4
 
 .global lbl_801C17C4
 lbl_801C17C4:
 	# ROM: 0x1BE7C4
+glabel string_a_Options
 	.asciz "a/Options"
 	.balign 4
 
 .global lbl_801C17D0
 lbl_801C17D0:
 	# ROM: 0x1BE7D0
+glabel string_banana_pic
 	.asciz "banana.pic"
 	.balign 4
+glabel string_BANANA_S_
 	.asciz "BANANA(S)"
 	.balign 4
+glabel string__2d_BANANAS_LEFT
 	.asciz "%2d BANANAS LEFT"
 	.balign 4
 	.byte 0x42, 0xC8, 0x00, 0x00
@@ -27579,71 +27612,89 @@ lbl_801C17D0:
 	.byte 0x00, 0xFF, 0xFF, 0x00
 	.byte 0x00, 0xFF, 0x00, 0xFF
 	.byte 0x00, 0x00, 0xFF, 0xFF
+glabel string_ROUND__d
 	.asciz "ROUND %d"
 	.balign 4
+glabel string_MASTER__d
 	.asciz "MASTER %d"
 	.balign 4
+glabel string_EXTRA__d
 	.asciz "EXTRA %d"
 	.balign 4
+glabel string_FLOOR__d
 	.asciz "FLOOR %d"
 	.balign 4
+glabel string_BONUS_FLOOR
 	.asciz "BONUS FLOOR"
+glabel string_FINAL_ROUND
 	.asciz "FINAL ROUND"
+glabel string_FINAL_FLOOR
 	.asciz "FINAL FLOOR"
+glabel string__Lib_No__d_
 	.asciz "[Lib No.%d]"
 
 .global lbl_801C19FC
 lbl_801C19FC:
 	# ROM: 0x1BE9FC
+glabel string_saru_mark_pic
 	.asciz "saru mark.pic"
 	.balign 4
-	.4byte 0x802F1088  ;# ptr
+	.4byte string_FINAL  ;# ptr
 	.4byte 0x802F1090  ;# ptr
 	.4byte 0x802F1094  ;# ptr
 
 .global lbl_801C1A18
 lbl_801C1A18:
 	# ROM: 0x1BEA18
+glabel string_separate
 	.asciz "separate"
 	.balign 4
 
 .global lbl_801C1A24
 lbl_801C1A24:
 	# ROM: 0x1BEA24
+glabel string__2d_BANANA_s_LEFT
 	.asciz "%2d BANANA%s LEFT"
 	.balign 4
 
 .global lbl_801C1A38
 lbl_801C1A38:
 	# ROM: 0x1BEA38
+glabel string_JUMP_TO_FLOOR__d
 	.asciz "JUMP TO FLOOR %d"
 	.balign 4
 
 .global lbl_801C1A4C
 lbl_801C1A4C:
 	# ROM: 0x1BEA4C
+glabel string_FALL_OUT
 	.asciz "FALL OUT"
 	.balign 4
 
 .global lbl_801C1A58
 lbl_801C1A58:
 	# ROM: 0x1BEA58
+glabel string_TIME_OVER
 	.asciz "TIME OVER"
 	.balign 4
 
 .global lbl_801C1A64
 lbl_801C1A64:
 	# ROM: 0x1BEA64
+glabel string_BONUS_FINISH
 	.asciz "BONUS FINISH"
 	.balign 4
+glabel string_CONTINUE_
 	.asciz "CONTINUE?"
 	.balign 4
+glabel string_h_NOKORI
 	.asciz "h/NOKORI"
 	.balign 4
 
 .global lbl_801C1A8C
 lbl_801C1A8C:
 	# ROM: 0x1BEA8C
+glabel string_a_Continue_s___d
 	.asciz "a/Continue(s):%d"
 	.balign 4
 
@@ -27662,21 +27713,27 @@ lbl_801C1AA0:
 .global lbl_801C1AC0
 lbl_801C1AC0:
 	# ROM: 0x1BEAC0
+glabel string_HURRY_UP_
 	.asciz "HURRY UP!"
 	.balign 4
+glabel string_THE_GREATEST_
 	.asciz "THE GREATEST!"
 	.balign 4
+glabel string_SECOND_BEST
 	.asciz "SECOND BEST"
+glabel string_THIRD_BEST
 	.asciz "THIRD BEST"
 	.balign 4
+glabel string_FOURTH_BEST
 	.asciz "FOURTH BEST"
+glabel string_FIFTH_BEST
 	.asciz "FIFTH BEST"
 	.balign 4
-	.4byte 0x801C1ACC  ;# ptr
-	.4byte 0x801C1ADC  ;# ptr
-	.4byte 0x801C1AE8  ;# ptr
-	.4byte 0x801C1AF4  ;# ptr
-	.4byte 0x801C1B00  ;# ptr
+	.4byte string_THE_GREATEST_  ;# ptr
+	.4byte string_SECOND_BEST  ;# ptr
+	.4byte string_THIRD_BEST  ;# ptr
+	.4byte string_FOURTH_BEST  ;# ptr
+	.4byte string_FIFTH_BEST  ;# ptr
 
 .global lbl_801C1B20
 lbl_801C1B20:
@@ -27684,215 +27741,262 @@ lbl_801C1B20:
 	.byte 0x00, 0x48, 0x00, 0x48
 	.byte 0x00, 0x30, 0x02, 0x58
 	.byte 0x02, 0x10, 0x00, 0x00
+glabel string_NAME_ENTRY
 	.asciz "NAME ENTRY"
 	.balign 4
+glabel string_OUT_OF_RANK
 	.asciz "OUT OF RANK"
+glabel string_YOU_ARE__s
 	.asciz "YOU ARE %s"
 	.balign 4
+glabel string_TIME_LIMIT
 	.asciz "TIME LIMIT"
 	.balign 4
+glabel string_CONGRATULATIONS
 	.asciz "CONGRATULATIONS"
+glabel string_THANK__YOU__FOR__PLAYING
 	.asciz "THANK  YOU  FOR  PLAYING"
 	.balign 4
+glabel string_Chief_Programmer
 	.asciz "Chief Programmer"
 	.balign 4
+glabel string_Hisashi_Endo
 	.asciz "Hisashi Endo"
 	.balign 4
+glabel string_Programmers
 	.asciz "Programmers"
+glabel string_Jun_Tokuhara
 	.asciz "Jun Tokuhara"
 	.balign 4
+glabel string_Yoshinori_Suzuki
 	.asciz "Yoshinori Suzuki"
 	.balign 4
+glabel string_Eiji_Takaki
 	.asciz "Eiji Takaki"
+glabel string_Chief_Designer
 	.asciz "Chief Designer"
 	.balign 4
+glabel string_Junichi_Yamada
 	.asciz "Junichi Yamada"
 	.balign 4
+glabel string_Designers
 	.asciz "Designers"
 	.balign 4
+glabel string_Mika_Kojima
 	.asciz "Mika Kojima"
+glabel string_Yukinobu_Arikawa
 	.asciz "Yukinobu Arikawa"
 	.balign 4
+glabel string_Yukio_Oda
 	.asciz "Yukio Oda"
 	.balign 4
+glabel string_Mari_Sasaki
 	.asciz "Mari Sasaki"
+glabel string_Sound_Design
 	.asciz "Sound Design"
 	.balign 4
+glabel string_Yoshiyuki_Kadooka
 	.asciz "Yoshiyuki Kadooka"
 	.balign 4
+glabel string_Hiroyuki_Hamada
 	.asciz "Hiroyuki Hamada"
+glabel string_Hidenori_Shoji
 	.asciz "Hidenori Shoji"
 	.balign 4
+glabel string_Sakae_Osumi
 	.asciz "Sakae Osumi"
+glabel string_Monkey_Voice
 	.asciz "Monkey Voice"
 	.balign 4
+glabel string_Kaoru_Morota
 	.asciz "Kaoru Morota"
 	.balign 4
+glabel string_Konami_Yoshida
 	.asciz "Konami Yoshida"
 	.balign 4
+glabel string_Rio_Natsuki
 	.asciz "Rio Natsuki"
+glabel string_Mechatronics
 	.asciz "Mechatronics"
 	.balign 4
+glabel string_Masao_Yoshimoto
 	.asciz "Masao Yoshimoto"
+glabel string_Akihiko_Kohno
 	.asciz "Akihiko Kohno"
 	.balign 4
+glabel string_Kazuhiro_Nojo
 	.asciz "Kazuhiro Nojo"
 	.balign 4
+glabel string_Hiroki_Koyama
 	.asciz "Hiroki Koyama"
 	.balign 4
+glabel string_Masahito_Yanase
 	.asciz "Masahito Yanase"
+glabel string_Seiji_Ishii
 	.asciz "Seiji Ishii"
+glabel string_Yutaka_Yokoyama
 	.asciz "Yutaka Yokoyama"
+glabel string_Eiji_Inoue
 	.asciz "Eiji Inoue"
 	.balign 4
+glabel string_Publicity
 	.asciz "Publicity"
 	.balign 4
+glabel string_Masae_Otoshi
 	.asciz "Masae Otoshi"
 	.balign 4
+glabel string_Cooperation
 	.asciz "Cooperation"
+glabel string_Dole_Food_Company_Inc
 	.asciz "Dole Food Company,Inc"
 	.balign 4
+glabel string_Dole_Japan_Ltd_
 	.asciz "Dole Japan,Ltd."
+glabel string_Special_Thanks
 	.asciz "Special Thanks"
 	.balign 4
+glabel string_STURM_Co__Ltd_
 	.asciz "STURM Co.,Ltd."
 	.balign 4
+glabel string_T_s_music_Co__Ltd_
 	.asciz "T's music Co.,Ltd."
 	.balign 4
+glabel string_Producer___Director
 	.asciz "Producer & Director"
+glabel string_Toshihiro_Nagoshi
 	.asciz "Toshihiro Nagoshi"
 	.balign 4
 	.4byte 0
-	.4byte 0x802F10FC  ;# ptr
+	.4byte string_Staff  ;# ptr
 	.4byte 0
 	.byte 0x00, 0x23, 0x00, 0x00
-	.4byte 0x801C1B88  ;# ptr
+	.4byte string_Chief_Programmer  ;# ptr
 	.4byte 0
 	.byte 0x00, 0x37, 0x00, 0x00
-	.4byte 0x801C1B9C  ;# ptr
+	.4byte string_Hisashi_Endo  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0x50, 0x00, 0x00
-	.4byte 0x801C1BAC  ;# ptr
+	.4byte string_Programmers  ;# ptr
 	.4byte 0
 	.byte 0x00, 0x64, 0x00, 0x00
-	.4byte 0x801C1BB8  ;# ptr
+	.4byte string_Jun_Tokuhara  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0x73, 0x00, 0x00
-	.4byte 0x801C1BC8  ;# ptr
+	.4byte string_Yoshinori_Suzuki  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0x82, 0x00, 0x00
-	.4byte 0x801C1BDC  ;# ptr
+	.4byte string_Eiji_Takaki  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0x9B, 0x00, 0x00
-	.4byte 0x801C1BE8  ;# ptr
+	.4byte string_Chief_Designer  ;# ptr
 	.4byte 0
 	.byte 0x00, 0xAF, 0x00, 0x00
-	.4byte 0x801C1BF8  ;# ptr
+	.4byte string_Junichi_Yamada  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0xC8, 0x00, 0x00
-	.4byte 0x801C1C08  ;# ptr
+	.4byte string_Designers  ;# ptr
 	.4byte 0
 	.byte 0x00, 0xDC, 0x00, 0x00
-	.4byte 0x801C1C14  ;# ptr
+	.4byte string_Mika_Kojima  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0xEB, 0x00, 0x00
-	.4byte 0x801C1C20  ;# ptr
+	.4byte string_Yukinobu_Arikawa  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x00, 0xFA, 0x00, 0x00
-	.4byte 0x801C1C34  ;# ptr
+	.4byte string_Yukio_Oda  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x09, 0x00, 0x00
-	.4byte 0x801C1C40  ;# ptr
+	.4byte string_Mari_Sasaki  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x22, 0x00, 0x00
-	.4byte 0x801C1C4C  ;# ptr
+	.4byte string_Sound_Design  ;# ptr
 	.4byte 0
 	.byte 0x01, 0x36, 0x00, 0x00
-	.4byte 0x801C1C5C  ;# ptr
+	.4byte string_Yoshiyuki_Kadooka  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x45, 0x00, 0x00
-	.4byte 0x802F1104  ;# ptr
+	.4byte string_Chamy  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x54, 0x00, 0x00
-	.4byte 0x801C1C70  ;# ptr
+	.4byte string_Hiroyuki_Hamada  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x63, 0x00, 0x00
-	.4byte 0x801C1C80  ;# ptr
+	.4byte string_Hidenori_Shoji  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x72, 0x00, 0x00
-	.4byte 0x801C1C90  ;# ptr
+	.4byte string_Sakae_Osumi  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0x8B, 0x00, 0x00
-	.4byte 0x801C1C9C  ;# ptr
+	.4byte string_Monkey_Voice  ;# ptr
 	.4byte 0
 	.byte 0x01, 0x9F, 0x00, 0x00
-	.4byte 0x801C1CAC  ;# ptr
+	.4byte string_Kaoru_Morota  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0xAE, 0x00, 0x00
-	.4byte 0x801C1CBC  ;# ptr
+	.4byte string_Konami_Yoshida  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0xBD, 0x00, 0x00
-	.4byte 0x801C1CCC  ;# ptr
+	.4byte string_Rio_Natsuki  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0xD6, 0x00, 0x00
-	.4byte 0x801C1CD8  ;# ptr
+	.4byte string_Mechatronics  ;# ptr
 	.4byte 0
 	.byte 0x01, 0xEA, 0x00, 0x00
-	.4byte 0x801C1CE8  ;# ptr
+	.4byte string_Masao_Yoshimoto  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x01, 0xF9, 0x00, 0x00
-	.4byte 0x801C1CF8  ;# ptr
+	.4byte string_Akihiko_Kohno  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x08, 0x00, 0x00
-	.4byte 0x801C1D08  ;# ptr
+	.4byte string_Kazuhiro_Nojo  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x17, 0x00, 0x00
-	.4byte 0x801C1D18  ;# ptr
+	.4byte string_Hiroki_Koyama  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x26, 0x00, 0x00
-	.4byte 0x801C1D28  ;# ptr
+	.4byte string_Masahito_Yanase  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x35, 0x00, 0x00
-	.4byte 0x801C1D38  ;# ptr
+	.4byte string_Seiji_Ishii  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x44, 0x00, 0x00
-	.4byte 0x801C1D44  ;# ptr
+	.4byte string_Yutaka_Yokoyama  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x53, 0x00, 0x00
-	.4byte 0x801C1D54  ;# ptr
+	.4byte string_Eiji_Inoue  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x6C, 0x00, 0x00
-	.4byte 0x801C1D60  ;# ptr
+	.4byte string_Publicity  ;# ptr
 	.4byte 0
 	.byte 0x02, 0x80, 0x00, 0x00
-	.4byte 0x801C1D6C  ;# ptr
+	.4byte string_Masae_Otoshi  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0x99, 0x00, 0x00
-	.4byte 0x801C1D7C  ;# ptr
+	.4byte string_Cooperation  ;# ptr
 	.4byte 0
 	.byte 0x02, 0xAD, 0x00, 0x00
-	.4byte 0x801C1D88  ;# ptr
+	.4byte string_Dole_Food_Company_Inc  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0xBC, 0x00, 0x00
-	.4byte 0x801C1DA0  ;# ptr
+	.4byte string_Dole_Japan_Ltd_  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x02, 0xF5, 0x00, 0x00
-	.4byte 0x801C1DB0  ;# ptr
+	.4byte string_Special_Thanks  ;# ptr
 	.4byte 0
 	.byte 0x03, 0x09, 0x00, 0x00
-	.4byte 0x802F110C  ;# ptr
+	.4byte string_HAIKYO  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x03, 0x18, 0x00, 0x00
-	.4byte 0x801C1DC0  ;# ptr
+	.4byte string_STURM_Co__Ltd_  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x03, 0x27, 0x00, 0x00
-	.4byte 0x801C1DD0  ;# ptr
+	.4byte string_T_s_music_Co__Ltd_  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.byte 0x03, 0x60, 0x00, 0x00
-	.4byte 0x801C1DE4  ;# ptr
+	.4byte string_Producer___Director  ;# ptr
 	.4byte 0
 	.byte 0x03, 0x74, 0x00, 0x00
-	.4byte 0x801C1DF8  ;# ptr
+	.4byte string_Toshihiro_Nagoshi  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.4byte 0
@@ -27910,6 +28014,7 @@ lbl_801C1B20:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0x00, 0x00, 0x00
+glabel string_ENDING_PICTURE
 	.asciz "ENDING PICTURE"
 	.balign 4
 	.byte 0x00, 0xC8, 0x00, 0x00
@@ -27932,13 +28037,16 @@ lbl_801C1B20:
 	.byte 0x40, 0xC0, 0x00, 0x00
 	.byte 0x3D, 0x4C, 0xCC, 0xCD
 	.byte 0x06, 0x00, 0x00, 0x00
+glabel string_MASTER_STAGE
 	.asciz "MASTER STAGE"
 	.balign 4
+glabel string_EXTRA_STAGE
 	.asciz "EXTRA STAGE"
 
 .global lbl_801C20D8
 lbl_801C20D8:
 	# ROM: 0x1BF0D8
+glabel string_result_banana_pic
 	.asciz "result banana.pic"
 	.balign 4
 
@@ -27964,44 +28072,54 @@ lbl_801C20EC:
 	.byte 0xC2, 0x10, 0x00, 0x00
 	.4byte 0
 	.byte 0x42, 0x10, 0x00, 0x00
+glabel string_result_menu
 	.asciz "result menu"
+glabel string_result_mask
 	.asciz "result mask"
+glabel string_k_RITORAI
 	.asciz "k/RITORAI"
 	.balign 4
+glabel string_h_SETTEIHENNKOU
 	.asciz "h/SETTEIHENNKOU"
+glabel string_h_SHUURYOU
 	.asciz "h/SHUURYOU"
 	.balign 4
-	.4byte 0x801C2150  ;# ptr
-	.4byte 0x801C215C  ;# ptr
-	.4byte 0x801C216C  ;# ptr
+	.4byte string_k_RITORAI  ;# ptr
+	.4byte string_h_SETTEIHENNKOU  ;# ptr
+	.4byte string_h_SHUURYOU  ;# ptr
 
 .global lbl_801C2184
 lbl_801C2184:
 	# ROM: 0x1BF184
+glabel string_CLEAR_SCORE___
 	.asciz "CLEAR SCORE : "
 	.balign 4
 
 .global lbl_801C2194
 lbl_801C2194:
 	# ROM: 0x1BF194
+glabel string__WARP_BONUS___
 	.asciz " WARP BONUS   "
 	.balign 4
 
 .global lbl_801C21A4
 lbl_801C21A4:
 	# ROM: 0x1BF1A4
+glabel string__TIME_BONUS___
 	.asciz " TIME BONUS   "
 	.balign 4
 
 .global lbl_801C21B4
 lbl_801C21B4:
 	# ROM: 0x1BF1B4
+glabel string_FLOOR_SCORE___
 	.asciz "FLOOR SCORE : "
 	.balign 4
 
 .global lbl_801C21C4
 lbl_801C21C4:
 	# ROM: 0x1BF1C4
+glabel string_BEST_SCORE
 	.asciz "BEST SCORE"
 	.balign 4
 	.byte 0x05, 0x11, 0x05, 0x12
@@ -28029,11 +28147,13 @@ lbl_801C21C4:
 	.byte 0x42, 0x7C, 0x00, 0x00
 	.byte 0x42, 0x60, 0x00, 0x00
 	.byte 0x42, 0x8A, 0x00, 0x00
+glabel string_bomb_scat_d_pic
 	.asciz "bomb_scat%d.pic"
 
 .global lbl_801C2244
 lbl_801C2244:
 	# ROM: 0x1BF244
+glabel string_timer_pic
 	.asciz "timer.pic"
 	.balign 4
 
@@ -28107,78 +28227,106 @@ lbl_801C2318:
 	.byte 0x03, 0x02, 0x02, 0x02
 	.byte 0x05, 0x03, 0x04, 0x04
 	.byte 0x03, 0x04, 0x00, 0x00
+glabel string_a_Normal_Mode_movement
 	.asciz "a/Normal Mode movement"
 	.balign 4
+glabel string_a_Normal_Mode_rules
 	.asciz "a/Normal Mode rules"
+glabel string_a_Competition_Mode_movement
 	.asciz "a/Competition Mode movement"
+glabel string_a_Competition_Mode_rules
 	.asciz "a/Competition Mode rules"
 	.balign 4
+glabel string_a_Practice_Mode_movement
 	.asciz "a/Practice Mode movement"
 	.balign 4
+glabel string_a_Practice_Mode_rules
 	.asciz "a/Practice Mode rules"
 	.balign 4
+glabel string_a_Monkey_Race_controls
 	.asciz "a/Monkey Race controls"
 	.balign 4
+glabel string_a_One_Course_Race_rules
 	.asciz "a/One Course Race rules"
+glabel string_a_About_Items
 	.asciz "a/About Items"
 	.balign 4
+glabel string_a_Grand_Prix_rules
 	.asciz "a/Grand Prix rules"
 	.balign 4
+glabel string_a_Time_Attack_Rules
 	.asciz "a/Time Attack Rules"
-	.4byte 0x801C23C4  ;# ptr
-	.4byte 0x801C23DC  ;# ptr
-	.4byte 0x801C23F4  ;# ptr
-	.4byte 0x801C23DC  ;# ptr
-	.4byte 0x801C2404  ;# ptr
-	.4byte 0x801C2418  ;# ptr
+	.4byte string_a_Monkey_Race_controls  ;# ptr
+	.4byte string_a_One_Course_Race_rules  ;# ptr
+	.4byte string_a_About_Items  ;# ptr
+	.4byte string_a_One_Course_Race_rules  ;# ptr
+	.4byte string_a_Grand_Prix_rules  ;# ptr
+	.4byte string_a_Time_Attack_Rules  ;# ptr
+glabel string_a_Monkey_Fight_controls
 	.asciz "a/Monkey Fight controls"
+glabel string_a_Monkey_Fight_rules
 	.asciz "a/Monkey Fight rules"
 	.balign 4
-	.4byte 0x801C2444  ;# ptr
-	.4byte 0x801C245C  ;# ptr
-	.4byte 0x801C23F4  ;# ptr
+	.4byte string_a_Monkey_Fight_controls  ;# ptr
+	.4byte string_a_Monkey_Fight_rules  ;# ptr
+	.4byte string_a_About_Items  ;# ptr
+glabel string_a_Monkey_Target_controls
 	.asciz "a/Monkey Target controls"
 	.balign 4
+glabel string_a_Monkey_Target_rules
 	.asciz "a/Monkey Target rules"
 	.balign 4
+glabel string_a_About_Help_Items
 	.asciz "a/About Help Items"
 	.balign 4
+glabel string_a_About_the_Wheel_of_Danger
 	.asciz "a/About the Wheel of Danger"
-	.4byte 0x801C2480  ;# ptr
-	.4byte 0x801C249C  ;# ptr
-	.4byte 0x801C24B4  ;# ptr
-	.4byte 0x801C24C8  ;# ptr
+	.4byte string_a_Monkey_Target_controls  ;# ptr
+	.4byte string_a_Monkey_Target_rules  ;# ptr
+	.4byte string_a_About_Help_Items  ;# ptr
+	.4byte string_a_About_the_Wheel_of_Danger  ;# ptr
+glabel string_a_View_Mode_controls
 	.asciz "a/View Mode controls"
 	.balign 4
+glabel string_a_Shot_Mode_controls
 	.asciz "a/Shot Mode controls"
 	.balign 4
+glabel string_a_Vs__Mode_rules
 	.asciz "a/Vs. Mode rules"
 	.balign 4
+glabel string_a_Tournament_Mode_rules
 	.asciz "a/Tournament Mode rules"
-	.4byte 0x801C24F4  ;# ptr
-	.4byte 0x801C250C  ;# ptr
-	.4byte 0x801C2524  ;# ptr
-	.4byte 0x801C2538  ;# ptr
+	.4byte string_a_View_Mode_controls  ;# ptr
+	.4byte string_a_Shot_Mode_controls  ;# ptr
+	.4byte string_a_Vs__Mode_rules  ;# ptr
+	.4byte string_a_Tournament_Mode_rules  ;# ptr
+glabel string_a_Monkey_Bowling_controls
 	.asciz "a/Monkey Bowling controls"
 	.balign 4
+glabel string_a_Standard_Mode_rules
 	.asciz "a/Standard Mode rules"
 	.balign 4
+glabel string_a_Challenge_Mode_rules
 	.asciz "a/Challenge Mode rules"
 	.balign 4
-	.4byte 0x801C2560  ;# ptr
-	.4byte 0x801C257C  ;# ptr
-	.4byte 0x801C2594  ;# ptr
+	.4byte string_a_Monkey_Bowling_controls  ;# ptr
+	.4byte string_a_Standard_Mode_rules  ;# ptr
+	.4byte string_a_Challenge_Mode_rules  ;# ptr
+glabel string_a_Putt_Mode_controls
 	.asciz "a/Putt Mode controls"
 	.balign 4
+glabel string_a_Camera_Mode_controls
 	.asciz "a/Camera Mode controls"
 	.balign 4
+glabel string_a_Stroke_Play_rules
 	.asciz "a/Stroke Play rules"
+glabel string_a_Match_Play_rules
 	.asciz "a/Match Play rules"
 	.balign 4
-	.4byte 0x801C25B8  ;# ptr
-	.4byte 0x801C25D0  ;# ptr
-	.4byte 0x801C25E8  ;# ptr
-	.4byte 0x801C25FC  ;# ptr
+	.4byte string_a_Putt_Mode_controls  ;# ptr
+	.4byte string_a_Camera_Mode_controls  ;# ptr
+	.4byte string_a_Stroke_Play_rules  ;# ptr
+	.4byte string_a_Match_Play_rules  ;# ptr
 	.4byte 0x802F1168  ;# ptr
 	.4byte 0x802F1170  ;# ptr
 	.4byte 0x802F1178  ;# ptr
@@ -28233,258 +28381,325 @@ lbl_801C2318:
 	.byte 0x00, 0x00, 0x0C, 0x21
 	.byte 0x05, 0x1A, 0x2C, 0x43
 	.byte 0x55, 0x67, 0x79, 0x00
+glabel string_a_Control_Stick
 	.asciz "a/Control Stick"
+glabel string_a_Roll_the_ball
 	.asciz "a/Roll the ball"
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C2708  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a_Roll_the_ball  ;# ptr
 	.4byte 0
+glabel string_a_START_PAUSE_Button
 	.asciz "a/START/PAUSE Button"
 	.balign 4
+glabel string_a_Pause_Menu
 	.asciz "a/Pause Menu"
 	.balign 4
-	.4byte 0x801C2724  ;# ptr
-	.4byte 0x801C273C  ;# ptr
+	.4byte string_a_START_PAUSE_Button  ;# ptr
+	.4byte string_a_Pause_Menu  ;# ptr
 	.4byte 0
+glabel string_a_A_Button
 	.asciz "a/A Button"
 	.balign 4
+glabel string_a_Adjust_the_size_of
 	.asciz "a/Adjust the size of"
 	.balign 4
+glabel string_a_the_on_screen_map
 	.asciz "a/the on-screen map"
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C2764  ;# ptr
-	.4byte 0x801C277C  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Adjust_the_size_of  ;# ptr
+	.4byte string_a_the_on_screen_map  ;# ptr
 	.4byte 0
+glabel string_a_Use_Item
 	.asciz "a/Use Item"
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C27A0  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Use_Item  ;# ptr
 	.4byte 0
+glabel string_a_Return_to_the_stage
 	.asciz "a/Return to the stage"
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x802F1180  ;# ptr
-	.4byte 0x801C27B8  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Punch  ;# ptr
+	.4byte string_a_Return_to_the_stage  ;# ptr
 	.4byte 0
+glabel string_a__Before_taking_flight_
 	.asciz "a/-Before taking flight-"
 	.balign 4
+glabel string_a__During_flight_
 	.asciz "a/-During flight-"
 	.balign 4
+glabel string_a_Push_p_SANNKAKU_U_a__to_move_down
 	.asciz "a/Push p/SANNKAKU_U/a/ to move down"
+glabel string_a_Push_p_SANNKAKU_D_a__to_move_up
 	.asciz "a/Push p/SANNKAKU_D/a/ to move up"
 	.balign 4
+glabel string_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__will_turn
 	.asciz "p/SANNKAKU_L/a/ or p/SANNKAKU_R/a/ will turn"
 	.balign 4
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C27E0  ;# ptr
-	.4byte 0x801C2708  ;# ptr
-	.4byte 0x801C27FC  ;# ptr
-	.4byte 0x801C2810  ;# ptr
-	.4byte 0x801C2834  ;# ptr
-	.4byte 0x801C2858  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a__Before_taking_flight_  ;# ptr
+	.4byte string_a_Roll_the_ball  ;# ptr
+	.4byte string_a__During_flight_  ;# ptr
+	.4byte string_a_Push_p_SANNKAKU_U_a__to_move_down  ;# ptr
+	.4byte string_a_Push_p_SANNKAKU_D_a__to_move_up  ;# ptr
+	.4byte string_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__will_turn  ;# ptr
 	.4byte 0
+glabel string_a_Change_to_flight_mode
 	.asciz "a/Change to flight mode"
+glabel string_a_Change_to_landing_mode
 	.asciz "a/Change to landing mode"
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C28A8  ;# ptr
-	.4byte 0x801C28C0  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Change_to_flight_mode  ;# ptr
+	.4byte string_a_Change_to_landing_mode  ;# ptr
 	.4byte 0
+glabel string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to
 	.asciz "a/Press p/SANNKAKU_L/a/ or p/SANNKAKU_R/a/ to"
 	.balign 4
+glabel string_a_change_the_direction
 	.asciz "a/change the direction"
 	.balign 4
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C28EC  ;# ptr
-	.4byte 0x801C291C  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to  ;# ptr
+	.4byte string_a_change_the_direction  ;# ptr
 	.4byte 0
+glabel string_a_Once_you_choose_an_angle_
 	.asciz "a/Once you choose an angle,"
+glabel string_a_it_will_change_to_shot_mode_
 	.asciz "a/it will change to shot mode."
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C2944  ;# ptr
-	.4byte 0x801C2960  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Once_you_choose_an_angle_  ;# ptr
+	.4byte string_a_it_will_change_to_shot_mode_  ;# ptr
 	.4byte 0
+glabel string_a_B_Button
 	.asciz "a/B Button"
 	.balign 4
+glabel string_a_Return_to_previous
 	.asciz "a/Return to previous"
 	.balign 4
+glabel string_a_camera_view
 	.asciz "a/camera view"
 	.balign 4
-	.4byte 0x801C2990  ;# ptr
-	.4byte 0x801C299C  ;# ptr
-	.4byte 0x801C29B4  ;# ptr
+	.4byte string_a_B_Button  ;# ptr
+	.4byte string_a_Return_to_previous  ;# ptr
+	.4byte string_a_camera_view  ;# ptr
 	.4byte 0
+glabel string_a_C_Stick
 	.asciz "a/C Stick"
 	.balign 4
+glabel string_a_Camera_movement
 	.asciz "a/Camera movement"
 	.balign 4
-	.4byte 0x801C29D4  ;# ptr
-	.4byte 0x801C29E0  ;# ptr
+	.4byte string_a_C_Stick  ;# ptr
+	.4byte string_a_Camera_movement  ;# ptr
 	.4byte 0
+glabel string_a_X_Button
 	.asciz "a/X Button"
 	.balign 4
+glabel string_a_Ball_number
 	.asciz "a/Ball number"
 	.balign 4
-	.4byte 0x801C2A00  ;# ptr
-	.4byte 0x801C2A0C  ;# ptr
+	.4byte string_a_X_Button  ;# ptr
+	.4byte string_a_Ball_number  ;# ptr
 	.4byte 0
+glabel string_a_Y_Button
 	.asciz "a/Y Button"
 	.balign 4
+glabel string_a_Change_between
 	.asciz "a/Change between"
 	.balign 4
+glabel string_a_2D_top_view_and_3D_view
 	.asciz "a/2D top view and 3D view"
 	.balign 4
-	.4byte 0x801C2A28  ;# ptr
-	.4byte 0x801C2A34  ;# ptr
-	.4byte 0x801C2A48  ;# ptr
+	.4byte string_a_Y_Button  ;# ptr
+	.4byte string_a_Change_between  ;# ptr
+	.4byte string_a_2D_top_view_and_3D_view  ;# ptr
 	.4byte 0
+glabel string_a_Change_the_shot_point
 	.asciz "a/Change the shot point"
+glabel string_a_of_the_ball
 	.asciz "a/of the ball"
 	.balign 4
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C2A74  ;# ptr
-	.4byte 0x801C2A8C  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a_Change_the_shot_point  ;# ptr
+	.4byte string_a_of_the_ball  ;# ptr
 	.4byte 0
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x802F1188  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Shot  ;# ptr
 	.4byte 0
+glabel string_a_Return_to_View_Mode
 	.asciz "a/Return to View Mode"
 	.balign 4
-	.4byte 0x801C2990  ;# ptr
-	.4byte 0x801C2AB8  ;# ptr
+	.4byte string_a_B_Button  ;# ptr
+	.4byte string_a_Return_to_View_Mode  ;# ptr
 	.4byte 0
+glabel string_a_Change_the_strength
 	.asciz "a/Change the strength"
 	.balign 4
+glabel string_a_of_your_shot
 	.asciz "a/of your shot"
 	.balign 4
-	.4byte 0x801C2A28  ;# ptr
-	.4byte 0x801C2ADC  ;# ptr
-	.4byte 0x801C2AF4  ;# ptr
+	.4byte string_a_Y_Button  ;# ptr
+	.4byte string_a_Change_the_strength  ;# ptr
+	.4byte string_a_of_your_shot  ;# ptr
 	.4byte 0
+glabel string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_change
 	.asciz "a/Press p/SANNKAKU_L/a/ or p/SANNKAKU_R/a/ to change"
 	.balign 4
+glabel string_a_your_throwing_position
 	.asciz "a/your throwing position"
 	.balign 4
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C2B14  ;# ptr
-	.4byte 0x801C2B4C  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_change  ;# ptr
+	.4byte string_a_your_throwing_position  ;# ptr
 	.4byte 0
+glabel string_a_Select_
 	.asciz "a/Select:"
 	.balign 4
+glabel string_a_1__Throwing_position
 	.asciz "a/1. Throwing position"
 	.balign 4
+glabel string_a_2__Throwing_direction
 	.asciz "a/2. Throwing direction"
+glabel string_a_3__Throwing_strength
 	.asciz "a/3. Throwing strength"
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C2B78  ;# ptr
-	.4byte 0x801C2B84  ;# ptr
-	.4byte 0x801C2B9C  ;# ptr
-	.4byte 0x801C2BB4  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Select_  ;# ptr
+	.4byte string_a_1__Throwing_position  ;# ptr
+	.4byte string_a_2__Throwing_direction  ;# ptr
+	.4byte string_a_3__Throwing_strength  ;# ptr
 	.4byte 0
+glabel string_a_Cancel_the
 	.asciz "a/Cancel the"
 	.balign 4
+glabel string_a_throwing_position
 	.asciz "a/throwing position"
-	.4byte 0x801C2990  ;# ptr
-	.4byte 0x801C2BE4  ;# ptr
-	.4byte 0x801C2BF4  ;# ptr
+	.4byte string_a_B_Button  ;# ptr
+	.4byte string_a_Cancel_the  ;# ptr
+	.4byte string_a_throwing_position  ;# ptr
 	.4byte 0
+glabel string_a_Switch_score
 	.asciz "a/Switch score"
 	.balign 4
-	.4byte 0x801C2A00  ;# ptr
-	.4byte 0x801C2C18  ;# ptr
+	.4byte string_a_X_Button  ;# ptr
+	.4byte string_a_Switch_score  ;# ptr
 	.4byte 0
+glabel string_a_L_R_Buttons
 	.asciz "a/L R Buttons"
 	.balign 4
+glabel string_a_Ball_spin
 	.asciz "a/Ball spin"
-	.4byte 0x801C2C34  ;# ptr
-	.4byte 0x801C2C44  ;# ptr
+	.4byte string_a_L_R_Buttons  ;# ptr
+	.4byte string_a_Ball_spin  ;# ptr
 	.4byte 0
+glabel string_a_your_hitting_direction
 	.asciz "a/your hitting direction"
 	.balign 4
+glabel string_a_Press_p_SANNKAKU_U_a__or_p_SANNKAKU_D_a__to_change
 	.asciz "a/Press p/SANNKAKU_U/a/ or p/SANNKAKU_D/a/ to change"
 	.balign 4
+glabel string_a_your_hitting_strength
 	.asciz "a/your hitting strength"
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C2B14  ;# ptr
-	.4byte 0x801C2C5C  ;# ptr
-	.4byte 0x801C2C78  ;# ptr
-	.4byte 0x801C2CB0  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_change  ;# ptr
+	.4byte string_a_your_hitting_direction  ;# ptr
+	.4byte string_a_Press_p_SANNKAKU_U_a__or_p_SANNKAKU_D_a__to_change  ;# ptr
+	.4byte string_a_your_hitting_strength  ;# ptr
 	.4byte 0
+glabel string_a_Hit_the_ball
 	.asciz "a/Hit the ball"
 	.balign 4
+glabel string_a_Select
 	.asciz "a/Select"
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C2CE0  ;# ptr
-	.4byte 0x801C2CF0  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Hit_the_ball  ;# ptr
+	.4byte string_a_Select  ;# ptr
 	.4byte 0
+glabel string_a_Change_hitting_strength
 	.asciz "a/Change hitting strength"
 	.balign 4
+glabel string_a_Cancel
 	.asciz "a/Cancel"
 	.balign 4
-	.4byte 0x801C2990  ;# ptr
-	.4byte 0x801C2D0C  ;# ptr
-	.4byte 0x801C2D28  ;# ptr
+	.4byte string_a_B_Button  ;# ptr
+	.4byte string_a_Change_hitting_strength  ;# ptr
+	.4byte string_a_Cancel  ;# ptr
 	.4byte 0
+glabel string_a_Change_to_camera_mode
 	.asciz "a/Change to camera mode"
-	.4byte 0x801C29D4  ;# ptr
-	.4byte 0x801C2D44  ;# ptr
+	.4byte string_a_C_Stick  ;# ptr
+	.4byte string_a_Change_to_camera_mode  ;# ptr
 	.4byte 0
-	.4byte 0x801C2A00  ;# ptr
-	.4byte 0x801C2D44  ;# ptr
+	.4byte string_a_X_Button  ;# ptr
+	.4byte string_a_Change_to_camera_mode  ;# ptr
 	.4byte 0
+glabel string_a_View_score
 	.asciz "a/View score"
 	.balign 4
-	.4byte 0x801C2A28  ;# ptr
-	.4byte 0x801C2D74  ;# ptr
+	.4byte string_a_Y_Button  ;# ptr
+	.4byte string_a_View_score  ;# ptr
 	.4byte 0
+glabel string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_turn
 	.asciz "a/Press p/SANNKAKU_L/a/ or p/SANNKAKU_R/a/ to turn"
 	.balign 4
+glabel string_a_the_camera_right_or_left
 	.asciz "a/the camera right or left"
 	.balign 4
+glabel string_a_Press_p_SANNKAKU_U_a__or_p_SANNKAKU_D_a__to_move
 	.asciz "a/Press p/SANNKAKU_U/a/ or p/SANNKAKU_D/a/ to move"
 	.balign 4
+glabel string_a_the_camera_forward_or_back
 	.asciz "a/the camera forward or back"
 	.balign 4
-	.4byte 0x801C26F8  ;# ptr
-	.4byte 0x801C2D90  ;# ptr
-	.4byte 0x801C2DC4  ;# ptr
-	.4byte 0x801C2DE0  ;# ptr
-	.4byte 0x801C2E14  ;# ptr
+	.4byte string_a_Control_Stick  ;# ptr
+	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_turn  ;# ptr
+	.4byte string_a_the_camera_right_or_left  ;# ptr
+	.4byte string_a_Press_p_SANNKAKU_U_a__or_p_SANNKAKU_D_a__to_move  ;# ptr
+	.4byte string_a_the_camera_forward_or_back  ;# ptr
 	.4byte 0
+glabel string_a_Face_the_camera_point
 	.asciz "a/Face the camera point"
+glabel string_a_Return_to_Putt_Mode
 	.asciz "a/Return to Putt Mode"
 	.balign 4
-	.4byte 0x801C2758  ;# ptr
-	.4byte 0x801C2E4C  ;# ptr
-	.4byte 0x801C2E64  ;# ptr
+	.4byte string_a_A_Button  ;# ptr
+	.4byte string_a_Face_the_camera_point  ;# ptr
+	.4byte string_a_Return_to_Putt_Mode  ;# ptr
 	.4byte 0
+glabel string_a_Return_to_Putt_Mode_without
 	.asciz "a/Return to Putt Mode without"
 	.balign 4
+glabel string_a_changing_where_you_are_facing_
 	.asciz "a/changing where you are facing."
 	.balign 4
-	.4byte 0x801C2990  ;# ptr
-	.4byte 0x801C2E8C  ;# ptr
-	.4byte 0x801C2EAC  ;# ptr
+	.4byte string_a_B_Button  ;# ptr
+	.4byte string_a_Return_to_Putt_Mode_without  ;# ptr
+	.4byte string_a_changing_where_you_are_facing_  ;# ptr
 	.4byte 0
+glabel string_a_Move_the
 	.asciz "a/Move the"
 	.balign 4
+glabel string_a_camera_point
 	.asciz "a/camera point"
 	.balign 4
-	.4byte 0x801C29D4  ;# ptr
-	.4byte 0x801C2EE0  ;# ptr
-	.4byte 0x801C2EEC  ;# ptr
+	.4byte string_a_C_Stick  ;# ptr
+	.4byte string_a_Move_the  ;# ptr
+	.4byte string_a_camera_point  ;# ptr
 	.4byte 0
+glabel string_a_Lower_camera
 	.asciz "a/Lower camera"
 	.balign 4
-	.4byte 0x801C2A00  ;# ptr
-	.4byte 0x801C2F0C  ;# ptr
+	.4byte string_a_X_Button  ;# ptr
+	.4byte string_a_Lower_camera  ;# ptr
 	.4byte 0
+glabel string_a_Raise_camera
 	.asciz "a/Raise camera"
 	.balign 4
-	.4byte 0x801C2A28  ;# ptr
-	.4byte 0x801C2F28  ;# ptr
+	.4byte string_a_Y_Button  ;# ptr
+	.4byte string_a_Raise_camera  ;# ptr
 	.4byte 0
 	.byte 0x03, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
@@ -28879,300 +29094,403 @@ lbl_801C2318:
 	.4byte 0x801C3518  ;# ptr
 	.4byte 0x801C3528  ;# ptr
 	.4byte 0x801C3540  ;# ptr
+glabel string_a_If_you_can_guide_the_ball_to_the_goal_without_falling_off
 	.asciz "a/If you can guide the ball to the goal without falling off"
+glabel string_a_the_track__you_ll_continue_on_to_the_next_stage_
 	.asciz "a/the track, you'll continue on to the next stage!"
 	.balign 4
+glabel string_a_There_are_delicious_bananas_scattered_throughout_the_stages_
 	.asciz "a/There are delicious bananas scattered throughout the stages!"
 	.balign 4
+glabel string_a_If_you_eat_100__you_ll_get_an_extra_life_
 	.asciz "a/If you eat 100, you'll get an extra life!"
+glabel string_a_If_you_fall_off_the_track__you_ll_lose_a_life_
 	.asciz "a/If you fall off the track, you'll lose a life!"
 	.balign 4
+glabel string_a_If_you_run_out_of_time__you_ll_also_lose_a_life_
 	.asciz "a/If you run out of time, you'll also lose a life!"
 	.balign 4
+glabel string_a_If_you_keep_falling_off_or_running_out_of_time_and
 	.asciz "a/If you keep falling off or running out of time and"
 	.balign 4
+glabel string_a_you_run_out_of_extra_monkeys__the_game_will_be_over_
 	.asciz "a/you run out of extra monkeys, the game will be over!"
 	.balign 4
-	.4byte 0x801C3568  ;# ptr
-	.4byte 0x801C35A4  ;# ptr
-	.4byte 0x801C35D8  ;# ptr
-	.4byte 0x801C3618  ;# ptr
-	.4byte 0x801C3644  ;# ptr
-	.4byte 0x801C3678  ;# ptr
-	.4byte 0x801C36AC  ;# ptr
-	.4byte 0x801C36E4  ;# ptr
+	.4byte string_a_If_you_can_guide_the_ball_to_the_goal_without_falling_off  ;# ptr
+	.4byte string_a_the_track__you_ll_continue_on_to_the_next_stage_  ;# ptr
+	.4byte string_a_There_are_delicious_bananas_scattered_throughout_the_stages_  ;# ptr
+	.4byte string_a_If_you_eat_100__you_ll_get_an_extra_life_  ;# ptr
+	.4byte string_a_If_you_fall_off_the_track__you_ll_lose_a_life_  ;# ptr
+	.4byte string_a_If_you_run_out_of_time__you_ll_also_lose_a_life_  ;# ptr
+	.4byte string_a_If_you_keep_falling_off_or_running_out_of_time_and  ;# ptr
+	.4byte string_a_you_run_out_of_extra_monkeys__the_game_will_be_over_  ;# ptr
+glabel string_a_Try_and_beat_your_opponent_to_the_goal_
 	.asciz "a/Try and beat your opponent to the goal!"
 	.balign 4
+glabel string_a_Get_there_first_and_receive_tons_of_points_
 	.asciz "a/Get there first and receive tons of points!"
 	.balign 4
+glabel string_a_Once_the_determined_number_of_matches_has_finished_
 	.asciz "a/Once the determined number of matches has finished,"
 	.balign 4
+glabel string_a_the_person_with_the_most_points_wins_
 	.asciz "a/the person with the most points wins!"
+glabel string_a_Even_if_you_fall_off_the_track__you_will_return_to_the_start_of_the_track_
 	.asciz "a/Even if you fall off the track, you will return to the start of the track!"
 	.balign 4
+glabel string_a_You_can_continue_to_play_until_someone_reaches_the_goal_or_the_time_runs_out_
 	.asciz "a/You can continue to play until someone reaches the goal or the time runs out!"
+glabel string_a_Once_the_time_runs_out__the_game_is_over__Even_if_no_one_has
 	.asciz "a/Once the time runs out, the game is over! Even if no one has"
 	.balign 4
+glabel string_a_reached_the_goal__you_will_continue_onto_the_next_stage_
 	.asciz "a/reached the goal, you will continue onto the next stage!"
 	.balign 4
-	.4byte 0x801C373C  ;# ptr
-	.4byte 0x801C3768  ;# ptr
-	.4byte 0x801C3798  ;# ptr
-	.4byte 0x801C37D0  ;# ptr
-	.4byte 0x801C37F8  ;# ptr
-	.4byte 0x801C3848  ;# ptr
-	.4byte 0x801C3898  ;# ptr
-	.4byte 0x801C38D8  ;# ptr
+	.4byte string_a_Try_and_beat_your_opponent_to_the_goal_  ;# ptr
+	.4byte string_a_Get_there_first_and_receive_tons_of_points_  ;# ptr
+	.4byte string_a_Once_the_determined_number_of_matches_has_finished_  ;# ptr
+	.4byte string_a_the_person_with_the_most_points_wins_  ;# ptr
+	.4byte string_a_Even_if_you_fall_off_the_track__you_will_return_to_the_start_of_the_track_  ;# ptr
+	.4byte string_a_You_can_continue_to_play_until_someone_reaches_the_goal_or_the_time_runs_out_  ;# ptr
+	.4byte string_a_Once_the_time_runs_out__the_game_is_over__Even_if_no_one_has  ;# ptr
+	.4byte string_a_reached_the_goal__you_will_continue_onto_the_next_stage_  ;# ptr
+glabel string_a_You_can_select_any_stage_that_you_ve_played_before
 	.asciz "a/You can select any stage that you've played before"
 	.balign 4
+glabel string_a_and_practice_doing_it_over_and_over_
 	.asciz "a/and practice doing it over and over!"
 	.balign 4
+glabel string_a_Use_the_Control_Stick_to_guide_the_ball_to_the_goal
 	.asciz "a/Use the Control Stick to guide the ball to the goal"
 	.balign 4
+glabel string_a_without_falling_off_the_track__Good_luck_
 	.asciz "a/without falling off the track! Good luck!"
+glabel string_a_When_you_want_to_practice_a_new_stage__just_press_the_START_PAUSE
 	.asciz "a/When you want to practice a new stage, just press the START/PAUSE"
+glabel string_a_Button__select_the_Stage_Select_option__and_change_the_stage_
 	.asciz "a/Button, select the Stage Select option, and change the stage."
+glabel string_a_When_you_want_to_quit_practicing__just_press_the_START_PAUSE
 	.asciz "a/When you want to quit practicing, just press the START/PAUSE"
 	.balign 4
+glabel string_a_Button_and_select_the_Exit_Game_option_
 	.asciz "a/Button and select the Exit Game option."
 	.balign 4
-	.4byte 0x801C3934  ;# ptr
-	.4byte 0x801C396C  ;# ptr
-	.4byte 0x801C3994  ;# ptr
-	.4byte 0x801C39CC  ;# ptr
-	.4byte 0x801C39F8  ;# ptr
-	.4byte 0x801C3A3C  ;# ptr
-	.4byte 0x801C3A7C  ;# ptr
-	.4byte 0x801C3ABC  ;# ptr
+	.4byte string_a_You_can_select_any_stage_that_you_ve_played_before  ;# ptr
+	.4byte string_a_and_practice_doing_it_over_and_over_  ;# ptr
+	.4byte string_a_Use_the_Control_Stick_to_guide_the_ball_to_the_goal  ;# ptr
+	.4byte string_a_without_falling_off_the_track__Good_luck_  ;# ptr
+	.4byte string_a_When_you_want_to_practice_a_new_stage__just_press_the_START_PAUSE  ;# ptr
+	.4byte string_a_Button__select_the_Stage_Select_option__and_change_the_stage_  ;# ptr
+	.4byte string_a_When_you_want_to_quit_practicing__just_press_the_START_PAUSE  ;# ptr
+	.4byte string_a_Button_and_select_the_Exit_Game_option_  ;# ptr
+glabel string_a_You_pick_one_course_and_race__Roll_your_ball
 	.asciz "a/You pick one course and race! Roll your ball"
 	.balign 4
+glabel string_a_as_fast_as_you_can_and_try_to_come_in_first_
 	.asciz "a/as fast as you can and try to come in first!"
 	.balign 4
+glabel string_a_Once_you_complete_the_selected_number_of_laps__you_will_reach
 	.asciz "a/Once you complete the selected number of laps, you will reach"
+glabel string_a_the_goal__Once_all_the_places_have_been_filled__the_race_will_end_
 	.asciz "a/the goal! Once all the places have been filled, the race will end."
 	.balign 4
+glabel string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item_
 	.asciz "a/If you run into an Item Box, you will receive an item!"
 	.balign 4
+glabel string_a_You_can_hold_up_to_3_items__Use_them_by_pressing_the_A_Button_
 	.asciz "a/You can hold up to 3 items! Use them by pressing the A Button."
 	.balign 4
+glabel string_a_If_you_are_playing_1_player__there_is_a_time_limit__If_the_time
 	.asciz "a/If you are playing 1 player, there is a time limit! If the time"
 	.balign 4
+glabel string_a_runs_out__the_game_will_end_and_you_will_be_forced_to_retire_
 	.asciz "a/runs out, the game will end and you will be forced to retire!"
+glabel string_a_Race_on_all_the_courses_and_get_points_by_winning_
 	.asciz "a/Race on all the courses and get points by winning!"
 	.balign 4
+glabel string_a_The_player_with_the_most_points_at_the_end_of_all_the_races_wins_
 	.asciz "a/The player with the most points at the end of all the races wins!"
+glabel string_a_Once_you_complete_the_selected_number_of_laps__you_will_reach_the
 	.asciz "a/Once you complete the selected number of laps, you will reach the"
+glabel string_a_goal__The_better_place_you_come_in__the_more_points_you_will_get_
 	.asciz "a/goal! The better place you come in, the more points you will get!"
+glabel string_a_Pick_one_course_and_see_how_fast
 	.asciz "a/Pick one course and see how fast"
 	.balign 4
+glabel string_a_you_can_complete_it_by_yourself_
 	.asciz "a/you can complete it by yourself!"
 	.balign 4
+glabel string_a_In_this_mode__you_won_t_find_any_Item_Boxes_
 	.asciz "a/In this mode, you won't find any Item Boxes,"
 	.balign 4
+glabel string_a_but_you_will_start_the_race_with_three_Speed_Up_items_
 	.asciz "a/but you will start the race with three Speed Up items!"
 	.balign 4
+glabel string_a_Try_and_find_the_best_places_to_use_your_Speed_Up_items
 	.asciz "a/Try and find the best places to use your Speed Up items"
 	.balign 4
+glabel string_a_to_get_as_fast_a_time_as_possible_to_rank_in_
 	.asciz "a/to get as fast a time as possible to rank in!"
+glabel string_a_There_is_a_time_limit_in_this_mode___If_the_time_runs_out_
 	.asciz "a/There is a time limit in this mode!! If the time runs out,"
 	.balign 4
+glabel string_a_the_game_will_end_and_you_will_be_forced_to_retire_
 	.asciz "a/the game will end and you will be forced to retire!"
 	.balign 4
-	.4byte 0x801C3B08  ;# ptr
-	.4byte 0x801C3B38  ;# ptr
-	.4byte 0x801C3B68  ;# ptr
-	.4byte 0x801C3BA8  ;# ptr
-	.4byte 0x801C3BF0  ;# ptr
-	.4byte 0x801C3C2C  ;# ptr
-	.4byte 0x801C3C70  ;# ptr
-	.4byte 0x801C3CB4  ;# ptr
-	.4byte 0x801C3CF4  ;# ptr
-	.4byte 0x801C3D2C  ;# ptr
-	.4byte 0x801C3D70  ;# ptr
-	.4byte 0x801C3DB4  ;# ptr
-	.4byte 0x801C3BF0  ;# ptr
-	.4byte 0x801C3C2C  ;# ptr
-	.4byte 0x801C3C70  ;# ptr
-	.4byte 0x801C3CB4  ;# ptr
-	.4byte 0x801C3DF8  ;# ptr
-	.4byte 0x801C3E1C  ;# ptr
-	.4byte 0x801C3E40  ;# ptr
-	.4byte 0x801C3E70  ;# ptr
-	.4byte 0x801C3EAC  ;# ptr
-	.4byte 0x801C3EE8  ;# ptr
-	.4byte 0x801C3F18  ;# ptr
-	.4byte 0x801C3F58  ;# ptr
+	.4byte string_a_You_pick_one_course_and_race__Roll_your_ball  ;# ptr
+	.4byte string_a_as_fast_as_you_can_and_try_to_come_in_first_  ;# ptr
+	.4byte string_a_Once_you_complete_the_selected_number_of_laps__you_will_reach  ;# ptr
+	.4byte string_a_the_goal__Once_all_the_places_have_been_filled__the_race_will_end_  ;# ptr
+	.4byte string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item_  ;# ptr
+	.4byte string_a_You_can_hold_up_to_3_items__Use_them_by_pressing_the_A_Button_  ;# ptr
+	.4byte string_a_If_you_are_playing_1_player__there_is_a_time_limit__If_the_time  ;# ptr
+	.4byte string_a_runs_out__the_game_will_end_and_you_will_be_forced_to_retire_  ;# ptr
+	.4byte string_a_Race_on_all_the_courses_and_get_points_by_winning_  ;# ptr
+	.4byte string_a_The_player_with_the_most_points_at_the_end_of_all_the_races_wins_  ;# ptr
+	.4byte string_a_Once_you_complete_the_selected_number_of_laps__you_will_reach_the  ;# ptr
+	.4byte string_a_goal__The_better_place_you_come_in__the_more_points_you_will_get_  ;# ptr
+	.4byte string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item_  ;# ptr
+	.4byte string_a_You_can_hold_up_to_3_items__Use_them_by_pressing_the_A_Button_  ;# ptr
+	.4byte string_a_If_you_are_playing_1_player__there_is_a_time_limit__If_the_time  ;# ptr
+	.4byte string_a_runs_out__the_game_will_end_and_you_will_be_forced_to_retire_  ;# ptr
+	.4byte string_a_Pick_one_course_and_see_how_fast  ;# ptr
+	.4byte string_a_you_can_complete_it_by_yourself_  ;# ptr
+	.4byte string_a_In_this_mode__you_won_t_find_any_Item_Boxes_  ;# ptr
+	.4byte string_a_but_you_will_start_the_race_with_three_Speed_Up_items_  ;# ptr
+	.4byte string_a_Try_and_find_the_best_places_to_use_your_Speed_Up_items  ;# ptr
+	.4byte string_a_to_get_as_fast_a_time_as_possible_to_rank_in_  ;# ptr
+	.4byte string_a_There_is_a_time_limit_in_this_mode___If_the_time_runs_out_  ;# ptr
+	.4byte string_a_the_game_will_end_and_you_will_be_forced_to_retire_  ;# ptr
+glabel string_a_Press_the_A_Button_to_punch_your_opponent_
 	.asciz "a/Press the A Button to punch your opponent!"
 	.balign 4
+glabel string_a_If_you_knock_your_opponent_off_the_track__you_ll_receive_points_
 	.asciz "a/If you knock your opponent off the track, you'll receive points!"
 	.balign 4
+glabel string_a_When_the_time_limit_runs_out_
 	.asciz "a/When the time limit runs out,"
+glabel string_a_The_person_with_the_most_wins_over_the_determined_number_of_matches_wins_
 	.asciz "a/The person with the most wins over the determined number of matches wins!"
+glabel string_a_If_there_s_a_tie_in_the_final_round__the_game_will_go_into_sudden_death_
 	.asciz "a/If there's a tie in the final round, the game will go into sudden death!"
 	.balign 4
+glabel string_a_If_an_Item_Box_appears__punch_it_to_break_it_open_
 	.asciz "a/If an Item Box appears, punch it to break it open!"
 	.balign 4
+glabel string_a_If_you_pick_up_an_item__your_punches_will_become_stronger_
 	.asciz "a/If you pick up an item, your punches will become stronger!"
 	.balign 4
-	.4byte 0x801C3FF0  ;# ptr
-	.4byte 0x801C4020  ;# ptr
-	.4byte 0x801C4064  ;# ptr
-	.4byte 0x801C37D0  ;# ptr
-	.4byte 0x801C4084  ;# ptr
-	.4byte 0x801C40D0  ;# ptr
-	.4byte 0x801C411C  ;# ptr
-	.4byte 0x801C4154  ;# ptr
+	.4byte string_a_Press_the_A_Button_to_punch_your_opponent_  ;# ptr
+	.4byte string_a_If_you_knock_your_opponent_off_the_track__you_ll_receive_points_  ;# ptr
+	.4byte string_a_When_the_time_limit_runs_out_  ;# ptr
+	.4byte string_a_the_person_with_the_most_points_wins_  ;# ptr
+	.4byte string_a_The_person_with_the_most_wins_over_the_determined_number_of_matches_wins_  ;# ptr
+	.4byte string_a_If_there_s_a_tie_in_the_final_round__the_game_will_go_into_sudden_death_  ;# ptr
+	.4byte string_a_If_an_Item_Box_appears__punch_it_to_break_it_open_  ;# ptr
+	.4byte string_a_If_you_pick_up_an_item__your_punches_will_become_stronger_  ;# ptr
+glabel string_a_After_jumping_off_the_ramp__while_in_the_air__if_you_switch_to
 	.asciz "a/After jumping off the ramp, while in the air, if you switch to"
 	.balign 4
+glabel string_a_flight_mode__your_ball_will_open_up_and_act_like_a_glider_
 	.asciz "a/flight mode, your ball will open up and act like a glider!"
 	.balign 4
+glabel string_a_Once_you_get_close_to_the_target__close_the_ball_to_go_into
 	.asciz "a/Once you get close to the target, close the ball to go into"
 	.balign 4
+glabel string_a_landing_mode__Try_to_land_on_top_of_the_target_
 	.asciz "a/landing mode. Try to land on top of the target!"
 	.balign 4
+glabel string_a_You_will_receive_points_for_the_target_you_land_on__You_will
 	.asciz "a/You will receive points for the target you land on! You will"
 	.balign 4
+glabel string_a_get_to_jump_the_determined_number_of_times_and_add_your_score_up_
 	.asciz "a/get to jump the determined number of times and add your score up!"
+glabel string_a_If_you_get_a_banana__you_will_be_able_to_use_Help_Items__Also_
 	.asciz "a/If you get a banana, you will be able to use Help Items. Also,"
 	.balign 4
+glabel string_a_the_Wheel_of_Danger_may_put_obstacles_on_the_course_
 	.asciz "a/the Wheel of Danger may put obstacles on the course."
 	.balign 4
-	.4byte 0x801C41B4  ;# ptr
-	.4byte 0x801C41F8  ;# ptr
-	.4byte 0x801C4238  ;# ptr
-	.4byte 0x801C4278  ;# ptr
-	.4byte 0x801C42AC  ;# ptr
-	.4byte 0x801C42EC  ;# ptr
-	.4byte 0x801C4330  ;# ptr
-	.4byte 0x801C4374  ;# ptr
+	.4byte string_a_After_jumping_off_the_ramp__while_in_the_air__if_you_switch_to  ;# ptr
+	.4byte string_a_flight_mode__your_ball_will_open_up_and_act_like_a_glider_  ;# ptr
+	.4byte string_a_Once_you_get_close_to_the_target__close_the_ball_to_go_into  ;# ptr
+	.4byte string_a_landing_mode__Try_to_land_on_top_of_the_target_  ;# ptr
+	.4byte string_a_You_will_receive_points_for_the_target_you_land_on__You_will  ;# ptr
+	.4byte string_a_get_to_jump_the_determined_number_of_times_and_add_your_score_up_  ;# ptr
+	.4byte string_a_If_you_get_a_banana__you_will_be_able_to_use_Help_Items__Also_  ;# ptr
+	.4byte string_a_the_Wheel_of_Danger_may_put_obstacles_on_the_course_  ;# ptr
+glabel string_a_In_2_player_mode__the_game_has_similar_rules_as_9_ball_
 	.asciz "a/In 2 player mode, the game has similar rules as 9 ball."
 	.balign 4
+glabel string_a_Whoever_pockets_the_9_ball_first_wins_
 	.asciz "a/Whoever pockets the 9 ball first wins."
 	.balign 4
+glabel string_a_Start_by_pocketing_the_ball_with_the_lowest_number_and_work_your
 	.asciz "a/Start by pocketing the ball with the lowest number and work your"
 	.balign 4
+glabel string_a_way_up__If_you_miss__it_becomes_your_opponent_s_turn_
 	.asciz "a/way up! If you miss, it becomes your opponent's turn."
+glabel string_a_After_you_hit_the_ball_with_the_lowest_number_
 	.asciz "a/After you hit the ball with the lowest number,"
 	.balign 4
+glabel string_a_and_if_it_goes_in_a_pocket__you_can_continue_playing_
 	.asciz "a/and if it goes in a pocket, you can continue playing!"
+glabel string_a_If_your_own_ball_falls_into_a_pocket__it_s_considered_a_foul_
 	.asciz "a/If your own ball falls into a pocket, it's considered a foul,"
+glabel string_a_and_it_becomes_your_opponent_s_turn_
 	.asciz "a/and it becomes your opponent's turn."
 	.balign 4
+glabel string_a_In_1_player_mode__you_can_play_against_the_COM__To_win_
 	.asciz "a/In 1 player mode, you can play against the COM. To win,"
 	.balign 4
+glabel string_a_you_must_pocket_the_9_ball_before_your_opponent_
 	.asciz "a/you must pocket the 9 ball before your opponent."
 	.balign 4
+glabel string_a_Start_by_pocketing_the_ball_with_the_lowest_number_and_work
 	.asciz "a/Start by pocketing the ball with the lowest number and work"
 	.balign 4
+glabel string_a_your_way_up__If_you_miss__it_becomes_your_opponent_s_turn_
 	.asciz "a/your way up! If you miss, it becomes your opponent's turn."
 	.balign 4
+glabel string_a_If_your_own_ball_falls_into_a_pocket__it_s_considered
 	.asciz "a/If your own ball falls into a pocket, it's considered"
+glabel string_a_a_foul__and_it_becomes_your_opponent_s_turn_
 	.asciz "a/a foul, and it becomes your opponent's turn."
 	.balign 4
-	.4byte 0x801C43CC  ;# ptr
-	.4byte 0x801C4408  ;# ptr
-	.4byte 0x801C4434  ;# ptr
-	.4byte 0x801C4478  ;# ptr
-	.4byte 0x801C44B0  ;# ptr
-	.4byte 0x801C44E4  ;# ptr
-	.4byte 0x801C451C  ;# ptr
-	.4byte 0x801C455C  ;# ptr
-	.4byte 0x801C4584  ;# ptr
-	.4byte 0x801C45C0  ;# ptr
-	.4byte 0x801C45F4  ;# ptr
-	.4byte 0x801C4634  ;# ptr
-	.4byte 0x801C44B0  ;# ptr
-	.4byte 0x801C44E4  ;# ptr
-	.4byte 0x801C4674  ;# ptr
-	.4byte 0x801C46AC  ;# ptr
+	.4byte string_a_In_2_player_mode__the_game_has_similar_rules_as_9_ball_  ;# ptr
+	.4byte string_a_Whoever_pockets_the_9_ball_first_wins_  ;# ptr
+	.4byte string_a_Start_by_pocketing_the_ball_with_the_lowest_number_and_work_your  ;# ptr
+	.4byte string_a_way_up__If_you_miss__it_becomes_your_opponent_s_turn_  ;# ptr
+	.4byte string_a_After_you_hit_the_ball_with_the_lowest_number_  ;# ptr
+	.4byte string_a_and_if_it_goes_in_a_pocket__you_can_continue_playing_  ;# ptr
+	.4byte string_a_If_your_own_ball_falls_into_a_pocket__it_s_considered_a_foul_  ;# ptr
+	.4byte string_a_and_it_becomes_your_opponent_s_turn_  ;# ptr
+	.4byte string_a_In_1_player_mode__you_can_play_against_the_COM__To_win_  ;# ptr
+	.4byte string_a_you_must_pocket_the_9_ball_before_your_opponent_  ;# ptr
+	.4byte string_a_Start_by_pocketing_the_ball_with_the_lowest_number_and_work  ;# ptr
+	.4byte string_a_your_way_up__If_you_miss__it_becomes_your_opponent_s_turn_  ;# ptr
+	.4byte string_a_After_you_hit_the_ball_with_the_lowest_number_  ;# ptr
+	.4byte string_a_and_if_it_goes_in_a_pocket__you_can_continue_playing_  ;# ptr
+	.4byte string_a_If_your_own_ball_falls_into_a_pocket__it_s_considered  ;# ptr
+	.4byte string_a_a_foul__and_it_becomes_your_opponent_s_turn_  ;# ptr
+glabel string_a_At_the_start__you_will_use_the_Control_Stick_to_move_left_or_right_in
 	.asciz "a/At the start, you will use the Control Stick to move left or right in"
+glabel string_a_order_to_determine_your_throwing_position__Press_the_A_Button_to_decide_
 	.asciz "a/order to determine your throwing position. Press the A Button to decide."
 	.balign 4
+glabel string_a_Next__an_arrow_that_shows_the_direction_of_the_throw_will_appear_
 	.asciz "a/Next, an arrow that shows the direction of the throw will appear."
+glabel string_a_Press_the_A_Button_to_stop_the_arrow_from_moving_back_and_forth_
 	.asciz "a/Press the A Button to stop the arrow from moving back and forth!"
 	.balign 4
+glabel string_a_After_that__the_throwing_strength_gauge_will_appear__Press_the
 	.asciz "a/After that, the throwing strength gauge will appear. Press the"
 	.balign 4
+glabel string_a_A_Button_when_the_meter_reaches_the_strength_you_want_to_throw_with_
 	.asciz "a/A Button when the meter reaches the strength you want to throw with!"
 	.balign 4
+glabel string_a_Lastly__before_the_ball_gets_thrown__you_can_press
 	.asciz "a/Lastly, before the ball gets thrown, you can press"
 	.balign 4
+glabel string_a_the_L_or_R_Button_to_add_spin_to_your_ball_
 	.asciz "a/the L or R Button to add spin to your ball!"
 	.balign 4
+glabel string_a_Throw_the_ball_with_the_right_angle__strength__and_spin_to_knock
 	.asciz "a/Throw the ball with the right angle, strength, and spin to knock"
 	.balign 4
+glabel string_a_over_all_the_pins__Your_score_will_be_totaled_up_from_10_frames_
 	.asciz "a/over all the pins! Your score will be totaled up from 10 frames!"
 	.balign 4
+glabel string_a_Try_to_knock_down
 	.asciz "a/Try to knock down"
+glabel string_a_all_the_pins_with_one_throw_
 	.asciz "a/all the pins with one throw!"
 	.balign 4
+glabel string_a_Pins_can_be_set_in_10_different_possible_patterns_
 	.asciz "a/Pins can be set in 10 different possible patterns!"
 	.balign 4
+glabel string_a_You_can_choose_whatever_pattern_you_want_
 	.asciz "a/You can choose whatever pattern you want!"
+glabel string_a_Once_you_master_how_to_spin_the_ball__try_to_knock_down
 	.asciz "a/Once you master how to spin the ball, try to knock down"
 	.balign 4
+glabel string_a_the_pins_in_all_the_different_patterns_
 	.asciz "a/the pins in all the different patterns!"
 	.balign 4
+glabel string_a_You_have_12_tries_to_knock_down_the_pins__Once_you_ve_thrown
 	.asciz "a/You have 12 tries to knock down the pins! Once you've thrown"
 	.balign 4
+glabel string_a_the_ball_12_times__it_s_game_over_
 	.asciz "a/the ball 12 times, it's game over!"
 	.balign 4
-	.4byte 0x801C471C  ;# ptr
-	.4byte 0x801C4764  ;# ptr
-	.4byte 0x801C47B0  ;# ptr
-	.4byte 0x801C47F4  ;# ptr
-	.4byte 0x801C4838  ;# ptr
-	.4byte 0x801C487C  ;# ptr
-	.4byte 0x801C48C4  ;# ptr
-	.4byte 0x801C48FC  ;# ptr
-	.4byte 0x801C492C  ;# ptr
-	.4byte 0x801C4970  ;# ptr
-	.4byte 0x801C49B4  ;# ptr
-	.4byte 0x801C49C8  ;# ptr
-	.4byte 0x801C49E8  ;# ptr
-	.4byte 0x801C4A20  ;# ptr
-	.4byte 0x801C4A4C  ;# ptr
-	.4byte 0x801C4A88  ;# ptr
-	.4byte 0x801C4AB4  ;# ptr
-	.4byte 0x801C4AF4  ;# ptr
+	.4byte string_a_At_the_start__you_will_use_the_Control_Stick_to_move_left_or_right_in  ;# ptr
+	.4byte string_a_order_to_determine_your_throwing_position__Press_the_A_Button_to_decide_  ;# ptr
+	.4byte string_a_Next__an_arrow_that_shows_the_direction_of_the_throw_will_appear_  ;# ptr
+	.4byte string_a_Press_the_A_Button_to_stop_the_arrow_from_moving_back_and_forth_  ;# ptr
+	.4byte string_a_After_that__the_throwing_strength_gauge_will_appear__Press_the  ;# ptr
+	.4byte string_a_A_Button_when_the_meter_reaches_the_strength_you_want_to_throw_with_  ;# ptr
+	.4byte string_a_Lastly__before_the_ball_gets_thrown__you_can_press  ;# ptr
+	.4byte string_a_the_L_or_R_Button_to_add_spin_to_your_ball_  ;# ptr
+	.4byte string_a_Throw_the_ball_with_the_right_angle__strength__and_spin_to_knock  ;# ptr
+	.4byte string_a_over_all_the_pins__Your_score_will_be_totaled_up_from_10_frames_  ;# ptr
+	.4byte string_a_Try_to_knock_down  ;# ptr
+	.4byte string_a_all_the_pins_with_one_throw_  ;# ptr
+	.4byte string_a_Pins_can_be_set_in_10_different_possible_patterns_  ;# ptr
+	.4byte string_a_You_can_choose_whatever_pattern_you_want_  ;# ptr
+	.4byte string_a_Once_you_master_how_to_spin_the_ball__try_to_knock_down  ;# ptr
+	.4byte string_a_the_pins_in_all_the_different_patterns_  ;# ptr
+	.4byte string_a_You_have_12_tries_to_knock_down_the_pins__Once_you_ve_thrown  ;# ptr
+	.4byte string_a_the_ball_12_times__it_s_game_over_  ;# ptr
 	.4byte 0x802F11D0  ;# ptr
 	.4byte 0x802F11D0  ;# ptr
+glabel string_a_Play_the_selected_number_of_holes__and_total_the_scores_
 	.asciz "a/Play the selected number of holes, and total the scores."
 	.balign 4
+glabel string_a_The_player_with_the_lowest_total_score_will_get_the_better_grade_
 	.asciz "a/The player with the lowest total score will get the better grade."
+glabel string_a_Hit_the_ball_and_put_it_in_the_cup__The_player_with
 	.asciz "a/Hit the ball and put it in the cup! The player with"
 	.balign 4
+glabel string_a_the_fewer_hits_will_get_the_better_grade_
 	.asciz "a/the fewer hits will get the better grade."
+glabel string_a_If_the_ball_falls_off_the_track__it_counts_as_an_Out
 	.asciz "a/If the ball falls off the track, it counts as an Out"
 	.balign 4
+glabel string_a_of_Bounds__A_penalty_of_1_stroke_will_be_incurred_
 	.asciz "a/of Bounds! A penalty of 1 stroke will be incurred!"
 	.balign 4
+glabel string_a_If_you_can_t_knock_the_ball_into_the_hole_within_9_hits__you_will
 	.asciz "a/If you can't knock the ball into the hole within 9 hits, you will"
+glabel string_a_be_forced_to_give_up__You_will_be_given_a_score_of_10_for_that_hole_
 	.asciz "a/be forced to give up! You will be given a score of 10 for that hole."
 	.balign 4
+glabel string_a_The_player_to_win_each_hole_will_receive_points_for_that_hole_
 	.asciz "a/The player to win each hole will receive points for that hole."
 	.balign 4
+glabel string_a_The_player_with_the_least_number_of_strokes_wins_
 	.asciz "a/The player with the least number of strokes wins."
+glabel string_a_If_the_difference_in_the_score_between_the_losing_player_and_winning
 	.asciz "a/If the difference in the score between the losing player and winning"
 	.balign 4
+glabel string_a_player_becomes_too_great_for_the_player_to_catch_up__the_game_will_end_
 	.asciz "a/player becomes too great for the player to catch up, the game will end."
 	.balign 4
-	.4byte 0x801C4B6C  ;# ptr
-	.4byte 0x801C4BA8  ;# ptr
-	.4byte 0x801C4BEC  ;# ptr
-	.4byte 0x801C4C24  ;# ptr
-	.4byte 0x801C4C50  ;# ptr
-	.4byte 0x801C4C88  ;# ptr
-	.4byte 0x801C4CC0  ;# ptr
-	.4byte 0x801C4D04  ;# ptr
-	.4byte 0x801C4D4C  ;# ptr
-	.4byte 0x801C4D90  ;# ptr
-	.4byte 0x801C4DC4  ;# ptr
-	.4byte 0x801C4E0C  ;# ptr
-	.4byte 0x801C4C50  ;# ptr
-	.4byte 0x801C4C88  ;# ptr
-	.4byte 0x801C4CC0  ;# ptr
-	.4byte 0x801C4D04  ;# ptr
+	.4byte string_a_Play_the_selected_number_of_holes__and_total_the_scores_  ;# ptr
+	.4byte string_a_The_player_with_the_lowest_total_score_will_get_the_better_grade_  ;# ptr
+	.4byte string_a_Hit_the_ball_and_put_it_in_the_cup__The_player_with  ;# ptr
+	.4byte string_a_the_fewer_hits_will_get_the_better_grade_  ;# ptr
+	.4byte string_a_If_the_ball_falls_off_the_track__it_counts_as_an_Out  ;# ptr
+	.4byte string_a_of_Bounds__A_penalty_of_1_stroke_will_be_incurred_  ;# ptr
+	.4byte string_a_If_you_can_t_knock_the_ball_into_the_hole_within_9_hits__you_will  ;# ptr
+	.4byte string_a_be_forced_to_give_up__You_will_be_given_a_score_of_10_for_that_hole_  ;# ptr
+	.4byte string_a_The_player_to_win_each_hole_will_receive_points_for_that_hole_  ;# ptr
+	.4byte string_a_The_player_with_the_least_number_of_strokes_wins_  ;# ptr
+	.4byte string_a_If_the_difference_in_the_score_between_the_losing_player_and_winning  ;# ptr
+	.4byte string_a_player_becomes_too_great_for_the_player_to_catch_up__the_game_will_end_  ;# ptr
+	.4byte string_a_If_the_ball_falls_off_the_track__it_counts_as_an_Out  ;# ptr
+	.4byte string_a_of_Bounds__A_penalty_of_1_stroke_will_be_incurred_  ;# ptr
+	.4byte string_a_If_you_can_t_knock_the_ball_into_the_hole_within_9_hits__you_will  ;# ptr
+	.4byte string_a_be_forced_to_give_up__You_will_be_given_a_score_of_10_for_that_hole_  ;# ptr
 	.4byte 0x801C371C  ;# ptr
 	.4byte 0x801C3914  ;# ptr
 	.4byte 0x801C3AE8  ;# ptr
@@ -29182,119 +29500,160 @@ lbl_801C2318:
 	.4byte 0x801C46DC  ;# ptr
 	.4byte 0x801C4B1C  ;# ptr
 	.4byte 0x801C4E58  ;# ptr
+glabel string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item__2
 	.asciz "a/If you run into an Item Box, you will receive an item,"
 	.balign 4
+glabel string_a_but_only_luck_will_determine_what_item_you_receive_
 	.asciz "a/but only luck will determine what item you receive."
 	.balign 4
+glabel string_a_Speed_Star___For_a_short_time_
 	.asciz "a/Speed Star : For a short time,"
 	.balign 4
+glabel string_a_your_speed_will_be_increased_
 	.asciz "a/your speed will be increased!"
+glabel string_a_Banana_Peel___You_will_drop_a_banana_peel_on_the_ground
 	.asciz "a/Banana Peel : You will drop a banana peel on the ground"
 	.balign 4
+glabel string_a_and_if_anyone_touches_it__they_will_slip_
 	.asciz "a/and if anyone touches it, they will slip!"
+glabel string_a_Bowling_Bomber___You_will_release_a_bomb
 	.asciz "a/Bowling Bomber : You will release a bomb"
 	.balign 4
+glabel string_a_and_if_you_hit_your_opponent__it_will_explode_
 	.asciz "a/and if you hit your opponent, it will explode!"
 	.balign 4
+glabel string_a_Polygon_Ball___For_a_short_period_
 	.asciz "a/Polygon Ball : For a short period,"
 	.balign 4
+glabel string_a_your_opponent_s_ball_will_become_polygonal_
 	.asciz "a/your opponent's ball will become polygonal!"
 	.balign 4
+glabel string_a_Ice_Cube___For_a_short_period__you_will_turn_your
 	.asciz "a/Ice Cube : For a short period, you will turn your"
+glabel string_a_opponent_into_ice_and_they_will_slide_all_over_
 	.asciz "a/opponent into ice and they will slide all over!"
 	.balign 4
-	.4byte 0x801C4EBC  ;# ptr
-	.4byte 0x801C4EF8  ;# ptr
-	.4byte 0x801C4F30  ;# ptr
-	.4byte 0x801C4F54  ;# ptr
-	.4byte 0x801C4F74  ;# ptr
-	.4byte 0x801C4FB0  ;# ptr
-	.4byte 0x801C4FDC  ;# ptr
-	.4byte 0x801C5008  ;# ptr
-	.4byte 0x801C503C  ;# ptr
-	.4byte 0x801C5064  ;# ptr
-	.4byte 0x801C5094  ;# ptr
-	.4byte 0x801C50C8  ;# ptr
+	.4byte string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item__2  ;# ptr
+	.4byte string_a_but_only_luck_will_determine_what_item_you_receive_  ;# ptr
+	.4byte string_a_Speed_Star___For_a_short_time_  ;# ptr
+	.4byte string_a_your_speed_will_be_increased_  ;# ptr
+	.4byte string_a_Banana_Peel___You_will_drop_a_banana_peel_on_the_ground  ;# ptr
+	.4byte string_a_and_if_anyone_touches_it__they_will_slip_  ;# ptr
+	.4byte string_a_Bowling_Bomber___You_will_release_a_bomb  ;# ptr
+	.4byte string_a_and_if_you_hit_your_opponent__it_will_explode_  ;# ptr
+	.4byte string_a_Polygon_Ball___For_a_short_period_  ;# ptr
+	.4byte string_a_your_opponent_s_ball_will_become_polygonal_  ;# ptr
+	.4byte string_a_Ice_Cube___For_a_short_period__you_will_turn_your  ;# ptr
+	.4byte string_a_opponent_into_ice_and_they_will_slide_all_over_  ;# ptr
+glabel string_a_If_you_break_open_an_Item_Box__you_will_find_an_item_inside_
 	.asciz "a/If you break open an Item Box, you will find an item inside!"
 	.balign 4
+glabel string_a_Long_Punch___The_length_of_your_punches_will_increase_
 	.asciz "a/Long Punch : The length of your punches will increase,"
 	.balign 4
+glabel string_a_and_you_can_even_hit_far_away_opponents_
 	.asciz "a/and you can even hit far away opponents!"
 	.balign 4
+glabel string_a_Big_Punch___Your_glove_becomes_huge_making_it_easy
 	.asciz "a/Big Punch : Your glove becomes huge making it easy"
 	.balign 4
+glabel string_a_for_you_to_hit_your_opponent_
 	.asciz "a/for you to hit your opponent!"
+glabel string_a_Spinning_Punch___For_a_short_period_of_time_
 	.asciz "a/Spinning Punch : For a short period of time,"
 	.balign 4
+glabel string_a_you_will_do_spinning_punches_
 	.asciz "a/you will do spinning punches!"
-	.4byte 0x801C512C  ;# ptr
-	.4byte 0x801C4154  ;# ptr
-	.4byte 0x801C516C  ;# ptr
-	.4byte 0x801C51A8  ;# ptr
-	.4byte 0x801C51D4  ;# ptr
-	.4byte 0x801C520C  ;# ptr
-	.4byte 0x801C522C  ;# ptr
-	.4byte 0x801C525C  ;# ptr
+	.4byte string_a_If_you_break_open_an_Item_Box__you_will_find_an_item_inside_  ;# ptr
+	.4byte string_a_If_you_pick_up_an_item__your_punches_will_become_stronger_  ;# ptr
+	.4byte string_a_Long_Punch___The_length_of_your_punches_will_increase_  ;# ptr
+	.4byte string_a_and_you_can_even_hit_far_away_opponents_  ;# ptr
+	.4byte string_a_Big_Punch___Your_glove_becomes_huge_making_it_easy  ;# ptr
+	.4byte string_a_for_you_to_hit_your_opponent_  ;# ptr
+	.4byte string_a_Spinning_Punch___For_a_short_period_of_time_  ;# ptr
+	.4byte string_a_you_will_do_spinning_punches_  ;# ptr
+glabel string_a_If_you_set_the_Help_Items_to_ON_in_the_Gameplay_Settings_
 	.asciz "a/If you set the Help Items to ON in the Gameplay Settings,"
+glabel string_a_you_will_be_able_to_get_bananas_and_use_Help_Items_
 	.asciz "a/you will be able to get bananas and use Help Items."
 	.balign 4
+glabel string_a_Wind_0_mph___Eliminate_wind
 	.asciz "a/Wind 0 mph : Eliminate wind"
 	.balign 4
+glabel string_a_to_make_it_easier_to_fly_
 	.asciz "a/to make it easier to fly!"
+glabel string_a_Brake_Ball___After_you_land__this_will_slow
 	.asciz "a/Brake Ball : After you land, this will slow"
 	.balign 4
+glabel string_a_you_down_more_quickly__so_you_won_t_roll_as_much_
 	.asciz "a/you down more quickly, so you won't roll as much!"
+glabel string_a_Double_Score___Whatever_target_you_land_on_
 	.asciz "a/Double Score : Whatever target you land on,"
 	.balign 4
+glabel string_a_it_will_double_your_score_
 	.asciz "a/it will double your score!"
 	.balign 4
+glabel string_a_Sticky_Landing___When_you_land_on_a_target_
 	.asciz "a/Sticky Landing : When you land on a target,"
 	.balign 4
+glabel string_a_you_stick_to_the_place_that_you_land_on_
 	.asciz "a/you stick to the place that you land on!"
 	.balign 4
+glabel string_a_Triple_Score___Whatever_target_you_land_on_
 	.asciz "a/Triple Score : Whatever target you land on,"
 	.balign 4
+glabel string_a_it_will_triple_your_score_
 	.asciz "a/it will triple your score!"
 	.balign 4
-	.4byte 0x801C529C  ;# ptr
-	.4byte 0x801C52D8  ;# ptr
-	.4byte 0x801C5310  ;# ptr
-	.4byte 0x801C5330  ;# ptr
-	.4byte 0x801C534C  ;# ptr
-	.4byte 0x801C537C  ;# ptr
-	.4byte 0x801C53B0  ;# ptr
-	.4byte 0x801C53E0  ;# ptr
-	.4byte 0x801C5400  ;# ptr
-	.4byte 0x801C5430  ;# ptr
-	.4byte 0x801C545C  ;# ptr
-	.4byte 0x801C548C  ;# ptr
+	.4byte string_a_If_you_set_the_Help_Items_to_ON_in_the_Gameplay_Settings_  ;# ptr
+	.4byte string_a_you_will_be_able_to_get_bananas_and_use_Help_Items_  ;# ptr
+	.4byte string_a_Wind_0_mph___Eliminate_wind  ;# ptr
+	.4byte string_a_to_make_it_easier_to_fly_  ;# ptr
+	.4byte string_a_Brake_Ball___After_you_land__this_will_slow  ;# ptr
+	.4byte string_a_you_down_more_quickly__so_you_won_t_roll_as_much_  ;# ptr
+	.4byte string_a_Double_Score___Whatever_target_you_land_on_  ;# ptr
+	.4byte string_a_it_will_double_your_score_  ;# ptr
+	.4byte string_a_Sticky_Landing___When_you_land_on_a_target_  ;# ptr
+	.4byte string_a_you_stick_to_the_place_that_you_land_on_  ;# ptr
+	.4byte string_a_Triple_Score___Whatever_target_you_land_on_  ;# ptr
+	.4byte string_a_it_will_triple_your_score_  ;# ptr
+glabel string_a_If_you_turn_the_Wheel_of_Danger_ON_in_the_Gameplay_settings_
 	.asciz "a/If you turn the Wheel of Danger ON in the Gameplay settings,"
 	.balign 4
+glabel string_a_then_before_each_flight__the_Wheel_of_Danger_will_spin_
 	.asciz "a/then before each flight, the Wheel of Danger will spin!"
 	.balign 4
+glabel string_a_Safe__where_there_s_no_symbols____No_traps
 	.asciz "a/Safe (where there's no symbols) : No traps"
 	.balign 4
+glabel string_a_will_be_set__You_can_fly_without_a_worry_
 	.asciz "a/will be set. You can fly without a worry."
+glabel string_a_Smoke_Screen___A_fog_like_cloud
 	.asciz "a/Smoke Screen : A fog-like cloud"
 	.balign 4
+glabel string_a_makes_the_targets_hard_to_see_
 	.asciz "a/makes the targets hard to see!"
 	.balign 4
+glabel string_a_Spiked_Ball___There_are_spiked_balls_floating_in_the_sky_
 	.asciz "a/Spiked Ball : There are spiked balls floating in the sky!"
+glabel string_a_If_you_fly_into_one__you_ll_be_forced_to_land_
 	.asciz "a/If you fly into one, you'll be forced to land!"
 	.balign 4
+glabel string_a_Big_Bomb___There_are_bombs_set_on_top_of_some
 	.asciz "a/Big Bomb : There are bombs set on top of some"
+glabel string_a_of_the_targets__If_you_land_on_one__it_will_explode_
 	.asciz "a/of the targets! If you land on one, it will explode!"
 	.balign 4
-	.4byte 0x801C54DC  ;# ptr
-	.4byte 0x801C551C  ;# ptr
-	.4byte 0x801C5558  ;# ptr
-	.4byte 0x801C5588  ;# ptr
-	.4byte 0x801C55B4  ;# ptr
-	.4byte 0x801C55D8  ;# ptr
-	.4byte 0x801C55FC  ;# ptr
-	.4byte 0x801C5638  ;# ptr
-	.4byte 0x801C566C  ;# ptr
-	.4byte 0x801C569C  ;# ptr
+	.4byte string_a_If_you_turn_the_Wheel_of_Danger_ON_in_the_Gameplay_settings_  ;# ptr
+	.4byte string_a_then_before_each_flight__the_Wheel_of_Danger_will_spin_  ;# ptr
+	.4byte string_a_Safe__where_there_s_no_symbols____No_traps  ;# ptr
+	.4byte string_a_will_be_set__You_can_fly_without_a_worry_  ;# ptr
+	.4byte string_a_Smoke_Screen___A_fog_like_cloud  ;# ptr
+	.4byte string_a_makes_the_targets_hard_to_see_  ;# ptr
+	.4byte string_a_Spiked_Ball___There_are_spiked_balls_floating_in_the_sky_  ;# ptr
+	.4byte string_a_If_you_fly_into_one__you_ll_be_forced_to_land_  ;# ptr
+	.4byte string_a_Big_Bomb___There_are_bombs_set_on_top_of_some  ;# ptr
+	.4byte string_a_of_the_targets__If_you_land_on_one__it_will_explode_  ;# ptr
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -29304,10 +29663,13 @@ lbl_801C2318:
 	.4byte 0x801C56D4  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_p_LEVER_
 	.asciz "p/LEVER/"
 	.balign 4
+glabel string_p_SANNKAKU_L_a___p_SANNKAKU_R_
 	.asciz "p/SANNKAKU_L/a/  p/SANNKAKU_R/"
 	.balign 4
+glabel string_a_Movement
 	.asciz "a/Movement"
 	.balign 4
 
@@ -29342,12 +29704,14 @@ lbl_801C5758:
 .global lbl_801C57B8
 lbl_801C57B8:
 	# ROM: 0x1C27B8
+glabel string_ord_tbl_c
 	.asciz "ord_tbl.c"
 	.balign 4
 
 .global lbl_801C57C4
 lbl_801C57C4:
 	# ROM: 0x1C27C4
+glabel string_Ordering_Primitive_Over__
 	.asciz "Ordering Primitive Over!!"
 	.balign 4
 
@@ -29426,55 +29790,75 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C57E0  ;# ptr
+	.4byte lbl_801C57E0  ;# ptr
 	.4byte 0x801C5800  ;# ptr
 	.4byte 0x801C5820  ;# ptr
 	.4byte 0x801C5890  ;# ptr
+glabel string_obj_H_APE_KUBI
 	.asciz "obj_H_APE_KUBI"
 	.balign 4
+glabel string_obj_M_APE_KUBI
 	.asciz "obj_M_APE_KUBI"
 	.balign 4
+glabel string_obj_L_APE_KUBI
 	.asciz "obj_L_APE_KUBI"
 	.balign 4
+glabel string_obj_S_APE_KUBI
 	.asciz "obj_S_APE_KUBI"
 	.balign 4
+glabel string_obj_H_APE_TE_L
 	.asciz "obj_H_APE_TE_L"
 	.balign 4
+glabel string_obj_M_APE_MT_L
 	.asciz "obj_M_APE_MT_L"
 	.balign 4
+glabel string_obj_L_APE_MT_L
 	.asciz "obj_L_APE_MT_L"
 	.balign 4
+glabel string_obj_S_APE_MT_L
 	.asciz "obj_S_APE_MT_L"
 	.balign 4
+glabel string_obj_H_APE_TE_R
 	.asciz "obj_H_APE_TE_R"
 	.balign 4
+glabel string_obj_M_APE_MT_R
 	.asciz "obj_M_APE_MT_R"
 	.balign 4
+glabel string_obj_L_APE_MT_R
 	.asciz "obj_L_APE_MT_R"
 	.balign 4
+glabel string_obj_S_APE_MT_R
 	.asciz "obj_S_APE_MT_R"
 	.balign 4
+glabel string_obj_H_APE_KUBI_EAR_L
 	.asciz "obj_H_APE_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_M_APE_KUBI_EAR_L
 	.asciz "obj_M_APE_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_L_APE_KUBI_EAR_L
 	.asciz "obj_L_APE_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_S_APE_KUBI_EAR_L
 	.asciz "obj_S_APE_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_H_APE_KUBI_EAR_R
 	.asciz "obj_H_APE_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_M_APE_KUBI_EAR_R
 	.asciz "obj_M_APE_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_L_APE_KUBI_EAR_R
 	.asciz "obj_L_APE_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_S_APE_KUBI_EAR_R
 	.asciz "obj_S_APE_KUBI_EAR_R"
 	.balign 4
-	.4byte 0x802F11E8  ;# ptr
-	.4byte 0x801C5910  ;# ptr
-	.4byte 0x801C5920  ;# ptr
-	.4byte 0x801C5930  ;# ptr
-	.4byte 0x801C5940  ;# ptr
+	.4byte string_MDL_APE  ;# ptr
+	.4byte string_obj_H_APE_KUBI  ;# ptr
+	.4byte string_obj_M_APE_KUBI  ;# ptr
+	.4byte string_obj_L_APE_KUBI  ;# ptr
+	.4byte string_obj_S_APE_KUBI  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29486,11 +29870,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11E8  ;# ptr
-	.4byte 0x801C5950  ;# ptr
-	.4byte 0x801C5960  ;# ptr
-	.4byte 0x801C5970  ;# ptr
-	.4byte 0x801C5980  ;# ptr
+	.4byte string_MDL_APE  ;# ptr
+	.4byte string_obj_H_APE_TE_L  ;# ptr
+	.4byte string_obj_M_APE_MT_L  ;# ptr
+	.4byte string_obj_L_APE_MT_L  ;# ptr
+	.4byte string_obj_S_APE_MT_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.4byte 0
 	.4byte 0
@@ -29502,11 +29886,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11E8  ;# ptr
-	.4byte 0x801C5990  ;# ptr
-	.4byte 0x801C59A0  ;# ptr
-	.4byte 0x801C59B0  ;# ptr
-	.4byte 0x801C59C0  ;# ptr
+	.4byte string_MDL_APE  ;# ptr
+	.4byte string_obj_H_APE_TE_R  ;# ptr
+	.4byte string_obj_M_APE_MT_R  ;# ptr
+	.4byte string_obj_L_APE_MT_R  ;# ptr
+	.4byte string_obj_S_APE_MT_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.4byte 0
 	.4byte 0
@@ -29518,11 +29902,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11E8  ;# ptr
-	.4byte 0x801C59D0  ;# ptr
-	.4byte 0x801C59E8  ;# ptr
-	.4byte 0x801C5A00  ;# ptr
-	.4byte 0x801C5A18  ;# ptr
+	.4byte string_MDL_APE  ;# ptr
+	.4byte string_obj_H_APE_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_M_APE_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_L_APE_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_S_APE_KUBI_EAR_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29534,11 +29918,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11E8  ;# ptr
-	.4byte 0x801C5A30  ;# ptr
-	.4byte 0x801C5A48  ;# ptr
-	.4byte 0x801C5A60  ;# ptr
-	.4byte 0x801C5A78  ;# ptr
+	.4byte string_MDL_APE  ;# ptr
+	.4byte string_obj_H_APE_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_M_APE_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_L_APE_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_S_APE_KUBI_EAR_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29550,47 +29934,65 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel string_obj_H_GAL_KUBI
 	.asciz "obj_H_GAL_KUBI"
 	.balign 4
+glabel string_obj_M_GAL_KUBI
 	.asciz "obj_M_GAL_KUBI"
 	.balign 4
+glabel string_obj_L_GAL_KUBI
 	.asciz "obj_L_GAL_KUBI"
 	.balign 4
+glabel string_obj_S_GAL_KUBI
 	.asciz "obj_S_GAL_KUBI"
 	.balign 4
+glabel string_obj_M_GAL_MT_L
 	.asciz "obj_M_GAL_MT_L"
 	.balign 4
+glabel string_obj_L_GAL_MT_L
 	.asciz "obj_L_GAL_MT_L"
 	.balign 4
+glabel string_obj_S_GAL_MT_L
 	.asciz "obj_S_GAL_MT_L"
 	.balign 4
+glabel string_obj_M_GAL_MT_R
 	.asciz "obj_M_GAL_MT_R"
 	.balign 4
+glabel string_obj_L_GAL_MT_R
 	.asciz "obj_L_GAL_MT_R"
 	.balign 4
+glabel string_obj_S_GAL_MT_R
 	.asciz "obj_S_GAL_MT_R"
 	.balign 4
+glabel string_obj_H_GAL_KUBI_EAR_L
 	.asciz "obj_H_GAL_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_M_GAL_KUBI_EAR_L
 	.asciz "obj_M_GAL_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_L_GAL_KUBI_EAR_L
 	.asciz "obj_L_GAL_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_S_GAL_KUBI_EAR_L
 	.asciz "obj_S_GAL_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_H_GAL_KUBI_EAR_R
 	.asciz "obj_H_GAL_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_M_GAL_KUBI_EAR_R
 	.asciz "obj_M_GAL_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_L_GAL_KUBI_EAR_R
 	.asciz "obj_L_GAL_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_S_GAL_KUBI_EAR_R
 	.asciz "obj_S_GAL_KUBI_EAR_R"
 	.balign 4
-	.4byte 0x802F11F0  ;# ptr
-	.4byte 0x801C5BD0  ;# ptr
-	.4byte 0x801C5BE0  ;# ptr
-	.4byte 0x801C5BF0  ;# ptr
-	.4byte 0x801C5C00  ;# ptr
+	.4byte string_MDL_GAL  ;# ptr
+	.4byte string_obj_H_GAL_KUBI  ;# ptr
+	.4byte string_obj_M_GAL_KUBI  ;# ptr
+	.4byte string_obj_L_GAL_KUBI  ;# ptr
+	.4byte string_obj_S_GAL_KUBI  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29602,11 +30004,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F0  ;# ptr
-	.4byte 0x801C5C10  ;# ptr
-	.4byte 0x801C5C10  ;# ptr
-	.4byte 0x801C5C20  ;# ptr
-	.4byte 0x801C5C30  ;# ptr
+	.4byte string_MDL_GAL  ;# ptr
+	.4byte string_obj_M_GAL_MT_L  ;# ptr
+	.4byte string_obj_M_GAL_MT_L  ;# ptr
+	.4byte string_obj_L_GAL_MT_L  ;# ptr
+	.4byte string_obj_S_GAL_MT_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.4byte 0
 	.4byte 0
@@ -29618,11 +30020,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F0  ;# ptr
-	.4byte 0x801C5C40  ;# ptr
-	.4byte 0x801C5C40  ;# ptr
-	.4byte 0x801C5C50  ;# ptr
-	.4byte 0x801C5C60  ;# ptr
+	.4byte string_MDL_GAL  ;# ptr
+	.4byte string_obj_M_GAL_MT_R  ;# ptr
+	.4byte string_obj_M_GAL_MT_R  ;# ptr
+	.4byte string_obj_L_GAL_MT_R  ;# ptr
+	.4byte string_obj_S_GAL_MT_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.4byte 0
 	.4byte 0
@@ -29634,11 +30036,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F0  ;# ptr
-	.4byte 0x801C5C70  ;# ptr
-	.4byte 0x801C5C88  ;# ptr
-	.4byte 0x801C5CA0  ;# ptr
-	.4byte 0x801C5CB8  ;# ptr
+	.4byte string_MDL_GAL  ;# ptr
+	.4byte string_obj_H_GAL_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_M_GAL_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_L_GAL_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_S_GAL_KUBI_EAR_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29650,11 +30052,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F0  ;# ptr
-	.4byte 0x801C5CD0  ;# ptr
-	.4byte 0x801C5CE8  ;# ptr
-	.4byte 0x801C5D00  ;# ptr
-	.4byte 0x801C5D18  ;# ptr
+	.4byte string_MDL_GAL  ;# ptr
+	.4byte string_obj_H_GAL_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_M_GAL_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_L_GAL_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_S_GAL_KUBI_EAR_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29666,47 +30068,65 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel string_obj_H_KID_KUBI
 	.asciz "obj_H_KID_KUBI"
 	.balign 4
+glabel string_obj_M_KID_KUBI
 	.asciz "obj_M_KID_KUBI"
 	.balign 4
+glabel string_obj_L_KID_KUBI
 	.asciz "obj_L_KID_KUBI"
 	.balign 4
+glabel string_obj_S_KID_KUBI
 	.asciz "obj_S_KID_KUBI"
 	.balign 4
+glabel string_obj_M_KID_MT_L
 	.asciz "obj_M_KID_MT_L"
 	.balign 4
+glabel string_obj_L_KID_MT_L
 	.asciz "obj_L_KID_MT_L"
 	.balign 4
+glabel string_obj_S_KID_MT_L
 	.asciz "obj_S_KID_MT_L"
 	.balign 4
+glabel string_obj_M_KID_MT_R
 	.asciz "obj_M_KID_MT_R"
 	.balign 4
+glabel string_obj_L_KID_MT_R
 	.asciz "obj_L_KID_MT_R"
 	.balign 4
+glabel string_obj_S_KID_MT_R
 	.asciz "obj_S_KID_MT_R"
 	.balign 4
+glabel string_obj_H_KID_KUBI_EAR_L
 	.asciz "obj_H_KID_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_M_KID_KUBI_EAR_L
 	.asciz "obj_M_KID_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_L_KID_KUBI_EAR_L
 	.asciz "obj_L_KID_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_S_KID_KUBI_EAR_L
 	.asciz "obj_S_KID_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_H_KID_KUBI_EAR_R
 	.asciz "obj_H_KID_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_M_KID_KUBI_EAR_R
 	.asciz "obj_M_KID_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_L_KID_KUBI_EAR_R
 	.asciz "obj_L_KID_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_S_KID_KUBI_EAR_R
 	.asciz "obj_S_KID_KUBI_EAR_R"
 	.balign 4
-	.4byte 0x802F11F8  ;# ptr
-	.4byte 0x801C5E70  ;# ptr
-	.4byte 0x801C5E80  ;# ptr
-	.4byte 0x801C5E90  ;# ptr
-	.4byte 0x801C5EA0  ;# ptr
+	.4byte string_MDL_KID  ;# ptr
+	.4byte string_obj_H_KID_KUBI  ;# ptr
+	.4byte string_obj_M_KID_KUBI  ;# ptr
+	.4byte string_obj_L_KID_KUBI  ;# ptr
+	.4byte string_obj_S_KID_KUBI  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29718,11 +30138,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F8  ;# ptr
-	.4byte 0x801C5EB0  ;# ptr
-	.4byte 0x801C5EB0  ;# ptr
-	.4byte 0x801C5EC0  ;# ptr
-	.4byte 0x801C5ED0  ;# ptr
+	.4byte string_MDL_KID  ;# ptr
+	.4byte string_obj_M_KID_MT_L  ;# ptr
+	.4byte string_obj_M_KID_MT_L  ;# ptr
+	.4byte string_obj_L_KID_MT_L  ;# ptr
+	.4byte string_obj_S_KID_MT_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.4byte 0
 	.4byte 0
@@ -29734,11 +30154,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F8  ;# ptr
-	.4byte 0x801C5EE0  ;# ptr
-	.4byte 0x801C5EE0  ;# ptr
-	.4byte 0x801C5EF0  ;# ptr
-	.4byte 0x801C5F00  ;# ptr
+	.4byte string_MDL_KID  ;# ptr
+	.4byte string_obj_M_KID_MT_R  ;# ptr
+	.4byte string_obj_M_KID_MT_R  ;# ptr
+	.4byte string_obj_L_KID_MT_R  ;# ptr
+	.4byte string_obj_S_KID_MT_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.4byte 0
 	.4byte 0
@@ -29750,11 +30170,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F8  ;# ptr
-	.4byte 0x801C5F10  ;# ptr
-	.4byte 0x801C5F28  ;# ptr
-	.4byte 0x801C5F40  ;# ptr
-	.4byte 0x801C5F58  ;# ptr
+	.4byte string_MDL_KID  ;# ptr
+	.4byte string_obj_H_KID_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_M_KID_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_L_KID_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_S_KID_KUBI_EAR_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29766,11 +30186,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11F8  ;# ptr
-	.4byte 0x801C5F70  ;# ptr
-	.4byte 0x801C5F88  ;# ptr
-	.4byte 0x801C5FA0  ;# ptr
-	.4byte 0x801C5FB8  ;# ptr
+	.4byte string_MDL_KID  ;# ptr
+	.4byte string_obj_H_KID_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_M_KID_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_L_KID_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_S_KID_KUBI_EAR_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29782,47 +30202,65 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel string_obj_H_GOR_KUBI
 	.asciz "obj_H_GOR_KUBI"
 	.balign 4
+glabel string_obj_M_GOR_KUBI
 	.asciz "obj_M_GOR_KUBI"
 	.balign 4
+glabel string_obj_L_GOR_KUBI
 	.asciz "obj_L_GOR_KUBI"
 	.balign 4
+glabel string_obj_S_GOR_KUBI
 	.asciz "obj_S_GOR_KUBI"
 	.balign 4
+glabel string_obj_M_GOR_MT_L
 	.asciz "obj_M_GOR_MT_L"
 	.balign 4
+glabel string_obj_L_GOR_MT_L
 	.asciz "obj_L_GOR_MT_L"
 	.balign 4
+glabel string_obj_S_GOR_MT_L
 	.asciz "obj_S_GOR_MT_L"
 	.balign 4
+glabel string_obj_M_GOR_MT_R
 	.asciz "obj_M_GOR_MT_R"
 	.balign 4
+glabel string_obj_L_GOR_MT_R
 	.asciz "obj_L_GOR_MT_R"
 	.balign 4
+glabel string_obj_S_GOR_MT_R
 	.asciz "obj_S_GOR_MT_R"
 	.balign 4
+glabel string_obj_H_GOR_KUBI_EAR_L
 	.asciz "obj_H_GOR_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_M_GOR_KUBI_EAR_L
 	.asciz "obj_M_GOR_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_L_GOR_KUBI_EAR_L
 	.asciz "obj_L_GOR_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_S_GOR_KUBI_EAR_L
 	.asciz "obj_S_GOR_KUBI_EAR_L"
 	.balign 4
+glabel string_obj_H_GOR_KUBI_EAR_R
 	.asciz "obj_H_GOR_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_M_GOR_KUBI_EAR_R
 	.asciz "obj_M_GOR_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_L_GOR_KUBI_EAR_R
 	.asciz "obj_L_GOR_KUBI_EAR_R"
 	.balign 4
+glabel string_obj_S_GOR_KUBI_EAR_R
 	.asciz "obj_S_GOR_KUBI_EAR_R"
 	.balign 4
-	.4byte 0x802F1200  ;# ptr
-	.4byte 0x801C6110  ;# ptr
-	.4byte 0x801C6120  ;# ptr
-	.4byte 0x801C6130  ;# ptr
-	.4byte 0x801C6140  ;# ptr
+	.4byte string_MDL_GOR  ;# ptr
+	.4byte string_obj_H_GOR_KUBI  ;# ptr
+	.4byte string_obj_M_GOR_KUBI  ;# ptr
+	.4byte string_obj_L_GOR_KUBI  ;# ptr
+	.4byte string_obj_S_GOR_KUBI  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29834,11 +30272,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F1200  ;# ptr
-	.4byte 0x801C6150  ;# ptr
-	.4byte 0x801C6150  ;# ptr
-	.4byte 0x801C6160  ;# ptr
-	.4byte 0x801C6170  ;# ptr
+	.4byte string_MDL_GOR  ;# ptr
+	.4byte string_obj_M_GOR_MT_L  ;# ptr
+	.4byte string_obj_M_GOR_MT_L  ;# ptr
+	.4byte string_obj_L_GOR_MT_L  ;# ptr
+	.4byte string_obj_S_GOR_MT_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.4byte 0
 	.4byte 0
@@ -29850,11 +30288,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F1200  ;# ptr
-	.4byte 0x801C6180  ;# ptr
-	.4byte 0x801C6180  ;# ptr
-	.4byte 0x801C6190  ;# ptr
-	.4byte 0x801C61A0  ;# ptr
+	.4byte string_MDL_GOR  ;# ptr
+	.4byte string_obj_M_GOR_MT_R  ;# ptr
+	.4byte string_obj_M_GOR_MT_R  ;# ptr
+	.4byte string_obj_L_GOR_MT_R  ;# ptr
+	.4byte string_obj_S_GOR_MT_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.4byte 0
 	.4byte 0
@@ -29866,11 +30304,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F1200  ;# ptr
-	.4byte 0x801C61B0  ;# ptr
-	.4byte 0x801C61C8  ;# ptr
-	.4byte 0x801C61E0  ;# ptr
-	.4byte 0x801C61F8  ;# ptr
+	.4byte string_MDL_GOR  ;# ptr
+	.4byte string_obj_H_GOR_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_M_GOR_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_L_GOR_KUBI_EAR_L  ;# ptr
+	.4byte string_obj_S_GOR_KUBI_EAR_L  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29882,11 +30320,11 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F1200  ;# ptr
-	.4byte 0x801C6210  ;# ptr
-	.4byte 0x801C6228  ;# ptr
-	.4byte 0x801C6240  ;# ptr
-	.4byte 0x801C6258  ;# ptr
+	.4byte string_MDL_GOR  ;# ptr
+	.4byte string_obj_H_GOR_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_M_GOR_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_L_GOR_KUBI_EAR_R  ;# ptr
+	.4byte string_obj_S_GOR_KUBI_EAR_R  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -29914,37 +30352,47 @@ lbl_801C63C0:
 	.byte 0x00, 0x00, 0x00, 0x05
 	.byte 0x00, 0x00, 0x00, 0x05
 	.byte 0x00, 0x00, 0x00, 0x05
+glabel string_Smile_Face
 	.asciz "Smile Face"
 	.balign 4
+glabel string_Angry_Face
 	.asciz "Angry Face"
 	.balign 4
+glabel string_Left_Hand_Open
 	.asciz "Left Hand Open"
 	.balign 4
+glabel string_Right_Hand_Open
 	.asciz "Right Hand Open"
+glabel string_Afraid_Face
 	.asciz "Afraid Face"
+glabel string_Open_Mouth
 	.asciz "Open Mouth"
 	.balign 4
-	.4byte 0x801C63D0  ;# ptr
-	.4byte 0x801C63DC  ;# ptr
-	.4byte 0x801C63E8  ;# ptr
-	.4byte 0x801C63F8  ;# ptr
-	.4byte 0x801C6408  ;# ptr
-	.4byte 0x802F1208  ;# ptr
-	.4byte 0x801C6414  ;# ptr
+	.4byte string_Smile_Face  ;# ptr
+	.4byte string_Angry_Face  ;# ptr
+	.4byte string_Left_Hand_Open  ;# ptr
+	.4byte string_Right_Hand_Open  ;# ptr
+	.4byte string_Afraid_Face  ;# ptr
+	.4byte string_Dissut  ;# ptr
+	.4byte string_Open_Mouth  ;# ptr
 	.4byte 0
+glabel string_Hand_Left
 	.asciz "Hand Left"
 	.balign 4
+glabel string_Hand_Right
 	.asciz "Hand Right"
 	.balign 4
+glabel string_Ear_Left
 	.asciz "Ear Left"
 	.balign 4
+glabel string_Ear_Right
 	.asciz "Ear Right"
 	.balign 4
-	.4byte 0x802F1210  ;# ptr
-	.4byte 0x801C6440  ;# ptr
-	.4byte 0x801C644C  ;# ptr
-	.4byte 0x801C6458  ;# ptr
-	.4byte 0x801C6464  ;# ptr
+	.4byte string_Face  ;# ptr
+	.4byte string_Hand_Left  ;# ptr
+	.4byte string_Hand_Right  ;# ptr
+	.4byte string_Ear_Left  ;# ptr
+	.4byte string_Ear_Right  ;# ptr
 	.4byte 0
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.4byte 0
@@ -30415,8 +30863,10 @@ lbl_801C692C:
 	.4byte 0x801C6AFC  ;# ptr
 	.4byte 0x801C6ABC  ;# ptr
 	.4byte 0x801C6B3C  ;# ptr
+glabel string_H_APE_EYE
 	.asciz "H_APE_EYE"
 	.balign 4
+glabel string_H_APE_HAIR
 	.asciz "H_APE_HAIR"
 	.balign 4
 	.byte 0x00, 0x3C, 0x00, 0x05
@@ -30424,7 +30874,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5910  ;# ptr
+	.4byte string_obj_H_APE_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -30432,7 +30882,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C6B8C  ;# ptr
+	.4byte string_H_APE_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0E, 0x00, 0x05
@@ -30440,7 +30890,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085C94  ;# ptr
-	.4byte 0x801C6B98  ;# ptr
+	.4byte string_H_APE_HAIR  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x3E, 0x00, 0x0A
@@ -30448,7 +30898,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C5950  ;# ptr
+	.4byte string_obj_H_APE_TE_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x41, 0x00, 0x0F
@@ -30456,7 +30906,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C5990  ;# ptr
+	.4byte string_obj_H_APE_TE_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -30464,7 +30914,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C59D0  ;# ptr
+	.4byte string_obj_H_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x04, 0x00, 0x05
@@ -30472,11 +30922,13 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5A30  ;# ptr
+	.4byte string_obj_H_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_M_APE_EYE
 	.asciz "M_APE_EYE"
 	.balign 4
+glabel string_M_APE_HAIR
 	.asciz "M_APE_HAIR"
 	.balign 4
 	.byte 0x00, 0x3C, 0x00, 0x05
@@ -30484,7 +30936,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5920  ;# ptr
+	.4byte string_obj_M_APE_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -30492,7 +30944,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C6C84  ;# ptr
+	.4byte string_M_APE_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0E, 0x00, 0x05
@@ -30500,7 +30952,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085C94  ;# ptr
-	.4byte 0x801C6C90  ;# ptr
+	.4byte string_M_APE_HAIR  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x3E, 0x00, 0x0A
@@ -30508,7 +30960,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C5960  ;# ptr
+	.4byte string_obj_M_APE_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x41, 0x00, 0x0F
@@ -30516,7 +30968,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C59A0  ;# ptr
+	.4byte string_obj_M_APE_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x03, 0x00, 0x05
@@ -30524,7 +30976,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C59E8  ;# ptr
+	.4byte string_obj_M_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -30532,9 +30984,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5A48  ;# ptr
+	.4byte string_obj_M_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_L_APE_EYE
 	.asciz "L_APE_EYE"
 	.balign 4
 	.byte 0x00, 0x13, 0x00, 0x05
@@ -30542,7 +30995,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5930  ;# ptr
+	.4byte string_obj_L_APE_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x12, 0x00, 0x05
@@ -30550,7 +31003,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C6D7C  ;# ptr
+	.4byte string_L_APE_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x14, 0x00, 0x0A
@@ -30558,7 +31011,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5970  ;# ptr
+	.4byte string_obj_L_APE_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x16, 0x00, 0x0F
@@ -30566,7 +31019,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C59B0  ;# ptr
+	.4byte string_obj_L_APE_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x01, 0x00, 0x05
@@ -30574,7 +31027,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5A00  ;# ptr
+	.4byte string_obj_L_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -30582,7 +31035,7 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5A60  ;# ptr
+	.4byte string_obj_L_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x05
@@ -30590,7 +31043,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5940  ;# ptr
+	.4byte string_obj_S_APE_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0D, 0x00, 0x0A
@@ -30598,7 +31051,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5980  ;# ptr
+	.4byte string_obj_S_APE_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0F, 0x00, 0x0F
@@ -30606,7 +31059,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C59C0  ;# ptr
+	.4byte string_obj_S_APE_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -30614,7 +31067,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5A18  ;# ptr
+	.4byte string_obj_S_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -30622,9 +31075,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5A78  ;# ptr
+	.4byte string_obj_S_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_H_GAL_EYE
 	.asciz "H_GAL_EYE"
 	.balign 4
 	.byte 0x00, 0x0F, 0x00, 0x05
@@ -30632,7 +31086,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5BD0  ;# ptr
+	.4byte string_obj_H_GAL_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -30640,7 +31094,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C6EE8  ;# ptr
+	.4byte string_H_GAL_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x11, 0x00, 0x0A
@@ -30648,7 +31102,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C5C10  ;# ptr
+	.4byte string_obj_M_GAL_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x14, 0x00, 0x0F
@@ -30656,7 +31110,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C5C40  ;# ptr
+	.4byte string_obj_M_GAL_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x10, 0x00, 0x05
@@ -30664,7 +31118,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5C70  ;# ptr
+	.4byte string_obj_H_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x12, 0x00, 0x05
@@ -30672,9 +31126,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5CD0  ;# ptr
+	.4byte string_obj_H_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_M_GAL_EYE
 	.asciz "M_GAL_EYE"
 	.balign 4
 	.byte 0x00, 0x0F, 0x00, 0x05
@@ -30682,7 +31137,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5BE0  ;# ptr
+	.4byte string_obj_M_GAL_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -30690,7 +31145,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C6FB4  ;# ptr
+	.4byte string_M_GAL_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x11, 0x00, 0x0A
@@ -30698,7 +31153,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C5C10  ;# ptr
+	.4byte string_obj_M_GAL_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x14, 0x00, 0x0F
@@ -30706,7 +31161,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C5C40  ;# ptr
+	.4byte string_obj_M_GAL_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x04, 0x00, 0x05
@@ -30714,7 +31169,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5C88  ;# ptr
+	.4byte string_obj_M_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -30722,9 +31177,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5CE8  ;# ptr
+	.4byte string_obj_M_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_L_GAL_EYE
 	.asciz "L_GAL_EYE"
 	.balign 4
 	.byte 0x00, 0x12, 0x00, 0x05
@@ -30732,7 +31188,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5BF0  ;# ptr
+	.4byte string_obj_L_GAL_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x10, 0x00, 0x05
@@ -30740,7 +31196,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C7080  ;# ptr
+	.4byte string_L_GAL_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x13, 0x00, 0x0A
@@ -30748,7 +31204,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5C20  ;# ptr
+	.4byte string_obj_L_GAL_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x16, 0x00, 0x0F
@@ -30756,7 +31212,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5C50  ;# ptr
+	.4byte string_obj_L_GAL_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x01, 0x00, 0x05
@@ -30764,7 +31220,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5CA0  ;# ptr
+	.4byte string_obj_L_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -30772,7 +31228,7 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5D00  ;# ptr
+	.4byte string_obj_L_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x05
@@ -30780,7 +31236,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5C00  ;# ptr
+	.4byte string_obj_S_GAL_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0D, 0x00, 0x0A
@@ -30788,7 +31244,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5C30  ;# ptr
+	.4byte string_obj_S_GAL_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0F, 0x00, 0x0F
@@ -30796,7 +31252,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5C60  ;# ptr
+	.4byte string_obj_S_GAL_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -30804,7 +31260,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5CB8  ;# ptr
+	.4byte string_obj_S_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -30812,9 +31268,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xF5, 0xC2, 0x8F
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5D18  ;# ptr
+	.4byte string_obj_S_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_H_KID_EYE
 	.asciz "H_KID_EYE"
 	.balign 4
 	.byte 0x00, 0x0F, 0x00, 0x05
@@ -30822,7 +31279,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5E70  ;# ptr
+	.4byte string_obj_H_KID_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0E, 0x00, 0x05
@@ -30830,7 +31287,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C71EC  ;# ptr
+	.4byte string_H_KID_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x11, 0x00, 0x0A
@@ -30838,7 +31295,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C5EB0  ;# ptr
+	.4byte string_obj_M_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x14, 0x00, 0x0F
@@ -30846,7 +31303,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C5EE0  ;# ptr
+	.4byte string_obj_M_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0A, 0x00, 0x05
@@ -30854,7 +31311,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5F10  ;# ptr
+	.4byte string_obj_H_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0C, 0x00, 0x05
@@ -30862,9 +31319,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5F70  ;# ptr
+	.4byte string_obj_H_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_M_KID_EYE
 	.asciz "M_KID_EYE"
 	.balign 4
 	.byte 0x00, 0x0F, 0x00, 0x05
@@ -30872,7 +31330,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C5E80  ;# ptr
+	.4byte string_obj_M_KID_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0E, 0x00, 0x05
@@ -30880,7 +31338,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C72B8  ;# ptr
+	.4byte string_M_KID_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x11, 0x00, 0x0A
@@ -30888,7 +31346,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C5EB0  ;# ptr
+	.4byte string_obj_M_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x14, 0x00, 0x0F
@@ -30896,7 +31354,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C5EE0  ;# ptr
+	.4byte string_obj_M_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0B, 0x00, 0x05
@@ -30904,7 +31362,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5F28  ;# ptr
+	.4byte string_obj_M_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0D, 0x00, 0x05
@@ -30912,11 +31370,13 @@ lbl_801C692C:
 	.byte 0xBD, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5F88  ;# ptr
+	.4byte string_obj_M_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_obj_L_KID_FACE
 	.asciz "obj_L_KID_FACE"
 	.balign 4
+glabel string_L_KID_EYE
 	.asciz "L_KID_EYE"
 	.balign 4
 	.byte 0x00, 0x13, 0x00, 0x05
@@ -30924,7 +31384,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800865A4  ;# ptr
-	.4byte 0x801C5E90  ;# ptr
+	.4byte string_obj_L_KID_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x1A, 0x00, 0x05
@@ -30932,7 +31392,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C7384  ;# ptr
+	.4byte string_obj_L_KID_FACE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x10, 0x00, 0x05
@@ -30940,7 +31400,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C7394  ;# ptr
+	.4byte string_L_KID_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x14, 0x00, 0x0A
@@ -30948,7 +31408,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085F94  ;# ptr
-	.4byte 0x801C5EC0  ;# ptr
+	.4byte string_obj_L_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x17, 0x00, 0x0F
@@ -30956,7 +31416,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085F94  ;# ptr
-	.4byte 0x801C5EF0  ;# ptr
+	.4byte string_obj_L_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x01, 0x00, 0x05
@@ -30964,7 +31424,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5F40  ;# ptr
+	.4byte string_obj_L_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -30972,7 +31432,7 @@ lbl_801C692C:
 	.byte 0xBD, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5FA0  ;# ptr
+	.4byte string_obj_L_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0B, 0x00, 0x05
@@ -30980,7 +31440,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5EA0  ;# ptr
+	.4byte string_obj_S_KID_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0D, 0x00, 0x0A
@@ -30988,7 +31448,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5ED0  ;# ptr
+	.4byte string_obj_S_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0F, 0x00, 0x0F
@@ -30996,7 +31456,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C5F00  ;# ptr
+	.4byte string_obj_S_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -31004,7 +31464,7 @@ lbl_801C692C:
 	.byte 0x3D, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5F58  ;# ptr
+	.4byte string_obj_S_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x0A, 0x00, 0x05
@@ -31012,9 +31472,10 @@ lbl_801C692C:
 	.byte 0xBD, 0xB8, 0x51, 0xEC
 	.byte 0x3D, 0x9F, 0xBE, 0x77
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C5FB8  ;# ptr
+	.4byte string_obj_S_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_H_GOR_EYE
 	.asciz "H_GOR_EYE"
 	.balign 4
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -31022,7 +31483,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C6110  ;# ptr
+	.4byte string_obj_H_GOR_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -31030,7 +31491,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C7520  ;# ptr
+	.4byte string_H_GOR_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x0A
@@ -31038,7 +31499,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C6150  ;# ptr
+	.4byte string_obj_M_GOR_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x0F
@@ -31046,7 +31507,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C6180  ;# ptr
+	.4byte string_obj_M_GOR_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x05
@@ -31054,7 +31515,7 @@ lbl_801C692C:
 	.byte 0x3E, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C61B0  ;# ptr
+	.4byte string_obj_H_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x01, 0x00, 0x05
@@ -31062,9 +31523,10 @@ lbl_801C692C:
 	.byte 0xBE, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C6210  ;# ptr
+	.4byte string_obj_H_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_M_GOR_EYE
 	.asciz "M_GOR_EYE"
 	.balign 4
 	.byte 0x00, 0x05, 0x00, 0x05
@@ -31072,7 +31534,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C6120  ;# ptr
+	.4byte string_obj_M_GOR_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -31080,7 +31542,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C75EC  ;# ptr
+	.4byte string_M_GOR_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x0A
@@ -31088,7 +31550,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800860E4  ;# ptr
-	.4byte 0x801C6150  ;# ptr
+	.4byte string_obj_M_GOR_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x0F
@@ -31096,7 +31558,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_800861EC  ;# ptr
-	.4byte 0x801C6180  ;# ptr
+	.4byte string_obj_M_GOR_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x19, 0x00, 0x05
@@ -31104,7 +31566,7 @@ lbl_801C692C:
 	.byte 0x3E, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C61C8  ;# ptr
+	.4byte string_obj_M_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x1A, 0x00, 0x05
@@ -31112,9 +31574,10 @@ lbl_801C692C:
 	.byte 0xBE, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C6228  ;# ptr
+	.4byte string_obj_M_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel string_L_GOR_EYE
 	.asciz "L_GOR_EYE"
 	.balign 4
 	.byte 0x00, 0x04, 0x00, 0x05
@@ -31122,7 +31585,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C6130  ;# ptr
+	.4byte string_obj_L_GOR_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x03, 0x00, 0x05
@@ -31130,7 +31593,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80085E44  ;# ptr
-	.4byte 0x801C76B8  ;# ptr
+	.4byte string_L_GOR_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x0A
@@ -31138,7 +31601,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C6160  ;# ptr
+	.4byte string_obj_L_GOR_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x09, 0x00, 0x0F
@@ -31146,7 +31609,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C6190  ;# ptr
+	.4byte string_obj_L_GOR_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x01, 0x00, 0x05
@@ -31154,7 +31617,7 @@ lbl_801C692C:
 	.byte 0x3E, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C61E0  ;# ptr
+	.4byte string_obj_L_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x02, 0x00, 0x05
@@ -31162,7 +31625,7 @@ lbl_801C692C:
 	.byte 0xBE, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C6240  ;# ptr
+	.4byte string_obj_L_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x11, 0x00, 0x05
@@ -31170,7 +31633,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte func_80086794  ;# ptr
-	.4byte 0x801C6140  ;# ptr
+	.4byte string_obj_S_GOR_KUBI  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x18, 0x00, 0x0A
@@ -31178,7 +31641,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C6170  ;# ptr
+	.4byte string_obj_S_GOR_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x1A, 0x00, 0x0F
@@ -31186,7 +31649,7 @@ lbl_801C692C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C61A0  ;# ptr
+	.4byte string_obj_S_GOR_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -31194,7 +31657,7 @@ lbl_801C692C:
 	.byte 0x3E, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C61F8  ;# ptr
+	.4byte string_obj_S_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x10, 0x00, 0x05
@@ -31202,14 +31665,14 @@ lbl_801C692C:
 	.byte 0xBE, 0x42, 0x8F, 0x5C
 	.byte 0x3E, 0x19, 0x99, 0x9A
 	.4byte func_80086F2C  ;# ptr
-	.4byte 0x801C6258  ;# ptr
+	.4byte string_obj_S_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
 
 .global lbl_801C7824
 lbl_801C7824:
 	# ROM: 0x1C4824
-	.4byte 0x802F1218  ;# ptr
+	.4byte string_boy_h  ;# ptr
 	.4byte 0x801C6BA4  ;# ptr
 	.4byte 0x801C6C9C  ;# ptr
 	.4byte 0
@@ -31218,7 +31681,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x01, 0x00, 0x00
 	.4byte 0
-	.4byte 0x802F1220  ;# ptr
+	.4byte string_boy_l  ;# ptr
 	.4byte 0x801C6D88  ;# ptr
 	.4byte 0x801C6E48  ;# ptr
 	.4byte 0
@@ -31227,7 +31690,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
-	.4byte 0x802F1228  ;# ptr
+	.4byte string_gal_h  ;# ptr
 	.4byte 0x801C6EF4  ;# ptr
 	.4byte 0x801C6FC0  ;# ptr
 	.4byte 0
@@ -31236,7 +31699,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x03, 0x00, 0x02
 	.4byte 0
-	.4byte 0x802F1230  ;# ptr
+	.4byte string_gal_l  ;# ptr
 	.4byte 0x801C708C  ;# ptr
 	.4byte 0x801C714C  ;# ptr
 	.4byte 0
@@ -31245,7 +31708,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
-	.4byte 0x802F1238  ;# ptr
+	.4byte string_kid_h  ;# ptr
 	.4byte 0x801C71F8  ;# ptr
 	.4byte 0x801C72C4  ;# ptr
 	.4byte 0
@@ -31254,7 +31717,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x09, 0x00, 0x08
 	.4byte 0
-	.4byte 0x802F1240  ;# ptr
+	.4byte string_kid_l  ;# ptr
 	.4byte 0x801C73A0  ;# ptr
 	.4byte 0x801C7480  ;# ptr
 	.4byte 0
@@ -31263,7 +31726,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
-	.4byte 0x802F1248  ;# ptr
+	.4byte string_gor_h  ;# ptr
 	.4byte 0x801C752C  ;# ptr
 	.4byte 0x801C75F8  ;# ptr
 	.4byte 0
@@ -31272,7 +31735,7 @@ lbl_801C7824:
 	.4byte 0
 	.byte 0x00, 0x04, 0x00, 0x18
 	.4byte 0
-	.4byte 0x802F1250  ;# ptr
+	.4byte string_gor_l  ;# ptr
 	.4byte 0x801C76C4  ;# ptr
 	.4byte 0x801C7784  ;# ptr
 	.4byte 0
@@ -31364,12 +31827,16 @@ lbl_801C7A1C:
 .global lbl_801C7A40
 lbl_801C7A40:
 	# ROM: 0x1C4A40
+glabel string_RNK_TITILE
 	.asciz "RNK TITILE"
 	.balign 4
+glabel string_MASTER__d_2
 	.asciz "MASTER %d"
 	.balign 4
+glabel string_EXTRA__d_2
 	.asciz "EXTRA %d"
 	.balign 4
+glabel string_FLOOR__d_2
 	.asciz "FLOOR %d"
 	.balign 4
 
@@ -31455,71 +31922,92 @@ lbl_801C7B34:
 	.4byte func_8008A120  ;# ptr
 	.4byte func_8008A120  ;# ptr
 	.4byte func_8008A120  ;# ptr
+glabel string_boy_ch_tpl_lz
 	.asciz "boy_ch.tpl.lz"
 	.balign 4
+glabel string_kid_ch_tpl_lz
 	.asciz "kid_ch.tpl.lz"
 	.balign 4
+glabel string_gor_ch_tpl_lz
 	.asciz "gor_ch.tpl.lz"
 	.balign 4
 
 .global lbl_801C7B8C
 lbl_801C7B8C:
 	# ROM: 0x1C4B8C
+glabel string_mot_ape_c
 	.asciz "mot_ape.c"
 	.balign 4
+glabel string_cannot_OSAlloc_n_3
 	.asciz "cannot OSAlloc\n"
+glabel string________Character_Model_Information_______n
 	.asciz " ===== Character Model Information =====\n"
 	.balign 4
+glabel string_No_Chara_Texture___s__n
 	.asciz "No Chara Texture <%s>\n"
 	.balign 4
+glabel string_Stopped____n
 	.asciz "Stopped...\n"
+glabel string_cannot_OSAlloc_3
 	.asciz "cannot OSAlloc"
 	.balign 4
+glabel string_Not_enough_ARAM_for_CharacterModel__n
 	.asciz "Not enough ARAM for CharacterModel.\n"
 	.balign 4
+glabel string_No_Chara_Model___s__n
 	.asciz "No Chara Model <%s>\n"
 	.balign 4
+glabel string__s___Polygon___x___Texture___x___n
 	.asciz "%s : Polygon[ %x ] Texture[ %x ]\n"
 	.balign 4
+glabel string_change_texture_load___s____x___n
 	.asciz "change texture load. %s [ %x ]\n"
+glabel string____Use_ARAM_Memory_top____x_n
 	.asciz "   Use ARAM Memory top : %x\n"
 	.balign 4
+glabel string__________________________________________n
 	.asciz " =======================================\n"
 	.balign 4
 
 .global lbl_801C7CD8
 lbl_801C7CD8:
 	# ROM: 0x1C4CD8
+glabel string_obj___s_is_nothing__n
 	.asciz "obj: %s is nothing.\n"
 	.balign 4
 
 .global lbl_801C7CF0
 lbl_801C7CF0:
 	# ROM: 0x1C4CF0
+glabel string_rob_init_Heap_Over__n
 	.asciz "rob init Heap Over.\n"
 	.balign 4
 
 .global lbl_801C7D08
 lbl_801C7D08:
 	# ROM: 0x1C4D08
+glabel string__nchara_model_is_already_free__n
 	.asciz "\nchara model is already free.\n"
 	.balign 4
 
 .global lbl_801C7D28
 lbl_801C7D28:
 	# ROM: 0x1C4D28
+glabel string_APE_Allocate_limit_over___n
 	.asciz "APE Allocate limit over!!\n"
 	.balign 4
 
 .global lbl_801C7D44
 lbl_801C7D44:
 	# ROM: 0x1C4D44
+glabel string_ape_face_p_lz
 	.asciz "ape/face_p.lz"
 	.balign 4
 
 .global lbl_801C7D54
 lbl_801C7D54:
 	# ROM: 0x1C4D54
+glabel string_ape_face_lz
 	.asciz "ape/face.lz"
 
 .global lbl_801C7D60
@@ -31569,214 +32057,339 @@ glabel naka
 	.balign 4
 glabel jyokyuu
 	.asciz "JYOkyuu"
-	.byte 0x55, 0x45, 0x00, 0x00
+glabel string_UE
+    .asciz "UE"
+    .balign 4
+glabel string_KYUU
 	.asciz "KYUU"
 	.balign 4
+glabel string_NANI
 	.asciz "NANI"
 	.balign 4
+glabel string_HONN
 	.asciz "HONN"
 	.balign 4
+glabel string_KAchi
 	.asciz "KAchi"
 	.balign 4
+glabel string_MAke
 	.asciz "MAke"
 	.balign 4
+glabel string_SHIyou
 	.asciz "SHIyou"
 	.balign 4
+glabel string_TSUKAu
 	.asciz "TSUKAu"
 	.balign 4
+glabel string_shiYOU
 	.asciz "shiYOU"
 	.balign 4
-	.byte 0x59, 0x4F, 0x55, 0x00
+glabel string_YOU
+	.asciz "YOU"
+glabel string_JIbunn
 	.asciz "JIbunn"
 	.balign 4
+glabel string_jiBUNN
 	.asciz "jiBUNN"
 	.balign 4
+glabel string_HITO
 	.asciz "HITO"
 	.balign 4
+glabel string_NINN
 	.asciz "NINN"
 	.balign 4
+glabel string_GENzai
 	.asciz "GENzai"
 	.balign 4
+glabel string_genZAI
 	.asciz "genZAI"
 	.balign 4
+glabel string_KOsuu
 	.asciz "KOsuu"
 	.balign 4
+glabel string_DOUji
 	.asciz "DOUji"
 	.balign 4
+glabel string_douJI
 	.asciz "douJI"
 	.balign 4
+glabel string_TOKI
 	.asciz "TOKI"
 	.balign 4
+glabel string_TAIsenn
 	.asciz "TAIsenn"
+glabel string_taiSENN
 	.asciz "taiSENN"
+glabel string_SENN
 	.asciz "SENN"
 	.balign 4
+glabel string_KAIsuu
 	.asciz "KAIsuu"
 	.balign 4
-	.byte 0x4B, 0x41, 0x49, 0x00
+glabel string_KAI
+    .asciz "KAI"
+glabel string_TSUGI
 	.asciz "TSUGI"
 	.balign 4
+glabel string_KYOUsou
 	.asciz "KYOUsou"
+glabel string_kyouSOU
 	.asciz "kyouSOU"
+glabel string_SAKI
 	.asciz "SAKI"
 	.balign 4
+glabel string_HOKA
 	.asciz "HOKA"
 	.balign 4
+glabel string_KURAI
 	.asciz "KURAI"
 	.balign 4
+glabel string_KAZU
 	.asciz "KAZU"
 	.balign 4
-	.byte 0x53, 0x55, 0x55, 0x00
-	.byte 0x4F, 0x53, 0x55, 0x00
-	.byte 0x48, 0x41, 0x49, 0x00
+glabel string_SUU
+	.asciz "SUU"
+glabel string_OSU
+	.asciz "OSU"
+glabel string_HAI
+	.asciz "HAI"
+glabel string_KEttei
 	.asciz "KEttei"
 	.balign 4
+glabel string_keTTEI
 	.asciz "keTTEI"
 	.balign 4
-	.byte 0x41, 0x75, 0x00, 0x00
+glabel string_Au
+    .asciz "Au"
+    .balign 4
+glabel string_MIGI
 	.asciz "MIGI"
 	.balign 4
+glabel string_SHITA
 	.asciz "SHITA"
 	.balign 4
+glabel string_KUDA
 	.asciz "KUDA"
 	.balign 4
+glabel string_HIDARI
 	.asciz "HIDARI"
 	.balign 4
+glabel string_TAberu
 	.asciz "TAberu"
 	.balign 4
-	.byte 0x49, 0x4D, 0x41, 0x00
-	.byte 0x44, 0x4F, 0x55, 0x00
+glabel string_IMA
+	.asciz "IMA"
+glabel string_DOU
+	.asciz "DOU"
+glabel string_UGOku
 	.asciz "UGOku"
 	.balign 4
-	.byte 0x44, 0x41, 0x49, 0x00
+glabel string_DAI
+	.asciz "DAI"
+glabel string_OOkii
 	.asciz "OOkii"
 	.balign 4
+glabel string_KIbunn
 	.asciz "KIbunn"
 	.balign 4
+glabel string_HENN
 	.asciz "HENN"
 	.balign 4
+glabel string_KAwaru
 	.asciz "KAwaru"
 	.balign 4
+glabel string_CHIkei
 	.asciz "CHIkei"
 	.balign 4
+glabel string_chiKEI
 	.asciz "chiKEI"
 	.balign 4
+glabel string_chiTENN
 	.asciz "chiTENN"
+glabel string_TENN
 	.asciz "TENN"
 	.balign 4
+glabel string_SAKA
 	.asciz "SAKA"
 	.balign 4
+glabel string_MICHI
 	.asciz "MICHI"
 	.balign 4
+glabel string_Ochiru
 	.asciz "Ochiru"
 	.balign 4
+glabel string_TOru
 	.asciz "TOru"
 	.balign 4
+glabel string_KIkann
 	.asciz "KIkann"
 	.balign 4
+glabel string_MOUkeru
 	.asciz "MOUkeru"
+glabel string_TUku
 	.asciz "TUku"
 	.balign 4
+glabel string_YOmu
 	.asciz "YOmu"
 	.balign 4
+glabel string_KARADA
 	.asciz "KARADA"
 	.balign 4
+glabel string_ATUKAu
 	.asciz "ATUKAu"
 	.balign 4
+glabel string_SETSU
 	.asciz "SETSU"
 	.balign 4
+glabel string_AKArui
 	.asciz "AKArui"
 	.balign 4
+glabel string_KAku
 	.asciz "KAku"
 	.balign 4
+glabel string_DENN
 	.asciz "DENN"
 	.balign 4
+glabel string_GENN
 	.asciz "GENN"
 	.balign 4
+glabel string_NUku
 	.asciz "NUku"
 	.balign 4
-	.byte 0x53, 0x4F, 0x55, 0x00
+glabel string_SOU
+	.asciz "SOU"
+glabel string_TAMA
 	.asciz "TAMA"
 	.balign 4
+glabel string_SHOKYUU
 	.asciz "SHOKYUU"
+glabel string_CHUKYUU
 	.asciz "CHUKYUU"
+glabel string_JYOKYUU
 	.asciz "JYOKYUU"
+glabel string_SHOUBU
 	.asciz "SHOUBU"
 	.balign 4
+glabel string_SYOUBU
 	.asciz "SYOUBU"
 	.balign 4
+glabel string_SHIYOU
 	.asciz "SHIYOU"
 	.balign 4
+glabel string_JIBUNN
 	.asciz "JIBUNN"
 	.balign 4
+glabel string_GENZAI
 	.asciz "GENZAI"
 	.balign 4
+glabel string_DOUJI
 	.asciz "DOUJI"
 	.balign 4
+glabel string_TAISENN
 	.asciz "TAISENN"
+glabel string_KYOUSOU
 	.asciz "KYOUSOU"
+glabel string_HONNSUU
 	.asciz "HONNSUU"
+glabel string_KOSUU
 	.asciz "KOSUU"
 	.balign 4
+glabel string_KETTEI
 	.asciz "KETTEI"
 	.balign 4
+glabel string_CHIKEI
 	.asciz "CHIKEI"
 	.balign 4
+glabel string_CHITENN
 	.asciz "CHITENN"
+glabel string_RAKKA
 	.asciz "RAKKA"
 	.balign 4
-	.byte 0x49, 0x52, 0x45, 0x00
+glabel string_IRE
+	.asciz "IRE"
+glabel string_SENNSHU
 	.asciz "SENNSHU"
+glabel string_TORU
 	.asciz "TORU"
 	.balign 4
+glabel string_TORE
 	.asciz "TORE"
 	.balign 4
+glabel string_NANNKAI
 	.asciz "NANNKAI"
+glabel string_KAISUU
 	.asciz "KAISUU"
 	.balign 4
+glabel string_KATE
 	.asciz "KATE"
 	.balign 4
+glabel string_SHOKI
 	.asciz "SHOKI"
 	.balign 4
+glabel string_SETTEI
 	.asciz "SETTEI"
 	.balign 4
+glabel string_HONNTAI
 	.asciz "HONNTAI"
+glabel string_SETUMEI
 	.asciz "SETUMEI"
+glabel string_KACHI
 	.asciz "KACHI"
 	.balign 4
+glabel string_TATAKAU
 	.asciz "TATAKAU"
+glabel string_TATAKAI
 	.asciz "TATAKAI"
+glabel string_SENNSOU
 	.asciz "SENNSOU"
+glabel string_NUKU
 	.asciz "NUKU"
 	.balign 4
+glabel string_HASHIRU
 	.asciz "HASHIRU"
+glabel string_NUKI
 	.asciz "NUKI"
 	.balign 4
+glabel string_TSUKAU
 	.asciz "TSUKAU"
 	.balign 4
+glabel string_OTOSU
 	.asciz "OTOSU"
 	.balign 4
-	.byte 0x4F, 0x54, 0x4F, 0x00
+glabel string_OTO
+	.asciz "OTO"
+glabel string_TSUKAI
 	.asciz "TSUKAI"
 	.balign 4
+glabel string_OCHI
 	.asciz "OCHI"
 	.balign 4
+glabel string_KIME
 	.asciz "KIME"
 	.balign 4
+glabel string_JITENN
 	.asciz "JITENN"
 	.balign 4
+glabel string_OSHI
 	.asciz "OSHI"
 	.balign 4
+glabel string_DOUTENN
 	.asciz "DOUTENN"
+glabel string_HENNKEI
 	.asciz "HENNKEI"
+glabel string_TSUKAE
 	.asciz "TSUKAE"
 	.balign 4
+glabel string_SAYUU
 	.asciz "SAYUU"
 	.balign 4
+glabel string_KIMA
 	.asciz "KIMA"
 	.balign 4
+glabel string_MAKE
 	.asciz "MAKE"
 	.balign 4
+glabel string_JYOUGE
 	.asciz "JYOUGE"
 	.balign 4
 	.4byte 0
@@ -31856,7 +32469,9 @@ lbl_802F0FE8:
 	# ROM: 0x1EB728
 	.4byte 0
 	.4byte 0
+glabel string_a_Retry
 	.asciz "a/Retry"
+glabel string_a_Guide
 	.asciz "a/Guide"
 
 .global lbl_802F1000
@@ -31872,6 +32487,7 @@ lbl_802F1004:
 .global lbl_802F1008
 lbl_802F1008:
 	# ROM: 0x1EB748
+glabel string_logo
 	.asciz "logo"
 	.balign 4
 
@@ -31883,17 +32499,20 @@ lbl_802F1010:
 .global lbl_802F1014
 lbl_802F1014:
 	# ROM: 0x1EB754
+glabel string_SEGA_AV
 	.asciz "SEGA AV"
 
 .global lbl_802F101C
 lbl_802F101C:
 	# ROM: 0x1EB75C
+glabel string_title
 	.asciz "title"
 	.balign 4
 
 .global lbl_802F1024
 lbl_802F1024:
 	# ROM: 0x1EB764
+glabel string_saru
 	.asciz "saru"
 	.balign 4
 
@@ -31915,17 +32534,20 @@ lbl_802F1034:
 .global lbl_802F1038
 lbl_802F1038:
 	# ROM: 0x1EB778
+glabel string_000_100
 	.asciz "000 100"
 
 .global lbl_802F1040
 lbl_802F1040:
 	# ROM: 0x1EB780
+glabel string_banana
 	.asciz "banana"
 	.balign 4
 
 .global lbl_802F1048
 lbl_802F1048:
 	# ROM: 0x1EB788
+glabel string_eieipu
 	.asciz "eieipu"
 	.balign 4
 
@@ -31937,6 +32559,7 @@ lbl_802F1050:
 .global lbl_802F1054
 lbl_802F1054:
 	# ROM: 0x1EB794
+glabel string_READY
 	.asciz "READY"
 	.balign 4
 
@@ -31948,24 +32571,28 @@ lbl_802F105C:
 .global lbl_802F1060
 lbl_802F1060:
 	# ROM: 0x1EB7A0
+glabel string_course
 	.asciz "course"
 	.balign 4
 
 .global lbl_802F1068
 lbl_802F1068:
 	# ROM: 0x1EB7A8
+glabel string_SCORE
 	.asciz "SCORE"
 	.balign 4
 
 .global lbl_802F1070
 lbl_802F1070:
 	# ROM: 0x1EB7B0
+glabel string_NULL_n
 	.asciz "NULL\n"
 	.balign 4
 
 .global lbl_802F1078
 lbl_802F1078:
 	# ROM: 0x1EB7B8
+glabel string_score
 	.asciz "score"
 	.balign 4
 
@@ -31978,6 +32605,7 @@ lbl_802F1080:
 lbl_802F1084:
 	# ROM: 0x1EB7C4
 	.byte 0x6D, 0x70, 0x68, 0x00
+glabel string_FINAL
 	.asciz "FINAL"
 	.balign 4
 	.byte 0x32, 0x4E, 0x44, 0x00
@@ -31986,18 +32614,21 @@ lbl_802F1084:
 .global lbl_802F1098
 lbl_802F1098:
 	# ROM: 0x1EB7D8
+glabel string__03d
 	.asciz "%03d"
 	.balign 4
 
 .global lbl_802F10A0
 lbl_802F10A0:
 	# ROM: 0x1EB7E0
+glabel string___02d
 	.asciz ":%02d"
 	.balign 4
 
 .global lbl_802F10A8
 lbl_802F10A8:
 	# ROM: 0x1EB7E8
+glabel string_____100
 	.asciz "    100"
 
 .global lbl_802F10B0
@@ -32008,6 +32639,7 @@ lbl_802F10B0:
 .global lbl_802F10B4
 lbl_802F10B4:
 	# ROM: 0x1EB7F4
+glabel string__3_0f
 	.asciz "%3.0f"
 	.balign 4
 
@@ -32029,12 +32661,14 @@ lbl_802F10C4:
 .global lbl_802F10C8
 lbl_802F10C8:
 	# ROM: 0x1EB808
+glabel string_GOAL
 	.asciz "GOAL"
 	.balign 4
 
 .global lbl_802F10D0
 lbl_802F10D0:
 	# ROM: 0x1EB810
+glabel string_PERFECT
 	.asciz "PERFECT"
 
 .global lbl_802F10D8
@@ -32055,58 +32689,70 @@ lbl_802F10E0:
 .global lbl_802F10E4
 lbl_802F10E4:
 	# ROM: 0x1EB824
+glabel string_REPLAY
 	.asciz "REPLAY"
 	.balign 4
 
 .global lbl_802F10EC
 lbl_802F10EC:
 	# ROM: 0x1EB82C
+glabel string_NAME
 	.asciz "NAME"
 	.balign 4
 
 .global lbl_802F10F4
 lbl_802F10F4:
 	# ROM: 0x1EB834
+glabel string_ENTRY
 	.asciz "ENTRY"
 	.balign 4
+glabel string_Staff
 	.asciz "Staff"
 	.balign 4
+glabel string_Chamy
 	.asciz "Chamy"
 	.balign 4
+glabel string_HAIKYO
 	.asciz "HAIKYO"
 	.balign 4
 
 .global lbl_802F1114
 lbl_802F1114:
 	# ROM: 0x1EB854
+glabel string_result_2
 	.asciz "result"
 	.balign 4
 
 .global lbl_802F111C
 lbl_802F111C:
 	# ROM: 0x1EB85C
+glabel string_ranking_2
 	.asciz "ranking"
 
 .global lbl_802F1124
 lbl_802F1124:
 	# ROM: 0x1EB864
+glabel string___5d
 	.asciz " %5d"
 	.balign 4
 
 .global lbl_802F112C
 lbl_802F112C:
 	# ROM: 0x1EB86C
+glabel string____X__d
 	.asciz "   X %d"
 
 .global lbl_802F1134
 lbl_802F1134:
 	# ROM: 0x1EB874
+glabel string___X__d
 	.asciz "  X %d"
 	.balign 4
 
 .global lbl_802F113C
 lbl_802F113C:
 	# ROM: 0x1EB87C
+glabel string____X_2
 	.asciz "   X 2"
 	.balign 4
 
@@ -32123,6 +32769,7 @@ lbl_802F1148:
 .global lbl_802F114C
 lbl_802F114C:
 	# ROM: 0x1EB88C
+glabel string_hibi
 	.asciz "hibi"
 	.balign 4
 	.4byte 0
@@ -32136,15 +32783,18 @@ lbl_802F1158:
 .global lbl_802F1160
 lbl_802F1160:
 	# ROM: 0x1EB8A0
+glabel string_how_to
 	.asciz "how to"
 	.balign 4
-	.4byte 0x801C232C  ;# ptr
-	.4byte 0x801C2344  ;# ptr
-	.4byte 0x801C2358  ;# ptr
-	.4byte 0x801C2374  ;# ptr
-	.4byte 0x801C2390  ;# ptr
-	.4byte 0x801C23AC  ;# ptr
+	.4byte string_a_Normal_Mode_movement  ;# ptr
+	.4byte string_a_Normal_Mode_rules  ;# ptr
+	.4byte string_a_Competition_Mode_movement  ;# ptr
+	.4byte string_a_Competition_Mode_rules  ;# ptr
+	.4byte string_a_Practice_Mode_movement  ;# ptr
+	.4byte string_a_Practice_Mode_rules  ;# ptr
+glabel string_a_Punch
 	.asciz "a/Punch"
+glabel string_a_Shot
 	.asciz "a/Shot"
 	.balign 4
 	.byte 0x00, 0x01, 0x02, 0xFF
@@ -32173,42 +32823,59 @@ lbl_802F11D4:
 .global lbl_802F11D8
 lbl_802F11D8:
 	# ROM: 0x1EB918
+glabel string_a_Back
 	.asciz "a/Back"
 	.balign 4
 
 .global lbl_802F11E0
 lbl_802F11E0:
 	# ROM: 0x1EB920
+glabel string_a_Next
 	.asciz "a/Next"
 	.balign 4
+glabel string_MDL_APE
 	.asciz "MDL_APE"
+glabel string_MDL_GAL
 	.asciz "MDL_GAL"
+glabel string_MDL_KID
 	.asciz "MDL_KID"
+glabel string_MDL_GOR
 	.asciz "MDL_GOR"
+glabel string_Dissut
 	.asciz "Dissut"
 	.balign 4
+glabel string_Face
 	.asciz "Face"
 	.balign 4
+glabel string_boy_h
 	.asciz "boy_h"
 	.balign 4
+glabel string_boy_l
 	.asciz "boy_l"
 	.balign 4
+glabel string_gal_h
 	.asciz "gal_h"
 	.balign 4
+glabel string_gal_l
 	.asciz "gal_l"
 	.balign 4
+glabel string_kid_h
 	.asciz "kid_h"
 	.balign 4
+glabel string_kid_l
 	.asciz "kid_l"
 	.balign 4
+glabel string_gor_h
 	.asciz "gor_h"
 	.balign 4
+glabel string_gor_l
 	.asciz "gor_l"
 	.balign 4
 
 .global lbl_802F1258
 lbl_802F1258:
 	# ROM: 0x1EB998
+glabel string__07d
 	.asciz "%07d"
 	.balign 4
 
@@ -32225,6 +32892,7 @@ lbl_802F1264:
 .global lbl_802F1268
 lbl_802F1268:
 	# ROM: 0x1EB9A8
+glabel string_RANKING
 	.asciz "RANKING"
 
 .global lbl_802F1270
@@ -32240,22 +32908,31 @@ lbl_802F1274:
 .global lbl_802F1278
 lbl_802F1278:
 	# ROM: 0x1EB9B8
+glabel string_REPLAY_2
 	.asciz "REPLAY"
 	.balign 4
+glabel string_BOY_H
 	.asciz "BOY H"
 	.balign 4
+glabel string_BOY_L
 	.asciz "BOY_L"
 	.balign 4
+glabel string_GAL_H
 	.asciz "GAL_H"
 	.balign 4
+glabel string_GAL_L
 	.asciz "GAL_L"
 	.balign 4
+glabel string_KID_H
 	.asciz "KID_H"
 	.balign 4
+glabel string_KID_L
 	.asciz "KID_L"
 	.balign 4
+glabel string_GOR_H
 	.asciz "GOR_H"
 	.balign 4
+glabel string_GOR_L
 	.asciz "GOR_L"
 	.balign 4
 
@@ -32267,11 +32944,13 @@ lbl_802F12C0:
 .global lbl_802F12C4
 lbl_802F12C4:
 	# ROM: 0x1EBA04
+glabel string__tpl_lz
 	.asciz ".tpl.lz"
 
 .global lbl_802F12CC
 lbl_802F12CC:
 	# ROM: 0x1EBA0C
+glabel string__gma_lz
 	.asciz ".gma.lz"
 
 .global lbl_802F12D4

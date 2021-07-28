@@ -9477,6 +9477,7 @@ lbl_801B7EE8:
 .global lbl_801B7F88
 lbl_801B7F88:
 	# ROM: 0x1B4F88
+glabel string_edge_length_is_too_short_n
 	.asciz "edge length is too short\n"
 	.balign 4
 	.4byte 0
@@ -9952,30 +9953,34 @@ lbl_801B86A8:
 .global lbl_801B86D8
 lbl_801B86D8:
 	# ROM: 0x1B56D8
-	.4byte 0x802F09A0  ;# ptr
-	.4byte 0x802F09A8  ;# ptr
-	.4byte 0x802F09B0  ;# ptr
+	.4byte string_GOAL_3  ;# ptr
+	.4byte string_GOAL_G  ;# ptr
+	.4byte string_GOAL_R  ;# ptr
 
 .global lbl_801B86E4
 lbl_801B86E4:
 	# ROM: 0x1B56E4
+glabel string_preview_140x140_tpl
 	.asciz "preview/140x140.tpl"
 
 .global lbl_801B86F8
 lbl_801B86F8:
 	# ROM: 0x1B56F8
+glabel string_MOT_STAGE101_BLUR
 	.asciz "MOT_STAGE101_BLUR"
 	.balign 4
 
 .global lbl_801B870C
 lbl_801B870C:
 	# ROM: 0x1B570C
+glabel string_SHAPE_STAGE134
 	.asciz "SHAPE_STAGE134"
 	.balign 4
 
 .global lbl_801B871C
 lbl_801B871C:
 	# ROM: 0x1B571C
+glabel string____________st_03d______________n
 	.asciz "========== st%03d ============\n"
 	.byte 0x0A, 0x13, 0x14, 0x1E
 	.byte 0x31, 0x32, 0x3C, 0x46
@@ -9983,76 +9988,104 @@ lbl_801B871C:
 	.byte 0x62, 0x63, 0x64, 0x72
 	.byte 0x73, 0x74, 0x75, 0x76
 	.byte 0x77, 0x78, 0xFF, 0x00
+glabel string_STAGE_03d_lz
 	.asciz "STAGE%03d.lz"
 	.balign 4
+glabel string_st_03d_gma
 	.asciz "st%03d.gma"
 	.balign 4
+glabel string_st_03d_tpl
 	.asciz "st%03d.tpl"
 	.balign 4
+glabel string_st_03d_p_lz
 	.asciz "st%03d_p.lz"
+glabel string_st_03d_lz
 	.asciz "st%03d.lz"
 	.balign 4
 
 .global lbl_801B8794
 lbl_801B8794:
 	# ROM: 0x1B5794
-	.4byte 0x802F1B00  ;# ptr
-	.4byte 0x802F1B04  ;# ptr
+	.4byte lbl_802F1B00  ;# ptr
+	.4byte lbl_802F1B04  ;# ptr
 	.4byte 0
 
 .global lbl_801B87A0
 lbl_801B87A0:
 	# ROM: 0x1B57A0
-	.4byte 0x802F1F38  ;# ptr
-	.4byte 0x802F1CC0  ;# ptr
+	.4byte decodedStageGmaPtr  ;# ptr
+	.4byte decodedBgGma  ;# ptr
 	.4byte 0
+glabel string_warning__s___no_match_n
 	.asciz "warning %s : no match\n"
 	.balign 4
+glabel string_warning_BG__s___no_match_n
 	.asciz "warning BG %s : no match\n"
 	.balign 4
+glabel string_warning_MV__s___no_match_n
 	.asciz "warning MV %s : no match\n"
 	.balign 4
 	.byte 0x01, 0x01, 0x01, 0x01
 	.byte 0x01, 0x01, 0x03, 0x04
 	.byte 0x04, 0x04, 0x01, 0x02
 	.byte 0x07, 0x06, 0x05, 0x00
+glabel string_cannot_Open_2
 	.asciz "cannot Open"
+glabel string_cannot_Read
 	.asciz "cannot Read"
+glabel string_cannot_OSAlloc_6
 	.asciz "cannot OSAlloc"
 	.balign 4
+glabel string_cannot_Close_2
 	.asciz "cannot Close"
 	.balign 4
+glabel string_cannot_open_stcoli_n
 	.asciz "cannot open stcoli\n"
 
 .global lbl_801B8858
 lbl_801B8858:
 	# ROM: 0x1B5858
+glabel string_recdata_bin
 	.asciz "recdata.bin"
+glabel string__REPLAY_TEST_n_n
 	.asciz " REPLAY TEST\n\n"
 	.balign 4
+glabel string______ID___03d_n
 	.asciz "     ID: %03d\n"
 	.balign 4
+glabel string______Record_for_Save_n
 	.asciz "     Record for Save\n"
 	.balign 4
+glabel string_________NO_DATA_n
 	.asciz "       :NO DATA\n"
 	.balign 4
+glabel string___STAGE___03d_Lib_No__03d__n
 	.asciz "  STAGE: %03d(Lib No.%03d)\n"
+glabel string__COURSE___3d_n
 	.asciz " COURSE: %3d\n"
 	.balign 4
+glabel string___MONKY___3d_n
 	.asciz "  MONKY: %3d\n"
 	.balign 4
+glabel string____NAME___s_n
 	.asciz "   NAME: %s\n"
 	.balign 4
+glabel string___GRADE___f_n
 	.asciz "  GRADE: %f\n"
 	.balign 4
+glabel string_Same_Kind_Data_Count____d_n
 	.asciz "Same Kind Data Count : %d\n"
 	.balign 4
+glabel string_Adjust_Coeff____f_n
 	.asciz "Adjust Coeff : %f\n"
 	.balign 4
+glabel string_Converting_to_C_Source_format_
 	.asciz "Converting to C Source format."
 	.balign 4
+glabel string_Please_Type__save_recplay__in_DDD_n
 	.asciz "Please Type [save_recplay] in DDD\n"
 	.balign 4
+glabel string__to_Make_File_recplay_data_h__n
 	.asciz " to Make File recplay_data.h.\n"
 	.balign 4
 	.byte 0x00, 0x02, 0x13, 0x6E
@@ -10077,141 +10110,190 @@ lbl_801B8858:
 .global lbl_801B89E8
 lbl_801B89E8:
 	# ROM: 0x1B59E8
+glabel string_ET_PAPERFRAG
 	.asciz "ET_PAPERFRAG"
 	.balign 4
+glabel string_ET_GET_BANANA
 	.asciz "ET_GET_BANANA"
 	.balign 4
+glabel string_ET_COLI_PARTICLE
 	.asciz "ET_COLI_PARTICLE"
 	.balign 4
+glabel string_ET_BIRD_KITE
 	.asciz "ET_BIRD_KITE"
 	.balign 4
+glabel string_ET_ROTATE_BG
 	.asciz "ET_ROTATE_BG"
 	.balign 4
+glabel string_ET_ICEWATER_REFLECT
 	.asciz "ET_ICEWATER_REFLECT"
+glabel string_ET_ICEWATER_PARTICLE
 	.asciz "ET_ICEWATER_PARTICLE"
 	.balign 4
+glabel string_ET_RAINDROP
 	.asciz "ET_RAINDROP"
+glabel string_ET_HOLDING_BANANA
 	.asciz "ET_HOLDING_BANANA"
 	.balign 4
+glabel string_ET_BUBBLE
 	.asciz "ET_BUBBLE"
 	.balign 4
+glabel string_ET_LEVITATE
 	.asciz "ET_LEVITATE"
+glabel string_ET_TWINKLE_STAR
 	.asciz "ET_TWINKLE_STAR"
+glabel string_ET_BONUS_STG_STAR
 	.asciz "ET_BONUS_STG_STAR"
 	.balign 4
+glabel string_ET_BONUS_STG_STAR_TAIL
 	.asciz "ET_BONUS_STG_STAR_TAIL"
 	.balign 4
+glabel string_ET_WATER_LIGHT
 	.asciz "ET_WATER_LIGHT"
 	.balign 4
+glabel string_ET_RAINDROP_RIPPLE
 	.asciz "ET_RAINDROP_RIPPLE"
 	.balign 4
+glabel string_ET_BALL_GLOW
 	.asciz "ET_BALL_GLOW"
 	.balign 4
+glabel string_ET_EXM_GUIDE_LIGHT
 	.asciz "ET_EXM_GUIDE_LIGHT"
 	.balign 4
+glabel string_ET_EXM_GUIDE_LIGHT_TAIL
 	.asciz "ET_EXM_GUIDE_LIGHT_TAIL"
+glabel string_ET_COLISTAR_PARTICLE
 	.asciz "ET_COLISTAR_PARTICLE"
 	.balign 4
+glabel string_ET_BGWAT_BUBBLE_BASE
 	.asciz "ET_BGWAT_BUBBLE_BASE"
 	.balign 4
+glabel string_ET_BGWAT_BUBBLE
 	.asciz "ET_BGWAT_BUBBLE"
+glabel string_ET_METEO
 	.asciz "ET_METEO"
 	.balign 4
+glabel string_ET_METEO_FIX
 	.asciz "ET_METEO_FIX"
 	.balign 4
+glabel string_ET_FIGHT_REVIVAL
 	.asciz "ET_FIGHT_REVIVAL"
 	.balign 4
+glabel string_ET_FIGHT_PANNEL
 	.asciz "ET_FIGHT_PANNEL"
+glabel string_ET_FIGHT_GET_BANANA
 	.asciz "ET_FIGHT_GET_BANANA"
+glabel string_ET_COLIFLASH
 	.asciz "ET_COLIFLASH"
 	.balign 4
+glabel string_ET_FIGHT_BOX_FRAG
 	.asciz "ET_FIGHT_BOX_FRAG"
 	.balign 4
+glabel string_ET_FIGHT_HOLDING_PITEM
 	.asciz "ET_FIGHT_HOLDING_PITEM"
 	.balign 4
+glabel string_ET_FIGHT_BALL_EFC
 	.asciz "ET_FIGHT_BALL_EFC"
 	.balign 4
+glabel string_ET_FIGHT_REVIVAL_PTC
 	.asciz "ET_FIGHT_REVIVAL_PTC"
 	.balign 4
+glabel string_ET_BNS_STG_STAR
 	.asciz "ET_BNS_STG_STAR"
+glabel string_ET_BNS_STG_STAR_TAIL
 	.asciz "ET_BNS_STG_STAR_TAIL"
 	.balign 4
+glabel string_ET_BGMST_GEN_CLOUD
 	.asciz "ET_BGMST_GEN_CLOUD"
 	.balign 4
+glabel string_ET_BGSTM_RAINRIPPLE
 	.asciz "ET_BGSTM_RAINRIPPLE"
+glabel string_ET_NAMEENT_CODE
 	.asciz "ET_NAMEENT_CODE"
+glabel string_ET_GET_NAMEENT_CODE
 	.asciz "ET_GET_NAMEENT_CODE"
+glabel string_ET_MR_BOMB
 	.asciz "ET_MR_BOMB"
 	.balign 4
+glabel string_ET_PILOT_BOMB
 	.asciz "ET_PILOT_BOMB"
 	.balign 4
+glabel string_ET_BGMST_WATER
 	.asciz "ET_BGMST_WATER"
 	.balign 4
+glabel string_ET_MR_BOMB_LIGHT
 	.asciz "ET_MR_BOMB_LIGHT"
 	.balign 4
+glabel string_ET_FIGHT_COLIFLASH
 	.asciz "ET_FIGHT_COLIFLASH"
 	.balign 4
+glabel string_ET_FIGHT_COLIFLASH_PTC
 	.asciz "ET_FIGHT_COLIFLASH_PTC"
 	.balign 4
+glabel string_ET_MR_SPEED_STAR_LIGHT
 	.asciz "ET_MR_SPEED_STAR_LIGHT"
 	.balign 4
+glabel string_ET_COMMENDFRAG
 	.asciz "ET_COMMENDFRAG"
 	.balign 4
+glabel string_ET_ENDING_BALLFRAG
 	.asciz "ET_ENDING_BALLFRAG"
 	.balign 4
+glabel string_ET_BANANA_DROP
 	.asciz "ET_BANANA_DROP"
 	.balign 4
+glabel string_ET_BGEND_WATER
 	.asciz "ET_BGEND_WATER"
 	.balign 4
-	.4byte 0x801B89E8  ;# ptr
-	.4byte 0x801B89F8  ;# ptr
-	.4byte 0x801B8A08  ;# ptr
-	.4byte 0x801B8A1C  ;# ptr
-	.4byte 0x801B8A2C  ;# ptr
-	.4byte 0x801B8A3C  ;# ptr
-	.4byte 0x801B8A50  ;# ptr
-	.4byte 0x801B8A68  ;# ptr
-	.4byte 0x801B8A74  ;# ptr
-	.4byte 0x801B8A88  ;# ptr
-	.4byte 0x801B8A94  ;# ptr
-	.4byte 0x801B8AA0  ;# ptr
-	.4byte 0x801B8AB0  ;# ptr
-	.4byte 0x801B8AC4  ;# ptr
-	.4byte 0x801B8ADC  ;# ptr
-	.4byte 0x801B8AEC  ;# ptr
-	.4byte 0x801B8B00  ;# ptr
-	.4byte 0x801B8B10  ;# ptr
-	.4byte 0x801B8B24  ;# ptr
-	.4byte 0x801B8B3C  ;# ptr
-	.4byte 0x801B8B54  ;# ptr
-	.4byte 0x801B8B6C  ;# ptr
-	.4byte 0x801B8B7C  ;# ptr
-	.4byte 0x801B8B88  ;# ptr
-	.4byte 0x801B8B98  ;# ptr
-	.4byte 0x801B8BAC  ;# ptr
-	.4byte 0x801B8BBC  ;# ptr
-	.4byte 0x801B8BD0  ;# ptr
-	.4byte 0x801B8BE0  ;# ptr
-	.4byte 0x801B8BF4  ;# ptr
-	.4byte 0x801B8C0C  ;# ptr
-	.4byte 0x801B8C20  ;# ptr
-	.4byte 0x801B8C38  ;# ptr
-	.4byte 0x801B8C48  ;# ptr
-	.4byte 0x801B8C60  ;# ptr
-	.4byte 0x801B8C74  ;# ptr
-	.4byte 0x801B8C88  ;# ptr
-	.4byte 0x801B8C98  ;# ptr
-	.4byte 0x801B8CAC  ;# ptr
-	.4byte 0x801B8CB8  ;# ptr
-	.4byte 0x801B8CC8  ;# ptr
-	.4byte 0x801B8CD8  ;# ptr
-	.4byte 0x801B8CEC  ;# ptr
-	.4byte 0x801B8D00  ;# ptr
-	.4byte 0x801B8D18  ;# ptr
-	.4byte 0x801B8D30  ;# ptr
-	.4byte 0x801B8D40  ;# ptr
-	.4byte 0x801B8D54  ;# ptr
-	.4byte 0x801B8D64  ;# ptr
+	.4byte string_ET_PAPERFRAG  ;# ptr
+	.4byte string_ET_GET_BANANA  ;# ptr
+	.4byte string_ET_COLI_PARTICLE  ;# ptr
+	.4byte string_ET_BIRD_KITE  ;# ptr
+	.4byte string_ET_ROTATE_BG  ;# ptr
+	.4byte string_ET_ICEWATER_REFLECT  ;# ptr
+	.4byte string_ET_ICEWATER_PARTICLE  ;# ptr
+	.4byte string_ET_RAINDROP  ;# ptr
+	.4byte string_ET_HOLDING_BANANA  ;# ptr
+	.4byte string_ET_BUBBLE  ;# ptr
+	.4byte string_ET_LEVITATE  ;# ptr
+	.4byte string_ET_TWINKLE_STAR  ;# ptr
+	.4byte string_ET_BONUS_STG_STAR  ;# ptr
+	.4byte string_ET_BONUS_STG_STAR_TAIL  ;# ptr
+	.4byte string_ET_WATER_LIGHT  ;# ptr
+	.4byte string_ET_RAINDROP_RIPPLE  ;# ptr
+	.4byte string_ET_BALL_GLOW  ;# ptr
+	.4byte string_ET_EXM_GUIDE_LIGHT  ;# ptr
+	.4byte string_ET_EXM_GUIDE_LIGHT_TAIL  ;# ptr
+	.4byte string_ET_COLISTAR_PARTICLE  ;# ptr
+	.4byte string_ET_BGWAT_BUBBLE_BASE  ;# ptr
+	.4byte string_ET_BGWAT_BUBBLE  ;# ptr
+	.4byte string_ET_METEO  ;# ptr
+	.4byte string_ET_METEO_FIX  ;# ptr
+	.4byte string_ET_FIGHT_REVIVAL  ;# ptr
+	.4byte string_ET_FIGHT_PANNEL  ;# ptr
+	.4byte string_ET_FIGHT_GET_BANANA  ;# ptr
+	.4byte string_ET_COLIFLASH  ;# ptr
+	.4byte string_ET_FIGHT_BOX_FRAG  ;# ptr
+	.4byte string_ET_FIGHT_HOLDING_PITEM  ;# ptr
+	.4byte string_ET_FIGHT_BALL_EFC  ;# ptr
+	.4byte string_ET_FIGHT_REVIVAL_PTC  ;# ptr
+	.4byte string_ET_BNS_STG_STAR  ;# ptr
+	.4byte string_ET_BNS_STG_STAR_TAIL  ;# ptr
+	.4byte string_ET_BGMST_GEN_CLOUD  ;# ptr
+	.4byte string_ET_BGSTM_RAINRIPPLE  ;# ptr
+	.4byte string_ET_NAMEENT_CODE  ;# ptr
+	.4byte string_ET_GET_NAMEENT_CODE  ;# ptr
+	.4byte string_ET_MR_BOMB  ;# ptr
+	.4byte string_ET_PILOT_BOMB  ;# ptr
+	.4byte string_ET_BGMST_WATER  ;# ptr
+	.4byte string_ET_MR_BOMB_LIGHT  ;# ptr
+	.4byte string_ET_FIGHT_COLIFLASH  ;# ptr
+	.4byte string_ET_FIGHT_COLIFLASH_PTC  ;# ptr
+	.4byte string_ET_MR_SPEED_STAR_LIGHT  ;# ptr
+	.4byte string_ET_COMMENDFRAG  ;# ptr
+	.4byte string_ET_ENDING_BALLFRAG  ;# ptr
+	.4byte string_ET_BANANA_DROP  ;# ptr
+	.4byte string_ET_BGEND_WATER  ;# ptr
 
 .global lbl_801B8E38
 lbl_801B8E38:
@@ -10510,69 +10592,96 @@ lbl_801B9178:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xCD, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
+glabel string_BG_TYPE_BLUESKY_A
 	.asciz "BG_TYPE_BLUESKY_A"
 	.balign 4
+glabel string_BG_TYPE_NIGHT_B
 	.asciz "BG_TYPE_NIGHT_B"
+glabel string_BG_TYPE_SUNSET_C
 	.asciz "BG_TYPE_SUNSET_C"
 	.balign 4
+glabel string_BG_TYPE_WATER_C
 	.asciz "BG_TYPE_WATER_C"
+glabel string_BG_TYPE_STORM_D
 	.asciz "BG_TYPE_STORM_D"
+glabel string_BG_TYPE_ICE_E
 	.asciz "BG_TYPE_ICE_E"
 	.balign 4
+glabel string_BG_TYPE_SAND_G
 	.asciz "BG_TYPE_SAND_G"
 	.balign 4
+glabel string_BG_TYPE_SPACE_H
 	.asciz "BG_TYPE_SPACE_H"
+glabel string_BG_TYPE_CAVE_I
 	.asciz "BG_TYPE_CAVE_I"
 	.balign 4
+glabel string_BG_TYPE_BONUS_J
 	.asciz "BG_TYPE_BONUS_J"
+glabel string_BG_TYPE_EXTRAMASTER_J
 	.asciz "BG_TYPE_EXTRAMASTER_J"
 	.balign 4
+glabel string_BG_TYPE_E3
 	.asciz "BG_TYPE_E3"
 	.balign 4
+glabel string_BG_TYPE_JUN
 	.asciz "BG_TYPE_JUN"
+glabel string_BG_TYPE_WAT
 	.asciz "BG_TYPE_WAT"
+glabel string_BG_TYPE_NIG
 	.asciz "BG_TYPE_NIG"
+glabel string_BG_TYPE_SUN
 	.asciz "BG_TYPE_SUN"
+glabel string_BG_TYPE_SPA
 	.asciz "BG_TYPE_SPA"
+glabel string_BG_TYPE_SND
 	.asciz "BG_TYPE_SND"
+glabel string_BG_TYPE_ICE2
 	.asciz "BG_TYPE_ICE2"
 	.balign 4
+glabel string_BG_TYPE_STM
 	.asciz "BG_TYPE_STM"
+glabel string_BG_TYPE_BNS
 	.asciz "BG_TYPE_BNS"
+glabel string_BG_TYPE_PIL
 	.asciz "BG_TYPE_PIL"
+glabel string_BG_TYPE_BIL
 	.asciz "BG_TYPE_BIL"
+glabel string_BG_TYPE_GOL
 	.asciz "BG_TYPE_GOL"
+glabel string_BG_TYPE_BOW
 	.asciz "BG_TYPE_BOW"
+glabel string_BG_TYPE_MST
 	.asciz "BG_TYPE_MST"
+glabel string_BG_TYPE_END
 	.asciz "BG_TYPE_END"
-	.4byte 0x802F0A08  ;# ptr
-	.4byte 0x801B9290  ;# ptr
-	.4byte 0x801B92A4  ;# ptr
-	.4byte 0x801B92B4  ;# ptr
-	.4byte 0x801B92C8  ;# ptr
-	.4byte 0x801B92D8  ;# ptr
-	.4byte 0x801B92E8  ;# ptr
-	.4byte 0x801B92F8  ;# ptr
-	.4byte 0x801B9308  ;# ptr
-	.4byte 0x801B9318  ;# ptr
-	.4byte 0x801B9328  ;# ptr
-	.4byte 0x801B9338  ;# ptr
-	.4byte 0x801B9350  ;# ptr
-	.4byte 0x801B935C  ;# ptr
-	.4byte 0x801B9368  ;# ptr
-	.4byte 0x801B9374  ;# ptr
-	.4byte 0x801B9380  ;# ptr
-	.4byte 0x801B938C  ;# ptr
-	.4byte 0x801B9398  ;# ptr
-	.4byte 0x801B93A4  ;# ptr
-	.4byte 0x801B93B4  ;# ptr
-	.4byte 0x801B93C0  ;# ptr
-	.4byte 0x801B93CC  ;# ptr
-	.4byte 0x801B93D8  ;# ptr
-	.4byte 0x801B93E4  ;# ptr
-	.4byte 0x801B93F0  ;# ptr
-	.4byte 0x801B93FC  ;# ptr
-	.4byte 0x801B9408  ;# ptr
+	.4byte string_NULL  ;# ptr
+	.4byte string_BG_TYPE_BLUESKY_A  ;# ptr
+	.4byte string_BG_TYPE_NIGHT_B  ;# ptr
+	.4byte string_BG_TYPE_SUNSET_C  ;# ptr
+	.4byte string_BG_TYPE_WATER_C  ;# ptr
+	.4byte string_BG_TYPE_STORM_D  ;# ptr
+	.4byte string_BG_TYPE_ICE_E  ;# ptr
+	.4byte string_BG_TYPE_SAND_G  ;# ptr
+	.4byte string_BG_TYPE_SPACE_H  ;# ptr
+	.4byte string_BG_TYPE_CAVE_I  ;# ptr
+	.4byte string_BG_TYPE_BONUS_J  ;# ptr
+	.4byte string_BG_TYPE_EXTRAMASTER_J  ;# ptr
+	.4byte string_BG_TYPE_E3  ;# ptr
+	.4byte string_BG_TYPE_JUN  ;# ptr
+	.4byte string_BG_TYPE_WAT  ;# ptr
+	.4byte string_BG_TYPE_NIG  ;# ptr
+	.4byte string_BG_TYPE_SUN  ;# ptr
+	.4byte string_BG_TYPE_SPA  ;# ptr
+	.4byte string_BG_TYPE_SND  ;# ptr
+	.4byte string_BG_TYPE_ICE2  ;# ptr
+	.4byte string_BG_TYPE_STM  ;# ptr
+	.4byte string_BG_TYPE_BNS  ;# ptr
+	.4byte string_BG_TYPE_PIL  ;# ptr
+	.4byte string_BG_TYPE_BIL  ;# ptr
+	.4byte string_BG_TYPE_GOL  ;# ptr
+	.4byte string_BG_TYPE_BOW  ;# ptr
+	.4byte string_BG_TYPE_MST  ;# ptr
+	.4byte string_BG_TYPE_END  ;# ptr
 	.4byte 0
 	.4byte 0
 	.4byte func_800569C4  ;# ptr
@@ -10785,6 +10894,7 @@ lbl_801B9658:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel string_bg_ending
 	.asciz "bg_ending"
 	.balign 4
 	.4byte 0
@@ -10800,34 +10910,34 @@ lbl_801B9658:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F0A10  ;# ptr
-	.4byte 0x802F0A18  ;# ptr
-	.4byte 0x802F0A20  ;# ptr
-	.4byte 0x802F0A28  ;# ptr
-	.4byte 0x802F0A30  ;# ptr
-	.4byte 0x802F0A38  ;# ptr
-	.4byte 0x802F0A40  ;# ptr
-	.4byte 0x802F0A48  ;# ptr
-	.4byte 0x802F0A50  ;# ptr
-	.4byte 0x802F0A58  ;# ptr
+	.4byte string_bg_jun  ;# ptr
+	.4byte string_bg_wat  ;# ptr
+	.4byte string_bg_nig  ;# ptr
+	.4byte string_bg_sun  ;# ptr
+	.4byte string_bg_spa  ;# ptr
+	.4byte string_bg_snd  ;# ptr
+	.4byte string_bg_ice  ;# ptr
+	.4byte string_bg_stm  ;# ptr
+	.4byte string_bg_bns  ;# ptr
+	.4byte string_bg_pil  ;# ptr
 	.4byte 0
-	.4byte 0x802F0A60  ;# ptr
-	.4byte 0x802F0A68  ;# ptr
-	.4byte 0x802F0A70  ;# ptr
-	.4byte 0x801B97B4  ;# ptr
+	.4byte string_bg_gol  ;# ptr
+	.4byte string_bg_bow  ;# ptr
+	.4byte string_bg_mst  ;# ptr
+	.4byte string_bg_ending  ;# ptr
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F0A78  ;# ptr
-	.4byte 0x802F0A80  ;# ptr
-	.4byte 0x802F0A88  ;# ptr
-	.4byte 0x802F0A90  ;# ptr
-	.4byte 0x802F0A98  ;# ptr
-	.4byte 0x802F0AA0  ;# ptr
-	.4byte 0x802F0AA8  ;# ptr
-	.4byte 0x802F0AB0  ;# ptr
-	.4byte 0x802F0AB8  ;# ptr
-	.4byte 0x802F0AC0  ;# ptr
-	.4byte 0x802F0AC0  ;# ptr
+	.4byte string_bg_a  ;# ptr
+	.4byte string_bg_b  ;# ptr
+	.4byte string_bg_c  ;# ptr
+	.4byte string_bg_d  ;# ptr
+	.4byte string_bg_e  ;# ptr
+	.4byte string_bg_f  ;# ptr
+	.4byte string_bg_g  ;# ptr
+	.4byte string_bg_h  ;# ptr
+	.4byte string_bg_i  ;# ptr
+	.4byte string_bg_j  ;# ptr
+	.4byte string_bg_j  ;# ptr
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -10929,8 +11039,10 @@ lbl_801B991C:
 	.byte 0x01, 0x01, 0x01, 0x01
 	.byte 0x01, 0x15, 0x1B, 0x0D
 	.byte 0x01, 0x00, 0x00, 0x00
+glabel string_background_c
 	.asciz "background.c"
 	.balign 4
+glabel string_cannot_OSAlloc_n_6
 	.asciz "cannot OSAlloc\n"
 	.byte 0x00, 0x09, 0x00, 0x0A
 	.byte 0x00, 0x0B, 0x00, 0x0C
@@ -11020,20 +11132,24 @@ lbl_801B9B28:
 .global lbl_801B9B48
 lbl_801B9B48:
 	# ROM: 0x1B6B48
+glabel string_obj_STARPOINT_
 	.asciz "obj_STARPOINT_"
 	.balign 4
 
 .global lbl_801B9B58
 lbl_801B9B58:
 	# ROM: 0x1B6B58
+glabel string_obj_STARPOINT__2
 	.asciz "obj_STARPOINT_"
 	.balign 4
 
 .global lbl_801B9B68
 lbl_801B9B68:
 	# ROM: 0x1B6B68
+glabel string_background_lm_stg_cpu_load_f__7_7f_n
 	.asciz "background.lm_stg_cpu_load_f:%7.7f\n"
 	.4byte 0
+glabel string_JUN_FIG_CLOUD_
 	.asciz "JUN_FIG_CLOUD_"
 	.balign 4
 
@@ -11041,66 +11157,79 @@ lbl_801B9B68:
 lbl_801B9BA0:
 	# ROM: 0x1B6BA0
 	.4byte 0
-	.4byte 0x801B9B90  ;# ptr
+	.4byte string_JUN_FIG_CLOUD_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 
 .global lbl_801B9BB0
 lbl_801B9BB0:
 	# ROM: 0x1B6BB0
+glabel string_SND_KAGE_LOW_MAP_A
 	.asciz "SND_KAGE_LOW_MAP_A"
 	.balign 4
+glabel string_SND_STAGE_SAND_A
 	.asciz "SND_STAGE_SAND_A"
 	.balign 4
+glabel string_SND_FUNSUI_WATER_A_URA
 	.asciz "SND_FUNSUI_WATER_A_URA"
 	.balign 4
+glabel string_SND_FUNSUI_WATER_B
 	.asciz "SND_FUNSUI_WATER_B"
 	.balign 4
+glabel string_SND_FUNSUI_WATER_B_URA
 	.asciz "SND_FUNSUI_WATER_B_URA"
 	.balign 4
+glabel string_SND_FUNSUI_IND_A
 	.asciz "SND_FUNSUI_IND_A"
 	.balign 4
+glabel string_SND_FUNSUI_GRAD_A
 	.asciz "SND_FUNSUI_GRAD_A"
 	.balign 4
+glabel string_SND_FUNSUI_UP_TATE
 	.asciz "SND_FUNSUI_UP_TATE"
 	.balign 4
+glabel string_SND_FUNSUI_UP_YOKO
 	.asciz "SND_FUNSUI_UP_YOKO"
 	.balign 4
+glabel string_SND_FUNSUI_DOWN_TATE
 	.asciz "SND_FUNSUI_DOWN_TATE"
 	.balign 4
+glabel string_SND_FUNSUI_DOWN_YOKO
 	.asciz "SND_FUNSUI_DOWN_YOKO"
 	.balign 4
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9BB0  ;# ptr
+	.4byte string_SND_KAGE_LOW_MAP_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9BC4  ;# ptr
+	.4byte string_SND_STAGE_SAND_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9BD8  ;# ptr
+	.4byte string_SND_FUNSUI_WATER_A_URA  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9BF0  ;# ptr
+	.4byte string_SND_FUNSUI_WATER_B  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C04  ;# ptr
+	.4byte string_SND_FUNSUI_WATER_B_URA  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C1C  ;# ptr
+	.4byte string_SND_FUNSUI_IND_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C30  ;# ptr
+	.4byte string_SND_FUNSUI_GRAD_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C44  ;# ptr
+	.4byte string_SND_FUNSUI_UP_TATE  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C58  ;# ptr
+	.4byte string_SND_FUNSUI_UP_YOKO  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C6C  ;# ptr
+	.4byte string_SND_FUNSUI_DOWN_TATE  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9C84  ;# ptr
+	.4byte string_SND_FUNSUI_DOWN_YOKO  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_SND_PIRAM_CLOUD
 	.asciz "SND_PIRAM_CLOUD"
+glabel string_SND_FUNSUI_WATER
 	.asciz "SND_FUNSUI_WATER"
 	.balign 4
 	.4byte 0
-	.4byte 0x801B9CFC  ;# ptr
+	.4byte string_SND_PIRAM_CLOUD  ;# ptr
 	.4byte 0
-	.4byte 0x801B9D0C  ;# ptr
+	.4byte string_SND_FUNSUI_WATER  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 	.4byte func_8005C3B8  ;# ptr
@@ -11127,60 +11256,73 @@ lbl_801B9D48:
 .global lbl_801B9D78
 lbl_801B9D78:
 	# ROM: 0x1B6D78
+glabel string_WAT_SUIMEN_MAT_ONLY
 	.asciz "WAT_SUIMEN_MAT_ONLY"
+glabel string_WAT_SANSYO_TEX_WATER
 	.asciz "WAT_SANSYO_TEX_WATER"
 	.balign 4
+glabel string_WAT_SUIMEN_TEST_LOW_CONT
 	.asciz "WAT_SUIMEN_TEST_LOW_CONT"
 	.balign 4
+glabel string_WAT_BUBBLE_
 	.asciz "WAT_BUBBLE_"
+glabel string_WAT_LIGHTMAP
 	.asciz "WAT_LIGHTMAP"
 	.balign 4
+glabel string_WAT_LIGHTMAP_STAGE
 	.asciz "WAT_LIGHTMAP_STAGE"
 	.balign 4
+glabel string_WAT_LIGHTMAP_GRAD
 	.asciz "WAT_LIGHTMAP_GRAD"
 	.balign 4
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9D78  ;# ptr
+	.4byte string_WAT_SUIMEN_MAT_ONLY  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9D8C  ;# ptr
+	.4byte string_WAT_SANSYO_TEX_WATER  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9DA4  ;# ptr
+	.4byte string_WAT_SUIMEN_TEST_LOW_CONT  ;# ptr
 	.4byte 0
-	.4byte 0x801B9DC0  ;# ptr
+	.4byte string_WAT_BUBBLE_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9DCC  ;# ptr
+	.4byte string_WAT_LIGHTMAP  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9DDC  ;# ptr
+	.4byte string_WAT_LIGHTMAP_STAGE  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9DF0  ;# ptr
+	.4byte string_WAT_LIGHTMAP_GRAD  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_WAT_SUB_SUKRYU
 	.asciz "WAT_SUB_SUKRYU"
 	.balign 4
+glabel string_WAT_SUIMEN
 	.asciz "WAT_SUIMEN"
 	.balign 4
+glabel string_WAT_LIGHTCHAIN
 	.asciz "WAT_LIGHTCHAIN"
 	.balign 4
+glabel string_WAT_LONG_CHAIN
 	.asciz "WAT_LONG_CHAIN"
 	.balign 4
+glabel string_WAT_PLANT
 	.asciz "WAT_PLANT"
 	.balign 4
+glabel string_WAT_UKIWA
 	.asciz "WAT_UKIWA"
 	.balign 4
 	.4byte 0
-	.4byte 0x801B9E44  ;# ptr
+	.4byte string_WAT_SUB_SUKRYU  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9E54  ;# ptr
+	.4byte string_WAT_SUIMEN  ;# ptr
 	.4byte 0
-	.4byte 0x801B9E60  ;# ptr
+	.4byte string_WAT_LIGHTCHAIN  ;# ptr
 	.4byte 0
-	.4byte 0x801B9E70  ;# ptr
+	.4byte string_WAT_LONG_CHAIN  ;# ptr
 	.4byte 0
-	.4byte 0x801B9E80  ;# ptr
+	.4byte string_WAT_PLANT  ;# ptr
 	.4byte 0
-	.4byte 0x801B9E8C  ;# ptr
+	.4byte string_WAT_UKIWA  ;# ptr
 	.4byte 0
-	.4byte 0x802F0AF8  ;# ptr
+	.4byte string_WAT_SUB  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 
@@ -11199,22 +11341,26 @@ lbl_801B9ED8:
 .global lbl_801B9EF8
 lbl_801B9EF8:
 	# ROM: 0x1B6EF8
+glabel string_SPA_INSEKI_
 	.asciz "SPA_INSEKI_"
+glabel string_SPA_DOSEI_IND_MAP
 	.asciz "SPA_DOSEI_IND_MAP"
 	.balign 4
 	.4byte 0
-	.4byte 0x801B9EF8  ;# ptr
+	.4byte string_SPA_INSEKI_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9F04  ;# ptr
+	.4byte string_SPA_DOSEI_IND_MAP  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_SPA_YOUSAI_CORE
 	.asciz "SPA_YOUSAI_CORE"
+glabel string_SPA_DOSEI
 	.asciz "SPA_DOSEI"
 	.balign 4
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9F30  ;# ptr
+	.4byte string_SPA_YOUSAI_CORE  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9F40  ;# ptr
+	.4byte string_SPA_DOSEI  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 
@@ -11234,8 +11380,10 @@ lbl_801B9F64:
 	.4byte lbl_8005FAB4  ;# ptr
 	.4byte lbl_8005FA98  ;# ptr
 	.4byte 0
+glabel string_SUN_GROUND
 	.asciz "SUN_GROUND"
 	.balign 4
+glabel string_SUN_CLOUD_
 	.asciz "SUN_CLOUD_"
 	.balign 4
 
@@ -11243,48 +11391,57 @@ lbl_801B9F64:
 lbl_801B9FB0:
 	# ROM: 0x1B6FB0
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9F98  ;# ptr
+	.4byte string_SUN_GROUND  ;# ptr
 	.4byte 0
-	.4byte 0x801B9FA4  ;# ptr
+	.4byte string_SUN_CLOUD_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 
 .global lbl_801B9FC8
 lbl_801B9FC8:
 	# ROM: 0x1B6FC8
+glabel string_BNS_SHOTSTAR
 	.asciz "BNS_SHOTSTAR"
 	.balign 4
+glabel string_STARLIGHT_
 	.asciz "STARLIGHT_"
 	.balign 4
+glabel string_BNS_LIGHTMAP
 	.asciz "BNS_LIGHTMAP"
 	.balign 4
+glabel string_BNS_LIGHTMAP_A
 	.asciz "BNS_LIGHTMAP_A"
 	.balign 4
+glabel string_STARPOINT
 	.asciz "STARPOINT"
 	.balign 4
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9FC8  ;# ptr
+	.4byte string_BNS_SHOTSTAR  ;# ptr
 	.4byte 0
-	.4byte 0x801B9FD8  ;# ptr
+	.4byte string_STARLIGHT_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9FE4  ;# ptr
+	.4byte string_BNS_LIGHTMAP  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801B9FF4  ;# ptr
+	.4byte string_BNS_LIGHTMAP_A  ;# ptr
 	.4byte 0
-	.4byte 0x801BA004  ;# ptr
+	.4byte string_STARPOINT  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_BNS_MAIN
 	.asciz "BNS_MAIN"
 	.balign 4
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA040  ;# ptr
+	.4byte string_BNS_MAIN  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 	.4byte 0
+glabel string_STM_RAIN00
 	.asciz "STM_RAIN00"
 	.balign 4
+glabel string_STM_RAIN01
 	.asciz "STM_RAIN01"
 	.balign 4
+glabel string_STM_RAIN02
 	.asciz "STM_RAIN02"
 	.balign 4
 
@@ -11292,11 +11449,11 @@ lbl_801B9FC8:
 lbl_801BA084:
 	# ROM: 0x1B7084
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA060  ;# ptr
+	.4byte string_STM_RAIN00  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA06C  ;# ptr
+	.4byte string_STM_RAIN01  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA078  ;# ptr
+	.4byte string_STM_RAIN02  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 
@@ -11328,45 +11485,55 @@ lbl_801BA0A4:
 .global lbl_801BA0F8
 lbl_801BA0F8:
 	# ROM: 0x1B70F8
+glabel string_MST_STG_CLOUD_
 	.asciz "MST_STG_CLOUD_"
 	.balign 4
+glabel string_MST_MINI_CLOUD_
 	.asciz "MST_MINI_CLOUD_"
+glabel string_MST_SPRA_CLOUD_
 	.asciz "MST_SPRA_CLOUD_"
+glabel string_MST_YOUSAI_WATER_C
 	.asciz "MST_YOUSAI_WATER_C"
 	.balign 4
+glabel string_MST_YOUSAI_WATER_SPEC
 	.asciz "MST_YOUSAI_WATER_SPEC"
 	.balign 4
 	.4byte 0
-	.4byte 0x801BA0F8  ;# ptr
+	.4byte string_MST_STG_CLOUD_  ;# ptr
 	.4byte 0
-	.4byte 0x801BA108  ;# ptr
+	.4byte string_MST_MINI_CLOUD_  ;# ptr
 	.4byte 0
-	.4byte 0x801BA118  ;# ptr
+	.4byte string_MST_SPRA_CLOUD_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA128  ;# ptr
+	.4byte string_MST_YOUSAI_WATER_C  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA13C  ;# ptr
+	.4byte string_MST_YOUSAI_WATER_SPEC  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_MST_BOTTOMCLOUD_
 	.asciz "MST_BOTTOMCLOUD_"
 	.balign 4
+glabel string_MST_PARADISE_CLOUD_
 	.asciz "MST_PARADISE_CLOUD_"
+glabel string_MST_CLOUD_GEN_
 	.asciz "MST_CLOUD_GEN_"
 	.balign 4
+glabel string_MST_PARADISE_A
 	.asciz "MST_PARADISE_A"
 	.balign 4
+glabel string_MST_PARADISE_B
 	.asciz "MST_PARADISE_B"
 	.balign 4
 	.4byte 0
-	.4byte 0x801BA184  ;# ptr
+	.4byte string_MST_BOTTOMCLOUD_  ;# ptr
 	.4byte 0
-	.4byte 0x801BA198  ;# ptr
+	.4byte string_MST_PARADISE_CLOUD_  ;# ptr
 	.4byte 0
-	.4byte 0x801BA1AC  ;# ptr
+	.4byte string_MST_CLOUD_GEN_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA1BC  ;# ptr
+	.4byte string_MST_PARADISE_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA1CC  ;# ptr
+	.4byte string_MST_PARADISE_B  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 	.4byte 0
@@ -11374,56 +11541,68 @@ lbl_801BA0F8:
 .global lbl_801BA210
 lbl_801BA210:
 	# ROM: 0x1B7210
+glabel string_PIL_WATER_SPEC
 	.asciz "PIL_WATER_SPEC"
 	.balign 4
+glabel string_PIL_IND_MAP_A
 	.asciz "PIL_IND_MAP_A"
 	.balign 4
+glabel string_PIL_SEA_MASK
 	.asciz "PIL_SEA_MASK"
 	.balign 4
+glabel string_PIL_VTX_SEA_BALL_A
 	.asciz "PIL_VTX_SEA_BALL_A"
 	.balign 4
+glabel string_PIL_IND_MAP_B
 	.asciz "PIL_IND_MAP_B"
 	.balign 4
+glabel string_PIL_IND_MAP_C
 	.asciz "PIL_IND_MAP_C"
 	.balign 4
+glabel string_PIL_HAMON_
 	.asciz "PIL_HAMON_"
 	.balign 4
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA210  ;# ptr
+	.4byte string_PIL_WATER_SPEC  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA220  ;# ptr
+	.4byte string_PIL_IND_MAP_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA230  ;# ptr
+	.4byte string_PIL_SEA_MASK  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA240  ;# ptr
+	.4byte string_PIL_VTX_SEA_BALL_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA254  ;# ptr
+	.4byte string_PIL_IND_MAP_B  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA264  ;# ptr
+	.4byte string_PIL_IND_MAP_C  ;# ptr
 	.4byte 0
-	.4byte 0x801BA274  ;# ptr
+	.4byte string_PIL_HAMON_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_PIL_SEA_
 	.asciz "PIL_SEA_"
 	.balign 4
+glabel string_PIL_SANGOSYO_A
 	.asciz "PIL_SANGOSYO_A"
 	.balign 4
+glabel string_PIL_ISLAND_A
 	.asciz "PIL_ISLAND_A"
 	.balign 4
+glabel string_PIL_ISLAND_B
 	.asciz "PIL_ISLAND_B"
 	.balign 4
+glabel string_PIL_ISLAND_C
 	.asciz "PIL_ISLAND_C"
 	.balign 4
 	.4byte 0
-	.4byte 0x801BA2C0  ;# ptr
+	.4byte string_PIL_SEA_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA2CC  ;# ptr
+	.4byte string_PIL_SANGOSYO_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA2DC  ;# ptr
+	.4byte string_PIL_ISLAND_A  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA2EC  ;# ptr
+	.4byte string_PIL_ISLAND_B  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA2FC  ;# ptr
+	.4byte string_PIL_ISLAND_C  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 	.4byte 0
@@ -11431,28 +11610,33 @@ lbl_801BA210:
 .global lbl_801BA340
 lbl_801BA340:
 	# ROM: 0x1B7340
+glabel string_END_STG_CLOUD_
 	.asciz "END_STG_CLOUD_"
 	.balign 4
+glabel string_END_YOUSAI_WATER_C
 	.asciz "END_YOUSAI_WATER_C"
 	.balign 4
+glabel string_END_YOUSAI_WATER_SPEC
 	.asciz "END_YOUSAI_WATER_SPEC"
 	.balign 4
+glabel string_END_FUNSUI_WATER_
 	.asciz "END_FUNSUI_WATER_"
 	.balign 4
 	.4byte 0
-	.4byte 0x801BA340  ;# ptr
+	.4byte string_END_STG_CLOUD_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA350  ;# ptr
+	.4byte string_END_YOUSAI_WATER_C  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801BA364  ;# ptr
+	.4byte string_END_YOUSAI_WATER_SPEC  ;# ptr
 	.4byte 0
-	.4byte 0x801BA37C  ;# ptr
+	.4byte string_END_FUNSUI_WATER_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
+glabel string_END_PARADISE_
 	.asciz "END_PARADISE_"
 	.balign 4
 	.4byte 0
-	.4byte 0x801BA3B8  ;# ptr
+	.4byte string_END_PARADISE_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0
 
@@ -11517,10 +11701,10 @@ lbl_801BA3D8:
 	.byte 0x01, 0x22, 0x01, 0x2C
 	.byte 0x01, 0x36, 0x01, 0x40
 	.byte 0x01, 0x4A, 0x02, 0xBC
-	.4byte 0x801BA3D8  ;# ptr
+	.4byte lbl_801BA3D8  ;# ptr
 	.4byte 0x801BA3EC  ;# ptr
 	.4byte 0x801BA428  ;# ptr
-	.4byte 0x802F0B00  ;# ptr
+	.4byte lbl_802F0B00  ;# ptr
 	.4byte 0x801BA48C  ;# ptr
 	.4byte 0x801BA498  ;# ptr
 	.4byte 0x801BA4AC  ;# ptr
@@ -14953,54 +15137,70 @@ lbl_801BDA2C:
 	.4byte 0x801BD508  ;# ptr
 	.4byte 0x801BD508  ;# ptr
 	.4byte 0x801BD508  ;# ptr
-	.4byte 0x801BD86C  ;# ptr
-	.4byte 0x801BD86C  ;# ptr
-	.4byte 0x801BD86C  ;# ptr
+	.4byte lbl_801BD86C  ;# ptr
+	.4byte lbl_801BD86C  ;# ptr
+	.4byte lbl_801BD86C  ;# ptr
+glabel string_a_Play_Point_record_for_this_time___ft__4d
 	.asciz "a/Play Point record for this time : ft/%4d"
 	.balign 4
+glabel string_a_Highest_Play_Point_record_c_0xffffff_a_timec_0x000000____ft__4d
 	.asciz "a/Highest Play Point record c/0xffffff/a/timec/0x000000/ : ft/%4d"
 	.balign 4
+glabel string_a_You_didn_t_get_any_play_points_
 	.asciz "a/You didn't get any play points."
 	.balign 4
+glabel string_z9_a_You_now_have_a_total_of__d_Play_Points_
 	.asciz "z9/a/You now have a total of %d Play Points."
 	.balign 4
+glabel string_a_You_received__d_Play_Points_
 	.asciz "a/You received %d Play Points."
 	.balign 4
+glabel string_b_c_0xff8000_a_b_You_can_unlock_a_Mini_Game_
 	.asciz "b/c/0xff8000/a/b/You can unlock a Mini Game!"
 	.balign 4
+glabel string_a_Unlock_a_Mini_Game_by_selecting_it_
 	.asciz "a/Unlock a Mini Game by selecting it!"
 	.balign 4
+glabel string_b_c_0xff8000_a_b_You_can_get_unlimited_continues_
 	.asciz "b/c/0xff8000/a/b/You can get unlimited continues!"
 	.balign 4
+glabel string_a_You_have_used__d_Play_Points_
 	.asciz "a/You have used %d Play Points."
+glabel string_b_c_0xff8000_a_b_Your_number_of_continues_has_been_increased_to__d__
 	.asciz "b/c/0xff8000/a/b/Your number of continues has been increased to %d !"
 	.balign 4
 
 .global lbl_801BDC34
 lbl_801BDC34:
 	# ROM: 0x1BAC34
+glabel string__d__03d_
 	.asciz "%d(%03d)"
 	.balign 4
 
 .global lbl_801BDC40
 lbl_801BDC40:
 	# ROM: 0x1BAC40
+glabel string_IT_FGT_BANANA
 	.asciz "IT_FGT_BANANA"
 	.balign 4
+glabel string_IT_MINI_RACE
 	.asciz "IT_MINI_RACE"
 	.balign 4
+glabel string_IT_FGT_POWER
 	.asciz "IT_FGT_POWER"
 	.balign 4
+glabel string_IT_FGT_PUNCH
 	.asciz "IT_FGT_PUNCH"
 	.balign 4
+glabel string_IT_PILOT
 	.asciz "IT_PILOT"
 	.balign 4
-	.4byte 0x802F0B28  ;# ptr
-	.4byte 0x801BDC40  ;# ptr
-	.4byte 0x801BDC50  ;# ptr
-	.4byte 0x801BDC60  ;# ptr
-	.4byte 0x801BDC70  ;# ptr
-	.4byte 0x801BDC80  ;# ptr
+	.4byte string_IT_COIN  ;# ptr
+	.4byte string_IT_FGT_BANANA  ;# ptr
+	.4byte string_IT_MINI_RACE  ;# ptr
+	.4byte string_IT_FGT_POWER  ;# ptr
+	.4byte string_IT_FGT_PUNCH  ;# ptr
+	.4byte string_IT_PILOT  ;# ptr
 
 .global lbl_801BDCA4
 lbl_801BDCA4:
@@ -15074,6 +15274,7 @@ lbl_801BDD30:
 	.4byte func_80068C90  ;# ptr
 	.4byte func_8006A5BC  ;# ptr
 	.4byte 0
+glabel string_STATUS___s_n
 	.asciz "STATUS: %s\n"
 	.byte 0x16, 0x16, 0x16, 0x16
 	.byte 0x16, 0x16, 0x16, 0x16
@@ -15082,32 +15283,46 @@ lbl_801BDD30:
 	.byte 0x16, 0x16, 0x16, 0x16
 	.byte 0x16, 0x16, 0x16, 0x0A
 	.4byte 0
+glabel string_TYPE___s_n
 	.asciz "TYPE: %s\n"
 	.balign 4
+glabel string_POS__X__7_3f_n
 	.asciz "POS: X,%7.3f\n"
 	.balign 4
+glabel string______Y__7_3f_n
 	.asciz "     Y,%7.3f\n"
 	.balign 4
+glabel string______Z__7_3f_n
 	.asciz "     Z,%7.3f\n"
 	.balign 4
+glabel string_SPD__X__7_3f_n
 	.asciz "SPD: X,%7.3f\n"
 	.balign 4
+glabel string_ROT__X_0x_04X_n
 	.asciz "ROT: X,0x%04X\n"
 	.balign 4
+glabel string______Y_0x_04X_n
 	.asciz "     Y,0x%04X\n"
 	.balign 4
+glabel string______Z_0x_04X_n
 	.asciz "     Z,0x%04X\n"
 	.balign 4
+glabel string_ROTSPD__X_0x_04X_n
 	.asciz "ROTSPD: X,0x%04X\n"
 	.balign 4
+glabel string_________Y_0x_04X_n
 	.asciz "        Y,0x%04X\n"
 	.balign 4
+glabel string_________Z_0x_04X_n
 	.asciz "        Z,0x%04X\n"
 	.balign 4
+glabel string_COLI_RAD___7_3f_n
 	.asciz "COLI RAD: %7.3f\n"
 	.balign 4
+glabel string_Captured_Time___d_n
 	.asciz "Captured Time: %d\n"
 	.balign 4
+glabel string_Flag__0x_08X_n
 	.asciz "Flag: 0x%08X\n"
 	.balign 4
 	.4byte func_80068C78  ;# ptr
@@ -15165,6 +15380,7 @@ lbl_801BDEA0:
 	.byte 0x16, 0x16, 0x16, 0x16
 	.byte 0x16, 0x16, 0x16, 0x0A
 	.4byte 0
+glabel string_Coin_Value___d_n
 	.asciz "Coin Value: %d\n"
 	.4byte 0
 
@@ -15228,41 +15444,53 @@ lbl_801BDFA0:
 	.byte 0x16, 0x16, 0x16, 0x16
 	.byte 0x16, 0x16, 0x16, 0x0A
 	.4byte 0
+glabel string_Coin_Value___d_n_2
 	.asciz "Coin Value: %d\n"
 	.4byte 0
 
 .global lbl_801BE048
 lbl_801BE048:
 	# ROM: 0x1BB048
+glabel string_SOT_BUMPER
 	.asciz "SOT_BUMPER"
 	.balign 4
+glabel string_SOT_JAMABAR
 	.asciz "SOT_JAMABAR"
+glabel string_SOT_GOALTAPE
 	.asciz "SOT_GOALTAPE"
 	.balign 4
+glabel string_SOT_GOALBAG
 	.asciz "SOT_GOALBAG"
+glabel string_SOT_GOALBAG_EXMASTER
 	.asciz "SOT_GOALBAG_EXMASTER"
 	.balign 4
+glabel string_SOT_MF_PNL_BUMPER
 	.asciz "SOT_MF_PNL_BUMPER"
 	.balign 4
+glabel string_SOT_MF_PNL_ELECTRAP
 	.asciz "SOT_MF_PNL_ELECTRAP"
+glabel string_SOT_MF_BULLET_TEST
 	.asciz "SOT_MF_BULLET_TEST"
 	.balign 4
+glabel string_SOT_MF_BOX
 	.asciz "SOT_MF_BOX"
 	.balign 4
+glabel string_SOT_BUMPER_BGSPECIAL
 	.asciz "SOT_BUMPER_BGSPECIAL"
 	.balign 4
+glabel string_SOT_NAMEENT_BTN
 	.asciz "SOT_NAMEENT_BTN"
-	.4byte 0x801BE048  ;# ptr
-	.4byte 0x801BE054  ;# ptr
-	.4byte 0x801BE060  ;# ptr
-	.4byte 0x801BE070  ;# ptr
-	.4byte 0x801BE07C  ;# ptr
-	.4byte 0x801BE094  ;# ptr
-	.4byte 0x801BE0A8  ;# ptr
-	.4byte 0x801BE0BC  ;# ptr
-	.4byte 0x801BE0D0  ;# ptr
-	.4byte 0x801BE0DC  ;# ptr
-	.4byte 0x801BE0F4  ;# ptr
+	.4byte string_SOT_BUMPER  ;# ptr
+	.4byte string_SOT_JAMABAR  ;# ptr
+	.4byte string_SOT_GOALTAPE  ;# ptr
+	.4byte string_SOT_GOALBAG  ;# ptr
+	.4byte string_SOT_GOALBAG_EXMASTER  ;# ptr
+	.4byte string_SOT_MF_PNL_BUMPER  ;# ptr
+	.4byte string_SOT_MF_PNL_ELECTRAP  ;# ptr
+	.4byte string_SOT_MF_BULLET_TEST  ;# ptr
+	.4byte string_SOT_MF_BOX  ;# ptr
+	.4byte string_SOT_BUMPER_BGSPECIAL  ;# ptr
+	.4byte string_SOT_NAMEENT_BTN  ;# ptr
 
 .global lbl_801BE130
 lbl_801BE130:
@@ -15355,6 +15583,7 @@ lbl_801BE1F0:
 	.4byte func_8006C408  ;# ptr
 	.4byte func_800AFC18  ;# ptr
 	.4byte 0
+glabel string_STATUS___s_n_2
 	.asciz "STATUS: %s\n"
 	.byte 0x16, 0x16, 0x16, 0x16
 	.byte 0x16, 0x16, 0x16, 0x16
@@ -15363,32 +15592,46 @@ lbl_801BE1F0:
 	.byte 0x16, 0x16, 0x16, 0x16
 	.byte 0x16, 0x16, 0x16, 0x0A
 	.4byte 0
+glabel string_TYPE___s_n_2
 	.asciz "TYPE: %s\n"
 	.balign 4
+glabel string_PART_ID___d_n
 	.asciz "PART ID: %d\n"
 	.balign 4
+glabel string_POS__X__7_3f_n_2
 	.asciz "POS: X,%7.3f\n"
 	.balign 4
+glabel string______Y__7_3f_n_2
 	.asciz "     Y,%7.3f\n"
 	.balign 4
+glabel string______Z__7_3f_n_2
 	.asciz "     Z,%7.3f\n"
 	.balign 4
+glabel string_SPD__X__7_3f_n_2
 	.asciz "SPD: X,%7.3f\n"
 	.balign 4
+glabel string_ROT__X_0x_04X_n_2
 	.asciz "ROT: X,0x%04X\n"
 	.balign 4
+glabel string______Y_0x_04X_n_2
 	.asciz "     Y,0x%04X\n"
 	.balign 4
+glabel string______Z_0x_04X_n_2
 	.asciz "     Z,0x%04X\n"
 	.balign 4
+glabel string_ROTSPD__X_0x_04X_n_2
 	.asciz "ROTSPD: X,0x%04X\n"
 	.balign 4
+glabel string_________Y_0x_04X_n_2
 	.asciz "        Y,0x%04X\n"
 	.balign 4
+glabel string_________Z_0x_04X_n_2
 	.asciz "        Z,0x%04X\n"
 	.balign 4
+glabel string_COLI_RAD___7_3f_n_2
 	.asciz "COLI RAD: %7.3f\n"
 	.balign 4
+glabel string_Flag__0x_08X_n_2
 	.asciz "Flag: 0x%08X\n"
 	.balign 4
 	.4byte func_8006C7A4  ;# ptr
@@ -15397,9 +15640,10 @@ lbl_801BE1F0:
 	.4byte func_8006C7B0  ;# ptr
 	.4byte func_8006C7B4  ;# ptr
 	.4byte func_8006C7B8  ;# ptr
-	.4byte 0x802F1F38  ;# ptr
-	.4byte 0x802F1CC0  ;# ptr
+	.4byte decodedStageGmaPtr  ;# ptr
+	.4byte decodedBgGma  ;# ptr
 	.4byte 0
+glabel string_BUMPER_L_d
 	.asciz "BUMPER_L%d"
 	.balign 4
 
@@ -15422,12 +15666,16 @@ lbl_801BE394:
 	.byte 0x00, 0x22, 0x00, 0x23
 	.byte 0x00, 0x24, 0x00, 0x25
 	.byte 0x00, 0x26, 0x00, 0x27
+glabel string_OFS__X__7_3f_n
 	.asciz "OFS: X,%7.3f\n"
 	.balign 4
+glabel string_OFS_SPD__X__7_3f_n
 	.asciz "OFS SPD: X,%7.3f\n"
 	.balign 4
+glabel string__________Y__7_3f_n
 	.asciz "         Y,%7.3f\n"
 	.balign 4
+glabel string__________Z__7_3f_n
 	.asciz "         Z,%7.3f\n"
 	.balign 4
 
@@ -15452,6 +15700,7 @@ lbl_801BE434:
 .global lbl_801BE448
 lbl_801BE448:
 	# ROM: 0x1BB448
+glabel string_Warning____Goal_Tape_Max__d__Over____n
 	.asciz "Warning!!! Goal Tape Max(%d) Over!!!\n"
 	.balign 4
 
@@ -15461,7 +15710,7 @@ lbl_801BE448:
 lbl_802F0990:
 	# ROM: 0x1EB0D0
 	.byte 0x00, 0x00, 0x00, 0x5C
-	.4byte 0x80206D00  ;# ptr
+	.4byte lbl_80206D00  ;# ptr
 
 .global lbl_802F0998
 lbl_802F0998:
@@ -15472,28 +15721,34 @@ lbl_802F0998:
 lbl_802F099C:
 	# ROM: 0x1EB0DC
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
+glabel string_GOAL_3
 	.asciz "GOAL"
 	.balign 4
+glabel string_GOAL_G
 	.asciz "GOAL_G"
 	.balign 4
+glabel string_GOAL_R
 	.asciz "GOAL_R"
 	.balign 4
 
 .global lbl_802F09B8
 lbl_802F09B8:
 	# ROM: 0x1EB0F8
+glabel string_st_03d_2
 	.asciz "st%03d"
 	.balign 4
 
 .global lbl_802F09C0
 lbl_802F09C0:
 	# ROM: 0x1EB100
+glabel string__test_3
 	.asciz "/test"
 	.balign 4
 
 .global lbl_802F09C8
 lbl_802F09C8:
 	# ROM: 0x1EB108
+glabel string__MAP
 	.asciz "_MAP"
 	.balign 4
 
@@ -15505,6 +15760,7 @@ lbl_802F09D0:
 .global lbl_802F09D4
 lbl_802F09D4:
 	# ROM: 0x1EB114
+glabel string_stage_c
 	.asciz "stage.c"
 	.4byte 0
 
@@ -15516,17 +15772,20 @@ lbl_802F09E0:
 .global lbl_802F09E4
 lbl_802F09E4:
 	# ROM: 0x1EB124
+glabel string_recdata
 	.asciz "recdata"
 
 .global lbl_802F09EC
 lbl_802F09EC:
 	# ROM: 0x1EB12C
+glabel string__test_4
 	.asciz "/test"
 	.balign 4
 
 .global lbl_802F09F4
 lbl_802F09F4:
 	# ROM: 0x1EB134
+glabel string______
 	.asciz "#$%@^"
 	.balign 4
 
@@ -15540,52 +15799,76 @@ lbl_802F0A00:
 	# ROM: 0x1EB140
 	.byte 0x0A, 0x00, 0x00, 0x00
 	.4byte 0
+glabel string_NULL
 	.asciz "NULL"
 	.balign 4
+glabel string_bg_jun
 	.asciz "bg_jun"
 	.balign 4
+glabel string_bg_wat
 	.asciz "bg_wat"
 	.balign 4
+glabel string_bg_nig
 	.asciz "bg_nig"
 	.balign 4
+glabel string_bg_sun
 	.asciz "bg_sun"
 	.balign 4
+glabel string_bg_spa
 	.asciz "bg_spa"
 	.balign 4
+glabel string_bg_snd
 	.asciz "bg_snd"
 	.balign 4
+glabel string_bg_ice
 	.asciz "bg_ice"
 	.balign 4
+glabel string_bg_stm
 	.asciz "bg_stm"
 	.balign 4
+glabel string_bg_bns
 	.asciz "bg_bns"
 	.balign 4
+glabel string_bg_pil
 	.asciz "bg_pil"
 	.balign 4
+glabel string_bg_gol
 	.asciz "bg_gol"
 	.balign 4
+glabel string_bg_bow
 	.asciz "bg_bow"
 	.balign 4
+glabel string_bg_mst
 	.asciz "bg_mst"
 	.balign 4
+glabel string_bg_a
 	.asciz "bg_a"
 	.balign 4
+glabel string_bg_b
 	.asciz "bg_b"
 	.balign 4
+glabel string_bg_c
 	.asciz "bg_c"
 	.balign 4
+glabel string_bg_d
 	.asciz "bg_d"
 	.balign 4
+glabel string_bg_e
 	.asciz "bg_e"
 	.balign 4
+glabel string_bg_f
 	.asciz "bg_f"
 	.balign 4
+glabel string_bg_g
 	.asciz "bg_g"
 	.balign 4
+glabel string_bg_h
 	.asciz "bg_h"
 	.balign 4
+glabel string_bg_i
 	.asciz "bg_i"
 	.balign 4
+glabel string_bg_j
 	.asciz "bg_j"
 	.balign 4
 
@@ -15597,32 +15880,38 @@ lbl_802F0AC8:
 .global lbl_802F0ACC
 lbl_802F0ACC:
 	# ROM: 0x1EB20C
+glabel string__s_gma
 	.asciz "%s.gma"
 	.balign 4
 
 .global lbl_802F0AD4
 lbl_802F0AD4:
 	# ROM: 0x1EB214
+glabel string__s_tpl
 	.asciz "%s.tpl"
 	.balign 4
 
 .global lbl_802F0ADC
 lbl_802F0ADC:
 	# ROM: 0x1EB21C
+glabel string__test_5
 	.asciz "/test"
 	.balign 4
 
 .global lbl_802F0AE4
 lbl_802F0AE4:
 	# ROM: 0x1EB224
+glabel string__s_p_lz
 	.asciz "%s_p.lz"
 
 .global lbl_802F0AEC
 lbl_802F0AEC:
 	# ROM: 0x1EB22C
+glabel string__s_lz
 	.asciz "%s.lz"
 	.balign 4
 	.4byte 0
+glabel string_WAT_SUB
 	.asciz "WAT_SUB"
 
 .global lbl_802F0B00
@@ -15654,6 +15943,7 @@ lbl_802F0B14:
 .global lbl_802F0B18
 lbl_802F0B18:
 	# ROM: 0x1EB258
+glabel string_CLEAR
 	.asciz "CLEAR"
 	.balign 4
 
@@ -15662,10 +15952,11 @@ lbl_802F0B20:
 	# ROM: 0x1EB260
 	.byte 0x45, 0x4E, 0x44, 0x00
 	.4byte 0
+glabel string_IT_COIN
 	.asciz "IT_COIN"
-	.4byte 0x801BDEA0  ;# ptr
+	.4byte lbl_801BDEA0  ;# ptr
 	.4byte 0x801BDEC8  ;# ptr
-	.4byte 0x801BDF60  ;# ptr
+	.4byte lbl_801BDF60  ;# ptr
 	.4byte 0x801BDF88  ;# ptr
 
 .global lbl_802F0B40
@@ -15676,6 +15967,7 @@ lbl_802F0B40:
 .global lbl_802F0B44
 lbl_802F0B44:
 	# ROM: 0x1EB284
+glabel string_JAMABAR
 	.asciz "JAMABAR"
 	.4byte 0
 

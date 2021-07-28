@@ -4094,12 +4094,14 @@ lbl_800345A8:
 .global lbl_801B7998
 lbl_801B7998:
 	# ROM: 0x1B4998
+glabel string_nl2ngc_c
 	.asciz "nl2ngc.c"
 	.balign 4
 
 .global lbl_801B79A4
 lbl_801B79A4:
 	# ROM: 0x1B49A4
+glabel string_cannot_OSAlloc_2
 	.asciz "cannot OSAlloc"
 	.balign 4
 

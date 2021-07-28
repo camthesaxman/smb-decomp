@@ -13127,6 +13127,7 @@ lbl_802F2FCC:
 .global lbl_802F2FD0
 lbl_802F2FD0:
 	# ROM: 0x1EC9F0
+glabel string__333_4
 	.asciz "?333"
 	.balign 4
 
@@ -13375,8 +13376,10 @@ lbl_8017632C:
 	.4byte 0x80176370  ;# ptr
 	.4byte 0x80176390  ;# ptr
 	.4byte 0x801763C0  ;# ptr
+glabel string_camera_c
 	.asciz "camera.c"
 	.balign 4
+glabel string_Ielligal_player_number
 	.asciz "Ielligal player number"
 	.balign 4
 	.4byte 0
@@ -14360,67 +14363,79 @@ lbl_801772AC:
 .global lbl_80177358
 lbl_80177358:
 	# ROM: 0x174358
+glabel string_INFINITE
 	.asciz "INFINITE"
 	.balign 4
+glabel string_POINT_POW
 	.asciz "POINT_POW"
 	.balign 4
+glabel string_SPOT_POW
 	.asciz "SPOT_POW"
 	.balign 4
+glabel string_POINT_DARKPOW
 	.asciz "POINT_DARKPOW"
 	.balign 4
+glabel string_SPOT_DARKPOW
 	.asciz "SPOT_DARKPOW"
 	.balign 4
+glabel string_POINT_DARK
 	.asciz "POINT_DARK"
 	.balign 4
+glabel string_SPOT_DARK
 	.asciz "SPOT_DARK"
 	.balign 4
-	.4byte 0x80177358  ;# ptr
-	.4byte 0x802F0318  ;# ptr
-	.4byte 0x802F0320  ;# ptr
-	.4byte 0x80177364  ;# ptr
-	.4byte 0x80177370  ;# ptr
-	.4byte 0x8017737C  ;# ptr
-	.4byte 0x8017738C  ;# ptr
-	.4byte 0x8017739C  ;# ptr
-	.4byte 0x801773A8  ;# ptr
+	.4byte string_INFINITE  ;# ptr
+	.4byte string_POINT  ;# ptr
+	.4byte string_SPOT  ;# ptr
+	.4byte string_POINT_POW  ;# ptr
+	.4byte string_SPOT_POW  ;# ptr
+	.4byte string_POINT_DARKPOW  ;# ptr
+	.4byte string_SPOT_DARKPOW  ;# ptr
+	.4byte string_POINT_DARK  ;# ptr
+	.4byte string_SPOT_DARK  ;# ptr
+glabel string_BG_PILLAR
 	.asciz "BG_PILLAR"
 	.balign 4
+glabel string_BG_COUNTER
 	.asciz "BG_COUNTER"
 	.balign 4
-	.4byte 0x802F0328  ;# ptr
-	.4byte 0x802F0330  ;# ptr
-	.4byte 0x802F0338  ;# ptr
-	.4byte 0x802F0340  ;# ptr
+	.4byte string_TEST  ;# ptr
+	.4byte string_STAGE  ;# ptr
+	.4byte string_BUMPER  ;# ptr
+	.4byte string_AUTO  ;# ptr
 	.4byte 0x802F0348  ;# ptr
-	.4byte 0x801773D8  ;# ptr
-	.4byte 0x802F034C  ;# ptr
-	.4byte 0x801773E4  ;# ptr
+	.4byte string_BG_PILLAR  ;# ptr
+	.4byte string_BG_WALL  ;# ptr
+	.4byte string_BG_COUNTER  ;# ptr
+glabel string_SINGLE_UNIT
 	.asciz "SINGLE_UNIT"
+glabel string_DEF_MINIMAP
 	.asciz "DEF_MINIMAP"
+glabel string_DEF_GMAT
 	.asciz "DEF_GMAT"
 	.balign 4
-	.4byte 0x802F0354  ;# ptr
-	.4byte 0x802F035C  ;# ptr
-	.4byte 0x80177410  ;# ptr
-	.4byte 0x8017741C  ;# ptr
-	.4byte 0x80177428  ;# ptr
-	.4byte 0x802F0364  ;# ptr
-	.4byte 0x802F036C  ;# ptr
-	.4byte 0x802F0374  ;# ptr
-	.4byte 0x802F037C  ;# ptr
-	.4byte 0x802F0384  ;# ptr
-	.4byte 0x802F038C  ;# ptr
-	.4byte 0x802F0394  ;# ptr
-	.4byte 0x802F039C  ;# ptr
-	.4byte 0x802F03A4  ;# ptr
-	.4byte 0x802F03AC  ;# ptr
-	.4byte 0x802F03B4  ;# ptr
-	.4byte 0x802F03BC  ;# ptr
-	.4byte 0x802F03C4  ;# ptr
-	.4byte 0x802F03CC  ;# ptr
-	.4byte 0x802F03D4  ;# ptr
-	.4byte 0x802F03DC  ;# ptr
-	.4byte 0x802F03E4  ;# ptr
+	.4byte string_DEFAULT  ;# ptr
+	.4byte string_SINGLE  ;# ptr
+	.4byte string_SINGLE_UNIT  ;# ptr
+	.4byte string_DEF_MINIMAP  ;# ptr
+	.4byte string_DEF_GMAT  ;# ptr
+	.4byte string_DEF_MIR  ;# ptr
+	.4byte string_BG_0  ;# ptr
+	.4byte string_BG_1  ;# ptr
+	.4byte string_BG_2  ;# ptr
+	.4byte string_BG_3  ;# ptr
+	.4byte string_BG_4  ;# ptr
+	.4byte string_BG_5  ;# ptr
+	.4byte string_BG_6  ;# ptr
+	.4byte string_BG_7  ;# ptr
+	.4byte string_BG_8  ;# ptr
+	.4byte string_BG_9  ;# ptr
+	.4byte string_BG_a  ;# ptr
+	.4byte string_BG_b  ;# ptr
+	.4byte string_BG_c  ;# ptr
+	.4byte string_BG_d  ;# ptr
+	.4byte string_BG_e  ;# ptr
+	.4byte string_BG_f  ;# ptr
 
 .global lbl_8017748C
 lbl_8017748C:
@@ -24153,15 +24168,21 @@ lbl_8017748C:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel string__t_d__tLID__s__t_d__n
 	.asciz "\t%d,\tLID_%s,\t%d,\n"
 	.balign 4
+glabel string__tLTP__s__t_d__t_d__n
 	.asciz "\tLTP_%s,\t%d,\t%d,\n"
 	.balign 4
+glabel string__t___f___f___f____n
 	.asciz "\t{ %f, %f, %f },\n"
 	.balign 4
+glabel string__t0x_x__t0x_x__t0x_x__t___f___f___f____n
 	.asciz "\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n"
+glabel string__t_f__t_f__t_f__n
 	.asciz "\t%f,\t%f,\t%f,\n"
 	.balign 4
+glabel string__t_f__t_f_n
 	.asciz "\t%f,\t%f\n"
 	.balign 4
 
@@ -24226,12 +24247,14 @@ lbl_80180D74:
 .global lbl_80180DB0
 lbl_80180DB0:
 	# ROM: 0x17DDB0
+glabel string_LIGHT_ERROR____PushLightGroup___stack_over__n
 	.asciz "LIGHT ERROR!!! PushLightGroup() stack over.\n"
 	.balign 4
 
 .global lbl_80180DE0
 lbl_80180DE0:
 	# ROM: 0x17DDE0
+glabel string_LIGHT_ERROR____PopLightGroup___stack_null__n
 	.asciz "LIGHT ERROR!!! PopLightGroup() stack null.\n"
 
 .global lbl_80180E0C
@@ -24269,45 +24292,54 @@ lbl_80180E0C:
 	.4byte 0x802F0410  ;# ptr
 	.4byte 0x80180E5C  ;# ptr
 	.4byte 0
+glabel string_BILL_FLOOR
 	.asciz "BILL_FLOOR"
 	.balign 4
+glabel string_BILL_WALL
 	.asciz "BILL_WALL"
 	.balign 4
+glabel string_BILL_PILLAR00
 	.asciz "BILL_PILLAR00"
 	.balign 4
+glabel string_BILL_BOX
 	.asciz "BILL_BOX"
 	.balign 4
+glabel string_BILL_BAR_COUNTER
 	.asciz "BILL_BAR_COUNTER"
 	.balign 4
+glabel string_BILL_CHAIR00
 	.asciz "BILL_CHAIR00"
 	.balign 4
+glabel string_BILL_PLANT00
 	.asciz "BILL_PLANT00"
 	.balign 4
+glabel string_BILL_PLANT01
 	.asciz "BILL_PLANT01"
 	.balign 4
+glabel string_BILL_PLANT02
 	.asciz "BILL_PLANT02"
 	.balign 4
 
 .global lbl_80180F14
 lbl_80180F14:
 	# ROM: 0x17DF14
-	.4byte 0x80180E8C  ;# ptr
+	.4byte string_BILL_FLOOR  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
-	.4byte 0x80180E98  ;# ptr
+	.4byte string_BILL_WALL  ;# ptr
 	.byte 0x02, 0x00, 0x00, 0x00
-	.4byte 0x80180EA4  ;# ptr
+	.4byte string_BILL_PILLAR00  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
-	.4byte 0x80180EB4  ;# ptr
+	.4byte string_BILL_BOX  ;# ptr
 	.byte 0x03, 0x00, 0x00, 0x00
-	.4byte 0x80180EC0  ;# ptr
+	.4byte string_BILL_BAR_COUNTER  ;# ptr
 	.byte 0x04, 0x00, 0x00, 0x00
-	.4byte 0x80180ED4  ;# ptr
+	.4byte string_BILL_CHAIR00  ;# ptr
 	.byte 0x05, 0x00, 0x00, 0x00
-	.4byte 0x80180EE4  ;# ptr
+	.4byte string_BILL_PLANT00  ;# ptr
 	.byte 0x06, 0x00, 0x00, 0x00
-	.4byte 0x80180EF4  ;# ptr
+	.4byte string_BILL_PLANT01  ;# ptr
 	.byte 0x07, 0x00, 0x00, 0x00
-	.4byte 0x80180F04  ;# ptr
+	.4byte string_BILL_PLANT02  ;# ptr
 	.byte 0x08, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0xFF, 0x00, 0x00, 0x00
@@ -24588,6 +24620,7 @@ lbl_80180F64:
 	.byte 0x3F, 0x19, 0x99, 0x9A
 	.byte 0x3E, 0xCC, 0xCC, 0xCD
 	.byte 0x3E, 0xCC, 0xCC, 0xCD
+glabel string__333_5
 	.asciz "?333"
 	.balign 4
 	.byte 0x3F, 0x80, 0x00, 0x00
@@ -24606,6 +24639,7 @@ lbl_80180F64:
 	.byte 0x3F, 0x19, 0x99, 0x9A
 	.byte 0x3E, 0xCC, 0xCC, 0xCD
 	.byte 0x3E, 0xCC, 0xCC, 0xCD
+glabel string__333_6
 	.asciz "?333"
 	.balign 4
 	.byte 0x3F, 0x80, 0x00, 0x00

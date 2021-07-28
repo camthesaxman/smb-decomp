@@ -2168,6 +2168,7 @@ lbl_802F28B0:
 .global lbl_80173C70
 lbl_80173C70:
 	# ROM: 0x170C70
+glabel string_sub_mode__error__s__n
 	.asciz "sub_mode: error %s.\n"
 	.balign 4
 

@@ -13419,6 +13419,7 @@ lbl_802F02F8:
 	.byte 0x04, 0x02, 0x00, 0x00
 	.4byte 0
 	.4byte 0
+glabel string_k_CHU_
 	.asciz "k/CHU!"
 	.balign 4
 
@@ -14069,6 +14070,7 @@ lbl_802F2B5C:
 .global lbl_802F2B60
 lbl_802F2B60:
 	# ROM: 0x1EC580
+glabel string__s33
 	.asciz "@s33"
 	.balign 4
 
@@ -14548,7 +14550,7 @@ lbl_8010FF90:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x10, 0xE0, 0x00, 0x00
-	.4byte 0x80174E70  ;# ptr
+	.4byte string_k_SU_PA_MONKI_BO_RUh_NOASOBIKATA  ;# ptr
 	.4byte 0
 	.byte 0x10, 0x2C, 0xFC, 0x00
 	.4byte 0
@@ -14560,13 +14562,13 @@ lbl_8010FF90:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x10, 0x2C, 0x01, 0x00
-	.4byte 0x80174E94  ;# ptr
+	.4byte string_k_KONNTORO_RUSUTEXIKKUh_WO_np_IRE_h_TAHOUNI_k_KOROh_GARUYO  ;# ptr
 	.4byte 0
 	.byte 0x0F, 0x00, 0x02, 0x00
-	.4byte 0x80174ED0  ;# ptr
+	.4byte string_k_BO_RUh_GAp_UGOku_h_KUTO_k_KAMERAh_MOp_UGOku_h_KUKARA  ;# ptr
 	.4byte 0
 	.byte 0x0E, 0x10, 0x03, 0x00
-	.4byte 0x80174F08  ;# ptr
+	.4byte string_h_SORENIp_Au_h_WASETE_nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU  ;# ptr
 	.4byte 0
 	.byte 0x0D, 0x5C, 0xFF, 0x00
 	.4byte 0
@@ -14579,10 +14581,10 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x0C, 0xA8, 0x04, 0x00
-	.4byte 0x80174F44  ;# ptr
+	.4byte string_p_MIGI_SHITA_h_NIARUNOHA_k_MAPPUh_DAYO  ;# ptr
 	.4byte 0
 	.byte 0x0B, 0xB8, 0x05, 0x00
-	.4byte 0x80174F6C  ;# ptr
+	.4byte string_c_0xffffff_p_BUTTON_A_c_0x000000_k_BOTANh_WOp_OSU_h_SUTO  ;# ptr
 	.4byte 0
 	.byte 0x0B, 0x9A, 0xFD, 0x00
 	.4byte 0
@@ -14594,7 +14596,7 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x0A, 0xC8, 0x06, 0x00
-	.4byte 0x80174FA8  ;# ptr
+	.4byte string_k_MAPPUh_NOp_OOkii_h_KISAGA_p_KAwaru_h_WARUNDA  ;# ptr
 	.4byte 0
 	.byte 0x0A, 0xAA, 0xFD, 0x00
 	.4byte 0
@@ -14606,7 +14608,7 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x09, 0xD8, 0x07, 0x00
-	.4byte 0x80174FD8  ;# ptr
+	.4byte string_k_GO_RUp_CHITENN_h_YA_p_CHIKEI_h_GAYOKUWAKARUYO  ;# ptr
 	.4byte 0
 	.byte 0x09, 0xBA, 0xFD, 0x00
 	.4byte 0
@@ -14621,28 +14623,28 @@ lbl_80110004:
 	.4byte 0
 	.4byte 0
 	.byte 0x08, 0xAC, 0x08, 0x00
-	.4byte 0x80175008  ;# ptr
+	.4byte string_k_BOKUh_HAk_BANANAh_GAk_DA_ISUKI_  ;# ptr
 	.4byte 0
 	.byte 0x07, 0xBC, 0x09, 0x00
-	.4byte 0x8017502C  ;# ptr
+	.4byte string_k_BANANAh_WO100p_HONN_p_TAberu_h_BERUTO  ;# ptr
 	.4byte 0
 	.byte 0x06, 0xCC, 0x0A, 0x00
-	.4byte 0x80175054  ;# ptr
+	.4byte string_1UPh_SURUNDAYO  ;# ptr
 	.4byte 0
 	.byte 0x06, 0x0E, 0x0B, 0x00
-	.4byte 0x80175064  ;# ptr
+	.4byte string_p_CHIKEI_h_NIp_Au_h_WASETEk__nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU  ;# ptr
 	.4byte 0
 	.byte 0x05, 0x64, 0x0C, 0x00
-	.4byte 0x801750A8  ;# ptr
+	.4byte string_p_SAKAMICHI_h_WONOBORUp_TOKI_h_HA  ;# ptr
 	.4byte 0
 	.byte 0x04, 0xD8, 0x0D, 0x00
-	.4byte 0x801750CC  ;# ptr
+	.4byte string_k_KONNTORO_RUSUTEXIKKUh_WO_np_OOkii_h_KIKUKATAMUKETENE  ;# ptr
 	.4byte 0
 	.byte 0x04, 0x4C, 0x0E, 0x00
-	.4byte 0x80175104  ;# ptr
+	.4byte string_k_HUROAh_KARAp_Ochiru_h_CHIRUTO1k_MISUh_DAYO  ;# ptr
 	.4byte 0
 	.byte 0x03, 0xC0, 0x0F, 0x00
-	.4byte 0x80175134  ;# ptr
+	.4byte string_p_Ochiru_h_CHINAIYOUNI_p_KIbunn_h_WOTUKETENE__  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x02, 0x58, 0xF9, 0x00
 	.4byte 0
@@ -14663,10 +14665,10 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x02, 0x58, 0x10, 0x00
-	.4byte 0x80175164  ;# ptr
+	.4byte string_k_TAIMUh_GA0NINARUMAENI  ;# ptr
 	.4byte 0
 	.byte 0x01, 0x4A, 0x11, 0x00
-	.4byte 0x8017517C  ;# ptr
+	.4byte string_k_GO_RUh_SUREBA_p_TSUGI_h_NISUSUMERUYO  ;# ptr
 	.4byte 0
 	.byte 0x00, 0x5A, 0xF6, 0x00
 	.4byte 0
@@ -14820,6 +14822,7 @@ lbl_801740A8:
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x42, 0x8C, 0x00, 0x00
 	.byte 0xBF, 0x7E, 0x92, 0x3E
+glabel string___L___L_
 	.asciz "<$L{<$L{"
 	.byte 0x00, 0x00, 0x01
 	.byte 0x42, 0x90, 0x00, 0x00
@@ -14876,6 +14879,7 @@ lbl_801740A8:
 .global lbl_801741B0
 lbl_801741B0:
 	# ROM: 0x1711B0
+glabel string_sub_mode__error__d_in_Adv
 	.asciz "sub_mode: error %d in Adv"
 	.balign 4
 
@@ -15261,10 +15265,12 @@ lbl_801741D8:
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x00, 0x04, 0x40
+glabel string_A_ff
 	.asciz "A&ff"
 	.balign 4
 	.4byte 0
 	.byte 0x00, 0x00, 0x06, 0xCB
+glabel string_A_ff_2
 	.asciz "A&ff"
 	.balign 4
 	.4byte 0
@@ -15689,99 +15695,137 @@ lbl_80174E14:
 .global lbl_80174E38
 lbl_80174E38:
 	# ROM: 0x171E38
+glabel string_bmp_bmp_sel_tpl_2
 	.asciz "bmp/bmp_sel.tpl"
 
 .global lbl_80174E48
 lbl_80174E48:
 	# ROM: 0x171E48
+glabel string_c_0xff5000_____Control_description_____
 	.asciz "c/0xff5000/    Control description!    "
+glabel string_k_SU_PA_MONKI_BO_RUh_NOASOBIKATA
 	.asciz "k/SU-PA-MONKI-BO-RUh/NOASOBIKATA"
 	.balign 4
+glabel string_k_KONNTORO_RUSUTEXIKKUh_WO_np_IRE_h_TAHOUNI_k_KOROh_GARUYO
 	.asciz "k/KONNTORO-RUSUTEXIKKUh/WO\np/IRE/h/TAHOUNI k/KOROh/GARUYO"
 	.balign 4
+glabel string_k_BO_RUh_GAp_UGOku_h_KUTO_k_KAMERAh_MOp_UGOku_h_KUKARA
 	.asciz "k/BO-RUh/GAp/UGOku/h/KUTO k/KAMERAh/MOp/UGOku/h/KUKARA"
 	.balign 4
+glabel string_h_SORENIp_Au_h_WASETE_nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU
 	.asciz "h/SORENIp/Au/h/WASETE\nk/KONNTORO-RUSUTEXIKKUh/WOp/IRE/h/YOU"
+glabel string_p_MIGI_SHITA_h_NIARUNOHA_k_MAPPUh_DAYO
 	.asciz "p/MIGI/SHITA/h/NIARUNOHA k/MAPPUh/DAYO"
 	.balign 4
+glabel string_c_0xffffff_p_BUTTON_A_c_0x000000_k_BOTANh_WOp_OSU_h_SUTO
 	.asciz "c/0xffffff/p/BUTTON_A/c/0x000000/k/BOTANh/WOp/OSU/h/SUTO"
 	.balign 4
+glabel string_k_MAPPUh_NOp_OOkii_h_KISAGA_p_KAwaru_h_WARUNDA
 	.asciz "k/MAPPUh/NOp/OOkii/h/KISAGA p/KAwaru/h/WARUNDA"
 	.balign 4
+glabel string_k_GO_RUp_CHITENN_h_YA_p_CHIKEI_h_GAYOKUWAKARUYO
 	.asciz "k/GO-RUp/CHITENN/h/YA p/CHIKEI/h/GAYOKUWAKARUYO"
+glabel string_k_BOKUh_HAk_BANANAh_GAk_DA_ISUKI_
 	.asciz "k/BOKUh/HAk/BANANAh/GAk/DA~ISUKI!"
 	.balign 4
+glabel string_k_BANANAh_WO100p_HONN_p_TAberu_h_BERUTO
 	.asciz "k/BANANAh/WO100p/HONN/p/TAberu/h/BERUTO"
+glabel string_1UPh_SURUNDAYO
 	.asciz "1UPh/SURUNDAYO"
 	.balign 4
+glabel string_p_CHIKEI_h_NIp_Au_h_WASETEk__nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU
 	.asciz "p/CHIKEI/h/NIp/Au/h/WASETEk/\nk/KONNTORO-RUSUTEXIKKUh/WOp/IRE/h/YOU"
 	.balign 4
+glabel string_p_SAKAMICHI_h_WONOBORUp_TOKI_h_HA
 	.asciz "p/SAKAMICHI/h/WONOBORUp/TOKI/h/HA"
 	.balign 4
+glabel string_k_KONNTORO_RUSUTEXIKKUh_WO_np_OOkii_h_KIKUKATAMUKETENE
 	.asciz "k/KONNTORO-RUSUTEXIKKUh/WO\np/OOkii/h/KIKUKATAMUKETENE"
 	.balign 4
+glabel string_k_HUROAh_KARAp_Ochiru_h_CHIRUTO1k_MISUh_DAYO
 	.asciz "k/HUROAh/KARAp/Ochiru/h/CHIRUTO1k/MISUh/DAYO"
 	.balign 4
+glabel string_p_Ochiru_h_CHINAIYOUNI_p_KIbunn_h_WOTUKETENE__
 	.asciz "p/Ochiru/h/CHINAIYOUNI p/KIbunn/h/WOTUKETENE~!"
 	.balign 4
+glabel string_k_TAIMUh_GA0NINARUMAENI
 	.asciz "k/TAIMUh/GA0NINARUMAENI"
+glabel string_k_GO_RUh_SUREBA_p_TSUGI_h_NISUSUMERUYO
 	.asciz "k/GO-RUh/SUREBA p/TSUGI/h/NISUSUMERUYO"
 	.balign 4
+glabel string_How_to_play_Super_Monkey_Ball_
 	.asciz "How to play Super Monkey Ball!"
 	.balign 4
+glabel string_The_further_you_push_the_Control_nStick__the_faster_you_ll_roll_
 	.asciz "The further you push the Control\nStick, the faster you'll roll."
+glabel string_And_if_the_ball_starts_moving__nthe_camera_will_follow_
 	.asciz "And if the ball starts moving,\nthe camera will follow."
 	.balign 4
+glabel string_So__you_ll_want_to_make_sure_nto_remember_that_when_you_move_
 	.asciz "So, you'll want to make sure\nto remember that when you move."
 	.balign 4
+glabel string_There_s_a_map_of_the_stage_nin_the_bottom_right_corner_
 	.asciz "There's a map of the stage\nin the bottom right corner."
 	.balign 4
+glabel string_If_you_press_the_c_0xffffff_p_BUTTON_A_c_0x000000_a__Button_
 	.asciz "If you press the c/0xffffff/p/BUTTON_A/c/0x000000/a/ Button,"
 	.balign 4
+glabel string_you_can_change_nthe_size_of_the_map_
 	.asciz "you can change\nthe size of the map!"
+glabel string_The_goal_and_level_boundaries_nare_easy_to_see_
 	.asciz "The goal and level boundaries\nare easy to see."
 	.balign 4
+glabel string_I_really_love_bananas_
 	.asciz "I really love bananas!"
 	.balign 4
+glabel string_If_you_eat_100_bananas_
 	.asciz "If you eat 100 bananas,"
+glabel string_you_ll_get_an_extra_life_
 	.asciz "you'll get an extra life!"
 	.balign 4
+glabel string_Make_sure_to_use_the_Control_Stick_nand_stay_on_the_ground_
 	.asciz "Make sure to use the Control Stick\nand stay on the ground!"
 	.balign 4
+glabel string_When_you_want_to_climb_up_a_hill_
 	.asciz "When you want to climb up a hill,"
 	.balign 4
+glabel string_make_sure_to_press_hard_non_the_Control_Stick_
 	.asciz "make sure to press hard\non the Control Stick!"
 	.balign 4
+glabel string_If_you_fall_off__you_ll_lose_a_lifep_TENNTENN_
 	.asciz "If you fall off, you'll lose a lifep/TENNTENN/"
 	.balign 4
+glabel string_Make_sure_not_to_fall_off_
 	.asciz "Make sure not to fall off!"
 	.balign 4
+glabel string_If_you_make_it_to_the_goal_nbefore_time_runs_out_
 	.asciz "If you make it to the goal\nbefore time runs out,"
 	.balign 4
+glabel string_you_ll_advance_to_the_next_stage_
 	.asciz "you'll advance to the next stage!"
 	.balign 4
 
 .global lbl_801754C8
 lbl_801754C8:
 	# ROM: 0x1724C8
-	.4byte 0x801751A4  ;# ptr
-	.4byte 0x801751C4  ;# ptr
-	.4byte 0x80175204  ;# ptr
-	.4byte 0x8017523C  ;# ptr
-	.4byte 0x8017527C  ;# ptr
-	.4byte 0x801752B4  ;# ptr
-	.4byte 0x801752F4  ;# ptr
-	.4byte 0x80175318  ;# ptr
-	.4byte 0x80175348  ;# ptr
-	.4byte 0x80175360  ;# ptr
-	.4byte 0x80175378  ;# ptr
-	.4byte 0x80175394  ;# ptr
-	.4byte 0x801753D0  ;# ptr
-	.4byte 0x801753F4  ;# ptr
-	.4byte 0x80175424  ;# ptr
-	.4byte 0x80175454  ;# ptr
-	.4byte 0x80175470  ;# ptr
-	.4byte 0x801754A4  ;# ptr
+	.4byte string_How_to_play_Super_Monkey_Ball_  ;# ptr
+	.4byte string_The_further_you_push_the_Control_nStick__the_faster_you_ll_roll_  ;# ptr
+	.4byte string_And_if_the_ball_starts_moving__nthe_camera_will_follow_  ;# ptr
+	.4byte string_So__you_ll_want_to_make_sure_nto_remember_that_when_you_move_  ;# ptr
+	.4byte string_There_s_a_map_of_the_stage_nin_the_bottom_right_corner_  ;# ptr
+	.4byte string_If_you_press_the_c_0xffffff_p_BUTTON_A_c_0x000000_a__Button_  ;# ptr
+	.4byte string_you_can_change_nthe_size_of_the_map_  ;# ptr
+	.4byte string_The_goal_and_level_boundaries_nare_easy_to_see_  ;# ptr
+	.4byte string_I_really_love_bananas_  ;# ptr
+	.4byte string_If_you_eat_100_bananas_  ;# ptr
+	.4byte string_you_ll_get_an_extra_life_  ;# ptr
+	.4byte string_Make_sure_to_use_the_Control_Stick_nand_stay_on_the_ground_  ;# ptr
+	.4byte string_When_you_want_to_climb_up_a_hill_  ;# ptr
+	.4byte string_make_sure_to_press_hard_non_the_Control_Stick_  ;# ptr
+	.4byte string_If_you_fall_off__you_ll_lose_a_lifep_TENNTENN_  ;# ptr
+	.4byte string_Make_sure_not_to_fall_off_  ;# ptr
+	.4byte string_If_you_make_it_to_the_goal_nbefore_time_runs_out_  ;# ptr
+	.4byte string_you_ll_advance_to_the_next_stage_  ;# ptr
 
 .global lbl_80175510
 lbl_80175510:
@@ -15803,6 +15847,7 @@ lbl_80175510:
 .global lbl_80175544
 lbl_80175544:
 	# ROM: 0x172544
+glabel string______pre_load_stage__d_______n
 	.asciz "/*-- pre_load_stage(%d) --*/\n"
 	.balign 4
 	.4byte 0
@@ -15810,10 +15855,13 @@ lbl_80175544:
 .global lbl_80175568
 lbl_80175568:
 	# ROM: 0x172568
+glabel string_sub_mode__error__d_in_Sel
 	.asciz "sub_mode: error %d in Sel"
 	.balign 4
+glabel string_mkbe_sel_stage_rel
 	.asciz "mkbe.sel_stage.rel"
 	.balign 4
+glabel string_mkbe_sel_ngc_rel
 	.asciz "mkbe.sel_ngc.rel"
 	.balign 4
 
@@ -15821,11 +15869,11 @@ lbl_80175568:
 lbl_801755AC:
 	# ROM: 0x1725AC
 	.4byte 0x802F0300  ;# ptr
-	.4byte 0x80175584  ;# ptr
+	.4byte string_mkbe_sel_stage_rel  ;# ptr
 	.4byte 0x802F0300  ;# ptr
-	.4byte 0x80175598  ;# ptr
+	.4byte string_mkbe_sel_ngc_rel  ;# ptr
 	.4byte 0x802F0300  ;# ptr
-	.4byte 0x80175598  ;# ptr
+	.4byte string_mkbe_sel_ngc_rel  ;# ptr
 	.4byte 0x802F0300  ;# ptr
 	.4byte 0x802F0300  ;# ptr
 	.4byte 0x802F0300  ;# ptr
@@ -15843,253 +15891,332 @@ lbl_801755AC:
 .global lbl_801755F8
 lbl_801755F8:
 	# ROM: 0x1725F8
+glabel string_sub_mode__error__d_in_Game
 	.asciz "sub_mode: error %d in Game"
 	.balign 4
 
 .global lbl_80175614
 lbl_80175614:
 	# ROM: 0x172614
+glabel string_pre_load_stage_init__d_now__d_n
 	.asciz "pre_load_stage init:%d now:%d\n"
 	.balign 4
+glabel string_h_NAMAEWO_OSIETE_
 	.asciz "h/NAMAEWO OSIETE!"
 	.balign 4
+glabel string_h_ONAMAE_OSIETE_
 	.asciz "h/ONAMAE OSIETE!"
 	.balign 4
+glabel string_h_NAMAEWO_OSIETEHOSHIIDEk_CHU_
 	.asciz "h/NAMAEWO OSIETEHOSHIIDEk/CHU!"
 	.balign 4
+glabel string_k_NAMAE_OSIERO__UHO_UHOHO_
 	.asciz "k/NAMAE OSIERO! UHO UHOHO!"
 	.balign 4
-	.4byte 0x80175634  ;# ptr
-	.4byte 0x80175648  ;# ptr
-	.4byte 0x8017565C  ;# ptr
-	.4byte 0x8017567C  ;# ptr
+	.4byte string_h_NAMAEWO_OSIETE_  ;# ptr
+	.4byte string_h_ONAMAE_OSIETE_  ;# ptr
+	.4byte string_h_NAMAEWO_OSIETEHOSHIIDEk_CHU_  ;# ptr
+	.4byte string_k_NAMAE_OSIERO__UHO_UHOHO_  ;# ptr
+glabel string_ENTER_YOUR_NAME_
 	.asciz "ENTER YOUR NAME!"
 	.balign 4
 
 .global lbl_801756BC
 lbl_801756BC:
 	# ROM: 0x1726BC
-	.4byte 0x801756A8  ;# ptr
-	.4byte 0x801756A8  ;# ptr
-	.4byte 0x801756A8  ;# ptr
-	.4byte 0x801756A8  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+glabel string_h_KONNDOHA_SARANI_2
 	.asciz "h/KONNDOHA SARANI"
 	.balign 4
+glabel string_h_UENOk_REBERUh_DE_ASONNDENE_2
 	.asciz "h/UENOk/REBERUh/DE ASONNDENE"
 	.balign 4
+glabel string_h_KOREDE_k_KIMIh_MO_2
 	.asciz "h/KOREDE k/KIMIh/MO"
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO_2
 	.asciz "h/ICHININNMAENO Ok/SARUh/SANNDAYO"
 	.balign 4
+glabel string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO_2
 	.asciz "k/KIMIh/TTEk/SUGOIh/NE! KOREKARAMO"
 	.balign 4
+glabel string_k_MONNKI_BO_RUh_WO_YOROSIKU__2
 	.asciz "k/MONNKI-BO-RUh/WO YOROSIKU!"
 	.balign 4
+glabel string_h_KONNDOHA_MOTTO_2
 	.asciz "h/KONNDOHA MOTTO"
 	.balign 4
+glabel string_h_UENOk_REBERUh_WO_MEZASHITENE_2
 	.asciz "h/UENOk/REBERUh/WO MEZASHITENE"
 	.balign 4
+glabel string_h_ANATAMO_KOREDE_2
 	.asciz "h/ANATAMO KOREDE"
 	.balign 4
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNNE_2
 	.asciz "h/ICHININNMAENO Ok/SARUh/SANNNE"
+glabel string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO_2
 	.asciz "h/ANATATTEk/SUGOIh/WA! KOREKARAMO"
 	.balign 4
+glabel string_k_PUREI_h_SHIMAKUTTENE_2
 	.asciz "k/PUREI h/SHIMAKUTTENE"
 	.balign 4
+glabel string_h_MOTTO_UENOk_REBERUh_DE_2
 	.asciz "h/MOTTO UENOk/REBERUh/DE"
 	.balign 4
+glabel string_h_ASOBITAIDEk_CHU_2
 	.asciz "h/ASOBITAIDEk/CHU"
 	.balign 4
+glabel string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO_2
 	.asciz "h/KOREDE RIPPANA Ok/SARUh/SANNNO"
 	.balign 4
+glabel string_h_NAKAMAIRIDEk_CHU_2
 	.asciz "h/NAKAMAIRIDEk/CHU"
 	.balign 4
+glabel string_k_SUGOIh_DEk_CHU__h_KOREKARAMO_2
 	.asciz "k/SUGOIh/DEk/CHU! h/KOREKARAMO"
 	.balign 4
+glabel string_h_ZUTTO_ASONNDEHOSIIDEk_CHU_2
 	.asciz "h/ZUTTO ASONNDEHOSIIDEk/CHU"
+glabel string_h_MIKANNSEIDEk_GOZARUh_YO
 	.asciz "h/MIKANNSEIDEk/GOZARUh/YO"
 	.balign 4
+glabel string_h_UHO_UHOHO
 	.asciz "h/UHO UHOHO"
+glabel string_k_BANANAh_KAIJINNDEHAk_GOZARAh_NUYO
 	.asciz "k/BANANAh/KAIJINNDEHAk/GOZARAh/NUYO"
-	.4byte 0x801756CC  ;# ptr
-	.4byte 0x801756E0  ;# ptr
-	.4byte 0x80175700  ;# ptr
-	.4byte 0x80175714  ;# ptr
-	.4byte 0x80175738  ;# ptr
-	.4byte 0x8017575C  ;# ptr
-	.4byte 0x8017577C  ;# ptr
-	.4byte 0x80175790  ;# ptr
-	.4byte 0x801757B0  ;# ptr
-	.4byte 0x801757C4  ;# ptr
-	.4byte 0x801757E4  ;# ptr
-	.4byte 0x80175808  ;# ptr
-	.4byte 0x80175820  ;# ptr
-	.4byte 0x8017583C  ;# ptr
-	.4byte 0x80175850  ;# ptr
-	.4byte 0x80175874  ;# ptr
-	.4byte 0x80175888  ;# ptr
-	.4byte 0x801758A8  ;# ptr
-	.4byte 0x801758C4  ;# ptr
-	.4byte 0x801758E0  ;# ptr
-	.4byte 0x801758EC  ;# ptr
-	.4byte 0x801758E0  ;# ptr
-	.4byte 0x801758E0  ;# ptr
-	.4byte 0x802F0308  ;# ptr
+	.4byte string_h_KONNDOHA_SARANI_2  ;# ptr
+	.4byte string_h_UENOk_REBERUh_DE_ASONNDENE_2  ;# ptr
+	.4byte string_h_KOREDE_k_KIMIh_MO_2  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO_2  ;# ptr
+	.4byte string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO_2  ;# ptr
+	.4byte string_k_MONNKI_BO_RUh_WO_YOROSIKU__2  ;# ptr
+	.4byte string_h_KONNDOHA_MOTTO_2  ;# ptr
+	.4byte string_h_UENOk_REBERUh_WO_MEZASHITENE_2  ;# ptr
+	.4byte string_h_ANATAMO_KOREDE_2  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNNE_2  ;# ptr
+	.4byte string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO_2  ;# ptr
+	.4byte string_k_PUREI_h_SHIMAKUTTENE_2  ;# ptr
+	.4byte string_h_MOTTO_UENOk_REBERUh_DE_2  ;# ptr
+	.4byte string_h_ASOBITAIDEk_CHU_2  ;# ptr
+	.4byte string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO_2  ;# ptr
+	.4byte string_h_NAKAMAIRIDEk_CHU_2  ;# ptr
+	.4byte string_k_SUGOIh_DEk_CHU__h_KOREKARAMO_2  ;# ptr
+	.4byte string_h_ZUTTO_ASONNDEHOSIIDEk_CHU_2  ;# ptr
+	.4byte string_h_MIKANNSEIDEk_GOZARUh_YO  ;# ptr
+	.4byte string_h_UHO_UHOHO  ;# ptr
+	.4byte string_k_BANANAh_KAIJINNDEHAk_GOZARAh_NUYO  ;# ptr
+	.4byte string_h_UHO_UHOHO  ;# ptr
+	.4byte string_h_UHO_UHOHO  ;# ptr
+	.4byte string_k_CHU_  ;# ptr
+glabel string_z_Let_s_try_higher_level
 	.asciz "z/Let's try higher level"
 	.balign 4
+glabel string_z_next_time
 	.asciz "z/next time"
+glabel string_z_Now_you_ve_become
 	.asciz "z/Now you've become"
+glabel string_z_cool_monkey_like_me
 	.asciz "z/cool monkey like me"
 	.balign 4
+glabel string_z_You_are_so_cool__Remember_
 	.asciz "z/You are so cool! Remember,"
 	.balign 4
+glabel string_z_Monkey_Ball_is_the_best_game_for_you_
 	.asciz "z/Monkey Ball is the best game for you!"
+glabel string_z_pretty_monkey_like_me
 	.asciz "z/pretty monkey like me"
+glabel string_z_You_are_so_fantastic__Remember_
 	.asciz "z/You are so fantastic! Remember,"
 	.balign 4
+glabel string_z_I_want_to_play_higher_level
 	.asciz "z/I want to play higher level"
 	.balign 4
+glabel string_z_grown_up_monkey_like_me
 	.asciz "z/grown up monkey like me"
 	.balign 4
+glabel string_z_You_are_such_grown_up__Remember_
 	.asciz "z/You are such grown up! Remember,"
 	.balign 4
-	.4byte 0x80175970  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x801759AC  ;# ptr
-	.4byte 0x801759C4  ;# ptr
-	.4byte 0x801759E4  ;# ptr
-	.4byte 0x80175970  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x80175A0C  ;# ptr
-	.4byte 0x80175A24  ;# ptr
-	.4byte 0x801759E4  ;# ptr
-	.4byte 0x80175A48  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x80175A68  ;# ptr
-	.4byte 0x80175A84  ;# ptr
-	.4byte 0x801759E4  ;# ptr
-	.4byte 0x80175970  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x80175A0C  ;# ptr
-	.4byte 0x80175A24  ;# ptr
-	.4byte 0x801759E4  ;# ptr
+	.4byte string_z_Let_s_try_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_cool_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_so_cool__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte string_z_Let_s_try_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_pretty_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_so_fantastic__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte string_z_I_want_to_play_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_grown_up_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_such_grown_up__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte string_z_Let_s_try_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_pretty_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_so_fantastic__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+glabel string_z9_a_Congratulations__You_didn_t_miss_anything_
 	.asciz "z9/a/Congratulations! You didn't miss anything!"
+glabel string_a_You_get_to_play_the_extra_stages_
 	.asciz "a/You get to play the extra stages!"
+glabel string_a_They_re_all_very_difficult_
 	.asciz "a/They're all very difficult,"
 	.balign 4
+glabel string_a_but_try_your_best_
 	.asciz "a/but try your best!"
 	.balign 4
+glabel string_z9_a_I_can_t_believe_you_didn_t_miss_anything_
 	.asciz "z9/a/I can't believe you didn't miss anything!"
 	.balign 4
+glabel string_z8_a_But__you_still_have_to_clear_the_extra_stages_
 	.asciz "z8/a/But, you still have to clear the extra stages!"
+glabel string_a_Make_sure_to_try_your_hardest
 	.asciz "a/Make sure to try your hardest"
+glabel string_a_on_these_stages__too_
 	.asciz "a/on these stages, too!"
+glabel string_a_Goo_goo__You_didn_t_miss_anyting_
 	.asciz "a/Goo goo! You didn't miss anyting!"
+glabel string_a_You_can_pway_da_extra_stages_
 	.asciz "a/You can pway da extra stages!"
+glabel string_a_It_s_a_wittle_bit_hard_
 	.asciz "a/It's a wittle bit hard,"
 	.balign 4
+glabel string_a_but_do_your_best_
 	.asciz "a/but do your best!"
+glabel string_z9_a_You_passed_everything_without_missing___
 	.asciz "z9/a/You passed everything without missing!!!"
 	.balign 4
+glabel string_a_Now__onto_the_extra_stages_
 	.asciz "a/Now, onto the extra stages!"
 	.balign 4
+glabel string_a_It_s_time_for_a_real_challenge_
 	.asciz "a/It's time for a real challenge!"
 	.balign 4
+glabel string_a_You_must_rule_over_all_the_stages_
 	.asciz "a/You must rule over all the stages!"
 	.balign 4
-	.4byte 0x80175B08  ;# ptr
-	.4byte 0x80175B38  ;# ptr
-	.4byte 0x80175B5C  ;# ptr
-	.4byte 0x80175B7C  ;# ptr
-	.4byte 0x80175B94  ;# ptr
-	.4byte 0x80175BC4  ;# ptr
-	.4byte 0x80175BF8  ;# ptr
-	.4byte 0x80175C18  ;# ptr
-	.4byte 0x80175C30  ;# ptr
-	.4byte 0x80175C54  ;# ptr
-	.4byte 0x80175C74  ;# ptr
-	.4byte 0x80175C90  ;# ptr
-	.4byte 0x80175CA4  ;# ptr
-	.4byte 0x80175CD4  ;# ptr
-	.4byte 0x80175CF4  ;# ptr
-	.4byte 0x80175D18  ;# ptr
+	.4byte string_z9_a_Congratulations__You_didn_t_miss_anything_  ;# ptr
+	.4byte string_a_You_get_to_play_the_extra_stages_  ;# ptr
+	.4byte string_a_They_re_all_very_difficult_  ;# ptr
+	.4byte string_a_but_try_your_best_  ;# ptr
+	.4byte string_z9_a_I_can_t_believe_you_didn_t_miss_anything_  ;# ptr
+	.4byte string_z8_a_But__you_still_have_to_clear_the_extra_stages_  ;# ptr
+	.4byte string_a_Make_sure_to_try_your_hardest  ;# ptr
+	.4byte string_a_on_these_stages__too_  ;# ptr
+	.4byte string_a_Goo_goo__You_didn_t_miss_anyting_  ;# ptr
+	.4byte string_a_You_can_pway_da_extra_stages_  ;# ptr
+	.4byte string_a_It_s_a_wittle_bit_hard_  ;# ptr
+	.4byte string_a_but_do_your_best_  ;# ptr
+	.4byte string_z9_a_You_passed_everything_without_missing___  ;# ptr
+	.4byte string_a_Now__onto_the_extra_stages_  ;# ptr
+	.4byte string_a_It_s_time_for_a_real_challenge_  ;# ptr
+	.4byte string_a_You_must_rule_over_all_the_stages_  ;# ptr
+glabel string_z8_a_You_cleared_all_the_stages_without_continuing_
 	.asciz "z8/a/You cleared all the stages without continuing!"
+glabel string_a_You_can_play_the_extra_stages_now_
 	.asciz "a/You can play the extra stages now!"
 	.balign 4
+glabel string_z7_a_You_cleared_everything_without_having_to_continue_
 	.asciz "z7/a/You cleared everything without having to continue!"
+glabel string_z7_a_But__there_s_still_extra_stages_that_you_have_to_clear_
 	.asciz "z7/a/But, there's still extra stages that you have to clear!"
 	.balign 4
+glabel string_z9_a_You_passed_eberyting_without_continuing_
 	.asciz "z9/a/You passed eberyting without continuing!"
 	.balign 4
+glabel string_a_You_can_pway_da_extra_stages_now_
 	.asciz "a/You can pway da extra stages now!"
+glabel string_z7_a_Congratulations__You_cleared_everything_without_continuing_
 	.asciz "z7/a/Congratulations! You cleared everything without continuing!"
 	.balign 4
+glabel string_a_Onto_the_extra_stages_
 	.asciz "a/Onto the extra stages!"
 	.balign 4
+glabel string_a_Go_go_go___
 	.asciz "a/Go go go!!!"
 	.balign 4
-	.4byte 0x80175D80  ;# ptr
-	.4byte 0x80175DB4  ;# ptr
-	.4byte 0x80175B5C  ;# ptr
-	.4byte 0x80175B7C  ;# ptr
-	.4byte 0x80175DDC  ;# ptr
-	.4byte 0x80175E14  ;# ptr
-	.4byte 0x80175BF8  ;# ptr
-	.4byte 0x80175C18  ;# ptr
-	.4byte 0x80175E54  ;# ptr
-	.4byte 0x80175E84  ;# ptr
-	.4byte 0x80175C74  ;# ptr
-	.4byte 0x80175C90  ;# ptr
-	.4byte 0x80175EA8  ;# ptr
-	.4byte 0x80175EEC  ;# ptr
-	.4byte 0x80175D18  ;# ptr
-	.4byte 0x80175F08  ;# ptr
+	.4byte string_z8_a_You_cleared_all_the_stages_without_continuing_  ;# ptr
+	.4byte string_a_You_can_play_the_extra_stages_now_  ;# ptr
+	.4byte string_a_They_re_all_very_difficult_  ;# ptr
+	.4byte string_a_but_try_your_best_  ;# ptr
+	.4byte string_z7_a_You_cleared_everything_without_having_to_continue_  ;# ptr
+	.4byte string_z7_a_But__there_s_still_extra_stages_that_you_have_to_clear_  ;# ptr
+	.4byte string_a_Make_sure_to_try_your_hardest  ;# ptr
+	.4byte string_a_on_these_stages__too_  ;# ptr
+	.4byte string_z9_a_You_passed_eberyting_without_continuing_  ;# ptr
+	.4byte string_a_You_can_pway_da_extra_stages_now_  ;# ptr
+	.4byte string_a_It_s_a_wittle_bit_hard_  ;# ptr
+	.4byte string_a_but_do_your_best_  ;# ptr
+	.4byte string_z7_a_Congratulations__You_cleared_everything_without_continuing_  ;# ptr
+	.4byte string_a_Onto_the_extra_stages_  ;# ptr
+	.4byte string_a_You_must_rule_over_all_the_stages_  ;# ptr
+	.4byte string_a_Go_go_go___  ;# ptr
+glabel string_z8_a_Congratulations__You_cleared_the_extra_stages_
 	.asciz "z8/a/Congratulations! You cleared the extra stages!"
+glabel string_z8_a_Now_you_can_try_to_clear_the_master_stages_
 	.asciz "z8/a/Now you can try to clear the master stages!"
 	.balign 4
+glabel string_a_If_you_can_pass_these_
 	.asciz "a/If you can pass these,"
 	.balign 4
+glabel string_a_you_will_be_the_best_player_ever_
 	.asciz "a/you will be the best player ever!"
 	.byte 0x7A, 0x37, 0x2F, 0x61
 	.byte 0x2F, 0x57, 0x6F, 0x77
 	.byte 0x81, 0x63, 0x20, 0x49
+glabel string__can_t_believe_you_passed_the_extra_stages_
 	.asciz " can't believe you passed the extra stages!"
+glabel string_a_You_really_are_something_
 	.asciz "a/You really are something!"
+glabel string_a_But__there_s_still_more_
 	.asciz "a/But, there's still more!"
 	.balign 4
+glabel string_z7_a_Now_try_to_clear_the_master_stages__Good_luck_
 	.asciz "z7/a/Now try to clear the master stages! Good luck!"
+glabel string_z7_a_You_cleared_da_extra_stages__too____You_are_gweat_
 	.asciz "z7/a/You cleared da extra stages, too??? You are gweat!"
+glabel string_z8_a_But__now_you_have_to_pway_da_master_stages_
 	.asciz "z8/a/But, now you have to pway da master stages!"
 	.balign 4
+glabel string_a_Dese_ones_are_bery_hard_
 	.asciz "a/Dese ones are bery hard,"
 	.balign 4
+glabel string_a_You_cleared_the_extra_stages____
 	.asciz "a/You cleared the extra stages!!!!"
 	.balign 4
+glabel string_a_Congraaaaaatulations__Good_job_
 	.asciz "a/Congraaaaaatulations! Good job!"
 	.balign 4
+glabel string_a_Now__onto_your_final_challenge_
 	.asciz "a/Now, onto your final challenge!"
 	.balign 4
+glabel string_a_The_master_stages_
 	.asciz "a/The master stages!"
 	.balign 4
-	.4byte 0x80175F58  ;# ptr
-	.4byte 0x80175F8C  ;# ptr
-	.4byte 0x80175FC0  ;# ptr
-	.4byte 0x80175FDC  ;# ptr
+	.4byte string_z8_a_Congratulations__You_cleared_the_extra_stages_  ;# ptr
+	.4byte string_z8_a_Now_you_can_try_to_clear_the_master_stages_  ;# ptr
+	.4byte string_a_If_you_can_pass_these_  ;# ptr
+	.4byte string_a_you_will_be_the_best_player_ever_  ;# ptr
 	.4byte 0x80176000  ;# ptr
-	.4byte 0x80176038  ;# ptr
-	.4byte 0x80176054  ;# ptr
-	.4byte 0x80176070  ;# ptr
-	.4byte 0x801760A4  ;# ptr
-	.4byte 0x801760DC  ;# ptr
-	.4byte 0x80176110  ;# ptr
-	.4byte 0x80175C90  ;# ptr
-	.4byte 0x8017612C  ;# ptr
-	.4byte 0x80176150  ;# ptr
-	.4byte 0x80176174  ;# ptr
-	.4byte 0x80176198  ;# ptr
+	.4byte string_a_You_really_are_something_  ;# ptr
+	.4byte string_a_But__there_s_still_more_  ;# ptr
+	.4byte string_z7_a_Now_try_to_clear_the_master_stages__Good_luck_  ;# ptr
+	.4byte string_z7_a_You_cleared_da_extra_stages__too____You_are_gweat_  ;# ptr
+	.4byte string_z8_a_But__now_you_have_to_pway_da_master_stages_  ;# ptr
+	.4byte string_a_Dese_ones_are_bery_hard_  ;# ptr
+	.4byte string_a_but_do_your_best_  ;# ptr
+	.4byte string_a_You_cleared_the_extra_stages____  ;# ptr
+	.4byte string_a_Congraaaaaatulations__Good_job_  ;# ptr
+	.4byte string_a_Now__onto_your_final_challenge_  ;# ptr
+	.4byte string_a_The_master_stages_  ;# ptr
 
 .global lbl_801761F0
 lbl_801761F0:

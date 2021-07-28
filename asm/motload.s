@@ -2577,11 +2577,16 @@ lbl_80036980:
 .global lbl_801B7B28
 lbl_801B7B28:
 	# ROM: 0x1B4B28
+glabel string_motload_c
 	.asciz "motload.c"
 	.balign 4
+glabel string_cannot_dvd_read
 	.asciz "cannot dvd_read"
+glabel string_cannot_OSAlloc_n_2
 	.asciz "cannot OSAlloc\n"
+glabel string_cannot_OSAlooc_n
 	.asciz "cannot OSAlooc\n"
+glabel string_cannot_DVDClose
 	.asciz "cannot DVDClose"
 	.4byte 0
 

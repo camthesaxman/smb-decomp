@@ -7587,6 +7587,7 @@ lbl_802F3204:
 .global lbl_802F3208
 lbl_802F3208:
 	# ROM: 0x1ECC28
+glabel string___ff
 	.asciz "?&ff"
 	.balign 4
 
@@ -8062,1840 +8063,2847 @@ lbl_801147CC:
 .global lbl_801AC960
 lbl_801AC960:
 	# ROM: 0x1A9960
+glabel string_GRPbil_set
 	.asciz "GRPbil_set"
 	.balign 4
+glabel string_GRPbow_set
 	.asciz "GRPbow_set"
 	.balign 4
+glabel string_GRPfight_set
 	.asciz "GRPfight_set"
 	.balign 4
+glabel string_GRPgolf_set
 	.asciz "GRPgolf_set"
+glabel string_GRPrace_set
 	.asciz "GRPrace_set"
+glabel string_GRPtarget_set
 	.asciz "GRPtarget_set"
 	.balign 4
+glabel string_GRPcomn_set
 	.asciz "GRPcomn_set"
+glabel string_GRPending
 	.asciz "GRPending"
 	.balign 4
+glabel string_GRPstream
 	.asciz "GRPstream"
 	.balign 4
+glabel string_SND_SEB_SE_COIN_SEPCM_2
 	.asciz "SND_SEB_SE_COIN_SEPCM_2"
+glabel string_SND_SEB_SE_COIN_SEPCM_3
 	.asciz "SND_SEB_SE_COIN_SEPCM_3"
+glabel string_SND_SEB_SE_START_SEPCM
 	.asciz "SND_SEB_SE_START_SEPCM"
 	.balign 4
+glabel string_SND_SNGA_SNG_BNK0_FX_TEST
 	.asciz "SND_SNGA_SNG_BNK0_FX_TEST"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM
 	.asciz "SND_SEB_SE_BALL_SEPCM"
 	.balign 4
+glabel string_DMY_CODE
 	.asciz "DMY_CODE"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_1
 	.asciz "SND_SEB_SE_BALL_SEPCM_1"
+glabel string_SND_SEB_SE_BALL_SEPCM_2
 	.asciz "SND_SEB_SE_BALL_SEPCM_2"
+glabel string_SND_SEB_SE_BALL_SEPCM_3
 	.asciz "SND_SEB_SE_BALL_SEPCM_3"
+glabel string_SND_SEB_SE_BALL_SEPCM_4
 	.asciz "SND_SEB_SE_BALL_SEPCM_4"
+glabel string_SND_SEB_SE_BALL_SEPCM_5
 	.asciz "SND_SEB_SE_BALL_SEPCM_5"
+glabel string_SND_SEB_SE_BALL_SEPCM_6
 	.asciz "SND_SEB_SE_BALL_SEPCM_6"
+glabel string_SND_SEB_SE_BALL_SEPCM_7
 	.asciz "SND_SEB_SE_BALL_SEPCM_7"
+glabel string_SND_SEB_SE_BALL_SEPCM_8
 	.asciz "SND_SEB_SE_BALL_SEPCM_8"
+glabel string_SND_SEB_SE_BALL_SEPCM_9
 	.asciz "SND_SEB_SE_BALL_SEPCM_9"
+glabel string_SND_SEB_SE_BALL_SEPCM_10
 	.asciz "SND_SEB_SE_BALL_SEPCM_10"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_18
 	.asciz "SND_SEB_SE_BALL_SEPCM_18"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_19
 	.asciz "SND_SEB_SE_BALL_SEPCM_19"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_20
 	.asciz "SND_SEB_SE_BALL_SEPCM_20"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_21
 	.asciz "SND_SEB_SE_BALL_SEPCM_21"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_22
 	.asciz "SND_SEB_SE_BALL_SEPCM_22"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_23
 	.asciz "SND_SEB_SE_BALL_SEPCM_23"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_25
 	.asciz "SND_SEB_SE_BALL_SEPCM_25"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_11
 	.asciz "SND_SEB_SE_BALL_SEPCM_11"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_12
 	.asciz "SND_SEB_SE_BALL_SEPCM_12"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_13
 	.asciz "SND_SEB_SE_BALL_SEPCM_13"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_14
 	.asciz "SND_SEB_SE_BALL_SEPCM_14"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_15
 	.asciz "SND_SEB_SE_BALL_SEPCM_15"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_16
 	.asciz "SND_SEB_SE_BALL_SEPCM_16"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_17
 	.asciz "SND_SEB_SE_BALL_SEPCM_17"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_26
 	.asciz "SND_SEB_SE_BALL_SEPCM_26"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_27
 	.asciz "SND_SEB_SE_BALL_SEPCM_27"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_28
 	.asciz "SND_SEB_SE_BALL_SEPCM_28"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_29
 	.asciz "SND_SEB_SE_BALL_SEPCM_29"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_30
 	.asciz "SND_SEB_SE_BALL_SEPCM_30"
 	.balign 4
+glabel string_SND_SEB_SE_BALL_SEPCM_31
 	.asciz "SND_SEB_SE_BALL_SEPCM_31"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM
 	.asciz "SND_SEB_SE_ETC_SEPCM"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_2
 	.asciz "SND_SEB_SE_ETC_SEPCM_2"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_3
 	.asciz "SND_SEB_SE_ETC_SEPCM_3"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_5
 	.asciz "SND_SEB_SE_ETC_SEPCM_5"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_6
 	.asciz "SND_SEB_SE_ETC_SEPCM_6"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_7
 	.asciz "SND_SEB_SE_ETC_SEPCM_7"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_8
 	.asciz "SND_SEB_SE_ETC_SEPCM_8"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_9
 	.asciz "SND_SEB_SE_ETC_SEPCM_9"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_10
 	.asciz "SND_SEB_SE_ETC_SEPCM_10"
+glabel string_SND_SEB_SE_ETC_SEPCM_11
 	.asciz "SND_SEB_SE_ETC_SEPCM_11"
+glabel string_SND_SEB_SE_ETC_SEPCM_12
 	.asciz "SND_SEB_SE_ETC_SEPCM_12"
+glabel string_SND_SEB_SE_ETC_SEPCM_22
 	.asciz "SND_SEB_SE_ETC_SEPCM_22"
+glabel string_SND_SEB_SE_ETC_SEPCM_14
 	.asciz "SND_SEB_SE_ETC_SEPCM_14"
+glabel string_SND_SEB_SE_ETC_SEPCM_OFF
 	.asciz "SND_SEB_SE_ETC_SEPCM_OFF"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_15
 	.asciz "SND_SEB_SE_ETC_SEPCM_15"
+glabel string_SND_SEB_SE_ETC_SEPCM_16
 	.asciz "SND_SEB_SE_ETC_SEPCM_16"
+glabel string_SND_SEB_SE_ETC_SEPCM_17
 	.asciz "SND_SEB_SE_ETC_SEPCM_17"
+glabel string_SND_SEB_SE_ETC_SEPCM_18
 	.asciz "SND_SEB_SE_ETC_SEPCM_18"
+glabel string_SND_SEB_SE_ETC_SEPCM_OFF_1
 	.asciz "SND_SEB_SE_ETC_SEPCM_OFF_1"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_19
 	.asciz "SND_SEB_SE_ETC_SEPCM_19"
+glabel string_SND_SEB_SE_ETC_SEPCM_OFF_2
 	.asciz "SND_SEB_SE_ETC_SEPCM_OFF_2"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_SEPCM_20
 	.asciz "SND_SEB_SE_ETC_SEPCM_20"
+glabel string_SND_SEB_SE_ETC_SEPCM_21
 	.asciz "SND_SEB_SE_ETC_SEPCM_21"
+glabel string_SND_SEB_SE_ETC_SEPCM_24
 	.asciz "SND_SEB_SE_ETC_SEPCM_24"
+glabel string_SND_SEB_SE_JGL_SEPCM_2
 	.asciz "SND_SEB_SE_JGL_SEPCM_2"
 	.balign 4
+glabel string_SND_SEB_SE_JGL_SEPCM_3
 	.asciz "SND_SEB_SE_JGL_SEPCM_3"
 	.balign 4
+glabel string_SND_SEB_SE_JGL_SE034UP_1
 	.asciz "SND_SEB_SE_JGL_SE034UP_1"
 	.balign 4
+glabel string_SND_SEB_SE_JGL_JGL01A_AIF_1
 	.asciz "SND_SEB_SE_JGL_JGL01A_AIF_1"
+glabel string_SND_SE01_RUN01
 	.asciz "SND_SE01_RUN01"
 	.balign 4
+glabel string_SND_SE01_RUN02
 	.asciz "SND_SE01_RUN02"
 	.balign 4
+glabel string_SND_SE01_RUN03
 	.asciz "SND_SE01_RUN03"
 	.balign 4
+glabel string_SND_SE01_FORPOP01_FPD
 	.asciz "SND_SE01_FORPOP01_FPD"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_25
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_25"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_27
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_27"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_31
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_31"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_32
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_32"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_33
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_33"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_34
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_34"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_35
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_35"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_36
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_36"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_37
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_37"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_OFF_3
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_OFF_3"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_38
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_38"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_OFF_4
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_OFF_4"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_39
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_39"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_40
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_40"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_41
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_41"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_42
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_42"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_43
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_43"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_44
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_44"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_45
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_45"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_46
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_46"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_47
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_47"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_48
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_48"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_49
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_49"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_50
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_50"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_51
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_51"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_52
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_52"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_56
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_56"
 	.balign 4
+glabel string_SND_SEB_SE_ETC_0_SEPCM_13
 	.asciz "SND_SEB_SE_ETC_0_SEPCM_13"
 	.balign 4
+glabel string_SND_SEB_RACKA_31_01_2
 	.asciz "SND_SEB_RACKA_31_01_2"
 	.balign 4
+glabel string_SND_SEB_RACKA_C_0003_WAV_2
 	.asciz "SND_SEB_RACKA_C_0003_WAV_2"
 	.balign 4
+glabel string_SND_SEB_RACKA_C_0004_WAV
 	.asciz "SND_SEB_RACKA_C_0004_WAV"
 	.balign 4
+glabel string_SND_SEB_YUKA_SEPCM_1_1
 	.asciz "SND_SEB_YUKA_SEPCM_1_1"
 	.balign 4
+glabel string_SND_SEB_YUKA_SEPCM_3_2
 	.asciz "SND_SEB_YUKA_SEPCM_3_2"
 	.balign 4
+glabel string_SND_SEB_YUKA_SEPCM_5_3
 	.asciz "SND_SEB_YUKA_SEPCM_5_3"
 	.balign 4
+glabel string_SFXse162
 	.asciz "SFXse162"
 	.balign 4
+glabel string_SFXse163
 	.asciz "SFXse163"
 	.balign 4
+glabel string_SFXse188
 	.asciz "SFXse188"
 	.balign 4
+glabel string_SFXse189
 	.asciz "SFXse189"
 	.balign 4
+glabel string_SFXse161
 	.asciz "SFXse161"
 	.balign 4
+glabel string_SND_SED_NAR_SEGA
 	.asciz "SND_SED_NAR_SEGA"
 	.balign 4
+glabel string_SND_SED_NAR_TITTLE1
 	.asciz "SND_SED_NAR_TITTLE1"
+glabel string_SND_SED_NAR_TITTLE2
 	.asciz "SND_SED_NAR_TITTLE2"
+glabel string_SND_SED_NAR_0
 	.asciz "SND_SED_NAR_0"
 	.balign 4
+glabel string_SND_SED_NAR_1
 	.asciz "SND_SED_NAR_1"
 	.balign 4
+glabel string_SND_SED_NAR_2
 	.asciz "SND_SED_NAR_2"
 	.balign 4
+glabel string_SND_SED_NAR_3
 	.asciz "SND_SED_NAR_3"
 	.balign 4
+glabel string_SND_SED_NAR_4
 	.asciz "SND_SED_NAR_4"
 	.balign 4
+glabel string_SND_SED_NAR_5
 	.asciz "SND_SED_NAR_5"
 	.balign 4
+glabel string_SND_SED_NAR_6
 	.asciz "SND_SED_NAR_6"
 	.balign 4
+glabel string_SND_SED_NAR_7
 	.asciz "SND_SED_NAR_7"
 	.balign 4
+glabel string_SND_SED_NAR_8
 	.asciz "SND_SED_NAR_8"
 	.balign 4
+glabel string_SND_SED_NAR_9
 	.asciz "SND_SED_NAR_9"
 	.balign 4
+glabel string_SND_SED_NAR_READY
 	.asciz "SND_SED_NAR_READY"
 	.balign 4
+glabel string_SND_SED_NAR_GO
 	.asciz "SND_SED_NAR_GO"
 	.balign 4
+glabel string_SND_SED_NAR_GO2
 	.asciz "SND_SED_NAR_GO2"
+glabel string_SND_SED_NAR_RINGOUT
 	.asciz "SND_SED_NAR_RINGOUT"
+glabel string_SND_SED_NAR_HURRY
 	.asciz "SND_SED_NAR_HURRY"
 	.balign 4
+glabel string_SND_SED_NAR_CLEAR
 	.asciz "SND_SED_NAR_CLEAR"
 	.balign 4
+glabel string_SND_SED_NAR_TIMEOVER
 	.asciz "SND_SED_NAR_TIMEOVER"
 	.balign 4
+glabel string_SND_SED_NAR_GAMEOVER
 	.asciz "SND_SED_NAR_GAMEOVER"
 	.balign 4
+glabel string_SND_SED_NAR_BONUSFIN
 	.asciz "SND_SED_NAR_BONUSFIN"
 	.balign 4
+glabel string_SND_SED_NAR_CLEAR_FLOOR
 	.asciz "SND_SED_NAR_CLEAR_FLOOR"
+glabel string_SND_SED_NAR_CLEAR_GAME
 	.asciz "SND_SED_NAR_CLEAR_GAME"
 	.balign 4
+glabel string_SND_SED_NAR_CONGLA
 	.asciz "SND_SED_NAR_CONGLA"
 	.balign 4
+glabel string_SND_SED_NAR_CONTINUE
 	.asciz "SND_SED_NAR_CONTINUE"
 	.balign 4
+glabel string_SND_SED_NAR_FALLOUT
 	.asciz "SND_SED_NAR_FALLOUT"
+glabel string_SND_SED_NAR_GOAL
 	.asciz "SND_SED_NAR_GOAL"
 	.balign 4
+glabel string_SND_SED_NAR_PERFECT
 	.asciz "SND_SED_NAR_PERFECT"
+glabel string_SND_SED_NAR_PRESS
 	.asciz "SND_SED_NAR_PRESS"
 	.balign 4
+glabel string_SND_SED_NAR_READY2
 	.asciz "SND_SED_NAR_READY2"
 	.balign 4
+glabel string_SND_SED_NAR_SEL_LV
 	.asciz "SND_SED_NAR_SEL_LV"
 	.balign 4
+glabel string_SND_SED_NAR_SEL_MK
 	.asciz "SND_SED_NAR_SEL_MK"
 	.balign 4
+glabel string_SND_SED_NAR_THANKYOU
 	.asciz "SND_SED_NAR_THANKYOU"
 	.balign 4
+glabel string_SND_SED_NAR_FALL00
 	.asciz "SND_SED_NAR_FALL00"
 	.balign 4
+glabel string_SND_SED_NAR_FALL01
 	.asciz "SND_SED_NAR_FALL01"
 	.balign 4
+glabel string_SND_SED_NAR_FALL02
 	.asciz "SND_SED_NAR_FALL02"
 	.balign 4
+glabel string_SND_SED_NAR_N4_ES
 	.asciz "SND_SED_NAR_N4_ES"
 	.balign 4
+glabel string_SND_SED_NAR_OP_TRN
 	.asciz "SND_SED_NAR_OP_TRN"
 	.balign 4
+glabel string_SND_SED_NAR_RST5
 	.asciz "SND_SED_NAR_RST5"
 	.balign 4
+glabel string_SND_SED_NAR_HAMMER1
 	.asciz "SND_SED_NAR_HAMMER1"
+glabel string_SND_SED_NAR_HAMMER2
 	.asciz "SND_SED_NAR_HAMMER2"
+glabel string_SND_SED_NAR_RAIN1
 	.asciz "SND_SED_NAR_RAIN1"
 	.balign 4
+glabel string_SND_SED_NAR_RAIN1_OFF
 	.asciz "SND_SED_NAR_RAIN1_OFF"
 	.balign 4
+glabel string_SND_SED_NAR_RAIN2
 	.asciz "SND_SED_NAR_RAIN2"
 	.balign 4
+glabel string_SND_SED_NAR_RAIN2_OFF
 	.asciz "SND_SED_NAR_RAIN2_OFF"
 	.balign 4
+glabel string_SND_SED_NAR_BOYM_START2
 	.asciz "SND_SED_NAR_BOYM_START2"
+glabel string_SND_SED_NAR_BOYM_START3
 	.asciz "SND_SED_NAR_BOYM_START3"
+glabel string_SND_SED_NAR_GIRLM_GOAL3
 	.asciz "SND_SED_NAR_GIRLM_GOAL3"
+glabel string_SND_SED_NAR_BABYM_START3
 	.asciz "SND_SED_NAR_BABYM_START3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_START1
 	.asciz "SND_SED_VO1_BOYM_START1"
+glabel string_SND_SED_VO1_BOYM_START2
 	.asciz "SND_SED_VO1_BOYM_START2"
+glabel string_SND_SED_VO1_BOYM_START3
 	.asciz "SND_SED_VO1_BOYM_START3"
+glabel string_SND_SED_VO1_BOYM_START4
 	.asciz "SND_SED_VO1_BOYM_START4"
+glabel string_SND_SED_VO1_BOYM_TIMEOVER1
 	.asciz "SND_SED_VO1_BOYM_TIMEOVER1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_TIMEOVER2
 	.asciz "SND_SED_VO1_BOYM_TIMEOVER2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_OCHISOU1
 	.asciz "SND_SED_VO1_BOYM_OCHISOU1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_OCHISOU2
 	.asciz "SND_SED_VO1_BOYM_OCHISOU2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_OCHISOU3
 	.asciz "SND_SED_VO1_BOYM_OCHISOU3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_BGET
 	.asciz "SND_SED_VO1_BOYM_BGET"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_BBGET1
 	.asciz "SND_SED_VO1_BOYM_BBGET1"
+glabel string_SND_SED_VO1_BOYM_BBGET2
 	.asciz "SND_SED_VO1_BOYM_BBGET2"
+glabel string_SND_SED_VO1_BOYM_COLI1
 	.asciz "SND_SED_VO1_BOYM_COLI1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_COLI2
 	.asciz "SND_SED_VO1_BOYM_COLI2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_COLI3
 	.asciz "SND_SED_VO1_BOYM_COLI3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_COLI4
 	.asciz "SND_SED_VO1_BOYM_COLI4"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_COLI5
 	.asciz "SND_SED_VO1_BOYM_COLI5"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_COLI6
 	.asciz "SND_SED_VO1_BOYM_COLI6"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_COLI7
 	.asciz "SND_SED_VO1_BOYM_COLI7"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_QUEST1
 	.asciz "SND_SED_VO1_BOYM_QUEST1"
+glabel string_SND_SED_VO1_BOYM_ANGLY
 	.asciz "SND_SED_VO1_BOYM_ANGLY"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_LAUGH
 	.asciz "SND_SED_VO1_BOYM_LAUGH"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_CRY
 	.asciz "SND_SED_VO1_BOYM_CRY"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_GOAL1
 	.asciz "SND_SED_VO1_BOYM_GOAL1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_GOAL2
 	.asciz "SND_SED_VO1_BOYM_GOAL2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_GOAL3
 	.asciz "SND_SED_VO1_BOYM_GOAL3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_FALL1
 	.asciz "SND_SED_VO1_BOYM_FALL1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_FALL2
 	.asciz "SND_SED_VO1_BOYM_FALL2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_FALL3
 	.asciz "SND_SED_VO1_BOYM_FALL3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_FALL4
 	.asciz "SND_SED_VO1_BOYM_FALL4"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_HELLO
 	.asciz "SND_SED_VO1_BOYM_HELLO"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_BYE
 	.asciz "SND_SED_VO1_BOYM_BYE"
 	.balign 4
+glabel string_SND_SED_VO1_BOYM_SEEYOU
 	.asciz "SND_SED_VO1_BOYM_SEEYOU"
+glabel string_SND_SED_VO1_BOYH_START1
 	.asciz "SND_SED_VO1_BOYH_START1"
+glabel string_SND_SED_VO1_BOYH_OCHISOU1
 	.asciz "SND_SED_VO1_BOYH_OCHISOU1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_OCHISOU2
 	.asciz "SND_SED_VO1_BOYH_OCHISOU2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_OCHISOU3
 	.asciz "SND_SED_VO1_BOYH_OCHISOU3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_OCHISOU5
 	.asciz "SND_SED_VO1_BOYH_OCHISOU5"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_OCHISOU7
 	.asciz "SND_SED_VO1_BOYH_OCHISOU7"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_OCHISOU8
 	.asciz "SND_SED_VO1_BOYH_OCHISOU8"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_OCHISOU9
 	.asciz "SND_SED_VO1_BOYH_OCHISOU9"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_LAUGH2
 	.asciz "SND_SED_VO1_BOYH_LAUGH2"
+glabel string_SND_SED_VO1_BOYH_GOAL1
 	.asciz "SND_SED_VO1_BOYH_GOAL1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_GOAL2
 	.asciz "SND_SED_VO1_BOYH_GOAL2"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_GOAL3
 	.asciz "SND_SED_VO1_BOYH_GOAL3"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_FALL1
 	.asciz "SND_SED_VO1_BOYH_FALL1"
 	.balign 4
+glabel string_SND_SED_VO1_BOYH_FALL1L
 	.asciz "SND_SED_VO1_BOYH_FALL1L"
+glabel string_SND_SED_VO2_GIRLM_START
 	.asciz "SND_SED_VO2_GIRLM_START"
+glabel string_SND_SED_VO2_GIRLM_TIMEOVER
 	.asciz "SND_SED_VO2_GIRLM_TIMEOVER"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_OCHISOU1
 	.asciz "SND_SED_VO2_GIRLM_OCHISOU1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_OCHISOU2
 	.asciz "SND_SED_VO2_GIRLM_OCHISOU2"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_OCHISOU3
 	.asciz "SND_SED_VO2_GIRLM_OCHISOU3"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_BGET1
 	.asciz "SND_SED_VO2_GIRLM_BGET1"
+glabel string_SND_SED_VO2_GIRLM_BGET2
 	.asciz "SND_SED_VO2_GIRLM_BGET2"
+glabel string_SND_SED_VO2_GIRLM_BGET3
 	.asciz "SND_SED_VO2_GIRLM_BGET3"
+glabel string_SND_SED_VO2_GIRLM_BGET4
 	.asciz "SND_SED_VO2_GIRLM_BGET4"
+glabel string_SND_SED_VO2_GIRLM_BGET5
 	.asciz "SND_SED_VO2_GIRLM_BGET5"
+glabel string_SND_SED_VO2_GIRLM_BBGET1
 	.asciz "SND_SED_VO2_GIRLM_BBGET1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_BBGET2
 	.asciz "SND_SED_VO2_GIRLM_BBGET2"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_BBGET3
 	.asciz "SND_SED_VO2_GIRLM_BBGET3"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_BBGET4
 	.asciz "SND_SED_VO2_GIRLM_BBGET4"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_COLI1
 	.asciz "SND_SED_VO2_GIRLM_COLI1"
+glabel string_SND_SED_VO2_GIRLM_COLI2
 	.asciz "SND_SED_VO2_GIRLM_COLI2"
+glabel string_SND_SED_VO2_GIRLM_COLI3
 	.asciz "SND_SED_VO2_GIRLM_COLI3"
+glabel string_SND_SED_VO2_GIRLM_COLI4
 	.asciz "SND_SED_VO2_GIRLM_COLI4"
+glabel string_SND_SED_VO2_GIRLM_COLI5
 	.asciz "SND_SED_VO2_GIRLM_COLI5"
+glabel string_SND_SED_VO2_GIRLM_COLI6
 	.asciz "SND_SED_VO2_GIRLM_COLI6"
+glabel string_SND_SED_VO2_GIRLM_COLI7
 	.asciz "SND_SED_VO2_GIRLM_COLI7"
+glabel string_SND_SED_VO2_GIRLM_COLI8
 	.asciz "SND_SED_VO2_GIRLM_COLI8"
+glabel string_SND_SED_VO2_GIRLM_COLI9
 	.asciz "SND_SED_VO2_GIRLM_COLI9"
+glabel string_SND_SED_VO2_GIRLM_QUEST1
 	.asciz "SND_SED_VO2_GIRLM_QUEST1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_QUEST2
 	.asciz "SND_SED_VO2_GIRLM_QUEST2"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_ANGLY1
 	.asciz "SND_SED_VO2_GIRLM_ANGLY1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_ANGLY2
 	.asciz "SND_SED_VO2_GIRLM_ANGLY2"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_CRY1
 	.asciz "SND_SED_VO2_GIRLM_CRY1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_GOAL1
 	.asciz "SND_SED_VO2_GIRLM_GOAL1"
+glabel string_SND_SED_VO2_GIRLM_GOAL2
 	.asciz "SND_SED_VO2_GIRLM_GOAL2"
+glabel string_SND_SED_VO2_GIRLM_GOAL3
 	.asciz "SND_SED_VO2_GIRLM_GOAL3"
+glabel string_SND_SED_VO2_GIRLM_GOAL4
 	.asciz "SND_SED_VO2_GIRLM_GOAL4"
+glabel string_SND_SED_VO2_GIRLM_FALL1
 	.asciz "SND_SED_VO2_GIRLM_FALL1"
+glabel string_SND_SED_VO2_GIRLM_FALL2
 	.asciz "SND_SED_VO2_GIRLM_FALL2"
+glabel string_SND_SED_VO2_GIRLM_HELLO
 	.asciz "SND_SED_VO2_GIRLM_HELLO"
+glabel string_SND_SED_VO2_GIRLM_BYE1
 	.asciz "SND_SED_VO2_GIRLM_BYE1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_BYE2
 	.asciz "SND_SED_VO2_GIRLM_BYE2"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLM_SEEYOU
 	.asciz "SND_SED_VO2_GIRLM_SEEYOU"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_START1
 	.asciz "SND_SED_VO2_GIRLH_START1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_OCHISOU1
 	.asciz "SND_SED_VO2_GIRLH_OCHISOU1"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_OCHISOU2
 	.asciz "SND_SED_VO2_GIRLH_OCHISOU2"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_OCHISOU3
 	.asciz "SND_SED_VO2_GIRLH_OCHISOU3"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_OCHISOU5
 	.asciz "SND_SED_VO2_GIRLH_OCHISOU5"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_OCHISOU8
 	.asciz "SND_SED_VO2_GIRLH_OCHISOU8"
 	.balign 4
+glabel string_SND_SED_VO2_GIRLH_FALL2
 	.asciz "SND_SED_VO2_GIRLH_FALL2"
+glabel string_SND_SED_VO2_GIRLH_FALL2L
 	.asciz "SND_SED_VO2_GIRLH_FALL2L"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_START2
 	.asciz "SND_SED_VO3_BABYM_START2"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_START3
 	.asciz "SND_SED_VO3_BABYM_START3"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_TIMEOVER
 	.asciz "SND_SED_VO3_BABYM_TIMEOVER"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_OCHISOU1
 	.asciz "SND_SED_VO3_BABYM_OCHISOU1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_OCHISOU2
 	.asciz "SND_SED_VO3_BABYM_OCHISOU2"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_OCHISOU3
 	.asciz "SND_SED_VO3_BABYM_OCHISOU3"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_BGET1
 	.asciz "SND_SED_VO3_BABYM_BGET1"
+glabel string_SND_SED_VO3_BABYM_BGET2
 	.asciz "SND_SED_VO3_BABYM_BGET2"
+glabel string_SND_SED_VO3_BABYM_BGET3
 	.asciz "SND_SED_VO3_BABYM_BGET3"
+glabel string_SND_SED_VO3_BABYM_BBGET1
 	.asciz "SND_SED_VO3_BABYM_BBGET1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_BBGET2
 	.asciz "SND_SED_VO3_BABYM_BBGET2"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_BBGET3
 	.asciz "SND_SED_VO3_BABYM_BBGET3"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_COLI1
 	.asciz "SND_SED_VO3_BABYM_COLI1"
+glabel string_SND_SED_VO3_BABYM_COLI2
 	.asciz "SND_SED_VO3_BABYM_COLI2"
+glabel string_SND_SED_VO3_BABYM_COLI4
 	.asciz "SND_SED_VO3_BABYM_COLI4"
+glabel string_SND_SED_VO3_BABYM_COLI5
 	.asciz "SND_SED_VO3_BABYM_COLI5"
+glabel string_SND_SED_VO3_BABYM_COLI6
 	.asciz "SND_SED_VO3_BABYM_COLI6"
+glabel string_SND_SED_VO3_BABYM_QUEST1
 	.asciz "SND_SED_VO3_BABYM_QUEST1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_QUEST2
 	.asciz "SND_SED_VO3_BABYM_QUEST2"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_ANGLY
 	.asciz "SND_SED_VO3_BABYM_ANGLY"
+glabel string_SND_SED_VO3_BABYM_LAUGH
 	.asciz "SND_SED_VO3_BABYM_LAUGH"
+glabel string_SND_SED_VO3_BABYM_CRY1
 	.asciz "SND_SED_VO3_BABYM_CRY1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_CRY2
 	.asciz "SND_SED_VO3_BABYM_CRY2"
 	.balign 4
+glabel string_SND_SED_VO3_BABYM_GOAL1
 	.asciz "SND_SED_VO3_BABYM_GOAL1"
+glabel string_SND_SED_VO3_BABYM_GOAL2
 	.asciz "SND_SED_VO3_BABYM_GOAL2"
+glabel string_SND_SED_VO3_BABYM_FALL1
 	.asciz "SND_SED_VO3_BABYM_FALL1"
+glabel string_SND_SED_VO3_BABYM_FALL2
 	.asciz "SND_SED_VO3_BABYM_FALL2"
+glabel string_SND_SED_VO3_BABYM_FALL3
 	.asciz "SND_SED_VO3_BABYM_FALL3"
+glabel string_SND_SED_VO3_BABYM_FALL4
 	.asciz "SND_SED_VO3_BABYM_FALL4"
+glabel string_SND_SED_VO3_BABYH_START1
 	.asciz "SND_SED_VO3_BABYH_START1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_TIMEOVER3
 	.asciz "SND_SED_VO3_BABYH_TIMEOVER3"
+glabel string_SND_SED_VO3_BABYH_OCHISOU1
 	.asciz "SND_SED_VO3_BABYH_OCHISOU1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_OCHISOU2
 	.asciz "SND_SED_VO3_BABYH_OCHISOU2"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_OCHISOU3
 	.asciz "SND_SED_VO3_BABYH_OCHISOU3"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_OCHISOU4
 	.asciz "SND_SED_VO3_BABYH_OCHISOU4"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_OCHISOU6
 	.asciz "SND_SED_VO3_BABYH_OCHISOU6"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_OCHISOU7
 	.asciz "SND_SED_VO3_BABYH_OCHISOU7"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_BGET4
 	.asciz "SND_SED_VO3_BABYH_BGET4"
+glabel string_SND_SED_VO3_BABYH_COLI4
 	.asciz "SND_SED_VO3_BABYH_COLI4"
+glabel string_SND_SED_VO3_BABYH_LAUGH1
 	.asciz "SND_SED_VO3_BABYH_LAUGH1"
 	.balign 4
+glabel string_SND_SED_VO3_BABYH_FALL1
 	.asciz "SND_SED_VO3_BABYH_FALL1"
+glabel string_SND_SED_VO3_BABYH_FALL1L
 	.asciz "SND_SED_VO3_BABYH_FALL1L"
 	.balign 4
+glabel string_SFXgoli_1up_basic_macro
 	.asciz "SFXgoli_1up_basic_macro"
+glabel string_SFXgoli_bumper1_basic_macro
 	.asciz "SFXgoli_bumper1_basic_macro"
+glabel string_SFXgoli_bumper2_basic_macro
 	.asciz "SFXgoli_bumper2_basic_macro"
+glabel string_SFXgoli_bumper3_basic_macro
 	.asciz "SFXgoli_bumper3_basic_macro"
+glabel string_SFXgoli_bumper4_basic_macro
 	.asciz "SFXgoli_bumper4_basic_macro"
+glabel string_SFXgoli_bumper5_basic_macro
 	.asciz "SFXgoli_bumper5_basic_macro"
+glabel string_SFXgoli_bumper6_basic_macro
 	.asciz "SFXgoli_bumper6_basic_macro"
+glabel string_SFXgoli_conte_basic_macro
 	.asciz "SFXgoli_conte_basic_macro"
 	.balign 4
+glabel string_SFXgoli_fall1_basic_macro
 	.asciz "SFXgoli_fall1_basic_macro"
 	.balign 4
+glabel string_SFXgoli_fall2_basic_macro
 	.asciz "SFXgoli_fall2_basic_macro"
 	.balign 4
+glabel string_SFXgoli_gameover_basic_macro
 	.asciz "SFXgoli_gameover_basic_macro"
 	.balign 4
+glabel string_SFXgoli_get1_basic_macro
 	.asciz "SFXgoli_get1_basic_macro"
 	.balign 4
+glabel string_SFXgoli_goal_basic_macro
 	.asciz "SFXgoli_goal_basic_macro"
 	.balign 4
+glabel string_SFXgoli_goal2_basic_macro
 	.asciz "SFXgoli_goal2_basic_macro"
 	.balign 4
+glabel string_SFXgoli_goal3_basic_macro
 	.asciz "SFXgoli_goal3_basic_macro"
 	.balign 4
+glabel string_SFXgoli_goal4_basic_macro
 	.asciz "SFXgoli_goal4_basic_macro"
 	.balign 4
+glabel string_SFXgoli_husaget1_basic_macro
 	.asciz "SFXgoli_husaget1_basic_macro"
 	.balign 4
+glabel string_SFXgoli_select_basic_macro
 	.asciz "SFXgoli_select_basic_macro"
 	.balign 4
+glabel string_SFXgoli_shock1_basic_macro
 	.asciz "SFXgoli_shock1_basic_macro"
 	.balign 4
+glabel string_SFXgoli_shock2_basic_macro
 	.asciz "SFXgoli_shock2_basic_macro"
 	.balign 4
+glabel string_SFXgoli_shock3_basic_macro
 	.asciz "SFXgoli_shock3_basic_macro"
 	.balign 4
+glabel string_SFXgoli_shock4_basic_macro
 	.asciz "SFXgoli_shock4_basic_macro"
 	.balign 4
+glabel string_SFXgoli_start_basic_macro
 	.asciz "SFXgoli_start_basic_macro"
 	.balign 4
+glabel string_SFXgoli_timeover_basic_macro
 	.asciz "SFXgoli_timeover_basic_macro"
 	.balign 4
+glabel string_SFXcushion01_basic_macro
 	.asciz "SFXcushion01_basic_macro"
 	.balign 4
+glabel string_SFXcushion02_basic_macro
 	.asciz "SFXcushion02_basic_macro"
 	.balign 4
+glabel string_SFXcushion03_basic_macro
 	.asciz "SFXcushion03_basic_macro"
 	.balign 4
+glabel string_SFXhit01_basic_macro
 	.asciz "SFXhit01_basic_macro"
 	.balign 4
+glabel string_SFXhit02_basic_macro
 	.asciz "SFXhit02_basic_macro"
 	.balign 4
+glabel string_SFXhit03_basic_macro
 	.asciz "SFXhit03_basic_macro"
 	.balign 4
+glabel string_SFXhit04_basic_macro
 	.asciz "SFXhit04_basic_macro"
 	.balign 4
+glabel string_SFXhit05_basic_macro
 	.asciz "SFXhit05_basic_macro"
 	.balign 4
+glabel string_SFXhit06_basic_macro
 	.asciz "SFXhit06_basic_macro"
 	.balign 4
+glabel string_SFXhit07_basic_macro
 	.asciz "SFXhit07_basic_macro"
 	.balign 4
+glabel string_SFXhit08_basic_macro
 	.asciz "SFXhit08_basic_macro"
 	.balign 4
+glabel string_SFXhit09_basic_macro
 	.asciz "SFXhit09_basic_macro"
 	.balign 4
+glabel string_SFXhit10_basic_macro
 	.asciz "SFXhit10_basic_macro"
 	.balign 4
+glabel string_SFXhit11_basic_macro
 	.asciz "SFXhit11_basic_macro"
 	.balign 4
+glabel string_SFXpoket01_basic_macro
 	.asciz "SFXpoket01_basic_macro"
 	.balign 4
+glabel string_SFXpoket02_basic_macro
 	.asciz "SFXpoket02_basic_macro"
 	.balign 4
+glabel string_SFXpoket03_basic_macro
 	.asciz "SFXpoket03_basic_macro"
 	.balign 4
+glabel string_SFXshot01_basic_macro
 	.asciz "SFXshot01_basic_macro"
 	.balign 4
+glabel string_SFXshot02_basic_macro
 	.asciz "SFXshot02_basic_macro"
 	.balign 4
+glabel string_SFXshot03_basic_macro
 	.asciz "SFXshot03_basic_macro"
 	.balign 4
+glabel string_SFXshot04_basic_macro
 	.asciz "SFXshot04_basic_macro"
 	.balign 4
+glabel string_SFXbillose_basic_macro
 	.asciz "SFXbillose_basic_macro"
 	.balign 4
+glabel string_SFXbilwin_basic_macro
 	.asciz "SFXbilwin_basic_macro"
 	.balign 4
+glabel string_SFXapplaudb_basic_macro
 	.asciz "SFXapplaudb_basic_macro"
+glabel string_SFXbilstr_basic_macro
 	.asciz "SFXbilstr_basic_macro"
 	.balign 4
+glabel string_SFXtoogoodb_basic_macro
 	.asciz "SFXtoogoodb_basic_macro"
+glabel string_SFXcushion04_basic_macro
 	.asciz "SFXcushion04_basic_macro"
 	.balign 4
+glabel string_SFXcushion05_basic_macro
 	.asciz "SFXcushion05_basic_macro"
 	.balign 4
+glabel string_SFXshot_moresoft_basic_macro
 	.asciz "SFXshot_moresoft_basic_macro"
 	.balign 4
+glabel string_SFXshot_soft_basic_macro
 	.asciz "SFXshot_soft_basic_macro"
 	.balign 4
+glabel string_SFXapplaudbbig_basic_macro
 	.asciz "SFXapplaudbbig_basic_macro"
 	.balign 4
+glabel string_SFXapplaudbnocl_basic_macro
 	.asciz "SFXapplaudbnocl_basic_macro"
+glabel string_SFXapplaudbnol_basic_macro
 	.asciz "SFXapplaudbnol_basic_macro"
 	.balign 4
+glabel string_SFXbill_foul_l_basic_macro
 	.asciz "SFXbill_foul_l_basic_macro"
 	.balign 4
+glabel string_SFXbill_foul_r_basic_macro
 	.asciz "SFXbill_foul_r_basic_macro"
 	.balign 4
+glabel string_SFXbill_lose_l_basic_macro
 	.asciz "SFXbill_lose_l_basic_macro"
 	.balign 4
+glabel string_SFXbill_lose_r_basic_macro
 	.asciz "SFXbill_lose_r_basic_macro"
 	.balign 4
+glabel string_SFXbill_senkou_l_basic_macro
 	.asciz "SFXbill_senkou_l_basic_macro"
 	.balign 4
+glabel string_SFXbill_senkou_r_basic_macro
 	.asciz "SFXbill_senkou_r_basic_macro"
 	.balign 4
+glabel string_SFXbill_win_l_basic_macro
 	.asciz "SFXbill_win_l_basic_macro"
 	.balign 4
+glabel string_SFXbill_win_r_basic_macro
 	.asciz "SFXbill_win_r_basic_macro"
 	.balign 4
+glabel string_SFXboob_basic_macro
 	.asciz "SFXboob_basic_macro"
+glabel string_SFXcushion06_basic_macro
 	.asciz "SFXcushion06_basic_macro"
 	.balign 4
+glabel string_SFXshotshift_basic_macro
 	.asciz "SFXshotshift_basic_macro"
 	.balign 4
+glabel string_SFX1st_match_basic_macro
 	.asciz "SFX1st_match_basic_macro"
 	.balign 4
+glabel string_SFX2nd_match_basic_macro
 	.asciz "SFX2nd_match_basic_macro"
 	.balign 4
+glabel string_SFX3rd_match_basic_macro
 	.asciz "SFX3rd_match_basic_macro"
 	.balign 4
+glabel string_SFXbreak_ace_01_basic_macro
 	.asciz "SFXbreak_ace_01_basic_macro"
+glabel string_SFXbreak_ace_02_basic_macro
 	.asciz "SFXbreak_ace_02_basic_macro"
+glabel string_SFXbreak_ace_03_basic_macro
 	.asciz "SFXbreak_ace_03_basic_macro"
+glabel string_SFXbreak_shot_basic_macro
 	.asciz "SFXbreak_shot_basic_macro"
 	.balign 4
+glabel string_SFXcanon_shot_basic_macro
 	.asciz "SFXcanon_shot_basic_macro"
 	.balign 4
+glabel string_SFXcombination_shot_basic_macro
 	.asciz "SFXcombination_shot_basic_macro"
+glabel string_SFXfinal_match_basic_macro
 	.asciz "SFXfinal_match_basic_macro"
 	.balign 4
+glabel string_SFXfoul_basic_macro
 	.asciz "SFXfoul_basic_macro"
+glabel string_SFXfree_ball_basic_macro
 	.asciz "SFXfree_ball_basic_macro"
 	.balign 4
+glabel string_SFXfree_drop_basic_macro
 	.asciz "SFXfree_drop_basic_macro"
 	.balign 4
+glabel string_SFXkiss_shot_basic_macro
 	.asciz "SFXkiss_shot_basic_macro"
 	.balign 4
+glabel string_SFXpocket_01_basic_macro
 	.asciz "SFXpocket_01_basic_macro"
 	.balign 4
+glabel string_SFXpocket_02_basic_macro
 	.asciz "SFXpocket_02_basic_macro"
 	.balign 4
+glabel string_SFXpocket_03_basic_macro
 	.asciz "SFXpocket_03_basic_macro"
 	.balign 4
+glabel string_SFXpocket_04_basic_macro
 	.asciz "SFXpocket_04_basic_macro"
 	.balign 4
+glabel string_SFXsafety_basic_macro
 	.asciz "SFXsafety_basic_macro"
 	.balign 4
+glabel string_SFXspecial_match_basic_macro
 	.asciz "SFXspecial_match_basic_macro"
 	.balign 4
+glabel string_SFXballpin_heavy_basic_macro
 	.asciz "SFXballpin_heavy_basic_macro"
 	.balign 4
+glabel string_SFXballpin_light_basic_macro
 	.asciz "SFXballpin_light_basic_macro"
 	.balign 4
+glabel string_SFXballpin_normal_basic_macro
 	.asciz "SFXballpin_normal_basic_macro"
 	.balign 4
+glabel string_SFXhit_after01_basic_macro
 	.asciz "SFXhit_after01_basic_macro"
 	.balign 4
+glabel string_SFXpinfloor_heavy_basic_macro
 	.asciz "SFXpinfloor_heavy_basic_macro"
 	.balign 4
+glabel string_SFXpinfloor_light_basic_macro
 	.asciz "SFXpinfloor_light_basic_macro"
 	.balign 4
+glabel string_SFXpinfloor_normal02_basic_macro
 	.asciz "SFXpinfloor_normal02_basic_macro"
 	.balign 4
+glabel string_SFXpinfloor_normal_basic_macro
 	.asciz "SFXpinfloor_normal_basic_macro"
 	.balign 4
+glabel string_SFXpinpin01_basic_macro
 	.asciz "SFXpinpin01_basic_macro"
+glabel string_SFXpinpin02_basic_macro
 	.asciz "SFXpinpin02_basic_macro"
+glabel string_SFXpinpin03_basic_macro
 	.asciz "SFXpinpin03_basic_macro"
+glabel string_SFXpinpin04_basic_macro
 	.asciz "SFXpinpin04_basic_macro"
+glabel string_SFXpinpin05_basic_macro
 	.asciz "SFXpinpin05_basic_macro"
+glabel string_SFXpinpin06_basic_macro
 	.asciz "SFXpinpin06_basic_macro"
+glabel string_SFXroll_basic_macro
 	.asciz "SFXroll_basic_macro"
+glabel string_SFXstrike01_basic_macro
 	.asciz "SFXstrike01_basic_macro"
+glabel string_SFXstrike02_basic_macro
 	.asciz "SFXstrike02_basic_macro"
+glabel string_SFXstrike03_basic_macro
 	.asciz "SFXstrike03_basic_macro"
+glabel string_SFXstrike04_basic_macro
 	.asciz "SFXstrike04_basic_macro"
+glabel string_SFXthrow01_basic_macro
 	.asciz "SFXthrow01_basic_macro"
 	.balign 4
+glabel string_SFXscorechange_basic_macro
 	.asciz "SFXscorechange_basic_macro"
 	.balign 4
+glabel string_SFXgutter_basic_macro
 	.asciz "SFXgutter_basic_macro"
 	.balign 4
+glabel string_SFXmachine1_basic_macro
 	.asciz "SFXmachine1_basic_macro"
+glabel string_SFXmachine2_basic_macro
 	.asciz "SFXmachine2_basic_macro"
+glabel string_SFXgutterbuzzer_basic_macro
 	.asciz "SFXgutterbuzzer_basic_macro"
+glabel string_SFXnyuinyui_basic_macro
 	.asciz "SFXnyuinyui_basic_macro"
+glabel string_SFXsparebuzzer_basic_macro
 	.asciz "SFXsparebuzzer_basic_macro"
 	.balign 4
+glabel string_SFXstrikebuzzer_basic_macro
 	.asciz "SFXstrikebuzzer_basic_macro"
+glabel string_SFXcourse_basic_macro
 	.asciz "SFXcourse_basic_macro"
 	.balign 4
+glabel string_SFXdecision_basic_macro
 	.asciz "SFXdecision_basic_macro"
+glabel string_SFXmachine3_basic_macro
 	.asciz "SFXmachine3_basic_macro"
+glabel string_SFXmachine4_basic_macro
 	.asciz "SFXmachine4_basic_macro"
+glabel string_SFXmachine5_basic_macro
 	.asciz "SFXmachine5_basic_macro"
+glabel string_SFXbowl_miss_l_basic_macro
 	.asciz "SFXbowl_miss_l_basic_macro"
 	.balign 4
+glabel string_SFXbowl_miss_r_basic_macro
 	.asciz "SFXbowl_miss_r_basic_macro"
 	.balign 4
+glabel string_SFXbowl_normal_l_basic_macro
 	.asciz "SFXbowl_normal_l_basic_macro"
 	.balign 4
+glabel string_SFXbowl_normal_r_basic_macro
 	.asciz "SFXbowl_normal_r_basic_macro"
 	.balign 4
+glabel string_SFXbowl_perfect_l_basic_macro
 	.asciz "SFXbowl_perfect_l_basic_macro"
 	.balign 4
+glabel string_SFXbowl_perfect_r_basic_macro
 	.asciz "SFXbowl_perfect_r_basic_macro"
 	.balign 4
+glabel string_SFXbowl_spare_l_basic_macro
 	.asciz "SFXbowl_spare_l_basic_macro"
+glabel string_SFXbowl_spare_r_basic_macro
 	.asciz "SFXbowl_spare_r_basic_macro"
+glabel string_SFXbowl_strike_l_basic_macro
 	.asciz "SFXbowl_strike_l_basic_macro"
 	.balign 4
+glabel string_SFXbowl_strike_r_basic_macro
 	.asciz "SFXbowl_strike_r_basic_macro"
 	.balign 4
+glabel string_SFXbowl_turkey_l_basic_macro
 	.asciz "SFXbowl_turkey_l_basic_macro"
 	.balign 4
+glabel string_SFXbowl_turkey_r_basic_macro
 	.asciz "SFXbowl_turkey_r_basic_macro"
 	.balign 4
+glabel string_SFXpinpinhigh_basic_macro
 	.asciz "SFXpinpinhigh_basic_macro"
 	.balign 4
+glabel string_SFXtick_basic_macro
 	.asciz "SFXtick_basic_macro"
+glabel string_SFXtock_basic_macro
 	.asciz "SFXtock_basic_macro"
+glabel string_SFXfirework1_basic_macro
 	.asciz "SFXfirework1_basic_macro"
 	.balign 4
+glabel string_SFXfirework2_basic_macro
 	.asciz "SFXfirework2_basic_macro"
 	.balign 4
+glabel string_SFXdouble_basic_macro
 	.asciz "SFXdouble_basic_macro"
 	.balign 4
+glabel string_SFXexcellent_basic_macro
 	.asciz "SFXexcellent_basic_macro"
 	.balign 4
+glabel string_SFXgutter_basic_macro_1
 	.asciz "SFXgutter_basic_macro_1"
+glabel string_SFXmiss_basic_macro
 	.asciz "SFXmiss_basic_macro"
+glabel string_SFXpunch_out_01_basic_macro
 	.asciz "SFXpunch_out_01_basic_macro"
+glabel string_SFXpunch_out_02_basic_macro
 	.asciz "SFXpunch_out_02_basic_macro"
+glabel string_SFXspare_basic_macro
 	.asciz "SFXspare_basic_macro"
 	.balign 4
+glabel string_SFXstrike_basic_macro
 	.asciz "SFXstrike_basic_macro"
 	.balign 4
+glabel string_SFXtry_again_basic_macro
 	.asciz "SFXtry_again_basic_macro"
 	.balign 4
+glabel string_SFXturkey_basic_macro
 	.asciz "SFXturkey_basic_macro"
 	.balign 4
+glabel string_SFXclear2_basic_macro
 	.asciz "SFXclear2_basic_macro"
 	.balign 4
+glabel string_SFXperfect2_basic_macro
 	.asciz "SFXperfect2_basic_macro"
+glabel string_SFXboxdrop_basic_macro
 	.asciz "SFXboxdrop_basic_macro"
 	.balign 4
+glabel string_SFXelectricalshock01_basic_macro
 	.asciz "SFXelectricalshock01_basic_macro"
 	.balign 4
+glabel string_SFXelectricalshock02_basic_macro
 	.asciz "SFXelectricalshock02_basic_macro"
 	.balign 4
+glabel string_SFXgong_bell04_basic_macro
 	.asciz "SFXgong_bell04_basic_macro"
 	.balign 4
+glabel string_SFXgong_bell05_basic_macro
 	.asciz "SFXgong_bell05_basic_macro"
 	.balign 4
+glabel string_SFXgong_bell_a_basic_macro
 	.asciz "SFXgong_bell_a_basic_macro"
 	.balign 4
+glabel string_SFXitemboxbreak_basic_macro
 	.asciz "SFXitemboxbreak_basic_macro"
+glabel string_SFXitemboxbroke_basic_macro
 	.asciz "SFXitemboxbroke_basic_macro"
+glabel string_SFXpunch04_basic_macro
 	.asciz "SFXpunch04_basic_macro"
 	.balign 4
+glabel string_SFXpunch05_basic_macro
 	.asciz "SFXpunch05_basic_macro"
 	.balign 4
+glabel string_SFXpunch06_basic_macro
 	.asciz "SFXpunch06_basic_macro"
 	.balign 4
+glabel string_SFXpunch07_basic_macro
 	.asciz "SFXpunch07_basic_macro"
 	.balign 4
+glabel string_SFXpunch08_basic_macro
 	.asciz "SFXpunch08_basic_macro"
 	.balign 4
+glabel string_SFXpunch_longbig01_basic_macro
 	.asciz "SFXpunch_longbig01_basic_macro"
 	.balign 4
+glabel string_SFXpunch_longbig02_basic_macro
 	.asciz "SFXpunch_longbig02_basic_macro"
 	.balign 4
+glabel string_SFXspring01_basic_macro
 	.asciz "SFXspring01_basic_macro"
+glabel string_SFXspring02_basic_macro
 	.asciz "SFXspring02_basic_macro"
+glabel string_SFXswing01_basic_macro
 	.asciz "SFXswing01_basic_macro"
 	.balign 4
+glabel string_SFXtouchdown01_basic_macro
 	.asciz "SFXtouchdown01_basic_macro"
 	.balign 4
+glabel string_SFXtouchdown03_basic_macro
 	.asciz "SFXtouchdown03_basic_macro"
 	.balign 4
+glabel string_SFXspinpunch_basic_macro
 	.asciz "SFXspinpunch_basic_macro"
 	.balign 4
+glabel string_SFXbigpunch_basic_macro
 	.asciz "SFXbigpunch_basic_macro"
+glabel string_SFXrevive_basic_macro
 	.asciz "SFXrevive_basic_macro"
 	.balign 4
+glabel string_SFXstar_basic_macro
 	.asciz "SFXstar_basic_macro"
+glabel string_SFXfight_win_l_basic_macro
 	.asciz "SFXfight_win_l_basic_macro"
 	.balign 4
+glabel string_SFXfight_win_r_basic_macro
 	.asciz "SFXfight_win_r_basic_macro"
 	.balign 4
+glabel string_SFXfight_01_basic_macro
 	.asciz "SFXfight_01_basic_macro"
+glabel string_SFXfight_02_basic_macro
 	.asciz "SFXfight_02_basic_macro"
+glabel string_SFXfinal_round_01_basic_macro
 	.asciz "SFXfinal_round_01_basic_macro"
 	.balign 4
+glabel string_SFXfinal_round_02_basic_macro
 	.asciz "SFXfinal_round_02_basic_macro"
 	.balign 4
+glabel string_SFXfinal_round_03_basic_macro
 	.asciz "SFXfinal_round_03_basic_macro"
 	.balign 4
+glabel string_SFXfinal_round_04_basic_macro
 	.asciz "SFXfinal_round_04_basic_macro"
 	.balign 4
+glabel string_SFXringout_01_basic_macro
 	.asciz "SFXringout_01_basic_macro"
 	.balign 4
+glabel string_SFXringout_02_basic_macro
 	.asciz "SFXringout_02_basic_macro"
 	.balign 4
+glabel string_SFXround01_basic_macro
 	.asciz "SFXround01_basic_macro"
 	.balign 4
+glabel string_SFXround02_basic_macro
 	.asciz "SFXround02_basic_macro"
 	.balign 4
+glabel string_SFXround03_basic_macro
 	.asciz "SFXround03_basic_macro"
 	.balign 4
+glabel string_SFXround04_basic_macro
 	.asciz "SFXround04_basic_macro"
 	.balign 4
+glabel string_SFXround05_basic_macro
 	.asciz "SFXround05_basic_macro"
 	.balign 4
+glabel string_SFXround06_basic_macro
 	.asciz "SFXround06_basic_macro"
 	.balign 4
+glabel string_SFXround07_basic_macro
 	.asciz "SFXround07_basic_macro"
 	.balign 4
+glabel string_SFXround08_basic_macro
 	.asciz "SFXround08_basic_macro"
 	.balign 4
+glabel string_SFXround09_basic_macro
 	.asciz "SFXround09_basic_macro"
 	.balign 4
+glabel string_SFXround10_basic_macro
 	.asciz "SFXround10_basic_macro"
 	.balign 4
+glabel string_SFXround11_basic_macro
 	.asciz "SFXround11_basic_macro"
 	.balign 4
+glabel string_SFXround12_basic_macro
 	.asciz "SFXround12_basic_macro"
 	.balign 4
+glabel string_SFXround13_basic_macro
 	.asciz "SFXround13_basic_macro"
 	.balign 4
+glabel string_SFXround14_basic_macro
 	.asciz "SFXround14_basic_macro"
 	.balign 4
+glabel string_SFXround15_basic_macro
 	.asciz "SFXround15_basic_macro"
 	.balign 4
+glabel string_SFXround16_basic_macro
 	.asciz "SFXround16_basic_macro"
 	.balign 4
+glabel string_SFXround17_basic_macro
 	.asciz "SFXround17_basic_macro"
 	.balign 4
+glabel string_SFXround18_basic_macro
 	.asciz "SFXround18_basic_macro"
 	.balign 4
+glabel string_SFXround19_basic_macro
 	.asciz "SFXround19_basic_macro"
 	.balign 4
+glabel string_SFXround20_basic_macro
 	.asciz "SFXround20_basic_macro"
 	.balign 4
+glabel string_SFXsudden_death_01_basic_macro
 	.asciz "SFXsudden_death_01_basic_macro"
 	.balign 4
+glabel string_SFXsudden_death_02_basic_macro
 	.asciz "SFXsudden_death_02_basic_macro"
 	.balign 4
+glabel string_SFXfight_01_basic_macro_1
 	.asciz "SFXfight_01_basic_macro_1"
 	.balign 4
+glabel string_SFXfight_02_basic_macro_1
 	.asciz "SFXfight_02_basic_macro_1"
 	.balign 4
+glabel string_SFXfinal_round_01_basic_macro_1
 	.asciz "SFXfinal_round_01_basic_macro_1"
+glabel string_SFXfinal_round_02_basic_macro_1
 	.asciz "SFXfinal_round_02_basic_macro_1"
+glabel string_SFXfinal_round_03_basic_macro_1
 	.asciz "SFXfinal_round_03_basic_macro_1"
+glabel string_SFXfinal_round_04_basic_macro_1
 	.asciz "SFXfinal_round_04_basic_macro_1"
+glabel string_SFXringout_01_basic_macro_1
 	.asciz "SFXringout_01_basic_macro_1"
+glabel string_SFXringout_02_basic_macro_1
 	.asciz "SFXringout_02_basic_macro_1"
+glabel string_SFXround01_basic_macro_1
 	.asciz "SFXround01_basic_macro_1"
 	.balign 4
+glabel string_SFXround02_basic_macro_1
 	.asciz "SFXround02_basic_macro_1"
 	.balign 4
+glabel string_SFXround03_basic_macro_1
 	.asciz "SFXround03_basic_macro_1"
 	.balign 4
+glabel string_SFXround04_basic_macro_1
 	.asciz "SFXround04_basic_macro_1"
 	.balign 4
+glabel string_SFXround05_basic_macro_1
 	.asciz "SFXround05_basic_macro_1"
 	.balign 4
+glabel string_SFXround06_basic_macro_1
 	.asciz "SFXround06_basic_macro_1"
 	.balign 4
+glabel string_SFXround07_basic_macro_1
 	.asciz "SFXround07_basic_macro_1"
 	.balign 4
+glabel string_SFXround08_basic_macro_1
 	.asciz "SFXround08_basic_macro_1"
 	.balign 4
+glabel string_SFXround09_basic_macro_1
 	.asciz "SFXround09_basic_macro_1"
 	.balign 4
+glabel string_SFXround10_basic_macro_1
 	.asciz "SFXround10_basic_macro_1"
 	.balign 4
+glabel string_SFXround11_basic_macro_1
 	.asciz "SFXround11_basic_macro_1"
 	.balign 4
+glabel string_SFXround12_basic_macro_1
 	.asciz "SFXround12_basic_macro_1"
 	.balign 4
+glabel string_SFXround13_basic_macro_1
 	.asciz "SFXround13_basic_macro_1"
 	.balign 4
+glabel string_SFXround14_basic_macro_1
 	.asciz "SFXround14_basic_macro_1"
 	.balign 4
+glabel string_SFXround15_basic_macro_1
 	.asciz "SFXround15_basic_macro_1"
 	.balign 4
+glabel string_SFXround16_basic_macro_1
 	.asciz "SFXround16_basic_macro_1"
 	.balign 4
+glabel string_SFXround17_basic_macro_1
 	.asciz "SFXround17_basic_macro_1"
 	.balign 4
+glabel string_SFXround18_basic_macro_1
 	.asciz "SFXround18_basic_macro_1"
 	.balign 4
+glabel string_SFXround19_basic_macro_1
 	.asciz "SFXround19_basic_macro_1"
 	.balign 4
+glabel string_SFXround20_basic_macro_1
 	.asciz "SFXround20_basic_macro_1"
 	.balign 4
+glabel string_SFXsudden_death_01_basic_macro_1
 	.asciz "SFXsudden_death_01_basic_macro_1"
 	.balign 4
+glabel string_SFXsudden_death_02_basic_macro_1
 	.asciz "SFXsudden_death_02_basic_macro_1"
 	.balign 4
+glabel string_SFXin1_basic_macro
 	.asciz "SFXin1_basic_macro"
 	.balign 4
+glabel string_SFXlawn_a_basic_macro
 	.asciz "SFXlawn_a_basic_macro"
 	.balign 4
+glabel string_SFXlawn_b_basic_macro
 	.asciz "SFXlawn_b_basic_macro"
 	.balign 4
+glabel string_SFXswisha_a_basic_macro
 	.asciz "SFXswisha_a_basic_macro"
+glabel string_SFXswish_b_basic_macro
 	.asciz "SFXswish_b_basic_macro"
 	.balign 4
+glabel string_SFXtrip_basic_macro
 	.asciz "SFXtrip_basic_macro"
+glabel string_SFXapplaud_basic_macro
 	.asciz "SFXapplaud_basic_macro"
 	.balign 4
+glabel string_SFXapplaud_big_basic_macro
 	.asciz "SFXapplaud_big_basic_macro"
 	.balign 4
+glabel string_SFXbird_basic_macro
 	.asciz "SFXbird_basic_macro"
+glabel string_SFXbird_loop_basic_macro
 	.asciz "SFXbird_loop_basic_macro"
 	.balign 4
+glabel string_SFXboo_basic_macro
 	.asciz "SFXboo_basic_macro"
 	.balign 4
+glabel string_SFXcheer_basic_macro
 	.asciz "SFXcheer_basic_macro"
 	.balign 4
+glabel string_SFXputter_normal_basic_macro
 	.asciz "SFXputter_normal_basic_macro"
 	.balign 4
+glabel string_SFXputter_soft_basic_macro
 	.asciz "SFXputter_soft_basic_macro"
 	.balign 4
+glabel string_SFXscorechange02_basic_macro
 	.asciz "SFXscorechange02_basic_macro"
 	.balign 4
+glabel string_SFXtoogood1_basic_macro
 	.asciz "SFXtoogood1_basic_macro"
+glabel string_SFXtoogood2_basic_macro
 	.asciz "SFXtoogood2_basic_macro"
+glabel string_SFXawkward_basic_macro
 	.asciz "SFXawkward_basic_macro"
 	.balign 4
+glabel string_SFXflag_basic_macro
 	.asciz "SFXflag_basic_macro"
+glabel string_SFXafterob_basic_macro
 	.asciz "SFXafterob_basic_macro"
 	.balign 4
+glabel string_SFXgolf_birdie_l_basic_macro
 	.asciz "SFXgolf_birdie_l_basic_macro"
 	.balign 4
+glabel string_SFXgolf_birdie_r_basic_macro
 	.asciz "SFXgolf_birdie_r_basic_macro"
 	.balign 4
+glabel string_SFXgolf_bogie_l_basic_macro
 	.asciz "SFXgolf_bogie_l_basic_macro"
+glabel string_SFXgolf_bogie_r_basic_macro
 	.asciz "SFXgolf_bogie_r_basic_macro"
+glabel string_SFXgolf_giveup1_l_basic_macro
 	.asciz "SFXgolf_giveup1_l_basic_macro"
 	.balign 4
+glabel string_SFXgolf_giveup1_r_basic_macro
 	.asciz "SFXgolf_giveup1_r_basic_macro"
 	.balign 4
+glabel string_SFXgolf_giveup2_l_basic_macro
 	.asciz "SFXgolf_giveup2_l_basic_macro"
 	.balign 4
+glabel string_SFXgolf_giveup2_r_basic_macro
 	.asciz "SFXgolf_giveup2_r_basic_macro"
 	.balign 4
+glabel string_SFXgolf_holein1_l_basic_macro
 	.asciz "SFXgolf_holein1_l_basic_macro"
 	.balign 4
+glabel string_SFXgolf_holein1_r_basic_macro
 	.asciz "SFXgolf_holein1_r_basic_macro"
 	.balign 4
+glabel string_SFXgolf_ob_l_basic_macro
 	.asciz "SFXgolf_ob_l_basic_macro"
 	.balign 4
+glabel string_SFXgolf_ob_r_basic_macro
 	.asciz "SFXgolf_ob_r_basic_macro"
 	.balign 4
+glabel string_SFXgolf_par_l_basic_macro
 	.asciz "SFXgolf_par_l_basic_macro"
 	.balign 4
+glabel string_SFXgolf_par_r_basic_macro
 	.asciz "SFXgolf_par_r_basic_macro"
 	.balign 4
+glabel string_SFXpolehit_basic_macro
 	.asciz "SFXpolehit_basic_macro"
 	.balign 4
+glabel string_SFXbirdie_basic_macro_1
 	.asciz "SFXbirdie_basic_macro_1"
+glabel string_SFXbogey_basic_macro_1
 	.asciz "SFXbogey_basic_macro_1"
 	.balign 4
+glabel string_SFXdouble_bogey_basic_macro_1
 	.asciz "SFXdouble_bogey_basic_macro_1"
 	.balign 4
+glabel string_SFXgive_up_basic_macro_1
 	.asciz "SFXgive_up_basic_macro_1"
 	.balign 4
+glabel string_SFXhole_in_one_basic_macro_1
 	.asciz "SFXhole_in_one_basic_macro_1"
 	.balign 4
+glabel string_SFXnice_on_basic_macro_1
 	.asciz "SFXnice_on_basic_macro_1"
 	.balign 4
+glabel string_SFXnice_touch_basic_macro_1
 	.asciz "SFXnice_touch_basic_macro_1"
+glabel string_SFXob_basic_macro_1
 	.asciz "SFXob_basic_macro_1"
+glabel string_SFXpar_basic_macro_1
 	.asciz "SFXpar_basic_macro_1"
 	.balign 4
+glabel string_SFXbanana_basic_macro
 	.asciz "SFXbanana_basic_macro"
 	.balign 4
+glabel string_SFXbanana_big_basic_macro
 	.asciz "SFXbanana_big_basic_macro"
 	.balign 4
+glabel string_SFXdash_a_basic_macro
 	.asciz "SFXdash_a_basic_macro"
 	.balign 4
+glabel string_SFXdash_b_basic_macro
 	.asciz "SFXdash_b_basic_macro"
 	.balign 4
+glabel string_SFXdash_c_basic_macro
 	.asciz "SFXdash_c_basic_macro"
 	.balign 4
+glabel string_SFXhit_basic_macro
 	.asciz "SFXhit_basic_macro"
 	.balign 4
+glabel string_SFXjumpstand_basic_macro
 	.asciz "SFXjumpstand_basic_macro"
 	.balign 4
+glabel string_SFXjumpstand_close_basic_macro
 	.asciz "SFXjumpstand_close_basic_macro"
 	.balign 4
+glabel string_SFXrecover_basic_macro
 	.asciz "SFXrecover_basic_macro"
 	.balign 4
+glabel string_SFXreverse_basic_macro
 	.asciz "SFXreverse_basic_macro"
 	.balign 4
+glabel string_SFXsignal1_basic_macro
 	.asciz "SFXsignal1_basic_macro"
 	.balign 4
+glabel string_SFXsignal2_basic_macro
 	.asciz "SFXsignal2_basic_macro"
 	.balign 4
+glabel string_SFXstick_basic_macro
 	.asciz "SFXstick_basic_macro"
 	.balign 4
+glabel string_SFXstick_close_basic_macro
 	.asciz "SFXstick_close_basic_macro"
 	.balign 4
+glabel string_SFXthrow_basic_macro
 	.asciz "SFXthrow_basic_macro"
 	.balign 4
+glabel string_SFXbrake_basic_macro
 	.asciz "SFXbrake_basic_macro"
 	.balign 4
+glabel string_SFXcrack_basic_macro
 	.asciz "SFXcrack_basic_macro"
 	.balign 4
+glabel string_SFXcrackcrash_basic_macro
 	.asciz "SFXcrackcrash_basic_macro"
 	.balign 4
+glabel string_SFXrun_basic_macro
 	.asciz "SFXrun_basic_macro"
 	.balign 4
+glabel string_SFXsandrun_basic_macro
 	.asciz "SFXsandrun_basic_macro"
 	.balign 4
+glabel string_SFXitem_hit_basic_macro
 	.asciz "SFXitem_hit_basic_macro"
+glabel string_SFXboxdrop_r_basic_macro
 	.asciz "SFXboxdrop_r_basic_macro"
 	.balign 4
+glabel string_SFXdrumcan_basic_macro
 	.asciz "SFXdrumcan_basic_macro"
 	.balign 4
+glabel string_SFXsignal_a_basic_macro
 	.asciz "SFXsignal_a_basic_macro"
+glabel string_SFXracelast_l_basic_macro
 	.asciz "SFXracelast_l_basic_macro"
 	.balign 4
+glabel string_SFXracelast_r_basic_macro
 	.asciz "SFXracelast_r_basic_macro"
 	.balign 4
+glabel string_SFXracetop_l_basic_macro
 	.asciz "SFXracetop_l_basic_macro"
 	.balign 4
+glabel string_SFXracetop_r_basic_macro
 	.asciz "SFXracetop_r_basic_macro"
 	.balign 4
+glabel string_SFXcure_basic_macro
 	.asciz "SFXcure_basic_macro"
+glabel string_SFXalright_01_basic_macro
 	.asciz "SFXalright_01_basic_macro"
 	.balign 4
+glabel string_SFXalright_02_basic_macro
 	.asciz "SFXalright_02_basic_macro"
 	.balign 4
+glabel string_SFXalright_03_basic_macro
 	.asciz "SFXalright_03_basic_macro"
 	.balign 4
+glabel string_SFXbest_lap_basic_macro
 	.asciz "SFXbest_lap_basic_macro"
+glabel string_SFXbest_record_01_basic_macro
 	.asciz "SFXbest_record_01_basic_macro"
 	.balign 4
+glabel string_SFXbest_record_02_basic_macro
 	.asciz "SFXbest_record_02_basic_macro"
 	.balign 4
+glabel string_SFXfastest_lap_basic_macro
 	.asciz "SFXfastest_lap_basic_macro"
 	.balign 4
+glabel string_SFXfinal_lap_01_basic_macro
 	.asciz "SFXfinal_lap_01_basic_macro"
+glabel string_SFXfinal_lap_02_basic_macro
 	.asciz "SFXfinal_lap_02_basic_macro"
+glabel string_SFXkeep_on_01_basic_macro
 	.asciz "SFXkeep_on_01_basic_macro"
 	.balign 4
+glabel string_SFXkeep_on_02_basic_macro
 	.asciz "SFXkeep_on_02_basic_macro"
 	.balign 4
+glabel string_SFXkeep_on_03_basic_macro
 	.asciz "SFXkeep_on_03_basic_macro"
 	.balign 4
+glabel string_SFXnew_record_01_basic_macro
 	.asciz "SFXnew_record_01_basic_macro"
 	.balign 4
+glabel string_SFXnew_record_02_basic_macro
 	.asciz "SFXnew_record_02_basic_macro"
 	.balign 4
+glabel string_SFXtime_extension_basic_macro
 	.asciz "SFXtime_extension_basic_macro"
 	.balign 4
+glabel string_SFXgo_001_basic_macro
 	.asciz "SFXgo_001_basic_macro"
 	.balign 4
+glabel string_SFXgo_002_basic_macro
 	.asciz "SFXgo_002_basic_macro"
 	.balign 4
+glabel string_SFXgo_003_basic_macro
 	.asciz "SFXgo_003_basic_macro"
 	.balign 4
+glabel string_SFXready_001_basic_macro
 	.asciz "SFXready_001_basic_macro"
 	.balign 4
+glabel string_SFXready_002_basic_macro
 	.asciz "SFXready_002_basic_macro"
 	.balign 4
+glabel string_SFXround01_basic_macro_1_1
 	.asciz "SFXround01_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround02_basic_macro_1_1
 	.asciz "SFXround02_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround03_basic_macro_1_1
 	.asciz "SFXround03_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround04_basic_macro_1_1
 	.asciz "SFXround04_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround05_basic_macro_1_1
 	.asciz "SFXround05_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround06_basic_macro_1_1
 	.asciz "SFXround06_basic_macro_1_1"
 	.balign 4
+glabel string_SFXfinal_round_01_basic_macro_1_1
 	.asciz "SFXfinal_round_01_basic_macro_1_1"
 	.balign 4
+glabel string_SFXfinal_round_03_basic_macro_1_1
 	.asciz "SFXfinal_round_03_basic_macro_1_1"
 	.balign 4
+glabel string_SFXfinal_round_04_basic_macro_1_1
 	.asciz "SFXfinal_round_04_basic_macro_1_1"
 	.balign 4
+glabel string_SFXblow1_basic_macro
 	.asciz "SFXblow1_basic_macro"
 	.balign 4
+glabel string_SFXblow2_basic_macro
 	.asciz "SFXblow2_basic_macro"
 	.balign 4
+glabel string_SFXblow3_basic_macro
 	.asciz "SFXblow3_basic_macro"
 	.balign 4
+glabel string_SFXblow4_basic_macro
 	.asciz "SFXblow4_basic_macro"
 	.balign 4
+glabel string_SFXbubble_baby01_basic_macro
 	.asciz "SFXbubble_baby01_basic_macro"
 	.balign 4
+glabel string_SFXbubble_baby02_basic_macro
 	.asciz "SFXbubble_baby02_basic_macro"
 	.balign 4
+glabel string_SFXbubble_boy01_basic_macro
 	.asciz "SFXbubble_boy01_basic_macro"
+glabel string_SFXbubble_boy02_basic_macro
 	.asciz "SFXbubble_boy02_basic_macro"
+glabel string_SFXbubble_girl01_basic_macro
 	.asciz "SFXbubble_girl01_basic_macro"
 	.balign 4
+glabel string_SFXbubble_girl02_basic_macro
 	.asciz "SFXbubble_girl02_basic_macro"
 	.balign 4
+glabel string_SFXfly_basic_macro
 	.asciz "SFXfly_basic_macro"
 	.balign 4
+glabel string_SFXopen_a_basic_macro
 	.asciz "SFXopen_a_basic_macro"
 	.balign 4
+glabel string_SFXopen_b_basic_macro
 	.asciz "SFXopen_b_basic_macro"
 	.balign 4
+glabel string_SFXtouchdown02_basic_macro
 	.asciz "SFXtouchdown02_basic_macro"
 	.balign 4
+glabel string_SFXalart_basic_macro
 	.asciz "SFXalart_basic_macro"
 	.balign 4
+glabel string_SFXtarget_miss_l_basic_macro
 	.asciz "SFXtarget_miss_l_basic_macro"
 	.balign 4
+glabel string_SFXsplash_ball_basic_macro
 	.asciz "SFXsplash_ball_basic_macro"
 	.balign 4
+glabel string_SFXsplash_open_basic_macro
 	.asciz "SFXsplash_open_basic_macro"
 	.balign 4
+glabel string_SFXtarget_miss_r_basic_macro
 	.asciz "SFXtarget_miss_r_basic_macro"
 	.balign 4
+glabel string_SFXcloud_basic_macro
 	.asciz "SFXcloud_basic_macro"
 	.balign 4
+glabel string_SFXwave_small_basic_macro
 	.asciz "SFXwave_small_basic_macro"
 	.balign 4
+glabel string_SFXaid_basic_macro
 	.asciz "SFXaid_basic_macro"
 	.balign 4
+glabel string_SFXbarbball_basic_macro
 	.asciz "SFXbarbball_basic_macro"
+glabel string_SFXhindrance_basic_macro
 	.asciz "SFXhindrance_basic_macro"
 	.balign 4
+glabel string_SFXhindrance2_basic_macro
 	.asciz "SFXhindrance2_basic_macro"
 	.balign 4
+glabel string_SFXmarkbig_basic_macro
 	.asciz "SFXmarkbig_basic_macro"
 	.balign 4
+glabel string_SFXpanel_basic_macro
 	.asciz "SFXpanel_basic_macro"
 	.balign 4
+glabel string_SFXwindwall_basic_macro
 	.asciz "SFXwindwall_basic_macro"
+glabel string_SFXtarget_score_hi_basic_macro
 	.asciz "SFXtarget_score_hi_basic_macro"
 	.balign 4
+glabel string_SFXroulette_basic_macro
 	.asciz "SFXroulette_basic_macro"
+glabel string_SFXtarget_score_hi_l_basic_macro
 	.asciz "SFXtarget_score_hi_l_basic_macro"
 	.balign 4
+glabel string_SFXheavydrop_basic_macro
 	.asciz "SFXheavydrop_basic_macro"
 	.balign 4
+glabel string_SFXtarget_score_hi_r_basic_macro
 	.asciz "SFXtarget_score_hi_r_basic_macro"
 	.balign 4
+glabel string_SFXtarget_score_normal_l_basic_macro
 	.asciz "SFXtarget_score_normal_l_basic_macro"
 	.balign 4
+glabel string_SFXtarget_score_normal_r_basic_macro
 	.asciz "SFXtarget_score_normal_r_basic_macro"
 	.balign 4
+glabel string_SFXtarget_score_super_l_basic_macro
 	.asciz "SFXtarget_score_super_l_basic_macro"
+glabel string_SFXtarget_score_super_r_basic_macro
 	.asciz "SFXtarget_score_super_r_basic_macro"
+glabel string_SFXbond_basic_macro
 	.asciz "SFXbond_basic_macro"
+glabel string_SFXbubble_goli_basic_macro
 	.asciz "SFXbubble_goli_basic_macro"
 	.balign 4
+glabel string_SFXkurukuru_basic_macro
 	.asciz "SFXkurukuru_basic_macro"
+glabel string_SFXalright_basic_macro
 	.asciz "SFXalright_basic_macro"
 	.balign 4
+glabel string_SFXbomb_basic_macro_1
 	.asciz "SFXbomb_basic_macro_1"
 	.balign 4
+glabel string_SFXbrake_ball_basic_macro
 	.asciz "SFXbrake_ball_basic_macro"
 	.balign 4
+glabel string_SFXclowd_basic_macro
 	.asciz "SFXclowd_basic_macro"
 	.balign 4
+glabel string_SFXdouble_score_basic_macro
 	.asciz "SFXdouble_score_basic_macro"
+glabel string_SFXgood_basic_macro
 	.asciz "SFXgood_basic_macro"
+glabel string_SFXmagnet_ball_basic_macro
 	.asciz "SFXmagnet_ball_basic_macro"
 	.balign 4
+glabel string_SFXno_wind_basic_macro
 	.asciz "SFXno_wind_basic_macro"
 	.balign 4
+glabel string_SFXoh_no_01_basic_macro
 	.asciz "SFXoh_no_01_basic_macro"
+glabel string_SFXoh_no_02_basic_macro
 	.asciz "SFXoh_no_02_basic_macro"
+glabel string_SFXout_jp_basic_macro
 	.asciz "SFXout_jp_basic_macro"
 	.balign 4
+glabel string_SFXout_us_basic_macro
 	.asciz "SFXout_us_basic_macro"
 	.balign 4
+glabel string_SFXsafe_jp_basic_macro
 	.asciz "SFXsafe_jp_basic_macro"
 	.balign 4
+glabel string_SFXsafe_us_basic_macro
 	.asciz "SFXsafe_us_basic_macro"
 	.balign 4
+glabel string_SFXspike_ball_jp_basic_macro
 	.asciz "SFXspike_ball_jp_basic_macro"
 	.balign 4
+glabel string_SFXspike_ball_us_basic_macro
 	.asciz "SFXspike_ball_us_basic_macro"
 	.balign 4
+glabel string_SFXstrong_wind_basic_macro
 	.asciz "SFXstrong_wind_basic_macro"
 	.balign 4
+glabel string_SFXtriple_score_basic_macro
 	.asciz "SFXtriple_score_basic_macro"
+glabel string_SFXvery_good_basic_macro
 	.asciz "SFXvery_good_basic_macro"
 	.balign 4
+glabel string_SFXexcellent2_basic_macro
 	.asciz "SFXexcellent2_basic_macro"
 	.balign 4
+glabel string_SFXmiss2_basic_macro
 	.asciz "SFXmiss2_basic_macro"
 	.balign 4
+glabel string_SFXalright_basic_macro_1
 	.asciz "SFXalright_basic_macro_1"
 	.balign 4
+glabel string_SFXbomb_basic_macro_1_1
 	.asciz "SFXbomb_basic_macro_1_1"
+glabel string_SFXbrake_ball_basic_macro_1
 	.asciz "SFXbrake_ball_basic_macro_1"
+glabel string_SFXclowd_basic_macro_1
 	.asciz "SFXclowd_basic_macro_1"
 	.balign 4
+glabel string_SFXdouble_score_basic_macro_1
 	.asciz "SFXdouble_score_basic_macro_1"
 	.balign 4
+glabel string_SFXgood_basic_macro_1
 	.asciz "SFXgood_basic_macro_1"
 	.balign 4
+glabel string_SFXmagnet_ball_basic_macro_1
 	.asciz "SFXmagnet_ball_basic_macro_1"
 	.balign 4
+glabel string_SFXno_wind_basic_macro_1
 	.asciz "SFXno_wind_basic_macro_1"
 	.balign 4
+glabel string_SFXoh_no_01_basic_macro_1
 	.asciz "SFXoh_no_01_basic_macro_1"
 	.balign 4
+glabel string_SFXoh_no_02_basic_macro_1
 	.asciz "SFXoh_no_02_basic_macro_1"
 	.balign 4
+glabel string_SFXout_jp_basic_macro_1
 	.asciz "SFXout_jp_basic_macro_1"
+glabel string_SFXout_us_basic_macro_1
 	.asciz "SFXout_us_basic_macro_1"
+glabel string_SFXsafe_jp_basic_macro_1
 	.asciz "SFXsafe_jp_basic_macro_1"
 	.balign 4
+glabel string_SFXsafe_us_basic_macro_1
 	.asciz "SFXsafe_us_basic_macro_1"
 	.balign 4
+glabel string_SFXspike_ball_jp_basic_macro_1
 	.asciz "SFXspike_ball_jp_basic_macro_1"
 	.balign 4
+glabel string_SFXspike_ball_us_basic_macro_1
 	.asciz "SFXspike_ball_us_basic_macro_1"
 	.balign 4
+glabel string_SFXstrong_wind_basic_macro_1
 	.asciz "SFXstrong_wind_basic_macro_1"
 	.balign 4
+glabel string_SFXtriple_score_basic_macro_1
 	.asciz "SFXtriple_score_basic_macro_1"
 	.balign 4
+glabel string_SFXvery_good_basic_macro_1
 	.asciz "SFXvery_good_basic_macro_1"
 	.balign 4
+glabel string_SFXexcellent2_basic_macro_1
 	.asciz "SFXexcellent2_basic_macro_1"
+glabel string_SFXmiss2_basic_macro_1
 	.asciz "SFXmiss2_basic_macro_1"
 	.balign 4
+glabel string_SFXround01_basic_macro_2
 	.asciz "SFXround01_basic_macro_2"
 	.balign 4
+glabel string_SFXround02_basic_macro_2
 	.asciz "SFXround02_basic_macro_2"
 	.balign 4
+glabel string_SFXround03_basic_macro_2
 	.asciz "SFXround03_basic_macro_2"
 	.balign 4
+glabel string_SFXround04_basic_macro_2
 	.asciz "SFXround04_basic_macro_2"
 	.balign 4
+glabel string_SFXround05_basic_macro_2
 	.asciz "SFXround05_basic_macro_2"
 	.balign 4
+glabel string_SFXround06_basic_macro_2
 	.asciz "SFXround06_basic_macro_2"
 	.balign 4
+glabel string_SFXround07_basic_macro_1_1
 	.asciz "SFXround07_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround08_basic_macro_1_1
 	.asciz "SFXround08_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround09_basic_macro_1_1
 	.asciz "SFXround09_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround10_basic_macro_1_1
 	.asciz "SFXround10_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround11_basic_macro_1_1
 	.asciz "SFXround11_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround12_basic_macro_1_1
 	.asciz "SFXround12_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround13_basic_macro_1_1
 	.asciz "SFXround13_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround14_basic_macro_1_1
 	.asciz "SFXround14_basic_macro_1_1"
 	.balign 4
+glabel string_SFXround15_basic_macro_1_1
 	.asciz "SFXround15_basic_macro_1_1"
 	.balign 4
+glabel string_SFXfinal_round_01_basic_macro_2
 	.asciz "SFXfinal_round_01_basic_macro_2"
+glabel string_SFXfinal_round_03_basic_macro_2
 	.asciz "SFXfinal_round_03_basic_macro_2"
+glabel string_SFXfinal_round_04_basic_macro_2
 	.asciz "SFXfinal_round_04_basic_macro_2"
+glabel string_SFXball_bump_basic_macro
 	.asciz "SFXball_bump_basic_macro"
 	.balign 4
+glabel string_SFXbomb_basic_macro
 	.asciz "SFXbomb_basic_macro"
+glabel string_SFXcamera_switch1_basic_macro
 	.asciz "SFXcamera_switch1_basic_macro"
 	.balign 4
+glabel string_SFXcamera_switch2_basic_macro
 	.asciz "SFXcamera_switch2_basic_macro"
 	.balign 4
+glabel string_SFXitem_basic_macro
 	.asciz "SFXitem_basic_macro"
+glabel string_SFXnormalitem_get_basic_macro
 	.asciz "SFXnormalitem_get_basic_macro"
 	.balign 4
+glabel string_SFXpowerscale1_basic_macro
 	.asciz "SFXpowerscale1_basic_macro"
 	.balign 4
+glabel string_SFXpowerscale2_basic_macro
 	.asciz "SFXpowerscale2_basic_macro"
 	.balign 4
+glabel string_SFXshot_power_basic_macro
 	.asciz "SFXshot_power_basic_macro"
 	.balign 4
+glabel string_SFXspitem_get_basic_macro
 	.asciz "SFXspitem_get_basic_macro"
 	.balign 4
+glabel string_SFX1up_basic_macro
 	.asciz "SFX1up_basic_macro"
 	.balign 4
+glabel string_SFXfinishfly2_basic_macro
 	.asciz "SFXfinishfly2_basic_macro"
 	.balign 4
+glabel string_SFXtapecut_basic_macro
 	.asciz "SFXtapecut_basic_macro"
 	.balign 4
+glabel string_SFXball_bumpbig_basic_macro
 	.asciz "SFXball_bumpbig_basic_macro"
+glabel string_SFXpower1_basic_macro
 	.asciz "SFXpower1_basic_macro"
 	.balign 4
+glabel string_SFXpower2_basic_macro
 	.asciz "SFXpower2_basic_macro"
 	.balign 4
+glabel string_SFXgauge1_basic_macro
 	.asciz "SFXgauge1_basic_macro"
 	.balign 4
+glabel string_SFXgauge2_basic_macro
 	.asciz "SFXgauge2_basic_macro"
 	.balign 4
+glabel string_SFXcancell_basic_macro
 	.asciz "SFXcancell_basic_macro"
 	.balign 4
+glabel string_SFXcomdecision_basic_macro
 	.asciz "SFXcomdecision_basic_macro"
 	.balign 4
+glabel string_SFXgauge3_basic_macro
 	.asciz "SFXgauge3_basic_macro"
 	.balign 4
+glabel string_SFXgauge4_basic_macro
 	.asciz "SFXgauge4_basic_macro"
 	.balign 4
+glabel string_SFXbirdc_basic_macro
 	.asciz "SFXbirdc_basic_macro"
 	.balign 4
+glabel string_SFXbirdc_loop_basic_macro
 	.asciz "SFXbirdc_loop_basic_macro"
 	.balign 4
+glabel string_SFXbonus_finish_basic_macro
 	.asciz "SFXbonus_finish_basic_macro"
+glabel string_SFXcount_00_basic_macro
 	.asciz "SFXcount_00_basic_macro"
+glabel string_SFXcount_01_basic_macro
 	.asciz "SFXcount_01_basic_macro"
+glabel string_SFXcount_02_basic_macro
 	.asciz "SFXcount_02_basic_macro"
+glabel string_SFXcount_03_basic_macro
 	.asciz "SFXcount_03_basic_macro"
+glabel string_SFXcount_04_basic_macro
 	.asciz "SFXcount_04_basic_macro"
+glabel string_SFXcount_05_basic_macro
 	.asciz "SFXcount_05_basic_macro"
+glabel string_SFXcount_06_basic_macro
 	.asciz "SFXcount_06_basic_macro"
+glabel string_SFXcount_07_basic_macro
 	.asciz "SFXcount_07_basic_macro"
+glabel string_SFXcount_08_basic_macro
 	.asciz "SFXcount_08_basic_macro"
+glabel string_SFXcount_09_basic_macro
 	.asciz "SFXcount_09_basic_macro"
+glabel string_SFXcount_10_basic_macro
 	.asciz "SFXcount_10_basic_macro"
+glabel string_SFXcount_11_basic_macro
 	.asciz "SFXcount_11_basic_macro"
+glabel string_SFXcount_12_basic_macro
 	.asciz "SFXcount_12_basic_macro"
+glabel string_SFXcount_13_basic_macro
 	.asciz "SFXcount_13_basic_macro"
+glabel string_SFXcount_14_basic_macro
 	.asciz "SFXcount_14_basic_macro"
+glabel string_SFXcount_15_basic_macro
 	.asciz "SFXcount_15_basic_macro"
+glabel string_SFXcount_16_basic_macro
 	.asciz "SFXcount_16_basic_macro"
+glabel string_SFXcount_17_basic_macro
 	.asciz "SFXcount_17_basic_macro"
+glabel string_SFXcount_18_basic_macro
 	.asciz "SFXcount_18_basic_macro"
+glabel string_SFXcount_19_basic_macro
 	.asciz "SFXcount_19_basic_macro"
+glabel string_SFXcount_20_basic_macro
 	.asciz "SFXcount_20_basic_macro"
+glabel string_SFXfallout_01_basic_macro
 	.asciz "SFXfallout_01_basic_macro"
 	.balign 4
+glabel string_SFXfallout_02_basic_macro
 	.asciz "SFXfallout_02_basic_macro"
 	.balign 4
+glabel string_SFXfallout_03_basic_macro
 	.asciz "SFXfallout_03_basic_macro"
 	.balign 4
+glabel string_SFXfloor_clear_basic_macro
 	.asciz "SFXfloor_clear_basic_macro"
 	.balign 4
+glabel string_SFXgame_clear_basic_macro
 	.asciz "SFXgame_clear_basic_macro"
 	.balign 4
+glabel string_SFXgame_over_basic_macro
 	.asciz "SFXgame_over_basic_macro"
 	.balign 4
+glabel string_SFXgo_01_basic_macro
 	.asciz "SFXgo_01_basic_macro"
 	.balign 4
+glabel string_SFXgo_02_basic_macro
 	.asciz "SFXgo_02_basic_macro"
 	.balign 4
+glabel string_SFXgo_03_basic_macro
 	.asciz "SFXgo_03_basic_macro"
 	.balign 4
+glabel string_SFXgo_04_basic_macro
 	.asciz "SFXgo_04_basic_macro"
 	.balign 4
+glabel string_SFXgoal_01_basic_macro
 	.asciz "SFXgoal_01_basic_macro"
 	.balign 4
+glabel string_SFXgoal_02_basic_macro
 	.asciz "SFXgoal_02_basic_macro"
 	.balign 4
+glabel string_SFXgoal_03_basic_macro
 	.asciz "SFXgoal_03_basic_macro"
 	.balign 4
+glabel string_SFXgoal_04_basic_macro
 	.asciz "SFXgoal_04_basic_macro"
 	.balign 4
+glabel string_SFXhurry_up_basic_macro
 	.asciz "SFXhurry_up_basic_macro"
+glabel string_SFXready_01_basic_macro
 	.asciz "SFXready_01_basic_macro"
+glabel string_SFXready_02_basic_macro
 	.asciz "SFXready_02_basic_macro"
+glabel string_SFXstage_clear_basic_macro
 	.asciz "SFXstage_clear_basic_macro"
 	.balign 4
+glabel string_SFXtime_over_basic_macro
 	.asciz "SFXtime_over_basic_macro"
 	.balign 4
+glabel string_SFXcontinue2_basic_macro
 	.asciz "SFXcontinue2_basic_macro"
 	.balign 4
+glabel string_SFXenter_your_name_basic_macro
 	.asciz "SFXenter_your_name_basic_macro"
 	.balign 4
+glabel string_SFXsee_you_again_basic_macro
 	.asciz "SFXsee_you_again_basic_macro"
 	.balign 4
+glabel string_SFXthanx_for_playn_basic_macro
 	.asciz "SFXthanx_for_playn_basic_macro"
 	.balign 4
+glabel string_SFXhow_many_players_basic_macro
 	.asciz "SFXhow_many_players_basic_macro"
+glabel string_SFXselect_course_basic_macro
 	.asciz "SFXselect_course_basic_macro"
 	.balign 4
+glabel string_SFXselect_game_basic_macro
 	.asciz "SFXselect_game_basic_macro"
 	.balign 4
+glabel string_SFXselect_level_basic_macro
 	.asciz "SFXselect_level_basic_macro"
+glabel string_SFXselect_mode_basic_macro
 	.asciz "SFXselect_mode_basic_macro"
 	.balign 4
+glabel string_SFXselect_stage_basic_macro
 	.asciz "SFXselect_stage_basic_macro"
+glabel string_SFXselect_your_monkey_basic_macro
 	.asciz "SFXselect_your_monkey_basic_macro"
 	.balign 4
+glabel string_SFXadvanced_basic_macro
 	.asciz "SFXadvanced_basic_macro"
+glabel string_SFXbiginner_basic_macro
 	.asciz "SFXbiginner_basic_macro"
+glabel string_SFXcompetition_mode_basic_macro
 	.asciz "SFXcompetition_mode_basic_macro"
+glabel string_SFXexpert_basic_macro
 	.asciz "SFXexpert_basic_macro"
 	.balign 4
+glabel string_SFXextra_basic_macro
 	.asciz "SFXextra_basic_macro"
 	.balign 4
+glabel string_SFXmain_game_basic_macro
 	.asciz "SFXmain_game_basic_macro"
 	.balign 4
+glabel string_SFXmaster_basic_macro
 	.asciz "SFXmaster_basic_macro"
 	.balign 4
+glabel string_SFXnormal_mode_basic_macro
 	.asciz "SFXnormal_mode_basic_macro"
 	.balign 4
+glabel string_SFXpractice_mode_basic_macro
 	.asciz "SFXpractice_mode_basic_macro"
 	.balign 4
+glabel string_SFXgrandprix_basic_macro
 	.asciz "SFXgrandprix_basic_macro"
 	.balign 4
+glabel string_SFXmonkey_fight_basic_macro
 	.asciz "SFXmonkey_fight_basic_macro"
+glabel string_SFXmonkey_target_basic_macro
 	.asciz "SFXmonkey_target_basic_macro"
 	.balign 4
+glabel string_SFXmonky_race_basic_macro
 	.asciz "SFXmonky_race_basic_macro"
 	.balign 4
+glabel string_SFXonecourse_race_basic_macro
 	.asciz "SFXonecourse_race_basic_macro"
 	.balign 4
+glabel string_SFXparty_game_basic_macro
 	.asciz "SFXparty_game_basic_macro"
 	.balign 4
+glabel string_SFXtime_attack_basic_macro
 	.asciz "SFXtime_attack_basic_macro"
 	.balign 4
+glabel string_SFXchallenge_mode_basic_macro
 	.asciz "SFXchallenge_mode_basic_macro"
 	.balign 4
+glabel string_SFXmatch_play_basic_macro
 	.asciz "SFXmatch_play_basic_macro"
 	.balign 4
+glabel string_SFXmini_game_basic_macro
 	.asciz "SFXmini_game_basic_macro"
 	.balign 4
+glabel string_SFXmonkey_billiards_basic_macro
 	.asciz "SFXmonkey_billiards_basic_macro"
+glabel string_SFXmonkey_bowling_basic_macro
 	.asciz "SFXmonkey_bowling_basic_macro"
 	.balign 4
+glabel string_SFXmonkey_golf_basic_macro
 	.asciz "SFXmonkey_golf_basic_macro"
 	.balign 4
+glabel string_SFXstandard_mode_basic_macro
 	.asciz "SFXstandard_mode_basic_macro"
 	.balign 4
+glabel string_SFXstroke_play_basic_macro
 	.asciz "SFXstroke_play_basic_macro"
 	.balign 4
+glabel string_SFXtournament_mode_basic_macro
 	.asciz "SFXtournament_mode_basic_macro"
 	.balign 4
+glabel string_SFXversus_mode_basic_macro
 	.asciz "SFXversus_mode_basic_macro"
 	.balign 4
+glabel string_SFXgamesettings_basic_macro
 	.asciz "SFXgamesettings_basic_macro"
+glabel string_SFXchamp_01_basic_macro
 	.asciz "SFXchamp_01_basic_macro"
+glabel string_SFXchamp_02_basic_macro
 	.asciz "SFXchamp_02_basic_macro"
+glabel string_SFXcongra_01_basic_macro
 	.asciz "SFXcongra_01_basic_macro"
 	.balign 4
+glabel string_SFXcongra_02_basic_macro
 	.asciz "SFXcongra_02_basic_macro"
 	.balign 4
+glabel string_SFXcongra_03_basic_macro
 	.asciz "SFXcongra_03_basic_macro"
 	.balign 4
+glabel string_SFXdraw_basic_macro
 	.asciz "SFXdraw_basic_macro"
+glabel string_SFXfinish_01_basic_macro
 	.asciz "SFXfinish_01_basic_macro"
 	.balign 4
+glabel string_SFXfinish_02_basic_macro
 	.asciz "SFXfinish_02_basic_macro"
 	.balign 4
+glabel string_SFXfinish_03_basic_macro
 	.asciz "SFXfinish_03_basic_macro"
 	.balign 4
+glabel string_SFXlose_01_basic_macro
 	.asciz "SFXlose_01_basic_macro"
 	.balign 4
+glabel string_SFXlose_02_basic_macro
 	.asciz "SFXlose_02_basic_macro"
 	.balign 4
+glabel string_SFXplayer1_basic_macro
 	.asciz "SFXplayer1_basic_macro"
 	.balign 4
+glabel string_SFXplayer1win_basic_macro
 	.asciz "SFXplayer1win_basic_macro"
 	.balign 4
+glabel string_SFXplayer2_basic_macro
 	.asciz "SFXplayer2_basic_macro"
 	.balign 4
+glabel string_SFXplayer2win_basic_macro
 	.asciz "SFXplayer2win_basic_macro"
 	.balign 4
+glabel string_SFXplayer3_basic_macro
 	.asciz "SFXplayer3_basic_macro"
 	.balign 4
+glabel string_SFXplayer3win_basic_macro
 	.asciz "SFXplayer3win_basic_macro"
 	.balign 4
+glabel string_SFXplayer4_basic_macro
 	.asciz "SFXplayer4_basic_macro"
 	.balign 4
+glabel string_SFXplayer4win_basic_macro
 	.asciz "SFXplayer4win_basic_macro"
 	.balign 4
+glabel string_SFXrank_in_basic_macro
 	.asciz "SFXrank_in_basic_macro"
 	.balign 4
+glabel string_SFXresult_01_basic_macro
 	.asciz "SFXresult_01_basic_macro"
 	.balign 4
+glabel string_SFXresult_02_basic_macro
 	.asciz "SFXresult_02_basic_macro"
 	.balign 4
+glabel string_SFXstart_basic_macro
 	.asciz "SFXstart_basic_macro"
 	.balign 4
+glabel string_SFXtoobad_01_basic_macro
 	.asciz "SFXtoobad_01_basic_macro"
 	.balign 4
+glabel string_SFXtoobad_02_basic_macro
 	.asciz "SFXtoobad_02_basic_macro"
 	.balign 4
+glabel string_SFXwin_01_basic_macro
 	.asciz "SFXwin_01_basic_macro"
 	.balign 4
+glabel string_SFXwinner_01_basic_macro
 	.asciz "SFXwinner_01_basic_macro"
 	.balign 4
+glabel string_SFXyou_lose_03_basic_macro
 	.asciz "SFXyou_lose_03_basic_macro"
 	.balign 4
+glabel string_SFXyou_win_01_basic_macro
 	.asciz "SFXyou_win_01_basic_macro"
 	.balign 4
+glabel string_SFXyou_win_02_basic_macro
 	.asciz "SFXyou_win_02_basic_macro"
 	.balign 4
+glabel string_SFXav_basic_macro
 	.asciz "SFXav_basic_macro"
 	.balign 4
+glabel string_SFXsmb_basic_macro
 	.asciz "SFXsmb_basic_macro"
 	.balign 4
+glabel string_SFXsega2_basic_macro
 	.asciz "SFXsega2_basic_macro"
 	.balign 4
+glabel string_SFXperfect3_basic_macro
 	.asciz "SFXperfect3_basic_macro"
+glabel string_SFXpressstart_basic_macro
 	.asciz "SFXpressstart_basic_macro"
 	.balign 4
+glabel string_SFXringout_03_basic_macro
 	.asciz "SFXringout_03_basic_macro"
 	.balign 4
+glabel string_SFXdropstone_basic_macro
 	.asciz "SFXdropstone_basic_macro"
 	.balign 4
+glabel string_SFXfly1_basic_macro
 	.asciz "SFXfly1_basic_macro"
+glabel string_SFXfly2_basic_macro
 	.asciz "SFXfly2_basic_macro"
+glabel string_SFXheavydrope_basic_macro
 	.asciz "SFXheavydrope_basic_macro"
 	.balign 4
+glabel string_SFXopen_c_basic_macro
 	.asciz "SFXopen_c_basic_macro"
 	.balign 4
+glabel string_SFXsit_basic_macro
 	.asciz "SFXsit_basic_macro"
 	.balign 4
+glabel string_SFXcharge_basic_macro
 	.asciz "SFXcharge_basic_macro"
 	.balign 4
+glabel string_SFXdoorclose_basic_macro
 	.asciz "SFXdoorclose_basic_macro"
 	.balign 4
+glabel string_SFXdooropen_basic_macro
 	.asciz "SFXdooropen_basic_macro"
+glabel string_SFXknock1_basic_macro
 	.asciz "SFXknock1_basic_macro"
 	.balign 4
+glabel string_SFXbananadorop_basic_macro
 	.asciz "SFXbananadorop_basic_macro"
 	.balign 4
+glabel string_STRM_THEME_INT
 	.asciz "STRM_THEME_INT"
 	.balign 4
+glabel string_STRM_THEME_LP
 	.asciz "STRM_THEME_LP"
 	.balign 4
+glabel string_STRM_ADV_INT
 	.asciz "STRM_ADV_INT"
 	.balign 4
+glabel string_STRM_ADV_LP
 	.asciz "STRM_ADV_LP"
+glabel string_STRM_SEL_INT
 	.asciz "STRM_SEL_INT"
 	.balign 4
+glabel string_STRM_SEL_LP
 	.asciz "STRM_SEL_LP"
+glabel string_STRM_SEL2_INT
 	.asciz "STRM_SEL2_INT"
 	.balign 4
+glabel string_STRM_SEL2_LP
 	.asciz "STRM_SEL2_LP"
 	.balign 4
+glabel string_STRM_SEL_RACE_INT
 	.asciz "STRM_SEL_RACE_INT"
 	.balign 4
+glabel string_STRM_SEL_RACE_LP
 	.asciz "STRM_SEL_RACE_LP"
 	.balign 4
+glabel string_STRM_SEL_FIGHT_INT
 	.asciz "STRM_SEL_FIGHT_INT"
 	.balign 4
+glabel string_STRM_SEL_FIGHT_LP
 	.asciz "STRM_SEL_FIGHT_LP"
 	.balign 4
+glabel string_STRM_SEL_TARGET_INT
 	.asciz "STRM_SEL_TARGET_INT"
+glabel string_STRM_SEL_TARGET_LP
 	.asciz "STRM_SEL_TARGET_LP"
 	.balign 4
+glabel string_STRM_SEL_BILL_INT
 	.asciz "STRM_SEL_BILL_INT"
 	.balign 4
+glabel string_STRM_SEL_BILL_LP
 	.asciz "STRM_SEL_BILL_LP"
 	.balign 4
+glabel string_STRM_SEL_BOWL_INT
 	.asciz "STRM_SEL_BOWL_INT"
 	.balign 4
+glabel string_STRM_SEL_BOWL_LP
 	.asciz "STRM_SEL_BOWL_LP"
 	.balign 4
+glabel string_STRM_SEL_GOLF_INT
 	.asciz "STRM_SEL_GOLF_INT"
 	.balign 4
+glabel string_STRM_SEL_GOLF_LP
 	.asciz "STRM_SEL_GOLF_LP"
 	.balign 4
+glabel string_STRM_ST1_INT
 	.asciz "STRM_ST1_INT"
 	.balign 4
+glabel string_STRM_ST1_LP
 	.asciz "STRM_ST1_LP"
+glabel string_STRM_ST2_INT
 	.asciz "STRM_ST2_INT"
 	.balign 4
+glabel string_STRM_ST2_LP
 	.asciz "STRM_ST2_LP"
+glabel string_STRM_ST3_INT
 	.asciz "STRM_ST3_INT"
 	.balign 4
+glabel string_STRM_ST3_LP
 	.asciz "STRM_ST3_LP"
+glabel string_STRM_ST4_INT
 	.asciz "STRM_ST4_INT"
 	.balign 4
+glabel string_STRM_ST4_LP
 	.asciz "STRM_ST4_LP"
+glabel string_STRM_ST5_INT
 	.asciz "STRM_ST5_INT"
 	.balign 4
+glabel string_STRM_ST5_LP
 	.asciz "STRM_ST5_LP"
+glabel string_STRM_ST6_INT
 	.asciz "STRM_ST6_INT"
 	.balign 4
+glabel string_STRM_ST6_LP
 	.asciz "STRM_ST6_LP"
+glabel string_STRM_ST7_INT
 	.asciz "STRM_ST7_INT"
 	.balign 4
+glabel string_STRM_ST7_LP
 	.asciz "STRM_ST7_LP"
+glabel string_STRM_ST8_INT
 	.asciz "STRM_ST8_INT"
 	.balign 4
+glabel string_STRM_ST8_LP
 	.asciz "STRM_ST8_LP"
+glabel string_STRM_STB_INT
 	.asciz "STRM_STB_INT"
 	.balign 4
+glabel string_STRM_STB_LP
 	.asciz "STRM_STB_LP"
+glabel string_STRM_STM_INT
 	.asciz "STRM_STM_INT"
 	.balign 4
+glabel string_STRM_STM_LP
 	.asciz "STRM_STM_LP"
+glabel string_STRM_CNT_INT
 	.asciz "STRM_CNT_INT"
 	.balign 4
+glabel string_STRM_CNT_LP
 	.asciz "STRM_CNT_LP"
+glabel string_STRM_OVR_INT
 	.asciz "STRM_OVR_INT"
 	.balign 4
+glabel string_STRM_OVR_LP
 	.asciz "STRM_OVR_LP"
+glabel string_STRM_RACE_INT
 	.asciz "STRM_RACE_INT"
 	.balign 4
+glabel string_STRM_RACE_LP
 	.asciz "STRM_RACE_LP"
 	.balign 4
+glabel string_STRM_FIGHT_INT
 	.asciz "STRM_FIGHT_INT"
 	.balign 4
+glabel string_STRM_FIGHT_LP
 	.asciz "STRM_FIGHT_LP"
 	.balign 4
+glabel string_STRM_OMK_INT
 	.asciz "STRM_OMK_INT"
 	.balign 4
+glabel string_STRM_OMK_LP
 	.asciz "STRM_OMK_LP"
+glabel string_STRM_PILOT_INT
 	.asciz "STRM_PILOT_INT"
 	.balign 4
+glabel string_STRM_PILOT_LP
 	.asciz "STRM_PILOT_LP"
 	.balign 4
+glabel string_STRM_BILI_INT
 	.asciz "STRM_BILI_INT"
 	.balign 4
+glabel string_STRM_BILI_LP
 	.asciz "STRM_BILI_LP"
 	.balign 4
+glabel string_STRM_BWL_INT
 	.asciz "STRM_BWL_INT"
 	.balign 4
+glabel string_STRM_BWL_LP
 	.asciz "STRM_BWL_LP"
+glabel string_STRM_GLF_INT
 	.asciz "STRM_GLF_INT"
 	.balign 4
+glabel string_STRM_GLF_LP
 	.asciz "STRM_GLF_LP"
+glabel string_STRM_OMK2_INT
 	.asciz "STRM_OMK2_INT"
 	.balign 4
+glabel string_STRM_OMK2_LP
 	.asciz "STRM_OMK2_LP"
 	.balign 4
+glabel string_STRM_GREP_INT
 	.asciz "STRM_GREP_INT"
 	.balign 4
+glabel string_STRM_GREP_LP
 	.asciz "STRM_GREP_LP"
 	.balign 4
+glabel string_STRM_RESULT_INT
 	.asciz "STRM_RESULT_INT"
+glabel string_STRM_RESULT_LP
 	.asciz "STRM_RESULT_LP"
 	.balign 4
+glabel string_STRM_HYO_INT
 	.asciz "STRM_HYO_INT"
 	.balign 4
+glabel string_STRM_HYO_LP
 	.asciz "STRM_HYO_LP"
+glabel string_STRM_ENT_INT
 	.asciz "STRM_ENT_INT"
 	.balign 4
+glabel string_STRM_ENT_LP
 	.asciz "STRM_ENT_LP"
+glabel string_STRM_END_INT
 	.asciz "STRM_END_INT"
 	.balign 4
+glabel string_STRM_END_LP
 	.asciz "STRM_END_LP"
+glabel string_STRM_ROLL_INT
 	.asciz "STRM_ROLL_INT"
 	.balign 4
+glabel string_STRM_ROLL_LP
 	.asciz "STRM_ROLL_LP"
 	.balign 4
+glabel string_STRM_OPT_INT
 	.asciz "STRM_OPT_INT"
 	.balign 4
+glabel string_STRM_OPT_LP
 	.asciz "STRM_OPT_LP"
+glabel string_sel2_all
 	.asciz "sel2_all"
 	.balign 4
+glabel string_sel_race
 	.asciz "sel_race"
 	.balign 4
+glabel string_sel_Fight
 	.asciz "sel_Fight"
 	.balign 4
+glabel string_sel_target
 	.asciz "sel_target"
 	.balign 4
+glabel string_sel_billiard
 	.asciz "sel_billiard"
 	.balign 4
+glabel string_sel_bowling
 	.asciz "sel_bowling"
+glabel string_sel_golf
 	.asciz "sel_golf"
 	.balign 4
+glabel string_fight_int
 	.asciz "fight_int"
 	.balign 4
+glabel string_fight_lp
 	.asciz "fight_lp"
 	.balign 4
+glabel string_tget_int
 	.asciz "tget_int"
 	.balign 4
+glabel string_bili_int
 	.asciz "bili_int"
 	.balign 4
+glabel string_grep_int
 	.asciz "grep_int"
 	.balign 4
+glabel string_roll_int
 	.asciz "roll_int"
 	.balign 4
+glabel string_advm_int
 	.asciz "advm_int"
 	.balign 4
+glabel string_selm_int
 	.asciz "selm_int"
 	.balign 4
+glabel string_sel2m_all
 	.asciz "sel2m_all"
 	.balign 4
+glabel string_sel2m_lp
 	.asciz "sel2m_lp"
 	.balign 4
+glabel string_selm_race
 	.asciz "selm_race"
 	.balign 4
+glabel string_selm_Fight
 	.asciz "selm_Fight"
 	.balign 4
+glabel string_selm_target
 	.asciz "selm_target"
+glabel string_selm_billiard
 	.asciz "selm_billiard"
 	.balign 4
+glabel string_selm_bowling
 	.asciz "selm_bowling"
 	.balign 4
+glabel string_selm_golf
 	.asciz "selm_golf"
 	.balign 4
+glabel string_st2m_all
 	.asciz "st2m_all"
 	.balign 4
+glabel string_st3m_int
 	.asciz "st3m_int"
 	.balign 4
+glabel string_st4m_int
 	.asciz "st4m_int"
 	.balign 4
+glabel string_st5m_int
 	.asciz "st5m_int"
 	.balign 4
+glabel string_st6m_int
 	.asciz "st6m_int"
 	.balign 4
+glabel string_st8m_int
 	.asciz "st8m_int"
 	.balign 4
+glabel string_stbm_int
 	.asciz "stbm_int"
 	.balign 4
+glabel string_stmm_int
 	.asciz "stmm_int"
 	.balign 4
+glabel string_fightm_int
 	.asciz "fightm_int"
 	.balign 4
+glabel string_fightm_lp
 	.asciz "fightm_lp"
 	.balign 4
+glabel string_tgetm_int
 	.asciz "tgetm_int"
 	.balign 4
+glabel string_tgetm_lp
 	.asciz "tgetm_lp"
 	.balign 4
+glabel string_bilim_int
 	.asciz "bilim_int"
 	.balign 4
+glabel string_bilim_lp
 	.asciz "bilim_lp"
 	.balign 4
+glabel string_bwlm_int
 	.asciz "bwlm_int"
 	.balign 4
+glabel string_grepm_int
 	.asciz "grepm_int"
 	.balign 4
+glabel string_grepm_lp
 	.asciz "grepm_lp"
 	.balign 4
+glabel string_entm_int
 	.asciz "entm_int"
 	.balign 4
+glabel string_endm_int
 	.asciz "endm_int"
 	.balign 4
+glabel string_rollm_int
 	.asciz "rollm_int"
 	.balign 4
+glabel string_rollm_lp
 	.asciz "rollm_lp"
 	.balign 4
 
 .global lbl_801B2A5C
 lbl_801B2A5C:
 	# ROM: 0x1AFA5C
-	.4byte 0x802F05BC  ;# ptr
+	.4byte string_theme  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x2C, 0xE4, 0x00
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x802F05BC  ;# ptr
+	.4byte string_theme  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x2C, 0xE4, 0x00
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x802F05C4  ;# ptr
+	.4byte string_adv_int  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x05, 0x51, 0x00
 	.byte 0x03, 0x00, 0x00, 0x00
-	.4byte 0x802F05CC  ;# ptr
+	.4byte string_adv_lp  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x1A, 0xFE, 0x00
 	.byte 0x03, 0x00, 0x00, 0x00
-	.4byte 0x802F05D4  ;# ptr
+	.4byte string_sel_int  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x49, 0x00
 	.byte 0x05, 0x00, 0x00, 0x00
-	.4byte 0x802F05DC  ;# ptr
+	.4byte string_sel_lp  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0A, 0xE9, 0x00
 	.byte 0x05, 0x00, 0x00, 0x00
-	.4byte 0x801B2840  ;# ptr
+	.4byte string_sel2_all  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x17, 0x57, 0x00
 	.byte 0x07, 0x00, 0x00, 0x00
-	.4byte 0x802F05E4  ;# ptr
+	.4byte string_sel2_lp  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x14, 0xC3, 0x00
 	.byte 0x07, 0x00, 0x00, 0x00
-	.4byte 0x801B284C  ;# ptr
+	.4byte string_sel_race  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x08, 0xB7, 0x00
 	.byte 0x09, 0x00, 0x00, 0x00
-	.4byte 0x801B284C  ;# ptr
+	.4byte string_sel_race  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x08, 0xB7, 0x00
 	.byte 0x09, 0x00, 0x00, 0x00
-	.4byte 0x801B2858  ;# ptr
+	.4byte string_sel_Fight  ;# ptr
 	.byte 0xA0, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0D, 0xFC, 0x00
 	.byte 0x0B, 0x00, 0x00, 0x00
-	.4byte 0x801B2858  ;# ptr
+	.4byte string_sel_Fight  ;# ptr
 	.byte 0xA0, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0D, 0xFC, 0x00
 	.byte 0x0B, 0x00, 0x00, 0x00
-	.4byte 0x801B2864  ;# ptr
+	.4byte string_sel_target  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0C, 0xBD, 0x00
 	.byte 0x0D, 0x00, 0x00, 0x00
-	.4byte 0x801B2864  ;# ptr
+	.4byte string_sel_target  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0C, 0xBD, 0x00
 	.byte 0x0D, 0x00, 0x00, 0x00
-	.4byte 0x801B2870  ;# ptr
+	.4byte string_sel_billiard  ;# ptr
 	.byte 0xA0, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0D, 0x1F, 0x00
 	.byte 0x0F, 0x00, 0x00, 0x00
-	.4byte 0x801B2870  ;# ptr
+	.4byte string_sel_billiard  ;# ptr
 	.byte 0xA0, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0D, 0x1F, 0x00
 	.byte 0x0F, 0x00, 0x00, 0x00
-	.4byte 0x801B2880  ;# ptr
+	.4byte string_sel_bowling  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0A, 0x48, 0x00
 	.byte 0x11, 0x00, 0x00, 0x00
-	.4byte 0x801B2880  ;# ptr
+	.4byte string_sel_bowling  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0A, 0x48, 0x00
 	.byte 0x11, 0x00, 0x00, 0x00
-	.4byte 0x801B288C  ;# ptr
+	.4byte string_sel_golf  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0C, 0x2A, 0x00
 	.byte 0x13, 0x00, 0x00, 0x00
-	.4byte 0x801B288C  ;# ptr
+	.4byte string_sel_golf  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0C, 0x2A, 0x00
 	.byte 0x13, 0x00, 0x00, 0x00
@@ -9907,43 +10915,43 @@ lbl_801B2A5C:
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x2E, 0xD1, 0x00
 	.byte 0x15, 0x00, 0x00, 0x00
-	.4byte 0x802F05F0  ;# ptr
+	.4byte string_st2_all  ;# ptr
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x33, 0x3F, 0x00
 	.byte 0x17, 0x00, 0x00, 0x00
-	.4byte 0x802F05F8  ;# ptr
+	.4byte string_st2_lp  ;# ptr
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x31, 0x8F, 0x00
 	.byte 0x17, 0x00, 0x00, 0x00
-	.4byte 0x802F0600  ;# ptr
+	.4byte string_st3_int  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x4E, 0x9C
 	.byte 0x19, 0x00, 0x00, 0x00
-	.4byte 0x802F0608  ;# ptr
+	.4byte string_st3_lp  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x35, 0x37, 0x00
 	.byte 0x19, 0x00, 0x00, 0x00
-	.4byte 0x802F0610  ;# ptr
+	.4byte string_st4_int  ;# ptr
 	.byte 0x87, 0x00, 0x00, 0x00
 	.byte 0x00, 0x04, 0x68, 0xA8
 	.byte 0x1B, 0x00, 0x00, 0x00
-	.4byte 0x802F0618  ;# ptr
+	.4byte string_st4_lp  ;# ptr
 	.byte 0x87, 0x00, 0x00, 0x00
 	.byte 0x00, 0x2D, 0x01, 0x00
 	.byte 0x1B, 0x00, 0x00, 0x00
-	.4byte 0x802F0620  ;# ptr
+	.4byte string_st5_int  ;# ptr
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x00, 0x37, 0x00
 	.byte 0x1D, 0x00, 0x00, 0x00
-	.4byte 0x802F0628  ;# ptr
+	.4byte string_st5_lp  ;# ptr
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x40, 0xDA, 0x00
 	.byte 0x1D, 0x00, 0x00, 0x00
-	.4byte 0x802F0630  ;# ptr
+	.4byte string_st6_int  ;# ptr
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x5E, 0x00
 	.byte 0x1F, 0x00, 0x00, 0x00
-	.4byte 0x802F0638  ;# ptr
+	.4byte string_st6_lp  ;# ptr
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x39, 0x17, 0x00
 	.byte 0x1F, 0x00, 0x00, 0x00
@@ -9955,27 +10963,27 @@ lbl_801B2A5C:
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x3A, 0x0C, 0x00
 	.byte 0x21, 0x00, 0x00, 0x00
-	.4byte 0x802F0644  ;# ptr
+	.4byte string_st8_int  ;# ptr
 	.byte 0xA0, 0x00, 0x00, 0x00
 	.byte 0x00, 0x04, 0xB0, 0x00
 	.byte 0x23, 0x00, 0x00, 0x00
-	.4byte 0x802F064C  ;# ptr
+	.4byte string_st8_lp  ;# ptr
 	.byte 0xA0, 0x00, 0x00, 0x00
 	.byte 0x00, 0x3B, 0xBE, 0x00
 	.byte 0x23, 0x00, 0x00, 0x00
-	.4byte 0x802F0654  ;# ptr
+	.4byte string_stb_int  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x1E, 0x00
 	.byte 0x25, 0x00, 0x00, 0x00
-	.4byte 0x802F065C  ;# ptr
+	.4byte string_stb_lp  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x34, 0xF1, 0x00
 	.byte 0x25, 0x00, 0x00, 0x00
-	.4byte 0x802F0664  ;# ptr
+	.4byte string_stm_int  ;# ptr
 	.byte 0x78, 0x00, 0x00, 0x00
 	.byte 0x00, 0x02, 0x8B, 0x00
 	.byte 0x27, 0x00, 0x00, 0x00
-	.4byte 0x802F066C  ;# ptr
+	.4byte string_stm_lp  ;# ptr
 	.byte 0x78, 0x00, 0x00, 0x00
 	.byte 0x00, 0x29, 0xA1, 0x00
 	.byte 0x27, 0x00, 0x00, 0x00
@@ -9995,19 +11003,19 @@ lbl_801B2A5C:
 	.byte 0x96, 0x00, 0x00, 0x00
 	.byte 0x00, 0x02, 0x90, 0x00
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x802F0594  ;# ptr
+	.4byte string_race  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x4C, 0xF0, 0x00
 	.byte 0x2D, 0x00, 0x00, 0x00
-	.4byte 0x802F0594  ;# ptr
+	.4byte string_race  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x4C, 0xF0, 0x00
 	.byte 0x2D, 0x00, 0x00, 0x00
-	.4byte 0x801B2898  ;# ptr
+	.4byte string_fight_int  ;# ptr
 	.byte 0x82, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0xE3, 0x67
 	.byte 0x2F, 0x00, 0x00, 0x00
-	.4byte 0x801B28A4  ;# ptr
+	.4byte string_fight_lp  ;# ptr
 	.byte 0x82, 0x00, 0x00, 0x00
 	.byte 0x00, 0x35, 0x3F, 0x00
 	.byte 0x2F, 0x00, 0x00, 0x00
@@ -10019,27 +11027,27 @@ lbl_801B2A5C:
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0B, 0x9E, 0x00
 	.byte 0x31, 0x00, 0x00, 0x00
-	.4byte 0x801B28B0  ;# ptr
+	.4byte string_tget_int  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x08, 0xB4, 0x00
 	.byte 0x33, 0x00, 0x00, 0x00
-	.4byte 0x802F0680  ;# ptr
+	.4byte string_tget_lp  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x46, 0x3F, 0x00
 	.byte 0x33, 0x00, 0x00, 0x00
-	.4byte 0x801B28BC  ;# ptr
+	.4byte string_bili_int  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x03, 0xB8, 0x00
 	.byte 0x35, 0x00, 0x00, 0x00
-	.4byte 0x802F0688  ;# ptr
+	.4byte string_bili_lp  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x2D, 0xCE, 0x00
 	.byte 0x35, 0x00, 0x00, 0x00
-	.4byte 0x802F0690  ;# ptr
+	.4byte string_bwl_int  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x03, 0x19, 0x00
 	.byte 0x37, 0x00, 0x00, 0x00
-	.4byte 0x802F0698  ;# ptr
+	.4byte string_bwl_lp  ;# ptr
 	.byte 0x8C, 0x00, 0x00, 0x00
 	.byte 0x00, 0x2D, 0x49, 0x00
 	.byte 0x37, 0x00, 0x00, 0x00
@@ -10051,27 +11059,27 @@ lbl_801B2A5C:
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x38, 0x2B, 0x00
 	.byte 0x39, 0x00, 0x00, 0x00
-	.4byte 0x802F06A4  ;# ptr
+	.4byte string_omk2  ;# ptr
 	.byte 0x87, 0x00, 0x00, 0x00
 	.byte 0x00, 0x07, 0xD4, 0x00
 	.byte 0x3B, 0x00, 0x00, 0x00
-	.4byte 0x802F06A4  ;# ptr
+	.4byte string_omk2  ;# ptr
 	.byte 0x87, 0x00, 0x00, 0x00
 	.byte 0x00, 0x07, 0xD4, 0x00
 	.byte 0x3B, 0x00, 0x00, 0x00
-	.4byte 0x801B28C8  ;# ptr
+	.4byte string_grep_int  ;# ptr
 	.byte 0x82, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x46, 0x00
 	.byte 0x3D, 0x00, 0x00, 0x00
-	.4byte 0x802F06AC  ;# ptr
+	.4byte string_grep_lp  ;# ptr
 	.byte 0x82, 0x00, 0x00, 0x00
 	.byte 0x00, 0x05, 0x4A, 0x00
 	.byte 0x3D, 0x00, 0x00, 0x00
-	.4byte 0x802F06B4  ;# ptr
+	.4byte string_result  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x16, 0x73, 0x00
 	.byte 0x3F, 0x00, 0x00, 0x00
-	.4byte 0x802F06B4  ;# ptr
+	.4byte string_result  ;# ptr
 	.byte 0x9B, 0x00, 0x00, 0x00
 	.byte 0x00, 0x16, 0x73, 0x00
 	.byte 0x3F, 0x00, 0x00, 0x00
@@ -10083,27 +11091,27 @@ lbl_801B2A5C:
 	.byte 0x73, 0x00, 0x00, 0x00
 	.byte 0x00, 0x13, 0x7A, 0x00
 	.byte 0x41, 0x00, 0x00, 0x00
-	.4byte 0x802F06C0  ;# ptr
+	.4byte string_ent_int  ;# ptr
 	.byte 0x87, 0x00, 0x00, 0x00
 	.byte 0x00, 0x00, 0xCA, 0x00
 	.byte 0x43, 0x00, 0x00, 0x00
-	.4byte 0x802F06C8  ;# ptr
+	.4byte string_ent_lp  ;# ptr
 	.byte 0x87, 0x00, 0x00, 0x00
 	.byte 0x00, 0x18, 0x62, 0x00
 	.byte 0x43, 0x00, 0x00, 0x00
-	.4byte 0x802F06D0  ;# ptr
+	.4byte string_end_int  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x4D, 0x00
 	.byte 0x45, 0x00, 0x00, 0x00
-	.4byte 0x802F06D8  ;# ptr
+	.4byte string_end_lp  ;# ptr
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x16, 0x15, 0x00
 	.byte 0x45, 0x00, 0x00, 0x00
-	.4byte 0x801B28D4  ;# ptr
+	.4byte string_roll_int  ;# ptr
 	.byte 0xBE, 0x00, 0x00, 0x00
 	.byte 0x00, 0x05, 0x3A, 0x00
 	.byte 0x47, 0x00, 0x00, 0x00
-	.4byte 0x802F06E0  ;# ptr
+	.4byte string_roll_lp  ;# ptr
 	.byte 0xBE, 0x00, 0x00, 0x00
 	.byte 0x00, 0x45, 0x31, 0x00
 	.byte 0x47, 0x00, 0x00, 0x00
@@ -10115,299 +11123,299 @@ lbl_801B2A5C:
 	.byte 0x91, 0x00, 0x00, 0x00
 	.byte 0x00, 0x0D, 0xDA, 0x00
 	.byte 0x49, 0x00, 0x00, 0x00
-	.4byte 0x802F06EC  ;# ptr
+	.4byte string_themem  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x802F06EC  ;# ptr
+	.4byte string_themem  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x801B28E0  ;# ptr
+	.4byte string_advm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x03, 0x00, 0x00, 0x00
-	.4byte 0x802F06F4  ;# ptr
+	.4byte string_advm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x03, 0x00, 0x00, 0x00
-	.4byte 0x801B28EC  ;# ptr
+	.4byte string_selm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x05, 0x00, 0x00, 0x00
-	.4byte 0x802F06FC  ;# ptr
+	.4byte string_selm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x05, 0x00, 0x00, 0x00
-	.4byte 0x801B28F8  ;# ptr
+	.4byte string_sel2m_all  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x07, 0x00, 0x00, 0x00
-	.4byte 0x801B2904  ;# ptr
+	.4byte string_sel2m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x07, 0x00, 0x00, 0x00
-	.4byte 0x801B2910  ;# ptr
+	.4byte string_selm_race  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x09, 0x00, 0x00, 0x00
-	.4byte 0x801B2910  ;# ptr
+	.4byte string_selm_race  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x09, 0x00, 0x00, 0x00
-	.4byte 0x801B291C  ;# ptr
+	.4byte string_selm_Fight  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x0B, 0x00, 0x00, 0x00
-	.4byte 0x801B291C  ;# ptr
+	.4byte string_selm_Fight  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x0B, 0x00, 0x00, 0x00
-	.4byte 0x801B2928  ;# ptr
+	.4byte string_selm_target  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x0D, 0x00, 0x00, 0x00
-	.4byte 0x801B2928  ;# ptr
+	.4byte string_selm_target  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x0D, 0x00, 0x00, 0x00
-	.4byte 0x801B2934  ;# ptr
+	.4byte string_selm_billiard  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x0F, 0x00, 0x00, 0x00
-	.4byte 0x801B2934  ;# ptr
+	.4byte string_selm_billiard  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x0F, 0x00, 0x00, 0x00
-	.4byte 0x801B2944  ;# ptr
+	.4byte string_selm_bowling  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x11, 0x00, 0x00, 0x00
-	.4byte 0x801B2944  ;# ptr
+	.4byte string_selm_bowling  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x11, 0x00, 0x00, 0x00
-	.4byte 0x801B2954  ;# ptr
+	.4byte string_selm_golf  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x13, 0x00, 0x00, 0x00
-	.4byte 0x801B2954  ;# ptr
+	.4byte string_selm_golf  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x13, 0x00, 0x00, 0x00
-	.4byte 0x802F0704  ;# ptr
+	.4byte string_st1m  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x15, 0x00, 0x00, 0x00
-	.4byte 0x802F0704  ;# ptr
+	.4byte string_st1m  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x15, 0x00, 0x00, 0x00
-	.4byte 0x801B2960  ;# ptr
+	.4byte string_st2m_all  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x17, 0x00, 0x00, 0x00
-	.4byte 0x802F070C  ;# ptr
+	.4byte string_st2m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x17, 0x00, 0x00, 0x00
-	.4byte 0x801B296C  ;# ptr
+	.4byte string_st3m_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x19, 0x00, 0x00, 0x00
-	.4byte 0x802F0714  ;# ptr
+	.4byte string_st3m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x19, 0x00, 0x00, 0x00
-	.4byte 0x801B2978  ;# ptr
+	.4byte string_st4m_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x1B, 0x00, 0x00, 0x00
-	.4byte 0x802F071C  ;# ptr
+	.4byte string_st4m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x1B, 0x00, 0x00, 0x00
-	.4byte 0x801B2984  ;# ptr
+	.4byte string_st5m_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x1D, 0x00, 0x00, 0x00
-	.4byte 0x802F0724  ;# ptr
+	.4byte string_st5m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x1D, 0x00, 0x00, 0x00
-	.4byte 0x801B2990  ;# ptr
+	.4byte string_st6m_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x1F, 0x00, 0x00, 0x00
-	.4byte 0x802F072C  ;# ptr
+	.4byte string_st6m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x1F, 0x00, 0x00, 0x00
-	.4byte 0x802F0734  ;# ptr
+	.4byte string_st7m  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x21, 0x00, 0x00, 0x00
-	.4byte 0x802F0734  ;# ptr
+	.4byte string_st7m  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x21, 0x00, 0x00, 0x00
-	.4byte 0x801B299C  ;# ptr
+	.4byte string_st8m_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x23, 0x00, 0x00, 0x00
-	.4byte 0x802F073C  ;# ptr
+	.4byte string_st8m_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x23, 0x00, 0x00, 0x00
-	.4byte 0x801B29A8  ;# ptr
+	.4byte string_stbm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x25, 0x00, 0x00, 0x00
-	.4byte 0x802F0744  ;# ptr
+	.4byte string_stbm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x25, 0x00, 0x00, 0x00
-	.4byte 0x801B29B4  ;# ptr
+	.4byte string_stmm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x27, 0x00, 0x00, 0x00
-	.4byte 0x802F074C  ;# ptr
+	.4byte string_stmm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x27, 0x00, 0x00, 0x00
-	.4byte 0x802F0754  ;# ptr
+	.4byte string_cntm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x29, 0x00, 0x00, 0x00
-	.4byte 0x802F0754  ;# ptr
+	.4byte string_cntm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x29, 0x00, 0x00, 0x00
-	.4byte 0x802F075C  ;# ptr
+	.4byte string_ovrm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x802F075C  ;# ptr
+	.4byte string_ovrm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0xFF, 0x00, 0x00, 0x00
-	.4byte 0x802F0764  ;# ptr
+	.4byte string_racem  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x2D, 0x00, 0x00, 0x00
-	.4byte 0x802F0764  ;# ptr
+	.4byte string_racem  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x2D, 0x00, 0x00, 0x00
-	.4byte 0x801B29C0  ;# ptr
+	.4byte string_fightm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x2F, 0x00, 0x00, 0x00
-	.4byte 0x801B29CC  ;# ptr
+	.4byte string_fightm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x2F, 0x00, 0x00, 0x00
-	.4byte 0x802F076C  ;# ptr
+	.4byte string_omkm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x31, 0x00, 0x00, 0x00
-	.4byte 0x802F076C  ;# ptr
+	.4byte string_omkm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x31, 0x00, 0x00, 0x00
-	.4byte 0x801B29D8  ;# ptr
+	.4byte string_tgetm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x33, 0x00, 0x00, 0x00
-	.4byte 0x801B29E4  ;# ptr
+	.4byte string_tgetm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x33, 0x00, 0x00, 0x00
-	.4byte 0x801B29F0  ;# ptr
+	.4byte string_bilim_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x35, 0x00, 0x00, 0x00
-	.4byte 0x801B29FC  ;# ptr
+	.4byte string_bilim_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x35, 0x00, 0x00, 0x00
-	.4byte 0x801B2A08  ;# ptr
+	.4byte string_bwlm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x37, 0x00, 0x00, 0x00
-	.4byte 0x802F0774  ;# ptr
+	.4byte string_bwlm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x37, 0x00, 0x00, 0x00
-	.4byte 0x802F077C  ;# ptr
+	.4byte string_glfm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x39, 0x00, 0x00, 0x00
-	.4byte 0x802F077C  ;# ptr
+	.4byte string_glfm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x39, 0x00, 0x00, 0x00
-	.4byte 0x802F0784  ;# ptr
+	.4byte string_omk2m  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x3B, 0x00, 0x00, 0x00
-	.4byte 0x802F0784  ;# ptr
+	.4byte string_omk2m  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x3B, 0x00, 0x00, 0x00
-	.4byte 0x801B2A14  ;# ptr
+	.4byte string_grepm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x3D, 0x00, 0x00, 0x00
-	.4byte 0x801B2A20  ;# ptr
+	.4byte string_grepm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x3D, 0x00, 0x00, 0x00
-	.4byte 0x802F078C  ;# ptr
+	.4byte string_resultm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x3F, 0x00, 0x00, 0x00
-	.4byte 0x802F078C  ;# ptr
+	.4byte string_resultm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x3F, 0x00, 0x00, 0x00
-	.4byte 0x802F0794  ;# ptr
+	.4byte string_hyom  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x41, 0x00, 0x00, 0x00
-	.4byte 0x802F0794  ;# ptr
+	.4byte string_hyom  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x41, 0x00, 0x00, 0x00
-	.4byte 0x801B2A2C  ;# ptr
+	.4byte string_entm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x43, 0x00, 0x00, 0x00
-	.4byte 0x802F079C  ;# ptr
+	.4byte string_entm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x43, 0x00, 0x00, 0x00
-	.4byte 0x801B2A38  ;# ptr
+	.4byte string_endm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x45, 0x00, 0x00, 0x00
-	.4byte 0x802F07A4  ;# ptr
+	.4byte string_endm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x45, 0x00, 0x00, 0x00
-	.4byte 0x801B2A44  ;# ptr
+	.4byte string_rollm_int  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x47, 0x00, 0x00, 0x00
-	.4byte 0x801B2A50  ;# ptr
+	.4byte string_rollm_lp  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x47, 0x00, 0x00, 0x00
-	.4byte 0x802F07AC  ;# ptr
+	.4byte string_optm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x49, 0x00, 0x00, 0x00
-	.4byte 0x802F07AC  ;# ptr
+	.4byte string_optm  ;# ptr
 	.byte 0x01, 0x00, 0x00, 0x00
 	.4byte 0
 	.byte 0x49, 0x00, 0x00, 0x00
@@ -10415,16 +11423,23 @@ lbl_801B2A5C:
 .global lbl_801B339C
 lbl_801B339C:
 	# ROM: 0x1B039C
+glabel string_____Sound_ERROR_____at_
 	.asciz "### Sound ERROR ### at "
+glabel string__test_snd_adp__s_adp
 	.asciz "/test/snd/adp/%s.adp"
 	.balign 4
+glabel string_ReadMusyXData_n
 	.asciz "ReadMusyXData\n"
 	.balign 4
+glabel string_Unable_to_open___s__n
 	.asciz "Unable to open '%s'\n"
 	.balign 4
+glabel string_Zero_length_file___s__n
 	.asciz "Zero length file '%s'\n"
 	.balign 4
+glabel string_unable_to_allocate_buffer___s__n
 	.asciz "unable to allocate buffer '%s'\n"
+glabel string_Failed_to_read_data_from___s__n
 	.asciz "Failed to read data from '%s'\n"
 	.balign 4
 
@@ -10441,18 +11456,27 @@ lbl_801B344C:
 	.4byte lbl_800291AC  ;# ptr
 	.4byte lbl_800291AC  ;# ptr
 	.4byte lbl_80029180  ;# ptr
+glabel string_SoundGroupLoad_n
 	.asciz "SoundGroupLoad\n"
+glabel string_RAM_ERROR____
 	.asciz "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n"
 	.balign 4
+glabel string_RAM_ALLOC_ERROR____
 	.asciz "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n"
+glabel string_RAM_SIZE_OVER____
 	.asciz "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n"
+glabel string_RAM_ERROR_____2
 	.asciz "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n"
+glabel string_RAM_ALLOC_ERROR_____2
 	.asciz "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n"
 	.balign 4
+glabel string_RAM_SIZE_OVER_____2
 	.asciz "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n"
 	.balign 4
+glabel string_____but_SUCCESS____use_CharaHeap_n
 	.asciz "--> but SUCCESS !! use CharaHeap\n"
 	.balign 4
+glabel string_ARAM_SIZE_OVER____
 	.asciz "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n"
 	.balign 4
 
@@ -10584,105 +11608,127 @@ lbl_801B3734:
 .global lbl_801B3784
 lbl_801B3784:
 	# ROM: 0x1B0784
+glabel string_SoundReq__s_nowball_is_NULL______pid___0_n
 	.asciz "SoundReq %s nowball is NULL. --> pid = 0\n"
 	.balign 4
 
 .global lbl_801B37B0
 lbl_801B37B0:
 	# ROM: 0x1B07B0
+glabel string_warning___SoundReq___cue_over__s_n
 	.asciz "warning : SoundReq() cue over %s\n"
 	.balign 4
 
 .global lbl_801B37D4
 lbl_801B37D4:
 	# ROM: 0x1B07D4
+glabel string_SoundReqDirect__s_ape_is_NULL______pid___0_n
 	.asciz "SoundReqDirect %s ape is NULL. --> pid = 0\n"
 
 .global lbl_801B3800
 lbl_801B3800:
 	# ROM: 0x1B0800
+glabel string_SoundReqID__s_ERROR____ape_is_NULL__n
 	.asciz "SoundReqID %s ERROR !! ape is NULL.\n"
 	.balign 4
 
 .global lbl_801B3828
 lbl_801B3828:
 	# ROM: 0x1B0828
+glabel string__s__s_nowball_is_NULL______pid___0_n
 	.asciz "%s %s nowball is NULL. --> pid = 0\n"
 
 .global lbl_801B384C
 lbl_801B384C:
 	# ROM: 0x1B084C
+glabel string_SoundOff
 	.asciz "SoundOff"
 	.balign 4
 
 .global lbl_801B3858
 lbl_801B3858:
 	# ROM: 0x1B0858
+glabel string_SoundVol
 	.asciz "SoundVol"
 	.balign 4
 
 .global lbl_801B3864
 lbl_801B3864:
 	# ROM: 0x1B0864
+glabel string_SoundPan
 	.asciz "SoundPan"
 	.balign 4
 
 .global lbl_801B3870
 lbl_801B3870:
 	# ROM: 0x1B0870
+glabel string_SoundPitch
 	.asciz "SoundPitch"
 	.balign 4
 
 .global lbl_801B387C
 lbl_801B387C:
 	# ROM: 0x1B087C
+glabel string_SoundDop
 	.asciz "SoundDop"
 	.balign 4
+glabel string_SoundMod
 	.asciz "SoundMod"
 	.balign 4
 
 .global lbl_801B3894
 lbl_801B3894:
 	# ROM: 0x1B0894
+glabel string_SoundRev
 	.asciz "SoundRev"
 	.balign 4
 
 .global lbl_801B38A0
 lbl_801B38A0:
 	# ROM: 0x1B08A0
+glabel string_SoundCho
 	.asciz "SoundCho"
 	.balign 4
 
 .global lbl_801B38AC
 lbl_801B38AC:
 	# ROM: 0x1B08AC
+glabel string_SoundSearchID__s_ERROR____ape_is_NULL__n
 	.asciz "SoundSearchID %s ERROR !! ape is NULL.\n"
 
 .global lbl_801B38D4
 lbl_801B38D4:
 	# ROM: 0x1B08D4
+glabel string_SoundOffID
 	.asciz "SoundOffID"
 	.balign 4
+glabel string_SoundVolID
 	.asciz "SoundVolID"
 	.balign 4
+glabel string_SoundPanID
 	.asciz "SoundPanID"
 	.balign 4
+glabel string_SoundPitchID
 	.asciz "SoundPitchID"
 	.balign 4
+glabel string_SoundDopID
 	.asciz "SoundDopID"
 	.balign 4
+glabel string_SoundModID
 	.asciz "SoundModID"
 	.balign 4
 
 .global lbl_801B3920
 lbl_801B3920:
 	# ROM: 0x1B0920
+glabel string_SoundRevID
 	.asciz "SoundRevID"
 	.balign 4
 
 .global lbl_801B392C
 lbl_801B392C:
 	# ROM: 0x1B092C
+glabel string_SoundChoID
 	.asciz "SoundChoID"
 	.balign 4
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
@@ -10764,23 +11810,33 @@ lbl_801B3A24:
 .global lbl_801B3A54
 lbl_801B3A54:
 	# ROM: 0x1B0A54
+glabel string_DVDReadAsync_result__x_n
 	.asciz "DVDReadAsync result %x\n"
+glabel string_restL__d_n
 	.asciz "restL %d\n"
 	.balign 4
+glabel string_extraL__d_n
 	.asciz "extraL %d\n"
 	.balign 4
+glabel string_restR__d_n
 	.asciz "restR %d\n"
 	.balign 4
+glabel string_extraR__d_n
 	.asciz "extraR %d\n"
 	.balign 4
+glabel string__test_snd_test_streamL_pcm
 	.asciz "/test/snd/test/streamL.pcm"
 	.balign 4
+glabel string_SoundStreamStart_n
 	.asciz "SoundStreamStart\n"
 	.balign 4
+glabel string_can_t_open_data_n
 	.asciz "can't open data\n"
 	.balign 4
+glabel string__test_snd_test_streamR_pcm
 	.asciz "/test/snd/test/streamR.pcm"
 	.balign 4
+glabel string_can_t_allocate_stream_n
 	.asciz "can't allocate stream\n"
 	.balign 4
 	.4byte 0
@@ -10790,31 +11846,37 @@ lbl_801B3A54:
 .global lbl_802F07B4
 lbl_802F07B4:
 	# ROM: 0x1EAEF4
+glabel string__s_pool
 	.asciz "%s.pool"
 
 .global lbl_802F07BC
 lbl_802F07BC:
 	# ROM: 0x1EAEFC
+glabel string__s_proj
 	.asciz "%s.proj"
 
 .global lbl_802F07C4
 lbl_802F07C4:
 	# ROM: 0x1EAF04
+glabel string__s_samp
 	.asciz "%s.samp"
 
 .global lbl_802F07CC
 lbl_802F07CC:
 	# ROM: 0x1EAF0C
+glabel string__s_sdir
 	.asciz "%s.sdir"
 
 .global lbl_802F07D4
 lbl_802F07D4:
 	# ROM: 0x1EAF14
+glabel string_snd_mkb
 	.asciz "snd/mkb"
 
 .global lbl_802F07DC
 lbl_802F07DC:
 	# ROM: 0x1EAF1C
+glabel string__test_2
 	.asciz "/test"
 	.balign 4
 	.4byte 0

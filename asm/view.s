@@ -9094,11 +9094,15 @@ lbl_80171B70:
 .global lbl_801D5800
 lbl_801D5800:
 	# ROM: 0x1D2800
+glabel string_cannot_OSAlloc_n_5
 	.asciz "cannot OSAlloc\n"
+glabel string_a_Stage_Overview
 	.asciz "a/Stage Overview"
 	.balign 4
+glabel string_p_LEVER_a_Rotate_Zoom
 	.asciz "p/LEVER/a/Rotate/Zoom"
 	.balign 4
+glabel string_p_BUTTON_C_a_Pan_camera
 	.asciz "p/BUTTON_C/a/Pan camera"
 
 .global lbl_801D5854
@@ -9113,12 +9117,14 @@ lbl_801D5854:
 .global lbl_801D5868
 lbl_801D5868:
 	# ROM: 0x1D2868
+glabel string_not_allocate_file_descriptor__s__n
 	.asciz "not allocate file descriptor %s.\n"
 	.balign 4
 
 .global lbl_801D588C
 lbl_801D588C:
 	# ROM: 0x1D288C
+glabel string_file__s_open_failed_n
 	.asciz "file %s open failed\n"
 	.balign 4
 	.4byte 0
@@ -9126,22 +9132,31 @@ lbl_801D588C:
 .global lbl_801D58A8
 lbl_801D58A8:
 	# ROM: 0x1D28A8
+glabel string____ABCDEFGHIJKLMNOPQRSTUVWXYZ______0123456789_
 	.asciz "\\]ABCDEFGHIJKLMNOPQRSTUVWXYZ.!?&-@0123456789["
 	.balign 4
+glabel string_RANKING_n
 	.asciz "RANKING\n"
 	.balign 4
+glabel string____d__d__n
 	.asciz " [%d/%d]\n"
 	.balign 4
+glabel string_entry__TRUE_n
 	.asciz "entry: TRUE\n"
 	.balign 4
+glabel string_entry__FALSE_n
 	.asciz "entry: FALSE\n"
 	.balign 4
+glabel string_spr_bg_bg_rac_gct
 	.asciz "spr_bg/bg_rac.gct"
 	.balign 4
+glabel string_spr_bg_bg_tgt_gct
 	.asciz "spr_bg/bg_tgt.gct"
 	.balign 4
+glabel string_spr_bg_bg_bwl_gct
 	.asciz "spr_bg/bg_bwl.gct"
 	.balign 4
+glabel string_spr_bg_bg_glf_gct
 	.asciz "spr_bg/bg_glf.gct"
 	.balign 4
 
@@ -9149,53 +9164,53 @@ lbl_801D58A8:
 lbl_801D5960:
 	# ROM: 0x1D2960
 	.4byte func_800AADC4  ;# ptr
-	.4byte 0x801D5A20  ;# ptr
+	.4byte lbl_801D5A20  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5910  ;# ptr
+	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
 	.4byte 0x801D5A50  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5910  ;# ptr
+	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
 	.4byte 0x801D5A80  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5910  ;# ptr
+	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
 	.4byte 0x801D5AB0  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5910  ;# ptr
+	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
 	.4byte 0x801D5AE0  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5910  ;# ptr
+	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
 	.4byte 0x801D5B10  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5910  ;# ptr
+	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AAE80  ;# ptr
 	.4byte 0x801D5B40  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5924  ;# ptr
+	.4byte string_spr_bg_bg_tgt_gct  ;# ptr
 	.4byte func_800AAE80  ;# ptr
 	.4byte 0x801D5B68  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5924  ;# ptr
+	.4byte string_spr_bg_bg_tgt_gct  ;# ptr
 	.4byte func_800AAE80  ;# ptr
 	.4byte 0x801D5B90  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D5924  ;# ptr
+	.4byte string_spr_bg_bg_tgt_gct  ;# ptr
 	.4byte func_800AAF40  ;# ptr
 	.4byte 0x801D5BB8  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x06
-	.4byte 0x801D5938  ;# ptr
+	.4byte string_spr_bg_bg_bwl_gct  ;# ptr
 	.4byte func_800AAF40  ;# ptr
 	.4byte 0x801D5BD6  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x06
-	.4byte 0x801D5938  ;# ptr
+	.4byte string_spr_bg_bg_bwl_gct  ;# ptr
 	.4byte func_800AB174  ;# ptr
 	.4byte 0x801D5BF4  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D594C  ;# ptr
+	.4byte string_spr_bg_bg_glf_gct  ;# ptr
 
 .global lbl_801D5A20
 lbl_801D5A20:
@@ -9907,6 +9922,7 @@ lbl_801D61E4:
 	.4byte 0x802F16CC  ;# ptr
 	.4byte 0x802F16D0  ;# ptr
 	.4byte 0x802F16D4  ;# ptr
+glabel string_Please_enter_your_name_
 	.asciz "Please enter your name."
 
 .global lbl_801D6514
@@ -9915,66 +9931,82 @@ lbl_801D6514:
 	.4byte 0
 	.byte 0x42, 0x20, 0x00, 0x00
 	.byte 0x42, 0xA8, 0x00, 0x00
+glabel string_a__Jungle_Circuit_
 	.asciz "a/-Jungle Circuit-"
 	.balign 4
+glabel string_a__Aqua_Offroad_
 	.asciz "a/-Aqua Offroad-"
 	.balign 4
+glabel string_a__Frozen_Highway_
 	.asciz "a/-Frozen Highway-"
 	.balign 4
+glabel string_a__Sky_Downtown_
 	.asciz "a/-Sky Downtown-"
 	.balign 4
+glabel string_a__Pipe_Warp_Tunnel_
 	.asciz "a/-Pipe Warp Tunnel-"
 	.balign 4
+glabel string_a__Speed_Desert_
 	.asciz "a/-Speed Desert-"
 	.balign 4
-	.4byte 0x801D6520  ;# ptr
+	.4byte string_a__Jungle_Circuit_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
-	.4byte 0x801D6534  ;# ptr
+	.4byte string_a__Aqua_Offroad_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
-	.4byte 0x801D6548  ;# ptr
+	.4byte string_a__Frozen_Highway_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
-	.4byte 0x801D655C  ;# ptr
+	.4byte string_a__Sky_Downtown_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x09
-	.4byte 0x801D6570  ;# ptr
+	.4byte string_a__Pipe_Warp_Tunnel_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0A
-	.4byte 0x801D6588  ;# ptr
+	.4byte string_a__Speed_Desert_  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
+glabel string_a__5_rounds_
 	.asciz "a/-5 rounds-"
 	.balign 4
+glabel string_a__10_rounds_
 	.asciz "a/-10 rounds-"
 	.balign 4
+glabel string_a__15_rounds_
 	.asciz "a/-15 rounds-"
 	.balign 4
-	.4byte 0x801D65CC  ;# ptr
-	.4byte 0x801D65DC  ;# ptr
-	.4byte 0x801D65EC  ;# ptr
+	.4byte string_a__5_rounds_  ;# ptr
+	.4byte string_a__10_rounds_  ;# ptr
+	.4byte string_a__15_rounds_  ;# ptr
 
 .global lbl_801D6608
 lbl_801D6608:
 	# ROM: 0x1D3608
+glabel string_a_Target
 	.asciz "a/Target"
 	.balign 4
+glabel string_a_Bowling
 	.asciz "a/Bowling"
 	.balign 4
+glabel string_a__Normal_Mode_
 	.asciz "a/-Normal Mode-"
+glabel string_a__Challenge_Mode_
 	.asciz "a/-Challenge Mode-"
 	.balign 4
 
 .global lbl_801D6644
 lbl_801D6644:
 	# ROM: 0x1D3644
+glabel string_a__18_holes_
 	.asciz "a/-18 holes-"
 	.balign 4
 
 .global lbl_801D6654
 lbl_801D6654:
 	# ROM: 0x1D3654
+glabel string_p_SANNKAKU_L_
 	.asciz "p/SANNKAKU_L/"
 	.balign 4
 
 .global lbl_801D6664
 lbl_801D6664:
 	# ROM: 0x1D3664
+glabel string_p_SANNKAKU_R_
 	.asciz "p/SANNKAKU_R/"
 	.balign 4
 
@@ -9989,71 +10021,85 @@ lbl_801D6674:
 .global lbl_801D6684
 lbl_801D6684:
 	# ROM: 0x1D3684
+glabel string_race___02d__02d_
 	.asciz "race: %02d'%02d\"%02d %s(%d)\n"
 	.balign 4
 
 .global lbl_801D66A4
 lbl_801D66A4:
 	# ROM: 0x1D36A4
+glabel string_target__d__s_n
 	.asciz "target:%d %s\n"
 	.balign 4
 
 .global lbl_801D66B4
 lbl_801D66B4:
 	# ROM: 0x1D36B4
+glabel string_bowl_nml__d__s_n
 	.asciz "bowl_nml:%d %s\n"
 
 .global lbl_801D66C4
 lbl_801D66C4:
 	# ROM: 0x1D36C4
+glabel string_bowl_cha__d__s_n
 	.asciz "bowl_cha:%d %s\n"
 
 .global lbl_801D66D4
 lbl_801D66D4:
 	# ROM: 0x1D36D4
+glabel string_golf_cha__d__d__d__s_n
 	.asciz "golf_cha:%d %d %d %s\n"
 	.balign 4
 	.4byte 0
+glabel string_a_Please_close_the_Disc_Cover_
 	.asciz "a/Please close the Disc Cover."
 	.balign 4
+glabel string_a_Please_insert
 	.asciz "a/Please insert"
+glabel string_a_the_Super_Monkey_Ball_Game_Disc_
 	.asciz "a/the Super Monkey Ball Game Disc."
 	.balign 4
-	.4byte 0x801D6710  ;# ptr
+	.4byte string_a_Please_insert  ;# ptr
 	.4byte 0
-	.4byte 0x801D6720  ;# ptr
+	.4byte string_a_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
 	.4byte 0
-	.4byte 0x801D6710  ;# ptr
+	.4byte string_a_Please_insert  ;# ptr
 	.4byte 0
-	.4byte 0x801D6720  ;# ptr
+	.4byte string_a_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
 	.4byte 0
+glabel string_a_Could_not_read_Game_Disc_
 	.asciz "a/Could not read Game Disc."
+glabel string_a_Please_see_the_Instruction_Booklet_for_details_
 	.asciz "a/Please see the Instruction Booklet for details."
 	.balign 4
-	.4byte 0x801D6764  ;# ptr
+	.4byte string_a_Could_not_read_Game_Disc_  ;# ptr
 	.4byte 0
 	.4byte 0x802F1720  ;# ptr
 	.4byte 0
-	.4byte 0x801D6780  ;# ptr
+	.4byte string_a_Please_see_the_Instruction_Booklet_for_details_  ;# ptr
 	.4byte 0
+glabel string_a_An_error_has_occurred_
 	.asciz "a/An error has occurred."
 	.balign 4
+glabel string_a_Press_the_POWER_Button_to_turn_off
 	.asciz "a/Press the POWER Button to turn off"
 	.balign 4
+glabel string_a_the_Nintendo_GameCube_tm_
 	.asciz "a/the Nintendo GameCube tm."
+glabel string_a_Follow_the_instructions_in_the_Instruction_Booklet_
 	.asciz "a/Follow the instructions in the Instruction Booklet."
 	.balign 4
-	.4byte 0x801D67CC  ;# ptr
+	.4byte string_a_An_error_has_occurred_  ;# ptr
 	.4byte 0
 	.4byte 0x802F1720  ;# ptr
 	.4byte 0
-	.4byte 0x801D67E8  ;# ptr
+	.4byte string_a_Press_the_POWER_Button_to_turn_off  ;# ptr
 	.4byte 0
-	.4byte 0x801D6810  ;# ptr
+	.4byte string_a_the_Nintendo_GameCube_tm_  ;# ptr
 	.4byte 0
 	.4byte 0x802F1720  ;# ptr
 	.4byte 0
-	.4byte 0x801D682C  ;# ptr
+	.4byte string_a_Follow_the_instructions_in_the_Instruction_Booklet_  ;# ptr
 	.4byte 0
 
 .global lbl_801D6894
@@ -10069,47 +10115,56 @@ lbl_801D6894:
 	.byte 0x00, 0x00, 0x00, 0x03
 	.4byte 0x801D6864  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x06
+glabel string_Please_close_the_Disc_Cover_
 	.asciz "Please close the Disc Cover."
 	.balign 4
+glabel string_Please_insert
 	.asciz "Please insert"
 	.balign 4
+glabel string_the_Super_Monkey_Ball_Game_Disc_
 	.asciz "the Super Monkey Ball Game Disc."
 	.balign 4
-	.4byte 0x801D68DC  ;# ptr
+	.4byte string_Please_insert  ;# ptr
 	.4byte 0
-	.4byte 0x801D68EC  ;# ptr
+	.4byte string_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
 	.4byte 0
-	.4byte 0x801D68DC  ;# ptr
+	.4byte string_Please_insert  ;# ptr
 	.4byte 0
-	.4byte 0x801D68EC  ;# ptr
+	.4byte string_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
 	.4byte 0
+glabel string_Could_not_read_Game_Disc_
 	.asciz "Could not read Game Disc."
 	.balign 4
+glabel string_Please_see_the_Instruction_Booklet_for_details_
 	.asciz "Please see the Instruction Booklet for details."
-	.4byte 0x801D6930  ;# ptr
+	.4byte string_Could_not_read_Game_Disc_  ;# ptr
 	.4byte 0
 	.4byte 0x802F1720  ;# ptr
 	.4byte 0
-	.4byte 0x801D694C  ;# ptr
+	.4byte string_Please_see_the_Instruction_Booklet_for_details_  ;# ptr
 	.4byte 0
+glabel string_An_error_has_occurred_
 	.asciz "An error has occurred."
 	.balign 4
+glabel string_Press_the_POWER_Button_to_turn_off
 	.asciz "Press the POWER Button to turn off"
 	.balign 4
+glabel string_the_Nintendo_GameCube_tm_
 	.asciz "the Nintendo GameCube tm."
 	.balign 4
+glabel string_Follow_the_instructions_in_the_Instruction_Booklet_
 	.asciz "Follow the instructions in the Instruction Booklet."
-	.4byte 0x801D6994  ;# ptr
+	.4byte string_An_error_has_occurred_  ;# ptr
 	.4byte 0
 	.4byte 0x802F1720  ;# ptr
 	.4byte 0
-	.4byte 0x801D69AC  ;# ptr
+	.4byte string_Press_the_POWER_Button_to_turn_off  ;# ptr
 	.4byte 0
-	.4byte 0x801D69D0  ;# ptr
+	.4byte string_the_Nintendo_GameCube_tm_  ;# ptr
 	.4byte 0
 	.4byte 0x802F1720  ;# ptr
 	.4byte 0
-	.4byte 0x801D69EC  ;# ptr
+	.4byte string_Follow_the_instructions_in_the_Instruction_Booklet_  ;# ptr
 	.4byte 0
 
 .global lbl_801D6A50
@@ -10163,5 +10218,6 @@ lbl_801D6AAC:
 .global lbl_801D6AE0
 lbl_801D6AE0:
 	# ROM: 0x1D3AE0
+glabel string_loading_gct
 	.asciz "loading.gct"
 	.4byte 0
