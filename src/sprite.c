@@ -1555,3 +1555,191 @@ float func_80071018(char *chr, int fontId)
     }
     return 1.0f;
 }
+
+struct Struct80071140_a
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+};
+
+struct Struct80071140_b
+{
+    s8 unk0;
+    u8 unk1;
+};  // size = 4
+
+// TODO: dump rodata
+/*
+int func_80071140(struct Struct80071140_a *a, char *b, u32 *c, u32 *d, u32 *e)
+{
+    int r4;
+
+    a->unk8 = 0;
+    
+    if (*b == 0x68 && *(b + 1) == 0x2F)
+    {
+        a->unk0 = (a->unk0 & 0xFFFF0000) | 1;
+        *d = 1;
+        return -2;
+    }
+    if (*b == 0x6B && *(b + 1) == 0x2F)
+    {
+        a->unk0 = (a->unk0 & 0xFFFF0000) | 2;
+        *d = 1;
+        return -2;
+    }
+    if (*b == 0x61 && *(b + 1) == 0x2F)
+    {
+        a->unk0 = (a->unk0 & 0xFFFF0000);
+        *d = 1;
+        return -2;
+    }
+    if (*b == 0x70 && *(b + 1) == 0x2F)
+    {
+        a->unk0 = (a->unk0 & 0xFFFF0000) | 3;
+        *d = 1;
+        return -2;
+    }
+    //lbl_8007124C
+    if (*b == 0x63 && *(b + 1) == 0x2F)
+    {
+        *d += 4;
+        *c = 0;
+        // some more variables
+        b += 4;
+        // to lbl_80071354 (loop)
+        while (*b != 0x2F)
+        {
+            int r0;
+            switch (*b)
+            {
+            case 0+48:
+                r0 = 0;
+                break;
+            case 1+48:
+                r0 = 1;
+                break;
+            case 2+48:
+                r0 = 2;
+                break;
+            case 3+48:
+                r0 = 3;
+                break;
+            case 4+48:
+                r0 = 4;
+                break;
+            case 5+48:
+                r0 = 5;
+                break;
+            case 6+48:
+                r0 = 6;
+                break;
+            case 7+48:
+                r0 = 7;
+                break;
+            case 8+48:
+                r0 = 8;
+                break;
+            case 9+48:
+                r0 = 9;
+                break;
+            case 49+48:
+                r0 = 10;
+                break;
+            case 50+48:
+                r0 = 11;
+                break;
+            case 51+48:
+                r0 = 12;
+                break;
+            case 52+48:
+                r0 = 13;
+                break;
+            case 53+48:
+                r0 = 14;
+                break;
+            case 54+48:
+                r0 = 15;
+                break;
+            default:
+                r0 = 0;
+                break;
+            }
+            //lbl_80071330
+            *c |= r0 << 0x14;
+            *d += 1;
+            b++;
+        }
+        return -2;
+    }
+    //lbl_80071368
+    if (*b == 0x62 && *(b + 1) == 0x2F)
+    {
+        *a |= 0x10000;
+        *d = 1;
+        return -2;
+    }
+    if (*b == 0x2F && *(b + 1) == 0x62)
+    {
+        *a &= 0xFFFEFFFF;
+        *d = 1;
+        return -2;
+    }
+    //lbl_800713D0
+    if (*b == 0x66 && *(b + 1) == 0x74 && *(b + 2) == 0x2F)
+    {
+        *e = 1;
+        *d = 2;
+        return -2;
+    }
+    if (*b == 0x66 && *(b + 1) == 0x70 && *(b + 2) == 0x2F)
+    {
+        *e = 2;
+        *d = 2;
+        return -2;
+    }
+    if (*b == 0x7A && *(b + 2) == 0x2F)
+    {
+        switch *(b + 1)
+        {
+        case 0x72:
+            *e = 0x64;
+            break;
+        case 0x39:
+            *e = 0x5A;
+            break;
+        case 0x38:
+            *e = 0x50;
+            break;
+        case 0x37:
+            *e = 0x46;
+            break;
+        }
+        //lbl_800714B8
+        *d = 2;
+        return -2;
+    }
+    //lbl_800714C8
+    a->unk0 &= 0xFFFDFFFF;
+    r4 = a->unk0 & 0xFFFF;  // u16?
+    if (r4 == 0)
+    {
+        //int r30;
+        // are these returns, or variable assignment, then return?
+        if (*b >= 0x41 && *b <= 0x5A)
+            return *b + 0x87;
+        if (*b >= 0x61 && *b <= 0x7A)
+            return *b + 0x8F;
+        if (*b >= 0x30 && *b <= 0x39)
+            return *b + 0xE8;
+        if (*b == 0x2E)
+            return 0x155;
+        if (*b == 0x2C)
+            return 0x154;
+        //lbl_80071560  // to be continued...
+        return lbl_80117A80[
+    }
+    //lbl_80071570
+}
+*/
