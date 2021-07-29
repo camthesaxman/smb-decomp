@@ -5439,11 +5439,11 @@ lbl_80042BFC:
 .global ev_world_main
 ev_world_main:
 /* 80042C4C 0003EB6C  7C 08 02 A6 */	mflr r0
-/* 80042C50 0003EB70  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80042C50 0003EB70  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80042C54 0003EB74  90 01 00 04 */	stw r0, 4(r1)
 /* 80042C58 0003EB78  94 21 FF C8 */	stwu r1, -0x38(r1)
 /* 80042C5C 0003EB7C  BF 21 00 1C */	stmw r25, 0x1c(r1)
-/* 80042C60 0003EB80  3B E3 59 88 */	addi r31, r3, lbl_80205988@l
+/* 80042C60 0003EB80  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 80042C64 0003EB84  3C 60 80 20 */	lis r3, lbl_80206BF0@ha
 /* 80042C68 0003EB88  3B C3 6B F0 */	addi r30, r3, lbl_80206BF0@l
 /* 80042C6C 0003EB8C  3C 60 80 1C */	lis r3, lbl_801B86A8@ha
@@ -5613,14 +5613,14 @@ lbl_80042E70:
 .global ev_world_dest
 ev_world_dest:
 /* 80042E84 0003EDA4  7C 08 02 A6 */	mflr r0
-/* 80042E88 0003EDA8  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80042E88 0003EDA8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80042E8C 0003EDAC  90 01 00 04 */	stw r0, 4(r1)
 /* 80042E90 0003EDB0  3C 80 80 20 */	lis r4, lbl_80206BF0@ha
 /* 80042E94 0003EDB4  94 21 FF D0 */	stwu r1, -0x30(r1)
 /* 80042E98 0003EDB8  DB E1 00 28 */	stfd f31, 0x28(r1)
 /* 80042E9C 0003EDBC  DB C1 00 20 */	stfd f30, 0x20(r1)
 /* 80042EA0 0003EDC0  BF 61 00 0C */	stmw r27, 0xc(r1)
-/* 80042EA4 0003EDC4  3B E3 59 88 */	addi r31, r3, lbl_80205988@l
+/* 80042EA4 0003EDC4  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 80042EA8 0003EDC8  3B C4 6B F0 */	addi r30, r4, lbl_80206BF0@l
 /* 80042EAC 0003EDCC  3B BE 00 00 */	addi r29, r30, 0
 /* 80042EB0 0003EDD0  3B 60 00 00 */	li r27, 0

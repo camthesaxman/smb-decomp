@@ -383,7 +383,7 @@ void gm_main(void)
         if (lbl_802F021C.unk0 == 0)
         {
             event_clear();
-            func_800705E4();
+            g_something_with_iteratively_freeing_memory();
             minigame_link(gameModeRelNames[gameMode], &lbl_802F021C);
         }
         if (lbl_802F1B74 != 0)

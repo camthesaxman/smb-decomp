@@ -88,3 +88,4 @@ struct Struct801EEC80
 };
 
 struct Sprite;
+struct FontParams;

@@ -4,6 +4,205 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "game.h"
+
+enum FontID
+{
+    FONT_ASCII,  // 0
+    FONT_ASC_8x16,
+    FONT_ASC_12x12,
+    FONT_DMY00,
+    FONT_DMY01,
+    FONT_DMY02,
+    FONT_DMY03,
+    FONT_DMY04,
+    FONT_DMY05,
+    FONT_ASC_72x64,
+    FONT_DMY06,  // 10
+    FONT_DMY07,
+    FONT_DMY08,
+    FONT_DMY09,
+    FONT_DMY10,
+    FONT_DMY11,
+    FONT_DMY12,
+    FONT_DMY13,
+    FONT_DMY14,
+    FONT_DMY15,
+    FONT_DMY16,  // 20
+    FONT_ICON_SD,
+    FONT_ICON_SD2,
+    FONT_DMY20,
+    FONT_DMY21,
+    FONT_DMY22,
+    FONT_DMY23,
+    FONT_NUM_26x31,
+    FONT_ASC_30x31,
+    FONT_ICON_TPL,
+    FONT_ICON_MDE,  // 30
+    FONT_ICON_RNK,
+    FONT_RNK_32x32,
+    FONT_RNK_NUM,
+    FONT_MINI_RNK,
+    FONT_SCORE_NUM,
+    FONT_DMY_RNK0,
+    FONT_DMY_RNK1,
+    FONT_DMY_RNK2,
+    FONT_DMY_RNK3,
+    FONT_DMY_RNK4,  // 40
+    FONT_DMY_RNK5,
+    FONT_DMY_RNK6,
+    FONT_DMY_RNK7,
+    FONT_DMY_RNK8,
+    FONT_DMY_RNK9,
+    FONT_DMY_RNKa,
+    FONT_DMY_RNKb,
+    FONT_DMY_RNKc,
+    FONT_DMY_RNKd,
+    FONT_DMY_RNKe,  // 50
+    FONT_DMY_RNKf,
+    FONT_NUM_7x10,
+    FONT_NUM_8x10,
+    FONT_NUM_12x24,
+    FONT_ICON_CRS,
+    FONT_DMY40,
+    FONT_DMY41,
+    FONT_DMY42,
+    FONT_DMY43,
+    FONT_BWL_SCORE,  // 60
+    FONT_DMY50,
+    FONT_DMY51,
+    FONT_DMY52,
+    FONT_DMY53,
+    FONT_DMY54,
+    FONT_DMY55,
+    FONT_DMY56,
+    FONT_DMY57,
+    FONT_RAC_ASC16x16,
+    FONT_RAC_PLAYER,  // 70
+    FONT_RAC_RANK,
+    FONT_RAC_RAP_MARK_NUM,
+    FONT_RAC_RAP_NUM,
+    FONT_RAC_TIME_NUM,
+    FONT_RAC_RAP_MARK_NUM_S,
+    FONT_RAC_TIME_NUM_S,
+    FONT_DMY60,
+    FONT_DMY61,
+    FONT_DMY62,
+    FONT_DMY63,  // 80
+    FONT_DMY64,
+    FONT_TGT_PLAYER,
+    FONT_TGT_MSCORE,
+    FONT_TGT_SPEED,
+    FONT_TGT_SCORE,
+    FONT_TGT_ROUND,
+    FONT_TGT_ALT,
+    FONT_TGT_WIND,
+    FONT_TGT_RESULT,
+    FONT_DMY72,  // 90
+    FONT_DMY73,
+    FONT_DMY74,
+    FONT_ICON_LV,
+    FONT_NUM_22x22,
+    FONT_ASC_16x16,
+    FONT_ASC_16x16P,
+    FONT_ASC_18x16,
+    FONT_ASC_20x20,
+    FONT_ASC_20x20P,
+    FONT_ASC_32x32,  // 100
+    FONT_NUM_12x19,
+    FONT_NUM_24x37,
+    FONT_DMY79,
+    FONT_DMY7a,
+    FONT_DMY7b,
+    FONT_DMY7c,
+    FONT_DMY7d,
+    FONT_DMY7e,
+    FONT_DMY7f,
+    FONT_DMY80,  // 110
+    FONT_DMY81,
+    FONT_DMY82,
+    FONT_DMY83,
+    FONT_DMY84,
+    FONT_DMY85,
+    FONT_DMY86,
+    FONT_DMY87,
+    FONT_DMY88,
+    FONT_DMY89,
+    FONT_DMY8a,  // 120
+    FONT_DMY8b,
+    FONT_DMY8c,
+    FONT_DMY8d,
+    FONT_DMY8e,
+    FONT_DMY8f,
+    FONT_DMY90,
+    FONT_DMY91,
+    FONT_DMY92,
+    FONT_DMY93,
+    FONT_DMY94,  // 130
+    FONT_DMY95,
+    FONT_DMY96,
+    FONT_DMY97,
+    FONT_DMY98,
+    FONT_DMY99,
+    FONT_DMY9a,
+    FONT_DMY9b,
+    FONT_DMY9c,
+    FONT_DMY9d,
+    FONT_DMY9e,  // 140
+    FONT_DMY9f,
+    FONT_DMYa0,
+    FONT_DMYa1,
+    FONT_DMYa2,
+    FONT_DMYa3,
+    FONT_DMYa4,
+    FONT_DMYa5,
+    FONT_DMYa6,
+    FONT_DMYa7,
+    FONT_DMYa8,  // 150
+    FONT_DMYa9,
+    FONT_DMYaa,
+    FONT_DMYab,
+    FONT_DMYac,
+    FONT_DMYad,
+    FONT_DMYae,
+    FONT_DMYaf,
+    FONT_DMYb0,
+    FONT_DMYb1,
+    FONT_DMYb2,  // 160
+    FONT_DMYb3,
+    FONT_DMYb4,
+    FONT_DMYb5,
+    FONT_DMYb6,
+    FONT_DMYb7,
+    FONT_DMYb8,
+    FONT_DMYb9,
+    FONT_DMYba,
+    FONT_DMYbb,
+    FONT_DMYbc,  // 170
+    FONT_DMYbd,
+    FONT_DMYbe,
+    FONT_DMYbf,
+    FONT_JAP_TAG,
+    FONT_JAP_DMY,
+    FONT_JAP_24x24_2,
+    FONT_JAP_24x24_2P,
+    FONT_JAP_24x24_I,
+    FONT_JAP_24x24_2Pg,
+};
+
+enum TextAlign
+{
+    ALIGN_LT,
+    ALIGN_LC,
+    ALIGN_LB,
+    ALIGN_CT,
+    ALIGN_CC,
+    ALIGN_CB,
+    ALIGN_RT,
+    ALIGN_RC,
+    ALIGN_RB,
+    ALIGN_PIC,
+};
 
 struct Struct8028CF28
 {
@@ -23,51 +222,51 @@ struct Struct8028CF28
 
 struct SpritePoolInfo
 {
-    u8 filler0[0x30];
-    u8 unk30[4];
-    u32 unk34;
-    s32 unk38;
-    s8 *unk3C;  // statusList
+             u8 filler0[0x30];
+             u8 unk30[4];
+             u32 unk34;
+             s32 unk38;
+    /*0x3C*/ s8 *statusList;
 };
 
 struct Sprite
 {
-    s8 unk0;
-    u8 unk1;
-    s8 unk2;
-    s8 unk3;
-    float unk4;
-    float unk8;
-    u8 unkC;
-    u8 unkD;
-    u8 unkE;
-    s8 unkF;
-    u8 filler10[0x30-0x10];
-    void (*unk30)();
-    void (*unk34)();
-    void (*unk38)(struct Sprite *);
-    u16 unk3C;
-    u8 filler3E[0x40-0x3E];
-    float unk40;
-    float unk44;
-    u8 filler48[4];
-    float unk4C;
-    struct Sprite *unk50;
-    struct Sprite *unk54;
-    s32 unk58;
-    s32 unk5C;
-    s32 unk60;
-    s32 unk64;
-    u8 filler68[0x6C-0x68];
-    float unk6C;
-    u8 filler70[4];
-    u32 unk74;
-    u32 unk78;
-    float unk7C;
-    float unk80;
-    float unk84;
-    float unk88;
-    char unk8C[0xBC-0x8C];
+    /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???
+    /*0x01*/ u8 fontId;  // fontId
+             s8 unk2;
+    /*0x03*/ s8 textAlign;
+    /*0x04*/ float centerX;
+    /*0x08*/ float centerY;
+             u8 unkC;
+             u8 unkD;
+             u8 unkE;
+             s8 unkF;
+             u8 filler10[0x30-0x10];
+    /*0x30*/ void (*destFunc)();
+    /*0x34*/ void (*mainFunc)();
+             void (*unk38)(struct Sprite *);
+             u16 unk3C;
+             u8 filler3E[0x40-0x3E];
+             float unk40;
+             float unk44;
+             u8 filler48[4];
+             float unk4C;
+             struct Sprite *unk50;
+             struct Sprite *unk54;
+             s32 unk58;
+             s32 unk5C;
+             s32 unk60;
+             s32 unk64;
+             u8 filler68[0x6C-0x68];
+             float unk6C;
+             u8 filler70[4];
+             u32 unk74;
+             u32 unk78;
+             float unk7C;
+             float unk80;
+             float unk84;
+             float unk88;
+             char text[0xBC-0x8C];  // text
 };
 
 struct Struct8028FE58
@@ -83,16 +282,16 @@ struct Struct8028CF28 lbl_8028CF28;
 struct Sprite lbl_8028CF58[64];
 struct Struct8028FE58 lbl_8028FE58[0x42];
 
-extern struct SpritePoolInfo lbl_80205988;
+extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
 
 void ev_sprite_init(void)
 {
     struct Struct8028CF28 *r5 = &lbl_8028CF28;
-    s8 *r6 = lbl_80205988.unk3C;
+    s8 *status = spritePoolInfo.statusList;
     /*
     int i = 0;
 
-    while (i < lbl_80205988.unk38)
+    while (i < spritePoolInfo.unk38)
     {
         *r6 = 0;
         i++;
@@ -101,8 +300,8 @@ void ev_sprite_init(void)
     */
 
     int i;
-    for (i = 0; i < lbl_80205988.unk38; i++, r6++)
-        *r6 = 0;
+    for (i = 0; i < spritePoolInfo.unk38; i++, status++)
+        *status = 0;
 
     r5->unk0 = 0.0f;
     r5->unk4 = 0.0f;
@@ -120,22 +319,22 @@ void ev_sprite_init(void)
 
 void ev_sprite_main(void)
 {
-    struct Sprite *r29;
-    s8 *r28;
-    int i = 0;  // r27
+    struct Sprite *sprite;
+    s8 *status;
+    int i = 0;
 
     if (lbl_802F1EE0 & 0xA)
         return;
     lbl_802F2000 = 0;
-    r28 = lbl_80205988.unk3C;
-    r29 = lbl_8028CF58;
-    for (i = 0; i < lbl_80205988.unk38; i++, r29++, r28++)
+    status = spritePoolInfo.statusList;
+    sprite = lbl_8028CF58;
+    for (i = 0; i < spritePoolInfo.unk38; i++, sprite++, status++)
     {
-        if (*r28 != 0)
+        if (*status != 0)
         {
-            lbl_802F2000 |= 1 << r29->unkF;
-            if (r29->unk34 != NULL)
-                r29->unk34(r28, r29);
+            lbl_802F2000 |= 1 << sprite->unkF;
+            if (sprite->mainFunc != NULL)
+                sprite->mainFunc(status, sprite);
         }
     }
     func_80073EF8();
@@ -143,23 +342,23 @@ void ev_sprite_main(void)
 
 void ev_sprite_dest(void)
 {
-    struct Sprite *r30;
-    s8 *r29;
+    struct Sprite *sprite;
+    s8 *status;
     int i = 0;
 
-    r30 = lbl_8028CF58;
-    r29 = lbl_80205988.unk3C;
-    for (; i < 64; i++, r30++, r29++)
+    sprite = lbl_8028CF58;
+    status = spritePoolInfo.statusList;
+    for (; i < 64; i++, sprite++, status++)
     {
-        if (*r29 != 0)
+        if (*status != 0)
         {
-            if (r30->unk30 != NULL)
-                r30->unk30(r30);
-            *r29 = 0;
+            if (sprite->destFunc != NULL)
+                sprite->destFunc(sprite);
+            *status = 0;
         }
     }
 
-    lbl_80205988.unk34 = 0;
+    spritePoolInfo.unk34 = 0;
     lbl_802F2000 = 0;
     func_80074480();
 }
@@ -191,8 +390,8 @@ void func_800700D8(int a)
     r9->unk4 = r5;
     r9->unk8 = NULL;
 
-    r11 = lbl_80205988.unk3C;
-    for (i = 0; i < lbl_80205988.unk38; r8++, i++, r11++)
+    r11 = spritePoolInfo.statusList;
+    for (i = 0; i < spritePoolInfo.unk38; r8++, i++, r11++)
     {
         if (*r11 != 0 && (!r31 || r8->unkF == 100))
         {
@@ -235,18 +434,18 @@ void func_800700D8(int a)
         }
         r30 = r30->unk8;
     }
-    if (gameMode == 4)
+    if (gameMode == MD_MINI)
     {
         switch (gameSubmode)
         {
-        case 0x90:
-        case 0x91:
-        case 0x92:
-        case 0x93:
-        case 0x9C:
-        case 0x9D:
-        case 0xA2:
-        case 0xA3:
+        case SMD_MINI_SELECT_INIT:
+        case SMD_MINI_SELECT_MAIN:
+        case SMD_MINI_TEST0_INIT:
+        case SMD_MINI_TEST0_MAIN:
+        case SMD_MINI_BILLIARDS_INIT:
+        case SMD_MINI_BILLIARDS_MAIN:
+        case SMD_MINI_COMMEND_INIT:
+        case SMD_MINI_COMMEND_MAIN:
             break;
         default:
             func_80093B84();
@@ -267,7 +466,7 @@ asm void func_800700D8(int a)
 //arcade: FUN_0c048ea0
 void func_800702C8(struct Sprite *sprite)
 {
-    if (lbl_80205988.unk3C[sprite->unk2] != 0 && sprite->unk50 == NULL)
+    if (spritePoolInfo.statusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
         g_something_with_sprites(sprite);
         while (sprite->unk54 != NULL)
@@ -323,7 +522,7 @@ struct Struct801BE470 lbl_801BE470[] =
     {256,  224},
 };
 
-struct Struct801BE4B0
+struct FontParams
 {
     u16 unk0;
     u8 unk2;
@@ -343,7 +542,7 @@ struct Struct801BE4B0
 };
 
 // font parameters?
-struct Struct801BE4B0 lbl_801BE4B0[] =
+struct FontParams lbl_801BE4B0[] =
 {
     {0, 8, 8, 0, 127, 16, 8, 0.0625, 0.125, 0.0078125, 0.015625, 0, 0, 0, 0},
     {6, 8, 16, 32, 122, 16, 6, 0.0625, 0.125, 0.0078125, 0.0078125, 0, 0, 0, 0},
@@ -940,301 +1139,419 @@ struct Struct801C0B94 lbl_801C108C[] =
 
 extern char **lbl_80181E04[];
 
-void g_something_with_sprites(struct Sprite *a)
+void g_something_with_sprites(struct Sprite *sprite)
 {
     u32 r29;
     u32 r26;
     int i;
-    int r24;
-    int r23;
+    int x;
+    int y;
 
-    if (a->unk78 & 1)
+    if (sprite->unk78 & 1)
         return;
-    func_80070A08(a, &a->unk58, &a->unk5C, &a->unk60, &a->unk64);
-    if (a->unk38 != NULL)
+    g_get_dimensions_for_sprite(sprite, &sprite->unk58, &sprite->unk5C, &sprite->unk60, &sprite->unk64);
+    if (sprite->unk38 != NULL)
     {
-        a->unk38(a);
+        sprite->unk38(sprite);
         return;
     }
-    switch (a->unk0)
+    switch (sprite->type)
     {
     case 0:
-        func_80072B50(a);
+        func_80072B50(sprite);
         break;
     case 1:
-        if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
+        if (lbl_80181CB4[(sprite->unk3C & 0xFF00) >> 8].unk0 == 0)
         {
             printf("SPRITE WARNING!! %s's category %s is not load\n",
-                lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
+                lbl_80181E04[sprite->unk3C >> 8][sprite->unk3C & 0xFF],
+                lbl_80181CB4[sprite->unk3C >> 8].unk8);
             break;
         }
-        func_80072C68(a);
+        func_80072C68(sprite);
         break;
     case 2:
-        if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
+        if (lbl_80181CB4[(sprite->unk3C & 0xFF00) >> 8].unk0 == 0)
         {
             printf("SPRITE WARNING!! %s's category %s is not load\n",
-                lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
+                lbl_80181E04[sprite->unk3C >> 8][sprite->unk3C & 0xFF],
+                lbl_80181CB4[sprite->unk3C >> 8].unk8);
             break;
         }
-        r26 = a->unk3C & 0xFF;
-        r29 = a->unk3C;
-        r24 = a->unk4;
-        r23 = a->unk8;
+        r26 = sprite->unk3C & 0xFF;
+        r29 = sprite->unk3C;
+        x = sprite->centerX;
+        y = sprite->centerY;
         for (i = 0; i < 8; i++)
         {
-            a->unk3C = (r29 & 0xFF00) | r26;
-            a->unk4 = (float)(r24 + lbl_801BE470[i].unk0);
-            a->unk8 = (float)(r23 + lbl_801BE470[i].unk4);
-            func_80070A08(a, &a->unk58, &a->unk5C, &a->unk60, &a->unk64);
-            func_80072C68(a);
+            sprite->unk3C = (r29 & 0xFF00) | r26;
+            sprite->centerX = (float)(x + lbl_801BE470[i].unk0);
+            sprite->centerY = (float)(y + lbl_801BE470[i].unk4);
+            g_get_dimensions_for_sprite(sprite, &sprite->unk58, &sprite->unk5C, &sprite->unk60, &sprite->unk64);
+            func_80072C68(sprite);
             r26++;
         }
-        a->unk3C = r29;
-        a->unk4 = r24;
-        a->unk8 = r23;
+        sprite->unk3C = r29;
+        sprite->centerX = x;
+        sprite->centerY = y;
     }
 }
 
 #pragma force_active on
 
-void func_800705A4(int a)
+void call_something_with_bmp_bmp_com(int a)
 {
-    func_80026204(a);
+    g_something_with_bmp_bmp_com(a);
 }
 
 void func_800705C4(int a)
 {
-    func_80026260(a);
+    g_something_with_freeing_memory(a);
 }
 
-void func_800705E4(void)
+void g_something_with_iteratively_freeing_memory(void)
 {
     int i;
     for (i = 0; i < 14; i++)
     {
         if (i != 0)
-	    func_80026260(i);
+            g_something_with_freeing_memory(i);
     }
 }
 
 struct Sprite *create_sprite(void)
 {
-    int r31 = func_800309A8(lbl_80205988.unk30, 2);
-    struct Sprite *r30;
+    int index = pool_alloc(spritePoolInfo.unk30, 2);
 
-    if (r31 < 0)
+    if (index < 0)
         return NULL;
-    r30 = &lbl_8028CF58[r31];
-    memset(r30, 0, sizeof(*r30));
-    r30->unk2 = r31;
-    r30->unk4C = 0.1f;
-    r30->unkC = 0xFF;
-    r30->unkD = 0xFF;
-    r30->unkE = 0xFF;
-    r30->unk40 = 1.0f;
-    r30->unk44 = 1.0f;
-    r30->unk6C = 1.0f;
-    r30->unk58 = 0;
-    r30->unk5C = 0;
-    r30->unk60 = 1;
-    r30->unk64 = 1;
-    r30->unk7C = 0.0f;
-    r30->unk80 = 0.0f;
-    r30->unk84 = 1.0f;
-    r30->unk88 = 1.0f;
-    r30->unk74 = 0x20000;
-    return r30;
-}
-
-struct Sprite *create_sprite_ex(struct Sprite *a)
-{
-    struct Sprite *r3 = create_sprite();
-    if (r3 != NULL)
+    else
     {
-        a->unk54 = r3;
-        r3->unk50 = a;
-        r3->unk74 |= a->unk74 & (1 << 18);
-    }
-    return r3;
-}
+        struct Sprite *sprite = &lbl_8028CF58[index];
 
-void func_80070750(int a)
-{
-    struct Sprite *r30 = lbl_8028CF58;
-    s8 *r29 = lbl_80205988.unk3C;
-    int i;
-
-    for (i = 0; i < 64; i++)
-    {
-        if (*r29 != 0 && r30->unkF == a)
-        {
-            if (r30->unk30 != NULL)
-                r30->unk30(r30);
-            *r29 = 0;
-        }
-        r30++;
-        r29++;
+        memset(sprite, 0, sizeof(*sprite));
+        sprite->unk2 = index;
+        sprite->unk4C = 0.1f;
+        sprite->unkC = 0xFF;
+        sprite->unkD = 0xFF;
+        sprite->unkE = 0xFF;
+        sprite->unk40 = 1.0f;
+        sprite->unk44 = 1.0f;
+        sprite->unk6C = 1.0f;
+        sprite->unk58 = 0;
+        sprite->unk5C = 0;
+        sprite->unk60 = 1;
+        sprite->unk64 = 1;
+        sprite->unk7C = 0.0f;
+        sprite->unk80 = 0.0f;
+        sprite->unk84 = 1.0f;
+        sprite->unk88 = 1.0f;
+        sprite->unk74 = 0x20000;
+        return sprite;
     }
 }
 
-void func_800707E4(void)
+struct Sprite *create_linked_sprite(struct Sprite *sprite)
 {
-    struct Sprite *r30 = lbl_8028CF58;
-    s8 *r29 = lbl_80205988.unk3C;
-    int i;
-
-    for (i = 0; i < 64; i++)
+    struct Sprite *newSprite = create_sprite();
+    if (newSprite != NULL)
     {
-        if (*r29 != 0)
-        {
-            if (r30->unk30 != NULL)
-                r30->unk30(r30);
-            *r29 = 0;
-        }
-        r30++;
-        r29++;
+        sprite->unk54 = newSprite;
+        newSprite->unk50 = sprite;
+        newSprite->unk74 |= sprite->unk74 & (1 << 18);
     }
+    return newSprite;
 }
 
-struct Sprite *func_8007087C(int a)
+// probably has nothing to do with fonts
+void g_dest_sprite_with_font(int a)
 {
     struct Sprite *sprite = lbl_8028CF58;
-    s8 *r6 = lbl_80205988.unk3C;
-    int i;  // r5, ctr
+    s8 *status = spritePoolInfo.statusList;
+    int i;
 
-    for (i = 0; i < 64; i++, sprite++, r6++)
+    for (i = 0; i < 64; i++)
     {
-        if (*r6 != 0 && sprite->unkF == a)
+        if (*status != 0 && sprite->unkF == a)
+        {
+            if (sprite->destFunc != NULL)
+                sprite->destFunc(sprite);
+            *status = 0;
+        }
+        sprite++;
+        status++;
+    }
+}
+
+void dest_all_sprites(void)
+{
+    struct Sprite *sprite = lbl_8028CF58;
+    s8 *status = spritePoolInfo.statusList;
+    int i;
+
+    for (i = 0; i < 64; i++)
+    {
+        if (*status != 0)
+        {
+            if (sprite->destFunc != NULL)
+                sprite->destFunc(sprite);
+            *status = 0;
+        }
+        sprite++;
+        status++;
+    }
+}
+
+struct Sprite *g_find_sprite_with_probably_not_font(int a)
+{
+    struct Sprite *sprite = lbl_8028CF58;
+    s8 *status = spritePoolInfo.statusList;
+    int i;
+
+    for (i = 0; i < 64; i++, sprite++, status++)
+    {
+        if (*status != 0 && sprite->unkF == a)
             return sprite;
     }
     return NULL;
 }
 
-void func_80070A08(struct Sprite *a, s32 *b, s32 *c, s32 *d, s32 *e)
+void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, s32 *e)
 {
-    int r31 = 0;
-    int r30 = 0;
-    struct Struct801BE4B0 *r29;
-    int r5;
-    int r6;
+    int width = 0;
+    int height = 0;
+    struct FontParams *fontParams;
+    int x;
+    int y;
     int len;
 
-    if (a->unk38 != 0)
+    if (sprite->unk38 != 0)
     {
-        *b = a->unk4 - 50.0f;
-        *c = a->unk8 - 50.0f;
-        *d = a->unk4 + 50.0f;
-        *e = a->unk8 + 50.0f;
+        *b = sprite->centerX - 50.0f;
+        *c = sprite->centerY - 50.0f;
+        *d = sprite->centerX + 50.0f;
+        *e = sprite->centerY + 50.0f;
         return;
     }
     else
     {
-        r29 = &lbl_801BE4B0[a->unk1];
-        switch (a->unk0)
+        fontParams = &lbl_801BE4B0[sprite->fontId];
+        switch (sprite->type)
         {
         case 0:
-            len = strlen(a->unk8C);
-            r31 = len * r29->unk2;
-            r30 = r29->unk3;
-            if (a->unk1 > 0xAE)
+            len = strlen(sprite->text);
+            width = len * fontParams->unk2;
+            height = fontParams->unk3;
+            if (sprite->fontId > FONT_JAP_TAG)  // Japanese font
             {
-                r31 = func_80073084(a->unk1, a->unk8C);
+                width = func_80073084(sprite->fontId, sprite->text);
             }
-            else
+            else  // ASCII font
             {
-                char *r22 = a->unk8C;
-                while (*r22 != 0)
+                char *chr = sprite->text;
+                while (*chr != 0)
                 {
                     float f1;
-                    r31 += func_80070E9C(r22, a->unk1, r29) - r29->unk2;
-                    f1 = func_80071018(r22, a->unk1);
+                    width += func_80070E9C(chr, sprite->fontId, fontParams) - fontParams->unk2;
+                    f1 = func_80071018(chr, sprite->fontId);
                     if (f1 != 1.0)
-                        r31 += f1 * r29->unk2 - r29->unk2;
-                    r22++;
+                        width += f1 * fontParams->unk2 - fontParams->unk2;
+                    chr++;
                 }
             }
             break;
         case 1:
         case 2:
-            if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
+            if (lbl_80181CB4[(sprite->unk3C & 0xFF00) >> 8].unk0 == 0)
             {
                 printf("SPRITE WARNING!! %s's category %s is not load\n",
-                    lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
-                *b = a->unk4 - 50.0f;
-                *c = a->unk8 - 50.0f;
-                *d = a->unk4 + 50.0f;
-                *e = a->unk8 + 50.0f;
+                    lbl_80181E04[sprite->unk3C >> 8][sprite->unk3C & 0xFF],
+                    lbl_80181CB4[sprite->unk3C >> 8].unk8);
+                *b = sprite->centerX - 50.0f;
+                *c = sprite->centerY - 50.0f;
+                *d = sprite->centerX + 50.0f;
+                *e = sprite->centerY + 50.0f;
                 return;
             }
-            r31 = lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk10->unk4[a->unk3C & 0xFF].unk8;
-            r30 = lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk10->unk4[a->unk3C & 0xFF].unkA;
+            width = lbl_80181CB4[(sprite->unk3C & 0xFF00) >> 8].unk10->unk4[sprite->unk3C & 0xFF].unk8;
+            height = lbl_80181CB4[(sprite->unk3C & 0xFF00) >> 8].unk10->unk4[sprite->unk3C & 0xFF].unkA;
             break;
         }
     }
 
-    r31 *= a->unk40;
-    r30 *= a->unk44;
-    if (a->unk50 == NULL)
+    width *= sprite->unk40;
+    height *= sprite->unk44;
+    if (sprite->unk50 == NULL)
     {
-        r5 = a->unk4;
-        r6 = a->unk8;
-        switch (a->unk3)
+        x = sprite->centerX;
+        y = sprite->centerY;
+        switch (sprite->textAlign)
         {
-        case 9:
-        case 3:
-        case 4:
-        case 5:
-            r5 -= r31 / 2;
+        // centered horizontally
+        case ALIGN_CT:
+        case ALIGN_CC:
+        case ALIGN_CB:
+        case ALIGN_PIC:
+            x -= width / 2;
             break;
-        case 6:
-        case 7:
-        case 8:
-            r5 -= r31;
+        // right aligned
+        case ALIGN_RT:
+        case ALIGN_RC:
+        case ALIGN_RB:
+            x -= width;
             break;
         }
-        switch (a->unk3)
+        switch (sprite->textAlign)
         {
-        case 1:
-        case 4:
-        case 7:
-        case 9:
-            r6 -= r30 / 2;
+        // centered vertically
+        case ALIGN_LC:
+        case ALIGN_CC:
+        case ALIGN_RC:
+        case ALIGN_PIC:
+            y -= height / 2;
             break;
-        case 2:
-        case 5:
-        case 8:
-            r6 -= r30;
+        // bottom aligned
+        case ALIGN_LB:
+        case ALIGN_CB:
+        case ALIGN_RB:
+            y -= height;
             break;
         }
-        *b = r5;
-        *c = r6;
-        *d = r5 + r31;
-        *e = r6 + r30;
+        *b = x;
+        *c = y;
+        *d = x + width;
+        *e = y + height;
     }
     else
     {
-        r6 = a->unk50->unk5C;
-        r5 = a->unk50->unk60;
-        switch (a->unk3)
+        y = sprite->unk50->unk5C;
+        x = sprite->unk50->unk60;
+        switch (sprite->textAlign)
         {
-        case 1:
-        case 4:
-        case 7:
-        case 9:
-            r6 = (r6 + a->unk50->unk64) / 2 - r30 / 2;
+        // centered vertically
+        case ALIGN_LC:
+        case ALIGN_CC:
+        case ALIGN_RC:
+        case ALIGN_PIC:
+            y = (y + sprite->unk50->unk64) / 2 - height / 2;
             break;
-        case 2:
-        case 5:
-        case 8:
-            r6 = a->unk50->unk64 - r30;
+        // bottom aligned
+        case ALIGN_LB:
+        case ALIGN_CB:
+        case ALIGN_RB:
+            y = sprite->unk50->unk64 - height;
             break;
         }
-        r5 += a->unk4;
-        r6 += a->unk8;
-        *b = r5;
-        *c = r6;
-        *d = r5 + r31;
-        *e = r6 + r30;
+        x += sprite->centerX;
+        y += sprite->centerY;
+        *b = x;
+        *c = y;
+        *d = x + width;
+        *e = y + height;
     }
+}
+
+int func_80070E9C(char *chr, int fontId, struct FontParams *params)
+{
+    switch (fontId)
+    {
+    case FONT_ASC_20x20P:
+        switch (*chr)
+        {
+        case 0x20:
+            return 10;
+        case 0x49:
+            return 12;
+        }
+        break;
+    case FONT_ASC_72x64:
+        switch (*chr)
+        {
+        case 0x20:
+            return 18;
+        case 0x49:
+            return 30;
+        }
+        break;
+    case FONT_ASC_16x16P:
+        switch (*chr)
+        {
+        case 0x2C:
+        case 0x27:
+        case 0x2E:
+            return 8;
+        case 0x20:  
+            return 9;
+        case 0x49:
+            return 8;
+        case 0x69:
+            return 7;
+        case 0x6A:
+            return 9;
+        case 0x6C:
+            return 9;
+        case 0x6D:
+            return 13;
+        case 0x72:
+            return 10;
+        default:
+            if (*chr >= 0x61 && *chr <= 0x7A)
+                return 11;
+            break;
+        }
+        break;
+    case FONT_NUM_8x10:
+        return 8;
+    }
+    return params->unk2;
+}
+
+float func_80071018(char *chr, int fontId)
+{
+    switch (fontId)
+    {
+    case FONT_ASC_72x64:
+        switch (*chr)
+        {
+        case 0x4F:
+            switch (*(chr + 1))
+            {
+            case 0x41:
+                return 0.949999988079f;
+            case 0x56:
+                return 0.899999976158f;
+            }
+            break;
+        case 0x44:
+            switch (*(chr + 1))
+            {
+            case 0x59:
+                return 0.899999976158f;
+            }
+            break;
+        }
+        break;
+    case FONT_NUM_7x10:
+        return 0.777769982815f;
+    case FONT_RAC_ASC16x16:
+        switch (*chr)
+        {
+        case 0x27:
+            return 0.333333343267f;
+        case 0x23:
+            return 0.555555582047f;
+        default:
+            return 1.0f;
+        }
+        break;
+    case FONT_RAC_RAP_MARK_NUM_S:
+        return 0.899999976158f;
+    case FONT_TGT_MSCORE:
+        return 1.125f;
+    case FONT_TGT_SPEED:
+        return 0.899999976158f;
+    case FONT_TGT_ROUND:
+        return 0.833333313465f;
+    }
+    return 1.0f;
 }

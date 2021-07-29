@@ -192,9 +192,9 @@ lbl_80017A30:
 /* 80017A48 00013968  54 00 04 E2 */	rlwinm r0, r0, 0, 0x13, 0x11
 /* 80017A4C 0001396C  90 0D 9C FC */	stw r0, dipSwitches-_SDA_BASE_(r13)
 lbl_80017A50:
-/* 80017A50 00013970  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80017A50 00013970  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80017A54 00013974  C3 82 84 18 */	lfs f28, lbl_802F2C18-_SDA2_BASE_(r2)
-/* 80017A58 00013978  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80017A58 00013978  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80017A5C 0001397C  C3 A2 84 50 */	lfs f29, lbl_802F2C50-_SDA2_BASE_(r2)
 /* 80017A60 00013980  3C 80 80 1F */	lis r4, cameraInfo@ha
 /* 80017A64 00013984  82 C3 00 0C */	lwz r22, 0xc(r3)
@@ -9740,11 +9740,11 @@ lbl_800207D0:
 /* 80020838 0001C758  FC 40 08 90 */	fmr f2, f1
 /* 8002083C 0001C75C  4B FE 76 19 */	bl mathutil_mtxA_tf_point_xyz
 /* 80020840 0001C760  A8 BE 00 50 */	lha r5, 0x50(r30)
-/* 80020844 0001C764  3C 80 80 20 */	lis r4, lbl_80205988@ha
+/* 80020844 0001C764  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 80020848 0001C768  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
 /* 8002084C 0001C76C  38 05 00 01 */	addi r0, r5, 1
 /* 80020850 0001C770  B0 1E 00 50 */	sth r0, 0x50(r30)
-/* 80020854 0001C774  38 E4 59 88 */	addi r7, r4, lbl_80205988@l
+/* 80020854 0001C774  38 E4 59 88 */	addi r7, r4, spritePoolInfo@l
 /* 80020858 0001C778  38 C3 3B 70 */	addi r6, r3, lbl_801F3B70@l
 /* 8002085C 0001C77C  81 07 00 0C */	lwz r8, 0xc(r7)
 /* 80020860 0001C780  39 20 00 00 */	li r9, 0

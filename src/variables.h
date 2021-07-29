@@ -575,7 +575,7 @@ extern struct PerfInfo perfInfo;
 // extern ? lbl_802037D8;
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
-// extern ? lbl_80205988;
+// extern ? spritePoolInfo;
 // extern ? lbl_80205DA0;
 // extern ? lbl_80205DAC;
 // extern ? lbl_80205E00;
