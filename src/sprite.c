@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
@@ -22,7 +23,8 @@ struct Struct8028CF28
 
 struct SpritePoolInfo
 {
-    u8 filler0[0x34];
+    u8 filler0[0x30];
+    u8 unk30[4];
     u32 unk34;
     s32 unk38;
     s8 *unk3C;  // statusList
@@ -31,30 +33,41 @@ struct SpritePoolInfo
 struct Sprite
 {
     s8 unk0;
-    u8 filler1[1];
+    u8 unk1;
     s8 unk2;
-    u8 filler3[1];
+    s8 unk3;
     float unk4;
     float unk8;
-    u8 fillerC[0xF-0xC];
+    u8 unkC;
+    u8 unkD;
+    u8 unkE;
     s8 unkF;
     u8 filler10[0x30-0x10];
     void (*unk30)();
     void (*unk34)();
     void (*unk38)(struct Sprite *);
     u16 unk3C;
-    u8 filler3E[0x4C-0x3E];
+    u8 filler3E[0x40-0x3E];
+    float unk40;
+    float unk44;
+    u8 filler48[4];
     float unk4C;
-    u32 unk50;
-    void *unk54;
-    u32 unk58;
-    u32 unk5C;
-    u32 unk60;
-    u32 unk64;
-    u8 filler68[0x74-0x68];
+    struct Sprite *unk50;
+    struct Sprite *unk54;
+    s32 unk58;
+    s32 unk5C;
+    s32 unk60;
+    s32 unk64;
+    u8 filler68[0x6C-0x68];
+    float unk6C;
+    u8 filler70[4];
     u32 unk74;
     u32 unk78;
-    u8 filler7C[0xBC-0x7C];
+    float unk7C;
+    float unk80;
+    float unk84;
+    float unk88;
+    char unk8C[0xBC-0x8C];
 };
 
 struct Struct8028FE58
@@ -193,7 +206,7 @@ void func_800700D8(int a)
                 if ((r8->unk74 & (1<<18)) != 0)
                     continue;
             }
-            if (r8->unk50 != 0)
+            if (r8->unk50 != NULL)
                 continue;
             r10 = r5->unk8;
             while ((r6 = r10->unk0) != NULL)
@@ -254,7 +267,7 @@ asm void func_800700D8(int a)
 //arcade: FUN_0c048ea0
 void func_800702C8(struct Sprite *sprite)
 {
-    if (lbl_80205988.unk3C[sprite->unk2] != 0 && sprite->unk50 == 0)
+    if (lbl_80205988.unk3C[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
         g_something_with_sprites(sprite);
         while (sprite->unk54 != NULL)
@@ -265,12 +278,28 @@ void func_800702C8(struct Sprite *sprite)
     }
 }
 
+struct Struct80181CB4_child_child
+{
+    u8 filler0[8];
+    u16 unk8;
+    u16 unkA;
+    u8 fillerC[4];
+};  // size = 0x10
+
+struct Struct80181CB4_child
+{
+    u8 filler0[4];
+    struct Struct80181CB4_child_child *unk4;
+};
+
 struct Struct80181CB4
 {
     s32 unk0;
     void *unk4;
     char *unk8;
-    u8 fillerC[0x18-0xC];
+    u8 fillerC[0x10-0xC];
+    struct Struct80181CB4_child *unk10;
+    u8 filler14[4];
 };
 
 extern struct Struct80181CB4 lbl_80181CB4[];
@@ -964,5 +993,248 @@ void g_something_with_sprites(struct Sprite *a)
         a->unk3C = r29;
         a->unk4 = r24;
         a->unk8 = r23;
+    }
+}
+
+#pragma force_active on
+
+void func_800705A4(int a)
+{
+    func_80026204(a);
+}
+
+void func_800705C4(int a)
+{
+    func_80026260(a);
+}
+
+void func_800705E4(void)
+{
+    int i;
+    for (i = 0; i < 14; i++)
+    {
+        if (i != 0)
+	    func_80026260(i);
+    }
+}
+
+struct Sprite *create_sprite(void)
+{
+    int r31 = func_800309A8(lbl_80205988.unk30, 2);
+    struct Sprite *r30;
+
+    if (r31 < 0)
+        return NULL;
+    r30 = &lbl_8028CF58[r31];
+    memset(r30, 0, sizeof(*r30));
+    r30->unk2 = r31;
+    r30->unk4C = 0.1f;
+    r30->unkC = 0xFF;
+    r30->unkD = 0xFF;
+    r30->unkE = 0xFF;
+    r30->unk40 = 1.0f;
+    r30->unk44 = 1.0f;
+    r30->unk6C = 1.0f;
+    r30->unk58 = 0;
+    r30->unk5C = 0;
+    r30->unk60 = 1;
+    r30->unk64 = 1;
+    r30->unk7C = 0.0f;
+    r30->unk80 = 0.0f;
+    r30->unk84 = 1.0f;
+    r30->unk88 = 1.0f;
+    r30->unk74 = 0x20000;
+    return r30;
+}
+
+struct Sprite *create_sprite_ex(struct Sprite *a)
+{
+    struct Sprite *r3 = create_sprite();
+    if (r3 != NULL)
+    {
+        a->unk54 = r3;
+        r3->unk50 = a;
+        r3->unk74 |= a->unk74 & (1 << 18);
+    }
+    return r3;
+}
+
+void func_80070750(int a)
+{
+    struct Sprite *r30 = lbl_8028CF58;
+    s8 *r29 = lbl_80205988.unk3C;
+    int i;
+
+    for (i = 0; i < 64; i++)
+    {
+        if (*r29 != 0 && r30->unkF == a)
+        {
+            if (r30->unk30 != NULL)
+                r30->unk30(r30);
+            *r29 = 0;
+        }
+        r30++;
+        r29++;
+    }
+}
+
+void func_800707E4(void)
+{
+    struct Sprite *r30 = lbl_8028CF58;
+    s8 *r29 = lbl_80205988.unk3C;
+    int i;
+
+    for (i = 0; i < 64; i++)
+    {
+        if (*r29 != 0)
+        {
+            if (r30->unk30 != NULL)
+                r30->unk30(r30);
+            *r29 = 0;
+        }
+        r30++;
+        r29++;
+    }
+}
+
+struct Sprite *func_8007087C(int a)
+{
+    struct Sprite *sprite = lbl_8028CF58;
+    s8 *r6 = lbl_80205988.unk3C;
+    int i;  // r5, ctr
+
+    for (i = 0; i < 64; i++, sprite++, r6++)
+    {
+        if (*r6 != 0 && sprite->unkF == a)
+            return sprite;
+    }
+    return NULL;
+}
+
+void func_80070A08(struct Sprite *a, s32 *b, s32 *c, s32 *d, s32 *e)
+{
+    int r31 = 0;
+    int r30 = 0;
+    struct Struct801BE4B0 *r29;
+    int r5;
+    int r6;
+    int len;
+
+    if (a->unk38 != 0)
+    {
+        *b = a->unk4 - 50.0f;
+        *c = a->unk8 - 50.0f;
+        *d = a->unk4 + 50.0f;
+        *e = a->unk8 + 50.0f;
+        return;
+    }
+    else
+    {
+        r29 = &lbl_801BE4B0[a->unk1];
+        switch (a->unk0)
+        {
+        case 0:
+            len = strlen(a->unk8C);
+            r31 = len * r29->unk2;
+            r30 = r29->unk3;
+            if (a->unk1 > 0xAE)
+            {
+                r31 = func_80073084(a->unk1, a->unk8C);
+            }
+            else
+            {
+                char *r22 = a->unk8C;
+                while (*r22 != 0)
+                {
+                    float f1;
+                    r31 += func_80070E9C(r22, a->unk1, r29) - r29->unk2;
+                    f1 = func_80071018(r22, a->unk1);
+                    if (f1 != 1.0)
+                        r31 += f1 * r29->unk2 - r29->unk2;
+                    r22++;
+                }
+            }
+            break;
+        case 1:
+        case 2:
+            if (lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk0 == 0)
+            {
+                printf("SPRITE WARNING!! %s's category %s is not load\n",
+                    lbl_80181E04[a->unk3C >> 8][a->unk3C & 0xFF], lbl_80181CB4[a->unk3C >> 8].unk8);
+                *b = a->unk4 - 50.0f;
+                *c = a->unk8 - 50.0f;
+                *d = a->unk4 + 50.0f;
+                *e = a->unk8 + 50.0f;
+                return;
+            }
+            r31 = lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk10->unk4[a->unk3C & 0xFF].unk8;
+            r30 = lbl_80181CB4[(a->unk3C & 0xFF00) >> 8].unk10->unk4[a->unk3C & 0xFF].unkA;
+            break;
+        }
+    }
+
+    r31 *= a->unk40;
+    r30 *= a->unk44;
+    if (a->unk50 == NULL)
+    {
+        r5 = a->unk4;
+        r6 = a->unk8;
+        switch (a->unk3)
+        {
+        case 9:
+        case 3:
+        case 4:
+        case 5:
+            r5 -= r31 / 2;
+            break;
+        case 6:
+        case 7:
+        case 8:
+            r5 -= r31;
+            break;
+        }
+        switch (a->unk3)
+        {
+        case 1:
+        case 4:
+        case 7:
+        case 9:
+            r6 -= r30 / 2;
+            break;
+        case 2:
+        case 5:
+        case 8:
+            r6 -= r30;
+            break;
+        }
+        *b = r5;
+        *c = r6;
+        *d = r5 + r31;
+        *e = r6 + r30;
+    }
+    else
+    {
+        r6 = a->unk50->unk5C;
+        r5 = a->unk50->unk60;
+        switch (a->unk3)
+        {
+        case 1:
+        case 4:
+        case 7:
+        case 9:
+            r6 = (r6 + a->unk50->unk64) / 2 - r30 / 2;
+            break;
+        case 2:
+        case 5:
+        case 8:
+            r6 = a->unk50->unk64 - r30;
+            break;
+        }
+        r5 += a->unk4;
+        r6 += a->unk8;
+        *b = r5;
+        *c = r6;
+        *d = r5 + r31;
+        *e = r6 + r30;
     }
 }
