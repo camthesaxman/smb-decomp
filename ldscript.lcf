@@ -23,6 +23,20 @@ FORCEACTIVE {
     func_8008E5F8 func_8008E64C func_8008E698
     
     mathutil_alignment
+    
+    lbl_8028FE58
+    
+    fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
 }
 
 FORCEFILES { game.o }
+
+/* sprite.s */
+lbl_802F4A70 = 0x802F4A70;
+lbl_802F4A74 = 0x802F4A74;
+lbl_802F4A78 = 0x802F4A78;
+lbl_802F4A80 = 0x802F4A80;
+lbl_801C1264 = 0x801C1264;
+lbl_802F4A90 = 0x802F4A90;
+lbl_802F4A98 = 0x802F4A98;
+lbl_802F4AA4 = 0x802F4AA4;

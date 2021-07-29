@@ -878,12 +878,12 @@ func_8000C5A4:
 /* 8000C5C8 000084E8  3C 60 80 1C */	lis r3, lbl_801B9178@ha
 /* 8000C5CC 000084EC  3B 84 5E 60 */	addi r28, r4, lbl_80205E60@l
 /* 8000C5D0 000084F0  38 63 91 78 */	addi r3, r3, lbl_801B9178@l
-/* 8000C5D4 000084F4  3C 80 80 20 */	lis r4, lbl_80205988@ha
+/* 8000C5D4 000084F4  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 8000C5D8 000084F8  3B A5 EF 00 */	addi r29, r5, cameraInfo@l
 /* 8000C5DC 000084FC  3B 5F 01 E0 */	addi r26, r31, 0x1e0
 /* 8000C5E0 00008500  3B 7F 00 18 */	addi r27, r31, 0x18
 /* 8000C5E4 00008504  3B 23 00 08 */	addi r25, r3, 8
-/* 8000C5E8 00008508  3B C4 59 88 */	addi r30, r4, lbl_80205988@l
+/* 8000C5E8 00008508  3B C4 59 88 */	addi r30, r4, spritePoolInfo@l
 /* 8000C5EC 0000850C  3B 00 00 00 */	li r24, 0
 /* 8000C5F0 00008510  82 ED 9D 38 */	lwz r23, currentBallStructPtr-_SDA_BASE_(r13)
 /* 8000C5F4 00008514  C3 E2 80 E4 */	lfs f31, lbl_802F28E4-_SDA2_BASE_(r2)
@@ -1102,7 +1102,7 @@ lbl_8000C89C:
 .global func_8000C8D4
 func_8000C8D4:
 /* 8000C8D4 000087F4  7C 08 02 A6 */	mflr r0
-/* 8000C8D8 000087F8  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 8000C8D8 000087F8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8000C8DC 000087FC  90 01 00 04 */	stw r0, 4(r1)
 /* 8000C8E0 00008800  3C 80 AA AB */	lis r4, 0xAAAAAAAB@ha
 /* 8000C8E4 00008804  94 21 FF 90 */	stwu r1, -0x70(r1)
@@ -1112,7 +1112,7 @@ func_8000C8D4:
 /* 8000C8F4 00008814  DB 81 00 50 */	stfd f28, 0x50(r1)
 /* 8000C8F8 00008818  DB 61 00 48 */	stfd f27, 0x48(r1)
 /* 8000C8FC 0000881C  BE C1 00 20 */	stmw r22, 0x20(r1)
-/* 8000C900 00008820  3B 83 59 88 */	addi r28, r3, lbl_80205988@l
+/* 8000C900 00008820  3B 83 59 88 */	addi r28, r3, spritePoolInfo@l
 /* 8000C904 00008824  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 8000C908 00008828  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
 /* 8000C90C 0000882C  3C 60 80 1F */	lis r3, cameraInfo@ha
@@ -1615,12 +1615,12 @@ func_8000D018:
 /* 8000D040 00008F60  3B E4 3C C8 */	addi r31, r4, eventInfo@l
 /* 8000D044 00008F64  3B 65 5E 60 */	addi r27, r5, lbl_80205E60@l
 /* 8000D048 00008F68  3C A0 80 1F */	lis r5, lbl_801EEC80@ha
-/* 8000D04C 00008F6C  3C 80 80 20 */	lis r4, lbl_80205988@ha
+/* 8000D04C 00008F6C  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 8000D050 00008F70  3B 86 EF 00 */	addi r28, r6, cameraInfo@l
 /* 8000D054 00008F74  3B A5 EC 80 */	addi r29, r5, lbl_801EEC80@l
 /* 8000D058 00008F78  3B 5F 01 E0 */	addi r26, r31, 0x1e0
 /* 8000D05C 00008F7C  3B 23 00 08 */	addi r25, r3, 8
-/* 8000D060 00008F80  3B C4 59 88 */	addi r30, r4, lbl_80205988@l
+/* 8000D060 00008F80  3B C4 59 88 */	addi r30, r4, spritePoolInfo@l
 /* 8000D064 00008F84  3B 00 00 00 */	li r24, 0
 /* 8000D068 00008F88  82 ED 9D 38 */	lwz r23, currentBallStructPtr-_SDA_BASE_(r13)
 /* 8000D06C 00008F8C  C3 E2 80 E4 */	lfs f31, lbl_802F28E4-_SDA2_BASE_(r2)
@@ -2022,7 +2022,7 @@ func_8000D5E4:
 /* 8000D630 00009550  48 00 08 98 */	b lbl_8000DEC8
 lbl_8000D634:
 /* 8000D634 00009554  38 60 00 02 */	li r3, 2
-/* 8000D638 00009558  48 06 32 45 */	bl func_8007087C
+/* 8000D638 00009558  48 06 32 45 */	bl g_find_sprite_with_probably_not_font
 /* 8000D63C 0000955C  28 03 00 00 */	cmplwi r3, 0
 /* 8000D640 00009560  40 82 00 10 */	bne lbl_8000D650
 /* 8000D644 00009564  C3 E2 80 E4 */	lfs f31, lbl_802F28E4-_SDA2_BASE_(r2)
@@ -3249,7 +3249,7 @@ func_8000E708:
 /* 8000E77C 0000A69C  3C 60 80 20 */	lis r3, lbl_80206BC0@ha
 /* 8000E780 0000A6A0  93 E3 6B C0 */	stw r31, lbl_80206BC0@l(r3)
 /* 8000E784 0000A6A4  4B FF CC D9 */	bl event_clear
-/* 8000E788 0000A6A8  48 06 1E 5D */	bl func_800705E4
+/* 8000E788 0000A6A8  48 06 1E 5D */	bl g_something_with_iteratively_freeing_memory
 /* 8000E78C 0000A6AC  38 60 00 0F */	li r3, 0xf
 /* 8000E790 0000A6B0  4B FF CB 99 */	bl ev_run_init
 /* 8000E794 0000A6B4  38 60 00 10 */	li r3, 0x10
@@ -3260,7 +3260,7 @@ func_8000E708:
 /* 8000E7A8 0000A6C8  48 00 A2 5D */	bl func_80018A04
 /* 8000E7AC 0000A6CC  48 03 63 3D */	bl func_80044AE8
 /* 8000E7B0 0000A6D0  38 60 00 01 */	li r3, 1
-/* 8000E7B4 0000A6D4  48 06 1D F1 */	bl func_800705A4
+/* 8000E7B4 0000A6D4  48 06 1D F1 */	bl call_something_with_bmp_bmp_com
 /* 8000E7B8 0000A6D8  48 06 80 19 */	bl func_800767D0
 /* 8000E7BC 0000A6DC  38 60 00 21 */	li r3, 0x21
 /* 8000E7C0 0000A6E0  48 01 CD E5 */	bl func_8002B5A4
@@ -3713,7 +3713,7 @@ lbl_8000EDFC:
 /* 8000EE0C 0000AD2C  90 04 00 00 */	stw r0, 0(r4)
 /* 8000EE10 0000AD30  41 81 00 14 */	bgt lbl_8000EE24
 /* 8000EE14 0000AD34  38 60 00 03 */	li r3, 3
-/* 8000EE18 0000AD38  48 06 19 39 */	bl func_80070750
+/* 8000EE18 0000AD38  48 06 19 39 */	bl g_dest_sprite_with_font
 /* 8000EE1C 0000AD3C  38 00 00 01 */	li r0, 1
 /* 8000EE20 0000AD40  B0 0D 99 AC */	sth r0, gameSubmodeRequest-_SDA_BASE_(r13)
 lbl_8000EE24:
@@ -3752,9 +3752,9 @@ func_8000EE34:
 /* 8000EE9C 0000ADBC  48 03 5A 89 */	bl load_stage
 /* 8000EEA0 0000ADC0  48 02 11 4D */	bl func_8002FFEC
 /* 8000EEA4 0000ADC4  4B FF C5 B9 */	bl event_clear
-/* 8000EEA8 0000ADC8  48 06 17 3D */	bl func_800705E4
-/* 8000EEAC 0000ADCC  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 8000EEB0 0000ADD0  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 8000EEA8 0000ADC8  48 06 17 3D */	bl g_something_with_iteratively_freeing_memory
+/* 8000EEAC 0000ADCC  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 8000EEB0 0000ADD0  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 8000EEB4 0000ADD4  38 C3 00 0C */	addi r6, r3, 0xc
 /* 8000EEB8 0000ADD8  80 83 00 0C */	lwz r4, 0xc(r3)
 /* 8000EEBC 0000ADDC  3B 80 00 02 */	li r28, 2
@@ -3836,7 +3836,7 @@ func_8000EE34:
 /* 8000EFEC 0000AF0C  9B A4 00 C8 */	stb r29, 0xc8(r4)
 /* 8000EFF0 0000AF10  48 00 9A 15 */	bl func_80018A04
 /* 8000EFF4 0000AF14  38 60 00 01 */	li r3, 1
-/* 8000EFF8 0000AF18  48 06 15 AD */	bl func_800705A4
+/* 8000EFF8 0000AF18  48 06 15 AD */	bl call_something_with_bmp_bmp_com
 /* 8000EFFC 0000AF1C  38 60 00 00 */	li r3, 0
 /* 8000F000 0000AF20  48 06 76 21 */	bl func_80076620
 /* 8000F004 0000AF24  38 60 00 00 */	li r3, 0
@@ -4026,21 +4026,21 @@ lbl_8000F294:
 /* 8000F2A8 0000B1C8  2C 15 00 03 */	cmpwi r21, 3
 /* 8000F2AC 0000B1CC  41 80 FF E8 */	blt lbl_8000F294
 /* 8000F2B0 0000B1D0  38 60 00 1E */	li r3, 0x1e
-/* 8000F2B4 0000B1D4  48 06 15 C9 */	bl func_8007087C
+/* 8000F2B4 0000B1D4  48 06 15 C9 */	bl g_find_sprite_with_probably_not_font
 /* 8000F2B8 0000B1D8  28 03 00 00 */	cmplwi r3, 0
 /* 8000F2BC 0000B1DC  41 82 00 0C */	beq lbl_8000F2C8
 /* 8000F2C0 0000B1E0  38 00 FF FF */	li r0, -1
 /* 8000F2C4 0000B1E4  B0 03 00 10 */	sth r0, 0x10(r3)
 lbl_8000F2C8:
 /* 8000F2C8 0000B1E8  38 60 00 1F */	li r3, 0x1f
-/* 8000F2CC 0000B1EC  48 06 15 B1 */	bl func_8007087C
+/* 8000F2CC 0000B1EC  48 06 15 B1 */	bl g_find_sprite_with_probably_not_font
 /* 8000F2D0 0000B1F0  28 03 00 00 */	cmplwi r3, 0
 /* 8000F2D4 0000B1F4  41 82 00 0C */	beq lbl_8000F2E0
 /* 8000F2D8 0000B1F8  38 00 FF FF */	li r0, -1
 /* 8000F2DC 0000B1FC  B0 03 00 10 */	sth r0, 0x10(r3)
 lbl_8000F2E0:
 /* 8000F2E0 0000B200  38 60 00 20 */	li r3, 0x20
-/* 8000F2E4 0000B204  48 06 15 99 */	bl func_8007087C
+/* 8000F2E4 0000B204  48 06 15 99 */	bl g_find_sprite_with_probably_not_font
 /* 8000F2E8 0000B208  28 03 00 00 */	cmplwi r3, 0
 /* 8000F2EC 0000B20C  41 82 03 44 */	beq lbl_8000F630
 /* 8000F2F0 0000B210  38 00 FF FF */	li r0, -1
@@ -4295,7 +4295,7 @@ lbl_8000F5F8:
 .global lbl_8000F604
 lbl_8000F604:
 /* 8000F604 0000B524  38 60 00 0B */	li r3, 0xb
-/* 8000F608 0000B528  48 06 12 75 */	bl func_8007087C
+/* 8000F608 0000B528  48 06 12 75 */	bl g_find_sprite_with_probably_not_font
 /* 8000F60C 0000B52C  28 03 00 00 */	cmplwi r3, 0
 /* 8000F610 0000B530  41 82 00 20 */	beq lbl_8000F630
 /* 8000F614 0000B534  80 96 00 08 */	lwz r4, 8(r22)
@@ -4306,7 +4306,7 @@ lbl_8000F604:
 .global lbl_8000F628
 lbl_8000F628:
 /* 8000F628 0000B548  38 60 00 0B */	li r3, 0xb
-/* 8000F62C 0000B54C  48 06 11 25 */	bl func_80070750
+/* 8000F62C 0000B54C  48 06 11 25 */	bl g_dest_sprite_with_font
 lbl_8000F630:
 .global lbl_8000F630
 /* 8000F630 0000B550  3A D6 00 0C */	addi r22, r22, 0xc
@@ -4920,21 +4920,21 @@ func_8000FEC8:
 /* 8000FED4 0000BDF4  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 8000FED8 0000BDF8  3B E3 00 00 */	addi r31, r3, 0
 /* 8000FEDC 0000BDFC  38 60 00 25 */	li r3, 0x25
-/* 8000FEE0 0000BE00  48 06 09 9D */	bl func_8007087C
+/* 8000FEE0 0000BE00  48 06 09 9D */	bl g_find_sprite_with_probably_not_font
 /* 8000FEE4 0000BE04  28 03 00 00 */	cmplwi r3, 0
 /* 8000FEE8 0000BE08  41 82 00 0C */	beq lbl_8000FEF4
 /* 8000FEEC 0000BE0C  38 00 FF FF */	li r0, -1
 /* 8000FEF0 0000BE10  90 03 00 48 */	stw r0, 0x48(r3)
 lbl_8000FEF4:
 /* 8000FEF4 0000BE14  38 60 00 26 */	li r3, 0x26
-/* 8000FEF8 0000BE18  48 06 09 85 */	bl func_8007087C
+/* 8000FEF8 0000BE18  48 06 09 85 */	bl g_find_sprite_with_probably_not_font
 /* 8000FEFC 0000BE1C  28 03 00 00 */	cmplwi r3, 0
 /* 8000FF00 0000BE20  41 82 00 0C */	beq lbl_8000FF0C
 /* 8000FF04 0000BE24  38 00 FF FF */	li r0, -1
 /* 8000FF08 0000BE28  90 03 00 48 */	stw r0, 0x48(r3)
 lbl_8000FF0C:
 /* 8000FF0C 0000BE2C  38 60 00 27 */	li r3, 0x27
-/* 8000FF10 0000BE30  48 06 09 6D */	bl func_8007087C
+/* 8000FF10 0000BE30  48 06 09 6D */	bl g_find_sprite_with_probably_not_font
 /* 8000FF14 0000BE34  28 03 00 00 */	cmplwi r3, 0
 /* 8000FF18 0000BE38  41 82 00 0C */	beq lbl_8000FF24
 /* 8000FF1C 0000BE3C  38 00 FF FF */	li r0, -1
@@ -4953,21 +4953,21 @@ lbl_8000FF24:
 /* 8000FF4C 0000BE6C  38 A0 00 00 */	li r5, 0
 /* 8000FF50 0000BE70  48 06 59 B1 */	bl func_80075900
 /* 8000FF54 0000BE74  38 60 00 1E */	li r3, 0x1e
-/* 8000FF58 0000BE78  48 06 09 25 */	bl func_8007087C
+/* 8000FF58 0000BE78  48 06 09 25 */	bl g_find_sprite_with_probably_not_font
 /* 8000FF5C 0000BE7C  28 03 00 00 */	cmplwi r3, 0
 /* 8000FF60 0000BE80  41 82 00 0C */	beq lbl_8000FF6C
 /* 8000FF64 0000BE84  38 00 FF FF */	li r0, -1
 /* 8000FF68 0000BE88  B0 03 00 10 */	sth r0, 0x10(r3)
 lbl_8000FF6C:
 /* 8000FF6C 0000BE8C  38 60 00 1F */	li r3, 0x1f
-/* 8000FF70 0000BE90  48 06 09 0D */	bl func_8007087C
+/* 8000FF70 0000BE90  48 06 09 0D */	bl g_find_sprite_with_probably_not_font
 /* 8000FF74 0000BE94  28 03 00 00 */	cmplwi r3, 0
 /* 8000FF78 0000BE98  41 82 00 0C */	beq lbl_8000FF84
 /* 8000FF7C 0000BE9C  38 00 FF FF */	li r0, -1
 /* 8000FF80 0000BEA0  B0 03 00 10 */	sth r0, 0x10(r3)
 lbl_8000FF84:
 /* 8000FF84 0000BEA4  38 60 00 20 */	li r3, 0x20
-/* 8000FF88 0000BEA8  48 06 08 F5 */	bl func_8007087C
+/* 8000FF88 0000BEA8  48 06 08 F5 */	bl g_find_sprite_with_probably_not_font
 /* 8000FF8C 0000BEAC  28 03 00 00 */	cmplwi r3, 0
 /* 8000FF90 0000BEB0  41 82 00 0C */	beq lbl_8000FF9C
 /* 8000FF94 0000BEB4  38 00 FF FF */	li r0, -1
@@ -4978,7 +4978,7 @@ lbl_8000FF9C:
 /* 8000FFA4 0000BEC4  38 A0 00 00 */	li r5, 0
 /* 8000FFA8 0000BEC8  48 06 59 59 */	bl func_80075900
 /* 8000FFAC 0000BECC  38 60 00 11 */	li r3, 0x11
-/* 8000FFB0 0000BED0  48 06 08 CD */	bl func_8007087C
+/* 8000FFB0 0000BED0  48 06 08 CD */	bl g_find_sprite_with_probably_not_font
 /* 8000FFB4 0000BED4  28 03 00 00 */	cmplwi r3, 0
 /* 8000FFB8 0000BED8  41 82 00 0C */	beq lbl_8000FFC4
 /* 8000FFBC 0000BEDC  38 00 00 01 */	li r0, 1
@@ -5101,7 +5101,7 @@ func_80010114:
 /* 80010170 0000C090  3C 60 80 20 */	lis r3, lbl_80206BC0@ha
 /* 80010174 0000C094  93 E3 6B C0 */	stw r31, lbl_80206BC0@l(r3)
 /* 80010178 0000C098  4B FF B2 E5 */	bl event_clear
-/* 8001017C 0000C09C  48 06 04 69 */	bl func_800705E4
+/* 8001017C 0000C09C  48 06 04 69 */	bl g_something_with_iteratively_freeing_memory
 /* 80010180 0000C0A0  38 60 00 10 */	li r3, 0x10
 /* 80010184 0000C0A4  4B FF B1 A5 */	bl ev_run_init
 /* 80010188 0000C0A8  38 60 00 12 */	li r3, 0x12
@@ -5110,7 +5110,7 @@ func_80010114:
 /* 80010194 0000C0B4  48 00 88 71 */	bl func_80018A04
 /* 80010198 0000C0B8  48 03 49 51 */	bl func_80044AE8
 /* 8001019C 0000C0BC  38 60 00 01 */	li r3, 1
-/* 800101A0 0000C0C0  48 06 04 05 */	bl func_800705A4
+/* 800101A0 0000C0C0  48 06 04 05 */	bl call_something_with_bmp_bmp_com
 /* 800101A4 0000C0C4  38 60 00 01 */	li r3, 1
 /* 800101A8 0000C0C8  48 06 6C 25 */	bl func_80076DCC
 /* 800101AC 0000C0CC  80 0D 9C FC */	lwz r0, dipSwitches-_SDA_BASE_(r13)
@@ -5437,7 +5437,7 @@ func_80010560:
 /* 80010660 0000C580  93 A4 00 78 */	stw r29, 0x78(r4)
 /* 80010664 0000C584  48 00 83 A1 */	bl func_80018A04
 /* 80010668 0000C588  38 60 00 05 */	li r3, 5
-/* 8001066C 0000C58C  48 05 FF 39 */	bl func_800705A4
+/* 8001066C 0000C58C  48 05 FF 39 */	bl call_something_with_bmp_bmp_com
 /* 80010670 0000C590  38 60 00 00 */	li r3, 0
 /* 80010674 0000C594  48 06 5F AD */	bl func_80076620
 /* 80010678 0000C598  38 60 00 00 */	li r3, 0
@@ -5826,7 +5826,7 @@ lbl_80010B60:
 /* 80010BB8 0000CAD8  38 80 00 02 */	li r4, 2
 /* 80010BBC 0000CADC  48 01 C3 7D */	bl func_8002CF38
 /* 80010BC0 0000CAE0  38 60 00 11 */	li r3, 0x11
-/* 80010BC4 0000CAE4  48 05 FC B9 */	bl func_8007087C
+/* 80010BC4 0000CAE4  48 05 FC B9 */	bl g_find_sprite_with_probably_not_font
 /* 80010BC8 0000CAE8  28 03 00 00 */	cmplwi r3, 0
 /* 80010BCC 0000CAEC  41 82 00 0C */	beq lbl_80010BD8
 /* 80010BD0 0000CAF0  38 00 00 01 */	li r0, 1
@@ -5897,7 +5897,7 @@ lbl_80010C9C:
 /* 80010CC0 0000CBE0  B0 0D 9D 78 */	sth r0, stageId-_SDA_BASE_(r13)
 /* 80010CC4 0000CBE4  4B FF A7 99 */	bl event_clear
 /* 80010CC8 0000CBE8  38 60 00 03 */	li r3, 3
-/* 80010CCC 0000CBEC  48 05 F8 D9 */	bl func_800705A4
+/* 80010CCC 0000CBEC  48 05 F8 D9 */	bl call_something_with_bmp_bmp_com
 /* 80010CD0 0000CBF0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80010CD4 0000CBF4  3B A3 EC 20 */	addi r29, r3, modeCtrl@l
 /* 80010CD8 0000CBF8  93 FD 00 28 */	stw r31, 0x28(r29)
@@ -5957,7 +5957,7 @@ lbl_80010C9C:
 /* 80010DB0 0000CCD0  38 60 00 04 */	li r3, 4
 /* 80010DB4 0000CCD4  48 07 38 FD */	bl func_800846B0
 /* 80010DB8 0000CCD8  38 60 00 05 */	li r3, 5
-/* 80010DBC 0000CCDC  48 01 54 49 */	bl func_80026204
+/* 80010DBC 0000CCDC  48 01 54 49 */	bl g_something_with_bmp_bmp_com
 /* 80010DC0 0000CCE0  80 1E 00 00 */	lwz r0, 0(r30)
 /* 80010DC4 0000CCE4  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80010DC8 0000CCE8  38 A0 00 78 */	li r5, 0x78
@@ -6031,7 +6031,7 @@ func_80010EA8:
 /* 80010EC8 0000CDE8  2C 00 00 78 */	cmpwi r0, 0x78
 /* 80010ECC 0000CDEC  40 82 00 2C */	bne lbl_80010EF8
 /* 80010ED0 0000CDF0  38 60 00 0F */	li r3, 0xf
-/* 80010ED4 0000CDF4  48 05 F9 A9 */	bl func_8007087C
+/* 80010ED4 0000CDF4  48 05 F9 A9 */	bl g_find_sprite_with_probably_not_font
 /* 80010ED8 0000CDF8  28 03 00 00 */	cmplwi r3, 0
 /* 80010EDC 0000CDFC  41 82 00 0C */	beq lbl_80010EE8
 /* 80010EE0 0000CE00  38 00 00 0F */	li r0, 0xf
@@ -6273,9 +6273,9 @@ func_80011238:
 /* 80011248 0000D168  94 21 FF F8 */	stwu r1, -8(r1)
 /* 8001124C 0000D16C  90 03 EC 20 */	stw r0, modeCtrl@l(r3)
 /* 80011250 0000D170  38 60 00 02 */	li r3, 2
-/* 80011254 0000D174  48 05 F4 FD */	bl func_80070750
+/* 80011254 0000D174  48 05 F4 FD */	bl g_dest_sprite_with_font
 /* 80011258 0000D178  38 60 00 12 */	li r3, 0x12
-/* 8001125C 0000D17C  48 05 F4 F5 */	bl func_80070750
+/* 8001125C 0000D17C  48 05 F4 F5 */	bl g_dest_sprite_with_font
 /* 80011260 0000D180  38 00 00 0C */	li r0, 0xc
 /* 80011264 0000D184  B0 0D 99 AC */	sth r0, gameSubmodeRequest-_SDA_BASE_(r13)
 /* 80011268 0000D188  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -6334,22 +6334,22 @@ lbl_80011314:
 /* 80011328 0000D248  48 00 00 F4 */	b lbl_8001141C
 lbl_8001132C:
 /* 8001132C 0000D24C  38 60 00 00 */	li r3, 0
-/* 80011330 0000D250  48 05 F4 21 */	bl func_80070750
+/* 80011330 0000D250  48 05 F4 21 */	bl g_dest_sprite_with_font
 /* 80011334 0000D254  38 60 00 25 */	li r3, 0x25
-/* 80011338 0000D258  48 05 F4 19 */	bl func_80070750
+/* 80011338 0000D258  48 05 F4 19 */	bl g_dest_sprite_with_font
 /* 8001133C 0000D25C  38 60 00 27 */	li r3, 0x27
-/* 80011340 0000D260  48 05 F4 11 */	bl func_80070750
+/* 80011340 0000D260  48 05 F4 11 */	bl g_dest_sprite_with_font
 /* 80011344 0000D264  38 60 00 01 */	li r3, 1
 /* 80011348 0000D268  48 06 59 0D */	bl func_80076C54
 /* 8001134C 0000D26C  38 60 00 00 */	li r3, 0
 /* 80011350 0000D270  48 07 73 91 */	bl func_800886E0
 /* 80011354 0000D274  38 60 00 11 */	li r3, 0x11
-/* 80011358 0000D278  48 05 F5 25 */	bl func_8007087C
+/* 80011358 0000D278  48 05 F5 25 */	bl g_find_sprite_with_probably_not_font
 /* 8001135C 0000D27C  28 03 00 00 */	cmplwi r3, 0
 /* 80011360 0000D280  41 82 00 14 */	beq lbl_80011374
 /* 80011364 0000D284  3B C0 00 01 */	li r30, 1
 /* 80011368 0000D288  38 60 00 11 */	li r3, 0x11
-/* 8001136C 0000D28C  48 05 F5 11 */	bl func_8007087C
+/* 8001136C 0000D28C  48 05 F5 11 */	bl g_find_sprite_with_probably_not_font
 /* 80011370 0000D290  93 C3 00 48 */	stw r30, 0x48(r3)
 lbl_80011374:
 /* 80011374 0000D294  3C 60 80 1F */	lis r3, lbl_801EED3C@ha
@@ -6720,9 +6720,9 @@ lbl_80011884:
 /* 800118C0 0000D7E0  38 80 00 02 */	li r4, 2
 /* 800118C4 0000D7E4  48 01 B6 75 */	bl func_8002CF38
 lbl_800118C8:
-/* 800118C8 0000D7E8  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800118C8 0000D7E8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800118CC 0000D7EC  83 CD 9D 38 */	lwz r30, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800118D0 0000D7F0  3B E3 59 88 */	addi r31, r3, lbl_80205988@l
+/* 800118D0 0000D7F0  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 800118D4 0000D7F4  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 800118D8 0000D7F8  83 9F 00 0C */	lwz r28, 0xc(r31)
 /* 800118DC 0000D7FC  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -6774,7 +6774,7 @@ lbl_80011944:
 /* 80011988 0000D8A8  38 60 00 01 */	li r3, 1
 /* 8001198C 0000D8AC  48 07 76 49 */	bl func_80088FD4
 /* 80011990 0000D8B0  38 60 00 03 */	li r3, 3
-/* 80011994 0000D8B4  48 05 ED BD */	bl func_80070750
+/* 80011994 0000D8B4  48 05 ED BD */	bl g_dest_sprite_with_font
 /* 80011998 0000D8B8  38 60 00 03 */	li r3, 3
 /* 8001199C 0000D8BC  48 05 EC 29 */	bl func_800705C4
 /* 800119A0 0000D8C0  48 00 69 2D */	bl func_800182CC
@@ -7001,17 +7001,17 @@ func_80011BE8:
 /* 80011C78 0000DB98  38 80 00 02 */	li r4, 2
 /* 80011C7C 0000DB9C  48 01 B2 BD */	bl func_8002CF38
 /* 80011C80 0000DBA0  38 60 00 11 */	li r3, 0x11
-/* 80011C84 0000DBA4  48 05 EB F9 */	bl func_8007087C
+/* 80011C84 0000DBA4  48 05 EB F9 */	bl g_find_sprite_with_probably_not_font
 /* 80011C88 0000DBA8  28 03 00 00 */	cmplwi r3, 0
 /* 80011C8C 0000DBAC  41 82 00 28 */	beq lbl_80011CB4
 /* 80011C90 0000DBB0  38 60 00 11 */	li r3, 0x11
-/* 80011C94 0000DBB4  48 05 EB E9 */	bl func_8007087C
+/* 80011C94 0000DBB4  48 05 EB E9 */	bl g_find_sprite_with_probably_not_font
 /* 80011C98 0000DBB8  80 03 00 48 */	lwz r0, 0x48(r3)
 /* 80011C9C 0000DBBC  2C 00 00 00 */	cmpwi r0, 0
 /* 80011CA0 0000DBC0  40 82 00 14 */	bne lbl_80011CB4
 /* 80011CA4 0000DBC4  3B E0 00 01 */	li r31, 1
 /* 80011CA8 0000DBC8  38 60 00 11 */	li r3, 0x11
-/* 80011CAC 0000DBCC  48 05 EB D1 */	bl func_8007087C
+/* 80011CAC 0000DBCC  48 05 EB D1 */	bl g_find_sprite_with_probably_not_font
 /* 80011CB0 0000DBD0  93 E3 00 48 */	stw r31, 0x48(r3)
 lbl_80011CB4:
 /* 80011CB4 0000DBD4  38 00 00 0A */	li r0, 0xa
@@ -7079,9 +7079,9 @@ lbl_80011D78:
 .global func_80011D90
 func_80011D90:
 /* 80011D90 0000DCB0  7C 08 02 A6 */	mflr r0
-/* 80011D94 0000DCB4  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80011D94 0000DCB4  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80011D98 0000DCB8  90 01 00 04 */	stw r0, 4(r1)
-/* 80011D9C 0000DCBC  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80011D9C 0000DCBC  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80011DA0 0000DCC0  38 00 00 02 */	li r0, 2
 /* 80011DA4 0000DCC4  94 21 FF F8 */	stwu r1, -8(r1)
 /* 80011DA8 0000DCC8  39 03 00 0C */	addi r8, r3, 0xc
@@ -7595,7 +7595,7 @@ func_80012524:
 /* 80012528 0000E448  90 01 00 04 */	stw r0, 4(r1)
 /* 8001252C 0000E44C  94 21 FF F8 */	stwu r1, -8(r1)
 /* 80012530 0000E450  4B FF 8F 2D */	bl event_clear
-/* 80012534 0000E454  48 05 E0 B1 */	bl func_800705E4
+/* 80012534 0000E454  48 05 E0 B1 */	bl g_something_with_iteratively_freeing_memory
 /* 80012538 0000E458  A8 0D 99 AE */	lha r0, gameSubmode-_SDA_BASE_(r13)
 /* 8001253C 0000E45C  3C 60 80 17 */	lis r3, lbl_801755AC@ha
 /* 80012540 0000E460  38 63 55 AC */	addi r3, r3, lbl_801755AC@l
@@ -7706,7 +7706,7 @@ func_8001267C:
 /* 800126A8 0000E5C8  90 64 00 08 */	stw r3, 8(r4)
 /* 800126AC 0000E5CC  90 04 00 2C */	stw r0, 0x2c(r4)
 /* 800126B0 0000E5D0  4B FF 8D AD */	bl event_clear
-/* 800126B4 0000E5D4  48 05 DF 31 */	bl func_800705E4
+/* 800126B4 0000E5D4  48 05 DF 31 */	bl g_something_with_iteratively_freeing_memory
 /* 800126B8 0000E5D8  48 01 23 1D */	bl func_800249D4
 /* 800126BC 0000E5DC  48 03 22 65 */	bl func_80044920
 /* 800126C0 0000E5E0  38 60 00 03 */	li r3, 3
@@ -7714,10 +7714,10 @@ func_8001267C:
 /* 800126C8 0000E5E8  38 60 00 12 */	li r3, 0x12
 /* 800126CC 0000E5EC  4B FF 8C 5D */	bl ev_run_init
 /* 800126D0 0000E5F0  38 60 00 05 */	li r3, 5
-/* 800126D4 0000E5F4  48 05 DE D1 */	bl func_800705A4
-/* 800126D8 0000E5F8  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800126D4 0000E5F4  48 05 DE D1 */	bl call_something_with_bmp_bmp_com
+/* 800126D8 0000E5F8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800126DC 0000E5FC  80 ED 9D 38 */	lwz r7, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800126E0 0000E600  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 800126E0 0000E600  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 800126E4 0000E604  38 A3 00 0C */	addi r5, r3, 0xc
 /* 800126E8 0000E608  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 800126EC 0000E60C  81 03 00 0C */	lwz r8, 0xc(r3)
@@ -7922,17 +7922,17 @@ func_800129B0:
 /* 800129B4 0000E8D4  90 01 00 04 */	stw r0, 4(r1)
 /* 800129B8 0000E8D8  94 21 FF F8 */	stwu r1, -8(r1)
 /* 800129BC 0000E8DC  4B FF 8A A1 */	bl event_clear
-/* 800129C0 0000E8E0  48 05 DC 25 */	bl func_800705E4
+/* 800129C0 0000E8E0  48 05 DC 25 */	bl g_something_with_iteratively_freeing_memory
 /* 800129C4 0000E8E4  48 03 1F 5D */	bl func_80044920
 /* 800129C8 0000E8E8  38 60 00 03 */	li r3, 3
 /* 800129CC 0000E8EC  4B FF 89 5D */	bl ev_run_init
 /* 800129D0 0000E8F0  38 60 00 12 */	li r3, 0x12
 /* 800129D4 0000E8F4  4B FF 89 55 */	bl ev_run_init
 /* 800129D8 0000E8F8  38 60 00 05 */	li r3, 5
-/* 800129DC 0000E8FC  48 05 DB C9 */	bl func_800705A4
-/* 800129E0 0000E900  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800129DC 0000E8FC  48 05 DB C9 */	bl call_something_with_bmp_bmp_com
+/* 800129E0 0000E900  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800129E4 0000E904  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800129E8 0000E908  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800129E8 0000E908  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800129EC 0000E90C  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 800129F0 0000E910  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 800129F4 0000E914  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -8082,11 +8082,11 @@ lbl_80012C04:
 /* 80012C04 0000EB24  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 80012C08 0000EB28  38 83 3A 58 */	addi r4, r3, lbl_801F3A58@l
 /* 80012C0C 0000EB2C  80 04 00 00 */	lwz r0, 0(r4)
-/* 80012C10 0000EB30  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80012C10 0000EB30  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80012C14 0000EB34  3C A0 80 20 */	lis r5, lbl_80205E60@ha
 /* 80012C18 0000EB38  60 00 01 08 */	ori r0, r0, 0x108
 /* 80012C1C 0000EB3C  90 04 00 00 */	stw r0, 0(r4)
-/* 80012C20 0000EB40  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 80012C20 0000EB40  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80012C24 0000EB44  38 05 5E 60 */	addi r0, r5, lbl_80205E60@l
 /* 80012C28 0000EB48  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
 /* 80012C2C 0000EB4C  7C 05 03 78 */	mr r5, r0
@@ -8278,7 +8278,7 @@ lbl_80012EC4:
 /* 80012ECC 0000EDEC  2C 00 00 78 */	cmpwi r0, 0x78
 /* 80012ED0 0000EDF0  40 82 00 2C */	bne lbl_80012EFC
 /* 80012ED4 0000EDF4  38 60 00 0F */	li r3, 0xf
-/* 80012ED8 0000EDF8  48 05 D9 A5 */	bl func_8007087C
+/* 80012ED8 0000EDF8  48 05 D9 A5 */	bl g_find_sprite_with_probably_not_font
 /* 80012EDC 0000EDFC  28 03 00 00 */	cmplwi r3, 0
 /* 80012EE0 0000EE00  41 82 00 0C */	beq lbl_80012EEC
 /* 80012EE4 0000EE04  38 00 00 0F */	li r0, 0xf
@@ -8302,9 +8302,9 @@ lbl_80012EFC:
 /* 80012F24 0000EE44  FC 00 08 28 */	fsub f0, f0, f1
 /* 80012F28 0000EE48  FC 02 00 00 */	fcmpu cr0, f2, f0
 /* 80012F2C 0000EE4C  40 82 00 5C */	bne lbl_80012F88
-/* 80012F30 0000EE50  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80012F30 0000EE50  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80012F34 0000EE54  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80012F38 0000EE58  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 80012F38 0000EE58  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80012F3C 0000EE5C  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80012F40 0000EE60  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 80012F44 0000EE64  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -8418,8 +8418,8 @@ lbl_80013094:
 /* 800130C0 0000EFE0  48 03 5E 99 */	bl func_80048F58
 lbl_800130C4:
 /* 800130C4 0000EFE4  48 03 5E B1 */	bl func_80048F74
-/* 800130C8 0000EFE8  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 800130CC 0000EFEC  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800130C8 0000EFE8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800130CC 0000EFEC  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800130D0 0000EFF0  3C 60 80 20 */	lis r3, lbl_80206BF0@ha
 /* 800130D4 0000EFF4  80 C4 00 0C */	lwz r6, 0xc(r4)
 /* 800130D8 0000EFF8  38 03 6B F0 */	addi r0, r3, lbl_80206BF0@l
@@ -8568,8 +8568,8 @@ lbl_800132DC:
 /* 800132E0 0000F200  41 82 00 70 */	beq lbl_80013350
 /* 800132E4 0000F204  54 80 07 FA */	rlwinm r0, r4, 0, 0x1f, 0x1d
 /* 800132E8 0000F208  90 03 00 00 */	stw r0, 0(r3)
-/* 800132EC 0000F20C  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 800132F0 0000F210  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800132EC 0000F20C  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800132F0 0000F210  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800132F4 0000F214  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 800132F8 0000F218  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
 /* 800132FC 0000F21C  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -8745,9 +8745,9 @@ lbl_80013538:
 lbl_80013558:
 /* 80013558 0000F478  2C 1F 00 00 */	cmpwi r31, 0
 /* 8001355C 0000F47C  40 82 00 8C */	bne lbl_800135E8
-/* 80013560 0000F480  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80013560 0000F480  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80013564 0000F484  83 CD 9D 38 */	lwz r30, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80013568 0000F488  3B 63 59 88 */	addi r27, r3, lbl_80205988@l
+/* 80013568 0000F488  3B 63 59 88 */	addi r27, r3, spritePoolInfo@l
 /* 8001356C 0000F48C  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80013570 0000F490  83 BB 00 0C */	lwz r29, 0xc(r27)
 /* 80013574 0000F494  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -8871,14 +8871,14 @@ lbl_80013728:
 /* 80013728 0000F648  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8001372C 0000F64C  38 C3 EC 20 */	addi r6, r3, modeCtrl@l
 /* 80013730 0000F650  80 06 00 08 */	lwz r0, 8(r6)
-/* 80013734 0000F654  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80013734 0000F654  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80013738 0000F658  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 8001373C 0000F65C  54 00 05 A8 */	rlwinm r0, r0, 0, 0x16, 0x14
 /* 80013740 0000F660  90 06 00 08 */	stw r0, 8(r6)
 /* 80013744 0000F664  38 A0 00 1E */	li r5, 0x1e
 /* 80013748 0000F668  38 04 5E 60 */	addi r0, r4, lbl_80205E60@l
 /* 8001374C 0000F66C  90 A6 00 18 */	stw r5, 0x18(r6)
-/* 80013750 0000F670  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80013750 0000F670  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80013754 0000F674  7C 04 03 78 */	mr r4, r0
 /* 80013758 0000F678  80 AD 9D 38 */	lwz r5, currentBallStructPtr-_SDA_BASE_(r13)
 /* 8001375C 0000F67C  38 E0 00 00 */	li r7, 0
@@ -8901,8 +8901,8 @@ lbl_80013790:
 /* 80013794 0000F6B4  7C 07 00 00 */	cmpw r7, r0
 /* 80013798 0000F6B8  41 80 FF D0 */	blt lbl_80013768
 /* 8001379C 0000F6BC  90 AD 9D 38 */	stw r5, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800137A0 0000F6C0  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 800137A4 0000F6C4  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800137A0 0000F6C0  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800137A4 0000F6C4  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800137A8 0000F6C8  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 800137AC 0000F6CC  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
 /* 800137B0 0000F6D0  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -8925,9 +8925,9 @@ lbl_800137E8:
 /* 800137E8 0000F708  80 04 00 08 */	lwz r0, 8(r4)
 /* 800137EC 0000F70C  7C 08 00 00 */	cmpw r8, r0
 /* 800137F0 0000F710  41 80 FF D8 */	blt lbl_800137C8
-/* 800137F4 0000F714  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800137F4 0000F714  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800137F8 0000F718  90 CD 9D 38 */	stw r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800137FC 0000F71C  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800137FC 0000F71C  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80013800 0000F720  3C 60 80 20 */	lis r3, lbl_80206BF0@ha
 /* 80013804 0000F724  80 C4 00 0C */	lwz r6, 0xc(r4)
 /* 80013808 0000F728  38 03 6B F0 */	addi r0, r3, lbl_80206BF0@l
@@ -9059,8 +9059,8 @@ func_800139A8:
 /* 800139DC 0000F8FC  54 00 07 34 */	rlwinm r0, r0, 0, 0x1c, 0x1a
 /* 800139E0 0000F900  90 03 00 00 */	stw r0, lbl_801F0000@l(r3)
 lbl_800139E4:
-/* 800139E4 0000F904  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 800139E8 0000F908  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800139E4 0000F904  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800139E8 0000F908  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800139EC 0000F90C  3B C4 00 0C */	addi r30, r4, 0xc
 /* 800139F0 0000F910  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 800139F4 0000F914  83 64 00 0C */	lwz r27, 0xc(r4)
@@ -9426,9 +9426,9 @@ lbl_80013F04:
 lbl_80013F08:
 /* 80013F08 0000FE28  A8 6D 9D 78 */	lha r3, stageId-_SDA_BASE_(r13)
 /* 80013F0C 0000FE2C  48 00 E9 9D */	bl func_800228A8
-/* 80013F10 0000FE30  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80013F10 0000FE30  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80013F14 0000FE34  80 ED 9D 38 */	lwz r7, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80013F18 0000FE38  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80013F18 0000FE38  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80013F1C 0000FE3C  38 A3 00 0C */	addi r5, r3, 0xc
 /* 80013F20 0000FE40  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 80013F24 0000FE44  81 03 00 0C */	lwz r8, 0xc(r3)
@@ -9779,9 +9779,9 @@ func_800143C4:
 /* 8001440C 0001032C  4B FF 6F 89 */	bl ev_run_dest
 /* 80014410 00010330  38 60 00 0B */	li r3, 0xb
 /* 80014414 00010334  4B FF 6F 81 */	bl ev_run_dest
-/* 80014418 00010338  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80014418 00010338  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8001441C 0001033C  80 AD 9D 38 */	lwz r5, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80014420 00010340  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80014420 00010340  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80014424 00010344  3B E3 00 0C */	addi r31, r3, 0xc
 /* 80014428 00010348  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 8001442C 0001034C  80 C3 00 0C */	lwz r6, 0xc(r3)
@@ -10094,9 +10094,9 @@ lbl_80014850:
 /* 8001487C 0001079C  FC 02 00 00 */	fcmpu cr0, f2, f0
 /* 80014880 000107A0  40 82 01 78 */	bne lbl_800149F8
 /* 80014884 000107A4  48 03 48 D5 */	bl func_80049158
-/* 80014888 000107A8  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80014888 000107A8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8001488C 000107AC  80 ED 9D 38 */	lwz r7, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80014890 000107B0  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80014890 000107B0  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80014894 000107B4  38 A3 00 0C */	addi r5, r3, 0xc
 /* 80014898 000107B8  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 8001489C 000107BC  81 03 00 0C */	lwz r8, 0xc(r3)
@@ -10208,9 +10208,9 @@ lbl_800149F8:
 /* 80014A20 00010940  FC 00 08 28 */	fsub f0, f0, f1
 /* 80014A24 00010944  FC 02 00 00 */	fcmpu cr0, f2, f0
 /* 80014A28 00010948  40 82 01 4C */	bne lbl_80014B74
-/* 80014A2C 0001094C  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80014A2C 0001094C  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80014A30 00010950  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80014A34 00010954  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 80014A34 00010954  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80014A38 00010958  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80014A3C 0001095C  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 80014A40 00010960  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -10438,9 +10438,9 @@ func_80014D24:
 /* 80014D64 00010C84  4B FF 66 31 */	bl ev_run_dest
 /* 80014D68 00010C88  38 60 00 01 */	li r3, 1
 /* 80014D6C 00010C8C  48 06 F9 45 */	bl func_800846B0
-/* 80014D70 00010C90  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80014D70 00010C90  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80014D74 00010C94  80 ED 9D 38 */	lwz r7, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80014D78 00010C98  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80014D78 00010C98  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80014D7C 00010C9C  38 A3 00 0C */	addi r5, r3, 0xc
 /* 80014D80 00010CA0  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 80014D84 00010CA4  81 03 00 0C */	lwz r8, 0xc(r3)
@@ -10537,9 +10537,9 @@ func_80014E78:
 /* 80014EC4 00010DE4  40 82 00 08 */	bne lbl_80014ECC
 /* 80014EC8 00010DE8  48 03 42 91 */	bl func_80049158
 lbl_80014ECC:
-/* 80014ECC 00010DEC  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80014ECC 00010DEC  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80014ED0 00010DF0  83 8D 9D 38 */	lwz r28, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80014ED4 00010DF4  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 80014ED4 00010DF4  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80014ED8 00010DF8  3B E4 00 0C */	addi r31, r4, 0xc
 /* 80014EDC 00010DFC  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80014EE0 00010E00  83 64 00 0C */	lwz r27, 0xc(r4)
@@ -10708,9 +10708,9 @@ lbl_80015118:
 /* 80015130 00011050  3B C3 00 08 */	addi r30, r3, 8
 /* 80015134 00011054  54 00 06 75 */	rlwinm. r0, r0, 0, 0x19, 0x1a
 /* 80015138 00011058  40 82 00 5C */	bne lbl_80015194
-/* 8001513C 0001105C  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 8001513C 0001105C  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80015140 00011060  83 8D 9D 38 */	lwz r28, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80015144 00011064  3B E3 59 88 */	addi r31, r3, lbl_80205988@l
+/* 80015144 00011064  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 80015148 00011068  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 8001514C 0001106C  83 7F 00 0C */	lwz r27, 0xc(r31)
 /* 80015150 00011070  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -10957,8 +10957,8 @@ func_80015480:
 /* 800154A8 000113C8  41 82 00 08 */	beq lbl_800154B0
 /* 800154AC 000113CC  48 00 00 58 */	b lbl_80015504
 lbl_800154B0:
-/* 800154B0 000113D0  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 800154B4 000113D4  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 800154B0 000113D0  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800154B4 000113D4  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 800154B8 000113D8  80 83 00 0C */	lwz r4, 0xc(r3)
 /* 800154BC 000113DC  38 A0 00 00 */	li r5, 0
 /* 800154C0 000113E0  38 E3 00 0C */	addi r7, r3, 0xc
@@ -11097,9 +11097,9 @@ lbl_80015620:
 /* 800156B0 000115D0  4B FF 5C 79 */	bl ev_run_init
 /* 800156B4 000115D4  38 60 00 0B */	li r3, 0xb
 /* 800156B8 000115D8  4B FF 5C 71 */	bl ev_run_init
-/* 800156BC 000115DC  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800156BC 000115DC  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800156C0 000115E0  80 AD 9D 38 */	lwz r5, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800156C4 000115E4  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 800156C4 000115E4  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 800156C8 000115E8  3B E3 00 0C */	addi r31, r3, 0xc
 /* 800156CC 000115EC  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 800156D0 000115F0  80 C3 00 0C */	lwz r6, 0xc(r3)
@@ -11285,8 +11285,8 @@ func_80015948:
 /* 80015968 00011888  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 8001596C 0001188C  38 83 3A 58 */	addi r4, r3, lbl_801F3A58@l
 /* 80015970 00011890  80 04 00 00 */	lwz r0, 0(r4)
-/* 80015974 00011894  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 80015978 00011898  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80015974 00011894  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 80015978 00011898  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 8001597C 0001189C  54 00 07 76 */	rlwinm r0, r0, 0, 0x1d, 0x1b
 /* 80015980 000118A0  90 04 00 00 */	stw r0, 0(r4)
 /* 80015984 000118A4  38 A3 00 0C */	addi r5, r3, 0xc
@@ -11353,9 +11353,9 @@ func_80015A40:
 /* 80015A54 00011974  80 0D 9D 00 */	lwz r0, lbl_802F1EE0-_SDA_BASE_(r13)
 /* 80015A58 00011978  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015A5C 0001197C  40 82 01 5C */	bne lbl_80015BB8
-/* 80015A60 00011980  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80015A60 00011980  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80015A64 00011984  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80015A68 00011988  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 80015A68 00011988  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80015A6C 0001198C  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80015A70 00011990  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 80015A74 00011994  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -11612,9 +11612,9 @@ lbl_80015DDC:
 /* 80015E04 00011D24  4B FF 55 25 */	bl ev_run_init
 /* 80015E08 00011D28  38 60 00 10 */	li r3, 0x10
 /* 80015E0C 00011D2C  4B FF 55 1D */	bl ev_run_init
-/* 80015E10 00011D30  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80015E10 00011D30  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80015E14 00011D34  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80015E18 00011D38  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 80015E18 00011D38  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 80015E1C 00011D3C  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80015E20 00011D40  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 80015E24 00011D44  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -12001,9 +12001,9 @@ lbl_800163B4:
 /* 800163C8 000122E8  C0 22 83 A0 */	lfs f1, lbl_802F2BA0-_SDA2_BASE_(r2)
 /* 800163CC 000122EC  48 02 E0 D9 */	bl func_800444A4
 lbl_800163D0:
-/* 800163D0 000122F0  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800163D0 000122F0  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800163D4 000122F4  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 800163D8 000122F8  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 800163D8 000122F8  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800163DC 000122FC  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 800163E0 00012300  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 800163E4 00012304  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -12303,9 +12303,9 @@ lbl_80016820:
 /* 8001682C 0001274C  38 A5 00 0C */	addi r5, r5, 0xc
 /* 80016830 00012750  42 00 FF F0 */	bdnz lbl_80016820
 lbl_80016834:
-/* 80016834 00012754  3C 80 80 20 */	lis r4, lbl_80205988@ha
+/* 80016834 00012754  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 80016838 00012758  80 0D 9D 38 */	lwz r0, currentBallStructPtr-_SDA_BASE_(r13)
-/* 8001683C 0001275C  39 04 59 88 */	addi r8, r4, lbl_80205988@l
+/* 8001683C 0001275C  39 04 59 88 */	addi r8, r4, spritePoolInfo@l
 /* 80016840 00012760  3C A0 80 20 */	lis r5, lbl_80205E60@ha
 /* 80016844 00012764  80 88 00 0C */	lwz r4, 0xc(r8)
 /* 80016848 00012768  38 A5 5E 60 */	addi r5, r5, lbl_80205E60@l
@@ -12467,9 +12467,9 @@ lbl_80016A70:
 /* 80016A78 00012998  80 1E 00 00 */	lwz r0, 0(r30)
 /* 80016A7C 0001299C  2C 00 00 B4 */	cmpwi r0, 0xb4
 /* 80016A80 000129A0  40 81 01 C8 */	ble lbl_80016C48
-/* 80016A84 000129A4  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80016A84 000129A4  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80016A88 000129A8  83 4D 9D 38 */	lwz r26, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80016A8C 000129AC  3B E3 59 88 */	addi r31, r3, lbl_80205988@l
+/* 80016A8C 000129AC  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 80016A90 000129B0  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80016A94 000129B4  83 3F 00 0C */	lwz r25, 0xc(r31)
 /* 80016A98 000129B8  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -12600,9 +12600,9 @@ lbl_80016C48:
 /* 80016C58 00012B78  2C 00 00 F0 */	cmpwi r0, 0xf0
 /* 80016C5C 00012B7C  90 04 00 00 */	stw r0, 0(r4)
 /* 80016C60 00012B80  41 80 00 BC */	blt lbl_80016D1C
-/* 80016C64 00012B84  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80016C64 00012B84  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80016C68 00012B88  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80016C6C 00012B8C  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80016C6C 00012B8C  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80016C70 00012B90  80 A3 00 08 */	lwz r5, 8(r3)
 /* 80016C74 00012B94  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 80016C78 00012B98  38 04 5E 60 */	addi r0, r4, lbl_80205E60@l
@@ -12670,9 +12670,9 @@ func_80016D30:
 /* 80016D4C 00012C6C  88 0D 9A 44 */	lbz r0, lbl_802F1C24-_SDA_BASE_(r13)
 /* 80016D50 00012C70  2C 00 00 01 */	cmpwi r0, 1
 /* 80016D54 00012C74  40 82 00 68 */	bne lbl_80016DBC
-/* 80016D58 00012C78  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 80016D58 00012C78  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80016D5C 00012C7C  83 AD 9D 38 */	lwz r29, currentBallStructPtr-_SDA_BASE_(r13)
-/* 80016D60 00012C80  3B E3 59 88 */	addi r31, r3, lbl_80205988@l
+/* 80016D60 00012C80  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 80016D64 00012C84  3C 60 80 20 */	lis r3, lbl_80205E60@ha
 /* 80016D68 00012C88  83 9F 00 0C */	lwz r28, 0xc(r31)
 /* 80016D6C 00012C8C  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
@@ -12906,11 +12906,11 @@ lbl_80017080:
 /* 80017084 00012FA4  48 00 00 AC */	b lbl_80017130
 lbl_80017088:
 /* 80017088 00012FA8  A8 86 00 28 */	lha r4, 0x28(r6)
-/* 8001708C 00012FAC  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 8001708C 00012FAC  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80017090 00012FB0  3C A0 80 20 */	lis r5, lbl_80205E60@ha
 /* 80017094 00012FB4  38 04 00 01 */	addi r0, r4, 1
 /* 80017098 00012FB8  B0 06 00 28 */	sth r0, 0x28(r6)
-/* 8001709C 00012FBC  38 83 59 88 */	addi r4, r3, lbl_80205988@l
+/* 8001709C 00012FBC  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
 /* 800170A0 00012FC0  38 05 5E 60 */	addi r0, r5, lbl_80205E60@l
 /* 800170A4 00012FC4  80 CD 9D 38 */	lwz r6, currentBallStructPtr-_SDA_BASE_(r13)
 /* 800170A8 00012FC8  7C 05 03 78 */	mr r5, r0
@@ -12974,8 +12974,8 @@ func_80017160:
 /* 80017160 00013080  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80017164 00013084  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 80017168 00013088  80 83 00 2C */	lwz r4, 0x2c(r3)
-/* 8001716C 0001308C  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 80017170 00013090  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 8001716C 0001308C  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 80017170 00013090  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80017174 00013094  38 84 00 01 */	addi r4, r4, 1
 /* 80017178 00013098  80 C3 00 0C */	lwz r6, 0xc(r3)
 /* 8001717C 0001309C  54 83 07 BE */	clrlwi r3, r4, 0x1e
@@ -13006,9 +13006,9 @@ func_80017160:
 
 .global func_800171E0
 func_800171E0:
-/* 800171E0 00013100  3C 60 80 20 */	lis r3, lbl_80205988@ha
+/* 800171E0 00013100  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800171E4 00013104  94 21 FF B8 */	stwu r1, -0x48(r1)
-/* 800171E8 00013108  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 800171E8 00013108  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 800171EC 0001310C  38 83 00 0C */	addi r4, r3, 0xc
 /* 800171F0 00013110  80 63 00 0C */	lwz r3, 0xc(r3)
 /* 800171F4 00013114  38 C0 00 00 */	li r6, 0
@@ -13199,9 +13199,9 @@ lbl_8001727C:
 
 .global func_800174C8
 func_800174C8:
-/* 800174C8 000133E8  3C 80 80 20 */	lis r4, lbl_80205988@ha
+/* 800174C8 000133E8  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 800174CC 000133EC  3C 60 80 1F */	lis r3, modeCtrl@ha
-/* 800174D0 000133F0  38 84 59 88 */	addi r4, r4, lbl_80205988@l
+/* 800174D0 000133F0  38 84 59 88 */	addi r4, r4, spritePoolInfo@l
 /* 800174D4 000133F4  84 A4 00 0C */	lwzu r5, 0xc(r4)
 /* 800174D8 000133F8  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800174DC 000133FC  84 03 00 2C */	lwzu r0, 0x2c(r3)
@@ -13351,8 +13351,8 @@ lbl_800176FC:
 
 .global func_80017708
 func_80017708:
-/* 80017708 00013628  3C 80 80 20 */	lis r4, lbl_80205988@ha
-/* 8001770C 0001362C  38 84 59 88 */	addi r4, r4, lbl_80205988@l
+/* 80017708 00013628  3C 80 80 20 */	lis r4, spritePoolInfo@ha
+/* 8001770C 0001362C  38 84 59 88 */	addi r4, r4, spritePoolInfo@l
 /* 80017710 00013630  80 84 00 0C */	lwz r4, 0xc(r4)
 /* 80017714 00013634  38 00 00 00 */	li r0, 0
 /* 80017718 00013638  7C 04 19 AE */	stbx r0, r4, r3
@@ -13360,8 +13360,8 @@ func_80017708:
 
 .global func_80017720
 func_80017720:
-/* 80017720 00013640  3C 60 80 20 */	lis r3, lbl_80205988@ha
-/* 80017724 00013644  38 63 59 88 */	addi r3, r3, lbl_80205988@l
+/* 80017720 00013640  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 80017724 00013644  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 80017728 00013648  80 83 00 0C */	lwz r4, 0xc(r3)
 /* 8001772C 0001364C  38 60 00 01 */	li r3, 1
 /* 80017730 00013650  88 04 00 00 */	lbz r0, 0(r4)
@@ -13419,6 +13419,7 @@ lbl_802F02F8:
 	.byte 0x04, 0x02, 0x00, 0x00
 	.4byte 0
 	.4byte 0
+glabel string_k_CHU_
 	.asciz "k/CHU!"
 	.balign 4
 
@@ -14069,6 +14070,7 @@ lbl_802F2B5C:
 .global lbl_802F2B60
 lbl_802F2B60:
 	# ROM: 0x1EC580
+glabel string__s33
 	.asciz "@s33"
 	.balign 4
 
@@ -14548,7 +14550,7 @@ lbl_8010FF90:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x10, 0xE0, 0x00, 0x00
-	.4byte 0x80174E70  ;# ptr
+	.4byte string_k_SU_PA_MONKI_BO_RUh_NOASOBIKATA  ;# ptr
 	.4byte 0
 	.byte 0x10, 0x2C, 0xFC, 0x00
 	.4byte 0
@@ -14560,13 +14562,13 @@ lbl_8010FF90:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x10, 0x2C, 0x01, 0x00
-	.4byte 0x80174E94  ;# ptr
+	.4byte string_k_KONNTORO_RUSUTEXIKKUh_WO_np_IRE_h_TAHOUNI_k_KOROh_GARUYO  ;# ptr
 	.4byte 0
 	.byte 0x0F, 0x00, 0x02, 0x00
-	.4byte 0x80174ED0  ;# ptr
+	.4byte string_k_BO_RUh_GAp_UGOku_h_KUTO_k_KAMERAh_MOp_UGOku_h_KUKARA  ;# ptr
 	.4byte 0
 	.byte 0x0E, 0x10, 0x03, 0x00
-	.4byte 0x80174F08  ;# ptr
+	.4byte string_h_SORENIp_Au_h_WASETE_nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU  ;# ptr
 	.4byte 0
 	.byte 0x0D, 0x5C, 0xFF, 0x00
 	.4byte 0
@@ -14579,10 +14581,10 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x0C, 0xA8, 0x04, 0x00
-	.4byte 0x80174F44  ;# ptr
+	.4byte string_p_MIGI_SHITA_h_NIARUNOHA_k_MAPPUh_DAYO  ;# ptr
 	.4byte 0
 	.byte 0x0B, 0xB8, 0x05, 0x00
-	.4byte 0x80174F6C  ;# ptr
+	.4byte string_c_0xffffff_p_BUTTON_A_c_0x000000_k_BOTANh_WOp_OSU_h_SUTO  ;# ptr
 	.4byte 0
 	.byte 0x0B, 0x9A, 0xFD, 0x00
 	.4byte 0
@@ -14594,7 +14596,7 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x0A, 0xC8, 0x06, 0x00
-	.4byte 0x80174FA8  ;# ptr
+	.4byte string_k_MAPPUh_NOp_OOkii_h_KISAGA_p_KAwaru_h_WARUNDA  ;# ptr
 	.4byte 0
 	.byte 0x0A, 0xAA, 0xFD, 0x00
 	.4byte 0
@@ -14606,7 +14608,7 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x09, 0xD8, 0x07, 0x00
-	.4byte 0x80174FD8  ;# ptr
+	.4byte string_k_GO_RUp_CHITENN_h_YA_p_CHIKEI_h_GAYOKUWAKARUYO  ;# ptr
 	.4byte 0
 	.byte 0x09, 0xBA, 0xFD, 0x00
 	.4byte 0
@@ -14621,28 +14623,28 @@ lbl_80110004:
 	.4byte 0
 	.4byte 0
 	.byte 0x08, 0xAC, 0x08, 0x00
-	.4byte 0x80175008  ;# ptr
+	.4byte string_k_BOKUh_HAk_BANANAh_GAk_DA_ISUKI_  ;# ptr
 	.4byte 0
 	.byte 0x07, 0xBC, 0x09, 0x00
-	.4byte 0x8017502C  ;# ptr
+	.4byte string_k_BANANAh_WO100p_HONN_p_TAberu_h_BERUTO  ;# ptr
 	.4byte 0
 	.byte 0x06, 0xCC, 0x0A, 0x00
-	.4byte 0x80175054  ;# ptr
+	.4byte string_1UPh_SURUNDAYO  ;# ptr
 	.4byte 0
 	.byte 0x06, 0x0E, 0x0B, 0x00
-	.4byte 0x80175064  ;# ptr
+	.4byte string_p_CHIKEI_h_NIp_Au_h_WASETEk__nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU  ;# ptr
 	.4byte 0
 	.byte 0x05, 0x64, 0x0C, 0x00
-	.4byte 0x801750A8  ;# ptr
+	.4byte string_p_SAKAMICHI_h_WONOBORUp_TOKI_h_HA  ;# ptr
 	.4byte 0
 	.byte 0x04, 0xD8, 0x0D, 0x00
-	.4byte 0x801750CC  ;# ptr
+	.4byte string_k_KONNTORO_RUSUTEXIKKUh_WO_np_OOkii_h_KIKUKATAMUKETENE  ;# ptr
 	.4byte 0
 	.byte 0x04, 0x4C, 0x0E, 0x00
-	.4byte 0x80175104  ;# ptr
+	.4byte string_k_HUROAh_KARAp_Ochiru_h_CHIRUTO1k_MISUh_DAYO  ;# ptr
 	.4byte 0
 	.byte 0x03, 0xC0, 0x0F, 0x00
-	.4byte 0x80175134  ;# ptr
+	.4byte string_p_Ochiru_h_CHINAIYOUNI_p_KIbunn_h_WOTUKETENE__  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x02, 0x58, 0xF9, 0x00
 	.4byte 0
@@ -14663,10 +14665,10 @@ lbl_80110004:
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x02, 0x58, 0x10, 0x00
-	.4byte 0x80175164  ;# ptr
+	.4byte string_k_TAIMUh_GA0NINARUMAENI  ;# ptr
 	.4byte 0
 	.byte 0x01, 0x4A, 0x11, 0x00
-	.4byte 0x8017517C  ;# ptr
+	.4byte string_k_GO_RUh_SUREBA_p_TSUGI_h_NISUSUMERUYO  ;# ptr
 	.4byte 0
 	.byte 0x00, 0x5A, 0xF6, 0x00
 	.4byte 0
@@ -14820,6 +14822,7 @@ lbl_801740A8:
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x42, 0x8C, 0x00, 0x00
 	.byte 0xBF, 0x7E, 0x92, 0x3E
+glabel string___L___L_
 	.asciz "<$L{<$L{"
 	.byte 0x00, 0x00, 0x01
 	.byte 0x42, 0x90, 0x00, 0x00
@@ -14876,6 +14879,7 @@ lbl_801740A8:
 .global lbl_801741B0
 lbl_801741B0:
 	# ROM: 0x1711B0
+glabel string_sub_mode__error__d_in_Adv
 	.asciz "sub_mode: error %d in Adv"
 	.balign 4
 
@@ -15261,10 +15265,12 @@ lbl_801741D8:
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x00, 0x04, 0x40
+glabel string_A_ff
 	.asciz "A&ff"
 	.balign 4
 	.4byte 0
 	.byte 0x00, 0x00, 0x06, 0xCB
+glabel string_A_ff_2
 	.asciz "A&ff"
 	.balign 4
 	.4byte 0
@@ -15689,99 +15695,137 @@ lbl_80174E14:
 .global lbl_80174E38
 lbl_80174E38:
 	# ROM: 0x171E38
+glabel string_bmp_bmp_sel_tpl_2
 	.asciz "bmp/bmp_sel.tpl"
 
 .global lbl_80174E48
 lbl_80174E48:
 	# ROM: 0x171E48
+glabel string_c_0xff5000_____Control_description_____
 	.asciz "c/0xff5000/    Control description!    "
+glabel string_k_SU_PA_MONKI_BO_RUh_NOASOBIKATA
 	.asciz "k/SU-PA-MONKI-BO-RUh/NOASOBIKATA"
 	.balign 4
+glabel string_k_KONNTORO_RUSUTEXIKKUh_WO_np_IRE_h_TAHOUNI_k_KOROh_GARUYO
 	.asciz "k/KONNTORO-RUSUTEXIKKUh/WO\np/IRE/h/TAHOUNI k/KOROh/GARUYO"
 	.balign 4
+glabel string_k_BO_RUh_GAp_UGOku_h_KUTO_k_KAMERAh_MOp_UGOku_h_KUKARA
 	.asciz "k/BO-RUh/GAp/UGOku/h/KUTO k/KAMERAh/MOp/UGOku/h/KUKARA"
 	.balign 4
+glabel string_h_SORENIp_Au_h_WASETE_nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU
 	.asciz "h/SORENIp/Au/h/WASETE\nk/KONNTORO-RUSUTEXIKKUh/WOp/IRE/h/YOU"
+glabel string_p_MIGI_SHITA_h_NIARUNOHA_k_MAPPUh_DAYO
 	.asciz "p/MIGI/SHITA/h/NIARUNOHA k/MAPPUh/DAYO"
 	.balign 4
+glabel string_c_0xffffff_p_BUTTON_A_c_0x000000_k_BOTANh_WOp_OSU_h_SUTO
 	.asciz "c/0xffffff/p/BUTTON_A/c/0x000000/k/BOTANh/WOp/OSU/h/SUTO"
 	.balign 4
+glabel string_k_MAPPUh_NOp_OOkii_h_KISAGA_p_KAwaru_h_WARUNDA
 	.asciz "k/MAPPUh/NOp/OOkii/h/KISAGA p/KAwaru/h/WARUNDA"
 	.balign 4
+glabel string_k_GO_RUp_CHITENN_h_YA_p_CHIKEI_h_GAYOKUWAKARUYO
 	.asciz "k/GO-RUp/CHITENN/h/YA p/CHIKEI/h/GAYOKUWAKARUYO"
+glabel string_k_BOKUh_HAk_BANANAh_GAk_DA_ISUKI_
 	.asciz "k/BOKUh/HAk/BANANAh/GAk/DA~ISUKI!"
 	.balign 4
+glabel string_k_BANANAh_WO100p_HONN_p_TAberu_h_BERUTO
 	.asciz "k/BANANAh/WO100p/HONN/p/TAberu/h/BERUTO"
+glabel string_1UPh_SURUNDAYO
 	.asciz "1UPh/SURUNDAYO"
 	.balign 4
+glabel string_p_CHIKEI_h_NIp_Au_h_WASETEk__nk_KONNTORO_RUSUTEXIKKUh_WOp_IRE_h_YOU
 	.asciz "p/CHIKEI/h/NIp/Au/h/WASETEk/\nk/KONNTORO-RUSUTEXIKKUh/WOp/IRE/h/YOU"
 	.balign 4
+glabel string_p_SAKAMICHI_h_WONOBORUp_TOKI_h_HA
 	.asciz "p/SAKAMICHI/h/WONOBORUp/TOKI/h/HA"
 	.balign 4
+glabel string_k_KONNTORO_RUSUTEXIKKUh_WO_np_OOkii_h_KIKUKATAMUKETENE
 	.asciz "k/KONNTORO-RUSUTEXIKKUh/WO\np/OOkii/h/KIKUKATAMUKETENE"
 	.balign 4
+glabel string_k_HUROAh_KARAp_Ochiru_h_CHIRUTO1k_MISUh_DAYO
 	.asciz "k/HUROAh/KARAp/Ochiru/h/CHIRUTO1k/MISUh/DAYO"
 	.balign 4
+glabel string_p_Ochiru_h_CHINAIYOUNI_p_KIbunn_h_WOTUKETENE__
 	.asciz "p/Ochiru/h/CHINAIYOUNI p/KIbunn/h/WOTUKETENE~!"
 	.balign 4
+glabel string_k_TAIMUh_GA0NINARUMAENI
 	.asciz "k/TAIMUh/GA0NINARUMAENI"
+glabel string_k_GO_RUh_SUREBA_p_TSUGI_h_NISUSUMERUYO
 	.asciz "k/GO-RUh/SUREBA p/TSUGI/h/NISUSUMERUYO"
 	.balign 4
+glabel string_How_to_play_Super_Monkey_Ball_
 	.asciz "How to play Super Monkey Ball!"
 	.balign 4
+glabel string_The_further_you_push_the_Control_nStick__the_faster_you_ll_roll_
 	.asciz "The further you push the Control\nStick, the faster you'll roll."
+glabel string_And_if_the_ball_starts_moving__nthe_camera_will_follow_
 	.asciz "And if the ball starts moving,\nthe camera will follow."
 	.balign 4
+glabel string_So__you_ll_want_to_make_sure_nto_remember_that_when_you_move_
 	.asciz "So, you'll want to make sure\nto remember that when you move."
 	.balign 4
+glabel string_There_s_a_map_of_the_stage_nin_the_bottom_right_corner_
 	.asciz "There's a map of the stage\nin the bottom right corner."
 	.balign 4
+glabel string_If_you_press_the_c_0xffffff_p_BUTTON_A_c_0x000000_a__Button_
 	.asciz "If you press the c/0xffffff/p/BUTTON_A/c/0x000000/a/ Button,"
 	.balign 4
+glabel string_you_can_change_nthe_size_of_the_map_
 	.asciz "you can change\nthe size of the map!"
+glabel string_The_goal_and_level_boundaries_nare_easy_to_see_
 	.asciz "The goal and level boundaries\nare easy to see."
 	.balign 4
+glabel string_I_really_love_bananas_
 	.asciz "I really love bananas!"
 	.balign 4
+glabel string_If_you_eat_100_bananas_
 	.asciz "If you eat 100 bananas,"
+glabel string_you_ll_get_an_extra_life_
 	.asciz "you'll get an extra life!"
 	.balign 4
+glabel string_Make_sure_to_use_the_Control_Stick_nand_stay_on_the_ground_
 	.asciz "Make sure to use the Control Stick\nand stay on the ground!"
 	.balign 4
+glabel string_When_you_want_to_climb_up_a_hill_
 	.asciz "When you want to climb up a hill,"
 	.balign 4
+glabel string_make_sure_to_press_hard_non_the_Control_Stick_
 	.asciz "make sure to press hard\non the Control Stick!"
 	.balign 4
+glabel string_If_you_fall_off__you_ll_lose_a_lifep_TENNTENN_
 	.asciz "If you fall off, you'll lose a lifep/TENNTENN/"
 	.balign 4
+glabel string_Make_sure_not_to_fall_off_
 	.asciz "Make sure not to fall off!"
 	.balign 4
+glabel string_If_you_make_it_to_the_goal_nbefore_time_runs_out_
 	.asciz "If you make it to the goal\nbefore time runs out,"
 	.balign 4
+glabel string_you_ll_advance_to_the_next_stage_
 	.asciz "you'll advance to the next stage!"
 	.balign 4
 
 .global lbl_801754C8
 lbl_801754C8:
 	# ROM: 0x1724C8
-	.4byte 0x801751A4  ;# ptr
-	.4byte 0x801751C4  ;# ptr
-	.4byte 0x80175204  ;# ptr
-	.4byte 0x8017523C  ;# ptr
-	.4byte 0x8017527C  ;# ptr
-	.4byte 0x801752B4  ;# ptr
-	.4byte 0x801752F4  ;# ptr
-	.4byte 0x80175318  ;# ptr
-	.4byte 0x80175348  ;# ptr
-	.4byte 0x80175360  ;# ptr
-	.4byte 0x80175378  ;# ptr
-	.4byte 0x80175394  ;# ptr
-	.4byte 0x801753D0  ;# ptr
-	.4byte 0x801753F4  ;# ptr
-	.4byte 0x80175424  ;# ptr
-	.4byte 0x80175454  ;# ptr
-	.4byte 0x80175470  ;# ptr
-	.4byte 0x801754A4  ;# ptr
+	.4byte string_How_to_play_Super_Monkey_Ball_  ;# ptr
+	.4byte string_The_further_you_push_the_Control_nStick__the_faster_you_ll_roll_  ;# ptr
+	.4byte string_And_if_the_ball_starts_moving__nthe_camera_will_follow_  ;# ptr
+	.4byte string_So__you_ll_want_to_make_sure_nto_remember_that_when_you_move_  ;# ptr
+	.4byte string_There_s_a_map_of_the_stage_nin_the_bottom_right_corner_  ;# ptr
+	.4byte string_If_you_press_the_c_0xffffff_p_BUTTON_A_c_0x000000_a__Button_  ;# ptr
+	.4byte string_you_can_change_nthe_size_of_the_map_  ;# ptr
+	.4byte string_The_goal_and_level_boundaries_nare_easy_to_see_  ;# ptr
+	.4byte string_I_really_love_bananas_  ;# ptr
+	.4byte string_If_you_eat_100_bananas_  ;# ptr
+	.4byte string_you_ll_get_an_extra_life_  ;# ptr
+	.4byte string_Make_sure_to_use_the_Control_Stick_nand_stay_on_the_ground_  ;# ptr
+	.4byte string_When_you_want_to_climb_up_a_hill_  ;# ptr
+	.4byte string_make_sure_to_press_hard_non_the_Control_Stick_  ;# ptr
+	.4byte string_If_you_fall_off__you_ll_lose_a_lifep_TENNTENN_  ;# ptr
+	.4byte string_Make_sure_not_to_fall_off_  ;# ptr
+	.4byte string_If_you_make_it_to_the_goal_nbefore_time_runs_out_  ;# ptr
+	.4byte string_you_ll_advance_to_the_next_stage_  ;# ptr
 
 .global lbl_80175510
 lbl_80175510:
@@ -15803,6 +15847,7 @@ lbl_80175510:
 .global lbl_80175544
 lbl_80175544:
 	# ROM: 0x172544
+glabel string______pre_load_stage__d_______n
 	.asciz "/*-- pre_load_stage(%d) --*/\n"
 	.balign 4
 	.4byte 0
@@ -15810,10 +15855,13 @@ lbl_80175544:
 .global lbl_80175568
 lbl_80175568:
 	# ROM: 0x172568
+glabel string_sub_mode__error__d_in_Sel
 	.asciz "sub_mode: error %d in Sel"
 	.balign 4
+glabel string_mkbe_sel_stage_rel
 	.asciz "mkbe.sel_stage.rel"
 	.balign 4
+glabel string_mkbe_sel_ngc_rel
 	.asciz "mkbe.sel_ngc.rel"
 	.balign 4
 
@@ -15821,11 +15869,11 @@ lbl_80175568:
 lbl_801755AC:
 	# ROM: 0x1725AC
 	.4byte 0x802F0300  ;# ptr
-	.4byte 0x80175584  ;# ptr
+	.4byte string_mkbe_sel_stage_rel  ;# ptr
 	.4byte 0x802F0300  ;# ptr
-	.4byte 0x80175598  ;# ptr
+	.4byte string_mkbe_sel_ngc_rel  ;# ptr
 	.4byte 0x802F0300  ;# ptr
-	.4byte 0x80175598  ;# ptr
+	.4byte string_mkbe_sel_ngc_rel  ;# ptr
 	.4byte 0x802F0300  ;# ptr
 	.4byte 0x802F0300  ;# ptr
 	.4byte 0x802F0300  ;# ptr
@@ -15843,253 +15891,332 @@ lbl_801755AC:
 .global lbl_801755F8
 lbl_801755F8:
 	# ROM: 0x1725F8
+glabel string_sub_mode__error__d_in_Game
 	.asciz "sub_mode: error %d in Game"
 	.balign 4
 
 .global lbl_80175614
 lbl_80175614:
 	# ROM: 0x172614
+glabel string_pre_load_stage_init__d_now__d_n
 	.asciz "pre_load_stage init:%d now:%d\n"
 	.balign 4
+glabel string_h_NAMAEWO_OSIETE_
 	.asciz "h/NAMAEWO OSIETE!"
 	.balign 4
+glabel string_h_ONAMAE_OSIETE_
 	.asciz "h/ONAMAE OSIETE!"
 	.balign 4
+glabel string_h_NAMAEWO_OSIETEHOSHIIDEk_CHU_
 	.asciz "h/NAMAEWO OSIETEHOSHIIDEk/CHU!"
 	.balign 4
+glabel string_k_NAMAE_OSIERO__UHO_UHOHO_
 	.asciz "k/NAMAE OSIERO! UHO UHOHO!"
 	.balign 4
-	.4byte 0x80175634  ;# ptr
-	.4byte 0x80175648  ;# ptr
-	.4byte 0x8017565C  ;# ptr
-	.4byte 0x8017567C  ;# ptr
+	.4byte string_h_NAMAEWO_OSIETE_  ;# ptr
+	.4byte string_h_ONAMAE_OSIETE_  ;# ptr
+	.4byte string_h_NAMAEWO_OSIETEHOSHIIDEk_CHU_  ;# ptr
+	.4byte string_k_NAMAE_OSIERO__UHO_UHOHO_  ;# ptr
+glabel string_ENTER_YOUR_NAME_
 	.asciz "ENTER YOUR NAME!"
 	.balign 4
 
 .global lbl_801756BC
 lbl_801756BC:
 	# ROM: 0x1726BC
-	.4byte 0x801756A8  ;# ptr
-	.4byte 0x801756A8  ;# ptr
-	.4byte 0x801756A8  ;# ptr
-	.4byte 0x801756A8  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+	.4byte string_ENTER_YOUR_NAME_  ;# ptr
+glabel string_h_KONNDOHA_SARANI_2
 	.asciz "h/KONNDOHA SARANI"
 	.balign 4
+glabel string_h_UENOk_REBERUh_DE_ASONNDENE_2
 	.asciz "h/UENOk/REBERUh/DE ASONNDENE"
 	.balign 4
+glabel string_h_KOREDE_k_KIMIh_MO_2
 	.asciz "h/KOREDE k/KIMIh/MO"
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO_2
 	.asciz "h/ICHININNMAENO Ok/SARUh/SANNDAYO"
 	.balign 4
+glabel string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO_2
 	.asciz "k/KIMIh/TTEk/SUGOIh/NE! KOREKARAMO"
 	.balign 4
+glabel string_k_MONNKI_BO_RUh_WO_YOROSIKU__2
 	.asciz "k/MONNKI-BO-RUh/WO YOROSIKU!"
 	.balign 4
+glabel string_h_KONNDOHA_MOTTO_2
 	.asciz "h/KONNDOHA MOTTO"
 	.balign 4
+glabel string_h_UENOk_REBERUh_WO_MEZASHITENE_2
 	.asciz "h/UENOk/REBERUh/WO MEZASHITENE"
 	.balign 4
+glabel string_h_ANATAMO_KOREDE_2
 	.asciz "h/ANATAMO KOREDE"
 	.balign 4
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNNE_2
 	.asciz "h/ICHININNMAENO Ok/SARUh/SANNNE"
+glabel string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO_2
 	.asciz "h/ANATATTEk/SUGOIh/WA! KOREKARAMO"
 	.balign 4
+glabel string_k_PUREI_h_SHIMAKUTTENE_2
 	.asciz "k/PUREI h/SHIMAKUTTENE"
 	.balign 4
+glabel string_h_MOTTO_UENOk_REBERUh_DE_2
 	.asciz "h/MOTTO UENOk/REBERUh/DE"
 	.balign 4
+glabel string_h_ASOBITAIDEk_CHU_2
 	.asciz "h/ASOBITAIDEk/CHU"
 	.balign 4
+glabel string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO_2
 	.asciz "h/KOREDE RIPPANA Ok/SARUh/SANNNO"
 	.balign 4
+glabel string_h_NAKAMAIRIDEk_CHU_2
 	.asciz "h/NAKAMAIRIDEk/CHU"
 	.balign 4
+glabel string_k_SUGOIh_DEk_CHU__h_KOREKARAMO_2
 	.asciz "k/SUGOIh/DEk/CHU! h/KOREKARAMO"
 	.balign 4
+glabel string_h_ZUTTO_ASONNDEHOSIIDEk_CHU_2
 	.asciz "h/ZUTTO ASONNDEHOSIIDEk/CHU"
+glabel string_h_MIKANNSEIDEk_GOZARUh_YO
 	.asciz "h/MIKANNSEIDEk/GOZARUh/YO"
 	.balign 4
+glabel string_h_UHO_UHOHO
 	.asciz "h/UHO UHOHO"
+glabel string_k_BANANAh_KAIJINNDEHAk_GOZARAh_NUYO
 	.asciz "k/BANANAh/KAIJINNDEHAk/GOZARAh/NUYO"
-	.4byte 0x801756CC  ;# ptr
-	.4byte 0x801756E0  ;# ptr
-	.4byte 0x80175700  ;# ptr
-	.4byte 0x80175714  ;# ptr
-	.4byte 0x80175738  ;# ptr
-	.4byte 0x8017575C  ;# ptr
-	.4byte 0x8017577C  ;# ptr
-	.4byte 0x80175790  ;# ptr
-	.4byte 0x801757B0  ;# ptr
-	.4byte 0x801757C4  ;# ptr
-	.4byte 0x801757E4  ;# ptr
-	.4byte 0x80175808  ;# ptr
-	.4byte 0x80175820  ;# ptr
-	.4byte 0x8017583C  ;# ptr
-	.4byte 0x80175850  ;# ptr
-	.4byte 0x80175874  ;# ptr
-	.4byte 0x80175888  ;# ptr
-	.4byte 0x801758A8  ;# ptr
-	.4byte 0x801758C4  ;# ptr
-	.4byte 0x801758E0  ;# ptr
-	.4byte 0x801758EC  ;# ptr
-	.4byte 0x801758E0  ;# ptr
-	.4byte 0x801758E0  ;# ptr
-	.4byte 0x802F0308  ;# ptr
+	.4byte string_h_KONNDOHA_SARANI_2  ;# ptr
+	.4byte string_h_UENOk_REBERUh_DE_ASONNDENE_2  ;# ptr
+	.4byte string_h_KOREDE_k_KIMIh_MO_2  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO_2  ;# ptr
+	.4byte string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO_2  ;# ptr
+	.4byte string_k_MONNKI_BO_RUh_WO_YOROSIKU__2  ;# ptr
+	.4byte string_h_KONNDOHA_MOTTO_2  ;# ptr
+	.4byte string_h_UENOk_REBERUh_WO_MEZASHITENE_2  ;# ptr
+	.4byte string_h_ANATAMO_KOREDE_2  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNNE_2  ;# ptr
+	.4byte string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO_2  ;# ptr
+	.4byte string_k_PUREI_h_SHIMAKUTTENE_2  ;# ptr
+	.4byte string_h_MOTTO_UENOk_REBERUh_DE_2  ;# ptr
+	.4byte string_h_ASOBITAIDEk_CHU_2  ;# ptr
+	.4byte string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO_2  ;# ptr
+	.4byte string_h_NAKAMAIRIDEk_CHU_2  ;# ptr
+	.4byte string_k_SUGOIh_DEk_CHU__h_KOREKARAMO_2  ;# ptr
+	.4byte string_h_ZUTTO_ASONNDEHOSIIDEk_CHU_2  ;# ptr
+	.4byte string_h_MIKANNSEIDEk_GOZARUh_YO  ;# ptr
+	.4byte string_h_UHO_UHOHO  ;# ptr
+	.4byte string_k_BANANAh_KAIJINNDEHAk_GOZARAh_NUYO  ;# ptr
+	.4byte string_h_UHO_UHOHO  ;# ptr
+	.4byte string_h_UHO_UHOHO  ;# ptr
+	.4byte string_k_CHU_  ;# ptr
+glabel string_z_Let_s_try_higher_level
 	.asciz "z/Let's try higher level"
 	.balign 4
+glabel string_z_next_time
 	.asciz "z/next time"
+glabel string_z_Now_you_ve_become
 	.asciz "z/Now you've become"
+glabel string_z_cool_monkey_like_me
 	.asciz "z/cool monkey like me"
 	.balign 4
+glabel string_z_You_are_so_cool__Remember_
 	.asciz "z/You are so cool! Remember,"
 	.balign 4
+glabel string_z_Monkey_Ball_is_the_best_game_for_you_
 	.asciz "z/Monkey Ball is the best game for you!"
+glabel string_z_pretty_monkey_like_me
 	.asciz "z/pretty monkey like me"
+glabel string_z_You_are_so_fantastic__Remember_
 	.asciz "z/You are so fantastic! Remember,"
 	.balign 4
+glabel string_z_I_want_to_play_higher_level
 	.asciz "z/I want to play higher level"
 	.balign 4
+glabel string_z_grown_up_monkey_like_me
 	.asciz "z/grown up monkey like me"
 	.balign 4
+glabel string_z_You_are_such_grown_up__Remember_
 	.asciz "z/You are such grown up! Remember,"
 	.balign 4
-	.4byte 0x80175970  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x801759AC  ;# ptr
-	.4byte 0x801759C4  ;# ptr
-	.4byte 0x801759E4  ;# ptr
-	.4byte 0x80175970  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x80175A0C  ;# ptr
-	.4byte 0x80175A24  ;# ptr
-	.4byte 0x801759E4  ;# ptr
-	.4byte 0x80175A48  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x80175A68  ;# ptr
-	.4byte 0x80175A84  ;# ptr
-	.4byte 0x801759E4  ;# ptr
-	.4byte 0x80175970  ;# ptr
-	.4byte 0x8017598C  ;# ptr
-	.4byte 0x80175998  ;# ptr
-	.4byte 0x80175A0C  ;# ptr
-	.4byte 0x80175A24  ;# ptr
-	.4byte 0x801759E4  ;# ptr
+	.4byte string_z_Let_s_try_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_cool_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_so_cool__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte string_z_Let_s_try_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_pretty_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_so_fantastic__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte string_z_I_want_to_play_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_grown_up_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_such_grown_up__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte string_z_Let_s_try_higher_level  ;# ptr
+	.4byte string_z_next_time  ;# ptr
+	.4byte string_z_Now_you_ve_become  ;# ptr
+	.4byte string_z_pretty_monkey_like_me  ;# ptr
+	.4byte string_z_You_are_so_fantastic__Remember_  ;# ptr
+	.4byte string_z_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+glabel string_z9_a_Congratulations__You_didn_t_miss_anything_
 	.asciz "z9/a/Congratulations! You didn't miss anything!"
+glabel string_a_You_get_to_play_the_extra_stages_
 	.asciz "a/You get to play the extra stages!"
+glabel string_a_They_re_all_very_difficult_
 	.asciz "a/They're all very difficult,"
 	.balign 4
+glabel string_a_but_try_your_best_
 	.asciz "a/but try your best!"
 	.balign 4
+glabel string_z9_a_I_can_t_believe_you_didn_t_miss_anything_
 	.asciz "z9/a/I can't believe you didn't miss anything!"
 	.balign 4
+glabel string_z8_a_But__you_still_have_to_clear_the_extra_stages_
 	.asciz "z8/a/But, you still have to clear the extra stages!"
+glabel string_a_Make_sure_to_try_your_hardest
 	.asciz "a/Make sure to try your hardest"
+glabel string_a_on_these_stages__too_
 	.asciz "a/on these stages, too!"
+glabel string_a_Goo_goo__You_didn_t_miss_anyting_
 	.asciz "a/Goo goo! You didn't miss anyting!"
+glabel string_a_You_can_pway_da_extra_stages_
 	.asciz "a/You can pway da extra stages!"
+glabel string_a_It_s_a_wittle_bit_hard_
 	.asciz "a/It's a wittle bit hard,"
 	.balign 4
+glabel string_a_but_do_your_best_
 	.asciz "a/but do your best!"
+glabel string_z9_a_You_passed_everything_without_missing___
 	.asciz "z9/a/You passed everything without missing!!!"
 	.balign 4
+glabel string_a_Now__onto_the_extra_stages_
 	.asciz "a/Now, onto the extra stages!"
 	.balign 4
+glabel string_a_It_s_time_for_a_real_challenge_
 	.asciz "a/It's time for a real challenge!"
 	.balign 4
+glabel string_a_You_must_rule_over_all_the_stages_
 	.asciz "a/You must rule over all the stages!"
 	.balign 4
-	.4byte 0x80175B08  ;# ptr
-	.4byte 0x80175B38  ;# ptr
-	.4byte 0x80175B5C  ;# ptr
-	.4byte 0x80175B7C  ;# ptr
-	.4byte 0x80175B94  ;# ptr
-	.4byte 0x80175BC4  ;# ptr
-	.4byte 0x80175BF8  ;# ptr
-	.4byte 0x80175C18  ;# ptr
-	.4byte 0x80175C30  ;# ptr
-	.4byte 0x80175C54  ;# ptr
-	.4byte 0x80175C74  ;# ptr
-	.4byte 0x80175C90  ;# ptr
-	.4byte 0x80175CA4  ;# ptr
-	.4byte 0x80175CD4  ;# ptr
-	.4byte 0x80175CF4  ;# ptr
-	.4byte 0x80175D18  ;# ptr
+	.4byte string_z9_a_Congratulations__You_didn_t_miss_anything_  ;# ptr
+	.4byte string_a_You_get_to_play_the_extra_stages_  ;# ptr
+	.4byte string_a_They_re_all_very_difficult_  ;# ptr
+	.4byte string_a_but_try_your_best_  ;# ptr
+	.4byte string_z9_a_I_can_t_believe_you_didn_t_miss_anything_  ;# ptr
+	.4byte string_z8_a_But__you_still_have_to_clear_the_extra_stages_  ;# ptr
+	.4byte string_a_Make_sure_to_try_your_hardest  ;# ptr
+	.4byte string_a_on_these_stages__too_  ;# ptr
+	.4byte string_a_Goo_goo__You_didn_t_miss_anyting_  ;# ptr
+	.4byte string_a_You_can_pway_da_extra_stages_  ;# ptr
+	.4byte string_a_It_s_a_wittle_bit_hard_  ;# ptr
+	.4byte string_a_but_do_your_best_  ;# ptr
+	.4byte string_z9_a_You_passed_everything_without_missing___  ;# ptr
+	.4byte string_a_Now__onto_the_extra_stages_  ;# ptr
+	.4byte string_a_It_s_time_for_a_real_challenge_  ;# ptr
+	.4byte string_a_You_must_rule_over_all_the_stages_  ;# ptr
+glabel string_z8_a_You_cleared_all_the_stages_without_continuing_
 	.asciz "z8/a/You cleared all the stages without continuing!"
+glabel string_a_You_can_play_the_extra_stages_now_
 	.asciz "a/You can play the extra stages now!"
 	.balign 4
+glabel string_z7_a_You_cleared_everything_without_having_to_continue_
 	.asciz "z7/a/You cleared everything without having to continue!"
+glabel string_z7_a_But__there_s_still_extra_stages_that_you_have_to_clear_
 	.asciz "z7/a/But, there's still extra stages that you have to clear!"
 	.balign 4
+glabel string_z9_a_You_passed_eberyting_without_continuing_
 	.asciz "z9/a/You passed eberyting without continuing!"
 	.balign 4
+glabel string_a_You_can_pway_da_extra_stages_now_
 	.asciz "a/You can pway da extra stages now!"
+glabel string_z7_a_Congratulations__You_cleared_everything_without_continuing_
 	.asciz "z7/a/Congratulations! You cleared everything without continuing!"
 	.balign 4
+glabel string_a_Onto_the_extra_stages_
 	.asciz "a/Onto the extra stages!"
 	.balign 4
+glabel string_a_Go_go_go___
 	.asciz "a/Go go go!!!"
 	.balign 4
-	.4byte 0x80175D80  ;# ptr
-	.4byte 0x80175DB4  ;# ptr
-	.4byte 0x80175B5C  ;# ptr
-	.4byte 0x80175B7C  ;# ptr
-	.4byte 0x80175DDC  ;# ptr
-	.4byte 0x80175E14  ;# ptr
-	.4byte 0x80175BF8  ;# ptr
-	.4byte 0x80175C18  ;# ptr
-	.4byte 0x80175E54  ;# ptr
-	.4byte 0x80175E84  ;# ptr
-	.4byte 0x80175C74  ;# ptr
-	.4byte 0x80175C90  ;# ptr
-	.4byte 0x80175EA8  ;# ptr
-	.4byte 0x80175EEC  ;# ptr
-	.4byte 0x80175D18  ;# ptr
-	.4byte 0x80175F08  ;# ptr
+	.4byte string_z8_a_You_cleared_all_the_stages_without_continuing_  ;# ptr
+	.4byte string_a_You_can_play_the_extra_stages_now_  ;# ptr
+	.4byte string_a_They_re_all_very_difficult_  ;# ptr
+	.4byte string_a_but_try_your_best_  ;# ptr
+	.4byte string_z7_a_You_cleared_everything_without_having_to_continue_  ;# ptr
+	.4byte string_z7_a_But__there_s_still_extra_stages_that_you_have_to_clear_  ;# ptr
+	.4byte string_a_Make_sure_to_try_your_hardest  ;# ptr
+	.4byte string_a_on_these_stages__too_  ;# ptr
+	.4byte string_z9_a_You_passed_eberyting_without_continuing_  ;# ptr
+	.4byte string_a_You_can_pway_da_extra_stages_now_  ;# ptr
+	.4byte string_a_It_s_a_wittle_bit_hard_  ;# ptr
+	.4byte string_a_but_do_your_best_  ;# ptr
+	.4byte string_z7_a_Congratulations__You_cleared_everything_without_continuing_  ;# ptr
+	.4byte string_a_Onto_the_extra_stages_  ;# ptr
+	.4byte string_a_You_must_rule_over_all_the_stages_  ;# ptr
+	.4byte string_a_Go_go_go___  ;# ptr
+glabel string_z8_a_Congratulations__You_cleared_the_extra_stages_
 	.asciz "z8/a/Congratulations! You cleared the extra stages!"
+glabel string_z8_a_Now_you_can_try_to_clear_the_master_stages_
 	.asciz "z8/a/Now you can try to clear the master stages!"
 	.balign 4
+glabel string_a_If_you_can_pass_these_
 	.asciz "a/If you can pass these,"
 	.balign 4
+glabel string_a_you_will_be_the_best_player_ever_
 	.asciz "a/you will be the best player ever!"
 	.byte 0x7A, 0x37, 0x2F, 0x61
 	.byte 0x2F, 0x57, 0x6F, 0x77
 	.byte 0x81, 0x63, 0x20, 0x49
+glabel string__can_t_believe_you_passed_the_extra_stages_
 	.asciz " can't believe you passed the extra stages!"
+glabel string_a_You_really_are_something_
 	.asciz "a/You really are something!"
+glabel string_a_But__there_s_still_more_
 	.asciz "a/But, there's still more!"
 	.balign 4
+glabel string_z7_a_Now_try_to_clear_the_master_stages__Good_luck_
 	.asciz "z7/a/Now try to clear the master stages! Good luck!"
+glabel string_z7_a_You_cleared_da_extra_stages__too____You_are_gweat_
 	.asciz "z7/a/You cleared da extra stages, too??? You are gweat!"
+glabel string_z8_a_But__now_you_have_to_pway_da_master_stages_
 	.asciz "z8/a/But, now you have to pway da master stages!"
 	.balign 4
+glabel string_a_Dese_ones_are_bery_hard_
 	.asciz "a/Dese ones are bery hard,"
 	.balign 4
+glabel string_a_You_cleared_the_extra_stages____
 	.asciz "a/You cleared the extra stages!!!!"
 	.balign 4
+glabel string_a_Congraaaaaatulations__Good_job_
 	.asciz "a/Congraaaaaatulations! Good job!"
 	.balign 4
+glabel string_a_Now__onto_your_final_challenge_
 	.asciz "a/Now, onto your final challenge!"
 	.balign 4
+glabel string_a_The_master_stages_
 	.asciz "a/The master stages!"
 	.balign 4
-	.4byte 0x80175F58  ;# ptr
-	.4byte 0x80175F8C  ;# ptr
-	.4byte 0x80175FC0  ;# ptr
-	.4byte 0x80175FDC  ;# ptr
+	.4byte string_z8_a_Congratulations__You_cleared_the_extra_stages_  ;# ptr
+	.4byte string_z8_a_Now_you_can_try_to_clear_the_master_stages_  ;# ptr
+	.4byte string_a_If_you_can_pass_these_  ;# ptr
+	.4byte string_a_you_will_be_the_best_player_ever_  ;# ptr
 	.4byte 0x80176000  ;# ptr
-	.4byte 0x80176038  ;# ptr
-	.4byte 0x80176054  ;# ptr
-	.4byte 0x80176070  ;# ptr
-	.4byte 0x801760A4  ;# ptr
-	.4byte 0x801760DC  ;# ptr
-	.4byte 0x80176110  ;# ptr
-	.4byte 0x80175C90  ;# ptr
-	.4byte 0x8017612C  ;# ptr
-	.4byte 0x80176150  ;# ptr
-	.4byte 0x80176174  ;# ptr
-	.4byte 0x80176198  ;# ptr
+	.4byte string_a_You_really_are_something_  ;# ptr
+	.4byte string_a_But__there_s_still_more_  ;# ptr
+	.4byte string_z7_a_Now_try_to_clear_the_master_stages__Good_luck_  ;# ptr
+	.4byte string_z7_a_You_cleared_da_extra_stages__too____You_are_gweat_  ;# ptr
+	.4byte string_z8_a_But__now_you_have_to_pway_da_master_stages_  ;# ptr
+	.4byte string_a_Dese_ones_are_bery_hard_  ;# ptr
+	.4byte string_a_but_do_your_best_  ;# ptr
+	.4byte string_a_You_cleared_the_extra_stages____  ;# ptr
+	.4byte string_a_Congraaaaaatulations__Good_job_  ;# ptr
+	.4byte string_a_Now__onto_your_final_challenge_  ;# ptr
+	.4byte string_a_The_master_stages_  ;# ptr
 
 .global lbl_801761F0
 lbl_801761F0:
@@ -16247,8 +16374,8 @@ lbl_80203F84:
 .global lbl_80205688
 lbl_80205688:
 	.skip 0x300
-.global lbl_80205988
-lbl_80205988:
+.global spritePoolInfo
+spritePoolInfo:
 	.skip 0x418
 .global lbl_80205DA0
 lbl_80205DA0:
@@ -16385,78 +16512,3 @@ lbl_8028CED8:
 .global lbl_8028CF00
 lbl_8028CF00:
 	.skip 0x28
-.global lbl_8028CF28
-lbl_8028CF28:
-	.skip 0x30
-.global lbl_8028CF58
-lbl_8028CF58:
-	.skip 0x3218
-.global lbl_80290170
-lbl_80290170:
-	.skip 0x10
-.global lbl_80290180
-lbl_80290180:
-	.skip 0x2940
-.global lbl_80292AC0
-lbl_80292AC0:
-	.skip 0xA0
-.global lbl_80292B60
-lbl_80292B60:
-	.skip 0xA0
-.global lbl_80292C00
-lbl_80292C00:
-	.skip 0x60
-.global lbl_80292C60
-lbl_80292C60:
-	.skip 0x30
-.global lbl_80292C90
-lbl_80292C90:
-	.skip 0x28
-.global lbl_80292CB8
-lbl_80292CB8:
-	.skip 0x60
-.global lbl_80292D18
-lbl_80292D18:
-	.skip 0x18
-.global lbl_80292D30
-lbl_80292D30:
-	.skip 0x130
-.global lbl_80292E60
-lbl_80292E60:
-	.skip 0x10
-.global lbl_80292E70
-lbl_80292E70:
-	.skip 0x20000
-.global lbl_802B2E70
-lbl_802B2E70:
-	.skip 0x940
-.global lbl_802B37B0
-lbl_802B37B0:
-	.skip 0x40
-.global lbl_802B37F0
-lbl_802B37F0:
-	.skip 0x16C
-.global lbl_802B395C
-lbl_802B395C:
-	.skip 0x64
-.global lbl_802B39C0
-lbl_802B39C0:
-	.skip 0xCF0
-.global lbl_802B46B0
-lbl_802B46B0:
-	.skip 0x40
-.global lbl_802B46F0
-lbl_802B46F0:
-	.skip 0xF0
-.global lbl_802B47E0
-lbl_802B47E0:
-	.skip 0x20
-.global lbl_802B4800
-lbl_802B4800:
-	.skip 0x5F0
-.global lbl_802B4DF0
-lbl_802B4DF0:
-	.skip 0x20
-.global lbl_802B4E10
-lbl_802B4E10:
-	.skip 0x50

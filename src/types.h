@@ -73,12 +73,12 @@ struct ModeControl
 
 struct Event
 {
-    s8 state;
-    char *name;
-    void (*start)(void);
-    void (*main)(void);
-    void (*finish)(void);
-    u32 time;
+    /*0x00*/ s8 state;
+    /*0x04*/ char *name;
+    /*0x08*/ void (*start)(void);
+    /*0x0C*/ void (*main)(void);
+    /*0x14*/ void (*finish)(void);
+    /*0x18*/ u32 time;
 };
 
 struct Struct801EEC80
@@ -86,3 +86,6 @@ struct Struct801EEC80
     u8 filler0[0x10];
     u32 unk10;
 };
+
+struct Sprite;
+struct FontParams;

@@ -352,7 +352,7 @@ func_80025EC0:
 /* 80025ED0 00021DF0  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 80025ED4 00021DF4  3B E3 1B D0 */	addi r31, r3, lbl_80181BD0@l
 /* 80025ED8 00021DF8  38 60 00 00 */	li r3, 0
-/* 80025EDC 00021DFC  48 00 03 29 */	bl func_80026204
+/* 80025EDC 00021DFC  48 00 03 29 */	bl g_something_with_bmp_bmp_com
 /* 80025EE0 00021E00  38 60 00 00 */	li r3, 0
 /* 80025EE4 00021E04  48 00 04 95 */	bl func_80026378
 /* 80025EE8 00021E08  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
@@ -574,8 +574,8 @@ lbl_800261F0:
 /* 800261FC 0002211C  7C 08 03 A6 */	mtlr r0
 /* 80026200 00022120  4E 80 00 20 */	blr
 
-.global func_80026204
-func_80026204:
+.global g_something_with_bmp_bmp_com
+g_something_with_bmp_bmp_com:
 /* 80026204 00022124  7C 08 02 A6 */	mflr r0
 /* 80026208 00022128  1C 83 00 18 */	mulli r4, r3, 0x18
 /* 8002620C 0002212C  90 01 00 04 */	stw r0, 4(r1)
@@ -601,8 +601,8 @@ lbl_8002624C:
 /* 80026258 00022178  7C 08 03 A6 */	mtlr r0
 /* 8002625C 0002217C  4E 80 00 20 */	blr
 
-.global func_80026260
-func_80026260:
+.global g_something_with_freeing_memory
+g_something_with_freeing_memory:
 /* 80026260 00022180  7C 08 02 A6 */	mflr r0
 /* 80026264 00022184  2C 03 00 0E */	cmpwi r3, 0xe
 /* 80026268 00022188  90 01 00 04 */	stw r0, 4(r1)

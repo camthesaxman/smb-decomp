@@ -6715,12 +6715,14 @@ lbl_802F5AC8:
 .global lbl_802F5AD0
 lbl_802F5AD0:
 	# ROM: 0x1EF4F0
+glabel string___33_
 	.asciz "@?33 "
 	.balign 4
 
 .global lbl_802F5AD8
 lbl_802F5AD8:
 	# ROM: 0x1EF4F8
+glabel string__C338
 	.asciz "@C338"
 	.balign 4
 
@@ -6745,6 +6747,7 @@ lbl_802F5AF0:
 .global lbl_802F5AF8
 lbl_802F5AF8:
 	# ROM: 0x1EF518
+glabel string___338
 	.asciz "@#338"
 	.balign 4
 
@@ -6845,6 +6848,7 @@ lbl_802F5B58:
 .global lbl_801D4288
 lbl_801D4288:
 	# ROM: 0x1D1288
+glabel string_A_Memory_Card_error_has_occurred_
 	.asciz "A Memory Card error has occurred."
 	.balign 4
 	.4byte 0x802C4840  ;# ptr
@@ -6853,492 +6857,604 @@ lbl_801D4288:
 	.4byte 0
 	.4byte 0x802C48C0  ;# ptr
 	.4byte 0
+glabel string_Could_not_read_Memory_Card_
 	.asciz "Could not read Memory Card."
+glabel string_Please_see_the_Instruction_Booklet_for_details__2
 	.asciz "Please see the Instruction Booklet for details."
-	.4byte 0x801D42C4  ;# ptr
+	.4byte string_Could_not_read_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D42E0  ;# ptr
+	.4byte string_Please_see_the_Instruction_Booklet_for_details__2  ;# ptr
 	.4byte 0
+glabel string_This_Memory_Card_cannot_be_used_
 	.asciz "This Memory Card cannot be used."
 	.balign 4
+glabel string_Memory_Card_is_not_inserted_
 	.asciz "Memory Card is not inserted."
 	.balign 4
+glabel string_Please_insert_a_Memory_Card_
 	.asciz "Please insert a Memory Card."
 	.balign 4
-	.4byte 0x801D4344  ;# ptr
+	.4byte string_Memory_Card_is_not_inserted_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4364  ;# ptr
+	.4byte string_Please_insert_a_Memory_Card_  ;# ptr
 	.4byte 0
+glabel string_There_is_no_Memory_Card_in_Slot_A_
 	.asciz "There is no Memory Card in Slot A."
 	.balign 4
+glabel string_The_Autosave_function_will_be_set_to_Off_
 	.asciz "The Autosave function will be set to Off."
 	.balign 4
-	.4byte 0x801D4394  ;# ptr
+	.4byte string_There_is_no_Memory_Card_in_Slot_A_  ;# ptr
 	.4byte 0
-	.4byte 0x801D43B8  ;# ptr
+	.4byte string_The_Autosave_function_will_be_set_to_Off_  ;# ptr
 	.4byte 0
+glabel string_Please_insert_a_Memory_Card_into_Slot_A_
 	.asciz "Please insert a Memory Card into Slot A."
 	.balign 4
-	.4byte 0x801D4344  ;# ptr
+	.4byte string_Memory_Card_is_not_inserted_  ;# ptr
 	.4byte 0
-	.4byte 0x801D43F4  ;# ptr
+	.4byte string_Please_insert_a_Memory_Card_into_Slot_A_  ;# ptr
 	.4byte 0
+glabel string_The_Memory_Card_was_removed_
 	.asciz "The Memory Card was removed."
 	.balign 4
+glabel string_The_operation_has_been_stopped_
 	.asciz "The operation has been stopped."
-	.4byte 0x801D4430  ;# ptr
+	.4byte string_The_Memory_Card_was_removed_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4450  ;# ptr
+	.4byte string_The_operation_has_been_stopped_  ;# ptr
 	.4byte 0
+glabel string_This_Memory_Card_is_not_supported_recognized_
 	.asciz "This Memory Card is not supported/recognized."
 	.balign 4
+glabel string_Please_insert_a_different_Memory_Card_
 	.asciz "Please insert a different Memory Card."
 	.balign 4
-	.4byte 0x801D4480  ;# ptr
+	.4byte string_This_Memory_Card_is_not_supported_recognized_  ;# ptr
 	.4byte 0
-	.4byte 0x801D44B0  ;# ptr
+	.4byte string_Please_insert_a_different_Memory_Card_  ;# ptr
 	.4byte 0
+glabel string_The_file_on_the_Memory_Card_has_been_damaged_
 	.asciz "The file on the Memory Card has been damaged."
 	.balign 4
+glabel string_Please_use_the_GameCube_tm_Memory_Card_Menu
 	.asciz "Please use the GameCube tm Memory Card Menu"
+glabel string_or_the_Save_Function_of_the_Game_Data_Option_in_this_game
 	.asciz "or the Save Function of the Game Data Option in this game"
 	.balign 4
+glabel string_to_format_your_Memory_Card_
 	.asciz "to format your Memory Card."
-	.4byte 0x801D44E8  ;# ptr
+	.4byte string_The_file_on_the_Memory_Card_has_been_damaged_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4518  ;# ptr
+	.4byte string_Please_use_the_GameCube_tm_Memory_Card_Menu  ;# ptr
 	.4byte 0
-	.4byte 0x801D4544  ;# ptr
+	.4byte string_or_the_Save_Function_of_the_Game_Data_Option_in_this_game  ;# ptr
 	.4byte 0
-	.4byte 0x801D4580  ;# ptr
+	.4byte string_to_format_your_Memory_Card_  ;# ptr
 	.4byte 0
+glabel string_No_Super_Monkey_Ball_Game_Data_found_on_Memory_Card_
 	.asciz "No Super Monkey Ball Game Data found on Memory Card."
 	.balign 4
+glabel string_Cannot_save_data_to_the_file_
 	.asciz "Cannot save data to the file."
 	.balign 4
+glabel string_Cannot_load_file_
 	.asciz "Cannot load file."
 	.balign 4
+glabel string_Cannot_read_file_
 	.asciz "Cannot read file."
 	.balign 4
+glabel string_Not_enough_free_blocks_in_Memory_Card_
 	.asciz "Not enough free blocks in Memory Card."
 	.balign 4
+glabel string_There_are__d_free_blocks_
 	.asciz "There are %d free blocks,"
 	.balign 4
+glabel string_but__d_blocks_are_required_to_save_the_data_
 	.asciz "but %d blocks are required to save the data."
 	.balign 4
-	.4byte 0x801D463C  ;# ptr
+	.4byte string_Not_enough_free_blocks_in_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4664  ;# ptr
+	.4byte string_There_are__d_free_blocks_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4680  ;# ptr
+	.4byte string_but__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
+glabel string_There_is__d_free_block_
 	.asciz "There is %d free block,"
-	.4byte 0x801D463C  ;# ptr
+	.4byte string_Not_enough_free_blocks_in_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D46C8  ;# ptr
+	.4byte string_There_is__d_free_block_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4680  ;# ptr
+	.4byte string_but__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4664  ;# ptr
+	.4byte string_There_are__d_free_blocks_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4680  ;# ptr
+	.4byte string_but__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D43B8  ;# ptr
+	.4byte string_The_Autosave_function_will_be_set_to_Off_  ;# ptr
 	.4byte 0
-	.4byte 0x801D46C8  ;# ptr
+	.4byte string_There_is__d_free_block_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4680  ;# ptr
+	.4byte string_but__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D43B8  ;# ptr
+	.4byte string_The_Autosave_function_will_be_set_to_Off_  ;# ptr
 	.4byte 0
+glabel string_No_free_blocks_in_Memory_Card_
 	.asciz "No free blocks in Memory Card."
 	.balign 4
+glabel string__d_blocks_are_required_to_save_the_data_
 	.asciz "%d blocks are required to save the data."
 	.balign 4
-	.4byte 0x801D4728  ;# ptr
+	.4byte string_No_free_blocks_in_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4748  ;# ptr
+	.4byte string__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4728  ;# ptr
+	.4byte string_No_free_blocks_in_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4748  ;# ptr
+	.4byte string__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D43B8  ;# ptr
+	.4byte string_The_Autosave_function_will_be_set_to_Off_  ;# ptr
 	.4byte 0
-	.4byte 0x801D463C  ;# ptr
+	.4byte string_Not_enough_free_blocks_in_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4748  ;# ptr
+	.4byte string__d_blocks_are_required_to_save_the_data_  ;# ptr
 	.4byte 0
+glabel string_The_data_has_been_successfully_saved_
 	.asciz "The data has been successfully saved,"
 	.balign 4
+glabel string_but_there_are_not_enough_free_blocks_to_save_the_data_
 	.asciz "but there are not enough free blocks to save the data."
 	.balign 4
+glabel string_To_save_Replay_Data__at_least_2_free_blocks_are_required_
 	.asciz "To save Replay Data, at least 2 free blocks are required."
 	.balign 4
+glabel string_Also__to_save_Game_Data__or_to_save_over_old_data_
 	.asciz "Also, to save Game Data, or to save over old data,"
 	.balign 4
+glabel string_at_least_3_free_blocks_are_required_
 	.asciz "at least 3 free blocks are required."
 	.balign 4
-	.4byte 0x801D47AC  ;# ptr
+	.4byte string_The_data_has_been_successfully_saved_  ;# ptr
 	.4byte 0
-	.4byte 0x801D47D4  ;# ptr
+	.4byte string_but_there_are_not_enough_free_blocks_to_save_the_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D480C  ;# ptr
+	.4byte string_To_save_Replay_Data__at_least_2_free_blocks_are_required_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4848  ;# ptr
+	.4byte string_Also__to_save_Game_Data__or_to_save_over_old_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D487C  ;# ptr
+	.4byte string_at_least_3_free_blocks_are_required_  ;# ptr
 	.4byte 0
+glabel string_but_there_are_not_enough_free_blocks_to_save_Game_Data_
 	.asciz "but there are not enough free blocks to save Game Data."
+glabel string_To_save_Game_Data__or_to_save_over_old_data_
 	.asciz "To save Game Data, or to save over old data,"
 	.balign 4
-	.4byte 0x801D47AC  ;# ptr
+	.4byte string_The_data_has_been_successfully_saved_  ;# ptr
 	.4byte 0
-	.4byte 0x801D48CC  ;# ptr
+	.4byte string_but_there_are_not_enough_free_blocks_to_save_Game_Data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4904  ;# ptr
+	.4byte string_To_save_Game_Data__or_to_save_over_old_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D487C  ;# ptr
+	.4byte string_at_least_3_free_blocks_are_required_  ;# ptr
 	.4byte 0
+glabel string_but_there_may_not_be_enough_free_blocks_to_save_Replay_Data_
 	.asciz "but there may not be enough free blocks to save Replay Data."
 	.balign 4
+glabel string_Replay_Data_requires_a_maximum_of_13_free_blocks_to_save_
 	.asciz "Replay Data requires a maximum of 13 free blocks to save."
 	.balign 4
-	.4byte 0x801D47AC  ;# ptr
+	.4byte string_The_data_has_been_successfully_saved_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4954  ;# ptr
+	.4byte string_but_there_may_not_be_enough_free_blocks_to_save_Replay_Data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4994  ;# ptr
+	.4byte string_Replay_Data_requires_a_maximum_of_13_free_blocks_to_save_  ;# ptr
 	.4byte 0
+glabel string_There_are_not_enough_free_blocks
 	.asciz "There are not enough free blocks"
 	.balign 4
+glabel string_to_save_a_file_in_this_Memory_Card_
 	.asciz "to save a file in this Memory Card."
-	.4byte 0x801D49E8  ;# ptr
+	.4byte string_There_are_not_enough_free_blocks  ;# ptr
 	.4byte 0
-	.4byte 0x801D4A0C  ;# ptr
+	.4byte string_to_save_a_file_in_this_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D480C  ;# ptr
+	.4byte string_To_save_Replay_Data__at_least_2_free_blocks_are_required_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4848  ;# ptr
+	.4byte string_Also__to_save_Game_Data__or_to_save_over_old_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D487C  ;# ptr
+	.4byte string_at_least_3_free_blocks_are_required_  ;# ptr
 	.4byte 0
+glabel string_to_save_Game_Data_in_this_Memory_Card_
 	.asciz "to save Game Data in this Memory Card."
 	.balign 4
-	.4byte 0x801D49E8  ;# ptr
+	.4byte string_There_are_not_enough_free_blocks  ;# ptr
 	.4byte 0
-	.4byte 0x801D4A58  ;# ptr
+	.4byte string_to_save_Game_Data_in_this_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4904  ;# ptr
+	.4byte string_To_save_Game_Data__or_to_save_over_old_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D487C  ;# ptr
+	.4byte string_at_least_3_free_blocks_are_required_  ;# ptr
 	.4byte 0
+glabel string_There_may_not_be_enough_free_blocks_to_save_Replay_Data_
 	.asciz "There may not be enough free blocks to save Replay Data."
 	.balign 4
+glabel string_Replay_Data_requires_a_maximum_of_13_free_blocks_
 	.asciz "Replay Data requires a maximum of 13 free blocks."
 	.balign 4
-	.4byte 0x801D4AA0  ;# ptr
+	.4byte string_There_may_not_be_enough_free_blocks_to_save_Replay_Data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4ADC  ;# ptr
+	.4byte string_Replay_Data_requires_a_maximum_of_13_free_blocks_  ;# ptr
 	.4byte 0
+glabel string_There_are_not_enough_free_blocks_in_this_Memory_Card_
 	.asciz "There are not enough free blocks in this Memory Card."
 	.balign 4
-	.4byte 0x801D45BC  ;# ptr
+	.4byte string_No_Super_Monkey_Ball_Game_Data_found_on_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4B20  ;# ptr
+	.4byte string_There_are_not_enough_free_blocks_in_this_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D480C  ;# ptr
+	.4byte string_To_save_Replay_Data__at_least_2_free_blocks_are_required_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4848  ;# ptr
+	.4byte string_Also__to_save_Game_Data__or_to_save_over_old_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D487C  ;# ptr
+	.4byte string_at_least_3_free_blocks_are_required_  ;# ptr
 	.4byte 0
-	.4byte 0x801D45BC  ;# ptr
+	.4byte string_No_Super_Monkey_Ball_Game_Data_found_on_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D49E8  ;# ptr
+	.4byte string_There_are_not_enough_free_blocks  ;# ptr
 	.4byte 0
-	.4byte 0x801D4A58  ;# ptr
+	.4byte string_to_save_Game_Data_in_this_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4904  ;# ptr
+	.4byte string_To_save_Game_Data__or_to_save_over_old_data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D487C  ;# ptr
+	.4byte string_at_least_3_free_blocks_are_required_  ;# ptr
 	.4byte 0
+glabel string_There_may_not_be_enough_free_blocks
 	.asciz "There may not be enough free blocks"
+glabel string_to_save_Replay_Data_in_this_Memory_Card_
 	.asciz "to save Replay Data in this Memory Card."
 	.balign 4
+glabel string_To_save_Replay_Data__a_maximum_of_13_free_blocks_is_required_
 	.asciz "To save Replay Data, a maximum of 13 free blocks is required."
 	.balign 4
-	.4byte 0x801D45BC  ;# ptr
+	.4byte string_No_Super_Monkey_Ball_Game_Data_found_on_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4BA8  ;# ptr
+	.4byte string_There_may_not_be_enough_free_blocks  ;# ptr
 	.4byte 0
-	.4byte 0x801D4BCC  ;# ptr
+	.4byte string_to_save_Replay_Data_in_this_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4BF8  ;# ptr
+	.4byte string_To_save_Replay_Data__a_maximum_of_13_free_blocks_is_required_  ;# ptr
 	.4byte 0
+glabel string_Cannot_make_any_more_files_
 	.asciz "Cannot make any more files."
+glabel string_The_data_has_been_succesfully_saved_
 	.asciz "The data has been succesfully saved."
 	.balign 4
+glabel string_However__no_more_files_can_be_made__
 	.asciz "However, no more files can be made. "
 	.balign 4
+glabel string_You_will_not_be_able_to_save_the_data_next_time_
 	.asciz "You will not be able to save the data next time."
 	.balign 4
-	.4byte 0x801D4C74  ;# ptr
+	.4byte string_The_data_has_been_succesfully_saved_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4C9C  ;# ptr
+	.4byte string_However__no_more_files_can_be_made__  ;# ptr
 	.4byte 0
-	.4byte 0x801D4CC4  ;# ptr
+	.4byte string_You_will_not_be_able_to_save_the_data_next_time_  ;# ptr
 	.4byte 0
+glabel string_Saving_finished_
 	.asciz "Saving finished."
 	.balign 4
+glabel string_Loading_finished_
 	.asciz "Loading finished."
 	.balign 4
+glabel string_A_file_has_been_deleted_
 	.asciz "A file has been deleted."
 	.balign 4
+glabel string_The_Game_Data_version_is_incorrect_
 	.asciz "The Game Data version is incorrect."
+glabel string_Please_try_saving_your_game_again_
 	.asciz "Please try saving your game again."
 	.balign 4
-	.4byte 0x801D4D54  ;# ptr
+	.4byte string_The_Game_Data_version_is_incorrect_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4D78  ;# ptr
+	.4byte string_Please_try_saving_your_game_again_  ;# ptr
 	.4byte 0
+glabel string_The_Game_Data_has_been_damaged_
 	.asciz "The Game Data has been damaged."
-	.4byte 0x801D4DAC  ;# ptr
+	.4byte string_The_Game_Data_has_been_damaged_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4D78  ;# ptr
+	.4byte string_Please_try_saving_your_game_again_  ;# ptr
 	.4byte 0
+glabel string_The_Replay_Data_has_been_damaged_
 	.asciz "The Replay Data has been damaged."
 	.balign 4
+glabel string_Please_delete_the_file_
 	.asciz "Please delete the file."
-	.4byte 0x801D4DDC  ;# ptr
+	.4byte string_The_Replay_Data_has_been_damaged_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4E00  ;# ptr
+	.4byte string_Please_delete_the_file_  ;# ptr
 	.4byte 0
+glabel string_Formatting_has_been_interrupted_
 	.asciz "Formatting has been interrupted."
 	.balign 4
+glabel string_Saving_has_been_interrupted_
 	.asciz "Saving has been interrupted."
 	.balign 4
+glabel string_Loading_has_been_interrupted_
 	.asciz "Loading has been interrupted."
 	.balign 4
+glabel string_The_file_size_has_been_changed_
 	.asciz "The file size has been changed."
+glabel string_Please_delete_the_file_from_the_menu__and_try_again_
 	.asciz "Please delete the file from the menu, and try again."
 	.balign 4
-	.4byte 0x801D4E8C  ;# ptr
+	.4byte string_The_file_size_has_been_changed_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4EAC  ;# ptr
+	.4byte string_Please_delete_the_file_from_the_menu__and_try_again_  ;# ptr
 	.4byte 0
+glabel string_No_Replay_Data_found_
 	.asciz "No Replay Data found."
 	.balign 4
+glabel string_In_Normal_mode_and_Practice_Mode__during_the_Replay_playback_
 	.asciz "In Normal mode and Practice Mode, during the Replay playback,"
 	.balign 4
+glabel string_if_you_access_the_Pause_Menu_and_select_Save_Replay_
 	.asciz "if you access the Pause Menu and select Save Replay,"
 	.balign 4
+glabel string_you_can_save_the_Replay_that_you_are_viewing_
 	.asciz "you can save the Replay that you are viewing."
 	.balign 4
-	.4byte 0x801D4EF4  ;# ptr
+	.4byte string_No_Replay_Data_found_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4F0C  ;# ptr
+	.4byte string_In_Normal_mode_and_Practice_Mode__during_the_Replay_playback_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4F4C  ;# ptr
+	.4byte string_if_you_access_the_Pause_Menu_and_select_Save_Replay_  ;# ptr
 	.4byte 0
-	.4byte 0x801D4F84  ;# ptr
+	.4byte string_you_can_save_the_Replay_that_you_are_viewing_  ;# ptr
 	.4byte 0
+glabel string_Please_press_the_p_BUTTON_B__a_Button_
 	.asciz "Please press the p/BUTTON_B/ a/Button."
 	.balign 4
+glabel string_Please_press_the_p_BUTTON_B__a_Button_to_Continue_without_saving_
 	.asciz "Please press the p/BUTTON_B/ a/Button to Continue without saving."
 	.balign 4
+glabel string_There_are__d_free_blocks_on_this_Memory_Card_
 	.asciz "There are %d free blocks on this Memory Card."
 	.balign 4
+glabel string_There_is__d_free_block_on_this_Memory_Card_
 	.asciz "There is %d free block on this Memory Card."
+glabel string_No_free_blocks_found_on_this_Memory_Card_
 	.asciz "No free blocks found on this Memory Card."
 	.balign 4
+glabel string_Accessing_Memory_Card_
 	.asciz "Accessing Memory Card."
 	.balign 4
+glabel string_Now_saving_Replay_Data_
 	.asciz "Now saving Replay Data."
+glabel string_Do_not_touch_the_Memory_Card_or_the_POWER_Button_
 	.asciz "Do not touch the Memory Card or the POWER Button."
 	.balign 4
-	.4byte 0x801D50E0  ;# ptr
+	.4byte string_Now_saving_Replay_Data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D50F8  ;# ptr
+	.4byte string_Do_not_touch_the_Memory_Card_or_the_POWER_Button_  ;# ptr
 	.4byte 0
+glabel string_Now_saving_Game_Data_
 	.asciz "Now saving Game Data."
 	.balign 4
-	.4byte 0x801D513C  ;# ptr
+	.4byte string_Now_saving_Game_Data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D50F8  ;# ptr
+	.4byte string_Do_not_touch_the_Memory_Card_or_the_POWER_Button_  ;# ptr
 	.4byte 0
+glabel string_Now_loading_Game_Data_
 	.asciz "Now loading Game Data."
 	.balign 4
-	.4byte 0x801D5164  ;# ptr
+	.4byte string_Now_loading_Game_Data_  ;# ptr
 	.4byte 0
-	.4byte 0x801D50F8  ;# ptr
+	.4byte string_Do_not_touch_the_Memory_Card_or_the_POWER_Button_  ;# ptr
 	.4byte 0
+glabel string_Please_use_the_p_LEVER__a_or_the_p_BUTTON____a_to_highlight_a_selection_
 	.asciz "Please use the p/LEVER/ a/or the p/BUTTON_+/ a/to highlight a selection,"
 	.balign 4
+glabel string_and_press_the_p_BUTTON_A__a_Button_to_select_
 	.asciz "and press the p/BUTTON_A/ a/Button to select."
 	.balign 4
-	.4byte 0x801D518C  ;# ptr
+	.4byte string_Please_use_the_p_LEVER__a_or_the_p_BUTTON____a_to_highlight_a_selection_  ;# ptr
 	.4byte 0
-	.4byte 0x801D51D8  ;# ptr
+	.4byte string_and_press_the_p_BUTTON_A__a_Button_to_select_  ;# ptr
 	.4byte 0
+glabel string_Please_insert_a_Memory_Card_into_Slot_A__2
 	.asciz "Please insert a Memory Card into Slot A,"
 	.balign 4
+glabel string_then_press_the_p_BUTTON_A__a_Button_
 	.asciz "then press the p/BUTTON_A/ a/Button."
 	.balign 4
+glabel string_You_may_cancel_by_pressing_the_p_BUTTON_B__a_Button_
 	.asciz "You may cancel by pressing the p/BUTTON_B/ a/Button."
 	.balign 4
-	.4byte 0x801D5218  ;# ptr
+	.4byte string_Please_insert_a_Memory_Card_into_Slot_A__2  ;# ptr
 	.4byte 0
-	.4byte 0x801D5244  ;# ptr
+	.4byte string_then_press_the_p_BUTTON_A__a_Button_  ;# ptr
 	.4byte 0
-	.4byte 0x801D526C  ;# ptr
+	.4byte string_You_may_cancel_by_pressing_the_p_BUTTON_B__a_Button_  ;# ptr
 	.4byte 0
+glabel string_This_will_format_your_Memory_Card_
 	.asciz "This will format your Memory Card."
 	.balign 4
+glabel string_All_data_will_be_lost__Is_it_OK_to_format_
 	.asciz "All data will be lost. Is it OK to format?"
 	.balign 4
-	.4byte 0x801D52BC  ;# ptr
+	.4byte string_This_will_format_your_Memory_Card_  ;# ptr
 	.4byte 0
-	.4byte 0x801D52E0  ;# ptr
-	.4byte 0
-	.4byte 0x802F15D8  ;# ptr
+	.4byte string_All_data_will_be_lost__Is_it_OK_to_format_  ;# ptr
 	.4byte 0
 	.4byte 0x802F15D8  ;# ptr
 	.4byte 0
+	.4byte 0x802F15D8  ;# ptr
+	.4byte 0
+glabel string_Memory_Card_being_formatted_
 	.asciz "Memory Card being formatted."
 	.balign 4
-	.4byte 0x801D532C  ;# ptr
+	.4byte string_Memory_Card_being_formatted_  ;# ptr
 	.4byte 0
-	.4byte 0x801D50F8  ;# ptr
+	.4byte string_Do_not_touch_the_Memory_Card_or_the_POWER_Button_  ;# ptr
 	.4byte 0
+glabel string_A_Super_Monkey_Ball_Game_Data_file_already_exists_
 	.asciz "A Super Monkey Ball Game Data file already exists."
 	.balign 4
+glabel string_Would_you_like_to_save_over_it_
 	.asciz "Would you like to save over it?"
-	.4byte 0x801D535C  ;# ptr
+	.4byte string_A_Super_Monkey_Ball_Game_Data_file_already_exists_  ;# ptr
 	.4byte 0
-	.4byte 0x801D5390  ;# ptr
-	.4byte 0
-	.4byte 0x802F15D8  ;# ptr
+	.4byte string_Would_you_like_to_save_over_it_  ;# ptr
 	.4byte 0
 	.4byte 0x802F15D8  ;# ptr
 	.4byte 0
-	.4byte 0x802F1450  ;# ptr
-	.4byte 0x802F1458  ;# ptr
-	.4byte 0x802F1460  ;# ptr
-	.4byte 0x802F1468  ;# ptr
-	.4byte 0x802F1470  ;# ptr
-	.4byte 0x802F1478  ;# ptr
-	.4byte 0x802F1480  ;# ptr
-	.4byte 0x802F1488  ;# ptr
-	.4byte 0x802F1490  ;# ptr
-	.4byte 0x802F1498  ;# ptr
-	.4byte 0x802F14A0  ;# ptr
-	.4byte 0x802F14A8  ;# ptr
-	.4byte 0x802F14B0  ;# ptr
-	.4byte 0x802F14B8  ;# ptr
-	.4byte 0x802F14C0  ;# ptr
-	.4byte 0x802F14D0  ;# ptr
-	.4byte 0x802F14E0  ;# ptr
-	.4byte 0x802F14E8  ;# ptr
-	.4byte 0x802F14F0  ;# ptr
-	.4byte 0x802F14F8  ;# ptr
-	.4byte 0x802F1500  ;# ptr
-	.4byte 0x802F1508  ;# ptr
-	.4byte 0x802F1510  ;# ptr
-	.4byte 0x802F1518  ;# ptr
-	.4byte 0x802F1520  ;# ptr
-	.4byte 0x802F1528  ;# ptr
-	.4byte 0x802F1530  ;# ptr
-	.4byte 0x802F1538  ;# ptr
-	.4byte 0x802F1540  ;# ptr
-	.4byte 0x802F1548  ;# ptr
-	.4byte 0x802F1550  ;# ptr
-	.4byte 0x802F1558  ;# ptr
-	.4byte 0x802F1560  ;# ptr
-	.4byte 0x802F1568  ;# ptr
-	.4byte 0x802F1570  ;# ptr
-	.4byte 0x802F1578  ;# ptr
-	.4byte 0x802F1580  ;# ptr
-	.4byte 0x802F1588  ;# ptr
-	.4byte 0x802F1590  ;# ptr
-	.4byte 0x802F1598  ;# ptr
-	.4byte 0x802F15A0  ;# ptr
-	.4byte 0x802F15DC  ;# ptr
-	.4byte 0x802F15E4  ;# ptr
-	.4byte 0x802F15EC  ;# ptr
-	.4byte 0x802F15FC  ;# ptr
-	.4byte 0x802F1604  ;# ptr
-	.4byte 0x802F160C  ;# ptr
-	.4byte 0x802F1614  ;# ptr
-	.4byte 0x802F161C  ;# ptr
-	.4byte 0x802F1624  ;# ptr
-	.4byte 0x802F162C  ;# ptr
-	.4byte 0x802F1634  ;# ptr
-	.4byte 0x802F163C  ;# ptr
-	.4byte 0x802F1644  ;# ptr
+	.4byte 0x802F15D8  ;# ptr
+	.4byte 0
+	.4byte lbl_802F1450  ;# ptr
+	.4byte lbl_802F1458  ;# ptr
+	.4byte lbl_802F1460  ;# ptr
+	.4byte lbl_802F1468  ;# ptr
+	.4byte lbl_802F1470  ;# ptr
+	.4byte lbl_802F1478  ;# ptr
+	.4byte lbl_802F1480  ;# ptr
+	.4byte lbl_802F1488  ;# ptr
+	.4byte lbl_802F1490  ;# ptr
+	.4byte lbl_802F1498  ;# ptr
+	.4byte lbl_802F14A0  ;# ptr
+	.4byte lbl_802F14A8  ;# ptr
+	.4byte lbl_802F14B0  ;# ptr
+	.4byte lbl_802F14B8  ;# ptr
+	.4byte lbl_802F14C0  ;# ptr
+	.4byte lbl_802F14D0  ;# ptr
+	.4byte lbl_802F14E0  ;# ptr
+	.4byte lbl_802F14E8  ;# ptr
+	.4byte lbl_802F14F0  ;# ptr
+	.4byte lbl_802F14F8  ;# ptr
+	.4byte lbl_802F1500  ;# ptr
+	.4byte lbl_802F1508  ;# ptr
+	.4byte lbl_802F1510  ;# ptr
+	.4byte lbl_802F1518  ;# ptr
+	.4byte lbl_802F1520  ;# ptr
+	.4byte lbl_802F1528  ;# ptr
+	.4byte lbl_802F1530  ;# ptr
+	.4byte lbl_802F1538  ;# ptr
+	.4byte lbl_802F1540  ;# ptr
+	.4byte lbl_802F1548  ;# ptr
+	.4byte lbl_802F1550  ;# ptr
+	.4byte lbl_802F1558  ;# ptr
+	.4byte lbl_802F1560  ;# ptr
+	.4byte lbl_802F1568  ;# ptr
+	.4byte lbl_802F1570  ;# ptr
+	.4byte lbl_802F1578  ;# ptr
+	.4byte lbl_802F1580  ;# ptr
+	.4byte lbl_802F1588  ;# ptr
+	.4byte lbl_802F1590  ;# ptr
+	.4byte lbl_802F1598  ;# ptr
+	.4byte lbl_802F15A0  ;# ptr
+	.4byte lbl_802F15DC  ;# ptr
+	.4byte lbl_802F15E4  ;# ptr
+	.4byte lbl_802F15EC  ;# ptr
+	.4byte lbl_802F15FC  ;# ptr
+	.4byte lbl_802F1604  ;# ptr
+	.4byte lbl_802F160C  ;# ptr
+	.4byte lbl_802F1614  ;# ptr
+	.4byte lbl_802F161C  ;# ptr
+	.4byte lbl_802F1624  ;# ptr
+	.4byte lbl_802F162C  ;# ptr
+	.4byte lbl_802F1634  ;# ptr
+	.4byte lbl_802F163C  ;# ptr
+	.4byte lbl_802F1644  ;# ptr
 
 .global lbl_801D54A8
 lbl_801D54A8:
 	# ROM: 0x1D24A8
+glabel string_memcard_c
 	.asciz "memcard.c"
 	.balign 4
 
 .global lbl_801D54B4
 lbl_801D54B4:
 	# ROM: 0x1D24B4
+glabel string_cannot_OSAlloc_5
 	.asciz "cannot OSAlloc"
 	.balign 4
+glabel string_banner_and_icon_bin
 	.asciz "banner_and_icon.bin"
+glabel string_cannot_open_banner_and_icon_bin
 	.asciz "cannot open banner_and_icon.bin"
+glabel string_cannot_read_banner_and_icon_bin
 	.asciz "cannot read banner_and_icon.bin"
+glabel string_Super_Monkey_Ball
 	.asciz "Super Monkey Ball"
 	.balign 4
+glabel string_GameData_02d__02d__02d__02d__02d
 	.asciz "GameData%02d-%02d-%02d %02d:%02d"
 	.balign 4
+glabel string_preview_96x32_tpl
 	.asciz "preview/96x32.tpl"
 	.balign 4
+glabel string_cannot_open_replay_banner_image
 	.asciz "cannot open replay banner image"
+glabel string_cannot_read_replay_banner_image
 	.asciz "cannot read replay banner image"
+glabel string_replay_icon_bin
 	.asciz "replay_icon.bin"
+glabel string_cannot_open_replay_icon_bin
 	.asciz "cannot open replay_icon.bin"
+glabel string_cannot_read_replay_icon_bin
 	.asciz "cannot read replay_icon.bin"
+glabel string__s_d__02d__02d__02d__02d__02d
 	.asciz "%s%d %02d-%02d-%02d %02d:%02d"
 	.balign 4
 
 .global lbl_801D560C
 lbl_801D560C:
 	# ROM: 0x1D260C
+glabel string_fatal___d_n
 	.asciz "fatal: %d\n"
 	.balign 4
 
 .global lbl_801D5618
 lbl_801D5618:
 	# ROM: 0x1D2618
+glabel string_super_monkey_ball_000
 	.asciz "super_monkey_ball.000"
 	.balign 4
 
 .global lbl_801D5630
 lbl_801D5630:
 	# ROM: 0x1D2630
+glabel string_super_monkey_ball_sys
 	.asciz "super_monkey_ball.sys"
 	.balign 4
+glabel string_stat___d_n
 	.asciz "stat: %d\n"
 	.balign 4
+glabel string_load_sequence_n
 	.asciz "load_sequence\n"
 	.balign 4
+glabel string_save_sequence_n
 	.asciz "save_sequence\n"
 	.balign 4
+glabel string_replay_save_sequence_n
 	.asciz "replay_save_sequence\n"
 	.balign 4
+glabel string_replay_list_sequence_n
 	.asciz "replay_list_sequence\n"
 	.balign 4
+glabel string_replay_load_sequence_n
 	.asciz "replay_load_sequence\n"
 	.balign 4
+glabel string_replay_delete_sequence_n
 	.asciz "replay_delete_sequence\n"
+glabel string_smkb_08x_08x
 	.asciz "smkb%08x%08x"
 	.balign 4
+glabel string_memcard_mode__d_n
 	.asciz "memcard_mode:%d\n"
 	.balign 4
+glabel string_Memcard_
 	.asciz "Memcard."
 	.balign 4
 

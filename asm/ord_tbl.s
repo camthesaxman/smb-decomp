@@ -4908,22 +4908,22 @@ lbl_802F56A0:
 .global lbl_80171950
 lbl_80171950:
 	# ROM: 0x16E950
-	.4byte 0x802F1280  ;# ptr
-	.4byte 0x802F1288  ;# ptr
-	.4byte 0x802F1290  ;# ptr
-	.4byte 0x802F1298  ;# ptr
-	.4byte 0x802F12A0  ;# ptr
-	.4byte 0x802F12A8  ;# ptr
-	.4byte 0x802F12B0  ;# ptr
-	.4byte 0x802F12B8  ;# ptr
+	.4byte string_BOY_H  ;# ptr
+	.4byte string_BOY_L  ;# ptr
+	.4byte string_GAL_H  ;# ptr
+	.4byte string_GAL_L  ;# ptr
+	.4byte string_KID_H  ;# ptr
+	.4byte string_KID_L  ;# ptr
+	.4byte string_GOR_H  ;# ptr
+	.4byte string_GOR_L  ;# ptr
 
 .global lbl_80171970
 lbl_80171970:
 	# ROM: 0x16E970
-	.4byte 0x801C7B5C  ;# ptr
+	.4byte string_boy_ch_tpl_lz  ;# ptr
 	.4byte 0
-	.4byte 0x801C7B6C  ;# ptr
-	.4byte 0x801C7B7C  ;# ptr
+	.4byte string_kid_ch_tpl_lz  ;# ptr
+	.4byte string_gor_ch_tpl_lz  ;# ptr
 	.byte 0x3F, 0x80, 0x00, 0x00
 	.4byte 0
 	.4byte 0

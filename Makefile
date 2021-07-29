@@ -59,6 +59,7 @@ SOURCE_FILES := \
 	asm/code.s \
 	asm/background.s \
 	asm/stage.s \
+	src/sprite.c \
 	asm/sprite.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
@@ -273,6 +274,7 @@ tools:
 
 # File-specific compiler flags
 src/mathutil.o: CFLAGS += -inline auto -fp_contract off
+src/sprite.o:   CFLAGS += -inline auto -fp_contract off
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 

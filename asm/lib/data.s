@@ -1487,6 +1487,7 @@ lbl_80172208:
 	# ROM: 0x16F208
 	.byte 0x3F, 0xF9, 0x21, 0xFB
 	.byte 0x40, 0x00, 0x00, 0x00
+glabel string__tD_
 	.asciz ">tD-"
 	.balign 4
 	.byte 0x3C, 0xF8, 0x46, 0x98
@@ -1495,6 +1496,7 @@ lbl_80172208:
 	.byte 0x60, 0x00, 0x00, 0x00
 	.byte 0x39, 0xF0, 0x1B, 0x83
 	.byte 0x80, 0x00, 0x00, 0x00
+glabel string_8z___
 	.asciz "8z% @"
 	.balign 4
 	.byte 0x36, 0xE3, 0x82, 0x22
@@ -1513,6 +1515,7 @@ lbl_80172248:
 	.byte 0xBD, 0xAD, 0x41, 0x7C
 	.byte 0x3D, 0x41, 0x18, 0x6D
 	.byte 0x40, 0xDA, 0x82, 0x6B
+glabel string__OYX_
 	.asciz "@OYX@"
 	.balign 4
 	.byte 0x3F, 0xB9, 0x25, 0xAB
@@ -1563,6 +1566,7 @@ lbl_80172300:
 .global lbl_80172310
 lbl_80172310:
 	# ROM: 0x16F310
+glabel string_MetroTRK_for_Dolphin_v0_8
 	.asciz "MetroTRK for Dolphin v0.8"
 	.balign 4
 	.4byte 0
@@ -1608,28 +1612,41 @@ lbl_80172368:
 .global lbl_801E5CF0
 lbl_801E5CF0:
 	# ROM: 0x1E2CF0
+glabel string__nDolphin_OS__Revision__37____n
 	.asciz "\nDolphin OS $Revision: 37 $.\n"
 	.balign 4
+glabel string_Kernel_built____s__s_n
 	.asciz "Kernel built : %s %s\n"
 	.balign 4
+glabel string_Jul_19_2001
 	.asciz "Jul 19 2001"
+glabel string_05_43_42
 	.asciz "05:43:42"
 	.balign 4
+glabel string_Console_Type___
 	.asciz "Console Type : "
+glabel string_Retail__d_n
 	.asciz "Retail %d\n"
 	.balign 4
+glabel string_Mac_Emulator_n
 	.asciz "Mac Emulator\n"
 	.balign 4
+glabel string_PC_Emulator_n
 	.asciz "PC Emulator\n"
 	.balign 4
+glabel string_EPPC_Arthur_n
 	.asciz "EPPC Arthur\n"
 	.balign 4
+glabel string_EPPC_Minnow_n
 	.asciz "EPPC Minnow\n"
 	.balign 4
+glabel string_Development_HW_d_n
 	.asciz "Development HW%d\n"
 	.balign 4
+glabel string_Memory__d_MB_n
 	.asciz "Memory %d MB\n"
 	.balign 4
+glabel string_Arena___0x_x___0x_x_n
 	.asciz "Arena : 0x%x - 0x%x\n"
 	.balign 4
 	.byte 0x00, 0x00, 0x01, 0x00
@@ -1647,12 +1664,16 @@ lbl_801E5CF0:
 	.byte 0x00, 0x00, 0x13, 0x00
 	.byte 0x00, 0x00, 0x14, 0x00
 	.byte 0x00, 0x00, 0x17, 0x00
+glabel string_Installing_OSDBIntegrator_n
 	.asciz "Installing OSDBIntegrator\n"
 	.balign 4
+glabel string_____OSINIT__exception__d_commandeered_by_TRK_n
 	.asciz ">>> OSINIT: exception %d commandeered by TRK\n"
 	.balign 4
+glabel string_____OSINIT__exception__d_vectored_to_debugger_n
 	.asciz ">>> OSINIT: exception %d vectored to debugger\n"
 	.balign 4
+glabel string_Exceptions_initialized____n
 	.asciz "Exceptions initialized...\n"
 	.balign 4
 	.4byte 0
@@ -1660,38 +1681,57 @@ lbl_801E5CF0:
 .global lbl_801E5EB0
 lbl_801E5EB0:
 	# ROM: 0x1E2EB0
+glabel string_OSCheckHeap__Failed_HeapArray_in__d
 	.asciz "OSCheckHeap: Failed HeapArray in %d"
+glabel string_OSCheckHeap__Failed_0____heap____heap___NumHeaps_in__d
 	.asciz "OSCheckHeap: Failed 0 <= heap && heap < NumHeaps in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_0____hd__size_in__d
 	.asciz "OSCheckHeap: Failed 0 <= hd->size in %d"
+glabel string_OSCheckHeap__Failed_hd__allocated____NULL____hd__allocated__prev____NULL_in__d
 	.asciz "OSCheckHeap: Failed hd->allocated == NULL || hd->allocated->prev == NULL in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_InRange_cell__ArenaStart__ArenaEnd__in__d
 	.asciz "OSCheckHeap: Failed InRange(cell, ArenaStart, ArenaEnd) in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_OFFSET_cell__ALIGNMENT_____0_in__d
 	.asciz "OSCheckHeap: Failed OFFSET(cell, ALIGNMENT) == 0 in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_cell__next____NULL____cell__next__prev____cell_in__d
 	.asciz "OSCheckHeap: Failed cell->next == NULL || cell->next->prev == cell in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_MINOBJSIZE____cell__size_in__d
 	.asciz "OSCheckHeap: Failed MINOBJSIZE <= cell->size in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_OFFSET_cell__size__ALIGNMENT_____0_in__d
 	.asciz "OSCheckHeap: Failed OFFSET(cell->size, ALIGNMENT) == 0 in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_0___total____total____hd__size_in__d
 	.asciz "OSCheckHeap: Failed 0 < total && total <= hd->size in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_hd__free____NULL____hd__free__prev____NULL_in__d
 	.asciz "OSCheckHeap: Failed hd->free == NULL || hd->free->prev == NULL in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_cell__next____NULL_____char___cell___cell__size____char___cell__next_in__d
 	.asciz "OSCheckHeap: Failed cell->next == NULL || (char*) cell + cell->size < (char*) cell->next in %d"
 	.balign 4
+glabel string_OSCheckHeap__Failed_total____hd__size_in__d
 	.asciz "OSCheckHeap: Failed total == hd->size in %d"
+glabel string__nOSDumpHeap__d___n
 	.asciz "\nOSDumpHeap(%d):\n"
 	.balign 4
+glabel string_________Inactive_n
 	.asciz "--------Inactive\n"
 	.balign 4
+glabel string_addr_tsize_t_tend_tprev_tnext_n
 	.asciz "addr\tsize\t\tend\tprev\tnext\n"
 	.balign 4
+glabel string_________Allocated_n
 	.asciz "--------Allocated\n"
 	.balign 4
+glabel string__x_t_d_t_x_t_x_t_x_n
 	.asciz "%x\t%d\t%x\t%x\t%x\n"
+glabel string_________Free_n
 	.asciz "--------Free\n"
 	.balign 4
 	.4byte 0
@@ -1735,29 +1775,43 @@ lbl_801E6248:
 .global lbl_801E62C8
 lbl_801E62C8:
 	# ROM: 0x1E32C8
+glabel string_____L2_INVALIDATE___SHOULD_NEVER_HAPPEN_n
 	.asciz ">>> L2 INVALIDATE : SHOULD NEVER HAPPEN\n"
 	.balign 4
+glabel string_Machine_check_received_n
 	.asciz "Machine check received\n"
+glabel string_HID2___0x_x___SRR1___0x_x_n
 	.asciz "HID2 = 0x%x   SRR1 = 0x%x\n"
 	.balign 4
+glabel string_Machine_check_was_not_DMA_locked_cache_related_n
 	.asciz "Machine check was not DMA/locked cache related\n"
+glabel string_DMAErrorHandler____An_error_occurred_while_processing_DMA__n
 	.asciz "DMAErrorHandler(): An error occurred while processing DMA.\n"
+glabel string_The_following_errors_have_been_detected_and_cleared___n
 	.asciz "The following errors have been detected and cleared :\n"
 	.balign 4
+glabel string__t__Requested_a_locked_cache_tag_that_was_already_in_the_cache_n
 	.asciz "\t- Requested a locked cache tag that was already in the cache\n"
 	.balign 4
+glabel string__t__DMA_attempted_to_access_normal_cache_n
 	.asciz "\t- DMA attempted to access normal cache\n"
 	.balign 4
+glabel string__t__DMA_missed_in_data_cache_n
 	.asciz "\t- DMA missed in data cache\n"
 	.balign 4
+glabel string__t__DMA_queue_overflowed_n
 	.asciz "\t- DMA queue overflowed\n"
 	.balign 4
+glabel string_L1_i_caches_initialized_n
 	.asciz "L1 i-caches initialized\n"
 	.balign 4
+glabel string_L1_d_caches_initialized_n
 	.asciz "L1 d-caches initialized\n"
 	.balign 4
+glabel string_L2_cache_initialized_n
 	.asciz "L2 cache initialized\n"
 	.balign 4
+glabel string_Locked_cache_machine_check_handler_installed_n
 	.asciz "Locked cache machine check handler installed\n"
 	.balign 4
 	.4byte 0
@@ -1765,51 +1819,74 @@ lbl_801E62C8:
 .global lbl_801E64F8
 lbl_801E64F8:
 	# ROM: 0x1E34F8
+glabel string___________________________Context_0x_08x___________________________n
 	.asciz "------------------------- Context 0x%08x -------------------------\n"
+glabel string_r__2d____0x_08x___14d___r__2d____0x_08x___14d__n
 	.asciz "r%-2d  = 0x%08x (%14d)  r%-2d  = 0x%08x (%14d)\n"
+glabel string_LR_____0x_08x___________________CR_____0x_08x_n
 	.asciz "LR   = 0x%08x                   CR   = 0x%08x\n"
 	.balign 4
+glabel string_SRR0___0x_08x___________________SRR1___0x_08x_n
 	.asciz "SRR0 = 0x%08x                   SRR1 = 0x%08x\n"
 	.balign 4
+glabel string__nGQRs___________n
 	.asciz "\nGQRs----------\n"
 	.balign 4
+glabel string_gqr_d___0x_08x__t_gqr_d___0x_08x_n
 	.asciz "gqr%d = 0x%08x \t gqr%d = 0x%08x\n"
 	.balign 4
+glabel string__n_nFPRs___________n
 	.asciz "\n\nFPRs----------\n"
 	.balign 4
+glabel string_fr_d__t___d__t_fr_d__t___d_n
 	.asciz "fr%d \t= %d \t fr%d \t= %d\n"
 	.balign 4
+glabel string__n_nPSFs___________n
 	.asciz "\n\nPSFs----------\n"
 	.balign 4
+glabel string_ps_d__t__0x_x__t_ps_d__t__0x_x_n
 	.asciz "ps%d \t= 0x%x \t ps%d \t= 0x%x\n"
 	.balign 4
+glabel string__nAddress_______Back_Chain____LR_Save_n
 	.asciz "\nAddress:      Back Chain    LR Save\n"
 	.balign 4
+glabel string_0x_08x____0x_08x____0x_08x_n
 	.asciz "0x%08x:   0x%08x    0x%08x\n"
 
 .global lbl_801E66AC
 lbl_801E66AC:
 	# ROM: 0x1E36AC
+glabel string_FPU_unavailable_handler_installed_n
 	.asciz "FPU-unavailable handler installed\n"
 	.balign 4
 
 .global lbl_801E66D0
 lbl_801E66D0:
 	# ROM: 0x1E36D0
+glabel string__in__
 	.asciz " in \"%s\" on line %d.\n"
 	.balign 4
+glabel string__nAddress_______Back_Chain____LR_Save_n_2
 	.asciz "\nAddress:      Back Chain    LR Save\n"
 	.balign 4
+glabel string_0x_08x____0x_08x____0x_08x_n_2
 	.asciz "0x%08x:   0x%08x    0x%08x\n"
+glabel string_Non_recoverable_Exception__d
 	.asciz "Non-recoverable Exception %d"
 	.balign 4
+glabel string_Unhandled_Exception__d
 	.asciz "Unhandled Exception %d"
 	.balign 4
+glabel string__nDSISR__0x_08x___________________DAR____0x_08x_n
 	.asciz "\nDSISR= 0x%08x                   DAR  = 0x%08x\n"
+glabel string__nInstruction_at_0x_x__read_from_SRR0__attempted_to_access_invalid_address_0x_x__read_from_DAR__n
 	.asciz "\nInstruction at 0x%x (read from SRR0) attempted to access invalid address 0x%x (read from DAR)\n"
+glabel string__nAttempted_to_fetch_instruction_from_invalid_address_0x_x__read_from_SRR0__n
 	.asciz "\nAttempted to fetch instruction from invalid address 0x%x (read from SRR0)\n"
+glabel string__nInstruction_at_0x_x__read_from_SRR0__attempted_to_access_unaligned_address_0x_x__read_from_DAR__n
 	.asciz "\nInstruction at 0x%x (read from SRR0) attempted to access unaligned address 0x%x (read from DAR)\n"
 	.balign 4
+glabel string__nProgram_exception___Possible_illegal_instruction_operation_at_or_around_0x_x__read_from_SRR0__n
 	.asciz "\nProgram exception : Possible illegal instruction/operation at or around 0x%x (read from SRR0)\n"
 	.4byte 0
 
@@ -2578,12 +2655,14 @@ lbl_801E7444:
 .global lbl_801E74B0
 lbl_801E74B0:
 	# ROM: 0x1E44B0
+glabel string_OSLink__unknown_relocation_type__3d_n
 	.asciz "OSLink: unknown relocation type %3d\n"
 	.balign 4
 
 .global lbl_801E74D8
 lbl_801E74D8:
 	# ROM: 0x1E44D8
+glabel string_OSUnlink__unknown_relocation_type__3d_n
 	.asciz "OSUnlink: unknown relocation type %3d\n"
 	.balign 4
 
@@ -2632,35 +2711,47 @@ lbl_801E7548:
 .global lbl_801E7578
 lbl_801E7578:
 	# ROM: 0x1E4578
+glabel string_DBExceptionDestination_n
 	.asciz "DBExceptionDestination\n"
 
 .global lbl_801E7590
 lbl_801E7590:
 	# ROM: 0x1E4590
+glabel string_DVDConvertEntrynumToPath_possibly_DVDOpen_or_DVDChangeDir_or_DVDOpenDir___specified_directory_or_file___s__doesn_t_match_standard_8_3_format__This_is_a_temporary_restriction_and_will_be_removed_soon_n
 	.asciz "DVDConvertEntrynumToPath(possibly DVDOpen or DVDChangeDir or DVDOpenDir): specified directory or file (%s) doesn't match standard 8.3 format. This is a temporary restriction and will be removed soon\n"
 
 .global lbl_801E7658
 lbl_801E7658:
 	# ROM: 0x1E4658
+glabel string_Warning__DVDOpen____file___s__was_not_found_under__s__n
 	.asciz "Warning: DVDOpen(): file '%s' was not found under %s.\n"
 	.balign 4
 
 .global lbl_801E7690
 lbl_801E7690:
 	# ROM: 0x1E4690
+glabel string_DVDReadAsync____specified_area_is_out_of_the_file__
 	.asciz "DVDReadAsync(): specified area is out of the file  "
+glabel string_DVDRead____specified_area_is_out_of_the_file__
 	.asciz "DVDRead(): specified area is out of the file  "
 	.balign 4
+glabel string_DVDSeek____offset_is_out_of_the_file__
 	.asciz "DVDSeek(): offset is out of the file  "
 	.balign 4
+glabel string_DVDPrepareStreamAsync____Specified_start_address__filestart_0x_x____offset_0x_x___is_not_32KB_aligned
 	.asciz "DVDPrepareStreamAsync(): Specified start address (filestart(0x%x) + offset(0x%x)) is not 32KB aligned"
 	.balign 4
+glabel string_DVDPrepareStreamAsync____Specified_length__0x_x__is_not_a_multiple_of_32768_32_1024_
 	.asciz "DVDPrepareStreamAsync(): Specified length (0x%x) is not a multiple of 32768(32*1024)"
 	.balign 4
+glabel string_DVDPrepareStreamAsync____The_area_specified__offset_0x_x___length_0x_x___is_out_of_the_file
 	.asciz "DVDPrepareStreamAsync(): The area specified (offset(0x%x), length(0x%x)) is out of the file"
+glabel string_DVDPrepareStream____Specified_start_address__filestart_0x_x____offset_0x_x___is_not_32KB_aligned
 	.asciz "DVDPrepareStream(): Specified start address (filestart(0x%x) + offset(0x%x)) is not 32KB aligned"
 	.balign 4
+glabel string_DVDPrepareStream____Specified_length__0x_x__is_not_a_multiple_of_32768_32_1024_
 	.asciz "DVDPrepareStream(): Specified length (0x%x) is not a multiple of 32768(32*1024)"
+glabel string_DVDPrepareStream____The_area_specified__offset_0x_x___length_0x_x___is_out_of_the_file
 	.asciz "DVDPrepareStream(): The area specified (offset(0x%x), length(0x%x)) is out of the file"
 	.balign 4
 	.4byte 0
@@ -2668,12 +2759,16 @@ lbl_801E7690:
 .global lbl_801E7948
 lbl_801E7948:
 	# ROM: 0x1E4948
+glabel string_app_booted_via_JTAG_n
 	.asciz "app booted via JTAG\n"
 	.balign 4
+glabel string_load_fst_n
 	.asciz "load fst\n"
 	.balign 4
+glabel string_app_booted_from_bootrom_n
 	.asciz "app booted from bootrom\n"
 	.balign 4
+glabel string_bootrom_n
 	.asciz "bootrom\n"
 	.balign 4
 
@@ -2767,12 +2862,17 @@ lbl_801E7A60:
 .global lbl_801E7AA0
 lbl_801E7AA0:
 	# ROM: 0x1E4AA0
+glabel string___Game_Name______c_c_c_c_n
 	.asciz "  Game Name ... %c%c%c%c\n"
 	.balign 4
+glabel string___Company________c_c_n
 	.asciz "  Company ..... %c%c\n"
 	.balign 4
+glabel string___Disk___________d_n
 	.asciz "  Disk # ...... %d\n"
+glabel string___Game_ver_______d_n
 	.asciz "  Game ver .... %d\n"
+glabel string___Streaming______s_n
 	.asciz "  Streaming ... %s\n"
 
 .global lbl_801E7B10
@@ -3666,33 +3766,44 @@ lbl_801E8880:
 	.byte 0x4E, 0x04, 0x68, 0x03
 	.byte 0x68, 0x03, 0x68, 0x03
 	.byte 0x68, 0x03, 0x9C, 0x02
+glabel string_PADSetSamplingRate__unknown_TV_format
 	.asciz "PADSetSamplingRate: unknown TV format"
 	.balign 4
 
 .global lbl_801E88E8
 lbl_801E88E8:
 	# ROM: 0x1E58E8
+glabel string_DSPInit____Build_Date___s__s_n
 	.asciz "DSPInit(): Build Date: %s %s\n"
 	.balign 4
+glabel string_May_22_2001
 	.asciz "May 22 2001"
+glabel string_02_06_43
 	.asciz "02:06:43"
 	.balign 4
 
 .global lbl_801E8920
 lbl_801E8920:
 	# ROM: 0x1E5920
+glabel string_DSP_is_booting_task__0x_08X_n
 	.asciz "DSP is booting task: 0x%08X\n"
 	.balign 4
+glabel string___DSP_boot_task______IRAM_MMEM_ADDR__0x_08X_n
 	.asciz "__DSP_boot_task()  : IRAM MMEM ADDR: 0x%08X\n"
 	.balign 4
+glabel string___DSP_boot_task______IRAM_DSP_ADDR___0x_08X_n
 	.asciz "__DSP_boot_task()  : IRAM DSP ADDR : 0x%08X\n"
 	.balign 4
+glabel string___DSP_boot_task______IRAM_LENGTH_____0x_08X_n
 	.asciz "__DSP_boot_task()  : IRAM LENGTH   : 0x%08X\n"
 	.balign 4
+glabel string___DSP_boot_task______DRAM_MMEM_ADDR__0x_08X_n
 	.asciz "__DSP_boot_task()  : DRAM MMEM ADDR: 0x%08X\n"
 	.balign 4
+glabel string___DSP_boot_task______Start_Vector____0x_08X_n
 	.asciz "__DSP_boot_task()  : Start Vector  : 0x%08X\n"
 	.balign 4
+glabel string___DSP_add_task_____Added_task______0x_08X_n
 	.asciz "__DSP_add_task() : Added task    : 0x%08X\n"
 	.balign 4
 	.4byte 0
@@ -4264,23 +4375,27 @@ lbl_801E91C0:
 .global lbl_801E91E0
 lbl_801E91E0:
 	# ROM: 0x1E61E0
+glabel string_PERF___Unknown_event_type_for_ID__d___possibly_out_of_memory_n
 	.asciz "PERF : Unknown event type for ID %d - possibly out of memory\n"
 	.balign 4
 
 .global lbl_801E9220
 lbl_801E9220:
 	# ROM: 0x1E6220
+glabel string_PERF___event_is_still_open_for_CPU__n
 	.asciz "PERF : event is still open for CPU!\n"
 	.balign 4
 
 .global lbl_801E9248
 lbl_801E9248:
 	# ROM: 0x1E6248
+glabel string_PERF___ending_an_event_that_never_started__n
 	.asciz "PERF : ending an event that never started!\n"
 
 .global lbl_801E9274
 lbl_801E9274:
 	# ROM: 0x1E6274
+glabel string_PERF___AUTOSAMPLE___0_____SHOULD_NEVER_HAPPEN__n
 	.asciz "PERF : AUTOSAMPLE < 0!!!! SHOULD NEVER HAPPEN!\n"
 	.4byte 0
 
@@ -4303,8 +4418,10 @@ lbl_801E92A8:
 	.byte 0x41, 0x20, 0x00, 0x00
 	.byte 0x44, 0x1A, 0x00, 0x00
 	.byte 0x41, 0x20, 0x00, 0x00
+glabel string_CMUU
 	.asciz "CMUU"
 	.balign 4
+glabel string_CMUUA_
 	.asciz "CMUUA "
 	.balign 4
 	.byte 0x43, 0xCD, 0x55, 0x55
@@ -8939,6 +9056,7 @@ lbl_801ED8D8:
 .global lbl_801ED8F8
 lbl_801ED8F8:
 	# ROM: 0x1EA8F8
+glabel string_Can_t_select_EXI2_port__n
 	.asciz "Can't select EXI2 port!\n"
 	.balign 4
 	.4byte 0
@@ -8986,6 +9104,7 @@ FirstRead:
 .global lbl_802F1958
 lbl_802F1958:
 	# ROM: 0x1EC098
+glabel string_dvdfs_c
 	.asciz "dvdfs.c"
 
 .global autoInvalidation
@@ -9048,6 +9167,7 @@ cmdCalibrate:
 .global lbl_802F1994
 lbl_802F1994:
 	# ROM: 0x1EC0D4
+glabel string_Pad_c
 	.asciz "Pad.c"
 	.balign 4
 	.4byte 0
@@ -9061,7 +9181,7 @@ Chan:
 .global gx
 gx:
 	# ROM: 0x1EC0E8
-	.4byte 0x802C7E90  ;# ptr
+	.4byte gxData  ;# ptr
 	.4byte 0
 
 .global tbl1
@@ -9349,7 +9469,7 @@ lbl_802F1AC4:
 .global exi
 exi:
 	# ROM: 0x1EC208
-	.4byte 0x802F01C8  ;# ptr
+	.4byte lbl_802F01C8  ;# ptr
 	.4byte 0
 
 .global pucEXI2InputPending
