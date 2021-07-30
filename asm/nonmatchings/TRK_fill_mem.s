@@ -1,9 +1,3 @@
-.include "macros.inc"
-
-.section .text, "ax"  # 0x800065A0 - 0x8010F860
-
-.global TRK_fill_mem
-TRK_fill_mem:
 /* 8010C108 00108028  28 05 00 20 */	cmplwi r5, 0x20
 /* 8010C10C 0010802C  38 C3 FF FF */	addi r6, r3, -1
 /* 8010C110 00108030  54 80 06 3E */	clrlwi r0, r4, 0x18

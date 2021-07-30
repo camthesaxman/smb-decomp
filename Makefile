@@ -52,7 +52,6 @@ LDSCRIPT := ldscript.lcf
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
 	asm/data.s \
-	asm/init.s \
 	src/main.c \
 	src/init.c \
 	src/init_2.c \
@@ -89,6 +88,7 @@ SOURCE_FILES := \
 	asm/view.s \
 	asm/preview.s \
 	asm/lib/base/PPCArch.s \
+	asm/lib/os/__start.s \
 	asm/lib/os/OS.s \
 	asm/lib/os/OSAlarm.s \
 	asm/lib/os/OSAlloc.s \
@@ -192,6 +192,7 @@ SOURCE_FILES := \
 	asm/lib/musyx/reverb.s \
 	asm/lib/musyx/chorus_fx.s \
 	asm/lib/dtk/dtk.s \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.c \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/__va_arg.s \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.s \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.s \
@@ -239,7 +240,7 @@ SOURCE_FILES := \
 	asm/lib/TRK_MINNOW_DOLPHIN/mutex_TRK.s \
 	asm/lib/TRK_MINNOW_DOLPHIN/notify.s \
 	asm/lib/TRK_MINNOW_DOLPHIN/flush_cache.s \
-	asm/lib/TRK_MINNOW_DOLPHIN/mem_TRK.s \
+	src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c \
 	asm/lib/TRK_MINNOW_DOLPHIN/targimpl.s \
 	asm/lib/TRK_MINNOW_DOLPHIN/dolphin_trk.s \
 	asm/lib/TRK_MINNOW_DOLPHIN/mpc_7xx_603e.s \
@@ -249,7 +250,8 @@ SOURCE_FILES := \
 	asm/lib/amcstubs/AmcExi2Stubs.s \
 	asm/lib/odemustubs/odemustubs.s \
 	asm/lib/amcnotstub/amcnotstub.s \
-	asm/lib/data.s
+	asm/lib/data.s \
+	asm/init.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 DEP_FILES := $(addsuffix .dep,$(basename $(SOURCE_FILES)))
 
@@ -293,6 +295,10 @@ src/mathutil.o: CFLAGS += -inline auto -fp_contract off
 src/sprite.o:   CFLAGS += -inline auto -fp_contract off
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
+
+src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: CFLAGS += -i src/lib/Runtime.PPCEABI.H/Runtime/Inc
+src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: CC_CHECK := true
+src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 
 # Automatic dependency files
 -include $(DEP_FILES)

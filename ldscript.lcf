@@ -1,12 +1,13 @@
 _SDA_BASE_ = 0x802F81E0;
 _SDA2_BASE_ = 0x802FA800;
+_stack_addr = 0x80306C80;
 
 SECTIONS
 {
     .init       BIND(0x80003100) : {}
-    .text       BIND(0x800065A0) : {}
     _extab      BIND(0x800054C0) : {}
     _extabindex BIND(0x80005B80) : {}
+    .text       BIND(0x800065A0) : {}
     .ctors      BIND(0x8010F860) : {}
     .dtors      BIND(0x8010F880) : {}
     .rodata     BIND(0x8010F8A0) : {}
