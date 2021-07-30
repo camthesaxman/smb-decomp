@@ -29,8 +29,8 @@ extern float lbl_802F1B68;
 extern u32 lbl_802F1B6C;
 
 // sin/cos tables?
-extern float lbl_80194940[];
-extern float lbl_80184920[];
+extern float tanTable[];
+extern float sinTable[];
 
 // prototypes needed for asm entry labels
 void _return_nan();
@@ -232,9 +232,9 @@ asm float mathutil_sin(register s16 angle)
     beq @1
     subfic r4, r4, 0x4000
 @1:
-    lis r6, lbl_80184920@h
+    lis r6, sinTable@h
     slwi r4, r4, 2
-    ori r6, r6, lbl_80184920@l
+    ori r6, r6, sinTable@l
     andi. r5, angle, 0x8000
     lfsx f1, r6, r4
     beqlr
@@ -262,9 +262,9 @@ lbl_80007220:
     subfic r6, r6, 0x4000
 lbl_80007238:
     subfic r7, r6, 0x4000
-    lis r8, lbl_80184920@h
+    lis r8, sinTable@h
     slwi r6, r6, 2
-    ori r8, r8, lbl_80184920@l
+    ori r8, r8, sinTable@l
     slwi r7, r7, 2
     lfsx f1, r8, r6
     lfsx f2, r8, r7
@@ -284,10 +284,10 @@ asm float mathutil_tan(register u32 angle)
 {
     nofralloc
 
-    lis r4, lbl_80194940@h
+    lis r4, tanTable@h
     andi. r6, angle, 0x4000
     rlwinm r5, angle, 2, 0x10, 0x1d
-    ori r4, r4, lbl_80194940@l
+    ori r4, r4, tanTable@l
     beq @1
     addis r4, r4, 1
     neg r5, r5

@@ -49,6 +49,7 @@ SOURCE_FILES := \
 	asm/event.s \
 	asm/camera.s \
 	asm/code_1.s \
+	src/trig_tables.c \
 	asm/input.s \
 	asm/perf.s \
 	asm/sound.s \
