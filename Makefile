@@ -6,7 +6,17 @@ endif
 
 COMPILER_VERSION ?= 1.1
 
-### Tools ###
+VERBOSE ?= 0
+
+# Don't echo build commands unless VERBOSE is set
+ifeq ($(VERBOSE),0)
+  QUIET := @
+endif
+
+#-------------------------------------------------------------------------------
+# Tools
+#-------------------------------------------------------------------------------
+
 COMPILER_DIR := mwcc_compiler/$(COMPILER_VERSION)
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
 CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
@@ -14,9 +24,9 @@ LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
 OBJCOPY := $(DEVKITPPC)/bin/powerpc-eabi-objcopy
 OBJDUMP := $(DEVKITPPC)/bin/powerpc-eabi-objdump
 GCC     := $(DEVKITPPC)/bin/powerpc-eabi-gcc
-HOSTCPP := cpp
+HOSTCC  := cc
 SHA1SUM := sha1sum
-ELF2DOL := tools/elf2dol
+ELF2DOL := tools/elf2dol$(EXE)
 
 INCLUDE_DIRS := src
 SYSTEM_INCLUDE_DIRS := include
@@ -26,9 +36,14 @@ CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on
 CPPFLAGS     := $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 LDFLAGS      := -fp hard -nodefaults
 
+HOSTCFLAGS   := -Wall -O3 -s
+
 CC_CHECK     := $(GCC) -Wall -Wextra -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -fsyntax-only -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
-### Files ###
+#-------------------------------------------------------------------------------
+# Files
+#-------------------------------------------------------------------------------
+
 BASEROM  := baserom.bin
 DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
@@ -242,36 +257,36 @@ DEP_FILES := $(addsuffix .dep,$(basename $(SOURCE_FILES)))
 # Recipes
 #-------------------------------------------------------------------------------
 
-.PHONY: tools default
+.PHONY: default
 
 default: $(DOL)
-	@ $(SHA1SUM) -c supermonkeyball.sha1
+	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
 
-$(DOL): $(ELF) | tools
-	$(ELF2DOL) $(ELF) $(DOL)
+$(DOL): $(ELF) $(ELF2DOL)
+	@echo Converting $< to $@
+	$(QUIET) $(ELF2DOL) $(ELF) $(DOL)
 
 $(ELF): $(LDSCRIPT) $(O_FILES)
-	$(LD) $(LDFLAGS) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
+	@echo Linking ELF $@
+	$(QUIET) $(LD) $(LDFLAGS) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
 # The Metrowerks linker doesn't generate physical addresses in the ELF program headers. This fixes it somehow.
-	$(OBJCOPY) $(ELF) $(ELF)
+	$(QUIET) $(OBJCOPY) $(ELF) $(ELF)
 
 %.o: %.s
-	$(AS) $(ASFLAGS) -o $@ $<
+	@echo Assembling $<
+	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
 
 %.o: %.c
+	@echo Compiling $<
 # Generate dependencies and check syntax
-	$(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
+	$(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 # Compile
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+	$(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 # Disassemble file
-	@ $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
+	$(QUIET) $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
 
 clean:
-	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP)
-	$(MAKE) -C tools clean
-
-tools:
-	$(MAKE) -C tools
+	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP) $(ELF2DOL)
 
 # File-specific compiler flags
 src/mathutil.o: CFLAGS += -inline auto -fp_contract off
@@ -281,3 +296,11 @@ src/DEMOPuts.o: CFLAGS += -inline auto
 
 # Automatic dependency files
 -include $(DEP_FILES)
+
+#-------------------------------------------------------------------------------
+# Tool Recipes
+#-------------------------------------------------------------------------------
+
+$(ELF2DOL): tools/elf2dol.c
+	@echo Building tool $@
+	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
