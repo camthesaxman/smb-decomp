@@ -759,7 +759,7 @@ extern GXTexObj fontTexObj;
 // extern ? __block_for_set_state;
 // extern ? __block_for_next_track;
 // extern ? __block_for_prev_track;
-// extern ? lbl_802EE030;
+// extern ? fragmentinfo;
 // extern ? lbl_802EE040;
 // extern ? lbl_802EE140;
 // extern ? lbl_802EE240;

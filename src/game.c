@@ -1,7 +1,7 @@
+#include <stddef.h>
 #include <dolphin.h>
 
 #include "global.h"
-
 #include "game.h"
 
 struct MinigameLink

@@ -10,4 +10,6 @@ fi
 
 #echo "Replace $1 with $2?"
 #read
-grep -rl "$1" asm/*.{s,inc} asm/*/*.{s,inc} asm/*/*/*.{s,inc} src/*.{c,h} ldscript.lcf | xargs sed -i "s/\b$1\b/$2/g"
+C_FILES="$(find src -name *.c) $(find src -name *.h)"
+ASM_FILES="$(find asm -name *.s) $(find asm -name *.inc)"
+grep -rl "$1" $ASM_FILES $C_FILES ldscript.lcf | xargs sed -i "s/\b$1\b/$2/g"

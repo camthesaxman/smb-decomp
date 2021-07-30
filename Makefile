@@ -31,9 +31,11 @@ ELF2DOL := tools/elf2dol$(EXE)
 INCLUDE_DIRS := src
 SYSTEM_INCLUDE_DIRS := include
 
+RUNTIME_INCLUDE_DIRS := src/lib/Runtime.PPCEABI.H/Runtime/Inc
+
 ASFLAGS      := -mgekko -I asm
 CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -enum int
-CPPFLAGS     := $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 LDFLAGS      := -fp hard -nodefaults
 
 HOSTCFLAGS   := -Wall -O3 -s
@@ -195,7 +197,7 @@ SOURCE_FILES := \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.c \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/__va_arg.s \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.s \
-	asm/lib/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.s \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.cp \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/runtime.s \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/abort_exit.s \
@@ -278,14 +280,22 @@ $(ELF): $(LDSCRIPT) $(O_FILES)
 	@echo Assembling $<
 	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
 
+# Canned recipe for compiling C or C++
+# Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
+# then disassembles the object file
+define COMPILE =
+@echo Compiling $<
+$(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
+$(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+$(QUIET) $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
+endef
+
 %.o: %.c
-	@echo Compiling $<
-# Generate dependencies and check syntax
-	$(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
-# Compile
-	$(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-# Disassemble file
-	$(QUIET) $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
+	$(COMPILE)
+%.o: %.cpp
+	$(COMPILE)
+%.o: %.cp
+	$(COMPILE)
 
 clean:
 	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP) $(ELF2DOL)
@@ -296,8 +306,10 @@ src/sprite.o:   CFLAGS += -inline auto -fp_contract off
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 
-src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: CFLAGS += -i src/lib/Runtime.PPCEABI.H/Runtime/Inc
+src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: CC_CHECK := true
+src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o: CC_CHECK := true
+src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o: SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 
 # Automatic dependency files

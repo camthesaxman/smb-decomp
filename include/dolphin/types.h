@@ -18,7 +18,6 @@ typedef int BOOL;
 #define FALSE 0
 #define TRUE 1
 
-#define NULL ((void *)0)
 
 #if defined(__MWERKS__)
 #define AT_ADDRESS(addr) : (addr)

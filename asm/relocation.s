@@ -1975,8 +1975,8 @@ __block_for_next_track:
 .global __block_for_prev_track
 __block_for_prev_track:
 	.skip 0x30
-.global lbl_802EE030
-lbl_802EE030:
+.global fragmentinfo
+fragmentinfo:
 	.skip 0x10
 .global lbl_802EE040
 lbl_802EE040:
