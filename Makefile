@@ -199,7 +199,7 @@ SOURCE_FILES := \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.s \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.cp \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/runtime.s \
-	asm/lib/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.s \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/__init_cpp_exceptions.cpp \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/abort_exit.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common_Embedded/Src/ansi_fp.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/buffer_io.s \
@@ -298,7 +298,10 @@ endef
 	$(COMPILE)
 
 clean:
-	$(RM) $(DOL) $(ELF) $(O_FILES) $(MAP) $(ELF2DOL)
+	$(RM) $(DOL) $(ELF) $(MAP) $(ELF2DOL)
+	find . -name '*.o' -exec rm {} +
+	find . -name '*.dep' -exec rm {} +
+	find . -name '*.dump' -exec rm {} +
 
 # File-specific compiler flags
 src/mathutil.o: CFLAGS += -inline auto -fp_contract off
@@ -306,10 +309,15 @@ src/sprite.o:   CFLAGS += -inline auto -fp_contract off
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 
-src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
-src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o: CC_CHECK := true
-src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o: CC_CHECK := true
-src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o: SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
+# These need an extra include directory and are incompatible with gcc
+RUNTIME_OBJECTS := \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/__init_cpp_exceptions.o
+
+$(RUNTIME_OBJECTS): CC_CHECK := true
+$(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
+
 src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 
 # Automatic dependency files

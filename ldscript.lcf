@@ -18,7 +18,7 @@ SECTIONS
     .sdata2     BIND(0x802F2800) : {}
 }
 FORCEACTIVE {
-    unkData GetR2__Fv
+    unkData 
     func_8008D888 func_8008D8D0 load_model
     free_model
     func_8008E5F8 func_8008E64C func_8008E698
@@ -30,7 +30,7 @@ FORCEACTIVE {
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
 }
 
-FORCEFILES { game.o }
+FORCEFILES { game.o __init_cpp_exceptions.o }
 
 /* sprite.s */
 lbl_802F4A70 = 0x802F4A70;

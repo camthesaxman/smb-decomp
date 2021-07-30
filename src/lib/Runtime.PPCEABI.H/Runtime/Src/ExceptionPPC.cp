@@ -14,9 +14,7 @@ extern ProcessInfo fragmentinfo[MAXFRAGMENTS];
 
 #pragma peephole off
 
-// TODO: These functions should have C++ linkage
-
-extern "C" void __unregister_fragment(int fragmentID)
+void __unregister_fragment(int fragmentID)
 {
     if (fragmentID >= 0 && fragmentID < MAXFRAGMENTS)
     {
@@ -26,7 +24,7 @@ extern "C" void __unregister_fragment(int fragmentID)
     }
 }
 
-extern "C" int __register_fragment(struct __eti_init_info *info, char *TOC)
+int __register_fragment(struct __eti_init_info *info, char *TOC)
 {
     ProcessInfo *f;
     int i;
