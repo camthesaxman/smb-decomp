@@ -106,7 +106,7 @@ with open(sys.argv[1], 'rt') as f:
         m = re.match(r'\s*\.section\s+([\._A-Za-z0-9]+)', line)
         if m:
             currSection = m.groups()[0]
-        elif currSection in ['.rodata', '.data', '.sdata', '.sdata2']:
+        elif currSection in ['.rodata', '.data', '.sdata', '.sdata2', '.ctors', '.dtors', '_extab', '_extabindex']:
             # Incbin directive
             m = re.match(r'\s*\.incbin\s+"baserom.dol"\s*,\s*([^,]+),\s*([^,]+)', line)
             if m:

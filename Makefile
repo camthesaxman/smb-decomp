@@ -53,7 +53,7 @@ MAP      := $(DOL:.dol=.map)
 LDSCRIPT := ldscript.lcf
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
-	asm/data.s \
+	asm/c++_exception_data.s \
 	src/main.c \
 	src/init.c \
 	src/init_2.c \

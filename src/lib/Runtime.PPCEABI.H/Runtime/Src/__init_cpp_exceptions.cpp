@@ -14,6 +14,8 @@ asm char *GetR2(void)
     blr
 }
 
+extern "C" {
+
 void __fini_cpp_exceptions(void)
 {
     if (fragmentID != -2)
@@ -30,4 +32,6 @@ void __init_cpp_exceptions(void)
         char *R2 = GetR2();
         fragmentID = __register_fragment(_eti_init_info, R2);
     }
+}
+
 }

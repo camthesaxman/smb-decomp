@@ -9,7 +9,7 @@ labels = {}
 # get addresses from map file
 with open('supermonkeyball.map', 'rt') as f:
     for line in f.readlines():
-        if "(entry of ." in line:
+        if "(entry of " in line:
             m = re.match(r'\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)', line)
             if m:
                 g = m.groups()
