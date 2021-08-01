@@ -196,7 +196,7 @@ SOURCE_FILES := \
 	asm/lib/dtk/dtk.s \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.c \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/__va_arg.s \
-	asm/lib/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.s \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/global_destructor_chain.c \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.cp \
 	asm/lib/PowerPC_EABI_Support/Runtime/Src/runtime.s \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/__init_cpp_exceptions.cpp \
@@ -313,7 +313,8 @@ src/DEMOPuts.o: CFLAGS += -inline auto
 RUNTIME_OBJECTS := \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o \
-	src/lib/Runtime.PPCEABI.H/Runtime/Src/__init_cpp_exceptions.o
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/__init_cpp_exceptions.o \
+	src/lib/Runtime.PPCEABI.H/Runtime/Src/global_destructor_chain.o
 
 $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)

@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <__ppc_eabi_linker.h>
+#include <NMWException.h>
 
 typedef struct ProcessInfo
 {
