@@ -90,7 +90,8 @@ SOURCE_FILES := \
 	asm/view.s \
 	asm/preview.s \
 	asm/lib/base/PPCArch.s \
-	asm/lib/os/__start.s \
+	src/lib/os/__start.c \
+	src/lib/os/__ppc_eabi_init.c \
 	asm/lib/os/OS.s \
 	asm/lib/os/OSAlarm.s \
 	asm/lib/os/OSAlloc.s \
@@ -311,6 +312,8 @@ src/DEMOPuts.o: CFLAGS += -inline auto
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
+	src/lib/os/__start.o \
+	src/lib/os/__ppc_eabi_init.o \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/__mem.o \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/ExceptionPPC.o \
 	src/lib/Runtime.PPCEABI.H/Runtime/Src/__init_cpp_exceptions.o \

@@ -12,5 +12,6 @@
 #include <dolphin/ar.h>
 #include <dolphin/arq.h>
 #include <dolphin/PPCArch.h>
+#include <dolphin/DBInterface.h>
 
 #endif
