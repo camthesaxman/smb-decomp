@@ -17,6 +17,13 @@ with open('supermonkeyball.map', 'rt') as f:
                 label = g[3]
                 labels[addr] = label
                 #print('label: %s, addr: %s' % (label, addr))
+        else:
+            m = re.match(r'\s+(\w+)\s+(\w+)\s+(\w+)\s+4\s+(\w+)', line)
+            if m:
+                g = m.groups()
+                addr = int(g[2], 16)
+                label = g[3]
+                labels[addr] = label
 
 # replace pointers
 for fname in sys.argv[1:]:

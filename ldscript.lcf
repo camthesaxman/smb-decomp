@@ -24,7 +24,6 @@ FORCEACTIVE {
     func_8008E5F8 func_8008E64C func_8008E698
     
     mathutil_alignment
-    
     lbl_8028FE58
     lbl_802BA360
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
@@ -41,3 +40,6 @@ lbl_801C1264 = 0x801C1264;
 lbl_802F4A90 = 0x802F4A90;
 lbl_802F4A98 = 0x802F4A98;
 lbl_802F4AA4 = 0x802F4AA4;
+
+/* memcard.s */
+lbl_801D4288 = 0x801D4288;
