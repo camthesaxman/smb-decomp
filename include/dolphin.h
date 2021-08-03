@@ -13,5 +13,6 @@
 #include <dolphin/arq.h>
 #include <dolphin/PPCArch.h>
 #include <dolphin/DBInterface.h>
+#include <dolphin/pad.h>
 
 #endif

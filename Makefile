@@ -66,6 +66,7 @@ SOURCE_FILES := \
 	asm/camera.s \
 	asm/code_1.s \
 	src/trig_tables.c \
+	src/input.c \
 	asm/input.s \
 	asm/perf.s \
 	asm/sound.s \
@@ -85,6 +86,7 @@ SOURCE_FILES := \
 	asm/load.s \
 	asm/relocation.s \
 	asm/mini_commend.s \
+	src/memcard.c \
 	asm/memcard.s \
 	src/DEMOPuts.c \
 	asm/view.s \

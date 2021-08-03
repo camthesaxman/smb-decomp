@@ -5,6 +5,8 @@
 #include <dolphin/OSCache.h>
 #include <dolphin/OSModule.h>
 #include <dolphin/OSFont.h>
+#include <dolphin/OSReset.h>
+#include <dolphin/OSResetSW.h>
 
 typedef s64 OSTime;
 
