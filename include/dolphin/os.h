@@ -19,7 +19,22 @@ void OSSetArenaLo(void *);
 
 u32 OSGetPhysicalMemSize(void);
 
+typedef struct OSCalendarTime
+{
+    /*0x00*/ int sec;
+    /*0x04*/ int min;
+    /*0x08*/ int hour;
+    /*0x0C*/ int mday;
+    /*0x10*/ int mon;
+    /*0x14*/ int year;
+    /*0x18*/ int wday;
+    /*0x1C*/ int yday;
+    /*0x20*/ int msec;
+    /*0x24*/ int usec;
+} OSCalendarTime;
+
 OSTime OSGetTime(void);
+void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
 
 void OSReport(char *, ...);
 void OSPanic(char *file, int line, char *msg, ...);

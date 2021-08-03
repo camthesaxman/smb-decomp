@@ -1,4 +1,6 @@
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
@@ -6,21 +8,43 @@
 extern u8 lbl_802F21A8;
 extern u8 lbl_802F21B9;
 
+
 // .bss
+struct
+{
+    u8 filler0[0x2E];
+    u8 unk2E;
+    u8 filler2F[1];
+    u32 unk30;
+    u16 unk34;
+    u16 unk36;
+    u32 unk38;
+    //u8 filler3C[0xA8-0x3C];
+    u8 filler3C[0x70-0x3C];
+    // Is this part of the struct?
+} lbl_802BA2A0;
+
 //u8 lbl_802BA310[0x50];
 struct
 {
     u8 filler0[0x8];
     u32 unk8;
     u32 unkC;
-    u8 filler10[0x50-0x10];
+    u8 filler10[0x48-0x10-0x10];
 } lbl_802BA310;
+struct
+{
+    OSTime time;  // no idea which struct this is in.
+    u8 filler8[0x60-0x50];
+} lbl_802BA348;
+//u8 filler350[0x10];
 u8 lbl_802BA360[0x20];
 //CARDFileInfo lbl_802BA360;
 
-//FORCE_BSS_ORDER(filler0)
-//FORCE_BSS_ORDER(asdf)
+FORCE_BSS_ORDER(lbl_802BA2A0)
 FORCE_BSS_ORDER(lbl_802BA310)
+FORCE_BSS_ORDER(lbl_802BA348)
+//FORCE_BSS_ORDER(filler350)
 FORCE_BSS_ORDER(lbl_802BA360)
 
 #pragma force_active on
@@ -608,10 +632,68 @@ struct StringTable *lbl_801D53D0[] =
     &lbl_802F1644,
 };
 
-/*
+extern struct
+{
+    u8 unk0[4];
+    u8 unk4[0x5800];
+    char unk5804[0x5824-0x5804];
+    char unk5824[100];
+} *lbl_802F21AC;
+
 void func_8009F568(void)
 {
+    int i;
+    DVDFileInfo sp30;
+    OSCalendarTime sp8;
     void *r29 = OSAlloc(0x5800);
-    if (
+    if (r29 == NULL)
+        OSPanic("memcard.c", 0x39F, "cannot OSAlloc");
+    if (DVDOpen("banner_and_icon.bin", &sp30) == 0)
+        OSPanic("memcard.c", 0x3A3, "cannot open banner_and_icon.bin");
+    if (func_800ACBBC(&sp30, r29, 0x5800, 0) == 0)
+        OSPanic("memcard.c", 0x3A7, "cannot read banner_and_icon.bin");
+    memcpy(lbl_802F21AC->unk4, r29, 0x5800);
+    OSFree(r29);
+    DVDClose(&sp30);
+    lbl_802BA2A0.unk38 = (u32)lbl_802F21AC->unk5804 - (u32)lbl_802F21AC;
+    strcpy(lbl_802F21AC->unk5804, "Super Monkey Ball");
+    OSTicksToCalendarTime(lbl_802BA348.time, &sp8);
+    sprintf(
+        lbl_802F21AC->unk5824,
+        "GameData%02d-%02d-%02d %02d:%02d",
+        sp8.mon + 1,
+        sp8.mday,
+        sp8.year % 100,
+        sp8.hour,
+        sp8.min);
+
+    lbl_802BA2A0.unk30 = (u32)lbl_802F21AC->unk4 - (u32)lbl_802F21AC;
+    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~0x3) | 2;
+    
+    // These loops match except for stack
+    /*
+    for (i = 0; i < 8; i++)
+        lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*i))) | (2 << (2*i));
+    for (i = 0; i < 8; i++)
+        lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
+    */
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*0))) | (2 << (2*0));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*1))) | (2 << (2*1));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*2))) | (2 << (2*2));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*3))) | (2 << (2*3));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*4))) | (2 << (2*4));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*5))) | (2 << (2*5));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*6))) | (2 << (2*6));
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*7))) | (2 << (2*7));
+    
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*0))) | ((1 << (2*0)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*1))) | ((1 << (2*1)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*2))) | ((1 << (2*2)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*3))) | ((1 << (2*3)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*4))) | ((1 << (2*4)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*5))) | ((1 << (2*5)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*6))) | ((1 << (2*6)) & 0x1FFF);
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*7))) | ((1 << (2*7)) & 0x1FFF);
+
+    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~(0x1<<2));
 }
-*/

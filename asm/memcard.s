@@ -49,7 +49,6 @@ lbl_8009F53C:
 /* 8009F55C 0009B47C  7C 00 00 34 */	cntlzw r0, r0
 /* 8009F560 0009B480  54 03 D9 7E */	srwi r3, r0, 5
 /* 8009F564 0009B484  4E 80 00 20 */	blr
-.endif
 
 .global func_8009F568
 func_8009F568:
@@ -119,16 +118,16 @@ lbl_8009F610:
 /* 8009F658 0009B578  80 9F 00 AC */	lwz r4, 0xac(r31)
 /* 8009F65C 0009B57C  48 02 A5 41 */	bl OSTicksToCalendarTime
 /* 8009F660 0009B580  3C 60 51 EC */	lis r3, 0x51EB851F@ha
-/* 8009F664 0009B584  80 E1 00 1C */	lwz r7, 0x1c(r1)
+/* 8009F664 0009B584  80 E1 00 1C */	lwz r7, 0x1c(r1)  ;# year
 /* 8009F668 0009B588  38 03 85 1F */	addi r0, r3, 0x51EB851F@l
 /* 8009F66C 0009B58C  80 8D 9F CC */	lwz r4, lbl_802F21AC-_SDA_BASE_(r13)
 /* 8009F670 0009B590  7C 00 38 96 */	mulhw r0, r0, r7
-/* 8009F674 0009B594  80 A1 00 18 */	lwz r5, 0x18(r1)
-/* 8009F678 0009B598  80 C1 00 14 */	lwz r6, 0x14(r1)
+/* 8009F674 0009B594  80 A1 00 18 */	lwz r5, 0x18(r1)  ;# mon
+/* 8009F678 0009B598  80 C1 00 14 */	lwz r6, 0x14(r1)  ;# mday
 /* 8009F67C 0009B59C  4C C6 31 82 */	crclr 6
-/* 8009F680 0009B5A0  81 01 00 10 */	lwz r8, 0x10(r1)
+/* 8009F680 0009B5A0  81 01 00 10 */	lwz r8, 0x10(r1)  ;# hour
 /* 8009F684 0009B5A4  7C 00 2E 70 */	srawi r0, r0, 5
-/* 8009F688 0009B5A8  81 21 00 0C */	lwz r9, 0xc(r1)
+/* 8009F688 0009B5A8  81 21 00 0C */	lwz r9, 0xc(r1)  ;# min
 /* 8009F68C 0009B5AC  54 03 0F FE */	srwi r3, r0, 0x1f
 /* 8009F690 0009B5B0  7C 00 1A 14 */	add r0, r0, r3
 /* 8009F694 0009B5B4  1C 00 00 64 */	mulli r0, r0, 0x64
@@ -218,6 +217,7 @@ lbl_8009F610:
 /* 8009F7E4 0009B704  83 A1 00 74 */	lwz r29, 0x74(r1)
 /* 8009F7E8 0009B708  38 21 00 80 */	addi r1, r1, 0x80
 /* 8009F7EC 0009B70C  4E 80 00 20 */	blr
+.endif
 
 .global func_8009F7F0
 func_8009F7F0:
@@ -6847,6 +6847,7 @@ lbl_802F5B58:
 
 .section .data
 
+.if 0
 .global lbl_801D54A8
 lbl_801D54A8:
 	# ROM: 0x1D24A8
@@ -6872,6 +6873,8 @@ glabel string_Super_Monkey_Ball
 glabel string_GameData_02d__02d__02d__02d__02d
 	.asciz "GameData%02d-%02d-%02d %02d:%02d"
 	.balign 4
+.endif
+
 glabel string_preview_96x32_tpl
 	.asciz "preview/96x32.tpl"
 	.balign 4

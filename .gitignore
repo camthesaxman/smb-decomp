@@ -9,6 +9,7 @@ supermonkeyball.map
 *.dol
 tools/elf2dol
 *.exe
+__pycache__
 
 # Temporary files
 *.sw*

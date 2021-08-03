@@ -336,3 +336,5 @@ src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 $(ELF2DOL): tools/elf2dol.c
 	@echo Building tool $@
 	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
+
+print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true

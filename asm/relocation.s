@@ -1701,9 +1701,11 @@ lbl_802BA200:
 .global lbl_802BA210
 lbl_802BA210:
 	.skip 0x90
+.if 0
 .global lbl_802BA2A0
 lbl_802BA2A0:
 	.skip 0x70
+.endif
 
 .section .sbss
 
