@@ -629,7 +629,7 @@ void ev_recplay_dest(void);
 // ? func_800496BC();
 // ? func_80049C1C();
 // ? func_80049E7C();
-// ? func_80049F20();
+void func_80049F20(int, void *);
 // ? func_80049F90();
 // ? func_8004A820();
 // ? func_8004A874();

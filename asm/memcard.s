@@ -217,7 +217,6 @@ lbl_8009F610:
 /* 8009F7E4 0009B704  83 A1 00 74 */	lwz r29, 0x74(r1)
 /* 8009F7E8 0009B708  38 21 00 80 */	addi r1, r1, 0x80
 /* 8009F7EC 0009B70C  4E 80 00 20 */	blr
-.endif
 
 .global func_8009F7F0
 func_8009F7F0:
@@ -340,17 +339,17 @@ lbl_8009F9A4:
 /* 8009F9A4 0009B8C4  2C 00 00 03 */	cmpwi r0, 3
 /* 8009F9A8 0009B8C8  40 80 00 8C */	bge lbl_8009FA34
 /* 8009F9AC 0009B8CC  48 00 00 24 */	b lbl_8009F9D0
-lbl_8009F9B0:
+lbl_8009F9B0:  ;# 0
 /* 8009F9B0 0009B8D0  38 61 00 7C */	addi r3, r1, 0x7c
 /* 8009F9B4 0009B8D4  38 8D 94 74 */	addi r4, r13, lbl_802F1654-_SDA_BASE_
 /* 8009F9B8 0009B8D8  48 06 70 F5 */	bl strcpy
 /* 8009F9BC 0009B8DC  48 00 00 78 */	b lbl_8009FA34
-lbl_8009F9C0:
+lbl_8009F9C0:  ;# 1
 /* 8009F9C0 0009B8E0  38 61 00 7C */	addi r3, r1, 0x7c
 /* 8009F9C4 0009B8E4  38 8D 94 7C */	addi r4, r13, lbl_802F165C-_SDA_BASE_
 /* 8009F9C8 0009B8E8  48 06 70 E5 */	bl strcpy
 /* 8009F9CC 0009B8EC  48 00 00 68 */	b lbl_8009FA34
-lbl_8009F9D0:
+lbl_8009F9D0:  ;# 2
 /* 8009F9D0 0009B8F0  38 61 00 7C */	addi r3, r1, 0x7c
 /* 8009F9D4 0009B8F4  38 8D 94 84 */	addi r4, r13, lbl_802F1664-_SDA_BASE_
 /* 8009F9D8 0009B8F8  48 06 70 D5 */	bl strcpy
@@ -367,17 +366,17 @@ lbl_8009F9FC:
 /* 8009F9FC 0009B91C  2C 00 00 03 */	cmpwi r0, 3
 /* 8009FA00 0009B920  40 80 00 34 */	bge lbl_8009FA34
 /* 8009FA04 0009B924  48 00 00 24 */	b lbl_8009FA28
-lbl_8009FA08:
+lbl_8009FA08:  ;# 0
 /* 8009FA08 0009B928  38 61 00 7C */	addi r3, r1, 0x7c
 /* 8009FA0C 0009B92C  38 8D 94 8C */	addi r4, r13, lbl_802F166C-_SDA_BASE_
 /* 8009FA10 0009B930  48 06 70 9D */	bl strcpy
 /* 8009FA14 0009B934  48 00 00 20 */	b lbl_8009FA34
-lbl_8009FA18:
+lbl_8009FA18:  ;# 1
 /* 8009FA18 0009B938  38 61 00 7C */	addi r3, r1, 0x7c
 /* 8009FA1C 0009B93C  38 8D 94 94 */	addi r4, r13, lbl_802F1674-_SDA_BASE_
 /* 8009FA20 0009B940  48 06 70 8D */	bl strcpy
 /* 8009FA24 0009B944  48 00 00 10 */	b lbl_8009FA34
-lbl_8009FA28:
+lbl_8009FA28:  ;# 2
 /* 8009FA28 0009B948  38 61 00 7C */	addi r3, r1, 0x7c
 /* 8009FA2C 0009B94C  38 8D 94 9C */	addi r4, r13, lbl_802F167C-_SDA_BASE_
 /* 8009FA30 0009B950  48 06 70 7D */	bl strcpy
@@ -468,6 +467,7 @@ lbl_8009FA34:
 /* 8009FB80 0009BAA0  83 A1 00 E4 */	lwz r29, 0xe4(r1)
 /* 8009FB84 0009BAA4  38 21 00 F0 */	addi r1, r1, 0xf0
 /* 8009FB88 0009BAA8  4E 80 00 20 */	blr
+.endif
 
 .global func_8009FB8C
 func_8009FB8C:
@@ -6873,7 +6873,6 @@ glabel string_Super_Monkey_Ball
 glabel string_GameData_02d__02d__02d__02d__02d
 	.asciz "GameData%02d-%02d-%02d %02d:%02d"
 	.balign 4
-.endif
 
 glabel string_preview_96x32_tpl
 	.asciz "preview/96x32.tpl"
@@ -6891,6 +6890,7 @@ glabel string_cannot_read_replay_icon_bin
 glabel string__s_d__02d__02d__02d__02d__02d
 	.asciz "%s%d %02d-%02d-%02d %02d:%02d"
 	.balign 4
+.endif
 
 .global lbl_801D560C
 lbl_801D560C:
@@ -7029,6 +7029,7 @@ lbl_802C6BD8:
 
 .section .sdata
 
+.if 0
 .global lbl_802F164C
 lbl_802F164C:
 	# ROM: 0x1EBD8C
@@ -7074,6 +7075,7 @@ lbl_802F167C:
 glabel string_Exp_FL
 	.asciz "Exp.FL"
 	.balign 4
+.endif
 
 .global lbl_802F1684
 lbl_802F1684:

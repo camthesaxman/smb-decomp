@@ -31,9 +31,12 @@ struct
     u32 unk8;
     u32 unkC;
     u8 filler10[0x48-0x10-0x10];
+/*
 } lbl_802BA310;
 struct
 {
+*/
+#define lbl_802BA310 lbl_802BA348  // hmm... some functions reference lbl_802BA310
     OSTime time;  // no idea which struct this is in.
     u8 filler8[0x60-0x50];
 } lbl_802BA348;
@@ -634,11 +637,27 @@ struct StringTable *lbl_801D53D0[] =
 
 extern struct
 {
-    u8 unk0[4];
+    u8 filler0[4];
     u8 unk4[0x5800];
     char unk5804[0x5824-0x5804];
     char unk5824[100];
 } *lbl_802F21AC;
+
+extern struct
+{
+    u8 filler0[2];
+    u16 unk2;
+    u8 unk4;  // array?
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+    u32 unk8;
+    u32 unkC;
+    u8 unk10[0x1800];
+    u8 unk1810[0x800];
+    char unk2010[0x20];
+    char unk2030[0x20];
+} *lbl_802F21C4;
 
 void func_8009F568(void)
 {
@@ -696,4 +715,113 @@ void func_8009F568(void)
     lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*7))) | ((1 << (2*7)) & 0x1FFF);
 
     lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~(0x1<<2));
+}
+
+struct Struct8009F7F0
+{
+    u16 unk0;
+    u8 unk2;  // 8A
+    u8 unk3;  // 8B
+    u8 unk4;
+    u8 unk5;
+    u8 filler6[0x10-6];
+    u32 unk10;
+    u8 filler14[0x24-0x14-12];
+};
+
+void func_8009F7F0(void)
+{
+    DVDFileInfo spA0;
+    struct Struct8009F7F0 sp88;
+    char sp7C[0x88-0x7C];
+    char sp38[0x7C-0x38];
+    OSCalendarTime sp10;
+
+    void *r29 = OSAlloc(0x1800);
+    if (r29 == NULL)
+        OSPanic("memcard.c", 0x3F6, "cannot OSAlloc");
+    func_80049F20(11, &sp88);
+    if (DVDOpen("preview/96x32.tpl", &spA0) == 0)
+        OSPanic("memcard.c", 0x402, "cannot open replay banner image");
+    if (func_800ACBBC(&spA0, r29, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
+        OSPanic("memcard.c", 0x405, "cannot read replay banner image");
+    memcpy(lbl_802F21C4->unk10, r29, 0x1800);
+    DVDClose(&spA0);
+    
+    if (DVDOpen("replay_icon.bin", &spA0) == 0)
+        OSPanic("memcard.c", 0x410, "cannot open replay_icon.bin");
+    if (func_800ACBBC(&spA0, r29, 0x800, 0) == 0)
+        OSPanic("memcard.c", 0x413, "cannot read replay_icon.bin");
+    memcpy(lbl_802F21C4->unk1810, r29, 0x800);
+    DVDClose(&spA0);
+    OSFree(r29);
+    lbl_802BA2A0.unk38 = (u32)lbl_802F21C4->unk2010 - (u32)lbl_802F21C4;
+    strncpy(lbl_802F21C4->unk2010, "Super Monkey Ball", 32);
+
+    if (sp88.unk0 & (1<<(31-0x19)))
+    {
+        strcpy(sp7C, "Master");
+    }
+    else
+    {
+        if (sp88.unk0 & (1<<(31-0x1A)))
+        {
+            switch (sp88.unk3)
+            {
+            case 0:
+                strcpy(sp7C, "Beg.Ext");
+                break;
+            case 1:
+                strcpy(sp7C, "Adv.Ext");
+                break;
+            case 2:
+                strcpy(sp7C, "Exp.Ext");
+                break;
+            }
+        }
+        else
+        {
+            switch (sp88.unk3)
+            {
+            case 0:
+                strcpy(sp7C, "Beg.FL");
+                break;
+            case 1:
+                strcpy(sp7C, "Adv.FL");
+                break;
+            case 2:
+                strcpy(sp7C, "Exp.FL");
+                break;
+            }
+        }
+    }
+
+    OSTicksToCalendarTime(lbl_802BA348.time, &sp10);
+    sprintf(
+        sp38,
+        "%s%d %02d-%02d-%02d %02d:%02d",
+        sp7C,
+        sp88.unk4,
+        sp10.mon + 1,
+        sp10.mday,
+        sp10.year % 100,
+        sp10.hour,
+        sp10.min);
+    strncpy(lbl_802F21C4->unk2030, sp38, 32);
+
+    lbl_802BA2A0.unk30 = (u32)lbl_802F21C4->unk10 - (u32)lbl_802F21C4;
+    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~0x3) | 2;
+    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~0x3) | 2;
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~0x3) | 3;
+    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(0x3<<2));
+    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~(0x1<<2));
+
+    lbl_802F21C4->unk2 = sp88.unk0;
+    lbl_802F21C4->unk4 = sp88.unk2;
+    lbl_802F21C4->unk5 = sp88.unk3;
+    lbl_802F21C4->unk6 = sp88.unk4;
+    lbl_802F21C4->unk7 = sp88.unk5;
+    lbl_802F21C4->unk8 = sp88.unk10;
+
+    lbl_802F21C4->unkC = (u64)lbl_802BA348.time / (*(u32 *)0x800000F8 / 4); // WTF??
 }
