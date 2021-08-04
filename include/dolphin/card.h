@@ -14,5 +14,6 @@ void CARDInit(void);
 s32 CARDUnmount(s32 chan);
 s32 CARDCancel(CARDFileInfo *fileInfo);
 s32 CARDClose(CARDFileInfo *fileInfo);
+s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize);
 
 #endif
