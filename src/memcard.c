@@ -53,7 +53,8 @@ struct UnkStruct802BA310
     u32 unk44;
     u32 unk48;
     u8 unk4C;
-    u8 filler4D[0x50-0x4D];
+    u8 unk4D;
+    u8 filler4E[0x50-0x4E];
     /*0x50*/ CARDFileInfo cardFileInfo;
     u8 filler64[0xC];
 } lbl_802BA310;
@@ -1163,6 +1164,233 @@ void func_800A03DC(void)
         {
             lbl_802BA310.unk8 |= 2;
             lbl_802BA310.unk4C = 0xF;
+        }
+        break;
+    }
+}
+
+void func_800A06CC(void)
+{
+    s32 freeBytes;
+    s32 freeFiles;
+    s32 result = CARDFreeBlocks(0, &freeBytes, &freeFiles);
+
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -6:
+        lbl_802BA310.unkC = &lbl_802F1490;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        else
+        {
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        }
+        break;
+    case 0:
+        if (lbl_802BA310.unk4C == 0x17)
+        {
+            if (freeFiles < 1)
+            {
+                lbl_802BA310.unkC = &lbl_802F1540;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else if (lbl_802F21B0 == 2)
+            {
+                freeBytes /= (1 << 13);
+                if (freeBytes < 13)
+                {
+                    lbl_802BA310.unk8 |= 0x180000;
+                    lbl_802BA310.unk4D = freeBytes;
+                    lbl_802BA310.unk42 = 0;
+                    if (freeBytes < 2)
+                    {
+                        if (lbl_802BA310.unk8 & (1 << (31-0xD)))
+                            lbl_802BA310.unkC = &lbl_802F1510;
+                        else
+                            lbl_802BA310.unkC = &lbl_802F1528;
+                    }
+                    else if (freeBytes < 3)
+                    {
+                        if (lbl_802BA310.unk8 & (1 << (31-0xD)))
+                            lbl_802BA310.unkC = &lbl_802F1518;
+                        else
+                            lbl_802BA310.unkC = &lbl_802F1530;
+                    }
+                    else
+                    {
+                        if (lbl_802BA310.unk8 & (1 << (31-0xD)))
+                            lbl_802BA310.unkC = &lbl_802F1520;
+                        else
+                            lbl_802BA310.unkC = &lbl_802F1538;
+                    }
+                }
+                else
+                {
+                    if (lbl_802BA310.unk8 & (1 << (31-0xD)))
+                    {
+                        lbl_802BA310.unk42 = 0;
+                        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+                        lbl_802BA310.unk8 |= 8;
+                    }
+                    else
+                        lbl_802BA310.unkC = &lbl_802F14A0;
+                }
+                lbl_802BA310.unk8 &= ~(1 << (31-14));
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else if (freeBytes < lbl_802BA310.unk48)
+            {
+                if (freeBytes == 0)
+                {
+                    if (lbl_802F21B0 == 3)
+                    {
+                        sprintf(
+                            lbl_802F13D8.entries[0].str,
+                            lbl_802F14E8.entries[0].str,
+                            freeBytes / (1 << 13));
+                        sprintf(
+                            lbl_802F13D8.entries[1].str,
+                            lbl_802F14E8.entries[1].str,
+                            lbl_802BA310.unk48 / (1 << 13));
+                        sprintf(
+                            lbl_802F13D8.entries[2].str,
+                            lbl_802F14E8.entries[2].str);
+                        lbl_802F13D8.entries[0].unk4 = lbl_802F14E8.entries[0].unk4;
+                        lbl_802F13D8.entries[1].unk4 = lbl_802F14E8.entries[1].unk4;
+                        lbl_802F13D8.entries[2].unk4 = lbl_802F14E8.entries[2].unk4;
+                        lbl_802F13D8.numEntries = lbl_802F14E8.numEntries;
+                    }
+                    else
+                    {
+                        sprintf(
+                            lbl_802F13D8.entries[0].str,
+                            lbl_802F14E0.entries[0].str);
+                        sprintf(
+                            lbl_802F13D8.entries[1].str,
+                            lbl_802F14E0.entries[1].str,
+                            lbl_802BA310.unk48 / (1 << 13));
+                        lbl_802F13D8.entries[0].unk4 = lbl_802F14E0.entries[0].unk4;
+                        lbl_802F13D8.entries[1].unk4 = lbl_802F14E0.entries[1].unk4;
+                        lbl_802F13D8.numEntries = lbl_802F14E0.numEntries;
+                    }
+                }
+                else
+                {
+                    struct StringTable *strTable;
+
+                    if (lbl_802F21B0 == 3)
+                    {
+                        if (freeBytes / (1 << 13) == 1)
+                            strTable = &lbl_802F14D8;
+                        else
+                            strTable = &lbl_802F14D0;
+                        sprintf(
+                            lbl_802F13D8.entries[0].str,
+                            strTable->entries[0].str,
+                            freeBytes / (1 << 13));
+                        sprintf(
+                            lbl_802F13D8.entries[1].str,
+                            strTable->entries[1].str,
+                            lbl_802BA310.unk48 / (1 << 13));
+                        sprintf(
+                            lbl_802F13D8.entries[2].str,
+                            strTable->entries[2].str);
+                        lbl_802F13D8.entries[0].unk4 = strTable->entries[0].unk4;
+                        lbl_802F13D8.entries[1].unk4 = strTable->entries[1].unk4;
+                        lbl_802F13D8.entries[2].unk4 = strTable->entries[2].unk4;
+                        lbl_802F13D8.numEntries = strTable->numEntries;
+                    }
+                    else
+                    {
+                        if (freeBytes / (1 << 13) == 1)
+                            strTable = &lbl_802F14C8;
+                        else
+                            strTable = &lbl_802F14C0;
+                        sprintf(
+                            lbl_802F13D8.entries[0].str,
+                            strTable->entries[0].str);
+                        sprintf(
+                            lbl_802F13D8.entries[1].str,
+                            strTable->entries[1].str,
+                            freeBytes / (1 << 13));
+                        sprintf(
+                            lbl_802F13D8.entries[2].str,
+                            strTable->entries[2].str,
+                            lbl_802BA310.unk48 / (1 << 13));
+                        lbl_802F13D8.entries[0].unk4 = strTable->entries[0].unk4;
+                        lbl_802F13D8.entries[1].unk4 = strTable->entries[1].unk4;
+                        lbl_802F13D8.entries[2].unk4 = strTable->entries[2].unk4;
+                        lbl_802F13D8.numEntries = strTable->numEntries;
+                    }
+                }
+                lbl_802BA310.unkC = &lbl_802F13D8;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else
+            {
+                lbl_802BA310.unk42 = 0;
+                lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+                lbl_802BA310.unk4C = 13;
+                if (lbl_802BA310.unk8 & (1 << (31-0x12))
+                 && ((lbl_802BA310.unk8 & 0x00010080) == 0x10080))
+                {
+                    lbl_802F21B1 = 0;
+                    lbl_802BA310.unk8 |= 0x400;
+                }
+            }
+        }
+        else
+        {
+            freeBytes /= (1 << 13);
+            if (freeFiles < 1)
+                lbl_802BA310.unkC = &lbl_802F1548;
+            else
+            {
+                if (freeBytes < 13)
+                {
+                    lbl_802BA310.unk8 |= 0x100000;
+                    lbl_802BA310.unk4D = freeBytes;
+                    lbl_802BA310.unk42 = 0;
+                    if (freeBytes < 2)
+                        lbl_802BA310.unkC = &lbl_802F14F8;
+                    else if (freeBytes < 3)
+                        lbl_802BA310.unkC = &lbl_802F1500;
+                    else
+                        lbl_802BA310.unkC = &lbl_802F1508;
+                }
+                else
+                {
+                    if (lbl_802F21B0 == 3)
+                    {
+                        lbl_802BA310.unk42 = 0;
+                        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+                        lbl_802BA310.unk8 &= ~(1 << (31-12));
+                    }
+                    else
+                        lbl_802BA310.unkC = &lbl_802F1550;
+                }
+            }
+            lbl_802BA310.unk8 &= ~(1 << (31-0x10));
+            lbl_802BA310.unk8 |= 8;
+            lbl_802BA310.unk4C = 0xFF;
         }
         break;
     }

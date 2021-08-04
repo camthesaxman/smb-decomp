@@ -311,6 +311,7 @@ src/mathutil.o: CFLAGS += -inline auto -fp_contract off
 src/sprite.o:   CFLAGS += -inline auto -fp_contract off
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
+src/memcard.o: CFLAGS += -inline auto
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \

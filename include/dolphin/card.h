@@ -40,5 +40,6 @@ s32 CARDMountAsync(s32 chan, void *workArea, CARDCallback detachCallback,
     CARDCallback attachCallback);
 s32 CARDGetResultCode(s32 chan);
 s32 CARDCheckAsync(s32 chan, CARDCallback callback);
+s32 CARDFreeBlocks(s32 chan, s32 *byteNotUsed, s32 *filesNotUsed);
 
 #endif
