@@ -8,6 +8,17 @@
 extern u8 lbl_802F21A8;
 extern u8 lbl_802F21B9;
 
+struct StringEntry
+{
+    char *str;
+    u32 unk4;
+};
+
+struct StringTable
+{
+    struct StringEntry *entries;
+    u32 numEntries;
+};
 
 // .bss
 struct
@@ -30,16 +41,21 @@ struct UnkStruct802BA310
     u8 filler0[4];
     s32 unk4;
     u32 unk8;
-    u32 unkC;
+    struct StringTable *unkC;
     u8 filler10[0x38-0x10];
 
 //#define lbl_802BA310 lbl_802BA348  // hmm... some functions reference lbl_802BA310
     /*0x38*/ OSTime time;  // no idea which struct this is in.
-    u8 filler40[0x60-0x50];
-    u8 cardFileInfo[0x20];
+    s16 unk40;
+    u16 unk42;
+    //u8 filler44[0x48-0x44];
+    u32 unk44;
+    u32 unk48;
+    u8 unk4C;
+    u8 filler4D[0x50-0x4D];
+    /*0x50*/ u8 cardFileInfo[0x20];
 } lbl_802BA310;
 
-STATIC_ASSERT(offsetof(struct UnkStruct802BA310, filler40) == 0x40, asdf);
 //u8 filler350[0x10];
 //u8 lbl_802BA360[0x20];
 //CARDFileInfo lbl_802BA360;
@@ -83,18 +99,6 @@ int sub_8009F554(void)
 }
 
 //lbl_801D4288 = start of .data section
-
-struct StringEntry
-{
-    char *str;
-    u32 unk4;
-};
-
-struct StringTable
-{
-    struct StringEntry *entries;
-    u32 numEntries;
-};
 
 struct StringEntry lbl_802F13C8 =
 {
@@ -781,15 +785,79 @@ void func_8009F7F0(void)
     lbl_802F21C4->unkC = (u64)lbl_802BA310.time / (*(u32 *)0x800000F8 / 4); // WTF??
 }
 
-/*
 void func_8009FB8C(void)
 {
-    s32 sp8;
+    s32 dummyMemSize;
+    s32 result;
 
-    switch (CARDProbeEx(0, &sp8, &lbl_802BA348.unk4))
+    result = CARDProbeEx(0, &dummyMemSize, &lbl_802BA310.unk4);
+    if (result != CARD_RESULT_NOCARD)
     {
+        if (result != CARD_RESULT_BUSY)
+            lbl_802BA310.unk40 = 0;
+        if (result < CARD_RESULT_BUSY)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+        }
+    }
+
+    lbl_802BA310.unk8 &= ~(1 << (31-0x1D));
+    switch (result)
+    {
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_NOCARD:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk8 &= ~(1 << (31-0x1D));
+            if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unk42 = 0;
+                lbl_802BA310.unkC = &lbl_802F1468;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else
+            {
+                lbl_802BA310.unkC = &lbl_802F1470;
+                lbl_802BA310.unk4C = 1;
+            }
+        }
+        else
+            lbl_802BA310.unk8 |= 4;
+        break;
+    case CARD_RESULT_WRONGDEVICE:
+        lbl_802BA310.unkC = &lbl_802F1460;
+        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        break;
+    case CARD_RESULT_BUSY:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_READY:
+        if (lbl_802BA310.unk4 != 0x2000)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1498;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        else
+        {
+            int foo = lbl_802BA310.unk4 - 1;
+            lbl_802BA310.unk48 = (lbl_802BA310.unk44 + foo) & ~foo;
+            lbl_802BA310.unk4C = 3;
+        }
+        break;
     }
 }
-*/
