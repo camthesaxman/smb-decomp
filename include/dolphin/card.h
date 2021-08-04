@@ -19,6 +19,8 @@
 #define CARD_RESULT_CANCELED     -14
 #define CARD_RESULT_FATAL_ERROR -128
 
+typedef void (*CARDCallback)(s32 chan, s32 result);
+
 typedef struct CARDFileInfo
 {
     s32 chan;
@@ -33,5 +35,9 @@ s32 CARDUnmount(s32 chan);
 s32 CARDCancel(CARDFileInfo *fileInfo);
 s32 CARDClose(CARDFileInfo *fileInfo);
 s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize);
+s32 CARDMountAsync(s32 chan, void *workArea, CARDCallback detachCallback,
+    CARDCallback attachCallback);
+s32 CARDGetResultCode(s32 chan);
+s32 CARDCheckAsync(s32 chan, CARDCallback callback);
 
 #endif

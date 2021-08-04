@@ -56,12 +56,15 @@ struct UnkStruct802BA310
     /*0x50*/ u8 cardFileInfo[0x20];
 } lbl_802BA310;
 
+u8 lbl_802BA380[0xA100];
+
 //u8 filler350[0x10];
 //u8 lbl_802BA360[0x20];
 //CARDFileInfo lbl_802BA360;
 
 FORCE_BSS_ORDER(lbl_802BA2A0)
 FORCE_BSS_ORDER(lbl_802BA310)
+FORCE_BSS_ORDER(lbl_802BA380)
 //FORCE_BSS_ORDER(lbl_802BA348)
 //FORCE_BSS_ORDER(filler350)
 //FORCE_BSS_ORDER(lbl_802BA360)
@@ -647,7 +650,7 @@ void func_8009F568(void)
 
     lbl_802BA2A0.unk30 = (u32)lbl_802F21AC->unk4 - (u32)lbl_802F21AC;
     lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~0x3) | 2;
-    
+
     // These loops match except for stack
     /*
     for (i = 0; i < 8; i++)
@@ -663,7 +666,7 @@ void func_8009F568(void)
     lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*5))) | (2 << (2*5));
     lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*6))) | (2 << (2*6));
     lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*7))) | (2 << (2*7));
-    
+
     lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*0))) | ((1 << (2*0)) & 0x1FFF);
     lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*1))) | ((1 << (2*1)) & 0x1FFF);
     lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*2))) | ((1 << (2*2)) & 0x1FFF);
@@ -706,7 +709,7 @@ void func_8009F7F0(void)
         OSPanic("memcard.c", 0x405, "cannot read replay banner image");
     memcpy(lbl_802F21C4->unk10, r29, 0x1800);
     DVDClose(&spA0);
-    
+
     if (DVDOpen("replay_icon.bin", &spA0) == 0)
         OSPanic("memcard.c", 0x410, "cannot open replay_icon.bin");
     if (func_800ACBBC(&spA0, r29, 0x800, 0) == 0)
@@ -858,6 +861,204 @@ void func_8009FB8C(void)
             lbl_802BA310.unk48 = (lbl_802BA310.unk44 + foo) & ~foo;
             lbl_802BA310.unk4C = 3;
         }
+        break;
+    }
+}
+
+void func_8009FDD4(void)
+{
+    s32 result = CARDMountAsync(0, lbl_802BA380, NULL, NULL);
+
+    if (result < 0)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case CARD_RESULT_FATAL_ERROR:
+        lbl_802BA310.unkC = &lbl_802F1480;
+        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        break;
+    case CARD_RESULT_IOERROR:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_WRONGDEVICE:
+        lbl_802BA310.unkC = &lbl_802F1460;
+        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        break;
+    case CARD_RESULT_NOCARD:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_NOFILE:
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 4;
+        break;
+    }
+}
+
+void func_8009FF18(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case CARD_RESULT_FATAL_ERROR:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_IOERROR:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_WRONGDEVICE:
+        lbl_802BA310.unkC = &lbl_802F1460;
+        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        break;
+    case CARD_RESULT_NOCARD:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_BUSY:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_ENCODING:
+    case CARD_RESULT_BROKEN:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        // fall through
+    case CARD_RESULT_READY:
+        lbl_802BA310.unk4C = 5;
+        lbl_802BA310.unk8 |= 1;
+        break;
+    }
+}
+
+void func_800A00C0(void)
+{
+    s32 result = CARDCheckAsync(0, NULL);
+
+    if (result < 0)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case CARD_RESULT_FATAL_ERROR:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_IOERROR:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_NOCARD:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 6;
+        break;
+    }
+}
+
+extern u8 lbl_802F21B0;
+extern u8 lbl_802F21B1;
+
+void func_800A01B0(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case CARD_RESULT_FATAL_ERROR:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_IOERROR:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_WRONGDEVICE:
+        lbl_802BA310.unkC = &lbl_802F1460;
+        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        break;
+    case CARD_RESULT_NOCARD:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_BROKEN:
+    case CARD_RESULT_ENCODING:
+        if ((lbl_802BA310.unk8 & 0x90) == 0x90)
+        {
+            lbl_802BA310.unkC = &lbl_802F1488;
+            lbl_802BA310.unk4C = 9;
+            lbl_802F21B1 = 0;
+            lbl_802BA310.unk8 |= 0x400;
+        }
+        else
+        {
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unkC = &lbl_802F1490;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_READY:
+        if (lbl_802F21B0 == 5)
+        {
+            lbl_802BA310.unk40 = 0x4B0;
+            lbl_802BA310.unk4C = 0x17;
+        }
+        else if (lbl_802F21B0 == 6)
+            lbl_802BA310.unk4C = 0x18;
+        else if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
+            lbl_802BA310.unk4C = 0x21;
+        else
+            lbl_802BA310.unk4C = 7;
         break;
     }
 }
