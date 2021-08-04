@@ -38,11 +38,12 @@ struct
 //u8 lbl_802BA310[0x50];
 struct UnkStruct802BA310
 {
-    u8 filler0[4];
+    u32 unk0;
     s32 unk4;
     u32 unk8;
     struct StringTable *unkC;
-    u8 filler10[0x38-0x10];
+    u8 filler10[0x14-0x10];
+    /*0x14*/ char fileName[0x38-0x14];
 
 //#define lbl_802BA310 lbl_802BA348  // hmm... some functions reference lbl_802BA310
     /*0x38*/ OSTime time;  // no idea which struct this is in.
@@ -53,7 +54,8 @@ struct UnkStruct802BA310
     u32 unk48;
     u8 unk4C;
     u8 filler4D[0x50-0x4D];
-    /*0x50*/ u8 cardFileInfo[0x20];
+    /*0x50*/ CARDFileInfo cardFileInfo;
+    u8 filler64[0xC];
 } lbl_802BA310;
 
 u8 lbl_802BA380[0xA100];
@@ -83,10 +85,10 @@ void func_8009F4CC(u8 a)
 
 void func_8009F4D4(void)
 {
-    CARDCancel((CARDFileInfo *)lbl_802BA310.cardFileInfo);
+    CARDCancel(&lbl_802BA310.cardFileInfo);
     if (lbl_802BA310.unk8 & (1 << (31-0x1E)))
     {
-        CARDClose((CARDFileInfo *)lbl_802BA310.cardFileInfo);
+        CARDClose(&lbl_802BA310.cardFileInfo);
         lbl_802BA310.unk8 &= ~(1 << (31-0x1E));
     }
     if (lbl_802BA310.unk8 & 1)
@@ -1059,6 +1061,109 @@ void func_800A01B0(void)
             lbl_802BA310.unk4C = 0x21;
         else
             lbl_802BA310.unk4C = 7;
+        break;
+    }
+}
+
+void func_800A03DC(void)
+{
+    s32 result = CARDOpen(0, lbl_802BA310.fileName, &lbl_802BA310.cardFileInfo);
+    
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+    
+    switch (result)
+    {
+    case CARD_RESULT_FATAL_ERROR:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_NOCARD:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case CARD_RESULT_NOFILE:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
+        {
+            if (lbl_802BA310.unk4C == 0x22)
+                lbl_802BA310.unk4C = 7;
+            else
+            {
+                lbl_802BA310.unk0 = -1;
+                lbl_802BA310.unk40 = 0x4B0;
+                lbl_802BA310.unk4C = 0x17;
+            }
+        }
+        else
+            lbl_802BA310.unk4C = 0x1F;
+        break;
+    case CARD_RESULT_NOPERM:
+        if ((lbl_802BA310.unk8 & 0x90) == 0x90)
+        {
+            lbl_802BA310.unkC = &lbl_802F14A8;
+            lbl_802BA310.unk4C = 9;
+            lbl_802F21B1 = 0;
+            lbl_802BA310.unk8 |= 0x400;
+        }
+        else
+        {
+            lbl_802BA310.unkC = &lbl_802F14B0;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_BUSY:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_BROKEN:
+        if ((lbl_802BA310.unk8 & 0x90) == 0x90)
+        {
+            lbl_802BA310.unkC = &lbl_802F1488;
+            lbl_802BA310.unk4C = 9;
+            lbl_802F21B1 = 0;
+            lbl_802BA310.unk8 |= 0x400;
+        }
+        else
+        {
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unkC = &lbl_802F1490;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case CARD_RESULT_READY:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        if ((lbl_802BA310.unk8 & 0x2010) == 0x2010)
+        {
+            lbl_802BA310.unk0 = lbl_802BA310.cardFileInfo.fileNo;
+            CARDClose(&lbl_802BA310.cardFileInfo);
+            if (lbl_802BA310.unk4C == 0x22)
+                lbl_802BA310.unk4C = 0x23;
+            else
+            {
+                lbl_802BA310.unk40 = 0x4B0;
+                lbl_802BA310.unk4C = 0x17;
+                lbl_802BA310.unk8 |= 0x10000;
+            }
+        }
+        else
+        {
+            lbl_802BA310.unk8 |= 2;
+            lbl_802BA310.unk4C = 0xF;
+        }
         break;
     }
 }

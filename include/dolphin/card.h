@@ -23,16 +23,17 @@ typedef void (*CARDCallback)(s32 chan, s32 result);
 
 typedef struct CARDFileInfo
 {
-    s32 chan;
-    s32 fileNo;
-    s32 offset;
-    s32 length;
-    u16 iBlock;
+    /*0x00*/ s32 chan;
+    /*0x04*/ s32 fileNo;
+    /*0x08*/ s32 offset;
+    /*0x0C*/ s32 length;
+    /*0x10*/ u16 iBlock;
 } CARDFileInfo;
 
 void CARDInit(void);
 s32 CARDUnmount(s32 chan);
 s32 CARDCancel(CARDFileInfo *fileInfo);
+s32 CARDOpen(s32 chan, char *fileName, CARDFileInfo *fileInfo);
 s32 CARDClose(CARDFileInfo *fileInfo);
 s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize);
 s32 CARDMountAsync(s32 chan, void *workArea, CARDCallback detachCallback,
