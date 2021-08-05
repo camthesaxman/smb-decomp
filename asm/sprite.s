@@ -31827,12 +31827,13 @@ glabel string_a_Guide
 .global lbl_802F1000
 lbl_802F1000:
 	# ROM: 0x1EB740
-	.byte 0x4F, 0x4E, 0x00, 0x00
+	.asciz "ON"
+    .balign 4
 
 .global lbl_802F1004
 lbl_802F1004:
 	# ROM: 0x1EB744
-	.byte 0x4F, 0x46, 0x46, 0x00
+	.asciz "OFF"
 
 .global lbl_802F1008
 lbl_802F1008:
@@ -31844,7 +31845,7 @@ glabel string_logo
 .global lbl_802F1010
 lbl_802F1010:
 	# ROM: 0x1EB750
-	.byte 0x28, 0x43, 0x29, 0x00
+	.asciz "(C)"
 
 .global lbl_802F1014
 lbl_802F1014:
@@ -32024,17 +32025,20 @@ glabel string_PERFECT
 .global lbl_802F10D8
 lbl_802F10D8:
 	# ROM: 0x1EB818
-	.byte 0x59, 0x45, 0x53, 0x00
+	.asciz "YES"
+    .balign 4
 
 .global lbl_802F10DC
 lbl_802F10DC:
 	# ROM: 0x1EB81C
-	.byte 0x4E, 0x4F, 0x00, 0x00
+	.asciz "NO"
+    .balign 4
 
 .global lbl_802F10E0
 lbl_802F10E0:
 	# ROM: 0x1EB820
-	.byte 0x31, 0x55, 0x50, 0x00
+	.asciz "1UP"
+    .balign 4
 
 .global lbl_802F10E4
 lbl_802F10E4:
@@ -32109,12 +32113,12 @@ glabel string____X_2
 .global lbl_802F1144
 lbl_802F1144:
 	# ROM: 0x1EB884
-	.byte 0x25, 0x36, 0x64, 0x00
+	.asciz "%6d"
 
 .global lbl_802F1148
 lbl_802F1148:
 	# ROM: 0x1EB888
-	.byte 0x2B, 0x25, 0x64, 0x00
+	.asciz "+%d"
 
 .global lbl_802F114C
 lbl_802F114C:
@@ -32127,7 +32131,7 @@ glabel string_hibi
 .global lbl_802F1158
 lbl_802F1158:
 	# ROM: 0x1EB898
-	.byte 0x58, 0x25, 0x64, 0x00
+	.asciz "X%d"
 	.4byte 0
 
 .global lbl_802F1160
@@ -32168,7 +32172,8 @@ glabel string_a_Shot
 .global lbl_802F11D4
 lbl_802F11D4:
 	# ROM: 0x1EB914
-	.byte 0x25, 0x64, 0x00, 0x00
+	.asciz "%d"
+    .balign 4
 
 .global lbl_802F11D8
 lbl_802F11D8:
@@ -32248,7 +32253,8 @@ glabel string_RANKING
 .global lbl_802F1270
 lbl_802F1270:
 	# ROM: 0x1EB9B0
-	.byte 0x25, 0x73, 0x00, 0x00
+	.asciz "%s"
+    .balign 4
 
 .global lbl_802F1274
 lbl_802F1274:
@@ -32289,7 +32295,7 @@ glabel string_GOR_L
 .global lbl_802F12C0
 lbl_802F12C0:
 	# ROM: 0x1EBA00
-	.byte 0x61, 0x70, 0x65, 0x00
+	.asciz "ape"
 
 .global lbl_802F12C4
 lbl_802F12C4:

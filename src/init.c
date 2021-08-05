@@ -382,7 +382,7 @@ void init_rel(void)
     {
         u32 size = (fileInfo.length + 0x1F) & ~0x1F;
         void *strTable = OSAllocFromHeap(__OSCurrHeap, size);
-        if (func_800ACBBC(&fileInfo, strTable, size, 0))
+        if (g_read_dvd_file(&fileInfo, strTable, size, 0))
             OSSetStringTable(strTable);
         DVDClose(&fileInfo);
     }

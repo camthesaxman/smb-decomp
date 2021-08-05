@@ -194,7 +194,7 @@ s32 file_read(struct File *file, void *dest, u32 size, u32 offset)
             ;
         return size;
     default:
-        return func_800ACBBC(&file->dvdFile, dest, size, offset);
+        return g_read_dvd_file(&file->dvdFile, dest, size, offset);
     }
 }
 

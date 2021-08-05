@@ -54,17 +54,17 @@ extern struct UnkStruct802F21BC
 
 u8 lbl_802BA380[0xA100];
 u8 lbl_802C4480[0x3C0];
-char lbl_802C4840[64];
-char lbl_802C4880[64];
-char lbl_802C48C0[0x80];
+char strFmtBufferLine1[64];
+char strFmtBufferLine2[64];
+char strFmtBufferLine3[0x80];
 
 FORCE_BSS_ORDER(lbl_802BA2A0)
 FORCE_BSS_ORDER(lbl_802BA310)
 FORCE_BSS_ORDER(lbl_802BA380)
 FORCE_BSS_ORDER(lbl_802C4480)
-FORCE_BSS_ORDER(lbl_802C4840)
-FORCE_BSS_ORDER(lbl_802C4880)
-FORCE_BSS_ORDER(lbl_802C48C0)
+FORCE_BSS_ORDER(strFmtBufferLine1)
+FORCE_BSS_ORDER(strFmtBufferLine2)
+FORCE_BSS_ORDER(strFmtBufferLine3)
 
 extern u8 lbl_802F21A8;
 extern u8 lbl_802F21B9;
@@ -139,16 +139,16 @@ struct StringEntry lbl_802F13C8 =
     "A Memory Card error has occurred.", 0,
 };
 
-struct StringTable lbl_802F13D0 = {&lbl_802F13C8, 1};
+struct StringTable msgMemCardError = {&lbl_802F13C8, 1};
 
-struct StringEntry lbl_801D42AC[] =
+struct StringEntry strFmtBuffer[] =
 {
-    {lbl_802C4840, 0},
-    {lbl_802C4880, 0},
-    {lbl_802C48C0, 0},
+    {strFmtBufferLine1, 0},
+    {strFmtBufferLine2, 0},
+    {strFmtBufferLine3, 0},
 };
 
-struct StringTable lbl_802F13D8 = {lbl_801D42AC, 0 /*why 0?*/};
+struct StringTable msgFmtBuffer = {strFmtBuffer, 0 /*why 0?*/};
 
 struct StringEntry lbl_801D4310[] =
 {
@@ -156,7 +156,7 @@ struct StringEntry lbl_801D4310[] =
     {"Please see the Instruction Booklet for details.", 0},
 };
 
-struct StringEntry stringEntry1 =
+struct StringEntry strMemCardCantUse =
 {
     "This Memory Card cannot be used.", 0,
 };
@@ -179,7 +179,7 @@ struct StringEntry lbl_801D4420[] =
     {"Please insert a Memory Card into Slot A.", 0},
 };
 
-struct StringEntry lbl_801D4470[] =
+struct StringEntry strMemCardRemoved[] =
 {
     {"The Memory Card was removed.", 0},
     {"The operation has been stopped.", 0},
@@ -199,12 +199,12 @@ struct StringEntry lbl_801D459C[] =
     {"to format your Memory Card.", 0},
 };
 
-struct StringEntry stringEntry2 =
+struct StringEntry strMemCardDamaged =
 {
     "The file on the Memory Card has been damaged.", 0,
 };
 
-struct StringEntry stringEntry3 =
+struct StringEntry strMemCardCantUse2 =
 {
     "This Memory Card cannot be used.", 0,
 };
@@ -214,17 +214,17 @@ struct StringEntry stringEntry4 =
     "No Super Monkey Ball Game Data found on Memory Card.", 0,
 };
 
-struct StringEntry stringEntry5 =
+struct StringEntry strCantSaveFile =
 {
     "Cannot save data to the file.", 0,
 };
 
-struct StringEntry stringEntry6 =
+struct StringEntry strCantLoadFile =
 {
     "Cannot load file.", 0,
 };
 
-struct StringEntry stringEntry7 =
+struct StringEntry strCantReadFile =
 {
     "Cannot read file.", 0,
 };
@@ -349,73 +349,73 @@ struct StringEntry lbl_801D4C38[] =
     {"To save Replay Data, a maximum of 13 free blocks is required.", 0},
 };
 
-struct StringEntry stringEntry8 =
+struct StringEntry strCantMakeMoreFiles =
 {
     "Cannot make any more files.", 0,
 };
 
-struct StringEntry lbl_801D4CF8[] =
+struct StringEntry strSaveSuccessNoMoreFiles[] =
 {
     {"The data has been succesfully saved.", 0},
     {"However, no more files can be made. ", 0},
     {"You will not be able to save the data next time.", 0},
 };
 
-struct StringEntry stringEntry9 =
+struct StringEntry strSaveFinished =
 {
     "Saving finished.", 0,
 };
 
-struct StringEntry stringEntry10 =
+struct StringEntry strLoadFinished =
 {
     "Loading finished.", 0,
 };
 
-struct StringEntry stringEntry11 =
+struct StringEntry strDeleteFinished =
 {
     "A file has been deleted.", 0,
 };
 
-struct StringEntry lbl_801D4D9C[] =
+struct StringEntry strGameDataWrongVersion[] =
 {
     {"The Game Data version is incorrect.", 0},
     {"Please try saving your game again.", 0},
 };
 
-struct StringEntry lbl_801D4DCC[] =
+struct StringEntry strGameDataDamaged[] =
 {
     {"The Game Data has been damaged.", 0},
     {"Please try saving your game again.", 0},
 };
 
-struct StringEntry lbl_801D4E18[] =
+struct StringEntry strReplayDataDamaged[] =
 {
     {"The Replay Data has been damaged.", 0},
     {"Please delete the file.", 0},
 };
 
-struct StringEntry stringEntry12 =
+struct StringEntry strFormatInterrupted =
 {
     "Formatting has been interrupted.", 0,
 };
 
-struct StringEntry stringEntry13 =
+struct StringEntry strSaveInterrupted =
 {
     "Saving has been interrupted.", 0,
 };
 
-struct StringEntry stringEntry14 =
+struct StringEntry strLoadInterrupted =
 {
     "Loading has been interrupted.", 0,
 };
 
-struct StringEntry lbl_801D4EE4[] =
+struct StringEntry strFileSizeChanged[] =
 {
     {"The file size has been changed.", 0},
     {"Please delete the file from the menu, and try again.", 0},
 };
 
-struct StringEntry lbl_801D4FB4[] =
+struct StringEntry strNoReplayData[] =
 {
     {"No Replay Data found.", 0},
     {"In Normal mode and Practice Mode, during the Replay playback,", 0},
@@ -424,19 +424,19 @@ struct StringEntry lbl_801D4FB4[] =
 };
 
 struct StringTable lbl_802F1450 = {lbl_801D4310, ARRAY_COUNT(lbl_801D4310)};
-struct StringTable lbl_802F1458 = {&stringEntry1, 1};
+struct StringTable msgMemCardCantUse = {&strMemCardCantUse, 1};
 struct StringTable lbl_802F1460 = {lbl_801D4384, ARRAY_COUNT(lbl_801D4384)};
 struct StringTable lbl_802F1468 = {lbl_801D43E4, ARRAY_COUNT(lbl_801D43E4)};
 struct StringTable lbl_802F1470 = {lbl_801D4420, ARRAY_COUNT(lbl_801D4420)};
-struct StringTable lbl_802F1478 = {lbl_801D4470, ARRAY_COUNT(lbl_801D4470)};
+struct StringTable msgMemCardRemoved = {strMemCardRemoved, ARRAY_COUNT(strMemCardRemoved)};
 struct StringTable lbl_802F1480 = {lbl_801D44D8, ARRAY_COUNT(lbl_801D44D8)};
-struct StringTable lbl_802F1488 = {&stringEntry2, 1};
+struct StringTable msgMemCardDamaged = {&strMemCardDamaged, 1};
 struct StringTable lbl_802F1490 = {lbl_801D459C, ARRAY_COUNT(lbl_801D459C)};
-struct StringTable lbl_802F1498 = {&stringEntry3, 1};
+struct StringTable msgMemCardCantUse2 = {&strMemCardCantUse2, 1};
 struct StringTable lbl_802F14A0 = {&stringEntry4, 1};
-struct StringTable lbl_802F14A8 = {&stringEntry5, 1};
-struct StringTable lbl_802F14B0 = {&stringEntry6, 1};
-struct StringTable lbl_802F14B8 = {&stringEntry7, 1};
+struct StringTable msgCantSaveFile = {&strCantSaveFile, 1};
+struct StringTable msgCantLoadFile = {&strCantLoadFile, 1};
+struct StringTable msgCantReadFile = {&strCantReadFile, 1};
 struct StringTable lbl_802F14C0 = {lbl_801D46B0, ARRAY_COUNT(lbl_801D46B0)};
 struct StringTable lbl_802F14C8 = {lbl_801D46E0, ARRAY_COUNT(lbl_801D46E0)};
 struct StringTable lbl_802F14D0 = {lbl_801D46F8, ARRAY_COUNT(lbl_801D46F8)};
@@ -453,63 +453,63 @@ struct StringTable lbl_802F1520 = {lbl_801D4B10, ARRAY_COUNT(lbl_801D4B10)};
 struct StringTable lbl_802F1528 = {lbl_801D4B58, ARRAY_COUNT(lbl_801D4B58)};
 struct StringTable lbl_802F1530 = {lbl_801D4B58_blah, ARRAY_COUNT(lbl_801D4B58_blah)};
 struct StringTable lbl_802F1538 = {lbl_801D4C38, ARRAY_COUNT(lbl_801D4C38)};
-struct StringTable lbl_802F1540 = {&stringEntry8, 1};
-struct StringTable lbl_802F1548 = {lbl_801D4CF8, ARRAY_COUNT(lbl_801D4CF8)};
-struct StringTable lbl_802F1550 = {&stringEntry9, 1};
-struct StringTable lbl_802F1558 = {&stringEntry10, 1};
-struct StringTable lbl_802F1560 = {&stringEntry11, 1};
-struct StringTable lbl_802F1568 = {lbl_801D4D9C, ARRAY_COUNT(lbl_801D4D9C)};
-struct StringTable lbl_802F1570 = {lbl_801D4DCC, ARRAY_COUNT(lbl_801D4DCC)};
-struct StringTable lbl_802F1578 = {lbl_801D4E18, ARRAY_COUNT(lbl_801D4E18)};
-struct StringTable lbl_802F1580 = {&stringEntry12, 1};
-struct StringTable lbl_802F1588 = {&stringEntry13, 1};
-struct StringTable lbl_802F1590 = {&stringEntry14, 1};
-struct StringTable lbl_802F1598 = {lbl_801D4EE4, ARRAY_COUNT(lbl_801D4EE4)};
-struct StringTable lbl_802F15A0 = {lbl_801D4FB4, ARRAY_COUNT(lbl_801D4FB4)};
+struct StringTable msgCantMakeMoreFiles = {&strCantMakeMoreFiles, 1};
+struct StringTable msgSaveSuccessNoMoreFiles = {strSaveSuccessNoMoreFiles, ARRAY_COUNT(strSaveSuccessNoMoreFiles)};
+struct StringTable msgSaveFinished = {&strSaveFinished, 1};
+struct StringTable msgLoadFinished = {&strLoadFinished, 1};
+struct StringTable msgDeleteFinished = {&strDeleteFinished, 1};
+struct StringTable msgGameDataWrongVersion = {strGameDataWrongVersion, ARRAY_COUNT(strGameDataWrongVersion)};
+struct StringTable msgGameDataDamaged = {strGameDataDamaged, ARRAY_COUNT(strGameDataDamaged)};
+struct StringTable msgReplayDataDamaged = {strReplayDataDamaged, ARRAY_COUNT(strReplayDataDamaged)};
+struct StringTable msgFormatInterrupted = {&strFormatInterrupted, 1};
+struct StringTable msgSaveInterrupted = {&strSaveInterrupted, 1};
+struct StringTable msgLoadInterrupted = {&strLoadInterrupted, 1};
+struct StringTable msgFileSizeChanged = {strFileSizeChanged, ARRAY_COUNT(strFileSizeChanged)};
+struct StringTable msgNoReplayData = {strNoReplayData, ARRAY_COUNT(strNoReplayData)};
 
-struct StringEntry lbl_802F15A8 =
+struct StringEntry strPressBButton =
 {
     "Please press the p/BUTTON_B/ a/Button.", 0,
 };
 
-struct StringEntry stringEntry15 =
+struct StringEntry strPressBButtonNoSave =
 {
     "Please press the p/BUTTON_B/ a/Button to Continue without saving.", 0,
 };
 
-struct StringEntry lbl_802F15B8 =
+struct StringEntry strMemCardNumFreeBlocks =
 {
     "There are %d free blocks on this Memory Card.", 0,
 };
 
-struct StringEntry stringEntry16 =
+struct StringEntry strMemCardNumFreeBlock =
 {
     "There is %d free block on this Memory Card.", 0,
 };
 
-struct StringEntry stringEntry17 =
+struct StringEntry strMemCardNoFreeBlocks =
 {
     "No free blocks found on this Memory Card.", 0,
 };
 
-struct StringEntry stringEntry18 =
+struct StringEntry strAccessMemCard =
 {
     "Accessing Memory Card.", 0,
 };
 
-struct StringEntry lbl_801D512C[] =
+struct StringEntry strSavingReplay[] =
 {
     {"Now saving Replay Data.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry lbl_801D5154[] =
+struct StringEntry strSavingGame[] =
 {
     {"Now saving Game Data.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry lbl_801D517C[] =
+struct StringEntry strLoadingGame[] =
 {
     {"Now loading Game Data.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
@@ -528,7 +528,7 @@ struct StringEntry lbl_801D52A4[] =
     {"You may cancel by pressing the p/BUTTON_B/ a/Button.", 0},
 };
 
-struct StringEntry lbl_801D530C[] =
+struct StringEntry strFormatPrompt[] =
 {
     {"This will format your Memory Card.", 0},
     {"All data will be lost. Is it OK to format?", 0},
@@ -536,13 +536,13 @@ struct StringEntry lbl_801D530C[] =
     {"", 0},
 };
 
-struct StringEntry lbl_801D534C[] =
+struct StringEntry strFormatProgress[] =
 {
     {"Memory Card being formatted.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry lbl_801D53B0[] =
+struct StringEntry strOverwritePrompt[] =
 {
     {"A Super Monkey Ball Game Data file already exists.", 0},
     {"Would you like to save over it?", 0},
@@ -550,37 +550,37 @@ struct StringEntry lbl_801D53B0[] =
     {"", 0},
 };
 
-struct StringTable lbl_802F15DC = {&lbl_802F15A8, 1};
-struct StringTable lbl_802F15E4 = {&stringEntry15, 1};
-struct StringTable lbl_802F15EC = {&lbl_802F15B8, 1};
-struct StringTable lbl_802F15F4 = {&stringEntry16, 1};
-struct StringTable lbl_802F15FC = {&stringEntry17, 1};
-struct StringTable lbl_802F1604 = {&stringEntry18, 1};
-struct StringTable lbl_802F160C = {lbl_801D512C, ARRAY_COUNT(lbl_801D512C)};
-struct StringTable lbl_802F1614 = {lbl_801D5154, ARRAY_COUNT(lbl_801D5154)};
-struct StringTable lbl_802F161C = {lbl_801D517C, ARRAY_COUNT(lbl_801D517C)};
+struct StringTable msgPressBButton = {&strPressBButton, 1};
+struct StringTable msgPressBButtonNoSave = {&strPressBButtonNoSave, 1};
+struct StringTable msgMemCardNumFreeBlocks = {&strMemCardNumFreeBlocks, 1};
+struct StringTable msgMemCardNumFreeBlock = {&strMemCardNumFreeBlock, 1};
+struct StringTable msgMemCardNoFreeBlocks = {&strMemCardNoFreeBlocks, 1};
+struct StringTable msgAccessMemCard = {&strAccessMemCard, 1};
+struct StringTable msgSavingReplay = {strSavingReplay, ARRAY_COUNT(strSavingReplay)};
+struct StringTable msgSavingGame = {strSavingGame, ARRAY_COUNT(strSavingGame)};
+struct StringTable msgLoadingGame = {strLoadingGame, ARRAY_COUNT(strLoadingGame)};
 struct StringTable lbl_802F1624 = {lbl_801D5208, ARRAY_COUNT(lbl_801D5208)};
 struct StringTable lbl_802F162C = {lbl_801D52A4, ARRAY_COUNT(lbl_801D52A4)};
-struct StringTable lbl_802F1634 = {lbl_801D530C, ARRAY_COUNT(lbl_801D530C)};
-struct StringTable lbl_802F163C = {lbl_801D534C, ARRAY_COUNT(lbl_801D534C)};
-struct StringTable lbl_802F1644 = {lbl_801D53B0, ARRAY_COUNT(lbl_801D53B0)};
+struct StringTable msgFormatPrompt = {strFormatPrompt, ARRAY_COUNT(strFormatPrompt)};
+struct StringTable msgFormatProgress = {strFormatProgress, ARRAY_COUNT(strFormatProgress)};
+struct StringTable msgOverwritePrompt = {strOverwritePrompt, ARRAY_COUNT(strOverwritePrompt)};
 
 struct StringTable *lbl_801D53D0[] =
 {
     &lbl_802F1450,
-    &lbl_802F1458,
+    &msgMemCardCantUse,
     &lbl_802F1460,
     &lbl_802F1468,
     &lbl_802F1470,
-    &lbl_802F1478,
+    &msgMemCardRemoved,
     &lbl_802F1480,
-    &lbl_802F1488,
+    &msgMemCardDamaged,
     &lbl_802F1490,
-    &lbl_802F1498,
+    &msgMemCardCantUse2,
     &lbl_802F14A0,
-    &lbl_802F14A8,
-    &lbl_802F14B0,
-    &lbl_802F14B8,
+    &msgCantSaveFile,
+    &msgCantLoadFile,
+    &msgCantReadFile,
     &lbl_802F14C0,
     &lbl_802F14D0,
     &lbl_802F14E0,
@@ -595,60 +595,60 @@ struct StringTable *lbl_801D53D0[] =
     &lbl_802F1528,
     &lbl_802F1530,
     &lbl_802F1538,
-    &lbl_802F1540,
-    &lbl_802F1548,
-    &lbl_802F1550,
-    &lbl_802F1558,
-    &lbl_802F1560,
-    &lbl_802F1568,
-    &lbl_802F1570,
-    &lbl_802F1578,
-    &lbl_802F1580,
-    &lbl_802F1588,
-    &lbl_802F1590,
-    &lbl_802F1598,
-    &lbl_802F15A0,
-    &lbl_802F15DC,
-    &lbl_802F15E4,
-    &lbl_802F15EC,
-    &lbl_802F15FC,
-    &lbl_802F1604,
-    &lbl_802F160C,
-    &lbl_802F1614,
-    &lbl_802F161C,
+    &msgCantMakeMoreFiles,
+    &msgSaveSuccessNoMoreFiles,
+    &msgSaveFinished,
+    &msgLoadFinished,
+    &msgDeleteFinished,
+    &msgGameDataWrongVersion,
+    &msgGameDataDamaged,
+    &msgReplayDataDamaged,
+    &msgFormatInterrupted,
+    &msgSaveInterrupted,
+    &msgLoadInterrupted,
+    &msgFileSizeChanged,
+    &msgNoReplayData,
+    &msgPressBButton,
+    &msgPressBButtonNoSave,
+    &msgMemCardNumFreeBlocks,
+    &msgMemCardNoFreeBlocks,
+    &msgAccessMemCard,
+    &msgSavingReplay,
+    &msgSavingGame,
+    &msgLoadingGame,
     &lbl_802F1624,
     &lbl_802F162C,
-    &lbl_802F1634,
-    &lbl_802F163C,
-    &lbl_802F1644,
+    &msgFormatPrompt,
+    &msgFormatProgress,
+    &msgOverwritePrompt,
 };
 
 void func_8009F568(void)
 {
     int i;
-    DVDFileInfo sp30;
-    OSCalendarTime sp8;
-    void *r29 = OSAlloc(0x5800);
-    if (r29 == NULL)
+    DVDFileInfo file;
+    OSCalendarTime calendarTime;
+    void *buffer = OSAlloc(0x5800);
+    if (buffer == NULL)
         OSPanic("memcard.c", 0x39F, "cannot OSAlloc");
-    if (DVDOpen("banner_and_icon.bin", &sp30) == 0)
+    if (DVDOpen("banner_and_icon.bin", &file) == 0)
         OSPanic("memcard.c", 0x3A3, "cannot open banner_and_icon.bin");
-    if (func_800ACBBC(&sp30, r29, 0x5800, 0) == 0)
+    if (g_read_dvd_file(&file, buffer, 0x5800, 0) == 0)
         OSPanic("memcard.c", 0x3A7, "cannot read banner_and_icon.bin");
-    memcpy(lbl_802F21AC->unk4, r29, 0x5800);
-    OSFree(r29);
-    DVDClose(&sp30);
+    memcpy(lbl_802F21AC->unk4, buffer, 0x5800);
+    OSFree(buffer);
+    DVDClose(&file);
     lbl_802BA2A0.commentAddr = (u32)lbl_802F21AC->unk5804 - (u32)lbl_802F21AC;
     strcpy(lbl_802F21AC->unk5804, "Super Monkey Ball");
-    OSTicksToCalendarTime(lbl_802BA310.time, &sp8);
+    OSTicksToCalendarTime(lbl_802BA310.time, &calendarTime);
     sprintf(
         lbl_802F21AC->unk5824,
         "GameData%02d-%02d-%02d %02d:%02d",
-        sp8.mon + 1,
-        sp8.mday,
-        sp8.year % 100,
-        sp8.hour,
-        sp8.min);
+        calendarTime.mon + 1,
+        calendarTime.mday,
+        calendarTime.year % 100,
+        calendarTime.hour,
+        calendarTime.min);
 
     lbl_802BA2A0.iconAddr = (u32)lbl_802F21AC->unk4 - (u32)lbl_802F21AC;
     lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~0x3) | 2;
@@ -683,9 +683,9 @@ void func_8009F568(void)
 
 struct Struct8009F7F0
 {
-    u16 unk0;
-    u8 unk2;  // 8A
-    u8 unk3;  // 8B
+    u16 flags;
+    u8 unk2;
+    u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 unk4;
     u8 unk5;
     u8 filler6[0x10-6];
@@ -695,83 +695,83 @@ struct Struct8009F7F0
 
 void func_8009F7F0(void)
 {
-    DVDFileInfo spA0;
+    DVDFileInfo file;
     struct Struct8009F7F0 sp88;
-    char sp7C[0x88-0x7C];
-    char sp38[0x7C-0x38];
-    OSCalendarTime sp10;
+    char categoryName[12];
+    char replayFileName[68];
+    OSCalendarTime calendarTime;
 
-    void *r29 = OSAlloc(0x1800);
-    if (r29 == NULL)
+    void *buffer = OSAlloc(0x1800);
+    if (buffer == NULL)
         OSPanic("memcard.c", 0x3F6, "cannot OSAlloc");
     func_80049F20(11, &sp88);
-    if (DVDOpen("preview/96x32.tpl", &spA0) == 0)
+    if (DVDOpen("preview/96x32.tpl", &file) == 0)
         OSPanic("memcard.c", 0x402, "cannot open replay banner image");
-    if (func_800ACBBC(&spA0, r29, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
+    if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
         OSPanic("memcard.c", 0x405, "cannot read replay banner image");
-    memcpy(lbl_802F21C4->unk10, r29, 0x1800);
-    DVDClose(&spA0);
+    memcpy(lbl_802F21C4->unk10, buffer, 0x1800);
+    DVDClose(&file);
 
-    if (DVDOpen("replay_icon.bin", &spA0) == 0)
+    if (DVDOpen("replay_icon.bin", &file) == 0)
         OSPanic("memcard.c", 0x410, "cannot open replay_icon.bin");
-    if (func_800ACBBC(&spA0, r29, 0x800, 0) == 0)
+    if (g_read_dvd_file(&file, buffer, 0x800, 0) == 0)
         OSPanic("memcard.c", 0x413, "cannot read replay_icon.bin");
-    memcpy(lbl_802F21C4->unk1810, r29, 0x800);
-    DVDClose(&spA0);
-    OSFree(r29);
+    memcpy(lbl_802F21C4->unk1810, buffer, 0x800);
+    DVDClose(&file);
+    OSFree(buffer);
     lbl_802BA2A0.commentAddr = (u32)lbl_802F21C4->unk2010 - (u32)lbl_802F21C4;
     strncpy(lbl_802F21C4->unk2010, "Super Monkey Ball", 32);
 
-    if (sp88.unk0 & (1<<(31-0x19)))
+    if (sp88.flags & (1<<(31-0x19)))
     {
-        strcpy(sp7C, "Master");
+        strcpy(categoryName, "Master");
     }
     else
     {
-        if (sp88.unk0 & (1<<(31-0x1A)))
+        if (sp88.flags & (1<<(31-0x1A)))
         {
-            switch (sp88.unk3)
+            switch (sp88.difficulty)
             {
             case 0:
-                strcpy(sp7C, "Beg.Ext");
+                strcpy(categoryName, "Beg.Ext");
                 break;
             case 1:
-                strcpy(sp7C, "Adv.Ext");
+                strcpy(categoryName, "Adv.Ext");
                 break;
             case 2:
-                strcpy(sp7C, "Exp.Ext");
+                strcpy(categoryName, "Exp.Ext");
                 break;
             }
         }
         else
         {
-            switch (sp88.unk3)
+            switch (sp88.difficulty)
             {
             case 0:
-                strcpy(sp7C, "Beg.FL");
+                strcpy(categoryName, "Beg.FL");
                 break;
             case 1:
-                strcpy(sp7C, "Adv.FL");
+                strcpy(categoryName, "Adv.FL");
                 break;
             case 2:
-                strcpy(sp7C, "Exp.FL");
+                strcpy(categoryName, "Exp.FL");
                 break;
             }
         }
     }
 
-    OSTicksToCalendarTime(lbl_802BA310.time, &sp10);
+    OSTicksToCalendarTime(lbl_802BA310.time, &calendarTime);
     sprintf(
-        sp38,
+        replayFileName,
         "%s%d %02d-%02d-%02d %02d:%02d",
-        sp7C,
+        categoryName,
         sp88.unk4,
-        sp10.mon + 1,
-        sp10.mday,
-        sp10.year % 100,
-        sp10.hour,
-        sp10.min);
-    strncpy(lbl_802F21C4->unk2030, sp38, 32);
+        calendarTime.mon + 1,
+        calendarTime.mday,
+        calendarTime.year % 100,
+        calendarTime.hour,
+        calendarTime.min);
+    strncpy(lbl_802F21C4->unk2030, replayFileName, 32);
 
     lbl_802BA2A0.iconAddr = (u32)lbl_802F21C4->unk10 - (u32)lbl_802F21C4;
     lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~0x3) | 2;
@@ -780,9 +780,9 @@ void func_8009F7F0(void)
     lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(0x3<<2));
     lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~(0x1<<2));
 
-    lbl_802F21C4->unk2 = sp88.unk0;
+    lbl_802F21C4->unk2 = sp88.flags;
     lbl_802F21C4->unk4 = sp88.unk2;
-    lbl_802F21C4->unk5 = sp88.unk3;
+    lbl_802F21C4->unk5 = sp88.difficulty;
     lbl_802F21C4->unk6 = sp88.unk4;
     lbl_802F21C4->unk7 = sp88.unk5;
     lbl_802F21C4->unk8 = sp88.unk10;
@@ -812,7 +812,7 @@ void func_8009FB8C(void)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_NOCARD:
@@ -854,7 +854,7 @@ void func_8009FB8C(void)
         {
             lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
             lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &lbl_802F1498;
+            lbl_802BA310.unkC = &msgMemCardCantUse2;
             lbl_802BA310.unk4C = 0xFF;
         }
         else
@@ -884,7 +884,7 @@ void func_8009FDD4(void)
         lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_WRONGDEVICE:
@@ -892,7 +892,7 @@ void func_8009FDD4(void)
         lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_NOFILE:
@@ -921,11 +921,11 @@ void func_8009FF18(void)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_WRONGDEVICE:
@@ -933,7 +933,7 @@ void func_8009FF18(void)
         lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_BUSY:
@@ -970,15 +970,15 @@ void func_800A00C0(void)
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     default:
@@ -1006,11 +1006,11 @@ void func_800A01B0(void)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_WRONGDEVICE:
@@ -1018,7 +1018,7 @@ void func_800A01B0(void)
         lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1034,7 +1034,7 @@ void func_800A01B0(void)
     case CARD_RESULT_ENCODING:
         if ((lbl_802BA310.unk8 & 0x90) == 0x90)
         {
-            lbl_802BA310.unkC = &lbl_802F1488;
+            lbl_802BA310.unkC = &msgMemCardDamaged;
             lbl_802BA310.unk4C = 9;
             lbl_802F21B1 = 0;
             lbl_802BA310.unk8 |= 0x400;
@@ -1078,11 +1078,11 @@ void func_800A03DC(void)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case CARD_RESULT_NOFILE:
@@ -1105,14 +1105,14 @@ void func_800A03DC(void)
     case CARD_RESULT_NOPERM:
         if ((lbl_802BA310.unk8 & 0x90) == 0x90)
         {
-            lbl_802BA310.unkC = &lbl_802F14A8;
+            lbl_802BA310.unkC = &msgCantSaveFile;
             lbl_802BA310.unk4C = 9;
             lbl_802F21B1 = 0;
             lbl_802BA310.unk8 |= 0x400;
         }
         else
         {
-            lbl_802BA310.unkC = &lbl_802F14B0;
+            lbl_802BA310.unkC = &msgCantLoadFile;
             lbl_802BA310.unk4C = 0xFF;
         }
         break;
@@ -1128,7 +1128,7 @@ void func_800A03DC(void)
     case CARD_RESULT_BROKEN:
         if ((lbl_802BA310.unk8 & 0x90) == 0x90)
         {
-            lbl_802BA310.unkC = &lbl_802F1488;
+            lbl_802BA310.unkC = &msgMemCardDamaged;
             lbl_802BA310.unk4C = 9;
             lbl_802F21B1 = 0;
             lbl_802BA310.unk8 |= 0x400;
@@ -1177,11 +1177,11 @@ void func_800A06CC(void)
     {
     case -128:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -6:
@@ -1205,7 +1205,7 @@ void func_800A06CC(void)
         {
             if (freeFiles < 1)
             {
-                lbl_802BA310.unkC = &lbl_802F1540;
+                lbl_802BA310.unkC = &msgCantMakeMoreFiles;
                 lbl_802BA310.unk4C = 0xFF;
             }
             else if (lbl_802F21B0 == 2)
@@ -1259,33 +1259,33 @@ void func_800A06CC(void)
                     if (lbl_802F21B0 == 3)
                     {
                         sprintf(
-                            lbl_802F13D8.entries[0].str,
+                            msgFmtBuffer.entries[0].str,
                             lbl_802F14E8.entries[0].str,
                             freeBytes / (1 << 13));
                         sprintf(
-                            lbl_802F13D8.entries[1].str,
+                            msgFmtBuffer.entries[1].str,
                             lbl_802F14E8.entries[1].str,
                             lbl_802BA310.unk48 / (1 << 13));
                         sprintf(
-                            lbl_802F13D8.entries[2].str,
+                            msgFmtBuffer.entries[2].str,
                             lbl_802F14E8.entries[2].str);
-                        lbl_802F13D8.entries[0].unk4 = lbl_802F14E8.entries[0].unk4;
-                        lbl_802F13D8.entries[1].unk4 = lbl_802F14E8.entries[1].unk4;
-                        lbl_802F13D8.entries[2].unk4 = lbl_802F14E8.entries[2].unk4;
-                        lbl_802F13D8.numEntries = lbl_802F14E8.numEntries;
+                        msgFmtBuffer.entries[0].unk4 = lbl_802F14E8.entries[0].unk4;
+                        msgFmtBuffer.entries[1].unk4 = lbl_802F14E8.entries[1].unk4;
+                        msgFmtBuffer.entries[2].unk4 = lbl_802F14E8.entries[2].unk4;
+                        msgFmtBuffer.numEntries = lbl_802F14E8.numEntries;
                     }
                     else
                     {
                         sprintf(
-                            lbl_802F13D8.entries[0].str,
+                            msgFmtBuffer.entries[0].str,
                             lbl_802F14E0.entries[0].str);
                         sprintf(
-                            lbl_802F13D8.entries[1].str,
+                            msgFmtBuffer.entries[1].str,
                             lbl_802F14E0.entries[1].str,
                             lbl_802BA310.unk48 / (1 << 13));
-                        lbl_802F13D8.entries[0].unk4 = lbl_802F14E0.entries[0].unk4;
-                        lbl_802F13D8.entries[1].unk4 = lbl_802F14E0.entries[1].unk4;
-                        lbl_802F13D8.numEntries = lbl_802F14E0.numEntries;
+                        msgFmtBuffer.entries[0].unk4 = lbl_802F14E0.entries[0].unk4;
+                        msgFmtBuffer.entries[1].unk4 = lbl_802F14E0.entries[1].unk4;
+                        msgFmtBuffer.numEntries = lbl_802F14E0.numEntries;
                     }
                 }
                 else
@@ -1299,20 +1299,20 @@ void func_800A06CC(void)
                         else
                             strTable = &lbl_802F14D0;
                         sprintf(
-                            lbl_802F13D8.entries[0].str,
+                            msgFmtBuffer.entries[0].str,
                             strTable->entries[0].str,
                             freeBytes / (1 << 13));
                         sprintf(
-                            lbl_802F13D8.entries[1].str,
+                            msgFmtBuffer.entries[1].str,
                             strTable->entries[1].str,
                             lbl_802BA310.unk48 / (1 << 13));
                         sprintf(
-                            lbl_802F13D8.entries[2].str,
+                            msgFmtBuffer.entries[2].str,
                             strTable->entries[2].str);
-                        lbl_802F13D8.entries[0].unk4 = strTable->entries[0].unk4;
-                        lbl_802F13D8.entries[1].unk4 = strTable->entries[1].unk4;
-                        lbl_802F13D8.entries[2].unk4 = strTable->entries[2].unk4;
-                        lbl_802F13D8.numEntries = strTable->numEntries;
+                        msgFmtBuffer.entries[0].unk4 = strTable->entries[0].unk4;
+                        msgFmtBuffer.entries[1].unk4 = strTable->entries[1].unk4;
+                        msgFmtBuffer.entries[2].unk4 = strTable->entries[2].unk4;
+                        msgFmtBuffer.numEntries = strTable->numEntries;
                     }
                     else
                     {
@@ -1321,23 +1321,23 @@ void func_800A06CC(void)
                         else
                             strTable = &lbl_802F14C0;
                         sprintf(
-                            lbl_802F13D8.entries[0].str,
+                            msgFmtBuffer.entries[0].str,
                             strTable->entries[0].str);
                         sprintf(
-                            lbl_802F13D8.entries[1].str,
+                            msgFmtBuffer.entries[1].str,
                             strTable->entries[1].str,
                             freeBytes / (1 << 13));
                         sprintf(
-                            lbl_802F13D8.entries[2].str,
+                            msgFmtBuffer.entries[2].str,
                             strTable->entries[2].str,
                             lbl_802BA310.unk48 / (1 << 13));
-                        lbl_802F13D8.entries[0].unk4 = strTable->entries[0].unk4;
-                        lbl_802F13D8.entries[1].unk4 = strTable->entries[1].unk4;
-                        lbl_802F13D8.entries[2].unk4 = strTable->entries[2].unk4;
-                        lbl_802F13D8.numEntries = strTable->numEntries;
+                        msgFmtBuffer.entries[0].unk4 = strTable->entries[0].unk4;
+                        msgFmtBuffer.entries[1].unk4 = strTable->entries[1].unk4;
+                        msgFmtBuffer.entries[2].unk4 = strTable->entries[2].unk4;
+                        msgFmtBuffer.numEntries = strTable->numEntries;
                     }
                 }
-                lbl_802BA310.unkC = &lbl_802F13D8;
+                lbl_802BA310.unkC = &msgFmtBuffer;
                 lbl_802BA310.unk4C = 0xFF;
             }
             else
@@ -1357,7 +1357,7 @@ void func_800A06CC(void)
         {
             freeBytes /= (1 << 13);
             if (freeFiles < 1)
-                lbl_802BA310.unkC = &lbl_802F1548;
+                lbl_802BA310.unkC = &msgSaveSuccessNoMoreFiles;
             else
             {
                 if (freeBytes < 13)
@@ -1381,7 +1381,7 @@ void func_800A06CC(void)
                         lbl_802BA310.unk8 &= ~(1 << (31-12));
                     }
                     else
-                        lbl_802BA310.unkC = &lbl_802F1550;
+                        lbl_802BA310.unkC = &msgSaveFinished;
                 }
             }
             lbl_802BA310.unk8 &= ~(1 << (31-0x10));
@@ -1405,24 +1405,24 @@ void func_800A0D1C(void)
     switch (status)
     {
     case -128:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -8:
-        lbl_802BA310.unkC = &lbl_802F1540;
+        lbl_802BA310.unkC = &msgCantMakeMoreFiles;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -9:
-        sprintf(lbl_802F13D8.entries[0].str, lbl_802F14F0.entries[0].str);
-        sprintf(lbl_802F13D8.entries[1].str, lbl_802F14F0.entries[1].str);
-        lbl_802F13D8.entries[0].unk4 = lbl_802F14F0.entries[0].unk4;
-        lbl_802F13D8.entries[1].unk4 = lbl_802F14F0.entries[1].unk4;
-        lbl_802F13D8.numEntries = lbl_802F14F0.numEntries;
-        lbl_802BA310.unkC = &lbl_802F13D8;
+        sprintf(msgFmtBuffer.entries[0].str, lbl_802F14F0.entries[0].str);
+        sprintf(msgFmtBuffer.entries[1].str, lbl_802F14F0.entries[1].str);
+        msgFmtBuffer.entries[0].unk4 = lbl_802F14F0.entries[0].unk4;
+        msgFmtBuffer.entries[1].unk4 = lbl_802F14F0.entries[1].unk4;
+        msgFmtBuffer.numEntries = lbl_802F14F0.numEntries;
+        lbl_802BA310.unkC = &msgFmtBuffer;
         lbl_802BA310.unk4C = 0xFF;
         break;
     default:
@@ -1453,19 +1453,19 @@ void func_800A0E94(void)
     case -128:
     default:
         printf("fatal: %d\n", (int)status);
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -8:
-        lbl_802BA310.unkC = &lbl_802F1540;
+        lbl_802BA310.unkC = &msgCantMakeMoreFiles;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -5:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1478,12 +1478,12 @@ void func_800A0E94(void)
         }
         break;
     case -9:
-        sprintf(lbl_802F13D8.entries[0].str, lbl_802F14F0.entries[0].str);
-        sprintf(lbl_802F13D8.entries[1].str, lbl_802F14F0.entries[1].str);
-        lbl_802F13D8.entries[0].unk4 = lbl_802F14F0.entries[0].unk4;
-        lbl_802F13D8.entries[1].unk4 = lbl_802F14F0.entries[1].unk4;
-        lbl_802F13D8.numEntries = lbl_802F14F0.numEntries;
-        lbl_802BA310.unkC = &lbl_802F13D8;
+        sprintf(msgFmtBuffer.entries[0].str, lbl_802F14F0.entries[0].str);
+        sprintf(msgFmtBuffer.entries[1].str, lbl_802F14F0.entries[1].str);
+        msgFmtBuffer.entries[0].unk4 = lbl_802F14F0.entries[0].unk4;
+        msgFmtBuffer.entries[1].unk4 = lbl_802F14F0.entries[1].unk4;
+        msgFmtBuffer.numEntries = lbl_802F14F0.numEntries;
+        lbl_802BA310.unkC = &msgFmtBuffer;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case 0:
@@ -1508,15 +1508,15 @@ void func_800A10A8(void *data)
     switch (result)
     {
     case -128:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -11:
-        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unkC = &msgFileSizeChanged;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     default:
@@ -1545,23 +1545,23 @@ void func_800A11A0(void)
     case -10:
     case -128:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -5:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -11:
-        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unkC = &msgFileSizeChanged;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -14:
-        lbl_802BA310.unkC = &lbl_802F1588;
+        lbl_802BA310.unkC = &msgSaveInterrupted;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1589,11 +1589,11 @@ void func_800A1330(void)
     switch (result)
     {
     case -128:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     default:
@@ -1623,11 +1623,11 @@ void func_800A1404(void)
     case -10:
     case -128:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1667,15 +1667,15 @@ void func_800A1584(void *buffer)
     switch (result)
     {
     case -128:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -11:
-        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unkC = &msgFileSizeChanged;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     default:
@@ -1705,23 +1705,23 @@ void func_800A167C(void)
     case -10:
     case -128:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -5:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -11:
-        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unkC = &msgFileSizeChanged;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -14:
-        lbl_802BA310.unkC = &lbl_802F1590;
+        lbl_802BA310.unkC = &msgLoadInterrupted;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1747,7 +1747,7 @@ void func_800A167C(void)
                 lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
                 lbl_802BA310.unk8 |= 0x200;
                 lbl_802BA310.unk8 |= 0x4000;
-                lbl_802BA310.unkC = &lbl_802F1578;
+                lbl_802BA310.unkC = &msgReplayDataDamaged;
                 lbl_802BA310.unk4C = 0xFF;
             }
         }
@@ -1761,7 +1761,7 @@ void func_800A167C(void)
                 lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
                 lbl_802BA310.unk8 |= 0x200;
                 lbl_802BA310.unk8 |= 0x4000;
-                lbl_802BA310.unkC = &lbl_802F1570;
+                lbl_802BA310.unkC = &msgGameDataDamaged;
                 lbl_802BA310.unk4C = 0xFF;
             }
             else
@@ -1770,7 +1770,7 @@ void func_800A167C(void)
                 {
                     lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
                     lbl_802BA310.unk8 |= 0x200;
-                    lbl_802BA310.unkC = &lbl_802F1568;
+                    lbl_802BA310.unkC = &msgGameDataWrongVersion;
                     lbl_802BA310.unk4C = 0xFF;
                 }
                 else
@@ -1797,7 +1797,7 @@ void func_800A1988(void)
     {
     case -128:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -4:
@@ -1805,11 +1805,11 @@ void func_800A1988(void)
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -10:
-        lbl_802BA310.unkC = &lbl_802F14B8;
+        lbl_802BA310.unkC = &msgCantReadFile;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1831,7 +1831,7 @@ void func_800A1988(void)
                 lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
                 lbl_802BA310.unk8 |= 0x200;
             }
-            lbl_802BA310.unkC = &lbl_802F1558;
+            lbl_802BA310.unkC = &msgLoadFinished;
             lbl_802BA310.unk4C = 0xFF;
             lbl_802BA310.unk8 |= 8;
             lbl_802BA310.unk8 &= ~(1 << (31-14));
@@ -1850,11 +1850,11 @@ void func_800A1B58(void)
     switch (result)
     {
     case -128:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     default:
@@ -1882,15 +1882,15 @@ void func_800A1C24(void)
     {
     case -128:
     default:
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -5:
-        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unkC = &msgMemCardCantUse;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1922,13 +1922,13 @@ void func_800A1D64(void)
     default:
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
-        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unkC = &msgMemCardError;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -3:
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
-        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unkC = &msgMemCardRemoved;
         lbl_802BA310.unk4C = 0xFF;
         break;
     case -1:
@@ -1960,7 +1960,7 @@ void func_800A1D64(void)
             {
                 lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
                 lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &lbl_802F15A0;
+                lbl_802BA310.unkC = &msgNoReplayData;
                 lbl_802BA310.unk4C = 0xFF;
                 lbl_802BA310.unk8 &= ~(1 << (31-14));
             }

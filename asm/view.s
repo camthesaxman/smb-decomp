@@ -8133,8 +8133,8 @@ lbl_800ACBB0:
 /* 800ACBB4 000A8AD4  90 0D A0 20 */	stw r0, lbl_802F2200-_SDA_BASE_(r13)
 /* 800ACBB8 000A8AD8  4E 80 00 20 */	blr
 
-.global func_800ACBBC
-func_800ACBBC:
+.global g_read_dvd_file
+g_read_dvd_file:
 /* 800ACBBC 000A8ADC  7C 08 02 A6 */	mflr r0
 /* 800ACBC0 000A8AE0  3C E0 80 0B */	lis r7, lbl_800ACBA0@ha
 /* 800ACBC4 000A8AE4  90 01 00 04 */	stw r0, 4(r1)

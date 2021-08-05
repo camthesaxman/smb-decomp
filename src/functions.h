@@ -1671,7 +1671,7 @@ void func_800A75B4(void);
 // ? func_800AC43C();
 // ? func_800AC718();
 void func_800ACA40(void);
-int func_800ACBBC();
+int g_read_dvd_file();
 void init_loading_gct(void);
 // ? func_800ACDCC();
 // ? func_800ACF04();
