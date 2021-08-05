@@ -668,7 +668,7 @@ void func_80049F20(int, void *);
 // ? func_8004C548();
 // ? func_8004C668();
 // ? func_8004C69C();
-// ? func_8004C6DC();
+int func_8004C6DC();
 // ? func_8004C70C();
 // ? func_8004C754();
 // ? func_8004C780();

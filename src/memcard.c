@@ -1775,3 +1775,130 @@ void func_800A167C(void)
         break;
     }
 }
+
+void func_800A1988(void)
+{
+    s32 result = CARDGetStatus(0, lbl_802BA310.cardFileInfo.fileNo, &lbl_802BA2A0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -4:
+        lbl_802BA310.unkC = &lbl_802F14A0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -10:
+        lbl_802BA310.unkC = &lbl_802F14B8;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
+            lbl_802BA310.unk4C = 0x11;
+        else
+        {
+            if ((lbl_802BA310.unk8 & (1 << (31-0x19))) == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+            }
+            lbl_802BA310.unkC = &lbl_802F1558;
+            lbl_802BA310.unk4C = 0xFF;
+            lbl_802BA310.unk8 |= 8;
+            lbl_802BA310.unk8 &= ~(1 << (31-14));
+        }
+        break;
+    }
+}
+
+void func_800A1B58(void)
+{
+    s32 result = __CARDFormatRegionAsync(0, 0);
+
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 10;
+        break;
+    }
+}
+
+void func_800A1C24(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -5:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        lbl_802BA310.unk4C = 13;
+        break;
+    }
+}

@@ -67,5 +67,9 @@ s32 CARDCreateAsync(s32 chan, char *fileName, u32 size, CARDFileInfo *fileInfo, 
 s32 CARDWriteAsync(CARDFileInfo* fileInfo, void *addr, s32 length, s32 offset, CARDCallback callback);
 s32 CARDSetStatusAsync(s32 chan, s32 fileNo, CARDStat *stat, CARDCallback callback);
 s32 CARDReadAsync(CARDFileInfo* fileInfo, void *addr, s32 length, s32 offset, CARDCallback callback);
+s32 CARDGetStatus(s32 chan, s32 fileNo, CARDStat *stat);
+
+// private
+s32 __CARDFormatRegionAsync();
 
 #endif
