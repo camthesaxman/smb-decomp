@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "mathutil.h"
 
 extern u8 lbl_802F21A8;
 extern u8 lbl_802F21B9;
@@ -589,15 +590,17 @@ struct StringTable *lbl_801D53D0[] =
 
 extern struct
 {
-    u8 filler0[4];
+    u16 unk0;
+    u16 unk2;
     u8 unk4[0x5800];
     char unk5804[0x5824-0x5804];
-    char unk5824[100];
+    char unk5824[0xC04-0x824];
+    u8 unk5C04[100];
 } *lbl_802F21AC;
 
 extern struct
 {
-    u8 filler0[2];
+    u16 unk0;  // crc
     u16 unk2;
     u8 unk4;  // array?
     u8 unk5;
@@ -609,6 +612,7 @@ extern struct
     u8 unk1810[0x800];
     char unk2010[0x20];
     char unk2030[0x20];
+    u8 unk2050[100];
 } *lbl_802F21C4;
 
 void func_8009F568(void)
@@ -1674,6 +1678,100 @@ void func_800A1584(void *buffer)
         lbl_802BA310.unk8 &= ~(1 << (31-0x16));
         lbl_802BA310.unk40 = 0x4B0;
         lbl_802BA310.unk4C = 0x10;
+        break;
+    }
+}
+
+void func_800A167C(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case -4:
+    case -10:
+    case -128:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -5:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -11:
+        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -14:
+        lbl_802BA310.unkC = &lbl_802F1590;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        if (lbl_802BA310.unk8 & (1 << (31-19)))
+        {
+            if (lbl_802F21C4->unk0 == mathutil_calc_crc16(lbl_802BA310.unk48 - 2, (u8 *)lbl_802F21C4 + 2)
+             && func_8004C6DC(lbl_802F21C4->unk2050) != 0)
+            {
+                lbl_802BA310.unk8 |= 8;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unk8 |= 0x4000;
+                lbl_802BA310.unkC = &lbl_802F1578;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+        }
+        else if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
+            lbl_802BA310.unk4C = 0x13;
+        else
+        {
+            u8 *r4 = (u8 *)lbl_802F21AC + 2;
+            if (lbl_802F21AC->unk0 != mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)lbl_802F21AC), r4))
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unk8 |= 0x4000;
+                lbl_802BA310.unkC = &lbl_802F1570;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else
+            {
+                if (lbl_802F21AC->unk2 != 0x16)
+                {
+                    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                    lbl_802BA310.unk8 |= 0x200;
+                    lbl_802BA310.unkC = &lbl_802F1568;
+                    lbl_802BA310.unk4C = 0xFF;
+                }
+                else
+                    lbl_802BA310.unk4C = 0x25;
+            }
+        }
         break;
     }
 }
