@@ -6,9 +6,6 @@
 #include "global.h"
 #include "mathutil.h"
 
-extern u8 lbl_802F21A8;
-extern u8 lbl_802F21B9;
-
 struct StringEntry
 {
     char *str;
@@ -47,18 +44,61 @@ struct UnkStruct802BA310
     u8 filler64[0xC];
 } lbl_802BA310;
 
-u8 lbl_802BA380[0xA100];
+extern struct UnkStruct802F21BC
+{
+    u8 filler0[0x10];
+    u32 unk10;
+    s8 unk14;
+    u8 filler15[0x18-0x15];
+} *lbl_802F21BC;
 
-//u8 filler350[0x10];
-//u8 lbl_802BA360[0x20];
-//CARDFileInfo lbl_802BA360;
+u8 lbl_802BA380[0xA100];
+u8 lbl_802C4480[0x3C0];
+char lbl_802C4840[64];
+char lbl_802C4880[64];
+char lbl_802C48C0[0x80];
 
 FORCE_BSS_ORDER(lbl_802BA2A0)
 FORCE_BSS_ORDER(lbl_802BA310)
 FORCE_BSS_ORDER(lbl_802BA380)
-//FORCE_BSS_ORDER(lbl_802BA348)
-//FORCE_BSS_ORDER(filler350)
-//FORCE_BSS_ORDER(lbl_802BA360)
+FORCE_BSS_ORDER(lbl_802C4480)
+FORCE_BSS_ORDER(lbl_802C4840)
+FORCE_BSS_ORDER(lbl_802C4880)
+FORCE_BSS_ORDER(lbl_802C48C0)
+
+extern u8 lbl_802F21A8;
+extern u8 lbl_802F21B9;
+extern u8 lbl_802F21B0;
+extern u8 lbl_802F21B1;
+extern s8 lbl_802F21B2;
+extern u8 lbl_802F21B8;
+
+extern struct
+{
+    u16 unk0;
+    u16 unk2;
+    u8 unk4[0x5800];
+    char unk5804[0x5824-0x5804];
+    char unk5824[0xC04-0x824];
+    u8 unk5C04[100];
+} *lbl_802F21AC;
+
+extern struct
+{
+    u16 unk0;  // crc
+    u16 unk2;
+    u8 unk4;  // array?
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+    u32 unk8;
+    u32 unkC;
+    u8 unk10[0x1800];
+    u8 unk1810[0x800];
+    char unk2010[0x20];
+    char unk2030[0x20];
+    u8 unk2050[100];
+} *lbl_802F21C4;
 
 #pragma force_active on
 
@@ -101,10 +141,6 @@ struct StringEntry lbl_802F13C8 =
 
 struct StringTable lbl_802F13D0 = {&lbl_802F13C8, 1};
 
-// guessing here
-extern char lbl_802C4840[];  // in bss
-extern char lbl_802C4880[];
-extern char lbl_802C48C0[];
 struct StringEntry lbl_801D42AC[] =
 {
     {lbl_802C4840, 0},
@@ -431,7 +467,6 @@ struct StringTable lbl_802F1590 = {&stringEntry14, 1};
 struct StringTable lbl_802F1598 = {lbl_801D4EE4, ARRAY_COUNT(lbl_801D4EE4)};
 struct StringTable lbl_802F15A0 = {lbl_801D4FB4, ARRAY_COUNT(lbl_801D4FB4)};
 
-extern char string_Please_press_the_p_BUTTON_B__a_Button_[];
 struct StringEntry lbl_802F15A8 =
 {
     "Please press the p/BUTTON_B/ a/Button.", 0,
@@ -587,33 +622,6 @@ struct StringTable *lbl_801D53D0[] =
     &lbl_802F163C,
     &lbl_802F1644,
 };
-
-extern struct
-{
-    u16 unk0;
-    u16 unk2;
-    u8 unk4[0x5800];
-    char unk5804[0x5824-0x5804];
-    char unk5824[0xC04-0x824];
-    u8 unk5C04[100];
-} *lbl_802F21AC;
-
-extern struct
-{
-    u16 unk0;  // crc
-    u16 unk2;
-    u8 unk4;  // array?
-    u8 unk5;
-    u8 unk6;
-    u8 unk7;
-    u32 unk8;
-    u32 unkC;
-    u8 unk10[0x1800];
-    u8 unk1810[0x800];
-    char unk2010[0x20];
-    char unk2030[0x20];
-    u8 unk2050[100];
-} *lbl_802F21C4;
 
 void func_8009F568(void)
 {
@@ -981,9 +989,6 @@ void func_800A00C0(void)
         break;
     }
 }
-
-extern u8 lbl_802F21B0;
-extern u8 lbl_802F21B1;
 
 void func_800A01B0(void)
 {
@@ -1899,6 +1904,74 @@ void func_800A1C24(void)
         break;
     case 0:
         lbl_802BA310.unk4C = 13;
+        break;
+    }
+}
+
+void func_800A1D64(void)
+{
+    struct UnkStruct802F21BC *r3;
+    int result = CARDGetStatus(0, lbl_802F21B2, &lbl_802BA2A0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        if (strncmp((char *)lbl_802BA2A0.gameName, "GMBE", 4) == 0
+         && strncmp((char *)lbl_802BA2A0.company, "8P", 2) == 0
+         && strncmp((char *)lbl_802BA2A0.fileName, "smkb", 4) == 0)
+        {
+            r3 = &lbl_802F21BC[lbl_802F21B8];
+            r3->unk14 = lbl_802F21B2;
+            r3->unk10 = lbl_802BA2A0.length;
+            lbl_802F21B8++;
+        }
+    case -4:
+    case -10:
+        if (++lbl_802F21B2 >= 0x7F)
+        {
+            r3 = &lbl_802F21BC[lbl_802F21B8];
+            r3->unk14 = -1;
+            if (lbl_802F21B8 == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unkC = &lbl_802F15A0;
+                lbl_802BA310.unk4C = 0xFF;
+                lbl_802BA310.unk8 &= ~(1 << (31-14));
+            }
+            else
+                lbl_802BA310.unk4C = 0x1A;
+        }
+        else
+        {
+            lbl_802BA310.unk40 = 0x4B0;
+            memset(&lbl_802BA2A0, 0, sizeof(lbl_802BA2A0));
+        }
         break;
     }
 }

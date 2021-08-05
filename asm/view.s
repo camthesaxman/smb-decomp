@@ -10221,3 +10221,41 @@ lbl_801D6AE0:
 glabel string_loading_gct
 	.asciz "loading.gct"
 	.4byte 0
+
+.section .bss
+
+# 802c4940
+	.skip 0x1400
+.global lbl_802C5D60
+lbl_802C5D60:
+	.skip 0x420
+.global lbl_802C6180
+lbl_802C6180:
+	.skip 0xA0
+.global lbl_802C6220
+lbl_802C6220:
+	.skip 0xF4
+.global lbl_802C6314
+lbl_802C6314:
+	.skip 0xC0
+.global lbl_802C63D4
+lbl_802C63D4:
+	.skip 0x3C0
+.global lbl_802C6794
+lbl_802C6794:
+	.skip 0x40
+.global lbl_802C67D4
+lbl_802C67D4:
+	.skip 0x144
+.global lbl_802C6918
+lbl_802C6918:
+	.skip 0x2A0
+.global lbl_802C6BB8
+lbl_802C6BB8:
+	.skip 0x10
+.global lbl_802C6BC8
+lbl_802C6BC8:
+	.skip 0x10
+.global lbl_802C6BD8
+lbl_802C6BD8:
+	.skip 0x10

@@ -24,6 +24,9 @@ typedef enum
 #define static
 #define inline
 
+// bss
+GXTexObj fontTexObj;
+
 static inline void DEMOSetFontType(s32 attr)
 {
     // Font type

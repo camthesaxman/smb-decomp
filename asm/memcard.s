@@ -2980,7 +2980,6 @@ lbl_800A1D50:
 /* 800A1D58 0009DC78  38 21 00 10 */	addi r1, r1, 0x10
 /* 800A1D5C 0009DC7C  7C 08 03 A6 */	mtlr r0
 /* 800A1D60 0009DC80  4E 80 00 20 */	blr
-.endif
 
 .global func_800A1D64
 func_800A1D64:
@@ -3009,18 +3008,18 @@ lbl_800A1DA0:
 /* 800A1DB8 0009DCD8  2C 03 FF 80 */	cmpwi r3, -128
 /* 800A1DBC 0009DCDC  41 82 00 2C */	beq lbl_800A1DE8
 /* 800A1DC0 0009DCE0  48 00 00 28 */	b lbl_800A1DE8
-lbl_800A1DC4:
+lbl_800A1DC4:  ;# > -4
 /* 800A1DC4 0009DCE4  2C 03 FF FF */	cmpwi r3, -1
 /* 800A1DC8 0009DCE8  41 82 00 A0 */	beq lbl_800A1E68
 /* 800A1DCC 0009DCEC  40 80 00 10 */	bge lbl_800A1DDC
-/* 800A1DD0 0009DCF0  2C 03 FF FE */	cmpwi r3, -2
+/* 800A1DD0 0009DCF0  2C 03 FF FE */	cmpwi r3, -2  ;# > -4 and < -1
 /* 800A1DD4 0009DCF4  40 80 00 14 */	bge lbl_800A1DE8
 /* 800A1DD8 0009DCF8  48 00 00 50 */	b lbl_800A1E28
-lbl_800A1DDC:
+lbl_800A1DDC:  ;# > -1
 /* 800A1DDC 0009DCFC  2C 03 00 01 */	cmpwi r3, 1
 /* 800A1DE0 0009DD00  40 80 00 08 */	bge lbl_800A1DE8
 /* 800A1DE4 0009DD04  48 00 00 D0 */	b lbl_800A1EB4
-lbl_800A1DE8:
+lbl_800A1DE8:  ;# -128, def
 /* 800A1DE8 0009DD08  80 1F 00 78 */	lwz r0, 0x78(r31)
 /* 800A1DEC 0009DD0C  38 BF 00 78 */	addi r5, r31, 0x78
 /* 800A1DF0 0009DD10  54 00 06 73 */	rlwinm. r0, r0, 0, 0x19, 0x19
@@ -3039,7 +3038,7 @@ lbl_800A1E04:
 /* 800A1E1C 0009DD3C  90 7F 00 7C */	stw r3, 0x7c(r31)
 /* 800A1E20 0009DD40  98 1F 00 BC */	stb r0, 0xbc(r31)
 /* 800A1E24 0009DD44  48 00 01 B0 */	b lbl_800A1FD4
-lbl_800A1E28:
+lbl_800A1E28:  ;# -3
 /* 800A1E28 0009DD48  80 1F 00 78 */	lwz r0, 0x78(r31)
 /* 800A1E2C 0009DD4C  38 BF 00 78 */	addi r5, r31, 0x78
 /* 800A1E30 0009DD50  54 00 06 73 */	rlwinm. r0, r0, 0, 0x19, 0x19
@@ -3058,7 +3057,7 @@ lbl_800A1E44:
 /* 800A1E5C 0009DD7C  90 7F 00 7C */	stw r3, 0x7c(r31)
 /* 800A1E60 0009DD80  98 1F 00 BC */	stb r0, 0xbc(r31)
 /* 800A1E64 0009DD84  48 00 01 70 */	b lbl_800A1FD4
-lbl_800A1E68:
+lbl_800A1E68:  ;# -1
 /* 800A1E68 0009DD88  A8 1F 00 B0 */	lha r0, 0xb0(r31)
 /* 800A1E6C 0009DD8C  2C 00 00 00 */	cmpwi r0, 0
 /* 800A1E70 0009DD90  40 82 01 64 */	bne lbl_800A1FD4
@@ -3080,7 +3079,7 @@ lbl_800A1E90:
 /* 800A1EA8 0009DDC8  90 7F 00 7C */	stw r3, 0x7c(r31)
 /* 800A1EAC 0009DDCC  98 1F 00 BC */	stb r0, 0xbc(r31)
 /* 800A1EB0 0009DDD0  48 00 01 24 */	b lbl_800A1FD4
-lbl_800A1EB4:
+lbl_800A1EB4:  ;# 0
 /* 800A1EB4 0009DDD4  38 7F 00 28 */	addi r3, r31, 0x28
 /* 800A1EB8 0009DDD8  38 8D 94 A4 */	addi r4, r13, lbl_802F1684-_SDA_BASE_
 /* 800A1EBC 0009DDDC  38 A0 00 04 */	li r5, 4
@@ -3110,7 +3109,7 @@ lbl_800A1EB4:
 /* 800A1F1C 0009DE3C  88 6D 9F D8 */	lbz r3, lbl_802F21B8-_SDA_BASE_(r13)
 /* 800A1F20 0009DE40  38 03 00 01 */	addi r0, r3, 1
 /* 800A1F24 0009DE44  98 0D 9F D8 */	stb r0, lbl_802F21B8-_SDA_BASE_(r13)
-lbl_800A1F28:
+lbl_800A1F28:  ;# end (-4, -10 break)
 /* 800A1F28 0009DE48  88 6D 9F D2 */	lbz r3, lbl_802F21B2-_SDA_BASE_(r13)
 /* 800A1F2C 0009DE4C  38 63 00 01 */	addi r3, r3, 1
 /* 800A1F30 0009DE50  7C 60 07 74 */	extsb r0, r3
@@ -3164,6 +3163,7 @@ lbl_800A1FD4:
 /* 800A1FDC 0009DEFC  38 21 00 10 */	addi r1, r1, 0x10
 /* 800A1FE0 0009DF00  7C 08 03 A6 */	mtlr r0
 /* 800A1FE4 0009DF04  4E 80 00 20 */	blr
+.endif
 
 .global func_800A1FE8
 func_800A1FE8:
@@ -6982,7 +6982,6 @@ lbl_801D5704:
 .global lbl_802BA380
 lbl_802BA380:
 	.skip 0xA100
-.endif
 .global lbl_802C4480
 lbl_802C4480:
     .skip 0x3C0
@@ -6992,42 +6991,7 @@ glabel lbl_802C4880
     .skip 0x40
 glabel lbl_802C48C0
 	.skip 0x80
-.global fontTexObj
-fontTexObj:
-	.skip 0x1420
-.global lbl_802C5D60
-lbl_802C5D60:
-	.skip 0x420
-.global lbl_802C6180
-lbl_802C6180:
-	.skip 0xA0
-.global lbl_802C6220
-lbl_802C6220:
-	.skip 0xF4
-.global lbl_802C6314
-lbl_802C6314:
-	.skip 0xC0
-.global lbl_802C63D4
-lbl_802C63D4:
-	.skip 0x3C0
-.global lbl_802C6794
-lbl_802C6794:
-	.skip 0x40
-.global lbl_802C67D4
-lbl_802C67D4:
-	.skip 0x144
-.global lbl_802C6918
-lbl_802C6918:
-	.skip 0x2A0
-.global lbl_802C6BB8
-lbl_802C6BB8:
-	.skip 0x10
-.global lbl_802C6BC8
-lbl_802C6BC8:
-	.skip 0x10
-.global lbl_802C6BD8
-lbl_802C6BD8:
-	.skip 0x10
+.endif
 
 .section .sdata
 
@@ -7077,7 +7041,6 @@ lbl_802F167C:
 glabel string_Exp_FL
 	.asciz "Exp.FL"
 	.balign 4
-.endif
 
 .global lbl_802F1684
 lbl_802F1684:
@@ -7097,6 +7060,7 @@ lbl_802F1690:
 glabel string_smkb
 	.asciz "smkb"
 	.balign 4
+.endif
 	.4byte 0x802C4900  ;# ptr
 	.4byte 0
 
