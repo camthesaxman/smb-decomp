@@ -21,21 +21,8 @@ struct StringTable
 };
 
 // .bss
-struct
-{
-    u8 filler0[0x2E];
-    u8 unk2E;
-    u8 filler2F[1];
-    u32 unk30;
-    u16 unk34;
-    u16 unk36;
-    u32 unk38;
-    //u8 filler3C[0xA8-0x3C];
-    u8 filler3C[0x70-0x3C];
-    // Is this part of the struct?
-} lbl_802BA2A0;
+CARDStat lbl_802BA2A0;
 
-//u8 lbl_802BA310[0x50];
 struct UnkStruct802BA310
 {
     u32 unk0;
@@ -639,7 +626,7 @@ void func_8009F568(void)
     memcpy(lbl_802F21AC->unk4, r29, 0x5800);
     OSFree(r29);
     DVDClose(&sp30);
-    lbl_802BA2A0.unk38 = (u32)lbl_802F21AC->unk5804 - (u32)lbl_802F21AC;
+    lbl_802BA2A0.commentAddr = (u32)lbl_802F21AC->unk5804 - (u32)lbl_802F21AC;
     strcpy(lbl_802F21AC->unk5804, "Super Monkey Ball");
     OSTicksToCalendarTime(lbl_802BA310.time, &sp8);
     sprintf(
@@ -651,8 +638,8 @@ void func_8009F568(void)
         sp8.hour,
         sp8.min);
 
-    lbl_802BA2A0.unk30 = (u32)lbl_802F21AC->unk4 - (u32)lbl_802F21AC;
-    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~0x3) | 2;
+    lbl_802BA2A0.iconAddr = (u32)lbl_802F21AC->unk4 - (u32)lbl_802F21AC;
+    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~0x3) | 2;
 
     // These loops match except for stack
     /*
@@ -661,25 +648,25 @@ void func_8009F568(void)
     for (i = 0; i < 8; i++)
         lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
     */
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*0))) | (2 << (2*0));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*1))) | (2 << (2*1));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*2))) | (2 << (2*2));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*3))) | (2 << (2*3));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*4))) | (2 << (2*4));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*5))) | (2 << (2*5));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*6))) | (2 << (2*6));
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*7))) | (2 << (2*7));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*0))) | (2 << (2*0));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*1))) | (2 << (2*1));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*2))) | (2 << (2*2));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*3))) | (2 << (2*3));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*4))) | (2 << (2*4));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*5))) | (2 << (2*5));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*6))) | (2 << (2*6));
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*7))) | (2 << (2*7));
 
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*0))) | ((1 << (2*0)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*1))) | ((1 << (2*1)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*2))) | ((1 << (2*2)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*3))) | ((1 << (2*3)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*4))) | ((1 << (2*4)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*5))) | ((1 << (2*5)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*6))) | ((1 << (2*6)) & 0x1FFF);
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*7))) | ((1 << (2*7)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*0))) | ((1 << (2*0)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*1))) | ((1 << (2*1)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*2))) | ((1 << (2*2)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*3))) | ((1 << (2*3)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*4))) | ((1 << (2*4)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*5))) | ((1 << (2*5)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*6))) | ((1 << (2*6)) & 0x1FFF);
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*7))) | ((1 << (2*7)) & 0x1FFF);
 
-    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~(0x1<<2));
+    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~(0x1<<2));
 }
 
 struct Struct8009F7F0
@@ -720,7 +707,7 @@ void func_8009F7F0(void)
     memcpy(lbl_802F21C4->unk1810, r29, 0x800);
     DVDClose(&spA0);
     OSFree(r29);
-    lbl_802BA2A0.unk38 = (u32)lbl_802F21C4->unk2010 - (u32)lbl_802F21C4;
+    lbl_802BA2A0.commentAddr = (u32)lbl_802F21C4->unk2010 - (u32)lbl_802F21C4;
     strncpy(lbl_802F21C4->unk2010, "Super Monkey Ball", 32);
 
     if (sp88.unk0 & (1<<(31-0x19)))
@@ -774,12 +761,12 @@ void func_8009F7F0(void)
         sp10.min);
     strncpy(lbl_802F21C4->unk2030, sp38, 32);
 
-    lbl_802BA2A0.unk30 = (u32)lbl_802F21C4->unk10 - (u32)lbl_802F21C4;
-    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~0x3) | 2;
-    lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~0x3) | 2;
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~0x3) | 3;
-    lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(0x3<<2));
-    lbl_802BA2A0.unk2E = (lbl_802BA2A0.unk2E & ~(0x1<<2));
+    lbl_802BA2A0.iconAddr = (u32)lbl_802F21C4->unk10 - (u32)lbl_802F21C4;
+    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~0x3) | 2;
+    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~0x3) | 2;
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~0x3) | 3;
+    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(0x3<<2));
+    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~(0x1<<2));
 
     lbl_802F21C4->unk2 = sp88.unk0;
     lbl_802F21C4->unk4 = sp88.unk2;
@@ -1069,7 +1056,7 @@ void func_800A01B0(void)
 void func_800A03DC(void)
 {
     s32 result = CARDOpen(0, lbl_802BA310.fileName, &lbl_802BA310.cardFileInfo);
-    
+
     if (result != -1)
         lbl_802BA310.unk40 = 0;
     if (result < -1)
@@ -1077,7 +1064,7 @@ void func_800A03DC(void)
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
     }
-    
+
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
@@ -1392,6 +1379,301 @@ void func_800A06CC(void)
             lbl_802BA310.unk8 |= 8;
             lbl_802BA310.unk4C = 0xFF;
         }
+        break;
+    }
+}
+
+void func_800A0D1C(void)
+{
+    s32 status = CARDCreateAsync(0, lbl_802BA310.fileName, lbl_802BA310.unk48, &lbl_802BA310.cardFileInfo, NULL);
+
+    if (status < 0)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (status)
+    {
+    case -128:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -8:
+        lbl_802BA310.unkC = &lbl_802F1540;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -9:
+        sprintf(lbl_802F13D8.entries[0].str, lbl_802F14F0.entries[0].str);
+        sprintf(lbl_802F13D8.entries[1].str, lbl_802F14F0.entries[1].str);
+        lbl_802F13D8.entries[0].unk4 = lbl_802F14F0.entries[0].unk4;
+        lbl_802F13D8.entries[1].unk4 = lbl_802F14F0.entries[1].unk4;
+        lbl_802F13D8.numEntries = lbl_802F14F0.numEntries;
+        lbl_802BA310.unkC = &lbl_802F13D8;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 14;
+        break;
+    }
+}
+
+void func_800A0E94(void)
+{
+    s32 status = CARDGetResultCode(0);
+
+    if (status != -1)
+        lbl_802BA310.unk40 = 0;
+    if (status < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (status)
+    {
+    case -6:
+    case -12:
+    case -128:
+    default:
+        printf("fatal: %d\n", (int)status);
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -8:
+        lbl_802BA310.unkC = &lbl_802F1540;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -5:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case -9:
+        sprintf(lbl_802F13D8.entries[0].str, lbl_802F14F0.entries[0].str);
+        sprintf(lbl_802F13D8.entries[1].str, lbl_802F14F0.entries[1].str);
+        lbl_802F13D8.entries[0].unk4 = lbl_802F14F0.entries[0].unk4;
+        lbl_802F13D8.entries[1].unk4 = lbl_802F14F0.entries[1].unk4;
+        lbl_802F13D8.numEntries = lbl_802F14F0.numEntries;
+        lbl_802BA310.unkC = &lbl_802F13D8;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case 0:
+        lbl_802BA310.unk8 |= 0x802;
+        lbl_802BA310.unk4C = 0x13;
+        break;
+    }
+}
+
+void func_800A10A8(void *data)
+{
+    s32 result = CARDWriteAsync(
+        &lbl_802BA310.cardFileInfo,
+        data,
+        lbl_802BA310.unk48,
+        0,
+        NULL);
+
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -11:
+        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 0x12;
+        break;
+    }
+}
+
+void func_800A11A0(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case -10:
+    case -128:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -5:
+        lbl_802BA310.unkC = &lbl_802F1458;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -11:
+        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -14:
+        lbl_802BA310.unkC = &lbl_802F1588;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        lbl_802BA310.unk4C = 0x15;
+        break;
+    }
+}
+
+void func_800A1330(void)
+{
+    s32 result = CARDSetStatusAsync(0, lbl_802BA310.cardFileInfo.fileNo, &lbl_802BA2A0, 0);
+
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 0x16;
+        break;
+    }
+}
+
+void func_800A1404(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+
+    switch (result)
+    {
+    case -4:
+    case -10:
+    case -128:
+    default:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        if (lbl_802BA310.unk8 & (1 << (31-0x12)))
+        {
+            lbl_802BA310.unk8 |= 0x400000;
+            if (lbl_802BA310.unk8 & (1 << (31-15)))
+                lbl_802BA310.unk4C = 11;
+            else
+                lbl_802BA310.unk4C = 31;
+        }
+        else
+        {
+            lbl_802BA310.unk40 = 0x4B0;
+            lbl_802BA310.unk4C = 30;
+        }
+        break;
+    }
+}
+
+void func_800A1584(void *buffer)
+{
+    s32 result = CARDReadAsync(&lbl_802BA310.cardFileInfo, buffer, lbl_802BA310.unk48, 0, NULL);
+
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &lbl_802F13D0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -11:
+        lbl_802BA310.unkC = &lbl_802F1598;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &lbl_802F1478;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 0x10;
         break;
     }
 }
