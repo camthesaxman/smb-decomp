@@ -2784,3 +2784,119 @@ void func_800A3204(void)
         break;
     }
 }
+
+void func_800A3780(void)
+{
+    switch (lbl_802BA310.unk4C)
+    {
+    case 1:
+        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        {
+            func_8002B5C8(0x6A);
+            lbl_802BA310.unk40 = 0x3C;
+            lbl_802BA310.unk4C = 2;
+        }
+        break;
+    case 2:
+        func_8009FB8C();
+        break;
+    case 3:
+        if ((lbl_802F21C4 = OSAlloc(lbl_802BA310.unk48)) == NULL)
+            OSPanic("memcard.c", 0xD63, "cannot OSAlloc");
+        memset(lbl_802F21C4, 0, lbl_802BA310.unk48);
+        func_8009FDD4();
+        break;
+    case 4:
+        func_8009FF18();
+        break;
+    case 5:
+        func_800A00C0();
+        break;
+    case 6:
+        func_800A01B0();
+        break;
+    case 9:
+        if ((lbl_801F3D88.unk4 & 1)
+         || (lbl_801F3D94.unk4 & 1))
+        {
+            if (lbl_802F21B1 == 0)
+                func_8002B5C8(0x6C);
+            lbl_802F21B1 = 1;
+        }
+        if ((lbl_801F3D88.unk4 & 2)
+         || (lbl_801F3D94.unk4 & 2))
+        {
+            if (lbl_802F21B1 == 1)
+                func_8002B5C8(0x6C);
+            lbl_802F21B1 = 0;
+        }
+        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        {
+            func_8002B5C8(0x6A);
+            lbl_802BA310.unk8 &= ~(1 << (31-0x15));
+            if (lbl_802F21B1 == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unkC = &msgFormatInterrupted;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else
+            {
+                lbl_802BA310.unk8 |= 0x200000;
+                func_800A1B58();
+            }
+        }
+        break;
+    case 0xA:
+        func_800A1C24();
+        if (lbl_802BA310.unk4C != 10)
+            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        break;
+    case 0x17:
+        func_800A06CC();
+        break;
+    case 0xD:
+        lbl_802BA310.unk8 |= 0x200000;
+        func_800A0D1C();
+        break;
+    case 0xE:
+        func_800A0E94();
+        break;
+    case 0x13:
+        lbl_802BA310.unk8 |= 0x8000;
+        memset(&lbl_802BA2A0, 0, sizeof(lbl_802BA2A0));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 0x14;
+        break;
+    case 0x14:
+        func_800A1988();
+        break;
+    case 0x11:
+        func_8009F7F0();
+        func_8004C69C(lbl_802F21C4->unk2050);
+        lbl_802F21C4->unk0 = mathutil_calc_crc16(lbl_802BA310.unk48 - 2, (u8 *)lbl_802F21C4 + 2);
+        func_800A10A8(lbl_802F21C4);
+        break;
+    case 0x12:
+        func_800A11A0();
+        break;
+    case 0x15:
+        func_800A1330();
+        break;
+    case 0x16:
+        func_800A1404();
+        if (lbl_802BA310.unk4C != 0x16)
+            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        break;
+    case 0x1E:
+        func_800A06CC();
+        break;
+    case 0xFF:
+        break;
+    default:
+        printf("stat: %d\n", lbl_802BA310.unk4C);
+        OSPanic("memcard.c", 0xDE9, "replay_save_sequence\n");
+        break;
+    }
+}

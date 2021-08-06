@@ -25,8 +25,6 @@ FORCEACTIVE {
     
     mathutil_alignment
     lbl_8028FE58
-    lbl_802BA360
-    lbl_802BA348
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
 }
 
@@ -46,4 +44,3 @@ lbl_802F4AA4 = 0x802F4AA4;
 lbl_801D4288 = 0x801D4288;
 lbl_801D54A8 = 0x801D54A8;
 lbl_801D54B4 = 0x801D54B4;
-lbl_802BA310 = 0x802BA310;
