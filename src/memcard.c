@@ -1353,7 +1353,7 @@ void func_800A06CC(void)
                 lbl_802BA310.unk8 &= ~(1 << (31-0x16));
                 lbl_802BA310.unk4C = 13;
                 if (lbl_802BA310.unk8 & (1 << (31-0x12))
-                 && ((lbl_802BA310.unk8 & 0x00010080) == 0x10080))
+                 && ((lbl_802BA310.unk8 & 0x10080) == 0x10080))
                 {
                     lbl_802F21B1 = 0;
                     lbl_802BA310.unk8 |= 0x400;
@@ -1957,6 +1957,7 @@ void func_800A1D64(void)
             r3->unk10 = lbl_802BA2A0.length;
             lbl_802F21B8++;
         }
+        // fall through
     case -4:
     case -10:
         if (++lbl_802F21B2 >= 0x7F)
@@ -1993,7 +1994,7 @@ void func_800A1FE8(void)
     if (lbl_802F21C8 == 0)
     {
         result = CARDFastOpen(0, r30->unk14, &lbl_802BA310.cardFileInfo);
-        
+
         if (result != -1)
             lbl_802BA310.unk40 = 0;
         if (result < -1)
@@ -2001,7 +2002,7 @@ void func_800A1FE8(void)
             lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
             lbl_802BA310.unk8 |= 0x200;
         }
-        
+
         switch (result)
         {
         case -128:
@@ -2048,10 +2049,10 @@ void func_800A1FE8(void)
         if ((lbl_802F21C4 = OSAlloc(r30->unk10)) == NULL)
             OSPanic("memcard.c", 0x9CA, "cannot OSAlloc");
         result = CARDReadAsync(&lbl_802BA310.cardFileInfo, lbl_802F21C4, r30->unk10, 0, NULL);
-        
+
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
-        
+
         switch (result)
         {
         case -128:
@@ -2077,7 +2078,7 @@ void func_800A1FE8(void)
     else
     {
         result = CARDGetResultCode(0);
-        
+
         if (result != -1)
             lbl_802BA310.unk40 = 0;
         if (result < -1)
@@ -2085,7 +2086,7 @@ void func_800A1FE8(void)
             lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
             lbl_802BA310.unk8 |= 0x200;
         }
-        
+
         switch (result)
         {
         case -10:
@@ -2157,5 +2158,434 @@ void func_800A1FE8(void)
             }
             break;
         }
+    }
+}
+
+extern u32 lbl_802F21C0;
+
+void func_800A2538(void)
+{
+    s32 result = CARDFastOpen(0, lbl_802F21BC[lbl_802F21C0].unk14, &lbl_802BA310.cardFileInfo);
+    
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+    
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -4:
+        lbl_802BA310.unkC = &lbl_802F14A0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -10:
+        lbl_802BA310.unkC = &msgCantLoadFile;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case -6:
+        lbl_802BA310.unkC = &lbl_802F1490;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case 0:
+        lbl_802BA310.unk8 |= 2;
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk4C = 15;
+        break;
+    }
+}
+
+void func_800A26FC(int fileNo)
+{
+    s32 result;
+
+    if (fileNo < 0)
+        result = -4;
+    else
+        result = CARDFastDeleteAsync(0, fileNo, NULL);
+
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+    
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        if (lbl_802BA310.unk4C == 11)
+            lbl_802BA310.unk4C = 12;
+        else
+            lbl_802BA310.unk4C = 0x24;
+        break;
+    }
+}
+
+void func_800A27F8(void)
+{
+    s32 result = CARDGetResultCode(0);
+    
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+    
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -4:
+        lbl_802BA310.unkC = &lbl_802F14A0;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -10:
+        lbl_802BA310.unkC = &msgCantLoadFile;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        if (lbl_802BA310.unk8 & (1 << (31-0x12)))
+        {
+            if (lbl_802BA310.unk4C == 0x24)
+                lbl_802BA310.unk4C = 7;
+            else
+                lbl_802BA310.unk4C = 31;
+        }
+        else 
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &msgDeleteFinished;
+            lbl_802BA310.unk4C = 0xFF;
+            lbl_802BA310.unk8 |= 8;
+        }
+        break;
+    }
+}
+
+void func_800A29CC(void)
+{
+    s32 result = CARDDeleteAsync(0, "super_monkey_ball.000", NULL);
+    
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+    
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 0x26;
+        break;
+    }
+}
+
+void func_800A2AA0(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+    
+    switch (result)
+    {
+    case -128:
+    default:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -10:
+        lbl_802BA310.unkC = &msgCantLoadFile;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case -4:
+    case 0:
+        if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+        {
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            lbl_802BA310.unk40 = 0x4B0;
+            lbl_802BA310.unk4C = 0x17;
+            lbl_802BA310.unk8 |= 0x40000;
+        }
+        else
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &msgLoadFinished;
+            lbl_802BA310.unk4C = 0xFF;
+            lbl_802BA310.unk8 |= 8;
+            lbl_802BA310.unk8 &= ~(1 << (31-14));
+        }
+        break;
+    }
+}
+
+void func_800A2C74(void)
+{
+    s32 result = CARDRenameAsync(0, "super_monkey_ball.000", "super_monkey_ball.sys", NULL);
+    
+    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+    lbl_802BA310.unk8 |= 0x200;
+
+    switch (result)
+    {
+    case -128:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -4:
+        if (lbl_802F21B0 == 2)
+        {
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            lbl_802BA310.unk40 = 0x4B0;
+            lbl_802BA310.unk4C = 0x17;
+        }
+        else
+        {
+            lbl_802BA310.unkC = &lbl_802F14A0;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    default:
+        lbl_802BA310.unk42 = 0;
+        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 32;
+        break;
+    }
+}
+
+void func_800A2DA4(void)
+{
+    s32 result = CARDGetResultCode(0);
+
+    if (result != -1)
+        lbl_802BA310.unk40 = 0;
+    if (result < -1)
+    {
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+    }
+    
+    switch (result)
+    {
+    case -7:
+    case -12:
+    case -128:
+    default:
+        lbl_802BA310.unkC = &msgMemCardError;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -3:
+        lbl_802BA310.unkC = &msgMemCardRemoved;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -4:
+        if (lbl_802BA310.unk8 & (1 << (31-0x1A)))
+        {
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+            {
+                lbl_802BA310.unk40 = 0x4B0;
+                lbl_802BA310.unk4C = 0x17;
+            }
+            else
+                lbl_802BA310.unk4C = 15;
+        }
+        else
+        {
+            lbl_802BA310.unkC = &lbl_802F14A0;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case -10:
+        lbl_802BA310.unkC = &msgCantLoadFile;
+        lbl_802BA310.unk4C = 0xFF;
+        break;
+    case -1:
+        if (lbl_802BA310.unk40 == 0)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+            lbl_802BA310.unkC = &lbl_802F1450;
+            lbl_802BA310.unk4C = 0xFF;
+        }
+        break;
+    case 0:
+        if (lbl_802BA310.unk8 & (1 << (31-0x1A)))
+            lbl_802BA310.unk4C = 7;
+        else if ((lbl_802BA310.unk8 & 0x00010040) == 0x10040)
+        {
+            lbl_802BA310.unk4C = 0xFF;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x10));
+            lbl_802BA310.unk8 |= 8;
+        }
+        else
+        {
+            if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+                lbl_802BA310.unk8 |= 0x80000;
+            lbl_802BA310.unk40 = 0x4B0;
+            lbl_802BA310.unk4C = 0x1E;
+        }
+        break;
+    }
+}
+
+extern struct
+{
+    u8 filler0[4];
+    u16 unk4;
+    u8 filler8[100];
+} lbl_801F3D88;
+
+void func_800A2FDC(void)
+{
+    switch (lbl_802BA310.unk4C)
+    {
+    case 1:
+        if ((lbl_801F3D88.unk4 & (1 << (31-0x17)))
+         || !(lbl_802BA310.unk8 & (1 << (31-0x18))))
+         {
+             lbl_802BA310.unk40 = 0x3C;
+             lbl_802BA310.unk4C = 2;
+         }
+         break;
+    case 2:
+        func_8009FB8C();
+        break;
+    case 3:
+        if ((lbl_802F21AC = OSAlloc(lbl_802BA310.unk48)) == NULL)
+            OSPanic("memcard.c", 0xBF6, "cannot OSAlloc");
+        memset(lbl_802F21AC, 0, lbl_802BA310.unk48);
+        lbl_802BA310.unk8 |= 0x20000;
+        func_8009FDD4();
+        break;
+    case 4:
+        func_8009FF18();
+        break;
+    case 5:
+        func_800A00C0();
+        break;
+    case 6:
+        func_800A01B0();
+        break;
+    case 7:
+        lbl_802BA310.unk40 = 0x4B0;
+        if (lbl_802BA310.unk4C == 7)
+            lbl_802BA310.unk4C = 8;
+        else
+            lbl_802BA310.unk4C = 0x22;
+        // fall through
+    case 8:
+        func_800A03DC();
+        break;
+    case 0x1F:
+        func_800A2C74();
+        break;
+    case 0x20:
+        func_800A2DA4();
+        break;
+    case 0x17:
+        func_800A06CC();
+        break;
+    case 0xF:
+        func_800A1584(lbl_802F21AC);
+        break;
+    case 0x10:
+        func_800A167C();
+        break;
+    case 0x25:
+        func_800A29CC();
+        break;
+    case 0x26:
+        func_800A2AA0();
+        break;
+    case 0xFF:
+        break;
+    default:
+        printf("stat: %d\n", lbl_802BA310.unk4C);
+        OSPanic("memcard.c", 0xC47, "load_sequence\n");
+        break;
     }
 }

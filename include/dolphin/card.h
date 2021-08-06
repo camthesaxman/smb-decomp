@@ -69,6 +69,9 @@ s32 CARDSetStatusAsync(s32 chan, s32 fileNo, CARDStat *stat, CARDCallback callba
 s32 CARDReadAsync(CARDFileInfo* fileInfo, void *addr, s32 length, s32 offset, CARDCallback callback);
 s32 CARDGetStatus(s32 chan, s32 fileNo, CARDStat *stat);
 s32 CARDFastOpen(s32 chan, s32 fileNo, CARDFileInfo *fileInfo);
+s32 CARDFastDeleteAsync(s32 chan, s32 fileNo, CARDCallback callback);
+s32 CARDDeleteAsync(s32 chan, char *fileName, CARDCallback callback);
+s32 CARDRenameAsync(s32 chan, char *oldName, char *newName, CARDCallback callback);
 
 // private
 s32 __CARDFormatRegionAsync();
