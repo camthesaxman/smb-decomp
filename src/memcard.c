@@ -46,7 +46,14 @@ struct UnkStruct802BA310
 
 extern struct UnkStruct802F21BC
 {
-    u8 filler0[0x10];
+    u8 filler0[2];
+    u16 unk2;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+    u32 unk8;
+    u32 unkC;
     u32 unk10;
     s8 unk14;
     u8 filler15[0x18-0x15];
@@ -1973,5 +1980,182 @@ void func_800A1D64(void)
             memset(&lbl_802BA2A0, 0, sizeof(lbl_802BA2A0));
         }
         break;
+    }
+}
+
+extern u8 lbl_802F21C8;
+
+void func_800A1FE8(void)
+{
+    struct UnkStruct802F21BC *r30 = &lbl_802F21BC[lbl_802F21B8];
+    s32 result;
+
+    if (lbl_802F21C8 == 0)
+    {
+        result = CARDFastOpen(0, r30->unk14, &lbl_802BA310.cardFileInfo);
+        
+        if (result != -1)
+            lbl_802BA310.unk40 = 0;
+        if (result < -1)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+        }
+        
+        switch (result)
+        {
+        case -128:
+        default:
+            lbl_802BA310.unkC = &msgMemCardError;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -3:
+            lbl_802BA310.unkC = &msgMemCardRemoved;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -4:
+            lbl_802BA310.unkC = &lbl_802F14A0;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -10:
+            lbl_802BA310.unkC = &msgCantLoadFile;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -1:
+            if (lbl_802BA310.unk40 == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unkC = &lbl_802F1450;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            break;
+        case -6:
+            lbl_802BA310.unkC = &lbl_802F1490;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case 0:
+            lbl_802BA310.unk8 |= 2;
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            lbl_802F21C8 = 1;
+            lbl_802BA310.unk40 = 0x4B0;
+            break;
+        }
+    }
+    else if (lbl_802F21C8 == 1)
+    {
+        if ((lbl_802F21C4 = OSAlloc(r30->unk10)) == NULL)
+            OSPanic("memcard.c", 0x9CA, "cannot OSAlloc");
+        result = CARDReadAsync(&lbl_802BA310.cardFileInfo, lbl_802F21C4, r30->unk10, 0, NULL);
+        
+        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+        lbl_802BA310.unk8 |= 0x200;
+        
+        switch (result)
+        {
+        case -128:
+            lbl_802BA310.unkC = &msgMemCardError;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -11:
+            lbl_802BA310.unkC = &msgFileSizeChanged;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -3:
+            lbl_802BA310.unkC = &msgMemCardRemoved;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        default:
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            lbl_802BA310.unk40 = 0x4B0;
+            lbl_802F21C8 = 2;
+            break;
+        }
+    }
+    else
+    {
+        result = CARDGetResultCode(0);
+        
+        if (result != -1)
+            lbl_802BA310.unk40 = 0;
+        if (result < -1)
+        {
+            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+            lbl_802BA310.unk8 |= 0x200;
+        }
+        
+        switch (result)
+        {
+        case -10:
+        case -128:
+        default:
+            lbl_802BA310.unkC = &msgMemCardError;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -5:
+            lbl_802BA310.unkC = &msgMemCardCantUse;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -11:
+            lbl_802BA310.unkC = &msgFileSizeChanged;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -14:
+            lbl_802BA310.unkC = &msgLoadInterrupted;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -3:
+            lbl_802BA310.unkC = &msgMemCardRemoved;
+            lbl_802BA310.unk4C = 0xFF;
+            break;
+        case -1:
+            if (lbl_802BA310.unk40 == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unkC = &lbl_802F1450;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            break;
+        case 0:
+            CARDClose(&lbl_802BA310.cardFileInfo);
+            if (mathutil_calc_crc16(r30->unk10 - 2, (u8 *)lbl_802F21C4 + 2) != lbl_802F21C4->unk0)
+            {
+                r30->unk2 = 0x100;
+                r30->unk4 = 1;
+                r30->unk5 = 0;
+                r30->unk6 = 0;
+                r30->unk7 = 0;
+                r30->unk8 = 0;
+                r30->unkC = 0;
+            }
+            else
+            {
+                r30->unk2 = lbl_802F21C4->unk2;
+                r30->unk4 = lbl_802F21C4->unk4;
+                r30->unk5 = lbl_802F21C4->unk5;
+                r30->unk6 = lbl_802F21C4->unk6;
+                r30->unk7 = lbl_802F21C4->unk7;
+                r30->unk8 = lbl_802F21C4->unk8;
+                r30->unkC = lbl_802F21C4->unkC;
+            }
+            OSFree(lbl_802F21C4);
+            lbl_802F21C4 = 0;
+            if (lbl_802F21B8 == 0)
+            {
+                lbl_802BA310.unk8 |= 8;
+                lbl_802BA310.unk4C = 0xFF;
+                lbl_802BA310.unk8 &= ~(1 << (31-14));
+            }
+            else
+            {
+                lbl_802F21C8 = 0;
+                lbl_802F21B8--;
+                lbl_802BA310.unk40 = 0x4B0;
+            }
+            break;
+        }
     }
 }
