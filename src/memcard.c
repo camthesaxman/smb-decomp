@@ -2166,7 +2166,7 @@ extern u32 lbl_802F21C0;
 void func_800A2538(void)
 {
     s32 result = CARDFastOpen(0, lbl_802F21BC[lbl_802F21C0].unk14, &lbl_802BA310.cardFileInfo);
-    
+
     if (result != -1)
         lbl_802BA310.unk40 = 0;
     if (result < -1)
@@ -2174,7 +2174,7 @@ void func_800A2538(void)
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
     }
-    
+
     switch (result)
     {
     case -128:
@@ -2227,7 +2227,7 @@ void func_800A26FC(int fileNo)
 
     lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
     lbl_802BA310.unk8 |= 0x200;
-    
+
     switch (result)
     {
     case -128:
@@ -2253,7 +2253,7 @@ void func_800A26FC(int fileNo)
 void func_800A27F8(void)
 {
     s32 result = CARDGetResultCode(0);
-    
+
     if (result != -1)
         lbl_802BA310.unk40 = 0;
     if (result < -1)
@@ -2261,7 +2261,7 @@ void func_800A27F8(void)
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
     }
-    
+
     switch (result)
     {
     case -128:
@@ -2298,7 +2298,7 @@ void func_800A27F8(void)
             else
                 lbl_802BA310.unk4C = 31;
         }
-        else 
+        else
         {
             lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
             lbl_802BA310.unk8 |= 0x200;
@@ -2313,10 +2313,10 @@ void func_800A27F8(void)
 void func_800A29CC(void)
 {
     s32 result = CARDDeleteAsync(0, "super_monkey_ball.000", NULL);
-    
+
     lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
     lbl_802BA310.unk8 |= 0x200;
-    
+
     switch (result)
     {
     case -128:
@@ -2347,7 +2347,7 @@ void func_800A2AA0(void)
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
     }
-    
+
     switch (result)
     {
     case -128:
@@ -2398,7 +2398,7 @@ void func_800A2AA0(void)
 void func_800A2C74(void)
 {
     s32 result = CARDRenameAsync(0, "super_monkey_ball.000", "super_monkey_ball.sys", NULL);
-    
+
     lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
     lbl_802BA310.unk8 |= 0x200;
 
@@ -2446,7 +2446,7 @@ void func_800A2DA4(void)
         lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
         lbl_802BA310.unk8 |= 0x200;
     }
-    
+
     switch (result)
     {
     case -7:
@@ -2516,8 +2516,15 @@ extern struct
 {
     u8 filler0[4];
     u16 unk4;
-    u8 filler8[100];
+    u8 filler8[4];
 } lbl_801F3D88;
+
+extern struct
+{
+    u8 filler0[4];
+    u16 unk4;
+    u8 filler8[4];
+} lbl_801F3D94;
 
 void func_800A2FDC(void)
 {
@@ -2526,11 +2533,11 @@ void func_800A2FDC(void)
     case 1:
         if ((lbl_801F3D88.unk4 & (1 << (31-0x17)))
          || !(lbl_802BA310.unk8 & (1 << (31-0x18))))
-         {
-             lbl_802BA310.unk40 = 0x3C;
-             lbl_802BA310.unk4C = 2;
-         }
-         break;
+        {
+            lbl_802BA310.unk40 = 0x3C;
+            lbl_802BA310.unk4C = 2;
+        }
+        break;
     case 2:
         func_8009FB8C();
         break;
@@ -2586,6 +2593,194 @@ void func_800A2FDC(void)
     default:
         printf("stat: %d\n", lbl_802BA310.unk4C);
         OSPanic("memcard.c", 0xC47, "load_sequence\n");
+        break;
+    }
+}
+
+void func_800A3204(void)
+{
+    u8 *r4;
+
+    switch (lbl_802BA310.unk4C)
+    {
+    case 1:
+        if ((lbl_801F3D88.unk4 & (1 << (31-0x17)))
+         || !(lbl_802BA310.unk8 & (1 << (31-0x18))))
+        {
+            lbl_802BA310.unk40 = 0x3C;
+            lbl_802BA310.unk4C = 2;
+        }
+        break;
+    case 2:
+        func_8009FB8C();
+        break;
+    case 3:
+        if ((lbl_802F21AC = OSAlloc(lbl_802BA310.unk48)) == NULL)
+            OSPanic("memcard.c", 0xC6A, "cannot OSAlloc");
+        memset(lbl_802F21AC, 0, lbl_802BA310.unk48);
+        func_8009FDD4();
+        break;
+    case 4:
+        func_8009FF18();
+        break;
+    case 5:
+        func_800A00C0();
+        break;
+    case 6:
+        func_800A01B0();
+        break;
+    case 0x21:
+        lbl_802BA310.unk40 = 0x4B0;
+        if (lbl_802BA310.unk4C == 7)
+            lbl_802BA310.unk4C = 8;
+        else
+            lbl_802BA310.unk4C = 0x22;
+        // fall through
+    case 0x22:
+        func_800A03DC();
+        break;
+    case 0x23:
+        func_800A26FC(lbl_802BA310.unk0);
+        break;
+    case 0x24:
+        func_800A27F8();
+        break;
+    case 7:
+        strcpy(lbl_802BA310.fileName, "super_monkey_ball.sys");
+        lbl_802BA310.unk40 = 0x4B0;
+        if (lbl_802BA310.unk4C == 7)
+            lbl_802BA310.unk4C = 8;
+        else
+            lbl_802BA310.unk4C = 0x22;
+        // fall through
+    case 8:
+        func_800A03DC();
+        break;
+    case 9:
+        if ((lbl_801F3D88.unk4 & 1)
+         || (lbl_801F3D94.unk4 & 1))
+        {
+            if (lbl_802F21B1 == 0)
+                func_8002B5C8(0x6C);
+            lbl_802F21B1 = 1;
+        }
+        if ((lbl_801F3D88.unk4 & 2)
+         || (lbl_801F3D94.unk4 & 2))
+        {
+            if (lbl_802F21B1 == 1)
+                func_8002B5C8(0x6C);
+            lbl_802F21B1 = 0;
+        }
+        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        {
+            func_8002B5C8(0x6A);
+            lbl_802BA310.unk8 &= ~(1 << (31-0x15));
+            if (lbl_802F21B1 == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unkC = &msgFormatInterrupted;
+                lbl_802BA310.unk4C = 0xFF;
+            }
+            else
+            {
+                lbl_802BA310.unk8 |= 0x200000;
+                func_800A1B58();
+            }
+        }
+        break;
+    case 0xA:
+        func_800A1C24();
+        if (lbl_802BA310.unk4C != 10)
+            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        break;
+    case 0x17:
+        func_800A06CC();
+        break;
+    case 0xD:
+        if (lbl_802BA310.unk8 & (1 << (31-0x15)))
+        {
+            if ((lbl_801F3D88.unk4 & 1)
+             || (lbl_801F3D94.unk4 & 1))
+            {
+                if (lbl_802F21B1 == 0)
+                    func_8002B5C8(0x6C);
+                lbl_802F21B1 = 1;
+            }
+            if ((lbl_801F3D88.unk4 & 2)
+             || (lbl_801F3D94.unk4 & 2))
+            {
+                if (lbl_802F21B1 == 1)
+                    func_8002B5C8(0x6C);
+                lbl_802F21B1 = 0;
+            }
+            if (!(lbl_801F3D88.unk4 & (1 << (31-0x17))))
+                break;
+            func_8002B5C8(0x6A);
+            lbl_802BA310.unk8 &= ~(1 << (31-0x15));
+            if (lbl_802F21B1 == 0)
+            {
+                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
+                lbl_802BA310.unk8 |= 0x200;
+                lbl_802BA310.unkC = &msgSaveInterrupted;
+                lbl_802BA310.unk4C = 0xFF;
+                break;
+            }
+        }
+        strcpy(lbl_802BA310.fileName, "super_monkey_ball.000");
+        lbl_802BA310.unk8 |= 0x208000;
+        func_800A0D1C();
+        break;
+    case 0xE:
+        func_800A0E94();
+        break;
+    case 0x13:
+        memset(&lbl_802BA2A0, 0, 0x6C);
+        lbl_802BA310.unk40 = 0x4B0;
+        lbl_802BA310.unk4C = 0x14;
+        break;
+    case 0x14:
+        func_800A1988();
+        break;
+    case 0x11:
+        func_8009F568();
+        func_800A4E70();
+        lbl_802F21AC->unk2 = 0x16;
+        r4 = (u8 *)lbl_802F21AC + 2;
+        lbl_802F21AC->unk0 = mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)lbl_802F21AC), r4);
+        func_800A10A8(lbl_802F21AC);
+        break;
+    case 0x12:
+        func_800A11A0();
+        break;
+    case 0x15:
+        func_800A1330();
+        break;
+    case 0x16:
+        func_800A1404();
+        break;
+    case 0xB:
+        func_800A26FC(lbl_802BA310.unk0);
+        break;
+    case 0xC:
+        func_800A27F8();
+        break;
+    case 0x1F:
+        func_800A2C74();
+        break;
+    case 0x20:
+        func_800A2DA4();
+        if (lbl_802BA310.unk4C != 0x20)
+            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        break;
+    case 0x1E:
+        func_800A06CC();
+        break;
+    case 0xFF:
+        break;
+    default:
+        printf("stat: %d\n", lbl_802BA310.unk4C);
+        OSPanic("memcard.c", 0xD40, "save_sequence\n");
         break;
     }
 }
