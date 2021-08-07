@@ -5861,6 +5861,7 @@ lbl_800A43B8:
 /* 800A43DC 000A02FC  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global func_800A43E0
 func_800A43E0:
 /* 800A43E0 000A0300  7C 08 02 A6 */	mflr r0
@@ -5917,7 +5918,7 @@ lbl_800A4474:
 /* 800A44A0 000A03C0  3C 60 43 30 */	lis r3, 0x4330
 /* 800A44A4 000A03C4  C8 22 B2 C0 */	lfd f1, lbl_802F5AC0-_SDA2_BASE_(r2)
 /* 800A44A8 000A03C8  90 01 00 1C */	stw r0, 0x1c(r1)
-/* 800A44AC 000A03CC  C8 A2 B2 B0 */	lfd f5, lbl_802F5AB0-_SDA2_BASE_(r2)
+/* 800A44AC 000A03CC  C8 A2 B2 B0 */	lfd f5, lbl_802F5AB0-_SDA2_BASE_(r2)  ;# 0.800000011920929
 /* 800A44B0 000A03D0  90 61 00 20 */	stw r3, 0x20(r1)
 /* 800A44B4 000A03D4  90 61 00 18 */	stw r3, 0x18(r1)
 /* 800A44B8 000A03D8  C8 41 00 20 */	lfd f2, 0x20(r1)  ;# (float)(r27)
@@ -5934,14 +5935,14 @@ lbl_800A44E0:
 /* 800A44E0 000A0400  C0 42 B2 C8 */	lfs f2, lbl_802F5AC8-_SDA2_BASE_(r2)
 lbl_800A44E4:
 /* 800A44E4 000A0404  C8 22 B2 D0 */	lfd f1, lbl_802F5AD0-_SDA2_BASE_(r2)  ;# 31.19999885559082
-/* 800A44E8 000A0408  38 7E 14 9C */	addi r3, r30, 0x149c
+/* 800A44E8 000A0408  38 7E 14 9C */	addi r3, r30, 0x149c  ;# 801D5724
 /* 800A44EC 000A040C  C8 02 B2 D8 */	lfd f0, lbl_802F5AD8-_SDA2_BASE_(r2)  ;# 38.40000057220459
-/* 800A44F0 000A0410  FC 3E 08 2A */	fadd f1, f30, f1
+/* 800A44F0 000A0410  FC 3E 08 2A */	fadd f1, f30, f1  ;# f30 + 31.19999885559082
 /* 800A44F4 000A0414  D3 9E 14 A0 */	stfs f28, 0x14a0(r30)
-/* 800A44F8 000A0418  FC 42 00 2A */	fadd f2, f2, f0
+/* 800A44F8 000A0418  FC 42 00 2A */	fadd f2, f2, f0  ;# f2 + 38.40000057220459
 /* 800A44FC 000A041C  D3 BE 14 A4 */	stfs f29, 0x14a4(r30)
-/* 800A4500 000A0420  FC 20 08 18 */	frsp f1, f1
-/* 800A4504 000A0424  FC 40 10 18 */	frsp f2, f2
+/* 800A4500 000A0420  FC 20 08 18 */	frsp f1, f1  ;# (float)(f30 + 31.19999885559082)
+/* 800A4504 000A0424  FC 40 10 18 */	frsp f2, f2  ;# (float)(f2 + 38.40000057220459)
 /* 800A4508 000A0428  C8 02 B2 E0 */	lfd f0, lbl_802F5AE0-_SDA2_BASE_(r2)  ;# 0.125
 /* 800A450C 000A042C  FC 21 00 32 */	fmul f1, f1, f0
 /* 800A4510 000A0430  FC 02 00 32 */	fmul f0, f2, f0
@@ -5965,8 +5966,8 @@ lbl_800A44E4:
 /* 800A4558 000A0478  CB 22 B2 B0 */	lfd f25, lbl_802F5AB0-_SDA2_BASE_(r2)  ;# 0.800000011920929
 /* 800A455C 000A047C  3F C0 43 30 */	lis r30, 0x4330
 /* 800A4560 000A0480  CB 42 B3 08 */	lfd f26, lbl_802F5B08-_SDA2_BASE_(r2)  ;# 32.0
-/* 800A4564 000A0484  CB 62 B3 18 */	lfd f27, lbl_802F5B18-_SDA2_BASE_(r2)  ;# 16.0
-/* 800A4568 000A0488  CB A2 B3 10 */	lfd f29, lbl_802F5B10-_SDA2_BASE_(r2)  ;# 16.00000762939453
+/* 800A4564 000A0484  CB 62 B3 18 */	lfd f27, lbl_802F5B18-_SDA2_BASE_(r2)  ;# double conv
+/* 800A4568 000A0488  CB A2 B3 10 */	lfd f29, lbl_802F5B10-_SDA2_BASE_(r2)  ;# 16.0
 /* 800A456C 000A048C  48 00 00 80 */	b lbl_800A45EC
 lbl_800A4570:
 /* 800A4570 000A0490  80 7F 00 00 */	lwz r3, 0(r31)
@@ -5976,22 +5977,22 @@ lbl_800A4570:
 /* 800A4580 000A04A0  6F 80 80 00 */	xoris r0, r28, 0x8000
 /* 800A4584 000A04A4  90 01 00 1C */	stw r0, 0x1c(r1)
 /* 800A4588 000A04A8  FC 3F 00 72 */	fmul f1, f31, f1
-/* 800A458C 000A04AC  38 03 FF FF */	addi r0, r3, -1
+/* 800A458C 000A04AC  38 03 FF FF */	addi r0, r3, -1  ;# a->unk4 - 1
 /* 800A4590 000A04B0  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 800A4594 000A04B4  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 800A4598 000A04B8  90 01 00 24 */	stw r0, 0x24(r1)
 /* 800A459C 000A04BC  C8 01 00 18 */	lfd f0, 0x18(r1)
 /* 800A45A0 000A04C0  FC 3C 08 28 */	fsub f1, f28, f1
 /* 800A45A4 000A04C4  93 C1 00 20 */	stw r30, 0x20(r1)
-/* 800A45A8 000A04C8  FC 40 D8 28 */	fsub f2, f0, f27
-/* 800A45AC 000A04CC  C8 01 00 20 */	lfd f0, 0x20(r1)
+/* 800A45A8 000A04C8  FC 40 D8 28 */	fsub f2, f0, f27  ;# (float)i
+/* 800A45AC 000A04CC  C8 01 00 20 */	lfd f0, 0x20(r1)  ;#
 /* 800A45B0 000A04D0  FC 20 08 18 */	frsp f1, f1
-/* 800A45B4 000A04D4  FC 00 D8 28 */	fsub f0, f0, f27
-/* 800A45B8 000A04D8  FC 5A 00 B2 */	fmul f2, f26, f2
-/* 800A45BC 000A04DC  FC 1D 00 32 */	fmul f0, f29, f0
-/* 800A45C0 000A04E0  FC 59 00 B2 */	fmul f2, f25, f2
-/* 800A45C4 000A04E4  FC 19 00 32 */	fmul f0, f25, f0
-/* 800A45C8 000A04E8  FC 1E 00 28 */	fsub f0, f30, f0
+/* 800A45B4 000A04D4  FC 00 D8 28 */	fsub f0, f0, f27  ;# (float)(a->unk4 - 1)
+/* 800A45B8 000A04D8  FC 5A 00 B2 */	fmul f2, f26, f2  ;# 32.0 * i
+/* 800A45BC 000A04DC  FC 1D 00 32 */	fmul f0, f29, f0  ;# 16.0 * (a->unk4 - 1)
+/* 800A45C0 000A04E0  FC 59 00 B2 */	fmul f2, f25, f2  ;# 0.800000011920929 * (32.0 * i)
+/* 800A45C4 000A04E4  FC 19 00 32 */	fmul f0, f25, f0  ;# 0.800000011920929 * (16.0 * (a->unk4 - 1))
+/* 800A45C8 000A04E8  FC 1E 00 28 */	fsub f0, f30, f0  
 /* 800A45CC 000A04EC  FC 42 00 2A */	fadd f2, f2, f0
 /* 800A45D0 000A04F0  FC 40 10 18 */	frsp f2, f2
 /* 800A45D4 000A04F4  4B FC D5 8D */	bl func_80071B60
@@ -6016,6 +6017,7 @@ lbl_800A45EC:
 /* 800A461C 000A053C  CB 21 00 40 */	lfd f25, 0x40(r1)
 /* 800A4620 000A0540  38 21 00 78 */	addi r1, r1, 0x78
 /* 800A4624 000A0544  4E 80 00 20 */	blr
+.endif
 
 .global func_800A4628
 func_800A4628:
@@ -6682,15 +6684,16 @@ func_800A4F04:
 
 .section .sdata2
 
+.if 0
 .global lbl_802F5AA0
 lbl_802F5AA0:
 	# ROM: 0x1EF4C0
-	.byte 0x3F, 0x26, 0x66, 0x66  ;# 0.649999976158
+	.byte 0x3F, 0x26, 0x66, 0x66  ;# 0.649999976158f
 
 .global lbl_802F5AA4
 lbl_802F5AA4:
 	# ROM: 0x1EF4C4
-	.byte 0x3F, 0x4C, 0xCC, 0xCD  ;# 0.800000011921
+	.byte 0x3F, 0x4C, 0xCC, 0xCD  ;# 0.800000011921f
 
 .global lbl_802F5AA8
 lbl_802F5AA8:
@@ -6776,11 +6779,12 @@ lbl_802F5B10:
 	.byte 0x40, 0x30, 0x00, 0x00  ;# 16.0
 	.4byte 0
 
-.global lbl_802F5B18
+.global lbl_802F5B18  ;# double conv
 lbl_802F5B18:
 	# ROM: 0x1EF538
 	.byte 0x43, 0x30, 0x00, 0x00
 	.byte 0x80, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F5B20
 lbl_802F5B20:
@@ -6960,22 +6964,25 @@ lbl_801D5704:
 	.4byte lbl_800A41DC  ;# ptr 6
 	.4byte lbl_800A41E4  ;# ptr 7
 .endif
+.if 0
+    ;# size = 0x40
 	.byte 0x00, 0x00, 0x00, 0x4B
-	.byte 0x43, 0xA0, 0x00, 0x00
-	.byte 0x43, 0x70, 0x00, 0x00
-	.byte 0x3F, 0x80, 0x00, 0x00
-	.byte 0x3F, 0x80, 0x00, 0x00
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x43, 0xA0, 0x00, 0x00  ;# 320.0f
+	.byte 0x43, 0x70, 0x00, 0x00  ;# 240.0f
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
 	.4byte 0
 	.4byte 0
-	.byte 0x3F, 0x80, 0x00, 0x00
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
 	.4byte 0
-	.byte 0x3F, 0x26, 0x66, 0x66
+	.byte 0x3F, 0x26, 0x66, 0x66  ;# 0.649999976158
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.byte 0xFF, 0x00, 0x00, 0x00
 	.4byte 0
+.endif
 	.4byte 0
 	.4byte 0
 	.4byte 0

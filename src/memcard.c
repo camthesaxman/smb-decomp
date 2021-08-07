@@ -3209,30 +3209,146 @@ struct UnkStruct800A43E0
     s32 unk4;
 };
 
-/*
-void func_800A43E0(struct UnkStruct800A43E0 *a)
+#pragma force_active on
+#pragma fp_contract off
+
+struct
 {
-    int i;
+    u32 unk0;
+    float unk4;  // 14a0
+    float unk8;  // 14a4
+    float unkC;
+    float unk10;  // 14ac
+    float unk14;  // 14b0
+    float unk18;
+    float unk1C;
+    float unk20;
+    float unk24;  // 14c0
+    u32 unk28;
+    float unk2C;  // 14c8
+    u32 unk30;
+    u32 unk34;
+    u32 unk38;
+    u32 unk3C;
+} lbl_801D5724 =
+{
+    0x4B,
+    320.0f,
+    240.0f,
+    1.0f,
+    1.0f,
+    1.0f,
+    0.0f,
+    0.0f,
+    1.0f,
+    1.0f,
+    0,  // unk28
+    0.649999976158f,
+    0xFFFFFFFF,
+    0x0A,
+    0xFF000000,
+    0,
+};
+
+extern float lbl_802F1ECC;
+
+void func_80071B60(float, float);
+#pragma force_active off
+
+void func_800A43E0(struct UnkStruct800A43E0 *a, float b, float c)
+{
+    int i;  // r28
     int r27;
     float f30;
     float f2;
+    
+    //float _f1;
+    //float _f2;
 
     func_80071A8C();
     func_80071AD4(0xB3);
-    func_80071B50(0x20);
-    func_80071B2C(0.65f, 0.8f);
-    f30 = 0.0f;
-    r27 = a->unk4;
-    for (i = 0; i < a->unk4; i++)
+    func_80071B50(0x200000);
+    func_80071B2C(0.649999976158f, 0.800000011921f);
+    
+    for (i = 0, f30 = 0.0f, r27 = a->unk4; i < a->unk4; i++)
     {
-        float f1 = func_800726A8(a->unk0[i]);
+        float f1 = func_800726A8(a->unk0[i].unk0);
         if (f1 > f30)
             f30 = f1;
     }
     if (r27 > 0)
-        f2 = 0.8 * (24.0 * r27 + 8.0 * (r27 - 1));
+        f2 = 0.800000011920929 * (24.0 * r27 + 8.0 * (r27 - 1));
     else
         f2 = 19.2f;
+    //lbl_800A44E4
     
+    // register swap here
+    // If I create a new variable for f30, it messes up the prologue
+    f30 += 31.19999885559082;
+    f2 += 38.40000057220459;
+    lbl_801D5724.unk4 = b;
+    lbl_801D5724.unk8 = c;
+    f30 *= 0.125;
+    f2 *= 0.125;
+    lbl_801D5724.unk10 = f30;
+    lbl_801D5724.unk14 = f2;
+    lbl_801D5724.unk2C = 0.65 + 0.1 * lbl_802F1ECC;
+    func_80073828(&lbl_801D5724);
+    for (i = 0; i < a->unk4; i++)
+    {
+        float f1 = b - 0.5 * func_800726A8(a->unk0[i].unk0);
+        float f2 = 0.800000011920929 * (32.0 * i)
+            + ((c - 9.600000143051147) - 0.800000011920929 * (16.0 * (a->unk4 - 1)));
+        func_80071B60(f1, f2);
+        func_80071E58(a->unk0[i].unk0);
+    }
+}
+
+/*
+void func_800A43E0(struct UnkStruct800A43E0 *a, float b, float c)
+{
+    int i;  // r28
+    int r27;
+    float f30;
+    float f2;
+    
+    //float _f1;
+    //float _f2;
+
+    func_80071A8C();
+    func_80071AD4(0xB3);
+    func_80071B50(0x200000);
+    func_80071B2C(0.649999976158f, 0.800000011921f);
+    
+    for (i = 0, f30 = 0.0f, r27 = a->unk4; i < a->unk4; i++)
+    {
+        float f1 = func_800726A8(a->unk0[i].unk0);
+        if (f1 > f30)
+            f30 = f1;
+    }
+    if (r27 > 0)
+        f2 = 0.800000011920929 * (24.0 * r27 + 8.0 * (r27 - 1));
+    else
+        f2 = 19.2f;
+    //lbl_800A44E4
+    
+    f30 += 31.19999885559082;
+    f2 += 38.40000057220459;
+    lbl_801D5724.unk4 = b;
+    lbl_801D5724.unk8 = c;
+    f30 *= 0.125;
+    f2 *= 0.125;
+    lbl_801D5724.unk10 = f30;
+    lbl_801D5724.unk14 = f2;
+    lbl_801D5724.unk2C = 0.65 + 0.1 * lbl_802F1ECC;
+    func_80073828(&lbl_801D5724);
+    for (i = 0; i < a->unk4; i++)
+    {
+        float f1 = b - 0.5 * func_800726A8(a->unk0[i].unk0);
+        float f2 = 0.800000011920929 * (32.0 * i)
+            + ((c - 9.600000143051147) - 0.800000011920929 * (16.0 * (a->unk4 - 1)));
+        func_80071B60(f1, f2);
+        func_80071E58(a->unk0[i].unk0);
+    }
 }
 */
