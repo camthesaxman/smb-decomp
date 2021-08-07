@@ -23,7 +23,7 @@ CARDStat lbl_802BA2A0;
 
 struct UnkStruct802BA310
 {
-    u32 unk0;
+    u32 unk0;  // lbl_802BA2A0 + 0x70
     s32 unk4;
     u32 unk8;
     struct MemCardMessage *unkC;
@@ -2986,7 +2986,253 @@ void replay_load_sequence(void)
     }
 }
 
+#pragma force_active off
+
+// inline
+void replay_delete_sequence(void)
+{
+    switch (lbl_802BA310.unk4C)
+    {
+    case 0xB:
+        func_800A26FC(lbl_802F21BC[lbl_802F21C0].unk14);
+        break;
+    case 0xC:
+        func_800A27F8();
+        break;
+    case 0xFF:
+        break;
+    default:
+        printf("stat: %d\n", lbl_802BA310.unk4C);
+        OSPanic("memcard.c", 0xE89, "replay_delete_sequence\n");
+        break;
+    }
+}
+
 void memcard_init(void)
 {
     lbl_802F21A8 = 0;
 }
+
+void ev_memcard_init(void)
+{
+    // r30 = lbl_802BA2A0
+    lbl_802BA310.unk4C = 1;
+    lbl_802BA310.unkC = 0;
+    lbl_802BA310.unk0 = -1;
+    lbl_802F21B2 = 0;
+    lbl_802BA310.time = OSGetTime();
+
+    if (lbl_802F21B0 != 7)
+    {
+        if (lbl_802F21B0 == 1 || lbl_802F21B0 == 3 || lbl_802F21B0 == 5)
+            lbl_802BA310.unk8 |= 0x10;
+        else
+            lbl_802BA310.unk8 |= 0x20;
+    }
+
+    if (lbl_802F21B0 == 2 || lbl_802F21B0 == 3)
+        lbl_802BA310.unk8 |= 0x40;
+    else
+        lbl_802BA310.unk8 |= 0x80;
+
+    if (lbl_802F21B0 == 4 || lbl_802F21B0 == 5 || lbl_802F21B0 == 6 || lbl_802F21B0 == 7)
+        lbl_802BA310.unk8 |= 0x1000;
+    else
+        lbl_802BA310.unk8 |= 0x2000;
+
+    if (lbl_802BA310.unk8 & (1 << (31-0x13)))
+    {
+        sprintf(lbl_802BA310.fileName, "smkb%08x%08x",
+            (unsigned int)((u64)lbl_802BA310.time >> 32),
+            (unsigned int)(lbl_802BA310.time));
+    }
+    else if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
+        strcpy(lbl_802BA310.fileName, "super_monkey_ball.000");
+    else
+        strcpy(lbl_802BA310.fileName, "super_monkey_ball.sys");
+
+    if (!(lbl_802BA310.unk8 & (1 << (31-0x13))))
+        lbl_802BA310.unk44 = 0x5C04;
+    else if (lbl_802F21B0 == 5)
+        lbl_802BA310.unk44 = func_8004C668() + 0x2050;
+    else if (lbl_802F21B0 == 4)
+        lbl_802BA310.unk44 = lbl_802F21BC[lbl_802F21C0].unk10;
+    else
+        lbl_802BA310.unk44 = 0x200;
+
+    if (lbl_802F21B0 == 4)
+        lbl_802BA310.unk4C = 0x1C;
+    else if (lbl_802F21B0 == 7)
+        lbl_802BA310.unk4C = 0xB;
+
+    if (lbl_802F21B0 == 2)
+    {
+        if ((lbl_802F21AC = OSAlloc(0x5C04)) == NULL)
+            OSPanic("memcard.c", 0xEFB, "cannot OSAlloc");
+        func_800A4E70();
+        memcpy(lbl_802C4480, lbl_802F21AC->unk5824 + 0x20, 0x3C0);
+        OSFree(lbl_802F21AC);
+        lbl_802F21AC = NULL;
+    }
+    if (!(lbl_802BA310.unk8 & (1 << (31-0x19))))
+        lbl_801F3D88.unk4 = 0;
+}
+
+void ev_memcard_main(void)
+{
+    if ((lbl_802BA310.unk8 & (1 << (31-0x18)))
+     && lbl_802BA310.unk4C == 1
+     && (lbl_801F3D88.unk4 & (1 << (31-0x16))))
+    {
+        func_8002B5C8(0x6B);
+        lbl_802BA310.unk4C = 0xFF;
+        lbl_802BA310.unk8 |= 0x100;
+    }
+    if (lbl_802BA310.unk4C == 0xFF && !(lbl_802BA310.unk8 & (1 << (31-0x16  ))))
+    {
+        lbl_802BA310.unk8 &= ~(1 << (31-10));
+        ev_run_dest(0);
+        return;
+    }
+    if (lbl_802BA310.unk8 & (1 << (31-0x16)))
+    {
+        lbl_802BA310.unk8 &= 0xFFDD7FFF;
+        if (lbl_801F3D88.unk4 & (1 << (31-0x16)))
+        {
+            func_8002B5C8(0x6B);
+            lbl_802BA310.unk42 = 0;
+            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            lbl_801F3D88.unk4 = 0;
+        }
+        else
+        {
+            if (lbl_802BA310.unk42 == 0)
+                return;
+            lbl_802BA310.unk42--;
+            if (lbl_802BA310.unk42 == 0)
+                lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            else
+                return;
+        }
+    }
+    if (lbl_802BA310.unk40 > 0)
+        lbl_802BA310.unk40--;
+    switch (lbl_802F21B0)
+    {
+    case 0:
+    case 2:
+        load_sequence();
+        break;
+    case 1:
+    case 3:
+        save_sequence();
+        break;
+    case 4:
+        replay_load_sequence();
+        break;
+    case 5:
+        replay_save_sequence();
+        break;
+    case 6:
+        replay_list_sequence();
+        break;
+    case 7:
+        replay_delete_sequence();
+        break;
+    default:
+        printf("memcard_mode:%d\n", lbl_802F21B0);
+        OSPanic("memcard.c", 0xF70, "Memcard.");
+        break;
+    }
+}
+
+extern u32 lbl_802F21B4;
+
+void ev_memcard_dest(void)
+{
+    if (lbl_802BA310.unk8 & (1 << (31-28)))
+        lbl_802F21B9 = 1;
+    else
+    {
+        lbl_802F21B9 = 0;
+        if (lbl_802F21B0 == 3)
+            lbl_802F21A8 = 0;
+    }
+
+    CARDCancel(&lbl_802BA310.cardFileInfo);
+    if (lbl_802BA310.unk8 & (1 << (31-0x1E)))
+    {
+        CARDClose(&lbl_802BA310.cardFileInfo);
+        lbl_802BA310.unk8 &= ~(1 << (31-0x1E));
+    }
+    
+    if (lbl_802BA310.unk8 & 1)
+    {
+        if (lbl_802F21B0 != 6 && lbl_802F21B0 != 7 && lbl_802F21B0 != 4)
+        {
+            CARDUnmount(0);
+            lbl_802BA310.unk8 &= ~1;
+        }
+    }
+
+    if (lbl_802F21AC != NULL && !(lbl_802BA310.unk8 & 0x5110) && lbl_802F21AC->unk2 == 0x16)
+        func_800A4F04();
+    lbl_802BA310.unk4C = 0;
+    lbl_802BA310.unk8 &= 3;
+    if (lbl_802F21AC != NULL)
+    {
+        OSFree(lbl_802F21AC);
+        lbl_802F21AC = NULL;
+    }
+    if (lbl_802F21C4 != NULL)
+    {
+        OSFree(lbl_802F21C4);
+        lbl_802F21C4 = NULL;
+    }
+    
+    lbl_802F21B4 = 0;
+    lbl_802F21BC = 0;
+}
+
+void func_80071B2C(float, float);
+float func_800726A8();
+
+struct UnkStruct800A43E0_child
+{
+    u32 unk0;
+    u8 filler4[4];
+};
+
+struct UnkStruct800A43E0
+{
+    struct UnkStruct800A43E0_child *unk0;
+    s32 unk4;
+};
+
+/*
+void func_800A43E0(struct UnkStruct800A43E0 *a)
+{
+    int i;
+    int r27;
+    float f30;
+    float f2;
+
+    func_80071A8C();
+    func_80071AD4(0xB3);
+    func_80071B50(0x20);
+    func_80071B2C(0.65f, 0.8f);
+    f30 = 0.0f;
+    r27 = a->unk4;
+    for (i = 0; i < a->unk4; i++)
+    {
+        float f1 = func_800726A8(a->unk0[i]);
+        if (f1 > f30)
+            f30 = f1;
+    }
+    if (r27 > 0)
+        f2 = 0.8 * (24.0 * r27 + 8.0 * (r27 - 1));
+    else
+        f2 = 19.2f;
+    
+}
+*/
