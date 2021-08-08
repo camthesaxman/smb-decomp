@@ -6019,6 +6019,7 @@ lbl_800A45EC:
 /* 800A4624 000A0544  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global func_800A4628
 func_800A4628:
 /* 800A4628 000A0548  7C 08 02 A6 */	mflr r0
@@ -6172,31 +6173,31 @@ lbl_800A481C:
 /* 800A4838 000A0758  3C 60 88 89 */	lis r3, 0x88888889@ha
 /* 800A483C 000A075C  80 8D 99 54 */	lwz r4, lbl_802F1B34-_SDA_BASE_(r13)
 /* 800A4840 000A0760  38 03 88 89 */	addi r0, r3, 0x88888889@l
-/* 800A4844 000A0764  C8 62 B3 58 */	lfd f3, lbl_802F5B58-_SDA2_BASE_(r2)
+/* 800A4844 000A0764  C8 62 B3 58 */	lfd f3, lbl_802F5B58-_SDA2_BASE_(r2)  ;# double conv?
 /* 800A4848 000A0768  7C 00 20 16 */	mulhwu r0, r0, r4
-/* 800A484C 000A076C  C8 42 B3 18 */	lfd f2, lbl_802F5B18-_SDA2_BASE_(r2)
-/* 800A4850 000A0770  C8 22 B3 48 */	lfd f1, lbl_802F5B48-_SDA2_BASE_(r2)
-/* 800A4854 000A0774  C8 82 B3 40 */	lfd f4, lbl_802F5B40-_SDA2_BASE_(r2)
+/* 800A484C 000A076C  C8 42 B3 18 */	lfd f2, lbl_802F5B18-_SDA2_BASE_(r2)  ;# double conv
+/* 800A4850 000A0770  C8 22 B3 48 */	lfd f1, lbl_802F5B48-_SDA2_BASE_(r2)  ;# 30.0
+/* 800A4854 000A0774  C8 82 B3 40 */	lfd f4, lbl_802F5B40-_SDA2_BASE_(r2)  ;# 255.0
 /* 800A4858 000A0778  54 00 D9 7E */	srwi r0, r0, 5
 /* 800A485C 000A077C  1C 00 00 3C */	mulli r0, r0, 0x3c
-/* 800A4860 000A0780  7C 00 20 50 */	subf r0, r0, r4
+/* 800A4860 000A0780  7C 00 20 50 */	subf r0, r0, r4  ;# lbl_802F1B34 % 0x3C;
 /* 800A4864 000A0784  90 01 00 3C */	stw r0, 0x3c(r1)
 /* 800A4868 000A0788  3F 80 43 30 */	lis r28, 0x4330
-/* 800A486C 000A078C  93 81 00 38 */	stw r28, 0x38(r1)
+/* 800A486C 000A078C  93 81 00 38 */	stw r28, 0x38(r1)  ;# double conv
 /* 800A4870 000A0790  C8 01 00 38 */	lfd f0, 0x38(r1)
-/* 800A4874 000A0794  EC 00 18 28 */	fsubs f0, f0, f3
-/* 800A4878 000A0798  FC 00 00 1E */	fctiwz f0, f0
+/* 800A4874 000A0794  EC 00 18 28 */	fsubs f0, f0, f3  ;# (double)(lbl_802F1B34 % 0x3C)
+/* 800A4878 000A0798  FC 00 00 1E */	fctiwz f0, f0  ;# back to integer? what?
 /* 800A487C 000A079C  D8 01 00 30 */	stfd f0, 0x30(r1)
 /* 800A4880 000A07A0  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800A4884 000A07A4  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 800A4888 000A07A8  90 01 00 2C */	stw r0, 0x2c(r1)
 /* 800A488C 000A07AC  93 81 00 28 */	stw r28, 0x28(r1)
 /* 800A4890 000A07B0  C8 01 00 28 */	lfd f0, 0x28(r1)
-/* 800A4894 000A07B4  FC 00 10 28 */	fsub f0, f0, f2
+/* 800A4894 000A07B4  FC 00 10 28 */	fsub f0, f0, f2  ;#(double)(int)(double)(lbl_802F1B34 % 0x3C)
 /* 800A4898 000A07B8  FC 00 08 28 */	fsub f0, f0, f1
 /* 800A489C 000A07BC  FC 00 00 1E */	fctiwz f0, f0
 /* 800A48A0 000A07C0  D8 01 00 20 */	stfd f0, 0x20(r1)
-/* 800A48A4 000A07C4  80 01 00 24 */	lwz r0, 0x24(r1)
+/* 800A48A4 000A07C4  80 01 00 24 */	lwz r0, 0x24(r1)    ;#(int)((double)(int)(double)(lbl_802F1B34 % 0x3C) - 30.0)
 /* 800A48A8 000A07C8  7C 03 FE 70 */	srawi r3, r0, 0x1f
 /* 800A48AC 000A07CC  7C 60 02 78 */	xor r0, r3, r0
 /* 800A48B0 000A07D0  7C 03 00 50 */	subf r0, r3, r0
@@ -6204,7 +6205,7 @@ lbl_800A481C:
 /* 800A48B8 000A07D8  90 01 00 1C */	stw r0, 0x1c(r1)
 /* 800A48BC 000A07DC  93 81 00 18 */	stw r28, 0x18(r1)
 /* 800A48C0 000A07E0  C8 01 00 18 */	lfd f0, 0x18(r1)
-/* 800A48C4 000A07E4  EC 00 10 28 */	fsubs f0, f0, f2
+/* 800A48C4 000A07E4  EC 00 10 28 */	fsubs f0, f0, f2  ;# (float)(abs(xxx))
 /* 800A48C8 000A07E8  FC 00 08 24 */	fdiv f0, f0, f1
 /* 800A48CC 000A07EC  FC 24 00 32 */	fmul f1, f4, f0
 /* 800A48D0 000A07F0  48 05 EC 9D */	bl __cvt_fp2unsigned
@@ -6326,11 +6327,11 @@ lbl_800A4A50:
 /* 800A4A78 000A0998  3C 60 88 89 */	lis r3, 0x88888889@ha
 /* 800A4A7C 000A099C  80 8D 99 54 */	lwz r4, lbl_802F1B34-_SDA_BASE_(r13)
 /* 800A4A80 000A09A0  38 03 88 89 */	addi r0, r3, 0x88888889@l
-/* 800A4A84 000A09A4  C8 62 B3 58 */	lfd f3, lbl_802F5B58-_SDA2_BASE_(r2)
+/* 800A4A84 000A09A4  C8 62 B3 58 */	lfd f3, lbl_802F5B58-_SDA2_BASE_(r2)  ;# double conv
 /* 800A4A88 000A09A8  7C 00 20 16 */	mulhwu r0, r0, r4
-/* 800A4A8C 000A09AC  C8 42 B3 18 */	lfd f2, lbl_802F5B18-_SDA2_BASE_(r2)
-/* 800A4A90 000A09B0  C8 22 B3 48 */	lfd f1, lbl_802F5B48-_SDA2_BASE_(r2)
-/* 800A4A94 000A09B4  C8 82 B3 40 */	lfd f4, lbl_802F5B40-_SDA2_BASE_(r2)
+/* 800A4A8C 000A09AC  C8 42 B3 18 */	lfd f2, lbl_802F5B18-_SDA2_BASE_(r2)  ;# double conv
+/* 800A4A90 000A09B0  C8 22 B3 48 */	lfd f1, lbl_802F5B48-_SDA2_BASE_(r2)  ;# 30.0
+/* 800A4A94 000A09B4  C8 82 B3 40 */	lfd f4, lbl_802F5B40-_SDA2_BASE_(r2)  ;# 255.0
 /* 800A4A98 000A09B8  54 00 D9 7E */	srwi r0, r0, 5
 /* 800A4A9C 000A09BC  1C 00 00 3C */	mulli r0, r0, 0x3c
 /* 800A4AA0 000A09C0  7C 00 20 50 */	subf r0, r0, r4
@@ -6493,6 +6494,7 @@ lbl_800A4CCC:
 /* 800A4CE0 000A0C00  83 81 00 40 */	lwz r28, 0x40(r1)
 /* 800A4CE4 000A0C04  38 21 00 50 */	addi r1, r1, 0x50
 /* 800A4CE8 000A0C08  4E 80 00 20 */	blr
+.endif
 
 .global func_800A4CEC
 func_800A4CEC:
@@ -6786,15 +6788,16 @@ lbl_802F5B18:
 	.byte 0x80, 0x00, 0x00, 0x00
 .endif
 
+.if 0
 .global lbl_802F5B20
 lbl_802F5B20:
 	# ROM: 0x1EF540
-	.byte 0x43, 0xA0, 0x00, 0x00
+	.byte 0x43, 0xA0, 0x00, 0x00  ;# 320.0f
 
 .global lbl_802F5B24
 lbl_802F5B24:
 	# ROM: 0x1EF544
-	.byte 0x43, 0x70, 0x00, 0x00
+	.byte 0x43, 0x70, 0x00, 0x00  ;# 240.0f
 
 .global lbl_802F5B28
 lbl_802F5B28:
@@ -6809,50 +6812,51 @@ lbl_802F5B2C:
 .global lbl_802F5B30
 lbl_802F5B30:
 	# ROM: 0x1EF550
-	.byte 0x3C, 0x03, 0x12, 0x6F
+	.byte 0x3C, 0x03, 0x12, 0x6F  ;# 0.00800000037998f
 
 .global lbl_802F5B34
 lbl_802F5B34:
 	# ROM: 0x1EF554
-	.byte 0x43, 0xBE, 0x00, 0x00
+	.byte 0x43, 0xBE, 0x00, 0x00  ;# 380.0f
 
 .global lbl_802F5B38
 lbl_802F5B38:
 	# ROM: 0x1EF558
-	.byte 0x42, 0xC8, 0x00, 0x00
+	.byte 0x42, 0xC8, 0x00, 0x00  ;# 100.0f
 
 .global lbl_802F5B3C
 lbl_802F5B3C:
 	# ROM: 0x1EF55C
-	.byte 0x43, 0xAA, 0x00, 0x00
+	.byte 0x43, 0xAA, 0x00, 0x00  ;# 340.0
 
 .global lbl_802F5B40
 lbl_802F5B40:
 	# ROM: 0x1EF560
-	.byte 0x40, 0x6F, 0xE0, 0x00
+	.byte 0x40, 0x6F, 0xE0, 0x00  ;# 255.0
 	.4byte 0
 
 .global lbl_802F5B48
 lbl_802F5B48:
 	# ROM: 0x1EF568
-	.byte 0x40, 0x3E, 0x00, 0x00
+	.byte 0x40, 0x3E, 0x00, 0x00  ;# 30.0
 	.4byte 0
 
 .global lbl_802F5B50
 lbl_802F5B50:
 	# ROM: 0x1EF570
-	.byte 0x3F, 0xC0, 0x00, 0x00
+	.byte 0x3F, 0xC0, 0x00, 0x00  ;# 1.5f
 
 .global lbl_802F5B54
 lbl_802F5B54:
 	# ROM: 0x1EF574
-	.byte 0x43, 0x72, 0x00, 0x00
+	.byte 0x43, 0x72, 0x00, 0x00  ;# 242.0
 
 .global lbl_802F5B58
 lbl_802F5B58:
 	# ROM: 0x1EF578
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
+.endif
 
 .section .data
 
@@ -7075,6 +7079,8 @@ glabel string_smkb
 	.asciz "smkb"
 	.balign 4
 .endif
+
+.if 0
 	.4byte 0x802C4900  ;# ptr
 	.4byte 0
 
@@ -7089,7 +7095,8 @@ glabel string_Yes_
 lbl_802F16A8:
 	# ROM: 0x1EBDE8
 	.byte 0x4E, 0x6F, 0x00, 0x00
-	.4byte 0
+.endif
+    	.4byte 0
 
 .global lbl_802F16B0
 lbl_802F16B0:
