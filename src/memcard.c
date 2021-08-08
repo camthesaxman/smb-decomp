@@ -3309,57 +3309,25 @@ extern void func_80071B1C(float);
 
 extern s32 lbl_802F1EB0;
 
-//#define ABS(x)  ((x) >= 0 ? (x) : -(x))
-//#define ABS(x)  ((x) < 0 ? -(x) : (x))
-#define ABS(x)  (((x) ^ (x >> 31)) - (x))
-
-struct MemCardMessage blah = {(void *)lbl_802C4900, 0};
+struct StringEntry lbl_802F1698 = {(void *)lbl_802C4900, 0};
 
 #pragma force_active off
 
-static void derp(struct MemCardMessage *msg)
+#ifdef NONMATCHING
+static void g_msg_box_default_pos(struct MemCardMessage *msg)
 {
     func_800A43E0(msg, 320.0f, 240.0f);
 }
 
 static int int_abs(int x)
 {
-    return (x ^ (x >> 31)) - x;
+    return ((x >> 31) ^ x) - (x >> 31);
 }
-
-static int int_abs2(float _x)
-{
-    int x = _x;
-    return (x ^ (x >> 31)) - x;
-}
-
-inline int int_abs3(register int x)
-{
-#ifdef __MWERKS__
-    register int temp;
-    asm {
-        srawi temp, x, 31
-        xor x, temp, x
-        subf x, temp, x
-    }
-    return temp;
-#endif
-}
-
-/*
-static int (abs)(int n)
-{
-    if (n < 0)
-        return(-n);
-    else
-        return(n);
-}
-*/
-
-inline int	abs (int n) { return(__abs(n)); }
 
 void func_800A4628(void)
 {
+    register int i;
+    u32 r29;
     u32 wtf;
     func_80071A8C();
     func_80071AD4(0xB3);
@@ -3367,7 +3335,7 @@ void func_800A4628(void)
     if (lbl_802BA310.unk8 & (1 << (31-0x16)))
     {
         if (lbl_802BA310.unkC != NULL)
-            derp(lbl_802BA310.unkC);
+            g_msg_box_default_pos(lbl_802BA310.unkC);
         if (lbl_802BA310.unk42 == 0 || lbl_802BA310.unk8 & (1 << (31-12)))
         {
             if (lbl_802BA310.unk8 & (1 << (31-0x1B)) && !(lbl_802BA310.unk8 & (1 << (31-9))))
@@ -3407,7 +3375,7 @@ void func_800A4628(void)
     //lbl_800A4794
     else if (lbl_802BA310.unk8 & (1 << (31-0x1D)))
     {
-        func_800A43E0(&msgAccessMemCard, 320.0f, 240.0f);
+        g_msg_box_default_pos(&msgAccessMemCard);
         return;
     }
     //lbl_800A47B0
@@ -3416,7 +3384,7 @@ void func_800A4628(void)
         if (lbl_802BA310.unk8 & (1 << (31-0x10)))
         {
             func_80071B60(100.0f, 340.0f);
-            func_800A43E0(&msgSavingGame, 320.0f, 240.0f);
+            g_msg_box_default_pos(&msgSavingGame);
         }
         //lbl_800A47DC
         func_80071A8C();
@@ -3431,23 +3399,12 @@ void func_800A4628(void)
     if (lbl_802BA310.unk4C == 9)
     {
         //a0764
-        float h;
-        int i;
-        int j;
-        float f;
-        float asdf;
-        //u32 wtf;
-        u32 r29;
-        func_800A43E0(&msgOverwritePrompt, 320.0f, 240.0f);
-#if 1
-        // right constant load order, but compiler adds extra code
-        i = (int)(float)(lbl_802F1B34 % 0x3C);
-        asdf = int_abs(i - 30.0);
-        wtf = (asdf / 30.0) * 255.0;
-#else
-        // right instructions, but wrong constant load order
-        wtf = ((float)abs((int)(float)(lbl_802F1B34 % 0x3C) - 30.0) / 30.0) * 255.0;
-#endif
+        g_msg_box_default_pos(&msgOverwritePrompt);
+
+        // right float constant load, but compiler adds an unecessary conversion
+        i = (float)(lbl_802F1B34 % 60);
+        wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
+
         r29 = (wtf << 16) | (wtf << 8) | wtf;
 
         func_80071B2C(1.5f, 1.5f);
@@ -3504,21 +3461,13 @@ void func_800A4628(void)
         func_800A43E0(&msgFormatProgress, 320.0f, 240.0f);
     if (lbl_802BA310.unk4C == 13 && (lbl_802BA310.unk8 & (1 << (31-0x15))))
     {
-        int i;
-        float asdf;
-        //u32 wtf;
-        u32 r28;
         func_800A43E0(&msgOverwritePrompt, 320.0f, 240.0f);
-#if 1
-        // right constant load order, but compiler adds extra code
-        i = (int)(float)(lbl_802F1B34 % 0x3C);
-        asdf = int_abs(i - 30.0);
-        wtf = (asdf / 30.0) * 255.0;
-#else
-        // right instructions, but wrong constant load order
-        wtf = ((float)abs((int)(float)(lbl_802F1B34 % 0x3C) - 30.0) / 30.0) * 255.0;
-#endif
-        r28 = (wtf << 16) | (wtf << 8) | wtf;
+
+        // right float constant load, but compiler adds an unecessary conversion
+        i = (float)(lbl_802F1B34 % 60);
+        wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
+
+        r29 = (wtf << 16) | (wtf << 8) | wtf;
         func_80071B2C(1.5f, 1.5f);
         func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
@@ -3529,13 +3478,13 @@ void func_800A4628(void)
         else
         {
             func_80071AE4(0);
-            func_80071AF8(r28);
+            func_80071AF8(r29);
         }
         func_80071E58("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            func_80071AF8(r28);
+            func_80071AF8(r29);
         }
         else
         {
@@ -3552,13 +3501,13 @@ void func_800A4628(void)
         else
         {
             func_80071AE4(0xFFFFFF);
-            func_80071AF8(r28);
+            func_80071AF8(r29);
         }
         func_80071E58("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0xFFFFFF);
-            func_80071AF8(r28);
+            func_80071AF8(r29);
         }
         else
         {
@@ -3580,214 +3529,37 @@ void func_800A4628(void)
         func_800A43E0(&msgLoadingGame, 320.0f, 240.0f);
     func_80071A8C();
 }
+#else
+#pragma force_active on
 
-/*
-void func_800A4628(void)
+__declspec(section ".sdata")
+char lbl_802F16A0[] = "Yes ";
+__declspec(section ".sdata")
+char lbl_802F16A8[] = "No";
+
+extern const float lbl_802F5B18;
+const float lbl_802F5B20 = 320.0f;
+const float lbl_802F5B24 = 240.0f;
+const struct MemCardMessage lbl_802F5B28 =
 {
-    func_80071A8C();
-    func_80071AD4(0xB3);
-    func_80071B1C(0.00800000037998f);
-    if (lbl_802BA310.unk8 & (1 << (31-0x16)))
-    {
-        if (lbl_802BA310.unkC != NULL)
-            func_800A43E0(lbl_802BA310.unkC, 320.0f, 240.0f);
-        if (lbl_802BA310.unk42 == 0 || lbl_802BA310.unk8 & (1 << (31-12)))
-        {
-            if (lbl_802BA310.unk8 & (1 << (31-0x1B)) && !(lbl_802BA310.unk8 & (1 << (31-9))))
-                func_800A43E0(&msgPressBButtonNoSave, 320.0f, 380.0f);
-            else
-                func_800A43E0(&msgPressBButton, 320.0f, 380.0f);
-        }
-        //lbl_800A46D8
-        if (lbl_802BA310.unk8 & (1 << (31-0xB)))
-        {
-            if (lbl_802BA310.unk4D == 0)
-                func_800A43E0(&msgMemCardNoFreeBlocks, 320.0f, 100.0f);
-            else
-            {
-                // TODO
-                struct MemCardMessage sp8 = {(void *)0x802F1698, 0};
-                struct MemCardMessage *r29;
-                if (lbl_802BA310.unk4D == 1)
-                    r29 = &msgMemCardNumFreeBlock;
-                else
-                    r29 = &msgMemCardNumFreeBlocks;
-                sprintf(sp8.lines[0].str, r29->lines[0].str, lbl_802BA310.unk4D);
-                if (lbl_802BA310.unk4D > 9)
-                    sp8.lines[0].unk4 = r29->lines[0].unk4 + 1;
-                else
-                    sp8.lines[0].unk4 = r29->lines[0].unk4;
-                //lbl_800A4774
-                sp8.numLines = r29->numLines;
-                func_800A43E0(&sp8, 320.0f, 100.0f);
-            }
-        }
-        //lbl_800A478C
-        func_80071A8C();
-        // to lbl_800A4CCC
-        return;
-    }
-    //lbl_800A4794
-    else if (lbl_802BA310.unk8 & (1 << (31-0x1D)))
-    {
-        func_800A43E0(&msgAccessMemCard, 320.0f, 240.0f);
-        return;
-    }
-    //lbl_800A47B0
-    else if (lbl_802BA310.unk8 & (1 << (31-0x19)))
-    {
-        if (lbl_802BA310.unk8 & (1 << (31-0x10)))
-        {
-            func_80071B60(100.0f, 340.0f);
-            func_800A43E0(&msgSavingGame, 320.0f, 240.0f);
-        }
-        //lbl_800A47DC
-        func_80071A8C();
-        return;
-    }
-    //lbl_800A47E4
-    else if (lbl_802BA310.unk8 & (1 << (31-0x15)))
-        func_800A43E0(&lbl_802F1624, 320.0f, 380.0f);
-    //lbl_800A47FC
-    if (lbl_802BA310.unk4C == 1)
-        func_800A43E0(&lbl_802F162C, 320.0f, 380.0f);
-    if (lbl_802BA310.unk4C == 9)
-    {
-        float f;
-        int foo;
-        int bar;
-        u32 wtf;
-        u32 r29;
-        func_800A43E0(&msgFormatPrompt, 320.0f, 380.0f);
-        f = lbl_802F1B34 % 0x3C;
-        foo = f;
-        bar = foo - 30.0;
-        wtf = (ABS(bar) / 30.0) * 255.0;
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
-        func_80071B2C(1.5f, 1.5f);
-        func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0);
-            func_80071AF8(0);
-        }
-        else
-        {
-            func_80071AE4(0);
-            func_80071AF8(r29);
-        }
-        func_80071E58("Yes ");
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0);
-            func_80071AF8(r29);
-        }
-        else
-        {
-            func_80071AE4(0);
-            func_80071AF8(0);
-        }
-        //lbl_800A4980
-        func_80071E58("No");
-        func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
-        }
-        else
-        {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
-        }
-        func_80071E58("Yes ");
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
-        }
-        else
-        {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
-        }
-        func_80071E58("No");
-    }
-    //lbl_800A4A34
-    if (lbl_802BA310.unk4C == 10)
-        func_800A43E0(&msgFormatProgress, 320.0f, 240.0f);
-    if (lbl_802BA310.unk4C == 13 && (lbl_802BA310.unk8 & (1 << (31-0x15))))
-    {
-        float f;
-        int foo;
-        int bar;
-        u32 wtf;
-        u32 r28;
-        func_800A43E0(&msgOverwritePrompt, 320.0f, 240.0f);
-        f = lbl_802F1B34 % 0x3C;
-        foo = f;
-        bar = foo - 30.0;
-        wtf = (ABS(bar) / 30.0) * 255.0;
-        r28 = (wtf << 16) | (wtf << 8) | wtf;
-        func_80071B2C(1.5f, 1.5f);
-        func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0);
-            func_80071AF8(0);
-        }
-        else
-        {
-            func_80071AE4(0);
-            func_80071AF8(r28);
-        }
-        func_80071E58("Yes ");
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0);
-            func_80071AF8(r28);
-        }
-        else
-        {
-            func_80071AE4(0);
-            func_80071AF8(0);
-        }
-        func_80071E58("No");
-        func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
-        }
-        else
-        {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r28);
-        }
-        func_80071E58("Yes ");
-        if (lbl_802F21B1 == 0)
-        {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r28);
-        }
-        else
-        {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
-        }
-        func_80071E58("No");
-    }
-    //lbl_800A4C74
-    if (lbl_802BA310.unk8 & (1 << (31-0x10)))
-    {
-        if (lbl_802BA310.unk8 & (1 << (31-0x13)))
-            func_800A43E0(&msgSavingReplay, 320.0f, 240.0f);
-        else
-            func_800A43E0(&msgSavingGame, 320.0f, 240.0f);
-    }
-    //lbl_800A4CAC
-    if (lbl_802BA310.unk8 & (1 << (31-14)))
-        func_800A43E0(&msgLoadingGame, 320.0f, 240.0f);
-    func_80071A8C();
+    &lbl_802F1698, 0
+};
+const float lbl_802F5B30 = 0.00800000037998f;
+const float lbl_802F5B34 = 380.0f;
+const float lbl_802F5B38 = 100.0f;
+const float lbl_802F5B3C = 340.0f;
+const double lbl_802F5B40 = 255.0;
+const double lbl_802F5B48 = 30.0;
+const float lbl_802F5B50 = 1.5f;
+const float lbl_802F5B54 = 242.0f;
+const double lbl_802F5B58 = 4503599627370496;
+extern u32 __cvt_fp2unsigned(float);
+#define _SDA2_BASE_ 0
+asm void func_800A4628(void)
+{
+    nofralloc
+    #include "../asm/nonmatchings/func_800A4628.s"
 }
-*/
+#undef _SDA2_BASE_
+#pragma peephole on
+#endif
