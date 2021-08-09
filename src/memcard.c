@@ -22,6 +22,8 @@ enum
 {
     MC_STATUS_MOUNTED = (1 << 0),
     MC_STATUS_OPEN    = (1 << 1),
+    MC_STATUS_SAVING  = (1 << 4),  // saving gamedata or replay
+    MC_STATUS_LOADING = (1 << 5),  // loading gamdata or replay
     MC_STATUS_ERROR   = (1 << 9),
     MC_STATUS_REPLAY_FILE  = (1 << 12),  // loading/saving/deleting replay
     MC_STATUS_GAMEDATA_FILE = (1 << 13),  // loading/saving gamedata
@@ -49,6 +51,7 @@ enum
     MC_STATE_CHECK_VERIFY_FILESYSTEM_RESULT = 6,
     MC_STATE_OPEN_FILE = 8,
     MC_STATE_CHECK_CREATE_FILE_RESULT = 14,
+    MC_STATE_GET_METADATA = 20,
     MC_STATE_CHECK_FREE_SPACE = 23,
     MC_STATE_CHECK_FREE_SPACE2 = 30,
     MC_STATE_ERROR = 0xFF,
@@ -58,7 +61,7 @@ enum
 CARDStat cardStat;
 struct MemcardInfo
 {
-    u32 unk0;
+    s32 fileNo;
     /*0x04*/ s32 sectorSize;
     /*0x08*/ u32 statusFlags;
     /*0x0C*/ struct MemCardMessage *msg;
@@ -737,7 +740,7 @@ struct Struct8009F7F0
     u8 unk5;
     u8 filler6[0x10-6];
     u32 unk10;
-    u8 filler14[0x24-0x14-12];
+    u8 filler14[4];
 };
 
 void init_replay_file_data(void)
@@ -1085,7 +1088,7 @@ void check_verify_filesystem_result(void)
         break;
     case CARD_RESULT_BROKEN:
     case CARD_RESULT_ENCODING:
-        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 7))) == ((1 << 4) | (1 << 7)))
+        if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgMemCardDamaged;
             memcardInfo.state = 9;
@@ -1107,7 +1110,7 @@ void check_verify_filesystem_result(void)
         }
         else if (memcardMode == MC_MODE_LIST_REPLAY)
             memcardInfo.state = 0x18;
-        else if (memcardInfo.statusFlags & (1 << 4))
+        else if (memcardInfo.statusFlags & MC_STATUS_SAVING)
             memcardInfo.state = 0x21;
         else
             memcardInfo.state = 7;
@@ -1141,13 +1144,13 @@ void open_memcard_file(void)
     case CARD_RESULT_NOFILE:
         memcardInfo.unk42 = 0;
         memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-        if (memcardInfo.statusFlags & (1 << 4))
+        if (memcardInfo.statusFlags & MC_STATUS_SAVING)
         {
             if (memcardInfo.state == 0x22)
                 memcardInfo.state = 7;
             else
             {
-                memcardInfo.unk0 = -1;
+                memcardInfo.fileNo = -1;
                 memcardInfo.unk40 = 0x4B0;
                 memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
             }
@@ -1156,7 +1159,7 @@ void open_memcard_file(void)
             memcardInfo.state = 0x1F;
         break;
     case CARD_RESULT_NOPERM:
-        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 7))) == ((1 << 4) | (1 << 7)))
+        if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgCantSaveFile;
             memcardInfo.state = 9;
@@ -1179,7 +1182,7 @@ void open_memcard_file(void)
         }
         break;
     case CARD_RESULT_BROKEN:
-        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 7))) == ((1 << 4) | (1 << 7)))
+        if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgMemCardDamaged;
             memcardInfo.state = 9;
@@ -1196,9 +1199,9 @@ void open_memcard_file(void)
     case CARD_RESULT_READY:
         memcardInfo.unk42 = 0;
         memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-        if ((memcardInfo.statusFlags & ((1 << 4) | MC_STATUS_GAMEDATA_FILE)) == ((1 << 4) | MC_STATUS_GAMEDATA_FILE))
+        if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | MC_STATUS_GAMEDATA_FILE)) == (MC_STATUS_SAVING | MC_STATUS_GAMEDATA_FILE))
         {
-            memcardInfo.unk0 = memcardInfo.cardFileInfo.fileNo;
+            memcardInfo.fileNo = memcardInfo.cardFileInfo.fileNo;
             CARDClose(&memcardInfo.cardFileInfo);
             if (memcardInfo.state == 0x22)
                 memcardInfo.state = 0x23;
@@ -1805,7 +1808,7 @@ void check_read_memcard_file_result(void)
                 memcardInfo.state = MC_STATE_ERROR;
             }
         }
-        else if (memcardInfo.statusFlags & (1 << 4))
+        else if (memcardInfo.statusFlags & MC_STATUS_SAVING)
             memcardInfo.state = 0x13;
         else
         {
@@ -1876,7 +1879,7 @@ void get_memcard_file_metadata(void)
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.statusFlags & (1 << 4))
+        if (memcardInfo.statusFlags & MC_STATUS_SAVING)
             memcardInfo.state = 0x11;
         else
         {
@@ -1967,7 +1970,7 @@ void get_memcard_file_metadata_2(void)
     struct ReplayFileInfo *replay;
     int result = CARDGetStatus(0, lbl_802F21B2, &cardStat);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
 
     switch (result)
@@ -2040,7 +2043,7 @@ void replay_list_open_and_read(void)
     {
         result = CARDFastOpen(0, replay->fileNo, &memcardInfo.cardFileInfo);
 
-        if (result != -1)
+        if (result != CARD_RESULT_BUSY)
             memcardInfo.unk40 = 0;
         if (result < -1)
         {
@@ -2124,7 +2127,7 @@ void replay_list_open_and_read(void)
     {
         result = CARDGetResultCode(0);
 
-        if (result != -1)
+        if (result != CARD_RESULT_BUSY)
             memcardInfo.unk40 = 0;
         if (result < -1)
         {
@@ -2210,7 +2213,7 @@ void open_replay_file(void)
 {
     s32 result = CARDFastOpen(0, replayFileInfo[lbl_802F21C0].fileNo, &memcardInfo.cardFileInfo);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -2259,7 +2262,7 @@ void open_replay_file(void)
     }
 }
 
-void delete_replay_file(int fileNo)
+void delete_memcard_file(int fileNo)
 {
     s32 result;
 
@@ -2293,11 +2296,11 @@ void delete_replay_file(int fileNo)
     }
 }
 
-void check_delete_replay_file_result(void)
+void check_delete_memcard_file_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -2504,7 +2507,7 @@ void check_rename_gamedata_file_result(void)
         memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
-        if (memcardInfo.statusFlags & (1 << 5))
+        if (memcardInfo.statusFlags & MC_STATUS_LOADING)
         {
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
@@ -2536,7 +2539,7 @@ void check_rename_gamedata_file_result(void)
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.statusFlags & (1 << 5))
+        if (memcardInfo.statusFlags & MC_STATUS_LOADING)
             memcardInfo.state = 7;
         else if ((memcardInfo.statusFlags & ((1 << 16) | (1 << 6))) == ((1 << 16) | (1 << 6)))
         {
@@ -2594,7 +2597,7 @@ void load_sequence(void)
         else
             memcardInfo.state = 0x22;
         // fall through
-    case 8:
+    case MC_STATE_OPEN_FILE:
         open_memcard_file();
         break;
     case 0x1F:
@@ -2670,10 +2673,10 @@ void save_sequence(void)
         open_memcard_file();
         break;
     case 0x23:
-        delete_replay_file(memcardInfo.unk0);
+        delete_memcard_file(memcardInfo.fileNo);
         break;
     case 0x24:
-        check_delete_replay_file_result();
+        check_delete_memcard_file_result();
         break;
     case 7:
         strcpy(memcardInfo.fileName, "super_monkey_ball.sys");
@@ -2790,10 +2793,10 @@ void save_sequence(void)
         check_set_memcard_file_metadata_result();
         break;
     case 0xB:
-        delete_replay_file(memcardInfo.unk0);
+        delete_memcard_file(memcardInfo.fileNo);
         break;
     case 0xC:
-        check_delete_replay_file_result();
+        check_delete_memcard_file_result();
         break;
     case 0x1F:
         rename_gamedata_file();
@@ -2897,9 +2900,9 @@ void replay_save_sequence(void)
         memcardInfo.statusFlags |= (1 << 15);
         memset(&cardStat, 0, sizeof(cardStat));
         memcardInfo.unk40 = 0x4B0;
-        memcardInfo.state = 0x14;
+        memcardInfo.state = MC_STATE_GET_METADATA;
         break;
-    case 0x14:
+    case MC_STATE_GET_METADATA:
         get_memcard_file_metadata();
         break;
     case 0x11:
@@ -3024,10 +3027,10 @@ void replay_delete_sequence(void)
     switch (memcardInfo.state)
     {
     case 0xB:
-        delete_replay_file(replayFileInfo[lbl_802F21C0].fileNo);
+        delete_memcard_file(replayFileInfo[lbl_802F21C0].fileNo);
         break;
     case 0xC:
-        check_delete_replay_file_result();
+        check_delete_memcard_file_result();
         break;
     case MC_STATE_ERROR:
         break;
@@ -3047,7 +3050,7 @@ void ev_memcard_init(void)
 {
     memcardInfo.state = 1;
     memcardInfo.msg = NULL;
-    memcardInfo.unk0 = -1;
+    memcardInfo.fileNo = -1;
     lbl_802F21B2 = 0;
     memcardInfo.time = OSGetTime();
 
@@ -3056,9 +3059,9 @@ void ev_memcard_init(void)
         if (memcardMode == MC_MODE_SAVE_GAMEDATA_1
          || memcardMode == MC_MODE_SAVE_GAMEDATA_3
          || memcardMode == MC_MODE_SAVE_REPLAY)
-            memcardInfo.statusFlags |= (1 << 4);
+            memcardInfo.statusFlags |= MC_STATUS_SAVING;
         else
-            memcardInfo.statusFlags |= (1 << 5);
+            memcardInfo.statusFlags |= MC_STATUS_LOADING;
     }
 
     if (memcardMode == MC_MODE_LOAD_GAMEDATA_2
@@ -3081,7 +3084,7 @@ void ev_memcard_init(void)
             (unsigned int)((u64)memcardInfo.time >> 32),
             (unsigned int)(memcardInfo.time));
     }
-    else if (memcardInfo.statusFlags & (1 << 4))
+    else if (memcardInfo.statusFlags & MC_STATUS_SAVING)
         strcpy(memcardInfo.fileName, "super_monkey_ball.000");
     else
         strcpy(memcardInfo.fileName, "super_monkey_ball.sys");
@@ -3212,7 +3215,7 @@ void ev_memcard_dest(void)
     }
 
     if (memcardGameData != NULL
-     && !(memcardInfo.statusFlags & ((1 << 4) | (1 << 8) | MC_STATUS_REPLAY_FILE | (1 << 14)))
+     && !(memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 8) | MC_STATUS_REPLAY_FILE | (1 << 14)))
      && memcardGameData->version == 0x16)
         func_800A4F04();
     memcardInfo.state = 0;
@@ -3337,7 +3340,7 @@ static int int_abs(int x)
     return ((x >> 31) ^ x) - (x >> 31);
 }
 
-void func_800A4628(void)
+void memcard_draw_ui(void)
 {
     register int i;
     u32 r29;
@@ -3351,7 +3354,8 @@ void func_800A4628(void)
             g_msg_box_default_pos(memcardInfo.msg);
         if (memcardInfo.unk42 == 0 || memcardInfo.statusFlags & (1 << 19))
         {
-            if (memcardInfo.statusFlags & (1 << 4) && !(memcardInfo.statusFlags & (1 << 22)))
+            if ((memcardInfo.statusFlags & MC_STATUS_SAVING)
+             && !(memcardInfo.statusFlags & (1 << 22)))
                 draw_memcard_msg(&msgPressBButtonNoSave, 320.0f, 380.0f);
             else
                 draw_memcard_msg(&msgPressBButton, 320.0f, 380.0f);
@@ -3568,10 +3572,10 @@ const float lbl_802F5B54 = 242.0f;
 const double lbl_802F5B58 = 4503599627370496;
 extern u32 __cvt_fp2unsigned(float);
 #define _SDA2_BASE_ 0
-asm void func_800A4628(void)
+asm void memcard_draw_ui(void)
 {
     nofralloc
-    #include "../asm/nonmatchings/func_800A4628.s"
+    #include "../asm/nonmatchings/memcard_draw_ui.s"
 }
 #undef _SDA2_BASE_
 #pragma peephole on
