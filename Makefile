@@ -75,8 +75,8 @@ SOURCE_FILES := \
 	asm/motload.s \
 	asm/ball.s \
 	asm/code.s \
-	asm/background.s \
 	asm/stage.s \
+	asm/background.s \
 	src/sprite.c \
 	asm/sprite.s \
 	asm/ord_tbl.s \
