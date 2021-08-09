@@ -23,6 +23,35 @@ enum
     MC_STATUS_MOUNTED = (1 << 0),
     MC_STATUS_OPEN    = (1 << 1),
     MC_STATUS_ERROR   = (1 << 9),
+    MC_STATUS_REPLAY_FILE  = (1 << 12),  // loading/saving/deleting replay
+    MC_STATUS_GAMEDATA_FILE = (1 << 13),  // loading/saving gamedata
+};
+
+enum
+{
+    /*0*/ MC_MODE_LOAD_GAMEDATA_0,
+    /*1*/ MC_MODE_SAVE_GAMEDATA_1,
+    /*2*/ MC_MODE_LOAD_GAMEDATA_2,
+    /*3*/ MC_MODE_SAVE_GAMEDATA_3,
+    /*4*/ MC_MODE_LOAD_REPLAY,
+    /*5*/ MC_MODE_SAVE_REPLAY,
+    /*6*/ MC_MODE_LIST_REPLAY,
+    /*7*/ MC_MODE_DELETE_REPLAY,
+};
+
+enum
+{
+    MC_STATE_UNK1 = 1,
+    MC_STATE_PROBE = 2,
+    MC_STATE_MOUNT = 3,
+    MC_STATE_CHECK_MOUNT_RESULT = 4,
+    MC_STATE_VERIFY_FILESYSTEM = 5,
+    MC_STATE_CHECK_VERIFY_FILESYSTEM_RESULT = 6,
+    MC_STATE_OPEN_FILE = 8,
+    MC_STATE_CHECK_CREATE_FILE_RESULT = 14,
+    MC_STATE_CHECK_FREE_SPACE = 23,
+    MC_STATE_CHECK_FREE_SPACE2 = 30,
+    MC_STATE_ERROR = 0xFF,
 };
 
 // .bss
@@ -30,14 +59,14 @@ CARDStat cardStat;
 struct MemcardInfo
 {
     u32 unk0;
-    s32 unk4;
+    /*0x04*/ s32 sectorSize;
     /*0x08*/ u32 statusFlags;
     /*0x0C*/ struct MemCardMessage *msg;
     u8 unused10[4];
     /*0x14*/ char fileName[0x38-0x14];
     /*0x38*/ OSTime time;
     s16 unk40;
-    u16 unk42;
+    u16 unk42;  // error message timer?
     u32 unk44;
     /*0x48*/ u32 fileSize;
     /*0x4C*/ u8 state;
@@ -61,56 +90,45 @@ FORCE_BSS_ORDER(strFmtBufferLine2)
 FORCE_BSS_ORDER(strFmtBufferLine3)
 FORCE_BSS_ORDER(lbl_802C4900)
 
-// sbss
 u8 lbl_802F21C8;
+
+// replay file data
 struct
 {
     u16 crc;
-    u16 unk2;
+    u16 replayFlags;
     u8 unk4;
-    u8 unk5;
-    u8 unk6;
+    u8 difficulty;
+    u8 floorNum;
     u8 unk7;
     u32 unk8;
     u32 unkC;
-    u8 unk10[0x1800];
-    u8 unk1810[0x800];
-    char unk2010[0x20];
+    /*0x0010*/ u8 bannerImg[0x1800];
+    /*0x1810*/ u8 replayIcon[0x800];
+    /*0x2010*/ char comment[0x20];  // "Super Monkey Ball"
     char unk2030[0x20];
     u8 unk2050[100];
 } *memcardReplayData;
+
 u32 lbl_802F21C0;
-struct UnkStruct802F21BC
+struct ReplayFileInfo
 {
     u8 filler0[2];
-    u16 unk2;
+    u16 replayFlags;
     u8 unk4;
-    u8 unk5;
-    u8 unk6;
+    u8 difficulty;
+    u8 floorNum;
     u8 unk7;
     u32 unk8;
     u32 unkC;
-    u32 unk10;
+    u32 fileSize;
     s8 fileNo;
-    u8 filler15[0x18-0x15];
-} *lbl_802F21BC;
+} *replayFileInfo;
 u8 lbl_802F21B9;
-u8 lbl_802F21B8;
+u8 replayFileIndex;
 u32 lbl_802F21B4;
 s8 lbl_802F21B2;
 u8 lbl_802F21B1;
-
-enum
-{
-    /*0*/ MC_MODE_LOAD_GAMEDATA_0,
-    /*1*/ MC_MODE_SAVE_GAMEDATA_1,
-    /*2*/ MC_MODE_LOAD_GAMEDATA_2,
-    /*3*/ MC_MODE_SAVE_GAMEDATA_3,
-    /*4*/ MC_MODE_LOAD_REPLAY,
-    /*5*/ MC_MODE_SAVE_REPLAY,
-    /*6*/ MC_MODE_LIST_REPLAY,
-    /*7*/ MC_MODE_DELETE_REPLAY,
-};
 
 u8 memcardMode;
 struct
@@ -138,7 +156,7 @@ void func_8009F4CC(u8 a)
     lbl_802F21A8 = a;
 }
 
-void func_8009F4D4(void)
+void memcard_cancel_and_unmount(void)
 {
     CARDCancel(&memcardInfo.cardFileInfo);
 
@@ -543,13 +561,13 @@ struct StringEntry strLoadingGame[] =
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry lbl_801D5208[] =
+struct StringEntry strMakeSelection[] =
 {
     {"Please use the p/LEVER/ a/or the p/BUTTON_+/ a/to highlight a selection,", 0},
     {"and press the p/BUTTON_A/ a/Button to select.", 0},
 };
 
-struct StringEntry lbl_801D52A4[] =
+struct StringEntry strInsertMemcardSlotAPressA[] =
 {
     {"Please insert a Memory Card into Slot A,", 0},
     {"then press the p/BUTTON_A/ a/Button.", 0},
@@ -587,8 +605,8 @@ struct MemCardMessage msgAccessMemCard = {&strAccessMemCard, 1};
 struct MemCardMessage msgSavingReplay = {strSavingReplay, ARRAY_COUNT(strSavingReplay)};
 struct MemCardMessage msgSavingGame = {strSavingGame, ARRAY_COUNT(strSavingGame)};
 struct MemCardMessage msgLoadingGame = {strLoadingGame, ARRAY_COUNT(strLoadingGame)};
-struct MemCardMessage lbl_802F1624 = {lbl_801D5208, ARRAY_COUNT(lbl_801D5208)};
-struct MemCardMessage lbl_802F162C = {lbl_801D52A4, ARRAY_COUNT(lbl_801D52A4)};
+struct MemCardMessage msgMakeSelection = {strMakeSelection, ARRAY_COUNT(strMakeSelection)};
+struct MemCardMessage msgInsertMemcardSlotAPressA = {strInsertMemcardSlotAPressA, ARRAY_COUNT(strInsertMemcardSlotAPressA)};
 struct MemCardMessage msgFormatPrompt = {strFormatPrompt, ARRAY_COUNT(strFormatPrompt)};
 struct MemCardMessage msgFormatProgress = {strFormatProgress, ARRAY_COUNT(strFormatProgress)};
 struct MemCardMessage msgOverwritePrompt = {strOverwritePrompt, ARRAY_COUNT(strOverwritePrompt)};
@@ -644,8 +662,8 @@ struct MemCardMessage *lbl_801D53D0[] =
     &msgSavingReplay,
     &msgSavingGame,
     &msgLoadingGame,
-    &lbl_802F1624,
-    &lbl_802F162C,
+    &msgMakeSelection,
+    &msgInsertMemcardSlotAPressA,
     &msgFormatPrompt,
     &msgFormatProgress,
     &msgOverwritePrompt,
@@ -656,14 +674,15 @@ void func_8009F568(void)
     int i;
     DVDFileInfo file;
     OSCalendarTime calendarTime;
-    void *buffer = OSAlloc(0x5800);
+    void *buffer = OSAlloc(sizeof(memcardGameData->unk4));
+
     if (buffer == NULL)
         OSPanic("memcard.c", 927, "cannot OSAlloc");
     if (DVDOpen("banner_and_icon.bin", &file) == 0)
         OSPanic("memcard.c", 931, "cannot open banner_and_icon.bin");
-    if (g_read_dvd_file(&file, buffer, 0x5800, 0) == 0)
+    if (g_read_dvd_file(&file, buffer, sizeof(memcardGameData->unk4), 0) == 0)
         OSPanic("memcard.c", 935, "cannot read banner_and_icon.bin");
-    memcpy(memcardGameData->unk4, buffer, 0x5800);
+    memcpy(memcardGameData->unk4, buffer, sizeof(memcardGameData->unk4));
     OSFree(buffer);
     DVDClose(&file);
     cardStat.commentAddr = (u32)memcardGameData->unk5804 - (u32)memcardGameData;
@@ -711,17 +730,17 @@ void func_8009F568(void)
 
 struct Struct8009F7F0
 {
-    u16 flags;
+    u16 flags;  // (1 << 5) = expert, (1 << 6) = master
     u8 unk2;
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
-    u8 unk4;
+    u8 floorNum;
     u8 unk5;
     u8 filler6[0x10-6];
     u32 unk10;
     u8 filler14[0x24-0x14-12];
 };
 
-void func_8009F7F0(void)
+void init_replay_file_data(void)
 {
     DVDFileInfo file;
     struct Struct8009F7F0 sp88;
@@ -732,23 +751,28 @@ void func_8009F7F0(void)
     void *buffer = OSAlloc(0x1800);
     if (buffer == NULL)
         OSPanic("memcard.c", 1014, "cannot OSAlloc");
-    func_80049F20(11, &sp88);
+    g_get_replay_info(11, &sp88);
+    
+    // copy banner image
     if (DVDOpen("preview/96x32.tpl", &file) == 0)
         OSPanic("memcard.c", 1026, "cannot open replay banner image");
     if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
         OSPanic("memcard.c", 1029, "cannot read replay banner image");
-    memcpy(memcardReplayData->unk10, buffer, 0x1800);
+    memcpy(memcardReplayData->bannerImg, buffer, 0x1800);
     DVDClose(&file);
 
+    // copy replay icon
     if (DVDOpen("replay_icon.bin", &file) == 0)
         OSPanic("memcard.c", 1040, "cannot open replay_icon.bin");
     if (g_read_dvd_file(&file, buffer, 0x800, 0) == 0)
         OSPanic("memcard.c", 1043, "cannot read replay_icon.bin");
-    memcpy(memcardReplayData->unk1810, buffer, 0x800);
+    memcpy(memcardReplayData->replayIcon, buffer, 0x800);
     DVDClose(&file);
+
     OSFree(buffer);
-    cardStat.commentAddr = (u32)memcardReplayData->unk2010 - (u32)memcardReplayData;
-    strncpy(memcardReplayData->unk2010, "Super Monkey Ball", 32);
+
+    cardStat.commentAddr = (u32)memcardReplayData->comment - (u32)memcardReplayData;
+    strncpy(memcardReplayData->comment, "Super Monkey Ball", 32);
 
     if (sp88.flags & (1 << 6))
     {
@@ -793,7 +817,7 @@ void func_8009F7F0(void)
         replayFileName,
         "%s%d %02d-%02d-%02d %02d:%02d",
         category,
-        sp88.unk4,
+        sp88.floorNum,
         calendarTime.mon + 1,
         calendarTime.mday,
         calendarTime.year % 100,
@@ -801,29 +825,29 @@ void func_8009F7F0(void)
         calendarTime.min);
     strncpy(memcardReplayData->unk2030, replayFileName, 32);
 
-    cardStat.iconAddr = (u32)memcardReplayData->unk10 - (u32)memcardReplayData;
+    cardStat.iconAddr = (u32)memcardReplayData->bannerImg - (u32)memcardReplayData;
     cardStat.bannerFormat = (cardStat.bannerFormat & ~0x3) | 2;
     cardStat.iconFormat = (cardStat.iconFormat & ~0x3) | 2;
     cardStat.iconSpeed = (cardStat.iconSpeed & ~0x3) | 3;
     cardStat.iconSpeed = (cardStat.iconSpeed & ~(0x3<<2));
     cardStat.bannerFormat = (cardStat.bannerFormat & ~(0x1<<2));
 
-    memcardReplayData->unk2 = sp88.flags;
+    memcardReplayData->replayFlags = sp88.flags;
     memcardReplayData->unk4 = sp88.unk2;
-    memcardReplayData->unk5 = sp88.difficulty;
-    memcardReplayData->unk6 = sp88.unk4;
+    memcardReplayData->difficulty = sp88.difficulty;
+    memcardReplayData->floorNum = sp88.floorNum;
     memcardReplayData->unk7 = sp88.unk5;
     memcardReplayData->unk8 = sp88.unk10;
 
     memcardReplayData->unkC = (u64)memcardInfo.time / (*(u32 *)0x800000F8 / 4); // WTF??
 }
 
-void func_8009FB8C(void)
+void probe_memcard(void)
 {
     s32 dummyMemSize;
     s32 result;
 
-    result = CARDProbeEx(0, &dummyMemSize, &memcardInfo.unk4);
+    result = CARDProbeEx(0, &dummyMemSize, &memcardInfo.sectorSize);
     if (result != CARD_RESULT_NOCARD)
     {
         if (result != CARD_RESULT_BUSY)
@@ -841,7 +865,7 @@ void func_8009FB8C(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         if (memcardInfo.unk40 == 0)
@@ -853,7 +877,7 @@ void func_8009FB8C(void)
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.unk42 = 0;
                 memcardInfo.msg = &msgMemCardNotInsertedAutosaveOff;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else
             {
@@ -866,7 +890,7 @@ void func_8009FB8C(void)
         break;
     case CARD_RESULT_WRONGDEVICE:
         memcardInfo.msg = &msgMemCardNotInserted;
-        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? MC_STATE_ERROR : MC_STATE_UNK1;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -874,28 +898,29 @@ void func_8009FB8C(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.unk4 != 0x2000)
+        if (memcardInfo.sectorSize != 0x2000)
         {
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantUse2;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         else
         {
-            int foo = memcardInfo.unk4 - 1;
-            memcardInfo.fileSize = (memcardInfo.unk44 + foo) & ~foo;
+            // round up to multiple of sector size
+            int sizeMask = memcardInfo.sectorSize - 1;
+            memcardInfo.fileSize = (memcardInfo.unk44 + sizeMask) & ~sizeMask;
             memcardInfo.state = 3;
         }
         break;
     }
 }
 
-void func_8009FDD4(void)
+void mount_memcard(void)
 {
     s32 result = CARDMountAsync(0, cardWorkArea, NULL, NULL);
 
@@ -909,19 +934,19 @@ void func_8009FDD4(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardNotSupported;
-        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? MC_STATE_ERROR : MC_STATE_UNK1;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_WRONGDEVICE:
         memcardInfo.msg = &msgMemCardNotInserted;
-        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? MC_STATE_ERROR : MC_STATE_UNK1;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
     default:
@@ -933,11 +958,11 @@ void func_8009FDD4(void)
     }
 }
 
-void func_8009FF18(void)
+void check_mount_memcard_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -950,19 +975,19 @@ void func_8009FF18(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_WRONGDEVICE:
         memcardInfo.msg = &msgMemCardNotInserted;
-        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? MC_STATE_ERROR : MC_STATE_UNK1;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -970,7 +995,7 @@ void func_8009FF18(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_ENCODING:
@@ -985,7 +1010,7 @@ void func_8009FF18(void)
     }
 }
 
-void func_800A00C0(void)
+void verify_filesystem(void)
 {
     s32 result = CARDCheckAsync(0, NULL);
 
@@ -999,15 +1024,15 @@ void func_800A00C0(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -1018,11 +1043,11 @@ void func_800A00C0(void)
     }
 }
 
-void func_800A01B0(void)
+void check_verify_filesystem_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -1035,19 +1060,19 @@ void func_800A01B0(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_WRONGDEVICE:
         memcardInfo.msg = &msgMemCardNotInserted;
-        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? MC_STATE_ERROR : MC_STATE_UNK1;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1055,7 +1080,7 @@ void func_800A01B0(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_BROKEN:
@@ -1071,14 +1096,14 @@ void func_800A01B0(void)
         {
             memcardInfo.unk42 = 0;
             memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
         if (memcardMode == MC_MODE_SAVE_REPLAY)
         {
             memcardInfo.unk40 = 0x4B0;
-            memcardInfo.state = 0x17;
+            memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
         }
         else if (memcardMode == MC_MODE_LIST_REPLAY)
             memcardInfo.state = 0x18;
@@ -1090,11 +1115,11 @@ void func_800A01B0(void)
     }
 }
 
-void func_800A03DC(void)
+void open_memcard_file(void)
 {
     s32 result = CARDOpen(0, memcardInfo.fileName, &memcardInfo.cardFileInfo);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -1107,11 +1132,11 @@ void func_800A03DC(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
         memcardInfo.unk42 = 0;
@@ -1124,7 +1149,7 @@ void func_800A03DC(void)
             {
                 memcardInfo.unk0 = -1;
                 memcardInfo.unk40 = 0x4B0;
-                memcardInfo.state = 0x17;
+                memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
             }
         }
         else
@@ -1141,7 +1166,7 @@ void func_800A03DC(void)
         else
         {
             memcardInfo.msg = &msgCantLoadFile;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_BUSY:
@@ -1150,7 +1175,7 @@ void func_800A03DC(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_BROKEN:
@@ -1165,13 +1190,13 @@ void func_800A03DC(void)
         {
             memcardInfo.unk42 = 0;
             memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
         memcardInfo.unk42 = 0;
         memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 13))) == ((1 << 4) | (1 << 13)))
+        if ((memcardInfo.statusFlags & ((1 << 4) | MC_STATUS_GAMEDATA_FILE)) == ((1 << 4) | MC_STATUS_GAMEDATA_FILE))
         {
             memcardInfo.unk0 = memcardInfo.cardFileInfo.fileNo;
             CARDClose(&memcardInfo.cardFileInfo);
@@ -1180,7 +1205,7 @@ void func_800A03DC(void)
             else
             {
                 memcardInfo.unk40 = 0x4B0;
-                memcardInfo.state = 0x17;
+                memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
                 memcardInfo.statusFlags |= (1 << 16);
             }
         }
@@ -1193,7 +1218,7 @@ void func_800A03DC(void)
     }
 }
 
-void func_800A06CC(void)
+void check_card_free_space(void)
 {
     s32 freeBytes;
     s32 freeFiles;
@@ -1201,26 +1226,27 @@ void func_800A06CC(void)
 
     memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
     memcardInfo.statusFlags |= MC_STATUS_ERROR;
+
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BROKEN:
         memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
         {
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         else
         {
@@ -1229,12 +1255,12 @@ void func_800A06CC(void)
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.state == 0x17)
+        if (memcardInfo.state == MC_STATE_CHECK_FREE_SPACE)
         {
             if (freeFiles < 1)
             {
                 memcardInfo.msg = &msgCantMakeMoreFiles;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else if (memcardMode == MC_MODE_LOAD_GAMEDATA_2)
             {
@@ -1278,7 +1304,7 @@ void func_800A06CC(void)
                         memcardInfo.msg = &lbl_802F14A0;
                 }
                 memcardInfo.statusFlags &= ~(1 << 17);
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else if (freeBytes < memcardInfo.fileSize)
             {
@@ -1366,14 +1392,14 @@ void func_800A06CC(void)
                     }
                 }
                 memcardInfo.msg = &msgFmtBuffer;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else
             {
                 memcardInfo.unk42 = 0;
                 memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
                 memcardInfo.state = 13;
-                if (memcardInfo.statusFlags & (1 << 13)
+                if (memcardInfo.statusFlags & MC_STATUS_GAMEDATA_FILE
                  && ((memcardInfo.statusFlags & ((1 << 16) | (1 << 7))) == ((1 << 16) | (1 << 7))))
                 {
                     lbl_802F21B1 = 0;
@@ -1414,13 +1440,13 @@ void func_800A06CC(void)
             }
             memcardInfo.statusFlags &= ~(1 << 15);
             memcardInfo.statusFlags |= (1 << 3);
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     }
 }
 
-void func_800A0D1C(void)
+void create_memcard_file(void)
 {
     s32 status = CARDCreateAsync(0, memcardInfo.fileName, memcardInfo.fileSize, &memcardInfo.cardFileInfo, NULL);
 
@@ -1434,15 +1460,15 @@ void func_800A0D1C(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOENT:
         memcardInfo.msg = &msgCantMakeMoreFiles;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_INSSPACE:
         sprintf(msgFmtBuffer.lines[0].str, lbl_802F14F0.lines[0].str);
@@ -1451,18 +1477,18 @@ void func_800A0D1C(void)
         msgFmtBuffer.lines[1].unk4 = lbl_802F14F0.lines[1].unk4;
         msgFmtBuffer.numLines = lbl_802F14F0.numLines;
         memcardInfo.msg = &msgFmtBuffer;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
         memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
         memcardInfo.unk40 = 0x4B0;
-        memcardInfo.state = 14;
+        memcardInfo.state = MC_STATE_CHECK_CREATE_FILE_RESULT;
         break;
     }
 }
 
-void func_800A0E94(void)
+void check_create_memcard_file_result(void)
 {
     s32 status = CARDGetResultCode(0);
 
@@ -1482,19 +1508,19 @@ void func_800A0E94(void)
     default:
         printf("fatal: %d\n", (int)status);
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOENT:
         memcardInfo.msg = &msgCantMakeMoreFiles;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1502,7 +1528,7 @@ void func_800A0E94(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_INSSPACE:
@@ -1512,7 +1538,7 @@ void func_800A0E94(void)
         msgFmtBuffer.lines[1].unk4 = lbl_802F14F0.lines[1].unk4;
         msgFmtBuffer.numLines = lbl_802F14F0.numLines;
         memcardInfo.msg = &msgFmtBuffer;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_READY:
         memcardInfo.statusFlags |= MC_STATUS_OPEN | (1 << 11);
@@ -1521,7 +1547,7 @@ void func_800A0E94(void)
     }
 }
 
-void func_800A10A8(void *data)
+void write_memcard_file(void *data)
 {
     s32 result = CARDWriteAsync(
         &memcardInfo.cardFileInfo,
@@ -1537,15 +1563,15 @@ void func_800A10A8(void *data)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_LIMIT:
         memcardInfo.msg = &msgFileSizeChanged;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -1556,7 +1582,7 @@ void func_800A10A8(void *data)
     }
 }
 
-void func_800A11A0(void)
+void check_write_memcard_file_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
@@ -1574,23 +1600,23 @@ void func_800A11A0(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_LIMIT:
         memcardInfo.msg = &msgFileSizeChanged;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_CANCELED:
         memcardInfo.msg = &msgSaveInterrupted;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1598,7 +1624,7 @@ void func_800A11A0(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
@@ -1607,7 +1633,7 @@ void func_800A11A0(void)
     }
 }
 
-void func_800A1330(void)
+void set_memcard_file_metadata(void)
 {
     s32 result = CARDSetStatusAsync(0, memcardInfo.cardFileInfo.fileNo, &cardStat, 0);
 
@@ -1618,11 +1644,11 @@ void func_800A1330(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -1633,7 +1659,7 @@ void func_800A1330(void)
     }
 }
 
-void func_800A1404(void)
+void check_set_memcard_file_metadata_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
@@ -1652,11 +1678,11 @@ void func_800A1404(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1664,11 +1690,11 @@ void func_800A1404(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.statusFlags & (1 << 13))
+        if (memcardInfo.statusFlags & MC_STATUS_GAMEDATA_FILE)
         {
             memcardInfo.statusFlags |= (1 << 22);
             if (memcardInfo.statusFlags & (1 << 16))
@@ -1685,7 +1711,7 @@ void func_800A1404(void)
     }
 }
 
-void func_800A1584(void *buffer)
+void read_memcard_file(void *buffer)
 {
     s32 result = CARDReadAsync(&memcardInfo.cardFileInfo, buffer, memcardInfo.fileSize, 0, NULL);
 
@@ -1696,15 +1722,15 @@ void func_800A1584(void *buffer)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_LIMIT:
         memcardInfo.msg = &msgFileSizeChanged;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -1715,7 +1741,7 @@ void func_800A1584(void *buffer)
     }
 }
 
-void func_800A167C(void)
+void check_read_memcard_file_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
@@ -1734,23 +1760,23 @@ void func_800A167C(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_LIMIT:
         memcardInfo.msg = &msgFileSizeChanged;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_CANCELED:
         memcardInfo.msg = &msgLoadInterrupted;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1758,17 +1784,17 @@ void func_800A167C(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.statusFlags & (1 << 12))
+        if (memcardInfo.statusFlags & MC_STATUS_REPLAY_FILE)
         {
             if (memcardReplayData->crc == mathutil_calc_crc16(memcardInfo.fileSize - 2, (u8 *)memcardReplayData + 2)
              && func_8004C6DC(memcardReplayData->unk2050) != 0)
             {
                 memcardInfo.statusFlags |= (1 << 3);
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else
             {
@@ -1776,7 +1802,7 @@ void func_800A167C(void)
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.statusFlags |= (1 << 14);
                 memcardInfo.msg = &msgReplayDataDamaged;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
         }
         else if (memcardInfo.statusFlags & (1 << 4))
@@ -1790,7 +1816,7 @@ void func_800A167C(void)
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.statusFlags |= (1 << 14);
                 memcardInfo.msg = &msgGameDataDamaged;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else
             {
@@ -1799,7 +1825,7 @@ void func_800A167C(void)
                     memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                     memcardInfo.statusFlags |= MC_STATUS_ERROR;
                     memcardInfo.msg = &msgGameDataWrongVersion;
-                    memcardInfo.state = 0xFF;
+                    memcardInfo.state = MC_STATE_ERROR;
                 }
                 else
                     memcardInfo.state = 0x25;
@@ -1809,7 +1835,7 @@ void func_800A167C(void)
     }
 }
 
-void func_800A1988(void)
+void get_memcard_file_metadata(void)
 {
     s32 result = CARDGetStatus(0, memcardInfo.cardFileInfo.fileNo, &cardStat);
 
@@ -1826,19 +1852,19 @@ void func_800A1988(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
         memcardInfo.msg = &lbl_802F14A0;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOPERM:
         memcardInfo.msg = &msgCantReadFile;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1846,7 +1872,7 @@ void func_800A1988(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
@@ -1860,7 +1886,7 @@ void func_800A1988(void)
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
             }
             memcardInfo.msg = &msgLoadFinished;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             memcardInfo.statusFlags |= (1 << 3);
             memcardInfo.statusFlags &= ~(1 << 17);
         }
@@ -1868,7 +1894,7 @@ void func_800A1988(void)
     }
 }
 
-void func_800A1B58(void)
+void format_memcard(void)
 {
     s32 result = __CARDFormatRegionAsync(0, 0);
 
@@ -1879,11 +1905,11 @@ void func_800A1B58(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -1894,7 +1920,7 @@ void func_800A1B58(void)
     }
 }
 
-void func_800A1C24(void)
+void check_format_memcard_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
@@ -1911,15 +1937,15 @@ void func_800A1C24(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_IOERROR:
         memcardInfo.msg = &msgMemCardCantUse;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1927,7 +1953,7 @@ void func_800A1C24(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
@@ -1936,9 +1962,9 @@ void func_800A1C24(void)
     }
 }
 
-void func_800A1D64(void)
+void get_memcard_file_metadata_2(void)
 {
-    struct UnkStruct802F21BC *r3;
+    struct ReplayFileInfo *replay;
     int result = CARDGetStatus(0, lbl_802F21B2, &cardStat);
 
     if (result != -1)
@@ -1951,13 +1977,13 @@ void func_800A1D64(void)
         memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
         memcardInfo.statusFlags |= MC_STATUS_ERROR;
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
         memcardInfo.statusFlags |= MC_STATUS_ERROR;
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -1965,7 +1991,7 @@ void func_800A1D64(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
@@ -1973,24 +1999,24 @@ void func_800A1D64(void)
          && strncmp((char *)cardStat.company, "8P", 2) == 0
          && strncmp((char *)cardStat.fileName, "smkb", 4) == 0)
         {
-            r3 = &lbl_802F21BC[lbl_802F21B8];
-            r3->fileNo = lbl_802F21B2;
-            r3->unk10 = cardStat.length;
-            lbl_802F21B8++;
+            replay = &replayFileInfo[replayFileIndex];
+            replay->fileNo = lbl_802F21B2;
+            replay->fileSize = cardStat.length;
+            replayFileIndex++;
         }
         // fall through
     case CARD_RESULT_NOFILE:
     case CARD_RESULT_NOPERM:
         if (++lbl_802F21B2 >= 0x7F)
         {
-            r3 = &lbl_802F21BC[lbl_802F21B8];
-            r3->fileNo = -1;
-            if (lbl_802F21B8 == 0)
+            replay = &replayFileInfo[replayFileIndex];
+            replay->fileNo = -1;
+            if (replayFileIndex == 0)
             {
                 memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.msg = &msgNoReplayData;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
                 memcardInfo.statusFlags &= ~(1 << 17);
             }
             else
@@ -2007,12 +2033,12 @@ void func_800A1D64(void)
 
 void replay_list_open_and_read(void)
 {
-    struct UnkStruct802F21BC *r30 = &lbl_802F21BC[lbl_802F21B8];
+    struct ReplayFileInfo *replay = &replayFileInfo[replayFileIndex];
     s32 result;
 
     if (lbl_802F21C8 == 0)
     {
-        result = CARDFastOpen(0, r30->fileNo, &memcardInfo.cardFileInfo);
+        result = CARDFastOpen(0, replay->fileNo, &memcardInfo.cardFileInfo);
 
         if (result != -1)
             memcardInfo.unk40 = 0;
@@ -2027,19 +2053,19 @@ void replay_list_open_and_read(void)
         case CARD_RESULT_FATAL_ERROR:
         default:
             memcardInfo.msg = &msgMemCardError;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_NOCARD:
             memcardInfo.msg = &msgMemCardRemoved;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_NOFILE:
             memcardInfo.msg = &lbl_802F14A0;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_NOPERM:
             memcardInfo.msg = &msgCantLoadFile;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_BUSY:
             if (memcardInfo.unk40 == 0)
@@ -2047,12 +2073,12 @@ void replay_list_open_and_read(void)
                 memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.msg = &msgMemCardCantRead;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             break;
         case CARD_RESULT_BROKEN:
             memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_READY:
             memcardInfo.statusFlags |= MC_STATUS_OPEN;
@@ -2065,9 +2091,9 @@ void replay_list_open_and_read(void)
     }
     else if (lbl_802F21C8 == 1)
     {
-        if ((memcardReplayData = OSAlloc(r30->unk10)) == NULL)
+        if ((memcardReplayData = OSAlloc(replay->fileSize)) == NULL)
             OSPanic("memcard.c", 2506, "cannot OSAlloc");
-        result = CARDReadAsync(&memcardInfo.cardFileInfo, memcardReplayData, r30->unk10, 0, NULL);
+        result = CARDReadAsync(&memcardInfo.cardFileInfo, memcardReplayData, replay->fileSize, 0, NULL);
 
         memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
         memcardInfo.statusFlags |= MC_STATUS_ERROR;
@@ -2076,15 +2102,15 @@ void replay_list_open_and_read(void)
         {
         case CARD_RESULT_FATAL_ERROR:
             memcardInfo.msg = &msgMemCardError;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_LIMIT:
             memcardInfo.msg = &msgFileSizeChanged;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_NOCARD:
             memcardInfo.msg = &msgMemCardRemoved;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         default:
             memcardInfo.unk42 = 0;
@@ -2112,23 +2138,23 @@ void replay_list_open_and_read(void)
         case CARD_RESULT_FATAL_ERROR:
         default:
             memcardInfo.msg = &msgMemCardError;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_IOERROR:
             memcardInfo.msg = &msgMemCardCantUse;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_LIMIT:
             memcardInfo.msg = &msgFileSizeChanged;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_CANCELED:
             memcardInfo.msg = &msgLoadInterrupted;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_NOCARD:
             memcardInfo.msg = &msgMemCardRemoved;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             break;
         case CARD_RESULT_BUSY:
             if (memcardInfo.unk40 == 0)
@@ -2136,43 +2162,43 @@ void replay_list_open_and_read(void)
                 memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.msg = &msgMemCardCantRead;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             break;
         case CARD_RESULT_READY:
             CARDClose(&memcardInfo.cardFileInfo);
-            if (mathutil_calc_crc16(r30->unk10 - 2, (u8 *)memcardReplayData + 2) != memcardReplayData->crc)
+            if (mathutil_calc_crc16(replay->fileSize - 2, (u8 *)memcardReplayData + 2) != memcardReplayData->crc)
             {
-                r30->unk2 = 0x100;
-                r30->unk4 = 1;
-                r30->unk5 = 0;
-                r30->unk6 = 0;
-                r30->unk7 = 0;
-                r30->unk8 = 0;
-                r30->unkC = 0;
+                replay->replayFlags = 0x100;
+                replay->unk4 = 1;
+                replay->difficulty = 0;
+                replay->floorNum = 0;
+                replay->unk7 = 0;
+                replay->unk8 = 0;
+                replay->unkC = 0;
             }
             else
             {
-                r30->unk2 = memcardReplayData->unk2;
-                r30->unk4 = memcardReplayData->unk4;
-                r30->unk5 = memcardReplayData->unk5;
-                r30->unk6 = memcardReplayData->unk6;
-                r30->unk7 = memcardReplayData->unk7;
-                r30->unk8 = memcardReplayData->unk8;
-                r30->unkC = memcardReplayData->unkC;
+                replay->replayFlags = memcardReplayData->replayFlags;
+                replay->unk4 = memcardReplayData->unk4;
+                replay->difficulty = memcardReplayData->difficulty;
+                replay->floorNum = memcardReplayData->floorNum;
+                replay->unk7 = memcardReplayData->unk7;
+                replay->unk8 = memcardReplayData->unk8;
+                replay->unkC = memcardReplayData->unkC;
             }
             OSFree(memcardReplayData);
             memcardReplayData = NULL;
-            if (lbl_802F21B8 == 0)
+            if (replayFileIndex == 0)
             {
                 memcardInfo.statusFlags |= (1 << 3);
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
                 memcardInfo.statusFlags &= ~(1 << 17);
             }
             else
             {
                 lbl_802F21C8 = 0;
-                lbl_802F21B8--;
+                replayFileIndex--;
                 memcardInfo.unk40 = 0x4B0;
             }
             break;
@@ -2180,9 +2206,9 @@ void replay_list_open_and_read(void)
     }
 }
 
-void func_800A2538(void)
+void open_replay_file(void)
 {
-    s32 result = CARDFastOpen(0, lbl_802F21BC[lbl_802F21C0].fileNo, &memcardInfo.cardFileInfo);
+    s32 result = CARDFastOpen(0, replayFileInfo[lbl_802F21C0].fileNo, &memcardInfo.cardFileInfo);
 
     if (result != -1)
         memcardInfo.unk40 = 0;
@@ -2197,19 +2223,19 @@ void func_800A2538(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
         memcardInfo.msg = &lbl_802F14A0;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOPERM:
         memcardInfo.msg = &msgCantLoadFile;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -2217,12 +2243,12 @@ void func_800A2538(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_BROKEN:
         memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_READY:
         memcardInfo.statusFlags |= MC_STATUS_OPEN;
@@ -2233,7 +2259,7 @@ void func_800A2538(void)
     }
 }
 
-void func_800A26FC(int fileNo)
+void delete_replay_file(int fileNo)
 {
     s32 result;
 
@@ -2249,11 +2275,11 @@ void func_800A26FC(int fileNo)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -2267,7 +2293,7 @@ void func_800A26FC(int fileNo)
     }
 }
 
-void func_800A27F8(void)
+void check_delete_replay_file_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
@@ -2284,19 +2310,19 @@ void func_800A27F8(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
         memcardInfo.msg = &lbl_802F14A0;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOPERM:
         memcardInfo.msg = &msgCantLoadFile;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -2304,11 +2330,11 @@ void func_800A27F8(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
-        if (memcardInfo.statusFlags & (1 << 13))
+        if (memcardInfo.statusFlags & MC_STATUS_GAMEDATA_FILE)
         {
             if (memcardInfo.state == 0x24)
                 memcardInfo.state = 7;
@@ -2320,14 +2346,14 @@ void func_800A27F8(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgDeleteFinished;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             memcardInfo.statusFlags |= (1 << 3);
         }
         break;
     }
 }
 
-void func_800A29CC(void)
+void delete_gamedata_file(void)
 {
     s32 result = CARDDeleteAsync(0, "super_monkey_ball.000", NULL);
 
@@ -2338,11 +2364,11 @@ void func_800A29CC(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     default:
         memcardInfo.unk42 = 0;
@@ -2353,11 +2379,11 @@ void func_800A29CC(void)
     }
 }
 
-void func_800A2AA0(void)
+void check_delete_gamedata_file_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -2370,15 +2396,15 @@ void func_800A2AA0(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOPERM:
         memcardInfo.msg = &msgCantLoadFile;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -2386,7 +2412,7 @@ void func_800A2AA0(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_NOFILE:
@@ -2396,7 +2422,7 @@ void func_800A2AA0(void)
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
             memcardInfo.unk40 = 0x4B0;
-            memcardInfo.state = 0x17;
+            memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
             memcardInfo.statusFlags |= (1 << 18);
         }
         else
@@ -2404,7 +2430,7 @@ void func_800A2AA0(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgLoadFinished;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             memcardInfo.statusFlags |= (1 << 3);
             memcardInfo.statusFlags &= ~(1 << 17);
         }
@@ -2412,7 +2438,7 @@ void func_800A2AA0(void)
     }
 }
 
-void func_800A2C74(void)
+void rename_gamedata_file(void)
 {
     s32 result = CARDRenameAsync(0, "super_monkey_ball.000", "super_monkey_ball.sys", NULL);
 
@@ -2423,11 +2449,11 @@ void func_800A2C74(void)
     {
     case CARD_RESULT_FATAL_ERROR:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
         if (memcardMode == MC_MODE_LOAD_GAMEDATA_2)
@@ -2435,12 +2461,12 @@ void func_800A2C74(void)
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
             memcardInfo.unk40 = 0x4B0;
-            memcardInfo.state = 0x17;
+            memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
         }
         else
         {
             memcardInfo.msg = &lbl_802F14A0;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     default:
@@ -2452,11 +2478,11 @@ void func_800A2C74(void)
     }
 }
 
-void func_800A2DA4(void)
+void check_rename_gamedata_file_result(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
+    if (result != CARD_RESULT_BUSY)
         memcardInfo.unk40 = 0;
     if (result < -1)
     {
@@ -2471,11 +2497,11 @@ void func_800A2DA4(void)
     case CARD_RESULT_FATAL_ERROR:
     default:
         memcardInfo.msg = &msgMemCardError;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOCARD:
         memcardInfo.msg = &msgMemCardRemoved;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_NOFILE:
         if (memcardInfo.statusFlags & (1 << 5))
@@ -2485,7 +2511,7 @@ void func_800A2DA4(void)
             if (memcardInfo.statusFlags & (1 << 6))
             {
                 memcardInfo.unk40 = 0x4B0;
-                memcardInfo.state = 0x17;
+                memcardInfo.state = MC_STATE_CHECK_FREE_SPACE;
             }
             else
                 memcardInfo.state = 15;
@@ -2493,12 +2519,12 @@ void func_800A2DA4(void)
         else
         {
             memcardInfo.msg = &lbl_802F14A0;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_NOPERM:
         memcardInfo.msg = &msgCantLoadFile;
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         break;
     case CARD_RESULT_BUSY:
         if (memcardInfo.unk40 == 0)
@@ -2506,7 +2532,7 @@ void func_800A2DA4(void)
             memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
             memcardInfo.statusFlags |= MC_STATUS_ERROR;
             memcardInfo.msg = &msgMemCardCantRead;
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
         }
         break;
     case CARD_RESULT_READY:
@@ -2514,7 +2540,7 @@ void func_800A2DA4(void)
             memcardInfo.state = 7;
         else if ((memcardInfo.statusFlags & ((1 << 16) | (1 << 6))) == ((1 << 16) | (1 << 6)))
         {
-            memcardInfo.state = 0xFF;
+            memcardInfo.state = MC_STATE_ERROR;
             memcardInfo.statusFlags &= ~(1 << 15);
             memcardInfo.statusFlags |= (1 << 3);
         }
@@ -2523,75 +2549,76 @@ void func_800A2DA4(void)
             if (memcardInfo.statusFlags & (1 << 6))
                 memcardInfo.statusFlags |= (1 << 19);
             memcardInfo.unk40 = 0x4B0;
-            memcardInfo.state = 0x1E;
+            memcardInfo.state = MC_STATE_CHECK_FREE_SPACE2;
         }
         break;
     }
 }
 
+// gamedata load state machine
 void load_sequence(void)
 {
     switch (memcardInfo.state)
     {
-    case 1:
+    case MC_STATE_UNK1:
         if ((lbl_801F3D88.unk4 & (1 << 8))
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
-            memcardInfo.state = 2;
+            memcardInfo.state = MC_STATE_PROBE;
         }
         break;
-    case 2:
-        func_8009FB8C();
+    case MC_STATE_PROBE:
+        probe_memcard();
         break;
-    case 3:
+    case MC_STATE_MOUNT:
         if ((memcardGameData = OSAlloc(memcardInfo.fileSize)) == NULL)
             OSPanic("memcard.c", 3062, "cannot OSAlloc");
         memset(memcardGameData, 0, memcardInfo.fileSize);
         memcardInfo.statusFlags |= (1 << 17);
-        func_8009FDD4();
+        mount_memcard();
         break;
-    case 4:
-        func_8009FF18();
+    case MC_STATE_CHECK_MOUNT_RESULT:
+        check_mount_memcard_result();
         break;
-    case 5:
-        func_800A00C0();
+    case MC_STATE_VERIFY_FILESYSTEM:
+        verify_filesystem();
         break;
-    case 6:
-        func_800A01B0();
+    case MC_STATE_CHECK_VERIFY_FILESYSTEM_RESULT:
+        check_verify_filesystem_result();
         break;
     case 7:
         memcardInfo.unk40 = 0x4B0;
-        if (memcardInfo.state == 7)
-            memcardInfo.state = 8;
+        if (memcardInfo.state == 7)  // always true
+            memcardInfo.state = MC_STATE_OPEN_FILE;
         else
             memcardInfo.state = 0x22;
         // fall through
     case 8:
-        func_800A03DC();
+        open_memcard_file();
         break;
     case 0x1F:
-        func_800A2C74();
+        rename_gamedata_file();
         break;
     case 0x20:
-        func_800A2DA4();
+        check_rename_gamedata_file_result();
         break;
-    case 0x17:
-        func_800A06CC();
+    case MC_STATE_CHECK_FREE_SPACE:
+        check_card_free_space();
         break;
     case 0xF:
-        func_800A1584(memcardGameData);
+        read_memcard_file(memcardGameData);
         break;
     case 0x10:
-        func_800A167C();
+        check_read_memcard_file_result();
         break;
     case 0x25:
-        func_800A29CC();
+        delete_gamedata_file();
         break;
     case 0x26:
-        func_800A2AA0();
+        check_delete_gamedata_file_result();
         break;
-    case 0xFF:
+    case MC_STATE_ERROR:
         break;
     default:
         printf("stat: %d\n", memcardInfo.state);
@@ -2606,58 +2633,58 @@ void save_sequence(void)
 
     switch (memcardInfo.state)
     {
-    case 1:
+    case MC_STATE_UNK1:
         if ((lbl_801F3D88.unk4 & (1 << 8))
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
-            memcardInfo.state = 2;
+            memcardInfo.state = MC_STATE_PROBE;
         }
         break;
-    case 2:
-        func_8009FB8C();
+    case MC_STATE_PROBE:
+        probe_memcard();
         break;
-    case 3:
+    case MC_STATE_MOUNT:
         if ((memcardGameData = OSAlloc(memcardInfo.fileSize)) == NULL)
             OSPanic("memcard.c", 3178, "cannot OSAlloc");
         memset(memcardGameData, 0, memcardInfo.fileSize);
-        func_8009FDD4();
+        mount_memcard();
         break;
-    case 4:
-        func_8009FF18();
+    case MC_STATE_CHECK_MOUNT_RESULT:
+        check_mount_memcard_result();
         break;
-    case 5:
-        func_800A00C0();
+    case MC_STATE_VERIFY_FILESYSTEM:
+        verify_filesystem();
         break;
-    case 6:
-        func_800A01B0();
+    case MC_STATE_CHECK_VERIFY_FILESYSTEM_RESULT:
+        check_verify_filesystem_result();
         break;
     case 0x21:
         memcardInfo.unk40 = 0x4B0;
-        if (memcardInfo.state == 7)
-            memcardInfo.state = 8;
+        if (memcardInfo.state == 7)  // always false
+            memcardInfo.state = MC_STATE_OPEN_FILE;
         else
             memcardInfo.state = 0x22;
         // fall through
     case 0x22:
-        func_800A03DC();
+        open_memcard_file();
         break;
     case 0x23:
-        func_800A26FC(memcardInfo.unk0);
+        delete_replay_file(memcardInfo.unk0);
         break;
     case 0x24:
-        func_800A27F8();
+        check_delete_replay_file_result();
         break;
     case 7:
         strcpy(memcardInfo.fileName, "super_monkey_ball.sys");
         memcardInfo.unk40 = 0x4B0;
-        if (memcardInfo.state == 7)
-            memcardInfo.state = 8;
+        if (memcardInfo.state == 7)  // always true
+            memcardInfo.state = MC_STATE_OPEN_FILE;
         else
             memcardInfo.state = 0x22;
         // fall through
-    case 8:
-        func_800A03DC();
+    case MC_STATE_OPEN_FILE:
+        open_memcard_file();
         break;
     case 9:
         if ((lbl_801F3D88.unk4 & 1)
@@ -2683,22 +2710,22 @@ void save_sequence(void)
                 memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.msg = &msgFormatInterrupted;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else
             {
                 memcardInfo.statusFlags |= (1 << 21);
-                func_800A1B58();
+                format_memcard();
             }
         }
         break;
     case 0xA:
-        func_800A1C24();
+        check_format_memcard_result();
         if (memcardInfo.state != 10)
             memcardInfo.statusFlags &= ~(1 << 21);
         break;
-    case 0x17:
-        func_800A06CC();
+    case MC_STATE_CHECK_FREE_SPACE:
+        check_card_free_space();
         break;
     case 0xD:
         if (memcardInfo.statusFlags & (1 << 10))
@@ -2726,16 +2753,16 @@ void save_sequence(void)
                 memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.msg = &msgSaveInterrupted;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
                 break;
             }
         }
         strcpy(memcardInfo.fileName, "super_monkey_ball.000");
         memcardInfo.statusFlags |= (1 << 21) | (1 << 15);
-        func_800A0D1C();
+        create_memcard_file();
         break;
-    case 0xE:
-        func_800A0E94();
+    case MC_STATE_CHECK_CREATE_FILE_RESULT:
+        check_create_memcard_file_result();
         break;
     case 0x13:
         memset(&cardStat, 0, 0x6C);
@@ -2743,7 +2770,7 @@ void save_sequence(void)
         memcardInfo.state = 0x14;
         break;
     case 0x14:
-        func_800A1988();
+        get_memcard_file_metadata();
         break;
     case 0x11:
         func_8009F568();
@@ -2751,35 +2778,35 @@ void save_sequence(void)
         memcardGameData->version = 0x16;
         r4 = (u8 *)memcardGameData + 2;
         memcardGameData->crc = mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)memcardGameData), r4);
-        func_800A10A8(memcardGameData);
+        write_memcard_file(memcardGameData);
         break;
     case 0x12:
-        func_800A11A0();
+        check_write_memcard_file_result();
         break;
     case 0x15:
-        func_800A1330();
+        set_memcard_file_metadata();
         break;
     case 0x16:
-        func_800A1404();
+        check_set_memcard_file_metadata_result();
         break;
     case 0xB:
-        func_800A26FC(memcardInfo.unk0);
+        delete_replay_file(memcardInfo.unk0);
         break;
     case 0xC:
-        func_800A27F8();
+        check_delete_replay_file_result();
         break;
     case 0x1F:
-        func_800A2C74();
+        rename_gamedata_file();
         break;
     case 0x20:
-        func_800A2DA4();
+        check_rename_gamedata_file_result();
         if (memcardInfo.state != 0x20)
             memcardInfo.statusFlags &= ~(1 << 21);
         break;
-    case 0x1E:
-        func_800A06CC();
+    case MC_STATE_CHECK_FREE_SPACE2:
+        check_card_free_space();
         break;
-    case 0xFF:
+    case MC_STATE_ERROR:
         break;
     default:
         printf("stat: %d\n", memcardInfo.state);
@@ -2801,22 +2828,22 @@ void replay_save_sequence(void)
         }
         break;
     case 2:
-        func_8009FB8C();
+        probe_memcard();
         break;
     case 3:
         if ((memcardReplayData = OSAlloc(memcardInfo.fileSize)) == NULL)
             OSPanic("memcard.c", 3427, "cannot OSAlloc");
         memset(memcardReplayData, 0, memcardInfo.fileSize);
-        func_8009FDD4();
+        mount_memcard();
         break;
     case 4:
-        func_8009FF18();
+        check_mount_memcard_result();
         break;
     case 5:
-        func_800A00C0();
+        verify_filesystem();
         break;
     case 6:
-        func_800A01B0();
+        check_verify_filesystem_result();
         break;
     case 9:
         if ((lbl_801F3D88.unk4 & 1)
@@ -2842,29 +2869,29 @@ void replay_save_sequence(void)
                 memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
                 memcardInfo.statusFlags |= MC_STATUS_ERROR;
                 memcardInfo.msg = &msgFormatInterrupted;
-                memcardInfo.state = 0xFF;
+                memcardInfo.state = MC_STATE_ERROR;
             }
             else
             {
                 memcardInfo.statusFlags |= (1 << 21);
-                func_800A1B58();
+                format_memcard();
             }
         }
         break;
     case 0xA:
-        func_800A1C24();
+        check_format_memcard_result();
         if (memcardInfo.state != 10)
             memcardInfo.statusFlags &= ~(1 << 21);
         break;
-    case 0x17:
-        func_800A06CC();
+    case MC_STATE_CHECK_FREE_SPACE:
+        check_card_free_space();
         break;
     case 0xD:
         memcardInfo.statusFlags |= (1 << 21);
-        func_800A0D1C();
+        create_memcard_file();
         break;
-    case 0xE:
-        func_800A0E94();
+    case MC_STATE_CHECK_CREATE_FILE_RESULT:
+        check_create_memcard_file_result();
         break;
     case 0x13:
         memcardInfo.statusFlags |= (1 << 15);
@@ -2873,29 +2900,29 @@ void replay_save_sequence(void)
         memcardInfo.state = 0x14;
         break;
     case 0x14:
-        func_800A1988();
+        get_memcard_file_metadata();
         break;
     case 0x11:
-        func_8009F7F0();
+        init_replay_file_data();
         func_8004C69C(memcardReplayData->unk2050);
         memcardReplayData->crc = mathutil_calc_crc16(memcardInfo.fileSize - 2, (u8 *)memcardReplayData + 2);
-        func_800A10A8(memcardReplayData);
+        write_memcard_file(memcardReplayData);
         break;
     case 0x12:
-        func_800A11A0();
+        check_write_memcard_file_result();
         break;
     case 0x15:
-        func_800A1330();
+        set_memcard_file_metadata();
         break;
     case 0x16:
-        func_800A1404();
+        check_set_memcard_file_metadata_result();
         if (memcardInfo.state != 0x16)
             memcardInfo.statusFlags &= ~(1 << 21);
         break;
-    case 0x1E:
-        func_800A06CC();
+    case MC_STATE_CHECK_FREE_SPACE2:
+        check_card_free_space();
         break;
-    case 0xFF:
+    case MC_STATE_ERROR:
         break;
     default:
         printf("stat: %d\n", memcardInfo.state);
@@ -2917,41 +2944,41 @@ void replay_list_sequence(void)
         }
         break;
     case 2:
-        func_8009FB8C();
+        probe_memcard();
         break;
     case 3:
         memcardInfo.statusFlags |= (1 << 17);
-        func_8009FDD4();
+        mount_memcard();
         break;
     case 4:
-        func_8009FF18();
+        check_mount_memcard_result();
         break;
     case 5:
-        func_800A00C0();
+        verify_filesystem();
         break;
     case 6:
-        func_800A01B0();
+        check_verify_filesystem_result();
         break;
     case 0x18:
         lbl_802F21B2 = 0;
-        lbl_802F21B8 = 0;
+        replayFileIndex = 0;
         memset(&cardStat, 0, sizeof(cardStat));
         memcardInfo.unk40 = 0x4B0;
         memcardInfo.state = 0x19;
         break;
     case 0x19:
-        func_800A1D64();
+        get_memcard_file_metadata_2();
         break;
     case 0x1A:
         lbl_802F21C8 = 0;
-        lbl_802F21B8--;
+        replayFileIndex--;
         memcardInfo.unk40 = 0x4B0;
         memcardInfo.state = 0x1B;
         break;
     case 0x1B:
         replay_list_open_and_read();
         break;
-    case 0xFF:
+    case MC_STATE_ERROR:
         break;
     default:
         printf("stat: %d\n", memcardInfo.state);
@@ -2972,15 +2999,15 @@ void replay_load_sequence(void)
         memcardInfo.state = 0x1D;
         break;
     case 0x1D:
-        func_800A2538();
+        open_replay_file();
         break;
     case 0xF:
-        func_800A1584(memcardReplayData);
+        read_memcard_file(memcardReplayData);
         break;
     case 0x10:
-        func_800A167C();
+        check_read_memcard_file_result();
         break;
-    case 0xFF:
+    case MC_STATE_ERROR:
         break;
     default:
         printf("stat: %d\n", memcardInfo.state);
@@ -2997,12 +3024,12 @@ void replay_delete_sequence(void)
     switch (memcardInfo.state)
     {
     case 0xB:
-        func_800A26FC(lbl_802F21BC[lbl_802F21C0].fileNo);
+        delete_replay_file(replayFileInfo[lbl_802F21C0].fileNo);
         break;
     case 0xC:
-        func_800A27F8();
+        check_delete_replay_file_result();
         break;
-    case 0xFF:
+    case MC_STATE_ERROR:
         break;
     default:
         printf("stat: %d\n", memcardInfo.state);
@@ -3044,11 +3071,11 @@ void ev_memcard_init(void)
      || memcardMode == MC_MODE_SAVE_REPLAY
      || memcardMode == MC_MODE_LIST_REPLAY
      || memcardMode == MC_MODE_DELETE_REPLAY)
-        memcardInfo.statusFlags |= (1 << 12);
+        memcardInfo.statusFlags |= MC_STATUS_REPLAY_FILE;
     else
-        memcardInfo.statusFlags |= (1 << 13);
+        memcardInfo.statusFlags |= MC_STATUS_GAMEDATA_FILE;
 
-    if (memcardInfo.statusFlags & (1 << 12))
+    if (memcardInfo.statusFlags & MC_STATUS_REPLAY_FILE)
     {
         sprintf(memcardInfo.fileName, "smkb%08x%08x",
             (unsigned int)((u64)memcardInfo.time >> 32),
@@ -3059,12 +3086,12 @@ void ev_memcard_init(void)
     else
         strcpy(memcardInfo.fileName, "super_monkey_ball.sys");
 
-    if (!(memcardInfo.statusFlags & (1 << 12)))
+    if (!(memcardInfo.statusFlags & MC_STATUS_REPLAY_FILE))
         memcardInfo.unk44 = 0x5C04;
     else if (memcardMode == MC_MODE_SAVE_REPLAY)
         memcardInfo.unk44 = func_8004C668() + 0x2050;
     else if (memcardMode == MC_MODE_LOAD_REPLAY)
-        memcardInfo.unk44 = lbl_802F21BC[lbl_802F21C0].unk10;
+        memcardInfo.unk44 = replayFileInfo[lbl_802F21C0].fileSize;
     else
         memcardInfo.unk44 = 0x200;
 
@@ -3093,10 +3120,10 @@ void ev_memcard_main(void)
      && (lbl_801F3D88.unk4 & (1 << 9)))
     {
         func_8002B5C8(0x6B);
-        memcardInfo.state = 0xFF;
+        memcardInfo.state = MC_STATE_ERROR;
         memcardInfo.statusFlags |= (1 << 8);
     }
-    if (memcardInfo.state == 0xFF && !(memcardInfo.statusFlags & MC_STATUS_ERROR))
+    if (memcardInfo.state == MC_STATE_ERROR && !(memcardInfo.statusFlags & MC_STATUS_ERROR))
     {
         memcardInfo.statusFlags &= ~(1 << 21);
         ev_run_dest(0);
@@ -3123,6 +3150,7 @@ void ev_memcard_main(void)
                 return;
         }
     }
+
     if (memcardInfo.unk40 > 0)
         memcardInfo.unk40--;
     switch (memcardMode)
@@ -3184,7 +3212,7 @@ void ev_memcard_dest(void)
     }
 
     if (memcardGameData != NULL
-     && !(memcardInfo.statusFlags & ((1 << 4) | (1 << 8) | (1 << 12) | (1 << 14)))
+     && !(memcardInfo.statusFlags & ((1 << 4) | (1 << 8) | MC_STATUS_REPLAY_FILE | (1 << 14)))
      && memcardGameData->version == 0x16)
         func_800A4F04();
     memcardInfo.state = 0;
@@ -3201,7 +3229,7 @@ void ev_memcard_dest(void)
     }
 
     lbl_802F21B4 = 0;
-    lbl_802F21BC = 0;
+    replayFileInfo = NULL;
 }
 
 #pragma force_active on
@@ -3377,10 +3405,10 @@ void func_800A4628(void)
     }
     //lbl_800A47E4
     else if (memcardInfo.statusFlags & (1 << 10))
-        draw_memcard_msg(&lbl_802F1624, 320.0f, 380.0f);
+        draw_memcard_msg(&msgMakeSelection, 320.0f, 380.0f);
     //lbl_800A47FC
     if (memcardInfo.state == 1)
-        draw_memcard_msg(&lbl_802F162C, 320.0f, 380.0f);
+        draw_memcard_msg(&msgInsertMemcardSlotAPressA, 320.0f, 380.0f);
     if (memcardInfo.state == 9)
     {
         //a0764
@@ -3504,7 +3532,7 @@ void func_800A4628(void)
     //lbl_800A4C74
     if (memcardInfo.statusFlags & (1 << 15))
     {
-        if (memcardInfo.statusFlags & (1 << 12))
+        if (memcardInfo.statusFlags & MC_STATUS_REPLAY_FILE)
             draw_memcard_msg(&msgSavingReplay, 320.0f, 240.0f);
         else
             draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);

@@ -3835,8 +3835,8 @@ lbl_80049F10:
 /* 80049F18 00045E38  7C 08 03 A6 */	mtlr r0
 /* 80049F1C 00045E3C  4E 80 00 20 */	blr
 
-.global func_80049F20
-func_80049F20:
+.global g_get_replay_info
+g_get_replay_info:
 /* 80049F20 00045E40  7C 08 02 A6 */	mflr r0
 /* 80049F24 00045E44  2C 03 00 0B */	cmpwi r3, 0xb
 /* 80049F28 00045E48  90 01 00 04 */	stw r0, 4(r1)
