@@ -1494,8 +1494,7 @@ void func_80095398();
 // ? func_8009A13C();
 // ? func_8009A2A4();
 // ? func_8009A6E0();
-void minigame_link();
-void minigame_unlink();
+
 // ? begin_display_list();
 // ? end_display_list();
 // ? func_8009A9A8();

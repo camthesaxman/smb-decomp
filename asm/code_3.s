@@ -2,125 +2,6 @@
 
 .section .text
 
-# relocation.s
-.global minigame_link
-minigame_link:
-/* 8009A7C8 000966E8  7C 08 02 A6 */	mflr r0
-/* 8009A7CC 000966EC  90 01 00 04 */	stw r0, 4(r1)
-/* 8009A7D0 000966F0  38 00 00 00 */	li r0, 0
-/* 8009A7D4 000966F4  94 21 FF A0 */	stwu r1, -0x60(r1)
-/* 8009A7D8 000966F8  93 E1 00 5C */	stw r31, 0x5c(r1)
-/* 8009A7DC 000966FC  93 C1 00 58 */	stw r30, 0x58(r1)
-/* 8009A7E0 00096700  93 A1 00 54 */	stw r29, 0x54(r1)
-/* 8009A7E4 00096704  3B A4 00 00 */	addi r29, r4, 0
-/* 8009A7E8 00096708  90 04 00 00 */	stw r0, 0(r4)
-/* 8009A7EC 0009670C  3C 80 80 1D */	lis r4, lbl_801D3D88@ha
-/* 8009A7F0 00096710  3B E4 3D 88 */	addi r31, r4, lbl_801D3D88@l
-/* 8009A7F4 00096714  90 1D 00 04 */	stw r0, 4(r29)
-/* 8009A7F8 00096718  38 81 00 10 */	addi r4, r1, 0x10
-/* 8009A7FC 0009671C  48 03 12 C1 */	bl DVDOpen
-/* 8009A800 00096720  2C 03 00 00 */	cmpwi r3, 0
-/* 8009A804 00096724  41 82 00 DC */	beq lbl_8009A8E0
-/* 8009A808 00096728  80 81 00 44 */	lwz r4, 0x44(r1)
-/* 8009A80C 0009672C  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
-/* 8009A810 00096730  38 04 00 1F */	addi r0, r4, 0x1f
-/* 8009A814 00096734  54 1E 00 34 */	rlwinm r30, r0, 0, 0, 0x1a
-/* 8009A818 00096738  38 9E 00 00 */	addi r4, r30, 0
-/* 8009A81C 0009673C  48 02 7E B1 */	bl OSAllocFromHeap
-/* 8009A820 00096740  90 7D 00 00 */	stw r3, 0(r29)
-/* 8009A824 00096744  80 1D 00 00 */	lwz r0, 0(r29)
-/* 8009A828 00096748  28 00 00 00 */	cmplwi r0, 0
-/* 8009A82C 0009674C  40 82 00 18 */	bne lbl_8009A844
-/* 8009A830 00096750  38 7F 01 44 */	addi r3, r31, 0x144
-/* 8009A834 00096754  4C C6 31 82 */	crclr 6
-/* 8009A838 00096758  38 BF 01 54 */	addi r5, r31, 0x154
-/* 8009A83C 0009675C  38 80 00 40 */	li r4, 0x40
-/* 8009A840 00096760  48 02 94 61 */	bl OSPanic
-lbl_8009A844:
-/* 8009A844 00096764  80 9D 00 00 */	lwz r4, 0(r29)
-/* 8009A848 00096768  38 BE 00 00 */	addi r5, r30, 0
-/* 8009A84C 0009676C  38 61 00 10 */	addi r3, r1, 0x10
-/* 8009A850 00096770  38 C0 00 00 */	li r6, 0
-/* 8009A854 00096774  48 01 23 69 */	bl g_read_dvd_file
-/* 8009A858 00096778  2C 03 00 00 */	cmpwi r3, 0
-/* 8009A85C 0009677C  41 82 00 68 */	beq lbl_8009A8C4
-/* 8009A860 00096780  80 7D 00 00 */	lwz r3, 0(r29)
-/* 8009A864 00096784  80 83 00 20 */	lwz r4, 0x20(r3)
-/* 8009A868 00096788  28 04 00 00 */	cmplwi r4, 0
-/* 8009A86C 0009678C  41 82 00 08 */	beq lbl_8009A874
-/* 8009A870 00096790  48 00 00 08 */	b lbl_8009A878
-lbl_8009A874:
-/* 8009A874 00096794  38 80 00 20 */	li r4, 0x20
-lbl_8009A878:
-/* 8009A878 00096798  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
-/* 8009A87C 0009679C  48 02 7E 51 */	bl OSAllocFromHeap
-/* 8009A880 000967A0  90 7D 00 04 */	stw r3, 4(r29)
-/* 8009A884 000967A4  80 1D 00 04 */	lwz r0, 4(r29)
-/* 8009A888 000967A8  28 00 00 00 */	cmplwi r0, 0
-/* 8009A88C 000967AC  40 82 00 18 */	bne lbl_8009A8A4
-/* 8009A890 000967B0  38 7F 01 44 */	addi r3, r31, 0x144
-/* 8009A894 000967B4  4C C6 31 82 */	crclr 6
-/* 8009A898 000967B8  38 BF 01 54 */	addi r5, r31, 0x154
-/* 8009A89C 000967BC  38 80 00 44 */	li r4, 0x44
-/* 8009A8A0 000967C0  48 02 94 01 */	bl OSPanic
-lbl_8009A8A4:
-/* 8009A8A4 000967C4  80 7D 00 00 */	lwz r3, 0(r29)
-/* 8009A8A8 000967C8  80 9D 00 04 */	lwz r4, 4(r29)
-/* 8009A8AC 000967CC  48 02 C2 B9 */	bl OSLink
-/* 8009A8B0 000967D0  80 7D 00 00 */	lwz r3, 0(r29)
-/* 8009A8B4 000967D4  81 83 00 34 */	lwz r12, 0x34(r3)
-/* 8009A8B8 000967D8  7D 88 03 A6 */	mtlr r12
-/* 8009A8BC 000967DC  4E 80 00 21 */	blrl
-/* 8009A8C0 000967E0  48 00 00 18 */	b lbl_8009A8D8
-lbl_8009A8C4:
-/* 8009A8C4 000967E4  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
-/* 8009A8C8 000967E8  80 9D 00 00 */	lwz r4, 0(r29)
-/* 8009A8CC 000967EC  48 02 7E FD */	bl OSFreeToHeap
-/* 8009A8D0 000967F0  38 00 00 00 */	li r0, 0
-/* 8009A8D4 000967F4  90 1D 00 00 */	stw r0, 0(r29)
-lbl_8009A8D8:
-/* 8009A8D8 000967F8  38 61 00 10 */	addi r3, r1, 0x10
-/* 8009A8DC 000967FC  48 03 12 A9 */	bl DVDClose
-lbl_8009A8E0:
-/* 8009A8E0 00096800  80 01 00 64 */	lwz r0, 0x64(r1)
-/* 8009A8E4 00096804  83 E1 00 5C */	lwz r31, 0x5c(r1)
-/* 8009A8E8 00096808  83 C1 00 58 */	lwz r30, 0x58(r1)
-/* 8009A8EC 0009680C  7C 08 03 A6 */	mtlr r0
-/* 8009A8F0 00096810  83 A1 00 54 */	lwz r29, 0x54(r1)
-/* 8009A8F4 00096814  38 21 00 60 */	addi r1, r1, 0x60
-/* 8009A8F8 00096818  4E 80 00 20 */	blr
-
-.global minigame_unlink
-minigame_unlink:
-/* 8009A8FC 0009681C  7C 08 02 A6 */	mflr r0
-/* 8009A900 00096820  90 01 00 04 */	stw r0, 4(r1)
-/* 8009A904 00096824  94 21 FF E8 */	stwu r1, -0x18(r1)
-/* 8009A908 00096828  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 8009A90C 0009682C  7C 7F 1B 78 */	mr r31, r3
-/* 8009A910 00096830  80 63 00 00 */	lwz r3, 0(r3)
-/* 8009A914 00096834  28 03 00 00 */	cmplwi r3, 0
-/* 8009A918 00096838  41 82 00 3C */	beq lbl_8009A954
-/* 8009A91C 0009683C  81 83 00 38 */	lwz r12, 0x38(r3)
-/* 8009A920 00096840  7D 88 03 A6 */	mtlr r12
-/* 8009A924 00096844  4E 80 00 21 */	blrl
-/* 8009A928 00096848  80 7F 00 00 */	lwz r3, 0(r31)
-/* 8009A92C 0009684C  48 02 C6 45 */	bl OSUnlink
-/* 8009A930 00096850  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
-/* 8009A934 00096854  80 9F 00 04 */	lwz r4, 4(r31)
-/* 8009A938 00096858  48 02 7E 91 */	bl OSFreeToHeap
-/* 8009A93C 0009685C  80 6D 97 48 */	lwz r3, __OSCurrHeap-_SDA_BASE_(r13)
-/* 8009A940 00096860  80 9F 00 00 */	lwz r4, 0(r31)
-/* 8009A944 00096864  48 02 7E 85 */	bl OSFreeToHeap
-/* 8009A948 00096868  38 00 00 00 */	li r0, 0
-/* 8009A94C 0009686C  90 1F 00 00 */	stw r0, 0(r31)
-/* 8009A950 00096870  90 1F 00 04 */	stw r0, 4(r31)
-lbl_8009A954:
-/* 8009A954 00096874  80 01 00 1C */	lwz r0, 0x1c(r1)
-/* 8009A958 00096878  83 E1 00 14 */	lwz r31, 0x14(r1)
-/* 8009A95C 0009687C  38 21 00 18 */	addi r1, r1, 0x18
-/* 8009A960 00096880  7C 08 03 A6 */	mtlr r0
-/* 8009A964 00096884  4E 80 00 20 */	blr
-
 .global begin_display_list
 begin_display_list:
 /* 8009A968 00096888  7C 08 02 A6 */	mflr r0
@@ -1612,6 +1493,248 @@ lbl_8009BED8:
 /* 8009BEEC 00097E0C  38 21 00 08 */	addi r1, r1, 8
 /* 8009BEF0 00097E10  7C 08 03 A6 */	mtlr r0
 /* 8009BEF4 00097E14  4E 80 00 20 */	blr
+
+.section .data
+
+	.balign 0x10
+.global lbl_801D3EF0
+lbl_801D3EF0:
+	# ROM: 0x1D0EF0
+	.byte 0x06, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+
+.global lbl_801D3F10
+lbl_801D3F10:
+	# ROM: 0x1D0F10
+	.4byte lbl_8009BB78  ;# ptr
+	.4byte lbl_8009BBBC  ;# ptr
+	.4byte lbl_8009BC00  ;# ptr
+	.4byte lbl_8009BC44  ;# ptr
+	.4byte lbl_8009BC88  ;# ptr
+	.4byte lbl_8009BCD8  ;# ptr
+	.4byte lbl_8009BD20  ;# ptr
+	.4byte lbl_8009BD70  ;# ptr
+	.4byte lbl_8009BDB4  ;# ptr
+	.4byte lbl_8009BDF8  ;# ptr
+	.4byte lbl_8009BE2C  ;# ptr
+
+.global lbl_801D3F3C
+lbl_801D3F3C:
+	# ROM: 0x1D0F3C
+glabel string_MINI_COMMEND
+	.asciz "MINI COMMEND"
+	.balign 4
+
+.global lbl_801D3F4C
+lbl_801D3F4C:
+	# ROM: 0x1D0F4C
+	.byte 0x1C, 0x20, 0x5B, 0x20
+glabel string__d____d__
+	.asciz "%d / %d ]"
+	.balign 4
+
+.global lbl_801D3F5C
+lbl_801D3F5C:
+	# ROM: 0x1D0F5C
+	.byte 0x30, 0x1E, 0x21, 0x20
+	.byte 0x1C, 0x25, 0x2C, 0x2B
+	.byte 0x23, 0x29, 0x10, 0x10
+	.byte 0x10, 0x10, 0x10, 0x10
+	.byte 0x10, 0x0C, 0x1B, 0x0D
+	.byte 0x0E, 0x0F, 0x24, 0x11
+	.byte 0x26, 0x12, 0x27, 0x28
+	.byte 0x13, 0x1D, 0x14, 0x15
+	.byte 0x1F, 0x2A, 0x16, 0x17
+	.byte 0x18, 0x19, 0x2D, 0x1A
+	.byte 0x2E, 0x22, 0x2F, 0x00
+	.4byte 0
+	.byte 0x00, 0x00, 0x01, 0xE9
+	.byte 0x00, 0x00, 0x00, 0x82
+	.byte 0x00, 0x00, 0x01, 0xF1
+	.4byte 0
+	.byte 0x00, 0x00, 0x01, 0xE9
+	.byte 0x00, 0x00, 0x00, 0x82
+	.byte 0x00, 0x00, 0x01, 0xEA
+	.byte 0x00, 0x00, 0x00, 0xBE
+	.byte 0x00, 0x00, 0x01, 0xEF
+	.4byte 0
+	.byte 0x00, 0x00, 0x01, 0xE9
+	.byte 0x00, 0x00, 0x00, 0x82
+	.byte 0x00, 0x00, 0x01, 0xEB
+	.byte 0x00, 0x00, 0x00, 0xBE
+	.byte 0x00, 0x00, 0x01, 0xEF
+	.4byte 0
+	.byte 0x00, 0x00, 0x01, 0xE9
+	.byte 0x00, 0x00, 0x00, 0x82
+	.byte 0x00, 0x00, 0x01, 0xEC
+	.byte 0x00, 0x00, 0x00, 0xBE
+	.byte 0x00, 0x00, 0x01, 0xEF
+	.4byte 0
+	.byte 0x00, 0x00, 0x01, 0xE9
+	.byte 0x00, 0x00, 0x00, 0x82
+	.byte 0x00, 0x00, 0x01, 0xED
+	.byte 0x00, 0x00, 0x00, 0xBE
+	.byte 0x00, 0x00, 0x01, 0xEF
+	.4byte 0
+	.byte 0x00, 0x00, 0x01, 0xE9
+	.byte 0x00, 0x00, 0x00, 0x82
+	.byte 0x00, 0x00, 0x01, 0xEE
+glabel string_CONGRATULATIONS_
+	.asciz "CONGRATULATIONS:"
+	.balign 4
+glabel string_YOU_LOSE
+	.asciz "YOU LOSE"
+	.balign 4
+glabel string_YOU_RETIRE
+	.asciz "YOU RETIRE"
+	.balign 4
+glabel string_COM_WINS
+	.asciz "COM WINS"
+	.balign 4
+glabel string_DRAW_GAME
+	.asciz "DRAW GAME"
+	.balign 4
+
+.global lbl_801D404C
+lbl_801D404C:
+	# ROM: 0x1D104C
+	.4byte string_CONGRATULATIONS_  ;# ptr
+	.byte 0x3F, 0xD3, 0x33, 0x33
+	.byte 0x3E, 0x80, 0x00, 0x00
+	.4byte 0
+	.4byte 0x802F1370  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_CONGRATULATIONS_  ;# ptr
+	.byte 0x3F, 0xF3, 0x33, 0x33
+	.byte 0x3E, 0x61, 0x47, 0xAE
+	.4byte 0
+	.4byte 0x802F1368  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_YOU_LOSE  ;# ptr
+	.byte 0x3F, 0xC6, 0x66, 0x66
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.4byte 0
+	.4byte 0x802F1378  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_YOU_RETIRE  ;# ptr
+	.byte 0x3F, 0x86, 0x66, 0x66
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.4byte 0
+	.4byte 0x802F1380  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_COM_WINS  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x802F1370  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_1P_WINS  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x801D3F98  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x03
+	.4byte string_2P_WINS  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x801D3FB0  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x03
+	.4byte string_3P_WINS  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x801D3FC8  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x03
+	.4byte string_4P_WINS  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x801D3FE0  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x03
+	.4byte string_DRAW_GAME  ;# ptr
+	.byte 0x3F, 0x9D, 0x70, 0xA4
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x802F1368  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_RANK_IN  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x801D3FF8  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x02
+	.4byte 0x802F13B0  ;# ptr
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x802F1368  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte string_YOU_WIN  ;# ptr
+	.byte 0x3F, 0xB7, 0x0A, 0x3D
+	.byte 0x3E, 0xA3, 0xD7, 0x0A
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x801D3F88  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x02
+	.byte 0x00, 0x00, 0x0D, 0x00
+	.4byte 0
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0
+	.4byte 0
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x05
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.byte 0x00, 0x00, 0x0D, 0x00
+	.byte 0x44, 0x20, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.byte 0x00, 0x00, 0x00, 0x07
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel string_commend_disp
+	.asciz "commend disp"
+	.balign 4
+glabel string_mini_commend_c
+	.asciz "mini_commend.c"
+	.balign 4
+glabel string_multiple_CommendInit_without_CommendDest_n
+	.asciz "multiple CommendInit without CommendDest\n"
+	.balign 4
+glabel string_commend_tpl
+	.asciz "commend.tpl"
+glabel string_commend_gma
+	.asciz "commend.gma"
 
 .section .sdata2
 

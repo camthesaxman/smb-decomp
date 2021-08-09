@@ -3,7 +3,9 @@
 
 #include <dolphin/types.h>
 
-typedef int  OSHeapHandle;
+typedef int OSHeapHandle;
+
+extern volatile OSHeapHandle __OSCurrHeap;
 
 void *OSInitAlloc(void *, void *, int);
 OSHeapHandle OSCreateHeap(void *, void *);

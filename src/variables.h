@@ -1046,7 +1046,6 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802F18E8;
 // extern ? lbl_802F18F0;
 // extern ? lbl_802F18F8;
-extern OSHeapHandle __OSCurrHeap;
 // extern ? __OSArenaLo;
 // extern ? lbl_802F1938;
 // extern ? lbl_802F1940;

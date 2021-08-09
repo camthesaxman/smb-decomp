@@ -3,12 +3,7 @@
 
 #include "global.h"
 #include "game.h"
-
-struct MinigameLink
-{
-    u32 unk0;
-    u32 unk4;
-};
+#include "relocation.h"
 
 char *gameModeRelNames[] = {
     "",
@@ -380,7 +375,7 @@ void gm_main(void)
 
     if (modeCtrl.unk8 & (1 << 9))
     {
-        if (lbl_802F021C.unk0 == 0)
+        if (lbl_802F021C.info == NULL)
         {
             event_clear();
             g_something_with_iteratively_freeing_memory();
