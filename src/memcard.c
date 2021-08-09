@@ -18,85 +18,56 @@ struct MemCardMessage
     int numLines;
 };
 
-// .bss
-CARDStat lbl_802BA2A0;
-
-struct UnkStruct802BA310
+enum
 {
-    u32 unk0;  // lbl_802BA2A0 + 0x70
-    s32 unk4;
-    u32 unk8;
-    struct MemCardMessage *unkC;
-    u8 filler10[0x14-0x10];
-    /*0x14*/ char fileName[0x38-0x14];
+    MC_STATUS_MOUNTED = (1 << 0),
+    MC_STATUS_OPEN    = (1 << 1),
+    MC_STATUS_ERROR   = (1 << 9),
+};
 
-//#define lbl_802BA310 lbl_802BA348  // hmm... some functions reference lbl_802BA310
-    /*0x38*/ OSTime time;  // no idea which struct this is in.
+// .bss
+CARDStat cardStat;
+struct MemcardInfo
+{
+    u32 unk0;
+    s32 unk4;
+    /*0x08*/ u32 statusFlags;
+    /*0x0C*/ struct MemCardMessage *msg;
+    u8 unused10[4];
+    /*0x14*/ char fileName[0x38-0x14];
+    /*0x38*/ OSTime time;
     s16 unk40;
     u16 unk42;
-    //u8 filler44[0x48-0x44];
     u32 unk44;
-    u32 unk48;
-    u8 unk4C;
+    /*0x48*/ u32 fileSize;
+    /*0x4C*/ u8 state;
     u8 unk4D;
-    u8 filler4E[0x50-0x4E];
     /*0x50*/ CARDFileInfo cardFileInfo;
-    u8 filler64[0xC];
-} lbl_802BA310;
-
-extern struct UnkStruct802F21BC
-{
-    u8 filler0[2];
-    u16 unk2;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6;
-    u8 unk7;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    s8 unk14;
-    u8 filler15[0x18-0x15];
-} *lbl_802F21BC;
-
-u8 lbl_802BA380[0xA100];
+    u8 unused64[0xC];
+} memcardInfo;
+u8 cardWorkArea[0xA100];
 u8 lbl_802C4480[0x3C0];
 char strFmtBufferLine1[64];
 char strFmtBufferLine2[64];
 char strFmtBufferLine3[64];
 char lbl_802C4900[64];
 
-FORCE_BSS_ORDER(lbl_802BA2A0)
-FORCE_BSS_ORDER(lbl_802BA310)
-FORCE_BSS_ORDER(lbl_802BA380)
+FORCE_BSS_ORDER(cardStat)
+FORCE_BSS_ORDER(memcardInfo)
+FORCE_BSS_ORDER(cardWorkArea)
 FORCE_BSS_ORDER(lbl_802C4480)
 FORCE_BSS_ORDER(strFmtBufferLine1)
 FORCE_BSS_ORDER(strFmtBufferLine2)
 FORCE_BSS_ORDER(strFmtBufferLine3)
 FORCE_BSS_ORDER(lbl_802C4900)
 
-extern u8 lbl_802F21A8;
-extern u8 lbl_802F21B9;
-extern u8 lbl_802F21B0;
-extern u8 lbl_802F21B1;
-extern s8 lbl_802F21B2;
-extern u8 lbl_802F21B8;
-
-extern struct
+// sbss
+u8 lbl_802F21C8;
+struct
 {
-    u16 unk0;
+    u16 crc;
     u16 unk2;
-    u8 unk4[0x5800];
-    char unk5804[0x5824-0x5804];
-    char unk5824[0xC04-0x824];
-    u8 unk5C04[100];
-} *lbl_802F21AC;
-
-extern struct
-{
-    u16 unk0;  // crc
-    u16 unk2;
-    u8 unk4;  // array?
+    u8 unk4;
     u8 unk5;
     u8 unk6;
     u8 unk7;
@@ -107,7 +78,53 @@ extern struct
     char unk2010[0x20];
     char unk2030[0x20];
     u8 unk2050[100];
-} *lbl_802F21C4;
+} *memcardReplayData;
+u32 lbl_802F21C0;
+struct UnkStruct802F21BC
+{
+    u8 filler0[2];
+    u16 unk2;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+    u32 unk8;
+    u32 unkC;
+    u32 unk10;
+    s8 fileNo;
+    u8 filler15[0x18-0x15];
+} *lbl_802F21BC;
+u8 lbl_802F21B9;
+u8 lbl_802F21B8;
+u32 lbl_802F21B4;
+s8 lbl_802F21B2;
+u8 lbl_802F21B1;
+
+enum
+{
+    /*0*/ MC_MODE_LOAD_GAMEDATA_0,
+    /*1*/ MC_MODE_SAVE_GAMEDATA_1,
+    /*2*/ MC_MODE_LOAD_GAMEDATA_2,
+    /*3*/ MC_MODE_SAVE_GAMEDATA_3,
+    /*4*/ MC_MODE_LOAD_REPLAY,
+    /*5*/ MC_MODE_SAVE_REPLAY,
+    /*6*/ MC_MODE_LIST_REPLAY,
+    /*7*/ MC_MODE_DELETE_REPLAY,
+};
+
+u8 memcardMode;
+struct
+{
+    u16 crc;
+    u16 version;
+    u8 unk4[0x5800];
+    char unk5804[0x5824-0x5804];
+    char unk5824[0xC04-0x824];
+    u8 unk5C04[100];
+} *memcardGameData;
+u8 lbl_802F21A8;
+
+#define BLOCK_SIZE 0x2000
 
 #pragma force_active on
 
@@ -123,16 +140,18 @@ void func_8009F4CC(u8 a)
 
 void func_8009F4D4(void)
 {
-    CARDCancel(&lbl_802BA310.cardFileInfo);
-    if (lbl_802BA310.unk8 & (1 << (31-0x1E)))
+    CARDCancel(&memcardInfo.cardFileInfo);
+
+    if (memcardInfo.statusFlags & MC_STATUS_OPEN)
     {
-        CARDClose(&lbl_802BA310.cardFileInfo);
-        lbl_802BA310.unk8 &= ~(1 << (31-0x1E));
+        CARDClose(&memcardInfo.cardFileInfo);
+        memcardInfo.statusFlags &= ~MC_STATUS_OPEN;
     }
-    if (lbl_802BA310.unk8 & 1)
+
+    if (memcardInfo.statusFlags & MC_STATUS_MOUNTED)
     {
         CARDUnmount(0);
-        lbl_802BA310.unk8 &= ~1;
+        memcardInfo.statusFlags &= ~MC_STATUS_MOUNTED;
     }
 }
 
@@ -639,19 +658,19 @@ void func_8009F568(void)
     OSCalendarTime calendarTime;
     void *buffer = OSAlloc(0x5800);
     if (buffer == NULL)
-        OSPanic("memcard.c", 0x39F, "cannot OSAlloc");
+        OSPanic("memcard.c", 927, "cannot OSAlloc");
     if (DVDOpen("banner_and_icon.bin", &file) == 0)
-        OSPanic("memcard.c", 0x3A3, "cannot open banner_and_icon.bin");
+        OSPanic("memcard.c", 931, "cannot open banner_and_icon.bin");
     if (g_read_dvd_file(&file, buffer, 0x5800, 0) == 0)
-        OSPanic("memcard.c", 0x3A7, "cannot read banner_and_icon.bin");
-    memcpy(lbl_802F21AC->unk4, buffer, 0x5800);
+        OSPanic("memcard.c", 935, "cannot read banner_and_icon.bin");
+    memcpy(memcardGameData->unk4, buffer, 0x5800);
     OSFree(buffer);
     DVDClose(&file);
-    lbl_802BA2A0.commentAddr = (u32)lbl_802F21AC->unk5804 - (u32)lbl_802F21AC;
-    strcpy(lbl_802F21AC->unk5804, "Super Monkey Ball");
-    OSTicksToCalendarTime(lbl_802BA310.time, &calendarTime);
+    cardStat.commentAddr = (u32)memcardGameData->unk5804 - (u32)memcardGameData;
+    strcpy(memcardGameData->unk5804, "Super Monkey Ball");
+    OSTicksToCalendarTime(memcardInfo.time, &calendarTime);
     sprintf(
-        lbl_802F21AC->unk5824,
+        memcardGameData->unk5824,
         "GameData%02d-%02d-%02d %02d:%02d",
         calendarTime.mon + 1,
         calendarTime.mday,
@@ -659,35 +678,35 @@ void func_8009F568(void)
         calendarTime.hour,
         calendarTime.min);
 
-    lbl_802BA2A0.iconAddr = (u32)lbl_802F21AC->unk4 - (u32)lbl_802F21AC;
-    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~0x3) | 2;
+    cardStat.iconAddr = (u32)memcardGameData->unk4 - (u32)memcardGameData;
+    cardStat.bannerFormat = (cardStat.bannerFormat & ~0x3) | 2;
 
     // These loops match except for stack
     /*
     for (i = 0; i < 8; i++)
-        lbl_802BA2A0.unk34 = (lbl_802BA2A0.unk34 & ~(3 << (2*i))) | (2 << (2*i));
+        cardStat.unk34 = (cardStat.unk34 & ~(3 << (2*i))) | (2 << (2*i));
     for (i = 0; i < 8; i++)
-        lbl_802BA2A0.unk36 = (lbl_802BA2A0.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
+        cardStat.unk36 = (cardStat.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
     */
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*0))) | (2 << (2*0));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*1))) | (2 << (2*1));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*2))) | (2 << (2*2));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*3))) | (2 << (2*3));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*4))) | (2 << (2*4));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*5))) | (2 << (2*5));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*6))) | (2 << (2*6));
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~(3 << (2*7))) | (2 << (2*7));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*0))) | (2 << (2*0));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*1))) | (2 << (2*1));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*2))) | (2 << (2*2));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*3))) | (2 << (2*3));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*4))) | (2 << (2*4));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*5))) | (2 << (2*5));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*6))) | (2 << (2*6));
+    cardStat.iconFormat = (cardStat.iconFormat & ~(3 << (2*7))) | (2 << (2*7));
 
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*0))) | ((1 << (2*0)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*1))) | ((1 << (2*1)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*2))) | ((1 << (2*2)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*3))) | ((1 << (2*3)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*4))) | ((1 << (2*4)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*5))) | ((1 << (2*5)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*6))) | ((1 << (2*6)) & 0x1FFF);
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(3 << (2*7))) | ((1 << (2*7)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*0))) | ((1 << (2*0)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*1))) | ((1 << (2*1)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*2))) | ((1 << (2*2)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*3))) | ((1 << (2*3)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*4))) | ((1 << (2*4)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*5))) | ((1 << (2*5)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*6))) | ((1 << (2*6)) & 0x1FFF);
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(3 << (2*7))) | ((1 << (2*7)) & 0x1FFF);
 
-    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~(0x1<<2));
+    cardStat.bannerFormat = (cardStat.bannerFormat & ~(0x1<<2));
 }
 
 struct Struct8009F7F0
@@ -706,49 +725,49 @@ void func_8009F7F0(void)
 {
     DVDFileInfo file;
     struct Struct8009F7F0 sp88;
-    char categoryName[12];
+    char category[12];
     char replayFileName[68];
     OSCalendarTime calendarTime;
 
     void *buffer = OSAlloc(0x1800);
     if (buffer == NULL)
-        OSPanic("memcard.c", 0x3F6, "cannot OSAlloc");
+        OSPanic("memcard.c", 1014, "cannot OSAlloc");
     func_80049F20(11, &sp88);
     if (DVDOpen("preview/96x32.tpl", &file) == 0)
-        OSPanic("memcard.c", 0x402, "cannot open replay banner image");
+        OSPanic("memcard.c", 1026, "cannot open replay banner image");
     if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
-        OSPanic("memcard.c", 0x405, "cannot read replay banner image");
-    memcpy(lbl_802F21C4->unk10, buffer, 0x1800);
+        OSPanic("memcard.c", 1029, "cannot read replay banner image");
+    memcpy(memcardReplayData->unk10, buffer, 0x1800);
     DVDClose(&file);
 
     if (DVDOpen("replay_icon.bin", &file) == 0)
-        OSPanic("memcard.c", 0x410, "cannot open replay_icon.bin");
+        OSPanic("memcard.c", 1040, "cannot open replay_icon.bin");
     if (g_read_dvd_file(&file, buffer, 0x800, 0) == 0)
-        OSPanic("memcard.c", 0x413, "cannot read replay_icon.bin");
-    memcpy(lbl_802F21C4->unk1810, buffer, 0x800);
+        OSPanic("memcard.c", 1043, "cannot read replay_icon.bin");
+    memcpy(memcardReplayData->unk1810, buffer, 0x800);
     DVDClose(&file);
     OSFree(buffer);
-    lbl_802BA2A0.commentAddr = (u32)lbl_802F21C4->unk2010 - (u32)lbl_802F21C4;
-    strncpy(lbl_802F21C4->unk2010, "Super Monkey Ball", 32);
+    cardStat.commentAddr = (u32)memcardReplayData->unk2010 - (u32)memcardReplayData;
+    strncpy(memcardReplayData->unk2010, "Super Monkey Ball", 32);
 
-    if (sp88.flags & (1<<(31-0x19)))
+    if (sp88.flags & (1 << 6))
     {
-        strcpy(categoryName, "Master");
+        strcpy(category, "Master");
     }
     else
     {
-        if (sp88.flags & (1<<(31-0x1A)))
+        if (sp88.flags & (1 << 5))
         {
             switch (sp88.difficulty)
             {
             case 0:
-                strcpy(categoryName, "Beg.Ext");
+                strcpy(category, "Beg.Ext");
                 break;
             case 1:
-                strcpy(categoryName, "Adv.Ext");
+                strcpy(category, "Adv.Ext");
                 break;
             case 2:
-                strcpy(categoryName, "Exp.Ext");
+                strcpy(category, "Exp.Ext");
                 break;
             }
         }
@@ -757,46 +776,46 @@ void func_8009F7F0(void)
             switch (sp88.difficulty)
             {
             case 0:
-                strcpy(categoryName, "Beg.FL");
+                strcpy(category, "Beg.FL");
                 break;
             case 1:
-                strcpy(categoryName, "Adv.FL");
+                strcpy(category, "Adv.FL");
                 break;
             case 2:
-                strcpy(categoryName, "Exp.FL");
+                strcpy(category, "Exp.FL");
                 break;
             }
         }
     }
 
-    OSTicksToCalendarTime(lbl_802BA310.time, &calendarTime);
+    OSTicksToCalendarTime(memcardInfo.time, &calendarTime);
     sprintf(
         replayFileName,
         "%s%d %02d-%02d-%02d %02d:%02d",
-        categoryName,
+        category,
         sp88.unk4,
         calendarTime.mon + 1,
         calendarTime.mday,
         calendarTime.year % 100,
         calendarTime.hour,
         calendarTime.min);
-    strncpy(lbl_802F21C4->unk2030, replayFileName, 32);
+    strncpy(memcardReplayData->unk2030, replayFileName, 32);
 
-    lbl_802BA2A0.iconAddr = (u32)lbl_802F21C4->unk10 - (u32)lbl_802F21C4;
-    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~0x3) | 2;
-    lbl_802BA2A0.iconFormat = (lbl_802BA2A0.iconFormat & ~0x3) | 2;
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~0x3) | 3;
-    lbl_802BA2A0.iconSpeed = (lbl_802BA2A0.iconSpeed & ~(0x3<<2));
-    lbl_802BA2A0.bannerFormat = (lbl_802BA2A0.bannerFormat & ~(0x1<<2));
+    cardStat.iconAddr = (u32)memcardReplayData->unk10 - (u32)memcardReplayData;
+    cardStat.bannerFormat = (cardStat.bannerFormat & ~0x3) | 2;
+    cardStat.iconFormat = (cardStat.iconFormat & ~0x3) | 2;
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~0x3) | 3;
+    cardStat.iconSpeed = (cardStat.iconSpeed & ~(0x3<<2));
+    cardStat.bannerFormat = (cardStat.bannerFormat & ~(0x1<<2));
 
-    lbl_802F21C4->unk2 = sp88.flags;
-    lbl_802F21C4->unk4 = sp88.unk2;
-    lbl_802F21C4->unk5 = sp88.difficulty;
-    lbl_802F21C4->unk6 = sp88.unk4;
-    lbl_802F21C4->unk7 = sp88.unk5;
-    lbl_802F21C4->unk8 = sp88.unk10;
+    memcardReplayData->unk2 = sp88.flags;
+    memcardReplayData->unk4 = sp88.unk2;
+    memcardReplayData->unk5 = sp88.difficulty;
+    memcardReplayData->unk6 = sp88.unk4;
+    memcardReplayData->unk7 = sp88.unk5;
+    memcardReplayData->unk8 = sp88.unk10;
 
-    lbl_802F21C4->unkC = (u64)lbl_802BA310.time / (*(u32 *)0x800000F8 / 4); // WTF??
+    memcardReplayData->unkC = (u64)memcardInfo.time / (*(u32 *)0x800000F8 / 4); // WTF??
 }
 
 void func_8009FB8C(void)
@@ -804,73 +823,73 @@ void func_8009FB8C(void)
     s32 dummyMemSize;
     s32 result;
 
-    result = CARDProbeEx(0, &dummyMemSize, &lbl_802BA310.unk4);
+    result = CARDProbeEx(0, &dummyMemSize, &memcardInfo.unk4);
     if (result != CARD_RESULT_NOCARD)
     {
         if (result != CARD_RESULT_BUSY)
-            lbl_802BA310.unk40 = 0;
-        if (result < CARD_RESULT_BUSY)
+            memcardInfo.unk40 = 0;
+        if (result < -1)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
         }
     }
 
-    lbl_802BA310.unk8 &= ~(1 << (31-0x1D));
+    memcardInfo.statusFlags &= ~(1 << 2);
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_NOCARD:
-        if (lbl_802BA310.unk40 == 0)
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk8 &= ~(1 << (31-0x1D));
-            if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+            memcardInfo.statusFlags &= ~(1 << 2);
+            if (memcardInfo.statusFlags & (1 << 6))
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unk42 = 0;
-                lbl_802BA310.unkC = &msgMemCardNotInsertedAutosaveOff;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.unk42 = 0;
+                memcardInfo.msg = &msgMemCardNotInsertedAutosaveOff;
+                memcardInfo.state = 0xFF;
             }
             else
             {
-                lbl_802BA310.unkC = &msgMemCardNotInsertedSlotA;
-                lbl_802BA310.unk4C = 1;
+                memcardInfo.msg = &msgMemCardNotInsertedSlotA;
+                memcardInfo.state = 1;
             }
         }
         else
-            lbl_802BA310.unk8 |= 4;
+            memcardInfo.statusFlags |= (1 << 2);
         break;
     case CARD_RESULT_WRONGDEVICE:
-        lbl_802BA310.unkC = &msgMemCardNotInserted;
-        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        memcardInfo.msg = &msgMemCardNotInserted;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
         break;
     case CARD_RESULT_BUSY:
-        if (lbl_802BA310.unk40 == 0)
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_READY:
-        if (lbl_802BA310.unk4 != 0x2000)
+        if (memcardInfo.unk4 != 0x2000)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantUse2;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantUse2;
+            memcardInfo.state = 0xFF;
         }
         else
         {
-            int foo = lbl_802BA310.unk4 - 1;
-            lbl_802BA310.unk48 = (lbl_802BA310.unk44 + foo) & ~foo;
-            lbl_802BA310.unk4C = 3;
+            int foo = memcardInfo.unk4 - 1;
+            memcardInfo.fileSize = (memcardInfo.unk44 + foo) & ~foo;
+            memcardInfo.state = 3;
         }
         break;
     }
@@ -878,38 +897,38 @@ void func_8009FB8C(void)
 
 void func_8009FDD4(void)
 {
-    s32 result = CARDMountAsync(0, lbl_802BA380, NULL, NULL);
+    s32 result = CARDMountAsync(0, cardWorkArea, NULL, NULL);
 
     if (result < 0)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
-        lbl_802BA310.unkC = &msgMemCardNotSupported;
-        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        memcardInfo.msg = &msgMemCardNotSupported;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_WRONGDEVICE:
-        lbl_802BA310.unkC = &msgMemCardNotInserted;
-        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        memcardInfo.msg = &msgMemCardNotInserted;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_NOFILE:
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 4;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 4;
         break;
     }
 }
@@ -919,49 +938,49 @@ void func_8009FF18(void)
     s32 result = CARDGetResultCode(0);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_WRONGDEVICE:
-        lbl_802BA310.unkC = &msgMemCardNotInserted;
-        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        memcardInfo.msg = &msgMemCardNotInserted;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_BUSY:
-        if (lbl_802BA310.unk40 == 0)
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_ENCODING:
     case CARD_RESULT_BROKEN:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
         // fall through
     case CARD_RESULT_READY:
-        lbl_802BA310.unk4C = 5;
-        lbl_802BA310.unk8 |= 1;
+        memcardInfo.state = 5;
+        memcardInfo.statusFlags |= MC_STATUS_MOUNTED;
         break;
     }
 }
@@ -972,29 +991,29 @@ void func_800A00C0(void)
 
     if (result < 0)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 6;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 6;
         break;
     }
 }
@@ -1004,171 +1023,171 @@ void func_800A01B0(void)
     s32 result = CARDGetResultCode(0);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_IOERROR:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_WRONGDEVICE:
-        lbl_802BA310.unkC = &msgMemCardNotInserted;
-        lbl_802BA310.unk4C = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xFF : 1;
+        memcardInfo.msg = &msgMemCardNotInserted;
+        memcardInfo.state = (memcardInfo.statusFlags & (1 << 6)) ? 0xFF : 1;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_BROKEN:
     case CARD_RESULT_ENCODING:
-        if ((lbl_802BA310.unk8 & 0x90) == 0x90)
+        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 7))) == ((1 << 4) | (1 << 7)))
         {
-            lbl_802BA310.unkC = &msgMemCardDamaged;
-            lbl_802BA310.unk4C = 9;
+            memcardInfo.msg = &msgMemCardDamaged;
+            memcardInfo.state = 9;
             lbl_802F21B1 = 0;
-            lbl_802BA310.unk8 |= 0x400;
+            memcardInfo.statusFlags |= (1 << 10);
         }
         else
         {
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unkC = &msgMemCardFileDamagedPleaseFormat;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = 0;
+            memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_READY:
-        if (lbl_802F21B0 == 5)
+        if (memcardMode == MC_MODE_SAVE_REPLAY)
         {
-            lbl_802BA310.unk40 = 0x4B0;
-            lbl_802BA310.unk4C = 0x17;
+            memcardInfo.unk40 = 0x4B0;
+            memcardInfo.state = 0x17;
         }
-        else if (lbl_802F21B0 == 6)
-            lbl_802BA310.unk4C = 0x18;
-        else if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
-            lbl_802BA310.unk4C = 0x21;
+        else if (memcardMode == MC_MODE_LIST_REPLAY)
+            memcardInfo.state = 0x18;
+        else if (memcardInfo.statusFlags & (1 << 4))
+            memcardInfo.state = 0x21;
         else
-            lbl_802BA310.unk4C = 7;
+            memcardInfo.state = 7;
         break;
     }
 }
 
 void func_800A03DC(void)
 {
-    s32 result = CARDOpen(0, lbl_802BA310.fileName, &lbl_802BA310.cardFileInfo);
+    s32 result = CARDOpen(0, memcardInfo.fileName, &memcardInfo.cardFileInfo);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
     case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_NOCARD:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     case CARD_RESULT_NOFILE:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        if (memcardInfo.statusFlags & (1 << 4))
         {
-            if (lbl_802BA310.unk4C == 0x22)
-                lbl_802BA310.unk4C = 7;
+            if (memcardInfo.state == 0x22)
+                memcardInfo.state = 7;
             else
             {
-                lbl_802BA310.unk0 = -1;
-                lbl_802BA310.unk40 = 0x4B0;
-                lbl_802BA310.unk4C = 0x17;
+                memcardInfo.unk0 = -1;
+                memcardInfo.unk40 = 0x4B0;
+                memcardInfo.state = 0x17;
             }
         }
         else
-            lbl_802BA310.unk4C = 0x1F;
+            memcardInfo.state = 0x1F;
         break;
     case CARD_RESULT_NOPERM:
-        if ((lbl_802BA310.unk8 & 0x90) == 0x90)
+        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 7))) == ((1 << 4) | (1 << 7)))
         {
-            lbl_802BA310.unkC = &msgCantSaveFile;
-            lbl_802BA310.unk4C = 9;
+            memcardInfo.msg = &msgCantSaveFile;
+            memcardInfo.state = 9;
             lbl_802F21B1 = 0;
-            lbl_802BA310.unk8 |= 0x400;
+            memcardInfo.statusFlags |= (1 << 10);
         }
         else
         {
-            lbl_802BA310.unkC = &msgCantLoadFile;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.msg = &msgCantLoadFile;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_BUSY:
-        if (lbl_802BA310.unk40 == 0)
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_BROKEN:
-        if ((lbl_802BA310.unk8 & 0x90) == 0x90)
+        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 7))) == ((1 << 4) | (1 << 7)))
         {
-            lbl_802BA310.unkC = &msgMemCardDamaged;
-            lbl_802BA310.unk4C = 9;
+            memcardInfo.msg = &msgMemCardDamaged;
+            memcardInfo.state = 9;
             lbl_802F21B1 = 0;
-            lbl_802BA310.unk8 |= 0x400;
+            memcardInfo.statusFlags |= (1 << 10);
         }
         else
         {
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unkC = &msgMemCardFileDamagedPleaseFormat;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = 0;
+            memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
+            memcardInfo.state = 0xFF;
         }
         break;
     case CARD_RESULT_READY:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        if ((lbl_802BA310.unk8 & 0x2010) == 0x2010)
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        if ((memcardInfo.statusFlags & ((1 << 4) | (1 << 13))) == ((1 << 4) | (1 << 13)))
         {
-            lbl_802BA310.unk0 = lbl_802BA310.cardFileInfo.fileNo;
-            CARDClose(&lbl_802BA310.cardFileInfo);
-            if (lbl_802BA310.unk4C == 0x22)
-                lbl_802BA310.unk4C = 0x23;
+            memcardInfo.unk0 = memcardInfo.cardFileInfo.fileNo;
+            CARDClose(&memcardInfo.cardFileInfo);
+            if (memcardInfo.state == 0x22)
+                memcardInfo.state = 0x23;
             else
             {
-                lbl_802BA310.unk40 = 0x4B0;
-                lbl_802BA310.unk4C = 0x17;
-                lbl_802BA310.unk8 |= 0x10000;
+                memcardInfo.unk40 = 0x4B0;
+                memcardInfo.state = 0x17;
+                memcardInfo.statusFlags |= (1 << 16);
             }
         }
         else
         {
-            lbl_802BA310.unk8 |= 2;
-            lbl_802BA310.unk4C = 0xF;
+            memcardInfo.statusFlags |= MC_STATUS_OPEN;
+            memcardInfo.state = 0xF;
         }
         break;
     }
@@ -1180,101 +1199,101 @@ void func_800A06CC(void)
     s32 freeFiles;
     s32 result = CARDFreeBlocks(0, &freeBytes, &freeFiles);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -6:
-        lbl_802BA310.unkC = &msgMemCardFileDamagedPleaseFormat;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_BROKEN:
+        memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         else
         {
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
         }
         break;
-    case 0:
-        if (lbl_802BA310.unk4C == 0x17)
+    case CARD_RESULT_READY:
+        if (memcardInfo.state == 0x17)
         {
             if (freeFiles < 1)
             {
-                lbl_802BA310.unkC = &msgCantMakeMoreFiles;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.msg = &msgCantMakeMoreFiles;
+                memcardInfo.state = 0xFF;
             }
-            else if (lbl_802F21B0 == 2)
+            else if (memcardMode == MC_MODE_LOAD_GAMEDATA_2)
             {
-                freeBytes /= (1 << 13);
+                freeBytes /= BLOCK_SIZE;
                 if (freeBytes < 13)
                 {
-                    lbl_802BA310.unk8 |= 0x180000;
-                    lbl_802BA310.unk4D = freeBytes;
-                    lbl_802BA310.unk42 = 0;
+                    memcardInfo.statusFlags |= (1 << 19) | (1 << 20);
+                    memcardInfo.unk4D = freeBytes;
+                    memcardInfo.unk42 = 0;
                     if (freeBytes < 2)
                     {
-                        if (lbl_802BA310.unk8 & (1 << (31-0xD)))
-                            lbl_802BA310.unkC = &lbl_802F1510;
+                        if (memcardInfo.statusFlags & (1 << 18))
+                            memcardInfo.msg = &lbl_802F1510;
                         else
-                            lbl_802BA310.unkC = &lbl_802F1528;
+                            memcardInfo.msg = &lbl_802F1528;
                     }
                     else if (freeBytes < 3)
                     {
-                        if (lbl_802BA310.unk8 & (1 << (31-0xD)))
-                            lbl_802BA310.unkC = &lbl_802F1518;
+                        if (memcardInfo.statusFlags & (1 << 18))
+                            memcardInfo.msg = &lbl_802F1518;
                         else
-                            lbl_802BA310.unkC = &lbl_802F1530;
+                            memcardInfo.msg = &lbl_802F1530;
                     }
                     else
                     {
-                        if (lbl_802BA310.unk8 & (1 << (31-0xD)))
-                            lbl_802BA310.unkC = &lbl_802F1520;
+                        if (memcardInfo.statusFlags & (1 << 18))
+                            memcardInfo.msg = &lbl_802F1520;
                         else
-                            lbl_802BA310.unkC = &lbl_802F1538;
+                            memcardInfo.msg = &lbl_802F1538;
                     }
                 }
                 else
                 {
-                    if (lbl_802BA310.unk8 & (1 << (31-0xD)))
+                    if (memcardInfo.statusFlags & (1 << 18))
                     {
-                        lbl_802BA310.unk42 = 0;
-                        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-                        lbl_802BA310.unk8 |= 8;
+                        memcardInfo.unk42 = 0;
+                        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+                        memcardInfo.statusFlags |= (1 << 3);
                     }
                     else
-                        lbl_802BA310.unkC = &lbl_802F14A0;
+                        memcardInfo.msg = &lbl_802F14A0;
                 }
-                lbl_802BA310.unk8 &= ~(1 << (31-14));
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.statusFlags &= ~(1 << 17);
+                memcardInfo.state = 0xFF;
             }
-            else if (freeBytes < lbl_802BA310.unk48)
+            else if (freeBytes < memcardInfo.fileSize)
             {
                 if (freeBytes == 0)
                 {
-                    if (lbl_802F21B0 == 3)
+                    if (memcardMode == MC_MODE_SAVE_GAMEDATA_3)
                     {
                         sprintf(
                             msgFmtBuffer.lines[0].str,
                             lbl_802F14E8.lines[0].str,
-                            freeBytes / (1 << 13));
+                            freeBytes / BLOCK_SIZE);
                         sprintf(
                             msgFmtBuffer.lines[1].str,
                             lbl_802F14E8.lines[1].str,
-                            lbl_802BA310.unk48 / (1 << 13));
+                            memcardInfo.fileSize / BLOCK_SIZE);
                         sprintf(
                             msgFmtBuffer.lines[2].str,
                             lbl_802F14E8.lines[2].str);
@@ -1291,7 +1310,7 @@ void func_800A06CC(void)
                         sprintf(
                             msgFmtBuffer.lines[1].str,
                             lbl_802F14E0.lines[1].str,
-                            lbl_802BA310.unk48 / (1 << 13));
+                            memcardInfo.fileSize / BLOCK_SIZE);
                         msgFmtBuffer.lines[0].unk4 = lbl_802F14E0.lines[0].unk4;
                         msgFmtBuffer.lines[1].unk4 = lbl_802F14E0.lines[1].unk4;
                         msgFmtBuffer.numLines = lbl_802F14E0.numLines;
@@ -1301,20 +1320,20 @@ void func_800A06CC(void)
                 {
                     struct MemCardMessage *fmtMsg;
 
-                    if (lbl_802F21B0 == 3)
+                    if (memcardMode == MC_MODE_SAVE_GAMEDATA_3)
                     {
-                        if (freeBytes / (1 << 13) == 1)
+                        if (freeBytes / BLOCK_SIZE == 1)
                             fmtMsg = &lbl_802F14D8;
                         else
                             fmtMsg = &lbl_802F14D0;
                         sprintf(
                             msgFmtBuffer.lines[0].str,
                             fmtMsg->lines[0].str,
-                            freeBytes / (1 << 13));
+                            freeBytes / BLOCK_SIZE);
                         sprintf(
                             msgFmtBuffer.lines[1].str,
                             fmtMsg->lines[1].str,
-                            lbl_802BA310.unk48 / (1 << 13));
+                            memcardInfo.fileSize / BLOCK_SIZE);
                         sprintf(
                             msgFmtBuffer.lines[2].str,
                             fmtMsg->lines[2].str);
@@ -1325,7 +1344,7 @@ void func_800A06CC(void)
                     }
                     else
                     {
-                        if (freeBytes / (1 << 13) == 1)
+                        if (freeBytes / BLOCK_SIZE == 1)
                             fmtMsg = &lbl_802F14C8;
                         else
                             fmtMsg = &lbl_802F14C0;
@@ -1335,67 +1354,67 @@ void func_800A06CC(void)
                         sprintf(
                             msgFmtBuffer.lines[1].str,
                             fmtMsg->lines[1].str,
-                            freeBytes / (1 << 13));
+                            freeBytes / BLOCK_SIZE);
                         sprintf(
                             msgFmtBuffer.lines[2].str,
                             fmtMsg->lines[2].str,
-                            lbl_802BA310.unk48 / (1 << 13));
+                            memcardInfo.fileSize / BLOCK_SIZE);
                         msgFmtBuffer.lines[0].unk4 = fmtMsg->lines[0].unk4;
                         msgFmtBuffer.lines[1].unk4 = fmtMsg->lines[1].unk4;
                         msgFmtBuffer.lines[2].unk4 = fmtMsg->lines[2].unk4;
                         msgFmtBuffer.numLines = fmtMsg->numLines;
                     }
                 }
-                lbl_802BA310.unkC = &msgFmtBuffer;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.msg = &msgFmtBuffer;
+                memcardInfo.state = 0xFF;
             }
             else
             {
-                lbl_802BA310.unk42 = 0;
-                lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-                lbl_802BA310.unk4C = 13;
-                if (lbl_802BA310.unk8 & (1 << (31-0x12))
-                 && ((lbl_802BA310.unk8 & 0x10080) == 0x10080))
+                memcardInfo.unk42 = 0;
+                memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+                memcardInfo.state = 13;
+                if (memcardInfo.statusFlags & (1 << 13)
+                 && ((memcardInfo.statusFlags & ((1 << 16) | (1 << 7))) == ((1 << 16) | (1 << 7))))
                 {
                     lbl_802F21B1 = 0;
-                    lbl_802BA310.unk8 |= 0x400;
+                    memcardInfo.statusFlags |= (1 << 10);
                 }
             }
         }
         else
         {
-            freeBytes /= (1 << 13);
+            freeBytes /= BLOCK_SIZE;
             if (freeFiles < 1)
-                lbl_802BA310.unkC = &msgSaveSuccessNoMoreFiles;
+                memcardInfo.msg = &msgSaveSuccessNoMoreFiles;
             else
             {
                 if (freeBytes < 13)
                 {
-                    lbl_802BA310.unk8 |= 0x100000;
-                    lbl_802BA310.unk4D = freeBytes;
-                    lbl_802BA310.unk42 = 0;
+                    memcardInfo.statusFlags |= (1 << 20);
+                    memcardInfo.unk4D = freeBytes;
+                    memcardInfo.unk42 = 0;
                     if (freeBytes < 2)
-                        lbl_802BA310.unkC = &lbl_802F14F8;
+                        memcardInfo.msg = &lbl_802F14F8;
                     else if (freeBytes < 3)
-                        lbl_802BA310.unkC = &lbl_802F1500;
+                        memcardInfo.msg = &lbl_802F1500;
                     else
-                        lbl_802BA310.unkC = &lbl_802F1508;
+                        memcardInfo.msg = &lbl_802F1508;
                 }
                 else
                 {
-                    if (lbl_802F21B0 == 3)
+                    if (memcardMode == MC_MODE_SAVE_GAMEDATA_3)
                     {
-                        lbl_802BA310.unk42 = 0;
-                        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-                        lbl_802BA310.unk8 &= ~(1 << (31-12));
+                        memcardInfo.unk42 = 0;
+                        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+                        memcardInfo.statusFlags &= ~(1 << 19);
                     }
                     else
-                        lbl_802BA310.unkC = &msgSaveFinished;
+                        memcardInfo.msg = &msgSaveFinished;
                 }
             }
-            lbl_802BA310.unk8 &= ~(1 << (31-0x10));
-            lbl_802BA310.unk8 |= 8;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.statusFlags &= ~(1 << 15);
+            memcardInfo.statusFlags |= (1 << 3);
+            memcardInfo.state = 0xFF;
         }
         break;
     }
@@ -1403,42 +1422,42 @@ void func_800A06CC(void)
 
 void func_800A0D1C(void)
 {
-    s32 status = CARDCreateAsync(0, lbl_802BA310.fileName, lbl_802BA310.unk48, &lbl_802BA310.cardFileInfo, NULL);
+    s32 status = CARDCreateAsync(0, memcardInfo.fileName, memcardInfo.fileSize, &memcardInfo.cardFileInfo, NULL);
 
     if (status < 0)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (status)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -8:
-        lbl_802BA310.unkC = &msgCantMakeMoreFiles;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOENT:
+        memcardInfo.msg = &msgCantMakeMoreFiles;
+        memcardInfo.state = 0xFF;
         break;
-    case -9:
+    case CARD_RESULT_INSSPACE:
         sprintf(msgFmtBuffer.lines[0].str, lbl_802F14F0.lines[0].str);
         sprintf(msgFmtBuffer.lines[1].str, lbl_802F14F0.lines[1].str);
         msgFmtBuffer.lines[0].unk4 = lbl_802F14F0.lines[0].unk4;
         msgFmtBuffer.lines[1].unk4 = lbl_802F14F0.lines[1].unk4;
         msgFmtBuffer.numLines = lbl_802F14F0.numLines;
-        lbl_802BA310.unkC = &msgFmtBuffer;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgFmtBuffer;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 14;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 14;
         break;
     }
 }
@@ -1447,57 +1466,57 @@ void func_800A0E94(void)
 {
     s32 status = CARDGetResultCode(0);
 
-    if (status != -1)
-        lbl_802BA310.unk40 = 0;
+    if (status != CARD_RESULT_BUSY)
+        memcardInfo.unk40 = 0;
     if (status < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (status)
     {
-    case -6:
-    case -12:
-    case -128:
+    case CARD_RESULT_BROKEN:
+    case CARD_RESULT_NAMETOOLONG:
+    case CARD_RESULT_FATAL_ERROR:
     default:
         printf("fatal: %d\n", (int)status);
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -8:
-        lbl_802BA310.unkC = &msgCantMakeMoreFiles;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOENT:
+        memcardInfo.msg = &msgCantMakeMoreFiles;
+        memcardInfo.state = 0xFF;
         break;
-    case -5:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_IOERROR:
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case -9:
+    case CARD_RESULT_INSSPACE:
         sprintf(msgFmtBuffer.lines[0].str, lbl_802F14F0.lines[0].str);
         sprintf(msgFmtBuffer.lines[1].str, lbl_802F14F0.lines[1].str);
         msgFmtBuffer.lines[0].unk4 = lbl_802F14F0.lines[0].unk4;
         msgFmtBuffer.lines[1].unk4 = lbl_802F14F0.lines[1].unk4;
         msgFmtBuffer.numLines = lbl_802F14F0.numLines;
-        lbl_802BA310.unkC = &msgFmtBuffer;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgFmtBuffer;
+        memcardInfo.state = 0xFF;
         break;
-    case 0:
-        lbl_802BA310.unk8 |= 0x802;
-        lbl_802BA310.unk4C = 0x13;
+    case CARD_RESULT_READY:
+        memcardInfo.statusFlags |= MC_STATUS_OPEN | (1 << 11);
+        memcardInfo.state = 0x13;
         break;
     }
 }
@@ -1505,34 +1524,34 @@ void func_800A0E94(void)
 void func_800A10A8(void *data)
 {
     s32 result = CARDWriteAsync(
-        &lbl_802BA310.cardFileInfo,
+        &memcardInfo.cardFileInfo,
         data,
-        lbl_802BA310.unk48,
+        memcardInfo.fileSize,
         0,
         NULL);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -11:
-        lbl_802BA310.unkC = &msgFileSizeChanged;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_LIMIT:
+        memcardInfo.msg = &msgFileSizeChanged;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x12;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x12;
         break;
     }
 }
@@ -1541,75 +1560,75 @@ void func_800A11A0(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
-        lbl_802BA310.unk40 = 0;
+    if (result != CARD_RESULT_BUSY)
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -10:
-    case -128:
+    case CARD_RESULT_NOPERM:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -5:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_IOERROR:
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
-    case -11:
-        lbl_802BA310.unkC = &msgFileSizeChanged;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_LIMIT:
+        memcardInfo.msg = &msgFileSizeChanged;
+        memcardInfo.state = 0xFF;
         break;
-    case -14:
-        lbl_802BA310.unkC = &msgSaveInterrupted;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_CANCELED:
+        memcardInfo.msg = &msgSaveInterrupted;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        lbl_802BA310.unk4C = 0x15;
+    case CARD_RESULT_READY:
+        memcardInfo.state = 0x15;
         break;
     }
 }
 
 void func_800A1330(void)
 {
-    s32 result = CARDSetStatusAsync(0, lbl_802BA310.cardFileInfo.fileNo, &lbl_802BA2A0, 0);
+    s32 result = CARDSetStatusAsync(0, memcardInfo.cardFileInfo.fileNo, &cardStat, 0);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x16;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x16;
         break;
     }
 }
@@ -1618,49 +1637,49 @@ void func_800A1404(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
-        lbl_802BA310.unk40 = 0;
+    if (result != CARD_RESULT_BUSY)
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -4:
-    case -10:
-    case -128:
+    case CARD_RESULT_NOFILE:
+    case CARD_RESULT_NOPERM:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        if (lbl_802BA310.unk8 & (1 << (31-0x12)))
+    case CARD_RESULT_READY:
+        if (memcardInfo.statusFlags & (1 << 13))
         {
-            lbl_802BA310.unk8 |= 0x400000;
-            if (lbl_802BA310.unk8 & (1 << (31-15)))
-                lbl_802BA310.unk4C = 11;
+            memcardInfo.statusFlags |= (1 << 22);
+            if (memcardInfo.statusFlags & (1 << 16))
+                memcardInfo.state = 11;
             else
-                lbl_802BA310.unk4C = 31;
+                memcardInfo.state = 31;
         }
         else
         {
-            lbl_802BA310.unk40 = 0x4B0;
-            lbl_802BA310.unk4C = 30;
+            memcardInfo.unk40 = 0x4B0;
+            memcardInfo.state = 30;
         }
         break;
     }
@@ -1668,30 +1687,30 @@ void func_800A1404(void)
 
 void func_800A1584(void *buffer)
 {
-    s32 result = CARDReadAsync(&lbl_802BA310.cardFileInfo, buffer, lbl_802BA310.unk48, 0, NULL);
+    s32 result = CARDReadAsync(&memcardInfo.cardFileInfo, buffer, memcardInfo.fileSize, 0, NULL);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -11:
-        lbl_802BA310.unkC = &msgFileSizeChanged;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_LIMIT:
+        memcardInfo.msg = &msgFileSizeChanged;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x10;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x10;
         break;
     }
 }
@@ -1700,90 +1719,90 @@ void func_800A167C(void)
 {
     s32 result = CARDGetResultCode(0);
 
-    if (result != -1)
-        lbl_802BA310.unk40 = 0;
+    if (result != CARD_RESULT_BUSY)
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -4:
-    case -10:
-    case -128:
+    case CARD_RESULT_NOFILE:
+    case CARD_RESULT_NOPERM:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -5:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_IOERROR:
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
-    case -11:
-        lbl_802BA310.unkC = &msgFileSizeChanged;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_LIMIT:
+        memcardInfo.msg = &msgFileSizeChanged;
+        memcardInfo.state = 0xFF;
         break;
-    case -14:
-        lbl_802BA310.unkC = &msgLoadInterrupted;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_CANCELED:
+        memcardInfo.msg = &msgLoadInterrupted;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        if (lbl_802BA310.unk8 & (1 << (31-19)))
+    case CARD_RESULT_READY:
+        if (memcardInfo.statusFlags & (1 << 12))
         {
-            if (lbl_802F21C4->unk0 == mathutil_calc_crc16(lbl_802BA310.unk48 - 2, (u8 *)lbl_802F21C4 + 2)
-             && func_8004C6DC(lbl_802F21C4->unk2050) != 0)
+            if (memcardReplayData->crc == mathutil_calc_crc16(memcardInfo.fileSize - 2, (u8 *)memcardReplayData + 2)
+             && func_8004C6DC(memcardReplayData->unk2050) != 0)
             {
-                lbl_802BA310.unk8 |= 8;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.statusFlags |= (1 << 3);
+                memcardInfo.state = 0xFF;
             }
             else
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unk8 |= 0x4000;
-                lbl_802BA310.unkC = &msgReplayDataDamaged;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.statusFlags |= (1 << 14);
+                memcardInfo.msg = &msgReplayDataDamaged;
+                memcardInfo.state = 0xFF;
             }
         }
-        else if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
-            lbl_802BA310.unk4C = 0x13;
+        else if (memcardInfo.statusFlags & (1 << 4))
+            memcardInfo.state = 0x13;
         else
         {
-            u8 *r4 = (u8 *)lbl_802F21AC + 2;
-            if (lbl_802F21AC->unk0 != mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)lbl_802F21AC), r4))
+            u8 *r4 = (u8 *)memcardGameData + 2;
+            if (memcardGameData->crc != mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)memcardGameData), r4))
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unk8 |= 0x4000;
-                lbl_802BA310.unkC = &msgGameDataDamaged;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.statusFlags |= (1 << 14);
+                memcardInfo.msg = &msgGameDataDamaged;
+                memcardInfo.state = 0xFF;
             }
             else
             {
-                if (lbl_802F21AC->unk2 != 0x16)
+                if (memcardGameData->version != 0x16)
                 {
-                    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                    lbl_802BA310.unk8 |= 0x200;
-                    lbl_802BA310.unkC = &msgGameDataWrongVersion;
-                    lbl_802BA310.unk4C = 0xFF;
+                    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                    memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                    memcardInfo.msg = &msgGameDataWrongVersion;
+                    memcardInfo.state = 0xFF;
                 }
                 else
-                    lbl_802BA310.unk4C = 0x25;
+                    memcardInfo.state = 0x25;
             }
         }
         break;
@@ -1792,58 +1811,58 @@ void func_800A167C(void)
 
 void func_800A1988(void)
 {
-    s32 result = CARDGetStatus(0, lbl_802BA310.cardFileInfo.fileNo, &lbl_802BA2A0);
+    s32 result = CARDGetStatus(0, memcardInfo.cardFileInfo.fileNo, &cardStat);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -4:
-        lbl_802BA310.unkC = &lbl_802F14A0;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOFILE:
+        memcardInfo.msg = &lbl_802F14A0;
+        memcardInfo.state = 0xFF;
         break;
-    case -10:
-        lbl_802BA310.unkC = &msgCantReadFile;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOPERM:
+        memcardInfo.msg = &msgCantReadFile;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
-            lbl_802BA310.unk4C = 0x11;
+    case CARD_RESULT_READY:
+        if (memcardInfo.statusFlags & (1 << 4))
+            memcardInfo.state = 0x11;
         else
         {
-            if ((lbl_802BA310.unk8 & (1 << (31-0x19))) == 0)
+            if ((memcardInfo.statusFlags & (1 << 6)) == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
             }
-            lbl_802BA310.unkC = &msgLoadFinished;
-            lbl_802BA310.unk4C = 0xFF;
-            lbl_802BA310.unk8 |= 8;
-            lbl_802BA310.unk8 &= ~(1 << (31-14));
+            memcardInfo.msg = &msgLoadFinished;
+            memcardInfo.state = 0xFF;
+            memcardInfo.statusFlags |= (1 << 3);
+            memcardInfo.statusFlags &= ~(1 << 17);
         }
         break;
     }
@@ -1853,24 +1872,24 @@ void func_800A1B58(void)
 {
     s32 result = __CARDFormatRegionAsync(0, 0);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 10;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 10;
         break;
     }
 }
@@ -1880,39 +1899,39 @@ void func_800A1C24(void)
     s32 result = CARDGetResultCode(0);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -5:
-        lbl_802BA310.unkC = &msgMemCardCantUse;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_IOERROR:
+        memcardInfo.msg = &msgMemCardCantUse;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        lbl_802BA310.unk4C = 13;
+    case CARD_RESULT_READY:
+        memcardInfo.state = 13;
         break;
     }
 }
@@ -1920,159 +1939,157 @@ void func_800A1C24(void)
 void func_800A1D64(void)
 {
     struct UnkStruct802F21BC *r3;
-    int result = CARDGetStatus(0, lbl_802F21B2, &lbl_802BA2A0);
+    int result = CARDGetStatus(0, lbl_802F21B2, &cardStat);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
 
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        if (strncmp((char *)lbl_802BA2A0.gameName, "GMBE", 4) == 0
-         && strncmp((char *)lbl_802BA2A0.company, "8P", 2) == 0
-         && strncmp((char *)lbl_802BA2A0.fileName, "smkb", 4) == 0)
+    case CARD_RESULT_READY:
+        if (strncmp((char *)cardStat.gameName, "GMBE", 4) == 0
+         && strncmp((char *)cardStat.company, "8P", 2) == 0
+         && strncmp((char *)cardStat.fileName, "smkb", 4) == 0)
         {
             r3 = &lbl_802F21BC[lbl_802F21B8];
-            r3->unk14 = lbl_802F21B2;
-            r3->unk10 = lbl_802BA2A0.length;
+            r3->fileNo = lbl_802F21B2;
+            r3->unk10 = cardStat.length;
             lbl_802F21B8++;
         }
         // fall through
-    case -4:
-    case -10:
+    case CARD_RESULT_NOFILE:
+    case CARD_RESULT_NOPERM:
         if (++lbl_802F21B2 >= 0x7F)
         {
             r3 = &lbl_802F21BC[lbl_802F21B8];
-            r3->unk14 = -1;
+            r3->fileNo = -1;
             if (lbl_802F21B8 == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &msgNoReplayData;
-                lbl_802BA310.unk4C = 0xFF;
-                lbl_802BA310.unk8 &= ~(1 << (31-14));
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.msg = &msgNoReplayData;
+                memcardInfo.state = 0xFF;
+                memcardInfo.statusFlags &= ~(1 << 17);
             }
             else
-                lbl_802BA310.unk4C = 0x1A;
+                memcardInfo.state = 0x1A;
         }
         else
         {
-            lbl_802BA310.unk40 = 0x4B0;
-            memset(&lbl_802BA2A0, 0, sizeof(lbl_802BA2A0));
+            memcardInfo.unk40 = 0x4B0;
+            memset(&cardStat, 0, sizeof(cardStat));
         }
         break;
     }
 }
 
-extern u8 lbl_802F21C8;
-
-void func_800A1FE8(void)
+void replay_list_open_and_read(void)
 {
     struct UnkStruct802F21BC *r30 = &lbl_802F21BC[lbl_802F21B8];
     s32 result;
 
     if (lbl_802F21C8 == 0)
     {
-        result = CARDFastOpen(0, r30->unk14, &lbl_802BA310.cardFileInfo);
+        result = CARDFastOpen(0, r30->fileNo, &memcardInfo.cardFileInfo);
 
         if (result != -1)
-            lbl_802BA310.unk40 = 0;
+            memcardInfo.unk40 = 0;
         if (result < -1)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
         }
 
         switch (result)
         {
-        case -128:
+        case CARD_RESULT_FATAL_ERROR:
         default:
-            lbl_802BA310.unkC = &msgMemCardError;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.msg = &msgMemCardError;
+            memcardInfo.state = 0xFF;
             break;
-        case -3:
-            lbl_802BA310.unkC = &msgMemCardRemoved;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_NOCARD:
+            memcardInfo.msg = &msgMemCardRemoved;
+            memcardInfo.state = 0xFF;
             break;
-        case -4:
-            lbl_802BA310.unkC = &lbl_802F14A0;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_NOFILE:
+            memcardInfo.msg = &lbl_802F14A0;
+            memcardInfo.state = 0xFF;
             break;
-        case -10:
-            lbl_802BA310.unkC = &msgCantLoadFile;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_NOPERM:
+            memcardInfo.msg = &msgCantLoadFile;
+            memcardInfo.state = 0xFF;
             break;
-        case -1:
-            if (lbl_802BA310.unk40 == 0)
+        case CARD_RESULT_BUSY:
+            if (memcardInfo.unk40 == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &msgMemCardCantRead;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.msg = &msgMemCardCantRead;
+                memcardInfo.state = 0xFF;
             }
             break;
-        case -6:
-            lbl_802BA310.unkC = &msgMemCardFileDamagedPleaseFormat;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_BROKEN:
+            memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
+            memcardInfo.state = 0xFF;
             break;
-        case 0:
-            lbl_802BA310.unk8 |= 2;
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+        case CARD_RESULT_READY:
+            memcardInfo.statusFlags |= MC_STATUS_OPEN;
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
             lbl_802F21C8 = 1;
-            lbl_802BA310.unk40 = 0x4B0;
+            memcardInfo.unk40 = 0x4B0;
             break;
         }
     }
     else if (lbl_802F21C8 == 1)
     {
-        if ((lbl_802F21C4 = OSAlloc(r30->unk10)) == NULL)
-            OSPanic("memcard.c", 0x9CA, "cannot OSAlloc");
-        result = CARDReadAsync(&lbl_802BA310.cardFileInfo, lbl_802F21C4, r30->unk10, 0, NULL);
+        if ((memcardReplayData = OSAlloc(r30->unk10)) == NULL)
+            OSPanic("memcard.c", 2506, "cannot OSAlloc");
+        result = CARDReadAsync(&memcardInfo.cardFileInfo, memcardReplayData, r30->unk10, 0, NULL);
 
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
         switch (result)
         {
-        case -128:
-            lbl_802BA310.unkC = &msgMemCardError;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_FATAL_ERROR:
+            memcardInfo.msg = &msgMemCardError;
+            memcardInfo.state = 0xFF;
             break;
-        case -11:
-            lbl_802BA310.unkC = &msgFileSizeChanged;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_LIMIT:
+            memcardInfo.msg = &msgFileSizeChanged;
+            memcardInfo.state = 0xFF;
             break;
-        case -3:
-            lbl_802BA310.unkC = &msgMemCardRemoved;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_NOCARD:
+            memcardInfo.msg = &msgMemCardRemoved;
+            memcardInfo.state = 0xFF;
             break;
         default:
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-            lbl_802BA310.unk40 = 0x4B0;
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+            memcardInfo.unk40 = 0x4B0;
             lbl_802F21C8 = 2;
             break;
         }
@@ -2082,49 +2099,49 @@ void func_800A1FE8(void)
         result = CARDGetResultCode(0);
 
         if (result != -1)
-            lbl_802BA310.unk40 = 0;
+            memcardInfo.unk40 = 0;
         if (result < -1)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
         }
 
         switch (result)
         {
-        case -10:
-        case -128:
+        case CARD_RESULT_NOPERM:
+        case CARD_RESULT_FATAL_ERROR:
         default:
-            lbl_802BA310.unkC = &msgMemCardError;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.msg = &msgMemCardError;
+            memcardInfo.state = 0xFF;
             break;
-        case -5:
-            lbl_802BA310.unkC = &msgMemCardCantUse;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_IOERROR:
+            memcardInfo.msg = &msgMemCardCantUse;
+            memcardInfo.state = 0xFF;
             break;
-        case -11:
-            lbl_802BA310.unkC = &msgFileSizeChanged;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_LIMIT:
+            memcardInfo.msg = &msgFileSizeChanged;
+            memcardInfo.state = 0xFF;
             break;
-        case -14:
-            lbl_802BA310.unkC = &msgLoadInterrupted;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_CANCELED:
+            memcardInfo.msg = &msgLoadInterrupted;
+            memcardInfo.state = 0xFF;
             break;
-        case -3:
-            lbl_802BA310.unkC = &msgMemCardRemoved;
-            lbl_802BA310.unk4C = 0xFF;
+        case CARD_RESULT_NOCARD:
+            memcardInfo.msg = &msgMemCardRemoved;
+            memcardInfo.state = 0xFF;
             break;
-        case -1:
-            if (lbl_802BA310.unk40 == 0)
+        case CARD_RESULT_BUSY:
+            if (memcardInfo.unk40 == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &msgMemCardCantRead;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.msg = &msgMemCardCantRead;
+                memcardInfo.state = 0xFF;
             }
             break;
-        case 0:
-            CARDClose(&lbl_802BA310.cardFileInfo);
-            if (mathutil_calc_crc16(r30->unk10 - 2, (u8 *)lbl_802F21C4 + 2) != lbl_802F21C4->unk0)
+        case CARD_RESULT_READY:
+            CARDClose(&memcardInfo.cardFileInfo);
+            if (mathutil_calc_crc16(r30->unk10 - 2, (u8 *)memcardReplayData + 2) != memcardReplayData->crc)
             {
                 r30->unk2 = 0x100;
                 r30->unk4 = 1;
@@ -2136,84 +2153,82 @@ void func_800A1FE8(void)
             }
             else
             {
-                r30->unk2 = lbl_802F21C4->unk2;
-                r30->unk4 = lbl_802F21C4->unk4;
-                r30->unk5 = lbl_802F21C4->unk5;
-                r30->unk6 = lbl_802F21C4->unk6;
-                r30->unk7 = lbl_802F21C4->unk7;
-                r30->unk8 = lbl_802F21C4->unk8;
-                r30->unkC = lbl_802F21C4->unkC;
+                r30->unk2 = memcardReplayData->unk2;
+                r30->unk4 = memcardReplayData->unk4;
+                r30->unk5 = memcardReplayData->unk5;
+                r30->unk6 = memcardReplayData->unk6;
+                r30->unk7 = memcardReplayData->unk7;
+                r30->unk8 = memcardReplayData->unk8;
+                r30->unkC = memcardReplayData->unkC;
             }
-            OSFree(lbl_802F21C4);
-            lbl_802F21C4 = 0;
+            OSFree(memcardReplayData);
+            memcardReplayData = NULL;
             if (lbl_802F21B8 == 0)
             {
-                lbl_802BA310.unk8 |= 8;
-                lbl_802BA310.unk4C = 0xFF;
-                lbl_802BA310.unk8 &= ~(1 << (31-14));
+                memcardInfo.statusFlags |= (1 << 3);
+                memcardInfo.state = 0xFF;
+                memcardInfo.statusFlags &= ~(1 << 17);
             }
             else
             {
                 lbl_802F21C8 = 0;
                 lbl_802F21B8--;
-                lbl_802BA310.unk40 = 0x4B0;
+                memcardInfo.unk40 = 0x4B0;
             }
             break;
         }
     }
 }
 
-extern u32 lbl_802F21C0;
-
 void func_800A2538(void)
 {
-    s32 result = CARDFastOpen(0, lbl_802F21BC[lbl_802F21C0].unk14, &lbl_802BA310.cardFileInfo);
+    s32 result = CARDFastOpen(0, lbl_802F21BC[lbl_802F21C0].fileNo, &memcardInfo.cardFileInfo);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -4:
-        lbl_802BA310.unkC = &lbl_802F14A0;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOFILE:
+        memcardInfo.msg = &lbl_802F14A0;
+        memcardInfo.state = 0xFF;
         break;
-    case -10:
-        lbl_802BA310.unkC = &msgCantLoadFile;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOPERM:
+        memcardInfo.msg = &msgCantLoadFile;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case -6:
-        lbl_802BA310.unkC = &msgMemCardFileDamagedPleaseFormat;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_BROKEN:
+        memcardInfo.msg = &msgMemCardFileDamagedPleaseFormat;
+        memcardInfo.state = 0xFF;
         break;
-    case 0:
-        lbl_802BA310.unk8 |= 2;
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk4C = 15;
+    case CARD_RESULT_READY:
+        memcardInfo.statusFlags |= MC_STATUS_OPEN;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.state = 15;
         break;
     }
 }
@@ -2223,31 +2238,31 @@ void func_800A26FC(int fileNo)
     s32 result;
 
     if (fileNo < 0)
-        result = -4;
+        result = CARD_RESULT_NOFILE;
     else
         result = CARDFastDeleteAsync(0, fileNo, NULL);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        if (lbl_802BA310.unk4C == 11)
-            lbl_802BA310.unk4C = 12;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        if (memcardInfo.state == 11)
+            memcardInfo.state = 12;
         else
-            lbl_802BA310.unk4C = 0x24;
+            memcardInfo.state = 0x24;
         break;
     }
 }
@@ -2257,56 +2272,56 @@ void func_800A27F8(void)
     s32 result = CARDGetResultCode(0);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -4:
-        lbl_802BA310.unkC = &lbl_802F14A0;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOFILE:
+        memcardInfo.msg = &lbl_802F14A0;
+        memcardInfo.state = 0xFF;
         break;
-    case -10:
-        lbl_802BA310.unkC = &msgCantLoadFile;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOPERM:
+        memcardInfo.msg = &msgCantLoadFile;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        if (lbl_802BA310.unk8 & (1 << (31-0x12)))
+    case CARD_RESULT_READY:
+        if (memcardInfo.statusFlags & (1 << 13))
         {
-            if (lbl_802BA310.unk4C == 0x24)
-                lbl_802BA310.unk4C = 7;
+            if (memcardInfo.state == 0x24)
+                memcardInfo.state = 7;
             else
-                lbl_802BA310.unk4C = 31;
+                memcardInfo.state = 31;
         }
         else
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgDeleteFinished;
-            lbl_802BA310.unk4C = 0xFF;
-            lbl_802BA310.unk8 |= 8;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgDeleteFinished;
+            memcardInfo.state = 0xFF;
+            memcardInfo.statusFlags |= (1 << 3);
         }
         break;
     }
@@ -2316,24 +2331,24 @@ void func_800A29CC(void)
 {
     s32 result = CARDDeleteAsync(0, "super_monkey_ball.000", NULL);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x26;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x26;
         break;
     }
 }
@@ -2343,55 +2358,55 @@ void func_800A2AA0(void)
     s32 result = CARDGetResultCode(0);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -128:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -10:
-        lbl_802BA310.unkC = &msgCantLoadFile;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOPERM:
+        memcardInfo.msg = &msgCantLoadFile;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case -4:
-    case 0:
-        if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+    case CARD_RESULT_NOFILE:
+    case CARD_RESULT_READY:
+        if (memcardInfo.statusFlags & (1 << 6))
         {
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-            lbl_802BA310.unk40 = 0x4B0;
-            lbl_802BA310.unk4C = 0x17;
-            lbl_802BA310.unk8 |= 0x40000;
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+            memcardInfo.unk40 = 0x4B0;
+            memcardInfo.state = 0x17;
+            memcardInfo.statusFlags |= (1 << 18);
         }
         else
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgLoadFinished;
-            lbl_802BA310.unk4C = 0xFF;
-            lbl_802BA310.unk8 |= 8;
-            lbl_802BA310.unk8 &= ~(1 << (31-14));
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgLoadFinished;
+            memcardInfo.state = 0xFF;
+            memcardInfo.statusFlags |= (1 << 3);
+            memcardInfo.statusFlags &= ~(1 << 17);
         }
         break;
     }
@@ -2401,38 +2416,38 @@ void func_800A2C74(void)
 {
     s32 result = CARDRenameAsync(0, "super_monkey_ball.000", "super_monkey_ball.sys", NULL);
 
-    lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-    lbl_802BA310.unk8 |= 0x200;
+    memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+    memcardInfo.statusFlags |= MC_STATUS_ERROR;
 
     switch (result)
     {
-    case -128:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_FATAL_ERROR:
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -4:
-        if (lbl_802F21B0 == 2)
+    case CARD_RESULT_NOFILE:
+        if (memcardMode == MC_MODE_LOAD_GAMEDATA_2)
         {
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-            lbl_802BA310.unk40 = 0x4B0;
-            lbl_802BA310.unk4C = 0x17;
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+            memcardInfo.unk40 = 0x4B0;
+            memcardInfo.state = 0x17;
         }
         else
         {
-            lbl_802BA310.unkC = &lbl_802F14A0;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.msg = &lbl_802F14A0;
+            memcardInfo.state = 0xFF;
         }
         break;
     default:
-        lbl_802BA310.unk42 = 0;
-        lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 32;
+        memcardInfo.unk42 = 0;
+        memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 32;
         break;
     }
 }
@@ -2442,112 +2457,98 @@ void func_800A2DA4(void)
     s32 result = CARDGetResultCode(0);
 
     if (result != -1)
-        lbl_802BA310.unk40 = 0;
+        memcardInfo.unk40 = 0;
     if (result < -1)
     {
-        lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-        lbl_802BA310.unk8 |= 0x200;
+        memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+        memcardInfo.statusFlags |= MC_STATUS_ERROR;
     }
 
     switch (result)
     {
-    case -7:
-    case -12:
-    case -128:
+    case CARD_RESULT_EXIST:
+    case CARD_RESULT_NAMETOOLONG:
+    case CARD_RESULT_FATAL_ERROR:
     default:
-        lbl_802BA310.unkC = &msgMemCardError;
-        lbl_802BA310.unk4C = 0xFF;
+        memcardInfo.msg = &msgMemCardError;
+        memcardInfo.state = 0xFF;
         break;
-    case -3:
-        lbl_802BA310.unkC = &msgMemCardRemoved;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOCARD:
+        memcardInfo.msg = &msgMemCardRemoved;
+        memcardInfo.state = 0xFF;
         break;
-    case -4:
-        if (lbl_802BA310.unk8 & (1 << (31-0x1A)))
+    case CARD_RESULT_NOFILE:
+        if (memcardInfo.statusFlags & (1 << 5))
         {
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
-            if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
+            if (memcardInfo.statusFlags & (1 << 6))
             {
-                lbl_802BA310.unk40 = 0x4B0;
-                lbl_802BA310.unk4C = 0x17;
+                memcardInfo.unk40 = 0x4B0;
+                memcardInfo.state = 0x17;
             }
             else
-                lbl_802BA310.unk4C = 15;
+                memcardInfo.state = 15;
         }
         else
         {
-            lbl_802BA310.unkC = &lbl_802F14A0;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.msg = &lbl_802F14A0;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case -10:
-        lbl_802BA310.unkC = &msgCantLoadFile;
-        lbl_802BA310.unk4C = 0xFF;
+    case CARD_RESULT_NOPERM:
+        memcardInfo.msg = &msgCantLoadFile;
+        memcardInfo.state = 0xFF;
         break;
-    case -1:
-        if (lbl_802BA310.unk40 == 0)
+    case CARD_RESULT_BUSY:
+        if (memcardInfo.unk40 == 0)
         {
-            lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-            lbl_802BA310.unk8 |= 0x200;
-            lbl_802BA310.unkC = &msgMemCardCantRead;
-            lbl_802BA310.unk4C = 0xFF;
+            memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+            memcardInfo.statusFlags |= MC_STATUS_ERROR;
+            memcardInfo.msg = &msgMemCardCantRead;
+            memcardInfo.state = 0xFF;
         }
         break;
-    case 0:
-        if (lbl_802BA310.unk8 & (1 << (31-0x1A)))
-            lbl_802BA310.unk4C = 7;
-        else if ((lbl_802BA310.unk8 & 0x00010040) == 0x10040)
+    case CARD_RESULT_READY:
+        if (memcardInfo.statusFlags & (1 << 5))
+            memcardInfo.state = 7;
+        else if ((memcardInfo.statusFlags & ((1 << 16) | (1 << 6))) == ((1 << 16) | (1 << 6)))
         {
-            lbl_802BA310.unk4C = 0xFF;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x10));
-            lbl_802BA310.unk8 |= 8;
+            memcardInfo.state = 0xFF;
+            memcardInfo.statusFlags &= ~(1 << 15);
+            memcardInfo.statusFlags |= (1 << 3);
         }
         else
         {
-            if (lbl_802BA310.unk8 & (1 << (31-0x19)))
-                lbl_802BA310.unk8 |= 0x80000;
-            lbl_802BA310.unk40 = 0x4B0;
-            lbl_802BA310.unk4C = 0x1E;
+            if (memcardInfo.statusFlags & (1 << 6))
+                memcardInfo.statusFlags |= (1 << 19);
+            memcardInfo.unk40 = 0x4B0;
+            memcardInfo.state = 0x1E;
         }
         break;
     }
 }
 
-extern struct
-{
-    u8 filler0[4];
-    u16 unk4;
-    u8 filler8[4];
-} lbl_801F3D88;
-
-extern struct
-{
-    u8 filler0[4];
-    u16 unk4;
-    u8 filler8[4];
-} lbl_801F3D94;
-
 void load_sequence(void)
 {
-    switch (lbl_802BA310.unk4C)
+    switch (memcardInfo.state)
     {
     case 1:
-        if ((lbl_801F3D88.unk4 & (1 << (31-0x17)))
-         || !(lbl_802BA310.unk8 & (1 << (31-0x18))))
+        if ((lbl_801F3D88.unk4 & (1 << 8))
+         || !(memcardInfo.statusFlags & (1 << 7)))
         {
-            lbl_802BA310.unk40 = 0x3C;
-            lbl_802BA310.unk4C = 2;
+            memcardInfo.unk40 = 0x3C;
+            memcardInfo.state = 2;
         }
         break;
     case 2:
         func_8009FB8C();
         break;
     case 3:
-        if ((lbl_802F21AC = OSAlloc(lbl_802BA310.unk48)) == NULL)
-            OSPanic("memcard.c", 0xBF6, "cannot OSAlloc");
-        memset(lbl_802F21AC, 0, lbl_802BA310.unk48);
-        lbl_802BA310.unk8 |= 0x20000;
+        if ((memcardGameData = OSAlloc(memcardInfo.fileSize)) == NULL)
+            OSPanic("memcard.c", 3062, "cannot OSAlloc");
+        memset(memcardGameData, 0, memcardInfo.fileSize);
+        memcardInfo.statusFlags |= (1 << 17);
         func_8009FDD4();
         break;
     case 4:
@@ -2560,11 +2561,11 @@ void load_sequence(void)
         func_800A01B0();
         break;
     case 7:
-        lbl_802BA310.unk40 = 0x4B0;
-        if (lbl_802BA310.unk4C == 7)
-            lbl_802BA310.unk4C = 8;
+        memcardInfo.unk40 = 0x4B0;
+        if (memcardInfo.state == 7)
+            memcardInfo.state = 8;
         else
-            lbl_802BA310.unk4C = 0x22;
+            memcardInfo.state = 0x22;
         // fall through
     case 8:
         func_800A03DC();
@@ -2579,7 +2580,7 @@ void load_sequence(void)
         func_800A06CC();
         break;
     case 0xF:
-        func_800A1584(lbl_802F21AC);
+        func_800A1584(memcardGameData);
         break;
     case 0x10:
         func_800A167C();
@@ -2593,8 +2594,8 @@ void load_sequence(void)
     case 0xFF:
         break;
     default:
-        printf("stat: %d\n", lbl_802BA310.unk4C);
-        OSPanic("memcard.c", 0xC47, "load_sequence\n");
+        printf("stat: %d\n", memcardInfo.state);
+        OSPanic("memcard.c", 3143, "load_sequence\n");
         break;
     }
 }
@@ -2603,23 +2604,23 @@ void save_sequence(void)
 {
     u8 *r4;
 
-    switch (lbl_802BA310.unk4C)
+    switch (memcardInfo.state)
     {
     case 1:
-        if ((lbl_801F3D88.unk4 & (1 << (31-0x17)))
-         || !(lbl_802BA310.unk8 & (1 << (31-0x18))))
+        if ((lbl_801F3D88.unk4 & (1 << 8))
+         || !(memcardInfo.statusFlags & (1 << 7)))
         {
-            lbl_802BA310.unk40 = 0x3C;
-            lbl_802BA310.unk4C = 2;
+            memcardInfo.unk40 = 0x3C;
+            memcardInfo.state = 2;
         }
         break;
     case 2:
         func_8009FB8C();
         break;
     case 3:
-        if ((lbl_802F21AC = OSAlloc(lbl_802BA310.unk48)) == NULL)
-            OSPanic("memcard.c", 0xC6A, "cannot OSAlloc");
-        memset(lbl_802F21AC, 0, lbl_802BA310.unk48);
+        if ((memcardGameData = OSAlloc(memcardInfo.fileSize)) == NULL)
+            OSPanic("memcard.c", 3178, "cannot OSAlloc");
+        memset(memcardGameData, 0, memcardInfo.fileSize);
         func_8009FDD4();
         break;
     case 4:
@@ -2632,28 +2633,28 @@ void save_sequence(void)
         func_800A01B0();
         break;
     case 0x21:
-        lbl_802BA310.unk40 = 0x4B0;
-        if (lbl_802BA310.unk4C == 7)
-            lbl_802BA310.unk4C = 8;
+        memcardInfo.unk40 = 0x4B0;
+        if (memcardInfo.state == 7)
+            memcardInfo.state = 8;
         else
-            lbl_802BA310.unk4C = 0x22;
+            memcardInfo.state = 0x22;
         // fall through
     case 0x22:
         func_800A03DC();
         break;
     case 0x23:
-        func_800A26FC(lbl_802BA310.unk0);
+        func_800A26FC(memcardInfo.unk0);
         break;
     case 0x24:
         func_800A27F8();
         break;
     case 7:
-        strcpy(lbl_802BA310.fileName, "super_monkey_ball.sys");
-        lbl_802BA310.unk40 = 0x4B0;
-        if (lbl_802BA310.unk4C == 7)
-            lbl_802BA310.unk4C = 8;
+        strcpy(memcardInfo.fileName, "super_monkey_ball.sys");
+        memcardInfo.unk40 = 0x4B0;
+        if (memcardInfo.state == 7)
+            memcardInfo.state = 8;
         else
-            lbl_802BA310.unk4C = 0x22;
+            memcardInfo.state = 0x22;
         // fall through
     case 8:
         func_800A03DC();
@@ -2673,34 +2674,34 @@ void save_sequence(void)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        if (lbl_801F3D88.unk4 & (1 << 8))
         {
             func_8002B5C8(0x6A);
-            lbl_802BA310.unk8 &= ~(1 << (31-0x15));
+            memcardInfo.statusFlags &= ~(1 << 10);
             if (lbl_802F21B1 == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &msgFormatInterrupted;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.msg = &msgFormatInterrupted;
+                memcardInfo.state = 0xFF;
             }
             else
             {
-                lbl_802BA310.unk8 |= 0x200000;
+                memcardInfo.statusFlags |= (1 << 21);
                 func_800A1B58();
             }
         }
         break;
     case 0xA:
         func_800A1C24();
-        if (lbl_802BA310.unk4C != 10)
-            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        if (memcardInfo.state != 10)
+            memcardInfo.statusFlags &= ~(1 << 21);
         break;
     case 0x17:
         func_800A06CC();
         break;
     case 0xD:
-        if (lbl_802BA310.unk8 & (1 << (31-0x15)))
+        if (memcardInfo.statusFlags & (1 << 10))
         {
             if ((lbl_801F3D88.unk4 & 1)
              || (lbl_801F3D94.unk4 & 1))
@@ -2716,30 +2717,30 @@ void save_sequence(void)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 0;
             }
-            if (!(lbl_801F3D88.unk4 & (1 << (31-0x17))))
+            if (!(lbl_801F3D88.unk4 & (1 << 8)))
                 break;
             func_8002B5C8(0x6A);
-            lbl_802BA310.unk8 &= ~(1 << (31-0x15));
+            memcardInfo.statusFlags &= ~(1 << 10);
             if (lbl_802F21B1 == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &msgSaveInterrupted;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.msg = &msgSaveInterrupted;
+                memcardInfo.state = 0xFF;
                 break;
             }
         }
-        strcpy(lbl_802BA310.fileName, "super_monkey_ball.000");
-        lbl_802BA310.unk8 |= 0x208000;
+        strcpy(memcardInfo.fileName, "super_monkey_ball.000");
+        memcardInfo.statusFlags |= (1 << 21) | (1 << 15);
         func_800A0D1C();
         break;
     case 0xE:
         func_800A0E94();
         break;
     case 0x13:
-        memset(&lbl_802BA2A0, 0, 0x6C);
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x14;
+        memset(&cardStat, 0, 0x6C);
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x14;
         break;
     case 0x14:
         func_800A1988();
@@ -2747,10 +2748,10 @@ void save_sequence(void)
     case 0x11:
         func_8009F568();
         func_800A4E70();
-        lbl_802F21AC->unk2 = 0x16;
-        r4 = (u8 *)lbl_802F21AC + 2;
-        lbl_802F21AC->unk0 = mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)lbl_802F21AC), r4);
-        func_800A10A8(lbl_802F21AC);
+        memcardGameData->version = 0x16;
+        r4 = (u8 *)memcardGameData + 2;
+        memcardGameData->crc = mathutil_calc_crc16(0x5C04 - (r4 - (u8 *)memcardGameData), r4);
+        func_800A10A8(memcardGameData);
         break;
     case 0x12:
         func_800A11A0();
@@ -2762,7 +2763,7 @@ void save_sequence(void)
         func_800A1404();
         break;
     case 0xB:
-        func_800A26FC(lbl_802BA310.unk0);
+        func_800A26FC(memcardInfo.unk0);
         break;
     case 0xC:
         func_800A27F8();
@@ -2772,8 +2773,8 @@ void save_sequence(void)
         break;
     case 0x20:
         func_800A2DA4();
-        if (lbl_802BA310.unk4C != 0x20)
-            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        if (memcardInfo.state != 0x20)
+            memcardInfo.statusFlags &= ~(1 << 21);
         break;
     case 0x1E:
         func_800A06CC();
@@ -2781,31 +2782,31 @@ void save_sequence(void)
     case 0xFF:
         break;
     default:
-        printf("stat: %d\n", lbl_802BA310.unk4C);
-        OSPanic("memcard.c", 0xD40, "save_sequence\n");
+        printf("stat: %d\n", memcardInfo.state);
+        OSPanic("memcard.c", 3392, "save_sequence\n");
         break;
     }
 }
 
 void replay_save_sequence(void)
 {
-    switch (lbl_802BA310.unk4C)
+    switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        if (lbl_801F3D88.unk4 & (1 << 8))
         {
             func_8002B5C8(0x6A);
-            lbl_802BA310.unk40 = 0x3C;
-            lbl_802BA310.unk4C = 2;
+            memcardInfo.unk40 = 0x3C;
+            memcardInfo.state = 2;
         }
         break;
     case 2:
         func_8009FB8C();
         break;
     case 3:
-        if ((lbl_802F21C4 = OSAlloc(lbl_802BA310.unk48)) == NULL)
-            OSPanic("memcard.c", 0xD63, "cannot OSAlloc");
-        memset(lbl_802F21C4, 0, lbl_802BA310.unk48);
+        if ((memcardReplayData = OSAlloc(memcardInfo.fileSize)) == NULL)
+            OSPanic("memcard.c", 3427, "cannot OSAlloc");
+        memset(memcardReplayData, 0, memcardInfo.fileSize);
         func_8009FDD4();
         break;
     case 4:
@@ -2832,53 +2833,53 @@ void replay_save_sequence(void)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        if (lbl_801F3D88.unk4 & (1 << 8))
         {
             func_8002B5C8(0x6A);
-            lbl_802BA310.unk8 &= ~(1 << (31-0x15));
+            memcardInfo.statusFlags &= ~(1 << 10);
             if (lbl_802F21B1 == 0)
             {
-                lbl_802BA310.unk42 = (lbl_802BA310.unk8 & (1 << (31-0x19))) ? 0xB4 : 0;
-                lbl_802BA310.unk8 |= 0x200;
-                lbl_802BA310.unkC = &msgFormatInterrupted;
-                lbl_802BA310.unk4C = 0xFF;
+                memcardInfo.unk42 = (memcardInfo.statusFlags & (1 << 6)) ? 0xB4 : 0;
+                memcardInfo.statusFlags |= MC_STATUS_ERROR;
+                memcardInfo.msg = &msgFormatInterrupted;
+                memcardInfo.state = 0xFF;
             }
             else
             {
-                lbl_802BA310.unk8 |= 0x200000;
+                memcardInfo.statusFlags |= (1 << 21);
                 func_800A1B58();
             }
         }
         break;
     case 0xA:
         func_800A1C24();
-        if (lbl_802BA310.unk4C != 10)
-            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        if (memcardInfo.state != 10)
+            memcardInfo.statusFlags &= ~(1 << 21);
         break;
     case 0x17:
         func_800A06CC();
         break;
     case 0xD:
-        lbl_802BA310.unk8 |= 0x200000;
+        memcardInfo.statusFlags |= (1 << 21);
         func_800A0D1C();
         break;
     case 0xE:
         func_800A0E94();
         break;
     case 0x13:
-        lbl_802BA310.unk8 |= 0x8000;
-        memset(&lbl_802BA2A0, 0, sizeof(lbl_802BA2A0));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x14;
+        memcardInfo.statusFlags |= (1 << 15);
+        memset(&cardStat, 0, sizeof(cardStat));
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x14;
         break;
     case 0x14:
         func_800A1988();
         break;
     case 0x11:
         func_8009F7F0();
-        func_8004C69C(lbl_802F21C4->unk2050);
-        lbl_802F21C4->unk0 = mathutil_calc_crc16(lbl_802BA310.unk48 - 2, (u8 *)lbl_802F21C4 + 2);
-        func_800A10A8(lbl_802F21C4);
+        func_8004C69C(memcardReplayData->unk2050);
+        memcardReplayData->crc = mathutil_calc_crc16(memcardInfo.fileSize - 2, (u8 *)memcardReplayData + 2);
+        func_800A10A8(memcardReplayData);
         break;
     case 0x12:
         func_800A11A0();
@@ -2888,8 +2889,8 @@ void replay_save_sequence(void)
         break;
     case 0x16:
         func_800A1404();
-        if (lbl_802BA310.unk4C != 0x16)
-            lbl_802BA310.unk8 &= ~(1 << (31-10));
+        if (memcardInfo.state != 0x16)
+            memcardInfo.statusFlags &= ~(1 << 21);
         break;
     case 0x1E:
         func_800A06CC();
@@ -2897,29 +2898,29 @@ void replay_save_sequence(void)
     case 0xFF:
         break;
     default:
-        printf("stat: %d\n", lbl_802BA310.unk4C);
-        OSPanic("memcard.c", 0xDE9, "replay_save_sequence\n");
+        printf("stat: %d\n", memcardInfo.state);
+        OSPanic("memcard.c", 3561, "replay_save_sequence\n");
         break;
     }
 }
 
 void replay_list_sequence(void)
 {
-    switch (lbl_802BA310.unk4C)
+    switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88.unk4 & (1 << (31-0x17)))
+        if (lbl_801F3D88.unk4 & (1 << 8))
         {
             func_8002B5C8(0x6A);
-            lbl_802BA310.unk40 = 0x3C;
-            lbl_802BA310.unk4C = 2;
+            memcardInfo.unk40 = 0x3C;
+            memcardInfo.state = 2;
         }
         break;
     case 2:
         func_8009FB8C();
         break;
     case 3:
-        lbl_802BA310.unk8 |= 0x20000;
+        memcardInfo.statusFlags |= (1 << 17);
         func_8009FDD4();
         break;
     case 4:
@@ -2934,9 +2935,9 @@ void replay_list_sequence(void)
     case 0x18:
         lbl_802F21B2 = 0;
         lbl_802F21B8 = 0;
-        memset(&lbl_802BA2A0, 0, sizeof(lbl_802BA2A0));
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x19;
+        memset(&cardStat, 0, sizeof(cardStat));
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x19;
         break;
     case 0x19:
         func_800A1D64();
@@ -2944,37 +2945,37 @@ void replay_list_sequence(void)
     case 0x1A:
         lbl_802F21C8 = 0;
         lbl_802F21B8--;
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x1B;
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x1B;
         break;
     case 0x1B:
-        func_800A1FE8();
+        replay_list_open_and_read();
         break;
     case 0xFF:
         break;
     default:
-        printf("stat: %d\n", lbl_802BA310.unk4C);
-        OSPanic("memcard.c", 0xE39, "replay_list_sequence\n");
+        printf("stat: %d\n", memcardInfo.state);
+        OSPanic("memcard.c", 3641, "replay_list_sequence\n");
         break;
     }
 }
 
 void replay_load_sequence(void)
 {
-    switch (lbl_802BA310.unk4C)
+    switch (memcardInfo.state)
     {
     case 0x1C:
-        lbl_802BA310.unk48 = lbl_802BA310.unk44;
-        if ((lbl_802F21C4 = OSAlloc(lbl_802BA310.unk48)) == NULL)
-            OSPanic("memcard.c", 0xE4F, "cannot OSAlloc");
-        lbl_802BA310.unk40 = 0x4B0;
-        lbl_802BA310.unk4C = 0x1D;
+        memcardInfo.fileSize = memcardInfo.unk44;
+        if ((memcardReplayData = OSAlloc(memcardInfo.fileSize)) == NULL)
+            OSPanic("memcard.c", 3663, "cannot OSAlloc");
+        memcardInfo.unk40 = 0x4B0;
+        memcardInfo.state = 0x1D;
         break;
     case 0x1D:
         func_800A2538();
         break;
     case 0xF:
-        func_800A1584(lbl_802F21C4);
+        func_800A1584(memcardReplayData);
         break;
     case 0x10:
         func_800A167C();
@@ -2982,8 +2983,8 @@ void replay_load_sequence(void)
     case 0xFF:
         break;
     default:
-        printf("stat: %d\n", lbl_802BA310.unk4C);
-        OSPanic("memcard.c", 0xE6B, "replay_load_sequence\n");
+        printf("stat: %d\n", memcardInfo.state);
+        OSPanic("memcard.c", 3691, "replay_load_sequence\n");
         break;
     }
 }
@@ -2993,10 +2994,10 @@ void replay_load_sequence(void)
 // inline
 void replay_delete_sequence(void)
 {
-    switch (lbl_802BA310.unk4C)
+    switch (memcardInfo.state)
     {
     case 0xB:
-        func_800A26FC(lbl_802F21BC[lbl_802F21C0].unk14);
+        func_800A26FC(lbl_802F21BC[lbl_802F21C0].fileNo);
         break;
     case 0xC:
         func_800A27F8();
@@ -3004,8 +3005,8 @@ void replay_delete_sequence(void)
     case 0xFF:
         break;
     default:
-        printf("stat: %d\n", lbl_802BA310.unk4C);
-        OSPanic("memcard.c", 0xE89, "replay_delete_sequence\n");
+        printf("stat: %d\n", memcardInfo.state);
+        OSPanic("memcard.c", 3721, "replay_delete_sequence\n");
         break;
     }
 }
@@ -3017,199 +3018,191 @@ void memcard_init(void)
 
 void ev_memcard_init(void)
 {
-    // r30 = lbl_802BA2A0
-    lbl_802BA310.unk4C = 1;
-    lbl_802BA310.unkC = 0;
-    lbl_802BA310.unk0 = -1;
+    memcardInfo.state = 1;
+    memcardInfo.msg = NULL;
+    memcardInfo.unk0 = -1;
     lbl_802F21B2 = 0;
-    lbl_802BA310.time = OSGetTime();
+    memcardInfo.time = OSGetTime();
 
-    if (lbl_802F21B0 != 7)
+    if (memcardMode != MC_MODE_DELETE_REPLAY)
     {
-        if (lbl_802F21B0 == 1 || lbl_802F21B0 == 3 || lbl_802F21B0 == 5)
-            lbl_802BA310.unk8 |= 0x10;
+        if (memcardMode == MC_MODE_SAVE_GAMEDATA_1
+         || memcardMode == MC_MODE_SAVE_GAMEDATA_3
+         || memcardMode == MC_MODE_SAVE_REPLAY)
+            memcardInfo.statusFlags |= (1 << 4);
         else
-            lbl_802BA310.unk8 |= 0x20;
+            memcardInfo.statusFlags |= (1 << 5);
     }
 
-    if (lbl_802F21B0 == 2 || lbl_802F21B0 == 3)
-        lbl_802BA310.unk8 |= 0x40;
+    if (memcardMode == MC_MODE_LOAD_GAMEDATA_2
+     || memcardMode == MC_MODE_SAVE_GAMEDATA_3)
+        memcardInfo.statusFlags |= (1 << 6);
     else
-        lbl_802BA310.unk8 |= 0x80;
+        memcardInfo.statusFlags |= (1 << 7);
 
-    if (lbl_802F21B0 == 4 || lbl_802F21B0 == 5 || lbl_802F21B0 == 6 || lbl_802F21B0 == 7)
-        lbl_802BA310.unk8 |= 0x1000;
+    if (memcardMode == MC_MODE_LOAD_REPLAY
+     || memcardMode == MC_MODE_SAVE_REPLAY
+     || memcardMode == MC_MODE_LIST_REPLAY
+     || memcardMode == MC_MODE_DELETE_REPLAY)
+        memcardInfo.statusFlags |= (1 << 12);
     else
-        lbl_802BA310.unk8 |= 0x2000;
+        memcardInfo.statusFlags |= (1 << 13);
 
-    if (lbl_802BA310.unk8 & (1 << (31-0x13)))
+    if (memcardInfo.statusFlags & (1 << 12))
     {
-        sprintf(lbl_802BA310.fileName, "smkb%08x%08x",
-            (unsigned int)((u64)lbl_802BA310.time >> 32),
-            (unsigned int)(lbl_802BA310.time));
+        sprintf(memcardInfo.fileName, "smkb%08x%08x",
+            (unsigned int)((u64)memcardInfo.time >> 32),
+            (unsigned int)(memcardInfo.time));
     }
-    else if (lbl_802BA310.unk8 & (1 << (31-0x1B)))
-        strcpy(lbl_802BA310.fileName, "super_monkey_ball.000");
+    else if (memcardInfo.statusFlags & (1 << 4))
+        strcpy(memcardInfo.fileName, "super_monkey_ball.000");
     else
-        strcpy(lbl_802BA310.fileName, "super_monkey_ball.sys");
+        strcpy(memcardInfo.fileName, "super_monkey_ball.sys");
 
-    if (!(lbl_802BA310.unk8 & (1 << (31-0x13))))
-        lbl_802BA310.unk44 = 0x5C04;
-    else if (lbl_802F21B0 == 5)
-        lbl_802BA310.unk44 = func_8004C668() + 0x2050;
-    else if (lbl_802F21B0 == 4)
-        lbl_802BA310.unk44 = lbl_802F21BC[lbl_802F21C0].unk10;
+    if (!(memcardInfo.statusFlags & (1 << 12)))
+        memcardInfo.unk44 = 0x5C04;
+    else if (memcardMode == MC_MODE_SAVE_REPLAY)
+        memcardInfo.unk44 = func_8004C668() + 0x2050;
+    else if (memcardMode == MC_MODE_LOAD_REPLAY)
+        memcardInfo.unk44 = lbl_802F21BC[lbl_802F21C0].unk10;
     else
-        lbl_802BA310.unk44 = 0x200;
+        memcardInfo.unk44 = 0x200;
 
-    if (lbl_802F21B0 == 4)
-        lbl_802BA310.unk4C = 0x1C;
-    else if (lbl_802F21B0 == 7)
-        lbl_802BA310.unk4C = 0xB;
+    if (memcardMode == MC_MODE_LOAD_REPLAY)
+        memcardInfo.state = 0x1C;
+    else if (memcardMode == MC_MODE_DELETE_REPLAY)
+        memcardInfo.state = 0xB;
 
-    if (lbl_802F21B0 == 2)
+    if (memcardMode == MC_MODE_LOAD_GAMEDATA_2)
     {
-        if ((lbl_802F21AC = OSAlloc(0x5C04)) == NULL)
-            OSPanic("memcard.c", 0xEFB, "cannot OSAlloc");
+        if ((memcardGameData = OSAlloc(0x5C04)) == NULL)
+            OSPanic("memcard.c", 3835, "cannot OSAlloc");
         func_800A4E70();
-        memcpy(lbl_802C4480, lbl_802F21AC->unk5824 + 0x20, 0x3C0);
-        OSFree(lbl_802F21AC);
-        lbl_802F21AC = NULL;
+        memcpy(lbl_802C4480, memcardGameData->unk5824 + 0x20, 0x3C0);
+        OSFree(memcardGameData);
+        memcardGameData = NULL;
     }
-    if (!(lbl_802BA310.unk8 & (1 << (31-0x19))))
+    if (!(memcardInfo.statusFlags & (1 << 6)))
         lbl_801F3D88.unk4 = 0;
 }
 
 void ev_memcard_main(void)
 {
-    if ((lbl_802BA310.unk8 & (1 << (31-0x18)))
-     && lbl_802BA310.unk4C == 1
-     && (lbl_801F3D88.unk4 & (1 << (31-0x16))))
+    if ((memcardInfo.statusFlags & (1 << 7))
+     && memcardInfo.state == 1
+     && (lbl_801F3D88.unk4 & (1 << 9)))
     {
         func_8002B5C8(0x6B);
-        lbl_802BA310.unk4C = 0xFF;
-        lbl_802BA310.unk8 |= 0x100;
+        memcardInfo.state = 0xFF;
+        memcardInfo.statusFlags |= (1 << 8);
     }
-    if (lbl_802BA310.unk4C == 0xFF && !(lbl_802BA310.unk8 & (1 << (31-0x16  ))))
+    if (memcardInfo.state == 0xFF && !(memcardInfo.statusFlags & MC_STATUS_ERROR))
     {
-        lbl_802BA310.unk8 &= ~(1 << (31-10));
+        memcardInfo.statusFlags &= ~(1 << 21);
         ev_run_dest(0);
         return;
     }
-    if (lbl_802BA310.unk8 & (1 << (31-0x16)))
+    if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
-        lbl_802BA310.unk8 &= 0xFFDD7FFF;
-        if (lbl_801F3D88.unk4 & (1 << (31-0x16)))
+        memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | (1 << 21));
+        if (lbl_801F3D88.unk4 & (1 << 9))
         {
             func_8002B5C8(0x6B);
-            lbl_802BA310.unk42 = 0;
-            lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            memcardInfo.unk42 = 0;
+            memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
             lbl_801F3D88.unk4 = 0;
         }
         else
         {
-            if (lbl_802BA310.unk42 == 0)
+            if (memcardInfo.unk42 == 0)
                 return;
-            lbl_802BA310.unk42--;
-            if (lbl_802BA310.unk42 == 0)
-                lbl_802BA310.unk8 &= ~(1 << (31-0x16));
+            memcardInfo.unk42--;
+            if (memcardInfo.unk42 == 0)
+                memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
             else
                 return;
         }
     }
-    if (lbl_802BA310.unk40 > 0)
-        lbl_802BA310.unk40--;
-    switch (lbl_802F21B0)
+    if (memcardInfo.unk40 > 0)
+        memcardInfo.unk40--;
+    switch (memcardMode)
     {
-    case 0:
-    case 2:
+    case MC_MODE_LOAD_GAMEDATA_0:
+    case MC_MODE_LOAD_GAMEDATA_2:
         load_sequence();
         break;
-    case 1:
-    case 3:
+    case MC_MODE_SAVE_GAMEDATA_1:
+    case MC_MODE_SAVE_GAMEDATA_3:
         save_sequence();
         break;
-    case 4:
+    case MC_MODE_LOAD_REPLAY:
         replay_load_sequence();
         break;
-    case 5:
+    case MC_MODE_SAVE_REPLAY:
         replay_save_sequence();
         break;
-    case 6:
+    case MC_MODE_LIST_REPLAY:
         replay_list_sequence();
         break;
-    case 7:
+    case MC_MODE_DELETE_REPLAY:
         replay_delete_sequence();
         break;
     default:
-        printf("memcard_mode:%d\n", lbl_802F21B0);
-        OSPanic("memcard.c", 0xF70, "Memcard.");
+        printf("memcard_mode:%d\n", memcardMode);
+        OSPanic("memcard.c", 3952, "Memcard.");
         break;
     }
 }
 
-extern u32 lbl_802F21B4;
-
 void ev_memcard_dest(void)
 {
-    if (lbl_802BA310.unk8 & (1 << (31-28)))
+    if (memcardInfo.statusFlags & (1 << 3))
         lbl_802F21B9 = 1;
     else
     {
         lbl_802F21B9 = 0;
-        if (lbl_802F21B0 == 3)
+        if (memcardMode == MC_MODE_SAVE_GAMEDATA_3)
             lbl_802F21A8 = 0;
     }
 
-    CARDCancel(&lbl_802BA310.cardFileInfo);
-    if (lbl_802BA310.unk8 & (1 << (31-0x1E)))
+    CARDCancel(&memcardInfo.cardFileInfo);
+    if (memcardInfo.statusFlags & MC_STATUS_OPEN)
     {
-        CARDClose(&lbl_802BA310.cardFileInfo);
-        lbl_802BA310.unk8 &= ~(1 << (31-0x1E));
+        CARDClose(&memcardInfo.cardFileInfo);
+        memcardInfo.statusFlags &= ~MC_STATUS_OPEN;
     }
 
-    if (lbl_802BA310.unk8 & 1)
+    if (memcardInfo.statusFlags & MC_STATUS_MOUNTED)
     {
-        if (lbl_802F21B0 != 6 && lbl_802F21B0 != 7 && lbl_802F21B0 != 4)
+        if (memcardMode != MC_MODE_LIST_REPLAY
+         && memcardMode != MC_MODE_DELETE_REPLAY
+         && memcardMode != MC_MODE_LOAD_REPLAY)
         {
             CARDUnmount(0);
-            lbl_802BA310.unk8 &= ~1;
+            memcardInfo.statusFlags &= ~MC_STATUS_MOUNTED;
         }
     }
 
-    if (lbl_802F21AC != NULL && !(lbl_802BA310.unk8 & 0x5110) && lbl_802F21AC->unk2 == 0x16)
+    if (memcardGameData != NULL
+     && !(memcardInfo.statusFlags & ((1 << 4) | (1 << 8) | (1 << 12) | (1 << 14)))
+     && memcardGameData->version == 0x16)
         func_800A4F04();
-    lbl_802BA310.unk4C = 0;
-    lbl_802BA310.unk8 &= 3;
-    if (lbl_802F21AC != NULL)
+    memcardInfo.state = 0;
+    memcardInfo.statusFlags &= 3;
+    if (memcardGameData != NULL)
     {
-        OSFree(lbl_802F21AC);
-        lbl_802F21AC = NULL;
+        OSFree(memcardGameData);
+        memcardGameData = NULL;
     }
-    if (lbl_802F21C4 != NULL)
+    if (memcardReplayData != NULL)
     {
-        OSFree(lbl_802F21C4);
-        lbl_802F21C4 = NULL;
+        OSFree(memcardReplayData);
+        memcardReplayData = NULL;
     }
 
     lbl_802F21B4 = 0;
     lbl_802F21BC = 0;
 }
-
-void func_80071B2C(float, float);
-float func_800726A8();
-
-struct UnkStruct800A43E0_child
-{
-    int unk0;
-    u8 filler4[4];
-};
-
-struct UnkStruct800A43E0
-{
-    struct UnkStruct800A43E0_child *unk0;
-    s32 unk4;
-};
 
 #pragma force_active on
 #pragma fp_contract off
@@ -3217,17 +3210,17 @@ struct UnkStruct800A43E0
 struct
 {
     u32 unk0;
-    float unk4;  // 14a0
-    float unk8;  // 14a4
+    float unk4;
+    float unk8;
     float unkC;
-    float unk10;  // 14ac
-    float unk14;  // 14b0
+    float unk10;
+    float unk14;
     float unk18;
     float unk1C;
     float unk20;
-    float unk24;  // 14c0
+    float unk24;
     u32 unk28;
-    float unk2C;  // 14c8
+    float unk2C;
     u32 unk30;
     u32 unk34;
     u32 unk38;
@@ -3252,11 +3245,7 @@ struct
     0,
 };
 
-extern float lbl_802F1ECC;
-
-extern u32 lbl_802F1B34;
-
-void func_800A43E0(struct MemCardMessage *msg, float b, float c)
+void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
 {
     int i;
     int r27;
@@ -3271,9 +3260,9 @@ void func_800A43E0(struct MemCardMessage *msg, float b, float c)
 
     for (i = 0, f30 = 0.0f, r27 = msg->numLines; i < msg->numLines; i++)
     {
-        float f1 = func_800726A8(msg->lines[i].str);
-        if (f1 > f30)
-            f30 = f1;
+        float lineWidth = g_get_text_width(msg->lines[i].str);
+        if (lineWidth > f30)
+            f30 = lineWidth;
     }
     if (r27 > 0)
         f2 = 0.800000011920929 * (24.0 * r27 + 8.0 * (r27 - 1));
@@ -3283,8 +3272,8 @@ void func_800A43E0(struct MemCardMessage *msg, float b, float c)
     f1 = f30;
     f1 += 31.19999885559082;
     f2 += 38.40000057220459;
-    lbl_801D5724.unk4 = b;
-    lbl_801D5724.unk8 = c;
+    lbl_801D5724.unk4 = x;
+    lbl_801D5724.unk8 = y;
     {
         float var1 = f1;
         float var2 = f2;
@@ -3297,17 +3286,13 @@ void func_800A43E0(struct MemCardMessage *msg, float b, float c)
     func_80073828(&lbl_801D5724);
     for (i = 0; i < msg->numLines; i++)
     {
-        float param1 = b - 0.5 * func_800726A8(msg->lines[i].str);
+        float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);
         float param2 = 0.800000011920929 * (32.0 * i)
-            + ((c - 9.600000143051147) - 0.800000011920929 * (16.0 * (msg->numLines - 1)));
+            + ((y - 9.600000143051147) - 0.800000011920929 * (16.0 * (msg->numLines - 1)));
         func_80071B60(param1, param2);
         func_80071E58(msg->lines[i].str);
     }
 }
-
-extern void func_80071B1C(float);
-
-extern s32 lbl_802F1EB0;
 
 struct StringEntry lbl_802F1698 = {(void *)lbl_802C4900, 0};
 
@@ -3316,7 +3301,7 @@ struct StringEntry lbl_802F1698 = {(void *)lbl_802C4900, 0};
 #ifdef NONMATCHING
 static void g_msg_box_default_pos(struct MemCardMessage *msg)
 {
-    func_800A43E0(msg, 320.0f, 240.0f);
+    draw_memcard_msg(msg, 320.0f, 240.0f);
 }
 
 static int int_abs(int x)
@@ -3332,39 +3317,39 @@ void func_800A4628(void)
     func_80071A8C();
     func_80071AD4(0xB3);
     func_80071B1C(0.00800000037998f);
-    if (lbl_802BA310.unk8 & (1 << (31-0x16)))
+    if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
-        if (lbl_802BA310.unkC != NULL)
-            g_msg_box_default_pos(lbl_802BA310.unkC);
-        if (lbl_802BA310.unk42 == 0 || lbl_802BA310.unk8 & (1 << (31-12)))
+        if (memcardInfo.msg != NULL)
+            g_msg_box_default_pos(memcardInfo.msg);
+        if (memcardInfo.unk42 == 0 || memcardInfo.statusFlags & (1 << 19))
         {
-            if (lbl_802BA310.unk8 & (1 << (31-0x1B)) && !(lbl_802BA310.unk8 & (1 << (31-9))))
-                func_800A43E0(&msgPressBButtonNoSave, 320.0f, 380.0f);
+            if (memcardInfo.statusFlags & (1 << 4) && !(memcardInfo.statusFlags & (1 << 22)))
+                draw_memcard_msg(&msgPressBButtonNoSave, 320.0f, 380.0f);
             else
-                func_800A43E0(&msgPressBButton, 320.0f, 380.0f);
+                draw_memcard_msg(&msgPressBButton, 320.0f, 380.0f);
         }
         //lbl_800A46D8
-        if (lbl_802BA310.unk8 & (1 << (31-0xB)))
+        if (memcardInfo.statusFlags & (1 << 20))
         {
-            if (lbl_802BA310.unk4D == 0)
-                func_800A43E0(&msgMemCardNoFreeBlocks, 320.0f, 100.0f);
+            if (memcardInfo.unk4D == 0)
+                draw_memcard_msg(&msgMemCardNoFreeBlocks, 320.0f, 100.0f);
             else
             {
                 // TODO
                 struct MemCardMessage sp8 = {(void *)0x802F1698, 0};
                 struct MemCardMessage *r29;
-                if (lbl_802BA310.unk4D == 1)
+                if (memcardInfo.unk4D == 1)
                     r29 = &msgMemCardNumFreeBlock;
                 else
                     r29 = &msgMemCardNumFreeBlocks;
-                sprintf(sp8.lines[0].str, r29->lines[0].str, lbl_802BA310.unk4D);
-                if (lbl_802BA310.unk4D > 9)
+                sprintf(sp8.lines[0].str, r29->lines[0].str, memcardInfo.unk4D);
+                if (memcardInfo.unk4D > 9)
                     sp8.lines[0].unk4 = r29->lines[0].unk4 + 1;
                 else
                     sp8.lines[0].unk4 = r29->lines[0].unk4;
                 //lbl_800A4774
                 sp8.numLines = r29->numLines;
-                func_800A43E0(&sp8, 320.0f, 100.0f);
+                draw_memcard_msg(&sp8, 320.0f, 100.0f);
             }
         }
         //lbl_800A478C
@@ -3373,15 +3358,15 @@ void func_800A4628(void)
         return;
     }
     //lbl_800A4794
-    else if (lbl_802BA310.unk8 & (1 << (31-0x1D)))
+    else if (memcardInfo.statusFlags & (1 << 2))
     {
         g_msg_box_default_pos(&msgAccessMemCard);
         return;
     }
     //lbl_800A47B0
-    else if (lbl_802BA310.unk8 & (1 << (31-0x19)))
+    else if (memcardInfo.statusFlags & (1 << 6))
     {
-        if (lbl_802BA310.unk8 & (1 << (31-0x10)))
+        if (memcardInfo.statusFlags & (1 << 15))
         {
             func_80071B60(100.0f, 340.0f);
             g_msg_box_default_pos(&msgSavingGame);
@@ -3391,12 +3376,12 @@ void func_800A4628(void)
         return;
     }
     //lbl_800A47E4
-    else if (lbl_802BA310.unk8 & (1 << (31-0x15)))
-        func_800A43E0(&lbl_802F1624, 320.0f, 380.0f);
+    else if (memcardInfo.statusFlags & (1 << 10))
+        draw_memcard_msg(&lbl_802F1624, 320.0f, 380.0f);
     //lbl_800A47FC
-    if (lbl_802BA310.unk4C == 1)
-        func_800A43E0(&lbl_802F162C, 320.0f, 380.0f);
-    if (lbl_802BA310.unk4C == 9)
+    if (memcardInfo.state == 1)
+        draw_memcard_msg(&lbl_802F162C, 320.0f, 380.0f);
+    if (memcardInfo.state == 9)
     {
         //a0764
         g_msg_box_default_pos(&msgOverwritePrompt);
@@ -3457,11 +3442,11 @@ void func_800A4628(void)
         func_80071E58("No");
     }
     //lbl_800A4A34
-    if (lbl_802BA310.unk4C == 10)
-        func_800A43E0(&msgFormatProgress, 320.0f, 240.0f);
-    if (lbl_802BA310.unk4C == 13 && (lbl_802BA310.unk8 & (1 << (31-0x15))))
+    if (memcardInfo.state == 10)
+        draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
+    if (memcardInfo.state == 13 && (memcardInfo.statusFlags & (1 << 10)))
     {
-        func_800A43E0(&msgOverwritePrompt, 320.0f, 240.0f);
+        draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
         // right float constant load, but compiler adds an unecessary conversion
         i = (float)(lbl_802F1B34 % 60);
@@ -3517,16 +3502,16 @@ void func_800A4628(void)
         func_80071E58("No");
     }
     //lbl_800A4C74
-    if (lbl_802BA310.unk8 & (1 << (31-0x10)))
+    if (memcardInfo.statusFlags & (1 << 15))
     {
-        if (lbl_802BA310.unk8 & (1 << (31-0x13)))
-            func_800A43E0(&msgSavingReplay, 320.0f, 240.0f);
+        if (memcardInfo.statusFlags & (1 << 12))
+            draw_memcard_msg(&msgSavingReplay, 320.0f, 240.0f);
         else
-            func_800A43E0(&msgSavingGame, 320.0f, 240.0f);
+            draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
     }
     //lbl_800A4CAC
-    if (lbl_802BA310.unk8 & (1 << (31-14)))
-        func_800A43E0(&msgLoadingGame, 320.0f, 240.0f);
+    if (memcardInfo.statusFlags & (1 << 17))
+        draw_memcard_msg(&msgLoadingGame, 320.0f, 240.0f);
     func_80071A8C();
 }
 #else
@@ -3563,3 +3548,91 @@ asm void func_800A4628(void)
 #undef _SDA2_BASE_
 #pragma peephole on
 #endif
+
+void func_800A4CEC(void)
+{
+    s32 result;
+    CARDFileInfo cardFile;
+
+    // unmount card
+    while (CARDGetResultCode(0) == CARD_RESULT_BUSY)
+        ;
+    while (CARDUnmount(0) == CARD_RESULT_BUSY)
+        ;
+
+    // mount card
+    while ((result = CARDMount(0, cardWorkArea, NULL)) == CARD_RESULT_BUSY)
+        ;
+    if (result != CARD_RESULT_READY)
+        goto error;  // could not mount
+
+    while ((result = CARDOpen(0, "super_monkey_ball.000", &cardFile)) == CARD_RESULT_BUSY)
+        ;
+    if (result != CARD_RESULT_READY)
+        goto error;
+
+    while ((result = CARDOpen(0, "super_monkey_ball.sys", &cardFile)) == CARD_RESULT_BUSY)
+        ;
+    if (result == CARD_RESULT_READY)
+    {
+        while (CARDDelete(0, "super_monkey_ball.000") == CARD_RESULT_BUSY)
+            ;
+    }
+    else if (result == CARD_RESULT_NOFILE)
+    {
+        while (CARDRename(0, "super_monkey_ball.000", "super_monkey_ball.sys") == CARD_RESULT_BUSY)
+            ;
+    }
+
+error:
+    while (CARDUnmount(0) == -1)
+        ;
+}
+
+#pragma force_active on
+
+void func_800A4DF0(void)
+{
+    if ((memcardGameData = OSAlloc(0x5C04)) == NULL)
+        OSPanic("memcard.c", 4462, "cannot OSAlloc");
+    memcpy(memcardGameData->unk5824 + 32, lbl_802C4480, 0x3C0);
+    func_800A4F04();
+    OSFree(memcardGameData);
+    memcardGameData = NULL;
+}
+
+extern u8 lbl_801D5A20[];
+extern u32 lbl_802F22C8;
+
+extern void func_800B6224(u8);
+extern u8 func_800B622C(void);
+
+void func_800A4E70(void)
+{
+    memcardGameData->unk5824[0x6E] = lbl_802F21A8;
+    func_80025E5C(memcardGameData);
+    func_80011F74(memcardGameData);
+    func_8002DB10(memcardGameData);
+    func_80067FD0(memcardGameData);
+    memcardGameData->unk5824[0xCC] = modeCtrl.unk42;
+    memcpy(memcardGameData->unk5824 + 0xD0, lbl_801D5A20, 0x1FC);
+    memcardGameData->unk5824[0xCD] = func_800B622C();
+    func_800AFC1C(memcardGameData);
+    *(u32 *)(memcardGameData->unk5824 + 0x3DC) = lbl_802F22C8;
+}
+
+void func_800A4F04(void)
+{
+    lbl_802F21A8 = memcardGameData->unk5824[0x6E];
+    func_80025E8C(memcardGameData);
+    func_80012170(memcardGameData);
+    func_8002DB24(memcardGameData);
+    func_8006800C(memcardGameData);
+    modeCtrl.unk42 = memcardGameData->unk5824[0xCC];
+    memcpy(lbl_801D5A20, memcardGameData->unk5824 + 0xD0, 0x1FC);
+    func_800B6224(memcardGameData->unk5824[0xCD]);
+    func_800AFC4C(memcardGameData);
+    lbl_802F22C8 = *(u32 *)(memcardGameData->unk5824 + 0x3DC);
+}
+
+u8 memcard_data_padding[0x14] = {0};

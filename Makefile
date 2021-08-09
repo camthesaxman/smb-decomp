@@ -87,7 +87,6 @@ SOURCE_FILES := \
 	asm/relocation.s \
 	asm/mini_commend.s \
 	src/memcard.c \
-	asm/memcard.s \
 	src/DEMOPuts.c \
 	asm/view.s \
 	asm/preview.s \

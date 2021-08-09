@@ -205,6 +205,10 @@ FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lzHeaderBuf)
 FORCE_BSS_ORDER(unknownTexImg)
 
+#ifndef __MWERKS__
+u32 __lwbrx(void *, u32);
+#endif
+
 #ifdef __MWERKS__
 asm void func_8008D6BC(register u32 arg)
 {

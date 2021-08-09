@@ -2910,8 +2910,8 @@ lbl_8007264C:
 /* 800726A0 0006E5C0  38 21 01 68 */	addi r1, r1, 0x168
 /* 800726A4 0006E5C4  4E 80 00 20 */	blr
 
-.global func_800726A8
-func_800726A8:
+.global g_get_text_width
+g_get_text_width:
 /* 800726A8 0006E5C8  7C 08 02 A6 */	mflr r0
 /* 800726AC 0006E5CC  3C 80 80 29 */	lis r4, lbl_8028CF28@ha
 /* 800726B0 0006E5D0  90 01 00 04 */	stw r0, 4(r1)

@@ -5,7 +5,7 @@
 
 #include "global.h"
 
-// TODO: avoid duplicate symbol name
+// TODO: avoid duplicate FontData symbol name
 #define FontData lbl_802F21D4
 
 typedef enum
@@ -26,6 +26,13 @@ typedef enum
 
 // bss
 GXTexObj fontTexObj;
+
+// sbss
+s16 FontSpace;
+s16 FontSize;
+void *LastSheet;
+static OSFontHeader *FontData;
+s32 fontShift;
 
 static inline void DEMOSetFontType(s32 attr)
 {

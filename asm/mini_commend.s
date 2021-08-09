@@ -3840,13 +3840,13 @@ func_8009F430:
 
 .global func_8009F49C
 func_8009F49C:
-/* 8009F49C 0009B3BC  98 6D 9F D0 */	stb r3, lbl_802F21B0-_SDA_BASE_(r13)
+/* 8009F49C 0009B3BC  98 6D 9F D0 */	stb r3, memcardMode-_SDA_BASE_(r13)
 /* 8009F4A0 0009B3C0  4E 80 00 20 */	blr
 
 .global func_8009F4A4
 func_8009F4A4:
-/* 8009F4A4 0009B3C4  3C 60 80 2C */	lis r3, lbl_802BA310@ha
-/* 8009F4A8 0009B3C8  38 63 A3 10 */	addi r3, r3, lbl_802BA310@l
+/* 8009F4A4 0009B3C4  3C 60 80 2C */	lis r3, memcardInfo@ha
+/* 8009F4A8 0009B3C8  38 63 A3 10 */	addi r3, r3, memcardInfo@l
 /* 8009F4AC 0009B3CC  80 03 00 08 */	lwz r0, 8(r3)
 /* 8009F4B0 0009B3D0  54 03 02 94 */	rlwinm r3, r0, 0, 0xa, 0xa
 /* 8009F4B4 0009B3D4  4E 80 00 20 */	blr

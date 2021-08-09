@@ -4,6 +4,7 @@
 // stop gcc from complaining
 #ifndef __MWERKS__
 extern int __abs(int);
+extern float __fabs(float);
 #endif
 
 #define NAN       (0.0f / 0.0f)

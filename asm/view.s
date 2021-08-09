@@ -4206,7 +4206,7 @@ lbl_800A9254:
 /* 800A9370 000A5290  7C 83 03 78 */	or r3, r4, r0
 /* 800A9374 000A5294  4B FC 87 85 */	bl func_80071AF8
 /* 800A9378 000A5298  7F A3 EB 78 */	mr r3, r29
-/* 800A937C 000A529C  4B FC 93 2D */	bl func_800726A8
+/* 800A937C 000A529C  4B FC 93 2D */	bl g_get_text_width
 /* 800A9380 000A52A0  C8 02 B4 F8 */	lfd f0, lbl_802F5CF8-_SDA2_BASE_(r2)
 /* 800A9384 000A52A4  C8 42 B5 70 */	lfd f2, lbl_802F5D70-_SDA2_BASE_(r2)
 /* 800A9388 000A52A8  FC 00 00 72 */	fmul f0, f0, f1
@@ -4629,7 +4629,7 @@ lbl_800A98A0:
 /* 800A99D0 000A58F0  7C 83 03 78 */	or r3, r4, r0
 /* 800A99D4 000A58F4  4B FC 81 25 */	bl func_80071AF8
 /* 800A99D8 000A58F8  7E 83 A3 78 */	mr r3, r20
-/* 800A99DC 000A58FC  4B FC 8C CD */	bl func_800726A8
+/* 800A99DC 000A58FC  4B FC 8C CD */	bl g_get_text_width
 /* 800A99E0 000A5900  C8 02 B4 F8 */	lfd f0, lbl_802F5CF8-_SDA2_BASE_(r2)
 /* 800A99E4 000A5904  C8 42 B5 D8 */	lfd f2, lbl_802F5DD8-_SDA2_BASE_(r2)
 /* 800A99E8 000A5908  FC 00 00 72 */	fmul f0, f0, f1
@@ -7874,7 +7874,7 @@ func_800AC718:
 lbl_800AC834:
 /* 800AC834 000A8754  80 7D 00 00 */	lwz r3, 0(r29)
 /* 800AC838 000A8758  7C 63 E0 2E */	lwzx r3, r3, r28
-/* 800AC83C 000A875C  4B FC 5E 6D */	bl func_800726A8
+/* 800AC83C 000A875C  4B FC 5E 6D */	bl g_get_text_width
 /* 800AC840 000A8760  80 7D 00 04 */	lwz r3, 4(r29)
 /* 800AC844 000A8764  6F C0 80 00 */	xoris r0, r30, 0x8000
 /* 800AC848 000A8768  90 01 00 74 */	stw r0, 0x74(r1)
@@ -10259,3 +10259,494 @@ lbl_802C6BC8:
 .global lbl_802C6BD8
 lbl_802C6BD8:
 	.skip 0x10
+
+.section .sdata
+
+    .balign 0x10
+.global lbl_802F16B0
+lbl_802F16B0:
+	# ROM: 0x1EBDF0
+glabel string_view_c
+	.asciz "view.c"
+	.balign 4
+
+.global lbl_802F16B8
+lbl_802F16B8:
+	# ROM: 0x1EBDF8
+	.byte 0x42, 0x70, 0x00, 0x00
+	.byte 0xF3, 0x00, 0x00, 0x00
+	.byte 0x53, 0x45, 0x58, 0x00
+	.byte 0x58, 0x58, 0x58, 0x00
+	.byte 0x58, 0x58, 0x20, 0x00
+	.byte 0x58, 0x58, 0x00, 0x00
+	.byte 0x20, 0x58, 0x58, 0x00
+	.byte 0x58, 0x20, 0x58, 0x00
+
+.global lbl_802F16D8
+lbl_802F16D8:
+	# ROM: 0x1EBE18
+	.byte 0x2D, 0x2D, 0x2D, 0x00
+
+.global lbl_802F16DC
+lbl_802F16DC:
+	# ROM: 0x1EBE1C
+	.byte 0x25, 0x64, 0x00, 0x00
+
+.global lbl_802F16E0
+lbl_802F16E0:
+	# ROM: 0x1EBE20
+	.byte 0x25, 0x63, 0x00, 0x00
+
+.global lbl_802F16E4
+lbl_802F16E4:
+	# ROM: 0x1EBE24
+	.byte 0x3A, 0x00, 0x00, 0x00
+
+.global lbl_802F16E8
+lbl_802F16E8:
+	# ROM: 0x1EBE28
+	.byte 0x3B, 0x00, 0x00, 0x00
+
+.global lbl_802F16EC
+lbl_802F16EC:
+	# ROM: 0x1EBE2C
+glabel string_a_Race
+	.asciz "a/Race"
+	.balign 4
+
+.global lbl_802F16F4
+lbl_802F16F4:
+	# ROM: 0x1EBE34
+glabel string_RANK
+	.asciz "RANK"
+	.balign 4
+
+.global lbl_802F16FC
+lbl_802F16FC:
+	# ROM: 0x1EBE3C
+glabel string_a_Golf
+	.asciz "a/Golf"
+	.balign 4
+
+.global lbl_802F1704
+lbl_802F1704:
+	# ROM: 0x1EBE44
+	.byte 0x42, 0x47, 0x00, 0x00
+	.byte 0x42, 0x4F, 0x59, 0x00
+	.byte 0x47, 0x41, 0x4C, 0x00
+	.byte 0x4B, 0x49, 0x44, 0x00
+	.byte 0x47, 0x4F, 0x52, 0x00
+	.4byte string_a_Please_close_the_Disc_Cover_  ;# ptr
+	.4byte 0
+	.4byte 0
+	.4byte string_Please_close_the_Disc_Cover_  ;# ptr
+	.4byte 0
+	.4byte 0
+glabel string_FONT_A
+	.asciz "FONT_A"
+	.balign 4
+glabel string_FONT_B
+	.asciz "FONT_B"
+	.balign 4
+glabel string_FONT_C
+	.asciz "FONT_C"
+	.balign 4
+glabel string_FONT_D
+	.asciz "FONT_D"
+	.balign 4
+glabel string_FONT_E
+	.asciz "FONT_E"
+	.balign 4
+glabel string_FONT_F
+	.asciz "FONT_F"
+	.balign 4
+glabel string_FONT_G
+	.asciz "FONT_G"
+	.balign 4
+glabel string_FONT_H
+	.asciz "FONT_H"
+	.balign 4
+glabel string_FONT_I
+	.asciz "FONT_I"
+	.balign 4
+glabel string_FONT_J
+	.asciz "FONT_J"
+	.balign 4
+glabel string_FONT_K
+	.asciz "FONT_K"
+	.balign 4
+glabel string_FONT_L
+	.asciz "FONT_L"
+	.balign 4
+glabel string_FONT_M
+	.asciz "FONT_M"
+	.balign 4
+glabel string_FONT_N
+	.asciz "FONT_N"
+	.balign 4
+glabel string_FONT_O
+	.asciz "FONT_O"
+	.balign 4
+glabel string_FONT_P
+	.asciz "FONT_P"
+	.balign 4
+glabel string_FONT_Q
+	.asciz "FONT_Q"
+	.balign 4
+glabel string_FONT_R
+	.asciz "FONT_R"
+	.balign 4
+glabel string_FONT_S
+	.asciz "FONT_S"
+	.balign 4
+glabel string_FONT_T
+	.asciz "FONT_T"
+	.balign 4
+glabel string_FONT_U
+	.asciz "FONT_U"
+	.balign 4
+glabel string_FONT_V
+	.asciz "FONT_V"
+	.balign 4
+glabel string_FONT_W
+	.asciz "FONT_W"
+	.balign 4
+glabel string_FONT_X
+	.asciz "FONT_X"
+	.balign 4
+glabel string_FONT_Y
+	.asciz "FONT_Y"
+	.balign 4
+glabel string_FONT_Z
+	.asciz "FONT_Z"
+	.balign 4
+	.byte 0x53, 0x45, 0x58, 0x00
+	.byte 0x58, 0x58, 0x58, 0x00
+	.byte 0x58, 0x58, 0x20, 0x00
+	.byte 0x58, 0x58, 0x00, 0x00
+	.byte 0x20, 0x58, 0x58, 0x00
+	.byte 0x58, 0x20, 0x58, 0x00
+
+.global lbl_802F1818
+lbl_802F1818:
+	# ROM: 0x1EBF58
+glabel string_BUTTON
+	.asciz "BUTTON"
+	.balign 4
+
+.global lbl_802F1820
+lbl_802F1820:
+	# ROM: 0x1EBF60
+	.byte 0x41, 0x2E, 0x56, 0x00
+
+.global lbl_802F1824
+lbl_802F1824:
+	# ROM: 0x1EBF64
+	.byte 0x2D, 0x2D, 0x2D, 0x00
+
+.global lbl_802F1828
+lbl_802F1828:
+	# ROM: 0x1EBF68
+glabel string__07d_2
+	.asciz "%07d"
+	.balign 4
+	.byte 0x4E, 0x41, 0x47, 0x00
+	.byte 0x40, 0x52, 0x49, 0x00
+	.byte 0x53, 0x48, 0x4F, 0x00
+	.byte 0x53, 0x41, 0x4B, 0x00
+	.byte 0x4A, 0x41, 0x4D, 0x00
+	.byte 0x4D, 0x4B, 0x41, 0x00
+	.byte 0x4F, 0x44, 0x41, 0x00
+	.byte 0x4D, 0x2E, 0x53, 0x00
+	.byte 0x48, 0x2E, 0x45, 0x00
+	.byte 0x4A, 0x55, 0x4E, 0x00
+	.byte 0x59, 0x2E, 0x53, 0x00
+	.byte 0x41, 0x47, 0x45, 0x00
+glabel string_Bonobo
+	.asciz "Bonobo"
+	.balign 4
+glabel string_Gorilla
+	.asciz "Gorilla"
+glabel string_Aye_Aye
+	.asciz "Aye-Aye"
+glabel string_Potto
+	.asciz "Potto"
+	.balign 4
+glabel string_Avahi
+	.asciz "Avahi"
+	.balign 4
+glabel string_Indris
+	.asciz "Indris"
+	.balign 4
+
+.global lbl_802F1890
+lbl_802F1890:
+	# ROM: 0x1EBFD0
+glabel string_STAFF
+	.asciz "STAFF"
+	.balign 4
+
+.global lbl_802F1898
+lbl_802F1898:
+	# ROM: 0x1EBFD8
+glabel string_SUPER
+	.asciz "SUPER"
+	.balign 4
+
+.global lbl_802F18A0
+lbl_802F18A0:
+	# ROM: 0x1EBFE0
+glabel string_READY_2
+	.asciz "READY"
+	.balign 4
+
+.global lbl_802F18A8
+lbl_802F18A8:
+	# ROM: 0x1EBFE8
+glabel string_GOAL_2
+	.asciz "GOAL"
+	.balign 4
+
+.global lbl_802F18B0
+lbl_802F18B0:
+	# ROM: 0x1EBFF0
+	.byte 0x25, 0x73, 0x00, 0x00
+
+.global lbl_802F18B4
+lbl_802F18B4:
+	# ROM: 0x1EBFF4
+	.byte 0x25, 0x64, 0x00, 0x00
+
+.global lbl_802F18B8
+lbl_802F18B8:
+	# ROM: 0x1EBFF8
+	.byte 0x0F, 0x00, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F18C0
+lbl_802F18C0:
+	# ROM: 0x1EC000
+	.byte 0x00, 0xEA, 0x01, 0x02
+	.byte 0x01, 0x42, 0x01, 0x73
+
+.global lbl_802F18C8
+lbl_802F18C8:
+	# ROM: 0x1EC008
+	.byte 0x00, 0xB7, 0x01, 0x02
+	.byte 0x01, 0x41, 0x01, 0x8B
+
+.global lbl_802F18D0
+lbl_802F18D0:
+	# ROM: 0x1EC010
+	.byte 0x00, 0xEC, 0x01, 0x15
+	.byte 0x01, 0x6D, 0x01, 0x73
+
+.global lbl_802F18D8
+lbl_802F18D8:
+	# ROM: 0x1EC018
+	.byte 0x00, 0xB5, 0x00, 0xFF
+	.byte 0x01, 0x38, 0x01, 0x92
+
+.global lbl_802F18E0
+lbl_802F18E0:
+	# ROM: 0x1EC020
+	.byte 0x00, 0xEA, 0x01, 0x02
+	.byte 0x01, 0x6D, 0x01, 0x73
+
+.global lbl_802F18E8
+lbl_802F18E8:
+	# ROM: 0x1EC028
+	.byte 0x00, 0xE4, 0x01, 0x27
+	.byte 0x01, 0x4A, 0x00, 0x00
+
+.global lbl_802F18F0
+lbl_802F18F0:
+	# ROM: 0x1EC030
+	.byte 0x00, 0xE8, 0x01, 0x01
+	.byte 0x01, 0x6B, 0x00, 0x00
+
+.global lbl_802F18F8
+lbl_802F18F8:
+	# ROM: 0x1EC038
+	.byte 0x00, 0xE8, 0x01, 0x02
+	.byte 0x01, 0x6D, 0x00, 0x00
+glabel string_of__b_
+	.asciz "of %b!"
+	.balign 4
+glabel string_Oh_wow_
+	.asciz "Oh wow!"
+glabel string__point
+	.asciz " point"
+	.balign 4
+glabel string__points
+	.asciz " points"
+	.4byte 0
+	.4byte 0
+
+.section .sbss
+
+.global lbl_802F21E0
+lbl_802F21E0:
+	.skip 0x8
+.global lbl_802F21E8
+lbl_802F21E8:
+	.skip 0x4
+.global lbl_802F21EC
+lbl_802F21EC:
+	.skip 0x4
+.global lbl_802F21F0
+lbl_802F21F0:
+	.skip 0x8
+.global lbl_802F21F8
+lbl_802F21F8:
+	.skip 0x4
+.global lbl_802F21FC
+lbl_802F21FC:
+	.skip 0x4
+.global lbl_802F2200
+lbl_802F2200:
+	.skip 0x4
+.global lbl_802F2204
+lbl_802F2204:
+	.skip 0x4
+.global lbl_802F2208
+lbl_802F2208:
+	.skip 0x8
+.global lbl_802F2210
+lbl_802F2210:
+	.skip 0x4
+.global lbl_802F2214
+lbl_802F2214:
+	.skip 0x4
+.global lbl_802F2218
+lbl_802F2218:
+	.skip 0x4
+.global lbl_802F221C
+lbl_802F221C:
+	.skip 0x4
+.global lbl_802F2220
+lbl_802F2220:
+	.skip 0x4
+.global lbl_802F2224
+lbl_802F2224:
+	.skip 0x4
+.global lbl_802F2228
+lbl_802F2228:
+	.skip 0x4
+.global lbl_802F222C
+lbl_802F222C:
+	.skip 0x4
+.global lbl_802F2230
+lbl_802F2230:
+	.skip 0x4
+.global lbl_802F2234
+lbl_802F2234:
+	.skip 0x4
+.global lbl_802F2238
+lbl_802F2238:
+	.skip 0x4
+.global lbl_802F223C
+lbl_802F223C:
+	.skip 0x4
+.global lbl_802F2240
+lbl_802F2240:
+	.skip 0x4
+.global lbl_802F2244
+lbl_802F2244:
+	.skip 0x4
+.global lbl_802F2248
+lbl_802F2248:
+	.skip 0x4
+.global lbl_802F224C
+lbl_802F224C:
+	.skip 0x4
+.global lbl_802F2250
+lbl_802F2250:
+	.skip 0x4
+.global lbl_802F2254
+lbl_802F2254:
+	.skip 0x4
+.global lbl_802F2258
+lbl_802F2258:
+	.skip 0x4
+.global lbl_802F225C
+lbl_802F225C:
+	.skip 0x4
+.global lbl_802F2260
+lbl_802F2260:
+	.skip 0x4
+.global lbl_802F2264
+lbl_802F2264:
+	.skip 0x4
+.global lbl_802F2268
+lbl_802F2268:
+	.skip 0x4
+.global lbl_802F226C
+lbl_802F226C:
+	.skip 0x4
+.global lbl_802F2270
+lbl_802F2270:
+	.skip 0x4
+.global lbl_802F2274
+lbl_802F2274:
+	.skip 0x4
+.global lbl_802F2278
+lbl_802F2278:
+	.skip 0x4
+.global lbl_802F227C
+lbl_802F227C:
+	.skip 0x4
+.global lbl_802F2280
+lbl_802F2280:
+	.skip 0x4
+.global lbl_802F2284
+lbl_802F2284:
+	.skip 0x4
+.global lbl_802F2288
+lbl_802F2288:
+	.skip 0x4
+.global lbl_802F228C
+lbl_802F228C:
+	.skip 0x4
+.global lbl_802F2290
+lbl_802F2290:
+	.skip 0x4
+.global lbl_802F2294
+lbl_802F2294:
+	.skip 0x4
+.global lbl_802F2298
+lbl_802F2298:
+	.skip 0x4
+.global lbl_802F229C
+lbl_802F229C:
+	.skip 0x4
+.global lbl_802F22A0
+lbl_802F22A0:
+	.skip 0x4
+.global lbl_802F22A4
+lbl_802F22A4:
+	.skip 0x4
+.global lbl_802F22A8
+lbl_802F22A8:
+	.skip 0x4
+.global lbl_802F22AC
+lbl_802F22AC:
+	.skip 0x4
+.global lbl_802F22B0
+lbl_802F22B0:
+	.skip 0x4
+.global lbl_802F22B4
+lbl_802F22B4:
+	.skip 0x4
+.global lbl_802F22B8
+lbl_802F22B8:
+	.skip 0x4
+.global lbl_802F22BC
+lbl_802F22BC:
+	.skip 0x4
+.global lbl_802F22C0
+lbl_802F22C0:
+	.skip 0x8
+.global lbl_802F22C8
+lbl_802F22C8:
+	.skip 0x8
