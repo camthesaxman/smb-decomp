@@ -249,7 +249,7 @@ void (*lbl_801B95E4[])(void) =
 };
 
 // 4E0
-void (*lbl_801B9658[])(void) =
+void (*lbl_801B9658[])(int) =
 {
     NULL,
     func_800573A0,
@@ -357,6 +357,21 @@ extern struct TPL *decodedBgTpl;
 extern struct GMA *decodedBgGma;
 extern u32 lbl_802F1AFC;
 extern u32 lbl_802F1AE8;
+extern struct
+{
+    u32 unk0;
+    u8 filler4[9-4];
+} lbl_801EEC90;
+extern Mtx *lbl_802F1B3C;
+
+extern struct
+{
+    u8 filler0[0x68];
+    u32 unk68;
+    u32 unk6C;
+    u32 unk70;
+    u32 unk74;
+} *decodedStageLzPtr;
 
 void ev_background_init(void)
 {
@@ -369,10 +384,10 @@ void ev_background_init(void)
     lbl_801B9178.unk0 = r29;
     lbl_801B9178.unk9C = r27;
     lbl_801B9178.unkA0 = r26;
-    
+
     lbl_801B9178.unk4 = 0.0f;
     lbl_801B9178.unk8 = 0;
-    
+
     lbl_801B9178.unkC = lbl_801B9178_A8[lbl_801B9178.unk0];
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(lbl_801B9178.unk48);
@@ -526,19 +541,6 @@ char *lbl_801B9834[] =
     NULL,
     NULL,
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
 };
 
 void func_80055164(int bgId)
@@ -574,3 +576,204 @@ void func_80055164(int bgId)
         }
     }
 }
+
+u32 lbl_801B98A8[] =
+{
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0x16C,
+    0x194,
+    0,
+    0x16C,
+    0xAC,
+    0x56C,
+    0,
+    0x428,
+    0x80C,
+    0x1EC,
+    0,
+    0,
+    0,
+    0xB90,
+    0x94,
+    0,
+};
+
+u8 lbl_801B991C[] =
+{
+    0x01, 0x0D, 0x0D, 0x0D,
+    0x0D, 0x10, 0x10, 0x10,
+    0x10, 0x10, 0x01, 0x0D,
+    0x0D, 0x0D, 0x0D, 0x10,
+    0x10, 0x10, 0x10, 0x01,
+    0x01, 0x0F, 0x0F, 0x0F,
+    0x0F, 0x0F, 0x0F, 0x0F,
+    0x0F, 0x0F, 0x01, 0x0E,
+    0x0E, 0x0E, 0x0E, 0x0E,
+    0x0E, 0x0E, 0x0E, 0x0E,
+    0x0E, 0x0D, 0x0D, 0x0D,
+    0x0D, 0x0F, 0x0F, 0x0F,
+    0x0F, 0x01, 0x01, 0x0E,
+    0x0E, 0x0E, 0x0E, 0x0E,
+    0x0E, 0x0E, 0x0E, 0x0E,
+    0x01, 0x12, 0x12, 0x12,
+    0x12, 0x12, 0x12, 0x12,
+    0x12, 0x12, 0x01, 0x13,
+    0x13, 0x13, 0x13, 0x13,
+    0x13, 0x13, 0x13, 0x13,
+    0x01, 0x14, 0x14, 0x14,
+    0x14, 0x14, 0x14, 0x14,
+    0x14, 0x14, 0x14, 0x15,
+    0x15, 0x15, 0x15, 0x15,
+    0x01, 0x01, 0x01, 0x0D,
+    0x01, 0x11, 0x11, 0x11,
+    0x11, 0x11, 0x11, 0x11,
+    0x11, 0x11, 0x11, 0x11,
+    0x11, 0x11, 0x01, 0x1A,
+    0x1A, 0x1A, 0x1A, 0x1A,
+    0x1A, 0x1A, 0x1A, 0x1A,
+    0x1A, 0x1A, 0x1A, 0x1A,
+    0x1A, 0x1A, 0x1A, 0x11,
+    0x12, 0x0D, 0x13, 0x0F,
+    0x0E, 0x0F, 0x12, 0x10,
+    0x11, 0x11, 0x0E, 0x0D,
+    0x13, 0x11, 0x11, 0x11,
+    0x11, 0x11, 0x0D, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x0D, 0x0D, 0x0D,
+    0x0D, 0x0D, 0x0D, 0x0D,
+    0x0D, 0x0D, 0x0D, 0x0D,
+    0x0D, 0x0D, 0x0D, 0x0D,
+    0x0D, 0x0D, 0x0D, 0x19,
+    0x17, 0x01, 0x01, 0x01,
+    0x01, 0x01, 0x01, 0x01,
+    0x01, 0x01, 0x00, 0x01,
+    0x01, 0x01, 0x01, 0x01,
+    0x01, 0x15, 0x1B, 0x0D,
+    0x01, 0x00, 0x00, 0x00,
+};
+
+void load_bg_files(int bgId)
+{
+    char bgDir[64];
+    char gmaFileName[64];
+    char tplFileName[64];
+    char *bgName;
+
+    if (lbl_801B9178.unk0 != bgId)
+    {
+        OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B20);
+
+        if (lbl_801B9178.unk0 > 0)
+        {
+            if (lbl_801B9178.unk9C != NULL)
+            {
+                OSFree(lbl_801B9178.unk9C);
+                lbl_801B9178.unk9C = NULL;
+            }
+            if (decodedBgTpl != NULL || decodedBgGma != NULL)
+            {
+                VISetNextFrameBuffer(lbl_802F1CA4[0]);
+                VIWaitForRetrace();
+            }
+            if (decodedBgTpl != NULL)
+            {
+                free_tpl(decodedBgTpl);
+                decodedBgTpl = NULL;
+            }
+            if (decodedBgGma != NULL)
+            {
+                free_gma(decodedBgGma);
+                decodedBgGma = NULL;
+            }
+            func_80030E20(&lbl_802F1AFC, &lbl_802F1AE8);
+        }
+        if (bgId > 0)
+        {
+            bgName = lbl_801B97C0[bgId];
+            if (bgName != NULL)
+            {
+                strcpy(bgDir, "bg/");
+                DVDChangeDir(bgDir);
+                sprintf(gmaFileName, "%s.gma", bgName);
+                sprintf(tplFileName, "%s.tpl", bgName);
+                decodedBgTpl = load_tpl(tplFileName);
+                decodedBgGma = load_gma(gmaFileName, decodedBgTpl);
+                DVDChangeDir("/test");
+            }
+            bgName = lbl_801B9834[bgId];
+            if (bgName != NULL)
+            {
+                strcpy(bgDir, "bg/");
+                DVDChangeDir(bgDir);
+                sprintf(gmaFileName, "%s_p.lz", bgName);
+                sprintf(tplFileName, "%s.lz", bgName);
+                load_nlobj(&lbl_802F1AFC, &lbl_802F1AE8, gmaFileName, tplFileName);
+                DVDChangeDir("/test");
+            }
+            if (lbl_801B98A8[bgId] != 0)
+            {
+                lbl_801B9178.unk9C = OSAlloc(lbl_801B98A8[bgId]);
+                if (lbl_801B9178.unk9C == NULL)
+                    OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
+                memset(lbl_801B9178.unk9C, 0, lbl_801B98A8[bgId]);
+            }
+        }
+        OSSetCurrentHeap(oldHeap);
+        lbl_801B9178.unk0 = bgId;
+        func_80021DB4(stageId);
+    }
+}
+
+void func_800554A4(int a)
+{
+    if (lbl_801B9178.unk0 > 0)
+        lbl_801B9658[lbl_801B9178.unk0](a);
+}
+
+void bg_init_e3(void) {}
+
+void bg_main_e3(void)
+{
+    float var = lbl_801B9178.unk4 / 60.0;
+
+    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+}
+
+void func_80055554(void) {}
+
+void bg_disp_e3(void)
+{
+    func_800224CC();
+    if ((decodedStageLzPtr->unk6C != 0 || decodedStageLzPtr->unk74 != 0)
+     && (lbl_801EEC90.unk0 & 1))
+        func_8008E428(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->unk6C != 0)
+    {
+        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        func_80022274(4);
+    }
+    func_80055A18(lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    if (decodedStageLzPtr->unk74 != 0)
+    {
+        mathutil_mtxA_from_mtx(mathutilData->mtxB);
+        func_80022274(0);
+    }
+    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    func_80022530();
+}
+
+void func_80055628(int a) {}

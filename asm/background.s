@@ -322,7 +322,6 @@ lbl_80055260:
 /* 80055270 00051190  83 A1 00 D4 */	lwz r29, 0xd4(r1)
 /* 80055274 00051194  38 21 00 E0 */	addi r1, r1, 0xe0
 /* 80055278 00051198  4E 80 00 20 */	blr
-.endif
 
 .global load_bg_files
 load_bg_files:
@@ -529,6 +528,7 @@ bg_main_e3:
 /* 80055548 00051468  38 21 00 10 */	addi r1, r1, 0x10
 /* 8005554C 0005146C  7C 08 03 A6 */	mtlr r0
 /* 80055550 00051470  4E 80 00 20 */	blr
+
 .global func_80055554
 func_80055554:
 /* 80055554 00051474  4E 80 00 20 */	blr
@@ -594,6 +594,7 @@ lbl_800555FC:
 .global func_80055628
 func_80055628:
 /* 80055628 00051548  4E 80 00 20 */	blr
+.endif
 
 .global func_8005562C
 func_8005562C:
@@ -30341,7 +30342,6 @@ glabel lbl_801B97C0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-.endif
 	.byte 0x00, 0x00, 0x01, 0x6C
 	.byte 0x00, 0x00, 0x01, 0x94
 	.4byte 0
@@ -30418,6 +30418,7 @@ glabel string_background_c
 	.balign 4
 glabel string_cannot_OSAlloc_n_6
 	.asciz "cannot OSAlloc\n"
+.endif
 	.byte 0x00, 0x09, 0x00, 0x0A
 	.byte 0x00, 0x0B, 0x00, 0x0C
 	.byte 0x00, 0x0D, 0x00, 0x0E
@@ -35089,19 +35090,20 @@ lbl_802F3CF8:
 .global lbl_802F3CFC
 lbl_802F3CFC:
 	# ROM: 0x1ED71C
-	.byte 0x3F, 0x80, 0x00, 0x00
-.endif
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
 
 .global lbl_802F3D00
 lbl_802F3D00:
 	# ROM: 0x1ED720
-	.byte 0x40, 0x4E, 0x00, 0x00
+	.byte 0x40, 0x4E, 0x00, 0x00  ;# 60.0
 	.4byte 0
 
 .global lbl_802F3D08
 lbl_802F3D08:
 	# ROM: 0x1ED728
-	.byte 0x3F, 0x00, 0x00, 0x00
+	.byte 0x3F, 0x00, 0x00, 0x00  ;# 0.5f
+.endif
+
 	.4byte 0
 
 .global lbl_802F3D10
