@@ -76,6 +76,7 @@ SOURCE_FILES := \
 	asm/ball.s \
 	asm/code.s \
 	asm/stage.s \
+	src/background.c \
 	asm/background.s \
 	src/sprite.c \
 	asm/sprite.s \
