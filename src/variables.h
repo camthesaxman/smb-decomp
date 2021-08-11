@@ -1207,7 +1207,7 @@ extern u32 lbl_802F1BC8;
 // extern ? lbl_802F1C32;
 // extern ? lbl_802F1C34;
 // extern ? minigameRelCameraCallback;
-// extern ? currentCameraStructPtr;
+extern struct Camera *currentCameraStructPtr;
 // extern ? lbl_802F1C40;
 // extern ? lbl_802F1C48;
 // extern ? lbl_802F1C4C;

@@ -34,34 +34,6 @@ struct GMAMaterial
     u8 fillerC[0x20-0xC];
 };
 
-struct GMAModelHeader
-{
-    u8 filler0[4];
-    u32 flags;
-    Vec unk8;
-    float unk14;
-    /*0x18*/ u16 numMaterials;
-    /*0x1A*/ u16 numLayer1Meshes;
-    /*0x1C*/ u16 numLayer2Meshes;
-    u8 unk1E;
-    u8 filler1F[1];
-    u32 headerSize;
-    GXTexObj *texObjs;
-    u8 unk28[10];
-};
-
-struct GMAModelEntry
-{
-    struct GMAModelHeader *modelOffset;  // pointer to GMAModelHeader
-    char *name;
-};
-
-struct UnkStruct1
-{
-    u32 unk0;
-    char *unk4;
-};
-
 struct TPLTextureHeader
 {
     u32 format;
@@ -76,16 +48,6 @@ struct TPL
     u32 numTextures;
     struct TPLTextureHeader *texHeaders;
     u8 *fileData;
-};
-
-struct GMA
-{
-    u32 numModels;
-    u8 *modelsBase;
-    struct GMAModelEntry *modelEntries;
-    char *namesBase;
-    u8 filler10[0x20-0x10];
-    struct UnkStruct1 unk20;
 };
 
 struct UnkStruct4

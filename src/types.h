@@ -87,6 +87,116 @@ struct Struct801EEC80
     u32 unk10;
 };
 
+struct UnkStruct8005562C_child
+{
+    s32 unk0;
+    s32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u32 unk10;
+    u32 unk14;
+    u32 unk18;
+    u32 unk1C;
+    u32 unk20;
+    u32 unk24;
+    u32 unk28;
+    u32 unk2C;
+    u32 unk30;
+    u32 unk34;
+    u32 unk38;
+    u32 unk3C;
+    u32 unk40;
+    u32 unk44;
+    u32 unk48;
+    u32 unk4C;
+    u32 unk50;
+    
+    u32 unk58;
+    u32 unk5C;
+};
+
+struct GMAModelHeader
+{
+    u8 filler0[4];
+    u32 flags;
+    Vec unk8;
+    float unk14;
+    /*0x18*/ u16 numMaterials;
+    /*0x1A*/ u16 numLayer1Meshes;
+    /*0x1C*/ u16 numLayer2Meshes;
+    u8 unk1E;
+    u8 filler1F[1];
+    u32 headerSize;
+    GXTexObj *texObjs;
+    u8 unk28[10];
+};
+
+struct GMAModelEntry
+{
+    struct GMAModelHeader *modelOffset;  // pointer to GMAModelHeader
+    char *name;
+};
+
+struct UnkStruct1
+{
+    u32 unk0;
+    char *unk4;
+};
+
+struct GMA
+{
+    u32 numModels;
+    u8 *modelsBase;
+    struct GMAModelEntry *modelEntries;
+    char *namesBase;
+    u8 filler10[0x20-0x10];
+    struct UnkStruct1 unk20;
+};
+
+struct UnkStruct8005562C_child2_child
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s8 unk12;
+};
+
+struct UnkStruct8005562C_child2_child2
+{
+    Vec unk0;
+    s8 unkC;
+};
+
+struct UnkStruct8005562C_child2
+{
+    s32 unk0;
+    struct UnkStruct8005562C_child2_child *unk4;
+    s32 unk8;
+    struct UnkStruct8005562C_child2_child2 *unkC;
+};
+
+struct UnkStruct8005562C
+{
+    u32 unk0;
+    s32 unk4;
+    struct GMAModelHeader *unk8;
+    Vec unkC;
+    s16 unk18;
+    s16 unk1A;
+    s16 unk1C;
+    Vec unk20;
+    float unk2C;
+    struct UnkStruct8005562C_child *unk30;
+    struct UnkStruct8005562C_child2 *unk34;
+};
+
+struct Camera
+{
+    u8 filler0[0x1A];
+    s16 unk1A;
+};
+
 struct Sprite;
 struct FontParams;
 struct GMA;
