@@ -5,6 +5,31 @@ enum
     EV_STATE_SUSPENDED = 4
 };
 
+enum
+{
+    EVENT_MEMCARD,  // 0
+    EVENT_STAGE,
+    EVENT_WORLD,
+    EVENT_BALL,
+    EVENT_STOBJ,
+    EVENT_ITEM,  // 5
+    EVENT_RECPLAY,
+    EVENT_OBJ_COLLISION,
+    EVENT_NAME_ENTRY,
+    EVENT_INFO,
+    EVENT_COURSE,  // 10
+    EVENT_VIBRATION,
+    EVENT_VIEW,
+    EVENT_EFFECT,
+    EVENT_MINIMAP,
+    EVENT_CAMERA,  // 15
+    EVENT_SPRITE,
+    EVENT_MOUSE,
+    EVENT_SOUND,
+    EVENT_BACKGROUND,
+    EVENT_REND_EFC,  // 20
+};
+
 // avdisp.c
 struct GMAModelHeader;
 struct GMAMeshHeader;
@@ -205,3 +230,50 @@ struct GMA;
 struct TPL;
 
 typedef void (*Func802F20EC)();
+
+struct Ball_child
+{
+    u8 filler0[0x10];
+    u32 unk10;
+    u32 unk14;
+    u8 filler18[0x30-0x18];
+    Vec unk30;
+};
+
+struct Ball
+{
+    u8 filler0[0xFC];
+    struct Ball_child *unkFC;
+    u8 filler100[0x1A4-0x100];
+};
+
+struct Struct801B9178  // size = 0xA8
+{
+    s16 unk0;
+    float unk4;
+    u32 unk8;
+    u32 unkC;
+    u8 filler10[0x14-0x10];
+    Vec unk14;
+    Vec unk20;
+    float unk2C;
+    float unk30;
+    float unk34;
+    float unk38;
+    float unk3C;
+    float unk40;
+    u8 filler44[4];
+    Mtx unk48;
+    void (*unk78)(void);
+    int (*unk7C)();
+    u32 unk80;
+    float unk84;
+    u8 filler88[4];
+    u32 unk8C;
+    void (*unk90)();
+    u32 unk94;
+    void (*unk98)();
+    void *unk9C;
+    u32 unkA0;
+    u32 unkA4;
+};

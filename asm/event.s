@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global func_8000B918
 func_8000B918:
 /* 8000B918 00007838  7C 08 02 A6 */	mflr r0
@@ -255,6 +256,7 @@ lbl_8000BC84:
 /* 8000BC98 00007BB8  7C 08 03 A6 */	mtlr r0
 /* 8000BC9C 00007BBC  38 21 00 30 */	addi r1, r1, 0x30
 /* 8000BCA0 00007BC0  4E 80 00 20 */	blr
+.endif
 
 .global func_8000BCA4
 func_8000BCA4:
@@ -13425,44 +13427,45 @@ glabel string_k_CHU_
 
 .section .sdata2
 
+.if 0
     .4byte 0
 
 .global lbl_802F28C0
 lbl_802F28C0:
 	# ROM: 0x1EC2E0
-	.byte 0x3F, 0xDC, 0xCC, 0xCC
+	.byte 0x3F, 0xDC, 0xCC, 0xCC  ;# 0.45
 	.byte 0xCC, 0xCC, 0xCC, 0xCD
 
 .global lbl_802F28C8
 lbl_802F28C8:
 	# ROM: 0x1EC2E8
-	.byte 0x3E, 0xC2, 0x8F, 0x5C
+	.byte 0x3E, 0xC2, 0x8F, 0x5C  ;# 0.379999995232f
 
 .global lbl_802F28CC
 lbl_802F28CC:
 	# ROM: 0x1EC2EC
-	.byte 0x3E, 0xC7, 0xAE, 0x14
+	.byte 0x3E, 0xC7, 0xAE, 0x14  ;# 0.389999985695f
 
 .global lbl_802F28D0
 lbl_802F28D0:
 	# ROM: 0x1EC2F0
-	.byte 0x3E, 0xCC, 0xCC, 0xCD
+	.byte 0x3E, 0xCC, 0xCC, 0xCD  ;# 0.40000000596
 
 .global lbl_802F28D4
 lbl_802F28D4:
 	# ROM: 0x1EC2F4
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.byte 0x3F, 0x80, 0x00, 0x00  ;# 1.0f
 
 .global lbl_802F28D8
 lbl_802F28D8:
 	# ROM: 0x1EC2F8
-	.byte 0x3F, 0xD0, 0x00, 0x00
+	.byte 0x3F, 0xD0, 0x00, 0x00  ;# 0.25
 	.4byte 0
 
 .global lbl_802F28E0
 lbl_802F28E0:
 	# ROM: 0x1EC300
-	.byte 0xBE, 0x75, 0xC2, 0x8F
+	.byte 0xBE, 0x75, 0xC2, 0x8F  ;# -0.239999994636f
 
 .global lbl_802F28E4
 lbl_802F28E4:
@@ -13472,17 +13475,18 @@ lbl_802F28E4:
 .global lbl_802F28E8
 lbl_802F28E8:
 	# ROM: 0x1EC308
-	.byte 0x43, 0xC8, 0x00, 0x00
+	.byte 0x43, 0xC8, 0x00, 0x00  ;# 400.0f
 
 .global lbl_802F28EC
 lbl_802F28EC:
 	# ROM: 0x1EC30C
-	.byte 0x3F, 0xAA, 0xAA, 0xAB
+	.byte 0x3F, 0xAA, 0xAA, 0xAB  ;# 1.33333337307f
+.endif
 
 .global lbl_802F28F0
 lbl_802F28F0:
 	# ROM: 0x1EC310
-	.byte 0x3D, 0xCC, 0xCC, 0xCD
+	.byte 0x3D, 0xCC, 0xCC, 0xCD  ;# 0.10000000149f
 
 .global lbl_802F28F4
 lbl_802F28F4:
