@@ -847,7 +847,7 @@ void bg_bowling_main(void);
 void bg_bowling_finish(void);
 void func_8005653C(void);
 void func_8005660C(int);
-void func_80056610(void);
+int func_80056610(u32 **a, void *b);
 // ? func_80056684();
 // ? func_800567DC();
 // ? func_80056934();

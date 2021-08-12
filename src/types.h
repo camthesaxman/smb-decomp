@@ -176,10 +176,10 @@ struct UnkStruct8005562C_child2
     struct UnkStruct8005562C_child2_child2 *unkC;
 };
 
-struct UnkStruct8005562C
+struct UnkStruct8005562C  // decodedStageLzPtr->unk6C
 {
     u32 unk0;
-    s32 unk4;
+    char *unk4;
     struct GMAModelHeader *unk8;
     Vec unkC;
     s16 unk18;

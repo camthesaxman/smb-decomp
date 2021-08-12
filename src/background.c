@@ -26,7 +26,7 @@ struct Struct801B9178  // size = 0xA8
     u8 filler44[4];
     Mtx unk48;
     void (*unk78)(void);
-    void (*unk7C)(void);
+    int (*unk7C)();
     u32 unk80;
     float unk84;
     u8 filler88[4];
@@ -317,20 +317,20 @@ void (*lbl_801B96CC[])(void) =
 };
 
 // 5C8
-void (*lbl_801B9740[])(void) =
+int (*lbl_801B9740[])() =
 {
     NULL,
     NULL,
     NULL,
     NULL,
-    func_8005AE1C,
+    (void *)func_8005AE1C,
     NULL,
     NULL,
     NULL,
     NULL,
     NULL,
-    func_80056610,
-    func_80056610,
+    (void *)func_80056610,
+    (void *)func_80056610,
     NULL,
     NULL,
     NULL,
@@ -367,10 +367,10 @@ extern Mtx *lbl_802F1B3C;
 extern struct
 {
     u8 filler0[0x68];
-    u32 unk68;
-    void *unk6C;
-    u32 unk70;
-    void *unk74;
+    s32 unk68;
+    struct UnkStruct8005562C *unk6C;
+    s32 unk70;
+    struct UnkStruct8005562C *unk74;
 } *decodedStageLzPtr;
 
 void ev_background_init(void)
@@ -1228,3 +1228,315 @@ void func_8005608C(void)
 }
 
 void func_8005615C(int a) {}
+
+extern struct Struct80180F14
+{
+    char *unk0;
+    s8 unk4;
+} lbl_80180F14[];
+
+void bg_billiards_init(void)
+{
+    int i;
+    int j;
+    struct UnkStruct8005562C *r29 = decodedStageLzPtr->unk6C;
+
+    for (i = 0; i < decodedStageLzPtr->unk68; i++, r29++)
+    {
+        struct Struct80180F14 *r27 = lbl_80180F14;
+
+        while (r27->unk4 != -1)
+        {
+            int len1 = strlen(r27->unk0);
+            int len2 = strlen(r29->unk4) - 1;
+            int matched = 0;
+
+            for (j = 0; j < len1; j++)
+            {
+                if (r29->unk4[j] != r27->unk0[j])
+                    break;
+                if (len2 == j)
+                {
+                    matched = 1;
+                    break;
+                }
+            }
+            if (matched)
+            {
+                r29->unk0 |= r27->unk4 << 28;
+                break;
+            }
+            r27++;
+        }
+    }
+}
+
+void bg_billiards_main(void)
+{
+    float var = lbl_801B9178.unk4 / 60.0;
+
+    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+}
+
+void bg_billiards_finish(void) {}
+
+void func_800562BC(void)
+{
+    func_800224CC();
+    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+     && (lbl_801EEC90.unk0 & 1))
+        func_8008E428(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->unk6C != NULL)
+    {
+        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        func_80022274(4);
+    }
+    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    if (decodedStageLzPtr->unk74 != NULL)
+    {
+        mathutil_mtxA_from_mtx(mathutilData->mtxB);
+        func_80022274(0);
+    }
+    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    func_80022530();
+}
+
+void func_8005638C(int a) {}
+
+void bg_golf_init(void) {}
+
+void bg_golf_main(void)
+{
+    float var = lbl_801B9178.unk4 / 60.0;
+
+    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+}
+
+void bg_golf_finish(void) {}
+
+void func_800563FC(void)
+{
+    func_800224CC();
+    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+     && (lbl_801EEC90.unk0 & 1))
+        func_8008E428(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->unk6C != NULL)
+    {
+        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        func_80022274(4);
+    }
+    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    if (decodedStageLzPtr->unk74 != NULL)
+    {
+        mathutil_mtxA_from_mtx(mathutilData->mtxB);
+        func_80022274(0);
+    }
+    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    func_80022530();
+}
+
+void func_800564CC(int a) {}
+
+void bg_bowling_init(void) {}
+
+void bg_bowling_main(void)
+{
+    float var = lbl_801B9178.unk4 / 60.0;
+
+    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+}
+
+void bg_bowling_finish(void) {}
+
+void func_8005653C(void)
+{
+    func_800224CC();
+    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+     && (lbl_801EEC90.unk0 & 1))
+        func_8008E428(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->unk6C != NULL)
+    {
+        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        func_80022274(4);
+    }
+    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    if (decodedStageLzPtr->unk74 != NULL)
+    {
+        mathutil_mtxA_from_mtx(mathutilData->mtxB);
+        func_80022274(0);
+    }
+    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    func_80022530();
+}
+
+void func_8005660C(int a) {}
+
+int func_80056610(u32 **a, void *b)
+{
+    float sp10 = lbl_801B9178.unk84;
+    memcpy(b, a, a[-1][0]);  // WTF???
+    mathutil_mtxA_mult_left(lbl_801B9178.unk48);
+    func_80048420(b, lbl_801B9178.unk80, &sp10);
+    return 1;
+}
+
+struct Struct80056684
+{
+    u32 unk0;
+    char *unk4;
+};
+
+void func_80056684(struct Struct80056684 *a, int (*b)())
+{
+    int r30;
+    int r29;
+    struct GMAModelEntry *r28;
+    struct Struct80056684 *r27;
+    char *r26;
+    int r25;
+
+    if (decodedBgGma == NULL)
+        return;
+    r28 = decodedBgGma->modelEntries;
+    r30 = decodedBgGma->numModels;
+    r25 = 1;
+    while (r30 > 0)
+    {
+        int len1;
+
+        r26 = r28->name;
+        len1 = strlen(r26);
+        r27 = a;
+        r29 = 0;
+        while (r27->unk4 != NULL)
+        {
+            int matched;
+
+            switch (r27->unk0)
+            {
+            case 0:
+                matched = !strncmp(r26, r27->unk4, strlen(r27->unk4));
+                break;
+            case 1:
+                matched = !strcmp(r26, r27->unk4);
+                break;
+            case 2:
+                {
+                    int len2 = strlen(r27->unk4);
+                    if (len2 > len1)
+                        matched = 0;
+                    else
+                        matched = !strncmp(r26 + (len1 - len2), r27->unk4, len2);
+                }
+                break;
+            default:
+                matched = 0;
+                break;
+            }
+            if (matched)
+            {
+                r25 = b(r29, r28);
+                if (r25 == 0)
+                    break;
+            }
+            if (r25 == 0)
+                break;
+            r29++;
+            r27++;
+        }
+        if (r25 == 0)
+            break;
+        r30--;
+        r28++;
+    }
+}
+
+void func_800567DC(struct GMAModelEntry *r28, int r30_, struct Struct80056684 *a, int (*b)())
+{
+    int r30 = r30_;
+    int r29;
+    int r25 = 1;
+    struct Struct80056684 *r27;
+
+    while (r30 > 0)
+    {
+        // Hmm...
+        if ((r28 + 1)->modelOffset != NULL)
+        {
+            char *r26;
+            int len1;
+
+            r26 = r28->name;
+            len1 = strlen(r26);
+            r27 = a;
+            r29 = 0;
+            while (r27->unk4 != NULL)
+            {
+                int matched;
+
+                switch (r27->unk0)
+                {
+                case 0:
+                    matched = !strncmp(r26, r27->unk4, strlen(r27->unk4));
+                    break;
+                case 1:
+                    matched = !strcmp(r26, r27->unk4);
+                    break;
+                case 2:
+                    {
+                        int len2 = strlen(r27->unk4);
+                        if (len2 > len1)
+                            matched = 0;
+                        else
+                            matched = !strncmp(r26 + (len1 - len2), r27->unk4, len2);
+                    }
+                    break;
+                default:
+                    matched = 0;
+                    break;
+                }
+                if (matched)
+                {
+                    r25 = b(r29, r28);
+                    if (r25 == 0)
+                        break;
+                }
+                if (r25 == 0)
+                    break;
+                r29++;
+                r27++;
+            }
+            if (r25 == 0)
+                break;
+        }
+        r30--;
+        r28 += 7;
+    }
+}
+
+void func_80056934(void)
+{
+    int i;
+    struct UnkStruct8005562C *var1;
+
+    var1 = decodedStageLzPtr->unk6C;
+    for (i = 0; i < decodedStageLzPtr->unk68; i++, var1++)
+    {
+        if (var1->unk8 != NULL)
+            var1->unk0 &= 0xFFFFFF;
+    }
+    var1 = decodedStageLzPtr->unk74;
+    for (i = 0; i < decodedStageLzPtr->unk70; i++, var1++)
+    {
+        if (var1->unk8 != NULL)
+            var1->unk0 &= 0xFFFFFF;
+    }
+}
+
+void func_800569B4(int a)
+{
+    lbl_801B9178.unkA0 = a;
+}
