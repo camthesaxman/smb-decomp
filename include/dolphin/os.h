@@ -9,6 +9,7 @@
 #include <dolphin/OSResetSW.h>
 
 typedef s64 OSTime;
+typedef u32 OSTick;
 
 void OSInit(void);
 
@@ -33,6 +34,7 @@ typedef struct OSCalendarTime
     /*0x24*/ int usec;
 } OSCalendarTime;
 
+OSTick OSGetTick(void);
 OSTime OSGetTime(void);
 void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
 

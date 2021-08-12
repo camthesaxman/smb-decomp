@@ -38,9 +38,11 @@ struct PerfInfo
 
 struct ZMode
 {
-    GXBool compareEnable;
-    GXCompare compareFunc;
-    GXBool updateEnable;
+    /*0x00*/ GXBool compareEnable;
+    /*0x04*/ GXCompare compareFunc;
+    /*0x08*/ GXBool updateEnable;
+    /*0x09*/ u8 lineWidth;
+    /*0x0C*/ u32 texOffsets;
 };
 
 struct Struct801723C0
@@ -201,3 +203,5 @@ struct Sprite;
 struct FontParams;
 struct GMA;
 struct TPL;
+
+typedef void (*Func802F20EC)();

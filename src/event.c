@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "perf.h"
 
 struct Event eventInfo[] =
 {

@@ -477,4 +477,15 @@ typedef enum
     GX_LIGHT_NULL = 0,
 } GXLightID;
 
+typedef enum
+{
+    GX_TO_ZERO,
+    GX_TO_SIXTEENTH,
+    GX_TO_EIGHTH,
+    GX_TO_FOURTH,
+    GX_TO_HALF,
+    GX_TO_ONE,
+    GX_MAX_TEXOFFSET,
+} GXTexOffset;
+
 #endif

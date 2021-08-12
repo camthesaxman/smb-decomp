@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "perf.h"
 
 // bss
 u8 lbl_801ED920[0x1240];  // unknown type
@@ -15,7 +16,7 @@ void main(void)
     func_80025EC0();
     window_init();
     event_init();
-    func_800272E0();
+    perf_init();
     sound_init();
     func_8008D788();
     currentBallStructPtr = lbl_80205E60;

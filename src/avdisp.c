@@ -61,7 +61,6 @@ struct UnkStruct4
 };
 
 typedef u32 (*Func802F20F0)();
-typedef void (*Func802F20EC)();
 
 struct UnkStruct17
 {

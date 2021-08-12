@@ -3,6 +3,7 @@
 #include "global.h"
 
 #include "load.h"
+#include "perf.h"
 
 struct FileLoadInfo
 {

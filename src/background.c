@@ -31,7 +31,7 @@ struct Struct801B9178  // size = 0xA8
     float unk84;
     u8 filler88[4];
     u32 unk8C;
-    u32 unk90;
+    void (*unk90)();
     u32 unk94;
     void (*unk98)();
     void *unk9C;

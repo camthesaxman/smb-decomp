@@ -68,7 +68,7 @@ SOURCE_FILES := \
 	src/trig_tables.c \
 	src/input.c \
 	asm/input.s \
-	asm/perf.s \
+	src/perf.c \
 	asm/sound.s \
 	asm/code_2.s \
 	asm/nl2ngc.s \

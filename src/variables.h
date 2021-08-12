@@ -551,7 +551,11 @@ extern struct Struct801EEC80 lbl_801EEC80;
 // extern ? lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
-extern u8 lbl_801F3B70[];
+extern struct
+{
+    u16 unk0;
+    u8 filler2[0xF0-0x2];
+} lbl_801F3B70;
 // extern ? lbl_801F3C60;
 // extern ? lbl_801F3D50;
 extern struct
@@ -1258,11 +1262,7 @@ extern u8 lbl_802F1CD2;
 // extern ? lbl_802F1D00;
 // extern ? lbl_802F1D04;
 // extern ? lbl_802F1D08;
-// extern ? lbl_802F1D10;
-// extern ? lbl_802F1D18;
-// extern ? lbl_802F1D20;
-// extern ? lbl_802F1D24;
-extern u32 perfEnabled;
+
 // extern ? lbl_802F1D30;
 // extern ? lbl_802F1D38;
 // extern ? lbl_802F1D39;
