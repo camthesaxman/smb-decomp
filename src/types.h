@@ -30,6 +30,43 @@ enum
     EVENT_REND_EFC,  // 20
 };
 
+// DIP switches
+enum
+{
+    DIP_DEBUG        = 1 << 0,
+    DIP_DISP         = 1 << 1,
+    DIP_STCOLI       = 1 << 2,
+    DIP_TRIANGLE     = 1 << 3,
+    DIP_BALL_TGT     = 1 << 4,
+    DIP_JOINT_OFF    = 1 << 5,
+    DIP_APE_COLOR    = 1 << 6,
+    DIP_TIME_STOP    = 1 << 7,
+    DIP_KARAKUCHI    = 1 << 8,
+    DIP_NAMEENTRY    = 1 << 9,
+    DIP_SHADOW_TEST  = 1 << 10,
+    DIP_FALL_DISP    = 1 << 11,
+    DIP_TEST_CAM     = 1 << 12,
+    DIP_NO_INTR      = 1 << 13,
+    DIP_CAPTURE      = 1 << 14,
+    DIP_OLD_BALL     = 1 << 15,
+    DIP_NO_KARI      = 1 << 16,
+    DIP_PLAY_STG_ALL = 1 << 17,
+    DIP_PLAY_PNT_X10 = 1 << 18,
+    DIP_SARU_0       = 1 << 19,
+    DIP_SWITCH20     = 1 << 20,
+    DIP_SWITCH21     = 1 << 21,
+    DIP_SWITCH22     = 1 << 22,
+    DIP_SWITCH23     = 1 << 23,
+    DIP_SWITCH24     = 1 << 24,
+    DIP_SWITCH25     = 1 << 25,
+    DIP_SWITCH26     = 1 << 26,
+    DIP_SWITCH27     = 1 << 27,
+    DIP_SWITCH28     = 1 << 28,
+    DIP_SWITCH29     = 1 << 29,
+    DIP_SWITCH30     = 1 << 30,
+    DIP_SWITCH31     = 1 << 31,
+};
+
 // avdisp.c
 struct GMAModelHeader;
 struct GMAMeshHeader;

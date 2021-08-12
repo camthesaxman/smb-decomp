@@ -914,7 +914,7 @@ void bg_old_water_finish(void);
 void func_8005ACC4(void);
 void func_8005AD7C(int);
 void func_8005AD80(void);
-void func_8005AE1C(void);
+int func_8005AE1C();
 void bg_jungle_init(void);
 void bg_jungle_main(void);
 void bg_jungle_finish(void);

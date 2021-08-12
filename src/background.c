@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "game.h"
 #include "mathutil.h"
 
 #pragma force_active on
@@ -294,14 +295,82 @@ int (*lbl_801B9740[])() =
     NULL,
     NULL,
     NULL,
-    (void *)func_8005AE1C,
+    func_8005AE1C,
     NULL,
     NULL,
     NULL,
     NULL,
     NULL,
-    (void *)func_80056610,
-    (void *)func_80056610,
+    func_80056610,
+    func_80056610,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+};
+
+// 648
+char *bgFileNames[] =
+{
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    "bg_jun",
+    "bg_wat",
+    "bg_nig",
+    "bg_sun",
+    "bg_spa",
+    "bg_snd",
+    "bg_ice",
+    "bg_stm",
+    "bg_bns",
+    "bg_pil",
+    NULL,
+    "bg_gol",
+    "bg_bow",
+    "bg_mst",
+    "bg_ending",
+    NULL,
+};
+
+// 6BC
+char *oldBgFileNames[] =
+{
+    NULL,
+    "bg_a",
+    "bg_b",
+    "bg_c",
+    "bg_d",
+    "bg_e",
+    "bg_f",
+    "bg_g",
+    "bg_h",
+    "bg_i",
+    "bg_j",
+    "bg_j",
     NULL,
     NULL,
     NULL,
@@ -409,7 +478,7 @@ void func_80054FF0(void)
 
 void func_80055028(void)
 {
-    if (!(dipSwitches & (1 << (31-0x1D))) && lbl_801B9178.unk0 > 0)
+    if (!(dipSwitches & DIP_STCOLI) && lbl_801B9178.unk0 > 0)
         lbl_801B95E4[lbl_801B9178.unk0]();
 }
 
@@ -445,74 +514,6 @@ void func_8005507C(void)
         lbl_801B9178.unk0 = -1;
     }
 }
-
-// 648
-char *bgFileNames[] =
-{
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    "bg_jun",
-    "bg_wat",
-    "bg_nig",
-    "bg_sun",
-    "bg_spa",
-    "bg_snd",
-    "bg_ice",
-    "bg_stm",
-    "bg_bns",
-    "bg_pil",
-    NULL,
-    "bg_gol",
-    "bg_bow",
-    "bg_mst",
-    "bg_ending",
-    NULL,
-};
-
-// 6BC
-char *oldBgFileNames[] =
-{
-    NULL,
-    "bg_a",
-    "bg_b",
-    "bg_c",
-    "bg_d",
-    "bg_e",
-    "bg_f",
-    "bg_g",
-    "bg_h",
-    "bg_i",
-    "bg_j",
-    "bg_j",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-};
 
 void func_80055164(int bgId)
 {
@@ -769,7 +770,7 @@ void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
         return;
     if (lbl_801EEC90.unk0 & 0x11)
         r29 = 16;
-    else if (gameMode == 2 || gameMode == 4)
+    else if (gameMode == MD_GAME || gameMode == MD_MINI)
         r29 = 1 << (modeCtrl.unk30 - 1);
     else
         r29 = 1;
@@ -874,7 +875,7 @@ void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
         return;
     if (lbl_801EEC90.unk0 & 0x11)
         r30 = 16;
-    else if (gameMode == 2 || gameMode == 4)
+    else if (gameMode == MD_GAME || gameMode == MD_MINI)
         r30 = 1 << (modeCtrl.unk30 - 1);
     else
         r30 = 1;

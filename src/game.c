@@ -339,7 +339,7 @@ void gm_main(void)
 {
     s16 r4;
 
-    if (dipSwitches & 0x1)
+    if (dipSwitches & DIP_DEBUG)
         unkFunc80009C6C();
     else
         unkFunc80009F68();
