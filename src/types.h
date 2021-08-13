@@ -1,3 +1,4 @@
+// Event states
 enum
 {
     EV_STATE_INACTIVE = 0,
@@ -5,6 +6,7 @@ enum
     EV_STATE_SUSPENDED = 4
 };
 
+// Event IDs
 enum
 {
     EVENT_MEMCARD,  // 0
@@ -65,6 +67,38 @@ enum
     DIP_SWITCH29     = 1 << 29,
     DIP_SWITCH30     = 1 << 30,
     DIP_SWITCH31     = 1 << 31,
+};
+
+// Backgrounds
+enum
+{
+    BG_TYPE_BLUESKY_A = 1,
+    BG_TYPE_NIGHT_B,
+    BG_TYPE_SUNSET_C,
+    BG_TYPE_WATER_C,
+    BG_TYPE_STORM_D,  // 5
+    BG_TYPE_ICE_E,
+    BG_TYPE_SAND_G,
+    BG_TYPE_SPACE_H,
+    BG_TYPE_CAVE_I,
+    BG_TYPE_BONUS_J,  // 10
+    BG_TYPE_EXTRAMASTER_J,
+    BG_TYPE_E3,
+    BG_TYPE_JUN,
+    BG_TYPE_WAT,
+    BG_TYPE_NIG,  // 15
+    BG_TYPE_SUN,
+    BG_TYPE_SPA,
+    BG_TYPE_SND,
+    BG_TYPE_ICE2,
+    BG_TYPE_STM,  // 20
+    BG_TYPE_BNS,
+    BG_TYPE_PIL,
+    BG_TYPE_BIL,
+    BG_TYPE_GOL,
+    BG_TYPE_BOW,  // 25
+    BG_TYPE_MST,
+    BG_TYPE_END,
 };
 
 // avdisp.c
@@ -257,8 +291,13 @@ struct UnkStruct8005562C  // decodedStageLzPtr->unk6C
 
 struct Camera
 {
-    u8 filler0[0x1A];
+    u8 filler0[0xC];
+    Vec unkC;
+    u8 filler18[2];
     s16 unk1A;
+    u8 filler1C[0x34-0x1C];
+    float unk34;
+    float unk38;
 };
 
 struct Sprite;
@@ -284,9 +323,9 @@ struct Ball
     u8 filler100[0x1A4-0x100];
 };
 
-struct Struct801B9178  // size = 0xA8
+struct BackgroundInfo  // size = 0xA8
 {
-    s16 unk0;
+    s16 bgId;
     float unk4;
     u32 unk8;
     u32 unkC;
@@ -313,4 +352,22 @@ struct Struct801B9178  // size = 0xA8
     void *unk9C;
     u32 unkA0;
     u32 unkA4;
+};
+
+struct World
+{
+    s16 unk0;
+    s16 unk2;
+    u8 filler4[0x9-0x4];
+};
+
+struct SpritePoolInfo
+{
+             u8 filler0[0xC];
+             s8 *unkC;
+             u8 filler10[0x30-0x10];
+             u8 unk30[4];
+             u32 unk34;
+             s32 unk38;
+    /*0x3C*/ s8 *statusList;
 };

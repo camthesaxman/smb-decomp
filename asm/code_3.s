@@ -107,9 +107,9 @@ func_8009AA24:
 
 .global func_8009AAB0
 func_8009AAB0:
-/* 8009AAB0 000969D0  3C 60 80 1C */	lis r3, lbl_801B9178@ha
+/* 8009AAB0 000969D0  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 8009AAB4 000969D4  3C 80 80 17 */	lis r4, lbl_80171B40@ha
-/* 8009AAB8 000969D8  A8 A3 91 78 */	lha r5, lbl_801B9178@l(r3)
+/* 8009AAB8 000969D8  A8 A3 91 78 */	lha r5, backgroundInfo@l(r3)
 /* 8009AABC 000969DC  38 04 1B 40 */	addi r0, r4, lbl_80171B40@l
 /* 8009AAC0 000969E0  3C 60 80 2C */	lis r3, lbl_802BA200@ha
 /* 8009AAC4 000969E4  7C 06 03 78 */	mr r6, r0

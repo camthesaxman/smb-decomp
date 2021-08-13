@@ -16,17 +16,17 @@ static inline void show_loading_msg(void)
     int chr;
     int asterisks;
 
-    func_8002FC80(14, 15);
+    g_debug_set_cursor_pos(14, 15);
     chr = throbber[(lbl_802F1B34/2) % 4];
-    func_800301AC("%c", chr);
-    func_80030244("NOW LOADING");
-    func_800301AC("%c", chr);
-    func_8002FC80(15, 16);
-    func_80030244("LEFT: ");
+    g_debug_printf("%c", chr);
+    g_debug_print("NOW LOADING");
+    g_debug_printf("%c", chr);
+    g_debug_set_cursor_pos(15, 16);
+    g_debug_print("LEFT: ");
     asterisks = func_80092468();
     while (asterisks > 0)
     {
-        func_80030244("*");
+        g_debug_print("*");
         asterisks--;
     }
 }
@@ -238,15 +238,15 @@ extern float lbl_80173FD0[];
 struct Struct802F1CC8_child
 {
     u8 filler0[0x248];
-    u32 unk248;
+    struct GMAModelHeader *unk248;
     u8 filler24C[4];
-    u32 unk250;
+    struct GMAModelHeader *unk250;
     u8 filler254[4];
-    u32 unk258;
+    struct GMAModelHeader *unk258;
     u8 filler25C[4];
-    u32 unk260;
+    struct GMAModelHeader *unk260;
     u8 filler264[0x270-0x264];
-    u32 unk270;
+    struct GMAModelHeader *unk270;
 };
 
 extern struct Struct802F1CC8
@@ -338,7 +338,7 @@ void func_8000B96C(void)
             func_80094A34();
 
         func_80085678(400.0f);
-        func_80055028();
+        background_draw();
         func_80085678(0.0f);
 
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -360,11 +360,11 @@ void func_8000B96C(void)
             func_80038840();
     }
     func_8000E0FC();
-    if (lbl_801B9178.unk0 == 13 || lbl_801B9178.unk0 == 17)
+    if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         func_800945DC(0);
     func_8000D220();
     func_800858CC();
-    if (lbl_801B9178.unk0 == 13 || lbl_801B9178.unk0 == 17)
+    if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         func_80094488(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(8);
@@ -420,7 +420,7 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk260);
+    func_8008E7AC(lbl_802F1CC8->unk8->unk260);
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
     mathutil_mtxA_push();
     mathutil_mtxA_rotate_x(CLAMP(lbl_801EED3C.unk0 * 12, -0x1000, 0x1000));
@@ -428,7 +428,7 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC);
-    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk258);
+    func_8008E7AC(lbl_802F1CC8->unk8->unk258);
     mathutil_mtxA_pop();
     f2 = 0.0f;
     f3 = 0.0f;
@@ -458,7 +458,7 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC * 0.5);
-    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk258);
+    func_8008E7AC(lbl_802F1CC8->unk8->unk258);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&sp48);
     mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * lbl_801EED3C.unkC));
@@ -467,7 +467,7 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk250);
+    func_8008E7AC(lbl_802F1CC8->unk8->unk250);
     if (lbl_801EED3C.unk8 == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
@@ -476,6 +476,228 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(1.0 - lbl_801EED3C.unkC);
-    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk248);
+    func_8008E7AC(lbl_802F1CC8->unk8->unk248);
     func_800858CC();
+}
+
+struct Struct8000C144
+{
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+};
+
+const GXColor lbl_802F2978 = {0, 0, 0, 0};
+
+void func_8000C144(struct Struct8000C144 *a)
+{
+    float x1 = a->unk0;
+    float y1 = a->unk4;
+    float x2 = a->unk8;
+    float y2 = a->unkC;
+    float z = a->unk10;
+    u8 filler[8];
+    
+    func_8009A9B4(0x200);
+    func_8009E110(1, 0, 1, 0);
+    if (zMode->updateEnable  != GX_ENABLE
+     || zMode->compareFunc   != 7
+     || zMode->compareEnable != GX_ENABLE)
+    {
+        GXSetZMode(GX_ENABLE, 7, GX_ENABLE);
+        zMode->compareEnable = GX_ENABLE;
+        zMode->compareFunc   = 7;
+        zMode->updateEnable  = GX_ENABLE;
+    }
+
+    func_8009E398(0, lbl_802F2978, 0.0f, 100.0f, 0.1f, 20000.0f);
+    func_8009E094(0);
+    GXSetTevDirect(0);
+    func_8009EFF4(0, 0xFF, 0xFF, 0xFF);
+    func_8009F224(0, 0);
+    func_8009E618(0, 15, 15, 15, 15);
+    func_8009E800(0, 0, 0, 0, 1, 0);
+    func_8009E70C(0, 7, 7, 7, 6);
+    func_8009E918(0, 0, 0, 3, 1, 0);
+    func_8009F2C8(1);
+    mathutil_mtxA_push();
+    mathutil_mtxA_from_identity();
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    mathutil_mtxA_pop();
+
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(x2, y1, z);
+        GXPosition3f32(x1, y1, z);
+        GXPosition3f32(x1, y2, z);
+        GXPosition3f32(x2, y2, z);
+    GXEnd();
+
+    if (zMode->updateEnable  != GX_ENABLE
+     || zMode->compareFunc   != 3
+     || zMode->compareEnable != GX_ENABLE)
+    {
+        GXSetZMode(GX_ENABLE, 3, GX_ENABLE);
+        zMode->compareEnable = GX_ENABLE;
+        zMode->compareFunc   = 3;
+        zMode->updateEnable  = GX_ENABLE;
+    }
+}
+
+static inline float sum_of_sq(register float a, register float b)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+    }
+    return a;
+#else
+    return a * a + b * b;
+#endif
+}
+
+void func_8000C388(void)
+{
+    struct Struct8000C144 sp14;
+    Vec sp8;
+    float f3;
+
+    f3 = -(10000.0f * currentCameraStructPtr->unk38);
+    sp14.unk0 = f3 * currentCameraStructPtr->unk34;
+    sp14.unk4 = 0.0f;
+    sp14.unk8 = 0.0f;
+    sp14.unkC = f3;
+    sp14.unk10 = -10000.0f;
+    func_8000C144(&sp14);
+    if (lbl_801EED3C.unk8 == 0)
+    {
+        s16 r30;
+        s16 v3;
+        sp8.x = 0.0f;
+        sp8.y = 1.0f;
+        sp8.z = 0.0f;
+        mathutil_mtxA_from_identity();
+        mathutil_mtxA_rotate_y(-currentCameraStructPtr->unk1A);
+        mathutil_mtxA_rotate_z(-lbl_80206BF0.unk2);
+        mathutil_mtxA_rotate_x(-lbl_80206BF0.unk0);
+        mathutil_mtxA_tf_vec(&sp8, &sp8);
+        r30 = -mathutil_atan2(sp8.z, sp8.y);
+        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(sum_of_sq(sp8.z, sp8.y)));
+        r30 *= 0.2;
+        v3 *= 0.2;
+        lbl_801EED3C.unk0 = lbl_801EED3C.unk0 + 0.2 * ((float)r30 - (float)lbl_801EED3C.unk0);
+        lbl_801EED3C.unk4 = lbl_801EED3C.unk4 + 0.2 * ((float)v3 - (float)lbl_801EED3C.unk4);
+        func_8000BCA4();
+    }
+}
+
+extern struct
+{
+    u8 filler0[0x24];
+    s16 unk24;
+    u8 filler26[0x48-0x26];
+    float unk48;
+    float unk4C;
+    u8 filler50[0x284-0x50];
+} cameraInfo[4];
+
+void func_8000C5A4(void)
+{
+    int i;
+    struct Ball *oldBall = currentBallStructPtr;
+    for (i = 0; i < 4; i++)
+    {
+        if (cameraInfo[i].unk48 > 0.0f && cameraInfo[i].unk4C > 0.0f)
+        {
+            if (spritePoolInfo.unkC[i] == 0
+             || spritePoolInfo.unkC[i] == 4
+             || (cameraInfo[i].unk24 & (1 << (31-0x19))))
+            {
+                if (!(cameraInfo[i].unk24 & (1 << (31-0x18))))
+                    continue;
+            }
+            currentBallStructPtr = &lbl_80205E60[i];
+            func_80018648(i);
+            func_80092D3C();
+            func_80054FF0();
+            func_800225C0(i);
+            if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
+                func_80095398(4);
+            func_8000E0FC();
+            if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
+             || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
+                func_80047530();
+            func_80094A34();
+            if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
+            {
+                func_80085678(400.0f);
+                background_draw();
+                func_80085678(0.0f);
+            }
+            if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
+             || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
+                func_80047D70();
+            if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
+                func_80095398(16);
+            if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
+                func_80068370();
+            if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
+                func_8006B198();
+            if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
+                func_8004CD60();
+            if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
+                func_80038840();
+            if (backgroundInfo.unk8 & 1)
+                func_800945DC(i);
+            func_8000D220();
+            func_800858CC();
+            if (backgroundInfo.unk8 & 1)
+                func_80094488(i);
+            if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
+                func_80095398(8);
+        }
+    }
+    func_8000C7A4();
+    currentBallStructPtr = oldBall;
+    func_80017FCC();
+}
+
+void func_8000C7A4(void)
+{
+    int i;
+    struct Struct801EEC80 *unk = &lbl_801EEC80;
+
+    unk->unk10 |= (1 << 3);
+    for (i = 0; i < 4; i++)
+    {
+        if (cameraInfo[i].unk48 > 0.0f && cameraInfo[i].unk4C > 0.0f
+         && (cameraInfo[i].unk24 & (1 << (31-0x19))))
+        {
+            currentBallStructPtr = &lbl_80205E60[i];
+            func_80018648(i);
+            func_800225C0(i);
+            if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
+             || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
+                func_80047530();
+            if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
+            {
+                func_80085678(400.0f);
+                background_draw();
+                func_80085678(0.0f);
+            }
+            if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
+                func_80068370();
+            if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
+                func_8006B198();
+            if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
+                func_80038840();
+            func_8000C8D4();
+            func_8000D220();
+            func_800858CC();
+        }
+    }
+    unk->unk10 &= ~(1 << 3);
 }

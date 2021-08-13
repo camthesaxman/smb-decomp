@@ -10800,14 +10800,14 @@ lbl_800216C8:
 .global func_8002170C
 func_8002170C:
 /* 8002170C 0001D62C  7C 08 02 A6 */	mflr r0
-/* 80021710 0001D630  3C 80 80 1C */	lis r4, lbl_801B9178@ha
+/* 80021710 0001D630  3C 80 80 1C */	lis r4, backgroundInfo@ha
 /* 80021714 0001D634  90 01 00 04 */	stw r0, 4(r1)
 /* 80021718 0001D638  94 21 FF 98 */	stwu r1, -0x68(r1)
 /* 8002171C 0001D63C  93 E1 00 64 */	stw r31, 0x64(r1)
 /* 80021720 0001D640  93 C1 00 60 */	stw r30, 0x60(r1)
 /* 80021724 0001D644  93 A1 00 5C */	stw r29, 0x5c(r1)
 /* 80021728 0001D648  3B A3 00 00 */	addi r29, r3, 0
-/* 8002172C 0001D64C  A8 C4 91 78 */	lha r6, lbl_801B9178@l(r4)
+/* 8002172C 0001D64C  A8 C4 91 78 */	lha r6, backgroundInfo@l(r4)
 /* 80021730 0001D650  3C 80 80 1F */	lis r4, lbl_801EFC88@ha
 /* 80021734 0001D654  3B E4 FC 88 */	addi r31, r4, lbl_801EFC88@l
 /* 80021738 0001D658  7C C0 07 35 */	extsh. r0, r6
@@ -10922,8 +10922,8 @@ lbl_800218A0:
 /* 800218AC 0001D7CC  48 00 0D 51 */	bl func_800225FC
 lbl_800218B0:
 .global lbl_800218B0
-/* 800218B0 0001D7D0  3C 60 80 1C */	lis r3, lbl_801B9178@ha
-/* 800218B4 0001D7D4  A8 03 91 78 */	lha r0, lbl_801B9178@l(r3)
+/* 800218B0 0001D7D0  3C 60 80 1C */	lis r3, backgroundInfo@ha
+/* 800218B4 0001D7D4  A8 03 91 78 */	lha r0, backgroundInfo@l(r3)
 /* 800218B8 0001D7D8  2C 00 00 1B */	cmpwi r0, 0x1b
 /* 800218BC 0001D7DC  40 82 00 2C */	bne lbl_800218E8
 /* 800218C0 0001D7E0  3C 60 80 1F */	lis r3, modeCtrl@ha

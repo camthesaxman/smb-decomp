@@ -220,15 +220,6 @@ struct Struct8028CF28
     u8 filler2C[4];
 };
 
-struct SpritePoolInfo
-{
-             u8 filler0[0x30];
-             u8 unk30[4];
-             u32 unk34;
-             s32 unk38;
-    /*0x3C*/ s8 *statusList;
-};
-
 struct Sprite
 {
     /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???

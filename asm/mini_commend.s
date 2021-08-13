@@ -10,13 +10,13 @@ func_8009BEF8:
 /* 8009BF00 00097E20  90 01 00 04 */	stw r0, 4(r1)
 /* 8009BF04 00097E24  38 80 00 01 */	li r4, 1
 /* 8009BF08 00097E28  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8009BF0C 00097E2C  4B F9 3D 75 */	bl func_8002FC80
+/* 8009BF0C 00097E2C  4B F9 3D 75 */	bl g_debug_set_cursor_pos
 /* 8009BF10 00097E30  3C 60 80 1D */	lis r3, lbl_801D3F3C@ha
 /* 8009BF14 00097E34  38 63 3F 3C */	addi r3, r3, lbl_801D3F3C@l
-/* 8009BF18 00097E38  4B F9 43 2D */	bl func_80030244
+/* 8009BF18 00097E38  4B F9 43 2D */	bl g_debug_print
 /* 8009BF1C 00097E3C  38 60 00 03 */	li r3, 3
 /* 8009BF20 00097E40  38 80 00 03 */	li r4, 3
-/* 8009BF24 00097E44  4B F9 3D 5D */	bl func_8002FC80
+/* 8009BF24 00097E44  4B F9 3D 5D */	bl g_debug_set_cursor_pos
 /* 8009BF28 00097E48  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8009BF2C 00097E4C  4C C6 31 82 */	crclr 6
 /* 8009BF30 00097E50  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -24,7 +24,7 @@ func_8009BEF8:
 /* 8009BF38 00097E58  80 83 00 10 */	lwz r4, 0x10(r3)
 /* 8009BF3C 00097E5C  38 65 3F 4C */	addi r3, r5, lbl_801D3F4C@l
 /* 8009BF40 00097E60  38 A0 00 0B */	li r5, 0xb
-/* 8009BF44 00097E64  4B F9 42 69 */	bl func_800301AC
+/* 8009BF44 00097E64  4B F9 42 69 */	bl g_debug_printf
 /* 8009BF48 00097E68  48 00 0E 15 */	bl func_8009CD5C
 /* 8009BF4C 00097E6C  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 8009BF50 00097E70  38 63 3C C8 */	addi r3, r3, eventInfo@l
@@ -1052,8 +1052,8 @@ func_8009CD5C:
 /* 8009CDA0 00098CC0  80 6D 99 80 */	lwz r3, mathutilData-_SDA_BASE_(r13)
 /* 8009CDA4 00098CC4  38 63 00 30 */	addi r3, r3, 0x30
 /* 8009CDA8 00098CC8  4B F6 AA D1 */	bl mathutil_mtxA_to_mtx
-/* 8009CDAC 00098CCC  3C 60 80 1C */	lis r3, lbl_801B9178@ha
-/* 8009CDB0 00098CD0  38 63 91 78 */	addi r3, r3, lbl_801B9178@l
+/* 8009CDAC 00098CCC  3C 60 80 1C */	lis r3, backgroundInfo@ha
+/* 8009CDB0 00098CD0  38 63 91 78 */	addi r3, r3, backgroundInfo@l
 /* 8009CDB4 00098CD4  80 03 00 8C */	lwz r0, 0x8c(r3)
 /* 8009CDB8 00098CD8  28 00 00 00 */	cmplwi r0, 0
 /* 8009CDBC 00098CDC  7C 1A 03 78 */	mr r26, r0

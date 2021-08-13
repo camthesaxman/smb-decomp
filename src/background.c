@@ -9,7 +9,7 @@
 
 #pragma force_active on
 
-struct Struct801B9178 lbl_801B9178 =
+struct BackgroundInfo backgroundInfo =
 {
     0,
     8421504.0,
@@ -50,7 +50,7 @@ u32 lbl_801B9178_A8[] =
     -1,
 };
 
-// lbl_801B9178 + 0x29C
+// backgroundInfo + 0x29C
 char *lbl_801B9414[] =
 {
     "NULL",
@@ -84,7 +84,7 @@ char *lbl_801B9414[] =
     NULL,
 };
 
-// lbl_801B9178 + 0x310
+// backgroundInfo + 0x310
 void (*bgInitFuncs[])(void) =
 {
     NULL,
@@ -187,36 +187,36 @@ void (*bgFinishFuncs[])(void) =
 };
 
 // 46C
-void (*lbl_801B95E4[])(void) =
+void (*bgDrawFuncs[])(void) =
 {
     NULL,
-    func_80057360,
-    func_800584E8,
-    func_800587C4,
-    func_8005ACC4,
-    func_8005A138,
-    func_80058CA8,
-    func_80059924,
-    func_800586BC,
-    func_80057A64,
-    func_80058978,
-    func_80058258,
-    bg_disp_e3,
-    func_8005B5E0,
-    func_8005E858,
-    func_80055F4C,
-    func_80061190,
-    func_80060898,
-    func_8005C070,
-    func_8005608C,
-    func_800626C0,
-    func_80061704,
-    func_800646F4,
-    func_800562BC,
-    func_800563FC,
-    func_8005653C,
-    func_80063790,
-    func_800654D0,
+    bg_old_bluesky_draw,
+    bg_old_night_draw,
+    bg_old_sunset_draw,
+    bg_old_water_draw,
+    bg_old_storm_draw,
+    bg_old_ice_draw,
+    bg_old_sand_draw,
+    bg_old_space_draw,
+    bg_old_cave_draw,
+    bg_old_bonus_draw,
+    bg_old_extramaster_draw,
+    bg_e3_draw,
+    bg_jungle_draw,
+    bg_water_draw,
+    bg_night_draw,
+    bg_sunset_draw,
+    bg_space_draw,
+    bg_sand_draw,
+    bg_ice2_draw,
+    bg_storm_draw,
+    bg_bonus_draw,
+    bg_pilot_draw,
+    bg_billiards_draw,
+    bg_golf_draw,
+    bg_bowling_draw,
+    bg_master_draw,
+    bg_end_draw,
     NULL,
 };
 
@@ -415,34 +415,34 @@ extern struct
 
 void ev_background_init(void)
 {
-    s16 r29 = lbl_801B9178.unk0;
-    void *r27 = lbl_801B9178.unk9C;
-    u32 r26 = lbl_801B9178.unkA0;
+    s16 r29 = backgroundInfo.bgId;
+    void *r27 = backgroundInfo.unk9C;
+    u32 r26 = backgroundInfo.unkA0;
 
-    memset(&lbl_801B9178, 0, sizeof(lbl_801B9178));
+    memset(&backgroundInfo, 0, sizeof(backgroundInfo));
 
-    lbl_801B9178.unk0 = r29;
-    lbl_801B9178.unk9C = r27;
-    lbl_801B9178.unkA0 = r26;
+    backgroundInfo.bgId = r29;
+    backgroundInfo.unk9C = r27;
+    backgroundInfo.unkA0 = r26;
 
-    lbl_801B9178.unk4 = 0.0f;
-    lbl_801B9178.unk8 = 0;
+    backgroundInfo.unk4 = 0.0f;
+    backgroundInfo.unk8 = 0;
 
-    lbl_801B9178.unkC = lbl_801B9178_A8[lbl_801B9178.unk0];
+    backgroundInfo.unkC = lbl_801B9178_A8[backgroundInfo.bgId];
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_to_mtx(lbl_801B9178.unk48);
-    lbl_801B9178.unk78 = lbl_801B96CC[lbl_801B9178.unk0];
-    lbl_801B9178.unk7C = lbl_801B9740[lbl_801B9178.unk0];
-    lbl_801B9178.unk8C = 0;
-    lbl_801B9178.unk90 = 0;
-    lbl_801B9178.unk94 = 0;
-    if (lbl_801B9178.unk0 > 0)
+    mathutil_mtxA_to_mtx(backgroundInfo.unk48);
+    backgroundInfo.unk78 = lbl_801B96CC[backgroundInfo.bgId];
+    backgroundInfo.unk7C = lbl_801B9740[backgroundInfo.bgId];
+    backgroundInfo.unk8C = 0;
+    backgroundInfo.unk90 = 0;
+    backgroundInfo.unk94 = 0;
+    if (backgroundInfo.bgId > 0)
     {
         int temp = rand();
-        srand(lbl_801B9178.unkA0);
-        lbl_801B9178.unkA4 = rand();
-        bgInitFuncs[lbl_801B9178.unk0]();
-        lbl_801B9178.unkA0 = lbl_802F1B38 + rand();
+        srand(backgroundInfo.unkA0);
+        backgroundInfo.unkA4 = rand();
+        bgInitFuncs[backgroundInfo.bgId]();
+        backgroundInfo.unkA0 = lbl_802F1B38 + rand();
         srand(temp);
     }
 }
@@ -451,47 +451,47 @@ void ev_background_main(void)
 {
     if ((lbl_802F1EE0 & 0xA) == 0)
     {
-        lbl_801B9178.unk4 += 1.0f;
-        lbl_801B9178.unkA4++;
+        backgroundInfo.unk4 += 1.0f;
+        backgroundInfo.unkA4++;
     }
-    if (lbl_801B9178.unk0 > 0)
-        bgMainFuncs[lbl_801B9178.unk0]();
+    if (backgroundInfo.bgId > 0)
+        bgMainFuncs[backgroundInfo.bgId]();
 }
 
 void ev_background_dest(void)
 {
-    if (lbl_801B9178.unk0 > 0)
-        bgFinishFuncs[lbl_801B9178.unk0]();
-    lbl_801B9178.unk98 = NULL;
-    lbl_801B9178.unk78 = 0;
-    lbl_801B9178.unk7C = 0;
-    lbl_801B9178.unk8C = 0;
-    lbl_801B9178.unk90 = 0;
-    lbl_801B9178.unk94 = 0;
+    if (backgroundInfo.bgId > 0)
+        bgFinishFuncs[backgroundInfo.bgId]();
+    backgroundInfo.unk98 = NULL;
+    backgroundInfo.unk78 = 0;
+    backgroundInfo.unk7C = 0;
+    backgroundInfo.unk8C = 0;
+    backgroundInfo.unk90 = 0;
+    backgroundInfo.unk94 = 0;
 }
 
 void func_80054FF0(void)
 {
-    if (lbl_801B9178.unk98 != NULL)
-        lbl_801B9178.unk98();
+    if (backgroundInfo.unk98 != NULL)
+        backgroundInfo.unk98();
 }
 
-void func_80055028(void)
+void background_draw(void)
 {
-    if (!(dipSwitches & DIP_STCOLI) && lbl_801B9178.unk0 > 0)
-        lbl_801B95E4[lbl_801B9178.unk0]();
+    if (!(dipSwitches & DIP_STCOLI) && backgroundInfo.bgId > 0)
+        bgDrawFuncs[backgroundInfo.bgId]();
 }
 
 void func_8005507C(void)
 {
-    if (lbl_801B9178.unk0 > 0)
+    if (backgroundInfo.bgId > 0)
     {
         OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B20);
 
-        if (lbl_801B9178.unk9C != NULL)
+        if (backgroundInfo.unk9C != NULL)
         {
-            OSFree(lbl_801B9178.unk9C);
-            lbl_801B9178.unk9C = NULL;
+            OSFree(backgroundInfo.unk9C);
+            backgroundInfo.unk9C = NULL;
         }
         if (decodedBgTpl != NULL || decodedBgGma != NULL)
         {
@@ -511,7 +511,7 @@ void func_8005507C(void)
         func_80030E20(&lbl_802F1AFC, &lbl_802F1AE8);
 
         OSSetCurrentHeap(oldHeap);
-        lbl_801B9178.unk0 = -1;
+        backgroundInfo.bgId = -1;
     }
 }
 
@@ -522,7 +522,7 @@ void func_80055164(int bgId)
     char tplFileName[64];
     char *bgName;
 
-    if (lbl_801B9178.unk0 != bgId)
+    if (backgroundInfo.bgId != bgId)
     {
         bgName = bgFileNames[bgId];
         if (bgName != NULL)
@@ -644,16 +644,16 @@ void load_bg_files(int bgId)
     char tplFileName[64];
     char *bgName;
 
-    if (lbl_801B9178.unk0 != bgId)
+    if (backgroundInfo.bgId != bgId)
     {
         OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B20);
 
-        if (lbl_801B9178.unk0 > 0)
+        if (backgroundInfo.bgId > 0)
         {
-            if (lbl_801B9178.unk9C != NULL)
+            if (backgroundInfo.unk9C != NULL)
             {
-                OSFree(lbl_801B9178.unk9C);
-                lbl_801B9178.unk9C = NULL;
+                OSFree(backgroundInfo.unk9C);
+                backgroundInfo.unk9C = NULL;
             }
             if (decodedBgTpl != NULL || decodedBgGma != NULL)
             {
@@ -697,29 +697,29 @@ void load_bg_files(int bgId)
             }
             if (lbl_801B98A8[bgId] != 0)
             {
-                lbl_801B9178.unk9C = OSAlloc(lbl_801B98A8[bgId]);
-                if (lbl_801B9178.unk9C == NULL)
+                backgroundInfo.unk9C = OSAlloc(lbl_801B98A8[bgId]);
+                if (backgroundInfo.unk9C == NULL)
                     OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
-                memset(lbl_801B9178.unk9C, 0, lbl_801B98A8[bgId]);
+                memset(backgroundInfo.unk9C, 0, lbl_801B98A8[bgId]);
             }
         }
         OSSetCurrentHeap(oldHeap);
-        lbl_801B9178.unk0 = bgId;
+        backgroundInfo.bgId = bgId;
         func_80021DB4(stageId);
     }
 }
 
 void func_800554A4(int a)
 {
-    if (lbl_801B9178.unk0 > 0)
-        lbl_801B9658[lbl_801B9178.unk0](a);
+    if (backgroundInfo.bgId > 0)
+        lbl_801B9658[backgroundInfo.bgId](a);
 }
 
 void bg_e3_init(void) {}
 
 void bg_e3_main(void)
 {
-    float var = lbl_801B9178.unk4 / 60.0;
+    float var = backgroundInfo.unk4 / 60.0;
 
     func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
@@ -727,7 +727,7 @@ void bg_e3_main(void)
 
 void bg_e3_finish(void) {}
 
-void bg_disp_e3(void)
+void bg_e3_draw(void)
 {
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != 0 || decodedStageLzPtr->unk74 != 0)
@@ -913,8 +913,8 @@ void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
             func_800224CC();
             func_80022274(r23 + 6);
         }
-        if (lbl_801B9178.unk90 != 0 && (b->unk0 & (1 << (31-7))))
-            func_8008E5D8(lbl_801B9178.unk90);
+        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << (31-7))))
+            func_8008E5D8(backgroundInfo.unk90);
         func_8008E420(f29);
         if (b->unk2C < 1.19209289551e-07f)
             func_8008E7AC(r24);
@@ -1135,7 +1135,7 @@ void bg_night_init(void) {}
 
 void bg_night_main(void)
 {
-    float var = lbl_801B9178.unk4 / 60.0;
+    float var = backgroundInfo.unk4 / 60.0;
 
     func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
@@ -1143,7 +1143,7 @@ void bg_night_main(void)
 
 void bg_night_finish(void) {}
 
-void func_80055F4C(void)
+void bg_night_draw(void)
 {
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
@@ -1170,7 +1170,7 @@ void bg_ice2_init(void) {}
 
 void bg_ice2_main(void)
 {
-    float var = lbl_801B9178.unk4 / 60.0;
+    float var = backgroundInfo.unk4 / 60.0;
 
     func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
@@ -1178,7 +1178,7 @@ void bg_ice2_main(void)
 
 void bg_ice2_finish(void) {}
 
-void func_8005608C(void)
+void bg_ice2_draw(void)
 {
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
@@ -1245,7 +1245,7 @@ void bg_billiards_init(void)
 
 void bg_billiards_main(void)
 {
-    float var = lbl_801B9178.unk4 / 60.0;
+    float var = backgroundInfo.unk4 / 60.0;
 
     func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
@@ -1253,7 +1253,7 @@ void bg_billiards_main(void)
 
 void bg_billiards_finish(void) {}
 
-void func_800562BC(void)
+void bg_billiards_draw(void)
 {
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
@@ -1280,7 +1280,7 @@ void bg_golf_init(void) {}
 
 void bg_golf_main(void)
 {
-    float var = lbl_801B9178.unk4 / 60.0;
+    float var = backgroundInfo.unk4 / 60.0;
 
     func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
@@ -1288,7 +1288,7 @@ void bg_golf_main(void)
 
 void bg_golf_finish(void) {}
 
-void func_800563FC(void)
+void bg_golf_draw(void)
 {
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
@@ -1315,7 +1315,7 @@ void bg_bowling_init(void) {}
 
 void bg_bowling_main(void)
 {
-    float var = lbl_801B9178.unk4 / 60.0;
+    float var = backgroundInfo.unk4 / 60.0;
 
     func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
@@ -1323,7 +1323,7 @@ void bg_bowling_main(void)
 
 void bg_bowling_finish(void) {}
 
-void func_8005653C(void)
+void bg_bowling_draw(void)
 {
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
@@ -1348,10 +1348,10 @@ void func_8005660C(int a) {}
 
 int func_80056610(u32 **a, void *b)
 {
-    float sp10 = lbl_801B9178.unk84;
+    float sp10 = backgroundInfo.unk84;
     memcpy(b, a, a[-1][0]);  // WTF???
-    mathutil_mtxA_mult_left(lbl_801B9178.unk48);
-    func_80048420(b, lbl_801B9178.unk80, &sp10);
+    mathutil_mtxA_mult_left(backgroundInfo.unk48);
+    func_80048420(b, backgroundInfo.unk80, &sp10);
     return 1;
 }
 
@@ -1510,5 +1510,5 @@ void func_80056934(void)
 
 void func_800569B4(int a)
 {
-    lbl_801B9178.unkA0 = a;
+    backgroundInfo.unkA0 = a;
 }
