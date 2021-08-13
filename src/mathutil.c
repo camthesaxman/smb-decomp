@@ -1449,7 +1449,7 @@ lbl_80007F7C:
     blr
 }
 
-asm void mathutil_mtxA_rotate_x(s16 angle)
+asm void mathutil_mtxA_rotate_x(int angle)
 {
     nofralloc
 
@@ -1485,7 +1485,7 @@ asm void mathutil_mtxA_rotate_x(s16 angle)
     blr
 }
 
-asm void mathutil_mtxA_rotate_y(s16 angle)
+asm void mathutil_mtxA_rotate_y(int angle)
 {
     nofralloc
 
@@ -1529,7 +1529,7 @@ entry mathutil_mtxA_rotate_y_sin_cos
     blr
 }
 
-asm void mathutil_mtxA_rotate_z(s16 angle)
+asm void mathutil_mtxA_rotate_z(int angle)
 {
     nofralloc
 

@@ -11,7 +11,7 @@ void input_init(void)
         PADSetAnalogMode(3);
         lbl_802F1CD2++;
     }
-    memset(&lbl_801F3B70, 0, 0xF0);
+    memset(lbl_801F3B70, 0, sizeof(lbl_801F3B70));
     lbl_802F1CD0 = 0;
     lbl_802F1CD1 = 0;
 }

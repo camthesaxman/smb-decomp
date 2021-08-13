@@ -113,7 +113,7 @@ void func_80027448(void)
 {
     if (dipSwitches & DIP_DEBUG)
     {
-        if (lbl_801F3B70.unk0 & (1 << 4))
+        if (lbl_801F3B70[0].unk0 & (1 << 4))
         {
             if (lbl_802F1D24 < 127)
                 lbl_802F1D24++;

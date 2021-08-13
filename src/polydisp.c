@@ -237,7 +237,15 @@ extern float lbl_80173FD0[];
 
 struct Struct802F1CC8_child
 {
-    u8 filler0[0x270];
+    u8 filler0[0x248];
+    u32 unk248;
+    u8 filler24C[4];
+    u32 unk250;
+    u8 filler254[4];
+    u32 unk258;
+    u8 filler25C[4];
+    u32 unk260;
+    u8 filler264[0x270-0x264];
     u32 unk270;
 };
 
@@ -363,4 +371,111 @@ void func_8000B96C(void)
     func_80017FCC();
 }
 
-const float lbl_802F28EC = 1.33333337307f;
+extern struct
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    float unkC;
+} lbl_801EED3C;
+
+void func_80030BA8(float);
+
+#pragma fp_contract off
+
+#define CLAMP(val, min, max) \
+    ((val) < (min) ? (min) : (val) > (max) ? (max) : (val))
+
+void func_8000BCA4(void)
+{
+    Vec sp48;
+    u8 filler[16];
+    int i;
+    int r30;
+    int r0;
+    float f31;
+    float f2;
+    float f3;
+    Mtx sp8;
+
+    C_MTXPerspective(sp8, 1.0f, 1.33333333f, 0.1f, 100000.0f);
+    GXSetProjection(sp8, 0);
+    mathutil_mtxA_from_identity();
+    func_80022274(2);
+    sp48.x = -0.0055f;
+    sp48.y = -0.003f;
+    sp48.z = -0.718f;
+    if (!(lbl_802F1EE0 & 0xA))
+    {
+        if (lbl_801EED3C.unk8 > 0)
+            lbl_801EED3C.unkC += 0.05 * -lbl_801EED3C.unkC;
+        else
+            lbl_801EED3C.unkC += 0.05 * (1.0 - lbl_801EED3C.unkC);
+    }
+    f31 = 0.0005f;
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_translate(&sp48);
+    mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - lbl_801EED3C.unkC));
+    mathutil_mtxA_scale_xyz(f31, f31, f31);
+    func_80030BA8(f31);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk260);
+    mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
+    mathutil_mtxA_push();
+    mathutil_mtxA_rotate_x(CLAMP(lbl_801EED3C.unk0 * 12, -0x1000, 0x1000));
+    mathutil_mtxA_rotate_z(CLAMP(lbl_801EED3C.unk4 * 8, -0x1000, 0x1000));
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    func_8008E564(lbl_801EED3C.unkC);
+    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk258);
+    mathutil_mtxA_pop();
+    f2 = 0.0f;
+    f3 = 0.0f;
+    for (i = 0; i < 4; i++)
+    {
+        if (lbl_801F3B70[i].unkA == 0)
+        {
+            f2 = (float)lbl_801F3B70[i].unk2 / 60.0;
+            f3 = -(float)lbl_801F3B70[i].unk3 / 60.0;
+            break;
+        }
+    }
+    if (f2 < -1.0)
+        f2 = -1.0f;
+    else if (f2 > 1.0)
+        f2 = 1.0f;
+    if (f3 < -1.0)
+        f3 = -1.0f;
+    else if (f3 > 1.0)
+        f3 = 1.0f;
+    r0 = (4187.0f * f3);
+    r30 = (4187.0f * -f2);
+    mathutil_mtxA_rotate_x(CLAMP(r0 * 2, -0x1000, 0x1000));
+    mathutil_mtxA_rotate_z(CLAMP(r30 * 2, -0x1000, 0x1000));
+    mathutil_mtxA_scale_s(0.99f);
+    func_80030BA8(0.99f);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    func_8008E564(lbl_801EED3C.unkC * 0.5);
+    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk258);
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_translate(&sp48);
+    mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * lbl_801EED3C.unkC));
+    mathutil_mtxA_translate_xyz(0.0f, 0.00058f, 0.0f);
+    mathutil_mtxA_scale_xyz(f31, f31, f31);
+    func_80030BA8(f31);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk250);
+    if (lbl_801EED3C.unk8 == 2)
+    {
+        mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
+        func_80030BA8(1.0f);
+    }
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    func_8008E564(1.0 - lbl_801EED3C.unkC);
+    func_8008E7AC((void *)lbl_802F1CC8->unk8->unk248);
+    func_800858CC();
+}

@@ -554,8 +554,12 @@ extern struct Struct801EEC80 lbl_801EEC80;
 extern struct
 {
     u16 unk0;
-    u8 filler2[0xF0-0x2];
-} lbl_801F3B70;
+    s8 unk2;
+    s8 unk3;
+    u8 filler4[0xA-4];
+    s8 unkA;
+    u8 fillerD[0x3C-0xB];
+} lbl_801F3B70[4];
 // extern ? lbl_801F3C60;
 // extern ? lbl_801F3D50;
 extern struct
