@@ -1381,7 +1381,7 @@ extern u32 lbl_802F1EE0;
 extern void *currentBallStructPtr;
 extern void *currentWorldStructPtr;
 // extern ? lbl_802F1F28;
-// extern ? lbl_802F1F2C;
+extern struct GMAModelHeader *lbl_802F1F2C;
 
 struct DecodedStageLzPtr_child_child
 {
@@ -1407,7 +1407,9 @@ struct DecodedStageLzPtr_child
     s16 unk10;
     u16 unk12;
     struct DecodedStageLzPtr_child_child *unk14;
-    u8 filler18[0xB8-0x18];
+    u8 filler18[0x7C-0x18];
+    s32 unk7C;
+    u8 filler80[0xB8-0x80];
     float unkB8;
     float unkBC;
     float unkC0;
@@ -1427,7 +1429,7 @@ extern struct
     u32 unk78;
 } *decodedStageLzPtr;
 // extern ? lbl_802F1F34;
-// extern ? decodedStageGmaPtr;
+extern struct GMA *decodedStageGmaPtr;
 // extern ? decodedStageTplPtr;
 extern u16 lbl_802F1F40;
 extern struct Struct802F1F44

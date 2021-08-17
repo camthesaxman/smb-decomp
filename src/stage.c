@@ -41,6 +41,13 @@ FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(lbl_80206D78)
 FORCE_BSS_ORDER(lbl_80206DEC)
 
+char *lbl_801B86D8[] =
+{
+    "GOAL",
+    "GOAL_G",
+    "GOAL_R",
+};
+
 void ev_stage_init(void)
 {
     lbl_80206DEC.unk74 = 0;
@@ -62,7 +69,7 @@ void ev_stage_init(void)
             {
                 func_800ACF04(
                     lbl_80206D78,
-                    lbl_801B86E4,
+                    "preview/140x140.tpl",
                     r5 - 1,
                     0x8C,
                     0x8C,
@@ -136,7 +143,7 @@ void ev_stage_main(void)
     {
         int j;
         struct DecodedStageLzPtr_child_child *r27 = r29->unk14;
-        
+
         if (r27 == NULL2)
             continue;
         if (decodedStageLzPtr->unk78 != 0)
@@ -212,4 +219,90 @@ void ev_stage_main(void)
     }
     if (!(lbl_80206DEC.unk90 & 1))
         lbl_80206DEC.unk74++;
+}
+
+void ev_stage_dest(void)
+{
+    if (lbl_802F1F28)
+        func_800AD0F8(lbl_80206D78);
+}
+
+struct GMAModelHeader *func_80044138(struct GMA *a, char *b)
+{
+    struct GMAModelEntry *entry;
+    int numModels;
+
+    if (a == NULL2)
+        return NULL;
+    entry = a->modelEntries;
+    numModels = a->numModels;
+    while (numModels > 0)
+    {
+        if (strcmp(entry->name, b) == 0)
+            return entry->modelOffset;
+        numModels--;
+        entry++;
+    }
+    return NULL;
+}
+
+void func_800441BC(void)
+{
+    lbl_802F1F2C = func_80044138(decodedStageGmaPtr, "MOT_STAGE101_BLUR");
+}
+
+#pragma fp_contract off
+
+void func_8004424C(void)
+{
+    float f31;
+    float f30;
+    struct Struct80206E48 *r31;
+    struct DecodedStageLzPtr_child *r30;
+    int i;
+
+    if (lbl_802F1F2C == NULL2)
+        return;
+    f31 = lbl_80206DEC.unk78 / 60.0;
+    f31 += (float)decodedStageLzPtr->unk0;
+    f30 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
+    f31 -= f30 * (float)mathutil_floor_to_int(f31 / f30);
+    f31 += (float)decodedStageLzPtr->unk0;
+    r31 = lbl_80206E48 + 1;
+    r30 = decodedStageLzPtr->unkC + 1;
+    for (i = 1; i < decodedStageLzPtr->unk8; i++, r31++, r30++)
+    {
+        if (r30->unk7C > 0 && r30->unk14 != NULL2)
+        {
+            u32 r28;
+            Vec sp10;
+            float f27 = r31->unk0.x;
+        
+            f30 = f27;
+            if (r30->unk14->unk1C != NULL2)
+                f30 = func_80043918(r30->unk14->unk18, r30->unk14->unk1C, f31 - 0.5);
+            mathutil_mtxA_from_mtx(mathutilData->mtxB);
+            if (f30 < f27)
+            {
+                sp10.x = 0.5 * (f30 + f27) - 1.0;
+                f30 = f27 - f30;
+                r28 = 0;
+            }
+            else
+            {
+                sp10.x = 1.0 + 0.5 * (f30 + f27);
+                f30 = f30 - f27;
+                r28 = 1;
+            }
+            sp10.y = r31->unk0.y;
+            sp10.z = r31->unk0.z;
+            mathutil_mtxA_translate(&sp10);
+            if (r28)
+                mathutil_mtxA_rotate_y(-0x8000);
+            mathutil_mtxA_scale_xyz(0.5 * f30, 1.0f, 1.0f);
+            GXLoadPosMtxImm(mathutilData->mtxA, 0);
+            GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+            func_8008E438(lbl_802F1F2C);
+        }
+    }
 }

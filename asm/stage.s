@@ -460,7 +460,6 @@ lbl_800440E4:
 /* 800440F8 00040018  CB A1 00 48 */	lfd f29, 0x48(r1)
 /* 800440FC 0004001C  38 21 00 60 */	addi r1, r1, 0x60
 /* 80044100 00040020  4E 80 00 20 */	blr
-.endif
 .global ev_stage_dest
 ev_stage_dest:
 /* 80044104 00040024  7C 08 02 A6 */	mflr r0
@@ -584,14 +583,14 @@ func_8004424C:
 /* 8004428C 000401AC  3C 60 80 20 */	lis r3, lbl_80206DEC@ha
 /* 80044290 000401B0  80 CD 9D 50 */	lwz r6, decodedStageLzPtr-_SDA_BASE_(r13)
 /* 80044294 000401B4  38 63 6D EC */	addi r3, r3, lbl_80206DEC@l
-/* 80044298 000401B8  C8 02 8F 28 */	lfd f0, lbl_802F3728-_SDA2_BASE_(r2)
+/* 80044298 000401B8  C8 02 8F 28 */	lfd f0, lbl_802F3728-_SDA2_BASE_(r2)  ;# 60.0
 /* 8004429C 000401BC  C0 23 00 04 */	lfs f1, 4(r3)
 /* 800442A0 000401C0  3C A0 43 30 */	lis r5, 0x4330
 /* 800442A4 000401C4  80 86 00 00 */	lwz r4, 0(r6)
-/* 800442A8 000401C8  FF E1 00 24 */	fdiv f31, f1, f0
+/* 800442A8 000401C8  FF E1 00 24 */	fdiv f31, f1, f0  ;# unk4 / 60.0
 /* 800442AC 000401CC  80 06 00 04 */	lwz r0, 4(r6)
 /* 800442B0 000401D0  6C 83 80 00 */	xoris r3, r4, 0x8000
-/* 800442B4 000401D4  C8 42 8F 58 */	lfd f2, lbl_802F3758-_SDA2_BASE_(r2)
+/* 800442B4 000401D4  C8 42 8F 58 */	lfd f2, lbl_802F3758-_SDA2_BASE_(r2)  ;# conv
 /* 800442B8 000401D8  90 61 00 3C */	stw r3, 0x3c(r1)
 /* 800442BC 000401DC  7C 04 00 50 */	subf r0, r4, r0
 /* 800442C0 000401E0  90 A1 00 38 */	stw r5, 0x38(r1)
@@ -600,10 +599,10 @@ func_8004424C:
 /* 800442CC 000401EC  90 01 00 34 */	stw r0, 0x34(r1)
 /* 800442D0 000401F0  C8 01 00 38 */	lfd f0, 0x38(r1)
 /* 800442D4 000401F4  90 A1 00 30 */	stw r5, 0x30(r1)
-/* 800442D8 000401F8  EC 20 10 28 */	fsubs f1, f0, f2
+/* 800442D8 000401F8  EC 20 10 28 */	fsubs f1, f0, f2  ;# (float)lz->unk0
 /* 800442DC 000401FC  C8 01 00 30 */	lfd f0, 0x30(r1)
 /* 800442E0 00040200  EF FF 08 2A */	fadds f31, f31, f1
-/* 800442E4 00040204  EF C0 10 28 */	fsubs f30, f0, f2
+/* 800442E4 00040204  EF C0 10 28 */	fsubs f30, f0, f2  ;# (float)(unk0 - unk4)
 /* 800442E8 00040208  EC 3F F0 24 */	fdivs f1, f31, f30
 /* 800442EC 0004020C  FC 00 04 8E */	mffs f0
 /* 800442F0 00040210  FF C0 00 4C */	mtfsb1 0x1e
@@ -611,7 +610,7 @@ func_8004424C:
 /* 800442F8 00040218  FC 20 08 1C */	fctiw f1, f1
 /* 800442FC 0004021C  D8 21 00 08 */	stfd f1, 8(r1)
 /* 80044300 00040220  FD FE 05 8E */	mtfsf 0xff, f0
-/* 80044304 00040224  80 61 00 0C */	lwz r3, 0xc(r1)
+/* 80044304 00040224  80 61 00 0C */	lwz r3, 0xc(r1)  ;# floor(div)
 /* 80044308 00040228  80 06 00 00 */	lwz r0, 0(r6)
 /* 8004430C 0004022C  3C 80 80 20 */	lis r4, lbl_80206E48@ha
 /* 80044310 00040230  6C 63 80 00 */	xoris r3, r3, 0x8000
@@ -625,15 +624,15 @@ func_8004424C:
 /* 80044330 00040250  3B C3 00 C4 */	addi r30, r3, 0xc4
 /* 80044334 00040254  90 01 00 24 */	stw r0, 0x24(r1)
 /* 80044338 00040258  3B A0 00 01 */	li r29, 1
-/* 8004433C 0004025C  EC 00 10 28 */	fsubs f0, f0, f2
+/* 8004433C 0004025C  EC 00 10 28 */	fsubs f0, f0, f2  ;# (float)floor(div)
 /* 80044340 00040260  90 A1 00 20 */	stw r5, 0x20(r1)
-/* 80044344 00040264  EC 3E 00 32 */	fmuls f1, f30, f0
+/* 80044344 00040264  EC 3E 00 32 */	fmuls f1, f30, f0  ;# f30 * floor
 /* 80044348 00040268  C8 01 00 20 */	lfd f0, 0x20(r1)
 /* 8004434C 0004026C  EC 00 10 28 */	fsubs f0, f0, f2
 /* 80044350 00040270  EF FF 08 28 */	fsubs f31, f31, f1
 /* 80044354 00040274  EF FF 00 2A */	fadds f31, f31, f0
-/* 80044358 00040278  CB 82 8F 60 */	lfd f28, lbl_802F3760-_SDA2_BASE_(r2)
-/* 8004435C 0004027C  CB A2 8F 30 */	lfd f29, lbl_802F3730-_SDA2_BASE_(r2)
+/* 80044358 00040278  CB 82 8F 60 */	lfd f28, lbl_802F3760-_SDA2_BASE_(r2)  ;# 0.5
+/* 8004435C 0004027C  CB A2 8F 30 */	lfd f29, lbl_802F3730-_SDA2_BASE_(r2)  ;# 1.0
 /* 80044360 00040280  48 00 01 00 */	b lbl_80044460
 lbl_80044364:
 /* 80044364 00040284  80 1E 00 7C */	lwz r0, 0x7c(r30)
@@ -688,7 +687,7 @@ lbl_800443F8:
 /* 8004441C 0004033C  4B FC 3B E1 */	bl mathutil_mtxA_rotate_y
 lbl_80044420:
 /* 80044420 00040340  FC 3C 07 B2 */	fmul f1, f28, f30
-/* 80044424 00040344  C0 42 8F 68 */	lfs f2, lbl_802F3768-_SDA2_BASE_(r2)
+/* 80044424 00040344  C0 42 8F 68 */	lfs f2, lbl_802F3768-_SDA2_BASE_(r2)  ;# 1.0f
 /* 80044428 00040348  FC 60 10 90 */	fmr f3, f2
 /* 8004442C 0004034C  FC 20 08 18 */	frsp f1, f1
 /* 80044430 00040350  4B FC 39 A9 */	bl mathutil_mtxA_scale_xyz
@@ -723,7 +722,7 @@ lbl_80044470:
 /* 80044498 000403B8  83 81 00 40 */	lwz r28, 0x40(r1)
 /* 8004449C 000403BC  38 21 00 78 */	addi r1, r1, 0x78
 /* 800444A0 000403C0  4E 80 00 20 */	blr
-
+.endif
 .global func_800444A4
 func_800444A4:
 /* 800444A4 000403C4  7C 08 02 A6 */	mflr r0
@@ -19224,6 +19223,44 @@ func_80054E00:
 
 .section .sdata
 
+.if 0
+glabel string_GOAL_3
+	.asciz "GOAL"
+	.balign 4
+glabel string_GOAL_G
+	.asciz "GOAL_G"
+	.balign 4
+glabel string_GOAL_R
+	.asciz "GOAL_R"
+	.balign 4
+.endif
+
+.global lbl_802F09B8
+lbl_802F09B8:
+	# ROM: 0x1EB0F8
+glabel string_st_03d_2
+	.asciz "st%03d"
+	.balign 4
+
+.global lbl_802F09C0
+lbl_802F09C0:
+	# ROM: 0x1EB100
+glabel string__test_3
+	.asciz "/test"
+	.balign 4
+
+.global lbl_802F09C8
+lbl_802F09C8:
+	# ROM: 0x1EB108
+glabel string__MAP
+	.asciz "_MAP"
+	.balign 4
+
+.global lbl_802F09D0
+lbl_802F09D0:
+	# ROM: 0x1EB110
+	.byte 0x42, 0x4F, 0x58, 0x00
+
 .global lbl_802F09D4
 lbl_802F09D4:
 	# ROM: 0x1EB114
@@ -19313,7 +19350,6 @@ lbl_802F3758:
 	# ROM: 0x1ED178
 	.byte 0x43, 0x30, 0x00, 0x00  ;# conversion
     .byte 0x80, 0x00, 0x00, 0x00
-.endif
 
 .global lbl_802F3760
 lbl_802F3760:
@@ -19324,6 +19360,7 @@ lbl_802F3760:
 lbl_802F3768:
 	# ROM: 0x1ED188
 	.float 1  ;# 0x3F, 0x80, 0x00, 0x00
+.endif
 	.4byte 0
 
 .global lbl_802F3770
@@ -20629,6 +20666,7 @@ lbl_80117A70:
 .section .data
 
 # stage.s .data start
+.if 0
 .global lbl_801B86D8
 lbl_801B86D8:
 	# ROM: 0x1B56D8
@@ -20648,6 +20686,7 @@ lbl_801B86F8:
 glabel string_MOT_STAGE101_BLUR
 	.asciz "MOT_STAGE101_BLUR"
 	.balign 4
+.endif
 
 .global lbl_801B870C
 lbl_801B870C:

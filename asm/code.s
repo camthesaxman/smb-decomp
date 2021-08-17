@@ -7335,39 +7335,3 @@ lbl_802F0998:
 lbl_802F099C:
 	# ROM: 0x1EB0DC
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
-glabel string_GOAL_3
-	.asciz "GOAL"
-	.balign 4
-glabel string_GOAL_G
-	.asciz "GOAL_G"
-	.balign 4
-glabel string_GOAL_R
-	.asciz "GOAL_R"
-	.balign 4
-
-.global lbl_802F09B8
-lbl_802F09B8:
-	# ROM: 0x1EB0F8
-glabel string_st_03d_2
-	.asciz "st%03d"
-	.balign 4
-
-.global lbl_802F09C0
-lbl_802F09C0:
-	# ROM: 0x1EB100
-glabel string__test_3
-	.asciz "/test"
-	.balign 4
-
-.global lbl_802F09C8
-lbl_802F09C8:
-	# ROM: 0x1EB108
-glabel string__MAP
-	.asciz "_MAP"
-	.balign 4
-
-.global lbl_802F09D0
-lbl_802F09D0:
-	# ROM: 0x1EB110
-	.byte 0x42, 0x4F, 0x58, 0x00
-
