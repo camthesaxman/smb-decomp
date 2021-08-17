@@ -3,6 +3,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "game.h"
 #include "mathutil.h"
 
 extern u8 lbl_801B86E4[];
@@ -57,22 +58,22 @@ void ev_stage_init(void)
     switch (stageId)
     {
     case 101:
-        func_800441BC();
+        find_blur_part();
     }
     lbl_802F1F28 = 0;
-    if (gameMode == 2 && gameSubmode != 68)
+    if (gameMode == MD_GAME && gameSubmode != SMD_GAME_NAMEENTRY_READY_INIT)
     {
         if (modeCtrl.unk28 == 0 || modeCtrl.unk28 == 1)
         {
             int r5 = func_800673BC();
-            if (r5 > 0 && r5 <= 0xC8)
+            if (r5 > 0 && r5 <= 200)
             {
-                func_800ACF04(
+                g_create_stage_preview_texture(
                     lbl_80206D78,
                     "preview/140x140.tpl",
                     r5 - 1,
-                    0x8C,
-                    0x8C,
+                    140,
+                    140,
                     5);
                 func_800AD070(lbl_80206D78);
                 lbl_802F1F28 = 1;
@@ -227,18 +228,18 @@ void ev_stage_dest(void)
         func_800AD0F8(lbl_80206D78);
 }
 
-struct GMAModelHeader *func_80044138(struct GMA *a, char *b)
+struct GMAModelHeader *stage_find_model(struct GMA *gma, char *name)
 {
     struct GMAModelEntry *entry;
     int numModels;
 
-    if (a == NULL2)
+    if (gma == NULL2)
         return NULL;
-    entry = a->modelEntries;
-    numModels = a->numModels;
+    entry = gma->modelEntries;
+    numModels = gma->numModels;
     while (numModels > 0)
     {
-        if (strcmp(entry->name, b) == 0)
+        if (strcmp(entry->name, name) == 0)
             return entry->modelOffset;
         numModels--;
         entry++;
@@ -246,9 +247,9 @@ struct GMAModelHeader *func_80044138(struct GMA *a, char *b)
     return NULL;
 }
 
-void func_800441BC(void)
+void find_blur_part(void)
 {
-    lbl_802F1F2C = func_80044138(decodedStageGmaPtr, "MOT_STAGE101_BLUR");
+    lbl_802F1F2C = stage_find_model(decodedStageGmaPtr, "MOT_STAGE101_BLUR");
 }
 
 #pragma fp_contract off

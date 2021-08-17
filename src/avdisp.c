@@ -272,14 +272,14 @@ void func_8008D788(void)
     lbl_802F2108 = 0;
     mathutil_mtxA_from_translate_xyz(0.0f, 0.0f, 1.0f);
     mathutil_mtxA_to_mtx(lbl_802B4E9C);
-    func_8008F714(1.0f, 1.0f, 1.0f, 1.0f);
-    func_8008F7C8(0.0f, 0.0f, 0.0f, 0.0f);
+    g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
+    g_avdisp_set_some_color_2(0.0f, 0.0f, 0.0f, 0.0f);
     func_8008F878(0);
     func_8008F880(2, 0.0f, 100.0f);
     func_8008F890(0, 0, 0);
 }
 
-void func_8008D888(int a)
+void g_avdisp_alloc_matrix_lists(int a)
 {
     lbl_802F20CC = OSAlloc(a * sizeof(Mtx));
     avdispMatrixList = OSAlloc(a * sizeof(Mtx *));
@@ -610,7 +610,7 @@ void func_8008E438(struct GMAModelHeader *model)
         lbl_802F20DC = 1.0f;
     }
     else
-        func_8008E7AC(model);
+        g_avdisp_draw_model_1(model);
 }
 
 void func_8008E49C(struct GMAModelHeader *model)
@@ -622,7 +622,7 @@ void func_8008E49C(struct GMAModelHeader *model)
         lbl_802F20DC = 1.0f;
     }
     else
-        func_8008EA64(model);
+        g_avdisp_draw_model_2(model);
 }
 
 void func_8008E500(struct GMAModelHeader *model)
@@ -634,7 +634,7 @@ void func_8008E500(struct GMAModelHeader *model)
         lbl_802F20DC = 1.0f;
     }
     else
-        func_8008EB94(model);
+        g_avdisp_draw_model_3(model);
 }
 
 void func_8008E564(float a)
@@ -667,14 +667,14 @@ void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updat
     zModeUpdateEnable  = updateEnable;
 }
 
-Func802F20EC func_8008E5D8(Func802F20EC a)
+Func802F20EC g_avdisp_set_some_func_1(Func802F20EC a)
 {
     Func802F20EC temp = lbl_802F20EC;
     lbl_802F20EC = a;
     return temp;
 }
 
-Func802F20F0 func_8008E5E8(Func802F20F0 a)
+Func802F20F0 g_avdisp_set_some_func_2(Func802F20F0 a)
 {
     Func802F20F0 temp = lbl_802F20F0;
     lbl_802F20F0 = a;
@@ -802,7 +802,7 @@ static inline void *func_8008E7AC_inline(struct GMAModelHeader *model, struct GM
     return (void *)skip_mesh(r26);
 }
 
-void func_8008E7AC(struct GMAModelHeader *model)
+void g_avdisp_draw_model_1(struct GMAModelHeader *model)
 {
     struct GMAMeshHeader *r26 = (struct GMAMeshHeader *)((u8 *)model + model->headerSize);
     struct GMAMaterial *mtrl = (void *)((u8 *)model + 0x40);
@@ -850,7 +850,7 @@ static inline void *skip_mesh(struct GMAMeshHeader *a)
     return (void *)r7;
 }
 
-void func_8008EA64(struct GMAModelHeader *model)
+void g_avdisp_draw_model_2(struct GMAModelHeader *model)
 {
     int i;
     void *mesh = (u8 *)model + model->headerSize;
@@ -875,7 +875,7 @@ void func_8008EA64(struct GMAModelHeader *model)
     lbl_802F20DC = 1.0f;
 }
 
-void func_8008EB94(struct GMAModelHeader *model)
+void g_avdisp_draw_model_3(struct GMAModelHeader *model)
 {
     struct GMAMeshHeader *r24 = (struct GMAMeshHeader *)((u32)model + model->headerSize);
     struct GMAMaterial *mtrl = (struct GMAMaterial *)((u8 *)model + 0x40);
@@ -895,7 +895,7 @@ void func_8008EB94(struct GMAModelHeader *model)
     lbl_802F20DC = 1.0f;
 }
 
-void func_8008EEC0(struct GMAModelHeader *model)
+void g_avdisp_draw_model_4(struct GMAModelHeader *model)
 {
     struct GMAMeshHeader *r31 = (struct GMAMeshHeader *)((u32)model + model->headerSize);
     struct GMAMaterial *mtrl = (struct GMAMaterial *)((u8 *)model + 0x40);
@@ -1172,12 +1172,12 @@ u32 func_8008F6D4(u32 a)
     return old;
 }
 
-void func_8008F6E4(int unused, Mtx b)
+void g_avdisp_set_some_matrix(int unused, Mtx mtx)
 {
-    mathutil_mtx_copy(b, lbl_802B4E6C);
+    mathutil_mtx_copy(mtx, lbl_802B4E6C);
 }
 
-void func_8008F714(float a, float b, float c, float d)
+void g_avdisp_set_some_color_1(float a, float b, float c, float d)
 {
     if (a != 1.0f || b != 1.0f || c != 1.0f || d != 1.0f)
     {
@@ -1197,7 +1197,7 @@ void func_8008F714(float a, float b, float c, float d)
     }
 }
 
-void func_8008F7C8(float a, float b, float c, float d)
+void g_avdisp_set_some_color_2(float a, float b, float c, float d)
 {
     if (a != 0.0f || b != 0.0f || c != 0.0f || d != 0.0f)
     {

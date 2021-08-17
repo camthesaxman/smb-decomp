@@ -14,8 +14,8 @@ enum
 {
     SMD_ADV_TOP,  // 0
     SMD_ADV_DEMO_INIT,
-    SMD_ADV_DEMO_MAIN,
-    SMD_ADV_LOGO_INIT,
+    SMD_ADV_DEMO_MAIN,  // Attract screen
+    SMD_ADV_LOGO_INIT,  // AV logo
     SMD_ADV_LOGO_MAIN,
     SMD_ADV_WARNING_INIT,
     SMD_ADV_WARNING_MAIN,

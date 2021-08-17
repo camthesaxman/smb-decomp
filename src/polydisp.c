@@ -308,7 +308,7 @@ void func_8000B96C(void)
             f30 = lbl_80173FD0[lbl_80205E60[i].unkFC->unk10];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
-            func_8008F714(0.38f, 0.39f, 0.4f, 1.0f);
+            g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
             func_8008E420(f30);
             //func_8008E500(lbl_802F1CC8->unk8->unk270);
             func_8008E500(lbl_802F1CC8->modelEntries[0x4E].modelOffset);
@@ -432,8 +432,8 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    //func_8008E7AC(lbl_802F1CC8->unk8->unk260);
-    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4C].modelOffset);
+    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk260);
+    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4C].modelOffset);
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
     mathutil_mtxA_push();
     mathutil_mtxA_rotate_x(CLAMP(lbl_801EED3C.unk0 * 12, -0x1000, 0x1000));
@@ -441,8 +441,8 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC);
-    //func_8008E7AC(lbl_802F1CC8->unk8->unk258);
-    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
+    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk258);
+    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
     mathutil_mtxA_pop();
     f2 = 0.0f;
     f3 = 0.0f;
@@ -472,8 +472,8 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC * 0.5);
-    //func_8008E7AC(lbl_802F1CC8->unk8->unk258);
-    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
+    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk258);
+    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&sp48);
     mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * lbl_801EED3C.unkC));
@@ -482,8 +482,8 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    //func_8008E7AC(lbl_802F1CC8->unk8->unk250);
-    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4A].modelOffset);
+    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk250);
+    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4A].modelOffset);
     if (lbl_801EED3C.unk8 == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
@@ -492,8 +492,8 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(1.0 - lbl_801EED3C.unkC);
-    //func_8008E7AC(lbl_802F1CC8->unk8->unk248);
-    func_8008E7AC(lbl_802F1CC8->modelEntries[0x49].modelOffset);
+    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk248);
+    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x49].modelOffset);
     func_800858CC();
 }
 
@@ -765,7 +765,7 @@ void func_8000C8D4(void)
             test(&sp8, f27);
             func_8009AA24(mathutilData->mtxA, 0);
             foo = lbl_802F02E0[i];
-            func_8008E7AC(lbl_802F1CC8->modelEntries[foo].modelOffset);
+            g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[foo].modelOffset);
         }
     }
 }
@@ -804,7 +804,7 @@ void func_8000C8D4(void)
                 mathutil_mtxA_scale_s(r27[2] / (-4.0 * f27));
             func_8009AA24(mathutilData->mtxA, 0);
             foo = lbl_802F02E0[i];
-            func_8008E7AC(lbl_802F1CC8->unk8->unk0[foo].unk0);
+            g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk0[foo].unk0);
         }
     }
 }

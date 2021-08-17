@@ -817,7 +817,7 @@ void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
             a->unkC.y = func_80043918(r28->unk40, r28->unk44, f29);
         if (r28->unk4C != NULL2)
             a->unkC.z = func_80043918(r28->unk48, r28->unk4C, f29);
-        if ((a->unk0 & (1 << (31-0x1A))) && gameSubmode != 14)
+        if ((a->unk0 & (1 << (31-0x1A))) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
             mathutil_mtxA_from_translate(&a->unkC);
             mathutil_mtxA_rotate_z(a->unk1C);
@@ -880,18 +880,18 @@ void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
             func_80022274(r23 + 6);
         }
         if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << (31-7))))
-            func_8008E5D8(backgroundInfo.unk90);
+            g_avdisp_set_some_func_1(backgroundInfo.unk90);
         func_8008E420(f29);
         if (b->unk2C < 1.19209289551e-07f)
-            func_8008E7AC(r24);
+            g_avdisp_draw_model_1(r24);
         else
         {
             func_8008E564(1.0 - b->unk2C);
-            func_8008EB94(r24);
+            g_avdisp_draw_model_3(r24);
         }
         if (b->unk34 != 0)
             func_80055C6C(a, b->unk34);
-        func_8008E5D8(0);
+        g_avdisp_set_some_func_1(0);
         if (r23 > 0)
             func_80022530();
     }
@@ -1027,10 +1027,9 @@ s16 lbl_801B9AE8[] =
 
 extern u32 lbl_802F1B34;
 
-void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b)
+void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
 {
     u8 unused[8];
-    int r0;
     u32 r4;
 
     if (b->unk4 != NULL)
@@ -1040,8 +1039,9 @@ void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b)
 
         for (i = 0; i < b->unk0; i++, r26++)
         {
-
-            mathutil_mtxA_from_mtx(a);
+            int modelId;
+            
+            mathutil_mtxA_from_mtx(mtx);
             mathutil_mtxA_translate(&r26->unk0);
             mathutil_mtxA_rotate_z(r26->unk10);
             mathutil_mtxA_rotate_y(r26->unkE);
@@ -1053,28 +1053,28 @@ void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b)
             {
             default:
             case 65:
-                r0 = lbl_801B9A08[r4 % 14];
+                modelId = lbl_801B9A08[r4 % 14];
                 break;
             case 66:
-                r0 = lbl_801B9A24[r4 % 11];
+                modelId = lbl_801B9A24[r4 % 11];
                 break;
             case 67:
-                r0 = lbl_801B9A3C[r4 % 18];
+                modelId = lbl_801B9A3C[r4 % 18];
                 break;
             case 68:
-                r0 = lbl_801B9A60[r4 % 18];
+                modelId = lbl_801B9A60[r4 % 18];
                 break;
             case 69:
-                r0 = lbl_801B9A84[r4 % 18];
+                modelId = lbl_801B9A84[r4 % 18];
                 break;
             case 70:
-                r0 = lbl_801B9AA8[r4 % 16];
+                modelId = lbl_801B9AA8[r4 % 16];
                 break;
             case 71:
-                r0 = lbl_801B9AC8[(r4 % 15)];
+                modelId = lbl_801B9AC8[(r4 % 15)];
                 break;
             }
-            func_8008EA64(decodedBgGma->modelEntries[r0].modelOffset);
+            g_avdisp_draw_model_2(decodedBgGma->modelEntries[modelId].modelOffset);
         }
     }
     if (b->unkC != NULL)
@@ -1084,15 +1084,15 @@ void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b)
 
         for (i = 0; i < b->unk8; i++, r22++)
         {
-            int r0;
-            mathutil_mtxA_from_mtx(a);
+            int modelId;
+            mathutil_mtxA_from_mtx(mtx);
             mathutil_mtxA_translate(&r22->unk0);
             mathutil_mtxA_rotate_y(currentCameraStructPtr->unk1A);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
             r4 = (lbl_802F1B34 + r22->unkC * 4);
-            r0 = lbl_801B9AE8[r4 % 32];
-            func_8008E7AC(decodedBgGma->modelEntries[r0].modelOffset);
+            modelId = lbl_801B9AE8[r4 % 32];
+            g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);
         }
     }
 }
