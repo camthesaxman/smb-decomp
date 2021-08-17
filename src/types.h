@@ -190,27 +190,27 @@ struct UnkStruct8005562C_child
     s32 unk0;
     s32 unk4;
     u32 unk8;
-    u32 unkC;
+    void *unkC;
     u32 unk10;
-    u32 unk14;
+    void *unk14;
     u32 unk18;
-    u32 unk1C;
+    void *unk1C;
     u32 unk20;
-    u32 unk24;
+    void *unk24;
     u32 unk28;
-    u32 unk2C;
+    void *unk2C;
     u32 unk30;
-    u32 unk34;
+    void *unk34;
     u32 unk38;
-    u32 unk3C;
+    void *unk3C;
     u32 unk40;
-    u32 unk44;
+    void *unk44;
     u32 unk48;
-    u32 unk4C;
+    void *unk4C;
     u32 unk50;
-    
+    void *unk54;
     u32 unk58;
-    u32 unk5C;
+    void *unk5C;
 };
 
 struct GMAModelHeader

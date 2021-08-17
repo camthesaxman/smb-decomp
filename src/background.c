@@ -750,15 +750,13 @@ extern struct
 
 #pragma fp_contract off
 
-#ifdef NONMATCHING
-/*
-void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
+void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
 {
-    int i;  // r30
+    int i;
     int r29;
     Vec sp1C;
 
-    if (a == NULL)
+    if (a == NULL2)
         return;
     if (lbl_801EEC90.unk0 & 0x11)
         r29 = 16;
@@ -766,8 +764,7 @@ void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
         r29 = 1 << (modeCtrl.unk30 - 1);
     else
         r29 = 1;
-    //lbl_800556BC
-    for (i = 0; i < b; i++)
+    for (i = 0; i < b; i++, a++)
     {
         float f29;
         float f2;
@@ -777,54 +774,49 @@ void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
         a->unk0 &= ~(1 << (31-15));
         if (!(a->unk0 & r29))
             continue;
-        if (a->unk8 == 0)
+        if (a->unk8 == NULL2)
             continue;
-        a->unk0 |= 1;
+        a->unk0 |= 0x10000;
         r28 = a->unk30;
-        if (r28 == NULL)
+        if (r28 == NULL2)
             continue;
         f29 = c;
         if (a->unk0 & (1 << (31-0x19)))
             f29 = lbl_80206DEC.unk4 / 60.0;
-        //lbl_8005573C
         f29 += r28->unk0;
         f2 = (float)(r28->unk4 - r28->unk0);
-        // weird instructions
-        r4 = f29 / f2;
+        r4 = mathutil_floor_to_int(f29 / f2);
         f29 -= f2 * (float)r4;
         f29 += (float)r28->unk0;
-        if (r4 != 0 && func_80043918(r28->unk50, f29) < 0.5)
+        if (r28->unk54 != NULL2 && func_80043918(r28->unk50, r28->unk54, f29) < 0.5)
         {
             a->unk0 &= ~(1 << (31-15));
             continue;
         }
-        //lbl_80055800
-        if (r28->unk5C != 0)
+        if (r28->unk5C != NULL2)
         {
-            a->unk2C = func_80043918(r28->unk58, f29);
+            a->unk2C = func_80043918(r28->unk58, r28->unk5C, f29);
             if (a->unk2C >= 1.0)
                 continue;
         }
-        //lbl_80055830
-        if (r28->unkC != 0)
-            a->unk20.x = func_80043918(r28->unk8, f29);
-        if (r28->unk14 != 0)
-            a->unk20.y = func_80043918(r28->unk10, f29);
-        if (r28->unk1C != 0)
-            a->unk20.z = func_80043918(r28->unk18, f29);
-        if (r28->unk24 != 0)
-            a->unk18 = func_80043918(r28->unk20, f29) * 182.044448853f;
-        if (r28->unk2C != 0)
-            a->unk1A = func_80043918(r28->unk28, f29) * 182.044448853f;
-        if (r28->unk34 != 0)
-            a->unk1C = func_80043918(r28->unk30, f29) * 182.044448853f;
-        if (r28->unk3C != 0)
-            a->unkC.x = func_80043918(r28->unk38, f29);
-        if (r28->unk44 != 0)
-            a->unkC.y = func_80043918(r28->unk40, f29);
-        if (r28->unk4C != 0)
-            a->unkC.z = func_80043918(r28->unk48, f29);
-        //lbl_80055980
+        if (r28->unkC != NULL2)
+            a->unk20.x = func_80043918(r28->unk8, r28->unkC, f29);
+        if (r28->unk14 != NULL2)
+            a->unk20.y = func_80043918(r28->unk10, r28->unk14, f29);
+        if (r28->unk1C != NULL2)
+            a->unk20.z = func_80043918(r28->unk18, r28->unk1C, f29);
+        if (r28->unk24 != NULL2)
+            a->unk18 = func_80043918(r28->unk20, r28->unk24, f29) * 182.044448853f;
+        if (r28->unk2C != NULL2)
+            a->unk1A = func_80043918(r28->unk28, r28->unk2C, f29) * 182.044448853f;
+        if (r28->unk34 != NULL2)
+            a->unk1C = func_80043918(r28->unk30, r28->unk34, f29) * 182.044448853f;
+        if (r28->unk3C != NULL2)
+            a->unkC.x = func_80043918(r28->unk38, r28->unk3C, f29);
+        if (r28->unk44 != NULL2)
+            a->unkC.y = func_80043918(r28->unk40, r28->unk44, f29);
+        if (r28->unk4C != NULL2)
+            a->unkC.z = func_80043918(r28->unk48, r28->unk4C, f29);
         if ((a->unk0 & (1 << (31-0x1A))) && gameSubmode != 14)
         {
             mathutil_mtxA_from_translate(&a->unkC);
@@ -834,27 +826,8 @@ void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
             mathutil_mtxA_tf_point(&a->unk8->unk8, &sp1C);
             func_800390C8(5, &sp1C, 1.0f);
         }
-        //lbl_800559D8
-        a++;
     }
 }
-*/
-#else
-#pragma force_active off
-void force_float_constant_order(double *a, double *b, float *c)
-{
-    *a = 0.5;
-    *b = 1.0;
-    *c = 182.044448853f;
-}
-#pragma force_active on
-asm void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
-{
-    nofralloc
-    #include "../asm/nonmatchings/func_8005562C.s"
-}
-#pragma peephole on
-#endif
 
 void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
 {

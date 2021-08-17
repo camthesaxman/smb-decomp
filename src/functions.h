@@ -813,7 +813,7 @@ void bg_e3_main(void);
 void bg_e3_finish(void);
 void bg_e3_draw(void);
 void func_80055628(int);
-void func_8005562C(struct UnkStruct8005562C *, u32, float);
+void func_8005562C(struct UnkStruct8005562C *, int, float);
 void func_80055A18();
 void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b);
 void bg_night_init(void);
