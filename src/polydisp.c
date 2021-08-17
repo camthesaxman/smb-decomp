@@ -235,9 +235,17 @@ extern u32 lbl_802F1BB8;
 
 extern float lbl_80173FD0[];
 
+/*
+struct Struct802F1CC8_child_child
+{
+    struct GMAModelHeader *unk0;
+    u8 filler4[4];
+};
+
 struct Struct802F1CC8_child
 {
-    u8 filler0[0x248];
+    struct Struct802F1CC8_child_child unk0[2];
+    u8 filler10[0x248-0x10];
     struct GMAModelHeader *unk248;
     u8 filler24C[4];
     struct GMAModelHeader *unk250;
@@ -254,6 +262,9 @@ extern struct Struct802F1CC8
     u8 filler0[8];
     struct Struct802F1CC8_child *unk8;
 } *lbl_802F1CC8;
+*/
+
+extern struct GMA *lbl_802F1CC8;
 
 extern struct Struct80173FA8
 {
@@ -299,7 +310,8 @@ void func_8000B96C(void)
             mathutil_mtxA_rotate_x(0x4000);
             func_8008F714(0.38f, 0.39f, 0.4f, 1.0f);
             func_8008E420(f30);
-            func_8008E500(lbl_802F1CC8->unk8->unk270);
+            //func_8008E500(lbl_802F1CC8->unk8->unk270);
+            func_8008E500(lbl_802F1CC8->modelEntries[0x4E].modelOffset);
         }
         func_8000E3BC();
     }
@@ -361,11 +373,11 @@ void func_8000B96C(void)
     }
     func_8000E0FC();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
-        func_800945DC(0);
+        g_something_with_lens_flare_1(0);
     func_8000D220();
     func_800858CC();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
-        func_80094488(0);
+        g_something_with_lens_flare_2(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(8);
     func_80017FCC();
@@ -420,7 +432,8 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E7AC(lbl_802F1CC8->unk8->unk260);
+    //func_8008E7AC(lbl_802F1CC8->unk8->unk260);
+    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4C].modelOffset);
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
     mathutil_mtxA_push();
     mathutil_mtxA_rotate_x(CLAMP(lbl_801EED3C.unk0 * 12, -0x1000, 0x1000));
@@ -428,7 +441,8 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC);
-    func_8008E7AC(lbl_802F1CC8->unk8->unk258);
+    //func_8008E7AC(lbl_802F1CC8->unk8->unk258);
+    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
     mathutil_mtxA_pop();
     f2 = 0.0f;
     f3 = 0.0f;
@@ -458,7 +472,8 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC * 0.5);
-    func_8008E7AC(lbl_802F1CC8->unk8->unk258);
+    //func_8008E7AC(lbl_802F1CC8->unk8->unk258);
+    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&sp48);
     mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * lbl_801EED3C.unkC));
@@ -467,7 +482,8 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E7AC(lbl_802F1CC8->unk8->unk250);
+    //func_8008E7AC(lbl_802F1CC8->unk8->unk250);
+    func_8008E7AC(lbl_802F1CC8->modelEntries[0x4A].modelOffset);
     if (lbl_801EED3C.unk8 == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
@@ -476,7 +492,8 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(1.0 - lbl_801EED3C.unkC);
-    func_8008E7AC(lbl_802F1CC8->unk8->unk248);
+    //func_8008E7AC(lbl_802F1CC8->unk8->unk248);
+    func_8008E7AC(lbl_802F1CC8->modelEntries[0x49].modelOffset);
     func_800858CC();
 }
 
@@ -596,7 +613,9 @@ void func_8000C388(void)
 
 extern struct
 {
-    u8 filler0[0x24];
+    u8 filler0[0x1A];
+    s16 unk1A;
+    u8 filler1C[0x24-0x1C];
     s16 unk24;
     u8 filler26[0x48-0x26];
     float unk48;
@@ -651,11 +670,11 @@ void func_8000C5A4(void)
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
                 func_80038840();
             if (backgroundInfo.unk8 & 1)
-                func_800945DC(i);
+                g_something_with_lens_flare_1(i);
             func_8000D220();
             func_800858CC();
             if (backgroundInfo.unk8 & 1)
-                func_80094488(i);
+                g_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(8);
         }
@@ -701,3 +720,92 @@ void func_8000C7A4(void)
     }
     unk->unk10 &= ~(1 << 3);
 }
+
+/*
+#define MATHUTIL_DATA (*(struct MathutilData *)0xE0000000)
+extern u16 lbl_802F02E0[];
+
+static inline void test(Vec *r27, float f27)
+{
+            if (r27->z < -4.0 * f27)
+                mathutil_mtxA_scale_s(r27->z / (-4.0 * f27));
+}
+
+void func_8000C8D4(void)
+{
+    int i;  // r24
+    s8 *r25 = spritePoolInfo.unkC;
+    Vec sp8;
+//    Vec *r27 = &sp8;
+    for (i = 0; i < spritePoolInfo.unk8; i++)
+    {
+        if (r25[i] == 0
+         || r25[i] == 4
+         || (lbl_80205E60[i].unk94 & (1 << (31-0x1B))))
+            continue;
+        {
+            u16 foo;
+            float f27;
+            mathutil_mtxA_from_identity();
+            f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
+            mathutil_mtxA_scale_s(f27);
+            mathutil_mtxA_mult_right(mathutilData->mtxB);
+            mathutil_mtxA_translate(&lbl_80205E60[i].unk4);
+            mathutil_mtxA_rotate_y(cameraInfo[i].unk1A - 0x8000);
+            mathutil_mtxA_rotate_x(-0x4000);
+            mathutil_mtxA_translate_xyz(0.0f, lbl_80205E60[i].unk68, 0.0f);
+            //r27->x = MATHUTIL_DATA.mtxA[0][3];
+            //r27->y = MATHUTIL_DATA.mtxA[1][3];
+            //r27->z = MATHUTIL_DATA.mtxA[2][3];
+            sp8.x = *(float *)0xE000000C;
+            sp8.y = *(float *)0xE000001C;
+            sp8.z = *(float *)0xE000002C;
+            //if (r27->z < -4.0 * f27)
+            //    mathutil_mtxA_scale_s(r27->z / (-4.0 * f27));
+            test(&sp8, f27);
+            func_8009AA24(mathutilData->mtxA, 0);
+            foo = lbl_802F02E0[i];
+            func_8008E7AC(lbl_802F1CC8->modelEntries[foo].modelOffset);
+        }
+    }
+}
+*/
+/*
+void func_8000C8D4(void)
+{
+    int i;  // r24
+    s8 *r25 = spritePoolInfo.unkC;
+    float sp8[3];
+    float *r27 = sp8;
+    for (i = 0; i < spritePoolInfo.unk8; i++)
+    {
+        if (r25[i] == 0
+         || r25[i] == 4
+         || (lbl_80205E60[i].unk94 & (1 << (31-0x1B))))
+            continue;
+        {
+            u16 foo;
+            float f27;
+            mathutil_mtxA_from_identity();
+            f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
+            mathutil_mtxA_scale_s(f27);
+            mathutil_mtxA_mult_right(mathutilData->mtxB);
+            mathutil_mtxA_translate(&lbl_80205E60[i].unk4);
+            mathutil_mtxA_rotate_y(cameraInfo[i].unk1A - 0x8000);
+            mathutil_mtxA_rotate_x(-0x4000);
+            mathutil_mtxA_translate_xyz(0.0f, lbl_80205E60[i].unk68, 0.0f);
+            r27[0] = MATHUTIL_DATA.mtxA[0][3];
+            r27[1] = MATHUTIL_DATA.mtxA[1][3];
+            r27[2] = MATHUTIL_DATA.mtxA[2][3];
+            //sp8.x = *(float *)0xE000000C;
+            //sp8.y = *(float *)0xE000001C;
+            //sp8.z = *(float *)0xE000002C;
+            if (r27[2] < -4.0 * f27)
+                mathutil_mtxA_scale_s(r27[2] / (-4.0 * f27));
+            func_8009AA24(mathutilData->mtxA, 0);
+            foo = lbl_802F02E0[i];
+            func_8008E7AC(lbl_802F1CC8->unk8->unk0[foo].unk0);
+        }
+    }
+}
+*/

@@ -106,3 +106,28 @@ void g_math_unk15(Vec *a, Vec *b, float c);
 void g_math_unk16(Vec *a, Vec *b, float c);
 void mathutil_scale_ray(Vec *rayStart, Vec *rayEnd, Vec *outRayEnd, float scale);
 u16 mathutil_calc_crc16(s32 length, u8 *data);
+
+static inline s32 mathutil_floor_to_int(register float n)
+{
+#ifdef __MWERKS__
+    s32 buf[2];
+    register float savedFlags;
+    asm
+    {
+        // save FPCSR flags
+        mffs savedFlags
+        // set rounding mode to -inf
+        mtfsb1 30
+        mtfsb1 31
+        // convert to integer
+        fctiw n, n
+        stfd n, buf[0]
+        // restore old FPCSR flags
+        mtfsf 0xFF, savedFlags
+    }
+    return buf[1];
+#else
+    // TODO
+    return (s32)n;
+#endif
+}

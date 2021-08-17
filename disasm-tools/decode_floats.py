@@ -63,19 +63,19 @@ with open(sys.argv[1], 'rt') as f:
                 if doubleBytes:
                     doubleBytes += read_byte_directive(line)
                     val = decode_double(doubleBytes)
-                    print('double val: %.15g' % val)
-                    line = '\t.double %.15g  ;# %s\n' % (val, hex_bytes(doubleBytes))
+                    print('double val: %.17g' % val)
+                    line = '\t.double %.17g  ;# %s\n' % (val, hex_bytes(doubleBytes))
                     doubleBytes = None
                 else:
-                    print('label %s: line: %s', label, line)
+                    print('label %s: line: %s' % (label, line))
                     response = prompt()
                     if response == 'q':
                         skipAll = True
                     elif response == 'f':
                         b = read_byte_directive(line)
                         val = decode_float(b)
-                        print('float val: %.15g' % val)
-                        line = '\t.float %.15g  ;# %s\n' % (val, hex_bytes(b))
+                        print('float val: %.17g' % val)
+                        line = '\t.float %.17g  ;# %s\n' % (val, hex_bytes(b))
                     elif response == 'd':
                         doubleBytes = read_byte_directive(line)
                         continue

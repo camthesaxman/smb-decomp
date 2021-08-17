@@ -404,15 +404,6 @@ extern struct
 } lbl_801EEC90;
 extern Mtx *lbl_802F1B3C;
 
-extern struct
-{
-    u8 filler0[0x68];
-    s32 unk68;
-    struct UnkStruct8005562C *unk6C;
-    s32 unk70;
-    struct UnkStruct8005562C *unk74;
-} *decodedStageLzPtr;
-
 void ev_background_init(void)
 {
     s16 r29 = backgroundInfo.bgId;
@@ -760,6 +751,7 @@ extern struct
 #pragma fp_contract off
 
 #ifdef NONMATCHING
+/*
 void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
 {
     int i;  // r30
@@ -846,6 +838,7 @@ void func_8005562C(struct UnkStruct8005562C *a, u32 b, float c)
         a++;
     }
 }
+*/
 #else
 #pragma force_active off
 void force_float_constant_order(double *a, double *b, float *c)

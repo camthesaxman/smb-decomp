@@ -7,6 +7,9 @@
 // stripped by the linker.
 #define FORCE_BSS_ORDER(var) void *force_##var(){return &var;}
 
+// Possibly a different NULL definition caused by including dolphin.h before stddef.h
+#define NULL2 ((void *)0)
+
 #include "types.h"
 #include "functions.h"
 #include "variables.h"

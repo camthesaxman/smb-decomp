@@ -155,7 +155,7 @@ struct Struct801723C0
 
 struct ModeControl
 {
-    u32 unk0;
+    s32 unk0;
     u8 filler4[4];
     u32 unk8;
     u8 fillerC[0x1C-0xC];
@@ -318,7 +318,13 @@ struct Ball_child
 
 struct Ball
 {
-    u8 filler0[0xFC];
+    u8 filler0[0x4];
+    Vec unk4;
+    u8 filler10[0x68-0x10];
+    float unk68;
+    u8 filler6C[0x94-0x6C];
+    u32 unk94;
+    u8 filler98[0xFC-0x98];
     struct Ball_child *unkFC;
     u8 filler100[0x1A4-0x100];
 };
@@ -363,7 +369,8 @@ struct World
 
 struct SpritePoolInfo
 {
-             u8 filler0[0xC];
+             u8 filler0[8];
+             s32 unk8;
              s8 *unkC;
              u8 filler10[0x30-0x10];
              u8 unk30[4];

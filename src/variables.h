@@ -548,7 +548,11 @@ extern struct Struct801EEC80 lbl_801EEC80;
 // extern ? lbl_801F065C;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
-// extern ? lbl_801F3A58;
+extern struct
+{
+    u32 unk0;
+    u8 filler4[5];
+} lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
 extern struct
@@ -618,7 +622,12 @@ extern struct World lbl_80206BF0;
 // extern ? lbl_8020ADD4;
 // extern ? lbl_8020AE20;
 // extern ? lbl_8020AE40;
-// extern ? lbl_80250A68;
+extern struct
+{
+    u32 unk0[4];
+    float unk10;
+    u32 unk14;
+} lbl_80250A68;
 // extern ? lbl_80250A80;
 // extern ? lbl_80250AA0;
 // extern ? lbl_80250B58;
@@ -1373,12 +1382,63 @@ extern void *currentBallStructPtr;
 extern void *currentWorldStructPtr;
 // extern ? lbl_802F1F28;
 // extern ? lbl_802F1F2C;
-// extern ? decodedStageLzPtr;
+
+struct DecodedStageLzPtr_child_child
+{
+    u32 unk0;
+    void *unk4;
+    u32 unk8;
+    void *unkC;
+    u32 unk10;
+    void *unk14;
+    u32 unk18;
+    void *unk1C;
+    u32 unk20;
+    void *unk24;
+    u32 unk28;
+    void *unk2C;
+};
+
+struct DecodedStageLzPtr_child
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    u16 unk12;
+    struct DecodedStageLzPtr_child_child *unk14;
+    u8 filler18[0xB8-0x18];
+    float unkB8;
+    float unkBC;
+    float unkC0;
+};
+
+extern struct
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    struct DecodedStageLzPtr_child *unkC;
+    u8 filler10[0x68-0x10];
+    s32 unk68;
+    struct UnkStruct8005562C *unk6C;
+    s32 unk70;
+    struct UnkStruct8005562C *unk74;
+    u32 unk78;
+} *decodedStageLzPtr;
 // extern ? lbl_802F1F34;
 // extern ? decodedStageGmaPtr;
 // extern ? decodedStageTplPtr;
 extern u16 lbl_802F1F40;
-// extern ? lbl_802F1F44;
+extern struct Struct802F1F44
+{
+    void *unk0;
+    u32 **unk4;
+    u32 unk8;
+    u32 unkC;
+    u8 filler10[0x14-0x10];
+    void *unk14;
+} *lbl_802F1F44;
 // extern ? lbl_802F1F48;
 // extern ? lbl_802F1F4C;
 // extern ? lbl_802F1F50;

@@ -2189,8 +2189,8 @@ lbl_80094440:
 /* 80094480 000903A0  38 21 00 E8 */	addi r1, r1, 0xe8
 /* 80094484 000903A4  4E 80 00 20 */	blr
 
-.global func_80094488
-func_80094488:
+.global g_something_with_lens_flare_2
+g_something_with_lens_flare_2:
 /* 80094488 000903A8  7C 08 02 A6 */	mflr r0
 /* 8009448C 000903AC  1C A3 02 84 */	mulli r5, r3, 0x284
 /* 80094490 000903B0  90 01 00 04 */	stw r0, 4(r1)
@@ -2282,8 +2282,8 @@ lbl_800945BC:
 /* 800945D4 000904F4  38 21 00 20 */	addi r1, r1, 0x20
 /* 800945D8 000904F8  4E 80 00 20 */	blr
 
-.global func_800945DC
-func_800945DC:
+.global g_something_with_lens_flare_1
+g_something_with_lens_flare_1:
 /* 800945DC 000904FC  7C 08 02 A6 */	mflr r0
 /* 800945E0 00090500  1C A3 02 84 */	mulli r5, r3, 0x284
 /* 800945E4 00090504  90 01 00 04 */	stw r0, 4(r1)
