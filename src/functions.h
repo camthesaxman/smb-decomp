@@ -1666,13 +1666,7 @@ void func_800A75B4(void);
 void func_800ACA40(void);
 int g_read_dvd_file();
 void init_loading_gct(void);
-// ? func_800ACDCC();
-void g_create_stage_preview_texture();
-// ? func_800ACF2C();
-// ? func_800ACFD8();
-void func_800AD070();
-// ? func_800AD0B4();
-void func_800AD0F8();
+
 // ? func_800AD180();
 void func_800AD38C(void);
 void ev_name_entry_init(void);

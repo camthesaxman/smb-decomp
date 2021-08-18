@@ -92,7 +92,8 @@ SOURCE_FILES := \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	asm/view.s \
-	asm/preview.s \
+	src/preview.c \
+	asm/code_4.s \
 	asm/lib/base/PPCArch.s \
 	src/lib/os/__start.c \
 	src/lib/os/__ppc_eabi_init.c \

@@ -51,9 +51,9 @@ lbl_80043AF0:
 /* 80043B14 0003FA34  38 C0 00 8C */	li r6, 0x8c
 /* 80043B18 0003FA38  38 E0 00 8C */	li r7, 0x8c
 /* 80043B1C 0003FA3C  39 00 00 05 */	li r8, 5
-/* 80043B20 0003FA40  48 06 93 E5 */	bl g_create_stage_preview_texture
+/* 80043B20 0003FA40  48 06 93 E5 */	bl preview_create_with_alloc_img
 /* 80043B24 0003FA44  38 7F 00 78 */	addi r3, r31, 0x78
-/* 80043B28 0003FA48  48 06 95 49 */	bl func_800AD070
+/* 80043B28 0003FA48  48 06 95 49 */	bl g_preview_wait_then_do_something
 /* 80043B2C 0003FA4C  38 00 00 01 */	li r0, 1
 /* 80043B30 0003FA50  90 0D 9D 48 */	stw r0, lbl_802F1F28-_SDA_BASE_(r13)
 lbl_80043B34:
@@ -468,9 +468,9 @@ ev_stage_dest:
 /* 80044110 00040030  80 0D 9D 48 */	lwz r0, lbl_802F1F28-_SDA_BASE_(r13)
 /* 80044114 00040034  2C 00 00 00 */	cmpwi r0, 0
 /* 80044118 00040038  41 82 00 10 */	beq lbl_80044128
-/* 8004411C 0004003C  3C 60 80 20 */	lis r3, lbl_80206D78@ha
-/* 80044120 00040040  38 63 6D 78 */	addi r3, r3, lbl_80206D78@l
-/* 80044124 00040044  48 06 8F D5 */	bl func_800AD0F8
+/* 8004411C 0004003C  3C 60 80 20 */	lis r3, stagePreview@ha
+/* 80044120 00040040  38 63 6D 78 */	addi r3, r3, stagePreview@l
+/* 80044124 00040044  48 06 8F D5 */	bl preview_free
 lbl_80044128:
 /* 80044128 00040048  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8004412C 0004004C  38 21 00 08 */	addi r1, r1, 8
@@ -4857,10 +4857,10 @@ func_80047D70:
 /* 80047DD4 00043CF4  38 80 00 00 */	li r4, 0
 /* 80047DD8 00043CF8  48 09 C7 A9 */	bl GXLoadPosMtxImm
 /* 80047DDC 00043CFC  4B FD E5 C9 */	bl func_800263A4
-/* 80047DE0 00043D00  3C 60 80 20 */	lis r3, lbl_80206D78@ha
+/* 80047DE0 00043D00  3C 60 80 20 */	lis r3, stagePreview@ha
 /* 80047DE4 00043D04  C0 22 8F E0 */	lfs f1, lbl_802F37E0-_SDA2_BASE_(r2)
 /* 80047DE8 00043D08  C0 42 8F 68 */	lfs f2, lbl_802F3768-_SDA2_BASE_(r2)
-/* 80047DEC 00043D0C  38 63 6D 78 */	addi r3, r3, lbl_80206D78@l
+/* 80047DEC 00043D0C  38 63 6D 78 */	addi r3, r3, stagePreview@l
 /* 80047DF0 00043D10  C0 62 8F 20 */	lfs f3, lbl_802F3720-_SDA2_BASE_(r2)
 /* 80047DF4 00043D14  38 80 FF FF */	li r4, -1
 /* 80047DF8 00043D18  C0 82 8F C0 */	lfs f4, lbl_802F37C0-_SDA2_BASE_(r2)
@@ -21246,8 +21246,8 @@ lbl_801B9168:
 .global lbl_80206D00
 lbl_80206D00:
 	.skip 0x78
-.global lbl_80206D78
-lbl_80206D78:
+.global stagePreview
+stagePreview:
 	.skip 0x74
 .global lbl_80206DEC
 lbl_80206DEC:

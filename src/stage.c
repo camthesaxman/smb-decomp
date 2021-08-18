@@ -6,6 +6,7 @@
 #include "global.h"
 #include "game.h"
 #include "mathutil.h"
+#include "preview.h"
 
 extern u8 lbl_801B86E4[];
 extern int lbl_802F1F28;
@@ -21,7 +22,8 @@ struct Struct80206D00
     u8 filler14[4];
 } lbl_80206D00[5];
 
-u8 lbl_80206D78[0x74];  // 78
+struct Preview stagePreview;  // 78
+
 struct
 {
     //u8 filler0[0x74];
@@ -50,7 +52,7 @@ struct Struct80206E48
 } lbl_80206E48[0x48];  // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
-FORCE_BSS_ORDER(lbl_80206D78)
+FORCE_BSS_ORDER(stagePreview)
 FORCE_BSS_ORDER(lbl_80206DEC)
 
 char *lbl_801B86D8[] =
@@ -79,14 +81,14 @@ void ev_stage_init(void)
             int r5 = func_800673BC();
             if (r5 > 0 && r5 <= 200)
             {
-                g_create_stage_preview_texture(
-                    lbl_80206D78,
+                preview_create_with_alloc_img(
+                    &stagePreview,
                     "preview/140x140.tpl",
                     r5 - 1,
                     140,
                     140,
-                    5);
-                func_800AD070(lbl_80206D78);
+                    GX_TF_RGB5A3);
+                g_preview_wait_then_do_something(&stagePreview);
                 lbl_802F1F28 = 1;
             }
         }
@@ -236,7 +238,7 @@ void ev_stage_main(void)
 void ev_stage_dest(void)
 {
     if (lbl_802F1F28)
-        func_800AD0F8(lbl_80206D78);
+        preview_free(&stagePreview);
 }
 
 struct GMAModelHeader *stage_find_model(struct GMA *gma, char *name)
