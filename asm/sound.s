@@ -539,7 +539,7 @@ lbl_80027C94:
 /* 80027CA0 00023BC0  C0 23 00 04 */	lfs f1, 4(r3)
 /* 80027CA4 00023BC4  FC 00 08 00 */	fcmpu cr0, f0, f1
 /* 80027CA8 00023BC8  41 82 0C B8 */	beq lbl_80028960
-/* 80027CAC 00023BCC  A8 0D 9D 78 */	lha r0, stageId-_SDA_BASE_(r13)
+/* 80027CAC 00023BCC  A8 0D 9D 78 */	lha r0, currStageId-_SDA_BASE_(r13)
 /* 80027CB0 00023BD0  2C 00 00 4D */	cmpwi r0, 0x4d
 /* 80027CB4 00023BD4  41 82 0A 6C */	beq lbl_80028720
 /* 80027CB8 00023BD8  40 80 00 28 */	bge lbl_80027CE0
@@ -7996,8 +7996,8 @@ loadingStageIdRequest:
 .global loadingStageId
 loadingStageId:
 	.skip 0x2
-.global stageId
-stageId:
+.global currStageId
+currStageId:
 	.skip 0x8
 .global lbl_802F1F60
 lbl_802F1F60:

@@ -573,7 +573,7 @@ u32 lbl_801B98A8[] =
     0,
 };
 
-u8 lbl_801B991C[] =
+u8 stageBackgrounds[] =
 {
     0x01, 0x0D, 0x0D, 0x0D,
     0x0D, 0x10, 0x10, 0x10,
@@ -696,7 +696,7 @@ void load_bg_files(int bgId)
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        func_80021DB4(stageId);
+        func_80021DB4(currStageId);
     }
 }
 

@@ -224,7 +224,7 @@ extern float unknownTrigTable[];
 extern struct BackgroundInfo backgroundInfo;
 // extern ? bgDrawFuncs;
 // extern ? lbl_801B9658;
-// extern ? lbl_801B991C;
+// extern ? stageBackgrounds;
 // extern ? lbl_801B9B28;
 // extern ? lbl_801B9B48;
 // extern ? lbl_801B9B58;
@@ -614,7 +614,7 @@ extern struct World lbl_80206BF0;
 // extern ? lbl_80206D78;
 // extern ? lbl_80206DEC;
 // extern ? lbl_80206E48;
-// extern ? lbl_80209368;
+extern u8 lbl_80209368[];
 // extern ? lbl_802099E8;
 // extern ? lbl_8020A348;
 // extern ? lbl_8020AB88;
@@ -848,7 +848,7 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802F097C;
 // extern ? lbl_802F0988;
 // extern ? lbl_802F0990;
-// extern ? lbl_802F0998;
+extern int lbl_802F0998;
 // extern ? lbl_802F099C;
 // extern ? lbl_802F09B8;
 // extern ? lbl_802F09C0;
@@ -1148,12 +1148,12 @@ extern struct
 // extern ? lbl_802F1AE0;
 // extern ? lbl_802F1AE4;
 // extern ? lbl_802F1AE8;
-// extern ? lbl_802F1AEC;
+extern u32 lbl_802F1AEC;  // unknown type
 // extern ? lbl_802F1AF0;
 // extern ? lbl_802F1AF4;
 // extern ? lbl_802F1AF8;
 // extern ? lbl_802F1AFC;
-// extern ? lbl_802F1B00;
+extern u32 lbl_802F1B00;  // unknown type
 // extern ? lbl_802F1B04;
 extern long lbl_802F1B08;
 extern long lbl_802F1B0C;
@@ -1399,6 +1399,11 @@ struct DecodedStageLzPtr_child_child
     void *unk2C;
 };
 
+struct DecodedStageLzPtr_child_child2
+{
+    char *unk0;
+};
+
 struct DecodedStageLzPtr_child
 {
     Vec unk0;
@@ -1407,12 +1412,11 @@ struct DecodedStageLzPtr_child
     s16 unk10;
     u16 unk12;
     struct DecodedStageLzPtr_child_child *unk14;
-    u8 filler18[0x7C-0x18];
+    struct DecodedStageLzPtr_child_child2 *unk18;
+    u8 filler1C[0x7C-0x1C];
     s32 unk7C;
     u8 filler80[0xB8-0x80];
-    float unkB8;
-    float unkBC;
-    float unkC0;
+    Vec unkB8;
 };
 
 extern struct
@@ -1430,7 +1434,7 @@ extern struct
 } *decodedStageLzPtr;
 // extern ? lbl_802F1F34;
 extern struct GMA *decodedStageGmaPtr;
-// extern ? decodedStageTplPtr;
+extern struct TPL *decodedStageTplPtr;
 extern u16 lbl_802F1F40;
 extern struct Struct802F1F44
 {
@@ -1441,12 +1445,12 @@ extern struct Struct802F1F44
     u8 filler10[0x14-0x10];
     void *unk14;
 } *lbl_802F1F44;
-// extern ? lbl_802F1F48;
+extern u32 lbl_802F1F48;
 // extern ? lbl_802F1F4C;
 // extern ? lbl_802F1F50;
 extern u16 loadingStageIdRequest;
 // extern ? loadingStageId;
-extern s16 stageId;
+extern s16 currStageId;
 // extern ? lbl_802F1F60;
 // extern ? lbl_802F1F68;
 // extern ? lbl_802F1F6C;

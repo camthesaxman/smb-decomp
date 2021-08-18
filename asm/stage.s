@@ -16,7 +16,7 @@ ev_stage_init:
 /* 80043A94 0003F9B4  90 1F 00 F4 */	stw r0, 0xf4(r31)
 /* 80043A98 0003F9B8  90 1F 01 08 */	stw r0, 0x108(r31)
 /* 80043A9C 0003F9BC  48 00 0D 91 */	bl func_8004482C
-/* 80043AA0 0003F9C0  A8 0D 9D 78 */	lha r0, stageId-_SDA_BASE_(r13)
+/* 80043AA0 0003F9C0  A8 0D 9D 78 */	lha r0, currStageId-_SDA_BASE_(r13)
 /* 80043AA4 0003F9C4  2C 00 00 65 */	cmpwi r0, 0x65
 /* 80043AA8 0003F9C8  41 82 00 08 */	beq lbl_80043AB0
 /* 80043AAC 0003F9CC  48 00 00 08 */	b lbl_80043AB4
@@ -722,7 +722,7 @@ lbl_80044470:
 /* 80044498 000403B8  83 81 00 40 */	lwz r28, 0x40(r1)
 /* 8004449C 000403BC  38 21 00 78 */	addi r1, r1, 0x78
 /* 800444A0 000403C0  4E 80 00 20 */	blr
-.endif
+
 .global func_800444A4
 func_800444A4:
 /* 800444A4 000403C4  7C 08 02 A6 */	mflr r0
@@ -743,13 +743,13 @@ func_800444A4:
 /* 800444E0 00040400  D0 27 00 F0 */	stfs f1, 0xf0(r7)
 /* 800444E4 00040404  3C 80 43 30 */	lis r4, 0x4330
 /* 800444E8 00040408  D8 01 00 38 */	stfd f0, 0x38(r1)
-/* 800444EC 0004040C  80 01 00 3C */	lwz r0, 0x3c(r1)
+/* 800444EC 0004040C  80 01 00 3C */	lwz r0, 0x3c(r1)  ;# (int)a
 /* 800444F0 00040410  90 07 00 EC */	stw r0, 0xec(r7)
 /* 800444F4 00040414  C0 27 00 F0 */	lfs f1, 0xf0(r7)
-/* 800444F8 00040418  C8 02 8F 28 */	lfd f0, lbl_802F3728-_SDA2_BASE_(r2)
+/* 800444F8 00040418  C8 02 8F 28 */	lfd f0, lbl_802F3728-_SDA2_BASE_(r2)  ;# 60.0
 /* 800444FC 0004041C  80 CD 9D 50 */	lwz r6, decodedStageLzPtr-_SDA_BASE_(r13)
 /* 80044500 00040420  FF E1 00 24 */	fdiv f31, f1, f0
-/* 80044504 00040424  C8 42 8F 58 */	lfd f2, lbl_802F3758-_SDA2_BASE_(r2)
+/* 80044504 00040424  C8 42 8F 58 */	lfd f2, lbl_802F3758-_SDA2_BASE_(r2)  ;# conv
 /* 80044508 00040428  80 A6 00 00 */	lwz r5, 0(r6)
 /* 8004450C 0004042C  80 06 00 04 */	lwz r0, 4(r6)
 /* 80044510 00040430  6C A3 80 00 */	xoris r3, r5, 0x8000
@@ -790,7 +790,7 @@ func_800444A4:
 /* 8004459C 000404BC  EC 00 10 28 */	fsubs f0, f0, f2
 /* 800445A0 000404C0  EF FF 08 28 */	fsubs f31, f31, f1
 /* 800445A4 000404C4  EF FF 00 2A */	fadds f31, f31, f0
-/* 800445A8 000404C8  C3 C2 8F 50 */	lfs f30, lbl_802F3750-_SDA2_BASE_(r2)
+/* 800445A8 000404C8  C3 C2 8F 50 */	lfs f30, lbl_802F3750-_SDA2_BASE_(r2)  ;# 182.044448852539f
 /* 800445AC 000404CC  48 00 01 B0 */	b lbl_8004475C
 lbl_800445B0:
 /* 800445B0 000404D0  83 BE 00 14 */	lwz r29, 0x14(r30)
@@ -973,7 +973,7 @@ func_8004482C:
 /* 80044838 00040758  38 04 6E 48 */	addi r0, r4, lbl_80206E48@l
 /* 8004483C 0004075C  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80044840 00040760  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 80044844 00040764  7C 1F 03 78 */	mr r31, r0
+/* 80044844 00040764  7C 1F 03 78 */	mr r31, r0  ;# lbl_80206E48
 /* 80044848 00040768  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 8004484C 0004076C  93 A1 00 0C */	stw r29, 0xc(r1)
 /* 80044850 00040770  3B A0 00 00 */	li r29, 0
@@ -1029,7 +1029,6 @@ lbl_8004485C:
 /* 80044914 00040834  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 80044918 00040838  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004491C 0004083C  4E 80 00 20 */	blr
-
 .global func_80044920
 func_80044920:
 /* 80044920 00040840  4E 80 00 20 */	blr
@@ -1096,7 +1095,7 @@ lbl_800449DC:
 /* 800449F0 00040910  48 07 DE 55 */	bl OSSetCurrentHeap
 lbl_800449F4:
 /* 800449F4 00040914  7F 83 E3 78 */	mr r3, r28
-/* 800449F8 00040918  48 00 13 D9 */	bl func_80045DD0
+/* 800449F8 00040918  48 00 13 D9 */	bl get_stage_background
 /* 800449FC 0004091C  3C 80 80 1C */	lis r4, backgroundInfo@ha
 /* 80044A00 00040920  A8 04 91 78 */	lha r0, backgroundInfo@l(r4)
 /* 80044A04 00040924  7C 00 18 00 */	cmpw r0, r3
@@ -1107,7 +1106,7 @@ lbl_80044A14:
 /* 80044A14 00040934  7F 83 E3 78 */	mr r3, r28
 /* 80044A18 00040938  48 00 02 B5 */	bl load_stage_files
 /* 80044A1C 0004093C  7F 83 E3 78 */	mr r3, r28
-/* 80044A20 00040940  48 00 13 B1 */	bl func_80045DD0
+/* 80044A20 00040940  48 00 13 B1 */	bl get_stage_background
 /* 80044A24 00040944  48 01 08 59 */	bl load_bg_files
 /* 80044A28 00040948  80 0D 87 B8 */	lwz r0, lbl_802F0998-_SDA_BASE_(r13)
 /* 80044A2C 0004094C  7C 00 E0 00 */	cmpw r0, r28
@@ -1149,7 +1148,7 @@ lbl_80044AA0:
 /* 80044AA8 000409C8  48 05 60 09 */	bl func_8009AAB0
 /* 80044AAC 000409CC  7F 83 07 34 */	extsh r3, r28
 /* 80044AB0 000409D0  7F E0 07 75 */	extsb. r0, r31
-/* 80044AB4 000409D4  B0 6D 9D 78 */	sth r3, stageId-_SDA_BASE_(r13)
+/* 80044AB4 000409D4  B0 6D 9D 78 */	sth r3, currStageId-_SDA_BASE_(r13)
 /* 80044AB8 000409D8  41 82 00 0C */	beq lbl_80044AC4
 /* 80044ABC 000409DC  38 60 00 01 */	li r3, 1
 /* 80044AC0 000409E0  4B FC 68 69 */	bl ev_run_init
@@ -1165,8 +1164,8 @@ lbl_80044AD4:
 /* 80044AE0 00040A00  7C 08 03 A6 */	mtlr r0
 /* 80044AE4 00040A04  4E 80 00 20 */	blr
 
-.global func_80044AE8
-func_80044AE8:
+.global unload_stage
+unload_stage:
 /* 80044AE8 00040A08  7C 08 02 A6 */	mflr r0
 /* 80044AEC 00040A0C  90 01 00 04 */	stw r0, 4(r1)
 /* 80044AF0 00040A10  94 21 FF F0 */	stwu r1, -0x10(r1)
@@ -1218,9 +1217,10 @@ lbl_80044B88:
 /* 80044B94 00040AB4  38 21 00 10 */	addi r1, r1, 0x10
 /* 80044B98 00040AB8  7C 08 03 A6 */	mtlr r0
 /* 80044B9C 00040ABC  4E 80 00 20 */	blr
+
 # stage.s .text start
-.global func_80044BA0
-func_80044BA0:
+.global preload_stage_files
+preload_stage_files:
 /* 80044BA0 00040AC0  7C 08 02 A6 */	mflr r0
 /* 80044BA4 00040AC4  3C 80 80 1C */	lis r4, lbl_801B86D8@ha
 /* 80044BA8 00040AC8  90 01 00 04 */	stw r0, 4(r1)
@@ -1395,7 +1395,7 @@ lbl_80044DFC:
 /* 80044E0C 00040D2C  83 A1 03 14 */	lwz r29, 0x314(r1)
 /* 80044E10 00040D30  38 21 03 20 */	addi r1, r1, 0x320
 /* 80044E14 00040D34  4E 80 00 20 */	blr
-
+.endif
 .global func_80044E18
 func_80044E18:
 /* 80044E18 00040D38  7C 08 02 A6 */	mflr r0
@@ -1407,10 +1407,10 @@ func_80044E18:
 /* 80044E30 00040D50  3B 84 6D 00 */	addi r28, r4, lbl_80206D00@l
 /* 80044E34 00040D54  3C 80 80 1C */	lis r4, lbl_801B86D8@ha
 /* 80044E38 00040D58  3B 64 86 D8 */	addi r27, r4, lbl_801B86D8@l
-/* 80044E3C 00040D5C  3A 3C 27 88 */	addi r17, r28, 0x2788
-/* 80044E40 00040D60  3B DC 26 68 */	addi r30, r28, 0x2668
-/* 80044E44 00040D64  3B BC 28 A8 */	addi r29, r28, 0x28a8
-/* 80044E48 00040D68  3B 5C 2C E8 */	addi r26, r28, 0x2ce8
+/* 80044E3C 00040D5C  3A 3C 27 88 */	addi r17, r28, 0x2788  ;# 80209488
+/* 80044E40 00040D60  3B DC 26 68 */	addi r30, r28, 0x2668  ;# lbl_80209368
+/* 80044E44 00040D64  3B BC 28 A8 */	addi r29, r28, 0x28a8  ;# 802095A8
+/* 80044E48 00040D68  3B 5C 2C E8 */	addi r26, r28, 0x2ce8  ;# lbl_802099E8
 /* 80044E4C 00040D6C  3A 60 00 00 */	li r19, 0
 /* 80044E50 00040D70  3A 80 00 00 */	li r20, 0
 /* 80044E54 00040D74  80 6D 9D 50 */	lwz r3, decodedStageLzPtr-_SDA_BASE_(r13)
@@ -1423,7 +1423,7 @@ lbl_80044E64:
 /* 80044E6C 00040D8C  93 DA 00 04 */	stw r30, 4(r26)
 /* 80044E70 00040D90  90 1A 00 08 */	stw r0, 8(r26)
 /* 80044E74 00040D94  82 B6 00 18 */	lwz r21, 0x18(r22)
-/* 80044E78 00040D98  48 00 01 7C */	b lbl_80044FF4
+/* 80044E78 00040D98  48 00 01 7C */	b lbl_80044FF4  ;# while (r21->unk0 != NULL)
 lbl_80044E7C:
 /* 80044E7C 00040D9C  38 61 00 10 */	addi r3, r1, 0x10
 /* 80044E80 00040DA0  3A 40 00 00 */	li r18, 0
@@ -1433,15 +1433,15 @@ lbl_80044E7C:
 /* 80044E90 00040DB0  38 8D 87 E8 */	addi r4, r13, lbl_802F09C8-_SDA_BASE_
 /* 80044E94 00040DB4  38 A0 01 00 */	li r5, 0x100
 /* 80044E98 00040DB8  48 0C 1B 85 */	bl strncat
-/* 80044E9C 00040DBC  3B 1B 00 BC */	addi r24, r27, 0xbc
+/* 80044E9C 00040DBC  3B 1B 00 BC */	addi r24, r27, 0xbc  ;# lbl_801B8794
 /* 80044EA0 00040DC0  3B E0 00 00 */	li r31, 0
-/* 80044EA4 00040DC4  48 00 00 60 */	b lbl_80044F04
+/* 80044EA4 00040DC4  48 00 00 60 */	b lbl_80044F04  ;# for (j = 0; lbl_801B8794[j] != NULL; j++)
 lbl_80044EA8:
 /* 80044EA8 00040DC8  80 63 00 00 */	lwz r3, 0(r3)
 /* 80044EAC 00040DCC  28 03 00 00 */	cmplwi r3, 0
 /* 80044EB0 00040DD0  41 82 00 50 */	beq lbl_80044F00
 /* 80044EB4 00040DD4  3A E0 00 00 */	li r23, 0
-/* 80044EB8 00040DD8  3B 23 00 04 */	addi r25, r3, 4
+/* 80044EB8 00040DD8  3B 23 00 04 */	addi r25, r3, 4  ;# r3->unk4
 /* 80044EBC 00040DDC  56 E0 10 3A */	slwi r0, r23, 2
 /* 80044EC0 00040DE0  7E 19 02 14 */	add r16, r25, r0
 /* 80044EC4 00040DE4  48 00 00 30 */	b lbl_80044EF4
@@ -1468,7 +1468,7 @@ lbl_80044F04:
 /* 80044F04 00040E24  80 78 00 00 */	lwz r3, 0(r24)
 /* 80044F08 00040E28  28 03 00 00 */	cmplwi r3, 0
 /* 80044F0C 00040E2C  40 82 FF 9C */	bne lbl_80044EA8
-/* 80044F10 00040E30  3B 3B 00 BC */	addi r25, r27, 0xbc
+/* 80044F10 00040E30  3B 3B 00 BC */	addi r25, r27, 0xbc  ;# lbl_801B8794
 /* 80044F14 00040E34  48 00 00 60 */	b lbl_80044F74
 lbl_80044F18:
 /* 80044F18 00040E38  80 63 00 00 */	lwz r3, 0(r3)
@@ -2530,8 +2530,8 @@ lbl_80045DA8:
 /* 80045DC4 00041CE4  83 81 00 38 */	lwz r28, 0x38(r1)
 /* 80045DC8 00041CE8  38 21 00 58 */	addi r1, r1, 0x58
 /* 80045DCC 00041CEC  4E 80 00 20 */	blr
-.global func_80045DD0
-func_80045DD0:
+.global get_stage_background
+get_stage_background:
 /* 80045DD0 00041CF0  A8 0D 99 AE */	lha r0, gameSubmode-_SDA_BASE_(r13)
 /* 80045DD4 00041CF4  2C 00 00 48 */	cmpwi r0, 0x48
 /* 80045DD8 00041CF8  40 82 00 44 */	bne lbl_80045E1C
@@ -2555,8 +2555,8 @@ lbl_80045E14:
 /* 80045E14 00041D34  38 60 00 02 */	li r3, 2
 /* 80045E18 00041D38  48 00 00 14 */	b lbl_80045E2C
 lbl_80045E1C:
-/* 80045E1C 00041D3C  3C 80 80 1C */	lis r4, lbl_801B991C@ha
-/* 80045E20 00041D40  38 04 99 1C */	addi r0, r4, lbl_801B991C@l
+/* 80045E1C 00041D3C  3C 80 80 1C */	lis r4, stageBackgrounds@ha
+/* 80045E20 00041D40  38 04 99 1C */	addi r0, r4, stageBackgrounds@l
 /* 80045E24 00041D44  7C 60 1A 14 */	add r3, r0, r3
 /* 80045E28 00041D48  88 63 00 00 */	lbz r3, 0(r3)
 lbl_80045E2C:
@@ -2583,7 +2583,7 @@ func_80045E4C:
 /* 80045E6C 00041D8C  AB C4 00 20 */	lha r30, 0x20(r4)
 /* 80045E70 00041D90  38 1E 00 01 */	addi r0, r30, 1
 /* 80045E74 00041D94  B0 04 00 20 */	sth r0, 0x20(r4)
-/* 80045E78 00041D98  4B FF FF 59 */	bl func_80045DD0
+/* 80045E78 00041D98  4B FF FF 59 */	bl get_stage_background
 /* 80045E7C 00041D9C  B3 DF 00 00 */	sth r30, 0(r31)
 /* 80045E80 00041DA0  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80045E84 00041DA4  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -4625,7 +4625,7 @@ lbl_80047A88:
 /* 80047A8C 000439AC  28 00 00 00 */	cmplwi r0, 0
 /* 80047A90 000439B0  40 82 FF D0 */	bne lbl_80047A60
 lbl_80047A94:
-/* 80047A94 000439B4  A8 0D 9D 78 */	lha r0, stageId-_SDA_BASE_(r13)
+/* 80047A94 000439B4  A8 0D 9D 78 */	lha r0, currStageId-_SDA_BASE_(r13)
 /* 80047A98 000439B8  2C 00 00 65 */	cmpwi r0, 0x65
 /* 80047A9C 000439BC  40 82 00 08 */	bne lbl_80047AA4
 /* 80047AA0 000439C0  4B FF C7 AD */	bl func_8004424C
@@ -6173,7 +6173,7 @@ lbl_80049014:
 /* 80049028 00044F48  B0 14 00 18 */	sth r0, 0x18(r20)
 /* 8004902C 00044F4C  B0 74 00 1A */	sth r3, 0x1a(r20)
 /* 80049030 00044F50  B3 94 00 00 */	sth r28, 0(r20)
-/* 80049034 00044F54  A8 0D 9D 78 */	lha r0, stageId-_SDA_BASE_(r13)
+/* 80049034 00044F54  A8 0D 9D 78 */	lha r0, currStageId-_SDA_BASE_(r13)
 /* 80049038 00044F58  98 14 00 02 */	stb r0, 2(r20)
 /* 8004903C 00044F5C  40 82 00 18 */	bne lbl_80049054
 /* 80049040 00044F60  80 19 00 04 */	lwz r0, 4(r25)
@@ -7593,7 +7593,7 @@ lbl_8004A3E8:
 /* 8004A42C 0004634C  38 60 00 0D */	li r3, 0xd
 /* 8004A430 00046350  88 A1 00 16 */	lbz r5, 0x16(r1)
 /* 8004A434 00046354  88 01 00 17 */	lbz r0, 0x17(r1)
-/* 8004A438 00046358  B0 AD 9D 78 */	sth r5, stageId-_SDA_BASE_(r13)
+/* 8004A438 00046358  B0 AD 9D 78 */	sth r5, currStageId-_SDA_BASE_(r13)
 /* 8004A43C 0004635C  90 04 00 04 */	stw r0, 4(r4)
 /* 8004A440 00046360  4B FC 0F 55 */	bl ev_run_dest
 /* 8004A444 00046364  80 1D 00 00 */	lwz r0, 0(r29)
@@ -7605,7 +7605,7 @@ lbl_8004A3E8:
 /* 8004A45C 0004637C  84 03 3A 58 */	lwzu r0, 0x3a58(r3)
 /* 8004A460 00046380  60 00 00 10 */	ori r0, r0, 0x10
 /* 8004A464 00046384  90 03 00 00 */	stw r0, lbl_801F0000@l(r3)
-/* 8004A468 00046388  A8 6D 9D 78 */	lha r3, stageId-_SDA_BASE_(r13)
+/* 8004A468 00046388  A8 6D 9D 78 */	lha r3, currStageId-_SDA_BASE_(r13)
 /* 8004A46C 0004638C  4B FF A4 B9 */	bl load_stage
 /* 8004A470 00046390  38 60 00 01 */	li r3, 1
 /* 8004A474 00046394  4B FC 0F 21 */	bl ev_run_dest
@@ -8719,7 +8719,7 @@ func_8004B354:
 /* 8004B404 00047324  B0 1E 00 28 */	sth r0, 0x28(r30)
 /* 8004B408 00047328  B0 9E 00 2A */	sth r4, 0x2a(r30)
 /* 8004B40C 0004732C  B0 9E 00 10 */	sth r4, 0x10(r30)
-/* 8004B410 00047330  A8 0D 9D 78 */	lha r0, stageId-_SDA_BASE_(r13)
+/* 8004B410 00047330  A8 0D 9D 78 */	lha r0, currStageId-_SDA_BASE_(r13)
 /* 8004B414 00047334  98 1E 00 12 */	stb r0, 0x12(r30)
 /* 8004B418 00047338  40 82 00 18 */	bne lbl_8004B430
 /* 8004B41C 0004733C  80 1F 00 04 */	lwz r0, 4(r31)
@@ -19233,7 +19233,7 @@ glabel string_GOAL_G
 glabel string_GOAL_R
 	.asciz "GOAL_R"
 	.balign 4
-.endif
+
 
 .global lbl_802F09B8
 lbl_802F09B8:
@@ -19248,6 +19248,7 @@ lbl_802F09C0:
 glabel string__test_3
 	.asciz "/test"
 	.balign 4
+.endif
 
 .global lbl_802F09C8
 lbl_802F09C8:
@@ -20686,7 +20687,6 @@ lbl_801B86F8:
 glabel string_MOT_STAGE101_BLUR
 	.asciz "MOT_STAGE101_BLUR"
 	.balign 4
-.endif
 
 .global lbl_801B870C
 lbl_801B870C:
@@ -20700,6 +20700,8 @@ lbl_801B871C:
 	# ROM: 0x1B571C
 glabel string____________st_03d______________n
 	.asciz "========== st%03d ============\n"
+
+glabel arcadeStages
 	.byte 0x0A, 0x13, 0x14, 0x1E
 	.byte 0x31, 0x32, 0x3C, 0x46
 	.byte 0x50, 0x5C, 0x60, 0x61
@@ -20720,6 +20722,7 @@ glabel string_st_03d_p_lz
 glabel string_st_03d_lz
 	.asciz "st%03d.lz"
 	.balign 4
+.endif
 
 .global lbl_801B8794
 lbl_801B8794:
@@ -21257,7 +21260,11 @@ lbl_80206E48:
 .endif
 .global lbl_80209368
 lbl_80209368:
-	.skip 0x680
+    .skip 0x120
+glabel lbl_80209488
+    .skip 0x120
+glabel lbl_802095A8
+	.skip 0x440
 .global lbl_802099E8
 lbl_802099E8:
 	.skip 0x960
