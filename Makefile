@@ -62,7 +62,7 @@ SOURCE_FILES := \
 	asm/game.s \
 	src/event.c \
 	src/polydisp.c \
-	asm/event.s \
+	asm/polydisp.s \
 	asm/camera.s \
 	asm/code_1.s \
 	src/trig_tables.c \
