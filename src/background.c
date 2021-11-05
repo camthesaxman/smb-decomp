@@ -402,7 +402,6 @@ extern struct
     u32 unk0;
     u8 filler4[9-4];
 } lbl_801EEC90;
-extern Mtx *lbl_802F1B3C;
 
 void ev_background_init(void)
 {
@@ -726,10 +725,10 @@ void bg_e3_draw(void)
         func_8008E428(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != 0)
     {
-        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
     if (decodedStageLzPtr->unk74 != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1117,10 +1116,10 @@ void bg_night_draw(void)
         func_8008E428(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
-        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1152,10 +1151,10 @@ void bg_ice2_draw(void)
         func_8008E428(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
-        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1227,10 +1226,10 @@ void bg_billiards_draw(void)
         func_8008E428(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
-        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1262,10 +1261,10 @@ void bg_golf_draw(void)
         func_8008E428(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
-        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1297,10 +1296,10 @@ void bg_bowling_draw(void)
         func_8008E428(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
-        mathutil_mtxA_from_mtx(*lbl_802F1B3C);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(*lbl_802F1B3C, decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);

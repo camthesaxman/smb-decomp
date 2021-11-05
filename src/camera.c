@@ -2,6 +2,7 @@
 
 #include "global.h"
 #include "mathutil.h"
+#include "game.h"
 
 void camera_init(void)
 {
@@ -22,7 +23,7 @@ void camera_init(void)
         camera->unk2C = 0.0f;
         camera->unk30 = 0x2AAA;
         camera->unk32 = 0x2AAA;
-        camera->unk34 = 1.3333333730697632f;
+        camera->unk34 = 1.33333333f;
         camera->unk40 = 0.0f;
         camera->unk44 = 0.0f;
         camera->unk48 = 1.0f;
@@ -152,7 +153,7 @@ void ev_camera_main(void)
     if (dipSwitches & DIP_DEBUG)
     {
         if ((dipSwitches & DIP_TEST_CAM) && (lbl_801F3B70[0].unk18 & (1<<(31-0x14))))
-            dipSwitches ^= 0x2000;
+            dipSwitches ^= DIP_NO_INTR;
         if ((lbl_801F3B70[0].unk0 & (1<<(31-0x16))) && (lbl_801F3B70[0].unk18 & (1<<(31-0x14))))
         {
             if (dipSwitches & DIP_TEST_CAM)
@@ -194,8 +195,8 @@ void ev_camera_main(void)
                 if (eventInfo[2].state == 2 && !(camera->unk24 & (1<<(31-0x1C))))
                 {
                     mathutil_mtxA_translate(&ball->unk4);
-                    mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 * 0.59999999999999998);
-                    mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 * 0.59999999999999998);
+                    mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 * 0.6);
+                    mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 * 0.6);
                     mathutil_mtxA_translate_neg(&ball->unk4);
                 }
                 mathutil_mtxA_to_mtx(camera->unk144);
@@ -295,7 +296,7 @@ void ev_camera_main(void)
                 default:
                     if (camera->unk50 <= 0x474)
                     {
-                        camera->unk28 = -0.30000001192092896f;
+                        camera->unk28 = -0.3f;
                         camera->unk2C = 0.0f;
                     }
                     else
@@ -308,7 +309,7 @@ void ev_camera_main(void)
                 break;
             case 7:
                 camera->unk28 = 0.0f;
-                camera->unk2C = -0.54000002145767212f;
+                camera->unk2C = -0.54f;
                 break;
             case 8:
                 camera->unk28 = 0.0f;
@@ -325,7 +326,7 @@ void ev_camera_main(void)
                 {
                     camera->unk28 = lbl_802F21EC;
                     camera->unk2C = lbl_802F21F0;
-                    camera->unk30 = 182.04444885253906f * lbl_802F16B8;
+                    camera->unk30 = 182.044444f * lbl_802F16B8;
                 }
                 break;
             }
@@ -354,11 +355,11 @@ void func_80017FCC(void)
     mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C[3]);
     mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C[0]);
     mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C[4]);
-    C_MTXPerspective(sp1C, 59.996337890625f, 1.3333333730697632f, 0.10000000149011612f, 20000.0f);
+    C_MTXPerspective(sp1C, 59.996337f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(sp1C, 0);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
-    func_80020AB8(&(Vec){0.0f, 0.0f, 0.0f}, &(S16Vec){0, 0, 0}, 59.996337890625, 1.3333333730697632, 0.0f, 0.0f);
+    func_80020AB8(&(Vec){0.0f, 0.0f, 0.0f}, &(S16Vec){0, 0, 0}, 59.996337, 1.33333333, 0.0f, 0.0f);
 }
 
 void func_80018128(int a, float b, float c, float d, float e)
@@ -371,7 +372,7 @@ void func_80018128(int a, float b, float c, float d, float e)
     camera->unk4C = e;
     if (d > 0.0f && e > 0.0f)
     {
-        camera->unk34 = 1.3333333730697632f * (d / e);
+        camera->unk34 = 1.33333333f * (d / e);
         if (e == 1.0f)
             camera->unk32 = 0x2AAA;
         else
@@ -419,4 +420,63 @@ void func_800182CC(void)
     for (i = 0; i < 4; i++)
         func_80018128(i, 0.0f, 0.0f, 0.0f, 0.0f);
     func_80018128(0, 0.0f, 0.0f, 1.0f, 1.0f);
+}
+
+void func_80018330(int a)
+{
+    u8 unused[0x10];
+    struct Camera *camera = &cameraInfo[a];
+    Mtx projMtx;
+
+    lbl_802F1C40 = a;
+    lbl_802F1C34 = a;
+    currentCameraStructPtr = camera;
+    mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
+    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C[2]);
+    mathutil_mtx_copy(camera->unk174, lbl_802F1B3C[3]);
+    mathutil_mtx_copy(camera->unk1A4, lbl_802F1B3C[0]);
+    mathutil_mtx_copy(camera->unk1D4, lbl_802F1B3C[4]);
+    mathutil_mtx_copy(lbl_802F1B3C[0], lbl_802F1B3C[1]);
+    lbl_802F1B3C[1][0][3] = 0.0f;
+    lbl_802F1B3C[1][1][3] = -camera->unk0.y;
+    lbl_802F1B3C[1][2][3] = 0.0f;
+    if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && a == 0)
+    {
+        C_MTXPerspective(
+            projMtx,
+            0.0054931640625f * camera->unk30,
+            camera->unk34,
+            0.17320509254932404f / camera->unk38,
+            20000.0f);
+    }
+    else
+    {
+        C_MTXPerspective(
+            projMtx,
+            0.0054931640625f * camera->unk30,
+            camera->unk34,
+            0.1f,
+            20000.0f);
+    }
+    projMtx[0][2] -= projMtx[0][0] * camera->unk28 * camera->unk34 * camera->unk38;
+    projMtx[1][2] -= projMtx[1][1] * camera->unk2C * camera->unk38;
+    GXSetProjection(projMtx, 0);
+    if (camera->unk48 > 0.0f && camera->unk4C > 0.0f)
+    {
+        float fbW = currRenderMode->fbWidth;
+        float fbH = currRenderMode->xfbHeight;
+        float left   = fbW * camera->unk40;
+        float top    = fbH * camera->unk44;
+        float width  = fbW * camera->unk48;
+        float height = fbH * camera->unk4C;
+        GXSetViewport(left, top, width, height, 0.0f, 1.0f);
+        GXSetScissor(left, top, width, height);
+    }
+    func_80020AB8(
+        &camera->unk0,
+        &(S16Vec){camera->unk18, camera->unk1A, camera->unk1C},
+        0.0054931640625f * camera->unk30,
+        camera->unk34,
+        camera->unk28,
+        camera->unk2C);
 }
