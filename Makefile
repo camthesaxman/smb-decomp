@@ -63,6 +63,7 @@ SOURCE_FILES := \
 	src/event.c \
 	src/polydisp.c \
 	asm/polydisp.s \
+	src/camera.c \
 	asm/camera.s \
 	asm/code_1.s \
 	src/trig_tables.c \
@@ -310,6 +311,7 @@ clean:
 	find . -name '*.dump' -exec rm {} +
 
 # File-specific compiler flags
+src/camera.o: CFLAGS += -fp_contract off
 src/mathutil.o: CFLAGS += -inline auto -fp_contract off
 src/sprite.o:   CFLAGS += -inline auto -fp_contract off
 src/avdisp.o:   CFLAGS += -inline auto

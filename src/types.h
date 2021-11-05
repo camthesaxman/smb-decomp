@@ -1,3 +1,4 @@
+#include <stddef.h>
 // Event states
 enum
 {
@@ -156,7 +157,7 @@ struct Struct801723C0
 struct ModeControl
 {
     s32 unk0;
-    u8 filler4[4];
+    s32 unk4;
     u32 unk8;
     u8 fillerC[0x1C-0xC];
     u32 unk1C;
@@ -291,14 +292,43 @@ struct UnkStruct8005562C  // decodedStageLzPtr->unk6C
 
 struct Camera
 {
-    u8 filler0[0xC];
+    Vec unk0;
     Vec unkC;
-    u8 filler18[2];
+    s16 unk18;
     s16 unk1A;
-    u8 filler1C[0x34-0x1C];
+    s16 unk1C;
+    s8 unk1E;
+    u8 filler1F[0x24-0x1F];
+    s16 unk24;
+    s8 unk26;
+    u8 filler27[0x28-0x27];
+    float unk28;
+    float unk2C;
+    s16 unk30;
+    u16 unk32;
     float unk34;
     float unk38;
-};
+    float unk3C;
+    float unk40;
+    float unk44;
+    float unk48;
+    float unk4C;
+    s16 unk50;
+    u8 filler52[0xBC-0x52];
+    Vec unkBC;
+    Vec unkC8;
+    u8 fillerD4[0x144-0xD4];
+    Mtx unk144;
+    Mtx unk174;
+    Mtx unk1A4;
+    Mtx unk1D4;
+    u32 unk204;
+    u8 unk208;
+    u8 filler20C[0x284-0x20C];
+    
+};  // size=0x284
+
+//STATIC_ASSERT(offsetof(struct Camera,unk144)==0x144, no);
 
 struct Sprite;
 struct FontParams;
@@ -364,8 +394,8 @@ struct World
 {
     s16 unk0;
     s16 unk2;
-    u8 filler4[0x9-0x4];
-};
+    u8 filler4[0x40-0x4];
+};  // size = 0x40
 
 struct SpritePoolInfo
 {

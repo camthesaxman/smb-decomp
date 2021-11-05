@@ -1380,7 +1380,7 @@ entry mathutil_mtxA_tf_vec_xyz
     blr
 }
 
-asm void mathutil_mtxA_rigid_inv_tf_point(Vec *vec)
+asm void mathutil_mtxA_rigid_inv_tf_point(Vec *a, Vec *b)
 {
     nofralloc
 

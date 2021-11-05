@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global camera_init
 camera_init:
 /* 80017780 000136A0  7C 08 02 A6 */	mflr r0
@@ -12,12 +13,12 @@ camera_init:
 /* 80017794 000136B4  94 21 FF F8 */	stwu r1, -8(r1)
 /* 80017798 000136B8  38 00 FF FF */	li r0, -1
 /* 8001779C 000136BC  38 E0 00 00 */	li r7, 0
-/* 800177A0 000136C0  C0 42 84 18 */	lfs f2, lbl_802F2C18-_SDA2_BASE_(r2)
+/* 800177A0 000136C0  C0 42 84 18 */	lfs f2, lbl_802F2C18-_SDA2_BASE_(r2)  ;# 0
 /* 800177A4 000136C4  38 A0 00 03 */	li r5, 3
-/* 800177A8 000136C8  C0 22 84 1C */	lfs f1, lbl_802F2C1C-_SDA2_BASE_(r2)
+/* 800177A8 000136C8  C0 22 84 1C */	lfs f1, lbl_802F2C1C-_SDA2_BASE_(r2)  ;# 1.3333333730697632
 /* 800177AC 000136CC  38 80 00 00 */	li r4, 0
 /* 800177B0 000136D0  90 CD 9A 5C */	stw r6, currentCameraStructPtr-_SDA_BASE_(r13)
-/* 800177B4 000136D4  C0 02 84 20 */	lfs f0, lbl_802F2C20-_SDA2_BASE_(r2)
+/* 800177B4 000136D4  C0 02 84 20 */	lfs f0, lbl_802F2C20-_SDA2_BASE_(r2)  ;# 1
 /* 800177B8 000136D8  39 08 02 84 */	addi r8, r8, 0x284
 /* 800177BC 000136DC  90 0D 9A 60 */	stw r0, lbl_802F1C40-_SDA_BASE_(r13)
 /* 800177C0 000136E0  38 60 00 00 */	li r3, 0
@@ -99,6 +100,7 @@ camera_init:
 /* 800178F0 00013810  38 21 00 08 */	addi r1, r1, 8
 /* 800178F4 00013814  7C 08 03 A6 */	mtlr r0
 /* 800178F8 00013818  4E 80 00 20 */	blr
+
 .global ev_camera_init
 ev_camera_init:
 /* 800178FC 0001381C  7C 08 02 A6 */	mflr r0
@@ -115,7 +117,7 @@ ev_camera_init:
 /* 80017928 00013848  3B A0 00 00 */	li r29, 0
 /* 8001792C 0001384C  93 81 00 08 */	stw r28, 8(r1)
 /* 80017930 00013850  7C 1C 03 78 */	mr r28, r0
-/* 80017934 00013854  C3 E2 84 18 */	lfs f31, lbl_802F2C18-_SDA2_BASE_(r2)
+/* 80017934 00013854  C3 E2 84 18 */	lfs f31, lbl_802F2C18-_SDA2_BASE_(r2)  ;# 0
 lbl_80017938:
 /* 80017938 00013858  B3 DC 00 24 */	sth r30, 0x24(r28)
 /* 8001793C 0001385C  7F 83 E3 78 */	mr r3, r28
@@ -139,6 +141,8 @@ lbl_80017938:
 /* 80017984 000138A4  83 81 00 08 */	lwz r28, 8(r1)
 /* 80017988 000138A8  38 21 00 20 */	addi r1, r1, 0x20
 /* 8001798C 000138AC  4E 80 00 20 */	blr
+.endif
+.if 0
 .global ev_camera_main
 ev_camera_main:
 /* 80017990 000138B0  7C 08 02 A6 */	mflr r0
@@ -193,28 +197,28 @@ lbl_80017A30:
 /* 80017A4C 0001396C  90 0D 9C FC */	stw r0, dipSwitches-_SDA_BASE_(r13)
 lbl_80017A50:
 /* 80017A50 00013970  3C 60 80 20 */	lis r3, spritePoolInfo@ha
-/* 80017A54 00013974  C3 82 84 18 */	lfs f28, lbl_802F2C18-_SDA2_BASE_(r2)
+/* 80017A54 00013974  C3 82 84 18 */	lfs f28, lbl_802F2C18-_SDA2_BASE_(r2)  ;# 0
 /* 80017A58 00013978  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
-/* 80017A5C 0001397C  C3 A2 84 50 */	lfs f29, lbl_802F2C50-_SDA2_BASE_(r2)
+/* 80017A5C 0001397C  C3 A2 84 50 */	lfs f29, lbl_802F2C50-_SDA2_BASE_(r2)  ;# -0.30000001192092896
 /* 80017A60 00013980  3C 80 80 1F */	lis r4, cameraInfo@ha
 /* 80017A64 00013984  82 C3 00 0C */	lwz r22, 0xc(r3)
 /* 80017A68 00013988  3C 60 80 20 */	lis r3, lbl_80205E60@ha
-/* 80017A6C 0001398C  CB 62 84 48 */	lfd f27, lbl_802F2C48-_SDA2_BASE_(r2)
+/* 80017A6C 0001398C  CB 62 84 48 */	lfd f27, lbl_802F2C48-_SDA2_BASE_(r2)  ;# 2
 /* 80017A70 00013990  39 04 EF 00 */	addi r8, r4, cameraInfo@l
-/* 80017A74 00013994  CB 42 84 30 */	lfd f26, lbl_802F2C30-_SDA2_BASE_(r2)
+/* 80017A74 00013994  CB 42 84 30 */	lfd f26, lbl_802F2C30-_SDA2_BASE_(r2)  ;# 0
 /* 80017A78 00013998  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
-/* 80017A7C 0001399C  CB 02 84 38 */	lfd f24, lbl_802F2C38-_SDA2_BASE_(r2)
+/* 80017A7C 0001399C  CB 02 84 38 */	lfd f24, lbl_802F2C38-_SDA2_BASE_(r2)  ;# 0.0041666666666666666
 /* 80017A80 000139A0  3C 60 80 1F */	lis r3, modeCtrl@ha
-/* 80017A84 000139A4  CA C2 84 28 */	lfd f22, lbl_802F2C28-_SDA2_BASE_(r2)
+/* 80017A84 000139A4  CA C2 84 28 */	lfd f22, lbl_802F2C28-_SDA2_BASE_(r2)  ;# 0.59999999999999998
 /* 80017A88 000139A8  3C A0 80 20 */	lis r5, lbl_80206BF0@ha
-/* 80017A8C 000139AC  CA E2 84 68 */	lfd f23, lbl_802F2C68-_SDA2_BASE_(r2)
+/* 80017A8C 000139AC  CA E2 84 68 */	lfd f23, lbl_802F2C68-_SDA2_BASE_(r2)  ;# conv
 /* 80017A90 000139B0  3C E0 80 17 */	lis r7, lbl_80176200@ha
-/* 80017A94 000139B4  C3 22 84 40 */	lfs f25, lbl_802F2C40-_SDA2_BASE_(r2)
+/* 80017A94 000139B4  C3 22 84 40 */	lfs f25, lbl_802F2C40-_SDA2_BASE_(r2)  ;# -0.375
 /* 80017A98 000139B8  3C C0 80 17 */	lis r6, eventInfo@ha
-/* 80017A9C 000139BC  C3 C2 84 54 */	lfs f30, lbl_802F2C54-_SDA2_BASE_(r2)
+/* 80017A9C 000139BC  C3 C2 84 54 */	lfs f30, lbl_802F2C54-_SDA2_BASE_(r2)  ;# -0.54000002145767212
 /* 80017AA0 000139C0  3C 80 80 17 */	lis r4, lbl_8017632C@ha
-/* 80017AA4 000139C4  C3 E2 84 58 */	lfs f31, lbl_802F2C58-_SDA2_BASE_(r2)
-/* 80017AA8 000139C8  CA A2 84 60 */	lfd f21, lbl_802F2C60-_SDA2_BASE_(r2)
+/* 80017AA4 000139C4  C3 E2 84 58 */	lfs f31, lbl_802F2C58-_SDA2_BASE_(r2)  ;# 182.04444885253906
+/* 80017AA8 000139C8  CA A2 84 60 */	lfd f21, lbl_802F2C60-_SDA2_BASE_(r2)  ;# 1
 /* 80017AAC 000139CC  3B 08 00 00 */	addi r24, r8, 0
 /* 80017AB0 000139D0  7C 17 03 78 */	mr r23, r0
 /* 80017AB4 000139D4  3B E3 EC 20 */	addi r31, r3, modeCtrl@l
@@ -309,7 +313,7 @@ lbl_80017B54:
 /* 80017C04 00013B24  90 01 00 34 */	stw r0, 0x34(r1)
 /* 80017C08 00013B28  93 81 00 30 */	stw r28, 0x30(r1)
 /* 80017C0C 00013B2C  C8 01 00 30 */	lfd f0, 0x30(r1)
-/* 80017C10 00013B30  FC 00 B8 28 */	fsub f0, f0, f23
+/* 80017C10 00013B30  FC 00 B8 28 */	fsub f0, f0, f23  ;# (float)lbl_80206BF0[i].unk0
 /* 80017C14 00013B34  FC 16 00 32 */	fmul f0, f22, f0
 /* 80017C18 00013B38  FC 00 00 1E */	fctiwz f0, f0
 /* 80017C1C 00013B3C  D8 01 00 28 */	stfd f0, 0x28(r1)
@@ -372,12 +376,12 @@ lbl_80017CDC:
 /* 80017CF4 00013C14  7C 09 03 A6 */	mtctr r0
 /* 80017CF8 00013C18  4E 80 04 20 */	bctr
 .global lbl_80017CFC
-lbl_80017CFC:
+lbl_80017CFC:  ;# 1
 /* 80017CFC 00013C1C  D3 98 00 28 */	stfs f28, 0x28(r24)
 /* 80017D00 00013C20  D3 98 00 2C */	stfs f28, 0x2c(r24)
 /* 80017D04 00013C24  48 00 02 38 */	b lbl_80017F3C
 .global lbl_80017D08
-lbl_80017D08:
+lbl_80017D08:  ;# 2 3
 /* 80017D08 00013C28  C0 18 00 28 */	lfs f0, 0x28(r24)
 /* 80017D0C 00013C2C  FC 00 D0 40 */	fcmpo cr0, f0, f26
 /* 80017D10 00013C30  40 80 00 24 */	bge lbl_80017D34
@@ -421,17 +425,17 @@ lbl_80017D80:
 /* 80017D9C 00013CBC  D3 98 00 2C */	stfs f28, 0x2c(r24)
 /* 80017DA0 00013CC0  48 00 01 9C */	b lbl_80017F3C
 .global lbl_80017DA4
-lbl_80017DA4:
+lbl_80017DA4:  ;# 4
 /* 80017DA4 00013CC4  D3 98 00 28 */	stfs f28, 0x28(r24)
 /* 80017DA8 00013CC8  D3 38 00 2C */	stfs f25, 0x2c(r24)
 /* 80017DAC 00013CCC  48 00 01 90 */	b lbl_80017F3C
 .global lbl_80017DB0
-lbl_80017DB0:
+lbl_80017DB0:  ;# 0
 /* 80017DB0 00013CD0  D3 98 00 28 */	stfs f28, 0x28(r24)
 /* 80017DB4 00013CD4  D3 98 00 2C */	stfs f28, 0x2c(r24)
 /* 80017DB8 00013CD8  48 00 01 84 */	b lbl_80017F3C
 .global lbl_80017DBC
-lbl_80017DBC:
+lbl_80017DBC:  ;# 5
 /* 80017DBC 00013CDC  D3 98 00 28 */	stfs f28, 0x28(r24)
 /* 80017DC0 00013CE0  D3 98 00 2C */	stfs f28, 0x2c(r24)
 /* 80017DC4 00013CE4  80 0D 9D 00 */	lwz r0, lbl_802F1EE0-_SDA_BASE_(r13)
@@ -481,7 +485,7 @@ lbl_80017E54:
 /* 80017E68 00013D88  B0 18 00 30 */	sth r0, 0x30(r24)
 /* 80017E6C 00013D8C  48 00 00 D0 */	b lbl_80017F3C
 .global lbl_80017E70
-lbl_80017E70:
+lbl_80017E70:  ;# 6
 /* 80017E70 00013D90  80 1F 00 04 */	lwz r0, 4(r31)
 /* 80017E74 00013D94  2C 00 00 00 */	cmpwi r0, 0
 /* 80017E78 00013D98  41 82 00 08 */	beq lbl_80017E80
@@ -512,17 +516,17 @@ lbl_80017EC4:
 /* 80017EC8 00013DE8  B0 18 00 30 */	sth r0, 0x30(r24)
 /* 80017ECC 00013DEC  48 00 00 70 */	b lbl_80017F3C
 .global lbl_80017ED0
-lbl_80017ED0:
+lbl_80017ED0:  ;# 7
 /* 80017ED0 00013DF0  D3 98 00 28 */	stfs f28, 0x28(r24)
 /* 80017ED4 00013DF4  D3 D8 00 2C */	stfs f30, 0x2c(r24)
 /* 80017ED8 00013DF8  48 00 00 64 */	b lbl_80017F3C
 .global lbl_80017EDC
-lbl_80017EDC:
+lbl_80017EDC:  ;# 8
 /* 80017EDC 00013DFC  D3 98 00 28 */	stfs f28, 0x28(r24)
 /* 80017EE0 00013E00  D3 98 00 2C */	stfs f28, 0x2c(r24)
 /* 80017EE4 00013E04  48 00 00 58 */	b lbl_80017F3C
 .global lbl_80017EE8
-lbl_80017EE8:
+lbl_80017EE8:  ;# 10
 /* 80017EE8 00013E08  2C 19 00 00 */	cmpwi r25, 0
 /* 80017EEC 00013E0C  40 82 00 10 */	bne lbl_80017EFC
 /* 80017EF0 00013E10  A8 0D 9A 50 */	lha r0, lbl_802F1C30-_SDA_BASE_(r13)
@@ -533,7 +537,7 @@ lbl_80017EFC:
 /* 80017F00 00013E20  B0 18 00 30 */	sth r0, 0x30(r24)
 /* 80017F04 00013E24  48 00 00 38 */	b lbl_80017F3C
 .global lbl_80017F08
-lbl_80017F08:
+lbl_80017F08:  ;# 12
 /* 80017F08 00013E28  80 0D A0 08 */	lwz r0, lbl_802F21E8-_SDA_BASE_(r13)
 /* 80017F0C 00013E2C  2C 00 00 00 */	cmpwi r0, 0
 /* 80017F10 00013E30  41 82 00 2C */	beq lbl_80017F3C
@@ -547,7 +551,7 @@ lbl_80017F08:
 /* 80017F30 00013E50  D8 01 00 18 */	stfd f0, 0x18(r1)
 /* 80017F34 00013E54  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80017F38 00013E58  B0 18 00 30 */	sth r0, 0x30(r24)
-lbl_80017F3C:
+lbl_80017F3C:  ;# 9 11
 .global lbl_80017F3C
 /* 80017F3C 00013E5C  A8 18 00 30 */	lha r0, 0x30(r24)
 /* 80017F40 00013E60  7C 03 0E 70 */	srawi r3, r0, 1
@@ -588,6 +592,7 @@ lbl_80017F64:
 .global ev_camera_dest
 ev_camera_dest:
 /* 80017FC8 00013EE8  4E 80 00 20 */	blr
+.endif
 
 .global func_80017FCC
 func_80017FCC:
@@ -12286,79 +12291,77 @@ setup_vtx_attrib_fmt:
 
 .section .sdata2
 
+.if 0
 .global lbl_802F2C18
 lbl_802F2C18:
 	# ROM: 0x1EC638
-	.4byte 0
+	.float 0  ;# 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C1C
 lbl_802F2C1C:
 	# ROM: 0x1EC63C
-	.byte 0x3F, 0xAA, 0xAA, 0xAB
+	.float 1.3333333730697632  ;# 0x3F, 0xAA, 0xAA, 0xAB
 
 .global lbl_802F2C20
 lbl_802F2C20:
 	# ROM: 0x1EC640
-	.byte 0x3F, 0x80, 0x00, 0x00
-	.4byte 0
+	.float 1  ;# 0x3F, 0x80, 0x00, 0x00
+.endif
+.if 0
+	.float 0  ;# 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C28
 lbl_802F2C28:
 	# ROM: 0x1EC648
-	.byte 0x3F, 0xE3, 0x33, 0x33
-	.byte 0x33, 0x33, 0x33, 0x33
+	.double 0.59999999999999998  ;# 0x3F, 0xE3, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33
 
 .global lbl_802F2C30
 lbl_802F2C30:
 	# ROM: 0x1EC650
-	.4byte 0
-	.4byte 0
+	.double 0  ;# 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C38
 lbl_802F2C38:
 	# ROM: 0x1EC658
-	.byte 0x3F, 0x71, 0x11, 0x11
-	.byte 0x11, 0x11, 0x11, 0x11
+	.double 0.0041666666666666666  ;# 0x3F, 0x71, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11
 
 .global lbl_802F2C40
 lbl_802F2C40:
 	# ROM: 0x1EC660
-	.byte 0xBE, 0xC0, 0x00, 0x00
-	.4byte 0
+	.float -0.375  ;# 0xBE, 0xC0, 0x00, 0x00
+	.float 0  ;# 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C48
 lbl_802F2C48:
 	# ROM: 0x1EC668
-	.byte 0x40, 0x00, 0x00, 0x00
-	.4byte 0
+	.double 2  ;# 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C50
 lbl_802F2C50:
 	# ROM: 0x1EC670
-	.byte 0xBE, 0x99, 0x99, 0x9A
+	.float -0.30000001192092896  ;# 0xBE, 0x99, 0x99, 0x9A
 
 .global lbl_802F2C54
 lbl_802F2C54:
 	# ROM: 0x1EC674
-	.byte 0xBF, 0x0A, 0x3D, 0x71
+	.float -0.54000002145767212  ;# 0xBF, 0x0A, 0x3D, 0x71
 
 .global lbl_802F2C58
 lbl_802F2C58:
 	# ROM: 0x1EC678
-	.byte 0x43, 0x36, 0x0B, 0x61
-	.4byte 0
+	.float 182.04444885253906  ;# 0x43, 0x36, 0x0B, 0x61
+	.float 0  ;# 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C60
 lbl_802F2C60:
 	# ROM: 0x1EC680
-	.byte 0x3F, 0xF0, 0x00, 0x00
-	.4byte 0
+	.double 1  ;# 0x3F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2C68
 lbl_802F2C68:
 	# ROM: 0x1EC688
-	.byte 0x43, 0x30, 0x00, 0x00
-	.byte 0x80, 0x00, 0x00, 0x00
+	.double 4503601774854144  ;# 0x43, 0x30, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F2C70
 lbl_802F2C70:
@@ -13237,6 +13240,7 @@ lbl_80110310:
 
 .section .data
 
+.if 0
 .global lbl_80176200
 lbl_80176200:
 	# ROM: 0x173200
@@ -13315,7 +13319,9 @@ lbl_80176200:
 	.4byte func_80020910  ;# ptr
 	.4byte camera_sub_73  ;# ptr
 	.4byte func_80020A88  ;# ptr
+.endif
 
+.if 0
 .global lbl_8017632C
 lbl_8017632C:
 	# ROM: 0x17332C
@@ -13332,6 +13338,7 @@ lbl_8017632C:
 	.4byte lbl_80017EE8  ;# ptr
 	.4byte lbl_80017F3C  ;# ptr
 	.4byte lbl_80017F08  ;# ptr
+.endif
 	.4byte 0
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00

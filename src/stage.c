@@ -619,44 +619,83 @@ void load_stage_files(int stageId)
     }
 }
 
-/*
-u32 lbl_80209368[];
-u8 lbl_80209488[];
-u32 lbl_802095A8[];
-
-struct
+struct Struct802099E8
 {
     void *unk0;
     void *unk4;
     u32 unk8;
-} lbl_802099E8[];
+};
 
-void *lbl_801B8794[];  // TODO
+u32 lbl_80209368[0x48];
+u32 lbl_80209488[0x48];
+u32 lbl_802095A8[0x110];
+struct Struct802099E8 lbl_802099E8[0x48];
+struct Struct802099E8 lbl_80209D48[0x80];
+struct
+{
+    void *unk0;
+    u32 unk4;
+} lbl_8020A348[0x108];
+
+FORCE_BSS_ORDER(lbl_80209368)
+FORCE_BSS_ORDER(lbl_80209488)
+FORCE_BSS_ORDER(lbl_802095A8)
+FORCE_BSS_ORDER(lbl_802099E8)
+FORCE_BSS_ORDER(lbl_80209D48)
+FORCE_BSS_ORDER(lbl_8020A348)
+
+/*
+struct Struct801B8794
+{
+    
+};
+*/
+
+struct Struct802F1B04
+{
+    void *unk14;  // pointer to some struct
+    u32 unkB8;
+    u32 unkC0;
+};
+
+extern struct Struct802F1B04 *lbl_802F1B04;
+
+void **lbl_801B8794[] = {(void **)&lbl_802F1B00, &lbl_802F1B04, NULL};
 
 struct Struct80044E18
 {
     u8 filler0[4];
-    char *unk4[];
+    char **unk4[];
 };
 
-struct Struct80044E18_2  // r17
+struct Struct80044E18_2  // r17_
 {
     u32 unk0;
     u32 unk4;
     float unk8;
 };
 
+/*
+extern u32 lbl_802F1F4C;
+extern u32 lbl_802F1F50;
+
 void func_80044E18(void)
 {
     char sp10[0xFC];
+    u32 **r31;
     int j;  // r31
     int k;  // r23
     struct DecodedStageLzPtr_child *r22;
     int i;  // r20
-    struct Struct80044E18_2 *r17 = (void *)lbl_80209488;
+    struct DecodedStageLzPtr_child2 *r18;
+    u32 *r17 = lbl_80209488;
+    struct Struct80044E18_2 *r17_;
     u32 *r30 = lbl_80209368;
+    int r30_;
     u32 *r29 = lbl_802095A8;
     int r19 = 0;
+    struct DecodedStageLzPtr_child *r5;
+    int r4;
     
     lbl_802F1F50 = 0;
     r22 = decodedStageLzPtr->unkC;
@@ -672,20 +711,20 @@ void func_80044E18(void)
         while (r21->unk0 != NULL)
         {
             u32 **r18 = NULL;
-            u32 **r31;
+            
             strncpy(sp10, r21->unk0, 0xFC);
             strncat(sp10, "_MAP", 0x100);
             r31 = NULL;
             for (j = 0; lbl_801B8794[j] != NULL; j++)
             {
-                struct Struct80044E18 *r3 = lbl_801B8794[j];
+                struct Struct80044E18 *r3 = *lbl_801B8794[j];
                 if (r3 != NULL)
                 {
                     for (k = 0; r3->unk4[k] != 0; k++)
                     {
-                        if (strcmp(r21->unk0, r3->unk4[k][-2]) == 0)
+                        if (strcmp(r21->unk0, r3->unk4[k][-2] + 4) == 0)
                         {
-                            r18 = r3->unk4[k];
+                            r18 = (void *)r3->unk4[k];
                             break;  //to lbl_80044F00
                         }
                         //lbl_80044EEC
@@ -698,14 +737,14 @@ void func_80044E18(void)
             //lbl_80044F18 loop
             for (j = 0; lbl_801B8794[j] != NULL; j++)
             {
-                struct Struct80044E18 *r3 = lbl_801B8794[j];
+                struct Struct80044E18 *r3 = *lbl_801B8794[j];
                 if (r3 != NULL)
                 {
                     for (k = 0; r3->unk4[k] != 0; k++)
                     {
-                        if (strcmp(r21->unk0, r3->unk4[k][-2]) == 0)
+                        if (strcmp(r21->unk0, r3->unk4[k][-2] + 4) == 0)
                         {
-                            r31 = r3->unk4[k];
+                            r31 = (void *)r3->unk4[k];
                             break;  //to lbl_80044F70
                         }
                     }
@@ -717,19 +756,19 @@ void func_80044E18(void)
             //lbl_80044F8C
             if (r31 != NULL)
             {
-                *r30++ = r31;
+                *r30++ = (u32)r31;
                 if (r31 != r18)
-                    *r29++ = r31;
+                    *r29++ = (u32)r31;
             }
             //lbl_80044FAC
             if (r18 != NULL)
             {
-                // *r17++ = (u32)r18;
-                r17->unk0 = (u32)r18;
-                r17 = (void *)((u8 *)r17 + 4);
+                *r17++ = (u32)r18;
+                //r17->unk0 = (u32)r18;
+                //r17 = (void *)((u8 *)r17 + 4);
                 r19++;
-                *r29++ = r18;
-                lbl_802F1F50 = *r18[-1];
+                *r29++ = (u32)r18;
+                lbl_802F1F50 = (u32)*r18[-1];
                 lbl_802099E8[i].unk8++;
                 if (r19 >= 0x47)
                     break;
@@ -737,6 +776,64 @@ void func_80044E18(void)
         }
         //lbl_80045000
     }
-    r17->unk0 = *r18;
+    //80045018
+    *r17 = 0;
+    *r30 = 0;
+    r17_ = (void *)lbl_80209D48;
+    r30_ = decodedStageLzPtr->unk58 < 0x80 ? decodedStageLzPtr->unk58 : 0x80;
+    lbl_802F1F4C = 0;
+    // i : r26
+    r18 = decodedStageLzPtr->unk5C;
+    for (i = 0; i < r30_; i++)
+    {
+        int r19;
+        //lbl_80045050
+        r31 = NULL;
+        r19 = 0;
+        for (j = 0; lbl_801B8794[j] != NULL; j++)
+        {
+            struct Struct80044E18 *r3 = *lbl_801B8794[j];
+            if (r3 != NULL)
+            {
+                for (k = 0; r3->unk4[k] != NULL; k++)
+                {
+                    int asdf = func_800457B8(r18->unk4 + 4, r3->unk4[k][-2]);
+                    if (asdf > r19)
+                    {
+                        r19 = asdf;
+                        r31 = (void *)r3->unk4[k];
+                    }
+                }
+            }
+        }
+        //800450C0
+        r17_->unk0 = r18->unk0;
+        r17_->unk8 = r18->unk8;
+        if (r31 != 0)
+        {
+            r17_->unk4 = (u32)r31;
+            *r29++ = (u32)r31;
+            if ((r17_->unk0 & 3) == 1)
+                lbl_802F1F4C += *r31[-1];
+        }
+        //lbl_8004510C
+        else
+            r17_->unk4 = 0;
+    }
+    //80045128
+    // i = r6?
+    r4 = 0;
+    i = 0;
+    r5 = decodedStageLzPtr->unkC;
+    //for (i = 0; i < lbl_802F1F48; i++)
+    while (i < lbl_802F1F48)
+    {
+        lbl_8020A348[i].unk0 = &lbl_80209D48[r4];
+        lbl_8020A348[i].unk4 = r5->unk7C;
+        r4 += r5->unk7C;
+        i++;
+        r5++;
+    }
+    *r29 = 0;
 }
 */

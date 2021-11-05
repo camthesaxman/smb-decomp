@@ -598,8 +598,8 @@ void func_8000C388(void)
         sp8.z = 0.0f;
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(-currentCameraStructPtr->unk1A);
-        mathutil_mtxA_rotate_z(-lbl_80206BF0.unk2);
-        mathutil_mtxA_rotate_x(-lbl_80206BF0.unk0);
+        mathutil_mtxA_rotate_z(-lbl_80206BF0[0].unk2);
+        mathutil_mtxA_rotate_x(-lbl_80206BF0[0].unk0);
         mathutil_mtxA_tf_vec(&sp8, &sp8);
         r30 = -mathutil_atan2(sp8.z, sp8.y);
         v3 = mathutil_atan2(sp8.x, mathutil_sqrt(sum_of_sq(sp8.z, sp8.y)));
@@ -610,18 +610,6 @@ void func_8000C388(void)
         func_8000BCA4();
     }
 }
-
-extern struct
-{
-    u8 filler0[0x1A];
-    s16 unk1A;
-    u8 filler1C[0x24-0x1C];
-    s16 unk24;
-    u8 filler26[0x48-0x26];
-    float unk48;
-    float unk4C;
-    u8 filler50[0x284-0x50];
-} cameraInfo[4];
 
 void func_8000C5A4(void)
 {
