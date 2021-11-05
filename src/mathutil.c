@@ -299,7 +299,7 @@ asm float mathutil_tan(register u32 angle)
     blr
 }
 
-asm s16 mathutil_atan2(double a, double b)
+asm s16 mathutil_atan2(double a, float b)
 {
     nofralloc
 

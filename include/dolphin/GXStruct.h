@@ -38,14 +38,14 @@ typedef enum
 
 typedef struct
 {
-    VITVMode viTVmode;
-    u16 fbWidth;
-    u16 efbHeight;
-    u16 xfbHeight;
-    u16 viXOrigin;
-    u16 viYOrigin;
-    u16 viWidth;
-    u16 viHeight;
+    /*0x00*/ VITVMode viTVmode;
+    /*0x04*/ u16 fbWidth;
+    /*0x06*/ u16 efbHeight;
+    /*0x08*/ u16 xfbHeight;
+    /*0x0A*/ u16 viXOrigin;
+    /*0x0C*/ u16 viYOrigin;
+    /*0x0E*/ u16 viWidth;
+    /*0x10*/ u16 viHeight;
     VIXFBMode xFBmode;
     u8 field_rendering;
     u8 aa;

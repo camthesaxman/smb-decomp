@@ -338,3 +338,85 @@ void ev_camera_main(void)
 }
 
 void ev_camera_dest(void) {}
+
+void func_80020AB8(Vec *, S16Vec *, float, float, float, float);
+
+void func_80017FCC(void)
+{
+    u8 unused[0x10];
+    Mtx sp1C;
+
+    currentCameraStructPtr = &cameraInfo[0];
+    lbl_802F1C40 = 4;
+    lbl_802F1C34 = 4;
+    mathutil_mtx_copy(cameraInfo[0].unk144, mathutilData->mtxB);
+    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C[2]);
+    mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C[3]);
+    mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C[0]);
+    mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C[4]);
+    C_MTXPerspective(sp1C, 59.996337890625f, 1.3333333730697632f, 0.10000000149011612f, 20000.0f);
+    GXSetProjection(sp1C, 0);
+    GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
+    GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
+    func_80020AB8(&(Vec){0.0f, 0.0f, 0.0f}, &(S16Vec){0, 0, 0}, 59.996337890625, 1.3333333730697632, 0.0f, 0.0f);
+}
+
+void func_80018128(int a, float b, float c, float d, float e)
+{
+    struct Camera *camera = &cameraInfo[a];
+
+    camera->unk40 = b;
+    camera->unk44 = c;
+    camera->unk48 = d;
+    camera->unk4C = e;
+    if (d > 0.0f && e > 0.0f)
+    {
+        camera->unk34 = 1.3333333730697632f * (d / e);
+        if (e == 1.0f)
+            camera->unk32 = 0x2AAA;
+        else
+        {
+            float f1 = (0.5f + 0.5f * e) * mathutil_tan(0x1555);
+            s16 r0 = mathutil_atan2(f1, 1.0f) * 2;
+            camera->unk32 = r0;
+            camera->unk30 = camera->unk32;
+        }
+    }
+    if (lbl_802F1C40 == a)
+        func_80018330(a);
+}
+
+float lbl_80176360[] = {0.0f, 0.0f, 1.0f, 1.0f};
+float lbl_80176370[] = {0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 0.5f, 1.0f, 0.5f};
+float lbl_80176390[] = {0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
+float lbl_801763C0[] = {0.0f, 0.0f, 0.5f, 0.5f, 0.5f, 0.0f, 0.5f, 0.5f, 0.0f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
+float *lbl_80176400[] = {lbl_80176360, lbl_80176370, lbl_80176390, lbl_801763C0};
+
+void func_8001820C(int playerNum)
+{
+    int i;
+    float *ptr;
+
+    if (playerNum < 1 || playerNum > 4)
+        OSPanic("camera.c", 598, "Ielligal player number");
+    ptr = lbl_80176400[playerNum - 1];
+    for (i = 0; i < 4; i++)
+    {
+        if (i >= playerNum)
+            func_80018128(i, 0.0f, 0.0f, 0.0f, 0.0f);
+        else
+        {
+            func_80018128(i, ptr[0], ptr[1], ptr[2], ptr[3]);
+            ptr += 4;
+        }
+    }
+}
+
+void func_800182CC(void)
+{
+    int i;
+
+    for (i = 0; i < 4; i++)
+        func_80018128(i, 0.0f, 0.0f, 0.0f, 0.0f);
+    func_80018128(0, 0.0f, 0.0f, 1.0f, 1.0f);
+}

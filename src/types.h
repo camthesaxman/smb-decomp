@@ -1,4 +1,3 @@
-#include <stddef.h>
 // Event states
 enum
 {
