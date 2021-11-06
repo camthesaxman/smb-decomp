@@ -149,11 +149,14 @@ void ferrordie(FILE *f, const char *str)
 void add_bss(DOL_map *map, uint32_t paddr, uint32_t memsz)
 {
 	if(map->flags & HAVE_BSS) {
-		uint32_t start = swap32(map->header.bss_addr);
-		uint32_t size = swap32(map->header.bss_size);
-		if ( (start+size) == paddr) {
-			map->header.bss_size = swap32(size+memsz);
-		}
+		uint32_t curr_start = swap32(map->header.bss_addr);
+		uint32_t curr_size = swap32(map->header.bss_size);
+		if (paddr < curr_start)
+			map->header.bss_addr = swap32(paddr);
+		// Total BSS size should be the end of the last bss section minus the
+		// start of the first bss section.
+		if (paddr + memsz > curr_start + curr_size)
+			map->header.bss_size = swap32(paddr + memsz - curr_start);
 	} else {
 		map->header.bss_addr = swap32(paddr);
 		map->header.bss_size = swap32(memsz);

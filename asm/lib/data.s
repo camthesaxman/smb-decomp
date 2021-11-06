@@ -10682,4 +10682,4 @@ lbl_802F01C0:
 	.skip 0x8
 .global lbl_802F01C8
 lbl_802F01C8:
-	.skip 0x1918
+	.skip 0x18
