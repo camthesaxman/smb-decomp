@@ -289,18 +289,8 @@ struct UnkStruct8005562C  // decodedStageLzPtr->unk6C
     struct UnkStruct8005562C_child2 *unk34;
 };
 
-struct Camera
+struct Camera_sub
 {
-    Vec unk0;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    s8 unk1E;
-    u8 filler1F[0x24-0x1F];
-    s16 unk24;
-    s8 unk26;
-    u8 filler27[0x28-0x27];
     float unk28;
     float unk2C;
     s16 unk30;
@@ -312,11 +302,34 @@ struct Camera
     float unk44;
     float unk48;
     float unk4C;
+};
+
+struct Camera
+{
+    Vec unk0;
+    Vec unkC;
+    s16 unk18;
+    s16 unk1A;
+    s16 unk1C;
+    s8 unk1E;
+    u8 unk1F;
+    float unk20;
+    s16 unk24;
+    s8 unk26;
+    u8 filler27[0x28-0x27];
+    struct Camera_sub sub28;
     s16 unk50;
     u8 filler52[0xBC-0x52];
     Vec unkBC;
     Vec unkC8;
-    u8 fillerD4[0x144-0xD4];
+    u8 fillerD4[0xEC-0xD4];
+    u32 unkEC;
+    s32 unkF0;
+    Vec unkF4;
+    float unk100;
+    float unk104;
+    float unk108;
+    u8 filler10C[0x144-0x10C];
     Mtx unk144;
     Mtx unk174;
     Mtx unk1A4;

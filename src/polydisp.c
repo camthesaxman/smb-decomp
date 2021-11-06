@@ -582,8 +582,8 @@ void func_8000C388(void)
     Vec sp8;
     float f3;
 
-    f3 = -(10000.0f * currentCameraStructPtr->unk38);
-    sp14.unk0 = f3 * currentCameraStructPtr->unk34;
+    f3 = -(10000.0f * currentCameraStructPtr->sub28.unk38);
+    sp14.unk0 = f3 * currentCameraStructPtr->sub28.unk34;
     sp14.unk4 = 0.0f;
     sp14.unk8 = 0.0f;
     sp14.unkC = f3;
@@ -617,7 +617,7 @@ void func_8000C5A4(void)
     struct Ball *oldBall = currentBallStructPtr;
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].unk48 > 0.0f && cameraInfo[i].unk4C > 0.0f)
+        if (cameraInfo[i].sub28.unk48 > 0.0f && cameraInfo[i].sub28.unk4C > 0.0f)
         {
             if (spritePoolInfo.unkC[i] == 0
              || spritePoolInfo.unkC[i] == 4
@@ -680,7 +680,7 @@ void func_8000C7A4(void)
     unk->unk10 |= (1 << 3);
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].unk48 > 0.0f && cameraInfo[i].unk4C > 0.0f
+        if (cameraInfo[i].sub28.unk48 > 0.0f && cameraInfo[i].sub28.unk4C > 0.0f
          && (cameraInfo[i].unk24 & (1 << (31-0x19))))
         {
             currentBallStructPtr = &lbl_80205E60[i];
