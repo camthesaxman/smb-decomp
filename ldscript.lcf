@@ -11,19 +11,19 @@ SECTIONS
 {
     GROUP :
     {
-                                      /* RAM addr    DOL file pos */
-        .init       ALIGN(0x20) : {}  /* 0x80003100  0x000100     */
-        _extab      ALIGN(0x20) : {}  /* 0x800054C0  0x10B780     */
-        _extabindex ALIGN(0x20) : {}  /* 0x80005B80  0x10BE40     */
-        .text       ALIGN(0x20) : {}  /* 0x800065A0  0x0024C0     */
-        .ctors      ALIGN(0x20) : {}  /* 0x8010F860  0x10C860     */
-        .dtors      ALIGN(0x20) : {}  /* 0x8010F880  0x10C880     */
-        .rodata     ALIGN(0x20) : {}  /* 0x8010F8A0  0x10C8A0     */
-        .data       ALIGN(0x20) : {}  /* 0x80172380  0x16F380     */
-        .bss        ALIGN(0x20) : {}  /* 0x801ED920  n/a          */
-        .sdata      ALIGN(0x20) : {}  /* 0x802F01E0  0x1EA920     */
-        .sbss       ALIGN(0x20) : {}  /* 0x802F1AE0  n/a          */
-        .sdata2     ALIGN(0x20) : {}  /* 0x802F2800  0x1EC220     */
+                                      /* RAM addr    DOL file pos  Size */
+        .init       ALIGN(0x20) : {}  /* 0x80003100  0x000100      0x0023A8 */
+        _extab      ALIGN(0x20) : {}  /* 0x800054C0  0x10B780      0x0006A8 */
+        _extabindex ALIGN(0x20) : {}  /* 0x80005B80  0x10BE40      0x000A1C */
+        .text       ALIGN(0x20) : {}  /* 0x800065A0  0x0024C0      0x1092BC */
+        .ctors      ALIGN(0x20) : {}  /* 0x8010F860  0x10C860      0x00000C */
+        .dtors      ALIGN(0x20) : {}  /* 0x8010F880  0x10C880      0x000010 */
+        .rodata     ALIGN(0x20) : {}  /* 0x8010F8A0  0x10C8A0      0x062ADC */
+        .data       ALIGN(0x20) : {}  /* 0x80172380  0x16F380      0x07B591 */
+        .bss        ALIGN(0x20) : {}  /* 0x801ED920  n/a           0x1028C0 */
+        .sdata      ALIGN(0x20) : {}  /* 0x802F01E0  0x1EA920      0x0018F9 */
+        .sbss       ALIGN(0x20) : {}  /* 0x802F1AE0  n/a           0x000D15 */
+        .sdata2     ALIGN(0x20) : {}  /* 0x802F2800  0x1EC220      0x004480 */
     } > text
 }
 FORCEACTIVE {

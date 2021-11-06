@@ -1,7 +1,3 @@
-// TODO: linker crashes with these symbols
-#define _rom_copy_info _rom_copy_info_
-#define _bss_init_info _bss_init_info_
-
 #include <stdlib.h>
 #include <dolphin.h>
 #include <MetroTRK/DolphinTrkInit.h>

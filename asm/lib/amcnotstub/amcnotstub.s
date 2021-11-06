@@ -11,4 +11,3 @@ AMC_IsStub:
 Hu_IsStub:
 /* 8010F854 0010B774  38 60 00 00 */	li r3, 0
 /* 8010F858 0010B778  4E 80 00 20 */	blr
-/* 8010F85C 0010B77C  00 00 00 00 */	.4byte 0x00000000  /* unknown instruction */

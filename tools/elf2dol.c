@@ -15,6 +15,8 @@
 #define MIN(a, b)	(((a) < (b)) ? (a) : (b))
 #endif
 
+#define ARRAY_COUNT(arr) (sizeof(arr)/sizeof((arr)[0]))
+
 #define EI_NIDENT       16
 
 typedef struct {
@@ -400,7 +402,13 @@ void write_dol(DOL_map *map, const char *dol)
 		fprintf(stderr, "Writing DOL header...\n");
 	}
 	
-	written = fwrite(&map->header, sizeof(DOL_hdr), 1, dolf);
+	// Write DOL header with aligned text and data section sizes
+	DOL_hdr aligned_header = map->header;
+	for(i=0; i<ARRAY_COUNT(aligned_header.text_size); i++)
+		aligned_header.text_size[i] = swap32(DOL_ALIGN(swap32(aligned_header.text_size[i])));
+	for(i=0; i<ARRAY_COUNT(aligned_header.data_size); i++)
+		aligned_header.data_size[i] = swap32(DOL_ALIGN(swap32(aligned_header.data_size[i])));
+	written = fwrite(&aligned_header, sizeof(DOL_hdr), 1, dolf);
 	if(written != 1)
 		ferrordie(dolf, "writing DOL header");
 	

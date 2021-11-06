@@ -1605,7 +1605,6 @@ lbl_80172368:
 	.byte 0x60, 0x00, 0x00, 0x00
 	.byte 0x60, 0x00, 0x00, 0x00
 	.byte 0x60, 0x00, 0x00, 0x00
-	.4byte 0
 
 .section .data
 
@@ -9058,10 +9057,6 @@ lbl_801ED8F8:
 	# ROM: 0x1EA8F8
 glabel string_Can_t_select_EXI2_port__n
 	.asciz "Can't select EXI2 port!\n"
-	.balign 4
-	.4byte 0
-	.4byte 0
-	.4byte 0
 
 .section .sdata
 
@@ -9481,8 +9476,7 @@ pucEXI2InputPending:
 .global SendCount
 SendCount:
 	# ROM: 0x1EC218
-	.byte 0x80, 0x00, 0x00, 0x00
-	.4byte 0
+	.byte 0x80
 
 .section .sbss
 

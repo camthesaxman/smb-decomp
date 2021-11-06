@@ -643,12 +643,6 @@ glabel extab_212
 glabel extab_213
 	.byte 0x08, 0x08, 0x00, 0x00
 	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
 
 
 .section _extabindex, "wa"  # 0x80005B80 - 0x800065A0
@@ -1304,7 +1298,6 @@ TODO_eti_init_info:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0
 
 
 .section .ctors, "wa"  # 0x8010F860 - 0x8010F880
@@ -1314,12 +1307,6 @@ __init_cpp_exceptions_reference:
 	.4byte __init_cpp_exceptions  ;# ptr
 	.4byte func_80109058  ;# ptr
 	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
 
 .section .dtors, "wa"  # 0x8010F880 - 0x8010F8A0
 .global lbl_8010F880
@@ -1329,8 +1316,3 @@ lbl_8010F880:
 	.4byte __fini_cpp_exceptions  ;# ptr
 	.4byte __destroy_global_chain  ;# ptr
 	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
