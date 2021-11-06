@@ -10,9 +10,9 @@ ARRegisterDMACallback:
 /* 800D3238 000CF158  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800D323C 000CF15C  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800D3240 000CF160  7C 7E 1B 78 */	mr r30, r3
-/* 800D3244 000CF164  83 ED A2 F8 */	lwz r31, __AR_Callback-_SDA_BASE_(r13)
+/* 800D3244 000CF164  83 ED A2 F8 */	lwz r31, __AR_Callback@sda21(r13)
 /* 800D3248 000CF168  4B FF 2E 75 */	bl OSDisableInterrupts
-/* 800D324C 000CF16C  93 CD A2 F8 */	stw r30, __AR_Callback-_SDA_BASE_(r13)
+/* 800D324C 000CF16C  93 CD A2 F8 */	stw r30, __AR_Callback@sda21(r13)
 /* 800D3250 000CF170  4B FF 2E 95 */	bl OSRestoreInterrupts
 /* 800D3254 000CF174  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800D3258 000CF178  7F E3 FB 78 */	mr r3, r31
@@ -113,7 +113,7 @@ ARInit:
 /* 800D33B0 000CF2D0  3B C4 00 00 */	addi r30, r4, 0
 /* 800D33B4 000CF2D4  93 A1 00 24 */	stw r29, 0x24(r1)
 /* 800D33B8 000CF2D8  3B A3 00 00 */	addi r29, r3, 0
-/* 800D33BC 000CF2DC  80 0D A3 0C */	lwz r0, __AR_init_flag-_SDA_BASE_(r13)
+/* 800D33BC 000CF2DC  80 0D A3 0C */	lwz r0, __AR_init_flag@sda21(r13)
 /* 800D33C0 000CF2E0  2C 00 00 01 */	cmpwi r0, 1
 /* 800D33C4 000CF2E4  40 82 00 0C */	bne lbl_800D33D0
 /* 800D33C8 000CF2E8  38 60 40 00 */	li r3, 0x4000
@@ -122,7 +122,7 @@ lbl_800D33D0:
 /* 800D33D0 000CF2F0  4B FF 2C ED */	bl OSDisableInterrupts
 /* 800D33D4 000CF2F4  38 00 00 00 */	li r0, 0
 /* 800D33D8 000CF2F8  3C 80 80 0D */	lis r4, __ARHandler@ha
-/* 800D33DC 000CF2FC  90 0D A2 F8 */	stw r0, __AR_Callback-_SDA_BASE_(r13)
+/* 800D33DC 000CF2FC  90 0D A2 F8 */	stw r0, __AR_Callback@sda21(r13)
 /* 800D33E0 000CF300  3B E3 00 00 */	addi r31, r3, 0
 /* 800D33E4 000CF304  38 84 34 A0 */	addi r4, r4, __ARHandler@l
 /* 800D33E8 000CF308  38 60 00 06 */	li r3, 6
@@ -141,11 +141,11 @@ lbl_800D33D0:
 /* 800D341C 000CF33C  90 01 00 18 */	stw r0, 0x18(r1)
 /* 800D3420 000CF340  38 A3 50 00 */	addi r5, r3, 0xCC005000@l
 /* 800D3424 000CF344  C8 21 00 18 */	lfd f1, 0x18(r1)
-/* 800D3428 000CF348  90 8D A3 00 */	stw r4, __AR_StackPointer-_SDA_BASE_(r13)
+/* 800D3428 000CF348  90 8D A3 00 */	stw r4, __AR_StackPointer@sda21(r13)
 /* 800D342C 000CF34C  EC 21 10 28 */	fsubs f1, f1, f2
-/* 800D3430 000CF350  93 CD A3 04 */	stw r30, __AR_FreeBlocks-_SDA_BASE_(r13)
+/* 800D3430 000CF350  93 CD A3 04 */	stw r30, __AR_FreeBlocks@sda21(r13)
 /* 800D3434 000CF354  EC 01 00 24 */	fdivs f0, f1, f0
-/* 800D3438 000CF358  93 AD A3 08 */	stw r29, __AR_BlockLength-_SDA_BASE_(r13)
+/* 800D3438 000CF358  93 AD A3 08 */	stw r29, __AR_BlockLength@sda21(r13)
 /* 800D343C 000CF35C  A0 63 50 1A */	lhz r3, 0x501a(r3)
 /* 800D3440 000CF360  EC 03 00 32 */	fmuls f0, f3, f0
 /* 800D3444 000CF364  FC 00 00 1E */	fctiwz f0, f0
@@ -156,10 +156,10 @@ lbl_800D33D0:
 /* 800D3458 000CF378  B0 05 00 1A */	sth r0, 0x1a(r5)
 /* 800D345C 000CF37C  48 00 00 BD */	bl __ARChecksize
 /* 800D3460 000CF380  38 00 00 01 */	li r0, 1
-/* 800D3464 000CF384  90 0D A3 0C */	stw r0, __AR_init_flag-_SDA_BASE_(r13)
+/* 800D3464 000CF384  90 0D A3 0C */	stw r0, __AR_init_flag@sda21(r13)
 /* 800D3468 000CF388  7F E3 FB 78 */	mr r3, r31
 /* 800D346C 000CF38C  4B FF 2C 79 */	bl OSRestoreInterrupts
-/* 800D3470 000CF390  80 6D A3 00 */	lwz r3, __AR_StackPointer-_SDA_BASE_(r13)
+/* 800D3470 000CF390  80 6D A3 00 */	lwz r3, __AR_StackPointer@sda21(r13)
 lbl_800D3474:
 /* 800D3474 000CF394  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 800D3478 000CF398  83 E1 00 2C */	lwz r31, 0x2c(r1)
@@ -176,7 +176,7 @@ ARGetBaseAddress:
 
 .global ARGetSize
 ARGetSize:
-/* 800D3498 000CF3B8  80 6D A2 FC */	lwz r3, __AR_Size-_SDA_BASE_(r13)
+/* 800D3498 000CF3B8  80 6D A2 FC */	lwz r3, __AR_Size@sda21(r13)
 /* 800D349C 000CF3BC  4E 80 00 20 */	blr
 
 .global __ARHandler
@@ -197,7 +197,7 @@ __ARHandler:
 /* 800D34D4 000CF3F4  4B FF 03 B5 */	bl OSClearContext
 /* 800D34D8 000CF3F8  38 61 00 10 */	addi r3, r1, 0x10
 /* 800D34DC 000CF3FC  4B FF 01 E5 */	bl OSSetCurrentContext
-/* 800D34E0 000CF400  81 8D A2 F8 */	lwz r12, __AR_Callback-_SDA_BASE_(r13)
+/* 800D34E0 000CF400  81 8D A2 F8 */	lwz r12, __AR_Callback@sda21(r13)
 /* 800D34E4 000CF404  28 0C 00 00 */	cmplwi r12, 0
 /* 800D34E8 000CF408  41 82 00 0C */	beq lbl_800D34F4
 /* 800D34EC 000CF40C  7D 88 03 A6 */	mtlr r12
@@ -1190,7 +1190,7 @@ lbl_800D43B4:
 lbl_800D43C4:
 /* 800D43C4 000D02E4  3C 60 C0 00 */	lis r3, 0xC00000D0@ha
 /* 800D43C8 000D02E8  92 C3 00 D0 */	stw r22, 0xC00000D0@l(r3)
-/* 800D43CC 000D02EC  92 CD A2 FC */	stw r22, __AR_Size-_SDA_BASE_(r13)
+/* 800D43CC 000D02EC  92 CD A2 FC */	stw r22, __AR_Size@sda21(r13)
 /* 800D43D0 000D02F0  80 01 01 44 */	lwz r0, 0x144(r1)
 /* 800D43D4 000D02F4  B9 C1 00 F8 */	lmw r14, 0xf8(r1)
 /* 800D43D8 000D02F8  38 21 01 40 */	addi r1, r1, 0x140

@@ -39,7 +39,7 @@ lbl_800C60FC:
 .global __OSSetInterruptHandler
 __OSSetInterruptHandler:
 /* 800C6108 000C2028  7C 60 07 34 */	extsh r0, r3
-/* 800C610C 000C202C  80 6D A1 30 */	lwz r3, InterruptHandlerTable-_SDA_BASE_(r13)
+/* 800C610C 000C202C  80 6D A1 30 */	lwz r3, InterruptHandlerTable@sda21(r13)
 /* 800C6110 000C2030  54 00 10 3A */	slwi r0, r0, 2
 /* 800C6114 000C2034  7C A3 02 14 */	add r5, r3, r0
 /* 800C6118 000C2038  80 65 00 00 */	lwz r3, 0(r5)
@@ -49,7 +49,7 @@ __OSSetInterruptHandler:
 .global __OSGetInterruptHandler
 __OSGetInterruptHandler:
 /* 800C6124 000C2044  7C 60 07 34 */	extsh r0, r3
-/* 800C6128 000C2048  80 6D A1 30 */	lwz r3, InterruptHandlerTable-_SDA_BASE_(r13)
+/* 800C6128 000C2048  80 6D A1 30 */	lwz r3, InterruptHandlerTable@sda21(r13)
 /* 800C612C 000C204C  54 00 10 3A */	slwi r0, r0, 2
 /* 800C6130 000C2050  7C 63 00 2E */	lwzx r3, r3, r0
 /* 800C6134 000C2054  4E 80 00 20 */	blr
@@ -62,10 +62,10 @@ __OSInterruptInit:
 /* 800C6144 000C2064  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 800C6148 000C2068  3F E0 80 00 */	lis r31, 0x80003040@ha
 /* 800C614C 000C206C  38 1F 30 40 */	addi r0, r31, 0x80003040@l
-/* 800C6150 000C2070  90 0D A1 30 */	stw r0, InterruptHandlerTable-_SDA_BASE_(r13)
+/* 800C6150 000C2070  90 0D A1 30 */	stw r0, InterruptHandlerTable@sda21(r13)
 /* 800C6154 000C2074  38 80 00 00 */	li r4, 0
 /* 800C6158 000C2078  38 A0 00 80 */	li r5, 0x80
-/* 800C615C 000C207C  80 6D A1 30 */	lwz r3, InterruptHandlerTable-_SDA_BASE_(r13)
+/* 800C615C 000C207C  80 6D A1 30 */	lwz r3, InterruptHandlerTable@sda21(r13)
 /* 800C6160 000C2080  4B F3 D1 C1 */	bl memset
 /* 800C6164 000C2084  38 00 00 00 */	li r0, 0
 /* 800C6168 000C2088  90 1F 00 C4 */	stw r0, 0xc4(r31)
@@ -598,7 +598,7 @@ lbl_800C6828:
 /* 800C6828 000C2748  38 63 00 04 */	addi r3, r3, 4
 /* 800C682C 000C274C  4B FF FF E0 */	b lbl_800C680C
 lbl_800C6830:
-/* 800C6830 000C2750  80 6D A1 30 */	lwz r3, InterruptHandlerTable-_SDA_BASE_(r13)
+/* 800C6830 000C2750  80 6D A1 30 */	lwz r3, InterruptHandlerTable@sda21(r13)
 /* 800C6834 000C2754  57 A0 10 3A */	slwi r0, r29, 2
 /* 800C6838 000C2758  7F E3 00 2E */	lwzx r31, r3, r0
 /* 800C683C 000C275C  28 1F 00 00 */	cmplwi r31, 0

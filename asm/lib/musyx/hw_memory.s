@@ -7,7 +7,7 @@ salMalloc:
 /* 80101278 000FD198  7C 08 02 A6 */	mflr r0
 /* 8010127C 000FD19C  90 01 00 04 */	stw r0, 4(r1)
 /* 80101280 000FD1A0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80101284 000FD1A4  81 8D A5 4C */	lwz r12, salHooks-_SDA_BASE_(r13)
+/* 80101284 000FD1A4  81 8D A5 4C */	lwz r12, salHooks@sda21(r13)
 /* 80101288 000FD1A8  7D 88 03 A6 */	mtlr r12
 /* 8010128C 000FD1AC  4E 80 00 21 */	blrl
 /* 80101290 000FD1B0  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -18,7 +18,7 @@ salMalloc:
 .global salFree
 salFree:
 /* 801012A0 000FD1C0  7C 08 02 A6 */	mflr r0
-/* 801012A4 000FD1C4  38 8D A5 4C */	addi r4, r13, salHooks-_SDA_BASE_
+/* 801012A4 000FD1C4  38 8D A5 4C */	addi r4, r13, salHooks@sda21
 /* 801012A8 000FD1C8  90 01 00 04 */	stw r0, 4(r1)
 /* 801012AC 000FD1CC  94 21 FF F8 */	stwu r1, -8(r1)
 /* 801012B0 000FD1D0  81 84 00 04 */	lwz r12, 4(r4)

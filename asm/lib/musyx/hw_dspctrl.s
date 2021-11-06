@@ -9,133 +9,133 @@ salInitDspCtrl:
 /* 800F8618 000F4538  94 21 FF C8 */	stwu r1, -0x38(r1)
 /* 800F861C 000F453C  BF 61 00 24 */	stmw r27, 0x24(r1)
 /* 800F8620 000F4540  7C 9B 23 78 */	mr r27, r4
-/* 800F8624 000F4544  98 6D A5 54 */	stb r3, salNumVoices-_SDA_BASE_(r13)
+/* 800F8624 000F4544  98 6D A5 54 */	stb r3, salNumVoices@sda21(r13)
 /* 800F8628 000F4548  48 00 83 09 */	bl aramGetZeroBuffer
-/* 800F862C 000F454C  90 6D A4 E8 */	stw r3, dspARAMZeroBuffer-_SDA_BASE_(r13)
+/* 800F862C 000F454C  90 6D A4 E8 */	stw r3, dspARAMZeroBuffer@sda21(r13)
 /* 800F8630 000F4550  38 60 08 00 */	li r3, 0x800
 /* 800F8634 000F4554  48 00 8C 45 */	bl salMalloc
 /* 800F8638 000F4558  28 03 00 00 */	cmplwi r3, 0
-/* 800F863C 000F455C  90 6D A5 08 */	stw r3, dspCmdList-_SDA_BASE_(r13)
+/* 800F863C 000F455C  90 6D A5 08 */	stw r3, dspCmdList@sda21(r13)
 /* 800F8640 000F4560  41 82 03 30 */	beq lbl_800F8970
 /* 800F8644 000F4564  38 60 02 80 */	li r3, 0x280
 /* 800F8648 000F4568  48 00 8C 31 */	bl salMalloc
 /* 800F864C 000F456C  28 03 00 00 */	cmplwi r3, 0
-/* 800F8650 000F4570  90 6D A5 14 */	stw r3, dspSurround-_SDA_BASE_(r13)
+/* 800F8650 000F4570  90 6D A5 14 */	stw r3, dspSurround@sda21(r13)
 /* 800F8654 000F4574  41 82 03 1C */	beq lbl_800F8970
-/* 800F8658 000F4578  80 6D A5 14 */	lwz r3, dspSurround-_SDA_BASE_(r13)
+/* 800F8658 000F4578  80 6D A5 14 */	lwz r3, dspSurround@sda21(r13)
 /* 800F865C 000F457C  38 80 00 00 */	li r4, 0
 /* 800F8660 000F4580  38 A0 02 80 */	li r5, 0x280
 /* 800F8664 000F4584  4B F0 AC BD */	bl memset
-/* 800F8668 000F4588  80 6D A5 14 */	lwz r3, dspSurround-_SDA_BASE_(r13)
+/* 800F8668 000F4588  80 6D A5 14 */	lwz r3, dspSurround@sda21(r13)
 /* 800F866C 000F458C  38 80 02 80 */	li r4, 0x280
 /* 800F8670 000F4590  4B FC A8 F1 */	bl DCFlushRange
-/* 800F8674 000F4594  88 0D A5 54 */	lbz r0, salNumVoices-_SDA_BASE_(r13)
+/* 800F8674 000F4594  88 0D A5 54 */	lbz r0, salNumVoices@sda21(r13)
 /* 800F8678 000F4598  1C 60 00 F0 */	mulli r3, r0, 0xf0
 /* 800F867C 000F459C  48 00 8B FD */	bl salMalloc
 /* 800F8680 000F45A0  28 03 00 00 */	cmplwi r3, 0
-/* 800F8684 000F45A4  90 6D A5 1C */	stw r3, dspVoice-_SDA_BASE_(r13)
+/* 800F8684 000F45A4  90 6D A5 1C */	stw r3, dspVoice@sda21(r13)
 /* 800F8688 000F45A8  41 82 02 E8 */	beq lbl_800F8970
-/* 800F868C 000F45AC  88 0D A5 54 */	lbz r0, salNumVoices-_SDA_BASE_(r13)
+/* 800F868C 000F45AC  88 0D A5 54 */	lbz r0, salNumVoices@sda21(r13)
 /* 800F8690 000F45B0  54 03 30 32 */	slwi r3, r0, 6
 /* 800F8694 000F45B4  48 00 8B E5 */	bl salMalloc
 /* 800F8698 000F45B8  28 03 00 00 */	cmplwi r3, 0
-/* 800F869C 000F45BC  90 6D A5 18 */	stw r3, dspITDBuffer-_SDA_BASE_(r13)
+/* 800F869C 000F45BC  90 6D A5 18 */	stw r3, dspITDBuffer@sda21(r13)
 /* 800F86A0 000F45C0  41 82 02 D0 */	beq lbl_800F8970
-/* 800F86A4 000F45C4  88 0D A5 54 */	lbz r0, salNumVoices-_SDA_BASE_(r13)
-/* 800F86A8 000F45C8  80 6D A5 18 */	lwz r3, dspITDBuffer-_SDA_BASE_(r13)
+/* 800F86A4 000F45C4  88 0D A5 54 */	lbz r0, salNumVoices@sda21(r13)
+/* 800F86A8 000F45C8  80 6D A5 18 */	lwz r3, dspITDBuffer@sda21(r13)
 /* 800F86AC 000F45CC  54 04 30 32 */	slwi r4, r0, 6
 /* 800F86B0 000F45D0  4B FC A8 81 */	bl DCInvalidateRange
-/* 800F86B4 000F45D4  83 8D A5 18 */	lwz r28, dspITDBuffer-_SDA_BASE_(r13)
+/* 800F86B4 000F45D4  83 8D A5 18 */	lwz r28, dspITDBuffer@sda21(r13)
 /* 800F86B8 000F45D8  3B A0 00 00 */	li r29, 0
 /* 800F86BC 000F45DC  3B C0 00 00 */	li r30, 0
 /* 800F86C0 000F45E0  48 00 01 54 */	b lbl_800F8814
 lbl_800F86C4:
-/* 800F86C4 000F45E4  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F86C4 000F45E4  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F86C8 000F45E8  38 1E 00 E8 */	addi r0, r30, 0xe8
 /* 800F86CC 000F45EC  3B E0 00 00 */	li r31, 0
 /* 800F86D0 000F45F0  7F E3 01 AE */	stbx r31, r3, r0
 /* 800F86D4 000F45F4  38 1E 00 E9 */	addi r0, r30, 0xe9
 /* 800F86D8 000F45F8  38 DE 00 E4 */	addi r6, r30, 0xe4
-/* 800F86DC 000F45FC  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F86DC 000F45FC  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F86E0 000F4600  39 00 00 FF */	li r8, 0xff
 /* 800F86E4 000F4604  38 BE 00 E5 */	addi r5, r30, 0xe5
 /* 800F86E8 000F4608  7F E3 01 AE */	stbx r31, r3, r0
 /* 800F86EC 000F460C  38 9E 00 E6 */	addi r4, r30, 0xe6
 /* 800F86F0 000F4610  38 1E 00 E7 */	addi r0, r30, 0xe7
-/* 800F86F4 000F4614  80 ED A5 1C */	lwz r7, dspVoice-_SDA_BASE_(r13)
+/* 800F86F4 000F4614  80 ED A5 1C */	lwz r7, dspVoice@sda21(r13)
 /* 800F86F8 000F4618  38 60 00 BA */	li r3, 0xba
 /* 800F86FC 000F461C  7D 07 31 AE */	stbx r8, r7, r6
-/* 800F8700 000F4620  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800F8700 000F4620  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800F8704 000F4624  7D 06 29 AE */	stbx r8, r6, r5
-/* 800F8708 000F4628  80 AD A5 1C */	lwz r5, dspVoice-_SDA_BASE_(r13)
+/* 800F8708 000F4628  80 AD A5 1C */	lwz r5, dspVoice@sda21(r13)
 /* 800F870C 000F462C  7D 05 21 AE */	stbx r8, r5, r4
-/* 800F8710 000F4630  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800F8710 000F4630  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800F8714 000F4634  7D 04 01 AE */	stbx r8, r4, r0
 /* 800F8718 000F4638  48 00 8B 61 */	bl salMalloc
-/* 800F871C 000F463C  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800F871C 000F463C  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800F8720 000F4640  38 80 00 00 */	li r4, 0
 /* 800F8724 000F4644  38 A0 00 BA */	li r5, 0xba
 /* 800F8728 000F4648  7C 66 F1 2E */	stwx r3, r6, r30
-/* 800F872C 000F464C  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F872C 000F464C  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F8730 000F4650  7C 63 F0 2E */	lwzx r3, r3, r30
 /* 800F8734 000F4654  4B F0 AB ED */	bl memset
 /* 800F8738 000F4658  38 60 00 80 */	li r3, 0x80
 /* 800F873C 000F465C  48 00 8B 3D */	bl salMalloc
-/* 800F8740 000F4660  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800F8740 000F4660  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800F8744 000F4664  38 1E 00 04 */	addi r0, r30, 4
 /* 800F8748 000F4668  57 85 84 3E */	srwi r5, r28, 0x10
 /* 800F874C 000F466C  7C 64 01 2E */	stwx r3, r4, r0
 /* 800F8750 000F4670  38 1E 00 08 */	addi r0, r30, 8
 /* 800F8754 000F4674  38 80 00 BA */	li r4, 0xba
-/* 800F8758 000F4678  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F8758 000F4678  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F875C 000F467C  7C C3 F0 2E */	lwzx r6, r3, r30
 /* 800F8760 000F4680  54 C3 84 3E */	srwi r3, r6, 0x10
 /* 800F8764 000F4684  B0 66 00 04 */	sth r3, 4(r6)
-/* 800F8768 000F4688  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F8768 000F4688  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F876C 000F468C  7C 63 F0 2E */	lwzx r3, r3, r30
 /* 800F8770 000F4690  B0 63 00 06 */	sth r3, 6(r3)
-/* 800F8774 000F4694  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F8774 000F4694  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F8778 000F4698  7C 63 F2 14 */	add r3, r3, r30
 /* 800F877C 000F469C  80 C3 00 04 */	lwz r6, 4(r3)
 /* 800F8780 000F46A0  80 63 00 00 */	lwz r3, 0(r3)
 /* 800F8784 000F46A4  54 C6 84 3E */	srwi r6, r6, 0x10
 /* 800F8788 000F46A8  B0 C3 00 4E */	sth r6, 0x4e(r3)
-/* 800F878C 000F46AC  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F878C 000F46AC  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F8790 000F46B0  7C 63 F2 14 */	add r3, r3, r30
 /* 800F8794 000F46B4  80 C3 00 04 */	lwz r6, 4(r3)
 /* 800F8798 000F46B8  80 63 00 00 */	lwz r3, 0(r3)
 /* 800F879C 000F46BC  B0 C3 00 50 */	sth r6, 0x50(r3)
-/* 800F87A0 000F46C0  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F87A0 000F46C0  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F87A4 000F46C4  7C 63 F0 2E */	lwzx r3, r3, r30
 /* 800F87A8 000F46C8  B0 A3 00 38 */	sth r5, 0x38(r3)
-/* 800F87AC 000F46CC  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F87AC 000F46CC  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F87B0 000F46D0  7C 63 F0 2E */	lwzx r3, r3, r30
 /* 800F87B4 000F46D4  B3 83 00 3A */	sth r28, 0x3a(r3)
-/* 800F87B8 000F46D8  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F87B8 000F46D8  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F87BC 000F46DC  7F 83 01 2E */	stwx r28, r3, r0
 /* 800F87C0 000F46E0  3B 9C 00 40 */	addi r28, r28, 0x40
-/* 800F87C4 000F46E4  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F87C4 000F46E4  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F87C8 000F46E8  7C 63 F0 2E */	lwzx r3, r3, r30
 /* 800F87CC 000F46EC  4B FC A8 2D */	bl DCZeroRange
-/* 800F87D0 000F46F0  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F87D0 000F46F0  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F87D4 000F46F4  38 1E 00 24 */	addi r0, r30, 0x24
 /* 800F87D8 000F46F8  38 BE 00 28 */	addi r5, r30, 0x28
 /* 800F87DC 000F46FC  7F E3 01 2E */	stwx r31, r3, r0
 /* 800F87E0 000F4700  38 9E 00 2C */	addi r4, r30, 0x2c
 /* 800F87E4 000F4704  38 7E 00 30 */	addi r3, r30, 0x30
-/* 800F87E8 000F4708  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800F87E8 000F4708  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800F87EC 000F470C  38 1E 00 34 */	addi r0, r30, 0x34
 /* 800F87F0 000F4710  3B DE 00 F0 */	addi r30, r30, 0xf0
 /* 800F87F4 000F4714  7F E6 29 2E */	stwx r31, r6, r5
 /* 800F87F8 000F4718  3B BD 00 01 */	addi r29, r29, 1
-/* 800F87FC 000F471C  80 AD A5 1C */	lwz r5, dspVoice-_SDA_BASE_(r13)
+/* 800F87FC 000F471C  80 AD A5 1C */	lwz r5, dspVoice@sda21(r13)
 /* 800F8800 000F4720  7F E5 21 2E */	stwx r31, r5, r4
-/* 800F8804 000F4724  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800F8804 000F4724  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800F8808 000F4728  7F E4 19 2E */	stwx r31, r4, r3
-/* 800F880C 000F472C  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800F880C 000F472C  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800F8810 000F4730  7F E3 01 2E */	stwx r31, r3, r0
 lbl_800F8814:
-/* 800F8814 000F4734  88 0D A5 54 */	lbz r0, salNumVoices-_SDA_BASE_(r13)
+/* 800F8814 000F4734  88 0D A5 54 */	lbz r0, salNumVoices@sda21(r13)
 /* 800F8818 000F4738  7C 1D 00 40 */	cmplw r29, r0
 /* 800F881C 000F473C  41 80 FE A8 */	blt lbl_800F86C4
 /* 800F8820 000F4740  3C 60 80 2E */	lis r3, lbl_802E41B0@ha
@@ -219,7 +219,7 @@ lbl_800F8938:
 /* 800F8948 000F4868  38 60 01 00 */	li r3, 0x100
 /* 800F894C 000F486C  48 00 89 2D */	bl salMalloc
 /* 800F8950 000F4870  28 03 00 00 */	cmplwi r3, 0
-/* 800F8954 000F4874  90 6D A5 10 */	stw r3, dspHrtfHistoryBuffer-_SDA_BASE_(r13)
+/* 800F8954 000F4874  90 6D A5 10 */	stw r3, dspHrtfHistoryBuffer@sda21(r13)
 /* 800F8958 000F4878  40 82 00 0C */	bne lbl_800F8964
 /* 800F895C 000F487C  38 60 00 00 */	li r3, 0
 /* 800F8960 000F4880  48 00 00 14 */	b lbl_800F8974
@@ -243,9 +243,9 @@ salInitHRTFBuffer:
 /* 800F8990 000F48B0  90 01 00 04 */	stw r0, 4(r1)
 /* 800F8994 000F48B4  38 A0 01 00 */	li r5, 0x100
 /* 800F8998 000F48B8  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800F899C 000F48BC  80 6D A5 10 */	lwz r3, dspHrtfHistoryBuffer-_SDA_BASE_(r13)
+/* 800F899C 000F48BC  80 6D A5 10 */	lwz r3, dspHrtfHistoryBuffer@sda21(r13)
 /* 800F89A0 000F48C0  4B F0 A9 81 */	bl memset
-/* 800F89A4 000F48C4  80 6D A5 10 */	lwz r3, dspHrtfHistoryBuffer-_SDA_BASE_(r13)
+/* 800F89A4 000F48C4  80 6D A5 10 */	lwz r3, dspHrtfHistoryBuffer@sda21(r13)
 /* 800F89A8 000F48C8  38 80 01 00 */	li r4, 0x100
 /* 800F89AC 000F48CC  4B FC A6 1D */	bl DCFlushRangeNoSync
 /* 800F89B0 000F48D0  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -671,13 +671,13 @@ salBuildCommandList:
 /* 800F8F60 000F4E80  BD C1 00 80 */	stmw r14, 0x80(r1)
 /* 800F8F64 000F4E84  90 01 00 58 */	stw r0, 0x58(r1)
 /* 800F8F68 000F4E88  90 61 00 44 */	stw r3, 0x44(r1)
-/* 800F8F6C 000F4E8C  81 0D A5 08 */	lwz r8, dspCmdList-_SDA_BASE_(r13)
-/* 800F8F70 000F4E90  90 CD A4 EC */	stw r6, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800F8F74 000F4E94  91 0D A5 00 */	stw r8, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F8F78 000F4E98  80 ED A5 00 */	lwz r7, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F8F7C 000F4E9C  91 0D A4 F8 */	stw r8, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800F8F6C 000F4E8C  81 0D A5 08 */	lwz r8, dspCmdList@sda21(r13)
+/* 800F8F70 000F4E90  90 CD A4 EC */	stw r6, dspCmdLastLoad@sda21(r13)
+/* 800F8F74 000F4E94  91 0D A5 00 */	stw r8, dspCmdPtr@sda21(r13)
+/* 800F8F78 000F4E98  80 ED A5 00 */	lwz r7, dspCmdPtr@sda21(r13)
+/* 800F8F7C 000F4E9C  91 0D A4 F8 */	stw r8, dspCmdCurBase@sda21(r13)
 /* 800F8F80 000F4EA0  38 07 01 80 */	addi r0, r7, 0x180
-/* 800F8F84 000F4EA4  90 0D A4 FC */	stw r0, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800F8F84 000F4EA4  90 0D A4 FC */	stw r0, dspCmdMaxPtr@sda21(r13)
 /* 800F8F88 000F4EA8  38 05 A3 58 */	addi r0, r5, lbl_801EA358@l
 /* 800F8F8C 000F4EAC  90 01 00 6C */	stw r0, 0x6c(r1)
 /* 800F8F90 000F4EB0  40 80 00 0C */	bge lbl_800F8F9C
@@ -698,7 +698,7 @@ lbl_800F8F9C:
 /* 800F8FC8 000F4EE8  7C 63 01 D6 */	mullw r3, r3, r0
 /* 800F8FCC 000F4EEC  3A E3 28 BE */	addi r23, r3, 0x28be
 lbl_800F8FD0:
-/* 800F8FD0 000F4EF0  80 0D A5 0C */	lwz r0, dspHRTFOn-_SDA_BASE_(r13)
+/* 800F8FD0 000F4EF0  80 0D A5 0C */	lwz r0, dspHRTFOn@sda21(r13)
 /* 800F8FD4 000F4EF4  28 00 00 00 */	cmplwi r0, 0
 /* 800F8FD8 000F4EF8  41 82 00 0C */	beq lbl_800F8FE4
 /* 800F8FDC 000F4EFC  3E F7 00 01 */	addis r23, r23, 1
@@ -766,24 +766,24 @@ lbl_800F90B0:
 /* 800F90B4 000F4FD4  40 82 FF EC */	bne lbl_800F90A0
 /* 800F90B8 000F4FD8  38 00 00 00 */	li r0, 0
 /* 800F90BC 000F4FDC  90 13 00 4C */	stw r0, 0x4c(r19)
-/* 800F90C0 000F4FE0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F90C4 000F4FE4  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800F90C0 000F4FE0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800F90C4 000F4FE4  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800F90C8 000F4FE8  38 03 00 06 */	addi r0, r3, 6
 /* 800F90CC 000F4FEC  38 84 FF F8 */	addi r4, r4, -8
 /* 800F90D0 000F4FF0  7C 00 20 40 */	cmplw r0, r4
 /* 800F90D4 000F4FF4  40 81 00 90 */	ble lbl_800F9164
 /* 800F90D8 000F4FF8  38 00 00 0D */	li r0, 0xd
 /* 800F90DC 000F4FFC  B0 03 00 00 */	sth r0, 0(r3)
-/* 800F90E0 000F5000  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800F90E4 000F5004  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F90E0 000F5000  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800F90E4 000F5004  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F90E8 000F5008  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800F90EC 000F500C  B0 03 00 02 */	sth r0, 2(r3)
-/* 800F90F0 000F5010  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800F90F4 000F5014  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F90F0 000F5010  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800F90F4 000F5014  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F90F8 000F5018  B0 03 00 04 */	sth r0, 4(r3)
-/* 800F90FC 000F501C  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F9100 000F5020  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800F9104 000F5024  80 0D A4 F8 */	lwz r0, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800F90FC 000F501C  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800F9100 000F5020  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800F9104 000F5024  80 0D A4 F8 */	lwz r0, dspCmdCurBase@sda21(r13)
 /* 800F9108 000F5028  38 84 00 08 */	addi r4, r4, 8
 /* 800F910C 000F502C  28 03 00 00 */	cmplwi r3, 0
 /* 800F9110 000F5030  7C 80 20 50 */	subf r4, r0, r4
@@ -791,61 +791,61 @@ lbl_800F90B0:
 /* 800F9118 000F5038  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800F911C 000F503C  41 82 00 18 */	beq lbl_800F9134
 /* 800F9120 000F5040  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800F9124 000F5044  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800F9128 000F5048  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800F9124 000F5044  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800F9128 000F5048  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800F912C 000F504C  4B FC 9E CD */	bl DCZeroRange
 /* 800F9130 000F5050  48 00 00 08 */	b lbl_800F9138
 lbl_800F9134:
-/* 800F9134 000F5054  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800F9134 000F5054  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800F9138:
-/* 800F9138 000F5058  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F913C 000F505C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800F9140 000F5060  80 6D A4 F8 */	lwz r3, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800F9144 000F5064  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F9148 000F5068  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F914C 000F506C  90 8D A4 EC */	stw r4, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800F9138 000F5058  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800F913C 000F505C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800F9140 000F5060  80 6D A4 F8 */	lwz r3, dspCmdCurBase@sda21(r13)
+/* 800F9144 000F5064  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800F9148 000F5068  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800F914C 000F506C  90 8D A4 EC */	stw r4, dspCmdLastLoad@sda21(r13)
 /* 800F9150 000F5070  38 85 01 80 */	addi r4, r5, 0x180
-/* 800F9154 000F5074  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800F9158 000F5078  90 6D A4 F0 */	stw r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800F915C 000F507C  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800F9160 000F5080  90 8D A4 FC */	stw r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800F9154 000F5074  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800F9158 000F5078  90 6D A4 F0 */	stw r3, dspCmdLastBase@sda21(r13)
+/* 800F915C 000F507C  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800F9160 000F5080  90 8D A4 FC */	stw r4, dspCmdMaxPtr@sda21(r13)
 lbl_800F9164:
-/* 800F9164 000F5084  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F9164 000F5084  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F9168 000F5088  38 00 00 00 */	li r0, 0
 /* 800F916C 000F508C  3B 13 00 00 */	addi r24, r19, 0
 /* 800F9170 000F5090  B0 03 00 00 */	sth r0, 0(r3)
 /* 800F9174 000F5094  3B 20 00 00 */	li r25, 0
 /* 800F9178 000F5098  3A F7 2C 62 */	addi r23, r23, 0x2c62
 /* 800F917C 000F509C  80 13 00 00 */	lwz r0, 0(r19)
-/* 800F9180 000F50A0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F9180 000F50A0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F9184 000F50A4  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800F9188 000F50A8  B0 03 00 02 */	sth r0, 2(r3)
 /* 800F918C 000F50AC  80 13 00 00 */	lwz r0, 0(r19)
-/* 800F9190 000F50B0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F9190 000F50B0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F9194 000F50B4  B0 03 00 04 */	sth r0, 4(r3)
-/* 800F9198 000F50B8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F9198 000F50B8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F919C 000F50BC  38 03 00 06 */	addi r0, r3, 6
-/* 800F91A0 000F50C0  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F91A0 000F50C0  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800F91A4 000F50C4  48 00 01 4C */	b lbl_800F92F0
 lbl_800F91A8:
-/* 800F91A8 000F50C8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F91AC 000F50CC  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800F91A8 000F50C8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800F91AC 000F50CC  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800F91B0 000F50D0  38 03 00 0C */	addi r0, r3, 0xc
 /* 800F91B4 000F50D4  38 84 FF F8 */	addi r4, r4, -8
 /* 800F91B8 000F50D8  7C 00 20 40 */	cmplw r0, r4
 /* 800F91BC 000F50DC  40 81 00 90 */	ble lbl_800F924C
 /* 800F91C0 000F50E0  38 00 00 0D */	li r0, 0xd
 /* 800F91C4 000F50E4  B0 03 00 00 */	sth r0, 0(r3)
-/* 800F91C8 000F50E8  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800F91CC 000F50EC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F91C8 000F50E8  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800F91CC 000F50EC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F91D0 000F50F0  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800F91D4 000F50F4  B0 03 00 02 */	sth r0, 2(r3)
-/* 800F91D8 000F50F8  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800F91DC 000F50FC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F91D8 000F50F8  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800F91DC 000F50FC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F91E0 000F5100  B0 03 00 04 */	sth r0, 4(r3)
-/* 800F91E4 000F5104  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F91E8 000F5108  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800F91EC 000F510C  80 0D A4 F8 */	lwz r0, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800F91E4 000F5104  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800F91E8 000F5108  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800F91EC 000F510C  80 0D A4 F8 */	lwz r0, dspCmdCurBase@sda21(r13)
 /* 800F91F0 000F5110  38 84 00 08 */	addi r4, r4, 8
 /* 800F91F4 000F5114  28 03 00 00 */	cmplwi r3, 0
 /* 800F91F8 000F5118  7C 80 20 50 */	subf r4, r0, r4
@@ -853,34 +853,34 @@ lbl_800F91A8:
 /* 800F9200 000F5120  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800F9204 000F5124  41 82 00 18 */	beq lbl_800F921C
 /* 800F9208 000F5128  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800F920C 000F512C  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800F9210 000F5130  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800F920C 000F512C  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800F9210 000F5130  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800F9214 000F5134  4B FC 9D E5 */	bl DCZeroRange
 /* 800F9218 000F5138  48 00 00 08 */	b lbl_800F9220
 lbl_800F921C:
-/* 800F921C 000F513C  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800F921C 000F513C  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800F9220:
-/* 800F9220 000F5140  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F9224 000F5144  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800F9228 000F5148  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800F922C 000F514C  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F9230 000F5150  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800F9234 000F5154  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800F9220 000F5140  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800F9224 000F5144  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800F9228 000F5148  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800F922C 000F514C  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800F9230 000F5150  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800F9234 000F5154  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800F9238 000F5158  38 63 01 80 */	addi r3, r3, 0x180
-/* 800F923C 000F515C  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800F9240 000F5160  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800F9244 000F5164  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800F9248 000F5168  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800F923C 000F515C  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800F9240 000F5160  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800F9244 000F5164  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800F9248 000F5168  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800F924C:
-/* 800F924C 000F516C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F924C 000F516C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F9250 000F5170  38 00 00 01 */	li r0, 1
 /* 800F9254 000F5174  3A F7 29 4D */	addi r23, r23, 0x294d
 /* 800F9258 000F5178  B0 03 00 00 */	sth r0, 0(r3)
 /* 800F925C 000F517C  3B 39 00 01 */	addi r25, r25, 1
 /* 800F9260 000F5180  88 18 00 58 */	lbz r0, 0x58(r24)
-/* 800F9264 000F5184  88 8D A5 56 */	lbz r4, salFrame-_SDA_BASE_(r13)
+/* 800F9264 000F5184  88 8D A5 56 */	lbz r4, salFrame@sda21(r13)
 /* 800F9268 000F5188  1C 00 00 BC */	mulli r0, r0, 0xbc
-/* 800F926C 000F518C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F926C 000F518C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F9270 000F5190  68 84 00 01 */	xori r4, r4, 1
 /* 800F9274 000F5194  54 84 10 3A */	slwi r4, r4, 2
 /* 800F9278 000F5198  7C 80 22 14 */	add r4, r0, r4
@@ -890,9 +890,9 @@ lbl_800F924C:
 /* 800F9288 000F51A8  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800F928C 000F51AC  B0 03 00 02 */	sth r0, 2(r3)
 /* 800F9290 000F51B0  88 18 00 58 */	lbz r0, 0x58(r24)
-/* 800F9294 000F51B4  88 8D A5 56 */	lbz r4, salFrame-_SDA_BASE_(r13)
+/* 800F9294 000F51B4  88 8D A5 56 */	lbz r4, salFrame@sda21(r13)
 /* 800F9298 000F51B8  1C 00 00 BC */	mulli r0, r0, 0xbc
-/* 800F929C 000F51BC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F929C 000F51BC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F92A0 000F51C0  68 84 00 01 */	xori r4, r4, 1
 /* 800F92A4 000F51C4  54 84 10 3A */	slwi r4, r4, 2
 /* 800F92A8 000F51C8  7C 80 22 14 */	add r4, r0, r4
@@ -901,18 +901,18 @@ lbl_800F924C:
 /* 800F92B4 000F51D4  7C 04 00 2E */	lwzx r0, r4, r0
 /* 800F92B8 000F51D8  B0 03 00 04 */	sth r0, 4(r3)
 /* 800F92BC 000F51DC  A0 18 00 5A */	lhz r0, 0x5a(r24)
-/* 800F92C0 000F51E0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F92C0 000F51E0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F92C4 000F51E4  B0 03 00 06 */	sth r0, 6(r3)
 /* 800F92C8 000F51E8  A0 18 00 5C */	lhz r0, 0x5c(r24)
-/* 800F92CC 000F51EC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F92CC 000F51EC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F92D0 000F51F0  B0 03 00 08 */	sth r0, 8(r3)
 /* 800F92D4 000F51F4  A0 18 00 5E */	lhz r0, 0x5e(r24)
 /* 800F92D8 000F51F8  3B 18 00 0C */	addi r24, r24, 0xc
-/* 800F92DC 000F51FC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F92DC 000F51FC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F92E0 000F5200  B0 03 00 0A */	sth r0, 0xa(r3)
-/* 800F92E4 000F5204  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F92E4 000F5204  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800F92E8 000F5208  38 03 00 0C */	addi r0, r3, 0xc
-/* 800F92EC 000F520C  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800F92EC 000F520C  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 lbl_800F92F0:
 /* 800F92F0 000F5210  88 13 00 52 */	lbz r0, 0x52(r19)
 /* 800F92F4 000F5214  7C 19 00 40 */	cmplw r25, r0
@@ -1281,7 +1281,7 @@ lbl_800F984C:
 lbl_800F9854:
 /* 800F9854 000F5774  80 BF 00 84 */	lwz r5, 0x84(r31)
 /* 800F9858 000F5778  80 01 00 74 */	lwz r0, 0x74(r1)
-/* 800F985C 000F577C  80 6D A4 E8 */	lwz r3, dspARAMZeroBuffer-_SDA_BASE_(r13)
+/* 800F985C 000F577C  80 6D A4 E8 */	lwz r3, dspARAMZeroBuffer@sda21(r13)
 /* 800F9860 000F5780  7C 00 28 16 */	mulhwu r0, r0, r5
 /* 800F9864 000F5784  7C 80 28 50 */	subf r4, r0, r5
 /* 800F9868 000F5788  54 84 F8 7E */	srwi r4, r4, 1
@@ -1298,13 +1298,13 @@ lbl_800F9854:
 /* 800F9894 000F57B4  7D F5 7A 14 */	add r15, r21, r15
 /* 800F9898 000F57B8  48 00 00 2C */	b lbl_800F98C4
 lbl_800F989C:
-/* 800F989C 000F57BC  80 0D A4 E8 */	lwz r0, dspARAMZeroBuffer-_SDA_BASE_(r13)
+/* 800F989C 000F57BC  80 0D A4 E8 */	lwz r0, dspARAMZeroBuffer@sda21(r13)
 /* 800F98A0 000F57C0  80 7F 00 84 */	lwz r3, 0x84(r31)
 /* 800F98A4 000F57C4  90 01 00 48 */	stw r0, 0x48(r1)
 /* 800F98A8 000F57C8  7D F5 1A 14 */	add r15, r21, r3
 /* 800F98AC 000F57CC  48 00 00 18 */	b lbl_800F98C4
 lbl_800F98B0:
-/* 800F98B0 000F57D0  80 0D A4 E8 */	lwz r0, dspARAMZeroBuffer-_SDA_BASE_(r13)
+/* 800F98B0 000F57D0  80 0D A4 E8 */	lwz r0, dspARAMZeroBuffer@sda21(r13)
 /* 800F98B4 000F57D4  80 7F 00 84 */	lwz r3, 0x84(r31)
 /* 800F98B8 000F57D8  54 00 F8 7E */	srwi r0, r0, 1
 /* 800F98BC 000F57DC  90 01 00 48 */	stw r0, 0x48(r1)
@@ -2133,24 +2133,24 @@ lbl_800FA478:
 lbl_800FA488:
 /* 800FA488 000F63A8  28 10 00 00 */	cmplwi r16, 0
 /* 800FA48C 000F63AC  40 82 00 E0 */	bne lbl_800FA56C
-/* 800FA490 000F63B0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA494 000F63B4  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA490 000F63B0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA494 000F63B4  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800FA498 000F63B8  38 03 00 06 */	addi r0, r3, 6
 /* 800FA49C 000F63BC  38 84 FF F8 */	addi r4, r4, -8
 /* 800FA4A0 000F63C0  7C 00 20 40 */	cmplw r0, r4
 /* 800FA4A4 000F63C4  40 81 00 90 */	ble lbl_800FA534
 /* 800FA4A8 000F63C8  38 00 00 0D */	li r0, 0xd
 /* 800FA4AC 000F63CC  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FA4B0 000F63D0  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA4B4 000F63D4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA4B0 000F63D0  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA4B4 000F63D4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA4B8 000F63D8  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA4BC 000F63DC  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA4C0 000F63E0  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA4C4 000F63E4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA4C0 000F63E0  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA4C4 000F63E4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA4C8 000F63E8  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FA4CC 000F63EC  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA4D0 000F63F0  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FA4D4 000F63F4  80 0D A4 F8 */	lwz r0, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FA4CC 000F63EC  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800FA4D0 000F63F0  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800FA4D4 000F63F4  80 0D A4 F8 */	lwz r0, dspCmdCurBase@sda21(r13)
 /* 800FA4D8 000F63F8  38 84 00 08 */	addi r4, r4, 8
 /* 800FA4DC 000F63FC  28 03 00 00 */	cmplwi r3, 0
 /* 800FA4E0 000F6400  7C 80 20 50 */	subf r4, r0, r4
@@ -2158,38 +2158,38 @@ lbl_800FA488:
 /* 800FA4E8 000F6408  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800FA4EC 000F640C  41 82 00 18 */	beq lbl_800FA504
 /* 800FA4F0 000F6410  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800FA4F4 000F6414  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA4F8 000F6418  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FA4F4 000F6414  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FA4F8 000F6418  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FA4FC 000F641C  4B FC 8A FD */	bl DCZeroRange
 /* 800FA500 000F6420  48 00 00 08 */	b lbl_800FA508
 lbl_800FA504:
-/* 800FA504 000F6424  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FA504 000F6424  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800FA508:
-/* 800FA508 000F6428  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA50C 000F642C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA510 000F6430  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA514 000F6434  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA518 000F6438  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA51C 000F643C  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FA508 000F6428  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FA50C 000F642C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA510 000F6430  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800FA514 000F6434  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FA518 000F6438  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA51C 000F643C  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800FA520 000F6440  38 63 01 80 */	addi r3, r3, 0x180
-/* 800FA524 000F6444  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FA528 000F6448  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA52C 000F644C  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA530 000F6450  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA524 000F6444  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800FA528 000F6448  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800FA52C 000F644C  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800FA530 000F6450  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800FA534:
-/* 800FA534 000F6454  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA534 000F6454  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA538 000F6458  38 80 00 02 */	li r4, 2
 /* 800FA53C 000F645C  57 C0 84 3E */	srwi r0, r30, 0x10
 /* 800FA540 000F6460  B0 83 00 00 */	sth r4, 0(r3)
 /* 800FA544 000F6464  38 60 00 01 */	li r3, 1
 /* 800FA548 000F6468  90 61 00 4C */	stw r3, 0x4c(r1)
-/* 800FA54C 000F646C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA54C 000F646C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA550 000F6470  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA554 000F6474  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA554 000F6474  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA558 000F6478  B3 C3 00 04 */	sth r30, 4(r3)
-/* 800FA55C 000F647C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA55C 000F647C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA560 000F6480  38 03 00 06 */	addi r0, r3, 6
-/* 800FA564 000F6484  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA564 000F6484  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800FA568 000F6488  48 00 00 24 */	b lbl_800FA58C
 lbl_800FA56C:
 /* 800FA56C 000F648C  57 C0 84 3E */	srwi r0, r30, 0x10
@@ -2212,24 +2212,24 @@ lbl_800FA5A0:
 /* 800FA5A0 000F64C0  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 800FA5A4 000F64C4  28 00 00 00 */	cmplwi r0, 0
 /* 800FA5A8 000F64C8  41 82 00 BC */	beq lbl_800FA664
-/* 800FA5AC 000F64CC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA5B0 000F64D0  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA5AC 000F64CC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA5B0 000F64D0  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800FA5B4 000F64D4  38 03 00 02 */	addi r0, r3, 2
 /* 800FA5B8 000F64D8  38 84 FF F8 */	addi r4, r4, -8
 /* 800FA5BC 000F64DC  7C 00 20 40 */	cmplw r0, r4
 /* 800FA5C0 000F64E0  40 81 00 90 */	ble lbl_800FA650
 /* 800FA5C4 000F64E4  38 00 00 0D */	li r0, 0xd
 /* 800FA5C8 000F64E8  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FA5CC 000F64EC  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA5D0 000F64F0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA5CC 000F64EC  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA5D0 000F64F0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA5D4 000F64F4  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA5D8 000F64F8  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA5DC 000F64FC  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA5E0 000F6500  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA5DC 000F64FC  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA5E0 000F6500  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA5E4 000F6504  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FA5E8 000F6508  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA5EC 000F650C  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FA5F0 000F6510  80 0D A4 F8 */	lwz r0, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FA5E8 000F6508  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800FA5EC 000F650C  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800FA5F0 000F6510  80 0D A4 F8 */	lwz r0, dspCmdCurBase@sda21(r13)
 /* 800FA5F4 000F6514  38 84 00 08 */	addi r4, r4, 8
 /* 800FA5F8 000F6518  28 03 00 00 */	cmplwi r3, 0
 /* 800FA5FC 000F651C  7C 80 20 50 */	subf r4, r0, r4
@@ -2237,29 +2237,29 @@ lbl_800FA5A0:
 /* 800FA604 000F6524  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800FA608 000F6528  41 82 00 18 */	beq lbl_800FA620
 /* 800FA60C 000F652C  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800FA610 000F6530  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA614 000F6534  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FA610 000F6530  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FA614 000F6534  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FA618 000F6538  4B FC 89 E1 */	bl DCZeroRange
 /* 800FA61C 000F653C  48 00 00 08 */	b lbl_800FA624
 lbl_800FA620:
-/* 800FA620 000F6540  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FA620 000F6540  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800FA624:
-/* 800FA624 000F6544  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA628 000F6548  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA62C 000F654C  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA630 000F6550  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA634 000F6554  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA638 000F6558  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FA624 000F6544  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FA628 000F6548  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA62C 000F654C  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800FA630 000F6550  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FA634 000F6554  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA638 000F6558  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800FA63C 000F655C  38 63 01 80 */	addi r3, r3, 0x180
-/* 800FA640 000F6560  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FA644 000F6564  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA648 000F6568  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA64C 000F656C  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA640 000F6560  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800FA644 000F6564  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800FA648 000F6568  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800FA64C 000F656C  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800FA650:
-/* 800FA650 000F6570  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA650 000F6570  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA654 000F6574  38 80 00 03 */	li r4, 3
 /* 800FA658 000F6578  38 03 00 02 */	addi r0, r3, 2
-/* 800FA65C 000F657C  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA65C 000F657C  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800FA660 000F6580  B0 83 00 00 */	sth r4, 0(r3)
 lbl_800FA664:
 /* 800FA664 000F6584  28 10 00 00 */	cmplwi r16, 0
@@ -2271,7 +2271,7 @@ lbl_800FA664:
 /* 800FA67C 000F659C  B0 10 00 02 */	sth r0, 2(r16)
 /* 800FA680 000F65A0  4B FC 89 49 */	bl DCFlushRangeNoSync
 lbl_800FA684:
-/* 800FA684 000F65A4  88 6D A5 55 */	lbz r3, salAuxFrame-_SDA_BASE_(r13)
+/* 800FA684 000F65A4  88 6D A5 55 */	lbz r3, salAuxFrame@sda21(r13)
 /* 800FA688 000F65A8  80 93 00 AC */	lwz r4, 0xac(r19)
 /* 800FA68C 000F65AC  38 03 00 01 */	addi r0, r3, 1
 /* 800FA690 000F65B0  80 61 00 7C */	lwz r3, 0x7c(r1)
@@ -2283,24 +2283,24 @@ lbl_800FA684:
 /* 800FA6A8 000F65C8  7C 03 00 50 */	subf r0, r3, r0
 /* 800FA6AC 000F65CC  54 18 06 3E */	clrlwi r24, r0, 0x18
 /* 800FA6B0 000F65D0  41 82 01 1C */	beq lbl_800FA7CC
-/* 800FA6B4 000F65D4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA6B8 000F65D8  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA6B4 000F65D4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA6B8 000F65D8  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800FA6BC 000F65DC  38 03 00 0A */	addi r0, r3, 0xa
 /* 800FA6C0 000F65E0  38 84 FF F8 */	addi r4, r4, -8
 /* 800FA6C4 000F65E4  7C 00 20 40 */	cmplw r0, r4
 /* 800FA6C8 000F65E8  40 81 00 90 */	ble lbl_800FA758
 /* 800FA6CC 000F65EC  38 00 00 0D */	li r0, 0xd
 /* 800FA6D0 000F65F0  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FA6D4 000F65F4  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA6D8 000F65F8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA6D4 000F65F4  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA6D8 000F65F8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA6DC 000F65FC  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA6E0 000F6600  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA6E4 000F6604  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA6E8 000F6608  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA6E4 000F6604  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA6E8 000F6608  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA6EC 000F660C  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FA6F0 000F6610  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA6F4 000F6614  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FA6F8 000F6618  80 0D A4 F8 */	lwz r0, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FA6F0 000F6610  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800FA6F4 000F6614  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800FA6F8 000F6618  80 0D A4 F8 */	lwz r0, dspCmdCurBase@sda21(r13)
 /* 800FA6FC 000F661C  38 84 00 08 */	addi r4, r4, 8
 /* 800FA700 000F6620  28 03 00 00 */	cmplwi r3, 0
 /* 800FA704 000F6624  7C 80 20 50 */	subf r4, r0, r4
@@ -2308,54 +2308,54 @@ lbl_800FA684:
 /* 800FA70C 000F662C  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800FA710 000F6630  41 82 00 18 */	beq lbl_800FA728
 /* 800FA714 000F6634  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800FA718 000F6638  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA71C 000F663C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FA718 000F6638  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FA71C 000F663C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FA720 000F6640  4B FC 88 D9 */	bl DCZeroRange
 /* 800FA724 000F6644  48 00 00 08 */	b lbl_800FA72C
 lbl_800FA728:
-/* 800FA728 000F6648  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FA728 000F6648  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800FA72C:
-/* 800FA72C 000F664C  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA730 000F6650  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA734 000F6654  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA738 000F6658  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA73C 000F665C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA740 000F6660  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FA72C 000F664C  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FA730 000F6650  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA734 000F6654  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800FA738 000F6658  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FA73C 000F665C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA740 000F6660  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800FA744 000F6664  38 63 01 80 */	addi r3, r3, 0x180
-/* 800FA748 000F6668  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FA74C 000F666C  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA750 000F6670  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA754 000F6674  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA748 000F6668  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800FA74C 000F666C  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800FA750 000F6670  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800FA754 000F6674  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800FA758:
-/* 800FA758 000F6678  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA758 000F6678  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA75C 000F667C  38 00 00 04 */	li r0, 4
 /* 800FA760 000F6680  57 03 10 3A */	slwi r3, r24, 2
 /* 800FA764 000F6684  B0 04 00 00 */	sth r0, 0(r4)
 /* 800FA768 000F6688  38 63 00 30 */	addi r3, r3, 0x30
 /* 800FA76C 000F668C  7C 73 1A 14 */	add r3, r19, r3
-/* 800FA770 000F6690  88 0D A5 55 */	lbz r0, salAuxFrame-_SDA_BASE_(r13)
-/* 800FA774 000F6694  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA770 000F6690  88 0D A5 55 */	lbz r0, salAuxFrame@sda21(r13)
+/* 800FA774 000F6694  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA778 000F6698  54 05 10 3A */	slwi r5, r0, 2
 /* 800FA77C 000F669C  38 05 00 30 */	addi r0, r5, 0x30
 /* 800FA780 000F66A0  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA784 000F66A4  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA788 000F66A8  B0 04 00 02 */	sth r0, 2(r4)
-/* 800FA78C 000F66AC  88 0D A5 55 */	lbz r0, salAuxFrame-_SDA_BASE_(r13)
-/* 800FA790 000F66B0  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA78C 000F66AC  88 0D A5 55 */	lbz r0, salAuxFrame@sda21(r13)
+/* 800FA790 000F66B0  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA794 000F66B4  54 05 10 3A */	slwi r5, r0, 2
 /* 800FA798 000F66B8  38 05 00 30 */	addi r0, r5, 0x30
 /* 800FA79C 000F66BC  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA7A0 000F66C0  B0 04 00 04 */	sth r0, 4(r4)
 /* 800FA7A4 000F66C4  80 03 00 00 */	lwz r0, 0(r3)
-/* 800FA7A8 000F66C8  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA7A8 000F66C8  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA7AC 000F66CC  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA7B0 000F66D0  B0 04 00 06 */	sth r0, 6(r4)
 /* 800FA7B4 000F66D4  80 03 00 00 */	lwz r0, 0(r3)
-/* 800FA7B8 000F66D8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA7B8 000F66D8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA7BC 000F66DC  B0 03 00 08 */	sth r0, 8(r3)
-/* 800FA7C0 000F66E0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA7C0 000F66E0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA7C4 000F66E4  38 03 00 0A */	addi r0, r3, 0xa
-/* 800FA7C8 000F66E8  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA7C8 000F66E8  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 lbl_800FA7CC:
 /* 800FA7CC 000F66EC  80 13 00 54 */	lwz r0, 0x54(r19)
 /* 800FA7D0 000F66F0  2C 00 00 00 */	cmpwi r0, 0
@@ -2363,24 +2363,24 @@ lbl_800FA7CC:
 /* 800FA7D8 000F66F8  80 13 00 B0 */	lwz r0, 0xb0(r19)
 /* 800FA7DC 000F66FC  28 00 00 00 */	cmplwi r0, 0
 /* 800FA7E0 000F6700  41 82 02 4C */	beq lbl_800FAA2C
-/* 800FA7E4 000F6704  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA7E8 000F6708  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA7E4 000F6704  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA7E8 000F6708  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800FA7EC 000F670C  38 03 00 0A */	addi r0, r3, 0xa
 /* 800FA7F0 000F6710  38 84 FF F8 */	addi r4, r4, -8
 /* 800FA7F4 000F6714  7C 00 20 40 */	cmplw r0, r4
 /* 800FA7F8 000F6718  40 81 00 90 */	ble lbl_800FA888
 /* 800FA7FC 000F671C  38 00 00 0D */	li r0, 0xd
 /* 800FA800 000F6720  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FA804 000F6724  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA808 000F6728  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA804 000F6724  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA808 000F6728  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA80C 000F672C  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA810 000F6730  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA814 000F6734  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA818 000F6738  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA814 000F6734  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA818 000F6738  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA81C 000F673C  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FA820 000F6740  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA824 000F6744  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FA828 000F6748  80 0D A4 F8 */	lwz r0, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FA820 000F6740  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800FA824 000F6744  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800FA828 000F6748  80 0D A4 F8 */	lwz r0, dspCmdCurBase@sda21(r13)
 /* 800FA82C 000F674C  38 84 00 08 */	addi r4, r4, 8
 /* 800FA830 000F6750  28 03 00 00 */	cmplwi r3, 0
 /* 800FA834 000F6754  7C 80 20 50 */	subf r4, r0, r4
@@ -2388,74 +2388,74 @@ lbl_800FA7CC:
 /* 800FA83C 000F675C  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800FA840 000F6760  41 82 00 18 */	beq lbl_800FA858
 /* 800FA844 000F6764  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800FA848 000F6768  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA84C 000F676C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FA848 000F6768  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FA84C 000F676C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FA850 000F6770  4B FC 87 A9 */	bl DCZeroRange
 /* 800FA854 000F6774  48 00 00 08 */	b lbl_800FA85C
 lbl_800FA858:
-/* 800FA858 000F6778  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FA858 000F6778  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800FA85C:
-/* 800FA85C 000F677C  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA860 000F6780  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA864 000F6784  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA868 000F6788  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA86C 000F678C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA870 000F6790  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FA85C 000F677C  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FA860 000F6780  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA864 000F6784  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800FA868 000F6788  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FA86C 000F678C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA870 000F6790  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800FA874 000F6794  38 63 01 80 */	addi r3, r3, 0x180
-/* 800FA878 000F6798  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FA87C 000F679C  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA880 000F67A0  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA884 000F67A4  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA878 000F6798  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800FA87C 000F679C  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800FA880 000F67A0  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800FA884 000F67A4  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800FA888:
-/* 800FA888 000F67A8  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA888 000F67A8  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA88C 000F67AC  38 00 00 05 */	li r0, 5
 /* 800FA890 000F67B0  57 03 10 3A */	slwi r3, r24, 2
 /* 800FA894 000F67B4  B0 04 00 00 */	sth r0, 0(r4)
 /* 800FA898 000F67B8  38 63 00 3C */	addi r3, r3, 0x3c
 /* 800FA89C 000F67BC  7C 73 1A 14 */	add r3, r19, r3
-/* 800FA8A0 000F67C0  88 0D A5 55 */	lbz r0, salAuxFrame-_SDA_BASE_(r13)
-/* 800FA8A4 000F67C4  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA8A0 000F67C0  88 0D A5 55 */	lbz r0, salAuxFrame@sda21(r13)
+/* 800FA8A4 000F67C4  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA8A8 000F67C8  54 05 10 3A */	slwi r5, r0, 2
 /* 800FA8AC 000F67CC  38 05 00 3C */	addi r0, r5, 0x3c
 /* 800FA8B0 000F67D0  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA8B4 000F67D4  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA8B8 000F67D8  B0 04 00 02 */	sth r0, 2(r4)
-/* 800FA8BC 000F67DC  88 0D A5 55 */	lbz r0, salAuxFrame-_SDA_BASE_(r13)
-/* 800FA8C0 000F67E0  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA8BC 000F67DC  88 0D A5 55 */	lbz r0, salAuxFrame@sda21(r13)
+/* 800FA8C0 000F67E0  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA8C4 000F67E4  54 05 10 3A */	slwi r5, r0, 2
 /* 800FA8C8 000F67E8  38 05 00 3C */	addi r0, r5, 0x3c
 /* 800FA8CC 000F67EC  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA8D0 000F67F0  B0 04 00 04 */	sth r0, 4(r4)
 /* 800FA8D4 000F67F4  80 03 00 00 */	lwz r0, 0(r3)
-/* 800FA8D8 000F67F8  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA8D8 000F67F8  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FA8DC 000F67FC  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA8E0 000F6800  B0 04 00 06 */	sth r0, 6(r4)
 /* 800FA8E4 000F6804  80 03 00 00 */	lwz r0, 0(r3)
-/* 800FA8E8 000F6808  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA8E8 000F6808  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA8EC 000F680C  B0 03 00 08 */	sth r0, 8(r3)
-/* 800FA8F0 000F6810  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA8F0 000F6810  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA8F4 000F6814  38 03 00 0A */	addi r0, r3, 0xa
-/* 800FA8F8 000F6818  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA8F8 000F6818  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800FA8FC 000F681C  48 00 01 30 */	b lbl_800FAA2C
 lbl_800FA900:
-/* 800FA900 000F6820  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA904 000F6824  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA900 000F6820  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA904 000F6824  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800FA908 000F6828  38 A3 00 0A */	addi r5, r3, 0xa
 /* 800FA90C 000F682C  38 04 FF F8 */	addi r0, r4, -8
 /* 800FA910 000F6830  7C 05 00 40 */	cmplw r5, r0
 /* 800FA914 000F6834  40 81 00 90 */	ble lbl_800FA9A4
 /* 800FA918 000F6838  38 00 00 0D */	li r0, 0xd
 /* 800FA91C 000F683C  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FA920 000F6840  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA924 000F6844  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA920 000F6840  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA924 000F6844  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA928 000F6848  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA92C 000F684C  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA930 000F6850  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA934 000F6854  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA930 000F6850  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA934 000F6854  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA938 000F6858  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FA93C 000F685C  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA940 000F6860  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FA944 000F6864  80 AD A4 F8 */	lwz r5, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FA93C 000F685C  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800FA940 000F6860  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800FA944 000F6864  80 AD A4 F8 */	lwz r5, dspCmdCurBase@sda21(r13)
 /* 800FA948 000F6868  38 04 00 08 */	addi r0, r4, 8
 /* 800FA94C 000F686C  28 03 00 00 */	cmplwi r3, 0
 /* 800FA950 000F6870  7C 85 00 50 */	subf r4, r5, r0
@@ -2463,78 +2463,78 @@ lbl_800FA900:
 /* 800FA958 000F6878  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800FA95C 000F687C  41 82 00 18 */	beq lbl_800FA974
 /* 800FA960 000F6880  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800FA964 000F6884  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA968 000F6888  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FA964 000F6884  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FA968 000F6888  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FA96C 000F688C  4B FC 86 8D */	bl DCZeroRange
 /* 800FA970 000F6890  48 00 00 08 */	b lbl_800FA978
 lbl_800FA974:
-/* 800FA974 000F6894  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FA974 000F6894  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800FA978:
-/* 800FA978 000F6898  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA97C 000F689C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FA980 000F68A0  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA984 000F68A4  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA988 000F68A8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FA98C 000F68AC  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FA978 000F6898  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FA97C 000F689C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FA980 000F68A0  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800FA984 000F68A4  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FA988 000F68A8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FA98C 000F68AC  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800FA990 000F68B0  38 63 01 80 */	addi r3, r3, 0x180
-/* 800FA994 000F68B4  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FA998 000F68B8  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FA99C 000F68BC  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FA9A0 000F68C0  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FA994 000F68B4  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800FA998 000F68B8  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800FA99C 000F68BC  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800FA9A0 000F68C0  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800FA9A4:
-/* 800FA9A4 000F68C4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA9A4 000F68C4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA9A8 000F68C8  38 00 00 10 */	li r0, 0x10
 /* 800FA9AC 000F68CC  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FA9B0 000F68D0  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FA9B4 000F68D4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA9B0 000F68D0  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FA9B4 000F68D4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA9B8 000F68D8  54 04 10 3A */	slwi r4, r0, 2
 /* 800FA9BC 000F68DC  38 04 00 3C */	addi r0, r4, 0x3c
 /* 800FA9C0 000F68E0  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA9C4 000F68E4  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FA9C8 000F68E8  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FA9CC 000F68EC  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FA9D0 000F68F0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA9CC 000F68EC  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FA9D0 000F68F0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA9D4 000F68F4  54 04 10 3A */	slwi r4, r0, 2
 /* 800FA9D8 000F68F8  38 04 00 3C */	addi r0, r4, 0x3c
 /* 800FA9DC 000F68FC  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA9E0 000F6900  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FA9E4 000F6904  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FA9E8 000F6908  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FA9E4 000F6904  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FA9E8 000F6908  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FA9EC 000F690C  68 00 00 01 */	xori r0, r0, 1
 /* 800FA9F0 000F6910  54 04 10 3A */	slwi r4, r0, 2
 /* 800FA9F4 000F6914  38 04 00 3C */	addi r0, r4, 0x3c
 /* 800FA9F8 000F6918  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FA9FC 000F691C  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FAA00 000F6920  B0 03 00 06 */	sth r0, 6(r3)
-/* 800FAA04 000F6924  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FAA08 000F6928  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAA04 000F6924  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FAA08 000F6928  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAA0C 000F692C  68 00 00 01 */	xori r0, r0, 1
 /* 800FAA10 000F6930  54 04 10 3A */	slwi r4, r0, 2
 /* 800FAA14 000F6934  38 04 00 3C */	addi r0, r4, 0x3c
 /* 800FAA18 000F6938  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FAA1C 000F693C  B0 03 00 08 */	sth r0, 8(r3)
-/* 800FAA20 000F6940  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAA20 000F6940  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAA24 000F6944  38 03 00 0A */	addi r0, r3, 0xa
-/* 800FAA28 000F6948  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAA28 000F6948  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 lbl_800FAA2C:
-/* 800FAA2C 000F694C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FAA30 000F6950  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FAA2C 000F694C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FAA30 000F6950  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
 /* 800FAA34 000F6954  38 A3 00 06 */	addi r5, r3, 6
 /* 800FAA38 000F6958  38 04 FF F8 */	addi r0, r4, -8
 /* 800FAA3C 000F695C  7C 05 00 40 */	cmplw r5, r0
 /* 800FAA40 000F6960  40 81 00 90 */	ble lbl_800FAAD0
 /* 800FAA44 000F6964  38 00 00 0D */	li r0, 0xd
 /* 800FAA48 000F6968  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FAA4C 000F696C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FAA50 000F6970  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAA4C 000F696C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FAA50 000F6970  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAA54 000F6974  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FAA58 000F6978  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FAA5C 000F697C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FAA60 000F6980  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAA5C 000F697C  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FAA60 000F6980  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAA64 000F6984  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FAA68 000F6988  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FAA6C 000F698C  80 6D A4 EC */	lwz r3, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FAA70 000F6990  80 AD A4 F8 */	lwz r5, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FAA68 000F6988  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
+/* 800FAA6C 000F698C  80 6D A4 EC */	lwz r3, dspCmdLastLoad@sda21(r13)
+/* 800FAA70 000F6990  80 AD A4 F8 */	lwz r5, dspCmdCurBase@sda21(r13)
 /* 800FAA74 000F6994  38 04 00 08 */	addi r0, r4, 8
 /* 800FAA78 000F6998  28 03 00 00 */	cmplwi r3, 0
 /* 800FAA7C 000F699C  7C 85 00 50 */	subf r4, r5, r0
@@ -2542,44 +2542,44 @@ lbl_800FAA2C:
 /* 800FAA84 000F69A4  54 16 04 3A */	rlwinm r22, r0, 0, 0x10, 0x1d
 /* 800FAA88 000F69A8  41 82 00 18 */	beq lbl_800FAAA0
 /* 800FAA8C 000F69AC  B2 C3 00 06 */	sth r22, 6(r3)
-/* 800FAA90 000F69B0  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FAA94 000F69B4  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FAA90 000F69B0  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FAA94 000F69B4  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FAA98 000F69B8  4B FC 85 61 */	bl DCZeroRange
 /* 800FAA9C 000F69BC  48 00 00 08 */	b lbl_800FAAA4
 lbl_800FAAA0:
-/* 800FAAA0 000F69C0  B2 CD A5 04 */	sth r22, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FAAA0 000F69C0  B2 CD A5 04 */	sth r22, dspCmdFirstSize@sda21(r13)
 lbl_800FAAA4:
-/* 800FAAA4 000F69C4  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FAAA8 000F69C8  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FAAAC 000F69CC  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FAAB0 000F69D0  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FAAB4 000F69D4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FAAB8 000F69D8  90 AD A4 EC */	stw r5, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FAAA4 000F69C4  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FAAA8 000F69C8  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FAAAC 000F69CC  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
+/* 800FAAB0 000F69D0  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FAAB4 000F69D4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FAAB8 000F69D8  90 AD A4 EC */	stw r5, dspCmdLastLoad@sda21(r13)
 /* 800FAABC 000F69DC  38 63 01 80 */	addi r3, r3, 0x180
-/* 800FAAC0 000F69E0  B2 CD A4 F4 */	sth r22, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FAAC4 000F69E4  90 8D A4 F0 */	stw r4, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FAAC8 000F69E8  90 0D A4 F8 */	stw r0, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FAACC 000F69EC  90 6D A4 FC */	stw r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FAAC0 000F69E0  B2 CD A4 F4 */	sth r22, dspCmdLastSize@sda21(r13)
+/* 800FAAC4 000F69E4  90 8D A4 F0 */	stw r4, dspCmdLastBase@sda21(r13)
+/* 800FAAC8 000F69E8  90 0D A4 F8 */	stw r0, dspCmdCurBase@sda21(r13)
+/* 800FAACC 000F69EC  90 6D A4 FC */	stw r3, dspCmdMaxPtr@sda21(r13)
 lbl_800FAAD0:
-/* 800FAAD0 000F69F0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAAD0 000F69F0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAAD4 000F69F4  38 00 00 06 */	li r0, 6
 /* 800FAAD8 000F69F8  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FAADC 000F69FC  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FAAE0 000F6A00  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAADC 000F69FC  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FAAE0 000F6A00  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAAE4 000F6A04  54 04 10 3A */	slwi r4, r0, 2
 /* 800FAAE8 000F6A08  38 04 00 28 */	addi r0, r4, 0x28
 /* 800FAAEC 000F6A0C  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FAAF0 000F6A10  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FAAF4 000F6A14  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FAAF8 000F6A18  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FAAFC 000F6A1C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAAF8 000F6A18  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FAAFC 000F6A1C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAB00 000F6A20  54 04 10 3A */	slwi r4, r0, 2
 /* 800FAB04 000F6A24  38 04 00 28 */	addi r0, r4, 0x28
 /* 800FAB08 000F6A28  7C 13 00 2E */	lwzx r0, r19, r0
 /* 800FAB0C 000F6A2C  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FAB10 000F6A30  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAB10 000F6A30  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FAB14 000F6A34  38 03 00 06 */	addi r0, r3, 6
-/* 800FAB18 000F6A38  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FAB18 000F6A38  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800FAB1C 000F6A3C  80 13 00 04 */	lwz r0, 4(r19)
 /* 800FAB20 000F6A40  80 73 00 00 */	lwz r3, 0(r19)
 /* 800FAB24 000F6A44  2C 00 FF 60 */	cmpwi r0, -160
@@ -3015,24 +3015,24 @@ lbl_800FB0D8:
 /* 800FB0D8 000F6FF8  88 01 00 54 */	lbz r0, 0x54(r1)
 /* 800FB0DC 000F6FFC  28 00 00 08 */	cmplwi r0, 8
 /* 800FB0E0 000F7000  41 80 DF 5C */	blt lbl_800F903C
-/* 800FB0E4 000F7004  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB0E8 000F7008  80 6D A4 FC */	lwz r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FB0E4 000F7004  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FB0E8 000F7008  80 6D A4 FC */	lwz r3, dspCmdMaxPtr@sda21(r13)
 /* 800FB0EC 000F700C  38 85 00 06 */	addi r4, r5, 6
 /* 800FB0F0 000F7010  38 03 FF F8 */	addi r0, r3, -8
 /* 800FB0F4 000F7014  7C 04 00 40 */	cmplw r4, r0
 /* 800FB0F8 000F7018  40 81 00 90 */	ble lbl_800FB188
 /* 800FB0FC 000F701C  38 00 00 0D */	li r0, 0xd
 /* 800FB100 000F7020  B0 05 00 00 */	sth r0, 0(r5)
-/* 800FB104 000F7024  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB108 000F7028  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB104 000F7024  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FB108 000F7028  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB10C 000F702C  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FB110 000F7030  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FB114 000F7034  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB118 000F7038  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB114 000F7034  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FB118 000F7038  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB11C 000F703C  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FB120 000F7040  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB124 000F7044  80 AD A4 EC */	lwz r5, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FB128 000F7048  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FB120 000F7040  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FB124 000F7044  80 AD A4 EC */	lwz r5, dspCmdLastLoad@sda21(r13)
+/* 800FB128 000F7048  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
 /* 800FB12C 000F704C  38 03 00 08 */	addi r0, r3, 8
 /* 800FB130 000F7050  28 05 00 00 */	cmplwi r5, 0
 /* 800FB134 000F7054  7C 64 00 50 */	subf r3, r4, r0
@@ -3040,39 +3040,39 @@ lbl_800FB0D8:
 /* 800FB13C 000F705C  54 0E 04 3A */	rlwinm r14, r0, 0, 0x10, 0x1d
 /* 800FB140 000F7060  41 82 00 18 */	beq lbl_800FB158
 /* 800FB144 000F7064  B1 C5 00 06 */	sth r14, 6(r5)
-/* 800FB148 000F7068  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB14C 000F706C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FB148 000F7068  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FB14C 000F706C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FB150 000F7070  4B FC 7E A9 */	bl DCZeroRange
 /* 800FB154 000F7074  48 00 00 08 */	b lbl_800FB15C
 lbl_800FB158:
-/* 800FB158 000F7078  B1 CD A5 04 */	sth r14, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FB158 000F7078  B1 CD A5 04 */	sth r14, dspCmdFirstSize@sda21(r13)
 lbl_800FB15C:
-/* 800FB15C 000F707C  80 0D A5 00 */	lwz r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB160 000F7080  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB164 000F7084  80 AD A4 F8 */	lwz r5, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB168 000F7088  90 8D A5 00 */	stw r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB16C 000F708C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB170 000F7090  90 0D A4 EC */	stw r0, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FB15C 000F707C  80 0D A5 00 */	lwz r0, dspCmdPtr@sda21(r13)
+/* 800FB160 000F7080  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
+/* 800FB164 000F7084  80 AD A4 F8 */	lwz r5, dspCmdCurBase@sda21(r13)
+/* 800FB168 000F7088  90 8D A5 00 */	stw r4, dspCmdPtr@sda21(r13)
+/* 800FB16C 000F708C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FB170 000F7090  90 0D A4 EC */	stw r0, dspCmdLastLoad@sda21(r13)
 /* 800FB174 000F7094  38 03 01 80 */	addi r0, r3, 0x180
-/* 800FB178 000F7098  B1 CD A4 F4 */	sth r14, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FB17C 000F709C  90 AD A4 F0 */	stw r5, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB180 000F70A0  90 8D A4 F8 */	stw r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB184 000F70A4  90 0D A4 FC */	stw r0, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FB178 000F7098  B1 CD A4 F4 */	sth r14, dspCmdLastSize@sda21(r13)
+/* 800FB17C 000F709C  90 AD A4 F0 */	stw r5, dspCmdLastBase@sda21(r13)
+/* 800FB180 000F70A0  90 8D A4 F8 */	stw r4, dspCmdCurBase@sda21(r13)
+/* 800FB184 000F70A4  90 0D A4 FC */	stw r0, dspCmdMaxPtr@sda21(r13)
 lbl_800FB188:
-/* 800FB188 000F70A8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB188 000F70A8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB18C 000F70AC  38 00 00 11 */	li r0, 0x11
 /* 800FB190 000F70B0  3A 80 00 00 */	li r20, 0
 /* 800FB194 000F70B4  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FB198 000F70B8  80 0D A5 14 */	lwz r0, dspSurround-_SDA_BASE_(r13)
-/* 800FB19C 000F70BC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB198 000F70B8  80 0D A5 14 */	lwz r0, dspSurround@sda21(r13)
+/* 800FB19C 000F70BC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB1A0 000F70C0  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FB1A4 000F70C4  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FB1A8 000F70C8  80 0D A5 14 */	lwz r0, dspSurround-_SDA_BASE_(r13)
-/* 800FB1AC 000F70CC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB1A8 000F70C8  80 0D A5 14 */	lwz r0, dspSurround@sda21(r13)
+/* 800FB1AC 000F70CC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB1B0 000F70D0  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FB1B4 000F70D4  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB1B4 000F70D4  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB1B8 000F70D8  38 03 00 06 */	addi r0, r3, 6
-/* 800FB1BC 000F70DC  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB1BC 000F70DC  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800FB1C0 000F70E0  48 00 01 2C */	b lbl_800FB2EC
 lbl_800FB1C4:
 /* 800FB1C4 000F70E4  80 61 00 58 */	lwz r3, 0x58(r1)
@@ -3083,24 +3083,24 @@ lbl_800FB1C4:
 /* 800FB1D8 000F70F8  88 03 00 51 */	lbz r0, 0x51(r3)
 /* 800FB1DC 000F70FC  28 00 00 00 */	cmplwi r0, 0
 /* 800FB1E0 000F7100  41 82 00 FC */	beq lbl_800FB2DC
-/* 800FB1E4 000F7104  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB1E8 000F7108  80 6D A4 FC */	lwz r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FB1E4 000F7104  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FB1E8 000F7108  80 6D A4 FC */	lwz r3, dspCmdMaxPtr@sda21(r13)
 /* 800FB1EC 000F710C  38 85 00 06 */	addi r4, r5, 6
 /* 800FB1F0 000F7110  38 03 FF F8 */	addi r0, r3, -8
 /* 800FB1F4 000F7114  7C 04 00 40 */	cmplw r4, r0
 /* 800FB1F8 000F7118  40 81 00 90 */	ble lbl_800FB288
 /* 800FB1FC 000F711C  38 00 00 0D */	li r0, 0xd
 /* 800FB200 000F7120  B0 05 00 00 */	sth r0, 0(r5)
-/* 800FB204 000F7124  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB208 000F7128  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB204 000F7124  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FB208 000F7128  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB20C 000F712C  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FB210 000F7130  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FB214 000F7134  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB218 000F7138  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB214 000F7134  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FB218 000F7138  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB21C 000F713C  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FB220 000F7140  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB224 000F7144  80 AD A4 EC */	lwz r5, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FB228 000F7148  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FB220 000F7140  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FB224 000F7144  80 AD A4 EC */	lwz r5, dspCmdLastLoad@sda21(r13)
+/* 800FB228 000F7148  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
 /* 800FB22C 000F714C  38 03 00 08 */	addi r0, r3, 8
 /* 800FB230 000F7150  28 05 00 00 */	cmplwi r5, 0
 /* 800FB234 000F7154  7C 64 00 50 */	subf r3, r4, r0
@@ -3108,46 +3108,46 @@ lbl_800FB1C4:
 /* 800FB23C 000F715C  54 13 04 3A */	rlwinm r19, r0, 0, 0x10, 0x1d
 /* 800FB240 000F7160  41 82 00 18 */	beq lbl_800FB258
 /* 800FB244 000F7164  B2 65 00 06 */	sth r19, 6(r5)
-/* 800FB248 000F7168  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB24C 000F716C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FB248 000F7168  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FB24C 000F716C  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FB250 000F7170  4B FC 7D A9 */	bl DCZeroRange
 /* 800FB254 000F7174  48 00 00 08 */	b lbl_800FB25C
 lbl_800FB258:
-/* 800FB258 000F7178  B2 6D A5 04 */	sth r19, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FB258 000F7178  B2 6D A5 04 */	sth r19, dspCmdFirstSize@sda21(r13)
 lbl_800FB25C:
-/* 800FB25C 000F717C  80 0D A5 00 */	lwz r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB260 000F7180  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB264 000F7184  80 AD A4 F8 */	lwz r5, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB268 000F7188  90 8D A5 00 */	stw r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB26C 000F718C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB270 000F7190  90 0D A4 EC */	stw r0, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FB25C 000F717C  80 0D A5 00 */	lwz r0, dspCmdPtr@sda21(r13)
+/* 800FB260 000F7180  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
+/* 800FB264 000F7184  80 AD A4 F8 */	lwz r5, dspCmdCurBase@sda21(r13)
+/* 800FB268 000F7188  90 8D A5 00 */	stw r4, dspCmdPtr@sda21(r13)
+/* 800FB26C 000F718C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FB270 000F7190  90 0D A4 EC */	stw r0, dspCmdLastLoad@sda21(r13)
 /* 800FB274 000F7194  38 03 01 80 */	addi r0, r3, 0x180
-/* 800FB278 000F7198  B2 6D A4 F4 */	sth r19, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FB27C 000F719C  90 AD A4 F0 */	stw r5, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB280 000F71A0  90 8D A4 F8 */	stw r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB284 000F71A4  90 0D A4 FC */	stw r0, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FB278 000F7198  B2 6D A4 F4 */	sth r19, dspCmdLastSize@sda21(r13)
+/* 800FB27C 000F719C  90 AD A4 F0 */	stw r5, dspCmdLastBase@sda21(r13)
+/* 800FB280 000F71A0  90 8D A4 F8 */	stw r4, dspCmdCurBase@sda21(r13)
+/* 800FB284 000F71A4  90 0D A4 FC */	stw r0, dspCmdMaxPtr@sda21(r13)
 lbl_800FB288:
-/* 800FB288 000F71A8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB288 000F71A8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB28C 000F71AC  38 00 00 09 */	li r0, 9
 /* 800FB290 000F71B0  B0 03 00 00 */	sth r0, 0(r3)
-/* 800FB294 000F71B4  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FB298 000F71B8  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB294 000F71B4  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FB298 000F71B8  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FB29C 000F71BC  54 03 10 3A */	slwi r3, r0, 2
 /* 800FB2A0 000F71C0  38 03 00 28 */	addi r0, r3, 0x28
 /* 800FB2A4 000F71C4  80 61 00 58 */	lwz r3, 0x58(r1)
 /* 800FB2A8 000F71C8  7C 03 00 2E */	lwzx r0, r3, r0
 /* 800FB2AC 000F71CC  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FB2B0 000F71D0  B0 04 00 02 */	sth r0, 2(r4)
-/* 800FB2B4 000F71D4  88 0D A5 56 */	lbz r0, salFrame-_SDA_BASE_(r13)
-/* 800FB2B8 000F71D8  80 8D A5 00 */	lwz r4, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB2B4 000F71D4  88 0D A5 56 */	lbz r0, salFrame@sda21(r13)
+/* 800FB2B8 000F71D8  80 8D A5 00 */	lwz r4, dspCmdPtr@sda21(r13)
 /* 800FB2BC 000F71DC  54 03 10 3A */	slwi r3, r0, 2
 /* 800FB2C0 000F71E0  38 03 00 28 */	addi r0, r3, 0x28
 /* 800FB2C4 000F71E4  80 61 00 58 */	lwz r3, 0x58(r1)
 /* 800FB2C8 000F71E8  7C 03 00 2E */	lwzx r0, r3, r0
 /* 800FB2CC 000F71EC  B0 04 00 04 */	sth r0, 4(r4)
-/* 800FB2D0 000F71F0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB2D0 000F71F0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB2D4 000F71F4  38 03 00 06 */	addi r0, r3, 6
-/* 800FB2D8 000F71F8  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB2D8 000F71F8  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 lbl_800FB2DC:
 /* 800FB2DC 000F71FC  80 61 00 58 */	lwz r3, 0x58(r1)
 /* 800FB2E0 000F7200  3A 94 00 01 */	addi r20, r20, 1
@@ -3157,24 +3157,24 @@ lbl_800FB2EC:
 /* 800FB2EC 000F720C  56 80 06 3E */	clrlwi r0, r20, 0x18
 /* 800FB2F0 000F7210  28 00 00 08 */	cmplwi r0, 8
 /* 800FB2F4 000F7214  41 80 FE D0 */	blt lbl_800FB1C4
-/* 800FB2F8 000F7218  80 AD A5 00 */	lwz r5, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB2FC 000F721C  80 6D A4 FC */	lwz r3, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FB2F8 000F7218  80 AD A5 00 */	lwz r5, dspCmdPtr@sda21(r13)
+/* 800FB2FC 000F721C  80 6D A4 FC */	lwz r3, dspCmdMaxPtr@sda21(r13)
 /* 800FB300 000F7220  38 85 00 0A */	addi r4, r5, 0xa
 /* 800FB304 000F7224  38 03 FF F8 */	addi r0, r3, -8
 /* 800FB308 000F7228  7C 04 00 40 */	cmplw r4, r0
 /* 800FB30C 000F722C  40 81 00 90 */	ble lbl_800FB39C
 /* 800FB310 000F7230  38 00 00 0D */	li r0, 0xd
 /* 800FB314 000F7234  B0 05 00 00 */	sth r0, 0(r5)
-/* 800FB318 000F7238  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB31C 000F723C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB318 000F7238  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FB31C 000F723C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB320 000F7240  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800FB324 000F7244  B0 03 00 02 */	sth r0, 2(r3)
-/* 800FB328 000F7248  80 0D A4 FC */	lwz r0, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB32C 000F724C  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB328 000F7248  80 0D A4 FC */	lwz r0, dspCmdMaxPtr@sda21(r13)
+/* 800FB32C 000F724C  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB330 000F7250  B0 03 00 04 */	sth r0, 4(r3)
-/* 800FB334 000F7254  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB338 000F7258  80 AD A4 EC */	lwz r5, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FB33C 000F725C  80 8D A4 F8 */	lwz r4, dspCmdCurBase-_SDA_BASE_(r13)
+/* 800FB334 000F7254  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FB338 000F7258  80 AD A4 EC */	lwz r5, dspCmdLastLoad@sda21(r13)
+/* 800FB33C 000F725C  80 8D A4 F8 */	lwz r4, dspCmdCurBase@sda21(r13)
 /* 800FB340 000F7260  38 03 00 08 */	addi r0, r3, 8
 /* 800FB344 000F7264  28 05 00 00 */	cmplwi r5, 0
 /* 800FB348 000F7268  7C 64 00 50 */	subf r3, r4, r0
@@ -3182,68 +3182,68 @@ lbl_800FB2EC:
 /* 800FB350 000F7270  54 0E 04 3A */	rlwinm r14, r0, 0, 0x10, 0x1d
 /* 800FB354 000F7274  41 82 00 18 */	beq lbl_800FB36C
 /* 800FB358 000F7278  B1 C5 00 06 */	sth r14, 6(r5)
-/* 800FB35C 000F727C  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB360 000F7280  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FB35C 000F727C  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FB360 000F7280  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FB364 000F7284  4B FC 7C 95 */	bl DCZeroRange
 /* 800FB368 000F7288  48 00 00 08 */	b lbl_800FB370
 lbl_800FB36C:
-/* 800FB36C 000F728C  B1 CD A5 04 */	sth r14, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FB36C 000F728C  B1 CD A5 04 */	sth r14, dspCmdFirstSize@sda21(r13)
 lbl_800FB370:
-/* 800FB370 000F7290  80 0D A5 00 */	lwz r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB374 000F7294  80 8D A4 FC */	lwz r4, dspCmdMaxPtr-_SDA_BASE_(r13)
-/* 800FB378 000F7298  80 AD A4 F8 */	lwz r5, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB37C 000F729C  90 8D A5 00 */	stw r4, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB380 000F72A0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB384 000F72A4  90 0D A4 EC */	stw r0, dspCmdLastLoad-_SDA_BASE_(r13)
+/* 800FB370 000F7290  80 0D A5 00 */	lwz r0, dspCmdPtr@sda21(r13)
+/* 800FB374 000F7294  80 8D A4 FC */	lwz r4, dspCmdMaxPtr@sda21(r13)
+/* 800FB378 000F7298  80 AD A4 F8 */	lwz r5, dspCmdCurBase@sda21(r13)
+/* 800FB37C 000F729C  90 8D A5 00 */	stw r4, dspCmdPtr@sda21(r13)
+/* 800FB380 000F72A0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
+/* 800FB384 000F72A4  90 0D A4 EC */	stw r0, dspCmdLastLoad@sda21(r13)
 /* 800FB388 000F72A8  38 03 01 80 */	addi r0, r3, 0x180
-/* 800FB38C 000F72AC  B1 CD A4 F4 */	sth r14, dspCmdLastSize-_SDA_BASE_(r13)
-/* 800FB390 000F72B0  90 AD A4 F0 */	stw r5, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB394 000F72B4  90 8D A4 F8 */	stw r4, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB398 000F72B8  90 0D A4 FC */	stw r0, dspCmdMaxPtr-_SDA_BASE_(r13)
+/* 800FB38C 000F72AC  B1 CD A4 F4 */	sth r14, dspCmdLastSize@sda21(r13)
+/* 800FB390 000F72B0  90 AD A4 F0 */	stw r5, dspCmdLastBase@sda21(r13)
+/* 800FB394 000F72B4  90 8D A4 F8 */	stw r4, dspCmdCurBase@sda21(r13)
+/* 800FB398 000F72B8  90 0D A4 FC */	stw r0, dspCmdMaxPtr@sda21(r13)
 lbl_800FB39C:
-/* 800FB39C 000F72BC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB39C 000F72BC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3A0 000F72C0  38 80 00 0E */	li r4, 0xe
 /* 800FB3A4 000F72C4  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800FB3A8 000F72C8  B0 83 00 00 */	sth r4, 0(r3)
 /* 800FB3AC 000F72CC  38 80 00 0F */	li r4, 0xf
 /* 800FB3B0 000F72D0  54 00 84 3E */	srwi r0, r0, 0x10
-/* 800FB3B4 000F72D4  80 AD A5 14 */	lwz r5, dspSurround-_SDA_BASE_(r13)
-/* 800FB3B8 000F72D8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3B4 000F72D4  80 AD A5 14 */	lwz r5, dspSurround@sda21(r13)
+/* 800FB3B8 000F72D8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3BC 000F72DC  54 A5 84 3E */	srwi r5, r5, 0x10
 /* 800FB3C0 000F72E0  B0 A3 00 02 */	sth r5, 2(r3)
-/* 800FB3C4 000F72E4  80 AD A5 14 */	lwz r5, dspSurround-_SDA_BASE_(r13)
-/* 800FB3C8 000F72E8  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3C4 000F72E4  80 AD A5 14 */	lwz r5, dspSurround@sda21(r13)
+/* 800FB3C8 000F72E8  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3CC 000F72EC  B0 A3 00 04 */	sth r5, 4(r3)
-/* 800FB3D0 000F72F0  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3D0 000F72F0  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3D4 000F72F4  B0 03 00 06 */	sth r0, 6(r3)
 /* 800FB3D8 000F72F8  80 01 00 44 */	lwz r0, 0x44(r1)
-/* 800FB3DC 000F72FC  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3DC 000F72FC  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3E0 000F7300  B0 03 00 08 */	sth r0, 8(r3)
-/* 800FB3E4 000F7304  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3E4 000F7304  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3E8 000F7308  38 03 00 0A */	addi r0, r3, 0xa
-/* 800FB3EC 000F730C  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
-/* 800FB3F0 000F7310  80 6D A5 00 */	lwz r3, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3EC 000F730C  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
+/* 800FB3F0 000F7310  80 6D A5 00 */	lwz r3, dspCmdPtr@sda21(r13)
 /* 800FB3F4 000F7314  38 03 00 02 */	addi r0, r3, 2
-/* 800FB3F8 000F7318  90 0D A5 00 */	stw r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB3F8 000F7318  90 0D A5 00 */	stw r0, dspCmdPtr@sda21(r13)
 /* 800FB3FC 000F731C  B0 83 00 00 */	sth r4, 0(r3)
-/* 800FB400 000F7320  80 8D A4 EC */	lwz r4, dspCmdLastLoad-_SDA_BASE_(r13)
-/* 800FB404 000F7324  80 6D A4 F8 */	lwz r3, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB408 000F7328  80 0D A5 00 */	lwz r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB400 000F7320  80 8D A4 EC */	lwz r4, dspCmdLastLoad@sda21(r13)
+/* 800FB404 000F7324  80 6D A4 F8 */	lwz r3, dspCmdCurBase@sda21(r13)
+/* 800FB408 000F7328  80 0D A5 00 */	lwz r0, dspCmdPtr@sda21(r13)
 /* 800FB40C 000F732C  28 04 00 00 */	cmplwi r4, 0
 /* 800FB410 000F7330  7C 63 00 50 */	subf r3, r3, r0
 /* 800FB414 000F7334  38 03 00 03 */	addi r0, r3, 3
 /* 800FB418 000F7338  54 00 04 3A */	rlwinm r0, r0, 0, 0x10, 0x1d
 /* 800FB41C 000F733C  41 82 00 18 */	beq lbl_800FB434
 /* 800FB420 000F7340  B0 04 00 06 */	sth r0, 6(r4)
-/* 800FB424 000F7344  80 6D A4 F0 */	lwz r3, dspCmdLastBase-_SDA_BASE_(r13)
-/* 800FB428 000F7348  A0 8D A4 F4 */	lhz r4, dspCmdLastSize-_SDA_BASE_(r13)
+/* 800FB424 000F7344  80 6D A4 F0 */	lwz r3, dspCmdLastBase@sda21(r13)
+/* 800FB428 000F7348  A0 8D A4 F4 */	lhz r4, dspCmdLastSize@sda21(r13)
 /* 800FB42C 000F734C  4B FC 7B CD */	bl DCZeroRange
 /* 800FB430 000F7350  48 00 00 08 */	b lbl_800FB438
 lbl_800FB434:
-/* 800FB434 000F7354  B0 0D A5 04 */	sth r0, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 800FB434 000F7354  B0 0D A5 04 */	sth r0, dspCmdFirstSize@sda21(r13)
 lbl_800FB438:
-/* 800FB438 000F7358  80 6D A4 F8 */	lwz r3, dspCmdCurBase-_SDA_BASE_(r13)
-/* 800FB43C 000F735C  80 0D A5 00 */	lwz r0, dspCmdPtr-_SDA_BASE_(r13)
+/* 800FB438 000F7358  80 6D A4 F8 */	lwz r3, dspCmdCurBase@sda21(r13)
+/* 800FB43C 000F735C  80 0D A5 00 */	lwz r0, dspCmdPtr@sda21(r13)
 /* 800FB440 000F7360  7C 83 00 50 */	subf r4, r3, r0
 /* 800FB444 000F7364  4B FC 7B B5 */	bl DCZeroRange
 /* 800FB448 000F7368  B9 C1 00 80 */	lmw r14, 0x80(r1)
@@ -3258,7 +3258,7 @@ salSynthSendMessage:
 /* 800FB460 000F7380  90 01 00 04 */	stw r0, 4(r1)
 /* 800FB464 000F7384  38 04 00 00 */	addi r0, r4, 0
 /* 800FB468 000F7388  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800FB46C 000F738C  81 8D A5 20 */	lwz r12, salMessageCallback-_SDA_BASE_(r13)
+/* 800FB46C 000F738C  81 8D A5 20 */	lwz r12, salMessageCallback@sda21(r13)
 /* 800FB470 000F7390  28 0C 00 00 */	cmplwi r12, 0
 /* 800FB474 000F7394  41 82 00 14 */	beq lbl_800FB488
 /* 800FB478 000F7398  80 83 00 18 */	lwz r4, 0x18(r3)
@@ -3456,7 +3456,7 @@ lbl_800FB6FC:
 /* 800FB708 000F7628  80 1E 00 AC */	lwz r0, 0xac(r30)
 /* 800FB70C 000F762C  28 00 00 00 */	cmplwi r0, 0
 /* 800FB710 000F7630  41 82 00 64 */	beq lbl_800FB774
-/* 800FB714 000F7634  88 AD A5 55 */	lbz r5, salAuxFrame-_SDA_BASE_(r13)
+/* 800FB714 000F7634  88 AD A5 55 */	lbz r5, salAuxFrame@sda21(r13)
 /* 800FB718 000F7638  38 81 00 08 */	addi r4, r1, 8
 /* 800FB71C 000F763C  38 60 00 00 */	li r3, 0
 /* 800FB720 000F7640  38 C5 00 02 */	addi r6, r5, 2
@@ -3487,7 +3487,7 @@ lbl_800FB774:
 /* 800FB780 000F76A0  80 1E 00 B0 */	lwz r0, 0xb0(r30)
 /* 800FB784 000F76A4  28 00 00 00 */	cmplwi r0, 0
 /* 800FB788 000F76A8  41 82 00 64 */	beq lbl_800FB7EC
-/* 800FB78C 000F76AC  88 AD A5 55 */	lbz r5, salAuxFrame-_SDA_BASE_(r13)
+/* 800FB78C 000F76AC  88 AD A5 55 */	lbz r5, salAuxFrame@sda21(r13)
 /* 800FB790 000F76B0  38 81 00 08 */	addi r4, r1, 8
 /* 800FB794 000F76B4  38 60 00 00 */	li r3, 0
 /* 800FB798 000F76B8  38 C5 00 02 */	addi r6, r5, 2

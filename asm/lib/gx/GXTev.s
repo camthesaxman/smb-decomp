@@ -121,7 +121,7 @@ lbl_800E2368:
 .global GXSetTevColorIn
 GXSetTevColorIn:
 /* 800E23B8 000DE2D8  54 63 10 3A */	slwi r3, r3, 2
-/* 800E23BC 000DE2DC  80 0D 97 C8 */	lwz r0, gx-_SDA_BASE_(r13)
+/* 800E23BC 000DE2DC  80 0D 97 C8 */	lwz r0, gx@sda21(r13)
 /* 800E23C0 000DE2E0  39 23 01 30 */	addi r9, r3, 0x130
 /* 800E23C4 000DE2E4  7D 20 4A 14 */	add r9, r0, r9
 /* 800E23C8 000DE2E8  80 69 00 00 */	lwz r3, 0(r9)
@@ -147,7 +147,7 @@ GXSetTevColorIn:
 /* 800E2418 000DE338  7C 84 3B 78 */	or r4, r4, r7
 /* 800E241C 000DE33C  90 89 00 00 */	stw r4, 0(r9)
 /* 800E2420 000DE340  98 65 80 00 */	stb r3, 0xCC008000@l(r5)
-/* 800E2424 000DE344  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2424 000DE344  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2428 000DE348  80 89 00 00 */	lwz r4, 0(r9)
 /* 800E242C 000DE34C  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E2430 000DE350  B0 03 00 02 */	sth r0, 2(r3)
@@ -156,7 +156,7 @@ GXSetTevColorIn:
 .global GXSetTevAlphaIn
 GXSetTevAlphaIn:
 /* 800E2438 000DE358  54 63 10 3A */	slwi r3, r3, 2
-/* 800E243C 000DE35C  80 0D 97 C8 */	lwz r0, gx-_SDA_BASE_(r13)
+/* 800E243C 000DE35C  80 0D 97 C8 */	lwz r0, gx@sda21(r13)
 /* 800E2440 000DE360  39 23 01 70 */	addi r9, r3, 0x170
 /* 800E2444 000DE364  7D 20 4A 14 */	add r9, r0, r9
 /* 800E2448 000DE368  81 09 00 00 */	lwz r8, 0(r9)
@@ -183,7 +183,7 @@ GXSetTevAlphaIn:
 /* 800E249C 000DE3BC  7C C4 23 78 */	or r4, r6, r4
 /* 800E24A0 000DE3C0  90 89 00 00 */	stw r4, 0(r9)
 /* 800E24A4 000DE3C4  98 65 80 00 */	stb r3, 0xCC008000@l(r5)
-/* 800E24A8 000DE3C8  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E24A8 000DE3C8  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E24AC 000DE3CC  80 89 00 00 */	lwz r4, 0(r9)
 /* 800E24B0 000DE3D0  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E24B4 000DE3D4  B0 03 00 02 */	sth r0, 2(r3)
@@ -192,7 +192,7 @@ GXSetTevAlphaIn:
 .global GXSetTevColorOp
 GXSetTevColorOp:
 /* 800E24BC 000DE3DC  54 63 10 3A */	slwi r3, r3, 2
-/* 800E24C0 000DE3E0  80 0D 97 C8 */	lwz r0, gx-_SDA_BASE_(r13)
+/* 800E24C0 000DE3E0  80 0D 97 C8 */	lwz r0, gx@sda21(r13)
 /* 800E24C4 000DE3E4  38 63 01 30 */	addi r3, r3, 0x130
 /* 800E24C8 000DE3E8  7C 60 1A 14 */	add r3, r0, r3
 /* 800E24CC 000DE3EC  80 03 00 00 */	lwz r0, 0(r3)
@@ -236,7 +236,7 @@ lbl_800E2530:
 /* 800E255C 000DE47C  7C E6 33 78 */	or r6, r7, r6
 /* 800E2560 000DE480  90 C3 00 00 */	stw r6, 0(r3)
 /* 800E2564 000DE484  98 85 80 00 */	stb r4, 0xCC008000@l(r5)
-/* 800E2568 000DE488  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800E2568 000DE488  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800E256C 000DE48C  80 63 00 00 */	lwz r3, 0(r3)
 /* 800E2570 000DE490  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2574 000DE494  B0 04 00 02 */	sth r0, 2(r4)
@@ -245,7 +245,7 @@ lbl_800E2530:
 .global GXSetTevAlphaOp
 GXSetTevAlphaOp:
 /* 800E257C 000DE49C  54 63 10 3A */	slwi r3, r3, 2
-/* 800E2580 000DE4A0  80 0D 97 C8 */	lwz r0, gx-_SDA_BASE_(r13)
+/* 800E2580 000DE4A0  80 0D 97 C8 */	lwz r0, gx@sda21(r13)
 /* 800E2584 000DE4A4  38 63 01 70 */	addi r3, r3, 0x170
 /* 800E2588 000DE4A8  7C 60 1A 14 */	add r3, r0, r3
 /* 800E258C 000DE4AC  80 03 00 00 */	lwz r0, 0(r3)
@@ -289,7 +289,7 @@ lbl_800E25F0:
 /* 800E261C 000DE53C  7C E6 33 78 */	or r6, r7, r6
 /* 800E2620 000DE540  90 C3 00 00 */	stw r6, 0(r3)
 /* 800E2624 000DE544  98 85 80 00 */	stb r4, 0xCC008000@l(r5)
-/* 800E2628 000DE548  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800E2628 000DE548  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800E262C 000DE54C  80 63 00 00 */	lwz r3, 0(r3)
 /* 800E2630 000DE550  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E2634 000DE554  B0 04 00 02 */	sth r0, 2(r4)
@@ -307,7 +307,7 @@ GXSetTevColor:
 /* 800E2658 000DE578  88 C4 00 01 */	lbz r6, 1(r4)
 /* 800E265C 000DE57C  54 E7 C0 0E */	slwi r7, r7, 0x18
 /* 800E2660 000DE580  38 A0 00 61 */	li r5, 0x61
-/* 800E2664 000DE584  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2664 000DE584  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2668 000DE588  3C 80 CC 01 */	lis r4, 0xCC008000@ha
 /* 800E266C 000DE58C  98 A4 80 00 */	stb r5, 0xCC008000@l(r4)
 /* 800E2670 000DE590  51 27 03 3E */	rlwimi r7, r9, 0, 0xc, 0x1f
@@ -339,7 +339,7 @@ GXSetTevKColor:
 /* 800E26CC 000DE5EC  89 24 00 02 */	lbz r9, 2(r4)
 /* 800E26D0 000DE5F0  54 00 03 0E */	rlwinm r0, r0, 0, 0xc, 7
 /* 800E26D4 000DE5F4  64 08 00 80 */	oris r8, r0, 0x80
-/* 800E26D8 000DE5F8  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E26D8 000DE5F8  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E26DC 000DE5FC  54 E7 C0 0E */	slwi r7, r7, 0x18
 /* 800E26E0 000DE600  38 00 00 61 */	li r0, 0x61
 /* 800E26E4 000DE604  3C 80 CC 01 */	lis r4, 0xCC008000@ha
@@ -362,7 +362,7 @@ GXSetTevKColor:
 .global GXSetTevKColorSel
 GXSetTevKColorSel:
 /* 800E2724 000DE644  7C 65 0E 70 */	srawi r5, r3, 1
-/* 800E2728 000DE648  80 CD 97 C8 */	lwz r6, gx-_SDA_BASE_(r13)
+/* 800E2728 000DE648  80 CD 97 C8 */	lwz r6, gx@sda21(r13)
 /* 800E272C 000DE64C  54 60 07 FF */	clrlwi. r0, r3, 0x1f
 /* 800E2730 000DE650  54 A3 10 3A */	slwi r3, r5, 2
 /* 800E2734 000DE654  38 E3 01 B0 */	addi r7, r3, 0x1b0
@@ -382,7 +382,7 @@ lbl_800E2758:
 /* 800E2768 000DE688  90 07 00 00 */	stw r0, 0(r7)
 lbl_800E276C:
 /* 800E276C 000DE68C  38 00 00 61 */	li r0, 0x61
-/* 800E2770 000DE690  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2770 000DE690  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2774 000DE694  3C A0 CC 01 */	lis r5, 0xCC008000@ha
 /* 800E2778 000DE698  98 05 80 00 */	stb r0, 0xCC008000@l(r5)
 /* 800E277C 000DE69C  38 00 00 01 */	li r0, 1
@@ -394,7 +394,7 @@ lbl_800E276C:
 .global GXSetTevKAlphaSel
 GXSetTevKAlphaSel:
 /* 800E2790 000DE6B0  7C 65 0E 70 */	srawi r5, r3, 1
-/* 800E2794 000DE6B4  80 CD 97 C8 */	lwz r6, gx-_SDA_BASE_(r13)
+/* 800E2794 000DE6B4  80 CD 97 C8 */	lwz r6, gx@sda21(r13)
 /* 800E2798 000DE6B8  54 60 07 FF */	clrlwi. r0, r3, 0x1f
 /* 800E279C 000DE6BC  54 A3 10 3A */	slwi r3, r5, 2
 /* 800E27A0 000DE6C0  38 E3 01 B0 */	addi r7, r3, 0x1b0
@@ -414,7 +414,7 @@ lbl_800E27C4:
 /* 800E27D4 000DE6F4  90 07 00 00 */	stw r0, 0(r7)
 lbl_800E27D8:
 /* 800E27D8 000DE6F8  38 00 00 61 */	li r0, 0x61
-/* 800E27DC 000DE6FC  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E27DC 000DE6FC  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E27E0 000DE700  3C A0 CC 01 */	lis r5, 0xCC008000@ha
 /* 800E27E4 000DE704  98 05 80 00 */	stb r0, 0xCC008000@l(r5)
 /* 800E27E8 000DE708  38 00 00 01 */	li r0, 1
@@ -426,7 +426,7 @@ lbl_800E27D8:
 .global GXSetTevSwapMode
 GXSetTevSwapMode:
 /* 800E27FC 000DE71C  54 63 10 3A */	slwi r3, r3, 2
-/* 800E2800 000DE720  80 0D 97 C8 */	lwz r0, gx-_SDA_BASE_(r13)
+/* 800E2800 000DE720  80 0D 97 C8 */	lwz r0, gx@sda21(r13)
 /* 800E2804 000DE724  38 E3 01 70 */	addi r7, r3, 0x170
 /* 800E2808 000DE728  7C E0 3A 14 */	add r7, r0, r7
 /* 800E280C 000DE72C  80 07 00 00 */	lwz r0, 0(r7)
@@ -442,7 +442,7 @@ GXSetTevSwapMode:
 /* 800E2834 000DE754  7C 84 33 78 */	or r4, r4, r6
 /* 800E2838 000DE758  90 87 00 00 */	stw r4, 0(r7)
 /* 800E283C 000DE75C  98 65 80 00 */	stb r3, 0xCC008000@l(r5)
-/* 800E2840 000DE760  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2840 000DE760  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2844 000DE764  80 87 00 00 */	lwz r4, 0(r7)
 /* 800E2848 000DE768  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E284C 000DE76C  B0 03 00 02 */	sth r0, 2(r3)
@@ -451,7 +451,7 @@ GXSetTevSwapMode:
 .global GXSetTevSwapModeTable
 GXSetTevSwapModeTable:
 /* 800E2854 000DE774  54 69 08 3C */	slwi r9, r3, 1
-/* 800E2858 000DE778  80 0D 97 C8 */	lwz r0, gx-_SDA_BASE_(r13)
+/* 800E2858 000DE778  80 0D 97 C8 */	lwz r0, gx@sda21(r13)
 /* 800E285C 000DE77C  54 63 18 38 */	slwi r3, r3, 3
 /* 800E2860 000DE780  39 63 01 B0 */	addi r11, r3, 0x1b0
 /* 800E2864 000DE784  7D 60 5A 14 */	add r11, r0, r11
@@ -472,7 +472,7 @@ GXSetTevSwapModeTable:
 /* 800E28A0 000DE7C0  54 E3 10 3A */	slwi r3, r7, 2
 /* 800E28A4 000DE7C4  38 00 00 01 */	li r0, 1
 /* 800E28A8 000DE7C8  99 28 80 00 */	stb r9, 0xCC008000@l(r8)
-/* 800E28AC 000DE7CC  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800E28AC 000DE7CC  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800E28B0 000DE7D0  80 AB 00 00 */	lwz r5, 0(r11)
 /* 800E28B4 000DE7D4  7D 44 52 14 */	add r10, r4, r10
 /* 800E28B8 000DE7D8  90 A8 80 00 */	stw r5, -0x8000(r8)
@@ -485,7 +485,7 @@ GXSetTevSwapModeTable:
 /* 800E28D4 000DE7F4  7C 83 1B 78 */	or r3, r4, r3
 /* 800E28D8 000DE7F8  90 6A 00 00 */	stw r3, 0(r10)
 /* 800E28DC 000DE7FC  99 28 80 00 */	stb r9, -0x8000(r8)
-/* 800E28E0 000DE800  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E28E0 000DE800  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E28E4 000DE804  80 8A 00 00 */	lwz r4, 0(r10)
 /* 800E28E8 000DE808  90 88 80 00 */	stw r4, -0x8000(r8)
 /* 800E28EC 000DE80C  B0 03 00 02 */	sth r0, 2(r3)
@@ -494,7 +494,7 @@ GXSetTevSwapModeTable:
 .global GXSetAlphaCompare
 GXSetAlphaCompare:
 /* 800E28F4 000DE814  54 E7 44 2E */	rlwinm r7, r7, 8, 0x10, 0x17
-/* 800E28F8 000DE818  81 0D 97 C8 */	lwz r8, gx-_SDA_BASE_(r13)
+/* 800E28F8 000DE818  81 0D 97 C8 */	lwz r8, gx@sda21(r13)
 /* 800E28FC 000DE81C  50 87 06 3E */	rlwimi r7, r4, 0, 0x18, 0x1f
 /* 800E2900 000DE820  54 60 80 1E */	slwi r0, r3, 0x10
 /* 800E2904 000DE824  50 E0 04 3E */	rlwimi r0, r7, 0, 0x10, 0x1f
@@ -541,7 +541,7 @@ lbl_800E2988:
 /* 800E2988 000DE8A8  38 C0 00 02 */	li r6, 2
 lbl_800E298C:
 /* 800E298C 000DE8AC  38 00 00 61 */	li r0, 0x61
-/* 800E2990 000DE8B0  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800E2990 000DE8B0  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800E2994 000DE8B4  3C A0 CC 01 */	lis r5, 0xCC008000@ha
 /* 800E2998 000DE8B8  98 05 80 00 */	stb r0, 0xCC008000@l(r5)
 /* 800E299C 000DE8BC  54 C6 07 B6 */	rlwinm r6, r6, 0, 0x1e, 0x1b
@@ -559,7 +559,7 @@ lbl_800E298C:
 .global GXSetTevOrder
 GXSetTevOrder:
 /* 800E29C8 000DE8E8  7C 67 0E 70 */	srawi r7, r3, 1
-/* 800E29CC 000DE8EC  81 2D 97 C8 */	lwz r9, gx-_SDA_BASE_(r13)
+/* 800E29CC 000DE8EC  81 2D 97 C8 */	lwz r9, gx@sda21(r13)
 /* 800E29D0 000DE8F0  54 AA 06 2C */	rlwinm r10, r5, 0, 0x18, 0x16
 /* 800E29D4 000DE8F4  7C E7 01 94 */	addze r7, r7
 /* 800E29D8 000DE8F8  54 60 10 3A */	slwi r0, r3, 2
@@ -661,14 +661,14 @@ lbl_800E2B20:
 /* 800E2B30 000DEA50  90 07 00 00 */	stw r0, 0(r7)
 lbl_800E2B34:
 /* 800E2B34 000DEA54  38 00 00 61 */	li r0, 0x61
-/* 800E2B38 000DEA58  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2B38 000DEA58  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2B3C 000DEA5C  3C A0 CC 01 */	lis r5, 0xCC008000@ha
 /* 800E2B40 000DEA60  98 05 80 00 */	stb r0, 0xCC008000@l(r5)
 /* 800E2B44 000DEA64  38 00 00 01 */	li r0, 1
 /* 800E2B48 000DEA68  80 87 00 00 */	lwz r4, 0(r7)
 /* 800E2B4C 000DEA6C  90 85 80 00 */	stw r4, -0x8000(r5)
 /* 800E2B50 000DEA70  B0 03 00 02 */	sth r0, 2(r3)
-/* 800E2B54 000DEA74  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2B54 000DEA74  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2B58 000DEA78  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800E2B5C 000DEA7C  60 00 00 01 */	ori r0, r0, 1
 /* 800E2B60 000DEA80  90 03 04 F0 */	stw r0, 0x4f0(r3)
@@ -677,14 +677,14 @@ lbl_800E2B34:
 .global GXSetNumTevStages
 GXSetNumTevStages:
 /* 800E2B68 000DEA88  54 63 06 3E */	clrlwi r3, r3, 0x18
-/* 800E2B6C 000DEA8C  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800E2B6C 000DEA8C  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800E2B70 000DEA90  38 03 FF FF */	addi r0, r3, -1
 /* 800E2B74 000DEA94  84 64 02 04 */	lwzu r3, 0x204(r4)
 /* 800E2B78 000DEA98  54 00 50 2A */	slwi r0, r0, 0xa
 /* 800E2B7C 000DEA9C  54 63 05 A2 */	rlwinm r3, r3, 0, 0x16, 0x11
 /* 800E2B80 000DEAA0  7C 60 03 78 */	or r0, r3, r0
 /* 800E2B84 000DEAA4  90 04 00 00 */	stw r0, 0(r4)
-/* 800E2B88 000DEAA8  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800E2B88 000DEAA8  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800E2B8C 000DEAAC  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800E2B90 000DEAB0  60 00 00 04 */	ori r0, r0, 4
 /* 800E2B94 000DEAB4  90 03 04 F0 */	stw r0, 0x4f0(r3)

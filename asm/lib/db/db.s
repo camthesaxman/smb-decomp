@@ -7,12 +7,12 @@ DBInit:
 /* 800CA084 000C5FA4  3C 80 80 00 */	lis r4, 0x80000040@ha
 /* 800CA088 000C5FA8  38 04 00 40 */	addi r0, r4, 0x80000040@l
 /* 800CA08C 000C5FAC  3C 60 80 0D */	lis r3, __DBExceptionDestination@ha
-/* 800CA090 000C5FB0  90 0D A1 80 */	stw r0, __DBInterface-_SDA_BASE_(r13)
+/* 800CA090 000C5FB0  90 0D A1 80 */	stw r0, __DBInterface@sda21(r13)
 /* 800CA094 000C5FB4  38 63 A0 F4 */	addi r3, r3, __DBExceptionDestination@l
 /* 800CA098 000C5FB8  3C 03 80 00 */	addis r0, r3, 0x8000
 /* 800CA09C 000C5FBC  90 04 00 48 */	stw r0, 0x48(r4)
 /* 800CA0A0 000C5FC0  38 00 00 01 */	li r0, 1
-/* 800CA0A4 000C5FC4  90 0D A1 84 */	stw r0, DBVerbose-_SDA_BASE_(r13)
+/* 800CA0A4 000C5FC4  90 0D A1 84 */	stw r0, DBVerbose@sda21(r13)
 /* 800CA0A8 000C5FC8  4E 80 00 20 */	blr
 
 .global __DBExceptionDestinationAux
@@ -45,7 +45,7 @@ __DBExceptionDestination:
 
 .global __DBIsExceptionMarked
 __DBIsExceptionMarked:
-/* 800CA104 000C6024  80 8D A1 80 */	lwz r4, __DBInterface-_SDA_BASE_(r13)
+/* 800CA104 000C6024  80 8D A1 80 */	lwz r4, __DBInterface@sda21(r13)
 /* 800CA108 000C6028  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800CA10C 000C602C  38 60 00 01 */	li r3, 1
 /* 800CA110 000C6030  80 84 00 04 */	lwz r4, 4(r4)

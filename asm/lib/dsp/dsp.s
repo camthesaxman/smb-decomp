@@ -45,7 +45,7 @@ DSPInit:
 /* 800D47E0 000D0700  38 A3 00 2C */	addi r5, r3, 0x2c
 /* 800D47E4 000D0704  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 800D47E8 000D0708  48 00 01 05 */	bl __DSP_debug_printf
-/* 800D47EC 000D070C  80 0D A3 38 */	lwz r0, __DSP_init_flag-_SDA_BASE_(r13)
+/* 800D47EC 000D070C  80 0D A3 38 */	lwz r0, __DSP_init_flag@sda21(r13)
 /* 800D47F0 000D0710  2C 00 00 01 */	cmpwi r0, 1
 /* 800D47F4 000D0714  41 82 00 74 */	beq lbl_800D4868
 /* 800D47F8 000D0718  4B FF 18 C5 */	bl OSDisableInterrupts
@@ -70,11 +70,11 @@ DSPInit:
 /* 800D4844 000D0764  38 7F 00 00 */	addi r3, r31, 0
 /* 800D4848 000D0768  7C E5 28 38 */	and r5, r7, r5
 /* 800D484C 000D076C  B0 A6 00 0A */	sth r5, 0xa(r6)
-/* 800D4850 000D0770  90 8D A3 3C */	stw r4, __DSP_tmp_task-_SDA_BASE_(r13)
-/* 800D4854 000D0774  90 8D A3 40 */	stw r4, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4858 000D0778  90 8D A3 44 */	stw r4, __DSP_last_task-_SDA_BASE_(r13)
-/* 800D485C 000D077C  90 8D A3 48 */	stw r4, __DSP_first_task-_SDA_BASE_(r13)
-/* 800D4860 000D0780  90 0D A3 38 */	stw r0, __DSP_init_flag-_SDA_BASE_(r13)
+/* 800D4850 000D0770  90 8D A3 3C */	stw r4, __DSP_tmp_task@sda21(r13)
+/* 800D4854 000D0774  90 8D A3 40 */	stw r4, __DSP_curr_task@sda21(r13)
+/* 800D4858 000D0778  90 8D A3 44 */	stw r4, __DSP_last_task@sda21(r13)
+/* 800D485C 000D077C  90 8D A3 48 */	stw r4, __DSP_first_task@sda21(r13)
+/* 800D4860 000D0780  90 0D A3 38 */	stw r0, __DSP_init_flag@sda21(r13)
 /* 800D4864 000D0784  4B FF 18 81 */	bl OSRestoreInterrupts
 lbl_800D4868:
 /* 800D4868 000D0788  80 01 00 14 */	lwz r0, 0x14(r1)
@@ -101,7 +101,7 @@ DSPAddTask:
 /* 800D48B0 000D07D0  38 7F 00 00 */	addi r3, r31, 0
 /* 800D48B4 000D07D4  90 1E 00 08 */	stw r0, 8(r30)
 /* 800D48B8 000D07D8  4B FF 18 2D */	bl OSRestoreInterrupts
-/* 800D48BC 000D07DC  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D48BC 000D07DC  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
 /* 800D48C0 000D07E0  7C 1E 00 40 */	cmplw r30, r0
 /* 800D48C4 000D07E4  40 82 00 0C */	bne lbl_800D48D0
 /* 800D48C8 000D07E8  7F C3 F3 78 */	mr r3, r30

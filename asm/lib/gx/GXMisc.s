@@ -7,7 +7,7 @@ GXFlush:
 /* 800DF0AC 000DAFCC  7C 08 02 A6 */	mflr r0
 /* 800DF0B0 000DAFD0  90 01 00 04 */	stw r0, 4(r1)
 /* 800DF0B4 000DAFD4  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800DF0B8 000DAFD8  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800DF0B8 000DAFD8  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800DF0BC 000DAFDC  80 03 04 F0 */	lwz r0, 0x4f0(r3)
 /* 800DF0C0 000DAFE0  28 00 00 00 */	cmplwi r0, 0
 /* 800DF0C4 000DAFE4  41 82 00 08 */	beq lbl_800DF0CC
@@ -42,7 +42,7 @@ GXSetDrawSync:
 /* 800DF124 000DB044  7C 7F 1B 78 */	mr r31, r3
 /* 800DF128 000DB048  4B FE 6F 95 */	bl OSDisableInterrupts
 /* 800DF12C 000DB04C  38 C0 00 61 */	li r6, 0x61
-/* 800DF130 000DB050  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800DF130 000DB050  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800DF134 000DB054  3C A0 CC 01 */	lis r5, 0xCC008000@ha
 /* 800DF138 000DB058  57 E0 04 3E */	clrlwi r0, r31, 0x10
 /* 800DF13C 000DB05C  98 C5 80 00 */	stb r6, 0xCC008000@l(r5)
@@ -77,7 +77,7 @@ lbl_800DF184:
 /* 800DF1A8 000DB0C8  4B FE 25 89 */	bl PPCSync
 /* 800DF1AC 000DB0CC  7F E3 FB 78 */	mr r3, r31
 /* 800DF1B0 000DB0D0  4B FE 6F 35 */	bl OSRestoreInterrupts
-/* 800DF1B4 000DB0D4  80 6D 97 C8 */	lwz r3, gx-_SDA_BASE_(r13)
+/* 800DF1B4 000DB0D4  80 6D 97 C8 */	lwz r3, gx@sda21(r13)
 /* 800DF1B8 000DB0D8  38 00 00 01 */	li r0, 1
 /* 800DF1BC 000DB0DC  B0 03 00 02 */	sth r0, 2(r3)
 /* 800DF1C0 000DB0E0  80 01 00 1C */	lwz r0, 0x1c(r1)
@@ -94,7 +94,7 @@ GXSetDrawDone:
 /* 800DF1E0 000DB100  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800DF1E4 000DB104  4B FE 6E D9 */	bl OSDisableInterrupts
 /* 800DF1E8 000DB108  38 00 00 61 */	li r0, 0x61
-/* 800DF1EC 000DB10C  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800DF1EC 000DB10C  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800DF1F0 000DB110  3C C0 CC 01 */	lis r6, 0xCC008000@ha
 /* 800DF1F4 000DB114  3C A0 45 00 */	lis r5, 0x45000002@ha
 /* 800DF1F8 000DB118  98 06 80 00 */	stb r0, 0xCC008000@l(r6)
@@ -122,7 +122,7 @@ lbl_800DF228:
 /* 800DF248 000DB168  42 00 FF E0 */	bdnz lbl_800DF228
 /* 800DF24C 000DB16C  4B FE 24 E5 */	bl PPCSync
 /* 800DF250 000DB170  38 00 00 00 */	li r0, 0
-/* 800DF254 000DB174  98 0D A3 98 */	stb r0, DrawDone-_SDA_BASE_(r13)
+/* 800DF254 000DB174  98 0D A3 98 */	stb r0, DrawDone@sda21(r13)
 /* 800DF258 000DB178  7F E3 FB 78 */	mr r3, r31
 /* 800DF25C 000DB17C  4B FE 6E 89 */	bl OSRestoreInterrupts
 /* 800DF260 000DB180  80 01 00 1C */	lwz r0, 0x1c(r1)
@@ -147,17 +147,17 @@ GXDrawDone:
 /* 800DF2A0 000DB1C0  7C 7F 1B 78 */	mr r31, r3
 /* 800DF2A4 000DB1C4  4B FF FE 09 */	bl GXFlush
 /* 800DF2A8 000DB1C8  38 00 00 00 */	li r0, 0
-/* 800DF2AC 000DB1CC  98 0D A3 98 */	stb r0, DrawDone-_SDA_BASE_(r13)
+/* 800DF2AC 000DB1CC  98 0D A3 98 */	stb r0, DrawDone@sda21(r13)
 /* 800DF2B0 000DB1D0  7F E3 FB 78 */	mr r3, r31
 /* 800DF2B4 000DB1D4  4B FE 6E 31 */	bl OSRestoreInterrupts
 /* 800DF2B8 000DB1D8  4B FE 6E 05 */	bl OSDisableInterrupts
 /* 800DF2BC 000DB1DC  7C 7F 1B 78 */	mr r31, r3
 /* 800DF2C0 000DB1E0  48 00 00 0C */	b lbl_800DF2CC
 lbl_800DF2C4:
-/* 800DF2C4 000DB1E4  38 6D A3 9C */	addi r3, r13, FinishQueue-_SDA_BASE_
+/* 800DF2C4 000DB1E4  38 6D A3 9C */	addi r3, r13, FinishQueue@sda21
 /* 800DF2C8 000DB1E8  4B FE A4 C5 */	bl OSSleepThread
 lbl_800DF2CC:
-/* 800DF2CC 000DB1EC  88 0D A3 98 */	lbz r0, DrawDone-_SDA_BASE_(r13)
+/* 800DF2CC 000DB1EC  88 0D A3 98 */	lbz r0, DrawDone@sda21(r13)
 /* 800DF2D0 000DB1F0  28 00 00 00 */	cmplwi r0, 0
 /* 800DF2D4 000DB1F4  41 82 FF F0 */	beq lbl_800DF2C4
 /* 800DF2D8 000DB1F8  7F E3 FB 78 */	mr r3, r31
@@ -168,7 +168,7 @@ lbl_800DF2CC:
 /* 800DF2EC 000DB20C  7C 08 03 A6 */	mtlr r0
 /* 800DF2F0 000DB210  4E 80 00 20 */	blr
 /* 800DF2F4 000DB214  38 00 00 61 */	li r0, 0x61
-/* 800DF2F8 000DB218  80 8D 97 C8 */	lwz r4, gx-_SDA_BASE_(r13)
+/* 800DF2F8 000DB218  80 8D 97 C8 */	lwz r4, gx@sda21(r13)
 /* 800DF2FC 000DB21C  3C A0 CC 01 */	lis r5, 0xCC008000@ha
 /* 800DF300 000DB220  98 05 80 00 */	stb r0, 0xCC008000@l(r5)
 /* 800DF304 000DB224  38 00 00 01 */	li r0, 1
@@ -179,7 +179,7 @@ lbl_800DF2CC:
 
 .global GXPokeAlphaMode
 GXPokeAlphaMode:
-/* 800DF318 000DB238  80 AD A3 68 */	lwz r5, __peReg-_SDA_BASE_(r13)
+/* 800DF318 000DB238  80 AD A3 68 */	lwz r5, __peReg@sda21(r13)
 /* 800DF31C 000DB23C  54 80 06 3E */	clrlwi r0, r4, 0x18
 /* 800DF320 000DB240  50 60 40 2E */	rlwimi r0, r3, 8, 0, 0x17
 /* 800DF324 000DB244  B0 05 00 06 */	sth r0, 6(r5)
@@ -188,14 +188,14 @@ GXPokeAlphaMode:
 .global GXPokeAlphaRead
 GXPokeAlphaRead:
 /* 800DF32C 000DB24C  54 60 07 B8 */	rlwinm r0, r3, 0, 0x1e, 0x1c
-/* 800DF330 000DB250  80 6D A3 68 */	lwz r3, __peReg-_SDA_BASE_(r13)
+/* 800DF330 000DB250  80 6D A3 68 */	lwz r3, __peReg@sda21(r13)
 /* 800DF334 000DB254  60 00 00 04 */	ori r0, r0, 4
 /* 800DF338 000DB258  B0 03 00 08 */	sth r0, 8(r3)
 /* 800DF33C 000DB25C  4E 80 00 20 */	blr
 
 .global GXPokeAlphaUpdate
 GXPokeAlphaUpdate:
-/* 800DF340 000DB260  80 8D A3 68 */	lwz r4, __peReg-_SDA_BASE_(r13)
+/* 800DF340 000DB260  80 8D A3 68 */	lwz r4, __peReg@sda21(r13)
 /* 800DF344 000DB264  54 60 25 36 */	rlwinm r0, r3, 4, 0x14, 0x1b
 /* 800DF348 000DB268  A4 64 00 02 */	lhzu r3, 2(r4)
 /* 800DF34C 000DB26C  54 63 07 34 */	rlwinm r3, r3, 0, 0x1c, 0x1a
@@ -205,7 +205,7 @@ GXPokeAlphaUpdate:
 
 .global GXPokeBlendMode
 GXPokeBlendMode:
-/* 800DF35C 000DB27C  80 ED A3 68 */	lwz r7, __peReg-_SDA_BASE_(r13)
+/* 800DF35C 000DB27C  80 ED A3 68 */	lwz r7, __peReg@sda21(r13)
 /* 800DF360 000DB280  2C 03 00 01 */	cmpwi r3, 1
 /* 800DF364 000DB284  39 20 00 01 */	li r9, 1
 /* 800DF368 000DB288  39 47 00 02 */	addi r10, r7, 2
@@ -243,7 +243,7 @@ lbl_800DF380:
 
 .global GXPokeColorUpdate
 GXPokeColorUpdate:
-/* 800DF3E4 000DB304  80 8D A3 68 */	lwz r4, __peReg-_SDA_BASE_(r13)
+/* 800DF3E4 000DB304  80 8D A3 68 */	lwz r4, __peReg@sda21(r13)
 /* 800DF3E8 000DB308  54 60 1D 78 */	rlwinm r0, r3, 3, 0x15, 0x1c
 /* 800DF3EC 000DB30C  A4 64 00 02 */	lhzu r3, 2(r4)
 /* 800DF3F0 000DB310  54 63 07 76 */	rlwinm r3, r3, 0, 0x1d, 0x1b
@@ -253,7 +253,7 @@ GXPokeColorUpdate:
 
 .global GXPokeDstAlpha
 GXPokeDstAlpha:
-/* 800DF400 000DB320  80 AD A3 68 */	lwz r5, __peReg-_SDA_BASE_(r13)
+/* 800DF400 000DB320  80 AD A3 68 */	lwz r5, __peReg@sda21(r13)
 /* 800DF404 000DB324  54 60 44 2E */	rlwinm r0, r3, 8, 0x10, 0x17
 /* 800DF408 000DB328  50 80 06 3E */	rlwimi r0, r4, 0, 0x18, 0x1f
 /* 800DF40C 000DB32C  B0 05 00 04 */	sth r0, 4(r5)
@@ -261,7 +261,7 @@ GXPokeDstAlpha:
 
 .global GXPokeDither
 GXPokeDither:
-/* 800DF414 000DB334  80 8D A3 68 */	lwz r4, __peReg-_SDA_BASE_(r13)
+/* 800DF414 000DB334  80 8D A3 68 */	lwz r4, __peReg@sda21(r13)
 /* 800DF418 000DB338  54 60 15 BA */	rlwinm r0, r3, 2, 0x16, 0x1d
 /* 800DF41C 000DB33C  A4 64 00 02 */	lhzu r3, 2(r4)
 /* 800DF420 000DB340  54 63 07 B8 */	rlwinm r3, r3, 0, 0x1e, 0x1c
@@ -272,7 +272,7 @@ GXPokeDither:
 .global GXPokeZMode
 GXPokeZMode:
 /* 800DF430 000DB350  54 60 06 3E */	clrlwi r0, r3, 0x18
-/* 800DF434 000DB354  80 6D A3 68 */	lwz r3, __peReg-_SDA_BASE_(r13)
+/* 800DF434 000DB354  80 6D A3 68 */	lwz r3, __peReg@sda21(r13)
 /* 800DF438 000DB358  54 06 07 F6 */	rlwinm r6, r0, 0, 0x1f, 0x1b
 /* 800DF43C 000DB35C  54 80 08 3C */	slwi r0, r4, 1
 /* 800DF440 000DB360  7C C0 03 78 */	or r0, r6, r0
@@ -290,9 +290,9 @@ GXSetDrawSyncCallback:
 /* 800DF464 000DB384  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800DF468 000DB388  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800DF46C 000DB38C  7C 7E 1B 78 */	mr r30, r3
-/* 800DF470 000DB390  83 ED A3 90 */	lwz r31, TokenCB-_SDA_BASE_(r13)
+/* 800DF470 000DB390  83 ED A3 90 */	lwz r31, TokenCB@sda21(r13)
 /* 800DF474 000DB394  4B FE 6C 49 */	bl OSDisableInterrupts
-/* 800DF478 000DB398  93 CD A3 90 */	stw r30, TokenCB-_SDA_BASE_(r13)
+/* 800DF478 000DB398  93 CD A3 90 */	stw r30, TokenCB@sda21(r13)
 /* 800DF47C 000DB39C  4B FE 6C 69 */	bl OSRestoreInterrupts
 /* 800DF480 000DB3A0  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800DF484 000DB3A4  7F E3 FB 78 */	mr r3, r31
@@ -310,8 +310,8 @@ GXTokenInterruptHandler:
 /* 800DF4A8 000DB3C8  93 E1 02 DC */	stw r31, 0x2dc(r1)
 /* 800DF4AC 000DB3CC  93 C1 02 D8 */	stw r30, 0x2d8(r1)
 /* 800DF4B0 000DB3D0  7C 9E 23 78 */	mr r30, r4
-/* 800DF4B4 000DB3D4  80 0D A3 90 */	lwz r0, TokenCB-_SDA_BASE_(r13)
-/* 800DF4B8 000DB3D8  80 6D A3 68 */	lwz r3, __peReg-_SDA_BASE_(r13)
+/* 800DF4B4 000DB3D4  80 0D A3 90 */	lwz r0, TokenCB@sda21(r13)
+/* 800DF4B8 000DB3D8  80 6D A3 68 */	lwz r3, __peReg@sda21(r13)
 /* 800DF4BC 000DB3DC  28 00 00 00 */	cmplwi r0, 0
 /* 800DF4C0 000DB3E0  A3 E3 00 0E */	lhz r31, 0xe(r3)
 /* 800DF4C4 000DB3E4  41 82 00 34 */	beq lbl_800DF4F8
@@ -319,7 +319,7 @@ GXTokenInterruptHandler:
 /* 800DF4CC 000DB3EC  4B FE 43 BD */	bl OSClearContext
 /* 800DF4D0 000DB3F0  38 61 00 10 */	addi r3, r1, 0x10
 /* 800DF4D4 000DB3F4  4B FE 41 ED */	bl OSSetCurrentContext
-/* 800DF4D8 000DB3F8  81 8D A3 90 */	lwz r12, TokenCB-_SDA_BASE_(r13)
+/* 800DF4D8 000DB3F8  81 8D A3 90 */	lwz r12, TokenCB@sda21(r13)
 /* 800DF4DC 000DB3FC  38 7F 00 00 */	addi r3, r31, 0
 /* 800DF4E0 000DB400  7D 88 03 A6 */	mtlr r12
 /* 800DF4E4 000DB404  4E 80 00 21 */	blrl
@@ -328,7 +328,7 @@ GXTokenInterruptHandler:
 /* 800DF4F0 000DB410  7F C3 F3 78 */	mr r3, r30
 /* 800DF4F4 000DB414  4B FE 41 CD */	bl OSSetCurrentContext
 lbl_800DF4F8:
-/* 800DF4F8 000DB418  80 6D A3 68 */	lwz r3, __peReg-_SDA_BASE_(r13)
+/* 800DF4F8 000DB418  80 6D A3 68 */	lwz r3, __peReg@sda21(r13)
 /* 800DF4FC 000DB41C  A4 03 00 0A */	lhzu r0, 0xa(r3)
 /* 800DF500 000DB420  54 00 07 B8 */	rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 800DF504 000DB424  60 00 00 04 */	ori r0, r0, 4
@@ -348,9 +348,9 @@ GXSetDrawDoneCallback:
 /* 800DF530 000DB450  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800DF534 000DB454  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800DF538 000DB458  7C 7E 1B 78 */	mr r30, r3
-/* 800DF53C 000DB45C  83 ED A3 94 */	lwz r31, DrawDoneCB-_SDA_BASE_(r13)
+/* 800DF53C 000DB45C  83 ED A3 94 */	lwz r31, DrawDoneCB@sda21(r13)
 /* 800DF540 000DB460  4B FE 6B 7D */	bl OSDisableInterrupts
-/* 800DF544 000DB464  93 CD A3 94 */	stw r30, DrawDoneCB-_SDA_BASE_(r13)
+/* 800DF544 000DB464  93 CD A3 94 */	stw r30, DrawDoneCB@sda21(r13)
 /* 800DF548 000DB468  4B FE 6B 9D */	bl OSRestoreInterrupts
 /* 800DF54C 000DB46C  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800DF550 000DB470  7F E3 FB 78 */	mr r3, r31
@@ -368,20 +368,20 @@ GXFinishInterruptHandler:
 /* 800DF574 000DB494  94 21 FD 20 */	stwu r1, -0x2e0(r1)
 /* 800DF578 000DB498  93 E1 02 DC */	stw r31, 0x2dc(r1)
 /* 800DF57C 000DB49C  3B E4 00 00 */	addi r31, r4, 0
-/* 800DF580 000DB4A0  80 AD A3 68 */	lwz r5, __peReg-_SDA_BASE_(r13)
+/* 800DF580 000DB4A0  80 AD A3 68 */	lwz r5, __peReg@sda21(r13)
 /* 800DF584 000DB4A4  A0 05 00 0A */	lhz r0, 0xa(r5)
 /* 800DF588 000DB4A8  54 00 07 76 */	rlwinm r0, r0, 0, 0x1d, 0x1b
 /* 800DF58C 000DB4AC  60 00 00 08 */	ori r0, r0, 8
 /* 800DF590 000DB4B0  B0 05 00 0A */	sth r0, 0xa(r5)
-/* 800DF594 000DB4B4  80 0D A3 94 */	lwz r0, DrawDoneCB-_SDA_BASE_(r13)
-/* 800DF598 000DB4B8  98 6D A3 98 */	stb r3, DrawDone-_SDA_BASE_(r13)
+/* 800DF594 000DB4B4  80 0D A3 94 */	lwz r0, DrawDoneCB@sda21(r13)
+/* 800DF598 000DB4B8  98 6D A3 98 */	stb r3, DrawDone@sda21(r13)
 /* 800DF59C 000DB4BC  28 00 00 00 */	cmplwi r0, 0
 /* 800DF5A0 000DB4C0  41 82 00 30 */	beq lbl_800DF5D0
 /* 800DF5A4 000DB4C4  38 61 00 10 */	addi r3, r1, 0x10
 /* 800DF5A8 000DB4C8  4B FE 42 E1 */	bl OSClearContext
 /* 800DF5AC 000DB4CC  38 61 00 10 */	addi r3, r1, 0x10
 /* 800DF5B0 000DB4D0  4B FE 41 11 */	bl OSSetCurrentContext
-/* 800DF5B4 000DB4D4  81 8D A3 94 */	lwz r12, DrawDoneCB-_SDA_BASE_(r13)
+/* 800DF5B4 000DB4D4  81 8D A3 94 */	lwz r12, DrawDoneCB@sda21(r13)
 /* 800DF5B8 000DB4D8  7D 88 03 A6 */	mtlr r12
 /* 800DF5BC 000DB4DC  4E 80 00 21 */	blrl
 /* 800DF5C0 000DB4E0  38 61 00 10 */	addi r3, r1, 0x10
@@ -389,7 +389,7 @@ GXFinishInterruptHandler:
 /* 800DF5C8 000DB4E8  7F E3 FB 78 */	mr r3, r31
 /* 800DF5CC 000DB4EC  4B FE 40 F5 */	bl OSSetCurrentContext
 lbl_800DF5D0:
-/* 800DF5D0 000DB4F0  38 6D A3 9C */	addi r3, r13, FinishQueue-_SDA_BASE_
+/* 800DF5D0 000DB4F0  38 6D A3 9C */	addi r3, r13, FinishQueue@sda21
 /* 800DF5D4 000DB4F4  4B FE A2 A5 */	bl OSWakeupThread
 /* 800DF5D8 000DB4F8  80 01 02 E4 */	lwz r0, 0x2e4(r1)
 /* 800DF5DC 000DB4FC  83 E1 02 DC */	lwz r31, 0x2dc(r1)
@@ -410,13 +410,13 @@ __GXPEInit:
 /* 800DF60C 000DB52C  38 83 F5 68 */	addi r4, r3, GXFinishInterruptHandler@l
 /* 800DF610 000DB530  38 60 00 13 */	li r3, 0x13
 /* 800DF614 000DB534  4B FE 6A F5 */	bl __OSSetInterruptHandler
-/* 800DF618 000DB538  38 6D A3 9C */	addi r3, r13, FinishQueue-_SDA_BASE_
+/* 800DF618 000DB538  38 6D A3 9C */	addi r3, r13, FinishQueue@sda21
 /* 800DF61C 000DB53C  4B FE 96 8D */	bl OSInitThreadQueue
 /* 800DF620 000DB540  38 60 20 00 */	li r3, 0x2000
 /* 800DF624 000DB544  4B FE 6E C1 */	bl __OSUnmaskInterrupts
 /* 800DF628 000DB548  38 60 10 00 */	li r3, 0x1000
 /* 800DF62C 000DB54C  4B FE 6E B9 */	bl __OSUnmaskInterrupts
-/* 800DF630 000DB550  80 6D A3 68 */	lwz r3, __peReg-_SDA_BASE_(r13)
+/* 800DF630 000DB550  80 6D A3 68 */	lwz r3, __peReg@sda21(r13)
 /* 800DF634 000DB554  A4 03 00 0A */	lhzu r0, 0xa(r3)
 /* 800DF638 000DB558  54 00 07 B8 */	rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 800DF63C 000DB55C  60 00 00 04 */	ori r0, r0, 4

@@ -51,24 +51,24 @@ lbl_800CEE84:
 /* 800CEE88 000CADA8  4B FF 48 39 */	bl OSSetCurrentContext
 /* 800CEE8C 000CADAC  48 00 01 5C */	b lbl_800CEFE8
 lbl_800CEE90:
-/* 800CEE90 000CADB0  80 8D A2 48 */	lwz r4, retraceCount-_SDA_BASE_(r13)
+/* 800CEE90 000CADB0  80 8D A2 48 */	lwz r4, retraceCount@sda21(r13)
 /* 800CEE94 000CADB4  38 61 00 18 */	addi r3, r1, 0x18
 /* 800CEE98 000CADB8  38 04 00 01 */	addi r0, r4, 1
-/* 800CEE9C 000CADBC  90 0D A2 48 */	stw r0, retraceCount-_SDA_BASE_(r13)
+/* 800CEE9C 000CADBC  90 0D A2 48 */	stw r0, retraceCount@sda21(r13)
 /* 800CEEA0 000CADC0  4B FF 49 E9 */	bl OSClearContext
 /* 800CEEA4 000CADC4  38 61 00 18 */	addi r3, r1, 0x18
 /* 800CEEA8 000CADC8  4B FF 48 19 */	bl OSSetCurrentContext
-/* 800CEEAC 000CADCC  81 8D A2 5C */	lwz r12, PreCB-_SDA_BASE_(r13)
+/* 800CEEAC 000CADCC  81 8D A2 5C */	lwz r12, PreCB@sda21(r13)
 /* 800CEEB0 000CADD0  28 0C 00 00 */	cmplwi r12, 0
 /* 800CEEB4 000CADD4  41 82 00 10 */	beq lbl_800CEEC4
-/* 800CEEB8 000CADD8  80 6D A2 48 */	lwz r3, retraceCount-_SDA_BASE_(r13)
+/* 800CEEB8 000CADD8  80 6D A2 48 */	lwz r3, retraceCount@sda21(r13)
 /* 800CEEBC 000CADDC  7D 88 03 A6 */	mtlr r12
 /* 800CEEC0 000CADE0  4E 80 00 21 */	blrl
 lbl_800CEEC4:
-/* 800CEEC4 000CADE4  80 0D A2 50 */	lwz r0, flushFlag-_SDA_BASE_(r13)
+/* 800CEEC4 000CADE4  80 0D A2 50 */	lwz r0, flushFlag@sda21(r13)
 /* 800CEEC8 000CADE8  28 00 00 00 */	cmplwi r0, 0
 /* 800CEECC 000CADEC  41 82 00 E0 */	beq lbl_800CEFAC
-/* 800CEED0 000CADF0  80 0D A2 4C */	lwz r0, shdwChangeMode-_SDA_BASE_(r13)
+/* 800CEED0 000CADF0  80 0D A2 4C */	lwz r0, shdwChangeMode@sda21(r13)
 /* 800CEED4 000CADF4  28 00 00 01 */	cmplwi r0, 1
 /* 800CEED8 000CADF8  40 82 00 10 */	bne lbl_800CEEE8
 /* 800CEEDC 000CADFC  48 00 15 09 */	bl getCurrentFieldEvenOdd
@@ -81,9 +81,9 @@ lbl_800CEEE8:
 /* 800CEEF4 000CAE14  3B A3 20 00 */	addi r29, r3, 0xCC002000@l
 /* 800CEEF8 000CAE18  48 00 00 78 */	b lbl_800CEF70
 lbl_800CEEFC:
-/* 800CEEFC 000CAE1C  80 6D A2 78 */	lwz r3, shdwChanged-_SDA_BASE_(r13)
+/* 800CEEFC 000CAE1C  80 6D A2 78 */	lwz r3, shdwChanged@sda21(r13)
 /* 800CEF00 000CAE20  38 A0 00 20 */	li r5, 0x20
-/* 800CEF04 000CAE24  83 6D A2 7C */	lwz r27, lbl_802F245C-_SDA_BASE_(r13)
+/* 800CEF04 000CAE24  83 6D A2 7C */	lwz r27, lbl_802F245C@sda21(r13)
 /* 800CEF08 000CAE28  38 9B 00 00 */	addi r4, r27, 0
 /* 800CEF0C 000CAE2C  48 03 4A F5 */	bl __shr2u
 /* 800CEF10 000CAE30  7C 84 00 34 */	cntlzw r4, r4
@@ -104,23 +104,23 @@ lbl_800CEF30:
 /* 800CEF44 000CAE64  7C 1D 33 2E */	sthx r0, r29, r6
 /* 800CEF48 000CAE68  38 80 00 01 */	li r4, 1
 /* 800CEF4C 000CAE6C  48 03 4A 91 */	bl __shl2i
-/* 800CEF50 000CAE70  80 0D A2 78 */	lwz r0, shdwChanged-_SDA_BASE_(r13)
+/* 800CEF50 000CAE70  80 0D A2 78 */	lwz r0, shdwChanged@sda21(r13)
 /* 800CEF54 000CAE74  7C 65 18 F8 */	nor r5, r3, r3
 /* 800CEF58 000CAE78  7C 84 20 F8 */	nor r4, r4, r4
-/* 800CEF5C 000CAE7C  80 6D A2 7C */	lwz r3, lbl_802F245C-_SDA_BASE_(r13)
+/* 800CEF5C 000CAE7C  80 6D A2 7C */	lwz r3, lbl_802F245C@sda21(r13)
 /* 800CEF60 000CAE80  7C 00 28 38 */	and r0, r0, r5
 /* 800CEF64 000CAE84  7C 63 20 38 */	and r3, r3, r4
-/* 800CEF68 000CAE88  90 6D A2 7C */	stw r3, lbl_802F245C-_SDA_BASE_(r13)
-/* 800CEF6C 000CAE8C  90 0D A2 78 */	stw r0, shdwChanged-_SDA_BASE_(r13)
+/* 800CEF68 000CAE88  90 6D A2 7C */	stw r3, lbl_802F245C@sda21(r13)
+/* 800CEF6C 000CAE8C  90 0D A2 78 */	stw r0, shdwChanged@sda21(r13)
 lbl_800CEF70:
-/* 800CEF70 000CAE90  80 0D A2 78 */	lwz r0, shdwChanged-_SDA_BASE_(r13)
+/* 800CEF70 000CAE90  80 0D A2 78 */	lwz r0, shdwChanged@sda21(r13)
 /* 800CEF74 000CAE94  38 80 00 00 */	li r4, 0
-/* 800CEF78 000CAE98  80 6D A2 7C */	lwz r3, lbl_802F245C-_SDA_BASE_(r13)
+/* 800CEF78 000CAE98  80 6D A2 7C */	lwz r3, lbl_802F245C@sda21(r13)
 /* 800CEF7C 000CAE9C  7C 00 22 78 */	xor r0, r0, r4
 /* 800CEF80 000CAEA0  7C 63 22 78 */	xor r3, r3, r4
 /* 800CEF84 000CAEA4  7C 60 03 79 */	or. r0, r3, r0
 /* 800CEF88 000CAEA8  40 82 FF 74 */	bne lbl_800CEEFC
-/* 800CEF8C 000CAEAC  90 8D A2 4C */	stw r4, shdwChangeMode-_SDA_BASE_(r13)
+/* 800CEF8C 000CAEAC  90 8D A2 4C */	stw r4, shdwChangeMode@sda21(r13)
 /* 800CEF90 000CAEB0  38 00 00 01 */	li r0, 1
 /* 800CEF94 000CAEB4  48 00 00 08 */	b lbl_800CEF9C
 lbl_800CEF98:
@@ -129,19 +129,19 @@ lbl_800CEF9C:
 /* 800CEF9C 000CAEBC  2C 00 00 00 */	cmpwi r0, 0
 /* 800CEFA0 000CAEC0  41 82 00 0C */	beq lbl_800CEFAC
 /* 800CEFA4 000CAEC4  38 00 00 00 */	li r0, 0
-/* 800CEFA8 000CAEC8  90 0D A2 50 */	stw r0, flushFlag-_SDA_BASE_(r13)
+/* 800CEFA8 000CAEC8  90 0D A2 50 */	stw r0, flushFlag@sda21(r13)
 lbl_800CEFAC:
-/* 800CEFAC 000CAECC  80 0D A2 60 */	lwz r0, PostCB-_SDA_BASE_(r13)
+/* 800CEFAC 000CAECC  80 0D A2 60 */	lwz r0, PostCB@sda21(r13)
 /* 800CEFB0 000CAED0  28 00 00 00 */	cmplwi r0, 0
 /* 800CEFB4 000CAED4  41 82 00 1C */	beq lbl_800CEFD0
 /* 800CEFB8 000CAED8  38 61 00 18 */	addi r3, r1, 0x18
 /* 800CEFBC 000CAEDC  4B FF 48 CD */	bl OSClearContext
-/* 800CEFC0 000CAEE0  81 8D A2 60 */	lwz r12, PostCB-_SDA_BASE_(r13)
-/* 800CEFC4 000CAEE4  80 6D A2 48 */	lwz r3, retraceCount-_SDA_BASE_(r13)
+/* 800CEFC0 000CAEE0  81 8D A2 60 */	lwz r12, PostCB@sda21(r13)
+/* 800CEFC4 000CAEE4  80 6D A2 48 */	lwz r3, retraceCount@sda21(r13)
 /* 800CEFC8 000CAEE8  7D 88 03 A6 */	mtlr r12
 /* 800CEFCC 000CAEEC  4E 80 00 21 */	blrl
 lbl_800CEFD0:
-/* 800CEFD0 000CAEF0  38 6D A2 54 */	addi r3, r13, retraceQueue-_SDA_BASE_
+/* 800CEFD0 000CAEF0  38 6D A2 54 */	addi r3, r13, retraceQueue@sda21
 /* 800CEFD4 000CAEF4  4B FF A8 A5 */	bl OSWakeupThread
 /* 800CEFD8 000CAEF8  38 61 00 18 */	addi r3, r1, 0x18
 /* 800CEFDC 000CAEFC  4B FF 48 AD */	bl OSClearContext
@@ -342,7 +342,7 @@ VIInit:
 /* 800CF26C 000CB18C  3C 60 80 1E */	lis r3, lbl_801E7B10@ha
 /* 800CF270 000CB190  3B C4 7A A8 */	addi r30, r4, regs@l
 /* 800CF274 000CB194  3B E3 7B 10 */	addi r31, r3, lbl_801E7B10@l
-/* 800CF278 000CB198  90 0D A2 64 */	stw r0, encoderType-_SDA_BASE_(r13)
+/* 800CF278 000CB198  90 0D A2 64 */	stw r0, encoderType@sda21(r13)
 /* 800CF27C 000CB19C  A4 1C 00 02 */	lhzu r0, 2(r28)
 /* 800CF280 000CB1A0  54 00 07 FF */	clrlwi. r0, r0, 0x1f
 /* 800CF284 000CB1A4  40 82 00 0C */	bne lbl_800CF290
@@ -350,17 +350,17 @@ VIInit:
 /* 800CF28C 000CB1AC  4B FF FD D9 */	bl __VIInit
 lbl_800CF290:
 /* 800CF290 000CB1B0  3B A0 00 00 */	li r29, 0
-/* 800CF294 000CB1B4  93 AD A2 48 */	stw r29, retraceCount-_SDA_BASE_(r13)
+/* 800CF294 000CB1B4  93 AD A2 48 */	stw r29, retraceCount@sda21(r13)
 /* 800CF298 000CB1B8  3C 60 CC 00 */	lis r3, 0xCC002000@ha
 /* 800CF29C 000CB1BC  38 63 20 00 */	addi r3, r3, 0xCC002000@l
-/* 800CF2A0 000CB1C0  93 AD A2 74 */	stw r29, changed-_SDA_BASE_(r13)
+/* 800CF2A0 000CB1C0  93 AD A2 74 */	stw r29, changed@sda21(r13)
 /* 800CF2A4 000CB1C4  38 9F 01 1A */	addi r4, r31, 0x11a
 /* 800CF2A8 000CB1C8  3B 60 02 80 */	li r27, 0x280
-/* 800CF2AC 000CB1CC  93 AD A2 70 */	stw r29, changeMode-_SDA_BASE_(r13)
-/* 800CF2B0 000CB1D0  93 AD A2 7C */	stw r29, lbl_802F245C-_SDA_BASE_(r13)
-/* 800CF2B4 000CB1D4  93 AD A2 78 */	stw r29, shdwChanged-_SDA_BASE_(r13)
-/* 800CF2B8 000CB1D8  93 AD A2 4C */	stw r29, shdwChangeMode-_SDA_BASE_(r13)
-/* 800CF2BC 000CB1DC  93 AD A2 50 */	stw r29, flushFlag-_SDA_BASE_(r13)
+/* 800CF2AC 000CB1CC  93 AD A2 70 */	stw r29, changeMode@sda21(r13)
+/* 800CF2B0 000CB1D0  93 AD A2 7C */	stw r29, lbl_802F245C@sda21(r13)
+/* 800CF2B4 000CB1D4  93 AD A2 78 */	stw r29, shdwChanged@sda21(r13)
+/* 800CF2B8 000CB1D8  93 AD A2 4C */	stw r29, shdwChangeMode@sda21(r13)
+/* 800CF2BC 000CB1DC  93 AD A2 50 */	stw r29, flushFlag@sda21(r13)
 /* 800CF2C0 000CB1E0  A0 1F 01 0E */	lhz r0, 0x10e(r31)
 /* 800CF2C4 000CB1E4  A0 BF 01 0C */	lhz r5, 0x10c(r31)
 /* 800CF2C8 000CB1E8  54 00 54 2A */	rlwinm r0, r0, 0xa, 0x10, 0x15
@@ -439,8 +439,8 @@ lbl_800CF290:
 /* 800CF3EC 000CB30C  88 03 00 10 */	lbz r0, 0x10(r3)
 /* 800CF3F0 000CB310  38 60 00 00 */	li r3, 0
 /* 800CF3F4 000CB314  7C 00 07 74 */	extsb r0, r0
-/* 800CF3F8 000CB318  B3 AD A2 6A */	sth r29, displayOffsetV-_SDA_BASE_(r13)
-/* 800CF3FC 000CB31C  B0 0D A2 68 */	sth r0, displayOffsetH-_SDA_BASE_(r13)
+/* 800CF3F8 000CB318  B3 AD A2 6A */	sth r29, displayOffsetV@sda21(r13)
+/* 800CF3FC 000CB31C  B0 0D A2 68 */	sth r0, displayOffsetH@sda21(r13)
 /* 800CF400 000CB320  4B FF 8A DD */	bl __OSUnlockSram
 /* 800CF404 000CB324  B3 7E 00 F4 */	sth r27, 0xf4(r30)
 /* 800CF408 000CB328  38 00 01 E0 */	li r0, 0x1e0
@@ -459,7 +459,7 @@ lbl_800CF290:
 /* 800CF43C 000CB35C  B0 1E 00 F2 */	sth r0, 0xf2(r30)
 /* 800CF440 000CB360  A0 1E 00 F4 */	lhz r0, 0xf4(r30)
 /* 800CF444 000CB364  A8 DE 00 F0 */	lha r6, 0xf0(r30)
-/* 800CF448 000CB368  A8 AD A2 68 */	lha r5, displayOffsetH-_SDA_BASE_(r13)
+/* 800CF448 000CB368  A8 AD A2 68 */	lha r5, displayOffsetH@sda21(r13)
 /* 800CF44C 000CB36C  20 00 02 D0 */	subfic r0, r0, 0x2d0
 /* 800CF450 000CB370  7C A6 2A 14 */	add r5, r6, r5
 /* 800CF454 000CB374  7C 05 00 00 */	cmpw r5, r0
@@ -485,7 +485,7 @@ lbl_800CF490:
 /* 800CF490 000CB3B0  39 00 00 01 */	li r8, 1
 lbl_800CF494:
 /* 800CF494 000CB3B4  A0 04 00 00 */	lhz r0, 0(r4)
-/* 800CF498 000CB3B8  A9 4D A2 6A */	lha r10, displayOffsetV-_SDA_BASE_(r13)
+/* 800CF498 000CB3B8  A9 4D A2 6A */	lha r10, displayOffsetV@sda21(r13)
 /* 800CF49C 000CB3BC  7C 05 07 34 */	extsh r5, r0
 /* 800CF4A0 000CB3C0  54 09 07 FE */	clrlwi r9, r0, 0x1f
 /* 800CF4A4 000CB3C4  7C 05 52 14 */	add r0, r5, r10
@@ -591,7 +591,7 @@ lbl_800CF5E4:
 /* 800CF5FC 000CB51C  3B 80 00 00 */	li r28, 0
 /* 800CF600 000CB520  B3 7E 00 02 */	sth r27, 2(r30)
 /* 800CF604 000CB524  38 00 00 01 */	li r0, 1
-/* 800CF608 000CB528  38 6D A2 54 */	addi r3, r13, retraceQueue-_SDA_BASE_
+/* 800CF608 000CB528  38 6D A2 54 */	addi r3, r13, retraceQueue@sda21
 /* 800CF60C 000CB52C  98 9E 01 1C */	stb r4, 0x11c(r30)
 /* 800CF610 000CB530  98 9E 01 1D */	stb r4, 0x11d(r30)
 /* 800CF614 000CB534  98 9E 01 1E */	stb r4, 0x11e(r30)
@@ -611,8 +611,8 @@ lbl_800CF5E4:
 /* 800CF64C 000CB56C  38 60 00 18 */	li r3, 0x18
 /* 800CF650 000CB570  54 00 04 7E */	clrlwi r0, r0, 0x11
 /* 800CF654 000CB574  B0 05 00 34 */	sth r0, 0x34(r5)
-/* 800CF658 000CB578  93 8D A2 5C */	stw r28, PreCB-_SDA_BASE_(r13)
-/* 800CF65C 000CB57C  93 8D A2 60 */	stw r28, PostCB-_SDA_BASE_(r13)
+/* 800CF658 000CB578  93 8D A2 5C */	stw r28, PreCB@sda21(r13)
+/* 800CF65C 000CB57C  93 8D A2 60 */	stw r28, PostCB@sda21(r13)
 /* 800CF660 000CB580  4B FF 6A A9 */	bl __OSSetInterruptHandler
 /* 800CF664 000CB584  38 60 00 80 */	li r3, 0x80
 /* 800CF668 000CB588  4B FF 6E 7D */	bl __OSUnmaskInterrupts
@@ -630,12 +630,12 @@ VIWaitForRetrace:
 /* 800CF68C 000CB5AC  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 800CF690 000CB5B0  93 C1 00 08 */	stw r30, 8(r1)
 /* 800CF694 000CB5B4  4B FF 6A 29 */	bl OSDisableInterrupts
-/* 800CF698 000CB5B8  83 CD A2 48 */	lwz r30, retraceCount-_SDA_BASE_(r13)
+/* 800CF698 000CB5B8  83 CD A2 48 */	lwz r30, retraceCount@sda21(r13)
 /* 800CF69C 000CB5BC  7C 7F 1B 78 */	mr r31, r3
 lbl_800CF6A0:
-/* 800CF6A0 000CB5C0  38 6D A2 54 */	addi r3, r13, retraceQueue-_SDA_BASE_
+/* 800CF6A0 000CB5C0  38 6D A2 54 */	addi r3, r13, retraceQueue@sda21
 /* 800CF6A4 000CB5C4  4B FF A0 E9 */	bl OSSleepThread
-/* 800CF6A8 000CB5C8  80 0D A2 48 */	lwz r0, retraceCount-_SDA_BASE_(r13)
+/* 800CF6A8 000CB5C8  80 0D A2 48 */	lwz r0, retraceCount@sda21(r13)
 /* 800CF6AC 000CB5CC  7C 1E 00 40 */	cmplw r30, r0
 /* 800CF6B0 000CB5D0  41 82 FF F0 */	beq lbl_800CF6A0
 /* 800CF6B4 000CB5D4  7F E3 FB 78 */	mr r3, r31
@@ -771,11 +771,11 @@ lbl_800CF880:
 /* 800CF888 000CB7A8  3D 00 00 01 */	lis r8, 1
 /* 800CF88C 000CB7AC  B0 09 00 1E */	sth r0, 0x1e(r9)
 /* 800CF890 000CB7B0  3C 00 00 02 */	lis r0, 2
-/* 800CF894 000CB7B4  81 4D A2 70 */	lwz r10, changeMode-_SDA_BASE_(r13)
-/* 800CF898 000CB7B8  81 8D A2 74 */	lwz r12, changed-_SDA_BASE_(r13)
+/* 800CF894 000CB7B4  81 4D A2 70 */	lwz r10, changeMode@sda21(r13)
+/* 800CF898 000CB7B8  81 8D A2 74 */	lwz r12, changed@sda21(r13)
 /* 800CF89C 000CB7BC  7D 4A 43 78 */	or r10, r10, r8
-/* 800CF8A0 000CB7C0  91 8D A2 74 */	stw r12, changed-_SDA_BASE_(r13)
-/* 800CF8A4 000CB7C4  91 4D A2 70 */	stw r10, changeMode-_SDA_BASE_(r13)
+/* 800CF8A0 000CB7C0  91 8D A2 74 */	stw r12, changed@sda21(r13)
+/* 800CF8A4 000CB7C4  91 4D A2 70 */	stw r10, changeMode@sda21(r13)
 /* 800CF8A8 000CB7C8  81 44 00 00 */	lwz r10, 0(r4)
 /* 800CF8AC 000CB7CC  88 83 00 3C */	lbz r4, 0x3c(r3)
 /* 800CF8B0 000CB7D0  55 4A 84 3E */	srwi r10, r10, 0x10
@@ -783,60 +783,60 @@ lbl_800CF880:
 /* 800CF8B8 000CB7D8  7D 44 23 78 */	or r4, r10, r4
 /* 800CF8BC 000CB7DC  7D 64 23 78 */	or r4, r11, r4
 /* 800CF8C0 000CB7E0  B0 89 00 1C */	sth r4, 0x1c(r9)
-/* 800CF8C4 000CB7E4  80 8D A2 70 */	lwz r4, changeMode-_SDA_BASE_(r13)
-/* 800CF8C8 000CB7E8  81 4D A2 74 */	lwz r10, changed-_SDA_BASE_(r13)
+/* 800CF8C4 000CB7E4  80 8D A2 70 */	lwz r4, changeMode@sda21(r13)
+/* 800CF8C8 000CB7E8  81 4D A2 74 */	lwz r10, changed@sda21(r13)
 /* 800CF8CC 000CB7EC  7C 80 03 78 */	or r0, r4, r0
-/* 800CF8D0 000CB7F0  91 4D A2 74 */	stw r10, changed-_SDA_BASE_(r13)
-/* 800CF8D4 000CB7F4  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CF8D0 000CB7F0  91 4D A2 74 */	stw r10, changed@sda21(r13)
+/* 800CF8D4 000CB7F4  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CF8D8 000CB7F8  80 05 00 00 */	lwz r0, 0(r5)
 /* 800CF8DC 000CB7FC  B0 09 00 26 */	sth r0, 0x26(r9)
-/* 800CF8E0 000CB800  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CF8E4 000CB804  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800CF8E0 000CB800  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CF8E4 000CB804  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800CF8E8 000CB808  60 00 10 00 */	ori r0, r0, 0x1000
-/* 800CF8EC 000CB80C  90 8D A2 74 */	stw r4, changed-_SDA_BASE_(r13)
-/* 800CF8F0 000CB810  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CF8EC 000CB80C  90 8D A2 74 */	stw r4, changed@sda21(r13)
+/* 800CF8F0 000CB810  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CF8F4 000CB814  80 05 00 00 */	lwz r0, 0(r5)
 /* 800CF8F8 000CB818  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800CF8FC 000CB81C  B0 09 00 24 */	sth r0, 0x24(r9)
-/* 800CF900 000CB820  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CF904 000CB824  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800CF900 000CB820  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CF904 000CB824  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800CF908 000CB828  60 00 20 00 */	ori r0, r0, 0x2000
-/* 800CF90C 000CB82C  90 8D A2 74 */	stw r4, changed-_SDA_BASE_(r13)
-/* 800CF910 000CB830  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CF90C 000CB82C  90 8D A2 74 */	stw r4, changed@sda21(r13)
+/* 800CF910 000CB830  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CF914 000CB834  80 03 00 44 */	lwz r0, 0x44(r3)
 /* 800CF918 000CB838  2C 00 00 00 */	cmpwi r0, 0
 /* 800CF91C 000CB83C  41 82 00 80 */	beq lbl_800CF99C
 /* 800CF920 000CB840  80 66 00 00 */	lwz r3, 0(r6)
 /* 800CF924 000CB844  38 08 80 00 */	addi r0, r8, -32768
 /* 800CF928 000CB848  B0 69 00 22 */	sth r3, 0x22(r9)
-/* 800CF92C 000CB84C  80 6D A2 70 */	lwz r3, changeMode-_SDA_BASE_(r13)
-/* 800CF930 000CB850  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800CF92C 000CB84C  80 6D A2 70 */	lwz r3, changeMode@sda21(r13)
+/* 800CF930 000CB850  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800CF934 000CB854  60 63 40 00 */	ori r3, r3, 0x4000
-/* 800CF938 000CB858  90 8D A2 74 */	stw r4, changed-_SDA_BASE_(r13)
-/* 800CF93C 000CB85C  90 6D A2 70 */	stw r3, changeMode-_SDA_BASE_(r13)
+/* 800CF938 000CB858  90 8D A2 74 */	stw r4, changed@sda21(r13)
+/* 800CF93C 000CB85C  90 6D A2 70 */	stw r3, changeMode@sda21(r13)
 /* 800CF940 000CB860  80 66 00 00 */	lwz r3, 0(r6)
 /* 800CF944 000CB864  54 63 84 3E */	srwi r3, r3, 0x10
 /* 800CF948 000CB868  B0 69 00 20 */	sth r3, 0x20(r9)
-/* 800CF94C 000CB86C  80 6D A2 70 */	lwz r3, changeMode-_SDA_BASE_(r13)
-/* 800CF950 000CB870  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800CF94C 000CB86C  80 6D A2 70 */	lwz r3, changeMode@sda21(r13)
+/* 800CF950 000CB870  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800CF954 000CB874  7C 60 03 78 */	or r0, r3, r0
-/* 800CF958 000CB878  90 8D A2 74 */	stw r4, changed-_SDA_BASE_(r13)
-/* 800CF95C 000CB87C  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CF958 000CB878  90 8D A2 74 */	stw r4, changed@sda21(r13)
+/* 800CF95C 000CB87C  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CF960 000CB880  80 07 00 00 */	lwz r0, 0(r7)
 /* 800CF964 000CB884  B0 09 00 2A */	sth r0, 0x2a(r9)
-/* 800CF968 000CB888  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CF96C 000CB88C  80 6D A2 74 */	lwz r3, changed-_SDA_BASE_(r13)
+/* 800CF968 000CB888  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CF96C 000CB88C  80 6D A2 74 */	lwz r3, changed@sda21(r13)
 /* 800CF970 000CB890  60 00 04 00 */	ori r0, r0, 0x400
-/* 800CF974 000CB894  90 6D A2 74 */	stw r3, changed-_SDA_BASE_(r13)
-/* 800CF978 000CB898  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CF974 000CB894  90 6D A2 74 */	stw r3, changed@sda21(r13)
+/* 800CF978 000CB898  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CF97C 000CB89C  80 07 00 00 */	lwz r0, 0(r7)
 /* 800CF980 000CB8A0  54 00 84 3E */	srwi r0, r0, 0x10
 /* 800CF984 000CB8A4  B0 09 00 28 */	sth r0, 0x28(r9)
-/* 800CF988 000CB8A8  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CF98C 000CB8AC  80 6D A2 74 */	lwz r3, changed-_SDA_BASE_(r13)
+/* 800CF988 000CB8A8  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CF98C 000CB8AC  80 6D A2 74 */	lwz r3, changed@sda21(r13)
 /* 800CF990 000CB8B0  60 00 08 00 */	ori r0, r0, 0x800
-/* 800CF994 000CB8B4  90 6D A2 74 */	stw r3, changed-_SDA_BASE_(r13)
-/* 800CF998 000CB8B8  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CF994 000CB8B4  90 6D A2 74 */	stw r3, changed@sda21(r13)
+/* 800CF998 000CB8B8  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 lbl_800CF99C:
 /* 800CF99C 000CB8BC  83 E1 00 44 */	lwz r31, 0x44(r1)
 /* 800CF9A0 000CB8C0  38 21 00 48 */	addi r1, r1, 0x48
@@ -916,38 +916,38 @@ lbl_800CFA9C:
 /* 800CFAA8 000CB9C8  B0 8B 00 00 */	sth r4, 0(r11)
 /* 800CFAAC 000CB9CC  3C 80 80 00 */	lis r4, 0x8000
 /* 800CFAB0 000CB9D0  3D 20 01 00 */	lis r9, 0x100
-/* 800CFAB4 000CB9D4  80 AD A2 70 */	lwz r5, changeMode-_SDA_BASE_(r13)
+/* 800CFAB4 000CB9D4  80 AD A2 70 */	lwz r5, changeMode@sda21(r13)
 /* 800CFAB8 000CB9D8  3D 00 02 00 */	lis r8, 0x200
-/* 800CFABC 000CB9DC  81 4D A2 74 */	lwz r10, changed-_SDA_BASE_(r13)
+/* 800CFABC 000CB9DC  81 4D A2 74 */	lwz r10, changed@sda21(r13)
 /* 800CFAC0 000CB9E0  7C A4 23 78 */	or r4, r5, r4
 /* 800CFAC4 000CB9E4  3C A0 00 40 */	lis r5, 0x40
-/* 800CFAC8 000CB9E8  91 4D A2 74 */	stw r10, changed-_SDA_BASE_(r13)
-/* 800CFACC 000CB9EC  90 8D A2 70 */	stw r4, changeMode-_SDA_BASE_(r13)
+/* 800CFAC8 000CB9E8  91 4D A2 74 */	stw r10, changed@sda21(r13)
+/* 800CFACC 000CB9EC  90 8D A2 70 */	stw r4, changeMode@sda21(r13)
 /* 800CFAD0 000CB9F0  3C 80 00 80 */	lis r4, 0x80
 /* 800CFAD4 000CB9F4  B0 0B 00 0E */	sth r0, 0xe(r11)
-/* 800CFAD8 000CB9F8  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CFADC 000CB9FC  81 4D A2 74 */	lwz r10, changed-_SDA_BASE_(r13)
+/* 800CFAD8 000CB9F8  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CFADC 000CB9FC  81 4D A2 74 */	lwz r10, changed@sda21(r13)
 /* 800CFAE0 000CBA00  7C 00 4B 78 */	or r0, r0, r9
-/* 800CFAE4 000CBA04  91 4D A2 74 */	stw r10, changed-_SDA_BASE_(r13)
-/* 800CFAE8 000CBA08  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CFAE4 000CBA04  91 4D A2 74 */	stw r10, changed@sda21(r13)
+/* 800CFAE8 000CBA08  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CFAEC 000CBA0C  B0 CB 00 0C */	sth r6, 0xc(r11)
-/* 800CFAF0 000CBA10  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CFAF4 000CBA14  80 CD A2 74 */	lwz r6, changed-_SDA_BASE_(r13)
+/* 800CFAF0 000CBA10  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CFAF4 000CBA14  80 CD A2 74 */	lwz r6, changed@sda21(r13)
 /* 800CFAF8 000CBA18  7C 00 43 78 */	or r0, r0, r8
-/* 800CFAFC 000CBA1C  90 CD A2 74 */	stw r6, changed-_SDA_BASE_(r13)
-/* 800CFB00 000CBA20  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CFAFC 000CBA1C  90 CD A2 74 */	stw r6, changed@sda21(r13)
+/* 800CFB00 000CBA20  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CFB04 000CBA24  B0 6B 00 12 */	sth r3, 0x12(r11)
-/* 800CFB08 000CBA28  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CFB0C 000CBA2C  80 6D A2 74 */	lwz r3, changed-_SDA_BASE_(r13)
+/* 800CFB08 000CBA28  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CFB0C 000CBA2C  80 6D A2 74 */	lwz r3, changed@sda21(r13)
 /* 800CFB10 000CBA30  7C 00 2B 78 */	or r0, r0, r5
-/* 800CFB14 000CBA34  90 6D A2 74 */	stw r3, changed-_SDA_BASE_(r13)
-/* 800CFB18 000CBA38  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CFB14 000CBA34  90 6D A2 74 */	stw r3, changed@sda21(r13)
+/* 800CFB18 000CBA38  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CFB1C 000CBA3C  B0 EB 00 10 */	sth r7, 0x10(r11)
-/* 800CFB20 000CBA40  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CFB24 000CBA44  80 6D A2 74 */	lwz r3, changed-_SDA_BASE_(r13)
+/* 800CFB20 000CBA40  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CFB24 000CBA44  80 6D A2 74 */	lwz r3, changed@sda21(r13)
 /* 800CFB28 000CBA48  7C 00 23 78 */	or r0, r0, r4
-/* 800CFB2C 000CBA4C  90 6D A2 74 */	stw r3, changed-_SDA_BASE_(r13)
-/* 800CFB30 000CBA50  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CFB2C 000CBA4C  90 6D A2 74 */	stw r3, changed@sda21(r13)
+/* 800CFB30 000CBA50  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CFB34 000CBA54  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 800CFB38 000CBA58  83 C1 00 20 */	lwz r30, 0x20(r1)
 /* 800CFB3C 000CBA5C  83 A1 00 1C */	lwz r29, 0x1c(r1)
@@ -971,7 +971,7 @@ VIConfigure:
 /* 800CFB78 000CBA98  38 00 00 02 */	li r0, 2
 /* 800CFB7C 000CBA9C  90 1D 01 14 */	stw r0, 0x114(r29)
 /* 800CFB80 000CBAA0  38 00 00 01 */	li r0, 1
-/* 800CFB84 000CBAA4  90 0D A2 4C */	stw r0, shdwChangeMode-_SDA_BASE_(r13)
+/* 800CFB84 000CBAA4  90 0D A2 4C */	stw r0, shdwChangeMode@sda21(r13)
 /* 800CFB88 000CBAA8  48 00 00 24 */	b lbl_800CFBAC
 lbl_800CFB8C:
 /* 800CFB8C 000CBAAC  38 BD 01 14 */	addi r5, r29, 0x114
@@ -980,7 +980,7 @@ lbl_800CFB8C:
 /* 800CFB98 000CBAB8  7C 00 18 40 */	cmplw r0, r3
 /* 800CFB9C 000CBABC  41 82 00 0C */	beq lbl_800CFBA8
 /* 800CFBA0 000CBAC0  38 00 00 01 */	li r0, 1
-/* 800CFBA4 000CBAC4  90 0D A2 4C */	stw r0, shdwChangeMode-_SDA_BASE_(r13)
+/* 800CFBA4 000CBAC4  90 0D A2 4C */	stw r0, shdwChangeMode@sda21(r13)
 lbl_800CFBA8:
 /* 800CFBA8 000CBAC8  90 65 00 00 */	stw r3, 0(r5)
 lbl_800CFBAC:
@@ -1046,7 +1046,7 @@ lbl_800CFC70:
 /* 800CFC84 000CBBA4  93 DD 01 44 */	stw r30, 0x144(r29)
 /* 800CFC88 000CBBA8  A0 18 00 00 */	lhz r0, 0(r24)
 /* 800CFC8C 000CBBAC  A8 9D 00 F0 */	lha r4, 0xf0(r29)
-/* 800CFC90 000CBBB0  A8 6D A2 68 */	lha r3, displayOffsetH-_SDA_BASE_(r13)
+/* 800CFC90 000CBBB0  A8 6D A2 68 */	lha r3, displayOffsetH@sda21(r13)
 /* 800CFC94 000CBBB4  20 00 02 D0 */	subfic r0, r0, 0x2d0
 /* 800CFC98 000CBBB8  A0 DE 00 02 */	lhz r6, 2(r30)
 /* 800CFC9C 000CBBBC  7C 64 1A 14 */	add r3, r4, r3
@@ -1071,7 +1071,7 @@ lbl_800CFCD8:
 /* 800CFCD8 000CBBF8  38 00 00 01 */	li r0, 1
 lbl_800CFCDC:
 /* 800CFCDC 000CBBFC  A0 97 00 00 */	lhz r4, 0(r23)
-/* 800CFCE0 000CBC00  A8 AD A2 6A */	lha r5, displayOffsetV-_SDA_BASE_(r13)
+/* 800CFCE0 000CBC00  A8 AD A2 6A */	lha r5, displayOffsetV@sda21(r13)
 /* 800CFCE4 000CBC04  7C 87 07 34 */	extsh r7, r4
 /* 800CFCE8 000CBC08  54 84 07 FE */	clrlwi r4, r4, 0x1f
 /* 800CFCEC 000CBC0C  7C E7 2A 14 */	add r7, r7, r5
@@ -1148,7 +1148,7 @@ lbl_800CFDCC:
 /* 800CFDD8 000CBCF8  7C 05 22 14 */	add r0, r5, r4
 /* 800CFDDC 000CBCFC  7C 06 00 50 */	subf r0, r6, r0
 /* 800CFDE0 000CBD00  B0 1D 01 00 */	sth r0, 0x100(r29)
-/* 800CFDE4 000CBD04  80 0D A2 64 */	lwz r0, encoderType-_SDA_BASE_(r13)
+/* 800CFDE4 000CBD04  80 0D A2 64 */	lwz r0, encoderType@sda21(r13)
 /* 800CFDE8 000CBD08  28 00 00 00 */	cmplwi r0, 0
 /* 800CFDEC 000CBD0C  40 82 00 0C */	bne lbl_800CFDF8
 /* 800CFDF0 000CBD10  38 00 00 03 */	li r0, 3
@@ -1173,18 +1173,18 @@ lbl_800CFE2C:
 /* 800CFE30 000CBD50  B0 1D 00 32 */	sth r0, 0x32(r29)
 /* 800CFE34 000CBD54  38 04 00 01 */	addi r0, r4, 1
 /* 800CFE38 000CBD58  60 00 10 00 */	ori r0, r0, 0x1000
-/* 800CFE3C 000CBD5C  80 AD A2 70 */	lwz r5, changeMode-_SDA_BASE_(r13)
+/* 800CFE3C 000CBD5C  80 AD A2 70 */	lwz r5, changeMode@sda21(r13)
 /* 800CFE40 000CBD60  38 9D 00 02 */	addi r4, r29, 2
-/* 800CFE44 000CBD64  80 CD A2 74 */	lwz r6, changed-_SDA_BASE_(r13)
+/* 800CFE44 000CBD64  80 CD A2 74 */	lwz r6, changed@sda21(r13)
 /* 800CFE48 000CBD68  60 A5 00 40 */	ori r5, r5, 0x40
-/* 800CFE4C 000CBD6C  90 CD A2 74 */	stw r6, changed-_SDA_BASE_(r13)
-/* 800CFE50 000CBD70  90 AD A2 70 */	stw r5, changeMode-_SDA_BASE_(r13)
+/* 800CFE4C 000CBD6C  90 CD A2 74 */	stw r6, changed@sda21(r13)
+/* 800CFE50 000CBD70  90 AD A2 70 */	stw r5, changeMode@sda21(r13)
 /* 800CFE54 000CBD74  B0 1D 00 30 */	sth r0, 0x30(r29)
-/* 800CFE58 000CBD78  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800CFE5C 000CBD7C  80 AD A2 74 */	lwz r5, changed-_SDA_BASE_(r13)
+/* 800CFE58 000CBD78  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800CFE5C 000CBD7C  80 AD A2 74 */	lwz r5, changed@sda21(r13)
 /* 800CFE60 000CBD80  60 00 00 80 */	ori r0, r0, 0x80
-/* 800CFE64 000CBD84  90 AD A2 74 */	stw r5, changed-_SDA_BASE_(r13)
-/* 800CFE68 000CBD88  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CFE64 000CBD84  90 AD A2 74 */	stw r5, changed@sda21(r13)
+/* 800CFE68 000CBD88  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CFE6C 000CBD8C  80 1B 00 00 */	lwz r0, 0(r27)
 /* 800CFE70 000CBD90  A0 BD 00 02 */	lhz r5, 2(r29)
 /* 800CFE74 000CBD94  28 00 00 02 */	cmplwi r0, 2
@@ -1203,11 +1203,11 @@ lbl_800CFE90:
 /* 800CFEA0 000CBDC0  7C C5 2B 78 */	or r5, r6, r5
 /* 800CFEA4 000CBDC4  B0 A4 00 00 */	sth r5, 0(r4)
 /* 800CFEA8 000CBDC8  38 DD 00 6C */	addi r6, r29, 0x6c
-/* 800CFEAC 000CBDCC  80 8D A2 70 */	lwz r4, changeMode-_SDA_BASE_(r13)
-/* 800CFEB0 000CBDD0  80 AD A2 74 */	lwz r5, changed-_SDA_BASE_(r13)
+/* 800CFEAC 000CBDCC  80 8D A2 70 */	lwz r4, changeMode@sda21(r13)
+/* 800CFEB0 000CBDD0  80 AD A2 74 */	lwz r5, changed@sda21(r13)
 /* 800CFEB4 000CBDD4  7C 80 03 78 */	or r0, r4, r0
-/* 800CFEB8 000CBDD8  90 AD A2 74 */	stw r5, changed-_SDA_BASE_(r13)
-/* 800CFEBC 000CBDDC  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800CFEB8 000CBDD8  90 AD A2 74 */	stw r5, changed@sda21(r13)
+/* 800CFEBC 000CBDDC  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800CFEC0 000CBDE0  80 1F 00 00 */	lwz r0, 0(r31)
 /* 800CFEC4 000CBDE4  A0 9D 00 6C */	lhz r4, 0x6c(r29)
 /* 800CFEC8 000CBDE8  2C 00 00 02 */	cmpwi r0, 2
@@ -1219,11 +1219,11 @@ lbl_800CFED8:
 /* 800CFEDC 000CBDFC  60 00 00 01 */	ori r0, r0, 1
 lbl_800CFEE0:
 /* 800CFEE0 000CBE00  B0 06 00 00 */	sth r0, 0(r6)
-/* 800CFEE4 000CBE04  80 8D A2 70 */	lwz r4, changeMode-_SDA_BASE_(r13)
-/* 800CFEE8 000CBE08  80 0D A2 74 */	lwz r0, changed-_SDA_BASE_(r13)
+/* 800CFEE4 000CBE04  80 8D A2 70 */	lwz r4, changeMode@sda21(r13)
+/* 800CFEE8 000CBE08  80 0D A2 74 */	lwz r0, changed@sda21(r13)
 /* 800CFEEC 000CBE0C  60 00 02 00 */	ori r0, r0, 0x200
-/* 800CFEF0 000CBE10  90 0D A2 74 */	stw r0, changed-_SDA_BASE_(r13)
-/* 800CFEF4 000CBE14  90 8D A2 70 */	stw r4, changeMode-_SDA_BASE_(r13)
+/* 800CFEF0 000CBE10  90 0D A2 74 */	stw r0, changed@sda21(r13)
+/* 800CFEF4 000CBE14  90 8D A2 70 */	stw r4, changeMode@sda21(r13)
 /* 800CFEF8 000CBE18  80 1D 01 34 */	lwz r0, 0x134(r29)
 /* 800CFEFC 000CBE1C  A0 98 00 00 */	lhz r4, 0(r24)
 /* 800CFF00 000CBE20  2C 00 00 00 */	cmpwi r0, 0
@@ -1244,27 +1244,27 @@ lbl_800CFF18:
 /* 800CFF34 000CBE54  60 00 10 00 */	ori r0, r0, 0x1000
 /* 800CFF38 000CBE58  B0 1D 00 4A */	sth r0, 0x4a(r29)
 /* 800CFF3C 000CBE5C  3C 00 04 00 */	lis r0, 0x400
-/* 800CFF40 000CBE60  80 CD A2 70 */	lwz r6, changeMode-_SDA_BASE_(r13)
-/* 800CFF44 000CBE64  80 ED A2 74 */	lwz r7, changed-_SDA_BASE_(r13)
+/* 800CFF40 000CBE60  80 CD A2 70 */	lwz r6, changeMode@sda21(r13)
+/* 800CFF44 000CBE64  80 ED A2 74 */	lwz r7, changed@sda21(r13)
 /* 800CFF48 000CBE68  7C E0 03 78 */	or r0, r7, r0
-/* 800CFF4C 000CBE6C  90 0D A2 74 */	stw r0, changed-_SDA_BASE_(r13)
-/* 800CFF50 000CBE70  90 CD A2 70 */	stw r6, changeMode-_SDA_BASE_(r13)
+/* 800CFF4C 000CBE6C  90 0D A2 74 */	stw r0, changed@sda21(r13)
+/* 800CFF50 000CBE70  90 CD A2 70 */	stw r6, changeMode@sda21(r13)
 /* 800CFF54 000CBE74  B1 1D 00 70 */	sth r8, 0x70(r29)
-/* 800CFF58 000CBE78  80 CD A2 70 */	lwz r6, changeMode-_SDA_BASE_(r13)
-/* 800CFF5C 000CBE7C  80 0D A2 74 */	lwz r0, changed-_SDA_BASE_(r13)
+/* 800CFF58 000CBE78  80 CD A2 70 */	lwz r6, changeMode@sda21(r13)
+/* 800CFF5C 000CBE7C  80 0D A2 74 */	lwz r0, changed@sda21(r13)
 /* 800CFF60 000CBE80  60 00 00 80 */	ori r0, r0, 0x80
-/* 800CFF64 000CBE84  90 0D A2 74 */	stw r0, changed-_SDA_BASE_(r13)
-/* 800CFF68 000CBE88  90 CD A2 70 */	stw r6, changeMode-_SDA_BASE_(r13)
+/* 800CFF64 000CBE84  90 0D A2 74 */	stw r0, changed@sda21(r13)
+/* 800CFF68 000CBE88  90 CD A2 70 */	stw r6, changeMode@sda21(r13)
 /* 800CFF6C 000CBE8C  48 00 00 24 */	b lbl_800CFF90
 lbl_800CFF70:
 /* 800CFF70 000CBE90  38 00 01 00 */	li r0, 0x100
 /* 800CFF74 000CBE94  B0 1D 00 4A */	sth r0, 0x4a(r29)
 /* 800CFF78 000CBE98  3C 00 04 00 */	lis r0, 0x400
-/* 800CFF7C 000CBE9C  80 CD A2 70 */	lwz r6, changeMode-_SDA_BASE_(r13)
-/* 800CFF80 000CBEA0  80 ED A2 74 */	lwz r7, changed-_SDA_BASE_(r13)
+/* 800CFF7C 000CBE9C  80 CD A2 70 */	lwz r6, changeMode@sda21(r13)
+/* 800CFF80 000CBEA0  80 ED A2 74 */	lwz r7, changed@sda21(r13)
 /* 800CFF84 000CBEA4  7C E0 03 78 */	or r0, r7, r0
-/* 800CFF88 000CBEA8  90 0D A2 74 */	stw r0, changed-_SDA_BASE_(r13)
-/* 800CFF8C 000CBEAC  90 CD A2 70 */	stw r6, changeMode-_SDA_BASE_(r13)
+/* 800CFF88 000CBEA8  90 0D A2 74 */	stw r0, changed@sda21(r13)
+/* 800CFF8C 000CBEAC  90 CD A2 70 */	stw r6, changeMode@sda21(r13)
 lbl_800CFF90:
 /* 800CFF90 000CBEB0  A0 03 00 00 */	lhz r0, 0(r3)
 /* 800CFF94 000CBEB4  21 84 02 D0 */	subfic r12, r4, 0x2d0
@@ -1274,23 +1274,23 @@ lbl_800CFF90:
 /* 800CFFA4 000CBEC4  B0 DD 00 06 */	sth r6, 6(r29)
 /* 800CFFA8 000CBEC8  3D 20 04 00 */	lis r9, 0x400
 /* 800CFFAC 000CBECC  3C E0 08 00 */	lis r7, 0x800
-/* 800CFFB0 000CBED0  81 4D A2 70 */	lwz r10, changeMode-_SDA_BASE_(r13)
+/* 800CFFB0 000CBED0  81 4D A2 70 */	lwz r10, changeMode@sda21(r13)
 /* 800CFFB4 000CBED4  3C C0 00 10 */	lis r6, 0x10
 /* 800CFFB8 000CBED8  3C 80 00 20 */	lis r4, 0x20
-/* 800CFFBC 000CBEDC  81 6D A2 74 */	lwz r11, changed-_SDA_BASE_(r13)
+/* 800CFFBC 000CBEDC  81 6D A2 74 */	lwz r11, changed@sda21(r13)
 /* 800CFFC0 000CBEE0  7D 4A 1B 78 */	or r10, r10, r3
 /* 800CFFC4 000CBEE4  3C 60 00 04 */	lis r3, 4
-/* 800CFFC8 000CBEE8  91 6D A2 74 */	stw r11, changed-_SDA_BASE_(r13)
-/* 800CFFCC 000CBEEC  91 4D A2 70 */	stw r10, changeMode-_SDA_BASE_(r13)
+/* 800CFFC8 000CBEE8  91 6D A2 74 */	stw r11, changed@sda21(r13)
+/* 800CFFCC 000CBEEC  91 4D A2 70 */	stw r10, changeMode@sda21(r13)
 /* 800CFFD0 000CBEF0  89 5E 00 1D */	lbz r10, 0x1d(r30)
 /* 800CFFD4 000CBEF4  89 7E 00 1E */	lbz r11, 0x1e(r30)
 /* 800CFFD8 000CBEF8  51 4B 44 2E */	rlwimi r11, r10, 8, 0x10, 0x17
 /* 800CFFDC 000CBEFC  B1 7D 00 04 */	sth r11, 4(r29)
-/* 800CFFE0 000CBF00  81 4D A2 70 */	lwz r10, changeMode-_SDA_BASE_(r13)
-/* 800CFFE4 000CBF04  81 6D A2 74 */	lwz r11, changed-_SDA_BASE_(r13)
+/* 800CFFE0 000CBF00  81 4D A2 70 */	lwz r10, changeMode@sda21(r13)
+/* 800CFFE4 000CBF04  81 6D A2 74 */	lwz r11, changed@sda21(r13)
 /* 800CFFE8 000CBF08  7D 48 43 78 */	or r8, r10, r8
-/* 800CFFEC 000CBF0C  91 6D A2 74 */	stw r11, changed-_SDA_BASE_(r13)
-/* 800CFFF0 000CBF10  91 0D A2 70 */	stw r8, changeMode-_SDA_BASE_(r13)
+/* 800CFFEC 000CBF0C  91 6D A2 74 */	stw r11, changed@sda21(r13)
+/* 800CFFF0 000CBF10  91 0D A2 70 */	stw r8, changeMode@sda21(r13)
 /* 800CFFF4 000CBF14  89 1E 00 1F */	lbz r8, 0x1f(r30)
 /* 800CFFF8 000CBF18  89 5E 00 1C */	lbz r10, 0x1c(r30)
 /* 800CFFFC 000CBF1C  7E 28 02 14 */	add r17, r8, r0
@@ -1301,63 +1301,63 @@ lbl_800CFF90:
 /* 800D0010 000CBF30  B1 1D 00 0A */	sth r8, 0xa(r29)
 /* 800D0014 000CBF34  7D 0B 02 14 */	add r8, r11, r0
 /* 800D0018 000CBF38  38 08 00 28 */	addi r0, r8, 0x28
-/* 800D001C 000CBF3C  81 4D A2 70 */	lwz r10, changeMode-_SDA_BASE_(r13)
+/* 800D001C 000CBF3C  81 4D A2 70 */	lwz r10, changeMode@sda21(r13)
 /* 800D0020 000CBF40  7C 0C 00 50 */	subf r0, r12, r0
 /* 800D0024 000CBF44  56 28 BA 7E */	srwi r8, r17, 9
-/* 800D0028 000CBF48  81 6D A2 74 */	lwz r11, changed-_SDA_BASE_(r13)
+/* 800D0028 000CBF48  81 6D A2 74 */	lwz r11, changed@sda21(r13)
 /* 800D002C 000CBF4C  54 00 08 3C */	slwi r0, r0, 1
 /* 800D0030 000CBF50  7D 49 4B 78 */	or r9, r10, r9
-/* 800D0034 000CBF54  91 6D A2 74 */	stw r11, changed-_SDA_BASE_(r13)
+/* 800D0034 000CBF54  91 6D A2 74 */	stw r11, changed@sda21(r13)
 /* 800D0038 000CBF58  7D 00 03 78 */	or r0, r8, r0
-/* 800D003C 000CBF5C  91 2D A2 70 */	stw r9, changeMode-_SDA_BASE_(r13)
+/* 800D003C 000CBF5C  91 2D A2 70 */	stw r9, changeMode@sda21(r13)
 /* 800D0040 000CBF60  B0 1D 00 08 */	sth r0, 8(r29)
-/* 800D0044 000CBF64  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800D0048 000CBF68  81 0D A2 74 */	lwz r8, changed-_SDA_BASE_(r13)
+/* 800D0044 000CBF64  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800D0048 000CBF68  81 0D A2 74 */	lwz r8, changed@sda21(r13)
 /* 800D004C 000CBF6C  7C 00 3B 78 */	or r0, r0, r7
-/* 800D0050 000CBF70  91 0D A2 74 */	stw r8, changed-_SDA_BASE_(r13)
-/* 800D0054 000CBF74  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800D0050 000CBF70  91 0D A2 74 */	stw r8, changed@sda21(r13)
+/* 800D0054 000CBF74  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800D0058 000CBF78  A0 1E 00 10 */	lhz r0, 0x10(r30)
 /* 800D005C 000CBF7C  88 FE 00 0C */	lbz r7, 0xc(r30)
 /* 800D0060 000CBF80  54 00 28 34 */	slwi r0, r0, 5
 /* 800D0064 000CBF84  7C E0 03 78 */	or r0, r7, r0
 /* 800D0068 000CBF88  B0 1D 00 16 */	sth r0, 0x16(r29)
-/* 800D006C 000CBF8C  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800D0070 000CBF90  80 ED A2 74 */	lwz r7, changed-_SDA_BASE_(r13)
+/* 800D006C 000CBF8C  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800D0070 000CBF90  80 ED A2 74 */	lwz r7, changed@sda21(r13)
 /* 800D0074 000CBF94  7C 00 33 78 */	or r0, r0, r6
-/* 800D0078 000CBF98  90 ED A2 74 */	stw r7, changed-_SDA_BASE_(r13)
-/* 800D007C 000CBF9C  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800D0078 000CBF98  90 ED A2 74 */	stw r7, changed@sda21(r13)
+/* 800D007C 000CBF9C  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800D0080 000CBFA0  A0 1E 00 14 */	lhz r0, 0x14(r30)
 /* 800D0084 000CBFA4  88 DE 00 0E */	lbz r6, 0xe(r30)
 /* 800D0088 000CBFA8  54 00 28 34 */	slwi r0, r0, 5
 /* 800D008C 000CBFAC  7C C0 03 78 */	or r0, r6, r0
 /* 800D0090 000CBFB0  B0 1D 00 14 */	sth r0, 0x14(r29)
-/* 800D0094 000CBFB4  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800D0098 000CBFB8  80 CD A2 74 */	lwz r6, changed-_SDA_BASE_(r13)
+/* 800D0094 000CBFB4  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800D0098 000CBFB8  80 CD A2 74 */	lwz r6, changed@sda21(r13)
 /* 800D009C 000CBFBC  7C 00 23 78 */	or r0, r0, r4
-/* 800D00A0 000CBFC0  90 CD A2 74 */	stw r6, changed-_SDA_BASE_(r13)
-/* 800D00A4 000CBFC4  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800D00A0 000CBFC0  90 CD A2 74 */	stw r6, changed@sda21(r13)
+/* 800D00A4 000CBFC4  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800D00A8 000CBFC8  A0 1E 00 12 */	lhz r0, 0x12(r30)
 /* 800D00AC 000CBFCC  88 9E 00 0D */	lbz r4, 0xd(r30)
 /* 800D00B0 000CBFD0  54 00 28 34 */	slwi r0, r0, 5
 /* 800D00B4 000CBFD4  7C 80 03 78 */	or r0, r4, r0
 /* 800D00B8 000CBFD8  B0 1D 00 1A */	sth r0, 0x1a(r29)
-/* 800D00BC 000CBFDC  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
-/* 800D00C0 000CBFE0  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800D00BC 000CBFDC  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
+/* 800D00C0 000CBFE0  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800D00C4 000CBFE4  7C 00 1B 78 */	or r0, r0, r3
-/* 800D00C8 000CBFE8  90 8D A2 74 */	stw r4, changed-_SDA_BASE_(r13)
-/* 800D00CC 000CBFEC  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800D00C8 000CBFE8  90 8D A2 74 */	stw r4, changed@sda21(r13)
+/* 800D00CC 000CBFEC  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800D00D0 000CBFF0  A0 1E 00 16 */	lhz r0, 0x16(r30)
 /* 800D00D4 000CBFF4  88 7E 00 0F */	lbz r3, 0xf(r30)
 /* 800D00D8 000CBFF8  54 00 28 34 */	slwi r0, r0, 5
 /* 800D00DC 000CBFFC  7C 60 03 78 */	or r0, r3, r0
 /* 800D00E0 000CC000  B0 1D 00 18 */	sth r0, 0x18(r29)
-/* 800D00E4 000CC004  80 6D A2 70 */	lwz r3, changeMode-_SDA_BASE_(r13)
+/* 800D00E4 000CC004  80 6D A2 70 */	lwz r3, changeMode@sda21(r13)
 /* 800D00E8 000CC008  3C 00 00 08 */	lis r0, 8
 /* 800D00EC 000CC00C  38 DD 01 1C */	addi r6, r29, 0x11c
-/* 800D00F0 000CC010  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800D00F0 000CC010  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800D00F4 000CC014  7C 60 03 78 */	or r0, r3, r0
-/* 800D00F8 000CC018  90 8D A2 74 */	stw r4, changed-_SDA_BASE_(r13)
-/* 800D00FC 000CC01C  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800D00F8 000CC018  90 8D A2 74 */	stw r4, changed@sda21(r13)
+/* 800D00FC 000CC01C  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 /* 800D0100 000CC020  A0 7C 00 00 */	lhz r3, 0(r28)
 /* 800D0104 000CC024  80 99 00 00 */	lwz r4, 0(r25)
 /* 800D0108 000CC028  38 03 00 0F */	addi r0, r3, 0xf
@@ -1390,13 +1390,13 @@ lbl_800D0134:
 /* 800D016C 000CC08C  88 9D 01 1D */	lbz r4, 0x11d(r29)
 /* 800D0170 000CC090  50 04 44 2E */	rlwimi r4, r0, 8, 0x10, 0x17
 /* 800D0174 000CC094  B0 9D 00 48 */	sth r4, 0x48(r29)
-/* 800D0178 000CC098  80 8D A2 70 */	lwz r4, changeMode-_SDA_BASE_(r13)
-/* 800D017C 000CC09C  80 0D A2 80 */	lwz r0, Initialized-_SDA_BASE_(r13)
-/* 800D0180 000CC0A0  80 AD A2 74 */	lwz r5, changed-_SDA_BASE_(r13)
+/* 800D0178 000CC098  80 8D A2 70 */	lwz r4, changeMode@sda21(r13)
+/* 800D017C 000CC09C  80 0D A2 80 */	lwz r0, Initialized@sda21(r13)
+/* 800D0180 000CC0A0  80 AD A2 74 */	lwz r5, changed@sda21(r13)
 /* 800D0184 000CC0A4  28 00 00 00 */	cmplwi r0, 0
 /* 800D0188 000CC0A8  7C A0 1B 78 */	or r0, r5, r3
-/* 800D018C 000CC0AC  90 0D A2 74 */	stw r0, changed-_SDA_BASE_(r13)
-/* 800D0190 000CC0B0  90 8D A2 70 */	stw r4, changeMode-_SDA_BASE_(r13)
+/* 800D018C 000CC0AC  90 0D A2 74 */	stw r0, changed@sda21(r13)
+/* 800D0190 000CC0B0  90 8D A2 70 */	stw r4, changeMode@sda21(r13)
 /* 800D0194 000CC0B4  41 82 00 1C */	beq lbl_800D01B0
 /* 800D0198 000CC0B8  38 7D 00 F0 */	addi r3, r29, 0xf0
 /* 800D019C 000CC0BC  38 9D 01 24 */	addi r4, r29, 0x124
@@ -1431,24 +1431,24 @@ VIFlush:
 /* 800D0200 000CC120  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 800D0204 000CC124  BF 61 00 14 */	stmw r27, 0x14(r1)
 /* 800D0208 000CC128  4B FF 5E B5 */	bl OSDisableInterrupts
-/* 800D020C 000CC12C  80 CD A2 78 */	lwz r6, shdwChanged-_SDA_BASE_(r13)
+/* 800D020C 000CC12C  80 CD A2 78 */	lwz r6, shdwChanged@sda21(r13)
 /* 800D0210 000CC130  3C A0 80 2C */	lis r5, regs@ha
 /* 800D0214 000CC134  3C 80 80 2C */	lis r4, shdwRegs@ha
-/* 800D0218 000CC138  80 ED A2 7C */	lwz r7, lbl_802F245C-_SDA_BASE_(r13)
+/* 800D0218 000CC138  80 ED A2 7C */	lwz r7, lbl_802F245C@sda21(r13)
 /* 800D021C 000CC13C  3B C3 00 00 */	addi r30, r3, 0
 /* 800D0220 000CC140  3B E5 7A A8 */	addi r31, r5, regs@l
-/* 800D0224 000CC144  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
+/* 800D0224 000CC144  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
 /* 800D0228 000CC148  3B A4 7B 20 */	addi r29, r4, shdwRegs@l
-/* 800D022C 000CC14C  80 6D A2 74 */	lwz r3, changed-_SDA_BASE_(r13)
+/* 800D022C 000CC14C  80 6D A2 74 */	lwz r3, changed@sda21(r13)
 /* 800D0230 000CC150  7C C0 03 78 */	or r0, r6, r0
 /* 800D0234 000CC154  7C E3 1B 78 */	or r3, r7, r3
-/* 800D0238 000CC158  90 6D A2 7C */	stw r3, lbl_802F245C-_SDA_BASE_(r13)
-/* 800D023C 000CC15C  90 0D A2 78 */	stw r0, shdwChanged-_SDA_BASE_(r13)
+/* 800D0238 000CC158  90 6D A2 7C */	stw r3, lbl_802F245C@sda21(r13)
+/* 800D023C 000CC15C  90 0D A2 78 */	stw r0, shdwChanged@sda21(r13)
 /* 800D0240 000CC160  48 00 00 7C */	b lbl_800D02BC
 lbl_800D0244:
-/* 800D0244 000CC164  80 6D A2 70 */	lwz r3, changeMode-_SDA_BASE_(r13)
+/* 800D0244 000CC164  80 6D A2 70 */	lwz r3, changeMode@sda21(r13)
 /* 800D0248 000CC168  38 A0 00 20 */	li r5, 0x20
-/* 800D024C 000CC16C  83 6D A2 74 */	lwz r27, changed-_SDA_BASE_(r13)
+/* 800D024C 000CC16C  83 6D A2 74 */	lwz r27, changed@sda21(r13)
 /* 800D0250 000CC170  38 9B 00 00 */	addi r4, r27, 0
 /* 800D0254 000CC174  48 03 37 AD */	bl __shr2u
 /* 800D0258 000CC178  7C 84 00 34 */	cntlzw r4, r4
@@ -1470,24 +1470,24 @@ lbl_800D0278:
 /* 800D0290 000CC1B0  38 60 00 00 */	li r3, 0
 /* 800D0294 000CC1B4  38 80 00 01 */	li r4, 1
 /* 800D0298 000CC1B8  48 03 37 45 */	bl __shl2i
-/* 800D029C 000CC1BC  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
+/* 800D029C 000CC1BC  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
 /* 800D02A0 000CC1C0  7C 65 18 F8 */	nor r5, r3, r3
 /* 800D02A4 000CC1C4  7C 84 20 F8 */	nor r4, r4, r4
-/* 800D02A8 000CC1C8  80 6D A2 74 */	lwz r3, changed-_SDA_BASE_(r13)
+/* 800D02A8 000CC1C8  80 6D A2 74 */	lwz r3, changed@sda21(r13)
 /* 800D02AC 000CC1CC  7C 00 28 38 */	and r0, r0, r5
 /* 800D02B0 000CC1D0  7C 63 20 38 */	and r3, r3, r4
-/* 800D02B4 000CC1D4  90 6D A2 74 */	stw r3, changed-_SDA_BASE_(r13)
-/* 800D02B8 000CC1D8  90 0D A2 70 */	stw r0, changeMode-_SDA_BASE_(r13)
+/* 800D02B4 000CC1D4  90 6D A2 74 */	stw r3, changed@sda21(r13)
+/* 800D02B8 000CC1D8  90 0D A2 70 */	stw r0, changeMode@sda21(r13)
 lbl_800D02BC:
-/* 800D02BC 000CC1DC  80 0D A2 70 */	lwz r0, changeMode-_SDA_BASE_(r13)
+/* 800D02BC 000CC1DC  80 0D A2 70 */	lwz r0, changeMode@sda21(r13)
 /* 800D02C0 000CC1E0  38 60 00 00 */	li r3, 0
-/* 800D02C4 000CC1E4  80 8D A2 74 */	lwz r4, changed-_SDA_BASE_(r13)
+/* 800D02C4 000CC1E4  80 8D A2 74 */	lwz r4, changed@sda21(r13)
 /* 800D02C8 000CC1E8  7C 00 1A 78 */	xor r0, r0, r3
 /* 800D02CC 000CC1EC  7C 83 1A 78 */	xor r3, r4, r3
 /* 800D02D0 000CC1F0  7C 60 03 79 */	or. r0, r3, r0
 /* 800D02D4 000CC1F4  40 82 FF 70 */	bne lbl_800D0244
 /* 800D02D8 000CC1F8  38 00 00 01 */	li r0, 1
-/* 800D02DC 000CC1FC  90 0D A2 50 */	stw r0, flushFlag-_SDA_BASE_(r13)
+/* 800D02DC 000CC1FC  90 0D A2 50 */	stw r0, flushFlag@sda21(r13)
 /* 800D02E0 000CC200  7F C3 F3 78 */	mr r3, r30
 /* 800D02E4 000CC204  4B FF 5E 01 */	bl OSRestoreInterrupts
 /* 800D02E8 000CC208  BB 61 00 14 */	lmw r27, 0x14(r1)
@@ -1510,7 +1510,7 @@ VISetNextFrameBuffer:
 /* 800D0320 000CC240  93 DF 01 20 */	stw r30, 0x120(r31)
 /* 800D0324 000CC244  38 00 00 01 */	li r0, 1
 /* 800D0328 000CC248  3B C3 00 00 */	addi r30, r3, 0
-/* 800D032C 000CC24C  90 0D A2 80 */	stw r0, Initialized-_SDA_BASE_(r13)
+/* 800D032C 000CC24C  90 0D A2 80 */	stw r0, Initialized@sda21(r13)
 /* 800D0330 000CC250  38 7F 00 F0 */	addi r3, r31, 0xf0
 /* 800D0334 000CC254  38 9F 01 24 */	addi r4, r31, 0x124
 /* 800D0338 000CC258  38 BF 01 28 */	addi r5, r31, 0x128

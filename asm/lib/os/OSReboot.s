@@ -24,7 +24,7 @@ Run:
 .global Callback
 Callback:
 /* 800C70D8 000C2FF8  38 00 00 01 */	li r0, 1
-/* 800C70DC 000C2FFC  90 0D A1 38 */	stw r0, Prepared-_SDA_BASE_(r13)
+/* 800C70DC 000C2FFC  90 0D A1 38 */	stw r0, Prepared@sda21(r13)
 /* 800C70E0 000C3000  4E 80 00 20 */	blr
 
 .global __OSReboot
@@ -69,7 +69,7 @@ lbl_800C715C:
 lbl_800C7174:
 /* 800C7174 000C3094  48 00 00 04 */	b lbl_800C7178
 lbl_800C7178:
-/* 800C7178 000C3098  80 0D A1 38 */	lwz r0, Prepared-_SDA_BASE_(r13)
+/* 800C7178 000C3098  80 0D A1 38 */	lwz r0, Prepared@sda21(r13)
 /* 800C717C 000C309C  2C 00 00 00 */	cmpwi r0, 0
 /* 800C7180 000C30A0  41 82 FF F8 */	beq lbl_800C7178
 /* 800C7184 000C30A4  7F C4 F3 78 */	mr r4, r30
@@ -109,7 +109,7 @@ lbl_800C71E0:
 lbl_800C71F8:
 /* 800C71F8 000C3118  48 00 00 04 */	b lbl_800C71FC
 lbl_800C71FC:
-/* 800C71FC 000C311C  80 0D A1 38 */	lwz r0, Prepared-_SDA_BASE_(r13)
+/* 800C71FC 000C311C  80 0D A1 38 */	lwz r0, Prepared@sda21(r13)
 /* 800C7200 000C3120  2C 00 00 00 */	cmpwi r0, 0
 /* 800C7204 000C3124  41 82 FF F8 */	beq lbl_800C71FC
 /* 800C7208 000C3128  7F C5 F3 78 */	mr r5, r30

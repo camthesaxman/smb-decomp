@@ -6,7 +6,7 @@
 UpdateRoomDistances:
 /* 800FBFB8 000F7ED8  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 800FBFBC 000F7EDC  38 A0 00 00 */	li r5, 0
-/* 800FBFC0 000F7EE0  80 6D A5 30 */	lwz r3, s3dListenerRoot-_SDA_BASE_(r13)
+/* 800FBFC0 000F7EE0  80 6D A5 30 */	lwz r3, s3dListenerRoot@sda21(r13)
 /* 800FBFC4 000F7EE4  48 00 00 0C */	b lbl_800FBFD0
 lbl_800FBFC8:
 /* 800FBFC8 000F7EE8  80 63 00 00 */	lwz r3, 0(r3)
@@ -16,7 +16,7 @@ lbl_800FBFD0:
 /* 800FBFD4 000F7EF4  40 82 FF F4 */	bne lbl_800FBFC8
 /* 800FBFD8 000F7EF8  28 05 00 00 */	cmplwi r5, 0
 /* 800FBFDC 000F7EFC  41 82 00 98 */	beq lbl_800FC074
-/* 800FBFE0 000F7F00  80 8D A5 34 */	lwz r4, s3dRoomRoot-_SDA_BASE_(r13)
+/* 800FBFE0 000F7F00  80 8D A5 34 */	lwz r4, s3dRoomRoot@sda21(r13)
 /* 800FBFE4 000F7F04  3C 00 43 30 */	lis r0, 0x4330
 /* 800FBFE8 000F7F08  C8 22 C1 C8 */	lfd f1, lbl_802F69C8-_SDA2_BASE_(r2)
 /* 800FBFEC 000F7F0C  48 00 00 80 */	b lbl_800FC06C
@@ -25,7 +25,7 @@ lbl_800FBFF0:
 /* 800FBFF4 000F7F14  28 03 00 FF */	cmplwi r3, 0xff
 /* 800FBFF8 000F7F18  41 82 00 70 */	beq lbl_800FC068
 /* 800FBFFC 000F7F1C  C0 C2 C1 C0 */	lfs f6, lbl_802F69C0-_SDA2_BASE_(r2)
-/* 800FC000 000F7F20  80 6D A5 30 */	lwz r3, s3dListenerRoot-_SDA_BASE_(r13)
+/* 800FC000 000F7F20  80 6D A5 30 */	lwz r3, s3dListenerRoot@sda21(r13)
 /* 800FC004 000F7F24  48 00 00 44 */	b lbl_800FC048
 lbl_800FC008:
 /* 800FC008 000F7F28  C0 84 00 0C */	lfs f4, 0xc(r4)
@@ -73,7 +73,7 @@ CheckRoomStatus:
 /* 800FC094 000F7FB4  DB 81 00 40 */	stfd f28, 0x40(r1)
 /* 800FC098 000F7FB8  BF 01 00 20 */	stmw r24, 0x20(r1)
 /* 800FC09C 000F7FBC  4B FF FF 1D */	bl UpdateRoomDistances
-/* 800FC0A0 000F7FC0  80 6D A5 30 */	lwz r3, s3dListenerRoot-_SDA_BASE_(r13)
+/* 800FC0A0 000F7FC0  80 6D A5 30 */	lwz r3, s3dListenerRoot@sda21(r13)
 /* 800FC0A4 000F7FC4  3B 80 00 00 */	li r28, 0
 /* 800FC0A8 000F7FC8  48 00 00 0C */	b lbl_800FC0B4
 lbl_800FC0AC:
@@ -84,7 +84,7 @@ lbl_800FC0B4:
 /* 800FC0B8 000F7FD8  40 82 FF F4 */	bne lbl_800FC0AC
 /* 800FC0BC 000F7FDC  28 1C 00 00 */	cmplwi r28, 0
 /* 800FC0C0 000F7FE0  41 82 03 74 */	beq lbl_800FC434
-/* 800FC0C4 000F7FE4  83 AD A5 34 */	lwz r29, s3dRoomRoot-_SDA_BASE_(r13)
+/* 800FC0C4 000F7FE4  83 AD A5 34 */	lwz r29, s3dRoomRoot@sda21(r13)
 /* 800FC0C8 000F7FE8  3F 40 43 30 */	lis r26, 0x4330
 /* 800FC0CC 000F7FEC  C3 82 C1 D4 */	lfs f28, lbl_802F69D4-_SDA2_BASE_(r2)
 /* 800FC0D0 000F7FF0  3F E0 00 7F */	lis r31, 0x7f
@@ -95,7 +95,7 @@ lbl_800FC0E0:
 /* 800FC0E0 000F8000  88 1D 00 1C */	lbz r0, 0x1c(r29)
 /* 800FC0E4 000F8004  28 00 00 FF */	cmplwi r0, 0xff
 /* 800FC0E8 000F8008  40 82 02 44 */	bne lbl_800FC32C
-/* 800FC0EC 000F800C  80 6D A5 30 */	lwz r3, s3dListenerRoot-_SDA_BASE_(r13)
+/* 800FC0EC 000F800C  80 6D A5 30 */	lwz r3, s3dListenerRoot@sda21(r13)
 /* 800FC0F0 000F8010  C3 E2 C1 C0 */	lfs f31, lbl_802F69C0-_SDA2_BASE_(r2)
 /* 800FC0F4 000F8014  7C 64 1B 78 */	mr r4, r3
 /* 800FC0F8 000F8018  48 00 00 44 */	b lbl_800FC13C
@@ -138,9 +138,9 @@ lbl_800FC178:
 /* 800FC178 000F8098  28 03 00 00 */	cmplwi r3, 0
 /* 800FC17C 000F809C  40 82 FF E4 */	bne lbl_800FC160
 lbl_800FC180:
-/* 800FC180 000F80A0  88 6D A5 41 */	lbz r3, snd_max_studios-_SDA_BASE_(r13)
+/* 800FC180 000F80A0  88 6D A5 41 */	lbz r3, snd_max_studios@sda21(r13)
 /* 800FC184 000F80A4  38 00 FF FF */	li r0, -1
-/* 800FC188 000F80A8  80 8D A5 3C */	lwz r4, snd_used_studios-_SDA_BASE_(r13)
+/* 800FC188 000F80A8  80 8D A5 3C */	lwz r4, snd_used_studios@sda21(r13)
 /* 800FC18C 000F80AC  7C 00 18 30 */	slw r0, r0, r3
 /* 800FC190 000F80B0  7C 05 00 F8 */	nor r5, r0, r0
 /* 800FC194 000F80B4  7C A0 20 38 */	and r0, r5, r4
@@ -159,17 +159,17 @@ lbl_800FC1B4:
 /* 800FC1C4 000F80E4  42 00 FF F0 */	bdnz lbl_800FC1B4
 lbl_800FC1C8:
 /* 800FC1C8 000F80E8  38 00 00 01 */	li r0, 1
-/* 800FC1CC 000F80EC  80 8D A5 3C */	lwz r4, snd_used_studios-_SDA_BASE_(r13)
+/* 800FC1CC 000F80EC  80 8D A5 3C */	lwz r4, snd_used_studios@sda21(r13)
 /* 800FC1D0 000F80F0  7C 03 28 30 */	slw r3, r0, r5
-/* 800FC1D4 000F80F4  88 0D A5 40 */	lbz r0, snd_base_studio-_SDA_BASE_(r13)
+/* 800FC1D4 000F80F4  88 0D A5 40 */	lbz r0, snd_base_studio@sda21(r13)
 /* 800FC1D8 000F80F8  7C 83 1B 78 */	or r3, r4, r3
-/* 800FC1DC 000F80FC  90 6D A5 3C */	stw r3, snd_used_studios-_SDA_BASE_(r13)
+/* 800FC1DC 000F80FC  90 6D A5 3C */	stw r3, snd_used_studios@sda21(r13)
 /* 800FC1E0 000F8100  7C 05 02 14 */	add r0, r5, r0
 /* 800FC1E4 000F8104  98 1D 00 1C */	stb r0, 0x1c(r29)
 /* 800FC1E8 000F8108  48 00 00 C0 */	b lbl_800FC2A8
 lbl_800FC1EC:
 /* 800FC1EC 000F810C  C0 22 C1 D0 */	lfs f1, lbl_802F69D0-_SDA2_BASE_(r2)
-/* 800FC1F0 000F8110  80 6D A5 34 */	lwz r3, s3dRoomRoot-_SDA_BASE_(r13)
+/* 800FC1F0 000F8110  80 6D A5 34 */	lwz r3, s3dRoomRoot@sda21(r13)
 /* 800FC1F4 000F8114  48 00 00 28 */	b lbl_800FC21C
 lbl_800FC1F8:
 /* 800FC1F8 000F8118  88 03 00 1C */	lbz r0, 0x1c(r3)
@@ -190,7 +190,7 @@ lbl_800FC21C:
 /* 800FC22C 000F814C  FC 01 F8 40 */	fcmpo cr0, f1, f31
 /* 800FC230 000F8150  40 81 01 F8 */	ble lbl_800FC428
 lbl_800FC234:
-/* 800FC234 000F8154  83 0D A5 2C */	lwz r24, s3dEmitterRoot-_SDA_BASE_(r13)
+/* 800FC234 000F8154  83 0D A5 2C */	lwz r24, s3dEmitterRoot@sda21(r13)
 /* 800FC238 000F8158  3B 20 FF FF */	li r25, -1
 /* 800FC23C 000F815C  48 00 00 2C */	b lbl_800FC268
 lbl_800FC240:
@@ -356,7 +356,7 @@ CheckDoorStatus:
 /* 800FC46C 000F838C  93 E1 00 2C */	stw r31, 0x2c(r1)
 /* 800FC470 000F8390  3F E0 43 30 */	lis r31, 0x4330
 /* 800FC474 000F8394  93 C1 00 28 */	stw r30, 0x28(r1)
-/* 800FC478 000F8398  83 CD A5 38 */	lwz r30, s3dDoorRoot-_SDA_BASE_(r13)
+/* 800FC478 000F8398  83 CD A5 38 */	lwz r30, s3dDoorRoot@sda21(r13)
 /* 800FC47C 000F839C  CB C2 C1 C8 */	lfd f30, lbl_802F69C8-_SDA2_BASE_(r2)
 /* 800FC480 000F83A0  C3 E2 C1 E0 */	lfs f31, lbl_802F69E0-_SDA2_BASE_(r2)
 /* 800FC484 000F83A4  48 00 01 88 */	b lbl_800FC60C
@@ -507,7 +507,7 @@ CalcEmitter:
 /* 800FC690 000F85B0  FF 20 D0 90 */	fmr f25, f26
 /* 800FC694 000F85B4  D3 85 00 00 */	stfs f28, 0(r5)
 /* 800FC698 000F85B8  FF 00 C8 90 */	fmr f24, f25
-/* 800FC69C 000F85BC  83 ED A5 30 */	lwz r31, s3dListenerRoot-_SDA_BASE_(r13)
+/* 800FC69C 000F85BC  83 ED A5 30 */	lwz r31, s3dListenerRoot@sda21(r13)
 /* 800FC6A0 000F85C0  C3 A2 C1 F0 */	lfs f29, lbl_802F69F0-_SDA2_BASE_(r2)
 /* 800FC6A4 000F85C4  CB C2 C1 D8 */	lfd f30, lbl_802F69D8-_SDA2_BASE_(r2)
 /* 800FC6A8 000F85C8  CB E2 C1 E8 */	lfd f31, lbl_802F69E8-_SDA2_BASE_(r2)
@@ -980,7 +980,7 @@ lbl_800FCD30:
 /* 800FCD44 000F8C64  48 00 00 0C */	b lbl_800FCD50
 lbl_800FCD48:
 /* 800FCD48 000F8C68  80 03 00 00 */	lwz r0, 0(r3)
-/* 800FCD4C 000F8C6C  90 0D A5 2C */	stw r0, s3dEmitterRoot-_SDA_BASE_(r13)
+/* 800FCD4C 000F8C6C  90 0D A5 2C */	stw r0, s3dEmitterRoot@sda21(r13)
 lbl_800FCD50:
 /* 800FCD50 000F8C70  80 03 00 10 */	lwz r0, 0x10(r3)
 /* 800FCD54 000F8C74  54 00 04 3E */	clrlwi r0, r0, 0x10
@@ -1007,7 +1007,7 @@ s3dKillEmitterByFXID:
 /* 800FCD98 000F8CB8  3B A4 00 00 */	addi r29, r4, 0
 /* 800FCD9C 000F8CBC  93 81 00 10 */	stw r28, 0x10(r1)
 /* 800FCDA0 000F8CC0  3B 83 00 00 */	addi r28, r3, 0
-/* 800FCDA4 000F8CC4  83 ED A5 2C */	lwz r31, s3dEmitterRoot-_SDA_BASE_(r13)
+/* 800FCDA4 000F8CC4  83 ED A5 2C */	lwz r31, s3dEmitterRoot@sda21(r13)
 /* 800FCDA8 000F8CC8  48 00 00 60 */	b lbl_800FCE08
 lbl_800FCDAC:
 /* 800FCDAC 000F8CCC  28 1D 00 00 */	cmplwi r29, 0
@@ -1020,7 +1020,7 @@ lbl_800FCDC0:
 /* 800FCDC4 000F8CE4  A0 04 00 00 */	lhz r0, 0(r4)
 /* 800FCDC8 000F8CE8  7C 03 00 40 */	cmplw r3, r0
 /* 800FCDCC 000F8CEC  40 82 00 30 */	bne lbl_800FCDFC
-/* 800FCDD0 000F8CF0  88 0D A4 18 */	lbz r0, sndActive_2-_SDA_BASE_(r13)
+/* 800FCDD0 000F8CF0  88 0D A4 18 */	lbz r0, sndActive_2@sda21(r13)
 /* 800FCDD4 000F8CF4  28 00 00 00 */	cmplwi r0, 0
 /* 800FCDD8 000F8CF8  41 82 00 2C */	beq lbl_800FCE04
 /* 800FCDDC 000F8CFC  48 00 44 25 */	bl hwDisableIrq
@@ -1051,7 +1051,7 @@ lbl_800FCE08:
 
 .global AddRunningEmitter
 AddRunningEmitter:
-/* 800FCE30 000F8D50  88 ED A5 42 */	lbz r7, startGroupNum-_SDA_BASE_(r13)
+/* 800FCE30 000F8D50  88 ED A5 42 */	lbz r7, startGroupNum@sda21(r13)
 /* 800FCE34 000F8D54  3C 80 80 2E */	lis r4, lbl_802E4890@ha
 /* 800FCE38 000F8D58  38 A4 48 90 */	addi r5, r4, lbl_802E4890@l
 /* 800FCE3C 000F8D5C  2C 07 00 00 */	cmpwi r7, 0
@@ -1077,9 +1077,9 @@ lbl_800FCE6C:
 /* 800FCE84 000F8DA4  90 04 00 58 */	stw r0, 0x58(r4)
 /* 800FCE88 000F8DA8  80 03 00 40 */	lwz r0, 0x40(r3)
 /* 800FCE8C 000F8DAC  90 04 00 50 */	stw r0, 0x50(r4)
-/* 800FCE90 000F8DB0  88 8D A5 42 */	lbz r4, startGroupNum-_SDA_BASE_(r13)
+/* 800FCE90 000F8DB0  88 8D A5 42 */	lbz r4, startGroupNum@sda21(r13)
 /* 800FCE94 000F8DB4  38 04 00 01 */	addi r0, r4, 1
-/* 800FCE98 000F8DB8  98 0D A5 42 */	stb r0, startGroupNum-_SDA_BASE_(r13)
+/* 800FCE98 000F8DB8  98 0D A5 42 */	stb r0, startGroupNum@sda21(r13)
 lbl_800FCE9C:
 /* 800FCE9C 000F8DBC  1C 08 00 0C */	mulli r0, r8, 0xc
 /* 800FCEA0 000F8DC0  7C C5 02 14 */	add r6, r5, r0
@@ -1098,35 +1098,35 @@ lbl_800FCEC4:
 lbl_800FCECC:
 /* 800FCECC 000F8DEC  28 08 00 00 */	cmplwi r8, 0
 /* 800FCED0 000F8DF0  40 82 00 1C */	bne lbl_800FCEEC
-/* 800FCED4 000F8DF4  88 0D A5 44 */	lbz r0, runListNum-_SDA_BASE_(r13)
+/* 800FCED4 000F8DF4  88 0D A5 44 */	lbz r0, runListNum@sda21(r13)
 /* 800FCED8 000F8DF8  1C 00 00 0C */	mulli r0, r0, 0xc
 /* 800FCEDC 000F8DFC  7C 85 02 14 */	add r4, r5, r0
 /* 800FCEE0 000F8E00  38 04 05 50 */	addi r0, r4, 0x550
 /* 800FCEE4 000F8E04  90 06 00 00 */	stw r0, 0(r6)
 /* 800FCEE8 000F8E08  48 00 00 18 */	b lbl_800FCF00
 lbl_800FCEEC:
-/* 800FCEEC 000F8E0C  88 0D A5 44 */	lbz r0, runListNum-_SDA_BASE_(r13)
+/* 800FCEEC 000F8E0C  88 0D A5 44 */	lbz r0, runListNum@sda21(r13)
 /* 800FCEF0 000F8E10  1C 00 00 0C */	mulli r0, r0, 0xc
 /* 800FCEF4 000F8E14  7C 85 02 14 */	add r4, r5, r0
 /* 800FCEF8 000F8E18  38 04 05 50 */	addi r0, r4, 0x550
 /* 800FCEFC 000F8E1C  90 08 00 00 */	stw r0, 0(r8)
 lbl_800FCF00:
-/* 800FCF00 000F8E20  88 0D A5 44 */	lbz r0, runListNum-_SDA_BASE_(r13)
+/* 800FCF00 000F8E20  88 0D A5 44 */	lbz r0, runListNum@sda21(r13)
 /* 800FCF04 000F8E24  1C 00 00 0C */	mulli r0, r0, 0xc
 /* 800FCF08 000F8E28  7C 85 02 14 */	add r4, r5, r0
 /* 800FCF0C 000F8E2C  90 E4 05 50 */	stw r7, 0x550(r4)
 /* 800FCF10 000F8E30  90 64 05 58 */	stw r3, 0x558(r4)
-/* 800FCF14 000F8E34  88 6D A5 44 */	lbz r3, runListNum-_SDA_BASE_(r13)
+/* 800FCF14 000F8E34  88 6D A5 44 */	lbz r3, runListNum@sda21(r13)
 /* 800FCF18 000F8E38  1C 03 00 0C */	mulli r0, r3, 0xc
 /* 800FCF1C 000F8E3C  38 63 00 01 */	addi r3, r3, 1
-/* 800FCF20 000F8E40  98 6D A5 44 */	stb r3, runListNum-_SDA_BASE_(r13)
+/* 800FCF20 000F8E40  98 6D A5 44 */	stb r3, runListNum@sda21(r13)
 /* 800FCF24 000F8E44  7C 65 02 14 */	add r3, r5, r0
 /* 800FCF28 000F8E48  D0 23 05 54 */	stfs f1, 0x554(r3)
 /* 800FCF2C 000F8E4C  4E 80 00 20 */	blr
 
 .global AddStartingEmitter
 AddStartingEmitter:
-/* 800FCF30 000F8E50  88 ED A5 42 */	lbz r7, startGroupNum-_SDA_BASE_(r13)
+/* 800FCF30 000F8E50  88 ED A5 42 */	lbz r7, startGroupNum@sda21(r13)
 /* 800FCF34 000F8E54  3C 80 80 2E */	lis r4, lbl_802E4890@ha
 /* 800FCF38 000F8E58  38 A4 48 90 */	addi r5, r4, lbl_802E4890@l
 /* 800FCF3C 000F8E5C  2C 07 00 00 */	cmpwi r7, 0
@@ -1157,11 +1157,11 @@ lbl_800FCF84:
 /* 800FCF94 000F8EB4  90 04 00 58 */	stw r0, 0x58(r4)
 /* 800FCF98 000F8EB8  80 03 00 40 */	lwz r0, 0x40(r3)
 /* 800FCF9C 000F8EBC  90 04 00 50 */	stw r0, 0x50(r4)
-/* 800FCFA0 000F8EC0  88 8D A5 42 */	lbz r4, startGroupNum-_SDA_BASE_(r13)
+/* 800FCFA0 000F8EC0  88 8D A5 42 */	lbz r4, startGroupNum@sda21(r13)
 /* 800FCFA4 000F8EC4  38 04 00 01 */	addi r0, r4, 1
-/* 800FCFA8 000F8EC8  98 0D A5 42 */	stb r0, startGroupNum-_SDA_BASE_(r13)
+/* 800FCFA8 000F8EC8  98 0D A5 42 */	stb r0, startGroupNum@sda21(r13)
 lbl_800FCFAC:
-/* 800FCFAC 000F8ECC  88 CD A5 43 */	lbz r6, startListNumnum-_SDA_BASE_(r13)
+/* 800FCFAC 000F8ECC  88 CD A5 43 */	lbz r6, startListNumnum@sda21(r13)
 /* 800FCFB0 000F8ED0  28 06 00 20 */	cmplwi r6, 0x20
 /* 800FCFB4 000F8ED4  40 82 00 0C */	bne lbl_800FCFC0
 /* 800FCFB8 000F8ED8  38 60 00 00 */	li r3, 0
@@ -1195,7 +1195,7 @@ lbl_800FD00C:
 /* 800FD014 000F8F34  94 86 01 D0 */	stwu r4, 0x1d0(r6)
 /* 800FD018 000F8F38  90 C7 00 00 */	stw r6, 0(r7)
 lbl_800FD01C:
-/* 800FD01C 000F8F3C  88 0D A5 43 */	lbz r0, startListNumnum-_SDA_BASE_(r13)
+/* 800FD01C 000F8F3C  88 0D A5 43 */	lbz r0, startListNumnum@sda21(r13)
 /* 800FD020 000F8F40  1C 00 00 1C */	mulli r0, r0, 0x1c
 /* 800FD024 000F8F44  7C 85 02 14 */	add r4, r5, r0
 /* 800FD028 000F8F48  90 64 01 E8 */	stw r3, 0x1e8(r4)
@@ -1204,10 +1204,10 @@ lbl_800FD01C:
 /* 800FD034 000F8F54  D0 44 01 D8 */	stfs f2, 0x1d8(r4)
 /* 800FD038 000F8F58  D0 64 01 DC */	stfs f3, 0x1dc(r4)
 /* 800FD03C 000F8F5C  D0 84 01 E0 */	stfs f4, 0x1e0(r4)
-/* 800FD040 000F8F60  88 8D A5 43 */	lbz r4, startListNumnum-_SDA_BASE_(r13)
+/* 800FD040 000F8F60  88 8D A5 43 */	lbz r4, startListNumnum@sda21(r13)
 /* 800FD044 000F8F64  1C 04 00 1C */	mulli r0, r4, 0x1c
 /* 800FD048 000F8F68  38 84 00 01 */	addi r4, r4, 1
-/* 800FD04C 000F8F6C  98 8D A5 43 */	stb r4, startListNumnum-_SDA_BASE_(r13)
+/* 800FD04C 000F8F6C  98 8D A5 43 */	stb r4, startListNumnum@sda21(r13)
 /* 800FD050 000F8F70  7C 85 02 14 */	add r4, r5, r0
 /* 800FD054 000F8F74  D0 24 01 D4 */	stfs f1, 0x1d4(r4)
 /* 800FD058 000F8F78  4E 80 00 20 */	blr
@@ -1336,7 +1336,7 @@ lbl_800FD1FC:
 /* 800FD204 000F9124  3B FF 00 0C */	addi r31, r31, 0xc
 /* 800FD208 000F9128  3B DE 00 01 */	addi r30, r30, 1
 lbl_800FD20C:
-/* 800FD20C 000F912C  88 0D A5 42 */	lbz r0, startGroupNum-_SDA_BASE_(r13)
+/* 800FD20C 000F912C  88 0D A5 42 */	lbz r0, startGroupNum@sda21(r13)
 /* 800FD210 000F9130  7C 1E 00 00 */	cmpw r30, r0
 /* 800FD214 000F9134  41 80 FE 94 */	blt lbl_800FD0A8
 /* 800FD218 000F9138  80 01 00 3C */	lwz r0, 0x3c(r1)
@@ -1363,25 +1363,25 @@ s3dHandle:
 /* 800FD260 000F9180  93 E1 00 2C */	stw r31, 0x2c(r1)
 /* 800FD264 000F9184  93 C1 00 28 */	stw r30, 0x28(r1)
 /* 800FD268 000F9188  93 A1 00 24 */	stw r29, 0x24(r1)
-/* 800FD26C 000F918C  88 6D A5 28 */	lbz r3, s3dCallCnt-_SDA_BASE_(r13)
+/* 800FD26C 000F918C  88 6D A5 28 */	lbz r3, s3dCallCnt@sda21(r13)
 /* 800FD270 000F9190  28 03 00 00 */	cmplwi r3, 0
 /* 800FD274 000F9194  41 82 00 10 */	beq lbl_800FD284
 /* 800FD278 000F9198  38 03 FF FF */	addi r0, r3, -1
-/* 800FD27C 000F919C  98 0D A5 28 */	stb r0, s3dCallCnt-_SDA_BASE_(r13)
+/* 800FD27C 000F919C  98 0D A5 28 */	stb r0, s3dCallCnt@sda21(r13)
 /* 800FD280 000F91A0  48 00 03 04 */	b lbl_800FD584
 lbl_800FD284:
 /* 800FD284 000F91A4  38 00 00 00 */	li r0, 0
-/* 800FD288 000F91A8  83 CD A5 2C */	lwz r30, s3dEmitterRoot-_SDA_BASE_(r13)
+/* 800FD288 000F91A8  83 CD A5 2C */	lwz r30, s3dEmitterRoot@sda21(r13)
 /* 800FD28C 000F91AC  38 80 00 03 */	li r4, 3
-/* 800FD290 000F91B0  98 0D A5 42 */	stb r0, startGroupNum-_SDA_BASE_(r13)
+/* 800FD290 000F91B0  98 0D A5 42 */	stb r0, startGroupNum@sda21(r13)
 /* 800FD294 000F91B4  3C 60 00 02 */	lis r3, 0x00020001@ha
 /* 800FD298 000F91B8  C3 A2 C1 C0 */	lfs f29, lbl_802F69C0-_SDA2_BASE_(r2)
-/* 800FD29C 000F91BC  98 8D A5 28 */	stb r4, s3dCallCnt-_SDA_BASE_(r13)
+/* 800FD29C 000F91BC  98 8D A5 28 */	stb r4, s3dCallCnt@sda21(r13)
 /* 800FD2A0 000F91C0  3B E3 00 01 */	addi r31, r3, 0x00020001@l
 /* 800FD2A4 000F91C4  C3 C2 C2 04 */	lfs f30, lbl_802F6A04-_SDA2_BASE_(r2)
-/* 800FD2A8 000F91C8  98 0D A5 43 */	stb r0, startListNumnum-_SDA_BASE_(r13)
+/* 800FD2A8 000F91C8  98 0D A5 43 */	stb r0, startListNumnum@sda21(r13)
 /* 800FD2AC 000F91CC  C3 E2 C1 E4 */	lfs f31, lbl_802F69E4-_SDA2_BASE_(r2)
-/* 800FD2B0 000F91D0  98 0D A5 44 */	stb r0, runListNum-_SDA_BASE_(r13)
+/* 800FD2B0 000F91D0  98 0D A5 44 */	stb r0, runListNum@sda21(r13)
 /* 800FD2B4 000F91D4  48 00 02 BC */	b lbl_800FD570
 lbl_800FD2B8:
 /* 800FD2B8 000F91D8  80 9E 00 10 */	lwz r4, 0x10(r30)
@@ -1402,7 +1402,7 @@ lbl_800FD2DC:
 /* 800FD2F0 000F9210  48 00 00 0C */	b lbl_800FD2FC
 lbl_800FD2F4:
 /* 800FD2F4 000F9214  80 1E 00 00 */	lwz r0, 0(r30)
-/* 800FD2F8 000F9218  90 0D A5 2C */	stw r0, s3dEmitterRoot-_SDA_BASE_(r13)
+/* 800FD2F8 000F9218  90 0D A5 2C */	stw r0, s3dEmitterRoot@sda21(r13)
 lbl_800FD2FC:
 /* 800FD2FC 000F921C  80 1E 00 10 */	lwz r0, 0x10(r30)
 /* 800FD300 000F9220  54 00 04 3E */	clrlwi r0, r0, 0x10
@@ -1601,13 +1601,13 @@ lbl_800FD584:
 s3dInit:
 /* 800FD5AC 000F94CC  38 80 00 00 */	li r4, 0
 /* 800FD5B0 000F94D0  38 60 00 01 */	li r3, 1
-/* 800FD5B4 000F94D4  90 8D A5 2C */	stw r4, s3dEmitterRoot-_SDA_BASE_(r13)
+/* 800FD5B4 000F94D4  90 8D A5 2C */	stw r4, s3dEmitterRoot@sda21(r13)
 /* 800FD5B8 000F94D8  38 00 00 03 */	li r0, 3
-/* 800FD5BC 000F94DC  90 8D A5 30 */	stw r4, s3dListenerRoot-_SDA_BASE_(r13)
-/* 800FD5C0 000F94E0  90 8D A5 34 */	stw r4, s3dRoomRoot-_SDA_BASE_(r13)
-/* 800FD5C4 000F94E4  90 8D A5 38 */	stw r4, s3dDoorRoot-_SDA_BASE_(r13)
-/* 800FD5C8 000F94E8  90 8D A5 3C */	stw r4, snd_used_studios-_SDA_BASE_(r13)
-/* 800FD5CC 000F94EC  98 6D A5 40 */	stb r3, snd_base_studio-_SDA_BASE_(r13)
-/* 800FD5D0 000F94F0  98 0D A5 41 */	stb r0, snd_max_studios-_SDA_BASE_(r13)
-/* 800FD5D4 000F94F4  98 8D A5 28 */	stb r4, s3dCallCnt-_SDA_BASE_(r13)
+/* 800FD5BC 000F94DC  90 8D A5 30 */	stw r4, s3dListenerRoot@sda21(r13)
+/* 800FD5C0 000F94E0  90 8D A5 34 */	stw r4, s3dRoomRoot@sda21(r13)
+/* 800FD5C4 000F94E4  90 8D A5 38 */	stw r4, s3dDoorRoot@sda21(r13)
+/* 800FD5C8 000F94E8  90 8D A5 3C */	stw r4, snd_used_studios@sda21(r13)
+/* 800FD5CC 000F94EC  98 6D A5 40 */	stb r3, snd_base_studio@sda21(r13)
+/* 800FD5D0 000F94F0  98 0D A5 41 */	stb r0, snd_max_studios@sda21(r13)
+/* 800FD5D4 000F94F4  98 8D A5 28 */	stb r4, s3dCallCnt@sda21(r13)
 /* 800FD5D8 000F94F8  4E 80 00 20 */	blr

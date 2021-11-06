@@ -480,3 +480,9 @@ void func_80018330(int a)
         camera->unk28,
         camera->unk2C);
 }
+
+void func_80018648(int a)
+{
+    if (lbl_802F1C40 != a || lbl_802F1C34 != a)
+        func_80018330(a);
+}

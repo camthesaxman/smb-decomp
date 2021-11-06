@@ -25,7 +25,7 @@ lbl_800D497C:
 /* 800D4980 000D08A0  28 03 00 00 */	cmplwi r3, 0
 /* 800D4984 000D08A4  41 82 FF F8 */	beq lbl_800D497C
 /* 800D4988 000D08A8  4B FF FE 11 */	bl DSPReadMailFromDSP
-/* 800D498C 000D08AC  80 AD A3 40 */	lwz r5, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D498C 000D08AC  80 AD A3 40 */	lwz r5, __DSP_curr_task@sda21(r13)
 /* 800D4990 000D08B0  80 05 00 08 */	lwz r0, 8(r5)
 /* 800D4994 000D08B4  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 800D4998 000D08B8  41 82 00 18 */	beq lbl_800D49B0
@@ -53,7 +53,7 @@ lbl_800D49D4:
 lbl_800D49E8:
 /* 800D49E8 000D0908  38 00 00 01 */	li r0, 1
 /* 800D49EC 000D090C  90 05 00 00 */	stw r0, 0(r5)
-/* 800D49F0 000D0910  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D49F0 000D0910  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D49F4 000D0914  81 83 00 28 */	lwz r12, 0x28(r3)
 /* 800D49F8 000D0918  28 0C 00 00 */	cmplwi r12, 0
 /* 800D49FC 000D091C  41 82 03 40 */	beq lbl_800D4D3C
@@ -63,7 +63,7 @@ lbl_800D49E8:
 lbl_800D4A0C:
 /* 800D4A0C 000D092C  38 00 00 01 */	li r0, 1
 /* 800D4A10 000D0930  90 05 00 00 */	stw r0, 0(r5)
-/* 800D4A14 000D0934  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4A14 000D0934  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4A18 000D0938  81 83 00 2C */	lwz r12, 0x2c(r3)
 /* 800D4A1C 000D093C  28 0C 00 00 */	cmplwi r12, 0
 /* 800D4A20 000D0940  41 82 03 1C */	beq lbl_800D4D3C
@@ -71,10 +71,10 @@ lbl_800D4A0C:
 /* 800D4A28 000D0948  4E 80 00 21 */	blrl
 /* 800D4A2C 000D094C  48 00 03 10 */	b lbl_800D4D3C
 lbl_800D4A30:
-/* 800D4A30 000D0950  80 0D A3 50 */	lwz r0, __DSP_rude_task_pending-_SDA_BASE_(r13)
+/* 800D4A30 000D0950  80 0D A3 50 */	lwz r0, __DSP_rude_task_pending@sda21(r13)
 /* 800D4A34 000D0954  2C 00 00 00 */	cmpwi r0, 0
 /* 800D4A38 000D0958  41 82 00 98 */	beq lbl_800D4AD0
-/* 800D4A3C 000D095C  80 0D A3 54 */	lwz r0, __DSP_rude_task-_SDA_BASE_(r13)
+/* 800D4A3C 000D095C  80 0D A3 54 */	lwz r0, __DSP_rude_task@sda21(r13)
 /* 800D4A40 000D0960  7C 05 00 40 */	cmplw r5, r0
 /* 800D4A44 000D0964  40 82 00 44 */	bne lbl_800D4A88
 /* 800D4A48 000D0968  3C 60 CD D1 */	lis r3, 0xCDD10003@ha
@@ -85,9 +85,9 @@ lbl_800D4A54:
 /* 800D4A58 000D0978  28 03 00 00 */	cmplwi r3, 0
 /* 800D4A5C 000D097C  40 82 FF F8 */	bne lbl_800D4A54
 /* 800D4A60 000D0980  38 00 00 00 */	li r0, 0
-/* 800D4A64 000D0984  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4A68 000D0988  90 0D A3 54 */	stw r0, __DSP_rude_task-_SDA_BASE_(r13)
-/* 800D4A6C 000D098C  90 0D A3 50 */	stw r0, __DSP_rude_task_pending-_SDA_BASE_(r13)
+/* 800D4A64 000D0984  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
+/* 800D4A68 000D0988  90 0D A3 54 */	stw r0, __DSP_rude_task@sda21(r13)
+/* 800D4A6C 000D098C  90 0D A3 50 */	stw r0, __DSP_rude_task_pending@sda21(r13)
 /* 800D4A70 000D0990  81 83 00 2C */	lwz r12, 0x2c(r3)
 /* 800D4A74 000D0994  28 0C 00 00 */	cmplwi r12, 0
 /* 800D4A78 000D0998  41 82 02 C4 */	beq lbl_800D4D3C
@@ -102,23 +102,23 @@ lbl_800D4A94:
 /* 800D4A94 000D09B4  4B FF FC E5 */	bl DSPCheckMailToDSP
 /* 800D4A98 000D09B8  28 03 00 00 */	cmplwi r3, 0
 /* 800D4A9C 000D09BC  40 82 FF F8 */	bne lbl_800D4A94
-/* 800D4AA0 000D09C0  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4AA4 000D09C4  80 8D A3 54 */	lwz r4, __DSP_rude_task-_SDA_BASE_(r13)
+/* 800D4AA0 000D09C0  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
+/* 800D4AA4 000D09C4  80 8D A3 54 */	lwz r4, __DSP_rude_task@sda21(r13)
 /* 800D4AA8 000D09C8  48 00 02 B9 */	bl __DSP_exec_task
-/* 800D4AAC 000D09CC  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4AAC 000D09CC  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4AB0 000D09D0  38 80 00 02 */	li r4, 2
 /* 800D4AB4 000D09D4  38 00 00 00 */	li r0, 0
 /* 800D4AB8 000D09D8  90 83 00 00 */	stw r4, 0(r3)
-/* 800D4ABC 000D09DC  80 6D A3 54 */	lwz r3, __DSP_rude_task-_SDA_BASE_(r13)
-/* 800D4AC0 000D09E0  90 0D A3 50 */	stw r0, __DSP_rude_task_pending-_SDA_BASE_(r13)
-/* 800D4AC4 000D09E4  90 6D A3 40 */	stw r3, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4AC8 000D09E8  90 0D A3 54 */	stw r0, __DSP_rude_task-_SDA_BASE_(r13)
+/* 800D4ABC 000D09DC  80 6D A3 54 */	lwz r3, __DSP_rude_task@sda21(r13)
+/* 800D4AC0 000D09E0  90 0D A3 50 */	stw r0, __DSP_rude_task_pending@sda21(r13)
+/* 800D4AC4 000D09E4  90 6D A3 40 */	stw r3, __DSP_curr_task@sda21(r13)
+/* 800D4AC8 000D09E8  90 0D A3 54 */	stw r0, __DSP_rude_task@sda21(r13)
 /* 800D4ACC 000D09EC  48 00 02 70 */	b lbl_800D4D3C
 lbl_800D4AD0:
 /* 800D4AD0 000D09F0  80 05 00 38 */	lwz r0, 0x38(r5)
 /* 800D4AD4 000D09F4  28 00 00 00 */	cmplwi r0, 0
 /* 800D4AD8 000D09F8  40 82 00 80 */	bne lbl_800D4B58
-/* 800D4ADC 000D09FC  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D4ADC 000D09FC  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
 /* 800D4AE0 000D0A00  7C 05 00 40 */	cmplw r5, r0
 /* 800D4AE4 000D0A04  40 82 00 38 */	bne lbl_800D4B1C
 /* 800D4AE8 000D0A08  3C 60 CD D1 */	lis r3, 0xCDD10003@ha
@@ -128,7 +128,7 @@ lbl_800D4AF4:
 /* 800D4AF4 000D0A14  4B FF FC 85 */	bl DSPCheckMailToDSP
 /* 800D4AF8 000D0A18  28 03 00 00 */	cmplwi r3, 0
 /* 800D4AFC 000D0A1C  40 82 FF F8 */	bne lbl_800D4AF4
-/* 800D4B00 000D0A20  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B00 000D0A20  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4B04 000D0A24  81 83 00 2C */	lwz r12, 0x2c(r3)
 /* 800D4B08 000D0A28  28 0C 00 00 */	cmplwi r12, 0
 /* 800D4B0C 000D0A2C  41 82 02 30 */	beq lbl_800D4D3C
@@ -143,14 +143,14 @@ lbl_800D4B28:
 /* 800D4B28 000D0A48  4B FF FC 51 */	bl DSPCheckMailToDSP
 /* 800D4B2C 000D0A4C  28 03 00 00 */	cmplwi r3, 0
 /* 800D4B30 000D0A50  40 82 FF F8 */	bne lbl_800D4B28
-/* 800D4B34 000D0A54  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4B38 000D0A58  80 8D A3 48 */	lwz r4, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D4B34 000D0A54  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
+/* 800D4B38 000D0A58  80 8D A3 48 */	lwz r4, __DSP_first_task@sda21(r13)
 /* 800D4B3C 000D0A5C  48 00 02 25 */	bl __DSP_exec_task
-/* 800D4B40 000D0A60  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B40 000D0A60  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4B44 000D0A64  38 00 00 02 */	li r0, 2
 /* 800D4B48 000D0A68  90 03 00 00 */	stw r0, 0(r3)
-/* 800D4B4C 000D0A6C  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
-/* 800D4B50 000D0A70  90 0D A3 40 */	stw r0, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B4C 000D0A6C  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
+/* 800D4B50 000D0A70  90 0D A3 40 */	stw r0, __DSP_curr_task@sda21(r13)
 /* 800D4B54 000D0A74  48 00 01 E8 */	b lbl_800D4D3C
 lbl_800D4B58:
 /* 800D4B58 000D0A78  3C 60 CD D1 */	lis r3, 0xCDD10001@ha
@@ -160,18 +160,18 @@ lbl_800D4B64:
 /* 800D4B64 000D0A84  4B FF FC 15 */	bl DSPCheckMailToDSP
 /* 800D4B68 000D0A88  28 03 00 00 */	cmplwi r3, 0
 /* 800D4B6C 000D0A8C  40 82 FF F8 */	bne lbl_800D4B64
-/* 800D4B70 000D0A90  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B70 000D0A90  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4B74 000D0A94  80 83 00 38 */	lwz r4, 0x38(r3)
 /* 800D4B78 000D0A98  48 00 01 E9 */	bl __DSP_exec_task
-/* 800D4B7C 000D0A9C  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B7C 000D0A9C  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4B80 000D0AA0  38 00 00 02 */	li r0, 2
 /* 800D4B84 000D0AA4  90 03 00 00 */	stw r0, 0(r3)
-/* 800D4B88 000D0AA8  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B88 000D0AA8  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4B8C 000D0AAC  80 03 00 38 */	lwz r0, 0x38(r3)
-/* 800D4B90 000D0AB0  90 0D A3 40 */	stw r0, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4B90 000D0AB0  90 0D A3 40 */	stw r0, __DSP_curr_task@sda21(r13)
 /* 800D4B94 000D0AB4  48 00 01 A8 */	b lbl_800D4D3C
 lbl_800D4B98:
-/* 800D4B98 000D0AB8  80 0D A3 50 */	lwz r0, __DSP_rude_task_pending-_SDA_BASE_(r13)
+/* 800D4B98 000D0AB8  80 0D A3 50 */	lwz r0, __DSP_rude_task_pending@sda21(r13)
 /* 800D4B9C 000D0ABC  2C 00 00 00 */	cmpwi r0, 0
 /* 800D4BA0 000D0AC0  41 82 00 60 */	beq lbl_800D4C00
 /* 800D4BA4 000D0AC4  81 85 00 30 */	lwz r12, 0x30(r5)
@@ -189,21 +189,21 @@ lbl_800D4BC8:
 /* 800D4BCC 000D0AEC  28 03 00 00 */	cmplwi r3, 0
 /* 800D4BD0 000D0AF0  40 82 FF F8 */	bne lbl_800D4BC8
 /* 800D4BD4 000D0AF4  38 60 00 00 */	li r3, 0
-/* 800D4BD8 000D0AF8  80 8D A3 54 */	lwz r4, __DSP_rude_task-_SDA_BASE_(r13)
+/* 800D4BD8 000D0AF8  80 8D A3 54 */	lwz r4, __DSP_rude_task@sda21(r13)
 /* 800D4BDC 000D0AFC  48 00 01 85 */	bl __DSP_exec_task
-/* 800D4BE0 000D0B00  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4BE0 000D0B00  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4BE4 000D0B04  48 00 05 49 */	bl __DSP_remove_task
-/* 800D4BE8 000D0B08  80 6D A3 54 */	lwz r3, __DSP_rude_task-_SDA_BASE_(r13)
+/* 800D4BE8 000D0B08  80 6D A3 54 */	lwz r3, __DSP_rude_task@sda21(r13)
 /* 800D4BEC 000D0B0C  38 00 00 00 */	li r0, 0
-/* 800D4BF0 000D0B10  90 0D A3 50 */	stw r0, __DSP_rude_task_pending-_SDA_BASE_(r13)
-/* 800D4BF4 000D0B14  90 6D A3 40 */	stw r3, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4BF8 000D0B18  90 0D A3 54 */	stw r0, __DSP_rude_task-_SDA_BASE_(r13)
+/* 800D4BF0 000D0B10  90 0D A3 50 */	stw r0, __DSP_rude_task_pending@sda21(r13)
+/* 800D4BF4 000D0B14  90 6D A3 40 */	stw r3, __DSP_curr_task@sda21(r13)
+/* 800D4BF8 000D0B18  90 0D A3 54 */	stw r0, __DSP_rude_task@sda21(r13)
 /* 800D4BFC 000D0B1C  48 00 01 40 */	b lbl_800D4D3C
 lbl_800D4C00:
 /* 800D4C00 000D0B20  80 05 00 38 */	lwz r0, 0x38(r5)
 /* 800D4C04 000D0B24  28 00 00 00 */	cmplwi r0, 0
 /* 800D4C08 000D0B28  40 82 00 B4 */	bne lbl_800D4CBC
-/* 800D4C0C 000D0B2C  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D4C0C 000D0B2C  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
 /* 800D4C10 000D0B30  7C 05 00 40 */	cmplw r5, r0
 /* 800D4C14 000D0B34  40 82 00 4C */	bne lbl_800D4C60
 /* 800D4C18 000D0B38  81 85 00 30 */	lwz r12, 0x30(r5)
@@ -220,10 +220,10 @@ lbl_800D4C3C:
 /* 800D4C3C 000D0B5C  4B FF FB 3D */	bl DSPCheckMailToDSP
 /* 800D4C40 000D0B60  28 03 00 00 */	cmplwi r3, 0
 /* 800D4C44 000D0B64  40 82 FF F8 */	bne lbl_800D4C3C
-/* 800D4C48 000D0B68  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4C48 000D0B68  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4C4C 000D0B6C  38 00 00 03 */	li r0, 3
 /* 800D4C50 000D0B70  90 03 00 00 */	stw r0, 0(r3)
-/* 800D4C54 000D0B74  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4C54 000D0B74  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4C58 000D0B78  48 00 04 D5 */	bl __DSP_remove_task
 /* 800D4C5C 000D0B7C  48 00 00 E0 */	b lbl_800D4D3C
 lbl_800D4C60:
@@ -241,15 +241,15 @@ lbl_800D4C84:
 /* 800D4C84 000D0BA4  4B FF FA F5 */	bl DSPCheckMailToDSP
 /* 800D4C88 000D0BA8  28 03 00 00 */	cmplwi r3, 0
 /* 800D4C8C 000D0BAC  40 82 FF F8 */	bne lbl_800D4C84
-/* 800D4C90 000D0BB0  80 8D A3 40 */	lwz r4, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4C90 000D0BB0  80 8D A3 40 */	lwz r4, __DSP_curr_task@sda21(r13)
 /* 800D4C94 000D0BB4  38 00 00 03 */	li r0, 3
 /* 800D4C98 000D0BB8  38 60 00 00 */	li r3, 0
 /* 800D4C9C 000D0BBC  90 04 00 00 */	stw r0, 0(r4)
-/* 800D4CA0 000D0BC0  80 8D A3 48 */	lwz r4, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D4CA0 000D0BC0  80 8D A3 48 */	lwz r4, __DSP_first_task@sda21(r13)
 /* 800D4CA4 000D0BC4  48 00 00 BD */	bl __DSP_exec_task
-/* 800D4CA8 000D0BC8  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
-/* 800D4CAC 000D0BCC  80 6D A3 44 */	lwz r3, __DSP_last_task-_SDA_BASE_(r13)
-/* 800D4CB0 000D0BD0  90 0D A3 40 */	stw r0, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4CA8 000D0BC8  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
+/* 800D4CAC 000D0BCC  80 6D A3 44 */	lwz r3, __DSP_last_task@sda21(r13)
+/* 800D4CB0 000D0BD0  90 0D A3 40 */	stw r0, __DSP_curr_task@sda21(r13)
 /* 800D4CB4 000D0BD4  48 00 04 79 */	bl __DSP_remove_task
 /* 800D4CB8 000D0BD8  48 00 00 84 */	b lbl_800D4D3C
 lbl_800D4CBC:
@@ -267,17 +267,17 @@ lbl_800D4CE0:
 /* 800D4CE0 000D0C00  4B FF FA 99 */	bl DSPCheckMailToDSP
 /* 800D4CE4 000D0C04  28 03 00 00 */	cmplwi r3, 0
 /* 800D4CE8 000D0C08  40 82 FF F8 */	bne lbl_800D4CE0
-/* 800D4CEC 000D0C0C  80 8D A3 40 */	lwz r4, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4CEC 000D0C0C  80 8D A3 40 */	lwz r4, __DSP_curr_task@sda21(r13)
 /* 800D4CF0 000D0C10  38 00 00 03 */	li r0, 3
 /* 800D4CF4 000D0C14  38 60 00 00 */	li r3, 0
 /* 800D4CF8 000D0C18  90 04 00 00 */	stw r0, 0(r4)
-/* 800D4CFC 000D0C1C  80 8D A3 40 */	lwz r4, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4CFC 000D0C1C  80 8D A3 40 */	lwz r4, __DSP_curr_task@sda21(r13)
 /* 800D4D00 000D0C20  80 84 00 38 */	lwz r4, 0x38(r4)
 /* 800D4D04 000D0C24  48 00 00 5D */	bl __DSP_exec_task
-/* 800D4D08 000D0C28  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4D08 000D0C28  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4D0C 000D0C2C  80 03 00 38 */	lwz r0, 0x38(r3)
-/* 800D4D10 000D0C30  90 0D A3 40 */	stw r0, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D4D14 000D0C34  80 6D A3 40 */	lwz r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D4D10 000D0C30  90 0D A3 40 */	stw r0, __DSP_curr_task@sda21(r13)
+/* 800D4D14 000D0C34  80 6D A3 40 */	lwz r3, __DSP_curr_task@sda21(r13)
 /* 800D4D18 000D0C38  80 63 00 3C */	lwz r3, 0x3c(r3)
 /* 800D4D1C 000D0C3C  48 00 04 11 */	bl __DSP_remove_task
 /* 800D4D20 000D0C40  48 00 00 1C */	b lbl_800D4D3C
@@ -542,13 +542,13 @@ lbl_800D5008:
 
 .global __DSP_insert_task
 __DSP_insert_task:
-/* 800D508C 000D0FAC  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D508C 000D0FAC  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
 /* 800D5090 000D0FB0  28 00 00 00 */	cmplwi r0, 0
 /* 800D5094 000D0FB4  40 82 00 20 */	bne lbl_800D50B4
-/* 800D5098 000D0FB8  90 6D A3 40 */	stw r3, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D5098 000D0FB8  90 6D A3 40 */	stw r3, __DSP_curr_task@sda21(r13)
 /* 800D509C 000D0FBC  38 00 00 00 */	li r0, 0
-/* 800D50A0 000D0FC0  90 6D A3 44 */	stw r3, __DSP_last_task-_SDA_BASE_(r13)
-/* 800D50A4 000D0FC4  90 6D A3 48 */	stw r3, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D50A0 000D0FC0  90 6D A3 44 */	stw r3, __DSP_last_task@sda21(r13)
+/* 800D50A4 000D0FC4  90 6D A3 48 */	stw r3, __DSP_first_task@sda21(r13)
 /* 800D50A8 000D0FC8  90 03 00 3C */	stw r0, 0x3c(r3)
 /* 800D50AC 000D0FCC  90 03 00 38 */	stw r0, 0x38(r3)
 /* 800D50B0 000D0FD0  4E 80 00 20 */	blr
@@ -567,7 +567,7 @@ lbl_800D50BC:
 /* 800D50DC 000D0FFC  80 83 00 3C */	lwz r4, 0x3c(r3)
 /* 800D50E0 000D1000  28 04 00 00 */	cmplwi r4, 0
 /* 800D50E4 000D1004  40 82 00 0C */	bne lbl_800D50F0
-/* 800D50E8 000D1008  90 6D A3 48 */	stw r3, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D50E8 000D1008  90 6D A3 48 */	stw r3, __DSP_first_task@sda21(r13)
 /* 800D50EC 000D100C  48 00 00 18 */	b lbl_800D5104
 lbl_800D50F0:
 /* 800D50F0 000D1010  90 64 00 38 */	stw r3, 0x38(r4)
@@ -580,13 +580,13 @@ lbl_800D50FC:
 lbl_800D5104:
 /* 800D5104 000D1024  28 05 00 00 */	cmplwi r5, 0
 /* 800D5108 000D1028  4C 82 00 20 */	bnelr
-/* 800D510C 000D102C  80 8D A3 44 */	lwz r4, __DSP_last_task-_SDA_BASE_(r13)
+/* 800D510C 000D102C  80 8D A3 44 */	lwz r4, __DSP_last_task@sda21(r13)
 /* 800D5110 000D1030  38 00 00 00 */	li r0, 0
 /* 800D5114 000D1034  90 64 00 38 */	stw r3, 0x38(r4)
 /* 800D5118 000D1038  90 03 00 38 */	stw r0, 0x38(r3)
-/* 800D511C 000D103C  80 0D A3 44 */	lwz r0, __DSP_last_task-_SDA_BASE_(r13)
+/* 800D511C 000D103C  80 0D A3 44 */	lwz r0, __DSP_last_task@sda21(r13)
 /* 800D5120 000D1040  90 03 00 3C */	stw r0, 0x3c(r3)
-/* 800D5124 000D1044  90 6D A3 44 */	stw r3, __DSP_last_task-_SDA_BASE_(r13)
+/* 800D5124 000D1044  90 6D A3 44 */	stw r3, __DSP_last_task@sda21(r13)
 /* 800D5128 000D1048  4E 80 00 20 */	blr
 
 .global __DSP_remove_task
@@ -595,35 +595,35 @@ __DSP_remove_task:
 /* 800D5130 000D1050  90 83 00 08 */	stw r4, 8(r3)
 /* 800D5134 000D1054  38 00 00 03 */	li r0, 3
 /* 800D5138 000D1058  90 03 00 00 */	stw r0, 0(r3)
-/* 800D513C 000D105C  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D513C 000D105C  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
 /* 800D5140 000D1060  7C 00 18 40 */	cmplw r0, r3
 /* 800D5144 000D1064  40 82 00 30 */	bne lbl_800D5174
 /* 800D5148 000D1068  80 03 00 38 */	lwz r0, 0x38(r3)
 /* 800D514C 000D106C  28 00 00 00 */	cmplwi r0, 0
 /* 800D5150 000D1070  41 82 00 14 */	beq lbl_800D5164
-/* 800D5154 000D1074  90 0D A3 48 */	stw r0, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D5154 000D1074  90 0D A3 48 */	stw r0, __DSP_first_task@sda21(r13)
 /* 800D5158 000D1078  80 63 00 38 */	lwz r3, 0x38(r3)
 /* 800D515C 000D107C  90 83 00 3C */	stw r4, 0x3c(r3)
 /* 800D5160 000D1080  4E 80 00 20 */	blr
 lbl_800D5164:
-/* 800D5164 000D1084  90 8D A3 40 */	stw r4, __DSP_curr_task-_SDA_BASE_(r13)
-/* 800D5168 000D1088  90 8D A3 44 */	stw r4, __DSP_last_task-_SDA_BASE_(r13)
-/* 800D516C 000D108C  90 8D A3 48 */	stw r4, __DSP_first_task-_SDA_BASE_(r13)
+/* 800D5164 000D1084  90 8D A3 40 */	stw r4, __DSP_curr_task@sda21(r13)
+/* 800D5168 000D1088  90 8D A3 44 */	stw r4, __DSP_last_task@sda21(r13)
+/* 800D516C 000D108C  90 8D A3 48 */	stw r4, __DSP_first_task@sda21(r13)
 /* 800D5170 000D1090  4E 80 00 20 */	blr
 lbl_800D5174:
-/* 800D5174 000D1094  80 0D A3 44 */	lwz r0, __DSP_last_task-_SDA_BASE_(r13)
+/* 800D5174 000D1094  80 0D A3 44 */	lwz r0, __DSP_last_task@sda21(r13)
 /* 800D5178 000D1098  7C 00 18 40 */	cmplw r0, r3
 /* 800D517C 000D109C  40 82 00 20 */	bne lbl_800D519C
 /* 800D5180 000D10A0  80 03 00 3C */	lwz r0, 0x3c(r3)
-/* 800D5184 000D10A4  90 0D A3 44 */	stw r0, __DSP_last_task-_SDA_BASE_(r13)
+/* 800D5184 000D10A4  90 0D A3 44 */	stw r0, __DSP_last_task@sda21(r13)
 /* 800D5188 000D10A8  80 63 00 3C */	lwz r3, 0x3c(r3)
 /* 800D518C 000D10AC  90 83 00 38 */	stw r4, 0x38(r3)
-/* 800D5190 000D10B0  80 0D A3 48 */	lwz r0, __DSP_first_task-_SDA_BASE_(r13)
-/* 800D5194 000D10B4  90 0D A3 40 */	stw r0, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D5190 000D10B0  80 0D A3 48 */	lwz r0, __DSP_first_task@sda21(r13)
+/* 800D5194 000D10B4  90 0D A3 40 */	stw r0, __DSP_curr_task@sda21(r13)
 /* 800D5198 000D10B8  4E 80 00 20 */	blr
 lbl_800D519C:
 /* 800D519C 000D10BC  80 03 00 38 */	lwz r0, 0x38(r3)
-/* 800D51A0 000D10C0  90 0D A3 40 */	stw r0, __DSP_curr_task-_SDA_BASE_(r13)
+/* 800D51A0 000D10C0  90 0D A3 40 */	stw r0, __DSP_curr_task@sda21(r13)
 /* 800D51A4 000D10C4  80 03 00 38 */	lwz r0, 0x38(r3)
 /* 800D51A8 000D10C8  80 83 00 3C */	lwz r4, 0x3c(r3)
 /* 800D51AC 000D10CC  90 04 00 38 */	stw r0, 0x38(r4)

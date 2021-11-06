@@ -9,7 +9,7 @@ snd_handle_irq:
 /* 800FF54C 000FB46C  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800FF550 000FB470  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800FF554 000FB474  93 C1 00 10 */	stw r30, 0x10(r1)
-/* 800FF558 000FB478  88 0D A4 18 */	lbz r0, sndActive_2-_SDA_BASE_(r13)
+/* 800FF558 000FB478  88 0D A4 18 */	lbz r0, sndActive_2@sda21(r13)
 /* 800FF55C 000FB47C  28 00 00 00 */	cmplwi r0, 0
 /* 800FF560 000FB480  41 82 01 24 */	beq lbl_800FF684
 /* 800FF564 000FB484  4B FF 03 F1 */	bl streamCorrectLoops
@@ -21,22 +21,22 @@ snd_handle_irq:
 /* 800FF57C 000FB49C  4B FF C1 49 */	bl salHandleAuxProcessing
 /* 800FF580 000FB4A0  48 00 1C D9 */	bl hwIRQLeaveCritical
 /* 800FF584 000FB4A4  48 00 1C B5 */	bl hwIRQEnterCritical
-/* 800FF588 000FB4A8  88 AD A5 55 */	lbz r5, salAuxFrame-_SDA_BASE_(r13)
+/* 800FF588 000FB4A8  88 AD A5 55 */	lbz r5, salAuxFrame@sda21(r13)
 /* 800FF58C 000FB4AC  38 60 00 00 */	li r3, 0
 /* 800FF590 000FB4B0  3C 80 55 55 */	lis r4, 0x55555556@ha
-/* 800FF594 000FB4B4  88 ED A5 56 */	lbz r7, salFrame-_SDA_BASE_(r13)
+/* 800FF594 000FB4B4  88 ED A5 56 */	lbz r7, salFrame@sda21(r13)
 /* 800FF598 000FB4B8  38 C5 00 01 */	addi r6, r5, 1
 /* 800FF59C 000FB4BC  38 84 55 56 */	addi r4, r4, 0x55555556@l
-/* 800FF5A0 000FB4C0  88 0D A5 54 */	lbz r0, salNumVoices-_SDA_BASE_(r13)
+/* 800FF5A0 000FB4C0  88 0D A5 54 */	lbz r0, salNumVoices@sda21(r13)
 /* 800FF5A4 000FB4C4  7C A4 30 96 */	mulhw r5, r4, r6
 /* 800FF5A8 000FB4C8  54 A4 0F FE */	srwi r4, r5, 0x1f
 /* 800FF5AC 000FB4CC  7C 85 22 14 */	add r4, r5, r4
 /* 800FF5B0 000FB4D0  1C 84 00 03 */	mulli r4, r4, 3
 /* 800FF5B4 000FB4D4  7C 84 30 50 */	subf r4, r4, r6
 /* 800FF5B8 000FB4D8  68 E5 00 01 */	xori r5, r7, 1
-/* 800FF5BC 000FB4DC  98 8D A5 55 */	stb r4, salAuxFrame-_SDA_BASE_(r13)
+/* 800FF5BC 000FB4DC  98 8D A5 55 */	stb r4, salAuxFrame@sda21(r13)
 /* 800FF5C0 000FB4E0  7C 7F 1B 78 */	mr r31, r3
-/* 800FF5C4 000FB4E4  98 AD A5 56 */	stb r5, salFrame-_SDA_BASE_(r13)
+/* 800FF5C4 000FB4E4  98 AD A5 56 */	stb r5, salFrame@sda21(r13)
 /* 800FF5C8 000FB4E8  39 83 00 00 */	addi r12, r3, 0
 /* 800FF5CC 000FB4EC  39 43 00 00 */	addi r10, r3, 0
 /* 800FF5D0 000FB4F0  39 03 00 00 */	addi r8, r3, 0
@@ -44,22 +44,22 @@ snd_handle_irq:
 /* 800FF5D8 000FB4F8  3B C0 00 00 */	li r30, 0
 /* 800FF5DC 000FB4FC  48 00 00 48 */	b lbl_800FF624
 lbl_800FF5E0:
-/* 800FF5E0 000FB500  80 AD A5 1C */	lwz r5, dspVoice-_SDA_BASE_(r13)
+/* 800FF5E0 000FB500  80 AD A5 1C */	lwz r5, dspVoice@sda21(r13)
 /* 800FF5E4 000FB504  38 83 00 24 */	addi r4, r3, 0x24
 /* 800FF5E8 000FB508  39 24 00 04 */	addi r9, r4, 4
 /* 800FF5EC 000FB50C  7F E5 21 2E */	stwx r31, r5, r4
 /* 800FF5F0 000FB510  38 E4 00 08 */	addi r7, r4, 8
 /* 800FF5F4 000FB514  38 A4 00 0C */	addi r5, r4, 0xc
-/* 800FF5F8 000FB518  81 6D A5 1C */	lwz r11, dspVoice-_SDA_BASE_(r13)
+/* 800FF5F8 000FB518  81 6D A5 1C */	lwz r11, dspVoice@sda21(r13)
 /* 800FF5FC 000FB51C  38 84 00 10 */	addi r4, r4, 0x10
 /* 800FF600 000FB520  38 63 00 F0 */	addi r3, r3, 0xf0
 /* 800FF604 000FB524  7D 8B 49 2E */	stwx r12, r11, r9
 /* 800FF608 000FB528  3B DE 00 01 */	addi r30, r30, 1
-/* 800FF60C 000FB52C  81 2D A5 1C */	lwz r9, dspVoice-_SDA_BASE_(r13)
+/* 800FF60C 000FB52C  81 2D A5 1C */	lwz r9, dspVoice@sda21(r13)
 /* 800FF610 000FB530  7D 49 39 2E */	stwx r10, r9, r7
-/* 800FF614 000FB534  80 ED A5 1C */	lwz r7, dspVoice-_SDA_BASE_(r13)
+/* 800FF614 000FB534  80 ED A5 1C */	lwz r7, dspVoice@sda21(r13)
 /* 800FF618 000FB538  7D 07 29 2E */	stwx r8, r7, r5
-/* 800FF61C 000FB53C  80 AD A5 1C */	lwz r5, dspVoice-_SDA_BASE_(r13)
+/* 800FF61C 000FB53C  80 AD A5 1C */	lwz r5, dspVoice@sda21(r13)
 /* 800FF620 000FB540  7C C5 21 2E */	stwx r6, r5, r4
 lbl_800FF624:
 /* 800FF624 000FB544  57 C4 06 3E */	clrlwi r4, r30, 0x18
@@ -110,12 +110,12 @@ hwInit:
 /* 800FF6C0 000FB5E0  48 00 1A DD */	bl hwInitIrq
 /* 800FF6C4 000FB5E4  38 00 00 00 */	li r0, 0
 /* 800FF6C8 000FB5E8  3C 60 80 10 */	lis r3, snd_handle_irq@ha
-/* 800FF6CC 000FB5EC  98 0D A5 56 */	stb r0, salFrame-_SDA_BASE_(r13)
+/* 800FF6CC 000FB5EC  98 0D A5 56 */	stb r0, salFrame@sda21(r13)
 /* 800FF6D0 000FB5F0  38 63 F5 44 */	addi r3, r3, snd_handle_irq@l
-/* 800FF6D4 000FB5F4  98 0D A5 55 */	stb r0, salAuxFrame-_SDA_BASE_(r13)
+/* 800FF6D4 000FB5F4  98 0D A5 55 */	stb r0, salAuxFrame@sda21(r13)
 /* 800FF6D8 000FB5F8  7F E4 FB 78 */	mr r4, r31
 /* 800FF6DC 000FB5FC  7F A5 EB 78 */	mr r5, r29
-/* 800FF6E0 000FB600  90 0D A5 20 */	stw r0, salMessageCallback-_SDA_BASE_(r13)
+/* 800FF6E0 000FB600  90 0D A5 20 */	stw r0, salMessageCallback@sda21(r13)
 /* 800FF6E4 000FB604  48 00 18 21 */	bl salInitAi
 /* 800FF6E8 000FB608  28 03 00 00 */	cmplwi r3, 0
 /* 800FF6EC 000FB60C  41 82 00 44 */	beq lbl_800FF730
@@ -148,18 +148,18 @@ lbl_800FF734:
 
 .global hwSetTimeOffset
 hwSetTimeOffset:
-/* 800FF750 000FB670  98 6D A5 48 */	stb r3, salTimeOffset-_SDA_BASE_(r13)
+/* 800FF750 000FB670  98 6D A5 48 */	stb r3, salTimeOffset@sda21(r13)
 /* 800FF754 000FB674  4E 80 00 20 */	blr
 
 .global hwGetTimeOffset
 hwGetTimeOffset:
-/* 800FF758 000FB678  88 6D A5 48 */	lbz r3, salTimeOffset-_SDA_BASE_(r13)
+/* 800FF758 000FB678  88 6D A5 48 */	lbz r3, salTimeOffset@sda21(r13)
 /* 800FF75C 000FB67C  4E 80 00 20 */	blr
 
 .global hwIsActive
 hwIsActive:
 /* 800FF760 000FB680  1C 03 00 F0 */	mulli r0, r3, 0xf0
-/* 800FF764 000FB684  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800FF764 000FB684  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FF768 000FB688  7C 63 02 14 */	add r3, r3, r0
 /* 800FF76C 000FB68C  88 03 00 E8 */	lbz r0, 0xe8(r3)
 /* 800FF770 000FB690  7C 60 00 D0 */	neg r3, r0
@@ -169,13 +169,13 @@ hwIsActive:
 
 .global hwSetMesgCallback
 hwSetMesgCallback:
-/* 800FF780 000FB6A0  90 6D A5 20 */	stw r3, salMessageCallback-_SDA_BASE_(r13)
+/* 800FF780 000FB6A0  90 6D A5 20 */	stw r3, salMessageCallback@sda21(r13)
 /* 800FF784 000FB6A4  4E 80 00 20 */	blr
 
 .global hwSetPriority
 hwSetPriority:
 /* 800FF788 000FB6A8  1C 03 00 F0 */	mulli r0, r3, 0xf0
-/* 800FF78C 000FB6AC  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800FF78C 000FB6AC  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FF790 000FB6B0  7C 63 02 14 */	add r3, r3, r0
 /* 800FF794 000FB6B4  90 83 00 1C */	stw r4, 0x1c(r3)
 /* 800FF798 000FB6B8  4E 80 00 20 */	blr
@@ -193,10 +193,10 @@ hwInitSamplePlayback:
 /* 800FF7BC 000FB6DC  3B EA 00 00 */	addi r31, r10, 0
 /* 800FF7C0 000FB6E0  3B 60 00 00 */	li r27, 0
 /* 800FF7C4 000FB6E4  3B 80 00 00 */	li r28, 0
-/* 800FF7C8 000FB6E8  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FF7C8 000FB6E8  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FF7CC 000FB6EC  48 00 00 2C */	b lbl_800FF7F8
 lbl_800FF7D0:
-/* 800FF7D0 000FB6F0  81 4D A5 1C */	lwz r10, dspVoice-_SDA_BASE_(r13)
+/* 800FF7D0 000FB6F0  81 4D A5 1C */	lwz r10, dspVoice@sda21(r13)
 /* 800FF7D4 000FB6F4  3B 9C 00 01 */	addi r28, r28, 1
 /* 800FF7D8 000FB6F8  7D 4A 62 14 */	add r10, r10, r12
 /* 800FF7DC 000FB6FC  3B AA 00 24 */	addi r29, r10, 0x24
@@ -210,24 +210,24 @@ lbl_800FF7F8:
 /* 800FF7F8 000FB718  57 8A 06 3E */	clrlwi r10, r28, 0x18
 /* 800FF7FC 000FB71C  7C 0A 00 40 */	cmplw r10, r0
 /* 800FF800 000FB720  40 81 FF D0 */	ble lbl_800FF7D0
-/* 800FF804 000FB724  81 4D A5 1C */	lwz r10, dspVoice-_SDA_BASE_(r13)
+/* 800FF804 000FB724  81 4D A5 1C */	lwz r10, dspVoice@sda21(r13)
 /* 800FF808 000FB728  38 00 00 00 */	li r0, 0
 /* 800FF80C 000FB72C  28 06 00 00 */	cmplwi r6, 0
 /* 800FF810 000FB730  7C CA 1A 14 */	add r6, r10, r3
 /* 800FF814 000FB734  93 66 00 24 */	stw r27, 0x24(r6)
-/* 800FF818 000FB738  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800FF818 000FB738  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800FF81C 000FB73C  7C C6 1A 14 */	add r6, r6, r3
 /* 800FF820 000FB740  90 E6 00 1C */	stw r7, 0x1c(r6)
-/* 800FF824 000FB744  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800FF824 000FB744  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800FF828 000FB748  7C C6 1A 14 */	add r6, r6, r3
 /* 800FF82C 000FB74C  91 06 00 18 */	stw r8, 0x18(r6)
-/* 800FF830 000FB750  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800FF830 000FB750  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800FF834 000FB754  7C C6 1A 14 */	add r6, r6, r3
 /* 800FF838 000FB758  90 06 00 EC */	stw r0, 0xec(r6)
-/* 800FF83C 000FB75C  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800FF83C 000FB75C  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800FF840 000FB760  7C C6 1A 14 */	add r6, r6, r3
 /* 800FF844 000FB764  B0 86 00 70 */	sth r4, 0x70(r6)
-/* 800FF848 000FB768  80 ED A5 1C */	lwz r7, dspVoice-_SDA_BASE_(r13)
+/* 800FF848 000FB768  80 ED A5 1C */	lwz r7, dspVoice@sda21(r13)
 /* 800FF84C 000FB76C  80 C5 00 00 */	lwz r6, 0(r5)
 /* 800FF850 000FB770  80 85 00 04 */	lwz r4, 4(r5)
 /* 800FF854 000FB774  7C E7 1A 14 */	add r7, r7, r3
@@ -246,35 +246,35 @@ lbl_800FF7F8:
 /* 800FF888 000FB7A8  90 C7 00 8C */	stw r6, 0x8c(r7)
 /* 800FF88C 000FB7AC  90 87 00 90 */	stw r4, 0x90(r7)
 /* 800FF890 000FB7B0  41 82 00 44 */	beq lbl_800FF8D4
-/* 800FF894 000FB7B4  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800FF894 000FB7B4  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800FF898 000FB7B8  38 A0 7F FF */	li r5, 0x7fff
 /* 800FF89C 000FB7BC  7C 84 1A 14 */	add r4, r4, r3
 /* 800FF8A0 000FB7C0  98 04 00 A4 */	stb r0, 0xa4(r4)
-/* 800FF8A4 000FB7C4  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800FF8A4 000FB7C4  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800FF8A8 000FB7C8  7C 84 1A 14 */	add r4, r4, r3
 /* 800FF8AC 000FB7CC  90 04 00 B8 */	stw r0, 0xb8(r4)
-/* 800FF8B0 000FB7D0  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800FF8B0 000FB7D0  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800FF8B4 000FB7D4  7C 84 1A 14 */	add r4, r4, r3
 /* 800FF8B8 000FB7D8  90 04 00 BC */	stw r0, 0xbc(r4)
-/* 800FF8BC 000FB7DC  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800FF8BC 000FB7DC  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800FF8C0 000FB7E0  7C 84 1A 14 */	add r4, r4, r3
 /* 800FF8C4 000FB7E4  B0 A4 00 C0 */	sth r5, 0xc0(r4)
-/* 800FF8C8 000FB7E8  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
+/* 800FF8C8 000FB7E8  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
 /* 800FF8CC 000FB7EC  7C 84 1A 14 */	add r4, r4, r3
 /* 800FF8D0 000FB7F0  90 04 00 C4 */	stw r0, 0xc4(r4)
 lbl_800FF8D4:
-/* 800FF8D4 000FB7F4  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FF8D4 000FB7F4  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FF8D8 000FB7F8  38 A0 00 FF */	li r5, 0xff
 /* 800FF8DC 000FB7FC  28 09 00 00 */	cmplwi r9, 0
 /* 800FF8E0 000FB800  7C 80 1A 14 */	add r4, r0, r3
 /* 800FF8E4 000FB804  98 A4 00 E4 */	stb r5, 0xe4(r4)
-/* 800FF8E8 000FB808  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FF8E8 000FB808  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FF8EC 000FB80C  7C 80 1A 14 */	add r4, r0, r3
 /* 800FF8F0 000FB810  98 A4 00 E5 */	stb r5, 0xe5(r4)
-/* 800FF8F4 000FB814  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FF8F4 000FB814  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FF8F8 000FB818  7C 80 1A 14 */	add r4, r0, r3
 /* 800FF8FC 000FB81C  98 A4 00 E6 */	stb r5, 0xe6(r4)
-/* 800FF900 000FB820  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FF900 000FB820  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FF904 000FB824  7C 60 1A 14 */	add r3, r0, r3
 /* 800FF908 000FB828  98 A3 00 E7 */	stb r5, 0xe7(r3)
 /* 800FF90C 000FB82C  41 82 00 1C */	beq lbl_800FF928
@@ -297,7 +297,7 @@ lbl_800FF928:
 .global hwRelease
 hwRelease:
 /* 800FF948 000FB868  1C 83 00 F0 */	mulli r4, r3, 0xf0
-/* 800FF94C 000FB86C  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FF94C 000FB86C  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FF950 000FB870  7C 60 22 14 */	add r3, r0, r4
 /* 800FF954 000FB874  88 03 00 A4 */	lbz r0, 0xa4(r3)
 /* 800FF958 000FB878  2C 00 00 01 */	cmpwi r0, 1
@@ -307,8 +307,8 @@ hwRelease:
 /* 800FF968 000FB888  4D 80 00 20 */	bltlr
 /* 800FF96C 000FB88C  38 00 00 0A */	li r0, 0xa
 /* 800FF970 000FB890  90 03 00 C4 */	stw r0, 0xc4(r3)
-/* 800FF974 000FB894  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
-/* 800FF978 000FB898  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FF974 000FB894  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
+/* 800FF978 000FB898  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FF97C 000FB89C  7C 63 22 14 */	add r3, r3, r4
 /* 800FF980 000FB8A0  54 00 10 3A */	slwi r0, r0, 2
 /* 800FF984 000FB8A4  7C 63 02 14 */	add r3, r3, r0
@@ -319,8 +319,8 @@ hwRelease:
 lbl_800FF998:
 /* 800FF998 000FB8B8  38 00 00 0A */	li r0, 0xa
 /* 800FF99C 000FB8BC  90 03 00 C4 */	stw r0, 0xc4(r3)
-/* 800FF9A0 000FB8C0  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
-/* 800FF9A4 000FB8C4  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FF9A0 000FB8C0  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
+/* 800FF9A4 000FB8C4  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FF9A8 000FB8C8  7C 63 22 14 */	add r3, r3, r4
 /* 800FF9AC 000FB8CC  54 00 10 3A */	slwi r0, r0, 2
 /* 800FF9B0 000FB8D0  7C 63 02 14 */	add r3, r3, r0
@@ -332,8 +332,8 @@ lbl_800FF998:
 .global hwBreak
 hwBreak:
 /* 800FF9C4 000FB8E4  1C 63 00 F0 */	mulli r3, r3, 0xf0
-/* 800FF9C8 000FB8E8  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
-/* 800FF9CC 000FB8EC  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FF9C8 000FB8E8  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
+/* 800FF9CC 000FB8EC  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FF9D0 000FB8F0  7C 64 1A 14 */	add r3, r4, r3
 /* 800FF9D4 000FB8F4  54 00 10 3A */	slwi r0, r0, 2
 /* 800FF9D8 000FB8F8  7C 63 02 14 */	add r3, r3, r0
@@ -360,15 +360,15 @@ hwSetADSR:
 /* 800FFA20 000FB940  48 00 00 6C */	b lbl_800FFA8C
 lbl_800FFA24:
 /* 800FFA24 000FB944  1C BD 00 F0 */	mulli r5, r29, 0xf0
-/* 800FFA28 000FB948  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFA28 000FB948  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFA2C 000FB94C  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFA30 000FB950  38 00 00 00 */	li r0, 0
 /* 800FFA34 000FB954  98 03 00 A4 */	stb r0, 0xa4(r3)
-/* 800FFA38 000FB958  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFA38 000FB958  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFA3C 000FB95C  A0 9E 00 00 */	lhz r4, 0(r30)
 /* 800FFA40 000FB960  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFA44 000FB964  90 83 00 B8 */	stw r4, 0xb8(r3)
-/* 800FFA48 000FB968  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFA48 000FB968  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFA4C 000FB96C  A0 9E 00 02 */	lhz r4, 2(r30)
 /* 800FFA50 000FB970  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFA54 000FB974  90 83 00 BC */	stw r4, 0xbc(r3)
@@ -378,35 +378,35 @@ lbl_800FFA24:
 /* 800FFA64 000FB984  40 81 00 08 */	ble lbl_800FFA6C
 /* 800FFA68 000FB988  38 80 7F FF */	li r4, 0x7fff
 lbl_800FFA6C:
-/* 800FFA6C 000FB98C  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFA6C 000FB98C  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFA70 000FB990  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFA74 000FB994  B0 83 00 C0 */	sth r4, 0xc0(r3)
-/* 800FFA78 000FB998  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFA78 000FB998  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFA7C 000FB99C  A0 9E 00 06 */	lhz r4, 6(r30)
 /* 800FFA80 000FB9A0  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFA84 000FB9A4  90 83 00 C4 */	stw r4, 0xc4(r3)
 /* 800FFA88 000FB9A8  48 00 00 E0 */	b lbl_800FFB68
 lbl_800FFA8C:
 /* 800FFA8C 000FB9AC  1F FD 00 F0 */	mulli r31, r29, 0xf0
-/* 800FFA90 000FB9B0  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFA90 000FB9B0  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFA94 000FB9B4  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFA98 000FB9B8  38 00 00 01 */	li r0, 1
 /* 800FFA9C 000FB9BC  98 03 00 A4 */	stb r0, 0xa4(r3)
 /* 800FFAA0 000FB9C0  28 05 00 01 */	cmplwi r5, 1
 /* 800FFAA4 000FB9C4  38 80 00 00 */	li r4, 0
-/* 800FFAA8 000FB9C8  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFAA8 000FB9C8  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFAAC 000FB9CC  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFAB0 000FB9D0  98 83 00 CA */	stb r4, 0xca(r3)
 /* 800FFAB4 000FB9D4  40 82 00 6C */	bne lbl_800FFB20
 /* 800FFAB8 000FB9D8  80 7E 00 00 */	lwz r3, 0(r30)
 /* 800FFABC 000FB9DC  4B FF 7D 2D */	bl adsrConvertTimeCents
-/* 800FFAC0 000FB9E0  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFAC0 000FB9E0  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFAC4 000FB9E4  54 64 04 3E */	clrlwi r4, r3, 0x10
 /* 800FFAC8 000FB9E8  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFACC 000FB9EC  90 83 00 B8 */	stw r4, 0xb8(r3)
 /* 800FFAD0 000FB9F0  80 7E 00 04 */	lwz r3, 4(r30)
 /* 800FFAD4 000FB9F4  4B FF 7D 15 */	bl adsrConvertTimeCents
-/* 800FFAD8 000FB9F8  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFAD8 000FB9F8  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFADC 000FB9FC  54 64 04 3E */	clrlwi r4, r3, 0x10
 /* 800FFAE0 000FBA00  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFAE4 000FBA04  90 83 00 BC */	stw r4, 0xbc(r3)
@@ -417,7 +417,7 @@ lbl_800FFA8C:
 /* 800FFAF8 000FBA18  38 80 03 FF */	li r4, 0x3ff
 lbl_800FFAFC:
 /* 800FFAFC 000FBA1C  3C 60 80 1F */	lis r3, lbl_801E9D54@ha
-/* 800FFB00 000FBA20  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFB00 000FBA20  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFB04 000FBA24  38 63 9D 54 */	addi r3, r3, lbl_801E9D54@l
 /* 800FFB08 000FBA28  7C 63 22 14 */	add r3, r3, r4
 /* 800FFB0C 000FBA2C  88 83 00 00 */	lbz r4, 0(r3)
@@ -427,27 +427,27 @@ lbl_800FFAFC:
 /* 800FFB1C 000FBA3C  48 00 00 3C */	b lbl_800FFB58
 lbl_800FFB20:
 /* 800FFB20 000FBA40  80 7E 00 00 */	lwz r3, 0(r30)
-/* 800FFB24 000FBA44  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFB24 000FBA44  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFB28 000FBA48  54 64 04 3E */	clrlwi r4, r3, 0x10
 /* 800FFB2C 000FBA4C  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFB30 000FBA50  90 83 00 B8 */	stw r4, 0xb8(r3)
 /* 800FFB34 000FBA54  80 7E 00 04 */	lwz r3, 4(r30)
-/* 800FFB38 000FBA58  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFB38 000FBA58  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFB3C 000FBA5C  54 64 04 3E */	clrlwi r4, r3, 0x10
 /* 800FFB40 000FBA60  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFB44 000FBA64  90 83 00 BC */	stw r4, 0xbc(r3)
-/* 800FFB48 000FBA68  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFB48 000FBA68  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFB4C 000FBA6C  A0 9E 00 08 */	lhz r4, 8(r30)
 /* 800FFB50 000FBA70  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFB54 000FBA74  B0 83 00 C0 */	sth r4, 0xc0(r3)
 lbl_800FFB58:
-/* 800FFB58 000FBA78  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFB58 000FBA78  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFB5C 000FBA7C  A0 9E 00 0A */	lhz r4, 0xa(r30)
 /* 800FFB60 000FBA80  7C 60 FA 14 */	add r3, r0, r31
 /* 800FFB64 000FBA84  90 83 00 C4 */	stw r4, 0xc4(r3)
 lbl_800FFB68:
 /* 800FFB68 000FBA88  1C 1D 00 F0 */	mulli r0, r29, 0xf0
-/* 800FFB6C 000FBA8C  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800FFB6C 000FBA8C  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FFB70 000FBA90  7C 63 02 14 */	add r3, r3, r0
 /* 800FFB74 000FBA94  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FFB78 000FBA98  60 00 00 10 */	ori r0, r0, 0x10
@@ -463,7 +463,7 @@ lbl_800FFB68:
 .global hwSetStreamLoopPS
 hwSetStreamLoopPS:
 /* 800FFB9C 000FBABC  1C 03 00 F0 */	mulli r0, r3, 0xf0
-/* 800FFBA0 000FBAC0  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800FFBA0 000FBAC0  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FFBA4 000FBAC4  7C 63 02 14 */	add r3, r3, r0
 /* 800FFBA8 000FBAC8  98 83 00 A0 */	stb r4, 0xa0(r3)
 /* 800FFBAC 000FBACC  4E 80 00 20 */	blr
@@ -474,11 +474,11 @@ hwStart:
 /* 800FFBB4 000FBAD4  1C C3 00 F0 */	mulli r6, r3, 0xf0
 /* 800FFBB8 000FBAD8  90 01 00 04 */	stw r0, 4(r1)
 /* 800FFBBC 000FBADC  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800FFBC0 000FBAE0  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
-/* 800FFBC4 000FBAE4  88 AD A5 48 */	lbz r5, salTimeOffset-_SDA_BASE_(r13)
+/* 800FFBC0 000FBAE0  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
+/* 800FFBC4 000FBAE4  88 AD A5 48 */	lbz r5, salTimeOffset@sda21(r13)
 /* 800FFBC8 000FBAE8  7C 60 32 14 */	add r3, r0, r6
 /* 800FFBCC 000FBAEC  98 A3 00 D4 */	stb r5, 0xd4(r3)
-/* 800FFBD0 000FBAF0  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFBD0 000FBAF0  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFBD4 000FBAF4  7C 60 32 14 */	add r3, r0, r6
 /* 800FFBD8 000FBAF8  4B FF B8 C1 */	bl salActivateVoice
 /* 800FFBDC 000FBAFC  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -489,8 +489,8 @@ hwStart:
 .global hwKeyOff
 hwKeyOff:
 /* 800FFBEC 000FBB0C  1C 63 00 F0 */	mulli r3, r3, 0xf0
-/* 800FFBF0 000FBB10  80 8D A5 1C */	lwz r4, dspVoice-_SDA_BASE_(r13)
-/* 800FFBF4 000FBB14  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FFBF0 000FBB10  80 8D A5 1C */	lwz r4, dspVoice@sda21(r13)
+/* 800FFBF4 000FBB14  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FFBF8 000FBB18  7C 64 1A 14 */	add r3, r4, r3
 /* 800FFBFC 000FBB1C  54 00 10 3A */	slwi r0, r0, 2
 /* 800FFC00 000FBB20  7C 63 02 14 */	add r3, r3, r0
@@ -502,7 +502,7 @@ hwKeyOff:
 .global hwSetPitch
 hwSetPitch:
 /* 800FFC14 000FBB34  54 80 04 3E */	clrlwi r0, r4, 0x10
-/* 800FFC18 000FBB38  80 AD A5 1C */	lwz r5, dspVoice-_SDA_BASE_(r13)
+/* 800FFC18 000FBB38  80 AD A5 1C */	lwz r5, dspVoice@sda21(r13)
 /* 800FFC1C 000FBB3C  1C 63 00 F0 */	mulli r3, r3, 0xf0
 /* 800FFC20 000FBB40  28 00 40 00 */	cmplwi r0, 0x4000
 /* 800FFC24 000FBB44  7C A5 1A 14 */	add r5, r5, r3
@@ -519,27 +519,27 @@ lbl_800FFC30:
 /* 800FFC4C 000FBB6C  7C 03 00 40 */	cmplw r3, r0
 /* 800FFC50 000FBB70  4D 82 00 20 */	beqlr
 lbl_800FFC54:
-/* 800FFC54 000FBB74  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FFC54 000FBB74  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FFC58 000FBB78  54 84 23 36 */	rlwinm r4, r4, 4, 0xc, 0x1b
 /* 800FFC5C 000FBB7C  54 00 10 3A */	slwi r0, r0, 2
 /* 800FFC60 000FBB80  7C 65 02 14 */	add r3, r5, r0
 /* 800FFC64 000FBB84  90 83 00 38 */	stw r4, 0x38(r3)
-/* 800FFC68 000FBB88  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FFC68 000FBB88  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FFC6C 000FBB8C  54 00 10 3A */	slwi r0, r0, 2
 /* 800FFC70 000FBB90  7C 65 02 14 */	add r3, r5, r0
 /* 800FFC74 000FBB94  80 03 00 24 */	lwz r0, 0x24(r3)
 /* 800FFC78 000FBB98  60 00 00 08 */	ori r0, r0, 8
 /* 800FFC7C 000FBB9C  90 03 00 24 */	stw r0, 0x24(r3)
-/* 800FFC80 000FBBA0  88 0D A5 48 */	lbz r0, salTimeOffset-_SDA_BASE_(r13)
+/* 800FFC80 000FBBA0  88 0D A5 48 */	lbz r0, salTimeOffset@sda21(r13)
 /* 800FFC84 000FBBA4  98 05 00 E4 */	stb r0, 0xe4(r5)
 /* 800FFC88 000FBBA8  4E 80 00 20 */	blr
 
 .global hwSetSRCType
 hwSetSRCType:
 /* 800FFC8C 000FBBAC  1C A3 00 F0 */	mulli r5, r3, 0xf0
-/* 800FFC90 000FBBB0  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800FFC90 000FBBB0  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800FFC94 000FBBB4  54 80 0D FC */	rlwinm r0, r4, 1, 0x17, 0x1e
-/* 800FFC98 000FBBB8  38 6D 98 A0 */	addi r3, r13, dspSRCType-_SDA_BASE_
+/* 800FFC98 000FBBB8  38 6D 98 A0 */	addi r3, r13, dspSRCType@sda21
 /* 800FFC9C 000FBBBC  7C 03 02 2E */	lhzx r0, r3, r0
 /* 800FFCA0 000FBBC0  7C 66 2A 14 */	add r3, r6, r5
 /* 800FFCA4 000FBBC4  B0 03 00 CC */	sth r0, 0xcc(r3)
@@ -551,9 +551,9 @@ hwSetSRCType:
 .global hwSetPolyPhaseFilter
 hwSetPolyPhaseFilter:
 /* 800FFCB8 000FBBD8  1C A3 00 F0 */	mulli r5, r3, 0xf0
-/* 800FFCBC 000FBBDC  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 800FFCBC 000FBBDC  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 800FFCC0 000FBBE0  54 80 0D FC */	rlwinm r0, r4, 1, 0x17, 0x1e
-/* 800FFCC4 000FBBE4  38 6D 98 A8 */	addi r3, r13, dspCoefSel-_SDA_BASE_
+/* 800FFCC4 000FBBE4  38 6D 98 A8 */	addi r3, r13, dspCoefSel@sda21
 /* 800FFCC8 000FBBE8  7C 03 02 2E */	lhzx r0, r3, r0
 /* 800FFCCC 000FBBEC  7C 66 2A 14 */	add r3, r6, r5
 /* 800FFCD0 000FBBF0  B0 03 00 CE */	sth r0, 0xce(r3)
@@ -567,22 +567,22 @@ hwSetITDMode:
 /* 800FFCE4 000FBC04  54 80 06 3F */	clrlwi. r0, r4, 0x18
 /* 800FFCE8 000FBC08  40 82 00 3C */	bne lbl_800FFD24
 /* 800FFCEC 000FBC0C  1C A3 00 F0 */	mulli r5, r3, 0xf0
-/* 800FFCF0 000FBC10  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFCF0 000FBC10  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFCF4 000FBC14  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFCF8 000FBC18  80 03 00 EC */	lwz r0, 0xec(r3)
 /* 800FFCFC 000FBC1C  38 80 00 10 */	li r4, 0x10
 /* 800FFD00 000FBC20  64 00 80 00 */	oris r0, r0, 0x8000
 /* 800FFD04 000FBC24  90 03 00 EC */	stw r0, 0xec(r3)
-/* 800FFD08 000FBC28  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFD08 000FBC28  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFD0C 000FBC2C  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFD10 000FBC30  B0 83 00 D0 */	sth r4, 0xd0(r3)
-/* 800FFD14 000FBC34  80 0D A5 1C */	lwz r0, dspVoice-_SDA_BASE_(r13)
+/* 800FFD14 000FBC34  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
 /* 800FFD18 000FBC38  7C 60 2A 14 */	add r3, r0, r5
 /* 800FFD1C 000FBC3C  B0 83 00 D2 */	sth r4, 0xd2(r3)
 /* 800FFD20 000FBC40  4E 80 00 20 */	blr
 lbl_800FFD24:
 /* 800FFD24 000FBC44  1C 03 00 F0 */	mulli r0, r3, 0xf0
-/* 800FFD28 000FBC48  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800FFD28 000FBC48  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FFD2C 000FBC4C  7C 63 02 14 */	add r3, r3, r0
 /* 800FFD30 000FBC50  80 03 00 EC */	lwz r0, 0xec(r3)
 /* 800FFD34 000FBC54  54 00 00 7E */	clrlwi r0, r0, 1
@@ -599,7 +599,7 @@ hwSetVolume:
 /* 800FFD54 000FBC74  93 C1 00 60 */	stw r30, 0x60(r1)
 /* 800FFD58 000FBC78  3B C5 00 00 */	addi r30, r5, 0
 /* 800FFD5C 000FBC7C  C0 02 C2 20 */	lfs f0, lbl_802F6A20-_SDA2_BASE_(r2)
-/* 800FFD60 000FBC80  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 800FFD60 000FBC80  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FFD64 000FBC84  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800FFD68 000FBC88  7F E3 02 14 */	add r31, r3, r0
 /* 800FFD6C 000FBC8C  4C 41 13 82 */	cror 2, 1, 2
@@ -788,7 +788,7 @@ hwOff:
 /* 80100014 000FBF34  90 01 00 04 */	stw r0, 4(r1)
 /* 80100018 000FBF38  1C 03 00 F0 */	mulli r0, r3, 0xf0
 /* 8010001C 000FBF3C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80100020 000FBF40  80 6D A5 1C */	lwz r3, dspVoice-_SDA_BASE_(r13)
+/* 80100020 000FBF40  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 80100024 000FBF44  7C 63 02 14 */	add r3, r3, r0
 /* 80100028 000FBF48  4B FF B5 11 */	bl salDeactivateVoice
 /* 8010002C 000FBF4C  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -866,7 +866,7 @@ hwRemoveInput:
 .global hwGetPos
 hwGetPos:
 /* 8010010C 000FC02C  1C A3 00 F0 */	mulli r5, r3, 0xf0
-/* 80100110 000FC030  80 CD A5 1C */	lwz r6, dspVoice-_SDA_BASE_(r13)
+/* 80100110 000FC030  80 CD A5 1C */	lwz r6, dspVoice@sda21(r13)
 /* 80100114 000FC034  7C 86 2A 14 */	add r4, r6, r5
 /* 80100118 000FC038  88 04 00 E8 */	lbz r0, 0xe8(r4)
 /* 8010011C 000FC03C  28 00 00 02 */	cmplwi r0, 2
@@ -1130,12 +1130,12 @@ hwFrameDone:
 sndSetHooks:
 /* 80100464 000FC384  80 83 00 00 */	lwz r4, 0(r3)
 /* 80100468 000FC388  80 03 00 04 */	lwz r0, 4(r3)
-/* 8010046C 000FC38C  90 8D A5 4C */	stw r4, salHooks-_SDA_BASE_(r13)
-/* 80100470 000FC390  90 0D A5 50 */	stw r0, lbl_802F2730-_SDA_BASE_(r13)
+/* 8010046C 000FC38C  90 8D A5 4C */	stw r4, salHooks@sda21(r13)
+/* 80100470 000FC390  90 0D A5 50 */	stw r0, lbl_802F2730@sda21(r13)
 /* 80100474 000FC394  4E 80 00 20 */	blr
 
 .global hwDisableHRTF
 hwDisableHRTF:
 /* 80100478 000FC398  38 00 00 00 */	li r0, 0
-/* 8010047C 000FC39C  90 0D A5 0C */	stw r0, dspHRTFOn-_SDA_BASE_(r13)
+/* 8010047C 000FC39C  90 0D A5 0C */	stw r0, dspHRTFOn@sda21(r13)
 /* 80100480 000FC3A0  4E 80 00 20 */	blr

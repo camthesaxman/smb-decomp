@@ -8,40 +8,40 @@ salCallback:
 /* 80100DEC 000FCD0C  38 80 02 80 */	li r4, 0x280
 /* 80100DF0 000FCD10  90 01 00 04 */	stw r0, 4(r1)
 /* 80100DF4 000FCD14  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80100DF8 000FCD18  88 AD A5 9C */	lbz r5, salAIBufferIndex-_SDA_BASE_(r13)
-/* 80100DFC 000FCD1C  80 6D A5 7C */	lwz r3, salAIBufferBase-_SDA_BASE_(r13)
+/* 80100DF8 000FCD18  88 AD A5 9C */	lbz r5, salAIBufferIndex@sda21(r13)
+/* 80100DFC 000FCD1C  80 6D A5 7C */	lwz r3, salAIBufferBase@sda21(r13)
 /* 80100E00 000FCD20  38 A5 00 01 */	addi r5, r5, 1
 /* 80100E04 000FCD24  7C A0 16 70 */	srawi r0, r5, 2
 /* 80100E08 000FCD28  7C 00 01 94 */	addze r0, r0
 /* 80100E0C 000FCD2C  54 00 10 3A */	slwi r0, r0, 2
 /* 80100E10 000FCD30  7C 00 28 10 */	subfc r0, r0, r5
-/* 80100E14 000FCD34  98 0D A5 9C */	stb r0, salAIBufferIndex-_SDA_BASE_(r13)
+/* 80100E14 000FCD34  98 0D A5 9C */	stb r0, salAIBufferIndex@sda21(r13)
 /* 80100E18 000FCD38  3C 63 80 00 */	addis r3, r3, 0x8000
-/* 80100E1C 000FCD3C  88 0D A5 9C */	lbz r0, salAIBufferIndex-_SDA_BASE_(r13)
+/* 80100E1C 000FCD3C  88 0D A5 9C */	lbz r0, salAIBufferIndex@sda21(r13)
 /* 80100E20 000FCD40  1C 00 02 80 */	mulli r0, r0, 0x280
 /* 80100E24 000FCD44  7C 63 02 14 */	add r3, r3, r0
 /* 80100E28 000FCD48  4B FD 1B 01 */	bl AIInitDMA
 /* 80100E2C 000FCD4C  4B FC 8B 69 */	bl OSGetTick
-/* 80100E30 000FCD50  90 6D A5 8C */	stw r3, salLastTick-_SDA_BASE_(r13)
-/* 80100E34 000FCD54  80 0D A5 80 */	lwz r0, salDspIsDone-_SDA_BASE_(r13)
+/* 80100E30 000FCD50  90 6D A5 8C */	stw r3, salLastTick@sda21(r13)
+/* 80100E34 000FCD54  80 0D A5 80 */	lwz r0, salDspIsDone@sda21(r13)
 /* 80100E38 000FCD58  28 00 00 00 */	cmplwi r0, 0
 /* 80100E3C 000FCD5C  41 82 00 38 */	beq lbl_80100E74
-/* 80100E40 000FCD60  80 0D A5 88 */	lwz r0, salLogicActive-_SDA_BASE_(r13)
+/* 80100E40 000FCD60  80 0D A5 88 */	lwz r0, salLogicActive@sda21(r13)
 /* 80100E44 000FCD64  28 00 00 00 */	cmplwi r0, 0
 /* 80100E48 000FCD68  40 82 00 34 */	bne lbl_80100E7C
 /* 80100E4C 000FCD6C  38 00 00 01 */	li r0, 1
-/* 80100E50 000FCD70  90 0D A5 88 */	stw r0, salLogicActive-_SDA_BASE_(r13)
+/* 80100E50 000FCD70  90 0D A5 88 */	stw r0, salLogicActive@sda21(r13)
 /* 80100E54 000FCD74  4B FC 52 7D */	bl OSEnableInterrupts
-/* 80100E58 000FCD78  81 8D A5 78 */	lwz r12, userCallback-_SDA_BASE_(r13)
+/* 80100E58 000FCD78  81 8D A5 78 */	lwz r12, userCallback@sda21(r13)
 /* 80100E5C 000FCD7C  7D 88 03 A6 */	mtlr r12
 /* 80100E60 000FCD80  4E 80 00 21 */	blrl
 /* 80100E64 000FCD84  4B FC 52 59 */	bl OSDisableInterrupts
 /* 80100E68 000FCD88  38 00 00 00 */	li r0, 0
-/* 80100E6C 000FCD8C  90 0D A5 88 */	stw r0, salLogicActive-_SDA_BASE_(r13)
+/* 80100E6C 000FCD8C  90 0D A5 88 */	stw r0, salLogicActive@sda21(r13)
 /* 80100E70 000FCD90  48 00 00 0C */	b lbl_80100E7C
 lbl_80100E74:
 /* 80100E74 000FCD94  38 00 00 01 */	li r0, 1
-/* 80100E78 000FCD98  90 0D A5 84 */	stw r0, salLogicIsWaiting-_SDA_BASE_(r13)
+/* 80100E78 000FCD98  90 0D A5 84 */	stw r0, salLogicIsWaiting@sda21(r13)
 lbl_80100E7C:
 /* 80100E7C 000FCD9C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80100E80 000FCDA0  38 21 00 08 */	addi r1, r1, 8
@@ -51,8 +51,8 @@ lbl_80100E7C:
 .global dspInitCallback
 dspInitCallback:
 /* 80100E8C 000FCDAC  38 00 00 01 */	li r0, 1
-/* 80100E90 000FCDB0  90 0D A5 80 */	stw r0, salDspIsDone-_SDA_BASE_(r13)
-/* 80100E94 000FCDB4  90 0D A5 90 */	stw r0, salDspInitIsDone-_SDA_BASE_(r13)
+/* 80100E90 000FCDB0  90 0D A5 80 */	stw r0, salDspIsDone@sda21(r13)
+/* 80100E94 000FCDB4  90 0D A5 90 */	stw r0, salDspInitIsDone@sda21(r13)
 /* 80100E98 000FCDB8  4E 80 00 20 */	blr
 
 .global dspResumeCallback
@@ -62,22 +62,22 @@ dspResumeCallback:
 /* 80100EA4 000FCDC4  90 01 00 04 */	stw r0, 4(r1)
 /* 80100EA8 000FCDC8  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80100EAC 000FCDCC  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 80100EB0 000FCDD0  90 6D A5 80 */	stw r3, salDspIsDone-_SDA_BASE_(r13)
-/* 80100EB4 000FCDD4  80 0D A5 84 */	lwz r0, salLogicIsWaiting-_SDA_BASE_(r13)
+/* 80100EB0 000FCDD0  90 6D A5 80 */	stw r3, salDspIsDone@sda21(r13)
+/* 80100EB4 000FCDD4  80 0D A5 84 */	lwz r0, salLogicIsWaiting@sda21(r13)
 /* 80100EB8 000FCDD8  28 00 00 00 */	cmplwi r0, 0
 /* 80100EBC 000FCDDC  41 82 00 34 */	beq lbl_80100EF0
 /* 80100EC0 000FCDE0  3B E0 00 00 */	li r31, 0
-/* 80100EC4 000FCDE4  93 ED A5 84 */	stw r31, salLogicIsWaiting-_SDA_BASE_(r13)
-/* 80100EC8 000FCDE8  80 0D A5 88 */	lwz r0, salLogicActive-_SDA_BASE_(r13)
+/* 80100EC4 000FCDE4  93 ED A5 84 */	stw r31, salLogicIsWaiting@sda21(r13)
+/* 80100EC8 000FCDE8  80 0D A5 88 */	lwz r0, salLogicActive@sda21(r13)
 /* 80100ECC 000FCDEC  28 00 00 00 */	cmplwi r0, 0
 /* 80100ED0 000FCDF0  40 82 00 20 */	bne lbl_80100EF0
-/* 80100ED4 000FCDF4  90 6D A5 88 */	stw r3, salLogicActive-_SDA_BASE_(r13)
+/* 80100ED4 000FCDF4  90 6D A5 88 */	stw r3, salLogicActive@sda21(r13)
 /* 80100ED8 000FCDF8  4B FC 51 F9 */	bl OSEnableInterrupts
-/* 80100EDC 000FCDFC  81 8D A5 78 */	lwz r12, userCallback-_SDA_BASE_(r13)
+/* 80100EDC 000FCDFC  81 8D A5 78 */	lwz r12, userCallback@sda21(r13)
 /* 80100EE0 000FCE00  7D 88 03 A6 */	mtlr r12
 /* 80100EE4 000FCE04  4E 80 00 21 */	blrl
 /* 80100EE8 000FCE08  4B FC 51 D5 */	bl OSDisableInterrupts
-/* 80100EEC 000FCE0C  93 ED A5 88 */	stw r31, salLogicActive-_SDA_BASE_(r13)
+/* 80100EEC 000FCE0C  93 ED A5 88 */	stw r31, salLogicActive@sda21(r13)
 lbl_80100EF0:
 /* 80100EF0 000FCE10  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80100EF4 000FCE14  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -97,28 +97,28 @@ salInitAi:
 /* 80100F20 000FCE40  38 60 0A 00 */	li r3, 0xa00
 /* 80100F24 000FCE44  48 00 03 55 */	bl salMalloc
 /* 80100F28 000FCE48  28 03 00 00 */	cmplwi r3, 0
-/* 80100F2C 000FCE4C  90 6D A5 7C */	stw r3, salAIBufferBase-_SDA_BASE_(r13)
+/* 80100F2C 000FCE4C  90 6D A5 7C */	stw r3, salAIBufferBase@sda21(r13)
 /* 80100F30 000FCE50  41 82 00 84 */	beq lbl_80100FB4
-/* 80100F34 000FCE54  80 6D A5 7C */	lwz r3, salAIBufferBase-_SDA_BASE_(r13)
+/* 80100F34 000FCE54  80 6D A5 7C */	lwz r3, salAIBufferBase@sda21(r13)
 /* 80100F38 000FCE58  38 80 00 00 */	li r4, 0
 /* 80100F3C 000FCE5C  38 A0 0A 00 */	li r5, 0xa00
 /* 80100F40 000FCE60  4B F0 23 E1 */	bl memset
-/* 80100F44 000FCE64  80 6D A5 7C */	lwz r3, salAIBufferBase-_SDA_BASE_(r13)
+/* 80100F44 000FCE64  80 6D A5 7C */	lwz r3, salAIBufferBase@sda21(r13)
 /* 80100F48 000FCE68  38 80 0A 00 */	li r4, 0xa00
 /* 80100F4C 000FCE6C  4B FC 20 15 */	bl DCFlushRange
 /* 80100F50 000FCE70  38 00 00 00 */	li r0, 0
-/* 80100F54 000FCE74  93 CD A5 78 */	stw r30, userCallback-_SDA_BASE_(r13)
+/* 80100F54 000FCE74  93 CD A5 78 */	stw r30, userCallback@sda21(r13)
 /* 80100F58 000FCE78  38 80 00 01 */	li r4, 1
-/* 80100F5C 000FCE7C  90 0D A5 84 */	stw r0, salLogicIsWaiting-_SDA_BASE_(r13)
+/* 80100F5C 000FCE7C  90 0D A5 84 */	stw r0, salLogicIsWaiting@sda21(r13)
 /* 80100F60 000FCE80  3C 60 80 10 */	lis r3, salCallback@ha
 /* 80100F64 000FCE84  38 63 0D E8 */	addi r3, r3, salCallback@l
-/* 80100F68 000FCE88  90 8D A5 80 */	stw r4, salDspIsDone-_SDA_BASE_(r13)
-/* 80100F6C 000FCE8C  98 8D A5 9C */	stb r4, salAIBufferIndex-_SDA_BASE_(r13)
-/* 80100F70 000FCE90  90 0D A5 88 */	stw r0, salLogicActive-_SDA_BASE_(r13)
+/* 80100F68 000FCE88  90 8D A5 80 */	stw r4, salDspIsDone@sda21(r13)
+/* 80100F6C 000FCE8C  98 8D A5 9C */	stb r4, salAIBufferIndex@sda21(r13)
+/* 80100F70 000FCE90  90 0D A5 88 */	stw r0, salLogicActive@sda21(r13)
 /* 80100F74 000FCE94  4B FD 19 71 */	bl AIRegisterDMACallback
-/* 80100F78 000FCE98  88 0D A5 9C */	lbz r0, salAIBufferIndex-_SDA_BASE_(r13)
+/* 80100F78 000FCE98  88 0D A5 9C */	lbz r0, salAIBufferIndex@sda21(r13)
 /* 80100F7C 000FCE9C  38 80 02 80 */	li r4, 0x280
-/* 80100F80 000FCEA0  80 6D A5 7C */	lwz r3, salAIBufferBase-_SDA_BASE_(r13)
+/* 80100F80 000FCEA0  80 6D A5 7C */	lwz r3, salAIBufferBase@sda21(r13)
 /* 80100F84 000FCEA4  1C 00 02 80 */	mulli r0, r0, 0x280
 /* 80100F88 000FCEA8  3C 63 80 00 */	addis r3, r3, 0x8000
 /* 80100F8C 000FCEAC  7C 63 02 14 */	add r3, r3, r0
@@ -154,8 +154,8 @@ salStartAi:
 
 .global salAiGetDest
 salAiGetDest:
-/* 80100FF0 000FCF10  88 6D A5 9C */	lbz r3, salAIBufferIndex-_SDA_BASE_(r13)
-/* 80100FF4 000FCF14  80 8D A5 7C */	lwz r4, salAIBufferBase-_SDA_BASE_(r13)
+/* 80100FF0 000FCF10  88 6D A5 9C */	lbz r3, salAIBufferIndex@sda21(r13)
+/* 80100FF4 000FCF14  80 8D A5 7C */	lwz r4, salAIBufferBase@sda21(r13)
 /* 80100FF8 000FCF18  38 63 00 02 */	addi r3, r3, 2
 /* 80100FFC 000FCF1C  7C 60 16 70 */	srawi r0, r3, 2
 /* 80101000 000FCF20  7C 00 01 94 */	addze r0, r0
@@ -185,7 +185,7 @@ salInitDsp:
 /* 80101054 000FCF74  90 1E 00 0C */	stw r0, 0xc(r30)
 /* 80101058 000FCF78  38 1E 00 60 */	addi r0, r30, 0x60
 /* 8010105C 000FCF7C  3C 60 80 10 */	lis r3, dspResumeCallback@ha
-/* 80101060 000FCF80  A0 AD 98 B0 */	lhz r5, dspSlaveLength-_SDA_BASE_(r13)
+/* 80101060 000FCF80  A0 AD 98 B0 */	lhz r5, dspSlaveLength@sda21(r13)
 /* 80101064 000FCF84  90 BE 00 10 */	stw r5, 0x10(r30)
 /* 80101068 000FCF88  38 A0 00 30 */	li r5, 0x30
 /* 8010106C 000FCF8C  93 FE 00 14 */	stw r31, 0x14(r30)
@@ -203,10 +203,10 @@ salInitDsp:
 /* 8010109C 000FCFBC  4B FD 37 29 */	bl DSPInit
 /* 801010A0 000FCFC0  7F C3 F3 78 */	mr r3, r30
 /* 801010A4 000FCFC4  4B FD 37 D9 */	bl DSPAddTask
-/* 801010A8 000FCFC8  93 ED A5 90 */	stw r31, salDspInitIsDone-_SDA_BASE_(r13)
+/* 801010A8 000FCFC8  93 ED A5 90 */	stw r31, salDspInitIsDone@sda21(r13)
 /* 801010AC 000FCFCC  48 00 01 1D */	bl hwEnableIrq
 lbl_801010B0:
-/* 801010B0 000FCFD0  80 0D A5 90 */	lwz r0, salDspInitIsDone-_SDA_BASE_(r13)
+/* 801010B0 000FCFD0  80 0D A5 90 */	lwz r0, salDspInitIsDone@sda21(r13)
 /* 801010B4 000FCFD4  28 00 00 00 */	cmplwi r0, 0
 /* 801010B8 000FCFD8  41 82 FF F8 */	beq lbl_801010B0
 /* 801010BC 000FCFDC  48 00 01 45 */	bl hwDisableIrq
@@ -230,10 +230,10 @@ salCtrlDsp:
 /* 801010F8 000FD018  38 7F 00 00 */	addi r3, r31, 0
 /* 801010FC 000FD01C  4B FF 7E 45 */	bl salBuildCommandList
 /* 80101100 000FD020  38 00 00 00 */	li r0, 0
-/* 80101104 000FD024  83 ED A5 08 */	lwz r31, dspCmdList-_SDA_BASE_(r13)
-/* 80101108 000FD028  90 0D A5 80 */	stw r0, salDspIsDone-_SDA_BASE_(r13)
+/* 80101104 000FD024  83 ED A5 08 */	lwz r31, dspCmdList@sda21(r13)
+/* 80101108 000FD028  90 0D A5 80 */	stw r0, salDspIsDone@sda21(r13)
 /* 8010110C 000FD02C  4B FC 06 25 */	bl PPCSync
-/* 80101110 000FD030  A0 0D A5 04 */	lhz r0, dspCmdFirstSize-_SDA_BASE_(r13)
+/* 80101110 000FD030  A0 0D A5 04 */	lhz r0, dspCmdFirstSize@sda21(r13)
 /* 80101114 000FD034  64 03 BA BE */	oris r3, r0, 0xbabe
 /* 80101118 000FD038  4B FD 36 99 */	bl DSPSendMailToDSP
 lbl_8010111C:
@@ -259,7 +259,7 @@ salGetStartDelay:
 /* 80101158 000FD078  94 21 FF F8 */	stwu r1, -8(r1)
 /* 8010115C 000FD07C  4B FC 88 39 */	bl OSGetTick
 /* 80101160 000FD080  3C 80 80 00 */	lis r4, 0x800000F8@ha
-/* 80101164 000FD084  80 AD A5 8C */	lwz r5, salLastTick-_SDA_BASE_(r13)
+/* 80101164 000FD084  80 AD A5 8C */	lwz r5, salLastTick@sda21(r13)
 /* 80101168 000FD088  80 04 00 F8 */	lwz r0, 0x800000F8@l(r4)
 /* 8010116C 000FD08C  3C 80 43 1C */	lis r4, 0x431BDE83@ha
 /* 80101170 000FD090  7C A5 18 50 */	subf r5, r5, r3
@@ -280,9 +280,9 @@ hwInitIrq:
 /* 801011A0 000FD0C0  90 01 00 04 */	stw r0, 4(r1)
 /* 801011A4 000FD0C4  94 21 FF F8 */	stwu r1, -8(r1)
 /* 801011A8 000FD0C8  4B FC 4F 15 */	bl OSDisableInterrupts
-/* 801011AC 000FD0CC  90 6D A5 98 */	stw r3, oldState-_SDA_BASE_(r13)
+/* 801011AC 000FD0CC  90 6D A5 98 */	stw r3, oldState@sda21(r13)
 /* 801011B0 000FD0D0  38 00 00 01 */	li r0, 1
-/* 801011B4 000FD0D4  B0 0D A5 94 */	sth r0, hwIrqLevel-_SDA_BASE_(r13)
+/* 801011B4 000FD0D4  B0 0D A5 94 */	sth r0, hwIrqLevel@sda21(r13)
 /* 801011B8 000FD0D8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 801011BC 000FD0DC  38 21 00 08 */	addi r1, r1, 8
 /* 801011C0 000FD0E0  7C 08 03 A6 */	mtlr r0
@@ -293,12 +293,12 @@ hwEnableIrq:
 /* 801011C8 000FD0E8  7C 08 02 A6 */	mflr r0
 /* 801011CC 000FD0EC  90 01 00 04 */	stw r0, 4(r1)
 /* 801011D0 000FD0F0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 801011D4 000FD0F4  A0 6D A5 94 */	lhz r3, hwIrqLevel-_SDA_BASE_(r13)
+/* 801011D4 000FD0F4  A0 6D A5 94 */	lhz r3, hwIrqLevel@sda21(r13)
 /* 801011D8 000FD0F8  38 63 FF FF */	addi r3, r3, -1
 /* 801011DC 000FD0FC  54 60 04 3F */	clrlwi. r0, r3, 0x10
-/* 801011E0 000FD100  B0 6D A5 94 */	sth r3, hwIrqLevel-_SDA_BASE_(r13)
+/* 801011E0 000FD100  B0 6D A5 94 */	sth r3, hwIrqLevel@sda21(r13)
 /* 801011E4 000FD104  40 82 00 0C */	bne lbl_801011F0
-/* 801011E8 000FD108  80 6D A5 98 */	lwz r3, oldState-_SDA_BASE_(r13)
+/* 801011E8 000FD108  80 6D A5 98 */	lwz r3, oldState@sda21(r13)
 /* 801011EC 000FD10C  4B FC 4E F9 */	bl OSRestoreInterrupts
 lbl_801011F0:
 /* 801011F0 000FD110  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -311,13 +311,13 @@ hwDisableIrq:
 /* 80101200 000FD120  7C 08 02 A6 */	mflr r0
 /* 80101204 000FD124  90 01 00 04 */	stw r0, 4(r1)
 /* 80101208 000FD128  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010120C 000FD12C  A0 6D A5 94 */	lhz r3, hwIrqLevel-_SDA_BASE_(r13)
+/* 8010120C 000FD12C  A0 6D A5 94 */	lhz r3, hwIrqLevel@sda21(r13)
 /* 80101210 000FD130  38 03 00 01 */	addi r0, r3, 1
 /* 80101214 000FD134  28 03 00 00 */	cmplwi r3, 0
-/* 80101218 000FD138  B0 0D A5 94 */	sth r0, hwIrqLevel-_SDA_BASE_(r13)
+/* 80101218 000FD138  B0 0D A5 94 */	sth r0, hwIrqLevel@sda21(r13)
 /* 8010121C 000FD13C  40 82 00 0C */	bne lbl_80101228
 /* 80101220 000FD140  4B FC 4E 9D */	bl OSDisableInterrupts
-/* 80101224 000FD144  90 6D A5 98 */	stw r3, oldState-_SDA_BASE_(r13)
+/* 80101224 000FD144  90 6D A5 98 */	stw r3, oldState@sda21(r13)
 lbl_80101228:
 /* 80101228 000FD148  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8010122C 000FD14C  38 21 00 08 */	addi r1, r1, 8

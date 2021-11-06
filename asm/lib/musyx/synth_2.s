@@ -14,7 +14,7 @@ sndActive:
 /* 800FD5F4 000F9514  93 E1 00 2C */	stw r31, 0x2c(r1)
 /* 800FD5F8 000F9518  93 C1 00 28 */	stw r30, 0x28(r1)
 /* 800FD5FC 000F951C  7C FE 3B 78 */	mr r30, r7
-/* 800FD600 000F9520  99 0D A4 18 */	stb r8, sndActive_2-_SDA_BASE_(r13)
+/* 800FD600 000F9520  99 0D A4 18 */	stb r8, sndActive_2@sda21(r13)
 /* 800FD604 000F9524  41 81 00 14 */	bgt lbl_800FD618
 /* 800FD608 000F9528  3C E0 80 2D */	lis r7, lbl_802D6240@ha
 /* 800FD60C 000F952C  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
@@ -46,14 +46,14 @@ lbl_800FD628:
 /* 800FD66C 000F958C  4B FF 4C 55 */	bl dataInit
 /* 800FD670 000F9590  4B FE E0 A1 */	bl seqInit
 /* 800FD674 000F9594  38 00 00 00 */	li r0, 0
-/* 800FD678 000F9598  98 0D A4 48 */	stb r0, synthIdleWaitActive-_SDA_BASE_(r13)
+/* 800FD678 000F9598  98 0D A4 48 */	stb r0, synthIdleWaitActive@sda21(r13)
 /* 800FD67C 000F959C  38 9F 00 00 */	addi r4, r31, 0
 /* 800FD680 000F95A0  38 60 7D 00 */	li r3, 0x7d00
 /* 800FD684 000F95A4  4B FF 0D BD */	bl synthInit
 /* 800FD688 000F95A8  4B FF 1A D5 */	bl streamInit
 /* 800FD68C 000F95AC  4B FF FF 21 */	bl s3dInit
 /* 800FD690 000F95B0  38 00 00 01 */	li r0, 1
-/* 800FD694 000F95B4  98 0D A4 18 */	stb r0, sndActive_2-_SDA_BASE_(r13)
+/* 800FD694 000F95B4  98 0D A4 18 */	stb r0, sndActive_2@sda21(r13)
 /* 800FD698 000F95B8  38 60 00 00 */	li r3, 0
 lbl_800FD69C:
 /* 800FD69C 000F95BC  80 01 00 34 */	lwz r0, 0x34(r1)

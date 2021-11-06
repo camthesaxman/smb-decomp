@@ -4,7 +4,7 @@
 
 .global OSRegisterResetFunction
 OSRegisterResetFunction:
-/* 800C7294 000C31B4  80 AD A1 40 */	lwz r5, ResetFunctionQueue-_SDA_BASE_(r13)
+/* 800C7294 000C31B4  80 AD A1 40 */	lwz r5, ResetFunctionQueue@sda21(r13)
 /* 800C7298 000C31B8  48 00 00 08 */	b lbl_800C72A0
 lbl_800C729C:
 /* 800C729C 000C31BC  80 A5 00 08 */	lwz r5, 8(r5)
@@ -18,11 +18,11 @@ lbl_800C72A0:
 lbl_800C72B8:
 /* 800C72B8 000C31D8  28 05 00 00 */	cmplwi r5, 0
 /* 800C72BC 000C31DC  40 82 00 34 */	bne lbl_800C72F0
-/* 800C72C0 000C31E0  38 AD A1 40 */	addi r5, r13, ResetFunctionQueue-_SDA_BASE_
+/* 800C72C0 000C31E0  38 AD A1 40 */	addi r5, r13, ResetFunctionQueue@sda21
 /* 800C72C4 000C31E4  84 85 00 04 */	lwzu r4, 4(r5)
 /* 800C72C8 000C31E8  28 04 00 00 */	cmplwi r4, 0
 /* 800C72CC 000C31EC  40 82 00 0C */	bne lbl_800C72D8
-/* 800C72D0 000C31F0  90 6D A1 40 */	stw r3, ResetFunctionQueue-_SDA_BASE_(r13)
+/* 800C72D0 000C31F0  90 6D A1 40 */	stw r3, ResetFunctionQueue@sda21(r13)
 /* 800C72D4 000C31F4  48 00 00 08 */	b lbl_800C72DC
 lbl_800C72D8:
 /* 800C72D8 000C31F8  90 64 00 08 */	stw r3, 8(r4)
@@ -39,7 +39,7 @@ lbl_800C72F0:
 /* 800C72FC 000C321C  28 04 00 00 */	cmplwi r4, 0
 /* 800C7300 000C3220  90 83 00 0C */	stw r4, 0xc(r3)
 /* 800C7304 000C3224  40 82 00 0C */	bne lbl_800C7310
-/* 800C7308 000C3228  90 6D A1 40 */	stw r3, ResetFunctionQueue-_SDA_BASE_(r13)
+/* 800C7308 000C3228  90 6D A1 40 */	stw r3, ResetFunctionQueue@sda21(r13)
 /* 800C730C 000C322C  4E 80 00 20 */	blr
 lbl_800C7310:
 /* 800C7310 000C3230  90 64 00 08 */	stw r3, 8(r4)
@@ -121,7 +121,7 @@ OSResetSystem:
 lbl_800C73F8:
 /* 800C73F8 000C3318  48 00 00 04 */	b lbl_800C73FC
 lbl_800C73FC:
-/* 800C73FC 000C331C  83 8D A1 40 */	lwz r28, ResetFunctionQueue-_SDA_BASE_(r13)
+/* 800C73FC 000C331C  83 8D A1 40 */	lwz r28, ResetFunctionQueue@sda21(r13)
 /* 800C7400 000C3320  3B A0 00 00 */	li r29, 0
 /* 800C7404 000C3324  48 00 00 04 */	b lbl_800C7408
 lbl_800C7408:
@@ -172,7 +172,7 @@ lbl_800C7494:
 /* 800C749C 000C33BC  41 82 FF F8 */	beq lbl_800C7494
 lbl_800C74A0:
 /* 800C74A0 000C33C0  4B FF EC 1D */	bl OSDisableInterrupts
-/* 800C74A4 000C33C4  83 AD A1 40 */	lwz r29, ResetFunctionQueue-_SDA_BASE_(r13)
+/* 800C74A4 000C33C4  83 AD A1 40 */	lwz r29, ResetFunctionQueue@sda21(r13)
 /* 800C74A8 000C33C8  7C 7B 1B 78 */	mr r27, r3
 /* 800C74AC 000C33CC  3B 80 00 00 */	li r28, 0
 /* 800C74B0 000C33D0  48 00 00 04 */	b lbl_800C74B4

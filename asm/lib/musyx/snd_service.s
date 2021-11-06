@@ -5,11 +5,11 @@
 .global sndRand
 sndRand:
 /* 800FF3C0 000FB2E0  3C 60 A8 35 */	lis r3, 0xA8351D63@ha
-/* 800FF3C4 000FB2E4  80 8D 98 98 */	lwz r4, last_rnd-_SDA_BASE_(r13)
+/* 800FF3C4 000FB2E4  80 8D 98 98 */	lwz r4, last_rnd@sda21(r13)
 /* 800FF3C8 000FB2E8  38 03 1D 63 */	addi r0, r3, 0xA8351D63@l
 /* 800FF3CC 000FB2EC  7C 04 01 D6 */	mullw r0, r4, r0
-/* 800FF3D0 000FB2F0  90 0D 98 98 */	stw r0, last_rnd-_SDA_BASE_(r13)
-/* 800FF3D4 000FB2F4  80 0D 98 98 */	lwz r0, last_rnd-_SDA_BASE_(r13)
+/* 800FF3D0 000FB2F0  90 0D 98 98 */	stw r0, last_rnd@sda21(r13)
+/* 800FF3D4 000FB2F4  80 0D 98 98 */	lwz r0, last_rnd@sda21(r13)
 /* 800FF3D8 000FB2F8  54 03 D4 3E */	rlwinm r3, r0, 0x1a, 0x10, 0x1f
 /* 800FF3DC 000FB2FC  4E 80 00 20 */	blr
 

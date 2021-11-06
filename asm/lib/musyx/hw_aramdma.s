@@ -4,9 +4,9 @@
 
 .global aramQueueCallback
 aramQueueCallback:
-/* 80100484 000FC3A4  88 6D A5 65 */	lbz r3, aramQueueValid-_SDA_BASE_(r13)
+/* 80100484 000FC3A4  88 6D A5 65 */	lbz r3, aramQueueValid@sda21(r13)
 /* 80100488 000FC3A8  38 03 FF FF */	addi r0, r3, -1
-/* 8010048C 000FC3AC  98 0D A5 65 */	stb r0, aramQueueValid-_SDA_BASE_(r13)
+/* 8010048C 000FC3AC  98 0D A5 65 */	stb r0, aramQueueValid@sda21(r13)
 /* 80100490 000FC3B0  4E 80 00 20 */	blr
 
 .global aramUploadData
@@ -22,11 +22,11 @@ aramUploadData:
 /* 801004B4 000FC3D4  3B C6 00 00 */	addi r30, r6, 0
 /* 801004B8 000FC3D8  3B E7 B8 70 */	addi r31, r7, lbl_802EB870@l
 lbl_801004BC:
-/* 801004BC 000FC3DC  88 0D A5 65 */	lbz r0, aramQueueValid-_SDA_BASE_(r13)
+/* 801004BC 000FC3DC  88 0D A5 65 */	lbz r0, aramQueueValid@sda21(r13)
 /* 801004C0 000FC3E0  28 00 00 10 */	cmplwi r0, 0x10
 /* 801004C4 000FC3E4  40 80 FF F8 */	bge lbl_801004BC
 /* 801004C8 000FC3E8  4B FC 5B F5 */	bl OSDisableInterrupts
-/* 801004CC 000FC3EC  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801004CC 000FC3EC  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801004D0 000FC3F0  28 1E 00 00 */	cmplwi r30, 0
 /* 801004D4 000FC3F4  38 9F 00 04 */	addi r4, r31, 4
 /* 801004D8 000FC3F8  54 00 28 34 */	slwi r0, r0, 5
@@ -34,71 +34,71 @@ lbl_801004BC:
 /* 801004E0 000FC400  7C A4 01 2E */	stwx r5, r4, r0
 /* 801004E4 000FC404  38 BF 00 08 */	addi r5, r31, 8
 /* 801004E8 000FC408  38 E0 00 00 */	li r7, 0
-/* 801004EC 000FC40C  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801004EC 000FC40C  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801004F0 000FC410  3B C3 00 00 */	addi r30, r3, 0
 /* 801004F4 000FC414  54 00 28 34 */	slwi r0, r0, 5
 /* 801004F8 000FC418  7C E5 01 2E */	stwx r7, r5, r0
 /* 801004FC 000FC41C  41 82 00 08 */	beq lbl_80100504
 /* 80100500 000FC420  38 E0 00 01 */	li r7, 1
 lbl_80100504:
-/* 80100504 000FC424  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100504 000FC424  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100508 000FC428  3C 60 80 10 */	lis r3, aramQueueCallback@ha
 /* 8010050C 000FC42C  38 DF 00 0C */	addi r6, r31, 0xc
 /* 80100510 000FC430  54 00 28 34 */	slwi r0, r0, 5
 /* 80100514 000FC434  7C E6 01 2E */	stwx r7, r6, r0
 /* 80100518 000FC438  38 FF 00 10 */	addi r7, r31, 0x10
 /* 8010051C 000FC43C  39 1F 00 14 */	addi r8, r31, 0x14
-/* 80100520 000FC440  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100520 000FC440  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100524 000FC444  39 3F 00 18 */	addi r9, r31, 0x18
 /* 80100528 000FC448  38 63 04 84 */	addi r3, r3, aramQueueCallback@l
 /* 8010052C 000FC44C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100530 000FC450  7F 67 01 2E */	stwx r27, r7, r0
 /* 80100534 000FC454  39 5F 00 1C */	addi r10, r31, 0x1c
-/* 80100538 000FC458  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100538 000FC458  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 8010053C 000FC45C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100540 000FC460  7F 88 01 2E */	stwx r28, r8, r0
-/* 80100544 000FC464  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100544 000FC464  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100548 000FC468  54 00 28 34 */	slwi r0, r0, 5
 /* 8010054C 000FC46C  7F A9 01 2E */	stwx r29, r9, r0
-/* 80100550 000FC470  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100550 000FC470  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100554 000FC474  54 00 28 34 */	slwi r0, r0, 5
 /* 80100558 000FC478  7C 6A 01 2E */	stwx r3, r10, r0
-/* 8010055C 000FC47C  88 6D A5 64 */	lbz r3, aramQueueWrite-_SDA_BASE_(r13)
-/* 80100560 000FC480  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 8010055C 000FC47C  88 6D A5 64 */	lbz r3, aramQueueWrite@sda21(r13)
+/* 80100560 000FC480  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100564 000FC484  54 63 28 34 */	slwi r3, r3, 5
 /* 80100568 000FC488  7C 7F 1A 14 */	add r3, r31, r3
-/* 8010056C 000FC48C  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 8010056C 000FC48C  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 80100570 000FC490  54 00 28 34 */	slwi r0, r0, 5
 /* 80100574 000FC494  7C 84 00 2E */	lwzx r4, r4, r0
-/* 80100578 000FC498  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100578 000FC498  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 8010057C 000FC49C  55 6B 28 34 */	slwi r11, r11, 5
 /* 80100580 000FC4A0  7C A5 58 2E */	lwzx r5, r5, r11
-/* 80100584 000FC4A4  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100584 000FC4A4  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 80100588 000FC4A8  54 00 28 34 */	slwi r0, r0, 5
 /* 8010058C 000FC4AC  7C C6 00 2E */	lwzx r6, r6, r0
-/* 80100590 000FC4B0  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100590 000FC4B0  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100594 000FC4B4  55 6B 28 34 */	slwi r11, r11, 5
 /* 80100598 000FC4B8  7C E7 58 2E */	lwzx r7, r7, r11
-/* 8010059C 000FC4BC  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 8010059C 000FC4BC  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 801005A0 000FC4C0  54 00 28 34 */	slwi r0, r0, 5
 /* 801005A4 000FC4C4  7D 08 00 2E */	lwzx r8, r8, r0
-/* 801005A8 000FC4C8  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801005A8 000FC4C8  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801005AC 000FC4CC  55 6B 28 34 */	slwi r11, r11, 5
 /* 801005B0 000FC4D0  7D 29 58 2E */	lwzx r9, r9, r11
 /* 801005B4 000FC4D4  54 00 28 34 */	slwi r0, r0, 5
 /* 801005B8 000FC4D8  7D 4A 00 2E */	lwzx r10, r10, r0
 /* 801005BC 000FC4DC  4B FD 40 61 */	bl ARQPostRequest
-/* 801005C0 000FC4E0  88 8D A5 65 */	lbz r4, aramQueueValid-_SDA_BASE_(r13)
+/* 801005C0 000FC4E0  88 8D A5 65 */	lbz r4, aramQueueValid@sda21(r13)
 /* 801005C4 000FC4E4  38 7E 00 00 */	addi r3, r30, 0
 /* 801005C8 000FC4E8  38 04 00 01 */	addi r0, r4, 1
-/* 801005CC 000FC4EC  98 0D A5 65 */	stb r0, aramQueueValid-_SDA_BASE_(r13)
-/* 801005D0 000FC4F0  88 8D A5 64 */	lbz r4, aramQueueWrite-_SDA_BASE_(r13)
+/* 801005CC 000FC4EC  98 0D A5 65 */	stb r0, aramQueueValid@sda21(r13)
+/* 801005D0 000FC4F0  88 8D A5 64 */	lbz r4, aramQueueWrite@sda21(r13)
 /* 801005D4 000FC4F4  38 84 00 01 */	addi r4, r4, 1
 /* 801005D8 000FC4F8  7C 80 26 70 */	srawi r0, r4, 4
 /* 801005DC 000FC4FC  7C 00 01 94 */	addze r0, r0
 /* 801005E0 000FC500  54 00 20 36 */	slwi r0, r0, 4
 /* 801005E4 000FC504  7C 00 20 10 */	subfc r0, r0, r4
-/* 801005E8 000FC508  98 0D A5 64 */	stb r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801005E8 000FC508  98 0D A5 64 */	stb r0, aramQueueWrite@sda21(r13)
 /* 801005EC 000FC50C  4B FC 5A F9 */	bl OSRestoreInterrupts
 /* 801005F0 000FC510  BB 61 00 1C */	lmw r27, 0x1c(r1)
 /* 801005F4 000FC514  80 01 00 34 */	lwz r0, 0x34(r1)
@@ -108,7 +108,7 @@ lbl_80100504:
 
 .global aramSyncTransferQueue
 aramSyncTransferQueue:
-/* 80100604 000FC524  88 0D A5 65 */	lbz r0, aramQueueValid-_SDA_BASE_(r13)
+/* 80100604 000FC524  88 0D A5 65 */	lbz r0, aramQueueValid@sda21(r13)
 /* 80100608 000FC528  28 00 00 00 */	cmplwi r0, 0
 /* 8010060C 000FC52C  40 82 FF F8 */	bne aramSyncTransferQueue
 /* 80100610 000FC530  4E 80 00 20 */	blr
@@ -217,14 +217,14 @@ lbl_80100650:
 /* 8010079C 000FC6BC  38 80 05 00 */	li r4, 0x500
 /* 801007A0 000FC6C0  4B FC 27 C1 */	bl DCFlushRange
 /* 801007A4 000FC6C4  38 00 00 00 */	li r0, 0
-/* 801007A8 000FC6C8  98 0D A5 65 */	stb r0, aramQueueValid-_SDA_BASE_(r13)
-/* 801007AC 000FC6CC  98 0D A5 64 */	stb r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801007A8 000FC6C8  98 0D A5 65 */	stb r0, aramQueueValid@sda21(r13)
+/* 801007AC 000FC6CC  98 0D A5 64 */	stb r0, aramQueueWrite@sda21(r13)
 lbl_801007B0:
-/* 801007B0 000FC6D0  88 0D A5 65 */	lbz r0, aramQueueValid-_SDA_BASE_(r13)
+/* 801007B0 000FC6D0  88 0D A5 65 */	lbz r0, aramQueueValid@sda21(r13)
 /* 801007B4 000FC6D4  28 00 00 10 */	cmplwi r0, 0x10
 /* 801007B8 000FC6D8  40 80 FF F8 */	bge lbl_801007B0
 /* 801007BC 000FC6DC  4B FC 59 01 */	bl OSDisableInterrupts
-/* 801007C0 000FC6E0  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801007C0 000FC6E0  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801007C4 000FC6E4  3D 40 80 10 */	lis r10, aramQueueCallback@ha
 /* 801007C8 000FC6E8  39 6A 04 84 */	addi r11, r10, aramQueueCallback@l
 /* 801007CC 000FC6EC  38 9E 00 04 */	addi r4, r30, 4
@@ -233,85 +233,85 @@ lbl_801007B0:
 /* 801007D8 000FC6F8  7C A4 01 2E */	stwx r5, r4, r0
 /* 801007DC 000FC6FC  38 BE 00 08 */	addi r5, r30, 8
 /* 801007E0 000FC700  3B A0 00 00 */	li r29, 0
-/* 801007E4 000FC704  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801007E4 000FC704  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801007E8 000FC708  38 DE 00 0C */	addi r6, r30, 0xc
 /* 801007EC 000FC70C  38 FE 00 10 */	addi r7, r30, 0x10
 /* 801007F0 000FC710  54 00 28 34 */	slwi r0, r0, 5
 /* 801007F4 000FC714  7F A5 01 2E */	stwx r29, r5, r0
 /* 801007F8 000FC718  39 1E 00 14 */	addi r8, r30, 0x14
 /* 801007FC 000FC71C  39 3E 00 18 */	addi r9, r30, 0x18
-/* 80100800 000FC720  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100800 000FC720  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100804 000FC724  39 80 05 00 */	li r12, 0x500
 /* 80100808 000FC728  39 5E 00 1C */	addi r10, r30, 0x1c
 /* 8010080C 000FC72C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100810 000FC730  7F A6 01 2E */	stwx r29, r6, r0
 /* 80100814 000FC734  3B A3 00 00 */	addi r29, r3, 0
-/* 80100818 000FC738  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100818 000FC738  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 8010081C 000FC73C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100820 000FC740  7F 87 01 2E */	stwx r28, r7, r0
-/* 80100824 000FC744  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100824 000FC744  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100828 000FC748  54 00 28 34 */	slwi r0, r0, 5
 /* 8010082C 000FC74C  7F E8 01 2E */	stwx r31, r8, r0
-/* 80100830 000FC750  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100830 000FC750  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100834 000FC754  54 00 28 34 */	slwi r0, r0, 5
 /* 80100838 000FC758  7D 89 01 2E */	stwx r12, r9, r0
-/* 8010083C 000FC75C  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 8010083C 000FC75C  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100840 000FC760  54 00 28 34 */	slwi r0, r0, 5
 /* 80100844 000FC764  7D 6A 01 2E */	stwx r11, r10, r0
-/* 80100848 000FC768  88 6D A5 64 */	lbz r3, aramQueueWrite-_SDA_BASE_(r13)
-/* 8010084C 000FC76C  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100848 000FC768  88 6D A5 64 */	lbz r3, aramQueueWrite@sda21(r13)
+/* 8010084C 000FC76C  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100850 000FC770  54 63 28 34 */	slwi r3, r3, 5
 /* 80100854 000FC774  7C 7E 1A 14 */	add r3, r30, r3
-/* 80100858 000FC778  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100858 000FC778  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 8010085C 000FC77C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100860 000FC780  7C 84 00 2E */	lwzx r4, r4, r0
-/* 80100864 000FC784  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100864 000FC784  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100868 000FC788  55 6B 28 34 */	slwi r11, r11, 5
 /* 8010086C 000FC78C  7C A5 58 2E */	lwzx r5, r5, r11
-/* 80100870 000FC790  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100870 000FC790  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 80100874 000FC794  54 00 28 34 */	slwi r0, r0, 5
 /* 80100878 000FC798  7C C6 00 2E */	lwzx r6, r6, r0
-/* 8010087C 000FC79C  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 8010087C 000FC79C  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100880 000FC7A0  55 6B 28 34 */	slwi r11, r11, 5
 /* 80100884 000FC7A4  7C E7 58 2E */	lwzx r7, r7, r11
-/* 80100888 000FC7A8  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100888 000FC7A8  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 8010088C 000FC7AC  54 00 28 34 */	slwi r0, r0, 5
 /* 80100890 000FC7B0  7D 08 00 2E */	lwzx r8, r8, r0
-/* 80100894 000FC7B4  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100894 000FC7B4  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100898 000FC7B8  55 6B 28 34 */	slwi r11, r11, 5
 /* 8010089C 000FC7BC  7D 29 58 2E */	lwzx r9, r9, r11
 /* 801008A0 000FC7C0  54 00 28 34 */	slwi r0, r0, 5
 /* 801008A4 000FC7C4  7D 4A 00 2E */	lwzx r10, r10, r0
 /* 801008A8 000FC7C8  4B FD 3D 75 */	bl ARQPostRequest
-/* 801008AC 000FC7CC  88 8D A5 65 */	lbz r4, aramQueueValid-_SDA_BASE_(r13)
+/* 801008AC 000FC7CC  88 8D A5 65 */	lbz r4, aramQueueValid@sda21(r13)
 /* 801008B0 000FC7D0  38 7D 00 00 */	addi r3, r29, 0
 /* 801008B4 000FC7D4  38 04 00 01 */	addi r0, r4, 1
-/* 801008B8 000FC7D8  98 0D A5 65 */	stb r0, aramQueueValid-_SDA_BASE_(r13)
-/* 801008BC 000FC7DC  88 8D A5 64 */	lbz r4, aramQueueWrite-_SDA_BASE_(r13)
+/* 801008B8 000FC7D8  98 0D A5 65 */	stb r0, aramQueueValid@sda21(r13)
+/* 801008BC 000FC7DC  88 8D A5 64 */	lbz r4, aramQueueWrite@sda21(r13)
 /* 801008C0 000FC7E0  38 84 00 01 */	addi r4, r4, 1
 /* 801008C4 000FC7E4  7C 80 26 70 */	srawi r0, r4, 4
 /* 801008C8 000FC7E8  7C 00 01 94 */	addze r0, r0
 /* 801008CC 000FC7EC  54 00 20 36 */	slwi r0, r0, 4
 /* 801008D0 000FC7F0  7C 00 20 10 */	subfc r0, r0, r4
-/* 801008D4 000FC7F4  98 0D A5 64 */	stb r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801008D4 000FC7F4  98 0D A5 64 */	stb r0, aramQueueWrite@sda21(r13)
 /* 801008D8 000FC7F8  4B FC 58 0D */	bl OSRestoreInterrupts
 lbl_801008DC:
-/* 801008DC 000FC7FC  88 0D A5 65 */	lbz r0, aramQueueValid-_SDA_BASE_(r13)
+/* 801008DC 000FC7FC  88 0D A5 65 */	lbz r0, aramQueueValid@sda21(r13)
 /* 801008E0 000FC800  28 00 00 00 */	cmplwi r0, 0
 /* 801008E4 000FC804  40 82 FF F8 */	bne lbl_801008DC
 /* 801008E8 000FC808  7F 83 E3 78 */	mr r3, r28
 /* 801008EC 000FC80C  48 00 09 B5 */	bl salFree
 /* 801008F0 000FC810  7C 1F DA 14 */	add r0, r31, r27
-/* 801008F4 000FC814  90 0D A5 58 */	stw r0, aramTop-_SDA_BASE_(r13)
+/* 801008F4 000FC814  90 0D A5 58 */	stw r0, aramTop@sda21(r13)
 /* 801008F8 000FC818  4B FD 2B A1 */	bl ARGetSize
-/* 801008FC 000FC81C  80 0D A5 58 */	lwz r0, aramTop-_SDA_BASE_(r13)
+/* 801008FC 000FC81C  80 0D A5 58 */	lwz r0, aramTop@sda21(r13)
 /* 80100900 000FC820  7C 00 18 40 */	cmplw r0, r3
 /* 80100904 000FC824  40 81 00 0C */	ble lbl_80100910
 /* 80100908 000FC828  4B FD 2B 91 */	bl ARGetSize
-/* 8010090C 000FC82C  90 6D A5 58 */	stw r3, aramTop-_SDA_BASE_(r13)
+/* 8010090C 000FC82C  90 6D A5 58 */	stw r3, aramTop@sda21(r13)
 lbl_80100910:
 /* 80100910 000FC830  38 1F 05 00 */	addi r0, r31, 0x500
-/* 80100914 000FC834  90 0D A5 5C */	stw r0, aramWrite-_SDA_BASE_(r13)
+/* 80100914 000FC834  90 0D A5 5C */	stw r0, aramWrite@sda21(r13)
 /* 80100918 000FC838  48 00 01 C9 */	bl InitStreamBuffers
 /* 8010091C 000FC83C  BB 61 00 1C */	lmw r27, 0x1c(r1)
 /* 80100920 000FC840  80 01 00 34 */	lwz r0, 0x34(r1)
@@ -343,13 +343,13 @@ aramStoreData:
 /* 80100970 000FC890  38 9C 00 00 */	addi r4, r28, 0
 /* 80100974 000FC894  3B E5 B8 70 */	addi r31, r5, lbl_802EB870@l
 /* 80100978 000FC898  4B FC 25 E9 */	bl DCFlushRange
-/* 8010097C 000FC89C  83 AD A5 5C */	lwz r29, aramWrite-_SDA_BASE_(r13)
+/* 8010097C 000FC89C  83 AD A5 5C */	lwz r29, aramWrite@sda21(r13)
 lbl_80100980:
-/* 80100980 000FC8A0  88 0D A5 65 */	lbz r0, aramQueueValid-_SDA_BASE_(r13)
+/* 80100980 000FC8A0  88 0D A5 65 */	lbz r0, aramQueueValid@sda21(r13)
 /* 80100984 000FC8A4  28 00 00 10 */	cmplwi r0, 0x10
 /* 80100988 000FC8A8  40 80 FF F8 */	bge lbl_80100980
 /* 8010098C 000FC8AC  4B FC 57 31 */	bl OSDisableInterrupts
-/* 80100990 000FC8B0  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100990 000FC8B0  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100994 000FC8B4  3D 40 80 10 */	lis r10, aramQueueCallback@ha
 /* 80100998 000FC8B8  39 6A 04 84 */	addi r11, r10, aramQueueCallback@l
 /* 8010099C 000FC8BC  38 9F 00 04 */	addi r4, r31, 4
@@ -358,70 +358,70 @@ lbl_80100980:
 /* 801009A8 000FC8C8  7C A4 01 2E */	stwx r5, r4, r0
 /* 801009AC 000FC8CC  38 BF 00 08 */	addi r5, r31, 8
 /* 801009B0 000FC8D0  39 80 00 00 */	li r12, 0
-/* 801009B4 000FC8D4  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801009B4 000FC8D4  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801009B8 000FC8D8  38 DF 00 0C */	addi r6, r31, 0xc
 /* 801009BC 000FC8DC  38 FF 00 10 */	addi r7, r31, 0x10
 /* 801009C0 000FC8E0  54 00 28 34 */	slwi r0, r0, 5
 /* 801009C4 000FC8E4  7D 85 01 2E */	stwx r12, r5, r0
 /* 801009C8 000FC8E8  39 1F 00 14 */	addi r8, r31, 0x14
 /* 801009CC 000FC8EC  39 3F 00 18 */	addi r9, r31, 0x18
-/* 801009D0 000FC8F0  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801009D0 000FC8F0  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801009D4 000FC8F4  39 5F 00 1C */	addi r10, r31, 0x1c
 /* 801009D8 000FC8F8  7C 7E 1B 78 */	mr r30, r3
 /* 801009DC 000FC8FC  54 00 28 34 */	slwi r0, r0, 5
 /* 801009E0 000FC900  7D 86 01 2E */	stwx r12, r6, r0
-/* 801009E4 000FC904  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801009E4 000FC904  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801009E8 000FC908  54 00 28 34 */	slwi r0, r0, 5
 /* 801009EC 000FC90C  7F 67 01 2E */	stwx r27, r7, r0
-/* 801009F0 000FC910  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801009F0 000FC910  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 801009F4 000FC914  54 00 28 34 */	slwi r0, r0, 5
 /* 801009F8 000FC918  7F A8 01 2E */	stwx r29, r8, r0
-/* 801009FC 000FC91C  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 801009FC 000FC91C  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100A00 000FC920  54 00 28 34 */	slwi r0, r0, 5
 /* 80100A04 000FC924  7F 89 01 2E */	stwx r28, r9, r0
-/* 80100A08 000FC928  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A08 000FC928  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100A0C 000FC92C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100A10 000FC930  7D 6A 01 2E */	stwx r11, r10, r0
-/* 80100A14 000FC934  88 6D A5 64 */	lbz r3, aramQueueWrite-_SDA_BASE_(r13)
-/* 80100A18 000FC938  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A14 000FC934  88 6D A5 64 */	lbz r3, aramQueueWrite@sda21(r13)
+/* 80100A18 000FC938  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100A1C 000FC93C  54 63 28 34 */	slwi r3, r3, 5
 /* 80100A20 000FC940  7C 7F 1A 14 */	add r3, r31, r3
-/* 80100A24 000FC944  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A24 000FC944  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 80100A28 000FC948  54 00 28 34 */	slwi r0, r0, 5
 /* 80100A2C 000FC94C  7C 84 00 2E */	lwzx r4, r4, r0
-/* 80100A30 000FC950  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A30 000FC950  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100A34 000FC954  55 6B 28 34 */	slwi r11, r11, 5
 /* 80100A38 000FC958  7C A5 58 2E */	lwzx r5, r5, r11
-/* 80100A3C 000FC95C  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A3C 000FC95C  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 80100A40 000FC960  54 00 28 34 */	slwi r0, r0, 5
 /* 80100A44 000FC964  7C C6 00 2E */	lwzx r6, r6, r0
-/* 80100A48 000FC968  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A48 000FC968  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100A4C 000FC96C  55 6B 28 34 */	slwi r11, r11, 5
 /* 80100A50 000FC970  7C E7 58 2E */	lwzx r7, r7, r11
-/* 80100A54 000FC974  89 6D A5 64 */	lbz r11, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A54 000FC974  89 6D A5 64 */	lbz r11, aramQueueWrite@sda21(r13)
 /* 80100A58 000FC978  54 00 28 34 */	slwi r0, r0, 5
 /* 80100A5C 000FC97C  7D 08 00 2E */	lwzx r8, r8, r0
-/* 80100A60 000FC980  88 0D A5 64 */	lbz r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A60 000FC980  88 0D A5 64 */	lbz r0, aramQueueWrite@sda21(r13)
 /* 80100A64 000FC984  55 6B 28 34 */	slwi r11, r11, 5
 /* 80100A68 000FC988  7D 29 58 2E */	lwzx r9, r9, r11
 /* 80100A6C 000FC98C  54 00 28 34 */	slwi r0, r0, 5
 /* 80100A70 000FC990  7D 4A 00 2E */	lwzx r10, r10, r0
 /* 80100A74 000FC994  4B FD 3B A9 */	bl ARQPostRequest
-/* 80100A78 000FC998  88 8D A5 65 */	lbz r4, aramQueueValid-_SDA_BASE_(r13)
+/* 80100A78 000FC998  88 8D A5 65 */	lbz r4, aramQueueValid@sda21(r13)
 /* 80100A7C 000FC99C  38 7E 00 00 */	addi r3, r30, 0
 /* 80100A80 000FC9A0  38 04 00 01 */	addi r0, r4, 1
-/* 80100A84 000FC9A4  98 0D A5 65 */	stb r0, aramQueueValid-_SDA_BASE_(r13)
-/* 80100A88 000FC9A8  88 8D A5 64 */	lbz r4, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100A84 000FC9A4  98 0D A5 65 */	stb r0, aramQueueValid@sda21(r13)
+/* 80100A88 000FC9A8  88 8D A5 64 */	lbz r4, aramQueueWrite@sda21(r13)
 /* 80100A8C 000FC9AC  38 84 00 01 */	addi r4, r4, 1
 /* 80100A90 000FC9B0  7C 80 26 70 */	srawi r0, r4, 4
 /* 80100A94 000FC9B4  7C 00 01 94 */	addze r0, r0
 /* 80100A98 000FC9B8  54 00 20 36 */	slwi r0, r0, 4
 /* 80100A9C 000FC9BC  7C 00 20 10 */	subfc r0, r0, r4
-/* 80100AA0 000FC9C0  98 0D A5 64 */	stb r0, aramQueueWrite-_SDA_BASE_(r13)
+/* 80100AA0 000FC9C0  98 0D A5 64 */	stb r0, aramQueueWrite@sda21(r13)
 /* 80100AA4 000FC9C4  4B FC 56 41 */	bl OSRestoreInterrupts
-/* 80100AA8 000FC9C8  80 6D A5 5C */	lwz r3, aramWrite-_SDA_BASE_(r13)
+/* 80100AA8 000FC9C8  80 6D A5 5C */	lwz r3, aramWrite@sda21(r13)
 /* 80100AAC 000FC9CC  7C 03 E2 14 */	add r0, r3, r28
-/* 80100AB0 000FC9D0  90 0D A5 5C */	stw r0, aramWrite-_SDA_BASE_(r13)
+/* 80100AB0 000FC9D0  90 0D A5 5C */	stw r0, aramWrite@sda21(r13)
 /* 80100AB4 000FC9D4  BB 61 00 14 */	lmw r27, 0x14(r1)
 /* 80100AB8 000FC9D8  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 80100ABC 000FC9DC  38 21 00 28 */	addi r1, r1, 0x28
@@ -431,10 +431,10 @@ lbl_80100980:
 .global aramRemoveData
 aramRemoveData:
 /* 80100AC8 000FC9E8  38 64 00 1F */	addi r3, r4, 0x1f
-/* 80100ACC 000FC9EC  80 0D A5 5C */	lwz r0, aramWrite-_SDA_BASE_(r13)
+/* 80100ACC 000FC9EC  80 0D A5 5C */	lwz r0, aramWrite@sda21(r13)
 /* 80100AD0 000FC9F0  54 63 00 34 */	rlwinm r3, r3, 0, 0, 0x1a
 /* 80100AD4 000FC9F4  7C 03 00 50 */	subf r0, r3, r0
-/* 80100AD8 000FC9F8  90 0D A5 5C */	stw r0, aramWrite-_SDA_BASE_(r13)
+/* 80100AD8 000FC9F8  90 0D A5 5C */	stw r0, aramWrite@sda21(r13)
 /* 80100ADC 000FC9FC  4E 80 00 20 */	blr
 
 .global InitStreamBuffers
@@ -443,12 +443,12 @@ InitStreamBuffers:
 /* 80100AE4 000FCA04  38 C3 B8 70 */	addi r6, r3, lbl_802EB870@l
 /* 80100AE8 000FCA08  38 80 00 00 */	li r4, 0
 /* 80100AEC 000FCA0C  38 66 02 00 */	addi r3, r6, 0x200
-/* 80100AF0 000FCA10  90 8D A5 68 */	stw r4, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100AF0 000FCA10  90 8D A5 68 */	stw r4, aramUsedStreamBuffers@sda21(r13)
 /* 80100AF4 000FCA14  38 00 00 07 */	li r0, 7
-/* 80100AF8 000FCA18  90 8D A5 6C */	stw r4, aramFreeStreamBuffers-_SDA_BASE_(r13)
+/* 80100AF8 000FCA18  90 8D A5 6C */	stw r4, aramFreeStreamBuffers@sda21(r13)
 /* 80100AFC 000FCA1C  7C 09 03 A6 */	mtctr r0
 /* 80100B00 000FCA20  38 E6 02 10 */	addi r7, r6, 0x210
-/* 80100B04 000FCA24  90 6D A5 70 */	stw r3, aramIdleStreamBuffers-_SDA_BASE_(r13)
+/* 80100B04 000FCA24  90 6D A5 70 */	stw r3, aramIdleStreamBuffers@sda21(r13)
 /* 80100B08 000FCA28  39 00 00 01 */	li r8, 1
 lbl_80100B0C:
 /* 80100B0C 000FCA2C  90 E7 FF F0 */	stw r7, -0x10(r7)
@@ -485,8 +485,8 @@ lbl_80100B78:
 /* 80100B7C 000FCA9C  7C 66 02 14 */	add r3, r6, r0
 /* 80100B80 000FCAA0  38 00 00 00 */	li r0, 0
 /* 80100B84 000FCAA4  90 03 01 F0 */	stw r0, 0x1f0(r3)
-/* 80100B88 000FCAA8  80 0D A5 58 */	lwz r0, aramTop-_SDA_BASE_(r13)
-/* 80100B8C 000FCAAC  90 0D A5 60 */	stw r0, aramStream-_SDA_BASE_(r13)
+/* 80100B88 000FCAA8  80 0D A5 58 */	lwz r0, aramTop@sda21(r13)
+/* 80100B8C 000FCAAC  90 0D A5 60 */	stw r0, aramStream@sda21(r13)
 /* 80100B90 000FCAB0  4E 80 00 20 */	blr
 lbl_80100B94:
 /* 80100B94 000FCAB4  55 00 20 36 */	slwi r0, r8, 4
@@ -498,7 +498,7 @@ lbl_80100B94:
 .global aramAllocateStreamBuffer
 aramAllocateStreamBuffer:
 /* 80100BA8 000FCAC8  38 03 00 1F */	addi r0, r3, 0x1f
-/* 80100BAC 000FCACC  80 6D A5 6C */	lwz r3, aramFreeStreamBuffers-_SDA_BASE_(r13)
+/* 80100BAC 000FCACC  80 6D A5 6C */	lwz r3, aramFreeStreamBuffers@sda21(r13)
 /* 80100BB0 000FCAD0  54 07 00 34 */	rlwinm r7, r0, 0, 0, 0x1a
 /* 80100BB4 000FCAD4  38 A0 00 00 */	li r5, 0
 /* 80100BB8 000FCAD8  38 80 00 00 */	li r4, 0
@@ -525,27 +525,27 @@ lbl_80100BF4:
 lbl_80100BFC:
 /* 80100BFC 000FCB1C  28 05 00 00 */	cmplwi r5, 0
 /* 80100C00 000FCB20  40 82 00 5C */	bne lbl_80100C5C
-/* 80100C04 000FCB24  80 8D A5 70 */	lwz r4, aramIdleStreamBuffers-_SDA_BASE_(r13)
+/* 80100C04 000FCB24  80 8D A5 70 */	lwz r4, aramIdleStreamBuffers@sda21(r13)
 /* 80100C08 000FCB28  28 04 00 00 */	cmplwi r4, 0
 /* 80100C0C 000FCB2C  41 82 00 7C */	beq lbl_80100C88
-/* 80100C10 000FCB30  80 6D A5 60 */	lwz r3, aramStream-_SDA_BASE_(r13)
-/* 80100C14 000FCB34  80 0D A5 5C */	lwz r0, aramWrite-_SDA_BASE_(r13)
+/* 80100C10 000FCB30  80 6D A5 60 */	lwz r3, aramStream@sda21(r13)
+/* 80100C14 000FCB34  80 0D A5 5C */	lwz r0, aramWrite@sda21(r13)
 /* 80100C18 000FCB38  7C 67 18 50 */	subf r3, r7, r3
 /* 80100C1C 000FCB3C  7C 03 00 40 */	cmplw r3, r0
 /* 80100C20 000FCB40  41 80 00 68 */	blt lbl_80100C88
 /* 80100C24 000FCB44  80 04 00 00 */	lwz r0, 0(r4)
 /* 80100C28 000FCB48  7C 85 23 78 */	mr r5, r4
-/* 80100C2C 000FCB4C  90 0D A5 70 */	stw r0, aramIdleStreamBuffers-_SDA_BASE_(r13)
+/* 80100C2C 000FCB4C  90 0D A5 70 */	stw r0, aramIdleStreamBuffers@sda21(r13)
 /* 80100C30 000FCB50  90 E4 00 0C */	stw r7, 0xc(r4)
 /* 80100C34 000FCB54  90 E4 00 08 */	stw r7, 8(r4)
-/* 80100C38 000FCB58  80 0D A5 60 */	lwz r0, aramStream-_SDA_BASE_(r13)
+/* 80100C38 000FCB58  80 0D A5 60 */	lwz r0, aramStream@sda21(r13)
 /* 80100C3C 000FCB5C  7C 07 00 50 */	subf r0, r7, r0
-/* 80100C40 000FCB60  90 0D A5 60 */	stw r0, aramStream-_SDA_BASE_(r13)
-/* 80100C44 000FCB64  80 0D A5 60 */	lwz r0, aramStream-_SDA_BASE_(r13)
+/* 80100C40 000FCB60  90 0D A5 60 */	stw r0, aramStream@sda21(r13)
+/* 80100C44 000FCB64  80 0D A5 60 */	lwz r0, aramStream@sda21(r13)
 /* 80100C48 000FCB68  90 04 00 04 */	stw r0, 4(r4)
-/* 80100C4C 000FCB6C  80 0D A5 68 */	lwz r0, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100C4C 000FCB6C  80 0D A5 68 */	lwz r0, aramUsedStreamBuffers@sda21(r13)
 /* 80100C50 000FCB70  90 04 00 00 */	stw r0, 0(r4)
-/* 80100C54 000FCB74  90 8D A5 68 */	stw r4, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100C54 000FCB74  90 8D A5 68 */	stw r4, aramUsedStreamBuffers@sda21(r13)
 /* 80100C58 000FCB78  48 00 00 30 */	b lbl_80100C88
 lbl_80100C5C:
 /* 80100C5C 000FCB7C  28 04 00 00 */	cmplwi r4, 0
@@ -555,12 +555,12 @@ lbl_80100C5C:
 /* 80100C6C 000FCB8C  48 00 00 0C */	b lbl_80100C78
 lbl_80100C70:
 /* 80100C70 000FCB90  80 05 00 00 */	lwz r0, 0(r5)
-/* 80100C74 000FCB94  90 0D A5 6C */	stw r0, aramFreeStreamBuffers-_SDA_BASE_(r13)
+/* 80100C74 000FCB94  90 0D A5 6C */	stw r0, aramFreeStreamBuffers@sda21(r13)
 lbl_80100C78:
 /* 80100C78 000FCB98  90 E5 00 08 */	stw r7, 8(r5)
-/* 80100C7C 000FCB9C  80 0D A5 68 */	lwz r0, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100C7C 000FCB9C  80 0D A5 68 */	lwz r0, aramUsedStreamBuffers@sda21(r13)
 /* 80100C80 000FCBA0  90 05 00 00 */	stw r0, 0(r5)
-/* 80100C84 000FCBA4  90 AD A5 68 */	stw r5, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100C84 000FCBA4  90 AD A5 68 */	stw r5, aramUsedStreamBuffers@sda21(r13)
 lbl_80100C88:
 /* 80100C88 000FCBA8  28 05 00 00 */	cmplwi r5, 0
 /* 80100C8C 000FCBAC  40 82 00 0C */	bne lbl_80100C98
@@ -596,7 +596,7 @@ lbl_80100CD4:
 .global aramFreeStreamBuffer
 aramFreeStreamBuffer:
 /* 80100CEC 000FCC0C  3C 80 80 2F */	lis r4, lbl_802EBA70@ha
-/* 80100CF0 000FCC10  80 AD A5 68 */	lwz r5, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100CF0 000FCC10  80 AD A5 68 */	lwz r5, aramUsedStreamBuffers@sda21(r13)
 /* 80100CF4 000FCC14  54 63 25 36 */	rlwinm r3, r3, 4, 0x14, 0x1b
 /* 80100CF8 000FCC18  38 04 BA 70 */	addi r0, r4, lbl_802EBA70@l
 /* 80100CFC 000FCC1C  7C 80 1A 14 */	add r4, r0, r3
@@ -612,7 +612,7 @@ lbl_80100D08:
 /* 80100D20 000FCC40  48 00 00 20 */	b lbl_80100D40
 lbl_80100D24:
 /* 80100D24 000FCC44  80 04 00 00 */	lwz r0, 0(r4)
-/* 80100D28 000FCC48  90 0D A5 68 */	stw r0, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100D28 000FCC48  90 0D A5 68 */	stw r0, aramUsedStreamBuffers@sda21(r13)
 /* 80100D2C 000FCC4C  48 00 00 14 */	b lbl_80100D40
 lbl_80100D30:
 /* 80100D30 000FCC50  7C A3 2B 78 */	mr r3, r5
@@ -622,14 +622,14 @@ lbl_80100D38:
 /* 80100D3C 000FCC5C  40 82 FF CC */	bne lbl_80100D08
 lbl_80100D40:
 /* 80100D40 000FCC60  80 64 00 04 */	lwz r3, 4(r4)
-/* 80100D44 000FCC64  80 0D A5 60 */	lwz r0, aramStream-_SDA_BASE_(r13)
+/* 80100D44 000FCC64  80 0D A5 60 */	lwz r0, aramStream@sda21(r13)
 /* 80100D48 000FCC68  7C 03 00 40 */	cmplw r3, r0
 /* 80100D4C 000FCC6C  40 82 00 8C */	bne lbl_80100DD8
-/* 80100D50 000FCC70  80 0D A5 70 */	lwz r0, aramIdleStreamBuffers-_SDA_BASE_(r13)
+/* 80100D50 000FCC70  80 0D A5 70 */	lwz r0, aramIdleStreamBuffers@sda21(r13)
 /* 80100D54 000FCC74  38 A0 FF FF */	li r5, -1
 /* 80100D58 000FCC78  90 04 00 00 */	stw r0, 0(r4)
-/* 80100D5C 000FCC7C  90 8D A5 70 */	stw r4, aramIdleStreamBuffers-_SDA_BASE_(r13)
-/* 80100D60 000FCC80  80 6D A5 68 */	lwz r3, aramUsedStreamBuffers-_SDA_BASE_(r13)
+/* 80100D5C 000FCC7C  90 8D A5 70 */	stw r4, aramIdleStreamBuffers@sda21(r13)
+/* 80100D60 000FCC80  80 6D A5 68 */	lwz r3, aramUsedStreamBuffers@sda21(r13)
 /* 80100D64 000FCC84  48 00 00 18 */	b lbl_80100D7C
 lbl_80100D68:
 /* 80100D68 000FCC88  80 03 00 04 */	lwz r0, 4(r3)
@@ -641,17 +641,17 @@ lbl_80100D78:
 lbl_80100D7C:
 /* 80100D7C 000FCC9C  28 03 00 00 */	cmplwi r3, 0
 /* 80100D80 000FCCA0  40 82 FF E8 */	bne lbl_80100D68
-/* 80100D84 000FCCA4  80 8D A5 6C */	lwz r4, aramFreeStreamBuffers-_SDA_BASE_(r13)
+/* 80100D84 000FCCA4  80 8D A5 6C */	lwz r4, aramFreeStreamBuffers@sda21(r13)
 /* 80100D88 000FCCA8  48 00 00 28 */	b lbl_80100DB0
 lbl_80100D8C:
 /* 80100D8C 000FCCAC  80 04 00 04 */	lwz r0, 4(r4)
 /* 80100D90 000FCCB0  80 64 00 00 */	lwz r3, 0(r4)
 /* 80100D94 000FCCB4  7C 00 28 40 */	cmplw r0, r5
 /* 80100D98 000FCCB8  40 80 00 14 */	bge lbl_80100DAC
-/* 80100D9C 000FCCBC  90 6D A5 6C */	stw r3, aramFreeStreamBuffers-_SDA_BASE_(r13)
-/* 80100DA0 000FCCC0  80 0D A5 70 */	lwz r0, aramIdleStreamBuffers-_SDA_BASE_(r13)
+/* 80100D9C 000FCCBC  90 6D A5 6C */	stw r3, aramFreeStreamBuffers@sda21(r13)
+/* 80100DA0 000FCCC0  80 0D A5 70 */	lwz r0, aramIdleStreamBuffers@sda21(r13)
 /* 80100DA4 000FCCC4  90 04 00 00 */	stw r0, 0(r4)
-/* 80100DA8 000FCCC8  90 8D A5 70 */	stw r4, aramIdleStreamBuffers-_SDA_BASE_(r13)
+/* 80100DA8 000FCCC8  90 8D A5 70 */	stw r4, aramIdleStreamBuffers@sda21(r13)
 lbl_80100DAC:
 /* 80100DAC 000FCCCC  7C 64 1B 78 */	mr r4, r3
 lbl_80100DB0:
@@ -663,12 +663,12 @@ lbl_80100DB0:
 /* 80100DC4 000FCCE4  7C A0 2B 78 */	mr r0, r5
 /* 80100DC8 000FCCE8  48 00 00 08 */	b lbl_80100DD0
 lbl_80100DCC:
-/* 80100DCC 000FCCEC  80 0D A5 58 */	lwz r0, aramTop-_SDA_BASE_(r13)
+/* 80100DCC 000FCCEC  80 0D A5 58 */	lwz r0, aramTop@sda21(r13)
 lbl_80100DD0:
-/* 80100DD0 000FCCF0  90 0D A5 60 */	stw r0, aramStream-_SDA_BASE_(r13)
+/* 80100DD0 000FCCF0  90 0D A5 60 */	stw r0, aramStream@sda21(r13)
 /* 80100DD4 000FCCF4  4E 80 00 20 */	blr
 lbl_80100DD8:
-/* 80100DD8 000FCCF8  80 0D A5 6C */	lwz r0, aramFreeStreamBuffers-_SDA_BASE_(r13)
+/* 80100DD8 000FCCF8  80 0D A5 6C */	lwz r0, aramFreeStreamBuffers@sda21(r13)
 /* 80100DDC 000FCCFC  90 04 00 00 */	stw r0, 0(r4)
-/* 80100DE0 000FCD00  90 8D A5 6C */	stw r4, aramFreeStreamBuffers-_SDA_BASE_(r13)
+/* 80100DE0 000FCD00  90 8D A5 6C */	stw r4, aramFreeStreamBuffers@sda21(r13)
 /* 80100DE4 000FCD04  4E 80 00 20 */	blr
