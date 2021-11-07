@@ -530,7 +530,13 @@ extern struct Struct801EEC80 lbl_801EEC80;
 // extern ? lbl_801EEC90;
 // extern ? lbl_801EECF8;
 // extern ? lbl_801EED04;
-// extern ? lbl_801EED2C;
+extern struct
+{
+    u8 filler0[4];
+    u32 unk4;
+    s32 unk8;
+    s32 unkC;
+} lbl_801EED2C;
 // extern ? lbl_801EED3C;
 // extern ? lbl_801EED50;
 // extern ? lbl_801EED88;
@@ -567,7 +573,7 @@ extern struct
     u8 filler1A[0x3C-0x1A];
 } lbl_801F3B70[4];
 // extern ? lbl_801F3C60;
-// extern ? lbl_801F3D50;
+extern u16 lbl_801F3D50[][5];
 extern struct
 {
     u8 filler0[4];
@@ -609,7 +615,7 @@ extern struct SpritePoolInfo spritePoolInfo;
 extern struct Ball lbl_80205E60[];
 // extern ? lbl_80206B80;
 // extern ? lbl_80206BC0;
-// extern ? lbl_80206BD0;
+extern u32 lbl_80206BD0[];
 extern struct World lbl_80206BF0[];
 // extern ? lbl_80206CF0;
 // extern ? lbl_80206D00;

@@ -161,7 +161,7 @@ struct ModeControl
     u8 fillerC[0x1C-0xC];
     u32 unk1C;
     s32 unk20;
-    u8 filler24[0x28-0x24];
+    s32 unk24;
     s32 unk28;
     u8 filler2C[4];
     s32 unk30;
@@ -319,7 +319,15 @@ struct Camera
     u8 filler27[0x28-0x27];
     struct Camera_sub sub28;
     s16 unk50;
-    u8 filler52[0xBC-0x52];
+    u8 filler52[0x6C-0x52];
+    u32 unk6C;
+    u8 filler70[0x80-0x70];
+    float unk80;
+    u8 filler84[0x8C-0x84];
+    s32 unk8C;
+    u8 filler90[0xAC-0x90];
+    Vec unkAC;
+    u8 fillerB8[4];
     Vec unkBC;
     Vec unkC8;
     u8 fillerD4[0xEC-0xD4];
@@ -420,3 +428,11 @@ struct SpritePoolInfo
              s32 unk38;
     /*0x3C*/ s8 *statusList;
 };
+
+struct Struct80176434
+{
+    u32 unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+};  // size=0x10

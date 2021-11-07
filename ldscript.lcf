@@ -1,7 +1,3 @@
-_SDA_BASE_ = 0x802F81E0;
-_SDA2_BASE_ = 0x802FA800;
-_stack_addr = 0x80306C80;
-
 MEMORY
 {
     text : origin = 0x80003100
@@ -24,7 +20,10 @@ SECTIONS
         .sdata      ALIGN(0x20) : {}  /* 0x802F01E0  0x1EA920      0x0018F9 */
         .sbss       ALIGN(0x20) : {}  /* 0x802F1AE0  n/a           0x000D15 */
         .sdata2     ALIGN(0x20) : {}  /* 0x802F2800  0x1EC220      0x004480 */
+        .stack      ALIGN(0x20) : {}
     } > text
+    _stack_base = _f_stack;
+    _stack_addr = _f_stack + 0x10000;  /* 0x80306C80 */
 }
 FORCEACTIVE {
     unkData 
@@ -56,6 +55,12 @@ lbl_802F2C90 = 0x802F2C90;
 lbl_802F2C9C = 0x802F2C9C;
 lbl_802F2CA0 = 0x802F2CA0;
 lbl_802F2CB0 = 0x802F2CB0;
+lbl_802F2CE0 = 0x802F2CE0;
+lbl_802F2CE8 = 0x802F2CE8;
+lbl_802F2CF8 = 0x802F2CF8;
+lbl_802F2D00 = 0x802F2D00;
+lbl_802F2D08 = 0x802F2D08;
+lbl_802F2D10 = 0x802F2D10;
 
 /* sprite.s */
 lbl_802F4A70 = 0x802F4A70;

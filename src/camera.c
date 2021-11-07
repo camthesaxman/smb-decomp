@@ -547,7 +547,7 @@ void func_800188D4(void)
     u8 unused[0x10];
     struct Camera *camera = &cameraInfo[0];
     Mtx projMtx;
-    
+
     C_MTXPerspective(
         projMtx,
         0.0054931640625f * camera->sub28.unk30,
@@ -562,7 +562,7 @@ void func_800188D4(void)
 void func_8001898C(int a, int b, Vec *c)
 {
     struct Camera *camera = &cameraInfo[a];
-    
+
     camera->unkEC = 1;
     camera->unk100 += c->x;
     camera->unk104 += c->y;
@@ -577,7 +577,7 @@ void func_80018A04(int a)
 {
     int i;
     struct Camera *camera;
-    
+
     for (i = 0, camera = &cameraInfo[0]; i < 4; i++, camera++)
     {
         if (!(camera->unk24 & (1<<(31-0x1A))))
@@ -592,7 +592,7 @@ void func_80018A74(int a, int b)
 {
     int i;
     struct Camera *camera = &cameraInfo[0];
-    
+
     if (b)
     {
         for (i = 0; i < 4; i++, camera++)
@@ -613,6 +613,7 @@ void camera_clear(struct Camera *camera)
     u32 unused;
     struct Camera *r3;
 
+    // TODO: try permuting the order of these assignments
     backup.unk204 = camera->unk204;
     backup.unk24 = camera->unk24 & 0x50;
     backup.unk1E = camera->unk1E;
@@ -650,30 +651,30 @@ asm void camera_clear(struct Camera *camera)
 #endif
 #pragma peephole on
 
-void func_80018C58(register struct Camera *camera)
+void func_80018C58(struct Camera *camera)
 {
     if (camera->unkEC != 0)
     {
         camera->unk100 -= 0.75 * camera->unkF4.x;
         camera->unk104 -= 0.75 * camera->unkF4.y;
         camera->unk108 -= 0.75 * camera->unkF4.z;
-        
+
         camera->unk100 *= 0.85;
         camera->unk104 *= 0.85;
         camera->unk108 *= 0.85;
-        
+
         camera->unkF4.x += camera->unk100;
         camera->unkF4.y += camera->unk104;
         camera->unkF4.z += camera->unk108;
-        
+
         mathutil_mtxA_from_mtx(camera->unk144);
         mathutil_mtxA_translate(&camera->unkF4);
         mathutil_mtxA_to_mtx(camera->unk144);
-        
+
         mathutil_mtxA_from_mtx(camera->unk1A4);
         mathutil_mtxA_translate(&camera->unkF4);
         mathutil_mtxA_to_mtx(camera->unk1A4);
-        
+
         if (camera->unkF0 > 0)
         {
             camera->unkF0--;
@@ -718,4 +719,181 @@ void func_80018E38(struct Camera *camera, struct Ball *ball)
 {
     camera_clear(camera);
     camera->unk1E = 30;
+}
+
+struct Struct80176434 lbl_80176434[] =
+{
+    {0, -15.413999557495117f, 0.0f, 0.0f},
+    {0xA5, -14.75100040435791f, 0.0f, 0.0f},
+    // TODO: rest of entries
+};
+
+void func_80018E6C(struct Camera *camera, struct Ball *ball)
+{
+    float f31 = lbl_801EED2C.unk8;
+    Vec sp10;
+
+    camera->unk0.x = func_8008CDC0(f31, &lbl_80176434[0]);
+    camera->unk0.y = func_8008CDC0(f31, &lbl_80176434[0x10]);
+    camera->unk0.z = func_8008CDC0(f31, &lbl_80176434[0x20]);
+
+    camera->unkC.x = func_8008CDC0(f31, &lbl_80176434[0x30]);
+    camera->unkC.y = func_8008CDC0(f31, &lbl_80176434[0x40]);
+    camera->unkC.z = func_8008CDC0(f31, &lbl_80176434[0x50]);
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+}
+
+void func_80018FA4(struct Camera *camera, struct Ball *ball)
+{
+    camera_clear(camera);
+    camera->unk24 |= 8;
+    camera->unk1E = 0x37;
+}
+
+void func_80018FE4(struct Camera *camera, struct Ball *ball)
+{
+    float f31 = lbl_801EED2C.unk8;
+    Vec sp10;
+
+    if ((f31 >= 1740.0f && f31 < 1850.0f)
+     || (f31 >= 1954.0f && f31 < 2064.0f)
+     || (f31 >= 2498.0f && f31 < 2902.0f))
+    {
+        camera->unk0.x = func_8008CDC0(f31, &lbl_80176434[0x60]);
+        camera->unk0.y = func_8008CDC0(f31, &lbl_80176434[0x75]);
+        camera->unk0.z = func_8008CDC0(f31, &lbl_80176434[0x8A]);
+
+        camera->unkC.x = func_8008CDC0(f31, &lbl_80176434[0x9F]);
+        camera->unkC.y = func_8008CDC0(f31, &lbl_80176434[0xB4]);
+        camera->unkC.z = func_8008CDC0(f31, &lbl_80176434[0xC9]);
+    }
+    else
+    {
+        camera->unk0.x = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
+        camera->unk0.y = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
+        camera->unk0.z = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
+
+        camera->unkC.x = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
+        camera->unkC.y = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
+        camera->unkC.z = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
+    }
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+
+}
+
+void func_80019284(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    camera_clear(camera);
+
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y + 0.5;
+    camera->unkC.z = ball->unk4.z;
+
+    mathutil_mtxA_from_translate(&camera->unkC);
+    mathutil_mtxA_rotate_y(0);
+    sp10.x = 0.0f;
+    sp10.y = 1.0f;
+    sp10.z = 3.0f;
+    mathutil_mtxA_tf_point(&sp10, &camera->unk0);
+
+    sp10.x = 0.0f;
+    sp10.y = 0.0f;
+    sp10.z = 3.0f;
+    mathutil_mtxA_tf_point(&sp10, &camera->unkAC);
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+    camera->unk1E = 1;
+}
+
+void func_800193AC(struct Camera *camera, struct Ball *ball)
+{
+    camera_clear(camera);
+    camera->unk8C = 0x80;
+    camera->unk6C = 0;
+    camera->unk80 = 0.0f;
+    camera_sub_13(camera, ball);
+    camera->unk1E = 13;
+}
+
+void camera_sub_13(struct Camera *camera, struct Ball *ball)
+{
+    Quaternion sp1C;
+    Vec sp10;
+    int r10;
+    int i;
+
+    if (!(lbl_802F1EE0 & 0xA) || camera->unk1E != 13)
+    {
+        func_80019CDC((void *)&sp1C);
+        camera->unkC.x = sp1C.x;
+        camera->unkC.y = sp1C.y;
+        camera->unkC.z = sp1C.z;
+        if (camera->unk50 > 0)
+        {
+            for (i = 0; i < modeCtrl.unk24; i++)
+            {
+                r10 = lbl_80206BD0[i];
+                if (camera->unk80 > -0.3 && (lbl_801F3D50[r10][0] & (1<<(31-0x18))))
+                    camera->unk80 -= 0.01;
+                if (camera->unk80 < 0.2 && (lbl_801F3D50[r10][0] & (1<<(31-0x19))))
+                    camera->unk80 += 0.01;
+            }
+        }
+
+        sp10.x = 0.0f;
+        if (gameSubmode == SMD_GAME_RESULT_INIT
+         || gameSubmode == SMD_GAME_RESULT_MAIN
+         || gameSubmode == SMD_GAME_RESULT_MENU)
+            sp10.y = sp1C.w * (camera->unk80 + 0.4);
+        else
+            sp10.y = sp1C.w * (camera->unk80 + 0.8);
+        sp10.z = sp1C.w * (camera->unk80 + 0.8);
+
+        for (i = 0; i < modeCtrl.unk24; i++)
+        {
+            r10 = lbl_80206BD0[i];
+            if (camera->unk8C < 256 && (lbl_801F3D50[r10][0] & (1<<(31-0x1A))))
+                camera->unk8C += 8;
+            if (camera->unk8C > -256 && (lbl_801F3D50[r10][0] & (1<<(31-0x1B))))
+                camera->unk8C -= 8;
+        }
+        if (camera->unk50 > 0)
+            camera->unk6C += camera->unk8C;
+        mathutil_mtxA_from_translate(&camera->unkC);
+        mathutil_mtxA_rotate_y(camera->unk6C);
+        mathutil_mtxA_tf_point(&sp10, &camera->unk0);
+
+        sp10.x = camera->unkC.x - camera->unk0.x;
+        sp10.y = camera->unkC.y - camera->unk0.y;
+        sp10.z = camera->unkC.z - camera->unk0.z;
+
+        camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+        camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+        camera->unk1C = 0;
+
+        if (camera->unk50 < 0x3C)
+            camera->unk50++;
+    }
 }

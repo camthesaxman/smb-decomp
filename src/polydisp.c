@@ -222,13 +222,6 @@ extern struct
     s16 unkE;
 } lbl_801EED04;
 
-extern struct
-{
-    u8 filler0[4];
-    u32 unk4;
-    s32 unk8;
-} lbl_801EED2C;
-
 //extern u8 lbl_802F1B04[0xB4];
 extern u32 *lbl_802F1B04;
 extern u32 lbl_802F1BB8;
