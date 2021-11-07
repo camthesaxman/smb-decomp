@@ -557,7 +557,8 @@ extern struct Camera cameraInfo[4];
 extern struct
 {
     u32 unk0;
-    u8 filler4[5];
+    u8 filler4[0x1E - 0x4];
+    s16 unk1E;
 } lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
@@ -576,7 +577,8 @@ extern struct
 extern u16 lbl_801F3D50[][5];
 extern struct
 {
-    u8 filler0[4];
+    u16 unk0;
+    u8 filler2[2];
     u16 unk4;
     u8 filler8[4];
 } lbl_801F3D88;
@@ -627,7 +629,7 @@ extern u32 lbl_80209368[];
 // extern ? lbl_8020A348;
 // extern ? lbl_8020AB88;
 // extern ? lbl_8020ADC8;
-// extern ? lbl_8020ADD4;
+extern Quaternion lbl_8020ADD4;
 // extern ? lbl_8020AE20;
 // extern ? lbl_8020AE40;
 extern struct
@@ -1434,13 +1436,23 @@ struct DecodedStageLzPtr_child2
     float unk8;
 };
 
+struct DecodedStageLzPtr_child3
+{
+    float unk0;
+    float unk4;
+    float unk8;
+    u8 fillerC[0xE - 0xC];
+    s16 unkE;
+};
+
 extern struct
 {
     s32 unk0;
     s32 unk4;
     s32 unk8;
     struct DecodedStageLzPtr_child *unkC;
-    u8 filler10[0x58-0x10];
+    struct DecodedStageLzPtr_child3 *unk10;
+    u8 filler14[0x58-0x14];
     s32 unk58;
     struct DecodedStageLzPtr_child2 *unk5C;
     u8 filler60[8];

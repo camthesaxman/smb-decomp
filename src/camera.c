@@ -846,7 +846,7 @@ void camera_sub_13(struct Camera *camera, struct Ball *ball)
 
     if (!(lbl_802F1EE0 & 0xA) || camera->unk1E != 13)
     {
-        func_80019CDC((void *)&sp1C);
+        func_80019CDC(&sp1C);
         camera->unkC.x = sp1C.x;
         camera->unkC.y = sp1C.y;
         camera->unkC.z = sp1C.z;
@@ -897,3 +897,192 @@ void camera_sub_13(struct Camera *camera, struct Ball *ball)
             camera->unk50++;
     }
 }
+
+void func_800196E8(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    camera_clear(camera);
+
+    camera->unk0.x = 0.0f;
+    camera->unk0.y = 0.0f;
+    camera->unk0.z = 42.0f;
+
+    camera->unkC.x = 0.0f;
+    camera->unkC.y = 0.0f;
+    camera->unkC.z = 0.0f;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+
+    camera->unk1E = 0x35;
+}
+
+void func_800197AC(struct Camera *camera, struct Ball *ball) {}
+
+void camera_sub_ready_init(struct Camera *camera, struct Ball *ball)
+{
+    Quaternion sp1C;
+    Vec sp10;
+
+    camera_clear(camera);
+    func_80019CDC(&sp1C);
+    camera->unk54.x = sp1C.x;
+    camera->unk54.y = sp1C.y;
+    camera->unk54.z = sp1C.z;
+    camera->unk60 = sp1C.w * 0.8;
+    camera->unk64 = sp1C.w * 0.8;
+    mathutil_mtxA_from_translate(&camera->unk54);
+    mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
+    sp10.x = 0.0f;
+    sp10.y = camera->unk64;
+    sp10.z = camera->unk60;
+    mathutil_mtxA_tf_point(&sp10, &sp10);
+    sp10.x = camera->unk54.x - sp10.x;
+    sp10.y = camera->unk54.y - sp10.y;
+    sp10.z = camera->unk54.z - sp10.z;
+    camera->unk6C = (s16)(mathutil_atan2(sp10.x, sp10.z) - 32768);
+    camera->unk68 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk70 = 0;
+    camera->unk74.x = decodedStageLzPtr->unk10->unk0;
+    camera->unk74.y = decodedStageLzPtr->unk10->unk4 + 0.5;
+    camera->unk74.z = decodedStageLzPtr->unk10->unk8;
+    mathutil_mtxA_from_translate(&camera->unk74);
+    mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
+    sp10.x = 0.0f;
+    sp10.y = 1.0f;
+    sp10.z = 3.0f;
+    mathutil_mtxA_tf_point(&sp10, &sp10);
+    sp10.x = camera->unk74.x - sp10.x;
+    sp10.y = camera->unk74.y - sp10.y;
+    sp10.z = camera->unk74.z - sp10.z;
+    camera->unk8C = (s16)(mathutil_atan2(sp10.x, sp10.z) - 32768) + 0x10000;
+    camera->unk88 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk90 = 0;
+    camera->unk24 |= 1;
+    camera->unk50 = 0x5A;
+    camera->unk52 = 0x5A;
+    camera->unk26 = 1;
+    camera_sub_ready_main(camera, ball);
+    camera->unk1E = 11;
+}
+
+void camera_sub_ready_main(struct Camera *camera, struct Ball *ball)
+{
+    if (!(lbl_802F1EE0 & 0xA) || camera->unk1E != 11)
+    {
+        float f30;
+        float f7;
+        float f5;
+        Vec sp10;
+
+        if (camera->unk50 > 0)
+        {
+            camera->unk50--;
+            if (lbl_801F3A58.unk1E == 1 && (lbl_801F3D88.unk0 & (1<<(31-0x17))) && modeCtrl.unk0 > 0x78)
+                camera->unk50--;
+        }
+
+        f7 = camera->unk50;
+        f5 = camera->unk52;
+        f7 = f7 / f5;
+        f30 = (3.0 + -2.0 * f7) * (f7 * f7);
+
+        camera->unkC.x = camera->unk74.x * (1.0 - f30) + camera->unk54.x * f30;
+        camera->unkC.y = camera->unk74.y * (1.0 - f30) + camera->unk54.y * f30;
+        camera->unkC.z = camera->unk74.z * (1.0 - f30) + camera->unk54.z * f30;
+
+        camera->unk18 = (double)camera->unk68 + (s16)(camera->unk88 - camera->unk68) * (1.0 - f30);
+        camera->unk1A = (double)camera->unk6C + (camera->unk8C - camera->unk6C) * (1.0 - f30);
+        camera->unk1C = (double)camera->unk70 + (s16)(camera->unk90 - camera->unk70) * (1.0 - f30);
+
+        mathutil_mtxA_from_translate(&camera->unkC);
+        mathutil_mtxA_rotate_y(camera->unk1A);
+
+        sp10.x = 0.0f;
+        sp10.y = (1.0 - f30) + camera->unk64 * f30;
+        sp10.z = (1.0 - f30) * 3.0 + camera->unk60 * f30;
+        mathutil_mtxA_tf_point(&sp10, &camera->unk0);
+    }
+}
+
+void func_80019CA4(struct Camera *camera, struct Ball *ball)
+{
+    camera_sub_ready_init(camera, ball);
+    camera->unk50 = 0x15E;
+    camera->unk52 = 0x15E;
+}
+
+struct Struct80177214
+{
+    s32 stageId;
+    Quaternion quat;
+};  // size = 0x14
+
+extern struct Struct80177214 lbl_80177214[];
+
+void func_80019CDC(Quaternion *quat)
+{
+    struct Struct80177214 *ptr = &lbl_80177214[0];
+
+    while (ptr->stageId > 0)
+    {
+        if (ptr->stageId == currStageId)
+        {
+            *quat = ptr->quat;
+            return;
+        }
+        ptr++;
+    }
+    *quat = lbl_8020ADD4;
+    if (quat->w < 31.25)
+        quat->w = 31.25f;
+}
+
+void func_80019D74(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    camera_clear(camera);
+    camera->unk26 = 0;
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y + 0.5;
+    camera->unkC.z = ball->unk4.z;
+    mathutil_mtxA_from_translate(&camera->unkC);
+    mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
+    sp10.x = 0.0f;
+    sp10.y = 1.0f;
+    sp10.z = 3.0f;
+    mathutil_mtxA_tf_point(&sp10, &camera->unk0);
+    sp10.x = 0.0f;
+    sp10.y = 0.0f;
+    sp10.z = 3.0f;
+    mathutil_mtxA_tf_point(&sp10, &camera->unkAC);
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+    camera->unk1E = 1;
+}
+
+//const float lbl_802F2D18 = 42.0f;
+//const double lbl_802F2D20 = 3;
+//const double lbl_802F2D28 = -2;
+//const double lbl_802F2D30 = 31.25;
+//const float lbl_802F2D38 = 31.25;
+const float lbl_802F2D3C = 1.1920928955078125e-07;
+const double lbl_802F2D40 = 0.1;
+const double lbl_802F2D48 = 5;
+const double lbl_802F2D50 = 9;
+const double lbl_802F2D58 = 170;
+const double lbl_802F2D60 = 74;
+const double lbl_802F2D68 = 0.09;
