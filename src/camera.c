@@ -1074,15 +1074,318 @@ void func_80019D74(struct Camera *camera, struct Ball *ball)
     camera->unk1E = 1;
 }
 
+static inline float sum_of_3_sq(register float a, register float b, register float c)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
+#else
+    return a * a + b * b + c * c;
+#endif
+}
+
+#ifdef NONMATCHING  // register swaps
+void func_80019EB0(struct Camera *camera, struct Ball *ball)
+{
+    s16 r31;
+    s16 r30;
+    s16 r29;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    float f1;
+    int r4;
+    int r3;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    sp1C.x = camera->unk0.x;
+    sp1C.y = camera->unk0.y;
+    sp1C.z = camera->unk0.z;
+
+    sp10.x = camera->unkC.x;
+    sp10.y = camera->unkC.y;
+    sp10.z = camera->unkC.z;
+
+    sp28.x = camera->unkAC.x - camera->unkC.x;
+    sp28.y = camera->unkAC.y - camera->unkC.y;
+    sp28.z = camera->unkAC.z - camera->unkC.z;
+
+    f1 = sum_of_3_sq(sp28.x, sp28.y, sp28.z);
+    if (f1 > 1.1920928955078125e-07f)
+    {
+        f1 = mathutil_rsqrt(f1);
+        sp28.x *= f1;
+        sp28.y *= f1;
+        sp28.z *= f1;
+    }
+    else
+    {
+        sp28.x = 1.0f;
+        sp28.y = 0.0f;
+        sp28.z = 0.0f;
+    }
+    //lbl_80019FA4
+
+    sp28.x = sp28.x * 0.75 + camera->unkC.x;
+    sp28.y = sp28.y * 0.75 + camera->unkC.y;
+    sp28.z = sp28.z * 0.75 + camera->unkC.z;
+
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y + 0.5;
+    camera->unkC.z = ball->unk4.z;
+
+    sp28.x = camera->unkC.x - sp28.x;
+    sp28.y = camera->unkC.y - sp28.y;
+    sp28.z = camera->unkC.z - sp28.z;
+
+    if (ball->unk80 < 0x3C)
+        r31 = 0;
+    else
+        r31 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+
+    r30 = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    r3 = (s16)(r30 - camera->unk1A);
+    if (r3 < -512)
+        r4 = -512;
+    else if (r3 > 512)
+        r4 = 512;
+    else
+        r4 = r3;
+
+    r30 = camera->unk1A + r4;
+    if (!(camera->unk24 & (1<<(31-0x1E))) && !(ball->unk94 & (1<<(31-0x13))))
+    {
+        r3 = (s16)(ball->unk92 - r30);
+        if (r3 > 0x800)
+            r3 -= 0x800;
+        else if (r3 < -0x800)
+            r3 += 0x800;
+        else
+            r3 = 0;
+        //lbl_8001A10C
+        r3 >>= 7;
+        r4 = camera->unk10C;
+        if (r3 == 0)
+            r4 = 0;
+        //lbl_8001A120
+        else if ((r4 < 0 && r3 > 0) || (r4 > 0 && r3 < 0))
+            r4 = 0;
+        //lbl_8001A148
+        else if (r3 < 0)
+        {
+            if (r3 < r4 - 4)
+                r4 -= 4;
+            else
+                r4 = r3;
+        }
+        //lbl_8001A16C
+        else
+        {
+            if (r3 > r4 + 4)
+                r4 += 4;
+            else
+                r4 = r3;
+        }
+        //lbl_8001A184
+        r30 += r4;
+        r3 = (s16)(r30 - camera->unk1A);
+        if (r3 < -768)
+            r3 = -768;
+        else if (r3 > 768)
+            r3 = 768;
+        //lbl_8001A1B0
+        r30 = camera->unk1A + r3;
+    }
+    //lbl_8001A1B8
+    if (r31 < -6144)
+        r31 = -6144;
+    else if (r31 > 6144)
+        r31 = 6144;
+    //lbl_8001A1D8
+
+    r29 = camera->unkB8 + 0.2 * (r31 - camera->unkB8);
+    camera->unkB8 = r29;
+
+    mathutil_mtxA_from_translate(&camera->unkC);
+    mathutil_mtxA_rotate_y(r30);
+    mathutil_mtxA_rotate_x(r29);
+    sp28.x = 0.0f;
+    sp28.y = 0.0f;
+    sp28.z = 3.0f;
+    mathutil_mtxA_tf_point(&sp28, &camera->unkAC);
+    camera->unk10C = r30 - camera->unk1A;
+    camera->unk1A = r30;
+    camera->unk18 = r29 + 0x10000 - 3328;
+    mathutil_mtxA_from_translate(&camera->unkC);
+    mathutil_mtxA_rotate_y(camera->unk1A);
+    mathutil_mtxA_rotate_x(camera->unk18);
+    sp28.x = 0.0f;
+    sp28.y = 0.0f;
+    sp28.z = mathutil_sqrt(sum_of_sq(3.0f, 1.0f));
+    mathutil_mtxA_tf_point(&sp28, &camera->unk0);
+
+    camera->unk94.x = camera->unk0.x - sp1C.x;
+    camera->unk94.y = camera->unk0.y - sp1C.y;
+    camera->unk94.z = camera->unk0.z - sp1C.z;
+
+    camera->unkA0.x = camera->unkC.x - sp10.x;
+    camera->unkA0.y = camera->unkC.y - sp10.y;
+    camera->unkA0.z = camera->unkC.z - sp10.z;
+}
+#else
+asm void func_80019EB0(struct Camera *camera, struct Ball *ball)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_80019EB0.s"
+}
+#endif
+#pragma peephole on
+
+void func_8001A34C(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    float f0;
+    float f1;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    f0 = 0.1 * mathutil_sqrt(sum_of_3_sq(sp10.x, sp10.y, sp10.z)) / 5.0;
+    f0 *= 1.0 + 9.0 * lbl_801F3B70[0].unk6 / 170.0;
+
+    sp28.x = 0.0f;
+    sp1C.x = 0.0f;
+    sp28.y = 0.0f;
+    sp1C.y = 0.0f;
+    sp28.z = 0.0f;
+    sp1C.z = 0.0f;
+
+    sp28.x = f0 * lbl_801F3B70[0].unk2 / 74.0;
+    if (lbl_801F3D50[0][0] & (1<<(31-0x16)))
+        sp28.y = f0 * lbl_801F3B70[0].unk3 / 74.0;
+    else
+        sp28.z = -f0 * lbl_801F3B70[0].unk3 / 74.0;
+
+    sp1C.x = f0 * lbl_801F3B70[0].unk4 / 74.0;
+    if (lbl_801F3D50[0][0] & (1<<(31-0x16)))
+        sp1C.y = f0 * lbl_801F3B70[0].unk5 / 74.0;
+    else
+        sp1C.z = -f0 * lbl_801F3B70[0].unk5 / 74.0;
+
+    mathutil_mtxA_from_translate(&camera->unk0);
+    mathutil_mtxA_rotate_y(camera->unk1A);
+    mathutil_mtxA_rotate_x(camera->unk18);
+    mathutil_mtxA_rotate_z(camera->unk1C);
+    mathutil_mtxA_tf_point(&sp28, &camera->unk0);
+    mathutil_mtxA_rigid_inv_tf_point(&camera->unkC, &sp10);
+
+    sp10.x += sp1C.x;
+    sp10.y += sp1C.y;
+    sp10.z += sp1C.z;
+    mathutil_mtxA_tf_point(&sp10, &camera->unkC);
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    f1 = sum_of_3_sq(sp10.x, sp10.y, sp10.z);
+    if (f1 < 0.09)
+    {
+        float f2 = 0.3 / mathutil_sqrt(f1);
+        camera->unkC.x = camera->unk0.x + sp10.x * f2;
+        camera->unkC.y = camera->unk0.y + sp10.y * f2;
+        camera->unkC.z = camera->unk0.z + sp10.z * f2;
+    }
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001A70C(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001A7A4(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = currentCameraStructPtr->unk1C;
+}
+
+void func_8001A840(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    camera->unk26 = 2;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera->unk94.x *= 0.97;
+    camera->unk94.y *= 0.955;
+    camera->unk94.z *= 0.97;
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y;
+    camera->unkC.z = ball->unk4.z;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+}
+
 //const float lbl_802F2D18 = 42.0f;
 //const double lbl_802F2D20 = 3;
 //const double lbl_802F2D28 = -2;
 //const double lbl_802F2D30 = 31.25;
 //const float lbl_802F2D38 = 31.25;
-const float lbl_802F2D3C = 1.1920928955078125e-07;
-const double lbl_802F2D40 = 0.1;
-const double lbl_802F2D48 = 5;
-const double lbl_802F2D50 = 9;
-const double lbl_802F2D58 = 170;
-const double lbl_802F2D60 = 74;
-const double lbl_802F2D68 = 0.09;
+//const float lbl_802F2D3C = 1.1920928955078125e-07;
+//const double lbl_802F2D40 = 0.1;
+//const double lbl_802F2D48 = 5;
+//const double lbl_802F2D50 = 9;
+//const double lbl_802F2D58 = 170;
+//const double lbl_802F2D60 = 74;
+//const double lbl_802F2D68 = 0.09;
+
+//const double lbl_802F2D70 = 0.3;
+//const double lbl_802F2D78 = 0.97;
+//const double lbl_802F2D80 = 0.955;
+const double lbl_802F2D88 = 0.25;

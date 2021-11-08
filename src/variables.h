@@ -567,7 +567,10 @@ extern struct
     u16 unk0;
     s8 unk2;
     s8 unk3;
-    u8 filler4[0xA-4];
+    s8 unk4;
+    s8 unk5;
+    u8 unk6;
+    u8 filler7[0xA-0x7];
     s8 unkA;
     u8 fillerB[0x18-0xB];
     u16 unk18;

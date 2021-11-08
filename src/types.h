@@ -332,9 +332,11 @@ struct Camera
     s32 unk88;
     s32 unk8C;
     s32 unk90;
-    u8 filler94[0xAC-0x94];
+    Vec unk94;
+    Vec unkA0;
     Vec unkAC;
-    u8 fillerB8[4];
+    s16 unkB8;
+    u8 fillerBA[2];
     Vec unkBC;
     Vec unkC8;
     u8 fillerD4[0xEC-0xD4];
@@ -344,7 +346,8 @@ struct Camera
     float unk100;
     float unk104;
     float unk108;
-    u8 filler10C[0x144-0x10C];
+    s16 unk10C;
+    u8 filler10E[0x144-0x10E];
     Mtx unk144;
     Mtx unk174;
     Mtx unk1A4;
@@ -379,7 +382,10 @@ struct Ball
     Vec unk4;
     u8 filler10[0x68-0x10];
     float unk68;
-    u8 filler6C[0x94-0x6C];
+    u8 filler6C[0x80-0x6C];
+    s32 unk80;
+    u8 filler84[0x92-0x84];
+    s16 unk92;
     u32 unk94;
     u8 filler98[0xFC-0x98];
     struct Ball_child *unkFC;
