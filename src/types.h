@@ -451,3 +451,17 @@ struct Struct80176434
     float unk8;
     float unkC;
 };  // size=0x10
+
+struct Struct80206E48
+{
+    Vec unk0;
+    Vec unkC;
+    s16 unk18;
+    s16 unk1A;
+    s16 unk1C;
+    s16 unk1E;
+    s16 unk20;
+    s16 unk22;
+    Mtx unk24;
+    Mtx unk54;
+};

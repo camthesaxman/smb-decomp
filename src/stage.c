@@ -37,19 +37,7 @@ struct
     u8 filler94[0x5C-(0x94-0x74)];
 } lbl_80206DEC;
 
-struct Struct80206E48
-{
-    Vec unk0;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    Mtx unk24;
-    Mtx unk54;
-} lbl_80206E48[0x48];  // 148
+struct Struct80206E48 lbl_80206E48[0x48];  // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
