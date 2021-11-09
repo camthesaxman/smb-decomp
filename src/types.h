@@ -293,40 +293,40 @@ struct Camera_sub
 {
     float unk28;
     float unk2C;
-    s16 unk30;
+    s16 unk30;  // fov
     u16 unk32;
     float unk34;
     float unk38;
     float unk3C;
-    float unk40;
-    float unk44;
-    float unk48;
-    float unk4C;
+    float unk40;  // left
+    float unk44;  // top
+    float unk48;  // width
+    float unk4C;  // height
 };
 
 struct Camera
 {
-    Vec unk0;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    s8 unk1E;
+    Vec unk0;  // eye
+    Vec unkC;  // lookAt
+    s16 unk18;  // pitch
+    s16 unk1A;  // yaw
+    s16 unk1C;  // roll
+    s8 unk1E;  // state
     u8 unk1F;
     float unk20;
-    s16 unk24;
+    s16 unk24;  // flags
     s8 unk26;
     u8 filler27[0x28-0x27];
-    struct Camera_sub sub28;
+    struct Camera_sub sub28;  // viewport info?
     s16 unk50;
     s16 unk52;
-    Vec unk54;
+    Vec unk54;  // lookAt start for level fly-in?
     float unk60;
     float unk64;
     s32 unk68;
     s32 unk6C;
     s32 unk70;
-    Vec unk74;
+    Vec unk74;  // lookAt end for level fly-in?
     float unk80;
     u8 filler84[0x88-0x84];
     s32 unk88;
@@ -380,7 +380,9 @@ struct Ball
 {
     u8 filler0[0x4];
     Vec unk4;
-    u8 filler10[0x68-0x10];
+    u8 filler10[0x2E - 0x10];
+    s8 unk2E;
+    u8 filler2F[0x68-0x2F];
     float unk68;
     u8 filler6C[0x80-0x6C];
     s32 unk80;

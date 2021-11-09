@@ -1769,7 +1769,7 @@ func_80093E48:
 /* 80093E60 0008FD80  93 A1 00 0C */	stw r29, 0xc(r1)
 /* 80093E64 0008FD84  93 81 00 08 */	stw r28, 8(r1)
 /* 80093E68 0008FD88  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
-/* 80093E6C 0008FD8C  4B F8 44 61 */	bl func_800182CC
+/* 80093E6C 0008FD8C  4B F8 44 61 */	bl camera_setup_singleplayer_viewport
 /* 80093E70 0008FD90  3C 60 80 20 */	lis r3, lbl_80206BC0@ha
 /* 80093E74 0008FD94  3B A3 6B C0 */	addi r29, r3, lbl_80206BC0@l
 /* 80093E78 0008FD98  3C 60 80 20 */	lis r3, spritePoolInfo@ha
@@ -1785,7 +1785,7 @@ lbl_80093E88:
 /* 80093E9C 0008FDBC  C0 62 AF CC */	lfs f3, lbl_802F57CC-_SDA2_BASE_(r2)
 /* 80093EA0 0008FDC0  FC 40 08 90 */	fmr f2, f1
 /* 80093EA4 0008FDC4  FC 80 18 90 */	fmr f4, f3
-/* 80093EA8 0008FDC8  4B F8 42 81 */	bl func_80018128
+/* 80093EA8 0008FDC8  4B F8 42 81 */	bl setup_camera_viewport
 /* 80093EAC 0008FDCC  3B 9C 00 01 */	addi r28, r28, 1
 /* 80093EB0 0008FDD0  2C 1C 00 04 */	cmpwi r28, 4
 /* 80093EB4 0008FDD4  3B BD 00 04 */	addi r29, r29, 4

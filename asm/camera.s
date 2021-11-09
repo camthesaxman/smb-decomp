@@ -686,8 +686,8 @@ func_80017FCC:
 /* 80018124 00014044  4E 80 00 20 */	blr
 .endif
 .if 0
-.global func_80018128
-func_80018128:
+.global setup_camera_viewport
+setup_camera_viewport:
 /* 80018128 00014048  7C 08 02 A6 */	mflr r0
 /* 8001812C 0001404C  90 01 00 04 */	stw r0, 4(r1)
 /* 80018130 00014050  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -751,8 +751,8 @@ lbl_800181F0:
 .endif
 
 .if 0
-.global func_8001820C
-func_8001820C:
+.global camera_setup_splitscreen_viewports
+camera_setup_splitscreen_viewports:
 /* 8001820C 0001412C  7C 08 02 A6 */	mflr r0
 /* 80018210 00014130  90 01 00 04 */	stw r0, 4(r1)
 /* 80018214 00014134  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -785,7 +785,7 @@ lbl_80018264:
 /* 80018274 00014194  FC 40 08 90 */	fmr f2, f1
 /* 80018278 00014198  FC 60 08 90 */	fmr f3, f1
 /* 8001827C 0001419C  FC 80 08 90 */	fmr f4, f1
-/* 80018280 000141A0  4B FF FE A9 */	bl func_80018128
+/* 80018280 000141A0  4B FF FE A9 */	bl setup_camera_viewport
 /* 80018284 000141A4  48 00 00 20 */	b lbl_800182A4
 lbl_80018288:
 /* 80018288 000141A8  C0 3E 00 00 */	lfs f1, 0(r30)
@@ -793,7 +793,7 @@ lbl_80018288:
 /* 80018290 000141B0  C0 5E 00 04 */	lfs f2, 4(r30)
 /* 80018294 000141B4  C0 7E 00 08 */	lfs f3, 8(r30)
 /* 80018298 000141B8  C0 9E 00 0C */	lfs f4, 0xc(r30)
-/* 8001829C 000141BC  4B FF FE 8D */	bl func_80018128
+/* 8001829C 000141BC  4B FF FE 8D */	bl setup_camera_viewport
 /* 800182A0 000141C0  3B DE 00 10 */	addi r30, r30, 0x10
 lbl_800182A4:
 /* 800182A4 000141C4  3B FF 00 01 */	addi r31, r31, 1
@@ -807,8 +807,8 @@ lbl_800182A4:
 /* 800182C4 000141E4  38 21 00 20 */	addi r1, r1, 0x20
 /* 800182C8 000141E8  4E 80 00 20 */	blr
 
-.global func_800182CC
-func_800182CC:
+.global camera_setup_singleplayer_viewport
+camera_setup_singleplayer_viewport:
 /* 800182CC 000141EC  7C 08 02 A6 */	mflr r0
 /* 800182D0 000141F0  90 01 00 04 */	stw r0, 4(r1)
 /* 800182D4 000141F4  94 21 FF F0 */	stwu r1, -0x10(r1)
@@ -820,7 +820,7 @@ lbl_800182E0:
 /* 800182E8 00014208  FC 40 08 90 */	fmr f2, f1
 /* 800182EC 0001420C  FC 60 08 90 */	fmr f3, f1
 /* 800182F0 00014210  FC 80 08 90 */	fmr f4, f1
-/* 800182F4 00014214  4B FF FE 35 */	bl func_80018128
+/* 800182F4 00014214  4B FF FE 35 */	bl setup_camera_viewport
 /* 800182F8 00014218  3B FF 00 01 */	addi r31, r31, 1
 /* 800182FC 0001421C  2C 1F 00 04 */	cmpwi r31, 4
 /* 80018300 00014220  41 80 FF E0 */	blt lbl_800182E0
@@ -829,7 +829,7 @@ lbl_800182E0:
 /* 8001830C 0001422C  C0 62 84 20 */	lfs f3, lbl_802F2C20-_SDA2_BASE_(r2)  ;# 1
 /* 80018310 00014230  FC 40 08 90 */	fmr f2, f1
 /* 80018314 00014234  FC 80 18 90 */	fmr f4, f3
-/* 80018318 00014238  4B FF FE 11 */	bl func_80018128
+/* 80018318 00014238  4B FF FE 11 */	bl setup_camera_viewport
 /* 8001831C 0001423C  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 80018320 00014240  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 80018324 00014244  38 21 00 10 */	addi r1, r1, 0x10
@@ -1307,8 +1307,8 @@ lbl_800189F4:
 /* 800189FC 0001491C  90 83 00 F0 */	stw r4, 0xf0(r3)
 /* 80018A00 00014920  4E 80 00 20 */	blr
 
-.global func_80018A04
-func_80018A04:
+.global camera_set_state
+camera_set_state:
 /* 80018A04 00014924  3C 80 80 1F */	lis r4, cameraInfo@ha
 /* 80018A08 00014928  38 A4 EF 00 */	addi r5, r4, cameraInfo@l
 /* 80018A0C 0001492C  A8 85 00 24 */	lha r4, 0x24(r5)
@@ -1341,8 +1341,8 @@ lbl_80018A58:
 /* 80018A6C 0001498C  98 05 00 1F */	stb r0, 0x1f(r5)
 /* 80018A70 00014990  4E 80 00 20 */	blr
 
-.global func_80018A74
-func_80018A74:
+.global camera_set_or_clear_flags
+camera_set_or_clear_flags:
 /* 80018A74 00014994  2C 04 00 00 */	cmpwi r4, 0
 /* 80018A78 00014998  3C 80 80 1F */	lis r4, cameraInfo@ha
 /* 80018A7C 0001499C  38 84 EF 00 */	addi r4, r4, cameraInfo@l
@@ -3452,6 +3452,7 @@ lbl_8001A958:
 /* 8001A964 00016884  7C 08 03 A6 */	mtlr r0
 /* 8001A968 00016888  4E 80 00 20 */	blr
 .endif
+.if 0
 .global func_8001A96C
 func_8001A96C:
 /* 8001A96C 0001688C  7C 08 02 A6 */	mflr r0
@@ -3500,14 +3501,14 @@ func_8001A96C:
 /* 8001AA18 00016938  3B A3 0A 68 */	addi r29, r3, lbl_80250A68@l
 /* 8001AA1C 0001693C  54 00 10 3A */	slwi r0, r0, 2
 /* 8001AA20 00016940  C8 42 85 88 */	lfd f2, lbl_802F2D88-_SDA2_BASE_(r2)
-/* 8001AA24 00016944  EC 80 08 28 */	fsubs f4, f0, f1
+/* 8001AA24 00016944  EC 80 08 28 */	fsubs f4, f0, f1  ;# rand
 /* 8001AA28 00016948  7C 7D 02 14 */	add r3, r29, r0
 /* 8001AA2C 0001694C  C8 22 84 B0 */	lfd f1, lbl_802F2CB0-_SDA2_BASE_(r2)  ;# 0.75
 /* 8001AA30 00016950  C0 1D 00 10 */	lfs f0, 0x10(r29)
 /* 8001AA34 00016954  38 81 00 10 */	addi r4, r1, 0x10
-/* 8001AA38 00016958  EC 64 18 24 */	fdivs f3, f4, f3
+/* 8001AA38 00016958  EC 64 18 24 */	fdivs f3, f4, f3  ;# rand / 32767.0f
 /* 8001AA3C 0001695C  80 63 00 00 */	lwz r3, 0(r3)
-/* 8001AA40 00016960  FC 42 00 F2 */	fmul f2, f2, f3
+/* 8001AA40 00016960  FC 42 00 F2 */	fmul f2, f2, f3  ;# 0.25 * (rand / 32767.0f)
 /* 8001AA44 00016964  FC 21 10 2A */	fadd f1, f1, f2
 /* 8001AA48 00016968  FC 00 00 72 */	fmul f0, f0, f1
 /* 8001AA4C 0001696C  FC 20 00 18 */	frsp f1, f0
@@ -3554,7 +3555,7 @@ func_8001A96C:
 /* 8001AAF0 00016A10  4B FE C6 09 */	bl mathutil_sqrt
 /* 8001AAF4 00016A14  C0 02 84 20 */	lfs f0, lbl_802F2C20-_SDA2_BASE_(r2)  ;# 1
 /* 8001AAF8 00016A18  C0 61 00 34 */	lfs f3, 0x34(r1)
-/* 8001AAFC 00016A1C  EC 20 08 24 */	fdivs f1, f0, f1
+/* 8001AAFC 00016A1C  EC 20 08 24 */	fdivs f1, f0, f1  ;# 1.0f / sqrt
 /* 8001AB00 00016A20  C8 02 85 98 */	lfd f0, lbl_802F2D98-_SDA2_BASE_(r2)
 /* 8001AB04 00016A24  EC 21 00 F2 */	fmuls f1, f1, f3
 /* 8001AB08 00016A28  FC 01 00 40 */	fcmpo cr0, f1, f0
@@ -3614,7 +3615,7 @@ lbl_8001ABA4:
 /* 8001ABD4 00016AF4  7F C3 F3 78 */	mr r3, r30
 /* 8001ABD8 00016AF8  C0 21 00 10 */	lfs f1, 0x10(r1)
 /* 8001ABDC 00016AFC  7F E4 FB 78 */	mr r4, r31
-/* 8001ABE0 00016B00  FC 60 F8 24 */	fdiv f3, f0, f31
+/* 8001ABE0 00016B00  FC 60 F8 24 */	fdiv f3, f0, f31  ;# 1.0 / f31
 /* 8001ABE4 00016B04  C0 1F 00 04 */	lfs f0, 4(r31)
 /* 8001ABE8 00016B08  C0 5E 00 94 */	lfs f2, 0x94(r30)
 /* 8001ABEC 00016B0C  FC 60 18 18 */	frsp f3, f3
@@ -3705,14 +3706,14 @@ func_8001AC84:
 /* 8001AD2C 00016C4C  C8 01 00 60 */	lfd f0, 0x60(r1)
 /* 8001AD30 00016C50  7C 00 07 74 */	extsb r0, r0
 /* 8001AD34 00016C54  54 00 10 3A */	slwi r0, r0, 2
-/* 8001AD38 00016C58  C8 22 85 88 */	lfd f1, lbl_802F2D88-_SDA2_BASE_(r2)
-/* 8001AD3C 00016C5C  EC 60 18 28 */	fsubs f3, f0, f3
+/* 8001AD38 00016C58  C8 22 85 88 */	lfd f1, lbl_802F2D88-_SDA2_BASE_(r2)  ;# 0.25
+/* 8001AD3C 00016C5C  EC 60 18 28 */	fsubs f3, f0, f3  ;# rand
 /* 8001AD40 00016C60  7C 7D 02 14 */	add r3, r29, r0
 /* 8001AD44 00016C64  C0 1D 00 10 */	lfs f0, 0x10(r29)
 /* 8001AD48 00016C68  80 63 00 00 */	lwz r3, 0(r3)
 /* 8001AD4C 00016C6C  38 81 00 30 */	addi r4, r1, 0x30
-/* 8001AD50 00016C70  EC 43 10 24 */	fdivs f2, f3, f2
-/* 8001AD54 00016C74  FC 21 00 B2 */	fmul f1, f1, f2
+/* 8001AD50 00016C70  EC 43 10 24 */	fdivs f2, f3, f2  ;# rand / 32767.0f
+/* 8001AD54 00016C74  FC 21 00 B2 */	fmul f1, f1, f2   ;# 0.25 * (rand / 32767.0f)
 /* 8001AD58 00016C78  FF E0 00 72 */	fmul f31, f0, f1
 /* 8001AD5C 00016C7C  FF E0 F8 18 */	frsp f31, f31
 /* 8001AD60 00016C80  FC 20 F8 90 */	fmr f1, f31
@@ -3860,7 +3861,6 @@ lbl_8001AF7C:
 /* 8001AF90 00016EB0  83 A1 00 6C */	lwz r29, 0x6c(r1)
 /* 8001AF94 00016EB4  38 21 00 80 */	addi r1, r1, 0x80
 /* 8001AF98 00016EB8  4E 80 00 20 */	blr
-
 .global camera_sub_ringout_main
 camera_sub_ringout_main:
 /* 8001AF9C 00016EBC  7C 08 02 A6 */	mflr r0
@@ -3985,6 +3985,7 @@ func_8001B140:
 /* 8001B164 00017084  38 21 00 08 */	addi r1, r1, 8
 /* 8001B168 00017088  7C 08 03 A6 */	mtlr r0
 /* 8001B16C 0001708C  4E 80 00 20 */	blr
+.endif
 
 .global camera_sub_goal_main
 camera_sub_goal_main:
@@ -12623,7 +12624,6 @@ lbl_802F2D80:
 lbl_802F2D88:
 	# ROM: 0x1EC7A8
 	.double 0.25  ;# 0x3F, 0xD0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-.endif
 
 .global lbl_802F2D90
 lbl_802F2D90:
@@ -12692,6 +12692,7 @@ lbl_802F2DE8:
 lbl_802F2DF0:
 	# ROM: 0x1EC810
 	.double 4  ;# 0x40, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F2DF8
 lbl_802F2DF8:
