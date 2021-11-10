@@ -76,7 +76,7 @@ void mathutil_mtxA_rotate_y(int angle);
 void mathutil_mtxA_rotate_y_sin_cos(float sinAngle, float cosAngle);
 void mathutil_mtxA_rotate_z(int angle);
 void mathutil_mtxA_rotate_z_sin_cos(float sinAngle, float cosAngle);
-void mathutil_vec_normalize_len(Vec *vec);
+float mathutil_vec_normalize_len(Vec *vec);
 void mathutil_vec_set_len(Vec *src, Vec *dest, float len);
 float mathutil_vec_dot_normalized_safe(Vec *a, Vec *b);
 void mathutil_mtxA_from_quat(Quaternion *quat);

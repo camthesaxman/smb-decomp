@@ -158,7 +158,9 @@ struct ModeControl
     s32 unk0;
     s32 unk4;
     u32 unk8;
-    u8 fillerC[0x1C-0xC];
+    u8 fillerC[0x10-0xC];
+    s32 unk10;
+    u8 filler14[0x1C-0x14];
     u32 unk1C;
     s32 unk20;
     s32 unk24;
@@ -380,7 +382,9 @@ struct Ball
 {
     u8 filler0[0x4];
     Vec unk4;
-    u8 filler10[0x2E - 0x10];
+    u8 filler10[0x1C - 0x10];
+    Vec unk1C;
+    u8 filler28[0x2E - 0x28];
     s8 unk2E;
     u8 filler2F[0x68-0x2F];
     float unk68;

@@ -1557,7 +1557,6 @@ void func_8001AC84(struct Camera *camera, struct Ball *ball)
         camera->unk0.x = sp30.x + sp50.x;
         camera->unk0.z = sp30.z + sp50.z;
     }
-    //lbl_8001AE64
 
     camera->unk94.x *= 0.1;
     camera->unk94.y *= 0.1;
@@ -1660,7 +1659,7 @@ void camera_sub_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.x = ball->unk4.x - camera->unk0.x;
     sp10.y = 0.0f;
     sp10.z = ball->unk4.z - camera->unk0.z;
-    
+
     f31 = vec_dot_prod(&sp10, &camera->unk94);
     mathutil_vec_normalize_len(&sp10);
 
@@ -1674,28 +1673,28 @@ void camera_sub_goal_main(struct Camera *camera, struct Ball *ball)
         camera->unk94.x += f2 * sp10.z;
         camera->unk94.z += f2 * sp10.x;
     }
-    
+
     camera->unk0.x += camera->unk94.x;
     camera->unk0.y += camera->unk94.y;
     camera->unk0.z += camera->unk94.z;
-    
+
     camera->unkA0.x = 0.3 * (ball->unk4.x - camera->unkC.x);
     camera->unkA0.y = 0.3 * (ball->unk4.y - camera->unkC.y);
     camera->unkA0.z = 0.3 * (ball->unk4.z - camera->unkC.z);
-    
+
     camera->unkC.x += camera->unkA0.x;
     camera->unkC.y += camera->unkA0.y;
     camera->unkC.z += camera->unkA0.z;
-    
+
     sp10.x = camera->unk0.x - camera->unkC.x;
     sp10.y = 0.0f;
     sp10.z = camera->unk0.z - camera->unkC.z;
-    
+
     f1 = mathutil_sqrt(sum_of_sq(sp10.x, sp10.z));
     if (f1 > 1.1920928955078125e-07f)
     {
         float f3 = (f1 + 0.08 * (2.0 - f1)) / f1;
-        
+
         camera->unk0.x = sp10.x * f3 + camera->unkC.x;
         camera->unk0.z = sp10.z * f3 + camera->unkC.z;
         if (!(ball->unk94 & (1<<(31-0x16))))
@@ -1777,12 +1776,12 @@ void func_8001B478(struct Camera *camera, struct Ball *ball)
 
     if (lbl_802F1EE0 & 0xA)
         return;
-    
+
     camera_clear(camera);
-    
+
     camera->unk26 = 4;
     camera->unk24 |= 4;
-    
+
     if ((lbl_801F3B70[lbl_80206BD0[ball->unk2E]].unk0 & (1<<(31-0x17)))
      && (lbl_801F3D88.unk0 & (1<<(31-0x17))))
     {
@@ -1813,12 +1812,12 @@ void func_8001B478(struct Camera *camera, struct Ball *ball)
             camera->unk94.x *= 0.02;
             camera->unk94.y *= 0.02;
             camera->unk94.z *= 0.02;
-            
+
             sp28.x = 0.0f;
             sp28.y = 2.0f;
             sp28.z = 0.0f;
             mathutil_mtxA_tf_point(&sp28, &sp28);
-            
+
             sp60.x = sp34.x - sp28.x;
             sp60.y = sp34.y - sp28.y;
             sp60.z = sp34.z - sp28.z;
@@ -1908,31 +1907,453 @@ void func_8001B478(struct Camera *camera, struct Ball *ball)
     camera_sub_17(camera, ball);
 }
 
-//const float lbl_802F2D18 = 42.0f;
-//const double lbl_802F2D20 = 3;
-//const double lbl_802F2D28 = -2;
-//const double lbl_802F2D30 = 31.25;
-//const float lbl_802F2D38 = 31.25;
-//const float lbl_802F2D3C = 1.1920928955078125e-07;
-//const double lbl_802F2D40 = 0.1;
-//const double lbl_802F2D48 = 5;
-//const double lbl_802F2D50 = 9;
-//const double lbl_802F2D58 = 170;
-//const double lbl_802F2D60 = 74;
-//const double lbl_802F2D68 = 0.09;
-//const double lbl_802F2D70 = 0.3;
-//const double lbl_802F2D78 = 0.97;
-//const double lbl_802F2D80 = 0.955;
-//const double lbl_802F2D88 = 0.25;
-//const float lbl_802F2D90 = 32767.0f;
-//const double lbl_802F2D98 = 0.96592582630000001;
-//const double lbl_802F2DA0 = 0.25881904509999998;
-//const float lbl_802F2DA8 = 60.0f;
-//const double lbl_802F2DB0 = 0.14999999999999999;
-//const double lbl_802F2DB8 = -0.01;
-//const double lbl_802F2DC0 = 0.08;
+void camera_sub_17(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera->unk94.x *= 0.98;
+    camera->unk94.y *= 0.98;
+    camera->unk94.z *= 0.98;
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp10.x = ball->unk4.x - camera->unkC.x;
+    sp10.y = ball->unk4.y - camera->unkC.y;
+    sp10.z = ball->unk4.z - camera->unkC.z;
+
+    camera->unkA0.x = sp10.x * 0.15;
+    camera->unkA0.y = sp10.y * 0.15;
+    camera->unkA0.z = sp10.z * 0.15;
+
+    camera->unkC.x += camera->unkA0.x;
+    camera->unkC.y += camera->unkA0.y;
+    camera->unkC.z += camera->unkA0.z;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001BDDC(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp1C;
+    Vec sp10;
+    struct DecodedStageLzPtr_child4 *r5;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    r5 = &decodedStageLzPtr->unk1C[lbl_801F3A58.unkC];
+    sp1C = r5->unk0;
+
+    if (lbl_801F3A58.unkE > 0)
+    {
+        mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_tf_point(&sp1C, &sp1C);
+    }
+
+    sp1C.x = ball->unk4.x - sp1C.x;
+    sp1C.y = ball->unk4.y - sp1C.y;
+    sp1C.z = ball->unk4.z - sp1C.z;
+    if (mathutil_vec_normalize_len(&sp1C) < 12.0)
+        camera->unk1E = 16;
+
+    sp10.x = (ball->unk1C.x * 4.0) + (ball->unk4.x + sp1C.x * 2.0);
+    sp10.y = (ball->unk1C.y * 4.0) + (ball->unk4.y + sp1C.y * 2.0) + 2.0;
+    sp10.z = (ball->unk1C.z * 4.0) + (ball->unk4.z + sp1C.z * 2.0);
+
+    camera->unk94.x = 0.04 * (sp10.x - camera->unk0.x);
+    camera->unk94.y = 0.04 * (sp10.y - camera->unk0.y);
+    camera->unk94.z = 0.04 * (sp10.z - camera->unk0.z);
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp1C.x = ball->unk4.x - camera->unkC.x;
+    sp1C.y = ball->unk4.y - camera->unkC.y;
+    sp1C.z = ball->unk4.z - camera->unkC.z;
+
+    camera->unkA0.x = sp1C.x * 0.15;
+    camera->unkA0.y = sp1C.y * 0.15;
+    camera->unkA0.z = sp1C.z * 0.15;
+
+    camera->unkC.x += camera->unkA0.x;
+    camera->unkC.y += camera->unkA0.y;
+    camera->unkC.z += camera->unkA0.z;
+
+    sp1C.x = camera->unkC.x - camera->unk0.x;
+    sp1C.y = camera->unkC.y - camera->unk0.y;
+    sp1C.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp1C.x, sp1C.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp1C.y, mathutil_sqrt(sum_of_sq(sp1C.x, sp1C.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001C0C4(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    struct DecodedStageLzPtr_child4 *r5;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    r5 = &decodedStageLzPtr->unk1C[lbl_801F3A58.unkC];
+    sp10 = r5->unk0;
+
+    if (lbl_801F3A58.unkE > 0)
+    {
+        mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_tf_point(&sp10, &sp10);
+    }
+
+    sp28.x = lbl_801F3A58.unk10.x;
+    sp28.y = lbl_801F3A58.unk10.y * 0.05;
+    sp28.z = lbl_801F3A58.unk10.z;
+    mathutil_vec_set_len(&sp28, &sp28, -4.0f);
+
+    sp28.y += 2.5;
+    sp1C.x = sp10.x + sp28.x;
+    sp1C.y = sp10.y + sp28.y;
+    sp1C.z = sp10.z + sp28.z;
+
+    camera->unk94.x = 0.04 * (sp1C.x - camera->unk0.x);
+    camera->unk94.y = 0.04 * (sp1C.y - camera->unk0.y);
+    camera->unk94.z = 0.04 * (sp1C.z - camera->unk0.z);
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp28.x = ball->unk4.x - camera->unkC.x;
+    sp28.y = ball->unk4.y - camera->unkC.y;
+    sp28.z = ball->unk4.z - camera->unkC.z;
+
+    camera->unkA0.x = sp28.x * 0.15;
+    camera->unkA0.y = sp28.y * 0.15;
+    camera->unkA0.z = sp28.z * 0.15;
+
+    camera->unkC.x += camera->unkA0.x;
+    camera->unkC.y += camera->unkA0.y;
+    camera->unkC.z += camera->unkA0.z;
+
+    sp28.x = camera->unkC.x - camera->unk0.x;
+    sp28.y = camera->unkC.y - camera->unk0.y;
+    sp28.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001C368(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    struct DecodedStageLzPtr_child4 *r30;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    r30 = &decodedStageLzPtr->unk1C[lbl_801F3A58.unkC];
+    mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+    mathutil_mtxA_translate(&r30->unk0);
+    mathutil_mtxA_rotate_z(r30->unk10);
+    mathutil_mtxA_rotate_y(r30->unkE);
+    mathutil_mtxA_rotate_x(r30->unkC);
+    mathutil_mtxA_tf_point(&camera->unk54, &sp10);
+
+    sp28.x = sp10.x - ball->unk4.x;
+    sp28.y = 0.0f;
+    sp28.z = sp10.z - ball->unk4.z;
+    mathutil_vec_set_len(&sp28, &sp28, camera->unk60);
+
+    sp1C.x = sp10.x + sp28.x;
+    sp1C.y = sp10.y + sp28.y;
+    sp1C.z = sp10.z + sp28.z;
+
+    camera->unk94.x = 0.02 * (sp1C.x - camera->unk0.x);
+    camera->unk94.y = 0.02 * (sp1C.y - camera->unk0.y);
+    camera->unk94.z = 0.02 * (sp1C.z - camera->unk0.z);
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp28.x = ball->unk4.x - camera->unkC.x;
+    sp28.y = ball->unk4.y - camera->unkC.y;
+    sp28.z = ball->unk4.z - camera->unkC.z;
+
+    camera->unkA0.x = sp28.x * 0.15;
+    camera->unkA0.y = sp28.y * 0.15;
+    camera->unkA0.z = sp28.z * 0.15;
+
+    camera->unkC.x += camera->unkA0.x;
+    camera->unkC.y += camera->unkA0.y;
+    camera->unkC.z += camera->unkA0.z;
+
+    sp28.x = camera->unkC.x - camera->unk0.x;
+    sp28.y = camera->unkC.y - camera->unk0.y;
+    sp28.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001C5FC(struct Camera *camera, struct Ball *ball)
+{
+    camera->unk1E = 22;
+    camera_sub_22_23_24(camera, ball);
+}
+
+void camera_sub_22_23_24(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera->unk94.x *= 0.92;
+    camera->unk94.y *= 0.92;
+    camera->unk94.z *= 0.92;
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp10.x = ball->unk4.x - camera->unkC.x;
+    sp10.y = ball->unk4.y - camera->unkC.y;
+    sp10.z = ball->unk4.z - camera->unkC.z;
+
+    camera->unkA0.x = (sp10.x - camera->unkA0.x) * 0.1;
+    camera->unkA0.y = (sp10.y - camera->unkA0.y) * 0.1;
+    camera->unkA0.z = (sp10.z - camera->unkA0.z) * 0.1;
+
+    camera->unkC.x += camera->unkA0.x;
+    camera->unkC.y += camera->unkA0.y;
+    camera->unkC.z += camera->unkA0.z;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+}
+
+void func_8001C7D8(struct Camera *camera, struct Ball *ball)
+{
+    camera_clear(camera);
+    camera_sub_26(camera, ball);
+    camera->unk50 = 0;
+    camera->unk26 = 7;
+    camera->unk1E = 26;
+}
+
+void camera_sub_26(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+
+    if ((lbl_802F1EE0 & 0xA) && camera->unk1E == 26)
+        return;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_rotate_y(ball->unk92);
+
+    sp1C.x = 0.0f;
+    sp1C.y = -0.3f;
+    sp1C.z = -1.4 - (camera->unk50 * 0.01);
+
+    sp10.x = 0.0f;
+    sp10.y = -0.4f;
+    sp10.z = -(camera->unk50 * 0.01);
+
+    if (camera->unk1E == 26)
+    {
+        if ((modeCtrl.unk8 & (1<<(31-0x1D))) && modeCtrl.unk10 == 1)
+        {
+            sp1C.z = -5.0f;
+            sp10.z = -3.6f;
+        }
+
+        mathutil_mtxA_tf_point(&sp1C, &sp1C);
+        mathutil_mtxA_tf_point(&sp10, &sp10);
+
+        camera->unk0.x += (sp1C.x - camera->unk0.x) * 0.1;
+        camera->unk0.y += (sp1C.y - camera->unk0.y) * 0.1;
+        camera->unk0.z += (sp1C.z - camera->unk0.z) * 0.1;
+
+        camera->unkC.x += (sp10.x - camera->unkC.x) * 0.1;
+        camera->unkC.y += (sp10.y - camera->unkC.y) * 0.1;
+        camera->unkC.z += (sp10.z - camera->unkC.z) * 0.1;
+    }
+    else
+    {
+        mathutil_mtxA_tf_point(&sp1C, &camera->unk0);
+        mathutil_mtxA_tf_point(&sp10, &camera->unkC);
+    }
+
+    sp28.x = camera->unkC.x - camera->unk0.x;
+    sp28.y = camera->unkC.y - camera->unk0.y;
+    sp28.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+    camera->unk1C = 0;
+
+    if (++camera->unk50 > 0x293)
+        camera->unk50 = 0x293;
+}
+
+void func_8001CAB8(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+
+    camera_clear(camera);
+
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y;
+    camera->unkC.z = ball->unk4.z;
+
+    camera->unk0.x = decodedStageLzPtr->unk10->unk8;
+    camera->unk0.y = decodedStageLzPtr->unk10->unk4;
+    camera->unk0.z = decodedStageLzPtr->unk10->unk0;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+
+    camera->unk1E = 32;
+}
+
+void func_8001CBB0(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    sp1C = camera->unk0;  // unused
+    sp10 = camera->unkC;
+
+    camera->unkC.x += (ball->unk4.x - camera->unkC.x) * 0.25;
+    camera->unkC.y += (ball->unk4.y - camera->unkC.y) * 0.25;
+    camera->unkC.z += (ball->unk4.z - camera->unkC.z) * 0.25;
+
+    camera->unk94.x = 0.0f;
+    camera->unk94.y = 0.0f;
+    camera->unk94.z = 0.0f;
+
+    camera->unk0.x = decodedStageLzPtr->unk10->unk8;
+    camera->unk0.y = decodedStageLzPtr->unk10->unk4;
+    camera->unk0.z = decodedStageLzPtr->unk10->unk0;
+
+    sp28.x = camera->unkC.x - camera->unk0.x;
+    sp28.y = camera->unkC.y - camera->unk0.y;
+    sp28.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+    camera->unk1C = 0;
+
+    camera->unkA0.x = camera->unkC.x - sp10.x;
+    camera->unkA0.y = camera->unkC.y - sp10.y;
+    camera->unkA0.z = camera->unkC.z - sp10.z;
+}
+
+void func_8001CD4C(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp10;
+    int r31;
+    float f1;
+
+    camera_clear(camera);
+
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y + 0.5;
+    camera->unkC.z = ball->unk4.z;
+
+    r31 = ((modeCtrl.unk0 - 30) << 9);
+    if (r31 < 0)
+        r31 = 0;
+    if (r31 < 0x2000)
+        f1 = 3.0f;
+    else
+        f1 = 3.0 + (float)(r31 - 8192) * -3.4877232142857141e-05;
+
+    sp10.x = -ball->unk4.x;
+    sp10.y = 0.0f;
+    sp10.z = -ball->unk4.z;
+    mathutil_vec_set_len(&sp10, &sp10, f1);
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y(r31);
+    mathutil_mtxA_tf_vec(&sp10, &sp10);
+
+    camera->unk0.x = sp10.x + ball->unk4.x;
+    camera->unk0.y = ball->unk4.y + 2.0 + (float)r31 * -3.0517578125e-05;
+    camera->unk0.z = sp10.z + ball->unk4.z;
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+
+    camera->unk1E = 34;
+}
 
 /*
+const double lbl_802F2C48 = 2.0;
+const float lbl_802F2C50 = -0.3;
+const double lbl_802F2C60 = 1.0;
+const float lbl_802F2D18 = 42.0f;
+const double lbl_802F2D20 = 3;
+const double lbl_802F2D28 = -2;
+const double lbl_802F2D30 = 31.25;
+const float lbl_802F2D38 = 31.25;
+const float lbl_802F2D3C = 1.1920928955078125e-07;
+const double lbl_802F2D40 = 0.1;
+const double lbl_802F2D48 = 5;
+const double lbl_802F2D50 = 9;
+const double lbl_802F2D58 = 170;
+const double lbl_802F2D60 = 74;
+const double lbl_802F2D68 = 0.09;
+const double lbl_802F2D70 = 0.3;
+const double lbl_802F2D78 = 0.97;
+const double lbl_802F2D80 = 0.955;
+const double lbl_802F2D88 = 0.25;
+const float lbl_802F2D90 = 32767.0f;
+const double lbl_802F2D98 = 0.96592582630000001;
+const double lbl_802F2DA0 = 0.25881904509999998;
+const float lbl_802F2DA8 = 60.0f;
+const double lbl_802F2DB0 = 0.14999999999999999;
+const double lbl_802F2DB8 = -0.01;
+const double lbl_802F2DC0 = 0.08;
 const double lbl_802F2DC8 = 16.0;
 const double lbl_802F2DD0 = 2.5;
 const double lbl_802F2DD8 = 0.02;
@@ -1942,3 +2363,25 @@ const double lbl_802F2DF0 = 4.0;
 const float lbl_802F2DF8 = 2.5f;
 const float lbl_802F2DFC = 5.0f;
 */
+//const double lbl_802F2E00 = 0.98;
+//const double lbl_802F2E08 = 12.0;
+//const double lbl_802F2E10 = 0.04;
+//const double lbl_802F2E18 = 0.05;
+//const float lbl_802F2E20 = -4.0f;
+//const double lbl_802F2E28 = 0.92;
+//const double lbl_802F2E30 = -1.4;
+//const float lbl_802F2E38 = -0.4f;
+//const float lbl_802F2E3C = -5.0f;
+//const float lbl_802F2E40 = -3.6f;
+//const double lbl_802F2E48 = -3.4877232142857141e-05;
+//const double lbl_802F2E50 = -3.0517578125e-05;
+const double lbl_802F2E58 = 10.0;
+const double lbl_802F2E60 = 0.95;
+const float lbl_802F2E68 = 4.0f;
+const float lbl_802F2E6C = 0.2f;
+const float lbl_802F2E70 = 480.0f;
+const float lbl_802F2E74 = 540.0f;
+const double lbl_802F2E78 = -8192.0;
+const float lbl_802F2E80 = 8192.0f;
+const float lbl_802F2E84 = 165.0f;
+const double lbl_802F2E88 = 2.6;

@@ -1568,7 +1568,7 @@ entry mathutil_mtxA_rotate_z_sin_cos
 }
 
 // Normalize a vector and return its original length
-asm void mathutil_vec_normalize_len(register Vec *vec)
+asm float mathutil_vec_normalize_len(register Vec *vec)
 {
     nofralloc
 
