@@ -758,9 +758,228 @@ void func_80018E38(struct Camera *camera, struct Ball *ball)
 
 struct Struct80176434 lbl_80176434[] =
 {
-    {0, -15.413999557495117f, 0.0f, 0.0f},
-    {0xA5, -14.75100040435791f, 0.0f, 0.0f},
-    // TODO: rest of entries
+    {   0,  -15.414, 0, 0},
+    { 165,  -14.751, 0, 0},
+    { 330,  -14.751, 0, 0},
+    { 433,  -14.751, 0, 0},
+    { 434,     -0.2, 0, 0},
+    { 651,   -2.825, 0, 0},
+    { 652, -453.165, 0, 0},
+    { 869, -453.165, 0, 0},
+    { 870,    2.567, 0, 0},
+    {1087,    2.567, 0, 0},
+    {1088,        0, 0, 0},
+    {1198,        0, 0, 0},
+    {1228,    9.071, 0, 0},
+    {1305,    9.071, 0, 0},
+    {1306,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,  -58.546, 0, 0},
+    { 165,  -58.744, 0, 0},
+    { 330,  -58.744, 0, 0},
+    { 433,  -58.744, 0, 0},
+    { 434,    -0.02, 0, 0},
+    { 651,    0.963, 0, 0},
+    { 652,  -46.452, 0, 0},
+    { 869,  -46.425, 0, 0},
+    { 870,    1.229, 0, 0},
+    {1087,    1.229, 0, 0},
+    {1088,        0, 0, 0},
+    {1198,        0, 0, 0},
+    {1228,    0.498, 0, 0},
+    {1305,    0.498, 0, 0},
+    {1306,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,  -45.335, 0, 0},
+    { 165,  -44.541, 0, 0},
+    { 330,  -44.541, 0, 0},
+    { 434,  -44.541, 0, 0},
+    { 434,   - 0.78, 0, 0},
+    { 651,     -4.9, 0, 0},
+    { 652, -237.234, 0, 0},
+    { 869, -237.234, 0, 0},
+    { 870,   -2.444, 0, 0},
+    {1087,   -2.444, 0, 0},
+    {1088,        0, 0, 0},
+    {1198,        0, 0, 0},
+    {1228,    8.702, 0, 0},
+    {1305,    8.702, 0, 0},
+    {1306,        1, 0, 0},
+    {2902,        1, 0, 0},
+    {   0,  -40.265, 0, 0},
+    { 165,  -20.647, 0, 0},
+    { 330,  -20.647, 0, 0},
+    { 434,  -21.243, 0, 0},
+    { 434,      0.2, 0, 0},
+    { 651,     0.23, 0, 0},
+    { 652, -438.964, 0, 0},
+    { 869, -438.964, 0, 0},
+    { 870,   -3.049, 0, 0},
+    {1087,   -3.049, 0, 0},
+    {1088,  -80.677, 0, 0},
+    {1198,    71.51, 0, 0},
+    {1228,   73.012, 0, 0},
+    {1305,   73.012, 0, 0},
+    {1306,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,  -51.904, 0, 0},
+    { 165,  -51.302, 0, 0},
+    { 330,  -51.302, 0, 0},
+    { 434,  -20.305, 0, 0},
+    { 434,      0.5, 0, 0},
+    { 651,    1.678, 0, 0},
+    { 652,  -47.321, 0, 0},
+    { 869,  -47.321, 0, 0},
+    { 870,    1.102, 0, 0},
+    {1087,    1.102, 0, 0},
+    {1088,   19.309, 0, 0},
+    {1198,    0.792, 0, 0},
+    {1228,    0.545, 0, 0},
+    {1305,    0.545, 0, 0},
+    {1306,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,  -30.959, 0, 0},
+    { 165,  -11.428, 0, 0},
+    { 330,  -11.428, 0, 0},
+    { 434,  -31.099, 0, 0},
+    { 434,     0.57, 0, 0},
+    { 651,   -0.039, 0, 0},
+    { 652, -216.187, 0, 0},
+    { 869, -216.187, 0, 0},
+    { 870,   -1.408, 0, 0},
+    {1087,   -1.408, 0, 0},
+    {1088,  145.504, 0, 0},
+    {1198,    85.81, 0, 0},
+    {1228,  100.036, 0, 0},
+    {1305,  100.036, 0, 0},
+    {1306,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,        0, 0, 0},
+    {1306,     0.74, 0, 0},
+    {1525,     1.12, 0, 0},
+    {1526,    -0.76, 0, 0},
+    {1636,    -0.76, 0, 0},
+    {1739,    -1.06, 0, 0},
+    {1740,    -4.35, 0, 0},
+    {1849,    -2.92, 0, 0},
+    {1850,     1.65, 0, 0},
+    {1953,     0.82, 0, 0},
+    {1954,    7.474, 0, 0},
+    {2063,     9.12, 0, 0},
+    {2064,    -0.85, 0, 0},
+    {2167,    -0.85, 0, 0},
+    {2168,     -4.1, 0, 0},
+    {2277,    -3.47, 0, 0},
+    {2278,     0.73, 0, 0},
+    {2497,     5.43, 0, 0},
+    {2498,        0, 0, 0},
+    {2602,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,        0, 0, 0},
+    {1306,     -0.4, 0, 0},
+    {1525,     0.15, 0, 0},
+    {1526,     0.17, 0, 0},
+    {1636,     0.17, 0, 0},
+    {1739,     0.17, 0, 0},
+    {1740,   -1.777, 0, 0},
+    {1849,    -1.87, 0, 0},
+    {1850,     0.06, 0, 0},
+    {1953,     0.05, 0, 0},
+    {1954,     0.29, 0, 0},
+    {2063,     0.59, 0, 0},
+    {2064,        0, 0, 0},
+    {2167,        0, 0, 0},
+    {2168,     0.19, 0, 0},
+    {2277,    -0.01, 0, 0},
+    {2278,    -0.24, 0, 0},
+    {2497,     1.14, 0, 0},
+    {2498,    -42.5, 0, 0},
+    {2602,   -42.43, 0, 0},
+    {2902,   -42.43, 0, 0},
+    {   0,        1, 0, 0},
+    {1306,    -0.24, 0, 0},
+    {1525,    -0.51, 0, 0},
+    {1526,     1.13, 0, 0},
+    {1636,     1.13, 0, 0},
+    {1739,      0.5, 0, 0},
+    {1740,       -5, 0, 0},
+    {1849,     -4.8, 0, 0},
+    {1850,     0.51, 0, 0},
+    {1953,        0, 0, 0},
+    {1954,     0.22, 0, 0},
+    {2063,     2.54, 0, 0},
+    {2064,     0.78, 0, 0},
+    {2167,     0.78, 0, 0},
+    {2168,     -0.2, 0, 0},
+    {2277,    -0.93, 0, 0},
+    {2278,     -1.9, 0, 0},
+    {2497,     -0.9, 0, 0},
+    {2498,   124.31, 0, 0},
+    {2602,   115.56, 0, 0},
+    {2902,   115.56, 0, 0},
+    {   0,        0, 0, 0},
+    {1306,    -0.02, 0, 0},
+    {1525,    0.012, 0, 0},
+    {1526,      0.3, 0, 0},
+    {1636,      0.3, 0, 0},
+    {1739,     1.22, 0, 0},
+    {1740,      1.4, 0, 0},
+    {1849,       -1, 0, 0},
+    {1850,    -4.18, 0, 0},
+    {1953,    -4.06, 0, 0},
+    {1954,      6.5, 0, 0},
+    {2063,     6.44, 0, 0},
+    {2064,     1.85, 0, 0},
+    {2167,     1.85, 0, 0},
+    {2168,     -1.4, 0, 0},
+    {2277,    -0.89, 0, 0},
+    {2278,     -4.9, 0, 0},
+    {2497,    -1.26, 0, 0},
+    {2498,        0, 0, 0},
+    {2602,        0, 0, 0},
+    {2902,        0, 0, 0},
+    {   0,        0, 0, 0},
+    {1306,     0.19, 0, 0},
+    {1525,        0, 0, 0},
+    {1526,    -0.08, 0, 0},
+    {1636,    -0.08, 0, 0},
+    {1739,        0, 0, 0},
+    {1740,       -2, 0, 0},
+    {1849,       -3, 0, 0},
+    {1850,    -0.05, 0, 0},
+    {1953,    -0.05, 0, 0},
+    {1954,      0.5, 0, 0},
+    {2063,     0.34, 0, 0},
+    {2064,     -0.1, 0, 0},
+    {2167,     -0.1, 0, 0},
+    {2168,     1.22, 0, 0},
+    {2277,    -0.03, 0, 0},
+    {2278,    -0.06, 0, 0},
+    {2497,    -1.81, 0, 0},
+    {2498,   -41.96, 0, 0},
+    {2602,   -40.38, 0, 0},
+    {2902,   -40.38, 0, 0},
+    {   0,        0, 0, 0},
+    {1306,    -0.06, 0, 0},
+    {1525,    -0.06, 0, 0},
+    {1526,    -1.28, 0, 0},
+    {1636,    -1.28, 0, 0},
+    {1739,    -0.68, 0, 0},
+    {1740,      8.1, 0, 0},
+    {1849,      8.6, 0, 0},
+    {1850,     0.72, 0, 0},
+    {1953,     1.09, 0, 0},
+    {1954,      2.7, 0, 0},
+    {2063,     3.95, 0, 0},
+    {2064,     -1.3, 0, 0},
+    {2167,     -1.3, 0, 0},
+    {2168,    -3.37, 0, 0},
+    {2277,    -0.01, 0, 0},
+    {2278,     5.44, 0, 0},
+    {2497,     3.33, 0, 0},
+    {2498,   116.31, 0, 0},
+    {2602,   107.49, 0, 0},
+    {2902,   107.49, 0, 0},
 };
 
 void func_80018E6C(struct Camera *camera, struct Ball *ball)
@@ -1056,7 +1275,13 @@ struct Struct80177214
     Quaternion quat;
 };  // size = 0x14
 
-extern struct Struct80177214 lbl_80177214[];
+struct Struct80177214 lbl_80177214[] =
+{
+    {4,   {0, 0, 0,    50}},
+    {14,  {0, 0, 0,    50}},
+    {144, {0, 0, 0, 31.25}},
+    {0,   {0, 0, 0,     0}},
+};
 
 void func_80019CDC(Quaternion *quat)
 {
@@ -2327,6 +2552,261 @@ void func_8001CD4C(struct Camera *camera, struct Ball *ball)
     camera->unk1E = 34;
 }
 
+void func_8001CF28(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    int r28;
+    float f31;
+    float f30;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    sp1C = camera->unk0;  // unused
+    sp10 = camera->unkC;
+
+    camera->unkC.x += (ball->unk4.x - camera->unkC.x) * 0.5;
+    camera->unkC.y += (ball->unk4.y + 0.5 - camera->unkC.y) * 0.5;
+    camera->unkC.z += (ball->unk4.z - camera->unkC.z) * 0.5;
+
+    r28 = ((modeCtrl.unk0 - 30) << 9);
+    if (r28 < 0)
+        r28 = 0;
+    if (r28 < 0x2000)
+        f30 = 3.0f;
+    else
+        f30 = 3.0 + (float)(r28 - 8192) * -3.4877232142857141e-05;
+
+    sp34.x = -ball->unk4.x;
+    sp34.y = 0.0f;
+    sp34.z = -ball->unk4.z;
+    f31 = vec_mag(&sp34);
+    mathutil_vec_set_len(&sp34, &sp34, f30);
+
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y(r28);
+    mathutil_mtxA_tf_vec(&sp34, &sp34);
+
+    sp28.x = sp34.x + ball->unk4.x;
+    sp28.y = ball->unk4.y + 2.0 * (f31 / 10.0) + (float)r28 * -3.0517578125e-05;
+    sp28.z = sp34.z + ball->unk4.z;
+
+    if (modeCtrl.unk0 > 15)
+    {
+        camera->unk94.x += ((sp28.x - camera->unk0.x) * 0.15 - camera->unk94.x) * 0.4;
+        camera->unk94.y += ((sp28.y - camera->unk0.y) * 0.15 - camera->unk94.y) * 0.4;
+        camera->unk94.z += ((sp28.z - camera->unk0.z) * 0.15 - camera->unk94.z) * 0.4;
+    }
+    else
+    {
+        camera->unk94.x += ((sp28.x - camera->unk0.x) * 0.3 - camera->unk94.x) * 0.8;
+        camera->unk94.y += ((sp28.y - camera->unk0.y) * 0.3 - camera->unk94.y) * 0.8;
+        camera->unk94.z += ((sp28.z - camera->unk0.z) * 0.3 - camera->unk94.z) * 0.8;
+    }
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp34.x = camera->unkC.x - camera->unk0.x;
+    sp34.y = camera->unkC.y - camera->unk0.y;
+    sp34.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp34.x, sp34.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp34.y, mathutil_sqrt(sum_of_sq(sp34.x, sp34.z)));
+    camera->unk1C = 0;
+
+    camera->unkA0.x = camera->unkC.x - sp10.x;
+    camera->unkA0.y = camera->unkC.y - sp10.y;
+    camera->unkA0.z = camera->unkC.z - sp10.z;
+}
+
+void func_8001D32C(struct Camera *camera, struct Ball *ball)
+{
+    camera->unk1E = 36;
+    camera_sub_36(camera, ball);
+}
+
+// maybe some kind of dot product that's partially optimized out?
+static inline float weird_inline_stuff(register float x1, register float x2, register float z1, register float y1, register float y2, register float z2)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls x1, x1, x2
+        fmadds x1, y1, y2, x1
+        fmadds x1, z1, z2, x1
+    }
+    return x1;
+#else
+    return x1 * x2 + y1 * y2 + z1 * z2;
+#endif
+}
+
+void camera_sub_36(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    float f1;
+    float f31;
+    float f30;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    sp1C = camera->unk0;
+    sp10 = camera->unkC;
+
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y + 0.5;
+    camera->unkC.z = ball->unk4.z;
+
+    sp28.x = -ball->unk4.x;
+    sp28.y = 0.0f;
+    sp28.z = -ball->unk4.z;
+
+    f31 = vec_mag(&sp28);
+    mathutil_vec_set_len(&sp28, &sp28, 3.0f);
+
+    sp28.x += ball->unk4.x;
+    sp28.z += ball->unk4.z;
+    sp28.x += (camera->unk0.x - sp28.x) * 0.95;
+    sp28.z += (camera->unk0.z - sp28.z) * 0.95;
+    sp28.x -= ball->unk4.x;
+    sp28.z -= ball->unk4.z;
+    mathutil_vec_set_len(&sp28, &sp28, 3.0f);
+
+    sp28.y = ball->unk4.y + (f31 / 10.0) * 2.0;
+    camera->unk0.x = sp28.x + ball->unk4.x;
+    camera->unk0.y += (sp28.y - camera->unk0.y) * 0.1;
+    camera->unk0.z = sp28.z + ball->unk4.z;
+
+    f1 = camera->unk0.x * camera->unk0.x + camera->unk0.z * camera->unk0.z;
+    f31 = weird_inline_stuff(ball->unk4.x, camera->unk0.x, ball->unk4.z, 0.0f, 0.0f, camera->unk0.z);
+
+    if (f1 < 4.0f || f31 < 0.0f)
+    {
+        f30 = mathutil_sqrt(f1);
+        sp28.x = ball->unk4.x * 0.2f + sp1C.x;
+        sp28.y = 0.0f;
+        sp28.z = ball->unk4.z * 0.2f + sp1C.z;
+        if (f30 < 1.0f || f31 < 0.0f)
+        {
+            mathutil_vec_set_len(&sp28, &sp28, 1.0f);
+            camera->unk0.x = sp28.x;
+            camera->unk0.z = sp28.z;
+        }
+        else
+        {
+            float f2;
+            mathutil_vec_set_len(&sp28, &sp28, 1.0f);
+            f2 = 2.0f;
+            f2 -= f30;
+            camera->unk0.x += (sp28.x - camera->unk0.x) * f2;
+            camera->unk0.z += (sp28.z - camera->unk0.z) * f2;
+        }
+    }
+
+    sp28.x = camera->unkC.x - camera->unk0.x;
+    sp28.y = camera->unkC.y - camera->unk0.y;
+    sp28.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+    camera->unk1C = 0;
+
+    camera->unk94.x = camera->unk0.x - sp1C.x;
+    camera->unk94.y = camera->unk0.y - sp1C.y;
+    camera->unk94.z = camera->unk0.z - sp1C.z;
+
+    camera->unkA0.x = camera->unkC.x - sp10.x;
+    camera->unkA0.y = camera->unkC.y - sp10.y;
+    camera->unkA0.z = camera->unkC.z - sp10.z;
+}
+
+void func_8001D708(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+    
+    sp1C = camera->unk0;
+    sp10 = camera->unkC;
+    
+    camera->unkC.x = ball->unk4.x;
+    camera->unkC.y = ball->unk4.y + 0.5;
+    camera->unkC.z = ball->unk4.z;
+    
+    sp28.x = -decodedStageLzPtr->unk1C->unk0.x;
+    sp28.y = 0.0f;
+    sp28.z = -decodedStageLzPtr->unk1C->unk0.z;
+    mathutil_vec_set_len(&sp28, &sp28, 3.0f);
+    
+    sp28.x += ball->unk4.x;
+    sp28.z += ball->unk4.z;
+    sp28.x += (camera->unk0.x - sp28.x) * 0.95;
+    sp28.z += (camera->unk0.z - sp28.z) * 0.95;
+    sp28.x -= ball->unk4.x;
+    sp28.z -= ball->unk4.z;
+    mathutil_vec_set_len(&sp28, &sp28, 3.0f);
+    
+    camera->unk0.x = sp28.x + ball->unk4.x;
+    camera->unk0.y = ball->unk4.y + 2.0;
+    camera->unk0.z = sp28.z + ball->unk4.z;
+
+    sp28.x = camera->unkC.x - camera->unk0.x;
+    sp28.y = camera->unkC.y - camera->unk0.y;
+    sp28.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp28.y, mathutil_sqrt(sum_of_sq(sp28.x, sp28.z)));
+    camera->unk1C = 0;
+
+    camera->unk94.x = camera->unk0.x - sp1C.x;
+    camera->unk94.y = camera->unk0.y - sp1C.y;
+    camera->unk94.z = camera->unk0.z - sp1C.z;
+
+    camera->unkA0.x = camera->unkC.x - sp10.x;
+    camera->unkA0.y = camera->unkC.y - sp10.y;
+    camera->unkA0.z = camera->unkC.z - sp10.z;
+}
+
+void func_8001D968(struct Camera *camera, struct Ball *ball) {}
+
+void func_8001D96C(struct Camera *camera, struct Ball *ball) {}
+
+void func_8001D970(struct Camera *camera, struct Ball *ball)
+{
+    camera_clear(camera);
+    camera->unk50 = 0;
+    camera->unk26 = 6;
+    camera_sub_42(camera, ball);
+    camera->unk1E = 42;
+}
+
+/*
+void camera_sub_42(struct Camera *camera, struct Ball *ball)
+{
+    if ((lbl_802F1EE0 & 0xA) && camera->unk1E == 42)
+        return;
+    
+    if (camera->unk50 < 0x1E0)
+    {
+        float f6 = camera->unk50 / 480.0f;
+        f6 = 3.0 + -2 * f6 + f6 * f6;
+        
+    }
+    //lbl_8001DAE8
+}
+*/
+
 /*
 const double lbl_802F2C48 = 2.0;
 const float lbl_802F2C50 = -0.3;
@@ -2362,23 +2842,23 @@ const double lbl_802F2DE8 = 0.35;
 const double lbl_802F2DF0 = 4.0;
 const float lbl_802F2DF8 = 2.5f;
 const float lbl_802F2DFC = 5.0f;
-*/
-//const double lbl_802F2E00 = 0.98;
-//const double lbl_802F2E08 = 12.0;
-//const double lbl_802F2E10 = 0.04;
-//const double lbl_802F2E18 = 0.05;
-//const float lbl_802F2E20 = -4.0f;
-//const double lbl_802F2E28 = 0.92;
-//const double lbl_802F2E30 = -1.4;
-//const float lbl_802F2E38 = -0.4f;
-//const float lbl_802F2E3C = -5.0f;
-//const float lbl_802F2E40 = -3.6f;
-//const double lbl_802F2E48 = -3.4877232142857141e-05;
-//const double lbl_802F2E50 = -3.0517578125e-05;
+const double lbl_802F2E00 = 0.98;
+const double lbl_802F2E08 = 12.0;
+const double lbl_802F2E10 = 0.04;
+const double lbl_802F2E18 = 0.05;
+const float lbl_802F2E20 = -4.0f;
+const double lbl_802F2E28 = 0.92;
+const double lbl_802F2E30 = -1.4;
+const float lbl_802F2E38 = -0.4f;
+const float lbl_802F2E3C = -5.0f;
+const float lbl_802F2E40 = -3.6f;
+const double lbl_802F2E48 = -3.4877232142857141e-05;
+const double lbl_802F2E50 = -3.0517578125e-05;
 const double lbl_802F2E58 = 10.0;
 const double lbl_802F2E60 = 0.95;
 const float lbl_802F2E68 = 4.0f;
 const float lbl_802F2E6C = 0.2f;
+*/
 const float lbl_802F2E70 = 480.0f;
 const float lbl_802F2E74 = 540.0f;
 const double lbl_802F2E78 = -8192.0;

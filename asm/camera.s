@@ -5955,7 +5955,6 @@ lbl_8001CDF4:
 /* 8001CF1C 00018E3C  38 21 00 38 */	addi r1, r1, 0x38
 /* 8001CF20 00018E40  7C 08 03 A6 */	mtlr r0
 /* 8001CF24 00018E44  4E 80 00 20 */	blr
-.endif
 .global func_8001CF28
 func_8001CF28:
 /* 8001CF28 00018E48  7C 08 02 A6 */	mflr r0
@@ -5996,7 +5995,7 @@ func_8001CF28:
 /* 8001CFB4 00018ED4  D0 1E 00 0C */	stfs f0, 0xc(r30)
 /* 8001CFB8 00018ED8  C0 1F 00 08 */	lfs f0, 8(r31)
 /* 8001CFBC 00018EDC  C0 3E 00 10 */	lfs f1, 0x10(r30)
-/* 8001CFC0 00018EE0  FC 02 00 2A */	fadd f0, f2, f0
+/* 8001CFC0 00018EE0  FC 02 00 2A */	fadd f0, f2, f0  ;# 0.5 + ball y
 /* 8001CFC4 00018EE4  FC 00 08 28 */	fsub f0, f0, f1
 /* 8001CFC8 00018EE8  FC 02 00 32 */	fmul f0, f2, f0
 /* 8001CFCC 00018EEC  FC 01 00 2A */	fadd f0, f1, f0
@@ -6070,16 +6069,16 @@ lbl_8001D04C:
 /* 8001D0D0 00018FF0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8001D0D4 00018FF4  C0 61 00 34 */	lfs f3, 0x34(r1)
 /* 8001D0D8 00018FF8  90 01 00 40 */	stw r0, 0x40(r1)
-/* 8001D0DC 00018FFC  FC 01 00 32 */	fmul f0, f1, f0
+/* 8001D0DC 00018FFC  FC 01 00 32 */	fmul f0, f1, f0  ;# 2.0 * (f31 / 10.0)
 /* 8001D0E0 00019000  C0 3F 00 04 */	lfs f1, 4(r31)
 /* 8001D0E4 00019004  C8 42 84 68 */	lfd f2, lbl_802F2C68-_SDA2_BASE_(r2)  ;# conv
-/* 8001D0E8 00019008  EC A3 08 2A */	fadds f5, f3, f1
+/* 8001D0E8 00019008  EC A3 08 2A */	fadds f5, f3, f1  ;# sp34.x + ball->unk0.x
 /* 8001D0EC 0001900C  C8 21 00 40 */	lfd f1, 0x40(r1)
-/* 8001D0F0 00019010  EC 61 10 28 */	fsubs f3, f1, f2
+/* 8001D0F0 00019010  EC 61 10 28 */	fsubs f3, f1, f2  ;# r28
 /* 8001D0F4 00019014  D0 A1 00 28 */	stfs f5, 0x28(r1)
 /* 8001D0F8 00019018  C8 82 86 50 */	lfd f4, lbl_802F2E50-_SDA2_BASE_(r2)
 /* 8001D0FC 0001901C  C0 5F 00 08 */	lfs f2, 8(r31)
-/* 8001D100 00019020  FC 64 00 F2 */	fmul f3, f4, f3
+/* 8001D100 00019020  FC 64 00 F2 */	fmul f3, f4, f3  ;# -3.0517578125e-05 * r28
 /* 8001D104 00019024  C0 21 00 3C */	lfs f1, 0x3c(r1)
 /* 8001D108 00019028  FC 02 00 2A */	fadd f0, f2, f0
 /* 8001D10C 0001902C  FC 03 00 2A */	fadd f0, f3, f0
@@ -6097,7 +6096,7 @@ lbl_8001D04C:
 /* 8001D13C 0001905C  EC 01 00 28 */	fsubs f0, f1, f0
 /* 8001D140 00019060  C0 3E 00 94 */	lfs f1, 0x94(r30)
 /* 8001D144 00019064  C8 82 85 08 */	lfd f4, lbl_802F2D08-_SDA2_BASE_(r2)  ;# 0.40000000000000002
-/* 8001D148 00019068  FC 03 00 32 */	fmul f0, f3, f0
+/* 8001D148 00019068  FC 03 00 32 */	fmul f0, f3, f0  ;# 0.15 * (sp28.x - camera->unk0.x)
 /* 8001D14C 0001906C  FC 00 08 28 */	fsub f0, f0, f1
 /* 8001D150 00019070  FC 04 00 32 */	fmul f0, f4, f0
 /* 8001D154 00019074  FC 01 00 2A */	fadd f0, f1, f0
@@ -6404,8 +6403,8 @@ lbl_8001D5D0:
 /* 8001D5DC 000194FC  C0 42 85 E0 */	lfs f2, lbl_802F2DE0-_SDA2_BASE_(r2)
 /* 8001D5E0 00019500  C0 3D 00 00 */	lfs f1, 0(r29)
 /* 8001D5E4 00019504  C0 01 00 28 */	lfs f0, 0x28(r1)
-/* 8001D5E8 00019508  EC 42 F0 28 */	fsubs f2, f2, f30
-/* 8001D5EC 0001950C  EC 00 08 28 */	fsubs f0, f0, f1
+/* 8001D5E8 00019508  EC 42 F0 28 */	fsubs f2, f2, f30  ;# 2.0f - f30
+/* 8001D5EC 0001950C  EC 00 08 28 */	fsubs f0, f0, f1   ;# sp28.x - camera->unk0.x
 /* 8001D5F0 00019510  EC 02 00 32 */	fmuls f0, f2, f0
 /* 8001D5F4 00019514  EC 01 00 2A */	fadds f0, f1, f0
 /* 8001D5F8 00019518  D0 1D 00 00 */	stfs f0, 0(r29)
@@ -6478,6 +6477,7 @@ lbl_8001D6E4:
 /* 8001D6FC 0001961C  83 A1 00 3C */	lwz r29, 0x3c(r1)
 /* 8001D700 00019620  38 21 00 58 */	addi r1, r1, 0x58
 /* 8001D704 00019624  4E 80 00 20 */	blr
+
 .global func_8001D708
 func_8001D708:
 /* 8001D708 00019628  7C 08 02 A6 */	mflr r0
@@ -6664,6 +6664,7 @@ func_8001D970:
 /* 8001D9C0 000198E0  7C 08 03 A6 */	mtlr r0
 /* 8001D9C4 000198E4  38 21 00 18 */	addi r1, r1, 0x18
 /* 8001D9C8 000198E8  4E 80 00 20 */	blr
+.endif
 
 .global camera_sub_42
 camera_sub_42:
@@ -6696,17 +6697,17 @@ lbl_8001DA08:
 /* 8001DA30 00019950  C8 42 85 28 */	lfd f2, lbl_802F2D28-_SDA2_BASE_(r2)
 /* 8001DA34 00019954  C8 01 00 30 */	lfd f0, 0x30(r1)
 /* 8001DA38 00019958  C8 A2 85 20 */	lfd f5, lbl_802F2D20-_SDA2_BASE_(r2)
-/* 8001DA3C 0001995C  EC C0 08 28 */	fsubs f6, f0, f1
+/* 8001DA3C 0001995C  EC C0 08 28 */	fsubs f6, f0, f1  ;# unk50
 /* 8001DA40 00019960  C0 64 10 64 */	lfs f3, 0x1064(r4)
 /* 8001DA44 00019964  C8 22 84 60 */	lfd f1, lbl_802F2C60-_SDA2_BASE_(r2)
 /* 8001DA48 00019968  C4 04 10 70 */	lfsu f0, 0x1070(r4)
-/* 8001DA4C 0001996C  EC C6 20 24 */	fdivs f6, f6, f4
-/* 8001DA50 00019970  FC 82 01 B2 */	fmul f4, f2, f6
+/* 8001DA4C 0001996C  EC C6 20 24 */	fdivs f6, f6, f4  ;# unk50 / 480.0f
+/* 8001DA50 00019970  FC 82 01 B2 */	fmul f4, f2, f6   ;# -2 * f6
 /* 8001DA54 00019974  EC 46 01 B2 */	fmuls f2, f6, f6
-/* 8001DA58 00019978  FC 85 20 2A */	fadd f4, f5, f4
-/* 8001DA5C 0001997C  FC C4 00 B2 */	fmul f6, f4, f2
+/* 8001DA58 00019978  FC 85 20 2A */	fadd f4, f5, f4   ;# 3 + -2 * f6
+/* 8001DA5C 0001997C  FC C4 00 B2 */	fmul f6, f4, f2   ;# 3 + -2 * f6 + f6 * f6
 /* 8001DA60 00019980  FC C0 30 18 */	frsp f6, f6
-/* 8001DA64 00019984  FC 41 30 28 */	fsub f2, f1, f6
+/* 8001DA64 00019984  FC 41 30 28 */	fsub f2, f1, f6   ;# 1.0 - f6
 /* 8001DA68 00019988  EC 00 01 B2 */	fmuls f0, f0, f6
 /* 8001DA6C 0001998C  FC 23 00 B2 */	fmul f1, f3, f2
 /* 8001DA70 00019990  FC 01 00 2A */	fadd f0, f1, f0
@@ -13399,7 +13400,7 @@ glabel lbl_80176434
 	.byte 0xC1, 0x6C, 0x04, 0x19
 	.4byte 0
 	.4byte 0
-.endif
+
 	.byte 0x00, 0x00, 0x01, 0x4A
 	.byte 0xC1, 0x6C, 0x04, 0x19
 	.4byte 0
@@ -14304,6 +14305,8 @@ lbl_80177214:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+.endif
+glabel lbl_80177264
 	.4byte 0
 	.byte 0x40, 0x13, 0x33, 0x33
 	.byte 0xC0, 0x80, 0x00, 0x00
