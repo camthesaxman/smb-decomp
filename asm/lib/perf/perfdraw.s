@@ -2583,3 +2583,93 @@ PERFPostDraw:
 PERFSetDrawBWBarKey:
 /* 800E867C 000E459C  90 6D A3 EC */	stw r3, bDrawBWBarKey@sda21(r13)
 /* 800E8680 000E45A0  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6890
+lbl_802F6890:
+	# ROM: 0x1F02B0
+	.byte 0x44, 0x1A, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6898
+lbl_802F6898:
+	# ROM: 0x1F02B8
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F68A0
+lbl_802F68A0:
+	# ROM: 0x1F02C0
+	.4byte 0
+
+.global lbl_802F68A4
+lbl_802F68A4:
+	# ROM: 0x1F02C4
+	.byte 0x3B, 0x4C, 0xCC, 0xCD
+
+.global lbl_802F68A8
+lbl_802F68A8:
+	# ROM: 0x1F02C8
+	.byte 0x3B, 0x88, 0x88, 0x89
+
+.global lbl_802F68AC
+lbl_802F68AC:
+	# ROM: 0x1F02CC
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F68B0
+lbl_802F68B0:
+	# ROM: 0x1F02D0
+	.byte 0xBF, 0x73, 0x33, 0x33
+
+.global lbl_802F68B4
+lbl_802F68B4:
+	# ROM: 0x1F02D4
+	.byte 0xBF, 0x60, 0x00, 0x01
+
+.global lbl_802F68B8
+lbl_802F68B8:
+	# ROM: 0x1F02D8
+	.byte 0x40, 0xE0, 0x00, 0x00
+
+.global lbl_802F68BC
+lbl_802F68BC:
+	# ROM: 0x1F02DC
+	.byte 0x43, 0x0C, 0x00, 0x00
+
+.global lbl_802F68C0
+lbl_802F68C0:
+	# ROM: 0x1F02E0
+	.byte 0xBF, 0x80, 0x00, 0x00
+
+.global lbl_802F68C4
+lbl_802F68C4:
+	# ROM: 0x1F02E4
+	.byte 0x42, 0x48, 0x00, 0x00
+
+.global lbl_802F68C8
+lbl_802F68C8:
+	# ROM: 0x1F02E8
+	.byte 0x3F, 0x00, 0x00, 0x00
+
+.global lbl_802F68CC
+lbl_802F68CC:
+	# ROM: 0x1F02EC
+	.byte 0x41, 0x60, 0x00, 0x00
+
+.global lbl_802F68D0
+lbl_802F68D0:
+	# ROM: 0x1F02F0
+	.byte 0x41, 0xA8, 0x00, 0x00
+
+.global lbl_802F68D4
+lbl_802F68D4:
+	# ROM: 0x1F02F4
+	.byte 0x44, 0x14, 0xDD, 0xDE
+
+.global lbl_802F68D8
+lbl_802F68D8:
+	# ROM: 0x1F02F8
+	.byte 0x41, 0xC8, 0x00, 0x00
+	.4byte 0

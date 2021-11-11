@@ -2870,7 +2870,7 @@ void __GXSetDirtyState(void);
 // ? round_decimal();
 // ? longlong2str();
 // ? long2str();
-// ? parse_fmt();
+// ? parse_format();
 // ? srand();
 // ? rand();
 // ? strchr();

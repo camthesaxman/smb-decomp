@@ -462,3 +462,11 @@ __GXFlushTextureState:
 /* 800E2208 000DE128  90 65 80 00 */	stw r3, -0x8000(r5)
 /* 800E220C 000DE12C  B0 04 00 02 */	sth r0, 2(r4)
 /* 800E2210 000DE130  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6800
+lbl_802F6800:
+	# ROM: 0x1F0220
+	.byte 0x44, 0x80, 0x00, 0x00
+	.4byte 0

@@ -1611,3 +1611,79 @@ s3dInit:
 /* 800FD5D0 000F94F0  98 0D A5 41 */	stb r0, snd_max_studios@sda21(r13)
 /* 800FD5D4 000F94F4  98 8D A5 28 */	stb r4, s3dCallCnt@sda21(r13)
 /* 800FD5D8 000F94F8  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F69C0
+lbl_802F69C0:
+	# ROM: 0x1F03E0
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F69C8
+lbl_802F69C8:
+	# ROM: 0x1F03E8
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F69D0
+lbl_802F69D0:
+	# ROM: 0x1F03F0
+	.byte 0xBF, 0x80, 0x00, 0x00
+
+.global lbl_802F69D4
+lbl_802F69D4:
+	# ROM: 0x1F03F4
+	.byte 0x34, 0x01, 0x02, 0x04
+
+.global lbl_802F69D8
+lbl_802F69D8:
+	# ROM: 0x1F03F8
+	.byte 0x3F, 0xE0, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F69E0
+lbl_802F69E0:
+	# ROM: 0x1F0400
+	.byte 0x42, 0xFE, 0x00, 0x00
+
+.global lbl_802F69E4
+lbl_802F69E4:
+	# ROM: 0x1F0404
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F69E8
+lbl_802F69E8:
+	# ROM: 0x1F0408
+	.byte 0x40, 0x08, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F69F0
+lbl_802F69F0:
+	# ROM: 0x1F0410
+	.byte 0x3C, 0x88, 0x88, 0x89
+
+.global lbl_802F69F4
+lbl_802F69F4:
+	# ROM: 0x1F0414
+	.byte 0x42, 0x80, 0x00, 0x00
+
+.global lbl_802F69F8
+lbl_802F69F8:
+	# ROM: 0x1F0418
+	.byte 0x46, 0x00, 0x00, 0x00
+
+.global lbl_802F69FC
+lbl_802F69FC:
+	# ROM: 0x1F041C
+	.byte 0x3D, 0xA3, 0xD7, 0x0A
+
+.global lbl_802F6A00
+lbl_802F6A00:
+	# ROM: 0x1F0420
+	.byte 0x3E, 0x19, 0x99, 0x9A
+
+.global lbl_802F6A04
+lbl_802F6A04:
+	# ROM: 0x1F0424
+	.byte 0x3E, 0x99, 0x99, 0x9A

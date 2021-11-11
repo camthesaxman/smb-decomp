@@ -518,3 +518,45 @@ GXSetFieldMode:
 /* 800E32DC 000DF1FC  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800E32E0 000DF200  38 21 00 20 */	addi r1, r1, 0x20
 /* 800E32E4 000DF204  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6808
+lbl_802F6808:
+	# ROM: 0x1F0228
+	.4byte 0
+
+.global lbl_802F680C
+lbl_802F680C:
+	# ROM: 0x1F022C
+	.byte 0x3F, 0x00, 0x00, 0x00
+
+.global lbl_802F6810
+lbl_802F6810:
+	# ROM: 0x1F0230
+	.byte 0x3F, 0xF0, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6818
+lbl_802F6818:
+	# ROM: 0x1F0238
+	.byte 0x40, 0x00, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6820
+lbl_802F6820:
+	# ROM: 0x1F0240
+	.byte 0x3F, 0xE0, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6828
+lbl_802F6828:
+	# ROM: 0x1F0248
+	.byte 0x4B, 0x00, 0x00, 0x1E
+	.4byte 0
+
+.global lbl_802F6830
+lbl_802F6830:
+	# ROM: 0x1F0250
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00

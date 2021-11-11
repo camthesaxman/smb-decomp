@@ -212,7 +212,7 @@ SOURCE_FILES := \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/buffer_io.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/char_io.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/PPC_EABI/SRC/critical_regions.ppc_eabi.s \
-	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/ctype.s \
+	src/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/ctype.c \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/direct_io.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mbstring.s \
 	asm/lib/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem.s \
@@ -294,7 +294,7 @@ define COMPILE =
 @echo Compiling $<
 $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-$(QUIET) $(OBJDUMP) -D -r $@ > $(@:.o=.dump)
+$(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
 endef
 
 %.o: %.c
@@ -332,7 +332,6 @@ $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
 src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
-
 # Automatic dependency files
 -include $(DEP_FILES)
 

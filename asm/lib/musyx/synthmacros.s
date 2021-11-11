@@ -4316,3 +4316,43 @@ lbl_800F5EA4:
 /* 800F5EA8 000F1DC8  7C 09 00 40 */	cmplw r9, r0
 /* 800F5EAC 000F1DCC  41 80 FF CC */	blt lbl_800F5E78
 /* 800F5EB0 000F1DD0  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6930
+lbl_802F6930:
+	# ROM: 0x1F0350
+	.byte 0x45, 0x80, 0x00, 0x00
+
+.global lbl_802F6934
+lbl_802F6934:
+	# ROM: 0x1F0354
+	.byte 0x34, 0x00, 0x00, 0x00
+
+.global lbl_802F6938
+lbl_802F6938:
+	# ROM: 0x1F0358
+	.byte 0x3C, 0x00, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6940
+lbl_802F6940:
+	# ROM: 0x1F0360
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6948
+lbl_802F6948:
+	# ROM: 0x1F0368
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00
+
+.global lbl_802F6950
+lbl_802F6950:
+	# ROM: 0x1F0370
+	.byte 0x44, 0x7F, 0xC0, 0x00
+
+.global lbl_802F6954
+lbl_802F6954:
+	# ROM: 0x1F0374
+	.byte 0x3F, 0x80, 0x00, 0x00

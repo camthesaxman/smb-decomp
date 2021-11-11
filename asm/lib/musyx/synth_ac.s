@@ -87,3 +87,23 @@ lbl_800F77A4:
 /* 800F77DC 000F36FC  38 21 00 18 */	addi r1, r1, 0x18
 /* 800F77E0 000F3700  7C 08 03 A6 */	mtlr r0
 /* 800F77E4 000F3704  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6958
+lbl_802F6958:
+	# ROM: 0x1F0378
+	.byte 0x3F, 0x87, 0x9C, 0x7D
+	.4byte 0
+
+.global lbl_802F6960
+lbl_802F6960:
+	# ROM: 0x1F0380
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6968
+lbl_802F6968:
+	# ROM: 0x1F0388
+	.byte 0x45, 0x80, 0x00, 0x00
+	.4byte 0

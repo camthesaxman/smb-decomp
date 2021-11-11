@@ -488,3 +488,39 @@ lbl_800F7E6C:
 /* 800F7E80 000F3DA0  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800F7E84 000F3DA4  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F7E88 000F3DA8  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6970
+lbl_802F6970:
+	# ROM: 0x1F0390
+	.byte 0x44, 0x7A, 0x00, 0x00
+
+.global lbl_802F6974
+lbl_802F6974:
+	# ROM: 0x1F0394
+	.byte 0x40, 0x00, 0x00, 0x00
+
+.global lbl_802F6978
+lbl_802F6978:
+	# ROM: 0x1F0398
+	.byte 0x32, 0x5A, 0x74, 0x0E
+	.4byte 0
+
+.global lbl_802F6980
+lbl_802F6980:
+	# ROM: 0x1F03A0
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00
+
+.global lbl_802F6988
+lbl_802F6988:
+	# ROM: 0x1F03A8
+	.byte 0x39, 0xA9, 0xC8, 0x4A
+	.4byte 0
+
+.global lbl_802F6990
+lbl_802F6990:
+	# ROM: 0x1F03B0
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0

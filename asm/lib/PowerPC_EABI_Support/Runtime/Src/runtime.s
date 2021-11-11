@@ -495,3 +495,15 @@ lbl_80103BB4:
 lbl_80103BC4:
 /* 80103BC4 000FFAE4  38 21 00 10 */	addi r1, r1, 0x10
 /* 80103BC8 000FFAE8  4E 80 00 20 */	blr
+
+.section .rodata
+
+.global lbl_80171DC0
+lbl_80171DC0:
+	# ROM: 0x16EDC0
+	.4byte 0
+	.4byte 0
+	.byte 0x41, 0xF0, 0x00, 0x00
+	.4byte 0
+	.byte 0x41, 0xE0, 0x00, 0x00
+	.4byte 0

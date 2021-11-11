@@ -1433,3 +1433,17 @@ lbl_800E5F0C:
 /* 800E5F28 000E1E48  38 21 00 10 */	addi r1, r1, 0x10
 /* 800E5F2C 000E1E4C  7C 08 03 A6 */	mtlr r0
 /* 800E5F30 000E1E50  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6880
+lbl_802F6880:
+	# ROM: 0x1F02A0
+	.byte 0xFF, 0x19, 0x00, 0xC8
+	.4byte 0
+
+.global lbl_802F6888
+lbl_802F6888:
+	# ROM: 0x1F02A8
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0

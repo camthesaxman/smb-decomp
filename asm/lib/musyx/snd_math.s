@@ -96,3 +96,23 @@ lbl_800FD7E8:
 /* 800FD808 000F9728  EC 00 08 24 */	fdivs f0, f0, f1
 /* 800FD80C 000F972C  D0 03 00 08 */	stfs f0, 8(r3)
 /* 800FD810 000F9730  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6A08
+lbl_802F6A08:
+	# ROM: 0x1F0428
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F6A10
+lbl_802F6A10:
+	# ROM: 0x1F0430
+	.byte 0x3F, 0xE0, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6A18
+lbl_802F6A18:
+	# ROM: 0x1F0438
+	.byte 0x40, 0x08, 0x00, 0x00
+	.4byte 0

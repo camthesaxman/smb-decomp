@@ -3382,3 +3382,73 @@ lbl_800EE8F8:
 /* 800EE920 000EA840  38 21 00 80 */	addi r1, r1, 0x80
 /* 800EE924 000EA844  7C 08 03 A6 */	mtlr r0
 /* 800EE928 000EA848  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F68E0
+lbl_802F68E0:
+	# ROM: 0x1F0300
+	.byte 0x34, 0x01, 0x02, 0x04
+
+.global lbl_802F68E4
+lbl_802F68E4:
+	# ROM: 0x1F0304
+	.byte 0x3C, 0x01, 0x02, 0x04
+
+.global lbl_802F68E8
+lbl_802F68E8:
+	# ROM: 0x1F0308
+	.byte 0x39, 0x00, 0x00, 0x00
+
+.global lbl_802F68EC
+lbl_802F68EC:
+	# ROM: 0x1F030C
+	.byte 0x39, 0x80, 0x00, 0x00
+
+.global lbl_802F68F0
+lbl_802F68F0:
+	# ROM: 0x1F0310
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F68F4
+lbl_802F68F4:
+	# ROM: 0x1F0314
+	.byte 0x32, 0x80, 0x02, 0x00
+
+.global lbl_802F68F8
+lbl_802F68F8:
+	# ROM: 0x1F0318
+	.byte 0x3E, 0x4C, 0xCC, 0xCD
+
+.global lbl_802F68FC
+lbl_802F68FC:
+	# ROM: 0x1F031C
+	.byte 0x38, 0x80, 0x02, 0x00
+
+.global lbl_802F6900
+lbl_802F6900:
+	# ROM: 0x1F0320
+	.byte 0x46, 0xFF, 0xFE, 0x00
+	.4byte 0
+
+.global lbl_802F6908
+lbl_802F6908:
+	# ROM: 0x1F0328
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6910
+lbl_802F6910:
+	# ROM: 0x1F0330
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00
+
+.global lbl_802F6918
+lbl_802F6918:
+	# ROM: 0x1F0338
+	.4byte 0
+
+.global lbl_802F691C
+lbl_802F691C:
+	# ROM: 0x1F033C
+	.byte 0x44, 0xA0, 0x00, 0x00

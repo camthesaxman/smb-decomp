@@ -18,6 +18,17 @@ double cos(double x);
 float sinf(float x);
 float acosf(float x);
 
+double ldexp(double x, int exp);
+
 inline int	abs (int n) { return(__abs(n)); }
+
+double scalbn(double x, int n);
+
+#ifdef __MWERKS__
+#pragma cplusplus on
+inline double scalbn(double x, int n) {return ldexp(x,n);}
+inline double fabs(double x) { return __fabs(x); }
+#pragma cplusplus reset
+#endif
 
 #endif

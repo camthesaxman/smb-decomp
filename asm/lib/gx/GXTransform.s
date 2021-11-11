@@ -439,3 +439,27 @@ lbl_800E498C:
 /* 800E4990 000E08B0  38 00 00 00 */	li r0, 0
 /* 800E4994 000E08B4  B0 03 00 02 */	sth r0, 2(r3)
 /* 800E4998 000E08B8  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6868
+lbl_802F6868:
+	# ROM: 0x1F0288
+	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6870
+lbl_802F6870:
+	# ROM: 0x1F0290
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6878
+lbl_802F6878:
+	# ROM: 0x1F0298
+	.byte 0x43, 0xAA, 0x00, 0x00
+
+.global lbl_802F687C
+lbl_802F687C:
+	# ROM: 0x1F029C
+	.byte 0x4B, 0x7F, 0xFF, 0xFF

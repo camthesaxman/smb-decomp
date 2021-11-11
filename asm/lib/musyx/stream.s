@@ -1463,3 +1463,21 @@ lbl_800F05CC:
 /* 800F05D8 000EC4F8  38 21 00 28 */	addi r1, r1, 0x28
 /* 800F05DC 000EC4FC  7C 08 03 A6 */	mtlr r0
 /* 800F05E0 000EC500  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6920
+lbl_802F6920:
+	# ROM: 0x1F0340
+	.byte 0x45, 0x80, 0x00, 0x00
+
+.global lbl_802F6924
+lbl_802F6924:
+	# ROM: 0x1F0344
+	.byte 0x3C, 0x01, 0x02, 0x04
+
+.global lbl_802F6928
+lbl_802F6928:
+	# ROM: 0x1F0348
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
