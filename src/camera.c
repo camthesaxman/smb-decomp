@@ -3075,8 +3075,205 @@ void func_8001E2E8(struct Camera *camera, struct Ball *ball)
     camera_sub_47(camera, ball);
 }
 
+void camera_sub_47(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp3C;
+    Vec sp30;
+    u8 unused[0x14];
+    Vec sp10;
+    float f1;
+    float f31;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera->unk60 += camera->unk80;
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, camera->unk60);
+    f1 = vec_distance(&ball->unk4, &camera->unk0);
+    f31 = 2.0 - f1 * 0.125;
+    if (f31 < 0.0)
+        f31 = 0.0f;
+    sp30.x = ball->unk1C.z;
+    sp30.y = 0.0f;
+    sp30.z = ball->unk1C.x;
+
+    sp3C.x = camera->unk0.x - ball->unk4.x;
+    sp3C.y = 0.0f;
+    sp3C.z = camera->unk0.z - ball->unk4.z;
+    mathutil_vec_normalize_len(&sp30);
+    mathutil_vec_normalize_len(&sp3C);
+
+    if (sp30.x * sp3C.x + sp30.z * sp3C.z < -0.1)
+    {
+        sp30.x = -sp30.x;
+        sp30.z = -sp30.z;
+    }
+    //lbl_8001E680
+    if (sp30.x == 0.0 && sp30.z == 0.0)
+    {
+        sp30.x = sp3C.x;
+        sp30.z = sp3C.z;
+    }
+    //lbl_8001E6AC
+    mathutil_vec_set_len(&sp30, &sp30, camera->unk64 * 2.0 * f31);
+    camera->unk74.x += (sp30.x - camera->unk74.x) * 0.05;
+    camera->unk74.z += (sp30.z - camera->unk74.z) * 0.05;
+    camera->unk54.x = sp10.x;
+    camera->unk54.y = sp10.y;
+    camera->unk54.z = sp10.z;
+
+    camera->unk94.x = (sp10.x + camera->unk74.x - camera->unk0.x) * 0.1;
+    camera->unk94.y = (sp10.y + camera->unk64 - camera->unk0.y) * 0.1;
+    camera->unk94.z = (sp10.z + camera->unk74.z - camera->unk0.z) * 0.1;
+
+    camera->unk0.x += camera->unk94.x;
+    camera->unk0.y += camera->unk94.y;
+    camera->unk0.z += camera->unk94.z;
+
+    sp3C.x = (ball->unk4.x + 6.0 * ball->unk1C.x) - camera->unkC.x;
+    sp3C.y = (ball->unk4.y + 6.0 * ball->unk1C.y) - camera->unkC.y;
+    sp3C.z = (ball->unk4.z + 6.0 * ball->unk1C.z) - camera->unkC.z;
+
+    camera->unkA0.x = sp3C.x * 0.1;
+    camera->unkA0.y = sp3C.y * 0.1;
+    camera->unkA0.z = sp3C.z * 0.1;
+
+    camera->unkC.x += camera->unkA0.x;
+    camera->unkC.y += camera->unkA0.y;
+    camera->unkC.z += camera->unkA0.z;
+
+    sp3C.x = camera->unkC.x - camera->unk0.x;
+    sp3C.y = camera->unkC.y - camera->unk0.y;
+    sp3C.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp3C.x, sp3C.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp3C.y, mathutil_sqrt(sum_of_sq(sp3C.x, sp3C.z)));
+    camera->unk1C = 0;
+
+    if (lbl_80250A68.unk10 < 60.0f)
+        camera->unk1E = 14;
+}
+
+void func_8001E924(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp58;
+    Vec sp4C;
+    struct Struct8009F7F0 sp34;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    float f31;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera_clear(camera);
+    camera->unk24 |= 4;
+    g_get_replay_info(lbl_80250A68.unk0[ball->unk2E], &sp34);
+
+    if (!(sp34.flags & 1)
+     || lbl_801F3A58.unkC >= decodedStageLzPtr->unk18
+     || lbl_801F3A58.unkE >= decodedStageLzPtr->unk8)
+    {
+        camera->unk10E = 0;
+        camera->unk110 = -1;
+
+        sp58.x = (rand() / 32767.0f) - 0.5;
+        sp58.y = 0.25f;
+        sp58.z = (rand() / 32767.0f) - 0.5;
+        mathutil_vec_set_len(&sp58, &sp58, (rand() / 32767.0f) * 20.0 + 20.0);
+    }
+    else
+    {
+        camera->unk10E = lbl_801F3A58.unkE;
+        camera->unk110 = lbl_801F3A58.unkC;
+
+        sp58 = decodedStageLzPtr->unk1C[camera->unk110].unk0;
+        mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+        mathutil_mtxA_rigid_inv_tf_point(&ball->unk4, &sp28);
+
+        f31 = vec_distance(&sp58, &sp28);
+        if (f31 > 60.0)
+            f31 = 60.0f;
+        else if (f31 < 20.0)
+            f31 = 20.0f;
+
+        sp4C.x = (rand() / 32767.0f) - 0.5;
+        sp4C.y = 9.9999997473787516e-05f;
+        sp4C.z = (rand() / 32767.0f) - 0.5;
+        mathutil_vec_set_len(&sp4C, &sp4C, f31);
+
+        sp4C.y = f31 * ((rand() / 32767.0f) * 0.5 + 0.5);
+        if (camera->unk10E != 0)
+        {
+            sp58.x = sp4C.x;
+            sp58.y = sp4C.y;
+            sp58.z = sp4C.z;
+        }
+        else
+        {
+            sp58.x = sp4C.x + (sp58.x + sp28.x) * 0.5 - sp58.x;
+            sp58.y = sp4C.y + (sp58.y + sp28.y) * 0.5 - sp58.y;
+            sp58.z = sp4C.z + (sp58.z + sp28.z) * 0.5 - sp58.z;
+        }
+    }
+    camera->unk114 = sp58;
+
+    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    if (camera->unk110 >= 0)
+    {
+        mathutil_mtxA_translate(&decodedStageLzPtr->unk1C[camera->unk110].unk0);
+        mathutil_mtxA_sq_from_identity();
+    }
+    f31 = (float)camera->sub28.unk32 * ((rand() / 32767.0f) + 0.1f);
+    mathutil_mtxA_rotate_y((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
+    mathutil_mtxA_rotate_x((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
+    mathutil_mtxA_rigid_inv_tf_point(&ball->unk4, &camera->unk12C);
+    mathutil_mtxA_rigid_inv_tf_vec(&ball->unk1C, &camera->unk138);
+
+    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    if (camera->unk110 >= 0)
+    {
+        mathutil_mtxA_translate(&decodedStageLzPtr->unk1C[camera->unk110].unk0);
+        mathutil_mtxA_sq_from_identity();
+    }
+    mathutil_mtxA_tf_point(&camera->unk114, &camera->unk0);
+    mathutil_mtxA_tf_point(&camera->unk12C, &camera->unkC);
+
+    camera->unk6C = ((rand() / 32767.0f) + 0.5f) * 15.0f;
+    sp4C = camera->unk114;
+
+    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    if (camera->unk110 >= 0)
+    {
+        mathutil_mtxA_translate(&decodedStageLzPtr->unk1C[camera->unk110].unk0);
+        mathutil_mtxA_sq_from_identity();
+    }
+    mathutil_mtxA_tf_point(&sp4C, &sp1C);
+
+    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk54);
+    if (camera->unk110 >= 0)
+    {
+        mathutil_mtxA_translate(&decodedStageLzPtr->unk1C[camera->unk110].unk0);
+        mathutil_mtxA_sq_from_identity();
+    }
+    mathutil_mtxA_tf_point(&sp4C, &sp10);
+
+    sp4C.x = sp1C.x - sp10.x;
+    sp4C.y = sp1C.y - sp10.y;
+    sp4C.z = sp1C.z - sp10.z;
+
+    camera->unk94 = sp4C;
+    camera->unk54 = sp4C;
+    camera->unk68 = 1;
+    camera->unk1E = 49;
+    camera->unk26 = 5;
+    camera->sub28.unk30 = f31;
+    camera_sub_49(camera, ball);
+}
+
 /*
-const double lbl_802F2C30 = 3.0;
+const double lbl_802F2C30 = 0.0;
 const double lbl_802F2C48 = 2.0;
 const float lbl_802F2C50 = -0.3;
 const double lbl_802F2C60 = 1.0;
@@ -3139,4 +3336,13 @@ const double lbl_802F2EA0 = 60.0;
 const double lbl_802F2EA8 = 240.0;
 const double lbl_802F2EB0 = 180.0;
 const double lbl_802F2EB8 = 1.5;
+const double lbl_802F2EC0 = 0.125;
+const double lbl_802F2EC8 = -0.1;
+const double lbl_802F2ED0 = 6.0;
+const float lbl_802F2ED8 = 0.25f;
+const double lbl_802F2EE0 = 20.0;
+const float lbl_802F2EE8 = 20.0f;
+const float lbl_802F2EEC = 9.9999997473787516e-05f;
+const float lbl_802F2EF0 = 15.0f;
 */
+const float lbl_802F2EF4 = 0.4f;

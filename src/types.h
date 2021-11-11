@@ -296,7 +296,7 @@ struct Camera_sub
     float unk28;
     float unk2C;
     s16 unk30;  // fov
-    u16 unk32;
+    s16 unk32;
     float unk34;
     float unk38;
     float unk3C;
@@ -349,7 +349,13 @@ struct Camera
     float unk104;
     float unk108;
     s16 unk10C;
-    u8 filler10E[0x144-0x10E];
+    s16 unk10E;
+    s16 unk110;
+    u8 filler112[0x114-0x112];
+    Vec unk114;
+    u8 filler120[0x12C-0x120];
+    Vec unk12C;
+    Vec unk138;
     Mtx unk144;
     Mtx unk174;
     Mtx unk1A4;

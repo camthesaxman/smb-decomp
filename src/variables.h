@@ -1468,7 +1468,8 @@ extern struct
     s32 unk8;
     struct DecodedStageLzPtr_child *unkC;
     struct DecodedStageLzPtr_child3 *unk10;
-    u8 filler14[0x1C-0x14];
+    u8 filler14[0x18-0x14];
+    s32 unk18;
     struct DecodedStageLzPtr_child4 *unk1C;
     u8 filler20[0x58-0x20];
     s32 unk58;
