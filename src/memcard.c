@@ -731,18 +731,6 @@ void func_8009F568(void)
     cardStat.bannerFormat = (cardStat.bannerFormat & ~(0x1<<2));
 }
 
-struct Struct8009F7F0
-{
-    u16 flags;  // (1 << 5) = expert, (1 << 6) = master
-    u8 unk2;
-    u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
-    u8 floorNum;
-    u8 unk5;
-    u8 filler6[0x10-6];
-    u32 unk10;
-    u8 filler14[4];
-};
-
 void init_replay_file_data(void)
 {
     DVDFileInfo file;

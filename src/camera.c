@@ -2912,6 +2912,169 @@ void camera_sub_42(struct Camera *camera, struct Ball *ball)
         camera->unk50 += 1;
 }
 
+struct Struct801EFB94
+{
+    s32 unk0;
+    s32 unk4;
+    struct Struct8009F7F0 unk8;
+};
+
+extern struct Struct801EFB94 lbl_801EFB94[];
+
+static inline int func_8001DDF0_inline(int a, int b)
+{
+    int temp = a / b;
+    return temp * b;
+}
+
+void func_8001DDF0(struct Camera *camera, struct Ball *ball)
+{
+    u32 sp50[32];
+    u8 unused2[0x14];
+    Vec sp30;
+    u8 unused[0x14];
+    Vec sp10;
+    int r31;
+    struct Struct801EFB94 *r30;
+    float f31;
+    int r4;
+    int r5;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera_clear(camera);
+
+    camera->unk50 = 0;
+    r30 = &lbl_801EFB94[camera->unk204];
+    f31 = func_8004964C(lbl_80250A68.unk0[ball->unk2E]);
+    g_get_replay_info(lbl_80250A68.unk0[ball->unk2E], &r30->unk8);
+
+    r31 = 0;
+    sp50[r31] = 5;
+    r31++;
+    if ((r30->unk8.flags & 1) && lbl_80250A68.unk10 > f31 - 240.0f)
+    {
+        sp50[r31] = 16;
+        r31++;
+    }
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10);
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, 0.0f);
+    if (vec_distance(&sp10, &sp30) < 16.0)
+    {
+        sp50[r31] = 7;
+        r31++;
+    }
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, lbl_80250A68.unk10 - 60.0);
+    if (vec_distance(&sp10, &sp30) > 1.0 && lbl_80250A68.unk10 > 240.0)
+    {
+        sp50[r31] = 46;
+        r31++;
+    }
+    sp50[r31] = 48;
+    r31++;
+
+    r4 = (rand() & 0x7FFF);
+    r5 = r4 - func_8001DDF0_inline(r4, r31);
+    r4 = sp50[r5];
+    if (r4 == r30->unk4)
+    {
+        r5++;
+        r5 -= func_8001DDF0_inline(r5, r31);
+        r4 = sp50[r5];
+    }
+    r30->unk4 = r4;
+    camera->unk1E = r4;
+    lbl_80176200[r4](camera, ball);
+    r30->unk0 = camera->unk1E;
+    camera->unk1E = 0x2D;
+}
+
+void func_8001E0A8(struct Camera *camera, struct Ball *ball)
+{
+    u8 unused[0x10];
+    Vec sp10;
+    struct Struct801EFB94 *r31;
+    u32 bvar;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera->unk50++;
+    r31 = &lbl_801EFB94[camera->unk204];
+    lbl_80176200[r31->unk0](camera, ball);
+    if (camera->unk1E != 0x2D)
+    {
+        r31->unk0 = camera->unk1E;
+        camera->unk1E = 0x2D;
+        camera->unk50 = 0;
+    }
+
+    bvar = 0;
+    switch (r31->unk0 - 8)
+    {
+    case 39:
+        if (!(camera->unk50 & 0x1F))
+        {
+            func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10 - 60.0);
+            if (vec_distance(&ball->unk4, &sp10) < 0.5)
+                bvar = 1;
+        }
+        // fall through
+    case 0:
+    case 9:
+        if (camera->unk50 > 0x78 && !(camera->unk50 & 0x3F))
+        {
+            if (vec_distance(&ball->unk4, &camera->unk0) > 16.0)
+                bvar = 1;
+        }
+        if (camera->unk50 > 0x168)
+            bvar = 1;
+        break;
+    case 41:
+        if (camera->unk50 > 0xF0 && !(camera->unk50 & 0x1F) && (rand() & 1))
+            bvar = 1;
+        break;
+    case 1:
+    case 10:
+    case 12:
+        if (camera->unk50 > 0x78 && !(camera->unk50 & 0x1F) && (rand() & 1))
+            bvar = 1;
+        break;
+    }
+    if (bvar && ball->unk3 == 10)
+        camera->unk1E = 0x2C;
+}
+
+void func_8001E2E8(struct Camera *camera, struct Ball *ball)
+{
+    u8 unused[0x10];
+    Vec sp10;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera_clear(camera);
+    camera->unk26 = 0;
+    camera->unk24 |= 4;
+    if (lbl_80250A68.unk10 > 180.0)
+        camera->unk60 = lbl_80250A68.unk10 - ((rand() / 32767.0f) * 1.5 + 0.5) * 60.0;
+    else
+        camera->unk60 = lbl_80250A68.unk10 * ((rand() / 32767.0f) * 0.5 + 0.5);
+    camera->unk64 = (rand() / 32767.0f) * 2.0 + 0.3;
+    camera->unk80 = camera->unk60 * ((rand() / 32767.0f) * 0.5 + 0.2);
+    camera->unk80 = (camera->unk80 - camera->unk60) / lbl_80250A68.unk10;
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, camera->unk60);
+    camera->unk54 = sp10;
+    camera->unk0 = sp10;
+    camera->unk74.x = 0.0f;
+    camera->unk74.y = 0.0f;
+    camera->unk74.z = 0.0f;
+    camera->unkC = ball->unk4;
+    camera->unk1E = 0x2F;
+    camera_sub_47(camera, ball);
+}
+
 /*
 const double lbl_802F2C30 = 3.0;
 const double lbl_802F2C48 = 2.0;
@@ -2964,8 +3127,6 @@ const double lbl_802F2E58 = 10.0;
 const double lbl_802F2E60 = 0.95;
 const float lbl_802F2E68 = 4.0f;
 const float lbl_802F2E6C = 0.2f;
-*/
-/*
 const float lbl_802F2E70 = 480.0f;
 const float lbl_802F2E74 = 540.0f;
 const double lbl_802F2E78 = -8192.0;
@@ -2973,9 +3134,9 @@ const float lbl_802F2E80 = 8192.0f;
 const float lbl_802F2E84 = 165.0f;
 const double lbl_802F2E88 = 2.6;
 const double lbl_802F2E90 = 15.0;
-*/
 const float lbl_802F2E98 = 240.0f;
 const double lbl_802F2EA0 = 60.0;
 const double lbl_802F2EA8 = 240.0;
 const double lbl_802F2EB0 = 180.0;
 const double lbl_802F2EB8 = 1.5;
+*/

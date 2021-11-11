@@ -6704,7 +6704,7 @@ lbl_8001DA08:
 /* 8001DA50 00019970  FC 82 01 B2 */	fmul f4, f2, f6   ;# -2.0 * 6
 /* 8001DA54 00019974  EC 46 01 B2 */	fmuls f2, f6, f6 
 /* 8001DA58 00019978  FC 85 20 2A */	fadd f4, f5, f4   ;# 3.0 + -2.0 * 6
-/* 8001DA5C 0001997C  FC C4 00 B2 */	fmul f6, f4, f2
+/* 8001DA5C 0001997C  FC C4 00 B2 */	fmul f6, f4, f2   ;# (3.0 + -2.0 * f6) * f6 * f6
 /* 8001DA60 00019980  FC C0 30 18 */	frsp f6, f6
 /* 8001DA64 00019984  FC 41 30 28 */	fsub f2, f1, f6
 /* 8001DA68 00019988  EC 00 01 B2 */	fmuls f0, f0, f6
@@ -6943,7 +6943,6 @@ lbl_8001DDD8:
 /* 8001DDE4 00019D04  7C 08 03 A6 */	mtlr r0
 /* 8001DDE8 00019D08  38 21 00 40 */	addi r1, r1, 0x40
 /* 8001DDEC 00019D0C  4E 80 00 20 */	blr
-.endif
 .global func_8001DDF0
 func_8001DDF0:
 /* 8001DDF0 00019D10  7C 08 02 A6 */	mflr r0
@@ -7178,7 +7177,7 @@ lbl_8001E140:
 /* 8001E164 0001A084  7C 09 03 A6 */	mtctr r0
 /* 8001E168 0001A088  4E 80 04 20 */	bctr
 .global lbl_8001E16C
-lbl_8001E16C:
+lbl_8001E16C:  ;# 39
 /* 8001E16C 0001A08C  A8 1D 00 50 */	lha r0, 0x50(r29)
 /* 8001E170 0001A090  54 00 06 FF */	clrlwi. r0, r0, 0x1b
 /* 8001E174 0001A094  40 82 00 80 */	bne lbl_8001E1F4
@@ -7213,7 +7212,7 @@ lbl_8001E16C:
 /* 8001E1E8 0001A108  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 8001E1EC 0001A10C  40 80 00 08 */	bge lbl_8001E1F4
 /* 8001E1F0 0001A110  3B E0 00 01 */	li r31, 1
-lbl_8001E1F4:
+lbl_8001E1F4:  ;# 0 9
 .global lbl_8001E1F4
 /* 8001E1F4 0001A114  A8 1D 00 50 */	lha r0, 0x50(r29)
 /* 8001E1F8 0001A118  2C 00 00 78 */	cmpwi r0, 0x78
@@ -7245,7 +7244,7 @@ lbl_8001E250:
 /* 8001E25C 0001A17C  3B E0 00 01 */	li r31, 1
 /* 8001E260 0001A180  48 00 00 50 */	b lbl_8001E2B0
 .global lbl_8001E264
-lbl_8001E264:
+lbl_8001E264:  ;# 41
 /* 8001E264 0001A184  A8 1D 00 50 */	lha r0, 0x50(r29)
 /* 8001E268 0001A188  2C 00 00 F0 */	cmpwi r0, 0xf0
 /* 8001E26C 0001A18C  40 81 00 44 */	ble lbl_8001E2B0
@@ -7256,7 +7255,7 @@ lbl_8001E264:
 /* 8001E280 0001A1A0  41 82 00 30 */	beq lbl_8001E2B0
 /* 8001E284 0001A1A4  3B E0 00 01 */	li r31, 1
 /* 8001E288 0001A1A8  48 00 00 28 */	b lbl_8001E2B0
-.global lbl_8001E28C
+.global lbl_8001E28C  ;# 1 10 12
 lbl_8001E28C:
 /* 8001E28C 0001A1AC  A8 1D 00 50 */	lha r0, 0x50(r29)
 /* 8001E290 0001A1B0  2C 00 00 78 */	cmpwi r0, 0x78
@@ -7267,7 +7266,7 @@ lbl_8001E28C:
 /* 8001E2A4 0001A1C4  54 60 07 FF */	clrlwi. r0, r3, 0x1f
 /* 8001E2A8 0001A1C8  41 82 00 08 */	beq lbl_8001E2B0
 /* 8001E2AC 0001A1CC  3B E0 00 01 */	li r31, 1
-lbl_8001E2B0:
+lbl_8001E2B0:  ;# default break
 .global lbl_8001E2B0
 /* 8001E2B0 0001A1D0  28 1F 00 00 */	cmplwi r31, 0
 /* 8001E2B4 0001A1D4  41 82 00 18 */	beq lbl_8001E2CC
@@ -7322,12 +7321,12 @@ func_8001E2E8:
 /* 8001E36C 0001A28C  C8 62 86 B8 */	lfd f3, lbl_802F2EB8-_SDA2_BASE_(r2)
 /* 8001E370 0001A290  C8 01 00 38 */	lfd f0, 0x38(r1)
 /* 8001E374 0001A294  C8 42 84 E0 */	lfd f2, lbl_802F2CE0-_SDA2_BASE_(r2)  ;# 0.5
-/* 8001E378 0001A298  EC A0 08 28 */	fsubs f5, f0, f1
+/* 8001E378 0001A298  EC A0 08 28 */	fsubs f5, f0, f1  ;# rand
 /* 8001E37C 0001A29C  C8 22 86 A0 */	lfd f1, lbl_802F2EA0-_SDA2_BASE_(r2)
 /* 8001E380 0001A2A0  C0 1C 00 00 */	lfs f0, 0(r28)
-/* 8001E384 0001A2A4  EC 85 20 24 */	fdivs f4, f5, f4
-/* 8001E388 0001A2A8  FC 63 01 32 */	fmul f3, f3, f4
-/* 8001E38C 0001A2AC  FC 42 18 2A */	fadd f2, f2, f3
+/* 8001E384 0001A2A4  EC 85 20 24 */	fdivs f4, f5, f4  ;# rand / 32767.0f
+/* 8001E388 0001A2A8  FC 63 01 32 */	fmul f3, f3, f4  ;# 1.5 * (rand / 32767.0f)
+/* 8001E38C 0001A2AC  FC 42 18 2A */	fadd f2, f2, f3  ;# 0.5 + 1.5 * (rand / 32767.0f)
 /* 8001E390 0001A2B0  FC 21 00 B2 */	fmul f1, f1, f2
 /* 8001E394 0001A2B4  FC 00 08 28 */	fsub f0, f0, f1
 /* 8001E398 0001A2B8  FC 00 00 18 */	frsp f0, f0
@@ -7344,10 +7343,10 @@ lbl_8001E3A4:
 /* 8001E3C0 0001A2E0  C8 42 84 E0 */	lfd f2, lbl_802F2CE0-_SDA2_BASE_(r2)  ;# 0.5
 /* 8001E3C4 0001A2E4  C8 61 00 38 */	lfd f3, 0x38(r1)
 /* 8001E3C8 0001A2E8  C0 1C 00 00 */	lfs f0, 0(r28)
-/* 8001E3CC 0001A2EC  EC 63 20 28 */	fsubs f3, f3, f4
-/* 8001E3D0 0001A2F0  EC 23 08 24 */	fdivs f1, f3, f1
-/* 8001E3D4 0001A2F4  FC 22 00 72 */	fmul f1, f2, f1
-/* 8001E3D8 0001A2F8  FC 22 08 2A */	fadd f1, f2, f1
+/* 8001E3CC 0001A2EC  EC 63 20 28 */	fsubs f3, f3, f4  ;# rand
+/* 8001E3D0 0001A2F0  EC 23 08 24 */	fdivs f1, f3, f1  ;# rand / 32767.0f
+/* 8001E3D4 0001A2F4  FC 22 00 72 */	fmul f1, f2, f1  ;#  0.5 * (rand / 32767.0f)
+/* 8001E3D8 0001A2F8  FC 22 08 2A */	fadd f1, f2, f1  ;# 0.5 + 0.5 * (rand / 32767.0f)
 /* 8001E3DC 0001A2FC  FC 00 00 72 */	fmul f0, f0, f1
 /* 8001E3E0 0001A300  FC 00 00 18 */	frsp f0, f0
 /* 8001E3E4 0001A304  D0 1E 00 60 */	stfs f0, 0x60(r30)
@@ -7362,9 +7361,9 @@ lbl_8001E3E8:
 /* 8001E404 0001A324  C8 22 84 48 */	lfd f1, lbl_802F2C48-_SDA2_BASE_(r2)
 /* 8001E408 0001A328  C8 61 00 38 */	lfd f3, 0x38(r1)
 /* 8001E40C 0001A32C  C8 02 85 70 */	lfd f0, lbl_802F2D70-_SDA2_BASE_(r2)
-/* 8001E410 0001A330  EC 63 20 28 */	fsubs f3, f3, f4
-/* 8001E414 0001A334  EC 43 10 24 */	fdivs f2, f3, f2
-/* 8001E418 0001A338  FC 21 00 B2 */	fmul f1, f1, f2
+/* 8001E410 0001A330  EC 63 20 28 */	fsubs f3, f3, f4  ;# rand
+/* 8001E414 0001A334  EC 43 10 24 */	fdivs f2, f3, f2  ;# rand / 32767.0f
+/* 8001E418 0001A338  FC 21 00 B2 */	fmul f1, f1, f2  ;# 2.0 * (rand / 32767.0f)
 /* 8001E41C 0001A33C  FC 00 08 2A */	fadd f0, f0, f1
 /* 8001E420 0001A340  FC 00 00 18 */	frsp f0, f0
 /* 8001E424 0001A344  D0 1E 00 64 */	stfs f0, 0x64(r30)
@@ -7380,11 +7379,11 @@ lbl_8001E3E8:
 /* 8001E44C 0001A36C  38 81 00 10 */	addi r4, r1, 0x10
 /* 8001E450 0001A370  C8 01 00 30 */	lfd f0, 0x30(r1)
 /* 8001E454 0001A374  C8 22 85 00 */	lfd f1, lbl_802F2D00-_SDA2_BASE_(r2)  ;# 0.20000000000000001
-/* 8001E458 0001A378  EC 80 20 28 */	fsubs f4, f0, f4
+/* 8001E458 0001A378  EC 80 20 28 */	fsubs f4, f0, f4  ;# rand
 /* 8001E45C 0001A37C  C0 1E 00 60 */	lfs f0, 0x60(r30)
-/* 8001E460 0001A380  EC 64 18 24 */	fdivs f3, f4, f3
-/* 8001E464 0001A384  FC 42 00 F2 */	fmul f2, f2, f3
-/* 8001E468 0001A388  FC 21 10 2A */	fadd f1, f1, f2
+/* 8001E460 0001A380  EC 64 18 24 */	fdivs f3, f4, f3  ;# rand / 32767.0f
+/* 8001E464 0001A384  FC 42 00 F2 */	fmul f2, f2, f3  ;#  0.5 * (rand / 32767.0f)
+/* 8001E468 0001A388  FC 21 10 2A */	fadd f1, f1, f2  ;# 0.2 + 0.5 * (rand / 32767.0f)
 /* 8001E46C 0001A38C  FC 00 00 72 */	fmul f0, f0, f1
 /* 8001E470 0001A390  FC 00 00 18 */	frsp f0, f0
 /* 8001E474 0001A394  D0 1E 00 80 */	stfs f0, 0x80(r30)
@@ -7437,6 +7436,7 @@ lbl_8001E518:
 /* 8001E52C 0001A44C  83 81 00 40 */	lwz r28, 0x40(r1)
 /* 8001E530 0001A450  38 21 00 50 */	addi r1, r1, 0x50
 /* 8001E534 0001A454  4E 80 00 20 */	blr
+.endif
 
 .global camera_sub_47
 camera_sub_47:
@@ -14316,7 +14316,7 @@ glabel lbl_80177264
 	.byte 0xC3, 0x16, 0x00, 0x00
 	.byte 0x44, 0x11, 0x00, 0x00
 .endif
-
+.if 0
 .global lbl_801772AC
 lbl_801772AC:
 	# ROM: 0x1742AC
@@ -14362,6 +14362,7 @@ lbl_801772AC:
 	.4byte lbl_8001E16C  ;# ptr
 	.4byte lbl_8001E2B0  ;# ptr
 	.4byte lbl_8001E264  ;# ptr
+.endif
 	.4byte 0
 
 .global lbl_80177358

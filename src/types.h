@@ -380,7 +380,8 @@ struct Ball_child
 
 struct Ball
 {
-    u8 filler0[0x4];
+    u8 filler0[0x3];
+    s8 unk3;
     Vec unk4;
     u8 filler10[0x1C - 0x10];
     Vec unk1C;
@@ -468,4 +469,16 @@ struct Struct80206E48
     s16 unk22;
     Mtx unk24;
     Mtx unk54;
+};
+
+struct Struct8009F7F0  // replay info?
+{
+    u16 flags;  // (1 << 5) = expert, (1 << 6) = master
+    u8 unk2;
+    u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
+    u8 floorNum;
+    u8 unk5;
+    u8 filler6[0x10-6];
+    u32 unk10;
+    u8 filler14[4];
 };
