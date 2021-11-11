@@ -2736,19 +2736,19 @@ void func_8001D708(struct Camera *camera, struct Ball *ball)
 
     if (lbl_802F1EE0 & 0xA)
         return;
-    
+
     sp1C = camera->unk0;
     sp10 = camera->unkC;
-    
+
     camera->unkC.x = ball->unk4.x;
     camera->unkC.y = ball->unk4.y + 0.5;
     camera->unkC.z = ball->unk4.z;
-    
+
     sp28.x = -decodedStageLzPtr->unk1C->unk0.x;
     sp28.y = 0.0f;
     sp28.z = -decodedStageLzPtr->unk1C->unk0.z;
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
-    
+
     sp28.x += ball->unk4.x;
     sp28.z += ball->unk4.z;
     sp28.x += (camera->unk0.x - sp28.x) * 0.95;
@@ -2756,7 +2756,7 @@ void func_8001D708(struct Camera *camera, struct Ball *ball)
     sp28.x -= ball->unk4.x;
     sp28.z -= ball->unk4.z;
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
-    
+
     camera->unk0.x = sp28.x + ball->unk4.x;
     camera->unk0.y = ball->unk4.y + 2.0;
     camera->unk0.z = sp28.z + ball->unk4.z;
@@ -2791,23 +2791,129 @@ void func_8001D970(struct Camera *camera, struct Ball *ball)
     camera->unk1E = 42;
 }
 
-/*
+Vec lbl_80177264[] =
+{
+    {0,  2.3,  -4},
+    {0,  0.4,  -4},
+    {0,  0.4,  -3},
+    {0,  0.4,   0},
+    {0,    4,  -2},
+    {0, -150, 580},
+};
+
+struct Struct802F1C28
+{
+    u8 filler0[0x30];
+    float unk30;
+    float unk34;
+    float unk38;
+};
+
+extern struct Struct802F1C28 *lbl_802F1C28;
+
 void camera_sub_42(struct Camera *camera, struct Ball *ball)
 {
+    Vec sp1C;
+    Vec sp10;
+    struct Struct802F1C28 *r5 = lbl_802F1C28;
+
     if ((lbl_802F1EE0 & 0xA) && camera->unk1E == 42)
         return;
-    
+
     if (camera->unk50 < 0x1E0)
     {
-        float f6 = camera->unk50 / 480.0f;
-        f6 = 3.0 + -2 * f6 + f6 * f6;
-        
+        Vec *r3 = &lbl_80177264[0];
+        Vec *r4 = &lbl_80177264[1];
+        float val = camera->unk50 / 480.0f;
+
+        val = (3.0 + -2.0 * val) * (val * val);
+
+        camera->unk0.x = r3->x * (1.0 - val) + r4->x * val;
+        camera->unk0.y = r3->y * (1.0 - val) + r4->y * val;
+        camera->unk0.z = r3->z * (1.0 - val) + r4->z * val;
+
+        camera->unkC.x = r5->unk30;
+        camera->unkC.y = r5->unk34 + 0.4 + camera->unk0.y - 0.4;
+        camera->unkC.z = r5->unk38;
     }
-    //lbl_8001DAE8
+    else if (camera->unk50 < 0x258)
+    {
+        camera->unk0.x = lbl_80177264[1].x;
+        camera->unk0.y = lbl_80177264[1].y;
+        camera->unk0.z = lbl_80177264[1].z;
+
+        camera->unkC.x = r5->unk30;
+        camera->unkC.y = r5->unk34 + 0.4;
+        camera->unkC.z = r5->unk38;
+    }
+    else if (camera->unk50 < 0x474)
+    {
+
+        Vec *r4 = &lbl_80177264[2];
+        float val = (float)(camera->unk50 - 600) / 540.0f;
+        int r30;
+
+        val = (3.0 + -2.0 * val) * (val * val);
+
+        camera->unk0.x = r4->x;
+        camera->unk0.y = r4->y;
+        camera->unk0.z = r4->z;
+
+        camera->unkC.x = r5->unk30;
+        camera->unkC.y = r5->unk34 + 0.4;
+        camera->unkC.z = r5->unk38;
+
+        sp1C.x = camera->unk0.x - camera->unkC.x;
+        sp1C.y = camera->unk0.y - camera->unkC.y;
+        sp1C.z = camera->unk0.z - camera->unkC.z;
+
+        r30 = -8192.0 * (1.0 - val) + 8192.0f * val;
+        mathutil_mtxA_from_translate(&camera->unkC);
+        mathutil_mtxA_rotate_y(r30);
+        mathutil_mtxA_tf_point(&sp1C, &camera->unk0);
+    }
+    else if (camera->unk50 < 0x4B0)
+    {
+        camera->unk0.x = lbl_80177264[4].x;
+        camera->unk0.y = lbl_80177264[4].y;
+        camera->unk0.z = lbl_80177264[4].z;
+
+        camera->unkC.x = r5->unk30;
+        camera->unkC.y = r5->unk34 + 0.4;
+        camera->unkC.z = r5->unk38;
+    }
+    else
+    {
+        float val = (float)(camera->unk50 - 1200) / 165.0f;
+
+        val = CLAMP(val, 0.0, 1.0);
+        val = -2.0 * val * val * val + 3.0 * val * val;
+
+        camera->unk0.x = lbl_80177264[4].x;
+        camera->unk0.y = lbl_80177264[4].y;
+        camera->unk0.z = lbl_80177264[4].z - val * 2.6;
+
+        camera->unkC.x = r5->unk30;
+        camera->unkC.y = 0.4 + val * 15.0;
+        camera->unkC.z = r5->unk38;
+    }
+
+    sp10.x = camera->unkC.x - camera->unk0.x;
+    sp10.y = camera->unkC.y - camera->unk0.y;
+    sp10.z = camera->unkC.z - camera->unk0.z;
+
+    camera->unk1A = mathutil_atan2(sp10.x, sp10.z) - 32768;
+    camera->unk18 = mathutil_atan2(sp10.y, mathutil_sqrt(sum_of_sq(sp10.x, sp10.z)));
+    camera->unk1C = 0;
+
+    if (lbl_801F3D88.unk0 & (1<<(31-0x17)))
+        camera->unk50 += 2;
+    else
+        camera->unk50 += 1;
 }
-*/
 
 /*
+const double lbl_802F2C30 = 3.0;
 const double lbl_802F2C48 = 2.0;
 const float lbl_802F2C50 = -0.3;
 const double lbl_802F2C60 = 1.0;
@@ -2859,9 +2965,17 @@ const double lbl_802F2E60 = 0.95;
 const float lbl_802F2E68 = 4.0f;
 const float lbl_802F2E6C = 0.2f;
 */
+/*
 const float lbl_802F2E70 = 480.0f;
 const float lbl_802F2E74 = 540.0f;
 const double lbl_802F2E78 = -8192.0;
 const float lbl_802F2E80 = 8192.0f;
 const float lbl_802F2E84 = 165.0f;
 const double lbl_802F2E88 = 2.6;
+const double lbl_802F2E90 = 15.0;
+*/
+const float lbl_802F2E98 = 240.0f;
+const double lbl_802F2EA0 = 60.0;
+const double lbl_802F2EA8 = 240.0;
+const double lbl_802F2EB0 = 180.0;
+const double lbl_802F2EB8 = 1.5;

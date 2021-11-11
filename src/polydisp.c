@@ -388,9 +388,6 @@ void func_80030BA8(float);
 
 #pragma fp_contract off
 
-#define CLAMP(val, min, max) \
-    ((val) < (min) ? (min) : (val) > (max) ? (max) : (val))
-
 void func_8000BCA4(void)
 {
     Vec sp48;
