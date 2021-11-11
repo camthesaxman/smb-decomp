@@ -8143,7 +8143,7 @@ lbl_8001EFC4:
 /* 8001EFDC 0001AEFC  38 21 00 B0 */	addi r1, r1, 0xb0
 /* 8001EFE0 0001AF00  4E 80 00 20 */	blr
 .endif
-
+.if 0
 .global camera_sub_49
 camera_sub_49:
 /* 8001EFE4 0001AF04  7C 08 02 A6 */	mflr r0
@@ -8239,7 +8239,7 @@ lbl_8001F04C:
 /* 8001F148 0001B068  C0 5F 01 38 */	lfs f2, 0x138(r31)
 /* 8001F14C 0001B06C  EC 01 00 28 */	fsubs f0, f1, f0
 /* 8001F150 0001B070  C8 62 84 F8 */	lfd f3, lbl_802F2CF8-_SDA2_BASE_(r2)  ;# 0.01
-/* 8001F154 0001B074  EC 00 10 28 */	fsubs f0, f0, f2
+/* 8001F154 0001B074  EC 00 10 28 */	fsubs f0, f0, f2  ;# sp28.x - unk12c.x - unk138.x
 /* 8001F158 0001B078  FC 03 00 32 */	fmul f0, f3, f0
 /* 8001F15C 0001B07C  FC 02 00 2A */	fadd f0, f2, f0
 /* 8001F160 0001B080  FC 00 00 18 */	frsp f0, f0
@@ -8249,7 +8249,7 @@ lbl_8001F04C:
 /* 8001F170 0001B090  C0 1F 01 38 */	lfs f0, 0x138(r31)
 /* 8001F174 0001B094  EC 22 08 28 */	fsubs f1, f2, f1
 /* 8001F178 0001B098  C0 5F 01 3C */	lfs f2, 0x13c(r31)
-/* 8001F17C 0001B09C  EC 01 00 28 */	fsubs f0, f1, f0
+/* 8001F17C 0001B09C  EC 01 00 28 */	fsubs f0, f1, f0  ;# sp28.y - unk12c.y - 
 /* 8001F180 0001B0A0  FC 03 00 32 */	fmul f0, f3, f0
 /* 8001F184 0001B0A4  FC 02 00 2A */	fadd f0, f2, f0
 /* 8001F188 0001B0A8  FC 00 00 18 */	frsp f0, f0
@@ -8416,7 +8416,7 @@ lbl_8001F318:
 /* 8001F3FC 0001B31C  C0 1F 00 0C */	lfs f0, 0xc(r31)
 /* 8001F400 0001B320  C0 5F 00 A0 */	lfs f2, 0xa0(r31)
 /* 8001F404 0001B324  EC 01 00 28 */	fsubs f0, f1, f0
-/* 8001F408 0001B328  EC 00 10 28 */	fsubs f0, f0, f2
+/* 8001F408 0001B328  EC 00 10 28 */	fsubs f0, f0, f2  ;# sp28.x - unkC.x - unkA0.x
 /* 8001F40C 0001B32C  FC 03 00 32 */	fmul f0, f3, f0
 /* 8001F410 0001B330  FC 02 00 2A */	fadd f0, f2, f0
 /* 8001F414 0001B334  FC 00 00 18 */	frsp f0, f0
@@ -8506,6 +8506,8 @@ func_8001F524:
 /* 8001F554 0001B474  38 21 00 18 */	addi r1, r1, 0x18
 /* 8001F558 0001B478  7C 08 03 A6 */	mtlr r0
 /* 8001F55C 0001B47C  4E 80 00 20 */	blr
+.endif
+.if 0
 .global func_8001F560
 func_8001F560:
 /* 8001F560 0001B480  7C 08 02 A6 */	mflr r0
@@ -8618,7 +8620,7 @@ func_8001F698:
 /* 8001F700 0001B620  C0 22 86 F0 */	lfs f1, lbl_802F2EF0-_SDA2_BASE_(r2)
 /* 8001F704 0001B624  EC 80 20 28 */	fsubs f4, f0, f4
 /* 8001F708 0001B628  C0 1F 00 04 */	lfs f0, 4(r31)
-/* 8001F70C 0001B62C  EC 64 18 24 */	fdivs f3, f4, f3
+/* 8001F70C 0001B62C  EC 64 18 24 */	fdivs f3, f4, f3  ;# rand / 32767
 /* 8001F710 0001B630  EC 43 10 28 */	fsubs f2, f3, f2
 /* 8001F714 0001B634  EC 21 00 B2 */	fmuls f1, f1, f2
 /* 8001F718 0001B638  EC 00 08 2A */	fadds f0, f0, f1
@@ -8706,6 +8708,7 @@ lbl_8001F808:
 /* 8001F858 0001B778  38 21 00 48 */	addi r1, r1, 0x48
 /* 8001F85C 0001B77C  7C 08 03 A6 */	mtlr r0
 /* 8001F860 0001B780  4E 80 00 20 */	blr
+.endif
 .global func_8001F864
 func_8001F864:
 /* 8001F864 0001B784  7C 08 02 A6 */	mflr r0
@@ -12902,7 +12905,6 @@ lbl_802F2EF0:
 lbl_802F2EF4:
 	# ROM: 0x1EC914
 	.float 0.40000000596046448  ;# 0x3E, 0xCC, 0xCC, 0xCD
-.endif
 
 .global lbl_802F2EF8
 lbl_802F2EF8:
@@ -12917,52 +12919,50 @@ lbl_802F2EFC:
 .global lbl_802F2F00
 lbl_802F2F00:
 	# ROM: 0x1EC920
-	.byte 0x45, 0x80, 0x00, 0x00
-	.4byte 0
+	.float 4096  ;# 0x45, 0x80, 0x00, 0x00
+	.float 0  ;# 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2F08
 lbl_802F2F08:
 	# ROM: 0x1EC928
-	.byte 0x40, 0x0C, 0x00, 0x00
-	.4byte 0
+	.double 3.5  ;# 0x40, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2F10
 lbl_802F2F10:
 	# ROM: 0x1EC930
-	.byte 0x3F, 0x8C, 0x6A, 0x7F
+	.float 1.0970000028610229  ;# 0x3F, 0x8C, 0x6A, 0x7F
 
 .global lbl_802F2F14
 lbl_802F2F14:
 	# ROM: 0x1EC934
-	.byte 0x40, 0x32, 0xC0, 0x83
+	.float 2.7929999828338623  ;# 0x40, 0x32, 0xC0, 0x83
 
 .global lbl_802F2F18
 lbl_802F2F18:
 	# ROM: 0x1EC938
-	.byte 0x3F, 0xC1, 0x47, 0xAE
+	.float 1.5099999904632568  ;# 0x3F, 0xC1, 0x47, 0xAE
 
 .global lbl_802F2F1C
 lbl_802F2F1C:
 	# ROM: 0x1EC93C
-	.byte 0xBF, 0x60, 0x41, 0x89
+	.float -0.87599998712539673  ;# 0xBF, 0x60, 0x41, 0x89
 
 .global lbl_802F2F20
 lbl_802F2F20:
 	# ROM: 0x1EC940
-	.byte 0x41, 0xF0, 0x00, 0x00
-	.4byte 0
+	.float 30  ;# 0x41, 0xF0, 0x00, 0x00
+	.float 0  ;# 0x00, 0x00, 0x00, 0x00
 
 .global lbl_802F2F28
 lbl_802F2F28:
 	# ROM: 0x1EC948
-	.byte 0x40, 0x02, 0x66, 0x66
-	.byte 0x66, 0x66, 0x66, 0x66
+	.double 2.2999999999999998  ;# 0x40, 0x02, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66
 
 .global lbl_802F2F30
 lbl_802F2F30:
 	# ROM: 0x1EC950
-	.byte 0x3F, 0xF3, 0x33, 0x33
-	.byte 0x33, 0x33, 0x33, 0x33
+	.double 1.2  ;# 0x3F, 0xF3, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33
+.endif
 
 .global lbl_802F2F38
 lbl_802F2F38:
@@ -13152,7 +13152,6 @@ lbl_80110230:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-.endif
 
 .global lbl_8011023C
 lbl_8011023C:
@@ -13160,6 +13159,7 @@ lbl_8011023C:
 	.4byte 0
 	.4byte 0
 	.byte 0xBF, 0x80, 0x00, 0x00
+.endif
 
 .global lbl_80110248
 lbl_80110248:

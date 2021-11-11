@@ -378,7 +378,7 @@ typedef void (*Func802F20EC)();
 struct Ball_child
 {
     u8 filler0[0x10];
-    u32 unk10;
+    s32 unk10;
     u32 unk14;
     u8 filler18[0x30-0x18];
     Vec unk30;
@@ -391,7 +391,9 @@ struct Ball
     Vec unk4;
     u8 filler10[0x1C - 0x10];
     Vec unk1C;
-    u8 filler28[0x2E - 0x28];
+    u8 filler28[0x2A - 0x28];
+    s16 unk2A;
+    u8 filler2C[2];
     s8 unk2E;
     u8 filler2F[0x68-0x2F];
     float unk68;
