@@ -404,7 +404,10 @@ struct Ball
     u32 unk94;
     u8 filler98[0xFC-0x98];
     struct Ball_child *unkFC;
-    u8 filler100[0x1A4-0x100];
+    u8 filler100[0x14E - 0x100];
+    s16 unk14E;
+    Vec unk150;
+    u8 filler15C[0x1A4-0x15C];
 };
 
 struct BackgroundInfo  // size = 0xA8

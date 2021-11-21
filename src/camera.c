@@ -3461,6 +3461,257 @@ void func_8001F698(struct Camera *camera, struct Ball *ball)
     camera->unk1E = 0x39;
 }
 
+void func_8001F864(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp1C = {0.0f, 0.57f, -1.6f};
+    Vec sp10 = {0.0f, 0.0f, -1.0f};
+    float t;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    if (camera->unk50 > 0)
+        camera->unk50--;
+
+    t = (float)camera->unk50 / (float)camera->unk52;
+    t = (3.0 + -2.0 * t) * (t * t);
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_rotate_y(ball->unk2A);
+    mathutil_mtxA_tf_point(&sp1C, &sp1C);
+
+    camera->unk0.x += (sp1C.x - camera->unk0.x) * 0.05;
+    camera->unk0.y += (sp1C.y - camera->unk0.y) * 0.05;
+    camera->unk0.z += (sp1C.z - camera->unk0.z) * 0.05;
+
+    camera->unk1A = camera->unk6C + (camera->unk8C - camera->unk6C) * (1.0 - t);
+    camera->unk18 = camera->unk68 + (s16)(camera->unk88 - camera->unk68) * (1.0 - t);
+    camera->unk1C = 0;
+
+    mathutil_mtxA_from_translate(&camera->unk0);
+    mathutil_mtxA_rotate_y(camera->unk1A);
+    mathutil_mtxA_rotate_x(camera->unk18);
+    mathutil_mtxA_tf_point(&sp10, &camera->unkC);
+}
+
+void func_8001FAA4(struct Camera *camera, struct Ball *ball)
+{
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    camera->unk0.y = 1.097f;
+    camera->unk0.z = 2.793f;
+
+    camera->unkC.x = 0.0f;
+    camera->unkC.y = 1.51f;
+    camera->unkC.z = -0.876f;
+}
+
+void func_8001FADC(struct Camera *camera, struct Ball *ball)
+{
+    camera->unk0.x = 0.0f;
+    camera->unk0.y = 1.0f;
+    camera->unk0.z = 0.0f;
+
+    camera->unkC.x = camera->unkC.y = camera->unkC.z = 0.0f;
+
+    camera->unk1A = 0;
+    camera->unk18 = -16384;
+    camera->unk1C = 0;
+}
+
+void func_8001FB14(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp24;
+    Vec sp18;
+    s16 sp14;
+    s16 sp12;
+    s16 sp10;
+
+    func_8001FF2C(camera, ball, &sp24, &sp18, &sp14, &sp12, &sp10, 0);
+
+    camera->unk0 = sp24;
+    camera->unkC = sp18;
+    camera->unk18 = sp14;
+    camera->unk1A = sp12;
+    camera->unk1C = sp10;
+    camera->unk1E = 0x45;
+}
+
+void func_8001FBA8(struct Camera *camera, struct Ball *ball)
+{
+    Vec sp28;
+    Vec sp1C;
+    s16 sp18;
+    s16 sp16;
+    s16 sp14;
+    struct Camera *cam0 = &cameraInfo[0];
+    int bval = (cam0->unk1E == 10 || cam0->unk1E == 11);
+
+    if (bval)
+    {
+        float t;
+
+        func_80020334(camera, ball, &sp28, &sp1C, &sp18, &sp16, &sp14);
+        func_8001FF2C(camera, ball, &camera->unk0, &camera->unkC, &camera->unk18, &camera->unk1A, &camera->unk1C, 0);
+
+        t = (float)cam0->unk50 / (float)cam0->unk52;
+        t = (3.0 + -2.0 * t) * (t * t);
+
+        camera->unk0.x = camera->unk0.x * (1.0 - t) + sp28.x * t;
+        camera->unk0.y = camera->unk0.y * (1.0 - t) + sp28.y * t;
+        camera->unk0.z = camera->unk0.z * (1.0 - t) + sp28.z * t;
+
+        camera->unkC.x = camera->unkC.x * (1.0 - t) + sp1C.x * t;
+        camera->unkC.y = camera->unkC.y * (1.0 - t) + sp1C.y * t;
+        camera->unkC.z = camera->unkC.z * (1.0 - t) + sp1C.z * t;
+
+        camera->unk18 = sp18 + (s16)(camera->unk18 - sp18) * (1.0 - t);
+        camera->unk1A = sp16 + (s16)(camera->unk1A - sp16) * (1.0 - t);
+        camera->unk1C = sp14 + (s16)(camera->unk1C - sp14) * (1.0 - t);
+    }
+    else
+    {
+        func_8001FF2C(camera, ball, &sp28, &sp1C, &camera->unk18, &camera->unk1A, &camera->unk1C, 0);
+
+        sp28.x -= camera->unk0.x;
+        sp28.y -= camera->unk0.y;
+        sp28.z -= camera->unk0.z;
+
+        camera->unk0.x += sp28.x * 0.2;
+        camera->unk0.y += sp28.y * 0.2;
+        camera->unk0.z += sp28.z * 0.2;
+
+        sp1C.y -= camera->unkC.y;
+        camera->unkC.x = camera->unk0.x;
+        camera->unkC.y += sp1C.y * 0.2;
+        camera->unkC.z = camera->unk0.z;
+    }
+}
+
+// Not sure if this is supposed to be asm or not
+static inline void get_mtxA_translate(Vec *v)
+{
+#ifdef __MWERKS__
+    register float *mtxA;
+    register float *_x = &v->x;
+    register float *_y = &v->y;
+    register float *_z = &v->z;
+    register float x, y, z;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x0C(mtxA)  // mtxA[0][3]
+        lfs y, 0x1C(mtxA)  // mtxA[1][3]
+        lfs z, 0x2C(mtxA)  // mtxA[2][3]
+        stfs x, 0(_x)
+        stfs y, 0(_y)
+        stfs z, 0(_z)
+    }
+#else
+    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+#endif
+}
+
+void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *lookAt, s16 *xrot, s16 *yrot, s16 *zrot, int h)
+{
+    Vec sp4C[3];
+    Vec sp40;
+    Vec sp34;
+    Vec sp28;
+    int i;
+    struct Ball *b;
+    float f31;
+
+    for (i = 0, b = &lbl_80205E60[0]; i < 3; i++, b++)
+    {
+        if (b->unk94 & 0x1800)
+            sp28 = b->unk150;
+        else
+        {
+            float f6 = b->unk14E / 30.0f;
+
+            sp28.x = b->unk4.x * (1.0 - f6) + b->unk150.x * f6;
+            sp28.y = b->unk4.y * (1.0 - f6) + b->unk150.y * f6;
+            sp28.z = b->unk4.z * (1.0 - f6) + b->unk150.z * f6;
+        }
+        if (i == 0)
+        {
+            sp34.x = sp28.x;
+            sp40.x = sp28.x;
+            sp34.y = sp28.y;
+            sp40.y = sp28.y;
+            sp34.z = sp28.z;
+            sp40.z = sp28.z;
+        }
+        else
+        {
+            if (sp28.x > sp40.x)
+                sp40.x = sp28.x;
+            if (sp28.y > sp40.y)
+                sp40.y = sp28.y;
+            if (sp28.z > sp40.z)
+                sp40.z = sp28.z;
+
+            if (sp28.x < sp34.x)
+                sp34.x = sp28.x;
+            if (sp28.y < sp34.y)
+                sp34.y = sp28.y;
+            if (sp28.z < sp34.z)
+                sp34.z = sp28.z;
+        }
+        sp4C[i] = sp28;
+    }
+
+    sp28.x = (sp40.x + sp34.x) * 0.5;
+    sp28.y = sp40.y;
+    sp28.z = (sp40.z + sp34.z) * 0.5;
+
+    if (h == 1)
+    {
+        sp28.x -= camera->unkC.x;
+        sp28.y -= camera->unkC.y;
+        sp28.z -= camera->unkC.z;
+
+        lookAt->x = sp28.x * 0.2 + camera->unkC.x;
+        lookAt->y = sp28.y * 0.2 + camera->unkC.y;
+        lookAt->z = sp28.z * 0.2 + camera->unkC.z;
+    }
+    else
+    {
+        lookAt->x = sp28.x;
+        lookAt->y = sp28.y;
+        lookAt->z = sp28.z;
+    }
+
+    f31 = 0.0f;
+    for (i = 0, b = &lbl_80205E60[0]; i < 3; i++, b++)  // b not used here. needed to match
+    {
+        float var1;
+
+        sp28.x = lookAt->x - sp4C[i].x;
+        sp28.z = lookAt->z - sp4C[i].z;
+        var1 = sum_of_sq(sp28.x, sp28.z);
+        if (var1 > f31)
+            f31 = var1;
+    }
+    f31 = mathutil_sqrt(f31) * 2.3;
+    if (f31 < 15.0)
+        f31 = 15.0f;
+
+    mathutil_mtxA_from_translate(lookAt);
+    mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE + 0x4000);
+    mathutil_mtxA_rotate_x(-16384);
+    mathutil_mtxA_translate_xyz(0.0f, 0.0f, f31);
+
+    get_mtxA_translate(eye);
+
+    mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
+}
+
 /*
 const double lbl_802F2C30 = 0.0;
 const double lbl_802F2C48 = 2.0;
@@ -3533,20 +3784,16 @@ const double lbl_802F2EE0 = 20.0;
 const float lbl_802F2EE8 = 20.0f;
 const float lbl_802F2EEC = 9.9999997473787516e-05f;
 const float lbl_802F2EF0 = 15.0f;
-*/
-/*
 const float lbl_802F2EF4 = 0.4f;
 const float lbl_802F2EF8 = 0.96f;
 const float lbl_802F2EFC = 0.92f;
-*/
-/*
 const float lbl_802F2F00 = 4096.0f;
 const double lbl_802F2F08 = 3.5;
-*/
 const float lbl_802F2F10 = 1.097f;
 const float lbl_802F2F14 = 2.793f;
 const float lbl_802F2F18 = 1.51f;
 const float lbl_802F2F1C = -0.876f;
 const float lbl_802F2F20 = 30.0f;
 const double lbl_802F2F28 = 2.3;
+*/
 const double lbl_802F2F30 = 1.2;

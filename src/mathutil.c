@@ -6,18 +6,6 @@
 
 #define PI 3.14159265358979323846f
 
-#define LC_CACHE_BASE 0xE0000000
-
-// See struct MathutilData
-#define OFFSET_MTX_A          0x00
-#define OFFSET_MTX_B          0x30
-#define OFFSET_MTX_STACK_PTR  0x94
-#define OFFSET_CONST_ZERO     0x198
-#define OFFSET_CONST_ONE      0x19C
-#define OFFSET_CONST_ONE_HALF 0x1A0
-#define OFFSET_UNK1AC         0x1AC
-#define OFFSET_UNK1AE         0x1AE
-
 // GQR registers used for conversion
 #define GQR_F32 0
 #define GQR_U8  2

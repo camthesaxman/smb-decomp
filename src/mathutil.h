@@ -17,6 +17,18 @@ struct MathutilData
     u8 unk1AF;
 };
 
+// See struct MathutilData
+#define OFFSET_MTX_A          0x00
+#define OFFSET_MTX_B          0x30
+#define OFFSET_MTX_STACK_PTR  0x94
+#define OFFSET_CONST_ZERO     0x198
+#define OFFSET_CONST_ONE      0x19C
+#define OFFSET_CONST_ONE_HALF 0x1A0
+#define OFFSET_UNK1AC         0x1AC
+#define OFFSET_UNK1AE         0x1AE
+
+#define LC_CACHE_BASE 0xE0000000
+
 void mathutil_init(void);
 float func_8000716C(double a);
 float mathutil_sqrt(double n);
