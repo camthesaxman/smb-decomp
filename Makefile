@@ -34,7 +34,7 @@ SYSTEM_INCLUDE_DIRS := include
 RUNTIME_INCLUDE_DIRS := src/lib/Runtime.PPCEABI.H/Runtime/Inc
 
 ASFLAGS      := -mgekko -I asm
-CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -fp fmadd -fp_contract on -Cpp_exceptions off -enum int
+CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int
 CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 LDFLAGS      := -fp hard -nodefaults
 
@@ -64,7 +64,7 @@ SOURCE_FILES := \
 	src/polydisp.c \
 	asm/polydisp.s \
 	src/camera.c \
-	asm/camera.s \
+	asm/code_0.s \
 	asm/code_1.s \
 	src/trig_tables.c \
 	src/input.c \
@@ -311,9 +311,9 @@ clean:
 	find . -name '*.dump' -exec rm {} +
 
 # File-specific compiler flags
-src/camera.o: CFLAGS += -fp_contract off
-src/mathutil.o: CFLAGS += -inline auto -fp_contract off
-src/sprite.o:   CFLAGS += -inline auto -fp_contract off
+src/camera.o: CFLAGS += -inline auto
+src/mathutil.o: CFLAGS += -inline auto
+src/sprite.o:   CFLAGS += -inline auto
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 src/memcard.o: CFLAGS += -inline auto

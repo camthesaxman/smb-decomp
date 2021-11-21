@@ -1329,7 +1329,7 @@ entry mathutil_mtxA_tf_vec
     ps_merge00 f3, f3, f0
     b @do_tf
 
-// void mathutil_mtxA_tf_point_xyz(Vec *vec)
+// void mathutil_mtxA_tf_point_xyz(Vec *vec, float x, float y, float z)
 entry mathutil_mtxA_tf_point_xyz
     lis r5, LC_CACHE_BASE@ha
     ps_merge00 f1, f1, f2
@@ -1338,7 +1338,7 @@ entry mathutil_mtxA_tf_point_xyz
     ps_merge00 f3, f3, f0
     b @do_tf
 
-// void mathutil_mtxA_tf_vec_xyz(Vec *vec)
+// void mathutil_mtxA_tf_vec_xyz(Vec *vec, float x, float y, float z)
 entry mathutil_mtxA_tf_vec_xyz
     lis r5, LC_CACHE_BASE@ha
     ps_merge00 f1, f1, f2

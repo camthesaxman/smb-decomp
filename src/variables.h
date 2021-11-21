@@ -1240,7 +1240,7 @@ extern u32 lbl_802F1BC8;
 extern s16 lbl_802F1C30;
 // extern ? lbl_802F1C32;
 extern s32 lbl_802F1C34;
-// extern ? minigameRelCameraCallback;
+extern void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
 extern struct Camera *currentCameraStructPtr;
 extern s32 lbl_802F1C40;
 // extern ? lbl_802F1C48;
