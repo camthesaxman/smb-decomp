@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "camera.h"
 #include "game.h"
 #include "mathutil.h"
 
@@ -552,20 +553,6 @@ void func_8000C144(struct Struct8000C144 *a)
     }
 }
 
-static inline float sum_of_sq(register float a, register float b)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-    }
-    return a;
-#else
-    return a * a + b * b;
-#endif
-}
-
 void func_8000C388(void)
 {
     struct Struct8000C144 sp14;
@@ -587,12 +574,12 @@ void func_8000C388(void)
         sp8.y = 1.0f;
         sp8.z = 0.0f;
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(-currentCameraStructPtr->unk1A);
+        mathutil_mtxA_rotate_y(-currentCameraStructPtr->rotY);
         mathutil_mtxA_rotate_z(-lbl_80206BF0[0].unk2);
         mathutil_mtxA_rotate_x(-lbl_80206BF0[0].unk0);
         mathutil_mtxA_tf_vec(&sp8, &sp8);
         r30 = -mathutil_atan2(sp8.z, sp8.y);
-        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(sum_of_sq(sp8.z, sp8.y)));
+        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq(sp8.z, sp8.y)));
         r30 *= 0.2;
         v3 *= 0.2;
         lbl_801EED3C.unk0 = lbl_801EED3C.unk0 + 0.2 * ((float)r30 - (float)lbl_801EED3C.unk0);
@@ -607,13 +594,13 @@ void func_8000C5A4(void)
     struct Ball *oldBall = currentBallStructPtr;
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.unk48 > 0.0f && cameraInfo[i].sub28.unk4C > 0.0f)
+        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
         {
             if (spritePoolInfo.unkC[i] == 0
              || spritePoolInfo.unkC[i] == 4
-             || (cameraInfo[i].unk24 & (1 << (31-0x19))))
+             || (cameraInfo[i].flags & (1 << (31-0x19))))
             {
-                if (!(cameraInfo[i].unk24 & (1 << (31-0x18))))
+                if (!(cameraInfo[i].flags & (1 << (31-0x18))))
                     continue;
             }
             currentBallStructPtr = &lbl_80205E60[i];
@@ -670,8 +657,8 @@ void func_8000C7A4(void)
     unk->unk10 |= (1 << 3);
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.unk48 > 0.0f && cameraInfo[i].sub28.unk4C > 0.0f
-         && (cameraInfo[i].unk24 & (1 << (31-0x19))))
+        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f
+         && (cameraInfo[i].flags & (1 << (31-0x19))))
         {
             currentBallStructPtr = &lbl_80205E60[i];
             func_80018648(i);

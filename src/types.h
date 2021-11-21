@@ -293,30 +293,31 @@ struct UnkStruct8005562C  // decodedStageLzPtr->unk6C
 
 struct Camera_sub
 {
+    // Offsets here are relative to the enclosing Camera struct.
     float unk28;
     float unk2C;
-    s16 unk30;  // fov
+    /*0x30*/ s16 fov;
     s16 unk32;
     float unk34;
     float unk38;
     float unk3C;
-    float unk40;  // left
-    float unk44;  // top
-    float unk48;  // width
-    float unk4C;  // height
+    /*0x40*/ float left;  // screen position (0.0-1.0) of viewport left edge
+    /*0x44*/ float top;  // screen position (0.0-1.0) of viewport top edge
+    /*0x48*/ float width;  // width (0.0-1.0) of viewport as a portion of screen width
+    /*0x4C*/ float height;  // height (0.0-1.0) of viewport as a portion of screen height
 };
 
 struct Camera
 {
-    Vec unk0;  // eye
-    Vec unkC;  // lookAt
-    s16 unk18;  // pitch
-    s16 unk1A;  // yaw
-    s16 unk1C;  // roll
-    s8 unk1E;  // state
+    /*0x00*/ Vec eye;  // position of the eye of the camera
+    /*0x0C*/ Vec lookAt;  // position of the point that the camera is facing
+    /*0x18*/ s16 rotX;  // rotation about X axis (pitch)
+    /*0x1A*/ s16 rotY;  // rotation about Y axis (yaw)
+    /*0x1C*/ s16 rotZ;  // rotation about Z axis (roll)
+    /*0x1E*/ s8 state;
     u8 unk1F;
     float unk20;
-    s16 unk24;  // flags
+    /*0x24*/ s16 flags;
     s8 unk26;
     u8 filler27[0x28-0x27];
     struct Camera_sub sub28;  // viewport info?
@@ -363,10 +364,7 @@ struct Camera
     u32 unk204;
     u8 unk208;
     u8 filler20C[0x284-0x20C];
-    
 };  // size=0x284
-
-//STATIC_ASSERT(offsetof(struct Camera,unk144)==0x144, no);
 
 struct Sprite;
 struct FontParams;

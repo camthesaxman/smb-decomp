@@ -127,7 +127,7 @@ extern struct Event eventInfo[];
 // extern ? lbl_80175614;
 // extern ? lbl_801756BC;
 // extern ? lbl_801761F0;
-// extern ? lbl_80176200;
+// extern ? cameraFuncs;
 // extern ? lbl_8017632C;
 // extern ? lbl_80177214;
 // extern ? lbl_801772AC;

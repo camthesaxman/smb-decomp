@@ -1086,7 +1086,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             int modelId;
             mathutil_mtxA_from_mtx(mtx);
             mathutil_mtxA_translate(&r22->unk0);
-            mathutil_mtxA_rotate_y(currentCameraStructPtr->unk1A);
+            mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
             r4 = (lbl_802F1B34 + r22->unkC * 4);

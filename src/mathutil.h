@@ -143,3 +143,65 @@ static inline s32 mathutil_floor_to_int(register float n)
     return (s32)n;
 #endif
 }
+
+static inline float mathutil_sum_of_sq(register float a, register float b)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+    }
+    return a;
+#else
+    return a * a + b * b;
+#endif
+}
+
+static inline float mathutil_vec_mag(register Vec *v)
+{
+    register float x, y, z;
+#ifdef __MWERKS__
+    asm
+    {
+        lfs x, v->x
+        lfs y, v->y
+        lfs z, v->z
+        fmuls x, x, x
+        fmadds x, y, y, x
+        fmadds x, z, z, x
+    }
+    return mathutil_sqrt(x);
+#else
+    return mathutil_sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+#endif
+}
+
+static inline float mathutil_vec_distance(register Vec *a, register Vec *b)
+{
+#ifdef __MWERKS__
+    register float x1, y1, z1, x2, y2, z2;
+    register float result;
+    asm
+    {
+        lfs x1, a->x
+        lfs x2, b->x
+        lfs y1, a->y
+        lfs y2, b->y
+        lfs z1, a->z
+        lfs z2, b->z
+        fsubs x1, x1, x2
+        fsubs y1, y1, y2
+        fsubs z1, z1, z2
+        fmuls result, x1, x1
+        fmadds result, y1, y1, result
+        fmadds result, z1, z1, result
+    }
+    return mathutil_sqrt(result);
+#else
+    float result = (a->x - b->x) * (a->x - b->x)
+                 + (a->y - b->y) * (a->y - b->y)
+                 + (a->z - b->z) * (a->z - b->z);
+    return mathutil_sqrt(result);
+#endif
+}
