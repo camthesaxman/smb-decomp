@@ -648,7 +648,7 @@ struct Struct802F1B04
 
 extern struct Struct802F1B04 *lbl_802F1B04;
 
-void **lbl_801B8794[] = {(void **)&lbl_802F1B00, &lbl_802F1B04, NULL};
+void **lbl_801B8794[] = {(void **)&lbl_802F1B00, (void **)&lbl_802F1B04, NULL};
 
 struct Struct80044E18
 {
