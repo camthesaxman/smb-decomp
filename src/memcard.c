@@ -3224,7 +3224,6 @@ void ev_memcard_dest(void)
 }
 
 #pragma force_active on
-#pragma fp_contract off
 
 struct
 {

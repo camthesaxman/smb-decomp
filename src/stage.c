@@ -83,8 +83,6 @@ void ev_stage_init(void)
     }
 }
 
-#pragma fp_contract off
-
 void ev_stage_main(void)
 {
     struct Struct80206E48 *r30;

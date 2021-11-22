@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "camera.h"
 #include "game.h"
 #include "mathutil.h"
 
@@ -746,8 +747,6 @@ extern struct
     float unk4;
     u8 filler8[1];
 } lbl_80206DEC;
-
-#pragma fp_contract off
 
 void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
 {

@@ -542,8 +542,7 @@ extern struct
 // extern ? lbl_801EED88;
 // extern ? lbl_801EEDA8;
 // extern ? lbl_801EEEC0;
-extern struct Camera cameraInfo[4];
-// extern ? lbl_801EFB94;
+
 // extern ? lbl_801EFC18;
 // extern ? lbl_801EFC54;
 // extern ? lbl_801EFC88;
@@ -1445,9 +1444,7 @@ struct DecodedStageLzPtr_child2
 
 struct DecodedStageLzPtr_child3
 {
-    float unk0;
-    float unk4;
-    float unk8;
+    Vec unk0;  // starting position for stage?
     u8 fillerC[0xE - 0xC];
     s16 unkE;
 };

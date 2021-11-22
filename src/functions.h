@@ -151,7 +151,7 @@ void func_80016EF0(void);
 // ? func_80017708();
 // ? func_80017720();
 
-// ? func_80020AB8();
+void func_80020AB8(Vec *, S16Vec *, float, float, float, float);
 // ? func_80020DB4();
 // ? func_80020EB4();
 int func_80020FD0(Vec *, float, float);

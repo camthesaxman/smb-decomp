@@ -387,8 +387,6 @@ extern struct
 
 void func_80030BA8(float);
 
-#pragma fp_contract off
-
 void func_8000BCA4(void)
 {
     Vec sp48;
