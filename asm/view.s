@@ -1750,7 +1750,7 @@ func_800A7020:
 /* 800A7028 000A2F48  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800A702C 000A2F4C  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800A7030 000A2F50  7C 7F 1B 78 */	mr r31, r3
-/* 800A7034 000A2F54  4B F7 2C A9 */	bl func_80019CDC
+/* 800A7034 000A2F54  4B F7 2C A9 */	bl get_curr_stage_fly_in_position
 /* 800A7038 000A2F58  3C 60 80 1D */	lis r3, lbl_801D5854@ha
 /* 800A703C 000A2F5C  A8 AD 9D 78 */	lha r5, currStageId@sda21(r13)
 /* 800A7040 000A2F60  38 83 58 54 */	addi r4, r3, lbl_801D5854@l

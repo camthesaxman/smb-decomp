@@ -129,7 +129,7 @@ extern struct Event eventInfo[];
 // extern ? lbl_801761F0;
 // extern ? cameraFuncs;
 // extern ? lbl_8017632C;
-// extern ? lbl_80177214;
+// extern ? stageFlyInPositions;
 // extern ? lbl_801772AC;
 // extern ? lbl_80177358;
 // extern ? lbl_8017748C;

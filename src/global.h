@@ -12,6 +12,9 @@
 // Possibly a different NULL definition caused by including dolphin.h before stddef.h
 #define NULL2 ((void *)0)
 
+#define DEGREES_TO_S16(angle) ((s16)((angle) * (65536.0f / 360.0f)))
+#define S16_TO_DEGREES(angle) ((angle) * (360.0f / 65536.0f))
+
 #include "types.h"
 #include "functions.h"
 #include "variables.h"

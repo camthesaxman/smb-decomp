@@ -4174,7 +4174,7 @@ lbl_800960E0:
 /* 8009610C 0009202C  98 83 00 08 */	stb r4, 8(r3)
 lbl_80096110:
 /* 80096110 00092030  80 6D 9A 60 */	lwz r3, lbl_802F1C40@sda21(r13)
-/* 80096114 00092034  4B F8 22 1D */	bl func_80018330
+/* 80096114 00092034  4B F8 22 1D */	bl camera_apply_viewport
 /* 80096118 00092038  80 01 00 8C */	lwz r0, 0x8c(r1)
 /* 8009611C 0009203C  CB E1 00 80 */	lfd f31, 0x80(r1)
 /* 80096120 00092040  CB C1 00 78 */	lfd f30, 0x78(r1)
@@ -5345,7 +5345,7 @@ lbl_8009726C:
 /* 80097298 000931B8  98 83 00 08 */	stb r4, 8(r3)
 lbl_8009729C:
 /* 8009729C 000931BC  80 6D 9A 60 */	lwz r3, lbl_802F1C40@sda21(r13)
-/* 800972A0 000931C0  4B F8 10 91 */	bl func_80018330
+/* 800972A0 000931C0  4B F8 10 91 */	bl camera_apply_viewport
 /* 800972A4 000931C4  80 01 00 9C */	lwz r0, 0x9c(r1)
 /* 800972A8 000931C8  CB E1 00 90 */	lfd f31, 0x90(r1)
 /* 800972AC 000931CC  CB C1 00 88 */	lfd f30, 0x88(r1)
@@ -5687,7 +5687,7 @@ func_800976FC:
 /* 80097734 00093654  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80097738 00093658  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 8009773C 0009365C  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 80097740 00093660  4B F8 0B F1 */	bl func_80018330
+/* 80097740 00093660  4B F8 0B F1 */	bl camera_apply_viewport
 /* 80097744 00093664  83 AD 9A 5C */	lwz r29, currentCameraStructPtr@sda21(r13)
 /* 80097748 00093668  38 00 00 50 */	li r0, 0x50
 /* 8009774C 0009366C  7C 09 03 A6 */	mtctr r0
@@ -5920,7 +5920,7 @@ lbl_80097814:
 /* 80097AC0 000939E0  38 7D 01 D4 */	addi r3, r29, 0x1d4
 /* 80097AC4 000939E4  4B F6 FD B5 */	bl mathutil_mtxA_to_mtx
 /* 80097AC8 000939E8  80 6D 9A 60 */	lwz r3, lbl_802F1C40@sda21(r13)
-/* 80097ACC 000939EC  4B F8 08 65 */	bl func_80018330
+/* 80097ACC 000939EC  4B F8 08 65 */	bl camera_apply_viewport
 /* 80097AD0 000939F0  A8 1D 00 30 */	lha r0, 0x30(r29)
 /* 80097AD4 000939F4  3F E0 43 30 */	lis r31, 0x4330
 /* 80097AD8 000939F8  C8 22 B0 F0 */	lfd f1, lbl_802F58F0-_SDA2_BASE_(r2)
@@ -6159,10 +6159,10 @@ lbl_80097E28:
 /* 80097E44 00093D64  3B A3 EC 20 */	addi r29, r3, modeCtrl@l
 /* 80097E48 00093D68  90 05 00 08 */	stw r0, 8(r5)
 /* 80097E4C 00093D6C  80 7D 00 2C */	lwz r3, 0x2c(r29)
-/* 80097E50 00093D70  4B F8 04 E1 */	bl func_80018330
+/* 80097E50 00093D70  4B F8 04 E1 */	bl camera_apply_viewport
 /* 80097E54 00093D74  4B F8 A6 DD */	bl func_80022530
 /* 80097E58 00093D78  80 7D 00 2C */	lwz r3, 0x2c(r29)
-/* 80097E5C 00093D7C  4B F8 04 D5 */	bl func_80018330
+/* 80097E5C 00093D7C  4B F8 04 D5 */	bl camera_apply_viewport
 lbl_80097E60:
 /* 80097E60 00093D80  80 01 03 C4 */	lwz r0, 0x3c4(r1)
 /* 80097E64 00093D84  83 E1 03 BC */	lwz r31, 0x3bc(r1)
@@ -6604,7 +6604,7 @@ func_80098484:
 /* 800984AC 000943CC  93 81 03 B0 */	stw r28, 0x3b0(r1)
 /* 800984B0 000943D0  3B 84 00 00 */	addi r28, r4, 0
 /* 800984B4 000943D4  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 800984B8 000943D8  4B F7 FE 79 */	bl func_80018330
+/* 800984B8 000943D8  4B F7 FE 79 */	bl camera_apply_viewport
 /* 800984BC 000943DC  4B F8 9A 11 */	bl func_80021ECC
 /* 800984C0 000943E0  83 AD 9A 5C */	lwz r29, currentCameraStructPtr@sda21(r13)
 /* 800984C4 000943E4  38 00 00 50 */	li r0, 0x50
@@ -6798,7 +6798,7 @@ lbl_800984D8:
 /* 800987B0 000946D0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800987B4 000946D4  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800987B8 000946D8  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 800987BC 000946DC  4B F7 FB 75 */	bl func_80018330
+/* 800987BC 000946DC  4B F7 FB 75 */	bl camera_apply_viewport
 /* 800987C0 000946E0  A8 1D 00 30 */	lha r0, 0x30(r29)
 /* 800987C4 000946E4  3F E0 43 30 */	lis r31, 0x4330
 /* 800987C8 000946E8  C8 22 B0 F0 */	lfd f1, lbl_802F58F0-_SDA2_BASE_(r2)
@@ -7030,7 +7030,7 @@ lbl_80098B00:
 /* 80098B1C 00094A3C  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 80098B20 00094A40  90 05 00 08 */	stw r0, 8(r5)
 /* 80098B24 00094A44  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 80098B28 00094A48  4B F7 F8 09 */	bl func_80018330
+/* 80098B28 00094A48  4B F7 F8 09 */	bl camera_apply_viewport
 /* 80098B2C 00094A4C  4B F8 9A 05 */	bl func_80022530
 /* 80098B30 00094A50  80 01 03 C4 */	lwz r0, 0x3c4(r1)
 /* 80098B34 00094A54  83 E1 03 BC */	lwz r31, 0x3bc(r1)
@@ -7259,7 +7259,7 @@ lbl_80098E04:
 /* 80098E88 00094DA8  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80098E8C 00094DAC  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 80098E90 00094DB0  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 80098E94 00094DB4  4B F7 F4 9D */	bl func_80018330
+/* 80098E94 00094DB4  4B F7 F4 9D */	bl camera_apply_viewport
 /* 80098E98 00094DB8  80 01 00 54 */	lwz r0, 0x54(r1)
 /* 80098E9C 00094DBC  83 E1 00 4C */	lwz r31, 0x4c(r1)
 /* 80098EA0 00094DC0  83 C1 00 48 */	lwz r30, 0x48(r1)
@@ -8030,7 +8030,7 @@ func_800999CC:
 /* 800999F4 00095914  93 81 03 C8 */	stw r28, 0x3c8(r1)
 /* 800999F8 00095918  3B 84 00 00 */	addi r28, r4, 0
 /* 800999FC 0009591C  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 80099A00 00095920  4B F7 E9 31 */	bl func_80018330
+/* 80099A00 00095920  4B F7 E9 31 */	bl camera_apply_viewport
 /* 80099A04 00095924  83 AD 9A 5C */	lwz r29, currentCameraStructPtr@sda21(r13)
 /* 80099A08 00095928  38 00 00 50 */	li r0, 0x50
 /* 80099A0C 0009592C  7C 09 03 A6 */	mtctr r0
@@ -8253,7 +8253,7 @@ lbl_80099ABC:
 /* 80099D68 00095C88  38 7D 01 D4 */	addi r3, r29, 0x1d4
 /* 80099D6C 00095C8C  4B F6 DB 0D */	bl mathutil_mtxA_to_mtx
 /* 80099D70 00095C90  80 6D 9A 60 */	lwz r3, lbl_802F1C40@sda21(r13)
-/* 80099D74 00095C94  4B F7 E5 BD */	bl func_80018330
+/* 80099D74 00095C94  4B F7 E5 BD */	bl camera_apply_viewport
 /* 80099D78 00095C98  A8 1D 00 30 */	lha r0, 0x30(r29)
 /* 80099D7C 00095C9C  3F 80 43 30 */	lis r28, 0x4330
 /* 80099D80 00095CA0  C8 22 B1 70 */	lfd f1, lbl_802F5970-_SDA2_BASE_(r2)
@@ -8498,7 +8498,7 @@ lbl_8009A0EC:
 /* 8009A108 00096028  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 8009A10C 0009602C  90 05 00 08 */	stw r0, 8(r5)
 /* 8009A110 00096030  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 8009A114 00096034  4B F7 E2 1D */	bl func_80018330
+/* 8009A114 00096034  4B F7 E2 1D */	bl camera_apply_viewport
 /* 8009A118 00096038  4B F8 84 19 */	bl func_80022530
 /* 8009A11C 0009603C  80 01 03 DC */	lwz r0, 0x3dc(r1)
 /* 8009A120 00096040  83 E1 03 D4 */	lwz r31, 0x3d4(r1)
@@ -8596,7 +8596,7 @@ lbl_8009A1F8:
 /* 8009A27C 0009619C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8009A280 000961A0  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 8009A284 000961A4  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 8009A288 000961A8  4B F7 E0 A9 */	bl func_80018330
+/* 8009A288 000961A8  4B F7 E0 A9 */	bl camera_apply_viewport
 /* 8009A28C 000961AC  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 8009A290 000961B0  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 8009A294 000961B4  83 C1 00 18 */	lwz r30, 0x18(r1)

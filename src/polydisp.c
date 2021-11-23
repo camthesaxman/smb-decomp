@@ -558,7 +558,7 @@ void func_8000C388(void)
     float f3;
 
     f3 = -(10000.0f * currentCameraStructPtr->sub28.unk38);
-    sp14.unk0 = f3 * currentCameraStructPtr->sub28.unk34;
+    sp14.unk0 = f3 * currentCameraStructPtr->sub28.aspect;
     sp14.unk4 = 0.0f;
     sp14.unk8 = 0.0f;
     sp14.unkC = f3;
