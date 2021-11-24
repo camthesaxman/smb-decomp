@@ -443,7 +443,7 @@ u32 func_80007424(float a)
 }
 
 #ifdef __MWERKS__
-asm void mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
+asm float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
 {
     nofralloc
 

@@ -40,7 +40,7 @@ float mathutil_tan(u32 angle);
 s16 mathutil_atan2(double a, float b);
 u32 mathutil_atan(double angle);
 u32 func_80007424(float a);
-void mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB);
+float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB);
 void mathutil_mtx_from_identity(Mtx mtx);
 void mathutil_mtxA_from_identity(void);
 void mathutil_mtxA_sq_from_identity(void);

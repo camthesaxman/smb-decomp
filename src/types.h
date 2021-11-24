@@ -327,7 +327,12 @@ struct Ball
     u8 filler84[0x92-0x84];
     s16 unk92;
     u32 unk94;
-    u8 filler98[0xFC-0x98];
+    u8 filler98[0xA8-0x98];
+    Quaternion unkA8;
+    Vec unkB8;
+    float unkC4;
+    u8 fillerC8[0xF8-0xC8];
+    float unkF8;
     struct Ball_child *unkFC;
     u8 filler100[0x14E - 0x100];
     s16 unk14E;
@@ -417,4 +422,13 @@ struct Struct8009F7F0  // replay info?
     u8 filler6[0x10-6];
     u32 unk10;
     u8 filler14[4];
+};
+
+struct Struct8003FB48
+{
+    u32 unk0;
+    u8 filler4[4];
+    float unk8;
+    u8 fillerC[4];
+    Vec unk10;
 };

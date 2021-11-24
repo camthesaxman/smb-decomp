@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global func_8003699C
 func_8003699C:
 /* 8003699C 000328BC  7C 08 02 A6 */	mflr r0
@@ -41,7 +42,7 @@ func_8003699C:
 /* 80036A24 00032944  C0 1C 00 F0 */	lfs f0, 0xf0(r28)
 /* 80036A28 00032948  EC 00 00 72 */	fmuls f0, f0, f1
 /* 80036A2C 0003294C  D0 1C 00 F0 */	stfs f0, 0xf0(r28)
-/* 80036A30 00032950  3B 9C 00 40 */	addi r28, r28, 0x40
+/* 80036A30 00032950  3B 9C 00 40 */	addi r28, r28, 0x40  ;# lbl_80205E60
 /* 80036A34 00032954  4B FD 22 61 */	bl mathutil_quat_normalize
 /* 80036A38 00032958  38 7C 00 A8 */	addi r3, r28, 0xa8
 /* 80036A3C 0003295C  4B FD 18 21 */	bl mathutil_mtxA_from_quat
@@ -354,7 +355,7 @@ func_80036EB8:
 /* 80036EB8 00032DD8  7C 08 02 A6 */	mflr r0
 /* 80036EBC 00032DDC  3C A0 80 20 */	lis r5, lbl_80205E60@ha
 /* 80036EC0 00032DE0  90 01 00 04 */	stw r0, 4(r1)
-/* 80036EC4 00032DE4  3C 80 80 11 */	lis r4, lbl_80110004@ha
+/* 80036EC4 00032DE4  3C 80 80 11 */	lis r4, lbl_80117830@ha
 /* 80036EC8 00032DE8  38 A5 5E 60 */	addi r5, r5, lbl_80205E60@l
 /* 80036ECC 00032DEC  94 21 FF 58 */	stwu r1, -0xa8(r1)
 /* 80036ED0 00032DF0  DB E1 00 A0 */	stfd f31, 0xa0(r1)
@@ -363,9 +364,9 @@ func_80036EB8:
 /* 80036EDC 00032DFC  3B C3 00 00 */	addi r30, r3, 0
 /* 80036EE0 00032E00  93 A1 00 94 */	stw r29, 0x94(r1)
 /* 80036EE4 00032E04  93 81 00 90 */	stw r28, 0x90(r1)
-/* 80036EE8 00032E08  84 64 78 30 */	lwzu r3, 0x7830(r4)
+/* 80036EE8 00032E08  84 64 78 30 */	lwzu r3, lbl_80117830@l(r4)
 /* 80036EEC 00032E0C  88 DE 00 C0 */	lbz r6, 0xc0(r30)
-/* 80036EF0 00032E10  80 04 00 04 */	lwz r0, lbl_80110004@l(r4)
+/* 80036EF0 00032E10  80 04 00 04 */	lwz r0, 4(r4)
 /* 80036EF4 00032E14  7C C6 07 74 */	extsb r6, r6
 /* 80036EF8 00032E18  90 61 00 0C */	stw r3, 0xc(r1)
 /* 80036EFC 00032E1C  1C 66 01 A4 */	mulli r3, r6, 0x1a4
@@ -475,6 +476,7 @@ lbl_80037070:
 /* 8003708C 00032FAC  83 81 00 90 */	lwz r28, 0x90(r1)
 /* 80037090 00032FB0  38 21 00 A8 */	addi r1, r1, 0xa8
 /* 80037094 00032FB4  4E 80 00 20 */	blr
+.endif
 
 .global func_80037098
 func_80037098:
@@ -7922,8 +7924,39 @@ lbl_8003DD08:
 /* 8003DD14 00039C34  7C 08 03 A6 */	mtlr r0
 /* 8003DD18 00039C38  4E 80 00 20 */	blr
 
+.section .bss
+
+# ball.c
+.if 0
+.global ballInfo
+ballInfo:
+	.skip 0x10
+.global lbl_80205E30
+lbl_80205E30:
+	.skip 0x30
+.global lbl_80205E60
+lbl_80205E60:
+	.skip 0xD20
+.endif
+.global lbl_80206B80
+lbl_80206B80:
+	.skip 0x40
+.global lbl_80206BC0
+lbl_80206BC0:
+	.skip 0x10
+.global lbl_80206BD0
+lbl_80206BD0:
+	.skip 0x20
+.global lbl_80206BF0
+lbl_80206BF0:
+	.skip 0x100
+.global lbl_80206CF0
+lbl_80206CF0:
+	.skip 0x10
+
 .section .sdata2
 
+.if 0
 .global lbl_802F3398
 lbl_802F3398:
 	# ROM: 0x1ECDB8
@@ -8005,6 +8038,7 @@ lbl_802F33D8:
 lbl_802F33DC:
 	# ROM: 0x1ECDFC
 	.byte 0x3E, 0x4C, 0xCC, 0xCD
+.endif
 
 .global lbl_802F33E0
 lbl_802F33E0:
@@ -8550,6 +8584,7 @@ lbl_802F3614:
 
 .section .rodata
 
+.if 0
 .global lbl_801177D0
 lbl_801177D0:
 	# ROM: 0x1147D0
@@ -8577,6 +8612,7 @@ lbl_801177D0:
 	.byte 0xBF, 0x80, 0x00, 0x00
 	.4byte 0
 	.4byte 0
+glabel lbl_80117830
 	.byte 0x3E, 0x99, 0x99, 0x9A
 	.4byte 0
 	.4byte 0
@@ -8589,6 +8625,7 @@ lbl_801177D0:
 	.byte 0x3D, 0xCC, 0xCC, 0xCD
 	.4byte 0
 	.byte 0x3E, 0x4C, 0xCC, 0xCD
+.endif
 
 .global lbl_80117860
 lbl_80117860:

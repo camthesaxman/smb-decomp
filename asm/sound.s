@@ -8304,30 +8304,6 @@ lbl_80205DAC:
 .global lbl_80205E00
 lbl_80205E00:
 	.skip 0x20
-.global ballInfo
-ballInfo:
-	.skip 0x10
-.global lbl_80205E30
-lbl_80205E30:
-	.skip 0x30
-.global lbl_80205E60
-lbl_80205E60:
-	.skip 0xD20
-.global lbl_80206B80
-lbl_80206B80:
-	.skip 0x40
-.global lbl_80206BC0
-lbl_80206BC0:
-	.skip 0x10
-.global lbl_80206BD0
-lbl_80206BD0:
-	.skip 0x20
-.global lbl_80206BF0
-lbl_80206BF0:
-	.skip 0x100
-.global lbl_80206CF0
-lbl_80206CF0:
-	.skip 0x10
 
 .section .sdata2
 

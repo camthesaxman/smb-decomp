@@ -448,7 +448,7 @@ void func_800390C8(int, Vec *, float);
 // ? func_8003F608();
 // ? func_8003F890();
 // ? func_8003F9F4();
-// ? func_8003FB48();
+void func_8003FB48(Vec *, struct Struct8003FB48 *, int);
 // ? func_80040138();
 // ? func_80040338();
 // ? func_80040624();

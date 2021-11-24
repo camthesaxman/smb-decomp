@@ -38,6 +38,17 @@ FORCEACTIVE {
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }
 
+/* ball.c */
+lbl_801177D0 = 0x801177D0;
+lbl_802F33A4 = 0x802F33A4;
+lbl_802F33A8 = 0x802F33A8;
+lbl_802F33B0 = 0x802F33B0;
+lbl_802F33B4 = 0x802F33B4;
+lbl_802F33BC = 0x802F33BC;
+lbl_802F33C0 = 0x802F33C0;
+lbl_802F33D0 = 0x802F33D0;
+lbl_802F33D8 = 0x802F33D8;
+
 /* sprite.s */
 lbl_802F4A70 = 0x802F4A70;
 lbl_802F4A74 = 0x802F4A74;
