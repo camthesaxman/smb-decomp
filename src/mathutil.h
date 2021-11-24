@@ -78,7 +78,7 @@ void mathutil_mtxA_scale_xyz(float x, float y, float z);
 void mathutil_mtxA_tf_point(Vec *src, Vec *dest);
 void mathutil_mtxA_tf_vec(Vec *src, Vec *dest);
 void mathutil_mtxA_tf_point_xyz(Vec *vec, float x, float y, float z);
-void mathutil_mtxA_tf_vec_xyz(Vec *vec);
+void mathutil_mtxA_tf_vec_xyz(Vec *vec, float x, float y, float z);
 void mathutil_mtxA_rigid_inv_tf_point(Vec *a, Vec *b);
 void mathutil_mtxA_rigid_inv_tf_tl(Vec *dest);
 void mathutil_mtxA_rigid_inv_tf_vec(Vec *src, Vec *dest);
@@ -203,5 +203,41 @@ static inline float mathutil_vec_distance(register Vec *a, register Vec *b)
                  + (a->y - b->y) * (a->y - b->y)
                  + (a->z - b->z) * (a->z - b->z);
     return mathutil_sqrt(result);
+#endif
+}
+
+static inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
+{
+#ifdef __MWERKS__
+    register float x1, y1, z1, x2, y2, z2;
+    register float x, y, z;
+
+    asm
+    {
+        lfs y1, a->y
+        lfs z2, b->z
+        lfs z1, a->z
+        lfs x2, b->x
+        lfs x1, a->x
+        lfs y2, b->y
+
+        fmuls x, y1, z2
+        fmuls y, z1, x2
+        fmuls z, x1, y2
+        fnmsubs x, z1, y2, x
+        stfs x, result->x
+        fnmsubs y, x1, z2, y
+        stfs y, result->y
+        fnmsubs z, y1, x2, z
+        stfs z, result->z
+    }
+#else
+    float x = a->y * b->z - a->z * b->y;
+    float y = a->z * b->x - a->x * b->z;
+    float z = a->x * b->y - a->y * b->x;
+
+    result->x = x;
+    result->y = y;
+    result->z = z;
 #endif
 }

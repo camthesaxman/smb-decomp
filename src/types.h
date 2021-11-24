@@ -320,7 +320,8 @@ struct Ball
     s16 unk2A;
     u8 filler2C[2];
     s8 unk2E;
-    u8 filler2F[0x68-0x2F];
+    s8 unk2F;
+    u8 filler30[0x68-0x30];
     float unk68;
     u8 filler6C[0x80-0x6C];
     s32 unk80;
@@ -334,7 +335,11 @@ struct Ball
     u8 fillerC8[0xF8-0xC8];
     float unkF8;
     struct Ball_child *unkFC;
-    u8 filler100[0x14E - 0x100];
+    u8 filler100[0x126 - 0x100];
+    s16 unk126;
+    u8 filler128[2];
+    s16 unk12A;
+    u8 filler12C[0x14E - 0x12C];
     s16 unk14E;
     Vec unk150;
     u8 filler15C[0x1A4-0x15C];
@@ -431,4 +436,32 @@ struct Struct8003FB48
     float unk8;
     u8 fillerC[4];
     Vec unk10;
+};
+
+struct Struct8003699C_child
+{
+    u8 filler0[0x38];
+    u16 unk38;
+    u8 filler3A[2];
+    float unk3C;
+};
+
+struct Struct8003699C
+{
+    struct Struct8003699C_child *unk0;
+    u8 filler4[0x14-4];
+    u32 unk14;
+    u8 filler18[0x24-0x18];
+    s32 unk24;
+    u8 filler28[0x30-0x28];
+    Vec unk30;
+    Vec unk3C;
+    Vec unk48;
+    s32 unk54;
+    u8 filler58[0x60-0x58];
+    Quaternion unk60;
+    u8 filler70[0xC0-0x70];
+    s8 unkC0;
+    u8 fillerC1[1];
+    s16 unkC2;
 };

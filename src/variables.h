@@ -556,12 +556,16 @@ extern struct
 extern struct
 {
     u32 unk0;
-    u8 filler4[0xC - 0x4];
+    s16 unk4;
+    s16 unk6;
+    u8 filler8[0xC - 0x8];
     s16 unkC;
     s16 unkE;
     Vec unk10;
     u8 filler1C[0x1E - 0x1C];
     s16 unk1E;
+    s16 unk20;
+    s16 unk22;
 } lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
