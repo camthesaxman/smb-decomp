@@ -163,9 +163,9 @@ struct ModeControl
     u8 filler14[0x1C-0x14];
     u32 unk1C;
     s32 unk20;
-    s32 unk24;
+    int unk24;
     s32 unk28;
-    u8 filler2C[4];
+    s32 unk2C;
     s32 unk30;
     u8 filler34[0x42-0x34];
     u8 unk42;
@@ -300,6 +300,7 @@ struct TPL;
 
 typedef void (*Func802F20EC)();
 
+/*
 struct Ball_child
 {
     u8 filler0[0x10];
@@ -307,11 +308,52 @@ struct Ball_child
     u32 unk14;
     u8 filler18[0x30-0x18];
     Vec unk30;
+    
+    Quaternion unk60;
+    
+    u8 unkC1;
+    
+    u8 unk14B;
+};
+*/
+
+struct Struct8003699C_child
+{
+    u8 filler0[0x38];
+    u16 unk38;
+    u8 filler3A[2];
+    float unk3C;
+};
+
+struct Ball_child  // possibly Ball_child?
+{
+    struct Struct8003699C_child *unk0;
+    u8 filler4[0x10-4];
+    s32 unk10;
+    u32 unk14;
+    u8 filler18[0x24-0x18];
+    s32 unk24;
+    u8 filler28[0x30-0x28];
+    Vec unk30;
+    Vec unk3C;
+    Vec unk48;
+    s32 unk54;
+    u8 filler58[0x60-0x58];
+    Quaternion unk60;
+    u8 filler70[0x74-0x70];
+    u32 unk74;
+    u8 filler78[0xB4-0x78];
+    u32 unkB4;
+    u8 fillerB8[0xC0-0xB8];
+    s8 unkC0;
+    u8 unkC1;
+    s16 unkC2;
 };
 
 struct Ball
 {
-    u8 filler0[0x3];
+    u8 unk0;
+    u8 filler1[0x2];
     s8 unk3;
     Vec unk4;
     u8 filler10[0x1C - 0x10];
@@ -335,11 +377,18 @@ struct Ball
     u8 fillerC8[0xF8-0xC8];
     float unkF8;
     struct Ball_child *unkFC;
-    u8 filler100[0x126 - 0x100];
+    u32 unk100;
+    Vec unk104;
+    float unk110;
+    u8 filler114[0x126-0x114];
     s16 unk126;
     u8 filler128[2];
     s16 unk12A;
-    u8 filler12C[0x14E - 0x12C];
+    u8 filler12C[0x144-0x12C];
+    u32 unk144;
+    u8 filler148[0x14B - 0x148];
+    u8 unk14B;
+    u8 filler14C[2];
     s16 unk14E;
     Vec unk150;
     u8 filler15C[0x1A4-0x15C];
@@ -436,32 +485,4 @@ struct Struct8003FB48
     float unk8;
     u8 fillerC[4];
     Vec unk10;
-};
-
-struct Struct8003699C_child
-{
-    u8 filler0[0x38];
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-};
-
-struct Struct8003699C
-{
-    struct Struct8003699C_child *unk0;
-    u8 filler4[0x14-4];
-    u32 unk14;
-    u8 filler18[0x24-0x18];
-    s32 unk24;
-    u8 filler28[0x30-0x28];
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    s32 unk54;
-    u8 filler58[0x60-0x58];
-    Quaternion unk60;
-    u8 filler70[0xC0-0x70];
-    s8 unkC0;
-    u8 fillerC1[1];
-    s16 unkC2;
 };

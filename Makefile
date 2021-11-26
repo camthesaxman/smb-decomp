@@ -312,6 +312,7 @@ clean:
 	find . -name '*.dump' -exec rm {} +
 
 # File-specific compiler flags
+src/ball.o: CFLAGS += -inline auto
 src/camera.o: CFLAGS += -inline auto
 src/mathutil.o: CFLAGS += -inline auto
 src/sprite.o:   CFLAGS += -inline auto

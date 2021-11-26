@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <dolphin.h>
 
 #include "global.h"
@@ -8,12 +9,16 @@
 float ballInfo[4];
 Mtx lbl_80205E30;  // ballInfo + 0x10
 struct Ball lbl_80205E60[8];  // ballInfo + 0x40
+s32 lbl_80206B80[16];  // ballInfo + 0xD60
+s32 lbl_80206BC0[4];  // ballInfo + 0xDA0
 
 FORCE_BSS_ORDER(ballInfo)
 FORCE_BSS_ORDER(lbl_80205E30)
 FORCE_BSS_ORDER(lbl_80205E60)
+FORCE_BSS_ORDER(lbl_80206B80)
+FORCE_BSS_ORDER(lbl_80206BC0)
 
-void func_8003699C(struct Struct8003699C *a)
+void func_8003699C(struct Ball_child *a)
 {
     struct Ball *ball = &lbl_80205E60[a->unkC0];
     Quaternion quat;
@@ -77,7 +82,7 @@ void func_8003699C(struct Struct8003699C *a)
     mathutil_mtxA_mult_left(lbl_80205E30);
 }
 
-float func_80036CAC(struct Struct8003699C *a)
+float func_80036CAC(struct Ball_child *a)
 {
     struct Ball *ball = &lbl_80205E60[a->unkC0];
     Vec sp4C;
@@ -127,7 +132,7 @@ float func_80036CAC(struct Struct8003699C *a)
     return mathutil_vec_mag(&ball->unkB8) * 1.5f;
 }
 
-void func_80036EB8(struct Struct8003699C *a)
+void func_80036EB8(struct Ball_child *a)
 {
     struct Ball *r31 = &lbl_80205E60[a->unkC0];
     struct Struct8003FB48 sp70;
@@ -175,7 +180,7 @@ void func_80036EB8(struct Struct8003699C *a)
     mathutil_mtxA_pop();
 }
 
-int func_80037098(struct Struct8003699C *a, struct Ball *ball)
+int func_80037098(struct Ball_child *a, struct Ball *ball)
 {
     int ret;
     int var1;
@@ -251,7 +256,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     return 2;
 }
 
-void func_8003721C(struct Struct8003699C *a, float b)
+void func_8003721C(struct Ball_child *a, float b)
 {
     struct Ball *ball = &lbl_80205E60[a->unkC0];
     float f31 = b;
@@ -373,7 +378,7 @@ void func_8003721C(struct Struct8003699C *a, float b)
     func_8008BBD4(a, r29, r28, r27, f31);
 }
 
-void func_8003765C(struct Struct8003699C *a)
+void func_8003765C(struct Ball_child *a)
 {
     struct Ball *ball = &lbl_80205E60[a->unkC0];
 
@@ -412,6 +417,265 @@ void func_80037718(void)
     mathutil_mtxA_mult_right(lbl_80205E30);
 }
 
+// Matching, but I can't include it here for now due to inlining shenanigans with mathutil_vec_cross_prod
+#ifdef NONMATCHING
+void lbl_8003781C(struct Ball_child *a, int b)
+{
+    struct Ball *r31;
+    struct Ball *r29 = &lbl_80205E60[a->unkC0];
+    struct Struct8003FB48 sp50;
+    //Vec sp44;
+    //Vec sp38;
+    //Vec sp2C;
+    //Quaternion sp1C;
+    int r27;
+    float f31;
+
+    switch (b)
+    {
+    case 3:
+        func_8008B2D4(a);
+        return;
+    }
+    //lbl_80037870
+    if (lbl_802F1EE0 & 0xA)
+        return;
+
+    func_8003FB48(&r29->unk4, &sp50, 0);
+    a->unk14 &= -20;
+    if (!(sp50.unk0 & 1) && r29->unk1C.y < -0.16203702986240387f)
+    {
+        a->unk14 |= 2;
+    }
+    else if (mathutil_vec_mag(&r29->unkB8) < 0.00027777777f)
+    {
+        a->unk14 |= 1;
+    }
+    //lbl_80037900
+    //r27 = (r29->unk94 & (1<<(31-0x13))) != a->unk14;
+    r27 = (r29->unk94 & (1<<(31-0x13))) != 0;
+    r27 |= !(a->unk14 & 3);
+    func_8003699C(a);
+    if (r27)
+    {
+        f31 = func_80036CAC(a);
+    }
+    //lbl_80037948
+    else
+    {
+        f31 = 0.0f;
+        mathutil_mtxA_from_quat(&a->unk60);
+        mathutil_mtxA_normalize_basis();
+        if (a->unk14 & (1<<(31-0x1E)))
+        {
+            func_80037718();  // inlined
+        }
+    }
+    //lbl_80037A08
+    if (r29->unk94 & (1<<(31-0x1A)))
+        f31 = mathutil_vec_mag(&r29->unk1C);
+    //lbl_80037A38
+    func_80036EB8(a);
+    mathutil_mtxA_to_quat(&a->unk60);
+    func_8003721C(a, f31);
+    func_8008C4A8(a);
+    if (!(a->unk14 & (1<<(31-0x1C))))
+    {
+        func_8003765C(a);  // inlined
+    }
+    //lbl_80037AE8
+    func_8008C090(a, &r29->unk104);
+    r29->unk100 = 0;
+    r29->unk110 = 0.0f;
+}
+#else
+extern const u8 lbl_801177D0[];
+void func_8003DA7C();
+#define _SDA2_BASE_ 0x802FA800
+#define lbl_802F3408 0x802F3408
+#define lbl_802F3410 0x802F3410
+const float lbl_802F3418 = -0.16203702986240387f;
+asm void lbl_8003781C(struct Ball_child *a, int b)
+{
+    nofralloc
+#include "../asm/nonmatchings/lbl_8003781C.s"
+}
+#undef lbl_802F3410
+#undef lbl_802F3408
+#pragma peephole on
+#endif
+
+void func_80037B1C() {}
+
+void func_80037B20(void)
+{
+    struct Ball *r5 = &lbl_80205E60[0];
+    struct Ball *r6 = currentBallStructPtr;
+    s8 *r7 = spritePoolInfo.unkC;
+    int i;
+
+    for (i = 0; i < spritePoolInfo.unk8; i++, r5++, r7++)
+    {
+        if (*r7 == 2)
+        {
+            currentBallStructPtr = r5;
+            r5->unkFC->unk14 &= ~(1<<(31-0x11));
+        }
+    }
+    currentBallStructPtr = r6;
+}
+
+void ev_ball_init(void)
+{
+    int sp18[4];
+    struct Ball *ball;
+    s8 *r21;
+    struct Ball_child *r20;
+    s32 j;
+    int i;
+
+    for (j = 0; j < 16; j++)
+        lbl_80206B80[j] = -1;
+
+    ball = &lbl_80205E60[0];
+    r21 = spritePoolInfo.unkC;
+
+    lbl_802F1F0C = 0;
+    func_8008C4A0(1.0f);
+    lbl_802F1F10 = 0;
+    func_8008BEF8(1);
+    switch (modeCtrl.unk28)
+    {
+    case 1:
+    case 4:
+        if (modeCtrl.unk24 > 2 && !(lbl_801EED2C.unk4 & (1<<(31-0x17))))
+            func_8008BEF8(2);
+        break;
+    case 3:
+        if (modeCtrl.unk24 >= 2)
+            func_8008BEF8(2);
+        break;
+    }
+
+    for (i = 0; i < 4; i++)
+        sp18[i] = 0;
+
+    for (i = 0; i < 4; i++,  ball++, r21++)
+    {
+        if (*r21 == 0 || (modeCtrl.unk28 != 8 && *r21 == 4))
+        {
+            ball->unk0 = 0;
+            ball->unk144 = 0;
+            ball->unkFC = NULL;
+            continue;
+        }
+
+        currentBallStructPtr = ball;
+        ball->unk2E = i;
+        func_800394C4(ball);
+        ball->unk0 = 2;
+        ball->unk3 = 0;
+        func_8004C754();
+        func_8008BA24(1);
+        r20 = func_8008B838(lbl_80206BC0[i]);
+        ball->unkFC = r20;
+        r20->unk74 = 0;
+        if (!(lbl_801EED2C.unk4 & (1<<(31-0x17))) && modeCtrl.unk30 > 1)
+            r20->unk14 |= 0x100000;
+        ball->unk14B = 0;
+        mathutil_mtxA_from_identity();
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE - 16384);
+        r20->unkC0 = i;
+        if (dipSwitches & (1<<(31-0x19)))
+            r20->unkB4 = sp18[lbl_80206BC0[i]];
+        else
+            r20->unkB4 = i;
+        if (lbl_801EED2C.unk4 & (1<<(31-0x17)))
+            r20->unkB4 = 0;
+        r20->unk30 = decodedStageLzPtr->unk10->unk0;
+        mathutil_mtxA_to_quat(&r20->unk60);
+        lbl_802F1F08 = 0;
+        ballInfo[i] = 0.0f;
+        sp18[lbl_80206BC0[i]]++;
+        switch (modeCtrl.unk28)
+        {
+        case 1:
+        case 3:
+        case 4:
+        case 8:
+            break;
+        default:
+            if (!(lbl_801EED2C.unk4 & (1<<(31-0x17))))
+                r20->unkC1 = ~(1 << i);
+            break;
+        }
+        switch (modeCtrl.unk28)
+        {
+        case 3:
+        case 4:
+        case 5:
+        case 7:
+            break;
+        default:
+            if (!(lbl_801EED2C.unk4 & (1<<(31-0x17))))
+                lbl_80206B80[i] = func_8008D1DC(lbl_8003781C, r20, 5);
+            break;
+        }
+        switch (modeCtrl.unk28)
+        {
+        case 1:
+        case 4:
+            if (lbl_801EED2C.unk4 & (1<<(31-0x17)))
+            {
+                func_8008BF00(r20, 0);
+                lbl_802F1F0C |= 1 << (r20->unk10 * 2);
+            }
+            else if (modeCtrl.unk24 > 2)
+            {
+                func_8008BF00(r20, 2);
+                lbl_802F1F0C |= 1 << (r20->unk10 * 2 + 1);
+            }
+            else
+            {
+                func_8008BF00(r20, 1);
+                lbl_802F1F0C |= 1 << (r20->unk10 * 2);
+            }
+            break;
+        case 3:
+            switch (modeCtrl.unk24)
+            {
+            case 1:
+                func_8008BF00(r20, 1);
+                lbl_802F1F0C |= 1 << (r20->unk10 * 2);
+                break;
+            case 3:  // useless; needed to match
+            case 2:
+            default:
+                func_8008BF00(r20, 2);
+                lbl_802F1F0C |= 1 << (r20->unk10 * 2 + 1);
+                break;
+            }
+            break;
+        default:
+            func_8008BF00(r20, 0);
+            lbl_802F1F0C |= 1 << (r20->unk10 * 2);
+            break;
+        }
+    }
+    switch (modeCtrl.unk28)
+    {
+    case 0:
+    case 5:
+    case 7:
+        currentBallStructPtr = &lbl_80205E60[modeCtrl.unk2C];
+        break;
+    default:
+        currentBallStructPtr = &lbl_80205E60[0];
+        break;
+    }
+    func_8008BEF8(1);
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -440,7 +704,6 @@ const float lbl_802F340C = 0.05f;
 const float lbl_802F3410 = -1.0f;
 const float lbl_802F3414 = 0.99f;
 */
-const float lbl_802F3418 = -0.16203702986240387f;
 const float lbl_802F341C = 0.75f;
 const double lbl_802F3420 = 0.5;
 const double lbl_802F3428 = 0.25;
