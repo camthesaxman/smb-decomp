@@ -300,23 +300,6 @@ struct TPL;
 
 typedef void (*Func802F20EC)();
 
-/*
-struct Ball_child
-{
-    u8 filler0[0x10];
-    s32 unk10;
-    u32 unk14;
-    u8 filler18[0x30-0x18];
-    Vec unk30;
-    
-    Quaternion unk60;
-    
-    u8 unkC1;
-    
-    u8 unk14B;
-};
-*/
-
 struct Struct8003699C_child
 {
     u8 filler0[0x38];
@@ -363,9 +346,13 @@ struct Ball
     u8 filler2C[2];
     s8 unk2E;
     s8 unk2F;
-    u8 filler30[0x68-0x30];
+    Mtx unk30;
+    u8 filler60[0x66-0x60];
+    s16 unk66;
     float unk68;
-    u8 filler6C[0x80-0x6C];
+    u8 filler6C[0x74-0x6C];
+    float unk74;
+    u8 filler78[0x80-0x78];
     s32 unk80;
     u8 filler84[0x92-0x84];
     s16 unk92;
@@ -374,13 +361,15 @@ struct Ball
     Quaternion unkA8;
     Vec unkB8;
     float unkC4;
-    u8 fillerC8[0xF8-0xC8];
+    Mtx unkC8;
     float unkF8;
     struct Ball_child *unkFC;
     u32 unk100;
     Vec unk104;
     float unk110;
-    u8 filler114[0x126-0x114];
+    u8 filler114[0x120-0x114];
+    u32 unk120;
+    u8 filler124[2];
     s16 unk126;
     u8 filler128[2];
     s16 unk12A;
@@ -391,7 +380,8 @@ struct Ball
     u8 filler14C[2];
     s16 unk14E;
     Vec unk150;
-    u8 filler15C[0x1A4-0x15C];
+    float unk15C[4];
+    u8 filler16C[0x1A4-0x16C];
 };
 
 struct BackgroundInfo  // size = 0xA8
@@ -418,7 +408,7 @@ struct BackgroundInfo  // size = 0xA8
     u8 filler88[4];
     u32 unk8C;
     void (*unk90)();
-    u32 unk94;
+    Func802F20EC unk94;
     void (*unk98)();
     void *unk9C;
     u32 unkA0;
@@ -485,4 +475,31 @@ struct Struct8003FB48
     float unk8;
     u8 fillerC[4];
     Vec unk10;
+};
+
+typedef u32 (*Func802F20F0)();
+
+struct UnkStruct17
+{
+    u8 filler0[4];
+    void (*unk4)(struct UnkStruct17 *);
+    void *unk8;
+    Mtx unkC;
+    void *unk3C;
+    struct GMAMeshHeader *unk40;
+    u32 unk44;
+    u32 unk48;
+    float unk4C;
+    Func802F20EC unk50;
+    Func802F20F0 unk54;
+    u8 unk58;
+    u8 unk59;
+    u32 unk5C;
+    u8 unk60;
+    u8 unk61;
+    u8 unk62;
+    Mtx *unk64;
+    GXColor unk68;
+    GXColor unk6C;
+    u32 unk70;
 };

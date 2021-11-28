@@ -2676,36 +2676,3 @@ lbl_801B7C5C:
 	.byte 0x59, 0x5F, 0x47, 0xFF
 	.byte 0x47, 0x5F, 0x50, 0xFF
 	.byte 0x59, 0x47, 0x5F, 0xFF
-
-.global lbl_801B7C84
-lbl_801B7C84:
-	# ROM: 0x1B4C84
-	.4byte func_800395B8  ;# ptr
-	.4byte func_800395DC  ;# ptr
-	.4byte ball_sub_ready_main  ;# ptr
-	.4byte func_80039794  ;# ptr
-	.4byte func_80039974  ;# ptr
-	.4byte func_800399D4  ;# ptr
-	.4byte ball_sub_goal_main  ;# ptr
-	.4byte func_80039B68  ;# ptr
-	.4byte ball_sub_replay_main  ;# ptr
-	.4byte func_80039B68  ;# ptr
-	.4byte ball_sub_replay_main  ;# ptr
-	.4byte func_80039FB0  ;# ptr
-	.4byte func_8003A180  ;# ptr
-	.4byte func_8003A184  ;# ptr
-	.4byte func_8003A354  ;# ptr
-	.4byte func_8003A358  ;# ptr
-	.4byte func_8003A734  ;# ptr
-	.4byte func_8003A654  ;# ptr
-	.4byte func_8003A908  ;# ptr
-	.4byte func_8003AA6C  ;# ptr
-	.4byte func_8003AB08  ;# ptr
-	.4byte ball_sub_21  ;# ptr
-	.4byte func_8003B0C4  ;# ptr
-	.4byte func_8003B0C4  ;# ptr
-	.4byte func_8003B0C4  ;# ptr
-	.4byte func_8003B0C4  ;# ptr
-	.4byte func_8003B0C4  ;# ptr
-	.4byte func_8003B0F4  ;# ptr
-	.4byte func_8003B268  ;# ptr

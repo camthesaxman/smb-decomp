@@ -527,7 +527,11 @@ extern u8 lbl_801EEBA0[];
 extern struct ModeControl modeCtrl;
 // extern ? lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
-// extern ? lbl_801EEC90;
+extern struct
+{
+    u32 unk0;
+    u8 filler4[9-4];
+} lbl_801EEC90;
 // extern ? lbl_801EECF8;
 // extern ? lbl_801EED04;
 extern struct
@@ -1174,7 +1178,22 @@ extern u32 lbl_802F1AEC;  // unknown type
 // extern ? lbl_802F1AF8;
 // extern ? lbl_802F1AFC;
 extern u32 lbl_802F1B00;  // unknown type
-// extern ? lbl_802F1B04;
+/*
+struct Struct802F1B04
+{
+    u8 filler0[4];
+    u32 unk4[2];  // unknown length
+    u8 fillerC[0xA0-0xC];
+    u32 unkA0;
+    u8 fillerA4[0xB4-0xA4];
+    u32 unkB4;
+    u8 fillerB8[0xDC-0xB8];
+    u32 unkDC;
+    u32 unkE0;
+};
+extern struct Struct802F1B04 *lbl_802F1B04_;
+*/
+extern u32 *lbl_802F1B04;  // doesn't match as a struct, apparently
 extern long lbl_802F1B08;
 extern long lbl_802F1B0C;
 extern long lbl_802F1B10;
@@ -1192,7 +1211,7 @@ extern Mtx *lbl_802F1B3C;
 extern void *lbl_802F1B40;
 extern u32 lbl_802F1B44;
 extern void *dvdReadBuffer;
-// extern ? lbl_802F1B4C;
+extern u32 lbl_802F1B4C;
 extern void *lbl_802F1B50;
 extern void *lbl_802F1B54;
 extern BOOL lbl_802F1B58;
@@ -1276,7 +1295,7 @@ extern void **lbl_802F1CA4;
 // extern ? lbl_802F1CBC;
 // extern ? decodedBgGma;
 // extern ? decodedBgTpl;
-// extern ? lbl_802F1CC8;
+extern struct GMA *lbl_802F1CC8;
 // extern ? lbl_802F1CCC;
 extern u8 lbl_802F1CD0;
 extern u8 lbl_802F1CD1;
@@ -1396,7 +1415,7 @@ extern u32 lbl_802F1EE0;
 // extern ? lbl_802F1F00;
 extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;
-extern u32 lbl_802F1F10;
+extern void (*lbl_802F1F10)(void);
 // extern ? minigameRelBallCallback;
 extern void *currentBallStructPtr;
 extern void *currentWorldStructPtr;

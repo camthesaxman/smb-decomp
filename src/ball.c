@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "camera.h"
 #include "game.h"
 #include "mathutil.h"
 
@@ -542,7 +543,7 @@ void ev_ball_init(void)
 
     lbl_802F1F0C = 0;
     func_8008C4A0(1.0f);
-    lbl_802F1F10 = 0;
+    lbl_802F1F10 = NULL;
     func_8008BEF8(1);
     switch (modeCtrl.unk28)
     {
@@ -676,6 +677,394 @@ void ev_ball_init(void)
     func_8008BEF8(1);
 }
 
+struct Ball_child *func_800380A8(int a, int b, void (*c)(struct Ball_child *, int))
+{
+    struct Ball_child *r30 = func_8008B838(b);
+
+    r30->unk74 = 0;
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y(0x8000);
+    lbl_80206B80[a] = func_8008D1DC(c, r30, 5);
+    func_8008BF00(r30, 0);
+    mathutil_mtxA_to_quat(&r30->unk60);
+    lbl_802F1F08 = 0;
+    return r30;
+}
+
+extern void (*lbl_801B7C84[])(struct Ball *);
+/*
+void (*lbl_801B7C84[])(struct Ball *) =
+{
+    func_800395B8,
+    func_800395DC,
+    ball_sub_ready_main,
+    func_80039794,
+    func_80039974,
+    func_800399D4,
+    ball_sub_goal_main,
+    func_80039B68,
+    ball_sub_replay_main,
+    func_80039B68,
+    ball_sub_replay_main,
+    func_80039FB0,
+    func_8003A180,
+    func_8003A184,
+    func_8003A354,
+    func_8003A358,
+    func_8003A734,
+    func_8003A654,
+    func_8003A908,
+    func_8003AA6C,
+    func_8003AB08,
+    ball_sub_21,
+    func_8003B0C4,
+    func_8003B0C4,
+    func_8003B0C4,
+    func_8003B0C4,
+    func_8003B0C4,
+    func_8003B0F4,
+    func_8003B268,
+};
+*/
+
+static inline float sq_mag(register Vec *vec)
+{
+#ifdef __MWERKS__
+    register float x, z, y;
+
+    z = vec->z;
+    y = vec->y;
+    x = vec->x;
+
+    asm
+    {
+        fmuls x, x, x
+        fmadds x, y, y, x
+        fmadds x, z, z, x
+    }
+    return x;
+#else
+    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
+#endif
+}
+
+void ev_ball_main(void)
+{
+    Vec sp8;
+    struct Ball *r29;
+    s8 *r28;
+    s8 *r3;
+    int i;
+
+    if (lbl_802F1EE0 & 0xA)
+        return;
+    r28 = spritePoolInfo.unkC;
+    r29 = &lbl_80205E60[0];
+    for (i = 0; i < spritePoolInfo.unk8; i++, r29++, r28++)
+    {
+        if (*r28 == 0 || *r28 == 4)
+            continue;
+        currentBallStructPtr = r29;
+        mathutil_mtx_copy(r29->unk30, r29->unkC8);
+        r29->unk120 = r29->unk94;
+        r29->unk94 &= -6;
+        func_8003CDB0(r29);
+        func_800390C8(4, &r29->unk4, 0.75f);
+        lbl_801B7C84[r29->unk3](r29);
+        if (modeCtrl.unk28 != 3)
+            func_80038528(r29);
+    }
+
+    r3 = spritePoolInfo.unkC;
+    r29 = &lbl_80205E60[0];
+    for (i = 0; i < spritePoolInfo.unk8; i++, r29++)
+    {
+        if (r3[i] == 0 || r3[i] == 4)
+            continue;
+        r29->unk15C[0] = r29->unk15C[1] = r29->unk15C[2] = r29->unk15C[3] = 1.0f;
+    }
+
+    if (modeCtrl.unk28 == 1)
+    {
+        r28 = spritePoolInfo.unkC;
+        r29 = &lbl_80205E60[0];
+        for (i = 0; i < spritePoolInfo.unk8; i++, r29++)
+        {
+            struct Ball *r24;
+            int j;
+
+            if (r28[i] == 0 || r28[i] == 4)
+                continue;
+            r24 = r29 + 1;
+            for (j = i + 1; j < spritePoolInfo.unk8; j++, r24++)
+            {
+                float f29;
+                float f2;
+                float f1;
+
+                if (r28[j] == 0 || r28[j] == 4)
+                    continue;
+                sp8.x = r29->unk4.x - r24->unk4.x;
+                sp8.y = r29->unk4.y - r24->unk4.y;
+                sp8.z = r29->unk4.z - r24->unk4.z;
+
+                f2 = sq_mag(&sp8);
+                f29 = r29->unk68 + r24->unk68;
+                if (f2 < (0.5 * f29) * (0.5 * f29))
+                {
+                    int k;
+
+                    f1 = mathutil_sqrt(f2);
+                    if (f1 < f29 * 0.25)
+                        f1 = 0.0f;
+                    else
+                        f1 = (f1 - (f29 * 0.25)) / (f29 * 0.25);
+
+                    for (k = 0; k < spritePoolInfo.unk8; k++)
+                    {
+                        if (j != k)
+                        {
+                            if (r24->unk15C[k] > f1)
+                                r24->unk15C[k] = f1;
+                        }
+                        else
+                        {
+                            if (r29->unk15C[k] > f1)
+                                r29->unk15C[k] = f1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (lbl_802F1F10 != NULL)
+        lbl_802F1F10();
+
+    if (modeCtrl.unk28 == 3)
+    {
+        r28 = spritePoolInfo.unkC;
+        r29 = &lbl_80205E60[0];
+        for (i = 0; i < spritePoolInfo.unk8; i++, r29++, r28++)
+        {
+            if (*r28 == 0 || *r28 == 4)
+                continue;
+            currentBallStructPtr = r29;
+            func_80038528(r29);
+        }
+    }
+
+    switch (modeCtrl.unk28)
+    {
+    case 0:
+    case 5:
+    case 7:
+        currentBallStructPtr = &lbl_80205E60[modeCtrl.unk2C];
+        break;
+    default:
+        currentBallStructPtr = &lbl_80205E60[0];
+        break;
+    }
+    func_8004C780();
+}
+
+#pragma force_active on
+const Vec lbl_80117884 = {0.0f, 0.0f, 0.0f};
+#pragma force_active off
+
+void func_80038528(struct Ball *ball)
+{
+    Vec sp64;
+    Vec sp58;
+    Vec sp4C;
+    Vec sp40;
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    float f31;
+    float f1;
+
+    func_8003D3C4();
+    if (ball->unk94 & (1<<(31-0x1D)))
+        func_8003C550(ball);
+
+    mathutil_mtxA_from_mtx(ball->unk30);
+    ball->unkC4 = mathutil_vec_mag(&ball->unkB8);
+    mathutil_mtxA_tf_vec_xyz(&sp58, 0.0f, 1.0f, 0.0f);
+    mathutil_mtxA_tf_vec_xyz(&sp40, 1.0f, 0.0f, 0.0f);
+    mathutil_mtxA_tf_vec_xyz(&sp28, 0.0f, 0.0f, 1.0f);
+    sp1C.x = 0.0f;
+    sp1C.y = -ball->unk68;
+    sp1C.z = 0.0f;
+    mathutil_mtxA_rigid_inv_tf_vec(&sp1C, &sp1C);
+
+    mathutil_mtxA_from_mtx(ball->unkC8);
+    mathutil_mtxA_tf_vec(&sp1C, &ball->unkB8);
+    ball->unkB8.y += ball->unk68;
+    mathutil_mtxA_tf_vec_xyz(&sp64, 0.0f, 1.0f, 0.0f);
+    mathutil_mtxA_tf_vec_xyz(&sp4C, 1.0f, 0.0f, 0.0f);
+    mathutil_mtxA_tf_vec_xyz(&sp34, 0.0f, 0.0f, 1.0f);
+
+    f31 = mathutil_vec_dot_normalized(&sp64, &sp58);
+
+    f1 = mathutil_vec_dot_normalized(&sp4C, &sp40);
+    if (f31 > f1)
+    {
+        f31 = f1;
+        sp64 = sp4C;
+        sp58 = sp40;
+    }
+    f1 = mathutil_vec_dot_normalized(&sp34, &sp28);
+    if (f31 > f1)
+    {
+        f31 = f1;
+        sp64 = sp34;
+        sp58 = sp28;
+    }
+
+    if (f31 > -0.9998f && f31 < 0.9998f)
+        mathutil_quat_from_dirs(&ball->unkA8, &sp64, &sp58);
+    else
+        ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+
+    func_8003CB88(ball);
+    func_8003CCB0();
+    if (modeCtrl.unk28 != 3)
+        func_8003D6A4(ball);
+    func_8003CDC0(ball);
+    if (ball->unk14E > 0)
+        ball->unk14E--;
+}
+
+void ev_ball_dest(void)
+{
+    struct Ball *ball;
+    int i;
+
+    func_8004C7A8();
+    for (i = 15; i >= 0; i--)
+    {
+        if (lbl_80206B80[i] != -1)
+        {
+            func_8008D29C(lbl_80206B80[i]);
+            lbl_80206B80[i] = -1;
+        }
+    }
+
+    ball = &lbl_80205E60[0];
+    for (i = 0; i < 4; i++, ball++)
+        ball->unk0 = 0;
+}
+
+struct Struct80038840
+{
+    u8 filler0[4];
+    void (*unk4)(struct Struct80038840 *);
+    u32 unk8;
+    u32 unkC;
+};
+
+extern void lbl_8003D928(struct Struct80038840 *);
+
+void func_80038840(void)
+{
+    struct Ball *r28;
+    s8 *r27;
+    int i;
+    int (*func)();
+    struct Struct80038840 *r23;
+    int r22;
+    Func802F20EC bgfunc;
+    int unused;
+
+#ifdef NONMATCHING
+    func = NULL;  //! func may used uninitialized.
+#endif
+
+    if (dipSwitches & DIP_OLD_BALL)
+    {
+        func = backgroundInfo.unk7C;
+        if (gameMode == MD_GAME && modeCtrl.unk28 == 1 && modeCtrl.unk24 > 3)
+            func = NULL;
+    }
+
+    r27 = spritePoolInfo.unkC;
+    r28 = &lbl_80205E60[0];
+    for (i = 0; i < spritePoolInfo.unk8; i++, r28++, r27++)
+    {
+        if (*r27 == 0 || *r27 == 4)
+            continue;
+        if (r28->unk94 & (1<<(31-0x1B)))
+            continue;
+        if ((lbl_801EEC90.unk0 & (1<<(31-0x1D)))
+         && func_8000E4D0(&r28->unk4) < 0.0f)
+            continue;
+        if (!(dipSwitches & DIP_OLD_BALL))
+        {
+            mathutil_mtxA_from_mtxB();
+            r22 = func_80085698(&r28->unk4);
+            r23 = (void *)func_80085B88(16);
+            r23->unk4 = lbl_8003D928;
+            r23->unk8 = func_800223D0();
+            r23->unkC = i;
+            func_80085B78(r22, r23);
+            continue;
+        }
+
+        func_8000E1A4(r28->unk15C[currentCameraStructPtr->unk204]);
+        mathutil_mtxA_from_mtxB();
+        mathutil_mtxA_mult_right(r28->unk30);
+        mathutil_mtxA_scale_s(r28->unk74);
+        func_80030BA8(r28->unk74);
+
+        if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
+        {
+            u32 *var = &lbl_802F1B04[r28->unk66];
+            //func_80033B14(lbl_802F1B04_->unk4[r28->unk66], 0.3f);
+            func_80033B14(var[1], 0.3f);
+        }
+        else
+        {
+            u32 *var = &lbl_802F1B04[r28->unk66];
+            //func_80033AD4(lbl_802F1B04_->unk4[r28->unk66]);
+            func_80033AD4(var[1]);
+        }
+
+        if (func != NULL)
+        {
+            mathutil_mtxA_push();
+            mathutil_mtxA_from_mtx(r28->unk30);
+            //if (r25(lbl_802F1B04->unkE0, lbl_802F1B4C) != 0)
+            if (func(lbl_802F1B04[0x38], lbl_802F1B4C) != 0)
+            {
+                mathutil_mtxA_pop();
+                func_80031784(lbl_802F1B4C);
+            }
+            else
+                mathutil_mtxA_pop();
+        }
+
+        bgfunc = backgroundInfo.unk94;
+        if (bgfunc != NULL)
+        {
+            g_avdisp_set_some_func_1(bgfunc);
+            func_8009AA24(mathutilData->mtxA, 0);
+            func_8008E500(lbl_802F1CC8->modelEntries[0x14].modelOffset);
+            g_avdisp_set_some_func_1(NULL);
+        }
+
+        mathutil_mtxA_push();
+        mathutil_mtxA_sq_from_identity();
+        mathutil_mtxA_scale_s(r28->unk74);
+        func_80030BA8(r28->unk74);
+        //func_80033AD4(lbl_802F1B04->unkA0);
+        func_80033AD4(lbl_802F1B04[0x28]);
+        mathutil_mtxA_pop();
+
+        func_8000E3BC();
+    }
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -703,7 +1092,16 @@ const float lbl_802F3408 = -0.12f;
 const float lbl_802F340C = 0.05f;
 const float lbl_802F3410 = -1.0f;
 const float lbl_802F3414 = 0.99f;
-*/
 const float lbl_802F341C = 0.75f;
 const double lbl_802F3420 = 0.5;
 const double lbl_802F3428 = 0.25;
+const float lbl_802F3430 = -0.9998f;
+const float lbl_802F3434 = 0.9998f;
+const float lbl_802F3438 = 0.3f;
+*/
+const float lbl_802F343C = -15.0f;
+const float lbl_802F3440 = 0.1f;
+const float lbl_802F3444 = 0.025f;
+const float lbl_802F3448 = 5.0f;
+const float lbl_802F344C = 1.4f;
+const double lbl_802F3450 = 0.2;

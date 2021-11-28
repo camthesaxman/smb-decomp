@@ -60,33 +60,6 @@ struct UnkStruct4
     u8 unk40[100];  // What type is this?
 };
 
-typedef u32 (*Func802F20F0)();
-
-struct UnkStruct17
-{
-    u8 filler0[4];
-    void (*unk4)(struct UnkStruct17 *);
-    void *unk8;
-    Mtx unkC;
-    void *unk3C;
-    struct GMAMeshHeader *unk40;
-    u32 unk44;
-    u32 unk48;
-    float unk4C;
-    Func802F20EC unk50;
-    Func802F20F0 unk54;
-    u8 unk58;
-    u8 unk59;
-    u32 unk5C;
-    u8 unk60;
-    u8 unk61;
-    u8 unk62;
-    Mtx *unk64;
-    GXColor unk68;
-    GXColor unk6C;
-    u32 unk70;
-};
-
 char *invalidModelName = "Invalid Model";
 
 // .sbss

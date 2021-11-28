@@ -223,10 +223,7 @@ extern struct
     s16 unkE;
 } lbl_801EED04;
 
-//extern u8 lbl_802F1B04[0xB4];
-extern u32 *lbl_802F1B04;
 extern u32 lbl_802F1BB8;
-
 extern float lbl_80173FD0[];
 
 /*
@@ -257,8 +254,6 @@ extern struct Struct802F1CC8
     struct Struct802F1CC8_child *unk8;
 } *lbl_802F1CC8;
 */
-
-extern struct GMA *lbl_802F1CC8;
 
 extern struct Struct80173FA8
 {

@@ -1618,7 +1618,6 @@ lbl_80038088:
 /* 8003809C 00033FBC  38 21 00 68 */	addi r1, r1, 0x68
 /* 800380A0 00033FC0  7C 08 03 A6 */	mtlr r0
 /* 800380A4 00033FC4  4E 80 00 20 */	blr
-.endif
 
 .global func_800380A8
 func_800380A8:
@@ -1664,6 +1663,7 @@ func_800380A8:
 /* 80038144 00034064  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 80038148 00034068  38 21 00 28 */	addi r1, r1, 0x28
 /* 8003814C 0003406C  4E 80 00 20 */	blr
+
 .global ev_ball_main
 ev_ball_main:
 /* 80038150 00034070  7C 08 02 A6 */	mflr r0
@@ -1918,7 +1918,7 @@ lbl_800384D0:
 /* 800384D0 000343F0  2C 00 00 07 */	cmpwi r0, 7
 /* 800384D4 000343F4  41 82 00 08 */	beq lbl_800384DC
 /* 800384D8 000343F8  48 00 00 24 */	b lbl_800384FC
-lbl_800384DC:
+lbl_800384DC:  ;# 5 7 0
 /* 800384DC 000343FC  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800384E0 00034400  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800384E4 00034404  80 03 00 2C */	lwz r0, 0x2c(r3)
@@ -1927,7 +1927,7 @@ lbl_800384DC:
 /* 800384F0 00034410  38 03 00 40 */	addi r0, r3, 0x40
 /* 800384F4 00034414  90 0D 9D 38 */	stw r0, currentBallStructPtr@sda21(r13)
 /* 800384F8 00034418  48 00 00 0C */	b lbl_80038504
-lbl_800384FC:
+lbl_800384FC:  ;# default
 /* 800384FC 0003441C  38 1E 00 40 */	addi r0, r30, 0x40
 /* 80038500 00034420  90 0D 9D 38 */	stw r0, currentBallStructPtr@sda21(r13)
 lbl_80038504:
@@ -1941,7 +1941,9 @@ lbl_80038508:
 /* 8003851C 0003443C  CB A1 00 40 */	lfd f29, 0x40(r1)
 /* 80038520 00034440  38 21 00 58 */	addi r1, r1, 0x58
 /* 80038524 00034444  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global func_80038528
 func_80038528:
 /* 80038528 00034448  7C 08 02 A6 */	mflr r0
@@ -2116,6 +2118,7 @@ lbl_800387A0:
 /* 800387B0 000346D0  83 C1 00 70 */	lwz r30, 0x70(r1)
 /* 800387B4 000346D4  38 21 00 80 */	addi r1, r1, 0x80
 /* 800387B8 000346D8  4E 80 00 20 */	blr
+
 .global ev_ball_dest
 ev_ball_dest:
 /* 800387BC 000346DC  7C 08 02 A6 */	mflr r0
@@ -2153,7 +2156,6 @@ lbl_80038800:
 /* 80038834 00034754  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 80038838 00034758  38 21 00 18 */	addi r1, r1, 0x18
 /* 8003883C 0003475C  4E 80 00 20 */	blr
-
 .global func_80038840
 func_80038840:
 /* 80038840 00034760  7C 08 02 A6 */	mflr r0
@@ -2324,7 +2326,7 @@ lbl_80038A90:
 /* 80038AA8 000349C8  38 21 00 40 */	addi r1, r1, 0x40
 /* 80038AAC 000349CC  7C 08 03 A6 */	mtlr r0
 /* 80038AB0 000349D0  4E 80 00 20 */	blr
-
+.endif
 .global func_80038AB4
 func_80038AB4:
 /* 80038AB4 000349D4  7C 08 02 A6 */	mflr r0
@@ -7639,7 +7641,7 @@ lbl_8003D870:
 /* 8003D91C 0003983C  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003D920 00039840  7C 08 03 A6 */	mtlr r0
 /* 8003D924 00039844  4E 80 00 20 */	blr
-lbl_8003D928:
+glabel lbl_8003D928
 /* 8003D928 00039848  7C 08 02 A6 */	mflr r0
 /* 8003D92C 0003984C  3C 80 80 20 */	lis r4, lbl_80205E60@ha
 /* 8003D930 00039850  90 01 00 04 */	stw r0, 4(r1)
@@ -8115,7 +8117,6 @@ lbl_802F3428:
 	# ROM: 0x1ECE48
 	.byte 0x3F, 0xD0, 0x00, 0x00
 	.4byte 0
-.endif
 
 .global lbl_802F3430
 lbl_802F3430:
@@ -8162,6 +8163,7 @@ lbl_802F3450:
 	# ROM: 0x1ECE70
 	.byte 0x3F, 0xC9, 0x99, 0x99
 	.byte 0x99, 0x99, 0x99, 0x9A
+.endif
 
 .global lbl_802F3458
 lbl_802F3458:
@@ -8648,6 +8650,9 @@ lbl_80117878:
 	.byte 0x3F, 0x80, 0x00, 0x00
 	.4byte 0
 .endif
+
+.if 0
+glabel lbl_80117884
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -8659,6 +8664,7 @@ lbl_80117890:
 	.4byte 0
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00
+.endif
 
 .global lbl_801178A0
 lbl_801178A0:
@@ -8829,3 +8835,41 @@ lbl_801179C4:
 	.byte 0x00, 0x54, 0x00, 0x55
 	.byte 0x00, 0x56, 0x00, 0x57
 	.4byte 0
+
+.section .data
+
+.if 1
+# ball.c
+.global lbl_801B7C84
+lbl_801B7C84:
+	# ROM: 0x1B4C84
+	.4byte func_800395B8  ;# ptr
+	.4byte func_800395DC  ;# ptr
+	.4byte ball_sub_ready_main  ;# ptr
+	.4byte func_80039794  ;# ptr
+	.4byte func_80039974  ;# ptr
+	.4byte func_800399D4  ;# ptr
+	.4byte ball_sub_goal_main  ;# ptr
+	.4byte func_80039B68  ;# ptr
+	.4byte ball_sub_replay_main  ;# ptr
+	.4byte func_80039B68  ;# ptr
+	.4byte ball_sub_replay_main  ;# ptr
+	.4byte func_80039FB0  ;# ptr
+	.4byte func_8003A180  ;# ptr
+	.4byte func_8003A184  ;# ptr
+	.4byte func_8003A354  ;# ptr
+	.4byte func_8003A358  ;# ptr
+	.4byte func_8003A734  ;# ptr
+	.4byte func_8003A654  ;# ptr
+	.4byte func_8003A908  ;# ptr
+	.4byte func_8003AA6C  ;# ptr
+	.4byte func_8003AB08  ;# ptr
+	.4byte ball_sub_21  ;# ptr
+	.4byte func_8003B0C4  ;# ptr
+	.4byte func_8003B0C4  ;# ptr
+	.4byte func_8003B0C4  ;# ptr
+	.4byte func_8003B0C4  ;# ptr
+	.4byte func_8003B0C4  ;# ptr
+	.4byte func_8003B0F4  ;# ptr
+	.4byte func_8003B268  ;# ptr
+.endif

@@ -398,11 +398,6 @@ extern struct TPL *decodedBgTpl;
 extern struct GMA *decodedBgGma;
 extern u32 lbl_802F1AFC;
 extern u32 lbl_802F1AE8;
-extern struct
-{
-    u32 unk0;
-    u8 filler4[9-4];
-} lbl_801EEC90;
 
 void ev_background_init(void)
 {
@@ -426,7 +421,7 @@ void ev_background_init(void)
     backgroundInfo.unk7C = lbl_801B9740[backgroundInfo.bgId];
     backgroundInfo.unk8C = 0;
     backgroundInfo.unk90 = 0;
-    backgroundInfo.unk94 = 0;
+    backgroundInfo.unk94 = NULL;
     if (backgroundInfo.bgId > 0)
     {
         int temp = rand();
@@ -458,7 +453,7 @@ void ev_background_dest(void)
     backgroundInfo.unk7C = 0;
     backgroundInfo.unk8C = 0;
     backgroundInfo.unk90 = 0;
-    backgroundInfo.unk94 = 0;
+    backgroundInfo.unk94 = NULL;
 }
 
 void func_80054FF0(void)

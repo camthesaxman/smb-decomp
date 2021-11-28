@@ -637,6 +637,7 @@ struct Struct801B8794
 };
 */
 
+/*
 struct Struct802F1B04
 {
     void *unk14;  // pointer to some struct
@@ -645,6 +646,7 @@ struct Struct802F1B04
 };
 
 extern struct Struct802F1B04 *lbl_802F1B04;
+*/
 
 void **lbl_801B8794[] = {(void **)&lbl_802F1B00, (void **)&lbl_802F1B04, NULL};
 
