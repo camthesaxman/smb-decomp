@@ -17,5 +17,6 @@
 #include <dolphin/GXCommandList.h>
 #include <dolphin/GXBump.h>
 #include <dolphin/GXFrameBuffer.h>
+#include <dolphin/GXGet.h>
 
 #endif

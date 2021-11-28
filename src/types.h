@@ -218,7 +218,7 @@ struct UnkStruct8005562C_child
 struct GMAModelHeader
 {
     u8 filler0[4];
-    u32 flags;
+    /*0x04*/ u32 flags;
     Vec unk8;
     float unk14;
     /*0x18*/ u16 numMaterials;
@@ -226,8 +226,8 @@ struct GMAModelHeader
     /*0x1C*/ u16 numLayer2Meshes;
     u8 unk1E;
     u8 filler1F[1];
-    u32 headerSize;
-    GXTexObj *texObjs;
+    /*0x20*/ u32 headerSize;
+    /*0x24*/ GXTexObj *texObjs;
     u8 unk28[10];
 };
 
@@ -375,7 +375,8 @@ struct Ball
     s16 unk12A;
     u8 filler12C[0x144-0x12C];
     u32 unk144;
-    u8 filler148[0x14B - 0x148];
+    u8 filler148[0x14A - 0x148];
+    u8 unk14A;
     u8 unk14B;
     u8 filler14C[2];
     s16 unk14E;
@@ -503,3 +504,20 @@ struct UnkStruct17
     GXColor unk6C;
     u32 unk70;
 };
+
+struct Struct80092B98
+{
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    Vec unk10;
+    float unk1C;
+    Vec unk20;
+    s16 unk2C;
+    u16 unk2E;
+    float unk30;
+    float unk34;
+    u32 unk38;
+    void *unk3C;
+};  // size = 0x40

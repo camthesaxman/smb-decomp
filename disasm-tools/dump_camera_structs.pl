@@ -18,7 +18,7 @@ sub u32 {
 }
 
 while ($line = <>) {
-    if ($line =~ /glabel lbl_80177264/) {
+    if ($line =~ /lbl_801B7CF8:/) {
         print("got label\n");
         $gotLabel = 1;
         next;
@@ -62,7 +62,7 @@ while ($line = <>) {
         @b = ();
     }
     
-    if ($line =~ /lbl_801772AC:/) {
+    if ($line =~ /lbl_801B7EC4/) {
         break;
     }
 }

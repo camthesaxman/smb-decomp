@@ -392,7 +392,8 @@ void func_8003765C(struct Ball_child *a)
     a->unk48 = (Vec){0.0f, 0.0f, 0.0f};
 }
 
-const float lbl_802F340C = 0.05f;  // probably from an inline function
+// needed here due to float constant ordering
+static float get_0_05(void) {return 0.05f;}
 
 void func_80037718(void)
 {
@@ -691,8 +692,60 @@ struct Ball_child *func_800380A8(int a, int b, void (*c)(struct Ball_child *, in
     return r30;
 }
 
-extern void (*lbl_801B7C84[])(struct Ball *);
-/*
+struct Struct801B7B78
+{
+    s16 unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+};
+
+struct Struct801B7B78 lbl_801B7B78[] =
+{
+    {0, 0.5f, 0.009799992f, 0.5f},
+    {6, 0.5f, 0.02177776f, 0.1f},
+};
+
+// not really sure what type this is. first element is 32-bit, though
+u32 lbl_801B7B98[][2] =  // + 0x20
+{
+    {0x0012005D, 0x005E0000},
+};
+
+// probably part of the above array?
+u32 lbl_801B7BA0[][2] =  // + 0x28
+{
+    {0x00110065, 0x00660000},
+};
+
+s16 lbl_801B7BA8[][9] =  // + 0x30
+{
+    {0x31, 0xB6, 0xB7, 0x32, 0xB8, 0x5F, 0x39, 0xB9, 0x60},
+    {0x02, 0xB2, 0xB3, 0x03, 0xB4, 0xB5, 0x3F, 0xBB, 0xBC},
+    {0x45, 0xBD, 0xBE, 0x46, 0x62, 0xBF, 0x3B, 0x61, 0xBA},
+    {0x15, 0x67, 0x68, 0x16, 0x69, 0x6A, 0x3D, 0x6B, 0x6C},
+    {0x2E, 0x2E, 0x2E, 0x2F, 0x2F, 0x2F, 0x41, 0x39, 0x39},
+    {0x36, 0x36, 0x36, 0x37, 0x37, 0x37, 0x3E, 0x39, 0x39},
+    {0x27, 0x27, 0x27, 0x28, 0x28, 0x28, 0x3A, 0x39, 0x39},
+    {0x05, 0x05, 0x05, 0x06, 0x06, 0x06, 0x40, 0x39, 0x39},
+    {0x33, 0x33, 0x33, 0x34, 0x34, 0x34, 0x42, 0x39, 0x39},
+    {0x47, 0x47, 0x47, 0x48, 0x48, 0x48, 0x3C, 0x39, 0x39},
+};
+
+u32 lbl_801B7C5C[] =  // + 0xE4
+{
+    0x475F5FFF,
+    0x5F5347FF,
+    0x4D475FFF,
+    0x604860FF,
+    0x4D5F47FF,
+    0x5F4D47FF,
+    0x47505FFF,
+    0x595F47FF,
+    0x475F50FF,
+    0x59475FFF,
+};
+
 void (*lbl_801B7C84[])(struct Ball *) =
 {
     func_800395B8,
@@ -725,7 +778,57 @@ void (*lbl_801B7C84[])(struct Ball *) =
     func_8003B0F4,
     func_8003B268,
 };
-*/
+
+struct Color3f
+{
+    float r, g, b;
+};
+
+// hmm...
+struct Color3f lbl_801B7CF8[] =  // + 0x180
+{
+    {1, 0, 0},
+    {0.175f, 0.398f, 1},
+    {0.986f, 1, 0.175f},
+    {0.175f, 1, 0.342f},
+    {3.643376007e-44, 2, 15},
+    {0.1f, 5.605193857e-45, 2.802596929e-45},
+    {2.942726775e-44, 2, 15},
+    {0.1f, 7.006492322e-45, 4.203895393e-45},
+    {3.783505854e-44, 1, 5},
+    {0.05f, 0, 0},
+    {3.082856622e-44, 1, 5},
+    {0.05f, 0, 0},
+    {3.363116314e-44, 3, 70},
+    {0.05f, 8.407790786e-45, 0},
+    {2.662467082e-44, 3, 70},
+    {0.05f, 9.80908925e-45, 0},
+    {3.222986468e-44, 2, 50},
+    {0.05f, 0, 0},
+    {2.522337236e-44, 2, 50},
+    {0.05f, 0, 0},
+    {7.006492322e-45, 8, 20},
+    {0.28f, 1.261168618e-44, 0},
+    {4.203895393e-45, 2, 20},
+    {0.1f, 0, 0},
+    {1.401298464e-44, 1, 40},
+    {0.05f, 1.541428311e-44, 0},
+    {1.121038771e-44, 2, 40},
+    {0.05f, 1.681558157e-44, 0},
+    {9.80908925e-45, 2, 20},
+    {0.05f, 0, 0},
+    {2.101947696e-44, 1, 40},
+    {0.05f, 1.96181785e-44, 0},
+    {1.821688004e-44, 2, 40},
+    {0.05f, 2.101947696e-44, 0},
+    {1.681558157e-44, 2, 20},
+    {0.05f, 0, 0},
+    {2.242077543e-44, 4, 80},
+    {0.15f, 0, 0},
+};
+
+u8 lbl_801B7EC0[] = {1, 0, 0, 0};  // + 0x348
+GXTexObj lbl_801B7EC4 = {0};  // + 0x34C
 
 static inline float sq_mag(register Vec *vec)
 {
@@ -1065,6 +1168,120 @@ void func_80038840(void)
     }
 }
 
+void func_80038AB4(void)
+{
+    struct Struct80092B98 sp18;
+    Vec spC;
+    int unused;
+    GXTexObj *tex1;
+    GXTexObj *tex2;
+    int r29;
+    struct Ball *ball;
+    s8 *r26;
+    int i;
+
+    r29 = lbl_801EED2C.unk4 & (1<<(31-0x17));
+    if (r29 != 0 && (lbl_801EED2C.unk4 & (1<<(31-0x14))))
+    {
+        func_80038DF4();
+        return;
+    }
+
+    switch (modeCtrl.unk28)
+    {
+    case 4:
+        if (backgroundInfo.bgId == BG_TYPE_SPA || backgroundInfo.bgId == BG_TYPE_ICE2)
+        {
+            if (modeCtrl.unk24 > 3)
+            {
+                func_80038DF4();
+                return;
+            }
+        }
+        break;
+    case 5:
+        return;
+    default:
+        if (modeCtrl.unk30 > 2)
+        {
+            func_80038DF4();
+            return;
+        }
+        break;
+    }
+
+    mathutil_mtxA_from_rotate_y(lbl_801F0614.unk42);
+    mathutil_mtxA_rotate_x(lbl_801F0614.unk40);
+    spC.x = 0.0f;
+    spC.y = 0.0f;
+    spC.z = -15.0f;
+    mathutil_mtxA_tf_vec(&spC, &spC);
+
+    switch (modeCtrl.unk28)
+    {
+    case 1:
+        sp18.unk2C = 2;
+        sp18.unk30 = 0.1f;
+        sp18.unk34 = 0.2f;
+        break;
+    default:
+        sp18.unk2C = 0x22;
+        sp18.unk30 = 0.025f;
+        sp18.unk34 = get_0_05(); //0.05f;
+        break;
+    }
+
+    sp18.unk20.x = 0.0f;
+    sp18.unk20.y = 1.0f;
+    sp18.unk20.z = 0.0f;
+    mathutil_mtxA_tf_vec(&sp18.unk20, &sp18.unk20);
+
+    tex1 = lbl_802F1CC8->modelEntries[0x5A].modelOffset->texObjs;
+    GXInitTexObj((tex2 = &lbl_801B7EC4),
+        GXGetTexObjData(tex1),
+        GXGetTexObjWidth(tex1),
+        GXGetTexObjHeight(tex1),
+        GXGetTexObjFmt(tex1),
+        0,
+        0,
+        GXGetTexObjMipMap(tex1));
+    GXInitTexObjLOD(tex2, 1, 1, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+
+    sp18.unk3C = lbl_801B7EC0;
+
+    r26 = spritePoolInfo.unkC;
+    ball = &lbl_80205E60[0];
+    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r26++)
+    {
+        if (*r26 == 0 || *r26 == 4)
+            continue;
+        if (ball->unk94 & (1<<(31-0x1B)))
+            continue;
+        sp18.unk38 = lbl_801B7C5C[ball->unk14A];
+        sp18.unk0 = spC.x + ball->unk4.x;
+        sp18.unk4 = spC.y + ball->unk4.y;
+        sp18.unk8 = spC.z + ball->unk4.z;
+        sp18.unkC = 5.0f;
+        sp18.unk10 = ball->unk4;
+        sp18.unk1C = ball->unk68 * 1.4f;
+        if (r29 != 0)
+            sp18.unk2E = 0xFFFF;
+        else
+        {
+            switch (modeCtrl.unk28)
+            {
+            case 4:
+            case 8:
+                sp18.unk2E = 0xFFFF;
+                break;
+            default:
+                sp18.unk2E = 1 << ball->unk2E;
+                break;
+            }
+        }
+        func_80092B98(&sp18);
+    }
+}
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -1098,10 +1315,10 @@ const double lbl_802F3428 = 0.25;
 const float lbl_802F3430 = -0.9998f;
 const float lbl_802F3434 = 0.9998f;
 const float lbl_802F3438 = 0.3f;
-*/
 const float lbl_802F343C = -15.0f;
 const float lbl_802F3440 = 0.1f;
 const float lbl_802F3444 = 0.025f;
 const float lbl_802F3448 = 5.0f;
 const float lbl_802F344C = 1.4f;
+*/
 const double lbl_802F3450 = 0.2;
