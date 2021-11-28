@@ -336,23 +336,27 @@ struct Ball_child  // possibly Ball_child?
 struct Ball
 {
     u8 unk0;
-    u8 filler1[0x2];
+    u8 filler1[1];
+    u8 unk2;  // lives
     s8 unk3;
     Vec unk4;
     u8 filler10[0x1C - 0x10];
     Vec unk1C;
     u8 filler28[0x2A - 0x28];
     s16 unk2A;
-    u8 filler2C[2];
+    s16 unk2C;
     s8 unk2E;
     s8 unk2F;
     Mtx unk30;
-    u8 filler60[0x66-0x60];
+    s16 unk60;
+    s16 unk62;
+    s16 unk64;
     s16 unk66;
     float unk68;
     u8 filler6C[0x74-0x6C];
     float unk74;
-    u8 filler78[0x80-0x78];
+    s32 unk78;  // bananas
+    u32 unk7C;
     s32 unk80;
     u8 filler84[0x92-0x84];
     s16 unk92;
@@ -367,13 +371,17 @@ struct Ball
     u32 unk100;
     Vec unk104;
     float unk110;
-    u8 filler114[0x120-0x114];
+    Vec unk114;
     u32 unk120;
     u8 filler124[2];
     s16 unk126;
-    u8 filler128[2];
+    s16 unk128;
     s16 unk12A;
-    u8 filler12C[0x144-0x12C];
+    u8 filler12C[0x134-0x12C];
+    u32 unk134;
+    u8 filler138[4];
+    s32 unk13C;
+    u8 filler140[4];
     u32 unk144;
     u8 filler148[0x14A - 0x148];
     u8 unk14A;
@@ -472,9 +480,12 @@ struct Struct8009F7F0  // replay info?
 struct Struct8003FB48
 {
     u32 unk0;
+    /*
     u8 filler4[4];
     float unk8;
     u8 fillerC[4];
+    */
+    Vec unk4;
     Vec unk10;
 };
 
@@ -518,6 +529,20 @@ struct Struct80092B98
     u16 unk2E;
     float unk30;
     float unk34;
-    u32 unk38;
+    GXColor unk38;
     void *unk3C;
 };  // size = 0x40
+
+struct Struct8009492C
+{
+    Vec unk0;
+    S16Vec unkC;
+    float unk14;
+    float unk18;
+    float unk1C;
+    float unk20;
+    float unk24;
+    struct GMAModelHeader *unk28;
+    GXColor unk2C;
+    u8 filler30[0x38-0x30];
+};

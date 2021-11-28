@@ -1,4 +1,4 @@
-#include <stddef.h>
+#include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
@@ -156,7 +156,7 @@ void func_80036EB8(struct Ball_child *a)
     sp48.z = 0.0f;
     mathutil_mtxA_tf_vec(&sp48, &sp48);
     r29 = -mathutil_atan2(sp48.z, sp48.x) - 32768;
-    func_8003FB48(&r31->unk4, &sp70, 0);
+    func_8003FB48(&r31->unk4, &sp70, NULL);
     mathutil_mtxA_from_translate(&r31->unk4);
     mathutil_mtxA_rotate_y(r29);
     r31->unk94 &= ~(1<<(31-0x1E));
@@ -165,9 +165,9 @@ void func_80036EB8(struct Ball_child *a)
     {
         mathutil_mtxA_push();
         mathutil_mtxA_tf_point(&spC[i], &sp48);
-        func_8003FB48(&sp48, &sp54, 0);
+        func_8003FB48(&sp48, &sp54, NULL);
         mathutil_mtxA_pop();
-        if (sp54.unk0 == 0 || sp54.unk8 < sp70.unk8 - 1.0)
+        if (sp54.unk0 == 0 || sp54.unk4.y < sp70.unk4.y - 1.0)
         {
             r31->unk94 |= 2;
             sp3C.x = sp48.x;
@@ -443,7 +443,7 @@ void lbl_8003781C(struct Ball_child *a, int b)
     if (lbl_802F1EE0 & 0xA)
         return;
 
-    func_8003FB48(&r29->unk4, &sp50, 0);
+    func_8003FB48(&r29->unk4, &sp50, NULL);
     a->unk14 &= -20;
     if (!(sp50.unk0 & 1) && r29->unk1C.y < -0.16203702986240387f)
     {
@@ -732,18 +732,18 @@ s16 lbl_801B7BA8[][9] =  // + 0x30
     {0x47, 0x47, 0x47, 0x48, 0x48, 0x48, 0x3C, 0x39, 0x39},
 };
 
-u32 lbl_801B7C5C[] =  // + 0xE4
+GXColor lbl_801B7C5C[] =  // + 0xE4
 {
-    0x475F5FFF,
-    0x5F5347FF,
-    0x4D475FFF,
-    0x604860FF,
-    0x4D5F47FF,
-    0x5F4D47FF,
-    0x47505FFF,
-    0x595F47FF,
-    0x475F50FF,
-    0x59475FFF,
+    {0x47, 0x5F, 0x5F, 0xFF},
+    {0x5F, 0x53, 0x47, 0xFF},
+    {0x4D, 0x47, 0x5F, 0xFF},
+    {0x60, 0x48, 0x60, 0xFF},
+    {0x4D, 0x5F, 0x47, 0xFF},
+    {0x5F, 0x4D, 0x47, 0xFF},
+    {0x47, 0x50, 0x5F, 0xFF},
+    {0x59, 0x5F, 0x47, 0xFF},
+    {0x47, 0x5F, 0x50, 0xFF},
+    {0x59, 0x47, 0x5F, 0xFF},
 };
 
 void (*lbl_801B7C84[])(struct Ball *) =
@@ -1227,7 +1227,7 @@ void func_80038AB4(void)
     default:
         sp18.unk2C = 0x22;
         sp18.unk30 = 0.025f;
-        sp18.unk34 = get_0_05(); //0.05f;
+        sp18.unk34 = get_0_05();  // 0.05f;
         break;
     }
 
@@ -1282,6 +1282,332 @@ void func_80038AB4(void)
         func_80092B98(&sp18);
     }
 }
+
+void func_80038DF4(void)
+{
+    struct Struct8009492C sp30;
+    struct Struct8003FB48 sp14;
+    Vec sp8;
+    struct Ball *r26;
+    s8 *r25;
+    int i;
+
+    sp30.unk20 = 0.025f;
+    sp30.unk24 = 0.05f;
+    sp30.unk28 = lbl_802F1CC8->modelEntries[0x4E].modelOffset;
+
+    r26 = &lbl_80205E60[0];
+    r25 = spritePoolInfo.unkC;
+    for (i = 0; i < spritePoolInfo.unk8; i++, r26++, r25++)
+    {
+        float f2;
+
+        if (*r25 == 0 || *r25 == 4)
+            continue;
+        if (r26->unk94 & (1<<(31-0x1B)))
+            continue;
+        if (func_8003FB48(&r26->unk4, &sp14, &sp8) == 0)
+            continue;
+        f2 = 1.0 - (r26->unk4.y - sp14.unk4.y) * 0.2;
+        if (f2 < 0.0f)
+            continue;
+
+        sp30.unk2C = lbl_801B7C5C[r26->unk14A];
+        sp30.unk2C.r *= f2;
+        sp30.unk2C.g *= f2;
+        sp30.unk2C.b *= f2;
+
+        sp30.unk14 = r26->unk68 * (1.0f + 2.0f * (1.0f - f2));
+        sp30.unk18 = sp30.unk14;
+        sp30.unk1C = sp30.unk14;
+
+        mathutil_vec_to_euler(&sp14.unk10, &sp30.unkC);
+        sp30.unkC.z = r26->unk2C;
+        sp30.unk0 = sp14.unk4;
+        func_8009492C(&sp30);
+    }
+}
+
+void give_bananas(int bananas)
+{
+    struct Ball *ball = currentBallStructPtr;
+
+    switch (modeCtrl.unk28)
+    {
+    case 0:
+        ball->unk78 += bananas;
+        if (ball->unk78 >= 100)
+        {
+            ball->unk2++;
+            ball->unk78 -= 100;
+            func_8007DEC8(0x78);
+            func_8002B5A4(0x2852);  // play 1-up sound?
+        }
+        break;
+    case 1:
+    case 2:
+        ball->unk78 += bananas;
+        if (ball->unk78 > 999)
+            ball->unk78 = 999;
+        break;
+    default:
+        ball->unk78 += bananas;
+        break;
+    }
+}
+
+static inline float vec_dot_prod(register Vec *a, register Vec *b)
+{
+#ifdef __MWERKS__
+    register float x1, y1, z1, x2, y2, z2;
+    asm
+    {
+        lfs x1, a->x
+        lfs x2, b->x
+        lfs y1, a->y
+        lfs y2, b->y
+        lfs z1, a->z
+        lfs z2, b->z
+        fmuls x2, x1, x2
+        fmadds x2, y1, y2, x2
+        fmadds x2, z1, z2, x2
+    }
+    return x2;
+#else
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+#endif
+}
+
+void func_800390C8(int a, Vec *b, float c)
+{
+    Vec sp50;
+    Vec sp44;
+    Mtx sp14;
+    int i;
+    struct Ball *r30;
+    s8 *r29;
+    int r28;
+
+    r30 = &lbl_80205E60[0];
+    r28 = currentBallStructPtr->unk2E;
+    r29 = spritePoolInfo.unkC;
+    lbl_802F1F0C = 0;
+
+    for (i = 0; i < 4; i++, r30++, r29++)
+    {
+        float f1;
+
+        if (*r29 == 0)
+            continue;
+        if (a == 4 && r28 == i)
+            continue;
+
+        sp50.x = b->x - r30->unk4.x;
+        sp50.y = b->y - r30->unk4.y;
+        sp50.z = b->z - r30->unk4.z;
+        f1 = mathutil_vec_normalize_len(&sp50);
+        if (f1 > 1.1920928955078125e-07f)
+            c /= f1;
+
+        if (r30->unk110 > c)
+            break;
+
+        if (r30->unk94 & 1)
+        {
+            sp44.x = -r30->unk114.x;
+            sp44.y = -r30->unk114.y;
+            sp44.z = -r30->unk114.z;
+        }
+        else
+        {
+            sp44.x = r30->unk1C.x;
+            sp44.y = r30->unk1C.y;
+            sp44.z = r30->unk1C.z;
+            if (sp44.y == 0.0)
+                sp44.y = 1.1920928955078125e-07f;
+            mathutil_vec_normalize_len(&sp44);
+        }
+
+        c *= (vec_dot_prod(&sp44, &sp50) + 0.5) * 0.75;
+        if (r30->unk110 > c)
+            break;
+
+        if (r30->unkFC != NULL)
+            mathutil_mtxA_from_quat(&r30->unkFC->unk60);
+
+        mathutil_mtxA_to_mtx(sp14);
+        sp44.x = -sp14[0][0];
+        sp44.y = -sp14[1][0];
+        sp44.z = -sp14[2][0];
+
+        c *= vec_dot_prod(&sp44, &sp50) + 0.5;
+        if (r30->unk110 < c)
+        {
+            r30->unk100 = a;
+            r30->unk104 = *b;
+            r30->unk110 = c;
+        }
+    }
+}
+
+#pragma force_active on
+
+// struct Ball?
+struct Struct80039320
+{
+    u8 filler0[0x20];
+    float unk20;
+};
+
+void unref_func_80039320(struct Ball *ball, struct Struct80039320 *b, int c)
+{
+    float f1;
+
+    if (ball->unk94 & (1<<(31-0xD)))
+    {
+        if (ball->unk13C < c)
+            ball->unk13C = c;
+        return;
+    }
+
+    ball->unk94 &= ~(3<<(31-0xE));
+    ball->unk94 |= 0x40000;
+    ball->unk13C = c;
+
+    f1 = ball->unk68 * 0.25f;
+    if (b != NULL)
+        b->unk20 += f1;
+    else
+        ball->unk1C.y += f1;
+}
+
+void unref_func_8003938C(struct Ball *ball, struct Struct80039320 *b, int c)
+{
+    float f1;
+
+    if (ball->unk94 & (1<<(31-0xE)))
+    {
+        if (ball->unk13C < c)
+            ball->unk13C = c;
+        return;
+    }
+
+    ball->unk94 &= ~(3<<(31-0xE));
+    ball->unk94 |= 0x20000;
+    ball->unk13C = c;
+
+    f1 = ball->unk68 * 0.125f;
+    if (b != NULL)
+        b->unk20 += f1;
+    else
+        ball->unk1C.y += f1;
+}
+
+void unref_func_800393F8(struct Ball *ball)
+{
+    ball->unk94 &= ~(3<<(31-0xE));
+    ball->unk13C = 0;
+}
+
+#pragma force_active off
+
+void func_80039410(struct Ball *ball)
+{
+    struct Ball backup;
+
+    backup.unkFC = ball->unkFC;
+    backup.unk2E = ball->unk2E;
+
+    memset(ball, 0, sizeof(*ball));
+
+    switch (modeCtrl.unk28)
+    {
+    default:
+        if (dipSwitches & (1<<(31-0xC)))
+            ball->unk2 = 0;
+        else
+            ball->unk2 = 3;
+        break;
+    case 1:
+    case 2:
+        ball->unk2 = 2;
+        break;
+    }
+
+    ball->unk78 = 0;
+    ball->unk134 = 0;
+    ball->unk7C = 0;
+    ball->unkFC = backup.unkFC;
+    ball->unk2E = backup.unk2E;
+    ball->unk126 = 0;
+    ball->unk128 = 0;
+}
+
+void func_800394C4(struct Ball *ball)
+{
+    struct Ball backup;
+
+    switch (modeCtrl.unk28)
+    {
+    case 2:
+        ball->unk78 = 0;
+        ball->unk7C = 0;
+        break;
+    case 1:
+        if (ball->unk94 & (1<<(31-8)))
+        {
+            ball->unk78 = ball->unk134;
+            ball->unk94 &= ~(1<<(31-8));
+        }
+        ball->unk134 = ball->unk78;
+        break;
+    }
+    //lbl_80039534
+
+    backup.unk2E = ball->unk2E;
+    backup.unk2 = ball->unk2;
+    backup.unk78 = ball->unk78;
+    backup.unk134 = ball->unk134;
+    backup.unk7C = ball->unk7C;
+    backup.unkFC = ball->unkFC;
+    backup.unk126 = ball->unk126;
+    backup.unk128 = ball->unk128;
+
+    memset(ball, 0, sizeof(*ball));
+
+    ball->unk2E = backup.unk2E;
+    ball->unk2 = backup.unk2;
+    ball->unk78 = backup.unk78;
+    ball->unk134 = backup.unk134;
+    ball->unk7C = backup.unk7C;
+    ball->unkFC = backup.unkFC;
+    ball->unk126 = backup.unk126;
+    ball->unk128 = backup.unk128;
+
+    func_8003C4A0(ball, 0);
+
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_to_mtx(ball->unk30);
+    mathutil_mtxA_to_mtx(ball->unkC8);
+}
+
+void func_800395B8(struct Ball *ball)
+{
+    ball->unk1C.x = 0.0f;
+    ball->unk1C.y = 0.0f;
+    ball->unk1C.z = 0.0f;
+
+    ball->unk60 = 0;
+    ball->unk62 = 0;
+    ball->unk64 = 0;
+}
+
+void func_800395DC(struct Ball *ball)
+{
+    func_80039410(ball);
+    ball_sub_ready_main(ball);
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -1320,5 +1646,12 @@ const float lbl_802F3440 = 0.1f;
 const float lbl_802F3444 = 0.025f;
 const float lbl_802F3448 = 5.0f;
 const float lbl_802F344C = 1.4f;
-*/
 const double lbl_802F3450 = 0.2;
+const float lbl_802F3458 = 2.0f;
+const float lbl_802F345C = 1.1920928955078125e-07f;
+const double lbl_802F3460 = 0.0;
+const double lbl_802F3468 = 0.75;
+const float lbl_802F3470 = 0.25f;
+const float lbl_802F3474 = 0.125f;
+* */
+const double lbl_802F3478 = 24.0;

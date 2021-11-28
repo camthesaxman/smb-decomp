@@ -1422,7 +1422,7 @@ extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;
 extern void (*lbl_802F1F10)(void);
 // extern ? minigameRelBallCallback;
-extern void *currentBallStructPtr;
+extern struct Ball *currentBallStructPtr;
 extern void *currentWorldStructPtr;
 // extern ? lbl_802F1F28;
 extern struct GMAModelHeader *lbl_802F1F2C;
