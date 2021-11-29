@@ -655,7 +655,7 @@ extern struct
 {
     u32 unk0[4];
     float unk10;
-    u32 unk14;
+    s32 unk14;
 } lbl_80250A68;
 // extern ? lbl_80250A80;
 // extern ? lbl_80250AA0;

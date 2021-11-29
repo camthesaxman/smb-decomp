@@ -1616,8 +1616,7 @@ void camera_func_4(struct Camera *camera, struct Ball *ball)
 void camera_func_5(struct Camera *camera, struct Ball *ball)
 {
     Vec sp30;
-    u8 unused[20];
-    Vec sp10;
+    struct Struct800496BC sp10;
     Vec *r29;
     float f31;
     float f3;
@@ -1644,17 +1643,17 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10,
         (0.75 + 0.25 * (rand() / 32767.0f)) * lbl_80250A68.unk10);
 
-    camera->eye.x = sp10.x + sp30.x;
-    camera->eye.y = sp10.y + sp30.y;
-    camera->eye.z = sp10.z + sp30.z;
+    camera->eye.x = sp10.unk0.x + sp30.x;
+    camera->eye.y = sp10.unk0.y + sp30.y;
+    camera->eye.z = sp10.unk0.z + sp30.z;
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, 0.0f);
 
     r29 = &sp30;
 
-    sp30.x = camera->eye.x - sp10.x;
-    sp30.y = camera->eye.y - sp10.y;
-    sp30.z = camera->eye.z - sp10.z;
+    sp30.x = camera->eye.x - sp10.unk0.x;
+    sp30.y = camera->eye.y - sp10.unk0.y;
+    sp30.z = camera->eye.z - sp10.unk0.z;
 
     f1 = 1.0f / mathutil_vec_mag(&sp30);
     f3_ = sp30.y;
@@ -1662,8 +1661,8 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     {
         sp30.y = 0.0f;
         mathutil_vec_set_len(r29, r29, 0.25881904509999998 * f3_);
-        camera->eye.x = sp10.x + sp30.x;
-        camera->eye.z = sp10.z + sp30.z;
+        camera->eye.x = sp10.unk0.x + sp30.x;
+        camera->eye.z = sp10.unk0.z + sp30.z;
     }
 
     camera->unk94.x *= 0.25;
@@ -1676,9 +1675,9 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
 
     f3 = 1.0 / f31;
 
-    camera->unk94.x += f3 * (sp10.x - ball->unk4.x);
-    camera->unk94.y += f3 * (sp10.y - ball->unk4.y);
-    camera->unk94.z += f3 * (sp10.z - ball->unk4.z);
+    camera->unk94.x += f3 * (sp10.unk0.x - ball->unk4.x);
+    camera->unk94.y += f3 * (sp10.unk0.y - ball->unk4.y);
+    camera->unk94.z += f3 * (sp10.unk0.z - ball->unk4.z);
 
     camera->lookAt.x = ball->unk4.x;
     camera->lookAt.y = ball->unk4.y;
@@ -1694,10 +1693,8 @@ void camera_func_6(struct Camera *camera, struct Ball *ball) {}
 void camera_func_7(struct Camera *camera, struct Ball *ball)
 {
     Vec sp50;
-    u8 unused2[20];
-    Vec sp30;
-    u8 unused[20];
-    Vec sp10;
+    struct Struct800496BC sp30;
+    struct Struct800496BC sp10;
     Vec *r29;
     float f31;
     float f1;
@@ -1724,17 +1721,17 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, f31);
 
-    camera->eye.x = sp30.x + sp50.x;
-    camera->eye.y = sp30.y + sp50.y;
-    camera->eye.z = sp30.z + sp50.z;
+    camera->eye.x = sp30.unk0.x + sp50.x;
+    camera->eye.y = sp30.unk0.y + sp50.y;
+    camera->eye.z = sp30.unk0.z + sp50.z;
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, 0.0f);
 
     r29 = &sp50;
 
-    sp50.x = camera->eye.x - sp30.x;
-    sp50.y = camera->eye.y - sp30.y;
-    sp50.z = camera->eye.z - sp30.z;
+    sp50.x = camera->eye.x - sp30.unk0.x;
+    sp50.y = camera->eye.y - sp30.unk0.y;
+    sp50.z = camera->eye.z - sp30.unk0.z;
 
     f1 = 1.0f / mathutil_vec_mag(&sp50);
     f3_ = sp50.y;
@@ -1742,8 +1739,8 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     {
         sp50.y = 0.0f;
         mathutil_vec_set_len(r29, r29, 0.25881904509999998 * f3_);
-        camera->eye.x = sp30.x + sp50.x;
-        camera->eye.z = sp30.z + sp50.z;
+        camera->eye.x = sp30.unk0.x + sp50.x;
+        camera->eye.z = sp30.unk0.z + sp50.z;
     }
 
     camera->unk94.x *= 0.1;
@@ -1753,9 +1750,9 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, f31);
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, 1.0 + f31);
 
-    camera->unk94.x -= 0.6 * (sp30.x - sp10.x);
-    camera->unk94.y -= 0.6 * (sp30.y - sp10.y);
-    camera->unk94.z -= 0.6 * (sp30.z - sp10.z);
+    camera->unk94.x -= 0.6 * (sp30.unk0.x - sp10.unk0.x);
+    camera->unk94.y -= 0.6 * (sp30.unk0.y - sp10.unk0.y);
+    camera->unk94.z -= 0.6 * (sp30.unk0.z - sp10.unk0.z);
 
     camera->lookAt.x = ball->unk4.x;
     camera->lookAt.y = ball->unk4.y;
@@ -1921,8 +1918,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     struct DecodedStageLzPtr_child4 sp6C;
     Vec sp60;
     Vec sp54;
-    u8 filler[0x14];
-    Vec sp34;
+    struct Struct800496BC sp34;
     Vec sp28;
     Vec sp1C;
     Vec sp10;
@@ -1960,7 +1956,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_rotate_y(sp6C.unkE);
         mathutil_mtxA_rotate_x(sp6C.unkC);
         f31 = mathutil_vec_mag(&lbl_801F3A58.unk10);
-        if (mathutil_vec_distance(&sp6C.unk0, &sp34) > 2.5 && (rand() & 3) && sp34.y > sp6C.unk0.y)
+        if (mathutil_vec_distance(&sp6C.unk0, &sp34.unk0) > 2.5 && (rand() & 3) && sp34.unk0.y > sp6C.unk0.y)
         {
             double zero;
 
@@ -1973,9 +1969,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
             sp28.z = 0.0f;
             mathutil_mtxA_tf_point(&sp28, &sp28);
 
-            sp60.x = sp34.x - sp28.x;
-            sp60.y = sp34.y - sp28.y;
-            sp60.z = sp34.z - sp28.z;
+            sp60.x = sp34.unk0.x - sp28.x;
+            sp60.y = sp34.unk0.y - sp28.y;
+            sp60.z = sp34.unk0.z - sp28.z;
 
             zero = 0.0;
             if (__fabs(sp60.y) != zero)
@@ -1995,9 +1991,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
             else
                 mathutil_vec_set_len(&sp60, &sp60, 1.0 + rand() / 32767.0f);
 
-            camera->eye.x = sp34.x + sp60.x;
-            camera->eye.y = sp34.y + sp60.y;
-            camera->eye.z = sp34.z + sp60.z;
+            camera->eye.x = sp34.unk0.x + sp60.x;
+            camera->eye.y = sp34.unk0.y + sp60.y;
+            camera->eye.z = sp34.unk0.z + sp60.z;
         }
         else
         {
@@ -2829,10 +2825,8 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
 {
     u32 states[32];
     int statesLen;
-    u8 unused2[0x14];
-    Vec sp30;
-    u8 unused[0x14];
-    Vec sp10;
+    struct Struct800496BC sp30;
+    struct Struct800496BC sp10;
     struct Struct801EFB94 *r30;
     float f31;
     int nextState;
@@ -2860,14 +2854,14 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10);
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, 0.0f);
-    if (mathutil_vec_distance(&sp10, &sp30) < 16.0)
+    if (mathutil_vec_distance(&sp10.unk0, &sp30.unk0) < 16.0)
     {
         states[statesLen] = 7;
         statesLen++;
     }
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, lbl_80250A68.unk10 - 60.0);
-    if (mathutil_vec_distance(&sp10, &sp30) > 1.0 && lbl_80250A68.unk10 > 240.0)
+    if (mathutil_vec_distance(&sp10.unk0, &sp30.unk0) > 1.0 && lbl_80250A68.unk10 > 240.0)
     {
         states[statesLen] = 46;
         statesLen++;
@@ -2894,8 +2888,7 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
 
 void camera_func_demo(struct Camera *camera, struct Ball *ball)
 {
-    u8 unused[0x10];
-    Vec sp10;
+    struct Struct800496BC sp10;
     struct Struct801EFB94 *r31;
     u32 bvar;
 
@@ -2919,7 +2912,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
         if (!(camera->timerCurr & 0x1F))
         {
             func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10 - 60.0);
-            if (mathutil_vec_distance(&ball->unk4, &sp10) < 0.5)
+            if (mathutil_vec_distance(&ball->unk4, &sp10.unk0) < 0.5)
                 bvar = 1;
         }
         // fall through
@@ -2950,8 +2943,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
 
 void camera_func_46(struct Camera *camera, struct Ball *ball)
 {
-    u8 unused[0x10];
-    Vec sp10;
+    struct Struct800496BC sp10;
 
     if (lbl_802F1EE0 & 0xA)
         return;
@@ -2967,8 +2959,8 @@ void camera_func_46(struct Camera *camera, struct Ball *ball)
     camera->unk80 = camera->unk60 * ((rand() / 32767.0f) * 0.5 + 0.2);
     camera->unk80 = (camera->unk80 - camera->unk60) / lbl_80250A68.unk10;
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, camera->unk60);
-    camera->unk54 = sp10;
-    camera->eye = sp10;
+    camera->unk54 = sp10.unk0;
+    camera->eye = sp10.unk0;
     camera->unk74.x = 0.0f;
     camera->unk74.y = 0.0f;
     camera->unk74.z = 0.0f;
@@ -2981,8 +2973,7 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
 {
     Vec sp3C;
     Vec sp30;
-    u8 unused[0x14];
-    Vec sp10;
+    struct Struct800496BC sp10;
     float f1;
     float f31;
 
@@ -3019,13 +3010,13 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     mathutil_vec_set_len(&sp30, &sp30, camera->unk64 * 2.0 * f31);
     camera->unk74.x += (sp30.x - camera->unk74.x) * 0.05;
     camera->unk74.z += (sp30.z - camera->unk74.z) * 0.05;
-    camera->unk54.x = sp10.x;
-    camera->unk54.y = sp10.y;
-    camera->unk54.z = sp10.z;
+    camera->unk54.x = sp10.unk0.x;
+    camera->unk54.y = sp10.unk0.y;
+    camera->unk54.z = sp10.unk0.z;
 
-    camera->unk94.x = (sp10.x + camera->unk74.x - camera->eye.x) * 0.1;
-    camera->unk94.y = (sp10.y + camera->unk64 - camera->eye.y) * 0.1;
-    camera->unk94.z = (sp10.z + camera->unk74.z - camera->eye.z) * 0.1;
+    camera->unk94.x = (sp10.unk0.x + camera->unk74.x - camera->eye.x) * 0.1;
+    camera->unk94.y = (sp10.unk0.y + camera->unk64 - camera->eye.y) * 0.1;
+    camera->unk94.z = (sp10.unk0.z + camera->unk74.z - camera->eye.z) * 0.1;
 
     camera->eye.x += camera->unk94.x;
     camera->eye.y += camera->unk94.y;

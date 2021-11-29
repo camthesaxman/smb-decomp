@@ -337,12 +337,12 @@ struct Ball
 {
     u8 unk0;
     u8 filler1[1];
-    u8 unk2;  // lives
+    s8 unk2;  // lives
     s8 unk3;
     Vec unk4;
-    u8 filler10[0x1C - 0x10];
+    Vec unk10;
     Vec unk1C;
-    u8 filler28[0x2A - 0x28];
+    s16 unk28;
     s16 unk2A;
     s16 unk2C;
     s8 unk2E;
@@ -353,7 +353,8 @@ struct Ball
     s16 unk64;
     s16 unk66;
     float unk68;
-    u8 filler6C[0x74-0x6C];
+    float unk6C;
+    u8 filler70[0x70-0x6C];
     float unk74;
     s32 unk78;  // bananas
     u32 unk7C;
@@ -361,7 +362,7 @@ struct Ball
     u8 filler84[0x92-0x84];
     s16 unk92;
     u32 unk94;
-    u8 filler98[0xA8-0x98];
+    Quaternion unk98;
     Quaternion unkA8;
     Vec unkB8;
     float unkC4;
@@ -373,11 +374,12 @@ struct Ball
     float unk110;
     Vec unk114;
     u32 unk120;
-    u8 filler124[2];
+    s16 unk124;
     s16 unk126;
     s16 unk128;
     s16 unk12A;
-    u8 filler12C[0x134-0x12C];
+    u8 filler12C[0x130-0x12C];
+    float unk130;
     u32 unk134;
     u8 filler138[4];
     s32 unk13C;
@@ -428,7 +430,9 @@ struct World
 {
     s16 unk0;
     s16 unk2;
-    u8 filler4[0x40-0x4];
+    u8 filler4[0x20-0x4];
+    u16 unk20;
+    u8 filler22[0x40-0x22];
 };  // size = 0x40
 
 struct SpritePoolInfo
@@ -546,3 +550,25 @@ struct Struct8009492C
     GXColor unk2C;
     u8 filler30[0x38-0x30];
 };
+
+struct Struct80039974
+{
+    u32 unk0;
+    u8 filler4[0x44-0x4];
+    Vec unk44;
+    s32 unk50;
+    u8 filler54[8];
+};
+
+struct Struct800496BC
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+    s16 unk14;
+    s16 unk16;
+    u32 unk18;
+    float unk1C;
+};  // size = 0x20

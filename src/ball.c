@@ -1,4 +1,6 @@
+#include <stdlib.h>
 #include <string.h>
+
 #include <dolphin.h>
 
 #include "global.h"
@@ -1523,7 +1525,7 @@ void func_80039410(struct Ball *ball)
     switch (modeCtrl.unk28)
     {
     default:
-        if (dipSwitches & (1<<(31-0xC)))
+        if (dipSwitches & DIP_SARU_0)
             ball->unk2 = 0;
         else
             ball->unk2 = 3;
@@ -1608,6 +1610,475 @@ void func_800395DC(struct Ball *ball)
     ball_sub_ready_main(ball);
 }
 
+void ball_sub_ready_main(struct Ball *ball)
+{
+    func_800394C4(ball);
+
+    ball->unk4.x = decodedStageLzPtr->unk10->unk0.x;
+    ball->unk4.y = decodedStageLzPtr->unk10->unk0.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
+    ball->unk4.z = decodedStageLzPtr->unk10->unk0.z;
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_to_mtx(ball->unk30);
+
+    ball->unk94 |= 0x10;
+    ball->unkFC->unk14 |= 0x20;
+    ball->unk3 = 0;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+}
+
+void func_80039794(struct Ball *ball)
+{
+    float f2;
+    float zero;
+    float f4;
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    f4 = modeCtrl.unk0;
+    f2 = (decodedStageLzPtr->unk10->unk0.y - ball->unk4.y) / f4;
+
+    ball->unk1C.x = (zero = 0.0f);  // fake match
+    ball->unk1C.y = (ball->unk6C * f4) * 0.5 + f2;
+    ball->unk1C.z = zero;
+
+    ball->unk28 = 0x2000;
+    ball->unk2A = decodedStageLzPtr->unk10->unkE - 16384;
+    ball->unk2C = 0;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_rotate_y(ball->unk2A);
+    mathutil_mtxA_rotate_x(ball->unk28);
+    mathutil_mtxA_rotate_z(ball->unk2C);
+    mathutil_mtxA_to_mtx(ball->unk30);
+    mathutil_mtxA_to_mtx(ball->unkC8);
+
+    ball->unk94 &= ~(1<<(31-0x1B));
+    ball->unk94 |= 0x4000;
+    if (ball->unkFC != NULL)
+        ball->unkFC->unk14 &= ~(1<<(31-0x1A));
+    func_8002B5A4(0x1E);
+    ball->unk3 = 4;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unk98 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    mathutil_mtxA_to_quat(&ball->unkA8);
+}
+
+void func_80039974(struct Ball *ball)
+{
+    struct Struct80039974 spC;
+
+    handle_ball_linear_kinematics(ball, &spC, 0);
+    handle_ball_rotational_kinematics(ball, &spC, 0);
+    update_ball_ape_transform(ball, &spC, 0);
+    ball->unk80++;
+}
+
+void func_800399D4(struct Ball *ball)
+{
+    ball->unk3 = 6;
+    ball->unk94 |= 0x500;
+    if (ball->unk94 & (3<<(31-0x13)))
+        ball->unk94 |= 0x40;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+    ball_sub_goal_main(ball);
+}
+
+void ball_sub_goal_main(struct Ball *ball)
+{
+    struct Struct80039974 spC;
+
+    if (!(ball->unk94 & (1<<(31-0x16)))
+     && (ball->unkFC->unk14 & (1<<(31-0x11))))
+    {
+        ball->unk94 &= -1281;
+        ball->unk94 |= 0x200;
+        func_8002B5A4(0x126);
+    }
+
+    handle_ball_linear_kinematics(ball, &spC, 1);
+    handle_ball_rotational_kinematics(ball, &spC, 1);
+    update_ball_ape_transform(ball, &spC, 1);
+    ball->unk80++;
+}
+
+void func_80039B68(struct Ball *ball)
+{
+    struct Struct800496BC sp3C;
+    Vec sp30;
+
+    ball->unk80 = 0;
+    ball->unk3 = 10;
+    ball->unk94 &= ~(7<<(31-0x17));
+    ball->unk94 &= ~(1<<(31-0x1B));
+    if (ball->unkFC != NULL)
+        ball->unkFC->unk14 &= ~(1<<(31-0x1A));
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp3C, lbl_80250A68.unk10);
+    ball->unk4.x = sp3C.unk0.x;
+    ball->unk4.y = sp3C.unk0.y;
+    ball->unk4.z = sp3C.unk0.z;
+    ball->unkFC->unk30 = ball->unk4;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+    ball->unkFC->unk60 = ball->unk98;
+    ball_sub_replay_main(ball);
+    sp30.x = ball->unk1C.x;
+    sp30.y = 0.0f;
+    sp30.z = ball->unk1C.z;
+    if (sp30.x == 0.0 && sp30.z == 0.0)
+    {
+        mathutil_mtxA_from_identity();
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
+        sp30.x = 0.0f;
+        sp30.y = 0.0f;
+        sp30.z = -1.0f;
+        mathutil_mtxA_tf_vec(&sp30, &sp30);
+    }
+    func_8008C408(ball->unkFC, &sp30);
+    mathutil_mtx_copy(ball->unk30, ball->unkC8);
+}
+
+void ball_sub_replay_main(struct Ball *ball)
+{
+    struct Struct800496BC spC;
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    if (ball->unk2E == lbl_80250A68.unk14)
+        lbl_80250A68.unk10 -= 1.0f;
+
+    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &spC, lbl_80250A68.unk10);
+
+    ball->unk4.x = spC.unk0.x;
+    ball->unk4.y = spC.unk0.y;
+    ball->unk4.z = spC.unk0.z;
+
+    ball->unk1C.x = ball->unk4.x - ball->unk10.x;
+    ball->unk1C.y = ball->unk4.y - ball->unk10.y;
+    ball->unk1C.z = ball->unk4.z - ball->unk10.z;
+
+    ball->unk60 = spC.unkC - ball->unk28;
+    ball->unk62 = spC.unkE - ball->unk2A;
+    ball->unk64 = spC.unk10 - ball->unk2C;
+
+    ball->unk28 = spC.unkC;
+    ball->unk2A = spC.unkE;
+    ball->unk2C = spC.unk10;
+
+    ball->unk114.x = spC.unk12 * 3.0518509475997192e-05;
+    ball->unk114.y = spC.unk14 * 3.0518509475997192e-05;
+    ball->unk114.z = spC.unk16 * 3.0518509475997192e-05;
+
+    ball->unk94 = spC.unk18 | 0x1000000;
+    ball->unk130 = spC.unk1C;
+
+    if (lbl_80250A68.unk10 <= 0.0 || !(lbl_801F3A58.unk0 & (1<<(31-0x1B))))
+        ball->unk3 = 4;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_rotate_y(ball->unk2A);
+    mathutil_mtxA_rotate_x(ball->unk28);
+    mathutil_mtxA_rotate_z(ball->unk2C);
+    mathutil_mtxA_to_mtx(ball->unk30);
+    ball->unk80++;
+}
+
+void func_80039FB0(struct Ball *ball)
+{
+    func_800394C4(ball);
+
+    ball->unk4.x = decodedStageLzPtr->unk10->unk0.x;
+    ball->unk4.y = decodedStageLzPtr->unk10->unk0.y;
+    ball->unk4.z = decodedStageLzPtr->unk10->unk0.z;
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_to_mtx(ball->unk30);
+
+    ball->unkFC->unk30 = ball->unk4;
+    ball->unkFC->unk48.x = 0.0f;
+    ball->unkFC->unk48.y = 0.0f;
+    ball->unkFC->unk48.z = 0.0f;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+    ball->unkFC->unk60 = ball->unk98;
+    ball->unk2A = lbl_801F0614.unk42 + 0x2000;
+
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y(ball->unk2A - 16384);
+    mathutil_mtxA_to_quat(&ball->unkFC->unk60);
+    ball->unk3 = 12;
+}
+
+void func_8003A180(struct Ball *ball) {}
+
+void func_8003A184(struct Ball *ball)
+{
+    func_800394C4(ball);
+
+    ball->unk4.x = decodedStageLzPtr->unk10->unk0.x;
+    ball->unk4.y = decodedStageLzPtr->unk10->unk0.y + 10.0;
+    ball->unk4.z = decodedStageLzPtr->unk10->unk0.z;
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_to_mtx(ball->unk30);
+
+    ball->unkFC->unk30 = ball->unk4;
+    ball->unkFC->unk48.x = 0.0f;
+    ball->unkFC->unk48.y = 0.0f;
+    ball->unkFC->unk48.z = 0.0f;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+    ball->unkFC->unk60 = ball->unk98;
+
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE - 16384);
+    mathutil_mtxA_to_quat(&ball->unkFC->unk60);
+    ball->unk3 = 14;
+}
+
+void func_8003A354(struct Ball *ball) {}
+
+#define PI 3.14159265
+
+void func_8003A358(struct Ball *ball)
+{
+    Vec sp28;
+
+    func_800394C4(ball);
+
+    ball->unk4.x = decodedStageLzPtr->unk10->unk0.x;
+    ball->unk4.y = decodedStageLzPtr->unk10->unk0.y + 10.0;
+    ball->unk4.z = decodedStageLzPtr->unk10->unk0.z;
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_to_mtx(ball->unk30);
+
+    ball->unk1C.x = 0.0f;
+    ball->unk1C.y = 0.0f;
+    ball->unk1C.z = 0.0f;
+
+    sp28.x = ((rand() / 32767.0f) - 0.5) * 0.5;
+    sp28.y = ((rand() / 32767.0f) - 0.5) * 0.5;
+    sp28.z = ((rand() / 32767.0f) - 0.5) * 0.5;
+
+    if (ball->unk68 > 1.1920928955078125e-07f && mathutil_vec_mag(&sp28) != 0.0f)
+    {
+        float f1 = mathutil_vec_normalize_len(&sp28);
+
+        mathutil_quat_from_axis_angle(
+            &ball->unk98,
+            &sp28,
+            (f1 * 2.0f) / (ball->unk68 * ball->unk68 * PI) * 10430.3779296875);
+    }
+
+    ball->unk94 |= 0x40;
+    ball->unk3 = 4;
+    ball->unkFC->unk30 = ball->unk4;
+    ball->unkFC->unk48.x = 0.0f;
+    ball->unkFC->unk48.y = 0.0f;
+    ball->unkFC->unk48.z = 0.0f;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+    ball->unkFC->unk60 = ball->unk98;
+}
+
+void func_8003A654(struct Ball *ball)
+{
+    Vec sp68;
+    struct Struct80039974 spC;
+
+    mathutil_mtxA_from_mtx(mathutilData->mtxB);
+    mathutil_mtxA_rigid_inv_tf_tl(&sp68);
+    sp68.x -= ball->unk4.x;
+    sp68.y = 0.0f;
+    sp68.z -= ball->unk4.z;
+    mathutil_vec_set_len(&sp68, &sp68, 0.00064f);
+
+    ball->unk1C.x += sp68.x;
+    ball->unk1C.y += sp68.y;
+    ball->unk1C.z += sp68.z;
+
+    handle_ball_linear_kinematics(ball, &spC, 0);
+    handle_ball_rotational_kinematics(ball, &spC, 0);
+    update_ball_ape_transform(ball, &spC, 0);
+    ball->unk80++;
+}
+
+void func_8003A734(struct Ball *ball)
+{
+    func_800394C4(ball);
+    
+    if (modeCtrl.unk0 == 0x111C)
+    {
+        ball->unk4.x = decodedStageLzPtr->unk10->unk0.x;
+        ball->unk4.y = decodedStageLzPtr->unk10->unk0.y;
+        ball->unk4.z = decodedStageLzPtr->unk10->unk0.z;
+    }
+    else
+    {
+        ball->unk4.x = 14.5f;
+        ball->unk4.y = 2.5f;
+        ball->unk4.z = -13.5f;
+    }
+
+    ball->unk10.x = ball->unk4.x;
+    ball->unk10.y = ball->unk4.y;
+    ball->unk10.z = ball->unk4.z;
+
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_to_mtx(ball->unk30);
+
+    ball->unkFC->unk30 = ball->unk4;
+    ball->unkFC->unk48.x = 0.0f;
+    ball->unkFC->unk48.y = 0.0f;
+    ball->unkFC->unk48.z = 0.0f;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unk98 = ball->unkA8;
+    
+    if (modeCtrl.unk0 != 0x111C)
+    {
+        mathutil_mtxA_from_identity();
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE + 0x4000);
+        mathutil_mtxA_to_quat(&ball->unkFC->unk60);
+    }
+}
+
+void func_8003A908(struct Ball *ball)
+{
+    func_800394C4(ball);
+    
+    ball->unk4.y = ball->unk10.y = ball->unk68;
+    
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_translate(&ball->unk4);
+    mathutil_mtxA_to_mtx(ball->unk30);
+    
+    ball->unk28 = 0x2000;
+    ball->unk2A = 0;
+    ball->unk2C = 0;
+    
+    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_rotate_y(ball->unk2A);
+    mathutil_mtxA_rotate_x(ball->unk28);
+    mathutil_mtxA_rotate_z(ball->unk2C);
+    mathutil_mtxA_to_mtx(ball->unk30);
+    mathutil_mtxA_to_mtx(ball->unkC8);
+    
+    ball->unk3 = 0;
+    ball->unkC4 = 0.0f;
+    ball->unkF8 = 0.0f;
+    ball->unkB8 = (Vec){0.0f, 0.0f, 0.0f};
+    ball->unkFC->unk14 &= ~(1<<(31-0x11));
+    ball->unk98 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
+    ball->unkFC->unk60 = ball->unk98;
+    
+    mathutil_mtxA_to_quat(&ball->unkA8);
+}
+
+void func_8003AA6C(struct Ball *ball)
+{
+    ball->unk124 = 60;
+    lbl_80206BF0[ball->unk2E].unk20 = 0x5A;
+    cameraInfo[ball->unk2E].state = 4;
+    func_8002B5A4(ball->unk2 == 1 ? 0x51 : 0x1D);
+    func_8002B5A4(0x15);
+    ball->unk3 = 20;
+}
+
+void func_8003AB08(struct Ball *ball)
+{
+    struct Struct80039974 sp18;
+    Vec spC;
+
+    handle_ball_linear_kinematics(ball, &sp18, 0);
+    handle_ball_rotational_kinematics(ball, &sp18, 0);
+    update_ball_ape_transform(ball, &sp18, 0);
+    ball->unk80++;
+
+    if (--ball->unk124 > 0)
+        return;
+    
+    ball->unk4.x = ball->unk10.x = decodedStageLzPtr->unk10->unk0.x;
+    ball->unk4.y = ball->unk10.y = decodedStageLzPtr->unk10->unk0.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
+    ball->unk4.z = ball->unk10.z = decodedStageLzPtr->unk10->unk0.z;
+    
+    ball->unk1C.x = 0.0f;
+    ball->unk1C.y = 0.0f;
+    ball->unk1C.z = 0.0f;
+    
+    ball->unk80 = 0;
+    
+    ball->unk98.w = 1.0f;
+    ball->unk98.x = 0.0f;
+    ball->unk98.y = 0.0f;
+    ball->unk98.z = 0.0f;
+    
+    ball->unk14E = 30;
+    lbl_80206BF0[ball->unk2E].unk20 = 30;
+    
+    spC.x = -mathutil_sin(decodedStageLzPtr->unk10->unkE);
+    spC.y = 0.0f;
+    spC.z = -mathutil_sin(decodedStageLzPtr->unk10->unkE + 0x4000);
+    func_8008C408(ball->unkFC, &spC);
+    
+    cameraInfo[ball->unk2E].state = 0;
+    
+    ball->unk94 &= ~(1<<(31-0x14));
+    ball->unk3 = 4;
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -1653,5 +2124,16 @@ const double lbl_802F3460 = 0.0;
 const double lbl_802F3468 = 0.75;
 const float lbl_802F3470 = 0.25f;
 const float lbl_802F3474 = 0.125f;
-* */
 const double lbl_802F3478 = 24.0;
+const double lbl_802F3480 = 3.0518509475997192e-05;
+const double lbl_802F3488 = 10.0;
+const float lbl_802F3490 = 32767.0f;
+const double lbl_802F3498 = 10430.3779296875;
+const double lbl_802F34A0 = 3.1415926500000002;
+*/
+const float lbl_802F34A8 = 0.00064f;
+const float lbl_802F34AC = 14.5f;
+const float lbl_802F34B0 = 2.5f;
+const float lbl_802F34B4 = -13.5f;
+const float lbl_802F34B8 = -5.5999999046325684f;
+const float lbl_802F34BC = -2.0f;
