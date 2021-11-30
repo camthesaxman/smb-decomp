@@ -336,10 +336,10 @@ struct Ball_child
 struct Ball
 {
     u8 unk0;
-    u8 filler1[1];
+    s8 unk1;
     s8 unk2;  // lives
     s8 unk3;
-    Vec unk4;
+    Vec unk4;  // position
     Vec unk10;
     Vec unk1C;
     s16 unk28;
@@ -354,12 +354,13 @@ struct Ball
     s16 unk66;
     float unk68;
     float unk6C;
-    u8 filler70[0x70-0x6C];
+    float unk70;
     float unk74;
     s32 unk78;  // bananas
     u32 unk7C;
     s32 unk80;
-    u8 filler84[0x92-0x84];
+    Vec unk84;
+    s16 unk90;
     s16 unk92;
     u32 unk94;
     Quaternion unk98;
@@ -383,8 +384,7 @@ struct Ball
     u32 unk134;
     u8 filler138[4];
     s32 unk13C;
-    u8 filler140[4];
-    //u32 unk144;
+    float unk140;
     struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 filler148[0x14A - 0x148];
     u8 unk14A;
@@ -431,7 +431,8 @@ struct World
 {
     s16 unk0;
     s16 unk2;
-    u8 filler4[0x20-0x4];
+    u8 filler4[0x1C-0x4];
+    float unk1C;
     u16 unk20;
     u8 filler22[0x40-0x22];
 };  // size = 0x40
@@ -470,7 +471,7 @@ struct Struct80206E48
     Mtx unk54;
 };
 
-struct Struct8009F7F0  // replay info?
+struct MaybeReplayInfo
 {
     u16 flags;  // (1 << 5) = expert, (1 << 6) = master
     u8 unk2;
@@ -485,11 +486,6 @@ struct Struct8009F7F0  // replay info?
 struct Struct8003FB48
 {
     u32 unk0;
-    /*
-    u8 filler4[4];
-    float unk8;
-    u8 fillerC[4];
-    */
     Vec unk4;
     Vec unk10;
 };
@@ -555,12 +551,18 @@ struct Struct8009492C
 struct Struct80039974
 {
     u32 unk0;
-    u8 filler4[0x34-0x4];
+    Vec unk4;
+    Vec unk10;
+    Vec unk1C;
+    float unk28;
+    float unk2C;
+    float unk30;
     float unk34;
     Vec unk38;
     Vec unk44;
     s32 unk50;
-    u8 filler54[8];
+    float unk54;
+    s32 unk58;
 };
 
 struct Struct800496BC
@@ -665,4 +667,19 @@ struct Stage
     s32 unk70;
     struct UnkStruct8005562C *unk74;
     u32 unk78;
+};
+
+struct Struct8003C550
+{
+    u8 filler0[8];
+    s16 unk8;
+    u8 fillerA[0x14-0xA];
+    s16 unk14;
+    u8 filler16[0x34-0x16];
+    Vec unk34;
+    Vec unk40;
+    u8 filler4C[0x88-0x4C];
+    Vec unk88;
+    u8 filler94[0xA8-0x94];
+    float unkA8;
 };

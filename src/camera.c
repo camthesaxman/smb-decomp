@@ -2816,7 +2816,7 @@ struct Struct801EFB94
 {
     s32 unk0;
     s32 unk4;
-    struct Struct8009F7F0 unk8;
+    struct MaybeReplayInfo unk8;
 };
 
 struct Struct801EFB94 lbl_801EFB94[4];
@@ -3048,7 +3048,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 {
     Vec sp58;
     Vec sp4C;
-    struct Struct8009F7F0 sp34;
+    struct MaybeReplayInfo sp34;
     Vec sp28;
     Vec sp1C;
     Vec sp10;

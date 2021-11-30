@@ -734,7 +734,7 @@ void func_8009F568(void)
 void init_replay_file_data(void)
 {
     DVDFileInfo file;
-    struct Struct8009F7F0 sp88;
+    struct MaybeReplayInfo sp88;
     char category[12];
     char replayFileName[68];
     OSCalendarTime calendarTime;

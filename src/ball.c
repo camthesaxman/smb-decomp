@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -2618,6 +2619,221 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
     }
 }
 
+void func_8003C38C(struct Ball *ball)
+{
+    Vec spC;
+    float f1;
+
+    spC.x = ball->unk84.x - ball->unk4.x;
+    spC.z = ball->unk84.z - ball->unk4.z;
+
+    f1 = mathutil_sum_of_sq(spC.x, spC.z);
+    if (f1 > 1.1920928955078125e-07f)
+    {
+        f1 = 1.0 / mathutil_sqrt(f1);
+        spC.x *= f1;
+        spC.z *= f1;
+    }
+    else
+    {
+        spC.x = 1.0f;
+        spC.z = 0.0f;
+    }
+
+    ball->unk84.x = spC.x * 0.5 + ball->unk4.x;
+    ball->unk84.y = ball->unk4.y - ball->unk68;
+    ball->unk84.z = spC.z * 0.5 + ball->unk4.z;
+
+    spC.x = ball->unk84.x - ball->unk4.x;
+    spC.z = ball->unk84.z - ball->unk4.z;
+    ball->unk90 = mathutil_atan2(spC.x, spC.z);
+}
+
+void func_8003C4A0(struct Ball *ball, int b)
+{
+    struct Struct801B7B78 *r7 = &lbl_801B7B78[b];
+
+    ball->unk66 = r7->unk0;
+    ball->unk68 = r7->unk4;
+    ball->unk140 = r7->unk4;
+    ball->unk74 = 1.0f;
+    ball->unk6C = r7->unk8 * lbl_80206BF0[ball->unk2E].unk1C;
+    ball->unk70 = r7->unkC;
+    ball->unk1 = b;
+    if (modeCtrl.unk24 > 1)
+        ball->unk14A = ball->unk2E;
+    else
+        ball->unk14A = 3;
+    if (lbl_801EED2C.unk4 & (1<<(31-0x17)))
+        ball->unk14A = 3;
+}
+
+void func_8003C550(struct Ball *ball)
+{
+    struct Struct8003C550 sp30;
+    Vec sp24;
+    Vec sp18;
+    Vec spC;
+    int r31;
+    int r30;
+    float f25;
+    float f0;
+
+    sp24.x = -ball->unk114.x;
+    sp24.y = -ball->unk114.y;
+    sp24.z = -ball->unk114.z;
+
+    sp18.x = ball->unk1C.x * 0.5f;
+    sp18.y = ball->unk1C.y * 0.5f;
+    sp18.z = ball->unk1C.z * 0.5f;
+
+    spC.x = ball->unk4.x + ball->unk114.x * ball->unk68;
+    spC.y = ball->unk4.y + ball->unk114.y * ball->unk68;
+    spC.z = ball->unk4.z + ball->unk114.z * ball->unk68;
+
+    f0 = -vec_dot_prod(&sp24, &sp18);
+    sp18.x += f0 * sp24.x;
+    sp18.y += f0 * sp24.y;
+    sp18.z += f0 * sp24.z;
+
+    r30 = __fabs(ball->unk130 / 0.016499999910593033f);
+    if (r30 > 32)
+        r30 = 32;
+
+    f25 = __fabs(ball->unk130 / 0.32999999821186066) + 1.0;
+
+    memset(&sp30, 0, sizeof(sp30));
+
+    sp30.unk14 = ball->unk2E;
+    sp30.unk8 = 0x1B;
+    sp30.unk34 = spC;
+    sp30.unk88 = sp24;
+    sp30.unkA8 = ball->unk130;
+    func_8004CF08(&sp30);
+
+    memset(&sp30, 0, sizeof(sp30));
+
+    r31 = r30 >> 1;
+    sp30.unk14 = ball->unk2E;
+    sp30.unk8 = 0x13;
+    sp30.unk34 = spC;
+
+    while (r31 > 0)
+    {
+        sp30.unk40.x = sp18.x + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+        sp30.unk40.y = sp18.y + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+        sp30.unk40.z = sp18.z + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+
+        f0 = f25 * ((rand() / 32767.0f) * 0.055f + 0.015f);
+        sp30.unk40.x += f0 * sp24.x;
+        sp30.unk40.y += f0 * sp24.y;
+        sp30.unk40.z += f0 * sp24.z;
+
+        func_8004CF08(&sp30);
+        r31--;
+    }
+    r30 -= r30 >> 1;
+
+    memset(&sp30, 0, sizeof(sp30));
+
+    r31 = r30;
+    sp30.unk14 = ball->unk2E;
+    sp18.x *= 0.5f;
+    sp18.y *= 0.5f;
+    sp18.z *= 0.5f;
+    sp30.unk8 = 2;
+    sp30.unk34 = spC;
+
+    while (r31 > 0)
+    {
+        sp30.unk40.x = sp18.x + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+        sp30.unk40.y = sp18.y + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+        sp30.unk40.z = sp18.z + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+
+        f0 = f25 * ((rand() / 32767.0f) * 0.05f + 0.06f);
+        sp30.unk40.x += f0 * sp24.x;
+        sp30.unk40.y += f0 * sp24.y;
+        sp30.unk40.z += f0 * sp24.z;
+
+        func_8004CF08(&sp30);
+        r31--;
+    }
+}
+
+void func_8003CA98(struct Ball *ball, struct Struct80039974 *b)
+{
+    b->unk0 = 0;
+
+    b->unk4.x = ball->unk4.x;
+    b->unk4.y = ball->unk4.y;
+    b->unk4.z = ball->unk4.z;
+
+    b->unk10.x = ball->unk10.x;
+    b->unk10.y = ball->unk10.y;
+    b->unk10.z = ball->unk10.z;
+
+    b->unk1C.x = ball->unk1C.x;
+    b->unk1C.y = ball->unk1C.y;
+    b->unk1C.z = ball->unk1C.z;
+
+    b->unk28 = ball->unk68;
+    b->unk2C = ball->unk6C;
+    b->unk30 = ball->unk70;
+    b->unk34 = 0.0f;
+    b->unk58 = 0;
+    b->unk50 = 0;
+
+    if (modeCtrl.unk28 != 5)
+        b->unk54 = 0.01f;
+    else
+        b->unk54 = 0.005f;
+}
+
+void func_8003CB3C(struct Ball *ball, struct Struct80039974 *b)
+{
+    if (b->unk0 & 1)
+        ball->unk94 |= 1;
+
+    ball->unk4.x = b->unk4.x;
+    ball->unk4.y = b->unk4.y;
+    ball->unk4.z = b->unk4.z;
+
+    ball->unk1C.x = b->unk1C.x;
+    ball->unk1C.y = b->unk1C.y;
+    ball->unk1C.z = b->unk1C.z;
+}
+
+void func_8003CB88(struct Ball *ball)
+{
+    Vec spC;
+    int r31;
+    int r30;
+    float f1;
+    float f3;
+    s16 var;
+
+    mathutil_mtxA_from_quat(&ball->unkFC->unk60);
+    spC.x = -1.0f;
+    spC.y = 0.0f;
+    spC.z = 0.0f;
+    mathutil_mtxA_tf_vec(&spC, &spC);
+
+    r31 = mathutil_atan2(spC.x, spC.z) - 32768;
+    r30 = mathutil_atan2(ball->unk1C.x, ball->unk1C.z) - 32768;
+
+    f1 = mathutil_sqrt(mathutil_sum_of_sq(ball->unk1C.x, ball->unk1C.z));
+    if (f1 < 0.23148148148148145)
+        f3 = 0.0f;
+    else if (f1 < 0.37037037037037035)
+        f3 = (f1 - 0.23148148148148145) / 0.1388888888888889;
+    else
+        f3 = 1.0f;
+
+    var = r30 - r31;
+
+    ball->unk92 = r31 + var * f3;
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -2700,6 +2916,23 @@ const double lbl_802F3538 = 0.14999999999999999;
 const double lbl_802F3540 = 0.94999999999999996;
 const float lbl_802F3548 = 0.99971997737884521f;
 const float lbl_802F354C = 0.94999998807907104f;
-*/
-const float lbl_802F3550 = 0.016499999910593033f;
+const float lbl_802F3550 = 0.0165f;
 const double lbl_802F3558 = 0.32999999821186066;
+const double lbl_802F3560 = 0.05;
+const double lbl_802F3568 = 0.025;
+const float lbl_802F3570 = 0.015f;
+const float lbl_802F3574 = 0.055f;
+const float lbl_802F3578 = 0.06f;
+const float lbl_802F357C = 0.005f;
+*/
+const double lbl_802F3580 = 0.23148148148148145;
+const double lbl_802F3588 = 0.37037037037037035;
+const double lbl_802F3590 = 0.1388888888888889;
+const double lbl_802F3598 = 216000.0;
+const double lbl_802F35A0 = 1000.0;
+const float lbl_802F35A8 = 35.0f;
+const float lbl_802F35AC = 10.0f;
+const float lbl_802F35B0 = 130.0f;
+const float lbl_802F35B4 = 127.0f;
+const float lbl_802F35B8 = 80.0f;
+const float lbl_802F35BC = 0.85f;
