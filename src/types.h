@@ -308,7 +308,7 @@ struct Struct8003699C_child
     float unk3C;
 };
 
-struct Ball_child  // possibly Ball_child?
+struct Ball_child
 {
     struct Struct8003699C_child *unk0;
     u8 filler4[0x10-4];
@@ -384,7 +384,8 @@ struct Ball
     u8 filler138[4];
     s32 unk13C;
     u8 filler140[4];
-    u32 unk144;
+    //u32 unk144;
+    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 filler148[0x14A - 0x148];
     u8 unk14A;
     u8 unk14B;
@@ -554,7 +555,9 @@ struct Struct8009492C
 struct Struct80039974
 {
     u32 unk0;
-    u8 filler4[0x44-0x4];
+    u8 filler4[0x34-0x4];
+    float unk34;
+    Vec unk38;
     Vec unk44;
     s32 unk50;
     u8 filler54[8];
@@ -572,3 +575,94 @@ struct Struct800496BC
     u32 unk18;
     float unk1C;
 };  // size = 0x20
+
+struct Struct80206DEC
+{
+    s32 unk0;
+    float unk4;
+    void (*unk8)(void);
+    u32 unkC;
+    float unk10[3];
+    u32 unk1C;
+    u8 filler20[0x5C-0x20];
+};
+
+struct DecodedStageLzPtr_child_child
+{
+    u32 unk0;
+    void *unk4;
+    u32 unk8;
+    void *unkC;
+    u32 unk10;
+    void *unk14;
+    u32 unk18;
+    void *unk1C;
+    u32 unk20;
+    void *unk24;
+    u32 unk28;
+    void *unk2C;
+};
+
+struct DecodedStageLzPtr_child_child2
+{
+    char *unk0;
+};
+
+struct DecodedStageLzPtr_child
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    u16 unk12;
+    struct DecodedStageLzPtr_child_child *unk14;
+    struct DecodedStageLzPtr_child_child2 *unk18;
+    u8 filler1C[0x7C-0x1C];
+    s32 unk7C;
+    u8 filler80[0xB8-0x80];
+    Vec unkB8;
+};
+
+struct DecodedStageLzPtr_child2
+{
+    u32 unk0;
+    u32 unk4;
+    float unk8;
+};
+
+struct DecodedStageLzPtr_child3
+{
+    Vec unk0;  // starting position for stage?
+    u8 fillerC[0xE - 0xC];
+    s16 unkE;
+};
+
+struct DecodedStageLzPtr_child4
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    u8 filler12[0x14-0x12];
+};  // size = 0x14
+
+struct Stage
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    struct DecodedStageLzPtr_child *unkC;
+    struct DecodedStageLzPtr_child3 *unk10;
+    u8 filler14[0x18-0x14];
+    s32 unk18;
+    struct DecodedStageLzPtr_child4 *unk1C;
+    u8 filler20[0x58-0x20];
+    s32 unk58;
+    struct DecodedStageLzPtr_child2 *unk5C;
+    u8 filler60[8];
+    s32 unk68;
+    struct UnkStruct8005562C *unk6C;
+    s32 unk70;
+    struct UnkStruct8005562C *unk74;
+    u32 unk78;
+};

@@ -736,13 +736,6 @@ void bg_e3_draw(void)
 
 void func_80055628(int a) {}
 
-extern struct
-{
-    u8 filler0[4];
-    float unk4;
-    u8 filler8[1];
-} lbl_80206DEC;
-
 void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
 {
     int i;

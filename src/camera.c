@@ -3477,33 +3477,6 @@ void camera_func_69(struct Camera *camera, struct Ball *ball)
     }
 }
 
-// Not sure if this is supposed to be asm or not
-static inline void get_mtxA_translate(Vec *v)
-{
-#ifdef __MWERKS__
-    register float *mtxA;
-    register float *_x = &v->x;
-    register float *_y = &v->y;
-    register float *_z = &v->z;
-    register float x, y, z;
-
-    asm
-    {
-        lis mtxA, LC_CACHE_BASE@ha
-        lfs x, 0x0C(mtxA)  // mtxA[0][3]
-        lfs y, 0x1C(mtxA)  // mtxA[1][3]
-        lfs z, 0x2C(mtxA)  // mtxA[2][3]
-        stfs x, 0(_x)
-        stfs y, 0(_y)
-        stfs z, 0(_z)
-    }
-#else
-    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
-    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
-    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
-#endif
-}
-
 void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *lookAt, s16 *xrot, s16 *yrot, s16 *zrot, int h)
 {
     Vec sp4C[3];
@@ -3595,7 +3568,7 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, f31);
 
-    get_mtxA_translate(eye);
+    mathutil_get_mtxA_translate(eye);
 
     mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
 }
@@ -3615,7 +3588,7 @@ void func_80020334(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, sp24.w * 1.2);
 
-    get_mtxA_translate(eye);
+    mathutil_get_mtxA_translate(eye);
 
     mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
 }
@@ -3732,7 +3705,7 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_x(camera->rotX);
     mathutil_mtxA_rotate_z(camera->rotZ);
 
-    get_mtxA_translate(&camera->eye);
+    mathutil_get_mtxA_translate(&camera->eye);
     mathutil_mtxA_to_euler_yxz(&camera->rotY, &camera->rotX, &camera->rotZ);
     mathutil_mtxA_tf_point_xyz(&camera->lookAt, 0.0f, 0.0f, -1.0f);
     camera->timerCurr++;

@@ -24,6 +24,7 @@ struct Struct80206D00
 
 struct Preview stagePreview;  // 78
 
+/*
 struct
 {
     //u8 filler0[0x74];
@@ -36,6 +37,8 @@ struct
     u32 unk90;  // 108
     u8 filler94[0x5C-(0x94-0x74)];
 } lbl_80206DEC;
+*/
+struct Struct80206DEC lbl_80206DEC;
 
 struct Struct80206E48 lbl_80206E48[0x48];  // 148
 
@@ -52,9 +55,9 @@ char *lbl_801B86D8[] =
 
 void ev_stage_init(void)
 {
-    lbl_80206DEC.unk74 = 0;
-    lbl_80206DEC.unk7C = 0;
-    lbl_80206DEC.unk90 = 0;
+    lbl_80206DEC.unk0 = 0;
+    lbl_80206DEC.unk8 = NULL;
+    lbl_80206DEC.unk1C = 0;
     func_8004482C();
     switch (currStageId)
     {
@@ -97,19 +100,19 @@ void ev_stage_main(void)
     if (lbl_801F3A58.unk0 & (1 << (31-0x17)))
     {
         if (modeCtrl.unk0 > 0x78)
-            lbl_80206DEC.unk78 = 0.0f;
+            lbl_80206DEC.unk4 = 0.0f;
         else
-            lbl_80206DEC.unk78 = 0x78 - modeCtrl.unk0;
-        lbl_80206DEC.unk74 = 0x77;
+            lbl_80206DEC.unk4 = 0x78 - modeCtrl.unk0;
+        lbl_80206DEC.unk0 = 0x77;
     }
     else if (lbl_801F3A58.unk0 & (1 << (31-0x1B)))
     {
-        lbl_80206DEC.unk78 = func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
-        lbl_80206DEC.unk74 = lbl_80206DEC.unk78;
+        lbl_80206DEC.unk4 = func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
+        lbl_80206DEC.unk0 = lbl_80206DEC.unk4;
     }
     else
-        lbl_80206DEC.unk78 = lbl_80206DEC.unk74;
-    f31 = lbl_80206DEC.unk78 / 60.0;
+        lbl_80206DEC.unk4 = lbl_80206DEC.unk0;
+    f31 = lbl_80206DEC.unk4 / 60.0;
     f31 += decodedStageLzPtr->unk0;
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     f31 -= f3 * (float)mathutil_floor_to_int(f31 / f3);
@@ -120,9 +123,9 @@ void ev_stage_main(void)
         int i;
         for (i = 0; i < 3; i++)
         {
-            float *r5 = &lbl_80206DEC.unk84[i];
+            float *r5 = &lbl_80206DEC.unk10[i];
             float f3 = *r5;
-            if (lbl_80206DEC.unk80 & (1 << i))
+            if (lbl_80206DEC.unkC & (1 << i))
             {
                 f3 += 1.0;
                 if (f3 > 50.0)
@@ -153,7 +156,7 @@ void ev_stage_main(void)
             {
                 if (r29->unk12 & (1 << j))
                 {
-                    f31 = lbl_80206DEC.unk84[j];
+                    f31 = lbl_80206DEC.unk10[j];
                     break;
                 }
             }
@@ -205,8 +208,8 @@ void ev_stage_main(void)
         mathutil_mtxA_translate_neg(&r29->unk0);
         mathutil_mtxA_to_mtx(r30->unk54);
     }
-    if (lbl_80206DEC.unk7C != NULL)
-        lbl_80206DEC.unk7C();
+    if (lbl_80206DEC.unk8 != NULL)
+        lbl_80206DEC.unk8();
     if (lbl_802F1F44 != NULL)
     {
         struct Struct802F1F44 *r27 = lbl_802F1F44;
@@ -217,8 +220,8 @@ void ev_stage_main(void)
             r27++;
         }
     }
-    if (!(lbl_80206DEC.unk90 & 1))
-        lbl_80206DEC.unk74++;
+    if (!(lbl_80206DEC.unk1C & 1))
+        lbl_80206DEC.unk0++;
 }
 
 void ev_stage_dest(void)
@@ -261,7 +264,7 @@ void func_8004424C(void)
 
     if (lbl_802F1F2C == NULL2)
         return;
-    f31 = lbl_80206DEC.unk78 / 60.0;
+    f31 = lbl_80206DEC.unk4 / 60.0;
     f31 += (float)decodedStageLzPtr->unk0;
     f30 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     f31 -= f30 * (float)mathutil_floor_to_int(f31 / f30);
@@ -317,9 +320,9 @@ void func_800444A4(float a)
 
     if (lbl_802F1EE0 & 0xA)
         return;
-    lbl_80206DEC.unk78 = a;
-    lbl_80206DEC.unk74 = a;
-    f31 = lbl_80206DEC.unk78 / 60.0;
+    lbl_80206DEC.unk4 = a;
+    lbl_80206DEC.unk0 = a;
+    f31 = lbl_80206DEC.unk4 / 60.0;
     f31 += decodedStageLzPtr->unk0;
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     f31 -= f3 * (float)mathutil_floor_to_int(f31 / f3);;

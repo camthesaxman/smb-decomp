@@ -4613,7 +4613,6 @@ lbl_8003AC90:
 /* 8003AC9C 00036BBC  7C 08 03 A6 */	mtlr r0
 /* 8003ACA0 00036BC0  38 21 00 80 */	addi r1, r1, 0x80
 /* 8003ACA4 00036BC4  4E 80 00 20 */	blr
-.endif
 .global ball_sub_21
 ball_sub_21:
 /* 8003ACA8 00036BC8  7C 08 02 A6 */	mflr r0
@@ -5046,7 +5045,6 @@ lbl_8003B2B8:
 /* 8003B2FC 0003721C  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003B300 00037220  7C 08 03 A6 */	mtlr r0
 /* 8003B304 00037224  4E 80 00 20 */	blr
-
 .global handle_ball_linear_kinematics
 handle_ball_linear_kinematics:
 /* 8003B308 00037228  7C 08 02 A6 */	mflr r0
@@ -5290,7 +5288,6 @@ lbl_8003B694:
 /* 8003B6AC 000375CC  83 81 00 38 */	lwz r28, 0x38(r1)
 /* 8003B6B0 000375D0  38 21 00 50 */	addi r1, r1, 0x50
 /* 8003B6B4 000375D4  4E 80 00 20 */	blr
-
 .global func_8003B6B8
 func_8003B6B8:
 /* 8003B6B8 000375D8  7C 08 02 A6 */	mflr r0
@@ -5486,7 +5483,6 @@ lbl_8003B8E8:
 /* 8003B9A4 000378C4  38 21 00 50 */	addi r1, r1, 0x50
 /* 8003B9A8 000378C8  7C 08 03 A6 */	mtlr r0
 /* 8003B9AC 000378CC  4E 80 00 20 */	blr
-
 .global update_ball_ape_transform
 update_ball_ape_transform:
 /* 8003B9B0 000378D0  7C 08 02 A6 */	mflr r0
@@ -5645,7 +5641,6 @@ lbl_8003BBD8:
 /* 8003BBE8 00037B08  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 8003BBEC 00037B0C  38 21 00 30 */	addi r1, r1, 0x30
 /* 8003BBF0 00037B10  4E 80 00 20 */	blr
-
 .global func_8003BBF4
 func_8003BBF4:
 /* 8003BBF4 00037B14  7C 08 02 A6 */	mflr r0
@@ -5741,7 +5736,6 @@ func_8003BBF4:
 /* 8003BD5C 00037C7C  38 21 00 60 */	addi r1, r1, 0x60
 /* 8003BD60 00037C80  7C 08 03 A6 */	mtlr r0
 /* 8003BD64 00037C84  4E 80 00 20 */	blr
-
 .global func_8003BD68
 func_8003BD68:
 /* 8003BD68 00037C88  7C 08 02 A6 */	mflr r0
@@ -5923,7 +5917,6 @@ lbl_8003BF28:
 /* 8003C024 00037F44  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 8003C028 00037F48  7C 08 03 A6 */	mtlr r0
 /* 8003C02C 00037F4C  4E 80 00 20 */	blr
-
 .global handle_ball_rotational_kinematics
 handle_ball_rotational_kinematics:
 /* 8003C030 00037F50  7C 08 02 A6 */	mflr r0
@@ -5931,7 +5924,7 @@ handle_ball_rotational_kinematics:
 /* 8003C038 00037F58  90 01 00 04 */	stw r0, 4(r1)
 /* 8003C03C 00037F5C  94 21 FF 90 */	stwu r1, -0x70(r1)
 /* 8003C040 00037F60  93 E1 00 6C */	stw r31, 0x6c(r1)
-/* 8003C044 00037F64  3B E3 00 00 */	addi r31, r3, 0x43300000@l
+/* 8003C044 00037F64  3B E3 00 00 */	addi r31, r3, 0
 /* 8003C048 00037F68  38 60 00 00 */	li r3, 0
 /* 8003C04C 00037F6C  93 C1 00 68 */	stw r30, 0x68(r1)
 /* 8003C050 00037F70  3B C4 00 00 */	addi r30, r4, 0
@@ -6093,7 +6086,7 @@ lbl_8003C254:
 /* 8003C2AC 000381CC  C8 42 8C A0 */	lfd f2, lbl_802F34A0-_SDA2_BASE_(r2)
 /* 8003C2B0 000381D0  EC 23 00 72 */	fmuls f1, f3, f1
 /* 8003C2B4 000381D4  C8 62 8C 98 */	lfd f3, lbl_802F3498-_SDA2_BASE_(r2)
-/* 8003C2B8 000381D8  FC 02 00 32 */	fmul f0, f2, f0
+/* 8003C2B8 000381D8  FC 02 00 32 */	fmul f0, f2, f0  ;# unk68 * unk68 * pi
 /* 8003C2BC 000381DC  FC 01 00 24 */	fdiv f0, f1, f0
 /* 8003C2C0 000381E0  FC 03 00 32 */	fmul f0, f3, f0
 /* 8003C2C4 000381E4  FC 00 00 1E */	fctiwz f0, f0
@@ -6149,6 +6142,7 @@ lbl_8003C374:
 /* 8003C380 000382A0  7C 08 03 A6 */	mtlr r0
 /* 8003C384 000382A4  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003C388 000382A8  4E 80 00 20 */	blr
+.endif
 
 .global func_8003C38C
 func_8003C38C:
@@ -8258,7 +8252,6 @@ lbl_802F34B8:
 lbl_802F34BC:
 	# ROM: 0x1ECEDC
 	.byte 0xC0, 0x00, 0x00, 0x00
-.endif
 
 .global lbl_802F34C0
 lbl_802F34C0:
@@ -8407,6 +8400,7 @@ lbl_802F3558:
 	# ROM: 0x1ECF78
 	.byte 0x3F, 0xD5, 0x1E, 0xB8
 	.byte 0x50, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F3560
 lbl_802F3560:
@@ -8794,7 +8788,6 @@ lbl_8011798C:
 	.4byte 0
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00
-.endif
 
 .global lbl_8011799C
 lbl_8011799C:
@@ -8825,6 +8818,7 @@ lbl_801179C4:
 	.4byte 0
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00
+.endif
 	.byte 0x00, 0x3A, 0x00, 0x3B
 	.byte 0x00, 0x3F, 0x00, 0x53
 	.byte 0x00, 0x54, 0x00, 0x55

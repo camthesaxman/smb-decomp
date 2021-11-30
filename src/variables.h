@@ -641,7 +641,7 @@ extern struct World lbl_80206BF0[];
 // extern ? lbl_80206CF0;
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
-// extern ? lbl_80206DEC;
+extern struct Struct80206DEC lbl_80206DEC;
 extern struct Struct80206E48 lbl_80206E48[0x48];
 extern u32 lbl_80209368[];
 // extern ? lbl_802099E8;
@@ -1421,91 +1421,12 @@ extern u32 lbl_802F1EE0;
 extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;
 extern void (*lbl_802F1F10)(void);
-// extern ? minigameRelBallCallback;
+extern void (*minigameRelBallCallback)(struct Ball *);
 extern struct Ball *currentBallStructPtr;
 extern void *currentWorldStructPtr;
 // extern ? lbl_802F1F28;
 extern struct GMAModelHeader *lbl_802F1F2C;
-
-struct DecodedStageLzPtr_child_child
-{
-    u32 unk0;
-    void *unk4;
-    u32 unk8;
-    void *unkC;
-    u32 unk10;
-    void *unk14;
-    u32 unk18;
-    void *unk1C;
-    u32 unk20;
-    void *unk24;
-    u32 unk28;
-    void *unk2C;
-};
-
-struct DecodedStageLzPtr_child_child2
-{
-    char *unk0;
-};
-
-struct DecodedStageLzPtr_child
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u16 unk12;
-    struct DecodedStageLzPtr_child_child *unk14;
-    struct DecodedStageLzPtr_child_child2 *unk18;
-    u8 filler1C[0x7C-0x1C];
-    s32 unk7C;
-    u8 filler80[0xB8-0x80];
-    Vec unkB8;
-};
-
-struct DecodedStageLzPtr_child2
-{
-    u32 unk0;
-    u32 unk4;
-    float unk8;
-};
-
-struct DecodedStageLzPtr_child3
-{
-    Vec unk0;  // starting position for stage?
-    u8 fillerC[0xE - 0xC];
-    s16 unkE;
-};
-
-struct DecodedStageLzPtr_child4
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u8 filler12[0x14-0x12];
-};  // size = 0x14
-
-extern struct
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    struct DecodedStageLzPtr_child *unkC;
-    struct DecodedStageLzPtr_child3 *unk10;
-    u8 filler14[0x18-0x14];
-    s32 unk18;
-    struct DecodedStageLzPtr_child4 *unk1C;
-    u8 filler20[0x58-0x20];
-    s32 unk58;
-    struct DecodedStageLzPtr_child2 *unk5C;
-    u8 filler60[8];
-    s32 unk68;
-    struct UnkStruct8005562C *unk6C;
-    s32 unk70;
-    struct UnkStruct8005562C *unk74;
-    u32 unk78;
-} *decodedStageLzPtr;
+extern struct Stage *decodedStageLzPtr;
 // extern ? lbl_802F1F34;
 extern struct GMA *decodedStageGmaPtr;
 extern struct TPL *decodedStageTplPtr;

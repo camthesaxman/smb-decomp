@@ -241,3 +241,55 @@ static inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, reg
     result->z = z;
 #endif
 }
+
+static inline void mathutil_get_mtxA_translate(Vec *v)
+{
+#ifdef __MWERKS__
+    register float *mtxA;
+    register float *_x = &v->x;
+    register float *_y = &v->y;
+    register float *_z = &v->z;
+    register float x, y, z;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x0C(mtxA)  // mtxA[0][3]
+        lfs y, 0x1C(mtxA)  // mtxA[1][3]
+        lfs z, 0x2C(mtxA)  // mtxA[2][3]
+        stfs x, 0(_x)
+        stfs y, 0(_y)
+        stfs z, 0(_z)
+    }
+#else
+    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+#endif
+}
+
+static inline void mathutil_set_mtxA_translate(register Vec *v)
+{
+#ifdef __MWERKS__
+    register float *mtxA;
+    register float *_x = &v->x;
+    register float *_y = &v->y;
+    register float *_z = &v->z;
+    register float x, y, z;
+
+    asm
+    {
+        lfs x, v->x
+        lfs y, v->y
+        lfs z, v->z
+        lis mtxA, LC_CACHE_BASE@ha
+        stfs x, 0x0C(mtxA)  // mtxA[0][3]
+        stfs y, 0x1C(mtxA)  // mtxA[1][3]
+        stfs z, 0x2C(mtxA)  // mtxA[2][3]
+    }
+#else
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = v->x;
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3] = v->y;
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = v->z;
+#endif
+}
