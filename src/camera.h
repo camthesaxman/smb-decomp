@@ -2,6 +2,7 @@ enum
 {
     CAMERA_STATE_LEVEL_MAIN       = 1,  // main game in level
     CAMERA_STATE_TEST             = 2,
+    CAMERA_STATE_IDLE             = 3,
     CAMERA_STATE_FALLOUT_REPLAY   = 8,
     CAMERA_STATE_READY_INIT       = 10,
     CAMERA_STATE_READY_MAIN       = 11,  // level fly-in
@@ -139,7 +140,7 @@ void get_curr_stage_fly_in_position(Quaternion *);
 void camera_func_0(struct Camera *camera, struct Ball *ball);
 void camera_func_level_main(struct Camera *camera, struct Ball *ball);
 void camera_func_test(struct Camera *camera, struct Ball *ball);
-void camera_func_3(struct Camera *camera, struct Ball *ball);
+void camera_func_idle(struct Camera *camera, struct Ball *ball);
 void camera_func_62(struct Camera *camera, struct Ball *ball);
 void camera_func_4(struct Camera *camera, struct Ball *ball);
 void camera_func_5(struct Camera *camera, struct Ball *ball);

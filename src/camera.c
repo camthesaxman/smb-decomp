@@ -12,7 +12,7 @@
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
 // transforms a value x in the range 0.0 to 1.0 such that dy/dx approaches 0 when x approaches 1 or 0.
-#define CUBIC_SMOOTH(x) ((3.0 + -2.0 * (x)) * ((x) * (x)))
+#define SMOOTHSTEP(x) ((3.0 + -2.0 * (x)) * ((x) * (x)))
 
 struct Camera cameraInfo[5];
 
@@ -28,7 +28,7 @@ void camera_init(void)
     for (i = 0, camera = &cameraInfo[0]; i < 5; i++, camera++)
     {
         camera->unk204 = i;
-        camera->state = 3;
+        camera->state = CAMERA_STATE_IDLE;
         camera->unk208 = 3;
         camera->unk26 = 0;
         camera->sub28.unk28 = 0.0f;
@@ -66,7 +66,7 @@ void (*cameraFuncs[])(struct Camera *, struct Ball *) =
     camera_func_0,
     camera_func_level_main,
     camera_func_test,
-    camera_func_3,
+    camera_func_idle,
     camera_func_4,
     camera_func_5,
     camera_func_6,
@@ -1217,7 +1217,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         }
 
         t = (float)camera->timerCurr / (float)camera->timerMax;
-        t = CUBIC_SMOOTH(t);
+        t = SMOOTHSTEP(t);
 
         camera->lookAt.x = camera->unk74.x * (1.0 - t) + camera->unk54.x * t;
         camera->lookAt.y = camera->unk74.y * (1.0 - t) + camera->unk54.y * t;
@@ -1545,7 +1545,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     camera_face_direction(camera, &sp10);
 }
 
-void camera_func_3(struct Camera *camera, struct Ball *ball)
+void camera_func_idle(struct Camera *camera, struct Ball *ball)
 {
     Vec v;
 
@@ -2712,7 +2712,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
         Vec *r4 = &lbl_80177264[1];
         float t = camera->timerCurr / 480.0f;
 
-        t = CUBIC_SMOOTH(t);
+        t = SMOOTHSTEP(t);
 
         camera->eye.x = r3->x * (1.0 - t) + r4->x * t;
         camera->eye.y = r3->y * (1.0 - t) + r4->y * t;
@@ -2739,7 +2739,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
         float t = (float)(camera->timerCurr - 600) / 540.0f;
         int r30;
 
-        t = CUBIC_SMOOTH(t);
+        t = SMOOTHSTEP(t);
 
         camera->eye.x = r4->x;
         camera->eye.y = r4->y;
@@ -3346,7 +3346,7 @@ void camera_func_57(struct Camera *camera, struct Ball *ball)
         camera->timerCurr--;
 
     t = (float)camera->timerCurr / (float)camera->timerMax;
-    t = CUBIC_SMOOTH(t);
+    t = SMOOTHSTEP(t);
 
     mathutil_mtxA_from_translate(&ball->unk4);
     mathutil_mtxA_rotate_y(ball->unk2A);
@@ -3428,7 +3428,7 @@ void camera_func_69(struct Camera *camera, struct Ball *ball)
         func_8001FF2C(camera, ball, &camera->eye, &camera->lookAt, &camera->rotX, &camera->rotY, &camera->rotZ, 0);
 
         t = (float)cam0->timerCurr / (float)cam0->timerMax;
-        t = CUBIC_SMOOTH(t);
+        t = SMOOTHSTEP(t);
 
         camera->eye.x = camera->eye.x * (1.0 - t) + sp28.x * t;
         camera->eye.y = camera->eye.y * (1.0 - t) + sp28.y * t;
@@ -3648,7 +3648,7 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
         else
         {
             t = r29 / 204.0f;
-            t = CUBIC_SMOOTH(t);
+            t = SMOOTHSTEP(t);
 
             camera->eye.x = sp10.x + 0.0;
             camera->eye.y = t * 0.3 + (sp10.y - (0.75 * sp10.y) * (1.0 - t));
