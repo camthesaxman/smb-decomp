@@ -713,17 +713,9 @@ struct Struct801B7B78 lbl_801B7B78[] =
     {6, 0.5f, 0.02177776f, 0.1f},
 };
 
-// not really sure what type this is. first element is 32-bit, though
-u32 lbl_801B7B98[][2] =  // + 0x20
-{
-    {0x0012005D, 0x005E0000},
-};
+s16 lbl_801B7B98[] = { 0x12, 0x5D, 0x5E, 0x00 };  // + 0x20
 
-// probably part of the above array?
-u32 lbl_801B7BA0[][2] =  // + 0x28
-{
-    {0x00110065, 0x00660000},
-};
+s16 lbl_801B7BA0[] = { 0x11, 0x65, 0x66, 0x00 };  // + 0x28
 
 s16 lbl_801B7BA8[][9] =  // + 0x30
 {
@@ -994,7 +986,7 @@ void func_80038528(struct Ball *ball)
     float f31;
     float f1;
 
-    func_8003D3C4();
+    func_8003D3C4(ball);
     if (ball->unk94 & (1<<(31-0x1D)))
         func_8003C550(ball);
 
@@ -1065,16 +1057,6 @@ void ev_ball_dest(void)
     for (i = 0; i < 4; i++, ball++)
         ball->unk0 = 0;
 }
-
-struct Struct80038840
-{
-    u8 filler0[4];
-    void (*unk4)(struct Struct80038840 *);
-    u32 unk8;
-    u32 unkC;
-};
-
-extern void lbl_8003D928(struct Struct80038840 *);
 
 void func_80038840(void)
 {
@@ -2995,6 +2977,171 @@ void func_8003CDC0(struct Ball *ball)
     }
 }
 
+void func_8003D3C4(struct Ball *ball)
+{
+    float f26;
+
+    if (!(ball->unk94 & 1))
+        return;
+    if (modeCtrl.unk28 == 3 && ball->unk144 != NULL && ball->unk144->unk14 & (1<<(31-0x1A)))
+        return;
+
+    f26 = mathutil_vec_mag(&ball->unk1C);
+    f26 *= 5.0;
+    if (f26 > 1.5f)
+    {
+        Vec spC4;
+        struct Struct8003C550 sp18;
+        Vec spC;
+        float f2;
+        int r29;
+
+        spC.x = -ball->unk114.x;
+        spC.y = -ball->unk114.y;
+        spC.z = -ball->unk114.z;
+
+        memset(&sp18, 0, sizeof(sp18));
+
+        sp18.unk8 = 2;
+        sp18.unk14 = ball->unk2E;
+
+        sp18.unk34.x = ball->unk4.x + ball->unk114.x * ball->unk68;
+        sp18.unk34.y = ball->unk4.y + ball->unk114.y * ball->unk68;
+        sp18.unk34.z = ball->unk4.z + ball->unk114.z * ball->unk68;
+
+        if (!(lbl_801F3A58.unk0 & (1<<(31-0x1B))) || (lbl_801F3A58.unk0 & (1<<(31-0x14))))
+            f2 = 0.85f;
+        else
+            f2 = 0.1f;
+
+        spC4.x = ball->unk1C.x * f2;
+        spC4.y = ball->unk1C.y * f2;
+        spC4.z = ball->unk1C.z * f2;
+
+        r29 = f26;
+        while (r29 > 0)
+        {
+            float f25 = (rand() / 32767.0f) * f26 * 0.1;
+
+            sp18.unk40.x = (spC.x + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.x;
+            sp18.unk40.y = (spC.y + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.y;
+            sp18.unk40.z = (spC.z + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.z;
+
+            func_8004CF08(&sp18);
+
+            r29--;
+        }
+    }
+}
+
+void func_8003D6A4(struct Ball *ball)
+{
+    if (!(ball->unk94 & (3<<(31-0xE))))
+    {
+        if (ball->unk68 != ball->unk140)
+        {
+            ball->unk68 += (ball->unk140 - ball->unk68) * 0.2f;
+            ball->unk74 = ball->unk68 / ball->unk140;
+        }
+    }
+    else
+    {
+        ball->unk13C--;
+        if (ball->unk13C < 0)
+            ball->unk94 &= ~(3<<(31-0xE));
+        else if (ball->unk94 & (1<<(31-0xE)))
+            ball->unk68 += ((ball->unk140 * 0.5f) - ball->unk68) * 0.3f;
+        else
+            ball->unk68 += ((ball->unk140 * 2.0f) - ball->unk68) * 0.3f;
+        ball->unk74 = ball->unk68 / ball->unk140;
+    }
+
+    if (ball->unkFC != NULL)
+        ball->unkFC->unk58 = ball->unk74;
+}
+
+void g_ball_draw(struct Ball *ball, int unused)
+{
+    struct GMAModelEntry *r31 = lbl_802F1CC8->modelEntries;
+    s16 *r30 = lbl_801B7BA8[ball->unk14A];
+    Vec sp18;
+    u8 unused2[8];
+    float f31;  // distance from camera, maybe?
+    int r27;  // level of detail?
+
+    mathutil_mtxA_push();
+    mathutil_mtxA_from_mtx(currentCameraStructPtr->unk144);
+    mathutil_mtxA_tf_point(&ball->unk4, &sp18);
+    f31 = -0.25f / (currentCameraStructPtr->sub28.unk38 * sp18.z);
+    mathutil_mtxA_pop();
+
+    func_8000E1A4(ball->unk15C[currentCameraStructPtr->unk204] * 0.5 + 0.5);
+    avdisp_set_z_mode(1, 3, 0);
+
+    r27 = 0;
+    if (modeCtrl.unk30 > 1 && f31 < 0.17299999296665192f)
+    {
+        r27 = 1;
+        if (f31 < 0.10199999809265137f)
+            r27 = 2;
+    }
+
+    func_8008E420(ball->unk74);
+    g_avdisp_draw_model_2(r31[lbl_801B7BA0[r27]].modelOffset);
+    func_8008E420(ball->unk74);
+    g_avdisp_draw_model_2(r31[r30[r27]].modelOffset);
+    func_8008E420(ball->unk74);
+    g_avdisp_draw_model_2(r31[r30[r27 + 6]].modelOffset);
+    avdisp_set_z_mode(1, 3, 1);
+    g_avdisp_draw_model_2(r31[lbl_801B7B98[r27]].modelOffset);
+    func_8008E420(ball->unk74);
+    g_avdisp_draw_model_2(r31[r30[r27 + 3]].modelOffset);
+    func_8000E3BC();
+    avdisp_set_z_mode(1, 3, 1);
+}
+
+void lbl_8003D928(struct Struct80038840 *a)
+{
+    struct Ball *ball = &lbl_80205E60[a->unkC];
+    int (*r30)() = backgroundInfo.unk7C;
+    Func802F20EC bgfunc;
+
+    if (gameMode == 2 && modeCtrl.unk28 == 1 && modeCtrl.unk24 > 3)
+        r30 = NULL;
+
+    func_800223D8(a->unk8);
+    mathutil_mtxA_from_mtxB();
+    mathutil_mtxA_mult_right(ball->unk30);
+    mathutil_mtxA_scale_s(ball->unk74);
+    func_8009AA24(mathutilData->mtxA, 0);
+    g_ball_draw(ball, a->unkC);
+
+    if (r30 != NULL)
+    {
+        mathutil_mtxA_push();
+        mathutil_mtxA_from_mtx(ball->unk30);
+        if (r30(lbl_802F1B04[0x38], lbl_802F1B4C) != 0)
+        {
+            mathutil_mtxA_pop();
+            mathutil_mtxA_push();
+            mathutil_mtxA_scale_s(1.0099999904632568f);
+            func_80031784(lbl_802F1B4C);
+            mathutil_mtxA_pop();
+        }
+        else
+            mathutil_mtxA_pop();
+    }
+
+    bgfunc = backgroundInfo.unk94;
+    if (bgfunc != NULL)
+    {
+        g_avdisp_set_some_func_1(bgfunc);
+        func_8009AA24(mathutilData->mtxA, 0);
+        func_8008E49C(lbl_802F1CC8->modelEntries[0x14].modelOffset);
+        g_avdisp_set_some_func_1(NULL);
+    }
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -3101,12 +3248,10 @@ const double lbl_802F35C8 = 127.0;
 const double lbl_802F35D0 = 15.0;
 const double lbl_802F35D8 = 80.0;
 const double lbl_802F35E0 = 0.85000002384185791;
-*/
 const double lbl_802F35E8 = 5.0;
 const double lbl_802F35F0 = 0.1;
 const float lbl_802F35F8 = -0.25f;
 const float lbl_802F35FC = 0.17299999296665192f;
 const float lbl_802F3600 = 0.10199999809265137f;
 const float lbl_802F3604 = 1.0099999904632568f;
-const float lbl_802F3608 = 0.0f;
-const float lbl_802F360C = 1.0f;
+*/

@@ -321,7 +321,8 @@ struct Ball_child
     Vec unk3C;
     Vec unk48;
     s32 unk54;
-    u8 filler58[0x60-0x58];
+    float unk58;
+    u8 filler5C[0x60-0x5C];
     Quaternion unk60;
     u8 filler70[0x74-0x70];
     u32 unk74;
@@ -684,4 +685,12 @@ struct Struct8003C550
     Vec unk88;
     u8 filler94[0xA8-0x94];
     float unkA8;
+};
+
+struct Struct80038840
+{
+    u8 filler0[4];
+    void (*unk4)(struct Struct80038840 *);
+    u32 unk8;
+    u32 unkC;
 };

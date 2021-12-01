@@ -7259,7 +7259,6 @@ lbl_8003D3A4:
 /* 8003D3B8 000392D8  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 8003D3BC 000392DC  38 21 00 28 */	addi r1, r1, 0x28
 /* 8003D3C0 000392E0  4E 80 00 20 */	blr
-.endif
 
 .global func_8003D3C4
 func_8003D3C4:
@@ -7381,7 +7380,7 @@ lbl_8003D570:
 /* 8003D57C 0003949C  93 C1 00 E8 */	stw r30, 0xe8(r1)
 /* 8003D580 000394A0  C8 01 00 E8 */	lfd f0, 0xe8(r1)
 /* 8003D584 000394A4  EC 00 D8 28 */	fsubs f0, f0, f27
-/* 8003D588 000394A8  EC 00 E0 24 */	fdivs f0, f0, f28
+/* 8003D588 000394A8  EC 00 E0 24 */	fdivs f0, f0, f28  ;# (r / 32767.0f) 
 /* 8003D58C 000394AC  EC 1A 00 32 */	fmuls f0, f26, f0
 /* 8003D590 000394B0  FF 3D 00 32 */	fmul f25, f29, f0
 /* 8003D594 000394B4  FF 20 C8 18 */	frsp f25, f25
@@ -7393,9 +7392,9 @@ lbl_8003D570:
 /* 8003D5AC 000394CC  93 C1 00 E0 */	stw r30, 0xe0(r1)
 /* 8003D5B0 000394D0  C8 41 00 E0 */	lfd f2, 0xe0(r1)
 /* 8003D5B4 000394D4  EC 42 D8 28 */	fsubs f2, f2, f27
-/* 8003D5B8 000394D8  EC 42 E0 24 */	fdivs f2, f2, f28
+/* 8003D5B8 000394D8  EC 42 E0 24 */	fdivs f2, f2, f28  ;# (r / 32767.0f) 
 /* 8003D5BC 000394DC  FC 5E 00 B2 */	fmul f2, f30, f2
-/* 8003D5C0 000394E0  FC 42 F8 28 */	fsub f2, f2, f31
+/* 8003D5C0 000394E0  FC 42 F8 28 */	fsub f2, f2, f31  ;# (r / 32767.0f) * 1.5 - 0.75
 /* 8003D5C4 000394E4  FC 21 10 2A */	fadd f1, f1, f2
 /* 8003D5C8 000394E8  FC 39 00 72 */	fmul f1, f25, f1
 /* 8003D5CC 000394EC  FC 00 08 2A */	fadd f0, f0, f1
@@ -7522,8 +7521,8 @@ lbl_8003D778:
 /* 8003D788 000396A8  D0 04 00 58 */	stfs f0, 0x58(r4)
 /* 8003D78C 000396AC  4E 80 00 20 */	blr
 
-.global func_8003D790
-func_8003D790:
+.global g_ball_draw
+g_ball_draw:
 /* 8003D790 000396B0  7C 08 02 A6 */	mflr r0
 /* 8003D794 000396B4  3C 80 80 1B */	lis r4, lbl_801B7B78@ha
 /* 8003D798 000396B8  90 01 00 04 */	stw r0, 4(r1)
@@ -7627,6 +7626,7 @@ lbl_8003D870:
 /* 8003D91C 0003983C  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003D920 00039840  7C 08 03 A6 */	mtlr r0
 /* 8003D924 00039844  4E 80 00 20 */	blr
+
 glabel lbl_8003D928
 /* 8003D928 00039848  7C 08 02 A6 */	mflr r0
 /* 8003D92C 0003984C  3C 80 80 20 */	lis r4, lbl_80205E60@ha
@@ -7668,7 +7668,7 @@ lbl_8003D994:
 /* 8003D9B8 000398D8  48 05 D0 6D */	bl func_8009AA24
 /* 8003D9BC 000398DC  7F E3 FB 78 */	mr r3, r31
 /* 8003D9C0 000398E0  80 9D 00 0C */	lwz r4, 0xc(r29)
-/* 8003D9C4 000398E4  4B FF FD CD */	bl func_8003D790
+/* 8003D9C4 000398E4  4B FF FD CD */	bl g_ball_draw
 /* 8003D9C8 000398E8  28 1E 00 00 */	cmplwi r30, 0
 /* 8003D9CC 000398EC  41 82 00 54 */	beq lbl_8003DA20
 /* 8003D9D0 000398F0  4B FC 9E 21 */	bl mathutil_mtxA_push
@@ -7717,6 +7717,7 @@ lbl_8003DA60:
 /* 8003DA70 00039990  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 8003DA74 00039994  38 21 00 20 */	addi r1, r1, 0x20
 /* 8003DA78 00039998  4E 80 00 20 */	blr
+.endif
 
 .global func_8003DA7C
 func_8003DA7C:
@@ -8555,6 +8556,7 @@ lbl_802F3600:
 lbl_802F3604:
 	# ROM: 0x1ED024
 	.byte 0x3F, 0x81, 0x47, 0xAE
+.endif
 
 .global lbl_802F3608
 lbl_802F3608:
@@ -8565,7 +8567,6 @@ lbl_802F3608:
 lbl_802F360C:
 	# ROM: 0x1ED02C
 	.byte 0x3F, 0x80, 0x00, 0x00
-.endif
 
 .global lbl_802F3610
 lbl_802F3610:
