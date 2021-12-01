@@ -433,9 +433,9 @@ lbl_800A5CE0:
 /* 800A5D7C 000A1C9C  B0 01 00 0C */	sth r0, 0xc(r1)
 /* 800A5D80 000A1CA0  4B F7 AD 39 */	bl func_80020AB8
 /* 800A5D84 000A1CA4  4B F7 C1 49 */	bl func_80021ECC
-/* 800A5D88 000A1CA8  3C 60 80 20 */	lis r3, lbl_80205E60@ha
+/* 800A5D88 000A1CA8  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 800A5D8C 000A1CAC  83 8D 9D 38 */	lwz r28, currentBallStructPtr@sda21(r13)
-/* 800A5D90 000A1CB0  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
+/* 800A5D90 000A1CB0  38 03 5E 60 */	addi r0, r3, ballInfo@l
 /* 800A5D94 000A1CB4  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 800A5D98 000A1CB8  90 0D 9D 38 */	stw r0, currentBallStructPtr@sda21(r13)
 /* 800A5D9C 000A1CBC  38 63 3C C8 */	addi r3, r3, eventInfo@l

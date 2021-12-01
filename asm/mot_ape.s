@@ -3346,9 +3346,9 @@ lbl_8008C9A8:
 /* 8008C9AC 000888CC  54 00 02 D7 */	rlwinm. r0, r0, 0, 0xb, 0xb
 /* 8008C9B0 000888D0  41 82 00 A4 */	beq lbl_8008CA54
 /* 8008C9B4 000888D4  88 1F 00 C0 */	lbz r0, 0xc0(r31)
-/* 8008C9B8 000888D8  3C 80 80 20 */	lis r4, lbl_80205E60@ha
+/* 8008C9B8 000888D8  3C 80 80 20 */	lis r4, ballInfo@ha
 /* 8008C9BC 000888DC  80 6D 9A 5C */	lwz r3, currentCameraStructPtr@sda21(r13)
-/* 8008C9C0 000888E0  38 A4 5E 60 */	addi r5, r4, lbl_80205E60@l
+/* 8008C9C0 000888E0  38 A4 5E 60 */	addi r5, r4, ballInfo@l
 /* 8008C9C4 000888E4  7C 04 07 74 */	extsb r4, r0
 /* 8008C9C8 000888E8  80 03 02 04 */	lwz r0, 0x204(r3)
 /* 8008C9CC 000888EC  1C 64 01 A4 */	mulli r3, r4, 0x1a4

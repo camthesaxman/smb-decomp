@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "ball.h"
 #include "camera.h"
 #include "perf.h"
 
@@ -20,7 +21,7 @@ void main(void)
     perf_init();
     sound_init();
     func_8008D788();
-    currentBallStructPtr = lbl_80205E60;
+    currentBallStructPtr = ballInfo;
     currentWorldStructPtr = &lbl_80206BF0[0];
     chkstatus_init();
     func_8008CF00(lbl_801ED920, 0x80);

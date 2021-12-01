@@ -631,12 +631,7 @@ extern struct SpritePoolInfo spritePoolInfo;
 // extern ? lbl_80205DA0;
 // extern ? lbl_80205DAC;
 // extern ? lbl_80205E00;
-// extern ? ballInfo;
-// extern ? lbl_80205E30;
-extern struct Ball lbl_80205E60[];
-// extern ? lbl_80206B80;
-// extern ? lbl_80206BC0;
-extern u32 lbl_80206BD0[];
+
 extern struct World lbl_80206BF0[];
 // extern ? lbl_80206CF0;
 // extern ? lbl_80206D00;

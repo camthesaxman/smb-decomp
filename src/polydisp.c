@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "ball.h"
 #include "camera.h"
 #include "game.h"
 #include "mathutil.h"
@@ -287,14 +288,14 @@ void func_8000B96C(void)
         for (i = 0; i < 3; i++)
         {
             float f30;
-            if (lbl_80205E60[i].unkFC->unk14 & (1 << (31-0x1A)))
+            if (ballInfo[i].unkFC->unk14 & (1 << (31-0x1A)))
                 continue;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate_xyz(
-                lbl_80205E60[i].unkFC->unk30.x,
-                lbl_80205E60[i].unkFC->unk30.y - 0.45,
-                lbl_80205E60[i].unkFC->unk30.z);
-            f30 = lbl_80173FD0[lbl_80205E60[i].unkFC->unk10];
+                ballInfo[i].unkFC->unk30.x,
+                ballInfo[i].unkFC->unk30.y - 0.45,
+                ballInfo[i].unkFC->unk30.z);
+            f30 = lbl_80173FD0[ballInfo[i].unkFC->unk10];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
@@ -308,9 +309,9 @@ void func_8000B96C(void)
     {
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(
-            lbl_80205E60[0].unkFC->unk30.x,
-            lbl_80205E60[0].unkFC->unk30.y - 0.25,
-            lbl_80205E60[0].unkFC->unk30.z);
+            ballInfo[0].unkFC->unk30.x,
+            ballInfo[0].unkFC->unk30.y - 0.25,
+            ballInfo[0].unkFC->unk30.z);
         if (lbl_801EED2C.unk8 >= 0x440 && lbl_801EED2C.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
         func_80033AD4(lbl_802F1B04[0x37]);
@@ -323,7 +324,7 @@ void func_8000B96C(void)
         {
             u32 *var;
             mathutil_mtxA_from_mtxB();
-            mathutil_mtxA_translate(&lbl_80205E60[0].unkFC->unk30);
+            mathutil_mtxA_translate(&ballInfo[0].unkFC->unk30);
             mathutil_mtxA_translate(&r27->unk8);
             mathutil_mtxA_rotate_y(r27->unk6);
             mathutil_mtxA_rotate_x(r27->unk4);
@@ -596,7 +597,7 @@ void func_8000C5A4(void)
                 if (!(cameraInfo[i].flags & (1 << (31-0x18))))
                     continue;
             }
-            currentBallStructPtr = &lbl_80205E60[i];
+            currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
             func_80092D3C();
             func_80054FF0();
@@ -653,7 +654,7 @@ void func_8000C7A4(void)
         if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f
          && (cameraInfo[i].flags & (1 << (31-0x19))))
         {
-            currentBallStructPtr = &lbl_80205E60[i];
+            currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
             func_800225C0(i);
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
@@ -699,7 +700,7 @@ void func_8000C8D4(void)
     {
         if (r25[i] == 0
          || r25[i] == 4
-         || (lbl_80205E60[i].unk94 & (1 << (31-0x1B))))
+         || (ballInfo[i].unk94 & (1 << (31-0x1B))))
             continue;
         {
             u16 foo;
@@ -708,10 +709,10 @@ void func_8000C8D4(void)
             f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
             mathutil_mtxA_scale_s(f27);
             mathutil_mtxA_mult_right(mathutilData->mtxB);
-            mathutil_mtxA_translate(&lbl_80205E60[i].unk4);
+            mathutil_mtxA_translate(&ballInfo[i].unk4);
             mathutil_mtxA_rotate_y(cameraInfo[i].unk1A - 0x8000);
             mathutil_mtxA_rotate_x(-0x4000);
-            mathutil_mtxA_translate_xyz(0.0f, lbl_80205E60[i].unk68, 0.0f);
+            mathutil_mtxA_translate_xyz(0.0f, ballInfo[i].unk68, 0.0f);
             //r27->x = MATHUTIL_DATA.mtxA[0][3];
             //r27->y = MATHUTIL_DATA.mtxA[1][3];
             //r27->z = MATHUTIL_DATA.mtxA[2][3];
@@ -739,7 +740,7 @@ void func_8000C8D4(void)
     {
         if (r25[i] == 0
          || r25[i] == 4
-         || (lbl_80205E60[i].unk94 & (1 << (31-0x1B))))
+         || (ballInfo[i].unk94 & (1 << (31-0x1B))))
             continue;
         {
             u16 foo;
@@ -748,10 +749,10 @@ void func_8000C8D4(void)
             f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
             mathutil_mtxA_scale_s(f27);
             mathutil_mtxA_mult_right(mathutilData->mtxB);
-            mathutil_mtxA_translate(&lbl_80205E60[i].unk4);
+            mathutil_mtxA_translate(&ballInfo[i].unk4);
             mathutil_mtxA_rotate_y(cameraInfo[i].unk1A - 0x8000);
             mathutil_mtxA_rotate_x(-0x4000);
-            mathutil_mtxA_translate_xyz(0.0f, lbl_80205E60[i].unk68, 0.0f);
+            mathutil_mtxA_translate_xyz(0.0f, ballInfo[i].unk68, 0.0f);
             r27[0] = MATHUTIL_DATA.mtxA[0][3];
             r27[1] = MATHUTIL_DATA.mtxA[1][3];
             r27[2] = MATHUTIL_DATA.mtxA[2][3];

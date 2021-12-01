@@ -163,7 +163,7 @@ struct ModeControl
     u8 filler14[0x1C-0x14];
     u32 unk1C;
     s32 unk20;
-    int unk24;
+    /*0x24*/ int playerCount;
     s32 unk28;
     s32 unk2C;
     s32 unk30;
@@ -300,104 +300,8 @@ struct TPL;
 
 typedef void (*Func802F20EC)();
 
-struct Struct8003699C_child
-{
-    u8 filler0[0x38];
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-};
-
-struct Ball_child
-{
-    struct Struct8003699C_child *unk0;
-    u8 filler4[0x10-4];
-    s32 unk10;
-    u32 unk14;
-    u8 filler18[0x24-0x18];
-    s32 unk24;
-    u8 filler28[0x30-0x28];
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    s32 unk54;
-    float unk58;
-    u8 filler5C[0x60-0x5C];
-    Quaternion unk60;
-    u8 filler70[0x74-0x70];
-    u32 unk74;
-    u8 filler78[0xB4-0x78];
-    u32 unkB4;
-    u8 fillerB8[0xC0-0xB8];
-    s8 unkC0;
-    u8 unkC1;
-    s16 unkC2;
-    u8 fillerC4[0x1CE - 0xC4];
-    s16 unk1CE;  // used in the Ball.unk144 one
-};
-
-struct Ball
-{
-    u8 unk0;
-    s8 unk1;
-    s8 unk2;  // lives
-    s8 unk3;
-    Vec unk4;  // position
-    Vec unk10;
-    Vec unk1C;
-    s16 unk28;
-    s16 unk2A;
-    s16 unk2C;
-    s8 unk2E;
-    s8 unk2F;
-    Mtx unk30;
-    s16 unk60;
-    s16 unk62;
-    s16 unk64;
-    s16 unk66;
-    float unk68;
-    float unk6C;
-    float unk70;
-    float unk74;
-    s32 unk78;  // bananas
-    u32 unk7C;
-    s32 unk80;
-    Vec unk84;
-    s16 unk90;
-    s16 unk92;
-    u32 unk94;
-    Quaternion unk98;
-    Quaternion unkA8;
-    Vec unkB8;
-    float unkC4;
-    Mtx unkC8;
-    float unkF8;
-    struct Ball_child *unkFC;
-    u32 unk100;
-    Vec unk104;
-    float unk110;
-    Vec unk114;
-    u32 unk120;
-    s16 unk124;
-    s16 unk126;
-    s16 unk128;
-    s16 unk12A;
-    u8 filler12C[0x130-0x12C];
-    float unk130;
-    u32 unk134;
-    u8 filler138[4];
-    s32 unk13C;
-    float unk140;
-    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
-    u8 filler148[0x14A - 0x148];
-    u8 unk14A;
-    u8 unk14B;
-    u8 filler14C[2];
-    s16 unk14E;
-    Vec unk150;
-    float unk15C[4];
-    u8 filler16C[0x1A4-0x16C];
-};
+struct Ball_child;
+struct Ball;
 
 struct BackgroundInfo  // size = 0xA8
 {

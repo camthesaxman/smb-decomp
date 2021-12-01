@@ -21591,7 +21591,7 @@ do_object_collision:
 /* 8006A67C 0006659C  3A A3 59 88 */	addi r21, r3, spritePoolInfo@l
 /* 8006A680 000665A0  3C E0 80 28 */	lis r7, lbl_80285AB0@ha
 /* 8006A684 000665A4  3D 00 80 17 */	lis r8, eventInfo@ha
-/* 8006A688 000665A8  3C 60 80 20 */	lis r3, lbl_80205E60@ha
+/* 8006A688 000665A8  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 8006A68C 000665AC  3B 61 00 24 */	addi r27, r1, 0x24
 /* 8006A690 000665B0  3B 81 00 18 */	addi r28, r1, 0x18
 /* 8006A694 000665B4  3B 41 00 30 */	addi r26, r1, 0x30
@@ -21604,7 +21604,7 @@ do_object_collision:
 /* 8006A6B0 000665D0  80 0D 9D 38 */	lwz r0, currentBallStructPtr@sda21(r13)
 /* 8006A6B4 000665D4  82 75 00 0C */	lwz r19, 0xc(r21)
 /* 8006A6B8 000665D8  90 01 00 7C */	stw r0, 0x7c(r1)
-/* 8006A6BC 000665DC  38 03 5E 60 */	addi r0, r3, lbl_80205E60@l
+/* 8006A6BC 000665DC  38 03 5E 60 */	addi r0, r3, ballInfo@l
 /* 8006A6C0 000665E0  7C 16 03 78 */	mr r22, r0
 /* 8006A6C4 000665E4  38 09 3A 58 */	addi r0, r9, lbl_801F3A58@l
 /* 8006A6C8 000665E8  3C 60 80 07 */	lis r3, func_8006AAEC@ha
@@ -25036,8 +25036,8 @@ lbl_8006D7E4:
 /* 8006D820 00069740  2C 00 00 02 */	cmpwi r0, 2
 /* 8006D824 00069744  40 82 00 54 */	bne lbl_8006D878
 /* 8006D828 00069748  1C 05 01 A4 */	mulli r0, r5, 0x1a4
-/* 8006D82C 0006974C  3C 60 80 20 */	lis r3, lbl_80205E60@ha
-/* 8006D830 00069750  38 63 5E 60 */	addi r3, r3, lbl_80205E60@l
+/* 8006D82C 0006974C  3C 60 80 20 */	lis r3, ballInfo@ha
+/* 8006D830 00069750  38 63 5E 60 */	addi r3, r3, ballInfo@l
 /* 8006D834 00069754  7C 63 02 14 */	add r3, r3, r0
 /* 8006D838 00069758  80 03 00 94 */	lwz r0, 0x94(r3)
 /* 8006D83C 0006975C  54 00 01 CF */	rlwinm. r0, r0, 0, 7, 7

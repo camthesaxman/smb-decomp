@@ -5,9 +5,10 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "ball.h"
 #include "camera.h"
-#include "mathutil.h"
 #include "game.h"
+#include "mathutil.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -165,7 +166,7 @@ void ev_camera_main(void)
     }
 
     r22 = spritePoolInfo.unkC;
-    for (i = 0, camera = &cameraInfo[0], ball = &lbl_80205E60[0]; i < 4; i++, camera++, ball++, r22++)
+    for (i = 0, camera = &cameraInfo[0], ball = &ballInfo[0]; i < 4; i++, camera++, ball++, r22++)
     {
         if ((*r22 != 0 && *r22 != 4)
          || (camera->flags & (1<<(31-0x1B)))
@@ -176,7 +177,7 @@ void ev_camera_main(void)
                 cameraFuncs[CAMERA_STATE_TEST](camera, ball);
             else
                 cameraFuncs[camera->state](camera, ball);
-            mathutil_mtxA_from_translate(&ball->unk4);
+            mathutil_mtxA_from_translate(&ball->pos);
             mathutil_mtxA_rotate_y(camera->rotY);
             mathutil_mtxA_rigid_inv_tf_point(&camera->eye, &camera->unkBC);
             mathutil_mtxA_rigid_inv_tf_point(&camera->lookAt, &camera->unkC8);
@@ -193,26 +194,26 @@ void ev_camera_main(void)
                 if (eventInfo[EVENT_WORLD].state == EV_STATE_RUNNING
                  && !(camera->flags & (1<<(31-0x1C))))
                 {
-                    mathutil_mtxA_translate(&ball->unk4);
+                    mathutil_mtxA_translate(&ball->pos);
                     mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 * 0.6);
                     mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 * 0.6);
-                    mathutil_mtxA_translate_neg(&ball->unk4);
+                    mathutil_mtxA_translate_neg(&ball->pos);
                 }
                 mathutil_mtxA_to_mtx(camera->unk144);
             }
             else
             {
                 mathutil_mtxA_push();
-                mathutil_mtxA_translate(&ball->unk4);
+                mathutil_mtxA_translate(&ball->pos);
                 mathutil_mtxA_rotate_z(-lbl_80206BF0[i].unk2 >> 1);
                 mathutil_mtxA_rotate_x(-lbl_80206BF0[i].unk0 >> 1);
-                mathutil_mtxA_translate_neg(&ball->unk4);
+                mathutil_mtxA_translate_neg(&ball->pos);
                 mathutil_mtxA_to_mtx(camera->unk1A4);
                 mathutil_mtxA_pop();
-                mathutil_mtxA_translate(&ball->unk4);
+                mathutil_mtxA_translate(&ball->pos);
                 mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 >> 1);
                 mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 >> 1);
-                mathutil_mtxA_translate_neg(&ball->unk4);
+                mathutil_mtxA_translate_neg(&ball->pos);
                 mathutil_mtxA_to_mtx(camera->unk144);
             }
 
@@ -263,7 +264,7 @@ void ev_camera_main(void)
                 if (lbl_802F1EE0 & 0xA)
                     break;
                 mathutil_mtxA_from_mtx(camera->unk144);
-                mathutil_mtxA_tf_point(&ball->unk4, &sp8);
+                mathutil_mtxA_tf_point(&ball->pos, &sp8);
                 if (sp8.z > 0.0)
                     camera->sub28.fov = DEGREES_TO_S16(120);
                 else
@@ -1013,13 +1014,13 @@ void camera_func_attract_level(struct Camera *camera, struct Ball *ball)
     }
     else
     {
-        camera->eye.x = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
-        camera->eye.y = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
-        camera->eye.z = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
+        camera->eye.x = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
+        camera->eye.y = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
+        camera->eye.z = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
 
-        camera->lookAt.x = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
-        camera->lookAt.y = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
-        camera->lookAt.z = lbl_80205E60[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
+        camera->lookAt.x = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
+        camera->lookAt.y = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
+        camera->lookAt.z = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
     }
 
     sp10.x = camera->lookAt.x - camera->eye.x;
@@ -1035,9 +1036,9 @@ void camera_func_43(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.5;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.5;
+    camera->lookAt.z = ball->pos.z;
 
     mathutil_mtxA_from_translate(&camera->lookAt);
     mathutil_mtxA_rotate_y(0);
@@ -1085,7 +1086,7 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
         camera->lookAt.z = sp1C.z;
         if (camera->timerCurr > 0)
         {
-            for (i = 0; i < modeCtrl.unk24; i++)
+            for (i = 0; i < modeCtrl.playerCount; i++)
             {
                 r10 = lbl_80206BD0[i];
                 if (camera->unk80 > -0.3 && (lbl_801F3D50[r10][0] & (1<<(31-0x18))))
@@ -1104,7 +1105,7 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
             sp10.y = sp1C.w * (camera->unk80 + 0.8);
         sp10.z = sp1C.w * (camera->unk80 + 0.8);
 
-        for (i = 0; i < modeCtrl.unk24; i++)
+        for (i = 0; i < modeCtrl.playerCount; i++)
         {
             r10 = lbl_80206BD0[i];
             if (camera->unk8C < 256 && (lbl_801F3D50[r10][0] & (1<<(31-0x1A))))
@@ -1131,7 +1132,7 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
 
 void camera_func_52(struct Camera *camera, struct Ball *ball)
 {
-    Vec sp10;
+    Vec v;
 
     camera_clear(camera);
 
@@ -1143,11 +1144,11 @@ void camera_func_52(struct Camera *camera, struct Ball *ball)
     camera->lookAt.y = 0.0f;
     camera->lookAt.z = 0.0f;
 
-    sp10.x = camera->lookAt.x - camera->eye.x;
-    sp10.y = camera->lookAt.y - camera->eye.y;
-    sp10.z = camera->lookAt.z - camera->eye.z;
+    v.x = camera->lookAt.x - camera->eye.x;
+    v.y = camera->lookAt.y - camera->eye.y;
+    v.z = camera->lookAt.z - camera->eye.z;
 
-    camera_face_direction(camera, &sp10);
+    camera_face_direction(camera, &v);
 
     camera->state = 53;
 }
@@ -1282,9 +1283,9 @@ void camera_func_0(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
     camera->unk26 = 0;
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.5;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.5;
+    camera->lookAt.z = ball->pos.z;
     mathutil_mtxA_from_translate(&camera->lookAt);
     mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
     sp10.x = 0.0f;
@@ -1349,7 +1350,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.z = camera->unkAC.z - camera->lookAt.z;
 
     f1 = sum_of_3_sq(sp28.x, sp28.y, sp28.z);
-    if (f1 > 1.1920928955078125e-07f)
+    if (f1 > TINY)
     {
         f1 = mathutil_rsqrt(f1);
         sp28.x *= f1;
@@ -1368,9 +1369,9 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.y = sp28.y * 0.75 + camera->lookAt.y;
     sp28.z = sp28.z * 0.75 + camera->lookAt.z;
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.5;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.5;
+    camera->lookAt.z = ball->pos.z;
 
     sp28.x = camera->lookAt.x - sp28.x;
     sp28.y = camera->lookAt.y - sp28.y;
@@ -1391,7 +1392,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
         r4 = r3;
 
     r30 = camera->rotY + r4;
-    if (!(camera->flags & (1<<(31-0x1E))) && !(ball->unk94 & (1<<(31-0x13))))
+    if (!(camera->flags & (1<<(31-0x1E))) && !(ball->flags & BALL_FLAG_12))
     {
         r3 = (s16)(ball->unk92 - r30);
         if (r3 > 0x800)
@@ -1586,9 +1587,9 @@ void camera_func_4(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y;
+    camera->lookAt.z = ball->pos.z;
 
     sp10.x = camera->lookAt.x - camera->eye.x;
     sp10.y = camera->lookAt.y - camera->eye.y;
@@ -1659,13 +1660,13 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
 
     f3 = 1.0 / f31;
 
-    camera->unk94.x += f3 * (sp10.unk0.x - ball->unk4.x);
-    camera->unk94.y += f3 * (sp10.unk0.y - ball->unk4.y);
-    camera->unk94.z += f3 * (sp10.unk0.z - ball->unk4.z);
+    camera->unk94.x += f3 * (sp10.unk0.x - ball->pos.x);
+    camera->unk94.y += f3 * (sp10.unk0.y - ball->pos.y);
+    camera->unk94.z += f3 * (sp10.unk0.z - ball->pos.z);
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y;
+    camera->lookAt.z = ball->pos.z;
 
     camera->flags |= 1;
 
@@ -1738,9 +1739,9 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     camera->unk94.y -= 0.6 * (sp30.unk0.y - sp10.unk0.y);
     camera->unk94.z -= 0.6 * (sp30.unk0.z - sp10.unk0.z);
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y;
+    camera->lookAt.z = ball->pos.z;
 
     camera->flags |= 1;
 
@@ -1762,9 +1763,9 @@ void camera_func_fallout_replay(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp10.x = ball->unk4.x - camera->lookAt.x;
-    sp10.y = ball->unk4.y - camera->lookAt.y;
-    sp10.z = ball->unk4.z - camera->lookAt.z;
+    sp10.x = ball->pos.x - camera->lookAt.x;
+    sp10.y = ball->pos.y - camera->lookAt.y;
+    sp10.z = ball->pos.z - camera->lookAt.z;
 
     camera->unkA0.x = 0.15 * sp10.x;
     camera->unkA0.y = 0.15 * sp10.y;
@@ -1823,9 +1824,9 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     if (lbl_802F1EE0 & 0xA)
         return;
 
-    sp10.x = ball->unk4.x - camera->eye.x;
+    sp10.x = ball->pos.x - camera->eye.x;
     sp10.y = 0.0f;
-    sp10.z = ball->unk4.z - camera->eye.z;
+    sp10.z = ball->pos.z - camera->eye.z;
 
     f31 = vec_dot_prod(&sp10, &camera->unk94);
     mathutil_vec_normalize_len(&sp10);
@@ -1845,9 +1846,9 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    camera->unkA0.x = 0.3 * (ball->unk4.x - camera->lookAt.x);
-    camera->unkA0.y = 0.3 * (ball->unk4.y - camera->lookAt.y);
-    camera->unkA0.z = 0.3 * (ball->unk4.z - camera->lookAt.z);
+    camera->unkA0.x = 0.3 * (ball->pos.x - camera->lookAt.x);
+    camera->unkA0.y = 0.3 * (ball->pos.y - camera->lookAt.y);
+    camera->unkA0.z = 0.3 * (ball->pos.z - camera->lookAt.z);
 
     camera->lookAt.x += camera->unkA0.x;
     camera->lookAt.y += camera->unkA0.y;
@@ -1858,13 +1859,13 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.z = camera->eye.z - camera->lookAt.z;
 
     f1 = mathutil_sqrt(mathutil_sum_of_sq(sp10.x, sp10.z));
-    if (f1 > 1.1920928955078125e-07f)
+    if (f1 > TINY)
     {
         float f3 = (f1 + 0.08 * (2.0 - f1)) / f1;
 
         camera->eye.x = sp10.x * f3 + camera->lookAt.x;
         camera->eye.z = sp10.z * f3 + camera->lookAt.z;
-        if (!(ball->unk94 & (1<<(31-0x16))))
+        if (!(ball->flags & BALL_FLAG_09))
         {
             sp10.y = camera->lookAt.y - camera->eye.y;
             camera->eye.y += 0.01 * sp10.y;
@@ -1932,7 +1933,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
         mathutil_mtxA_tf_point(&sp6C.unk0, &sp6C.unk0);
     }
-    if (mathutil_vec_distance(&sp6C.unk0, &ball->unk4) < 16.0)
+    if (mathutil_vec_distance(&sp6C.unk0, &ball->pos) < 16.0)
     {
         camera->state = CAMERA_STATE_GOAL_REPLAY;
         mathutil_mtxA_from_translate(&sp6C.unk0);
@@ -1997,9 +1998,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 mathutil_mtxA_rotate_y(r29->unkE);
                 mathutil_mtxA_rotate_x(r29->unkC);
                 mathutil_mtxA_tf_point(&camera->unk54, &sp10);
-                sp1C.x = sp10.x - ball->unk4.x;
-                sp1C.y = sp10.y - ball->unk4.y;
-                sp1C.z = sp10.z - ball->unk4.z;
+                sp1C.x = sp10.x - ball->pos.x;
+                sp1C.y = sp10.y - ball->pos.y;
+                sp1C.z = sp10.z - ball->pos.z;
                 mathutil_vec_set_len(&sp1C, &sp1C, camera->unk60);
                 camera->eye.x = sp10.x + sp1C.x;
                 camera->eye.y = sp10.y + sp1C.y;
@@ -2025,19 +2026,19 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     else
     {
         camera->state = 18;
-        sp60.x = ball->unk4.x - sp6C.unk0.x;
-        sp60.y = ball->unk4.y - sp6C.unk0.y;
-        sp60.z = ball->unk4.z - sp6C.unk0.z;
+        sp60.x = ball->pos.x - sp6C.unk0.x;
+        sp60.y = ball->pos.y - sp6C.unk0.y;
+        sp60.z = ball->pos.z - sp6C.unk0.z;
         if (sp60.x == 0.0 && sp60.y == 0.0 && sp60.z == 0.0)
             sp60.z = 1.0f;
         mathutil_vec_set_len(&sp60, &sp60, 1.0f);
-        camera->eye.x = ball->unk4.x + sp60.x;
-        camera->eye.y = ball->unk4.y + sp60.y;
-        camera->eye.z = ball->unk4.z + sp60.z;
+        camera->eye.x = ball->pos.x + sp60.x;
+        camera->eye.y = ball->pos.y + sp60.y;
+        camera->eye.z = ball->pos.z + sp60.z;
     }
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y;
+    camera->lookAt.z = ball->pos.z;
     camera->flags |= 1;
     camera_func_goal_replay(camera, ball);
 }
@@ -2057,9 +2058,9 @@ void camera_func_goal_replay(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp10.x = ball->unk4.x - camera->lookAt.x;
-    sp10.y = ball->unk4.y - camera->lookAt.y;
-    sp10.z = ball->unk4.z - camera->lookAt.z;
+    sp10.x = ball->pos.x - camera->lookAt.x;
+    sp10.y = ball->pos.y - camera->lookAt.y;
+    sp10.z = ball->pos.z - camera->lookAt.z;
 
     camera->unkA0.x = sp10.x * 0.15;
     camera->unkA0.y = sp10.y * 0.15;
@@ -2094,15 +2095,15 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_tf_point(&sp1C, &sp1C);
     }
 
-    sp1C.x = ball->unk4.x - sp1C.x;
-    sp1C.y = ball->unk4.y - sp1C.y;
-    sp1C.z = ball->unk4.z - sp1C.z;
+    sp1C.x = ball->pos.x - sp1C.x;
+    sp1C.y = ball->pos.y - sp1C.y;
+    sp1C.z = ball->pos.z - sp1C.z;
     if (mathutil_vec_normalize_len(&sp1C) < 12.0)
         camera->state = 16;
 
-    sp10.x = (ball->unk1C.x * 4.0) + (ball->unk4.x + sp1C.x * 2.0);
-    sp10.y = (ball->unk1C.y * 4.0) + (ball->unk4.y + sp1C.y * 2.0) + 2.0;
-    sp10.z = (ball->unk1C.z * 4.0) + (ball->unk4.z + sp1C.z * 2.0);
+    sp10.x = (ball->unk1C.x * 4.0) + (ball->pos.x + sp1C.x * 2.0);
+    sp10.y = (ball->unk1C.y * 4.0) + (ball->pos.y + sp1C.y * 2.0) + 2.0;
+    sp10.z = (ball->unk1C.z * 4.0) + (ball->pos.z + sp1C.z * 2.0);
 
     camera->unk94.x = 0.04 * (sp10.x - camera->eye.x);
     camera->unk94.y = 0.04 * (sp10.y - camera->eye.y);
@@ -2112,9 +2113,9 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp1C.x = ball->unk4.x - camera->lookAt.x;
-    sp1C.y = ball->unk4.y - camera->lookAt.y;
-    sp1C.z = ball->unk4.z - camera->lookAt.z;
+    sp1C.x = ball->pos.x - camera->lookAt.x;
+    sp1C.y = ball->pos.y - camera->lookAt.y;
+    sp1C.z = ball->pos.z - camera->lookAt.z;
 
     camera->unkA0.x = sp1C.x * 0.15;
     camera->unkA0.y = sp1C.y * 0.15;
@@ -2168,9 +2169,9 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp28.x = ball->unk4.x - camera->lookAt.x;
-    sp28.y = ball->unk4.y - camera->lookAt.y;
-    sp28.z = ball->unk4.z - camera->lookAt.z;
+    sp28.x = ball->pos.x - camera->lookAt.x;
+    sp28.y = ball->pos.y - camera->lookAt.y;
+    sp28.z = ball->pos.z - camera->lookAt.z;
 
     camera->unkA0.x = sp28.x * 0.15;
     camera->unkA0.y = sp28.y * 0.15;
@@ -2205,9 +2206,9 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_x(r30->unkC);
     mathutil_mtxA_tf_point(&camera->unk54, &sp10);
 
-    sp28.x = sp10.x - ball->unk4.x;
+    sp28.x = sp10.x - ball->pos.x;
     sp28.y = 0.0f;
-    sp28.z = sp10.z - ball->unk4.z;
+    sp28.z = sp10.z - ball->pos.z;
     mathutil_vec_set_len(&sp28, &sp28, camera->unk60);
 
     sp1C.x = sp10.x + sp28.x;
@@ -2222,9 +2223,9 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp28.x = ball->unk4.x - camera->lookAt.x;
-    sp28.y = ball->unk4.y - camera->lookAt.y;
-    sp28.z = ball->unk4.z - camera->lookAt.z;
+    sp28.x = ball->pos.x - camera->lookAt.x;
+    sp28.y = ball->pos.y - camera->lookAt.y;
+    sp28.z = ball->pos.z - camera->lookAt.z;
 
     camera->unkA0.x = sp28.x * 0.15;
     camera->unkA0.y = sp28.y * 0.15;
@@ -2262,9 +2263,9 @@ void camera_func_22_23_24(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp10.x = ball->unk4.x - camera->lookAt.x;
-    sp10.y = ball->unk4.y - camera->lookAt.y;
-    sp10.z = ball->unk4.z - camera->lookAt.z;
+    sp10.x = ball->pos.x - camera->lookAt.x;
+    sp10.y = ball->pos.y - camera->lookAt.y;
+    sp10.z = ball->pos.z - camera->lookAt.z;
 
     camera->unkA0.x = (sp10.x - camera->unkA0.x) * 0.1;
     camera->unkA0.y = (sp10.y - camera->unkA0.y) * 0.1;
@@ -2299,7 +2300,7 @@ void camera_func_26(struct Camera *camera, struct Ball *ball)
     if ((lbl_802F1EE0 & 0xA) && camera->state == 26)
         return;
 
-    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_from_translate(&ball->pos);
     mathutil_mtxA_rotate_y(ball->unk92);
 
     sp1C.x = 0.0f;
@@ -2351,9 +2352,9 @@ void camera_func_31(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y;
+    camera->lookAt.z = ball->pos.z;
 
     camera->eye.x = decodedStageLzPtr->unk10->unk0.z;
     camera->eye.y = decodedStageLzPtr->unk10->unk0.y;
@@ -2380,9 +2381,9 @@ void camera_func_32(struct Camera *camera, struct Ball *ball)
     sp1C = camera->eye;  // unused
     sp10 = camera->lookAt;
 
-    camera->lookAt.x += (ball->unk4.x - camera->lookAt.x) * 0.25;
-    camera->lookAt.y += (ball->unk4.y - camera->lookAt.y) * 0.25;
-    camera->lookAt.z += (ball->unk4.z - camera->lookAt.z) * 0.25;
+    camera->lookAt.x += (ball->pos.x - camera->lookAt.x) * 0.25;
+    camera->lookAt.y += (ball->pos.y - camera->lookAt.y) * 0.25;
+    camera->lookAt.z += (ball->pos.z - camera->lookAt.z) * 0.25;
 
     camera->unk94.x = 0.0f;
     camera->unk94.y = 0.0f;
@@ -2411,9 +2412,9 @@ void camera_func_33(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.5;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.5;
+    camera->lookAt.z = ball->pos.z;
 
     r31 = ((modeCtrl.unk0 - 30) << 9);
     if (r31 < 0)
@@ -2423,17 +2424,17 @@ void camera_func_33(struct Camera *camera, struct Ball *ball)
     else
         f1 = 3.0 + (float)(r31 - 8192) * -3.4877232142857141e-05;
 
-    sp10.x = -ball->unk4.x;
+    sp10.x = -ball->pos.x;
     sp10.y = 0.0f;
-    sp10.z = -ball->unk4.z;
+    sp10.z = -ball->pos.z;
     mathutil_vec_set_len(&sp10, &sp10, f1);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_y(r31);
     mathutil_mtxA_tf_vec(&sp10, &sp10);
 
-    camera->eye.x = sp10.x + ball->unk4.x;
-    camera->eye.y = ball->unk4.y + 2.0 + (float)r31 * -3.0517578125e-05;
-    camera->eye.z = sp10.z + ball->unk4.z;
+    camera->eye.x = sp10.x + ball->pos.x;
+    camera->eye.y = ball->pos.y + 2.0 + (float)r31 * -3.0517578125e-05;
+    camera->eye.z = sp10.z + ball->pos.z;
 
     sp10.x = camera->lookAt.x - camera->eye.x;
     sp10.y = camera->lookAt.y - camera->eye.y;
@@ -2460,9 +2461,9 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     sp1C = camera->eye;  // unused
     sp10 = camera->lookAt;
 
-    camera->lookAt.x += (ball->unk4.x - camera->lookAt.x) * 0.5;
-    camera->lookAt.y += (ball->unk4.y + 0.5 - camera->lookAt.y) * 0.5;
-    camera->lookAt.z += (ball->unk4.z - camera->lookAt.z) * 0.5;
+    camera->lookAt.x += (ball->pos.x - camera->lookAt.x) * 0.5;
+    camera->lookAt.y += (ball->pos.y + 0.5 - camera->lookAt.y) * 0.5;
+    camera->lookAt.z += (ball->pos.z - camera->lookAt.z) * 0.5;
 
     r28 = ((modeCtrl.unk0 - 30) << 9);
     if (r28 < 0)
@@ -2472,9 +2473,9 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     else
         f30 = 3.0 + (float)(r28 - 8192) * -3.4877232142857141e-05;
 
-    sp34.x = -ball->unk4.x;
+    sp34.x = -ball->pos.x;
     sp34.y = 0.0f;
-    sp34.z = -ball->unk4.z;
+    sp34.z = -ball->pos.z;
     f31 = mathutil_vec_mag(&sp34);
     mathutil_vec_set_len(&sp34, &sp34, f30);
 
@@ -2482,9 +2483,9 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_y(r28);
     mathutil_mtxA_tf_vec(&sp34, &sp34);
 
-    sp28.x = sp34.x + ball->unk4.x;
-    sp28.y = ball->unk4.y + 2.0 * (f31 / 10.0) + (float)r28 * -3.0517578125e-05;
-    sp28.z = sp34.z + ball->unk4.z;
+    sp28.x = sp34.x + ball->pos.x;
+    sp28.y = ball->pos.y + 2.0 * (f31 / 10.0) + (float)r28 * -3.0517578125e-05;
+    sp28.z = sp34.z + ball->pos.z;
 
     if (modeCtrl.unk0 > 15)
     {
@@ -2551,39 +2552,39 @@ void camera_func_36(struct Camera *camera, struct Ball *ball)
     sp1C = camera->eye;
     sp10 = camera->lookAt;
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.5;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.5;
+    camera->lookAt.z = ball->pos.z;
 
-    sp28.x = -ball->unk4.x;
+    sp28.x = -ball->pos.x;
     sp28.y = 0.0f;
-    sp28.z = -ball->unk4.z;
+    sp28.z = -ball->pos.z;
 
     f31 = mathutil_vec_mag(&sp28);
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
 
-    sp28.x += ball->unk4.x;
-    sp28.z += ball->unk4.z;
+    sp28.x += ball->pos.x;
+    sp28.z += ball->pos.z;
     sp28.x += (camera->eye.x - sp28.x) * 0.95;
     sp28.z += (camera->eye.z - sp28.z) * 0.95;
-    sp28.x -= ball->unk4.x;
-    sp28.z -= ball->unk4.z;
+    sp28.x -= ball->pos.x;
+    sp28.z -= ball->pos.z;
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
 
-    sp28.y = ball->unk4.y + (f31 / 10.0) * 2.0;
-    camera->eye.x = sp28.x + ball->unk4.x;
+    sp28.y = ball->pos.y + (f31 / 10.0) * 2.0;
+    camera->eye.x = sp28.x + ball->pos.x;
     camera->eye.y += (sp28.y - camera->eye.y) * 0.1;
-    camera->eye.z = sp28.z + ball->unk4.z;
+    camera->eye.z = sp28.z + ball->pos.z;
 
     f1 = camera->eye.x * camera->eye.x + camera->eye.z * camera->eye.z;
-    f31 = weird_inline_stuff(ball->unk4.x, camera->eye.x, ball->unk4.z, 0.0f, 0.0f, camera->eye.z);
+    f31 = weird_inline_stuff(ball->pos.x, camera->eye.x, ball->pos.z, 0.0f, 0.0f, camera->eye.z);
 
     if (f1 < 4.0f || f31 < 0.0f)
     {
         f30 = mathutil_sqrt(f1);
-        sp28.x = ball->unk4.x * 0.2f + sp1C.x;
+        sp28.x = ball->pos.x * 0.2f + sp1C.x;
         sp28.y = 0.0f;
-        sp28.z = ball->unk4.z * 0.2f + sp1C.z;
+        sp28.z = ball->pos.z * 0.2f + sp1C.z;
         if (f30 < 1.0f || f31 < 0.0f)
         {
             mathutil_vec_set_len(&sp28, &sp28, 1.0f);
@@ -2628,26 +2629,26 @@ void camera_func_37(struct Camera *camera, struct Ball *ball)
     sp1C = camera->eye;
     sp10 = camera->lookAt;
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.5;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.5;
+    camera->lookAt.z = ball->pos.z;
 
     sp28.x = -decodedStageLzPtr->unk1C->unk0.x;
     sp28.y = 0.0f;
     sp28.z = -decodedStageLzPtr->unk1C->unk0.z;
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
 
-    sp28.x += ball->unk4.x;
-    sp28.z += ball->unk4.z;
+    sp28.x += ball->pos.x;
+    sp28.z += ball->pos.z;
     sp28.x += (camera->eye.x - sp28.x) * 0.95;
     sp28.z += (camera->eye.z - sp28.z) * 0.95;
-    sp28.x -= ball->unk4.x;
-    sp28.z -= ball->unk4.z;
+    sp28.x -= ball->pos.x;
+    sp28.z -= ball->pos.z;
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
 
-    camera->eye.x = sp28.x + ball->unk4.x;
-    camera->eye.y = ball->unk4.y + 2.0;
-    camera->eye.z = sp28.z + ball->unk4.z;
+    camera->eye.x = sp28.x + ball->pos.x;
+    camera->eye.y = ball->pos.y + 2.0;
+    camera->eye.z = sp28.z + ball->pos.z;
 
     sp28.x = camera->lookAt.x - camera->eye.x;
     sp28.y = camera->lookAt.y - camera->eye.y;
@@ -2896,7 +2897,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
         if (!(camera->timerCurr & 0x1F))
         {
             func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10 - 60.0);
-            if (mathutil_vec_distance(&ball->unk4, &sp10.unk0) < 0.5)
+            if (mathutil_vec_distance(&ball->pos, &sp10.unk0) < 0.5)
                 bvar = 1;
         }
         // fall through
@@ -2904,7 +2905,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
     case CAMERA_STATE_GOAL_REPLAY:
         if (camera->timerCurr > 120 && !(camera->timerCurr & 0x3F))
         {
-            if (mathutil_vec_distance(&ball->unk4, &camera->eye) > 16.0)
+            if (mathutil_vec_distance(&ball->pos, &camera->eye) > 16.0)
                 bvar = 1;
         }
         if (camera->timerCurr > 360)
@@ -2948,7 +2949,7 @@ void camera_func_46(struct Camera *camera, struct Ball *ball)
     camera->unk74.x = 0.0f;
     camera->unk74.y = 0.0f;
     camera->unk74.z = 0.0f;
-    camera->lookAt = ball->unk4;
+    camera->lookAt = ball->pos;
     camera->state = 47;
     camera_func_47(camera, ball);
 }
@@ -2966,7 +2967,7 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
 
     camera->unk60 += camera->unk80;
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, camera->unk60);
-    f1 = mathutil_vec_distance(&ball->unk4, &camera->eye);
+    f1 = mathutil_vec_distance(&ball->pos, &camera->eye);
     f31 = 2.0 - f1 * 0.125;
     if (f31 < 0.0)
         f31 = 0.0f;
@@ -2974,9 +2975,9 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     sp30.y = 0.0f;
     sp30.z = ball->unk1C.x;
 
-    sp3C.x = camera->eye.x - ball->unk4.x;
+    sp3C.x = camera->eye.x - ball->pos.x;
     sp3C.y = 0.0f;
-    sp3C.z = camera->eye.z - ball->unk4.z;
+    sp3C.z = camera->eye.z - ball->pos.z;
     mathutil_vec_normalize_len(&sp30);
     mathutil_vec_normalize_len(&sp3C);
 
@@ -3006,9 +3007,9 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp3C.x = (ball->unk4.x + 6.0 * ball->unk1C.x) - camera->lookAt.x;
-    sp3C.y = (ball->unk4.y + 6.0 * ball->unk1C.y) - camera->lookAt.y;
-    sp3C.z = (ball->unk4.z + 6.0 * ball->unk1C.z) - camera->lookAt.z;
+    sp3C.x = (ball->pos.x + 6.0 * ball->unk1C.x) - camera->lookAt.x;
+    sp3C.y = (ball->pos.y + 6.0 * ball->unk1C.y) - camera->lookAt.y;
+    sp3C.z = (ball->pos.z + 6.0 * ball->unk1C.z) - camera->lookAt.z;
 
     camera->unkA0.x = sp3C.x * 0.1;
     camera->unkA0.y = sp3C.y * 0.1;
@@ -3064,7 +3065,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 
         sp58 = decodedStageLzPtr->unk1C[camera->unk110].unk0;
         mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
-        mathutil_mtxA_rigid_inv_tf_point(&ball->unk4, &sp28);
+        mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp28);
 
         f31 = mathutil_vec_distance(&sp58, &sp28);
         if (f31 > 60.0)
@@ -3102,7 +3103,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     f31 = (float)camera->sub28.unk32 * ((rand() / 32767.0f) + 0.1f);
     mathutil_mtxA_rotate_y((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
     mathutil_mtxA_rotate_x((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
-    mathutil_mtxA_rigid_inv_tf_point(&ball->unk4, &camera->unk12C);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &camera->unk12C);
     mathutil_mtxA_rigid_inv_tf_vec(&ball->unk1C, &camera->unk138);
 
     mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
@@ -3175,9 +3176,9 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         camera->unk138.y *= 0.92;
         camera->unk138.z *= 0.92;
 
-        sp34.x = ball->unk4.x + ball->unk1C.x * 12.0;
-        sp34.y = ball->unk4.y + ball->unk1C.y * 12.0;
-        sp34.z = ball->unk4.z + ball->unk1C.z * 12.0;
+        sp34.x = ball->pos.x + ball->unk1C.x * 12.0;
+        sp34.y = ball->pos.y + ball->unk1C.y * 12.0;
+        sp34.z = ball->pos.z + ball->unk1C.z * 12.0;
 
         mathutil_mtxA_rigid_inv_tf_point(&sp34, &sp28);
 
@@ -3239,9 +3240,9 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         camera->unkA0.y *= 0.92;
         camera->unkA0.z *= 0.92;
 
-        sp28.x = ball->unk4.x + ball->unk1C.x * 12.0;
-        sp28.y = ball->unk4.y + ball->unk1C.y * 12.0;
-        sp28.z = ball->unk4.z + ball->unk1C.z * 12.0;
+        sp28.x = ball->pos.x + ball->unk1C.x * 12.0;
+        sp28.y = ball->pos.y + ball->unk1C.y * 12.0;
+        sp28.z = ball->pos.z + ball->unk1C.z * 12.0;
 
         //! possible oversight: subtracts unk1A0.x on all of them
         camera->unkA0.x += (sp28.x - camera->lookAt.x - camera->unkA0.x) * 0.01;
@@ -3279,9 +3280,9 @@ void camera_func_51(struct Camera *camera, struct Ball *ball)
     camera->rotX = mathutil_sin(camera->timerCurr * 128 + 0x4000) * 4096.0f;
     camera->rotZ = 0;
 
-    camera->lookAt.x = ball->unk4.x;
-    camera->lookAt.y = ball->unk4.y + 0.4;
-    camera->lookAt.z = ball->unk4.z;
+    camera->lookAt.x = ball->pos.x;
+    camera->lookAt.y = ball->pos.y + 0.4;
+    camera->lookAt.z = ball->pos.z;
 
     sp10.x = 0.0f;
     sp10.y = 0.0f;
@@ -3304,9 +3305,9 @@ void camera_func_56(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
 
-    camera->eye.x = ball->unk4.x + ((rand() / 32767.0f) - 0.5f) * 15.0f;
-    camera->eye.y = ball->unk4.y + (rand() / 32767.0f) * 5.0f + 1.0f;
-    camera->eye.z = ball->unk4.z + ((rand() / 32767.0f) - 0.5f) * 15.0f;
+    camera->eye.x = ball->pos.x + ((rand() / 32767.0f) - 0.5f) * 15.0f;
+    camera->eye.y = ball->pos.y + (rand() / 32767.0f) * 5.0f + 1.0f;
+    camera->eye.z = ball->pos.z + ((rand() / 32767.0f) - 0.5f) * 15.0f;
 
     var1 = (rand() << 1) & 0xFFFF;
     camera->unk6C = camera->rotY = var1;
@@ -3348,7 +3349,7 @@ void camera_func_57(struct Camera *camera, struct Ball *ball)
     t = (float)camera->timerCurr / (float)camera->timerMax;
     t = SMOOTHSTEP(t);
 
-    mathutil_mtxA_from_translate(&ball->unk4);
+    mathutil_mtxA_from_translate(&ball->pos);
     mathutil_mtxA_rotate_y(ball->unk2A);
     mathutil_mtxA_tf_point(&sp1C, &sp1C);
 
@@ -3471,17 +3472,17 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     struct Ball *b;
     float f31;
 
-    for (i = 0, b = &lbl_80205E60[0]; i < 3; i++, b++)
+    for (i = 0, b = &ballInfo[0]; i < 3; i++, b++)
     {
-        if (b->unk94 & 0x1800)
+        if (b->flags & (BALL_FLAG_11|BALL_FLAG_12))
             sp28 = b->unk150;
         else
         {
             float f6 = b->unk14E / 30.0f;
 
-            sp28.x = b->unk4.x * (1.0 - f6) + b->unk150.x * f6;
-            sp28.y = b->unk4.y * (1.0 - f6) + b->unk150.y * f6;
-            sp28.z = b->unk4.z * (1.0 - f6) + b->unk150.z * f6;
+            sp28.x = b->pos.x * (1.0 - f6) + b->unk150.x * f6;
+            sp28.y = b->pos.y * (1.0 - f6) + b->unk150.y * f6;
+            sp28.z = b->pos.z * (1.0 - f6) + b->unk150.z * f6;
         }
         if (i == 0)
         {
@@ -3533,7 +3534,7 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     }
 
     f31 = 0.0f;
-    for (i = 0, b = &lbl_80205E60[0]; i < 3; i++, b++)  // b not used here. needed to match
+    for (i = 0, b = &ballInfo[0]; i < 3; i++, b++)  // b not used here. needed to match
     {
         float var1;
 

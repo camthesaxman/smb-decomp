@@ -1728,11 +1728,11 @@ lbl_8000AC44:
 /* 8000AC48 00006B68  38 C3 3A 58 */	addi r6, r3, lbl_801F3A58@l
 /* 8000AC4C 00006B6C  A8 A6 00 1E */	lha r5, 0x1e(r6)
 /* 8000AC50 00006B70  3C 60 80 20 */	lis r3, spritePoolInfo@ha
-/* 8000AC54 00006B74  3C 80 80 20 */	lis r4, lbl_80205E60@ha
+/* 8000AC54 00006B74  3C 80 80 20 */	lis r4, ballInfo@ha
 /* 8000AC58 00006B78  38 05 00 01 */	addi r0, r5, 1
 /* 8000AC5C 00006B7C  B0 06 00 1E */	sth r0, 0x1e(r6)
 /* 8000AC60 00006B80  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
-/* 8000AC64 00006B84  38 04 5E 60 */	addi r0, r4, lbl_80205E60@l
+/* 8000AC64 00006B84  38 04 5E 60 */	addi r0, r4, ballInfo@l
 /* 8000AC68 00006B88  80 AD 9D 38 */	lwz r5, currentBallStructPtr@sda21(r13)
 /* 8000AC6C 00006B8C  7C 04 03 78 */	mr r4, r0
 /* 8000AC70 00006B90  80 C3 00 0C */	lwz r6, 0xc(r3)
