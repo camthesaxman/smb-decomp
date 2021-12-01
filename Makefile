@@ -75,7 +75,6 @@ SOURCE_FILES := \
 	asm/nl2ngc.s \
 	asm/motload.s \
 	src/ball.c \
-	asm/ball.s \
 	asm/code.s \
 	src/stage.c \
 	asm/stage.s \

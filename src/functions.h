@@ -433,7 +433,7 @@ void func_8003D3C4(struct Ball *);
 void func_8003D6A4(struct Ball *);
 // ? g_ball_draw();
 void lbl_8003D928(struct Struct80038840 *);
-void func_8003DA7C(Vec *, Vec *, Vec *);
+void copy_of_mathutil_vec_cross_prod(Vec *, Vec *, Vec *);
 void g_handle_ball_stage_collision(struct Struct80039974 *b, struct Stage *);
 // ? func_8003DD1C();
 // ? func_8003DE2C();

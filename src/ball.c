@@ -499,7 +499,7 @@ void lbl_8003781C(struct Ball_child *a, int b)
 }
 #else
 extern const u8 lbl_801177D0[];
-void func_8003DA7C();
+void copy_of_mathutil_vec_cross_prod();
 #define _SDA2_BASE_ 0x802FA800
 #define lbl_802F3408 0x802F3408
 #define lbl_802F3410 0x802F3410
@@ -3142,116 +3142,38 @@ void lbl_8003D928(struct Struct80038840 *a)
     }
 }
 
-/*
-const float lbl_802F3398 = 0.65f;
-const float lbl_802F339C = 0.032407406717538834f;
-const float lbl_802F33A0 = 100.0f;
-const float lbl_802F33A4 = 3.0f;
-const float lbl_802F33A8 = 1.5f;
-const float lbl_802F33AC = 0.9941f;
-const float lbl_802F33B0 = 1.0f;
-const float lbl_802F33B4 = 0.01f;
-const float lbl_802F33B8 = 1.999f;
-const float lbl_802F33BC = 0.0f;
-const float lbl_802F33C0 = 0.00027777777f;
-const float lbl_802F33C4 = -0.992f;
-const float lbl_802F33C8 = 9.9999999392252903e-09f;
-const double lbl_802F33D0 = 1.0;
-const float lbl_802F33D8 = 0.5f;
-const float lbl_802F33DC = 0.2f;
-const float lbl_802F33E0 = 182.04444885253906f;  // DEGREES_TO_S16
-const float lbl_802F33E4 = 20.0f;
-const float lbl_802F33E8 = 12.0f;
-const double lbl_802F33F0 = 4503601774854144;
-const float lbl_802F33F8 = 90.0f;
-const double lbl_802F3400 = 4503599627370496;
-const float lbl_802F3408 = -0.12f;
-const float lbl_802F340C = 0.05f;
-const float lbl_802F3410 = -1.0f;
-const float lbl_802F3414 = 0.99f;
-const float lbl_802F341C = 0.75f;
-const double lbl_802F3420 = 0.5;
-const double lbl_802F3428 = 0.25;
-const float lbl_802F3430 = -0.9998f;
-const float lbl_802F3434 = 0.9998f;
-const float lbl_802F3438 = 0.3f;
-const float lbl_802F343C = -15.0f;
-const float lbl_802F3440 = 0.1f;
-const float lbl_802F3444 = 0.025f;
-const float lbl_802F3448 = 5.0f;
-const float lbl_802F344C = 1.4f;
-const double lbl_802F3450 = 0.2;
-const float lbl_802F3458 = 2.0f;
-const float lbl_802F345C = 1.1920928955078125e-07f;
-const double lbl_802F3460 = 0.0;
-const double lbl_802F3468 = 0.75;
-const float lbl_802F3470 = 0.25f;
-const float lbl_802F3474 = 0.125f;
-const double lbl_802F3478 = 24.0;
-const double lbl_802F3480 = 3.0518509475997192e-05;
-const double lbl_802F3488 = 10.0;
-const float lbl_802F3490 = 32767.0f;
-const double lbl_802F3498 = 10430.3779296875;
-const double lbl_802F34A0 = 3.1415926500000002;
-const float lbl_802F34A8 = 0.00064f;
-const float lbl_802F34AC = 14.5f;
-const float lbl_802F34B0 = 2.5f;
-const float lbl_802F34B4 = -13.5f;
-const float lbl_802F34B8 = -5.6f;
-const float lbl_802F34BC = -2.0f;
-const float lbl_802F34C0 = -1.6f;
-const float lbl_802F34C4 = -5.4f;
-const float lbl_802F34C8 = -3.1f;
-const float lbl_802F34CC = 0.51f;
-const float lbl_802F34D0 = -42.49f;
-const float lbl_802F34D4 = 156.0f;
-const float lbl_802F34D8 = 158.0f;
-const float lbl_802F34DC = -3.0f;
-const float lbl_802F34E0 = 157.0f;
-const float lbl_802F34E4 = 159.0f;
-const double lbl_802F34E8 = -0.65;
-const float lbl_802F34F0 = -0.11f;
-const float lbl_802F34F4 = -0.15f;
-const double lbl_802F34F8 = -0.054999999701976776;  // no, 0.055 won't work
-const double lbl_802F3500 = -0.18699999898672104;
-const double lbl_802F3508 = -0.14299999922513962;
-const double lbl_802F3510 = -0.098999999463558197;
-const float lbl_802F3518 = 60.0f;
-const double lbl_802F3520 = 0.92000000000000004;
-const double lbl_802F3528 = -50.0;
-const double lbl_802F3530 = 10430.380520449504;
-const double lbl_802F3538 = 0.14999999999999999;
-const double lbl_802F3540 = 0.94999999999999996;
-const float lbl_802F3548 = 0.99971997737884521f;
-const float lbl_802F354C = 0.94999998807907104f;
-const float lbl_802F3550 = 0.0165f;
-const double lbl_802F3558 = 0.32999999821186066;
-const double lbl_802F3560 = 0.05;
-const double lbl_802F3568 = 0.025;
-const float lbl_802F3570 = 0.015f;
-const float lbl_802F3574 = 0.055f;
-const float lbl_802F3578 = 0.06f;
-const float lbl_802F357C = 0.005f;
-const double lbl_802F3580 = 0.23148148148148145;
-const double lbl_802F3588 = 0.37037037037037035;
-const double lbl_802F3590 = 0.1388888888888889;
-const double lbl_802F3598 = 216000.0;
-const double lbl_802F35A0 = 1000.0;
-const float lbl_802F35A8 = 35.0f;
-const float lbl_802F35AC = 10.0f;
-const float lbl_802F35B0 = 130.0f;
-const float lbl_802F35B4 = 127.0f;
-const float lbl_802F35B8 = 80.0f;
-const float lbl_802F35BC = 0.85f;
-const double lbl_802F35C0 = 1.5;
-const double lbl_802F35C8 = 127.0;
-const double lbl_802F35D0 = 15.0;
-const double lbl_802F35D8 = 80.0;
-const double lbl_802F35E0 = 0.85000002384185791;
-const double lbl_802F35E8 = 5.0;
-const double lbl_802F35F0 = 0.1;
-const float lbl_802F35F8 = -0.25f;
-const float lbl_802F35FC = 0.17299999296665192f;
-const float lbl_802F3600 = 0.10199999809265137f;
-const float lbl_802F3604 = 1.0099999904632568f;
-*/
+void copy_of_mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
+{
+#ifdef __MWERKS__
+    register float x1, y1, z1, x2, y2, z2;
+    register float x, y, z;
+
+    asm
+    {
+        lfs y1, a->y
+        lfs z2, b->z
+        lfs z1, a->z
+        lfs x2, b->x
+        lfs x1, a->x
+        lfs y2, b->y
+
+        fmuls x, y1, z2
+        fmuls y, z1, x2
+        fmuls z, x1, y2
+        fnmsubs x, z1, y2, x
+        stfs x, result->x
+        fnmsubs y, x1, z2, y
+        stfs y, result->y
+        fnmsubs z, y1, x2, z
+        stfs z, result->z
+    }
+#else
+    float x = a->y * b->z - a->z * b->y;
+    float y = a->z * b->x - a->x * b->z;
+    float z = a->x * b->y - a->y * b->x;
+
+    result->x = x;
+    result->y = y;
+    result->z = z;
+#endif
+}
