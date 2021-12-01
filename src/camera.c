@@ -633,22 +633,32 @@ void camera_set_or_clear_flags(int flags, int set)
     }
 }
 
-// matches except for a few instruction swaps
-#ifdef NONMATCHING
+static inline void g_clear_child_camera(struct Camera *child)
+{
+    child->unkEC = 0;
+    child->unkF0 = 0;
+    child->unkF4.x = 0.0f;
+    child->unkF4.y = 0.0f;
+    child->unkF4.z = 0.0f;
+    child->unk100 = 0.0f;
+    child->unk104 = 0.0f;
+    child->unk108 = 0.0f;
+}
+
 void camera_clear(struct Camera *camera)
 {
     struct Camera backup;
     u32 unused;
     struct Camera *r3;
 
-    // TODO: try permuting the order of these assignments
     backup.unk204 = camera->unk204;
-    backup.flags = camera->flags & 0x50;
     backup.state = camera->state;
+    backup.flags = camera->flags & 0x50;
     backup.unk26 = camera->unk26;
     backup.sub28 = camera->sub28;
     backup.unk1F = camera->unk1F;
-    memset(camera, 0, sizeof(*camera));
+    r3 = camera;
+    memset(r3, 0, sizeof(*camera));
     camera->unk204 = backup.unk204;
     camera->state = backup.state;
     camera->flags |= backup.flags | 1;
@@ -660,24 +670,8 @@ void camera_clear(struct Camera *camera)
     camera->sub28.fov = camera->sub28.unk32;
     camera->unk20 = 1.0f;
 
-    r3 = &cameraInfo[camera->unk204];
-    r3->unkEC = 0;
-    r3->unkF0 = 0;
-    r3->unkF4.x = 0.0f;
-    r3->unkF4.y = 0.0f;
-    r3->unkF4.z = 0.0f;
-    r3->unk100 = 0.0f;
-    r3->unk104 = 0.0f;
-    r3->unk108 = 0.0f;
+    g_clear_child_camera(&cameraInfo[camera->unk204]);
 }
-#else
-asm void camera_clear(struct Camera *camera)
-{
-    nofralloc
-#include "../asm/nonmatchings/camera_clear.s"
-}
-#endif
-#pragma peephole on
 
 void func_80018C58(struct Camera *camera)
 {
@@ -707,17 +701,7 @@ void func_80018C58(struct Camera *camera)
         {
             camera->unkF0--;
             if (camera->unkF0 == 0)
-            {
-                struct Camera *r3 = &cameraInfo[camera->unk204];
-                r3->unkEC = 0;
-                r3->unkF0 = 0;
-                r3->unkF4.x = 0.0f;
-                r3->unkF4.y = 0.0f;
-                r3->unkF4.z = 0.0f;
-                r3->unk100 = 0.0f;
-                r3->unk104 = 0.0f;
-                r3->unk108 = 0.0f;
-            }
+                g_clear_child_camera(&cameraInfo[camera->unk204]);
         }
     }
 }
