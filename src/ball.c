@@ -15,12 +15,16 @@ Mtx lbl_80205E30;  // ballInfo + 0x10
 struct Ball lbl_80205E60[8];  // ballInfo + 0x40
 s32 lbl_80206B80[16];  // ballInfo + 0xD60
 s32 lbl_80206BC0[4];  // ballInfo + 0xDA0
+u32 lbl_80206BD0[4];  // ballInfo + 0xDB0
+s32 lbl_80206BE0[4];  // ballInfo + 0xDC0
 
 FORCE_BSS_ORDER(ballInfo)
 FORCE_BSS_ORDER(lbl_80205E30)
 FORCE_BSS_ORDER(lbl_80205E60)
 FORCE_BSS_ORDER(lbl_80206B80)
 FORCE_BSS_ORDER(lbl_80206BC0)
+FORCE_BSS_ORDER(lbl_80206BD0)
+FORCE_BSS_ORDER(lbl_80206BE0)
 
 void func_8003699C(struct Ball_child *a)
 {
@@ -2834,6 +2838,163 @@ void func_8003CB88(struct Ball *ball)
     ball->unk92 = r31 + var * f3;
 }
 
+void func_8003CCB0(void)
+{
+    struct Ball *ball = currentBallStructPtr;
+    int bvar;
+
+    if (modeCtrl.unk28 == 3
+     && ball->unk144 != NULL
+     && (ball->unk144->unk14 & (1<<(31-0x1A))))
+        return;
+    if (!(ball->unk94 & (1<<(31-0x19))))
+        return;
+
+    if (modeCtrl.unk28 != 1)
+        bvar = ((ball->unk94 & (1<<(31-0x16))) || (ball->unk80 & 1));
+    else if (ball->unk94 & (1<<(31-0x16)))
+        bvar = ball->unk80 & 1;
+    else
+        bvar = (ball->unk80 & 3) == 1;
+
+    if (bvar)
+    {
+        struct Struct8003C550 sp8;
+
+        memset(&sp8, 0, sizeof(sp8));
+        sp8.unk8 = 10;
+        sp8.unk14 = ball->unk2E;
+        sp8.unk34 = ball->unk4;
+        func_8004CF08(&sp8);
+    }
+}
+
+void func_8003CDB0(struct Ball *ball)
+{
+    ball->unk94 &= 0x7FFFFFF;
+}
+
+static const s16 lbl_801179D4[] = { 0x3A, 0x3B, 0x3F, 0x53, 0x54, 0x55, 0x56, 0x57 };
+
+void func_8003CDC0(struct Ball *ball)
+{
+    if (lbl_801EED2C.unk4 & (1<<(31-0x17)))
+        return;
+
+    switch (modeCtrl.unk28)
+    {
+    case 4:
+        if (!(ball->unk94 & (1<<(31-0xA))) && ball->unk80 > 0x78)
+        {
+            if (ball->unkFC->unk24 == 2)
+                lbl_80206BE0[ball->unk2E]++;
+            else
+                lbl_80206BE0[ball->unk2E] = 0;
+            if ((lbl_80206BE0[ball->unk2E] % 30) == 1)
+                func_8002B5A4(lbl_801179D4[(rand() >> 12) & 7]);
+        }
+        break;
+    case 7:
+        if (ball->unkFC->unk24 == 2)
+            lbl_80206BE0[ball->unk2E]++;
+        else
+            lbl_80206BE0[ball->unk2E] = 0;
+        if ((lbl_80206BE0[ball->unk2E] % 30) == 1)
+            func_8002B5A4(lbl_801179D4[(rand() >> 12) & 7]);
+        break;
+    case 8:
+        break;
+    default:
+        if (lbl_80206DEC.unk0 > 0xF0
+         && gameSubmode != 0x41
+         && gameSubmode != 0x42
+         && gameSubmode != 0x3D
+         && gameSubmode != 0x3E
+         && gameSubmode != 0x51
+         && gameSubmode != 0x52)
+        {
+            if ((!(lbl_801F3A58.unk0 & (1<<(31-0x1A))) && !(lbl_801F3A58.unk0 & (1<<(31-0x1C))))
+             || (lbl_801F3A58.unk0 & (1<<(31-0x1B))))
+            {
+                if (!(ball->unk94 & (1<<(31-0x17))) && !(ball->unk94 & (1<<(31-0x16))))
+                {
+                    if (ball->unkFC->unk24 == 2)
+                        lbl_80206BE0[ball->unk2E]++;
+                    else
+                        lbl_80206BE0[ball->unk2E] = 0;
+                    if ((lbl_80206BE0[ball->unk2E] % 30) == 1)
+                        func_8002B5A4(lbl_801179D4[(rand() >> 12) & 7]);
+                }
+            }
+        }
+        break;
+    }
+
+    if (ball->unk3 != 6
+     && lbl_80206DEC.unk0 > 0xF0
+     && ball->unkFC->unk24 == 4
+     && ball->unkFC->unk0->unk38 == 2)
+    {
+        float f1 = (ballInfo[ball->unk2E] * 216000.0) / 1000.0;
+        if (f1 >= 35.0f)
+            func_8002B5A4(0x1A);
+        else if (f1 >= 20.0f)
+            func_8002B5A4(0x18);
+        else
+            func_8002B5A4(0x17);
+    }
+    if (ball->unk94 & (1<<(31-4)))
+        func_8002B5A4(0x69);
+    else if (ball->unk94 & (1<<(31-3)))
+        func_8002B5A4(0x2F);
+    else if (ball->unk94 & (1<<(31-2)))
+        func_8002B5A4(0x14);
+    else if (ball->unk94 & (1<<(31-1)))
+        func_8002B5A4(0x13);
+    else if (ball->unk94 & (1<<(31-0)))
+        func_8002B5A4(0x12);
+
+    if (gameSubmode == 0x54)
+        return;
+
+    if (modeCtrl.unk28 == 3)
+    {
+        struct Ball_child *r30 = ball->unk144;
+        s8 r31 = 0;
+        s8 r28 = 0;
+        float f2 = mathutil_vec_mag(&ball->unk1C) * 216000.0 / 1000.0;
+
+        if (r30->unk1CE > 3 && f2 > 10.0)
+        {
+            float f4 = (f2 - 10.0f) / 130.0f;
+
+            r31 = MIN(f4 * 127.0f, 127.0f);
+            r28 = MIN(f4 * 127.0f * 10.0f, 80.0f) * 0.85f;
+        }
+        if ((lbl_802F1B34 & 7) == 0 || r31 == 0)
+            func_8002CA5C(ball->unk2E, r31, r28);
+    }
+    else if (modeCtrl.unk28 != 7)
+    {
+        s8 r4;
+        s8 r5;
+        float f4 = mathutil_vec_mag(&ball->unk1C) * 216000.0 / 1000.0;
+
+        if ((ball->unk94 & 1) && f4 > 10.0)
+        {
+            r4 = MIN((f4 - 10.0) * 1.5, 127.0);
+            r5 = MIN((f4 - 10.0) * 15.0, 80.0) * 0.85000002384185791;
+        }
+        else
+        {
+            r4 = 0;
+            r5 = 0;
+        }
+        if ((lbl_802F1B34 & 7) == 0 || r4 == 0)
+            func_8002CA5C(ball->unk2E, r4, r5);
+    }
+}
+
 /*
 const float lbl_802F3398 = 0.65f;
 const float lbl_802F339C = 0.032407406717538834f;
@@ -2924,7 +3085,6 @@ const float lbl_802F3570 = 0.015f;
 const float lbl_802F3574 = 0.055f;
 const float lbl_802F3578 = 0.06f;
 const float lbl_802F357C = 0.005f;
-*/
 const double lbl_802F3580 = 0.23148148148148145;
 const double lbl_802F3588 = 0.37037037037037035;
 const double lbl_802F3590 = 0.1388888888888889;
@@ -2936,3 +3096,17 @@ const float lbl_802F35B0 = 130.0f;
 const float lbl_802F35B4 = 127.0f;
 const float lbl_802F35B8 = 80.0f;
 const float lbl_802F35BC = 0.85f;
+const double lbl_802F35C0 = 1.5;
+const double lbl_802F35C8 = 127.0;
+const double lbl_802F35D0 = 15.0;
+const double lbl_802F35D8 = 80.0;
+const double lbl_802F35E0 = 0.85000002384185791;
+*/
+const double lbl_802F35E8 = 5.0;
+const double lbl_802F35F0 = 0.1;
+const float lbl_802F35F8 = -0.25f;
+const float lbl_802F35FC = 0.17299999296665192f;
+const float lbl_802F3600 = 0.10199999809265137f;
+const float lbl_802F3604 = 1.0099999904632568f;
+const float lbl_802F3608 = 0.0f;
+const float lbl_802F360C = 1.0f;

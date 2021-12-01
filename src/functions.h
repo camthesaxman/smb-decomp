@@ -263,7 +263,7 @@ void func_8002B5C8();
 // ? SoundRevID();
 // ? SoundChoID();
 // ? func_8002CA38();
-// ? func_8002CA5C();
+void func_8002CA5C(int, s8, s8);
 // ? func_8002CEB8();
 // ? func_8002CF38();
 void func_8002DB10();

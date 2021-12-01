@@ -331,6 +331,8 @@ struct Ball_child
     s8 unkC0;
     u8 unkC1;
     s16 unkC2;
+    u8 fillerC4[0x1CE - 0xC4];
+    s16 unk1CE;  // used in the Ball.unk144 one
 };
 
 struct Ball
