@@ -1447,8 +1447,8 @@ lbl_80093A04:
 lbl_80093A0C:
 /* 80093A0C 0008F92C  38 60 00 01 */	li r3, 1
 /* 80093A10 0008F930  4E 80 00 20 */	blr
-.global func_80093A14
-func_80093A14:
+.global mode_mini_func
+mode_mini_func:
 /* 80093A14 0008F934  7C 08 02 A6 */	mflr r0
 /* 80093A18 0008F938  90 01 00 04 */	stw r0, 4(r1)
 /* 80093A1C 0008F93C  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1493,8 +1493,8 @@ lbl_80093A74:
 /* 80093AAC 0008F9CC  90 CD 9D 34 */	stw r6, minigameRelBallCallback@sda21(r13)
 /* 80093AB0 0008F9D0  90 ED 9A 58 */	stw r7, minigameRelCameraCallback@sda21(r13)
 /* 80093AB4 0008F9D4  4E 80 00 20 */	blr
-.global func_80093AB8
-func_80093AB8:
+.global submode_mini_game_init_func
+submode_mini_game_init_func:
 /* 80093AB8 0008F9D8  7C 08 02 A6 */	mflr r0
 /* 80093ABC 0008F9DC  90 01 00 04 */	stw r0, 4(r1)
 /* 80093AC0 0008F9E0  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1523,8 +1523,8 @@ lbl_80093AD4:
 /* 80093B18 0008FA38  38 21 00 08 */	addi r1, r1, 8
 /* 80093B1C 0008FA3C  7C 08 03 A6 */	mtlr r0
 /* 80093B20 0008FA40  4E 80 00 20 */	blr
-.global func_80093B24
-func_80093B24:
+.global submode_mini_game_main_func
+submode_mini_game_main_func:
 /* 80093B24 0008FA44  7C 08 02 A6 */	mflr r0
 /* 80093B28 0008FA48  90 01 00 04 */	stw r0, 4(r1)
 /* 80093B2C 0008FA4C  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1591,8 +1591,8 @@ func_80093BB4:
 /* 80093BF0 0008FB10  38 21 00 10 */	addi r1, r1, 0x10
 /* 80093BF4 0008FB14  7C 08 03 A6 */	mtlr r0
 /* 80093BF8 0008FB18  4E 80 00 20 */	blr
-.global func_80093BFC
-func_80093BFC:
+.global submode_mini_select_init_func
+submode_mini_select_init_func:
 /* 80093BFC 0008FB1C  7C 08 02 A6 */	mflr r0
 /* 80093C00 0008FB20  90 01 00 04 */	stw r0, 4(r1)
 /* 80093C04 0008FB24  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1609,8 +1609,8 @@ func_80093BFC:
 /* 80093C30 0008FB50  38 21 00 08 */	addi r1, r1, 8
 /* 80093C34 0008FB54  7C 08 03 A6 */	mtlr r0
 /* 80093C38 0008FB58  4E 80 00 20 */	blr
-.global func_80093C3C
-func_80093C3C:
+.global submode_mini_select_main_func
+submode_mini_select_main_func:
 /* 80093C3C 0008FB5C  7C 08 02 A6 */	mflr r0
 /* 80093C40 0008FB60  3C 80 80 1F */	lis r4, lbl_801F3B70@ha
 /* 80093C44 0008FB64  90 01 00 04 */	stw r0, 4(r1)
@@ -1727,8 +1727,8 @@ lbl_80093DB0:
 /* 80093DDC 0008FCFC  7C 08 03 A6 */	mtlr r0
 /* 80093DE0 0008FD00  38 21 00 10 */	addi r1, r1, 0x10
 /* 80093DE4 0008FD04  4E 80 00 20 */	blr
-.global func_80093DE8
-func_80093DE8:
+.global submode_mini_test0_init_func
+submode_mini_test0_init_func:
 /* 80093DE8 0008FD08  7C 08 02 A6 */	mflr r0
 /* 80093DEC 0008FD0C  90 01 00 04 */	stw r0, 4(r1)
 /* 80093DF0 0008FD10  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1737,8 +1737,8 @@ func_80093DE8:
 /* 80093DFC 0008FD1C  38 21 00 08 */	addi r1, r1, 8
 /* 80093E00 0008FD20  7C 08 03 A6 */	mtlr r0
 /* 80093E04 0008FD24  4E 80 00 20 */	blr
-.global func_80093E08
-func_80093E08:
+.global submode_mini_test0_main_func
+submode_mini_test0_main_func:
 /* 80093E08 0008FD28  7C 08 02 A6 */	mflr r0
 /* 80093E0C 0008FD2C  90 01 00 04 */	stw r0, 4(r1)
 /* 80093E10 0008FD30  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1758,8 +1758,8 @@ func_80093E28:
 /* 80093E3C 0008FD5C  38 21 00 08 */	addi r1, r1, 8
 /* 80093E40 0008FD60  7C 08 03 A6 */	mtlr r0
 /* 80093E44 0008FD64  4E 80 00 20 */	blr
-.global func_80093E48
-func_80093E48:
+.global submode_mini_ending_init_func
+submode_mini_ending_init_func:
 /* 80093E48 0008FD68  7C 08 02 A6 */	mflr r0
 /* 80093E4C 0008FD6C  90 01 00 04 */	stw r0, 4(r1)
 /* 80093E50 0008FD70  38 00 00 A7 */	li r0, 0xa7
@@ -1799,8 +1799,8 @@ lbl_80093E88:
 /* 80093ED4 0008FDF4  83 81 00 08 */	lwz r28, 8(r1)
 /* 80093ED8 0008FDF8  38 21 00 18 */	addi r1, r1, 0x18
 /* 80093EDC 0008FDFC  4E 80 00 20 */	blr
-.global func_80093EE0
-func_80093EE0:
+.global submode_mini_ending_main_func
+submode_mini_ending_main_func:
 /* 80093EE0 0008FE00  7C 08 02 A6 */	mflr r0
 /* 80093EE4 0008FE04  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
 /* 80093EE8 0008FE08  90 01 00 04 */	stw r0, 4(r1)

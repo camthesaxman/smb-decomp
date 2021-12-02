@@ -34,7 +34,7 @@ SYSTEM_INCLUDE_DIRS := include
 RUNTIME_INCLUDE_DIRS := src/lib/Runtime.PPCEABI.H/Runtime/Inc
 
 ASFLAGS      := -mgekko -I asm
-CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int
+CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas
 CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 LDFLAGS      := -fp hard -nodefaults
 
@@ -75,6 +75,7 @@ SOURCE_FILES := \
 	asm/nl2ngc.s \
 	asm/motload.s \
 	src/ball.c \
+	src/mathutil_vec_cross_prod.c \
 	asm/code.s \
 	src/stage.c \
 	asm/stage.s \

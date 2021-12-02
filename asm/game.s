@@ -877,8 +877,8 @@ lbl_8000A098:
 /* 8000A0A4 00005FC4  7C 08 03 A6 */	mtlr r0
 /* 8000A0A8 00005FC8  38 21 00 10 */	addi r1, r1, 0x10
 /* 8000A0AC 00005FCC  4E 80 00 20 */	blr
-.global func_8000A0B0
-func_8000A0B0:
+.global submode_dummy_func
+submode_dummy_func:
 /* 8000A0B0 00005FD0  7C 08 02 A6 */	mflr r0
 /* 8000A0B4 00005FD4  3C 60 80 17 */	lis r3, gameSubmodeNames@ha
 /* 8000A0B8 00005FD8  90 01 00 04 */	stw r0, 4(r1)

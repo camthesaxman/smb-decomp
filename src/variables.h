@@ -202,7 +202,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B7BA0;
 // extern ? lbl_801B7BA8;
 // extern ? lbl_801B7C5C;
-// extern ? lbl_801B7C84;
+// extern ? ballFuncs;
 // extern ? lbl_801B7CF8;
 // extern ? lbl_801B7EE8;
 // extern ? lbl_801B7F88;

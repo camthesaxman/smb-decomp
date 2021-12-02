@@ -74,11 +74,11 @@ struct Ball
 {
     u8 unk0;
     s8 unk1;
-    /*0x02*/ s8 lives;  // lives
-    s8 unk3;
-    /*0x04*/ Vec pos;  // position
-    Vec unk10;
-    Vec unk1C;
+    /*0x02*/ s8 lives;
+    /*0x03*/ s8 state;
+    /*0x04*/ Vec pos;
+    /*0x10*/ Vec prevPos;
+    /*0x1C*/ Vec vel;
     s16 unk28;
     s16 unk2A;
     s16 unk2C;
@@ -185,7 +185,7 @@ void ball_func_mini(struct Ball *);
 void ball_func_27(struct Ball *);
 void ball_func_28(struct Ball *);
 void handle_ball_linear_kinematics(struct Ball *, struct Struct80039974 *, int);
-void func_8003B6B8(struct Ball *, struct Struct80039974 *, int);
+void handle_ball_linear_kinematics_ignore_collision(struct Ball *, struct Struct80039974 *, int);
 void update_ball_ape_transform(struct Ball *, struct Struct80039974 *, int);
 // ? func_8003BBF4();
 // ? func_8003BD68();
@@ -203,4 +203,3 @@ void func_8003D3C4(struct Ball *);
 void func_8003D6A4(struct Ball *);
 // ? g_ball_draw();
 void lbl_8003D928(struct Struct80038840 *);
-void copy_of_mathutil_vec_cross_prod(Vec *, Vec *, Vec *);

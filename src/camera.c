@@ -2101,9 +2101,9 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     if (mathutil_vec_normalize_len(&sp1C) < 12.0)
         camera->state = 16;
 
-    sp10.x = (ball->unk1C.x * 4.0) + (ball->pos.x + sp1C.x * 2.0);
-    sp10.y = (ball->unk1C.y * 4.0) + (ball->pos.y + sp1C.y * 2.0) + 2.0;
-    sp10.z = (ball->unk1C.z * 4.0) + (ball->pos.z + sp1C.z * 2.0);
+    sp10.x = (ball->vel.x * 4.0) + (ball->pos.x + sp1C.x * 2.0);
+    sp10.y = (ball->vel.y * 4.0) + (ball->pos.y + sp1C.y * 2.0) + 2.0;
+    sp10.z = (ball->vel.z * 4.0) + (ball->pos.z + sp1C.z * 2.0);
 
     camera->unk94.x = 0.04 * (sp10.x - camera->eye.x);
     camera->unk94.y = 0.04 * (sp10.y - camera->eye.y);
@@ -2922,7 +2922,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
             bvar = 1;
         break;
     }
-    if (bvar && ball->unk3 == 10)
+    if (bvar && ball->state == 10)
         camera->state = 44;
 }
 
@@ -2971,9 +2971,9 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     f31 = 2.0 - f1 * 0.125;
     if (f31 < 0.0)
         f31 = 0.0f;
-    sp30.x = ball->unk1C.z;
+    sp30.x = ball->vel.z;
     sp30.y = 0.0f;
-    sp30.z = ball->unk1C.x;
+    sp30.z = ball->vel.x;
 
     sp3C.x = camera->eye.x - ball->pos.x;
     sp3C.y = 0.0f;
@@ -3007,9 +3007,9 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     camera->eye.y += camera->unk94.y;
     camera->eye.z += camera->unk94.z;
 
-    sp3C.x = (ball->pos.x + 6.0 * ball->unk1C.x) - camera->lookAt.x;
-    sp3C.y = (ball->pos.y + 6.0 * ball->unk1C.y) - camera->lookAt.y;
-    sp3C.z = (ball->pos.z + 6.0 * ball->unk1C.z) - camera->lookAt.z;
+    sp3C.x = (ball->pos.x + 6.0 * ball->vel.x) - camera->lookAt.x;
+    sp3C.y = (ball->pos.y + 6.0 * ball->vel.y) - camera->lookAt.y;
+    sp3C.z = (ball->pos.z + 6.0 * ball->vel.z) - camera->lookAt.z;
 
     camera->unkA0.x = sp3C.x * 0.1;
     camera->unkA0.y = sp3C.y * 0.1;
@@ -3104,7 +3104,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_y((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
     mathutil_mtxA_rotate_x((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
     mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &camera->unk12C);
-    mathutil_mtxA_rigid_inv_tf_vec(&ball->unk1C, &camera->unk138);
+    mathutil_mtxA_rigid_inv_tf_vec(&ball->vel, &camera->unk138);
 
     mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
     if (camera->unk110 >= 0)
@@ -3176,9 +3176,9 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         camera->unk138.y *= 0.92;
         camera->unk138.z *= 0.92;
 
-        sp34.x = ball->pos.x + ball->unk1C.x * 12.0;
-        sp34.y = ball->pos.y + ball->unk1C.y * 12.0;
-        sp34.z = ball->pos.z + ball->unk1C.z * 12.0;
+        sp34.x = ball->pos.x + ball->vel.x * 12.0;
+        sp34.y = ball->pos.y + ball->vel.y * 12.0;
+        sp34.z = ball->pos.z + ball->vel.z * 12.0;
 
         mathutil_mtxA_rigid_inv_tf_point(&sp34, &sp28);
 
@@ -3240,9 +3240,9 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         camera->unkA0.y *= 0.92;
         camera->unkA0.z *= 0.92;
 
-        sp28.x = ball->pos.x + ball->unk1C.x * 12.0;
-        sp28.y = ball->pos.y + ball->unk1C.y * 12.0;
-        sp28.z = ball->pos.z + ball->unk1C.z * 12.0;
+        sp28.x = ball->pos.x + ball->vel.x * 12.0;
+        sp28.y = ball->pos.y + ball->vel.y * 12.0;
+        sp28.z = ball->pos.z + ball->vel.z * 12.0;
 
         //! possible oversight: subtracts unk1A0.x on all of them
         camera->unkA0.x += (sp28.x - camera->lookAt.x - camera->unkA0.x) * 0.01;
@@ -3277,7 +3277,7 @@ void camera_func_51(struct Camera *camera, struct Ball *ball)
 
     camera->timerCurr++;
     camera->rotY = camera->timerCurr * 256;
-    camera->rotX = mathutil_sin(camera->timerCurr * 128 + 0x4000) * 4096.0f;
+    camera->rotX = mathutil_cos(camera->timerCurr * 128) * 4096.0f;
     camera->rotZ = 0;
 
     camera->lookAt.x = ball->pos.x;
@@ -3286,7 +3286,7 @@ void camera_func_51(struct Camera *camera, struct Ball *ball)
 
     sp10.x = 0.0f;
     sp10.y = 0.0f;
-    sp10.z = mathutil_sin(camera->timerCurr * 128 + 0x4000) * 1.5 + 3.5;
+    sp10.z = mathutil_cos(camera->timerCurr * 128) * 1.5 + 3.5;
 
     mathutil_mtxA_from_rotate_y(camera->rotY);
     mathutil_mtxA_rotate_x(camera->rotX);

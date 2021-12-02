@@ -36,7 +36,7 @@ def read_byte_directive(line):
 
 def handle_text_section_line(line):
     global in_sdata2
-    m = re.match(r'.*\s+lf(d|s)\s+\w+,\s+(\w+)-_SDA2_BASE_', line)
+    m = re.match(r'.*\s+lf(d|s)\s+\w+,\s+(\w+)(-_SDA2_BASE_|@sda21\(r2\))', line)
     if m:
         labelTypes[m.groups()[1]] = m.groups()[0]
     elif re.match(r'\s*\.section\s+\.sdata2', line):

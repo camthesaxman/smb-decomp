@@ -36,6 +36,7 @@ float func_8000716C(double a);
 float mathutil_sqrt(double n);
 float mathutil_rsqrt(double n);
 float mathutil_sin(s16 angle);
+#define mathutil_cos(angle) mathutil_sin((angle) + 0x4000)
 void mathutil_sin_cos_v(s16 a, float *b);
 void mathutil_sin_cos(s16 angle);
 float mathutil_tan(u32 angle);
@@ -208,7 +209,7 @@ static inline float mathutil_vec_distance(register Vec *a, register Vec *b)
 #endif
 }
 
-static inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
+extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
 {
 #ifdef __MWERKS__
     register float x1, y1, z1, x2, y2, z2;

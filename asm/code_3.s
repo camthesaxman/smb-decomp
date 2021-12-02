@@ -1142,8 +1142,8 @@ lbl_8009B9AC:
 /* 8009B9F0 00097910  38 21 00 38 */	addi r1, r1, 0x38
 /* 8009B9F4 00097914  7C 08 03 A6 */	mtlr r0
 /* 8009B9F8 00097918  4E 80 00 20 */	blr
-.global func_8009B9FC
-func_8009B9FC:
+.global submode_mini_commend_init_func
+submode_mini_commend_init_func:
 /* 8009B9FC 0009791C  7C 08 02 A6 */	mflr r0
 /* 8009BA00 00097920  38 60 00 0F */	li r3, 0xf
 /* 8009BA04 00097924  90 01 00 04 */	stw r0, 4(r1)
@@ -1202,8 +1202,8 @@ func_8009B9FC:
 /* 8009BAD8 000979F8  38 21 00 18 */	addi r1, r1, 0x18
 /* 8009BADC 000979FC  7C 08 03 A6 */	mtlr r0
 /* 8009BAE0 00097A00  4E 80 00 20 */	blr
-.global func_8009BAE4
-func_8009BAE4:
+.global submode_mini_commend_main_func
+submode_mini_commend_main_func:
 /* 8009BAE4 00097A04  7C 08 02 A6 */	mflr r0
 /* 8009BAE8 00097A08  90 01 00 04 */	stw r0, 4(r1)
 /* 8009BAEC 00097A0C  94 21 FF D8 */	stwu r1, -0x28(r1)

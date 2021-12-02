@@ -415,14 +415,14 @@ u32 func_80007424(float a)
 {
     u32 r3;
 
-    if (__fabs(a) > 1.0)
+    if (fabs(a) > 1.0)
     {
         if (a > 0.0f)
             return 0;
         else
             return -0x8000;
     }
-    if (__fabs(a) > 1.0)  // uh... we already checked that.
+    if (fabs(a) > 1.0)  // uh... we already checked that.
     {
         if (a > 0.0f)
             r3 = 0x4000;
@@ -2115,7 +2115,7 @@ void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle)
         quat->x = axis->x * var1;
         quat->y = axis->y * var1;
         quat->z = axis->z * var1;
-        quat->w = mathutil_sin(angle + 0x4000);
+        quat->w = mathutil_cos(angle);
     }
 }
 
