@@ -58,11 +58,13 @@ SOURCE_FILES := \
 	src/init.c \
 	src/init_2.c \
 	src/mathutil.c \
-	src/game.c \
-	asm/game.s \
+	src/mode.c \
+	asm/mode.s \
 	src/event.c \
 	src/polydisp.c \
 	asm/polydisp.s \
+	asm/adv.s \
+	asm/sel.s \
 	src/camera.c \
 	asm/code_0.s \
 	asm/code_1.s \

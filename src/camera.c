@@ -7,8 +7,8 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
-#include "game.h"
 #include "mathutil.h"
+#include "mode.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 

@@ -6,8 +6,8 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
-#include "game.h"
 #include "mathutil.h"
+#include "mode.h"
 
 #pragma force_active on
 

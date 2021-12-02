@@ -7,8 +7,8 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
-#include "game.h"
 #include "mathutil.h"
+#include "mode.h"
 
 float lbl_80205E20[4];
 Mtx lbl_80205E30;

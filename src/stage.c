@@ -4,8 +4,8 @@
 #include <dolphin.h>
 
 #include "global.h"
-#include "game.h"
 #include "mathutil.h"
+#include "mode.h"
 #include "preview.h"
 
 extern u8 lbl_801B86E4[];

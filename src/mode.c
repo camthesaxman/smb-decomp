@@ -2,7 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
-#include "game.h"
+#include "mode.h"
 #include "relocation.h"
 
 char *gameModeRelNames[] =
