@@ -65,6 +65,7 @@ SOURCE_FILES := \
 	asm/polydisp.s \
 	asm/adv.s \
 	asm/sel.s \
+	asm/game.s \
 	src/camera.c \
 	asm/code_0.s \
 	asm/code_1.s \
@@ -90,6 +91,7 @@ SOURCE_FILES := \
 	src/avdisp.c \
 	src/load.c \
 	asm/load.s \
+	asm/mini.s \
 	src/relocation.c \
 	asm/code_3.s \
 	asm/mini_commend.s \
