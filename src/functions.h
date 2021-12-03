@@ -235,7 +235,7 @@ void bmpdisp_main(void);
 void sound_init(void);
 void sound_main(void);
 // ? func_80029228();
-// ? func_80029788();
+void func_80029788(void);
 void ev_sound_init(void);
 void ev_sound_main(void);
 void ev_sound_dest(void);

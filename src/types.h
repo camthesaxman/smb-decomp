@@ -398,6 +398,8 @@ struct Struct8003FB48
 };
 
 typedef u32 (*Func802F20F0)();
+typedef void (*CameraCallback)(struct Camera *, struct Ball *);
+typedef void (*BallCallback)(struct Ball *);
 
 struct UnkStruct17
 {

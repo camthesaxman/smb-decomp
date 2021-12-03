@@ -3114,9 +3114,183 @@ func_8000E53C:
 /* 8000E5A0 0000A4C0  38 21 00 18 */	addi r1, r1, 0x18
 /* 8000E5A4 0000A4C4  4E 80 00 20 */	blr
 
+.section .sbss
+
+.global lbl_802F1AE0
+lbl_802F1AE0:
+	.skip 0x4
+.global lbl_802F1AE4
+lbl_802F1AE4:
+	.skip 0x4
+.global lbl_802F1AE8
+lbl_802F1AE8:
+	.skip 0x4
+.global lbl_802F1AEC
+lbl_802F1AEC:
+	.skip 0x4
+.global lbl_802F1AF0
+lbl_802F1AF0:
+	.skip 0x4
+.global lbl_802F1AF4
+lbl_802F1AF4:
+	.skip 0x4
+.global lbl_802F1AF8
+lbl_802F1AF8:
+	.skip 0x4
+.global lbl_802F1AFC
+lbl_802F1AFC:
+	.skip 0x4
+.global lbl_802F1B00
+lbl_802F1B00:
+	.skip 0x4
+.global lbl_802F1B04
+lbl_802F1B04:
+	.skip 0x4
+.global lbl_802F1B08
+lbl_802F1B08:
+	.skip 0x4
+.global lbl_802F1B0C
+lbl_802F1B0C:
+	.skip 0x4
+.global lbl_802F1B10
+lbl_802F1B10:
+	.skip 0x4
+.global lbl_802F1B14
+lbl_802F1B14:
+	.skip 0x4
+.global lbl_802F1B18
+lbl_802F1B18:
+	.skip 0x4
+.global lbl_802F1B1C
+lbl_802F1B1C:
+	.skip 0x4
+.global lbl_802F1B20
+lbl_802F1B20:
+	.skip 0x4
+.global lbl_802F1B24
+lbl_802F1B24:
+	.skip 0x4
+.global lbl_802F1B28
+lbl_802F1B28:
+	.skip 0x4
+.global lbl_802F1B2C
+lbl_802F1B2C:
+	.skip 0x4
+.global currRenderMode
+currRenderMode:
+	.skip 0x4
+.global lbl_802F1B34
+lbl_802F1B34:
+	.skip 0x4
+.global lbl_802F1B38
+lbl_802F1B38:
+	.skip 0x4
+.global lbl_802F1B3C
+lbl_802F1B3C:
+	.skip 0x4
+.global lbl_802F1B40
+lbl_802F1B40:
+	.skip 0x4
+.global lbl_802F1B44
+lbl_802F1B44:
+	.skip 0x4
+.global dvdReadBuffer
+dvdReadBuffer:
+	.skip 0x4
+.global lbl_802F1B4C
+lbl_802F1B4C:
+	.skip 0x4
+.global lbl_802F1B50
+lbl_802F1B50:
+	.skip 0x4
+.global lbl_802F1B54
+lbl_802F1B54:
+	.skip 0x4
+.global lbl_802F1B58
+lbl_802F1B58:
+	.skip 0x8
+.global mathutilData
+mathutilData:
+	.skip 0x8
+.global lbl_802F1B68
+lbl_802F1B68:
+	.skip 0x4
+.global lbl_802F1B6C
+lbl_802F1B6C:
+	.skip 0x4
+.global lbl_802F1B70
+lbl_802F1B70:
+	.skip 0x4
+.global lbl_802F1B74
+lbl_802F1B74:
+	.skip 0x4
+.global lbl_802F1B78
+lbl_802F1B78:
+	.skip 0x4
+.global lbl_802F1B7C
+lbl_802F1B7C:
+	.skip 0x4
+.global lbl_802F1B80
+lbl_802F1B80:
+	.skip 0x4
+.global submodeStringPtr
+submodeStringPtr:
+	.skip 0x4
+.global modeStringPtr
+modeStringPtr:
+	.skip 0x4
+.global gameSubmodeRequest
+gameSubmodeRequest:
+	.skip 0x2
+.global gameSubmode
+gameSubmode:
+	.skip 0x2
+.global gameModeRequest
+gameModeRequest:
+	.skip 0x2
+.global gameMode
+gameMode:
+	.skip 0x6
+.global lbl_802F1B98
+lbl_802F1B98:
+	.skip 0x4
+.global lbl_802F1B9C
+lbl_802F1B9C:
+	.skip 0x4
+.global lbl_802F1BA0
+lbl_802F1BA0:
+	.skip 0x1
+.global lbl_802F1BA1
+lbl_802F1BA1:
+	.skip 0x7
+.global lbl_802F1BA8
+lbl_802F1BA8:
+	.skip 0x4
+.global lbl_802F1BAC
+lbl_802F1BAC:
+	.skip 0x4
+.global lbl_802F1BB0
+lbl_802F1BB0:
+	.skip 0x4
+.global lbl_802F1BB4
+lbl_802F1BB4:
+	.skip 0x8
+.global lbl_802F1BBC
+lbl_802F1BBC:
+	.skip 0x8
+.global lbl_802F1BC4
+lbl_802F1BC4:
+	.skip 0x4
+.global lbl_802F1BC8
+lbl_802F1BC8:
+	.skip 0x4
+.global lbl_802F1BCC
+lbl_802F1BCC:
+	.skip 0x4
 
 .section .sdata
 
+    .balign 4
 .global lbl_802F02E0
 lbl_802F02E0:
 	# ROM: 0x1EAA20
@@ -3144,11 +3318,6 @@ lbl_802F02F8:
 	# ROM: 0x1EAA38
 	.byte 0x05, 0x05, 0x04, 0x03
 	.byte 0x04, 0x02, 0x00, 0x00
-	.4byte 0
-	.4byte 0
-glabel string_k_CHU_
-	.asciz "k/CHU!"
-	.balign 4
 
 .section .sdata2
 

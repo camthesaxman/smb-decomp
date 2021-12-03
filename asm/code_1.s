@@ -4856,13 +4856,3 @@ glabel string_cmd_flower
 	.balign 4
 	.4byte string_cmd_flower  ;# ptr
 	.4byte 0
-
-
-.section .sbss
-
-.global lbl_802F1AE0
-lbl_802F1AE0:
-	.skip 0x4
-.global lbl_802F1AE4
-lbl_802F1AE4:
-	.skip 0x4

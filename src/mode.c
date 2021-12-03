@@ -26,7 +26,7 @@ void (*gameModeFuncs[])(void) =
     NULL
 };
 
-void (*lbl_80172528 /*lbl_801724D0_58*/[]) =
+void (*gameSubmodeFuncs /*lbl_801724D0_58*/[])(void) =
 {
     submode_dummy_func,
     submode_adv_demo_init_func,
@@ -463,8 +463,8 @@ void gm_init(void)
     gameSubmode = SMD_ADV_WARNING_INIT;
     gameModeRequest = -1;
     gameSubmodeRequest = -1;
-    lbl_802F1B80 = 0;
-    lbl_802F1B7C = 0;
+    lbl_802F1B80 = NULL;
+    lbl_802F1B7C = NULL;
     modeCtrl.unk8 = 0;
     modeCtrl.unk0 = 0;
     modeCtrl.unk42 = 0;

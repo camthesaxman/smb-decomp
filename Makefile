@@ -64,7 +64,7 @@ SOURCE_FILES := \
 	src/polydisp.c \
 	asm/polydisp.s \
 	asm/adv.s \
-	asm/sel.s \
+	src/sel.c \
 	asm/game.s \
 	src/camera.c \
 	asm/code_0.s \
