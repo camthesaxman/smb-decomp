@@ -8301,9 +8301,11 @@ lbl_80205DA0:
 .global lbl_80205DAC
 lbl_80205DAC:
 	.skip 0x54
+.if 0
 .global lbl_80205E00
 lbl_80205E00:
 	.skip 0x20
+.endif
 
 .section .sdata2
 

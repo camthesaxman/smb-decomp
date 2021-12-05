@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 # motload.s
 .global init_ape_model_info
 init_ape_model_info:
@@ -964,20 +965,20 @@ lbl_8003532C:
 /* 80035338 00031258  40 80 00 0C */	bge lbl_80035344
 /* 8003533C 0003125C  2C 00 00 01 */	cmpwi r0, 1
 /* 80035340 00031260  40 80 00 18 */	bge lbl_80035358
-lbl_80035344:
+lbl_80035344:  ;# default
 /* 80035344 00031264  88 1E 00 01 */	lbz r0, 1(r30)
 /* 80035348 00031268  7C 00 E0 40 */	cmplw r0, r28
 /* 8003534C 0003126C  40 80 00 0C */	bge lbl_80035358
 /* 80035350 00031270  7F C3 F3 78 */	mr r3, r30
 /* 80035354 00031274  48 00 02 31 */	bl func_80035584
-lbl_80035358:
+lbl_80035358:  ;# 1 2
 /* 80035358 00031278  38 7E 00 00 */	addi r3, r30, 0
 /* 8003535C 0003127C  38 81 00 3C */	addi r4, r1, 0x3c
 /* 80035360 00031280  38 A1 00 38 */	addi r5, r1, 0x38
 /* 80035364 00031284  38 C1 00 40 */	addi r6, r1, 0x40
 /* 80035368 00031288  48 00 01 41 */	bl func_800354A8
 /* 8003536C 0003128C  48 00 00 A4 */	b lbl_80035410
-lbl_80035370:
+lbl_80035370:  ;# 3
 /* 80035370 00031290  80 9E 00 04 */	lwz r4, 4(r30)
 /* 80035374 00031294  3F A0 43 30 */	lis r29, 0x4330
 /* 80035378 00031298  C8 22 8B 20 */	lfd f1, lbl_802F3320-_SDA2_BASE_(r2)
@@ -1029,6 +1030,7 @@ lbl_80035410:
 /* 8003542C 0003134C  CB A1 00 70 */	lfd f29, 0x70(r1)
 /* 80035430 00031350  38 21 00 88 */	addi r1, r1, 0x88
 /* 80035434 00031354  4E 80 00 20 */	blr
+.endif
 
 .global func_80035438
 func_80035438:
@@ -2574,18 +2576,102 @@ lbl_80036980:
 
 .section .data
 
-.global lbl_801B7B28
-lbl_801B7B28:
-	# ROM: 0x1B4B28
-glabel string_motload_c
-	.asciz "motload.c"
-	.balign 4
-glabel string_cannot_dvd_read
-	.asciz "cannot dvd_read"
-glabel string_cannot_OSAlloc_n_2
-	.asciz "cannot OSAlloc\n"
-glabel string_cannot_OSAlooc_n
-	.asciz "cannot OSAlooc\n"
-glabel string_cannot_DVDClose
-	.asciz "cannot DVDClose"
 	.4byte 0
+
+.section .sdata2
+
+.if 0
+.global lbl_802F3310
+lbl_802F3310:
+	# ROM: 0x1ECD30
+	.4byte 0
+
+.global lbl_802F3314
+lbl_802F3314:
+	# ROM: 0x1ECD34
+	.byte 0x46, 0x22, 0xF9, 0x83
+
+.global lbl_802F3318
+lbl_802F3318:
+	# ROM: 0x1ECD38
+	.byte 0x3E, 0x80, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F3320
+lbl_802F3320:
+	# ROM: 0x1ECD40
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+.endif
+
+.global lbl_802F3328
+lbl_802F3328:
+	# ROM: 0x1ECD48
+	.byte 0x3F, 0xA1, 0x11, 0x11
+	.byte 0x11, 0x11, 0x11, 0x11
+
+.global lbl_802F3330
+lbl_802F3330:
+	# ROM: 0x1ECD50
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F3338
+lbl_802F3338:
+	# ROM: 0x1ECD58
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F333C
+lbl_802F333C:
+	# ROM: 0x1ECD5C
+	.byte 0xBF, 0x80, 0x00, 0x00
+	.byte 0x01, 0x04, 0x07, 0x0A
+	.byte 0x0D, 0x00, 0x00, 0x00
+	.byte 0x02, 0x00, 0x00, 0x00
+	.byte 0x03, 0x00, 0x00, 0x00
+	.byte 0x05, 0x00, 0x00, 0x00
+	.byte 0x06, 0x00, 0x00, 0x00
+	.byte 0x08, 0x00, 0x00, 0x00
+	.byte 0x09, 0x00, 0x00, 0x00
+	.byte 0x0B, 0x00, 0x00, 0x00
+	.byte 0x0C, 0x00, 0x00, 0x00
+	.byte 0x0E, 0x00, 0x00, 0x00
+	.byte 0x0F, 0x00, 0x00, 0x00
+	.byte 0x10, 0x00, 0x00, 0x00
+
+.global lbl_802F3374
+lbl_802F3374:
+	# ROM: 0x1ECD94
+	.4byte 0
+
+.global lbl_802F3378
+lbl_802F3378:
+	# ROM: 0x1ECD98
+	.byte 0x3A, 0x83, 0x12, 0x6F
+
+.global lbl_802F337C
+lbl_802F337C:
+	# ROM: 0x1ECD9C
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F3380
+lbl_802F3380:
+	# ROM: 0x1ECDA0
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F3388
+lbl_802F3388:
+	# ROM: 0x1ECDA8
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00
+
+.global lbl_802F3390
+lbl_802F3390:
+	# ROM: 0x1ECDB0
+	.byte 0x3C, 0x23, 0xD7, 0x0A
+
+.global lbl_802F3394
+lbl_802F3394:
+	# ROM: 0x1ECDB4
+	.byte 0x46, 0x22, 0xF9, 0x83

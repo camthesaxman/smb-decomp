@@ -600,3 +600,108 @@ struct Struct80038840
     u32 unk8;
     u32 unkC;
 };
+
+// motload
+
+struct Struct80034938
+{
+    u16 unk0;
+    u8 filler2[2];
+    void *unk4;
+    void *unk8;
+    void *unkC;
+    void *unk10;
+    void *unk14;
+};
+
+struct Struct80034B50_child_child
+{
+    u32 unk0;
+    void *unk4;
+};
+
+struct Struct80034B50_child
+{
+    void *unk0;
+    struct Struct80034B50_child_child *unk4;
+    void *unk8;
+    void *unkC;
+    void *unk10;
+    void *unk14;
+};
+
+struct Struct80034B50_child2_child
+{
+    void *unk0;
+    u8 filler4[0x18-0x4];
+};
+
+struct Struct80034B50_child2
+{
+    void *unk0;
+    struct Struct80034B50_child2_child *unk4[3];
+    s32 unk10[3];
+};
+
+struct Struct80034B50
+{
+    struct Struct80034B50_child *unk0;
+    u32 unk4;
+    struct Struct80034B50_child2 *unk8;
+    u32 unkC;
+};
+
+struct Struct80034D88
+{
+    u8 filler0[0x30];
+    void *unk30[16];
+    u8 filler70[0xB0-0x70];
+    void *unkB0;
+};
+
+struct Struct80034F5C_1_sub_child
+{
+    u16 unk0;
+};
+
+struct Struct80034F5C_1_sub
+{
+    u8 unk0;
+    u8 unk1;
+    u8 filler2[2];
+    struct Struct80034F5C_1_sub_child *unk4;
+    u32 unk8;
+    u32 unkC;
+};
+
+struct Struct80034F5C_1
+{
+    u32 unk0;
+    u8 filler4[0x54-0x4];
+    // array or not? there's no telling...
+    struct Struct80034F5C_1_sub unk54[3];
+    struct Struct80034F5C_1_sub unk84[3];
+    u8 fillerB4[0x1C0-0xB4];
+    float unk1C0[3];
+    u8 filler1CC[0x1D8-0x1CC];
+    Mtx unk1D8;
+    u8 filler208[0x238-0x208];
+};
+
+struct Struct80034F5C_2
+{
+    u8 filler0[2];
+    u16 unk2;
+};  // size = 4
+
+struct Struct80034F5C_3
+{
+    u8 filler0[2];
+    u16 unk2;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+};  // size = 0x1C

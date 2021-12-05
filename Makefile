@@ -76,6 +76,7 @@ SOURCE_FILES := \
 	asm/sound.s \
 	asm/code_2.s \
 	asm/nl2ngc.s \
+	src/motload.c \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
