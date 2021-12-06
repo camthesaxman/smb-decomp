@@ -664,39 +664,67 @@ struct Struct80034F5C_1_sub_child
     u16 unk0;
 };
 
+struct Struct80034F5C_1_sub_child2
+{
+    u8 unk0;
+};
+
+struct Struct80034F5C_1_sub_child3
+{
+    float unk0;
+    float unk4;
+    float unk8;
+};
+
 struct Struct80034F5C_1_sub
 {
     u8 unk0;
     u8 unk1;
     u8 filler2[2];
     struct Struct80034F5C_1_sub_child *unk4;
-    u32 unk8;
-    u32 unkC;
+    struct Struct80034F5C_1_sub_child2 *unk8;
+    struct Struct80034F5C_1_sub_child3 *unkC;
 };
 
 struct Struct80034F5C_1
 {
     u32 unk0;
     u8 filler4[0x54-0x4];
-    // array or not? there's no telling...
-    struct Struct80034F5C_1_sub unk54[3];
-    struct Struct80034F5C_1_sub unk84[3];
-    u8 fillerB4[0x1C0-0xB4];
-    float unk1C0[3];
-    u8 filler1CC[0x1D8-0x1CC];
+    // huh
+    union
+    {
+        struct Struct80034F5C_1_sub structs[6];
+        //struct Struct80034F5C_1_sub unk84[3];
+        //Mtx mtx;  // maybe not?
+    } unk54;
+    u8 fillerB4[0x168-0xB4];
+    Mtx unk168;
+    u8 filler198[0x1C0-0x198];
+    Point3d unk1C0;
+    Point3d unk1CC;
     Mtx unk1D8;
     u8 filler208[0x238-0x208];
 };
 
+/*
+    u8 filler44[0x54-0x44];
+    Mtx unk54;
+    u8 filler84[0x168-0x84];
+    Mtx unk168;
+    u8 filler198[0x1C0-0x198];
+    Point3d unk1C0;
+    Point3d unk1CC;
+    u8 filler1D8[0x238-0x1D8];
+*/
 struct Struct80034F5C_2
 {
-    u8 filler0[2];
+    u16 filler0;
     u16 unk2;
 };  // size = 4
 
 struct Struct80034F5C_3
 {
-    u8 filler0[2];
+    u16 filler0;
     u16 unk2;
     float unk4;
     float unk8;
@@ -705,3 +733,20 @@ struct Struct80034F5C_3
     float unk14;
     float unk18;
 };  // size = 0x1C
+
+struct Struct800355B8  // maybe the same as Struct80034F5C_1?
+{
+    u32 unk0;
+    u8 filler4[0x2E - 0x4];
+    s16 unk2E;
+    u8 filler30[2];
+    u16 unk32;
+    u8 filler34[2];
+    u16 unk36;
+    u16 unk38;
+    u16 unk3A;
+    u8 filler3C[0x40-0x3C];
+    float unk40;
+    u8 filler44[0x54-0x44];
+    Mtx unk54;
+};

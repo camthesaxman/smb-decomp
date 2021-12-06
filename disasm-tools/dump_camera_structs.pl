@@ -9,7 +9,11 @@ my @b = ();
 
 sub float {
     my $val = unpack "f", pack "L", ($_[0]<<24) | ($_[1]<<16) | ($_[2]<<8) | ($_[3]);
-    return sprintf("%.10g", $val);
+    my $str = sprintf("%.10g", $val);
+    if ($str !~ /\./) {
+        $str = $str . '.0';
+    }
+    return $str . 'f';
 }
 
 sub u32 {
@@ -17,23 +21,33 @@ sub u32 {
     return sprintf("%i", $val);
 }
 
+sub u16 {
+    my $val = ($_[0]<<8) | ($_[1]);
+    return sprintf("%i", $val);
+}
+
 while ($line = <>) {
-    if ($line =~ /lbl_801B7CF8:/) {
+    if ($line =~ /lbl_80114D80/) {
         print("got label\n");
         $gotLabel = 1;
         next;
     }
+    
+    if (!$gotLabel) {
+        next;
+    }
+    
     if ($line =~ /^\.asciz/) {
         $gotLabel = 0;
         next;
     }
-    if ($gotLabel && $line =~ /^\.endif/) {
+    if ($line =~ /^\.endif/) {
         $gotEndif = 1;
         next;
     }
 
-    if ($gotLabel && $line =~ /\.*byte/) {
-        #print("asdf");
+    if ($line =~ /\.*byte/) {
+        #print("line $line");
         if ($line =~ /\.byte (0x..), (0x..), (0x..), (0x..)/) {
             push(@b, hex($1), hex($2), hex($3), hex($4));
         }
@@ -53,16 +67,21 @@ while ($line = <>) {
         #print($line);
     }
     
-    if ((scalar @b) == 0xC) {
+    if ((scalar @b) == 4) {
         print("{");
-        printf("%s, ", float(@b[0...3]));
-        printf("%s, ", float(@b[4...7]));
-        printf("%s", float(@b[8...11]));
-        print("},\n");
+        printf(" %s,", u16(@b[0..1]));
+        printf(" %s},\n", u16(@b[2..3]));
+#        printf("    %s,\n", float(@b[4...7]));
+#        printf("    %s,\n", float(@b[8...11]));
+#        printf("    %s,\n", float(@b[12...15]));
+#        printf("    %s,\n", float(@b[16...19]));
+#        printf("    %s,\n", float(@b[20...23]));
+#        printf("    %s,\n", float(@b[24...27]));
+#        print("},\n");
         @b = ();
     }
     
-    if ($line =~ /lbl_801B7EC4/) {
+    if ($line =~ /lbl_80114DBC/) {
         break;
     }
 }

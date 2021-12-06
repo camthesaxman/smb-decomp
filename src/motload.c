@@ -245,31 +245,29 @@ void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struc
 
 void func_80035064(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, u32 c, float d)
 {
-    struct Struct80034F5C_1_sub *r3 = &a->unk54[0];
-    int i = 0;
+    struct Struct80034F5C_1_sub *r3 = &a->unk54.structs[0];
+    int unused;
 
     if (r3->unk0 != 0)
     {
-        b->unk1C0[i] = func_80035284(r3, d);
+        b->unk1C0.x = func_80035284(r3, d);
         if (c != 0)
-            b->unk1C0[i] = -b->unk1C0[i];
+            b->unk1C0.x = -b->unk1C0.x;
     }
     else
-        b->unk1C0[i] = 0.0f;
+        b->unk1C0.x = 0.0f;
     r3++;
-    i++;
 
     if (r3->unk0 != 0)
-        b->unk1C0[i] = func_80035284(r3, d);
+        b->unk1C0.y = func_80035284(r3, d);
     else
-        b->unk1C0[i] = 0.0f;
+        b->unk1C0.y = 0.0f;
     r3++;
-    i++;
 
     if (r3->unk0 != 0)
-        b->unk1C0[i] = func_80035284(r3, d);
+        b->unk1C0.z = func_80035284(r3, d);
     else
-        b->unk1C0[i] = 0.0f;
+        b->unk1C0.z = 0.0f;
 
 }
 
@@ -281,7 +279,7 @@ void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struc
     mathutil_mtxA_from_identity();
     f31 = 10430.3779296875f;
 
-    sub = &a->unk84[2];
+    sub = &a->unk54.structs[5];
     if (sub->unk0 != 0)
     {
         float f1 = func_80035284(sub, e);
@@ -316,12 +314,8 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
     float sp40;
     float sp3C;
     float sp38;
-    float sp34;
-    float sp30;
-    float sp2C;
-    float sp28;
-    float sp24;
-    float sp20;
+    Vec sp2C;
+    Vec sp20;
     struct Struct80034F5C_1_sub sp10;
     u8 r28 = a->unk0;
     u8 r31 = a->unk1;
@@ -362,20 +356,697 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
         func_800354A8(a, &sp3C, &sp38, &sp40);
         break;
     case 3:
-        sp20 = a->unk4->unk0;
-        func_800354A8(a, &sp28, &sp38, &sp24);
+        sp20.x = a->unk4->unk0;
+        func_800354A8(a, &sp20.z, &sp38, &sp20.y);
         sp10.unk4 = a->unk4;
         sp10.unk8 = a->unk8;
         sp10.unkC = a->unkC;
         func_80035584(&sp10);
-        sp2C = sp10.unk4->unk0;
-        func_800354A8(&sp10, &sp3C, &sp34, &sp30);
+        sp2C.x = sp10.unk4->unk0;
+        func_800354A8(&sp10, &sp3C, &sp2C.z, &sp2C.y);
         sp40 = func_80035438(&sp2C, &sp20, b);
         break;
     }
     a->unk1 = r31;
     return sp40;
 }
+
+#ifdef NONMATCHING  // register swaps
+// https://decomp.me/scratch/IXzah
+// https://decomp.me/scratch/HXuyG
+float func_80035438(Vec *a, Vec *b, float c)
+{
+    float f7, f6, f5, f0;
+    f7 = b->x - a->x;
+    f5 = (c - a->x) / f7;
+    f6 = f5 * f5;
+    f7 *= 0.033333333333333333;
+    f0 = f6 - f5;
+    f5 = f5 * f6 - f6;
+    return a->y
+         + (f5 + f5 - f6) * (a->y - b->y)
+         + f7 * (f5 * (a->z + b->z) - a->z * f0);
+}
+#else
+asm float func_80035438(Vec *a, Vec *b, float c)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_80035438.s"
+}
+#pragma peephole on
+#endif
+
+void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
+{
+    switch (a->unk8->unk0)
+    {
+    default:
+    case 0:
+        *b = *c = *d = 0.0f;
+        break;
+    case 1:
+        *b = *c = 0.0f;
+        *d = a->unkC->unk0;
+        break;
+    case 2:
+        *b = *c = a->unkC->unk0;
+        *d = a->unkC->unk4;
+        break;
+    case 3:
+        *b = a->unkC->unk0;
+        *c = a->unkC->unk4;
+        *d = a->unkC->unk8;
+        break;
+    }
+}
+
+void func_80035550(struct Struct80034F5C_1_sub *a)
+{
+    a->unk4 = (void *)((u32)a->unk4 + 2);  // WTF?
+    a->unkC = (void *)((u32)a->unkC + a->unk8->unk0 * 4);  // WTF?
+    a->unk8 = (void *)((u32)a->unk8 + 1);  // WTF?
+}
+
+void func_80035584(struct Struct80034F5C_1_sub *a)
+{
+    a->unk4 = (void *)((u32)a->unk4 - 2);  // WTF?
+    a->unk8 = (void *)((u32)a->unk8 - 1);  // WTF?
+    a->unkC = (void *)((u32)a->unkC - a->unk8->unk0 * 4);  // WTF?
+}
+
+void func_800355B8(struct Struct800355B8 *a)
+{
+    a->unk3A = func_80034F44(a->unk32);
+    func_80034360((u32)a + 0x81A8, a->unk32);
+}
+
+void func_800355FC(struct Struct800355B8 *a)
+{
+    u32 wtf;
+
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_to_mtx(a->unk54);
+    func_80035648(a);
+    wtf = (u32)a + 0x81A8;
+    func_80035748(wtf, wtf);
+}
+
+#pragma force_active on
+
+const struct Struct80034F5C_3 lbl_80114808[] =
+{
+    {
+        0,
+        0,
+        1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        1,
+        1,
+        -1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        3.141592741f,
+        0.0f,
+    },
+    {
+        3,
+        3,
+        1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        -3.141592741f,
+        0.0f,
+    },
+    {
+        6,
+        11,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        7,
+        12,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        10,
+        15,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        11,
+        6,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        12,
+        7,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        15,
+        10,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        16,
+        16,
+        -1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        3.141592741f,
+        0.0f,
+    },
+    {
+        18,
+        23,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        21,
+        26,
+        1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        22,
+        27,
+        1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        23,
+        18,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        26,
+        21,
+        1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        27,
+        22,
+        1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        255,
+        255,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+};
+
+const struct Struct80034F5C_3 lbl_801149E4[] =
+{
+    {
+        0,
+        0,
+        1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        1,
+        1,
+        -1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        3.141592741f,
+        0.0f,
+    },
+    {
+        3,
+        3,
+        1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        -3.141592741f,
+        0.0f,
+    },
+    {
+        6,
+        11,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        7,
+        12,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        10,
+        15,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        11,
+        6,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        12,
+        7,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        15,
+        10,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        16,
+        16,
+        -1.0f,
+        -1.0f,
+        -1.0f,
+        0.0f,
+        3.141592741f,
+        0.0f,
+    },
+    {
+        18,
+        23,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        21,
+        26,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        22,
+        27,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        23,
+        18,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        26,
+        21,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        27,
+        22,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        255,
+        255,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+};
+
+const struct Struct80034F5C_3 lbl_80114BC0[] =
+{
+    {
+        1,
+        1,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        2,
+        2,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        3,
+        3,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        4,
+        4,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        5,
+        5,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        6,
+        6,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        7,
+        7,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        8,
+        8,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        9,
+        9,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        10,
+        10,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        11,
+        11,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        12,
+        12,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        14,
+        14,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        15,
+        15,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        16,
+        16,
+        -1.0f,
+        -1.0f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+    {
+        255,
+        255,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+    },
+};
+
+const struct Struct80034F5C_2 lbl_80114D80[] =
+{
+    { 2, 2 },
+    { 4, 4 },
+    { 9, 14 },
+    { 14, 9 },
+    { 20, 25 },
+    { 25, 20 },
+    { 255, 255 },
+};
+const struct Struct80034F5C_2 lbl_80114D9C[] =
+{
+    { 0, 0 },
+    { 2, 2 },
+    { 4, 4 },
+    { 9, 14 },
+    { 14, 9 },
+    { 20, 25 },
+    { 25, 20 },
+    { 255, 255 },
+};
+
+const struct Struct80034F5C_2 lbl_80114DBC[] =
+{
+    { 255, 255 },
+};
+
+const void *const lbl_80114DC0[] =
+{
+    (void *)0x801147D8,
+    (void *)0x801147D8,
+    (void *)0x801147F4,
+    (void *)0x801147F4,
+};
+
+const struct Struct80034F5C_3 *const lbl_80114DD0[] =
+{
+    lbl_801149E4,
+    lbl_80114808,
+    lbl_80114BC0,
+    lbl_80114BC0,
+};
+
+const struct Struct80034F5C_2 *const lbl_80114DE0[] =
+{
+    lbl_80114D9C,
+    lbl_80114D80,
+    lbl_80114DBC,
+    lbl_80114DBC,
+};
+
+/*
+void func_80035648(struct Struct800355B8 *a)
+{
+    u32 flags;
+    struct Struct80034F5C_1 *r31 = (void *)((u32)a + 0x81A8);
+    struct Struct80034F5C_1 *r30;
+
+    //u32 r6 = a->unk0 & (1<<(31-0x1D));
+    //void *r5 = lbl_80114DE0[a->unk36];
+    //void *r4 = lbl_80114DD0[a->unk36];
+
+    func_80034F5C(r31, lbl_80114DD0[a->unk36], lbl_80114DE0[a->unk36], (float)a->unk38 + a->unk40, a->unk0 & (1<<(31-0x1D)));
+    r30 = r31;
+    mathutil_mtxA_from_mtx(a->unk54);
+    mathutil_mtxA_rotate_y(a->unk2E);
+    mathutil_mtxA_to_mtx(r31->unk168);
+    //#define r30 r31
+    flags = r30->unk0;
+    while (flags != 0)
+    {
+        if (flags & (1<<(31-0x1D)))
+        {
+            r30->unk1CC = r30->unk1C0;
+            mathutil_mtxA_from_mtx(r31->unk168);
+            mathutil_mtxA_tf_point(&r30->unk1CC, &r30->unk1CC);
+        }
+        r30++;
+        flags = r30->unk0;
+    }
+}
+*/
 
 /*
 const float lbl_802F3310 = 0f;
