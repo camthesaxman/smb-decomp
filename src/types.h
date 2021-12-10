@@ -750,3 +750,22 @@ struct Struct800355B8  // maybe the same as Struct80034F5C_1?
     u8 filler44[0x54-0x44];
     Mtx unk54;
 };
+
+// input
+
+struct Struct801F3C60
+{
+    PADStatus unk0;
+    PADStatus unkC;
+    PADStatus unk18;
+    PADStatus unk24;
+    PADStatus unk30;
+};
+
+struct Struct801F3D88
+{
+    u16 unk0;
+    u8 filler2[2];
+    u16 unk4;
+    u8 filler8[4];
+};

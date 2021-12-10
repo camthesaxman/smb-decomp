@@ -578,29 +578,10 @@ extern struct
 } lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
-extern struct
-{
-    u16 unk0;
-    s8 unk2;
-    s8 unk3;
-    s8 unk4;
-    s8 unk5;
-    u8 unk6;
-    u8 filler7[0xA-0x7];
-    s8 unkA;
-    u8 fillerB[0x18-0xB];
-    u16 unk18;
-    u8 filler1A[0x3C-0x1A];
-} lbl_801F3B70[4];
-// extern ? lbl_801F3C60;
+extern struct Struct801F3C60 lbl_801F3B70[4];
+extern struct Struct801F3C60 lbl_801F3C60[4];
 extern u16 lbl_801F3D50[][5];
-extern struct
-{
-    u16 unk0;
-    u8 filler2[2];
-    u16 unk4;
-    u8 filler8[4];
-} lbl_801F3D88;
+extern struct Struct801F3D88 lbl_801F3D88;
 extern struct
 {
     u8 filler0[4];
@@ -1297,8 +1278,8 @@ extern struct GMA *lbl_802F1CC8;
 extern u8 lbl_802F1CD0;
 extern u8 lbl_802F1CD1;
 extern u8 lbl_802F1CD2;
-// extern ? lbl_802F1CD4;
-// extern ? lbl_802F1CD8;
+extern u32 lbl_802F1CD4;
+extern u32 lbl_802F1CD8;
 // extern ? lbl_802F1CE0;
 // extern ? lbl_802F1CE2;
 // extern ? lbl_802F1CE4;

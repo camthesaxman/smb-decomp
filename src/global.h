@@ -15,6 +15,10 @@
 #define DEGREES_TO_S16(angle) ((s16)((angle) * (65536.0f / 360.0f)))
 #define S16_TO_DEGREES(angle) ((angle) * (360.0f / 65536.0f))
 
+#ifndef __MWERKS__
+extern u32 __cntlzw(u32);
+#endif
+
 #include "types.h"
 #include "functions.h"
 #include "variables.h"

@@ -13220,24 +13220,3 @@ lbl_801F3A8C:
 .global lbl_801F3A9C
 lbl_801F3A9C:
 	.skip 0xD4
-.global lbl_801F3B70
-lbl_801F3B70:
-	.skip 0xF0
-.global lbl_801F3C60
-lbl_801F3C60:
-	.skip 0xF0
-.global lbl_801F3D50
-lbl_801F3D50:
-	.skip 0x38
-.global lbl_801F3D88
-lbl_801F3D88:
-	.skip 0xC
-.global lbl_801F3D94
-lbl_801F3D94:
-	.skip 0xC
-.global lbl_801F3DA0
-lbl_801F3DA0:
-	.skip 0x20
-.global lbl_801F3DC0
-lbl_801F3DC0:
-	.skip 0x5000

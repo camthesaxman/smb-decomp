@@ -433,10 +433,10 @@ void func_8000BCA4(void)
     f3 = 0.0f;
     for (i = 0; i < 4; i++)
     {
-        if (lbl_801F3B70[i].unkA == 0)
+        if (lbl_801F3B70[i].unk0.err == 0)
         {
-            f2 = (float)lbl_801F3B70[i].unk2 / 60.0;
-            f3 = -(float)lbl_801F3B70[i].unk3 / 60.0;
+            f2 = (float)lbl_801F3B70[i].unk0.stickX / 60.0;
+            f3 = -(float)lbl_801F3B70[i].unk0.stickY / 60.0;
             break;
         }
     }

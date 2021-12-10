@@ -209,7 +209,7 @@ u16 func_80034F44(u16 index)
     return lbl_802F1F00[index - 1].unk0;
 }
 
-void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struct Struct80034F5C_2 *c, u32 d, float e)
+void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struct Struct80034F5C_2 *c, float e, u32 d)
 {
     u32 flags;
     struct Struct80034F5C_1 *r30 = a;
@@ -1016,6 +1016,7 @@ const struct Struct80034F5C_2 *const lbl_80114DE0[] =
     lbl_80114DBC,
 };
 
+// different file due to float constants?
 /*
 void func_80035648(struct Struct800355B8 *a)
 {
