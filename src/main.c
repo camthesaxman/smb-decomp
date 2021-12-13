@@ -4,6 +4,7 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
+#include "input.h"
 #include "perf.h"
 
 // bss

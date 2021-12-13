@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "input.h"
 #include "mathutil.h"
 
 u8 lbl_801EEBA0[0x80];

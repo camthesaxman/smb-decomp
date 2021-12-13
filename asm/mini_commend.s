@@ -72,8 +72,8 @@ submode_mini_commend_main_func:
 /* 8009BAF8 00097A18  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
 /* 8009BAFC 00097A1C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8009BB00 00097A20  40 82 03 C0 */	bne lbl_8009BEC0
-/* 8009BB04 00097A24  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 8009BB08 00097A28  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 8009BB04 00097A24  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 8009BB08 00097A28  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 8009BB0C 00097A2C  A0 83 00 18 */	lhz r4, 0x18(r3)
 /* 8009BB10 00097A30  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8009BB14 00097A34  38 63 EC 20 */	addi r3, r3, modeCtrl@l

@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "input.h"
 #include "mathutil.h"
 
 struct StringEntry
@@ -2552,7 +2553,7 @@ void load_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((lbl_801F3D88.unk4 & (1 << 8))
+        if ((lbl_801F3D88[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2625,7 +2626,7 @@ void save_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((lbl_801F3D88.unk4 & (1 << 8))
+        if ((lbl_801F3D88[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2678,21 +2679,21 @@ void save_sequence(void)
         open_memcard_file();
         break;
     case 9:
-        if ((lbl_801F3D88.unk4 & 1)
-         || (lbl_801F3D94.unk4 & 1))
+        if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
+         || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((lbl_801F3D88.unk4 & 2)
-         || (lbl_801F3D94.unk4 & 2))
+        if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
+         || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88.unk4 & (1 << 8))
+        if (lbl_801F3D88[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2721,21 +2722,21 @@ void save_sequence(void)
     case 0xD:
         if (memcardInfo.statusFlags & (1 << 10))
         {
-            if ((lbl_801F3D88.unk4 & 1)
-             || (lbl_801F3D94.unk4 & 1))
+            if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
+             || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
             {
                 if (lbl_802F21B1 == 0)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 1;
             }
-            if ((lbl_801F3D88.unk4 & 2)
-             || (lbl_801F3D94.unk4 & 2))
+            if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
+             || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
             {
                 if (lbl_802F21B1 == 1)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 0;
             }
-            if (!(lbl_801F3D88.unk4 & (1 << 8)))
+            if (!(lbl_801F3D88[2] & PAD_BUTTON_A))
                 break;
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2811,7 +2812,7 @@ void replay_save_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88.unk4 & (1 << 8))
+        if (lbl_801F3D88[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -2837,21 +2838,21 @@ void replay_save_sequence(void)
         check_verify_filesystem_result();
         break;
     case 9:
-        if ((lbl_801F3D88.unk4 & 1)
-         || (lbl_801F3D94.unk4 & 1))
+        if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
+         || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((lbl_801F3D88.unk4 & 2)
-         || (lbl_801F3D94.unk4 & 2))
+        if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
+         || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88.unk4 & (1 << 8))
+        if (lbl_801F3D88[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2927,7 +2928,7 @@ void replay_list_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88.unk4 & (1 << 8))
+        if (lbl_801F3D88[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -3101,14 +3102,14 @@ void ev_memcard_init(void)
         memcardGameData = NULL;
     }
     if (!(memcardInfo.statusFlags & (1 << 6)))
-        lbl_801F3D88.unk4 = 0;
+        lbl_801F3D88[2] = 0;
 }
 
 void ev_memcard_main(void)
 {
     if ((memcardInfo.statusFlags & (1 << 7))
      && memcardInfo.state == 1
-     && (lbl_801F3D88.unk4 & (1 << 9)))
+     && (lbl_801F3D88[2] & PAD_BUTTON_B))
     {
         func_8002B5C8(0x6B);
         memcardInfo.state = MC_STATE_ERROR;
@@ -3123,12 +3124,12 @@ void ev_memcard_main(void)
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
         memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | (1 << 21));
-        if (lbl_801F3D88.unk4 & (1 << 9))
+        if (lbl_801F3D88[2] & PAD_BUTTON_B)
         {
             func_8002B5C8(0x6B);
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-            lbl_801F3D88.unk4 = 0;
+            lbl_801F3D88[2] = 0;
         }
         else
         {

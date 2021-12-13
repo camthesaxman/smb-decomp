@@ -564,7 +564,7 @@ extern struct
     u8 fillerA[0x30-0xA];
     u16 unk18;
     u16 unk30;
-} lbl_801F3B70;
+} controllerInfo;
 
 extern u32 lbl_802F1ED8;
 extern u8 lbl_802F0248[];
@@ -579,7 +579,7 @@ extern u8 lbl_802F0234[];
 // pls help...
 #if 0
 //r8 = lbl_801F3D50
-//r7 = lbl_801F3B70
+//r7 = controllerInfo
 void unkFunc80009684(void)
 {
     /*
@@ -589,11 +589,11 @@ void unkFunc80009684(void)
     {
         if
         (
-            (lbl_801F3B70.unk30 & (1 << 3)) || (lbl_801F3D50.unk8 & (1 << 3))
+            (controllerInfo.unk30 & (1 << 3)) || (lbl_801F3D50.unk8 & (1 << 3))
             ||
             (
                 //800096F4
-                ((lbl_801F3B70.unk0 & (1 << 3)) && modeCtrl != 0) || 
+                ((controllerInfo.unk0 & (1 << 3)) && modeCtrl != 0) || 
             )
         )
         {
@@ -607,8 +607,8 @@ void unkFunc80009684(void)
     #define DAT_801f3d5a lbl_801F3D50.unkA
     #define DAT_801f3d64 lbl_801F3D50.unk14
     #define DAT_801f3d6c lbl_801F3D50.unk1C
-    #define DAT_801f3b70 lbl_801F3B70.unk0
-    #define DAT_801f3b88 lbl_801F3B70.unk18
+    #define DAT_801f3b70 controllerInfo.unk0
+    #define DAT_801f3b88 controllerInfo.unk18
     int iVar1 = 0;  // r5
     if ((DAT_801f3d50 & 0x100) == 0 && (DAT_801f3d50 & 0x200) == 0 && DAT_802f1ed8 == 0)
     {

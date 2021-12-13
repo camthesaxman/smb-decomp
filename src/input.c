@@ -4,21 +4,58 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "ball.h"
+#include "input.h"
 
-struct Struct801F3C60 lbl_801F3B70[4];
-struct Struct801F3C60 lbl_801F3C60[4];
+struct ControllerInfo controllerInfo[4];
+struct ControllerInfo lbl_801F3C60[4];
 u16 lbl_801F3D50[4][5];
 s32 lbl_801F3D78[4];
-struct Struct801F3D88 lbl_801F3D88;
+u16 lbl_801F3D88[6];
+u16 lbl_801F3D94[6];
 
-FORCE_BSS_ORDER(lbl_801F3B70);
+FORCE_BSS_ORDER(controllerInfo);
 FORCE_BSS_ORDER(lbl_801F3C60);
 FORCE_BSS_ORDER(lbl_801F3D50);
 FORCE_BSS_ORDER(lbl_801F3D78);
 FORCE_BSS_ORDER(lbl_801F3D88);
+FORCE_BSS_ORDER(lbl_801F3D94);
 
-// not sure if this is in this file or not
-extern s8 lbl_80181B80[8][2];
+s8 lbl_80181B80[][2] =
+{
+    { 0x54, 0x00 },
+    { 0x3B, 0x3B },
+    { 0x00, 0x54 },
+    { 0xC5, 0x3B },
+    { 0xAC, 0x00 },
+    { 0xC5, 0xC5 },
+    { 0x00, 0xAC },
+    { 0x3B, 0xC5 },
+    { 0x54, 0x00 },
+    { 0x3B, 0x3B },
+    { 0x00, 0x54 },
+    { 0xC5, 0x3B },
+    { 0xAC, 0x00 },
+    { 0xC5, 0xC5 },
+    { 0x00, 0xAC },
+    { 0x3B, 0xC5 },
+    { 0x54, 0x00 },
+    { 0x3B, 0x3B },
+    { 0x00, 0x54 },
+    { 0xC5, 0x3B },
+    { 0xAC, 0x00 },
+    { 0xC5, 0xC5 },
+    { 0x00, 0xAC },
+    { 0x3B, 0xC5 },
+    { 0x54, 0x00 },
+    { 0x3B, 0x3B },
+    { 0x00, 0x54 },
+    { 0xC5, 0x3B },
+    { 0xAC, 0x00 },
+    { 0xC5, 0xC5 },
+    { 0x00, 0xAC },
+    { 0x3B, 0xC5 },
+};
 
 const s8 lbl_80110320[100] =
 {
@@ -32,8 +69,6 @@ const s8 lbl_80110320[100] =
 	0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x36, 0x37,
 	0x38, 0x39, 0x3A, 0x3C,
 };
-
-#pragma force_active on
 
 const s8 lbl_80110320_64[8][2] =
 {
@@ -99,61 +134,40 @@ void input_init(void)
         PADSetAnalogMode(3);
         lbl_802F1CD2++;
     }
-    memset(lbl_801F3B70, 0, sizeof(lbl_801F3B70));
+    memset(controllerInfo, 0, sizeof(controllerInfo));
     lbl_802F1CD0 = 0;
     lbl_802F1CD1 = 0;
 }
 
+static inline int clamp(int val, int min, int max)
+{
+    if (val < min)
+        return min;
+    else if (val > max)
+        val = max;
+    return val;
+}
+
 #ifdef NONMATCHING
-//https://decomp.me/scratch/OTcMi
-//https://decomp.me/scratch/ay06P
-static inline int test(int r8)
+// https://decomp.me/scratch/EAwn5
+static inline void test3(struct ControllerInfo *r6, PADStatus *b)
 {
-    int r5 = __abs(r8);
-    if (r5 < 0)  // bruh...
-        return 0;
-    //lbl_80024FE4
-    else
-    {
-        if (r5 > 99)
-            r5 = 99;
-        return r5;
-    }
-}
-
-static inline int test2(int r0)
-{
-    r0 -= 16;
-        if (r0 < 0)
-            r0 = 0;
-        else if (r0 > 0xB4)
-            r0 = 0xB4;
-        return r0;
-}
-
-static inline void test3(struct Struct801F3C60 *r6, PADStatus *b)
-{
-        r6->unk0 = *b;
-        r6->unk18.button = b->button & ~r6->unkC.button;
-        r6->unk24.button = r6->unkC.button & ~b->button;
+    r6->unk0[0] = *b;
+    r6->unk0[2].button = b->button & ~r6->unk0[1].button;
+    r6->unk0[3].button = r6->unk0[1].button & ~b->button;
 }
 
 void input_main(void)
 {
-    //struct Struct801F3C60 *r6;
+    int r0;
     int i;  // r29
-    //int j;  // ctr
     int r3;
-    PADStatus sp10[4];  // sp + 0x10
-    struct
-    {
-        s8 x;
-        s8 y;
-    } spC;
+
+    PADStatus sp10[4];
+    struct CoordsS8 spC;
 
     func_80025158(sp10);
     func_800259F8(sp10);
-    //i = 0;
 
     /*
     for (r6 = &lbl_801F3C60[0], i = 0; i < 4; i++, r6++)
@@ -164,36 +178,29 @@ void input_main(void)
         r6->unk24.button = r6->unkC.button & ~sp10[i].button;
     }
     */
+
     for (i = 0; i < 4; i++)
     {
-        lbl_801F3C60[i].unkC.button = lbl_801F3C60[i].unk0.button;
+        lbl_801F3C60[i].unk0[1].button = lbl_801F3C60[i].unk0[0].button;
         test3(&lbl_801F3C60[i], &sp10[i]);
     }
 
+    /*
+    for (i = 0; i < 4; i++)
+    {
+        lbl_801F3C60[i].unk0[1].button = lbl_801F3C60[i].unk0[0].button;
+        lbl_801F3C60[i].unk0[0] = sp10[i];
+        lbl_801F3C60[i].unk0[2].button = sp10[i].button & ~lbl_801F3C60[i].unk0[1].button;
+        lbl_801F3C60[i].unk0[3].button = lbl_801F3C60[i].unk0[1].button & ~sp10[i].button;
+    }
+    */
     // r31 = sp10[i]
     for (i = 0; i < 4; i++)
     {
-        //int l;
-        //int r;
-        lbl_801F3B70[i].unkC.button = lbl_801F3B70[i].unk0.button;
+        controllerInfo[i].unk0[1].button = controllerInfo[i].unk0[0].button;
 
-        //l = sp10[i].triggerLeft - 16;
-        /*
-        if (sp10[i].triggerLeft - 16 < 0)
-            l = 0;
-        else if (sp10[i].triggerLeft - 16 > 0xB4)
-            l = 0xB4;
-        */
-        sp10[i].triggerLeft = test2(sp10[i].triggerLeft) * 0.77777779102325439f;
-
-        //r = sp10[i].triggerRight - 16;
-        /*
-        if (sp10[i].triggerRight - 16 < 0)
-            r = 0;
-        else if (sp10[i].triggerRight - 16 > 0xB4)
-            r = 0xB4;
-        */
-        sp10[i].triggerRight = test2(sp10[i].triggerRight) * 0.77777779102325439f;
+        sp10[i].triggerLeft = clamp(sp10[i].triggerLeft - 16, 0, 0xB4) * 0.77777779102325439f;
+        sp10[i].triggerRight = clamp(sp10[i].triggerRight - 16, 0, 0xB4) * 0.77777779102325439f;
 
         spC.x = sp10[i].stickX;
         spC.y = sp10[i].stickY;
@@ -201,48 +208,34 @@ void input_main(void)
         sp10[i].stickX = spC.x;
         sp10[i].stickY = spC.y;
 
-        //r3 = 0;
         for (r3 = 0; r3 < 8; r3++)
         {
-            int r7;
-            int r8;
-            int r6_;
-            int r5;
-
-            float f4;
-
             float f5;
             float f2;
             float f6;
             float f3;
 
-            //lbl_80024DE8
-            //s8 r4;
-            //s8 r6;
-            //s8 r9;
-            //s8 r10;
+            float f4;
 
-            int r0;
-
+            int r7;
+            int r8;
+            int r6_;
+            int r5;
 
             if (r3 == 7)
                 r0 = 0;
             else
                 r0 = r3 + 1;
-            //r4 = lbl_80110320_74[i].unk0[r3][0];
-            //r6 = lbl_80110320_74[i].unk0[r3][1];
-            //r9 = lbl_80110320_74[i].unk0[r0][0];
-            //r10 = lbl_80110320_74[i].unk0[r0][1];
-
-            f4 = (float)lbl_80110320_74[i][r3][0] * (float)lbl_80110320_74[i][r0][1]
-               - (float)lbl_80110320_74[i][r0][0] * (float)lbl_80110320_74[i][r3][1];
 
             f5 = lbl_80110320_74[i][r3][0];
             f2 = lbl_80110320_74[i][r3][1];
             f6 = lbl_80110320_74[i][r0][0];
             f3 = lbl_80110320_74[i][r0][1];
 
-            if (fabs(f4) < 1.1920928955078125e-07)
+            f4 = (float)lbl_80110320_74[i][r3][0] * (float)lbl_80110320_74[i][r0][1]
+               - (float)lbl_80110320_74[i][r0][0] * (float)lbl_80110320_74[i][r3][1];
+
+            if (__fabs(f4) < 1.1920928955078125e-07)
                 continue;
 
             f4 = 1.0f / f4;
@@ -255,43 +248,37 @@ void input_main(void)
 
             r8 = (int)(f3 * lbl_80110320_64[r3][0] + f2 * lbl_80110320_64[r0][0]);
             r7 = r8 < 0;
-            r6_ = test(r8);
+            r6_ = clamp(__abs(r8), 0, 99);
             //lbl_80024FF4
-            if (r7)
-                r5 = -1;
-            else
-                r5 = 1;
+            r5 = r7 ? -1 : 1;
             //lbl_80025008
             sp10[i].substickX = r5 * lbl_80110320[r6_];
 
             r8 = (int)(f3 * lbl_80110320_64[r3][1] + f2 * lbl_80110320_64[r0][1]);
             r7 = r8 < 0;
-            r6_ = test(r8);
-            if (r7)
-                r5 = -1;
-            else
-                r5 = 1;
+            r6_ = clamp(__abs(r8), 0, 99);
+            r5 = r7 ? -1 : 1;
             sp10[i].substickY = r5 * lbl_80110320[r6_];
             break;
         }
         //lbl_800250D0
         /*
-        lbl_801F3B70[i].unk0 = sp10[i];
-        lbl_801F3B70[i].unk18.button = sp10[i].button & ~lbl_801F3B70[i].unkC.button;
-        lbl_801F3B70[i].unk24.button = lbl_801F3B70[i].unkC.button & ~sp10[i].button;
+        controllerInfo[i].unk0 = sp10[i];
+        controllerInfo[i].unk18.button = sp10[i].button & ~controllerInfo[i].unkC.button;
+        controllerInfo[i].unk24.button = controllerInfo[i].unkC.button & ~sp10[i].button;
         */
-        test3(&lbl_801F3B70[i], &sp10[i]);
+        test3(&controllerInfo[i], &sp10[i]);
     }
     func_800252E4();
     func_8002551C();
     func_80025640();
 }
 #else
-const float lbl_802F30A8 = 0.77777779102325439f;
-const double lbl_802F30B0 = 1.1920928955078125e-07;
-const float lbl_802F30B8 = 1.0f;
-const float lbl_802F30BC = 0.0f;
-const double lbl_802F30C0 = 4503601774854144.0;
+float  force_lbl_802F30A8(void) { return 0.77777779102325439f; }
+double force_lbl_802F30B0(void) { return 1.1920928955078125e-07; }
+float  force_lbl_802F30B8(void) { return 1.0f; }
+float  force_lbl_802F30BC(void) { return 0.0f; }
+double force_lbl_802F30C0(void) { return 4503601774854144.0; }
 asm void input_main(void)
 {
     nofralloc
@@ -353,13 +340,13 @@ void func_800252E4(void)
         int x;
         int y;
         int var1;
-        struct Struct801F3C60 *r4 = &lbl_801F3B70[i];
+        struct ControllerInfo *r4 = &controllerInfo[i];
 
         r3[1] = r3[0];
         r3[0] = 0;
 
-        x = r4->unk0.stickX;
-        y = r4->unk0.stickY;
+        x = r4->unk0[0].stickX;
+        y = r4->unk0[0].stickY;
 
         if (r3[1] & (1 << 0))
             var1 = -15;
@@ -389,8 +376,8 @@ void func_800252E4(void)
         if (y > var1)
             r3[0] |= (1 << 3);
 
-        x = r4->unk0.substickX;
-        y = r4->unk0.substickY;
+        x = r4->unk0[0].substickX;
+        y = r4->unk0[0].substickY;
 
         if (r3[1] & (1 << 4))
             var1 = -15;
@@ -420,8 +407,8 @@ void func_800252E4(void)
         if (y > var1)
             r3[0] |= (1 << 7);
 
-        x = r4->unk0.triggerLeft;
-        y = r4->unk0.triggerRight;
+        x = r4->unk0[0].triggerLeft;
+        y = r4->unk0[0].triggerRight;
 
         if (r3[1] & (1 << 8))
             var1 = 40;
@@ -446,34 +433,174 @@ void func_800252E4(void)
 
 void func_8002551C(void)
 {
-    struct Struct801F3C60 *r5 = &lbl_801F3B70[0];
+    struct ControllerInfo *r5 = &controllerInfo[0];
     u16 *r6 = lbl_801F3D50[0];
     int i;
 
     for (i = 0; i < 4; i++, r5++, r6 += 5)
     {
-        if (r5->unk0.button == r5->unkC.button && r6[0] == r6[1])
+        if (r5->unk0[0].button == r5->unk0[1].button && r6[0] == r6[1])
             lbl_801F3D78[i]++;
         else
             lbl_801F3D78[i] = 0;
 
         if (lbl_801F3D78[i] >= 20 && (lbl_801F3D78[i] & 3) == 0)
         {
-            r5->unk30.button = r5->unk0.button;
+            r5->unk0[4].button = r5->unk0[0].button;
             r6[4] = r6[0];
         }
         else
         {
-            r5->unk30.button = r5->unk18.button;
+            r5->unk0[4].button = r5->unk0[2].button;
             r6[4] = r6[2];
         }
     }
 }
 
-//const float lbl_802F30A8 = 0.77777779102325439f;
-//const double lbl_802F30B0 = 1.1920928955078125e-07;
-//const float lbl_802F30B8 = 1.0f;
-//const float lbl_802F30BC = 0.0f;
-//const double lbl_802F30C0 = 4503601774854144.0;
-const double lbl_802F30C8 = 30.0;
-const double lbl_802F30D0 = 4503599627370496.0;
+void func_80025640(void)
+{
+    int i;
+    int j;
+    s8 *r27;
+
+    for (i = 0; i < 5; i++)
+    {
+        lbl_801F3D88[i] = 0;
+        lbl_801F3D94[i] = 0;
+    }
+
+    switch (gameMode)
+    {
+    case 0:
+    case 3:
+    case 5:
+        for (i = 0; i < 4; i++)
+        {
+            if (controllerInfo[i].unk0[0].err == -1)
+                continue;
+            for (j = 0; j < 5; j++)
+            {
+                lbl_801F3D88[j] |= controllerInfo[i].unk0[j].button;
+                lbl_801F3D94[j] |= lbl_801F3D50[i][j];
+            }
+        }
+        break;
+    default:
+        r27 = spritePoolInfo.unkC;
+        if (r27 == NULL)
+            break;
+        for (i = 0; i < 4; i++, r27++)
+        {
+            switch (modeCtrl.unk28)
+            {
+            case 6:
+                if (i > 1 || lbl_802F0310[i] == 0)
+                    continue;
+                break;
+            default:
+                if (*r27 != 2)
+                    continue;
+            }
+
+            for (j = 0; j < 5; j++)
+            {
+                lbl_801F3D88[j] |= controllerInfo[lbl_80206BD0[i]].unk0[j].button;
+                lbl_801F3D94[j] |= lbl_801F3D50[lbl_80206BD0[i]][j];
+            }
+        }
+        break;
+    }
+}
+
+void func_800259F8(PADStatus *pads)
+{
+    int resetCode;
+    int i;
+
+    if (lbl_802F1CD1 == 1 && !OSGetResetButtonState())
+    {
+        lbl_802F1CD0 = 0xFF;
+        resetCode = 2;
+    }
+    else
+        resetCode = 1;
+
+    if (OSGetResetButtonState())
+        lbl_802F1CD1 = 1;
+
+    if (lbl_802F1CD0 > 30.0)
+    {
+        ev_vibration_dest();
+        if (func_8009F4A4() != 0)
+            return;
+        func_800A4CEC();
+        epiproc_main();
+        OSResetSystem(OS_RESET_HOTRESET, resetCode, FALSE);
+        OSPanic("input.c", 472, "NANDEYANEN!?\n");
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        if ((pads[i].button & (PAD_BUTTON_START|PAD_BUTTON_X|PAD_BUTTON_B)) == (PAD_BUTTON_START|PAD_BUTTON_X|PAD_BUTTON_B))
+        {
+            lbl_802F1CD0++;
+            break;
+        }
+    }
+    if (i == 4)
+        lbl_802F1CD0 = 0;
+}
+
+void func_80025B1C(struct CoordsS8 *a, s8 *b)
+{
+    int r0;
+    int i;
+
+    for (i = 0; i < 8; i++)
+    {
+        float f9, f4, f10, f5;
+        float f8;
+        float f5_, f3;
+        int r8;
+        int foo;
+        int bar;
+        int sign;
+
+        if (i == 7)
+            r0 = 0;
+        else
+            r0 = i + 1;
+
+        f9  = b[i*2+0];
+        f4  = b[i*2+1];
+        f10 = b[r0*2+0];
+        f5  = b[r0*2+1];
+
+        f8 = (float)b[i*2+0] * (float)b[r0*2+1]
+           - (float)b[r0*2+0] * (float)b[i*2+1];
+
+        if (__fabs(f8) < 1.1920928955078125e-07)
+            continue;
+
+        f8 = 1.0f / f8;
+
+        f5_ = (f5 * a->x - f10 * a->y) * f8;
+        f3 = (-f4 * a->x + f9 * a->y) * f8;
+        if (f5_ < 0.0f || f3 < 0.0f)
+            continue;
+
+        r8 = f5_ * lbl_80110320_64[i][0] + f3 * lbl_80110320_64[r0][0];
+        foo = r8 < 0;
+        bar = clamp(__abs(r8), 0, 99);
+        sign = foo ? -1 : 1;
+        a->x = sign * lbl_80110320[bar];
+
+        r8 = f5_ * lbl_80110320_64[i][1] + f3 * lbl_80110320_64[r0][1];
+        foo = r8 < 0;
+        bar = clamp(__abs(r8), 0, 99);
+        sign = foo ? -1 : 1;
+        a->y = sign * lbl_80110320[bar];
+
+        break;
+    }
+}

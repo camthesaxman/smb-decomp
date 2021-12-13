@@ -20217,8 +20217,8 @@ lbl_80082058:
 /* 80082058 0007DF78  A8 0D 99 B2 */	lha r0, gameMode@sda21(r13)
 /* 8008205C 0007DF7C  2C 00 00 01 */	cmpwi r0, 1
 /* 80082060 0007DF80  40 82 03 48 */	bne lbl_800823A8
-/* 80082064 0007DF84  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 80082068 0007DF88  38 E5 3B 70 */	addi r7, r5, lbl_801F3B70@l
+/* 80082064 0007DF84  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 80082068 0007DF88  38 E5 3B 70 */	addi r7, r5, controllerInfo@l
 /* 8008206C 0007DF8C  A0 07 00 30 */	lhz r0, 0x30(r7)
 /* 80082070 0007DF90  54 05 07 FF */	clrlwi. r5, r0, 0x1f
 /* 80082074 0007DF94  40 82 01 40 */	bne lbl_800821B4
@@ -20240,8 +20240,8 @@ lbl_800820A4:
 /* 800820B0 0007DFD0  54 A5 05 AD */	rlwinm. r5, r5, 0, 0x16, 0x16
 /* 800820B4 0007DFD4  40 82 01 00 */	bne lbl_800821B4
 lbl_800820B8:
-/* 800820B8 0007DFD8  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 800820BC 0007DFDC  38 E5 3B 70 */	addi r7, r5, lbl_801F3B70@l
+/* 800820B8 0007DFD8  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 800820BC 0007DFDC  38 E5 3B 70 */	addi r7, r5, controllerInfo@l
 /* 800820C0 0007DFE0  A0 A7 00 6C */	lhz r5, 0x6c(r7)
 /* 800820C4 0007DFE4  54 A5 07 FF */	clrlwi. r5, r5, 0x1f
 /* 800820C8 0007DFE8  40 82 00 EC */	bne lbl_800821B4
@@ -20263,8 +20263,8 @@ lbl_800820F8:
 /* 80082104 0007E024  54 A5 05 AD */	rlwinm. r5, r5, 0, 0x16, 0x16
 /* 80082108 0007E028  40 82 00 AC */	bne lbl_800821B4
 lbl_8008210C:
-/* 8008210C 0007E02C  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 80082110 0007E030  38 E5 3B 70 */	addi r7, r5, lbl_801F3B70@l
+/* 8008210C 0007E02C  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 80082110 0007E030  38 E5 3B 70 */	addi r7, r5, controllerInfo@l
 /* 80082114 0007E034  A0 A7 00 A8 */	lhz r5, 0xa8(r7)
 /* 80082118 0007E038  54 A5 07 FF */	clrlwi. r5, r5, 0x1f
 /* 8008211C 0007E03C  40 82 00 98 */	bne lbl_800821B4
@@ -20286,8 +20286,8 @@ lbl_8008214C:
 /* 80082158 0007E078  54 A5 05 AD */	rlwinm. r5, r5, 0, 0x16, 0x16
 /* 8008215C 0007E07C  40 82 00 58 */	bne lbl_800821B4
 lbl_80082160:
-/* 80082160 0007E080  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 80082164 0007E084  38 E5 3B 70 */	addi r7, r5, lbl_801F3B70@l
+/* 80082160 0007E080  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 80082164 0007E084  38 E5 3B 70 */	addi r7, r5, controllerInfo@l
 /* 80082168 0007E088  A0 A7 00 E4 */	lhz r5, 0xe4(r7)
 /* 8008216C 0007E08C  54 A5 07 FF */	clrlwi. r5, r5, 0x1f
 /* 80082170 0007E090  40 82 00 44 */	bne lbl_800821B4
@@ -20339,8 +20339,8 @@ lbl_80082208:
 /* 80082218 0007E138  A0 06 00 08 */	lhz r0, 8(r6)
 /* 8008221C 0007E13C  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 80082220 0007E140  40 82 01 2C */	bne lbl_8008234C
-/* 80082224 0007E144  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 80082228 0007E148  A0 05 3B 70 */	lhz r0, lbl_801F3B70@l(r5)
+/* 80082224 0007E144  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 80082228 0007E148  A0 05 3B 70 */	lhz r0, controllerInfo@l(r5)
 /* 8008222C 0007E14C  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 80082230 0007E150  40 82 00 10 */	bne lbl_80082240
 /* 80082234 0007E154  A0 06 00 00 */	lhz r0, 0(r6)
@@ -20352,8 +20352,8 @@ lbl_80082240:
 /* 80082248 0007E168  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 8008224C 0007E16C  40 82 01 00 */	bne lbl_8008234C
 lbl_80082250:
-/* 80082250 0007E170  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 80082254 0007E174  38 C5 3B 70 */	addi r6, r5, lbl_801F3B70@l
+/* 80082250 0007E170  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 80082254 0007E174  38 C5 3B 70 */	addi r6, r5, controllerInfo@l
 /* 80082258 0007E178  A0 06 00 6C */	lhz r0, 0x6c(r6)
 /* 8008225C 0007E17C  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 80082260 0007E180  40 82 00 EC */	bne lbl_8008234C
@@ -20375,8 +20375,8 @@ lbl_80082290:
 /* 8008229C 0007E1BC  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 800822A0 0007E1C0  40 82 00 AC */	bne lbl_8008234C
 lbl_800822A4:
-/* 800822A4 0007E1C4  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 800822A8 0007E1C8  38 C5 3B 70 */	addi r6, r5, lbl_801F3B70@l
+/* 800822A4 0007E1C4  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 800822A8 0007E1C8  38 C5 3B 70 */	addi r6, r5, controllerInfo@l
 /* 800822AC 0007E1CC  A0 06 00 A8 */	lhz r0, 0xa8(r6)
 /* 800822B0 0007E1D0  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 800822B4 0007E1D4  40 82 00 98 */	bne lbl_8008234C
@@ -20398,8 +20398,8 @@ lbl_800822E4:
 /* 800822F0 0007E210  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 800822F4 0007E214  40 82 00 58 */	bne lbl_8008234C
 lbl_800822F8:
-/* 800822F8 0007E218  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 800822FC 0007E21C  38 C5 3B 70 */	addi r6, r5, lbl_801F3B70@l
+/* 800822F8 0007E218  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 800822FC 0007E21C  38 C5 3B 70 */	addi r6, r5, controllerInfo@l
 /* 80082300 0007E220  A0 06 00 E4 */	lhz r0, 0xe4(r6)
 /* 80082304 0007E224  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 80082308 0007E228  40 82 00 44 */	bne lbl_8008234C
@@ -20449,8 +20449,8 @@ lbl_800823A8:
 /* 800823A8 0007E2C8  3C A0 80 1F */	lis r5, lbl_801EEC68@ha
 /* 800823AC 0007E2CC  38 A5 EC 68 */	addi r5, r5, lbl_801EEC68@l
 /* 800823B0 0007E2D0  89 05 00 14 */	lbz r8, 0x14(r5)
-/* 800823B4 0007E2D4  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 800823B8 0007E2D8  38 A5 3B 70 */	addi r5, r5, lbl_801F3B70@l
+/* 800823B4 0007E2D4  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 800823B8 0007E2D8  38 A5 3B 70 */	addi r5, r5, controllerInfo@l
 /* 800823BC 0007E2DC  7D 08 07 74 */	extsb r8, r8
 /* 800823C0 0007E2E0  1C 08 00 3C */	mulli r0, r8, 0x3c
 /* 800823C4 0007E2E4  7C E5 02 14 */	add r7, r5, r0
@@ -20509,8 +20509,8 @@ lbl_80082470:
 /* 80082488 0007E3A8  A0 A6 00 08 */	lhz r5, 8(r6)
 /* 8008248C 0007E3AC  54 A5 07 BD */	rlwinm. r5, r5, 0, 0x1e, 0x1e
 /* 80082490 0007E3B0  40 82 00 40 */	bne lbl_800824D0
-/* 80082494 0007E3B4  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 80082498 0007E3B8  38 A5 3B 70 */	addi r5, r5, lbl_801F3B70@l
+/* 80082494 0007E3B4  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 80082498 0007E3B8  38 A5 3B 70 */	addi r5, r5, controllerInfo@l
 /* 8008249C 0007E3BC  7C A5 02 14 */	add r5, r5, r0
 /* 800824A0 0007E3C0  A0 05 00 00 */	lhz r0, 0(r5)
 /* 800824A4 0007E3C4  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e

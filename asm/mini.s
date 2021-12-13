@@ -167,9 +167,9 @@ submode_mini_select_init_func:
 .global submode_mini_select_main_func
 submode_mini_select_main_func:
 /* 80093C3C 0008FB5C  7C 08 02 A6 */	mflr r0
-/* 80093C40 0008FB60  3C 80 80 1F */	lis r4, lbl_801F3B70@ha
+/* 80093C40 0008FB60  3C 80 80 1F */	lis r4, controllerInfo@ha
 /* 80093C44 0008FB64  90 01 00 04 */	stw r0, 4(r1)
-/* 80093C48 0008FB68  38 A4 3B 70 */	addi r5, r4, lbl_801F3B70@l
+/* 80093C48 0008FB68  38 A4 3B 70 */	addi r5, r4, controllerInfo@l
 /* 80093C4C 0008FB6C  3C 80 80 1C */	lis r4, lbl_801C7ED8@ha
 /* 80093C50 0008FB70  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 80093C54 0008FB74  93 E1 00 0C */	stw r31, 0xc(r1)
@@ -208,8 +208,8 @@ lbl_80093CBC:
 /* 80093CCC 0008FBEC  A0 05 00 08 */	lhz r0, 8(r5)
 /* 80093CD0 0008FBF0  54 00 07 39 */	rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 80093CD4 0008FBF4  40 82 00 30 */	bne lbl_80093D04
-/* 80093CD8 0008FBF8  3C 80 80 1F */	lis r4, lbl_801F3B70@ha
-/* 80093CDC 0008FBFC  A0 04 3B 70 */	lhz r0, lbl_801F3B70@l(r4)
+/* 80093CD8 0008FBF8  3C 80 80 1F */	lis r4, controllerInfo@ha
+/* 80093CDC 0008FBFC  A0 04 3B 70 */	lhz r0, controllerInfo@l(r4)
 /* 80093CE0 0008FC00  54 00 07 39 */	rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 80093CE4 0008FC04  40 82 00 10 */	bne lbl_80093CF4
 /* 80093CE8 0008FC08  A0 05 00 00 */	lhz r0, 0(r5)
@@ -226,9 +226,9 @@ lbl_80093D04:
 /* 80093D0C 0008FC2C  38 60 00 0A */	li r3, 0xa
 lbl_80093D10:
 /* 80093D10 0008FC30  7C 60 07 34 */	extsh r0, r3
-/* 80093D14 0008FC34  3C 80 80 1F */	lis r4, lbl_801F3B70@ha
+/* 80093D14 0008FC34  3C 80 80 1F */	lis r4, controllerInfo@ha
 /* 80093D18 0008FC38  B0 0D 9F 90 */	sth r0, lbl_802F2170@sda21(r13)
-/* 80093D1C 0008FC3C  38 84 3B 70 */	addi r4, r4, lbl_801F3B70@l
+/* 80093D1C 0008FC3C  38 84 3B 70 */	addi r4, r4, controllerInfo@l
 /* 80093D20 0008FC40  A0 04 00 18 */	lhz r0, 0x18(r4)
 /* 80093D24 0008FC44  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 80093D28 0008FC48  41 82 00 2C */	beq lbl_80093D54
@@ -357,9 +357,9 @@ lbl_80093E88:
 .global submode_mini_ending_main_func
 submode_mini_ending_main_func:
 /* 80093EE0 0008FE00  7C 08 02 A6 */	mflr r0
-/* 80093EE4 0008FE04  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
+/* 80093EE4 0008FE04  3C 60 80 1F */	lis r3, controllerInfo@ha
 /* 80093EE8 0008FE08  90 01 00 04 */	stw r0, 4(r1)
-/* 80093EEC 0008FE0C  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 80093EEC 0008FE0C  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 80093EF0 0008FE10  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 80093EF4 0008FE14  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 80093EF8 0008FE18  3B E0 00 00 */	li r31, 0
@@ -1383,8 +1383,8 @@ ev_mouse_main:
 /* 80094D48 00090C68  41 82 00 08 */	beq lbl_80094D50
 /* 80094D4C 00090C6C  39 00 00 08 */	li r8, 8
 lbl_80094D50:
-/* 80094D50 00090C70  3C E0 80 1F */	lis r7, lbl_801F3B70@ha
-/* 80094D54 00090C74  38 E7 3B 70 */	addi r7, r7, lbl_801F3B70@l
+/* 80094D50 00090C70  3C E0 80 1F */	lis r7, controllerInfo@ha
+/* 80094D54 00090C74  38 E7 3B 70 */	addi r7, r7, controllerInfo@l
 /* 80094D58 00090C78  A0 E7 00 30 */	lhz r7, 0x30(r7)
 /* 80094D5C 00090C7C  54 E0 07 39 */	rlwinm. r0, r7, 0, 0x1c, 0x1c
 /* 80094D60 00090C80  41 82 00 10 */	beq lbl_80094D70
@@ -1410,9 +1410,9 @@ lbl_80094D98:
 /* 80094DA4 00090CC4  7C 00 42 14 */	add r0, r0, r8
 /* 80094DA8 00090CC8  B0 03 00 00 */	sth r0, 0(r3)
 lbl_80094DAC:
-/* 80094DAC 00090CCC  3C E0 80 1F */	lis r7, lbl_801F3B70@ha
+/* 80094DAC 00090CCC  3C E0 80 1F */	lis r7, controllerInfo@ha
 /* 80094DB0 00090CD0  A9 03 00 00 */	lha r8, 0(r3)
-/* 80094DB4 00090CD4  38 E7 3B 70 */	addi r7, r7, lbl_801F3B70@l
+/* 80094DB4 00090CD4  38 E7 3B 70 */	addi r7, r7, controllerInfo@l
 /* 80094DB8 00090CD8  C8 62 B0 50 */	lfd f3, lbl_802F5850-_SDA2_BASE_(r2)
 /* 80094DBC 00090CDC  88 07 00 02 */	lbz r0, 2(r7)
 /* 80094DC0 00090CE0  6D 09 80 00 */	xoris r9, r8, 0x8000
@@ -1479,9 +1479,9 @@ lbl_80094E98:
 /* 80094EA8 00090DC8  B0 04 00 00 */	sth r0, 0(r4)
 lbl_80094EAC:
 /* 80094EAC 00090DCC  A9 25 00 00 */	lha r9, 0(r5)
-/* 80094EB0 00090DD0  3D 00 80 1F */	lis r8, lbl_801F3B70@ha
+/* 80094EB0 00090DD0  3D 00 80 1F */	lis r8, controllerInfo@ha
 /* 80094EB4 00090DD4  A8 03 00 00 */	lha r0, 0(r3)
-/* 80094EB8 00090DD8  39 08 3B 70 */	addi r8, r8, lbl_801F3B70@l
+/* 80094EB8 00090DD8  39 08 3B 70 */	addi r8, r8, controllerInfo@l
 /* 80094EBC 00090DDC  38 A3 00 08 */	addi r5, r3, 8
 /* 80094EC0 00090DE0  7C 09 00 50 */	subf r0, r9, r0
 /* 80094EC4 00090DE4  B0 03 00 08 */	sth r0, 8(r3)
@@ -3435,9 +3435,9 @@ lbl_80096B94:
 /* 80096BA4 00092AC4  4E 80 00 20 */	blr
 .global func_80096BA8
 func_80096BA8:
-/* 80096BA8 00092AC8  3C 80 80 1F */	lis r4, lbl_801F3B70@ha
+/* 80096BA8 00092AC8  3C 80 80 1F */	lis r4, controllerInfo@ha
 /* 80096BAC 00092ACC  80 A3 00 10 */	lwz r5, 0x10(r3)
-/* 80096BB0 00092AD0  38 64 3B 70 */	addi r3, r4, lbl_801F3B70@l
+/* 80096BB0 00092AD0  38 64 3B 70 */	addi r3, r4, controllerInfo@l
 /* 80096BB4 00092AD4  A0 03 00 18 */	lhz r0, 0x18(r3)
 /* 80096BB8 00092AD8  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 80096BBC 00092ADC  4D 82 00 20 */	beqlr

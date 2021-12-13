@@ -578,16 +578,7 @@ extern struct
 } lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
-extern struct Struct801F3C60 lbl_801F3B70[4];
-extern struct Struct801F3C60 lbl_801F3C60[4];
-extern u16 lbl_801F3D50[][5];
-extern struct Struct801F3D88 lbl_801F3D88;
-extern struct
-{
-    u8 filler0[4];
-    u16 unk4;
-    u8 filler8[4];
-} lbl_801F3D94;
+
 // extern ? lbl_801F3DA0;
 // extern ? lbl_801F3DC0;
 // extern ? lbl_801F8DC0;
@@ -823,7 +814,7 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802F02EC;
 // extern ? lbl_802F02F0;
 // extern ? lbl_802F02F8;
-// extern ? lbl_802F0310;
+extern s8 lbl_802F0310[8];
 // extern ? lbl_802F03EC;
 // extern ? lbl_802F03F0;
 // extern ? lbl_802F0418;

@@ -1,6 +1,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "input.h"
 #include "perf.h"
 
 OSTick lbl_801F8DC0[8];
@@ -113,7 +114,7 @@ void func_80027448(void)
 {
     if (dipSwitches & DIP_DEBUG)
     {
-        if (lbl_801F3B70[0].unk0.button & (1 << 4))
+        if (controllerInfo[0].unk0[0].button & PAD_TRIGGER_Z)
         {
             if (lbl_802F1D24 < 127)
                 lbl_802F1D24++;

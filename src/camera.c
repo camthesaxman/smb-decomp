@@ -7,6 +7,7 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
+#include "input.h"
 #include "mathutil.h"
 #include "mode.h"
 
@@ -151,9 +152,9 @@ void ev_camera_main(void)
 
     if (dipSwitches & DIP_DEBUG)
     {
-        if ((dipSwitches & DIP_TEST_CAM) && (lbl_801F3B70[0].unk18.button & (1<<(31-0x14))))
+        if ((dipSwitches & DIP_TEST_CAM) && (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y))
             dipSwitches ^= DIP_NO_INTR;
-        if ((lbl_801F3B70[0].unk0.button & (1<<(31-0x16))) && (lbl_801F3B70[0].unk18.button & (1<<(31-0x14))))
+        if ((controllerInfo[0].unk0[0].button & PAD_BUTTON_B) && (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y))
         {
             if (dipSwitches & DIP_TEST_CAM)
                 dipSwitches &= ~DIP_TEST_CAM;
@@ -1213,7 +1214,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (lbl_801F3A58.unk1E == 1 && (lbl_801F3D88.unk0 & (1<<(31-0x17))) && modeCtrl.unk0 > 0x78)
+            if (lbl_801F3A58.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.unk0 > 0x78)
                 camera->timerCurr--;
         }
 
@@ -1493,7 +1494,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp10.z = camera->lookAt.z - camera->eye.z;
 
     f0 = 0.1 * mathutil_sqrt(sum_of_3_sq(sp10.x, sp10.y, sp10.z)) / 5.0;
-    f0 *= 1.0 + 9.0 * lbl_801F3B70[0].unk0.triggerLeft / 170.0;
+    f0 *= 1.0 + 9.0 * controllerInfo[0].unk0[0].triggerLeft / 170.0;
 
     sp28.x = 0.0f;
     sp1C.x = 0.0f;
@@ -1502,17 +1503,17 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp28.z = 0.0f;
     sp1C.z = 0.0f;
 
-    sp28.x = f0 * lbl_801F3B70[0].unk0.stickX / 74.0;
+    sp28.x = f0 * controllerInfo[0].unk0[0].stickX / 74.0;
     if (lbl_801F3D50[0][0] & (1<<(31-0x16)))
-        sp28.y = f0 * lbl_801F3B70[0].unk0.stickY / 74.0;
+        sp28.y = f0 * controllerInfo[0].unk0[0].stickY / 74.0;
     else
-        sp28.z = -f0 * lbl_801F3B70[0].unk0.stickY / 74.0;
+        sp28.z = -f0 * controllerInfo[0].unk0[0].stickY / 74.0;
 
-    sp1C.x = f0 * lbl_801F3B70[0].unk0.substickX / 74.0;
+    sp1C.x = f0 * controllerInfo[0].unk0[0].substickX / 74.0;
     if (lbl_801F3D50[0][0] & (1<<(31-0x16)))
-        sp1C.y = f0 * lbl_801F3B70[0].unk0.substickY / 74.0;
+        sp1C.y = f0 * controllerInfo[0].unk0[0].substickY / 74.0;
     else
-        sp1C.z = -f0 * lbl_801F3B70[0].unk0.substickY / 74.0;
+        sp1C.z = -f0 * controllerInfo[0].unk0[0].substickY / 74.0;
 
     mathutil_mtxA_from_translate(&camera->eye);
     mathutil_mtxA_rotate_y(camera->rotY);
@@ -1918,8 +1919,8 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     camera->unk26 = 4;
     camera->flags |= 4;
 
-    if ((lbl_801F3B70[lbl_80206BD0[ball->unk2E]].unk0.button & (1<<(31-0x17)))
-     && (lbl_801F3D88.unk0 & (1<<(31-0x17))))
+    if ((controllerInfo[lbl_80206BD0[ball->unk2E]].unk0[0].button & PAD_BUTTON_A)
+     && (lbl_801F3D88[0] & PAD_BUTTON_A))
     {
         camera->state = 48;
         cameraFuncs[camera->state](camera, ball);
@@ -2791,7 +2792,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp10);
 
-    if (lbl_801F3D88.unk0 & (1<<(31-0x17)))
+    if (lbl_801F3D88[0] & PAD_BUTTON_A)
         camera->timerCurr += 2;
     else
         camera->timerCurr += 1;
@@ -3700,7 +3701,7 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
     for (r3 = 0; r3 < spritePoolInfo.unk8; r3++, r8++)
     {
         if (*r8 == 2 || *r8 == 4)
-            r9 |= (lbl_801F3B70[r3].unk18.button & (1<<(31-0x17))) != 0;
+            r9 |= (controllerInfo[r3].unk0[2].button & PAD_BUTTON_A) != 0;
     }
 
     if (r9 && camera->timerCurr > 8 && camera->timerCurr < r31 * 272)

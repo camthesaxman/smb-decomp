@@ -95,8 +95,8 @@ ev_view_main:
 /* 800A5878 000A1798  80 ED A0 00 */	lwz r7, lbl_802F21E0@sda21(r13)
 /* 800A587C 000A179C  38 83 EC 68 */	addi r4, r3, lbl_801EEC68@l
 /* 800A5880 000A17A0  88 04 00 14 */	lbz r0, 0x14(r4)
-/* 800A5884 000A17A4  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A5888 000A17A8  38 A3 3B 70 */	addi r5, r3, lbl_801F3B70@l
+/* 800A5884 000A17A4  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A5888 000A17A8  38 A3 3B 70 */	addi r5, r3, controllerInfo@l
 /* 800A588C 000A17AC  A8 C7 00 3A */	lha r6, 0x3a(r7)
 /* 800A5890 000A17B0  7C 00 07 74 */	extsb r0, r0
 /* 800A5894 000A17B4  1C 00 00 3C */	mulli r0, r0, 0x3c
@@ -145,8 +145,8 @@ lbl_800A5934:
 /* 800A5938 000A1858  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
 /* 800A593C 000A185C  38 63 EC 68 */	addi r3, r3, lbl_801EEC68@l
 /* 800A5940 000A1860  88 03 00 14 */	lbz r0, 0x14(r3)
-/* 800A5944 000A1864  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A5948 000A1868  38 A3 3B 70 */	addi r5, r3, lbl_801F3B70@l
+/* 800A5944 000A1864  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A5948 000A1868  38 A3 3B 70 */	addi r5, r3, controllerInfo@l
 /* 800A594C 000A186C  A8 64 00 3C */	lha r3, 0x3c(r4)
 /* 800A5950 000A1870  7C 00 07 74 */	extsb r0, r0
 /* 800A5954 000A1874  1C 00 00 3C */	mulli r0, r0, 0x3c
@@ -2155,9 +2155,9 @@ submode_mini_ranking_main_func:
 /* 800A7624 000A3544  80 1F 00 00 */	lwz r0, 0(r31)
 /* 800A7628 000A3548  54 00 07 FF */	clrlwi. r0, r0, 0x1f
 /* 800A762C 000A354C  40 82 00 E4 */	bne lbl_800A7710
-/* 800A7630 000A3550  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
+/* 800A7630 000A3550  3C 60 80 1F */	lis r3, controllerInfo@ha
 /* 800A7634 000A3554  80 1D 00 00 */	lwz r0, 0(r29)
-/* 800A7638 000A3558  38 A3 3B 70 */	addi r5, r3, lbl_801F3B70@l
+/* 800A7638 000A3558  38 A3 3B 70 */	addi r5, r3, controllerInfo@l
 /* 800A763C 000A355C  A0 C5 00 30 */	lhz r6, 0x30(r5)
 /* 800A7640 000A3560  7C 1C 03 78 */	mr r28, r0
 /* 800A7644 000A3564  54 C3 07 FF */	clrlwi. r3, r6, 0x1f
@@ -2191,8 +2191,8 @@ lbl_800A7698:
 /* 800A76A8 000A35C8  A0 64 00 08 */	lhz r3, 8(r4)
 /* 800A76AC 000A35CC  54 63 07 BD */	rlwinm. r3, r3, 0, 0x1e, 0x1e
 /* 800A76B0 000A35D0  40 82 00 38 */	bne lbl_800A76E8
-/* 800A76B4 000A35D4  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A76B8 000A35D8  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 800A76B4 000A35D4  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A76B8 000A35D8  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 800A76BC 000A35DC  A0 63 00 00 */	lhz r3, 0(r3)
 /* 800A76C0 000A35E0  54 63 07 BD */	rlwinm. r3, r3, 0, 0x1e, 0x1e
 /* 800A76C4 000A35E4  40 82 00 10 */	bne lbl_800A76D4
@@ -2221,9 +2221,9 @@ lbl_800A7710:
 /* 800A7710 000A3630  80 1F 00 00 */	lwz r0, 0(r31)
 /* 800A7714 000A3634  54 00 07 FF */	clrlwi. r0, r0, 0x1f
 /* 800A7718 000A3638  40 82 00 CC */	bne lbl_800A77E4
-/* 800A771C 000A363C  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
+/* 800A771C 000A363C  3C 60 80 1F */	lis r3, controllerInfo@ha
 /* 800A7720 000A3640  88 9F 00 0B */	lbz r4, 0xb(r31)
-/* 800A7724 000A3644  38 C3 3B 70 */	addi r6, r3, lbl_801F3B70@l
+/* 800A7724 000A3644  38 C3 3B 70 */	addi r6, r3, controllerInfo@l
 /* 800A7728 000A3648  A0 E6 00 30 */	lhz r7, 0x30(r6)
 /* 800A772C 000A364C  38 7F 00 0B */	addi r3, r31, 0xb
 /* 800A7730 000A3650  7C 84 07 74 */	extsb r4, r4
@@ -2257,8 +2257,8 @@ lbl_800A7784:
 /* 800A7794 000A36B4  A0 06 00 08 */	lhz r0, 8(r6)
 /* 800A7798 000A36B8  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 800A779C 000A36BC  40 82 00 30 */	bne lbl_800A77CC
-/* 800A77A0 000A36C0  3C A0 80 1F */	lis r5, lbl_801F3B70@ha
-/* 800A77A4 000A36C4  A0 05 3B 70 */	lhz r0, lbl_801F3B70@l(r5)
+/* 800A77A0 000A36C0  3C A0 80 1F */	lis r5, controllerInfo@ha
+/* 800A77A4 000A36C4  A0 05 3B 70 */	lhz r0, controllerInfo@l(r5)
 /* 800A77A8 000A36C8  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 800A77AC 000A36CC  40 82 00 10 */	bne lbl_800A77BC
 /* 800A77B0 000A36D0  A0 06 00 00 */	lhz r0, 0(r6)
@@ -2278,8 +2278,8 @@ lbl_800A77DC:
 /* 800A77DC 000A36FC  7C 80 07 74 */	extsb r0, r4
 /* 800A77E0 000A3700  98 03 00 00 */	stb r0, 0(r3)
 lbl_800A77E4:
-/* 800A77E4 000A3704  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A77E8 000A3708  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 800A77E4 000A3704  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A77E8 000A3708  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 800A77EC 000A370C  A0 03 00 18 */	lhz r0, 0x18(r3)
 /* 800A77F0 000A3710  3B 83 00 18 */	addi r28, r3, 0x18
 /* 800A77F4 000A3714  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
@@ -2769,8 +2769,8 @@ lbl_800A7EE4:
 /* 800A7EE4 000A3E04  7C E0 07 74 */	extsb r0, r7
 /* 800A7EE8 000A3E08  7E F8 02 14 */	add r23, r24, r0
 lbl_800A7EEC:
-/* 800A7EEC 000A3E0C  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A7EF0 000A3E10  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 800A7EEC 000A3E0C  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A7EF0 000A3E10  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 800A7EF4 000A3E14  1C 04 00 3C */	mulli r0, r4, 0x3c
 /* 800A7EF8 000A3E18  38 C3 00 30 */	addi r6, r3, 0x30
 /* 800A7EFC 000A3E1C  7C 66 02 2E */	lhzx r3, r6, r0
@@ -2823,8 +2823,8 @@ lbl_800A7F90:
 lbl_800A7FA4:
 /* 800A7FA4 000A3EC4  1C 16 00 3C */	mulli r0, r22, 0x3c
 /* 800A7FA8 000A3EC8  88 BF 00 10 */	lbz r5, 0x10(r31)
-/* 800A7FAC 000A3ECC  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A7FB0 000A3ED0  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 800A7FAC 000A3ECC  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A7FB0 000A3ED0  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 800A7FB4 000A3ED4  7C 63 02 14 */	add r3, r3, r0
 /* 800A7FB8 000A3ED8  A0 83 00 30 */	lhz r4, 0x30(r3)
 /* 800A7FBC 000A3EDC  3B 9F 00 10 */	addi r28, r31, 0x10
@@ -2871,8 +2871,8 @@ lbl_800A8040:
 /* 800A804C 000A3F6C  98 01 00 10 */	stb r0, 0x10(r1)
 lbl_800A8050:
 /* 800A8050 000A3F70  1C 16 00 3C */	mulli r0, r22, 0x3c
-/* 800A8054 000A3F74  3C 60 80 1F */	lis r3, lbl_801F3B70@ha
-/* 800A8058 000A3F78  38 63 3B 70 */	addi r3, r3, lbl_801F3B70@l
+/* 800A8054 000A3F74  3C 60 80 1F */	lis r3, controllerInfo@ha
+/* 800A8058 000A3F78  38 63 3B 70 */	addi r3, r3, controllerInfo@l
 /* 800A805C 000A3F7C  7F 83 02 14 */	add r28, r3, r0
 /* 800A8060 000A3F80  A4 1C 00 18 */	lhzu r0, 0x18(r28)
 /* 800A8064 000A3F84  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17

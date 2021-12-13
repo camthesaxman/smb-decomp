@@ -4,6 +4,7 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
+#include "input.h"
 #include "mathutil.h"
 #include "mode.h"
 
@@ -433,10 +434,10 @@ void func_8000BCA4(void)
     f3 = 0.0f;
     for (i = 0; i < 4; i++)
     {
-        if (lbl_801F3B70[i].unk0.err == 0)
+        if (controllerInfo[i].unk0[0].err == 0)
         {
-            f2 = (float)lbl_801F3B70[i].unk0.stickX / 60.0;
-            f3 = -(float)lbl_801F3B70[i].unk0.stickY / 60.0;
+            f2 = (float)controllerInfo[i].unk0[0].stickX / 60.0;
+            f3 = -(float)controllerInfo[i].unk0[0].stickY / 60.0;
             break;
         }
     }
