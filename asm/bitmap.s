@@ -2,37 +2,7 @@
 
 .section .text
 
-.global func_80025E5C
-func_80025E5C:
-/* 80025E5C 00021D7C  7C 08 02 A6 */	mflr r0
-/* 80025E60 00021D80  3C 80 80 18 */	lis r4, lbl_80181B80@ha
-/* 80025E64 00021D84  90 01 00 04 */	stw r0, 4(r1)
-/* 80025E68 00021D88  38 84 1B 80 */	addi r4, r4, lbl_80181B80@l
-/* 80025E6C 00021D8C  38 63 58 48 */	addi r3, r3, 0x5848
-/* 80025E70 00021D90  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80025E74 00021D94  38 A0 00 40 */	li r5, 0x40
-/* 80025E78 00021D98  4B FD D5 9D */	bl memcpy
-/* 80025E7C 00021D9C  80 01 00 0C */	lwz r0, 0xc(r1)
-/* 80025E80 00021DA0  38 21 00 08 */	addi r1, r1, 8
-/* 80025E84 00021DA4  7C 08 03 A6 */	mtlr r0
-/* 80025E88 00021DA8  4E 80 00 20 */	blr
-
-.global func_80025E8C
-func_80025E8C:
-/* 80025E8C 00021DAC  7C 08 02 A6 */	mflr r0
-/* 80025E90 00021DB0  3C 80 80 18 */	lis r4, lbl_80181B80@ha
-/* 80025E94 00021DB4  90 01 00 04 */	stw r0, 4(r1)
-/* 80025E98 00021DB8  38 A3 00 00 */	addi r5, r3, 0
-/* 80025E9C 00021DBC  38 64 1B 80 */	addi r3, r4, lbl_80181B80@l
-/* 80025EA0 00021DC0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80025EA4 00021DC4  38 85 58 48 */	addi r4, r5, 0x5848
-/* 80025EA8 00021DC8  38 A0 00 40 */	li r5, 0x40
-/* 80025EAC 00021DCC  4B FD D5 69 */	bl memcpy
-/* 80025EB0 00021DD0  80 01 00 0C */	lwz r0, 0xc(r1)
-/* 80025EB4 00021DD4  38 21 00 08 */	addi r1, r1, 8
-/* 80025EB8 00021DD8  7C 08 03 A6 */	mtlr r0
-/* 80025EBC 00021DDC  4E 80 00 20 */	blr
-
+.if 0
 .global func_80025EC0
 func_80025EC0:
 /* 80025EC0 00021DE0  7C 08 02 A6 */	mflr r0
@@ -512,6 +482,7 @@ lbl_80026520:
 /* 80026564 00022484  38 21 00 18 */	addi r1, r1, 0x18
 /* 80026568 00022488  7C 08 03 A6 */	mtlr r0
 /* 8002656C 0002248C  4E 80 00 20 */	blr
+.endif
 
 .global bmpdisp_main
 bmpdisp_main:
@@ -1299,177 +1270,7 @@ lbl_80027084:
 
 .section .sbss
 
-.global lbl_802F1BE8
-lbl_802F1BE8:
-	.skip 0x8
-.global lbl_802F1BF0
-lbl_802F1BF0:
-	.skip 0x4
-.global lbl_802F1BF4
-lbl_802F1BF4:
-	.skip 0x8
-.global lbl_802F1BFC
-lbl_802F1BFC:
-	.skip 0x8
-.global lbl_802F1C04
-lbl_802F1C04:
-	.skip 0x8
-.global lbl_802F1C0C
-lbl_802F1C0C:
-	.skip 0x1
-.global lbl_802F1C0D
-lbl_802F1C0D:
-	.skip 0x3
-.global lbl_802F1C10
-lbl_802F1C10:
-	.skip 0x8
-.global lbl_802F1C18
-lbl_802F1C18:
-	.skip 0x4
-.global lbl_802F1C1C
-lbl_802F1C1C:
-	.skip 0x4
-.global lbl_802F1C20
-lbl_802F1C20:
-	.skip 0x4
-.global lbl_802F1C24
-lbl_802F1C24:
-	.skip 0x1
-.global lbl_802F1C25
-lbl_802F1C25:
-	.skip 0x3
-.global lbl_802F1C28
-lbl_802F1C28:
-	.skip 0x8
-.global lbl_802F1C30
-lbl_802F1C30:
-	.skip 0x2
-.global lbl_802F1C32
-lbl_802F1C32:
-	.skip 0x2
-.global lbl_802F1C34
-lbl_802F1C34:
-	.skip 0x4
-.global minigameRelCameraCallback
-minigameRelCameraCallback:
-	.skip 0x4
-.global currentCameraStructPtr
-currentCameraStructPtr:
-	.skip 0x4
-.global lbl_802F1C40
-lbl_802F1C40:
-	.skip 0x8
-.global lbl_802F1C48
-lbl_802F1C48:
-	.skip 0x4
-.global lbl_802F1C4C
-lbl_802F1C4C:
-	.skip 0x4
-.global lbl_802F1C50
-lbl_802F1C50:
-	.skip 0x4
-.global lbl_802F1C54
-lbl_802F1C54:
-	.skip 0x4
-.global lbl_802F1C58
-lbl_802F1C58:
-	.skip 0x4
-.global lbl_802F1C5C
-lbl_802F1C5C:
-	.skip 0x4
-.global lbl_802F1C60
-lbl_802F1C60:
-	.skip 0x4
-.global lbl_802F1C64
-lbl_802F1C64:
-	.skip 0x4
-.global lbl_802F1C68
-lbl_802F1C68:
-	.skip 0x4
-.global lbl_802F1C6C
-lbl_802F1C6C:
-	.skip 0x8
-.global lbl_802F1C74
-lbl_802F1C74:
-	.skip 0x1
-.global lbl_802F1C75
-lbl_802F1C75:
-	.skip 0x3
-.global lbl_802F1C78
-lbl_802F1C78:
-	.skip 0x4
-.global lbl_802F1C7C
-lbl_802F1C7C:
-	.skip 0x4
-.global lbl_802F1C80
-lbl_802F1C80:
-	.skip 0x4
-.global lbl_802F1C84
-lbl_802F1C84:
-	.skip 0x4
-.global lbl_802F1C88
-lbl_802F1C88:
-	.skip 0x4
-.global lbl_802F1C8C
-lbl_802F1C8C:
-	.skip 0x4
-.global lbl_802F1C90
-lbl_802F1C90:
-	.skip 0x4
-.global lbl_802F1C94
-lbl_802F1C94:
-	.skip 0x4
-.global lbl_802F1C98
-lbl_802F1C98:
-	.skip 0x8
-.global lbl_802F1CA0
-lbl_802F1CA0:
-	.skip 0x4
-.global lbl_802F1CA4
-lbl_802F1CA4:
-	.skip 0x4
-.global lbl_802F1CA8
-lbl_802F1CA8:
-	.skip 0x4
-.global lbl_802F1CAC
-lbl_802F1CAC:
-	.skip 0x4
-.global lbl_802F1CB0
-lbl_802F1CB0:
-	.skip 0x8
-.global lbl_802F1CB8
-lbl_802F1CB8:
-	.skip 0x4
-.global lbl_802F1CBC
-lbl_802F1CBC:
-	.skip 0x4
-.global decodedBgGma
-decodedBgGma:
-	.skip 0x4
-.global decodedBgTpl
-decodedBgTpl:
-	.skip 0x4
-.global lbl_802F1CC8
-lbl_802F1CC8:
-	.skip 0x4
-.global lbl_802F1CCC
-lbl_802F1CCC:
-	.skip 0x4
-.global lbl_802F1CD0
-lbl_802F1CD0:
-	.skip 0x1
-.global lbl_802F1CD1
-lbl_802F1CD1:
-	.skip 0x1
-.global lbl_802F1CD2
-lbl_802F1CD2:
-	.skip 0x2
-.global lbl_802F1CD4
-lbl_802F1CD4:
-	.skip 0x4
-.global lbl_802F1CD8
-lbl_802F1CD8:
-	.skip 0x8
+    .skip 0x4
 .global lbl_802F1CE0
 lbl_802F1CE0:
 	.skip 0x2
@@ -1509,6 +1310,7 @@ lbl_802F1D08:
 
 .section .sdata
 
+.if 0
 glabel string_BMP_COM
 	.asciz "BMP_COM"
 glabel string_BMP_ADV
@@ -1547,6 +1349,7 @@ lbl_802F04A8:
 lbl_802F04AC:
 	# ROM: 0x1EABEC
 	.byte 0x2E, 0x6C, 0x7A, 0x00
+.endif
 glabel string_ASCII
 	.asciz "ASCII"
 	.balign 4
@@ -1579,6 +1382,7 @@ glabel string_how_bar
 
 .section .sdata2
 
+.if 0
 .global lbl_802F30D8
 lbl_802F30D8:
 	# ROM: 0x1ECAF8
@@ -1671,6 +1475,7 @@ lbl_802F3120:
 lbl_802F3128:
 	# ROM: 0x1ECB48
 	.byte 0x3D, 0x80, 0x00, 0x00
+.endif
 	.4byte 0
 
 .section .rodata
@@ -6040,15 +5845,18 @@ lbl_8011057C:
 
 .section .bss
 
+.if 0
 .global lbl_801F3DA0
 lbl_801F3DA0:
 	.skip 0x20
+.endif
 .global lbl_801F3DC0
 lbl_801F3DC0:
 	.skip 0x5000
 
 .section .data
 
+.if 0
 # bitmap.s
 .global lbl_80181BD0
 lbl_80181BD0:
@@ -6174,20 +5982,21 @@ lbl_80181CB4:
 .global lbl_80181E04
 lbl_80181E04:
 	# ROM: 0x17EE04
-	.4byte 0x801825A4  ;# ptr
-	.4byte 0x801828E8  ;# ptr
-	.4byte 0x801829A0  ;# ptr
-	.4byte 0x80182C54  ;# ptr
-	.4byte 0x80183110  ;# ptr
-	.4byte 0x801833B4  ;# ptr
-	.4byte 0x80183614  ;# ptr
-	.4byte 0x801839D0  ;# ptr
-	.4byte 0x80183B60  ;# ptr
-	.4byte 0x80183C2C  ;# ptr
-	.4byte 0x80183FB4  ;# ptr
-	.4byte 0x80184490  ;# ptr
-	.4byte 0x8018484C  ;# ptr
-	.4byte 0x80184918  ;# ptr
+	.4byte lbl_801825A4  ;# ptr
+	.4byte lbl_801828E8  ;# ptr
+	.4byte lbl_801829A0  ;# ptr
+	.4byte lbl_80182C54  ;# ptr
+	.4byte lbl_80183110  ;# ptr
+	.4byte lbl_801833B4  ;# ptr
+	.4byte lbl_80183614  ;# ptr
+	.4byte lbl_801839D0  ;# ptr
+	.4byte lbl_80183B60  ;# ptr
+	.4byte lbl_80183C2C  ;# ptr
+	.4byte lbl_80183FB4  ;# ptr
+	.4byte lbl_80184490  ;# ptr
+	.4byte lbl_8018484C  ;# ptr
+	.4byte lbl_80184918  ;# ptr
+
 glabel string_bitmap_c
 	.asciz "bitmap.c"
 	.balign 4
@@ -6196,6 +6005,7 @@ glabel string_cannot_OSAlloc
 	.balign 4
 glabel string_cannot_OSAlloc_n
 	.asciz "cannot OSAlloc\n"
+.endif
 glabel string_Manager_is_NULL__n
 	.asciz "Manager is NULL.\n"
 	.balign 4
@@ -6502,6 +6312,7 @@ glabel string_icon_gol_wakka
 glabel string_menu_kiwaku_l2
 	.asciz "menu_kiwaku_l2"
 	.balign 4
+glabel lbl_801825A4
 	.4byte string_ASCII  ;# ptr
 	.4byte string_arrow  ;# ptr
 	.4byte string_icon_button  ;# ptr
@@ -6664,6 +6475,7 @@ glabel string_adv_title_spr_kage
 glabel string_adv_title_tm
 	.asciz "adv_title_tm"
 	.balign 4
+glabel lbl_801828E8
 	.4byte string_logo_av256  ;# ptr
 	.4byte string_adv_logo_plus  ;# ptr
 	.4byte string_logo_sega512  ;# ptr
@@ -6708,6 +6520,7 @@ glabel string_ts_dole_logos
 glabel string_yobi_dole
 	.asciz "yobi_dole"
 	.balign 4
+glabel lbl_801829A0
 	.4byte string_end_segalogo  ;# ptr
 	.4byte string_end_av_01  ;# ptr
 	.4byte string_end_av_02  ;# ptr
@@ -6831,6 +6644,7 @@ glabel string_rnk_mini_mark_tgt1
 glabel string_rnk_mini_mark_tgt2
 	.asciz "rnk_mini_mark_tgt2"
 	.balign 4
+glabel lbl_80182C54
 	.4byte string_asc_ball26x31  ;# ptr
 	.4byte string_asc_ball30x31  ;# ptr
 	.4byte string_rnk_ball_a  ;# ptr
@@ -7032,6 +6846,7 @@ glabel string_sel_kiwaku_rac_ex_j
 glabel string_sel_playmode_golf
 	.asciz "sel_playmode_golf"
 	.balign 4
+glabel lbl_80183110
 	.4byte string_sel_kiwaku_be_eex  ;# ptr
 	.4byte string_sel_kiwaku_be_jex  ;# ptr
 	.4byte string_sel_kiwaku_ad_eex  ;# ptr
@@ -7169,6 +6984,7 @@ glabel string_icon_bomb_part_i
 glabel string_icon_bomb_part_j
 	.asciz "icon_bomb_part_j"
 	.balign 4
+glabel lbl_801833B4
 	.4byte string_icon_bombtimer  ;# ptr
 	.4byte string_icon_lv1234_j  ;# ptr
 	.4byte string_game_rank  ;# ptr
@@ -7275,6 +7091,7 @@ glabel string_bwl_curve_icon_gongon
 glabel string_bwl_curve_icon_meemee
 	.asciz "bwl_curve_icon_meemee"
 	.balign 4
+glabel lbl_80183614
 	.4byte string_bwl_curve_ball  ;# ptr
 	.4byte string_bwl_kiwaku  ;# ptr
 	.4byte string_bwl_pins_base  ;# ptr
@@ -7441,6 +7258,7 @@ glabel string_rac_extension
 glabel string_rac_reverse_e
 	.asciz "rac_reverse_e"
 	.balign 4
+glabel lbl_801839D0
 	.4byte string_rac_item_mini_bomb  ;# ptr
 	.4byte string_rac_item_mini_cube  ;# ptr
 	.4byte string_rac_item_mini_egg  ;# ptr
@@ -7524,6 +7342,7 @@ glabel string_bil_moji2
 glabel string_bil_player
 	.asciz "bil_player"
 	.balign 4
+glabel lbl_80183B60
 	.4byte string_bil_kiwaku_mini  ;# ptr
 	.4byte string_bil_kiwaku_sight  ;# ptr
 	.4byte string_bil_miniball  ;# ptr
@@ -7571,6 +7390,7 @@ glabel string_fgt_score_num
 glabel string_fgt_shine
 	.asciz "fgt_shine"
 	.balign 4
+glabel lbl_80183C2C
 	.4byte string_fgt_banana  ;# ptr
 	.4byte string_fgt_banana_bar  ;# ptr
 	.4byte string_fgt_banana_point  ;# ptr
@@ -7729,6 +7549,7 @@ glabel string_glf_power_kyori_e
 	.balign 4
 glabel string_glf_icon_yd
 	.asciz "glf_icon_yd"
+glabel lbl_80183FB4
 	.4byte string_glf_player  ;# ptr
 	.4byte string_glf_power_banana  ;# ptr
 	.4byte string_glf_power_gauge  ;# ptr
@@ -7940,6 +7761,7 @@ glabel string_tgt_wind_waku_e
 	.asciz "tgt_wind_waku_e"
 glabel string_tgt_item_wind_e
 	.asciz "tgt_item_wind_e"
+glabel lbl_80184490
 	.4byte string_tgt_item_big  ;# ptr
 	.4byte string_tgt_item_bomb  ;# ptr
 	.4byte string_tgt_item_kumo  ;# ptr
@@ -8120,6 +7942,7 @@ glabel string_how_cont_arrow
 glabel string_how_cont_bar
 	.asciz "how_cont_bar"
 	.balign 4
+glabel lbl_8018484C
 	.4byte string_how_kiwaku  ;# ptr
 	.4byte string_how_bar  ;# ptr
 	.4byte string_how_bar_circle  ;# ptr
@@ -8171,5 +7994,6 @@ glabel string_No_Define_14
 glabel string_cmd_flower
 	.asciz "cmd_flower"
 	.balign 4
+glabel lbl_80184918
 	.4byte string_cmd_flower  ;# ptr
 	.4byte 0

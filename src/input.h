@@ -18,5 +18,7 @@ void func_80025158(PADStatus *);
 void func_800252E4(void);
 void func_8002551C(void);
 void func_80025640(void);
-void func_800259F8(PADStatus *);
+void handle_reset_input(PADStatus *);
 void func_80025B1C(struct CoordsS8 *, s8 *);
+void func_80025E5C(void *);
+void func_80025E8C(void *);

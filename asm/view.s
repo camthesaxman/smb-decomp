@@ -8029,7 +8029,7 @@ lbl_800ACA6C:
 /* 800ACA74 000A8994  38 61 00 08 */	addi r3, r1, 8
 /* 800ACA78 000A8998  4B F7 86 E1 */	bl func_80025158
 /* 800ACA7C 000A899C  38 61 00 08 */	addi r3, r1, 8
-/* 800ACA80 000A89A0  4B F7 8F 79 */	bl func_800259F8
+/* 800ACA80 000A89A0  4B F7 8F 79 */	bl handle_reset_input
 /* 800ACA84 000A89A4  48 00 96 11 */	bl ev_vibration_dest
 lbl_800ACA88:
 /* 800ACA88 000A89A8  48 02 17 F9 */	bl DVDGetDriveStatus
@@ -8157,7 +8157,7 @@ lbl_800ACBFC:
 /* 800ACC04 000A8B24  38 61 00 18 */	addi r3, r1, 0x18
 /* 800ACC08 000A8B28  4B F7 85 51 */	bl func_80025158
 /* 800ACC0C 000A8B2C  38 61 00 18 */	addi r3, r1, 0x18
-/* 800ACC10 000A8B30  4B F7 8D E9 */	bl func_800259F8
+/* 800ACC10 000A8B30  4B F7 8D E9 */	bl handle_reset_input
 /* 800ACC14 000A8B34  48 00 94 81 */	bl ev_vibration_dest
 lbl_800ACC18:
 /* 800ACC18 000A8B38  48 02 16 69 */	bl DVDGetDriveStatus

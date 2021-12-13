@@ -6,16 +6,7 @@
 #include "global.h"
 #include "mathutil.h"
 
-extern s32 lbl_802F20AC;
-extern u32 *lbl_802F20B0;
 u8 lbl_80205E00[32];
-extern struct Struct80034938 *lbl_802F1F00;
-extern void *lbl_802F20A8;
-extern struct Struct80034D88 *lbl_802F20A4;
-
-#ifndef __MWERKS__
-u32 __lwbrx(void *, u32);
-#endif
 
 #ifdef NONMATCHING  // register swaps
 int init_ape_model_info(char *a, char *b, char *c, char *d)
@@ -115,9 +106,6 @@ asm int init_ape_model_info(char *a, char *b, char *c, char *d)
 }
 #pragma peephole on
 #endif
-
-#define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
-
 
 void func_80034938(struct Struct80034938 *a)
 {
@@ -323,7 +311,7 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
 
     while (r31 < r28)
     {
-        float f1 = a->unk4->unk0;
+        float f1 = *a->unk4;
 
         if (fabs(f1 - b) < 1.1920928955078125e-07)
         {
@@ -356,13 +344,13 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
         func_800354A8(a, &sp3C, &sp38, &sp40);
         break;
     case 3:
-        sp20.x = a->unk4->unk0;
+        sp20.x = *a->unk4;
         func_800354A8(a, &sp20.z, &sp38, &sp20.y);
         sp10.unk4 = a->unk4;
         sp10.unk8 = a->unk8;
         sp10.unkC = a->unkC;
         func_80035584(&sp10);
-        sp2C.x = sp10.unk4->unk0;
+        sp2C.x = *sp10.unk4;
         func_800354A8(&sp10, &sp3C, &sp2C.z, &sp2C.y);
         sp40 = func_80035438(&sp2C, &sp20, b);
         break;
@@ -398,7 +386,7 @@ asm float func_80035438(Vec *a, Vec *b, float c)
 
 void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
 {
-    switch (a->unk8->unk0)
+    switch (*a->unk8)
     {
     default:
     case 0:
@@ -406,32 +394,32 @@ void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
         break;
     case 1:
         *b = *c = 0.0f;
-        *d = a->unkC->unk0;
+        *d = a->unkC[0];
         break;
     case 2:
-        *b = *c = a->unkC->unk0;
-        *d = a->unkC->unk4;
+        *b = *c = a->unkC[0];
+        *d = a->unkC[1];
         break;
     case 3:
-        *b = a->unkC->unk0;
-        *c = a->unkC->unk4;
-        *d = a->unkC->unk8;
+        *b = a->unkC[0];
+        *c = a->unkC[1];
+        *d = a->unkC[2];
         break;
     }
 }
 
 void func_80035550(struct Struct80034F5C_1_sub *a)
 {
-    a->unk4 = (void *)((u32)a->unk4 + 2);  // WTF?
-    a->unkC = (void *)((u32)a->unkC + a->unk8->unk0 * 4);  // WTF?
-    a->unk8 = (void *)((u32)a->unk8 + 1);  // WTF?
+    a->unk4++;
+    a->unkC += *a->unk8;
+    a->unk8++;
 }
 
 void func_80035584(struct Struct80034F5C_1_sub *a)
 {
-    a->unk4 = (void *)((u32)a->unk4 - 2);  // WTF?
-    a->unk8 = (void *)((u32)a->unk8 - 1);  // WTF?
-    a->unkC = (void *)((u32)a->unkC - a->unk8->unk0 * 4);  // WTF?
+    a->unk4--;
+    a->unk8--;
+    a->unkC -= *a->unk8;
 }
 
 void func_800355B8(struct Struct800355B8 *a)

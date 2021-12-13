@@ -659,16 +659,6 @@ struct Struct80034D88
     void *unkB0;
 };
 
-struct Struct80034F5C_1_sub_child
-{
-    u16 unk0;
-};
-
-struct Struct80034F5C_1_sub_child2
-{
-    u8 unk0;
-};
-
 struct Struct80034F5C_1_sub_child3
 {
     float unk0;
@@ -681,9 +671,10 @@ struct Struct80034F5C_1_sub
     u8 unk0;
     u8 unk1;
     u8 filler2[2];
-    struct Struct80034F5C_1_sub_child *unk4;
-    struct Struct80034F5C_1_sub_child2 *unk8;
-    struct Struct80034F5C_1_sub_child3 *unkC;
+    u16 *unk4;
+    u8 *unk8;
+    //struct Struct80034F5C_1_sub_child3 *unkC;
+    float *unkC;
 };
 
 struct Struct80034F5C_1
@@ -755,4 +746,32 @@ struct CoordsS8
 {
     s8 x;
     s8 y;
+};
+
+// bitmap
+
+struct Struct80181CB4_child_child
+{
+    u8 filler0[8];
+    u16 unk8;
+    u16 unkA;
+    u8 fillerC[4];
+};  // size = 0x10
+
+struct Struct80181CB4_child
+{
+    u8 filler0[4];
+    struct Struct80181CB4_child_child *unk4;
+    u8 filler8[4];
+    void *unkC;
+};
+
+struct Struct80181CB4
+{
+    s32 unk0;
+    char *unk4;
+    char *unk8;
+    u32 unkC;
+    struct Struct80181CB4_child *unk10;
+    OSHeapHandle unk14;
 };

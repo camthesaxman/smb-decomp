@@ -38,10 +38,14 @@ FORCEACTIVE {
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }
 
+/* bitmap.c */
+lbl_80181BD0 = 0x80181BD0;
+lbl_802F30E0 = 0x802F30E0;
+lbl_802F30E8 = 0x802F30E8;
+lbl_802F30EC = 0x802F30EC;
+
 /* motload.c */
 lbl_802F3310 = 0x802F3310;
-
-/* input.c */
 
 /* sprite.s */
 lbl_802F4A70 = 0x802F4A70;

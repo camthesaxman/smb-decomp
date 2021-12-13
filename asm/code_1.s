@@ -2630,3 +2630,162 @@ glabel string_init_sel_p_lz
 	.balign 4
 glabel string_init_sel_lz
 	.asciz "init/sel.lz"
+
+.section .sbss
+
+.global lbl_802F1BE8
+lbl_802F1BE8:
+	.skip 0x8
+.global lbl_802F1BF0
+lbl_802F1BF0:
+	.skip 0x4
+.global lbl_802F1BF4
+lbl_802F1BF4:
+	.skip 0x8
+.global lbl_802F1BFC
+lbl_802F1BFC:
+	.skip 0x8
+.global lbl_802F1C04
+lbl_802F1C04:
+	.skip 0x8
+.global lbl_802F1C0C
+lbl_802F1C0C:
+	.skip 0x1
+.global lbl_802F1C0D
+lbl_802F1C0D:
+	.skip 0x3
+.global lbl_802F1C10
+lbl_802F1C10:
+	.skip 0x8
+.global lbl_802F1C18
+lbl_802F1C18:
+	.skip 0x4
+.global lbl_802F1C1C
+lbl_802F1C1C:
+	.skip 0x4
+.global lbl_802F1C20
+lbl_802F1C20:
+	.skip 0x4
+.global lbl_802F1C24
+lbl_802F1C24:
+	.skip 0x1
+.global lbl_802F1C25
+lbl_802F1C25:
+	.skip 0x3
+.global lbl_802F1C28
+lbl_802F1C28:
+	.skip 0x8
+.global lbl_802F1C30
+lbl_802F1C30:
+	.skip 0x2
+.global lbl_802F1C32
+lbl_802F1C32:
+	.skip 0x2
+.global lbl_802F1C34
+lbl_802F1C34:
+	.skip 0x4
+.global minigameRelCameraCallback
+minigameRelCameraCallback:
+	.skip 0x4
+.global currentCameraStructPtr
+currentCameraStructPtr:
+	.skip 0x4
+.global lbl_802F1C40
+lbl_802F1C40:
+	.skip 0x8
+.global lbl_802F1C48
+lbl_802F1C48:
+	.skip 0x4
+.global lbl_802F1C4C
+lbl_802F1C4C:
+	.skip 0x4
+.global lbl_802F1C50
+lbl_802F1C50:
+	.skip 0x4
+.global lbl_802F1C54
+lbl_802F1C54:
+	.skip 0x4
+.global lbl_802F1C58
+lbl_802F1C58:
+	.skip 0x4
+.global lbl_802F1C5C
+lbl_802F1C5C:
+	.skip 0x4
+.global lbl_802F1C60
+lbl_802F1C60:
+	.skip 0x4
+.global lbl_802F1C64
+lbl_802F1C64:
+	.skip 0x4
+.global lbl_802F1C68
+lbl_802F1C68:
+	.skip 0x4
+.global lbl_802F1C6C
+lbl_802F1C6C:
+	.skip 0x8
+.global lbl_802F1C74
+lbl_802F1C74:
+	.skip 0x1
+.global lbl_802F1C75
+lbl_802F1C75:
+	.skip 0x3
+.global lbl_802F1C78
+lbl_802F1C78:
+	.skip 0x4
+.global lbl_802F1C7C
+lbl_802F1C7C:
+	.skip 0x4
+.global lbl_802F1C80
+lbl_802F1C80:
+	.skip 0x4
+.global lbl_802F1C84
+lbl_802F1C84:
+	.skip 0x4
+.global lbl_802F1C88
+lbl_802F1C88:
+	.skip 0x4
+.global lbl_802F1C8C
+lbl_802F1C8C:
+	.skip 0x4
+.global lbl_802F1C90
+lbl_802F1C90:
+	.skip 0x4
+.global lbl_802F1C94
+lbl_802F1C94:
+	.skip 0x4
+.global lbl_802F1C98
+lbl_802F1C98:
+	.skip 0x8
+.global lbl_802F1CA0
+lbl_802F1CA0:
+	.skip 0x4
+.global lbl_802F1CA4
+lbl_802F1CA4:
+	.skip 0x4
+.global lbl_802F1CA8
+lbl_802F1CA8:
+	.skip 0x4
+.global lbl_802F1CAC
+lbl_802F1CAC:
+	.skip 0x4
+.global lbl_802F1CB0
+lbl_802F1CB0:
+	.skip 0x8
+.global lbl_802F1CB8
+lbl_802F1CB8:
+	.skip 0x4
+.global lbl_802F1CBC
+lbl_802F1CBC:
+	.skip 0x4
+.global decodedBgGma
+decodedBgGma:
+	.skip 0x4
+.global decodedBgTpl
+decodedBgTpl:
+	.skip 0x4
+.global lbl_802F1CC8
+lbl_802F1CC8:
+	.skip 0x4
+.global lbl_802F1CCC
+lbl_802F1CCC:
+	.skip 0x4

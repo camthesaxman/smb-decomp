@@ -468,32 +468,6 @@ void func_800702C8(struct Sprite *sprite)
     }
 }
 
-struct Struct80181CB4_child_child
-{
-    u8 filler0[8];
-    u16 unk8;
-    u16 unkA;
-    u8 fillerC[4];
-};  // size = 0x10
-
-struct Struct80181CB4_child
-{
-    u8 filler0[4];
-    struct Struct80181CB4_child_child *unk4;
-};
-
-struct Struct80181CB4
-{
-    s32 unk0;
-    void *unk4;
-    char *unk8;
-    u8 fillerC[0x10-0xC];
-    struct Struct80181CB4_child *unk10;
-    u8 filler14[4];
-};
-
-extern struct Struct80181CB4 lbl_80181CB4[];
-
 struct Struct801BE470
 {
     s32 unk0;

@@ -21,6 +21,12 @@ FORCE_BSS_ORDER(lbl_801F3D78);
 FORCE_BSS_ORDER(lbl_801F3D88);
 FORCE_BSS_ORDER(lbl_801F3D94);
 
+u32 lbl_802F1CD8;
+u32 lbl_802F1CD4;
+u8 lbl_802F1CD2;
+u8 lbl_802F1CD1;
+u8 resetCounter;
+
 s8 lbl_80181B80[][2] =
 {
     { 0x54, 0x00 },
@@ -135,7 +141,7 @@ void input_init(void)
         lbl_802F1CD2++;
     }
     memset(controllerInfo, 0, sizeof(controllerInfo));
-    lbl_802F1CD0 = 0;
+    resetCounter = 0;
     lbl_802F1CD1 = 0;
 }
 
@@ -167,7 +173,7 @@ void input_main(void)
     struct CoordsS8 spC;
 
     func_80025158(sp10);
-    func_800259F8(sp10);
+    handle_reset_input(sp10);
 
     /*
     for (r6 = &lbl_801F3C60[0], i = 0; i < 4; i++, r6++)
@@ -512,14 +518,14 @@ void func_80025640(void)
     }
 }
 
-void func_800259F8(PADStatus *pads)
+void handle_reset_input(PADStatus *pads)
 {
     int resetCode;
     int i;
 
     if (lbl_802F1CD1 == 1 && !OSGetResetButtonState())
     {
-        lbl_802F1CD0 = 0xFF;
+        resetCounter = 0xFF;
         resetCode = 2;
     }
     else
@@ -528,7 +534,7 @@ void func_800259F8(PADStatus *pads)
     if (OSGetResetButtonState())
         lbl_802F1CD1 = 1;
 
-    if (lbl_802F1CD0 > 30.0)
+    if (resetCounter > 30.0)
     {
         ev_vibration_dest();
         if (func_8009F4A4() != 0)
@@ -543,12 +549,12 @@ void func_800259F8(PADStatus *pads)
     {
         if ((pads[i].button & (PAD_BUTTON_START|PAD_BUTTON_X|PAD_BUTTON_B)) == (PAD_BUTTON_START|PAD_BUTTON_X|PAD_BUTTON_B))
         {
-            lbl_802F1CD0++;
+            resetCounter++;
             break;
         }
     }
     if (i == 4)
-        lbl_802F1CD0 = 0;
+        resetCounter = 0;
 }
 
 void func_80025B1C(struct CoordsS8 *a, s8 *b)
@@ -603,4 +609,14 @@ void func_80025B1C(struct CoordsS8 *a, s8 *b)
 
         break;
     }
+}
+
+void func_80025E5C(void *dest)
+{
+    memcpy((u8 *)dest + 0x5848, lbl_80181B80, 0x40);
+}
+
+void func_80025E8C(void *src)
+{
+    memcpy(lbl_80181B80, (u8 *)src + 0x5848, 0x40);
 }

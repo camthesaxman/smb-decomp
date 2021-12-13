@@ -70,6 +70,7 @@ SOURCE_FILES := \
 	asm/code_0.s \
 	asm/code_1.s \
 	src/input.c \
+	src/bitmap.c \
 	asm/bitmap.s \
 	src/trig_tables.c \
 	src/perf.c \
