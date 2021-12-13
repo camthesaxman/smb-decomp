@@ -90,6 +90,7 @@ SOURCE_FILES := \
 	asm/sprite.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
+	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
 	asm/load.s \

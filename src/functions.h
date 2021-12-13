@@ -1153,7 +1153,7 @@ void func_8008D29C(int);
 // ? func_8008D330();
 // ? func_8008D36C();
 // ? func_8008D3A8();
-void decompress_lz();
+int decompress_lz(u8 *, void *);
 // ? func_8008D6BC();
 // ? func_8008D6D4();
 void func_8008D788(void);
