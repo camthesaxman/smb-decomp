@@ -113,7 +113,7 @@ lbl_80034748:
 lbl_8003476C:
 /* 8003476C 0003068C  7F 63 DB 78 */	mr r3, r27
 /* 80034770 00030690  80 8D 9D 20 */	lwz r4, lbl_802F1F00 //@sda21(r13)
-/* 80034774 00030694  48 05 8C 71 */	bl decompress_lz
+/* 80034774 00030694  48 05 8C 71 */	bl lzs_decompress
 /* 80034778 00030698  80 6D 97 48 */	lwz r3, __OSCurrHeap //@sda21(r13)
 /* 8003477C 0003069C  7F 64 DB 78 */	mr r4, r27
 /* 80034780 000306A0  48 08 E0 49 */	bl OSFreeToHeap
@@ -220,7 +220,7 @@ lbl_800348D8:
 lbl_800348FC:
 /* 800348FC 0003081C  7F E3 FB 78 */	mr r3, r31
 /* 80034900 00030820  80 8D 9E C4 */	lwz r4, lbl_802F20A4 //@sda21(r13)
-/* 80034904 00030824  48 05 8A E1 */	bl decompress_lz
+/* 80034904 00030824  48 05 8A E1 */	bl lzs_decompress
 /* 80034908 00030828  80 6D 97 48 */	lwz r3, __OSCurrHeap //@sda21(r13)
 /* 8003490C 0003082C  7F E4 FB 78 */	mr r4, r31
 /* 80034910 00030830  48 08 DE B9 */	bl OSFreeToHeap

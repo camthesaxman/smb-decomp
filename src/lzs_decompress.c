@@ -2,7 +2,7 @@
 
 #include "global.h"
 
-int decompress_lz(u8 *src, void *dest)
+int lzs_decompress(u8 *src, void *dest)
 {
     u8 unused[0x18];
     u8 ringBuf[4096];

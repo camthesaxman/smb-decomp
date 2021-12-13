@@ -344,7 +344,7 @@ struct GMA *load_gma(char *fileName, struct TPL *tpl)
             OSPanic("avdisp.c", 692, "cannot dvd_read");
         if (file_close(&file) != 1)
             OSPanic("avdisp.c", 693, "cannot DVDClose");
-        decompress_lz(lzData, fileData);
+        lzs_decompress(lzData, fileData);
         OSFree(lzData);
     }
     else
@@ -471,7 +471,7 @@ struct TPL *load_tpl(char *fileName)
             OSPanic("avdisp.c", 830, "cannot dvd_read");
         if (file_close(&file) != 1)
             OSPanic("avdisp.c", 831, "cannot DVDClose");
-        decompress_lz(r30, fileData);
+        lzs_decompress(r30, fileData);
         OSFree(r30);
     }
     else

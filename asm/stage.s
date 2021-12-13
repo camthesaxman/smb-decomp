@@ -3500,7 +3500,7 @@ lbl_80046B34:
 lbl_80046B58:
 /* 80046B58 00042A78  38 7D 00 00 */	addi r3, r29, 0
 /* 80046B5C 00042A7C  38 9C 00 00 */	addi r4, r28, 0
-/* 80046B60 00042A80  48 04 68 85 */	bl decompress_lz
+/* 80046B60 00042A80  48 04 68 85 */	bl lzs_decompress
 /* 80046B64 00042A84  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
 /* 80046B68 00042A88  7F A4 EB 78 */	mr r4, r29
 /* 80046B6C 00042A8C  48 07 BC 5D */	bl OSFreeToHeap

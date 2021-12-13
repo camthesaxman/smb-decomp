@@ -53,7 +53,7 @@ int init_ape_model_info(char *a, char *b, char *c, char *d)
         OSPanic("motload.c", 0x61, "cannot dvd_read");
     if (DVDClose(&sp18) != 1)
         OSPanic("motload.c", 0x62, "cannot DVDClose");
-    decompress_lz(r27, lbl_802F1F00);
+    lzs_decompress(r27, lbl_802F1F00);
     OSFree(r27);
     func_80034938(lbl_802F1F00);
     r26 = r26 + r26;
@@ -83,7 +83,7 @@ int init_ape_model_info(char *a, char *b, char *c, char *d)
         OSPanic("motload.c", 0x9E, "cannot dvd_read");
     if (DVDClose(&sp18) != 1)
         OSPanic("motload.c", 0x9F, "cannot DVDClose");
-    decompress_lz(r31_, lbl_802F20A4);
+    lzs_decompress(r31_, lbl_802F20A4);
     OSFree(r31_);
     func_80034D88(lbl_802F20A4);
     r26 += r28;

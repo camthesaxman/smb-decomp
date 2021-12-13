@@ -136,7 +136,7 @@ void *func_80025F74(char *filename)
         if (file_close(&file) != 1)
             return 0;
         fileData = (void *)OSRoundUp32B((u32)r30 + 0x10);
-        decompress_lz(lzData, fileData);
+        lzs_decompress(lzData, fileData);
         DCFlushRange(fileData, size);
         OSFreeToHeap(lbl_802F1B2C, lzData);
     }

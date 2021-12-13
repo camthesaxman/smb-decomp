@@ -97,7 +97,7 @@ lbl_80030D00:
 lbl_80030D18:
 /* 80030D18 0002CC38  38 7B 00 00 */	addi r3, r27, 0
 /* 80030D1C 0002CC3C  38 9A 00 00 */	addi r4, r26, 0
-/* 80030D20 0002CC40  48 05 C6 C5 */	bl decompress_lz
+/* 80030D20 0002CC40  48 05 C6 C5 */	bl lzs_decompress
 /* 80030D24 0002CC44  80 6D 99 4C */	lwz r3, lbl_802F1B2C@sda21(r13)
 /* 80030D28 0002CC48  7F 64 DB 78 */	mr r4, r27
 /* 80030D2C 0002CC4C  48 09 1A 9D */	bl OSFreeToHeap
