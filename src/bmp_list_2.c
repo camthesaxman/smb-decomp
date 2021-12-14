@@ -1,0 +1,31 @@
+char string_No_Define_2[] = "No Define";
+
+char *lbl_801828E8[] =
+{
+    "logo_av256",
+    "adv_logo_plus",
+    "logo_sega512",
+    "adv_title_bg",
+    "adv_title_mnk_gawa",
+    "adv_fukidashi_h",
+    "adv_fukidashi_h_mini",
+    "logo_plus256x40",
+    "adv_title_spr_gawa",
+    "adv_title_mnk_a",
+    "adv_title_mnk_l",
+    "adv_title_mnk_b",
+    "adv_title_mnk_m",
+    "adv_title_mnk_o",
+    "adv_title_mnk_n",
+    "adv_title_mnk_k",
+    "adv_title_mnk_e",
+    "adv_title_mnk_y",
+    "adv_title_mnk_kage",
+    "adv_title_spr_s",
+    "adv_title_spr_u",
+    "adv_title_spr_p",
+    "adv_title_spr_e",
+    "adv_title_spr_r",
+    "adv_title_spr_kage",
+    "adv_title_tm",
+};

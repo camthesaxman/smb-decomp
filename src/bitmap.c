@@ -26,9 +26,19 @@ struct Struct800267E8
     u8 unk18;
 };
 
-extern void *lbl_802F1CEC;
-extern u8 *lbl_802F1CF0;
-extern struct Struct802F1CF8 *lbl_802F1CF8;
+struct Struct80181CB4_child *lbl_802F1D08;
+u32 lbl_802F1D04;
+s32 lbl_802F1D00;
+u16 lbl_802F1CFC;
+struct Struct802F1CF8 *lbl_802F1CF8;
+u32 lbl_802F1CF4;
+u8 *lbl_802F1CF0;
+void *lbl_802F1CEC;
+float lbl_802F1CE8;
+u16 lbl_802F1CE4;
+u16 lbl_802F1CE2;
+u16 lbl_802F1CE0;
+struct Struct801F3DC0 lbl_801F3DC0[0x100];
 
 extern char *lbl_801825A4[];
 extern char *lbl_801828E8[];

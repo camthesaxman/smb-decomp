@@ -1,0 +1,33 @@
+char string_No_Define_7[] = "No Define";
+
+char *lbl_80183614[] =
+{
+    "bwl_curve_ball",
+    "bwl_kiwaku",
+    "bwl_pins_base",
+    "bwl_pins_num",
+    "bwl_power_gauge",
+    "bwl_power_waku",
+    "bwl_score_lr",
+    "bwl_score_num",
+    "bwl_score_waku",
+    "bwl_power_banana",
+    "bwl_curve_aiai",
+    "bwl_curve_arrow",
+    "bwl_score_waku_col",
+    "bwl_curve_base",
+    "bwl_cha_waku_r",
+    "bwl_score_spot",
+    "bwl_cha_waku_s",
+    "bwl_result_line",
+    "bwl_result_mb",
+    "bwl_result_mode",
+    "bwl_curve_guide",
+    "bwl_curve_ball_blue",
+    "bwl_curve_ball_red",
+    "bwl_curve_ball_yer",
+    "bwl_curve_icon_aiai",
+    "bwl_curve_icon_baby",
+    "bwl_curve_icon_gongon",
+    "bwl_curve_icon_meemee",
+};

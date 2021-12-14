@@ -1,0 +1,32 @@
+char string_No_Define_6[] = "No Define";
+
+char *lbl_801833B4[] =
+{
+    "icon_bombtimer",
+    "icon_lv1234_j",
+    "game_rank",
+    "game_result_e3",
+    "game_goal",
+    "asc_ball22x22",
+    "asc_komo16x16",
+    "asc_tama32x32",
+    "asc_ball18x16",
+    "asc_ball20x20",
+    "fukidashi",
+    "game_player",
+    "asc_ball26x38",
+    "asc_ball16x22",
+    string_No_Define_6,
+    string_No_Define_6,
+    "icon_bomb_hibi",
+    "icon_bomb_part_a",
+    "icon_bomb_part_b",
+    "icon_bomb_part_c",
+    "icon_bomb_part_d",
+    "icon_bomb_part_e",
+    "icon_bomb_part_f",
+    "icon_bomb_part_g",
+    "icon_bomb_part_h",
+    "icon_bomb_part_i",
+    "icon_bomb_part_j",
+};
