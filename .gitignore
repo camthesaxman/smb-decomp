@@ -8,6 +8,7 @@ mwcc_compiler/
 supermonkeyball.map
 *.dol
 tools/elf2dol
+tools/lzss
 *.exe
 __pycache__
 

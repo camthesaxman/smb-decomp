@@ -27,6 +27,7 @@ GCC     := $(DEVKITPPC)/bin/powerpc-eabi-gcc
 HOSTCC  := cc
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol$(EXE)
+LZSS    := tools/lzss$(EXE)
 
 INCLUDE_DIRS := src
 SYSTEM_INCLUDE_DIRS := include
@@ -349,6 +350,12 @@ src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 #-------------------------------------------------------------------------------
 
 $(ELF2DOL): tools/elf2dol.c
+	@echo Building tool $@
+	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
+
+# Original source for lzss can be found at
+# https://web.archive.org/web/19990203141013/http://oak.oakland.edu/pub/simtelnet/msdos/arcutils/lz_comp2.zip
+$(LZSS): tools/lzss.c
 	@echo Building tool $@
 	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
 
