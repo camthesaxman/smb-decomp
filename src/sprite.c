@@ -487,25 +487,6 @@ struct Struct801BE470 lbl_801BE470[] =
     {256,  224},
 };
 
-struct FontParams
-{
-    u16 unk0;
-    u8 unk2;
-    u8 unk3;
-    u32 unk4;
-    u32 unk8;
-    u8 unkC;
-    u8 unkD;
-    float unk10;
-    float unk14;
-    float unk18;
-    float unk1C;
-    u8 unk20;
-    u8 unk21;
-    u8 unk22;
-    s8 unk23;
-};
-
 // font parameters?
 struct FontParams lbl_801BE4B0[] =
 {

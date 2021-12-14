@@ -177,8 +177,8 @@ struct Event
     /*0x04*/ char *name;
     /*0x08*/ void (*start)(void);
     /*0x0C*/ void (*main)(void);
-    /*0x14*/ void (*finish)(void);
-    /*0x18*/ u32 time;
+    /*0x10*/ void (*finish)(void);
+    /*0x14*/ u32 time;
 };
 
 struct Struct801EEC80
@@ -758,12 +758,17 @@ struct Struct80181CB4_child_child
     u8 fillerC[4];
 };  // size = 0x10
 
+struct Struct80181CB4_child_child2
+{
+    u8 filler0[0x20];
+};  // size = 0x20
+
 struct Struct80181CB4_child
 {
     u8 filler0[4];
     struct Struct80181CB4_child_child *unk4;
     u8 filler8[4];
-    void *unkC;
+    struct Struct80181CB4_child_child2 *unkC;
 };
 
 struct Struct80181CB4
@@ -774,4 +779,30 @@ struct Struct80181CB4
     u32 unkC;
     struct Struct80181CB4_child *unk10;
     OSHeapHandle unk14;
+};
+
+// sprite
+
+struct FontParams
+{
+    s16 unk0;
+    u8 unk2;
+    u8 unk3;
+    s32 unk4;
+    u32 unk8;
+    s8 unkC;
+    s8 unkD;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+    u8 unk20;
+    u8 unk21;
+    u8 unk22;
+    s8 unk23;
+};
+
+struct Struct801F3DC0
+{
+    u8 filler0[0x50];
 };

@@ -39,6 +39,12 @@ static inline void GXTexCoord2s16(const s16 u, const s16 v)
     GXWGFifo.s16 = v;
 }
 
+static inline void GXTexCoord2f32(const f32 u, const f32 v)
+{
+    GXWGFifo.f32 = u;
+    GXWGFifo.f32 = v;
+}
+
 static inline void GXEnd (void) {}
 
 #endif
