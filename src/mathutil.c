@@ -1163,7 +1163,7 @@ entry mathutil_mtxA_from_mtxB_mult_mtx
     addi r5, r6, OFFSET_MTX_A
     b @do_mult
 
-// void mathutil_mtx_mult(Mtx a, Mtx b, Mtx c)
+// void mathutil_mtx_mult(Mtx a, Mtx b, Mtx result)
 entry mathutil_mtx_mult
     lis r6, LC_CACHE_BASE@ha
 

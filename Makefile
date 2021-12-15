@@ -72,20 +72,20 @@ SOURCE_FILES := \
 	asm/code_1.s \
 	src/input.c \
 	src/bitmap.c \
-	src/bmp_list_1.c \
-	src/bmp_list_2.c \
-	src/bmp_list_3.c \
-	src/bmp_list_4.c \
-	src/bmp_list_5.c \
-	src/bmp_list_6.c \
-	src/bmp_list_7.c \
-	src/bmp_list_8.c \
-	src/bmp_list_9.c \
-	src/bmp_list_10.c \
-	src/bmp_list_11.c \
-	src/bmp_list_12.c \
-	src/bmp_list_13.c \
-	src/bmp_list_14.c \
+	src/bmp_list_com.c \
+	src/bmp_list_adv.c \
+	src/bmp_list_end.c \
+	src/bmp_list_rnk.c \
+	src/bmp_list_sel.c \
+	src/bmp_list_nml.c \
+	src/bmp_list_bwl.c \
+	src/bmp_list_rac.c \
+	src/bmp_list_bil.c \
+	src/bmp_list_fgt.c \
+	src/bmp_list_glf.c \
+	src/bmp_list_tgt.c \
+	src/bmp_list_how.c \
+	src/bmp_list_cmd.c \
 	src/trig_tables.c \
 	src/perf.c \
 	asm/sound.s \

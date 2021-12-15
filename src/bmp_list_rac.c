@@ -1,6 +1,6 @@
 char string_No_Define_8[] = "No Define";
 
-char *lbl_801839D0[] =
+char *bmpRacNames[] =
 {
     "rac_item_mini_bomb",
     "rac_item_mini_cube",

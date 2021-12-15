@@ -301,8 +301,8 @@ void func_8000B96C(void)
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
             func_8008E420(f30);
-            //func_8008E500(lbl_802F1CC8->unk8->unk270);
-            func_8008E500(lbl_802F1CC8->modelEntries[0x4E].modelOffset);
+            //g_avdisp_maybe_draw_model_3(lbl_802F1CC8->unk8->unk270);
+            g_avdisp_maybe_draw_model_3(lbl_802F1CC8->modelEntries[0x4E].modelOffset);
         }
         func_8000E3BC();
     }

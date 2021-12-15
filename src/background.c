@@ -719,7 +719,7 @@ void bg_e3_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != 0 || decodedStageLzPtr->unk74 != 0)
      && (lbl_801EEC90.unk0 & 1))
-        func_8008E428(0.5f, 0.5f, 0.5f);
+        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
@@ -810,7 +810,7 @@ void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
             mathutil_mtxA_rotate_z(a->unk1C);
             mathutil_mtxA_rotate_y(a->unk1A);
             mathutil_mtxA_rotate_x(a->unk18);
-            mathutil_mtxA_tf_point(&a->unk8->unk8, &sp1C);
+            mathutil_mtxA_tf_point(&a->unk8->boundingSphereCenter, &sp1C);
             func_800390C8(5, &sp1C, 1.0f);
         }
     }
@@ -854,9 +854,9 @@ void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
         f29 = MAX(b->unk20.x, b->unk20.y);
         f29 = MAX(b->unk20.z, f29);
         if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
-         && func_8000E444(&r24->unk8) < -(f29 * r24->unk14))
+         && func_8000E444(&r24->boundingSphereCenter) < -(f29 * r24->boundingSphereRadius))
             continue;
-        if (func_80020FD0(&r24->unk8, r24->unk14, f29) == 0)
+        if (func_80020FD0(&r24->boundingSphereCenter, r24->boundingSphereRadius, f29) == 0)
             continue;
         r23 = b->unk0 >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -1101,7 +1101,7 @@ void bg_night_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        func_8008E428(0.5f, 0.5f, 0.5f);
+        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
@@ -1136,7 +1136,7 @@ void bg_ice2_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        func_8008E428(0.5f, 0.5f, 0.5f);
+        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
@@ -1211,7 +1211,7 @@ void bg_billiards_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        func_8008E428(0.5f, 0.5f, 0.5f);
+        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
@@ -1246,7 +1246,7 @@ void bg_golf_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        func_8008E428(0.5f, 0.5f, 0.5f);
+        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
@@ -1281,7 +1281,7 @@ void bg_bowling_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        func_8008E428(0.5f, 0.5f, 0.5f);
+        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->unk6C != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);

@@ -6,50 +6,6 @@
 #include "load.h"
 #include "mathutil.h"
 
-struct GMAMeshHeader
-{
-    u32 unk0;
-    GXColor unk4;
-    GXColor unk8;
-    u32 unkC;
-    u8 filler10[2];
-    u8 unk12;
-    u8 unk13;
-    u8 unk14;
-    u8 filler15[0x1C-0x15];
-    u32 unk1C;
-    u8 unk20[8];
-    u32 dispListSizes[2];
-    u8 unk30[0x60-0x30];
-    u8 unk60[1];
-};
-
-struct GMAMaterial
-{
-    u32 flags;
-    u16 unk4;
-    s8 unk6;
-    u8 unk7;
-    GXTexObj *texObj;
-    u8 fillerC[0x20-0xC];
-};
-
-struct TPLTextureHeader
-{
-    u32 format;
-    u32 imageOffset;
-    u16 width;
-    u16 height;
-    u8 fillerC[4];
-};  // size = 0x10
-
-struct TPL
-{
-    u32 numTextures;
-    struct TPLTextureHeader *texHeaders;
-    u8 *fileData;
-};
-
 struct UnkStruct4
 {
     u8 filler0[0x18];
@@ -88,8 +44,8 @@ float lbl_802F20DC;
 float lbl_802F20D8;
 float lbl_802F20D4;
 float lbl_802F20D0;
-Mtx *lbl_802F20CC;
-Mtx **avdispMatrixList;
+Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
+Mtx **avdispMtxPtrList;
 
 struct Struct802B4ECC
 {
@@ -127,7 +83,7 @@ static Mtx lbl_802B4E9C;
 static struct Struct802B4ECC lbl_802B4ECC;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
-static u8 lzHeaderBuf[32];
+static u8 lzssHeader[32];
 static u8 unknownTexImg[64];
 
 FORCE_BSS_ORDER(lbl_802B4E60)
@@ -136,7 +92,7 @@ FORCE_BSS_ORDER(lbl_802B4E9C)
 FORCE_BSS_ORDER(lbl_802B4ECC)
 FORCE_BSS_ORDER(unknownTexObj)
 FORCE_BSS_ORDER(filler_802B4F50)
-FORCE_BSS_ORDER(lzHeaderBuf)
+FORCE_BSS_ORDER(lzssHeader)
 FORCE_BSS_ORDER(unknownTexImg)
 
 #ifdef __MWERKS__
@@ -235,8 +191,8 @@ void func_8008D788(void)
     sp8.x = 0.0f;
     sp8.y = 1.0f;
     sp8.z = 0.0f;
-    func_8008E574(&sp8);
-    func_8008E5B8(1.0f, 1.0f, 1.0f);
+    g_avdisp_set_and_normalize_some_vec(&sp8);
+    g_avdisp_set_3_other_floats(1.0f, 1.0f, 1.0f);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     lbl_802F2108 = 0;
     mathutil_mtxA_from_translate_xyz(0.0f, 0.0f, 1.0f);
@@ -248,23 +204,24 @@ void func_8008D788(void)
     func_8008F890(0, 0, 0);
 }
 
-void g_avdisp_alloc_matrix_lists(int a)
+void g_avdisp_alloc_matrix_lists(int count)
 {
-    lbl_802F20CC = OSAlloc(a * sizeof(Mtx));
-    avdispMatrixList = OSAlloc(a * sizeof(Mtx *));
+    g_transformMtxList = OSAlloc(count * sizeof(Mtx));
+    avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
-void func_8008D8D0(struct UnkStruct4 *a, Mtx **dest)
+void func_8008D8D0(struct GMAModelHeader *a, Mtx **dest)
 {
     u8 i;
     int unused1;
     int unused2;
-    Mtx *pMtx = (void *)((u32)a->unk40 + a->unk18 * 32);
+    // matrices are stored immediately after materials
+    Mtx *pMtx = (void *)((u8 *)a->materials + a->numMaterials * sizeof(struct GMAMaterial));
 
     if (dest == NULL)
     {
-        dest = avdispMatrixList;
-        for (i = 0; i < a->unk1E; i++)
+        dest = avdispMtxPtrList;
+        for (i = 0; i < a->mtxCount; i++)
         {
             *dest = pMtx;
             mathutil_mtx_copy(*pMtx, **dest);  // useless copy source and dest are the same
@@ -274,7 +231,7 @@ void func_8008D8D0(struct UnkStruct4 *a, Mtx **dest)
     }
     else
     {
-        for (i = 0; i < a->unk1E; i++)
+        for (i = 0; i < a->mtxCount; i++)
         {
             mathutil_mtx_copy(*pMtx, **dest);
             pMtx++;
@@ -285,26 +242,26 @@ void func_8008D8D0(struct UnkStruct4 *a, Mtx **dest)
 
 struct GMAModelHeader *load_model(char *fileName, struct TPL *tpl)
 {
-    u32 *buffer;
+    struct GMAModelHeader *model;
     u32 size;
     struct File file;
-    
+
     if (!file_open(fileName, &file))
         return NULL;
     size = file_size(&file);
-    buffer = OSAlloc(OSRoundUp32B(size));
-    if (buffer == NULL)
+    model = OSAlloc(OSRoundUp32B(size));
+    if (model == NULL)
         OSPanic("avdisp.c", 638, "cannot OSAlloc");
-    file_read(&file, buffer, size, 0);
+    file_read(&file, model, size, 0);
     file_close(&file);
-    if (*buffer != (('G' << 24) | ('C' << 16) | ('M' << 8) | 'F'))
+    if (model->magic != (('G' << 24) | ('C' << 16) | ('M' << 8) | 'F'))
     {
         printf("invalid model format <%s>\n", fileName);
-        OSFree(buffer);
+        OSFree(model);
         return NULL;
     }
-    init_model((struct GMAModelHeader *)buffer, tpl, NULL);
-    return (struct GMAModelHeader *)buffer;
+    init_model(model, tpl, NULL);
+    return model;
 }
 
 void free_model(struct GMAModelHeader *model)
@@ -321,66 +278,79 @@ struct GMA *load_gma(char *fileName, struct TPL *tpl)
     u8 *fileData;
     struct File file;
     int len = strlen(fileName);
+
     if (len >= 3 && strncmp(fileName + (len - 3), ".lz", 3) == 0)
     {
         void *lzData;
-        u32 r27;
-        u32 foo;
+        u32 compressedSize;
+        u32 size;
 
         if (file_open(fileName, &file) == 0)
             return NULL;
-        if (file_read(&file, lzHeaderBuf, 32, 0) < 0)
+
+        // Read LZSS header
+        if (file_read(&file, lzssHeader, 32, 0) < 0)
             OSPanic("avdisp.c", 684, "cannot dvd_read");
-        r27 = OSRoundUp32B(__lwbrx(lzHeaderBuf, 0));
-        foo = OSRoundUp32B(__lwbrx(lzHeaderBuf, 4));
-        gma = OSAlloc(foo + 32);
+        compressedSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+        size = OSRoundUp32B(__lwbrx(lzssHeader, 4));
+
+        gma = OSAlloc(sizeof(*gma) + size);  // GMA struct followed by raw file data
         if (gma == NULL)
             OSPanic("avdisp.c", 688, "cannot OSAlloc\n");
-        lzData = OSAlloc(r27);
+
+        // Read whole file
+        lzData = OSAlloc(compressedSize);
         if (lzData == NULL)
             OSPanic("avdisp.c", 689, "cannot OSAlooc\n");
-        fileData = (u8 *)&gma->unk20;
-        if (file_read(&file, lzData, r27, 0) < 0)
+        fileData = gma->fileData;
+        if (file_read(&file, lzData, compressedSize, 0) < 0)
             OSPanic("avdisp.c", 692, "cannot dvd_read");
         if (file_close(&file) != 1)
             OSPanic("avdisp.c", 693, "cannot DVDClose");
+
+        // Decompress data
         lzs_decompress(lzData, fileData);
         OSFree(lzData);
     }
     else
     {
         u32 size;
+
         if (file_open(fileName, &file) == 0)
             return NULL;
         size = file_size(&file);
-        gma = OSAlloc(OSRoundUp32B(size) + 32);
+        gma = OSAlloc(sizeof(*gma) + OSRoundUp32B(size));  // GMA struct followed by raw file data
         if (gma == NULL)
             OSPanic("avdisp.c", 702, "cannot OSAlloc");
-        fileData = (u8 *)&gma->unk20;
+        fileData = gma->fileData;
         file_read(&file, fileData, size, 0);
         file_close(&file);
     }
 
-    gma->numModels = *(u32 *)fileData;
-    gma->modelsBase = (void *)(fileData + *(u32 *)(fileData + 4));
-    gma->modelEntries = (struct GMAModelEntry *)(fileData + 8);
-    gma->namesBase = (char *)(gma->modelEntries + *(u32 *)fileData);
+    // Read GMA header
+    gma->numModels = *(u32 *)(fileData + 0);  // 0: number of models
+    gma->modelsBase = OFFSET_TO_PTR(fileData, *(u32 *)(fileData + 4));  // 4: offset to model data
+    gma->modelEntries = OFFSET_TO_PTR(fileData, 8);  // 8: model entries
+    gma->namesBase = (char *)(gma->modelEntries + *(u32 *)(fileData + 0));  // names base follows model entries
 
+    // Load models
     for (i = 0; i < gma->numModels; i++)
     {
         struct GMAModelEntry *entry = &gma->modelEntries[i];
         void *offset = entry->modelOffset;
-        if (entry->modelOffset == (void *)0xFFFFFFFF)
+
+        if ((u32)entry->modelOffset == 0xFFFFFFFF)
         {
             entry->modelOffset = NULL;
             entry->name = invalidModelName;
         }
         else
         {
-            offset = gma->modelsBase + (u32)offset;
+            // Convert name and model offsets to pointers
+            offset = OFFSET_TO_PTR(gma->modelsBase, (u32)offset);
             entry->modelOffset = offset;
-            // convert name offset to pointer
-            entry->name = gma->namesBase + (u32)entry->name;
+            entry->name = OFFSET_TO_PTR(gma->namesBase, (u32)entry->name);
+            // Load the model
             init_model(offset, tpl, NULL);
         }
     }
@@ -392,10 +362,11 @@ struct GMA *load_gma_from_aram(u32 aramSrc, u32 size, struct TPL *tpl)
     u32 alignedSize = OSRoundUp32B(size);
     int i;
     u8 *fileData;
-    struct GMA *gma = OSAlloc(alignedSize + 32);
+
+    struct GMA *gma = OSAlloc(sizeof(*gma) + alignedSize);  // GMA struct followed by raw file data
     if (gma == NULL)
         OSPanic("avdisp.c", 750, "cannot OSAlloc");
-    fileData = (u8 *)&gma->unk20;
+    fileData = gma->fileData;
     DCInvalidateRange(fileData, alignedSize);
     while (ARGetDMAStatus() != 0)
         ;
@@ -403,26 +374,30 @@ struct GMA *load_gma_from_aram(u32 aramSrc, u32 size, struct TPL *tpl)
     while (ARGetDMAStatus() != 0)
         ;
 
-    gma->numModels = *(u32 *)fileData;
-    gma->modelsBase = (void *)(fileData + *(u32 *)(fileData + 4));
-    gma->modelEntries = (struct GMAModelEntry *)(fileData + 8);
-    gma->namesBase = (char *)(gma->modelEntries + *(u32 *)fileData);
+    // Read GMA header
+    gma->numModels = *(u32 *)(fileData + 0);  // 0: number of models
+    gma->modelsBase = OFFSET_TO_PTR(fileData, *(u32 *)(fileData + 4));  // 4: offset to model data
+    gma->modelEntries = OFFSET_TO_PTR(fileData, 8);  // 8: model entries
+    gma->namesBase = (char *)(gma->modelEntries + *(u32 *)(fileData + 0));  // names base follows model entries
 
+    // Load models
     for (i = 0; i < gma->numModels; i++)
     {
         struct GMAModelEntry *entry = &gma->modelEntries[i];
         void *offset = entry->modelOffset;
-        if (entry->modelOffset == (void *)0xFFFFFFFF)
+
+        if ((u32)entry->modelOffset == 0xFFFFFFFF)
         {
             entry->modelOffset = NULL;
             entry->name = invalidModelName;
         }
         else
         {
-            offset = gma->modelsBase + (u32)offset;
+            // Convert name and model offsets to pointers
+            offset = OFFSET_TO_PTR(gma->modelsBase, (u32)offset);
             entry->modelOffset = offset;
-            // convert name offset to pointer
-            entry->name = gma->namesBase + (u32)entry->name;
+            entry->name = OFFSET_TO_PTR(gma->namesBase, (u32)entry->name);
+            // Load the model
             init_model(offset, tpl, NULL);
         }
     }
@@ -432,10 +407,11 @@ struct GMA *load_gma_from_aram(u32 aramSrc, u32 size, struct TPL *tpl)
 void free_gma(struct GMA *gma)
 {
     int i;
-    
+
     for (i = 0; i < (s32)gma->numModels; i++)
     {
-        struct GMAModelHeader *model = (struct GMAModelHeader *)gma->modelEntries[i].modelOffset;
+        struct GMAModelHeader *model = gma->modelEntries[i].modelOffset;
+
         if (model != NULL && model->texObjs != NULL)
             OSFree(model->texObjs);
     }
@@ -444,35 +420,43 @@ void free_gma(struct GMA *gma)
 
 struct TPL *load_tpl(char *fileName)
 {
-    void *r30;
+    void *lzData;
     struct TPL *tpl;
     u8 *fileData;
     struct File file;
     int len = strlen(fileName);
+
     if (len >= 3 && strncmp(fileName + (len - 3), ".lz", 3) == 0)
     {
-        u32 r28;
-        u32 foo;
+        u32 compressedSize;
+        u32 size;
 
         if (file_open(fileName, &file) == 0)
             return NULL;
-        if (file_read(&file, lzHeaderBuf, 32, 0) < 0)
+
+        // Read LZSS header
+        if (file_read(&file, lzssHeader, 32, 0) < 0)
             OSPanic("avdisp.c", 822, "cannot dvd_read");
-        r28 = OSRoundUp32B(__lwbrx(lzHeaderBuf, 0));
-        foo = OSRoundUp32B(__lwbrx(lzHeaderBuf, 4));
-        tpl = OSAlloc(foo + 12);
+        compressedSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+        size = OSRoundUp32B(__lwbrx(lzssHeader, 4));
+
+        tpl = OSAlloc(12 + size);  // TPL struct followed by raw file data
         if (tpl == NULL)
             OSPanic("avdisp.c", 826, "cannot OSAlloc\n");
-        r30 = OSAlloc(r28);
-        if (r30 == NULL)
+        lzData = OSAlloc(compressedSize);
+        if (lzData == NULL)
             OSPanic("avdisp.c", 827, "cannot OSAlooc\n");
+
+        // Read whole file
         fileData = (void *)OSRoundUp32B((u32)tpl + 12);
-        if (file_read(&file, r30, r28, 0) < 0)
+        if (file_read(&file, lzData, compressedSize, 0) < 0)
             OSPanic("avdisp.c", 830, "cannot dvd_read");
         if (file_close(&file) != 1)
             OSPanic("avdisp.c", 831, "cannot DVDClose");
-        lzs_decompress(r30, fileData);
-        OSFree(r30);
+
+        // Decompress data
+        lzs_decompress(lzData, fileData);
+        OSFree(lzData);
     }
     else
     {
@@ -480,39 +464,40 @@ struct TPL *load_tpl(char *fileName)
         if (file_open(fileName, &file) == 0)
             return NULL;
         size = file_size(&file);
-        tpl = OSAlloc(OSRoundUp32B(size) + 32);
+        tpl = OSAlloc(OSRoundUp32B(size) + 32);  // TPL struct followed by raw file data
         if (tpl == NULL)
             OSPanic("avdisp.c", 840, "cannot OSAlloc");
         fileData = (void *)OSRoundUp32B((u32)tpl + 12);
         file_read(&file, fileData, size, 0);
         file_close(&file);
     }
-    tpl->numTextures = *(u32 *)fileData;
-    tpl->texHeaders = (struct TPLTextureHeader *)(fileData + 4);
-    tpl->fileData = (void *)fileData;
+
+    tpl->numTextures = *(u32 *)(fileData + 0);  // 0: number of textures
+    tpl->texHeaders = OFFSET_TO_PTR(fileData, 4);  // 4: texture headers
+    tpl->fileData = fileData;
     return tpl;
 }
 
 struct TPL *load_tpl_from_aram(u32 aramSrc, u32 size)
 {
-    u32 r31;
+    u32 alignedSize = OSRoundUp32B(size);
     struct TPL *tpl;
     u8 *fileData;
 
-    r31 = OSRoundUp32B(size);
-    tpl = OSAlloc(r31 + 32);
+    tpl = OSAlloc(alignedSize + 32);
     if (tpl == NULL)
         OSPanic("avdisp.c", 865, "cannot OSAlloc");
     fileData = (void *)OSRoundUp32B((u32)tpl + 12);
-    DCInvalidateRange(fileData, r31);
+    DCInvalidateRange(fileData, alignedSize);
     while (ARGetDMAStatus() != 0)
         ;
     ARStartDMA(ARAM_DIR_ARAM_TO_MRAM, (u32)fileData, aramSrc, size);
     while (ARGetDMAStatus() != 0)
         ;
-    tpl->numTextures = *(u32 *)fileData;
-    tpl->texHeaders = (struct TPLTextureHeader *)(fileData + 4);
-    tpl->fileData = (void *)fileData;
+
+    tpl->numTextures = *(u32 *)(fileData + 0);  // 0: number of textures
+    tpl->texHeaders = OFFSET_TO_PTR(fileData, 4);  // 4: texture headers
+    tpl->fileData = fileData;
     return tpl;
 }
 
@@ -521,7 +506,7 @@ GXTexObj *create_tpl_tex_objs(struct TPL *tpl)
     int i;
     struct TPLTextureHeader *texHdrs = tpl->texHeaders;
     GXTexObj *texObjs = OSAlloc(tpl->numTextures * sizeof(GXTexObj));
-    
+
     for (i = 0; i < tpl->numTextures; i++)
     {
         u8 maxLOD;
@@ -531,23 +516,23 @@ GXTexObj *create_tpl_tex_objs(struct TPL *tpl)
         else
             maxLOD = get_texture_max_lod(texHdrs[i].width, texHdrs[i].height);
         GXInitTexObj(
-            &texObjs[i],  // obj
-            (void *)imagePtr,  // image_ptr
-            texHdrs[i].width,  // width
-            texHdrs[i].height,  // height
+            &texObjs[i],               // obj
+            (void *)imagePtr,          // image_ptr
+            texHdrs[i].width,          // width
+            texHdrs[i].height,         // height
             texHdrs[i].format & 0x1F,  // format
-            GX_REPEAT,  // wrap_s
-            GX_REPEAT,  // wrap_t
-            0);  // mipmap
+            GX_REPEAT,                 // wrap_s
+            GX_REPEAT,                 // wrap_t
+            0);                        // mipmap
         GXInitTexObjLOD(
             &texObjs[i],  // obj
             (maxLOD != 0) ? GX_LIN_MIP_LIN : GX_LIN_MIP_NEAR,  // min_filt
-            GX_LINEAR,  // mag_filt
-            0.0f,  // min_lod
-            maxLOD,  // max_lod
-            0.0f,  // lod_bias
-            GX_FALSE,  // bias_clamp
-            TRUE,  // do_edge_lod
+            GX_LINEAR,    // mag_filt
+            0.0f,         // min_lod
+            maxLOD,       // max_lod
+            0.0f,         // lod_bias
+            GX_FALSE,     // bias_clamp
+            TRUE,         // do_edge_lod
             GX_ANISO_1);  // max_aniso
     }
     return texObjs;
@@ -563,16 +548,16 @@ void func_8008E420(float a)
     lbl_802F20E4 = a;
 }
 
-void func_8008E428(float a, float b, float c)
+void g_avdisp_set_3_floats(float a, float b, float c)
 {
     lbl_802F20D0 = a;
     lbl_802F20D4 = b;
     lbl_802F20D8 = c;
 }
 
-void func_8008E438(struct GMAModelHeader *model)
+void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->unk8, model->unk14, lbl_802F20E4) == 0)
+    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -582,9 +567,9 @@ void func_8008E438(struct GMAModelHeader *model)
         g_avdisp_draw_model_1(model);
 }
 
-void func_8008E49C(struct GMAModelHeader *model)
+void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->unk8, model->unk14, lbl_802F20E4) == 0)
+    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -594,9 +579,9 @@ void func_8008E49C(struct GMAModelHeader *model)
         g_avdisp_draw_model_2(model);
 }
 
-void func_8008E500(struct GMAModelHeader *model)
+void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->unk8, model->unk14, lbl_802F20E4) == 0)
+    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -616,13 +601,13 @@ void func_8008E56C(u32 a)
     lbl_802F20E0 = a;
 }
 
-void func_8008E574(Vec *a)
+void g_avdisp_set_and_normalize_some_vec(Vec *a)
 {
     lbl_802B4E60 = *a;
     mathutil_vec_normalize_len(&lbl_802B4E60);
 }
 
-void func_8008E5B8(float a, float b, float c)
+void g_avdisp_set_3_other_floats(float a, float b, float c)
 {
     lbl_802F20F4 = a;
     lbl_802F20F8 = b;
@@ -636,18 +621,18 @@ void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updat
     zModeUpdateEnable  = updateEnable;
 }
 
-Func802F20EC g_avdisp_set_some_func_1(Func802F20EC a)
+Func802F20EC g_avdisp_set_some_func_1(Func802F20EC func)
 {
-    Func802F20EC temp = lbl_802F20EC;
-    lbl_802F20EC = a;
-    return temp;
+    Func802F20EC old = lbl_802F20EC;
+    lbl_802F20EC = func;
+    return old;
 }
 
-Func802F20F0 g_avdisp_set_some_func_2(Func802F20F0 a)
+Func802F20F0 g_avdisp_set_some_func_2(Func802F20F0 func)
 {
-    Func802F20F0 temp = lbl_802F20F0;
-    lbl_802F20F0 = a;
-    return temp;
+    Func802F20F0 old = lbl_802F20F0;
+    lbl_802F20F0 = func;
+    return old;
 }
 
 struct UnkStruct12
@@ -659,7 +644,7 @@ struct UnkStruct12
 void *func_8008E5F8(struct GMAModelHeader *model)
 {
     struct UnkStruct12 *r3 = (struct UnkStruct12 *)((u8 *)model + model->headerSize);
-    if (model->flags & 0x18)
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         return (u8 *)r3 + r3->unk8;
     else
     {
@@ -670,7 +655,8 @@ void *func_8008E5F8(struct GMAModelHeader *model)
 
 void *func_8008E64C(struct GMAModelHeader *model)
 {
-    if (model->flags & 0x18)
+    // hmm... with these flags, this shouldn't point to the mesh?
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         return (u8 *)model + model->headerSize;
     else
     {
@@ -679,71 +665,66 @@ void *func_8008E64C(struct GMAModelHeader *model)
     }
 }
 
-static inline void *skip_mesh(struct GMAMeshHeader *a);
-
-static inline void *skip_mesh_inlined(struct GMAMeshHeader *a)
+static inline void *skip_mesh(struct GMAMeshHeader *mesh)
 {
-    u8 *r7 = a->unk60;
+    u8 *ptr = mesh->dispListData;
     int i;
+
+    // skip over display lists
     for (i = 0; i < 2; i++)
     {
-        if (a->unk13 & (1 << i))
-            r7 += a->dispListSizes[i];
+        if (mesh->unk13 & (1 << i))
+            ptr += mesh->dispListSizes[i];
     }
-    if (a->unk13 & 0xC)
+
+    // TODO: what is this?
+    if (mesh->unk13 & 0xC)
     {
-        u32 *r4 = (u32 *)r7;
-        r7 += 32;
-        r7 += r4[2];
-        r7 += r4[3];
+        u32 *r4 = (u32 *)ptr;
+        ptr += 32;
+        ptr += r4[2];
+        ptr += r4[3];
     }
-    return (void *)r7;
+
+    return (void *)ptr;
 }
 
-struct UnkStruct14
+void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
 {
-    u32 unk0;
-    u8 filler4[0x60-4];
-};
+    struct GMAMeshHeader *meshPtr = OFFSET_TO_PTR(model, model->headerSize);
 
-void func_8008E698(struct GMAModelHeader *model, u32 b)
-{
-    u8 *r5 = ((u8 *)model + model->headerSize);
-    if (model->flags & 0x18)
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
     {
         u32 i;
-        struct UnkStruct14 *r6 = (struct UnkStruct14 *)(r5 + 32);
+        struct GMAMeshHeader *meshes = OFFSET_TO_PTR(meshPtr, 32);
         for (i = 0; i < model->numLayer1Meshes + model->numLayer2Meshes; i++)
-            r6[i].unk0 |= b;
+            meshes[i].renderFlags |= flags;
     }
     else
     {
         u32 i;
-        struct GMAMeshHeader *r11 = (struct GMAMeshHeader *)r5;
+        struct GMAMeshHeader *mesh = meshPtr;
         for (i = 0; i < model->numLayer1Meshes + model->numLayer2Meshes; i++)
         {
-            r11->unk0 |= b;
-#ifdef NONMATCHING
-            r11 = skip_mesh(r11);
-#else
-            r11 = skip_mesh_inlined(r11);
-#endif
+            mesh->renderFlags |= flags;
+            mesh = skip_mesh(mesh);
         }
     }
 }
 
-static inline void *func_8008E7AC_inline(struct GMAModelHeader *model, struct GMAMeshHeader *r26, struct GMAMaterial *mtrl)
+static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
 {
     u32 r28;
     u32 r23 = lbl_802F20E8;
     struct UnkStruct17 *r29 = (void *)func_80085B88(0x74);
-    if (r26->unk14 != 0xFF)
-        r28 = func_800857A4(r26->unk30, -1);
+
+    if (mesh->unk14 != 0xFF)
+        r28 = func_800857A4(mesh->unk30, -1);
     else
-        r28 = func_80085698(r26->unk30);
+        r28 = func_80085698(mesh->unk30);
     r29->unk4 = lbl_8008F528;
     r29->unk8 = model;
-    r29->unk40 = r26;
+    r29->unk40 = mesh;
     r29->unk3C = mtrl;
     r29->unk44 = r23;
     r29->unk48 = func_800223D0();
@@ -768,77 +749,60 @@ static inline void *func_8008E7AC_inline(struct GMAModelHeader *model, struct GM
     r29->unk70 = lbl_802F211C;
     mathutil_mtxA_to_mtx(r29->unkC);
     func_80085B78(r28, r29);
-    return (void *)skip_mesh(r26);
+    return skip_mesh(mesh);
 }
 
 void g_avdisp_draw_model_1(struct GMAModelHeader *model)
 {
-    struct GMAMeshHeader *r26 = (struct GMAMeshHeader *)((u8 *)model + model->headerSize);
-    struct GMAMaterial *mtrl = (void *)((u8 *)model + 0x40);
+    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
     lbl_802F20E8 = 2;
     func_8009E094(lbl_802F20E8);
-    if (model->flags & 4)
-        func_8008F498(model);
+    if (model->flags & GCMF_STITCHING)
+        g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(model, (void *)r26);
-    //lbl_8008E80C
-    if (model->flags & 0x18)
-        draw_model_0x18(model, r26, mtrl);
+        func_8008FE44(model, mesh);
+
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
+        draw_model_0x18(model, mesh, mtrl);
     else
     {
-    
         for (i = 0; i < model->numLayer1Meshes; i++)
-            r26 = (void *)draw_model_8008F914(model, r26, mtrl);
+            mesh = draw_model_8008F914(model, mesh, mtrl);
         for (i = 0; i < model->numLayer2Meshes; i++)
-            r26 = func_8008E7AC_inline(model, r26, mtrl);
+            mesh = func_8008E7AC_inline(model, mesh, mtrl);
     }
-    //lbl_8008E9B4
+
     lbl_802F20E4 = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
 }
 
-static inline void *skip_mesh(struct GMAMeshHeader *a)
-{
-    u8 *r7 = a->unk60;
-    int i;
-    for (i = 0; i < 2; i++)
-    {
-        if (a->unk13 & (1 << i))
-            r7 += a->dispListSizes[i];
-    }
-    if (a->unk13 & 0xC)
-    {
-        u32 *r4 = (u32 *)r7;
-        r7 += 32;
-        r7 += r4[2];
-        r7 += r4[3];
-    }
-    return (void *)r7;
-}
-
 void g_avdisp_draw_model_2(struct GMAModelHeader *model)
 {
+    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
-    void *mesh = (u8 *)model + model->headerSize;
-    struct GMAMaterial *mtrl = (struct GMAMaterial *)((u8 *)model + 0x40);
+
     lbl_802F20E8 = 2;
     func_8009E094(lbl_802F20E8);
-    if (model->flags & 0x4)
-        func_8008F498(model);
+    if (model->flags & GCMF_STITCHING)
+        g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
         func_8008FE44(model, mesh);
-    if (model->flags & 0x18)
+
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         draw_model_0x18(model, mesh, mtrl);
     else
     {
         for (i = 0; i < model->numLayer1Meshes; i++)
-            mesh = (void *)draw_model_8008F914(model, mesh, mtrl);
+            mesh = draw_model_8008F914(model, mesh, mtrl);
         for (i = 0; i < model->numLayer2Meshes; i++)
-            mesh = (void *)draw_model_8008F914(model, mesh, mtrl);
+            mesh = draw_model_8008F914(model, mesh, mtrl);
     }
+
     lbl_802F20E4 = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
@@ -846,19 +810,22 @@ void g_avdisp_draw_model_2(struct GMAModelHeader *model)
 
 void g_avdisp_draw_model_3(struct GMAModelHeader *model)
 {
-    struct GMAMeshHeader *r24 = (struct GMAMeshHeader *)((u32)model + model->headerSize);
-    struct GMAMaterial *mtrl = (struct GMAMaterial *)((u8 *)model + 0x40);
+    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
+
     lbl_802F20E8 = 2;
     func_8009E094(lbl_802F20E8);
-    if (model->flags & 0x4)
-        func_8008F498(model);
+    if (model->flags & GCMF_STITCHING)
+        g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(model, (void *)r24);
+        func_8008FE44(model, mesh);
+
     for (i = 0; i < model->numLayer1Meshes; i++)
-        r24 = (void *)func_8008E7AC_inline(model, r24, mtrl);
+        mesh = (void *)func_8008E7AC_inline(model, mesh, mtrl);
     for (i = 0; i < model->numLayer2Meshes; i++)
-        r24 = (void *)func_8008E7AC_inline(model, r24, mtrl);
+        mesh = (void *)func_8008E7AC_inline(model, mesh, mtrl);
+
     lbl_802F20E4 = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
@@ -866,19 +833,22 @@ void g_avdisp_draw_model_3(struct GMAModelHeader *model)
 
 void g_avdisp_draw_model_4(struct GMAModelHeader *model)
 {
-    struct GMAMeshHeader *r31 = (struct GMAMeshHeader *)((u32)model + model->headerSize);
-    struct GMAMaterial *mtrl = (struct GMAMaterial *)((u8 *)model + 0x40);
+    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
+
     lbl_802F20E8 = 2;
-    if (model->flags & 0x4)
-        func_8008F498(model);
-    if (model->flags & 0x18)
-        draw_model_0x18(model, r31, mtrl);
+    if (model->flags & GCMF_STITCHING)
+        g_iteratively_multiply_model_matrices(model);
+
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
+        draw_model_0x18(model, mesh, mtrl);
     else
     {
         for (i = 0; i < model->numLayer1Meshes; i++)
-            r31 = (void *)draw_model_8008F914(model, r31, mtrl);
+            mesh = draw_model_8008F914(model, mesh, mtrl);
     }
+
     lbl_802F20E4 = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
@@ -984,16 +954,16 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
         mtrl->unk7);  // max_aniso
 }
 
-static struct GMAMeshHeader *func_8008F1E8_inline(struct GMAMeshHeader *mesh)
+static inline struct GMAMeshHeader *init_mesh_render_flags(struct GMAMeshHeader *mesh)
 {
-    if (mesh->unk1C & 0x800)
-        mesh->unk0 |= 0x100;
+    if (mesh->vtxFlags & 0x800)
+        mesh->renderFlags |= 0x100;
     if (mesh->unk12 == 0)
-        mesh->unk0 |= 0x80;
-    return skip_mesh((void *)mesh);
+        mesh->renderFlags |= 0x80;
+    return skip_mesh(mesh);
 }
 
-void *init_model(struct GMAModelHeader *model, struct TPL *tpl, u8 *c)
+GXTexObj *init_model(struct GMAModelHeader *model, struct TPL *tpl, GXTexObj *texObj)
 {
     struct GMAMaterial *materials;
     struct GMAMeshHeader *mesh;
@@ -1001,67 +971,73 @@ void *init_model(struct GMAModelHeader *model, struct TPL *tpl, u8 *c)
 
     if (tpl == NULL)
         model->numMaterials = 0;
-    materials = (void *)((u32)model + 0x40);
+    materials = (void *)model->materials;
+
+    // Allocate GX texture objects for materials
     if (model->numMaterials != 0)
     {
-        if (c != NULL)
+        if (texObj != NULL)
         {
-            model->texObjs = (void *)c;
-            c += model->numMaterials * 32;
+            model->texObjs = texObj;
+            texObj += model->numMaterials;
         }
         else
-            model->texObjs = OSAlloc(model->numMaterials * 32);
+            model->texObjs = OSAlloc(model->numMaterials * sizeof(GXTexObj));
         if (model->texObjs == NULL)
             OSPanic("avdisp.c", 0x58B, "cannot OSAlloc");
     }
     else
         model->texObjs = NULL;
 
+    // Initialize materials
     for (i = 0; i < model->numMaterials; i++)
     {
-        materials[i].texObj = (void *)&model->texObjs[i];
+        materials[i].texObj = &model->texObjs[i];
         init_material(&materials[i], &tpl->texHeaders[materials[i].unk4], tpl);
     }
-    mesh = (void *)((u32)model + model->headerSize);
-    if (model->flags & 0x18)
-        mesh = (void *)((u8 *)mesh + 32);
+
+    // Get pointer to mesh
+    // If model is GCMF_SKIN or GCMF_EFFECTIVE, then the mesh offset is 32 bytes more
+    mesh = OFFSET_TO_PTR(model, model->headerSize);
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
+        mesh = OFFSET_TO_PTR((u32)mesh, 32);
+
     for (i = 0; i < model->numLayer1Meshes; i++)
     {
         if (tpl == NULL)
             mesh->unk12 = 0;
-        if (model->flags & 0x18)
+        if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
             struct GMAMeshHeader *r3 = mesh;
-            //mesh += 3;
-            mesh = (void *)((u8 *)mesh + 3 * 32);
-            func_8008F1E8_inline(r3);
+            mesh++;
+            init_mesh_render_flags(r3);
         }
         else
-            mesh = func_8008F1E8_inline(mesh);
+            mesh = init_mesh_render_flags(mesh);
     }
     for (i = 0; i < model->numLayer2Meshes; i++)
     {
         if (tpl == NULL)
             mesh->unk12 = 0;
-        if (model->flags & 0x18)
+        if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
             struct GMAMeshHeader *r3 = mesh;
-            //mesh += 3;
-            mesh = (void *)((u8 *)mesh + 3 * 32);
-            func_8008F1E8_inline(r3);
+            mesh++;
+            init_mesh_render_flags(r3);
         }
         else
-            mesh = func_8008F1E8_inline(mesh);
+            mesh = init_mesh_render_flags(mesh);
     }
-    return c;
+    return texObj;
 }
 
-void func_8008F498(struct GMAModelHeader *model)
+void g_iteratively_multiply_model_matrices(struct GMAModelHeader *model)
 {
     unsigned int i;
-    for (i = 0; i < model->unk1E; i++)
-        mathutil_mtx_mult(mathutilData->mtxA, *avdispMatrixList[i], lbl_802F20CC[i]);
-    func_8008F8A4(model->unk28);
+
+    for (i = 0; i < model->mtxCount; i++)
+        mathutil_mtx_mult(mathutilData->mtxA, *avdispMtxPtrList[i], g_transformMtxList[i]);
+    func_8008F8A4(model->mtxIndexes);
 }
 
 void lbl_8008F528(struct UnkStruct17 *a)
@@ -1077,8 +1053,8 @@ void lbl_8008F528(struct UnkStruct17 *a)
     u32 r22;
     GXColor sp10;
     GXColor spC;
-    
-    if ((a->unk40->unk0 & 0x1) == 0)
+
+    if ((a->unk40->renderFlags & 0x1) == 0)
         func_800223D8(a->unk48);
     func_8009AA24(a->unkC, 0);
     mathutil_mtxA_from_mtx(a->unkC);
@@ -1205,13 +1181,13 @@ void func_8008F890(u8 a, u8 b, u8 c)
     lbl_802F2124.b = c;
 }
 
-void func_8008F8A4(u8 *a)
+void func_8008F8A4(u8 *mtxIndexes)
 {
     int i;
     for (i = 0; i < 8; i++)
     {
-        if ((s32)a[i] != 0xFF)
-            func_8009AA24(&lbl_802F20CC[a[i]], i + 1);
+        if ((s32)mtxIndexes[i] != 0xFF)
+            func_8009AA24(&g_transformMtxList[mtxIndexes[i]], i + 1);
     }
 }
 
@@ -1226,8 +1202,8 @@ struct UnkStruct25
 struct UnkStruct27
 {
     u8 filler0[4];
-    struct GMAMeshHeader *unk4;
-    void *unk8;
+    struct GMAMeshHeader *mesh;
+    struct GMAMaterial *mtrl;
     u8 fillerC[0x38-0xC];
 };
 
@@ -1239,70 +1215,37 @@ struct UnkStruct31
     u8 fillerC[0x20-0xC];
 };
 
-static u8 func_8008F914_inline(void *b, void *c)
-{
-    struct UnkStruct27 sp20;
-
-    if (lbl_802F20F0 != NULL)
-    {
-        sp20.unk4 = b;
-        sp20.unk8 = c;
-        return lbl_802F20F0(&sp20);
-    }
-    else
-    {
-        func_80090524(b, c);
-        return 1;
-    }
-}
-
-static u8 call_lbl_802F20F0(void *a)
-{
-    void *dummy = a;
-    void *dummy2 = a;
-    return lbl_802F20F0(dummy);
-}
-
-// Should really be func_8008F914_inline, but different stack usage
-static u8 func_8008F914_inline_hack(void *b, void *c)
-{
-    struct UnkStruct27 sp20;
-
-    if (lbl_802F20F0 != NULL)
-    {
-        sp20.unk4 = b;
-        sp20.unk8 = c;
-        return call_lbl_802F20F0(&sp20);
-    }
-    else
-    {
-        func_80090524(b, c);
-        return 1;
-    }
-}
-
-u32 draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
+struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
 {
     int i;
     u8 *dlist;
     s32 r30;
+    u8 bvar;
+    struct UnkStruct27 sp20;
+    u8 unused[12];
 
-    if (mesh->unk0 & 2)
+    if (mesh->renderFlags & 2)
         r30 = 0;
     else
         r30 = 1;
-    if (model->flags & 4)
+    if (model->flags & GCMF_STITCHING)
         func_8008F8A4(mesh->unk20);  // inlined
-    //lbl_8008F998
-    func_8009A9B4(mesh->unk1C);
-    dlist = mesh->unk60;
+    func_8009A9B4(mesh->vtxFlags);
+    dlist = mesh->dispListData;
 
-    //lbl_8008F9DC
-#ifdef NONMATCHING
-    if (func_8008F914_inline(mesh, mtrl) != 0)
-#else
-    if (func_8008F914_inline_hack(mesh, mtrl) != 0)
-#endif
+    if (lbl_802F20F0 != NULL)
+    {
+        sp20.mesh = (void *)mesh;
+        sp20.mtrl = mtrl;
+        bvar = lbl_802F20F0(&sp20);
+    }
+    else
+    {
+        func_80090524((void *)mesh, (void *)mtrl);
+        bvar = 1;
+    }
+
+    if (bvar)
     {
         for (i = 0; i < 2; i++)
         {
@@ -1316,7 +1259,6 @@ u32 draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh
                 GXCallDisplayList(dlist, mesh->dispListSizes[i]);
                 dlist += mesh->dispListSizes[i];
             }
-            //lbl_8008FA44
             if (r30 != 0)
                 r30 = 2;
         }
@@ -1336,12 +1278,11 @@ u32 draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh
             }
         }
     }
-    //lbl_8008FB18
     else
     {
-        return (u32)skip_mesh(mesh);  // inlined
+        return skip_mesh(mesh);
     }
-    return (u32)dlist;
+    return (struct GMAMeshHeader *)dlist;
 }
 
 #ifdef __MWERKS__
@@ -1413,18 +1354,33 @@ struct UnkStruct29
     u32 unk8;
 };
 
-void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *b, struct UnkStruct29 *c, u8 *d)
+void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct UnkStruct29 *c, u8 *d)
 {
     int i;
     int r30;
     u8 *r29 = (u8 *)c + c->unk8;
+    u8 bvar;
+    struct UnkStruct27 sp20;
 
-    if (mesh->unk0 & 2)
+    if (mesh->renderFlags & 2)
         r30 = 0;
     else
         r30 = 2;
-    func_8009A9B4(mesh->unk1C);
-    if (func_8008F914_inline(mesh, b) != 0)
+    func_8009A9B4(mesh->vtxFlags);
+
+    if (lbl_802F20F0 != NULL)
+    {
+        sp20.mesh = (void *)mesh;
+        sp20.mtrl = mtrl;
+        bvar = lbl_802F20F0(&sp20);
+    }
+    else
+    {
+        func_80090524((void *)mesh, (void *)mtrl);
+        bvar = 1;
+    }
+
+    if (bvar)
     {
         __GXSetDirtyState();
         for (i = 0; i < 2; i++)
@@ -1439,7 +1395,7 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *b, struct Unk
                     gx->unk204 = r3;
                     func_8008D6BC(r3);
                 }
-                func_8008FBB0(mesh->unk1C, r29, d, mesh->dispListSizes[i]);
+                func_8008FBB0(mesh->vtxFlags, r29, d, mesh->dispListSizes[i]);
                 d += mesh->dispListSizes[i] * 4;
             }
             if (r30 != 0)
@@ -1453,7 +1409,8 @@ void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, stru
 {
     int i;  // r31
     u8 *r30 = b->unk20;
-    u8 *r6 = (u8 *)b + b->unkC;
+    struct GMAMeshHeader *r6 = (void *)((u8 *)b + b->unkC.asU32);
+
     lbl_802F20E8 = 1;
     for (i = 0; i < model->numLayer1Meshes; i++)
     {
@@ -1462,33 +1419,16 @@ void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, stru
     }
     for (i = 0; i < model->numLayer2Meshes; i++)
     {
-        r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, r6);
+        r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
         r30 += 0x60;
     }
 }
 
-struct UnkStruct30
-{
-    u32 unk0;
-    GXColor unk4;
-    GXColor unk8;
-    u8 unkC;
-    u8 unkD;
-    u8 unkE;
-    u8 fillerF[0x11-0xF];
-    u8 unk11;
-    u8 unk12;
-    u8 filler13[0x16-0x13];
-    u16 unk16;
-    u8 filler18[0x40-0x18];
-    u32 unk40;
-};
-
-void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
+void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
 {
     lbl_802B4ECC.unk0 = 1;
-    if (model->flags & 0x18)
-        b = (struct UnkStruct30 *)((u8 *)b + 0x20);
+    if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
+        mesh = (struct GMAMeshHeader *)((u8 *)mesh + 0x20);
     if (lbl_802F2108 != 0)
         GXLoadTexMtxImm(lbl_802B4E6C, GX_TEXMTX1, GX_MTX3x4);
     else
@@ -1506,17 +1446,17 @@ void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
         func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
     else
         func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
-    if (b->unk0 & 0x88)
-        lbl_802B4ECC.unk10 = b->unk4;
+    if (mesh->renderFlags & 0x88)
+        lbl_802B4ECC.unk10 = mesh->unk4;
     else
     {
         lbl_802B4ECC.unk10.r = 255;
         lbl_802B4ECC.unk10.g = 255;
         lbl_802B4ECC.unk10.b = 255;
     }
-    lbl_802B4ECC.unk10.a = b->unk11;
-    if (b->unk0 & 0x8)
-        lbl_802B4ECC.unk14 = b->unk8;
+    lbl_802B4ECC.unk10.a = mesh->unk11;
+    if (mesh->renderFlags & 0x8)
+        lbl_802B4ECC.unk14 = mesh->unk8;
     else
     {
         lbl_802B4ECC.unk14.r = 255;
@@ -1524,10 +1464,10 @@ void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
         lbl_802B4ECC.unk14.b = 255;
     }
     lbl_802B4ECC.unk14.a = 255;
-    func_8008D6D4(b);
-    lbl_802B4ECC.unk18.r = b->unkC;
-    lbl_802B4ECC.unk18.g = b->unkD;
-    lbl_802B4ECC.unk18.b = b->unkE;
+    func_8008D6D4(mesh);
+    lbl_802B4ECC.unk18.r = mesh->unkC.asColor.r;
+    lbl_802B4ECC.unk18.g = mesh->unkC.asColor.g;
+    lbl_802B4ECC.unk18.b = mesh->unkC.asColor.b;
     lbl_802B4ECC.unk2 = 0;
     lbl_802B4ECC.unk1C = 15;
     lbl_802B4ECC.unk20 = 7;
@@ -1542,10 +1482,10 @@ void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
         func_8009F33C(3, lbl_802F2118);
     lbl_802B4ECC.unk24 = 4;
     lbl_802B4ECC.unk28 = 5;
-    if (b->unk0 & 0x20)
-        lbl_802B4ECC.unk24 = b->unk40 & 0xF;
-    if (b->unk0 & 0x40)
-        lbl_802B4ECC.unk28 = (b->unk40 >> 4) & 0xF;
+    if (mesh->renderFlags & 0x20)
+        lbl_802B4ECC.unk24 = mesh->unk40 & 0xF;
+    if (mesh->renderFlags & 0x40)
+        lbl_802B4ECC.unk28 = (mesh->unk40 >> 4) & 0xF;
     func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
     lbl_802B4ECC.unk1 = -1;
     lbl_802B4ECC.unk2C[0] = -1;
@@ -1560,8 +1500,8 @@ void func_8008FE44(struct GMAModelHeader *model, struct UnkStruct30 *b)
     lbl_802B4ECC.unk4C = 0;
     lbl_802B4ECC.unk50 = 0;
     lbl_802B4ECC.unk54 = 0;
-    mathutil_mtxA_tf_point(&model->unk8, &lbl_802B4ECC.unk58);
-    lbl_802B4ECC.unk58.z -= model->unk14;
+    mathutil_mtxA_tf_point(&model->boundingSphereCenter, &lbl_802B4ECC.unk58);
+    lbl_802B4ECC.unk58.z -= model->boundingSphereRadius;
     mathutil_vec_normalize_len(&lbl_802B4ECC.unk58);
 }
 
@@ -1573,7 +1513,7 @@ void func_8009015C(void)
 
     mathutil_mtxA_push();
     MTXLookAt(mtx, &cameraPos, &cameraUp, &lbl_802B4ECC.unk58);
-    mathutil_mtxA_from_mtx(mtx);    
+    mathutil_mtxA_from_mtx(mtx);
     mathutilData->mtxA[0][3] = 0.5f;
     mathutilData->mtxA[1][0] *= -1.0f;
     mathutilData->mtxA[1][1] *= -1.0f;
@@ -1605,9 +1545,9 @@ void func_80090268(void)
     target.x = (sp44.x + target.x) * 0.5f;
     target.y = (sp44.y + target.y) * 0.5f;
     target.z = (sp44.z + target.z) * 0.5f;
-    cameraUp.x = target.x - sp44.x; 
-    cameraUp.y = target.y - sp44.y; 
-    cameraUp.z = target.z - sp44.z; 
+    cameraUp.x = target.x - sp44.x;
+    cameraUp.y = target.y - sp44.y;
+    cameraUp.z = target.z - sp44.z;
     MTXLookAt(mtx, &cameraPos, &cameraUp, &target);
     mathutil_mtxA_from_mtx(mtx);
     mathutilData->mtxA[0][3] = 0.5f;
@@ -1669,7 +1609,7 @@ struct UnkStruct32
 
     u32 unk10;  // 8C
     u32 unk14;  // 90
-    
+
     u32 unk18;  // 94
     u32 unk1C;  // 98
     u32 unk20;  // 9C
@@ -1742,7 +1682,7 @@ static inline void inline_test5(s8 c)
 //#if 1
 // stack differences
 // DOL: 0x8C444
-void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
+void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
 {
     struct UnkStruct32 sp7C;  // correct
     GXColor sp78;  // correct
@@ -1752,7 +1692,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     s32 r14;
     s32 r15_;
     s32 r16_;
-    
+
     sp7C.tevStage = GX_TEVSTAGE0;  // 7C
     sp7C.texCoordID = 0;  // 80
     sp7C.unk8 = 0x1E;  // 84
@@ -1764,28 +1704,28 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     sp7C.unk18 = 0;  // 94
     sp7C.unk1C = 1;  // 98
     sp7C.unk20 = 0;  // 9C
-    
+
     sp7C.unkC = 1;  // 88
     sp7C.unk8 = 0x24;  // 84
     sp7C.unk14 = 0x49;  // 90
     sp7C.unk18 = 4;  // 94
-    
-    if (lbl_802B4ECC.unk18.r != a->unkC
-     || lbl_802B4ECC.unk18.g != a->unkD
-     || lbl_802B4ECC.unk18.b != a->unkE)
+
+    if (lbl_802B4ECC.unk18.r != a->unkC.asColor.r
+     || lbl_802B4ECC.unk18.g != a->unkC.asColor.g
+     || lbl_802B4ECC.unk18.b != a->unkC.asColor.b)
     {
         lbl_802B4ECC.unk50 = 0;
         lbl_802B4ECC.unk54 = 0;
-        lbl_802B4ECC.unk18.r = a->unkC;
-        lbl_802B4ECC.unk18.g = a->unkD;
-        lbl_802B4ECC.unk18.b = a->unkE;
+        lbl_802B4ECC.unk18.r = a->unkC.asColor.r;
+        lbl_802B4ECC.unk18.g = a->unkC.asColor.g;
+        lbl_802B4ECC.unk18.b = a->unkC.asColor.b;
     }
     //lbl_800905F8
-    if ((a->unk0 & 1) == 0)
+    if ((a->renderFlags & 1) == 0)
     {
         GXColor color_r5;
         int r0 = 0;
-        if (a->unk0 & 0x88)
+        if (a->renderFlags & 0x88)
         {
             sp78.r = a->unk4.r;
             sp78.g = a->unk4.g;
@@ -1808,7 +1748,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
             lbl_802B4ECC.unk10 = sp78;
         }
         //lbl_8009069C
-        if (a->unk0 & 8)
+        if (a->renderFlags & 8)
         {
             color_r5.r = a->unk8.r;
             color_r5.g = a->unk8.g;
@@ -1837,9 +1777,9 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     //lbl_8009071C
     r23 = 10;
     r22 = 5;
-    if (a->unk0 & 1)
+    if (a->renderFlags & 1)
     {
-        if (a->unk0 & 0x100)
+        if (a->renderFlags & 0x100)
         {
             if (lbl_802B4ECC.unk2 != 2)
             {
@@ -1859,7 +1799,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
         else
         {
             lbl_802B4ECC.unk2 = 1;
-            if (a->unk0 & 0x88)
+            if (a->renderFlags & 0x88)
             {
                 sp78.r = a->unk4.r;
                 sp78.g = a->unk4.g;
@@ -1883,7 +1823,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     //lbl_80090814
     else
     {
-        if (a->unk0 & 0x100)
+        if (a->renderFlags & 0x100)
         {
             if (lbl_802B4ECC.unk2 != 4)
             {
@@ -1933,10 +1873,10 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
         }
     }
     //lbl_800908D4
-    
+
     if (lbl_802F211C != 0)
     {
-        if (a->unk0 & 4)
+        if (a->renderFlags & 4)
             func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
         else
             func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
@@ -1952,7 +1892,7 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
         lbl_802B4ECC.unk20 = r22;
         r14 = 1;
     }
-    if (a->unk0 & 0x80)
+    if (a->renderFlags & 0x80)
     {
         if (lbl_802B4ECC.unk1 != 0 || r21 != 0 || r14 != 0)
         {
@@ -2240,9 +2180,9 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     //lbl_800911D0
     r15_ = 4;
     r16_ = 5;
-    if (a->unk0 & 0x20)
+    if (a->renderFlags & 0x20)
         r15_ = a->unk40 & 0xF;
-    if (a->unk0 & 0x40)
+    if (a->renderFlags & 0x40)
         r16_ = (a->unk40 >> 4) & 0xF;
     if (lbl_802B4ECC.unk24 != r15_ || lbl_802B4ECC.unk28 != r16_)
     {
@@ -2252,13 +2192,13 @@ void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
     }
     //lbl_8009123C
     lbl_802B4ECC.unk0 = 0;
-    if (a->unk0 & 0x80)
+    if (a->renderFlags & 0x80)
         lbl_802B4ECC.unk1 = 0;
     else
         lbl_802B4ECC.unk1 = a->unk12;
 }
 #else
-asm void func_80090524(struct UnkStruct30 *a, struct UnkStruct31 *b)
+asm void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
 {
 #define _SDA_BASE_ 0
 #define _SDA2_BASE_ 0
@@ -2403,7 +2343,7 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     }
     // unrolled loop?
     tevStage = a->tevStage;
-    
+
     GXSetTevDirect(tevStage);
     func_8009E2C8(a->tevStage, 0, 0);
     func_8009F180(tevStage, 13);
@@ -2413,7 +2353,7 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     func_8009E800(tevStage, 0, 0, 0, 1, 3);
     func_8009E70C(tevStage, 7, 7, 7, c);
     func_8009E918(tevStage, 0, 0, 0, 1, 3);
-    
+
     GXSetTevDirect(tevStage + 1);
     func_8009E2C8(a->tevStage, 0, 0);
     GXSetTexCoordGen2(a->texCoordID + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);

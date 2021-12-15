@@ -1,6 +1,6 @@
 char string_No_Define_3[] = "No Define";
 
-char *lbl_801829A0[] =
+char *bmpEndNames[] =
 {
     "end_segalogo",
     "end_av_01",

@@ -303,7 +303,7 @@ void func_8004424C(void)
             mathutil_mtxA_scale_xyz(0.5 * f30, 1.0f, 1.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-            func_8008E438(lbl_802F1F2C);
+            g_avdisp_maybe_draw_model_1(lbl_802F1F2C);
         }
     }
 }

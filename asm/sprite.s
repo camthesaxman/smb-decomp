@@ -373,8 +373,8 @@ lbl_800703C8:  ;# 0
 /* 800703D0 0006C2F0  48 00 01 BC */	b lbl_8007058C
 lbl_800703D4:  ;# 1
 /* 800703D4 0006C2F4  A0 FC 00 3C */	lhz r7, 0x3c(r28)
-/* 800703D8 0006C2F8  3C 60 80 18 */	lis r3, lbl_80181CB4@ha
-/* 800703DC 0006C2FC  38 A3 1C B4 */	addi r5, r3, lbl_80181CB4@l
+/* 800703D8 0006C2F8  3C 60 80 18 */	lis r3, bitmapGroups@ha
+/* 800703DC 0006C2FC  38 A3 1C B4 */	addi r5, r3, bitmapGroups@l
 /* 800703E0 0006C300  54 E0 C6 3E */	rlwinm r0, r7, 0x18, 0x18, 0x1f
 /* 800703E4 0006C304  1C 00 00 18 */	mulli r0, r0, 0x18
 /* 800703E8 0006C308  7C 65 02 14 */	add r3, r5, r0
@@ -384,11 +384,11 @@ lbl_800703D4:  ;# 1
 /* 800703F8 0006C318  7C E6 46 70 */	srawi r6, r7, 8  ;# unk3C >> 8
 /* 800703FC 0006C31C  4C C6 31 82 */	crclr 6
 /* 80070400 0006C320  1C 06 00 18 */	mulli r0, r6, 0x18
-/* 80070404 0006C324  7C 65 02 14 */	add r3, r5, r0      ;# &lbl_80181CB4[unk3C>>8]
-/* 80070408 0006C328  3C 80 80 18 */	lis r4, lbl_80181E04@ha
+/* 80070404 0006C324  7C 65 02 14 */	add r3, r5, r0      ;# &bitmapGroups[unk3C>>8]
+/* 80070408 0006C328  3C 80 80 18 */	lis r4, bitmapNames@ha
 /* 8007040C 0006C32C  80 A3 00 08 */	lwz r5, 8(r3)
 /* 80070410 0006C330  54 C6 10 3A */	slwi r6, r6, 2
-/* 80070414 0006C334  38 04 1E 04 */	addi r0, r4, lbl_80181E04@l
+/* 80070414 0006C334  38 04 1E 04 */	addi r0, r4, bitmapNames@l
 /* 80070418 0006C338  7C 60 32 14 */	add r3, r0, r6
 /* 8007041C 0006C33C  80 83 00 00 */	lwz r4, 0(r3)
 /* 80070420 0006C340  54 E0 15 BA */	rlwinm r0, r7, 2, 0x16, 0x1d
@@ -402,8 +402,8 @@ lbl_80070434:
 /* 8007043C 0006C35C  48 00 01 50 */	b lbl_8007058C
 lbl_80070440:  ;# 2
 /* 80070440 0006C360  A3 BC 00 3C */	lhz r29, 0x3c(r28)
-/* 80070444 0006C364  3C 60 80 18 */	lis r3, lbl_80181CB4@ha
-/* 80070448 0006C368  38 A3 1C B4 */	addi r5, r3, lbl_80181CB4@l
+/* 80070444 0006C364  3C 60 80 18 */	lis r3, bitmapGroups@ha
+/* 80070448 0006C368  38 A3 1C B4 */	addi r5, r3, bitmapGroups@l
 /* 8007044C 0006C36C  57 A0 C6 3E */	rlwinm r0, r29, 0x18, 0x18, 0x1f  ;# (r29 >> 8) & 0xFF
 /* 80070450 0006C370  1C 00 00 18 */	mulli r0, r0, 0x18
 /* 80070454 0006C374  7C 65 02 14 */	add r3, r5, r0
@@ -415,10 +415,10 @@ lbl_80070440:  ;# 2
 /* 8007046C 0006C38C  4C C6 31 82 */	crclr 6
 /* 80070470 0006C390  1C 06 00 18 */	mulli r0, r6, 0x18
 /* 80070474 0006C394  7C 65 02 14 */	add r3, r5, r0
-/* 80070478 0006C398  3C 80 80 18 */	lis r4, lbl_80181E04@ha
+/* 80070478 0006C398  3C 80 80 18 */	lis r4, bitmapNames@ha
 /* 8007047C 0006C39C  80 A3 00 08 */	lwz r5, 8(r3)
 /* 80070480 0006C3A0  54 C6 10 3A */	slwi r6, r6, 2
-/* 80070484 0006C3A4  38 04 1E 04 */	addi r0, r4, lbl_80181E04@l
+/* 80070484 0006C3A4  38 04 1E 04 */	addi r0, r4, bitmapNames@l
 /* 80070488 0006C3A8  7C 60 32 14 */	add r3, r0, r6
 /* 8007048C 0006C3AC  80 83 00 00 */	lwz r4, 0(r3)
 /* 80070490 0006C3B0  57 A0 15 BA */	rlwinm r0, r29, 2, 0x16, 0x1d
@@ -499,7 +499,7 @@ call_something_with_bmp_bmp_com:
 /* 800705A4 0006C4C4  7C 08 02 A6 */	mflr r0
 /* 800705A8 0006C4C8  90 01 00 04 */	stw r0, 4(r1)
 /* 800705AC 0006C4CC  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800705B0 0006C4D0  4B FB 5C 55 */	bl g_something_with_bmp_bmp_com
+/* 800705B0 0006C4D0  4B FB 5C 55 */	bl bitmap_load_group
 /* 800705B4 0006C4D4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800705B8 0006C4D8  38 21 00 08 */	addi r1, r1, 8
 /* 800705BC 0006C4DC  7C 08 03 A6 */	mtlr r0
@@ -510,7 +510,7 @@ func_800705C4:
 /* 800705C4 0006C4E4  7C 08 02 A6 */	mflr r0
 /* 800705C8 0006C4E8  90 01 00 04 */	stw r0, 4(r1)
 /* 800705CC 0006C4EC  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800705D0 0006C4F0  4B FB 5C 91 */	bl g_something_with_freeing_memory
+/* 800705D0 0006C4F0  4B FB 5C 91 */	bl bitmap_free_group
 /* 800705D4 0006C4F4  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800705D8 0006C4F8  38 21 00 08 */	addi r1, r1, 8
 /* 800705DC 0006C4FC  7C 08 03 A6 */	mtlr r0
@@ -527,7 +527,7 @@ lbl_800705F8:
 /* 800705F8 0006C518  2C 1F 00 00 */	cmpwi r31, 0
 /* 800705FC 0006C51C  41 82 00 0C */	beq lbl_80070608
 /* 80070600 0006C520  7F E3 FB 78 */	mr r3, r31
-/* 80070604 0006C524  4B FB 5C 5D */	bl g_something_with_freeing_memory
+/* 80070604 0006C524  4B FB 5C 5D */	bl bitmap_free_group
 lbl_80070608:
 /* 80070608 0006C528  3B FF 00 01 */	addi r31, r31, 1
 /* 8007060C 0006C52C  2C 1F 00 0E */	cmpwi r31, 0xe
@@ -938,8 +938,8 @@ lbl_80070BB4:
 /* 80070BC0 0006CAE0  48 00 00 E4 */	b lbl_80070CA4
 lbl_80070BC4:
 /* 80070BC4 0006CAE4  A0 F8 00 3C */	lhz r7, 0x3c(r24)
-/* 80070BC8 0006CAE8  3C 60 80 18 */	lis r3, lbl_80181CB4@ha
-/* 80070BCC 0006CAEC  38 A3 1C B4 */	addi r5, r3, lbl_80181CB4@l
+/* 80070BC8 0006CAE8  3C 60 80 18 */	lis r3, bitmapGroups@ha
+/* 80070BCC 0006CAEC  38 A3 1C B4 */	addi r5, r3, bitmapGroups@l
 /* 80070BD0 0006CAF0  54 E0 C6 3E */	rlwinm r0, r7, 0x18, 0x18, 0x1f
 /* 80070BD4 0006CAF4  1C 00 00 18 */	mulli r0, r0, 0x18
 /* 80070BD8 0006CAF8  7C 65 02 14 */	add r3, r5, r0
@@ -950,12 +950,12 @@ lbl_80070BC4:
 /* 80070BEC 0006CB0C  4C C6 31 82 */	crclr 6
 /* 80070BF0 0006CB10  1C 08 00 18 */	mulli r0, r8, 0x18
 /* 80070BF4 0006CB14  7C 65 02 14 */	add r3, r5, r0
-/* 80070BF8 0006CB18  3C 80 80 18 */	lis r4, lbl_80181E04@ha
+/* 80070BF8 0006CB18  3C 80 80 18 */	lis r4, bitmapNames@ha
 /* 80070BFC 0006CB1C  80 A3 00 08 */	lwz r5, 8(r3)
 /* 80070C00 0006CB20  3C C0 80 1C */	lis r6, lbl_801C1264@ha
 /* 80070C04 0006CB24  38 66 12 64 */	addi r3, r6, lbl_801C1264@l
 /* 80070C08 0006CB28  55 06 10 3A */	slwi r6, r8, 2
-/* 80070C0C 0006CB2C  38 04 1E 04 */	addi r0, r4, lbl_80181E04@l
+/* 80070C0C 0006CB2C  38 04 1E 04 */	addi r0, r4, bitmapNames@l
 /* 80070C10 0006CB30  7C 80 32 14 */	add r4, r0, r6
 /* 80070C14 0006CB34  80 84 00 00 */	lwz r4, 0(r4)
 /* 80070C18 0006CB38  54 E0 15 BA */	rlwinm r0, r7, 2, 0x16, 0x1d
@@ -4010,7 +4010,7 @@ func_80073600:
 /* 80073634 0006F554  40 80 00 08 */	bge lbl_8007363C
 /* 80073638 0006F558  48 00 01 D4 */	b lbl_8007380C
 lbl_8007363C:
-/* 8007363C 0006F55C  80 0D 9B 20 */	lwz r0, lbl_802F1D00@sda21(r13)
+/* 8007363C 0006F55C  80 0D 9B 20 */	lwz r0, g_bmpUnkCountOfSomething@sda21(r13)
 /* 80073640 0006F560  2C 00 01 00 */	cmpwi r0, 0x100
 /* 80073644 0006F564  40 82 00 30 */	bne lbl_80073674
 /* 80073648 0006F568  80 BE 00 00 */	lwz r5, 0(r30)
@@ -4032,10 +4032,10 @@ lbl_80073674:
 /* 80073684 0006F5A4  38 9E 00 00 */	addi r4, r30, 0
 /* 80073688 0006F5A8  38 A0 00 50 */	li r5, 0x50
 /* 8007368C 0006F5AC  4B F8 FD 89 */	bl memcpy
-/* 80073690 0006F5B0  80 6D 9B 20 */	lwz r3, lbl_802F1D00@sda21(r13)
+/* 80073690 0006F5B0  80 6D 9B 20 */	lwz r3, g_bmpUnkCountOfSomething@sda21(r13)
 /* 80073694 0006F5B4  38 80 00 01 */	li r4, 1
 /* 80073698 0006F5B8  38 03 00 01 */	addi r0, r3, 1
-/* 8007369C 0006F5BC  90 0D 9B 20 */	stw r0, lbl_802F1D00@sda21(r13)
+/* 8007369C 0006F5BC  90 0D 9B 20 */	stw r0, g_bmpUnkCountOfSomething@sda21(r13)
 lbl_800736A0:
 /* 800736A0 0006F5C0  2C 04 00 00 */	cmpwi r4, 0
 /* 800736A4 0006F5C4  41 82 00 0C */	beq lbl_800736B0
@@ -4064,7 +4064,7 @@ lbl_800736F0:
 /* 800736F0 0006F610  C0 1E 00 0C */	lfs f0, 0xc(r30)
 /* 800736F4 0006F614  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800736F8 0006F618  40 81 00 78 */	ble lbl_80073770
-/* 800736FC 0006F61C  80 0D 9B 20 */	lwz r0, lbl_802F1D00@sda21(r13)
+/* 800736FC 0006F61C  80 0D 9B 20 */	lwz r0, g_bmpUnkCountOfSomething@sda21(r13)
 /* 80073700 0006F620  2C 00 01 00 */	cmpwi r0, 0x100
 /* 80073704 0006F624  40 82 00 30 */	bne lbl_80073734
 /* 80073708 0006F628  80 BE 00 00 */	lwz r5, 0(r30)
@@ -4086,10 +4086,10 @@ lbl_80073734:
 /* 80073744 0006F664  38 9E 00 00 */	addi r4, r30, 0
 /* 80073748 0006F668  38 A0 00 50 */	li r5, 0x50
 /* 8007374C 0006F66C  4B F8 FC C9 */	bl memcpy
-/* 80073750 0006F670  80 6D 9B 20 */	lwz r3, lbl_802F1D00@sda21(r13)
+/* 80073750 0006F670  80 6D 9B 20 */	lwz r3, g_bmpUnkCountOfSomething@sda21(r13)
 /* 80073754 0006F674  38 80 00 01 */	li r4, 1
 /* 80073758 0006F678  38 03 00 01 */	addi r0, r3, 1
-/* 8007375C 0006F67C  90 0D 9B 20 */	stw r0, lbl_802F1D00@sda21(r13)
+/* 8007375C 0006F67C  90 0D 9B 20 */	stw r0, g_bmpUnkCountOfSomething@sda21(r13)
 lbl_80073760:
 /* 80073760 0006F680  2C 04 00 00 */	cmpwi r4, 0
 /* 80073764 0006F684  41 82 00 0C */	beq lbl_80073770
@@ -4107,7 +4107,7 @@ lbl_80073770:
 /* 80073790 0006F6B0  2C 00 00 55 */	cmpwi r0, 0x55
 /* 80073794 0006F6B4  40 82 00 78 */	bne lbl_8007380C
 lbl_80073798:
-/* 80073798 0006F6B8  80 0D 9B 20 */	lwz r0, lbl_802F1D00@sda21(r13)
+/* 80073798 0006F6B8  80 0D 9B 20 */	lwz r0, g_bmpUnkCountOfSomething@sda21(r13)
 /* 8007379C 0006F6BC  2C 00 01 00 */	cmpwi r0, 0x100
 /* 800737A0 0006F6C0  40 82 00 30 */	bne lbl_800737D0
 /* 800737A4 0006F6C4  80 BE 00 00 */	lwz r5, 0(r30)
@@ -4129,10 +4129,10 @@ lbl_800737D0:
 /* 800737E0 0006F700  38 9E 00 00 */	addi r4, r30, 0
 /* 800737E4 0006F704  38 A0 00 50 */	li r5, 0x50
 /* 800737E8 0006F708  4B F8 FC 2D */	bl memcpy
-/* 800737EC 0006F70C  80 6D 9B 20 */	lwz r3, lbl_802F1D00@sda21(r13)
+/* 800737EC 0006F70C  80 6D 9B 20 */	lwz r3, g_bmpUnkCountOfSomething@sda21(r13)
 /* 800737F0 0006F710  38 80 00 01 */	li r4, 1
 /* 800737F4 0006F714  38 03 00 01 */	addi r0, r3, 1
-/* 800737F8 0006F718  90 0D 9B 20 */	stw r0, lbl_802F1D00@sda21(r13)
+/* 800737F8 0006F718  90 0D 9B 20 */	stw r0, g_bmpUnkCountOfSomething@sda21(r13)
 lbl_800737FC:
 /* 800737FC 0006F71C  2C 04 00 00 */	cmpwi r4, 0
 /* 80073800 0006F720  41 82 00 0C */	beq lbl_8007380C
@@ -4193,8 +4193,8 @@ func_80073828:
 /* 800738C8 0006F7E8  48 00 05 10 */	b lbl_80073DD8
 lbl_800738CC:
 /* 800738CC 0006F7EC  80 FB 00 00 */	lwz r7, 0(r27)
-/* 800738D0 0006F7F0  3C 60 80 18 */	lis r3, lbl_80181CB4@ha
-/* 800738D4 0006F7F4  38 A3 1C B4 */	addi r5, r3, lbl_80181CB4@l
+/* 800738D0 0006F7F0  3C 60 80 18 */	lis r3, bitmapGroups@ha
+/* 800738D4 0006F7F4  38 A3 1C B4 */	addi r5, r3, bitmapGroups@l
 /* 800738D8 0006F7F8  54 E0 C6 3E */	rlwinm r0, r7, 0x18, 0x18, 0x1f
 /* 800738DC 0006F7FC  1C 80 00 18 */	mulli r4, r0, 0x18
 /* 800738E0 0006F800  7C 65 22 14 */	add r3, r5, r4
@@ -4205,12 +4205,12 @@ lbl_800738CC:
 /* 800738F4 0006F814  4C C6 31 82 */	crclr 6
 /* 800738F8 0006F818  1C 08 00 18 */	mulli r0, r8, 0x18
 /* 800738FC 0006F81C  7C 65 02 14 */	add r3, r5, r0
-/* 80073900 0006F820  3C 80 80 18 */	lis r4, lbl_80181E04@ha
+/* 80073900 0006F820  3C 80 80 18 */	lis r4, bitmapNames@ha
 /* 80073904 0006F824  80 A3 00 08 */	lwz r5, 8(r3)
 /* 80073908 0006F828  3C C0 80 1C */	lis r6, lbl_801C13EC@ha
 /* 8007390C 0006F82C  38 66 13 EC */	addi r3, r6, lbl_801C13EC@l
 /* 80073910 0006F830  55 06 10 3A */	slwi r6, r8, 2
-/* 80073914 0006F834  38 04 1E 04 */	addi r0, r4, lbl_80181E04@l
+/* 80073914 0006F834  38 04 1E 04 */	addi r0, r4, bitmapNames@l
 /* 80073918 0006F838  7C 80 32 14 */	add r4, r0, r6
 /* 8007391C 0006F83C  80 84 00 00 */	lwz r4, 0(r4)
 /* 80073920 0006F840  54 E0 15 BA */	rlwinm r0, r7, 2, 0x16, 0x1d
@@ -4548,12 +4548,12 @@ lbl_80073DD8:
 .global func_80073E00
 func_80073E00:
 /* 80073E00 0006FD20  7C 08 02 A6 */	mflr r0
-/* 80073E04 0006FD24  3C C0 80 18 */	lis r6, lbl_80181CB4@ha
+/* 80073E04 0006FD24  3C C0 80 18 */	lis r6, bitmapGroups@ha
 /* 80073E08 0006FD28  90 01 00 04 */	stw r0, 4(r1)
 /* 80073E0C 0006FD2C  54 60 C6 3E */	rlwinm r0, r3, 0x18, 0x18, 0x1f
 /* 80073E10 0006FD30  1C 00 00 18 */	mulli r0, r0, 0x18
 /* 80073E14 0006FD34  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80073E18 0006FD38  38 C6 1C B4 */	addi r6, r6, lbl_80181CB4@l
+/* 80073E18 0006FD38  38 C6 1C B4 */	addi r6, r6, bitmapGroups@l
 /* 80073E1C 0006FD3C  7C C6 02 14 */	add r6, r6, r0
 /* 80073E20 0006FD40  80 C6 00 10 */	lwz r6, 0x10(r6)
 /* 80073E24 0006FD44  54 60 2C F4 */	rlwinm r0, r3, 5, 0x13, 0x1a
@@ -12532,10 +12532,10 @@ lbl_8007B178:
 /* 8007B18C 000770AC  C8 42 A4 78 */	lfd f2, lbl_802F4C78-_SDA2_BASE_(r2)
 /* 8007B190 000770B0  A8 A3 00 68 */	lha r5, 0x68(r3)
 /* 8007B194 000770B4  90 01 00 7C */	stw r0, 0x7c(r1)
-/* 8007B198 000770B8  3C 80 80 18 */	lis r4, lbl_80181CB4@ha
+/* 8007B198 000770B8  3C 80 80 18 */	lis r4, bitmapGroups@ha
 /* 8007B19C 000770BC  C0 82 A4 9C */	lfs f4, lbl_802F4C9C-_SDA2_BASE_(r2)
 /* 8007B1A0 000770C0  90 A1 00 38 */	stw r5, 0x38(r1)
-/* 8007B1A4 000770C4  38 A4 1C B4 */	addi r5, r4, lbl_80181CB4@l
+/* 8007B1A4 000770C4  38 A4 1C B4 */	addi r5, r4, bitmapGroups@l
 /* 8007B1A8 000770C8  3C 80 43 30 */	lis r4, 0x4330
 /* 8007B1AC 000770CC  C8 62 A4 20 */	lfd f3, lbl_802F4C20-_SDA2_BASE_(r2)
 /* 8007B1B0 000770D0  C0 03 00 6C */	lfs f0, 0x6c(r3)
@@ -16921,7 +16921,7 @@ lbl_8007F1A4:
 /* 8007F1A8 0007B0C8  3C C0 80 1C */	lis r6, lbl_801C20EC@ha
 /* 8007F1AC 0007B0CC  90 01 00 04 */	stw r0, 4(r1)
 /* 8007F1B0 0007B0D0  38 00 05 02 */	li r0, 0x502
-/* 8007F1B4 0007B0D4  3C 80 80 18 */	lis r4, lbl_80181CB4@ha
+/* 8007F1B4 0007B0D4  3C 80 80 18 */	lis r4, bitmapGroups@ha
 /* 8007F1B8 0007B0D8  94 21 FF 78 */	stwu r1, -0x88(r1)
 /* 8007F1BC 0007B0DC  38 C6 20 EC */	addi r6, r6, lbl_801C20EC@l
 /* 8007F1C0 0007B0E0  90 01 00 0C */	stw r0, 0xc(r1)
@@ -16930,7 +16930,7 @@ lbl_8007F1A4:
 /* 8007F1CC 0007B0EC  A8 A3 00 68 */	lha r5, 0x68(r3)
 /* 8007F1D0 0007B0F0  C8 62 A4 20 */	lfd f3, lbl_802F4C20-_SDA2_BASE_(r2)
 /* 8007F1D4 0007B0F4  90 A1 00 34 */	stw r5, 0x34(r1)
-/* 8007F1D8 0007B0F8  38 A4 1C B4 */	addi r5, r4, lbl_80181CB4@l
+/* 8007F1D8 0007B0F8  38 A4 1C B4 */	addi r5, r4, bitmapGroups@l
 /* 8007F1DC 0007B0FC  3C 80 43 30 */	lis r4, 0x4330
 /* 8007F1E0 0007B100  C0 03 00 6C */	lfs f0, 0x6c(r3)
 /* 8007F1E4 0007B104  D0 01 00 38 */	stfs f0, 0x38(r1)

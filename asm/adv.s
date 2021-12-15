@@ -2849,7 +2849,7 @@ lbl_80010C9C:
 /* 80010DB0 0000CCD0  38 60 00 04 */	li r3, 4
 /* 80010DB4 0000CCD4  48 07 38 FD */	bl func_800846B0
 /* 80010DB8 0000CCD8  38 60 00 05 */	li r3, 5
-/* 80010DBC 0000CCDC  48 01 54 49 */	bl g_something_with_bmp_bmp_com
+/* 80010DBC 0000CCDC  48 01 54 49 */	bl bitmap_load_group
 /* 80010DC0 0000CCE0  80 1E 00 00 */	lwz r0, 0(r30)
 /* 80010DC4 0000CCE4  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 80010DC8 0000CCE8  38 A0 00 78 */	li r5, 0x78

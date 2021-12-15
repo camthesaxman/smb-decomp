@@ -1,6 +1,6 @@
 char string_No_Define[] = "No Define";
 
-char *lbl_801825A4[] =
+char *bmpComNames[] =
 {
     "ASCII",
     "arrow",

@@ -1,6 +1,6 @@
 char string_No_Define_12[] = "No Define";
 
-char *lbl_80184490[] =
+char *bmpTgtNames[] =
 {
     "tgt_item_big",
     "tgt_item_bomb",

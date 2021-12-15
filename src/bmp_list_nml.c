@@ -1,6 +1,6 @@
 char string_No_Define_6[] = "No Define";
 
-char *lbl_801833B4[] =
+char *bmpNmlNames[] =
 {
     "icon_bombtimer",
     "icon_lv1234_j",

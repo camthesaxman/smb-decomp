@@ -471,12 +471,12 @@ def search_map_file(fn_name: str) -> Tuple[Optional[str], Optional[int]]:
         if len(cands) == 1:
             return cands[0]
     elif map_format == 'mw':
-        #                                         ram   elf rom                                                       object name
-        find = re.findall(re.compile(r'  \S+ \S+ (\S+) (\S+)  . ' + fn_name + r'(?: \(entry of \.(?:init|text)\))? \t(\S+)'), contents)
+        #                                elf rom   ram                                                       object name
+        find = re.findall(re.compile(r'  (\S+) \S+ (\S+)  . ' + fn_name + r'(?: \(entry of \.(?:init|text)\))? \t(\S+)'), contents)
         if len(find) > 1:
             fail(f"Found multiple occurrences of function {fn_name} in map file.")
         if len(find) == 1:
-            rom = int(find[0][1],16)
+            rom = int(find[0][0],16) + 0x003660
             objname = find[0][2]
             # The metrowerks linker map format does not contain the full object path, so we must complete it manually.
             objfiles = [os.path.join(dirpath, f) for dirpath, _, filenames in os.walk(mw_build_dir) for f in filenames if f == objname]

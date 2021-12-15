@@ -1,6 +1,6 @@
 char string_No_Define_11[] = "No Define";
 
-char *lbl_80183FB4[] =
+char *bmpGlfNames[] =
 {
     "glf_player",
     "glf_power_banana",

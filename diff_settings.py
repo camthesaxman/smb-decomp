@@ -5,8 +5,8 @@ def apply(config, args):
     devkit_path = devkit_str.split("[")[1][:-2]
 
     config['mapfile'] = 'supermonkeyball.map'
-    config['myimg'] = 'supermonkeyball.dol'
-    config['baseimg'] = 'baserom.dol'
+    config['myimg'] = 'supermonkeyball.elf'
+    config['baseimg'] = 'baserom.elf'
     config['makeflags'] = []
     config['source_directories'] = ['src', 'include', 'spec']
     config["arch"] = "ppc"

@@ -1108,7 +1108,7 @@ void func_80038840(void)
         {
             g_avdisp_set_some_func_1(bgfunc);
             func_8009AA24(mathutilData->mtxA, 0);
-            func_8008E500(lbl_802F1CC8->modelEntries[0x14].modelOffset);
+            g_avdisp_maybe_draw_model_3(lbl_802F1CC8->modelEntries[0x14].modelOffset);
             g_avdisp_set_some_func_1(NULL);
         }
 
@@ -3085,7 +3085,7 @@ void lbl_8003D928(struct Struct80038840 *a)
     {
         g_avdisp_set_some_func_1(bgfunc);
         func_8009AA24(mathutilData->mtxA, 0);
-        func_8008E49C(lbl_802F1CC8->modelEntries[0x14].modelOffset);
+        g_avdisp_maybe_draw_model_2(lbl_802F1CC8->modelEntries[0x14].modelOffset);
         g_avdisp_set_some_func_1(NULL);
     }
 }

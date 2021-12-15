@@ -1,6 +1,6 @@
 char string_No_Define_4[] = "No Define";
 
-char *lbl_80182C54[] =
+char *bmpRnkNames[] =
 {
     "asc_ball26x31",
     "asc_ball30x31",

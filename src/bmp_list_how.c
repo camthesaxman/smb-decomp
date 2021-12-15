@@ -1,6 +1,6 @@
 char string_No_Define_13[] = "No Define";
 
-char *lbl_8018484C[] =
+char *bmpHowNames[] =
 {
     "how_kiwaku",
     "how_bar",

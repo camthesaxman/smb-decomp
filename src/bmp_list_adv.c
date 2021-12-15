@@ -1,6 +1,6 @@
 char string_No_Define_2[] = "No Define";
 
-char *lbl_801828E8[] =
+char *bmpAdvNames[] =
 {
     "logo_av256",
     "adv_logo_plus",

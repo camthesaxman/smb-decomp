@@ -102,14 +102,110 @@ enum
 };
 
 // avdisp.c
-struct GMAModelHeader;
 struct GMAMeshHeader;
 struct GMAMaterial;
-struct TPL;
 struct UnkStruct17;
-struct UnkStruct30;
 struct UnkStruct31;
 struct UnkStruct32;
+
+// GMAModelHeader.flags
+enum
+{
+    GCMF_16BIT = 0x01,
+    GCMF_STITCHING = 0x04,
+    GCMF_SKIN = 0x08,
+    GCMF_EFFECTIVE = 0x10,
+};
+
+// at GMAModelHeader + 0x40
+struct GMAMaterial
+{
+    u32 flags;
+    u16 unk4;
+    s8 unk6;
+    u8 unk7;
+    GXTexObj *texObj;
+    u8 fillerC[0x20-0xC];
+};
+
+struct GMAModelHeader
+{
+    /*0x00*/ u32 magic;  // "GCMF"
+    /*0x04*/ u32 flags;
+    /*0x08*/ Vec boundingSphereCenter;
+    /*0x14*/ float boundingSphereRadius;
+    /*0x18*/ u16 numMaterials;
+    /*0x1A*/ u16 numLayer1Meshes;  // opaque count?
+    /*0x1C*/ u16 numLayer2Meshes;  // transparent count?
+    /*0x1E*/ u8 mtxCount;
+    u8 filler1F[1];
+    /*0x20*/ u32 headerSize;
+    /*0x24*/ GXTexObj *texObjs;
+    /*0x28*/ u8 mtxIndexes[8];
+             u8 filler30[0x10];
+    /*0x40*/ struct GMAMaterial materials[0];
+};
+
+// if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
+struct GMAMeshHeader
+{
+    /*0x00*/ u32 renderFlags;
+    /*0x04*/ GXColor unk4;
+    /*0x08*/ GXColor unk8;
+             union
+             {
+                 u32 asU32;
+                 GXColor asColor;
+             } unkC;
+    /*0x10*/ u8 filler10[1];
+             u8 unk11;
+    /*0x12*/ u8 unk12;
+    /*0x13*/ u8 unk13;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
+    /*0x14*/ u8 unk14;
+    /*0x15*/ u8 filler15[0x16-0x15];
+             u16 unk16;
+             u8 filler18[0x1C-0x18];
+    /*0x1C*/ u32 vtxFlags;  // vtxFlags
+    /*0x20*/ u8 unk20[8];
+    /*0x28*/ u32 dispListSizes[2];
+    u8 unk30[0x40-0x30];
+    u32 unk40;
+    u8 filler44[0x60-0x44];
+    u8 dispListData[0];
+};  // size = 0x60
+
+struct GMAModelEntry
+{
+    struct GMAModelHeader *modelOffset;
+    char *name;
+};
+
+struct GMA
+{
+    /*0x00*/ u32 numModels;
+    /*0x04*/ u8 *modelsBase;
+    /*0x08*/ struct GMAModelEntry *modelEntries;
+    /*0x0C*/ char *namesBase;
+    /*0x10*/ u8 filler10[0x20-0x10];
+    /*0x20*/ u8 fileData[0];  // raw file data
+};  // size = 0x20
+
+struct TPLTextureHeader
+{
+    /*0x00*/ u32 format;
+    /*0x04*/ u32 imageOffset;
+    /*0x08*/ u16 width;
+    /*0x0A*/ u16 height;
+    /*0x0C*/ u32 unkC;
+};  // size = 0x10
+
+struct TPL
+{
+    /*0x00*/ u32 numTextures;
+    /*0x04*/ struct TPLTextureHeader *texHeaders;
+    /*0x08*/ u8 *fileData;  // raw file data
+    /*0x0C*/ GXTexObj *texObjs;  // only used by bitmap.c? avdisp.c seems to think TPL struct is only 12 bytes.
+};
 
 // load.c
 struct ARAMBlock;
@@ -213,44 +309,6 @@ struct UnkStruct8005562C_child
     void *unk54;
     u32 unk58;
     void *unk5C;
-};
-
-struct GMAModelHeader
-{
-    u8 filler0[4];
-    /*0x04*/ u32 flags;
-    Vec unk8;
-    float unk14;
-    /*0x18*/ u16 numMaterials;
-    /*0x1A*/ u16 numLayer1Meshes;
-    /*0x1C*/ u16 numLayer2Meshes;
-    u8 unk1E;
-    u8 filler1F[1];
-    /*0x20*/ u32 headerSize;
-    /*0x24*/ GXTexObj *texObjs;
-    u8 unk28[10];
-};
-
-struct GMAModelEntry
-{
-    struct GMAModelHeader *modelOffset;  // pointer to GMAModelHeader
-    char *name;
-};
-
-struct UnkStruct1
-{
-    u32 unk0;
-    char *unk4;
-};
-
-struct GMA
-{
-    u32 numModels;
-    u8 *modelsBase;
-    struct GMAModelEntry *modelEntries;
-    char *namesBase;
-    u8 filler10[0x20-0x10];
-    struct UnkStruct1 unk20;
 };
 
 struct UnkStruct8005562C_child2_child
@@ -673,7 +731,6 @@ struct Struct80034F5C_1_sub
     u8 filler2[2];
     u16 *unk4;
     u8 *unk8;
-    //struct Struct80034F5C_1_sub_child3 *unkC;
     float *unkC;
 };
 
@@ -697,16 +754,6 @@ struct Struct80034F5C_1
     u8 filler208[0x238-0x208];
 };
 
-/*
-    u8 filler44[0x54-0x44];
-    Mtx unk54;
-    u8 filler84[0x168-0x84];
-    Mtx unk168;
-    u8 filler198[0x1C0-0x198];
-    Point3d unk1C0;
-    Point3d unk1CC;
-    u8 filler1D8[0x238-0x1D8];
-*/
 struct Struct80034F5C_2
 {
     u16 filler0;
@@ -748,58 +795,25 @@ struct CoordsS8
     s8 y;
 };
 
-// bitmap
-
-struct Struct80181CB4_child_child
-{
-    u8 filler0[8];
-    u16 unk8;
-    u16 unkA;
-    u8 fillerC[4];
-};  // size = 0x10
-
-struct Struct80181CB4_child_child2
-{
-    u8 filler0[0x20];
-};  // size = 0x20
-
-struct Struct80181CB4_child
-{
-    u8 filler0[4];
-    struct Struct80181CB4_child_child *unk4;
-    u8 filler8[4];
-    struct Struct80181CB4_child_child2 *unkC;
-};
-
-struct Struct80181CB4
-{
-    s32 unk0;
-    char *unk4;
-    char *unk8;
-    u32 unkC;
-    struct Struct80181CB4_child *unk10;
-    OSHeapHandle unk14;
-};
-
 // sprite
 
 struct FontParams
 {
-    s16 unk0;
-    u8 unk2;
-    u8 unk3;
-    s32 unk4;
-    u32 unk8;
-    s8 unkC;
-    s8 unkD;
-    float unk10;
-    float unk14;
-    float unk18;
-    float unk1C;
-    u8 unk20;
-    u8 unk21;
-    u8 unk22;
-    s8 unk23;
+    /*0x00*/ s16 unk0;
+    /*0x02*/ u8 spaceWidth;
+    /*0x03*/ u8 lineHeight;
+    /*0x04*/ s32 unk4;
+    /*0x08*/ u32 unk8;
+    /*0x0C*/ s8 unkC;
+    /*0x0D*/ s8 unkD;
+    /*0x10*/ float unk10;
+    /*0x14*/ float unk14;
+    /*0x18*/ float unk18;
+    /*0x1C*/ float unk1C;
+    /*0x20*/ u8 unk20;
+    /*0x21*/ u8 unk21;
+    /*0x22*/ u8 unk22;
+    /*0x23*/ s8 unk23;
 };
 
 struct Struct801F3DC0

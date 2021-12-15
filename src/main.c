@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "ball.h"
+#include "bitmap.h"
 #include "camera.h"
 #include "input.h"
 #include "perf.h"
@@ -16,7 +17,7 @@ void main(void)
     lbl_802F1B38 = 0;
     initialize();
     gm_init();
-    func_80025EC0();
+    bitmap_init();
     window_init();
     event_init();
     perf_init();
@@ -102,7 +103,7 @@ void main(void)
         perfInfo.unk20 = perf_stop_timer(4);
         
         perf_init_timer(4);
-        bmpdisp_main();
+        bitmap_main();
         perfInfo.unk24 = perf_stop_timer(4);
         
         perf_init_timer(4);

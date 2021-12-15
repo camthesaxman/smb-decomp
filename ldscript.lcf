@@ -29,7 +29,7 @@ FORCEACTIVE {
     unkData 
     g_avdisp_alloc_matrix_lists func_8008D8D0 load_model
     free_model
-    func_8008E5F8 func_8008E64C func_8008E698
+    func_8008E5F8 func_8008E64C set_mesh_render_flags_in_model
     mathutil_alignment
     memcard_data_padding
     lbl_8028FE58
