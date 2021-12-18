@@ -1,0 +1,28 @@
+/* Linker configuration for building a relocatable (.rel) module */
+
+SECTIONS
+{
+    GROUP :
+    {
+        .init   :{}
+        .text   :{}
+        .ctors  :{}
+        .dtors  :{}
+        .rodata :{}
+        .data   :{}
+        .bss    :{}
+
+        /* TODO: remove this.
+        /* It's just a hack to pad out the section count. */
+        .sbss : {}
+    }
+}
+
+FORCEACTIVE
+{
+    _prolog
+    _epilog
+    _unresolved
+    _ctors
+    _dtors
+}

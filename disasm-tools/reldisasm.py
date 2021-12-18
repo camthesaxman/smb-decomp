@@ -62,16 +62,24 @@ numSections = read_u32(0x0C)
 sectionInfoOffset = read_u32(0x10)
 nameOffset = read_u32(0x14)
 nameSize = read_u32(0x18)
+version = read_u32(0x1C)
 bssSize = read_u32(0x20)
 relOffset = read_u32(0x24)
 impOffset = read_u32(0x28)
 impSize = read_u32(0x2C)
 prologSection = read_u8(0x30)
 epilogSection = read_u8(0x31)
+unresolvedSection = read_u8(0x32)
 prolog = read_u32(0x34)
 epilog = read_u32(0x38)
+unresolved = read_u32(0x3C)
 
-print("nameoffset: 0x%X" % nameOffset)
+print("version: %i" % version)
+print("nameoffset: 0x%X, size: 0x%X" % (nameOffset, nameSize))
+
+print("section table: 0x%X, size: 0x%X" % (sectionInfoOffset, numSections*8))
+print("imp table: 0x%X" % impOffset)
+print("relocs: 0x%X" % relOffset)
 
 print("%i sections:" % numSections)
 # Read sections
@@ -103,9 +111,11 @@ for i in range(0, numSections):
 
 # Add labels for prologue and epilogue
 if prologSection != 0:
-    labels[sectionInfo[prologSection]['offset'] + prolog] = 'prologue'
+    labels[sectionInfo[prologSection]['offset'] + prolog] = '_prolog'
 if epilogSection != 0:
-    labels[sectionInfo[epilogSection]['offset'] + epilog] = 'epilogue'
+    labels[sectionInfo[epilogSection]['offset'] + epilog] = '_epilog'
+if unresolvedSection != 0:
+    labels[sectionInfo[unresolvedSection]['offset'] + unresolved] = '_unresolved'
 
 def read_relocation_info(module, o):
     currSection = None
@@ -264,7 +274,7 @@ def output_data_range(o, end):
         # Not a string
         print('    .4byte 0x%08X' % read_u32(o))
         o += 4
-    while o < end:
+    if o < end:
         # TODO:
         print('unaligned')
     return

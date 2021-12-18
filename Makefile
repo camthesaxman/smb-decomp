@@ -27,6 +27,7 @@ GCC     := $(DEVKITPPC)/bin/powerpc-eabi-gcc
 HOSTCC  := cc
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol$(EXE)
+ELF2REL := tools/elf2rel$(EXE)
 LZSS    := tools/lzss$(EXE)
 
 INCLUDE_DIRS := src
@@ -51,7 +52,13 @@ BASEROM  := baserom.bin
 DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
 MAP      := $(DOL:.dol=.map)
-LDSCRIPT := ldscript.lcf
+LDSCRIPT := static.lcf
+
+REL_SAMPLE := mkbe.rel_sample.rel
+REL_SAMPLE_PLF := $(REL_SAMPLE:.rel=.plf)
+# rel files must not use the small data sections
+$(REL_SAMPLE_PLF): CFLAGS += -sdata 0 -sdata2 0
+
 # NOTE: the order of files listed here determines the link order
 SOURCE_FILES := \
 	asm/c++_exception_data.s \
@@ -286,24 +293,39 @@ SOURCE_FILES := \
 O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
 DEP_FILES := $(addsuffix .dep,$(basename $(SOURCE_FILES)))
 
+REL_SAMPLE_SOURCE_FILES := \
+	src/rel_sample.c \
+	asm/rel_dummy.s
+REL_SAMPLE_O_FILES := $(addsuffix .o,$(basename $(REL_SAMPLE_SOURCE_FILES)))
+
 #-------------------------------------------------------------------------------
 # Recipes
 #-------------------------------------------------------------------------------
 
 .PHONY: default
 
-default: $(DOL)
+default: $(DOL) $(REL_SAMPLE)
 	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
 
+# static module (.dol file)
 $(DOL): $(ELF) $(ELF2DOL)
 	@echo Converting $< to $@
 	$(QUIET) $(ELF2DOL) $(ELF) $(DOL)
 
 $(ELF): $(LDSCRIPT) $(O_FILES)
-	@echo Linking ELF $@
+	@echo Linking static module $@
 	$(QUIET) $(LD) $(LDFLAGS) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
 # The Metrowerks linker doesn't generate physical addresses in the ELF program headers. This fixes it somehow.
 	$(QUIET) $(OBJCOPY) $(ELF) $(ELF)
+
+# relocatable module (.rel file)
+$(REL_SAMPLE): $(REL_SAMPLE_PLF) $(ELF) $(ELF2REL)
+	@echo Converting $< to $@
+	$(QUIET) $(ELF2REL) $(REL_SAMPLE_PLF) $(ELF) $@
+
+$(REL_SAMPLE_PLF): $(REL_SAMPLE_O_FILES)
+	@echo Linking relocatable module $@
+	$(QUIET) $(LD) -g -nodefaults -fp hard -m _prolog -lcf partial.lcf -r1 $^ -o $@
 
 %.o: %.s
 	@echo Assembling $<
@@ -327,7 +349,7 @@ endef
 	$(COMPILE)
 
 clean:
-	$(RM) $(DOL) $(ELF) $(MAP) $(ELF2DOL)
+	$(RM) $(DOL) $(ELF) $(MAP) $(ELF2DOL) $(ELF2REL)
 	find . -name '*.o' -exec rm {} +
 	find . -name '*.dep' -exec rm {} +
 	find . -name '*.dump' -exec rm {} +
@@ -364,6 +386,10 @@ src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 #-------------------------------------------------------------------------------
 
 $(ELF2DOL): tools/elf2dol.c
+	@echo Building tool $@
+	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
+
+$(ELF2REL): tools/elf2rel.c
 	@echo Building tool $@
 	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
 
