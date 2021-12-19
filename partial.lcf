@@ -11,10 +11,6 @@ SECTIONS
         .rodata :{}
         .data   :{}
         .bss    :{}
-
-        /* TODO: remove this.
-        /* It's just a hack to pad out the section count. */
-        .sbss : {}
     }
 }
 

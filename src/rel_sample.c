@@ -4,8 +4,9 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "mode.h"
 
-static u32 counter;
+static int counter;
 
 static void increment_counter(void);
 static void print_counter(void);
@@ -13,7 +14,7 @@ static void print_counter(void);
 void _prolog(void)
 {
     func_80093A84(increment_counter, print_counter, 0, 0);
-    gameSubmodeRequest = 0xA1;
+    gameSubmodeRequest = SMD_MINI_REL_SAMPLE_MAIN;
     puts("RELOCATION SAMPLE LOADED\n");
 }
 
@@ -25,19 +26,19 @@ void _epilog(void)
 void _unresolved(void)
 {
     u32 i;
-    u32 *ptr;
+    u32 *sp;
 
     puts("\nError: A called an unlinked function.\n");
     puts("Address:      Back Chain    LR Save\n");
 
     i = 0;
-    ptr = (u32 *)OSGetStackPointer();
-    while (ptr != NULL && (u32)ptr != 0xFFFFFFFF && i++ < 16)
+    sp = (u32 *)OSGetStackPointer();
+    while (sp != NULL && (u32)sp != 0xFFFFFFFF && i++ < 16)
     {
-        printf("0x%08x:   0x%08x    0x%08x\n", (u32)ptr, ptr[0], ptr[1]);
-        ptr = (u32 *)*ptr;
+        printf("0x%08x:   0x%08x    0x%08x\n", (u32)sp, sp[0], sp[1]);
+        sp = (u32 *)sp[0];
     }
-    OSPanic("rel_sample.c", 0x4C, "\n");
+    OSPanic("rel_sample.c", 76, "\n");
 }
 
 static void increment_counter(void)

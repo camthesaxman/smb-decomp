@@ -816,6 +816,7 @@ void ev_course_dest(void);
 // ? func_80067008();
 // ? func_80067100();
 // ? func_800671D4();
+// ? func_8006720C();
 // ? func_80067264();
 // ? func_800672D0();
 int func_800673BC(void);

@@ -2,6 +2,8 @@
 
 from capstone import *
 from capstone.ppc import *
+from elftools.elf.elffile import *
+from elftools.elf.sections import *
 import sys
 
 # addr -> name
@@ -52,8 +54,24 @@ def read_u16(offset):
 def read_u32(offset):
     return (filecontent[offset + 0] << 24) | (filecontent[offset + 1] << 16) | (filecontent[offset + 2] << 8) | filecontent[offset + 3]
 
+def add_label(addr, name=None):
+    if not addr in labels:
+        if name == None:
+            name = 'lbl_0x%08X' % addr
+        labels[addr] = name
+
 with open(sys.argv[1], 'rb') as file:
     filecontent = bytearray(file.read())
+
+if len(sys.argv) >= 3:
+    # Why is this so slow?
+    with open(sys.argv[2], 'rb') as f:
+        elf = ELFFile(f)
+        elfsymtab = elf.get_section_by_name('.symtab')
+        for i in range(0, elfsymtab.num_symbols()):
+            sym = elfsymtab.get_symbol(i)
+            if len(sym.name) > 0 and not sym.name[0] in {'.', '@'}:
+                add_label(sym['st_value'], sym.name)
 
 id = read_u32(0)
 print("id: %i" % id)
@@ -134,7 +152,8 @@ def read_relocation_info(module, o):
             if module == 0:  # dol
                 symAddr = addend
                 if symAddr not in labels:
-                    labels[symAddr] = 'dol_%08X' % symAddr  # TODO: look it up in map file
+                    print('error: symbol for 0x%08X not found' % symAddr)
+                    exit(1)
             else:  # rel
                 symAddr = sectionInfo[section]['offset'] + addend
                 labels[symAddr] = 'lbl_%08X' % symAddr
@@ -149,7 +168,7 @@ def read_relocation_info(module, o):
             }
             relocations[relocOffset] = reloc
 
-        print(" offset: 0x%04X\ttype: %s\tsection: %i\tsym_addr: 0x%08X" % (relocOffset, relocationTypeNames[type], section, symAddr))
+        print(" offset: 0x%04X(+0x%X)\ttype: %s\tsection: %i\tsym_addr: 0x%08X" % (relocOffset, offset, relocationTypeNames[type], section, symAddr))
         if type == R_DOLPHIN_END:
             break
         o += 8
@@ -168,8 +187,7 @@ cs = Cs(CS_ARCH_PPC, CS_MODE_32 | CS_MODE_BIG_ENDIAN)
 cs.detail = True
 cs.imm_unsigned = False
 
-
-def get_relocation_for_code_offset(o):
+def get_relocation_for_offset(o):
     for i in range(o, o + 4):
         if i in relocations:
             return relocations[i]
@@ -182,8 +200,12 @@ def get_label(addr):
     return '0x%08X' % addr
 
 def print_label(label):
-    print('\n%s:' % label)
+    print('%s:' % label)
 
+def sign_extend_16(value):
+    if value > 0 and (value & 0x8000):
+        value -= 0x10000
+    return value
 
 def disassemble_insn(o, reloc):
     insn = next(cs.disasm(filecontent[o : o+4], o))
@@ -192,29 +214,51 @@ def disassemble_insn(o, reloc):
     else:
         relocType = -1
 
+    # handle relocs label
     if insn.id == PPC_INS_BL and relocType == R_PPC_REL24:
         return '%s %s' % (insn.mnemonic, get_label(reloc['addr']))
     if insn.id == PPC_INS_LIS and relocType == R_PPC_ADDR16_HA:
         return '%s %s, %s@ha' % (insn.mnemonic, insn.reg_name(insn.operands[0].reg), get_label(reloc['addr']))
     if insn.id == PPC_INS_ADDI and relocType == R_PPC_ADDR16_LO:
-        return '%s %s, %s, %s@l' % (insn.mnemonic, insn.reg_name(insn.operands[0].reg), insn.reg_name(insn.operands[0].reg), get_label(reloc['addr']))
-    if insn.id in {PPC_INS_LWZ, PPC_INS_LHZ, PPC_INS_LBZ, PPC_INS_LHA, PPC_INS_STW, PPC_INS_STH, PPC_INS_STB} \
+        return '%s %s, %s, %s@l' % (insn.mnemonic, insn.reg_name(insn.operands[0].reg), insn.reg_name(insn.operands[1].reg), get_label(reloc['addr']))
+    if insn.id in {PPC_INS_LWZ, PPC_INS_LHZ, PPC_INS_LBZ, PPC_INS_LHA, PPC_INS_STW, PPC_INS_STH, PPC_INS_STB, PPC_INS_LFS, PPC_INS_LFD, PPC_INS_LWZU, PPC_INS_STWU} \
      and relocType == R_PPC_ADDR16_LO:
         return '%s %s, %s@l(%s)' % (insn.mnemonic, insn.reg_name(insn.operands[0].reg), get_label(reloc['addr']), insn.reg_name(insn.operands[1].mem.base))
+
+    # branch target labels
+    if insn.id in {PPC_INS_B, PPC_INS_BL, PPC_INS_BDZ, PPC_INS_BDNZ, PPC_INS_BC}:
+        label = labels[insn.operands[0].imm]
+        if label:
+            return '%s %s' % (insn.mnemonic, label)
+
+    # misc. fixes
+
+    # Sign-extend immediate values because Capstone is an idiot and thinks all immediates are unsigned
+    if insn.id in {PPC_INS_ADDI, PPC_INS_ADDIC, PPC_INS_SUBFIC, PPC_INS_MULLI} and (insn.operands[2].imm & 0x8000):
+        return "%s %s, %s, %i  ;# fixed addi" % (insn.mnemonic, insn.reg_name(insn.operands[0].reg), insn.reg_name(insn.operands[1].value.reg), insn.operands[2].imm - 0x10000)
+
     if reloc:
         relocComment = '\t;# %s:%s' % (get_label(reloc['addr']), relocationTypeNames[reloc['type']])
     else:
         relocComment = ''
     return '%s %s%s' % (insn.mnemonic, insn.op_str, relocComment)
 
+def scan_local_labels(o, size):
+    for insn in cs.disasm(filecontent[o:o+size], o):
+        # branch labels
+        if insn.id in {PPC_INS_B, PPC_INS_BL, PPC_INS_BC, PPC_INS_BDZ, PPC_INS_BDNZ}:
+            for op in insn.operands:
+                if op.type == PPC_OP_IMM:
+                    add_label(op.imm)
 
 def dump_code(o, size):
+    scan_local_labels(o, size)
     end = o + size
     code = filecontent[o : end]
     while o < end:
         if o in labels:
             print_label(labels[o])
-        asm = disassemble_insn(o, get_relocation_for_code_offset(o))
+        asm = disassemble_insn(o, get_relocation_for_offset(o))
         print('/* %08X %08X */ %s' % (o, read_u32(o), asm))
         o += 4
     if o < end:
@@ -241,6 +285,10 @@ def is_all_zero(arr):
             return False
     return True
 
+# returns string of comma-separated hex bytes
+def hex_bytes(data):
+    return ', '.join('0x%02X' % n for n in data)
+
 # reads a string starting at pos
 def read_string(data, pos):
     text = ''
@@ -258,8 +306,7 @@ def escape_string(text):
 def output_data_range(o, end):
     print('    # 0x%X' % o)
     if not is_aligned(o):
-        # TODO:
-        print('unaligned')
+        print('    .byte ' + hex_bytes(filecontent[o:align(o)]))
         o = align(o)
     while o < (end & ~3):
         # Try to see if this is a string.
@@ -272,11 +319,19 @@ def output_data_range(o, end):
                 o = align(strEnd)
                 continue
         # Not a string
-        print('    .4byte 0x%08X' % read_u32(o))
+        reloc = get_relocation_for_offset(o)
+        if reloc:
+            type = reloc['type']
+            if type == R_PPC_ADDR32:
+                value = labels[reloc['addr']]
+            else:
+                print('dunno what to do about %s here' % relocationTypeNames[type])
+        else:
+            value = '0x%08X' % read_u32(o)
+        print('    .4byte %s' % value)
         o += 4
     if o < end:
-        # TODO:
-        print('unaligned')
+        print('    .byte ' + hex_bytes(filecontent[o:end]))
     return
 
 
@@ -317,6 +372,7 @@ for i in range(0, numSections):
     section = sectionInfo[i]
     if section['offset'] == 0 and section['length'] == 0:
         continue
+    print('# %i' % i)
     print('.section %s' % section['name'])
     if section['is_bss']:
         # bss section
@@ -328,4 +384,4 @@ for i in range(0, numSections):
         # data section
         dump_data(section['offset'], section['length'])
     print('')
-    
+

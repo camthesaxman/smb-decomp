@@ -13,6 +13,9 @@ ifeq ($(VERBOSE),0)
   QUIET := @
 endif
 
+# default recipe
+default: all
+
 #-------------------------------------------------------------------------------
 # Tools
 #-------------------------------------------------------------------------------
@@ -35,10 +38,11 @@ SYSTEM_INCLUDE_DIRS := include
 
 RUNTIME_INCLUDE_DIRS := src/lib/Runtime.PPCEABI.H/Runtime/Inc
 
-ASFLAGS      := -mgekko -I asm
-CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas
-CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
-LDFLAGS      := -fp hard -nodefaults
+ASFLAGS        := -mgekko -I asm
+CFLAGS         := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas
+CPPFLAGS       = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+STATIC_LDFLAGS := -nodefaults -fp hard
+RELOC_LDFLAGS  := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
@@ -52,15 +56,12 @@ BASEROM  := baserom.bin
 DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
 MAP      := $(DOL:.dol=.map)
-LDSCRIPT := static.lcf
 
-REL_SAMPLE := mkbe.rel_sample.rel
-REL_SAMPLE_PLF := $(REL_SAMPLE:.rel=.plf)
-# rel files must not use the small data sections
-$(REL_SAMPLE_PLF): CFLAGS += -sdata 0 -sdata2 0
+STAGE_SEL := mkbe.stage_sel.rel
+STAGE_SEL_PLF := $(STAGE_SEL:.rel=.plf)
 
 # NOTE: the order of files listed here determines the link order
-SOURCE_FILES := \
+DOL_SOURCE_FILES := \
 	asm/c++_exception_data.s \
 	src/main.c \
 	src/init.c \
@@ -290,46 +291,58 @@ SOURCE_FILES := \
 	asm/lib/amcnotstub/amcnotstub.s \
 	asm/lib/data.s \
 	asm/init.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
-DEP_FILES := $(addsuffix .dep,$(basename $(SOURCE_FILES)))
+DOL_O_FILES := $(addsuffix .o,$(basename $(DOL_SOURCE_FILES)))
+ALL_O_FILES += $(DOL_O_FILES)
+$(ELF): $(DOL_O_FILES)
 
+PAD_SECTION_COUNT := 0
+
+REL_SAMPLE := mkbe.rel_sample.rel
+REL_SAMPLE_PLF := $(REL_SAMPLE:.rel=.plf)
 REL_SAMPLE_SOURCE_FILES := \
-	src/rel_sample.c \
-	asm/rel_dummy.s
+	src/rel_sample.c
 REL_SAMPLE_O_FILES := $(addsuffix .o,$(basename $(REL_SAMPLE_SOURCE_FILES)))
+ALL_O_FILES += $(REL_SAMPLE_O_FILES)
+$(REL_SAMPLE_PLF): $(REL_SAMPLE_O_FILES)
+$(REL_SAMPLE): ELF2REL_ARGS := -i 9 -c 15 -o 0x118 -l 0x20
+
+REL_SEL_STAGE := mkbe.sel_stage.rel
+REL_SEL_STAGE_PLF := $(REL_SEL_STAGE:.rel=.plf)
+REL_SEL_STAGE_SOURCE_FILES := \
+	asm/sel_stage_rel.s
+REL_SEL_STAGE_O_FILES := $(addsuffix .o,$(basename $(REL_SEL_STAGE_SOURCE_FILES)))
+ALL_O_FILES += $(REL_SEL_STAGE_O_FILES)
+$(REL_SEL_STAGE_PLF): $(REL_SEL_STAGE_O_FILES)
+$(REL_SEL_STAGE): ELF2REL_ARGS := -i 2 -c 17 -o 0x1D -l 0x1F
 
 #-------------------------------------------------------------------------------
 # Recipes
 #-------------------------------------------------------------------------------
 
-.PHONY: default
+.PHONY: all default
 
-default: $(DOL) $(REL_SAMPLE)
+all: $(DOL) $(REL_SAMPLE) $(REL_SEL_STAGE)
 	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
 
 # static module (.dol file)
-$(DOL): $(ELF) $(ELF2DOL)
+%.dol: %.elf $(ELF2DOL)
 	@echo Converting $< to $@
-	$(QUIET) $(ELF2DOL) $(ELF) $(DOL)
+	$(QUIET) $(ELF2DOL) $(filter %.elf,$^) $@
 
-$(ELF): $(LDSCRIPT) $(O_FILES)
+%.elf: static.lcf
 	@echo Linking static module $@
-	$(QUIET) $(LD) $(LDFLAGS) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
+	$(QUIET) $(LD) -lcf static.lcf $(STATIC_LDFLAGS) $(filter %.o,$^) -map $(@:.elf=.map) -o $@
 # The Metrowerks linker doesn't generate physical addresses in the ELF program headers. This fixes it somehow.
-	$(QUIET) $(OBJCOPY) $(ELF) $(ELF)
+	$(QUIET) $(OBJCOPY) $@ $@
 
 # relocatable module (.rel file)
-$(REL_SAMPLE): $(REL_SAMPLE_PLF) $(ELF) $(ELF2REL)
-	@echo Converting $< to $@
-	$(QUIET) $(ELF2REL) $(REL_SAMPLE_PLF) $(ELF) $@
+%.rel: %.plf $(ELF) $(ELF2REL)
+	@echo Converting $(filter %.plf,$^) to $@
+	$(QUIET) $(ELF2REL) $(filter %.plf,$^) $(ELF) $@ $(ELF2REL_ARGS)
 
-$(REL_SAMPLE_PLF): $(REL_SAMPLE_O_FILES)
+%.plf: partial.lcf
 	@echo Linking relocatable module $@
-	$(QUIET) $(LD) -g -nodefaults -fp hard -m _prolog -lcf partial.lcf -r1 $^ -o $@
-
-%.o: %.s
-	@echo Assembling $<
-	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
+	$(QUIET) $(LD) -lcf partial.lcf $(RELOC_LDFLAGS) $(filter %.o,$^) -map $(@:.plf=.map) -o $@
 
 # Canned recipe for compiling C or C++
 # Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
@@ -341,12 +354,19 @@ $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 $(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
 endef
 
+# relocatable modules must not use the small data sections
+%.plf: CFLAGS += -sdata 0 -sdata2 0
+
 %.o: %.c
 	$(COMPILE)
 %.o: %.cpp
 	$(COMPILE)
 %.o: %.cp
 	$(COMPILE)
+
+%.o: %.s
+	@echo Assembling $<
+	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(DOL) $(ELF) $(MAP) $(ELF2DOL) $(ELF2REL)
@@ -355,15 +375,15 @@ clean:
 	find . -name '*.dump' -exec rm {} +
 
 # File-specific compiler flags
-src/ball.o: CFLAGS += -inline auto
-src/bitmap.o: CFLAGS += -inline auto
-src/camera.o: CFLAGS += -inline auto
+src/ball.o:     CFLAGS += -inline auto
+src/bitmap.o:   CFLAGS += -inline auto
+src/camera.o:   CFLAGS += -inline auto
 src/mathutil.o: CFLAGS += -inline auto
 src/sprite.o:   CFLAGS += -inline auto
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
-src/memcard.o: CFLAGS += -inline auto
-src/stage.o: CFLAGS += -inline auto
+src/memcard.o:  CFLAGS += -inline auto
+src/stage.o:    CFLAGS += -inline auto
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
@@ -378,7 +398,9 @@ $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
 src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
+
 # Automatic dependency files
+DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))
 -include $(DEP_FILES)
 
 #-------------------------------------------------------------------------------

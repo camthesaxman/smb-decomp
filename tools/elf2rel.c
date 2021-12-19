@@ -6,6 +6,14 @@
 #include <string.h>
 #include <errno.h>
 
+#ifndef MAX
+#define MAX(a, b)	(((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef MIN
+#define MIN(a, b)	(((a) < (b)) ? (a) : (b))
+#endif
+
 #define ARRAY_COUNT(arr) (sizeof(arr)/sizeof((arr)[0]))
 
 // Relevant portions of elf.h
@@ -248,6 +256,7 @@ static struct SymStringInfo plfInfo;
 static struct RelImportEntry *imports;
 static int importsCount = 0;
 static int *elfSec2DolSec = NULL;
+static int minSectionCount = 0;
 
 #define SWAPS32(n) n = read_s32be(&n)
 #define SWAPU32(n) n = read_u32be(&n)
@@ -288,6 +297,7 @@ static int lookup_symbol_by_name(const struct SymStringInfo *info, const char *n
 {
     int i;
 
+    //printf("looking up '%s'\n", name);
     for (i = 0; i < info->symtabCount; i++)
     {
         get_symtab_entry(info, i, sym);
@@ -359,14 +369,15 @@ static void add_reloc(const struct SymStringInfo *info, const Elf32_Rela *reloc,
         fatal_error("couldn't find symbol index %i\n", symIdx);
 
 /*
-    printf("offset: 0x%08X, symbold: \"%s\" (0x%08X) (sec %i), reloctype: %i, symtype: %i\n",
+    printf("sec: %i, offset: 0x%08X, sym: \"%s\" (0x%08X), rtype: %i, symtype: %i\n",
+        relocSection,
         reloc->r_offset,
         symbol_name(&plfInfo, &sym),
         sym.st_value,
-        sym.st_shndx,
         relocType,
         ELF32_ST_TYPE(sym.st_info));
 */
+
     if (!is_supported_reloc_type(relocType))
         fatal_error("relocation type %i not supported\n", relocType);
 
@@ -382,21 +393,21 @@ static void add_reloc(const struct SymStringInfo *info, const Elf32_Rela *reloc,
         const char *name = symbol_name(&plfInfo, &sym);
 
         // symbol is undefined; look for it in main elf
-        //printf("looking for undefined symbol '%s'\n", name);
+        //printf("looking for external symbol '%s'\n", name);
         if (!lookup_symbol_by_name(&elfInfo, name, &sym))
             fatal_error("symbol '%s' not found\n", name);
         //printf("section = %i, symaddr = 0x%08X\n", sym.st_shndx, sym.st_value);
         if (sym.st_shndx >= elfHeader.e_shnum)
             fatal_error("bad section index %i\n", sym.st_shndx);
         rentry.section = elfSec2DolSec[sym.st_shndx];
-        rentry.symaddr = sym.st_value;
+        rentry.symaddr = sym.st_value + reloc->r_addend;
         insert_reloc(&rentry, elfInfo.moduleId);
     }
     else
     {
         // symbol is located in this module
         rentry.section = sym.st_shndx;
-        rentry.symaddr = sym.st_value;  // this is the offset of the symbol in its section
+        rentry.symaddr = sym.st_value + reloc->r_addend;  // this is the offset of the symbol in its section
         //printf("symaddr = 0x%08X\n", sym.st_value);
         insert_reloc(&rentry, info->moduleId);
     }
@@ -451,7 +462,7 @@ static void read_elf_relocs(FILE *f, const Elf32_Ehdr *ehdr)
 
                 SWAPU32(reloc.r_offset);
                 SWAPU32(reloc.r_info);
-                SWAPS32(reloc.r_addend);  // always zero?
+                SWAPS32(reloc.r_addend);
 
                 add_reloc(&plfInfo, &reloc, shdr.sh_info);
 
@@ -619,22 +630,16 @@ void write_rel_sections(FILE *fin, Elf32_Ehdr *ehdr, FILE *fout)
 
     // section info table follows header
     relHdr.sectionInfoOffset = sizeof(struct RelHeader);
-    relHdr.sectionCount = ehdr->e_shnum;
+    relHdr.sectionCount = MAX(ehdr->e_shnum, minSectionCount);
 
     // sections follow section info table
     sectionOffset = relHdr.sectionInfoOffset + relHdr.sectionCount * 8;
     //printf("writing %i sections at 0x%X\n", relHdr.sectionCount, relHdr.sectionInfoOffset);
 
-    for (i = 0; i < (int)relHdr.sectionCount; i++)
+    for (i = 0; i < ehdr->e_shnum; i++)
     {
         Elf32_Shdr shdr;
-        struct
-        {
-            uint32_t offset;
-            uint32_t size;
-        } ent;
-
-        assert((sectionOffset % 4) == 0);
+        struct { uint32_t offset; uint32_t size; } ent;
 
         read_elf_section_header(fin, ehdr, i, &shdr);
         if (shdr.sh_type == SHT_PROGBITS && (shdr.sh_flags & SHF_ALLOC))
@@ -645,7 +650,7 @@ void write_rel_sections(FILE *fin, Elf32_Ehdr *ehdr, FILE *fout)
             uint32_t execflg = (shdr.sh_flags & SHF_EXECINSTR) ? 1 : 0;
             // write table entry
             write_u32be(sectionOffset | execflg, &ent.offset);  // offset
-            write_u32be(sizeAligned,             &ent.size);  // size
+            write_u32be(shdr.sh_size,            &ent.size);  // size
             write_checked(fout, relHdr.sectionInfoOffset + i * 8, &ent, sizeof(ent));
 
             // write section data
@@ -657,10 +662,10 @@ void write_rel_sections(FILE *fin, Elf32_Ehdr *ehdr, FILE *fout)
                     fatal_error("error reading section\n");
                 if (execflg)  // patch external function calls to _unresolved
                     patch_unresolved(i, data, sizeAligned);
-                if (!write_checked(fout, sectionOffset, data, sizeAligned))
+                if (!write_checked(fout, sectionOffset, data, shdr.sh_size))
                     fatal_error("error writing rel section\n");
                 free(data);
-                sectionOffset += sizeAligned;
+                sectionOffset += shdr.sh_size;
             }
         }
         else
@@ -736,9 +741,11 @@ void write_rel_imports(FILE *fout)
                 if (!write_checked(fout, relocsOffset, &ent, sizeof(ent)))
                     fatal_error("error writing relocation entry");
                 relocsOffset += sizeof(ent);
+                lastOffset = 0;
             }
 
             // write relocation
+            assert(reloc->offset > lastOffset);
             write_u16be(reloc->offset - lastOffset, &ent.offset);
             ent.type = reloc->type;
             ent.section = reloc->section;
@@ -802,26 +809,71 @@ static void write_rel_header(FILE *fout)
     write_checked(fout, 0, &relHdr, sizeof(relHdr));
 }
 
+static int parse_number(const char *str, int *n)
+{
+    char *end;
+    *n = strtol(str, &end, 0);
+    return end > str;
+}
+
 int main(int argc, char **argv)
 {
-    const char *plfName;
-    const char *elfName;
-    const char *relName;
+    const char *plfName = NULL;
+    const char *elfName = NULL;
+    const char *relName = NULL;
     FILE *plf;
     FILE *elf;
     FILE *rel;
     int i;
     int dolSecNum = 1;
+    int moduleId = -1;
+    int nameOffset = 0;
+    int nameLen = 0;
 
-    if (argc != 4)
+    for (i = 1; i < argc; i++)
     {
-        fprintf(stderr, "usage: %s reloc_elf static_elf rel_file\n", argv[0]);
-        return 1;
+        if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--pad-section-count") == 0)
+        {
+            if (i + 1 < argc && parse_number(argv[i + 1], &minSectionCount))
+                i++;
+            else
+                goto usage;
+        }
+        else if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--module-id") == 0)
+        {
+            if (i + 1 < argc && parse_number(argv[i + 1], &moduleId))
+                i++;
+            else
+                goto usage;
+        }
+        else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--name-offset") == 0)
+        {
+            if (i + 1 < argc && parse_number(argv[i + 1], &nameOffset))
+                i++;
+            else
+                goto usage;
+        }
+        else if (strcmp(argv[i], "-l") == 0 || strcmp(argv[i], "--name-length") == 0)
+        {
+            if (i + 1 < argc && parse_number(argv[i + 1], &nameLen))
+                i++;
+            else
+                goto usage;
+        }
+        else
+        {
+            if (plfName == NULL)
+                plfName = argv[i];
+            else if (elfName == NULL)
+                elfName = argv[i];
+            else if (relName == NULL)
+                relName = argv[i];
+            else
+                goto usage;
+        }
     }
-
-    plfName = argv[1];
-    elfName = argv[2];
-    relName = argv[3];
+    if (plfName == NULL || elfName == NULL || relName == NULL)
+        goto usage;
 
     plf = fopen(plfName, "rb");
     if (plf == NULL)
@@ -867,11 +919,10 @@ int main(int argc, char **argv)
 
     elfInfo.moduleId = 0;
 
-    // TODO: don't hardcode this
-    plfInfo.moduleId = 9;
+    plfInfo.moduleId = moduleId;
     // TODO: how is this determined. seems to randomly point inside section data
-    relHdr.moduleNameOffset = 0x118;
-    relHdr.moduleNameSize = 0x20;
+    relHdr.moduleNameOffset = nameOffset;
+    relHdr.moduleNameSize = nameLen;
 
     // TODO: not really sure how these section numbers from the rel map here,
     // but this seems to work.
@@ -915,4 +966,17 @@ int main(int argc, char **argv)
         free(imports[i].relocs);
     free(imports);
     return 0;
+
+usage:
+    fprintf(stderr,
+        "usage: %s reloc_elf static_elf rel_file\n"
+        "options:\n"
+        "  -i, --module-id <n>          sets the module ID in the rel header to <n>\n"
+        "  -c, --pad-section-count <n>  ensures that the rel will have at least <n>\n"
+        "                               sections\n"
+        "  -o, --name-offset <offset>   sets the name offset in the rel header to\n"
+        "                               <offset>\n"
+        "  -l, --name-length <len>      sets the name length in the rel header to <len>\n",
+        argv[0]);
+    return 1;
 }
