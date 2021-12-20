@@ -302,6 +302,7 @@ O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_sample.plf: $(O_FILES)
 mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
+ALL_RELS += mkbe.rel_sample.rel
 
 # mkbe.sel_stage.rel sources
 SOURCES := \
@@ -312,6 +313,7 @@ O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES += $(O_FILES)
 mkbe.sel_stage.plf: $(O_FILES)
 mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
+ALL_RELS += mkbe.sel_stage.rel
 
 #-------------------------------------------------------------------------------
 # Recipes
@@ -319,7 +321,7 @@ mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
 
 .PHONY: all default
 
-all: $(DOL) $(REL_SAMPLE) $(REL_SEL_STAGE)
+all: $(DOL) $(ALL_RELS)
 	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
 
 # static module (.dol file)
@@ -365,7 +367,7 @@ endef
 	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
 
 clean:
-	$(RM) $(DOL) $(ELF) $(MAP) $(ELF2DOL) $(ELF2REL)
+	$(RM) $(DOL) $(ELF) $(MAP) $(ALL_RELS) $(ELF2DOL) $(ELF2REL)
 	find . -name '*.o' -exec rm {} +
 	find . -name '*.dep' -exec rm {} +
 	find . -name '*.dump' -exec rm {} +
