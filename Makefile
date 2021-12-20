@@ -292,7 +292,7 @@ SOURCES := \
 	asm/lib/data.s \
 	asm/init.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
-ALL_O_FILES += $(O_FILES)
+ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
 
 # mkbe.rel_sample.rel sources
