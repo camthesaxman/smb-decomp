@@ -295,15 +295,6 @@ O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
 
-# mkbe.rel_sample.rel sources
-SOURCES := \
-	src/rel_sample.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
-ALL_O_FILES += $(O_FILES)
-mkbe.rel_sample.plf: $(O_FILES)
-mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
-ALL_RELS += mkbe.rel_sample.rel
-
 # mkbe.sel_stage.rel sources
 SOURCES := \
 	src/sel_stage_rel.c \
@@ -314,6 +305,25 @@ ALL_O_FILES += $(O_FILES)
 mkbe.sel_stage.plf: $(O_FILES)
 mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
 ALL_RELS += mkbe.sel_stage.rel
+
+# mkbe.rel_mini_pilot.rel sources
+SOURCES := \
+	src/mini_pilot.c \
+	asm/mini_pilot.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_pilot.plf: $(O_FILES)
+mkbe.rel_mini_pilot.rel: ELF2REL_ARGS := -i 6 -o 0xA9 -l 0x24 -c 18
+ALL_RELS += mkbe.rel_mini_pilot.rel
+
+# mkbe.rel_sample.rel sources
+SOURCES := \
+	src/rel_sample.c
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_sample.plf: $(O_FILES)
+mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
+ALL_RELS += mkbe.rel_sample.rel
 
 #-------------------------------------------------------------------------------
 # Recipes

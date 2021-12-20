@@ -10770,6 +10770,8 @@ lbl_8004D0A4:
 lbl_8004D0B4:
 /* 8004D0B4 00048FD4  7C 83 23 78 */	mr r3, r4
 /* 8004D0B8 00048FD8  4E 80 00 20 */	blr
+
+glabel func_8004D0BC
 /* 8004D0BC 00048FDC  28 04 00 00 */	cmplwi r4, 0
 /* 8004D0C0 00048FE0  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 8004D0C4 00048FE4  3C A0 80 1C */	lis r5, lbl_801B89E8@ha
@@ -21338,7 +21340,11 @@ lbl_8027CE58:
 	.skip 0x8C00
 .global lbl_80285A58
 lbl_80285A58:
-	.skip 0x58
+    .skip 0x10
+glabel lbl_80285A68
+	.skip 0x18
+glabel lbl_80285A80
+    .skip 0x30
 .global lbl_80285AB0
 lbl_80285AB0:
 	.skip 0x6600

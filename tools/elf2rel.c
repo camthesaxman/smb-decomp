@@ -116,6 +116,7 @@ typedef struct
 #define R_PPC_ADDR14_BRTAKEN	8
 #define R_PPC_ADDR14_BRNTAKEN	9
 #define R_PPC_REL24		10	/* PC relative 26 bit */
+#define R_PPC_REL14		11	/* PC relative 16 bit */
 
 #define R_DOLPHIN_SECTION 202
 #define R_DOLPHIN_END     203
@@ -131,11 +132,27 @@ const char *reloc_type_name(int type)
         NAMEENTRY(R_PPC_ADDR16_LO),
         NAMEENTRY(R_PPC_ADDR16_HA),
         NAMEENTRY(R_PPC_REL24),
+        NAMEENTRY(R_PPC_REL14),
     };
 #undef NAMEENTRY
     if (type > ARRAY_COUNT(names) || names[type] == NULL)
         return "(unknown)";
     return names[type];
+}
+
+static int is_supported_reloc_type(int relocType)
+{
+    switch (relocType)
+    {
+    case R_PPC_ADDR32:
+    case R_PPC_ADDR24:
+    case R_PPC_ADDR16_LO:
+    case R_PPC_ADDR16_HA:
+    case R_PPC_REL24:
+    case R_PPC_REL14:
+        return 1;
+    }
+    return 0;
 }
 
 void fatal_error(const char *msg, ...)
@@ -339,20 +356,6 @@ static void insert_reloc(struct RelRelocEntry *reloc, int moduleId)
     import->relocs = realloc(import->relocs, (import->relocsCount + 1) * sizeof(*import->relocs));
     import->relocs[import->relocsCount] = *reloc;
     import->relocsCount++;
-}
-
-static int is_supported_reloc_type(int relocType)
-{
-    switch (relocType)
-    {
-    case R_PPC_ADDR32:
-    case R_PPC_ADDR24:
-    case R_PPC_ADDR16_LO:
-    case R_PPC_ADDR16_HA:
-    case R_PPC_REL24:
-        return 1;
-    }
-    return 0;
 }
 
 // adds a rel relocation entry
