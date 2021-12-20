@@ -574,6 +574,8 @@ extern struct
     s16 unk1E;
     s16 unk20;
     s16 unk22;
+    u8 filler24[0x2E - 0x24];
+    s16 unk2E;
 } lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
@@ -1213,6 +1215,7 @@ extern s16 gameMode;
 extern u32 lbl_802F1BC8;
 // extern ? lbl_802F1BCC;
 
+extern struct Struct802F1BE0 lbl_802F1BE0;
 // extern ? lbl_802F1BE8;
 // extern ? lbl_802F1BF0;
 // extern ? lbl_802F1BF4;
@@ -1394,8 +1397,8 @@ extern struct Struct802F1F44
 extern u32 lbl_802F1F48;
 // extern ? lbl_802F1F4C;
 // extern ? lbl_802F1F50;
-extern u16 loadingStageIdRequest;
-// extern ? loadingStageId;
+extern s16 loadingStageIdRequest;
+extern s16 loadingStageId;
 extern s16 currStageId;
 // extern ? lbl_802F1F60;
 // extern ? lbl_802F1F68;
@@ -1409,7 +1412,7 @@ extern s16 currStageId;
 // extern ? lbl_802F1F98;
 // extern ? lbl_802F1F9C;
 // extern ? lbl_802F1FA0;
-// extern ? lbl_802F1FA4;
+extern u32 lbl_802F1FA4;
 // extern ? lbl_802F1FB0;
 // extern ? lbl_802F1FB8;
 // extern ? lbl_802F1FBC;

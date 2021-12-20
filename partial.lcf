@@ -19,6 +19,4 @@ FORCEACTIVE
     _prolog
     _epilog
     _unresolved
-    _ctors
-    _dtors
 }

@@ -38,11 +38,11 @@ SYSTEM_INCLUDE_DIRS := include
 
 RUNTIME_INCLUDE_DIRS := src/lib/Runtime.PPCEABI.H/Runtime/Inc
 
-ASFLAGS        := -mgekko -I asm
-CFLAGS         := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas
-CPPFLAGS       = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
-STATIC_LDFLAGS := -nodefaults -fp hard
-RELOC_LDFLAGS  := -nodefaults -fp hard -r1 -m _prolog -g
+ASFLAGS     := -mgekko -I asm
+CFLAGS      := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
+CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+DOL_LDFLAGS := -nodefaults -fp hard
+REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
@@ -57,11 +57,11 @@ DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
 MAP      := $(DOL:.dol=.map)
 
-STAGE_SEL := mkbe.stage_sel.rel
-STAGE_SEL_PLF := $(STAGE_SEL:.rel=.plf)
+DOL_LCF := static.lcf
+REL_LCF := partial.lcf
 
-# NOTE: the order of files listed here determines the link order
-DOL_SOURCE_FILES := \
+# main dol sources
+SOURCES := \
 	asm/c++_exception_data.s \
 	src/main.c \
 	src/init.c \
@@ -291,29 +291,27 @@ DOL_SOURCE_FILES := \
 	asm/lib/amcnotstub/amcnotstub.s \
 	asm/lib/data.s \
 	asm/init.s
-DOL_O_FILES := $(addsuffix .o,$(basename $(DOL_SOURCE_FILES)))
-ALL_O_FILES += $(DOL_O_FILES)
-$(ELF): $(DOL_O_FILES)
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+$(ELF): $(O_FILES)
 
-PAD_SECTION_COUNT := 0
-
-REL_SAMPLE := mkbe.rel_sample.rel
-REL_SAMPLE_PLF := $(REL_SAMPLE:.rel=.plf)
-REL_SAMPLE_SOURCE_FILES := \
+# mkbe.rel_sample.rel sources
+SOURCES := \
 	src/rel_sample.c
-REL_SAMPLE_O_FILES := $(addsuffix .o,$(basename $(REL_SAMPLE_SOURCE_FILES)))
-ALL_O_FILES += $(REL_SAMPLE_O_FILES)
-$(REL_SAMPLE_PLF): $(REL_SAMPLE_O_FILES)
-$(REL_SAMPLE): ELF2REL_ARGS := -i 9 -c 15 -o 0x118 -l 0x20
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_sample.plf: $(O_FILES)
+mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
 
-REL_SEL_STAGE := mkbe.sel_stage.rel
-REL_SEL_STAGE_PLF := $(REL_SEL_STAGE:.rel=.plf)
-REL_SEL_STAGE_SOURCE_FILES := \
-	asm/sel_stage_rel.s
-REL_SEL_STAGE_O_FILES := $(addsuffix .o,$(basename $(REL_SEL_STAGE_SOURCE_FILES)))
-ALL_O_FILES += $(REL_SEL_STAGE_O_FILES)
-$(REL_SEL_STAGE_PLF): $(REL_SEL_STAGE_O_FILES)
-$(REL_SEL_STAGE): ELF2REL_ARGS := -i 2 -c 17 -o 0x1D -l 0x1F
+# mkbe.sel_stage.rel sources
+SOURCES := \
+	src/sel_stage_rel.c \
+	src/sel_stage_rel_2.c \
+	src/sel_stage_rel_3.c
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.sel_stage.plf: $(O_FILES)
+mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
 
 #-------------------------------------------------------------------------------
 # Recipes
@@ -329,20 +327,18 @@ all: $(DOL) $(REL_SAMPLE) $(REL_SEL_STAGE)
 	@echo Converting $< to $@
 	$(QUIET) $(ELF2DOL) $(filter %.elf,$^) $@
 
-%.elf: static.lcf
+%.elf: $(DOL_LCF)
 	@echo Linking static module $@
-	$(QUIET) $(LD) -lcf static.lcf $(STATIC_LDFLAGS) $(filter %.o,$^) -map $(@:.elf=.map) -o $@
-# The Metrowerks linker doesn't generate physical addresses in the ELF program headers. This fixes it somehow.
-	$(QUIET) $(OBJCOPY) $@ $@
+	$(QUIET) $(LD) -lcf $(DOL_LCF) $(DOL_LDFLAGS) $(filter %.o,$^) -map $(@:.elf=.map) -o $@
 
 # relocatable module (.rel file)
 %.rel: %.plf $(ELF) $(ELF2REL)
 	@echo Converting $(filter %.plf,$^) to $@
 	$(QUIET) $(ELF2REL) $(filter %.plf,$^) $(ELF) $@ $(ELF2REL_ARGS)
 
-%.plf: partial.lcf
+%.plf: $(REL_LCF)
 	@echo Linking relocatable module $@
-	$(QUIET) $(LD) -lcf partial.lcf $(RELOC_LDFLAGS) $(filter %.o,$^) -map $(@:.plf=.map) -o $@
+	$(QUIET) $(LD) -lcf $(REL_LCF) $(REL_LDFLAGS) $(filter %.o,$^) -map $(@:.plf=.map) -o $@
 
 # Canned recipe for compiling C or C++
 # Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
@@ -355,7 +351,7 @@ $(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
 endef
 
 # relocatable modules must not use the small data sections
-%.plf: CFLAGS += -sdata 0 -sdata2 0
+%.plf: CFLAGS += -sdata 0 -sdata2 0 -g
 
 %.o: %.c
 	$(COMPILE)

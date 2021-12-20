@@ -228,7 +228,7 @@ struct RelRelocEntry
     int type;
     int relocSection;  // section which relocation patch applies to
     int section;       // section of symbol
-    size_t symaddr;    // for dol symbols, absolute address. for rel symbols, section offset
+    uint32_t symaddr;    // for dol symbols, absolute address. for rel symbols, section offset
 };
 
 struct RelImportEntry
@@ -567,6 +567,49 @@ void find_entry_points(FILE *f, const Elf32_Ehdr *ehdr, const struct SymStringIn
     }
 }
 
+// Removes unnecessary relocations from function calls within this module
+void remove_redundant_relocs(int sectionId, uint8_t *sectionData, size_t size)
+{
+    struct RelImportEntry *import = NULL;
+    struct RelRelocEntry *reloc;
+    int i;
+
+    // find the import directory for this module
+    for (i = 0; i < importsCount; i++)
+    {
+        if (imports[i].moduleId == plfInfo.moduleId)
+        {
+            import = &imports[i];
+            break;
+        }
+    }
+    assert(import != NULL);
+    
+    for (i = 0, reloc = &import->relocs[0]; i < import->relocsCount; i++, reloc++)
+    {
+        if (reloc->relocSection == sectionId && reloc->type == R_PPC_REL24)
+        {
+            assert(reloc->offset < size);
+            /*
+            printf("removing reloc: section %i, offset 0x%08X, type %s\n",
+                reloc->relocSection,
+                reloc->offset,
+                reloc_type_name(reloc->type));
+            */  
+            uint32_t insn = read_u32be((uint32_t *)(sectionData + reloc->offset));
+            assert(((insn >> 26) & 0x3F) == 18);  // TODO: do other instructions besides bl use R_PPC_REL24?
+            uint32_t offsetMask = 0x03FFFFFC;  // bits of instruction that contain the offset
+            int32_t branchOffset = reloc->symaddr - reloc->offset;  // relative branch
+            insn = (insn & ~offsetMask) | (branchOffset & offsetMask);
+            //printf("patching unresolved 0x%08X\n", insn);
+            write_u32be(insn, (uint32_t *)(sectionData + reloc->offset));
+            
+            // remove the relocation
+            reloc->type = R_PPC_NONE;
+        }
+    }
+}
+
 // Patches all external function calls to point to the _unresolved function by default.
 // TODO: should this also patch pointers to external functions in .data?
 void patch_unresolved(int sectionId, uint8_t *sectionData, size_t size)
@@ -602,13 +645,13 @@ void patch_unresolved(int sectionId, uint8_t *sectionData, size_t size)
             reloc->offset,
             reloc_type_name(reloc->type));
         */
-        // TODO: should we check if it's actually a bl instruction?
         if (reloc->relocSection == sectionId && reloc->type == R_PPC_REL24)
         {
             assert(reloc->offset < size);
             uint32_t insn = read_u32be((uint32_t *)(sectionData + reloc->offset));
+            assert(((insn >> 26) & 0x3F) == 18);  // TODO: do other instructions besides bl use R_PPC_REL24?
             uint32_t offsetMask = 0x03FFFFFC;  // bits of instruction that contain the offset
-            int32_t branchOffset = relHdr.unresolvedOffset - reloc->offset;
+            int32_t branchOffset = relHdr.unresolvedOffset - reloc->offset;  // relative branch
             insn = (insn & ~offsetMask) | (branchOffset & offsetMask);
             //printf("patching unresolved 0x%08X\n", insn);
             write_u32be(insn, (uint32_t *)(sectionData + reloc->offset));
@@ -661,7 +704,10 @@ void write_rel_sections(FILE *fin, Elf32_Ehdr *ehdr, FILE *fout)
                 if (!read_checked(fin, shdr.sh_offset, data, shdr.sh_size))
                     fatal_error("error reading section\n");
                 if (execflg)  // patch external function calls to _unresolved
+                {
+                    remove_redundant_relocs(i, data, sizeAligned);
                     patch_unresolved(i, data, sizeAligned);
+                }
                 if (!write_checked(fout, sectionOffset, data, shdr.sh_size))
                     fatal_error("error writing rel section\n");
                 free(data);
@@ -730,6 +776,9 @@ void write_rel_imports(FILE *fout)
         //printf("writing %i relocs for module %i at 0x%X\n", imp->relocsCount, imp->moduleId, relocsOffset);
         for (j = 0, reloc = &imp->relocs[0]; j < imp->relocsCount; j++, reloc++)
         {
+            if (reloc->type == R_PPC_NONE)  // removed reloc
+                continue;
+            
             if (reloc->relocSection != currSection)
             {
                 // write section change
@@ -745,7 +794,7 @@ void write_rel_imports(FILE *fout)
             }
 
             // write relocation
-            assert(reloc->offset > lastOffset);
+            assert(reloc->offset >= lastOffset);
             write_u16be(reloc->offset - lastOffset, &ent.offset);
             ent.type = reloc->type;
             ent.section = reloc->section;
@@ -889,13 +938,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    rel = fopen(relName, "wb");
-    if (rel == NULL)
-    {
-        fprintf(stderr, "could not open %s for reading: %s\n", relName, strerror(errno));
-        return 1;
-    }
-
     if (read_elf_header(plf, &plfHeader))
     {
         if (plfHeader.e_ident[EI_CLASS] != ELFCLASS32
@@ -951,6 +993,14 @@ int main(int argc, char **argv)
 
     relHdr.moduleVersion = 1;
     relHdr.moduleId = plfInfo.moduleId;
+
+    rel = fopen(relName, "wb");
+    if (rel == NULL)
+    {
+        fprintf(stderr, "could not open %s for reading: %s\n", relName, strerror(errno));
+        return 1;
+    }
+
     write_rel_sections(plf, &plfHeader, rel);
     write_rel_imports(rel);
     write_rel_header(rel);

@@ -57,7 +57,7 @@ def read_u32(offset):
 def add_label(addr, name=None):
     if not addr in labels:
         if name == None:
-            name = 'lbl_0x%08X' % addr
+            name = 'lbl_%08X' % addr
         labels[addr] = name
 
 with open(sys.argv[1], 'rb') as file:
@@ -260,6 +260,7 @@ def dump_code(o, size):
             print_label(labels[o])
         asm = disassemble_insn(o, get_relocation_for_offset(o))
         print('/* %08X %08X */ %s' % (o, read_u32(o), asm))
+        #print('/* %08X */ %s' % (read_u32(o), asm))
         o += 4
     if o < end:
         print('incomplete')

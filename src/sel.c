@@ -6,7 +6,7 @@
 #include "mode.h"
 #include "relocation.h"
 
-struct { u32 unk0; u32 unk4; } lbl_802F1BE0;
+struct Struct802F1BE0 lbl_802F1BE0;
 struct MinigameLink lbl_802F1BD8;
 void (*lbl_802F1BD4)(void);
 void (*menuCallback)(void);

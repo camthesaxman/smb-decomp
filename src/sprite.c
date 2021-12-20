@@ -207,46 +207,6 @@ struct Struct8028CF28
     u8 filler2C[4];
 };
 
-struct Sprite
-{
-    /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???
-    /*0x01*/ u8 fontId;  // fontId
-             s8 unk2;
-    /*0x03*/ s8 textAlign;
-    /*0x04*/ float centerX;
-    /*0x08*/ float centerY;
-             u8 unkC;
-             u8 unkD;
-             u8 unkE;
-             s8 unkF;
-             u8 filler10[0x30-0x10];
-    /*0x30*/ void (*destFunc)();
-    /*0x34*/ void (*mainFunc)();
-             void (*unk38)(struct Sprite *);
-             u16 unk3C;
-             u8 filler3E[0x40-0x3E];
-             float unk40;
-             float unk44;
-             u8 filler48[4];
-             float unk4C;
-             struct Sprite *unk50;
-             struct Sprite *unk54;
-             s32 unk58;
-             s32 unk5C;
-             s32 unk60;
-             s32 unk64;
-             u8 filler68[0x6C-0x68];
-             float unk6C;
-             u8 filler70[4];
-             u32 unk74;
-             u32 unk78;
-             float unk7C;
-             float unk80;
-             float unk84;
-             float unk88;
-             char text[0xBC-0x8C];  // text
-};
-
 struct Struct8028FE58
 {
     //u32 unk0;
