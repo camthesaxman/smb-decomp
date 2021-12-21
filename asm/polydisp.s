@@ -4433,7 +4433,10 @@ lbl_801EED50:
 	.skip 0x38
 .global lbl_801EED88
 lbl_801EED88:
-	.skip 0x20
+	.skip 0x10
+.global lbl_801EED98
+lbl_801EED98:
+    .skip 0x10
 .global lbl_801EEDA8
 lbl_801EEDA8:
 	.skip 0x118

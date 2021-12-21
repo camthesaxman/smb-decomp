@@ -8057,10 +8057,19 @@ lbl_802F1FA0:
 	.skip 0x4
 .global lbl_802F1FA4
 lbl_802F1FA4:
-	.skip 0xC
+	.skip 0x4
+.global lbl_802F1FA8
+lbl_802F1FA8:
+    .skip 0x4
+.global lbl_802F1FAC
+lbl_802F1FAC:
+    .skip 0x4
 .global lbl_802F1FB0
 lbl_802F1FB0:
-	.skip 0x8
+	.skip 0x4
+.global lbl_802F1FB4
+lbl_802F1FB4:
+    .skip 0x4
 .global lbl_802F1FB8
 lbl_802F1FB8:
 	.skip 0x4

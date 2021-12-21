@@ -295,6 +295,16 @@ O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
 
+# mkbe.sel_ngc.rel sources
+SOURCES := \
+	src/sel_ngc_rel.c \
+	asm/sel_ngc_rel.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.sel_ngc.plf: $(O_FILES)
+mkbe.sel_ngc.rel: ELF2REL_ARGS := -i 1 -o 0x0 -l 0x1D -c 18
+ALL_RELS += mkbe.sel_ngc.rel
+
 # mkbe.sel_stage.rel sources
 SOURCES := \
 	src/sel_stage_rel.c \
