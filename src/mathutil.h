@@ -38,6 +38,7 @@ float mathutil_rsqrt(double n);
 float mathutil_sin(s16 angle);
 #define mathutil_cos(angle) mathutil_sin((angle) + 0x4000)
 void mathutil_sin_cos_v(s16 a, float *b);
+void func_80007214();
 void mathutil_sin_cos(s16 angle);
 float mathutil_tan(u32 angle);
 s16 mathutil_atan2(double a, float b);
@@ -87,6 +88,7 @@ void mathutil_mtxA_rigid_inv_tf_tl(Vec *dest);
 void mathutil_mtxA_rigid_inv_tf_vec(Vec *src, Vec *dest);
 void mathutil_mtxA_rigid_inv_tf_vec_xyz(float x, float y, float z);
 void mathutil_mtxA_rotate_x(int angle);
+void mathutil_mtxA_rotate_x_sin_cos(float sinAngle, float cosAngle);
 void mathutil_mtxA_rotate_y(int angle);
 void mathutil_mtxA_rotate_y_sin_cos(float sinAngle, float cosAngle);
 void mathutil_mtxA_rotate_z(int angle);
