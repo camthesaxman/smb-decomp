@@ -6756,6 +6756,7 @@ glabel string_DIP_SWITCH30_2
 glabel string_DIP_SWITCH31_2
 	.asciz "DIP_SWITCH31"
 	.balign 4
+glabel dipSwitchNames
 	.4byte string_DIP_DEBUG_2  ;# ptr
 	.4byte string_DIP_DISP_2  ;# ptr
 	.4byte string_DIP_STCOLI_2  ;# ptr
@@ -7008,6 +7009,8 @@ lbl_802F0978:
 lbl_802F097C:
 	# ROM: 0x1EB0BC
 	.byte 0x17, 0x00, 0x00, 0x00
+
+glabel lbl_802F0980
 	.byte 0x00, 0x00, 0x00, 0x20
 	.4byte 0
 

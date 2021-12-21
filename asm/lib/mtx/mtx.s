@@ -15,6 +15,8 @@ PSMTXIdentity:
 /* 800CA190 000C60B0  F0 23 00 00 */	psq_st f1, 0(r3), 0, qr0
 /* 800CA194 000C60B4  F0 23 00 28 */	psq_st f1, 40(r3), 0, qr0
 /* 800CA198 000C60B8  4E 80 00 20 */	blr
+
+glabel PSMTXCopy
 /* 800CA19C 000C60BC  E0 03 00 00 */	psq_l f0, 0(r3), 0, qr0
 /* 800CA1A0 000C60C0  F0 04 00 00 */	psq_st f0, 0(r4), 0, qr0
 /* 800CA1A4 000C60C4  E0 23 00 08 */	psq_l f1, 8(r3), 0, qr0
@@ -28,14 +30,16 @@ PSMTXIdentity:
 /* 800CA1C4 000C60E4  E0 A3 00 28 */	psq_l f5, 40(r3), 0, qr0
 /* 800CA1C8 000C60E8  F0 A4 00 28 */	psq_st f5, 40(r4), 0, qr0
 /* 800CA1CC 000C60EC  4E 80 00 20 */	blr
+
+glabel PSMTXConcat
 /* 800CA1D0 000C60F0  94 21 FF C0 */	stwu r1, -0x40(r1)
 /* 800CA1D4 000C60F4  E0 03 00 00 */	psq_l f0, 0(r3), 0, qr0
 /* 800CA1D8 000C60F8  D9 C1 00 08 */	stfd f14, 8(r1)
 /* 800CA1DC 000C60FC  E0 C4 00 00 */	psq_l f6, 0(r4), 0, qr0
-/* 800CA1E0 000C6100  3C C0 80 2F */	lis r6, lbl_802F1948@ha
+/* 800CA1E0 000C6100  3C C0 80 2F */	lis r6, Unit01@ha
 /* 800CA1E4 000C6104  E0 E4 00 08 */	psq_l f7, 8(r4), 0, qr0
 /* 800CA1E8 000C6108  D9 E1 00 10 */	stfd f15, 0x10(r1)
-/* 800CA1EC 000C610C  38 C6 19 48 */	addi r6, r6, lbl_802F1948@l
+/* 800CA1EC 000C610C  38 C6 19 48 */	addi r6, r6, Unit01@l
 /* 800CA1F0 000C6110  DB E1 00 28 */	stfd f31, 0x28(r1)
 /* 800CA1F4 000C6114  E1 04 00 10 */	psq_l f8, 16(r4), 0, qr0
 /* 800CA1F8 000C6118  11 86 00 18 */	ps_muls0 f12, f6, f0
@@ -79,6 +83,8 @@ PSMTXIdentity:
 /* 800CA290 000C61B0  CB E1 00 28 */	lfd f31, 0x28(r1)
 /* 800CA294 000C61B4  38 21 00 40 */	addi r1, r1, 0x40
 /* 800CA298 000C61B8  4E 80 00 20 */	blr
+
+glabel PSMTXInverse
 /* 800CA29C 000C61BC  E0 03 80 00 */	psq_l f0, 0(r3), 1, qr0
 /* 800CA2A0 000C61C0  E0 23 00 04 */	psq_l f1, 4(r3), 0, qr0
 /* 800CA2A4 000C61C4  E0 43 80 10 */	psq_l f2, 16(r3), 1, qr0

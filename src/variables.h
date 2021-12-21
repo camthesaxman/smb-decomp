@@ -1063,7 +1063,7 @@ extern float lbl_802F16B8;
 // extern ? __OSArenaLo;
 // extern ? lbl_802F1938;
 // extern ? lbl_802F1940;
-// extern ? lbl_802F1948;
+// extern ? Unit01;
 // extern ? FirstRead;
 // extern ? lbl_802F1958;
 // extern ? autoInvalidation;

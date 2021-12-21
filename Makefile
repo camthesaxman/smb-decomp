@@ -345,6 +345,16 @@ mkbe.rel_sample.plf: $(O_FILES)
 mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
 ALL_RELS += mkbe.rel_sample.rel
 
+# mkbe.test_mode.rel sources
+SOURCES := \
+	src/test_mode.c \
+	asm/test_mode.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.test_mode.plf: $(O_FILES)
+mkbe.test_mode.rel: ELF2REL_ARGS := -i 10 -o 0x138 -l 0x1F -c 18
+ALL_RELS += mkbe.test_mode.rel
+
 # mkbe.option.rel sources
 SOURCES := \
 	src/option.c \

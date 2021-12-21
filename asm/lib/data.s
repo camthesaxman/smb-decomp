@@ -7916,8 +7916,8 @@ lbl_802F1940:
 	.byte 0xFF, 0xFF, 0x00, 0x00
 	.4byte 0
 
-.global lbl_802F1948
-lbl_802F1948:
+.global Unit01
+Unit01:
 	# ROM: 0x1EC088
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00
