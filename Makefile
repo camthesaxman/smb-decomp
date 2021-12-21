@@ -355,6 +355,15 @@ mkbe.rel_mini_pilot.plf: $(O_FILES)
 mkbe.rel_mini_pilot.rel: ELF2REL_ARGS := -i 6 -o 0xA9 -l 0x24 -c 18
 ALL_RELS += mkbe.rel_mini_pilot.rel
 
+# mkbe.rel_mini_golf.rel sources
+SOURCES := \
+	src/mini_golf.s \
+	asm/mini_golf.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_golf.plf: $(O_FILES)
+mkbe.rel_mini_golf.rel: ELF2REL_ARGS := -i 7 -o 0xCD -l 0x23 -c 17
+ALL_RELS += mkbe.rel_mini_golf.rel
 
 # mkbe.rel_mini_billiards.rel sources
 SOURCES := \
