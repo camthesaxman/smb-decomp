@@ -4,19 +4,8 @@
 
 .global gTRKInterruptVectorTable
 gTRKInterruptVectorTable:
-/* 800034B8 000004B8  4D 65 74 72 */	.4byte 0x4D657472  /* unknown instruction */
-/* 800034BC 000004BC  6F 77 65 72 */	xoris r23, r27, 0x6572
-/* 800034C0 000004C0  6B 73 20 54 */	xori r19, r27, 0x2054
-/* 800034C4 000004C4  61 72 67 65 */	ori r18, r11, 0x6765
-/* 800034C8 000004C8  74 20 52 65 */	andis. r0, r1, 0x5265
-/* 800034CC 000004CC  73 69 64 65 */	andi. r9, r27, 0x6465
-/* 800034D0 000004D0  6E 74 20 4B */	xoris r20, r19, 0x204b
-/* 800034D4 000004D4  65 72 6E 65 */	oris r18, r11, 0x6e65
-/* 800034D8 000004D8  6C 20 66 6F */	xoris r0, r1, 0x666f
-/* 800034DC 000004DC  72 20 50 6F */	andi. r0, r17, 0x506f
-/* 800034E0 000004E0  77 65 72 50 */	andis. r5, r27, 0x7250
-lbl_800034E4:
-/* 800034E4 000004E4  43 00 00 00 */	.4byte 0x43000000  /* unknown instruction */
+    .asciz "Metrowerks Target Resident Kernel for PowerPC"
+    .balign 4
 /* 800034E8 000004E8  00 00 00 00 */	.4byte 0x00000000  /* unknown instruction */
 /* 800034EC 000004EC  00 00 00 00 */	.4byte 0x00000000  /* unknown instruction */
 /* 800034F0 000004F0  00 00 00 00 */	.4byte 0x00000000  /* unknown instruction */
@@ -2006,14 +1995,3 @@ lbl_800046E8:
 /* 800053E0 000023E0  7C 7A 03 A6 */	mtspr 0x1a, r3
 /* 800053E4 000023E4  38 60 1F 00 */	li r3, 0x1f00
 /* 800053E8 000023E8  4C 00 00 64 */	rfi
-
-.global __TRK_reset
-__TRK_reset:
-/* 800053EC 000023EC  7C 08 02 A6 */	mflr r0
-/* 800053F0 000023F0  90 01 00 04 */	stw r0, 4(r1)
-/* 800053F4 000023F4  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800053F8 000023F8  48 10 84 D1 */	bl __TRK_copy_vectors
-/* 800053FC 000023FC  38 21 00 08 */	addi r1, r1, 8
-/* 80005400 00002400  80 01 00 04 */	lwz r0, 4(r1)
-/* 80005404 00002404  7C 08 03 A6 */	mtlr r0
-/* 80005408 00002408  4E 80 00 20 */	blr

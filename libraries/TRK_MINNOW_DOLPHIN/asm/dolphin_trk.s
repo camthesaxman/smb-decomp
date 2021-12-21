@@ -1,5 +1,18 @@
 .include "macros.inc"
 
+.section .init
+
+.global __TRK_reset
+__TRK_reset:
+/* 800053EC 000023EC  7C 08 02 A6 */	mflr r0
+/* 800053F0 000023F0  90 01 00 04 */	stw r0, 4(r1)
+/* 800053F4 000023F4  94 21 FF F8 */	stwu r1, -8(r1)
+/* 800053F8 000023F8  48 10 84 D1 */	bl __TRK_copy_vectors
+/* 800053FC 000023FC  38 21 00 08 */	addi r1, r1, 8
+/* 80005400 00002400  80 01 00 04 */	lwz r0, 4(r1)
+/* 80005404 00002404  7C 08 03 A6 */	mtlr r0
+/* 80005408 00002408  4E 80 00 20 */	blr
+
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
 .global InitMetroTRK

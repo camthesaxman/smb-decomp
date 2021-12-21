@@ -281,6 +281,7 @@ SOURCES := \
 	libraries/TRK_MINNOW_DOLPHIN/asm/flush_cache.s \
 	libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c \
 	libraries/TRK_MINNOW_DOLPHIN/asm/targimpl.s \
+	libraries/TRK_MINNOW_DOLPHIN/asm/__exception.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/dolphin_trk.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/mpc_7xx_603e.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/main_TRK.s \
@@ -289,8 +290,7 @@ SOURCES := \
 	libraries/amcstubs/asm/AmcExi2Stubs.s \
 	libraries/odemustubs/asm/odemustubs.s \
 	libraries/amcnotstub/asm/amcnotstub.s \
-	libraries/data.s \
-	asm/init.s
+	libraries/data.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
