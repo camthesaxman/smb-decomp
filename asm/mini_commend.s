@@ -4201,6 +4201,8 @@ func_8009F4A4:
 /* 8009F4AC 0009B3CC  80 03 00 08 */	lwz r0, 8(r3)
 /* 8009F4B0 0009B3D0  54 03 02 94 */	rlwinm r3, r0, 0, 0xa, 0xa
 /* 8009F4B4 0009B3D4  4E 80 00 20 */	blr
+
+glabel func_8009F4B8
 /* 8009F4B8 0009B3D8  90 6D 9F DC */	stw r3, replayFileInfo@sda21(r13)
 /* 8009F4BC 0009B3DC  90 8D 9F E0 */	stw r4, lbl_802F21C0@sda21(r13)
 /* 8009F4C0 0009B3E0  4E 80 00 20 */	blr

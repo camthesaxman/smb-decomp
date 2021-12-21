@@ -325,6 +325,16 @@ mkbe.rel_sample.plf: $(O_FILES)
 mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
 ALL_RELS += mkbe.rel_sample.rel
 
+# mkbe.option.rel sources
+SOURCES := \
+	src/option.c \
+	asm/option.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.option.plf: $(O_FILES)
+mkbe.option.rel: ELF2REL_ARGS := -i 11 -o 0x157 -l 0x1C -c 17
+ALL_RELS += mkbe.option.rel
+
 #-------------------------------------------------------------------------------
 # Recipes
 #-------------------------------------------------------------------------------

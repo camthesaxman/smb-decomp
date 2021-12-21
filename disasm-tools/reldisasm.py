@@ -140,6 +140,7 @@ if unresolvedSection != 0:
 
 def read_relocation_info(module, o):
     currSection = None
+    missingSymbols = False
     while True:
         offset = read_u16(o + 0)
         type = read_u8(o + 2)
@@ -156,7 +157,7 @@ def read_relocation_info(module, o):
                 symAddr = addend
                 if symAddr not in labels:
                     print('error: symbol for 0x%08X not found' % symAddr)
-                    exit(1)
+                    missingSymbols = True
             else:  # rel
                 symAddr = sectionInfo[section]['offset'] + addend
                 labels[symAddr] = 'lbl_%08X' % symAddr
@@ -176,6 +177,8 @@ def read_relocation_info(module, o):
         if type == R_DOLPHIN_END:
             break
         o += 8
+    if missingSymbols:
+        exit(1)
 
 numImpEntries = impSize / 8
 #print("%i imports" % numImpEntries)
@@ -403,7 +406,7 @@ def read_string(data, pos):
 def escape_string(text):
     return text.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\t','\\t')
 
-def output_data_range(o, end):
+def output_data_range(secNum, o, end):
     print('    # 0x%X' % o)
     if not is_aligned(o):
         print('    .byte ' + hex_bytes(filecontent[o:align(o)]))
@@ -411,11 +414,12 @@ def output_data_range(o, end):
     while o < (end & ~3):
         # Try to see if this is a string.
         string = read_string(filecontent, o)
-        if len(string) >= 4:
+        if len(string) >= 4 and secNum == 5:  # strings are only in .data
             strEnd = o + len(string)+1
-            if is_aligned(strEnd) or is_all_zero(filecontent[strEnd:align(strEnd)-strEnd]):
+            if is_aligned(strEnd) or is_all_zero(filecontent[strEnd : align(strEnd)-strEnd]):
                 print('    .asciz \"%s"' % escape_string(string))
-                print('    .balign 4')
+                if not is_aligned(strEnd):
+                    print('    .balign 4')
                 o = align(strEnd)
                 continue
         # Not a string
@@ -435,18 +439,18 @@ def output_data_range(o, end):
     return
 
 
-def dump_data(o, size):
+def dump_data(secNum, o, size):
     end = o + size
     lastPos = o
     while o < end:
         if o in labels:
             if o - lastPos > 0:
-                output_data_range(lastPos, o)
+                output_data_range(secNum, lastPos, o)
             print_label(labels[o])
             lastPos = o
         o += 1
     if o - lastPos > 0:
-        output_data_range(lastPos, o)
+        output_data_range(secNum, lastPos, o)
     return
 
 
@@ -482,6 +486,6 @@ for i in range(0, numSections):
         dump_code(section['offset'], section['length'])
     elif section['offset'] != 0:
         # data section
-        dump_data(section['offset'], section['length'])
+        dump_data(i, section['offset'], section['length'])
     print('')
 
