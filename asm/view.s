@@ -10238,7 +10238,7 @@ glabel string_loading_gct
 
 .section .bss
 
-# 802c4940
+glabel lbl_802C4960
 	.skip 0x1400
 .global lbl_802C5D60
 lbl_802C5D60:
@@ -10288,6 +10288,7 @@ glabel string_view_c
 lbl_802F16B8:
 	# ROM: 0x1EBDF8
 	.byte 0x42, 0x70, 0x00, 0x00
+glabel lbl_802F16BC
 	.byte 0xF3, 0x00, 0x00, 0x00
 	.byte 0x53, 0x45, 0x58, 0x00
 	.byte 0x58, 0x58, 0x58, 0x00
