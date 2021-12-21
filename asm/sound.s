@@ -7901,7 +7901,49 @@ lbl_802F1E54:
 	.skip 0x4
 .global lbl_802F1E58
 lbl_802F1E58:
-	.skip 0x50
+	.skip 0x4
+glabel lbl_802F1E5C
+    .skip 0x4
+glabel lbl_802F1E60
+    .skip 0x4
+glabel lbl_802F1E64
+    .skip 0x2
+glabel lbl_802F1E66
+    .skip 0x2
+glabel lbl_802F1E68
+    .skip 0x2
+glabel lbl_802F1E6A
+    .skip 0x2
+glabel lbl_802F1E6C
+    .skip 0x4
+glabel lbl_802F1E70
+    .skip 0x4
+glabel lbl_802F1E74
+    .skip 0x4
+glabel lbl_802F1E78
+    .skip 0x4
+glabel lbl_802F1E7C
+    .skip 0x4
+glabel lbl_802F1E80
+    .skip 0x4
+glabel lbl_802F1E84
+    .skip 0x4
+glabel lbl_802F1E88
+    .skip 0x4
+glabel lbl_802F1E8C
+    .skip 0x4
+glabel lbl_802F1E90
+    .skip 0x4
+glabel lbl_802F1E94
+    .skip 0x4
+glabel lbl_802F1E98
+    .skip 0x4
+glabel lbl_802F1E9C
+    .skip 0x4
+glabel lbl_802F1EA0
+    .skip 0x2
+glabel lbl_802F1EA2
+    .skip 0x6
 .global lbl_802F1EA8
 lbl_802F1EA8:
 	.skip 0x8

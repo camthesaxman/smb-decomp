@@ -336,6 +336,15 @@ mkbe.rel_mini_bowling.plf: $(O_FILES)
 mkbe.rel_mini_bowling.rel: ELF2REL_ARGS := -i 4 -o 0x5F -l 0x26 -c 18
 ALL_RELS += mkbe.rel_mini_bowling.rel
 
+# mkbe.rel_mini_fight.rel sources
+SOURCES := \
+	asm/mini_fight.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_fight.plf: $(O_FILES)
+mkbe.rel_mini_fight.rel: ELF2REL_ARGS := -i 5 -o 0x85 -l 0x24 -c 17
+ALL_RELS += mkbe.rel_mini_fight.rel
+
 # mkbe.rel_mini_pilot.rel sources
 SOURCES := \
 	src/mini_pilot.c \
