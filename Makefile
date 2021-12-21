@@ -306,6 +306,16 @@ mkbe.sel_stage.plf: $(O_FILES)
 mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
 ALL_RELS += mkbe.sel_stage.rel
 
+# mkbe.rel_mini_bowling.rel sources
+SOURCES := \
+	src/mini_bowling.c \
+	asm/mini_bowling.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_bowling.plf: $(O_FILES)
+mkbe.rel_mini_bowling.rel: ELF2REL_ARGS := -i 4 -o 0x5F -l 0x26 -c 18
+ALL_RELS += mkbe.rel_mini_bowling.rel
+
 # mkbe.rel_mini_pilot.rel sources
 SOURCES := \
 	src/mini_pilot.c \

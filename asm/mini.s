@@ -44,12 +44,15 @@ glabel func_80093A84
 /* 80093A94 0008F9B4  90 AD 9D 34 */	stw r5, minigameRelBallCallback@sda21(r13)
 /* 80093A98 0008F9B8  90 CD 9A 58 */	stw r6, minigameRelCameraCallback@sda21(r13)
 /* 80093A9C 0008F9BC  4E 80 00 20 */	blr
+
+glabel func_80093AA0
 /* 80093AA0 0008F9C0  90 6D 9F 78 */	stw r3, lbl_802F2158@sda21(r13)
 /* 80093AA4 0008F9C4  90 8D 9F 7C */	stw r4, lbl_802F215C@sda21(r13)
 /* 80093AA8 0008F9C8  90 AD 9F 80 */	stw r5, lbl_802F2160@sda21(r13)
 /* 80093AAC 0008F9CC  90 CD 9D 34 */	stw r6, minigameRelBallCallback@sda21(r13)
 /* 80093AB0 0008F9D0  90 ED 9A 58 */	stw r7, minigameRelCameraCallback@sda21(r13)
 /* 80093AB4 0008F9D4  4E 80 00 20 */	blr
+
 .global submode_mini_game_init_func
 submode_mini_game_init_func:
 /* 80093AB8 0008F9D8  7C 08 02 A6 */	mflr r0
