@@ -7,6 +7,11 @@ def apply(config, args):
     config['mapfile'] = 'supermonkeyball.map'
     config['myimg'] = 'supermonkeyball.elf'
     config['baseimg'] = 'baserom.elf'
+    
+    #config['mapfile'] = 'mkbe.sel_stage.map'
+    #config['myimg'] = 'mkbe.sel_stage.rel'
+    #config['baseimg'] = 'baserom.mkbe.sel_stage.rel'
+    
     config['makeflags'] = []
     config['source_directories'] = ['src', 'include', 'spec']
     config["arch"] = "ppc"

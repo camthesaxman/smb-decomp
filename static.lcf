@@ -1,3 +1,5 @@
+/* Linker configuration for building a static (.dol) module */
+
 MEMORY
 {
     text : origin = 0x80003100
@@ -25,7 +27,9 @@ SECTIONS
     _stack_base = _f_stack;
     _stack_addr = _f_stack + 0x10000;  /* 0x80306C80 */
 }
-FORCEACTIVE {
+
+FORCEACTIVE
+{
     unkData 
     g_avdisp_alloc_matrix_lists func_8008D8D0 load_model
     free_model

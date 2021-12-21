@@ -12,4 +12,4 @@ fi
 #read
 C_FILES="$(find src -name '*.c') $(find src -name '*.h')"
 ASM_FILES="$(find asm -name '*.s') $(find asm -name '*.inc')"
-grep -rl "$1" $ASM_FILES $C_FILES ldscript.lcf | xargs sed -i "s/\b$1\b/$2/g"
+grep -rl "$1" $ASM_FILES $C_FILES *.lcf | xargs sed -i "s/\b$1\b/$2/g"

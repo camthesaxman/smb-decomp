@@ -263,7 +263,8 @@ struct ModeControl
     s32 unk28;
     s32 unk2C;
     s32 unk30;
-    u8 filler34[0x42-0x34];
+    u8 filler34[0x40-0x34];
+    u16 unk40;
     u8 unk42;
 };
 
@@ -586,11 +587,14 @@ struct DecodedStageLzPtr_child
     u16 unk12;
     struct DecodedStageLzPtr_child_child *unk14;
     struct DecodedStageLzPtr_child_child2 *unk18;
-    u8 filler1C[0x7C-0x1C];
+    u8 filler1C[0x3C-0x1C];
+    s32 unk3C;
+    Vec *unk40;
+    u8 filler44[0x7C-0x44];
     s32 unk7C;
     u8 filler80[0xB8-0x80];
     Vec unkB8;
-};
+};  // size = 0xC4
 
 struct DecodedStageLzPtr_child2
 {
@@ -797,6 +801,46 @@ struct CoordsS8
 
 // sprite
 
+struct Sprite
+{
+    /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???
+    /*0x01*/ u8 fontId;  // fontId
+             s8 unk2;
+    /*0x03*/ s8 textAlign;
+    /*0x04*/ float centerX;
+    /*0x08*/ float centerY;
+             u8 unkC;
+             u8 unkD;
+             u8 unkE;
+             s8 unkF;
+             u8 filler10[0x30-0x10];
+    /*0x30*/ void (*destFunc)();
+    /*0x34*/ void (*mainFunc)();
+             void (*unk38)(struct Sprite *);
+             u16 unk3C;
+             u8 filler3E[0x40-0x3E];
+             float unk40;
+             float unk44;
+             u8 filler48[4];
+             float unk4C;
+             struct Sprite *unk50;
+             struct Sprite *unk54;
+             s32 unk58;
+             s32 unk5C;
+             s32 unk60;
+             s32 unk64;
+             u8 filler68[0x6C-0x68];
+             float unk6C;
+             u8 filler70[4];
+             u32 unk74;
+             u32 unk78;
+             float unk7C;
+             float unk80;
+             float unk84;
+             float unk88;
+    /*0x8C*/ char text[0xBC-0x8C];  // text
+};
+
 struct FontParams
 {
     /*0x00*/ s16 unk0;
@@ -819,4 +863,10 @@ struct FontParams
 struct Struct801F3DC0
 {
     u8 filler0[0x50];
+};
+
+struct Struct802F1BE0
+{
+    s32 unk0;
+    s32 unk4;
 };

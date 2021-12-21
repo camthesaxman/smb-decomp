@@ -2,17 +2,21 @@
 mwcc_compiler/
 
 # Build artifacts
-*.o
-*.elf
-*.dep
-supermonkeyball.map
 *.dol
+*.rel
+*.elf
+*.plf
+*.o
+*.dep
+*.map
+
+# Tool binaries
 tools/elf2dol
+tools/elf2rel
 tools/lzss
 *.exe
-__pycache__
 
 # Temporary files
 *.sw*
 *.dump
-
+__pycache__

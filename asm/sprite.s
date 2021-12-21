@@ -2059,6 +2059,8 @@ lbl_80071A60:
 /* 80071A68 0006D988  38 21 00 40 */	addi r1, r1, 0x40
 /* 80071A6C 0006D98C  7C 08 03 A6 */	mtlr r0
 /* 80071A70 0006D990  4E 80 00 20 */	blr
+
+glabel func_80071A74
 /* 80071A74 0006D994  1C 83 00 24 */	mulli r4, r3, 0x24
 /* 80071A78 0006D998  3C 60 80 1C */	lis r3, lbl_801BE4B0@ha
 /* 80071A7C 0006D99C  38 03 E4 B0 */	addi r0, r3, lbl_801BE4B0@l
@@ -2108,6 +2110,8 @@ func_80071AF8:
 /* 80071AFC 0006DA1C  38 84 CF 28 */	addi r4, r4, lbl_8028CF28@l
 /* 80071B00 0006DA20  90 64 00 14 */	stw r3, 0x14(r4)
 /* 80071B04 0006DA24  4E 80 00 20 */	blr
+
+glabel func_80071B08
 /* 80071B08 0006DA28  3C 80 80 29 */	lis r4, lbl_8028CF28@ha
 /* 80071B0C 0006DA2C  7C 60 07 34 */	extsh r0, r3
 /* 80071B10 0006DA30  38 64 CF 28 */	addi r3, r4, lbl_8028CF28@l
@@ -30062,6 +30066,8 @@ glabel string_Afraid_Face
 glabel string_Open_Mouth
 	.asciz "Open Mouth"
 	.balign 4
+
+glabel lbl_801C6420
 	.4byte string_Smile_Face  ;# ptr
 	.4byte string_Angry_Face  ;# ptr
 	.4byte string_Left_Hand_Open  ;# ptr
@@ -30082,6 +30088,8 @@ glabel string_Ear_Left
 glabel string_Ear_Right
 	.asciz "Ear Right"
 	.balign 4
+
+glabel lbl_801C6470
 	.4byte string_Face  ;# ptr
 	.4byte string_Hand_Left  ;# ptr
 	.4byte string_Hand_Right  ;# ptr

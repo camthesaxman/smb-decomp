@@ -13,6 +13,9 @@ ifeq ($(VERBOSE),0)
   QUIET := @
 endif
 
+# default recipe
+default: all
+
 #-------------------------------------------------------------------------------
 # Tools
 #-------------------------------------------------------------------------------
@@ -27,6 +30,7 @@ GCC     := $(DEVKITPPC)/bin/powerpc-eabi-gcc
 HOSTCC  := cc
 SHA1SUM := sha1sum
 ELF2DOL := tools/elf2dol$(EXE)
+ELF2REL := tools/elf2rel$(EXE)
 LZSS    := tools/lzss$(EXE)
 
 INCLUDE_DIRS := src
@@ -34,10 +38,11 @@ SYSTEM_INCLUDE_DIRS := include
 
 RUNTIME_INCLUDE_DIRS := src/lib/Runtime.PPCEABI.H/Runtime/Inc
 
-ASFLAGS      := -mgekko -I asm
-CFLAGS       := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas
+ASFLAGS     := -mgekko -I asm
+CFLAGS      := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
 CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
-LDFLAGS      := -fp hard -nodefaults
+DOL_LDFLAGS := -nodefaults -fp hard
+REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
@@ -51,9 +56,12 @@ BASEROM  := baserom.bin
 DOL      := supermonkeyball.dol
 ELF      := $(DOL:.dol=.elf)
 MAP      := $(DOL:.dol=.map)
-LDSCRIPT := ldscript.lcf
-# NOTE: the order of files listed here determines the link order
-SOURCE_FILES := \
+
+DOL_LCF := static.lcf
+REL_LCF := partial.lcf
+
+# main dol sources
+SOURCES := \
 	asm/c++_exception_data.s \
 	src/main.c \
 	src/init.c \
@@ -283,31 +291,145 @@ SOURCE_FILES := \
 	asm/lib/amcnotstub/amcnotstub.s \
 	asm/lib/data.s \
 	asm/init.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCE_FILES)))
-DEP_FILES := $(addsuffix .dep,$(basename $(SOURCE_FILES)))
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES := $(O_FILES)
+$(ELF): $(O_FILES)
+
+# mkbe.sel_ngc.rel sources
+SOURCES := \
+	src/sel_ngc_rel.c \
+	asm/sel_ngc_rel.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.sel_ngc.plf: $(O_FILES)
+mkbe.sel_ngc.rel: ELF2REL_ARGS := -i 1 -o 0x0 -l 0x1D -c 18
+ALL_RELS += mkbe.sel_ngc.rel
+
+# mkbe.sel_stage.rel sources
+SOURCES := \
+	src/sel_stage_rel.c \
+	src/sel_stage_rel_2.c \
+	src/sel_stage_rel_3.c
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.sel_stage.plf: $(O_FILES)
+mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
+ALL_RELS += mkbe.sel_stage.rel
+
+# mkbe.rel_mini_race.rel sources
+SOURCES := \
+	src/mini_race.c \
+	asm/mini_race.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_race.plf: $(O_FILES)
+mkbe.rel_mini_race.rel: ELF2REL_ARGS := -i 3 -o 0x3C -l 0x23 -c 18
+ALL_RELS += mkbe.rel_mini_race.rel
+
+# mkbe.rel_mini_bowling.rel sources
+SOURCES := \
+	src/mini_bowling.c \
+	asm/mini_bowling.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_bowling.plf: $(O_FILES)
+mkbe.rel_mini_bowling.rel: ELF2REL_ARGS := -i 4 -o 0x5F -l 0x26 -c 18
+ALL_RELS += mkbe.rel_mini_bowling.rel
+
+# mkbe.rel_mini_fight.rel sources
+SOURCES := \
+	asm/mini_fight.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_fight.plf: $(O_FILES)
+mkbe.rel_mini_fight.rel: ELF2REL_ARGS := -i 5 -o 0x85 -l 0x24 -c 17
+ALL_RELS += mkbe.rel_mini_fight.rel
+
+# mkbe.rel_mini_pilot.rel sources
+SOURCES := \
+	src/mini_pilot.c \
+	asm/mini_pilot.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_pilot.plf: $(O_FILES)
+mkbe.rel_mini_pilot.rel: ELF2REL_ARGS := -i 6 -o 0xA9 -l 0x24 -c 18
+ALL_RELS += mkbe.rel_mini_pilot.rel
+
+# mkbe.rel_mini_golf.rel sources
+SOURCES := \
+	src/mini_golf.s \
+	asm/mini_golf.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_golf.plf: $(O_FILES)
+mkbe.rel_mini_golf.rel: ELF2REL_ARGS := -i 7 -o 0xCD -l 0x23 -c 17
+ALL_RELS += mkbe.rel_mini_golf.rel
+
+# mkbe.rel_mini_billiards.rel sources
+SOURCES := \
+	src/mini_billiards.c \
+	asm/mini_billiards.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_mini_billiards.plf: $(O_FILES)
+mkbe.rel_mini_billiards.rel: ELF2REL_ARGS := -i 8 -o 0xF0 -l 0x28 -c 17
+ALL_RELS += mkbe.rel_mini_billiards.rel
+
+# mkbe.rel_sample.rel sources
+SOURCES := \
+	src/rel_sample.c
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.rel_sample.plf: $(O_FILES)
+mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
+ALL_RELS += mkbe.rel_sample.rel
+
+# mkbe.test_mode.rel sources
+SOURCES := \
+	src/test_mode.c \
+	asm/test_mode.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.test_mode.plf: $(O_FILES)
+mkbe.test_mode.rel: ELF2REL_ARGS := -i 10 -o 0x138 -l 0x1F -c 18
+ALL_RELS += mkbe.test_mode.rel
+
+# mkbe.option.rel sources
+SOURCES := \
+	src/option.c \
+	asm/option.s
+O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+ALL_O_FILES += $(O_FILES)
+mkbe.option.plf: $(O_FILES)
+mkbe.option.rel: ELF2REL_ARGS := -i 11 -o 0x157 -l 0x1C -c 17
+ALL_RELS += mkbe.option.rel
 
 #-------------------------------------------------------------------------------
 # Recipes
 #-------------------------------------------------------------------------------
 
-.PHONY: default
+.PHONY: all default
 
-default: $(DOL)
+all: $(DOL) $(ALL_RELS)
 	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
 
-$(DOL): $(ELF) $(ELF2DOL)
+# static module (.dol file)
+%.dol: %.elf $(ELF2DOL)
 	@echo Converting $< to $@
-	$(QUIET) $(ELF2DOL) $(ELF) $(DOL)
+	$(QUIET) $(ELF2DOL) $(filter %.elf,$^) $@
 
-$(ELF): $(LDSCRIPT) $(O_FILES)
-	@echo Linking ELF $@
-	$(QUIET) $(LD) $(LDFLAGS) $(O_FILES) -map $(MAP) -lcf $(LDSCRIPT) -o $@
-# The Metrowerks linker doesn't generate physical addresses in the ELF program headers. This fixes it somehow.
-	$(QUIET) $(OBJCOPY) $(ELF) $(ELF)
+%.elf: $(DOL_LCF)
+	@echo Linking static module $@
+	$(QUIET) $(LD) -lcf $(DOL_LCF) $(DOL_LDFLAGS) $(filter %.o,$^) -map $(@:.elf=.map) -o $@
 
-%.o: %.s
-	@echo Assembling $<
-	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
+# relocatable module (.rel file)
+%.rel: %.plf $(ELF) $(ELF2REL)
+	@echo Converting $(filter %.plf,$^) to $@
+	$(QUIET) $(ELF2REL) $(filter %.plf,$^) $(ELF) $@ $(ELF2REL_ARGS)
+
+%.plf: $(REL_LCF)
+	@echo Linking relocatable module $@
+	$(QUIET) $(LD) -lcf $(REL_LCF) $(REL_LDFLAGS) $(filter %.o,$^) -map $(@:.plf=.map) -o $@
 
 # Canned recipe for compiling C or C++
 # Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
@@ -319,6 +441,9 @@ $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 $(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
 endef
 
+# relocatable modules must not use the small data sections
+%.plf: CFLAGS += -sdata 0 -sdata2 0 -g
+
 %.o: %.c
 	$(COMPILE)
 %.o: %.cpp
@@ -326,22 +451,26 @@ endef
 %.o: %.cp
 	$(COMPILE)
 
+%.o: %.s
+	@echo Assembling $<
+	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
+
 clean:
-	$(RM) $(DOL) $(ELF) $(MAP) $(ELF2DOL)
+	$(RM) $(DOL) $(ELF) $(MAP) $(ALL_RELS) $(ELF2DOL) $(ELF2REL)
 	find . -name '*.o' -exec rm {} +
 	find . -name '*.dep' -exec rm {} +
 	find . -name '*.dump' -exec rm {} +
 
 # File-specific compiler flags
-src/ball.o: CFLAGS += -inline auto
-src/bitmap.o: CFLAGS += -inline auto
-src/camera.o: CFLAGS += -inline auto
+src/ball.o:     CFLAGS += -inline auto
+src/bitmap.o:   CFLAGS += -inline auto
+src/camera.o:   CFLAGS += -inline auto
 src/mathutil.o: CFLAGS += -inline auto
 src/sprite.o:   CFLAGS += -inline auto
 src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
-src/memcard.o: CFLAGS += -inline auto
-src/stage.o: CFLAGS += -inline auto
+src/memcard.o:  CFLAGS += -inline auto
+src/stage.o:    CFLAGS += -inline auto
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
@@ -356,7 +485,9 @@ $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
 src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
+
 # Automatic dependency files
+DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))
 -include $(DEP_FILES)
 
 #-------------------------------------------------------------------------------
@@ -364,6 +495,10 @@ src/lib/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
 #-------------------------------------------------------------------------------
 
 $(ELF2DOL): tools/elf2dol.c
+	@echo Building tool $@
+	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
+
+$(ELF2REL): tools/elf2rel.c
 	@echo Building tool $@
 	$(QUIET) $(HOSTCC) $(HOSTCFLAGS) -o $@ $^
 

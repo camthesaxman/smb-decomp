@@ -235,6 +235,7 @@ asm void mathutil_sin_cos_v(s16 a, float *b)
     nofralloc
 
     addi r5, r4, 4
+entry func_80007214
     crclr 6
     b lbl_80007220
 
@@ -1445,6 +1446,8 @@ asm void mathutil_mtxA_rotate_x(int angle)
     bl mathutil_sin_cos
     mtlr r4
 
+// void mathutil_mtxA_rotate_x_sin_cos(float sinAngle, float cosAngle)
+entry mathutil_mtxA_rotate_x_sin_cos
     lis r4, LC_CACHE_BASE@ha
     ps_merge00 f0, f2, f1
     psq_l f3, OFFSET_MTX_A+4(r4), 0, GQR_F32

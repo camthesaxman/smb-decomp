@@ -3,6 +3,7 @@
 
 #include <dolphin/OSAlloc.h>
 #include <dolphin/OSCache.h>
+#include <dolphin/OSContext.h>
 #include <dolphin/OSModule.h>
 #include <dolphin/OSFont.h>
 #include <dolphin/OSReset.h>
