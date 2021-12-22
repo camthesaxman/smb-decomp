@@ -1362,7 +1362,7 @@ void func_800390C8(int a, Vec *b, float c)
         sp50.y = b->y - ball->pos.y;
         sp50.z = b->z - ball->pos.z;
         f1 = mathutil_vec_normalize_len(&sp50);
-        if (f1 > TINY)
+        if (f1 > FLT_EPSILON)
             c /= f1;
 
         if (ball->unk110 > c)
@@ -1380,7 +1380,7 @@ void func_800390C8(int a, Vec *b, float c)
             sp44.y = ball->vel.y;
             sp44.z = ball->vel.z;
             if (sp44.y == 0.0)
-                sp44.y = TINY;
+                sp44.y = FLT_EPSILON;
             mathutil_vec_normalize_len(&sp44);
         }
 
@@ -1858,7 +1858,7 @@ void ball_func_15(struct Ball *ball)
     sp28.y = ((rand() / 32767.0f) - 0.5) * 0.5;
     sp28.z = ((rand() / 32767.0f) - 0.5) * 0.5;
 
-    if (ball->unk68 > TINY && mathutil_vec_mag(&sp28) != 0.0f)
+    if (ball->unk68 > FLT_EPSILON && mathutil_vec_mag(&sp28) != 0.0f)
     {
         float f1 = mathutil_vec_normalize_len(&sp28);
 
@@ -2228,7 +2228,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct Struct80039974 *b, 
         Vec vel = ball->vel;
         float f1 = mathutil_sum_of_sq(vel.x, vel.z);
 
-        if (f1 > TINY)
+        if (f1 > FLT_EPSILON)
         {
             f1 = 1.0 / mathutil_sqrt(f1);
             vel.x *= f1;
@@ -2317,7 +2317,7 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct St
         Vec vel = ball->vel;
         float f1 = mathutil_sum_of_sq(vel.x, vel.z);
 
-        if (f1 > TINY)
+        if (f1 > FLT_EPSILON)
         {
             f1 = 1.0 / mathutil_sqrt(f1);
             vel.x *= f1;
@@ -2468,7 +2468,7 @@ void func_8003BD68(struct Struct80039974 *a, Vec *b, Vec *c)
     mathutil_vec_cross_prod(c, &sp14, &sp20);
 
     f4 = 0.0f;
-    if (ball->unk68 > TINY)
+    if (ball->unk68 > FLT_EPSILON)
         f4 = (32768.0 / 3.141592) / (ball->unk68 * ball->unk68);
 
     ball->unk60 = (sp20.x * f4 - ball->unk60) * 0.15 + (float)ball->unk60;
@@ -2524,7 +2524,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
         mathutil_vec_cross_prod(&sp38, &sp44, &sp2C);
 
         f2 = 0.0f;
-        if (ball->unk68 > TINY)
+        if (ball->unk68 > FLT_EPSILON)
             f2 = (32768.0 / 3.141592) / (ball->unk68 * ball->unk68);
         ball->unk60 = sp2C.x * f2;
         ball->unk62 = sp2C.y * f2;
@@ -2533,7 +2533,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
         if (ball->flags & BALL_FLAG_10)
             func_8003BD68(b, &sp20, &sp38);
 
-        if (ball->unk68 > TINY)
+        if (ball->unk68 > FLT_EPSILON)
         {
             f1 = mathutil_vec_mag(&sp2C);
             if (f1 != 0.0f)
@@ -2576,7 +2576,7 @@ void func_8003C38C(struct Ball *ball)
     spC.z = ball->unk84.z - ball->pos.z;
 
     f1 = mathutil_sum_of_sq(spC.x, spC.z);
-    if (f1 > TINY)
+    if (f1 > FLT_EPSILON)
     {
         f1 = 1.0 / mathutil_sqrt(f1);
         spC.x *= f1;

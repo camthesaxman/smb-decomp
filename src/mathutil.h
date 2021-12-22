@@ -29,8 +29,6 @@ struct MathutilData
 
 #define LC_CACHE_BASE 0xE0000000
 
-#define TINY 1.1920928955078125e-07f
-
 void mathutil_init(void);
 float func_8000716C(double a);
 float mathutil_sqrt(double n);

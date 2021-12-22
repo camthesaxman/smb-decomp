@@ -1801,7 +1801,7 @@ void g_math_unk6(Quaternion *quat)
                + quat->y * quat->y
                + quat->z * quat->z
                + quat->w * quat->w;
-    if (var1 < TINY)
+    if (var1 < FLT_EPSILON)
     {
         quat->x = 0.0f;
         quat->y = 0.0f;
@@ -1974,8 +1974,8 @@ void g_math_unk8(Quaternion *a, Vec *b, Vec *c, float d)
     cross_product_alt(&sp18, b, c);
     mathutil_vec_normalize_len(&sp18);
     f1 = mathutil_sqrt(sq_mag(b));
-    if (f1 > PI * d - TINY)
-        f1 = PI * d - TINY;
+    if (f1 > PI * d - FLT_EPSILON)
+        f1 = PI * d - FLT_EPSILON;
     var = (int)((0.159154936671f * f1 / d) * 65536.0f);
     mathutil_quat_from_axis_angle(a, &sp18, -var);
 }
@@ -2105,7 +2105,7 @@ void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle)
     angle >>= 1;
 
     var1 = sq_mag(axis);
-    if (var1 < TINY)
+    if (var1 < FLT_EPSILON)
     {
         quat->x = 0.0f;
         quat->y = 0.0f;
@@ -2135,7 +2135,7 @@ void g_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c)
     }
 #endif
 
-    if (sq_mag2(b) < TINY)
+    if (sq_mag2(b) < FLT_EPSILON)
     {
         a->x = 0.0f;
         a->y = 0.0f;
@@ -2321,7 +2321,7 @@ static inline float sum_of_squares(register float a, register float b)
 
 static int is_large_enough(float n)  // inlined
 {
-    return __fabs(n) > TINY;
+    return __fabs(n) > FLT_EPSILON;
 }
 
 // Should the angles be called `yaw`, `pitch`, and `roll`? Not sure if they

@@ -1351,7 +1351,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.z = camera->unkAC.z - camera->lookAt.z;
 
     f1 = sum_of_3_sq(sp28.x, sp28.y, sp28.z);
-    if (f1 > TINY)
+    if (f1 > FLT_EPSILON)
     {
         f1 = mathutil_rsqrt(f1);
         sp28.x *= f1;
@@ -1833,7 +1833,7 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.z = camera->eye.z - camera->lookAt.z;
 
     f1 = mathutil_sqrt(mathutil_sum_of_sq(sp10.x, sp10.z));
-    if (f1 > TINY)
+    if (f1 > FLT_EPSILON)
     {
         float f3 = (f1 + 0.08 * (2.0 - f1)) / f1;
 

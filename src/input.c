@@ -241,7 +241,7 @@ void input_main(void)
             f4 = (float)lbl_80110320_74[i][r3][0] * (float)lbl_80110320_74[i][r0][1]
                - (float)lbl_80110320_74[i][r0][0] * (float)lbl_80110320_74[i][r3][1];
 
-            if (__fabs(f4) < 1.1920928955078125e-07)
+            if (__fabs(f4) < FLT_EPSILON)
                 continue;
 
             f4 = 1.0f / f4;
@@ -281,7 +281,7 @@ void input_main(void)
 }
 #else
 float  force_lbl_802F30A8(void) { return 0.77777779102325439f; }
-double force_lbl_802F30B0(void) { return 1.1920928955078125e-07; }
+double force_lbl_802F30B0(void) { return FLT_EPSILON; }
 float  force_lbl_802F30B8(void) { return 1.0f; }
 float  force_lbl_802F30BC(void) { return 0.0f; }
 double force_lbl_802F30C0(void) { return 4503601774854144.0; }
@@ -585,7 +585,7 @@ void func_80025B1C(struct CoordsS8 *a, s8 *b)
         f8 = (float)b[i*2+0] * (float)b[r0*2+1]
            - (float)b[r0*2+0] * (float)b[i*2+1];
 
-        if (__fabs(f8) < 1.1920928955078125e-07)
+        if (__fabs(f8) < FLT_EPSILON)
             continue;
 
         f8 = 1.0f / f8;

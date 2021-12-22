@@ -313,7 +313,7 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
     {
         float f1 = *a->unk4;
 
-        if (fabs(f1 - b) < 1.1920928955078125e-07)
+        if (fabs(f1 - b) < FLT_EPSILON)
         {
             r27 = 1;
             break;
