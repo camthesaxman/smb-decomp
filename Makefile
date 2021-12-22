@@ -42,7 +42,7 @@ ASFLAGS     := -mgekko -I asm
 CFLAGS      := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
 CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 DOL_LDFLAGS := -nodefaults -fp hard
-REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
+REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g -strip_partial
 
 HOSTCFLAGS   := -Wall -O3 -s
 

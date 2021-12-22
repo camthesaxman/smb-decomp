@@ -182,6 +182,7 @@ static struct Module relModule;
 static struct RelImportEntry *imports;
 static int importsCount = 0;
 static int minSectionCount = 0;
+static int undefinedSymError = 0;
 
 static void fatal_error(const char *msg, ...)
 {
@@ -319,7 +320,11 @@ static void add_reloc_entry(const struct Module *module, const Elf32_Rela *reloc
     {
         const char *name = symbol_name(&relModule, &sym);
         if (!lookup_symbol_by_name(&dolModule, name, &sym))
-            fatal_error("could not find symbol '%s' in any module\n", name);
+        {
+            undefinedSymError = 1;
+            fprintf(stderr, "could not find symbol '%s' in any module\n", name);
+            return;
+        }
         if (sym.st_shndx >= dolModule.ehdr.e_shnum)
             fatal_error("bad section index %i\n", sym.st_shndx);
             
@@ -371,6 +376,8 @@ static void module_read_relocs(struct Module *module)
     int i;
     int j;
 
+    undefinedSymError = 0;
+
     for (i = 0; i < (int)module->ehdr.e_shnum; i++)
     {
         Elf32_Shdr shdr;
@@ -396,6 +403,9 @@ static void module_read_relocs(struct Module *module)
             }
         }
     }
+    
+    if (undefinedSymError)
+        exit(1);
 }
 
 static int open_module(struct Module *module)
@@ -570,6 +580,9 @@ static int compare_relocs(const void *a, const void *b)
     // Sort by sections to which these relocations apply
     if (relocA->patchSection != relocB->patchSection)
         return relocA->patchSection - relocB->patchSection;
+    // Sort by patch offset
+    if (relocA->patchOffset != relocB->patchOffset)
+        return relocA->patchOffset - relocB->patchOffset;
     // Otherwise, leave the order alone
     return (uintptr_t)a - (uintptr_t)b;
 }

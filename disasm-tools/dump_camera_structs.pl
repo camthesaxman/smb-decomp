@@ -27,7 +27,7 @@ sub u16 {
 }
 
 while ($line = <>) {
-    if ($line =~ /lbl_80114D80/) {
+    if ($line =~ /glabel lbl_0000C88C/) {
         print("got label\n");
         $gotLabel = 1;
         next;
@@ -67,9 +67,9 @@ while ($line = <>) {
         #print($line);
     }
     
-    if ((scalar @b) == 4) {
+    if ((scalar @b) == 16) {
         print("{");
-        printf(" %s,", u16(@b[0..1]));
+        printf(" %s,", float(@b[0..3]));
         printf(" %s},\n", u16(@b[2..3]));
 #        printf("    %s,\n", float(@b[4...7]));
 #        printf("    %s,\n", float(@b[8...11]));
@@ -81,7 +81,9 @@ while ($line = <>) {
         @b = ();
     }
     
-    if ($line =~ /lbl_80114DBC/) {
-        break;
+    print("asdf");
+    if ($line =~ /.*lbl_0000C91C.*/) {
+        print("done");
+        exit;
     }
 }

@@ -4,13 +4,13 @@ def apply(config, args):
     devkit_str = p.communicate()[0].decode("ascii")
     devkit_path = devkit_str.split("[")[1][:-2]
 
-    config['mapfile'] = 'supermonkeyball.map'
-    config['myimg'] = 'supermonkeyball.elf'
-    config['baseimg'] = 'baserom.elf'
+    #config['mapfile'] = 'supermonkeyball.map'
+    #config['myimg'] = 'supermonkeyball.elf'
+    #config['baseimg'] = 'baserom.elf'
     
-    #config['mapfile'] = 'mkbe.sel_stage.map'
-    #config['myimg'] = 'mkbe.sel_stage.rel'
-    #config['baseimg'] = 'baserom.mkbe.sel_stage.rel'
+    config['mapfile'] = 'mkbe.rel_mini_pilot.map'
+    config['myimg'] = 'mkbe.rel_mini_pilot.rel'
+    config['baseimg'] = 'baserom.mkbe.rel_mini_pilot.rel'
     
     config['makeflags'] = []
     config['source_directories'] = ['src', 'include', 'spec']
