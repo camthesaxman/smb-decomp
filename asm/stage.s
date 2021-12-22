@@ -19316,6 +19316,7 @@ lbl_802F09FC:
 lbl_802F0A00:
 	# ROM: 0x1EB140
 	.byte 0x0A, 0x00, 0x00, 0x00
+glabel lbl_802F0A04
 	.4byte 0
 
 .section .sdata2
@@ -20822,10 +20823,12 @@ glabel string_Please_Type__save_recplay__in_DDD_n
 glabel string__to_Make_File_recplay_data_h__n
 	.asciz " to Make File recplay_data.h.\n"
 	.balign 4
+glabel lbl_801B89A0
 	.byte 0x00, 0x02, 0x13, 0x6E
 	.byte 0x00, 0x07, 0x66, 0x75
 	.byte 0x00, 0x09, 0x67, 0x76
 	.4byte 0
+glabel lbl_801B89B0
 	.byte 0x00, 0x08, 0x68, 0x77
 	.byte 0x00, 0x09, 0x4E, 0x78
 	.byte 0x00, 0x0B, 0x1B, 0x79
@@ -20836,9 +20839,9 @@ glabel string__to_Make_File_recplay_data_h__n
 	.byte 0x00, 0x18, 0x71, 0x7E
 	.byte 0x00, 0x1A, 0x5F, 0x7F
 	.4byte 0
-	.4byte 0x801B89A0  ;# ptr
-	.4byte 0x801B89B0  ;# ptr
-	.4byte 0x802F0A04  ;# ptr
+	.4byte lbl_801B89A0  ;# ptr
+	.4byte lbl_801B89B0  ;# ptr
+	.4byte lbl_802F0A04  ;# ptr
 	.4byte 0
 
 .global lbl_801B89E8

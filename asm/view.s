@@ -8504,6 +8504,7 @@ lbl_802F5C40:
 	# ROM: 0x1EF660
 	.byte 0x40, 0x04, 0x00, 0x00
 	.4byte 0
+glabel lbl_802F5C48
 	.byte 0x00, 0x0F, 0x00, 0x48
 	.byte 0x00, 0x48, 0x00, 0x48
 
@@ -9100,15 +9101,18 @@ lbl_80171B70:
 	.4byte 0
 	.byte 0xBF, 0x80, 0x00, 0x00
 	.4byte 0
+glabel lbl_80171B80
 	.byte 0x00, 0x20, 0x00, 0x20
 	.byte 0x00, 0x31, 0x00, 0x31
 	.byte 0x00, 0x31, 0x00, 0x31
 	.byte 0x00, 0x31, 0x00, 0x31
 	.byte 0x00, 0x31, 0x00, 0x00
+glabel lbl_80171B94
 	.byte 0x00, 0x33, 0x00, 0x33
 	.byte 0x00, 0x41, 0x00, 0x41
 	.byte 0x00, 0x41, 0x00, 0x41
 	.byte 0x00, 0x41, 0x00, 0x41
+glabel lbl_80171BA4
 	.byte 0x00, 0x03, 0x00, 0x5D
 	.byte 0x00, 0x5D, 0x00, 0x5D
 	.byte 0x00, 0x5D, 0x00, 0x00
@@ -9192,39 +9196,39 @@ lbl_801D5960:
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
-	.4byte 0x801D5A50  ;# ptr
+	.4byte lbl_801D5A50  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
-	.4byte 0x801D5A80  ;# ptr
+	.4byte lbl_801D5A80  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
-	.4byte 0x801D5AB0  ;# ptr
+	.4byte lbl_801D5AB0  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
-	.4byte 0x801D5AE0  ;# ptr
+	.4byte lbl_801D5AE0  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AADC4  ;# ptr
-	.4byte 0x801D5B10  ;# ptr
+	.4byte lbl_801D5B10  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_rac_gct  ;# ptr
 	.4byte func_800AAE80  ;# ptr
-	.4byte 0x801D5B40  ;# ptr
+	.4byte lbl_801D5B40  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_tgt_gct  ;# ptr
 	.4byte func_800AAE80  ;# ptr
-	.4byte 0x801D5B68  ;# ptr
+	.4byte lbl_801D5B68  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_tgt_gct  ;# ptr
 	.4byte func_800AAE80  ;# ptr
-	.4byte 0x801D5B90  ;# ptr
+	.4byte lbl_801D5B90  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_tgt_gct  ;# ptr
 	.4byte func_800AAF40  ;# ptr
-	.4byte 0x801D5BB8  ;# ptr
+	.4byte lbl_801D5BB8  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x06
 	.4byte string_spr_bg_bg_bwl_gct  ;# ptr
 	.4byte func_800AAF40  ;# ptr
@@ -9232,7 +9236,7 @@ lbl_801D5960:
 	.byte 0x00, 0x00, 0x00, 0x06
 	.4byte string_spr_bg_bg_bwl_gct  ;# ptr
 	.4byte func_800AB174  ;# ptr
-	.4byte 0x801D5BF4  ;# ptr
+	.4byte lbl_801D5BF4  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.4byte string_spr_bg_bg_glf_gct  ;# ptr
 
@@ -9249,8 +9253,10 @@ lbl_801D5A20:
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x55, 0x45, 0x44, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5A48
 	.byte 0x4E, 0x41, 0x47, 0x01
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5A50
 	.byte 0x44, 0x41, 0x49, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x4B, 0x4D, 0x4B, 0x01
@@ -9261,8 +9267,10 @@ lbl_801D5A20:
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x4D, 0x41, 0x53, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5A78
 	.byte 0x4E, 0x41, 0x47, 0x01
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5A80
 	.byte 0x49, 0x5A, 0x41, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x4D, 0x43, 0x49, 0x01
@@ -9273,8 +9281,10 @@ lbl_801D5A20:
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x4E, 0x49, 0x4E, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5AA8
 	.byte 0x4E, 0x41, 0x47, 0x01
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5AB0
 	.byte 0x4D, 0x41, 0x32, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x4E, 0x2E, 0x48, 0x01
@@ -9285,8 +9295,10 @@ lbl_801D5A20:
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x53, 0x41, 0x4B, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5AD8
 	.byte 0x4E, 0x41, 0x47, 0x01
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5AE0
 	.byte 0x4B, 0x41, 0x4B, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x59, 0x53, 0x4D, 0x01
@@ -9297,8 +9309,10 @@ lbl_801D5A20:
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x54, 0x4D, 0x59, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5B08
 	.byte 0x4E, 0x41, 0x47, 0x01
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5B10
 	.byte 0x59, 0x41, 0x55, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x48, 0x2E, 0x45, 0x01
@@ -9309,8 +9323,10 @@ lbl_801D5A20:
 	.byte 0x63, 0x3B, 0x63, 0x00
 	.byte 0x53, 0x48, 0x4F, 0x00
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5B38
 	.byte 0x4E, 0x41, 0x47, 0x01
 	.byte 0x63, 0x3B, 0x63, 0x00
+glabel lbl_801D5B40
 	.byte 0x53, 0x41, 0x4B, 0x00
 	.byte 0x00, 0x32, 0x00, 0x00
 	.byte 0x4D, 0x2E, 0x53, 0x01
@@ -9321,6 +9337,7 @@ lbl_801D5A20:
 	.byte 0x00, 0x14, 0x00, 0x00
 	.byte 0x4A, 0x41, 0x4D, 0x00
 	.byte 0x00, 0x0A, 0x00, 0x00
+glabel lbl_801D5B68
 	.byte 0x59, 0x53, 0x4D, 0x00
 	.byte 0x00, 0x32, 0x00, 0x00
 	.byte 0x4E, 0x2E, 0x48, 0x01
@@ -9331,6 +9348,7 @@ lbl_801D5A20:
 	.byte 0x00, 0x14, 0x00, 0x00
 	.byte 0x40, 0x52, 0x49, 0x00
 	.byte 0x00, 0x0A, 0x00, 0x00
+glabel lbl_801D5B90
 	.byte 0x53, 0x48, 0x4F, 0x00
 	.byte 0x00, 0x32, 0x00, 0x00
 	.byte 0x41, 0x47, 0x45, 0x01
@@ -9341,6 +9359,7 @@ lbl_801D5A20:
 	.byte 0x00, 0x14, 0x00, 0x00
 	.byte 0x48, 0x2E, 0x45, 0x00
 	.byte 0x00, 0x0A, 0x00, 0x00
+glabel lbl_801D5BB8
 	.byte 0x59, 0x2E, 0x4D, 0x00
 	.byte 0x00, 0x32, 0x4D, 0x41
 	.byte 0x32, 0x01, 0x00, 0x28
@@ -9356,6 +9375,7 @@ lbl_801D5A20:
 	.byte 0x4D, 0x49, 0x45, 0x03
 	.byte 0x00, 0x01, 0x4D, 0x41
 	.byte 0x53, 0x00, 0x00, 0x01
+glabel lbl_801D5BF4
 	.byte 0x54, 0x4F, 0x4B, 0x00
 	.byte 0x00, 0x63, 0x00, 0x63
 	.byte 0x44, 0x41, 0x49, 0x01
@@ -9370,12 +9390,12 @@ lbl_801D5A20:
 .global lbl_801D5C1C
 lbl_801D5C1C:
 	# ROM: 0x1D2C1C
-	.4byte 0x801D5A48  ;# ptr
-	.4byte 0x801D5A78  ;# ptr
-	.4byte 0x801D5AA8  ;# ptr
-	.4byte 0x801D5AD8  ;# ptr
-	.4byte 0x801D5B08  ;# ptr
-	.4byte 0x801D5B38  ;# ptr
+	.4byte lbl_801D5A48  ;# ptr
+	.4byte lbl_801D5A78  ;# ptr
+	.4byte lbl_801D5AA8  ;# ptr
+	.4byte lbl_801D5AD8  ;# ptr
+	.4byte lbl_801D5B08  ;# ptr
+	.4byte lbl_801D5B38  ;# ptr
 	.byte 0x00, 0x00, 0x03, 0x19
 	.byte 0x42, 0xE0, 0x00, 0x00
 	.byte 0x41, 0xB8, 0x00, 0x00
@@ -9620,6 +9640,7 @@ lbl_801D5C1C:
 	.byte 0xFF, 0x4E, 0x7D, 0xFF
 	.byte 0xFF, 0xF1, 0xDE, 0x21
 	.byte 0xFF, 0x07, 0xA5, 0x5B
+glabel lbl_801D6004
 	.byte 0x00, 0x00, 0x03, 0x25
 	.4byte 0
 	.4byte 0
@@ -9664,6 +9685,7 @@ lbl_801D6054:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801D60A4
 	.byte 0x00, 0x00, 0x03, 0x25
 	.4byte 0
 	.4byte 0
@@ -9684,6 +9706,7 @@ lbl_801D6054:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801D60F4
 	.byte 0x00, 0x00, 0x03, 0x25
 	.4byte 0
 	.4byte 0
@@ -9704,6 +9727,7 @@ lbl_801D6054:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801D6144
 	.byte 0x00, 0x00, 0x03, 0x25
 	.4byte 0
 	.4byte 0
@@ -9748,10 +9772,10 @@ lbl_801D6054:
 .global lbl_801D61E4
 lbl_801D61E4:
 	# ROM: 0x1D31E4
-	.4byte 0x801D6004  ;# ptr
-	.4byte 0x801D60A4  ;# ptr
-	.4byte 0x801D60F4  ;# ptr
-	.4byte 0x801D6144  ;# ptr
+	.4byte lbl_801D6004  ;# ptr
+	.4byte lbl_801D60A4  ;# ptr
+	.4byte lbl_801D60F4  ;# ptr
+	.4byte lbl_801D6144  ;# ptr
 	.byte 0x00, 0x00, 0x03, 0x1B
 	.byte 0x41, 0x40, 0x00, 0x00
 	.byte 0x43, 0xCB, 0x80, 0x00
@@ -9832,13 +9856,13 @@ lbl_801D61E4:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F5C48  ;# ptr
+	.4byte lbl_802F5C48  ;# ptr
 	.byte 0x00, 0x04, 0x00, 0x00
-	.4byte 0x80171B80  ;# ptr
+	.4byte lbl_80171B80  ;# ptr
 	.byte 0x00, 0x09, 0x00, 0x00
-	.4byte 0x80171B94  ;# ptr
+	.4byte lbl_80171B94  ;# ptr
 	.byte 0x00, 0x08, 0x00, 0x00
-	.4byte 0x80171BA4  ;# ptr
+	.4byte lbl_80171BA4  ;# ptr
 	.byte 0x00, 0x05, 0x00, 0x00
 	.byte 0x00, 0x00, 0x03, 0x1C
 	.4byte 0
@@ -9940,12 +9964,12 @@ lbl_801D61E4:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F16C0  ;# ptr
-	.4byte 0x802F16C4  ;# ptr
-	.4byte 0x802F16C8  ;# ptr
-	.4byte 0x802F16CC  ;# ptr
-	.4byte 0x802F16D0  ;# ptr
-	.4byte 0x802F16D4  ;# ptr
+	.4byte lbl_802F16C0  ;# ptr
+	.4byte lbl_802F16C4  ;# ptr
+	.4byte lbl_802F16C8  ;# ptr
+	.4byte lbl_802F16CC  ;# ptr
+	.4byte lbl_802F16D0  ;# ptr
+	.4byte lbl_802F16D4  ;# ptr
 glabel string_Please_enter_your_name_
 	.asciz "Please enter your name."
 
@@ -10037,10 +10061,10 @@ glabel string_p_SANNKAKU_R_
 .global lbl_801D6674
 lbl_801D6674:
 	# ROM: 0x1D3674
-	.4byte 0x802F1708  ;# ptr
-	.4byte 0x802F170C  ;# ptr
-	.4byte 0x802F1710  ;# ptr
-	.4byte 0x802F1714  ;# ptr
+	.4byte lbl_802F1708  ;# ptr
+	.4byte lbl_802F170C  ;# ptr
+	.4byte lbl_802F1710  ;# ptr
+	.4byte lbl_802F1714  ;# ptr
 
 .global lbl_801D6684
 lbl_801D6684:
@@ -10083,10 +10107,12 @@ glabel string_a_Please_insert
 glabel string_a_the_Super_Monkey_Ball_Game_Disc_
 	.asciz "a/the Super Monkey Ball Game Disc."
 	.balign 4
+glabel lbl_801D6744
 	.4byte string_a_Please_insert  ;# ptr
 	.4byte 0
 	.4byte string_a_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
 	.4byte 0
+glabel lbl_801D6754
 	.4byte string_a_Please_insert  ;# ptr
 	.4byte 0
 	.4byte string_a_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
@@ -10096,9 +10122,10 @@ glabel string_a_Could_not_read_Game_Disc_
 glabel string_a_Please_see_the_Instruction_Booklet_for_details_
 	.asciz "a/Please see the Instruction Booklet for details."
 	.balign 4
+glabel lbl_801D67B4
 	.4byte string_a_Could_not_read_Game_Disc_  ;# ptr
 	.4byte 0
-	.4byte 0x802F1720  ;# ptr
+	.4byte lbl_802F1720  ;# ptr
 	.4byte 0
 	.4byte string_a_Please_see_the_Instruction_Booklet_for_details_  ;# ptr
 	.4byte 0
@@ -10113,15 +10140,16 @@ glabel string_a_the_Nintendo_GameCube_tm_
 glabel string_a_Follow_the_instructions_in_the_Instruction_Booklet_
 	.asciz "a/Follow the instructions in the Instruction Booklet."
 	.balign 4
+glabel lbl_801D6864
 	.4byte string_a_An_error_has_occurred_  ;# ptr
 	.4byte 0
-	.4byte 0x802F1720  ;# ptr
+	.4byte lbl_802F1720  ;# ptr
 	.4byte 0
 	.4byte string_a_Press_the_POWER_Button_to_turn_off  ;# ptr
 	.4byte 0
 	.4byte string_a_the_Nintendo_GameCube_tm_  ;# ptr
 	.4byte 0
-	.4byte 0x802F1720  ;# ptr
+	.4byte lbl_802F1720  ;# ptr
 	.4byte 0
 	.4byte string_a_Follow_the_instructions_in_the_Instruction_Booklet_  ;# ptr
 	.4byte 0
@@ -10129,15 +10157,15 @@ glabel string_a_Follow_the_instructions_in_the_Instruction_Booklet_
 .global lbl_801D6894
 lbl_801D6894:
 	# ROM: 0x1D3894
-	.4byte 0x802F1718  ;# ptr
+	.4byte lbl_802F1718  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801D6744  ;# ptr
+	.4byte lbl_801D6744  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x02
-	.4byte 0x801D6754  ;# ptr
+	.4byte lbl_801D6754  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x02
-	.4byte 0x801D67B4  ;# ptr
+	.4byte lbl_801D67B4  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
-	.4byte 0x801D6864  ;# ptr
+	.4byte lbl_801D6864  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x06
 glabel string_Please_close_the_Disc_Cover_
 	.asciz "Please close the Disc Cover."
@@ -10148,10 +10176,12 @@ glabel string_Please_insert
 glabel string_the_Super_Monkey_Ball_Game_Disc_
 	.asciz "the Super Monkey Ball Game Disc."
 	.balign 4
+glabel lbl_801D6910
 	.4byte string_Please_insert  ;# ptr
 	.4byte 0
 	.4byte string_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
 	.4byte 0
+glabel lbl_801D6920
 	.4byte string_Please_insert  ;# ptr
 	.4byte 0
 	.4byte string_the_Super_Monkey_Ball_Game_Disc_  ;# ptr
@@ -10161,9 +10191,10 @@ glabel string_Could_not_read_Game_Disc_
 	.balign 4
 glabel string_Please_see_the_Instruction_Booklet_for_details_
 	.asciz "Please see the Instruction Booklet for details."
+glabel lbl_801D697C
 	.4byte string_Could_not_read_Game_Disc_  ;# ptr
 	.4byte 0
-	.4byte 0x802F1720  ;# ptr
+	.4byte lbl_802F1720  ;# ptr
 	.4byte 0
 	.4byte string_Please_see_the_Instruction_Booklet_for_details_  ;# ptr
 	.4byte 0
@@ -10178,15 +10209,16 @@ glabel string_the_Nintendo_GameCube_tm_
 	.balign 4
 glabel string_Follow_the_instructions_in_the_Instruction_Booklet_
 	.asciz "Follow the instructions in the Instruction Booklet."
+glabel lbl_801D6A20
 	.4byte string_An_error_has_occurred_  ;# ptr
 	.4byte 0
-	.4byte 0x802F1720  ;# ptr
+	.4byte lbl_802F1720  ;# ptr
 	.4byte 0
 	.4byte string_Press_the_POWER_Button_to_turn_off  ;# ptr
 	.4byte 0
 	.4byte string_the_Nintendo_GameCube_tm_  ;# ptr
 	.4byte 0
-	.4byte 0x802F1720  ;# ptr
+	.4byte lbl_802F1720  ;# ptr
 	.4byte 0
 	.4byte string_Follow_the_instructions_in_the_Instruction_Booklet_  ;# ptr
 	.4byte 0
@@ -10194,15 +10226,15 @@ glabel string_Follow_the_instructions_in_the_Instruction_Booklet_
 .global lbl_801D6A50
 lbl_801D6A50:
 	# ROM: 0x1D3A50
-	.4byte 0x802F1724  ;# ptr
+	.4byte lbl_802F1724  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
-	.4byte 0x801D6910  ;# ptr
+	.4byte lbl_801D6910  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x02
-	.4byte 0x801D6920  ;# ptr
+	.4byte lbl_801D6920  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x02
-	.4byte 0x801D697C  ;# ptr
+	.4byte lbl_801D697C  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x03
-	.4byte 0x801D6A20  ;# ptr
+	.4byte lbl_801D6A20  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x06
 
 .global lbl_801D6A78
@@ -10300,11 +10332,17 @@ lbl_802F16B8:
 	.byte 0x42, 0x70, 0x00, 0x00
 glabel lbl_802F16BC
 	.byte 0xF3, 0x00, 0x00, 0x00
+glabel lbl_802F16C0
 	.byte 0x53, 0x45, 0x58, 0x00
+glabel lbl_802F16C4
 	.byte 0x58, 0x58, 0x58, 0x00
+glabel lbl_802F16C8
 	.byte 0x58, 0x58, 0x20, 0x00
+glabel lbl_802F16CC
 	.byte 0x58, 0x58, 0x00, 0x00
+glabel lbl_802F16D0
 	.byte 0x20, 0x58, 0x58, 0x00
+glabel lbl_802F16D4
 	.byte 0x58, 0x20, 0x58, 0x00
 
 .global lbl_802F16D8
@@ -10357,13 +10395,20 @@ glabel string_a_Golf
 lbl_802F1704:
 	# ROM: 0x1EBE44
 	.byte 0x42, 0x47, 0x00, 0x00
+glabel lbl_802F1708
 	.byte 0x42, 0x4F, 0x59, 0x00
+glabel lbl_802F170C
 	.byte 0x47, 0x41, 0x4C, 0x00
+glabel lbl_802F1710
 	.byte 0x4B, 0x49, 0x44, 0x00
+glabel lbl_802F1714
 	.byte 0x47, 0x4F, 0x52, 0x00
+glabel lbl_802F1718
 	.4byte string_a_Please_close_the_Disc_Cover_  ;# ptr
 	.4byte 0
+glabel lbl_802F1720
 	.4byte 0
+glabel lbl_802F1724
 	.4byte string_Please_close_the_Disc_Cover_  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -10445,11 +10490,17 @@ glabel string_FONT_Y
 glabel string_FONT_Z
 	.asciz "FONT_Z"
 	.balign 4
+glabel lbl_802F1800
 	.byte 0x53, 0x45, 0x58, 0x00
+glabel lbl_802F1804
 	.byte 0x58, 0x58, 0x58, 0x00
+glabel lbl_802F1808
 	.byte 0x58, 0x58, 0x20, 0x00
+glabel lbl_802F180C
 	.byte 0x58, 0x58, 0x00, 0x00
+glabel lbl_802F1810
 	.byte 0x20, 0x58, 0x58, 0x00
+glabel lbl_802F1814
 	.byte 0x58, 0x20, 0x58, 0x00
 
 .global lbl_802F1818
@@ -10475,17 +10526,29 @@ lbl_802F1828:
 glabel string__07d_2
 	.asciz "%07d"
 	.balign 4
+glabel lbl_802F1830
 	.byte 0x4E, 0x41, 0x47, 0x00
+glabel lbl_802F1834
 	.byte 0x40, 0x52, 0x49, 0x00
+glabel lbl_802F1838
 	.byte 0x53, 0x48, 0x4F, 0x00
+glabel lbl_802F183C
 	.byte 0x53, 0x41, 0x4B, 0x00
+glabel lbl_802F1840
 	.byte 0x4A, 0x41, 0x4D, 0x00
+glabel lbl_802F1844
 	.byte 0x4D, 0x4B, 0x41, 0x00
+glabel lbl_802F1848
 	.byte 0x4F, 0x44, 0x41, 0x00
+glabel lbl_802F184C
 	.byte 0x4D, 0x2E, 0x53, 0x00
+glabel lbl_802F1850
 	.byte 0x48, 0x2E, 0x45, 0x00
+glabel lbl_802F1854
 	.byte 0x4A, 0x55, 0x4E, 0x00
+glabel lbl_802F1858
 	.byte 0x59, 0x2E, 0x53, 0x00
+glabel lbl_802F185C
 	.byte 0x41, 0x47, 0x45, 0x00
 glabel string_Bonobo
 	.asciz "Bonobo"
@@ -10605,6 +10668,7 @@ glabel string__point
 	.balign 4
 glabel string__points
 	.asciz " points"
+glabel lbl_802F1920
 	.4byte 0
 	.4byte 0
 

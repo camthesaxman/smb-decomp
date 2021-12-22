@@ -6127,6 +6127,7 @@ glabel string_a_If_you_can_pass_these_
 	.balign 4
 glabel string_a_you_will_be_the_best_player_ever_
 	.asciz "a/you will be the best player ever!"
+glabel lbl_80176000
 	.byte 0x7A, 0x37, 0x2F, 0x61
 	.byte 0x2F, 0x57, 0x6F, 0x77
 	.byte 0x81, 0x63, 0x20, 0x49
@@ -6163,7 +6164,7 @@ glabel string_a_The_master_stages_
 	.4byte string_z8_a_Now_you_can_try_to_clear_the_master_stages_  ;# ptr
 	.4byte string_a_If_you_can_pass_these_  ;# ptr
 	.4byte string_a_you_will_be_the_best_player_ever_  ;# ptr
-	.4byte 0x80176000  ;# ptr
+	.4byte lbl_80176000  ;# ptr
 	.4byte string_a_You_really_are_something_  ;# ptr
 	.4byte string_a_But__there_s_still_more_  ;# ptr
 	.4byte string_z7_a_Now_try_to_clear_the_master_stages__Good_luck_  ;# ptr

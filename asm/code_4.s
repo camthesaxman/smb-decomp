@@ -24395,12 +24395,12 @@ lbl_801D6C70:
 .global lbl_801D6D30
 lbl_801D6D30:
 	# ROM: 0x1D3D30
-	.4byte 0x802F1800  ;# ptr
-	.4byte 0x802F1804  ;# ptr
-	.4byte 0x802F1808  ;# ptr
-	.4byte 0x802F180C  ;# ptr
-	.4byte 0x802F1810  ;# ptr
-	.4byte 0x802F1814  ;# ptr
+	.4byte lbl_802F1800  ;# ptr
+	.4byte lbl_802F1804  ;# ptr
+	.4byte lbl_802F1808  ;# ptr
+	.4byte lbl_802F180C  ;# ptr
+	.4byte lbl_802F1810  ;# ptr
+	.4byte lbl_802F1814  ;# ptr
 
 .global lbl_801D6D48
 lbl_801D6D48:
@@ -24440,21 +24440,21 @@ lbl_801D6D60:
 .global lbl_801D6DC0
 lbl_801D6DC0:
 	# ROM: 0x1D3DC0
-	.4byte 0x802F1830  ;# ptr
-	.4byte 0x802F1834  ;# ptr
-	.4byte 0x802F1838  ;# ptr
-	.4byte 0x802F183C  ;# ptr
+	.4byte lbl_802F1830  ;# ptr
+	.4byte lbl_802F1834  ;# ptr
+	.4byte lbl_802F1838  ;# ptr
+	.4byte lbl_802F183C  ;# ptr
 	.4byte lbl_802F1820  ;# ptr
-	.4byte 0x802F1830  ;# ptr
-	.4byte 0x802F1840  ;# ptr
-	.4byte 0x802F1844  ;# ptr
-	.4byte 0x802F1848  ;# ptr
-	.4byte 0x802F184C  ;# ptr
-	.4byte 0x802F1830  ;# ptr
-	.4byte 0x802F1850  ;# ptr
-	.4byte 0x802F1854  ;# ptr
-	.4byte 0x802F1858  ;# ptr
-	.4byte 0x802F185C  ;# ptr
+	.4byte lbl_802F1830  ;# ptr
+	.4byte lbl_802F1840  ;# ptr
+	.4byte lbl_802F1844  ;# ptr
+	.4byte lbl_802F1848  ;# ptr
+	.4byte lbl_802F184C  ;# ptr
+	.4byte lbl_802F1830  ;# ptr
+	.4byte lbl_802F1850  ;# ptr
+	.4byte lbl_802F1854  ;# ptr
+	.4byte lbl_802F1858  ;# ptr
+	.4byte lbl_802F185C  ;# ptr
 	.4byte 0
 
 .global lbl_801D6E00
@@ -36484,6 +36484,7 @@ lbl_801E2BEC:
 	.4byte lbl_800BC5C4  ;# ptr
 	.4byte lbl_800BC650  ;# ptr
 	.4byte lbl_800BC6A4  ;# ptr
+glabel lbl_801E2C44
 	.byte 0x00, 0x23, 0x25, 0x26
 	.4byte 0
 	.4byte 0
@@ -36574,6 +36575,7 @@ lbl_801E2BEC:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801E2DAC
 	.byte 0x00, 0x18, 0x19, 0x19
 	.4byte 0
 	.4byte 0
@@ -36664,6 +36666,7 @@ lbl_801E2BEC:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801E2F14
 	.byte 0x00, 0x20, 0x1B, 0x19
 	.4byte 0
 	.4byte 0
@@ -36754,6 +36757,7 @@ lbl_801E2BEC:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801E307C
 	.byte 0x00, 0x21, 0x25, 0x26
 	.4byte 0
 	.4byte 0
@@ -36848,10 +36852,10 @@ lbl_801E2BEC:
 .global lbl_801E31E4
 lbl_801E31E4:
 	# ROM: 0x1E01E4
-	.4byte 0x801E2C44  ;# ptr
-	.4byte 0x801E2DAC  ;# ptr
-	.4byte 0x801E2F14  ;# ptr
-	.4byte 0x801E307C  ;# ptr
+	.4byte lbl_801E2C44  ;# ptr
+	.4byte lbl_801E2DAC  ;# ptr
+	.4byte lbl_801E2F14  ;# ptr
+	.4byte lbl_801E307C  ;# ptr
 
 .global lbl_801E31F4
 lbl_801E31F4:
@@ -36908,6 +36912,7 @@ glabel string_Try_a_higher_level
 glabel string_next_time
 	.asciz "next time"
 	.balign 4
+glabel lbl_801E32B8
 	.4byte string_Try_a_higher_level  ;# ptr
 	.4byte string_next_time  ;# ptr
 	.4byte 0
@@ -36924,6 +36929,7 @@ glabel string_Now_you_ve_become
 	.balign 4
 glabel string_cool_monkey_like_me
 	.asciz "cool monkey like me"
+glabel lbl_801E3330
 	.4byte string_Now_you_ve_become  ;# ptr
 	.4byte string_cool_monkey_like_me  ;# ptr
 	.4byte 0
@@ -36942,6 +36948,7 @@ glabel string_You_are_so_cool__Remember_
 glabel string_Monkey_Ball_is_the_best_game_for_you_
 	.asciz "Monkey Ball is the best game for you!"
 	.balign 4
+glabel lbl_801E33D0
 	.4byte string_You_are_so_cool__Remember_  ;# ptr
 	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
 	.4byte 0
@@ -36975,6 +36982,7 @@ glabel string_let_s_try_to_make_it
 	.balign 4
 glabel string_all_the_way_to_the_end_
 	.asciz "all the way to the end!"
+glabel lbl_801E3518
 	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
 	.4byte string_You_re_incredible_  ;# ptr
 	.4byte string_The_next_time_you_play_  ;# ptr
@@ -37007,6 +37015,7 @@ glabel string_Only__n_left_to
 glabel string_unlock_the_next_Mini_Game_
 	.asciz "unlock the next Mini Game!"
 	.balign 4
+glabel lbl_801E3614
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Only__n_left_to  ;# ptr
@@ -37031,6 +37040,7 @@ glabel string_Since_you_got_a_lot_of_points_
 	.balign 4
 glabel string_you_can_unlock_a_Mini_Game_
 	.asciz "you can unlock a Mini Game!"
+glabel lbl_801E36E8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -37050,6 +37060,7 @@ glabel string_h_SAIGONOk_MINIGE_MUh_WOk_GETTOh_SHITENE_
 glabel string_you_can_unlock_the_last_Mini_Game_
 	.asciz "you can unlock the last Mini Game!"
 	.balign 4
+glabel lbl_801E3784
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -37069,6 +37080,7 @@ glabel string_h_k_KONNTEXINYU_h_p_KAISUUh_WOHUYASERUYO_
 glabel string_increase_your_number_of_continues_
 	.asciz "increase your number of continues!"
 	.balign 4
+glabel lbl_801E3820
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Only__n_left_to  ;# ptr
@@ -37087,6 +37099,7 @@ glabel string_you_increase_your_number
 	.balign 4
 glabel string_of_continues_to__c_
 	.asciz "of continues to %c!"
+glabel lbl_801E38AC
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -37109,6 +37122,7 @@ glabel string_Now__you_can_play_with
 	.balign 4
 glabel string_infinite_continues_
 	.asciz "infinite continues!"
+glabel lbl_801E3948
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Now__you_can_play_with  ;# ptr
@@ -37135,6 +37149,7 @@ glabel string_Now__you_can_try_to_set_the
 glabel string_high_score_for_the_most_Play_Points_
 	.asciz "high score for the most Play Points!"
 	.balign 4
+glabel lbl_801E3A58
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_You_ve_unlocked_everything_  ;# ptr
 	.4byte string_Now__you_can_try_to_set_the  ;# ptr
@@ -37163,6 +37178,7 @@ glabel string_Do_your_best_to_try_and_beat
 glabel string_the_high_score__okay_
 	.asciz "the high score, okay?"
 	.balign 4
+glabel lbl_801E3B34
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
@@ -37189,6 +37205,7 @@ glabel string_Congratulations_
 glabel string_That_was_truly_a_great_game_
 	.asciz "That was truly a great game!"
 	.balign 4
+glabel lbl_801E3C14
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_That_s_a_new_high_score_  ;# ptr
 	.4byte string_Congratulations_  ;# ptr
@@ -37213,6 +37230,7 @@ glabel string_There_s_no_record_better_than_this_
 glabel string_You_are_the_greatest_
 	.asciz "You are the greatest!"
 	.balign 4
+glabel lbl_801E3CE4
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_There_s_no_record_better_than_this_  ;# ptr
 	.4byte string_You_are_the_greatest_  ;# ptr
@@ -37235,6 +37253,7 @@ glabel string_Try_one_more_time_to_see
 glabel string_if_you_can_get__b_
 	.asciz "if you can get %b!"
 	.balign 4
+glabel lbl_801E3D7C
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Try_one_more_time_to_see  ;# ptr
@@ -37249,6 +37268,7 @@ glabel string_h_UENOk_REBERUh_WO_MEZASHITENE
 	.4byte string_h_KONNDOHA_MOTTO  ;# ptr
 	.4byte string_h_UENOk_REBERUh_WO_MEZASHITENE  ;# ptr
 	.4byte 0
+glabel lbl_801E3DD0
 	.4byte string_Try_a_higher_level  ;# ptr
 	.4byte string_next_time  ;# ptr
 	.4byte 0
@@ -37263,6 +37283,7 @@ glabel string_h_ICHININNMAENO_Ok_SARUh_SANNNE
 glabel string_pretty_monkey_like_me
 	.asciz "pretty monkey like me"
 	.balign 4
+glabel lbl_801E3E34
 	.4byte string_Now_you_ve_become  ;# ptr
 	.4byte string_pretty_monkey_like_me  ;# ptr
 	.4byte 0
@@ -37277,6 +37298,7 @@ glabel string_k_PUREI_h_SHIMAKUTTENE
 	.4byte 0
 glabel string_You_are_so_fantastic__Remember_
 	.asciz "You are so fantastic! Remember,"
+glabel lbl_801E3EA8
 	.4byte string_You_are_so_fantastic__Remember_  ;# ptr
 	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
 	.4byte 0
@@ -37304,6 +37326,7 @@ glabel string_I_guess_you_should_take_a_break_
 	.balign 4
 glabel string_Next_time__let_s_try_to_make_it
 	.asciz "Next time, let's try to make it"
+glabel lbl_801E3FE8
 	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
 	.4byte string_You_really_are_something_  ;# ptr
 	.4byte string_I_guess_you_should_take_a_break_  ;# ptr
@@ -37333,6 +37356,7 @@ glabel string_You_might_be_able_to_unlock_a_game
 glabel string_with__n__more_points_
 	.asciz "with %n_ more points!"
 	.balign 4
+glabel lbl_801E40D8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__that_s__t_  ;# ptr
 	.4byte string_You_might_be_able_to_unlock_a_game  ;# ptr
@@ -37357,6 +37381,7 @@ glabel string_you_can_unlock_any_Mini_Game
 glabel string_you_want_
 	.asciz "you want!"
 	.balign 4
+glabel lbl_801E41A8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__that_s__t_  ;# ptr
 	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
@@ -37376,6 +37401,7 @@ glabel string_you_ll_be_able_to_unlock
 	.balign 4
 glabel string_the_last_Mini_Game_
 	.asciz "the last Mini Game!"
+glabel lbl_801E4234
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__that_s__t_  ;# ptr
 	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
@@ -37398,6 +37424,7 @@ glabel string_your_number_of_continues
 	.balign 4
 glabel string_if_you_get__n__more_points_
 	.asciz "if you get %n_ more points!"
+glabel lbl_801E42D8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__that_s__t_  ;# ptr
 	.4byte string_You_can_increase  ;# ptr
@@ -37417,6 +37444,7 @@ glabel string_you_ll_be_able_to_increase
 	.balign 4
 glabel string_your_number_of_continues_to__c_
 	.asciz "your number of continues to %c!"
+glabel lbl_801E4374
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__that_s__t_  ;# ptr
 	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
@@ -37430,6 +37458,7 @@ glabel string_h_DEKIRUYOUNINATTAWAYO_
 	.4byte string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO  ;# ptr
 	.4byte string_h_DEKIRUYOUNINATTAWAYO_  ;# ptr
 	.4byte 0
+glabel lbl_801E43B8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__that_s__t_  ;# ptr
 	.4byte string_Now__you_can_play_with  ;# ptr
@@ -37454,6 +37483,7 @@ glabel string_Now__you_can_try_to_see_how_many
 glabel string_points_you_can_get_in_1_player_mode_
 	.asciz "points you can get in 1 player mode!"
 	.balign 4
+glabel lbl_801E44A4
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_You_ve_unlocked_everything_  ;# ptr
 	.4byte string_Now__you_can_try_to_see_how_many  ;# ptr
@@ -37476,6 +37506,7 @@ glabel string_h_KOREKARAMO__ASOBITUDUKETENE_
 glabel string_Do_your_best_and_play_more_to_beat
 	.asciz "Do your best and play more to beat"
 	.balign 4
+glabel lbl_801E4558
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Do_your_best_and_play_more_to_beat  ;# ptr
@@ -37504,6 +37535,7 @@ glabel string_Now_just_try_to_beat
 glabel string_your_own_record_
 	.asciz "your own record!"
 	.balign 4
+glabel lbl_801E4640
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_You_got_the_high_score_  ;# ptr
 	.4byte string_Wow__I_can_t_believe_it_  ;# ptr
@@ -37527,6 +37559,7 @@ glabel string_h_MOU__k_SUTEKIp___k_TOKIMEKIp___k_DA_ISUKIh_YO_
 glabel string_You_are_perfect_
 	.asciz "You are perfect!"
 	.balign 4
+glabel lbl_801E46F8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_There_s_no_record_better_than_this_  ;# ptr
 	.4byte string_You_are_perfect_  ;# ptr
@@ -37547,6 +37580,7 @@ glabel string_h_MATADASERUKA__TYOUSENNSITENE_
 glabel string_if_you_can_get_the_high_score
 	.asciz "if you can get the high score"
 	.balign 4
+glabel lbl_801E47A4
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Try_one_more_time_to_see  ;# ptr
@@ -37564,6 +37598,7 @@ glabel string_h_ASOBITAIDEk_CHU
 	.4byte 0
 glabel string_I_want_to_play_higher_level
 	.asciz "I want to play higher level"
+glabel lbl_801E4814
 	.4byte string_I_want_to_play_higher_level  ;# ptr
 	.4byte string_next_time  ;# ptr
 	.4byte 0
@@ -37578,6 +37613,7 @@ glabel string_h_NAKAMAIRIDEk_CHU
 	.4byte 0
 glabel string_grown_up_monkey_like_me
 	.asciz "grown up monkey like me"
+glabel lbl_801E487C
 	.4byte string_Now_you_ve_become  ;# ptr
 	.4byte string_grown_up_monkey_like_me  ;# ptr
 	.4byte 0
@@ -37592,6 +37628,7 @@ glabel string_h_ZUTTO_ASONNDEHOSIIDEk_CHU
 glabel string_You_are_such_grown_up__Remember_
 	.asciz "You are such grown up! Remember,"
 	.balign 4
+glabel lbl_801E48F4
 	.4byte string_You_are_such_grown_up__Remember_  ;# ptr
 	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
 	.4byte 0
@@ -37619,6 +37656,7 @@ glabel string_It_s_a_wittle_hard__but_let_s_try
 glabel string_to_make_it_all_da_way_to_da_end_
 	.asciz "to make it all da way to da end!"
 	.balign 4
+glabel lbl_801E4A10
 	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
 	.4byte string_You_are_weally_good_  ;# ptr
 	.4byte string_It_s_a_wittle_hard__but_let_s_try  ;# ptr
@@ -37646,6 +37684,7 @@ glabel string_Only__n_weft_to
 glabel string_unwock_the_next_Mini_Game_
 	.asciz "unwock the next Mini Game!"
 	.balign 4
+glabel lbl_801E4AE4
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_togeder__you_have__t_  ;# ptr
 	.4byte string_Only__n_weft_to  ;# ptr
@@ -37661,6 +37700,7 @@ glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUDEk_TYU_
 	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
 	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUDEk_TYU_  ;# ptr
 	.4byte 0
+glabel lbl_801E4B6C
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -37683,6 +37723,7 @@ glabel string_Since_you_got_a_wot_of_points_
 glabel string_you_can_unwock_the_last_Mini_Game_
 	.asciz "you can unwock the last Mini Game!"
 	.balign 4
+glabel lbl_801E4C28
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_togeder__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_wot_of_points_  ;# ptr
@@ -37702,6 +37743,7 @@ glabel string_All_togedder__you_have__p_
 glabel string_incwease_your_number_of_continues_
 	.asciz "incwease your number of continues!"
 	.balign 4
+glabel lbl_801E4CB4
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_togedder__you_have__p_  ;# ptr
 	.4byte string_Only__n_weft_to  ;# ptr
@@ -37721,6 +37763,7 @@ glabel string_you_incwease_your_number
 glabel string_of_continues_
 	.asciz "of continues!"
 	.balign 4
+glabel lbl_801E4D34
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_togeder__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_wot_of_points_  ;# ptr
@@ -37740,6 +37783,7 @@ glabel string_h_DEKIRUYOUNINATTADEk_TYU__BABU__
 glabel string_Now__you_can_pway_with
 	.asciz "Now, you can pway with"
 	.balign 4
+glabel lbl_801E4DBC
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_togeder__you_have__t_  ;# ptr
 	.4byte string_Now__you_can_pway_with  ;# ptr
@@ -37759,6 +37803,7 @@ glabel string_h_IKUTUk_GETTOh_SURUKANIk_TYARENJIh_DEk_TYU_
 glabel string_You_ve_unwocked_everyting_
 	.asciz "You've unwocked everyting!"
 	.balign 4
+glabel lbl_801E4E5C
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_You_ve_unwocked_everyting_  ;# ptr
 	.4byte string_Now__you_can_try_to_set_the  ;# ptr
@@ -37779,6 +37824,7 @@ glabel string_h_KOREKARAMO__k_PUREIh_SURUDEk_TYU_
 	.4byte 0
 glabel string_the_high_score___Let_s_go__
 	.asciz "the high score!! Let's go!!"
+glabel lbl_801E4F04
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
@@ -37804,6 +37850,7 @@ glabel string_Congwatuwations_
 glabel string_That_was_truly_a_gweat_game_
 	.asciz "That was truly a gweat game!"
 	.balign 4
+glabel lbl_801E4FCC
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_That_s_a_new_high_score_  ;# ptr
 	.4byte string_Congwatuwations_  ;# ptr
@@ -37824,6 +37871,7 @@ glabel string_h_MOUNAIDEk_TYU__ODOROKIh_DEk_TYU_
 	.4byte 0
 glabel string_There_s_no_wecord_better_than_this_
 	.asciz "There's no wecord better than this!"
+glabel lbl_801E5078
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_There_s_no_wecord_better_than_this_  ;# ptr
 	.4byte string_You_are_the_greatest_  ;# ptr
@@ -37846,6 +37894,7 @@ glabel string_k_TYARENNJIh_TITEHOSIIDEk_TYU__BABU__
 glabel string_if_you_can_get__b__Goo_goo___
 	.asciz "if you can get %b! Goo goo!!!"
 	.balign 4
+glabel lbl_801E5134
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Try_one_more_time_to_see  ;# ptr
@@ -37863,6 +37912,7 @@ glabel string_Try_to_be_the_greatest_monkey_ever_
 	.asciz "Try to be the greatest monkey ever!"
 glabel string_Play_the_more_difficult_levels_
 	.asciz "Play the more difficult levels!"
+glabel lbl_801E51D8
 	.4byte string_Try_to_be_the_greatest_monkey_ever_  ;# ptr
 	.4byte string_Play_the_more_difficult_levels_  ;# ptr
 	.4byte 0
@@ -37887,6 +37937,7 @@ glabel string_Buuuut__there_s_still_a_more
 glabel string_difficult_level_to_beat_
 	.asciz "difficult level to beat!"
 	.balign 4
+glabel lbl_801E5298
 	.4byte string_Wow__You_re_really_good_  ;# ptr
 	.4byte string_I_m_surprised_  ;# ptr
 	.4byte string_Buuuut__there_s_still_a_more  ;# ptr
@@ -37908,6 +37959,7 @@ glabel string_You_really_are_the_greatest
 glabel string_monkey_ever__
 	.asciz "monkey ever!!"
 	.balign 4
+glabel lbl_801E5334
 	.4byte string_Oh_wow_  ;# ptr
 	.4byte string_I_can_t_believe_it_  ;# ptr
 	.4byte string_You_really_are_the_greatest  ;# ptr
@@ -37938,6 +37990,7 @@ glabel string_Next_time_you_play_
 glabel string_let_s_take_it_all_the_way___
 	.asciz "let's take it all the way!!!"
 	.balign 4
+glabel lbl_801E5468
 	.4byte string_You_really_are_something_to_have  ;# ptr
 	.4byte string_made_it_this_far__Congratulations__  ;# ptr
 	.4byte string_Next_time_you_play_  ;# ptr
@@ -37965,6 +38018,7 @@ glabel string_You_got__p__Alright___
 	.balign 4
 glabel string_Go_go_go___
 	.asciz "Go go go!!!"
+glabel lbl_801E552C
 	.4byte string_You_got__p__Alright___  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Only__n_left_to  ;# ptr
@@ -37983,6 +38037,7 @@ glabel string_k_MINIGE_MU_GETTOXO_XTU__DAXA__
 	.4byte 0
 glabel string_you_can_unlock_a_Mini_Game__Yeah___
 	.asciz "you can unlock a Mini Game! Yeah!!!"
+glabel lbl_801E55BC
 	.4byte string_You_got__p__Alright___  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -38002,6 +38057,7 @@ glabel string_All_together__you_have__t
 glabel string_Go_for_it___
 	.asciz "Go for it!!!"
 	.balign 4
+glabel lbl_801E5634
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -38016,6 +38072,7 @@ glabel string_k_KONNTEXINYU__HUE_RU__UHOUHO_
 	.4byte string_k_ATO__nk_POINNTO_DE  ;# ptr
 	.4byte string_k_KONNTEXINYU__HUE_RU__UHOUHO_  ;# ptr
 	.4byte 0
+glabel lbl_801E5680
 	.4byte string_You_got__p__Alright___  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Only__n_left_to  ;# ptr
@@ -38029,6 +38086,7 @@ glabel string_k_KONNTEXINYU___ck__KAINI_HUETA_XTU_
 	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
 	.4byte string_k_KONNTEXINYU___ck__KAINI_HUETA_XTU_  ;# ptr
 	.4byte 0
+glabel lbl_801E56D0
 	.4byte string_You_got__p__Alright___  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
@@ -38049,6 +38107,7 @@ glabel string_k_DEKIRUYOUNI_NATTA___NATTA__
 glabel string_infinite_continues__Good_job__
 	.asciz "infinite continues! Good job!!"
 	.balign 4
+glabel lbl_801E5760
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_All_together__you_have__t_  ;# ptr
 	.4byte string_Now__you_can_play_with  ;# ptr
@@ -38073,6 +38132,7 @@ glabel string_You_ve_unlocked_everything__Wow___
 glabel string_high_score_for_most_Play_Points_
 	.asciz "high score for most Play Points!"
 	.balign 4
+glabel lbl_801E5838
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_You_ve_unlocked_everything__Wow___  ;# ptr
 	.4byte string_Now__you_can_try_to_set_the  ;# ptr
@@ -38094,6 +38154,7 @@ glabel string_k_PUREI_SURUNO_DA_XTU__UHOHO_I_
 glabel string_the_high_score__You_can_do_it___
 	.asciz "the high score! You can do it!!!"
 	.balign 4
+glabel lbl_801E58E8
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
@@ -38116,6 +38177,7 @@ glabel string_k_YATTA__YATTA___YATTA_GO_NN_
 glabel string_You_really_are_the_best____Woo_hoo___
 	.asciz "You really are the best!!! Woo hoo!!!"
 	.balign 4
+glabel lbl_801E5998
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_That_s_a_new_high_score_  ;# ptr
 	.4byte string_Congratulations_  ;# ptr
@@ -38139,6 +38201,7 @@ glabel string_I_can_t_believe_it__
 	.balign 4
 glabel string_You_must_be_a_genius___
 	.asciz "You must be a genius!!!"
+glabel lbl_801E5A54
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_There_s_no_record_better_than_this_  ;# ptr
 	.4byte string_I_can_t_believe_it__  ;# ptr
@@ -38161,80 +38224,85 @@ glabel string_k_GANNBARE_XTU__1p___k_2p___k_3p___k_DAXA_XTU_
 glabel string_Readyp_TENNTENN_a__Go___
 	.asciz "Readyp/TENNTENN/a/ Go!!!"
 	.balign 4
+glabel lbl_801E5B08
 	.4byte string_You_got__p_  ;# ptr
 	.4byte string_The_high_score_is__b_  ;# ptr
 	.4byte string_Try_one_more_time_to_see  ;# ptr
 	.4byte string_if_you_can_get__b_  ;# ptr
 	.4byte string_Readyp_TENNTENN_a__Go___  ;# ptr
 	.4byte 0
-	.4byte 0x801E32B8  ;# ptr
-	.4byte 0x801E3330  ;# ptr
-	.4byte 0x801E33D0  ;# ptr
-	.4byte 0x801E3518  ;# ptr
-	.4byte 0x801E3614  ;# ptr
-	.4byte 0x801E36E8  ;# ptr
-	.4byte 0x801E3784  ;# ptr
-	.4byte 0x801E3820  ;# ptr
-	.4byte 0x801E38AC  ;# ptr
-	.4byte 0x801E3948  ;# ptr
-	.4byte 0x801E3A58  ;# ptr
-	.4byte 0x801E3B34  ;# ptr
-	.4byte 0x801E3C14  ;# ptr
-	.4byte 0x801E3CE4  ;# ptr
-	.4byte 0x801E3D7C  ;# ptr
-	.4byte 0x801E3DD0  ;# ptr
-	.4byte 0x801E3E34  ;# ptr
-	.4byte 0x801E3EA8  ;# ptr
-	.4byte 0x801E3FE8  ;# ptr
-	.4byte 0x801E40D8  ;# ptr
-	.4byte 0x801E41A8  ;# ptr
-	.4byte 0x801E4234  ;# ptr
-	.4byte 0x801E42D8  ;# ptr
-	.4byte 0x801E4374  ;# ptr
-	.4byte 0x801E43B8  ;# ptr
-	.4byte 0x801E44A4  ;# ptr
-	.4byte 0x801E4558  ;# ptr
-	.4byte 0x801E4640  ;# ptr
-	.4byte 0x801E46F8  ;# ptr
-	.4byte 0x801E47A4  ;# ptr
-	.4byte 0x801E4814  ;# ptr
-	.4byte 0x801E487C  ;# ptr
-	.4byte 0x801E48F4  ;# ptr
-	.4byte 0x801E4A10  ;# ptr
-	.4byte 0x801E4AE4  ;# ptr
-	.4byte 0x801E4B6C  ;# ptr
-	.4byte 0x801E4C28  ;# ptr
-	.4byte 0x801E4CB4  ;# ptr
-	.4byte 0x801E4D34  ;# ptr
-	.4byte 0x801E4DBC  ;# ptr
-	.4byte 0x801E4E5C  ;# ptr
-	.4byte 0x801E4F04  ;# ptr
-	.4byte 0x801E4FCC  ;# ptr
-	.4byte 0x801E5078  ;# ptr
-	.4byte 0x801E5134  ;# ptr
-	.4byte 0x801E51D8  ;# ptr
-	.4byte 0x801E5298  ;# ptr
-	.4byte 0x801E5334  ;# ptr
-	.4byte 0x801E5468  ;# ptr
-	.4byte 0x801E552C  ;# ptr
-	.4byte 0x801E55BC  ;# ptr
-	.4byte 0x801E5634  ;# ptr
-	.4byte 0x801E5680  ;# ptr
-	.4byte 0x801E56D0  ;# ptr
-	.4byte 0x801E5760  ;# ptr
-	.4byte 0x801E5838  ;# ptr
-	.4byte 0x801E58E8  ;# ptr
-	.4byte 0x801E5998  ;# ptr
-	.4byte 0x801E5A54  ;# ptr
-	.4byte 0x801E5B08  ;# ptr
+glabel lbl_801E5B20
+	.4byte lbl_801E32B8  ;# ptr
+	.4byte lbl_801E3330  ;# ptr
+	.4byte lbl_801E33D0  ;# ptr
+	.4byte lbl_801E3518  ;# ptr
+	.4byte lbl_801E3614  ;# ptr
+	.4byte lbl_801E36E8  ;# ptr
+	.4byte lbl_801E3784  ;# ptr
+	.4byte lbl_801E3820  ;# ptr
+	.4byte lbl_801E38AC  ;# ptr
+	.4byte lbl_801E3948  ;# ptr
+	.4byte lbl_801E3A58  ;# ptr
+	.4byte lbl_801E3B34  ;# ptr
+	.4byte lbl_801E3C14  ;# ptr
+	.4byte lbl_801E3CE4  ;# ptr
+	.4byte lbl_801E3D7C  ;# ptr
+glabel lbl_801E5B5C
+	.4byte lbl_801E3DD0  ;# ptr
+	.4byte lbl_801E3E34  ;# ptr
+	.4byte lbl_801E3EA8  ;# ptr
+	.4byte lbl_801E3FE8  ;# ptr
+	.4byte lbl_801E40D8  ;# ptr
+	.4byte lbl_801E41A8  ;# ptr
+	.4byte lbl_801E4234  ;# ptr
+	.4byte lbl_801E42D8  ;# ptr
+	.4byte lbl_801E4374  ;# ptr
+	.4byte lbl_801E43B8  ;# ptr
+	.4byte lbl_801E44A4  ;# ptr
+	.4byte lbl_801E4558  ;# ptr
+	.4byte lbl_801E4640  ;# ptr
+	.4byte lbl_801E46F8  ;# ptr
+	.4byte lbl_801E47A4  ;# ptr
+glabel lbl_801E5B98
+	.4byte lbl_801E4814  ;# ptr
+	.4byte lbl_801E487C  ;# ptr
+	.4byte lbl_801E48F4  ;# ptr
+	.4byte lbl_801E4A10  ;# ptr
+	.4byte lbl_801E4AE4  ;# ptr
+	.4byte lbl_801E4B6C  ;# ptr
+	.4byte lbl_801E4C28  ;# ptr
+	.4byte lbl_801E4CB4  ;# ptr
+	.4byte lbl_801E4D34  ;# ptr
+	.4byte lbl_801E4DBC  ;# ptr
+	.4byte lbl_801E4E5C  ;# ptr
+	.4byte lbl_801E4F04  ;# ptr
+	.4byte lbl_801E4FCC  ;# ptr
+	.4byte lbl_801E5078  ;# ptr
+	.4byte lbl_801E5134  ;# ptr
+glabel lbl_801E5BD4
+	.4byte lbl_801E51D8  ;# ptr
+	.4byte lbl_801E5298  ;# ptr
+	.4byte lbl_801E5334  ;# ptr
+	.4byte lbl_801E5468  ;# ptr
+	.4byte lbl_801E552C  ;# ptr
+	.4byte lbl_801E55BC  ;# ptr
+	.4byte lbl_801E5634  ;# ptr
+	.4byte lbl_801E5680  ;# ptr
+	.4byte lbl_801E56D0  ;# ptr
+	.4byte lbl_801E5760  ;# ptr
+	.4byte lbl_801E5838  ;# ptr
+	.4byte lbl_801E58E8  ;# ptr
+	.4byte lbl_801E5998  ;# ptr
+	.4byte lbl_801E5A54  ;# ptr
+	.4byte lbl_801E5B08  ;# ptr
 
 .global lbl_801E5C10
 lbl_801E5C10:
 	# ROM: 0x1E2C10
-	.4byte 0x801E5B20  ;# ptr
-	.4byte 0x801E5B5C  ;# ptr
-	.4byte 0x801E5B98  ;# ptr
-	.4byte 0x801E5BD4  ;# ptr
+	.4byte lbl_801E5B20  ;# ptr
+	.4byte lbl_801E5B5C  ;# ptr
+	.4byte lbl_801E5B98  ;# ptr
+	.4byte lbl_801E5BD4  ;# ptr
 
 .global lbl_801E5C20
 lbl_801E5C20:
@@ -38256,7 +38324,7 @@ lbl_801E5C20:
 	.4byte lbl_800C0F5C  ;# ptr
 	.4byte string__point  ;# ptr
 	.4byte string__points  ;# ptr
-	.4byte 0x802F1920  ;# ptr
+	.4byte lbl_802F1920  ;# ptr
 glabel string_c_0xff0000__dc_0x000000__s
 	.asciz "c/0xff0000/%dc/0x000000/%s"
 	.balign 4

@@ -13543,29 +13543,29 @@ glabel string_mkbe_rel_sample_rel
 .global lbl_801D3BD0
 lbl_801D3BD0:
 	# ROM: 0x1D0BD0
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_mini_fight_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_mini_bowling_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_mini_race_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_mini_pilot_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_mini_billiards_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_mini_golf_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 	.4byte string_mkbe_rel_sample_rel  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
-	.4byte 0x802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
 glabel string_MONKEY_RACE
 	.asciz "MONKEY RACE"
 glabel string_BILLIARDS
@@ -13668,6 +13668,7 @@ glabel string_k_AIAI
 	.balign 4
 glabel string_k_ABAHI
 	.asciz "k/ABAHI"
+glabel lbl_802F1310
 	.4byte 0
 glabel string_TEST0
 	.asciz "TEST0"
@@ -13707,12 +13708,16 @@ lbl_802F1360:
 	# ROM: 0x1EBAA0
 	.byte 0x2B, 0x00, 0x00, 0x00
 	.4byte 0
+glabel lbl_802F1368
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0x00, 0x00, 0x01, 0xE9
+glabel lbl_802F1370
 	.4byte 0
 	.byte 0x00, 0x00, 0x01, 0xE9
+glabel lbl_802F1378
 	.4byte 0
 	.byte 0x00, 0x00, 0x01, 0xF0
+glabel lbl_802F1380
 	.4byte 0
 	.byte 0x00, 0x00, 0x01, 0xDB
 glabel string_1P_WINS
@@ -13725,6 +13730,7 @@ glabel string_4P_WINS
 	.asciz "4P WINS"
 glabel string_RANK_IN
 	.asciz "RANK IN"
+glabel lbl_802F13B0
 	.4byte 0
 glabel string_YOU_WIN
 	.asciz "YOU WIN"

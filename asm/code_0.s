@@ -2619,6 +2619,7 @@ glabel string_POINT_DARK
 glabel string_SPOT_DARK
 	.asciz "SPOT_DARK"
 	.balign 4
+glabel lbl_801773B4
 	.4byte string_INFINITE  ;# ptr
 	.4byte string_POINT  ;# ptr
 	.4byte string_SPOT  ;# ptr
@@ -2634,11 +2635,12 @@ glabel string_BG_PILLAR
 glabel string_BG_COUNTER
 	.asciz "BG_COUNTER"
 	.balign 4
+glabel lbl_801773F0
 	.4byte string_TEST  ;# ptr
 	.4byte string_STAGE  ;# ptr
 	.4byte string_BUMPER  ;# ptr
 	.4byte string_AUTO  ;# ptr
-	.4byte 0x802F0348  ;# ptr
+	.4byte lbl_802F0348  ;# ptr
 	.4byte string_BG_PILLAR  ;# ptr
 	.4byte string_BG_WALL  ;# ptr
 	.4byte string_BG_COUNTER  ;# ptr
@@ -2649,6 +2651,7 @@ glabel string_DEF_MINIMAP
 glabel string_DEF_GMAT
 	.asciz "DEF_GMAT"
 	.balign 4
+glabel lbl_80177434
 	.4byte string_DEFAULT  ;# ptr
 	.4byte string_SINGLE  ;# ptr
 	.4byte string_SINGLE_UNIT  ;# ptr
@@ -12504,28 +12507,33 @@ lbl_80180E0C:
 	.4byte lbl_80022808  ;# ptr
 	.4byte lbl_8002274C  ;# ptr
 	.4byte lbl_80022808  ;# ptr
+glabel lbl_80180E30
 	.byte 0x05, 0x01, 0x05, 0x02
 	.byte 0x05, 0x03, 0x05, 0x04
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80180E3C
 	.byte 0x06, 0x01, 0x06, 0x02
 	.byte 0x06, 0x03, 0x06, 0x04
 	.byte 0x06, 0x05, 0x06, 0x06
 	.byte 0x06, 0x07, 0x06, 0x08
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80180E50
 	.byte 0x07, 0x01, 0x07, 0x02
 	.byte 0x05, 0x01, 0x05, 0x03
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80180E5C
 	.byte 0x05, 0x04, 0x06, 0x01
 	.byte 0x06, 0x02, 0x06, 0x03
 	.byte 0xFF, 0xFF, 0x00, 0x00
-	.4byte 0x80180E30  ;# ptr
-	.4byte 0x80180E3C  ;# ptr
-	.4byte 0x802F03F8  ;# ptr
-	.4byte 0x802F0400  ;# ptr
-	.4byte 0x80180E50  ;# ptr
-	.4byte 0x802F0408  ;# ptr
-	.4byte 0x802F0410  ;# ptr
-	.4byte 0x80180E5C  ;# ptr
+glabel lbl_80180E68
+	.4byte lbl_80180E30  ;# ptr
+	.4byte lbl_80180E3C  ;# ptr
+	.4byte lbl_802F03F8  ;# ptr
+	.4byte lbl_802F0400  ;# ptr
+	.4byte lbl_80180E50  ;# ptr
+	.4byte lbl_802F0408  ;# ptr
+	.4byte lbl_802F0410  ;# ptr
+	.4byte lbl_80180E5C  ;# ptr
 	.4byte 0
 glabel string_BILL_FLOOR
 	.asciz "BILL_FLOOR"
@@ -13015,7 +13023,7 @@ glabel string__333_6
 	.4byte 0
 	.4byte 0
 	.byte 0x20, 0x00, 0x60, 0x00
-	.4byte 0x80180E68  ;# ptr
+	.4byte lbl_80180E68  ;# ptr
 	.byte 0x3F, 0x19, 0x99, 0x9A
 	.byte 0x3F, 0x19, 0x99, 0x9A
 	.byte 0x3F, 0x19, 0x99, 0x9A

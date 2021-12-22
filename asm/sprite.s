@@ -27031,12 +27031,14 @@ glabel string_a_How_to_play
 	.balign 4
 glabel string_a_Exit_game
 	.asciz "a/Exit game"
+glabel lbl_801C155C
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
 	.4byte string_a_Exit_game  ;# ptr
 glabel string_a_View_stage
 	.asciz "a/View stage"
 	.balign 4
+glabel lbl_801C1578
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_View_stage  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
@@ -27044,6 +27046,7 @@ glabel string_a_View_stage
 glabel string_a_Save_replay
 	.asciz "a/Save replay"
 	.balign 4
+glabel lbl_801C1598
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_Save_replay  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
@@ -27051,22 +27054,26 @@ glabel string_a_Save_replay
 glabel string_a_Stage_select
 	.asciz "a/Stage select"
 	.balign 4
+glabel lbl_801C15B8
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_Retry  ;# ptr
 	.4byte string_a_View_stage  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
 	.4byte string_a_Stage_select  ;# ptr
 	.4byte string_a_Exit_game  ;# ptr
+glabel lbl_801C15D0
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_Retry  ;# ptr
 	.4byte string_a_Save_replay  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
 	.4byte string_a_Stage_select  ;# ptr
 	.4byte string_a_Exit_game  ;# ptr
+glabel lbl_801C15E8
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_Retry  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
 	.4byte string_a_Exit_game  ;# ptr
+glabel lbl_801C15F8
 	.4byte string_a_Continue_game  ;# ptr
 	.4byte string_a_Guide  ;# ptr
 	.4byte string_a_How_to_play  ;# ptr
@@ -27075,16 +27082,16 @@ glabel string_a_Stage_select
 .global lbl_801C1608
 lbl_801C1608:
 	# ROM: 0x1BE608
-	.4byte 0x801C155C  ;# ptr
-	.4byte 0x801C1578  ;# ptr
-	.4byte 0x801C15B8  ;# ptr
-	.4byte 0x801C15E8  ;# ptr
-	.4byte 0x801C15F8  ;# ptr
-	.4byte 0x801C155C  ;# ptr
-	.4byte 0x801C1598  ;# ptr
-	.4byte 0x801C15D0  ;# ptr
-	.4byte 0x801C15E8  ;# ptr
-	.4byte 0x801C15F8  ;# ptr
+	.4byte lbl_801C155C  ;# ptr
+	.4byte lbl_801C1578  ;# ptr
+	.4byte lbl_801C15B8  ;# ptr
+	.4byte lbl_801C15E8  ;# ptr
+	.4byte lbl_801C15F8  ;# ptr
+	.4byte lbl_801C155C  ;# ptr
+	.4byte lbl_801C1598  ;# ptr
+	.4byte lbl_801C15D0  ;# ptr
+	.4byte lbl_801C15E8  ;# ptr
+	.4byte lbl_801C15F8  ;# ptr
 
 .global lbl_801C1630
 lbl_801C1630:
@@ -27338,8 +27345,8 @@ glabel string_saru_mark_pic
 	.asciz "saru mark.pic"
 	.balign 4
 	.4byte string_FINAL  ;# ptr
-	.4byte 0x802F1090  ;# ptr
-	.4byte 0x802F1094  ;# ptr
+	.4byte lbl_802F1090  ;# ptr
+	.4byte lbl_802F1094  ;# ptr
 
 .global lbl_801C1A18
 lbl_801C1A18:
@@ -27954,6 +27961,7 @@ glabel string_a_Grand_Prix_rules
 	.balign 4
 glabel string_a_Time_Attack_Rules
 	.asciz "a/Time Attack Rules"
+glabel lbl_801C242C
 	.4byte string_a_Monkey_Race_controls  ;# ptr
 	.4byte string_a_One_Course_Race_rules  ;# ptr
 	.4byte string_a_About_Items  ;# ptr
@@ -27965,6 +27973,7 @@ glabel string_a_Monkey_Fight_controls
 glabel string_a_Monkey_Fight_rules
 	.asciz "a/Monkey Fight rules"
 	.balign 4
+glabel lbl_801C2474
 	.4byte string_a_Monkey_Fight_controls  ;# ptr
 	.4byte string_a_Monkey_Fight_rules  ;# ptr
 	.4byte string_a_About_Items  ;# ptr
@@ -27979,6 +27988,7 @@ glabel string_a_About_Help_Items
 	.balign 4
 glabel string_a_About_the_Wheel_of_Danger
 	.asciz "a/About the Wheel of Danger"
+glabel lbl_801C24E4
 	.4byte string_a_Monkey_Target_controls  ;# ptr
 	.4byte string_a_Monkey_Target_rules  ;# ptr
 	.4byte string_a_About_Help_Items  ;# ptr
@@ -27994,6 +28004,7 @@ glabel string_a_Vs__Mode_rules
 	.balign 4
 glabel string_a_Tournament_Mode_rules
 	.asciz "a/Tournament Mode rules"
+glabel lbl_801C2550
 	.4byte string_a_View_Mode_controls  ;# ptr
 	.4byte string_a_Shot_Mode_controls  ;# ptr
 	.4byte string_a_Vs__Mode_rules  ;# ptr
@@ -28007,6 +28018,7 @@ glabel string_a_Standard_Mode_rules
 glabel string_a_Challenge_Mode_rules
 	.asciz "a/Challenge Mode rules"
 	.balign 4
+glabel lbl_801C25AC
 	.4byte string_a_Monkey_Bowling_controls  ;# ptr
 	.4byte string_a_Standard_Mode_rules  ;# ptr
 	.4byte string_a_Challenge_Mode_rules  ;# ptr
@@ -28021,19 +28033,20 @@ glabel string_a_Stroke_Play_rules
 glabel string_a_Match_Play_rules
 	.asciz "a/Match Play rules"
 	.balign 4
+glabel lbl_801C2610
 	.4byte string_a_Putt_Mode_controls  ;# ptr
 	.4byte string_a_Camera_Mode_controls  ;# ptr
 	.4byte string_a_Stroke_Play_rules  ;# ptr
 	.4byte string_a_Match_Play_rules  ;# ptr
-	.4byte 0x802F1168  ;# ptr
-	.4byte 0x802F1170  ;# ptr
-	.4byte 0x802F1178  ;# ptr
-	.4byte 0x801C242C  ;# ptr
-	.4byte 0x801C2474  ;# ptr
-	.4byte 0x801C24E4  ;# ptr
-	.4byte 0x801C2550  ;# ptr
-	.4byte 0x801C25AC  ;# ptr
-	.4byte 0x801C2610  ;# ptr
+	.4byte lbl_802F1168  ;# ptr
+	.4byte lbl_802F1170  ;# ptr
+	.4byte lbl_802F1178  ;# ptr
+	.4byte lbl_801C242C  ;# ptr
+	.4byte lbl_801C2474  ;# ptr
+	.4byte lbl_801C24E4  ;# ptr
+	.4byte lbl_801C2550  ;# ptr
+	.4byte lbl_801C25AC  ;# ptr
+	.4byte lbl_801C2610  ;# ptr
 	.byte 0x00, 0x00, 0x0C, 0x24
 	.byte 0x05, 0x1A, 0x00, 0x00
 	.4byte 0
@@ -28083,6 +28096,7 @@ glabel string_a_Control_Stick
 	.asciz "a/Control Stick"
 glabel string_a_Roll_the_ball
 	.asciz "a/Roll the ball"
+glabel lbl_801C2718
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a_Roll_the_ball  ;# ptr
 	.4byte 0
@@ -28092,6 +28106,7 @@ glabel string_a_START_PAUSE_Button
 glabel string_a_Pause_Menu
 	.asciz "a/Pause Menu"
 	.balign 4
+glabel lbl_801C274C
 	.4byte string_a_START_PAUSE_Button  ;# ptr
 	.4byte string_a_Pause_Menu  ;# ptr
 	.4byte 0
@@ -28103,6 +28118,7 @@ glabel string_a_Adjust_the_size_of
 	.balign 4
 glabel string_a_the_on_screen_map
 	.asciz "a/the on-screen map"
+glabel lbl_801C2790
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Adjust_the_size_of  ;# ptr
 	.4byte string_a_the_on_screen_map  ;# ptr
@@ -28110,12 +28126,14 @@ glabel string_a_the_on_screen_map
 glabel string_a_Use_Item
 	.asciz "a/Use Item"
 	.balign 4
+glabel lbl_801C27AC
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Use_Item  ;# ptr
 	.4byte 0
 glabel string_a_Return_to_the_stage
 	.asciz "a/Return to the stage"
 	.balign 4
+glabel lbl_801C27D0
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Punch  ;# ptr
 	.4byte string_a_Return_to_the_stage  ;# ptr
@@ -28134,6 +28152,7 @@ glabel string_a_Push_p_SANNKAKU_D_a__to_move_up
 glabel string_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__will_turn
 	.asciz "p/SANNKAKU_L/a/ or p/SANNKAKU_R/a/ will turn"
 	.balign 4
+glabel lbl_801C2888
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a__Before_taking_flight_  ;# ptr
 	.4byte string_a_Roll_the_ball  ;# ptr
@@ -28147,6 +28166,7 @@ glabel string_a_Change_to_flight_mode
 glabel string_a_Change_to_landing_mode
 	.asciz "a/Change to landing mode"
 	.balign 4
+glabel lbl_801C28DC
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Change_to_flight_mode  ;# ptr
 	.4byte string_a_Change_to_landing_mode  ;# ptr
@@ -28157,6 +28177,7 @@ glabel string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to
 glabel string_a_change_the_direction
 	.asciz "a/change the direction"
 	.balign 4
+glabel lbl_801C2934
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to  ;# ptr
 	.4byte string_a_change_the_direction  ;# ptr
@@ -28166,6 +28187,7 @@ glabel string_a_Once_you_choose_an_angle_
 glabel string_a_it_will_change_to_shot_mode_
 	.asciz "a/it will change to shot mode."
 	.balign 4
+glabel lbl_801C2980
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Once_you_choose_an_angle_  ;# ptr
 	.4byte string_a_it_will_change_to_shot_mode_  ;# ptr
@@ -28179,6 +28201,7 @@ glabel string_a_Return_to_previous
 glabel string_a_camera_view
 	.asciz "a/camera view"
 	.balign 4
+glabel lbl_801C29C4
 	.4byte string_a_B_Button  ;# ptr
 	.4byte string_a_Return_to_previous  ;# ptr
 	.4byte string_a_camera_view  ;# ptr
@@ -28189,6 +28212,7 @@ glabel string_a_C_Stick
 glabel string_a_Camera_movement
 	.asciz "a/Camera movement"
 	.balign 4
+glabel lbl_801C29F4
 	.4byte string_a_C_Stick  ;# ptr
 	.4byte string_a_Camera_movement  ;# ptr
 	.4byte 0
@@ -28198,6 +28222,7 @@ glabel string_a_X_Button
 glabel string_a_Ball_number
 	.asciz "a/Ball number"
 	.balign 4
+glabel lbl_801C2A1C
 	.4byte string_a_X_Button  ;# ptr
 	.4byte string_a_Ball_number  ;# ptr
 	.4byte 0
@@ -28210,6 +28235,7 @@ glabel string_a_Change_between
 glabel string_a_2D_top_view_and_3D_view
 	.asciz "a/2D top view and 3D view"
 	.balign 4
+glabel lbl_801C2A64
 	.4byte string_a_Y_Button  ;# ptr
 	.4byte string_a_Change_between  ;# ptr
 	.4byte string_a_2D_top_view_and_3D_view  ;# ptr
@@ -28219,16 +28245,19 @@ glabel string_a_Change_the_shot_point
 glabel string_a_of_the_ball
 	.asciz "a/of the ball"
 	.balign 4
+glabel lbl_801C2A9C
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a_Change_the_shot_point  ;# ptr
 	.4byte string_a_of_the_ball  ;# ptr
 	.4byte 0
+glabel lbl_801C2AAC
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Shot  ;# ptr
 	.4byte 0
 glabel string_a_Return_to_View_Mode
 	.asciz "a/Return to View Mode"
 	.balign 4
+glabel lbl_801C2AD0
 	.4byte string_a_B_Button  ;# ptr
 	.4byte string_a_Return_to_View_Mode  ;# ptr
 	.4byte 0
@@ -28238,6 +28267,7 @@ glabel string_a_Change_the_strength
 glabel string_a_of_your_shot
 	.asciz "a/of your shot"
 	.balign 4
+glabel lbl_801C2B04
 	.4byte string_a_Y_Button  ;# ptr
 	.4byte string_a_Change_the_strength  ;# ptr
 	.4byte string_a_of_your_shot  ;# ptr
@@ -28248,6 +28278,7 @@ glabel string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_change
 glabel string_a_your_throwing_position
 	.asciz "a/your throwing position"
 	.balign 4
+glabel lbl_801C2B68
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_change  ;# ptr
 	.4byte string_a_your_throwing_position  ;# ptr
@@ -28263,6 +28294,7 @@ glabel string_a_2__Throwing_direction
 glabel string_a_3__Throwing_strength
 	.asciz "a/3. Throwing strength"
 	.balign 4
+glabel lbl_801C2BCC
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Select_  ;# ptr
 	.4byte string_a_1__Throwing_position  ;# ptr
@@ -28274,6 +28306,7 @@ glabel string_a_Cancel_the
 	.balign 4
 glabel string_a_throwing_position
 	.asciz "a/throwing position"
+glabel lbl_801C2C08
 	.4byte string_a_B_Button  ;# ptr
 	.4byte string_a_Cancel_the  ;# ptr
 	.4byte string_a_throwing_position  ;# ptr
@@ -28281,6 +28314,7 @@ glabel string_a_throwing_position
 glabel string_a_Switch_score
 	.asciz "a/Switch score"
 	.balign 4
+glabel lbl_801C2C28
 	.4byte string_a_X_Button  ;# ptr
 	.4byte string_a_Switch_score  ;# ptr
 	.4byte 0
@@ -28289,6 +28323,7 @@ glabel string_a_L_R_Buttons
 	.balign 4
 glabel string_a_Ball_spin
 	.asciz "a/Ball spin"
+glabel lbl_801C2C50
 	.4byte string_a_L_R_Buttons  ;# ptr
 	.4byte string_a_Ball_spin  ;# ptr
 	.4byte 0
@@ -28300,6 +28335,7 @@ glabel string_a_Press_p_SANNKAKU_U_a__or_p_SANNKAKU_D_a__to_change
 	.balign 4
 glabel string_a_your_hitting_strength
 	.asciz "a/your hitting strength"
+glabel lbl_801C2CC8
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_change  ;# ptr
 	.4byte string_a_your_hitting_direction  ;# ptr
@@ -28312,6 +28348,7 @@ glabel string_a_Hit_the_ball
 glabel string_a_Select
 	.asciz "a/Select"
 	.balign 4
+glabel lbl_801C2CFC
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Hit_the_ball  ;# ptr
 	.4byte string_a_Select  ;# ptr
@@ -28322,21 +28359,25 @@ glabel string_a_Change_hitting_strength
 glabel string_a_Cancel
 	.asciz "a/Cancel"
 	.balign 4
+glabel lbl_801C2D34
 	.4byte string_a_B_Button  ;# ptr
 	.4byte string_a_Change_hitting_strength  ;# ptr
 	.4byte string_a_Cancel  ;# ptr
 	.4byte 0
 glabel string_a_Change_to_camera_mode
 	.asciz "a/Change to camera mode"
+glabel lbl_801C2D5C
 	.4byte string_a_C_Stick  ;# ptr
 	.4byte string_a_Change_to_camera_mode  ;# ptr
 	.4byte 0
+glabel lbl_801C2D68
 	.4byte string_a_X_Button  ;# ptr
 	.4byte string_a_Change_to_camera_mode  ;# ptr
 	.4byte 0
 glabel string_a_View_score
 	.asciz "a/View score"
 	.balign 4
+glabel lbl_801C2D84
 	.4byte string_a_Y_Button  ;# ptr
 	.4byte string_a_View_score  ;# ptr
 	.4byte 0
@@ -28352,6 +28393,7 @@ glabel string_a_Press_p_SANNKAKU_U_a__or_p_SANNKAKU_D_a__to_move
 glabel string_a_the_camera_forward_or_back
 	.asciz "a/the camera forward or back"
 	.balign 4
+glabel lbl_801C2E34
 	.4byte string_a_Control_Stick  ;# ptr
 	.4byte string_a_Press_p_SANNKAKU_L_a__or_p_SANNKAKU_R_a__to_turn  ;# ptr
 	.4byte string_a_the_camera_right_or_left  ;# ptr
@@ -28363,6 +28405,7 @@ glabel string_a_Face_the_camera_point
 glabel string_a_Return_to_Putt_Mode
 	.asciz "a/Return to Putt Mode"
 	.balign 4
+glabel lbl_801C2E7C
 	.4byte string_a_A_Button  ;# ptr
 	.4byte string_a_Face_the_camera_point  ;# ptr
 	.4byte string_a_Return_to_Putt_Mode  ;# ptr
@@ -28373,6 +28416,7 @@ glabel string_a_Return_to_Putt_Mode_without
 glabel string_a_changing_where_you_are_facing_
 	.asciz "a/changing where you are facing."
 	.balign 4
+glabel lbl_801C2ED0
 	.4byte string_a_B_Button  ;# ptr
 	.4byte string_a_Return_to_Putt_Mode_without  ;# ptr
 	.4byte string_a_changing_where_you_are_facing_  ;# ptr
@@ -28383,6 +28427,7 @@ glabel string_a_Move_the
 glabel string_a_camera_point
 	.asciz "a/camera point"
 	.balign 4
+glabel lbl_801C2EFC
 	.4byte string_a_C_Stick  ;# ptr
 	.4byte string_a_Move_the  ;# ptr
 	.4byte string_a_camera_point  ;# ptr
@@ -28390,138 +28435,140 @@ glabel string_a_camera_point
 glabel string_a_Lower_camera
 	.asciz "a/Lower camera"
 	.balign 4
+glabel lbl_801C2F1C
 	.4byte string_a_X_Button  ;# ptr
 	.4byte string_a_Lower_camera  ;# ptr
 	.4byte 0
 glabel string_a_Raise_camera
 	.asciz "a/Raise camera"
 	.balign 4
+glabel lbl_801C2F38
 	.4byte string_a_Y_Button  ;# ptr
 	.4byte string_a_Raise_camera  ;# ptr
 	.4byte 0
 	.byte 0x03, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2718  ;# ptr
+	.4byte lbl_801C2718  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0xF3
 	.byte 0x01, 0x57, 0x00, 0x00
-	.4byte 0x801C274C  ;# ptr
+	.4byte lbl_801C274C  ;# ptr
 	.byte 0x08, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF6, 0x00, 0x00
-	.4byte 0x801C2790  ;# ptr
+	.4byte lbl_801C2790  ;# ptr
 	.byte 0x01, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF6, 0x00, 0x00
-	.4byte 0x801C27AC  ;# ptr
+	.4byte lbl_801C27AC  ;# ptr
 	.byte 0x05, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF6, 0x00, 0x00
-	.4byte 0x801C27D0  ;# ptr
+	.4byte lbl_801C27D0  ;# ptr
 	.byte 0x0E, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2888  ;# ptr
+	.4byte lbl_801C2888  ;# ptr
 	.byte 0x05, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF6, 0x00, 0x00
-	.4byte 0x801C28DC  ;# ptr
+	.4byte lbl_801C28DC  ;# ptr
 	.byte 0x0B, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2934  ;# ptr
+	.4byte lbl_801C2934  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.byte 0x01, 0x3F, 0x00, 0x00
-	.4byte 0x801C274C  ;# ptr
+	.4byte lbl_801C274C  ;# ptr
 	.byte 0x08, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF7, 0x00, 0x00
-	.4byte 0x801C2980  ;# ptr
+	.4byte lbl_801C2980  ;# ptr
 	.byte 0x09, 0x00, 0x01, 0xD7
 	.byte 0x01, 0x4F, 0x00, 0x00
-	.4byte 0x801C29C4  ;# ptr
+	.4byte lbl_801C29C4  ;# ptr
 	.byte 0x04, 0x00, 0x00, 0xF3
 	.byte 0x01, 0x57, 0x00, 0x00
-	.4byte 0x801C29F4  ;# ptr
+	.4byte lbl_801C29F4  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xD7
 	.byte 0x00, 0x9F, 0x00, 0x00
-	.4byte 0x801C2A1C  ;# ptr
+	.4byte lbl_801C2A1C  ;# ptr
 	.byte 0x07, 0x00, 0x00, 0xF3
 	.byte 0x00, 0x4F, 0x00, 0x00
-	.4byte 0x801C2A64  ;# ptr
+	.4byte lbl_801C2A64  ;# ptr
 	.byte 0x0B, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2A9C  ;# ptr
+	.4byte lbl_801C2A9C  ;# ptr
 	.byte 0x01, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF7, 0x00, 0x00
-	.4byte 0x801C2AAC  ;# ptr
+	.4byte lbl_801C2AAC  ;# ptr
 	.byte 0x02, 0x00, 0x01, 0xD7
 	.byte 0x01, 0x4F, 0x00, 0x00
-	.4byte 0x801C2AD0  ;# ptr
+	.4byte lbl_801C2AD0  ;# ptr
 	.byte 0x07, 0x00, 0x00, 0xF3
 	.byte 0x00, 0x4F, 0x00, 0x00
-	.4byte 0x801C2B04  ;# ptr
+	.4byte lbl_801C2B04  ;# ptr
 	.byte 0x0B, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2B68  ;# ptr
+	.4byte lbl_801C2B68  ;# ptr
 	.byte 0x0C, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF7, 0x00, 0x00
-	.4byte 0x801C2BCC  ;# ptr
+	.4byte lbl_801C2BCC  ;# ptr
 	.byte 0x09, 0x00, 0x00, 0xF3
 	.byte 0x01, 0x57, 0x00, 0x00
-	.4byte 0x801C2C08  ;# ptr
+	.4byte lbl_801C2C08  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xD7
 	.byte 0x00, 0x9F, 0x00, 0x00
-	.4byte 0x801C2C28  ;# ptr
+	.4byte lbl_801C2C28  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0xF3
 	.byte 0x00, 0x4F, 0x00, 0x00
-	.4byte 0x801C2C50  ;# ptr
+	.4byte lbl_801C2C50  ;# ptr
 	.byte 0x0D, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2CC8  ;# ptr
+	.4byte lbl_801C2CC8  ;# ptr
 	.byte 0x05, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF7, 0x00, 0x00
-	.4byte 0x801C2CFC  ;# ptr
+	.4byte lbl_801C2CFC  ;# ptr
 	.byte 0x06, 0x00, 0x01, 0xD7
 	.byte 0x01, 0x4F, 0x00, 0x00
-	.4byte 0x801C2D34  ;# ptr
+	.4byte lbl_801C2D34  ;# ptr
 	.byte 0x04, 0x00, 0x00, 0xF3
 	.byte 0x01, 0x57, 0x00, 0x00
-	.4byte 0x801C2D5C  ;# ptr
+	.4byte lbl_801C2D5C  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xD7
 	.byte 0x00, 0x9F, 0x00, 0x00
-	.4byte 0x801C2D68  ;# ptr
+	.4byte lbl_801C2D68  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0xF3
 	.byte 0x00, 0x4F, 0x00, 0x00
-	.4byte 0x801C2D84  ;# ptr
+	.4byte lbl_801C2D84  ;# ptr
 	.byte 0x0D, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x87, 0x00, 0x00
-	.4byte 0x801C2E34  ;# ptr
+	.4byte lbl_801C2E34  ;# ptr
 	.byte 0x08, 0x00, 0x01, 0xD7
 	.byte 0x00, 0xF7, 0x00, 0x00
-	.4byte 0x801C2E7C  ;# ptr
+	.4byte lbl_801C2E7C  ;# ptr
 	.byte 0x09, 0x00, 0x01, 0xD7
 	.byte 0x01, 0x4F, 0x00, 0x00
-	.4byte 0x801C2ED0  ;# ptr
+	.4byte lbl_801C2ED0  ;# ptr
 	.byte 0x0A, 0x00, 0x00, 0xF3
 	.byte 0x01, 0x57, 0x00, 0x00
-	.4byte 0x801C2EFC  ;# ptr
+	.4byte lbl_801C2EFC  ;# ptr
 	.byte 0x00, 0x00, 0x01, 0xD7
 	.byte 0x00, 0x9F, 0x00, 0x00
-	.4byte 0x801C2F1C  ;# ptr
+	.4byte lbl_801C2F1C  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0xF3
 	.byte 0x00, 0x4F, 0x00, 0x00
-	.4byte 0x801C2F38  ;# ptr
-	.4byte 0x802F1190  ;# ptr
-	.4byte 0x802F1194  ;# ptr
-	.4byte 0x802F1198  ;# ptr
-	.4byte 0x802F119C  ;# ptr
-	.4byte 0x802F11A0  ;# ptr
-	.4byte 0x802F11A4  ;# ptr
-	.4byte 0x802F11A8  ;# ptr
-	.4byte 0x802F11B8  ;# ptr
-	.4byte 0x802F11C0  ;# ptr
+	.4byte lbl_801C2F38  ;# ptr
+	.4byte lbl_802F1190  ;# ptr
+	.4byte lbl_802F1194  ;# ptr
+	.4byte lbl_802F1198  ;# ptr
+	.4byte lbl_802F119C  ;# ptr
+	.4byte lbl_802F11A0  ;# ptr
+	.4byte lbl_802F11A4  ;# ptr
+	.4byte lbl_802F11A8  ;# ptr
+	.4byte lbl_802F11B8  ;# ptr
+	.4byte lbl_802F11C0  ;# ptr
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x802F11B0  ;# ptr
+	.4byte lbl_802F11B0  ;# ptr
 	.4byte 0
-	.4byte 0x802F11C8  ;# ptr
+	.4byte lbl_802F11C8  ;# ptr
 	.byte 0x43, 0x23, 0x00, 0x00
 	.byte 0x43, 0x21, 0x00, 0x00
 	.byte 0x43, 0x5E, 0x00, 0x00
@@ -28702,41 +28749,48 @@ glabel string_a_Raise_camera
 	.byte 0x00, 0xFA, 0xCE, 0x19
 	.byte 0x00, 0xE2, 0x19, 0x3E
 	.byte 0x00, 0x96, 0x28, 0x97
+glabel lbl_801C3400
 	.byte 0x00, 0x7E, 0x42, 0x1F
 	.byte 0x00, 0xE2, 0x19, 0x3E
 	.byte 0x00, 0xFA, 0xCE, 0x19
 	.byte 0x00, 0x96, 0x28, 0x97
 	.byte 0x00, 0x19, 0xA8, 0x71
 	.byte 0x00, 0x37, 0x61, 0xE2
+glabel lbl_801C3418
 	.byte 0x00, 0x37, 0x61, 0xE2
 	.byte 0x00, 0x19, 0xA8, 0x71
 	.byte 0x00, 0xFA, 0xCE, 0x19
 	.byte 0x00, 0xE2, 0x19, 0x3E
+glabel lbl_801C3428
 	.byte 0x00, 0x7E, 0x42, 0x1F
 	.byte 0x00, 0xE2, 0x19, 0x3E
 	.byte 0x00, 0xFA, 0xCE, 0x19
 	.byte 0x00, 0x96, 0x28, 0x97
 	.byte 0x00, 0x19, 0xA8, 0x71
 	.byte 0x00, 0x37, 0x61, 0xE2
+glabel lbl_801C3440
 	.byte 0x00, 0x37, 0x61, 0xE2
 	.byte 0x00, 0x19, 0xA8, 0x71
 	.byte 0x00, 0xFA, 0xCE, 0x19
 	.byte 0x00, 0xE2, 0x19, 0x3E
 	.byte 0x00, 0x96, 0x28, 0x97
 	.4byte 0
-	.4byte 0x801C3400  ;# ptr
-	.4byte 0x801C3418  ;# ptr
-	.4byte 0x801C3428  ;# ptr
-	.4byte 0x801C3440  ;# ptr
+	.4byte lbl_801C3400  ;# ptr
+	.4byte lbl_801C3418  ;# ptr
+	.4byte lbl_801C3428  ;# ptr
+	.4byte lbl_801C3440  ;# ptr
+glabel lbl_801C3468
 	.byte 0x42, 0xE0, 0x00, 0x00
 	.byte 0x43, 0x42, 0x00, 0x00
 	.byte 0x43, 0x8A, 0x00, 0x00
 	.byte 0x43, 0xB3, 0x00, 0x00
+glabel lbl_801C3478
 	.byte 0x42, 0xE0, 0x00, 0x00
 	.byte 0x43, 0x30, 0x00, 0x00
 	.byte 0x43, 0x70, 0x00, 0x00
 	.byte 0x43, 0x98, 0x00, 0x00
 	.byte 0x43, 0xB8, 0x00, 0x00
+glabel lbl_801C348C
 	.byte 0x42, 0xC4, 0x00, 0x00
 	.byte 0x43, 0x1A, 0x00, 0x00
 	.byte 0x43, 0x52, 0x00, 0x00
@@ -28747,51 +28801,58 @@ glabel string_a_Raise_camera
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C3468  ;# ptr
-	.4byte 0x801C3478  ;# ptr
-	.4byte 0x801C348C  ;# ptr
+	.4byte lbl_801C3468  ;# ptr
+	.4byte lbl_801C3478  ;# ptr
+	.4byte lbl_801C348C  ;# ptr
+glabel lbl_801C34C0
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x00, 0x00, 0x20
 	.byte 0x00, 0x00, 0x00, 0x33
 	.byte 0x00, 0x00, 0x00, 0x03
+glabel lbl_801C34D0
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x00, 0x00, 0x20
 	.byte 0x00, 0x00, 0x00, 0x36
 	.byte 0x00, 0x00, 0x00, 0x08
+glabel lbl_801C34E0
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x0F
-	.4byte 0x801C34C0  ;# ptr
-	.4byte 0x801C34D0  ;# ptr
-	.4byte 0x801C34E0  ;# ptr
+	.4byte lbl_801C34C0  ;# ptr
+	.4byte lbl_801C34D0  ;# ptr
+	.4byte lbl_801C34E0  ;# ptr
+glabel lbl_801C3500
 	.byte 0x00, 0x00, 0x0C, 0x09
 	.byte 0x00, 0x00, 0x0C, 0x0C
 	.byte 0x00, 0x00, 0x0C, 0x07
 	.byte 0x00, 0x00, 0x0C, 0x08
 	.byte 0x00, 0x00, 0x0C, 0x0B
 	.byte 0x00, 0x00, 0x0C, 0x0A
+glabel lbl_801C3518
 	.byte 0x00, 0x00, 0x0C, 0x04
 	.byte 0x00, 0x00, 0x0C, 0x05
 	.byte 0x00, 0x00, 0x0C, 0x03
 	.byte 0x00, 0x00, 0x0C, 0x06
+glabel lbl_801C3528
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x00, 0x0C, 0x18
 	.byte 0x00, 0x00, 0x0C, 0x14
 	.byte 0x00, 0x00, 0x0C, 0x0F
 	.byte 0x00, 0x00, 0x0C, 0x10
 	.byte 0x00, 0x00, 0x0C, 0x17
+glabel lbl_801C3540
 	.byte 0x00, 0x00, 0x00, 0x0F
 	.byte 0x00, 0x00, 0x0C, 0x13
 	.byte 0x00, 0x00, 0x0C, 0x11
 	.byte 0x00, 0x00, 0x0C, 0x15
 	.byte 0x00, 0x00, 0x0C, 0x0D
 	.4byte 0
-	.4byte 0x801C3500  ;# ptr
-	.4byte 0x801C3518  ;# ptr
-	.4byte 0x801C3528  ;# ptr
-	.4byte 0x801C3540  ;# ptr
+	.4byte lbl_801C3500  ;# ptr
+	.4byte lbl_801C3518  ;# ptr
+	.4byte lbl_801C3528  ;# ptr
+	.4byte lbl_801C3540  ;# ptr
 glabel string_a_If_you_can_guide_the_ball_to_the_goal_without_falling_off
 	.asciz "a/If you can guide the ball to the goal without falling off"
 glabel string_a_the_track__you_ll_continue_on_to_the_next_stage_
@@ -28814,6 +28875,7 @@ glabel string_a_If_you_keep_falling_off_or_running_out_of_time_and
 glabel string_a_you_run_out_of_extra_monkeys__the_game_will_be_over_
 	.asciz "a/you run out of extra monkeys, the game will be over!"
 	.balign 4
+glabel lbl_801C371C
 	.4byte string_a_If_you_can_guide_the_ball_to_the_goal_without_falling_off  ;# ptr
 	.4byte string_a_the_track__you_ll_continue_on_to_the_next_stage_  ;# ptr
 	.4byte string_a_There_are_delicious_bananas_scattered_throughout_the_stages_  ;# ptr
@@ -28844,6 +28906,7 @@ glabel string_a_Once_the_time_runs_out__the_game_is_over__Even_if_no_one_has
 glabel string_a_reached_the_goal__you_will_continue_onto_the_next_stage_
 	.asciz "a/reached the goal, you will continue onto the next stage!"
 	.balign 4
+glabel lbl_801C3914
 	.4byte string_a_Try_and_beat_your_opponent_to_the_goal_  ;# ptr
 	.4byte string_a_Get_there_first_and_receive_tons_of_points_  ;# ptr
 	.4byte string_a_Once_the_determined_number_of_matches_has_finished_  ;# ptr
@@ -28873,6 +28936,7 @@ glabel string_a_When_you_want_to_quit_practicing__just_press_the_START_PAUSE
 glabel string_a_Button_and_select_the_Exit_Game_option_
 	.asciz "a/Button and select the Exit Game option."
 	.balign 4
+glabel lbl_801C3AE8
 	.4byte string_a_You_can_select_any_stage_that_you_ve_played_before  ;# ptr
 	.4byte string_a_and_practice_doing_it_over_and_over_  ;# ptr
 	.4byte string_a_Use_the_Control_Stick_to_guide_the_ball_to_the_goal  ;# ptr
@@ -28935,6 +28999,7 @@ glabel string_a_There_is_a_time_limit_in_this_mode___If_the_time_runs_out_
 glabel string_a_the_game_will_end_and_you_will_be_forced_to_retire_
 	.asciz "a/the game will end and you will be forced to retire!"
 	.balign 4
+glabel lbl_801C3F90
 	.4byte string_a_You_pick_one_course_and_race__Roll_your_ball  ;# ptr
 	.4byte string_a_as_fast_as_you_can_and_try_to_come_in_first_  ;# ptr
 	.4byte string_a_Once_you_complete_the_selected_number_of_laps__you_will_reach  ;# ptr
@@ -28978,6 +29043,7 @@ glabel string_a_If_an_Item_Box_appears__punch_it_to_break_it_open_
 glabel string_a_If_you_pick_up_an_item__your_punches_will_become_stronger_
 	.asciz "a/If you pick up an item, your punches will become stronger!"
 	.balign 4
+glabel lbl_801C4194
 	.4byte string_a_Press_the_A_Button_to_punch_your_opponent_  ;# ptr
 	.4byte string_a_If_you_knock_your_opponent_off_the_track__you_ll_receive_points_  ;# ptr
 	.4byte string_a_When_the_time_limit_runs_out_  ;# ptr
@@ -29009,6 +29075,7 @@ glabel string_a_If_you_get_a_banana__you_will_be_able_to_use_Help_Items__Also_
 glabel string_a_the_Wheel_of_Danger_may_put_obstacles_on_the_course_
 	.asciz "a/the Wheel of Danger may put obstacles on the course."
 	.balign 4
+glabel lbl_801C43AC
 	.4byte string_a_After_jumping_off_the_ramp__while_in_the_air__if_you_switch_to  ;# ptr
 	.4byte string_a_flight_mode__your_ball_will_open_up_and_act_like_a_glider_  ;# ptr
 	.4byte string_a_Once_you_get_close_to_the_target__close_the_ball_to_go_into  ;# ptr
@@ -29055,6 +29122,7 @@ glabel string_a_If_your_own_ball_falls_into_a_pocket__it_s_considered
 glabel string_a_a_foul__and_it_becomes_your_opponent_s_turn_
 	.asciz "a/a foul, and it becomes your opponent's turn."
 	.balign 4
+glabel lbl_801C46DC
 	.4byte string_a_In_2_player_mode__the_game_has_similar_rules_as_9_ball_  ;# ptr
 	.4byte string_a_Whoever_pockets_the_9_ball_first_wins_  ;# ptr
 	.4byte string_a_Start_by_pocketing_the_ball_with_the_lowest_number_and_work_your  ;# ptr
@@ -29121,6 +29189,7 @@ glabel string_a_You_have_12_tries_to_knock_down_the_pins__Once_you_ve_thrown
 glabel string_a_the_ball_12_times__it_s_game_over_
 	.asciz "a/the ball 12 times, it's game over!"
 	.balign 4
+glabel lbl_801C4B1C
 	.4byte string_a_At_the_start__you_will_use_the_Control_Stick_to_move_left_or_right_in  ;# ptr
 	.4byte string_a_order_to_determine_your_throwing_position__Press_the_A_Button_to_decide_  ;# ptr
 	.4byte string_a_Next__an_arrow_that_shows_the_direction_of_the_throw_will_appear_  ;# ptr
@@ -29139,8 +29208,8 @@ glabel string_a_the_ball_12_times__it_s_game_over_
 	.4byte string_a_the_pins_in_all_the_different_patterns_  ;# ptr
 	.4byte string_a_You_have_12_tries_to_knock_down_the_pins__Once_you_ve_thrown  ;# ptr
 	.4byte string_a_the_ball_12_times__it_s_game_over_  ;# ptr
-	.4byte 0x802F11D0  ;# ptr
-	.4byte 0x802F11D0  ;# ptr
+	.4byte lbl_802F11D0  ;# ptr
+	.4byte lbl_802F11D0  ;# ptr
 glabel string_a_Play_the_selected_number_of_holes__and_total_the_scores_
 	.asciz "a/Play the selected number of holes, and total the scores."
 	.balign 4
@@ -29173,6 +29242,7 @@ glabel string_a_If_the_difference_in_the_score_between_the_losing_player_and_win
 glabel string_a_player_becomes_too_great_for_the_player_to_catch_up__the_game_will_end_
 	.asciz "a/player becomes too great for the player to catch up, the game will end."
 	.balign 4
+glabel lbl_801C4E58
 	.4byte string_a_Play_the_selected_number_of_holes__and_total_the_scores_  ;# ptr
 	.4byte string_a_The_player_with_the_lowest_total_score_will_get_the_better_grade_  ;# ptr
 	.4byte string_a_Hit_the_ball_and_put_it_in_the_cup__The_player_with  ;# ptr
@@ -29189,15 +29259,15 @@ glabel string_a_player_becomes_too_great_for_the_player_to_catch_up__the_game_wi
 	.4byte string_a_of_Bounds__A_penalty_of_1_stroke_will_be_incurred_  ;# ptr
 	.4byte string_a_If_you_can_t_knock_the_ball_into_the_hole_within_9_hits__you_will  ;# ptr
 	.4byte string_a_be_forced_to_give_up__You_will_be_given_a_score_of_10_for_that_hole_  ;# ptr
-	.4byte 0x801C371C  ;# ptr
-	.4byte 0x801C3914  ;# ptr
-	.4byte 0x801C3AE8  ;# ptr
-	.4byte 0x801C3F90  ;# ptr
-	.4byte 0x801C4194  ;# ptr
-	.4byte 0x801C43AC  ;# ptr
-	.4byte 0x801C46DC  ;# ptr
-	.4byte 0x801C4B1C  ;# ptr
-	.4byte 0x801C4E58  ;# ptr
+	.4byte lbl_801C371C  ;# ptr
+	.4byte lbl_801C3914  ;# ptr
+	.4byte lbl_801C3AE8  ;# ptr
+	.4byte lbl_801C3F90  ;# ptr
+	.4byte lbl_801C4194  ;# ptr
+	.4byte lbl_801C43AC  ;# ptr
+	.4byte lbl_801C46DC  ;# ptr
+	.4byte lbl_801C4B1C  ;# ptr
+	.4byte lbl_801C4E58  ;# ptr
 glabel string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item__2
 	.asciz "a/If you run into an Item Box, you will receive an item,"
 	.balign 4
@@ -29231,6 +29301,7 @@ glabel string_a_Ice_Cube___For_a_short_period__you_will_turn_your
 glabel string_a_opponent_into_ice_and_they_will_slide_all_over_
 	.asciz "a/opponent into ice and they will slide all over!"
 	.balign 4
+glabel lbl_801C50FC
 	.4byte string_a_If_you_run_into_an_Item_Box__you_will_receive_an_item__2  ;# ptr
 	.4byte string_a_but_only_luck_will_determine_what_item_you_receive_  ;# ptr
 	.4byte string_a_Speed_Star___For_a_short_time_  ;# ptr
@@ -29262,6 +29333,7 @@ glabel string_a_Spinning_Punch___For_a_short_period_of_time_
 	.balign 4
 glabel string_a_you_will_do_spinning_punches_
 	.asciz "a/you will do spinning punches!"
+glabel lbl_801C527C
 	.4byte string_a_If_you_break_open_an_Item_Box__you_will_find_an_item_inside_  ;# ptr
 	.4byte string_a_If_you_pick_up_an_item__your_punches_will_become_stronger_  ;# ptr
 	.4byte string_a_Long_Punch___The_length_of_your_punches_will_increase_  ;# ptr
@@ -29303,6 +29375,7 @@ glabel string_a_Triple_Score___Whatever_target_you_land_on_
 glabel string_a_it_will_triple_your_score_
 	.asciz "a/it will triple your score!"
 	.balign 4
+glabel lbl_801C54AC
 	.4byte string_a_If_you_set_the_Help_Items_to_ON_in_the_Gameplay_Settings_  ;# ptr
 	.4byte string_a_you_will_be_able_to_get_bananas_and_use_Help_Items_  ;# ptr
 	.4byte string_a_Wind_0_mph___Eliminate_wind  ;# ptr
@@ -29342,6 +29415,7 @@ glabel string_a_Big_Bomb___There_are_bombs_set_on_top_of_some
 glabel string_a_of_the_targets__If_you_land_on_one__it_will_explode_
 	.asciz "a/of the targets! If you land on one, it will explode!"
 	.balign 4
+glabel lbl_801C56D4
 	.4byte string_a_If_you_turn_the_Wheel_of_Danger_ON_in_the_Gameplay_settings_  ;# ptr
 	.4byte string_a_then_before_each_flight__the_Wheel_of_Danger_will_spin_  ;# ptr
 	.4byte string_a_Safe__where_there_s_no_symbols____No_traps  ;# ptr
@@ -29355,10 +29429,10 @@ glabel string_a_of_the_targets__If_you_land_on_one__it_will_explode_
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C50FC  ;# ptr
-	.4byte 0x801C527C  ;# ptr
-	.4byte 0x801C54AC  ;# ptr
-	.4byte 0x801C56D4  ;# ptr
+	.4byte lbl_801C50FC  ;# ptr
+	.4byte lbl_801C527C  ;# ptr
+	.4byte lbl_801C54AC  ;# ptr
+	.4byte lbl_801C56D4  ;# ptr
 	.4byte 0
 	.4byte 0
 glabel string_p_LEVER_
@@ -29424,6 +29498,7 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801C5800
 	.byte 0x80, 0x00, 0x00, 0x03
 	.byte 0x00, 0x00, 0x00, 0x14
 	.byte 0x00, 0x00, 0x00, 0x0F
@@ -29432,6 +29507,7 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801C5820
 	.byte 0x80, 0x00, 0x00, 0x07
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x00, 0x00, 0x00, 0x0A
@@ -29460,6 +29536,7 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+glabel lbl_801C5890
 	.byte 0x80, 0x00, 0x00, 0x07
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0xFF, 0xFF, 0xFF, 0xF6
@@ -29489,9 +29566,9 @@ lbl_801C57E0:
 	.4byte 0
 	.4byte 0
 	.4byte lbl_801C57E0  ;# ptr
-	.4byte 0x801C5800  ;# ptr
-	.4byte 0x801C5820  ;# ptr
-	.4byte 0x801C5890  ;# ptr
+	.4byte lbl_801C5800  ;# ptr
+	.4byte lbl_801C5820  ;# ptr
+	.4byte lbl_801C5890  ;# ptr
 glabel string_obj_H_APE_KUBI
 	.asciz "obj_H_APE_KUBI"
 	.balign 4
@@ -29552,6 +29629,7 @@ glabel string_obj_L_APE_KUBI_EAR_R
 glabel string_obj_S_APE_KUBI_EAR_R
 	.asciz "obj_S_APE_KUBI_EAR_R"
 	.balign 4
+glabel lbl_801C5A90
 	.4byte string_MDL_APE  ;# ptr
 	.4byte string_obj_H_APE_KUBI  ;# ptr
 	.4byte string_obj_M_APE_KUBI  ;# ptr
@@ -29686,6 +29764,7 @@ glabel string_obj_L_GAL_KUBI_EAR_R
 glabel string_obj_S_GAL_KUBI_EAR_R
 	.asciz "obj_S_GAL_KUBI_EAR_R"
 	.balign 4
+glabel lbl_801C5D30
 	.4byte string_MDL_GAL  ;# ptr
 	.4byte string_obj_H_GAL_KUBI  ;# ptr
 	.4byte string_obj_M_GAL_KUBI  ;# ptr
@@ -29820,6 +29899,7 @@ glabel string_obj_L_KID_KUBI_EAR_R
 glabel string_obj_S_KID_KUBI_EAR_R
 	.asciz "obj_S_KID_KUBI_EAR_R"
 	.balign 4
+glabel lbl_801C5FD0
 	.4byte string_MDL_KID  ;# ptr
 	.4byte string_obj_H_KID_KUBI  ;# ptr
 	.4byte string_obj_M_KID_KUBI  ;# ptr
@@ -29954,6 +30034,7 @@ glabel string_obj_L_GOR_KUBI_EAR_R
 glabel string_obj_S_GOR_KUBI_EAR_R
 	.asciz "obj_S_GOR_KUBI_EAR_R"
 	.balign 4
+glabel lbl_801C6270
 	.4byte string_MDL_GOR  ;# ptr
 	.4byte string_obj_H_GOR_KUBI  ;# ptr
 	.4byte string_obj_M_GOR_KUBI  ;# ptr
@@ -30038,10 +30119,10 @@ glabel string_obj_S_GOR_KUBI_EAR_R
 .global lbl_801C63B0
 lbl_801C63B0:
 	# ROM: 0x1C33B0
-	.4byte 0x801C5A90  ;# ptr
-	.4byte 0x801C5D30  ;# ptr
-	.4byte 0x801C5FD0  ;# ptr
-	.4byte 0x801C6270  ;# ptr
+	.4byte lbl_801C5A90  ;# ptr
+	.4byte lbl_801C5D30  ;# ptr
+	.4byte lbl_801C5FD0  ;# ptr
+	.4byte lbl_801C6270  ;# ptr
 
 .global lbl_801C63C0
 lbl_801C63C0:
@@ -30425,14 +30506,14 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x37
 	.byte 0x00, 0x00, 0x00, 0x46
 	.byte 0x00, 0x00, 0x00, 0x23
-	.4byte 0x80130AEC  ;# ptr
+	.4byte lbl_80130AEC  ;# ptr
 	.4byte 0x8013FBD4  ;# ptr
-	.4byte 0x8015D1DC  ;# ptr
-	.4byte 0x80153A54  ;# ptr
-	.4byte 0x80162D44  ;# ptr
-	.4byte 0x80169884  ;# ptr
-	.4byte 0x8016FCDC  ;# ptr
-	.4byte 0x8016DD94  ;# ptr
+	.4byte lbl_8015D1DC  ;# ptr
+	.4byte lbl_80153A54  ;# ptr
+	.4byte lbl_80162D44  ;# ptr
+	.4byte lbl_80169884  ;# ptr
+	.4byte lbl_8016FCDC  ;# ptr
+	.4byte lbl_8016DD94  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x00, 0x00, 0x03
 	.byte 0x00, 0x00, 0x00, 0x04
@@ -30449,14 +30530,14 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x1E
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0x00, 0x00, 0x00, 0x24
-	.4byte 0x8012C234  ;# ptr
-	.4byte 0x8013EB94  ;# ptr
+	.4byte lbl_8012C234  ;# ptr
+	.4byte lbl_8013EB94  ;# ptr
 	.4byte 0
-	.4byte 0x8014D184  ;# ptr
-	.4byte 0x80161684  ;# ptr
-	.4byte 0x80168C54  ;# ptr
+	.4byte lbl_8014D184  ;# ptr
+	.4byte lbl_80161684  ;# ptr
+	.4byte lbl_80168C54  ;# ptr
 	.4byte 0
-	.4byte 0x8016CEF4  ;# ptr
+	.4byte lbl_8016CEF4  ;# ptr
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
@@ -30473,14 +30554,14 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x15
 	.byte 0x00, 0x00, 0x00, 0x15
 	.byte 0x00, 0x00, 0x00, 0x26
-	.4byte 0x8012346C  ;# ptr
-	.4byte 0x8013B65C  ;# ptr
-	.4byte 0x8015A11C  ;# ptr
-	.4byte 0x80146F9C  ;# ptr
-	.4byte 0x801649B4  ;# ptr
-	.4byte 0x801683CC  ;# ptr
-	.4byte 0x8016F454  ;# ptr
-	.4byte 0x8016BF84  ;# ptr
+	.4byte lbl_8012346C  ;# ptr
+	.4byte lbl_8013B65C  ;# ptr
+	.4byte lbl_8015A11C  ;# ptr
+	.4byte lbl_80146F9C  ;# ptr
+	.4byte lbl_801649B4  ;# ptr
+	.4byte lbl_801683CC  ;# ptr
+	.4byte lbl_8016F454  ;# ptr
+	.4byte lbl_8016BF84  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x08
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.byte 0x00, 0x00, 0x00, 0x0C
@@ -30497,14 +30578,14 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x44
 	.byte 0x00, 0x00, 0x00, 0x15
 	.byte 0x00, 0x00, 0x00, 0x29
-	.4byte 0x80118D0C  ;# ptr
-	.4byte 0x80137A3C  ;# ptr
-	.4byte 0x80157BBC  ;# ptr
-	.4byte 0x80142D64  ;# ptr
-	.4byte 0x8015F80C  ;# ptr
-	.4byte 0x8016682C  ;# ptr
-	.4byte 0x8016EBCC  ;# ptr
-	.4byte 0x8016AEDC  ;# ptr
+	.4byte lbl_80118D0C  ;# ptr
+	.4byte lbl_80137A3C  ;# ptr
+	.4byte lbl_80157BBC  ;# ptr
+	.4byte lbl_80142D64  ;# ptr
+	.4byte lbl_8015F80C  ;# ptr
+	.4byte lbl_8016682C  ;# ptr
+	.4byte lbl_8016EBCC  ;# ptr
+	.4byte lbl_8016AEDC  ;# ptr
 	.byte 0x00, 0x00, 0x00, 0x07
 	.byte 0x00, 0x00, 0x00, 0x09
 	.byte 0x00, 0x00, 0x00, 0x0B
@@ -30513,6 +30594,7 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x1F
 	.byte 0x00, 0x00, 0x00, 0x24
 	.byte 0x00, 0x00, 0x00, 0x12
+glabel lbl_801C6ABC
 	.byte 0x00, 0x00, 0x00, 0x0E
 	.byte 0x00, 0x00, 0x00, 0x06
 	.4byte 0
@@ -30529,6 +30611,7 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x07
 	.byte 0x00, 0x00, 0x00, 0x07
 	.byte 0x00, 0x00, 0x00, 0x07
+glabel lbl_801C6AFC
 	.byte 0x00, 0x00, 0x00, 0x06
 	.byte 0x00, 0x00, 0x00, 0x06
 	.byte 0x00, 0x00, 0x00, 0x08
@@ -30545,6 +30628,7 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x0E
 	.byte 0x00, 0x00, 0x00, 0x0E
 	.byte 0x00, 0x00, 0x00, 0x0E
+glabel lbl_801C6B3C
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x00, 0x00, 0x00, 0x0A
 	.byte 0x00, 0x00, 0x00, 0x0B
@@ -30562,15 +30646,16 @@ lbl_801C692C:
 	.byte 0x00, 0x00, 0x00, 0x13
 	.byte 0x00, 0x00, 0x00, 0x13
 	.4byte 0
-	.4byte 0x801C6AFC  ;# ptr
-	.4byte 0x801C6ABC  ;# ptr
-	.4byte 0x801C6B3C  ;# ptr
+	.4byte lbl_801C6AFC  ;# ptr
+	.4byte lbl_801C6ABC  ;# ptr
+	.4byte lbl_801C6B3C  ;# ptr
 glabel string_H_APE_EYE
 	.asciz "H_APE_EYE"
 	.balign 4
 glabel string_H_APE_HAIR
 	.asciz "H_APE_HAIR"
 	.balign 4
+glabel lbl_801C6BA4
 	.byte 0x00, 0x3C, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30633,6 +30718,7 @@ glabel string_M_APE_EYE
 glabel string_M_APE_HAIR
 	.asciz "M_APE_HAIR"
 	.balign 4
+glabel lbl_801C6C9C
 	.byte 0x00, 0x3C, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30692,6 +30778,7 @@ glabel string_M_APE_HAIR
 glabel string_L_APE_EYE
 	.asciz "L_APE_EYE"
 	.balign 4
+glabel lbl_801C6D88
 	.byte 0x00, 0x13, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30740,6 +30827,7 @@ glabel string_L_APE_EYE
 	.4byte string_obj_L_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel lbl_801C6E48
 	.byte 0x00, 0x07, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30783,6 +30871,7 @@ glabel string_L_APE_EYE
 glabel string_H_GAL_EYE
 	.asciz "H_GAL_EYE"
 	.balign 4
+glabel lbl_801C6EF4
 	.byte 0x00, 0x0F, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30834,6 +30923,7 @@ glabel string_H_GAL_EYE
 glabel string_M_GAL_EYE
 	.asciz "M_GAL_EYE"
 	.balign 4
+glabel lbl_801C6FC0
 	.byte 0x00, 0x0F, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30885,6 +30975,7 @@ glabel string_M_GAL_EYE
 glabel string_L_GAL_EYE
 	.asciz "L_GAL_EYE"
 	.balign 4
+glabel lbl_801C708C
 	.byte 0x00, 0x12, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30933,6 +31024,7 @@ glabel string_L_GAL_EYE
 	.4byte string_obj_L_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel lbl_801C714C
 	.byte 0x00, 0x07, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -30976,6 +31068,7 @@ glabel string_L_GAL_EYE
 glabel string_H_KID_EYE
 	.asciz "H_KID_EYE"
 	.balign 4
+glabel lbl_801C71F8
 	.byte 0x00, 0x0F, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31027,6 +31120,7 @@ glabel string_H_KID_EYE
 glabel string_M_KID_EYE
 	.asciz "M_KID_EYE"
 	.balign 4
+glabel lbl_801C72C4
 	.byte 0x00, 0x0F, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31081,6 +31175,7 @@ glabel string_obj_L_KID_FACE
 glabel string_L_KID_EYE
 	.asciz "L_KID_EYE"
 	.balign 4
+glabel lbl_801C73A0
 	.byte 0x00, 0x13, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31137,6 +31232,7 @@ glabel string_L_KID_EYE
 	.4byte string_obj_L_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel lbl_801C7480
 	.byte 0x00, 0x0B, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31180,6 +31276,7 @@ glabel string_L_KID_EYE
 glabel string_H_GOR_EYE
 	.asciz "H_GOR_EYE"
 	.balign 4
+glabel lbl_801C752C
 	.byte 0x00, 0x05, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31231,6 +31328,7 @@ glabel string_H_GOR_EYE
 glabel string_M_GOR_EYE
 	.asciz "M_GOR_EYE"
 	.balign 4
+glabel lbl_801C75F8
 	.byte 0x00, 0x05, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31282,6 +31380,7 @@ glabel string_M_GOR_EYE
 glabel string_L_GOR_EYE
 	.asciz "L_GOR_EYE"
 	.balign 4
+glabel lbl_801C76C4
 	.byte 0x00, 0x04, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31330,6 +31429,7 @@ glabel string_L_GOR_EYE
 	.4byte string_obj_L_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+glabel lbl_801C7784
 	.byte 0x00, 0x11, 0x00, 0x05
 	.4byte 0
 	.4byte 0
@@ -31375,8 +31475,8 @@ glabel string_L_GOR_EYE
 lbl_801C7824:
 	# ROM: 0x1C4824
 	.4byte string_boy_h  ;# ptr
-	.4byte 0x801C6BA4  ;# ptr
-	.4byte 0x801C6C9C  ;# ptr
+	.4byte lbl_801C6BA4  ;# ptr
+	.4byte lbl_801C6C9C  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x07
@@ -31384,8 +31484,8 @@ lbl_801C7824:
 	.byte 0x00, 0x01, 0x00, 0x00
 	.4byte 0
 	.4byte string_boy_l  ;# ptr
-	.4byte 0x801C6D88  ;# ptr
-	.4byte 0x801C6E48  ;# ptr
+	.4byte lbl_801C6D88  ;# ptr
+	.4byte lbl_801C6E48  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -31393,8 +31493,8 @@ lbl_801C7824:
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
 	.4byte string_gal_h  ;# ptr
-	.4byte 0x801C6EF4  ;# ptr
-	.4byte 0x801C6FC0  ;# ptr
+	.4byte lbl_801C6EF4  ;# ptr
+	.4byte lbl_801C6FC0  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x06
@@ -31402,8 +31502,8 @@ lbl_801C7824:
 	.byte 0x00, 0x03, 0x00, 0x02
 	.4byte 0
 	.4byte string_gal_l  ;# ptr
-	.4byte 0x801C708C  ;# ptr
-	.4byte 0x801C714C  ;# ptr
+	.4byte lbl_801C708C  ;# ptr
+	.4byte lbl_801C714C  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -31411,8 +31511,8 @@ lbl_801C7824:
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
 	.4byte string_kid_h  ;# ptr
-	.4byte 0x801C71F8  ;# ptr
-	.4byte 0x801C72C4  ;# ptr
+	.4byte lbl_801C71F8  ;# ptr
+	.4byte lbl_801C72C4  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x06
@@ -31420,8 +31520,8 @@ lbl_801C7824:
 	.byte 0x00, 0x09, 0x00, 0x08
 	.4byte 0
 	.4byte string_kid_l  ;# ptr
-	.4byte 0x801C73A0  ;# ptr
-	.4byte 0x801C7480  ;# ptr
+	.4byte lbl_801C73A0  ;# ptr
+	.4byte lbl_801C7480  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x07, 0x00, 0x05
@@ -31429,8 +31529,8 @@ lbl_801C7824:
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
 	.4byte string_gor_h  ;# ptr
-	.4byte 0x801C752C  ;# ptr
-	.4byte 0x801C75F8  ;# ptr
+	.4byte lbl_801C752C  ;# ptr
+	.4byte lbl_801C75F8  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x06
@@ -31438,8 +31538,8 @@ lbl_801C7824:
 	.byte 0x00, 0x04, 0x00, 0x18
 	.4byte 0
 	.4byte string_gor_l  ;# ptr
-	.4byte 0x801C76C4  ;# ptr
-	.4byte 0x801C7784  ;# ptr
+	.4byte lbl_801C76C4  ;# ptr
+	.4byte lbl_801C7784  ;# ptr
 	.4byte 0
 	.4byte 0
 	.byte 0x00, 0x06, 0x00, 0x05
@@ -31723,30 +31823,36 @@ lbl_801C7D60:
 	.4byte lbl_8008BE78  ;# ptr
 	.4byte lbl_8008BE00  ;# ptr
 	.4byte lbl_8008BC34  ;# ptr
+glabel lbl_801C7D80
 	.byte 0x00, 0x09, 0x00, 0x01
 	.byte 0x00, 0x03, 0x00, 0x02
+glabel lbl_801C7D88
 	.byte 0x00, 0x07, 0x00, 0x05
 	.byte 0x00, 0x07, 0x00, 0x06
+glabel lbl_801C7D90
 	.byte 0x00, 0x01, 0x00, 0x01
 	.byte 0x00, 0x03, 0x00, 0x02
+glabel lbl_801C7D98
 	.byte 0x00, 0x07, 0x00, 0x01
 	.byte 0x00, 0x03, 0x00, 0x02
+glabel lbl_801C7DA0
 	.byte 0x00, 0x0A, 0x00, 0x01
 	.byte 0x00, 0x03, 0x00, 0x02
+glabel lbl_801C7DA8
 	.byte 0x00, 0x04, 0x00, 0x09
 	.byte 0x00, 0x0B, 0x00, 0x0A
 
 .global lbl_801C7DB0
 lbl_801C7DB0:
 	# ROM: 0x1C4DB0
-	.4byte 0x801C7D80  ;# ptr
-	.4byte 0x801C7D88  ;# ptr
+	.4byte lbl_801C7D80  ;# ptr
+	.4byte lbl_801C7D88  ;# ptr
 	.4byte 0
 	.4byte 0
-	.4byte 0x801C7DA0  ;# ptr
-	.4byte 0x801C7DA8  ;# ptr
-	.4byte 0x801C7D90  ;# ptr
-	.4byte 0x801C7D98  ;# ptr
+	.4byte lbl_801C7DA0  ;# ptr
+	.4byte lbl_801C7DA8  ;# ptr
+	.4byte lbl_801C7D90  ;# ptr
+	.4byte lbl_801C7D98  ;# ptr
 
 .section .sdata
 
@@ -31967,7 +32073,9 @@ lbl_802F1084:
 glabel string_FINAL
 	.asciz "FINAL"
 	.balign 4
+glabel lbl_802F1090
 	.byte 0x32, 0x4E, 0x44, 0x00
+glabel lbl_802F1094
 	.byte 0x31, 0x53, 0x54, 0x00
 
 .global lbl_802F1098
@@ -32148,10 +32256,13 @@ lbl_802F1160:
 glabel string_how_to
 	.asciz "how to"
 	.balign 4
+glabel lbl_802F1168
 	.4byte string_a_Normal_Mode_movement  ;# ptr
 	.4byte string_a_Normal_Mode_rules  ;# ptr
+glabel lbl_802F1170
 	.4byte string_a_Competition_Mode_movement  ;# ptr
 	.4byte string_a_Competition_Mode_rules  ;# ptr
+glabel lbl_802F1178
 	.4byte string_a_Practice_Mode_movement  ;# ptr
 	.4byte string_a_Practice_Mode_rules  ;# ptr
 glabel string_a_Punch
@@ -32159,22 +32270,34 @@ glabel string_a_Punch
 glabel string_a_Shot
 	.asciz "a/Shot"
 	.balign 4
+glabel lbl_802F1190
 	.byte 0x00, 0x01, 0x02, 0xFF
+glabel lbl_802F1194
 	.byte 0x00, 0x01, 0xFF, 0x00
+glabel lbl_802F1198
 	.byte 0x00, 0x01, 0x02, 0xFF
+glabel lbl_802F119C
 	.byte 0x00, 0x01, 0x03, 0xFF
+glabel lbl_802F11A0
 	.byte 0x00, 0x01, 0x04, 0xFF
+glabel lbl_802F11A4
 	.byte 0x05, 0x01, 0x06, 0xFF
+glabel lbl_802F11A8
 	.byte 0x07, 0x08, 0x09, 0x0A
 	.byte 0x0B, 0x0C, 0x0D, 0xFF
+glabel lbl_802F11B0
 	.byte 0x08, 0x0C, 0x0E, 0x0F
 	.byte 0x10, 0x11, 0xFF, 0x00
+glabel lbl_802F11B8
 	.byte 0x08, 0x12, 0x13, 0x14
 	.byte 0x15, 0x16, 0xFF, 0x00
+glabel lbl_802F11C0
 	.byte 0x08, 0x17, 0x18, 0x19
 	.byte 0x1A, 0x1B, 0x1C, 0xFF
+glabel lbl_802F11C8
 	.byte 0x08, 0x1D, 0x1E, 0x1F
 	.byte 0x20, 0x21, 0x22, 0xFF
+glabel lbl_802F11D0
 	.byte 0x20, 0x00, 0x00, 0x00
 
 .global lbl_802F11D4
@@ -33547,6 +33670,7 @@ lbl_80118AC8:
 	.byte 0x00, 0x00, 0x00, 0x11
 	.byte 0x00, 0x00, 0x00, 0x11
 	.byte 0x00, 0x00, 0x00, 0x11
+glabel lbl_80118D0C
 	.byte 0xBF, 0x2D, 0xC9, 0xD6
 	.byte 0x3F, 0x01, 0x18, 0x5D
 	.byte 0xBC, 0x39, 0xDC, 0x2F
@@ -44282,6 +44406,7 @@ glabel string__hz__2
 	.4byte 0
 	.byte 0x14, 0xC0, 0x58, 0xD0
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8012346C
 	.byte 0xBF, 0x8A, 0x1B, 0x76
 	.byte 0x3F, 0x86, 0xDB, 0xE8
 	.byte 0x3F, 0x5A, 0x73, 0xE7
@@ -53375,6 +53500,7 @@ glabel string____d_2
 	.4byte 0
 	.byte 0x19, 0xE8, 0x58, 0x90
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8012C234
 	.byte 0xBC, 0x14, 0x3E, 0x10
 	.byte 0x3F, 0xBD, 0x9F, 0xB2
 	.byte 0x3F, 0x64, 0xF0, 0xFA
@@ -58036,6 +58162,7 @@ glabel string____n__3
 	.4byte 0
 	.byte 0x0B, 0xF0, 0x5B, 0xC0
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80130AEC
 	.byte 0xBC, 0x14, 0x5F, 0x9E
 	.byte 0x3F, 0xBE, 0x4A, 0xCF
 	.byte 0x3F, 0x50, 0xD8, 0xBA
@@ -65172,6 +65299,7 @@ glabel string____n__4
 	.4byte 0
 	.byte 0x1A, 0x48, 0x56, 0x48
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80137A3C
 	.byte 0x3E, 0xF3, 0xC8, 0xE2
 	.byte 0x3F, 0xA1, 0x75, 0x19
 	.byte 0x40, 0x05, 0x7A, 0xF2
@@ -69034,6 +69162,7 @@ glabel string__KK__h_J
 	.4byte 0
 	.byte 0x07, 0x28, 0x55, 0xE8
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8013B65C
 	.byte 0x3E, 0xF3, 0xC8, 0xE2
 	.byte 0x3F, 0xA1, 0x75, 0x08
 	.byte 0x40, 0x05, 0x7A, 0xFA
@@ -72453,6 +72582,7 @@ glabel string__KK__h_J_2
 	.4byte 0
 	.byte 0x05, 0xF8, 0x56, 0x48
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8013EB94
 	.byte 0x3F, 0x7E, 0x91, 0xEA
 	.byte 0x3E, 0xC3, 0xB2, 0x35
 	.byte 0x3D, 0x32, 0xF3, 0x3D
@@ -76682,6 +76812,7 @@ glabel string__KK__h_J_3
 	.4byte 0
 	.byte 0x05, 0xF8, 0x56, 0x48
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80142D64
 	.byte 0x3F, 0xFA, 0xA7, 0x37
 	.byte 0xBF, 0x82, 0x96, 0xA2
 	.byte 0x3E, 0xD0, 0xD4, 0xBB
@@ -80932,6 +81063,7 @@ glabel string__p_M
 	.4byte 0
 	.byte 0x64, 0xC0, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80146F9C
 	.byte 0x3F, 0xDD, 0xD6, 0x95
 	.byte 0xBF, 0x8E, 0x69, 0x8C
 	.byte 0x3E, 0xC0, 0xBB, 0xB2
@@ -87214,6 +87346,7 @@ glabel string__p_M_2
 	.4byte 0
 	.byte 0x64, 0xD0, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8014D184
 	.byte 0x3F, 0xED, 0x0A, 0x2D
 	.byte 0xBF, 0x89, 0x09, 0x31
 	.byte 0x3F, 0x1D, 0x5C, 0x85
@@ -93939,6 +94072,7 @@ glabel string__p_M_3
 	.4byte 0
 	.byte 0x65, 0xD8, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80153A54
 	.byte 0x3F, 0xFA, 0xA7, 0x37
 	.byte 0xBF, 0x82, 0x96, 0xA2
 	.byte 0x3E, 0xD0, 0xD4, 0xBB
@@ -98138,6 +98272,7 @@ glabel string__p_M_5
 	.4byte 0
 	.byte 0x67, 0xC8, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80157BBC
 	.byte 0x3F, 0x2F, 0x6E, 0x3F
 	.byte 0x3F, 0x1F, 0x46, 0x67
 	.byte 0x3F, 0xB5, 0x26, 0x42
@@ -100538,6 +100673,7 @@ glabel string__uIs
 	.4byte 0
 	.byte 0x5E, 0xD0, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8015A11C
 	.byte 0x3F, 0x2F, 0x6E, 0x3F
 	.byte 0x3F, 0x1F, 0x46, 0x67
 	.byte 0x3F, 0xB5, 0x26, 0x42
@@ -103666,6 +103802,7 @@ glabel string__uIs_2
 	.4byte 0
 	.byte 0x5F, 0x30, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8015D1DC
 	.byte 0x3E, 0xB0, 0x03, 0x47
 	.byte 0x3F, 0x69, 0x24, 0xC0
 	.byte 0x3F, 0xC0, 0x4F, 0x98
@@ -106114,6 +106251,7 @@ glabel string__uIs_3
 	.4byte 0
 	.byte 0x5F, 0x30, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8015F80C
 	.byte 0x3F, 0x8E, 0xC7, 0x11
 	.byte 0x3F, 0x5F, 0x4C, 0x5E
 	.byte 0x3F, 0x16, 0x5C, 0x0C
@@ -108064,6 +108202,7 @@ glabel string__uIs_3
 	.4byte 0
 	.byte 0x0C, 0x78, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80161684
 	.byte 0x3F, 0x84, 0x20, 0x79
 	.byte 0x3F, 0x83, 0x8F, 0xF7
 	.byte 0x3F, 0x60, 0x62, 0x2C
@@ -109521,6 +109660,7 @@ glabel string__CI_
 	.4byte 0
 	.byte 0x11, 0x88, 0x15, 0xB0
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80162D44
 	.byte 0x3F, 0x88, 0x99, 0xD9
 	.byte 0x3F, 0x80, 0xB7, 0x45
 	.byte 0x3F, 0x43, 0xFD, 0xC6
@@ -111341,6 +111481,7 @@ glabel string__CI_
 	.4byte 0
 	.byte 0x0C, 0x78, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_801649B4
 	.byte 0x3F, 0xAF, 0xF2, 0xFE
 	.byte 0x3F, 0x2D, 0xCD, 0x2D
 	.byte 0x3F, 0x59, 0x8E, 0x22
@@ -113291,6 +113432,7 @@ glabel string__CI_
 	.4byte 0
 	.byte 0x0C, 0x78, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016682C
 	.byte 0x3F, 0x49, 0xE6, 0x36
 	.byte 0xBF, 0x92, 0x8D, 0x97
 	.byte 0x3F, 0xF2, 0xFE, 0x7A
@@ -115059,6 +115201,7 @@ glabel string__CI_
 	.4byte 0
 	.byte 0x1D, 0xC0, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_801683CC
 	.byte 0x3F, 0x46, 0x10, 0x9D
 	.byte 0xBF, 0x92, 0x8D, 0x54
 	.byte 0x40, 0x08, 0x98, 0x42
@@ -115605,6 +115748,7 @@ glabel string__CI_
 	.4byte 0
 	.byte 0x07, 0x90, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_80168C54
 	.byte 0x3F, 0xBC, 0xBE, 0x62
 	.byte 0xBE, 0x5B, 0x37, 0xCA
 	.byte 0x3F, 0x65, 0x0D, 0x8D
@@ -116385,6 +116529,7 @@ glabel string__CI_
 	.byte 0xBF, 0x2C, 0x56, 0xF7
 	.byte 0x1D, 0x78, 0x1D, 0xA0
 	.byte 0x1F, 0x50, 0x00, 0x00
+glabel lbl_80169884
 	.byte 0x3F, 0x49, 0xE6, 0x36
 	.byte 0xBF, 0x92, 0x8D, 0x5C
 	.byte 0x3F, 0xED, 0x3E, 0x79
@@ -117815,6 +117960,7 @@ glabel string__CI_
 	.4byte 0
 	.byte 0x07, 0x90, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016AEDC
 	.byte 0x40, 0x04, 0x5D, 0xAF
 	.byte 0x3F, 0x15, 0x96, 0x85
 	.byte 0x3E, 0x58, 0xC3, 0x6E
@@ -118884,6 +119030,7 @@ glabel string__5Yq
 	.4byte 0
 	.byte 0x0D, 0x00, 0x15, 0xB8
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016BF84
 	.byte 0x40, 0x02, 0x1E, 0xC9
 	.byte 0x3F, 0x15, 0x96, 0x85
 	.byte 0x3E, 0x85, 0x6F, 0x54
@@ -119875,6 +120022,7 @@ glabel string__5Yq_2
 	.4byte 0
 	.byte 0x0D, 0x00, 0x15, 0xB8
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016CEF4
 	.byte 0x3F, 0xFB, 0x61, 0x0B
 	.byte 0x3E, 0xE0, 0xFA, 0xDF
 	.byte 0xBC, 0x65, 0x86, 0x01
@@ -120813,6 +120961,7 @@ glabel string___18_6
 	.4byte 0
 	.byte 0x05, 0x50, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016DD94
 	.byte 0x40, 0x06, 0xAB, 0xDE
 	.byte 0x3F, 0x15, 0x96, 0x85
 	.byte 0x3E, 0x9E, 0x95, 0x53
@@ -121727,6 +121876,7 @@ glabel string___X_
 	.4byte 0
 	.byte 0x05, 0x50, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016EBCC
 	.byte 0x3F, 0x09, 0x6F, 0x87
 	.byte 0xBF, 0x51, 0x4C, 0xEC
 	.byte 0x3F, 0xA5, 0xD4, 0x74
@@ -122276,6 +122426,7 @@ glabel string__bd_
 	.4byte 0
 	.byte 0x05, 0x10, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016F454
 	.byte 0x3F, 0x0D, 0x8B, 0x2F
 	.byte 0xBF, 0x51, 0x4C, 0xEC
 	.byte 0x3F, 0xBC, 0x1C, 0x8A
@@ -122824,6 +122975,7 @@ glabel string__bd__2
 	.4byte 0
 	.byte 0x05, 0x10, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0x00, 0x00
+glabel lbl_8016FCDC
 	.byte 0x3F, 0x90, 0x2C, 0xE4
 	.byte 0xBE, 0xA6, 0xEE, 0x74
 	.byte 0x3F, 0x21, 0x1E, 0x97
