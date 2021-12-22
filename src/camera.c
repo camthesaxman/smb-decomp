@@ -18,6 +18,22 @@
 
 struct Camera cameraInfo[5];
 
+// belongs in mathutil.h?
+static inline float sum_of_3_sq(register float a, register float b, register float c)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
+#else
+    return a * a + b * b + c * c;
+#endif
+}
+
 void camera_init(void)
 {
     int i;
@@ -1307,44 +1323,28 @@ void camera_func_0(struct Camera *camera, struct Ball *ball)
     camera->state = CAMERA_STATE_LEVEL_MAIN;
 }
 
-static inline float sum_of_3_sq(register float a, register float b, register float c)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
-#else
-    return a * a + b * b + c * c;
-#endif
-}
-
-#ifdef NONMATCHING  // register swaps
 void camera_func_level_main(struct Camera *camera, struct Ball *ball)
 {
     s16 r31;
-    s16 r30;
+    s16 yaw;
     s16 r29;
     Vec sp28;
-    Vec sp1C;
-    Vec sp10;
+    Vec prevEyePos;
+    Vec prevLookAt;
     float f1;
-    int r4;
     int r3;
+    int r4;
 
     if (lbl_802F1EE0 & 0xA)
         return;
 
-    sp1C.x = camera->eye.x;
-    sp1C.y = camera->eye.y;
-    sp1C.z = camera->eye.z;
+    prevEyePos.x = camera->eye.x;
+    prevEyePos.y = camera->eye.y;
+    prevEyePos.z = camera->eye.z;
 
-    sp10.x = camera->lookAt.x;
-    sp10.y = camera->lookAt.y;
-    sp10.z = camera->lookAt.z;
+    prevLookAt.x = camera->lookAt.x;
+    prevLookAt.y = camera->lookAt.y;
+    prevLookAt.z = camera->lookAt.z;
 
     sp28.x = camera->unkAC.x - camera->lookAt.x;
     sp28.y = camera->unkAC.y - camera->lookAt.y;
@@ -1364,7 +1364,6 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
         sp28.y = 0.0f;
         sp28.z = 0.0f;
     }
-    //lbl_80019FA4
 
     sp28.x = sp28.x * 0.75 + camera->lookAt.x;
     sp28.y = sp28.y * 0.75 + camera->lookAt.y;
@@ -1383,34 +1382,24 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     else
         r31 = mathutil_atan2(sp28.y, mathutil_sqrt(mathutil_sum_of_sq(sp28.x, sp28.z)));
 
-    r30 = mathutil_atan2(sp28.x, sp28.z) - 32768;
-    r3 = (s16)(r30 - camera->rotY);
-    if (r3 < -512)
-        r4 = -512;
-    else if (r3 > 512)
-        r4 = 512;
-    else
-        r4 = r3;
-
-    r30 = camera->rotY + r4;
+    yaw = mathutil_atan2(sp28.x, sp28.z) - 32768;
+    r3 = (s16)(yaw - camera->rotY);
+    yaw = camera->rotY + CLAMP(r3, -512, 512);
     if (!(camera->flags & (1<<(31-0x1E))) && !(ball->flags & BALL_FLAG_12))
     {
-        r3 = (s16)(ball->unk92 - r30);
+        r3 = (s16)(ball->unk92 - yaw);
         if (r3 > 0x800)
             r3 -= 0x800;
         else if (r3 < -0x800)
             r3 += 0x800;
         else
             r3 = 0;
-        //lbl_8001A10C
         r3 >>= 7;
         r4 = camera->unk10C;
         if (r3 == 0)
             r4 = 0;
-        //lbl_8001A120
         else if ((r4 < 0 && r3 > 0) || (r4 > 0 && r3 < 0))
             r4 = 0;
-        //lbl_8001A148
         else if (r3 < 0)
         {
             if (r3 < r4 - 4)
@@ -1418,7 +1407,6 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
             else
                 r4 = r3;
         }
-        //lbl_8001A16C
         else
         {
             if (r3 > r4 + 4)
@@ -1426,36 +1414,29 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
             else
                 r4 = r3;
         }
-        //lbl_8001A184
-        r30 += r4;
-        r3 = (s16)(r30 - camera->rotY);
-        if (r3 < -768)
-            r3 = -768;
-        else if (r3 > 768)
-            r3 = 768;
-        //lbl_8001A1B0
-        r30 = camera->rotY + r3;
+
+        yaw += r4;
+        r3 = CLAMP((s16)(yaw - camera->rotY), -768, 768);
+        yaw = camera->rotY + r3;
     }
-    //lbl_8001A1B8
+
     if (r31 < -6144)
         r31 = -6144;
     else if (r31 > 6144)
         r31 = 6144;
-    //lbl_8001A1D8
-
     r29 = camera->unkB8 + 0.2 * (r31 - camera->unkB8);
     camera->unkB8 = r29;
 
     mathutil_mtxA_from_translate(&camera->lookAt);
-    mathutil_mtxA_rotate_y(r30);
+    mathutil_mtxA_rotate_y(yaw);
     mathutil_mtxA_rotate_x(r29);
     sp28.x = 0.0f;
     sp28.y = 0.0f;
     sp28.z = 3.0f;
     mathutil_mtxA_tf_point(&sp28, &camera->unkAC);
-    camera->unk10C = r30 - camera->rotY;
-    camera->rotY = r30;
-    camera->rotX = r29 + 0x10000 - 3328;
+    camera->unk10C = yaw - camera->rotY;
+    camera->rotY = yaw;
+    camera->rotX = r29 + 62208;
     mathutil_mtxA_from_translate(&camera->lookAt);
     mathutil_mtxA_rotate_y(camera->rotY);
     mathutil_mtxA_rotate_x(camera->rotX);
@@ -1464,22 +1445,14 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.z = mathutil_sqrt(mathutil_sum_of_sq(3.0f, 1.0f));
     mathutil_mtxA_tf_point(&sp28, &camera->eye);
 
-    camera->unk94.x = camera->eye.x - sp1C.x;
-    camera->unk94.y = camera->eye.y - sp1C.y;
-    camera->unk94.z = camera->eye.z - sp1C.z;
+    camera->unk94.x = camera->eye.x - prevEyePos.x;
+    camera->unk94.y = camera->eye.y - prevEyePos.y;
+    camera->unk94.z = camera->eye.z - prevEyePos.z;
 
-    camera->unkA0.x = camera->lookAt.x - sp10.x;
-    camera->unkA0.y = camera->lookAt.y - sp10.y;
-    camera->unkA0.z = camera->lookAt.z - sp10.z;
+    camera->unkA0.x = camera->lookAt.x - prevLookAt.x;
+    camera->unkA0.y = camera->lookAt.y - prevLookAt.y;
+    camera->unkA0.z = camera->lookAt.z - prevLookAt.z;
 }
-#else
-asm void camera_func_level_main(struct Camera *camera, struct Ball *ball)
-{
-    nofralloc
-#include "../asm/nonmatchings/camera_func_level_main.s"
-}
-#endif
-#pragma peephole on
 
 void camera_func_test(struct Camera *camera, struct Ball *ball)
 {
