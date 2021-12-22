@@ -144,8 +144,8 @@ lbl_00000260:
 /* 00000260 4BFFFED5 */ bl event_clear
 /* 00000264 4BFFFED1 */ bl g_something_with_iteratively_freeing_memory
 /* 00000268 4BFFFECD */ bl func_800249D4
-/* 0000026C 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 00000270 3B830000 */ addi r28, r3, lbl_802F1B24@l
+/* 0000026C 3C600000 */ lis r3, memHeap2@ha
+/* 00000270 3B830000 */ addi r28, r3, memHeap2@l
 /* 00000274 807C0000 */ lwz r3, 0(r28)
 /* 00000278 4BFFFEBD */ bl OSSetCurrentHeap
 /* 0000027C 3B630000 */ addi r27, r3, 0
@@ -10832,8 +10832,8 @@ lbl_00009E34:
 /* 00009E44 93C10010 */ stw r30, 0x10(r1)
 /* 00009E48 93A1000C */ stw r29, 0xc(r1)
 /* 00009E4C 4BFF62E9 */ bl func_8002FFEC
-/* 00009E50 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 00009E54 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 00009E50 3C600000 */ lis r3, memHeap2@ha
+/* 00009E54 38630000 */ addi r3, r3, memHeap2@l
 /* 00009E58 80630000 */ lwz r3, 0(r3)
 /* 00009E5C 4BFF62D9 */ bl OSSetCurrentHeap
 /* 00009E60 7C7E1B78 */ mr r30, r3

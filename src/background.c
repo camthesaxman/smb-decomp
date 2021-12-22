@@ -394,7 +394,7 @@ char *oldBgFileNames[] =
 
 extern u32 lbl_802F1B38;
 extern u32 lbl_802F1EE0;
-extern OSHeapHandle lbl_802F1B20;
+extern OSHeapHandle memHeap3;
 extern struct TPL *decodedBgTpl;
 extern struct GMA *decodedBgGma;
 extern u32 lbl_802F1AFC;
@@ -473,7 +473,7 @@ void func_8005507C(void)
 {
     if (backgroundInfo.bgId > 0)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B20);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
 
         if (backgroundInfo.unk9C != NULL)
         {
@@ -633,7 +633,7 @@ void load_bg_files(int bgId)
 
     if (backgroundInfo.bgId != bgId)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B20);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
 
         if (backgroundInfo.bgId > 0)
         {

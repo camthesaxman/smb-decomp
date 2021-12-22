@@ -11123,8 +11123,8 @@ lbl_0000A690:
 /* 0000A814 4BFF5951 */ bl bitmap_load_group
 /* 0000A818 38600009 */ li r3, 9
 /* 0000A81C 4BFF5949 */ bl bitmap_load_group
-/* 0000A820 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 0000A824 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 0000A820 3C600000 */ lis r3, memHeap2@ha
+/* 0000A824 38630000 */ addi r3, r3, memHeap2@l
 /* 0000A828 80630000 */ lwz r3, 0(r3)
 /* 0000A82C 4BFF5939 */ bl OSSetCurrentHeap
 /* 0000A830 3B430000 */ addi r26, r3, 0
@@ -11232,8 +11232,8 @@ lbl_0000A974:
 /* 0000A9B8 801E0000 */ lwz r0, 0(r30)
 /* 0000A9BC 540007FF */ clrlwi. r0, r0, 0x1f
 /* 0000A9C0 41820030 */ beq lbl_0000A9F0
-/* 0000A9C4 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 0000A9C8 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 0000A9C4 3C600000 */ lis r3, memHeap2@ha
+/* 0000A9C8 38630000 */ addi r3, r3, memHeap2@l
 /* 0000A9CC 80630000 */ lwz r3, 0(r3)
 /* 0000A9D0 4BFF5795 */ bl OSSetCurrentHeap
 /* 0000A9D4 7C7D1B78 */ mr r29, r3
@@ -11245,8 +11245,8 @@ lbl_0000A974:
 /* 0000A9EC 901E0000 */ stw r0, 0(r30)
 lbl_0000A9F0:
 /* 0000A9F0 4BFF5775 */ bl func_80029788
-/* 0000A9F4 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 0000A9F8 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 0000A9F4 3C600000 */ lis r3, memHeap2@ha
+/* 0000A9F8 38630000 */ addi r3, r3, memHeap2@l
 /* 0000A9FC 80630000 */ lwz r3, 0(r3)
 /* 0000AA00 4BFF5765 */ bl OSSetCurrentHeap
 /* 0000AA04 7C7D1B78 */ mr r29, r3
@@ -13580,8 +13580,8 @@ lbl_0000CB94:
 /* 0000CB94 38630008 */ addi r3, r3, 8
 /* 0000CB98 4200FF70 */ bdnz lbl_0000CB08
 lbl_0000CB9C:
-/* 0000CB9C 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 0000CBA0 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 0000CB9C 3C600000 */ lis r3, memHeap2@ha
+/* 0000CBA0 38630000 */ addi r3, r3, memHeap2@l
 /* 0000CBA4 80630000 */ lwz r3, 0(r3)
 /* 0000CBA8 4BFF35BD */ bl OSSetCurrentHeap
 /* 0000CBAC 3BA30000 */ addi r29, r3, 0
@@ -13734,8 +13734,8 @@ lbl_0000CDC8:
 /* 0000CDD4 4080003C */ bge lbl_0000CE10
 /* 0000CDD8 80630028 */ lwz r3, 0x28(r3)
 /* 0000CDDC 4BFF3389 */ bl func_80012434
-/* 0000CDE0 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 0000CDE4 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 0000CDE0 3C600000 */ lis r3, memHeap2@ha
+/* 0000CDE4 38630000 */ addi r3, r3, memHeap2@l
 /* 0000CDE8 80630000 */ lwz r3, 0(r3)
 /* 0000CDEC 4BFF3379 */ bl OSSetCurrentHeap
 /* 0000CDF0 7C7F1B78 */ mr r31, r3

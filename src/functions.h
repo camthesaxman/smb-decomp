@@ -291,7 +291,7 @@ void func_80031210(int);
 // ? func_800314B8();
 // ? func_800315E4();
 // ? func_80031764();
-void func_80031784(int);
+void func_80031784(void *);
 // ? func_800317A4();
 // ? func_80031A58();
 // ? func_8003209C();

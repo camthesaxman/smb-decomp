@@ -123,7 +123,7 @@ struct TPL *bitmap_load_tpl(char *filename)
             OSPanic("bitmap.c", 164, "cannot OSAlloc\n");
 
         // Read whole file
-        lzData = OSAllocFromHeap(lbl_802F1B2C, compressedSize);
+        lzData = OSAllocFromHeap(memHeap5, compressedSize);
         if (lzData == NULL)
             OSPanic("bitmap.c", 165, "cannot OSAlloc\n");
         if (file_read(&file, lzData, compressedSize, 0) < 0)
@@ -135,7 +135,7 @@ struct TPL *bitmap_load_tpl(char *filename)
         fileData = (void *)OSRoundUp32B((u32)tpl + 0x10);
         lzs_decompress(lzData, fileData);
         DCFlushRange(fileData, size);
-        OSFreeToHeap(lbl_802F1B2C, lzData);
+        OSFreeToHeap(memHeap5, lzData);
     }
     else
     {

@@ -3146,35 +3146,35 @@ lbl_802F1B00:
 .global lbl_802F1B04
 lbl_802F1B04:
 	.skip 0x4
-.global lbl_802F1B08
-lbl_802F1B08:
+.global memHeap4Size
+memHeap4Size:
 	.skip 0x4
-.global lbl_802F1B0C
-lbl_802F1B0C:
+.global memHeap3Size
+memHeap3Size:
 	.skip 0x4
-.global lbl_802F1B10
-lbl_802F1B10:
+.global memHeap2Size
+memHeap2Size:
 	.skip 0x4
-.global lbl_802F1B14
-lbl_802F1B14:
+.global memHeap1Size
+memHeap1Size:
 	.skip 0x4
-.global lbl_802F1B18
-lbl_802F1B18:
+.global memHeap5Size
+memHeap5Size:
 	.skip 0x4
-.global lbl_802F1B1C
-lbl_802F1B1C:
+.global memHeap4
+memHeap4:
 	.skip 0x4
-.global lbl_802F1B20
-lbl_802F1B20:
+.global memHeap3
+memHeap3:
 	.skip 0x4
-.global lbl_802F1B24
-lbl_802F1B24:
+.global memHeap2
+memHeap2:
 	.skip 0x4
-.global lbl_802F1B28
-lbl_802F1B28:
+.global memHeap1
+memHeap1:
 	.skip 0x4
-.global lbl_802F1B2C
-lbl_802F1B2C:
+.global memHeap5
+memHeap5:
 	.skip 0x4
 .global currRenderMode
 currRenderMode:

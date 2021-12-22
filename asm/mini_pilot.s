@@ -129,8 +129,8 @@ lbl_000001F8:
 /* 0000022C 4BFFFF21 */ bl unload_stage
 /* 00000230 3860000E */ li r3, 0xe
 /* 00000234 4BFFFF19 */ bl func_80029228
-/* 00000238 3C600000 */ lis r3, lbl_802F1B24@ha
-/* 0000023C 38630000 */ addi r3, r3, lbl_802F1B24@l
+/* 00000238 3C600000 */ lis r3, memHeap2@ha
+/* 0000023C 38630000 */ addi r3, r3, memHeap2@l
 /* 00000240 80630000 */ lwz r3, 0(r3)
 /* 00000244 4BFFFF09 */ bl OSSetCurrentHeap
 /* 00000248 3BC30000 */ addi r30, r3, 0
@@ -203,9 +203,9 @@ lbl_00000314:
 /* 00000344 3C600000 */ lis r3, gameSubmodeRequest@ha
 /* 00000348 38830000 */ addi r4, r3, gameSubmodeRequest@l
 /* 0000034C 3800009B */ li r0, 0x9b
-/* 00000350 3C600000 */ lis r3, lbl_802F1B24@ha
+/* 00000350 3C600000 */ lis r3, memHeap2@ha
 /* 00000354 B0040000 */ sth r0, 0(r4)
-/* 00000358 3BA30000 */ addi r29, r3, lbl_802F1B24@l
+/* 00000358 3BA30000 */ addi r29, r3, memHeap2@l
 /* 0000035C 3FC00001 */ lis r30, 1
 /* 00000360 807D0000 */ lwz r3, 0(r29)
 /* 00000364 389EA00C */ addi r4, r30, -24564  ;# fixed addi
@@ -234,9 +234,9 @@ lbl_000003B4:
 /* 000003BC 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000003C0 93E1000C */ stw r31, 0xc(r1)
 /* 000003C4 4BFFFD89 */ bl event_clear
-/* 000003C8 3C800000 */ lis r4, lbl_802F1B24@ha
+/* 000003C8 3C800000 */ lis r4, memHeap2@ha
 /* 000003CC 3C600000 */ lis r3, lbl_1000003C@ha
-/* 000003D0 3BE40000 */ addi r31, r4, lbl_802F1B24@l
+/* 000003D0 3BE40000 */ addi r31, r4, memHeap2@l
 /* 000003D4 38830000 */ addi r4, r3, lbl_1000003C@l
 /* 000003D8 807F0000 */ lwz r3, 0(r31)
 /* 000003DC 80840000 */ lwz r4, 0(r4)

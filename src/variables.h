@@ -96,7 +96,7 @@
 
 // .data section
 // extern ? unkData;
-extern struct Struct801723C0 lbl_801723C0;
+// extern struct Struct801723C0 bufferInitInfo[];
 // extern ? lbl_80172400;
 // extern ? msg2;
 // extern ? msg3;
@@ -1167,24 +1167,24 @@ struct Struct802F1B04
 extern struct Struct802F1B04 *lbl_802F1B04_;
 */
 extern u32 *lbl_802F1B04;  // doesn't match as a struct, apparently
-extern long lbl_802F1B08;
-extern long lbl_802F1B0C;
-extern long lbl_802F1B10;
-extern long lbl_802F1B14;
-extern long lbl_802F1B18;
-extern OSHeapHandle lbl_802F1B1C;
-extern OSHeapHandle lbl_802F1B20;
-extern OSHeapHandle lbl_802F1B24;
-extern OSHeapHandle lbl_802F1B28;
-extern OSHeapHandle lbl_802F1B2C;
+extern long memHeap4Size;
+extern long memHeap3Size;
+extern long memHeap2Size;
+extern long memHeap1Size;
+extern long memHeap5Size;
+extern OSHeapHandle memHeap4;
+extern OSHeapHandle memHeap3;
+extern OSHeapHandle memHeap2;
+extern OSHeapHandle memHeap1;
+extern OSHeapHandle memHeap5;
 extern GXRenderModeObj *currRenderMode;
 extern u32 lbl_802F1B34;
 extern u32 lbl_802F1B38;
 extern Mtx *lbl_802F1B3C;
 extern void *lbl_802F1B40;
-extern u32 lbl_802F1B44;
+extern void *lbl_802F1B44;
 extern void *dvdReadBuffer;
-extern u32 lbl_802F1B4C;
+extern void *lbl_802F1B4C;
 extern void *lbl_802F1B50;
 extern void *lbl_802F1B54;
 extern BOOL lbl_802F1B58;

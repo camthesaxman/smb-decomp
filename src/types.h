@@ -237,18 +237,6 @@ struct ZMode
     /*0x0C*/ u32 texOffsets;
 };
 
-struct Struct801723C0
-{
-    u32 *unk0;
-    u32 unk4;
-    u32 *unk8;
-    u32 unkC;
-    u32 *unk10;
-    u32 unk14;
-    u32 *unk18;
-    u32 unk1C;
-};
-
 struct ModeControl
 {
     s32 unk0;

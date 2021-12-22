@@ -444,7 +444,7 @@ void load_stage(int stageId)
         ev_run_dest(EVENT_BACKGROUND);
     if (lbl_802F0998 != stageId)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B24);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap2);
 
         if (decodedStageTplPtr != NULL || decodedStageGmaPtr != NULL)
         {
@@ -498,7 +498,7 @@ void unload_stage(void)
 {
     if (lbl_802F0998 != -1)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(lbl_802F1B24);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap2);
 
         if (decodedStageTplPtr != NULL || decodedStageGmaPtr != NULL)
         {
@@ -588,7 +588,7 @@ void load_stage_files(int stageId)
         lbl_802F099C = stageId;
         sprintf(stageDir, "st%03d", stageId);
         DVDChangeDir(stageDir);
-        oldHeap = OSSetCurrentHeap(lbl_802F1B24);
+        oldHeap = OSSetCurrentHeap(memHeap2);
         func_80046A00(stageId);
         if (stageId != 190)
         {
