@@ -2219,9 +2219,6 @@ lbl_802F0248:
 
 .section .bss
 
-.global modeCtrl
-modeCtrl:
-	.skip 0x48
 .global lbl_801EEC68
 lbl_801EEC68:
 	.skip 0x18

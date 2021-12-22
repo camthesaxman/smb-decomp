@@ -456,7 +456,8 @@ char *lbl_80173C5C[] =
     "TEST MODE",
 };
 
-#ifdef NONMATCHING
+struct ModeControl modeCtrl;
+
 void gm_init(void)
 {
     gameMode = MD_ADV;
@@ -471,31 +472,6 @@ void gm_init(void)
     modeCtrl.unk1C = 0;
     modeCtrl.unk20 = 0;
 }
-#else
-asm void gm_init(void)
-{
-nofralloc
-#define _SDA_BASE_ 0
-/* 800094B8 000053D8  38 80 00 00 */	li r4, 0
-/* 800094BC 000053DC  38 00 FF FF */	li r0, -1
-/* 800094C0 000053E0  B0 8D 99 B2 */	sth r4, gameMode-_SDA_BASE_(r13)
-/* 800094C4 000053E4  38 60 00 05 */	li r3, 5
-/* 800094C8 000053E8  3C A0 80 1F */	lis r5, modeCtrl@ha
-/* 800094CC 000053EC  B0 6D 99 AE */	sth r3, gameSubmode-_SDA_BASE_(r13)
-/* 800094D0 000053F0  38 65 EC 20 */	addi r3, r5, modeCtrl@l
-/* 800094D4 000053F4  B0 0D 99 B0 */	sth r0, gameModeRequest-_SDA_BASE_(r13)
-/* 800094D8 000053F8  B0 0D 99 AC */	sth r0, gameSubmodeRequest-_SDA_BASE_(r13)
-/* 800094DC 000053FC  90 8D 99 A0 */	stw r4, lbl_802F1B80-_SDA_BASE_(r13)
-/* 800094E0 00005400  90 8D 99 9C */	stw r4, lbl_802F1B7C-_SDA_BASE_(r13)
-/* 800094E4 00005404  90 83 00 08 */	stw r4, 8(r3)
-/* 800094E8 00005408  90 83 00 00 */	stw r4, 0(r3)
-/* 800094EC 0000540C  98 83 00 42 */	stb r4, 0x42(r3)
-/* 800094F0 00005410  90 83 00 1C */	stw r4, 0x1c(r3)
-/* 800094F4 00005414  90 83 00 20 */	stw r4, 0x20(r3)
-/* 800094F8 00005418  4E 80 00 20 */	blr
-}
-#pragma peephole on
-#endif
 
 void gm_main(void)
 {
