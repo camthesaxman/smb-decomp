@@ -647,7 +647,7 @@ extern struct
 // extern ? lbl_8028CED8;
 // extern ? lbl_8028CF00;
 // extern ? lbl_8028CF28;
-// extern ? lbl_8028CF58;
+// extern ? spriteInfo;
 // extern ? lbl_80290170;
 // extern ? lbl_80290180;
 // extern ? lbl_80292AC0;

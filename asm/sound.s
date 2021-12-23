@@ -7964,16 +7964,26 @@ glabel lbl_802F1EA0
     .skip 0x2
 glabel lbl_802F1EA2
 glabel lbl_802F1EA2
-    .skip 0x6
+	.skip 0x2
+glabel lbl_802F1EA4
+	.skip 0x4
 .global lbl_802F1EA8
 lbl_802F1EA8:
-	.skip 0x8
+	.skip 0x4
+glabel lbl_802F1EAC
+	.skip 0x4
 .global lbl_802F1EB0
 lbl_802F1EB0:
 	.skip 0x4
 .global lbl_802F1EB4
 lbl_802F1EB4:
-	.skip 0x10
+	.skip 0x4
+glabel lbl_802F1EB8
+	.skip 0x4
+glabel lbl_802F1EBC
+	.skip 0x4
+glabel lbl_802F1EC0
+	.skip 0x4
 .global lbl_802F1EC4
 lbl_802F1EC4:
 	.skip 0x4
@@ -8337,7 +8347,33 @@ lbl_801F8DC0:
 .endif
 .global perfInfo
 perfInfo:
-	.skip 0x38
+	.skip 0x4
+glabel lbl_801F8DE4
+	.skip 0x4
+glabel lbl_801F8DE8
+	.skip 0x4
+glabel lbl_801F8DEC
+	.skip 0x4
+glabel lbl_801F8DF0
+	.skip 0x4
+glabel lbl_801F8DF4
+	.skip 0x4
+glabel lbl_801F8DF8
+	.skip 0x4
+glabel lbl_801F8DFC
+	.skip 0x4
+glabel lbl_801F8E00
+	.skip 0x4
+glabel lbl_801F8E04
+	.skip 0x4
+glabel lbl_801F8E08
+	.skip 0x4
+glabel lbl_801F8E0C
+	.skip 0x4
+glabel lbl_801F8E10
+	.skip 0x4
+glabel lbl_801F8E14
+	.skip 0x4
 .global lbl_801F8E18
 lbl_801F8E18:
 	.skip 0x39C
@@ -8392,7 +8428,9 @@ lbl_80205688:
 	.skip 0x300
 .global spritePoolInfo
 spritePoolInfo:
-	.skip 0x418
+	.skip 0x1D4
+glabel lbl_80205B5C
+	.skip 0x244
 .global lbl_80205DA0
 lbl_80205DA0:
 	.skip 0xC

@@ -1459,7 +1459,19 @@ lbl_802BA1A0:
 	.skip 0x60
 .global lbl_802BA200
 lbl_802BA200:
-	.skip 0x10
+	.skip 0x4
+glabel lbl_802BA204
+	.skip 0x4
+glabel lbl_802BA208
+	.skip 0x4
+glabel lbl_802BA20C
+	.skip 0x1
+glabel lbl_802BA20D
+	.skip 0x1
+glabel lbl_802BA20E
+	.skip 0x1
+glabel lbl_802BA20F
+	.skip 0x1
 .global lbl_802BA210
 lbl_802BA210:
 	.skip 0x90

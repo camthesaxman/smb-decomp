@@ -2729,7 +2729,21 @@ lbl_802F1C68:
 	.skip 0x4
 .global lbl_802F1C6C
 lbl_802F1C6C:
-	.skip 0x8
+	.skip 0x1
+glabel lbl_802F1C6D
+	.skip 0x1
+glabel lbl_802F1C6E
+	.skip 0x1
+glabel lbl_802F1C6F
+	.skip 0x1
+glabel lbl_802F1C70
+	.skip 0x1
+glabel lbl_802F1C71
+	.skip 0x1
+glabel lbl_802F1C72
+	.skip 0x1
+glabel lbl_802F1C73
+	.skip 0x1
 .global lbl_802F1C74
 lbl_802F1C74:
 	.skip 0x1

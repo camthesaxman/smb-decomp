@@ -59,9 +59,9 @@ ev_sprite_main:
 /* 8006FF90 0006BEB0  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8006FF94 0006BEB4  90 0D 9E 20 */	stw r0, lbl_802F2000@sda21(r13)
 /* 8006FF98 0006BEB8  3B C3 59 88 */	addi r30, r3, spritePoolInfo@l
-/* 8006FF9C 0006BEBC  3C 60 80 29 */	lis r3, lbl_8028CF58@ha
+/* 8006FF9C 0006BEBC  3C 60 80 29 */	lis r3, spriteInfo@ha
 /* 8006FFA0 0006BEC0  83 9E 00 3C */	lwz r28, 0x3c(r30)
-/* 8006FFA4 0006BEC4  38 03 CF 58 */	addi r0, r3, lbl_8028CF58@l
+/* 8006FFA4 0006BEC4  38 03 CF 58 */	addi r0, r3, spriteInfo@l
 /* 8006FFA8 0006BEC8  7C 1D 03 78 */	mr r29, r0
 /* 8006FFAC 0006BECC  3B 60 00 00 */	li r27, 0
 /* 8006FFB0 0006BED0  3B E0 00 01 */	li r31, 1
@@ -104,10 +104,10 @@ ev_sprite_dest:
 /* 80070028 0006BF48  7C 08 02 A6 */	mflr r0
 /* 8007002C 0006BF4C  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80070030 0006BF50  90 01 00 04 */	stw r0, 4(r1)
-/* 80070034 0006BF54  3C 80 80 29 */	lis r4, lbl_8028CF58@ha
+/* 80070034 0006BF54  3C 80 80 29 */	lis r4, spriteInfo@ha
 /* 80070038 0006BF58  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 8007003C 0006BF5C  94 21 FF E8 */	stwu r1, -0x18(r1)
-/* 80070040 0006BF60  38 04 CF 58 */	addi r0, r4, lbl_8028CF58@l
+/* 80070040 0006BF60  38 04 CF 58 */	addi r0, r4, spriteInfo@l
 /* 80070044 0006BF64  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 80070048 0006BF68  3B E0 00 00 */	li r31, 0
 /* 8007004C 0006BF6C  93 C1 00 10 */	stw r30, 0x10(r1)
@@ -556,8 +556,8 @@ create_sprite:
 /* 8007065C 0006C57C  48 00 00 8C */	b lbl_800706E8
 lbl_80070660:
 /* 80070660 0006C580  1C 9F 00 BC */	mulli r4, r31, 0xbc
-/* 80070664 0006C584  3C 60 80 29 */	lis r3, lbl_8028CF58@ha
-/* 80070668 0006C588  38 03 CF 58 */	addi r0, r3, lbl_8028CF58@l
+/* 80070664 0006C584  3C 60 80 29 */	lis r3, spriteInfo@ha
+/* 80070668 0006C588  38 03 CF 58 */	addi r0, r3, spriteInfo@l
 /* 8007066C 0006C58C  7F C0 22 14 */	add r30, r0, r4
 /* 80070670 0006C590  38 7E 00 00 */	addi r3, r30, 0
 /* 80070674 0006C594  38 80 00 00 */	li r4, 0
@@ -626,10 +626,10 @@ g_dest_sprite_with_font:
 /* 80070750 0006C670  7C 08 02 A6 */	mflr r0
 /* 80070754 0006C674  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 80070758 0006C678  90 01 00 04 */	stw r0, 4(r1)
-/* 8007075C 0006C67C  3C A0 80 29 */	lis r5, lbl_8028CF58@ha
+/* 8007075C 0006C67C  3C A0 80 29 */	lis r5, spriteInfo@ha
 /* 80070760 0006C680  38 84 59 88 */	addi r4, r4, spritePoolInfo@l
 /* 80070764 0006C684  94 21 FF D8 */	stwu r1, -0x28(r1)
-/* 80070768 0006C688  38 05 CF 58 */	addi r0, r5, lbl_8028CF58@l
+/* 80070768 0006C688  38 05 CF 58 */	addi r0, r5, spriteInfo@l
 /* 8007076C 0006C68C  BF 61 00 14 */	stmw r27, 0x14(r1)
 /* 80070770 0006C690  3B 63 00 00 */	addi r27, r3, 0
 /* 80070774 0006C694  7C 1E 03 78 */	mr r30, r0
@@ -667,10 +667,10 @@ lbl_800707BC:
 /* 800707E4 0006C704  7C 08 02 A6 */	mflr r0
 /* 800707E8 0006C708  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800707EC 0006C70C  90 01 00 04 */	stw r0, 4(r1)
-/* 800707F0 0006C710  3C 80 80 29 */	lis r4, lbl_8028CF58@ha
+/* 800707F0 0006C710  3C 80 80 29 */	lis r4, spriteInfo@ha
 /* 800707F4 0006C714  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
 /* 800707F8 0006C718  94 21 FF E8 */	stwu r1, -0x18(r1)
-/* 800707FC 0006C71C  38 04 CF 58 */	addi r0, r4, lbl_8028CF58@l
+/* 800707FC 0006C71C  38 04 CF 58 */	addi r0, r4, spriteInfo@l
 /* 80070800 0006C720  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 80070804 0006C724  3B E0 00 00 */	li r31, 0
 /* 80070808 0006C728  93 C1 00 10 */	stw r30, 0x10(r1)
@@ -712,9 +712,9 @@ g_find_sprite_with_probably_not_font:
 /* 80070880 0006C7A0  38 84 59 88 */	addi r4, r4, spritePoolInfo@l
 /* 80070884 0006C7A4  38 00 00 08 */	li r0, 8
 /* 80070888 0006C7A8  80 C4 00 3C */	lwz r6, 0x3c(r4)
-/* 8007088C 0006C7AC  3C A0 80 29 */	lis r5, lbl_8028CF58@ha
+/* 8007088C 0006C7AC  3C A0 80 29 */	lis r5, spriteInfo@ha
 /* 80070890 0006C7B0  7C 09 03 A6 */	mtctr r0
-/* 80070894 0006C7B4  38 85 CF 58 */	addi r4, r5, lbl_8028CF58@l
+/* 80070894 0006C7B4  38 85 CF 58 */	addi r4, r5, spriteInfo@l
 /* 80070898 0006C7B8  38 A0 00 00 */	li r5, 0
 lbl_8007089C:
 /* 8007089C 0006C7BC  88 06 00 00 */	lbz r0, 0(r6)

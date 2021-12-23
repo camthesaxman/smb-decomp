@@ -21363,7 +21363,13 @@ lbl_80285AB0:
 	.skip 0x6600
 .global lbl_8028C0B0
 lbl_8028C0B0:
-	.skip 0x28
+	.skip 0x4
+glabel lbl_8028C0B4
+	.skip 0x4
+glabel lbl_8028C0B8
+	.skip 0x4
+glabel lbl_8028C0BC
+	.skip 0x1C
 .global lbl_8028C0D8
 lbl_8028C0D8:
 	.skip 0xCC0

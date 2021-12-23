@@ -1513,8 +1513,8 @@ lbl_80094F04:
 /* 80094F0C 00090E2C  3C C0 80 20 */	lis r6, spritePoolInfo@ha
 /* 80094F10 00090E30  38 C6 59 88 */	addi r6, r6, spritePoolInfo@l
 /* 80094F14 00090E34  81 26 00 38 */	lwz r9, 0x38(r6)
-/* 80094F18 00090E38  3D 00 80 29 */	lis r8, lbl_8028CF58@ha
-/* 80094F1C 00090E3C  38 08 CF 58 */	addi r0, r8, lbl_8028CF58@l
+/* 80094F18 00090E38  3D 00 80 29 */	lis r8, spriteInfo@ha
+/* 80094F1C 00090E3C  38 08 CF 58 */	addi r0, r8, spriteInfo@l
 /* 80094F20 00090E40  81 66 00 3C */	lwz r11, 0x3c(r6)
 /* 80094F24 00090E44  2C 09 00 00 */	cmpwi r9, 0
 /* 80094F28 00090E48  7D 29 03 A6 */	mtctr r9
@@ -1552,8 +1552,8 @@ lbl_80094F98:
 /* 80094F9C 00090EBC  7C 60 07 35 */	extsh. r0, r3
 /* 80094FA0 00090EC0  41 80 00 78 */	blt lbl_80095018
 /* 80094FA4 00090EC4  1C 83 00 BC */	mulli r4, r3, 0xbc
-/* 80094FA8 00090EC8  3C 60 80 29 */	lis r3, lbl_8028CF58@ha
-/* 80094FAC 00090ECC  38 03 CF 58 */	addi r0, r3, lbl_8028CF58@l
+/* 80094FA8 00090EC8  3C 60 80 29 */	lis r3, spriteInfo@ha
+/* 80094FAC 00090ECC  38 03 CF 58 */	addi r0, r3, spriteInfo@l
 /* 80094FB0 00090ED0  7C 80 22 14 */	add r4, r0, r4
 /* 80094FB4 00090ED4  48 00 00 08 */	b lbl_80094FBC
 lbl_80094FB8:
@@ -1647,8 +1647,8 @@ func_80095024:
 /* 800950F8 00091018  7C 60 07 35 */	extsh. r0, r3
 /* 800950FC 0009101C  41 80 01 28 */	blt lbl_80095224
 /* 80095100 00091020  1C 83 00 BC */	mulli r4, r3, 0xbc
-/* 80095104 00091024  3C 60 80 29 */	lis r3, lbl_8028CF58@ha
-/* 80095108 00091028  38 03 CF 58 */	addi r0, r3, lbl_8028CF58@l
+/* 80095104 00091024  3C 60 80 29 */	lis r3, spriteInfo@ha
+/* 80095108 00091028  38 03 CF 58 */	addi r0, r3, spriteInfo@l
 /* 8009510C 0009102C  7F C0 22 14 */	add r30, r0, r4
 /* 80095110 00091030  4B FD C9 7D */	bl func_80071A8C
 /* 80095114 00091034  80 9E 00 58 */	lwz r4, 0x58(r30)

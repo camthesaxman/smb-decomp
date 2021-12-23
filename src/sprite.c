@@ -217,7 +217,7 @@ struct Struct8028FE58
 
 // .bss
 struct Struct8028CF28 lbl_8028CF28;
-struct Sprite lbl_8028CF58[64];
+struct Sprite spriteInfo[64];
 struct Struct8028FE58 lbl_8028FE58[0x42];
 
 extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
@@ -265,7 +265,7 @@ void ev_sprite_main(void)
         return;
     lbl_802F2000 = 0;
     status = spritePoolInfo.statusList;
-    sprite = lbl_8028CF58;
+    sprite = spriteInfo;
     for (i = 0; i < spritePoolInfo.unk38; i++, sprite++, status++)
     {
         if (*status != 0)
@@ -284,7 +284,7 @@ void ev_sprite_dest(void)
     s8 *status;
     int i = 0;
 
-    sprite = lbl_8028CF58;
+    sprite = spriteInfo;
     status = spritePoolInfo.statusList;
     for (; i < 64; i++, sprite++, status++)
     {
@@ -320,7 +320,7 @@ void func_800700D8(int a)
     r12 = 0;
     r5 = &lbl_8028FE58[r12++];
     r9 = &lbl_8028FE58[r12++];
-    r8 = lbl_8028CF58;
+    r8 = spriteInfo;
     r5->unk0 = NULL;
     r5->unk4 = NULL;
     r5->unk8 = r9;
@@ -1119,7 +1119,7 @@ struct Sprite *create_sprite(void)
         return NULL;
     else
     {
-        struct Sprite *sprite = &lbl_8028CF58[index];
+        struct Sprite *sprite = &spriteInfo[index];
 
         memset(sprite, 0, sizeof(*sprite));
         sprite->unk2 = index;
@@ -1158,7 +1158,7 @@ struct Sprite *create_linked_sprite(struct Sprite *sprite)
 // probably has nothing to do with fonts
 void g_dest_sprite_with_font(int a)
 {
-    struct Sprite *sprite = lbl_8028CF58;
+    struct Sprite *sprite = spriteInfo;
     s8 *status = spritePoolInfo.statusList;
     int i;
 
@@ -1177,7 +1177,7 @@ void g_dest_sprite_with_font(int a)
 
 void dest_all_sprites(void)
 {
-    struct Sprite *sprite = lbl_8028CF58;
+    struct Sprite *sprite = spriteInfo;
     s8 *status = spritePoolInfo.statusList;
     int i;
 
@@ -1196,7 +1196,7 @@ void dest_all_sprites(void)
 
 struct Sprite *g_find_sprite_with_probably_not_font(int a)
 {
-    struct Sprite *sprite = lbl_8028CF58;
+    struct Sprite *sprite = spriteInfo;
     s8 *status = spritePoolInfo.statusList;
     int i;
 
