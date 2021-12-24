@@ -859,3 +859,13 @@ struct Struct802F1BE0
     s32 unk0;
     s32 unk4;
 };
+
+struct Struct802F1F44
+{
+    void *unk0;
+    u32 **unk4;
+    u32 unk8;
+    u32 unkC;
+    u8 filler10[0x14-0x10];
+    void *unk14;
+};

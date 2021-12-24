@@ -1396,7 +1396,7 @@ lbl_80044DFC:
 /* 80044E10 00040D30  38 21 03 20 */	addi r1, r1, 0x320
 /* 80044E14 00040D34  4E 80 00 20 */	blr
 .endif
-.if 1
+.if 0
 .global func_80044E18
 func_80044E18:
 /* 80044E18 00040D38  7C 08 02 A6 */	mflr r0
@@ -1657,6 +1657,7 @@ lbl_8004516C:
 /* 8004518C 000410AC  7C 08 03 A6 */	mtlr r0
 /* 80045190 000410B0  4E 80 00 20 */	blr
 .endif
+.if 0
 .global func_80045194
 func_80045194:
 /* 80045194 000410B4  7C 08 02 A6 */	mflr r0
@@ -1985,7 +1986,9 @@ lbl_800455D8:
 /* 800455F0 00041510  38 21 00 50 */	addi r1, r1, 0x50
 /* 800455F4 00041514  7C 08 03 A6 */	mtlr r0
 /* 800455F8 00041518  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global func_800455FC
 func_800455FC:
 /* 800455FC 0004151C  7C 08 02 A6 */	mflr r0
@@ -2002,7 +2005,7 @@ lbl_80045620:
 /* 80045624 00041544  28 00 00 00 */	cmplwi r0, 0
 /* 80045628 00041548  41 82 00 58 */	beq lbl_80045680
 /* 8004562C 0004154C  3B E0 00 00 */	li r31, 0
-/* 80045630 00041550  57 FC 18 38 */	slwi r28, r31, 3
+/* 80045630 00041550  57 FC 18 38 */	slwi r28, r31, 3  ;# i * 8
 /* 80045634 00041554  48 00 00 38 */	b lbl_8004566C
 lbl_80045638:
 /* 80045638 00041558  80 83 00 08 */	lwz r4, 8(r3)
@@ -2037,6 +2040,7 @@ lbl_80045684:
 /* 8004569C 000415BC  38 21 00 28 */	addi r1, r1, 0x28
 /* 800456A0 000415C0  7C 08 03 A6 */	mtlr r0
 /* 800456A4 000415C4  4E 80 00 20 */	blr
+.endif
 
 .global func_800456A8
 func_800456A8:
@@ -20745,12 +20749,14 @@ lbl_801B8794:
 	.4byte 0
 .endif
 
+.if 0
 .global lbl_801B87A0
 lbl_801B87A0:
 	# ROM: 0x1B57A0
 	.4byte decodedStageGmaPtr  ;# ptr
 	.4byte decodedBgGma  ;# ptr
 	.4byte 0
+.endif
 glabel string_warning__s___no_match_n
 	.asciz "warning %s : no match\n"
 	.balign 4

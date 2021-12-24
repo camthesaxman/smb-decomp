@@ -633,25 +633,13 @@ FORCE_BSS_ORDER(lbl_802099E8)
 FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
 
-/*
-struct Struct801B8794
+struct NLObj
 {
-    
-};
-*/
-
-/*
-struct Struct802F1B04
-{
-    void *unk14;  // pointer to some struct
-    u32 unkB8;
-    u32 unkC0;
+    u8 filler0[4];
+    void *unk4[10];
 };
 
-extern struct Struct802F1B04 *lbl_802F1B04;
-*/
-
-void **lbl_801B8794[] = {(void **)&lbl_802F1B00, (void **)&lbl_802F1B04, NULL};
+struct NLObj **lbl_801B8794[] = {(struct NLObj **)&lbl_802F1B00, (struct NLObj **)&lbl_802F1B04, NULL};
 
 struct Struct80044E18
 {
@@ -666,10 +654,12 @@ struct Struct80044E18_2  // r17_
     float unk8;
 };
 
-/*
 extern u32 lbl_802F1F4C;
 extern u32 lbl_802F1F50;
+extern char lbl_802F09C8;
 
+#ifdef NONMATCHING
+/*
 void func_80044E18(void)
 {
     char sp10[0xFC];
@@ -687,14 +677,14 @@ void func_80044E18(void)
     int r19 = 0;
     struct DecodedStageLzPtr_child *r5;
     int r4;
-    
+
     lbl_802F1F50 = 0;
     r22 = decodedStageLzPtr->unkC;
     for (i = 0; i < lbl_802F1F48; i++, r22++)
     {
         struct DecodedStageLzPtr_child_child2 *r21;
         char *r4;
-        
+
         lbl_802099E8[i].unk0 = r22;
         lbl_802099E8[i].unk4 = r30;
         lbl_802099E8[i].unk8 = 0;
@@ -702,7 +692,7 @@ void func_80044E18(void)
         while (r21->unk0 != NULL)
         {
             u32 **r18 = NULL;
-            
+
             strncpy(sp10, r21->unk0, 0xFC);
             strncat(sp10, "_MAP", 0x100);
             r31 = NULL;
@@ -828,3 +818,69 @@ void func_80044E18(void)
     *r29 = 0;
 }
 */
+#else
+asm void func_80044E18(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_80044E18.s"
+}
+#pragma peephole on
+#endif
+
+extern u32 lbl_802F1F34;
+extern char lbl_802F09D0[4];
+
+#ifndef NONMATCHING
+asm void func_80045194(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_80045194.s"
+}
+#pragma peephole on
+#endif
+
+struct Struct801B87A0_child_child
+{
+    u32 unk0;
+    char *unk4;
+    //u8 filler4[4];
+};
+
+struct Struct801B87A0_child
+{
+    s32 unk0;
+    u8 filler4[4];
+    struct GMAModelEntry *unk8;
+};
+
+struct Struct801B87A0
+{
+    struct GMA *unk0;
+};
+
+struct GMA **lbl_801B87A0[3] = {&decodedStageGmaPtr, &decodedBgGma, NULL};
+
+inline struct GMAModelHeader *find_model_in_gma_list(struct GMA ***list, char *name)
+{
+    struct GMAModelHeader *model = NULL;
+    int i;
+
+    while (*list != NULL)
+    {
+        if (**list != NULL)
+        {
+            for (i = 0; i < (int)(**list)->numModels; i++)
+            {
+                if (strcmp(name, (**list)->modelEntries[i].name) == 0)
+                    model = (**list)->modelEntries[i].modelOffset;
+            }
+        }
+        list++;
+    }
+    return model;
+}
+
+struct GMAModelHeader *func_800455FC(char *name)
+{
+    return find_model_in_gma_list(lbl_801B87A0, name);
+}

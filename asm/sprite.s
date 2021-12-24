@@ -32458,7 +32458,7 @@ lbl_802F12E0:
 	.byte 0x07, 0x00, 0x00, 0x00
 
 .section .rodata
-
+.if 0
 # sprite.s
 .global lbl_80117A80
 lbl_80117A80:
@@ -33355,7 +33355,7 @@ lbl_80117A80:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-
+.endif
 .global lbl_80118870
 lbl_80118870:
 	# ROM: 0x115870

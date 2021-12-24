@@ -1264,7 +1264,7 @@ extern void **lbl_802F1CA4;
 // extern ? lbl_802F1CB0;
 // extern ? lbl_802F1CB8;
 // extern ? lbl_802F1CBC;
-// extern ? decodedBgGma;
+extern struct GMA *decodedBgGma;
 // extern ? decodedBgTpl;
 extern struct GMA *lbl_802F1CC8;
 // extern ? lbl_802F1CCC;
@@ -1385,15 +1385,7 @@ extern struct Stage *decodedStageLzPtr;
 extern struct GMA *decodedStageGmaPtr;
 extern struct TPL *decodedStageTplPtr;
 extern u16 lbl_802F1F40;
-extern struct Struct802F1F44
-{
-    void *unk0;
-    u32 **unk4;
-    u32 unk8;
-    u32 unkC;
-    u8 filler10[0x14-0x10];
-    void *unk14;
-} *lbl_802F1F44;
+extern struct Struct802F1F44 *lbl_802F1F44;
 extern u32 lbl_802F1F48;
 // extern ? lbl_802F1F4C;
 // extern ? lbl_802F1F50;

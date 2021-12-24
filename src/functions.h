@@ -411,7 +411,7 @@ void func_80044E18(void);
 void func_80045194(void);
 // ? func_800455FC();
 void func_800456A8(int stageId);
-// ? func_800457B8();
+int func_800457B8();
 int get_stage_background(int stageId);
 int func_80045E4C(void);
 void func_80045E98(void);
