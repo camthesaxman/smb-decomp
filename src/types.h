@@ -196,7 +196,7 @@ struct TPLTextureHeader
     /*0x04*/ u32 imageOffset;
     /*0x08*/ u16 width;
     /*0x0A*/ u16 height;
-    /*0x0C*/ u32 unkC;
+    /*0x0C*/ u16 unkC;
 };  // size = 0x10
 
 struct TPL

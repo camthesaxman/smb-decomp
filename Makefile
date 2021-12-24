@@ -98,6 +98,7 @@ SOURCES := \
 	src/perf.c \
 	asm/sound.s \
 	asm/code_2.s \
+	src/nl2ngc.c \
 	asm/nl2ngc.s \
 	src/motload.c \
 	asm/motload.s \

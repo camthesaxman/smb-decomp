@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 # nl2ngc.s
 .global load_nlobj
 load_nlobj:
@@ -202,7 +203,9 @@ lbl_80030E74:
 /* 80030E84 0002CDA4  7C 08 03 A6 */	mtlr r0
 /* 80030E88 0002CDA8  38 21 00 20 */	addi r1, r1, 0x20
 /* 80030E8C 0002CDAC  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global func_80030E90
 func_80030E90:
 /* 80030E90 0002CDB0  7C 08 02 A6 */	mflr r0
@@ -214,10 +217,10 @@ func_80030E90:
 /* 80030EA8 0002CDC8  3B DF 00 04 */	addi r30, r31, 4
 /* 80030EAC 0002CDCC  48 00 00 3C */	b lbl_80030EE8
 lbl_80030EB0:
-/* 80030EB0 0002CDD0  80 1E 00 00 */	lwz r0, 0(r30)
+/* 80030EB0 0002CDD0  80 1E 00 00 */	lwz r0, 0(r30)   ;# (*r30) += a
 /* 80030EB4 0002CDD4  7C 00 FA 14 */	add r0, r0, r31
 /* 80030EB8 0002CDD8  90 1E 00 00 */	stw r0, 0(r30)
-/* 80030EBC 0002CDDC  80 7E 00 00 */	lwz r3, 0(r30)
+/* 80030EBC 0002CDDC  80 7E 00 00 */	lwz r3, 0(r30)   ;# (*r30)
 /* 80030EC0 0002CDE0  80 03 FF F8 */	lwz r0, -8(r3)
 /* 80030EC4 0002CDE4  7C 00 FA 14 */	add r0, r0, r31
 /* 80030EC8 0002CDE8  90 03 FF F8 */	stw r0, -8(r3)
@@ -235,13 +238,13 @@ lbl_80030EE8:
 /* 80030EF4 0002CE14  80 1F 00 00 */	lwz r0, 0(r31)
 /* 80030EF8 0002CE18  7C 00 FA 14 */	add r0, r0, r31
 /* 80030EFC 0002CE1C  90 1F 00 00 */	stw r0, 0(r31)
-/* 80030F00 0002CE20  80 9F 00 00 */	lwz r4, 0(r31)
+/* 80030F00 0002CE20  80 9F 00 00 */	lwz r4, 0(r31)  ;# a->unk0
 /* 80030F04 0002CE24  48 00 00 5C */	b lbl_80030F60
 lbl_80030F08:
 /* 80030F08 0002CE28  80 04 00 00 */	lwz r0, 0(r4)
 /* 80030F0C 0002CE2C  7C 00 FA 14 */	add r0, r0, r31
 /* 80030F10 0002CE30  90 04 00 00 */	stw r0, 0(r4)
-/* 80030F14 0002CE34  80 64 00 00 */	lwz r3, 0(r4)
+/* 80030F14 0002CE34  80 64 00 00 */	lwz r3, 0(r4)  ;# ptr to unk?
 /* 80030F18 0002CE38  80 03 00 00 */	lwz r0, 0(r3)
 /* 80030F1C 0002CE3C  7C 00 FA 14 */	add r0, r0, r31
 /* 80030F20 0002CE40  90 03 00 00 */	stw r0, 0(r3)
@@ -467,6 +470,7 @@ lbl_800311FC:
 /* 80031204 0002D124  38 21 00 40 */	addi r1, r1, 0x40
 /* 80031208 0002D128  7C 08 03 A6 */	mtlr r0
 /* 8003120C 0002D12C  4E 80 00 20 */	blr
+.endif
 
 .global func_80031210
 func_80031210:
@@ -4089,8 +4093,12 @@ lbl_800345A8:
 /* 800345BC 000304DC  90 03 00 14 */	stw r0, 0x14(r3)
 /* 800345C0 000304E0  4E 80 00 20 */	blr
 
+.section .sdata
+    .balign 0x10
+
 .section .data
 
+.if 0
 .global lbl_801B7998
 lbl_801B7998:
 	# ROM: 0x1B4998
@@ -4104,7 +4112,9 @@ lbl_801B79A4:
 glabel string_cannot_OSAlloc_2
 	.asciz "cannot OSAlloc"
 	.balign 4
+.endif
 
+    .balign 4
 .global lbl_801B79B4
 lbl_801B79B4:
 	# ROM: 0x1B49B4
@@ -4209,3 +4219,67 @@ lbl_801B7B14:
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x00, 0x00, 0x00, 0x01
 	.4byte 0
+
+.section .bss
+
+.if 0
+.global lbl_80205DA0
+lbl_80205DA0:
+	.skip 0xC
+.global lbl_80205DAC
+lbl_80205DAC:
+	.skip 0x54
+.endif
+.if 0
+.global lbl_80205E00
+lbl_80205E00:
+	.skip 0x20
+.endif
+.balign 0x10
+
+.section .sdata2
+
+.if 0
+.global lbl_802F32E4
+lbl_802F32E4:
+	# ROM: 0x1ECD04
+	.4byte 0
+
+.global lbl_802F32E8
+lbl_802F32E8:
+	# ROM: 0x1ECD08
+	.byte 0x3F, 0x80, 0x00, 0x00
+
+.global lbl_802F32EC
+lbl_802F32EC:
+	# ROM: 0x1ECD0C
+	.byte 0x3D, 0xCC, 0xCC, 0xCD
+
+.global lbl_802F32F0
+lbl_802F32F0:
+	# ROM: 0x1ECD10
+	.byte 0x46, 0x9C, 0x40, 0x00
+
+.global lbl_802F32F4
+lbl_802F32F4:
+	# ROM: 0x1ECD14
+	.byte 0x42, 0xC8, 0x00, 0x00
+
+.global lbl_802F32F8
+lbl_802F32F8:
+	# ROM: 0x1ECD18
+	.byte 0x43, 0x7F, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F3300
+lbl_802F3300:
+	# ROM: 0x1ECD20
+	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F3308
+lbl_802F3308:
+	# ROM: 0x1ECD28
+	.byte 0x46, 0x22, 0xF9, 0x83
+	.4byte 0
+.endif
