@@ -69,3 +69,11 @@ lbl_801089BC:
 /* 801089C0 001048E0  38 21 00 20 */	addi r1, r1, 0x20
 /* 801089C4 001048E4  7C 08 03 A6 */	mtlr r0
 /* 801089C8 001048E8  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6C10
+lbl_802F6C10:
+	# ROM: 0x1F0630
+	.4byte 0
+	.4byte 0

@@ -487,3 +487,71 @@ lbl_800C2C80:
 /* 800C2C84 000BEBA4  38 21 00 08 */	addi r1, r1, 8
 /* 800C2C88 000BEBA8  7C 08 03 A6 */	mtlr r0
 /* 800C2C8C 000BEBAC  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E5EB0
+lbl_801E5EB0:
+	# ROM: 0x1E2EB0
+glabel string_OSCheckHeap__Failed_HeapArray_in__d
+	.asciz "OSCheckHeap: Failed HeapArray in %d"
+glabel string_OSCheckHeap__Failed_0____heap____heap___NumHeaps_in__d
+	.asciz "OSCheckHeap: Failed 0 <= heap && heap < NumHeaps in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_0____hd__size_in__d
+	.asciz "OSCheckHeap: Failed 0 <= hd->size in %d"
+glabel string_OSCheckHeap__Failed_hd__allocated____NULL____hd__allocated__prev____NULL_in__d
+	.asciz "OSCheckHeap: Failed hd->allocated == NULL || hd->allocated->prev == NULL in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_InRange_cell__ArenaStart__ArenaEnd__in__d
+	.asciz "OSCheckHeap: Failed InRange(cell, ArenaStart, ArenaEnd) in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_OFFSET_cell__ALIGNMENT_____0_in__d
+	.asciz "OSCheckHeap: Failed OFFSET(cell, ALIGNMENT) == 0 in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_cell__next____NULL____cell__next__prev____cell_in__d
+	.asciz "OSCheckHeap: Failed cell->next == NULL || cell->next->prev == cell in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_MINOBJSIZE____cell__size_in__d
+	.asciz "OSCheckHeap: Failed MINOBJSIZE <= cell->size in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_OFFSET_cell__size__ALIGNMENT_____0_in__d
+	.asciz "OSCheckHeap: Failed OFFSET(cell->size, ALIGNMENT) == 0 in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_0___total____total____hd__size_in__d
+	.asciz "OSCheckHeap: Failed 0 < total && total <= hd->size in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_hd__free____NULL____hd__free__prev____NULL_in__d
+	.asciz "OSCheckHeap: Failed hd->free == NULL || hd->free->prev == NULL in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_cell__next____NULL_____char___cell___cell__size____char___cell__next_in__d
+	.asciz "OSCheckHeap: Failed cell->next == NULL || (char*) cell + cell->size < (char*) cell->next in %d"
+	.balign 4
+glabel string_OSCheckHeap__Failed_total____hd__size_in__d
+	.asciz "OSCheckHeap: Failed total == hd->size in %d"
+glabel string__nOSDumpHeap__d___n
+	.asciz "\nOSDumpHeap(%d):\n"
+	.balign 4
+glabel string_________Inactive_n
+	.asciz "--------Inactive\n"
+	.balign 4
+glabel string_addr_tsize_t_tend_tprev_tnext_n
+	.asciz "addr\tsize\t\tend\tprev\tnext\n"
+	.balign 4
+glabel string_________Allocated_n
+	.asciz "--------Allocated\n"
+	.balign 4
+glabel string__x_t_d_t_x_t_x_t_x_n
+	.asciz "%x\t%d\t%x\t%x\t%x\n"
+glabel string_________Free_n
+	.asciz "--------Free\n"
+	.balign 4
+	.4byte 0
+
+.section .sdata
+
+.global __OSCurrHeap
+__OSCurrHeap:
+	# ROM: 0x1EC068
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0

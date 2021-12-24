@@ -47,3 +47,11 @@ lbl_80108744:
 lbl_80108768:
 /* 80108768 00104688  38 21 00 18 */	addi r1, r1, 0x18
 /* 8010876C 0010468C  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6BE0
+lbl_802F6BE0:
+	# ROM: 0x1F0600
+	.byte 0x43, 0x50, 0x00, 0x00
+	.4byte 0

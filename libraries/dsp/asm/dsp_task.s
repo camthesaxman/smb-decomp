@@ -631,3 +631,31 @@ lbl_800D519C:
 /* 800D51B4 000D10D4  80 63 00 38 */	lwz r3, 0x38(r3)
 /* 800D51B8 000D10D8  90 03 00 3C */	stw r0, 0x3c(r3)
 /* 800D51BC 000D10DC  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E8920
+lbl_801E8920:
+	# ROM: 0x1E5920
+glabel string_DSP_is_booting_task__0x_08X_n
+	.asciz "DSP is booting task: 0x%08X\n"
+	.balign 4
+glabel string___DSP_boot_task______IRAM_MMEM_ADDR__0x_08X_n
+	.asciz "__DSP_boot_task()  : IRAM MMEM ADDR: 0x%08X\n"
+	.balign 4
+glabel string___DSP_boot_task______IRAM_DSP_ADDR___0x_08X_n
+	.asciz "__DSP_boot_task()  : IRAM DSP ADDR : 0x%08X\n"
+	.balign 4
+glabel string___DSP_boot_task______IRAM_LENGTH_____0x_08X_n
+	.asciz "__DSP_boot_task()  : IRAM LENGTH   : 0x%08X\n"
+	.balign 4
+glabel string___DSP_boot_task______DRAM_MMEM_ADDR__0x_08X_n
+	.asciz "__DSP_boot_task()  : DRAM MMEM ADDR: 0x%08X\n"
+	.balign 4
+glabel string___DSP_boot_task______Start_Vector____0x_08X_n
+	.asciz "__DSP_boot_task()  : Start Vector  : 0x%08X\n"
+	.balign 4
+glabel string___DSP_add_task_____Added_task______0x_08X_n
+	.asciz "__DSP_add_task() : Added task    : 0x%08X\n"
+	.balign 4
+	.4byte 0

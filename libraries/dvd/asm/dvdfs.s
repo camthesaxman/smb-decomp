@@ -795,3 +795,47 @@ lbl_800CC158:
 /* 800CC15C 000C807C  38 21 00 08 */	addi r1, r1, 8
 /* 800CC160 000C8080  7C 08 03 A6 */	mtlr r0
 /* 800CC164 000C8084  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E7590
+lbl_801E7590:
+	# ROM: 0x1E4590
+glabel string_DVDConvertEntrynumToPath_possibly_DVDOpen_or_DVDChangeDir_or_DVDOpenDir___specified_directory_or_file___s__doesn_t_match_standard_8_3_format__This_is_a_temporary_restriction_and_will_be_removed_soon_n
+	.asciz "DVDConvertEntrynumToPath(possibly DVDOpen or DVDChangeDir or DVDOpenDir): specified directory or file (%s) doesn't match standard 8.3 format. This is a temporary restriction and will be removed soon\n"
+
+.global lbl_801E7658
+lbl_801E7658:
+	# ROM: 0x1E4658
+glabel string_Warning__DVDOpen____file___s__was_not_found_under__s__n
+	.asciz "Warning: DVDOpen(): file '%s' was not found under %s.\n"
+	.balign 4
+
+.global lbl_801E7690
+lbl_801E7690:
+	# ROM: 0x1E4690
+glabel string_DVDReadAsync____specified_area_is_out_of_the_file__
+	.asciz "DVDReadAsync(): specified area is out of the file  "
+glabel string_DVDRead____specified_area_is_out_of_the_file__
+	.asciz "DVDRead(): specified area is out of the file  "
+	.balign 4
+glabel string_DVDSeek____offset_is_out_of_the_file__
+	.asciz "DVDSeek(): offset is out of the file  "
+	.balign 4
+glabel string_DVDPrepareStreamAsync____Specified_start_address__filestart_0x_x____offset_0x_x___is_not_32KB_aligned
+	.asciz "DVDPrepareStreamAsync(): Specified start address (filestart(0x%x) + offset(0x%x)) is not 32KB aligned"
+	.balign 4
+glabel string_DVDPrepareStreamAsync____Specified_length__0x_x__is_not_a_multiple_of_32768_32_1024_
+	.asciz "DVDPrepareStreamAsync(): Specified length (0x%x) is not a multiple of 32768(32*1024)"
+	.balign 4
+glabel string_DVDPrepareStreamAsync____The_area_specified__offset_0x_x___length_0x_x___is_out_of_the_file
+	.asciz "DVDPrepareStreamAsync(): The area specified (offset(0x%x), length(0x%x)) is out of the file"
+glabel string_DVDPrepareStream____Specified_start_address__filestart_0x_x____offset_0x_x___is_not_32KB_aligned
+	.asciz "DVDPrepareStream(): Specified start address (filestart(0x%x) + offset(0x%x)) is not 32KB aligned"
+	.balign 4
+glabel string_DVDPrepareStream____Specified_length__0x_x__is_not_a_multiple_of_32768_32_1024_
+	.asciz "DVDPrepareStream(): Specified length (0x%x) is not a multiple of 32768(32*1024)"
+glabel string_DVDPrepareStream____The_area_specified__offset_0x_x___length_0x_x___is_out_of_the_file
+	.asciz "DVDPrepareStream(): The area specified (offset(0x%x), length(0x%x)) is out of the file"
+	.balign 4
+	.4byte 0

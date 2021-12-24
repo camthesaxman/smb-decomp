@@ -2904,3 +2904,88 @@ lbl_800CE850:
 /* 800CE868 000CA788  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 800CE86C 000CA78C  38 21 00 20 */	addi r1, r1, 0x20
 /* 800CE870 000CA790  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E7948
+lbl_801E7948:
+	# ROM: 0x1E4948
+glabel string_app_booted_via_JTAG_n
+	.asciz "app booted via JTAG\n"
+	.balign 4
+glabel string_load_fst_n
+	.asciz "load fst\n"
+	.balign 4
+glabel string_app_booted_from_bootrom_n
+	.asciz "app booted from bootrom\n"
+	.balign 4
+glabel string_bootrom_n
+	.asciz "bootrom\n"
+	.balign 4
+
+.global lbl_801E7994
+lbl_801E7994:
+	# ROM: 0x1E4994
+	.4byte lbl_800CD344  ;# ptr
+	.4byte lbl_800CD204  ;# ptr
+	.4byte lbl_800CD21C  ;# ptr
+	.4byte lbl_800CD234  ;# ptr
+	.4byte lbl_800CD264  ;# ptr
+	.4byte lbl_800CD328  ;# ptr
+	.4byte lbl_800CD27C  ;# ptr
+	.4byte lbl_800CD24C  ;# ptr
+
+.global lbl_801E79B4
+lbl_801E79B4:
+	# ROM: 0x1E49B4
+	.4byte lbl_800CD624  ;# ptr
+	.4byte lbl_800CD3E0  ;# ptr
+	.4byte lbl_800CD43C  ;# ptr
+	.4byte lbl_800CD460  ;# ptr
+	.4byte lbl_800CD3E0  ;# ptr
+	.4byte lbl_800CD3B4  ;# ptr
+	.4byte lbl_800CD480  ;# ptr
+	.4byte lbl_800CD4E4  ;# ptr
+	.4byte lbl_800CD510  ;# ptr
+	.4byte lbl_800CD544  ;# ptr
+	.4byte lbl_800CD568  ;# ptr
+	.4byte lbl_800CD58C  ;# ptr
+	.4byte lbl_800CD5B0  ;# ptr
+	.4byte lbl_800CD5D4  ;# ptr
+	.4byte lbl_800CD5FC  ;# ptr
+	.4byte lbl_800CD470  ;# ptr
+
+.global lbl_801E79F4
+lbl_801E79F4:
+	# ROM: 0x1E49F4
+	.4byte lbl_800CE37C  ;# ptr
+	.4byte lbl_800CE37C  ;# ptr
+	.4byte lbl_800CE39C  ;# ptr
+	.4byte lbl_800CE3E0  ;# ptr
+	.4byte lbl_800CE42C  ;# ptr
+	.4byte lbl_800CE4A8  ;# ptr
+	.4byte lbl_800CE4A8  ;# ptr
+	.4byte lbl_800CE4A8  ;# ptr
+	.4byte lbl_800CE4A8  ;# ptr
+	.4byte lbl_800CE574  ;# ptr
+	.4byte lbl_800CE574  ;# ptr
+	.4byte lbl_800CE37C  ;# ptr
+	.4byte lbl_800CE4A8  ;# ptr
+
+.global lbl_801E7A28
+lbl_801E7A28:
+	# ROM: 0x1E4A28
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte lbl_800CE714  ;# ptr
+	.4byte lbl_800CE704  ;# ptr
+	.4byte lbl_800CE704  ;# ptr
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte lbl_800CE714  ;# ptr
+	.4byte lbl_800CE704  ;# ptr
+	.4byte lbl_800CE704  ;# ptr
+	.4byte lbl_800CE70C  ;# ptr
+	.4byte 0

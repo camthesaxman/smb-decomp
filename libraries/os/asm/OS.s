@@ -532,3 +532,88 @@ __OSGetDIConfig:
 /* 800C1EBC 000BDDDC  54 03 06 3E */	clrlwi r3, r0, 0x18
 /* 800C1EC0 000BDDE0  4E 80 00 20 */	blr
 
+.section .data
+
+.global lbl_801E5CF0
+lbl_801E5CF0:
+	# ROM: 0x1E2CF0
+glabel string__nDolphin_OS__Revision__37____n
+	.asciz "\nDolphin OS $Revision: 37 $.\n"
+	.balign 4
+glabel string_Kernel_built____s__s_n
+	.asciz "Kernel built : %s %s\n"
+	.balign 4
+glabel string_Jul_19_2001
+	.asciz "Jul 19 2001"
+glabel string_05_43_42
+	.asciz "05:43:42"
+	.balign 4
+glabel string_Console_Type___
+	.asciz "Console Type : "
+glabel string_Retail__d_n
+	.asciz "Retail %d\n"
+	.balign 4
+glabel string_Mac_Emulator_n
+	.asciz "Mac Emulator\n"
+	.balign 4
+glabel string_PC_Emulator_n
+	.asciz "PC Emulator\n"
+	.balign 4
+glabel string_EPPC_Arthur_n
+	.asciz "EPPC Arthur\n"
+	.balign 4
+glabel string_EPPC_Minnow_n
+	.asciz "EPPC Minnow\n"
+	.balign 4
+glabel string_Development_HW_d_n
+	.asciz "Development HW%d\n"
+	.balign 4
+glabel string_Memory__d_MB_n
+	.asciz "Memory %d MB\n"
+	.balign 4
+glabel string_Arena___0x_x___0x_x_n
+	.asciz "Arena : 0x%x - 0x%x\n"
+	.balign 4
+	.byte 0x00, 0x00, 0x01, 0x00
+	.byte 0x00, 0x00, 0x02, 0x00
+	.byte 0x00, 0x00, 0x03, 0x00
+	.byte 0x00, 0x00, 0x04, 0x00
+	.byte 0x00, 0x00, 0x05, 0x00
+	.byte 0x00, 0x00, 0x06, 0x00
+	.byte 0x00, 0x00, 0x07, 0x00
+	.byte 0x00, 0x00, 0x08, 0x00
+	.byte 0x00, 0x00, 0x09, 0x00
+	.byte 0x00, 0x00, 0x0C, 0x00
+	.byte 0x00, 0x00, 0x0D, 0x00
+	.byte 0x00, 0x00, 0x0F, 0x00
+	.byte 0x00, 0x00, 0x13, 0x00
+	.byte 0x00, 0x00, 0x14, 0x00
+	.byte 0x00, 0x00, 0x17, 0x00
+glabel string_Installing_OSDBIntegrator_n
+	.asciz "Installing OSDBIntegrator\n"
+	.balign 4
+glabel string_____OSINIT__exception__d_commandeered_by_TRK_n
+	.asciz ">>> OSINIT: exception %d commandeered by TRK\n"
+	.balign 4
+glabel string_____OSINIT__exception__d_vectored_to_debugger_n
+	.asciz ">>> OSINIT: exception %d vectored to debugger\n"
+	.balign 4
+glabel string_Exceptions_initialized____n
+	.asciz "Exceptions initialized...\n"
+	.balign 4
+	.4byte 0
+
+.section .sbss
+
+.global BootInfo
+BootInfo:
+	.skip 0x4
+.global BI2DebugFlag
+BI2DebugFlag:
+	.skip 0x4
+.global AreWeInitialized
+AreWeInitialized:
+	.skip 0x4
+.global OSExceptionTable
+OSExceptionTable:
+	.skip 0x4

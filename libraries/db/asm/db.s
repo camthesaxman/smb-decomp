@@ -76,3 +76,11 @@ lbl_800CA148:
 /* 800CA164 000C6084  91 41 00 24 */	stw r10, 0x24(r1)
 /* 800CA168 000C6088  38 21 00 70 */	addi r1, r1, 0x70
 /* 800CA16C 000C608C  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E7578
+lbl_801E7578:
+	# ROM: 0x1E4578
+glabel string_DBExceptionDestination_n
+	.asciz "DBExceptionDestination\n"

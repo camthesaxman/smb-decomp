@@ -108,3 +108,23 @@ lbl_801086C0:
 lbl_801086CC:
 /* 801086CC 001045EC  38 21 00 10 */	addi r1, r1, 0x10
 /* 801086D0 001045F0  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6BC8
+lbl_802F6BC8:
+	# ROM: 0x1F05E8
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F6BD0
+lbl_802F6BD0:
+	# ROM: 0x1F05F0
+	.byte 0x7E, 0x37, 0xE4, 0x3C
+	.byte 0x88, 0x00, 0x75, 0x9C
+
+.global lbl_802F6BD8
+lbl_802F6BD8:
+	# ROM: 0x1F05F8
+	.4byte 0
+	.4byte 0

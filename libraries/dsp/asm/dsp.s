@@ -114,3 +114,17 @@ lbl_800D48D0:
 /* 800D48E0 000D0800  7C 08 03 A6 */	mtlr r0
 /* 800D48E4 000D0804  38 21 00 18 */	addi r1, r1, 0x18
 /* 800D48E8 000D0808  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E88E8
+lbl_801E88E8:
+	# ROM: 0x1E58E8
+glabel string_DSPInit____Build_Date___s__s_n
+	.asciz "DSPInit(): Build Date: %s %s\n"
+	.balign 4
+glabel string_May_22_2001
+	.asciz "May 22 2001"
+glabel string_02_06_43
+	.asciz "02:06:43"
+	.balign 4

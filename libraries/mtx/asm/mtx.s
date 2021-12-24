@@ -334,6 +334,14 @@ C_MTXLookAt:
 /* 800CA64C 000C656C  38 21 00 50 */	addi r1, r1, 0x50
 /* 800CA650 000C6570  4E 80 00 20 */	blr
 
+.section .sdata
+
+.global Unit01
+Unit01:
+	# ROM: 0x1EC088
+	.4byte 0
+	.byte 0x3F, 0x80, 0x00, 0x00
+
 .section .sdata2
 
 .global lbl_802F6730

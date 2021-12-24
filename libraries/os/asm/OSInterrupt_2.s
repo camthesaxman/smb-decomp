@@ -645,3 +645,51 @@ ExternalInterruptHandler:
 /* 800C68D0 000C27F0  7C 17 E2 A6 */	mfspr r0, 0x397
 /* 800C68D4 000C27F4  90 04 01 C0 */	stw r0, 0x1c0(r4)
 /* 800C68D8 000C27F8  4B FF FC 94 */	b __OSDispatchInterrupt
+
+.section .data
+
+.global lbl_801E7418
+lbl_801E7418:
+	# ROM: 0x1E4418
+	.byte 0x00, 0x00, 0x01, 0x00
+	.byte 0x00, 0x00, 0x00, 0x40
+	.byte 0xF8, 0x00, 0x00, 0x00
+	.byte 0x00, 0x00, 0x02, 0x00
+	.byte 0x00, 0x00, 0x00, 0x80
+	.byte 0x00, 0x00, 0x30, 0x00
+	.byte 0x00, 0x00, 0x00, 0x20
+	.byte 0x03, 0xFF, 0x8C, 0x00
+	.byte 0x04, 0x00, 0x00, 0x00
+	.byte 0x00, 0x00, 0x40, 0x00
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+
+.global lbl_801E7444
+lbl_801E7444:
+	# ROM: 0x1E4444
+	.4byte lbl_800C61D0  ;# ptr
+	.4byte lbl_800C61D0  ;# ptr
+	.4byte lbl_800C61D0  ;# ptr
+	.4byte lbl_800C61D0  ;# ptr
+	.4byte lbl_800C6458  ;# ptr
+	.4byte lbl_800C623C  ;# ptr
+	.4byte lbl_800C623C  ;# ptr
+	.4byte lbl_800C623C  ;# ptr
+	.4byte lbl_800C6290  ;# ptr
+	.4byte lbl_800C62C0  ;# ptr
+	.4byte lbl_800C62C0  ;# ptr
+	.4byte lbl_800C62C0  ;# ptr
+	.4byte lbl_800C6310  ;# ptr
+	.4byte lbl_800C6310  ;# ptr
+	.4byte lbl_800C6310  ;# ptr
+	.4byte lbl_800C6364  ;# ptr
+	.4byte lbl_800C6364  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr
+	.4byte lbl_800C63A4  ;# ptr

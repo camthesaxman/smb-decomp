@@ -235,3 +235,49 @@ lbl_800C3F44:
 /* 800C3F50 000BFE70  38 21 00 30 */	addi r1, r1, 0x30
 /* 800C3F54 000BFE74  7C 08 03 A6 */	mtlr r0
 /* 800C3F58 000BFE78  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E66D0
+lbl_801E66D0:
+	# ROM: 0x1E36D0
+glabel string__in__
+	.asciz " in \"%s\" on line %d.\n"
+	.balign 4
+glabel string__nAddress_______Back_Chain____LR_Save_n_2
+	.asciz "\nAddress:      Back Chain    LR Save\n"
+	.balign 4
+glabel string_0x_08x____0x_08x____0x_08x_n_2
+	.asciz "0x%08x:   0x%08x    0x%08x\n"
+glabel string_Non_recoverable_Exception__d
+	.asciz "Non-recoverable Exception %d"
+	.balign 4
+glabel string_Unhandled_Exception__d
+	.asciz "Unhandled Exception %d"
+	.balign 4
+glabel string__nDSISR__0x_08x___________________DAR____0x_08x_n
+	.asciz "\nDSISR= 0x%08x                   DAR  = 0x%08x\n"
+glabel string__nInstruction_at_0x_x__read_from_SRR0__attempted_to_access_invalid_address_0x_x__read_from_DAR__n
+	.asciz "\nInstruction at 0x%x (read from SRR0) attempted to access invalid address 0x%x (read from DAR)\n"
+glabel string__nAttempted_to_fetch_instruction_from_invalid_address_0x_x__read_from_SRR0__n
+	.asciz "\nAttempted to fetch instruction from invalid address 0x%x (read from SRR0)\n"
+glabel string__nInstruction_at_0x_x__read_from_SRR0__attempted_to_access_unaligned_address_0x_x__read_from_DAR__n
+	.asciz "\nInstruction at 0x%x (read from SRR0) attempted to access unaligned address 0x%x (read from DAR)\n"
+	.balign 4
+glabel string__nProgram_exception___Possible_illegal_instruction_operation_at_or_around_0x_x__read_from_SRR0__n
+	.asciz "\nProgram exception : Possible illegal instruction/operation at or around 0x%x (read from SRR0)\n"
+	.4byte 0
+
+.section .sdata
+
+.global lbl_802F1938
+lbl_802F1938:
+	# ROM: 0x1EC078
+	.byte 0x0A, 0x00, 0x00, 0x00
+	.4byte 0
+
+.section .bss
+
+.global OSErrorTable
+OSErrorTable:
+	.skip 0x40

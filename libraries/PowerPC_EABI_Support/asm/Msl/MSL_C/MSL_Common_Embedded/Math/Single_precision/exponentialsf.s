@@ -525,3 +525,27 @@ lbl_80109888:
 lbl_8010988C:
 /* 8010988C 001057AC  38 21 00 90 */	addi r1, r1, 0x90
 /* 80109890 001057B0  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6C68
+lbl_802F6C68:
+	# ROM: 0x1F0688
+	.4byte 0
+
+.global lbl_802F6C6C
+lbl_802F6C6C:
+	# ROM: 0x1F068C
+	.byte 0x3F, 0xB0, 0x00, 0x00
+
+.global lbl_802F6C70
+lbl_802F6C70:
+	# ROM: 0x1F0690
+	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6C78
+lbl_802F6C78:
+	# ROM: 0x1F0698
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00

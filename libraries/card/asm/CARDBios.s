@@ -1416,3 +1416,17 @@ lbl_800D64F8:
 /* 800D64FC 000D241C  38 21 00 08 */	addi r1, r1, 8
 /* 800D6500 000D2420  7C 08 03 A6 */	mtlr r0
 /* 800D6504 000D2424  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E8A60
+lbl_801E8A60:
+	# ROM: 0x1E5A60
+	.4byte func_800D64B8  ;# ptr
+	.byte 0x00, 0x00, 0x00, 0x7F
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0

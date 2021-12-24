@@ -690,3 +690,15 @@ lbl_800C8AE8:
 /* 800C8AF0 000C4A10  38 21 00 50 */	addi r1, r1, 0x50
 /* 800C8AF4 000C4A14  7C 08 03 A6 */	mtlr r0
 /* 800C8AF8 000C4A18  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E7500
+lbl_801E7500:
+	# ROM: 0x1E4500
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0

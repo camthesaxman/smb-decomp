@@ -21,3 +21,11 @@ OSSetArenaHi:
 OSSetArenaLo:
 /* 800C2CA8 000BEBC8  90 6D 97 50 */	stw r3, __OSArenaLo@sda21(r13)
 /* 800C2CAC 000BEBCC  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global __OSArenaLo
+__OSArenaLo:
+	# ROM: 0x1EC070
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0

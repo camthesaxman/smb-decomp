@@ -415,3 +415,93 @@ lbl_800C3440:
 /* 800C3468 000BF388  7C 08 03 A6 */	mtlr r0
 /* 800C346C 000BF38C  38 21 00 10 */	addi r1, r1, 0x10
 /* 800C3470 000BF390  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E62C8
+lbl_801E62C8:
+	# ROM: 0x1E32C8
+glabel string_____L2_INVALIDATE___SHOULD_NEVER_HAPPEN_n
+	.asciz ">>> L2 INVALIDATE : SHOULD NEVER HAPPEN\n"
+	.balign 4
+glabel string_Machine_check_received_n
+	.asciz "Machine check received\n"
+glabel string_HID2___0x_x___SRR1___0x_x_n
+	.asciz "HID2 = 0x%x   SRR1 = 0x%x\n"
+	.balign 4
+glabel string_Machine_check_was_not_DMA_locked_cache_related_n
+	.asciz "Machine check was not DMA/locked cache related\n"
+glabel string_DMAErrorHandler____An_error_occurred_while_processing_DMA__n
+	.asciz "DMAErrorHandler(): An error occurred while processing DMA.\n"
+glabel string_The_following_errors_have_been_detected_and_cleared___n
+	.asciz "The following errors have been detected and cleared :\n"
+	.balign 4
+glabel string__t__Requested_a_locked_cache_tag_that_was_already_in_the_cache_n
+	.asciz "\t- Requested a locked cache tag that was already in the cache\n"
+	.balign 4
+glabel string__t__DMA_attempted_to_access_normal_cache_n
+	.asciz "\t- DMA attempted to access normal cache\n"
+	.balign 4
+glabel string__t__DMA_missed_in_data_cache_n
+	.asciz "\t- DMA missed in data cache\n"
+	.balign 4
+glabel string__t__DMA_queue_overflowed_n
+	.asciz "\t- DMA queue overflowed\n"
+	.balign 4
+glabel string_L1_i_caches_initialized_n
+	.asciz "L1 i-caches initialized\n"
+	.balign 4
+glabel string_L1_d_caches_initialized_n
+	.asciz "L1 d-caches initialized\n"
+	.balign 4
+glabel string_L2_cache_initialized_n
+	.asciz "L2 cache initialized\n"
+	.balign 4
+glabel string_Locked_cache_machine_check_handler_installed_n
+	.asciz "Locked cache machine check handler installed\n"
+	.balign 4
+	.4byte 0
+
+.global lbl_801E64F8
+lbl_801E64F8:
+	# ROM: 0x1E34F8
+glabel string___________________________Context_0x_08x___________________________n
+	.asciz "------------------------- Context 0x%08x -------------------------\n"
+glabel string_r__2d____0x_08x___14d___r__2d____0x_08x___14d__n
+	.asciz "r%-2d  = 0x%08x (%14d)  r%-2d  = 0x%08x (%14d)\n"
+glabel string_LR_____0x_08x___________________CR_____0x_08x_n
+	.asciz "LR   = 0x%08x                   CR   = 0x%08x\n"
+	.balign 4
+glabel string_SRR0___0x_08x___________________SRR1___0x_08x_n
+	.asciz "SRR0 = 0x%08x                   SRR1 = 0x%08x\n"
+	.balign 4
+glabel string__nGQRs___________n
+	.asciz "\nGQRs----------\n"
+	.balign 4
+glabel string_gqr_d___0x_08x__t_gqr_d___0x_08x_n
+	.asciz "gqr%d = 0x%08x \t gqr%d = 0x%08x\n"
+	.balign 4
+glabel string__n_nFPRs___________n
+	.asciz "\n\nFPRs----------\n"
+	.balign 4
+glabel string_fr_d__t___d__t_fr_d__t___d_n
+	.asciz "fr%d \t= %d \t fr%d \t= %d\n"
+	.balign 4
+glabel string__n_nPSFs___________n
+	.asciz "\n\nPSFs----------\n"
+	.balign 4
+glabel string_ps_d__t__0x_x__t_ps_d__t__0x_x_n
+	.asciz "ps%d \t= 0x%x \t ps%d \t= 0x%x\n"
+	.balign 4
+glabel string__nAddress_______Back_Chain____LR_Save_n
+	.asciz "\nAddress:      Back Chain    LR Save\n"
+	.balign 4
+glabel string_0x_08x____0x_08x____0x_08x_n
+	.asciz "0x%08x:   0x%08x    0x%08x\n"
+
+.global lbl_801E66AC
+lbl_801E66AC:
+	# ROM: 0x1E36AC
+glabel string_FPU_unavailable_handler_installed_n
+	.asciz "FPU-unavailable handler installed\n"
+	.balign 4

@@ -321,3 +321,55 @@ lbl_8010910C:
 /* 8010910C 0010502C  3C 60 80 1F */	lis r3, lbl_801ED2FC@ha
 /* 80109110 00105030  C0 23 D2 FC */	lfs f1, lbl_801ED2FC@l(r3)
 /* 80109114 00105034  4E 80 00 20 */	blr
+
+.section .sdata2
+
+.global lbl_802F6C38
+lbl_802F6C38:
+	# ROM: 0x1F0658
+	.byte 0x3F, 0x22, 0xF9, 0x83
+
+.global lbl_802F6C3C
+lbl_802F6C3C:
+	# ROM: 0x1F065C
+	.byte 0x3F, 0x00, 0x00, 0x00
+
+.global lbl_802F6C40
+lbl_802F6C40:
+	# ROM: 0x1F0660
+	.byte 0x39, 0xB5, 0x04, 0xF3
+	.4byte 0
+
+.global lbl_802F6C48
+lbl_802F6C48:
+	# ROM: 0x1F0668
+	.byte 0x43, 0x30, 0x00, 0x00
+	.byte 0x80, 0x00, 0x00, 0x00
+
+.global lbl_802F6C50
+lbl_802F6C50:
+	# ROM: 0x1F0670
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F6C58
+lbl_802F6C58:
+	# ROM: 0x1F0678
+	.byte 0x3F, 0xE0, 0x00, 0x00
+	.4byte 0
+
+.global lbl_802F6C60
+lbl_802F6C60:
+	# ROM: 0x1F0680
+	.byte 0x40, 0x08, 0x00, 0x00
+	.4byte 0
+
+.section .rodata
+
+.global lbl_80172300
+lbl_80172300:
+	# ROM: 0x16F300
+	.byte 0x3E, 0x80, 0x00, 0x00
+	.byte 0x3C, 0xBE, 0x60, 0x80
+	.byte 0x34, 0x37, 0x22, 0x00
+	.byte 0x2D, 0xA4, 0x41, 0x52

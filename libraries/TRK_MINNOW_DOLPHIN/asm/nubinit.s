@@ -124,3 +124,13 @@ lbl_80109DE0:
 lbl_80109DE4:
 /* 80109DE4 00105D04  38 21 00 10 */	addi r1, r1, 0x10
 /* 80109DE8 00105D08  4E 80 00 20 */	blr
+
+.section .rodata
+
+.global lbl_80172310
+lbl_80172310:
+	# ROM: 0x16F310
+glabel string_MetroTRK_for_Dolphin_v0_8
+	.asciz "MetroTRK for Dolphin v0.8"
+	.balign 4
+	.4byte 0

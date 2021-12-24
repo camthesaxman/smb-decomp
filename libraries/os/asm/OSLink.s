@@ -563,3 +563,19 @@ __OSModuleInit:
 /* 800C7010 000C2F30  90 04 30 C8 */	stw r0, 0x30c8(r4)
 /* 800C7014 000C2F34  90 04 30 D0 */	stw r0, 0x30d0(r4)
 /* 800C7018 000C2F38  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E74B0
+lbl_801E74B0:
+	# ROM: 0x1E44B0
+glabel string_OSLink__unknown_relocation_type__3d_n
+	.asciz "OSLink: unknown relocation type %3d\n"
+	.balign 4
+
+.global lbl_801E74D8
+lbl_801E74D8:
+	# ROM: 0x1E44D8
+glabel string_OSUnlink__unknown_relocation_type__3d_n
+	.asciz "OSUnlink: unknown relocation type %3d\n"
+	.balign 4

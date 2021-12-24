@@ -152,3 +152,21 @@ lbl_800CEDAC:
 /* 800CEDE0 000CAD00  83 A1 00 54 */	lwz r29, 0x54(r1)
 /* 800CEDE4 000CAD04  38 21 00 60 */	addi r1, r1, 0x60
 /* 800CEDE8 000CAD08  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E7AA0
+lbl_801E7AA0:
+	# ROM: 0x1E4AA0
+glabel string___Game_Name______c_c_c_c_n
+	.asciz "  Game Name ... %c%c%c%c\n"
+	.balign 4
+glabel string___Company________c_c_n
+	.asciz "  Company ..... %c%c\n"
+	.balign 4
+glabel string___Disk___________d_n
+	.asciz "  Disk # ...... %d\n"
+glabel string___Game_ver_______d_n
+	.asciz "  Game ver .... %d\n"
+glabel string___Streaming______s_n
+	.asciz "  Streaming ... %s\n"

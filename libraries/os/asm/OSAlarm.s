@@ -530,3 +530,9 @@ DecrementerExceptionHandler:
 /* 800C2614 000BE534  7C 17 E2 A6 */	mfspr r0, 0x397
 /* 800C2618 000BE538  90 04 01 C0 */	stw r0, 0x1c0(r4)
 /* 800C261C 000BE53C  4B FF FD A8 */	b DecrementerExceptionCallback
+
+.section .sbss
+
+.global AlarmQueue
+AlarmQueue:
+	.skip 0x8
