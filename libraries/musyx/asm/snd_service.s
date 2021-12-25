@@ -125,3 +125,11 @@ sndConvertTicks:
 sndConvert2Ms:
 /* 800FF53C 000FB45C  54 63 C2 3E */	srwi r3, r3, 8
 /* 800FF540 000FB460  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global last_rnd
+last_rnd:
+	# ROM: 0x1EC1B8
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0

@@ -758,3 +758,10 @@ DBOpen:
 .global DBClose
 DBClose:
 /* 8010F848 0010B768  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global SendCount
+SendCount:
+	# ROM: 0x1EC218
+	.byte 0x80

@@ -762,3 +762,17 @@ lbl_802F67D0:
 	# ROM: 0x1F01F0
 	.byte 0x3F, 0x00, 0x00, 0x00
 	.4byte 0
+
+.section .data
+
+.global lbl_801E8F50
+lbl_801E8F50:
+	# ROM: 0x1E5F50
+	.4byte lbl_800E0720  ;# ptr
+	.4byte lbl_800E0640  ;# ptr
+	.4byte lbl_800E0654  ;# ptr
+	.4byte lbl_800E0670  ;# ptr
+	.4byte lbl_800E068C  ;# ptr
+	.4byte lbl_800E06B8  ;# ptr
+	.4byte lbl_800E06E8  ;# ptr
+	.4byte 0

@@ -5,7 +5,7 @@
 #include <__ppc_eabi_linker.h>
 #include <NMWException.h>
 
-extern int fragmentID;
+static int fragmentID = -2;
 
 asm char *GetR2(void)
 {

@@ -18,3 +18,11 @@ rand:
 /* 8010687C 0010279C  80 0D 98 C8 */	lwz r0, next@sda21(r13)
 /* 80106880 001027A0  54 03 84 7E */	rlwinm r3, r0, 0x10, 0x11, 0x1f
 /* 80106884 001027A4  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global next
+next:
+	# ROM: 0x1EC1E8
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0

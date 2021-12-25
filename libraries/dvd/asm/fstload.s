@@ -170,3 +170,21 @@ glabel string___Game_ver_______d_n
 	.asciz "  Game ver .... %d\n"
 glabel string___Streaming______s_n
 	.asciz "  Streaming ... %s\n"
+
+.section .sdata
+
+.global lbl_802F1968
+lbl_802F1968:
+	# ROM: 0x1EC0A8
+	.byte 0x0A, 0x00, 0x00, 0x00
+
+.global lbl_802F196C
+lbl_802F196C:
+	# ROM: 0x1EC0AC
+	.byte 0x4F, 0x46, 0x46, 0x00
+
+.global lbl_802F1970
+lbl_802F1970:
+	# ROM: 0x1EC0B0
+	.byte 0x4F, 0x4E, 0x00, 0x00
+	.4byte 0

@@ -1447,3 +1447,44 @@ lbl_802F6888:
 	# ROM: 0x1F02A8
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
+
+.section .data
+
+.global lbl_801E91E0
+lbl_801E91E0:
+	# ROM: 0x1E61E0
+glabel string_PERF___Unknown_event_type_for_ID__d___possibly_out_of_memory_n
+	.asciz "PERF : Unknown event type for ID %d - possibly out of memory\n"
+	.balign 4
+
+.global lbl_801E9220
+lbl_801E9220:
+	# ROM: 0x1E6220
+glabel string_PERF___event_is_still_open_for_CPU__n
+	.asciz "PERF : event is still open for CPU!\n"
+	.balign 4
+
+.global lbl_801E9248
+lbl_801E9248:
+	# ROM: 0x1E6248
+glabel string_PERF___ending_an_event_that_never_started__n
+	.asciz "PERF : ending an event that never started!\n"
+
+.global lbl_801E9274
+lbl_801E9274:
+	# ROM: 0x1E6274
+glabel string_PERF___AUTOSAMPLE___0_____SHOULD_NEVER_HAPPEN__n
+	.asciz "PERF : AUTOSAMPLE < 0!!!! SHOULD NEVER HAPPEN!\n"
+	.4byte 0
+
+.section .sdata
+
+.global CurrAutoSample
+CurrAutoSample:
+	# ROM: 0x1EC140
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+
+.global CurrToken
+CurrToken:
+	# ROM: 0x1EC144
+	.byte 0x00, 0x00, 0xFF, 0xFF

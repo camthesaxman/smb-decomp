@@ -1021,3 +1021,11 @@ __DVDLowSetWAType:
 /* 800CB724 000C7644  7C 08 03 A6 */	mtlr r0
 /* 800CB728 000C7648  38 21 00 18 */	addi r1, r1, 0x18
 /* 800CB72C 000C764C  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global FirstRead
+FirstRead:
+	# ROM: 0x1EC090
+	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0

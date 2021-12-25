@@ -3690,3 +3690,29 @@ lbl_800EB920:
 /* 800EB934 000E7854  90 04 00 00 */	stw r0, 0(r4)
 /* 800EB938 000E7858  90 0D A4 08 */	stw r0, seq_next_id@sda21(r13)
 /* 800EB93C 000E785C  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801E9338
+lbl_801E9338:
+	# ROM: 0x1E6338
+	.4byte lbl_800EA900  ;# ptr
+	.4byte lbl_800EA930  ;# ptr
+	.4byte lbl_800EA954  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EA97C  ;# ptr
+	.4byte lbl_800EAA08  ;# ptr
+	.4byte lbl_800EA994  ;# ptr

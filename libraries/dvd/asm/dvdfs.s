@@ -839,3 +839,11 @@ glabel string_DVDPrepareStream____The_area_specified__offset_0x_x___length_0x_x_
 	.asciz "DVDPrepareStream(): The area specified (offset(0x%x), length(0x%x)) is out of the file"
 	.balign 4
 	.4byte 0
+
+.section .sdata
+
+.global lbl_802F1958
+lbl_802F1958:
+	# ROM: 0x1EC098
+glabel string_dvdfs_c
+	.asciz "dvdfs.c"

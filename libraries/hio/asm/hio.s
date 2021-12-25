@@ -332,3 +332,11 @@ lbl_800DBF74:
 /* 800DBF84 000D7EA4  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 800DBF88 000D7EA8  38 21 00 28 */	addi r1, r1, 0x28
 /* 800DBF8C 000D7EAC  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global Chan
+Chan:
+	# ROM: 0x1EC0E0
+	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0

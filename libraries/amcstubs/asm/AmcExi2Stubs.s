@@ -951,3 +951,17 @@ EXI2_Reserve:
 .global EXI2_Unreserve
 EXI2_Unreserve:
 /* 8010EDC8 0010ACE8  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global exi
+exi:
+	# ROM: 0x1EC208
+	.4byte lbl_802F01C8  ;# ptr
+	.4byte 0
+
+.global pucEXI2InputPending
+pucEXI2InputPending:
+	# ROM: 0x1EC210
+	.4byte 0x802F27D0  ;# ptr
+	.4byte 0

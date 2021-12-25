@@ -345,3 +345,11 @@ hwIRQLeaveCritical:
 /* 8010126C 000FD18C  38 21 00 08 */	addi r1, r1, 8
 /* 80101270 000FD190  7C 08 03 A6 */	mtlr r0
 /* 80101274 000FD194  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global dspSlaveLength
+dspSlaveLength:
+	# ROM: 0x1EC1D0
+	.byte 0x19, 0xE0, 0x00, 0x00
+	.4byte 0

@@ -361,3 +361,15 @@ lbl_80106CE4:
 /* 80106CF4 00102C14  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 80106CF8 00102C18  38 21 00 30 */	addi r1, r1, 0x30
 /* 80106CFC 00102C1C  4E 80 00 20 */	blr
+
+.section .sdata
+
+.global K1
+K1:
+	# ROM: 0x1EC1F0
+	.byte 0x80, 0x80, 0x80, 0x80
+
+.global K2
+K2:
+	# ROM: 0x1EC1F4
+	.byte 0xFE, 0xFE, 0xFE, 0xFF

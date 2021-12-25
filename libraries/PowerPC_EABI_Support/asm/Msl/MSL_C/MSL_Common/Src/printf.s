@@ -2143,3 +2143,12 @@ lbl_802F6AA8:
 	# ROM: 0x1F04C8
 	.4byte 0
 	.4byte 0
+
+.section .sdata
+
+    .balign 8
+.global _wstringBase0
+_wstringBase0:
+	# ROM: 0x1EC1E0
+	.4byte 0
+	.4byte 0

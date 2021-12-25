@@ -70,13 +70,13 @@ void init_tv(void)
     switch (VIGetTvFormat())
     {
     case VI_NTSC:
-        currRenderMode = &lbl_801E8E98;
+        currRenderMode = &GXNtsc480IntDf;
         break;
     case VI_PAL:
-        currRenderMode = &lbl_801E8F10;
+        currRenderMode = &GXPal528IntDf;
         break;
     case VI_MPAL:
-        currRenderMode = &lbl_801E8ED4;
+        currRenderMode = &GXMpal480IntDf;
         break;
     default:
         OSPanic("init.c", 0x8E, "init_system: invalid TV format\n");

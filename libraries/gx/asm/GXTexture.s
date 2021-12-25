@@ -1005,3 +1005,205 @@ lbl_802F67F8:
 lbl_802F67FC:
 	# ROM: 0x1F021C
 	.byte 0x41, 0x20, 0x00, 0x00
+
+.section .data
+
+.global lbl_801E8F70
+lbl_801E8F70:
+	# ROM: 0x1E5F70
+	.4byte lbl_800E0F2C  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F2C  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F2C  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F2C  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F2C  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F38  ;# ptr
+	.4byte lbl_800E0F50  ;# ptr
+	.4byte lbl_800E0F44  ;# ptr
+
+.global lbl_801E9064
+lbl_801E9064:
+	# ROM: 0x1E6064
+	.4byte lbl_800E1080  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1080  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1080  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1080  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1080  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E108C  ;# ptr
+	.4byte lbl_800E10A4  ;# ptr
+	.4byte lbl_800E1098  ;# ptr
+
+.global lbl_801E9158
+lbl_801E9158:
+	# ROM: 0x1E6158
+	.4byte lbl_800E12B0  ;# ptr
+	.4byte lbl_800E12C4  ;# ptr
+	.4byte lbl_800E12C4  ;# ptr
+	.4byte lbl_800E12D8  ;# ptr
+	.4byte lbl_800E12D8  ;# ptr
+	.4byte lbl_800E12D8  ;# ptr
+	.4byte lbl_800E12EC  ;# ptr
+	.4byte lbl_800E1314  ;# ptr
+	.4byte lbl_800E12B0  ;# ptr
+	.4byte lbl_800E12C4  ;# ptr
+	.4byte lbl_800E12D8  ;# ptr
+	.4byte lbl_800E1314  ;# ptr
+	.4byte lbl_800E1314  ;# ptr
+	.4byte lbl_800E1314  ;# ptr
+	.4byte lbl_800E1300  ;# ptr
+	.4byte 0
+
+.section .sdata
+
+.global GXTexMode0Ids
+GXTexMode0Ids:
+	# ROM: 0x1EC100
+	.byte 0x80, 0x81, 0x82, 0x83
+	.byte 0xA0, 0xA1, 0xA2, 0xA3
+
+.global GXTexMode1Ids
+GXTexMode1Ids:
+	# ROM: 0x1EC108
+	.byte 0x84, 0x85, 0x86, 0x87
+	.byte 0xA4, 0xA5, 0xA6, 0xA7
+
+.global GXTexImage0Ids
+GXTexImage0Ids:
+	# ROM: 0x1EC110
+	.byte 0x88, 0x89, 0x8A, 0x8B
+	.byte 0xA8, 0xA9, 0xAA, 0xAB
+
+.global GXTexImage1Ids
+GXTexImage1Ids:
+	# ROM: 0x1EC118
+	.byte 0x8C, 0x8D, 0x8E, 0x8F
+	.byte 0xAC, 0xAD, 0xAE, 0xAF
+
+.global GXTexImage2Ids
+GXTexImage2Ids:
+	# ROM: 0x1EC120
+	.byte 0x90, 0x91, 0x92, 0x93
+	.byte 0xB0, 0xB1, 0xB2, 0xB3
+
+.global GXTexImage3Ids
+GXTexImage3Ids:
+	# ROM: 0x1EC128
+	.byte 0x94, 0x95, 0x96, 0x97
+	.byte 0xB4, 0xB5, 0xB6, 0xB7
+
+.global GXTexTlutIds
+GXTexTlutIds:
+	# ROM: 0x1EC130
+	.byte 0x98, 0x99, 0x9A, 0x9B
+	.byte 0xB8, 0xB9, 0xBA, 0xBB
+
+.global GX2HWFiltConv
+GX2HWFiltConv:
+	# ROM: 0x1EC138
+	.byte 0x00, 0x04, 0x01, 0x05
+	.byte 0x02, 0x06, 0x00, 0x00

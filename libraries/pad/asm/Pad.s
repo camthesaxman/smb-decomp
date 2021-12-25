@@ -2487,3 +2487,48 @@ lbl_801E8880:
 glabel string_PADSetSamplingRate__unknown_TV_format
 	.asciz "PADSetSamplingRate: unknown TV format"
 	.balign 4
+
+.section .sdata
+
+.global ResettingChan
+ResettingChan:
+	# ROM: 0x1EC0B8
+	.byte 0x00, 0x00, 0x00, 0x20
+
+.global XPatchBits
+XPatchBits:
+	# ROM: 0x1EC0BC
+	.byte 0xF0, 0x00, 0x00, 0x00
+
+.global AnalogMode
+AnalogMode:
+	# ROM: 0x1EC0C0
+	.byte 0x00, 0x00, 0x03, 0x00
+
+.global MakeStatus
+MakeStatus:
+	# ROM: 0x1EC0C4
+	.byte 0x00, 0x00, 0x00, 0x05
+
+.global lbl_802F1988
+lbl_802F1988:
+	# ROM: 0x1EC0C8
+	.4byte SPEC2_MakeStatus  ;# ptr
+
+.global cmdReadOrigin
+cmdReadOrigin:
+	# ROM: 0x1EC0CC
+	.byte 0x41, 0x00, 0x00, 0x00
+
+.global cmdCalibrate
+cmdCalibrate:
+	# ROM: 0x1EC0D0
+	.byte 0x42, 0x00, 0x00, 0x00
+
+.global lbl_802F1994
+lbl_802F1994:
+	# ROM: 0x1EC0D4
+glabel string_Pad_c
+	.asciz "Pad.c"
+	.balign 4
+	.4byte 0
