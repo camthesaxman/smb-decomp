@@ -323,7 +323,7 @@ void func_8000B96C(void)
         int i;
         for (i = 0; i < 2; i++, r27++)
         {
-            u32 *var;
+            void **var;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate(&ballInfo[0].unkFC->unk30);
             mathutil_mtxA_translate(&r27->unk8);

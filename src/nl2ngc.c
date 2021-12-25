@@ -1,14 +1,40 @@
+#include <assert.h>
 #include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
 #include "bitmap.h"
 #include "load.h"
+#include "mathutil.h"
 
 #pragma force_active on
 
-u8 lbl_80205DA0[0xC];
-u8 lbl_80205DAC[0x40-0xC];
+Vec lbl_80205DA0;
+//u8 lbl_80205DAC[0x40-0xC];
+struct Struct80205DAC
+{
+    u32 unk0;  // + 0xC
+    u8 unk4;   // + 0x10
+    u8 unk5;   // + 0x11
+    u8 unk6;   // + 0x12
+    u8 unk7;   // + 0x13
+    u8 unk8;   // + 0x14
+    u8 unk9;   // + 0x15
+    u8 unkA;   // + 0x16
+    u8 fillerB[1];
+    u32 unkC;  // + 0x18
+    u32 unk10;  // + 0x1C
+    GXColor unk14;  // + 0x20
+    GXColor unk18;  // + 0x24
+    //u8 filler1C[0x1C-0x14];
+    float unk1C;
+    u8 unk20;  // + 2C
+    u8 filler21[3];
+    u32 unk24;  // + 30
+    u8 unk28;  // +34
+    u8 filler29[0x34-0x29];
+};
+struct Struct80205DAC lbl_80205DAC;
 u8 lzHeader[0x20];
 
 #pragma force_active off
@@ -17,6 +43,7 @@ FORCE_BSS_ORDER(lbl_80205DA0)
 FORCE_BSS_ORDER(lbl_80205DAC)
 FORCE_BSS_ORDER(lzHeader)
 
+// struct or array? not sure...
 float lbl_801B7978[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 struct NLObj1_child_child_sub
@@ -49,7 +76,7 @@ struct NLObj2
     struct TPL *unk0;
 };
 
-struct Struct80030F88_sub
+struct Struct80031210_sub
 {
     s32 unk0;
     u8 filler4[4];
@@ -62,17 +89,7 @@ struct Struct80030F88_sub
     u32 unk4C;
 };
 
-struct Struct80030F88
-{
-    s32 unk0;
-    u32 unk4;
-    u8 filler8[4];
-   // GXTexObj *unkC;
-};
-
-extern void func_8009AD24(int);
-
-void func_80031070(struct Struct80030F88 *a, struct TPL *b);
+void lbl_80033C8C(struct UnkStruct18 *);
 
 #pragma force_active on
 void func_80030AC4(float a)
@@ -324,11 +341,11 @@ lbl_80030F60:
 #pragma peephole on
 #endif
 
-void func_80030F88(struct Struct80030F88 *a)
+void func_80030F88(struct Struct80031210 *a)
 {
     if (a->unk0 != -1)
     {
-        struct Struct80030F88_sub *r5 = (void *)((u8 *)a + 0x18);
+        struct Struct80031210_sub *r5 = (void *)((u8 *)a + 0x18);
         BOOL r6 = FALSE;
         BOOL r7 = FALSE;
         BOOL r8 = TRUE;
@@ -361,13 +378,13 @@ void func_80030F88(struct Struct80030F88 *a)
     }
 }
 
-void func_80031070(struct Struct80030F88 *a, struct TPL *b)
+void func_80031070(struct Struct80031210 *a, struct TPL *b)
 {
     u8 unused[8];
 
     if (a->unk0 != -1)
     {
-        struct Struct80030F88_sub *r30 = (void *)((u8 *)a + 0x18);
+        struct Struct80031210_sub *r30 = (void *)((u8 *)a + 0x18);
 
         while (r30->unk0 != 0)
         {
@@ -437,11 +454,398 @@ void func_80031070(struct Struct80030F88 *a, struct TPL *b)
     }
 }
 
+void func_80031210(struct Struct80031210 *a)
+{
+    u32 *temp;
+
+    if (a->unk0 != -1)
+    {
+        lbl_801B7978[7] = lbl_801B7978[6];
+        if (lbl_801B7978[6] == 1.0f)
+        {
+            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+                return;
+        }
+        else
+        {
+            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            {
+                lbl_801B7978[6] = 1.0f;
+                return;
+            }
+            lbl_801B7978[6] = 1.0f;
+        }
+        temp = &a->unk4;
+        if (a->unk4 & (1<<(31-0x16)))
+            func_80033B7C(a);
+        if (*temp & (1<<(31-0x17)))
+        {
+            struct UnkStruct18 *r29;
+            int r28 = func_80085698(&a->unk8);
+            r29 = func_80085B88(0x5C);
+
+            r29->unk4 = lbl_80033C8C;
+            r29->unk8 = a;
+            r29->unk3C.x = lbl_801B7978[0];
+            r29->unk3C.y = lbl_801B7978[1];
+            r29->unk3C.z = lbl_801B7978[2];
+            r29->unk48 = func_800223D0();
+            r29->unk4C.x = lbl_80205DA0.x;
+            r29->unk4C.y = lbl_80205DA0.y;
+            r29->unk4C.z = lbl_80205DA0.z;
+            r29->unk58 = lbl_802F1EEC;
+            mathutil_mtxA_to_mtx(r29->unkC);
+            func_80085B78(r28, r29);
+        }
+    }
+}
+
+Mtx lbl_801B79B4 =
+{
+    {1,  0,  0,  0},
+    {0, -1,  0,  1},
+    {0,  0,  1,  0},
+};
+
+void func_80031350(struct Struct80031210 *a)
+{
+    struct Struct80031210_sub *r30;
+
+    if (a->unk0 != -1)
+    {
+        lbl_801B7978[7] = lbl_801B7978[6];
+        if (lbl_801B7978[6] == 1.0f)
+        {
+            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+                return;
+        }
+        else
+        {
+            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            {
+                lbl_801B7978[6] = 1.0f;
+                return;
+            }
+        }
+        if (a->unk4 & (1<<(31-0x1E)))
+        {
+            func_8009A9B4(0x2A00);
+            lbl_80205DAC.unk0 = 1;
+        }
+        else
+        {
+            func_8009A9B4(0x2600);
+            lbl_80205DAC.unk0 = 0;
+        }
+
+        func_800317A4();
+        GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+        r30 = (void *)((u8 *)a + 0x18);
+        while (r30->unk0 != 0)
+        {
+            struct Struct80031210_sub *next;
+            void *unknown;
+
+            func_80031A58(r30);
+            unknown = ((u8 *)r30 + 0x50);
+            next = (void *)((u8 *)r30 + 0x50 + r30->unk4C);
+            switch (r30->unk24)
+            {
+            case -2:
+                break;
+            case -3:
+                func_80032474(unknown, next);
+                break;
+            default:
+                func_8003209C(unknown, next);
+                break;
+            }
+            r30 = next;
+        }
+        func_800341B8();
+    }
+}
+
+void lbl_80033E6C(struct UnkStruct19 *);
+
+void func_800314B8(struct Struct80031210 *a, float b)
+{
+    struct UnkStruct19 *r29;
+    int r28;
+
+    if (a->unk0 != -1)
+    {
+        lbl_801B7978[7] = lbl_801B7978[6];
+        if (lbl_801B7978[6] == 1.0f)
+        {
+            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+                return;
+        }
+        else
+        {
+            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            {
+                lbl_801B7978[6] = 1.0f;
+                return;
+            }
+            lbl_801B7978[6] = 1.0f;
+        }
+
+        r28 = func_80085698(&a->unk8);
+        r29 = func_80085B88(0x60);
+
+        r29->unk4 = lbl_80033E6C;
+        r29->unk8 = a;
+        r29->unk48 = b;
+        r29->unk3C.x = lbl_801B7978[0];
+        r29->unk3C.y = lbl_801B7978[1];
+        r29->unk3C.z = lbl_801B7978[2];
+        r29->unk4C = func_800223D0();
+        r29->unk50.x = lbl_80205DA0.x;
+        r29->unk50.y = lbl_80205DA0.y;
+        r29->unk50.z = lbl_80205DA0.z;
+        r29->unk5C = lbl_802F1EEC;
+        mathutil_mtxA_to_mtx(r29->unkC);
+        func_80085B78(r28, r29);
+    }
+}
+
+void func_800315E4(struct Struct80031210 *a, float b)
+{
+    struct Struct80031210_sub *r29;
+
+    if (a->unk0 != -1)
+    {
+        lbl_801B7978[7] = lbl_801B7978[6];
+        if (lbl_801B7978[6] == 1.0f)
+        {
+            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+                return;
+        }
+        else
+        {
+            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            {
+                lbl_801B7978[6] = 1.0f;
+                return;
+            }
+        }
+        if (a->unk4 & (1<<(31-0x1E)))
+        {
+            func_8009A9B4(0x2A00);
+            lbl_80205DAC.unk0 = 1;
+        }
+        else
+        {
+            func_8009A9B4(0x2600);
+            lbl_80205DAC.unk0 = 0;
+        }
+
+        lbl_80205DAC.unk1C = b;
+        func_80032A80();
+        GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+        r29 = (void *)((u8 *)a + 0x18);
+        while (r29->unk0 != 0)
+        {
+            struct Struct80031210_sub *next;
+            void *unknown;
+
+            func_80032D44(r29);
+            unknown = ((u8 *)r29 + 0x50);
+            next = (void *)((u8 *)r29 + 0x50 + r29->unk4C);
+            switch (r29->unk24)
+            {
+            case -2:
+                break;
+            case -3:
+                func_800333F0(unknown, next);
+                break;
+            default:
+                func_8003209C(unknown, next);
+                break;
+            }
+            r29 = next;
+        }
+        func_800341B8();
+    }
+}
+
+void func_80031764(struct Struct80031210 *a)
+{
+    func_80031210(a);
+}
+
+void func_80031784(struct Struct80031210 *a)
+{
+    func_80031350(a);
+}
+
+u8 lbl_801B79E4[] =
+{
+    0x00, 0x00, 0x00, 0x09,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x0A,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x0D,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0xFF,
+    0x00, 0x00, 0x00, 0x01,
+};
+u8 lbl_801B7A04[] =
+{
+    0x00, 0x00, 0x00, 0x09,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0A,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0D,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0xFF,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+};
+u8 lbl_801B7A44[] =
+{
+    0x00, 0x00, 0x00, 0x09,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x0B,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x0D,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0xFF,
+    0x00, 0x00, 0x00, 0x01,
+};
+u8 lbl_801B7A64[] =
+{
+    0x00, 0x00, 0x00, 0x09,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0B,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x05,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0D,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0xFF,
+    0x00, 0x00, 0x00, 0x01,
+    0x00, 0x00, 0x00, 0x04,
+    0x00, 0x00, 0x00, 0x00,
+};
+
+void *lbl_801B7AA4[] =
+{
+    lbl_801B79E4,
+    lbl_801B7A04,
+    lbl_801B7A44,
+    lbl_801B7A64,
+    NULL,
+};
+
+u32 lbl_801B7AB8[] = { 1, 2, 3, 4, 5, 6, 7 };
+u32 lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+s32 lbl_801B7AF4[] =
+{
+    GX_NEVER,
+    GX_GEQUAL,
+    GX_EQUAL,
+    GX_GEQUAL,
+    GX_LEQUAL, 
+    GX_NEQUAL, 
+    GX_LEQUAL, 
+    GX_ALWAYS
+};
+u32 lbl_801B7B14[] = { 3, 0, 2, 1, 0 };
+
+extern GXColor lbl_802F1EF4;
+extern float lbl_802F1EF8;
+extern float lbl_802F1EFC;
+extern u32 lbl_802F1EE8;
+extern u32 lbl_802F1EF0;
+
+void func_800317A4(void)
+{
+    GXColor sp8;
+
+    lbl_80205DAC.unk4 = 0;
+    lbl_80205DAC.unk5 = 1;
+    lbl_80205DAC.unk6 = 0;
+    func_8009E110(0, lbl_801B7AB8[0], lbl_801B7AD4[0], 0);
+    lbl_80205DAC.unk20 = zMode->compareEnable;
+    lbl_80205DAC.unk24 = zMode->compareFunc;
+    lbl_80205DAC.unk28 = zMode->updateEnable;
+    lbl_80205DAC.unk7 = 4;
+    lbl_80205DAC.unk8 = 0;
+
+    if ((!lbl_80205DAC.unk8) != zMode->updateEnable
+     || zMode->compareFunc   != lbl_801B7AF4[lbl_80205DAC.unk7]
+     || zMode->compareEnable != GX_ENABLE)
+    {
+        GXSetZMode(GX_ENABLE, lbl_801B7AF4[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
+        zMode->compareEnable = GX_ENABLE;
+        zMode->compareFunc   = lbl_801B7AF4[lbl_80205DAC.unk7];
+        zMode->updateEnable  = (!lbl_80205DAC.unk8);
+    }
+
+    if (lbl_802F1EEC != 0)
+        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    else
+        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+
+    lbl_80205DAC.unkA = 2;
+    func_8009E094(lbl_801B7B14[2]);
+    lbl_80205DAC.unkC = 0;
+    lbl_80205DAC.unk10 = 0;
+
+    lbl_80205DAC.unk14.r = lbl_801B7978[0] * 255.0f;
+    lbl_80205DAC.unk14.g = lbl_801B7978[1] * 255.0f;
+    lbl_80205DAC.unk14.b = lbl_801B7978[2] * 255.0f;
+    lbl_80205DAC.unk14.a = 255;
+    GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.unk14);
+
+    sp8.r = lbl_80205DAC.unk18.r = 0;
+    sp8.g = lbl_80205DAC.unk18.g = 0;
+    sp8.b = lbl_80205DAC.unk18.b = 0;
+    sp8.a = lbl_80205DAC.unk18.a = lbl_80205DAC.unk14.a;
+    GXSetChanAmbColor(GX_COLOR0A0, sp8);
+
+    lbl_80205DAC.unk9 = 0;
+    GXSetChanCtrl(
+        GX_COLOR0A0,   // chan
+        GX_ENABLE,     // enable
+        GX_SRC_REG,    // amb_src
+        GX_SRC_REG,    // mat_src
+        lbl_802F1EE8,  // light_mask
+        GX_DF_CLAMP,   // diff_fn
+        GX_AF_SPOT);   // attn_fn
+    GXSetTevDirect(GX_TEVSTAGE0);
+    func_8009E2C8(0, 0, 0);
+    func_8009F2C8(1);
+    GXSetNumTexGens(1);
+    GXSetNumIndStages(0);
+    GXSetNumChans(1);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
+}
+
 //const float lbl_802F32E4 = 0.0f;
-const float lbl_802F32E8 = 1.0f;
-const float lbl_802F32EC = 0.10000000149011612f;
-const float lbl_802F32F0 = 20000.0f;
-const float lbl_802F32F4 = 100.0f;
-const float lbl_802F32F8 = 255.0f;
+//const float lbl_802F32E8 = 1.0f;
+//const float lbl_802F32EC = 0.10000000149011612f;
+//const float lbl_802F32F0 = 20000.0f;
+//const float lbl_802F32F4 = 100.0f;
+//const float lbl_802F32F8 = 255.0f;
 const double lbl_802F3300 = 4503599627370496.0;
 const float lbl_802F3308 = 10430.3779296875f;

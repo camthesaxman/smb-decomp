@@ -470,7 +470,6 @@ lbl_800311FC:
 /* 80031204 0002D124  38 21 00 40 */	addi r1, r1, 0x40
 /* 80031208 0002D128  7C 08 03 A6 */	mtlr r0
 /* 8003120C 0002D12C  4E 80 00 20 */	blr
-.endif
 
 .global func_80031210
 func_80031210:
@@ -640,14 +639,14 @@ lbl_80031440:
 /* 80031468 0002D388  2C 00 FF FD */	cmpwi r0, -3
 /* 8003146C 0002D38C  40 80 00 08 */	bge lbl_80031474
 /* 80031470 0002D390  48 00 00 10 */	b lbl_80031480
-lbl_80031474:
+lbl_80031474:  ;# -3
 /* 80031474 0002D394  7F E4 FB 78 */	mr r4, r31
 /* 80031478 0002D398  48 00 0F FD */	bl func_80032474
 /* 8003147C 0002D39C  48 00 00 0C */	b lbl_80031488
-lbl_80031480:
+lbl_80031480:  ;# def
 /* 80031480 0002D3A0  7F E4 FB 78 */	mr r4, r31
 /* 80031484 0002D3A4  48 00 0C 19 */	bl func_8003209C
-lbl_80031488:
+lbl_80031488:  ;# -2
 /* 80031488 0002D3A8  7F FE FB 78 */	mr r30, r31
 lbl_8003148C:
 /* 8003148C 0002D3AC  80 1E 00 00 */	lwz r0, 0(r30)
@@ -875,7 +874,9 @@ func_80031784:
 /* 80031798 0002D6B8  38 21 00 08 */	addi r1, r1, 8
 /* 8003179C 0002D6BC  7C 08 03 A6 */	mtlr r0
 /* 800317A0 0002D6C0  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global func_800317A4
 func_800317A4:
 /* 800317A4 0002D6C4  7C 08 02 A6 */	mflr r0
@@ -1055,6 +1056,7 @@ lbl_8003190C:
 /* 80031A4C 0002D96C  38 21 00 50 */	addi r1, r1, 0x50
 /* 80031A50 0002D970  7C 08 03 A6 */	mtlr r0
 /* 80031A54 0002D974  4E 80 00 20 */	blr
+.endif
 
 .global func_80031A58
 func_80031A58:
@@ -3419,7 +3421,8 @@ lbl_80033C64:
 /* 80033C80 0002FBA0  7C 08 03 A6 */	mtlr r0
 /* 80033C84 0002FBA4  38 21 00 18 */	addi r1, r1, 0x18
 /* 80033C88 0002FBA8  4E 80 00 20 */	blr
-lbl_80033C8C:
+
+glabel lbl_80033C8C
 /* 80033C8C 0002FBAC  7C 08 02 A6 */	mflr r0
 /* 80033C90 0002FBB0  3C 80 80 20 */	lis r4, lbl_80205DA0@ha
 /* 80033C94 0002FBB4  90 01 00 04 */	stw r0, 4(r1)
@@ -3552,7 +3555,8 @@ lbl_80033E44:
 /* 80033E60 0002FD80  7C 08 03 A6 */	mtlr r0
 /* 80033E64 0002FD84  38 21 00 18 */	addi r1, r1, 0x18
 /* 80033E68 0002FD88  4E 80 00 20 */	blr
-lbl_80033E6C:
+
+glabel lbl_80033E6C
 /* 80033E6C 0002FD8C  7C 08 02 A6 */	mflr r0
 /* 80033E70 0002FD90  3C 80 80 20 */	lis r4, lbl_80205DA0@ha
 /* 80033E74 0002FD94  90 01 00 04 */	stw r0, 4(r1)
@@ -4112,7 +4116,6 @@ lbl_801B79A4:
 glabel string_cannot_OSAlloc_2
 	.asciz "cannot OSAlloc"
 	.balign 4
-.endif
 
     .balign 4
 .global lbl_801B79B4
@@ -4122,14 +4125,17 @@ lbl_801B79B4:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+    
 	.4byte 0
 	.byte 0xBF, 0x80, 0x00, 0x00
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00
+    
 	.4byte 0
 	.4byte 0
 	.byte 0x3F, 0x80, 0x00, 0x00
 	.4byte 0
+
 glabel lbl_801B79E4
 	.byte 0x00, 0x00, 0x00, 0x09
 	.byte 0x00, 0x00, 0x00, 0x01
@@ -4182,11 +4188,13 @@ glabel lbl_801B7A64
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x00, 0x00, 0x04
 	.4byte 0
+glabel lbl_801B7AA4
 	.4byte lbl_801B79E4  ;# ptr
 	.4byte lbl_801B7A04  ;# ptr
 	.4byte lbl_801B7A44  ;# ptr
 	.4byte lbl_801B7A64  ;# ptr
 	.4byte 0
+glabel lbl_801B7AB8
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x00, 0x00, 0x00, 0x03
@@ -4194,6 +4202,7 @@ glabel lbl_801B7A64
 	.byte 0x00, 0x00, 0x00, 0x05
 	.byte 0x00, 0x00, 0x00, 0x06
 	.byte 0x00, 0x00, 0x00, 0x07
+glabel lbl_801B7AD4
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x00, 0x00, 0x02
@@ -4202,6 +4211,7 @@ glabel lbl_801B7A64
 	.byte 0x00, 0x00, 0x00, 0x05
 	.byte 0x00, 0x00, 0x00, 0x06
 	.byte 0x00, 0x00, 0x00, 0x07
+glabel lbl_801B7AF4
 	.4byte 0
 	.byte 0x00, 0x00, 0x00, 0x06
 	.byte 0x00, 0x00, 0x00, 0x02
@@ -4211,7 +4221,7 @@ glabel lbl_801B7A64
 	.byte 0x00, 0x00, 0x00, 0x03
 	.byte 0x00, 0x00, 0x00, 0x07
 
-.global lbl_801B7B14
+.global lbl_801B7B14  ;# u32 array
 lbl_801B7B14:
 	# ROM: 0x1B4B14
 	.byte 0x00, 0x00, 0x00, 0x03
@@ -4219,6 +4229,7 @@ lbl_801B7B14:
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x00, 0x00, 0x00, 0x01
 	.4byte 0
+.endif
 
 .section .bss
 

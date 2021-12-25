@@ -206,6 +206,7 @@ struct TPL
     /*0x08*/ u8 *fileData;  // raw file data
     /*0x0C*/ GXTexObj *texObjs;  // only used by bitmap.c? avdisp.c seems to think TPL struct is only 12 bytes.
 };
+// maybe bitmap.c has a different struct that "contains" TPL?
 
 // load.c
 struct ARAMBlock;
@@ -472,6 +473,33 @@ struct UnkStruct17
     GXColor unk68;
     GXColor unk6C;
     u32 unk70;
+};
+
+// like UnkStruct17, but with a different fields starting at 0x3C.
+// possibly has a union?
+struct UnkStruct18
+{
+    u8 filler0[4];
+    void (*unk4)(struct UnkStruct18 *);
+    void *unk8;
+    Mtx unkC;
+    Vec unk3C;
+    u32 unk48;
+    Vec unk4C;
+    u32 unk58;
+};
+
+struct UnkStruct19
+{
+    u8 filler0[4];
+    void (*unk4)(struct UnkStruct19 *);
+    void *unk8;
+    Mtx unkC;
+    Vec unk3C;
+    float unk48;
+    u32 unk4C;
+    Vec unk50;
+    u32 unk5C;
 };
 
 struct Struct80092B98
@@ -868,4 +896,12 @@ struct Struct802F1F44
     u32 unkC;
     u8 filler10[0x14-0x10];
     void *unk14;
+};
+
+struct Struct80031210
+{
+    s32 unk0;
+    u32 unk4;
+    Vec unk8;
+    float unk14;
 };

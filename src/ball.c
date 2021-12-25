@@ -1078,13 +1078,13 @@ void func_80038840(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            u32 *var = &lbl_802F1B04[ball->unk66];
+            void **var = &lbl_802F1B04[ball->unk66];
             //func_80033B14(lbl_802F1B04_->unk4[ball->unk66], 0.3f);
             func_80033B14(var[1], 0.3f);
         }
         else
         {
-            u32 *var = &lbl_802F1B04[ball->unk66];
+            void **var = &lbl_802F1B04[ball->unk66];
             //func_80033AD4(lbl_802F1B04_->unk4[ball->unk66]);
             func_80033AD4(var[1]);
         }

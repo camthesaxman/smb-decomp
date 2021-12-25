@@ -1166,7 +1166,7 @@ struct Struct802F1B04
 };
 extern struct Struct802F1B04 *lbl_802F1B04_;
 */
-extern u32 *lbl_802F1B04;  // doesn't match as a struct, apparently
+extern struct Struct80031210 **lbl_802F1B04;  // doesn't match as a struct, apparently
 extern long memHeap4Size;
 extern long memHeap3Size;
 extern long memHeap2Size;
@@ -1366,7 +1366,7 @@ extern float lbl_802F1ECC;
 extern u32 dipSwitches;
 extern u32 lbl_802F1EE0;
 // extern ? lbl_802F1EE8;
-// extern ? lbl_802F1EEC;
+extern s32 lbl_802F1EEC;
 // extern ? lbl_802F1EF0;
 // extern ? lbl_802F1EF4;
 // extern ? lbl_802F1EF8;
