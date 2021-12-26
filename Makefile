@@ -99,7 +99,7 @@ SOURCES := \
 	asm/sound.s \
 	asm/code_2.s \
 	src/nl2ngc.c \
-	asm/nl2ngc.s \
+	asm/motload_pre.s \
 	src/motload.c \
 	asm/motload.s \
 	src/ball.c \

@@ -1847,11 +1847,69 @@ void func_80033F44(struct Struct80031210 *a)
     func_800341B8();
 }
 
-//const float lbl_802F32E4 = 0.0f;
-//const float lbl_802F32E8 = 1.0f;
-//const float lbl_802F32EC = 0.10000000149011612f;
-//const float lbl_802F32F0 = 20000.0f;
-//const float lbl_802F32F4 = 100.0f;
-//const float lbl_802F32F8 = 255.0f;
-//const double lbl_802F3300 = 4503599627370496.0;
-const float lbl_802F3308 = 10430.3779296875f;
+void func_8003404C(struct Struct80031210 *a, int (*func)())
+{
+    struct Struct80031210_sub *r30;
+
+    if (a->unk0 != -1)
+    {
+        lbl_801B7978[7] = lbl_801B7978[6];
+        if (lbl_801B7978[6] == 1.0f)
+        {
+            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+                return;
+        }
+        else
+        {
+            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[7]) == 0)
+            {
+                lbl_801B7978[6] = 1.0f;
+                return;
+            }
+        }
+        if (a->unk4 & (1<<(31-0x1E)))
+        {
+            g_set_vtx_desc(
+                (1 << GX_VA_POS)
+              | (1 << GX_VA_CLR0)
+              | (1 << GX_VA_TEX0));
+            lbl_80205DAC.unk0 = 1;
+        }
+        else
+        {
+            g_set_vtx_desc(
+                (1 << GX_VA_POS)
+              | (1 << GX_VA_NRM)
+              | (1 << GX_VA_TEX0));
+            lbl_80205DAC.unk0 = 0;
+        }
+        lbl_80205DAC.unk1C = 1.0f;
+
+        r30 = (void *)((u8 *)a + 0x18);
+        while (r30->unk0 != 0)
+        {
+            struct Struct80031210_sub *next = (void *)((u8 *)r30 + 0x50 + r30->unk4C);
+
+            if (func(r30, r30->unk4C) == 0)
+                r30 = next;
+            else
+            {
+                void *unknown = ((u8 *)r30 + 0x50);
+                switch (r30->unk24)
+                {
+                case -2:
+                    break;
+                case -3:
+                    func_80032474((void *)unknown, (void *)next);
+                    break;
+                default:
+                    func_8003209C((void *)unknown, (void *)next);
+                    break;
+                }
+                r30 = next;
+            }
+        }
+    }
+}
+
+void func_800341B8(void) {}

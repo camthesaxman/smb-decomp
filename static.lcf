@@ -42,15 +42,6 @@ FORCEACTIVE
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }
 
-/* nl2ngc.c */
-lbl_802F32E4 = 0x802F32E4;
-lbl_802F32E8 = 0x802F32E8;
-lbl_802F32EC = 0x802F32EC;
-lbl_802F32F0 = 0x802F32F0;
-lbl_802F32F4 = 0x802F32F4;
-lbl_802F32F8 = 0x802F32F8;
-lbl_802F3300 = 0x802F3300;
-
 /* sprite.s */
 lbl_802F4A70 = 0x802F4A70;
 lbl_802F4A74 = 0x802F4A74;
