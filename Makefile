@@ -119,6 +119,7 @@ SOURCES := \
 	asm/load.s \
 	asm/mini.s \
 	src/relocation.c \
+	src/code_3.c \
 	asm/code_3.s \
 	asm/mini_commend.s \
 	src/memcard.c \

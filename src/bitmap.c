@@ -251,7 +251,9 @@ void func_800263A4(void)
     GXColor green = { 0, 255, 0, 255 };
 
     func_8009AA20();
-    g_set_vtx_desc(0x2200);
+    g_set_vtx_desc(
+        (1 << GX_VA_POS)
+      | (1 << GX_VA_TEX0));
     GXSetNumChans(0);
     GXSetNumTexGens(1);
     func_8009F2C8(1);

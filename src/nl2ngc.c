@@ -516,12 +516,18 @@ void func_80031350(struct Struct80031210 *a)
         }
         if (a->unk4 & (1<<(31-0x1E)))
         {
-            g_set_vtx_desc(0x2A00);
+            g_set_vtx_desc(
+                (1 << GX_VA_POS)
+              | (1 << GX_VA_CLR0)
+              | (1 << GX_VA_TEX0));
             lbl_80205DAC.unk0 = 1;
         }
         else
         {
-            g_set_vtx_desc(0x2600);
+            g_set_vtx_desc(
+                (1 << GX_VA_POS)
+              | (1 << GX_VA_NRM)
+              | (1 << GX_VA_TEX0));
             lbl_80205DAC.unk0 = 0;
         }
 
@@ -622,12 +628,18 @@ void func_800315E4(struct Struct80031210 *a, float b)
         }
         if (a->unk4 & (1<<(31-0x1E)))
         {
-            g_set_vtx_desc(0x2A00);
+            g_set_vtx_desc(
+                (1 << GX_VA_POS)
+              | (1 << GX_VA_CLR0)
+              | (1 << GX_VA_TEX0));
             lbl_80205DAC.unk0 = 1;
         }
         else
         {
-            g_set_vtx_desc(0x2600);
+            g_set_vtx_desc(
+                (1 << GX_VA_POS)
+              | (1 << GX_VA_NRM)
+              | (1 << GX_VA_TEX0));
             lbl_80205DAC.unk0 = 0;
         }
 

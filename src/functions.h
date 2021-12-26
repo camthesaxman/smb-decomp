@@ -1322,7 +1322,7 @@ void func_800972CC(void);
 void begin_display_list(void *, u32);
 u32 end_display_list(void);
 // ? func_8009A9A8();
-void g_set_vtx_desc();
+void g_set_vtx_desc(u32);
 void func_8009AA20(void);
 void func_8009AA24();
 void func_8009AAB0(void);

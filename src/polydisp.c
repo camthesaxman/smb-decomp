@@ -503,7 +503,7 @@ void func_8000C144(struct Struct8000C144 *a)
     float z = a->unk10;
     u8 filler[8];
     
-    g_set_vtx_desc(0x200);
+    g_set_vtx_desc((1<< GX_VA_POS));
     func_8009E110(1, 0, 1, 0);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7

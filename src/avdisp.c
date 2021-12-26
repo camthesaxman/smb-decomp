@@ -956,7 +956,7 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
 
 static inline struct GMAMeshHeader *init_mesh_render_flags(struct GMAMeshHeader *mesh)
 {
-    if (mesh->vtxFlags & 0x800)
+    if (mesh->vtxFlags & (1 << GX_VA_CLR0))
         mesh->renderFlags |= 0x100;
     if (mesh->unk12 == 0)
         mesh->renderFlags |= 0x80;

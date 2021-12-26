@@ -1518,7 +1518,7 @@ extern void *lbl_802F2154;
 // extern ? lbl_802F2188;
 // extern ? lbl_802F2190;
 // extern ? lbl_802F2194;
-// extern ? lbl_802F2198;
+extern u32 lbl_802F2198;
 extern struct ZMode *zMode;
 // extern ? lbl_802F21A8;
 // extern ? memcardGameData;
