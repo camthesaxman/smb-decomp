@@ -294,7 +294,7 @@ void func_80031764(struct Struct80031210 *a);
 void func_80031784(struct Struct80031210 *a);
 void func_800317A4(void);
 void func_80031A58(struct Struct80031210_sub *);
-void func_8003209C(void *, void *);
+void func_8003209C(void *, void *b);
 void func_80032474(void *, void *);
 void func_80032A80(void);
 void func_80032D44(void *);

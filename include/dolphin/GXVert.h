@@ -33,6 +33,13 @@ static inline void GXPosition3f32(const f32 x, const f32 y, const f32 z)
     GXWGFifo.f32 = z;
 }
 
+static inline void GXNormal3f32(const f32 x, const f32 y, const f32 z)
+{
+    GXWGFifo.f32 = x;
+    GXWGFifo.f32 = y;
+    GXWGFifo.f32 = z;
+}
+
 static inline void GXTexCoord2s16(const s16 u, const s16 v)
 {
     GXWGFifo.s16 = u;

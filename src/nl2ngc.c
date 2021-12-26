@@ -13,7 +13,7 @@ Vec lbl_80205DA0;
 //u8 lbl_80205DAC[0x40-0xC];
 struct Struct80205DAC
 {
-    u32 unk0;  // + 0xC
+    s32 unk0;  // + 0xC
     u8 unk4;   // + 0x10
     u8 unk5;   // + 0x11
     u8 unk6;   // + 0x12
@@ -553,7 +553,7 @@ void func_80031350(struct Struct80031210 *a)
                 func_80032474(unknown, next);
                 break;
             default:
-                func_8003209C(unknown, next);
+                func_8003209C((void *)unknown, (void *)next);
                 break;
             }
             r30 = next;
@@ -666,7 +666,7 @@ void func_800315E4(struct Struct80031210 *a, float b)
                 func_800333F0(unknown, next);
                 break;
             default:
-                func_8003209C(unknown, next);
+                func_8003209C((void *)unknown, (void *)next);
                 break;
             }
             r29 = next;
@@ -982,6 +982,249 @@ void func_80031A58(struct Struct80031210_sub *a)
         }
     }
 }
+
+struct Struct8003209C
+{
+    u32 unk0;
+    u32 unk4;
+};
+
+struct SomeVtxStruct
+{
+    float x, y, z;
+    float nx, ny, nz;
+    float s, t;
+};
+
+void func_8003209C(void *start, void *end)
+{
+    struct Struct8003209C *dl = start;
+
+    g_set_vtx_desc(
+        (1 << GX_VA_POS)
+      | (1 << GX_VA_NRM)
+      | (1 << GX_VA_TEX0));
+
+    if (lbl_80205DAC.unk0 != 0)
+        lbl_80205DAC.unk0 = 0;
+
+    while (dl < (struct Struct8003209C *)end)
+    {
+        int vtxCount;
+        int i;
+        struct SomeVtxStruct *vtx;
+        u8 *vtxData = (u8 *)dl + 8;
+        u8 r4 = dl->unk0 & 3;
+
+        vtxCount = dl->unk4;
+        if (lbl_80205DAC.unkA != r4)
+        {
+            lbl_80205DAC.unkA = r4;
+            func_8009E094(lbl_801B7B14[r4]);
+        }
+
+        if (dl->unk0 & (1<<(31-0x1B)))
+        {
+            GXBegin(GX_TRIANGLESTRIP, 0, vtxCount);
+            while (vtxCount > 0)
+            {
+                if (*(u32 *)vtxData & 1)
+                {
+                    vtx = (void *)vtxData;
+                    GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                    GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                    GXTexCoord2f32(vtx->s, vtx->t);
+                    vtxData += 32;
+                }
+                else
+                {
+                    vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
+                    GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                    GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                    GXTexCoord2f32(vtx->s, vtx->t);
+                    vtxData += 8;
+                }
+                vtxCount--;
+            }
+        }
+        else if (dl->unk0 & (1<<(31-0x1C)))
+        {
+            GXBegin(GX_TRIANGLES, 0, vtxCount * 3);
+            while (vtxCount > 0)
+            {
+                for (i = 0; i < 3; i++)
+                {
+                    if (*(u32 *)vtxData & 1)
+                    {
+                        vtx = (void *)vtxData;
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        vtxData += 32;
+                    }
+                    else
+                    {
+                        vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        vtxData += 8;
+                    }
+                }
+                vtxCount--;
+            }
+        }
+        else if (dl->unk0 & (1<<(31-0x1D)))
+        {
+            GXBegin(GX_QUADS, 0, vtxCount * 4);
+            while (vtxCount > 0)
+            {
+                for (i = 4; i > 0; i--)
+                {
+                    if (*(u32 *)vtxData & 1)
+                    {
+                        vtx = (void *)vtxData;
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        vtxData += 32;
+                    }
+                    else
+                    {
+                        vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        vtxData += 8;
+                    }
+                }
+                vtxCount--;
+            }
+        }
+        dl = (void *)vtxData;
+    }
+}
+
+/*
+void func_8003209C(struct Struct8003209C *a, struct Struct8003209C *b)
+{
+    int r29;
+    struct SomeVtxStruct *vtx;
+    u32 offset;
+    int i;
+
+    g_set_vtx_desc(
+        (1 << GX_VA_POS)
+      | (1 << GX_VA_NRM)
+      | (1 << GX_VA_TEX0));
+    if (lbl_80205DAC.unk0 != 0)
+        lbl_80205DAC.unk0 = 0;
+
+    while (a < b)
+    {
+        u8 *ptr = (u8 *)a + 8;  // r28
+        u8 r4 = a->unk0 & 3;
+        r29 = a->unk4;
+        if (lbl_80205DAC.unkA != r4)
+        {
+            lbl_80205DAC.unkA = r4;
+            func_8009E094(lbl_801B7B14[r4]);
+        }
+        //lbl_80032120
+        if (a->unk0 & (1<<(31-0x1B)))
+        {
+            GXBegin(GX_TRIANGLESTRIP, 0, r29);
+            while (r29 > 0)
+            {
+                if (*(u32 *)ptr & 1)
+                {
+                    vtx = (void *)ptr;
+
+                    GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                    GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                    GXTexCoord2f32(vtx->s, vtx->t);
+                    ptr += 32;
+                }
+                else
+                {
+                    offset = *(u32 *)(ptr + 4);
+                    vtx = (void *)(ptr + offset + 8);
+
+                    GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                    GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                    GXTexCoord2f32(vtx->s, vtx->t);
+                    ptr += 8;
+                }
+                r29--;
+            }
+        }
+        //lbl_800321F4
+        else if (a->unk0 & (1<<(31-0x1C)))
+        {
+            GXBegin(GX_TRIANGLES, 0, r29 * 3);
+            while (r29 > 0)
+            {
+                for (i = 0; i < 3; i++)
+                {
+                    if (*(u32 *)ptr & 1)
+                    {
+                        vtx = (void *)ptr;
+
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        ptr += 32;
+                    }
+                    else
+                    {
+                        offset = *(u32 *)(ptr + 4);
+                        vtx = (void *)(ptr + offset + 8);
+
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        ptr += 8;
+                    }
+                }
+                r29--;
+            }
+        }
+        //lbl_800322D0
+        else if (a->unk0 & (1<<(31-0x1D)))
+        {
+            GXBegin(GX_QUADS, 0, r29 * 4);
+            while (r29 > 0)
+            {
+                //for (i = 0; i < 4; i++)
+                for (i = 4; i > 0; i--)
+                {
+                    if (*(u32 *)ptr & 1)
+                    {
+                        vtx = (void *)ptr;
+
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        ptr += 32;
+                    }
+                    else
+                    {
+                        offset = *(u32 *)(ptr + 4);
+                        vtx = (void *)(ptr + offset + 8);
+
+                        GXPosition3f32(vtx->x, vtx->y, vtx->z);
+                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        GXTexCoord2f32(vtx->s, vtx->t);
+                        ptr += 8;
+                    }
+                }
+                r29--;
+            }
+        }
+        a = (void *)ptr;
+    }
+}
+*/
 
 //const float lbl_802F32E4 = 0.0f;
 //const float lbl_802F32E8 = 1.0f;

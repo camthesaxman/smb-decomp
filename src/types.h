@@ -924,3 +924,5 @@ struct Struct80031210_sub
     u8 filler3C[0x4C-0x3C];
     u32 unk4C;
 };
+
+struct Struct8003209C;
