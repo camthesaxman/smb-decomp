@@ -192,10 +192,12 @@ void func_80034D88(struct Struct80034D88 *a)
     }
 }
 
+#pragma dont_inline on
 u16 func_80034F44(u16 index)
 {
     return lbl_802F1F00[index - 1].unk0;
 }
+#pragma dont_inline reset
 
 void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struct Struct80034F5C_2 *c, float e, u32 d)
 {

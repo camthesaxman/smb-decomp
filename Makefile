@@ -39,7 +39,7 @@ SYSTEM_INCLUDE_DIRS := include
 RUNTIME_INCLUDE_DIRS := libraries/PowerPC_EABI_Support/Runtime/Inc
 
 ASFLAGS     := -mgekko -I asm
-CFLAGS      := -O4,p -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
+CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
 CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 DOL_LDFLAGS := -nodefaults -fp hard
 REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
@@ -463,18 +463,6 @@ clean:
 	find . -name '*.o' -exec rm {} +
 	find . -name '*.dep' -exec rm {} +
 	find . -name '*.dump' -exec rm {} +
-
-# File-specific compiler flags
-src/ball.o:     CFLAGS += -inline auto
-src/bitmap.o:   CFLAGS += -inline auto
-src/camera.o:   CFLAGS += -inline auto
-src/mathutil.o: CFLAGS += -inline auto
-src/sprite.o:   CFLAGS += -inline auto
-src/avdisp.o:   CFLAGS += -inline auto
-src/DEMOPuts.o: CFLAGS += -inline auto
-src/memcard.o:  CFLAGS += -inline auto
-src/stage.o:    CFLAGS += -inline auto
-src/nl2ngc.o:   CFLAGS += -inline auto
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
