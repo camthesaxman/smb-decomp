@@ -905,3 +905,22 @@ struct Struct80031210
     Vec unk8;
     float unk14;
 };
+
+struct Struct80031210_sub
+{
+    s32 unk0;
+    u32 unk4;
+    u32 unk8;
+    GXTexObj *unkC;
+    u32 unk10;
+    u8 filler14[0x20-0x14];
+    s32 unk20;
+    s32 unk24;
+    float unk28;
+    float unk2C;
+    float unk30;
+    float unk34;
+    float unk38;
+    u8 filler3C[0x4C-0x3C];
+    u32 unk4C;
+};

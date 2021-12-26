@@ -30,8 +30,8 @@ func_8009A9A8:
 /* 8009A9AC 000968CC  90 0D 9F B8 */	stw r0, lbl_802F2198@sda21(r13)
 /* 8009A9B0 000968D0  4E 80 00 20 */	blr
 
-.global func_8009A9B4
-func_8009A9B4:
+.global g_set_vtx_desc
+g_set_vtx_desc:
 /* 8009A9B4 000968D4  7C 08 02 A6 */	mflr r0
 /* 8009A9B8 000968D8  90 01 00 04 */	stw r0, 4(r1)
 /* 8009A9BC 000968DC  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -929,7 +929,7 @@ lbl_8009B68C:
 /* 8009B6AC 000975CC  90 03 00 0C */	stw r0, 0xc(r3)
 lbl_8009B6B0:
 /* 8009B6B0 000975D0  38 60 0A 00 */	li r3, 0xa00
-/* 8009B6B4 000975D4  4B FF F3 01 */	bl func_8009A9B4
+/* 8009B6B4 000975D4  4B FF F3 01 */	bl g_set_vtx_desc
 /* 8009B6B8 000975D8  80 7F 00 04 */	lwz r3, 4(r31)
 /* 8009B6BC 000975DC  80 9F 00 08 */	lwz r4, 8(r31)
 /* 8009B6C0 000975E0  80 BF 00 0C */	lwz r5, 0xc(r31)

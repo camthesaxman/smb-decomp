@@ -22,7 +22,7 @@ struct Struct80205DAC
     u8 unk9;   // + 0x15
     u8 unkA;   // + 0x16
     u8 fillerB[1];
-    u32 unkC;  // + 0x18
+    GXTexObj *unkC;  // + 0x18
     u32 unk10;  // + 0x1C
     GXColor unk14;  // + 0x20
     GXColor unk18;  // + 0x24
@@ -74,19 +74,6 @@ struct NLObj1
 struct NLObj2
 {
     struct TPL *unk0;
-};
-
-struct Struct80031210_sub
-{
-    s32 unk0;
-    u8 filler4[4];
-    u32 unk8;
-    GXTexObj *unkC;
-    u8 filler10[0x20-0x10];
-    s32 unk20;
-    s32 unk24;
-    u8 filler28[0x4C-0x28];
-    u32 unk4C;
 };
 
 void lbl_80033C8C(struct UnkStruct18 *);
@@ -529,12 +516,12 @@ void func_80031350(struct Struct80031210 *a)
         }
         if (a->unk4 & (1<<(31-0x1E)))
         {
-            func_8009A9B4(0x2A00);
+            g_set_vtx_desc(0x2A00);
             lbl_80205DAC.unk0 = 1;
         }
         else
         {
-            func_8009A9B4(0x2600);
+            g_set_vtx_desc(0x2600);
             lbl_80205DAC.unk0 = 0;
         }
 
@@ -635,12 +622,12 @@ void func_800315E4(struct Struct80031210 *a, float b)
         }
         if (a->unk4 & (1<<(31-0x1E)))
         {
-            func_8009A9B4(0x2A00);
+            g_set_vtx_desc(0x2A00);
             lbl_80205DAC.unk0 = 1;
         }
         else
         {
-            func_8009A9B4(0x2600);
+            g_set_vtx_desc(0x2600);
             lbl_80205DAC.unk0 = 0;
         }
 
@@ -753,10 +740,9 @@ void *lbl_801B7AA4[] =
     lbl_801B7A04,
     lbl_801B7A44,
     lbl_801B7A64,
-    NULL,
 };
 
-u32 lbl_801B7AB8[] = { 1, 2, 3, 4, 5, 6, 7 };
+u32 lbl_801B7AB4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 u32 lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 s32 lbl_801B7AF4[] =
 {
@@ -764,9 +750,9 @@ s32 lbl_801B7AF4[] =
     GX_GEQUAL,
     GX_EQUAL,
     GX_GEQUAL,
-    GX_LEQUAL, 
-    GX_NEQUAL, 
-    GX_LEQUAL, 
+    GX_LEQUAL,
+    GX_NEQUAL,
+    GX_LEQUAL,
     GX_ALWAYS
 };
 u32 lbl_801B7B14[] = { 3, 0, 2, 1, 0 };
@@ -784,7 +770,7 @@ void func_800317A4(void)
     lbl_80205DAC.unk4 = 0;
     lbl_80205DAC.unk5 = 1;
     lbl_80205DAC.unk6 = 0;
-    func_8009E110(0, lbl_801B7AB8[0], lbl_801B7AD4[0], 0);
+    func_8009E110(0, lbl_801B7AB4[1], lbl_801B7AD4[0], 0);
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk24 = zMode->compareFunc;
     lbl_80205DAC.unk28 = zMode->updateEnable;
@@ -839,6 +825,150 @@ void func_800317A4(void)
     GXSetNumIndStages(0);
     GXSetNumChans(1);
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
+}
+
+void func_80031A58(struct Struct80031210_sub *a)
+{
+    struct Struct80031210_sub sp20 = *a;
+    GXColor sp1C;
+    u32 r28;
+    u32 r25;
+    u32 r26;
+    u32 r27;
+
+    switch ((sp20.unk0 >> 24) & 7)
+    {
+    case 0:
+        if (lbl_80205DAC.unk4 != 0)
+        {
+            func_8009E110(0, 1, 0, 0);
+            lbl_80205DAC.unk4 = 0;
+            lbl_80205DAC.unk5 = 1;
+            lbl_80205DAC.unk6 = 0;
+        }
+        break;
+    default:
+        r25 = sp20.unk8 >> 29;
+        r27 = (sp20.unk8 >> 26) & 7;
+        if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
+        {
+            func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            lbl_80205DAC.unk4 = 2;
+            lbl_80205DAC.unk5 = r25;
+            lbl_80205DAC.unk6 = r27;
+        }
+        break;
+    }
+
+    r28 = sp20.unk4 >> 29;
+    r26 = sp20.unk4 & 0x4000000;
+    if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
+    {
+        if ((!r26) != zMode->updateEnable
+         || zMode->compareFunc != lbl_801B7AF4[r28]
+         || zMode->compareEnable != GX_ENABLE)
+        {
+            GXSetZMode(GX_ENABLE, lbl_801B7AF4[r28], (!r26));
+            zMode->compareEnable = GX_ENABLE;
+            zMode->compareFunc   = lbl_801B7AF4[r28];
+            zMode->updateEnable  = (!r26);
+        }
+        lbl_80205DAC.unk7 = r28;
+        lbl_80205DAC.unk8 = r26;
+    }
+
+    if (lbl_802F1EEC != 0)
+        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    else
+        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+
+    if (sp20.unk20 < 0)
+    {
+        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        func_8009EA30(0, 4);
+    }
+    else
+    {
+        int r25 = lbl_80205DAC.unk10;
+
+        if (lbl_80205DAC.unkC != sp20.unkC)
+        {
+            lbl_80205DAC.unkC = sp20.unkC;
+            if (--r25 < 0)
+                r25 = 7;
+            lbl_80205DAC.unk10 = r25;
+            func_8009F430(sp20.unkC, r25);
+        }
+        func_8009EFF4(0, 0, r25, 4);
+        switch ((sp20.unk8 >> 6) & 3)
+        {
+        case 0:
+            func_8009EA30(0, 3);
+            break;
+        case 1:
+            func_8009E618(0, 15, 10, 8, 15);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 7, 7, 4);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        case 2:
+            func_8009E618(0, 10, 8, 9, 15);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 7, 7, 5);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        case 3:
+            func_8009E618(0, 15, 10, 8, 15);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 5, 4, 7);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        }
+    }
+
+    sp1C.r = sp20.unk30 * lbl_801B7978[0] * 255.0f;
+    sp1C.g = sp20.unk34 * lbl_801B7978[1] * 255.0f;
+    sp1C.b = sp20.unk38 * lbl_801B7978[2] * 255.0f;
+    sp1C.a = sp20.unk2C * 255.0f;
+    if (lbl_80205DAC.unk14.r != sp1C.r
+     || lbl_80205DAC.unk14.g != sp1C.g
+     || lbl_80205DAC.unk14.b != sp1C.b
+     || lbl_80205DAC.unk14.a != sp1C.a)
+    {
+        GXSetChanMatColor(4, sp1C);
+        lbl_80205DAC.unk14 = sp1C;
+    }
+
+    sp1C.r = sp20.unk28 * lbl_80205DA0.x * 255.0f;
+    sp1C.g = sp20.unk28 * lbl_80205DA0.y * 255.0f;
+    sp1C.b = sp20.unk28 * lbl_80205DA0.z * 255.0f;
+    sp1C.a = lbl_80205DAC.unk14.a;
+    if (lbl_80205DAC.unk18.r != sp1C.r
+     || lbl_80205DAC.unk18.g != sp1C.g
+     || lbl_80205DAC.unk18.b != sp1C.b
+     || lbl_80205DAC.unk18.a != sp1C.a)
+    {
+        GXSetChanAmbColor(4, sp1C);
+        lbl_80205DAC.unk18 = sp1C;
+    }
+
+    if (lbl_80205DAC.unk9 != sp20.unk24)
+    {
+        lbl_80205DAC.unk9 = sp20.unk24;
+        switch (sp20.unk24)
+        {
+        case -1:
+            GXSetChanCtrl(4, 0, 0, 0, 0, 2, 1);
+            break;
+        case -3:
+            GXSetChanCtrl(4, 0, 1, 1, 0, 2, 1);
+            break;
+        case -2:
+        default:
+            GXSetChanCtrl(4, 1, 0, 0, lbl_802F1EE8, 2, 1);
+            break;
+        }
+    }
 }
 
 //const float lbl_802F32E4 = 0.0f;

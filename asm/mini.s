@@ -2339,7 +2339,7 @@ lbl_80095A44:
 /* 80095B20 00091A40  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80095B24 00091A44  48 04 EB 15 */	bl GXLoadTexMtxImm
 /* 80095B28 00091A48  38 60 22 00 */	li r3, 0x2200
-/* 80095B2C 00091A4C  48 00 4E 89 */	bl func_8009A9B4
+/* 80095B2C 00091A4C  48 00 4E 89 */	bl g_set_vtx_desc
 /* 80095B30 00091A50  4B F7 1A 35 */	bl mathutil_mtxA_from_identity
 /* 80095B34 00091A54  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80095B38 00091A58  38 80 00 00 */	li r4, 0
@@ -2646,7 +2646,7 @@ lbl_80095FA4:
 /* 80095FA8 00091EC8  48 00 80 ED */	bl func_8009E094
 /* 80095FAC 00091ECC  48 00 4C E1 */	bl func_8009AC8C
 /* 80095FB0 00091ED0  38 60 22 00 */	li r3, 0x2200
-/* 80095FB4 00091ED4  48 00 4A 01 */	bl func_8009A9B4
+/* 80095FB4 00091ED4  48 00 4A 01 */	bl g_set_vtx_desc
 /* 80095FB8 00091ED8  4B F7 15 AD */	bl mathutil_mtxA_from_identity
 /* 80095FBC 00091EDC  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80095FC0 00091EE0  38 80 00 00 */	li r4, 0
@@ -3254,7 +3254,7 @@ lbl_8009680C:
 /* 800968E4 00092804  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800968E8 00092808  48 04 DD 51 */	bl GXLoadTexMtxImm
 /* 800968EC 0009280C  38 60 22 00 */	li r3, 0x2200
-/* 800968F0 00092810  48 00 40 C5 */	bl func_8009A9B4
+/* 800968F0 00092810  48 00 40 C5 */	bl g_set_vtx_desc
 /* 800968F4 00092814  4B F7 0C 71 */	bl mathutil_mtxA_from_identity
 /* 800968F8 00092818  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800968FC 0009281C  38 80 00 00 */	li r4, 0
@@ -3724,7 +3724,7 @@ lbl_80096FD0:
 /* 80096FD4 00092EF4  48 00 70 C1 */	bl func_8009E094
 /* 80096FD8 00092EF8  48 00 3C B5 */	bl func_8009AC8C
 /* 80096FDC 00092EFC  38 60 22 00 */	li r3, 0x2200
-/* 80096FE0 00092F00  48 00 39 D5 */	bl func_8009A9B4
+/* 80096FE0 00092F00  48 00 39 D5 */	bl g_set_vtx_desc
 /* 80096FE4 00092F04  4B F7 05 81 */	bl mathutil_mtxA_from_identity
 /* 80096FE8 00092F08  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80096FEC 00092F0C  38 80 00 00 */	li r4, 0

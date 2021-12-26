@@ -1230,7 +1230,7 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
         r30 = 1;
     if (model->flags & GCMF_STITCHING)
         func_8008F8A4(mesh->unk20);  // inlined
-    func_8009A9B4(mesh->vtxFlags);
+    g_set_vtx_desc(mesh->vtxFlags);
     dlist = mesh->dispListData;
 
     if (lbl_802F20F0 != NULL)
@@ -1366,7 +1366,7 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct 
         r30 = 0;
     else
         r30 = 2;
-    func_8009A9B4(mesh->vtxFlags);
+    g_set_vtx_desc(mesh->vtxFlags);
 
     if (lbl_802F20F0 != NULL)
     {
