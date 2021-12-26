@@ -40,6 +40,14 @@ static inline void GXNormal3f32(const f32 x, const f32 y, const f32 z)
     GXWGFifo.f32 = z;
 }
 
+static inline void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a)
+{
+    GXWGFifo.u8 = r;
+    GXWGFifo.u8 = g;
+    GXWGFifo.u8 = b;
+    GXWGFifo.u8 = a;
+}
+
 static inline void GXTexCoord2s16(const s16 u, const s16 v)
 {
     GXWGFifo.s16 = u;

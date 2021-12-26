@@ -550,7 +550,7 @@ void func_80031350(struct Struct80031210 *a)
             case -2:
                 break;
             case -3:
-                func_80032474(unknown, next);
+                func_80032474((void *)unknown, (void *)next);
                 break;
             default:
                 func_8003209C((void *)unknown, (void *)next);
@@ -663,7 +663,7 @@ void func_800315E4(struct Struct80031210 *a, float b)
             case -2:
                 break;
             case -3:
-                func_800333F0(unknown, next);
+                func_800333F0((void *)unknown, (void *)next);
                 break;
             default:
                 func_8003209C((void *)unknown, (void *)next);
@@ -996,10 +996,17 @@ struct SomeVtxStruct
     float s, t;
 };
 
-void func_8003209C(void *start, void *end)
+struct SomeVtxStruct2
 {
-    struct Struct8003209C *dl = start;
+    float x, y, z;
+    u8 fillerC[4];
+    u32 color;
+    u8 filler14[4];
+    float s, t;
+};
 
+void func_8003209C(struct Struct8003209C *dl, struct Struct8003209C *end)
+{
     g_set_vtx_desc(
         (1 << GX_VA_POS)
       | (1 << GX_VA_NRM)
@@ -1008,12 +1015,12 @@ void func_8003209C(void *start, void *end)
     if (lbl_80205DAC.unk0 != 0)
         lbl_80205DAC.unk0 = 0;
 
-    while (dl < (struct Struct8003209C *)end)
+    while (dl < end)
     {
         int vtxCount;
         int i;
-        struct SomeVtxStruct *vtx;
         u8 *vtxData = (u8 *)dl + 8;
+        struct SomeVtxStruct *vtx;
         u8 r4 = dl->unk0 & 3;
 
         vtxCount = dl->unk4;
@@ -1105,126 +1112,740 @@ void func_8003209C(void *start, void *end)
     }
 }
 
-/*
-void func_8003209C(struct Struct8003209C *a, struct Struct8003209C *b)
+void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
 {
-    int r29;
-    struct SomeVtxStruct *vtx;
-    u32 offset;
-    int i;
-
     g_set_vtx_desc(
         (1 << GX_VA_POS)
-      | (1 << GX_VA_NRM)
+      | (1 << GX_VA_CLR0)
       | (1 << GX_VA_TEX0));
-    if (lbl_80205DAC.unk0 != 0)
-        lbl_80205DAC.unk0 = 0;
 
-    while (a < b)
+    if (lbl_80205DAC.unk0 != 1)
+        lbl_80205DAC.unk0 = 1;
+
+    while (dl < end)
     {
-        u8 *ptr = (u8 *)a + 8;  // r28
-        u8 r4 = a->unk0 & 3;
-        r29 = a->unk4;
+        int vtxCount;
+        int i;
+        u8 *vtxData = (u8 *)dl + 8;
+        struct SomeVtxStruct2 *vtx;
+        u8 r4 = dl->unk0 & 3;;
+
+        vtxCount = dl->unk4;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
             func_8009E094(lbl_801B7B14[r4]);
         }
-        //lbl_80032120
-        if (a->unk0 & (1<<(31-0x1B)))
-        {
-            GXBegin(GX_TRIANGLESTRIP, 0, r29);
-            while (r29 > 0)
-            {
-                if (*(u32 *)ptr & 1)
-                {
-                    vtx = (void *)ptr;
 
+        if (dl->unk0 & (1<<(31-0x1B)))
+        {
+            GXBegin(GX_TRIANGLESTRIP, 0, vtxCount);
+            while (vtxCount > 0)
+            {
+                if (*(u32 *)vtxData & 1)
+                {
+                    u32 color;
+                    vtx = (void *)vtxData;
                     GXPosition3f32(vtx->x, vtx->y, vtx->z);
-                    GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                    color = vtx->color;
+                    GXColor4u8(
+                        ((color >> 16) & 0xFF) * lbl_801B7978[0],
+                        ((color >>  8) & 0xFF) * lbl_801B7978[1],
+                        ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                        ((color >> 24) & 0xFF));
                     GXTexCoord2f32(vtx->s, vtx->t);
-                    ptr += 32;
+                    vtxData += 32;
                 }
                 else
                 {
-                    offset = *(u32 *)(ptr + 4);
-                    vtx = (void *)(ptr + offset + 8);
-
+                    u32 color;
+                    vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
                     GXPosition3f32(vtx->x, vtx->y, vtx->z);
-                    GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                    color = vtx->color;
+                    GXColor4u8(
+                        ((color >> 16) & 0xFF) * lbl_801B7978[0],
+                        ((color >>  8) & 0xFF) * lbl_801B7978[1],
+                        ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                        ((color >> 24) & 0xFF));
                     GXTexCoord2f32(vtx->s, vtx->t);
-                    ptr += 8;
+                    vtxData += 8;
                 }
-                r29--;
+                vtxCount--;
             }
         }
-        //lbl_800321F4
-        else if (a->unk0 & (1<<(31-0x1C)))
+        else if (dl->unk0 & (1<<(31-0x1C)))
         {
-            GXBegin(GX_TRIANGLES, 0, r29 * 3);
-            while (r29 > 0)
+            GXBegin(GX_TRIANGLES, 0, vtxCount * 3);
+            while (vtxCount > 0)
             {
                 for (i = 0; i < 3; i++)
                 {
-                    if (*(u32 *)ptr & 1)
+                    if (*(u32 *)vtxData & 1)
                     {
-                        vtx = (void *)ptr;
-
+                        u32 color;
+                        vtx = (void *)vtxData;
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
-                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        color = vtx->color;
+                        GXColor4u8(
+                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
+                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
+                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
-                        ptr += 32;
+                        vtxData += 32;
                     }
                     else
                     {
-                        offset = *(u32 *)(ptr + 4);
-                        vtx = (void *)(ptr + offset + 8);
-
+                        u32 color;
+                        vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
-                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        color = vtx->color;
+                        GXColor4u8(
+                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
+                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
+                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
-                        ptr += 8;
+                        vtxData += 8;
                     }
                 }
-                r29--;
+                vtxCount--;
             }
         }
-        //lbl_800322D0
-        else if (a->unk0 & (1<<(31-0x1D)))
+        else if (dl->unk0 & (1<<(31-0x1D)))
         {
-            GXBegin(GX_QUADS, 0, r29 * 4);
-            while (r29 > 0)
+            GXBegin(GX_QUADS, 0, vtxCount * 4);
+            while (vtxCount > 0)
             {
-                //for (i = 0; i < 4; i++)
                 for (i = 4; i > 0; i--)
                 {
-                    if (*(u32 *)ptr & 1)
+                    if (*(u32 *)vtxData & 1)
                     {
-                        vtx = (void *)ptr;
-
+                        u32 color;
+                        vtx = (void *)vtxData;
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
-                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        color = vtx->color;
+                        GXColor4u8(
+                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
+                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
+                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
-                        ptr += 32;
+                        vtxData += 32;
                     }
                     else
                     {
-                        offset = *(u32 *)(ptr + 4);
-                        vtx = (void *)(ptr + offset + 8);
-
+                        u32 color;
+                        vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
-                        GXNormal3f32(vtx->nx, vtx->ny, vtx->nz);
+                        color = vtx->color;
+                        GXColor4u8(
+                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
+                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
+                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
-                        ptr += 8;
+                        vtxData += 8;
                     }
                 }
-                r29--;
+                vtxCount--;
             }
         }
-        a = (void *)ptr;
+        dl = (void *)vtxData;
     }
 }
-*/
+
+void func_80032A80(void)
+{
+    GXColor sp18;
+
+    lbl_80205DAC.unk4 = 0;
+    lbl_80205DAC.unk5 = 4;
+    lbl_80205DAC.unk6 = 5;
+
+    func_8009E110(1, lbl_801B7AB4[4], lbl_801B7AD4[5], 0);
+
+    lbl_80205DAC.unk20 = zMode->compareEnable;
+    lbl_80205DAC.unk20 = zMode->compareFunc;  //! mistake?
+    lbl_80205DAC.unk28 = zMode->updateEnable;
+    lbl_80205DAC.unk7 = 4;
+    lbl_80205DAC.unk8 = 0;
+
+    if ((!lbl_80205DAC.unk8) != zMode->updateEnable
+     || zMode->compareFunc   != lbl_801B7AF4[lbl_80205DAC.unk7]
+     || zMode->compareEnable != GX_ENABLE)
+    {
+        GXSetZMode(GX_ENABLE, lbl_801B7AF4[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
+        zMode->compareEnable = GX_ENABLE;
+        zMode->compareFunc   = lbl_801B7AF4[lbl_80205DAC.unk7];
+        zMode->updateEnable  = (!lbl_80205DAC.unk8);
+    }
+
+    if (lbl_802F1EEC != 0)
+        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    else
+        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+
+    lbl_80205DAC.unkA = 2;
+    func_8009E094(lbl_801B7B14[2]);
+    lbl_80205DAC.unkC = 0;
+    lbl_80205DAC.unk10 = 0;
+
+    lbl_80205DAC.unk14.r = lbl_801B7978[0] * 255.0f;
+    lbl_80205DAC.unk14.g = lbl_801B7978[1] * 255.0f;
+    lbl_80205DAC.unk14.b = lbl_801B7978[2] * 255.0f;
+    lbl_80205DAC.unk14.a = lbl_80205DAC.unk1C * 255.0f;
+    GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.unk14);
+
+    sp18.r = lbl_80205DAC.unk18.r = 0;
+    sp18.g = lbl_80205DAC.unk18.g = 0;
+    sp18.b = lbl_80205DAC.unk18.b = 0;
+    sp18.a = lbl_80205DAC.unk18.a = lbl_80205DAC.unk14.a;
+    GXSetChanAmbColor(GX_COLOR0A0, sp18);
+
+    lbl_80205DAC.unk9 = 0;
+    GXSetChanCtrl(
+        GX_COLOR0A0,   // chan
+        GX_ENABLE,     // enable
+        GX_SRC_REG,    // amb_src
+        GX_SRC_REG,    // mat_src
+        lbl_802F1EE8,  // light_mask
+        GX_DF_CLAMP,   // diff_fn
+        GX_AF_SPOT);   // attn_fn
+    GXSetTevDirect(GX_TEVSTAGE0);
+    func_8009E2C8(0, 0, 0);
+    func_8009F2C8(1);
+    GXSetNumTexGens(1);
+    GXSetNumIndStages(0);
+    GXSetNumChans(1);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
+}
+
+void func_80032D44(struct Struct80031210_sub *a)
+{
+    struct Struct80031210_sub sp20 = *a;
+    GXColor sp1C;
+    u32 r28;
+    u32 r25;
+    u32 r26;
+    u32 r27;
+
+    switch ((sp20.unk0 >> 24) & 7)
+    {
+    case 0:
+        if (lbl_80205DAC.unk4 != 0)
+        {
+            func_8009E110(1, 4, 5, 0);
+            lbl_80205DAC.unk4 = 0;
+            lbl_80205DAC.unk5 = 4;
+            lbl_80205DAC.unk6 = 5;
+        }
+        break;
+    default:
+        r25 = sp20.unk8 >> 29;
+        r27 = (sp20.unk8 >> 26) & 7;
+        if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
+        {
+            func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            lbl_80205DAC.unk4 = 2;
+            lbl_80205DAC.unk5 = r25;
+            lbl_80205DAC.unk6 = r27;
+        }
+        break;
+    }
+
+    r28 = sp20.unk4 >> 29;
+    r26 = sp20.unk4 & 0x4000000;
+    if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
+    {
+        if ((!r26) != zMode->updateEnable
+         || zMode->compareFunc != lbl_801B7AF4[r28]
+         || zMode->compareEnable != GX_ENABLE)
+        {
+            GXSetZMode(GX_ENABLE, lbl_801B7AF4[r28], (!r26));
+            zMode->compareEnable = GX_ENABLE;
+            zMode->compareFunc   = lbl_801B7AF4[r28];
+            zMode->updateEnable  = (!r26);
+        }
+        lbl_80205DAC.unk7 = r28;
+        lbl_80205DAC.unk8 = r26;
+    }
+
+    if (lbl_802F1EEC != 0)
+        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    else
+        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+
+    if (sp20.unk20 < 0)
+    {
+        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        func_8009EA30(0, 4);
+    }
+    else
+    {
+        int r25 = lbl_80205DAC.unk10;
+
+        if (lbl_80205DAC.unkC != sp20.unkC)
+        {
+            lbl_80205DAC.unkC = sp20.unkC;
+            if (--r25 < 0)
+                r25 = 7;
+            lbl_80205DAC.unk10 = r25;
+            func_8009F430(sp20.unkC, r25);
+        }
+        func_8009EFF4(0, 0, r25, 4);
+        switch ((sp20.unk8 >> 6) & 3)
+        {
+        case 0:
+            func_8009E618(0, 15, 15, 15, 8);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 4, 5, 7);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        case 1:
+            func_8009E618(0, 15, 10, 8, 15);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 4, 5, 7);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        case 2:
+            func_8009E618(0, 10, 8, 9, 15);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 7, 7, 5);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        case 3:
+            func_8009E618(0, 15, 10, 8, 15);
+            func_8009E800(0, 0, 0, 0, 1, 0);
+            func_8009E70C(0, 7, 5, 4, 7);
+            func_8009E918(0, 0, 0, 0, 1, 0);
+            break;
+        }
+    }
+
+    sp1C.r = sp20.unk30 * lbl_801B7978[0] * 255.0f;
+    sp1C.g = sp20.unk34 * lbl_801B7978[1] * 255.0f;
+    sp1C.b = sp20.unk38 * lbl_801B7978[2] * 255.0f;
+    sp1C.a = sp20.unk2C * lbl_80205DAC.unk1C * 255.0f;
+    if (lbl_80205DAC.unk14.r != sp1C.r
+     || lbl_80205DAC.unk14.g != sp1C.g
+     || lbl_80205DAC.unk14.b != sp1C.b
+     || lbl_80205DAC.unk14.a != sp1C.a)
+    {
+        GXSetChanMatColor(4, sp1C);
+        lbl_80205DAC.unk14 = sp1C;
+    }
+
+    sp1C.r = sp20.unk28 * lbl_80205DA0.x * 255.0f;
+    sp1C.g = sp20.unk28 * lbl_80205DA0.y * 255.0f;
+    sp1C.b = sp20.unk28 * lbl_80205DA0.z * 255.0f;
+    sp1C.a = lbl_80205DAC.unk14.a;
+    if (lbl_80205DAC.unk18.r != sp1C.r
+     || lbl_80205DAC.unk18.g != sp1C.g
+     || lbl_80205DAC.unk18.b != sp1C.b
+     || lbl_80205DAC.unk18.a != sp1C.a)
+    {
+        GXSetChanAmbColor(4, sp1C);
+        lbl_80205DAC.unk18 = sp1C;
+    }
+
+    if (lbl_80205DAC.unk9 != sp20.unk24)
+    {
+        lbl_80205DAC.unk9 = sp20.unk24;
+        switch (sp20.unk24)
+        {
+        case -1:
+            GXSetChanCtrl(4, 0, 0, 0, 0, 2, 1);
+            break;
+        case -3:
+            GXSetChanCtrl(4, 0, 1, 1, 0, 2, 1);
+            break;
+        case -2:
+        default:
+            GXSetChanCtrl(4, 1, 0, 0, lbl_802F1EE8, 2, 1);
+            break;
+        }
+    }
+}
+
+static inline void handle_color_vtx(struct SomeVtxStruct2 *vtx)
+{
+    u32 color;
+    GXPosition3f32(vtx->x, vtx->y, vtx->z);
+    color = vtx->color;
+    GXColor4u8(
+        ((color >> 16) & 0xFF) * lbl_801B7978[0],
+        ((color >>  8) & 0xFF) * lbl_801B7978[1],
+        ((color >>  0) & 0xFF) * lbl_801B7978[2],
+        ((color >> 24) & 0xFF) * lbl_80205DAC.unk1C);
+    GXTexCoord2f32(vtx->s, vtx->t);
+}
+
+void func_800333F0(struct Struct8003209C *dl, struct Struct8003209C *end)
+{
+    g_set_vtx_desc(
+        (1 << GX_VA_POS)
+      | (1 << GX_VA_CLR0)
+      | (1 << GX_VA_TEX0));
+
+    if (lbl_80205DAC.unk0 != 1)
+        lbl_80205DAC.unk0 = 1;
+
+    while (dl < end)
+    {
+        int vtxCount;
+        int i;
+        u8 *vtxData = (u8 *)dl + 8;
+        struct SomeVtxStruct2 *vtx;
+        u8 r4 = dl->unk0 & 3;
+
+        vtxCount = dl->unk4;
+        if (lbl_80205DAC.unkA != r4)
+        {
+            lbl_80205DAC.unkA = r4;
+            func_8009E094(lbl_801B7B14[r4]);
+        }
+
+        if (dl->unk0 & (1<<(31-0x1B)))
+        {
+            GXBegin(GX_TRIANGLESTRIP, 0, vtxCount);
+            while (vtxCount > 0)
+            {
+                if (*(u32 *)vtxData & 1)
+                {
+                    vtx = (void *)vtxData;
+                    handle_color_vtx(vtx);
+                    vtxData += 32;
+                }
+                else
+                {
+                    vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
+                    handle_color_vtx(vtx);
+                    vtxData += 8;
+                }
+                vtxCount--;
+            }
+        }
+        else if (dl->unk0 & (1<<(31-0x1C)))
+        {
+            GXBegin(GX_TRIANGLES, 0, vtxCount * 3);
+            while (vtxCount > 0)
+            {
+                for (i = 0; i < 3; i++)
+                {
+                    if (*(u32 *)vtxData & 1)
+                    {
+                        vtx = (void *)vtxData;
+                        handle_color_vtx(vtx);
+                        vtxData += 32;
+                    }
+                    else
+                    {
+                        vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
+                        handle_color_vtx(vtx);
+                        vtxData += 8;
+                    }
+                }
+                vtxCount--;
+            }
+        }
+        else if (dl->unk0 & (1<<(31-0x1D)))
+        {
+            GXBegin(GX_QUADS, 0, vtxCount * 4);
+            while (vtxCount > 0)
+            {
+                for (i = 4; i > 0; i--)
+                {
+                    if (*(u32 *)vtxData & 1)
+                    {
+                        vtx = (void *)vtxData;
+                        handle_color_vtx(vtx);
+                        vtxData += 32;
+                    }
+                    else
+                    {
+                        vtx = (void *)(vtxData + *(u32 *)(vtxData + 4) + 8);
+                        handle_color_vtx(vtx);
+                        vtxData += 8;
+                    }
+                }
+                vtxCount--;
+            }
+        }
+        dl = (void *)vtxData;
+    }
+}
+
+void func_80033AD4(void *a)
+{
+    func_80031210(a);
+}
+
+void func_80033AF4(void *a)
+{
+    func_80031350(a);
+}
+
+void func_80033B14(void *a, float b)
+{
+    func_800314B8(a, b);
+}
+
+void func_80033B34(u32 lightMask)
+{
+    lbl_802F1EE8 = lightMask;
+}
+
+void func_80033B3C(float a, float b, float c)
+{
+    lbl_80205DA0.x = a;
+    lbl_80205DA0.y = b;
+    lbl_80205DA0.z = c;
+}
+
+void func_80033B50(int a)
+{
+    lbl_802F1EEC = a;
+}
+
+void func_80033B58(u32 a, float b, float c)
+{
+    lbl_802F1EF0 = a;
+    lbl_802F1EF8 = b;
+    lbl_802F1EFC = c;
+}
+
+void func_80033B68(int r, int g, int b)
+{
+    lbl_802F1EF4.r = r;
+    lbl_802F1EF4.g = g;
+    lbl_802F1EF4.b = b;
+}
+
+void func_80033B7C(struct Struct80031210 *a)
+{
+    struct Struct80031210_sub *r31;
+
+    if (a->unk4 & (1<<(31-0x1E)))
+    {
+        g_set_vtx_desc(
+            (1 << GX_VA_POS)
+          | (1 << GX_VA_CLR0)
+          | (1 << GX_VA_TEX0));
+        lbl_80205DAC.unk0 = 1;
+    }
+    else
+    {
+        g_set_vtx_desc(
+            (1 << GX_VA_POS)
+          | (1 << GX_VA_NRM)
+          | (1 << GX_VA_TEX0));
+        lbl_80205DAC.unk0 = 0;
+    }
+
+    func_800317A4();
+    GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+    r31 = (void *)((u8 *)a + 0x18);
+    while (r31->unk0 != 0)
+    {
+        struct Struct80031210_sub *r30;
+
+        func_80031A58(r31);
+
+        r30 = (void *)((u8 *)r31 + 0x50 + r31->unk4C);
+        if (((r31->unk0 >> 24) & 7) != 0)
+            r31 = r30;
+        else
+        {
+            void *unknown = ((u8 *)r31 + 0x50);
+
+            switch (r31->unk24)
+            {
+            case -2:
+                break;
+            case -3:
+                func_80032474((void *)unknown, (void *)r30);
+                break;
+            default:
+                func_8003209C((void *)unknown, (void *)r30);
+                break;
+            }
+            r31 = r30;
+        }
+    }
+    func_800341B8();
+}
+
+void lbl_80033C8C(struct UnkStruct18 *a)
+{
+    float f31, f30, f29;
+
+    mathutil_mtxA_from_mtx(a->unkC);
+
+    f31 = lbl_801B7978[0];
+    f30 = lbl_801B7978[1];
+    f29 = lbl_801B7978[2];
+
+    lbl_801B7978[0] = a->unk3C.x;
+    lbl_801B7978[1] = a->unk3C.y;
+    lbl_801B7978[2] = a->unk3C.z;
+    if (!(a->unk8->unk4 & (1<<(31-0x15))))
+    {
+        func_800223D8(a->unk48);
+        func_80033B3C(a->unk4C.x, a->unk4C.y, a->unk4C.z);
+    }
+    lbl_802F1EEC = a->unk58;
+    func_80033D5C(a->unk8);
+
+    lbl_801B7978[0] = f31;
+    lbl_801B7978[1] = f30;
+    lbl_801B7978[2] = f29;
+}
+
+void func_80033D5C(struct Struct80031210 *a)
+{
+    struct Struct80031210_sub *r31;
+
+    if (a->unk4 & (1<<(31-0x1E)))
+    {
+        g_set_vtx_desc(
+            (1 << GX_VA_POS)
+          | (1 << GX_VA_CLR0)
+          | (1 << GX_VA_TEX0));
+        lbl_80205DAC.unk0 = 1;
+    }
+    else
+    {
+        g_set_vtx_desc(
+            (1 << GX_VA_POS)
+          | (1 << GX_VA_NRM)
+          | (1 << GX_VA_TEX0));
+        lbl_80205DAC.unk0 = 0;
+    }
+
+    func_800317A4();
+    GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+    r31 = (void *)((u8 *)a + 0x18);
+    while (r31->unk0 != 0)
+    {
+        struct Struct80031210_sub *r30;
+
+        func_80031A58(r31);
+
+        r30 = (void *)((u8 *)r31 + 0x50 + r31->unk4C);
+        if (((r31->unk0 >> 24) & 7) == 0)
+            r31 = r30;
+        else
+        {
+            void *unknown = ((u8 *)r31 + 0x50);
+
+            switch (r31->unk24)
+            {
+            case -2:
+                break;
+            case -3:
+                func_80032474((void *)unknown, (void *)r30);
+                break;
+            default:
+                func_8003209C((void *)unknown, (void *)r30);
+                break;
+            }
+            r31 = r30;
+        }
+    }
+    func_800341B8();
+}
+
+void func_80033F44(struct Struct80031210 *a);
+
+void lbl_80033E6C(struct UnkStruct19 *a)
+{
+    float f31, f30, f29;
+
+    mathutil_mtxA_from_mtx(a->unkC);
+
+    f31 = lbl_801B7978[0];
+    f30 = lbl_801B7978[1];
+    f29 = lbl_801B7978[2];
+
+    lbl_801B7978[0] = a->unk3C.x;
+    lbl_801B7978[1] = a->unk3C.y;
+    lbl_801B7978[2] = a->unk3C.z;
+    lbl_80205DAC.unk1C = a->unk48;
+    if (!(a->unk8->unk4 & (1<<(31-0x15))))
+    {
+        func_800223D8(a->unk4C);
+        func_80033B3C(a->unk50.x, a->unk50.y, a->unk50.z);
+    }
+    lbl_802F1EEC = a->unk5C;
+    func_80033F44(a->unk8);
+
+    lbl_801B7978[0] = f31;
+    lbl_801B7978[1] = f30;
+    lbl_801B7978[2] = f29;
+}
+
+void func_80033F44(struct Struct80031210 *a)
+{
+    struct Struct80031210_sub *r31;
+
+    if (a->unk0 == -1)
+        return;
+
+    if (a->unk4 & (1<<(31-0x1E)))
+    {
+        g_set_vtx_desc(
+            (1 << GX_VA_POS)
+          | (1 << GX_VA_CLR0)
+          | (1 << GX_VA_TEX0));
+        lbl_80205DAC.unk0 = 1;
+    }
+    else
+    {
+        g_set_vtx_desc(
+            (1 << GX_VA_POS)
+          | (1 << GX_VA_NRM)
+          | (1 << GX_VA_TEX0));
+        lbl_80205DAC.unk0 = 0;
+    }
+
+    func_80032A80();
+    GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+    r31 = (void *)((u8 *)a + 0x18);
+    while (r31->unk0 != 0)
+    {
+        struct Struct80031210_sub *r30;
+        void *unknown;
+
+        func_80032D44(r31);
+
+        r30 = (void *)((u8 *)r31 + 0x50 + r31->unk4C);
+        unknown = ((u8 *)r31 + 0x50);
+
+        switch (r31->unk24)
+        {
+        case -2:
+            break;
+        case -3:
+            func_800333F0((void *)unknown, (void *)r30);
+            break;
+        default:
+            func_8003209C((void *)unknown, (void *)r30);
+            break;
+        }
+        r31 = r30;
+    }
+    func_800341B8();
+}
 
 //const float lbl_802F32E4 = 0.0f;
 //const float lbl_802F32E8 = 1.0f;
@@ -1232,5 +1853,5 @@ void func_8003209C(struct Struct8003209C *a, struct Struct8003209C *b)
 //const float lbl_802F32F0 = 20000.0f;
 //const float lbl_802F32F4 = 100.0f;
 //const float lbl_802F32F8 = 255.0f;
-const double lbl_802F3300 = 4503599627370496.0;
+//const double lbl_802F3300 = 4503599627370496.0;
 const float lbl_802F3308 = 10430.3779296875f;

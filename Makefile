@@ -474,6 +474,7 @@ src/avdisp.o:   CFLAGS += -inline auto
 src/DEMOPuts.o: CFLAGS += -inline auto
 src/memcard.o:  CFLAGS += -inline auto
 src/stage.o:    CFLAGS += -inline auto
+src/nl2ngc.o:   CFLAGS += -inline auto
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \

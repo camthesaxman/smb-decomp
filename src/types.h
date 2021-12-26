@@ -475,13 +475,21 @@ struct UnkStruct17
     u32 unk70;
 };
 
+struct Struct80031210
+{
+    s32 unk0;
+    u32 unk4;
+    Vec unk8;
+    float unk14;
+};
+
 // like UnkStruct17, but with a different fields starting at 0x3C.
 // possibly has a union?
 struct UnkStruct18
 {
     u8 filler0[4];
     void (*unk4)(struct UnkStruct18 *);
-    void *unk8;
+    struct Struct80031210 *unk8;
     Mtx unkC;
     Vec unk3C;
     u32 unk48;
@@ -493,7 +501,7 @@ struct UnkStruct19
 {
     u8 filler0[4];
     void (*unk4)(struct UnkStruct19 *);
-    void *unk8;
+    struct Struct80031210 *unk8;
     Mtx unkC;
     Vec unk3C;
     float unk48;
@@ -896,14 +904,6 @@ struct Struct802F1F44
     u32 unkC;
     u8 filler10[0x14-0x10];
     void *unk14;
-};
-
-struct Struct80031210
-{
-    s32 unk0;
-    u32 unk4;
-    Vec unk8;
-    float unk14;
 };
 
 struct Struct80031210_sub
