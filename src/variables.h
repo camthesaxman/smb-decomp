@@ -601,8 +601,7 @@ extern struct PerfInfo perfInfo;
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
 extern struct SpritePoolInfo spritePoolInfo;
-// extern ? g_someAmbColor;
-// extern ? lbl_80205DAC;
+
 // extern ? lbl_80205E00;
 
 extern struct World lbl_80206BF0[];
@@ -1365,12 +1364,7 @@ extern float lbl_802F1ECC;
 // extern ? lbl_802F1ED8;
 extern u32 dipSwitches;
 extern u32 lbl_802F1EE0;
-extern u32 nlObjLightMask;
-extern s32 lbl_802F1EEC;
-extern u32 lbl_802F1EF0;
-extern GXColor lbl_802F1EF4;
-extern float lbl_802F1EF8;
-extern float lbl_802F1EFC;
+
 extern struct Struct80034938 *lbl_802F1F00;
 extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;

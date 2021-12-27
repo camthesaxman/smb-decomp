@@ -10537,7 +10537,7 @@ lbl_00009ED0:
 /* 00009F3C 38630000 */ addi r3, r3, lbl_802F1B04@l
 /* 00009F40 80630000 */ lwz r3, 0(r3)
 /* 00009F44 806300D8 */ lwz r3, 0xd8(r3)
-/* 00009F48 4BFF621D */ bl func_80031210
+/* 00009F48 4BFF621D */ bl g_draw_naomi_model_and_do_other_stuff
 /* 00009F4C 4BFF6219 */ bl func_8000E3BC
 lbl_00009F50:
 /* 00009F50 80010024 */ lwz r0, 0x24(r1)

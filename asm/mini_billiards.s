@@ -16656,7 +16656,7 @@ lbl_0000F44C:
 /* 0000F4B8 3AA30000 */ addi r21, r3, lbl_802F1B04@l
 /* 0000F4BC 80750000 */ lwz r3, 0(r21)
 /* 0000F4C0 806300A8 */ lwz r3, 0xa8(r3)
-/* 0000F4C4 4BFF0C71 */ bl func_80031210
+/* 0000F4C4 4BFF0C71 */ bl g_draw_naomi_model_and_do_other_stuff
 /* 0000F4C8 C03F37B8 */ lfs f1, 0x37b8(r31)
 /* 0000F4CC 4BFF0C69 */ bl func_80030AC4
 /* 0000F4D0 C01F3778 */ lfs f0, 0x3778(r31)
@@ -16739,7 +16739,7 @@ lbl_0000F4FC:
 /* 0000F600 4BFF0B35 */ bl func_80030B28
 /* 0000F604 80750000 */ lwz r3, 0(r21)
 /* 0000F608 806300A8 */ lwz r3, 0xa8(r3)
-/* 0000F60C 4BFF0B29 */ bl func_80031210
+/* 0000F60C 4BFF0B29 */ bl g_draw_naomi_model_and_do_other_stuff
 /* 0000F610 3A100001 */ addi r16, r16, 1
 /* 0000F614 2C100034 */ cmpwi r16, 0x34
 /* 0000F618 39EF0028 */ addi r15, r15, 0x28

@@ -486,9 +486,9 @@ struct UnkStruct18
 {
     u8 filler0[4];
     void (*unk4)(struct UnkStruct18 *);
-    struct NaomiModel *unk8;
+    struct NaomiModel *model;
     Mtx unkC;
-    Vec unk3C;
+    struct Color3f unk3C;
     u32 unk48;
     struct Color3f unk4C;
     u32 unk58;
@@ -498,9 +498,9 @@ struct UnkStruct19
 {
     u8 filler0[4];
     void (*unk4)(struct UnkStruct19 *);
-    struct NaomiModel *unk8;
+    struct NaomiModel *model;
     Mtx unkC;
-    Vec unk3C;
+    struct Color3f unk3C;
     float unk48;
     u32 unk4C;
     struct Color3f unk50;

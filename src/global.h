@@ -7,7 +7,7 @@
 // .bss variables seem to be ordered in the file based on their usage.
 // This macro generates a dummy function that forces the order and will be
 // stripped by the linker.
-#define FORCE_BSS_ORDER(var) void *force_##var(){return &var;}
+#define FORCE_BSS_ORDER(var) void *_force_bss_order_##var(){return &var;}
 
 // Possibly a different NULL definition caused by including dolphin.h before stddef.h
 #define NULL2 ((void *)0)

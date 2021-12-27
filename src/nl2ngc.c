@@ -8,7 +8,15 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 
+float lbl_802F1EFC;
+float lbl_802F1EF8;
+GXColor lbl_802F1EF4;
+u32 lbl_802F1EF0;
+s32 lbl_802F1EEC;
+u32 nlObjLightMask;
+
 struct Color3f g_someAmbColor;
+FORCE_BSS_ORDER(g_someAmbColor)
 
 struct
 {
@@ -32,12 +40,9 @@ struct
     u8 unk28;
     u8 filler29[0x34-0x29];
 } lbl_80205DAC;
-
-u8 lzHeader[0x20];
-
-FORCE_BSS_ORDER(g_someAmbColor)
 FORCE_BSS_ORDER(lbl_80205DAC)
-FORCE_BSS_ORDER(lzHeader)
+
+static u8 lzssHeader[32];
 
 struct
 {
@@ -49,7 +54,13 @@ struct
     float unk1C;
 } lbl_801B7978 = { { 1.0f, 1.0f, 1.0f }, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-void lbl_80033C8C(struct UnkStruct18 *);
+static BOOL adjust_pointers(struct NaomiObj *obj);
+static void init_model_flags(struct NaomiModel *model);
+static void prep_some_stuff_before_drawing(void);
+static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh);
+static void prep_some_stuff_before_drawing_2(void);
+void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh);
+static void lbl_80033C8C(struct UnkStruct18 *);
 
 #pragma force_active on
 void func_80030AC4(float a)
@@ -104,6 +115,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
     u32 size;
     struct File file;
 
+    // Free object if it's already loaded
     if (*pobj != NULL)
     {
         OSFree(*pobj);
@@ -118,13 +130,17 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
         void *compressed;
         void *uncompressed;
 
-        if (file_read(&file, lzHeader, 32, 0) < 0)
+        // Read LZSS header
+        if (file_read(&file, lzssHeader, 32, 0) < 0)
             return FALSE;
-        size = OSRoundUp32B(__lwbrx(lzHeader, 0));
-        uncompSize = OSRoundUp32B(__lwbrx(lzHeader, 4));
+        size = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+        uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
+
         uncompressed = OSAlloc(uncompSize);
         if (uncompressed == NULL)
             return FALSE;
+
+        // Read whole file
         compressed = OSAllocFromHeap(memHeap5, size);
         if (compressed == NULL)
         {
@@ -135,6 +151,8 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
             return FALSE;
         if (file_close(&file) != 1)
             return FALSE;
+
+        // Decompress data
         lzs_decompress(compressed, uncompressed);
         OSFreeToHeap(memHeap5, compressed);
         *pobj = uncompressed;
@@ -151,7 +169,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
         file_close(&file);
     }
 
-    func_80030E90(*pobj);
+    adjust_pointers(*pobj);
     if (*ptpl != NULL)
         bitmap_free_tpl(*ptpl);
     *ptpl = bitmap_load_tpl(texName);
@@ -161,7 +179,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
     pmodel = (*pobj)->modelPtrs;
     while (*pmodel != NULL)
     {
-        g_init_naomi_texture(*pmodel, *ptpl);
+        g_init_naomi_model_textures(*pmodel, *ptpl);
         pmodel++;
     }
     return TRUE;
@@ -184,124 +202,58 @@ BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl)
     return TRUE;
 }
 
-/*
-struct Unk
+// This function converts file all file offsets in the struct into memory pointers
+// Featuring some insane pointer arithmetic.
+static BOOL adjust_pointers(struct NaomiObj *obj)
 {
-    void *unk0;
-    u32 unk4;
-};
+    struct NaomiModel *volatile *pmodel = obj->modelPtrs;
+    struct NaomiObj_UnkChild *volatile *unkptr;
+    struct NaomiObj_UnkChild_Child *unkchild;
 
-BOOL func_80030E90(struct NLObj1_child *a)
-{
-    u32 ***r30 = a->unk4;
-    void ***r4;
-
-    while (*r30 != NULL)
+    // Adjust pointers in models?
+    while (*pmodel != NULL)
     {
-        *r30 = OFFSET_TO_PTR(a, *r30);
-        (*r30)[-2] = OFFSET_TO_PTR(a, (*r30)[-2]);
-        (*r30)[-1] = OFFSET_TO_PTR(a, (*r30)[-1]);
-        func_80030F88(*r30);
-        r30++;
+        u32 *ptr;
+
+        // adjust pointer to model?
+        *pmodel = (void *)((u32)*pmodel + (u32)obj);
+
+        // What the hell is this for?
+        ptr = (u32 *)*pmodel;
+        ptr[-2] += (u32)obj;
+
+        ptr = (u32 *)*pmodel;
+        ptr[-1] += (u32)obj;
+
+        init_model_flags(*pmodel);
+        pmodel++;
     }
-    a->unk0 = OFFSET_TO_PTR(a, a->unk0);
 
-    r4 = a->unk0;
-    while (*r4 != NULL)
+    obj->unk0 = (void *)((u32)obj->unk0 + (u32)obj);
+    unkptr = obj->unk0;
+    while (*unkptr != NULL)
     {
-        struct Unk *r3;
+        u32 *ptr;
+        *unkptr = (void *)((u32)*unkptr + (u32)obj);
 
-        *r4 = OFFSET_TO_PTR(a, *r4);
-        (*r4)[0] = OFFSET_TO_PTR(a, (*r4)[0]);
-        (*r4)[1] = OFFSET_TO_PTR(a, (*r4)[1]);
-        r3 = (*r4)[1];
-        while (r3->unk0 != 0)
+        ptr = (u32 *)*unkptr;
+        ptr[0] += (u32)obj;
+
+        ptr = (u32 *)*unkptr;
+        ptr[1] += (u32)obj;
+
+        unkchild = (*unkptr)->childStructs;
+        while (unkchild->unk0 != 0)
         {
-            r3->unk0 = OFFSET_TO_PTR(a, r3->unk0);
-            r3++;
+            unkchild->unk0 += (u32)obj;
+            unkchild++;
         }
-        r4++;
+        unkptr++;
     }
     return TRUE;
 }
-*/
-#ifndef NONMATCHING
-asm int func_80030E90()
-{
-    nofralloc
-/* 80030E90 0002CDB0  7C 08 02 A6 */	mflr r0
-/* 80030E94 0002CDB4  90 01 00 04 */	stw r0, 4(r1)
-/* 80030E98 0002CDB8  94 21 FF E8 */	stwu r1, -0x18(r1)
-/* 80030E9C 0002CDBC  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 80030EA0 0002CDC0  3B E3 00 00 */	addi r31, r3, 0
-/* 80030EA4 0002CDC4  93 C1 00 10 */	stw r30, 0x10(r1)
-/* 80030EA8 0002CDC8  3B DF 00 04 */	addi r30, r31, 4
-/* 80030EAC 0002CDCC  48 00 00 3C */	b lbl_80030EE8
-lbl_80030EB0:
-/* 80030EB0 0002CDD0  80 1E 00 00 */	lwz r0, 0(r30)
-/* 80030EB4 0002CDD4  7C 00 FA 14 */	add r0, r0, r31
-/* 80030EB8 0002CDD8  90 1E 00 00 */	stw r0, 0(r30)
-/* 80030EBC 0002CDDC  80 7E 00 00 */	lwz r3, 0(r30)
-/* 80030EC0 0002CDE0  80 03 FF F8 */	lwz r0, -8(r3)
-/* 80030EC4 0002CDE4  7C 00 FA 14 */	add r0, r0, r31
-/* 80030EC8 0002CDE8  90 03 FF F8 */	stw r0, -8(r3)
-/* 80030ECC 0002CDEC  80 7E 00 00 */	lwz r3, 0(r30)
-/* 80030ED0 0002CDF0  80 03 FF FC */	lwz r0, -4(r3)
-/* 80030ED4 0002CDF4  7C 00 FA 14 */	add r0, r0, r31
-/* 80030ED8 0002CDF8  90 03 FF FC */	stw r0, -4(r3)
-/* 80030EDC 0002CDFC  80 7E 00 00 */	lwz r3, 0(r30)
-/* 80030EE0 0002CE00  48 00 00 A9 */	bl func_80030F88
-/* 80030EE4 0002CE04  3B DE 00 04 */	addi r30, r30, 4
-lbl_80030EE8:
-/* 80030EE8 0002CE08  80 1E 00 00 */	lwz r0, 0(r30)
-/* 80030EEC 0002CE0C  28 00 00 00 */	cmplwi r0, 0
-/* 80030EF0 0002CE10  40 82 FF C0 */	bne lbl_80030EB0
-/* 80030EF4 0002CE14  80 1F 00 00 */	lwz r0, 0(r31)
-/* 80030EF8 0002CE18  7C 00 FA 14 */	add r0, r0, r31
-/* 80030EFC 0002CE1C  90 1F 00 00 */	stw r0, 0(r31)
-/* 80030F00 0002CE20  80 9F 00 00 */	lwz r4, 0(r31)
-/* 80030F04 0002CE24  48 00 00 5C */	b lbl_80030F60
-lbl_80030F08:
-/* 80030F08 0002CE28  80 04 00 00 */	lwz r0, 0(r4)
-/* 80030F0C 0002CE2C  7C 00 FA 14 */	add r0, r0, r31
-/* 80030F10 0002CE30  90 04 00 00 */	stw r0, 0(r4)
-/* 80030F14 0002CE34  80 64 00 00 */	lwz r3, 0(r4)
-/* 80030F18 0002CE38  80 03 00 00 */	lwz r0, 0(r3)
-/* 80030F1C 0002CE3C  7C 00 FA 14 */	add r0, r0, r31
-/* 80030F20 0002CE40  90 03 00 00 */	stw r0, 0(r3)
-/* 80030F24 0002CE44  80 64 00 00 */	lwz r3, 0(r4)
-/* 80030F28 0002CE48  80 03 00 04 */	lwz r0, 4(r3)
-/* 80030F2C 0002CE4C  7C 00 FA 14 */	add r0, r0, r31
-/* 80030F30 0002CE50  90 03 00 04 */	stw r0, 4(r3)
-/* 80030F34 0002CE54  80 64 00 00 */	lwz r3, 0(r4)
-/* 80030F38 0002CE58  80 63 00 04 */	lwz r3, 4(r3)
-/* 80030F3C 0002CE5C  48 00 00 14 */	b lbl_80030F50
-lbl_80030F40:
-/* 80030F40 0002CE60  80 03 00 00 */	lwz r0, 0(r3)
-/* 80030F44 0002CE64  7C 00 FA 14 */	add r0, r0, r31
-/* 80030F48 0002CE68  90 03 00 00 */	stw r0, 0(r3)
-/* 80030F4C 0002CE6C  38 63 00 08 */	addi r3, r3, 8
-lbl_80030F50:
-/* 80030F50 0002CE70  80 03 00 00 */	lwz r0, 0(r3)
-/* 80030F54 0002CE74  28 00 00 00 */	cmplwi r0, 0
-/* 80030F58 0002CE78  40 82 FF E8 */	bne lbl_80030F40
-/* 80030F5C 0002CE7C  38 84 00 04 */	addi r4, r4, 4
-lbl_80030F60:
-/* 80030F60 0002CE80  80 04 00 00 */	lwz r0, 0(r4)
-/* 80030F64 0002CE84  28 00 00 00 */	cmplwi r0, 0
-/* 80030F68 0002CE88  40 82 FF A0 */	bne lbl_80030F08
-/* 80030F6C 0002CE8C  80 01 00 1C */	lwz r0, 0x1c(r1)
-/* 80030F70 0002CE90  38 60 00 01 */	li r3, 1
-/* 80030F74 0002CE94  83 E1 00 14 */	lwz r31, 0x14(r1)
-/* 80030F78 0002CE98  83 C1 00 10 */	lwz r30, 0x10(r1)
-/* 80030F7C 0002CE9C  7C 08 03 A6 */	mtlr r0
-/* 80030F80 0002CEA0  38 21 00 18 */	addi r1, r1, 0x18
-/* 80030F84 0002CEA4  4E 80 00 20 */	blr
-}
-#pragma peephole on
-#endif
 
-void func_80030F88(struct NaomiModel *model)
+static void init_model_flags(struct NaomiModel *model)
 {
     if (model->unk0 != -1)
     {
@@ -316,13 +268,13 @@ void func_80030F88(struct NaomiModel *model)
             if (((mesh->unk0 >> 24) & 7) != 0)
             {
                 r6 = TRUE;
-                if (r8 && (mesh->unk24 != -1 || mesh->unk24 != -3))
+                if (r8 && (mesh->type != -1 || mesh->type != -3))
                     r8 = FALSE;
             }
             else
             {
                 r7 = TRUE;
-                if (r9 && (mesh->unk24 != -1 || mesh->unk24 != -3))
+                if (r9 && (mesh->type != -1 || mesh->type != -3))
                     r9 = FALSE;
             }
             mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
@@ -338,7 +290,7 @@ void func_80030F88(struct NaomiModel *model)
     }
 }
 
-void g_init_naomi_texture(struct NaomiModel *model, struct TPL *b)
+void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
 {
     u8 unused[8];
 
@@ -350,21 +302,21 @@ void g_init_naomi_texture(struct NaomiModel *model, struct TPL *b)
         {
             if (mesh->unk20 >= 0)
             {
-                u32 r31 = mesh->unk8;
-                GXTexObj *tobj = &b->texObjs[mesh->unk20];
+                u32 flags = mesh->unk8;
+                GXTexObj *tobj = &tpl->texObjs[mesh->unk20];
                 GXTexWrapMode wrapS, wrapT;
                 GXTexFilter minFilt, magFilt;
 
-                if (r31 & (1 << 16))
+                if (flags & (1 << 16))
                     wrapS = GXGetTexObjWrapS(tobj);
-                else if (r31 & (1 << 18))
+                else if (flags & (1 << 18))
                     wrapS = GX_MIRROR;
                 else
                     wrapS = GX_REPEAT;
 
-                if (r31 & (1 << 15))
+                if (flags & (1 << 15))
                     wrapT = GXGetTexObjWrapT(tobj);
-                else if (r31 & (1 << 17))
+                else if (flags & (1 << 17))
                     wrapT = GX_MIRROR;
                 else
                     wrapT = GX_REPEAT;
@@ -377,9 +329,9 @@ void g_init_naomi_texture(struct NaomiModel *model, struct TPL *b)
                     GXGetTexObjFmt(tobj),  // format
                     wrapS,  // wrap_s
                     wrapT,  // wrap_t
-                    b->texHeaders[mesh->unk20].unkC);  // mipmap
+                    tpl->texHeaders[mesh->unk20].unkC);  // mipmap
 
-                switch (((r31 >> 13) & 0x3))
+                switch (((flags >> 13) & 0x3))
                 {
                 case 0:
                     if (GXGetTexObjMipMap(tobj))
@@ -414,7 +366,7 @@ void g_init_naomi_texture(struct NaomiModel *model, struct TPL *b)
     }
 }
 
-void func_80031210(struct NaomiModel *model)
+void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
 {
     u32 *temp;
 
@@ -445,10 +397,10 @@ void func_80031210(struct NaomiModel *model)
             r29 = func_80085B88(0x5C);
 
             r29->unk4 = lbl_80033C8C;
-            r29->unk8 = model;
-            r29->unk3C.x = lbl_801B7978.unk0.r;
-            r29->unk3C.y = lbl_801B7978.unk0.g;
-            r29->unk3C.z = lbl_801B7978.unk0.b;
+            r29->model = model;
+            r29->unk3C.r = lbl_801B7978.unk0.r;
+            r29->unk3C.g = lbl_801B7978.unk0.g;
+            r29->unk3C.b = lbl_801B7978.unk0.b;
             r29->unk48 = func_800223D0();
             r29->unk4C.r = g_someAmbColor.r;
             r29->unk4C.g = g_someAmbColor.g;
@@ -504,7 +456,7 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
             lbl_80205DAC.unk0 = 0;
         }
 
-        func_800317A4();
+        prep_some_stuff_before_drawing();
         GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -515,10 +467,10 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next;
 
-            func_80031A58(mesh);
+            do_some_stuff_with_mesh_colors(mesh);
             dlstart = (void *)(mesh->dispListStart);
             next    = (void *)(mesh->dispListStart + mesh->dispListSize);
-            switch (mesh->unk24)
+            switch (mesh->type)
             {
             case -2:
                 break;
@@ -564,11 +516,11 @@ void func_800314B8(struct NaomiModel *model, float b)
         r29 = func_80085B88(0x60);
 
         r29->unk4 = lbl_80033E6C;
-        r29->unk8 = model;
+        r29->model = model;
         r29->unk48 = b;
-        r29->unk3C.x = lbl_801B7978.unk0.r;
-        r29->unk3C.y = lbl_801B7978.unk0.g;
-        r29->unk3C.z = lbl_801B7978.unk0.b;
+        r29->unk3C.r = lbl_801B7978.unk0.r;
+        r29->unk3C.g = lbl_801B7978.unk0.g;
+        r29->unk3C.b = lbl_801B7978.unk0.b;
         r29->unk4C = func_800223D0();
         r29->unk50.r = g_someAmbColor.r;
         r29->unk50.g = g_someAmbColor.g;
@@ -617,7 +569,7 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
         }
 
         lbl_80205DAC.unk1C = b;
-        func_80032A80();
+        prep_some_stuff_before_drawing_2();
         GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -628,10 +580,10 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next;
 
-            func_80032D44(mesh);
+            do_some_stuff_with_mesh_colors_2(mesh);
             dlstart = (void *)(mesh->dispListStart);
             next    = (void *)(mesh->dispListStart + mesh->dispListSize);
-            switch (mesh->unk24)
+            switch (mesh->type)
             {
             case -2:
                 break;
@@ -650,7 +602,7 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
 
 void func_80031764(struct NaomiModel *model)
 {
-    func_80031210(model);
+    g_draw_naomi_model_and_do_other_stuff(model);
 }
 
 void g_call_draw_naomi_model_1(struct NaomiModel *model)
@@ -688,7 +640,7 @@ GXCompare naomiToGCCompare[] =
 };
 u32 lbl_801B7B14[] = { 3, 0, 2, 1, 0 };
 
-void func_800317A4(void)
+static void prep_some_stuff_before_drawing(void)
 {
     GXColor ambColor;
 
@@ -752,7 +704,7 @@ void func_800317A4(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-void func_80031A58(struct NaomiMesh *pmesh)
+static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
 {
     struct NaomiMesh mesh = *pmesh;
     GXColor color;
@@ -877,10 +829,10 @@ void func_80031A58(struct NaomiMesh *pmesh)
         lbl_80205DAC.ambColor = color;
     }
 
-    if (lbl_80205DAC.unk9 != mesh.unk24)
+    if (lbl_80205DAC.unk9 != mesh.type)
     {
-        lbl_80205DAC.unk9 = mesh.unk24;
-        switch (mesh.unk24)
+        lbl_80205DAC.unk9 = mesh.type;
+        switch (mesh.type)
         {
         case -1:
             GXSetChanCtrl(
@@ -1173,7 +1125,7 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
     }
 }
 
-void func_80032A80(void)
+static void prep_some_stuff_before_drawing_2(void)
 {
     GXColor sp18;
 
@@ -1239,7 +1191,7 @@ void func_80032A80(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-void func_80032D44(struct NaomiMesh *pmesh)
+void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
 {
     struct NaomiMesh mesh = *pmesh;
     GXColor color;
@@ -1367,10 +1319,10 @@ void func_80032D44(struct NaomiMesh *pmesh)
         lbl_80205DAC.ambColor = color;
     }
 
-    if (lbl_80205DAC.unk9 != mesh.unk24)
+    if (lbl_80205DAC.unk9 != mesh.type)
     {
-        lbl_80205DAC.unk9 = mesh.unk24;
-        switch (mesh.unk24)
+        lbl_80205DAC.unk9 = mesh.type;
+        switch (mesh.type)
         {
         case -1:
             GXSetChanCtrl(
@@ -1520,7 +1472,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 
 void func_80033AD4(struct NaomiModel *model)
 {
-    func_80031210(model);
+    g_draw_naomi_model_and_do_other_stuff(model);
 }
 
 void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
@@ -1533,12 +1485,12 @@ void func_80033B14(struct NaomiModel *model, float b)
     func_800314B8(model, b);
 }
 
-void func_80033B34(u32 lightMask)
+void g_nl2ngc_set_light_mask(u32 lightMask)
 {
     nlObjLightMask = lightMask;
 }
 
-void func_80033B3C(float r, float g, float b)
+void g_nl2ngc_set_ambient_color(float r, float g, float b)
 {
     g_someAmbColor.r = r;
     g_someAmbColor.g = g;
@@ -1557,7 +1509,7 @@ void func_80033B58(u32 a, float b, float c)
     lbl_802F1EFC = c;
 }
 
-void func_80033B68(int r, int g, int b)
+void g_nl2ngc_set_some_other_color(int r, int g, int b)
 {
     lbl_802F1EF4.r = r;
     lbl_802F1EF4.g = g;
@@ -1585,7 +1537,7 @@ void g_draw_naomi_model_3(struct NaomiModel *model)
         lbl_80205DAC.unk0 = 0;
     }
 
-    func_800317A4();
+    prep_some_stuff_before_drawing();
     GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -1596,14 +1548,14 @@ void g_draw_naomi_model_3(struct NaomiModel *model)
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
-        func_80031A58(mesh);
+        do_some_stuff_with_mesh_colors(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
         if (((mesh->unk0 >> 24) & 7) != 0)
             mesh = next;
         else
         {
             dlstart = (void *)(mesh->dispListStart);
-            switch (mesh->unk24)
+            switch (mesh->type)
             {
             case -2:
                 break;
@@ -1620,7 +1572,7 @@ void g_draw_naomi_model_3(struct NaomiModel *model)
     func_800341B8();
 }
 
-void lbl_80033C8C(struct UnkStruct18 *a)
+static void lbl_80033C8C(struct UnkStruct18 *a)
 {
     float f31, f30, f29;
 
@@ -1630,16 +1582,16 @@ void lbl_80033C8C(struct UnkStruct18 *a)
     f30 = lbl_801B7978.unk0.g;
     f29 = lbl_801B7978.unk0.b;
 
-    lbl_801B7978.unk0.r = a->unk3C.x;
-    lbl_801B7978.unk0.g = a->unk3C.y;
-    lbl_801B7978.unk0.b = a->unk3C.z;
-    if (!(a->unk8->flags & (1 << 10)))
+    lbl_801B7978.unk0.r = a->unk3C.r;
+    lbl_801B7978.unk0.g = a->unk3C.g;
+    lbl_801B7978.unk0.b = a->unk3C.b;
+    if (!(a->model->flags & (1 << 10)))
     {
         func_800223D8(a->unk48);
-        func_80033B3C(a->unk4C.r, a->unk4C.g, a->unk4C.b);
+        g_nl2ngc_set_ambient_color(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
     lbl_802F1EEC = a->unk58;
-    g_draw_naomi_model_4(a->unk8);
+    g_draw_naomi_model_4(a->model);
 
     lbl_801B7978.unk0.r = f31;
     lbl_801B7978.unk0.g = f30;
@@ -1667,7 +1619,7 @@ void g_draw_naomi_model_4(struct NaomiModel *model)
         lbl_80205DAC.unk0 = 0;
     }
 
-    func_800317A4();
+    prep_some_stuff_before_drawing();
     GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -1678,14 +1630,14 @@ void g_draw_naomi_model_4(struct NaomiModel *model)
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
-        func_80031A58(mesh);
+        do_some_stuff_with_mesh_colors(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
         if (((mesh->unk0 >> 24) & 7) == 0)
             mesh = next;
         else
         {
             dlstart = (void *)(mesh->dispListStart);
-            switch (mesh->unk24)
+            switch (mesh->type)
             {
             case -2:
                 break;
@@ -1712,17 +1664,17 @@ void lbl_80033E6C(struct UnkStruct19 *a)
     f30 = lbl_801B7978.unk0.g;
     f29 = lbl_801B7978.unk0.b;
 
-    lbl_801B7978.unk0.r = a->unk3C.x;
-    lbl_801B7978.unk0.g = a->unk3C.y;
-    lbl_801B7978.unk0.b = a->unk3C.z;
+    lbl_801B7978.unk0.r = a->unk3C.r;
+    lbl_801B7978.unk0.g = a->unk3C.g;
+    lbl_801B7978.unk0.b = a->unk3C.b;
     lbl_80205DAC.unk1C = a->unk48;
-    if (!(a->unk8->flags & (1 << 10)))
+    if (!(a->model->flags & (1 << 10)))
     {
         func_800223D8(a->unk4C);
-        func_80033B3C(a->unk50.r, a->unk50.g, a->unk50.b);
+        g_nl2ngc_set_ambient_color(a->unk50.r, a->unk50.g, a->unk50.b);
     }
     lbl_802F1EEC = a->unk5C;
-    g_draw_naomi_model_5(a->unk8);
+    g_draw_naomi_model_5(a->model);
 
     lbl_801B7978.unk0.r = f31;
     lbl_801B7978.unk0.g = f30;
@@ -1753,7 +1705,7 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
         lbl_80205DAC.unk0 = 0;
     }
 
-    func_80032A80();
+    prep_some_stuff_before_drawing_2();
     GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -1764,10 +1716,10 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
-        func_80032D44(mesh);
+        do_some_stuff_with_mesh_colors_2(mesh);
         next    = (void *)(mesh->dispListStart + mesh->dispListSize);
         dlstart = (void *)(mesh->dispListStart);
-        switch (mesh->unk24)
+        switch (mesh->type)
         {
         case -2:
             break;
@@ -1832,7 +1784,7 @@ void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
             else
             {
                 dlstart = (void *)(mesh->dispListStart);
-                switch (mesh->unk24)
+                switch (mesh->type)
                 {
                 case -2:
                     break;

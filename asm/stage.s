@@ -17614,7 +17614,7 @@ lbl_8005359C:
 /* 80053618 0004F538  7C 03 07 34 */	extsh r3, r0
 /* 8005361C 0004F53C  4B FB 4A 6D */	bl mathutil_mtxA_rotate_z
 /* 80053620 0004F540  7F E3 FB 78 */	mr r3, r31
-/* 80053624 0004F544  4B FD DB ED */	bl func_80031210
+/* 80053624 0004F544  4B FD DB ED */	bl g_draw_naomi_model_and_do_other_stuff
 lbl_80053628:
 /* 80053628 0004F548  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 8005362C 0004F54C  CB E1 00 28 */	lfd f31, 0x28(r1)
