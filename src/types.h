@@ -101,6 +101,8 @@ enum
     BG_TYPE_END,
 };
 
+struct Color3f { float r, g, b; };
+
 // avdisp.c
 struct GMAMeshHeader;
 struct GMAMaterial;
@@ -475,13 +477,8 @@ struct UnkStruct17
     u32 unk70;
 };
 
-struct Struct80031210
-{
-    s32 unk0;
-    u32 unk4;
-    Vec unk8;
-    float unk14;
-};
+struct NaomiModel;
+struct NaomiObj;
 
 // like UnkStruct17, but with a different fields starting at 0x3C.
 // possibly has a union?
@@ -489,11 +486,11 @@ struct UnkStruct18
 {
     u8 filler0[4];
     void (*unk4)(struct UnkStruct18 *);
-    struct Struct80031210 *unk8;
+    struct NaomiModel *unk8;
     Mtx unkC;
     Vec unk3C;
     u32 unk48;
-    Vec unk4C;
+    struct Color3f unk4C;
     u32 unk58;
 };
 
@@ -501,12 +498,12 @@ struct UnkStruct19
 {
     u8 filler0[4];
     void (*unk4)(struct UnkStruct19 *);
-    struct Struct80031210 *unk8;
+    struct NaomiModel *unk8;
     Mtx unkC;
     Vec unk3C;
     float unk48;
     u32 unk4C;
-    Vec unk50;
+    struct Color3f unk50;
     u32 unk5C;
 };
 
@@ -905,24 +902,3 @@ struct Struct802F1F44
     u8 filler10[0x14-0x10];
     void *unk14;
 };
-
-struct Struct80031210_sub
-{
-    s32 unk0;
-    u32 unk4;
-    u32 unk8;
-    GXTexObj *unkC;
-    u32 unk10;
-    u8 filler14[0x20-0x14];
-    s32 unk20;
-    s32 unk24;
-    float unk28;
-    float unk2C;
-    float unk30;
-    float unk34;
-    float unk38;
-    u8 filler3C[0x4C-0x3C];
-    u32 unk4C;
-};
-
-struct Struct8003209C;

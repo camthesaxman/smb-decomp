@@ -6,75 +6,48 @@
 #include "bitmap.h"
 #include "load.h"
 #include "mathutil.h"
+#include "nl2ngc.h"
 
-#pragma force_active on
+struct Color3f g_someAmbColor;
 
-Vec lbl_80205DA0;
-//u8 lbl_80205DAC[0x40-0xC];
-struct Struct80205DAC
+struct
 {
-    s32 unk0;  // + 0xC
-    u8 unk4;   // + 0x10
-    u8 unk5;   // + 0x11
-    u8 unk6;   // + 0x12
-    u8 unk7;   // + 0x13
-    u8 unk8;   // + 0x14
-    u8 unk9;   // + 0x15
-    u8 unkA;   // + 0x16
+    s32 unk0;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+    u8 unk8;
+    u8 unk9;
+    u8 unkA;
     u8 fillerB[1];
-    GXTexObj *unkC;  // + 0x18
-    u32 unk10;  // + 0x1C
-    GXColor unk14;  // + 0x20
-    GXColor unk18;  // + 0x24
-    //u8 filler1C[0x1C-0x14];
+    GXTexObj *unkC;
+    u32 unk10;
+    GXColor matColor;
+    GXColor ambColor;
     float unk1C;
-    u8 unk20;  // + 2C
+    u8 unk20;
     u8 filler21[3];
-    u32 unk24;  // + 30
-    u8 unk28;  // +34
+    u32 unk24;
+    u8 unk28;
     u8 filler29[0x34-0x29];
-};
-struct Struct80205DAC lbl_80205DAC;
+} lbl_80205DAC;
+
 u8 lzHeader[0x20];
 
-#pragma force_active off
-
-FORCE_BSS_ORDER(lbl_80205DA0)
+FORCE_BSS_ORDER(g_someAmbColor)
 FORCE_BSS_ORDER(lbl_80205DAC)
 FORCE_BSS_ORDER(lzHeader)
 
-// struct or array? not sure...
-float lbl_801B7978[8] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-
-struct NLObj1_child_child_sub
+struct
 {
-    u16 unk0;
-    u8 filler2[0x10-0x2];
-};
-
-struct NLObj1_child_child
-{
-    u8 filler0[0xC];
-    struct NLObj1_child_child_sub unkC[4];  // unknown size
-};
-
-struct NLObj1_child
-{
-    void **unk0;
-    struct NLObj1_child_child *unk4[2];  // unknown size
-
-    GXTexObj *unkC;
-};
-
-struct NLObj1
-{
-    struct NLObj1_child *unk0;
-};
-
-struct NLObj2
-{
-    struct TPL *unk0;
-};
+    struct Color3f unk0;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+} lbl_801B7978 = { { 1.0f, 1.0f, 1.0f }, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 void lbl_80033C8C(struct UnkStruct18 *);
 
@@ -114,27 +87,27 @@ void func_80030B68(int a /*unknown*/, int b /*unknown*/, u32 c)
 
 void func_80030BA8(float x)
 {
-    lbl_801B7978[6] = x;
+    lbl_801B7978.unk18 = x;
 }
 
 void func_80030BB8(float x, float y, float z)
 {
-    lbl_801B7978[0] = x;
-    lbl_801B7978[1] = y;
-    lbl_801B7978[2] = z;
+    lbl_801B7978.unk0.r = x;
+    lbl_801B7978.unk0.g = y;
+    lbl_801B7978.unk0.b = z;
 }
 
-BOOL load_nlobj(struct NLObj1 *a, struct NLObj2 *b, char *modelName, char *texName)
+BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName)
 {
     int len;
-    void **r28_;
+    struct NaomiModel **pmodel;
     u32 size;
     struct File file;
 
-    if (a->unk0 != NULL)
+    if (*pobj != NULL)
     {
-        OSFree(a->unk0);
-        a->unk0 = NULL;
+        OSFree(*pobj);
+        *pobj = NULL;
     }
     if (!file_open(modelName, &file))
         return FALSE;
@@ -164,49 +137,49 @@ BOOL load_nlobj(struct NLObj1 *a, struct NLObj2 *b, char *modelName, char *texNa
             return FALSE;
         lzs_decompress(compressed, uncompressed);
         OSFreeToHeap(memHeap5, compressed);
-        a->unk0 = uncompressed;
-        if (a->unk0 == NULL)
+        *pobj = uncompressed;
+        if (*pobj == NULL)
             return FALSE;
     }
     else
     {
         size = OSRoundUp32B(file_size(&file));
-        a->unk0 = OSAlloc(size);
-        if (a->unk0 == NULL)
+        *pobj = OSAlloc(size);
+        if (*pobj == NULL)
             OSPanic("nl2ngc.c", 476, "cannot OSAlloc");
-        file_read(&file, a->unk0, size, 0);
+        file_read(&file, *pobj, size, 0);
         file_close(&file);
     }
 
-    func_80030E90(a->unk0);
-    if (b->unk0 != NULL)
-        bitmap_free_tpl(b->unk0);
-    b->unk0 = bitmap_load_tpl(texName);
-    if (b->unk0 == NULL)
+    func_80030E90(*pobj);
+    if (*ptpl != NULL)
+        bitmap_free_tpl(*ptpl);
+    *ptpl = bitmap_load_tpl(texName);
+    if (*ptpl == NULL)
         return FALSE;
 
-    r28_ = a->unk0->unk4;
-    while (*r28_ != NULL)
+    pmodel = (*pobj)->modelPtrs;
+    while (*pmodel != NULL)
     {
-        func_80031070(*r28_, (void *)b->unk0);
-        r28_++;
+        g_init_naomi_texture(*pmodel, *ptpl);
+        pmodel++;
     }
     return TRUE;
 }
 
-BOOL func_80030E20(struct NLObj1 *a, struct NLObj2 *b)
+BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl)
 {
     u8 unused[8];
 
-    if (a->unk0 != NULL)
+    if (*pobj != NULL)
     {
-        OSFree(a->unk0);
-        a->unk0 = NULL;
+        OSFree(*pobj);
+        *pobj = NULL;
     }
-    if (b->unk0 != NULL)
+    if (*ptpl != NULL)
     {
-        bitmap_free_tpl(b->unk0);
-        b->unk0 = NULL;
+        bitmap_free_tpl(*ptpl);
+        *ptpl = NULL;
     }
     return TRUE;
 }
@@ -328,70 +301,70 @@ lbl_80030F60:
 #pragma peephole on
 #endif
 
-void func_80030F88(struct Struct80031210 *a)
+void func_80030F88(struct NaomiModel *model)
 {
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        struct Struct80031210_sub *r5 = (void *)((u8 *)a + 0x18);
+        struct NaomiMesh *mesh = (struct NaomiMesh *)model->meshStart;
         BOOL r6 = FALSE;
         BOOL r7 = FALSE;
         BOOL r8 = TRUE;
         BOOL r9 = TRUE;
 
-        while (r5->unk0 != 0)
+        while (mesh->unk0 != 0)
         {
-            if (((r5->unk0 >> 24) & 7) != 0)
+            if (((mesh->unk0 >> 24) & 7) != 0)
             {
                 r6 = TRUE;
-                if (r8 && (r5->unk24 != -1 || r5->unk24 != -3))
+                if (r8 && (mesh->unk24 != -1 || mesh->unk24 != -3))
                     r8 = FALSE;
             }
             else
             {
                 r7 = TRUE;
-                if (r9 && (r5->unk24 != -1 || r5->unk24 != -3))
+                if (r9 && (mesh->unk24 != -1 || mesh->unk24 != -3))
                     r9 = FALSE;
             }
-            r5 = (void *)((u8 *)r5 + 0x50 + r5->unk4C);
+            mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
         if (r6)
-            a->unk4 |= 0x100;
+            model->flags |= (1 << 8);
         if (r7)
-            a->unk4 |= 0x200;
+            model->flags |= (1 << 9);
         if (r8)
-            a->unk4 |= 0x400;
+            model->flags |= (1 << 10);
         if (r9)
-            a->unk4 |= 0x800;
+            model->flags |= (1 << 11);
     }
 }
 
-void func_80031070(struct Struct80031210 *a, struct TPL *b)
+void g_init_naomi_texture(struct NaomiModel *model, struct TPL *b)
 {
     u8 unused[8];
 
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        struct Struct80031210_sub *r30 = (void *)((u8 *)a + 0x18);
+        struct NaomiMesh *mesh = (struct NaomiMesh *)model->meshStart;
 
-        while (r30->unk0 != 0)
+        while (mesh->unk0 != 0)
         {
-            if (r30->unk20 >= 0)
+            if (mesh->unk20 >= 0)
             {
-                u32 r31 = r30->unk8;
-                GXTexObj *tobj = &b->texObjs[r30->unk20];
+                u32 r31 = mesh->unk8;
+                GXTexObj *tobj = &b->texObjs[mesh->unk20];
                 GXTexWrapMode wrapS, wrapT;
                 GXTexFilter minFilt, magFilt;
 
-                if (r31 & (1<<(31-0xF)))
+                if (r31 & (1 << 16))
                     wrapS = GXGetTexObjWrapS(tobj);
-                else if (r31 & (1<<(31-0xD)))
+                else if (r31 & (1 << 18))
                     wrapS = GX_MIRROR;
                 else
                     wrapS = GX_REPEAT;
 
-                if (r31 & (1<<(31-0x10)))
+                if (r31 & (1 << 15))
                     wrapT = GXGetTexObjWrapT(tobj);
-                else if (r31 & (1<<(31-0xE)))
+                else if (r31 & (1 << 17))
                     wrapT = GX_MIRROR;
                 else
                     wrapT = GX_REPEAT;
@@ -404,7 +377,7 @@ void func_80031070(struct Struct80031210 *a, struct TPL *b)
                     GXGetTexObjFmt(tobj),  // format
                     wrapS,  // wrap_s
                     wrapT,  // wrap_t
-                    b->texHeaders[r30->unk20].unkC);  // mipmap
+                    b->texHeaders[mesh->unk20].unkC);  // mipmap
 
                 switch (((r31 >> 13) & 0x3))
                 {
@@ -425,61 +398,61 @@ void func_80031070(struct Struct80031210 *a, struct TPL *b)
                 }
 
                 GXInitTexObjLOD(
-                    tobj,  // obj
-                    minFilt,  // min_filt
-                    magFilt,  // mag_filt
-                    0.0f,  // min_lod
-                    0.0f,  // max_lod
-                    0.0f,  // lod_bias
-                    GX_FALSE,  // bias_clamp
-                    GX_FALSE,  // do_edge_lod
+                    tobj,         // obj
+                    minFilt,      // min_filt
+                    magFilt,      // mag_filt
+                    0.0f,         // min_lod
+                    0.0f,         // max_lod
+                    0.0f,         // lod_bias
+                    GX_FALSE,     // bias_clamp
+                    GX_FALSE,     // do_edge_lod
                     GX_ANISO_1);  // max_aniso
-                r30->unkC = tobj;
+                mesh->texObj = tobj;
             }
-            r30 = (void *)((u8 *)r30 + 0x50 + r30->unk4C);
+            mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
     }
 }
 
-void func_80031210(struct Struct80031210 *a)
+void func_80031210(struct NaomiModel *model)
 {
     u32 *temp;
 
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        lbl_801B7978[7] = lbl_801B7978[6];
-        if (lbl_801B7978[6] == 1.0f)
+        lbl_801B7978.unk1C = lbl_801B7978.unk18;
+        if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+            if (func_80020EB4(&model->unk8, model->unk14) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
             {
-                lbl_801B7978[6] = 1.0f;
+                lbl_801B7978.unk18 = 1.0f;
                 return;
             }
-            lbl_801B7978[6] = 1.0f;
+            lbl_801B7978.unk18 = 1.0f;
         }
-        temp = &a->unk4;
-        if (a->unk4 & (1<<(31-0x16)))
-            func_80033B7C(a);
-        if (*temp & (1<<(31-0x17)))
+        temp = &model->flags;
+        if (model->flags & (1 << 9))
+            g_draw_naomi_model_3(model);
+        if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
-            int r28 = func_80085698(&a->unk8);
+            int r28 = func_80085698(&model->unk8);
             r29 = func_80085B88(0x5C);
 
             r29->unk4 = lbl_80033C8C;
-            r29->unk8 = a;
-            r29->unk3C.x = lbl_801B7978[0];
-            r29->unk3C.y = lbl_801B7978[1];
-            r29->unk3C.z = lbl_801B7978[2];
+            r29->unk8 = model;
+            r29->unk3C.x = lbl_801B7978.unk0.r;
+            r29->unk3C.y = lbl_801B7978.unk0.g;
+            r29->unk3C.z = lbl_801B7978.unk0.b;
             r29->unk48 = func_800223D0();
-            r29->unk4C.x = lbl_80205DA0.x;
-            r29->unk4C.y = lbl_80205DA0.y;
-            r29->unk4C.z = lbl_80205DA0.z;
+            r29->unk4C.r = g_someAmbColor.r;
+            r29->unk4C.g = g_someAmbColor.g;
+            r29->unk4C.b = g_someAmbColor.b;
             r29->unk58 = lbl_802F1EEC;
             mathutil_mtxA_to_mtx(r29->unkC);
             func_80085B78(r28, r29);
@@ -487,34 +460,34 @@ void func_80031210(struct Struct80031210 *a)
     }
 }
 
-Mtx lbl_801B79B4 =
+Mtx textureMatrix =
 {
     {1,  0,  0,  0},
     {0, -1,  0,  1},
     {0,  0,  1,  0},
 };
 
-void func_80031350(struct Struct80031210 *a)
+void g_draw_naomi_model_1(struct NaomiModel *model)
 {
-    struct Struct80031210_sub *r30;
+    struct NaomiMesh *mesh;
 
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        lbl_801B7978[7] = lbl_801B7978[6];
-        if (lbl_801B7978[6] == 1.0f)
+        lbl_801B7978.unk1C = lbl_801B7978.unk18;
+        if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+            if (func_80020EB4(&model->unk8, model->unk14) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
             {
-                lbl_801B7978[6] = 1.0f;
+                lbl_801B7978.unk18 = 1.0f;
                 return;
             }
         }
-        if (a->unk4 & (1<<(31-0x1E)))
+        if (model->flags & (1 << 1))
         {
             g_set_vtx_desc(
                 (1 << GX_VA_POS)
@@ -532,31 +505,31 @@ void func_80031350(struct Struct80031210 *a)
         }
 
         func_800317A4();
-        GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
-        GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-        r30 = (void *)((u8 *)a + 0x18);
-        while (r30->unk0 != 0)
+        mesh = (struct NaomiMesh *)model->meshStart;
+        while (mesh->unk0 != 0)
         {
-            struct Struct80031210_sub *next;
-            void *unknown;
+            struct NaomiDispList *dlstart;
+            struct NaomiMesh *next;
 
-            func_80031A58(r30);
-            unknown = ((u8 *)r30 + 0x50);
-            next = (void *)((u8 *)r30 + 0x50 + r30->unk4C);
-            switch (r30->unk24)
+            func_80031A58(mesh);
+            dlstart = (void *)(mesh->dispListStart);
+            next    = (void *)(mesh->dispListStart + mesh->dispListSize);
+            switch (mesh->unk24)
             {
             case -2:
                 break;
             case -3:
-                func_80032474((void *)unknown, (void *)next);
+                g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
-                func_8003209C((void *)unknown, (void *)next);
+                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
-            r30 = next;
+            mesh = next;
         }
         func_800341B8();
     }
@@ -564,69 +537,69 @@ void func_80031350(struct Struct80031210 *a)
 
 void lbl_80033E6C(struct UnkStruct19 *);
 
-void func_800314B8(struct Struct80031210 *a, float b)
+void func_800314B8(struct NaomiModel *model, float b)
 {
     struct UnkStruct19 *r29;
     int r28;
 
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        lbl_801B7978[7] = lbl_801B7978[6];
-        if (lbl_801B7978[6] == 1.0f)
+        lbl_801B7978.unk1C = lbl_801B7978.unk18;
+        if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+            if (func_80020EB4(&model->unk8, model->unk14) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
             {
-                lbl_801B7978[6] = 1.0f;
+                lbl_801B7978.unk18 = 1.0f;
                 return;
             }
-            lbl_801B7978[6] = 1.0f;
+            lbl_801B7978.unk18 = 1.0f;
         }
 
-        r28 = func_80085698(&a->unk8);
+        r28 = func_80085698(&model->unk8);
         r29 = func_80085B88(0x60);
 
         r29->unk4 = lbl_80033E6C;
-        r29->unk8 = a;
+        r29->unk8 = model;
         r29->unk48 = b;
-        r29->unk3C.x = lbl_801B7978[0];
-        r29->unk3C.y = lbl_801B7978[1];
-        r29->unk3C.z = lbl_801B7978[2];
+        r29->unk3C.x = lbl_801B7978.unk0.r;
+        r29->unk3C.y = lbl_801B7978.unk0.g;
+        r29->unk3C.z = lbl_801B7978.unk0.b;
         r29->unk4C = func_800223D0();
-        r29->unk50.x = lbl_80205DA0.x;
-        r29->unk50.y = lbl_80205DA0.y;
-        r29->unk50.z = lbl_80205DA0.z;
+        r29->unk50.r = g_someAmbColor.r;
+        r29->unk50.g = g_someAmbColor.g;
+        r29->unk50.b = g_someAmbColor.b;
         r29->unk5C = lbl_802F1EEC;
         mathutil_mtxA_to_mtx(r29->unkC);
         func_80085B78(r28, r29);
     }
 }
 
-void func_800315E4(struct Struct80031210 *a, float b)
+void g_draw_naomi_model_2(struct NaomiModel *model, float b)
 {
-    struct Struct80031210_sub *r29;
+    struct NaomiMesh *mesh;
 
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        lbl_801B7978[7] = lbl_801B7978[6];
-        if (lbl_801B7978[6] == 1.0f)
+        lbl_801B7978.unk1C = lbl_801B7978.unk18;
+        if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+            if (func_80020EB4(&model->unk8, model->unk14) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[6]) == 0)
+            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
             {
-                lbl_801B7978[6] = 1.0f;
+                lbl_801B7978.unk18 = 1.0f;
                 return;
             }
         }
-        if (a->unk4 & (1<<(31-0x1E)))
+        if (model->flags & (1 << 1))
         {
             g_set_vtx_desc(
                 (1 << GX_VA_POS)
@@ -645,106 +618,52 @@ void func_800315E4(struct Struct80031210 *a, float b)
 
         lbl_80205DAC.unk1C = b;
         func_80032A80();
-        GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
-        GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-        r29 = (void *)((u8 *)a + 0x18);
-        while (r29->unk0 != 0)
+        mesh = (struct NaomiMesh *)model->meshStart;
+        while (mesh->unk0 != 0)
         {
-            struct Struct80031210_sub *next;
-            void *unknown;
+            struct NaomiDispList *dlstart;
+            struct NaomiMesh *next;
 
-            func_80032D44(r29);
-            unknown = ((u8 *)r29 + 0x50);
-            next = (void *)((u8 *)r29 + 0x50 + r29->unk4C);
-            switch (r29->unk24)
+            func_80032D44(mesh);
+            dlstart = (void *)(mesh->dispListStart);
+            next    = (void *)(mesh->dispListStart + mesh->dispListSize);
+            switch (mesh->unk24)
             {
             case -2:
                 break;
             case -3:
-                func_800333F0((void *)unknown, (void *)next);
+                g_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
                 break;
             default:
-                func_8003209C((void *)unknown, (void *)next);
+                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
-            r29 = next;
+            mesh = next;
         }
         func_800341B8();
     }
 }
 
-void func_80031764(struct Struct80031210 *a)
+void func_80031764(struct NaomiModel *model)
 {
-    func_80031210(a);
+    func_80031210(model);
 }
 
-void func_80031784(struct Struct80031210 *a)
+void g_call_draw_naomi_model_1(struct NaomiModel *model)
 {
-    func_80031350(a);
+    g_draw_naomi_model_1(model);
 }
 
-u8 lbl_801B79E4[] =
-{
-    0x00, 0x00, 0x00, 0x09,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x0A,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x0D,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0xFF,
-    0x00, 0x00, 0x00, 0x01,
-};
-u8 lbl_801B7A04[] =
-{
-    0x00, 0x00, 0x00, 0x09,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0A,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0D,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0xFF,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-};
-u8 lbl_801B7A44[] =
-{
-    0x00, 0x00, 0x00, 0x09,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x0B,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x0D,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0xFF,
-    0x00, 0x00, 0x00, 0x01,
-};
-u8 lbl_801B7A64[] =
-{
-    0x00, 0x00, 0x00, 0x09,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0B,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x05,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0D,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0xFF,
-    0x00, 0x00, 0x00, 0x01,
-    0x00, 0x00, 0x00, 0x04,
-    0x00, 0x00, 0x00, 0x00,
-};
+// unused stuff?
+
+u32 lbl_801B79E4[] = { 9, 1, 10, 1, 13, 1, 255, 1 };
+u32 lbl_801B7A04[] = { 9, 1, 4, 0, 10, 0, 4, 0, 13, 1, 4, 0, 255, 1, 4, 0 };
+u32 lbl_801B7A44[] = { 9, 1, 11, 1, 13, 1, 255, 1 };
+u32 lbl_801B7A64[] = { 9, 1, 4, 0, 11, 1, 5, 0, 13, 1, 4, 0, 255, 1, 4, 0 };
 
 void *lbl_801B7AA4[] =
 {
@@ -756,7 +675,7 @@ void *lbl_801B7AA4[] =
 
 u32 lbl_801B7AB4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 u32 lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
-s32 lbl_801B7AF4[] =
+GXCompare naomiToGCCompare[] =
 {
     GX_NEVER,
     GX_GEQUAL,
@@ -769,15 +688,9 @@ s32 lbl_801B7AF4[] =
 };
 u32 lbl_801B7B14[] = { 3, 0, 2, 1, 0 };
 
-extern GXColor lbl_802F1EF4;
-extern float lbl_802F1EF8;
-extern float lbl_802F1EFC;
-extern u32 lbl_802F1EE8;
-extern u32 lbl_802F1EF0;
-
 void func_800317A4(void)
 {
-    GXColor sp8;
+    GXColor ambColor;
 
     lbl_80205DAC.unk4 = 0;
     lbl_80205DAC.unk5 = 1;
@@ -790,12 +703,12 @@ void func_800317A4(void)
     lbl_80205DAC.unk8 = 0;
 
     if ((!lbl_80205DAC.unk8) != zMode->updateEnable
-     || zMode->compareFunc   != lbl_801B7AF4[lbl_80205DAC.unk7]
+     || zMode->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
      || zMode->compareEnable != GX_ENABLE)
     {
-        GXSetZMode(GX_ENABLE, lbl_801B7AF4[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
+        GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
         zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = lbl_801B7AF4[lbl_80205DAC.unk7];
+        zMode->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
         zMode->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
@@ -809,17 +722,17 @@ void func_800317A4(void)
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.unk10 = 0;
 
-    lbl_80205DAC.unk14.r = lbl_801B7978[0] * 255.0f;
-    lbl_80205DAC.unk14.g = lbl_801B7978[1] * 255.0f;
-    lbl_80205DAC.unk14.b = lbl_801B7978[2] * 255.0f;
-    lbl_80205DAC.unk14.a = 255;
-    GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.unk14);
+    lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
+    lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
+    lbl_80205DAC.matColor.b = lbl_801B7978.unk0.b * 255.0f;
+    lbl_80205DAC.matColor.a = 255;
+    GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.matColor);
 
-    sp8.r = lbl_80205DAC.unk18.r = 0;
-    sp8.g = lbl_80205DAC.unk18.g = 0;
-    sp8.b = lbl_80205DAC.unk18.b = 0;
-    sp8.a = lbl_80205DAC.unk18.a = lbl_80205DAC.unk14.a;
-    GXSetChanAmbColor(GX_COLOR0A0, sp8);
+    ambColor.r = lbl_80205DAC.ambColor.r = 0;
+    ambColor.g = lbl_80205DAC.ambColor.g = 0;
+    ambColor.b = lbl_80205DAC.ambColor.b = 0;
+    ambColor.a = lbl_80205DAC.ambColor.a = lbl_80205DAC.matColor.a;
+    GXSetChanAmbColor(GX_COLOR0A0, ambColor);
 
     lbl_80205DAC.unk9 = 0;
     GXSetChanCtrl(
@@ -827,7 +740,7 @@ void func_800317A4(void)
         GX_ENABLE,     // enable
         GX_SRC_REG,    // amb_src
         GX_SRC_REG,    // mat_src
-        lbl_802F1EE8,  // light_mask
+        nlObjLightMask,  // light_mask
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
@@ -839,16 +752,16 @@ void func_800317A4(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-void func_80031A58(struct Struct80031210_sub *a)
+void func_80031A58(struct NaomiMesh *pmesh)
 {
-    struct Struct80031210_sub sp20 = *a;
-    GXColor sp1C;
+    struct NaomiMesh mesh = *pmesh;
+    GXColor color;
     u32 r28;
     u32 r25;
     u32 r26;
     u32 r27;
 
-    switch ((sp20.unk0 >> 24) & 7)
+    switch ((mesh.unk0 >> 24) & 7)
     {
     case 0:
         if (lbl_80205DAC.unk4 != 0)
@@ -860,8 +773,8 @@ void func_80031A58(struct Struct80031210_sub *a)
         }
         break;
     default:
-        r25 = sp20.unk8 >> 29;
-        r27 = (sp20.unk8 >> 26) & 7;
+        r25 = mesh.unk8 >> 29;
+        r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
             func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
@@ -872,17 +785,17 @@ void func_80031A58(struct Struct80031210_sub *a)
         break;
     }
 
-    r28 = sp20.unk4 >> 29;
-    r26 = sp20.unk4 & 0x4000000;
+    r28 = mesh.unk4 >> 29;
+    r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
         if ((!r26) != zMode->updateEnable
-         || zMode->compareFunc != lbl_801B7AF4[r28]
+         || zMode->compareFunc != naomiToGCCompare[r28]
          || zMode->compareEnable != GX_ENABLE)
         {
-            GXSetZMode(GX_ENABLE, lbl_801B7AF4[r28], (!r26));
+            GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
             zMode->compareEnable = GX_ENABLE;
-            zMode->compareFunc   = lbl_801B7AF4[r28];
+            zMode->compareFunc   = naomiToGCCompare[r28];
             zMode->updateEnable  = (!r26);
         }
         lbl_80205DAC.unk7 = r28;
@@ -894,7 +807,7 @@ void func_80031A58(struct Struct80031210_sub *a)
     else
         func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
 
-    if (sp20.unk20 < 0)
+    if (mesh.unk20 < 0)
     {
         func_8009EFF4(0, 0xFF, 0xFF, 4);
         func_8009EA30(0, 4);
@@ -903,16 +816,16 @@ void func_80031A58(struct Struct80031210_sub *a)
     {
         int r25 = lbl_80205DAC.unk10;
 
-        if (lbl_80205DAC.unkC != sp20.unkC)
+        if (lbl_80205DAC.unkC != mesh.texObj)
         {
-            lbl_80205DAC.unkC = sp20.unkC;
+            lbl_80205DAC.unkC = mesh.texObj;
             if (--r25 < 0)
                 r25 = 7;
             lbl_80205DAC.unk10 = r25;
-            func_8009F430(sp20.unkC, r25);
+            func_8009F430(mesh.texObj, r25);
         }
         func_8009EFF4(0, 0, r25, 4);
-        switch ((sp20.unk8 >> 6) & 3)
+        switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
             func_8009EA30(0, 3);
@@ -938,74 +851,73 @@ void func_80031A58(struct Struct80031210_sub *a)
         }
     }
 
-    sp1C.r = sp20.unk30 * lbl_801B7978[0] * 255.0f;
-    sp1C.g = sp20.unk34 * lbl_801B7978[1] * 255.0f;
-    sp1C.b = sp20.unk38 * lbl_801B7978[2] * 255.0f;
-    sp1C.a = sp20.unk2C * 255.0f;
-    if (lbl_80205DAC.unk14.r != sp1C.r
-     || lbl_80205DAC.unk14.g != sp1C.g
-     || lbl_80205DAC.unk14.b != sp1C.b
-     || lbl_80205DAC.unk14.a != sp1C.a)
+    color.r = mesh.unk30 * lbl_801B7978.unk0.r * 255.0f;
+    color.g = mesh.unk34 * lbl_801B7978.unk0.g * 255.0f;
+    color.b = mesh.unk38 * lbl_801B7978.unk0.b * 255.0f;
+    color.a = mesh.unk2C * 255.0f;
+    if (lbl_80205DAC.matColor.r != color.r
+     || lbl_80205DAC.matColor.g != color.g
+     || lbl_80205DAC.matColor.b != color.b
+     || lbl_80205DAC.matColor.a != color.a)
     {
-        GXSetChanMatColor(4, sp1C);
-        lbl_80205DAC.unk14 = sp1C;
+        GXSetChanMatColor(GX_COLOR0A0, color);
+        lbl_80205DAC.matColor = color;
     }
 
-    sp1C.r = sp20.unk28 * lbl_80205DA0.x * 255.0f;
-    sp1C.g = sp20.unk28 * lbl_80205DA0.y * 255.0f;
-    sp1C.b = sp20.unk28 * lbl_80205DA0.z * 255.0f;
-    sp1C.a = lbl_80205DAC.unk14.a;
-    if (lbl_80205DAC.unk18.r != sp1C.r
-     || lbl_80205DAC.unk18.g != sp1C.g
-     || lbl_80205DAC.unk18.b != sp1C.b
-     || lbl_80205DAC.unk18.a != sp1C.a)
+    color.r = mesh.unk28 * g_someAmbColor.r * 255.0f;
+    color.g = mesh.unk28 * g_someAmbColor.g * 255.0f;
+    color.b = mesh.unk28 * g_someAmbColor.b * 255.0f;
+    color.a = lbl_80205DAC.matColor.a;
+    if (lbl_80205DAC.ambColor.r != color.r
+     || lbl_80205DAC.ambColor.g != color.g
+     || lbl_80205DAC.ambColor.b != color.b
+     || lbl_80205DAC.ambColor.a != color.a)
     {
-        GXSetChanAmbColor(4, sp1C);
-        lbl_80205DAC.unk18 = sp1C;
+        GXSetChanAmbColor(GX_COLOR0A0, color);
+        lbl_80205DAC.ambColor = color;
     }
 
-    if (lbl_80205DAC.unk9 != sp20.unk24)
+    if (lbl_80205DAC.unk9 != mesh.unk24)
     {
-        lbl_80205DAC.unk9 = sp20.unk24;
-        switch (sp20.unk24)
+        lbl_80205DAC.unk9 = mesh.unk24;
+        switch (mesh.unk24)
         {
         case -1:
-            GXSetChanCtrl(4, 0, 0, 0, 0, 2, 1);
+            GXSetChanCtrl(
+                GX_COLOR0A0,  // chan
+                GX_DISABLE,  // enable
+                GX_SRC_REG,  // amb_src
+                GX_SRC_REG,  // mat_src
+                GX_LIGHT_NULL,  // light_mask
+                GX_DF_CLAMP,  // diff_fn
+                GX_AF_SPOT);  // attn_fn
             break;
         case -3:
-            GXSetChanCtrl(4, 0, 1, 1, 0, 2, 1);
+            GXSetChanCtrl(
+                GX_COLOR0A0,  // chan
+                GX_DISABLE,  // enable
+                GX_SRC_VTX,  // amb_src
+                GX_SRC_VTX,  // mat_src
+                GX_LIGHT_NULL,  // light_mask
+                GX_DF_CLAMP,  // diff_fn
+                GX_AF_SPOT);  // attn_fn
             break;
         case -2:
         default:
-            GXSetChanCtrl(4, 1, 0, 0, lbl_802F1EE8, 2, 1);
+            GXSetChanCtrl(
+                GX_COLOR0A0,  // chan
+                GX_ENABLE,  // enable
+                GX_SRC_REG,  // amb_src
+                GX_SRC_REG,  // mat_src
+                nlObjLightMask,  // light_mask
+                GX_DF_CLAMP,  // diff_fn
+                GX_AF_SPOT);  // attn_fn
             break;
         }
     }
 }
 
-struct Struct8003209C
-{
-    u32 unk0;
-    u32 unk4;
-};
-
-struct SomeVtxStruct
-{
-    float x, y, z;
-    float nx, ny, nz;
-    float s, t;
-};
-
-struct SomeVtxStruct2
-{
-    float x, y, z;
-    u8 fillerC[4];
-    u32 color;
-    u8 filler14[4];
-    float s, t;
-};
-
-void func_8003209C(struct Struct8003209C *dl, struct Struct8003209C *end)
+void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
 {
     g_set_vtx_desc(
         (1 << GX_VA_POS)
@@ -1015,24 +927,24 @@ void func_8003209C(struct Struct8003209C *dl, struct Struct8003209C *end)
     if (lbl_80205DAC.unk0 != 0)
         lbl_80205DAC.unk0 = 0;
 
-    while (dl < end)
+    while (dl < (struct NaomiDispList *)end)
     {
         int vtxCount;
         int i;
-        u8 *vtxData = (u8 *)dl + 8;
-        struct SomeVtxStruct *vtx;
+        u8 *vtxData = dl->vtxData;
+        struct NaomiVtxWithNormal *vtx;
         u8 r4 = dl->unk0 & 3;
 
-        vtxCount = dl->unk4;
+        vtxCount = dl->vtxCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
             func_8009E094(lbl_801B7B14[r4]);
         }
 
-        if (dl->unk0 & (1<<(31-0x1B)))
+        if (dl->unk0 & (1 << 4))
         {
-            GXBegin(GX_TRIANGLESTRIP, 0, vtxCount);
+            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, vtxCount);
             while (vtxCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
@@ -1053,10 +965,11 @@ void func_8003209C(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
-        else if (dl->unk0 & (1<<(31-0x1C)))
+        else if (dl->unk0 & (1 << 3))
         {
-            GXBegin(GX_TRIANGLES, 0, vtxCount * 3);
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, vtxCount * 3);
             while (vtxCount > 0)
             {
                 for (i = 0; i < 3; i++)
@@ -1080,10 +993,11 @@ void func_8003209C(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
-        else if (dl->unk0 & (1<<(31-0x1D)))
+        else if (dl->unk0 & (1 << 2))
         {
-            GXBegin(GX_QUADS, 0, vtxCount * 4);
+            GXBegin(GX_QUADS, GX_VTXFMT0, vtxCount * 4);
             while (vtxCount > 0)
             {
                 for (i = 4; i > 0; i--)
@@ -1107,12 +1021,13 @@ void func_8003209C(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
         dl = (void *)vtxData;
     }
 }
 
-void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
+void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
 {
     g_set_vtx_desc(
         (1 << GX_VA_POS)
@@ -1122,24 +1037,24 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
     if (lbl_80205DAC.unk0 != 1)
         lbl_80205DAC.unk0 = 1;
 
-    while (dl < end)
+    while (dl < (struct NaomiDispList *)end)
     {
         int vtxCount;
         int i;
-        u8 *vtxData = (u8 *)dl + 8;
-        struct SomeVtxStruct2 *vtx;
-        u8 r4 = dl->unk0 & 3;;
+        u8 *vtxData = dl->vtxData;
+        struct NaomiVtxWithColor *vtx;
+        u8 r4 = dl->unk0 & 3;
 
-        vtxCount = dl->unk4;
+        vtxCount = dl->vtxCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
             func_8009E094(lbl_801B7B14[r4]);
         }
 
-        if (dl->unk0 & (1<<(31-0x1B)))
+        if (dl->unk0 & (1 << 4))
         {
-            GXBegin(GX_TRIANGLESTRIP, 0, vtxCount);
+            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, vtxCount);
             while (vtxCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
@@ -1149,9 +1064,9 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                     GXPosition3f32(vtx->x, vtx->y, vtx->z);
                     color = vtx->color;
                     GXColor4u8(
-                        ((color >> 16) & 0xFF) * lbl_801B7978[0],
-                        ((color >>  8) & 0xFF) * lbl_801B7978[1],
-                        ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                        ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+                        ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+                        ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
                         ((color >> 24) & 0xFF));
                     GXTexCoord2f32(vtx->s, vtx->t);
                     vtxData += 32;
@@ -1163,19 +1078,20 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                     GXPosition3f32(vtx->x, vtx->y, vtx->z);
                     color = vtx->color;
                     GXColor4u8(
-                        ((color >> 16) & 0xFF) * lbl_801B7978[0],
-                        ((color >>  8) & 0xFF) * lbl_801B7978[1],
-                        ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                        ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+                        ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+                        ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
                         ((color >> 24) & 0xFF));
                     GXTexCoord2f32(vtx->s, vtx->t);
                     vtxData += 8;
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
-        else if (dl->unk0 & (1<<(31-0x1C)))
+        else if (dl->unk0 & (1 << 3))
         {
-            GXBegin(GX_TRIANGLES, 0, vtxCount * 3);
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, vtxCount * 3);
             while (vtxCount > 0)
             {
                 for (i = 0; i < 3; i++)
@@ -1187,9 +1103,9 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
                         color = vtx->color;
                         GXColor4u8(
-                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
-                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
-                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+                            ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+                            ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
                             ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
                         vtxData += 32;
@@ -1201,9 +1117,9 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
                         color = vtx->color;
                         GXColor4u8(
-                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
-                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
-                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+                            ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+                            ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
                             ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
                         vtxData += 8;
@@ -1211,10 +1127,11 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
-        else if (dl->unk0 & (1<<(31-0x1D)))
+        else if (dl->unk0 & (1 << 2))
         {
-            GXBegin(GX_QUADS, 0, vtxCount * 4);
+            GXBegin(GX_QUADS, GX_VTXFMT0, vtxCount * 4);
             while (vtxCount > 0)
             {
                 for (i = 4; i > 0; i--)
@@ -1226,9 +1143,9 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
                         color = vtx->color;
                         GXColor4u8(
-                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
-                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
-                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+                            ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+                            ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
                             ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
                         vtxData += 32;
@@ -1240,9 +1157,9 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                         GXPosition3f32(vtx->x, vtx->y, vtx->z);
                         color = vtx->color;
                         GXColor4u8(
-                            ((color >> 16) & 0xFF) * lbl_801B7978[0],
-                            ((color >>  8) & 0xFF) * lbl_801B7978[1],
-                            ((color >>  0) & 0xFF) * lbl_801B7978[2],
+                            ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+                            ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+                            ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
                             ((color >> 24) & 0xFF));
                         GXTexCoord2f32(vtx->s, vtx->t);
                         vtxData += 8;
@@ -1250,6 +1167,7 @@ void func_80032474(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
         dl = (void *)vtxData;
     }
@@ -1272,12 +1190,12 @@ void func_80032A80(void)
     lbl_80205DAC.unk8 = 0;
 
     if ((!lbl_80205DAC.unk8) != zMode->updateEnable
-     || zMode->compareFunc   != lbl_801B7AF4[lbl_80205DAC.unk7]
+     || zMode->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
      || zMode->compareEnable != GX_ENABLE)
     {
-        GXSetZMode(GX_ENABLE, lbl_801B7AF4[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
+        GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
         zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = lbl_801B7AF4[lbl_80205DAC.unk7];
+        zMode->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
         zMode->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
@@ -1291,16 +1209,16 @@ void func_80032A80(void)
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.unk10 = 0;
 
-    lbl_80205DAC.unk14.r = lbl_801B7978[0] * 255.0f;
-    lbl_80205DAC.unk14.g = lbl_801B7978[1] * 255.0f;
-    lbl_80205DAC.unk14.b = lbl_801B7978[2] * 255.0f;
-    lbl_80205DAC.unk14.a = lbl_80205DAC.unk1C * 255.0f;
-    GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.unk14);
+    lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
+    lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
+    lbl_80205DAC.matColor.b = lbl_801B7978.unk0.b * 255.0f;
+    lbl_80205DAC.matColor.a = lbl_80205DAC.unk1C * 255.0f;
+    GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.matColor);
 
-    sp18.r = lbl_80205DAC.unk18.r = 0;
-    sp18.g = lbl_80205DAC.unk18.g = 0;
-    sp18.b = lbl_80205DAC.unk18.b = 0;
-    sp18.a = lbl_80205DAC.unk18.a = lbl_80205DAC.unk14.a;
+    sp18.r = lbl_80205DAC.ambColor.r = 0;
+    sp18.g = lbl_80205DAC.ambColor.g = 0;
+    sp18.b = lbl_80205DAC.ambColor.b = 0;
+    sp18.a = lbl_80205DAC.ambColor.a = lbl_80205DAC.matColor.a;
     GXSetChanAmbColor(GX_COLOR0A0, sp18);
 
     lbl_80205DAC.unk9 = 0;
@@ -1309,7 +1227,7 @@ void func_80032A80(void)
         GX_ENABLE,     // enable
         GX_SRC_REG,    // amb_src
         GX_SRC_REG,    // mat_src
-        lbl_802F1EE8,  // light_mask
+        nlObjLightMask,  // light_mask
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
@@ -1321,16 +1239,16 @@ void func_80032A80(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-void func_80032D44(struct Struct80031210_sub *a)
+void func_80032D44(struct NaomiMesh *pmesh)
 {
-    struct Struct80031210_sub sp20 = *a;
-    GXColor sp1C;
+    struct NaomiMesh mesh = *pmesh;
+    GXColor color;
     u32 r28;
     u32 r25;
     u32 r26;
     u32 r27;
 
-    switch ((sp20.unk0 >> 24) & 7)
+    switch ((mesh.unk0 >> 24) & 7)
     {
     case 0:
         if (lbl_80205DAC.unk4 != 0)
@@ -1342,8 +1260,8 @@ void func_80032D44(struct Struct80031210_sub *a)
         }
         break;
     default:
-        r25 = sp20.unk8 >> 29;
-        r27 = (sp20.unk8 >> 26) & 7;
+        r25 = mesh.unk8 >> 29;
+        r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
             func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
@@ -1354,17 +1272,17 @@ void func_80032D44(struct Struct80031210_sub *a)
         break;
     }
 
-    r28 = sp20.unk4 >> 29;
-    r26 = sp20.unk4 & 0x4000000;
+    r28 = mesh.unk4 >> 29;
+    r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
         if ((!r26) != zMode->updateEnable
-         || zMode->compareFunc != lbl_801B7AF4[r28]
+         || zMode->compareFunc != naomiToGCCompare[r28]
          || zMode->compareEnable != GX_ENABLE)
         {
-            GXSetZMode(GX_ENABLE, lbl_801B7AF4[r28], (!r26));
+            GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
             zMode->compareEnable = GX_ENABLE;
-            zMode->compareFunc   = lbl_801B7AF4[r28];
+            zMode->compareFunc   = naomiToGCCompare[r28];
             zMode->updateEnable  = (!r26);
         }
         lbl_80205DAC.unk7 = r28;
@@ -1376,7 +1294,7 @@ void func_80032D44(struct Struct80031210_sub *a)
     else
         func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
 
-    if (sp20.unk20 < 0)
+    if (mesh.unk20 < 0)
     {
         func_8009EFF4(0, 0xFF, 0xFF, 4);
         func_8009EA30(0, 4);
@@ -1385,16 +1303,16 @@ void func_80032D44(struct Struct80031210_sub *a)
     {
         int r25 = lbl_80205DAC.unk10;
 
-        if (lbl_80205DAC.unkC != sp20.unkC)
+        if (lbl_80205DAC.unkC != mesh.texObj)
         {
-            lbl_80205DAC.unkC = sp20.unkC;
+            lbl_80205DAC.unkC = mesh.texObj;
             if (--r25 < 0)
                 r25 = 7;
             lbl_80205DAC.unk10 = r25;
-            func_8009F430(sp20.unkC, r25);
+            func_8009F430(mesh.texObj, r25);
         }
         func_8009EFF4(0, 0, r25, 4);
-        switch ((sp20.unk8 >> 6) & 3)
+        switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
             func_8009E618(0, 15, 15, 15, 8);
@@ -1423,65 +1341,86 @@ void func_80032D44(struct Struct80031210_sub *a)
         }
     }
 
-    sp1C.r = sp20.unk30 * lbl_801B7978[0] * 255.0f;
-    sp1C.g = sp20.unk34 * lbl_801B7978[1] * 255.0f;
-    sp1C.b = sp20.unk38 * lbl_801B7978[2] * 255.0f;
-    sp1C.a = sp20.unk2C * lbl_80205DAC.unk1C * 255.0f;
-    if (lbl_80205DAC.unk14.r != sp1C.r
-     || lbl_80205DAC.unk14.g != sp1C.g
-     || lbl_80205DAC.unk14.b != sp1C.b
-     || lbl_80205DAC.unk14.a != sp1C.a)
+    color.r = mesh.unk30 * lbl_801B7978.unk0.r * 255.0f;
+    color.g = mesh.unk34 * lbl_801B7978.unk0.g * 255.0f;
+    color.b = mesh.unk38 * lbl_801B7978.unk0.b * 255.0f;
+    color.a = mesh.unk2C * lbl_80205DAC.unk1C * 255.0f;
+    if (lbl_80205DAC.matColor.r != color.r
+     || lbl_80205DAC.matColor.g != color.g
+     || lbl_80205DAC.matColor.b != color.b
+     || lbl_80205DAC.matColor.a != color.a)
     {
-        GXSetChanMatColor(4, sp1C);
-        lbl_80205DAC.unk14 = sp1C;
+        GXSetChanMatColor(GX_COLOR0A0, color);
+        lbl_80205DAC.matColor = color;
     }
 
-    sp1C.r = sp20.unk28 * lbl_80205DA0.x * 255.0f;
-    sp1C.g = sp20.unk28 * lbl_80205DA0.y * 255.0f;
-    sp1C.b = sp20.unk28 * lbl_80205DA0.z * 255.0f;
-    sp1C.a = lbl_80205DAC.unk14.a;
-    if (lbl_80205DAC.unk18.r != sp1C.r
-     || lbl_80205DAC.unk18.g != sp1C.g
-     || lbl_80205DAC.unk18.b != sp1C.b
-     || lbl_80205DAC.unk18.a != sp1C.a)
+    color.r = mesh.unk28 * g_someAmbColor.r * 255.0f;
+    color.g = mesh.unk28 * g_someAmbColor.g * 255.0f;
+    color.b = mesh.unk28 * g_someAmbColor.b * 255.0f;
+    color.a = lbl_80205DAC.matColor.a;
+    if (lbl_80205DAC.ambColor.r != color.r
+     || lbl_80205DAC.ambColor.g != color.g
+     || lbl_80205DAC.ambColor.b != color.b
+     || lbl_80205DAC.ambColor.a != color.a)
     {
-        GXSetChanAmbColor(4, sp1C);
-        lbl_80205DAC.unk18 = sp1C;
+        GXSetChanAmbColor(GX_COLOR0A0, color);
+        lbl_80205DAC.ambColor = color;
     }
 
-    if (lbl_80205DAC.unk9 != sp20.unk24)
+    if (lbl_80205DAC.unk9 != mesh.unk24)
     {
-        lbl_80205DAC.unk9 = sp20.unk24;
-        switch (sp20.unk24)
+        lbl_80205DAC.unk9 = mesh.unk24;
+        switch (mesh.unk24)
         {
         case -1:
-            GXSetChanCtrl(4, 0, 0, 0, 0, 2, 1);
+            GXSetChanCtrl(
+                GX_COLOR0A0,  // chan
+                GX_DISABLE,  // enable
+                GX_SRC_REG,  // amb_src
+                GX_SRC_REG,  // mat_src
+                GX_LIGHT_NULL,  // light_mask
+                GX_DF_CLAMP,  // diff_fn
+                GX_AF_SPOT);  // attn_fn
             break;
         case -3:
-            GXSetChanCtrl(4, 0, 1, 1, 0, 2, 1);
+            GXSetChanCtrl(
+                GX_COLOR0A0,  // chan
+                GX_DISABLE,  // enable
+                GX_SRC_VTX,  // amb_src
+                GX_SRC_VTX,  // mat_src
+                GX_LIGHT_NULL,  // light_mask
+                GX_DF_CLAMP,  // diff_fn
+                GX_AF_SPOT);  // attn_fn
             break;
         case -2:
         default:
-            GXSetChanCtrl(4, 1, 0, 0, lbl_802F1EE8, 2, 1);
+            GXSetChanCtrl(
+                GX_COLOR0A0,  // chan
+                GX_ENABLE,  // enable
+                GX_SRC_REG,  // amb_src
+                GX_SRC_REG,  // mat_src
+                nlObjLightMask,  // light_mask
+                GX_DF_CLAMP,  // diff_fn
+                GX_AF_SPOT);  // attn_fn
             break;
         }
     }
 }
 
-static inline void handle_color_vtx(struct SomeVtxStruct2 *vtx)
+static inline void handle_color_vtx(struct NaomiVtxWithColor *vtx)
 {
     u32 color;
     GXPosition3f32(vtx->x, vtx->y, vtx->z);
     color = vtx->color;
     GXColor4u8(
-        ((color >> 16) & 0xFF) * lbl_801B7978[0],
-        ((color >>  8) & 0xFF) * lbl_801B7978[1],
-        ((color >>  0) & 0xFF) * lbl_801B7978[2],
+        ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
+        ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
+        ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
         ((color >> 24) & 0xFF) * lbl_80205DAC.unk1C);
     GXTexCoord2f32(vtx->s, vtx->t);
 }
 
-void func_800333F0(struct Struct8003209C *dl, struct Struct8003209C *end)
+void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 {
     g_set_vtx_desc(
         (1 << GX_VA_POS)
@@ -1491,24 +1430,24 @@ void func_800333F0(struct Struct8003209C *dl, struct Struct8003209C *end)
     if (lbl_80205DAC.unk0 != 1)
         lbl_80205DAC.unk0 = 1;
 
-    while (dl < end)
+    while (dl < (struct NaomiDispList *)end)
     {
         int vtxCount;
         int i;
-        u8 *vtxData = (u8 *)dl + 8;
-        struct SomeVtxStruct2 *vtx;
+        u8 *vtxData = dl->vtxData;
+        struct NaomiVtxWithColor *vtx;
         u8 r4 = dl->unk0 & 3;
 
-        vtxCount = dl->unk4;
+        vtxCount = dl->vtxCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
             func_8009E094(lbl_801B7B14[r4]);
         }
 
-        if (dl->unk0 & (1<<(31-0x1B)))
+        if (dl->unk0 & (1 << 4))
         {
-            GXBegin(GX_TRIANGLESTRIP, 0, vtxCount);
+            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, vtxCount);
             while (vtxCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
@@ -1525,10 +1464,11 @@ void func_800333F0(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
-        else if (dl->unk0 & (1<<(31-0x1C)))
+        else if (dl->unk0 & (1 << 3))
         {
-            GXBegin(GX_TRIANGLES, 0, vtxCount * 3);
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, vtxCount * 3);
             while (vtxCount > 0)
             {
                 for (i = 0; i < 3; i++)
@@ -1548,10 +1488,11 @@ void func_800333F0(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
-        else if (dl->unk0 & (1<<(31-0x1D)))
+        else if (dl->unk0 & (1 << 2))
         {
-            GXBegin(GX_QUADS, 0, vtxCount * 4);
+            GXBegin(GX_QUADS, GX_VTXFMT0, vtxCount * 4);
             while (vtxCount > 0)
             {
                 for (i = 4; i > 0; i--)
@@ -1571,36 +1512,37 @@ void func_800333F0(struct Struct8003209C *dl, struct Struct8003209C *end)
                 }
                 vtxCount--;
             }
+            GXEnd();
         }
         dl = (void *)vtxData;
     }
 }
 
-void func_80033AD4(void *a)
+void func_80033AD4(struct NaomiModel *model)
 {
-    func_80031210(a);
+    func_80031210(model);
 }
 
-void func_80033AF4(void *a)
+void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
 {
-    func_80031350(a);
+    g_draw_naomi_model_1(model);
 }
 
-void func_80033B14(void *a, float b)
+void func_80033B14(struct NaomiModel *model, float b)
 {
-    func_800314B8(a, b);
+    func_800314B8(model, b);
 }
 
 void func_80033B34(u32 lightMask)
 {
-    lbl_802F1EE8 = lightMask;
+    nlObjLightMask = lightMask;
 }
 
-void func_80033B3C(float a, float b, float c)
+void func_80033B3C(float r, float g, float b)
 {
-    lbl_80205DA0.x = a;
-    lbl_80205DA0.y = b;
-    lbl_80205DA0.z = c;
+    g_someAmbColor.r = r;
+    g_someAmbColor.g = g;
+    g_someAmbColor.b = b;
 }
 
 void func_80033B50(int a)
@@ -1622,11 +1564,11 @@ void func_80033B68(int r, int g, int b)
     lbl_802F1EF4.b = b;
 }
 
-void func_80033B7C(struct Struct80031210 *a)
+void g_draw_naomi_model_3(struct NaomiModel *model)
 {
-    struct Struct80031210_sub *r31;
+    struct NaomiMesh *mesh;
 
-    if (a->unk4 & (1<<(31-0x1E)))
+    if (model->flags & (1 << 1))
     {
         g_set_vtx_desc(
             (1 << GX_VA_POS)
@@ -1644,36 +1586,35 @@ void func_80033B7C(struct Struct80031210 *a)
     }
 
     func_800317A4();
-    GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-    r31 = (void *)((u8 *)a + 0x18);
-    while (r31->unk0 != 0)
+    mesh = (struct NaomiMesh *)model->meshStart;
+    while (mesh->unk0 != 0)
     {
-        struct Struct80031210_sub *r30;
+        struct NaomiDispList *dlstart;
+        struct NaomiMesh *next;
 
-        func_80031A58(r31);
-
-        r30 = (void *)((u8 *)r31 + 0x50 + r31->unk4C);
-        if (((r31->unk0 >> 24) & 7) != 0)
-            r31 = r30;
+        func_80031A58(mesh);
+        next = (void *)(mesh->dispListStart + mesh->dispListSize);
+        if (((mesh->unk0 >> 24) & 7) != 0)
+            mesh = next;
         else
         {
-            void *unknown = ((u8 *)r31 + 0x50);
-
-            switch (r31->unk24)
+            dlstart = (void *)(mesh->dispListStart);
+            switch (mesh->unk24)
             {
             case -2:
                 break;
             case -3:
-                func_80032474((void *)unknown, (void *)r30);
+                g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
-                func_8003209C((void *)unknown, (void *)r30);
+                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
-            r31 = r30;
+            mesh = next;
         }
     }
     func_800341B8();
@@ -1685,31 +1626,31 @@ void lbl_80033C8C(struct UnkStruct18 *a)
 
     mathutil_mtxA_from_mtx(a->unkC);
 
-    f31 = lbl_801B7978[0];
-    f30 = lbl_801B7978[1];
-    f29 = lbl_801B7978[2];
+    f31 = lbl_801B7978.unk0.r;
+    f30 = lbl_801B7978.unk0.g;
+    f29 = lbl_801B7978.unk0.b;
 
-    lbl_801B7978[0] = a->unk3C.x;
-    lbl_801B7978[1] = a->unk3C.y;
-    lbl_801B7978[2] = a->unk3C.z;
-    if (!(a->unk8->unk4 & (1<<(31-0x15))))
+    lbl_801B7978.unk0.r = a->unk3C.x;
+    lbl_801B7978.unk0.g = a->unk3C.y;
+    lbl_801B7978.unk0.b = a->unk3C.z;
+    if (!(a->unk8->flags & (1 << 10)))
     {
         func_800223D8(a->unk48);
-        func_80033B3C(a->unk4C.x, a->unk4C.y, a->unk4C.z);
+        func_80033B3C(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
     lbl_802F1EEC = a->unk58;
-    func_80033D5C(a->unk8);
+    g_draw_naomi_model_4(a->unk8);
 
-    lbl_801B7978[0] = f31;
-    lbl_801B7978[1] = f30;
-    lbl_801B7978[2] = f29;
+    lbl_801B7978.unk0.r = f31;
+    lbl_801B7978.unk0.g = f30;
+    lbl_801B7978.unk0.b = f29;
 }
 
-void func_80033D5C(struct Struct80031210 *a)
+void g_draw_naomi_model_4(struct NaomiModel *model)
 {
-    struct Struct80031210_sub *r31;
+    struct NaomiMesh *mesh;
 
-    if (a->unk4 & (1<<(31-0x1E)))
+    if (model->flags & (1 << 1))
     {
         g_set_vtx_desc(
             (1 << GX_VA_POS)
@@ -1727,42 +1668,39 @@ void func_80033D5C(struct Struct80031210 *a)
     }
 
     func_800317A4();
-    GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-    r31 = (void *)((u8 *)a + 0x18);
-    while (r31->unk0 != 0)
+    mesh = (struct NaomiMesh *)model->meshStart;
+    while (mesh->unk0 != 0)
     {
-        struct Struct80031210_sub *r30;
+        struct NaomiDispList *dlstart;
+        struct NaomiMesh *next;
 
-        func_80031A58(r31);
-
-        r30 = (void *)((u8 *)r31 + 0x50 + r31->unk4C);
-        if (((r31->unk0 >> 24) & 7) == 0)
-            r31 = r30;
+        func_80031A58(mesh);
+        next = (void *)(mesh->dispListStart + mesh->dispListSize);
+        if (((mesh->unk0 >> 24) & 7) == 0)
+            mesh = next;
         else
         {
-            void *unknown = ((u8 *)r31 + 0x50);
-
-            switch (r31->unk24)
+            dlstart = (void *)(mesh->dispListStart);
+            switch (mesh->unk24)
             {
             case -2:
                 break;
             case -3:
-                func_80032474((void *)unknown, (void *)r30);
+                g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
-                func_8003209C((void *)unknown, (void *)r30);
+                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
-            r31 = r30;
+            mesh = next;
         }
     }
     func_800341B8();
 }
-
-void func_80033F44(struct Struct80031210 *a);
 
 void lbl_80033E6C(struct UnkStruct19 *a)
 {
@@ -1770,35 +1708,35 @@ void lbl_80033E6C(struct UnkStruct19 *a)
 
     mathutil_mtxA_from_mtx(a->unkC);
 
-    f31 = lbl_801B7978[0];
-    f30 = lbl_801B7978[1];
-    f29 = lbl_801B7978[2];
+    f31 = lbl_801B7978.unk0.r;
+    f30 = lbl_801B7978.unk0.g;
+    f29 = lbl_801B7978.unk0.b;
 
-    lbl_801B7978[0] = a->unk3C.x;
-    lbl_801B7978[1] = a->unk3C.y;
-    lbl_801B7978[2] = a->unk3C.z;
+    lbl_801B7978.unk0.r = a->unk3C.x;
+    lbl_801B7978.unk0.g = a->unk3C.y;
+    lbl_801B7978.unk0.b = a->unk3C.z;
     lbl_80205DAC.unk1C = a->unk48;
-    if (!(a->unk8->unk4 & (1<<(31-0x15))))
+    if (!(a->unk8->flags & (1 << 10)))
     {
         func_800223D8(a->unk4C);
-        func_80033B3C(a->unk50.x, a->unk50.y, a->unk50.z);
+        func_80033B3C(a->unk50.r, a->unk50.g, a->unk50.b);
     }
     lbl_802F1EEC = a->unk5C;
-    func_80033F44(a->unk8);
+    g_draw_naomi_model_5(a->unk8);
 
-    lbl_801B7978[0] = f31;
-    lbl_801B7978[1] = f30;
-    lbl_801B7978[2] = f29;
+    lbl_801B7978.unk0.r = f31;
+    lbl_801B7978.unk0.g = f30;
+    lbl_801B7978.unk0.b = f29;
 }
 
-void func_80033F44(struct Struct80031210 *a)
+void g_draw_naomi_model_5(struct NaomiModel *model)
 {
-    struct Struct80031210_sub *r31;
+    struct NaomiMesh *mesh;
 
-    if (a->unk0 == -1)
+    if (model->unk0 == -1)
         return;
 
-    if (a->unk4 & (1<<(31-0x1E)))
+    if (model->flags & (1 << 1))
     {
         g_set_vtx_desc(
             (1 << GX_VA_POS)
@@ -1816,58 +1754,56 @@ void func_80033F44(struct Struct80031210 *a)
     }
 
     func_80032A80();
-    GXLoadTexMtxImm(lbl_801B79B4, 0x1E, 1);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-    r31 = (void *)((u8 *)a + 0x18);
-    while (r31->unk0 != 0)
+    mesh = (struct NaomiMesh *)model->meshStart;
+    while (mesh->unk0 != 0)
     {
-        struct Struct80031210_sub *r30;
-        void *unknown;
+        struct NaomiDispList *dlstart;
+        struct NaomiMesh *next;
 
-        func_80032D44(r31);
-
-        r30 = (void *)((u8 *)r31 + 0x50 + r31->unk4C);
-        unknown = ((u8 *)r31 + 0x50);
-
-        switch (r31->unk24)
+        func_80032D44(mesh);
+        next    = (void *)(mesh->dispListStart + mesh->dispListSize);
+        dlstart = (void *)(mesh->dispListStart);
+        switch (mesh->unk24)
         {
         case -2:
             break;
         case -3:
-            func_800333F0((void *)unknown, (void *)r30);
+            g_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
             break;
         default:
-            func_8003209C((void *)unknown, (void *)r30);
+            g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
             break;
         }
-        r31 = r30;
+        mesh = next;
     }
     func_800341B8();
 }
 
-void func_8003404C(struct Struct80031210 *a, int (*func)())
+void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
 {
-    struct Struct80031210_sub *r30;
+    struct NaomiMesh *mesh;
 
-    if (a->unk0 != -1)
+    if (model->unk0 != -1)
     {
-        lbl_801B7978[7] = lbl_801B7978[6];
-        if (lbl_801B7978[6] == 1.0f)
+        lbl_801B7978.unk1C = lbl_801B7978.unk18;
+        if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&a->unk8, a->unk14) == 0)
+            if (func_80020EB4(&model->unk8, model->unk14) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&a->unk8, a->unk14, lbl_801B7978[7]) == 0)
+            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk1C) == 0)
             {
-                lbl_801B7978[6] = 1.0f;
+                lbl_801B7978.unk18 = 1.0f;
                 return;
             }
         }
-        if (a->unk4 & (1<<(31-0x1E)))
+        if (model->flags & (1 << 1))
         {
             g_set_vtx_desc(
                 (1 << GX_VA_POS)
@@ -1885,28 +1821,29 @@ void func_8003404C(struct Struct80031210 *a, int (*func)())
         }
         lbl_80205DAC.unk1C = 1.0f;
 
-        r30 = (void *)((u8 *)a + 0x18);
-        while (r30->unk0 != 0)
+        mesh = (struct NaomiMesh *)model->meshStart;
+        while (mesh->unk0 != 0)
         {
-            struct Struct80031210_sub *next = (void *)((u8 *)r30 + 0x50 + r30->unk4C);
+            struct NaomiDispList *dlstart;
+            struct NaomiMesh *next = (void *)(mesh->dispListStart + mesh->dispListSize);
 
-            if (func(r30, r30->unk4C) == 0)
-                r30 = next;
+            if (func(mesh, mesh->dispListSize) == 0)
+                mesh = next;
             else
             {
-                void *unknown = ((u8 *)r30 + 0x50);
-                switch (r30->unk24)
+                dlstart = (void *)(mesh->dispListStart);
+                switch (mesh->unk24)
                 {
                 case -2:
                     break;
                 case -3:
-                    func_80032474((void *)unknown, (void *)next);
+                    g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                     break;
                 default:
-                    func_8003209C((void *)unknown, (void *)next);
+                    g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                     break;
                 }
-                r30 = next;
+                mesh = next;
             }
         }
     }

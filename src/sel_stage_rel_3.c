@@ -6,6 +6,7 @@
 #include "global.h"
 #include "input.h"
 #include "mathutil.h"
+#include "nl2ngc.h"
 
 void lbl_00000C9C(void)
 {

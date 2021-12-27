@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "nl2ngc.h"
 
 #pragma force_active on
 
@@ -393,14 +394,6 @@ char *oldBgFileNames[] =
     NULL,
 };
 
-extern u32 lbl_802F1B38;
-extern u32 lbl_802F1EE0;
-extern OSHeapHandle memHeap3;
-extern struct TPL *decodedBgTpl;
-extern struct GMA *decodedBgGma;
-extern u32 lbl_802F1AFC;
-extern u32 lbl_802F1AE8;
-
 void ev_background_init(void)
 {
     s16 r29 = backgroundInfo.bgId;
@@ -496,7 +489,7 @@ void func_8005507C(void)
             free_gma(decodedBgGma);
             decodedBgGma = NULL;
         }
-        func_80030E20(&lbl_802F1AFC, &lbl_802F1AE8);
+        free_nlobj(&lbl_802F1AFC, &lbl_802F1AE8);
 
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = -1;
@@ -658,7 +651,7 @@ void load_bg_files(int bgId)
                 free_gma(decodedBgGma);
                 decodedBgGma = NULL;
             }
-            func_80030E20(&lbl_802F1AFC, &lbl_802F1AE8);
+            free_nlobj(&lbl_802F1AFC, &lbl_802F1AE8);
         }
         if (bgId > 0)
         {

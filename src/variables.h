@@ -193,7 +193,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B7978;
 // extern ? lbl_801B7998;
 // extern ? lbl_801B79A4;
-// extern ? lbl_801B79B4;
+// extern ? textureMatrix;
 // extern ? lbl_801B7B14;
 // extern ? lbl_801B7B28;
 // extern ? lbl_801B7B78;
@@ -601,7 +601,7 @@ extern struct PerfInfo perfInfo;
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
 extern struct SpritePoolInfo spritePoolInfo;
-// extern ? lbl_80205DA0;
+// extern ? g_someAmbColor;
 // extern ? lbl_80205DAC;
 // extern ? lbl_80205E00;
 
@@ -1144,13 +1144,13 @@ extern struct
 // .sbss section
 // extern ? lbl_802F1AE0;
 // extern ? lbl_802F1AE4;
-// extern ? lbl_802F1AE8;
-extern u32 lbl_802F1AEC;  // unknown type
+extern struct TPL *lbl_802F1AE8;
+extern struct TPL *lbl_802F1AEC;  // unknown type
 // extern ? lbl_802F1AF0;
 // extern ? lbl_802F1AF4;
 // extern ? lbl_802F1AF8;
-// extern ? lbl_802F1AFC;
-extern u32 lbl_802F1B00;  // unknown type
+extern struct NaomiObj *lbl_802F1AFC;
+extern struct NaomiObj *lbl_802F1B00;
 /*
 struct Struct802F1B04
 {
@@ -1166,7 +1166,7 @@ struct Struct802F1B04
 };
 extern struct Struct802F1B04 *lbl_802F1B04_;
 */
-extern struct Struct80031210 **lbl_802F1B04;  // doesn't match as a struct, apparently
+extern struct NaomiModel **lbl_802F1B04;  // doesn't match as a struct, apparently
 extern long memHeap4Size;
 extern long memHeap3Size;
 extern long memHeap2Size;
@@ -1265,7 +1265,7 @@ extern void **lbl_802F1CA4;
 // extern ? lbl_802F1CB8;
 // extern ? lbl_802F1CBC;
 extern struct GMA *decodedBgGma;
-// extern ? decodedBgTpl;
+extern struct TPL *decodedBgTpl;
 extern struct GMA *lbl_802F1CC8;
 // extern ? lbl_802F1CCC;
 extern u8 resetCounter;
@@ -1365,12 +1365,12 @@ extern float lbl_802F1ECC;
 // extern ? lbl_802F1ED8;
 extern u32 dipSwitches;
 extern u32 lbl_802F1EE0;
-// extern ? lbl_802F1EE8;
+extern u32 nlObjLightMask;
 extern s32 lbl_802F1EEC;
-// extern ? lbl_802F1EF0;
-// extern ? lbl_802F1EF4;
-// extern ? lbl_802F1EF8;
-// extern ? lbl_802F1EFC;
+extern u32 lbl_802F1EF0;
+extern GXColor lbl_802F1EF4;
+extern float lbl_802F1EF8;
+extern float lbl_802F1EFC;
 extern struct Struct80034938 *lbl_802F1F00;
 extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;

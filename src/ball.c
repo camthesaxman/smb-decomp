@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "nl2ngc.h"
 
 float lbl_80205E20[4];
 Mtx lbl_80205E30;
@@ -745,11 +746,6 @@ void (*ballFuncs[])(struct Ball *) =
     ball_func_28,
 };
 
-struct Color3f
-{
-    float r, g, b;
-};
-
 // hmm...
 struct Color3f lbl_801B7CF8[] =  // + 0x180
 {
@@ -1078,13 +1074,13 @@ void func_80038840(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            void **var = &lbl_802F1B04[ball->unk66];
+            struct NaomiModel **var = &lbl_802F1B04[ball->unk66];
             //func_80033B14(lbl_802F1B04_->unk4[ball->unk66], 0.3f);
             func_80033B14(var[1], 0.3f);
         }
         else
         {
-            void **var = &lbl_802F1B04[ball->unk66];
+            struct NaomiModel **var = &lbl_802F1B04[ball->unk66];
             //func_80033AD4(lbl_802F1B04_->unk4[ball->unk66]);
             func_80033AD4(var[1]);
         }
@@ -1097,7 +1093,7 @@ void func_80038840(void)
             if (func(lbl_802F1B04[0x38], lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
-                func_80031784(lbl_802F1B4C);
+                g_call_draw_naomi_model_1(lbl_802F1B4C);
             }
             else
                 mathutil_mtxA_pop();
@@ -3073,7 +3069,7 @@ void lbl_8003D928(struct Struct80038840 *a)
             mathutil_mtxA_pop();
             mathutil_mtxA_push();
             mathutil_mtxA_scale_s(1.01f);
-            func_80031784(lbl_802F1B4C);
+            g_call_draw_naomi_model_1(lbl_802F1B4C);
             mathutil_mtxA_pop();
         }
         else

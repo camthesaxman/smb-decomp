@@ -2069,7 +2069,7 @@ bg_old_space_draw:
 /* 80058708 00054628  38 A5 87 64 */	addi r5, r5, lbl_80058764@l
 /* 8005870C 0005462C  4B FE F7 0D */	bl func_80047E18
 /* 80058710 00054630  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 80058714 00054634  4B FD B3 E1 */	bl func_80033AF4
+/* 80058714 00054634  4B FD B3 E1 */	bl g_dupe_of_call_draw_naomi_model_1
 /* 80058718 00054638  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8005871C 0005463C  38 21 00 08 */	addi r1, r1, 8
 /* 80058720 00054640  7C 08 03 A6 */	mtlr r0
@@ -3322,7 +3322,7 @@ bg_old_sand_draw:
 /* 80059970 00055890  38 A5 9A 24 */	addi r5, r5, lbl_80059A24@l
 /* 80059974 00055894  4B FE E4 A5 */	bl func_80047E18
 /* 80059978 00055898  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005997C 0005589C  4B FD A1 79 */	bl func_80033AF4
+/* 8005997C 0005589C  4B FD A1 79 */	bl g_dupe_of_call_draw_naomi_model_1
 /* 80059980 000558A0  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
 /* 80059984 000558A4  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 80059988 000558A8  80 84 00 10 */	lwz r4, 0x10(r4)
@@ -3336,7 +3336,7 @@ bg_old_sand_draw:
 /* 800599A8 000558C8  38 A5 9A 74 */	addi r5, r5, lbl_80059A74@l
 /* 800599AC 000558CC  4B FE E4 6D */	bl func_80047E18
 /* 800599B0 000558D0  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 800599B4 000558D4  4B FD A1 41 */	bl func_80033AF4
+/* 800599B4 000558D4  4B FD A1 41 */	bl g_dupe_of_call_draw_naomi_model_1
 /* 800599B8 000558D8  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 800599BC 000558DC  38 63 91 78 */	addi r3, r3, backgroundInfo@l
 /* 800599C0 000558E0  C0 03 00 2C */	lfs f0, 0x2c(r3)
@@ -4622,7 +4622,7 @@ bg_old_water_draw:
 /* 8005AD18 00056C38  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD1C 00056C3C  4B FA CB 95 */	bl mathutil_mtxA_from_mtx
 /* 8005AD20 00056C40  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005AD24 00056C44  4B FD 8D D1 */	bl func_80033AF4
+/* 8005AD24 00056C44  4B FD 8D D1 */	bl g_dupe_of_call_draw_naomi_model_1
 /* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
 /* 8005AD2C 00056C4C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD30 00056C50  80 84 00 10 */	lwz r4, 0x10(r4)
@@ -4639,7 +4639,7 @@ bg_old_water_draw:
 /* 8005AD5C 00056C7C  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD60 00056C80  4B FA CB 51 */	bl mathutil_mtxA_from_mtx
 /* 8005AD64 00056C84  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005AD68 00056C88  4B FD 8D 8D */	bl func_80033AF4
+/* 8005AD68 00056C88  4B FD 8D 8D */	bl g_dupe_of_call_draw_naomi_model_1
 /* 8005AD6C 00056C8C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8005AD70 00056C90  38 21 00 08 */	addi r1, r1, 8
 /* 8005AD74 00056C94  7C 08 03 A6 */	mtlr r0
@@ -23284,7 +23284,7 @@ lbl_8006BE28:
 /* 8006BE44 00067D64  4B FC 4D 75 */	bl func_80030BB8
 /* 8006BE48 00067D68  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
 /* 8006BE4C 00067D6C  80 63 00 B0 */	lwz r3, 0xb0(r3)
-/* 8006BE50 00067D70  4B FC 55 01 */	bl func_80031350
+/* 8006BE50 00067D70  4B FC 55 01 */	bl g_draw_naomi_model_1
 /* 8006BE54 00067D74  4B FA 25 69 */	bl func_8000E3BC
 lbl_8006BE58:
 /* 8006BE58 00067D78  80 01 00 4C */	lwz r0, 0x4c(r1)
@@ -25025,7 +25025,7 @@ lbl_8006D7B0:
 /* 8006D7CC 000696EC  48 00 05 D5 */	bl func_8006DDA0
 /* 8006D7D0 000696F0  4B F9 A0 65 */	bl mathutil_mtxA_pop
 /* 8006D7D4 000696F4  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8006D7D8 000696F8  4B FC 63 1D */	bl func_80033AF4
+/* 8006D7D8 000696F8  4B FC 63 1D */	bl g_dupe_of_call_draw_naomi_model_1
 lbl_8006D7DC:
 /* 8006D7DC 000696FC  3B BD FF FF */	addi r29, r29, -1
 /* 8006D7E0 00069700  3B FF 00 30 */	addi r31, r31, 0x30

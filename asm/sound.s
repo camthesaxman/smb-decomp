@@ -8011,8 +8011,8 @@ dipSwitches:
 .global lbl_802F1EE0
 lbl_802F1EE0:
 	.skip 0x8
-.global lbl_802F1EE8
-lbl_802F1EE8:
+.global nlObjLightMask
+nlObjLightMask:
 	.skip 0x4
 .global lbl_802F1EEC
 lbl_802F1EEC:

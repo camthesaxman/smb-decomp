@@ -6,6 +6,7 @@
 #include "global.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "nl2ngc.h"
 #include "preview.h"
 
 extern u8 lbl_801B86E4[];
@@ -461,7 +462,7 @@ void load_stage(int stageId)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        func_80030E20(&lbl_802F1B00, &lbl_802F1AEC);
+        free_nlobj(&lbl_802F1B00, &lbl_802F1AEC);
         func_800472E8();
 
         OSSetCurrentHeap(oldHeap);
@@ -515,7 +516,7 @@ void unload_stage(void)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        func_80030E20(&lbl_802F1B00, &lbl_802F1AEC);
+        free_nlobj(&lbl_802F1B00, &lbl_802F1AEC);
         func_800472E8();
 
         OSSetCurrentHeap(oldHeap);
