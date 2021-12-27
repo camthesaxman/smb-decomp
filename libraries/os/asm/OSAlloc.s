@@ -555,3 +555,18 @@ __OSCurrHeap:
 	# ROM: 0x1EC068
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.4byte 0
+
+.section .sbss
+
+.global HeapArray
+HeapArray:
+	.skip 0x4
+.global NumHeaps
+NumHeaps:
+	.skip 0x4
+.global ArenaStart
+ArenaStart:
+	.skip 0x4
+.global ArenaEnd
+ArenaEnd:
+	.skip 0x4

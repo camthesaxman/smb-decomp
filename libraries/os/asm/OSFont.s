@@ -1544,3 +1544,18 @@ lbl_802F1940:
 	# ROM: 0x1EC080
 	.byte 0xFF, 0xFF, 0x00, 0x00
 	.4byte 0
+
+.section .sbss
+
+.global FontData
+FontData:
+	.skip 0x4
+.global SheetImage
+SheetImage:
+	.skip 0x4
+.global WidthTable
+WidthTable:
+	.skip 0x4
+.global CharsInSheet
+CharsInSheet:
+	.skip 0x4

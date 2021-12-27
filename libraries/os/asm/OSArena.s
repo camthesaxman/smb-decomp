@@ -29,3 +29,9 @@ __OSArenaLo:
 	# ROM: 0x1EC070
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.4byte 0
+
+.section .sbss
+
+.global __OSArenaHi
+__OSArenaHi:
+	.skip 0x8

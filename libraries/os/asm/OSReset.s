@@ -241,3 +241,9 @@ lbl_800C7568:
 /* 800C757C 000C349C  38 21 00 38 */	addi r1, r1, 0x38
 /* 800C7580 000C34A0  7C 08 03 A6 */	mtlr r0
 /* 800C7584 000C34A4  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global ResetFunctionQueue
+ResetFunctionQueue:
+	.skip 0x8

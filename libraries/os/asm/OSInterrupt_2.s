@@ -693,3 +693,9 @@ lbl_801E7444:
 	.4byte lbl_800C63A4  ;# ptr
 	.4byte lbl_800C63A4  ;# ptr
 	.4byte lbl_800C63A4  ;# ptr
+
+.section .sbss
+
+.global InterruptHandlerTable
+InterruptHandlerTable:
+	.skip 0x8

@@ -218,6 +218,7 @@ SOURCES := \
 	libraries/musyx/asm/synthvoice.s \
 	libraries/musyx/asm/synth_ac.s \
 	libraries/musyx/asm/synth_adsr.s \
+	libraries/musyx/asm/synth_dbtab.s \
 	libraries/musyx/asm/s_data.s \
 	libraries/musyx/asm/hw_dspctrl.s \
 	libraries/musyx/asm/hw_volconv.s \

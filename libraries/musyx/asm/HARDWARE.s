@@ -416,9 +416,9 @@ lbl_800FFA8C:
 /* 800FFAF4 000FBA14  40 81 00 08 */	ble lbl_800FFAFC
 /* 800FFAF8 000FBA18  38 80 03 FF */	li r4, 0x3ff
 lbl_800FFAFC:
-/* 800FFAFC 000FBA1C  3C 60 80 1F */	lis r3, lbl_801E9D54@ha
+/* 800FFAFC 000FBA1C  3C 60 80 1F */	lis r3, dspScale2IndexTab@ha
 /* 800FFB00 000FBA20  80 0D A5 1C */	lwz r0, dspVoice@sda21(r13)
-/* 800FFB04 000FBA24  38 63 9D 54 */	addi r3, r3, lbl_801E9D54@l
+/* 800FFB04 000FBA24  38 63 9D 54 */	addi r3, r3, dspScale2IndexTab@l
 /* 800FFB08 000FBA28  7C 63 22 14 */	add r3, r3, r4
 /* 800FFB0C 000FBA2C  88 83 00 00 */	lbz r4, 0(r3)
 /* 800FFB10 000FBA30  7C 60 FA 14 */	add r3, r0, r31

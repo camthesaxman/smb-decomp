@@ -152,3 +152,9 @@ lbl_800C7264:
 /* 800C7288 000C31A8  83 A1 03 3C */	lwz r29, 0x33c(r1)
 /* 800C728C 000C31AC  38 21 03 48 */	addi r1, r1, 0x348
 /* 800C7290 000C31B0  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global Prepared
+Prepared:
+	.skip 0x8
