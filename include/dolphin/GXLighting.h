@@ -7,4 +7,11 @@ void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color);
 void GXSetChanMatColor(GXChannelID chan, GXColor mat_color);
 
+void GXInitLightSpot(GXLightObj *lt_obj, f32 cutoff, GXSpotFn spot_func);
+void GXInitLightDistAttn(GXLightObj *lt_obj, f32 ref_distance,
+    f32 ref_brightness, GXDistAttnFn dist_func);
+void GXInitLightPos(GXLightObj *lt_obj, f32 x, f32 y, f32 z);
+void GXInitLightColor(GXLightObj *lt_obj, GXColor color);
+void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light);
+
 #endif

@@ -488,4 +488,23 @@ typedef enum
     GX_MAX_TEXOFFSET,
 } GXTexOffset;
 
+typedef enum
+{
+    GX_SP_OFF,
+    GX_SP_FLAT,
+    GX_SP_COS,
+    GX_SP_COS2,
+    GX_SP_SHARP,
+    GX_SP_RING1,
+    GX_SP_RING2,
+} GXSpotFn;
+
+typedef enum
+{
+    GX_DA_OFF,
+    GX_DA_GENTLE,
+    GX_DA_MEDIUM,
+    GX_DA_STEEP,
+} GXDistAttnFn;
+
 #endif

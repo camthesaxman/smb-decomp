@@ -503,7 +503,7 @@ void func_8000C144(struct Struct8000C144 *a)
     float y2 = a->unkC;
     float z = a->unk10;
     u8 filler[8];
-    
+
     g_set_vtx_desc((1<< GX_VA_POS));
     func_8009E110(1, 0, 1, 0);
     if (zMode->updateEnable  != GX_ENABLE
@@ -682,91 +682,371 @@ void func_8000C7A4(void)
     unk->unk10 &= ~(1 << 3);
 }
 
-/*
-#define MATHUTIL_DATA (*(struct MathutilData *)0xE0000000)
-extern u16 lbl_802F02E0[];
+extern u16 lbl_802F02E0[4];
 
-static inline void test(Vec *r27, float f27)
+#ifdef NONMATCHING
+static inline void mathutil_get_mtxA_translate_xyz(register float *px, register float *py, register float *pz)
 {
-            if (r27->z < -4.0 * f27)
-                mathutil_mtxA_scale_s(r27->z / (-4.0 * f27));
+#ifdef __MWERKS__
+    register float *mtxA;
+    //register float *_x = &v->x;
+    //register float *_y = &v->y;
+    //register float *_z = &v->z;
+    register float x, y, z;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x0C(mtxA)  // mtxA[0][3]
+        lfs y, 0x1C(mtxA)  // mtxA[1][3]
+        lfs z, 0x2C(mtxA)  // mtxA[2][3]
+        stfs x, 0(px)
+        stfs y, 0(py)
+        stfs z, 0(pz)
+    }
+
+    //*px = x;
+    //*py = y;
+    //*pz = z;
+
+#else
+    *px = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    *py = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    *pz = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+#endif
 }
 
 void func_8000C8D4(void)
 {
     int i;  // r24
+    struct Ball *ball;  // r26
     s8 *r25 = spritePoolInfo.unkC;
     Vec sp8;
-//    Vec *r27 = &sp8;
-    for (i = 0; i < spritePoolInfo.unk8; i++)
+    float f27;
+    ball = ballInfo;
+    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r25++)
     {
-        if (r25[i] == 0
-         || r25[i] == 4
-         || (ballInfo[i].unk94 & (1 << (31-0x1B))))
+        if (*r25 == 0 || *r25 == 4)
             continue;
-        {
-            u16 foo;
-            float f27;
-            mathutil_mtxA_from_identity();
-            f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
-            mathutil_mtxA_scale_s(f27);
-            mathutil_mtxA_mult_right(mathutilData->mtxB);
-            mathutil_mtxA_translate(&ballInfo[i].unk4);
-            mathutil_mtxA_rotate_y(cameraInfo[i].unk1A - 0x8000);
-            mathutil_mtxA_rotate_x(-0x4000);
-            mathutil_mtxA_translate_xyz(0.0f, ballInfo[i].unk68, 0.0f);
-            //r27->x = MATHUTIL_DATA.mtxA[0][3];
-            //r27->y = MATHUTIL_DATA.mtxA[1][3];
-            //r27->z = MATHUTIL_DATA.mtxA[2][3];
-            sp8.x = *(float *)0xE000000C;
-            sp8.y = *(float *)0xE000001C;
-            sp8.z = *(float *)0xE000002C;
-            //if (r27->z < -4.0 * f27)
-            //    mathutil_mtxA_scale_s(r27->z / (-4.0 * f27));
-            test(&sp8, f27);
-            func_8009AA24(mathutilData->mtxA, 0);
-            foo = lbl_802F02E0[i];
-            g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[foo].modelOffset);
-        }
+        if ((ball->flags & (1 << (31-0x1B))))
+            continue;
+        mathutil_mtxA_from_identity();
+        f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
+        mathutil_mtxA_scale_s(f27);
+        mathutil_mtxA_mult_right(mathutilData->mtxB);
+        mathutil_mtxA_translate(&ball->pos);
+        mathutil_mtxA_rotate_y(cameraInfo[i].rotY - 0x8000);
+        mathutil_mtxA_rotate_x(-0x4000);
+        mathutil_mtxA_translate_xyz(0.0f, ball->unk68, 0.0f);
+        mathutil_get_mtxA_translate_xyz(&sp8.x, &sp8.y, &sp8.z);
+        if (sp8.z < -4.0 * f27)
+            mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
+        func_8009AA24(mathutilData->mtxA, 0);
+        g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
-*/
-/*
-void func_8000C8D4(void)
+#else
+const double lbl_802F2998 = 0.8;
+const double lbl_802F29A0 = 0.1;
+const double lbl_802F29A8 = -4.0;
+asm void func_8000C8D4(void)
 {
-    int i;  // r24
-    s8 *r25 = spritePoolInfo.unkC;
-    float sp8[3];
-    float *r27 = sp8;
-    for (i = 0; i < spritePoolInfo.unk8; i++)
+    nofralloc
+#include "../asm/nonmatchings/func_8000C8D4.s"
+}
+#pragma peephole on
+#endif
+
+extern u32 lbl_802F1F34;
+
+void func_8000CA9C(void)
+{
+    Func802F20EC r31;
+    Func802F20EC r30;
+    int r4;
+    u32 r5;
+    Vec sp5C;
+    Mtx sp2C;
+
+    lbl_801EEC90.unk0 |= 1;
+    func_80018648(modeCtrl.unk2C);
+    func_80092D3C();
+    func_80054FF0();
+    func_800225C0(modeCtrl.unk2C);
+    func_8000E0FC();
+
+    if (lbl_802F1F34 != 0)
     {
-        if (r25[i] == 0
-         || r25[i] == 4
-         || (ballInfo[i].unk94 & (1 << (31-0x1B))))
-            continue;
+        r31 = (void *)backgroundInfo.unk8C;
+        if (r31 != NULL)
+            r30 = g_avdisp_set_some_func_1(r31);
+        mathutil_mtxA_from_mtxB();
+        func_8009AA24(mathutilData->mtxA, 0);
+        g_avdisp_draw_model_1((void *)lbl_802F1F34);
+        if (r31 != NULL)
+            g_avdisp_set_some_func_1(r30);
+    }
+    else
+    {
+        mathutil_mtxA_from_mtxB();
+        func_80033AD4(lbl_802F1B04[3]);
+    }
+
+    if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
+        func_80038840();
+    if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
+        background_draw();
+    if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
+        func_8004CD60();
+    func_800858CC();
+    r4 = modeCtrl.unk0;
+    if (r4 > 60)
+        r4 = 60;
+
+    r5 = FALSE;
+    if ((gameSubmode == SMD_GAME_CONTINUE_INIT || gameSubmode == SMD_GAME_CONTINUE_MAIN)
+     && (modeCtrl.unk8 & (1<<(31-0x1D)))
+     && modeCtrl.unk10 == 1)
+        r5 = TRUE;
+
+    if (!r5)
+    {
+        float f1;
+        float f26, f27;
+
+        if (gameSubmode != SMD_GAME_CONTINUE_INIT && gameSubmode != SMD_GAME_CONTINUE_MAIN)
+            f1 = 0.0f;
+        else if ((modeCtrl.unk8 & (1<<(31-0x1D))) && modeCtrl.unk10 == 0)
+            f1 = r4 / 60.0f;
+        else
+            f1 = 1.0f;
+
+        func_80030BB8(f1, f1, f1);
+        mathutil_mtxA_from_mtxB();
+        sp5C.x = currentBallStructPtr->pos.x;
+        sp5C.y = currentBallStructPtr->pos.y - currentBallStructPtr->unk68 + 0.01;
+        sp5C.z = currentBallStructPtr->pos.z;
+        mathutil_mtxA_translate(&sp5C);
+        f26 = 0.9f;
+        f27 = 4.6f;
+        mathutil_mtxA_scale_xyz(f26, f27, f26);
+        func_80030BA8(MAX(f26, f27));
+        g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x3B]);
+        func_80030BB8(1.0f, 1.0f, 1.0f);
+        mathutil_mtxA_from_mtxB();
+        mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
+        mathutil_mtxA_rotate_x(-16384);
+        mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
+        func_80030BA8(0.25f);
+        g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x3C]);
+    }
+    else
+    {
+        Vec sp20;
+        Vec sp14;
+        Vec sp8;
+        s16 r30;
+        int i;
+        float f28 = r4 / 60.0f;
+
+        f28 = (f28 - 0.5) * 2.0;
+        f28 = CLAMP(f28, 0.0, 1.0);
+        f28 *= f28;
+        mathutil_mtxA_from_identity();
+        mathutil_mtxA_to_mtx(sp2C);
+        sp2C[0][0] = 0.9f;
+        sp2C[2][2] = 0.9f;
+        sp2C[1][1] = 4.6f;
+        sp2C[1][3] = 0.01f;
+
+        for (i = 0; i < 4; i++)
         {
-            u16 foo;
-            float f27;
-            mathutil_mtxA_from_identity();
-            f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
-            mathutil_mtxA_scale_s(f27);
-            mathutil_mtxA_mult_right(mathutilData->mtxB);
-            mathutil_mtxA_translate(&ballInfo[i].unk4);
-            mathutil_mtxA_rotate_y(cameraInfo[i].unk1A - 0x8000);
-            mathutil_mtxA_rotate_x(-0x4000);
-            mathutil_mtxA_translate_xyz(0.0f, ballInfo[i].unk68, 0.0f);
-            r27[0] = MATHUTIL_DATA.mtxA[0][3];
-            r27[1] = MATHUTIL_DATA.mtxA[1][3];
-            r27[2] = MATHUTIL_DATA.mtxA[2][3];
-            //sp8.x = *(float *)0xE000000C;
-            //sp8.y = *(float *)0xE000001C;
-            //sp8.z = *(float *)0xE000002C;
-            if (r27[2] < -4.0 * f27)
-                mathutil_mtxA_scale_s(r27[2] / (-4.0 * f27));
-            func_8009AA24(mathutilData->mtxA, 0);
-            foo = lbl_802F02E0[i];
-            g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk0[foo].unk0);
+            float f26, f27;
+
+            r30 = i * 0x4000 + 0x2000;
+            f26 = mathutil_sin(r30);
+            f27 = mathutil_cos(r30);
+
+            func_80030BB8(1.0f, 1.0f, 1.0f);
+            sp20.x = 3.5 * f26;
+            sp20.y = 4.6f;
+            sp20.z = 3.5 * f27;
+            sp14.x = (3.5 * f26) * f28;
+            sp14.y = 0.0f;
+            sp14.z = (3.5 * f27) * f28;
+            sp2C[0][1] = sp20.x - sp14.x;
+            sp2C[2][1] = sp20.z - sp14.z;
+            sp2C[0][3] = sp14.x;
+            sp2C[2][3] = sp14.z;
+            mathutil_mtxA_from_mtx(sp2C);
+            mathutil_mtxA_mult_left(mathutilData->mtxB);
+            func_80030BA8(4.6f);
+            g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x40]);
+            func_80030BB8(1.0f, 1.0f, 1.0f);
+            mathutil_mtxA_from_mtxB_translate(&sp20);
+            sp8.x = sp14.x - sp20.x;
+            sp8.y = sp14.y - sp20.y;
+            sp8.z = sp14.z - sp20.z;
+            mathutil_mtxA_rotate_y(mathutil_atan2(sp8.x, sp8.z) - 32768);
+            mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z))));
+            mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
+            func_80030BA8(0.25f);
+            g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x3C]);
         }
     }
+
+    func_8000E3BC();
 }
-*/
+
+void func_8000CF94(void)
+{
+    func_80018648(modeCtrl.unk2C);
+    func_80092D3C();
+    func_80054FF0();
+    func_8000E0FC();
+    if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
+        func_80038840();
+    if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
+        background_draw();
+    if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
+        func_8004CD60();
+    func_800858CC();
+}
+
+void func_8000D018(void)
+{
+    int i;
+    struct Ball *r23 = currentBallStructPtr;
+    struct Struct801EEC80 *blah = &lbl_801EEC80;
+
+    for (i = 0; i < 4; i++)
+    {
+        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
+        {
+            if ((spritePoolInfo.unkC[i] == 0 || spritePoolInfo.unkC[i] == 4)
+             && !(cameraInfo[i].flags & (1<<(31-0x19))))
+                continue;
+
+            if (cameraInfo[i].flags & (1<<(31-0x19)))
+                blah->unk10 |= 8;
+            currentBallStructPtr = &ballInfo[i];
+            func_80018648(i);
+            func_80092D3C();
+            func_80054FF0();
+            func_800225C0(i);
+            if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
+                func_80095398(4);
+            func_8000E0FC();
+            if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
+             || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
+                func_80047530();
+            func_80094A34();
+            if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
+            {
+                func_80085678(400.0f);
+                background_draw();
+                func_80085678(0.0f);
+            }
+            if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
+                func_80095398(16);
+            if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
+                func_80068370();
+            if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
+                func_8006B198();
+            if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
+                func_8004CD60();
+            if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
+                func_80038840();
+            if (backgroundInfo.unk8 & 1)
+                g_something_with_lens_flare_1(i);
+            func_8000D220();
+            func_800858CC();
+            if (backgroundInfo.unk8 & 1)
+                g_something_with_lens_flare_2(i);
+            if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
+                func_80095398(8);
+            if (cameraInfo[i].flags & (1<<(31-0x19)))
+                blah->unk10 &= ~(1<<(31-0x1C));
+        }
+    }
+    currentBallStructPtr = r23;
+    func_80017FCC();
+}
+
+void func_8000D220(void)
+{
+    GXColor amb = {0xFF, 0xFF, 0xFF, 0xFF};
+    GXColor mat = {0x00, 0x00, 0x00, 0xFF};
+    GXColor light4color = {0xFF, 0x00, 0x00, 0xFF};
+    GXColor light2color = {0x00, 0xFF, 0x00, 0xFF};
+    GXColor light3color = {0x00, 0x00, 0xFF, 0xFF};
+    GXLightObj lightObj;
+    Vec light2pos;
+    Vec light3pos;
+    Vec light4pos;
+    Vec pos;
+
+    if ((dipSwitches & (1<<(31-0x13))) && !(dipSwitches & (1<<(31-0x12))))
+    {
+        mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
+        mathutil_mtxA_rotate_y((lbl_802F1B38 << 8) * 1.2f);
+        mathutil_unk_inline(10.0f, &light2pos);
+
+        mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
+        mathutil_mtxA_rotate_x(lbl_802F1B38 << 8);
+        mathutil_unk_inline(-10.0f, &light3pos);
+
+        mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
+        mathutil_mtxA_rotate_z((lbl_802F1B38 << 8) * 0.8f);
+
+        mathutil_mtxA_tf_point_xyz(&light4pos, 0.0f, 10.0f, 0.0f);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+
+        // Light 2
+        GXInitLightSpot(&lightObj, 0.0f, GX_SP_OFF);
+        GXInitLightDistAttn(&lightObj, 150.0f, 0.2f, GX_DA_STEEP);
+        mathutil_mtxA_tf_point(&light2pos, &pos);
+        GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);
+        GXInitLightColor(&lightObj, light2color);
+        GXLoadLightObjImm(&lightObj, GX_LIGHT2);
+
+        // Light 3
+        GXInitLightSpot(&lightObj, 0.0f, GX_SP_OFF);
+        GXInitLightDistAttn(&lightObj, 150.0f, 0.2f, GX_DA_STEEP);
+        mathutil_mtxA_tf_point(&light3pos, &pos);
+        GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);
+        GXInitLightColor(&lightObj, light3color);
+        GXLoadLightObjImm(&lightObj, GX_LIGHT3);
+
+        // Light 4
+        GXInitLightSpot(&lightObj, 0.0f, GX_SP_OFF);
+        GXInitLightDistAttn(&lightObj, 150.0f, 0.2f, GX_DA_STEEP);
+        mathutil_mtxA_tf_point(&light4pos, &pos);
+        GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);
+        GXInitLightColor(&lightObj, light4color);
+        GXLoadLightObjImm(&lightObj, GX_LIGHT4);
+
+        GXSetChanMatColor(GX_COLOR0, amb);
+        GXSetChanAmbColor(GX_COLOR0, mat);
+        GXSetChanCtrl(
+            GX_COLOR0A0,  // chan
+            GX_ENABLE,  // enable
+            GX_SRC_REG,  // amb_src
+            GX_SRC_REG,  // mat_src
+            GX_LIGHT2 | GX_LIGHT3 | GX_LIGHT4,  // light_mask
+            GX_DF_CLAMP,  // diff_fn
+            GX_AF_NONE);  // attn_fn
+        GXSetNumChans(1);
+        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        func_8009EA30(0, 4);
+        GXSetNumTexGens(0);
+        func_8009F2C8(1);
+
+        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_translate(&currentCameraStructPtr->lookAt);
+        mathutil_mtxA_scale_xyz(0.05f, 0.05f, 0.05f);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXDrawSphere(8, 8);
+    }
+}

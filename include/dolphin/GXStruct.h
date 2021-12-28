@@ -66,4 +66,9 @@ typedef struct
     u32 dummy[8];
 } GXTexObj;
 
+typedef struct
+{
+    u32 dummy[16];
+} GXLightObj;
+
 #endif

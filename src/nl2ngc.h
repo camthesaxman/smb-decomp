@@ -72,7 +72,7 @@ struct NaomiObj
 // ? func_80030AF8();
 // ? func_80030B68();
 void func_80030BA8(float);
-// ? func_80030BB8();
+void func_80030BB8(float r, float g, float b);
 BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
 BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl);
 void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);

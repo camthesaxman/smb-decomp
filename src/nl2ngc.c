@@ -101,11 +101,11 @@ void func_80030BA8(float x)
     lbl_801B7978.unk18 = x;
 }
 
-void func_80030BB8(float x, float y, float z)
+void func_80030BB8(float r, float g, float b)
 {
-    lbl_801B7978.unk0.r = x;
-    lbl_801B7978.unk0.g = y;
-    lbl_801B7978.unk0.b = z;
+    lbl_801B7978.unk0.r = r;
+    lbl_801B7978.unk0.g = g;
+    lbl_801B7978.unk0.b = b;
 }
 
 BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName)

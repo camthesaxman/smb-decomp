@@ -296,3 +296,37 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = v->z;
 #endif
 }
+
+static inline void mathutil_unk_inline(register float a, register Vec *v)
+{
+    register void *mtxA;
+    register float var1, var2, var3, var4, var5, var6;
+#ifdef __MWERKS__
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs var1, 0x08(mtxA)  // mtxA[0][2]
+        lfs var2, 0x0C(mtxA)  // mtxA[0][3]
+        lfs var3, 0x18(mtxA)  // mtxA[1][2]
+        lfs var4, 0x1C(mtxA)  // mtxA[1][3]
+        lfs var5, 0x28(mtxA)  // mtxA[2][2]
+        lfs var6, 0x2C(mtxA)  // mtxA[2][3]
+        fmadds var1, var1, a, var2
+        stfs var1, v->x
+        fmadds var3, var3, a, var4
+        stfs var3, v->y
+        fmadds var5, var5, a, var6
+        stfs var5, v->z
+    };
+#else
+    var1 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][2];
+    var2 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    var3 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][2];
+    var4 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    var5 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][2];
+    var6 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+    v->x = var1 * a + var2;
+    v->y = var3 * a + var4;
+    v->z = var5 * a + var6;
+#endif
+}
