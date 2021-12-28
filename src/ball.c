@@ -242,12 +242,6 @@ int func_80037098(struct Ball_child *a, struct Ball *ball)
     return ret;
 }
 
-static inline int int_abs(int x)
-{
-    int temp = (x >> 31);
-    return (temp ^ x) - temp;
-}
-
 static inline int func_8003721C_inline(struct Ball *ball)
 {
     int i;
@@ -258,7 +252,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     for (i = 0; i < spritePoolInfo.unk8; i++)
     {
         if (ball->unk2F - 1 == ballInfo[i].unk2F
-         && (u16)int_abs(ball->unk12A - ballInfo[i].unk12A) < 30)
+         && (u16)__abs(ball->unk12A - ballInfo[i].unk12A) < 30)
             return 3;
     }
 

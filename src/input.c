@@ -537,7 +537,7 @@ void handle_reset_input(PADStatus *pads)
     if (resetCounter > 30.0)
     {
         ev_vibration_dest();
-        if (func_8009F4A4() != 0)
+        if (memcard_is_write_in_progress() != 0)
             return;
         func_800A4CEC();
         epiproc_main();

@@ -338,8 +338,8 @@ currentBallStructPtr:
 .global currentWorldStructPtr
 currentWorldStructPtr:
 	.skip 0x8
-.global lbl_802F1F28
-lbl_802F1F28:
+.global previewLoaded
+previewLoaded:
 	.skip 0x4
 .global lbl_802F1F2C
 lbl_802F1F2C:

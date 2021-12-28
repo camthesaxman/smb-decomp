@@ -10,7 +10,7 @@
 #include "preview.h"
 
 extern u8 lbl_801B86E4[];
-extern int lbl_802F1F28;
+extern int previewLoaded;
 
 //u8 lbl_80206D00[0x78];
 struct Struct80206D00
@@ -65,7 +65,8 @@ void ev_stage_init(void)
     case 101:
         find_blur_part();
     }
-    lbl_802F1F28 = 0;
+
+    previewLoaded = FALSE;
     if (gameMode == MD_GAME && gameSubmode != SMD_GAME_NAMEENTRY_READY_INIT)
     {
         if (modeCtrl.unk28 == 0 || modeCtrl.unk28 == 1)
@@ -81,7 +82,7 @@ void ev_stage_init(void)
                     140,
                     GX_TF_RGB5A3);
                 g_preview_wait_then_do_something(&stagePreview);
-                lbl_802F1F28 = 1;
+                previewLoaded = TRUE;
             }
         }
     }
@@ -165,17 +166,17 @@ void ev_stage_main(void)
         if (r27->unk4 != NULL2)
         {
             r30->unk1E = r30->unk18;
-            r30->unk18 = 182.044448852539f * func_80043918(r27->unk0, r27->unk4, f31);
+            r30->unk18 = DEGREES_TO_S16(func_80043918(r27->unk0, r27->unk4, f31));
         }
         if (r27->unkC != NULL2)
         {
             r30->unk20 = r30->unk1A;
-            r30->unk1A = 182.044448852539f * func_80043918(r27->unk8, r27->unkC, f31);
+            r30->unk1A = DEGREES_TO_S16(func_80043918(r27->unk8, r27->unkC, f31));
         }
         if (r27->unk14 != NULL2)
         {
             r30->unk22 = r30->unk1C;
-            r30->unk1C = 182.044448852539f * func_80043918(r27->unk10, r27->unk14, f31);
+            r30->unk1C = DEGREES_TO_S16(func_80043918(r27->unk10, r27->unk14, f31));
         }
         if (r27->unk1C != NULL2)
         {
@@ -227,7 +228,7 @@ void ev_stage_main(void)
 
 void ev_stage_dest(void)
 {
-    if (lbl_802F1F28)
+    if (previewLoaded)
         preview_free(&stagePreview);
 }
 
@@ -338,17 +339,17 @@ void func_800444A4(float a)
             if (r29->unk4 != NULL2)
             {
                 r31->unk1E = r31->unk18;
-                r31->unk18 = 182.044448852539f * func_80043918(r29->unk0, r29->unk4, f31);
+                r31->unk18 = DEGREES_TO_S16(func_80043918(r29->unk0, r29->unk4, f31));
             }
             if (r29->unkC != NULL2)
             {
                 r31->unk20 = r31->unk1A;
-                r31->unk1A = 182.044448852539f * func_80043918(r29->unk8, r29->unkC, f31);
+                r31->unk1A = DEGREES_TO_S16(func_80043918(r29->unk8, r29->unkC, f31));
             }
             if (r29->unk14 != NULL2)
             {
                 r31->unk22 = r31->unk1C;
-                r31->unk1C = 182.044448852539f * func_80043918(r29->unk10, r29->unk14, f31);
+                r31->unk1C = DEGREES_TO_S16(func_80043918(r29->unk10, r29->unk14, f31));
             }
             if (r29->unk1C != NULL2)
             {
@@ -462,7 +463,7 @@ void load_stage(int stageId)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_nlobj(&lbl_802F1B00, &lbl_802F1AEC);
+        free_nlobj(&arcadeStageObj, &arcadeStageTpl);
         func_800472E8();
 
         OSSetCurrentHeap(oldHeap);
@@ -516,7 +517,7 @@ void unload_stage(void)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_nlobj(&lbl_802F1B00, &lbl_802F1AEC);
+        free_nlobj(&arcadeStageObj, &arcadeStageTpl);
         func_800472E8();
 
         OSSetCurrentHeap(oldHeap);
@@ -602,7 +603,7 @@ void load_stage_files(int stageId)
         {
             sprintf(gmaName, "st%03d_p.lz", stageId);
             sprintf(tplName, "st%03d.lz", stageId);
-            load_nlobj(&lbl_802F1B00, &lbl_802F1AEC, gmaName, tplName);
+            load_nlobj(&arcadeStageObj, &arcadeStageTpl, gmaName, tplName);
         }
         OSSetCurrentHeap(oldHeap);
         DVDChangeDir("/test");
@@ -640,7 +641,7 @@ struct NLObj
     void *unk4[10];
 };
 
-struct NLObj **lbl_801B8794[] = {(struct NLObj **)&lbl_802F1B00, (struct NLObj **)&lbl_802F1B04, NULL};
+struct NLObj **lbl_801B8794[] = {(struct NLObj **)&arcadeStageObj, (struct NLObj **)&lbl_802F1B04, NULL};
 
 struct Struct80044E18
 {

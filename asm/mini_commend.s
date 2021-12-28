@@ -4195,24 +4195,6 @@ func_8009F430:
 /* 8009F494 0009B3B4  38 21 00 20 */	addi r1, r1, 0x20
 /* 8009F498 0009B3B8  4E 80 00 20 */	blr
 
-.global func_8009F49C
-func_8009F49C:
-/* 8009F49C 0009B3BC  98 6D 9F D0 */	stb r3, memcardMode@sda21(r13)
-/* 8009F4A0 0009B3C0  4E 80 00 20 */	blr
-
-.global func_8009F4A4
-func_8009F4A4:
-/* 8009F4A4 0009B3C4  3C 60 80 2C */	lis r3, memcardInfo@ha
-/* 8009F4A8 0009B3C8  38 63 A3 10 */	addi r3, r3, memcardInfo@l
-/* 8009F4AC 0009B3CC  80 03 00 08 */	lwz r0, 8(r3)
-/* 8009F4B0 0009B3D0  54 03 02 94 */	rlwinm r3, r0, 0, 0xa, 0xa
-/* 8009F4B4 0009B3D4  4E 80 00 20 */	blr
-
-glabel func_8009F4B8
-/* 8009F4B8 0009B3D8  90 6D 9F DC */	stw r3, replayFileInfo@sda21(r13)
-/* 8009F4BC 0009B3DC  90 8D 9F E0 */	stw r4, lbl_802F21C0@sda21(r13)
-/* 8009F4C0 0009B3E0  4E 80 00 20 */	blr
-
 .section .sdata2
 
 .global lbl_802F59C0

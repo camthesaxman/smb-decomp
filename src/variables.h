@@ -582,7 +582,7 @@ extern struct
 
 // extern ? lzssHeader;
 extern struct Struct801F3DC0 lbl_801F3DC0[];
-// extern ? lbl_801F8DC0;
+
 extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
 // extern ? lbl_801F91B4;
@@ -1144,12 +1144,12 @@ extern struct
 // extern ? lbl_802F1AE0;
 // extern ? lbl_802F1AE4;
 extern struct TPL *lbl_802F1AE8;
-extern struct TPL *lbl_802F1AEC;  // unknown type
+extern struct TPL *arcadeStageTpl;  // unknown type
 // extern ? lbl_802F1AF0;
 // extern ? lbl_802F1AF4;
 // extern ? lbl_802F1AF8;
 extern struct NaomiObj *lbl_802F1AFC;
-extern struct NaomiObj *lbl_802F1B00;
+extern struct NaomiObj *arcadeStageObj;
 /*
 struct Struct802F1B04
 {
@@ -1372,7 +1372,7 @@ extern void (*lbl_802F1F10)(void);
 extern void (*minigameRelBallCallback)(struct Ball *);
 extern struct Ball *currentBallStructPtr;
 extern void *currentWorldStructPtr;
-// extern ? lbl_802F1F28;
+// extern ? previewLoaded;
 extern struct GMAModelHeader *lbl_802F1F2C;
 extern struct Stage *decodedStageLzPtr;
 // extern ? lbl_802F1F34;

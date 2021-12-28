@@ -8014,11 +8014,6 @@ lbl_802F1EE0:
 
 .section .bss
 
-.if 0
-.global lbl_801F8DC0
-lbl_801F8DC0:
-	.skip 0x20
-.endif
 .global perfInfo
 perfInfo:
 	.skip 0x4

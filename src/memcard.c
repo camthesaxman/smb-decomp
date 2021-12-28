@@ -28,6 +28,7 @@ enum
     MC_STATUS_ERROR   = (1 << 9),
     MC_STATUS_REPLAY_FILE  = (1 << 12),  // loading/saving/deleting replay
     MC_STATUS_GAMEDATA_FILE = (1 << 13),  // loading/saving gamedata
+    MC_STATUS_WRITE_IN_PROGRESS = (1 << 21),
 };
 
 enum
@@ -150,6 +151,22 @@ u8 lbl_802F21A8;
 
 #pragma force_active on
 
+void func_8009F49C(int mode)
+{
+    memcardMode = mode;
+}
+
+int memcard_is_write_in_progress(void)
+{
+    return (memcardInfo.statusFlags & MC_STATUS_WRITE_IN_PROGRESS);
+}
+
+void func_8009F4B8(struct ReplayFileInfo *replay, u32 b)
+{
+    replayFileInfo = replay;
+    lbl_802F21C0 = b;
+}
+
 u8 func_8009F4C4(void)
 {
     return lbl_802F21A8;
@@ -184,14 +201,14 @@ int sub_8009F554(void)
 
 //lbl_801D4288 = start of .data section
 
-struct StringEntry strMemCardError =
+struct StringEntry strMemCardError[1] =
 {
-    "A Memory Card error has occurred.", 0,
+    {"A Memory Card error has occurred.", 0},
 };
 
-struct MemCardMessage msgMemCardError = {&strMemCardError, 1};
+struct MemCardMessage msgMemCardError = {strMemCardError, ARRAY_COUNT(strMemCardError)};
 
-struct StringEntry strFmtBuffer[] =
+struct StringEntry strFmtBuffer[3] =
 {
     {strFmtBufferLine1, 0},
     {strFmtBufferLine2, 0},
@@ -200,48 +217,48 @@ struct StringEntry strFmtBuffer[] =
 
 struct MemCardMessage msgFmtBuffer = {strFmtBuffer, 0 /*why 0?*/};
 
-struct StringEntry strMemCardCantRead[] =
+struct StringEntry strMemCardCantRead[2] =
 {
     {"Could not read Memory Card.", 0},
     {"Please see the Instruction Booklet for details.", 0},
 };
 
-struct StringEntry strMemCardCantUse =
+struct StringEntry strMemCardCantUse[1] =
 {
-    "This Memory Card cannot be used.", 0,
+    {"This Memory Card cannot be used.", 0},
 };
 
-struct StringEntry strMemCardNotInserted[] =
+struct StringEntry strMemCardNotInserted[2] =
 {
     {"Memory Card is not inserted.", 0},
     {"Please insert a Memory Card.", 0},
 };
 
-struct StringEntry strMemCardNotInsertedAutosaveOff[] =
+struct StringEntry strMemCardNotInsertedAutosaveOff[2] =
 {
     {"There is no Memory Card in Slot A.", 0},
     {"The Autosave function will be set to Off.", 0},
 };
 
-struct StringEntry strMemCardNotInsertedSlotA[] =
+struct StringEntry strMemCardNotInsertedSlotA[2] =
 {
     {"Memory Card is not inserted.", 0},
     {"Please insert a Memory Card into Slot A.", 0},
 };
 
-struct StringEntry strMemCardRemoved[] =
+struct StringEntry strMemCardRemoved[2] =
 {
     {"The Memory Card was removed.", 0},
     {"The operation has been stopped.", 0},
 };
 
-struct StringEntry strMemCardNotSupported[] =
+struct StringEntry strMemCardNotSupported[2] =
 {
     {"This Memory Card is not supported/recognized.", 0},
     {"Please insert a different Memory Card.", 0},
 };
 
-struct StringEntry strMemCardFileDamagedPleaseFormat[] =
+struct StringEntry strMemCardFileDamagedPleaseFormat[4] =
 {
     {"The file on the Memory Card has been damaged.", 0},
     {"Please use the GameCube tm Memory Card Menu", 0},
@@ -249,84 +266,84 @@ struct StringEntry strMemCardFileDamagedPleaseFormat[] =
     {"to format your Memory Card.", 0},
 };
 
-struct StringEntry strMemCardFileDamaged =
+struct StringEntry strMemCardFileDamaged[1] =
 {
-    "The file on the Memory Card has been damaged.", 0,
+    {"The file on the Memory Card has been damaged.", 0},
 };
 
-struct StringEntry strMemCardCantUse2 =
+struct StringEntry strMemCardCantUse2[1] =
 {
-    "This Memory Card cannot be used.", 0,
+    {"This Memory Card cannot be used.", 0},
 };
 
-struct StringEntry stringEntry4 =
+struct StringEntry stringEntry4[1] =
 {
-    "No Super Monkey Ball Game Data found on Memory Card.", 0,
+    {"No Super Monkey Ball Game Data found on Memory Card.", 0},
 };
 
-struct StringEntry strCantSaveFile =
+struct StringEntry strCantSaveFile[1] =
 {
-    "Cannot save data to the file.", 0,
+    {"Cannot save data to the file.", 0},
 };
 
-struct StringEntry strCantLoadFile =
+struct StringEntry strCantLoadFile[1] =
 {
-    "Cannot load file.", 0,
+    {"Cannot load file.", 0},
 };
 
-struct StringEntry strCantReadFile =
+struct StringEntry strCantReadFile[1] =
 {
-    "Cannot read file.", 0,
+    {"Cannot read file.", 0},
 };
 
-struct StringEntry lbl_801D46B0[] =
+struct StringEntry lbl_801D46B0[3] =
 {
     {"Not enough free blocks in Memory Card.", 0},
     {"There are %d free blocks,", 0},
     {"but %d blocks are required to save the data.", 0},
 };
 
-struct StringEntry lbl_801D46E0[] =
+struct StringEntry lbl_801D46E0[3] =
 {
     {"Not enough free blocks in Memory Card.", 0},
     {"There is %d free block,", 0},
     {"but %d blocks are required to save the data.", 0},
 };
 
-struct StringEntry lbl_801D46F8[] =
+struct StringEntry lbl_801D46F8[3] =
 {
     {"There are %d free blocks,", 0},
     {"but %d blocks are required to save the data.", 0},
     {"The Autosave function will be set to Off.", 0},
 };
 
-struct StringEntry lbl_801D46F8_blah[] =
+struct StringEntry lbl_801D46F8_blah[3] =
 {
     {"There is %d free block,", 0},
     {"but %d blocks are required to save the data.", 0},
     {"The Autosave function will be set to Off.", 0},
 };
 
-struct StringEntry lbl_801D4774[] =
+struct StringEntry lbl_801D4774[2] =
 {
     {"No free blocks in Memory Card.", 0},
     {"%d blocks are required to save the data.", 0},
 };
 
-struct StringEntry lbl_801D4774_blah[] =
+struct StringEntry lbl_801D4774_blah[3] =
 {
     {"No free blocks in Memory Card.", 0},
     {"%d blocks are required to save the data.", 0},
     {"The Autosave function will be set to Off.", 0},
 };
 
-struct StringEntry lbl_801D4774_blah2[] =
+struct StringEntry lbl_801D4774_blah2[2] =
 {
     {"Not enough free blocks in Memory Card.", 0},
     {"%d blocks are required to save the data.", 0},
 };
 
-struct StringEntry lbl_801D48A4[] =
+struct StringEntry lbl_801D48A4[5] =
 {
     {"The data has been successfully saved,", 0},
     {"but there are not enough free blocks to save the data.", 0},
@@ -335,7 +352,7 @@ struct StringEntry lbl_801D48A4[] =
     {"at least 3 free blocks are required.", 0},
 };
 
-struct StringEntry lbl_801D4934[] =
+struct StringEntry lbl_801D4934[4] =
 {
     {"The data has been successfully saved,", 0},
     {"but there are not enough free blocks to save Game Data.", 0},
@@ -343,14 +360,14 @@ struct StringEntry lbl_801D4934[] =
     {"at least 3 free blocks are required.", 0},
 };
 
-struct StringEntry lbl_801D49D0[] =
+struct StringEntry lbl_801D49D0[3] =
 {
     {"The data has been successfully saved,", 0},
     {"but there may not be enough free blocks to save Replay Data.", 0},
     {"Replay Data requires a maximum of 13 free blocks to save.", 0},
 };
 
-struct StringEntry lbl_801D4A30[] =
+struct StringEntry lbl_801D4A30[5] =
 {
     {"There are not enough free blocks", 0},
     {"to save a file in this Memory Card.", 0},
@@ -359,7 +376,7 @@ struct StringEntry lbl_801D4A30[] =
     {"at least 3 free blocks are required.", 0},
 };
 
-struct StringEntry lbl_801D4A80[] =
+struct StringEntry lbl_801D4A80[4] =
 {
     {"There are not enough free blocks", 0},
     {"to save Game Data in this Memory Card.", 0},
@@ -367,13 +384,13 @@ struct StringEntry lbl_801D4A80[] =
     {"at least 3 free blocks are required.", 0},
 };
 
-struct StringEntry lbl_801D4B10[] =
+struct StringEntry lbl_801D4B10[2] =
 {
     {"There may not be enough free blocks to save Replay Data.", 0},
     {"Replay Data requires a maximum of 13 free blocks.", 0},
 };
 
-struct StringEntry lbl_801D4B58[] =
+struct StringEntry lbl_801D4B58[5] =
 {
     {"No Super Monkey Ball Game Data found on Memory Card.", 0},
     {"There are not enough free blocks in this Memory Card.", 0},
@@ -382,7 +399,7 @@ struct StringEntry lbl_801D4B58[] =
     {"at least 3 free blocks are required.", 0},
 };
 
-struct StringEntry lbl_801D4B58_blah[] =
+struct StringEntry lbl_801D4B58_blah[5] =
 {
     {"No Super Monkey Ball Game Data found on Memory Card.", 0},
     {"There are not enough free blocks", 0},
@@ -391,7 +408,7 @@ struct StringEntry lbl_801D4B58_blah[] =
     {"at least 3 free blocks are required.", 0},
 };
 
-struct StringEntry lbl_801D4C38[] =
+struct StringEntry lbl_801D4C38[4] =
 {
     {"No Super Monkey Ball Game Data found on Memory Card.", 0},
     {"There may not be enough free blocks", 0},
@@ -399,73 +416,73 @@ struct StringEntry lbl_801D4C38[] =
     {"To save Replay Data, a maximum of 13 free blocks is required.", 0},
 };
 
-struct StringEntry strCantMakeMoreFiles =
+struct StringEntry strCantMakeMoreFiles[1] =
 {
-    "Cannot make any more files.", 0,
+    {"Cannot make any more files.", 0},
 };
 
-struct StringEntry strSaveSuccessNoMoreFiles[] =
+struct StringEntry strSaveSuccessNoMoreFiles[3] =
 {
     {"The data has been succesfully saved.", 0},
     {"However, no more files can be made. ", 0},
     {"You will not be able to save the data next time.", 0},
 };
 
-struct StringEntry strSaveFinished =
+struct StringEntry strSaveFinished[1] =
 {
-    "Saving finished.", 0,
+    {"Saving finished.", 0},
 };
 
-struct StringEntry strLoadFinished =
+struct StringEntry strLoadFinished[1] =
 {
-    "Loading finished.", 0,
+    {"Loading finished.", 0},
 };
 
-struct StringEntry strDeleteFinished =
+struct StringEntry strDeleteFinished[1] =
 {
-    "A file has been deleted.", 0,
+    {"A file has been deleted.", 0},
 };
 
-struct StringEntry strGameDataWrongVersion[] =
+struct StringEntry strGameDataWrongVersion[2] =
 {
     {"The Game Data version is incorrect.", 0},
     {"Please try saving your game again.", 0},
 };
 
-struct StringEntry strGameDataDamaged[] =
+struct StringEntry strGameDataDamaged[2] =
 {
     {"The Game Data has been damaged.", 0},
     {"Please try saving your game again.", 0},
 };
 
-struct StringEntry strReplayDataDamaged[] =
+struct StringEntry strReplayDataDamaged[2] =
 {
     {"The Replay Data has been damaged.", 0},
     {"Please delete the file.", 0},
 };
 
-struct StringEntry strFormatInterrupted =
+struct StringEntry strFormatInterrupted[1] =
 {
-    "Formatting has been interrupted.", 0,
+    {"Formatting has been interrupted.", 0},
 };
 
-struct StringEntry strSaveInterrupted =
+struct StringEntry strSaveInterrupted[1] =
 {
-    "Saving has been interrupted.", 0,
+    {"Saving has been interrupted.", 0},
 };
 
-struct StringEntry strLoadInterrupted =
+struct StringEntry strLoadInterrupted[1] =
 {
-    "Loading has been interrupted.", 0,
+    {"Loading has been interrupted.", 0},
 };
 
-struct StringEntry strFileSizeChanged[] =
+struct StringEntry strFileSizeChanged[2] =
 {
     {"The file size has been changed.", 0},
     {"Please delete the file from the menu, and try again.", 0},
 };
 
-struct StringEntry strNoReplayData[] =
+struct StringEntry strNoReplayData[4] =
 {
     {"No Replay Data found.", 0},
     {"In Normal mode and Practice Mode, during the Replay playback,", 0},
@@ -473,112 +490,112 @@ struct StringEntry strNoReplayData[] =
     {"you can save the Replay that you are viewing.", 0},
 };
 
-struct MemCardMessage msgMemCardCantRead = {strMemCardCantRead, ARRAY_COUNT(strMemCardCantRead)};
-struct MemCardMessage msgMemCardCantUse = {&strMemCardCantUse, 1};
-struct MemCardMessage msgMemCardNotInserted = {strMemCardNotInserted, ARRAY_COUNT(strMemCardNotInserted)};
-struct MemCardMessage msgMemCardNotInsertedAutosaveOff = {strMemCardNotInsertedAutosaveOff, ARRAY_COUNT(strMemCardNotInsertedAutosaveOff)};
-struct MemCardMessage msgMemCardNotInsertedSlotA = {strMemCardNotInsertedSlotA, ARRAY_COUNT(strMemCardNotInsertedSlotA)};
-struct MemCardMessage msgMemCardRemoved = {strMemCardRemoved, ARRAY_COUNT(strMemCardRemoved)};
-struct MemCardMessage msgMemCardNotSupported = {strMemCardNotSupported, ARRAY_COUNT(strMemCardNotSupported)};
-struct MemCardMessage msgMemCardDamaged = {&strMemCardFileDamaged, 1};
+struct MemCardMessage msgMemCardCantRead                = {strMemCardCantRead, ARRAY_COUNT(strMemCardCantRead)};
+struct MemCardMessage msgMemCardCantUse                 = {strMemCardCantUse, ARRAY_COUNT(strMemCardCantUse)};
+struct MemCardMessage msgMemCardNotInserted             = {strMemCardNotInserted, ARRAY_COUNT(strMemCardNotInserted)};
+struct MemCardMessage msgMemCardNotInsertedAutosaveOff  = {strMemCardNotInsertedAutosaveOff, ARRAY_COUNT(strMemCardNotInsertedAutosaveOff)};
+struct MemCardMessage msgMemCardNotInsertedSlotA        = {strMemCardNotInsertedSlotA, ARRAY_COUNT(strMemCardNotInsertedSlotA)};
+struct MemCardMessage msgMemCardRemoved                 = {strMemCardRemoved, ARRAY_COUNT(strMemCardRemoved)};
+struct MemCardMessage msgMemCardNotSupported            = {strMemCardNotSupported, ARRAY_COUNT(strMemCardNotSupported)};
+struct MemCardMessage msgMemCardDamaged                 = {strMemCardFileDamaged, ARRAY_COUNT(strMemCardFileDamaged)};
 struct MemCardMessage msgMemCardFileDamagedPleaseFormat = {strMemCardFileDamagedPleaseFormat, ARRAY_COUNT(strMemCardFileDamagedPleaseFormat)};
-struct MemCardMessage msgMemCardCantUse2 = {&strMemCardCantUse2, 1};
-struct MemCardMessage lbl_802F14A0 = {&stringEntry4, 1};
-struct MemCardMessage msgCantSaveFile = {&strCantSaveFile, 1};
-struct MemCardMessage msgCantLoadFile = {&strCantLoadFile, 1};
-struct MemCardMessage msgCantReadFile = {&strCantReadFile, 1};
-struct MemCardMessage lbl_802F14C0 = {lbl_801D46B0, ARRAY_COUNT(lbl_801D46B0)};
-struct MemCardMessage lbl_802F14C8 = {lbl_801D46E0, ARRAY_COUNT(lbl_801D46E0)};
-struct MemCardMessage lbl_802F14D0 = {lbl_801D46F8, ARRAY_COUNT(lbl_801D46F8)};
-struct MemCardMessage lbl_802F14D8 = {lbl_801D46F8_blah, ARRAY_COUNT(lbl_801D46F8_blah)};
-struct MemCardMessage lbl_802F14E0 = {lbl_801D4774, ARRAY_COUNT(lbl_801D4774)};
-struct MemCardMessage lbl_802F14E8 = {lbl_801D4774_blah, ARRAY_COUNT(lbl_801D4774_blah)};
-struct MemCardMessage lbl_802F14F0 = {lbl_801D4774_blah2, ARRAY_COUNT(lbl_801D4774_blah2)};
-struct MemCardMessage lbl_802F14F8 = {lbl_801D48A4, ARRAY_COUNT(lbl_801D48A4)};
-struct MemCardMessage lbl_802F1500 = {lbl_801D4934, ARRAY_COUNT(lbl_801D4934)};
-struct MemCardMessage lbl_802F1508 = {lbl_801D49D0, ARRAY_COUNT(lbl_801D49D0)};
-struct MemCardMessage lbl_802F1510 = {lbl_801D4A30, ARRAY_COUNT(lbl_801D4A30)};
-struct MemCardMessage lbl_802F1518 = {lbl_801D4A80, ARRAY_COUNT(lbl_801D4A80)};
-struct MemCardMessage lbl_802F1520 = {lbl_801D4B10, ARRAY_COUNT(lbl_801D4B10)};
-struct MemCardMessage lbl_802F1528 = {lbl_801D4B58, ARRAY_COUNT(lbl_801D4B58)};
-struct MemCardMessage lbl_802F1530 = {lbl_801D4B58_blah, ARRAY_COUNT(lbl_801D4B58_blah)};
-struct MemCardMessage lbl_802F1538 = {lbl_801D4C38, ARRAY_COUNT(lbl_801D4C38)};
-struct MemCardMessage msgCantMakeMoreFiles = {&strCantMakeMoreFiles, 1};
-struct MemCardMessage msgSaveSuccessNoMoreFiles = {strSaveSuccessNoMoreFiles, ARRAY_COUNT(strSaveSuccessNoMoreFiles)};
-struct MemCardMessage msgSaveFinished = {&strSaveFinished, 1};
-struct MemCardMessage msgLoadFinished = {&strLoadFinished, 1};
-struct MemCardMessage msgDeleteFinished = {&strDeleteFinished, 1};
-struct MemCardMessage msgGameDataWrongVersion = {strGameDataWrongVersion, ARRAY_COUNT(strGameDataWrongVersion)};
-struct MemCardMessage msgGameDataDamaged = {strGameDataDamaged, ARRAY_COUNT(strGameDataDamaged)};
-struct MemCardMessage msgReplayDataDamaged = {strReplayDataDamaged, ARRAY_COUNT(strReplayDataDamaged)};
-struct MemCardMessage msgFormatInterrupted = {&strFormatInterrupted, 1};
-struct MemCardMessage msgSaveInterrupted = {&strSaveInterrupted, 1};
-struct MemCardMessage msgLoadInterrupted = {&strLoadInterrupted, 1};
-struct MemCardMessage msgFileSizeChanged = {strFileSizeChanged, ARRAY_COUNT(strFileSizeChanged)};
-struct MemCardMessage msgNoReplayData = {strNoReplayData, ARRAY_COUNT(strNoReplayData)};
+struct MemCardMessage msgMemCardCantUse2                = {strMemCardCantUse2, ARRAY_COUNT(strMemCardCantUse2)};
+struct MemCardMessage lbl_802F14A0                      = {stringEntry4, ARRAY_COUNT(stringEntry4)};
+struct MemCardMessage msgCantSaveFile                   = {strCantSaveFile, ARRAY_COUNT(strCantSaveFile)};
+struct MemCardMessage msgCantLoadFile                   = {strCantLoadFile, ARRAY_COUNT(strCantLoadFile)};
+struct MemCardMessage msgCantReadFile                   = {strCantReadFile, ARRAY_COUNT(strCantReadFile)};
+struct MemCardMessage lbl_802F14C0                      = {lbl_801D46B0, ARRAY_COUNT(lbl_801D46B0)};
+struct MemCardMessage lbl_802F14C8                      = {lbl_801D46E0, ARRAY_COUNT(lbl_801D46E0)};
+struct MemCardMessage lbl_802F14D0                      = {lbl_801D46F8, ARRAY_COUNT(lbl_801D46F8)};
+struct MemCardMessage lbl_802F14D8                      = {lbl_801D46F8_blah, ARRAY_COUNT(lbl_801D46F8_blah)};
+struct MemCardMessage lbl_802F14E0                      = {lbl_801D4774, ARRAY_COUNT(lbl_801D4774)};
+struct MemCardMessage lbl_802F14E8                      = {lbl_801D4774_blah, ARRAY_COUNT(lbl_801D4774_blah)};
+struct MemCardMessage lbl_802F14F0                      = {lbl_801D4774_blah2, ARRAY_COUNT(lbl_801D4774_blah2)};
+struct MemCardMessage lbl_802F14F8                      = {lbl_801D48A4, ARRAY_COUNT(lbl_801D48A4)};
+struct MemCardMessage lbl_802F1500                      = {lbl_801D4934, ARRAY_COUNT(lbl_801D4934)};
+struct MemCardMessage lbl_802F1508                      = {lbl_801D49D0, ARRAY_COUNT(lbl_801D49D0)};
+struct MemCardMessage lbl_802F1510                      = {lbl_801D4A30, ARRAY_COUNT(lbl_801D4A30)};
+struct MemCardMessage lbl_802F1518                      = {lbl_801D4A80, ARRAY_COUNT(lbl_801D4A80)};
+struct MemCardMessage lbl_802F1520                      = {lbl_801D4B10, ARRAY_COUNT(lbl_801D4B10)};
+struct MemCardMessage lbl_802F1528                      = {lbl_801D4B58, ARRAY_COUNT(lbl_801D4B58)};
+struct MemCardMessage lbl_802F1530                      = {lbl_801D4B58_blah, ARRAY_COUNT(lbl_801D4B58_blah)};
+struct MemCardMessage lbl_802F1538                      = {lbl_801D4C38, ARRAY_COUNT(lbl_801D4C38)};
+struct MemCardMessage msgCantMakeMoreFiles              = {strCantMakeMoreFiles, ARRAY_COUNT(strCantMakeMoreFiles)};
+struct MemCardMessage msgSaveSuccessNoMoreFiles         = {strSaveSuccessNoMoreFiles, ARRAY_COUNT(strSaveSuccessNoMoreFiles)};
+struct MemCardMessage msgSaveFinished                   = {strSaveFinished, ARRAY_COUNT(strSaveFinished)};
+struct MemCardMessage msgLoadFinished                   = {strLoadFinished, ARRAY_COUNT(strLoadFinished)};
+struct MemCardMessage msgDeleteFinished                 = {strDeleteFinished, ARRAY_COUNT(strDeleteFinished)};
+struct MemCardMessage msgGameDataWrongVersion           = {strGameDataWrongVersion, ARRAY_COUNT(strGameDataWrongVersion)};
+struct MemCardMessage msgGameDataDamaged                = {strGameDataDamaged, ARRAY_COUNT(strGameDataDamaged)};
+struct MemCardMessage msgReplayDataDamaged              = {strReplayDataDamaged, ARRAY_COUNT(strReplayDataDamaged)};
+struct MemCardMessage msgFormatInterrupted              = {strFormatInterrupted, ARRAY_COUNT(strFormatInterrupted)};
+struct MemCardMessage msgSaveInterrupted                = {strSaveInterrupted, ARRAY_COUNT(strSaveInterrupted)};
+struct MemCardMessage msgLoadInterrupted                = {strLoadInterrupted, ARRAY_COUNT(strLoadInterrupted)};
+struct MemCardMessage msgFileSizeChanged                = {strFileSizeChanged, ARRAY_COUNT(strFileSizeChanged)};
+struct MemCardMessage msgNoReplayData                   = {strNoReplayData, ARRAY_COUNT(strNoReplayData)};
 
-struct StringEntry strPressBButton =
+struct StringEntry strPressBButton[1] =
 {
-    "Please press the p/BUTTON_B/ a/Button.", 0,
+    {"Please press the p/BUTTON_B/ a/Button.", 0},
 };
 
-struct StringEntry strPressBButtonNoSave =
+struct StringEntry strPressBButtonNoSave[1] =
 {
-    "Please press the p/BUTTON_B/ a/Button to Continue without saving.", 0,
+    {"Please press the p/BUTTON_B/ a/Button to Continue without saving.", 0},
 };
 
-struct StringEntry strMemCardNumFreeBlocks =
+struct StringEntry strMemCardNumFreeBlocks[1] =
 {
-    "There are %d free blocks on this Memory Card.", 0,
+    {"There are %d free blocks on this Memory Card.", 0},
 };
 
-struct StringEntry strMemCardNumFreeBlock =
+struct StringEntry strMemCardNumFreeBlock[1] =
 {
-    "There is %d free block on this Memory Card.", 0,
+    {"There is %d free block on this Memory Card.", 0},
 };
 
-struct StringEntry strMemCardNoFreeBlocks =
+struct StringEntry strMemCardNoFreeBlocks[1] =
 {
-    "No free blocks found on this Memory Card.", 0,
+    {"No free blocks found on this Memory Card.", 0},
 };
 
-struct StringEntry strAccessMemCard =
+struct StringEntry strAccessMemCard[1] =
 {
-    "Accessing Memory Card.", 0,
+    {"Accessing Memory Card.", 0},
 };
 
-struct StringEntry strSavingReplay[] =
+struct StringEntry strSavingReplay[2] =
 {
     {"Now saving Replay Data.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry strSavingGame[] =
+struct StringEntry strSavingGame[2] =
 {
     {"Now saving Game Data.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry strLoadingGame[] =
+struct StringEntry strLoadingGame[2] =
 {
     {"Now loading Game Data.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry strMakeSelection[] =
+struct StringEntry strMakeSelection[2] =
 {
     {"Please use the p/LEVER/ a/or the p/BUTTON_+/ a/to highlight a selection,", 0},
     {"and press the p/BUTTON_A/ a/Button to select.", 0},
 };
 
-struct StringEntry strInsertMemcardSlotAPressA[] =
+struct StringEntry strInsertMemcardSlotAPressA[3] =
 {
     {"Please insert a Memory Card into Slot A,", 0},
     {"then press the p/BUTTON_A/ a/Button.", 0},
     {"You may cancel by pressing the p/BUTTON_B/ a/Button.", 0},
 };
 
-struct StringEntry strFormatPrompt[] =
+struct StringEntry strFormatPrompt[4] =
 {
     {"This will format your Memory Card.", 0},
     {"All data will be lost. Is it OK to format?", 0},
@@ -586,13 +603,13 @@ struct StringEntry strFormatPrompt[] =
     {"", 0},
 };
 
-struct StringEntry strFormatProgress[] =
+struct StringEntry strFormatProgress[2] =
 {
     {"Memory Card being formatted.", 0},
     {"Do not touch the Memory Card or the POWER Button.", 0},
 };
 
-struct StringEntry strOverwritePrompt[] =
+struct StringEntry strOverwritePrompt[4] =
 {
     {"A Super Monkey Ball Game Data file already exists.", 0},
     {"Would you like to save over it?", 0},
@@ -600,20 +617,20 @@ struct StringEntry strOverwritePrompt[] =
     {"", 0},
 };
 
-struct MemCardMessage msgPressBButton = {&strPressBButton, 1};
-struct MemCardMessage msgPressBButtonNoSave = {&strPressBButtonNoSave, 1};
-struct MemCardMessage msgMemCardNumFreeBlocks = {&strMemCardNumFreeBlocks, 1};
-struct MemCardMessage msgMemCardNumFreeBlock = {&strMemCardNumFreeBlock, 1};
-struct MemCardMessage msgMemCardNoFreeBlocks = {&strMemCardNoFreeBlocks, 1};
-struct MemCardMessage msgAccessMemCard = {&strAccessMemCard, 1};
-struct MemCardMessage msgSavingReplay = {strSavingReplay, ARRAY_COUNT(strSavingReplay)};
-struct MemCardMessage msgSavingGame = {strSavingGame, ARRAY_COUNT(strSavingGame)};
-struct MemCardMessage msgLoadingGame = {strLoadingGame, ARRAY_COUNT(strLoadingGame)};
-struct MemCardMessage msgMakeSelection = {strMakeSelection, ARRAY_COUNT(strMakeSelection)};
+struct MemCardMessage msgPressBButton             = {strPressBButton,             ARRAY_COUNT(strPressBButton)};
+struct MemCardMessage msgPressBButtonNoSave       = {strPressBButtonNoSave,       ARRAY_COUNT(strPressBButtonNoSave)};
+struct MemCardMessage msgMemCardNumFreeBlocks     = {strMemCardNumFreeBlocks,     ARRAY_COUNT(strMemCardNumFreeBlocks)};
+struct MemCardMessage msgMemCardNumFreeBlock      = {strMemCardNumFreeBlock,      ARRAY_COUNT(strMemCardNumFreeBlock)};
+struct MemCardMessage msgMemCardNoFreeBlocks      = {strMemCardNoFreeBlocks,      ARRAY_COUNT(strMemCardNoFreeBlocks)};
+struct MemCardMessage msgAccessMemCard            = {strAccessMemCard,            ARRAY_COUNT(strAccessMemCard)};
+struct MemCardMessage msgSavingReplay             = {strSavingReplay,             ARRAY_COUNT(strSavingReplay)};
+struct MemCardMessage msgSavingGame               = {strSavingGame,               ARRAY_COUNT(strSavingGame)};
+struct MemCardMessage msgLoadingGame              = {strLoadingGame,              ARRAY_COUNT(strLoadingGame)};
+struct MemCardMessage msgMakeSelection            = {strMakeSelection,            ARRAY_COUNT(strMakeSelection)};
 struct MemCardMessage msgInsertMemcardSlotAPressA = {strInsertMemcardSlotAPressA, ARRAY_COUNT(strInsertMemcardSlotAPressA)};
-struct MemCardMessage msgFormatPrompt = {strFormatPrompt, ARRAY_COUNT(strFormatPrompt)};
-struct MemCardMessage msgFormatProgress = {strFormatProgress, ARRAY_COUNT(strFormatProgress)};
-struct MemCardMessage msgOverwritePrompt = {strOverwritePrompt, ARRAY_COUNT(strOverwritePrompt)};
+struct MemCardMessage msgFormatPrompt             = {strFormatPrompt,             ARRAY_COUNT(strFormatPrompt)};
+struct MemCardMessage msgFormatProgress           = {strFormatProgress,           ARRAY_COUNT(strFormatProgress)};
+struct MemCardMessage msgOverwritePrompt          = {strOverwritePrompt,          ARRAY_COUNT(strOverwritePrompt)};
 
 struct MemCardMessage *lbl_801D53D0[] =
 {
@@ -2706,7 +2723,7 @@ void save_sequence(void)
             }
             else
             {
-                memcardInfo.statusFlags |= (1 << 21);
+                memcardInfo.statusFlags |= MC_STATUS_WRITE_IN_PROGRESS;
                 format_memcard();
             }
         }
@@ -2714,7 +2731,7 @@ void save_sequence(void)
     case 0xA:
         check_format_memcard_result();
         if (memcardInfo.state != 10)
-            memcardInfo.statusFlags &= ~(1 << 21);
+            memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
         break;
     case MC_STATE_CHECK_FREE_SPACE:
         check_card_free_space();
@@ -2750,7 +2767,7 @@ void save_sequence(void)
             }
         }
         strcpy(memcardInfo.fileName, "super_monkey_ball.000");
-        memcardInfo.statusFlags |= (1 << 21) | (1 << 15);
+        memcardInfo.statusFlags |= MC_STATUS_WRITE_IN_PROGRESS | (1 << 15);
         create_memcard_file();
         break;
     case MC_STATE_CHECK_CREATE_FILE_RESULT:
@@ -2793,7 +2810,7 @@ void save_sequence(void)
     case 0x20:
         check_rename_gamedata_file_result();
         if (memcardInfo.state != 0x20)
-            memcardInfo.statusFlags &= ~(1 << 21);
+            memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
         break;
     case MC_STATE_CHECK_FREE_SPACE2:
         check_card_free_space();
@@ -2865,7 +2882,7 @@ void replay_save_sequence(void)
             }
             else
             {
-                memcardInfo.statusFlags |= (1 << 21);
+                memcardInfo.statusFlags |= MC_STATUS_WRITE_IN_PROGRESS;
                 format_memcard();
             }
         }
@@ -2873,13 +2890,13 @@ void replay_save_sequence(void)
     case 0xA:
         check_format_memcard_result();
         if (memcardInfo.state != 10)
-            memcardInfo.statusFlags &= ~(1 << 21);
+            memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
         break;
     case MC_STATE_CHECK_FREE_SPACE:
         check_card_free_space();
         break;
     case 0xD:
-        memcardInfo.statusFlags |= (1 << 21);
+        memcardInfo.statusFlags |= MC_STATUS_WRITE_IN_PROGRESS;
         create_memcard_file();
         break;
     case MC_STATE_CHECK_CREATE_FILE_RESULT:
@@ -2909,7 +2926,7 @@ void replay_save_sequence(void)
     case 0x16:
         check_set_memcard_file_metadata_result();
         if (memcardInfo.state != 0x16)
-            memcardInfo.statusFlags &= ~(1 << 21);
+            memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
         break;
     case MC_STATE_CHECK_FREE_SPACE2:
         check_card_free_space();
@@ -3117,13 +3134,13 @@ void ev_memcard_main(void)
     }
     if (memcardInfo.state == MC_STATE_ERROR && !(memcardInfo.statusFlags & MC_STATUS_ERROR))
     {
-        memcardInfo.statusFlags &= ~(1 << 21);
+        memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
         ev_run_dest(0);
         return;
     }
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
-        memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | (1 << 21));
+        memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | MC_STATUS_WRITE_IN_PROGRESS);
         if (lbl_801F3D88[2] & PAD_BUTTON_B)
         {
             func_8002B5C8(0x6B);

@@ -4,23 +4,23 @@
 #include "input.h"
 #include "perf.h"
 
-OSTick lbl_801F8DC0[8];
+OSTick perfTimers[8];
 u32 perfEnabled;
-s8 lbl_802F1D24;
+s8 zTrigTimer;
 u32 lbl_802F1D20;
-u32 lbl_802F1D18[2];
-void *lbl_802F1D10[2];
+u32 perfDispListSizes[2];
+void *perfDispLists[2];
 
 #define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
 
 void perf_init_timer(int timerId)
 {
-    lbl_801F8DC0[timerId] = OSGetTick();
+    perfTimers[timerId] = OSGetTick();
 }
 
 u32 perf_stop_timer(volatile /* why ?*/ int timerId2)
 {
-    return ((OSGetTick() - lbl_801F8DC0[timerId2]) * 8)
+    return ((OSGetTick() - perfTimers[timerId2]) * 8)
          / ((OS_BUS_CLOCK_SPEED / 4) / 125000);
 }
 
@@ -81,8 +81,8 @@ void perf_init(void)
     PERFSetEvent(1, "EVENT", PERF_CPU_EVENT);
     PERFSetEvent(2, "DISP",  PERF_CPU_GP_EVENT);
     PERFSetDrawBWBarKey(TRUE);
-    lbl_802F1D10[0] = OSAlloc(0x3000);
-    lbl_802F1D10[1] = OSAlloc(0x3000);
+    perfDispLists[0] = OSAlloc(0x3000);
+    perfDispLists[1] = OSAlloc(0x3000);
     lbl_802F1D20 = 0;
 }
 
@@ -92,16 +92,16 @@ void func_80027388(void)
     {
         PERFEndFrame();
         PERFStopAutoSampling();
-        begin_display_list(lbl_802F1D10[lbl_802F1D20 & 1], 0x3000);
+        begin_display_list(perfDispLists[lbl_802F1D20 & 1], 0x3000);
         PERFDumpScreen();
-        lbl_802F1D18[lbl_802F1D20 & 1] = end_display_list();
+        perfDispListSizes[lbl_802F1D20 & 1] = end_display_list();
     }
     if (lbl_802F1D20 != 0 && perfEnabled)
     {
         PERFPreDraw();
         GXCallDisplayList(
-            lbl_802F1D10[lbl_802F1D20 & 1],
-            lbl_802F1D18[lbl_802F1D20 & 1]);
+            perfDispLists[lbl_802F1D20 & 1],
+            perfDispListSizes[lbl_802F1D20 & 1]);
         PERFPostDraw();
         GXSetLineWidth(zMode->lineWidth, zMode->texOffsets);
         func_8009E5BC();
@@ -116,20 +116,20 @@ void func_80027448(void)
     {
         if (controllerInfo[0].unk0[0].button & PAD_TRIGGER_Z)
         {
-            if (lbl_802F1D24 < 127)
-                lbl_802F1D24++;
-            if (lbl_802F1D24 > 30)
+            if (zTrigTimer < 127)
+                zTrigTimer++;
+            if (zTrigTimer > 30)
                 perfEnabled = TRUE;
         }
         else
         {
-            lbl_802F1D24 = 0;
+            zTrigTimer = 0;
             perfEnabled = FALSE;
         }
     }
     else
     {
-        lbl_802F1D24 = 0;
+        zTrigTimer = 0;
         perfEnabled = FALSE;
     }
     if (perfEnabled)

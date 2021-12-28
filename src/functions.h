@@ -1358,7 +1358,7 @@ void func_8009F33C();
 // ? func_8009F3D8();
 void func_8009F430();
 // ? func_8009F49C();
-int func_8009F4A4(void);
+int memcard_is_write_in_progress(void);
 // ? func_8009F4C4();
 // ? func_8009F568();
 // ? init_replay_file_data();

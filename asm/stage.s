@@ -25,7 +25,7 @@ lbl_80043AB0:
 lbl_80043AB4:
 /* 80043AB4 0003F9D4  A8 0D 99 B2 */	lha r0, gameMode@sda21(r13)
 /* 80043AB8 0003F9D8  38 60 00 00 */	li r3, 0
-/* 80043ABC 0003F9DC  90 6D 9D 48 */	stw r3, lbl_802F1F28@sda21(r13)
+/* 80043ABC 0003F9DC  90 6D 9D 48 */	stw r3, previewLoaded@sda21(r13)
 /* 80043AC0 0003F9E0  2C 00 00 02 */	cmpwi r0, 2
 /* 80043AC4 0003F9E4  40 82 00 70 */	bne lbl_80043B34
 /* 80043AC8 0003F9E8  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
@@ -55,7 +55,7 @@ lbl_80043AF0:
 /* 80043B24 0003FA44  38 7F 00 78 */	addi r3, r31, 0x78
 /* 80043B28 0003FA48  48 06 95 49 */	bl g_preview_wait_then_do_something
 /* 80043B2C 0003FA4C  38 00 00 01 */	li r0, 1
-/* 80043B30 0003FA50  90 0D 9D 48 */	stw r0, lbl_802F1F28@sda21(r13)
+/* 80043B30 0003FA50  90 0D 9D 48 */	stw r0, previewLoaded@sda21(r13)
 lbl_80043B34:
 /* 80043B34 0003FA54  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 80043B38 0003FA58  83 E1 00 0C */	lwz r31, 0xc(r1)
@@ -465,7 +465,7 @@ ev_stage_dest:
 /* 80044104 00040024  7C 08 02 A6 */	mflr r0
 /* 80044108 00040028  90 01 00 04 */	stw r0, 4(r1)
 /* 8004410C 0004002C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80044110 00040030  80 0D 9D 48 */	lwz r0, lbl_802F1F28@sda21(r13)
+/* 80044110 00040030  80 0D 9D 48 */	lwz r0, previewLoaded@sda21(r13)
 /* 80044114 00040034  2C 00 00 00 */	cmpwi r0, 0
 /* 80044118 00040038  41 82 00 10 */	beq lbl_80044128
 /* 8004411C 0004003C  3C 60 80 20 */	lis r3, stagePreview@ha
@@ -1087,8 +1087,8 @@ lbl_800449C4:
 /* 800449D4 000408F4  38 00 00 00 */	li r0, 0
 /* 800449D8 000408F8  90 0D 9D 58 */	stw r0, decodedStageGmaPtr@sda21(r13)
 lbl_800449DC:
-/* 800449DC 000408FC  38 6D 99 20 */	addi r3, r13, lbl_802F1B00@sda21
-/* 800449E0 00040900  38 8D 99 0C */	addi r4, r13, lbl_802F1AEC@sda21
+/* 800449DC 000408FC  38 6D 99 20 */	addi r3, r13, arcadeStageObj@sda21
+/* 800449E0 00040900  38 8D 99 0C */	addi r4, r13, arcadeStageTpl@sda21
 /* 800449E4 00040904  4B FE C4 3D */	bl free_nlobj
 /* 800449E8 00040908  48 00 29 01 */	bl func_800472E8
 /* 800449EC 0004090C  7F 63 DB 78 */	mr r3, r27
@@ -1202,8 +1202,8 @@ lbl_80044B50:
 /* 80044B60 00040A80  38 00 00 00 */	li r0, 0
 /* 80044B64 00040A84  90 0D 9D 58 */	stw r0, decodedStageGmaPtr@sda21(r13)
 lbl_80044B68:
-/* 80044B68 00040A88  38 6D 99 20 */	addi r3, r13, lbl_802F1B00@sda21
-/* 80044B6C 00040A8C  38 8D 99 0C */	addi r4, r13, lbl_802F1AEC@sda21
+/* 80044B68 00040A88  38 6D 99 20 */	addi r3, r13, arcadeStageObj@sda21
+/* 80044B6C 00040A8C  38 8D 99 0C */	addi r4, r13, arcadeStageTpl@sda21
 /* 80044B70 00040A90  4B FE C2 B1 */	bl free_nlobj
 /* 80044B74 00040A94  48 00 27 75 */	bl func_800472E8
 /* 80044B78 00040A98  7F E3 FB 78 */	mr r3, r31
@@ -1379,8 +1379,8 @@ lbl_80044DA8:
 /* 80044DD4 00040CF4  48 0B FE 51 */	bl sprintf
 /* 80044DD8 00040CF8  38 A1 01 0C */	addi r5, r1, 0x10c
 /* 80044DDC 00040CFC  38 C1 00 0C */	addi r6, r1, 0xc
-/* 80044DE0 00040D00  38 6D 99 20 */	addi r3, r13, lbl_802F1B00@sda21
-/* 80044DE4 00040D04  38 8D 99 0C */	addi r4, r13, lbl_802F1AEC@sda21
+/* 80044DE0 00040D00  38 6D 99 20 */	addi r3, r13, arcadeStageObj@sda21
+/* 80044DE4 00040D04  38 8D 99 0C */	addi r4, r13, arcadeStageTpl@sda21
 /* 80044DE8 00040D08  4B FE BD E5 */	bl load_nlobj
 lbl_80044DEC:
 /* 80044DEC 00040D0C  7F C3 F3 78 */	mr r3, r30
@@ -4839,7 +4839,7 @@ func_80047D70:
 /* 80047D70 00043C90  7C 08 02 A6 */	mflr r0
 /* 80047D74 00043C94  90 01 00 04 */	stw r0, 4(r1)
 /* 80047D78 00043C98  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80047D7C 00043C9C  80 0D 9D 48 */	lwz r0, lbl_802F1F28@sda21(r13)
+/* 80047D7C 00043C9C  80 0D 9D 48 */	lwz r0, previewLoaded@sda21(r13)
 /* 80047D80 00043CA0  2C 00 00 00 */	cmpwi r0, 0
 /* 80047D84 00043CA4  41 82 00 84 */	beq lbl_80047E08
 /* 80047D88 00043CA8  80 6D 9A 5C */	lwz r3, currentCameraStructPtr@sda21(r13)
@@ -20744,7 +20744,7 @@ glabel string_st_03d_lz
 .global lbl_801B8794
 lbl_801B8794:
 	# ROM: 0x1B5794
-	.4byte lbl_802F1B00  ;# ptr
+	.4byte arcadeStageObj  ;# ptr
 	.4byte lbl_802F1B04  ;# ptr
 	.4byte 0
 .endif

@@ -3125,8 +3125,8 @@ lbl_802F1AE4:
 .global lbl_802F1AE8
 lbl_802F1AE8:
 	.skip 0x4
-.global lbl_802F1AEC
-lbl_802F1AEC:
+.global arcadeStageTpl
+arcadeStageTpl:
 	.skip 0x4
 .global lbl_802F1AF0
 lbl_802F1AF0:
@@ -3140,8 +3140,8 @@ lbl_802F1AF8:
 .global lbl_802F1AFC
 lbl_802F1AFC:
 	.skip 0x4
-.global lbl_802F1B00
-lbl_802F1B00:
+.global arcadeStageObj
+arcadeStageObj:
 	.skip 0x4
 .global lbl_802F1B04
 lbl_802F1B04:
