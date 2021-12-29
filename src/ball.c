@@ -1302,28 +1302,6 @@ void give_bananas(int bananas)
     }
 }
 
-static inline float vec_dot_prod(register Vec *a, register Vec *b)
-{
-#ifdef __MWERKS__
-    register float x1, y1, z1, x2, y2, z2;
-    asm
-    {
-        lfs x1, a->x
-        lfs x2, b->x
-        lfs y1, a->y
-        lfs y2, b->y
-        lfs z1, a->z
-        lfs z2, b->z
-        fmuls x2, x1, x2
-        fmadds x2, y1, y2, x2
-        fmadds x2, z1, z2, x2
-    }
-    return x2;
-#else
-    return a->x * b->x + a->y * b->y + a->z * b->z;
-#endif
-}
-
 void func_800390C8(int a, Vec *b, float c)
 {
     Vec sp50;
@@ -1374,7 +1352,7 @@ void func_800390C8(int a, Vec *b, float c)
             mathutil_vec_normalize_len(&sp44);
         }
 
-        c *= (vec_dot_prod(&sp44, &sp50) + 0.5) * 0.75;
+        c *= (mathutil_vec_dot_prod(&sp44, &sp50) + 0.5) * 0.75;
         if (ball->unk110 > c)
             break;
 
@@ -1386,7 +1364,7 @@ void func_800390C8(int a, Vec *b, float c)
         sp44.y = -sp14[1][0];
         sp44.z = -sp14[2][0];
 
-        c *= vec_dot_prod(&sp44, &sp50) + 0.5;
+        c *= mathutil_vec_dot_prod(&sp44, &sp50) + 0.5;
         if (ball->unk110 < c)
         {
             ball->unk100 = a;
@@ -2426,7 +2404,7 @@ void func_8003BBF4(struct Struct80039974 *a, Vec *b)
 void func_8003BD68(struct Struct80039974 *a, Vec *b, Vec *c)
 {
     struct Ball *ball = currentBallStructPtr;
-    float f2 = vec_dot_prod(b, &a->unk44);
+    float f2 = mathutil_vec_dot_prod(b, &a->unk44);
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2629,7 +2607,7 @@ void func_8003C550(struct Ball *ball)
     spC.y = ball->pos.y + ball->unk114.y * ball->unk68;
     spC.z = ball->pos.z + ball->unk114.z * ball->unk68;
 
-    f0 = -vec_dot_prod(&sp24, &sp18);
+    f0 = -mathutil_vec_dot_prod(&sp24, &sp18);
     sp18.x += f0 * sp24.x;
     sp18.y += f0 * sp24.y;
     sp18.z += f0 * sp24.z;

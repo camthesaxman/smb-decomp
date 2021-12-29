@@ -71,7 +71,6 @@ SOURCES := \
 	asm/mode.s \
 	src/event.c \
 	src/polydisp.c \
-	asm/polydisp.s \
 	asm/adv.s \
 	src/sel.c \
 	asm/game.s \

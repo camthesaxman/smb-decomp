@@ -7,10 +7,11 @@ import sys
 import struct
 
 #startLabel = sys.argv[2]
-startLabel = 'lbl_0000C9CC'  # starting label
+startLabel = 'lbl_80173FD0'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>fffhxx'
-cFmt = '{{%6.7g, %5.7g, %6.7g}, %2d},'
+structFmt = '>f'
+#cFmt = '{ %u, %5d, %d, {%3.7g, %3.7g, %3.7g}},'
+cFmt = '%3.7g'
 dumping = False
 
 def print_struct(data):
@@ -35,9 +36,19 @@ def read_data(line):
             (value >> 16) & 0xFF,
             (value >> 8) & 0xFF,
             (value >> 0) & 0xFF])
+    m = re.match(r'\s*\.byte\s+(\w+),\s*(\w+),\s*(\w+),\s*(\w+)', line)
+    if m:
+        return bytearray(
+            [int(m.groups()[0], 0),
+            int(m.groups()[1], 0),
+            int(m.groups()[2], 0),
+            int(m.groups()[3], 0)])
     return bytearray()
 
 data = bytearray()
+
+structSize = struct.calcsize(structFmt)
+print('size = %i bytes' % structSize)
 
 with open(sys.argv[1], 'r') as f:
     for line in f.readlines():
@@ -49,9 +60,11 @@ with open(sys.argv[1], 'r') as f:
         else:
             if read_label(line) == startLabel:
                 dumping = True
+                print('dumping')
                 continue
 
-structSize = struct.calcsize(structFmt)
+#print(str(len(data)))
+
 while len(data) >= structSize:
     print_struct(struct.unpack(structFmt, data[0:structSize]))
     data = data[structSize:]

@@ -526,13 +526,14 @@ extern u8 lbl_801EEBA0[];
 extern struct ModeControl modeCtrl;
 // extern ? lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
+extern struct Struct801EEC90 lbl_801EEC90;
+// extern ? lbl_801EECF8;
 extern struct
 {
-    u32 unk0;
-    u8 filler4[9-4];
-} lbl_801EEC90;
-// extern ? lbl_801EECF8;
-// extern ? lbl_801EED04;
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+} lbl_801EED04;
 extern struct
 {
     u8 filler0[4];
@@ -540,7 +541,13 @@ extern struct
     s32 unk8;
     s32 unkC;
 } lbl_801EED2C;
-// extern ? lbl_801EED3C;
+extern struct
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    float unkC;
+} lbl_801EED3C;
 // extern ? lbl_801EED50;
 // extern ? lbl_801EED88;
 // extern ? lbl_801EEDA8;
@@ -689,7 +696,11 @@ extern u8 lbl_802B57A0[];
 // extern ? lbl_802B9390;
 // extern ? lbl_802BA190;
 // extern ? lbl_802BA1A0;
-// extern ? lbl_802BA200;
+extern struct
+{
+    u8 filler0[0xC];
+    GXColor unkC;
+} lbl_802BA200;
 // extern ? lbl_802BA210;
 // extern ? cardStat;
 // extern ? memcardInfo;
@@ -1183,7 +1194,7 @@ extern Mtx *lbl_802F1B3C;
 extern void *lbl_802F1B40;
 extern void *lbl_802F1B44;
 extern void *dvdReadBuffer;
-extern void *lbl_802F1B4C;
+extern struct NaomiModel *lbl_802F1B4C;
 extern void *lbl_802F1B50;
 extern void *lbl_802F1B54;
 extern BOOL lbl_802F1B58;
@@ -1212,7 +1223,7 @@ extern s16 gameMode;
 // extern ? lbl_802F1BBC;
 // extern ? lbl_802F1BC4;
 extern u32 lbl_802F1BC8;
-// extern ? lbl_802F1BCC;
+extern u32 lbl_802F1BCC;
 
 extern struct Struct802F1BE0 lbl_802F1BE0;
 // extern ? lbl_802F1BE8;
@@ -1375,7 +1386,7 @@ extern void *currentWorldStructPtr;
 // extern ? previewLoaded;
 extern struct GMAModelHeader *lbl_802F1F2C;
 extern struct Stage *decodedStageLzPtr;
-// extern ? lbl_802F1F34;
+extern u32 lbl_802F1F34;
 extern struct GMA *decodedStageGmaPtr;
 extern struct TPL *decodedStageTplPtr;
 extern u16 lbl_802F1F40;

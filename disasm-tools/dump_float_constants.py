@@ -64,7 +64,8 @@ def handle_sdata2_section_line(line):
             lbl = m.groups()[0]
             if lbl not in labelTypes:
                 print("don't know about %s" % lbl)
-                exit()
+                #exit()
+                return
 #            print('label %s' % lbl)
             currLabel = lbl
             currType = labelTypes[lbl]

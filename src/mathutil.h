@@ -209,6 +209,28 @@ static inline float mathutil_vec_distance(register Vec *a, register Vec *b)
 #endif
 }
 
+static inline float mathutil_vec_dot_prod(register Vec *a, register Vec *b)
+{
+#ifdef __MWERKS__
+    register float x1, y1, z1, x2, y2, z2;
+    asm
+    {
+        lfs x1, a->x
+        lfs x2, b->x
+        lfs y1, a->y
+        lfs y2, b->y
+        lfs z1, a->z
+        lfs z2, b->z
+        fmuls x2, x1, x2
+        fmadds x2, y1, y2, x2
+        fmadds x2, z1, z2, x2
+    }
+    return x2;
+#else
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+#endif
+}
+
 extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
 {
 #ifdef __MWERKS__

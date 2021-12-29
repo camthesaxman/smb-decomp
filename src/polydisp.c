@@ -1,4 +1,6 @@
 #include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
@@ -8,6 +10,12 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+
+struct Struct801EEC80 lbl_801EEC80;
+struct Struct801EEC90 lbl_801EEC90;
+
+FORCE_BSS_ORDER(lbl_801EEC80)
+FORCE_BSS_ORDER(lbl_801EEC90)
 
 void polydisp_init(void)
 {
@@ -37,16 +45,14 @@ static inline void show_loading_msg(void)
 
 void polydisp_main(void)
 {
-    struct Struct801EEC80 *unk = &lbl_801EEC80;
-
     if (gameMode == MD_SEL
      && (gameSubmode == SMD_SEL_STAGE_INIT || gameSubmode == SMD_SEL_STAGE_MAIN)
      && func_80092444() != 0)
         show_loading_msg();
 
-    unk->unk10 &= ~0x11;
+    lbl_801EEC90.unk0 &= ~0x11;
     if (func_8009D5D8() != 0)
-        unk->unk10 |= 0x10;
+        lbl_801EEC90.unk0 |= 0x10;
 
     func_80021ECC();
     func_8009AB5C();
@@ -219,54 +225,19 @@ void func_8000B8AC(void)
     }
 }
 
-extern struct
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-} lbl_801EED04;
-
-extern u32 lbl_802F1BB8;
-extern float lbl_80173FD0[];
-
-/*
-struct Struct802F1CC8_child_child
-{
-    struct GMAModelHeader *unk0;
-    u8 filler4[4];
-};
-
-struct Struct802F1CC8_child
-{
-    struct Struct802F1CC8_child_child unk0[2];
-    u8 filler10[0x248-0x10];
-    struct GMAModelHeader *unk248;
-    u8 filler24C[4];
-    struct GMAModelHeader *unk250;
-    u8 filler254[4];
-    struct GMAModelHeader *unk258;
-    u8 filler25C[4];
-    struct GMAModelHeader *unk260;
-    u8 filler264[0x270-0x264];
-    struct GMAModelHeader *unk270;
-};
-
-extern struct Struct802F1CC8
-{
-    u8 filler0[8];
-    struct Struct802F1CC8_child *unk8;
-} *lbl_802F1CC8;
-*/
-
-extern struct Struct80173FA8
+struct Struct80173FA8
 {
     u32 unk0;
     s16 unk4;
     s16 unk6;
     Vec unk8;
-} lbl_80173FA8[];
+} lbl_80173FA8[] =
+{
+    { 56, -25344, 22272, { 0.7, -0.3, 0.2 } },
+    { 57,   8832, 20736, { 0.6, -0.2, 0.2 } },
+};
 
-void func_80085678(float);
+float lbl_80173FD0[] = { 0.4, 0.25, 0.25, 0.5 };
 
 void func_8000B918(void)
 {
@@ -375,16 +346,6 @@ void func_8000B96C(void)
     func_80017FCC();
 }
 
-extern struct
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    float unkC;
-} lbl_801EED3C;
-
-void func_80030BA8(float);
-
 void func_8000BCA4(void)
 {
     Vec sp48;
@@ -484,6 +445,8 @@ void func_8000BCA4(void)
     func_800858CC();
 }
 
+const GXColor lbl_802F2978 = {0, 0, 0, 0};
+
 struct Struct8000C144
 {
     float unk0;
@@ -492,8 +455,6 @@ struct Struct8000C144
     float unkC;
     float unk10;
 };
-
-const GXColor lbl_802F2978 = {0, 0, 0, 0};
 
 void func_8000C144(struct Struct8000C144 *a)
 {
@@ -648,9 +609,8 @@ void func_8000C5A4(void)
 void func_8000C7A4(void)
 {
     int i;
-    struct Struct801EEC80 *unk = &lbl_801EEC80;
 
-    unk->unk10 |= (1 << 3);
+    lbl_801EEC90.unk0 |= (1 << 3);
     for (i = 0; i < 4; i++)
     {
         if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f
@@ -679,10 +639,10 @@ void func_8000C7A4(void)
             func_800858CC();
         }
     }
-    unk->unk10 &= ~(1 << 3);
+    lbl_801EEC90.unk0 &= ~(1 << 3);
 }
 
-extern u16 lbl_802F02E0[4];
+u16 lbl_802F02E0[4] = { 0x54, 0x55, 0x56, 0x57 };
 
 #ifdef NONMATCHING
 static inline void mathutil_get_mtxA_translate_xyz(register float *px, register float *py, register float *pz)
@@ -756,8 +716,6 @@ asm void func_8000C8D4(void)
 }
 #pragma peephole on
 #endif
-
-extern u32 lbl_802F1F34;
 
 void func_8000CA9C(void)
 {
@@ -917,7 +875,6 @@ void func_8000D018(void)
 {
     int i;
     struct Ball *r23 = currentBallStructPtr;
-    struct Struct801EEC80 *blah = &lbl_801EEC80;
 
     for (i = 0; i < 4; i++)
     {
@@ -928,7 +885,7 @@ void func_8000D018(void)
                 continue;
 
             if (cameraInfo[i].flags & (1<<(31-0x19)))
-                blah->unk10 |= 8;
+                lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
             func_80092D3C();
@@ -966,7 +923,7 @@ void func_8000D018(void)
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(8);
             if (cameraInfo[i].flags & (1<<(31-0x19)))
-                blah->unk10 &= ~(1<<(31-0x1C));
+                lbl_801EEC90.unk0 &= ~(1<<(31-0x1C));
         }
     }
     currentBallStructPtr = r23;
@@ -986,7 +943,7 @@ void func_8000D220(void)
     Vec light4pos;
     Vec pos;
 
-    if ((dipSwitches & (1<<(31-0x13))) && !(dipSwitches & (1<<(31-0x12))))
+    if ((dipSwitches & DIP_TEST_CAM) && !(dipSwitches & DIP_NO_INTR))
     {
         mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
         mathutil_mtxA_rotate_y((lbl_802F1B38 << 8) * 1.2f);
@@ -1049,4 +1006,327 @@ void func_8000D220(void)
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXDrawSphere(8, 8);
     }
+}
+
+void func_8000D5B8(void)
+{
+    lbl_801EEC90.unk4C = 0;
+    lbl_801EEC90.unk54 = 0;
+    lbl_801EEC90.unk58 = 0;
+    lbl_801EEC90.unk5C = 1.0f;
+    lbl_801EEC90.unk60 = 0.0f;
+}
+
+#pragma force_active on
+const float lbl_802F2A20 = 320.0f;
+const float lbl_802F2A24 = 56.0f;
+const float lbl_802F2A28 = 240.0f;
+const float lbl_802F2A2C = 1.3333332538604736f;
+const float lbl_802F2A30 = 0.0098999999463558197f;
+const float lbl_802F2A34 = 0.57735025882720947f;
+const float lbl_802F2A38 = 2.0f;
+const float lbl_802F2A3C = 0.75f;
+const double lbl_802F2A40 = 0.001;
+const float lbl_802F2A48 = 0.125f;
+const double lbl_802F2A50 = 0.0083333333333333332;
+const float lbl_802F2A58 = 0.0009399999980814755f;
+const float lbl_802F2A5C = 0.0051899999380111694f;
+const float lbl_802F2A60 = -0.0099999997764825821f;
+const float lbl_802F2A64 = 0.000699999975040555f;
+const double lbl_802F2A68 = 100.0;
+const float lbl_802F2A70 = 0.14100000262260437f;
+const float lbl_802F2A74 = 0.014899999834597111f;
+#pragma force_active off
+
+#if 1
+#ifdef NONMATCHING
+/*
+void func_8000D5E4(void)
+{
+    struct Sprite *r3;
+    float f31, f30;
+    Mtx sp54;
+    struct NaomiModel *r4;
+    float f4;
+    float f3;
+    int r8;
+    int r7;
+    float f1;
+    int i;
+    int r6;
+    struct NaomiMesh *r3_;
+    struct NaomiVtxWithNormal *r5;
+
+    if (eventInfo[12].state == 2)
+        return;
+    if (lbl_801F3A58.unk4 <= 0)
+        return;
+    //lbl_8000D634
+    r3 = g_find_sprite_with_probably_not_font(2);
+    if (r3 == NULL)
+    {
+        f31 = 0.0f;
+        f30 = 0.0f;
+    }
+    else
+    {
+        f31 = (r3->centerX - 320.0f) / 320.0f;
+        f30 = (56.0f - r3->centerY) / 240.0f;
+    }
+    //lbl_8000D674
+    C_MTXPerspective(sp54, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
+    sp54[0][2] -= sp54[0][0] * f31 * 1.3333332538604736f * 0.5773502588272095f;
+    sp54[1][2] -= sp54[1][1] * f30 * 0.5773502588272095f;
+    GXSetProjection(sp54, 0);
+
+    r4 = lbl_802F1B04[0x2B];
+    f31 = (float)lbl_801F3A58.unk4 / (float)lbl_801F3A58.unk6;
+    memcpy(lbl_802F1B4C, r4, ((u32 **)r4)[-1][0]);  // WTF???
+    r3_ = (struct NaomiMesh *)lbl_802F1B4C->meshStart;
+    //r8 = lbl_802F1B4C->unk6C;
+    r8 = ((struct NaomiDispList *)((struct NaomiMesh *)(((struct NaomiMesh *)lbl_802F1B4C->meshStart)->dispListStart)))->vtxCount;
+    f4 = 2.0 * (f31 - 0.5);
+    f4 = CLAMP(f4, 0.0, 1.0);
+    f3 = f4 * (r8 - 2.0);
+    r7 = (float)mathutil_floor_to_int(f3 * 0.5) * 2.0f;
+    r5 = (void *)((struct NaomiDispList *)r3_->dispListStart)->vtxData;
+    f1 = (r7 - f3) * 0.5;
+    r6 = r8 - 1;
+    for (i = 0; i < r6; i++)
+    {
+
+    }
+}
+*/
+#else
+extern u8 lbl_80173FE0[];
+extern u8 lbl_801740A8[];
+asm void func_8000D5E4(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_8000D5E4.s"
+}
+#pragma peephole on
+#endif
+#endif
+
+void func_8000DEE8(void)
+{
+    BOOL r0 = TRUE;
+    GXColor color;
+
+    switch (gameMode)
+    {
+    case MD_GAME:
+        switch (gameSubmode)
+        {
+        case SMD_GAME_INTR_SEL_INIT:
+        case SMD_GAME_INTR_SEL_MAIN:
+        case SMD_GAME_OVER_POINT_INIT:
+        case SMD_GAME_OVER_POINT_MAIN:
+            if ((modeCtrl.unk8 & (3<<(31-0x1A))) == 0)
+            {
+                color.r = 0;
+                color.g = 0;
+                color.b = 0;
+                color.a = 0;
+            }
+            else
+            {
+                color.r = 255;
+                color.g = 255;
+                color.b = 255;
+                color.a = 0;
+            }
+            r0 = FALSE;
+            break;
+        default:
+            color = backgroundInfo.unkC;
+            break;
+        }
+        break;
+    case MD_SEL:
+    case MD_MINI:
+        color = backgroundInfo.unkC;
+        break;
+    case MD_ADV:
+        switch (gameSubmode)
+        {
+        case SMD_ADV_LOGO_INIT:
+        case SMD_ADV_LOGO_MAIN:
+        case SMD_ADV_WARNING_INIT:
+        case SMD_ADV_WARNING_MAIN:
+        case SMD_ADV_RATING_INIT:
+        case SMD_ADV_RATING_MAIN:
+        case SMD_ADV_START_INIT:
+        case SMD_ADV_START_MAIN:
+            color.r = lbl_802F1BCC >> 16;
+            color.g = lbl_802F1BCC >> 8;
+            color.b = lbl_802F1BCC >> 0;
+            color.a = lbl_802F1BCC >> 24;
+            break;
+        default:
+            color = backgroundInfo.unkC;
+            lbl_802F1BCC = (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
+            break;
+        }
+        break;
+    case MD_OPTION:
+        switch (gameSubmode)
+        {
+        case SMD_OPTION_REPLAY_PLAY_INIT:
+        case SMD_OPTION_REPLAY_PLAY_MAIN:
+            color = backgroundInfo.unkC;
+            break;
+        default:
+            color.r = color.g = color.b = 0;
+            color.a = 255;
+            break;
+        }
+        break;
+    case MD_TEST:
+    default:
+        color.r = 64;
+        color.g = 64;
+        color.b = 64;
+        color.a = 0;
+        break;
+    }
+
+    if (r0 && (s8)lbl_802BA200.unkC.a != 0)
+    {
+        color.r = lbl_802BA200.unkC.r;
+        color.g = lbl_802BA200.unkC.g;
+        color.b = lbl_802BA200.unkC.b;
+    }
+    GXSetCopyClear(color, 0x00FFFFFF);
+}
+
+void func_8000E0FC(void)
+{
+    func_80085684(0.5f);
+    func_8008D158(0x00FFFF7F);
+    func_80085684(-0.5f);
+}
+
+void func_8000E134(void)
+{
+    if (eventInfo[3].state == 2)
+        func_80038AB4();
+    if (eventInfo[5].state == 2)
+        func_800685C4();
+}
+
+void func_8000E180(void)
+{
+    shadowerase_main();
+    func_80094914();
+}
+
+void func_8000E1A4(float a)
+{
+    switch (gameSubmode)
+    {
+    case SMD_GAME_CONTINUE_INIT:
+    case SMD_GAME_CONTINUE_MAIN:
+        func_80030BB8(0.8f, 0.8f, 0.8f);
+        g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
+        break;
+    case SMD_GAME_OVER_INIT:
+    case SMD_GAME_OVER_MAIN:
+    case SMD_GAME_NAMEENTRY_READY_INIT:
+        if (!(modeCtrl.unk8 & (1<<(31-0x1A))) && modeCtrl.unk28 != 1)
+        {
+            func_80030BB8(0.8f, 0.8f, 0.8f);
+            g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
+        }
+        else
+        {
+            func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+            g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+        }
+        break;
+    default:
+        if (modeCtrl.unk8 & (1<<(31-0x1B)))
+        {
+            func_80030BB8(1.0f, 1.0f, 1.0f);
+            g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, a);
+        }
+        else
+        {
+            func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+            g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+        }
+        break;
+    }
+}
+
+void func_8000E338(int a)
+{
+    float f3, f4, f5;
+
+    switch (a)
+    {
+    case 0x52:
+        f3 = 1.0f;
+        f5 = 0.0f;
+        f4 = 0.0f;
+        break;
+    case 0x47:
+        f5 = 0.0f;
+        f4 = 1.0f;
+        f3 = 0.0f;
+        break;
+    default:
+        f4 = 0.0f;
+        f3 = 0.0f;
+        f5 = 1.0f;
+        break;
+    }
+    func_80030BB8(lbl_801EEC80.unk4 * f3, lbl_801EEC80.unk8 * f4, lbl_801EEC80.unkC * f5);
+}
+
+void func_8000E3BC(void)
+{
+    func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+    g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
+}
+
+void func_8000E428(float a, float b, float c)
+{
+    lbl_801EEC80.unk0 = 0.0f;
+    lbl_801EEC80.unk4 = a;
+    lbl_801EEC80.unk8 = b;
+    lbl_801EEC80.unkC = c;
+}
+
+float func_8000E444(Vec *pos)
+{
+    Vec spC;
+
+    mathutil_mtxA_tf_point(pos, &spC);
+    spC.x -= lbl_801EEC90.unk1C.x;
+    spC.y -= lbl_801EEC90.unk1C.y;
+    spC.z -= lbl_801EEC90.unk1C.z;
+    return mathutil_vec_dot_prod(&spC, &lbl_801EEC90.unk28);
+}
+
+float func_8000E4D0(Vec *pos)
+{
+    Vec spC;
+
+    spC.x = pos->x - lbl_801EEC90.unk4.x;
+    spC.y = pos->y - lbl_801EEC90.unk4.y;
+    spC.z = pos->z - lbl_801EEC90.unk4.z;
+    return mathutil_vec_dot_prod(&spC, &lbl_801EEC90.unk10);
+}
+
+float func_8000E53C(Vec *pos)
+{
+    Vec spC;
+
+    spC.x = pos->x - lbl_801EEC90.unk34.x;
+    spC.y = pos->y - lbl_801EEC90.unk34.y;
+    spC.z = pos->z - lbl_801EEC90.unk34.z;
+    return mathutil_vec_dot_prod(&spC, &lbl_801EEC90.unk40);
 }

@@ -155,7 +155,7 @@ void ev_ball_main(void);
 void func_80038528(struct Ball *);
 void ev_ball_dest(void);
 void func_80038840(void);
-// ? func_80038AB4();
+void func_80038AB4(void);
 void func_80038DF4(void);
 // ? give_bananas();
 void func_800390C8(int, Vec *, float);

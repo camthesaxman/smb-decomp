@@ -2222,9 +2222,153 @@ lbl_802F0248:
 .global lbl_801EEC68
 lbl_801EEC68:
 	.skip 0x18
-.global lbl_801EEC80
-lbl_801EEC80:
-	.skip 0x10
-.global lbl_801EEC90
-lbl_801EEC90:
-	.skip 0x68
+
+.section .sbss
+
+.global lbl_802F1AE0
+lbl_802F1AE0:
+	.skip 0x4
+.global lbl_802F1AE4
+lbl_802F1AE4:
+	.skip 0x4
+.global lbl_802F1AE8
+lbl_802F1AE8:
+	.skip 0x4
+.global arcadeStageTpl
+arcadeStageTpl:
+	.skip 0x4
+.global lbl_802F1AF0
+lbl_802F1AF0:
+	.skip 0x4
+.global lbl_802F1AF4
+lbl_802F1AF4:
+	.skip 0x4
+.global lbl_802F1AF8
+lbl_802F1AF8:
+	.skip 0x4
+.global lbl_802F1AFC
+lbl_802F1AFC:
+	.skip 0x4
+.global arcadeStageObj
+arcadeStageObj:
+	.skip 0x4
+.global lbl_802F1B04
+lbl_802F1B04:
+	.skip 0x4
+.global memHeap4Size
+memHeap4Size:
+	.skip 0x4
+.global memHeap3Size
+memHeap3Size:
+	.skip 0x4
+.global memHeap2Size
+memHeap2Size:
+	.skip 0x4
+.global memHeap1Size
+memHeap1Size:
+	.skip 0x4
+.global memHeap5Size
+memHeap5Size:
+	.skip 0x4
+.global memHeap4
+memHeap4:
+	.skip 0x4
+.global memHeap3
+memHeap3:
+	.skip 0x4
+.global memHeap2
+memHeap2:
+	.skip 0x4
+.global memHeap1
+memHeap1:
+	.skip 0x4
+.global memHeap5
+memHeap5:
+	.skip 0x4
+.global currRenderMode
+currRenderMode:
+	.skip 0x4
+.global lbl_802F1B34
+lbl_802F1B34:
+	.skip 0x4
+.global lbl_802F1B38
+lbl_802F1B38:
+	.skip 0x4
+.global lbl_802F1B3C
+lbl_802F1B3C:
+	.skip 0x4
+.global lbl_802F1B40
+lbl_802F1B40:
+	.skip 0x4
+.global lbl_802F1B44
+lbl_802F1B44:
+	.skip 0x4
+.global dvdReadBuffer
+dvdReadBuffer:
+	.skip 0x4
+.global lbl_802F1B4C
+lbl_802F1B4C:
+	.skip 0x4
+.global lbl_802F1B50
+lbl_802F1B50:
+	.skip 0x4
+.global lbl_802F1B54
+lbl_802F1B54:
+	.skip 0x4
+.global lbl_802F1B58
+lbl_802F1B58:
+	.skip 0x8
+.global mathutilData
+mathutilData:
+	.skip 0x8
+.global lbl_802F1B68
+lbl_802F1B68:
+	.skip 0x4
+.global lbl_802F1B6C
+lbl_802F1B6C:
+	.skip 0x4
+.global lbl_802F1B70
+lbl_802F1B70:
+	.skip 0x4
+.global lbl_802F1B74
+lbl_802F1B74:
+	.skip 0x4
+.global lbl_802F1B78
+lbl_802F1B78:
+	.skip 0x4
+.global lbl_802F1B7C
+lbl_802F1B7C:
+	.skip 0x4
+.global lbl_802F1B80
+lbl_802F1B80:
+	.skip 0x4
+.global submodeStringPtr
+submodeStringPtr:
+	.skip 0x4
+.global modeStringPtr
+modeStringPtr:
+	.skip 0x4
+.global gameSubmodeRequest
+gameSubmodeRequest:
+	.skip 0x2
+.global gameSubmode
+gameSubmode:
+	.skip 0x2
+.global gameModeRequest
+gameModeRequest:
+	.skip 0x2
+.global gameMode
+gameMode:
+	.skip 0x6
+.global lbl_802F1B98
+lbl_802F1B98:
+	.skip 0x4
+.global lbl_802F1B9C
+lbl_802F1B9C:
+	.skip 0x4
+.global lbl_802F1BA0
+lbl_802F1BA0:
+	.skip 0x1
+.global lbl_802F1BA1
+lbl_802F1BA1:
+	.skip 0x7

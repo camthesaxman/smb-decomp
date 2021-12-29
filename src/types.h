@@ -270,12 +270,6 @@ struct Event
     /*0x14*/ u32 time;
 };
 
-struct Struct801EEC80
-{
-    u8 filler0[0x10];
-    u32 unk10;
-};
-
 struct UnkStruct8005562C_child
 {
     s32 unk0;
@@ -359,7 +353,7 @@ struct BackgroundInfo  // size = 0xA8
     s16 bgId;
     float unk4;
     u32 unk8;
-    u32 unkC;
+    GXColor unkC; //u32 unkC;
     u8 filler10[0x14-0x10];
     Vec unk14;
     Vec unk20;
@@ -901,4 +895,35 @@ struct Struct802F1F44
     u32 unkC;
     u8 filler10[0x14-0x10];
     void *unk14;
+};
+
+struct Struct801EEC80
+{
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+};
+
+struct Struct801EEC90
+{
+    u32 unk0;
+    Vec unk4;
+    Vec unk10;
+    Vec unk1C;
+    Vec unk28;
+    Vec unk34;
+    Vec unk40;
+    u32 unk4C;  // 5C
+    u8 filler50[4];
+    u32 unk54;
+    u32 unk58;
+    float unk5C;
+    float unk60;
+    u8 filler64[4];
+};
+
+struct Struct802F1B4C
+{
+    u32 unk6C;
 };

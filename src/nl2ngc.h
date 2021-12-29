@@ -77,7 +77,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
 BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl);
 void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
 void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *);
-// ? g_draw_naomi_model_1();
+void g_draw_naomi_model_1(struct NaomiModel *model);
 // ? func_800314B8();
 // ? g_draw_naomi_model_2();
 void func_80031764(struct NaomiModel *a);
