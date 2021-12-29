@@ -106,10 +106,13 @@ SOURCES := \
 	asm/code.s \
 	src/stage.c \
 	asm/stage.s \
+	asm/recplay.s \
 	src/background.c \
 	asm/background.s \
+	asm/item.s \
 	src/sprite.c \
 	asm/sprite.s \
+	asm/minimap.s \
 	asm/ord_tbl.s \
 	asm/mot_ape.s \
 	src/lzs_decompress.c \
@@ -117,6 +120,8 @@ SOURCES := \
 	src/load.c \
 	asm/load.s \
 	asm/mini.s \
+	asm/mouse.s \
+	asm/rend_efc.s \
 	src/relocation.c \
 	src/code_3.c \
 	asm/code_3.s \
@@ -124,6 +129,7 @@ SOURCES := \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	asm/view.s \
+	asm/mini_ranking.s \
 	src/preview.c \
 	asm/code_4.s \
 	libraries/base/asm/PPCArch.s \
