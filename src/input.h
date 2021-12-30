@@ -4,6 +4,14 @@ struct ControllerInfo
     PADStatus unk0[5];  // func_80025640 only matches (unrolled loops) if this is an array.
 };
 
+#define CONTROLLER_SOMETHING(idx, btn) \
+    (controllerInfo[idx].unk0[4].button & (btn)) \
+ || (lbl_801F3D50[idx][4] & btn) \
+ || ( \
+        ((controllerInfo[idx].unk0[0].button & (btn)) || (lbl_801F3D50[idx][0] & (btn))) \
+        && (lbl_801F3D50[idx][0] & PAD_BUTTON_B) \
+    )
+
 extern struct ControllerInfo controllerInfo[4];
 extern struct ControllerInfo lbl_801F3C60[4];
 extern u16 lbl_801F3D50[][5];

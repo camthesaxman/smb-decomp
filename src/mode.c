@@ -1,7 +1,9 @@
 #include <stddef.h>
+#include <stdio.h>
 #include <dolphin.h>
 
 #include "global.h"
+#include "input.h"
 #include "mode.h"
 #include "relocation.h"
 
@@ -526,169 +528,265 @@ void gm_main(void)
         gameModeFuncs[gameMode]();
 }
 
-/*
-extern struct
-{
-    u16 unk0;
-} lbl_801F3D50;
-
-extern struct
-{
-    u16 unk0;
-    u8 filler2[0x8-2];
-    u16 unk8;
-    u8 fillerA[0x30-0xA];
-    u16 unk18;
-    u16 unk30;
-} controllerInfo;
-
 extern u32 lbl_802F1ED8;
-extern u8 lbl_802F0248[];
-extern u8 lbl_802F0244[];
-extern u8 lbl_802F0240[];
-extern u8 lbl_802F023C[];
-extern u8 lbl_802F0238[];
-extern u8 lbl_802F0230[];
-extern u8 lbl_802F0234[];
-*/
 
-// pls help...
-#if 0
-//r8 = lbl_801F3D50
-//r7 = controllerInfo
-void unkFunc80009684(void)
+int unkFunc80009684(void)
 {
-    /*
-    if (!(lbl_801F3D50.unk0 & (1 << 10))
-     && !(lbl_801F3D50.unk0 & (1 << 9))
+    int bvar = FALSE;
+    int i;
+
+    if (!(lbl_801F3D50[0][0] & PAD_BUTTON_A)
+     && !(lbl_801F3D50[0][0] & PAD_BUTTON_B)
      && lbl_802F1ED8 == 0)
     {
-        if
-        (
-            (controllerInfo.unk30 & (1 << 3)) || (lbl_801F3D50.unk8 & (1 << 3))
-            ||
-            (
-                //800096F4
-                ((controllerInfo.unk0 & (1 << 3)) && modeCtrl != 0) || 
-            )
-        )
+        if (CONTROLLER_SOMETHING(0, PAD_BUTTON_UP)
+         || CONTROLLER_SOMETHING(1, PAD_BUTTON_UP)
+         || CONTROLLER_SOMETHING(2, PAD_BUTTON_UP)
+         || CONTROLLER_SOMETHING(3, PAD_BUTTON_UP))
         {
-            //?lbl_8000980C
+            if (--modeCtrl.unk20 < 0)
+                modeCtrl.unk20 = 4;
         }
-    }
-    //lbl_80009B14
-    */
-    #define DAT_801f3d50 lbl_801F3D50.unk0
-    #define DAT_801f3d58 lbl_801F3D50.unk8
-    #define DAT_801f3d5a lbl_801F3D50.unkA
-    #define DAT_801f3d64 lbl_801F3D50.unk14
-    #define DAT_801f3d6c lbl_801F3D50.unk1C
-    #define DAT_801f3b70 controllerInfo.unk0
-    #define DAT_801f3b88 controllerInfo.unk18
-    int iVar1 = 0;  // r5
-    if ((DAT_801f3d50 & 0x100) == 0 && (DAT_801f3d50 & 0x200) == 0 && DAT_802f1ed8 == 0)
-    {
-        if
-        (((((DAT_801f3ba0 & 8) != 0) || ((DAT_801f3d58 & 8) != 0))
-                ||
-                (
-                    ((((DAT_801f3b70 & 8) != 0 || ((DAT_801f3d50 & 8) != 0)) && ((DAT_801f3d50 & 0x200) != 0)
-                ) || ((/*puVar2 = &DAT_801f3b70,*/ (DAT_801f3bdc & 8) != 0 || ((DAT_801f3d62 & 8) != 0)))))
-            )
-         || ((((((DAT_801f3bac & 8) != 0 || ((DAT_801f3d5a & 8) != 0)) &&
-               ((DAT_801f3d5a & 0x200) != 0)) ||
-              (((/*puVar2 = &DAT_801f3b70,*/ (DAT_801f3c18 & 8) != 0 || ((DAT_801f3d6c & 8) != 0)) ||
-               (((((DAT_801f3be8 & 8) != 0 || ((DAT_801f3d64 & 8) != 0)) &&
-                 ((DAT_801f3d64 & 0x200) != 0)) ||
-                ((/*puVar2 = &DAT_801f3b70,*/ (DAT_801f3c54 & 8) != 0 ||
-                 (/*in_r7 = (undefined4 *)&DAT_801f3d50,*/ (DAT_801f3d76 & 8) != 0)))))))) ||
-             ((((DAT_801f3c24 & 8) != 0 || (/*in_r6 = DAT_801f3d6e & 8,*/ (DAT_801f3d6e & 8) != 0)) &&
-              (/*in_r6 = DAT_801f3d6e & 0x200,*/ (DAT_801f3d6e & 0x200) != 0)))))
-        ) {
-        //in_r7 = &DAT_801eec40;
-        //in_r6 = DAT_801eec40 - 1;
-        //DAT_801eec40 = in_r6;
-        modeCtrl.unk20--;
-        if (modeCtrl.unk20 < 0) {
-          modeCtrl.unk20 = 4;
-        }
-        //lbl_80009828
-      }
-      if (((((((DAT_801f3ba0 & 4) != 0) || ((DAT_801f3d58 & 4) != 0)) ||
-            (((((DAT_801f3b70 & 4) != 0 || ((DAT_801f3d50 & 4) != 0)) &&
-              ((DAT_801f3d50 & 0x200) != 0)) ||
-             ((((DAT_801f3bdc & 4) != 0 || ((DAT_801f3d62 & 4) != 0)) ||
-              ((((DAT_801f3bac & 4) != 0 || ((DAT_801f3d5a & 4) != 0)) &&
-               ((DAT_801f3d5a & 0x200) != 0)))))))) ||
-           ((((DAT_801f3c18 & 4) != 0 || ((DAT_801f3d6c & 4) != 0)) ||
-            (((((DAT_801f3be8 & 4) != 0 || ((DAT_801f3d64 & 4) != 0)) &&
-              ((DAT_801f3d64 & 0x200) != 0)) ||
-             (((DAT_801f3c54 & 4) != 0 || ((DAT_801f3d76 & 4) != 0)))))))) ||
-          ((((DAT_801f3c24 & 4) != 0 || ((DAT_801f3d6e & 4) != 0)) && ((DAT_801f3d6e & 0x200) != 0))
-          )))
-      {
-              //lbl_80009964
-            modeCtrl.unk20++;
-            if (modeCtrl.unk20 == 5)
+
+        if (CONTROLLER_SOMETHING(0, PAD_BUTTON_DOWN)
+         || CONTROLLER_SOMETHING(1, PAD_BUTTON_DOWN)
+         || CONTROLLER_SOMETHING(2, PAD_BUTTON_DOWN)
+         || CONTROLLER_SOMETHING(3, PAD_BUTTON_DOWN))
+        {
+            if (++modeCtrl.unk20 == 5)
                 modeCtrl.unk20 = 0;
-      }
-      //lbl_80009984
-      if (((DAT_801f3b88 & 0x1000) != 0) || ((DAT_801f3b88 & 0x100) != 0)) {
-        iVar1 = 1;
-      }
-      if (((DAT_801f3bc4 & 0x1000) != 0) || ((DAT_801f3bc4 & 0x100) != 0)) {
-        iVar1 = 1;
-      }
-      if (((DAT_801f3c00 & 0x1000) != 0) || ((DAT_801f3c00 & 0x100) != 0)) {
-        iVar1 = 1;
-      }
-      if (((DAT_801f3c3c & 0x1000) != 0) || ((DAT_801f3c3c & 0x100) != 0)) {
-        iVar1 = 1;
-      }
-      if (iVar1 != 0) {
-        DAT_801eec3c = 0;
-        if (DAT_801eec40 == 2) {
-          FUN_8009245c();
-          gameModeRequest = 4;
-          gameSubmodeRequest = 0x90;
         }
-        else {
-          if ((int)DAT_801eec40 < 2) {
-            if (DAT_801eec40 == 0) {
-              FUN_8009245c();
-              DAT_801eec28 = DAT_801eec28 | 3;
-              gameSubmodeRequest = 9;
-            }
-            else {
-              if (-1 < (int)DAT_801eec40) {
-                FUN_8009245c();
-                DAT_801eec28 = DAT_801eec28 | 2;
-                gameSubmodeRequest = 9;
-              }
-            }
-          }
-          else {
-            if (DAT_801eec40 == 4) {
-              FUN_8009245c();
-              gameModeRequest = 3;
-              gameSubmodeRequest = 0x5f;
-            }
-            else {
-              if ((int)DAT_801eec40 < 4) {
-                FUN_8009245c();
-                DAT_801eec28 = DAT_801eec28 | 0x40002;
-                gameSubmodeRequest = 9;
-              }
-            }
-          }
+
+        for (i = 0; i < 4; i++)
+        {
+            if ((controllerInfo[i].unk0[2].button & PAD_BUTTON_START)
+             || (controllerInfo[i].unk0[2].button & PAD_BUTTON_A))
+                bvar = TRUE;
         }
-        return 1;
-      }
-      if (((((DAT_801f3b88 & 0x200) != 0) || ((DAT_801f3bc4 & 0x200) != 0)) ||
-          ((DAT_801f3c00 & 0x200) != 0)) || ((DAT_801f3c3c & 0x200) != 0)) {
-        DAT_801eec3c = 0;
-      }
+
+        if (bvar)
+        {
+            modeCtrl.unk1C = 0;
+            switch (modeCtrl.unk20)
+            {
+            case 0:
+                func_8009245C();
+                modeCtrl.unk8 |= 1;
+                modeCtrl.unk8 |= 2;
+                gameSubmodeRequest = SMD_ADV_START_INIT;
+                break;
+            case 1:
+                func_8009245C();
+                modeCtrl.unk8 |= 2;
+                gameSubmodeRequest = SMD_ADV_START_INIT;
+                break;
+            case 2:
+                func_8009245C();
+                gameModeRequest = MD_MINI;
+                gameSubmodeRequest = SMD_MINI_SELECT_INIT;
+                break;
+            case 3:
+                func_8009245C();
+                modeCtrl.unk8 |= 0x40000;
+                modeCtrl.unk8 |= 2;
+                gameSubmodeRequest = SMD_ADV_START_INIT;
+                break;
+            case 4:
+                func_8009245C();
+                gameModeRequest = MD_TEST;
+                gameSubmodeRequest = SMD_TEST_SELECT_INIT;
+                break;
+            }
+            return 1;
+        }
+
+        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_B)
+         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_B)
+         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_B)
+         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_B))
+            modeCtrl.unk1C = 0;
     }
-    //lbl_80009B14
+
+    g_debug_set_cursor_pos(15, 15);
+    for (i = 0; i < 5; i++)
+    {
+        if (i == modeCtrl.unk20)
+            func_8002FD60(2);
+        g_debug_printf("%s\n", lbl_80173C5C[i]);
+        if (i == modeCtrl.unk20)
+            func_8002FD60(0);
+    }
+    g_debug_set_cursor_pos(13, modeCtrl.unk20 + 15);
+    g_debug_print("*");
+    g_debug_set_cursor_pos(11, 13);
+    g_debug_print("\x18");
+    for (i = 0; i < 16; i++)
+        g_debug_print("\x16");
+    g_debug_print("\x19");
+    g_debug_set_cursor_pos(11, 14);
+    for (i = 0; i < 7; i++)
+        g_debug_print("\x17\n");
+    g_debug_set_cursor_pos(28, 14);
+    for (i = 0; i < 7; i++)
+        g_debug_print("\x17\n");
+    g_debug_set_cursor_pos(11, 21);
+    g_debug_print("\x1A");
+    for (i = 0; i < 16; i++)
+        g_debug_print("\x16");
+    g_debug_print("\x1B");
+    return 0;
 }
-#endif
+
+void unkFunc80009C6C(void)
+{
+    int bvar = FALSE;
+    int i;
+
+    if (!(lbl_801F3D50[0][0] & PAD_BUTTON_A)
+     && !(lbl_801F3D50[0][0] & PAD_BUTTON_B)
+     && lbl_802F1ED8 == 0
+     && gameMode != MD_ADV)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            if (controllerInfo[i].unk0[2].button & PAD_BUTTON_START)
+                bvar = TRUE;
+        }
+        if ((gameMode == MD_GAME && (modeCtrl.unk8 & 1))
+         || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
+        {
+            if (!(lbl_801F3D88[0] & (1<<(31-0x1B))))
+                bvar = FALSE;
+        }
+
+        if (bvar)
+        {
+            switch (gameMode)
+            {
+            case MD_OPTION:
+                break;
+            case MD_MINI:
+                if (gameSubmode == SMD_MINI_SELECT_MAIN)
+                {
+                    gameModeRequest = MD_ADV;
+                    gameSubmodeRequest = SMD_ADV_LOGO_INIT;
+                }
+                else
+                {
+                    if (lbl_802F1B7C != NULL)
+                    {
+                        lbl_802F1B7C();
+                        lbl_802F1B7C = NULL;
+                    }
+                    gameSubmodeRequest = SMD_MINI_SELECT_INIT;
+                }
+                break;
+            case MD_TEST:
+                if (gameSubmode == SMD_TEST_SELECT_MAIN)
+                {
+                    gameModeRequest = MD_ADV;
+                    gameSubmodeRequest = SMD_ADV_LOGO_INIT;
+                }
+                else
+                {
+                    if (lbl_802F1B7C != NULL)
+                    {
+                        lbl_802F1B7C();
+                        lbl_802F1B7C = NULL;
+                    }
+                    gameSubmodeRequest = SMD_TEST_SELECT_INIT;
+                }
+                break;
+            case MD_SEL:
+                gameSubmodeRequest = SMD_SEL_NGC_DEST;
+                break;
+            default:
+                if (lbl_802F1B7C != NULL)
+                {
+                    lbl_802F1B7C();
+                    lbl_802F1B7C = NULL;
+                }
+                gameModeRequest = MD_TEST;
+                gameSubmodeRequest = SMD_TEST_SELECT_INIT;
+                break;
+            }
+            lbl_802F1EE0 &= -12;
+            return;
+        }
+    }
+
+    switch (gameMode)
+    {
+    case MD_ADV:
+        if (modeCtrl.unk1C == 0 || unkFunc80009684() == 0)
+        {
+            if ((lbl_801F3D50[0][0] & PAD_BUTTON_A)
+             || (lbl_801F3D50[0][0] & PAD_BUTTON_B)
+             || lbl_802F1ED8 != 0
+             || gameSubmode == SMD_ADV_START_MAIN)
+                break;
+            for (i = 0; i < 4; i++)
+            {
+                if ((controllerInfo[i].unk0[2].button & PAD_BUTTON_START)
+                 || (controllerInfo[i].unk0[2].button & PAD_BUTTON_A))
+                    modeCtrl.unk1C = 1;
+            }
+        }
+        break;
+    case MD_GAME:
+    case MD_MINI:
+        unkFunc8000B09C();
+        if (modeCtrl.unk1C != 0)
+            modeCtrl.unk1C = 0;
+        break;
+    }
+}
+
+void unkFunc80009F68(void)
+{
+    switch (gameMode)
+    {
+    case MD_ADV:
+        if (!(modeCtrl.unk8 & (1<<(31-0x1E)))
+         && gameSubmode == SMD_ADV_TITLE_MAIN
+         && (modeCtrl.unk8 & (1<<(31-0x1D))))
+        {
+            struct Sprite *sprite = g_find_sprite_with_probably_not_font(modeCtrl.unk10 + 12);
+            if (sprite != NULL && sprite->unk10 > 0)
+                break;
+            if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
+             || (controllerInfo[1].unk0[2].button & PAD_BUTTON_A)
+             || (controllerInfo[2].unk0[2].button & PAD_BUTTON_A)
+             || (controllerInfo[3].unk0[2].button & PAD_BUTTON_A))
+            {
+                func_8009245C();
+                if (modeCtrl.unk10 == 0)
+                {
+                    modeCtrl.unk8 |= 1;
+                    modeCtrl.unk8 |= 2;
+                    gameSubmodeRequest = SMD_ADV_START_INIT;
+                }
+                else
+                {
+                    modeCtrl.unk8 |= 0x40000;
+                    modeCtrl.unk8 |= 2;
+                    gameSubmodeRequest = SMD_ADV_START_INIT;
+                }
+            }
+        }
+        break;
+    case MD_GAME:
+    case MD_MINI:
+        unkFunc8000B09C();
+        break;
+    case MD_SEL:
+    case MD_TEST:
+    case MD_OPTION:
+        break;
+    }
+}
+
+void submode_dummy_func(void)
+{
+    printf("sub_mode: error %s.\n", gameSubmodeNames[gameSubmode]);
+}

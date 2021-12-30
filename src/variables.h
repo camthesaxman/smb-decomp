@@ -1372,7 +1372,7 @@ extern float lbl_802F1ECC;
 // extern ? lbl_802F1ED0;
 // extern ? lbl_802F1ED2;
 // extern ? lbl_802F1ED4;
-// extern ? lbl_802F1ED8;
+extern u32 lbl_802F1ED8;
 extern u32 dipSwitches;
 extern u32 lbl_802F1EE0;
 

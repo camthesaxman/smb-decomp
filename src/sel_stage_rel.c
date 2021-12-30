@@ -90,14 +90,6 @@ static void lbl_0x000001C0(void)
     gameSubmodeRequest = 30;
 }
 
-#define CONTROLLER_SOMETHING(btn) \
-    (controllerInfo[0].unk0[4].button & (btn)) \
- || (lbl_801F3D50[0][4] & btn) \
- || ( \
-        ((controllerInfo[0].unk0[0].button & (btn)) || (lbl_801F3D50[0][0] & (btn))) \
-        && (lbl_801F3D50[0][0] & PAD_BUTTON_B) \
-    )
-
 static void lbl_00000330(void)
 {
     int r3;
@@ -105,18 +97,15 @@ static void lbl_00000330(void)
     if (lbl_802F1EE0 & 0xA)
         return;
 
-    if (CONTROLLER_SOMETHING(PAD_BUTTON_UP))
+    if (CONTROLLER_SOMETHING(0, PAD_BUTTON_UP))
     {
         if (--lbl_802F1BE0.unk0 < 0)
             lbl_802F1BE0.unk0 = 7;
     }
-    else
+    else if (CONTROLLER_SOMETHING(0, PAD_BUTTON_DOWN))
     {
-        if (CONTROLLER_SOMETHING(PAD_BUTTON_DOWN))
-        {
-            if (++lbl_802F1BE0.unk0 >= 8)
-               lbl_802F1BE0.unk0 = 0;
-        }
+        if (++lbl_802F1BE0.unk0 >= 8)
+           lbl_802F1BE0.unk0 = 0;
     }
 
     switch (lbl_802F1BE0.unk0)
@@ -125,12 +114,12 @@ static void lbl_00000330(void)
         modeCtrl.unk8 &= ~(1 << 0);
         modeCtrl.unk8 &= ~8;
         modeCtrl.unk8 &= ~0x10;
-        if (CONTROLLER_SOMETHING(PAD_BUTTON_LEFT))
+        if (CONTROLLER_SOMETHING(0, PAD_BUTTON_LEFT))
         {
             if (--loadingStageIdRequest < 1)
                 loadingStageIdRequest = 1;
         }
-        if (CONTROLLER_SOMETHING(PAD_BUTTON_RIGHT))
+        if (CONTROLLER_SOMETHING(0, PAD_BUTTON_RIGHT))
         {
             if (++loadingStageIdRequest > 200)
                 loadingStageIdRequest = 200;
@@ -181,9 +170,9 @@ static void lbl_00000330(void)
     }
     if (lbl_802F1BE0.unk0 != 0)
     {
-        if (CONTROLLER_SOMETHING(PAD_BUTTON_LEFT))
+        if (CONTROLLER_SOMETHING(0, PAD_BUTTON_LEFT))
             lbl_802F1BE0.unk4--;
-        if (CONTROLLER_SOMETHING(PAD_BUTTON_RIGHT))
+        if (CONTROLLER_SOMETHING(0, PAD_BUTTON_RIGHT))
             lbl_802F1BE0.unk4++;
 
         if (lbl_802F1BE0.unk4 < 1)

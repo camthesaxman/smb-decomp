@@ -248,7 +248,7 @@ struct ModeControl
     u8 fillerC[0x10-0xC];
     s32 unk10;
     u8 filler14[0x1C-0x14];
-    u32 unk1C;
+    s32 unk1C;
     s32 unk20;
     /*0x24*/ int playerCount;
     s32 unk28;
@@ -829,7 +829,8 @@ struct Sprite
              u8 unkD;
              u8 unkE;
              s8 unkF;
-             u8 filler10[0x30-0x10];
+             s16 unk10;
+             u8 filler12[0x30-0x12];
     /*0x30*/ void (*destFunc)();
     /*0x34*/ void (*mainFunc)();
              void (*unk38)(struct Sprite *);

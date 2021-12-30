@@ -137,6 +137,7 @@ lbl_8000966C:
 /* 80009680 000055A0  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global unkFunc80009684
 unkFunc80009684:
 /* 80009684 000055A4  7C 08 02 A6 */	mflr r0
@@ -402,7 +403,7 @@ lbl_80009A24:
 /* 80009A28 00005948  41 82 00 90 */	beq lbl_80009AB8
 /* 80009A2C 0000594C  40 80 00 A0 */	bge lbl_80009ACC
 /* 80009A30 00005950  48 00 00 60 */	b lbl_80009A90
-lbl_80009A34:
+lbl_80009A34:  ;# 0
 /* 80009A34 00005954  48 08 8A 29 */	bl func_8009245C
 /* 80009A38 00005958  80 7F 00 08 */	lwz r3, 8(r31)
 /* 80009A3C 0000595C  38 00 00 09 */	li r0, 9
@@ -413,7 +414,7 @@ lbl_80009A34:
 /* 80009A50 00005970  90 7F 00 08 */	stw r3, 8(r31)
 /* 80009A54 00005974  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009A58 00005978  48 00 00 74 */	b lbl_80009ACC
-lbl_80009A5C:
+lbl_80009A5C:  ;# 1
 /* 80009A5C 0000597C  48 08 8A 01 */	bl func_8009245C
 /* 80009A60 00005980  80 7F 00 08 */	lwz r3, 8(r31)
 /* 80009A64 00005984  38 00 00 09 */	li r0, 9
@@ -421,14 +422,14 @@ lbl_80009A5C:
 /* 80009A6C 0000598C  90 7F 00 08 */	stw r3, 8(r31)
 /* 80009A70 00005990  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009A74 00005994  48 00 00 58 */	b lbl_80009ACC
-lbl_80009A78:
+lbl_80009A78:  ;# 2
 /* 80009A78 00005998  48 08 89 E5 */	bl func_8009245C
 /* 80009A7C 0000599C  38 60 00 04 */	li r3, 4
 /* 80009A80 000059A0  38 00 00 90 */	li r0, 0x90
 /* 80009A84 000059A4  B0 6D 99 B0 */	sth r3, gameModeRequest@sda21(r13)
 /* 80009A88 000059A8  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009A8C 000059AC  48 00 00 40 */	b lbl_80009ACC
-lbl_80009A90:
+lbl_80009A90:  ;# 3
 /* 80009A90 000059B0  48 08 89 CD */	bl func_8009245C
 /* 80009A94 000059B4  80 7F 00 08 */	lwz r3, 8(r31)
 /* 80009A98 000059B8  38 00 00 09 */	li r0, 9
@@ -439,13 +440,13 @@ lbl_80009A90:
 /* 80009AAC 000059CC  90 7F 00 08 */	stw r3, 8(r31)
 /* 80009AB0 000059D0  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009AB4 000059D4  48 00 00 18 */	b lbl_80009ACC
-lbl_80009AB8:
+lbl_80009AB8:  ;# 4
 /* 80009AB8 000059D8  48 08 89 A5 */	bl func_8009245C
 /* 80009ABC 000059DC  38 60 00 03 */	li r3, 3
 /* 80009AC0 000059E0  38 00 00 5F */	li r0, 0x5f
 /* 80009AC4 000059E4  B0 6D 99 B0 */	sth r3, gameModeRequest@sda21(r13)
 /* 80009AC8 000059E8  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
-lbl_80009ACC:
+lbl_80009ACC:  ;# end
 /* 80009ACC 000059EC  38 60 00 01 */	li r3, 1
 /* 80009AD0 000059F0  48 00 01 7C */	b lbl_80009C4C
 lbl_80009AD4:
@@ -561,7 +562,9 @@ lbl_80009C4C:
 /* 80009C60 00005B80  83 81 00 08 */	lwz r28, 8(r1)
 /* 80009C64 00005B84  38 21 00 18 */	addi r1, r1, 0x18
 /* 80009C68 00005B88  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global unkFunc80009C6C
 unkFunc80009C6C:
 /* 80009C6C 00005B8C  7C 08 02 A6 */	mflr r0
@@ -636,7 +639,7 @@ lbl_80009D44:
 lbl_80009D64:
 /* 80009D64 00005C84  2C 04 00 05 */	cmpwi r4, 5
 /* 80009D68 00005C88  41 82 00 D0 */	beq lbl_80009E38
-/* 80009D6C 00005C8C  40 80 00 A0 */	bge lbl_80009E0C
+/* 80009D6C 00005C8C  40 80 00 A0 */	bge lbl_80009E0C ;# 4
 /* 80009D70 00005C90  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
 /* 80009D74 00005C94  2C 00 00 91 */	cmpwi r0, 0x91
 /* 80009D78 00005C98  40 82 00 18 */	bne lbl_80009D90
@@ -657,7 +660,7 @@ lbl_80009DAC:
 /* 80009DAC 00005CCC  38 00 00 90 */	li r0, 0x90
 /* 80009DB0 00005CD0  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009DB4 00005CD4  48 00 00 84 */	b lbl_80009E38
-lbl_80009DB8:
+lbl_80009DB8:  ;# 3
 /* 80009DB8 00005CD8  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
 /* 80009DBC 00005CDC  2C 00 00 60 */	cmpwi r0, 0x60
 /* 80009DC0 00005CE0  40 82 00 18 */	bne lbl_80009DD8
@@ -678,11 +681,11 @@ lbl_80009DF4:
 /* 80009DF4 00005D14  38 00 00 5F */	li r0, 0x5f
 /* 80009DF8 00005D18  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009DFC 00005D1C  48 00 00 3C */	b lbl_80009E38
-lbl_80009E00:
+lbl_80009E00:  ;# 1
 /* 80009E00 00005D20  38 00 00 22 */	li r0, 0x22
 /* 80009E04 00005D24  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80009E08 00005D28  48 00 00 30 */	b lbl_80009E38
-lbl_80009E0C:
+lbl_80009E0C:  ;# default
 /* 80009E0C 00005D2C  81 8D 99 9C */	lwz r12, lbl_802F1B7C@sda21(r13)
 /* 80009E10 00005D30  28 0C 00 00 */	cmplwi r12, 0
 /* 80009E14 00005D34  41 82 00 14 */	beq lbl_80009E28
@@ -695,7 +698,7 @@ lbl_80009E28:
 /* 80009E2C 00005D4C  38 00 00 5F */	li r0, 0x5f
 /* 80009E30 00005D50  B0 6D 99 B0 */	sth r3, gameModeRequest@sda21(r13)
 /* 80009E34 00005D54  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
-lbl_80009E38:
+lbl_80009E38:  ;# end
 /* 80009E38 00005D58  80 6D 9D 00 */	lwz r3, lbl_802F1EE0@sda21(r13)
 /* 80009E3C 00005D5C  38 00 FF F4 */	li r0, -12
 /* 80009E40 00005D60  7C 60 00 38 */	and r0, r3, r0
@@ -713,7 +716,7 @@ lbl_80009E68:
 /* 80009E68 00005D88  2C 00 00 04 */	cmpwi r0, 4
 /* 80009E6C 00005D8C  41 82 00 CC */	beq lbl_80009F38
 /* 80009E70 00005D90  48 00 00 E4 */	b lbl_80009F54
-lbl_80009E74:
+lbl_80009E74:  ;# 0
 /* 80009E74 00005D94  84 1F 00 1C */	lwzu r0, 0x1c(r31)
 /* 80009E78 00005D98  2C 00 00 00 */	cmpwi r0, 0
 /* 80009E7C 00005D9C  41 82 00 10 */	beq lbl_80009E8C
@@ -771,7 +774,7 @@ lbl_80009F1C:
 lbl_80009F30:
 /* 80009F30 00005E50  90 1F 00 00 */	stw r0, 0(r31)
 /* 80009F34 00005E54  48 00 00 20 */	b lbl_80009F54
-lbl_80009F38:
+lbl_80009F38:  ;# 2, 4
 /* 80009F38 00005E58  48 00 11 65 */	bl unkFunc8000B09C
 /* 80009F3C 00005E5C  38 7F 00 1C */	addi r3, r31, 0x1c
 /* 80009F40 00005E60  80 1F 00 1C */	lwz r0, 0x1c(r31)
@@ -779,7 +782,7 @@ lbl_80009F38:
 /* 80009F48 00005E68  41 82 00 0C */	beq lbl_80009F54
 /* 80009F4C 00005E6C  38 00 00 00 */	li r0, 0
 /* 80009F50 00005E70  90 03 00 00 */	stw r0, 0(r3)
-lbl_80009F54:
+lbl_80009F54:  ;# end
 /* 80009F54 00005E74  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 80009F58 00005E78  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 80009F5C 00005E7C  38 21 00 10 */	addi r1, r1, 0x10
@@ -803,12 +806,12 @@ unkFunc80009F68:
 /* 80009F98 00005EB8  2C 00 00 00 */	cmpwi r0, 0
 /* 80009F9C 00005EBC  40 80 00 18 */	bge lbl_80009FB4
 /* 80009FA0 00005EC0  48 00 00 F8 */	b lbl_8000A098
-lbl_80009FA4:
+lbl_80009FA4:  ;# > 3
 /* 80009FA4 00005EC4  2C 00 00 05 */	cmpwi r0, 5
 /* 80009FA8 00005EC8  41 82 00 F0 */	beq lbl_8000A098
 /* 80009FAC 00005ECC  40 80 00 EC */	bge lbl_8000A098
 /* 80009FB0 00005ED0  48 00 00 E4 */	b lbl_8000A094
-lbl_80009FB4:
+lbl_80009FB4:  ;# 0
 /* 80009FB4 00005ED4  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80009FB8 00005ED8  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 80009FBC 00005EDC  80 83 00 08 */	lwz r4, 8(r3)
@@ -868,15 +871,16 @@ lbl_8000A070:
 /* 8000A088 00005FA8  90 7F 00 00 */	stw r3, 0(r31)
 /* 8000A08C 00005FAC  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 8000A090 00005FB0  48 00 00 08 */	b lbl_8000A098
-lbl_8000A094:
+lbl_8000A094:  ;# 4 2
 /* 8000A094 00005FB4  48 00 10 09 */	bl unkFunc8000B09C
-lbl_8000A098:
+lbl_8000A098:  ;# 3 1 5 default
 /* 8000A098 00005FB8  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 8000A09C 00005FBC  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 8000A0A0 00005FC0  83 C1 00 08 */	lwz r30, 8(r1)
 /* 8000A0A4 00005FC4  7C 08 03 A6 */	mtlr r0
 /* 8000A0A8 00005FC8  38 21 00 10 */	addi r1, r1, 0x10
 /* 8000A0AC 00005FCC  4E 80 00 20 */	blr
+
 .global submode_dummy_func
 submode_dummy_func:
 /* 8000A0B0 00005FD0  7C 08 02 A6 */	mflr r0
@@ -896,6 +900,7 @@ submode_dummy_func:
 /* 8000A0E8 00006008  38 21 00 08 */	addi r1, r1, 8
 /* 8000A0EC 0000600C  7C 08 03 A6 */	mtlr r0
 /* 8000A0F0 00006010  4E 80 00 20 */	blr
+.endif
 
 .global unkFunc8000A0F4
 unkFunc8000A0F4:
@@ -2165,56 +2170,60 @@ lbl_802F28B0:
 
 .section .data
 
+.if 0
 .global lbl_80173C70
 lbl_80173C70:
 	# ROM: 0x170C70
 glabel string_sub_mode__error__s__n
 	.asciz "sub_mode: error %s.\n"
 	.balign 4
+.endif
 
 .section .sdata
 
+.if 0
 	.balign 4
 
 .global lbl_802F022C
 lbl_802F022C:
 	# ROM: 0x1EA96C
-	.byte 0x25, 0x73, 0x0A, 0x00
+	.byte 0x25, 0x73, 0x0A, 0x00  ;# "%s\n"
 
 .global lbl_802F0230
 lbl_802F0230:
 	# ROM: 0x1EA970
-	.byte 0x2A, 0x00, 0x00, 0x00
+	.byte 0x2A, 0x00, 0x00, 0x00  ;# "*"
 
 .global lbl_802F0234
 lbl_802F0234:
 	# ROM: 0x1EA974
-	.byte 0x18, 0x00, 0x00, 0x00
+	.byte 0x18, 0x00, 0x00, 0x00  ;# "\x18"
 
 .global lbl_802F0238
 lbl_802F0238:
 	# ROM: 0x1EA978
-	.byte 0x16, 0x00, 0x00, 0x00
+	.byte 0x16, 0x00, 0x00, 0x00  ;# "\x16"
 
 .global lbl_802F023C
 lbl_802F023C:
 	# ROM: 0x1EA97C
-	.byte 0x19, 0x00, 0x00, 0x00
+	.byte 0x19, 0x00, 0x00, 0x00  ;# "\x19"
 
 .global lbl_802F0240
 lbl_802F0240:
 	# ROM: 0x1EA980
-	.byte 0x17, 0x0A, 0x00, 0x00
+	.byte 0x17, 0x0A, 0x00, 0x00  ;# "\x17\n"
 
 .global lbl_802F0244
 lbl_802F0244:
 	# ROM: 0x1EA984
-	.byte 0x1A, 0x00, 0x00, 0x00
+	.byte 0x1A, 0x00, 0x00, 0x00  ;# "\x1A"
 
 .global lbl_802F0248
 lbl_802F0248:
 	# ROM: 0x1EA988
-	.byte 0x1B, 0x00, 0x00, 0x00
+	.byte 0x1B, 0x00, 0x00, 0x00  ;# "\x1B"
+.endif
 	.4byte 0
 
 .section .bss
