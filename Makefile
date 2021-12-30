@@ -68,6 +68,7 @@ SOURCES := \
 	src/init_2.c \
 	src/mathutil.c \
 	src/mode.c \
+	src/mode_2.c \
 	asm/mode.s \
 	src/event.c \
 	src/polydisp.c \

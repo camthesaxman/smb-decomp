@@ -16,7 +16,7 @@ Mtx lbl_80205E30;
 struct Ball ballInfo[8];
 s32 lbl_80206B80[16];
 s32 lbl_80206BC0[4];
-u32 lbl_80206BD0[4];
+s32 lbl_80206BD0[4];
 s32 lbl_80206BE0[4];
 
 FORCE_BSS_ORDER(lbl_80205E20)

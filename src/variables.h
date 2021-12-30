@@ -524,7 +524,7 @@ extern u8 lbl_801ED920[];
 extern GXRenderModeObj lbl_801EEB60;
 extern u8 lbl_801EEBA0[];
 extern struct ModeControl modeCtrl;
-// extern ? lbl_801EEC68;
+extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
 // extern ? lbl_801EECF8;
@@ -549,7 +549,11 @@ extern struct
     float unkC;
 } lbl_801EED3C;
 // extern ? lbl_801EED50;
-// extern ? lbl_801EED88;
+extern struct
+{
+    u8 filler0[8];
+    u32 unk8;
+} lbl_801EED88;
 // extern ? lbl_801EEDA8;
 // extern ? lbl_801EEEC0;
 
@@ -654,7 +658,12 @@ extern struct
 // extern ? lbl_8028CF00;
 // extern ? lbl_8028CF28;
 // extern ? spriteInfo;
-// extern ? lbl_80290170;
+extern struct
+{
+    u8 filler0[0x4];
+    u32 unk4;
+    s32 unk8;
+} lbl_80290170;
 // extern ? lbl_80290180;
 // extern ? lbl_80292AC0;
 // extern ? lbl_80292B60;
@@ -1212,10 +1221,10 @@ extern s16 gameSubmodeRequest;
 extern s16 gameSubmode;
 extern s16 gameModeRequest;
 extern s16 gameMode;
-// extern ? lbl_802F1B98;
-// extern ? lbl_802F1B9C;
-// extern ? lbl_802F1BA0;
-// extern ? lbl_802F1BA1;
+extern s32 lbl_802F1B98;
+extern OSHeapHandle lbl_802F1B9C;
+extern s8 lbl_802F1BA0;
+extern s8 lbl_802F1BA1;
 // extern ? lbl_802F1BA8;
 // extern ? lbl_802F1BAC;
 // extern ? lbl_802F1BB0;
@@ -1241,7 +1250,7 @@ extern struct Struct802F1BE0 lbl_802F1BE0;
 // extern ? lbl_802F1C25;
 // extern ? lbl_802F1C28;
 extern s16 lbl_802F1C30;
-// extern ? lbl_802F1C32;
+extern s8 lbl_802F1C32;
 extern s32 lbl_802F1C34;
 extern void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
 extern struct Camera *currentCameraStructPtr;
@@ -1926,7 +1935,7 @@ extern float lbl_802F21F0;
 // extern ? lbl_802F28A0;
 // extern ? lbl_802F28A4;
 // extern ? lbl_802F28A8;
-// extern ? lbl_802F28B0;
+extern const s8 lbl_802F28B0[8];
 // extern ? lbl_802F28C0;
 // extern ? lbl_802F28C8;
 // extern ? lbl_802F28CC;

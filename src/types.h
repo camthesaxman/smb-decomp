@@ -255,7 +255,7 @@ struct ModeControl
     s32 unk2C;
     s32 unk30;
     u8 filler34[0x40-0x34];
-    u16 unk40;
+    s16 unk40;
     u8 unk42;
     u8 filler43[0x48-0x43];
 };
@@ -927,4 +927,16 @@ struct Struct801EEC90
 struct Struct802F1B4C
 {
     u32 unk6C;
+};
+
+struct Struct801EEC68
+{
+    s32 unk0;
+    u32 unk4;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+    s8 unk14;
+    s8 unk15;
+    s16 unk16;
 };

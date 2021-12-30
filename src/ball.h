@@ -138,7 +138,7 @@ struct Ball
 extern struct Ball ballInfo[];
 // extern ? lbl_80206B80;
 extern s32 lbl_80206BC0[4];
-extern u32 lbl_80206BD0[];
+extern s32 lbl_80206BD0[];
 
 // ? func_8003699C();
 // ? func_80036CAC();
