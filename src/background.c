@@ -861,7 +861,7 @@ void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
         }
         if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << (31-7))))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
-        func_8008E420(f29);
+        g_avdisp_set_model_scale(f29);
         if (b->unk2C < FLT_EPSILON)
             g_avdisp_draw_model_1(r24);
         else

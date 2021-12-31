@@ -14,7 +14,7 @@ void lbl_00000C9C(void)
     int i;
 
     func_80054FF0();
-    func_80047530();
+    stage_draw();
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->unk10->unk0);
     mathutil_mtxA_rotate_y(lbl_802F1B34 << 9);
@@ -48,9 +48,9 @@ void lbl_00000C9C(void)
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(16);
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-        func_80068370();
+        item_draw();
     if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-        func_8006B198();
+        stobj_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
-        func_8004CD60();
+        effect_draw();
 }

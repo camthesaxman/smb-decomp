@@ -19586,7 +19586,7 @@ lbl_000119B0:
 /* 00011A34 8063002C */ lwz r3, 0x2c(r3)
 /* 00011A38 4BFEE751 */ bl func_80033AD4
 lbl_00011A3C:
-/* 00011A3C 4BFEE74D */ bl func_80047530
+/* 00011A3C 4BFEE74D */ bl stage_draw
 /* 00011A40 3C600000 */ lis r3, eventInfo@ha
 /* 00011A44 38630000 */ addi r3, r3, eventInfo@l
 /* 00011A48 880301C8 */ lbz r0, 0x1c8(r3)
@@ -19612,21 +19612,21 @@ lbl_00011A88:
 /* 00011A90 88030078 */ lbz r0, 0x78(r3)
 /* 00011A94 2C000002 */ cmpwi r0, 2
 /* 00011A98 40820008 */ bne lbl_00011AA0
-/* 00011A9C 4BFEE6ED */ bl func_80068370
+/* 00011A9C 4BFEE6ED */ bl item_draw
 lbl_00011AA0:
 /* 00011AA0 3C600000 */ lis r3, eventInfo@ha
 /* 00011AA4 38630000 */ addi r3, r3, eventInfo@l
 /* 00011AA8 88030060 */ lbz r0, 0x60(r3)
 /* 00011AAC 2C000002 */ cmpwi r0, 2
 /* 00011AB0 40820008 */ bne lbl_00011AB8
-/* 00011AB4 4BFEE6D5 */ bl func_8006B198
+/* 00011AB4 4BFEE6D5 */ bl stobj_draw
 lbl_00011AB8:
 /* 00011AB8 3C600000 */ lis r3, eventInfo@ha
 /* 00011ABC 38630000 */ addi r3, r3, eventInfo@l
 /* 00011AC0 88030138 */ lbz r0, 0x138(r3)
 /* 00011AC4 2C000002 */ cmpwi r0, 2
 /* 00011AC8 40820008 */ bne lbl_00011AD0
-/* 00011ACC 4BFEE6BD */ bl func_8004CD60
+/* 00011ACC 4BFEE6BD */ bl effect_draw
 lbl_00011AD0:
 /* 00011AD0 3C600000 */ lis r3, backgroundInfo@ha
 /* 00011AD4 38630000 */ addi r3, r3, backgroundInfo@l

@@ -65,7 +65,7 @@ void polydisp_main(void)
     {
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
             func_80095398(1);
-        func_8000B6F0();
+        draw_3d_scene();
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
             func_80095398(2);
     }
@@ -77,12 +77,12 @@ void polydisp_main(void)
     if (modeCtrl.unk30 <= 1
      && eventInfo[EVENT_VIEW].state == EV_STATE_INACTIVE
      && eventInfo[EVENT_MINIMAP].state == EV_STATE_RUNNING)
-        func_80084A40();
+        minimap_draw();
     if (lbl_802F2000 & 4)
-        func_8000D5E4();
+        draw_timer_bomb_fuse();
 }
 
-void func_8000B6F0(void)
+void draw_3d_scene(void)
 {
     func_80085620();
     func_800226F4();
@@ -95,7 +95,7 @@ void func_8000B6F0(void)
         func_8000B8AC();
         break;
     case MD_SEL:
-        func_8000E0FC();
+        draw_monkey();
         func_8000D220();
         func_800125A4();
         break;
@@ -111,7 +111,7 @@ void func_8000B6F0(void)
         case SMD_GAME_BONUS_CLEAR_MAIN:
         case SMD_GAME_OVER_SAVE:
         case SMD_GAME_OVER_DEST:
-            func_8000C5A4();
+            draw_normal_game_scene();
             break;
         case SMD_GAME_RESULT_INIT:
         case SMD_GAME_RESULT_MAIN:
@@ -143,11 +143,11 @@ void func_8000B6F0(void)
             switch (modeCtrl.unk28)
             {
             case 1:
-                func_8000C5A4();
+                draw_normal_game_scene();
                 break;
             default:
                 if (modeCtrl.unk8 & (1 << 5))
-                    func_8000C5A4();
+                    draw_normal_game_scene();
                 break;
             }
             break;
@@ -159,7 +159,7 @@ void func_8000B6F0(void)
         }
         break;
     case MD_TEST:
-        func_8000E0FC();
+        draw_monkey();
         if (lbl_802F1B70 != NULL)
             lbl_802F1B70();
         func_8000D220();
@@ -209,7 +209,7 @@ void func_8000B8AC(void)
         func_8000B96C();
         break;
     case 14:
-        func_8000C5A4();
+        draw_normal_game_scene();
         func_8000BCA4();
         break;
     case 11:
@@ -218,7 +218,7 @@ void func_8000B8AC(void)
     case 16:
     case 17:
     case 18:
-        func_8000C5A4();
+        draw_normal_game_scene();
         func_800858CC();
         func_8000C388();
         break;
@@ -272,7 +272,7 @@ void func_8000B96C(void)
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
-            func_8008E420(f30);
+            g_avdisp_set_model_scale(f30);
             //g_avdisp_maybe_draw_model_3(lbl_802F1CC8->unk8->unk270);
             g_avdisp_maybe_draw_model_3(lbl_802F1CC8->modelEntries[0x4E].modelOffset);
         }
@@ -308,7 +308,7 @@ void func_8000B96C(void)
     if (!(lbl_801EED2C.unk4 & (1 << (31-0x1B))))
     {
         if (lbl_801EED2C.unk4 & (1 << (31-0x1E)))
-            func_80047530();
+            stage_draw();
         if (lbl_801EED2C.unk4 & (1 << (31-0x14)))
             func_80094A34();
 
@@ -322,19 +322,19 @@ void func_8000B96C(void)
         if ((lbl_801EED2C.unk4 & (1 << (31-0x1A)))
          && !(lbl_801EED2C.unk4 & (1 << (31-0x13)))
          && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-            func_80068370();
+            item_draw();
 
         if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING
          || (lbl_801EED2C.unk4 & (1 << (31-0x1C))))
-            func_8006B198();
+            stobj_draw();
 
         if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
-            func_8004CD60();
+            effect_draw();
 
         if (lbl_801EED2C.unk4 & (1 << (31-0x1D)))
             func_80038840();
     }
-    func_8000E0FC();
+    draw_monkey();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         g_something_with_lens_flare_1(0);
     func_8000D220();
@@ -545,7 +545,7 @@ void func_8000C388(void)
     }
 }
 
-void func_8000C5A4(void)
+void draw_normal_game_scene(void)
 {
     int i;
     struct Ball *oldBall = currentBallStructPtr;
@@ -567,10 +567,10 @@ void func_8000C5A4(void)
             func_800225C0(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
-            func_8000E0FC();
+            draw_monkey();
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                func_80047530();
+                stage_draw();  // draws stage
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
@@ -584,11 +584,11 @@ void func_8000C5A4(void)
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(16);
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-                func_80068370();
+                item_draw();  // draws bananas, but not the ones being picked up
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-                func_8006B198();
+                stobj_draw();
             if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
-                func_8004CD60();
+                effect_draw();  // draws sparks and stars
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
                 func_80038840();
             if (backgroundInfo.unk8 & 1)
@@ -621,7 +621,7 @@ void func_8000C7A4(void)
             func_800225C0(i);
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                func_80047530();
+                stage_draw();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
                 func_80085678(400.0f);
@@ -629,9 +629,9 @@ void func_8000C7A4(void)
                 func_80085678(0.0f);
             }
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-                func_80068370();
+                item_draw();
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-                func_8006B198();
+                stobj_draw();
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
                 func_80038840();
             func_8000C8D4();
@@ -697,7 +697,7 @@ void func_8000C8D4(void)
         mathutil_mtxA_translate(&ball->pos);
         mathutil_mtxA_rotate_y(cameraInfo[i].rotY - 0x8000);
         mathutil_mtxA_rotate_x(-0x4000);
-        mathutil_mtxA_translate_xyz(0.0f, ball->unk68, 0.0f);
+        mathutil_mtxA_translate_xyz(0.0f, ball->currRadius, 0.0f);
         mathutil_get_mtxA_translate_xyz(&sp8.x, &sp8.y, &sp8.z);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
@@ -731,7 +731,7 @@ void func_8000CA9C(void)
     func_80092D3C();
     func_80054FF0();
     func_800225C0(modeCtrl.unk2C);
-    func_8000E0FC();
+    draw_monkey();
 
     if (lbl_802F1F34 != 0)
     {
@@ -755,7 +755,7 @@ void func_8000CA9C(void)
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
         background_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
-        func_8004CD60();
+        effect_draw();
     func_800858CC();
     r4 = modeCtrl.unk0;
     if (r4 > 60)
@@ -782,7 +782,7 @@ void func_8000CA9C(void)
         func_80030BB8(f1, f1, f1);
         mathutil_mtxA_from_mtxB();
         sp5C.x = currentBallStructPtr->pos.x;
-        sp5C.y = currentBallStructPtr->pos.y - currentBallStructPtr->unk68 + 0.01;
+        sp5C.y = currentBallStructPtr->pos.y - currentBallStructPtr->currRadius + 0.01;
         sp5C.z = currentBallStructPtr->pos.z;
         mathutil_mtxA_translate(&sp5C);
         f26 = 0.9f;
@@ -861,13 +861,13 @@ void func_8000CF94(void)
     func_80018648(modeCtrl.unk2C);
     func_80092D3C();
     func_80054FF0();
-    func_8000E0FC();
+    draw_monkey();
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
         func_80038840();
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
         background_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
-        func_8004CD60();
+        effect_draw();
     func_800858CC();
 }
 
@@ -893,10 +893,10 @@ void func_8000D018(void)
             func_800225C0(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
-            func_8000E0FC();
+            draw_monkey();
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                func_80047530();
+                stage_draw();
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
@@ -907,11 +907,11 @@ void func_8000D018(void)
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(16);
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-                func_80068370();
+                item_draw();
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-                func_8006B198();
+                stobj_draw();
             if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
-                func_8004CD60();
+                effect_draw();
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
                 func_80038840();
             if (backgroundInfo.unk8 & 1)
@@ -1041,7 +1041,7 @@ const float lbl_802F2A74 = 0.014899999834597111f;
 #if 1
 #ifdef NONMATCHING
 /*
-void func_8000D5E4(void)
+void draw_timer_bomb_fuse(void)
 {
     struct Sprite *r3;
     float f31, f30;
@@ -1101,10 +1101,10 @@ void func_8000D5E4(void)
 #else
 extern u8 lbl_80173FE0[];
 extern u8 lbl_801740A8[];
-asm void func_8000D5E4(void)
+asm void draw_timer_bomb_fuse(void)
 {
     nofralloc
-#include "../asm/nonmatchings/func_8000D5E4.s"
+#include "../asm/nonmatchings/draw_timer_bomb_fuse.s"
 }
 #pragma peephole on
 #endif
@@ -1202,7 +1202,7 @@ void func_8000DEE8(void)
     GXSetCopyClear(color, 0x00FFFFFF);
 }
 
-void func_8000E0FC(void)
+void draw_monkey(void)
 {
     func_80085684(0.5f);
     func_8008D158(0x00FFFF7F);

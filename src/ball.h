@@ -82,17 +82,17 @@ struct Ball
     s16 unk28;
     s16 unk2A;
     s16 unk2C;
-    s8 unk2E;  // playerId
+    s8 unk2E;  // playerId?
     s8 unk2F;
     Mtx unk30;
     s16 unk60;
     s16 unk62;
     s16 unk64;
     s16 unk66;
-    float unk68;
+    /*0x68*/ float currRadius;
     float unk6C;
-    float unk70;
-    float unk74;
+    /*0x70*/ float restitution;
+    /*0x74*/ float modelScale;
     /*0x78*/ s32 bananas;
     u32 unk7C;
     s32 unk80;
@@ -121,10 +121,10 @@ struct Ball
     u32 unk134;
     u8 filler138[4];
     s32 unk13C;
-    float unk140;
+    /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
     struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 filler148[0x14A - 0x148];
-    u8 unk14A;  // maybe determines color of ball?
+    /*0x14A*/ u8 colorId;
     u8 unk14B;
     u8 filler14C[2];
     s16 unk14E;
@@ -200,6 +200,6 @@ void func_8003CCB0(void);
 void func_8003CDB0(struct Ball *);
 void func_8003CDC0(struct Ball *);
 void func_8003D3C4(struct Ball *);
-void func_8003D6A4(struct Ball *);
+void animate_ball_size_change(struct Ball *);
 // ? g_ball_draw();
 void lbl_8003D928(struct Struct80038840 *);

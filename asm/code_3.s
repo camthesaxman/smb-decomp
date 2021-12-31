@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global func_8009AA24
 func_8009AA24:
 /* 8009AA24 00096944  7C 85 23 78 */	mr r5, r4
@@ -39,6 +40,7 @@ func_8009AA24:
 /* 8009AAA4 000969C4  F0 86 00 00 */	psq_st f4, 0(r6), 0, qr0
 /* 8009AAA8 000969C8  F0 A6 80 00 */	psq_st f5, 0(r6), 1, qr0
 /* 8009AAAC 000969CC  4E 80 00 20 */	blr
+.endif
 
 .global func_8009AAB0
 func_8009AAB0:

@@ -28,7 +28,7 @@ void (*gameModeFuncs[])(void) =
     NULL
 };
 
-void (*gameSubmodeFuncs /*lbl_801724D0_58*/[])(void) =
+void (*gameSubmodeFuncs[])(void) =
 {
     submode_dummy_func,
     submode_adv_demo_init_func,

@@ -9593,7 +9593,7 @@ lbl_00008980:
 /* 000089B0 2C000004 */ cmpwi r0, 4
 /* 000089B4 40820008 */ bne lbl_000089BC
 lbl_000089B8:
-/* 000089B8 4BFF77A5 */ bl func_80047530
+/* 000089B8 4BFF77A5 */ bl stage_draw
 lbl_000089BC:
 /* 000089BC 3C600000 */ lis r3, currStageId@ha
 /* 000089C0 A8030000 */ lha r0, currStageId@l(r3)
@@ -9635,21 +9635,21 @@ lbl_00008A3C:
 /* 00008A44 88030078 */ lbz r0, 0x78(r3)
 /* 00008A48 2C000002 */ cmpwi r0, 2
 /* 00008A4C 40820008 */ bne lbl_00008A54
-/* 00008A50 4BFF770D */ bl func_80068370
+/* 00008A50 4BFF770D */ bl item_draw
 lbl_00008A54:
 /* 00008A54 3C600000 */ lis r3, eventInfo@ha
 /* 00008A58 38630000 */ addi r3, r3, eventInfo@l
 /* 00008A5C 88030060 */ lbz r0, 0x60(r3)
 /* 00008A60 2C000002 */ cmpwi r0, 2
 /* 00008A64 40820008 */ bne lbl_00008A6C
-/* 00008A68 4BFF76F5 */ bl func_8006B198
+/* 00008A68 4BFF76F5 */ bl stobj_draw
 lbl_00008A6C:
 /* 00008A6C 3C600000 */ lis r3, eventInfo@ha
 /* 00008A70 38630000 */ addi r3, r3, eventInfo@l
 /* 00008A74 88030138 */ lbz r0, 0x138(r3)
 /* 00008A78 2C000002 */ cmpwi r0, 2
 /* 00008A7C 40820008 */ bne lbl_00008A84
-/* 00008A80 4BFF76DD */ bl func_8004CD60
+/* 00008A80 4BFF76DD */ bl effect_draw
 lbl_00008A84:
 /* 00008A84 4BFF76D9 */ bl func_800858CC
 /* 00008A88 A0BE0004 */ lhz r5, 4(r30)
@@ -10105,7 +10105,7 @@ lbl_000090D0:
 /* 00009108 387F0990 */ addi r3, r31, 0x990
 /* 0000910C 4CC63182 */ crclr 6
 /* 00009110 4BFF704D */ bl g_debug_printf
-/* 00009114 4BFF7049 */ bl func_8000C5A4
+/* 00009114 4BFF7049 */ bl draw_normal_game_scene
 /* 00009118 4BFF9045 */ bl lbl_0000215C
 /* 0000911C 3C600000 */ lis r3, currRenderMode@ha
 /* 00009120 3B830000 */ addi r28, r3, currRenderMode@l
@@ -13126,7 +13126,7 @@ lbl_0000BE98:
 /* 0000BE98 7C0802A6 */ mflr r0
 /* 0000BE9C 90010004 */ stw r0, 4(r1)
 /* 0000BEA0 9421FFF8 */ stwu r1, -8(r1)
-/* 0000BEA4 4BFF42B9 */ bl func_8000C5A4
+/* 0000BEA4 4BFF42B9 */ bl draw_normal_game_scene
 /* 0000BEA8 8001000C */ lwz r0, 0xc(r1)
 /* 0000BEAC 38210008 */ addi r1, r1, 8
 /* 0000BEB0 7C0803A6 */ mtlr r0
@@ -13226,7 +13226,7 @@ lbl_0000C00C:
 /* 0000C010 90010004 */ stw r0, 4(r1)
 /* 0000C014 9421FFF8 */ stwu r1, -8(r1)
 /* 0000C018 48000249 */ bl lbl_0000C260
-/* 0000C01C 4BFF4141 */ bl func_8000C5A4
+/* 0000C01C 4BFF4141 */ bl draw_normal_game_scene
 /* 0000C020 480003D1 */ bl lbl_0000C3F0
 /* 0000C024 38600001 */ li r3, 1
 /* 0000C028 38800004 */ li r4, 4

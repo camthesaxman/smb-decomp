@@ -286,7 +286,7 @@ void ev_camera_main(void)
                     camera->sub28.fov = DEGREES_TO_S16(120);
                 else
                 {
-                    float f1 = 2.0 * ball->unk68 + mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.y));
+                    float f1 = 2.0 * ball->currRadius + mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.y));
                     s16 r0 = mathutil_atan2(f1, -sp8.z) * 2;
                     if (r0 > DEGREES_TO_S16(120))
                         r0 = DEGREES_TO_S16(120);

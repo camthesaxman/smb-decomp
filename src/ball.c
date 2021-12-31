@@ -661,15 +661,15 @@ struct Ball_child *func_800380A8(int a, int b, void (*c)(struct Ball_child *, in
     return r30;
 }
 
-struct Struct801B7B78
+struct BallPhysicsParams
 {
     s16 unk0;
-    float unk4;
+    float ballRadius;
     float unk8;
-    float unkC;
+    float restitution;  // controls bounciness
 };
 
-struct Struct801B7B78 lbl_801B7B78[] =
+struct BallPhysicsParams ballPhysicsParams[] =
 {
     {0, 0.5f, 0.009799992f, 0.5f},
     {6, 0.5f, 0.02177776f, 0.1f},
@@ -679,7 +679,7 @@ s16 lbl_801B7B98[] = { 0x12, 0x5D, 0x5E, 0x00 };  // + 0x20
 
 s16 lbl_801B7BA0[] = { 0x11, 0x65, 0x66, 0x00 };  // + 0x28
 
-s16 lbl_801B7BA8[][9] =  // + 0x30
+s16 lbl_801B7BA8[][9] =
 {
     {0x31, 0xB6, 0xB7, 0x32, 0xB8, 0x5F, 0x39, 0xB9, 0x60},
     {0x02, 0xB2, 0xB3, 0x03, 0xB4, 0xB5, 0x3F, 0xBB, 0xBC},
@@ -693,7 +693,7 @@ s16 lbl_801B7BA8[][9] =  // + 0x30
     {0x47, 0x47, 0x47, 0x48, 0x48, 0x48, 0x3C, 0x39, 0x39},
 };
 
-GXColor lbl_801B7C5C[] =  // + 0xE4
+GXColor ballShadowColors[] =  // shadow colors
 {
     {0x47, 0x5F, 0x5F, 0xFF},
     {0x5F, 0x53, 0x47, 0xFF},
@@ -849,13 +849,13 @@ void ev_ball_main(void)
         ball = &ballInfo[0];
         for (i = 0; i < spritePoolInfo.unk8; i++, ball++)
         {
-            struct Ball *r24;
+            struct Ball *nextBall;
             int j;
 
             if (r28[i] == 0 || r28[i] == 4)
                 continue;
-            r24 = ball + 1;
-            for (j = i + 1; j < spritePoolInfo.unk8; j++, r24++)
+            nextBall = ball + 1;
+            for (j = i + 1; j < spritePoolInfo.unk8; j++, nextBall++)
             {
                 float f29;
                 float f2;
@@ -863,12 +863,12 @@ void ev_ball_main(void)
 
                 if (r28[j] == 0 || r28[j] == 4)
                     continue;
-                sp8.x = ball->pos.x - r24->pos.x;
-                sp8.y = ball->pos.y - r24->pos.y;
-                sp8.z = ball->pos.z - r24->pos.z;
+                sp8.x = ball->pos.x - nextBall->pos.x;
+                sp8.y = ball->pos.y - nextBall->pos.y;
+                sp8.z = ball->pos.z - nextBall->pos.z;
 
                 f2 = sq_mag(&sp8);
-                f29 = ball->unk68 + r24->unk68;
+                f29 = ball->currRadius + nextBall->currRadius;
                 if (f2 < (0.5 * f29) * (0.5 * f29))
                 {
                     int k;
@@ -883,8 +883,8 @@ void ev_ball_main(void)
                     {
                         if (j != k)
                         {
-                            if (r24->unk15C[k] > f1)
-                                r24->unk15C[k] = f1;
+                            if (nextBall->unk15C[k] > f1)
+                                nextBall->unk15C[k] = f1;
                         }
                         else
                         {
@@ -953,13 +953,13 @@ void func_80038528(struct Ball *ball)
     mathutil_mtxA_tf_vec_xyz(&sp40, 1.0f, 0.0f, 0.0f);
     mathutil_mtxA_tf_vec_xyz(&sp28, 0.0f, 0.0f, 1.0f);
     sp1C.x = 0.0f;
-    sp1C.y = -ball->unk68;
+    sp1C.y = -ball->currRadius;
     sp1C.z = 0.0f;
     mathutil_mtxA_rigid_inv_tf_vec(&sp1C, &sp1C);
 
     mathutil_mtxA_from_mtx(ball->unkC8);
     mathutil_mtxA_tf_vec(&sp1C, &ball->unkB8);
-    ball->unkB8.y += ball->unk68;
+    ball->unkB8.y += ball->currRadius;
     mathutil_mtxA_tf_vec_xyz(&sp64, 0.0f, 1.0f, 0.0f);
     mathutil_mtxA_tf_vec_xyz(&sp4C, 1.0f, 0.0f, 0.0f);
     mathutil_mtxA_tf_vec_xyz(&sp34, 0.0f, 0.0f, 1.0f);
@@ -989,7 +989,7 @@ void func_80038528(struct Ball *ball)
     func_8003CB88(ball);
     func_8003CCB0();
     if (modeCtrl.unk28 != 3)
-        func_8003D6A4(ball);
+        animate_ball_size_change(ball);
     func_8003CDC0(ball);
     if (ball->unk14E > 0)
         ball->unk14E--;
@@ -1063,8 +1063,8 @@ void func_80038840(void)
         func_8000E1A4(ball->unk15C[currentCameraStructPtr->unk204]);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_mult_right(ball->unk30);
-        mathutil_mtxA_scale_s(ball->unk74);
-        func_80030BA8(ball->unk74);
+        mathutil_mtxA_scale_s(ball->modelScale);
+        func_80030BA8(ball->modelScale);
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
@@ -1104,8 +1104,8 @@ void func_80038840(void)
 
         mathutil_mtxA_push();
         mathutil_mtxA_sq_from_identity();
-        mathutil_mtxA_scale_s(ball->unk74);
-        func_80030BA8(ball->unk74);
+        mathutil_mtxA_scale_s(ball->modelScale);
+        func_80030BA8(ball->modelScale);
         //func_80033AD4(lbl_802F1B04->unkA0);
         func_80033AD4(lbl_802F1B04[0x28]);
         mathutil_mtxA_pop();
@@ -1203,13 +1203,13 @@ void func_80038AB4(void)
             continue;
         if (ball->flags & BALL_FLAG_04)
             continue;
-        sp18.unk38 = lbl_801B7C5C[ball->unk14A];
+        sp18.unk38 = ballShadowColors[ball->colorId];
         sp18.unk0 = spC.x + ball->pos.x;
         sp18.unk4 = spC.y + ball->pos.y;
         sp18.unk8 = spC.z + ball->pos.z;
         sp18.unkC = 5.0f;
         sp18.unk10 = ball->pos;
-        sp18.unk1C = ball->unk68 * 1.4f;
+        sp18.unk1C = ball->currRadius * 1.4f;
         if (r29 != 0)
             sp18.unk2E = 0xFFFF;
         else
@@ -1225,7 +1225,7 @@ void func_80038AB4(void)
                 break;
             }
         }
-        func_80092B98(&sp18);
+        g_init_shadow_stuff_probably(&sp18);
     }
 }
 
@@ -1258,12 +1258,12 @@ void func_80038DF4(void)
         if (f2 < 0.0f)
             continue;
 
-        sp30.unk2C = lbl_801B7C5C[ball->unk14A];
+        sp30.unk2C = ballShadowColors[ball->colorId];
         sp30.unk2C.r *= f2;
         sp30.unk2C.g *= f2;
         sp30.unk2C.b *= f2;
 
-        sp30.unk14 = ball->unk68 * (1.0f + 2.0f * (1.0f - f2));
+        sp30.unk14 = ball->currRadius * (1.0f + 2.0f * (1.0f - f2));
         sp30.unk18 = sp30.unk14;
         sp30.unk1C = sp30.unk14;
 
@@ -1398,7 +1398,7 @@ void unref_func_80039320(struct Ball *ball, struct Struct80039320 *b, int c)
     ball->flags |= BALL_FLAG_18;
     ball->unk13C = c;
 
-    f1 = ball->unk68 * 0.25f;
+    f1 = ball->currRadius * 0.25f;
     if (b != NULL)
         b->unk20 += f1;
     else
@@ -1420,7 +1420,7 @@ void unref_func_8003938C(struct Ball *ball, struct Struct80039320 *b, int c)
     ball->flags |= BALL_FLAG_17;
     ball->unk13C = c;
 
-    f1 = ball->unk68 * 0.125f;
+    f1 = ball->currRadius * 0.125f;
     if (b != NULL)
         b->unk20 += f1;
     else
@@ -1826,14 +1826,14 @@ void ball_func_15(struct Ball *ball)
     sp28.y = ((rand() / 32767.0f) - 0.5) * 0.5;
     sp28.z = ((rand() / 32767.0f) - 0.5) * 0.5;
 
-    if (ball->unk68 > FLT_EPSILON && mathutil_vec_mag(&sp28) != 0.0f)
+    if (ball->currRadius > FLT_EPSILON && mathutil_vec_mag(&sp28) != 0.0f)
     {
         float f1 = mathutil_vec_normalize_len(&sp28);
 
         mathutil_quat_from_axis_angle(
             &ball->unk98,
             &sp28,
-            (f1 * 2.0f) / (ball->unk68 * ball->unk68 * PI) * 10430.3779296875);
+            (f1 * 2.0f) / (ball->currRadius * ball->currRadius * PI) * 10430.3779296875);
     }
 
     ball->flags |= BALL_FLAG_06;
@@ -1920,7 +1920,7 @@ void ball_func_18(struct Ball *ball)
 {
     func_800394C4(ball);
 
-    ball->pos.y = ball->prevPos.y = ball->unk68;
+    ball->pos.y = ball->prevPos.y = ball->currRadius;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&ball->pos);
@@ -2006,7 +2006,7 @@ void ball_func_21(struct Ball *ball)
 {
     func_800394C4(ball);
 
-    ball->unk14A = 3;
+    ball->colorId = 3;
 
     if (!(lbl_801EED2C.unk4 & (1<<(31-0x19))))
         lbl_80206B80[ball->unk2E] = func_8008D1DC(lbl_8000F790, ball->unkFC, 5);
@@ -2436,8 +2436,8 @@ void func_8003BD68(struct Struct80039974 *a, Vec *b, Vec *c)
     mathutil_vec_cross_prod(c, &sp14, &sp20);
 
     f4 = 0.0f;
-    if (ball->unk68 > FLT_EPSILON)
-        f4 = (32768.0 / 3.141592) / (ball->unk68 * ball->unk68);
+    if (ball->currRadius > FLT_EPSILON)
+        f4 = (32768.0 / 3.141592) / (ball->currRadius * ball->currRadius);
 
     ball->unk60 = (sp20.x * f4 - ball->unk60) * 0.15 + (float)ball->unk60;
     ball->unk62 = (sp20.y * f4 - ball->unk62) * 0.15 + (float)ball->unk62;
@@ -2476,9 +2476,9 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
 
         mathutil_mtxA_from_mtx(lbl_80206E48[b->unk50].unk24);
         mathutil_mtxA_tf_vec(&b->unk44, &sp14);
-        sp38.x = -sp14.x * ball->unk68;
-        sp38.y = -sp14.y * ball->unk68;
-        sp38.z = -sp14.z * ball->unk68;
+        sp38.x = -sp14.x * ball->currRadius;
+        sp38.y = -sp14.y * ball->currRadius;
+        sp38.z = -sp14.z * ball->currRadius;
 
         mathutil_mtxA_from_rotate_y(ball->unk2A);
         mathutil_mtxA_rotate_x(ball->unk28);
@@ -2492,8 +2492,8 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
         mathutil_vec_cross_prod(&sp38, &sp44, &sp2C);
 
         f2 = 0.0f;
-        if (ball->unk68 > FLT_EPSILON)
-            f2 = (32768.0 / 3.141592) / (ball->unk68 * ball->unk68);
+        if (ball->currRadius > FLT_EPSILON)
+            f2 = (32768.0 / 3.141592) / (ball->currRadius * ball->currRadius);
         ball->unk60 = sp2C.x * f2;
         ball->unk62 = sp2C.y * f2;
         ball->unk64 = sp2C.z * f2;
@@ -2501,7 +2501,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
         if (ball->flags & BALL_FLAG_10)
             func_8003BD68(b, &sp20, &sp38);
 
-        if (ball->unk68 > FLT_EPSILON)
+        if (ball->currRadius > FLT_EPSILON)
         {
             f1 = mathutil_vec_mag(&sp2C);
             if (f1 != 0.0f)
@@ -2510,7 +2510,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
                 mathutil_quat_from_axis_angle(
                     &ball->unk98,
                     &sp2C,
-                    (f1 * 2.0f) / (ball->unk68 * ball->unk68 * PI) * 10430.3779296875);
+                    (f1 * 2.0f) / (ball->currRadius * ball->currRadius * PI) * 10430.3779296875);
             }
         }
     }
@@ -2557,7 +2557,7 @@ void func_8003C38C(struct Ball *ball)
     }
 
     ball->unk84.x = spC.x * 0.5 + ball->pos.x;
-    ball->unk84.y = ball->pos.y - ball->unk68;
+    ball->unk84.y = ball->pos.y - ball->currRadius;
     ball->unk84.z = spC.z * 0.5 + ball->pos.z;
 
     spC.x = ball->unk84.x - ball->pos.x;
@@ -2567,21 +2567,23 @@ void func_8003C38C(struct Ball *ball)
 
 void func_8003C4A0(struct Ball *ball, int b)
 {
-    struct Struct801B7B78 *r7 = &lbl_801B7B78[b];
+    struct BallPhysicsParams *physParams = &ballPhysicsParams[b];
 
-    ball->unk66 = r7->unk0;
-    ball->unk68 = r7->unk4;
-    ball->unk140 = r7->unk4;
-    ball->unk74 = 1.0f;
-    ball->unk6C = r7->unk8 * lbl_80206BF0[ball->unk2E].unk1C;
-    ball->unk70 = r7->unkC;
+    ball->unk66 = physParams->unk0;
+    ball->currRadius = physParams->ballRadius;
+    ball->targetRadius = physParams->ballRadius;
+    ball->modelScale = 1.0f;
+    ball->unk6C = physParams->unk8 * lbl_80206BF0[ball->unk2E].unk1C;
+    ball->restitution = physParams->restitution;
     ball->unk1 = b;
+
     if (modeCtrl.playerCount > 1)
-        ball->unk14A = ball->unk2E;
+        ball->colorId = ball->unk2E;
     else
-        ball->unk14A = 3;
+        ball->colorId = 3;
+
     if (lbl_801EED2C.unk4 & (1<<(31-0x17)))
-        ball->unk14A = 3;
+        ball->colorId = 3;
 }
 
 void func_8003C550(struct Ball *ball)
@@ -2603,9 +2605,9 @@ void func_8003C550(struct Ball *ball)
     sp18.y = ball->vel.y * 0.5f;
     sp18.z = ball->vel.z * 0.5f;
 
-    spC.x = ball->pos.x + ball->unk114.x * ball->unk68;
-    spC.y = ball->pos.y + ball->unk114.y * ball->unk68;
-    spC.z = ball->pos.z + ball->unk114.z * ball->unk68;
+    spC.x = ball->pos.x + ball->unk114.x * ball->currRadius;
+    spC.y = ball->pos.y + ball->unk114.y * ball->currRadius;
+    spC.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
     f0 = -mathutil_vec_dot_prod(&sp24, &sp18);
     sp18.x += f0 * sp24.x;
@@ -2688,9 +2690,9 @@ void func_8003CA98(struct Ball *ball, struct Struct80039974 *b)
     b->unk1C.y = ball->vel.y;
     b->unk1C.z = ball->vel.z;
 
-    b->unk28 = ball->unk68;
+    b->unk28 = ball->currRadius;
     b->unk2C = ball->unk6C;
-    b->unk30 = ball->unk70;
+    b->unk30 = ball->restitution;
     b->unk34 = 0.0f;
     b->unk58 = 0;
     b->unk50 = 0;
@@ -2923,9 +2925,9 @@ void func_8003D3C4(struct Ball *ball)
         sp18.unk8 = 2;
         sp18.unk14 = ball->unk2E;
 
-        sp18.unk34.x = ball->pos.x + ball->unk114.x * ball->unk68;
-        sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->unk68;
-        sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->unk68;
+        sp18.unk34.x = ball->pos.x + ball->unk114.x * ball->currRadius;
+        sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
+        sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
         if (!(lbl_801F3A58.unk0 & (1<<(31-0x1B))) || (lbl_801F3A58.unk0 & (1<<(31-0x14))))
             f2 = 0.85f;
@@ -2949,14 +2951,14 @@ void func_8003D3C4(struct Ball *ball)
     }
 }
 
-void func_8003D6A4(struct Ball *ball)
+void animate_ball_size_change(struct Ball *ball)
 {
     if (!(ball->flags & (BALL_FLAG_17|BALL_FLAG_18)))
     {
-        if (ball->unk68 != ball->unk140)
+        if (ball->currRadius != ball->targetRadius)
         {
-            ball->unk68 += (ball->unk140 - ball->unk68) * 0.2f;
-            ball->unk74 = ball->unk68 / ball->unk140;
+            ball->currRadius += (ball->targetRadius - ball->currRadius) * 0.2f;
+            ball->modelScale = ball->currRadius / ball->targetRadius;
         }
     }
     else
@@ -2965,20 +2967,20 @@ void func_8003D6A4(struct Ball *ball)
         if (ball->unk13C < 0)
             ball->flags &= ~(BALL_FLAG_17|BALL_FLAG_18);
         else if (ball->flags & BALL_FLAG_17)
-            ball->unk68 += ((ball->unk140 * 0.5f) - ball->unk68) * 0.3f;
+            ball->currRadius += ((ball->targetRadius * 0.5f) - ball->currRadius) * 0.3f;
         else
-            ball->unk68 += ((ball->unk140 * 2.0f) - ball->unk68) * 0.3f;
-        ball->unk74 = ball->unk68 / ball->unk140;
+            ball->currRadius += ((ball->targetRadius * 2.0f) - ball->currRadius) * 0.3f;
+        ball->modelScale = ball->currRadius / ball->targetRadius;
     }
 
     if (ball->unkFC != NULL)
-        ball->unkFC->unk58 = ball->unk74;
+        ball->unkFC->unk58 = ball->modelScale;
 }
 
 void g_ball_draw(struct Ball *ball, int unused)
 {
     struct GMAModelEntry *r31 = lbl_802F1CC8->modelEntries;
-    s16 *r30 = lbl_801B7BA8[ball->unk14A];
+    s16 *r30 = lbl_801B7BA8[ball->colorId];
     Vec sp18;
     u8 unused2[8];
     float f31;  // distance from camera, maybe?
@@ -3001,15 +3003,15 @@ void g_ball_draw(struct Ball *ball, int unused)
             r27 = 2;
     }
 
-    func_8008E420(ball->unk74);
+    g_avdisp_set_model_scale(ball->modelScale);
     g_avdisp_draw_model_2(r31[lbl_801B7BA0[r27]].modelOffset);
-    func_8008E420(ball->unk74);
+    g_avdisp_set_model_scale(ball->modelScale);
     g_avdisp_draw_model_2(r31[r30[r27]].modelOffset);
-    func_8008E420(ball->unk74);
+    g_avdisp_set_model_scale(ball->modelScale);
     g_avdisp_draw_model_2(r31[r30[r27 + 6]].modelOffset);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     g_avdisp_draw_model_2(r31[lbl_801B7B98[r27]].modelOffset);
-    func_8008E420(ball->unk74);
+    g_avdisp_set_model_scale(ball->modelScale);
     g_avdisp_draw_model_2(r31[r30[r27 + 3]].modelOffset);
     func_8000E3BC();
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
@@ -3027,7 +3029,7 @@ void lbl_8003D928(struct Struct80038840 *a)
     func_800223D8(a->unk8);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
-    mathutil_mtxA_scale_s(ball->unk74);
+    mathutil_mtxA_scale_s(ball->modelScale);
     func_8009AA24(mathutilData->mtxA, 0);
 
     g_ball_draw(ball, a->unkC);

@@ -5918,7 +5918,7 @@ lbl_00005770:
 /* 0000577C 88030138 */ lbz r0, 0x138(r3)
 /* 00005780 2C000002 */ cmpwi r0, 2
 /* 00005784 40822794 */ bne lbl_00007F18
-/* 00005788 4BFFAA49 */ bl func_8004CD60
+/* 00005788 4BFFAA49 */ bl effect_draw
 /* 0000578C 4800278C */ b lbl_00007F18
 lbl_00005790:
 /* 00005790 28034000 */ cmplwi r3, 0x4000
@@ -7068,7 +7068,7 @@ lbl_000068D0:
 /* 00006904 40820008 */ bne lbl_0000690C
 /* 00006908 4BFF98C9 */ bl background_draw
 lbl_0000690C:
-/* 0000690C 4BFF98C5 */ bl func_80047530
+/* 0000690C 4BFF98C5 */ bl stage_draw
 /* 00006910 3CA00000 */ lis r5, modeCtrl@ha
 /* 00006914 3C800000 */ lis r4, cameraInfo@ha
 /* 00006918 3C600000 */ lis r3, mathutilData@ha
@@ -10909,7 +10909,7 @@ lbl_0000A080:
 /* 0000A094 38A00001 */ li r5, 1
 /* 0000A098 4BFF6139 */ bl avdisp_set_z_mode
 lbl_0000A09C:
-/* 0000A09C 4BFF6135 */ bl func_8000E0FC
+/* 0000A09C 4BFF6135 */ bl draw_monkey
 /* 0000A0A0 880E0018 */ lbz r0, 0x18(r14)
 /* 0000A0A4 7C000774 */ extsb r0, r0
 /* 0000A0A8 2C000002 */ cmpwi r0, 2
@@ -10917,7 +10917,7 @@ lbl_0000A09C:
 /* 0000A0B0 2C000004 */ cmpwi r0, 4
 /* 0000A0B4 40820008 */ bne lbl_0000A0BC
 lbl_0000A0B8:
-/* 0000A0B8 4BFF6119 */ bl func_80047530
+/* 0000A0B8 4BFF6119 */ bl stage_draw
 lbl_0000A0BC:
 /* 0000A0BC 801D002C */ lwz r0, 0x2c(r29)
 /* 0000A0C0 1C000284 */ mulli r0, r0, 0x284
@@ -11899,17 +11899,17 @@ lbl_0000AF1C:
 /* 0000AF1C 880E0078 */ lbz r0, 0x78(r14)
 /* 0000AF20 2C000002 */ cmpwi r0, 2
 /* 0000AF24 40820008 */ bne lbl_0000AF2C
-/* 0000AF28 4BFF52A9 */ bl func_80068370
+/* 0000AF28 4BFF52A9 */ bl item_draw
 lbl_0000AF2C:
 /* 0000AF2C 880E0060 */ lbz r0, 0x60(r14)
 /* 0000AF30 2C000002 */ cmpwi r0, 2
 /* 0000AF34 40820008 */ bne lbl_0000AF3C
-/* 0000AF38 4BFF5299 */ bl func_8006B198
+/* 0000AF38 4BFF5299 */ bl stobj_draw
 lbl_0000AF3C:
 /* 0000AF3C 880E0138 */ lbz r0, 0x138(r14)
 /* 0000AF40 2C000002 */ cmpwi r0, 2
 /* 0000AF44 40820008 */ bne lbl_0000AF4C
-/* 0000AF48 4BFF5289 */ bl func_8004CD60
+/* 0000AF48 4BFF5289 */ bl effect_draw
 lbl_0000AF4C:
 /* 0000AF4C 880E0048 */ lbz r0, 0x48(r14)
 /* 0000AF50 2C000002 */ cmpwi r0, 2

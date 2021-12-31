@@ -455,8 +455,8 @@ shadowerase_main:
 /* 80092B90 0008EAB0  90 6D 9F 70 */	stw r3, lbl_802F2150@sda21(r13)
 /* 80092B94 0008EAB4  4E 80 00 20 */	blr
 
-.global func_80092B98
-func_80092B98:
+.global g_init_shadow_stuff_probably
+g_init_shadow_stuff_probably:
 /* 80092B98 0008EAB8  7C 08 02 A6 */	mflr r0
 /* 80092B9C 0008EABC  90 01 00 04 */	stw r0, 4(r1)
 /* 80092BA0 0008EAC0  94 21 FF D0 */	stwu r1, -0x30(r1)

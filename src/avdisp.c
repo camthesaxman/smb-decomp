@@ -118,8 +118,6 @@ void func_8008D6BC(u32 arg)
 asm void func_8008D6D4(register void *arg)
 {
     nofralloc
-#define qr0 0
-#define qr2 2
     lis r10, 0xE0000000@h
     psq_l f5, 424(r10), 0, qr2
     li r6, 0x10
@@ -543,7 +541,7 @@ void free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void func_8008E420(float a)
+void g_avdisp_set_model_scale(float a)
 {
     lbl_802F20E4 = a;
 }

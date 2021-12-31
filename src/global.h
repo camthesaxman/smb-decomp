@@ -23,6 +23,9 @@ extern u32 __cntlzw(u32);
 u32 __lwbrx(void *, u32);
 #endif
 
+#define qr0 0
+#define qr2 2
+
 #include "types.h"
 #include "functions.h"
 #include "variables.h"
