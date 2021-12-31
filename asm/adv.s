@@ -6289,7 +6289,7 @@ lbl_801EEEC0:
 	.skip 0x40
 
 .section .sbss
-
+    .balign 8
 .global lbl_802F1BA8
 lbl_802F1BA8:
 	.skip 0x4

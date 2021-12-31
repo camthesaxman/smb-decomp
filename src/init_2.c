@@ -3,6 +3,8 @@
 #include "global.h"
 #include "mathutil.h"
 
+struct MathutilData *mathutilData;
+
 void init_cache_ptrs(void)
 {
     mathutilData->constZero = 0.0f;

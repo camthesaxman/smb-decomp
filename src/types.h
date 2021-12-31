@@ -838,7 +838,7 @@ struct Sprite
              u8 filler3E[0x40-0x3E];
              float unk40;
              float unk44;
-             u8 filler48[4];
+             u32 unk48;
              float unk4C;
              struct Sprite *unk50;
              struct Sprite *unk54;

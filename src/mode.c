@@ -460,6 +460,18 @@ char *lbl_80173C5C[] =
 
 struct ModeControl modeCtrl;
 
+s16 gameMode;
+s16 gameModeRequest;
+s16 gameSubmode;
+s16 gameSubmodeRequest;
+void *modeStringPtr;
+void *submodeStringPtr;
+void (*lbl_802F1B80)(void);
+void (*lbl_802F1B7C)(void);
+u32 lbl_802F1B78;
+void (*lbl_802F1B74)(void);
+void (*lbl_802F1B70)(void);
+
 void gm_init(void)
 {
     gameMode = MD_ADV;

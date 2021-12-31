@@ -6,11 +6,50 @@
 #include "bitmap.h"
 #include "camera.h"
 #include "input.h"
+#include "nl2ngc.h"
 #include "perf.h"
 
 // bss
 u8 lbl_801ED920[0x1240];  // unknown type
 GXRenderModeObj lbl_801EEB60;
+
+// .sbss
+
+BOOL lbl_802F1B58;
+void *lbl_802F1B54;
+void *lbl_802F1B50;
+struct NaomiModel *lbl_802F1B4C;
+void *dvdReadBuffer;
+void *lbl_802F1B44;
+void *lbl_802F1B40;
+Mtx *lbl_802F1B3C;
+u32 lbl_802F1B38;
+u32 lbl_802F1B34;
+GXRenderModeObj *currRenderMode;
+
+OSHeapHandle memHeap5;
+OSHeapHandle memHeap1;
+OSHeapHandle memHeap2;
+OSHeapHandle memHeap3;
+OSHeapHandle memHeap4;
+
+long memHeap5Size;
+long memHeap1Size;
+long memHeap2Size;
+long memHeap3Size;
+long memHeap4Size;
+
+struct NaomiModel **lbl_802F1B04;  // should be NaomiObj*?
+struct NaomiObj *arcadeStageObj;
+struct NaomiObj *lbl_802F1AFC;
+struct NaomiObj *lbl_802F1AF8;
+struct NaomiObj *lbl_802F1AF4;
+
+struct TPL *lbl_802F1AF0;
+struct TPL *arcadeStageTpl;
+struct TPL *lbl_802F1AE8;
+struct TPL *lbl_802F1AE4;
+struct TPL *lbl_802F1AE0;
 
 void main(void)
 {
@@ -23,7 +62,7 @@ void main(void)
     perf_init();
     sound_init();
     func_8008D788();
-    currentBallStructPtr = ballInfo;
+    currentBallStructPtr = &ballInfo[0];
     currentWorldStructPtr = &lbl_80206BF0[0];
     chkstatus_init();
     func_8008CF00(lbl_801ED920, 0x80);

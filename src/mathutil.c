@@ -13,8 +13,8 @@
 #define GQR_S8  4
 #define GQR_S16 5
 
-extern float lbl_802F1B68;
-extern u32 lbl_802F1B6C;
+u32 lbl_802F1B6C;
+float lbl_802F1B68;
 
 // sin/cos tables?
 extern float tanTable[];
