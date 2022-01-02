@@ -33,7 +33,11 @@ void mathutil_init(void);
 float func_8000716C(double a);
 float mathutil_sqrt(double n);
 float mathutil_rsqrt(double n);
+#ifdef MATHUTIL_SIN_INT_PARAM
+float mathutil_sin(int angle);
+#else
 float mathutil_sin(s16 angle);
+#endif
 #define mathutil_cos(angle) mathutil_sin((angle) + 0x4000)
 void mathutil_sin_cos_v(s16 a, float *b);
 void func_80007214();

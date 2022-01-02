@@ -42,6 +42,8 @@ FORCEACTIVE
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }
 
+mathutil_sin_ = mathutil_sin;
+
 /* sprite.s */
 lbl_802F4A70 = 0x802F4A70;
 lbl_802F4A74 = 0x802F4A74;
@@ -51,6 +53,10 @@ lbl_801C1264 = 0x801C1264;
 lbl_802F4A90 = 0x802F4A90;
 lbl_802F4A98 = 0x802F4A98;
 lbl_802F4AA4 = 0x802F4AA4;
+lbl_802F3770 = 0x802F3770;
+lbl_802F3778 = 0x802F3778;
+lbl_802F377C = 0x802F377C;
+lbl_802F3780 = 0x802F3780;
 
 /* stage.s */
 lbl_802F3720 = 0x802F3720;

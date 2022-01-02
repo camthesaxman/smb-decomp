@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
@@ -17,8 +18,8 @@ struct Struct80206D00
 {
     void *unk0;
     u8 filler4[4];
-    void *unk8;
-    void *unkC;
+    void (*unk8)();
+    void (*unkC)();
     void *unk10;
     u8 filler14[4];
 } lbl_80206D00[5];
@@ -53,6 +54,9 @@ char *lbl_801B86D8[] =
     "GOAL_G",
     "GOAL_R",
 };
+
+void lbl_800457FC();
+void lbl_80045A00();
 
 void ev_stage_init(void)
 {
@@ -379,8 +383,8 @@ void func_800444A4(float a)
     }
 }
 
-extern u8 lbl_800457FC[];
-extern u8 lbl_80045A00[];
+//extern u8 lbl_800457FC[];
+//extern u8 lbl_80045A00[];
 extern u8 lbl_80045B54[];
 
 void func_80044794(void)
@@ -635,13 +639,15 @@ FORCE_BSS_ORDER(lbl_802099E8)
 FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
 
+/*
 struct NLObj
 {
     u8 filler0[4];
     void *unk4[10];
 };
+*/
 
-struct NLObj **lbl_801B8794[] = {(struct NLObj **)&arcadeStageObj, (struct NLObj **)&lbl_802F1B04, NULL};
+struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&arcadeStageObj, (struct NaomiObj **)&lbl_802F1B04, NULL};
 
 struct Struct80044E18
 {
@@ -886,3 +892,169 @@ struct GMAModelHeader *func_800455FC(char *name)
 {
     return find_model_in_gma_list(lbl_801B87A0, name);
 }
+
+struct Struct802F0990
+{
+    s32 unk0;
+    void *unk4;
+};
+
+extern struct Struct802F0990 lbl_802F0990[1];  // huh?
+
+struct NaomiModelHeader_child
+{
+    u32 unk0;
+};
+
+struct NaomiModelHeader
+{
+    s8 *unk0;
+    struct NaomiModelHeader_child *unk4;
+};
+
+int func_800457B8(s8 *, s8 *);
+
+#define HEADER_OF(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+
+void func_800456A8(int stageId)
+{
+    int r5;
+    struct Struct802F0990 *r6;
+    struct Struct802F1F44 *r28;
+    int i;
+    u8 *r31;
+
+    r6 = &lbl_802F0990[0];
+    r5 = 1;
+    r31 = (u8 *)lbl_802F1B4C + 0x10000;
+    if (lbl_802F0990[0].unk0 != stageId)
+    {
+        r5 = 0;
+        r6++;
+    }
+    if (r5 <= 0)
+    {
+        lbl_802F1F44 = NULL;
+        return;
+    }
+    lbl_802F1F44 = r6->unk4;
+    r28 = lbl_802F1F44;
+    while (r28->unk0 != NULL)
+    {
+        int r27;
+        struct NaomiModel *r26;
+        struct NaomiObj ***r25;
+
+        r26 = NULL;
+        r27 = 0;
+        r25 = &lbl_801B8794[0];
+        while (*r25 != NULL)
+        {
+            struct NaomiObj *nobj = **r25;
+            if (nobj != NULL)
+            {
+                struct NaomiModel **modelPtrs = nobj->modelPtrs;
+                for (i = 0; modelPtrs[i] != NULL; i++)
+                {
+                    int var = func_800457B8(r28->unk0, HEADER_OF(modelPtrs[i])->unk0 + 4);
+                    if (var > r27)
+                    {
+                        r27 = var;
+                        r26 = modelPtrs[i];
+                    }
+                }
+                r28->unk4 = (void *)r26;
+                if (r26 != NULL)
+                {
+                    r31 -= HEADER_OF(r26)->unk4->unk0;
+                    r28->unk14 = r31;
+                }
+            }
+            r25++;
+        }
+        r28++;
+    }
+}
+
+int func_800457B8(s8 *a, s8 *b)
+{
+    int i = 0;
+    while (*a == *b)
+    {
+        i++;
+        if (*a == 0 || *b == 0)
+            break;
+        a++;
+        b++;
+    }
+    return i;
+}
+
+struct Struct800457FC
+{
+    Vec unk0;
+    Vec unkC;
+    u8 filler18[8];
+};
+
+void lbl_800457FC(struct Struct800457FC *a)
+{
+    struct Struct800457FC sp18 = *a;
+    float f1;
+    float f31;
+    float f2;
+    int angle;
+    Vec spC;
+
+    f1 = mathutil_sqrt(sp18.unk0.x * sp18.unk0.x + sp18.unk0.z * sp18.unk0.z);
+    f31 = 0.5 + -0.030833333333333333 * f1;
+    f2 = -1092.0f;
+    f2 *= (lbl_80206DEC.unk4 - 30.0f);
+    angle = 16384.0 * f1;
+    angle = f2 + angle;
+    if (angle > 0)
+        return;
+    spC.x = sp18.unk0.x;
+    spC.y = 0.0f;
+    spC.z = sp18.unk0.z;
+    sp18.unk0.y += mathutil_sin(angle) * f31;
+    mathutil_vec_set_len(&spC, &spC, -(mathutil_sin(angle + 0x4000) * f31));
+    if (angle > -16384)
+    {
+        float f0 = angle * -6.103515625e-05f;
+        spC.x *= f0;
+        spC.z *= f0;
+    }
+    sp18.unkC.x += spC.x;
+    sp18.unkC.z += spC.z;
+    mathutil_vec_normalize_len(&sp18.unkC);
+    *a = sp18;
+}
+
+void lbl_80045A00(struct Struct800457FC *a)
+{
+    struct Struct800457FC spC = *a;
+    float f1;
+    float f31;
+    float f2;
+    int angle;
+
+    f1 = mathutil_sqrt(spC.unk0.x * spC.unk0.x + spC.unk0.z * spC.unk0.z);
+    f31 = 0.5 + -0.030833333333333333 * f1;
+    f2 = -1092.0f;
+    f2 *= (lbl_80206DEC.unk4 - 30.0f);
+    angle = 16384.0 * f1;
+    angle = f2 + angle;
+    if (angle > 0)
+        return;
+    spC.unk0.y += mathutil_sin(angle) * f31;
+    *a = spC;
+}
+
+/*
+const double lbl_802F3770 = -0.030833333333333333;
+const float lbl_802F3778 = -1092.0f;
+const float lbl_802F377C = 30.0f;
+const double lbl_802F3780 = 16384.0;
+const float lbl_802F3788 = -6.103515625e-05f;
+*/
