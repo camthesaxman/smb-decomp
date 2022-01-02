@@ -348,37 +348,6 @@ typedef void (*Func802F20EC)();
 struct Ball_child;
 struct Ball;
 
-struct BackgroundInfo  // size = 0xA8
-{
-    s16 bgId;
-    float unk4;
-    u32 unk8;
-    GXColor unkC; //u32 unkC;
-    u8 filler10[0x14-0x10];
-    Vec unk14;
-    Vec unk20;
-    float unk2C;
-    float unk30;
-    float unk34;
-    float unk38;
-    float unk3C;
-    float unk40;
-    u8 filler44[4];
-    Mtx unk48;
-    void (*unk78)(void);
-    int (*unk7C)();
-    u32 unk80;
-    float unk84;
-    u8 filler88[4];
-    u32 unk8C;
-    void (*unk90)();
-    Func802F20EC unk94;
-    void (*unk98)();
-    void *unk9C;
-    u32 unkA0;
-    u32 unkA4;
-};
-
 struct World
 {
     s16 unk0;

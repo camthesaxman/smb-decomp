@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "background.h"
 #include "input.h"
 #include "mathutil.h"
 #include "nl2ngc.h"

@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "background.h"
 #include "ball.h"
 #include "camera.h"
 #include "perf.h"

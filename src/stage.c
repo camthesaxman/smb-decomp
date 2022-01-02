@@ -3,8 +3,9 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include "global.h"
 #define MATHUTIL_SIN_INT_PARAM
+#include "global.h"
+#include "background.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
@@ -26,20 +27,6 @@ struct Struct80206D00
 
 struct Preview stagePreview;  // 78
 
-/*
-struct
-{
-    //u8 filler0[0x74];
-    s32 unk74;  // EC
-    float unk78;  // F0
-    void (*unk7C)(void);  // F4
-    u32 unk80;  // F8
-    float unk84[3];  // FC
-    //u8 filler88[0x90-0x88];
-    u32 unk90;  // 108
-    u8 filler94[0x5C-(0x94-0x74)];
-} lbl_80206DEC;
-*/
 struct Struct80206DEC lbl_80206DEC;
 
 struct Struct80206E48 lbl_80206E48[0x48];  // 148
@@ -57,6 +44,7 @@ char *lbl_801B86D8[] =
 
 void lbl_800457FC();
 void lbl_80045A00();
+int lbl_80045B54();
 
 void ev_stage_init(void)
 {
@@ -385,7 +373,7 @@ void func_800444A4(float a)
 
 //extern u8 lbl_800457FC[];
 //extern u8 lbl_80045A00[];
-extern u8 lbl_80045B54[];
+//extern u8 lbl_80045B54[];
 
 void func_80044794(void)
 {
@@ -557,7 +545,7 @@ void preload_stage_files(int stageId)
     char tplName[0x100];
     char stageLzName[0x100];
 
-    func_80055164(func_80045E4C());
+    func_80055164(func_80045E4C(stageId));
     sprintf(stageDir, "st%03d", stageId);
     DVDChangeDir(stageDir);
     sprintf(stageLzName, "STAGE%03d.lz", stageId);
@@ -621,16 +609,39 @@ struct Struct802099E8
     u32 unk8;
 };
 
+struct Struct80209488
+{
+    s32 unk0;
+    u8 filler4[4];
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+};
+
 u32 lbl_80209368[0x48];
-u32 lbl_80209488[0x48];
+struct Struct80209488 *lbl_80209488[0x48];
 u32 lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct802099E8 lbl_80209D48[0x80];
-struct
+
+struct Struct8020A348_child
 {
-    void *unk0;
-    u32 unk4;
-} lbl_8020A348[0x108];
+    u8 filler0[4];
+    struct Struct80209488 *unk4;
+    u8 filler8[4];
+};  // size = 0xC
+
+struct Struct8020A348
+{
+    struct Struct8020A348_child *unk0;
+    s32 unk4;
+};
+
+struct Struct8020A348 lbl_8020A348[0x108];  //0x3648
+struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
+u8 lbl_8020ADC8[0xC];
+Quaternion lbl_8020ADD4;
 
 FORCE_BSS_ORDER(lbl_80209368)
 FORCE_BSS_ORDER(lbl_80209488)
@@ -638,14 +649,9 @@ FORCE_BSS_ORDER(lbl_802095A8)
 FORCE_BSS_ORDER(lbl_802099E8)
 FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
-
-/*
-struct NLObj
-{
-    u8 filler0[4];
-    void *unk4[10];
-};
-*/
+FORCE_BSS_ORDER(lbl_8020AB88)
+FORCE_BSS_ORDER(lbl_8020ADC8)
+FORCE_BSS_ORDER(lbl_8020ADD4)
 
 struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&arcadeStageObj, (struct NaomiObj **)&lbl_802F1B04, NULL};
 
@@ -1018,7 +1024,7 @@ void lbl_800457FC(struct Struct800457FC *a)
     spC.y = 0.0f;
     spC.z = sp18.unk0.z;
     sp18.unk0.y += mathutil_sin(angle) * f31;
-    mathutil_vec_set_len(&spC, &spC, -(mathutil_sin(angle + 0x4000) * f31));
+    mathutil_vec_set_len(&spC, &spC, -(mathutil_cos(angle) * f31));
     if (angle > -16384)
     {
         float f0 = angle * -6.103515625e-05f;
@@ -1049,6 +1055,301 @@ void lbl_80045A00(struct Struct800457FC *a)
         return;
     spC.unk0.y += mathutil_sin(angle) * f31;
     *a = spC;
+}
+
+struct Struct80045B54_1
+{
+    Vec unk0;
+};
+
+#define lbl_802F3760 0.5
+#define lbl_802F3770 -0.030833333333333333
+#define lbl_802F3778 -1092.0f
+#define lbl_802F377C 30.0f
+#define lbl_802F3780 16384.0
+
+static inline float sum_of_3_sq(register float a, register float b, register float c)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
+#else
+    return a * a + b * b + c * c;
+#endif
+}
+
+int lbl_80045B54(Vec *a, Vec *b, Vec *c)
+{
+    float f1;
+    float f31;
+    float f2;
+    int r3;
+    int angle;
+    Vec sp14;
+
+    if (a->x < -10.01 || a->x > 10.01)
+        return 0;
+    if (a->z < -10.01 || a->z > 10.01)
+        return 0;
+
+    f1 = mathutil_sqrt(a->x * a->x + a->z * a->z);
+    f31 = 0.5 + -0.030833333333333333 * f1;
+    f2 = -1092.0f;
+    f2 *= (lbl_80206DEC.unk4 - 30.0f);
+    r3 = 16384.0 * f1;
+    angle = f2 + r3;
+    if (angle > 0)
+    {
+        b->x = a->x;
+        b->y = 0.0f;
+        b->z = a->z;
+        if (c != NULL)
+        {
+            c->x = 0.0f;
+            c->y = 1.0f;
+            c->z = 0.0f;
+        }
+        return 1;
+    }
+    b->x = a->x;
+    b->y = mathutil_sin(angle) * f31;
+    b->z = a->z;
+    if (c != NULL)
+    {
+        float f2;
+
+        c->x = 0.0f;
+        c->y = 1.0f;
+        c->z = 0.0f;
+        sp14.x = a->x;
+        sp14.z = a->z;
+        f1 = mathutil_sum_of_sq(sp14.x, sp14.z);
+        if (f1 <= 1.19209289550781e-07f)
+            return 1;
+        f2 = -(mathutil_cos(angle) * f31) * mathutil_rsqrt(f1);
+        sp14.x *= f2;
+        sp14.z *= f2;
+        sp14.y = 1.0f;
+        f1 = sum_of_3_sq(sp14.x, sp14.y, sp14.z);
+        if (f1 <= 1.19209289550781e-07f)
+            return 1;
+        f2 = mathutil_rsqrt(f1);
+        sp14.x *= f2;
+        sp14.y *= f2;
+        sp14.z *= f2;
+        c->x = sp14.x;
+        c->y = sp14.y;
+        c->z = sp14.z;
+    }
+    return 1;
+}
+
+int get_stage_background(int stageId)
+{
+    int bg;
+
+    if (gameSubmode == SMD_GAME_ENDING_INIT)
+    {
+        switch (modeCtrl.unk4)
+        {
+        case 0:
+            bg = 1;
+            break;
+        case 1:
+            bg = 3;
+            break;
+        case 2:
+        default:
+            bg = 2;
+            break;
+        }
+    }
+    else
+        bg = stageBackgrounds[stageId];
+
+    if (bg < 0)
+        bg = 0;
+    else if (bg > 27)
+        bg = 27;
+    return bg;
+}
+
+int func_80045E4C(int stageId)
+{
+    int bg;
+    int backup = lbl_801F3A58.unk20;
+
+    lbl_801F3A58.unk20++;
+    bg = get_stage_background(stageId);
+    lbl_801F3A58.unk20 = backup;
+    return bg;
+}
+
+void func_80045E98(void)
+{
+    Vec sp20;
+    Vec sp14;
+    Vec sp8;
+    unsigned int r4 = FALSE;
+
+    if (decodedStageLzPtr->unk5C == NULL2)
+    {
+        struct Struct80209488 **r3 = lbl_80209488;
+
+        while (*r3 != NULL)
+        {
+            struct Struct80209488 *r5 = *r3;
+
+            if (r5 != NULL2 && r5->unk0 >= 0)
+            {
+                if (!r4)
+                {
+                    r4 = TRUE;
+                    sp20.x = r5->unk8 - r5->unk14;
+                    sp20.y = r5->unkC - r5->unk14;
+                    sp20.z = r5->unk10 - r5->unk14;
+
+                    sp14.x = r5->unk8 + r5->unk14;
+                    sp14.y = r5->unkC + r5->unk14;
+                    sp14.z = r5->unk10 + r5->unk14;
+                }
+                else
+                {
+                    if (r5->unk8 - r5->unk14 < sp20.x)
+                        sp20.x = r5->unk8 - r5->unk14;
+                    if (r5->unkC - r5->unk14 < sp20.y)
+                        sp20.y = r5->unkC - r5->unk14;
+                    if (r5->unk10 - r5->unk14 < sp20.z)
+                        sp20.z = r5->unk10 - r5->unk14;
+
+                    if (r5->unk8 + r5->unk14 > sp14.x)
+                        sp14.x = r5->unk8 + r5->unk14;
+                    if (r5->unkC + r5->unk14 > sp14.y)
+                        sp14.y = r5->unkC + r5->unk14;
+                    if (r5->unk10 + r5->unk14 > sp14.z)
+                        sp14.z = r5->unk10 + r5->unk14;
+                }
+            }
+            r3++;
+        }
+    }
+    else if (decodedStageGmaPtr == NULL2)
+    {
+        struct Struct8020A348 *r3 = lbl_8020A348;
+        int i;
+
+        for (i = 0; i < lbl_802F1F48; i++, r3++)
+        {
+            struct Struct8020A348_child *r5 = r3->unk0;
+            int r6;
+            for (r6 = 0; r6 < r3->unk4; r6++, r5++)
+            {
+                struct Struct80209488 *r7 = r5->unk4;
+
+                if (r7 != NULL2 && r7->unk0 >= 0)
+                {
+                    if (!r4)
+                    {
+                        r4 = TRUE;
+                        sp20.x = r7->unk8 - r7->unk14;
+                        sp20.y = r7->unkC - r7->unk14;
+                        sp20.z = r7->unk10 - r7->unk14;
+
+                        sp14.x = r7->unk8 + r7->unk14;
+                        sp14.y = r7->unkC + r7->unk14;
+                        sp14.z = r7->unk10 + r7->unk14;
+                    }
+                    else
+                    {
+                        if (r7->unk8 - r7->unk14 < sp20.x)
+                            sp20.x = r7->unk8 - r7->unk14;
+                        if (r7->unkC - r7->unk14 < sp20.y)
+                            sp20.y = r7->unkC - r7->unk14;
+                        if (r7->unk10 - r7->unk14 < sp20.z)
+                            sp20.z = r7->unk10 - r7->unk14;
+
+                        if (r7->unk8 + r7->unk14 > sp14.x)
+                            sp14.x = r7->unk8 + r7->unk14;
+                        if (r7->unkC + r7->unk14 > sp14.y)
+                            sp14.y = r7->unkC + r7->unk14;
+                        if (r7->unk10 + r7->unk14 > sp14.z)
+                            sp14.z = r7->unk10 + r7->unk14;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        struct Struct8020A348 *r3 = lbl_8020AB88;
+        int i;
+
+        for (i = 0; i < lbl_802F1F48; i++, r3++)
+        {
+            struct Struct8020A348_child *r5 = r3->unk0;
+            int r6;
+
+            for (r6 = 0; r6 < r3->unk4; r6++, r5++)
+            {
+                struct Struct80209488 *r7 = r5->unk4;
+
+                if (r7 != NULL2)
+                {
+                    if (!r4)
+                    {
+                        r4 = TRUE;
+                        sp20.x = r7->unk8 - r7->unk14;
+                        sp20.y = r7->unkC - r7->unk14;
+                        sp20.z = r7->unk10 - r7->unk14;
+
+                        sp14.x = r7->unk8 + r7->unk14;
+                        sp14.y = r7->unkC + r7->unk14;
+                        sp14.z = r7->unk10 + r7->unk14;
+                    }
+                    else
+                    {
+                        if (r7->unk8 - r7->unk14 < sp20.x)
+                            sp20.x = r7->unk8 - r7->unk14;
+                        if (r7->unkC - r7->unk14 < sp20.y)
+                            sp20.y = r7->unkC - r7->unk14;
+                        if (r7->unk10 - r7->unk14 < sp20.z)
+                            sp20.z = r7->unk10 - r7->unk14;
+
+                        if (r7->unk8 + r7->unk14 > sp14.x)
+                            sp14.x = r7->unk8 + r7->unk14;
+                        if (r7->unkC + r7->unk14 > sp14.y)
+                            sp14.y = r7->unkC + r7->unk14;
+                        if (r7->unk10 + r7->unk14 > sp14.z)
+                            sp14.z = r7->unk10 + r7->unk14;
+                    }
+                }
+            }
+        }
+    }
+
+    if (r4)
+    {
+        lbl_8020ADD4.x = (sp14.x + sp20.x) * 0.5;
+        lbl_8020ADD4.y = (sp14.y + sp20.y) * 0.5;
+        lbl_8020ADD4.z = (sp14.z + sp20.z) * 0.5;
+
+        sp8.x = (sp14.x - sp20.x) * 0.5;
+        sp8.y = (sp14.y - sp20.y) * 0.5;
+        sp8.z = (sp14.z - sp20.z) * 0.5;
+        lbl_8020ADD4.w = mathutil_sqrt(sum_of_3_sq(sp8.x, sp8.y, sp8.z));//mathutil_vec_mag(&sp8);
+    }
+    else
+    {
+        lbl_8020ADD4.x = 0.0f;
+        lbl_8020ADD4.y = 0.0f;
+        lbl_8020ADD4.z = 0.0f;
+        lbl_8020ADD4.w = 50.0f;
+    }
 }
 
 /*
