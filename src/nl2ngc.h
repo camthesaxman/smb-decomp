@@ -17,7 +17,7 @@ struct NaomiVtxWithColor
 struct NaomiDispList
 {
     u32 unk0;
-    u32 vtxCount;
+    u32 faceCount;
     u8 vtxData[];  // array of NaomiVtxWithNormal or NaomiVtxWithColor structs
 };
 

@@ -881,13 +881,13 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
 
     while (dl < (struct NaomiDispList *)end)
     {
-        int vtxCount;
+        int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
         struct NaomiVtxWithNormal *vtx;
         u8 r4 = dl->unk0 & 3;
 
-        vtxCount = dl->vtxCount;
+        faceCount = dl->faceCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
@@ -896,8 +896,8 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
 
         if (dl->unk0 & (1 << 4))
         {
-            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, vtxCount);
-            while (vtxCount > 0)
+            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
+            while (faceCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
                 {
@@ -915,14 +915,14 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
                     GXTexCoord2f32(vtx->s, vtx->t);
                     vtxData += 8;
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
         else if (dl->unk0 & (1 << 3))
         {
-            GXBegin(GX_TRIANGLES, GX_VTXFMT0, vtxCount * 3);
-            while (vtxCount > 0)
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
+            while (faceCount > 0)
             {
                 for (i = 0; i < 3; i++)
                 {
@@ -943,14 +943,14 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
                         vtxData += 8;
                     }
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
         else if (dl->unk0 & (1 << 2))
         {
-            GXBegin(GX_QUADS, GX_VTXFMT0, vtxCount * 4);
-            while (vtxCount > 0)
+            GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
+            while (faceCount > 0)
             {
                 for (i = 4; i > 0; i--)
                 {
@@ -971,7 +971,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
                         vtxData += 8;
                     }
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
@@ -991,13 +991,13 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
 
     while (dl < (struct NaomiDispList *)end)
     {
-        int vtxCount;
+        int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
         struct NaomiVtxWithColor *vtx;
         u8 r4 = dl->unk0 & 3;
 
-        vtxCount = dl->vtxCount;
+        faceCount = dl->faceCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
@@ -1006,8 +1006,8 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
 
         if (dl->unk0 & (1 << 4))
         {
-            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, vtxCount);
-            while (vtxCount > 0)
+            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
+            while (faceCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
                 {
@@ -1037,14 +1037,14 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
                     GXTexCoord2f32(vtx->s, vtx->t);
                     vtxData += 8;
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
         else if (dl->unk0 & (1 << 3))
         {
-            GXBegin(GX_TRIANGLES, GX_VTXFMT0, vtxCount * 3);
-            while (vtxCount > 0)
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
+            while (faceCount > 0)
             {
                 for (i = 0; i < 3; i++)
                 {
@@ -1077,14 +1077,14 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
                         vtxData += 8;
                     }
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
         else if (dl->unk0 & (1 << 2))
         {
-            GXBegin(GX_QUADS, GX_VTXFMT0, vtxCount * 4);
-            while (vtxCount > 0)
+            GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
+            while (faceCount > 0)
             {
                 for (i = 4; i > 0; i--)
                 {
@@ -1117,7 +1117,7 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
                         vtxData += 8;
                     }
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
@@ -1384,13 +1384,13 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 
     while (dl < (struct NaomiDispList *)end)
     {
-        int vtxCount;
+        int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
         struct NaomiVtxWithColor *vtx;
         u8 r4 = dl->unk0 & 3;
 
-        vtxCount = dl->vtxCount;
+        faceCount = dl->faceCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
@@ -1399,8 +1399,8 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 
         if (dl->unk0 & (1 << 4))
         {
-            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, vtxCount);
-            while (vtxCount > 0)
+            GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
+            while (faceCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
                 {
@@ -1414,14 +1414,14 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
                     handle_color_vtx(vtx);
                     vtxData += 8;
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
         else if (dl->unk0 & (1 << 3))
         {
-            GXBegin(GX_TRIANGLES, GX_VTXFMT0, vtxCount * 3);
-            while (vtxCount > 0)
+            GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
+            while (faceCount > 0)
             {
                 for (i = 0; i < 3; i++)
                 {
@@ -1438,14 +1438,14 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
                         vtxData += 8;
                     }
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
         else if (dl->unk0 & (1 << 2))
         {
-            GXBegin(GX_QUADS, GX_VTXFMT0, vtxCount * 4);
-            while (vtxCount > 0)
+            GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
+            while (faceCount > 0)
             {
                 for (i = 4; i > 0; i--)
                 {
@@ -1462,7 +1462,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
                         vtxData += 8;
                     }
                 }
-                vtxCount--;
+                faceCount--;
             }
             GXEnd();
         }
