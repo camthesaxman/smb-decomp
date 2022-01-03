@@ -88,7 +88,7 @@ struct Ball
     s16 unk60;
     s16 unk62;
     s16 unk64;
-    s16 unk66;
+    s16 oldModelId;  // id of Naomi model
     /*0x68*/ float currRadius;
     float unk6C;
     /*0x70*/ float restitution;

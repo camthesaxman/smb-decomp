@@ -664,48 +664,53 @@ struct Ball_child *func_800380A8(int a, int b, void (*c)(struct Ball_child *, in
 
 struct BallPhysicsParams
 {
-    s16 unk0;
+    s16 oldModelId;
     float ballRadius;
-    float unk8;
+    float unk8;  // gravity? acceleration?
     float restitution;  // controls bounciness
 };
 
 struct BallPhysicsParams ballPhysicsParams[] =
 {
     {0, 0.5f, 0.009799992f, 0.5f},
-    {6, 0.5f, 0.02177776f, 0.1f},
+    {6, 0.5f,  0.02177776f, 0.1f},
 };
 
-s16 lbl_801B7B98[] = { 0x12, 0x5D, 0x5E, 0x00 };  // + 0x20
+s16 clearHemisphereOutsideParts[] = { 18, 93, 94 };
 
-s16 lbl_801B7BA0[] = { 0x11, 0x65, 0x66, 0x00 };  // + 0x28
+s16 clearHemisphereInsideParts[] = { 17, 101, 102 };
 
-s16 lbl_801B7BA8[][9] =
+/* Model IDs for ball parts for each color ball (3 LODs for each part)
+ * Only the red, blue, yellow, and green ball colors are actually used
+ * in the game.
+ */
+s16 coloredBallPartModelIDs[][9] =
 {
-    {0x31, 0xB6, 0xB7, 0x32, 0xB8, 0x5F, 0x39, 0xB9, 0x60},
-    {0x02, 0xB2, 0xB3, 0x03, 0xB4, 0xB5, 0x3F, 0xBB, 0xBC},
-    {0x45, 0xBD, 0xBE, 0x46, 0x62, 0xBF, 0x3B, 0x61, 0xBA},
-    {0x15, 0x67, 0x68, 0x16, 0x69, 0x6A, 0x3D, 0x6B, 0x6C},
-    {0x2E, 0x2E, 0x2E, 0x2F, 0x2F, 0x2F, 0x41, 0x39, 0x39},
-    {0x36, 0x36, 0x36, 0x37, 0x37, 0x37, 0x3E, 0x39, 0x39},
-    {0x27, 0x27, 0x27, 0x28, 0x28, 0x28, 0x3A, 0x39, 0x39},
-    {0x05, 0x05, 0x05, 0x06, 0x06, 0x06, 0x40, 0x39, 0x39},
-    {0x33, 0x33, 0x33, 0x34, 0x34, 0x34, 0x42, 0x39, 0x39},
-    {0x47, 0x47, 0x47, 0x48, 0x48, 0x48, 0x3C, 0x39, 0x39},
+      /* inside  */   /* outside  */    /*  edge  */
+    { 49, 182, 183,    50, 184,  95,    57, 185,  96},  // red ball
+    {  2, 178, 179,     3, 180, 181,    63, 187, 188},  // blue ball
+    { 69, 189, 190,    70,  98, 191,    59,  97, 186},  // yellow ball
+    { 21, 103, 104,    22, 105, 106,    61, 107, 108},  // green ball
+    { 46,  46,  46,    47,  47,  47,    65,  57,  57},  // purple ball
+    { 54,  54,  54,    55,  55,  55,    62,  57,  57},  // sky-blue ball
+    { 39,  39,  39,    40,  40,  40,    58,  57,  57},  // orange ball
+    {  5,   5,   5,     6,   6,   6,    64,  57,  57},  // bluish-purple ball
+    { 51,  51,  51,    52,  52,  52,    66,  57,  57},  // reddish-purple ball
+    { 71,  71,  71,    72,  72,  72,    60,  57,  57},  // yellowish-green ball
 };
 
 GXColor ballShadowColors[] =  // shadow colors
 {
-    {0x47, 0x5F, 0x5F, 0xFF},
-    {0x5F, 0x53, 0x47, 0xFF},
-    {0x4D, 0x47, 0x5F, 0xFF},
-    {0x60, 0x48, 0x60, 0xFF},
-    {0x4D, 0x5F, 0x47, 0xFF},
-    {0x5F, 0x4D, 0x47, 0xFF},
-    {0x47, 0x50, 0x5F, 0xFF},
-    {0x59, 0x5F, 0x47, 0xFF},
-    {0x47, 0x5F, 0x50, 0xFF},
-    {0x59, 0x47, 0x5F, 0xFF},
+    {0x47, 0x5F, 0x5F, 0xFF},  // red ball
+    {0x5F, 0x53, 0x47, 0xFF},  // blue ball
+    {0x4D, 0x47, 0x5F, 0xFF},  // yellow ball
+    {0x60, 0x48, 0x60, 0xFF},  // green ball
+    {0x4D, 0x5F, 0x47, 0xFF},  // purple ball
+    {0x5F, 0x4D, 0x47, 0xFF},  // sky-blue ball
+    {0x47, 0x50, 0x5F, 0xFF},  // orange ball
+    {0x59, 0x5F, 0x47, 0xFF},  // bluish-purple ball
+    {0x47, 0x5F, 0x50, 0xFF},  // reddish-purple ball
+    {0x59, 0x47, 0x5F, 0xFF},  // yellowish-green ball
 };
 
 void (*ballFuncs[])(struct Ball *) =
@@ -783,9 +788,6 @@ struct Color3f lbl_801B7CF8[] =  // + 0x180
     {2.242077543e-44, 4, 80},
     {0.15f, 0, 0},
 };
-
-u8 lbl_801B7EC0[] = {1, 0, 0, 0};  // + 0x348
-GXTexObj lbl_801B7EC4 = {0};  // + 0x34C
 
 static inline float sq_mag(register Vec *vec)
 {
@@ -1049,8 +1051,10 @@ void func_80038840(void)
         if ((lbl_801EEC90.unk0 & (1<<(31-0x1D)))
          && func_8000E4D0(&ball->pos) < 0.0f)
             continue;
+
         if (!(dipSwitches & DIP_OLD_BALL))
         {
+            // Draw new ball
             mathutil_mtxA_from_mtxB();
             r22 = func_80085698(&ball->pos);
             r23 = (void *)func_80085B88(16);
@@ -1061,6 +1065,8 @@ void func_80038840(void)
             continue;
         }
 
+        // The following code is for drawing the old arcade ball
+
         func_8000E1A4(ball->unk15C[currentCameraStructPtr->unk204]);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_mult_right(ball->unk30);
@@ -1069,14 +1075,14 @@ void func_80038840(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            struct NaomiModel **var = &lbl_802F1B04[ball->unk66];
-            //func_80033B14(lbl_802F1B04_->unk4[ball->unk66], 0.3f);
+            struct NaomiModel **var = &lbl_802F1B04[ball->oldModelId];
+            //func_80033B14(lbl_802F1B04_->unk4[ball->oldModelId], 0.3f);
             func_80033B14(var[1], 0.3f);
         }
         else
         {
-            struct NaomiModel **var = &lbl_802F1B04[ball->unk66];
-            //func_80033AD4(lbl_802F1B04_->unk4[ball->unk66]);
+            struct NaomiModel **var = &lbl_802F1B04[ball->oldModelId];
+            //func_80033AD4(lbl_802F1B04_->unk4[ball->oldModelId]);
             func_80033AD4(var[1]);
         }
 
@@ -1108,12 +1114,15 @@ void func_80038840(void)
         mathutil_mtxA_scale_s(ball->modelScale);
         func_80030BA8(ball->modelScale);
         //func_80033AD4(lbl_802F1B04->unkA0);
-        func_80033AD4(lbl_802F1B04[0x28]);
+        func_80033AD4(lbl_802F1B04[0x28]);  // draw ball edge
         mathutil_mtxA_pop();
 
         func_8000E3BC();
     }
 }
+
+u8 lbl_801B7EC0[] = {1, 0, 0, 0};  // + 0x348
+GXTexObj lbl_801B7EC4 = {0};  // + 0x34C
 
 void func_80038AB4(void)
 {
@@ -2570,7 +2579,7 @@ void func_8003C4A0(struct Ball *ball, int b)
 {
     struct BallPhysicsParams *physParams = &ballPhysicsParams[b];
 
-    ball->unk66 = physParams->unk0;
+    ball->oldModelId = physParams->oldModelId;
     ball->currRadius = physParams->ballRadius;
     ball->targetRadius = physParams->ballRadius;
     ball->modelScale = 1.0f;
@@ -2631,7 +2640,7 @@ void func_8003C550(struct Ball *ball)
     func_8004CF08(&sp30);
 
     memset(&sp30, 0, sizeof(sp30));
-    
+
     sp30.unk14 = ball->unk2E;
     sp30.unk8 = 0x13;
     sp30.unk34 = spC;
@@ -2980,12 +2989,12 @@ void animate_ball_size_change(struct Ball *ball)
 
 void g_ball_draw(struct Ball *ball, int unused)
 {
-    struct GMAModelEntry *r31 = lbl_802F1CC8->modelEntries;
-    s16 *r30 = lbl_801B7BA8[ball->colorId];
+    struct GMAModelEntry *entries = lbl_802F1CC8->modelEntries;
+    s16 *coloredParts = coloredBallPartModelIDs[ball->colorId];
     Vec sp18;
     u8 unused2[8];
     float f31;  // distance from camera, maybe?
-    int r27;  // level of detail?
+    int lod;  // level of detail?
 
     mathutil_mtxA_push();
     mathutil_mtxA_from_mtx(currentCameraStructPtr->unk144);
@@ -2996,24 +3005,35 @@ void g_ball_draw(struct Ball *ball, int unused)
     func_8000E1A4(ball->unk15C[currentCameraStructPtr->unk204] * 0.5 + 0.5);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
 
-    r27 = 0;
+    lod = 0;
     if (modeCtrl.unk30 > 1 && f31 < 0.17299999296665192f)
     {
-        r27 = 1;
+        lod = 1;
         if (f31 < 0.10199999809265137f)
-            r27 = 2;
+            lod = 2;
     }
 
+    // Draw inside of clear hemisphere
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(r31[lbl_801B7BA0[r27]].modelOffset);
+    g_avdisp_draw_model_2(entries[clearHemisphereInsideParts[lod]].modelOffset);
+
+    // Draw inside of colored hemisphere
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(r31[r30[r27]].modelOffset);
+    g_avdisp_draw_model_2(entries[coloredParts[0 + lod]].modelOffset);
+
+    // Draw edge ring between ball halves
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(r31[r30[r27 + 6]].modelOffset);
+    g_avdisp_draw_model_2(entries[coloredParts[6 + lod]].modelOffset);
+
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-    g_avdisp_draw_model_2(r31[lbl_801B7B98[r27]].modelOffset);
+
+    // Draw outside of clear hemisphere
+    g_avdisp_draw_model_2(entries[clearHemisphereOutsideParts[lod]].modelOffset);
+
+    // Draw outside of colored hemisphere
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(r31[r30[r27 + 3]].modelOffset);
+    g_avdisp_draw_model_2(entries[coloredParts[3 + lod]].modelOffset);
+
     func_8000E3BC();
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 }

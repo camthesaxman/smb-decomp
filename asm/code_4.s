@@ -17145,9 +17145,9 @@ lbl_800BCCE4:
 /* 800BCD2C 000B8C4C  4E 80 00 20 */	blr
 lbl_800BCD30:
 /* 800BCD30 000B8C50  7C 08 02 A6 */	mflr r0
-/* 800BCD34 000B8C54  3C 80 80 1B */	lis r4, lbl_801B7BA8@ha
+/* 800BCD34 000B8C54  3C 80 80 1B */	lis r4, coloredBallPartModelIDs@ha
 /* 800BCD38 000B8C58  90 01 00 04 */	stw r0, 4(r1)
-/* 800BCD3C 000B8C5C  38 04 7B A8 */	addi r0, r4, lbl_801B7BA8@l
+/* 800BCD3C 000B8C5C  38 04 7B A8 */	addi r0, r4, coloredBallPartModelIDs@l
 /* 800BCD40 000B8C60  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 800BCD44 000B8C64  93 E1 00 1C */	stw r31, 0x1c(r1)
 /* 800BCD48 000B8C68  93 C1 00 18 */	stw r30, 0x18(r1)
@@ -17180,8 +17180,8 @@ lbl_800BCD30:
 /* 800BCDB4 000B8CD4  38 80 00 03 */	li r4, 3
 /* 800BCDB8 000B8CD8  38 A0 00 00 */	li r5, 0
 /* 800BCDBC 000B8CDC  4B FD 18 0D */	bl avdisp_set_z_mode
-/* 800BCDC0 000B8CE0  3C 60 80 1B */	lis r3, lbl_801B7BA0@ha
-/* 800BCDC4 000B8CE4  A8 03 7B A0 */	lha r0, lbl_801B7BA0@l(r3)
+/* 800BCDC0 000B8CE0  3C 60 80 1B */	lis r3, clearHemisphereInsideParts@ha
+/* 800BCDC4 000B8CE4  A8 03 7B A0 */	lha r0, clearHemisphereInsideParts@l(r3)
 /* 800BCDC8 000B8CE8  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCDCC 000B8CEC  7C 7F 00 2E */	lwzx r3, r31, r0
 /* 800BCDD0 000B8CF0  4B FD 1C 95 */	bl g_avdisp_draw_model_2
@@ -17197,8 +17197,8 @@ lbl_800BCD30:
 /* 800BCDF8 000B8D18  38 80 00 03 */	li r4, 3
 /* 800BCDFC 000B8D1C  38 A0 00 01 */	li r5, 1
 /* 800BCE00 000B8D20  4B FD 17 C9 */	bl avdisp_set_z_mode
-/* 800BCE04 000B8D24  3C 60 80 1B */	lis r3, lbl_801B7B98@ha
-/* 800BCE08 000B8D28  A8 03 7B 98 */	lha r0, lbl_801B7B98@l(r3)
+/* 800BCE04 000B8D24  3C 60 80 1B */	lis r3, clearHemisphereOutsideParts@ha
+/* 800BCE08 000B8D28  A8 03 7B 98 */	lha r0, clearHemisphereOutsideParts@l(r3)
 /* 800BCE0C 000B8D2C  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCE10 000B8D30  7C 7F 00 2E */	lwzx r3, r31, r0
 /* 800BCE14 000B8D34  4B FD 1C 51 */	bl g_avdisp_draw_model_2
@@ -21468,8 +21468,8 @@ lbl_800C0C94:
 /* 800C0CFC 000BCC1C  38 80 00 03 */	li r4, 3
 /* 800C0D00 000BCC20  38 A0 00 00 */	li r5, 0
 /* 800C0D04 000BCC24  4B FC D8 C5 */	bl avdisp_set_z_mode
-/* 800C0D08 000BCC28  3C 60 80 1B */	lis r3, lbl_801B7BA0@ha
-/* 800C0D0C 000BCC2C  A8 03 7B A0 */	lha r0, lbl_801B7BA0@l(r3)
+/* 800C0D08 000BCC28  3C 60 80 1B */	lis r3, clearHemisphereInsideParts@ha
+/* 800C0D0C 000BCC2C  A8 03 7B A0 */	lha r0, clearHemisphereInsideParts@l(r3)
 /* 800C0D10 000BCC30  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D14 000BCC34  7C 7F 00 2E */	lwzx r3, r31, r0
 /* 800C0D18 000BCC38  4B FC D7 85 */	bl g_avdisp_maybe_draw_model_2
@@ -21477,16 +21477,16 @@ lbl_800C0C94:
 /* 800C0D20 000BCC40  38 80 00 03 */	li r4, 3
 /* 800C0D24 000BCC44  38 A0 00 01 */	li r5, 1
 /* 800C0D28 000BCC48  4B FC D8 A1 */	bl avdisp_set_z_mode
-/* 800C0D2C 000BCC4C  3C 60 80 1B */	lis r3, lbl_801B7B98@ha
-/* 800C0D30 000BCC50  A8 03 7B 98 */	lha r0, lbl_801B7B98@l(r3)
+/* 800C0D2C 000BCC4C  3C 60 80 1B */	lis r3, clearHemisphereOutsideParts@ha
+/* 800C0D30 000BCC50  A8 03 7B 98 */	lha r0, clearHemisphereOutsideParts@l(r3)
 /* 800C0D34 000BCC54  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D38 000BCC58  7C 7F 00 2E */	lwzx r3, r31, r0
 /* 800C0D3C 000BCC5C  4B FC D7 61 */	bl g_avdisp_maybe_draw_model_2
 /* 800C0D40 000BCC60  48 00 00 64 */	b lbl_800C0DA4
 lbl_800C0D44:
 /* 800C0D44 000BCC64  1C 84 00 12 */	mulli r4, r4, 0x12
-/* 800C0D48 000BCC68  3C 60 80 1B */	lis r3, lbl_801B7BA8@ha
-/* 800C0D4C 000BCC6C  38 03 7B A8 */	addi r0, r3, lbl_801B7BA8@l
+/* 800C0D48 000BCC68  3C 60 80 1B */	lis r3, coloredBallPartModelIDs@ha
+/* 800C0D4C 000BCC6C  38 03 7B A8 */	addi r0, r3, coloredBallPartModelIDs@l
 /* 800C0D50 000BCC70  7F C0 22 14 */	add r30, r0, r4
 /* 800C0D54 000BCC74  38 60 00 01 */	li r3, 1
 /* 800C0D58 000BCC78  38 80 00 03 */	li r4, 3

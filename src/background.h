@@ -1,3 +1,34 @@
+enum
+{
+    BG_TYPE_BLUESKY_A = 1,
+    BG_TYPE_NIGHT_B,
+    BG_TYPE_SUNSET_C,
+    BG_TYPE_WATER_C,
+    BG_TYPE_STORM_D,  // 5
+    BG_TYPE_ICE_E,
+    BG_TYPE_SAND_G,
+    BG_TYPE_SPACE_H,
+    BG_TYPE_CAVE_I,
+    BG_TYPE_BONUS_J,  // 10
+    BG_TYPE_EXTRAMASTER_J,
+    BG_TYPE_E3,
+    BG_TYPE_JUN,
+    BG_TYPE_WAT,
+    BG_TYPE_NIG,  // 15
+    BG_TYPE_SUN,
+    BG_TYPE_SPA,
+    BG_TYPE_SND,
+    BG_TYPE_ICE2,
+    BG_TYPE_STM,  // 20
+    BG_TYPE_BNS,
+    BG_TYPE_PIL,
+    BG_TYPE_BIL,
+    BG_TYPE_GOL,
+    BG_TYPE_BOW,  // 25
+    BG_TYPE_MST,
+    BG_TYPE_END,
+};
+
 struct BackgroundInfo  // size = 0xA8
 {
     s16 bgId;
