@@ -12,6 +12,8 @@
 #include "mode.h"
 #include "nl2ngc.h"
 
+#include "../data/common.gma.h"
+
 float lbl_80205E20[4];
 Mtx lbl_80205E30;
 struct Ball ballInfo[8];
@@ -676,9 +678,8 @@ struct BallPhysicsParams ballPhysicsParams[] =
     {6, 0.5f,  0.02177776f, 0.1f},
 };
 
-s16 clearHemisphereOutsideParts[] = { 18, 93, 94 };
-
-s16 clearHemisphereInsideParts[] = { 17, 101, 102 };
+s16 clearHemisphereOutsideParts[] = { CLEAR_HEMI_OUTSIDE, CLEAR_HEMI_OUTSIDE_L2, CLEAR_HEMI_OUTSIDE_L3 };
+s16 clearHemisphereInsideParts[]  = { CLEAR_HEMI_INSIDE,  CLEAR_HEMI_INSIDE_L2,  CLEAR_HEMI_INSIDE_L3  };
 
 /* Model IDs for ball parts for each color ball (3 LODs for each part)
  * Only the red, blue, yellow, and green ball colors are actually used
@@ -686,17 +687,67 @@ s16 clearHemisphereInsideParts[] = { 17, 101, 102 };
  */
 s16 coloredBallPartModelIDs[][9] =
 {
-      /* inside  */   /* outside  */    /*  edge  */
-    { 49, 182, 183,    50, 184,  95,    57, 185,  96},  // red ball
-    {  2, 178, 179,     3, 180, 181,    63, 187, 188},  // blue ball
-    { 69, 189, 190,    70,  98, 191,    59,  97, 186},  // yellow ball
-    { 21, 103, 104,    22, 105, 106,    61, 107, 108},  // green ball
-    { 46,  46,  46,    47,  47,  47,    65,  57,  57},  // purple ball
-    { 54,  54,  54,    55,  55,  55,    62,  57,  57},  // sky-blue ball
-    { 39,  39,  39,    40,  40,  40,    58,  57,  57},  // orange ball
-    {  5,   5,   5,     6,   6,   6,    64,  57,  57},  // bluish-purple ball
-    { 51,  51,  51,    52,  52,  52,    66,  57,  57},  // reddish-purple ball
-    { 71,  71,  71,    72,  72,  72,    60,  57,  57},  // yellowish-green ball
+        /*    LOD 1     */  /*      LOD 2      */  /*      LOD 3      */
+    // red ball
+    {
+        RED_HEMI_INSIDE,    RED_HEMI_INSIDE_L2,    RED_HEMI_INSIDE_L3,
+        RED_HEMI_OUTSIDE,   RED_HEMI_OUTSIDE_L2,   RED_HEMI_OUTSIDE_L3,
+        SPHERE_EDGE_01_RED, SPHERE_EDGE_01_RED_L2, SPHERE_EDGE_01_RED_L3,
+    },
+    // blue ball
+    {
+        BLU_HEMI_INSIDE,    BLU_HEMI_INSIDE_L2,    BLU_HEMI_INSIDE_L3,
+        BLU_HEMI_OUTSIDE,   BLU_HEMI_OUTSIDE_L2,   BLU_HEMI_OUTSIDE_L3,
+        SPHERE_EDGE_07_BLU, SPHERE_EDGE_07_BLU_L2, SPHERE_EDGE_07_BLU_L3,
+    },
+    // yellow ball
+    {
+        YEL_HEMI_INSIDE,    YEL_HEMI_INSIDE_L2,    YEL_HEMI_INSIDE_L3,
+        YEL_HEMI_OUTSIDE,   YEL_HEMI_OUTSIDE_L2,   YEL_HEMI_OUTSIDE_L3,
+        SPHERE_EDGE_03_YEL, SPHERE_EDGE_03_YEL_L2, SPHERE_EDGE_03_YEL_L3,
+    },
+    // green ball
+    {
+        GRE_HEMI_INSIDE,    GRE_HEMI_INSIDE_L2,    GRE_HEMI_INSIDE_L3,
+        GRE_HEMI_OUTSIDE,   GRE_HEMI_OUTSIDE_L2,   GRE_HEMI_OUTSIDE_L3,
+        SPHERE_EDGE_05_GRE, SPHERE_EDGE_05_GRE_L2, SPHERE_EDGE_05_GRE_L3,
+    },
+    // purple ball
+    {
+        PUR_HEMI_INSIDE,    PUR_HEMI_INSIDE,       PUR_HEMI_INSIDE,
+        PUR_HEMI_OUTSIDE,   PUR_HEMI_OUTSIDE,      PUR_HEMI_OUTSIDE,
+        SPHERE_EDGE_09_PUR, SPHERE_EDGE_01_RED,    SPHERE_EDGE_01_RED,
+    },
+    // sky-blue ball
+    {
+        SKY_HEMI_INSIDE,    SKY_HEMI_INSIDE,       SKY_HEMI_INSIDE,
+        SKY_HEMI_OUTSIDE,   SKY_HEMI_OUTSIDE,      SKY_HEMI_OUTSIDE,
+        SPHERE_EDGE_06_SKY, SPHERE_EDGE_01_RED,    SPHERE_EDGE_01_RED,
+    },
+    // orange ball
+    {
+        ORA_HEMI_INSIDE,    ORA_HEMI_INSIDE,       ORA_HEMI_INSIDE,
+        ORA_HEMI_OUTSIDE,   ORA_HEMI_OUTSIDE,      ORA_HEMI_OUTSIDE,
+        SPHERE_EDGE_02_ORA, SPHERE_EDGE_01_RED,    SPHERE_EDGE_01_RED,
+    },
+    // bluish-purple ball
+    {
+        BPU_HEMI_INSIDE,    BPU_HEMI_INSIDE,       BPU_HEMI_INSIDE,
+        BPU_HEMI_OUTSIDE,   BPU_HEMI_OUTSIDE,      BPU_HEMI_OUTSIDE,
+        SPHERE_EDGE_08_BPU, SPHERE_EDGE_01_RED,    SPHERE_EDGE_01_RED,
+    },
+    // reddish-purple ball
+    {
+        RPU_HEMI_INSIDE,    RPU_HEMI_INSIDE,     RPU_HEMI_INSIDE,
+        RPU_HEMI_OUTSIDE,   RPU_HEMI_OUTSIDE,    RPU_HEMI_OUTSIDE,
+        SPHERE_EDGE_10_RPU, SPHERE_EDGE_01_RED,  SPHERE_EDGE_01_RED
+    },
+    // yellowish-green ball
+    {
+        YG_HEMI_INSIDE,     YG_HEMI_INSIDE,      YG_HEMI_INSIDE,
+        YG_HEMI_OUTSIDE,    YG_HEMI_OUTSIDE,     YG_HEMI_OUTSIDE,
+        SPHERE_EDGE_04_YG,  SPHERE_EDGE_01_RED,  SPHERE_EDGE_01_RED
+    },
 };
 
 GXColor ballShadowColors[] =  // shadow colors
@@ -1075,23 +1126,18 @@ void func_80038840(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            struct NaomiModel **var = &lbl_802F1B04[ball->oldModelId];
-            //func_80033B14(lbl_802F1B04_->unk4[ball->oldModelId], 0.3f);
-            func_80033B14(var[1], 0.3f);
+            func_80033B14(NAOMIOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
         }
         else
         {
-            struct NaomiModel **var = &lbl_802F1B04[ball->oldModelId];
-            //func_80033AD4(lbl_802F1B04_->unk4[ball->oldModelId]);
-            func_80033AD4(var[1]);
+            func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, ball->oldModelId));
         }
 
         if (func != NULL)
         {
             mathutil_mtxA_push();
             mathutil_mtxA_from_mtx(ball->unk30);
-            //if (r25(lbl_802F1B04->unkE0, lbl_802F1B4C) != 0)
-            if (func(lbl_802F1B04[0x38], lbl_802F1B4C) != 0)
+            if (func(NAOMIOBJ_MODEL(naomiCommonObj, 0x37), lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
                 g_call_draw_naomi_model_1(lbl_802F1B4C);
@@ -1105,7 +1151,7 @@ void func_80038840(void)
         {
             g_avdisp_set_some_func_1(bgfunc);
             func_8009AA24(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_3(lbl_802F1CC8->modelEntries[0x14].modelOffset);
+            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
             g_avdisp_set_some_func_1(NULL);
         }
 
@@ -1113,8 +1159,7 @@ void func_80038840(void)
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
         func_80030BA8(ball->modelScale);
-        //func_80033AD4(lbl_802F1B04->unkA0);
-        func_80033AD4(lbl_802F1B04[0x28]);  // draw ball edge
+        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x27));  // draw ball edge
         mathutil_mtxA_pop();
 
         func_8000E3BC();
@@ -1192,7 +1237,7 @@ void func_80038AB4(void)
     sp18.unk20.z = 0.0f;
     mathutil_mtxA_tf_vec(&sp18.unk20, &sp18.unk20);
 
-    tex1 = lbl_802F1CC8->modelEntries[0x5A].modelOffset->texObjs;
+    tex1 = commonGma->modelEntries[circle_white].modelOffset->texObjs;
     GXInitTexObj((tex2 = &lbl_801B7EC4),
         GXGetTexObjData(tex1),
         GXGetTexObjWidth(tex1),
@@ -1250,7 +1295,7 @@ void func_80038DF4(void)
 
     sp30.unk20 = 0.025f;
     sp30.unk24 = 0.05f;
-    sp30.unk28 = lbl_802F1CC8->modelEntries[0x4E].modelOffset;
+    sp30.unk28 = commonGma->modelEntries[polyshadow01].modelOffset;
 
     ball = &ballInfo[0];
     r25 = spritePoolInfo.unkC;
@@ -2989,7 +3034,7 @@ void animate_ball_size_change(struct Ball *ball)
 
 void g_ball_draw(struct Ball *ball, int unused)
 {
-    struct GMAModelEntry *entries = lbl_802F1CC8->modelEntries;
+    struct GMAModelEntry *entries = commonGma->modelEntries;
     s16 *coloredParts = coloredBallPartModelIDs[ball->colorId];
     Vec sp18;
     u8 unused2[8];
@@ -3059,7 +3104,7 @@ void lbl_8003D928(struct Struct80038840 *a)
     {
         mathutil_mtxA_push();
         mathutil_mtxA_from_mtx(ball->unk30);
-        if (r30(lbl_802F1B04[0x38], lbl_802F1B4C) != 0)
+        if (r30(NAOMIOBJ_MODEL(naomiCommonObj, 0x37), lbl_802F1B4C) != 0)
         {
             mathutil_mtxA_pop();
             mathutil_mtxA_push();
@@ -3076,7 +3121,7 @@ void lbl_8003D928(struct Struct80038840 *a)
     {
         g_avdisp_set_some_func_1(bgfunc);
         func_8009AA24(mathutilData->mtxA, 0);
-        g_avdisp_maybe_draw_model_2(lbl_802F1CC8->modelEntries[0x14].modelOffset);
+        g_avdisp_maybe_draw_model_2(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
         g_avdisp_set_some_func_1(NULL);
     }
 }

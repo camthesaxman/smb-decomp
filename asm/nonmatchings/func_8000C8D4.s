@@ -89,7 +89,7 @@ lbl_8000CA2C:
 /* 8000CA2C 0000894C  80 6D 99 80 */	lwz r3, mathutilData  //@sda21(r13)
 /* 8000CA30 00008950  38 80 00 00 */	li r4, 0
 /* 8000CA34 00008954  48 08 DF F1 */	bl func_8009AA24
-/* 8000CA38 00008958  80 8D 9A E8 */	lwz r4, lbl_802F1CC8  //@sda21(r13)
+/* 8000CA38 00008958  80 8D 9A E8 */	lwz r4, commonGma  //@sda21(r13)
 /* 8000CA3C 0000895C  38 6D 81 00 */	addi r3, r13, lbl_802F02E0  //@sda21
 /* 8000CA40 00008960  7C 03 BA 2E */	lhzx r0, r3, r23
 /* 8000CA44 00008964  80 64 00 08 */	lwz r3, 8(r4)

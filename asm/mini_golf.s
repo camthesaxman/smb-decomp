@@ -8370,12 +8370,12 @@ lbl_00007BC8:
 /* 00007C28 418202F0 */ beq lbl_00007F18
 /* 00007C2C 28030400 */ cmplwi r3, 0x400
 /* 00007C30 418202E8 */ beq lbl_00007F18
-/* 00007C34 3C600000 */ lis r3, lbl_802F1CC8@ha
+/* 00007C34 3C600000 */ lis r3, commonGma@ha
 /* 00007C38 3CC00000 */ lis r6, ballInfo@ha
 /* 00007C3C 3CA00000 */ lis r5, lbl_802F1B34@ha
 /* 00007C40 3C800000 */ lis r4, mathutilData@ha
 /* 00007C44 3CE00000 */ lis r7, decodedStageLzPtr@ha
-/* 00007C48 3A630000 */ addi r19, r3, lbl_802F1CC8@l
+/* 00007C48 3A630000 */ addi r19, r3, commonGma@l
 /* 00007C4C 3B460000 */ addi r26, r6, ballInfo@l
 /* 00007C50 3B650000 */ addi r27, r5, lbl_802F1B34@l
 /* 00007C54 3B840000 */ addi r28, r4, mathutilData@l
@@ -10641,7 +10641,7 @@ lbl_00009C50:
 /* 00009CA0 920101A8 */ stw r16, 0x1a8(r1)
 /* 00009CA4 3DE08889 */ lis r15, 0x8889
 /* 00009CA8 3DC00000 */ lis r14, lbl_802F1B34@ha
-/* 00009CAC 3E800000 */ lis r20, lbl_802F1CC8@ha
+/* 00009CAC 3E800000 */ lis r20, commonGma@ha
 /* 00009CB0 3EC00000 */ lis r22, lbl_8020ADD4@ha
 /* 00009CB4 3EE00000 */ lis r23, currentCameraStructPtr@ha
 /* 00009CB8 3F400000 */ lis r26, backgroundInfo@ha
@@ -10663,7 +10663,7 @@ lbl_00009C50:
 /* 00009CF8 380E0000 */ addi r0, r14, lbl_802F1B34@l
 /* 00009CFC 39D80000 */ addi r14, r24, eventInfo@l
 /* 00009D00 900101A0 */ stw r0, 0x1a0(r1)
-/* 00009D04 38140000 */ addi r0, r20, lbl_802F1CC8@l
+/* 00009D04 38140000 */ addi r0, r20, commonGma@l
 /* 00009D08 3A2C0000 */ addi r17, r12, decodedStageLzPtr@l
 /* 00009D0C 900101B0 */ stw r0, 0x1b0(r1)
 /* 00009D10 38160000 */ addi r0, r22, lbl_8020ADD4@l

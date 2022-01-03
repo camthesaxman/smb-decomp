@@ -21,7 +21,7 @@ ev_stage_init:
 /* 80043AA8 0003F9C8  41 82 00 08 */	beq lbl_80043AB0
 /* 80043AAC 0003F9CC  48 00 00 08 */	b lbl_80043AB4
 lbl_80043AB0:
-/* 80043AB0 0003F9D0  48 00 07 0D */	bl find_blur_part
+/* 80043AB0 0003F9D0  48 00 07 0D */	bl find_blur_bridge_accordion
 lbl_80043AB4:
 /* 80043AB4 0003F9D4  A8 0D 99 B2 */	lha r0, gameMode@sda21(r13)
 /* 80043AB8 0003F9D8  38 60 00 00 */	li r3, 0
@@ -518,8 +518,8 @@ lbl_800441A0:
 /* 800441B4 000400D4  38 21 00 20 */	addi r1, r1, 0x20
 /* 800441B8 000400D8  4E 80 00 20 */	blr
 
-.global find_blur_part
-find_blur_part:
+.global find_blur_bridge_accordion
+find_blur_bridge_accordion:
 /* 800441BC 000400DC  7C 08 02 A6 */	mflr r0
 /* 800441C0 000400E0  90 01 00 04 */	stw r0, 4(r1)
 /* 800441C4 000400E4  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -553,7 +553,7 @@ lbl_80044220:
 /* 80044224 00040144  41 81 FF D8 */	bgt lbl_800441FC
 /* 80044228 00040148  38 00 00 00 */	li r0, 0
 lbl_8004422C:
-/* 8004422C 0004014C  90 0D 9D 4C */	stw r0, lbl_802F1F2C@sda21(r13)
+/* 8004422C 0004014C  90 0D 9D 4C */	stw r0, blurBridgeAccordion@sda21(r13)
 /* 80044230 00040150  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80044234 00040154  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 80044238 00040158  83 C1 00 10 */	lwz r30, 0x10(r1)
@@ -577,7 +577,7 @@ func_8004424C:
 /* 80044274 00040194  93 C1 00 48 */	stw r30, 0x48(r1)
 /* 80044278 00040198  93 A1 00 44 */	stw r29, 0x44(r1)
 /* 8004427C 0004019C  93 81 00 40 */	stw r28, 0x40(r1)
-/* 80044280 000401A0  80 6D 9D 4C */	lwz r3, lbl_802F1F2C@sda21(r13)
+/* 80044280 000401A0  80 6D 9D 4C */	lwz r3, blurBridgeAccordion@sda21(r13)
 /* 80044284 000401A4  7C 03 00 40 */	cmplw r3, r0
 /* 80044288 000401A8  41 82 01 E8 */	beq lbl_80044470
 /* 8004428C 000401AC  3C 60 80 20 */	lis r3, lbl_80206DEC@ha
@@ -697,7 +697,7 @@ lbl_80044420:
 /* 80044440 00040360  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80044444 00040364  38 80 00 00 */	li r4, 0
 /* 80044448 00040368  48 0A 01 75 */	bl GXLoadNrmMtxImm
-/* 8004444C 0004036C  80 6D 9D 4C */	lwz r3, lbl_802F1F2C@sda21(r13)
+/* 8004444C 0004036C  80 6D 9D 4C */	lwz r3, blurBridgeAccordion@sda21(r13)
 /* 80044450 00040370  48 04 9F E9 */	bl g_avdisp_maybe_draw_model_1
 lbl_80044454:
 /* 80044454 00040374  3B BD 00 01 */	addi r29, r29, 1
@@ -1087,8 +1087,8 @@ lbl_800449C4:
 /* 800449D4 000408F4  38 00 00 00 */	li r0, 0
 /* 800449D8 000408F8  90 0D 9D 58 */	stw r0, decodedStageGmaPtr@sda21(r13)
 lbl_800449DC:
-/* 800449DC 000408FC  38 6D 99 20 */	addi r3, r13, arcadeStageObj@sda21
-/* 800449E0 00040900  38 8D 99 0C */	addi r4, r13, arcadeStageTpl@sda21
+/* 800449DC 000408FC  38 6D 99 20 */	addi r3, r13, naomiStageObj@sda21
+/* 800449E0 00040900  38 8D 99 0C */	addi r4, r13, naomiStageTpl@sda21
 /* 800449E4 00040904  4B FE C4 3D */	bl free_nlobj
 /* 800449E8 00040908  48 00 29 01 */	bl func_800472E8
 /* 800449EC 0004090C  7F 63 DB 78 */	mr r3, r27
@@ -1202,8 +1202,8 @@ lbl_80044B50:
 /* 80044B60 00040A80  38 00 00 00 */	li r0, 0
 /* 80044B64 00040A84  90 0D 9D 58 */	stw r0, decodedStageGmaPtr@sda21(r13)
 lbl_80044B68:
-/* 80044B68 00040A88  38 6D 99 20 */	addi r3, r13, arcadeStageObj@sda21
-/* 80044B6C 00040A8C  38 8D 99 0C */	addi r4, r13, arcadeStageTpl@sda21
+/* 80044B68 00040A88  38 6D 99 20 */	addi r3, r13, naomiStageObj@sda21
+/* 80044B6C 00040A8C  38 8D 99 0C */	addi r4, r13, naomiStageTpl@sda21
 /* 80044B70 00040A90  4B FE C2 B1 */	bl free_nlobj
 /* 80044B74 00040A94  48 00 27 75 */	bl func_800472E8
 /* 80044B78 00040A98  7F E3 FB 78 */	mr r3, r31
@@ -1379,8 +1379,8 @@ lbl_80044DA8:
 /* 80044DD4 00040CF4  48 0B FE 51 */	bl sprintf
 /* 80044DD8 00040CF8  38 A1 01 0C */	addi r5, r1, 0x10c
 /* 80044DDC 00040CFC  38 C1 00 0C */	addi r6, r1, 0xc
-/* 80044DE0 00040D00  38 6D 99 20 */	addi r3, r13, arcadeStageObj@sda21
-/* 80044DE4 00040D04  38 8D 99 0C */	addi r4, r13, arcadeStageTpl@sda21
+/* 80044DE0 00040D00  38 6D 99 20 */	addi r3, r13, naomiStageObj@sda21
+/* 80044DE4 00040D04  38 8D 99 0C */	addi r4, r13, naomiStageTpl@sda21
 /* 80044DE8 00040D08  4B FE BD E5 */	bl load_nlobj
 lbl_80044DEC:
 /* 80044DEC 00040D0C  7F C3 F3 78 */	mr r3, r30
@@ -4339,11 +4339,11 @@ lbl_80047638:
 /* 80047668 00043588  92 C1 00 80 */	stw r22, 0x80(r1)
 /* 8004766C 0004358C  48 00 00 24 */	b lbl_80047690
 lbl_80047670:
-/* 80047670 00043590  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047670 00043590  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047674 00043594  80 63 00 14 */	lwz r3, 0x14(r3)
 /* 80047678 00043598  4B FE C4 5D */	bl func_80033AD4
 /* 8004767C 0004359C  38 00 00 00 */	li r0, 0
-/* 80047680 000435A0  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047680 000435A0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047684 000435A4  B0 01 00 7E */	sth r0, 0x7e(r1)
 /* 80047688 000435A8  80 03 00 14 */	lwz r0, 0x14(r3)
 /* 8004768C 000435AC  90 01 00 80 */	stw r0, 0x80(r1)
@@ -4384,7 +4384,7 @@ lbl_800476C0:
 /* 80047704 00043624  4B FC 06 D5 */	bl mathutil_mtxA_scale_xyz
 /* 80047708 00043628  C0 22 8F AC */	lfs f1, lbl_802F37AC-_SDA2_BASE_(r2)
 /* 8004770C 0004362C  4B FE 94 9D */	bl func_80030BA8
-/* 80047710 00043630  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047710 00043630  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047714 00043634  80 63 00 28 */	lwz r3, 0x28(r3)
 /* 80047718 00043638  4B FE C3 BD */	bl func_80033AD4
 /* 8004771C 0004363C  48 00 05 14 */	b lbl_80047C30
@@ -4704,7 +4704,7 @@ lbl_80047B54:
 /* 80047B70 00043A90  80 63 00 00 */	lwz r3, 0(r3)
 /* 80047B74 00043A94  2C 03 00 78 */	cmpwi r3, 0x78
 /* 80047B78 00043A98  40 81 00 14 */	ble lbl_80047B8C
-/* 80047B7C 00043A9C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047B7C 00043A9C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047B80 00043AA0  80 63 00 2C */	lwz r3, 0x2c(r3)
 /* 80047B84 00043AA4  4B FE BF 51 */	bl func_80033AD4
 /* 80047B88 00043AA8  48 00 00 A4 */	b lbl_80047C2C
@@ -4712,7 +4712,7 @@ lbl_80047B8C:
 /* 80047B8C 00043AAC  2C 03 00 3C */	cmpwi r3, 0x3c
 /* 80047B90 00043AB0  40 81 00 9C */	ble lbl_80047C2C
 /* 80047B94 00043AB4  38 03 FF C4 */	addi r0, r3, -60
-/* 80047B98 00043AB8  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047B98 00043AB8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047B9C 00043ABC  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 80047BA0 00043AC0  C8 42 8F 58 */	lfd f2, lbl_802F3758-_SDA2_BASE_(r2)
 /* 80047BA4 00043AC4  90 01 00 8C */	stw r0, 0x8c(r1)
@@ -4731,7 +4731,7 @@ lbl_80047BCC:
 /* 80047BD4 00043AF4  80 63 00 00 */	lwz r3, 0(r3)
 /* 80047BD8 00043AF8  2C 03 00 4B */	cmpwi r3, 0x4b
 /* 80047BDC 00043AFC  40 81 00 14 */	ble lbl_80047BF0
-/* 80047BE0 00043B00  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047BE0 00043B00  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047BE4 00043B04  80 63 00 2C */	lwz r3, 0x2c(r3)
 /* 80047BE8 00043B08  4B FE BE ED */	bl func_80033AD4
 /* 80047BEC 00043B0C  48 00 00 40 */	b lbl_80047C2C
@@ -4739,7 +4739,7 @@ lbl_80047BF0:
 /* 80047BF0 00043B10  2C 03 00 2D */	cmpwi r3, 0x2d
 /* 80047BF4 00043B14  40 81 00 38 */	ble lbl_80047C2C
 /* 80047BF8 00043B18  38 03 FF D3 */	addi r0, r3, -45
-/* 80047BFC 00043B1C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047BFC 00043B1C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047C00 00043B20  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 80047C04 00043B24  C8 42 8F 58 */	lfd f2, lbl_802F3758-_SDA2_BASE_(r2)
 /* 80047C08 00043B28  90 01 00 8C */	stw r0, 0x8c(r1)
@@ -4812,7 +4812,7 @@ lbl_80047CF0:
 lbl_80047CF4:
 /* 80047CF4 00043C14  FC 20 00 90 */	fmr f1, f0
 /* 80047CF8 00043C18  4B FE 8E B1 */	bl func_80030BA8
-/* 80047CFC 00043C1C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80047CFC 00043C1C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047D00 00043C20  C0 22 8F A4 */	lfs f1, lbl_802F37A4-_SDA2_BASE_(r2)
 /* 80047D04 00043C24  80 63 00 18 */	lwz r3, 0x18(r3)
 /* 80047D08 00043C28  4B FE BE 0D */	bl func_80033B14
@@ -7416,8 +7416,8 @@ glabel string_st_03d_lz
 .global lbl_801B8794
 lbl_801B8794:
 	# ROM: 0x1B5794
-	.4byte arcadeStageObj  ;# ptr
-	.4byte lbl_802F1B04  ;# ptr
+	.4byte naomiStageObj  ;# ptr
+	.4byte naomiCommonObj  ;# ptr
 	.4byte 0
 .endif
 

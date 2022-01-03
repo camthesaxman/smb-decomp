@@ -489,7 +489,7 @@ void func_8005507C(void)
             free_gma(decodedBgGma);
             decodedBgGma = NULL;
         }
-        free_nlobj(&lbl_802F1AFC, &lbl_802F1AE8);
+        free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
 
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = -1;
@@ -651,7 +651,7 @@ void load_bg_files(int bgId)
                 free_gma(decodedBgGma);
                 decodedBgGma = NULL;
             }
-            free_nlobj(&lbl_802F1AFC, &lbl_802F1AE8);
+            free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
         }
         if (bgId > 0)
         {
@@ -673,7 +673,7 @@ void load_bg_files(int bgId)
                 DVDChangeDir(bgDir);
                 sprintf(gmaFileName, "%s_p.lz", bgName);
                 sprintf(tplFileName, "%s.lz", bgName);
-                load_nlobj(&lbl_802F1AFC, &lbl_802F1AE8, gmaFileName, tplFileName);
+                load_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl, gmaFileName, tplFileName);
                 DVDChangeDir("/test");
             }
             if (lbl_801B98A8[bgId] != 0)

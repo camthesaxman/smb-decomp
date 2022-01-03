@@ -8131,8 +8131,8 @@ lbl_00007454:
 /* 00007468 807D0000 */ lwz r3, 0(r29)
 /* 0000746C 38800000 */ li r4, 0
 /* 00007470 4BFF8CED */ bl GXLoadNrmMtxImm
-/* 00007474 3C600000 */ lis r3, lbl_802F1B04@ha
-/* 00007478 38630000 */ addi r3, r3, lbl_802F1B04@l
+/* 00007474 3C600000 */ lis r3, naomiCommonObj@ha
+/* 00007478 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 0000747C 80630000 */ lwz r3, 0(r3)
 /* 00007480 806300A8 */ lwz r3, 0xa8(r3)
 /* 00007484 4BFF8CD9 */ bl func_80033AD4
@@ -8296,8 +8296,8 @@ lbl_000076AC:
 /* 000076D4 807E0000 */ lwz r3, 0(r30)
 /* 000076D8 38800000 */ li r4, 0
 /* 000076DC 4BFF8A81 */ bl GXLoadNrmMtxImm
-/* 000076E0 3C600000 */ lis r3, lbl_802F1CC8@ha
-/* 000076E4 38630000 */ addi r3, r3, lbl_802F1CC8@l
+/* 000076E0 3C600000 */ lis r3, commonGma@ha
+/* 000076E4 38630000 */ addi r3, r3, commonGma@l
 /* 000076E8 80630000 */ lwz r3, 0(r3)
 /* 000076EC 80630008 */ lwz r3, 8(r3)
 /* 000076F0 806300A0 */ lwz r3, 0xa0(r3)
@@ -9612,8 +9612,8 @@ lbl_000089D4:
 /* 000089F0 80030000 */ lwz r0, lbl_802F1B34@l(r3)
 /* 000089F4 5403482C */ slwi r3, r0, 9
 /* 000089F8 4BFF7765 */ bl mathutil_mtxA_rotate_y
-/* 000089FC 3C600000 */ lis r3, lbl_802F1B04@ha
-/* 00008A00 38630000 */ addi r3, r3, lbl_802F1B04@l
+/* 000089FC 3C600000 */ lis r3, naomiCommonObj@ha
+/* 00008A00 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00008A04 80630000 */ lwz r3, 0(r3)
 /* 00008A08 8063002C */ lwz r3, 0x2c(r3)
 /* 00008A0C 4BFF7751 */ bl func_80033AD4
@@ -10229,8 +10229,8 @@ lbl_000092D0:
 lbl_000092D8:
 /* 000092D8 48006AB5 */ bl lbl_0000FD8C
 /* 000092DC 4BFF6E81 */ bl mathutil_mtxA_from_mtxB
-/* 000092E0 3C600000 */ lis r3, lbl_802F1B04@ha
-/* 000092E4 38630000 */ addi r3, r3, lbl_802F1B04@l
+/* 000092E0 3C600000 */ lis r3, naomiCommonObj@ha
+/* 000092E4 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 000092E8 80630000 */ lwz r3, 0(r3)
 /* 000092EC 8063000C */ lwz r3, 0xc(r3)
 /* 000092F0 4BFF6E6D */ bl func_80033AD4
@@ -17471,8 +17471,8 @@ lbl_0000FDE0:
 /* 0000FE14 A87E00CC */ lha r3, 0xcc(r30)
 /* 0000FE18 4BFF0345 */ bl mathutil_mtxA_rotate_x
 /* 0000FE1C A89E00CC */ lha r4, 0xcc(r30)
-/* 0000FE20 3C600000 */ lis r3, lbl_802F1CC8@ha
-/* 0000FE24 3BE30000 */ addi r31, r3, lbl_802F1CC8@l
+/* 0000FE20 3C600000 */ lis r3, commonGma@ha
+/* 0000FE24 3BE30000 */ addi r31, r3, commonGma@l
 /* 0000FE28 38040020 */ addi r0, r4, 0x20
 /* 0000FE2C B01E00CC */ sth r0, 0xcc(r30)
 /* 0000FE30 807F0000 */ lwz r3, 0(r31)

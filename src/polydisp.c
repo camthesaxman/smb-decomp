@@ -12,6 +12,8 @@
 #include "mode.h"
 #include "nl2ngc.h"
 
+#include "../data/common.gma.h"
+
 struct Struct801EEC80 lbl_801EEC80;
 struct Struct801EEC90 lbl_801EEC90;
 
@@ -246,7 +248,7 @@ void func_8000B918(void)
     mathutil_mtxA_translate(&lbl_801EED04.unk0);
     mathutil_mtxA_rotate_x(lbl_801EED04.unkC);
     mathutil_mtxA_rotate_z(lbl_801EED04.unkE);
-    func_80033AD4(lbl_802F1B04[0x2D]);
+    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x2C));
 }
 
 void func_8000B96C(void)
@@ -274,8 +276,7 @@ void func_8000B96C(void)
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
             g_avdisp_set_model_scale(f30);
-            //g_avdisp_maybe_draw_model_3(lbl_802F1CC8->unk8->unk270);
-            g_avdisp_maybe_draw_model_3(lbl_802F1CC8->modelEntries[0x4E].modelOffset);
+            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[polyshadow01].modelOffset);
         }
         func_8000E3BC();
     }
@@ -288,7 +289,7 @@ void func_8000B96C(void)
             ballInfo[0].unkFC->unk30.z);
         if (lbl_801EED2C.unk8 >= 0x440 && lbl_801EED2C.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
-        func_80033AD4(lbl_802F1B04[0x37]);
+        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x36));
     }
     if (lbl_801EED2C.unk4 & (1 << (31-0x15)))
     {
@@ -296,14 +297,12 @@ void func_8000B96C(void)
         int i;
         for (i = 0; i < 2; i++, r27++)
         {
-            struct NaomiModel **var;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate(&ballInfo[0].unkFC->unk30);
             mathutil_mtxA_translate(&r27->unk8);
             mathutil_mtxA_rotate_y(r27->unk6);
             mathutil_mtxA_rotate_x(r27->unk4);
-            var = &lbl_802F1B04[r27->unk0];
-            func_80033AD4(var[1]);
+            func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, r27->unk0));
         }
     }
     if (!(lbl_801EED2C.unk4 & (1 << (31-0x1B))))
@@ -381,8 +380,7 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk260);
-    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4C].modelOffset);
+    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
     mathutil_mtxA_push();
     mathutil_mtxA_rotate_x(CLAMP(lbl_801EED3C.unk0 * 12, -0x1000, 0x1000));
@@ -390,8 +388,7 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC);
-    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk258);
-    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
+    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
     f2 = 0.0f;
     f3 = 0.0f;
@@ -421,8 +418,7 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(lbl_801EED3C.unkC * 0.5);
-    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk258);
-    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4B].modelOffset);
+    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&sp48);
     mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * lbl_801EED3C.unkC));
@@ -431,8 +427,7 @@ void func_8000BCA4(void)
     func_80030BA8(f31);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk250);
-    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x4A].modelOffset);
+    g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
     if (lbl_801EED3C.unk8 == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
@@ -441,8 +436,7 @@ void func_8000BCA4(void)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(1.0 - lbl_801EED3C.unkC);
-    //g_avdisp_draw_model_1(lbl_802F1CC8->unk8->unk248);
-    g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[0x49].modelOffset);
+    g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
     func_800858CC();
 }
 
@@ -643,7 +637,7 @@ void func_8000C7A4(void)
     lbl_801EEC90.unk0 &= ~(1 << 3);
 }
 
-u16 lbl_802F02E0[4] = { 0x54, 0x55, 0x56, 0x57 };
+u16 lbl_802F02E0[4] = { ARROW_1P, ARROW_2P, ARROW_3P, ARROW_4P };
 
 #ifdef NONMATCHING
 static inline void mathutil_get_mtxA_translate_xyz(register float *px, register float *py, register float *pz)
@@ -703,7 +697,7 @@ void func_8000C8D4(void)
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         func_8009AA24(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1(lbl_802F1CC8->modelEntries[lbl_802F02E0[i]].modelOffset);
+        g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
 #else
@@ -748,7 +742,7 @@ void func_8000CA9C(void)
     else
     {
         mathutil_mtxA_from_mtxB();
-        func_80033AD4(lbl_802F1B04[3]);
+        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 2));
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -790,14 +784,14 @@ void func_8000CA9C(void)
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         func_80030BA8(MAX(f26, f27));
-        g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x3B]);
+        g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3A));
         func_80030BB8(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
         func_80030BA8(0.25f);
-        g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x3C]);
+        g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3B));
     }
     else
     {
@@ -840,7 +834,7 @@ void func_8000CA9C(void)
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             func_80030BA8(4.6f);
-            g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x40]);
+            g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3F));
             func_80030BB8(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
@@ -850,7 +844,7 @@ void func_8000CA9C(void)
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             func_80030BA8(0.25f);
-            g_dupe_of_call_draw_naomi_model_1(lbl_802F1B04[0x3C]);
+            g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3B));
         }
     }
 
@@ -1080,7 +1074,7 @@ void draw_timer_bomb_fuse(void)
     sp54[1][2] -= sp54[1][1] * f30 * 0.5773502588272095f;
     GXSetProjection(sp54, 0);
 
-    r4 = lbl_802F1B04[0x2B];
+    r4 = naomiCommonObj[0x2B];
     f31 = (float)lbl_801F3A58.unk4 / (float)lbl_801F3A58.unk6;
     memcpy(lbl_802F1B4C, r4, ((u32 **)r4)[-1][0]);  // WTF???
     r3_ = (struct NaomiMesh *)lbl_802F1B4C->meshStart;

@@ -62,7 +62,7 @@ lbl_8000D674:
 /* 8000D6CC 000095EC  D0 01 00 6C */	stfs f0, 0x6c(r1)
 /* 8000D6D0 000095F0  48 0D 6C D9 */	bl GXSetProjection
 /* 8000D6D4 000095F4  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 8000D6D8 000095F8  80 8D 99 24 */	lwz r4, lbl_802F1B04  //@sda21(r13)
+/* 8000D6D8 000095F8  80 8D 99 24 */	lwz r4, naomiCommonObj  //@sda21(r13)
 /* 8000D6DC 000095FC  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
 /* 8000D6E0 00009600  83 CD 99 6C */	lwz r30, lbl_802F1B4C  //@sda21(r13)
 /* 8000D6E4 00009604  A8 A3 00 04 */	lha r5, 4(r3)
@@ -560,7 +560,7 @@ lbl_8000DD90:
 /* 8000DE10 00009D30  48 08 06 11 */	bl g_avdisp_set_model_scale
 /* 8000DE14 00009D34  38 60 00 01 */	li r3, 1
 /* 8000DE18 00009D38  48 08 18 BD */	bl func_8008F6D4
-/* 8000DE1C 00009D3C  80 6D 9A E8 */	lwz r3, lbl_802F1CC8  //@sda21(r13)
+/* 8000DE1C 00009D3C  80 6D 9A E8 */	lwz r3, commonGma  //@sda21(r13)
 /* 8000DE20 00009D40  80 63 00 08 */	lwz r3, 8(r3)
 /* 8000DE24 00009D44  80 63 02 80 */	lwz r3, 0x280(r3)
 /* 8000DE28 00009D48  48 08 09 85 */	bl g_avdisp_draw_model_1
@@ -599,7 +599,7 @@ lbl_8000DD90:
 /* 8000DEAC 00009DCC  FC 40 08 90 */	fmr f2, f1
 /* 8000DEB0 00009DD0  FC 60 08 90 */	fmr f3, f1
 /* 8000DEB4 00009DD4  4B FF 9F 25 */	bl mathutil_mtxA_scale_xyz
-/* 8000DEB8 00009DD8  80 6D 99 24 */	lwz r3, lbl_802F1B04  //@sda21(r13)
+/* 8000DEB8 00009DD8  80 6D 99 24 */	lwz r3, naomiCommonObj  //@sda21(r13)
 /* 8000DEBC 00009DDC  80 63 00 A4 */	lwz r3, 0xa4(r3)
 /* 8000DEC0 00009DE0  48 02 34 91 */	bl g_draw_naomi_model_1
 /* 8000DEC4 00009DE4  48 00 04 F9 */	bl func_8000E3BC

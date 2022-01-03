@@ -39,15 +39,15 @@ long memHeap2Size;
 long memHeap3Size;
 long memHeap4Size;
 
-struct NaomiModel **lbl_802F1B04;  // should be NaomiObj*?
-struct NaomiObj *arcadeStageObj;
-struct NaomiObj *lbl_802F1AFC;
+struct NaomiObj *naomiCommonObj;
+struct NaomiObj *naomiStageObj;
+struct NaomiObj *naomiBackgroundObj;
 struct NaomiObj *lbl_802F1AF8;
 struct NaomiObj *lbl_802F1AF4;
 
-struct TPL *lbl_802F1AF0;
-struct TPL *arcadeStageTpl;
-struct TPL *lbl_802F1AE8;
+struct TPL *naomiCommonTpl;
+struct TPL *naomiStageTpl;
+struct TPL *naomiBackgroundTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *lbl_802F1AE0;
 

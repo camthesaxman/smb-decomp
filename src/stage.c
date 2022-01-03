@@ -14,7 +14,6 @@
 extern u8 lbl_801B86E4[];
 extern int previewLoaded;
 
-//u8 lbl_80206D00[0x78];
 struct Struct80206D00
 {
     void *unk0;
@@ -55,7 +54,7 @@ void ev_stage_init(void)
     switch (currStageId)
     {
     case 101:
-        find_blur_part();
+        find_blur_bridge_accordion();
     }
 
     previewLoaded = FALSE;
@@ -243,9 +242,9 @@ struct GMAModelHeader *stage_find_model(struct GMA *gma, char *name)
     return NULL;
 }
 
-void find_blur_part(void)
+void find_blur_bridge_accordion(void)
 {
-    lbl_802F1F2C = stage_find_model(decodedStageGmaPtr, "MOT_STAGE101_BLUR");
+    blurBridgeAccordion = stage_find_model(decodedStageGmaPtr, "MOT_STAGE101_BLUR");
 }
 
 void func_8004424C(void)
@@ -256,7 +255,7 @@ void func_8004424C(void)
     struct DecodedStageLzPtr_child *r30;
     int i;
 
-    if (lbl_802F1F2C == NULL2)
+    if (blurBridgeAccordion == NULL2)
         return;
     f31 = lbl_80206DEC.unk4 / 60.0;
     f31 += (float)decodedStageLzPtr->unk0;
@@ -297,7 +296,7 @@ void func_8004424C(void)
             mathutil_mtxA_scale_xyz(0.5 * f30, 1.0f, 1.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_1(lbl_802F1F2C);
+            g_avdisp_maybe_draw_model_1(blurBridgeAccordion);
         }
     }
 }
@@ -455,7 +454,7 @@ void load_stage(int stageId)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_nlobj(&arcadeStageObj, &arcadeStageTpl);
+        free_nlobj(&naomiStageObj, &naomiStageTpl);
         func_800472E8();
 
         OSSetCurrentHeap(oldHeap);
@@ -509,7 +508,7 @@ void unload_stage(void)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_nlobj(&arcadeStageObj, &arcadeStageTpl);
+        free_nlobj(&naomiStageObj, &naomiStageTpl);
         func_800472E8();
 
         OSSetCurrentHeap(oldHeap);
@@ -595,7 +594,7 @@ void load_stage_files(int stageId)
         {
             sprintf(gmaName, "st%03d_p.lz", stageId);
             sprintf(tplName, "st%03d.lz", stageId);
-            load_nlobj(&arcadeStageObj, &arcadeStageTpl, gmaName, tplName);
+            load_nlobj(&naomiStageObj, &naomiStageTpl, gmaName, tplName);
         }
         OSSetCurrentHeap(oldHeap);
         DVDChangeDir("/test");
@@ -653,7 +652,7 @@ FORCE_BSS_ORDER(lbl_8020AB88)
 FORCE_BSS_ORDER(lbl_8020ADC8)
 FORCE_BSS_ORDER(lbl_8020ADD4)
 
-struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&arcadeStageObj, (struct NaomiObj **)&lbl_802F1B04, NULL};
+struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj, (struct NaomiObj **)&naomiCommonObj, NULL};
 
 struct Struct80044E18
 {

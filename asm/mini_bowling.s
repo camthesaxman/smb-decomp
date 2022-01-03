@@ -974,8 +974,8 @@ lbl_00000DF0:
 /* 00000E54 807F0000 */ lwz r3, 0(r31)
 /* 00000E58 38800000 */ li r4, 0
 /* 00000E5C 4BFFF305 */ bl GXLoadNrmMtxImm
-/* 00000E60 3C600000 */ lis r3, lbl_802F1CC8@ha
-/* 00000E64 3B830000 */ addi r28, r3, lbl_802F1CC8@l
+/* 00000E60 3C600000 */ lis r3, commonGma@ha
+/* 00000E64 3B830000 */ addi r28, r3, commonGma@l
 /* 00000E68 807C0000 */ lwz r3, 0(r28)
 /* 00000E6C 80630008 */ lwz r3, 8(r3)
 /* 00000E70 806305A8 */ lwz r3, 0x5a8(r3)
@@ -10785,10 +10785,10 @@ lbl_00009D4C:
 /* 00009D6C 2C000000 */ cmpwi r0, 0
 /* 00009D70 408101D8 */ ble lbl_00009F48
 /* 00009D74 3C800000 */ lis r4, mathutilData@ha
-/* 00009D78 3C600000 */ lis r3, lbl_802F1CC8@ha
+/* 00009D78 3C600000 */ lis r3, commonGma@ha
 /* 00009D7C 3B860000 */ addi r28, r6, 0
 /* 00009D80 3B240000 */ addi r25, r4, mathutilData@l
-/* 00009D84 3B430000 */ addi r26, r3, lbl_802F1CC8@l
+/* 00009D84 3B430000 */ addi r26, r3, commonGma@l
 /* 00009D88 3BA00000 */ li r29, 0
 /* 00009D8C 3F004330 */ lis r24, 0x4330
 lbl_00009D90:

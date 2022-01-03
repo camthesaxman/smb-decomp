@@ -19580,8 +19580,8 @@ lbl_000119B0:
 /* 00011A1C 80030000 */ lwz r0, lbl_80206DEC@l(r3)
 /* 00011A20 5403482C */ slwi r3, r0, 9
 /* 00011A24 4BFEE765 */ bl mathutil_mtxA_rotate_y
-/* 00011A28 3C600000 */ lis r3, lbl_802F1B04@ha
-/* 00011A2C 38630000 */ addi r3, r3, lbl_802F1B04@l
+/* 00011A28 3C600000 */ lis r3, naomiCommonObj@ha
+/* 00011A2C 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00011A30 80630000 */ lwz r3, 0(r3)
 /* 00011A34 8063002C */ lwz r3, 0x2c(r3)
 /* 00011A38 4BFEE751 */ bl func_80033AD4

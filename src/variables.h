@@ -1156,29 +1156,14 @@ extern struct
 // .sbss section
 // extern ? lbl_802F1AE0;
 // extern ? lbl_802F1AE4;
-extern struct TPL *lbl_802F1AE8;
-extern struct TPL *arcadeStageTpl;  // unknown type
-// extern ? lbl_802F1AF0;
+extern struct TPL *naomiBackgroundTpl;
+extern struct TPL *naomiStageTpl;  // unknown type
+// extern ? naomiCommonTpl;
 // extern ? lbl_802F1AF4;
 // extern ? lbl_802F1AF8;
-extern struct NaomiObj *lbl_802F1AFC;
-extern struct NaomiObj *arcadeStageObj;
-/*
-struct Struct802F1B04
-{
-    u8 filler0[4];
-    u32 unk4[2];  // unknown length
-    u8 fillerC[0xA0-0xC];
-    u32 unkA0;
-    u8 fillerA4[0xB4-0xA4];
-    u32 unkB4;
-    u8 fillerB8[0xDC-0xB8];
-    u32 unkDC;
-    u32 unkE0;
-};
-extern struct Struct802F1B04 *lbl_802F1B04_;
-*/
-extern struct NaomiModel **lbl_802F1B04;  // doesn't match as a struct, apparently
+extern struct NaomiObj *naomiBackgroundObj;
+extern struct NaomiObj *naomiStageObj;
+extern struct NaomiObj *naomiCommonObj;
 extern long memHeap4Size;
 extern long memHeap3Size;
 extern long memHeap2Size;
@@ -1278,7 +1263,7 @@ extern void **lbl_802F1CA4;
 // extern ? lbl_802F1CBC;
 extern struct GMA *decodedBgGma;
 extern struct TPL *decodedBgTpl;
-extern struct GMA *lbl_802F1CC8;
+extern struct GMA *commonGma;
 // extern ? lbl_802F1CCC;
 extern u8 resetCounter;
 extern u8 lbl_802F1CD1;
@@ -1386,7 +1371,7 @@ extern void (*minigameRelBallCallback)(struct Ball *);
 extern struct Ball *currentBallStructPtr;
 extern void *currentWorldStructPtr;
 // extern ? previewLoaded;
-extern struct GMAModelHeader *lbl_802F1F2C;
+extern struct GMAModelHeader *blurBridgeAccordion;
 extern struct Stage *decodedStageLzPtr;
 extern u32 lbl_802F1F34;
 extern struct GMA *decodedStageGmaPtr;

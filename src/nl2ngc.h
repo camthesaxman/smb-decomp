@@ -69,6 +69,8 @@ struct NaomiObj
     struct NaomiModel *modelPtrs[];  // array of pointers to the models
 };
 
+#define NAOMIOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
+
 // ? func_80030AF8();
 // ? func_80030B68();
 void func_80030BA8(float);

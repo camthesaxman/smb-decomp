@@ -341,8 +341,8 @@ currentWorldStructPtr:
 .global previewLoaded
 previewLoaded:
 	.skip 0x4
-.global lbl_802F1F2C
-lbl_802F1F2C:
+.global blurBridgeAccordion
+blurBridgeAccordion:
 	.skip 0x4
 .global decodedStageLzPtr
 decodedStageLzPtr:

@@ -2034,14 +2034,14 @@ func_800248DC:
 /* 800248DC 000207FC  7C 08 02 A6 */	mflr r0
 /* 800248E0 00020800  3C 60 80 18 */	lis r3, lbl_80181970@ha
 /* 800248E4 00020804  90 01 00 04 */	stw r0, 4(r1)
-/* 800248E8 00020808  38 8D 99 10 */	addi r4, r13, lbl_802F1AF0@sda21
+/* 800248E8 00020808  38 8D 99 10 */	addi r4, r13, naomiCommonTpl@sda21
 /* 800248EC 0002080C  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 800248F0 00020810  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 800248F4 00020814  3B E3 19 70 */	addi r31, r3, lbl_80181970@l
 /* 800248F8 00020818  38 BF 01 90 */	addi r5, r31, 0x190
 /* 800248FC 0002081C  93 C1 00 08 */	stw r30, 8(r1)
 /* 80024900 00020820  38 DF 01 A4 */	addi r6, r31, 0x1a4
-/* 80024904 00020824  38 6D 99 24 */	addi r3, r13, lbl_802F1B04@sda21
+/* 80024904 00020824  38 6D 99 24 */	addi r3, r13, naomiCommonObj@sda21
 /* 80024908 00020828  48 00 C2 C5 */	bl load_nlobj
 /* 8002490C 0002082C  3B C3 00 00 */	addi r30, r3, 0
 /* 80024910 00020830  38 6D 82 40 */	addi r3, r13, lbl_802F0420@sda21
@@ -2057,8 +2057,8 @@ func_800248DC:
 lbl_80024938:
 /* 80024938 00020858  38 7F 01 C4 */	addi r3, r31, 0x1c4
 /* 8002493C 0002085C  48 06 91 A9 */	bl load_gma
-/* 80024940 00020860  90 6D 9A E8 */	stw r3, lbl_802F1CC8@sda21(r13)
-/* 80024944 00020864  80 0D 9A E8 */	lwz r0, lbl_802F1CC8@sda21(r13)
+/* 80024940 00020860  90 6D 9A E8 */	stw r3, commonGma@sda21(r13)
+/* 80024944 00020864  80 0D 9A E8 */	lwz r0, commonGma@sda21(r13)
 /* 80024948 00020868  28 00 00 00 */	cmplwi r0, 0
 /* 8002494C 0002086C  40 82 00 08 */	bne lbl_80024954
 /* 80024950 00020870  3B C0 00 00 */	li r30, 0
@@ -2067,23 +2067,23 @@ lbl_80024954:
 /* 80024958 00020878  48 0A 74 75 */	bl DVDChangeDir
 /* 8002495C 0002087C  2C 1E 00 00 */	cmpwi r30, 0
 /* 80024960 00020880  41 82 00 58 */	beq lbl_800249B8
-/* 80024964 00020884  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80024964 00020884  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80024968 00020888  3F E0 FC 00 */	lis r31, 0xFBFFFFFF@ha
 /* 8002496C 0002088C  38 9F FF FF */	addi r4, r31, 0xFBFFFFFF@l
 /* 80024970 00020890  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 80024974 00020894  3C A0 04 00 */	lis r5, 0x400
 /* 80024978 00020898  48 06 89 F5 */	bl func_8008D36C
-/* 8002497C 0002089C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 8002497C 0002089C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80024980 000208A0  38 9F FF FF */	addi r4, r31, -1
 /* 80024984 000208A4  3C A0 04 00 */	lis r5, 0x400
 /* 80024988 000208A8  80 63 00 D8 */	lwz r3, 0xd8(r3)
 /* 8002498C 000208AC  48 06 89 E1 */	bl func_8008D36C
-/* 80024990 000208B0  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80024990 000208B0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80024994 000208B4  38 9F FF FF */	addi r4, r31, -1
 /* 80024998 000208B8  3C A0 04 00 */	lis r5, 0x400
 /* 8002499C 000208BC  80 63 00 EC */	lwz r3, 0xec(r3)
 /* 800249A0 000208C0  48 06 89 CD */	bl func_8008D36C
-/* 800249A4 000208C4  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 800249A4 000208C4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800249A8 000208C8  38 9F FF FF */	addi r4, r31, -1
 /* 800249AC 000208CC  3C A0 04 00 */	lis r5, 0x400
 /* 800249B0 000208D0  80 63 01 00 */	lwz r3, 0x100(r3)
@@ -2804,8 +2804,8 @@ decodedBgGma:
 .global decodedBgTpl
 decodedBgTpl:
 	.skip 0x4
-.global lbl_802F1CC8
-lbl_802F1CC8:
+.global commonGma
+commonGma:
 	.skip 0x4
 .global lbl_802F1CCC
 lbl_802F1CCC:

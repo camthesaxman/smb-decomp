@@ -2060,7 +2060,7 @@ func_800226F4:
 /* 80022748 0001E668  4E 80 04 20 */	bctr
 .global lbl_8002274C
 lbl_8002274C:
-/* 8002274C 0001E66C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 8002274C 0001E66C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80022750 0001E670  C0 02 87 98 */	lfs f0, lbl_802F2F98-_SDA2_BASE_(r2)
 /* 80022754 0001E674  80 63 00 08 */	lwz r3, 8(r3)
 /* 80022758 0001E678  38 63 00 18 */	addi r3, r3, 0x18
@@ -2081,14 +2081,14 @@ lbl_8002274C:
 /* 80022794 0001E6B4  FC 21 00 32 */	fmul f1, f1, f0
 /* 80022798 0001E6B8  FC 20 08 18 */	frsp f1, f1
 /* 8002279C 0001E6BC  48 00 E4 0D */	bl func_80030BA8
-/* 800227A0 0001E6C0  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 800227A0 0001E6C0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800227A4 0001E6C4  C0 22 87 C4 */	lfs f1, lbl_802F2FC4-_SDA2_BASE_(r2)
 /* 800227A8 0001E6C8  80 63 00 08 */	lwz r3, 8(r3)
 /* 800227AC 0001E6CC  48 00 ED 0D */	bl func_800314B8
 /* 800227B0 0001E6D0  4B FE 51 FD */	bl mathutil_mtxA_from_mtxB
 /* 800227B4 0001E6D4  38 7F 00 18 */	addi r3, r31, 0x18
 /* 800227B8 0001E6D8  4B FE 55 69 */	bl mathutil_mtxA_translate
-/* 800227BC 0001E6DC  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 800227BC 0001E6DC  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800227C0 0001E6E0  80 63 00 08 */	lwz r3, 8(r3)
 /* 800227C4 0001E6E4  48 00 EA 4D */	bl g_draw_naomi_model_and_do_other_stuff
 /* 800227C8 0001E6E8  48 00 00 CC */	b lbl_80022894
@@ -2105,13 +2105,13 @@ lbl_800227CC:
 /* 800227EC 0001E70C  3C 60 00 01 */	lis r3, 0x00008000@ha
 /* 800227F0 0001E710  38 63 80 00 */	addi r3, r3, 0x00008000@l
 /* 800227F4 0001E714  4B FE 57 95 */	bl mathutil_mtxA_rotate_x
-/* 800227F8 0001E718  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 800227F8 0001E718  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800227FC 0001E71C  80 63 00 F0 */	lwz r3, 0xf0(r3)
 /* 80022800 0001E720  48 00 EA 11 */	bl g_draw_naomi_model_and_do_other_stuff
 /* 80022804 0001E724  48 00 00 90 */	b lbl_80022894
 .global lbl_80022808
 lbl_80022808:
-/* 80022808 0001E728  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80022808 0001E728  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8002280C 0001E72C  C0 02 87 98 */	lfs f0, lbl_802F2F98-_SDA2_BASE_(r2)
 /* 80022810 0001E730  80 63 00 08 */	lwz r3, 8(r3)
 /* 80022814 0001E734  38 63 00 18 */	addi r3, r3, 0x18
@@ -2132,7 +2132,7 @@ lbl_80022808:
 /* 80022850 0001E770  FC 21 00 32 */	fmul f1, f1, f0
 /* 80022854 0001E774  FC 20 08 18 */	frsp f1, f1
 /* 80022858 0001E778  48 00 E3 51 */	bl func_80030BA8
-/* 8002285C 0001E77C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 8002285C 0001E77C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80022860 0001E780  C0 22 87 C4 */	lfs f1, lbl_802F2FC4-_SDA2_BASE_(r2)
 /* 80022864 0001E784  80 63 00 08 */	lwz r3, 8(r3)
 /* 80022868 0001E788  48 00 EC 51 */	bl func_800314B8
@@ -2143,7 +2143,7 @@ lbl_80022808:
 /* 8002287C 0001E79C  4B FE 57 81 */	bl mathutil_mtxA_rotate_y
 /* 80022880 0001E7A0  A8 7F 00 24 */	lha r3, 0x24(r31)
 /* 80022884 0001E7A4  4B FE 57 05 */	bl mathutil_mtxA_rotate_x
-/* 80022888 0001E7A8  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80022888 0001E7A8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8002288C 0001E7AC  80 63 00 F0 */	lwz r3, 0xf0(r3)
 /* 80022890 0001E7B0  48 00 E9 81 */	bl g_draw_naomi_model_and_do_other_stuff
 lbl_80022894:

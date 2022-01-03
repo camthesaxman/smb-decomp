@@ -30,7 +30,7 @@ bg_old_bluesky_init:
 /* 80056A20 00052940  A8 0D 99 B2 */	lha r0, gameMode@sda21(r13)
 /* 80056A24 00052944  2C 00 00 01 */	cmpwi r0, 1
 /* 80056A28 00052948  41 82 08 FC */	beq lbl_80057324
-/* 80056A2C 0005294C  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80056A2C 0005294C  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80056A30 00052950  C0 02 95 48 */	lfs f0, lbl_802F3D48-_SDA2_BASE_(r2)
 /* 80056A34 00052954  38 83 00 08 */	addi r4, r3, 8
 /* 80056A38 00052958  80 63 00 08 */	lwz r3, 8(r3)
@@ -262,7 +262,7 @@ lbl_80056D70:
 /* 80056D70 00052C90  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 80056D74 00052C94  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 80056D78 00052C98  38 61 00 14 */	addi r3, r1, 0x14
-/* 80056D7C 00052C9C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80056D7C 00052C9C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80056D80 00052CA0  80 04 00 08 */	lwz r0, 8(r4)
 /* 80056D84 00052CA4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80056D88 00052CA8  4B FF 61 81 */	bl func_8004CF08
@@ -342,7 +342,7 @@ lbl_80056E80:
 /* 80056E80 00052DA0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 80056E84 00052DA4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 80056E88 00052DA8  38 61 00 14 */	addi r3, r1, 0x14
-/* 80056E8C 00052DAC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80056E8C 00052DAC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80056E90 00052DB0  80 04 00 0C */	lwz r0, 0xc(r4)
 /* 80056E94 00052DB4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80056E98 00052DB8  4B FF 60 71 */	bl func_8004CF08
@@ -422,7 +422,7 @@ lbl_80056F90:
 /* 80056F90 00052EB0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 80056F94 00052EB4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 80056F98 00052EB8  38 61 00 14 */	addi r3, r1, 0x14
-/* 80056F9C 00052EBC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80056F9C 00052EBC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80056FA0 00052EC0  80 04 00 10 */	lwz r0, 0x10(r4)
 /* 80056FA4 00052EC4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80056FA8 00052EC8  4B FF 5F 61 */	bl func_8004CF08
@@ -506,7 +506,7 @@ lbl_800570B0:
 /* 800570B0 00052FD0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 800570B4 00052FD4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 800570B8 00052FD8  38 61 00 14 */	addi r3, r1, 0x14
-/* 800570BC 00052FDC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 800570BC 00052FDC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 800570C0 00052FE0  80 04 00 18 */	lwz r0, 0x18(r4)
 /* 800570C4 00052FE4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 800570C8 00052FE8  4B FF 5E 41 */	bl func_8004CF08
@@ -590,7 +590,7 @@ lbl_800571D0:
 /* 800571D0 000530F0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 800571D4 000530F4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 800571D8 000530F8  38 61 00 14 */	addi r3, r1, 0x14
-/* 800571DC 000530FC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 800571DC 000530FC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 800571E0 00053100  80 04 00 1C */	lwz r0, 0x1c(r4)
 /* 800571E4 00053104  90 01 00 44 */	stw r0, 0x44(r1)
 /* 800571E8 00053108  4B FF 5D 21 */	bl func_8004CF08
@@ -674,11 +674,11 @@ lbl_800572F0:
 /* 800572F0 00053210  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 800572F4 00053214  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 800572F8 00053218  38 61 00 14 */	addi r3, r1, 0x14
-/* 800572FC 0005321C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 800572FC 0005321C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80057300 00053220  80 04 00 20 */	lwz r0, 0x20(r4)
 /* 80057304 00053224  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80057308 00053228  4B FF 5C 01 */	bl func_8004CF08
-/* 8005730C 0005322C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005730C 0005322C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80057310 00053230  3C 60 80 05 */	lis r3, lbl_80057940@ha
 /* 80057314 00053234  38 A3 79 40 */	addi r5, r3, lbl_80057940@l
 /* 80057318 00053238  80 64 00 30 */	lwz r3, 0x30(r4)
@@ -712,10 +712,10 @@ bg_old_bluesky_draw:
 /* 8005736C 0005328C  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80057370 00053290  38 63 00 30 */	addi r3, r3, 0x30
 /* 80057374 00053294  4B FB 05 3D */	bl mathutil_mtxA_from_mtx
-/* 80057378 00053298  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80057378 00053298  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8005737C 0005329C  80 63 00 14 */	lwz r3, 0x14(r3)
 /* 80057380 000532A0  4B FD C7 55 */	bl func_80033AD4
-/* 80057384 000532A4  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80057384 000532A4  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80057388 000532A8  80 63 00 30 */	lwz r3, 0x30(r3)
 /* 8005738C 000532AC  4B FD A3 D9 */	bl func_80031764
 /* 80057390 000532B0  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -778,7 +778,7 @@ lbl_8005744C:
 /* 80057458 00053378  D8 01 00 10 */	stfd f0, 0x10(r1)
 /* 8005745C 0005337C  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 80057460 00053380  90 1F 00 10 */	stw r0, 0x10(r31)
-/* 80057464 00053384  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80057464 00053384  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80057468 00053388  80 03 00 04 */	lwz r0, 4(r3)
 /* 8005746C 0005338C  90 1F 00 30 */	stw r0, 0x30(r31)
 /* 80057470 00053390  A8 1F 00 54 */	lha r0, 0x54(r31)
@@ -1178,7 +1178,7 @@ lbl_80057A14:
 /* 80057A38 00053958  4E 80 00 20 */	blr
 .global bg_old_cave_init
 bg_old_cave_init:
-/* 80057A3C 0005395C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80057A3C 0005395C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80057A40 00053960  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 80057A44 00053964  38 63 91 78 */	addi r3, r3, backgroundInfo@l
 /* 80057A48 00053968  80 04 00 08 */	lwz r0, 8(r4)
@@ -1200,7 +1200,7 @@ bg_old_cave_draw:
 /* 80057A70 00053990  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80057A74 00053994  38 63 00 30 */	addi r3, r3, 0x30
 /* 80057A78 00053998  4B FA FE 39 */	bl mathutil_mtxA_from_mtx
-/* 80057A7C 0005399C  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80057A7C 0005399C  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80057A80 000539A0  80 63 00 04 */	lwz r3, 4(r3)
 /* 80057A84 000539A4  4B FD C0 51 */	bl func_80033AD4
 /* 80057A88 000539A8  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -1220,11 +1220,11 @@ bg_old_extramaster_init:
 /* 80057AB0 000539D0  DB E1 01 38 */	stfd f31, 0x138(r1)
 /* 80057AB4 000539D4  DB C1 01 30 */	stfd f30, 0x130(r1)
 /* 80057AB8 000539D8  BF 21 01 14 */	stmw r25, 0x114(r1)
-/* 80057ABC 000539DC  80 AD 99 1C */	lwz r5, lbl_802F1AFC@sda21(r13)
+/* 80057ABC 000539DC  80 AD 99 1C */	lwz r5, naomiBackgroundObj@sda21(r13)
 /* 80057AC0 000539E0  80 65 00 08 */	lwz r3, 8(r5)
 /* 80057AC4 000539E4  3C A0 04 00 */	lis r5, 0x400
 /* 80057AC8 000539E8  48 03 58 A5 */	bl func_8008D36C
-/* 80057ACC 000539EC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80057ACC 000539EC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80057AD0 000539F0  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 80057AD4 000539F4  3B A3 91 78 */	addi r29, r3, backgroundInfo@l
 /* 80057AD8 000539F8  80 04 00 A0 */	lwz r0, 0xa0(r4)
@@ -1452,14 +1452,14 @@ lbl_80057DB0:
 /* 80057E4C 00053D6C  B0 01 00 10 */	sth r0, 0x10(r1)
 /* 80057E50 00053D70  3C 60 80 1C */	lis r3, lbl_801B9B48@ha
 /* 80057E54 00053D74  3B C3 9B 48 */	addi r30, r3, lbl_801B9B48@l
-/* 80057E58 00053D78  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80057E58 00053D78  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80057E5C 00053D7C  38 00 00 00 */	li r0, 0
 /* 80057E60 00053D80  38 7E 00 00 */	addi r3, r30, 0
 /* 80057E64 00053D84  80 84 00 08 */	lwz r4, 8(r4)
 /* 80057E68 00053D88  90 81 00 38 */	stw r4, 0x38(r1)
 /* 80057E6C 00053D8C  90 01 00 18 */	stw r0, 0x18(r1)
 /* 80057E70 00053D90  48 0A EC F1 */	bl strlen
-/* 80057E74 00053D94  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80057E74 00053D94  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80057E78 00053D98  7C 7A 1B 78 */	mr r26, r3
 /* 80057E7C 00053D9C  CB C2 96 58 */	lfd f30, lbl_802F3E58-_SDA2_BASE_(r2)
 /* 80057E80 00053DA0  3F E0 43 30 */	lis r31, 0x4330
@@ -1742,7 +1742,7 @@ bg_old_extramaster_draw:
 /* 80058264 00054184  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80058268 00054188  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005826C 0005418C  4B FA F6 45 */	bl mathutil_mtxA_from_mtx
-/* 80058270 00054190  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058270 00054190  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058274 00054194  80 63 00 A4 */	lwz r3, 0xa4(r3)
 /* 80058278 00054198  4B FD B8 5D */	bl func_80033AD4
 /* 8005827C 0005419C  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -1896,7 +1896,7 @@ lbl_800584A4:
 /* 800584BC 000543DC  4E 80 00 20 */	blr
 .global bg_old_night_init
 bg_old_night_init:
-/* 800584C0 000543E0  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 800584C0 000543E0  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 800584C4 000543E4  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 800584C8 000543E8  38 63 91 78 */	addi r3, r3, backgroundInfo@l
 /* 800584CC 000543EC  80 04 00 08 */	lwz r0, 8(r4)
@@ -1918,7 +1918,7 @@ bg_old_night_draw:
 /* 800584F4 00054414  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 800584F8 00054418  38 63 00 30 */	addi r3, r3, 0x30
 /* 800584FC 0005441C  4B FA F3 B5 */	bl mathutil_mtxA_from_mtx
-/* 80058500 00054420  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058500 00054420  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058504 00054424  80 63 00 04 */	lwz r3, 4(r3)
 /* 80058508 00054428  4B FD B5 CD */	bl func_80033AD4
 /* 8005850C 0005442C  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -1937,7 +1937,7 @@ bg_old_space_init:
 /* 80058530 00054450  93 E1 00 1C */	stw r31, 0x1c(r1)
 /* 80058534 00054454  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 80058538 00054458  3B C3 91 78 */	addi r30, r3, backgroundInfo@l
-/* 8005853C 0005445C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005853C 0005445C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80058540 00054460  80 04 00 08 */	lwz r0, 8(r4)
 /* 80058544 00054464  90 1E 00 80 */	stw r0, 0x80(r30)
 /* 80058548 00054468  C0 02 96 B0 */	lfs f0, lbl_802F3EB0-_SDA2_BASE_(r2)
@@ -2053,10 +2053,10 @@ bg_old_space_draw:
 /* 800586C8 000545E8  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 800586CC 000545EC  38 63 00 30 */	addi r3, r3, 0x30
 /* 800586D0 000545F0  4B FA F1 E1 */	bl mathutil_mtxA_from_mtx
-/* 800586D4 000545F4  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 800586D4 000545F4  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 800586D8 000545F8  80 63 00 04 */	lwz r3, 4(r3)
 /* 800586DC 000545FC  4B FD B3 F9 */	bl func_80033AD4
-/* 800586E0 00054600  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 800586E0 00054600  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 800586E4 00054604  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 800586E8 00054608  80 84 00 0C */	lwz r4, 0xc(r4)
 /* 800586EC 0005460C  80 A4 FF FC */	lwz r5, -4(r4)
@@ -2109,7 +2109,7 @@ lbl_80058764:
 /* 80058798 000546B8  4E 80 00 20 */	blr
 .global bg_old_sunset_init
 bg_old_sunset_init:
-/* 8005879C 000546BC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005879C 000546BC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 800587A0 000546C0  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 800587A4 000546C4  38 63 91 78 */	addi r3, r3, backgroundInfo@l
 /* 800587A8 000546C8  80 04 00 08 */	lwz r0, 8(r4)
@@ -2131,7 +2131,7 @@ bg_old_sunset_draw:
 /* 800587D0 000546F0  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 800587D4 000546F4  38 63 00 30 */	addi r3, r3, 0x30
 /* 800587D8 000546F8  4B FA F0 D9 */	bl mathutil_mtxA_from_mtx
-/* 800587DC 000546FC  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 800587DC 000546FC  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 800587E0 00054700  80 63 00 04 */	lwz r3, 4(r3)
 /* 800587E4 00054704  4B FD B2 F1 */	bl func_80033AD4
 /* 800587E8 00054708  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -2154,11 +2154,11 @@ bg_old_bonus_init:
 /* 8005881C 0005473C  93 C1 00 D0 */	stw r30, 0xd0(r1)
 /* 80058820 00054740  93 A1 00 CC */	stw r29, 0xcc(r1)
 /* 80058824 00054744  93 81 00 C8 */	stw r28, 0xc8(r1)
-/* 80058828 00054748  80 AD 99 1C */	lwz r5, lbl_802F1AFC@sda21(r13)
+/* 80058828 00054748  80 AD 99 1C */	lwz r5, naomiBackgroundObj@sda21(r13)
 /* 8005882C 0005474C  80 65 00 08 */	lwz r3, 8(r5)
 /* 80058830 00054750  3C A0 04 00 */	lis r5, 0x400
 /* 80058834 00054754  48 03 4B 39 */	bl func_8008D36C
-/* 80058838 00054758  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80058838 00054758  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005883C 0005475C  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 80058840 00054760  3B C3 91 78 */	addi r30, r3, backgroundInfo@l
 /* 80058844 00054764  80 04 00 A0 */	lwz r0, 0xa0(r4)
@@ -2177,7 +2177,7 @@ bg_old_bonus_init:
 /* 80058878 00054798  38 A0 00 AC */	li r5, 0xac
 /* 8005887C 0005479C  4B FA AA A5 */	bl memset
 /* 80058880 000547A0  38 00 00 0B */	li r0, 0xb
-/* 80058884 000547A4  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80058884 000547A4  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80058888 000547A8  B0 01 00 10 */	sth r0, 0x10(r1)
 /* 8005888C 000547AC  3C 60 80 1C */	lis r3, lbl_801B9B58@ha
 /* 80058890 000547B0  3B C3 9B 58 */	addi r30, r3, lbl_801B9B58@l
@@ -2187,7 +2187,7 @@ bg_old_bonus_init:
 /* 800588A0 000547C0  90 81 00 38 */	stw r4, 0x38(r1)
 /* 800588A4 000547C4  90 01 00 18 */	stw r0, 0x18(r1)
 /* 800588A8 000547C8  48 0A E2 B9 */	bl strlen
-/* 800588AC 000547CC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 800588AC 000547CC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 800588B0 000547D0  7C 7C 1B 78 */	mr r28, r3
 /* 800588B4 000547D4  CB C2 97 10 */	lfd f30, lbl_802F3F10-_SDA2_BASE_(r2)
 /* 800588B8 000547D8  3F E0 43 30 */	lis r31, 0x4330
@@ -2253,7 +2253,7 @@ bg_old_bonus_draw:
 /* 80058984 000548A4  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80058988 000548A8  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005898C 000548AC  4B FA EF 25 */	bl mathutil_mtxA_from_mtx
-/* 80058990 000548B0  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058990 000548B0  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058994 000548B4  80 63 00 04 */	lwz r3, 4(r3)
 /* 80058998 000548B8  4B FD B1 3D */	bl func_80033AD4
 /* 8005899C 000548BC  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -2422,10 +2422,10 @@ bg_old_ice_init:
 /* 80058C10 00054B30  3F E0 FC 00 */	lis r31, 0xFBFFFFFF@ha
 /* 80058C14 00054B34  38 9F FF FF */	addi r4, r31, 0xFBFFFFFF@l
 /* 80058C18 00054B38  90 03 00 7C */	stw r0, 0x7c(r3)
-/* 80058C1C 00054B3C  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058C1C 00054B3C  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058C20 00054B40  80 63 00 08 */	lwz r3, 8(r3)
 /* 80058C24 00054B44  48 03 47 49 */	bl func_8008D36C
-/* 80058C28 00054B48  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058C28 00054B48  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058C2C 00054B4C  38 9F FF FF */	addi r4, r31, -1
 /* 80058C30 00054B50  3C A0 04 00 */	lis r5, 0x400
 /* 80058C34 00054B54  80 63 00 0C */	lwz r3, 0xc(r3)
@@ -2435,7 +2435,7 @@ bg_old_ice_init:
 /* 80058C44 00054B64  38 A0 00 AC */	li r5, 0xac
 /* 80058C48 00054B68  4B FA A6 D9 */	bl memset
 /* 80058C4C 00054B6C  38 00 00 05 */	li r0, 5
-/* 80058C50 00054B70  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80058C50 00054B70  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80058C54 00054B74  B0 01 00 10 */	sth r0, 0x10(r1)
 /* 80058C58 00054B78  38 61 00 08 */	addi r3, r1, 8
 /* 80058C5C 00054B7C  C0 42 97 70 */	lfs f2, lbl_802F3F70-_SDA2_BASE_(r2)
@@ -2469,7 +2469,7 @@ bg_old_ice_draw:
 /* 80058CB4 00054BD4  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80058CB8 00054BD8  38 63 00 30 */	addi r3, r3, 0x30
 /* 80058CBC 00054BDC  4B FA EB F5 */	bl mathutil_mtxA_from_mtx
-/* 80058CC0 00054BE0  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058CC0 00054BE0  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058CC4 00054BE4  80 63 00 04 */	lwz r3, 4(r3)
 /* 80058CC8 00054BE8  4B FD AE 0D */	bl func_80033AD4
 /* 80058CCC 00054BEC  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -2680,7 +2680,7 @@ func_80058D44:
 /* 80058FE8 00054F08  EC A0 08 28 */	fsubs f5, f0, f1
 /* 80058FEC 00054F0C  C8 22 97 A8 */	lfd f1, lbl_802F3FA8-_SDA2_BASE_(r2)
 /* 80058FF0 00054F10  C0 02 97 78 */	lfs f0, lbl_802F3F78-_SDA2_BASE_(r2)
-/* 80058FF4 00054F14  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80058FF4 00054F14  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058FF8 00054F18  EC 85 20 24 */	fdivs f4, f5, f4
 /* 80058FFC 00054F1C  FC 63 20 2A */	fadd f3, f3, f4
 /* 80059000 00054F20  FC 42 00 F2 */	fmul f2, f2, f3
@@ -3015,7 +3015,7 @@ lbl_80059504:
 /* 80059508 00055428  FC 20 00 72 */	fmul f1, f0, f1
 /* 8005950C 0005542C  FC 20 08 18 */	frsp f1, f1
 /* 80059510 00055430  4B FD 76 99 */	bl func_80030BA8
-/* 80059514 00055434  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 80059514 00055434  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80059518 00055438  80 63 00 0C */	lwz r3, 0xc(r3)
 /* 8005951C 0005543C  4B FD A5 B9 */	bl func_80033AD4
 /* 80059520 00055440  80 1F 00 04 */	lwz r0, 4(r31)
@@ -3190,7 +3190,7 @@ bg_old_sand_init:
 /* 80059780 000556A0  93 E1 00 24 */	stw r31, 0x24(r1)
 /* 80059784 000556A4  93 C1 00 20 */	stw r30, 0x20(r1)
 /* 80059788 000556A8  3B C3 91 78 */	addi r30, r3, backgroundInfo@l
-/* 8005978C 000556AC  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005978C 000556AC  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059790 000556B0  80 04 00 0C */	lwz r0, 0xc(r4)
 /* 80059794 000556B4  90 1E 00 80 */	stw r0, 0x80(r30)
 /* 80059798 000556B8  C0 02 98 38 */	lfs f0, lbl_802F4038-_SDA2_BASE_(r2)
@@ -3306,10 +3306,10 @@ bg_old_sand_draw:
 /* 80059930 00055850  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80059934 00055854  38 63 00 30 */	addi r3, r3, 0x30
 /* 80059938 00055858  4B FA DF 79 */	bl mathutil_mtxA_from_mtx
-/* 8005993C 0005585C  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 8005993C 0005585C  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80059940 00055860  80 63 00 04 */	lwz r3, 4(r3)
 /* 80059944 00055864  4B FD A1 91 */	bl func_80033AD4
-/* 80059948 00055868  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059948 00055868  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005994C 0005586C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 80059950 00055870  80 84 00 08 */	lwz r4, 8(r4)
 /* 80059954 00055874  80 A4 FF FC */	lwz r5, -4(r4)
@@ -3323,7 +3323,7 @@ bg_old_sand_draw:
 /* 80059974 00055894  4B FE E4 A5 */	bl func_80047E18
 /* 80059978 00055898  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005997C 0005589C  4B FD A1 79 */	bl g_dupe_of_call_draw_naomi_model_1
-/* 80059980 000558A0  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059980 000558A0  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059984 000558A4  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 80059988 000558A8  80 84 00 10 */	lwz r4, 0x10(r4)
 /* 8005998C 000558AC  80 A4 FF FC */	lwz r5, -4(r4)
@@ -3346,7 +3346,7 @@ bg_old_sand_draw:
 /* 800599D0 000558F0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800599D4 000558F4  7C 03 07 34 */	extsh r3, r0
 /* 800599D8 000558F8  4B FA E6 25 */	bl mathutil_mtxA_rotate_y
-/* 800599DC 000558FC  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 800599DC 000558FC  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 800599E0 00055900  80 63 00 14 */	lwz r3, 0x14(r3)
 /* 800599E4 00055904  4B FD A0 F1 */	bl func_80033AD4
 /* 800599E8 00055908  80 01 00 14 */	lwz r0, 0x14(r1)
@@ -3408,7 +3408,7 @@ bg_old_storm_init:
 /* 80059AA8 000559C8  94 21 FF 38 */	stwu r1, -0xc8(r1)
 /* 80059AAC 000559CC  93 E1 00 C4 */	stw r31, 0xc4(r1)
 /* 80059AB0 000559D0  3B E3 91 78 */	addi r31, r3, backgroundInfo@l
-/* 80059AB4 000559D4  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059AB4 000559D4  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059AB8 000559D8  80 04 00 20 */	lwz r0, 0x20(r4)
 /* 80059ABC 000559DC  90 1F 00 80 */	stw r0, 0x80(r31)
 /* 80059AC0 000559E0  C0 02 98 88 */	lfs f0, lbl_802F4088-_SDA2_BASE_(r2)
@@ -3453,7 +3453,7 @@ bg_old_storm_init:
 /* 80059B5C 00055A7C  7C 00 07 34 */	extsh r0, r0
 /* 80059B60 00055A80  B0 01 00 5C */	sth r0, 0x5c(r1)
 /* 80059B64 00055A84  38 61 00 08 */	addi r3, r1, 8
-/* 80059B68 00055A88  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059B68 00055A88  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059B6C 00055A8C  80 04 00 08 */	lwz r0, 8(r4)
 /* 80059B70 00055A90  90 01 00 38 */	stw r0, 0x38(r1)
 /* 80059B74 00055A94  4B FF 33 95 */	bl func_8004CF08
@@ -3476,7 +3476,7 @@ bg_old_storm_init:
 /* 80059BB8 00055AD8  7C 03 00 50 */	subf r0, r3, r0
 /* 80059BBC 00055ADC  B0 01 00 5C */	sth r0, 0x5c(r1)
 /* 80059BC0 00055AE0  38 61 00 08 */	addi r3, r1, 8
-/* 80059BC4 00055AE4  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059BC4 00055AE4  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059BC8 00055AE8  80 04 00 0C */	lwz r0, 0xc(r4)
 /* 80059BCC 00055AEC  90 01 00 38 */	stw r0, 0x38(r1)
 /* 80059BD0 00055AF0  4B FF 33 39 */	bl func_8004CF08
@@ -3499,7 +3499,7 @@ bg_old_storm_init:
 /* 80059C14 00055B34  7C 03 00 50 */	subf r0, r3, r0
 /* 80059C18 00055B38  B0 01 00 5C */	sth r0, 0x5c(r1)
 /* 80059C1C 00055B3C  38 61 00 08 */	addi r3, r1, 8
-/* 80059C20 00055B40  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059C20 00055B40  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059C24 00055B44  80 04 00 18 */	lwz r0, 0x18(r4)
 /* 80059C28 00055B48  90 01 00 38 */	stw r0, 0x38(r1)
 /* 80059C2C 00055B4C  4B FF 32 DD */	bl func_8004CF08
@@ -3522,7 +3522,7 @@ bg_old_storm_init:
 /* 80059C70 00055B90  7C 03 00 50 */	subf r0, r3, r0
 /* 80059C74 00055B94  B0 01 00 5C */	sth r0, 0x5c(r1)
 /* 80059C78 00055B98  38 61 00 08 */	addi r3, r1, 8
-/* 80059C7C 00055B9C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 80059C7C 00055B9C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059C80 00055BA0  80 04 00 1C */	lwz r0, 0x1c(r4)
 /* 80059C84 00055BA4  90 01 00 38 */	stw r0, 0x38(r1)
 /* 80059C88 00055BA8  4B FF 32 81 */	bl func_8004CF08
@@ -3761,7 +3761,7 @@ bg_old_storm_main:
 /* 8005A024 00055F44  4B FA E7 C1 */	bl mathutil_vec_to_euler_xy
 /* 8005A028 00055F48  48 0A C8 3D */	bl rand
 /* 8005A02C 00055F4C  54 60 04 7E */	clrlwi r0, r3, 0x11
-/* 8005A030 00055F50  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005A030 00055F50  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005A034 00055F54  B0 01 00 74 */	sth r0, 0x74(r1)
 /* 8005A038 00055F58  38 61 00 24 */	addi r3, r1, 0x24
 /* 8005A03C 00055F5C  80 04 00 24 */	lwz r0, 0x24(r4)
@@ -3815,7 +3815,7 @@ lbl_8005A04C:
 /* 8005A0F8 00056018  4B FA E6 ED */	bl mathutil_vec_to_euler_xy
 /* 8005A0FC 0005601C  48 0A C7 69 */	bl rand
 /* 8005A100 00056020  54 60 04 7E */	clrlwi r0, r3, 0x11
-/* 8005A104 00056024  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005A104 00056024  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005A108 00056028  B0 01 00 74 */	sth r0, 0x74(r1)
 /* 8005A10C 0005602C  38 61 00 24 */	addi r3, r1, 0x24
 /* 8005A110 00056030  80 04 00 24 */	lwz r0, 0x24(r4)
@@ -3839,10 +3839,10 @@ bg_old_storm_draw:
 /* 8005A144 00056064  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005A148 00056068  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005A14C 0005606C  4B FA D7 65 */	bl mathutil_mtxA_from_mtx
-/* 8005A150 00056070  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 8005A150 00056070  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8005A154 00056074  80 63 00 04 */	lwz r3, 4(r3)
 /* 8005A158 00056078  4B FD 99 7D */	bl func_80033AD4
-/* 8005A15C 0005607C  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 8005A15C 0005607C  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8005A160 00056080  80 63 00 10 */	lwz r3, 0x10(r3)
 /* 8005A164 00056084  4B FD 99 71 */	bl func_80033AD4
 /* 8005A168 00056088  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -4202,7 +4202,7 @@ lbl_8005A5A0:
 /* 8005A6C4 000565E4  C0 21 00 B4 */	lfs f1, 0xb4(r1)
 /* 8005A6C8 000565E8  C0 01 00 BC */	lfs f0, 0xbc(r1)
 /* 8005A6CC 000565EC  EC 22 08 2A */	fadds f1, f2, f1
-/* 8005A6D0 000565F0  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005A6D0 000565F0  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005A6D4 000565F4  D0 21 00 3C */	stfs f1, 0x3c(r1)
 /* 8005A6D8 000565F8  C0 21 00 44 */	lfs f1, 0x44(r1)
 /* 8005A6DC 000565FC  EC 01 00 2A */	fadds f0, f1, f0
@@ -4323,7 +4323,7 @@ lbl_8005A6F0:
 /* 8005A8A4 000567C4  B0 01 00 56 */	sth r0, 0x56(r1)
 /* 8005A8A8 000567C8  48 0A BF BD */	bl rand
 /* 8005A8AC 000567CC  54 60 04 7E */	clrlwi r0, r3, 0x11
-/* 8005A8B0 000567D0  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005A8B0 000567D0  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005A8B4 000567D4  B0 01 00 58 */	sth r0, 0x58(r1)
 /* 8005A8B8 000567D8  38 61 00 08 */	addi r3, r1, 8
 /* 8005A8BC 000567DC  80 04 00 14 */	lwz r0, 0x14(r4)
@@ -4604,10 +4604,10 @@ bg_old_water_draw:
 /* 8005ACD0 00056BF0  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005ACD4 00056BF4  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005ACD8 00056BF8  4B FA CB D9 */	bl mathutil_mtxA_from_mtx
-/* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, lbl_802F1AFC@sda21(r13)
+/* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8005ACE0 00056C00  80 63 00 04 */	lwz r3, 4(r3)
 /* 8005ACE4 00056C04  4B FD 8D F1 */	bl func_80033AD4
-/* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005ACEC 00056C0C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005ACF0 00056C10  80 84 00 08 */	lwz r4, 8(r4)
 /* 8005ACF4 00056C14  80 A4 FF FC */	lwz r5, -4(r4)
@@ -4623,7 +4623,7 @@ bg_old_water_draw:
 /* 8005AD1C 00056C3C  4B FA CB 95 */	bl mathutil_mtxA_from_mtx
 /* 8005AD20 00056C40  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD24 00056C44  4B FD 8D D1 */	bl g_dupe_of_call_draw_naomi_model_1
-/* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005AD2C 00056C4C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD30 00056C50  80 84 00 10 */	lwz r4, 0x10(r4)
 /* 8005AD34 00056C54  80 A4 FF FC */	lwz r5, -4(r4)
@@ -4678,7 +4678,7 @@ lbl_8005ADC8:
 /* 8005ADE0 00056D00  4B FA 86 35 */	bl memcpy
 /* 8005ADE4 00056D04  38 7F 00 48 */	addi r3, r31, 0x48
 /* 8005ADE8 00056D08  4B FA CE 6D */	bl mathutil_mtxA_mult_left
-/* 8005ADEC 00056D0C  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005ADEC 00056D0C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005ADF0 00056D10  38 7E 00 00 */	addi r3, r30, 0
 /* 8005ADF4 00056D14  38 A1 00 10 */	addi r5, r1, 0x10
 /* 8005ADF8 00056D18  80 84 00 0C */	lwz r4, 0xc(r4)
@@ -4717,7 +4717,7 @@ lbl_8005AE58:
 /* 8005AE6C 00056D8C  4B FA 85 A9 */	bl memcpy
 /* 8005AE70 00056D90  38 7F 00 48 */	addi r3, r31, 0x48
 /* 8005AE74 00056D94  4B FA CD E1 */	bl mathutil_mtxA_mult_left
-/* 8005AE78 00056D98  80 8D 99 1C */	lwz r4, lbl_802F1AFC@sda21(r13)
+/* 8005AE78 00056D98  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 8005AE7C 00056D9C  38 7E 00 00 */	addi r3, r30, 0
 /* 8005AE80 00056DA0  38 A1 00 10 */	addi r5, r1, 0x10
 /* 8005AE84 00056DA4  80 84 00 0C */	lwz r4, 0xc(r4)

@@ -16652,8 +16652,8 @@ lbl_0000F44C:
 /* 0000F4A8 4BFF0C8D */ bl mathutil_mtxA_translate_xyz
 /* 0000F4AC C03F37B4 */ lfs f1, 0x37b4(r31)
 /* 0000F4B0 4BFF0C85 */ bl mathutil_mtxA_scale_s
-/* 0000F4B4 3C600000 */ lis r3, lbl_802F1B04@ha
-/* 0000F4B8 3AA30000 */ addi r21, r3, lbl_802F1B04@l
+/* 0000F4B4 3C600000 */ lis r3, naomiCommonObj@ha
+/* 0000F4B8 3AA30000 */ addi r21, r3, naomiCommonObj@l
 /* 0000F4BC 80750000 */ lwz r3, 0(r21)
 /* 0000F4C0 806300A8 */ lwz r3, 0xa8(r3)
 /* 0000F4C4 4BFF0C71 */ bl g_draw_naomi_model_and_do_other_stuff
@@ -16746,9 +16746,9 @@ lbl_0000F4FC:
 /* 0000F61C 3A310030 */ addi r17, r17, 0x30
 /* 0000F620 4180FEDC */ blt lbl_0000F4FC
 /* 0000F624 3C800000 */ lis r4, lbl_0001CAD8@ha
-/* 0000F628 3C600000 */ lis r3, lbl_802F1B04@ha
+/* 0000F628 3C600000 */ lis r3, naomiCommonObj@ha
 /* 0000F62C 3A440000 */ addi r18, r4, lbl_0001CAD8@l
-/* 0000F630 3A230000 */ addi r17, r3, lbl_802F1B04@l
+/* 0000F630 3A230000 */ addi r17, r3, naomiCommonObj@l
 /* 0000F634 3A000000 */ li r16, 0
 /* 0000F638 39E00000 */ li r15, 0
 lbl_0000F63C:
@@ -17330,8 +17330,8 @@ lbl_0000FE98:
 /* 0000FEB4 4BFF0281 */ bl GXLoadNrmMtxImm
 /* 0000FEB8 FC20F090 */ fmr f1, f30
 /* 0000FEBC 4BFF0279 */ bl func_8008E564
-/* 0000FEC0 3C600000 */ lis r3, lbl_802F1CC8@ha
-/* 0000FEC4 38630000 */ addi r3, r3, lbl_802F1CC8@l
+/* 0000FEC0 3C600000 */ lis r3, commonGma@ha
+/* 0000FEC4 38630000 */ addi r3, r3, commonGma@l
 /* 0000FEC8 80630000 */ lwz r3, 0(r3)
 /* 0000FECC 80630008 */ lwz r3, 8(r3)
 /* 0000FED0 806300A0 */ lwz r3, 0xa0(r3)
@@ -17840,12 +17840,12 @@ lbl_000105BC:
 /* 00010624 928102B0 */ stw r20, 0x2b0(r1)
 /* 00010628 3C800000 */ lis r4, mathutilData@ha
 /* 0001062C C8230000 */ lfd f1, lbl_00020848@l(r3)
-/* 00010630 3C600000 */ lis r3, lbl_802F1CC8@ha
+/* 00010630 3C600000 */ lis r3, commonGma@ha
 /* 00010634 C80102B0 */ lfd f0, 0x2b0(r1)
 /* 00010638 3A610248 */ addi r19, r1, 0x248
 /* 0001063C EC000828 */ fsubs f0, f0, f1
 /* 00010640 3A440000 */ addi r18, r4, mathutilData@l
-/* 00010644 3A230000 */ addi r17, r3, lbl_802F1CC8@l
+/* 00010644 3A230000 */ addi r17, r3, commonGma@l
 /* 00010648 39E1024C */ addi r15, r1, 0x24c
 /* 0001064C EFE20032 */ fmuls f31, f2, f0
 /* 00010650 3A000000 */ li r16, 0
@@ -17907,12 +17907,12 @@ lbl_00010704:
 /* 00010728 91C102B0 */ stw r14, 0x2b0(r1)
 /* 0001072C 3C800000 */ lis r4, mathutilData@ha
 /* 00010730 C8230000 */ lfd f1, lbl_00020848@l(r3)
-/* 00010734 3C600000 */ lis r3, lbl_802F1CC8@ha
+/* 00010734 3C600000 */ lis r3, commonGma@ha
 /* 00010738 C80102B0 */ lfd f0, 0x2b0(r1)
 /* 0001073C 3A810248 */ addi r20, r1, 0x248
 /* 00010740 EC000828 */ fsubs f0, f0, f1
 /* 00010744 3A640000 */ addi r19, r4, mathutilData@l
-/* 00010748 3A430000 */ addi r18, r3, lbl_802F1CC8@l
+/* 00010748 3A430000 */ addi r18, r3, commonGma@l
 /* 0001074C 3A21024C */ addi r17, r1, 0x24c
 /* 00010750 EFE20032 */ fmuls f31, f2, f0
 /* 00010754 3A000000 */ li r16, 0
@@ -18468,8 +18468,8 @@ lbl_00010F48:
 /* 00010F78 806E0000 */ lwz r3, 0(r14)
 /* 00010F7C 38800000 */ li r4, 0
 /* 00010F80 4BFEF1B5 */ bl GXLoadNrmMtxImm
-/* 00010F84 3C600000 */ lis r3, lbl_802F1CC8@ha
-/* 00010F88 38630000 */ addi r3, r3, lbl_802F1CC8@l
+/* 00010F84 3C600000 */ lis r3, commonGma@ha
+/* 00010F88 38630000 */ addi r3, r3, commonGma@l
 /* 00010F8C 80630000 */ lwz r3, 0(r3)
 /* 00010F90 80630008 */ lwz r3, 8(r3)
 /* 00010F94 80630180 */ lwz r3, 0x180(r3)
@@ -18649,13 +18649,13 @@ lbl_000111F8:
 /* 00011224 3C600000 */ lis r3, lbl_802F1CB8@ha
 /* 00011228 3CA00000 */ lis r5, lbl_10009878@ha
 /* 0001122C 3C800000 */ lis r4, mathutilData@ha
-/* 00011230 3CE00000 */ lis r7, lbl_802F1CC8@ha
+/* 00011230 3CE00000 */ lis r7, commonGma@ha
 /* 00011234 3CC00000 */ lis r6, lbl_10000004@ha
 /* 00011238 3AC1000C */ addi r22, r1, 0xc
 /* 0001123C 3BE30000 */ addi r31, r3, lbl_802F1CB8@l
 /* 00011240 3BA50000 */ addi r29, r5, lbl_10009878@l
 /* 00011244 3BC40000 */ addi r30, r4, mathutilData@l
-/* 00011248 3B670000 */ addi r27, r7, lbl_802F1CC8@l
+/* 00011248 3B670000 */ addi r27, r7, commonGma@l
 /* 0001124C 3B860000 */ addi r28, r6, lbl_10000004@l
 /* 00011250 3B010018 */ addi r24, r1, 0x18
 /* 00011254 3B210020 */ addi r25, r1, 0x20

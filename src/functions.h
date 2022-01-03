@@ -363,7 +363,7 @@ void ev_stage_init(void);
 void ev_stage_main(void);
 void ev_stage_dest(void);
 // ? stage_find_model();
-void find_blur_part(void);
+void find_blur_bridge_accordion(void);
 // ? func_8004424C();
 // ? func_800444A4();
 void func_80044794(void);

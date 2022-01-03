@@ -3324,7 +3324,7 @@ func_80040B20:
 /* 80040B58 0003CA78  4B FC 74 A5 */	bl mathutil_mtxA_rotate_y
 /* 80040B5C 0003CA7C  A8 7E 00 0C */	lha r3, 0xc(r30)
 /* 80040B60 0003CA80  4B FC 74 29 */	bl mathutil_mtxA_rotate_x
-/* 80040B64 0003CA84  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80040B64 0003CA84  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80040B68 0003CA88  38 81 00 48 */	addi r4, r1, 0x48
 /* 80040B6C 0003CA8C  80 63 00 14 */	lwz r3, 0x14(r3)
 /* 80040B70 0003CA90  C3 E3 00 14 */	lfs f31, 0x14(r3)
@@ -4187,7 +4187,7 @@ lbl_800417E0:
 lbl_800417F0:
 /* 800417F0 0003D710  FC 20 00 90 */	fmr f1, f0
 /* 800417F4 0003D714  4B FE F3 B5 */	bl func_80030BA8
-/* 800417F8 0003D718  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 800417F8 0003D718  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800417FC 0003D71C  80 63 00 B8 */	lwz r3, 0xb8(r3)
 /* 80041800 0003D720  4B FE FA 11 */	bl g_draw_naomi_model_and_do_other_stuff
 /* 80041804 0003D724  3B 39 FF FF */	addi r25, r25, -1
@@ -4210,7 +4210,7 @@ lbl_80041820:
 /* 80041840 0003D760  4B FC 65 99 */	bl mathutil_mtxA_scale_xyz
 /* 80041844 0003D764  C0 39 00 0C */	lfs f1, 0xc(r25)
 /* 80041848 0003D768  4B FE F3 61 */	bl func_80030BA8
-/* 8004184C 0003D76C  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 8004184C 0003D76C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80041850 0003D770  80 63 00 C0 */	lwz r3, 0xc0(r3)
 /* 80041854 0003D774  4B FE F9 BD */	bl g_draw_naomi_model_and_do_other_stuff
 /* 80041858 0003D778  3B 5A FF FF */	addi r26, r26, -1
@@ -4246,7 +4246,7 @@ lbl_800418C4:
 /* 800418C4 0003D7E4  FC 20 00 90 */	fmr f1, f0
 lbl_800418C8:
 /* 800418C8 0003D7E8  4B FE F2 E1 */	bl func_80030BA8
-/* 800418CC 0003D7EC  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 800418CC 0003D7EC  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800418D0 0003D7F0  80 63 00 BC */	lwz r3, 0xbc(r3)
 /* 800418D4 0003D7F4  4B FE F9 3D */	bl g_draw_naomi_model_and_do_other_stuff
 /* 800418D8 0003D7F8  3B 5A FF FF */	addi r26, r26, -1
@@ -4505,7 +4505,7 @@ func_80041BA4:
 /* 80041C90 0003DBB0  FC 20 00 90 */	fmr f1, f0
 lbl_80041C94:
 /* 80041C94 0003DBB4  4B FE EF 15 */	bl func_80030BA8
-/* 80041C98 0003DBB8  80 6D 99 24 */	lwz r3, lbl_802F1B04@sda21(r13)
+/* 80041C98 0003DBB8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80041C9C 0003DBBC  80 63 00 28 */	lwz r3, 0x28(r3)
 /* 80041CA0 0003DBC0  4B FE F5 71 */	bl g_draw_naomi_model_and_do_other_stuff
 /* 80041CA4 0003DBC4  80 01 00 54 */	lwz r0, 0x54(r1)
