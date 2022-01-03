@@ -11374,7 +11374,7 @@ lbl_0000A564:
 /* 0000A798 EC000824 */ fdivs f0, f0, f1
 /* 0000A79C EC03002A */ fadds f0, f3, f0
 /* 0000A7A0 D0010174 */ stfs f0, 0x174(r1)
-/* 0000A7A4 4BFF5A2D */ bl func_8009AD4C
+/* 0000A7A4 4BFF5A2D */ bl g_draw_line
 /* 0000A7A8 C81F00F0 */ lfd f0, 0xf0(r31)
 /* 0000A7AC 3B5A0001 */ addi r26, r26, 1
 /* 0000A7B0 FFFF0028 */ fsub f31, f31, f0

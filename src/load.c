@@ -312,6 +312,8 @@ void func_8009248C(void)
     aramAllocEnd = ARAM_BASE;
 }
 
+u8 lbl_802B57A0[0x3800];
+
 void func_80092498(void)
 {
     func_800924CC();

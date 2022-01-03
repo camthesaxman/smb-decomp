@@ -909,3 +909,13 @@ struct Struct801EEC68
     s8 unk15;
     s16 unk16;
 };
+
+struct Struct802BA200
+{
+    s8 unk0;
+    u8 filler1[3];
+    float unk4;
+    float unk8;
+    u8 r, g, b;
+    s8 unkF;
+};

@@ -1160,7 +1160,7 @@ void g_avdisp_set_some_color_2(float a, float b, float c, float d)
     }
 }
 
-void func_8008F878(u32 a)
+void func_8008F878(int a)
 {
     lbl_802F211C = a;
 }

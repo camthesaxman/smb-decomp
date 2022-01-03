@@ -702,11 +702,7 @@ extern u8 lbl_802B57A0[];
 // extern ? lbl_802B9390;
 // extern ? lbl_802BA190;
 // extern ? lbl_802BA1A0;
-extern struct
-{
-    u8 filler0[0xC];
-    GXColor unkC;
-} lbl_802BA200;
+extern struct Struct802BA200 lbl_802BA200;
 // extern ? lbl_802BA210;
 // extern ? cardStat;
 // extern ? memcardInfo;

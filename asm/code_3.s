@@ -40,7 +40,6 @@ func_8009AA24:
 /* 8009AAA4 000969C4  F0 86 00 00 */	psq_st f4, 0(r6), 0, qr0
 /* 8009AAA8 000969C8  F0 A6 80 00 */	psq_st f5, 0(r6), 1, qr0
 /* 8009AAAC 000969CC  4E 80 00 20 */	blr
-.endif
 
 .global func_8009AAB0
 func_8009AAB0:
@@ -236,8 +235,8 @@ func_8009AD30:
 /* 8009AD44 00096C64  90 C7 00 10 */	stw r6, 0x10(r7)
 /* 8009AD48 00096C68  4E 80 00 20 */	blr
 
-.global func_8009AD4C
-func_8009AD4C:
+.global g_draw_line
+g_draw_line:
 /* 8009AD4C 00096C6C  7C 08 02 A6 */	mflr r0
 /* 8009AD50 00096C70  90 01 00 04 */	stw r0, 4(r1)
 /* 8009AD54 00096C74  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -289,6 +288,7 @@ func_8009AD4C:
 /* 8009AE0C 00096D2C  38 21 00 38 */	addi r1, r1, 0x38
 /* 8009AE10 00096D30  7C 08 03 A6 */	mtlr r0
 /* 8009AE14 00096D34  4E 80 00 20 */	blr
+.endif
 
 glabel func_8009AE18
 /* 8009AE18 00096D38  7C 08 02 A6 */	mflr r0
@@ -1356,6 +1356,7 @@ lbl_802F59BC:
 
 .section .rodata
 
+.if 0
 .global lbl_80171B40
 lbl_80171B40:
 	# ROM: 0x16EB40
@@ -1367,33 +1368,14 @@ lbl_80171B40:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+.endif
 
 .section .bss
 
+.if 0
 .global lbl_802B57A0
 lbl_802B57A0:
 	.skip 0x3800
-.global lbl_802B8FA0
-lbl_802B8FA0:
-	.skip 0x150
-.global lbl_802B90F0
-lbl_802B90F0:
-	.skip 0x270
-.global lbl_802B9360
-lbl_802B9360:
-	.skip 0x10
-.global lbl_802B9370
-lbl_802B9370:
-	.skip 0x20
-.global lbl_802B9390
-lbl_802B9390:
-	.skip 0xE00
-.global lbl_802BA190
-lbl_802BA190:
-	.skip 0x10
-.global lbl_802BA1A0
-lbl_802BA1A0:
-	.skip 0x60
 .global lbl_802BA200
 lbl_802BA200:
 	.skip 0x4
@@ -1409,6 +1391,7 @@ glabel lbl_802BA20E
 	.skip 0x1
 glabel lbl_802BA20F
 	.skip 0x1
+.endif
 .global lbl_802BA210
 lbl_802BA210:
 	.skip 0x90

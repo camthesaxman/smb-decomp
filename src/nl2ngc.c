@@ -73,7 +73,7 @@ void func_80030AF8(int a /*unknown*/, int b /*unknown*/)
     func_8009AD30(1, a, b, 0);
 }
 
-void func_80030B28(int a /*unknown*/, int b /*unknown*/, u32 c)
+void func_80030B28(Vec *a, Vec *b, u32 c)
 {
     GXColor sp14;  // also works as u8 array. not sure
 
@@ -81,7 +81,7 @@ void func_80030B28(int a /*unknown*/, int b /*unknown*/, u32 c)
     sp14.g = (c >> 8) & 0xFF;
     sp14.b = (c >> 0) & 0xFF;
     sp14.a = (c >> 24) & 0xFF;
-    func_8009AD4C(a, b, &sp14);
+    g_draw_line(a, b, &sp14);
 }
 #pragma force_active off
 

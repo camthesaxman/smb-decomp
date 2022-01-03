@@ -1194,11 +1194,11 @@ void func_8000DEE8(void)
         break;
     }
 
-    if (r0 && (s8)lbl_802BA200.unkC.a != 0)
+    if (r0 && lbl_802BA200.unkF != 0)
     {
-        color.r = lbl_802BA200.unkC.r;
-        color.g = lbl_802BA200.unkC.g;
-        color.b = lbl_802BA200.unkC.b;
+        color.r = lbl_802BA200.r;
+        color.g = lbl_802BA200.g;
+        color.b = lbl_802BA200.b;
     }
     GXSetCopyClear(color, 0x00FFFFFF);
 }

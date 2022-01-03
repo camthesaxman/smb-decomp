@@ -13747,3 +13747,27 @@ lbl_802F13C4:
 	# ROM: 0x1EBB04
 	.asciz ".."
     .balign 4
+
+.section .bss
+
+.global lbl_802B8FA0
+lbl_802B8FA0:
+	.skip 0x150
+.global lbl_802B90F0
+lbl_802B90F0:
+	.skip 0x270
+.global lbl_802B9360
+lbl_802B9360:
+	.skip 0x10
+.global lbl_802B9370
+lbl_802B9370:
+	.skip 0x20
+.global lbl_802B9390
+lbl_802B9390:
+	.skip 0xE00
+.global lbl_802BA190
+lbl_802BA190:
+	.skip 0x10
+.global lbl_802BA1A0
+lbl_802BA1A0:
+	.skip 0x60
