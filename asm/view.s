@@ -244,9 +244,9 @@ lbl_800A5934:
 /* 800A5AC4 000A19E4  A8 64 00 1E */	lha r3, 0x1e(r4)
 /* 800A5AC8 000A19E8  38 03 00 01 */	addi r0, r3, 1
 /* 800A5ACC 000A19EC  B0 04 00 1E */	sth r0, 0x1e(r4)
-/* 800A5AD0 000A19F0  80 6D 99 54 */	lwz r3, lbl_802F1B34@sda21(r13)
+/* 800A5AD0 000A19F0  80 6D 99 54 */	lwz r3, unpausedFrameCounter@sda21(r13)
 /* 800A5AD4 000A19F4  38 03 00 01 */	addi r0, r3, 1
-/* 800A5AD8 000A19F8  90 0D 99 54 */	stw r0, lbl_802F1B34@sda21(r13)
+/* 800A5AD8 000A19F8  90 0D 99 54 */	stw r0, unpausedFrameCounter@sda21(r13)
 /* 800A5ADC 000A19FC  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 800A5AE0 000A1A00  38 21 00 20 */	addi r1, r1, 0x20
 /* 800A5AE4 000A1A04  7C 08 03 A6 */	mtlr r0

@@ -5,6 +5,7 @@
 
 #include "global.h"
 #include "bitmap.h"
+#include "mode.h"
 
 static void sprite_func_B54(s8 *, struct Sprite *);
 static void sprite_func_BC4(s8 *, struct Sprite *);

@@ -88,7 +88,7 @@ void ev_stage_main(void)
     float f3;
     int i;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
     if (lbl_801F3A58.unk0 & (1 << (31-0x17)))
     {
@@ -311,7 +311,7 @@ void func_800444A4(float a)
     struct DecodedStageLzPtr_child_child *r29;
     int i;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
     lbl_80206DEC.unk4 = a;
     lbl_80206DEC.unk0 = a;
@@ -469,7 +469,7 @@ void load_stage(int stageId)
     if (lbl_802F0998 != stageId || newBG)
     {
         lbl_802F1F48 = decodedStageLzPtr->unk8 < 0x48 ? decodedStageLzPtr->unk8 : 0x48;
-        if (lbl_802F1EE0 & (1 << (31-0x1D)))
+        if (gamePauseStatus & (1 << (31-0x1D)))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
         func_80045194();

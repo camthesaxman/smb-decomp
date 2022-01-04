@@ -184,8 +184,8 @@ submode_mini_select_main_func:
 /* 80093C64 0008FB84  A8 6D 9F 90 */	lha r3, lbl_802F2170@sda21(r13)
 /* 80093C68 0008FB88  54 C0 07 7B */	rlwinm. r0, r6, 0, 0x1d, 0x1d
 /* 80093C6C 0008FB8C  40 82 00 40 */	bne lbl_80093CAC
-/* 80093C70 0008FB90  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
-/* 80093C74 0008FB94  38 84 3D 50 */	addi r4, r4, lbl_801F3D50@l
+/* 80093C70 0008FB90  3C 80 80 1F */	lis r4, analogButtonInfo@ha
+/* 80093C74 0008FB94  38 84 3D 50 */	addi r4, r4, analogButtonInfo@l
 /* 80093C78 0008FB98  A0 04 00 08 */	lhz r0, 8(r4)
 /* 80093C7C 0008FB9C  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80093C80 0008FBA0  40 82 00 2C */	bne lbl_80093CAC
@@ -196,8 +196,8 @@ submode_mini_select_main_func:
 /* 80093C94 0008FBB4  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80093C98 0008FBB8  41 82 00 24 */	beq lbl_80093CBC
 lbl_80093C9C:
-/* 80093C9C 0008FBBC  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
-/* 80093CA0 0008FBC0  A0 04 3D 50 */	lhz r0, lbl_801F3D50@l(r4)
+/* 80093C9C 0008FBBC  3C 80 80 1F */	lis r4, analogButtonInfo@ha
+/* 80093CA0 0008FBC0  A0 04 3D 50 */	lhz r0, analogButtonInfo@l(r4)
 /* 80093CA4 0008FBC4  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 80093CA8 0008FBC8  41 82 00 14 */	beq lbl_80093CBC
 lbl_80093CAC:
@@ -208,8 +208,8 @@ lbl_80093CAC:
 lbl_80093CBC:
 /* 80093CBC 0008FBDC  54 C0 07 39 */	rlwinm. r0, r6, 0, 0x1c, 0x1c
 /* 80093CC0 0008FBE0  40 82 00 44 */	bne lbl_80093D04
-/* 80093CC4 0008FBE4  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
-/* 80093CC8 0008FBE8  38 A4 3D 50 */	addi r5, r4, lbl_801F3D50@l
+/* 80093CC4 0008FBE4  3C 80 80 1F */	lis r4, analogButtonInfo@ha
+/* 80093CC8 0008FBE8  38 A4 3D 50 */	addi r5, r4, analogButtonInfo@l
 /* 80093CCC 0008FBEC  A0 05 00 08 */	lhz r0, 8(r5)
 /* 80093CD0 0008FBF0  54 00 07 39 */	rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 80093CD4 0008FBF4  40 82 00 30 */	bne lbl_80093D04
@@ -221,8 +221,8 @@ lbl_80093CBC:
 /* 80093CEC 0008FC0C  54 00 07 39 */	rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 80093CF0 0008FC10  41 82 00 20 */	beq lbl_80093D10
 lbl_80093CF4:
-/* 80093CF4 0008FC14  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
-/* 80093CF8 0008FC18  A0 04 3D 50 */	lhz r0, lbl_801F3D50@l(r4)
+/* 80093CF4 0008FC14  3C 80 80 1F */	lis r4, analogButtonInfo@ha
+/* 80093CF8 0008FC18  A0 04 3D 50 */	lhz r0, analogButtonInfo@l(r4)
 /* 80093CFC 0008FC1C  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 80093D00 0008FC20  41 82 00 10 */	beq lbl_80093D10
 lbl_80093D04:

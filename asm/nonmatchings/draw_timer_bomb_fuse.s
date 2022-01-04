@@ -517,7 +517,7 @@ lbl_8000DD60:
 /* 8000DD6C 00009C8C  7C 03 02 14 */	add r0, r3, r0
 /* 8000DD70 00009C90  90 1F 00 68 */	stw r0, 0x68(r31)
 lbl_8000DD74:
-/* 8000DD74 00009C94  80 0D 9D 00 */	lwz r0, lbl_802F1EE0  //@sda21(r13)
+/* 8000DD74 00009C94  80 0D 9D 00 */	lwz r0, gamePauseStatus  //@sda21(r13)
 /* 8000DD78 00009C98  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8000DD7C 00009C9C  40 82 00 14 */	bne lbl_8000DD90
 /* 8000DD80 00009CA0  80 7F 00 64 */	lwz r3, 0x64(r31)

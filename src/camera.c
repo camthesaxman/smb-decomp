@@ -174,7 +174,7 @@ void ev_camera_main(void)
         {
             if (dipSwitches & DIP_TEST_CAM)
                 dipSwitches &= ~DIP_TEST_CAM;
-            else if (lbl_802F1EE0 & 1)
+            else if (gamePauseStatus & 1)
             {
                 dipSwitches |= DIP_TEST_CAM;
                 dipSwitches &= ~DIP_NO_INTR;
@@ -278,7 +278,7 @@ void ev_camera_main(void)
             case 5:
                 camera->sub28.unk28 = 0.0f;
                 camera->sub28.unk2C = 0.0f;
-                if (lbl_802F1EE0 & 0xA)
+                if (gamePauseStatus & 0xA)
                     break;
                 mathutil_mtxA_from_mtx(camera->unk144);
                 mathutil_mtxA_tf_point(&ball->pos, &sp8);
@@ -1095,7 +1095,7 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
     int r10;
     int i;
 
-    if (!(lbl_802F1EE0 & 0xA) || camera->state != 13)
+    if (!(gamePauseStatus & 0xA) || camera->state != 13)
     {
         get_curr_stage_fly_in_position(&sp1C);
         camera->lookAt.x = sp1C.x;
@@ -1106,9 +1106,9 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
             for (i = 0; i < modeCtrl.playerCount; i++)
             {
                 r10 = lbl_80206BD0[i];
-                if (camera->unk80 > -0.3 && (lbl_801F3D50[r10][0] & (1<<(31-0x18))))
+                if (camera->unk80 > -0.3 && (analogButtonInfo[r10][0] & (1<<(31-0x18))))
                     camera->unk80 -= 0.01;
-                if (camera->unk80 < 0.2 && (lbl_801F3D50[r10][0] & (1<<(31-0x19))))
+                if (camera->unk80 < 0.2 && (analogButtonInfo[r10][0] & (1<<(31-0x19))))
                     camera->unk80 += 0.01;
             }
         }
@@ -1125,9 +1125,9 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
         for (i = 0; i < modeCtrl.playerCount; i++)
         {
             r10 = lbl_80206BD0[i];
-            if (camera->unk8C < 256 && (lbl_801F3D50[r10][0] & (1<<(31-0x1A))))
+            if (camera->unk8C < 256 && (analogButtonInfo[r10][0] & (1<<(31-0x1A))))
                 camera->unk8C += 8;
-            if (camera->unk8C > -256 && (lbl_801F3D50[r10][0] & (1<<(31-0x1B))))
+            if (camera->unk8C > -256 && (analogButtonInfo[r10][0] & (1<<(31-0x1B))))
                 camera->unk8C -= 8;
         }
         if (camera->timerCurr > 0)
@@ -1221,7 +1221,7 @@ void camera_func_ready_init(struct Camera *camera, struct Ball *ball)
 
 void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
 {
-    if (!(lbl_802F1EE0 & 0xA) || camera->state != 11)
+    if (!(gamePauseStatus & 0xA) || camera->state != 11)
     {
         float t;
         Vec sp10;
@@ -1335,7 +1335,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     int r3;
     int r4;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     prevEyePos.x = camera->eye.x;
@@ -1477,13 +1477,13 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp1C.z = 0.0f;
 
     sp28.x = f0 * controllerInfo[0].unk0[0].stickX / 74.0;
-    if (lbl_801F3D50[0][0] & (1<<(31-0x16)))
+    if (analogButtonInfo[0][0] & (1<<(31-0x16)))
         sp28.y = f0 * controllerInfo[0].unk0[0].stickY / 74.0;
     else
         sp28.z = -f0 * controllerInfo[0].unk0[0].stickY / 74.0;
 
     sp1C.x = f0 * controllerInfo[0].unk0[0].substickX / 74.0;
-    if (lbl_801F3D50[0][0] & (1<<(31-0x16)))
+    if (analogButtonInfo[0][0] & (1<<(31-0x16)))
         sp1C.y = f0 * controllerInfo[0].unk0[0].substickY / 74.0;
     else
         sp1C.z = -f0 * controllerInfo[0].unk0[0].substickY / 74.0;
@@ -1550,7 +1550,7 @@ void camera_func_4(struct Camera *camera, struct Ball *ball)
 
     camera->unk26 = 2;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->unk94.x *= 0.97;
@@ -1582,7 +1582,7 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     float f1;
     float f3_;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera_clear(camera);
@@ -1659,7 +1659,7 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     float f1;
     float f3_;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera_clear(camera);
@@ -1726,7 +1726,7 @@ void camera_func_fallout_replay(struct Camera *camera, struct Ball *ball)
 {
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->unk94.x *= 0.97;
@@ -1795,7 +1795,7 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     float f2;
     float f1;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     sp10.x = ball->pos.x - camera->eye.x;
@@ -1884,7 +1884,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     float f31;
     struct DecodedStageLzPtr_child4 *r29;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera_clear(camera);
@@ -2021,7 +2021,7 @@ void camera_func_goal_replay(struct Camera *camera, struct Ball *ball)
 {
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->unk94.x *= 0.98;
@@ -2057,7 +2057,7 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     Vec sp10;
     struct DecodedStageLzPtr_child4 *r5;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     r5 = &decodedStageLzPtr->unk1C[lbl_801F3A58.unkC];
@@ -2113,7 +2113,7 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
     Vec sp10;
     struct DecodedStageLzPtr_child4 *r5;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     r5 = &decodedStageLzPtr->unk1C[lbl_801F3A58.unkC];
@@ -2169,7 +2169,7 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     Vec sp10;
     struct DecodedStageLzPtr_child4 *r30;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     r30 = &decodedStageLzPtr->unk1C[lbl_801F3A58.unkC];
@@ -2226,7 +2226,7 @@ void camera_func_22_23_24(struct Camera *camera, struct Ball *ball)
 {
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->unk94.x *= 0.92;
@@ -2271,7 +2271,7 @@ void camera_func_26(struct Camera *camera, struct Ball *ball)
     Vec sp1C;
     Vec sp10;
 
-    if ((lbl_802F1EE0 & 0xA) && camera->state == 26)
+    if ((gamePauseStatus & 0xA) && camera->state == 26)
         return;
 
     mathutil_mtxA_from_translate(&ball->pos);
@@ -2349,7 +2349,7 @@ void camera_func_32(struct Camera *camera, struct Ball *ball)
     Vec sp1C;
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     sp1C = camera->eye;  // unused
@@ -2429,7 +2429,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     float f31;
     float f30;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     sp1C = camera->eye;  // unused
@@ -2520,7 +2520,7 @@ void camera_func_36(struct Camera *camera, struct Ball *ball)
     float f31;
     float f30;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     sp1C = camera->eye;
@@ -2597,7 +2597,7 @@ void camera_func_37(struct Camera *camera, struct Ball *ball)
     Vec sp1C;
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     sp1C = camera->eye;
@@ -2678,7 +2678,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
     Vec sp10;
     struct Struct802F1C28 *r5 = lbl_802F1C28;
 
-    if ((lbl_802F1EE0 & 0xA) && camera->state == 42)
+    if ((gamePauseStatus & 0xA) && camera->state == 42)
         return;
 
     if (camera->timerCurr < 480)
@@ -2791,7 +2791,7 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
     int nextState;
     int idx;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera_clear(camera);
@@ -2851,7 +2851,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
     struct Struct801EFB94 *r31;
     u32 bvar;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->timerCurr++;
@@ -2904,7 +2904,7 @@ void camera_func_46(struct Camera *camera, struct Ball *ball)
 {
     struct Struct800496BC sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera_clear(camera);
@@ -2936,7 +2936,7 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     float f1;
     float f31;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->unk60 += camera->unk80;
@@ -3013,7 +3013,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     Vec sp10;
     float f31;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera_clear(camera);
@@ -3128,7 +3128,7 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
     Vec sp1C;
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
@@ -3246,7 +3246,7 @@ void camera_func_51(struct Camera *camera, struct Ball *ball)
 {
     Vec sp10;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->timerCurr++;
@@ -3314,7 +3314,7 @@ void camera_func_57(struct Camera *camera, struct Ball *ball)
     Vec sp10 = {0.0f, 0.0f, -1.0f};
     float t;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     if (camera->timerCurr > 0)
@@ -3343,7 +3343,7 @@ void camera_func_57(struct Camera *camera, struct Ball *ball)
 
 void camera_func_63(struct Camera *camera, struct Ball *ball)
 {
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     camera->eye.y = 1.097f;
@@ -3575,7 +3575,7 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
     int r3;
     float t;
 
-    if ((lbl_802F1EE0 & 0xA) && camera->state == 71)
+    if ((gamePauseStatus & 0xA) && camera->state == 71)
         return;
 
     r31 = func_8009D7E8();

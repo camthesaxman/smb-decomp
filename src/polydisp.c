@@ -32,13 +32,13 @@ static inline void show_loading_msg(void)
     int asterisks;
 
     g_debug_set_cursor_pos(14, 15);
-    chr = throbber[(lbl_802F1B34/2) % 4];
+    chr = throbber[(unpausedFrameCounter/2) % 4];
     g_debug_printf("%c", chr);
     g_debug_print("NOW LOADING");
     g_debug_printf("%c", chr);
     g_debug_set_cursor_pos(15, 16);
     g_debug_print("LEFT: ");
-    asterisks = func_80092468();
+    asterisks = get_load_queue_count();
     while (asterisks > 0)
     {
         g_debug_print("*");
@@ -50,7 +50,7 @@ void polydisp_main(void)
 {
     if (gameMode == MD_SEL
      && (gameSubmode == SMD_SEL_STAGE_INIT || gameSubmode == SMD_SEL_STAGE_MAIN)
-     && func_80092444() != 0)
+     && is_load_queue_not_empty() != 0)
         show_loading_msg();
 
     lbl_801EEC90.unk0 &= ~0x11;
@@ -365,7 +365,7 @@ void func_8000BCA4(void)
     sp48.x = -0.0055f;
     sp48.y = -0.003f;
     sp48.z = -0.718f;
-    if (!(lbl_802F1EE0 & 0xA))
+    if (!(gamePauseStatus & 0xA))
     {
         if (lbl_801EED3C.unk8 > 0)
             lbl_801EED3C.unkC += 0.05 * -lbl_801EED3C.unkC;
@@ -686,7 +686,7 @@ void func_8000C8D4(void)
         if ((ball->flags & (1 << (31-0x1B))))
             continue;
         mathutil_mtxA_from_identity();
-        f27 = 0.8 - 0.1 * (((lbl_802F1B34 / 16) + i) % 3);
+        f27 = 0.8 - 0.1 * (((unpausedFrameCounter / 16) + i) % 3);
         mathutil_mtxA_scale_s(f27);
         mathutil_mtxA_mult_right(mathutilData->mtxB);
         mathutil_mtxA_translate(&ball->pos);
@@ -941,15 +941,15 @@ void func_8000D220(void)
     if ((dipSwitches & DIP_TEST_CAM) && !(dipSwitches & DIP_NO_INTR))
     {
         mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
-        mathutil_mtxA_rotate_y((lbl_802F1B38 << 8) * 1.2f);
+        mathutil_mtxA_rotate_y((globalFrameCounter << 8) * 1.2f);
         mathutil_unk_inline(10.0f, &light2pos);
 
         mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
-        mathutil_mtxA_rotate_x(lbl_802F1B38 << 8);
+        mathutil_mtxA_rotate_x(globalFrameCounter << 8);
         mathutil_unk_inline(-10.0f, &light3pos);
 
         mathutil_mtxA_from_translate(&currentCameraStructPtr->lookAt);
-        mathutil_mtxA_rotate_z((lbl_802F1B38 << 8) * 0.8f);
+        mathutil_mtxA_rotate_z((globalFrameCounter << 8) * 0.8f);
 
         mathutil_mtxA_tf_point_xyz(&light4pos, 0.0f, 10.0f, 0.0f);
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);

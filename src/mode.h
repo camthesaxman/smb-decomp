@@ -212,3 +212,39 @@ enum
     SMD_OPTION_PAD_VIB_MAIN,
     SMD_OPTION_BOTTOM, 
 };
+
+struct ModeControl
+{
+    s32 unk0;
+    s32 unk4;
+    u32 unk8;
+    u8 fillerC[0x10-0xC];
+    s32 unk10;
+    u8 filler14[0x1C-0x14];
+    s32 unk1C;
+    /*0x20*/ s32 menuSel;
+    /*0x24*/ int playerCount;
+    s32 unk28;
+    s32 unk2C;
+    s32 unk30;
+    u8 filler34[0x40-0x34];
+    s16 unk40;
+    u8 unk42;
+    u8 filler43[0x48-0x43];
+};
+
+extern struct ModeControl modeCtrl;
+extern s16 gameMode;
+extern s16 gameModeRequest;
+extern s16 gameSubmode;
+extern s16 gameSubmodeRequest;
+extern void *modeStringPtr;
+extern void *submodeStringPtr;
+extern void (*lbl_802F1B70)(void);
+extern void (*lbl_802F1B74)(void);
+extern u32 lbl_802F1B78;
+extern void (*lbl_802F1B7C)(void);
+extern void (*lbl_802F1B80)(void);
+
+void gm_init(void);
+void gm_main(void);

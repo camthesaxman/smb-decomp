@@ -325,7 +325,7 @@ submode_game_ready_init_func:
 /* 80012A84 0000E9A4  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 80012A88 0000E9A8  93 E1 00 24 */	stw r31, 0x24(r1)
 /* 80012A8C 0000E9AC  93 C1 00 20 */	stw r30, 0x20(r1)
-/* 80012A90 0000E9B0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80012A90 0000E9B0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80012A94 0000E9B4  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80012A98 0000E9B8  40 82 03 BC */	bne lbl_80012E54
 /* 80012A9C 0000E9BC  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -413,7 +413,7 @@ lbl_80012B5C:
 /* 80012BD0 0000EAF0  41 82 00 34 */	beq lbl_80012C04
 /* 80012BD4 0000EAF4  7F C3 F3 78 */	mr r3, r30
 /* 80012BD8 0000EAF8  48 03 1F C9 */	bl preload_stage_files
-/* 80012BDC 0000EAFC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80012BDC 0000EAFC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80012BE0 0000EB00  93 CD 9A 38 */	stw r30, lbl_802F1C18@sda21(r13)
 /* 80012BE4 0000EB04  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80012BE8 0000EB08  41 82 00 1C */	beq lbl_80012C04
@@ -598,7 +598,7 @@ submode_game_ready_main_func:
 /* 80012E6C 0000ED8C  7C 08 02 A6 */	mflr r0
 /* 80012E70 0000ED90  90 01 00 04 */	stw r0, 4(r1)
 /* 80012E74 0000ED94  94 21 FF F0 */	stwu r1, -0x10(r1)
-/* 80012E78 0000ED98  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80012E78 0000ED98  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80012E7C 0000ED9C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80012E80 0000EDA0  40 82 01 40 */	bne lbl_80012FC0
 /* 80012E84 0000EDA4  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -701,7 +701,7 @@ submode_game_play_init_func:
 /* 80012FDC 0000EEFC  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 80012FE0 0000EF00  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 80012FE4 0000EF04  93 A1 00 0C */	stw r29, 0xc(r1)
-/* 80012FE8 0000EF08  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80012FE8 0000EF08  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80012FEC 0000EF0C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80012FF0 0000EF10  40 82 01 34 */	bne lbl_80013124
 /* 80012FF4 0000EF14  38 60 00 02 */	li r3, 2
@@ -804,7 +804,7 @@ submode_game_play_main_func:
 /* 80013148 0000F068  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 8001314C 0000F06C  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 80013150 0000F070  93 C1 00 08 */	stw r30, 8(r1)
-/* 80013154 0000F074  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80013154 0000F074  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80013158 0000F078  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8001315C 0000F07C  40 82 02 38 */	bne lbl_80013394
 /* 80013160 0000F080  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -973,7 +973,7 @@ submode_game_goal_init_func:
 /* 800133B0 0000F2D0  90 01 00 04 */	stw r0, 4(r1)
 /* 800133B4 0000F2D4  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 800133B8 0000F2D8  93 E1 00 0C */	stw r31, 0xc(r1)
-/* 800133BC 0000F2DC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800133BC 0000F2DC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800133C0 0000F2E0  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800133C4 0000F2E4  40 82 01 10 */	bne lbl_800134D4
 /* 800133C8 0000F2E8  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -1062,7 +1062,7 @@ submode_game_goal_main_func:
 /* 800134EC 0000F40C  90 01 00 04 */	stw r0, 4(r1)
 /* 800134F0 0000F410  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 800134F4 0000F414  BF 21 00 0C */	stmw r25, 0xc(r1)
-/* 800134F8 0000F418  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800134F8 0000F418  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800134FC 0000F41C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80013500 0000F420  40 82 01 54 */	bne lbl_80013654
 /* 80013504 0000F424  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -1168,7 +1168,7 @@ submode_game_goal_replay_init_func:
 /* 8001366C 0000F58C  90 01 00 04 */	stw r0, 4(r1)
 /* 80013670 0000F590  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 80013674 0000F594  93 E1 00 24 */	stw r31, 0x24(r1)
-/* 80013678 0000F598  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80013678 0000F598  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8001367C 0000F59C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80013680 0000F5A0  40 82 03 14 */	bne lbl_80013994
 /* 80013684 0000F5A4  38 60 00 0B */	li r3, 0xb
@@ -1392,7 +1392,7 @@ submode_game_goal_replay_main_func:
 /* 800139AC 0000F8CC  90 01 00 04 */	stw r0, 4(r1)
 /* 800139B0 0000F8D0  94 21 FF D0 */	stwu r1, -0x30(r1)
 /* 800139B4 0000F8D4  BF 21 00 14 */	stmw r25, 0x14(r1)
-/* 800139B8 0000F8D8  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800139B8 0000F8D8  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800139BC 0000F8DC  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800139C0 0000F8E0  40 82 04 34 */	bne lbl_80013DF4
 /* 800139C4 0000F8E4  83 ED 9D 38 */	lwz r31, currentBallStructPtr@sda21(r13)
@@ -1465,7 +1465,7 @@ lbl_80013ABC:
 /* 80013ABC 0000F9DC  88 05 00 00 */	lbz r0, 0(r5)
 /* 80013AC0 0000F9E0  2C 00 00 02 */	cmpwi r0, 2
 /* 80013AC4 0000F9E4  40 82 00 74 */	bne lbl_80013B38
-/* 80013AC8 0000F9E8  80 0D 99 54 */	lwz r0, lbl_802F1B34@sda21(r13)
+/* 80013AC8 0000F9E8  80 0D 99 54 */	lwz r0, unpausedFrameCounter@sda21(r13)
 /* 80013ACC 0000F9EC  90 8D 9D 38 */	stw r4, currentBallStructPtr@sda21(r13)
 /* 80013AD0 0000F9F0  54 00 07 BF */	clrlwi. r0, r0, 0x1e
 /* 80013AD4 0000F9F4  40 82 00 64 */	bne lbl_80013B38
@@ -1519,7 +1519,7 @@ lbl_80013B64:
 /* 80013B78 0000FA98  90 1A 00 18 */	stw r0, 0x18(r26)
 /* 80013B7C 0000FA9C  48 00 34 39 */	bl func_80016FB4
 /* 80013B80 0000FAA0  7C 7F 1B 78 */	mr r31, r3
-/* 80013B84 0000FAA4  48 07 E8 C1 */	bl func_80092444
+/* 80013B84 0000FAA4  48 07 E8 C1 */	bl is_load_queue_not_empty
 /* 80013B88 0000FAA8  2C 03 00 00 */	cmpwi r3, 0
 /* 80013B8C 0000FAAC  40 82 00 34 */	bne lbl_80013BC0
 /* 80013B90 0000FAB0  3C 60 80 1F */	lis r3, lbl_801F3D88@ha
@@ -1707,7 +1707,7 @@ submode_game_continue_init_func:
 /* 80013E18 0000FD38  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 80013E1C 0000FD3C  93 A1 00 14 */	stw r29, 0x14(r1)
 /* 80013E20 0000FD40  93 81 00 10 */	stw r28, 0x10(r1)
-/* 80013E24 0000FD44  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80013E24 0000FD44  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80013E28 0000FD48  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80013E2C 0000FD4C  40 82 01 FC */	bne lbl_80014028
 /* 80013E30 0000FD50  48 00 33 11 */	bl func_80017140
@@ -1878,7 +1878,7 @@ submode_game_continue_main_func:
 /* 80014088 0000FFA8  40 82 00 08 */	bne lbl_80014090
 /* 8001408C 0000FFAC  3B E0 00 01 */	li r31, 1
 lbl_80014090:
-/* 80014090 0000FFB0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80014090 0000FFB0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80014094 0000FFB4  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80014098 0000FFB8  40 82 03 0C */	bne lbl_800143A4
 /* 8001409C 0000FFBC  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2112,7 +2112,7 @@ submode_game_timeover_init_func:
 /* 800143DC 000102FC  DB 81 00 40 */	stfd f28, 0x40(r1)
 /* 800143E0 00010300  DB 61 00 38 */	stfd f27, 0x38(r1)
 /* 800143E4 00010304  BF 61 00 24 */	stmw r27, 0x24(r1)
-/* 800143E8 00010308  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800143E8 00010308  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800143EC 0001030C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800143F0 00010310  40 82 01 90 */	bne lbl_80014580
 /* 800143F4 00010314  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2240,7 +2240,7 @@ submode_game_timeover_main_func:
 /* 800145B0 000104D0  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 800145B4 000104D4  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 800145B8 000104D8  93 C1 00 08 */	stw r30, 8(r1)
-/* 800145BC 000104DC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800145BC 000104DC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800145C0 000104E0  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800145C4 000104E4  40 82 01 4C */	bne lbl_80014710
 /* 800145C8 000104E8  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2347,7 +2347,7 @@ submode_game_ringout_init_func:
 /* 80014728 00010648  7C 08 02 A6 */	mflr r0
 /* 8001472C 0001064C  90 01 00 04 */	stw r0, 4(r1)
 /* 80014730 00010650  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80014734 00010654  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80014734 00010654  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80014738 00010658  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8001473C 0001065C  40 82 00 6C */	bne lbl_800147A8
 /* 80014740 00010660  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2391,7 +2391,7 @@ submode_game_ringout_main_func:
 /* 800147C4 000106E4  93 E1 00 1C */	stw r31, 0x1c(r1)
 /* 800147C8 000106E8  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 800147CC 000106EC  93 A1 00 14 */	stw r29, 0x14(r1)
-/* 800147D0 000106F0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800147D0 000106F0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800147D4 000106F4  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800147D8 000106F8  40 82 05 30 */	bne lbl_80014D08
 /* 800147DC 000106FC  80 6D 9D 38 */	lwz r3, currentBallStructPtr@sda21(r13)
@@ -2767,7 +2767,7 @@ submode_game_bonus_clear_init_func:
 /* 80014D24 00010C44  7C 08 02 A6 */	mflr r0
 /* 80014D28 00010C48  90 01 00 04 */	stw r0, 4(r1)
 /* 80014D2C 00010C4C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80014D30 00010C50  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80014D30 00010C50  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80014D34 00010C54  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80014D38 00010C58  40 82 01 30 */	bne lbl_80014E68
 /* 80014D3C 00010C5C  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2864,7 +2864,7 @@ submode_game_bonus_clear_main_func:
 /* 80014E7C 00010D9C  90 01 00 04 */	stw r0, 4(r1)
 /* 80014E80 00010DA0  94 21 FF D0 */	stwu r1, -0x30(r1)
 /* 80014E84 00010DA4  BF 21 00 14 */	stmw r25, 0x14(r1)
-/* 80014E88 00010DA8  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80014E88 00010DA8  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80014E8C 00010DAC  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80014E90 00010DB0  40 82 02 34 */	bne lbl_800150C4
 /* 80014E94 00010DB4  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3031,7 +3031,7 @@ submode_game_over_init_func:
 /* 800150DC 00010FFC  90 01 00 04 */	stw r0, 4(r1)
 /* 800150E0 00011000  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 800150E4 00011004  BF 41 00 08 */	stmw r26, 8(r1)
-/* 800150E8 00011008  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800150E8 00011008  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800150EC 0001100C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800150F0 00011010  40 82 01 08 */	bne lbl_800151F8
 /* 800150F4 00011014  38 60 00 12 */	li r3, 0x12
@@ -3117,7 +3117,7 @@ submode_game_over_main_func:
 /* 8001520C 0001112C  7C 08 02 A6 */	mflr r0
 /* 80015210 00011130  90 01 00 04 */	stw r0, 4(r1)
 /* 80015214 00011134  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015218 00011138  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015218 00011138  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8001521C 0001113C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015220 00011140  40 82 00 C8 */	bne lbl_800152E8
 /* 80015224 00011144  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3182,7 +3182,7 @@ submode_game_over_point_init_func:
 /* 800152F8 00011218  7C 08 02 A6 */	mflr r0
 /* 800152FC 0001121C  90 01 00 04 */	stw r0, 4(r1)
 /* 80015300 00011220  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015304 00011224  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015304 00011224  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015308 00011228  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8001530C 0001122C  40 82 00 58 */	bne lbl_80015364
 /* 80015310 00011230  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3216,7 +3216,7 @@ submode_game_over_point_main_func:
 /* 80015374 00011294  7C 08 02 A6 */	mflr r0
 /* 80015378 00011298  90 01 00 04 */	stw r0, 4(r1)
 /* 8001537C 0001129C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015380 000112A0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015380 000112A0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015384 000112A4  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015388 000112A8  40 82 00 CC */	bne lbl_80015454
 /* 8001538C 000112AC  48 05 14 DD */	bl func_80066868
@@ -3292,7 +3292,7 @@ submode_game_over_dest_func:
 /* 80015480 000113A0  7C 08 02 A6 */	mflr r0
 /* 80015484 000113A4  90 01 00 04 */	stw r0, 4(r1)
 /* 80015488 000113A8  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8001548C 000113AC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8001548C 000113AC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015490 000113B0  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015494 000113B4  40 82 00 C0 */	bne lbl_80015554
 /* 80015498 000113B8  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3359,7 +3359,7 @@ submode_game_nameentry_ready_init_func:
 /* 80015570 00011490  93 E1 00 3C */	stw r31, 0x3c(r1)
 /* 80015574 00011494  93 C1 00 38 */	stw r30, 0x38(r1)
 /* 80015578 00011498  93 A1 00 34 */	stw r29, 0x34(r1)
-/* 8001557C 0001149C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8001557C 0001149C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015580 000114A0  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015584 000114A4  40 82 02 BC */	bne lbl_80015840
 /* 80015588 000114A8  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3561,7 +3561,7 @@ submode_game_nameentry_ready_main_func:
 /* 80015868 00011788  93 E1 00 1C */	stw r31, 0x1c(r1)
 /* 8001586C 0001178C  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 80015870 00011790  93 A1 00 14 */	stw r29, 0x14(r1)
-/* 80015874 00011794  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015874 00011794  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015878 00011798  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8001587C 0001179C  40 82 00 B0 */	bne lbl_8001592C
 /* 80015880 000117A0  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3622,7 +3622,7 @@ submode_game_nameentry_init_func:
 /* 80015948 00011868  7C 08 02 A6 */	mflr r0
 /* 8001594C 0001186C  90 01 00 04 */	stw r0, 4(r1)
 /* 80015950 00011870  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015954 00011874  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015954 00011874  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015958 00011878  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8001595C 0001187C  40 82 00 D4 */	bne lbl_80015A30
 /* 80015960 00011880  38 60 00 3C */	li r3, 0x3c
@@ -3695,7 +3695,7 @@ submode_game_nameentry_main_func:
 /* 80015A48 00011968  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 80015A4C 0001196C  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 80015A50 00011970  93 C1 00 08 */	stw r30, 8(r1)
-/* 80015A54 00011974  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015A54 00011974  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015A58 00011978  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015A5C 0001197C  40 82 01 5C */	bne lbl_80015BB8
 /* 80015A60 00011980  3C 60 80 20 */	lis r3, spritePoolInfo@ha
@@ -3804,7 +3804,7 @@ submode_game_ending_init_func:
 /* 80015BD8 00011AF8  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 80015BDC 00011AFC  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 80015BE0 00011B00  93 C1 00 08 */	stw r30, 8(r1)
-/* 80015BE4 00011B04  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015BE4 00011B04  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015BE8 00011B08  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015BEC 00011B0C  40 82 00 74 */	bne lbl_80015C60
 /* 80015BF0 00011B10  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -3848,7 +3848,7 @@ submode_game_ending_main_func:
 /* 80015C78 00011B98  7C 08 02 A6 */	mflr r0
 /* 80015C7C 00011B9C  90 01 00 04 */	stw r0, 4(r1)
 /* 80015C80 00011BA0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015C84 00011BA4  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015C84 00011BA4  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015C88 00011BA8  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015C8C 00011BAC  40 82 00 68 */	bne lbl_80015CF4
 /* 80015C90 00011BB0  48 0A 06 6D */	bl func_800B62FC
@@ -3886,7 +3886,7 @@ submode_game_roll_init_func:
 /* 80015D04 00011C24  7C 08 02 A6 */	mflr r0
 /* 80015D08 00011C28  90 01 00 04 */	stw r0, 4(r1)
 /* 80015D0C 00011C2C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015D10 00011C30  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015D10 00011C30  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015D14 00011C34  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015D18 00011C38  40 82 00 1C */	bne lbl_80015D34
 /* 80015D1C 00011C3C  48 09 9F E5 */	bl func_800AFD00
@@ -3905,7 +3905,7 @@ submode_game_roll_main_func:
 /* 80015D44 00011C64  7C 08 02 A6 */	mflr r0
 /* 80015D48 00011C68  90 01 00 04 */	stw r0, 4(r1)
 /* 80015D4C 00011C6C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015D50 00011C70  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015D50 00011C70  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015D54 00011C74  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015D58 00011C78  40 82 00 38 */	bne lbl_80015D90
 /* 80015D5C 00011C7C  48 09 A2 1D */	bl func_800AFF78
@@ -3931,7 +3931,7 @@ submode_game_extra_init_func:
 /* 80015DA0 00011CC0  7C 08 02 A6 */	mflr r0
 /* 80015DA4 00011CC4  90 01 00 04 */	stw r0, 4(r1)
 /* 80015DA8 00011CC8  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80015DAC 00011CCC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015DAC 00011CCC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015DB0 00011CD0  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015DB4 00011CD4  40 82 01 14 */	bne lbl_80015EC8
 /* 80015DB8 00011CD8  38 00 02 58 */	li r0, 0x258
@@ -4021,7 +4021,7 @@ submode_game_extra_wait_func:
 /* 80015EE8 00011E08  93 E1 00 5C */	stw r31, 0x5c(r1)
 /* 80015EEC 00011E0C  3B E3 55 F8 */	addi r31, r3, lbl_801755F8@l
 /* 80015EF0 00011E10  93 C1 00 58 */	stw r30, 0x58(r1)
-/* 80015EF4 00011E14  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80015EF4 00011E14  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015EF8 00011E18  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015EFC 00011E1C  40 82 04 44 */	bne lbl_80016340
 /* 80015F00 00011E20  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -4317,7 +4317,7 @@ submode_game_result_init_func:
 /* 80016358 00012278  7C 08 02 A6 */	mflr r0
 /* 8001635C 0001227C  90 01 00 04 */	stw r0, 4(r1)
 /* 80016360 00012280  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80016364 00012284  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80016364 00012284  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80016368 00012288  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8001636C 0001228C  40 82 02 44 */	bne lbl_800165B0
 /* 80016370 00012290  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -4582,7 +4582,7 @@ submode_game_result_main_func:
 /* 80016730 00012650  94 21 FF C8 */	stwu r1, -0x38(r1)
 /* 80016734 00012654  BE E1 00 14 */	stmw r23, 0x14(r1)
 /* 80016738 00012658  3B A3 EE C0 */	addi r29, r3, lbl_801EEEC0@l
-/* 8001673C 0001265C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8001673C 0001265C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80016740 00012660  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80016744 00012664  40 82 05 D8 */	bne lbl_80016D1C
 /* 80016748 00012668  3C 60 80 1F */	lis r3, 0x801f
@@ -5009,7 +5009,7 @@ submode_game_result_menu_func:
 /* 80016D34 00012C54  90 01 00 04 */	stw r0, 4(r1)
 /* 80016D38 00012C58  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 80016D3C 00012C5C  BF 61 00 0C */	stmw r27, 0xc(r1)
-/* 80016D40 00012C60  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80016D40 00012C60  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80016D44 00012C64  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80016D48 00012C68  40 82 01 04 */	bne lbl_80016E4C
 /* 80016D4C 00012C6C  88 0D 9A 44 */	lbz r0, lbl_802F1C24@sda21(r13)
@@ -5094,7 +5094,7 @@ submode_game_intr_sel_init_func:
 /* 80016E60 00012D80  7C 08 02 A6 */	mflr r0
 /* 80016E64 00012D84  90 01 00 04 */	stw r0, 4(r1)
 /* 80016E68 00012D88  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80016E6C 00012D8C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80016E6C 00012D8C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80016E70 00012D90  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80016E74 00012D94  40 82 00 6C */	bne lbl_80016EE0
 /* 80016E78 00012D98  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -5133,7 +5133,7 @@ submode_game_intr_sel_main_func:
 /* 80016EF0 00012E10  7C 08 02 A6 */	mflr r0
 /* 80016EF4 00012E14  90 01 00 04 */	stw r0, 4(r1)
 /* 80016EF8 00012E18  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80016EFC 00012E1C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80016EFC 00012E1C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80016F00 00012E20  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80016F04 00012E24  40 82 00 A0 */	bne lbl_80016FA4
 /* 80016F08 00012E28  48 04 F9 61 */	bl func_80066868

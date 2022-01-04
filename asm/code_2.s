@@ -5,9 +5,9 @@
 .global func_8002E284
 func_8002E284:
 /* 8002E284 0002A1A4  7C 08 02 A6 */	mflr r0
-/* 8002E288 0002A1A8  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
+/* 8002E288 0002A1A8  3C 80 80 1F */	lis r4, analogButtonInfo@ha
 /* 8002E28C 0002A1AC  90 01 00 04 */	stw r0, 4(r1)
-/* 8002E290 0002A1B0  38 A4 3D 50 */	addi r5, r4, lbl_801F3D50@l
+/* 8002E290 0002A1B0  38 A4 3D 50 */	addi r5, r4, analogButtonInfo@l
 /* 8002E294 0002A1B4  3C C0 80 20 */	lis r6, lbl_80201928@ha
 /* 8002E298 0002A1B8  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8002E29C 0002A1BC  38 85 00 08 */	addi r4, r5, 8
@@ -60,8 +60,8 @@ lbl_8002E338:
 /* 8002E338 0002A258  A0 C4 00 00 */	lhz r6, 0(r4)
 /* 8002E33C 0002A25C  54 C3 06 F7 */	rlwinm. r3, r6, 0, 0x1b, 0x1b
 /* 8002E340 0002A260  40 82 00 1C */	bne lbl_8002E35C
-/* 8002E344 0002A264  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 8002E348 0002A268  A0 A3 3D 50 */	lhz r5, lbl_801F3D50@l(r3)
+/* 8002E344 0002A264  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 8002E348 0002A268  A0 A3 3D 50 */	lhz r5, analogButtonInfo@l(r3)
 /* 8002E34C 0002A26C  54 A3 06 F7 */	rlwinm. r3, r5, 0, 0x1b, 0x1b
 /* 8002E350 0002A270  41 82 00 34 */	beq lbl_8002E384
 /* 8002E354 0002A274  54 A3 05 AD */	rlwinm. r3, r5, 0, 0x16, 0x16
@@ -104,8 +104,8 @@ lbl_8002E3C8:
 /* 8002E3C8 0002A2E8  A0 C4 00 00 */	lhz r6, 0(r4)
 /* 8002E3CC 0002A2EC  54 C3 07 39 */	rlwinm. r3, r6, 0, 0x1c, 0x1c
 /* 8002E3D0 0002A2F0  40 82 00 1C */	bne lbl_8002E3EC
-/* 8002E3D4 0002A2F4  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 8002E3D8 0002A2F8  A0 A3 3D 50 */	lhz r5, lbl_801F3D50@l(r3)
+/* 8002E3D4 0002A2F4  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 8002E3D8 0002A2F8  A0 A3 3D 50 */	lhz r5, analogButtonInfo@l(r3)
 /* 8002E3DC 0002A2FC  54 A3 07 39 */	rlwinm. r3, r5, 0, 0x1c, 0x1c
 /* 8002E3E0 0002A300  41 82 00 40 */	beq lbl_8002E420
 /* 8002E3E4 0002A304  54 A3 05 AD */	rlwinm. r3, r5, 0, 0x16, 0x16
@@ -154,8 +154,8 @@ lbl_8002E470:
 /* 8002E470 0002A390  A0 A4 00 00 */	lhz r5, 0(r4)
 /* 8002E474 0002A394  54 A3 07 FF */	clrlwi. r3, r5, 0x1f
 /* 8002E478 0002A398  40 82 00 1C */	bne lbl_8002E494
-/* 8002E47C 0002A39C  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 8002E480 0002A3A0  A0 83 3D 50 */	lhz r4, lbl_801F3D50@l(r3)
+/* 8002E47C 0002A39C  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 8002E480 0002A3A0  A0 83 3D 50 */	lhz r4, analogButtonInfo@l(r3)
 /* 8002E484 0002A3A4  54 83 07 FF */	clrlwi. r3, r4, 0x1f
 /* 8002E488 0002A3A8  41 82 00 40 */	beq lbl_8002E4C8
 /* 8002E48C 0002A3AC  54 83 05 AD */	rlwinm. r3, r4, 0, 0x16, 0x16
@@ -352,8 +352,8 @@ lbl_8002E724:
 /* 8002E734 0002A654  40 82 00 30 */	bne lbl_8002E764
 /* 8002E738 0002A658  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 8002E73C 0002A65C  40 82 00 28 */	bne lbl_8002E764
-/* 8002E740 0002A660  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
-/* 8002E744 0002A664  A0 04 3D 50 */	lhz r0, lbl_801F3D50@l(r4)
+/* 8002E740 0002A660  3C 80 80 1F */	lis r4, analogButtonInfo@ha
+/* 8002E744 0002A664  A0 04 3D 50 */	lhz r0, analogButtonInfo@l(r4)
 /* 8002E748 0002A668  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 8002E74C 0002A66C  41 82 02 C0 */	beq lbl_8002EA0C
 /* 8002E750 0002A670  A0 85 00 00 */	lhz r4, 0(r5)
@@ -434,8 +434,8 @@ lbl_8002E818:
 /* 8002E82C 0002A74C  81 43 00 08 */	lwz r10, 8(r3)
 /* 8002E830 0002A750  80 A5 00 00 */	lwz r5, 0(r5)
 /* 8002E834 0002A754  40 82 00 24 */	bne lbl_8002E858
-/* 8002E838 0002A758  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 8002E83C 0002A75C  A0 03 3D 50 */	lhz r0, lbl_801F3D50@l(r3)
+/* 8002E838 0002A758  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 8002E83C 0002A75C  A0 03 3D 50 */	lhz r0, analogButtonInfo@l(r3)
 /* 8002E840 0002A760  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 8002E844 0002A764  41 82 00 64 */	beq lbl_8002E8A8
 /* 8002E848 0002A768  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -536,8 +536,8 @@ lbl_8002E950:
 /* 8002E96C 0002A88C  C0 43 00 04 */	lfs f2, 4(r3)
 /* 8002E970 0002A890  C0 63 00 08 */	lfs f3, 8(r3)
 /* 8002E974 0002A894  40 82 00 24 */	bne lbl_8002E998
-/* 8002E978 0002A898  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 8002E97C 0002A89C  A0 03 3D 50 */	lhz r0, lbl_801F3D50@l(r3)
+/* 8002E978 0002A898  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 8002E97C 0002A89C  A0 03 3D 50 */	lhz r0, analogButtonInfo@l(r3)
 /* 8002E980 0002A8A0  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 8002E984 0002A8A4  41 82 00 40 */	beq lbl_8002E9C4
 /* 8002E988 0002A8A8  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -635,16 +635,16 @@ lbl_8002EA80:
 /* 8002EAB4 0002A9D4  90 AD 9C 48 */	stw r5, lbl_802F1E28@sda21(r13)
 /* 8002EAB8 0002A9D8  41 82 00 10 */	beq lbl_8002EAC8
 /* 8002EABC 0002A9DC  38 60 00 02 */	li r3, 2
-/* 8002EAC0 0002A9E0  48 00 12 A1 */	bl func_8002FD60
+/* 8002EAC0 0002A9E0  48 00 12 A1 */	bl g_debug_set_text_color
 /* 8002EAC4 0002A9E4  48 00 00 0C */	b lbl_8002EAD0
 lbl_8002EAC8:
 /* 8002EAC8 0002A9E8  38 60 00 00 */	li r3, 0
-/* 8002EACC 0002A9EC  48 00 12 95 */	bl func_8002FD60
+/* 8002EACC 0002A9EC  48 00 12 95 */	bl g_debug_set_text_color
 lbl_8002EAD0:
 /* 8002EAD0 0002A9F0  7E E3 BB 78 */	mr r3, r23
 /* 8002EAD4 0002A9F4  48 00 04 39 */	bl func_8002EF0C
 /* 8002EAD8 0002A9F8  38 60 00 00 */	li r3, 0
-/* 8002EADC 0002A9FC  48 00 12 85 */	bl func_8002FD60
+/* 8002EADC 0002A9FC  48 00 12 85 */	bl g_debug_set_text_color
 /* 8002EAE0 0002AA00  81 17 00 0C */	lwz r8, 0xc(r23)
 /* 8002EAE4 0002AA04  3C 60 80 1B */	lis r3, lbl_801B7948@ha
 /* 8002EAE8 0002AA08  80 F7 00 08 */	lwz r7, 8(r23)
@@ -689,7 +689,7 @@ lbl_8002EB6C:
 /* 8002EB70 0002AA90  38 99 00 00 */	addi r4, r25, 0
 /* 8002EB74 0002AA94  48 00 11 0D */	bl g_debug_set_cursor_pos
 /* 8002EB78 0002AA98  38 60 00 00 */	li r3, 0
-/* 8002EB7C 0002AA9C  48 00 11 E5 */	bl func_8002FD60
+/* 8002EB7C 0002AA9C  48 00 11 E5 */	bl g_debug_set_text_color
 /* 8002EB80 0002AAA0  80 1C 00 00 */	lwz r0, 0(r28)
 /* 8002EB84 0002AAA4  54 00 06 3E */	clrlwi r0, r0, 0x18
 /* 8002EB88 0002AAA8  2C 00 00 0D */	cmpwi r0, 0xd
@@ -710,13 +710,13 @@ lbl_8002EBB4:
 /* 8002EBBC 0002AADC  28 18 00 00 */	cmplwi r24, 0
 /* 8002EBC0 0002AAE0  41 82 00 20 */	beq lbl_8002EBE0
 /* 8002EBC4 0002AAE4  38 60 00 02 */	li r3, 2
-/* 8002EBC8 0002AAE8  48 00 11 99 */	bl func_8002FD60
+/* 8002EBC8 0002AAE8  48 00 11 99 */	bl g_debug_set_text_color
 /* 8002EBCC 0002AAEC  48 00 00 14 */	b lbl_8002EBE0
 lbl_8002EBD0:
 /* 8002EBD0 0002AAF0  28 18 00 00 */	cmplwi r24, 0
 /* 8002EBD4 0002AAF4  41 82 00 0C */	beq lbl_8002EBE0
 /* 8002EBD8 0002AAF8  38 60 00 02 */	li r3, 2
-/* 8002EBDC 0002AAFC  48 00 11 85 */	bl func_8002FD60
+/* 8002EBDC 0002AAFC  48 00 11 85 */	bl g_debug_set_text_color
 lbl_8002EBE0:
 /* 8002EBE0 0002AB00  80 9C 00 00 */	lwz r4, 0(r28)
 /* 8002EBE4 0002AB04  54 80 05 AD */	rlwinm. r0, r4, 0, 0x16, 0x16
@@ -946,7 +946,7 @@ lbl_8002EEA4:
 /* 8002EEBC 0002ADDC  38 99 00 00 */	addi r4, r25, 0
 /* 8002EEC0 0002ADE0  48 00 0D C1 */	bl g_debug_set_cursor_pos
 /* 8002EEC4 0002ADE4  38 60 00 01 */	li r3, 1
-/* 8002EEC8 0002ADE8  48 00 0E 99 */	bl func_8002FD60
+/* 8002EEC8 0002ADE8  48 00 0E 99 */	bl g_debug_set_text_color
 /* 8002EECC 0002ADEC  38 60 00 02 */	li r3, 2
 /* 8002EED0 0002ADF0  38 8D 87 84 */	addi r4, r13, lbl_802F0964@sda21
 /* 8002EED4 0002ADF4  48 00 0E 95 */	bl func_8002FD68
@@ -1376,8 +1376,8 @@ window_main:
 /* 8002F4E8 0002B408  38 60 00 00 */	li r3, 0
 /* 8002F4EC 0002B40C  54 A5 07 39 */	rlwinm. r5, r5, 0, 0x1c, 0x1c
 /* 8002F4F0 0002B410  41 82 00 1C */	beq lbl_8002F50C
-/* 8002F4F4 0002B414  3C A0 80 1F */	lis r5, lbl_801F3D50@ha
-/* 8002F4F8 0002B418  38 A5 3D 50 */	addi r5, r5, lbl_801F3D50@l
+/* 8002F4F4 0002B414  3C A0 80 1F */	lis r5, analogButtonInfo@ha
+/* 8002F4F8 0002B418  38 A5 3D 50 */	addi r5, r5, analogButtonInfo@l
 /* 8002F4FC 0002B41C  A0 A5 00 00 */	lhz r5, 0(r5)
 /* 8002F500 0002B420  54 A5 05 AD */	rlwinm. r5, r5, 0, 0x16, 0x16
 /* 8002F504 0002B424  41 82 00 08 */	beq lbl_8002F50C
@@ -1396,8 +1396,8 @@ lbl_8002F518:
 /* 8002F530 0002B450  38 60 00 00 */	li r3, 0
 /* 8002F534 0002B454  54 A5 07 7B */	rlwinm. r5, r5, 0, 0x1d, 0x1d
 /* 8002F538 0002B458  41 82 00 1C */	beq lbl_8002F554
-/* 8002F53C 0002B45C  3C A0 80 1F */	lis r5, lbl_801F3D50@ha
-/* 8002F540 0002B460  38 A5 3D 50 */	addi r5, r5, lbl_801F3D50@l
+/* 8002F53C 0002B45C  3C A0 80 1F */	lis r5, analogButtonInfo@ha
+/* 8002F540 0002B460  38 A5 3D 50 */	addi r5, r5, analogButtonInfo@l
 /* 8002F544 0002B464  A0 A5 00 00 */	lhz r5, 0(r5)
 /* 8002F548 0002B468  54 A5 05 AD */	rlwinm. r5, r5, 0, 0x16, 0x16
 /* 8002F54C 0002B46C  41 82 00 08 */	beq lbl_8002F554
@@ -1416,8 +1416,8 @@ lbl_8002F560:
 /* 8002F578 0002B498  38 60 00 00 */	li r3, 0
 /* 8002F57C 0002B49C  54 A5 07 FF */	clrlwi. r5, r5, 0x1f
 /* 8002F580 0002B4A0  41 82 00 1C */	beq lbl_8002F59C
-/* 8002F584 0002B4A4  3C A0 80 1F */	lis r5, lbl_801F3D50@ha
-/* 8002F588 0002B4A8  38 A5 3D 50 */	addi r5, r5, lbl_801F3D50@l
+/* 8002F584 0002B4A4  3C A0 80 1F */	lis r5, analogButtonInfo@ha
+/* 8002F588 0002B4A8  38 A5 3D 50 */	addi r5, r5, analogButtonInfo@l
 /* 8002F58C 0002B4AC  A0 A5 00 00 */	lhz r5, 0(r5)
 /* 8002F590 0002B4B0  54 A5 05 AD */	rlwinm. r5, r5, 0, 0x16, 0x16
 /* 8002F594 0002B4B4  41 82 00 08 */	beq lbl_8002F59C
@@ -1436,8 +1436,8 @@ lbl_8002F5A8:
 /* 8002F5C0 0002B4E0  38 60 00 00 */	li r3, 0
 /* 8002F5C4 0002B4E4  54 84 07 BD */	rlwinm. r4, r4, 0, 0x1e, 0x1e
 /* 8002F5C8 0002B4E8  41 82 00 1C */	beq lbl_8002F5E4
-/* 8002F5CC 0002B4EC  3C 80 80 1F */	lis r4, lbl_801F3D50@ha
-/* 8002F5D0 0002B4F0  38 84 3D 50 */	addi r4, r4, lbl_801F3D50@l
+/* 8002F5CC 0002B4EC  3C 80 80 1F */	lis r4, analogButtonInfo@ha
+/* 8002F5D0 0002B4F0  38 84 3D 50 */	addi r4, r4, analogButtonInfo@l
 /* 8002F5D4 0002B4F4  A0 84 00 00 */	lhz r4, 0(r4)
 /* 8002F5D8 0002B4F8  54 84 05 AD */	rlwinm. r4, r4, 0, 0x16, 0x16
 /* 8002F5DC 0002B4FC  41 82 00 08 */	beq lbl_8002F5E4
@@ -1526,8 +1526,8 @@ lbl_8002F6C8:
 /* 8002F70C 0002B62C  38 80 00 00 */	li r4, 0
 /* 8002F710 0002B630  38 A0 07 A9 */	li r5, 0x7a9
 /* 8002F714 0002B634  4B FD 3C 0D */	bl memset
-/* 8002F718 0002B638  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 8002F71C 0002B63C  A0 03 3D 50 */	lhz r0, lbl_801F3D50@l(r3)
+/* 8002F718 0002B638  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 8002F71C 0002B63C  A0 03 3D 50 */	lhz r0, analogButtonInfo@l(r3)
 /* 8002F720 0002B640  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 8002F724 0002B644  41 82 01 48 */	beq lbl_8002F86C
 /* 8002F728 0002B648  80 0D 9C FC */	lwz r0, dipSwitches@sda21(r13)
@@ -1862,7 +1862,7 @@ lbl_8002FBFC:
 /* 8002FC00 0002BB20  3B DE FF FC */	addi r30, r30, -4
 /* 8002FC04 0002BB24  40 80 FF C0 */	bge lbl_8002FBC4
 /* 8002FC08 0002BB28  38 60 00 00 */	li r3, 0
-/* 8002FC0C 0002BB2C  48 00 01 55 */	bl func_8002FD60
+/* 8002FC0C 0002BB2C  48 00 01 55 */	bl g_debug_set_text_color
 /* 8002FC10 0002BB30  80 0D 9C C8 */	lwz r0, lbl_802F1EA8@sda21(r13)
 /* 8002FC14 0002BB34  28 00 00 00 */	cmplwi r0, 0
 /* 8002FC18 0002BB38  41 82 00 40 */	beq lbl_8002FC58
@@ -1963,8 +1963,8 @@ lbl_8002FCF4:
 /* 8002FD58 0002BC78  7C 08 03 A6 */	mtlr r0
 /* 8002FD5C 0002BC7C  4E 80 00 20 */	blr
 
-.global func_8002FD60
-func_8002FD60:
+.global g_debug_set_text_color
+g_debug_set_text_color:
 /* 8002FD60 0002BC80  98 6D 9C 4C */	stb r3, lbl_802F1E2C@sda21(r13)
 /* 8002FD64 0002BC84  4E 80 00 20 */	blr
 
@@ -2352,7 +2352,7 @@ lbl_8003029C:
 /* 800302B0 0002C1D0  91 01 00 1C */	stw r8, 0x1c(r1)
 /* 800302B4 0002C1D4  91 21 00 20 */	stw r9, 0x20(r1)
 /* 800302B8 0002C1D8  91 41 00 24 */	stw r10, 0x24(r1)
-/* 800302BC 0002C1DC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800302BC 0002C1DC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800302C0 0002C1E0  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 800302C4 0002C1E4  40 82 00 0C */	bne lbl_800302D0
 /* 800302C8 0002C1E8  38 60 00 00 */	li r3, 0
@@ -2580,22 +2580,22 @@ debug_main:
 /* 80030610 0002C530  41 82 00 1C */	beq lbl_8003062C
 /* 80030614 0002C534  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 80030618 0002C538  41 82 00 14 */	beq lbl_8003062C
-/* 8003061C 0002C53C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8003061C 0002C53C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80030620 0002C540  60 00 00 04 */	ori r0, r0, 4
-/* 80030624 0002C544  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 80030624 0002C544  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 /* 80030628 0002C548  48 00 00 10 */	b lbl_80030638
 lbl_8003062C:
-/* 8003062C 0002C54C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8003062C 0002C54C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80030630 0002C550  54 00 07 B8 */	rlwinm r0, r0, 0, 0x1e, 0x1c
-/* 80030634 0002C554  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 80030634 0002C554  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 lbl_80030638:
 /* 80030638 0002C558  28 03 00 00 */	cmplwi r3, 0
 /* 8003063C 0002C55C  41 82 00 A4 */	beq lbl_800306E0
-/* 80030640 0002C560  80 8D 9D 00 */	lwz r4, lbl_802F1EE0@sda21(r13)
+/* 80030640 0002C560  80 8D 9D 00 */	lwz r4, gamePauseStatus@sda21(r13)
 /* 80030644 0002C564  54 80 07 FF */	clrlwi. r0, r4, 0x1f
 /* 80030648 0002C568  40 82 00 34 */	bne lbl_8003067C
-/* 8003064C 0002C56C  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 80030650 0002C570  A0 03 3D 50 */	lhz r0, lbl_801F3D50@l(r3)
+/* 8003064C 0002C56C  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 80030650 0002C570  A0 03 3D 50 */	lhz r0, analogButtonInfo@l(r3)
 /* 80030654 0002C574  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
 /* 80030658 0002C578  41 82 00 94 */	beq lbl_800306EC
 /* 8003065C 0002C57C  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -2604,11 +2604,11 @@ lbl_80030638:
 /* 80030668 0002C588  54 00 04 E7 */	rlwinm. r0, r0, 0, 0x13, 0x13
 /* 8003066C 0002C58C  41 82 00 80 */	beq lbl_800306EC
 /* 80030670 0002C590  60 80 00 03 */	ori r0, r4, 3
-/* 80030674 0002C594  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 80030674 0002C594  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 /* 80030678 0002C598  48 00 00 74 */	b lbl_800306EC
 lbl_8003067C:
-/* 8003067C 0002C59C  3C 60 80 1F */	lis r3, lbl_801F3D50@ha
-/* 80030680 0002C5A0  A0 03 3D 50 */	lhz r0, lbl_801F3D50@l(r3)
+/* 8003067C 0002C59C  3C 60 80 1F */	lis r3, analogButtonInfo@ha
+/* 80030680 0002C5A0  A0 03 3D 50 */	lhz r0, analogButtonInfo@l(r3)
 /* 80030684 0002C5A4  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 80030688 0002C5A8  40 82 00 24 */	bne lbl_800306AC
 /* 8003068C 0002C5AC  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -2617,7 +2617,7 @@ lbl_8003067C:
 /* 80030698 0002C5B8  54 00 04 E7 */	rlwinm. r0, r0, 0, 0x13, 0x13
 /* 8003069C 0002C5BC  41 82 00 10 */	beq lbl_800306AC
 /* 800306A0 0002C5C0  54 80 00 3A */	rlwinm r0, r4, 0, 0, 0x1d
-/* 800306A4 0002C5C4  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 800306A4 0002C5C4  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 /* 800306A8 0002C5C8  48 00 00 44 */	b lbl_800306EC
 lbl_800306AC:
 /* 800306AC 0002C5CC  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -2625,21 +2625,21 @@ lbl_800306AC:
 /* 800306B4 0002C5D4  A0 03 00 18 */	lhz r0, 0x18(r3)
 /* 800306B8 0002C5D8  54 00 06 F7 */	rlwinm. r0, r0, 0, 0x1b, 0x1b
 /* 800306BC 0002C5DC  41 82 00 14 */	beq lbl_800306D0
-/* 800306C0 0002C5E0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800306C0 0002C5E0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800306C4 0002C5E4  54 00 07 FA */	rlwinm r0, r0, 0, 0x1f, 0x1d
-/* 800306C8 0002C5E8  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 800306C8 0002C5E8  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 /* 800306CC 0002C5EC  48 00 00 20 */	b lbl_800306EC
 lbl_800306D0:
-/* 800306D0 0002C5F0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800306D0 0002C5F0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800306D4 0002C5F4  60 00 00 02 */	ori r0, r0, 2
-/* 800306D8 0002C5F8  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 800306D8 0002C5F8  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 /* 800306DC 0002C5FC  48 00 00 10 */	b lbl_800306EC
 lbl_800306E0:
-/* 800306E0 0002C600  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800306E0 0002C600  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800306E4 0002C604  54 00 00 3A */	rlwinm r0, r0, 0, 0, 0x1d
-/* 800306E8 0002C608  90 0D 9D 00 */	stw r0, lbl_802F1EE0@sda21(r13)
+/* 800306E8 0002C608  90 0D 9D 00 */	stw r0, gamePauseStatus@sda21(r13)
 lbl_800306EC:
-/* 800306EC 0002C60C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800306EC 0002C60C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800306F0 0002C610  54 04 07 FF */	clrlwi. r4, r0, 0x1f
 /* 800306F4 0002C614  41 82 00 10 */	beq lbl_80030704
 /* 800306F8 0002C618  38 00 00 08 */	li r0, 8
@@ -2676,7 +2676,7 @@ lbl_80030738:
 /* 80030768 0002C688  88 03 01 98 */	lbz r0, 0x198(r3)
 /* 8003076C 0002C68C  2C 00 00 02 */	cmpwi r0, 2
 /* 80030770 0002C690  41 82 00 1C */	beq lbl_8003078C
-/* 80030774 0002C694  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80030774 0002C694  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80030778 0002C698  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8003077C 0002C69C  41 82 00 38 */	beq lbl_800307B4
 /* 80030780 0002C6A0  38 60 00 11 */	li r3, 0x11
@@ -2838,7 +2838,7 @@ lbl_80030990:
 
 .global func_8003099C
 func_8003099C:
-/* 8003099C 0002C8BC  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8003099C 0002C8BC  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800309A0 0002C8C0  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800309A4 0002C8C4  4E 80 00 20 */	blr
 

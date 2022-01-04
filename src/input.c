@@ -6,18 +6,19 @@
 #include "global.h"
 #include "ball.h"
 #include "input.h"
+#include "mode.h"
 
 struct ControllerInfo controllerInfo[4];
 struct ControllerInfo lbl_801F3C60[4];
-u16 lbl_801F3D50[4][5];
-s32 lbl_801F3D78[4];
+u16 analogButtonInfo[4][5];
+s32 controllerRepeatCounts[4];
 u16 lbl_801F3D88[6];
 u16 lbl_801F3D94[6];
 
 FORCE_BSS_ORDER(controllerInfo);
 FORCE_BSS_ORDER(lbl_801F3C60);
-FORCE_BSS_ORDER(lbl_801F3D50);
-FORCE_BSS_ORDER(lbl_801F3D78);
+FORCE_BSS_ORDER(analogButtonInfo);
+FORCE_BSS_ORDER(controllerRepeatCounts);
 FORCE_BSS_ORDER(lbl_801F3D88);
 FORCE_BSS_ORDER(lbl_801F3D94);
 
@@ -275,8 +276,8 @@ void input_main(void)
         */
         test3(&controllerInfo[i], &sp10[i]);
     }
-    func_800252E4();
-    func_8002551C();
+    get_analog_presses();
+    get_key_repeats();
     func_80025640();
 }
 #else
@@ -335,11 +336,11 @@ void func_80025158(PADStatus *pads)
     }
 }
 
-void func_800252E4(void)
+void get_analog_presses(void)
 {
     int i;
     int j;
-    u16 *r3 = lbl_801F3D50[0];
+    u16 *r3 = analogButtonInfo[0];
 
     for (i = 0; i < 4; i++)
     {
@@ -437,27 +438,28 @@ void func_800252E4(void)
     }
 }
 
-void func_8002551C(void)
+void get_key_repeats(void)
 {
-    struct ControllerInfo *r5 = &controllerInfo[0];
-    u16 *r6 = lbl_801F3D50[0];
+    struct ControllerInfo *cont = &controllerInfo[0];
+    u16 *r6 = analogButtonInfo[0];
     int i;
 
-    for (i = 0; i < 4; i++, r5++, r6 += 5)
+    for (i = 0; i < 4; i++, cont++, r6 += 5)
     {
-        if (r5->unk0[0].button == r5->unk0[1].button && r6[0] == r6[1])
-            lbl_801F3D78[i]++;
+        if (cont->unk0[0].button == cont->unk0[1].button
+         && r6[0] == r6[1])
+            controllerRepeatCounts[i]++;
         else
-            lbl_801F3D78[i] = 0;
+            controllerRepeatCounts[i] = 0;
 
-        if (lbl_801F3D78[i] >= 20 && (lbl_801F3D78[i] & 3) == 0)
+        if (controllerRepeatCounts[i] >= 20 && (controllerRepeatCounts[i] & 3) == 0)
         {
-            r5->unk0[4].button = r5->unk0[0].button;
+            cont->unk0[4].button = cont->unk0[0].button;
             r6[4] = r6[0];
         }
         else
         {
-            r5->unk0[4].button = r5->unk0[2].button;
+            cont->unk0[4].button = cont->unk0[2].button;
             r6[4] = r6[2];
         }
     }
@@ -487,7 +489,7 @@ void func_80025640(void)
             for (j = 0; j < 5; j++)
             {
                 lbl_801F3D88[j] |= controllerInfo[i].unk0[j].button;
-                lbl_801F3D94[j] |= lbl_801F3D50[i][j];
+                lbl_801F3D94[j] |= analogButtonInfo[i][j];
             }
         }
         break;
@@ -511,7 +513,7 @@ void func_80025640(void)
             for (j = 0; j < 5; j++)
             {
                 lbl_801F3D88[j] |= controllerInfo[lbl_80206BD0[i]].unk0[j].button;
-                lbl_801F3D94[j] |= lbl_801F3D50[lbl_80206BD0[i]][j];
+                lbl_801F3D94[j] |= analogButtonInfo[lbl_80206BD0[i]][j];
             }
         }
         break;

@@ -6,6 +6,7 @@
 #include "global.h"
 #include "input.h"
 #include "mathutil.h"
+#include "mode.h"
 
 struct StringEntry
 {
@@ -690,7 +691,7 @@ struct MemCardMessage *lbl_801D53D0[] =
     &msgOverwritePrompt,
 };
 
-void func_8009F568(void)
+void init_gamedata_file(void)
 {
     int i;
     DVDFileInfo file;
@@ -2782,7 +2783,7 @@ void save_sequence(void)
         get_memcard_file_metadata();
         break;
     case 0x11:
-        func_8009F568();
+        init_gamedata_file();
         func_800A4E70();
         memcardGameData->version = 0x16;
         r4 = (u8 *)memcardGameData + 2;
@@ -3424,7 +3425,7 @@ void memcard_draw_ui(void)
         g_msg_box_default_pos(&msgOverwritePrompt);
 
         // right float constant load, but compiler adds an unecessary conversion
-        i = (float)(lbl_802F1B34 % 60);
+        i = (float)(unpausedFrameCounter % 60);
         wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
 
         r29 = (wtf << 16) | (wtf << 8) | wtf;
@@ -3486,7 +3487,7 @@ void memcard_draw_ui(void)
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
         // right float constant load, but compiler adds an unecessary conversion
-        i = (float)(lbl_802F1B34 % 60);
+        i = (float)(unpausedFrameCounter % 60);
         wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
 
         r29 = (wtf << 16) | (wtf << 8) | wtf;

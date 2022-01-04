@@ -38,7 +38,7 @@ lbl_8000C948:
 /* 8000C964 00008884  54 00 06 F7 */	rlwinm. r0, r0, 0, 0x1b, 0x1b
 /* 8000C968 00008888  40 82 00 EC */	bne lbl_8000CA54
 /* 8000C96C 0000888C  4B FF AB F9 */	bl mathutil_mtxA_from_identity
-/* 8000C970 00008890  80 0D 99 54 */	lwz r0, lbl_802F1B34  //@sda21(r13)
+/* 8000C970 00008890  80 0D 99 54 */	lwz r0, unpausedFrameCounter  //@sda21(r13)
 /* 8000C974 00008894  54 00 E1 3E */	srwi r0, r0, 4
 /* 8000C978 00008898  7C 60 C2 14 */	add r3, r0, r24
 /* 8000C97C 0000889C  7C 1D 18 16 */	mulhwu r0, r29, r3

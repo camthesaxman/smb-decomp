@@ -69,7 +69,7 @@ submode_mini_commend_main_func:
 /* 8009BAEC 00097A0C  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 8009BAF0 00097A10  93 E1 00 24 */	stw r31, 0x24(r1)
 /* 8009BAF4 00097A14  93 C1 00 20 */	stw r30, 0x20(r1)
-/* 8009BAF8 00097A18  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8009BAF8 00097A18  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8009BAFC 00097A1C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8009BB00 00097A20  40 82 03 C0 */	bne lbl_8009BEC0
 /* 8009BB04 00097A24  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -489,10 +489,10 @@ lbl_8009C0A0:
 /* 8009C0E4 00098004  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009C0E8 00098008  38 80 00 00 */	li r4, 0
 /* 8009C0EC 0009800C  48 04 84 95 */	bl GXLoadPosMtxImm
-/* 8009C0F0 00098010  80 0D 99 54 */	lwz r0, lbl_802F1B34@sda21(r13)
+/* 8009C0F0 00098010  80 0D 99 54 */	lwz r0, unpausedFrameCounter@sda21(r13)
 /* 8009C0F4 00098014  54 03 38 30 */	slwi r3, r0, 7
 /* 8009C0F8 00098018  4B F6 BF 05 */	bl mathutil_mtxA_rotate_y
-/* 8009C0FC 0009801C  80 0D 99 54 */	lwz r0, lbl_802F1B34@sda21(r13)
+/* 8009C0FC 0009801C  80 0D 99 54 */	lwz r0, unpausedFrameCounter@sda21(r13)
 /* 8009C100 00098020  54 03 48 2C */	slwi r3, r0, 9
 /* 8009C104 00098024  4B F6 BF 85 */	bl mathutil_mtxA_rotate_z
 /* 8009C108 00098028  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
@@ -1833,7 +1833,7 @@ lbl_8009D3AC:
 /* 8009D3CC 000992EC  4B FE FE 75 */	bl func_8008D240
 /* 8009D3D0 000992F0  48 00 01 F4 */	b lbl_8009D5C4
 lbl_8009D3D4:
-/* 8009D3D4 000992F4  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8009D3D4 000992F4  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8009D3D8 000992F8  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8009D3DC 000992FC  40 82 01 E8 */	bne lbl_8009D5C4
 /* 8009D3E0 00099300  3C 60 80 2C */	lis r3, lbl_802BA210@ha

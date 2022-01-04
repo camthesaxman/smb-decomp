@@ -261,7 +261,7 @@ void ev_sprite_main(void)
     s8 *status;
     int i = 0;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
     lbl_802F2000 = 0;
     status = spritePoolInfo.statusList;

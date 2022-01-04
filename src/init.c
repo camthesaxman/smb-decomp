@@ -5,6 +5,7 @@
 #include "global.h"
 #include "input.h"
 #include "mathutil.h"
+#include "mode.h"
 
 u8 lbl_801EEBA0[0x80];
 

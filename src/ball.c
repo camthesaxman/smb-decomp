@@ -439,7 +439,7 @@ void lbl_8003781C(struct Ball_child *a, int b)
         return;
     }
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     func_8003FB48(&r29->pos, &sp50, NULL);
@@ -869,7 +869,7 @@ void ev_ball_main(void)
     s8 *r3;
     int i;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
     r28 = spritePoolInfo.unkC;
     ball = &ballInfo[0];
@@ -2928,7 +2928,7 @@ void func_8003CDC0(struct Ball *ball)
             r31 = MIN(f4 * 127.0f, 127.0f);
             r28 = MIN(f4 * 127.0f * 10.0f, 80.0f) * 0.85f;
         }
-        if ((lbl_802F1B34 & 7) == 0 || r31 == 0)
+        if ((unpausedFrameCounter & 7) == 0 || r31 == 0)
             func_8002CA5C(ball->unk2E, r31, r28);
     }
     else if (modeCtrl.unk28 != 7)
@@ -2947,7 +2947,7 @@ void func_8003CDC0(struct Ball *ball)
             r4 = 0;
             r5 = 0;
         }
-        if ((lbl_802F1B34 & 7) == 0 || r4 == 0)
+        if ((unpausedFrameCounter & 7) == 0 || r4 == 0)
             func_8002CA5C(ball->unk2E, r4, r5);
     }
 }

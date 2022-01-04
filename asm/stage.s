@@ -73,7 +73,7 @@ ev_stage_main:
 /* 80043B60 0003FA80  DB A1 00 48 */	stfd f29, 0x48(r1)
 /* 80043B64 0003FA84  BF 61 00 34 */	stmw r27, 0x34(r1)
 /* 80043B68 0003FA88  3B E3 6D 00 */	addi r31, r3, lbl_80206D00@l
-/* 80043B6C 0003FA8C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80043B6C 0003FA8C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80043B70 0003FA90  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80043B74 0003FA94  40 82 05 70 */	bne lbl_800440E4
 /* 80043B78 0003FA98  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -736,7 +736,7 @@ func_800444A4:
 /* 800444C4 000403E4  93 C1 00 48 */	stw r30, 0x48(r1)
 /* 800444C8 000403E8  93 A1 00 44 */	stw r29, 0x44(r1)
 /* 800444CC 000403EC  93 81 00 40 */	stw r28, 0x40(r1)
-/* 800444D0 000403F0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 800444D0 000403F0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800444D4 000403F4  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800444D8 000403F8  40 82 02 94 */	bne lbl_8004476C
 /* 800444DC 000403FC  FC 00 08 1E */	fctiwz f0, f1
@@ -1123,7 +1123,7 @@ lbl_80044A3C:
 lbl_80044A54:
 /* 80044A54 00040974  38 60 00 48 */	li r3, 0x48
 lbl_80044A58:
-/* 80044A58 00040978  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80044A58 00040978  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80044A5C 0004097C  90 6D 9D 68 */	stw r3, lbl_802F1F48@sda21(r13)
 /* 80044A60 00040980  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80044A64 00040984  41 82 00 18 */	beq lbl_80044A7C
@@ -1721,7 +1721,7 @@ lbl_80045250:
 /* 80045258 00041178  40 82 FF 94 */	bne lbl_800451EC
 /* 8004525C 0004117C  28 1C 00 00 */	cmplwi r28, 0
 /* 80045260 00041180  40 82 00 20 */	bne lbl_80045280
-/* 80045264 00041184  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80045264 00041184  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80045268 00041188  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 8004526C 0004118C  41 82 00 14 */	beq lbl_80045280
 /* 80045270 00041190  80 99 00 04 */	lwz r4, 4(r25)
@@ -1807,7 +1807,7 @@ lbl_8004537C:
 /* 80045384 000412A4  40 82 FF 94 */	bne lbl_80045318
 /* 80045388 000412A8  28 19 00 00 */	cmplwi r25, 0
 /* 8004538C 000412AC  40 82 00 20 */	bne lbl_800453AC
-/* 80045390 000412B0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80045390 000412B0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80045394 000412B4  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80045398 000412B8  41 82 00 14 */	beq lbl_800453AC
 /* 8004539C 000412BC  80 98 00 04 */	lwz r4, 4(r24)
@@ -1867,7 +1867,7 @@ lbl_80045448:
 /* 80045450 00041370  40 82 FF 94 */	bne lbl_800453E4
 /* 80045454 00041374  28 19 00 00 */	cmplwi r25, 0
 /* 80045458 00041378  40 82 00 20 */	bne lbl_80045478
-/* 8004545C 0004137C  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 8004545C 0004137C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80045460 00041380  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80045464 00041384  41 82 00 14 */	beq lbl_80045478
 /* 80045468 00041388  80 98 00 04 */	lwz r4, 4(r24)
@@ -4682,7 +4682,7 @@ lbl_80047AA4:
 /* 80047B10 00043A30  4B FC 04 ED */	bl mathutil_mtxA_rotate_y
 /* 80047B14 00043A34  38 60 40 00 */	li r3, 0x4000
 /* 80047B18 00043A38  4B FC 04 71 */	bl mathutil_mtxA_rotate_x
-/* 80047B1C 00043A3C  80 0D 99 54 */	lwz r0, lbl_802F1B34@sda21(r13)
+/* 80047B1C 00043A3C  80 0D 99 54 */	lwz r0, unpausedFrameCounter@sda21(r13)
 /* 80047B20 00043A40  54 03 48 2C */	slwi r3, r0, 9
 /* 80047B24 00043A44  4B FC 04 D9 */	bl mathutil_mtxA_rotate_y
 /* 80047B28 00043A48  C0 22 8F C0 */	lfs f1, lbl_802F37C0-_SDA2_BASE_(r2)
@@ -4693,7 +4693,7 @@ lbl_80047B34:
 /* 80047B38 00043A58  80 6D 9D 50 */	lwz r3, decodedStageLzPtr@sda21(r13)
 /* 80047B3C 00043A5C  80 63 00 10 */	lwz r3, 0x10(r3)
 /* 80047B40 00043A60  4B FC 01 E1 */	bl mathutil_mtxA_translate
-/* 80047B44 00043A64  80 0D 99 54 */	lwz r0, lbl_802F1B34@sda21(r13)
+/* 80047B44 00043A64  80 0D 99 54 */	lwz r0, unpausedFrameCounter@sda21(r13)
 /* 80047B48 00043A68  7C 00 00 D0 */	neg r0, r0
 /* 80047B4C 00043A6C  54 03 48 2C */	slwi r3, r0, 9
 /* 80047B50 00043A70  4B FC 04 AD */	bl mathutil_mtxA_rotate_y
@@ -8031,8 +8031,8 @@ lbl_8027CE18:
 .global lbl_8027CE24
 lbl_8027CE24:
 	.skip 0x34
-.global lbl_8027CE58
-lbl_8027CE58:
+.global itemInfo
+itemInfo:
 	.skip 0x8C00
 .global lbl_80285A58
 lbl_80285A58:

@@ -147,7 +147,7 @@ lbl_800A481C:
 /* 800A4830 000A0750  C0 42 B3 24 */	lfs f2, lbl_802F5B24-_SDA2_BASE_(r2)
 /* 800A4834 000A0754  4B FF FB AD */	bl draw_memcard_msg
 /* 800A4838 000A0758  3C 60 88 89 */	lis r3, 0x88888889@ha
-/* 800A483C 000A075C  80 8D 99 54 */	lwz r4, lbl_802F1B34
+/* 800A483C 000A075C  80 8D 99 54 */	lwz r4, unpausedFrameCounter
 /* 800A4840 000A0760  38 03 88 89 */	addi r0, r3, 0x88888889@l
 /* 800A4844 000A0764  C8 62 B3 58 */	lfd f3, lbl_802F5B58-_SDA2_BASE_(r2)  // double conv?
 /* 800A4848 000A0768  7C 00 20 16 */	mulhwu r0, r0, r4
@@ -156,12 +156,12 @@ lbl_800A481C:
 /* 800A4854 000A0774  C8 82 B3 40 */	lfd f4, lbl_802F5B40-_SDA2_BASE_(r2)  // 255.0
 /* 800A4858 000A0778  54 00 D9 7E */	srwi r0, r0, 5
 /* 800A485C 000A077C  1C 00 00 3C */	mulli r0, r0, 0x3c
-/* 800A4860 000A0780  7C 00 20 50 */	subf r0, r0, r4  // lbl_802F1B34 % 0x3C;
+/* 800A4860 000A0780  7C 00 20 50 */	subf r0, r0, r4  // unpausedFrameCounter % 0x3C;
 /* 800A4864 000A0784  90 01 00 3C */	stw r0, 0x3c(r1)
 /* 800A4868 000A0788  3F 80 43 30 */	lis r28, 0x4330
 /* 800A486C 000A078C  93 81 00 38 */	stw r28, 0x38(r1)  // double conv
 /* 800A4870 000A0790  C8 01 00 38 */	lfd f0, 0x38(r1)
-/* 800A4874 000A0794  EC 00 18 28 */	fsubs f0, f0, f3  // (double)(lbl_802F1B34 % 0x3C)
+/* 800A4874 000A0794  EC 00 18 28 */	fsubs f0, f0, f3  // (double)(unpausedFrameCounter % 0x3C)
 /* 800A4878 000A0798  FC 00 00 1E */	fctiwz f0, f0  // back to integer? what?
 /* 800A487C 000A079C  D8 01 00 30 */	stfd f0, 0x30(r1)
 /* 800A4880 000A07A0  80 01 00 34 */	lwz r0, 0x34(r1)
@@ -169,11 +169,11 @@ lbl_800A481C:
 /* 800A4888 000A07A8  90 01 00 2C */	stw r0, 0x2c(r1)
 /* 800A488C 000A07AC  93 81 00 28 */	stw r28, 0x28(r1)
 /* 800A4890 000A07B0  C8 01 00 28 */	lfd f0, 0x28(r1)
-/* 800A4894 000A07B4  FC 00 10 28 */	fsub f0, f0, f2  //(double)(int)(double)(lbl_802F1B34 % 0x3C)
+/* 800A4894 000A07B4  FC 00 10 28 */	fsub f0, f0, f2  //(double)(int)(double)(unpausedFrameCounter % 0x3C)
 /* 800A4898 000A07B8  FC 00 08 28 */	fsub f0, f0, f1
 /* 800A489C 000A07BC  FC 00 00 1E */	fctiwz f0, f0
 /* 800A48A0 000A07C0  D8 01 00 20 */	stfd f0, 0x20(r1)
-/* 800A48A4 000A07C4  80 01 00 24 */	lwz r0, 0x24(r1)    //(int)((double)(int)(double)(lbl_802F1B34 % 0x3C) - 30.0)
+/* 800A48A4 000A07C4  80 01 00 24 */	lwz r0, 0x24(r1)    //(int)((double)(int)(double)(unpausedFrameCounter % 0x3C) - 30.0)
 /* 800A48A8 000A07C8  7C 03 FE 70 */	srawi r3, r0, 0x1f
 /* 800A48AC 000A07CC  7C 60 02 78 */	xor r0, r3, r0
 /* 800A48B0 000A07D0  7C 03 00 50 */	subf r0, r3, r0
@@ -301,7 +301,7 @@ lbl_800A4A50:
 /* 800A4A70 000A0990  C0 42 B3 24 */	lfs f2, lbl_802F5B24-_SDA2_BASE_(r2)
 /* 800A4A74 000A0994  4B FF F9 6D */	bl draw_memcard_msg
 /* 800A4A78 000A0998  3C 60 88 89 */	lis r3, 0x88888889@ha
-/* 800A4A7C 000A099C  80 8D 99 54 */	lwz r4, lbl_802F1B34
+/* 800A4A7C 000A099C  80 8D 99 54 */	lwz r4, unpausedFrameCounter
 /* 800A4A80 000A09A0  38 03 88 89 */	addi r0, r3, 0x88888889@l
 /* 800A4A84 000A09A4  C8 62 B3 58 */	lfd f3, lbl_802F5B58-_SDA2_BASE_(r2)  // double conv
 /* 800A4A88 000A09A8  7C 00 20 16 */	mulhwu r0, r0, r4

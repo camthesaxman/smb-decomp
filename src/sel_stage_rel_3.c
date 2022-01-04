@@ -18,7 +18,7 @@ void lbl_00000C9C(void)
     stage_draw();
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->unk10->unk0);
-    mathutil_mtxA_rotate_y(lbl_802F1B34 << 9);
+    mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
     mathutil_mtxA_scale_xyz(0.6f, 0.6f, 0.6f);
     func_80030BA8(0.6f);
     g_draw_naomi_model_and_do_other_stuff(NAOMIOBJ_MODEL(naomiCommonObj, 10));
@@ -32,7 +32,7 @@ void lbl_00000C9C(void)
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate(r25);
             mathutil_mtxA_translate_xyz(0.0f, 2.0f, 0.0f);
-            mathutil_mtxA_rotate_y(lbl_802F1B34 << 9);
+            mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
             g_draw_naomi_model_and_do_other_stuff(NAOMIOBJ_MODEL(naomiCommonObj, 7));
         }
     }

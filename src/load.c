@@ -289,17 +289,17 @@ int get_next_file_id(int id)
         return 0;
 }
 
-int func_80092444(void)
+int is_load_queue_not_empty(void)
 {
     return loadQueueTail != loadQueueHead;
 }
 
-void func_8009245C(void)
+void empty_load_queue(void)
 {
     loadQueueHead = loadQueueTail;
 }
 
-int func_80092468(void)
+int get_load_queue_count(void)
 {
     if (loadQueueTail < loadQueueHead)
         return loadQueueTail + 16 - loadQueueHead;

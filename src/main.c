@@ -6,6 +6,7 @@
 #include "bitmap.h"
 #include "camera.h"
 #include "input.h"
+#include "mode.h"
 #include "nl2ngc.h"
 #include "perf.h"
 
@@ -23,8 +24,8 @@ void *dvdReadBuffer;
 void *lbl_802F1B44;
 void *lbl_802F1B40;
 Mtx *lbl_802F1B3C;
-u32 lbl_802F1B38;
-u32 lbl_802F1B34;
+u32 globalFrameCounter;
+u32 unpausedFrameCounter;
 GXRenderModeObj *currRenderMode;
 
 OSHeapHandle memHeap5;
@@ -53,7 +54,7 @@ struct TPL *lbl_802F1AE0;
 
 void main(void)
 {
-    lbl_802F1B38 = 0;
+    globalFrameCounter = 0;
     initialize();
     gm_init();
     bitmap_init();
@@ -82,7 +83,7 @@ void main(void)
     lbl_802F1F40 = 1;
     func_80011E1C();
     func_80065C58();
-    lbl_802F1B38++;
+    globalFrameCounter++;
     srand(OSGetTime());
 
     while (1)
@@ -164,9 +165,9 @@ void main(void)
         shadowerase_main();
         perfInfo.unk34 = perf_stop_timer(4);
 
-        lbl_802F1B38++;
-        if ((lbl_802F1EE0 & 0xA) == 0)
-            lbl_802F1B34++;
+        globalFrameCounter++;
+        if ((gamePauseStatus & 0xA) == 0)
+            unpausedFrameCounter++;
     }
 }
 

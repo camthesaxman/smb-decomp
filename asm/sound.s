@@ -290,7 +290,7 @@ func_8002786C:
 /* 800278F0 00023810  FC 01 00 00 */	fcmpu cr0, f1, f0
 /* 800278F4 00023814  41 82 00 10 */	beq lbl_80027904
 lbl_800278F8:
-/* 800278F8 00023818  48 06 AB 4D */	bl func_80092444
+/* 800278F8 00023818  48 06 AB 4D */	bl is_load_queue_not_empty
 /* 800278FC 0002381C  2C 03 00 00 */	cmpwi r3, 0
 /* 80027900 00023820  41 82 00 60 */	beq lbl_80027960
 lbl_80027904:
@@ -2603,7 +2603,7 @@ lbl_80029B54:
 /* 80029B68 00025A88  80 63 86 DC */	lwz r3, -0x7924(r3)
 /* 80029B6C 00025A8C  2C 03 00 00 */	cmpwi r3, 0
 /* 80029B70 00025A90  40 81 01 50 */	ble lbl_80029CC0
-/* 80029B74 00025A94  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80029B74 00025A94  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80029B78 00025A98  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 80029B7C 00025A9C  40 82 00 0C */	bne lbl_80029B88
 /* 80029B80 00025AA0  38 03 FF FF */	addi r0, r3, -1
@@ -2828,7 +2828,7 @@ lbl_80029E58:
 /* 80029EA8 00025DC8  88 0D 9B F9 */	lbz r0, lbl_802F1DD9@sda21(r13)
 /* 80029EAC 00025DCC  98 0D 9B F8 */	stb r0, lbl_802F1DD8@sda21(r13)
 lbl_80029EB0:
-/* 80029EB0 00025DD0  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80029EB0 00025DD0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80029EB4 00025DD4  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80029EB8 00025DD8  40 82 01 70 */	bne lbl_8002A028
 /* 80029EBC 00025DDC  38 C0 00 00 */	li r6, 0
@@ -8008,8 +8008,8 @@ lbl_802F1ED8:
 .global dipSwitches
 dipSwitches:
 	.skip 0x4
-.global lbl_802F1EE0
-lbl_802F1EE0:
+.global gamePauseStatus
+gamePauseStatus:
 	.skip 0x8
 
 .section .bss

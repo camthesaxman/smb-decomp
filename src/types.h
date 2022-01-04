@@ -208,26 +208,6 @@ struct ZMode
     /*0x0C*/ u32 texOffsets;
 };
 
-struct ModeControl
-{
-    s32 unk0;
-    s32 unk4;
-    u32 unk8;
-    u8 fillerC[0x10-0xC];
-    s32 unk10;
-    u8 filler14[0x1C-0x14];
-    s32 unk1C;
-    s32 unk20;
-    /*0x24*/ int playerCount;
-    s32 unk28;
-    s32 unk2C;
-    s32 unk30;
-    u8 filler34[0x40-0x34];
-    s16 unk40;
-    u8 unk42;
-    u8 filler43[0x48-0x43];
-};
-
 struct Event
 {
     /*0x00*/ s8 state;

@@ -20,7 +20,7 @@ void unkFunc8000A26C(struct Sprite *a)
 {
     int i;
 
-    lbl_802F1EE0 |= 8;
+    gamePauseStatus |= 8;
     lbl_801EEC68.unk14 = 0;
     for (i = 0; i < 4; i++)
     {
@@ -188,7 +188,7 @@ void unkFunc8000A924(struct Sprite *a)
     if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
         OSSetCurrentHeap(lbl_802F1B9C);
     func_80081F30();
-    lbl_802F1EE0 |= 8;
+    gamePauseStatus |= 8;
 }
 
 void unkFunc8000AA00(struct Sprite *a)
@@ -198,7 +198,7 @@ void unkFunc8000AA00(struct Sprite *a)
     s8 *r6;
     int i;
 
-    lbl_802F1EE0 &= ~(1<<(31-0x1C));
+    gamePauseStatus &= ~(1<<(31-0x1C));
     switch (lbl_801EEC68.unk10)
     {
     case 0:
@@ -232,14 +232,14 @@ void unkFunc8000AA00(struct Sprite *a)
             if (lbl_801EEC68.unk4 & (1<<(31-0x1D)))
             {
                 lbl_802F1B98 = 3;
-                lbl_802F1EE0 |= 8;
+                gamePauseStatus |= 8;
                 func_8009F49C(5);
                 ev_run_init(EVENT_MEMCARD);
             }
             else
             {
                 lbl_802F1B98 = 2;
-                lbl_802F1EE0 |= 8;
+                gamePauseStatus |= 8;
                 ev_run_init(EVENT_VIEW);
                 if (a != NULL)
                     a->unk78 |= 1;
@@ -252,7 +252,7 @@ void unkFunc8000AA00(struct Sprite *a)
             if (modeCtrl.unk28 == 0 && modeCtrl.playerCount == 1)
             {
                 lbl_802F1B98 = 5;
-                gameSubmodeRequest = 79;
+                gameSubmodeRequest = SMD_GAME_INTR_SEL_INIT;
             }
             else
             {
@@ -284,21 +284,21 @@ void unkFunc8000AA00(struct Sprite *a)
                 }
             }
             currentBallStructPtr = r5;
-            gameSubmodeRequest = 48;
+            gameSubmodeRequest = SMD_GAME_READY_INIT;
             func_8002CF38(100, 10);
             break;
         case 2:
             if (lbl_801EEC68.unk4 & (1<<(31-0x1D)))
             {
                 lbl_802F1B98 = 3;
-                lbl_802F1EE0 |= 8;
+                gamePauseStatus |= 8;
                 func_8009F49C(5);
                 ev_run_init(EVENT_MEMCARD);
             }
             else
             {
                 lbl_802F1B98 = 2;
-                lbl_802F1EE0 |= 8;
+                gamePauseStatus |= 8;
                 ev_run_init(EVENT_VIEW);
                 if (a != NULL)
                     a->unk78 |= 1;
@@ -436,7 +436,7 @@ void unkFunc8000B09C(void)
         unkFunc8000A26C(sprite);
     else
     {
-        if (lbl_802F1EE0 & (1<<(31-0x1C)))
+        if (gamePauseStatus & (1<<(31-0x1C)))
         {
             if (!(lbl_801EEC68.unk4 & 1))
                 unkFunc8000A580(sprite);
@@ -452,7 +452,7 @@ void unkFunc8000B09C(void)
             }
             else
                 unkFunc8000AECC(sprite);
-            if (!(dipSwitches & DIP_DEBUG) || !(lbl_802F1EE0 & (1<<(31-0x1E))))
+            if (!(dipSwitches & DIP_DEBUG) || !(gamePauseStatus & (1<<(31-0x1E))))
             {
                 if (sprite != NULL)
                     func_80075E1C(0, sprite);

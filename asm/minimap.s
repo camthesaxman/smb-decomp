@@ -65,7 +65,7 @@ ev_minimap_main:
 /* 8008433C 0008025C  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80084340 00080260  3C 60 80 1C */	lis r3, lbl_801C5758@ha
 /* 80084344 00080264  38 63 57 58 */	addi r3, r3, lbl_801C5758@l
-/* 80084348 00080268  80 0D 9D 00 */	lwz r0, lbl_802F1EE0@sda21(r13)
+/* 80084348 00080268  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8008434C 0008026C  80 8D 9D 38 */	lwz r4, currentBallStructPtr@sda21(r13)
 /* 80084350 00080270  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80084354 00080274  40 82 03 30 */	bne lbl_80084684
@@ -1195,7 +1195,7 @@ lbl_800853E4:
 /* 800853F4 00081314  38 7D 00 04 */	addi r3, r29, 4
 /* 800853F8 00081318  4B F8 29 29 */	bl mathutil_mtxA_translate
 /* 800853FC 0008131C  4B F8 21 95 */	bl mathutil_mtxA_sq_from_identity
-/* 80085400 00081320  80 0D 99 54 */	lwz r0, lbl_802F1B34@sda21(r13)
+/* 80085400 00081320  80 0D 99 54 */	lwz r0, unpausedFrameCounter@sda21(r13)
 /* 80085404 00081324  54 03 40 2E */	slwi r3, r0, 8
 /* 80085408 00081328  54 00 38 30 */	slwi r0, r0, 7
 /* 8008540C 0008132C  7C 63 02 14 */	add r3, r3, r0

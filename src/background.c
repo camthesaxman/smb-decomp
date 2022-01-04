@@ -423,14 +423,14 @@ void ev_background_init(void)
         srand(backgroundInfo.unkA0);
         backgroundInfo.unkA4 = rand();
         bgInitFuncs[backgroundInfo.bgId]();
-        backgroundInfo.unkA0 = lbl_802F1B38 + rand();
+        backgroundInfo.unkA0 = globalFrameCounter + rand();
         srand(temp);
     }
 }
 
 void ev_background_main(void)
 {
-    if ((lbl_802F1EE0 & 0xA) == 0)
+    if ((gamePauseStatus & 0xA) == 0)
     {
         backgroundInfo.unk4 += 1.0f;
         backgroundInfo.unkA4++;
@@ -1006,7 +1006,7 @@ s16 lbl_801B9AE8[] =
     0x26, 0x27,
 };
 
-extern u32 lbl_802F1B34;
+extern u32 unpausedFrameCounter;
 
 void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
 {
@@ -1029,7 +1029,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             mathutil_mtxA_rotate_x(r26->unkC);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-            r4 = lbl_802F1B34 / 2;
+            r4 = unpausedFrameCounter / 2;
             switch (r26->unk12)
             {
             default:
@@ -1071,7 +1071,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-            r4 = (lbl_802F1B34 + r22->unkC * 4);
+            r4 = (unpausedFrameCounter + r22->unkC * 4);
             modelId = lbl_801B9AE8[r4 % 32];
             g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);
         }

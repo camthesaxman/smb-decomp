@@ -46,7 +46,7 @@ void _unresolved(void)
 
 static void lbl_0x000001C0(void)
 {
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     modeCtrl.unk0 = 0;
@@ -95,7 +95,7 @@ static void lbl_00000330(void)
 {
     int r3;
 
-    if (lbl_802F1EE0 & 0xA)
+    if (gamePauseStatus & 0xA)
         return;
 
     if (CONTROLLER_SOMETHING(0, PAD_BUTTON_UP))
@@ -191,13 +191,13 @@ static void lbl_00000330(void)
     if (lbl_0000185D != loadingStageIdRequest)
     {
         lbl_0x00000C94();
-        func_8009245C();
+        empty_load_queue();
         preload_stage_files(loadingStageIdRequest);
         lbl_0000185D = loadingStageIdRequest;
     }
     lbl_801F3A58.unk2E = loadingStageIdRequest;
     loadingStageId = loadingStageIdRequest;
-    if (lbl_0000185D != currStageId && func_80092444() == 0)
+    if (lbl_0000185D != currStageId && is_load_queue_not_empty() == 0)
     {
         ev_run_dest(EVENT_EFFECT);
         ev_run_dest(EVENT_ITEM);

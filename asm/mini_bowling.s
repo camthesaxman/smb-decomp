@@ -473,8 +473,8 @@ lbl_00000718:
 /* 00000734 93C10018 */ stw r30, 0x18(r1)
 /* 00000738 3BC40000 */ addi r30, r4, lbl_10000000@l
 /* 0000073C 48006F95 */ bl lbl_000076D0
-/* 00000740 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 00000744 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00000740 3C600000 */ lis r3, gamePauseStatus@ha
+/* 00000744 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 00000748 7000000A */ andi. r0, r0, 0xa
 /* 0000074C 40820288 */ bne lbl_000009D4
 /* 00000750 807E0000 */ lwz r3, 0(r30)
@@ -980,9 +980,9 @@ lbl_00000DF0:
 /* 00000E6C 80630008 */ lwz r3, 8(r3)
 /* 00000E70 806305A8 */ lwz r3, 0x5a8(r3)
 /* 00000E74 4BFFF2ED */ bl g_avdisp_maybe_draw_model_1
-/* 00000E78 3C600000 */ lis r3, lbl_802F1B34@ha
+/* 00000E78 3C600000 */ lis r3, unpausedFrameCounter@ha
 /* 00000E7C C03E1C98 */ lfs f1, 0x1c98(r30)
-/* 00000E80 80030000 */ lwz r0, lbl_802F1B34@l(r3)
+/* 00000E80 80030000 */ lwz r0, unpausedFrameCounter@l(r3)
 /* 00000E84 3C600000 */ lis r3, lbl_00010D60@ha
 /* 00000E88 3FA04330 */ lis r29, 0x4330
 /* 00000E8C C8630000 */ lfd f3, lbl_00010D60@l(r3)
@@ -1110,8 +1110,8 @@ lbl_00001048:
 /* 0000105C 4BFFF105 */ bl func_80071A8C
 /* 00001060 386000B1 */ li r3, 0xb1
 /* 00001064 4BFFF0FD */ bl func_80071AD4
-/* 00001068 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 0000106C 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00001068 3C600000 */ lis r3, gamePauseStatus@ha
+/* 0000106C 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 00001070 54000739 */ rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 00001074 4082000C */ bne lbl_00001080
 /* 00001078 3C600020 */ lis r3, 0x20
@@ -1403,9 +1403,9 @@ lbl_000014B0:
 /* 000014B0 801E0004 */ lwz r0, 4(r30)
 /* 000014B4 70000390 */ andi. r0, r0, 0x390
 /* 000014B8 41820294 */ beq lbl_0000174C
-/* 000014BC 3C600000 */ lis r3, lbl_802F1B34@ha
+/* 000014BC 3C600000 */ lis r3, unpausedFrameCounter@ha
 /* 000014C0 C85C1DA0 */ lfd f2, 0x1da0(r28)
-/* 000014C4 80030000 */ lwz r0, lbl_802F1B34@l(r3)
+/* 000014C4 80030000 */ lwz r0, unpausedFrameCounter@l(r3)
 /* 000014C8 3C600000 */ lis r3, lbl_00010D60@ha
 /* 000014CC C8230000 */ lfd f1, lbl_00010D60@l(r3)
 /* 000014D0 9001012C */ stw r0, 0x12c(r1)
@@ -1430,8 +1430,8 @@ lbl_000014B0:
 /* 0000151C 4BFFEC45 */ bl func_80071A8C
 /* 00001520 386000B1 */ li r3, 0xb1
 /* 00001524 4BFFEC3D */ bl func_80071AD4
-/* 00001528 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 0000152C 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00001528 3C600000 */ lis r3, gamePauseStatus@ha
+/* 0000152C 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 00001530 54000739 */ rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 00001534 4082000C */ bne lbl_00001540
 /* 00001538 3C600020 */ lis r3, 0x20
@@ -1440,9 +1440,9 @@ lbl_00001540:
 /* 00001540 801E0004 */ lwz r0, 4(r30)
 /* 00001544 54000631 */ rlwinm. r0, r0, 0, 0x18, 0x18
 /* 00001548 41820104 */ beq lbl_0000164C
-/* 0000154C 3C600000 */ lis r3, lbl_802F1B34@ha
+/* 0000154C 3C600000 */ lis r3, unpausedFrameCounter@ha
 /* 00001550 C05C1DA8 */ lfs f2, 0x1da8(r28)
-/* 00001554 80830000 */ lwz r4, lbl_802F1B34@l(r3)
+/* 00001554 80830000 */ lwz r4, unpausedFrameCounter@l(r3)
 /* 00001558 3C600000 */ lis r3, lbl_00010D60@ha
 /* 0000155C C8230000 */ lfd f1, lbl_00010D60@l(r3)
 /* 00001560 3C600000 */ lis r3, lbl_00010D60@ha
@@ -1600,8 +1600,8 @@ lbl_00001780:
 /* 000017AC 4BFFE9B5 */ bl func_80071A8C
 /* 000017B0 386000B1 */ li r3, 0xb1
 /* 000017B4 4BFFE9AD */ bl func_80071AD4
-/* 000017B8 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 000017BC 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 000017B8 3C600000 */ lis r3, gamePauseStatus@ha
+/* 000017BC 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 000017C0 54000739 */ rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 000017C4 4082000C */ bne lbl_000017D0
 /* 000017C8 3C600020 */ lis r3, 0x20
@@ -4293,8 +4293,8 @@ lbl_00003EC4:
 /* 00003F04 54C007BD */ rlwinm. r0, r6, 0, 0x1e, 0x1e
 /* 00003F08 40820020 */ bne lbl_00003F28
 /* 00003F0C 1C05000A */ mulli r0, r5, 0xa
-/* 00003F10 3C800000 */ lis r4, lbl_801F3D50@ha
-/* 00003F14 38840000 */ addi r4, r4, lbl_801F3D50@l
+/* 00003F10 3C800000 */ lis r4, analogButtonInfo@ha
+/* 00003F14 38840000 */ addi r4, r4, analogButtonInfo@l
 /* 00003F18 7C840214 */ add r4, r4, r0
 /* 00003F1C A0840008 */ lhz r4, 8(r4)
 /* 00003F20 548007BD */ rlwinm. r0, r4, 0, 0x1e, 0x1e
@@ -5922,8 +5922,8 @@ lbl_00005630:
 /* 00005638 94650008 */ stwu r3, 8(r5)
 /* 0000563C 90050004 */ stw r0, 4(r5)
 /* 00005640 4200FFF0 */ bdnz lbl_00005630
-/* 00005644 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 00005648 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00005644 3C600000 */ lis r3, gamePauseStatus@ha
+/* 00005648 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 0000564C 7000000A */ andi. r0, r0, 0xa
 /* 00005650 408200D0 */ bne lbl_00005720
 /* 00005654 A89E0174 */ lha r4, 0x174(r30)
@@ -6118,10 +6118,10 @@ lbl_00005914:
 /* 00005918 4BFFA849 */ bl func_80073828
 /* 0000591C 3861014C */ addi r3, r1, 0x14c
 /* 00005920 4BFFA841 */ bl func_80073828
-/* 00005924 3C600000 */ lis r3, lbl_802F1B34@ha
+/* 00005924 3C600000 */ lis r3, unpausedFrameCounter@ha
 /* 00005928 3B9D0690 */ addi r28, r29, 0x690
 /* 0000592C 3B7D0820 */ addi r27, r29, 0x820
-/* 00005930 3BC30000 */ addi r30, r3, lbl_802F1B34@l
+/* 00005930 3BC30000 */ addi r30, r3, unpausedFrameCounter@l
 /* 00005934 3B400000 */ li r26, 0
 /* 00005938 3FE04330 */ lis r31, 0x4330
 lbl_0000593C:
@@ -6429,11 +6429,11 @@ lbl_00005D38:
 /* 00005D98 3C8051EC */ lis r4, 0x51ec
 /* 00005D9C 90010070 */ stw r0, 0x70(r1)
 /* 00005DA0 3C606666 */ lis r3, 0x6666
-/* 00005DA4 3CA00000 */ lis r5, lbl_802F1B34@ha
+/* 00005DA4 3CA00000 */ lis r5, unpausedFrameCounter@ha
 /* 00005DA8 39FF18B0 */ addi r15, r31, 0x18b0
 /* 00005DAC 3A44851F */ addi r18, r4, -31457  ;# fixed addi
 /* 00005DB0 3B236667 */ addi r25, r3, 0x6667
-/* 00005DB4 3A650000 */ addi r19, r5, lbl_802F1B34@l
+/* 00005DB4 3A650000 */ addi r19, r5, unpausedFrameCounter@l
 /* 00005DB8 3A000000 */ li r16, 0
 /* 00005DBC 48000738 */ b lbl_000064F4
 lbl_00005DC0:
@@ -7088,8 +7088,8 @@ lbl_00006714:
 /* 00006718 4BFF9A49 */ bl func_8008B2D4
 /* 0000671C 48000184 */ b lbl_000068A0
 lbl_00006720:
-/* 00006720 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 00006724 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00006720 3C600000 */ lis r3, gamePauseStatus@ha
+/* 00006724 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 00006728 7000000A */ andi. r0, r0, 0xa
 /* 0000672C 40820174 */ bne lbl_000068A0
 /* 00006730 3C600000 */ lis r3, modeCtrl@ha
@@ -7642,10 +7642,10 @@ lbl_00006E64:
 /* 00006F08 4E800020 */ blr 
 lbl_00006F0C:
 /* 00006F0C 7C0802A6 */ mflr r0
-/* 00006F10 3C800000 */ lis r4, lbl_802F1B34@ha
+/* 00006F10 3C800000 */ lis r4, unpausedFrameCounter@ha
 /* 00006F14 90010004 */ stw r0, 4(r1)
 /* 00006F18 3C600000 */ lis r3, lbl_0000F020@ha
-/* 00006F1C 38840000 */ addi r4, r4, lbl_802F1B34@l
+/* 00006F1C 38840000 */ addi r4, r4, unpausedFrameCounter@l
 /* 00006F20 9421FC68 */ stwu r1, -0x398(r1)
 /* 00006F24 3D000000 */ lis r8, lbl_10000000@ha
 /* 00006F28 3CE00000 */ lis r7, lbl_00014F20@ha
@@ -7869,8 +7869,8 @@ lbl_000071E4:
 /* 00007264 4BFF8EFD */ bl func_80071A8C
 /* 00007268 386000B1 */ li r3, 0xb1
 /* 0000726C 4BFF8EF5 */ bl func_80071AD4
-/* 00007270 3C600000 */ lis r3, lbl_802F1EE0@ha
-/* 00007274 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00007270 3C600000 */ lis r3, gamePauseStatus@ha
+/* 00007274 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 00007278 54000739 */ rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 0000727C 4082000C */ bne lbl_00007288
 /* 00007280 3C600020 */ lis r3, 0x20
@@ -8069,8 +8069,8 @@ lbl_00007518:
 /* 0000757C C81E1D28 */ lfd f0, 0x1d28(r30)
 /* 00007580 FC040040 */ fcmpo cr0, f4, f0
 /* 00007584 40810094 */ ble lbl_00007618
-/* 00007588 3C600000 */ lis r3, lbl_802F1B34@ha
-/* 0000758C 80030000 */ lwz r0, lbl_802F1B34@l(r3)
+/* 00007588 3C600000 */ lis r3, unpausedFrameCounter@ha
+/* 0000758C 80030000 */ lwz r0, unpausedFrameCounter@l(r3)
 /* 00007590 5400077F */ clrlwi. r0, r0, 0x1d
 /* 00007594 408200A4 */ bne lbl_00007638
 /* 00007598 FC240028 */ fsub f1, f4, f0
@@ -9260,10 +9260,10 @@ lbl_000086E4:
 /* 00008718 4E800020 */ blr 
 lbl_0000871C:
 /* 0000871C 7C0802A6 */ mflr r0
-/* 00008720 3CA00000 */ lis r5, lbl_802F1EE0@ha
+/* 00008720 3CA00000 */ lis r5, gamePauseStatus@ha
 /* 00008724 90010004 */ stw r0, 4(r1)
 /* 00008728 9421FFF8 */ stwu r1, -8(r1)
-/* 0000872C 80050000 */ lwz r0, lbl_802F1EE0@l(r5)
+/* 0000872C 80050000 */ lwz r0, gamePauseStatus@l(r5)
 /* 00008730 7000000A */ andi. r0, r0, 0xa
 /* 00008734 40820088 */ bne lbl_000087BC
 /* 00008738 8803001F */ lbz r0, 0x1f(r3)
@@ -10016,7 +10016,7 @@ lbl_00009204:
 /* 0000922C 4E800020 */ blr 
 lbl_00009230:
 /* 00009230 7C0802A6 */ mflr r0
-/* 00009234 3C800000 */ lis r4, lbl_802F1EE0@ha
+/* 00009234 3C800000 */ lis r4, gamePauseStatus@ha
 /* 00009238 90010004 */ stw r0, 4(r1)
 /* 0000923C 9421FFB0 */ stwu r1, -0x50(r1)
 /* 00009240 DBE10048 */ stfd f31, 0x48(r1)
@@ -10025,7 +10025,7 @@ lbl_00009230:
 /* 0000924C 93A1003C */ stw r29, 0x3c(r1)
 /* 00009250 3BA30000 */ addi r29, r3, 0
 /* 00009254 93810038 */ stw r28, 0x38(r1)
-/* 00009258 80040000 */ lwz r0, lbl_802F1EE0@l(r4)
+/* 00009258 80040000 */ lwz r0, gamePauseStatus@l(r4)
 /* 0000925C 3C800000 */ lis r4, lbl_00011338@ha
 /* 00009260 3BC40000 */ addi r30, r4, lbl_00011338@l
 /* 00009264 7000000A */ andi. r0, r0, 0xa
@@ -10593,12 +10593,12 @@ lbl_00009A60:
 /* 00009AA4 4E800020 */ blr 
 lbl_00009AA8:
 /* 00009AA8 7C0802A6 */ mflr r0
-/* 00009AAC 3C600000 */ lis r3, lbl_802F1EE0@ha
+/* 00009AAC 3C600000 */ lis r3, gamePauseStatus@ha
 /* 00009AB0 90010004 */ stw r0, 4(r1)
 /* 00009AB4 9421FFC8 */ stwu r1, -0x38(r1)
 /* 00009AB8 BF410020 */ stmw r26, 0x20(r1)
 /* 00009ABC 3BA00000 */ li r29, 0
-/* 00009AC0 80030000 */ lwz r0, lbl_802F1EE0@l(r3)
+/* 00009AC0 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 00009AC4 3C600000 */ lis r3, lbl_100004E0@ha
 /* 00009AC8 3BC30000 */ addi r30, r3, lbl_100004E0@l
 /* 00009ACC 7000000A */ andi. r0, r0, 0xa
@@ -11543,7 +11543,7 @@ lbl_0000A868:
 /* 0000A874 4E800020 */ blr 
 lbl_0000A878:
 /* 0000A878 7C0802A6 */ mflr r0
-/* 0000A87C 3C800000 */ lis r4, lbl_802F1EE0@ha
+/* 0000A87C 3C800000 */ lis r4, gamePauseStatus@ha
 /* 0000A880 90010004 */ stw r0, 4(r1)
 /* 0000A884 9421FFC8 */ stwu r1, -0x38(r1)
 /* 0000A888 93E10034 */ stw r31, 0x34(r1)
@@ -11551,7 +11551,7 @@ lbl_0000A878:
 /* 0000A890 93A1002C */ stw r29, 0x2c(r1)
 /* 0000A894 93810028 */ stw r28, 0x28(r1)
 /* 0000A898 3B830000 */ addi r28, r3, 0
-/* 0000A89C 80040000 */ lwz r0, lbl_802F1EE0@l(r4)
+/* 0000A89C 80040000 */ lwz r0, gamePauseStatus@l(r4)
 /* 0000A8A0 3C800000 */ lis r4, lbl_00014800@ha
 /* 0000A8A4 3BE40000 */ addi r31, r4, lbl_00014800@l
 /* 0000A8A8 7000000A */ andi. r0, r0, 0xa
