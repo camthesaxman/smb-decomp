@@ -887,3 +887,5 @@ struct Struct802BA200
     u8 r, g, b;
     s8 unkF;
 };
+
+struct Struct80209488;

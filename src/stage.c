@@ -582,7 +582,7 @@ void load_stage_files(int stageId)
         sprintf(stageDir, "st%03d", stageId);
         DVDChangeDir(stageDir);
         oldHeap = OSSetCurrentHeap(memHeap2);
-        func_80046A00(stageId);
+        load_stagedef(stageId);
         if (stageId != 190)
         {
             sprintf(gmaName, "st%03d.gma", stageId);
@@ -612,9 +612,12 @@ struct Struct80209488
 {
     s32 unk0;
     u8 filler4[4];
-    float unk8;
+    Vec unk8;
+    /*
+    float unk8;  // Vec
     float unkC;
     float unk10;
+    */
     float unk14;
 };
 
@@ -626,7 +629,7 @@ struct Struct802099E8 lbl_80209D48[0x80];
 
 struct Struct8020A348_child
 {
-    u8 filler0[4];
+    u32 unk0;
     struct Struct80209488 *unk4;
     u8 filler8[4];
 };  // size = 0xC
@@ -1209,29 +1212,29 @@ void func_80045E98(void)
                 if (!r4)
                 {
                     r4 = TRUE;
-                    sp20.x = r5->unk8 - r5->unk14;
-                    sp20.y = r5->unkC - r5->unk14;
-                    sp20.z = r5->unk10 - r5->unk14;
+                    sp20.x = r5->unk8.x - r5->unk14;
+                    sp20.y = r5->unk8.y - r5->unk14;
+                    sp20.z = r5->unk8.z - r5->unk14;
 
-                    sp14.x = r5->unk8 + r5->unk14;
-                    sp14.y = r5->unkC + r5->unk14;
-                    sp14.z = r5->unk10 + r5->unk14;
+                    sp14.x = r5->unk8.x + r5->unk14;
+                    sp14.y = r5->unk8.y + r5->unk14;
+                    sp14.z = r5->unk8.z + r5->unk14;
                 }
                 else
                 {
-                    if (r5->unk8 - r5->unk14 < sp20.x)
-                        sp20.x = r5->unk8 - r5->unk14;
-                    if (r5->unkC - r5->unk14 < sp20.y)
-                        sp20.y = r5->unkC - r5->unk14;
-                    if (r5->unk10 - r5->unk14 < sp20.z)
-                        sp20.z = r5->unk10 - r5->unk14;
+                    if (r5->unk8.x - r5->unk14 < sp20.x)
+                        sp20.x = r5->unk8.x - r5->unk14;
+                    if (r5->unk8.y - r5->unk14 < sp20.y)
+                        sp20.y = r5->unk8.y - r5->unk14;
+                    if (r5->unk8.z - r5->unk14 < sp20.z)
+                        sp20.z = r5->unk8.z - r5->unk14;
 
-                    if (r5->unk8 + r5->unk14 > sp14.x)
-                        sp14.x = r5->unk8 + r5->unk14;
-                    if (r5->unkC + r5->unk14 > sp14.y)
-                        sp14.y = r5->unkC + r5->unk14;
-                    if (r5->unk10 + r5->unk14 > sp14.z)
-                        sp14.z = r5->unk10 + r5->unk14;
+                    if (r5->unk8.x + r5->unk14 > sp14.x)
+                        sp14.x = r5->unk8.x + r5->unk14;
+                    if (r5->unk8.y + r5->unk14 > sp14.y)
+                        sp14.y = r5->unk8.y + r5->unk14;
+                    if (r5->unk8.z + r5->unk14 > sp14.z)
+                        sp14.z = r5->unk8.z + r5->unk14;
                 }
             }
             r3++;
@@ -1255,29 +1258,29 @@ void func_80045E98(void)
                     if (!r4)
                     {
                         r4 = TRUE;
-                        sp20.x = r7->unk8 - r7->unk14;
-                        sp20.y = r7->unkC - r7->unk14;
-                        sp20.z = r7->unk10 - r7->unk14;
+                        sp20.x = r7->unk8.x - r7->unk14;
+                        sp20.y = r7->unk8.y - r7->unk14;
+                        sp20.z = r7->unk8.z - r7->unk14;
 
-                        sp14.x = r7->unk8 + r7->unk14;
-                        sp14.y = r7->unkC + r7->unk14;
-                        sp14.z = r7->unk10 + r7->unk14;
+                        sp14.x = r7->unk8.x + r7->unk14;
+                        sp14.y = r7->unk8.y + r7->unk14;
+                        sp14.z = r7->unk8.z + r7->unk14;
                     }
                     else
                     {
-                        if (r7->unk8 - r7->unk14 < sp20.x)
-                            sp20.x = r7->unk8 - r7->unk14;
-                        if (r7->unkC - r7->unk14 < sp20.y)
-                            sp20.y = r7->unkC - r7->unk14;
-                        if (r7->unk10 - r7->unk14 < sp20.z)
-                            sp20.z = r7->unk10 - r7->unk14;
+                        if (r7->unk8.x - r7->unk14 < sp20.x)
+                            sp20.x = r7->unk8.x - r7->unk14;
+                        if (r7->unk8.y - r7->unk14 < sp20.y)
+                            sp20.y = r7->unk8.y - r7->unk14;
+                        if (r7->unk8.z - r7->unk14 < sp20.z)
+                            sp20.z = r7->unk8.z - r7->unk14;
 
-                        if (r7->unk8 + r7->unk14 > sp14.x)
-                            sp14.x = r7->unk8 + r7->unk14;
-                        if (r7->unkC + r7->unk14 > sp14.y)
-                            sp14.y = r7->unkC + r7->unk14;
-                        if (r7->unk10 + r7->unk14 > sp14.z)
-                            sp14.z = r7->unk10 + r7->unk14;
+                        if (r7->unk8.x + r7->unk14 > sp14.x)
+                            sp14.x = r7->unk8.x + r7->unk14;
+                        if (r7->unk8.y + r7->unk14 > sp14.y)
+                            sp14.y = r7->unk8.y + r7->unk14;
+                        if (r7->unk8.z + r7->unk14 > sp14.z)
+                            sp14.z = r7->unk8.z + r7->unk14;
                     }
                 }
             }
@@ -1302,29 +1305,29 @@ void func_80045E98(void)
                     if (!r4)
                     {
                         r4 = TRUE;
-                        sp20.x = r7->unk8 - r7->unk14;
-                        sp20.y = r7->unkC - r7->unk14;
-                        sp20.z = r7->unk10 - r7->unk14;
+                        sp20.x = r7->unk8.x - r7->unk14;
+                        sp20.y = r7->unk8.y - r7->unk14;
+                        sp20.z = r7->unk8.z - r7->unk14;
 
-                        sp14.x = r7->unk8 + r7->unk14;
-                        sp14.y = r7->unkC + r7->unk14;
-                        sp14.z = r7->unk10 + r7->unk14;
+                        sp14.x = r7->unk8.x + r7->unk14;
+                        sp14.y = r7->unk8.y + r7->unk14;
+                        sp14.z = r7->unk8.z + r7->unk14;
                     }
                     else
                     {
-                        if (r7->unk8 - r7->unk14 < sp20.x)
-                            sp20.x = r7->unk8 - r7->unk14;
-                        if (r7->unkC - r7->unk14 < sp20.y)
-                            sp20.y = r7->unkC - r7->unk14;
-                        if (r7->unk10 - r7->unk14 < sp20.z)
-                            sp20.z = r7->unk10 - r7->unk14;
+                        if (r7->unk8.x - r7->unk14 < sp20.x)
+                            sp20.x = r7->unk8.x - r7->unk14;
+                        if (r7->unk8.y - r7->unk14 < sp20.y)
+                            sp20.y = r7->unk8.y - r7->unk14;
+                        if (r7->unk8.z - r7->unk14 < sp20.z)
+                            sp20.z = r7->unk8.z - r7->unk14;
 
-                        if (r7->unk8 + r7->unk14 > sp14.x)
-                            sp14.x = r7->unk8 + r7->unk14;
-                        if (r7->unkC + r7->unk14 > sp14.y)
-                            sp14.y = r7->unkC + r7->unk14;
-                        if (r7->unk10 + r7->unk14 > sp14.z)
-                            sp14.z = r7->unk10 + r7->unk14;
+                        if (r7->unk8.x + r7->unk14 > sp14.x)
+                            sp14.x = r7->unk8.x + r7->unk14;
+                        if (r7->unk8.y + r7->unk14 > sp14.y)
+                            sp14.y = r7->unk8.y + r7->unk14;
+                        if (r7->unk8.z + r7->unk14 > sp14.z)
+                            sp14.z = r7->unk8.z + r7->unk14;
                     }
                 }
             }
@@ -1349,6 +1352,272 @@ void func_80045E98(void)
         lbl_8020ADD4.z = 0.0f;
         lbl_8020ADD4.w = 50.0f;
     }
+}
+
+extern const float lbl_802F37A4;
+extern const float lbl_802F37A8;
+
+#ifdef NONMATCHING
+// https://decomp.me/scratch/KDeDa
+void func_800463E8(Vec *a, float *b)
+{
+    u8 unused[24];
+    Vec v;
+    Vec sp40;
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
+    float result;
+    float f28 = 0.0f;
+    float f30 = 0.0f;
+    float f29 = 0.0f;
+    float f27 = 0.0f;
+    float f31 = 0.0f;
+    float f26 = 0.0f;
+
+    if (decodedStageGmaPtr != NULL)
+    {
+        struct Struct80206E48 *iter1 = lbl_80206E48;
+        struct Struct8020A348 *iter2 = lbl_8020AB88;
+        int j;
+        int i;
+
+        for (i = 0; i < lbl_802F1F48; i++, iter2++, iter1++)
+        {
+            struct Struct8020A348_child *iter3;
+
+            mathutil_mtxA_from_mtx(iter1->unk24);
+            iter3 = iter2->unk0;
+            for (j = 0; j < iter2->unk4; j++, iter3++)
+            {
+                if ((iter3->unk0 & 3) == 1 && iter3->unk4 != NULL)
+                {
+                    float f;
+                    struct Struct80209488 *r28 = iter3->unk4;
+
+                    mathutil_mtxA_tf_point(&r28->unk8, &sp34);
+                    f = r28->unk14;
+                    v.x = sp34.x - f;
+                    v.y = sp34.y - f;
+                    v.z = sp34.z - f;
+                    if (f28 > v.x)
+                        f28 = v.x;
+                    if (f30 > v.y)
+                        f30 = v.y;
+                    if (f29 > v.z)
+                        f29 = v.z;
+
+                    v.x = sp34.x + f;
+                    v.y = sp34.y + f;
+                    v.z = sp34.z + f;
+                    if (f27 < v.x)
+                        f27 = v.x;
+                    if (f31 < v.y)
+                        f31 = v.y;
+                    if (f26 < v.z)
+                        f26 = v.z;
+                }
+            }
+        }
+        sp40.x = (f28 + f27) * lbl_802F37A4;
+        sp40.y = (f30 + f31) * lbl_802F37A4;
+        sp40.z = (f29 + f26) * lbl_802F37A4;
+
+        result = 0.0f;
+        iter1 = lbl_80206E48;
+        iter2 = lbl_8020AB88;
+        for (i = 0; i < lbl_802F1F48; i++, iter2++, iter1++)
+        {
+            struct Struct8020A348_child *iter3;
+
+            mathutil_mtxA_from_mtx(iter1->unk24);
+            iter3 = iter2->unk0;
+            for (j = 0; j < iter2->unk4; j++, iter3++)
+            {
+                if ((iter3->unk0 & 3) == 1)
+                {
+                    float f28;
+                    float f0;
+                    struct Struct80209488 *r28 = iter3->unk4;
+
+                    if (iter3->unk4 == NULL)
+                        continue;
+                    mathutil_mtxA_tf_point(&r28->unk8, &sp28);
+                    f28 = r28->unk14;
+                    f0 = f28 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
+                    if (result < f0)
+                        result = f0;
+                }
+            }
+        }
+        result *= lbl_802F37A8;
+
+        *a = sp40;
+        *b = result;
+    }
+    else if (decodedStageLzPtr != NULL && decodedStageLzPtr->unk5C != NULL)
+    {
+        struct Struct80206E48 *iter1 = lbl_80206E48;
+        struct Struct8020A348 *iter2 = lbl_8020A348;
+        int j;
+        int i;
+
+        for (i = 0; i < lbl_802F1F48; i++, iter2++, iter1++)
+        {
+            struct Struct8020A348_child *iter3;
+            mathutil_mtxA_from_mtx(iter1->unk24);
+            iter3 = iter2->unk0;
+            for (j = 0; j < iter2->unk4; j++, iter3++)
+            {
+                if ((iter3->unk0 & 3) == 1 && iter3->unk4 != NULL)
+                {
+                    float f;
+                    struct Struct80209488 *r28 = iter3->unk4;
+
+                    mathutil_mtxA_tf_point(&r28->unk8, &sp1C);
+                    f = r28->unk14;
+                    v.x = sp1C.x - f;
+                    v.y = sp1C.y - f;
+                    v.z = sp1C.z - f;
+                    if (f28 > v.x)
+                        f28 = v.x;
+                    if (f30 > v.y)
+                        f30 = v.y;
+                    if (f29 > v.z)
+                        f29 = v.z;
+
+                    v.x = sp1C.x + f;
+                    v.y = sp1C.y + f;
+                    v.z = sp1C.z + f;
+                    if (f27 < v.x)
+                        f27 = v.x;
+                    if (f31 < v.y)
+                        f31 = v.y;
+                    if (f26 < v.z)
+                        f26 = v.z;
+                }
+            }
+        }
+        sp40.x = (f28 + f27) * lbl_802F37A4;
+        sp40.y = (f30 + f31) * lbl_802F37A4;
+        sp40.z = (f29 + f26) * lbl_802F37A4;
+
+        result = 0.0f;
+        iter1 = lbl_80206E48;
+        iter2 = lbl_8020A348;
+        for (i = 0; i < lbl_802F1F48; i++, iter2++, iter1++)
+        {
+            struct Struct8020A348_child *iter3;
+
+            mathutil_mtxA_from_mtx(iter1->unk24);
+            iter3 = iter2->unk0;
+            for (j = 0; j < iter2->unk4; j++, iter3++)
+            {
+                if ((iter3->unk0 & 3) == 1)
+                {
+                    float f31;
+                    float f0;
+                    struct Struct80209488 *r24 = iter3->unk4;
+
+                    if (iter3->unk4 == NULL)
+                        continue;
+                    mathutil_mtxA_tf_point(&r24->unk8, &sp10);
+                    f31 = func_80046884(r24);
+                    f0 = f31 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
+                    if (result < f0)
+                        result = f0;
+                }
+            }
+        }
+
+        *a = sp40;
+        *b = result;
+    }
+    else
+    {
+        a->x = 0.0f;
+        a->y = 0.0f;
+        a->z = 0.0f;
+        *b = 50.0f;
+    }
+}
+#else
+asm void func_800463E8(Vec *a, float *b)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_800463E8.s"
+}
+#pragma peephole on
+#endif
+
+struct
+{
+    Vec unk0;
+    float unkC;
+    float unk10;
+    u8 filler14[0x3C-0x14];
+} lbl_8020ADE4;
+
+extern void lbl_800468F0();
+extern void lbl_80046978();
+
+float func_80046884(struct Struct80209488 *a)
+{
+    lbl_8020ADE4.unk0 = a->unk8;
+    lbl_8020ADE4.unkC = 0.0f;
+    lbl_8020ADE4.unk10 = 0.0f;
+    func_80047E18(a, lbl_800468F0, lbl_80046978);
+    return lbl_8020ADE4.unk10;
+}
+
+static inline float vec_sq_mag(register Vec *v)
+{
+    register float x, y, z;
+#ifdef __MWERKS__
+    asm
+    {
+        lfs x, v->x
+        lfs y, v->y
+        lfs z, v->z
+        fmuls x, x, x
+        fmadds x, y, y, x
+        fmadds x, z, z, x
+    }
+    return x;
+#else
+    return v->x * v->x + v->y * v->y + v->z * v->z;
+#endif
+}
+
+void lbl_800468F0(Vec *a)
+{
+    Vec spC;
+    float f1;
+
+    spC.x = a->x - lbl_8020ADE4.unk0.x;
+    spC.z = a->z - lbl_8020ADE4.unk0.z;
+    spC.y = 0.0f;
+    f1 = vec_sq_mag(&spC);
+    if (f1 < lbl_8020ADE4.unkC)
+        return;
+    lbl_8020ADE4.unkC = f1;
+    lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
+}
+
+void lbl_80046978(Vec *a)  // duplicate of lbl_800468F0
+{
+    Vec spC;
+    float f1;
+
+    spC.x = a->x - lbl_8020ADE4.unk0.x;
+    spC.z = a->z - lbl_8020ADE4.unk0.z;
+    spC.y = 0.0f;
+    f1 = vec_sq_mag(&spC);
+    if (f1 < lbl_8020ADE4.unkC)
+        return;
+    lbl_8020ADE4.unkC = f1;
+    lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
 }
 
 /*
