@@ -1357,11 +1357,10 @@ void func_80045E98(void)
 extern const float lbl_802F37A4;
 extern const float lbl_802F37A8;
 
-#ifdef NONMATCHING
-// https://decomp.me/scratch/KDeDa
 void func_800463E8(Vec *a, float *b)
 {
-    u8 unused[24];
+    Vec v1;
+    Vec v2;
     Vec v;
     Vec sp40;
     Vec sp34;
@@ -1369,12 +1368,13 @@ void func_800463E8(Vec *a, float *b)
     Vec sp1C;
     Vec sp10;
     float result;
-    float f28 = 0.0f;
-    float f30 = 0.0f;
-    float f29 = 0.0f;
-    float f27 = 0.0f;
-    float f31 = 0.0f;
-    float f26 = 0.0f;
+
+    v1.x = 0.0f;
+    v1.y = 0.0f;
+    v1.z = 0.0f;
+    v2.x = 0.0f;
+    v2.y = 0.0f;
+    v2.z = 0.0f;
 
     if (decodedStageGmaPtr != NULL)
     {
@@ -1401,28 +1401,28 @@ void func_800463E8(Vec *a, float *b)
                     v.x = sp34.x - f;
                     v.y = sp34.y - f;
                     v.z = sp34.z - f;
-                    if (f28 > v.x)
-                        f28 = v.x;
-                    if (f30 > v.y)
-                        f30 = v.y;
-                    if (f29 > v.z)
-                        f29 = v.z;
+                    if (v1.x > v.x)
+                        v1.x = v.x;
+                    if (v1.y > v.y)
+                        v1.y = v.y;
+                    if (v1.z > v.z)
+                        v1.z = v.z;
 
                     v.x = sp34.x + f;
                     v.y = sp34.y + f;
                     v.z = sp34.z + f;
-                    if (f27 < v.x)
-                        f27 = v.x;
-                    if (f31 < v.y)
-                        f31 = v.y;
-                    if (f26 < v.z)
-                        f26 = v.z;
+                    if (v2.x < v.x)
+                        v2.x = v.x;
+                    if (v2.y < v.y)
+                        v2.y = v.y;
+                    if (v2.z < v.z)
+                        v2.z = v.z;
                 }
             }
         }
-        sp40.x = (f28 + f27) * lbl_802F37A4;
-        sp40.y = (f30 + f31) * lbl_802F37A4;
-        sp40.z = (f29 + f26) * lbl_802F37A4;
+        sp40.x = (v1.x + v2.x) * lbl_802F37A4;
+        sp40.y = (v1.y + v2.y) * lbl_802F37A4;
+        sp40.z = (v1.z + v2.z) * lbl_802F37A4;
 
         result = 0.0f;
         iter1 = lbl_80206E48;
@@ -1437,15 +1437,15 @@ void func_800463E8(Vec *a, float *b)
             {
                 if ((iter3->unk0 & 3) == 1)
                 {
-                    float f28;
+                    float var1;
                     float f0;
                     struct Struct80209488 *r28 = iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
                     mathutil_mtxA_tf_point(&r28->unk8, &sp28);
-                    f28 = r28->unk14;
-                    f0 = f28 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
+                    var1 = r28->unk14;
+                    f0 = var1 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
                     if (result < f0)
                         result = f0;
                 }
@@ -1480,28 +1480,28 @@ void func_800463E8(Vec *a, float *b)
                     v.x = sp1C.x - f;
                     v.y = sp1C.y - f;
                     v.z = sp1C.z - f;
-                    if (f28 > v.x)
-                        f28 = v.x;
-                    if (f30 > v.y)
-                        f30 = v.y;
-                    if (f29 > v.z)
-                        f29 = v.z;
+                    if (v1.x > v.x)
+                        v1.x = v.x;
+                    if (v1.y > v.y)
+                        v1.y = v.y;
+                    if (v1.z > v.z)
+                        v1.z = v.z;
 
                     v.x = sp1C.x + f;
                     v.y = sp1C.y + f;
                     v.z = sp1C.z + f;
-                    if (f27 < v.x)
-                        f27 = v.x;
-                    if (f31 < v.y)
-                        f31 = v.y;
-                    if (f26 < v.z)
-                        f26 = v.z;
+                    if (v2.x < v.x)
+                        v2.x = v.x;
+                    if (v2.y < v.y)
+                        v2.y = v.y;
+                    if (v2.z < v.z)
+                        v2.z = v.z;
                 }
             }
         }
-        sp40.x = (f28 + f27) * lbl_802F37A4;
-        sp40.y = (f30 + f31) * lbl_802F37A4;
-        sp40.z = (f29 + f26) * lbl_802F37A4;
+        sp40.x = (v1.x + v2.x) * lbl_802F37A4;
+        sp40.y = (v1.y + v2.y) * lbl_802F37A4;
+        sp40.z = (v1.z + v2.z) * lbl_802F37A4;
 
         result = 0.0f;
         iter1 = lbl_80206E48;
@@ -1516,15 +1516,15 @@ void func_800463E8(Vec *a, float *b)
             {
                 if ((iter3->unk0 & 3) == 1)
                 {
-                    float f31;
+                    float var1;
                     float f0;
                     struct Struct80209488 *r24 = iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
                     mathutil_mtxA_tf_point(&r24->unk8, &sp10);
-                    f31 = func_80046884(r24);
-                    f0 = f31 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
+                    var1 = func_80046884(r24);
+                    f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
                     if (result < f0)
                         result = f0;
                 }
@@ -1542,14 +1542,6 @@ void func_800463E8(Vec *a, float *b)
         *b = 50.0f;
     }
 }
-#else
-asm void func_800463E8(Vec *a, float *b)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_800463E8.s"
-}
-#pragma peephole on
-#endif
 
 struct
 {
