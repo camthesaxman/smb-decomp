@@ -6524,8 +6524,8 @@ lbl_80043904:
 /* 80043910 0003F830  7C 08 03 A6 */	mtlr r0
 /* 80043914 0003F834  4E 80 00 20 */	blr
 
-.global func_80043918
-func_80043918:
+.global g_interp_stage_anim_probably
+g_interp_stage_anim_probably:
 /* 80043918 0003F838  2C 03 00 02 */	cmpwi r3, 2
 /* 8004391C 0003F83C  41 80 00 14 */	blt lbl_80043930
 /* 80043920 0003F840  C0 04 00 04 */	lfs f0, 4(r4)

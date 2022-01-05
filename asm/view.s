@@ -914,7 +914,7 @@ lbl_800A6444:
 /* 800A6468 000A2388  B0 1F 00 1E */	sth r0, 0x1e(r31)
 /* 800A646C 000A238C  80 7C 00 00 */	lwz r3, 0(r28)
 /* 800A6470 000A2390  80 9C 00 04 */	lwz r4, 4(r28)
-/* 800A6474 000A2394  4B F9 D4 A5 */	bl func_80043918
+/* 800A6474 000A2394  4B F9 D4 A5 */	bl g_interp_stage_anim_probably
 /* 800A6478 000A2398  EC 1E 00 72 */	fmuls f0, f30, f1
 /* 800A647C 000A239C  FC 00 00 1E */	fctiwz f0, f0
 /* 800A6480 000A23A0  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -930,7 +930,7 @@ lbl_800A648C:
 /* 800A64A4 000A23C4  B0 1F 00 20 */	sth r0, 0x20(r31)
 /* 800A64A8 000A23C8  80 7C 00 08 */	lwz r3, 8(r28)
 /* 800A64AC 000A23CC  80 9C 00 0C */	lwz r4, 0xc(r28)
-/* 800A64B0 000A23D0  4B F9 D4 69 */	bl func_80043918
+/* 800A64B0 000A23D0  4B F9 D4 69 */	bl g_interp_stage_anim_probably
 /* 800A64B4 000A23D4  EC 1E 00 72 */	fmuls f0, f30, f1
 /* 800A64B8 000A23D8  FC 00 00 1E */	fctiwz f0, f0
 /* 800A64BC 000A23DC  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -946,7 +946,7 @@ lbl_800A64C8:
 /* 800A64E0 000A2400  B0 1F 00 22 */	sth r0, 0x22(r31)
 /* 800A64E4 000A2404  80 7C 00 10 */	lwz r3, 0x10(r28)
 /* 800A64E8 000A2408  80 9C 00 14 */	lwz r4, 0x14(r28)
-/* 800A64EC 000A240C  4B F9 D4 2D */	bl func_80043918
+/* 800A64EC 000A240C  4B F9 D4 2D */	bl g_interp_stage_anim_probably
 /* 800A64F0 000A2410  EC 1E 00 72 */	fmuls f0, f30, f1
 /* 800A64F4 000A2414  FC 00 00 1E */	fctiwz f0, f0
 /* 800A64F8 000A2418  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -964,7 +964,7 @@ lbl_800A6504:
 /* 800A6524 000A2444  D0 1F 00 0C */	stfs f0, 0xc(r31)
 /* 800A6528 000A2448  80 7C 00 18 */	lwz r3, 0x18(r28)
 /* 800A652C 000A244C  80 9C 00 1C */	lwz r4, 0x1c(r28)
-/* 800A6530 000A2450  4B F9 D3 E9 */	bl func_80043918
+/* 800A6530 000A2450  4B F9 D3 E9 */	bl g_interp_stage_anim_probably
 /* 800A6534 000A2454  D0 3F 00 00 */	stfs f1, 0(r31)
 lbl_800A6538:
 /* 800A6538 000A2458  80 7C 00 24 */	lwz r3, 0x24(r28)
@@ -978,7 +978,7 @@ lbl_800A6538:
 /* 800A6558 000A2478  D0 1F 00 10 */	stfs f0, 0x10(r31)
 /* 800A655C 000A247C  80 7C 00 20 */	lwz r3, 0x20(r28)
 /* 800A6560 000A2480  80 9C 00 24 */	lwz r4, 0x24(r28)
-/* 800A6564 000A2484  4B F9 D3 B5 */	bl func_80043918
+/* 800A6564 000A2484  4B F9 D3 B5 */	bl g_interp_stage_anim_probably
 /* 800A6568 000A2488  D0 3F 00 04 */	stfs f1, 4(r31)
 lbl_800A656C:
 /* 800A656C 000A248C  80 7C 00 2C */	lwz r3, 0x2c(r28)
@@ -992,7 +992,7 @@ lbl_800A656C:
 /* 800A658C 000A24AC  D0 1F 00 14 */	stfs f0, 0x14(r31)
 /* 800A6590 000A24B0  80 7C 00 28 */	lwz r3, 0x28(r28)
 /* 800A6594 000A24B4  80 9C 00 2C */	lwz r4, 0x2c(r28)
-/* 800A6598 000A24B8  4B F9 D3 81 */	bl func_80043918
+/* 800A6598 000A24B8  4B F9 D3 81 */	bl g_interp_stage_anim_probably
 /* 800A659C 000A24BC  D0 3F 00 08 */	stfs f1, 8(r31)
 lbl_800A65A0:
 /* 800A65A0 000A24C0  7F E3 FB 78 */	mr r3, r31

@@ -11,6 +11,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "stage.h"
 
 #pragma force_active on
 
@@ -702,7 +703,7 @@ void bg_e3_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
@@ -711,15 +712,15 @@ void bg_e3_finish(void) {}
 void bg_e3_draw(void)
 {
     func_800224CC();
-    if ((decodedStageLzPtr->unk6C != 0 || decodedStageLzPtr->unk74 != 0)
+    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->unk6C != 0)
+    if (decodedStageLzPtr->bgModels != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -731,7 +732,7 @@ void bg_e3_draw(void)
 
 void func_80055628(int a) {}
 
-void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
+void func_8005562C(struct StageBgModel *a, int b, float c)
 {
     int i;
     int r29;
@@ -755,7 +756,7 @@ void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
         a->unk0 &= ~(1 << (31-15));
         if (!(a->unk0 & r29))
             continue;
-        if (a->unk8 == NULL2)
+        if (a->model == NULL2)
             continue;
         a->unk0 |= 0x10000;
         r28 = a->unk30;
@@ -769,48 +770,48 @@ void func_8005562C(struct UnkStruct8005562C *a, int b, float c)
         r4 = mathutil_floor_to_int(f29 / f2);
         f29 -= f2 * (float)r4;
         f29 += (float)r28->unk0;
-        if (r28->unk54 != NULL2 && func_80043918(r28->unk50, r28->unk54, f29) < 0.5)
+        if (r28->unk54 != NULL2 && g_interp_stage_anim_probably(r28->unk50, r28->unk54, f29) < 0.5)
         {
             a->unk0 &= ~(1 << (31-15));
             continue;
         }
         if (r28->unk5C != NULL2)
         {
-            a->unk2C = func_80043918(r28->unk58, r28->unk5C, f29);
+            a->unk2C = g_interp_stage_anim_probably(r28->unk58, r28->unk5C, f29);
             if (a->unk2C >= 1.0)
                 continue;
         }
         if (r28->unkC != NULL2)
-            a->unk20.x = func_80043918(r28->unk8, r28->unkC, f29);
+            a->scale.x = g_interp_stage_anim_probably(r28->unk8, r28->unkC, f29);
         if (r28->unk14 != NULL2)
-            a->unk20.y = func_80043918(r28->unk10, r28->unk14, f29);
+            a->scale.y = g_interp_stage_anim_probably(r28->unk10, r28->unk14, f29);
         if (r28->unk1C != NULL2)
-            a->unk20.z = func_80043918(r28->unk18, r28->unk1C, f29);
+            a->scale.z = g_interp_stage_anim_probably(r28->unk18, r28->unk1C, f29);
         if (r28->unk24 != NULL2)
-            a->unk18 = func_80043918(r28->unk20, r28->unk24, f29) * 182.044448853f;
+            a->xrot = g_interp_stage_anim_probably(r28->unk20, r28->unk24, f29) * 182.044448853f;
         if (r28->unk2C != NULL2)
-            a->unk1A = func_80043918(r28->unk28, r28->unk2C, f29) * 182.044448853f;
+            a->yrot = g_interp_stage_anim_probably(r28->unk28, r28->unk2C, f29) * 182.044448853f;
         if (r28->unk34 != NULL2)
-            a->unk1C = func_80043918(r28->unk30, r28->unk34, f29) * 182.044448853f;
+            a->zrot = g_interp_stage_anim_probably(r28->unk30, r28->unk34, f29) * 182.044448853f;
         if (r28->unk3C != NULL2)
-            a->unkC.x = func_80043918(r28->unk38, r28->unk3C, f29);
+            a->pos.x = g_interp_stage_anim_probably(r28->unk38, r28->unk3C, f29);
         if (r28->unk44 != NULL2)
-            a->unkC.y = func_80043918(r28->unk40, r28->unk44, f29);
+            a->pos.y = g_interp_stage_anim_probably(r28->unk40, r28->unk44, f29);
         if (r28->unk4C != NULL2)
-            a->unkC.z = func_80043918(r28->unk48, r28->unk4C, f29);
+            a->pos.z = g_interp_stage_anim_probably(r28->unk48, r28->unk4C, f29);
         if ((a->unk0 & (1 << (31-0x1A))) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
-            mathutil_mtxA_from_translate(&a->unkC);
-            mathutil_mtxA_rotate_z(a->unk1C);
-            mathutil_mtxA_rotate_y(a->unk1A);
-            mathutil_mtxA_rotate_x(a->unk18);
-            mathutil_mtxA_tf_point(&a->unk8->boundingSphereCenter, &sp1C);
+            mathutil_mtxA_from_translate(&a->pos);
+            mathutil_mtxA_rotate_z(a->zrot);
+            mathutil_mtxA_rotate_y(a->yrot);
+            mathutil_mtxA_rotate_x(a->xrot);
+            mathutil_mtxA_tf_point(&a->model->boundingSphereCenter, &sp1C);
             func_800390C8(5, &sp1C, 1.0f);
         }
     }
 }
 
-void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
+void func_80055A18(Mtx a, struct StageBgModel *b, int c)
 {
     int i;
     int r30;
@@ -837,16 +838,16 @@ void func_80055A18(Mtx a, struct UnkStruct8005562C *b, int c)
             continue;
         if (b->unk2C >= 1.0)
             continue;
-        if ((r24 = b->unk8) == NULL)
+        if ((r24 = b->model) == NULL)
             continue;
         mathutil_mtxA_from_mtx(a);
-        mathutil_mtxA_translate(&b->unkC);
-        mathutil_mtxA_rotate_z(b->unk1C);
-        mathutil_mtxA_rotate_y(b->unk1A);
-        mathutil_mtxA_rotate_x(b->unk18);
-        mathutil_mtxA_scale(&b->unk20);
-        f29 = MAX(b->unk20.x, b->unk20.y);
-        f29 = MAX(b->unk20.z, f29);
+        mathutil_mtxA_translate(&b->pos);
+        mathutil_mtxA_rotate_z(b->zrot);
+        mathutil_mtxA_rotate_y(b->yrot);
+        mathutil_mtxA_rotate_x(b->xrot);
+        mathutil_mtxA_scale(&b->scale);
+        f29 = MAX(b->scale.x, b->scale.y);
+        f29 = MAX(b->scale.z, f29);
         if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
          && func_8000E444(&r24->boundingSphereCenter) < -(f29 * r24->boundingSphereRadius))
             continue;
@@ -1084,7 +1085,7 @@ void bg_night_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
@@ -1093,15 +1094,15 @@ void bg_night_finish(void) {}
 void bg_night_draw(void)
 {
     func_800224CC();
-    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->unk6C != NULL)
+    if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1119,7 +1120,7 @@ void bg_ice2_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
@@ -1128,15 +1129,15 @@ void bg_ice2_finish(void) {}
 void bg_ice2_draw(void)
 {
     func_800224CC();
-    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->unk6C != NULL)
+    if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1158,21 +1159,21 @@ void bg_billiards_init(void)
 {
     int i;
     int j;
-    struct UnkStruct8005562C *r29 = decodedStageLzPtr->unk6C;
+    struct StageBgModel *r29 = decodedStageLzPtr->bgModels;
 
-    for (i = 0; i < decodedStageLzPtr->unk68; i++, r29++)
+    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, r29++)
     {
         struct Struct80180F14 *r27 = lbl_80180F14;
 
         while (r27->unk4 != -1)
         {
             int len1 = strlen(r27->unk0);
-            int len2 = strlen(r29->unk4) - 1;
+            int len2 = strlen(r29->name) - 1;
             int matched = 0;
 
             for (j = 0; j < len1; j++)
             {
-                if (r29->unk4[j] != r27->unk0[j])
+                if (r29->name[j] != r27->unk0[j])
                     break;
                 if (len2 == j)
                 {
@@ -1194,7 +1195,7 @@ void bg_billiards_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
@@ -1203,15 +1204,15 @@ void bg_billiards_finish(void) {}
 void bg_billiards_draw(void)
 {
     func_800224CC();
-    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->unk6C != NULL)
+    if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1229,7 +1230,7 @@ void bg_golf_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
@@ -1238,15 +1239,15 @@ void bg_golf_finish(void) {}
 void bg_golf_draw(void)
 {
     func_800224CC();
-    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->unk6C != NULL)
+    if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1264,7 +1265,7 @@ void bg_bowling_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68, var);
+    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
     func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
@@ -1273,15 +1274,15 @@ void bg_bowling_finish(void) {}
 void bg_bowling_draw(void)
 {
     func_800224CC();
-    if ((decodedStageLzPtr->unk6C != NULL || decodedStageLzPtr->unk74 != NULL)
+    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->unk6C != NULL)
+    if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->unk6C, decodedStageLzPtr->unk68);
+    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1439,18 +1440,18 @@ void func_800567DC(struct GMAModelEntry *r28, int r30_, struct Struct80056684 *a
 void func_80056934(void)
 {
     int i;
-    struct UnkStruct8005562C *var1;
+    struct StageBgModel *var1;
 
-    var1 = decodedStageLzPtr->unk6C;
-    for (i = 0; i < decodedStageLzPtr->unk68; i++, var1++)
+    var1 = decodedStageLzPtr->bgModels;
+    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, var1++)
     {
-        if (var1->unk8 != NULL)
+        if (var1->model != NULL)
             var1->unk0 &= 0xFFFFFF;
     }
     var1 = decodedStageLzPtr->unk74;
     for (i = 0; i < decodedStageLzPtr->unk70; i++, var1++)
     {
-        if (var1->unk8 != NULL)
+        if (var1->model != NULL)
             var1->unk0 &= 0xFFFFFF;
     }
 }

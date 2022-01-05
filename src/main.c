@@ -9,6 +9,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "perf.h"
+#include "stage.h"
 
 // bss
 u8 lbl_801ED920[0x1240];  // unknown type

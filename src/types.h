@@ -269,20 +269,7 @@ struct UnkStruct8005562C_child2
     struct UnkStruct8005562C_child2_child2 *unkC;
 };
 
-struct UnkStruct8005562C  // decodedStageLzPtr->unk6C
-{
-    u32 unk0;
-    char *unk4;
-    struct GMAModelHeader *unk8;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    Vec unk20;
-    float unk2C;
-    struct UnkStruct8005562C_child *unk30;
-    struct UnkStruct8005562C_child2 *unk34;
-};
+struct StageBgModel;
 
 struct Camera;
 
@@ -490,88 +477,7 @@ struct Struct80206DEC
     u8 filler20[0x5C-0x20];
 };
 
-struct DecodedStageLzPtr_child_child
-{
-    u32 unk0;
-    void *unk4;
-    u32 unk8;
-    void *unkC;
-    u32 unk10;
-    void *unk14;
-    u32 unk18;
-    void *unk1C;
-    u32 unk20;
-    void *unk24;
-    u32 unk28;
-    void *unk2C;
-};
-
-struct DecodedStageLzPtr_child_child2
-{
-    char *unk0;
-};
-
-struct DecodedStageLzPtr_child
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u16 unk12;
-    struct DecodedStageLzPtr_child_child *unk14;
-    struct DecodedStageLzPtr_child_child2 *unk18;
-    u8 filler1C[0x3C-0x1C];
-    s32 unk3C;
-    Vec *unk40;
-    u8 filler44[0x7C-0x44];
-    s32 unk7C;
-    u8 filler80[0xB8-0x80];
-    Vec unkB8;
-};  // size = 0xC4
-
-struct DecodedStageLzPtr_child2
-{
-    u32 unk0;
-    u32 unk4;
-    float unk8;
-};
-
-struct DecodedStageLzPtr_child3
-{
-    Vec unk0;  // starting position for stage?
-    u8 fillerC[0xE - 0xC];
-    s16 unkE;
-};
-
-struct DecodedStageLzPtr_child4
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u8 filler12[0x14-0x12];
-};  // size = 0x14
-
-struct Stage
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    struct DecodedStageLzPtr_child *unkC;
-    struct DecodedStageLzPtr_child3 *unk10;
-    u8 filler14[0x18-0x14];
-    s32 unk18;
-    struct DecodedStageLzPtr_child4 *unk1C;
-    u8 filler20[0x58-0x20];
-    s32 unk58;
-    struct DecodedStageLzPtr_child2 *unk5C;
-    u8 filler60[8];
-    s32 unk68;
-    struct UnkStruct8005562C *unk6C;
-    s32 unk70;
-    struct UnkStruct8005562C *unk74;
-    u32 unk78;
-};
+struct Stage;
 
 struct Struct8003C550
 {

@@ -11,6 +11,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "stage.h"
 
 static int lbl_0000185D;
 

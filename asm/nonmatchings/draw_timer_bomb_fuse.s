@@ -574,7 +574,7 @@ lbl_8000DD90:
 /* 8000DE48 00009D68  38 60 00 0A */	li r3, 0xa
 /* 8000DE4C 00009D6C  FC 21 00 32 */	fmul f1, f1, f0
 /* 8000DE50 00009D70  FC 20 08 18 */	frsp f1, f1
-/* 8000DE54 00009D74  48 03 5A C5 */	bl func_80043918
+/* 8000DE54 00009D74  48 03 5A C5 */	bl g_interp_stage_anim_probably
 /* 8000DE58 00009D78  C8 02 81 10 */	lfd f0, 1.0  //lbl_802F2910  //-_SDA2_BASE_(r2)
 /* 8000DE5C 00009D7C  3C 60 80 17 */	lis r3, lbl_801740A8@ha
 /* 8000DE60 00009D80  38 83 40 A8 */	addi r4, r3, lbl_801740A8@l
@@ -584,7 +584,7 @@ lbl_8000DD90:
 /* 8000DE70 00009D90  38 60 00 0D */	li r3, 0xd
 /* 8000DE74 00009D94  FC 22 00 32 */	fmul f1, f2, f0
 /* 8000DE78 00009D98  FC 20 08 18 */	frsp f1, f1
-/* 8000DE7C 00009D9C  48 03 5A 9D */	bl func_80043918
+/* 8000DE7C 00009D9C  48 03 5A 9D */	bl g_interp_stage_anim_probably
 /* 8000DE80 00009DA0  D0 21 00 1C */	stfs f1, 0x1c(r1)
 /* 8000DE84 00009DA4  38 61 00 18 */	addi r3, r1, 0x18
 /* 8000DE88 00009DA8  C0 02 82 70 */	lfs f0, lbl_802F2A70  //-_SDA2_BASE_(r2)

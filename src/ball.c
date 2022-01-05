@@ -11,6 +11,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "stage.h"
 
 #include "../data/common.gma.h"
 
@@ -558,7 +559,7 @@ void ev_ball_init(void)
             r20->unk14 |= 0x100000;
         ball->unk14B = 0;
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE - 16384);
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot - 16384);
         r20->unkC0 = i;
         if (dipSwitches & DIP_APE_COLOR)
             r20->unkB4 = sp18[lbl_80206BC0[i]];
@@ -566,7 +567,7 @@ void ev_ball_init(void)
             r20->unkB4 = i;
         if (lbl_801EED2C.unk4 & (1<<(31-0x17)))
             r20->unkB4 = 0;
-        r20->unk30 = decodedStageLzPtr->unk10->unk0;
+        r20->unk30 = decodedStageLzPtr->startPos->pos;
         mathutil_mtxA_to_quat(&r20->unk60);
         lbl_802F1F08 = 0;
         lbl_80205E20[i] = 0.0f;
@@ -1590,9 +1591,9 @@ void ball_func_ready_main(struct Ball *ball)
 {
     func_800394C4(ball);
 
-    ball->pos.x = decodedStageLzPtr->unk10->unk0.x;
-    ball->pos.y = decodedStageLzPtr->unk10->unk0.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
-    ball->pos.z = decodedStageLzPtr->unk10->unk0.z;
+    ball->pos.x = decodedStageLzPtr->startPos->pos.x;
+    ball->pos.y = decodedStageLzPtr->startPos->pos.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
+    ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->prevPos.x = ball->pos.x;
     ball->prevPos.y = ball->pos.y;
@@ -1623,14 +1624,14 @@ void ball_func_3(struct Ball *ball)
     ball->prevPos.z = ball->pos.z;
 
     f4 = modeCtrl.unk0;
-    f2 = (decodedStageLzPtr->unk10->unk0.y - ball->pos.y) / f4;
+    f2 = (decodedStageLzPtr->startPos->pos.y - ball->pos.y) / f4;
 
     ball->vel.x = (zero = 0.0f);  // fake match
     ball->vel.y = (ball->unk6C * f4) * 0.5 + f2;
     ball->vel.z = zero;
 
     ball->unk28 = 0x2000;
-    ball->unk2A = decodedStageLzPtr->unk10->unkE - 16384;
+    ball->unk2A = decodedStageLzPtr->startPos->yrot - 16384;
     ball->unk2C = 0;
 
     mathutil_mtxA_from_translate(&ball->pos);
@@ -1726,7 +1727,7 @@ void ball_func_7(struct Ball *ball)
     if (sp30.x == 0.0 && sp30.z == 0.0)
     {
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot);
         sp30.x = 0.0f;
         sp30.y = 0.0f;
         sp30.z = -1.0f;
@@ -1787,9 +1788,9 @@ void ball_func_11(struct Ball *ball)
 {
     func_800394C4(ball);
 
-    ball->pos.x = decodedStageLzPtr->unk10->unk0.x;
-    ball->pos.y = decodedStageLzPtr->unk10->unk0.y;
-    ball->pos.z = decodedStageLzPtr->unk10->unk0.z;
+    ball->pos.x = decodedStageLzPtr->startPos->pos.x;
+    ball->pos.y = decodedStageLzPtr->startPos->pos.y;
+    ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->prevPos.x = ball->pos.x;
     ball->prevPos.y = ball->pos.y;
@@ -1823,9 +1824,9 @@ void ball_func_13(struct Ball *ball)
 {
     func_800394C4(ball);
 
-    ball->pos.x = decodedStageLzPtr->unk10->unk0.x;
-    ball->pos.y = decodedStageLzPtr->unk10->unk0.y + 10.0;
-    ball->pos.z = decodedStageLzPtr->unk10->unk0.z;
+    ball->pos.x = decodedStageLzPtr->startPos->pos.x;
+    ball->pos.y = decodedStageLzPtr->startPos->pos.y + 10.0;
+    ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->prevPos.x = ball->pos.x;
     ball->prevPos.y = ball->pos.y;
@@ -1847,7 +1848,7 @@ void ball_func_13(struct Ball *ball)
     ball->unkFC->unk60 = ball->unk98;
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE - 16384);
+    mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot - 16384);
     mathutil_mtxA_to_quat(&ball->unkFC->unk60);
     ball->state = 14;
 }
@@ -1862,9 +1863,9 @@ void ball_func_15(struct Ball *ball)
 
     func_800394C4(ball);
 
-    ball->pos.x = decodedStageLzPtr->unk10->unk0.x;
-    ball->pos.y = decodedStageLzPtr->unk10->unk0.y + 10.0;
-    ball->pos.z = decodedStageLzPtr->unk10->unk0.z;
+    ball->pos.x = decodedStageLzPtr->startPos->pos.x;
+    ball->pos.y = decodedStageLzPtr->startPos->pos.y + 10.0;
+    ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->prevPos.x = ball->pos.x;
     ball->prevPos.y = ball->pos.y;
@@ -1934,9 +1935,9 @@ void ball_func_16(struct Ball *ball)
 
     if (modeCtrl.unk0 == 0x111C)
     {
-        ball->pos.x = decodedStageLzPtr->unk10->unk0.x;
-        ball->pos.y = decodedStageLzPtr->unk10->unk0.y;
-        ball->pos.z = decodedStageLzPtr->unk10->unk0.z;
+        ball->pos.x = decodedStageLzPtr->startPos->pos.x;
+        ball->pos.y = decodedStageLzPtr->startPos->pos.y;
+        ball->pos.z = decodedStageLzPtr->startPos->pos.z;
     }
     else
     {
@@ -1966,7 +1967,7 @@ void ball_func_16(struct Ball *ball)
     if (modeCtrl.unk0 != 0x111C)
     {
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE + 0x4000);
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x4000);
         mathutil_mtxA_to_quat(&ball->unkFC->unk60);
     }
 }
@@ -2026,9 +2027,9 @@ void ball_func_20(struct Ball *ball)
     if (--ball->unk124 > 0)
         return;
 
-    ball->pos.x = ball->prevPos.x = decodedStageLzPtr->unk10->unk0.x;
-    ball->pos.y = ball->prevPos.y = decodedStageLzPtr->unk10->unk0.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
-    ball->pos.z = ball->prevPos.z = decodedStageLzPtr->unk10->unk0.z;
+    ball->pos.x = ball->prevPos.x = decodedStageLzPtr->startPos->pos.x;
+    ball->pos.y = ball->prevPos.y = decodedStageLzPtr->startPos->pos.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
+    ball->pos.z = ball->prevPos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->vel.x = 0.0f;
     ball->vel.y = 0.0f;
@@ -2044,9 +2045,9 @@ void ball_func_20(struct Ball *ball)
     ball->unk14E = 30;
     lbl_80206BF0[ball->unk2E].unk20 = 30;
 
-    spC.x = -mathutil_sin(decodedStageLzPtr->unk10->unkE);
+    spC.x = -mathutil_sin(decodedStageLzPtr->startPos->yrot);
     spC.y = 0.0f;
-    spC.z = -mathutil_cos(decodedStageLzPtr->unk10->unkE);
+    spC.z = -mathutil_cos(decodedStageLzPtr->startPos->yrot);
     func_8008C408(ball->unkFC, &spC);
 
     cameraInfo[ball->unk2E].state = 0;
@@ -2066,9 +2067,9 @@ void ball_func_21(struct Ball *ball)
     if (!(lbl_801EED2C.unk4 & (1<<(31-0x19))))
         lbl_80206B80[ball->unk2E] = func_8008D1DC(lbl_8000F790, ball->unkFC, 5);
 
-    ball->pos.x = decodedStageLzPtr->unk10->unk0.x;
-    ball->pos.y = decodedStageLzPtr->unk10->unk0.y;
-    ball->pos.z = decodedStageLzPtr->unk10->unk0.z;
+    ball->pos.x = decodedStageLzPtr->startPos->pos.x;
+    ball->pos.y = decodedStageLzPtr->startPos->pos.y;
+    ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
     if (currStageId == 13 && ball->unkFC->unk10 == 0)
     {
@@ -2140,20 +2141,20 @@ void ball_func_21(struct Ball *ball)
     if (currStageId == 9 && ball->unkFC->unk10 == 2)
     {
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE + 0x10000 - 0x8000);
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x10000 - 0x8000);
         mathutil_mtxA_to_quat(&ball->unkFC->unk60);
     }
     else if (currStageId == 9 && ball->unkFC->unk10 == 1)
     {
         // same exact thing as the above
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE + 0x10000 - 0x8000);
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x10000 - 0x8000);
         mathutil_mtxA_to_quat(&ball->unkFC->unk60);
     }
     else if (currStageId == 28 && ball->unkFC->unk10 == 0)
     {
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(decodedStageLzPtr->unk10->unkE);
+        mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot);
         mathutil_mtxA_to_quat(&ball->unkFC->unk60);
     }
 

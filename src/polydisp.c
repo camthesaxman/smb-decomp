@@ -11,6 +11,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "stage.h"
 
 #include "../data/common.gma.h"
 

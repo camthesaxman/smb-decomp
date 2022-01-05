@@ -8,22 +8,23 @@
 #include "input.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
+#include "stage.h"
 
 void lbl_00000C9C(void)
 {
-    struct DecodedStageLzPtr_child *r27;
+    struct StageCollHdr *r27;
     int i;
 
     func_80054FF0();
     stage_draw();
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&decodedStageLzPtr->unk10->unk0);
+    mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
     mathutil_mtxA_scale_xyz(0.6f, 0.6f, 0.6f);
     func_80030BA8(0.6f);
     g_draw_naomi_model_and_do_other_stuff(NAOMIOBJ_MODEL(naomiCommonObj, 10));
     
-    for (i = 0, r27 = decodedStageLzPtr->unkC; i < decodedStageLzPtr->unk8; i++, r27++)
+    for (i = 0, r27 = decodedStageLzPtr->collHdrs; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
     {
         Vec *r25 = r27->unk40;
         int j;

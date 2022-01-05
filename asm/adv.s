@@ -3069,7 +3069,7 @@ submode_adv_game_play_init_func:
 /* 800110EC 0000D00C  7C 7F 02 14 */	add r3, r31, r0
 /* 800110F0 0000D010  80 63 00 00 */	lwz r3, 0(r3)
 /* 800110F4 0000D014  48 03 8E 9D */	bl func_80049F90
-/* 800110F8 0000D018  48 03 33 AD */	bl func_800444A4
+/* 800110F8 0000D018  48 03 33 AD */	bl g_animate_stage
 /* 800110FC 0000D01C  38 00 00 12 */	li r0, 0x12
 /* 80011100 0000D020  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 lbl_80011104:
@@ -3536,7 +3536,7 @@ lbl_8001178C:
 /* 800117A4 0000D6C4  7C 63 02 14 */	add r3, r3, r0
 /* 800117A8 0000D6C8  80 63 00 00 */	lwz r3, 0(r3)
 /* 800117AC 0000D6CC  48 03 87 E5 */	bl func_80049F90
-/* 800117B0 0000D6D0  48 03 2C F5 */	bl func_800444A4
+/* 800117B0 0000D6D0  48 03 2C F5 */	bl g_animate_stage
 /* 800117B4 0000D6D4  48 00 02 D1 */	bl func_80011A84
 /* 800117B8 0000D6D8  38 81 00 08 */	addi r4, r1, 8
 /* 800117BC 0000D6DC  48 03 87 65 */	bl g_get_replay_info

@@ -6,6 +6,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "perf.h"
+#include "stage.h"
 
 struct Event eventInfo[] =
 {
