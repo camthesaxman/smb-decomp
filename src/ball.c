@@ -1109,7 +1109,7 @@ void func_80038840(void)
             // Draw new ball
             mathutil_mtxA_from_mtxB();
             r22 = func_80085698(&ball->pos);
-            r23 = (void *)func_80085B88(16);
+            r23 = (void *)g_alloc_some_drawing_mem(16);
             r23->unk4 = lbl_8003D928;
             r23->unk8 = func_800223D0();
             r23->unkC = i;

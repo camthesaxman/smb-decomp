@@ -13771,3 +13771,13 @@ lbl_802BA190:
 .global lbl_802BA1A0
 lbl_802BA1A0:
 	.skip 0x60
+
+.section .sbss
+
+	.skip 0x4
+.global lbl_802F2150
+lbl_802F2150:
+	.skip 0x4
+.global lbl_802F2154
+lbl_802F2154:
+	.skip 0x4

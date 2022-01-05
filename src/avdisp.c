@@ -714,7 +714,7 @@ static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *
 {
     u32 r28;
     u32 r23 = lbl_802F20E8;
-    struct UnkStruct17 *r29 = (void *)func_80085B88(0x74);
+    struct UnkStruct17 *r29 = (void *)g_alloc_some_drawing_mem(0x74);
 
     if (mesh->unk14 != 0xFF)
         r28 = func_800857A4(mesh->unk30, -1);
@@ -737,7 +737,7 @@ static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *
     r29->unk62 = lbl_802F2114;
     if (r29->unk60 != 0)
     {
-        r29->unk64 = (void *)func_80085B88(0x30);
+        r29->unk64 = (void *)g_alloc_some_drawing_mem(0x30);
         mathutil_mtx_copy(lbl_802B4E6C, *r29->unk64);
     }
     if (r29->unk61 != 0)

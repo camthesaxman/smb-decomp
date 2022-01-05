@@ -3,8 +3,8 @@
 .section .text
 
 # ord_tbl.s
-.global func_80085B88
-func_80085B88:
+.global g_alloc_some_drawing_mem
+g_alloc_some_drawing_mem:
 /* 80085B88 00081AA8  7C 08 02 A6 */	mflr r0
 /* 80085B8C 00081AAC  3C 80 80 29 */	lis r4, lbl_80292E60@ha
 /* 80085B90 00081AB0  90 01 00 04 */	stw r0, 4(r1)

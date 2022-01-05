@@ -205,7 +205,7 @@ struct ZMode
     /*0x04*/ GXCompare compareFunc;
     /*0x08*/ GXBool updateEnable;
     /*0x09*/ u8 lineWidth;
-    /*0x0C*/ u32 texOffsets;
+    /*0x0C*/ s32 texOffsets;
 };
 
 struct Event

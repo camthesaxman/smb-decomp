@@ -1834,3 +1834,42 @@ lbl_802F59A8:
 	# ROM: 0x1EF3C8
 	.byte 0x3F, 0x4C, 0xCC, 0xCD
 	.4byte 0
+
+.section .sbss
+
+.global lbl_802F2158
+lbl_802F2158:
+	.skip 0x4
+.global lbl_802F215C
+lbl_802F215C:
+	.skip 0x4
+.global lbl_802F2160
+lbl_802F2160:
+	.skip 0x4
+.global lbl_802F2164
+lbl_802F2164:
+	.skip 0x4
+.global lbl_802F2168
+lbl_802F2168:
+	.skip 0x8
+.global lbl_802F2170
+lbl_802F2170:
+	.skip 0x8
+.global lbl_802F2178
+lbl_802F2178:
+	.skip 0x8
+.global lbl_802F2180
+lbl_802F2180:
+	.skip 0x4
+.global lbl_802F2184
+lbl_802F2184:
+	.skip 0x4
+.global lbl_802F2188
+lbl_802F2188:
+	.skip 0x8
+.global lbl_802F2190
+lbl_802F2190:
+	.skip 0x4
+.global lbl_802F2194
+lbl_802F2194:
+	.skip 0x4

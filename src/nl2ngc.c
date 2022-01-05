@@ -73,21 +73,21 @@ void func_80030AF8(int a /*unknown*/, int b /*unknown*/)
     func_8009AD30(1, a, b, 0);
 }
 
-void func_80030B28(Vec *a, Vec *b, u32 c)
+void func_80030B28(Vec *start, Vec *end, u32 c)
 {
-    GXColor sp14;  // also works as u8 array. not sure
+    GXColor color;
 
-    sp14.r = (c >> 16) & 0xFF;
-    sp14.g = (c >> 8) & 0xFF;
-    sp14.b = (c >> 0) & 0xFF;
-    sp14.a = (c >> 24) & 0xFF;
-    g_draw_line(a, b, &sp14);
+    color.r = (c >> 16) & 0xFF;
+    color.g = (c >> 8) & 0xFF;
+    color.b = (c >> 0) & 0xFF;
+    color.a = (c >> 24) & 0xFF;
+    g_draw_line(start, end, &color);
 }
-#pragma force_active off
+#pragma force_active reset
 
-void func_80030B68(int a /*unknown*/, int b /*unknown*/, u32 c)
+void func_80030B68(Vec *a, Vec *b, u32 c)
 {
-    GXColor sp14;  // also works as u8 array. not sure
+    GXColor sp14;
 
     sp14.r = (c >> 16) & 0xFF;
     sp14.g = (c >> 8) & 0xFF;
@@ -394,7 +394,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         {
             struct UnkStruct18 *r29;
             int r28 = func_80085698(&model->unk8);
-            r29 = func_80085B88(0x5C);
+            r29 = g_alloc_some_drawing_mem(0x5C);
 
             r29->unk4 = lbl_80033C8C;
             r29->model = model;
@@ -513,7 +513,7 @@ void func_800314B8(struct NaomiModel *model, float b)
         }
 
         r28 = func_80085698(&model->unk8);
-        r29 = func_80085B88(0x60);
+        r29 = g_alloc_some_drawing_mem(0x60);
 
         r29->unk4 = lbl_80033E6C;
         r29->model = model;
