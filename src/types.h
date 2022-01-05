@@ -466,11 +466,13 @@ struct Struct800496BC
     float unk1C;
 };  // size = 0x20
 
+typedef void (*Struct80206DEC_Func)(void);
+
 struct Struct80206DEC
 {
     s32 unk0;
     float unk4;
-    void (*unk8)(void);
+    Struct80206DEC_Func unk8;
     u32 unkC;
     float unk10[3];
     u32 unk1C;

@@ -150,8 +150,8 @@ struct DecodedStageLzPtr_child5
 struct DecodedStageLzPtr_child6
 {
     u8 filler0[0xC];
-    void *unkC;
-    void *unk10;
+    struct StageAnimHdr *unkC;
+    struct StageAnimHdr *unk10;
 };
 
 struct Stage
@@ -219,7 +219,7 @@ void func_80045E98(void);
 float func_80046884(struct Struct80209488 *);
 void load_stagedef(int stageId);
 void func_800472E8(void);
-void func_80047320(void *, struct Stage *);
-void func_800473C0(void *, struct Stage *);
-void func_800474D8(void *, struct Stage *);
+void adjust_stage_anim_ptrs(struct StageAnimHdr **, struct Stage *);
+void func_800473C0(struct UnkStruct8005562C_child **, struct Stage *);
+void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
 void stage_draw(void);

@@ -1673,7 +1673,7 @@ void load_stagedef(int stageId)
     for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, coll++)
     {
         if (coll->animHdr != NULL)
-            func_80047320(&coll->animHdr, decodedStageLzPtr);
+            adjust_stage_anim_ptrs(&coll->animHdr, decodedStageLzPtr);
         if (coll->modelNames != NULL)
         {
             char **namep;
@@ -1855,9 +1855,9 @@ void load_stagedef(int stageId)
     {
         decodedStageLzPtr->unk88 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk88);
         if (decodedStageLzPtr->unk88->unkC != NULL)
-            func_80047320(&decodedStageLzPtr->unk88->unkC, decodedStageLzPtr);
+            adjust_stage_anim_ptrs(&decodedStageLzPtr->unk88->unkC, decodedStageLzPtr);
         if (decodedStageLzPtr->unk88->unk10 != NULL)
-            func_80047320(&decodedStageLzPtr->unk88->unk10, decodedStageLzPtr);
+            adjust_stage_anim_ptrs(&decodedStageLzPtr->unk88->unk10, decodedStageLzPtr);
     }
 
     if (decodedStageLzPtr->unk90 != NULL)
@@ -1865,6 +1865,78 @@ void load_stagedef(int stageId)
     if (decodedStageLzPtr->unk7C < 1)
         decodedStageLzPtr->unk7C = 1;
 }
+
+void func_800472E8(void)
+{
+    if (decodedStageLzPtr != NULL)
+    {
+        OSFree(decodedStageLzPtr);
+        decodedStageLzPtr = NULL;
+    }
+}
+
+void adjust_stage_anim_ptrs(struct StageAnimHdr **animp, struct Stage *baseptr)
+{
+    *animp = OFFSET_TO_PTR(baseptr, *animp);
+    if ((*animp)->xRotFrames != NULL)
+        (*animp)->xRotFrames = OFFSET_TO_PTR(baseptr, (*animp)->xRotFrames);
+    if ((*animp)->yRotFrames != NULL)
+        (*animp)->yRotFrames = OFFSET_TO_PTR(baseptr, (*animp)->yRotFrames);
+    if ((*animp)->zRotFrames != NULL)
+        (*animp)->zRotFrames = OFFSET_TO_PTR(baseptr, (*animp)->zRotFrames);
+    if ((*animp)->xTrnslFrames != NULL)
+        (*animp)->xTrnslFrames = OFFSET_TO_PTR(baseptr, (*animp)->xTrnslFrames);
+    if ((*animp)->yTrnslFrames != NULL)
+        (*animp)->yTrnslFrames = OFFSET_TO_PTR(baseptr, (*animp)->yTrnslFrames);
+    if ((*animp)->zTrnslFrames != NULL)
+        (*animp)->zTrnslFrames = OFFSET_TO_PTR(baseptr, (*animp)->zTrnslFrames);
+}
+
+void func_800473C0(struct UnkStruct8005562C_child **unkp, struct Stage *baseptr)
+{
+    *unkp = OFFSET_TO_PTR(baseptr, *unkp);
+    if ((*unkp)->unkC != NULL)
+        (*unkp)->unkC = OFFSET_TO_PTR(baseptr, (*unkp)->unkC);
+    if ((*unkp)->unk14 != NULL)
+        (*unkp)->unk14 = OFFSET_TO_PTR(baseptr, (*unkp)->unk14);
+    if ((*unkp)->unk1C != NULL)
+        (*unkp)->unk1C = OFFSET_TO_PTR(baseptr, (*unkp)->unk1C);
+    if ((*unkp)->unk24 != NULL)
+        (*unkp)->unk24 = OFFSET_TO_PTR(baseptr, (*unkp)->unk24);
+    if ((*unkp)->unk2C != NULL)
+        (*unkp)->unk2C = OFFSET_TO_PTR(baseptr, (*unkp)->unk2C);
+    if ((*unkp)->unk34 != NULL)
+        (*unkp)->unk34 = OFFSET_TO_PTR(baseptr, (*unkp)->unk34);
+    if ((*unkp)->unk3C != NULL)
+        (*unkp)->unk3C = OFFSET_TO_PTR(baseptr, (*unkp)->unk3C);
+    if ((*unkp)->unk44 != NULL)
+        (*unkp)->unk44 = OFFSET_TO_PTR(baseptr, (*unkp)->unk44);
+    if ((*unkp)->unk4C != NULL)
+        (*unkp)->unk4C = OFFSET_TO_PTR(baseptr, (*unkp)->unk4C);
+    if ((*unkp)->unk54 != NULL)
+        (*unkp)->unk54 = OFFSET_TO_PTR(baseptr, (*unkp)->unk54);
+    if ((*unkp)->unk5C != NULL)
+        (*unkp)->unk5C = OFFSET_TO_PTR(baseptr, (*unkp)->unk5C);
+}
+
+void func_800474D8(struct UnkStruct8005562C_child2 **unkp, struct Stage *baseptr)
+{
+    *unkp = OFFSET_TO_PTR(baseptr, *unkp);
+    if ((*unkp)->unk4 != NULL)
+        (*unkp)->unk4 = OFFSET_TO_PTR(baseptr, (*unkp)->unk4);
+    if ((*unkp)->unkC != NULL)
+        (*unkp)->unkC = OFFSET_TO_PTR(baseptr, (*unkp)->unkC);
+}
+
+#pragma force_active on
+Struct80206DEC_Func func_80047518(Struct80206DEC_Func func)
+{
+    Struct80206DEC_Func old = lbl_80206DEC.unk8;
+
+    lbl_80206DEC.unk8 = func;
+    return old;
+}
+#pragma force_active reset
 
 /*
 const double lbl_802F3770 = -0.030833333333333333;
