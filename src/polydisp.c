@@ -91,7 +91,7 @@ void polydisp_main(void)
 
 void draw_3d_scene(void)
 {
-    ord_tbl_reset_list();
+    ord_tbl_reset();
     func_800226F4();
     switch (gameMode)
     {
@@ -316,9 +316,9 @@ void func_8000B96C(void)
         if (lbl_801EED2C.unk4 & (1 << (31-0x14)))
             func_80094A34();
 
-        g_ord_tbl_set_some_float(400.0f);
+        ord_tbl_set_depth_offset(400.0f);
         background_draw();
-        g_ord_tbl_set_some_float(0.0f);
+        ord_tbl_set_depth_offset(0.0f);
 
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
             func_80095398(16);
@@ -573,9 +573,9 @@ void draw_normal_game_scene(void)
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
-                g_ord_tbl_set_some_float(400.0f);
+                ord_tbl_set_depth_offset(400.0f);
                 background_draw();
-                g_ord_tbl_set_some_float(0.0f);
+                ord_tbl_set_depth_offset(0.0f);
             }
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
@@ -623,9 +623,9 @@ void func_8000C7A4(void)
                 stage_draw();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
-                g_ord_tbl_set_some_float(400.0f);
+                ord_tbl_set_depth_offset(400.0f);
                 background_draw();
-                g_ord_tbl_set_some_float(0.0f);
+                ord_tbl_set_depth_offset(0.0f);
             }
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
                 item_draw();
@@ -899,9 +899,9 @@ void func_8000D018(void)
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
-                g_ord_tbl_set_some_float(400.0f);
+                ord_tbl_set_depth_offset(400.0f);
                 background_draw();
-                g_ord_tbl_set_some_float(0.0f);
+                ord_tbl_set_depth_offset(0.0f);
             }
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(16);
@@ -1203,9 +1203,9 @@ void func_8000DEE8(void)
 
 void draw_monkey(void)
 {
-    g_ord_tbl_add_some_float(0.5f);
+    ord_tbl_add_depth_offset(0.5f);
     func_8008D158(0x00FFFF7F);
-    g_ord_tbl_add_some_float(-0.5f);
+    ord_tbl_add_depth_offset(-0.5f);
 }
 
 void func_8000E134(void)

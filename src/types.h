@@ -726,12 +726,12 @@ struct Struct802F1B3C
     Mtx matrices[5];
     struct OrdTblNode *entries;
     s32 maxEntries;
-    float unkF8;
-    float unkFC;
-    float unk100;
-    struct OrdTblNode *lastEntry;
-    struct OrdTblNode *firstEntry;
-    float unk10C;
+    float depthOffset;
+    float minDepth;
+    float maxDepth;
+    struct OrdTblNode *lastEntry;  // the last node in 'entries'
+    struct OrdTblNode *firstEntry;  // the first node in 'entries'
+    float depthRange;
 };
 
 struct Sphere

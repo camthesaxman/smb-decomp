@@ -2887,10 +2887,10 @@ lbl_80097CAC:
 /* 80097CB8 00093BD8  2C 00 00 02 */	cmpwi r0, 2
 /* 80097CBC 00093BDC  40 82 00 18 */	bne lbl_80097CD4
 /* 80097CC0 00093BE0  C0 22 B0 EC */	lfs f1, lbl_802F58EC-_SDA2_BASE_(r2)
-/* 80097CC4 00093BE4  4B FE D9 B5 */	bl g_ord_tbl_set_some_float
+/* 80097CC4 00093BE4  4B FE D9 B5 */	bl ord_tbl_set_depth_offset
 /* 80097CC8 00093BE8  4B FB D3 61 */	bl background_draw
 /* 80097CCC 00093BEC  C0 22 B0 C0 */	lfs f1, lbl_802F58C0-_SDA2_BASE_(r2)
-/* 80097CD0 00093BF0  4B FE D9 A9 */	bl g_ord_tbl_set_some_float
+/* 80097CD0 00093BF0  4B FE D9 A9 */	bl ord_tbl_set_depth_offset
 lbl_80097CD4:
 /* 80097CD4 00093BF4  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 80097CD8 00093BF8  38 63 3C C8 */	addi r3, r3, eventInfo@l
@@ -3765,10 +3765,10 @@ lbl_8009899C:
 /* 800989A8 000948C8  2C 00 00 02 */	cmpwi r0, 2
 /* 800989AC 000948CC  40 82 00 18 */	bne lbl_800989C4
 /* 800989B0 000948D0  C0 22 B0 EC */	lfs f1, lbl_802F58EC-_SDA2_BASE_(r2)
-/* 800989B4 000948D4  4B FE CC C5 */	bl g_ord_tbl_set_some_float
+/* 800989B4 000948D4  4B FE CC C5 */	bl ord_tbl_set_depth_offset
 /* 800989B8 000948D8  4B FB C6 71 */	bl background_draw
 /* 800989BC 000948DC  C0 22 B0 C0 */	lfs f1, lbl_802F58C0-_SDA2_BASE_(r2)
-/* 800989C0 000948E0  4B FE CC B9 */	bl g_ord_tbl_set_some_float
+/* 800989C0 000948E0  4B FE CC B9 */	bl ord_tbl_set_depth_offset
 lbl_800989C4:
 /* 800989C4 000948E4  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 800989C8 000948E8  38 63 3C C8 */	addi r3, r3, eventInfo@l
@@ -5225,10 +5225,10 @@ lbl_80099F6C:
 /* 80099F78 00095E98  2C 00 00 02 */	cmpwi r0, 2
 /* 80099F7C 00095E9C  40 82 00 18 */	bne lbl_80099F94
 /* 80099F80 00095EA0  C0 22 B1 90 */	lfs f1, lbl_802F5990-_SDA2_BASE_(r2)
-/* 80099F84 00095EA4  4B FE B6 F5 */	bl g_ord_tbl_set_some_float
+/* 80099F84 00095EA4  4B FE B6 F5 */	bl ord_tbl_set_depth_offset
 /* 80099F88 00095EA8  4B FB B0 A1 */	bl background_draw
 /* 80099F8C 00095EAC  C0 22 B1 40 */	lfs f1, lbl_802F5940-_SDA2_BASE_(r2)
-/* 80099F90 00095EB0  4B FE B6 E9 */	bl g_ord_tbl_set_some_float
+/* 80099F90 00095EB0  4B FE B6 E9 */	bl ord_tbl_set_depth_offset
 lbl_80099F94:
 /* 80099F94 00095EB4  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 80099F98 00095EB8  38 63 3C C8 */	addi r3, r3, eventInfo@l

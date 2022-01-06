@@ -257,7 +257,7 @@ void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
 {
     struct Struct8009B048_1 *r31;
     Point3d *points;
-    struct OrdTblNode *list = g_ord_tbl_get_list_head_1(start);
+    struct OrdTblNode *list = ord_tbl_get_entry_for_pos(start);
 
     r31 = ord_tbl_alloc_node(sizeof(*r31));
     points = ord_tbl_alloc_node(2 * sizeof(Point3d));
@@ -335,7 +335,7 @@ void func_8009B538(struct PointWithColor *start, struct PointWithColor *end)
 {
     struct Struct8009B538_1 *r31;
     struct PointWithColor *points;
-    struct OrdTblNode *list = g_ord_tbl_get_list_head_1(&start->pos);
+    struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&start->pos);
 
     r31 = ord_tbl_alloc_node(sizeof(*r31));
     points = ord_tbl_alloc_node(2 * sizeof(struct PointWithColor));

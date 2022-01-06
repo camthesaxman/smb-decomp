@@ -1,3 +1,14 @@
+/**
+ *  ord_tbl.c - Implements a system for drawing objects in order of depth
+ *
+ * lbl_802F1B3C->entries is an array of OrdTblNodes that also form a linked list
+ * with lbl_802F1B3C->firstEntry as a pointer to the first node of the list. The
+ * nodes in lbl_802F1B3C->entries don't actually draw anything, but serve as
+ * places where other nodes (that do draw objects) can be inserted. Using this as
+ * an array allows for quick O(1) lookup, since an appropriate spot to insert a
+ * new node can be found by simply computing the depth of the object's position
+ * in screen space, and using that value to index into the array.
+ */
 #include <stddef.h>
 #include <dolphin.h>
 
@@ -5,128 +16,138 @@
 #include "mathutil.h"
 #include "ord_tbl.h"
 
-struct
-{
-    u8 *currPtr;
-    u8 *initPtr;
-    u32 initSize;
-    u32 currSize;
-} ordTblAllocInfo;
-
-static void clear_list(struct OrdTblNode *list, int count, u32 c);
-static void draw_nodes(struct OrdTblNode *a);
+static void clear_ord_table(struct OrdTblNode *ordTbl, int count, u32 order);
+static void draw_nodes(struct OrdTblNode *node);
 static void reset_alloc_info(void);
 
-void g_ord_tbl_init_list_stuff(float a, float b, float c, void *buffer, int maxEntries)
+/* Initializes parameters for the ordering table. Called at game startup */
+void ord_tbl_init(float depthOffset, float minDepth, float maxDepth, void *buffer, int maxEntries)
 {
     lbl_802F1B3C->entries = buffer;
     lbl_802F1B3C->maxEntries = maxEntries;
-    lbl_802F1B3C->unkF8 = a;
-    lbl_802F1B3C->unkFC = b;
-    lbl_802F1B3C->unk100 = c;
-    lbl_802F1B3C->unk10C = c - b;
-    ord_tbl_reset_list();
+    lbl_802F1B3C->depthOffset = depthOffset;
+    lbl_802F1B3C->minDepth = minDepth;
+    lbl_802F1B3C->maxDepth = maxDepth;
+    lbl_802F1B3C->depthRange = maxDepth - minDepth;
+    ord_tbl_reset();
 }
 
-void ord_tbl_reset_list(void)
+/* Resets the ordering table state. Called at the start of each frame */
+void ord_tbl_reset(void)
 {
-    clear_list(lbl_802F1B3C->entries, lbl_802F1B3C->maxEntries, 1);
+    clear_ord_table(lbl_802F1B3C->entries, lbl_802F1B3C->maxEntries, 1);
     lbl_802F1B3C->lastEntry = &lbl_802F1B3C->entries[lbl_802F1B3C->maxEntries - 1];
-    lbl_802F1B3C->firstEntry = lbl_802F1B3C->entries;
+    lbl_802F1B3C->firstEntry = &lbl_802F1B3C->entries[0];
 }
 
-void g_ord_tbl_set_some_float(float a)
+void ord_tbl_set_depth_offset(float offset)
 {
-    lbl_802F1B3C->unkF8 = a;
+    lbl_802F1B3C->depthOffset = offset;
 }
 
-void g_ord_tbl_add_some_float(float a)
+void ord_tbl_add_depth_offset(float offset)
 {
-    lbl_802F1B3C->unkF8 += a;
+    lbl_802F1B3C->depthOffset += offset;
 }
 
-struct OrdTblNode *g_ord_tbl_get_list_head_1(Vec *a)
+/* Returns the entry in the ordering table based on the depth of 'pos' in screen
+ * space. Before calling this function, mathutilData->mtxA must be initialized
+ * with a matrix that converts 'pos' to screen space. */
+struct OrdTblNode *ord_tbl_get_entry_for_pos(Point3d *pos)
 {
-    Vec sp10;
-    float f31;
-    float f3;
+    Vec scrnSpace;
+    float minDepth;
+    float depth;
     int index;
-    struct OrdTblNode *ret;
+    struct OrdTblNode *entry;
 
-    mathutil_mtxA_tf_point(a, &sp10);
-    f31 = lbl_802F1B3C->unkFC;
-    sp10.z = -sp10.z;
-    if (sp10.z < f31)
-        sp10.z = f31;
-    f3 = mathutil_vec_mag(&sp10) + lbl_802F1B3C->unkF8 - f31;
-    if (f3 < 0.0f)
+    // Convert the point into screen space coordinates
+    mathutil_mtxA_tf_point(pos, &scrnSpace);
+    minDepth = lbl_802F1B3C->minDepth;
+    scrnSpace.z = -scrnSpace.z;
+    if (scrnSpace.z < minDepth)
+        scrnSpace.z = minDepth;
+    depth = mathutil_vec_mag(&scrnSpace) + lbl_802F1B3C->depthOffset - minDepth;
+
+    // Convert the depth to an index into the table
+    if (depth < 0.0f)
         index = 0;
     else
     {
-        index = lbl_802F1B3C->maxEntries * f3 / (f3 + lbl_802F1B3C->unk10C);
+        index = lbl_802F1B3C->maxEntries * depth / (depth + lbl_802F1B3C->depthRange);
         if (index >= lbl_802F1B3C->maxEntries)
             index = lbl_802F1B3C->maxEntries - 1;
     }
-    ret = &lbl_802F1B3C->entries[index];
-    if (lbl_802F1B3C->lastEntry > ret)
-        lbl_802F1B3C->lastEntry = ret;
-    if (lbl_802F1B3C->firstEntry < ret)
-        lbl_802F1B3C->firstEntry = ret;
-    return ret;
+
+    entry = &lbl_802F1B3C->entries[index];
+    if (lbl_802F1B3C->lastEntry > entry)
+        lbl_802F1B3C->lastEntry = entry;
+    if (lbl_802F1B3C->firstEntry < entry)
+        lbl_802F1B3C->firstEntry = entry;
+    return entry;
 }
 
-struct OrdTblNode *g_ord_tbl_get_list_head_2(Vec *a, int b)
+/* Similar to 'ord_tbl_get_entry_for_pos', but with an additional parameter that
+ * is added to the computed index. */
+struct OrdTblNode *ord_tbl_get_entry_for_pos_offset_index(Point3d *pos, int indexOffset)
 {
-    Vec sp10;
-    float f31;
-    float f3;
+    Vec scrnSpace;
+    float minDepth;
+    float depth;
     int index;
-    struct OrdTblNode *ret;
+    struct OrdTblNode *entry;
 
-    mathutil_mtxA_tf_point(a, &sp10);
-    f31 = lbl_802F1B3C->unkFC;
-    sp10.z = -sp10.z;
-    if (sp10.z < f31)
-        sp10.z = f31;
-    f3 = mathutil_vec_mag(&sp10) + lbl_802F1B3C->unkF8 - f31;
-    if (f3 < 0.0f)
+    // Convert the point into screen space coordinates
+    mathutil_mtxA_tf_point(pos, &scrnSpace);
+    minDepth = lbl_802F1B3C->minDepth;
+    scrnSpace.z = -scrnSpace.z;
+    if (scrnSpace.z < minDepth)
+        scrnSpace.z = minDepth;
+    depth = mathutil_vec_mag(&scrnSpace) + lbl_802F1B3C->depthOffset - minDepth;
+
+    // Convert the depth to an index into the table
+    if (depth < 0.0f)
         index = 0;
     else
     {
-        index = lbl_802F1B3C->maxEntries * f3 / (f3 + lbl_802F1B3C->unk10C);
-        index = b + index;
+        index = lbl_802F1B3C->maxEntries * depth / (depth + lbl_802F1B3C->depthRange);
+        index = indexOffset + index;
         if (index < 0)
             index = 0;
         else if (index >= lbl_802F1B3C->maxEntries)
             index = lbl_802F1B3C->maxEntries - 1;
     }
-    ret = &lbl_802F1B3C->entries[index];
-    if (lbl_802F1B3C->lastEntry > ret)
-        lbl_802F1B3C->lastEntry = ret;
-    if (lbl_802F1B3C->firstEntry < ret)
-        lbl_802F1B3C->firstEntry = ret;
-    return ret;
+
+    entry = &lbl_802F1B3C->entries[index];
+    if (lbl_802F1B3C->lastEntry > entry)
+        lbl_802F1B3C->lastEntry = entry;
+    if (lbl_802F1B3C->firstEntry < entry)
+        lbl_802F1B3C->firstEntry = entry;
+    return entry;
 }
 
+/* Draws all nodes in the ordering table. Called at the end of each frame. */
 void ord_tbl_draw_nodes(void)
 {
     if (lbl_802F1B3C->firstEntry >= lbl_802F1B3C->lastEntry)
     {
-        if (lbl_802F1B3C->lastEntry > lbl_802F1B3C->entries)
-            lbl_802F1B3C->lastEntry[-1].next = NULL;
+        if (lbl_802F1B3C->lastEntry > &lbl_802F1B3C->entries[0])
+            lbl_802F1B3C->lastEntry[-1].next = NULL;  // Make sure the list is terminated
         draw_nodes(lbl_802F1B3C->firstEntry);
     }
-    ord_tbl_reset_list();
+    ord_tbl_reset();
 }
 
-static void clear_list(struct OrdTblNode *list, int count, u32 c)
+/* Clears all nodes in the table and links them in order */
+static void clear_ord_table(struct OrdTblNode *ordTbl, int count, u32 order)
 {
     int i;
     struct OrdTblNode *node;
 
-    if (c == 0)
+    if (order == 0)
     {
-        node = list;
+        // first to last (not actually used)
+        node = ordTbl;
         for (i = count - 1; i > 0; i--)
         {
             node->next = node + 1;
@@ -138,7 +159,8 @@ static void clear_list(struct OrdTblNode *list, int count, u32 c)
     }
     else
     {
-        node = &list[count - 1];
+        // last to first
+        node = &ordTbl[count - 1];
         for (i = count - 1; i > 0; i--)
         {
             node->next = node - 1;
@@ -151,6 +173,7 @@ static void clear_list(struct OrdTblNode *list, int count, u32 c)
     reset_alloc_info();
 }
 
+/* Calls the draw callback of all nodes in the list starting at 'node' */
 static void draw_nodes(struct OrdTblNode *node)
 {
     while (node != NULL)
@@ -161,6 +184,14 @@ static void draw_nodes(struct OrdTblNode *node)
     }
 }
 
+struct
+{
+    u8 *currPtr;
+    u8 *initPtr;
+    u32 initSize;
+    u32 currSize;
+} ordTblAllocInfo;
+
 /* Resets the ptr and size to that initially set by ord_tbl_init_buffer */
 static void reset_alloc_info(void)
 {
@@ -168,6 +199,7 @@ static void reset_alloc_info(void)
     ordTblAllocInfo.currSize = ordTblAllocInfo.initSize;
 }
 
+/* Sets the initial buffer and size to be used by 'ord_tbl_alloc_node' */
 void ord_tbl_init_buffer(void *addr, u32 size)
 {
     ordTblAllocInfo.initPtr = addr;
@@ -175,12 +207,14 @@ void ord_tbl_init_buffer(void *addr, u32 size)
     reset_alloc_info();
 }
 
-void ord_tbl_insert_node(struct OrdTblNode *head, struct OrdTblNode *toInsert)
+/* Inserts the node into the list after 'tblEntry' */
+void ord_tbl_insert_node(struct OrdTblNode *tblEntry, struct OrdTblNode *newNode)
 {
-    toInsert->next = head->next;
-    head->next = toInsert;
+    newNode->next = tblEntry->next;
+    tblEntry->next = newNode;
 }
 
+/* Allocates a block of memory from the buffer */
 void *ord_tbl_alloc_node(u32 size)
 {
     void *ptr;

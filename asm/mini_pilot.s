@@ -4153,10 +4153,10 @@ lbl_00003D28:
 /* 00003D30 2C000002 */ cmpwi r0, 2
 /* 00003D34 40820018 */ bne lbl_00003D4C
 /* 00003D38 C03401C8 */ lfs f1, 0x1c8(r20)
-/* 00003D3C 4BFFC411 */ bl g_ord_tbl_set_some_float
+/* 00003D3C 4BFFC411 */ bl ord_tbl_set_depth_offset
 /* 00003D40 4BFFC40D */ bl background_draw
 /* 00003D44 C0340030 */ lfs f1, 0x30(r20)
-/* 00003D48 4BFFC405 */ bl g_ord_tbl_set_some_float
+/* 00003D48 4BFFC405 */ bl ord_tbl_set_depth_offset
 lbl_00003D4C:
 /* 00003D4C A81B0000 */ lha r0, 0(r27)
 /* 00003D50 2C00001A */ cmpwi r0, 0x1a
@@ -4382,7 +4382,7 @@ lbl_0000405C:
 lbl_00004088:
 /* 00004088 4BFFC0C5 */ bl mathutil_mtxA_from_mtxB
 /* 0000408C 387D0004 */ addi r3, r29, 4
-/* 00004090 4BFFC0BD */ bl g_ord_tbl_get_list_head_1
+/* 00004090 4BFFC0BD */ bl ord_tbl_get_entry_for_pos
 /* 00004094 3B230000 */ addi r25, r3, 0
 /* 00004098 38600010 */ li r3, 0x10
 /* 0000409C 4BFFC0B1 */ bl ord_tbl_alloc_node

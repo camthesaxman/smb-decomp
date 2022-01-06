@@ -9625,10 +9625,10 @@ lbl_00008A10:
 /* 00008A20 2C000002 */ cmpwi r0, 2
 /* 00008A24 40820018 */ bne lbl_00008A3C
 /* 00008A28 C03F01F4 */ lfs f1, 0x1f4(r31)
-/* 00008A2C 4BFF7731 */ bl g_ord_tbl_set_some_float
+/* 00008A2C 4BFF7731 */ bl ord_tbl_set_depth_offset
 /* 00008A30 4BFF772D */ bl background_draw
 /* 00008A34 C03F0060 */ lfs f1, 0x60(r31)
-/* 00008A38 4BFF7725 */ bl g_ord_tbl_set_some_float
+/* 00008A38 4BFF7725 */ bl ord_tbl_set_depth_offset
 lbl_00008A3C:
 /* 00008A3C 3C600000 */ lis r3, eventInfo@ha
 /* 00008A40 38630000 */ addi r3, r3, eventInfo@l

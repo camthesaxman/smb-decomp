@@ -10126,10 +10126,10 @@ lbl_800B6548:
 /* 800B6554 000B2474  2C 00 00 02 */	cmpwi r0, 2
 /* 800B6558 000B2478  40 82 00 18 */	bne lbl_800B6570
 /* 800B655C 000B247C  C0 22 BC CC */	lfs f1, lbl_802F64CC-_SDA2_BASE_(r2)
-/* 800B6560 000B2480  4B FC F1 19 */	bl g_ord_tbl_set_some_float
+/* 800B6560 000B2480  4B FC F1 19 */	bl ord_tbl_set_depth_offset
 /* 800B6564 000B2484  4B F9 EA C5 */	bl background_draw
 /* 800B6568 000B2488  C0 22 BC D0 */	lfs f1, lbl_802F64D0-_SDA2_BASE_(r2)
-/* 800B656C 000B248C  4B FC F1 0D */	bl g_ord_tbl_set_some_float
+/* 800B656C 000B248C  4B FC F1 0D */	bl ord_tbl_set_depth_offset
 lbl_800B6570:
 /* 800B6570 000B2490  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 800B6574 000B2494  38 63 3C C8 */	addi r3, r3, eventInfo@l
@@ -16942,7 +16942,7 @@ lbl_800BCA14:
 /* 800BCA1C 000B893C  41 80 00 30 */	blt lbl_800BCA4C
 /* 800BCA20 000B8940  4B F4 AF 8D */	bl mathutil_mtxA_from_mtxB
 /* 800BCA24 000B8944  38 7B 00 0C */	addi r3, r27, 0xc
-/* 800BCA28 000B8948  4B FC 8C 71 */	bl g_ord_tbl_get_list_head_1
+/* 800BCA28 000B8948  4B FC 8C 71 */	bl ord_tbl_get_entry_for_pos
 /* 800BCA2C 000B894C  3A A3 00 00 */	addi r21, r3, 0
 /* 800BCA30 000B8950  38 60 00 0C */	li r3, 0xc
 /* 800BCA34 000B8954  4B FC 91 55 */	bl ord_tbl_alloc_node
@@ -21417,7 +21417,7 @@ func_800C0C1C:
 /* 800C0C34 000BCB54  7C 7D 1B 78 */	mr r29, r3
 /* 800C0C38 000BCB58  4B F4 6D 75 */	bl mathutil_mtxA_from_mtxB
 /* 800C0C3C 000BCB5C  38 7D 00 34 */	addi r3, r29, 0x34
-/* 800C0C40 000BCB60  4B FC 4A 59 */	bl g_ord_tbl_get_list_head_1
+/* 800C0C40 000BCB60  4B FC 4A 59 */	bl ord_tbl_get_entry_for_pos
 /* 800C0C44 000BCB64  3B C3 00 00 */	addi r30, r3, 0
 /* 800C0C48 000BCB68  38 60 00 10 */	li r3, 0x10
 /* 800C0C4C 000BCB6C  4B FC 4F 3D */	bl ord_tbl_alloc_node

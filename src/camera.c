@@ -1271,10 +1271,10 @@ struct StageFlyInPosition
 
 struct StageFlyInPosition stageFlyInPositions[] =
 {
-    {ST_004_WIDE_BRIDGE,        {{0, 0, 0},    50}},
-    {ST_014_NARROW_BRIDGE,      {{0, 0, 0},    50}},
-    {ST_144_FIGHT_ICE, {{0, 0, 0}, 31.25}},
-    {0},
+    { ST_004_WIDE_BRIDGE,   { { 0, 0, 0 },    50 } },
+    { ST_014_NARROW_BRIDGE, { { 0, 0, 0 },    50 } },
+    { ST_144_FIGHT_ICE,     { { 0, 0, 0 }, 31.25 } },
+    { 0 },
 };
 
 void get_curr_stage_fly_in_position(struct Sphere *sphere)

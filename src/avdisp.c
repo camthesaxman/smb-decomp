@@ -743,9 +743,9 @@ static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *
     struct UnkStruct17 *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (mesh->unk14 != 0xFF)
-        list = g_ord_tbl_get_list_head_2(&mesh->unk30, -1);
+        list = ord_tbl_get_entry_for_pos_offset_index(&mesh->unk30, -1);
     else
-        list = g_ord_tbl_get_list_head_1(&mesh->unk30);
+        list = ord_tbl_get_entry_for_pos(&mesh->unk30);
     node->node.drawFunc = (OrdTblDrawFunc)lbl_8008F528;
     node->unk8 = model;
     node->unk40 = mesh;

@@ -11620,10 +11620,10 @@ lbl_0000AB20:
 /* 0000AB28 2C000002 */ cmpwi r0, 2
 /* 0000AB2C 40820018 */ bne lbl_0000AB44
 /* 0000AB30 C03A0004 */ lfs f1, 4(r26)
-/* 0000AB34 4BFF5649 */ bl g_ord_tbl_set_some_float
+/* 0000AB34 4BFF5649 */ bl ord_tbl_set_depth_offset
 /* 0000AB38 4BFF5645 */ bl background_draw
 /* 0000AB3C C03A0000 */ lfs f1, 0(r26)
-/* 0000AB40 4BFF563D */ bl g_ord_tbl_set_some_float
+/* 0000AB40 4BFF563D */ bl ord_tbl_set_depth_offset
 lbl_0000AB44:
 /* 0000AB44 88160000 */ lbz r0, 0(r22)
 /* 0000AB48 2C000002 */ cmpwi r0, 2
@@ -12462,10 +12462,10 @@ lbl_0000B758:
 /* 0000B760 2C000002 */ cmpwi r0, 2
 /* 0000B764 40820018 */ bne lbl_0000B77C
 /* 0000B768 C03C0004 */ lfs f1, 4(r28)
-/* 0000B76C 4BFF4A11 */ bl g_ord_tbl_set_some_float
+/* 0000B76C 4BFF4A11 */ bl ord_tbl_set_depth_offset
 /* 0000B770 4BFF4A0D */ bl background_draw
 /* 0000B774 C03C0000 */ lfs f1, 0(r28)
-/* 0000B778 4BFF4A05 */ bl g_ord_tbl_set_some_float
+/* 0000B778 4BFF4A05 */ bl ord_tbl_set_depth_offset
 lbl_0000B77C:
 /* 0000B77C 88190000 */ lbz r0, 0(r25)
 /* 0000B780 2C000002 */ cmpwi r0, 2

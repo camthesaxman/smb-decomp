@@ -1119,7 +1119,7 @@ void func_80038840(void)
         {
             // Draw new ball
             mathutil_mtxA_from_mtxB();
-            list = g_ord_tbl_get_list_head_1(&ball->pos);
+            list = ord_tbl_get_entry_for_pos(&ball->pos);
             r23 = ord_tbl_alloc_node(sizeof(*r23));
             r23->node.drawFunc = (OrdTblDrawFunc)lbl_8003D928;
             r23->unk8 = func_800223D0();

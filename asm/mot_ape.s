@@ -3367,7 +3367,7 @@ lbl_8008C9A8:
 /* 8008C9E8 00088908  41 80 00 78 */	blt lbl_8008CA60
 /* 8008C9EC 0008890C  4B F7 AF C1 */	bl mathutil_mtxA_from_mtxB
 /* 8008C9F0 00088910  38 7F 00 30 */	addi r3, r31, 0x30
-/* 8008C9F4 00088914  4B FF 8C A5 */	bl g_ord_tbl_get_list_head_1
+/* 8008C9F4 00088914  4B FF 8C A5 */	bl ord_tbl_get_entry_for_pos
 /* 8008C9F8 00088918  3B 83 00 00 */	addi r28, r3, 0
 /* 8008C9FC 0008891C  38 60 00 14 */	li r3, 0x14
 /* 8008CA00 00088920  4B FF 91 89 */	bl ord_tbl_alloc_node

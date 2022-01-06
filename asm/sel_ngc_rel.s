@@ -19593,10 +19593,10 @@ lbl_00011A3C:
 /* 00011A4C 2C000002 */ cmpwi r0, 2
 /* 00011A50 40820018 */ bne lbl_00011A68
 /* 00011A54 C03F0018 */ lfs f1, 0x18(r31)
-/* 00011A58 4BFEE731 */ bl g_ord_tbl_set_some_float
+/* 00011A58 4BFEE731 */ bl ord_tbl_set_depth_offset
 /* 00011A5C 4BFEE72D */ bl background_draw
 /* 00011A60 C03F0008 */ lfs f1, 8(r31)
-/* 00011A64 4BFEE725 */ bl g_ord_tbl_set_some_float
+/* 00011A64 4BFEE725 */ bl ord_tbl_set_depth_offset
 lbl_00011A68:
 /* 00011A68 3C600000 */ lis r3, eventInfo@ha
 /* 00011A6C 38630000 */ addi r3, r3, eventInfo@l

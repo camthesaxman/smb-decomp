@@ -74,7 +74,7 @@ void main(void)
     camera_init();
     polydisp_init();
     ord_tbl_init_buffer(lbl_802F1B44, 0x10000);
-    g_ord_tbl_init_list_stuff(0.0f, 0.0f, 400.0f, lbl_80292E70, 0x4000);
+    ord_tbl_init(0.0f, 0.0f, 400.0f, lbl_80292E70, 0x4000);
     func_80092498();
     func_800948F4();
     func_800248DC();

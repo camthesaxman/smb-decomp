@@ -17806,10 +17806,10 @@ lbl_00010594:
 /* 000105A0 2C000002 */ cmpwi r0, 2
 /* 000105A4 40820018 */ bne lbl_000105BC
 /* 000105A8 C03F380C */ lfs f1, 0x380c(r31)
-/* 000105AC 4BFEFB89 */ bl g_ord_tbl_set_some_float
+/* 000105AC 4BFEFB89 */ bl ord_tbl_set_depth_offset
 /* 000105B0 4BFEFB85 */ bl background_draw
 /* 000105B4 C03F3778 */ lfs f1, 0x3778(r31)
-/* 000105B8 4BFEFB7D */ bl g_ord_tbl_set_some_float
+/* 000105B8 4BFEFB7D */ bl ord_tbl_set_depth_offset
 lbl_000105BC:
 /* 000105BC 7FC3F378 */ mr r3, r30
 /* 000105C0 48000BF5 */ bl lbl_000111B4

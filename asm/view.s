@@ -485,10 +485,10 @@ lbl_800A5E2C:
 /* 800A5E38 000A1D58  2C 00 00 02 */	cmpwi r0, 2
 /* 800A5E3C 000A1D5C  40 82 00 18 */	bne lbl_800A5E54
 /* 800A5E40 000A1D60  C0 22 B3 E0 */	lfs f1, lbl_802F5BE0-_SDA2_BASE_(r2)
-/* 800A5E44 000A1D64  4B FD F8 35 */	bl g_ord_tbl_set_some_float
+/* 800A5E44 000A1D64  4B FD F8 35 */	bl ord_tbl_set_depth_offset
 /* 800A5E48 000A1D68  4B FA F1 E1 */	bl background_draw
 /* 800A5E4C 000A1D6C  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
-/* 800A5E50 000A1D70  4B FD F8 29 */	bl g_ord_tbl_set_some_float
+/* 800A5E50 000A1D70  4B FD F8 29 */	bl ord_tbl_set_depth_offset
 lbl_800A5E54:
 /* 800A5E54 000A1D74  88 1F 00 00 */	lbz r0, 0(r31)
 /* 800A5E58 000A1D78  2C 00 00 02 */	cmpwi r0, 2
@@ -571,10 +571,10 @@ lbl_800A5F58:
 /* 800A5F64 000A1E84  2C 00 00 02 */	cmpwi r0, 2
 /* 800A5F68 000A1E88  40 82 00 18 */	bne lbl_800A5F80
 /* 800A5F6C 000A1E8C  C0 22 B3 E0 */	lfs f1, lbl_802F5BE0-_SDA2_BASE_(r2)
-/* 800A5F70 000A1E90  4B FD F7 09 */	bl g_ord_tbl_set_some_float
+/* 800A5F70 000A1E90  4B FD F7 09 */	bl ord_tbl_set_depth_offset
 /* 800A5F74 000A1E94  4B FA F0 B5 */	bl background_draw
 /* 800A5F78 000A1E98  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
-/* 800A5F7C 000A1E9C  4B FD F6 FD */	bl g_ord_tbl_set_some_float
+/* 800A5F7C 000A1E9C  4B FD F6 FD */	bl ord_tbl_set_depth_offset
 lbl_800A5F80:
 /* 800A5F80 000A1EA0  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 800A5F84 000A1EA4  38 63 3C C8 */	addi r3, r3, eventInfo@l

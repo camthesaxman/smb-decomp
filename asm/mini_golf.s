@@ -11876,10 +11876,10 @@ lbl_0000AEC8:
 /* 0000AED0 2C000002 */ cmpwi r0, 2
 /* 0000AED4 40820018 */ bne lbl_0000AEEC
 /* 0000AED8 C03F0280 */ lfs f1, 0x280(r31)
-/* 0000AEDC 4BFF52F5 */ bl g_ord_tbl_set_some_float
+/* 0000AEDC 4BFF52F5 */ bl ord_tbl_set_depth_offset
 /* 0000AEE0 4BFF52F1 */ bl background_draw
 /* 0000AEE4 C03F0000 */ lfs f1, 0(r31)
-/* 0000AEE8 4BFF52E9 */ bl g_ord_tbl_set_some_float
+/* 0000AEE8 4BFF52E9 */ bl ord_tbl_set_depth_offset
 lbl_0000AEEC:
 /* 0000AEEC 880E0018 */ lbz r0, 0x18(r14)
 /* 0000AEF0 7C000774 */ extsb r0, r0
