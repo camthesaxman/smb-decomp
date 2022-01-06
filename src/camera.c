@@ -297,9 +297,9 @@ void ev_camera_main(void)
                 }
                 break;
             case 6:
-                switch (modeCtrl.unk4)
+                switch (modeCtrl.levelSet)
                 {
-                case 0:
+                case LVLSET_BEGINNER:
                     if (camera->timerCurr <= 1140)
                     {
                         camera->sub28.unk28 = 0.0f;
@@ -1091,7 +1091,7 @@ void camera_func_12(struct Camera *camera, struct Ball *ball)
 
 void camera_func_13(struct Camera *camera, struct Ball *ball)
 {
-    Quaternion sp1C;
+    struct Sphere sp1C;
     Vec sp10;
     int r10;
     int i;
@@ -1099,9 +1099,9 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
     if (!(gamePauseStatus & 0xA) || camera->state != 13)
     {
         get_curr_stage_fly_in_position(&sp1C);
-        camera->lookAt.x = sp1C.x;
-        camera->lookAt.y = sp1C.y;
-        camera->lookAt.z = sp1C.z;
+        camera->lookAt.x = sp1C.pos.x;
+        camera->lookAt.y = sp1C.pos.y;
+        camera->lookAt.z = sp1C.pos.z;
         if (camera->timerCurr > 0)
         {
             for (i = 0; i < modeCtrl.playerCount; i++)
@@ -1118,10 +1118,10 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
         if (gameSubmode == SMD_GAME_RESULT_INIT
          || gameSubmode == SMD_GAME_RESULT_MAIN
          || gameSubmode == SMD_GAME_RESULT_MENU)
-            sp10.y = sp1C.w * (camera->unk80 + 0.4);
+            sp10.y = sp1C.radius * (camera->unk80 + 0.4);
         else
-            sp10.y = sp1C.w * (camera->unk80 + 0.8);
-        sp10.z = sp1C.w * (camera->unk80 + 0.8);
+            sp10.y = sp1C.radius * (camera->unk80 + 0.8);
+        sp10.z = sp1C.radius * (camera->unk80 + 0.8);
 
         for (i = 0; i < modeCtrl.playerCount; i++)
         {
@@ -1175,16 +1175,16 @@ void camera_func_53(struct Camera *camera, struct Ball *ball) {}
 
 void camera_func_ready_init(struct Camera *camera, struct Ball *ball)
 {
-    Quaternion sp1C;
+    struct Sphere sp1C;
     Vec sp10;
 
     camera_clear(camera);
     get_curr_stage_fly_in_position(&sp1C);
-    camera->unk54.x = sp1C.x;
-    camera->unk54.y = sp1C.y;
-    camera->unk54.z = sp1C.z;
-    camera->unk60 = sp1C.w * 0.8;
-    camera->unk64 = sp1C.w * 0.8;
+    camera->unk54.x = sp1C.pos.x;
+    camera->unk54.y = sp1C.pos.y;
+    camera->unk54.z = sp1C.pos.z;
+    camera->unk60 = sp1C.radius * 0.8;
+    camera->unk64 = sp1C.radius * 0.8;
     mathutil_mtxA_from_translate(&camera->unk54);
     mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot);
     sp10.x = 0.0f;
@@ -1266,18 +1266,18 @@ void camera_func_38(struct Camera *camera, struct Ball *ball)
 struct StageFlyInPosition
 {
     s32 stageId;
-    Quaternion quat;
+    struct Sphere boundSphere;
 };
 
 struct StageFlyInPosition stageFlyInPositions[] =
 {
-    {4,   {0, 0, 0,    50}},
-    {14,  {0, 0, 0,    50}},
-    {144, {0, 0, 0, 31.25}},
+    {ST_004_WIDE_BRIDGE,        {{0, 0, 0},    50}},
+    {ST_014_NARROW_BRIDGE,      {{0, 0, 0},    50}},
+    {ST_144_FIGHT_ICE, {{0, 0, 0}, 31.25}},
     {0},
 };
 
-void get_curr_stage_fly_in_position(Quaternion *quat)
+void get_curr_stage_fly_in_position(struct Sphere *sphere)
 {
     struct StageFlyInPosition *ptr = &stageFlyInPositions[0];
 
@@ -1285,14 +1285,14 @@ void get_curr_stage_fly_in_position(Quaternion *quat)
     {
         if (ptr->stageId == currStageId)
         {
-            *quat = ptr->quat;
+            *sphere = ptr->boundSphere;
             return;
         }
         ptr++;
     }
-    *quat = lbl_8020ADD4;
-    if (quat->w < 31.25)
-        quat->w = 31.25f;
+    *sphere = stageBoundingSphere;
+    if (sphere->radius < 31.25)
+        sphere->radius = 31.25f;
 }
 
 void camera_func_0(struct Camera *camera, struct Ball *ball)
@@ -1904,7 +1904,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     goal = decodedStageLzPtr->goals[lbl_801F3A58.unkC];
     if (lbl_801F3A58.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
         mathutil_mtxA_tf_point(&goal.pos, &goal.pos);
     }
     if (mathutil_vec_distance(&goal.pos, &ball->pos) < 16.0)
@@ -1968,7 +1968,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                     camera->unk54.x = -camera->unk54.x;
                 camera->unk60 = camera->unk54.y + 0.5 * (0.5 + (rand() / 32767.0f));
                 goalp = &decodedStageLzPtr->goals[lbl_801F3A58.unkC];
-                mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+                mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
                 mathutil_mtxA_translate(&goalp->pos);
                 mathutil_mtxA_rotate_z(goalp->zrot);
                 mathutil_mtxA_rotate_y(goalp->yrot);
@@ -2067,7 +2067,7 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
 
     if (lbl_801F3A58.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
         mathutil_mtxA_tf_point(&sp1C, &sp1C);
     }
 
@@ -2123,7 +2123,7 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
 
     if (lbl_801F3A58.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
         mathutil_mtxA_tf_point(&sp10, &sp10);
     }
 
@@ -2175,7 +2175,7 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
         return;
 
     goal = &decodedStageLzPtr->goals[lbl_801F3A58.unkC];
-    mathutil_mtxA_from_mtx(lbl_80206E48[lbl_801F3A58.unkE].unk24);
+    mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
     mathutil_mtxA_translate(&goal->pos);
     mathutil_mtxA_rotate_z(goal->zrot);
     mathutil_mtxA_rotate_y(goal->yrot);
@@ -2289,7 +2289,7 @@ void camera_func_26(struct Camera *camera, struct Ball *ball)
 
     if (camera->state == 26)
     {
-        if ((modeCtrl.unk8 & (1<<(31-0x1D))) && modeCtrl.unk10 == 1)
+        if ((modeCtrl.levelSetFlags & (1<<(31-0x1D))) && modeCtrl.unk10 == 1)
         {
             sp1C.z = -5.0f;
             sp10.z = -3.6f;
@@ -3040,7 +3040,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
         camera->unk110 = lbl_801F3A58.unkC;
 
         sp58 = decodedStageLzPtr->goals[camera->unk110].pos;
-        mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
         mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp28);
 
         f31 = mathutil_vec_distance(&sp58, &sp28);
@@ -3070,7 +3070,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     }
     camera->unk114 = sp58;
 
-    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3082,7 +3082,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &camera->unk12C);
     mathutil_mtxA_rigid_inv_tf_vec(&ball->vel, &camera->unk138);
 
-    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3094,7 +3094,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     camera->unk6C = ((rand() / 32767.0f) + 0.5f) * 15.0f;
     sp4C = camera->unk114;
 
-    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3102,7 +3102,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     }
     mathutil_mtxA_tf_point(&sp4C, &sp1C);
 
-    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk54);
+    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk54);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3133,7 +3133,7 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3177,7 +3177,7 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_push();
         mathutil_mtxA_tf_point(&camera->unk114, &sp1C);
 
-        mathutil_mtxA_from_mtx(lbl_80206E48[camera->unk10E].unk54);
+        mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk54);
         if (camera->unk110 >= 0)
         {
             mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3536,18 +3536,18 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
 
 void func_80020334(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *lookAt, s16 *xrot, s16 *yrot, s16 *zrot)
 {
-    Quaternion sp24;
+    struct Sphere sp24;
 
     get_curr_stage_fly_in_position(&sp24);  // inlined
 
-    lookAt->x = sp24.x;
-    lookAt->y = sp24.y;
-    lookAt->z = sp24.z;
+    lookAt->x = sp24.pos.x;
+    lookAt->y = sp24.pos.y;
+    lookAt->z = sp24.pos.z;
 
     mathutil_mtxA_from_translate(lookAt);
     mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x4000);
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
-    mathutil_mtxA_translate_xyz(0.0f, 0.0f, sp24.w * 1.2);
+    mathutil_mtxA_translate_xyz(0.0f, 0.0f, sp24.radius * 1.2);
 
     mathutil_get_mtxA_translate(eye);
 
@@ -3698,17 +3698,17 @@ void camera_func_72(struct Camera *camera, struct Ball *ball)
 
 void camera_func_73(struct Camera *camera, struct Ball *ball)
 {
-    Quaternion sp10;
+    struct Sphere sp10;
 
     get_curr_stage_fly_in_position(&sp10);  // inlined
 
-    camera->lookAt.x = sp10.x;
-    camera->lookAt.y = sp10.y;
-    camera->lookAt.z = sp10.z;
+    camera->lookAt.x = sp10.pos.x;
+    camera->lookAt.y = sp10.pos.y;
+    camera->lookAt.z = sp10.pos.z;
 
-    camera->eye.x = sp10.x;
-    camera->eye.y = sp10.y - sp10.w * 5.0;
-    camera->eye.z = sp10.z;
+    camera->eye.x = sp10.pos.x;
+    camera->eye.y = sp10.pos.y - sp10.radius * 5.0;
+    camera->eye.z = sp10.pos.z;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(90));

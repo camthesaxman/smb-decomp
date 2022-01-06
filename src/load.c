@@ -1,9 +1,11 @@
+/* load.c - Implements a queue and cache to load files */
 #include <dolphin.h>
 
 #include "global.h"
-
 #include "load.h"
 #include "perf.h"
+
+#pragma force_active on
 
 struct FileLoadInfo
 {
@@ -15,42 +17,38 @@ struct FileLoadInfo
     /*0x4C*/ u32 fileOffset;
     /*0x50*/ u32 bytesLeft;
     /*0x54*/ u32 transferSize;
-    /*0x58*/ struct ARAMBlock *aramBlock;
+    /*0x58*/ struct FileCacheEntry *cacheEntry;
 };
 
-#define ARAM_BASE 0x700000
-#define ARAM_SIZE 0x400000 
+static struct FileLoadInfo fileLoadQueue[16];
+static struct FileCacheEntry fileCache[32];
 
-// .bss
-struct FileLoadInfo fileLoadQueue[16];
-struct ARAMBlock lbl_802B5580[32];
-ARQRequest lbl_802B5780;
-
-FORCE_BSS_ORDER(fileLoadQueue)
-FORCE_BSS_ORDER(lbl_802B5580)
-FORCE_BSS_ORDER(lbl_802B5780)
-
-// .sbss
-volatile s32 aramToMramInProgress;
-s32 lbl_802F2144;
-volatile s32 mramToAramInProgress;
-volatile s32 dvdReadStatus;
-s32 loadQueueHead;  // index of first added file
-s32 loadQueueTail;  // index of most recently added file
+volatile int aramToMramInProgress;
+int currFileCacheIndex;
+volatile int mramToAramInProgress;
+volatile int dvdReadStatus;
+int loadQueueHead;  // index of first added file
+int loadQueueTail;  // index of most recently added file
 u32 unusedPadding;
+
+#define ARAM_BASE 0x700000
+#define ARAM_SIZE 0x400000
 
 u32 aramAllocEnd = ARAM_BASE;
 
-#pragma force_active on
-
-void mram_to_aram_callback(u32 arqRequestPtr)
+static void mram_to_aram_callback(u32 arqRequestPtr)
 {
     mramToAramInProgress = FALSE;
 }
 
+static struct FileCacheEntry *alloc_file_cache_entry(s32);
+static void dvd_read_callback(s32, DVDFileInfo *);
+static int get_next_file_id(int id);
+
 void load_main(void)
 {
     struct FileLoadInfo *info;
+    static ARQRequest aramRequest;
 
     if (loadQueueHead == loadQueueTail)
         return;
@@ -74,8 +72,8 @@ void load_main(void)
         info->fileOffset = 0;
         info->bytesLeft = info->fileSize;
         info->transferSize = MIN(info->bytesLeft, 0x18000);
-        info->aramBlock = alloc_aram_block(info->fileSize);
-        info->aramBlock->entryNum = info->entryNum;
+        info->cacheEntry = alloc_file_cache_entry(info->fileSize);
+        info->cacheEntry->entryNum = info->entryNum;
         // fall through
     case 2:
         // Read from DVD
@@ -98,12 +96,12 @@ void load_main(void)
         // Copy data to ARAM
         mramToAramInProgress = TRUE;
         ARQPostRequest(
-            &lbl_802B5780,
+            &aramRequest,
             0,
             ARQ_TYPE_MRAM_TO_ARAM,
             ARQ_PRIORITY_HIGH,
             (u32)dvdReadBuffer,
-            info->aramBlock->aramAddr + info->fileOffset,
+            info->cacheEntry->aramAddr + info->fileOffset,
             info->transferSize,
             mram_to_aram_callback);
         info->state = 6;
@@ -127,7 +125,7 @@ void load_main(void)
         else
         {
             // Done reading
-            info->aramBlock->unk0 = 1;
+            info->cacheEntry->hasData = TRUE;
             DVDClose(&info->dvdFile);
             // Move to the next file
             loadQueueHead = get_next_file_id(loadQueueHead);
@@ -140,28 +138,31 @@ BOOL file_open(char *filename, struct File *file)
 {
     int i;
     int entryNum = DVDConvertPathToEntrynum(filename);
-    struct ARAMBlock *block = lbl_802B5580;
+    struct FileCacheEntry *entry = fileCache;
 
-    for (i = 0; i < 32; i++, block++)
+    // Search for a cache entry for this file
+    for (i = 0; i < ARRAY_COUNT(fileCache); i++, entry++)
     {
-        if (block->unk0 == 1 && block->entryNum == entryNum)
+        if (entry->hasData == TRUE && entry->entryNum == entryNum)
         {
-            file->unk0 = 1;
-            file->unk40 = *block;
-            return 1;
+            file->isCached = TRUE;
+            file->cacheEntry = *entry;
+            return TRUE;
         }
     }
-    file->unk0 = 0;
+
+    // Not cached. Open it from the filesystem.
+    file->isCached = FALSE;
     return DVDOpen(filename, &file->dvdFile);
 }
 
 BOOL file_close(struct File *file)
 {
-    switch (file->unk0)
+    switch (file->isCached)
     {
-    case 1:
+    case TRUE:
         return TRUE;
-    case 0:
+    case FALSE:
         break;
     }
     return DVDClose(&file->dvdFile);
@@ -176,10 +177,10 @@ s32 file_read(struct File *file, void *dest, u32 size, u32 offset)
 {
     ARQRequest req;
 
-    switch (file->unk0)
+    switch (file->isCached)
     {
-    case 1:
-        // Copy data from ARAM to dest
+    case TRUE:
+        // Copy data from ARAM cache
         aramToMramInProgress = TRUE;
         DCInvalidateRange(dest, size);
         ARQPostRequest(
@@ -187,7 +188,7 @@ s32 file_read(struct File *file, void *dest, u32 size, u32 offset)
             0,
             ARQ_TYPE_ARAM_TO_MRAM,
             ARQ_PRIORITY_HIGH,
-            file->unk40.aramAddr + offset,
+            file->cacheEntry.aramAddr + offset,
             (u32)dest,
             size,
             aram_to_mram_callback);
@@ -201,16 +202,16 @@ s32 file_read(struct File *file, void *dest, u32 size, u32 offset)
 
 u32 file_size(struct File *file)
 {
-    switch (file->unk0)
+    switch (file->isCached)
     {
-    case 1:
-        return file->unk40.aramSize;
+    case TRUE:
+        return file->cacheEntry.aramSize;
     default:
         return file->dvdFile.length;
     }
 }
 
-void dvd_read_callback(s32 result, DVDFileInfo *dvdFile)
+static void dvd_read_callback(s32 result, DVDFileInfo *dvdFile)
 {
     if (result == DVD_RESULT_FATAL_ERROR)
         dvdReadStatus = -1;
@@ -218,72 +219,82 @@ void dvd_read_callback(s32 result, DVDFileInfo *dvdFile)
         dvdReadStatus = 0;
 }
 
-struct ARAMBlock *alloc_aram_block(s32 size)
+static void invalidate_file_cache_range(u32 addr, u32 size);
+
+static struct FileCacheEntry *alloc_file_cache_entry(s32 size)
 {
     u32 aramAddr;
-    struct ARAMBlock *r3;
+    struct FileCacheEntry *entry;
 
     size = OSRoundUp32B(size);
+    // allocate a range of ARAM to hold the file data
     if (ARAM_BASE + ARAM_SIZE - aramAllocEnd > size)
     {
-        // Add to end
+        // if there is space left, add to end
         aramAddr = aramAllocEnd;
         aramAllocEnd += size;
     }
     else
     {
+        // otherwise, start over from beginning
         aramAddr = ARAM_BASE;
         aramAllocEnd = ARAM_BASE + size;
     }
-    func_80092284(aramAddr, size);
-    r3 = &lbl_802B5580[lbl_802F2144];
-    if (++lbl_802F2144 >= 32)
-        lbl_802F2144 = 0;
-    r3->unk0 = 0;
-    r3->aramAddr = aramAddr;
-    r3->aramSize = size;
-    return r3;
+
+    // kick out any existing cache entry using this range
+    invalidate_file_cache_range(aramAddr, size);
+
+    entry = &fileCache[currFileCacheIndex];
+    if (++currFileCacheIndex >= ARRAY_COUNT(fileCache))
+        currFileCacheIndex = 0;
+    entry->hasData = FALSE;
+    entry->aramAddr = aramAddr;
+    entry->aramSize = size;
+    return entry;
 }
 
-void func_80092284(u32 addr, u32 size)
+static void invalidate_file_cache_range(u32 addr, u32 size)
 {
-    struct ARAMBlock *r7 = lbl_802B5580;
+    struct FileCacheEntry *entry = &fileCache[0];
     int i;
 
-    for (i = 0; i < 32; i++, r7++)
+    for (i = 0; i < ARRAY_COUNT(fileCache); i++, entry++)
     {
-        if (r7->unk0 != 0
-         && r7->aramAddr < (addr + size)
-         && r7->aramAddr + r7->aramSize > addr)
-            r7->unk0 = 0;
+        if (entry->hasData
+         && entry->aramAddr < (addr + size)
+         && entry->aramAddr + entry->aramSize > addr)
+            entry->hasData = FALSE;
     }
 }
 
+static int add_entrynum_to_load_queue(int entryNum);
+
+/* Adds a file to the load queue for fast loading */
 int file_preload(char *filename)
 {
     int entryNum = DVDConvertPathToEntrynum(filename);
     if (entryNum < 0)
-        return 0;
+        return FALSE;
     if (loadQueueTail == loadQueueHead)
         perf_init_timer(2);
     return add_entrynum_to_load_queue(entryNum);
 }
 
-int add_entrynum_to_load_queue(int entryNum)
+static int add_entrynum_to_load_queue(int entryNum)
 {
     int nextId = get_next_file_id(loadQueueTail);
     if (loadQueueHead == nextId)
-        return 0;
+        return FALSE;
     fileLoadQueue[loadQueueTail].state = 0;
     fileLoadQueue[loadQueueTail].entryNum = entryNum;
     loadQueueTail = nextId;
-    return 1;
+    return TRUE;
 }
 
-int get_next_file_id(int id)
+static int get_next_file_id(int id)
 {
     id++;
-    if (id < 16)
+    if (id < ARRAY_COUNT(fileLoadQueue))
         return id;
     else
         return 0;
@@ -302,12 +313,12 @@ void empty_load_queue(void)
 int get_load_queue_count(void)
 {
     if (loadQueueTail < loadQueueHead)
-        return loadQueueTail + 16 - loadQueueHead;
+        return loadQueueTail + ARRAY_COUNT(fileLoadQueue) - loadQueueHead;
     else
         return loadQueueTail - loadQueueHead;
 }
 
-void func_8009248C(void)
+void empty_file_cache(void)
 {
     aramAllocEnd = ARAM_BASE;
 }

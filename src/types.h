@@ -648,10 +648,10 @@ struct Struct801F3DC0
     u8 filler0[0x50];
 };
 
-struct Struct802F1BE0
+struct StageSelection
 {
-    s32 unk0;
-    s32 unk4;
+    s32 levelSet;
+    s32 levelNum;
 };
 
 struct Struct802F1F44
@@ -732,4 +732,10 @@ struct Struct802F1B3C
     struct OrdTblNode *lastEntry;
     struct OrdTblNode *firstEntry;
     float unk10C;
+};
+
+struct Sphere
+{
+    Point3d pos;
+    float radius;
 };

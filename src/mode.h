@@ -213,11 +213,24 @@ enum
     SMD_OPTION_BOTTOM, 
 };
 
+enum
+{
+    LVLSET_BEGINNER,
+    LVLSET_ADVANCED,
+    LVLSET_EXPERT,  // or Master (also referred to as Extra 2 in some places)
+};
+
+enum
+{
+    LVLSET_FLAG_EXTRA = (1 << 3),
+    LVLSET_FLAG_MASTER = (1 << 4),
+};
+
 struct ModeControl
 {
     s32 unk0;
-    s32 unk4;
-    u32 unk8;
+    s32 levelSet;
+    u32 levelSetFlags;
     u8 fillerC[0x10-0xC];
     s32 unk10;
     u8 filler14[0x1C-0x14];

@@ -10642,7 +10642,7 @@ lbl_00009C50:
 /* 00009CA4 3DE08889 */ lis r15, 0x8889
 /* 00009CA8 3DC00000 */ lis r14, unpausedFrameCounter@ha
 /* 00009CAC 3E800000 */ lis r20, commonGma@ha
-/* 00009CB0 3EC00000 */ lis r22, lbl_8020ADD4@ha
+/* 00009CB0 3EC00000 */ lis r22, stageBoundingSphere@ha
 /* 00009CB4 3EE00000 */ lis r23, currentCameraStructPtr@ha
 /* 00009CB8 3F400000 */ lis r26, backgroundInfo@ha
 /* 00009CBC 3F600000 */ lis r27, spritePoolInfo@ha
@@ -10666,7 +10666,7 @@ lbl_00009C50:
 /* 00009D04 38140000 */ addi r0, r20, commonGma@l
 /* 00009D08 3A2C0000 */ addi r17, r12, decodedStageLzPtr@l
 /* 00009D0C 900101B0 */ stw r0, 0x1b0(r1)
-/* 00009D10 38160000 */ addi r0, r22, lbl_8020ADD4@l
+/* 00009D10 38160000 */ addi r0, r22, stageBoundingSphere@l
 /* 00009D14 39EF8889 */ addi r15, r15, -30583  ;# fixed addi
 /* 00009D18 900101A4 */ stw r0, 0x1a4(r1)
 /* 00009D1C 38170000 */ addi r0, r23, currentCameraStructPtr@l
@@ -12147,16 +12147,16 @@ lbl_0000B280:
 /* 0000B294 80030000 */ lwz r0, decodedStageGmaPtr@l(r3)
 /* 0000B298 28000000 */ cmplwi r0, 0
 /* 0000B29C 418200BC */ beq lbl_0000B358
-/* 0000B2A0 3C800000 */ lis r4, lbl_80206E48@ha
+/* 0000B2A0 3C800000 */ lis r4, movableStageParts@ha
 /* 0000B2A4 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 0000B2A8 38A40000 */ addi r5, r4, lbl_80206E48@l
+/* 0000B2A8 38A40000 */ addi r5, r4, movableStageParts@l
 /* 0000B2AC 38030000 */ addi r0, r3, lbl_8020AB88@l
 /* 0000B2B0 3C800000 */ lis r4, mathutilData@ha
-/* 0000B2B4 3C600000 */ lis r3, lbl_802F1F48@ha
+/* 0000B2B4 3C600000 */ lis r3, movableStagePartCount@ha
 /* 0000B2B8 3B650000 */ addi r27, r5, 0
 /* 0000B2BC 7C1A0378 */ mr r26, r0
 /* 0000B2C0 3BC40000 */ addi r30, r4, mathutilData@l
-/* 0000B2C4 3BE30000 */ addi r31, r3, lbl_802F1F48@l
+/* 0000B2C4 3BE30000 */ addi r31, r3, movableStagePartCount@l
 /* 0000B2C8 3BA00000 */ li r29, 0
 /* 0000B2CC 48000080 */ b lbl_0000B34C
 lbl_0000B2D0:
@@ -13141,11 +13141,11 @@ lbl_0000C090:
 /* 0000C124 4E800020 */ blr 
 lbl_0000C128:
 /* 0000C128 7C0802A6 */ mflr r0
-/* 0000C12C 3C800000 */ lis r4, lbl_8020ADD4@ha
+/* 0000C12C 3C800000 */ lis r4, stageBoundingSphere@ha
 /* 0000C130 90010004 */ stw r0, 4(r1)
 /* 0000C134 9421FFE8 */ stwu r1, -0x18(r1)
 /* 0000C138 93E10014 */ stw r31, 0x14(r1)
-/* 0000C13C 3BE40000 */ addi r31, r4, lbl_8020ADD4@l
+/* 0000C13C 3BE40000 */ addi r31, r4, stageBoundingSphere@l
 /* 0000C140 3C800000 */ lis r4, lbl_00026390@ha
 /* 0000C144 93C10010 */ stw r30, 0x10(r1)
 /* 0000C148 3BC30000 */ addi r30, r3, 0
@@ -13208,11 +13208,11 @@ lbl_0000C128:
 /* 0000C22C 4E800020 */ blr 
 lbl_0000C230:
 /* 0000C230 7C0802A6 */ mflr r0
-/* 0000C234 3C800000 */ lis r4, lbl_8020ADD4@ha
+/* 0000C234 3C800000 */ lis r4, stageBoundingSphere@ha
 /* 0000C238 90010004 */ stw r0, 4(r1)
 /* 0000C23C 9421FFE8 */ stwu r1, -0x18(r1)
 /* 0000C240 93E10014 */ stw r31, 0x14(r1)
-/* 0000C244 3BE40000 */ addi r31, r4, lbl_8020ADD4@l
+/* 0000C244 3BE40000 */ addi r31, r4, stageBoundingSphere@l
 /* 0000C248 3C800000 */ lis r4, lbl_00026390@ha
 /* 0000C24C 93C10010 */ stw r30, 0x10(r1)
 /* 0000C250 3BC30000 */ addi r30, r3, 0
@@ -14252,9 +14252,9 @@ lbl_0000D144:
 /* 0000D230 901F0024 */ stw r0, 0x24(r31)
 lbl_0000D234:
 /* 0000D234 C03D0000 */ lfs f1, 0(r29)
-/* 0000D238 3C600000 */ lis r3, lbl_8020ADD4@ha
+/* 0000D238 3C600000 */ lis r3, stageBoundingSphere@ha
 /* 0000D23C C01D000C */ lfs f0, 0xc(r29)
-/* 0000D240 3B230000 */ addi r25, r3, lbl_8020ADD4@l
+/* 0000D240 3B230000 */ addi r25, r3, stageBoundingSphere@l
 /* 0000D244 EC010028 */ fsubs f0, f1, f0
 /* 0000D248 D0010050 */ stfs f0, 0x50(r1)
 /* 0000D24C C03D0004 */ lfs f1, 4(r29)
@@ -14362,9 +14362,9 @@ lbl_0000D234:
 /* 0000D3E4 D01D0008 */ stfs f0, 8(r29)
 lbl_0000D3E8:
 /* 0000D3E8 C03D0000 */ lfs f1, 0(r29)
-/* 0000D3EC 3C600000 */ lis r3, lbl_8020ADD4@ha
+/* 0000D3EC 3C600000 */ lis r3, stageBoundingSphere@ha
 /* 0000D3F0 C01D000C */ lfs f0, 0xc(r29)
-/* 0000D3F4 3B230000 */ addi r25, r3, lbl_8020ADD4@l
+/* 0000D3F4 3B230000 */ addi r25, r3, stageBoundingSphere@l
 /* 0000D3F8 EC010028 */ fsubs f0, f1, f0
 /* 0000D3FC D0010050 */ stfs f0, 0x50(r1)
 /* 0000D400 C03D0004 */ lfs f1, 4(r29)
@@ -15760,8 +15760,8 @@ lbl_0000E8AC:
 /* 0000E8CC 4BFF1905 */ bl camera_clear
 /* 0000E8D0 3800000A */ li r0, 0xa
 /* 0000E8D4 981E001F */ stb r0, 0x1f(r30)
-/* 0000E8D8 3C600000 */ lis r3, lbl_8020ADD4@ha
-/* 0000E8DC 38830000 */ addi r4, r3, lbl_8020ADD4@l
+/* 0000E8D8 3C600000 */ lis r3, stageBoundingSphere@ha
+/* 0000E8DC 38830000 */ addi r4, r3, stageBoundingSphere@l
 /* 0000E8E0 C03F00E4 */ lfs f1, 0xe4(r31)
 /* 0000E8E4 3860C000 */ li r3, -16384
 /* 0000E8E8 C0040000 */ lfs f0, 0(r4)
@@ -17735,8 +17735,8 @@ lbl_00010548:
 /* 00010654 4800004C */ b lbl_000106A0
 lbl_00010658:
 /* 00010658 1C800084 */ mulli r4, r0, 0x84
-/* 0001065C 3C600000 */ lis r3, lbl_80206E48@ha
-/* 00010660 38030000 */ addi r0, r3, lbl_80206E48@l
+/* 0001065C 3C600000 */ lis r3, movableStageParts@ha
+/* 00010660 38030000 */ addi r0, r3, movableStageParts@l
 /* 00010664 7C602214 */ add r3, r0, r4
 /* 00010668 38630024 */ addi r3, r3, 0x24
 /* 0001066C 4BFEFB65 */ bl mathutil_mtxA_from_mtx
@@ -17861,9 +17861,9 @@ lbl_00010808:
 /* 00010834 1C860084 */ mulli r4, r6, 0x84
 /* 00010838 80A3000C */ lwz r5, 0xc(r3)
 /* 0001083C 5400801E */ slwi r0, r0, 0x10
-/* 00010840 3C600000 */ lis r3, lbl_80206E48@ha
+/* 00010840 3C600000 */ lis r3, movableStageParts@ha
 /* 00010844 7C003670 */ srawi r0, r0, 6
-/* 00010848 3BE30000 */ addi r31, r3, lbl_80206E48@l
+/* 00010848 3BE30000 */ addi r31, r3, movableStageParts@l
 /* 0001084C 7FBF2214 */ add r29, r31, r4
 /* 00010850 7C000194 */ addze r0, r0
 /* 00010854 7C000734 */ extsh r0, r0
@@ -17988,19 +17988,19 @@ lbl_00010A18:
 /* 00010A28 28000000 */ cmplwi r0, 0
 /* 00010A2C 41820108 */ beq lbl_00010B34
 /* 00010A30 38000006 */ li r0, 6
-/* 00010A34 3C800000 */ lis r4, lbl_80206E48@ha
+/* 00010A34 3C800000 */ lis r4, movableStageParts@ha
 /* 00010A38 B001011E */ sth r0, 0x11e(r1)
 /* 00010A3C 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 00010A40 38C40000 */ addi r6, r4, lbl_80206E48@l
+/* 00010A40 38C40000 */ addi r6, r4, movableStageParts@l
 /* 00010A44 38030000 */ addi r0, r3, lbl_8020AB88@l
 /* 00010A48 3C800000 */ lis r4, lbl_801EEC90@ha
 /* 00010A4C 3CA00000 */ lis r5, mathutilData@ha
-/* 00010A50 3C600000 */ lis r3, lbl_802F1F48@ha
+/* 00010A50 3C600000 */ lis r3, movableStagePartCount@ha
 /* 00010A54 3B660000 */ addi r27, r6, 0
 /* 00010A58 7C1A0378 */ mr r26, r0
 /* 00010A5C 3AC40000 */ addi r22, r4, lbl_801EEC90@l
 /* 00010A60 3BE50000 */ addi r31, r5, mathutilData@l
-/* 00010A64 3AA30000 */ addi r21, r3, lbl_802F1F48@l
+/* 00010A64 3AA30000 */ addi r21, r3, movableStagePartCount@l
 /* 00010A68 3B000000 */ li r24, 0
 /* 00010A6C 480000B8 */ b lbl_00010B24
 lbl_00010A70:
@@ -18066,16 +18066,16 @@ lbl_00010B34:
 /* 00010B40 8003005C */ lwz r0, 0x5c(r3)
 /* 00010B44 28000000 */ cmplwi r0, 0
 /* 00010B48 408200E0 */ bne lbl_00010C28
-/* 00010B4C 3C800000 */ lis r4, lbl_80206E48@ha
-/* 00010B50 38A40000 */ addi r5, r4, lbl_80206E48@l
+/* 00010B4C 3C800000 */ lis r4, movableStageParts@ha
+/* 00010B50 38A40000 */ addi r5, r4, movableStageParts@l
 /* 00010B54 3C600000 */ lis r3, lbl_802099E8@ha
 /* 00010B58 38030000 */ addi r0, r3, lbl_802099E8@l
 /* 00010B5C 3C800000 */ lis r4, lbl_802F1B4C@ha
-/* 00010B60 3C600000 */ lis r3, lbl_802F1F48@ha
+/* 00010B60 3C600000 */ lis r3, movableStagePartCount@ha
 /* 00010B64 3A850000 */ addi r20, r5, 0
 /* 00010B68 7C180378 */ mr r24, r0
 /* 00010B6C 3AC40000 */ addi r22, r4, lbl_802F1B4C@l
-/* 00010B70 3AA30000 */ addi r21, r3, lbl_802F1F48@l
+/* 00010B70 3AA30000 */ addi r21, r3, movableStagePartCount@l
 /* 00010B74 3B400000 */ li r26, 0
 /* 00010B78 480000A0 */ b lbl_00010C18
 lbl_00010B7C:
@@ -18131,17 +18131,17 @@ lbl_00010C18:
 lbl_00010C28:
 /* 00010C28 3C600000 */ lis r3, currentCameraStructPtr@ha
 /* 00010C2C 80C30000 */ lwz r6, currentCameraStructPtr@l(r3)
-/* 00010C30 3C800000 */ lis r4, lbl_80206E48@ha
+/* 00010C30 3C800000 */ lis r4, movableStageParts@ha
 /* 00010C34 3C600000 */ lis r3, lbl_8020A348@ha
-/* 00010C38 38A40000 */ addi r5, r4, lbl_80206E48@l
+/* 00010C38 38A40000 */ addi r5, r4, movableStageParts@l
 /* 00010C3C C3E60038 */ lfs f31, 0x38(r6)
 /* 00010C40 38030000 */ addi r0, r3, lbl_8020A348@l
 /* 00010C44 3C800000 */ lis r4, lbl_802F1B4C@ha
-/* 00010C48 3C600000 */ lis r3, lbl_802F1F48@ha
+/* 00010C48 3C600000 */ lis r3, movableStagePartCount@ha
 /* 00010C4C 3AE50000 */ addi r23, r5, 0
 /* 00010C50 7C180378 */ mr r24, r0
 /* 00010C54 3AA40000 */ addi r21, r4, lbl_802F1B4C@l
-/* 00010C58 3AC30000 */ addi r22, r3, lbl_802F1F48@l
+/* 00010C58 3AC30000 */ addi r22, r3, movableStagePartCount@l
 /* 00010C5C 3BE00000 */ li r31, 0
 /* 00010C60 48000150 */ b lbl_00010DB0
 lbl_00010C64:
@@ -38514,8 +38514,8 @@ lbl_00023AB4:
 /* 00023AB4 7C0802A6 */ mflr r0
 /* 00023AB8 3C800000 */ lis r4, lbl_00026550@ha
 /* 00023ABC 90010004 */ stw r0, 4(r1)
-/* 00023AC0 3CA00000 */ lis r5, lbl_8020ADD4@ha
-/* 00023AC4 39050000 */ addi r8, r5, lbl_8020ADD4@l
+/* 00023AC0 3CA00000 */ lis r5, stageBoundingSphere@ha
+/* 00023AC4 39050000 */ addi r8, r5, stageBoundingSphere@l
 /* 00023AC8 9421FF80 */ stwu r1, -0x80(r1)
 /* 00023ACC 38840000 */ addi r4, r4, lbl_00026550@l
 /* 00023AD0 546A063E */ clrlwi r10, r3, 0x18
@@ -38639,8 +38639,8 @@ lbl_00023C68:
 /* 00023C8C DB410078 */ stfd f26, 0x78(r1)
 /* 00023C90 93E10074 */ stw r31, 0x74(r1)
 /* 00023C94 3BE30000 */ addi r31, r3, lbl_00026550@l
-/* 00023C98 3C600000 */ lis r3, lbl_8020ADD4@ha
-/* 00023C9C 38830000 */ addi r4, r3, lbl_8020ADD4@l
+/* 00023C98 3C600000 */ lis r3, stageBoundingSphere@ha
+/* 00023C9C 38830000 */ addi r4, r3, stageBoundingSphere@l
 /* 00023CA0 C85F02D8 */ lfd f2, 0x2d8(r31)
 /* 00023CA4 C01F045C */ lfs f0, 0x45c(r31)
 /* 00023CA8 C024000C */ lfs f1, 0xc(r4)

@@ -8676,9 +8676,9 @@ func_80050890:
 /* 800508A8 0004C7C8  93 C1 00 F0 */	stw r30, 0xf0(r1)
 /* 800508AC 0004C7CC  93 A1 00 EC */	stw r29, 0xec(r1)
 /* 800508B0 0004C7D0  80 A3 00 34 */	lwz r5, 0x34(r3)
-/* 800508B4 0004C7D4  3C 60 80 20 */	lis r3, lbl_80206E48@ha
+/* 800508B4 0004C7D4  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 800508B8 0004C7D8  80 9F 00 38 */	lwz r4, 0x38(r31)
-/* 800508BC 0004C7DC  38 03 6E 48 */	addi r0, r3, lbl_80206E48@l
+/* 800508BC 0004C7DC  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 800508C0 0004C7E0  83 AD 9D 38 */	lwz r29, currentBallStructPtr@sda21(r13)
 /* 800508C4 0004C7E4  90 A1 00 C4 */	stw r5, 0xc4(r1)
 /* 800508C8 0004C7E8  90 81 00 C8 */	stw r4, 0xc8(r1)

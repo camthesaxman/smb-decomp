@@ -6,7 +6,7 @@
 #include "mode.h"
 #include "relocation.h"
 
-struct Struct802F1BE0 lbl_802F1BE0;
+struct StageSelection stageSelection;
 struct MinigameLink lbl_802F1BD8;
 void (*lbl_802F1BD4)(void);
 void (*menuCallback)(void);
@@ -28,8 +28,8 @@ void mode_sel_func(void)
 #pragma force_active on
 void func_800123DC(void)
 {
-    lbl_802F1BE0.unk0 = 0;
-    lbl_802F1BE0.unk4 = 1;
+    stageSelection.levelSet = 0;
+    stageSelection.levelNum = 1;
 }
 #pragma force_active reset
 
@@ -49,13 +49,13 @@ void func_80012434(int a)
     case 6:
     case 7:
     case 8:
-        modeCtrl.unk8 |= 0x80000;
+        modeCtrl.levelSetFlags |= 0x80000;
         break;
     case 1:
     case 3:
     case 4:
     case 5:
-        modeCtrl.unk8 |= 0x10000;
+        modeCtrl.levelSetFlags |= 0x10000;
         break;
     case 0:
     case 2:

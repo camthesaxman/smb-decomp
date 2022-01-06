@@ -2235,8 +2235,8 @@ func_8003FB48:
 /* 8003FB78 0003BA98  3B 60 00 00 */	li r27, 0
 /* 8003FB7C 0003BA9C  3F E0 43 30 */	lis r31, 0x4330
 /* 8003FB80 0003BAA0  90 04 00 00 */	stw r0, 0(r4)
-/* 8003FB84 0003BAA4  3C 80 80 20 */	lis r4, lbl_80206E48@ha
-/* 8003FB88 0003BAA8  38 04 6E 48 */	addi r0, r4, lbl_80206E48@l
+/* 8003FB84 0003BAA4  3C 80 80 20 */	lis r4, movableStageParts@ha
+/* 8003FB88 0003BAA8  38 04 6E 48 */	addi r0, r4, movableStageParts@l
 /* 8003FB8C 0003BAAC  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8003FB90 0003BAB0  7C 1E 03 78 */	mr r30, r0
 /* 8003FB94 0003BAB4  CB E2 8E 18 */	lfd f31, lbl_802F3618-_SDA2_BASE_(r2)
@@ -2579,11 +2579,11 @@ lbl_80040054:
 /* 80040068 0003BF88  2C 1A 00 00 */	cmpwi r26, 0
 /* 8004006C 0003BF8C  40 81 00 88 */	ble lbl_800400F4
 /* 80040070 0003BF90  C0 18 00 04 */	lfs f0, 4(r24)
-/* 80040074 0003BF94  3C 60 80 20 */	lis r3, lbl_80206E48@ha
+/* 80040074 0003BF94  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 80040078 0003BF98  1C 9A 00 84 */	mulli r4, r26, 0x84
 /* 8004007C 0003BF9C  D0 01 00 30 */	stfs f0, 0x30(r1)
 /* 80040080 0003BFA0  C0 18 00 08 */	lfs f0, 8(r24)
-/* 80040084 0003BFA4  38 03 6E 48 */	addi r0, r3, lbl_80206E48@l
+/* 80040084 0003BFA4  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 80040088 0003BFA8  7F C0 22 14 */	add r30, r0, r4
 /* 8004008C 0003BFAC  D0 01 00 34 */	stfs f0, 0x34(r1)
 /* 80040090 0003BFB0  38 7E 00 24 */	addi r3, r30, 0x24
@@ -4035,8 +4035,8 @@ func_800415AC:
 /* 800415CC 0003D4EC  38 63 00 30 */	addi r3, r3, 0x30
 /* 800415D0 0003D4F0  4B FC 64 4D */	bl mathutil_mtx_copy
 /* 800415D4 0003D4F4  80 6D 9D 50 */	lwz r3, decodedStageLzPtr@sda21(r13)
-/* 800415D8 0003D4F8  3C 80 80 20 */	lis r4, lbl_80206E48@ha
-/* 800415DC 0003D4FC  38 04 6E 48 */	addi r0, r4, lbl_80206E48@l
+/* 800415D8 0003D4F8  3C 80 80 20 */	lis r4, movableStageParts@ha
+/* 800415DC 0003D4FC  38 04 6E 48 */	addi r0, r4, movableStageParts@l
 /* 800415E0 0003D500  CB E2 8E 18 */	lfd f31, lbl_802F3618-_SDA2_BASE_(r2)
 /* 800415E4 0003D504  83 83 00 0C */	lwz r28, 0xc(r3)
 /* 800415E8 0003D508  7C 1D 03 78 */	mr r29, r0
@@ -4753,8 +4753,8 @@ func_80042000:
 /* 80042030 0003DF50  1C 80 00 84 */	mulli r4, r0, 0x84
 /* 80042034 0003DF54  C0 1D 00 10 */	lfs f0, 0x10(r29)
 /* 80042038 0003DF58  EC 01 00 28 */	fsubs f0, f1, f0
-/* 8004203C 0003DF5C  3C 60 80 20 */	lis r3, lbl_80206E48@ha
-/* 80042040 0003DF60  38 03 6E 48 */	addi r0, r3, lbl_80206E48@l
+/* 8004203C 0003DF5C  3C 60 80 20 */	lis r3, movableStageParts@ha
+/* 80042040 0003DF60  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 80042044 0003DF64  7F E0 22 14 */	add r31, r0, r4
 /* 80042048 0003DF68  D0 01 00 10 */	stfs f0, 0x10(r1)
 /* 8004204C 0003DF6C  38 7F 00 24 */	addi r3, r31, 0x24
@@ -4809,11 +4809,11 @@ lbl_8004210C:
 /* 8004210C 0003E02C  2C 1E 00 00 */	cmpwi r30, 0
 /* 80042110 0003E030  40 81 00 E4 */	ble lbl_800421F4
 /* 80042114 0003E034  C0 3D 00 04 */	lfs f1, 4(r29)
-/* 80042118 0003E038  3C 60 80 20 */	lis r3, lbl_80206E48@ha
+/* 80042118 0003E038  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 8004211C 0003E03C  C0 1D 00 10 */	lfs f0, 0x10(r29)
 /* 80042120 0003E040  1C 9E 00 84 */	mulli r4, r30, 0x84
 /* 80042124 0003E044  EC 01 00 28 */	fsubs f0, f1, f0
-/* 80042128 0003E048  38 03 6E 48 */	addi r0, r3, lbl_80206E48@l
+/* 80042128 0003E048  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 8004212C 0003E04C  7F E0 22 14 */	add r31, r0, r4
 /* 80042130 0003E050  D0 01 00 10 */	stfs f0, 0x10(r1)
 /* 80042134 0003E054  38 7F 00 24 */	addi r3, r31, 0x24
@@ -5297,8 +5297,8 @@ func_800427A4:
 /* 800427D4 0003E6F4  2C 00 00 00 */	cmpwi r0, 0
 /* 800427D8 0003E6F8  40 81 00 28 */	ble lbl_80042800
 /* 800427DC 0003E6FC  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 800427E0 0003E700  3C 60 80 20 */	lis r3, lbl_80206E48@ha
-/* 800427E4 0003E704  38 03 6E 48 */	addi r0, r3, lbl_80206E48@l
+/* 800427E0 0003E700  3C 60 80 20 */	lis r3, movableStageParts@ha
+/* 800427E4 0003E704  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 800427E8 0003E708  7C 60 22 14 */	add r3, r0, r4
 /* 800427EC 0003E70C  38 63 00 24 */	addi r3, r3, 0x24
 /* 800427F0 0003E710  4B FC 50 C1 */	bl mathutil_mtxA_from_mtx
@@ -5309,8 +5309,8 @@ lbl_80042800:
 /* 80042800 0003E720  2C 1F 00 00 */	cmpwi r31, 0
 /* 80042804 0003E724  40 81 00 28 */	ble lbl_8004282C
 /* 80042808 0003E728  1C 9F 00 84 */	mulli r4, r31, 0x84
-/* 8004280C 0003E72C  3C 60 80 20 */	lis r3, lbl_80206E48@ha
-/* 80042810 0003E730  38 03 6E 48 */	addi r0, r3, lbl_80206E48@l
+/* 8004280C 0003E72C  3C 60 80 20 */	lis r3, movableStageParts@ha
+/* 80042810 0003E730  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 80042814 0003E734  7C 60 22 14 */	add r3, r0, r4
 /* 80042818 0003E738  38 63 00 24 */	addi r3, r3, 0x24
 /* 8004281C 0003E73C  4B FC 50 95 */	bl mathutil_mtxA_from_mtx
@@ -7414,8 +7414,8 @@ lbl_802F0990:
 	.byte 0x00, 0x00, 0x00, 0x5C
 	.4byte lbl_80206D00  ;# ptr
 
-.global lbl_802F0998
-lbl_802F0998:
+.global loadedStageId
+loadedStageId:
 	# ROM: 0x1EB0D8
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 

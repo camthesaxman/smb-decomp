@@ -362,8 +362,8 @@ lbl_802F1F40:
 .global lbl_802F1F44
 lbl_802F1F44:
 	.skip 0x4
-.global lbl_802F1F48
-lbl_802F1F48:
+.global movableStagePartCount
+movableStagePartCount:
 	.skip 0x4
 .global lbl_802F1F4C
 lbl_802F1F4C:

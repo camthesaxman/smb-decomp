@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "gxutil.h"
 #include "input.h"
+#include "load.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
@@ -53,7 +54,7 @@ void polydisp_main(void)
 {
     if (gameMode == MD_SEL
      && (gameSubmode == SMD_SEL_STAGE_INIT || gameSubmode == SMD_SEL_STAGE_MAIN)
-     && is_load_queue_not_empty() != 0)
+     && is_load_queue_not_empty())
         show_loading_msg();
 
     lbl_801EEC90.unk0 &= ~0x11;
@@ -152,7 +153,7 @@ void draw_3d_scene(void)
                 draw_normal_game_scene();
                 break;
             default:
-                if (modeCtrl.unk8 & (1 << 5))
+                if (modeCtrl.levelSetFlags & (1 << 5))
                     draw_normal_game_scene();
                 break;
             }
@@ -761,7 +762,7 @@ void func_8000CA9C(void)
 
     r5 = FALSE;
     if ((gameSubmode == SMD_GAME_CONTINUE_INIT || gameSubmode == SMD_GAME_CONTINUE_MAIN)
-     && (modeCtrl.unk8 & (1<<(31-0x1D)))
+     && (modeCtrl.levelSetFlags & (1<<(31-0x1D)))
      && modeCtrl.unk10 == 1)
         r5 = TRUE;
 
@@ -772,7 +773,7 @@ void func_8000CA9C(void)
 
         if (gameSubmode != SMD_GAME_CONTINUE_INIT && gameSubmode != SMD_GAME_CONTINUE_MAIN)
             f1 = 0.0f;
-        else if ((modeCtrl.unk8 & (1<<(31-0x1D))) && modeCtrl.unk10 == 0)
+        else if ((modeCtrl.levelSetFlags & (1<<(31-0x1D))) && modeCtrl.unk10 == 0)
             f1 = r4 / 60.0f;
         else
             f1 = 1.0f;
@@ -1122,7 +1123,7 @@ void func_8000DEE8(void)
         case SMD_GAME_INTR_SEL_MAIN:
         case SMD_GAME_OVER_POINT_INIT:
         case SMD_GAME_OVER_POINT_MAIN:
-            if ((modeCtrl.unk8 & (3<<(31-0x1A))) == 0)
+            if ((modeCtrl.levelSetFlags & (3<<(31-0x1A))) == 0)
             {
                 color.r = 0;
                 color.g = 0;
@@ -1233,7 +1234,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
     case SMD_GAME_NAMEENTRY_READY_INIT:
-        if (!(modeCtrl.unk8 & (1<<(31-0x1A))) && modeCtrl.unk28 != 1)
+        if (!(modeCtrl.levelSetFlags & (1<<(31-0x1A))) && modeCtrl.unk28 != 1)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
             g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
@@ -1245,7 +1246,7 @@ void func_8000E1A4(float a)
         }
         break;
     default:
-        if (modeCtrl.unk8 & (1<<(31-0x1B)))
+        if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
             g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, a);

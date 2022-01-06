@@ -11,7 +11,7 @@
 #include "ord_tbl.h"
 #include "stage.h"
 
-void lbl_00000C9C(void)
+void sel_stage_draw(void)
 {
     struct StageCollHdr *r27;
     int i;

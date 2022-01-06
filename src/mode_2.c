@@ -308,7 +308,7 @@ void unkFunc8000AA00(struct Sprite *a)
             unkFunc8000A924(a);
             break;
         case 4:
-            modeCtrl.unk8 |= 0x8000;
+            modeCtrl.levelSetFlags |= 0x8000;
             lbl_802F1B98 = 1;
             func_80012434(-1);
             break;
@@ -328,7 +328,7 @@ void unkFunc8000AA00(struct Sprite *a)
             break;
         case 1:
             g_dest_sprite_with_font(4);
-            modeCtrl.unk8 |= 0x4000;
+            modeCtrl.levelSetFlags |= 0x4000;
             func_8002CF38(100, 10);
             break;
         case 2:

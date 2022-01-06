@@ -7,10 +7,10 @@
 #include "bitmap.h"
 #include "mode.h"
 
-static void sprite_func_B54(s8 *, struct Sprite *);
-static void sprite_func_BC4(s8 *, struct Sprite *);
+static void lvlset_icon_sprite_func(s8 *, struct Sprite *);
+static void stage_name_sprite_func(s8 *, struct Sprite *);
 
-void lbl_0x00000A24(void)
+void create_sel_stage_sprites(void)
 {
     struct Sprite *sprite;
 
@@ -33,8 +33,8 @@ void lbl_0x00000A24(void)
         sprite->textAlign = ALIGN_CC;
         sprite->unk40 = 0.5f;
         sprite->unk44 = 0.5f;
-        sprite->mainFunc = sprite_func_B54;
-        sprintf(sprite->text, "%d", modeCtrl.unk4 + 4);
+        sprite->mainFunc = lvlset_icon_sprite_func;
+        sprintf(sprite->text, "%d", modeCtrl.levelSet + 4);
     }
 
     sprite = create_sprite();
@@ -44,7 +44,7 @@ void lbl_0x00000A24(void)
         sprite->centerY = 128.0f;
         sprite->fontId = 100;
         sprite->textAlign = ALIGN_LC;
-        sprite->mainFunc = sprite_func_BC4;
+        sprite->mainFunc = stage_name_sprite_func;
         sprintf(sprite->text, "STAGE %d", currStageId);
     }
 }
@@ -60,31 +60,32 @@ static const u32 unused_crap[] =
     0x80000000,
 };
 
-static void sprite_func_B54(s8 *status, struct Sprite *sprite)
+static void lvlset_icon_sprite_func(s8 *status, struct Sprite *sprite)
 {
-    if (lbl_802F1BE0.unk0 == 0)
+    if (stageSelection.levelSet == 0)
         sprite->unk6C = 0.0f;
     else
     {
         sprite->unk6C = 1.0f;
-        sprintf(sprite->text, "%d", modeCtrl.unk4 + 4);
+        // Characters '4' through '7' are the English level set icons
+        sprintf(sprite->text, "%d", 4 + modeCtrl.levelSet);
     }
 }
 
-static void sprite_func_BC4(s8 *status, struct Sprite *sprite)
+static void stage_name_sprite_func(s8 *status, struct Sprite *sprite)
 {
-    if (lbl_802F1BE0.unk0 == 0)
+    if (stageSelection.levelSet == 0)
         sprintf(sprite->text, "STAGE %d", loadingStageId);
-    else if (modeCtrl.unk8 & (1 << 4))
-        sprintf(sprite->text, "EXTRA 2\nFLOOR %d\nLIB. %d", lbl_802F1BE0.unk4, loadingStageId);
-    else if (modeCtrl.unk8 & (1 << 3))
-        sprintf(sprite->text, "EXTRA\nFLOOR %d\nLIB. %d", lbl_802F1BE0.unk4, loadingStageId);
+    else if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+        sprintf(sprite->text, "EXTRA 2\nFLOOR %d\nLIB. %d", stageSelection.levelNum, loadingStageId);
+    else if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
+        sprintf(sprite->text, "EXTRA\nFLOOR %d\nLIB. %d", stageSelection.levelNum, loadingStageId);
     else
-        sprintf(sprite->text, "FLOOR %d\nLIB. %d", lbl_802F1BE0.unk4, loadingStageId);
+        sprintf(sprite->text, "FLOOR %d\nLIB. %d", stageSelection.levelNum, loadingStageId);
 }
 
-void lbl_0x00000C90(void) {}
+void dummy_func_C90(void) {}
 
-void lbl_0x00000C94(void) {}
+void dummy_func_C94(void) {}
 
-void lbl_0x00000C98(void) {}
+void dummy_func_C98(void) {}

@@ -10,18 +10,19 @@
 #include "camera.h"
 #include "input.h"
 #include "mathutil.h"
+#include "load.h"
 #include "mode.h"
 #include "stage.h"
 
 static int lbl_0000185D;
 
-static void lbl_0x000001C0(void);
-static void lbl_00000330(void);
+static void sel_stage_init(void);
+static void sel_stage_handle_input(void);
 
 void _prolog(void)
 {
-    func_80012510(lbl_00000330, lbl_00000C9C, NULL, NULL);
-    lbl_0x000001C0();
+    func_80012510(sel_stage_handle_input, sel_stage_draw, NULL, NULL);
+    sel_stage_init();
     gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
 
@@ -45,7 +46,7 @@ void _unresolved(void)
     OSPanic("sel_stage_rel.c", 71, "\n");
 }
 
-static void lbl_0x000001C0(void)
+static void sel_stage_init(void)
 {
     if (gamePauseStatus & 0xA)
         return;
@@ -84,15 +85,15 @@ static void lbl_0x000001C0(void)
     camera_set_state(12);
     lbl_802F1FA4 = 0;
     func_800123DC();
-    lbl_0x00000A24();
-    lbl_0x00000C90();
+    create_sel_stage_sprites();
+    dummy_func_C90();
     func_800668A0();
     loadingStageId = lbl_801F3A58.unk2E;
     func_800732DC(0, 0, 30);
     gameSubmodeRequest = 30;
 }
 
-static void lbl_00000330(void)
+static void sel_stage_handle_input(void)
 {
     int r3;
 
@@ -101,21 +102,21 @@ static void lbl_00000330(void)
 
     if (CONTROLLER_SOMETHING(0, PAD_BUTTON_UP))
     {
-        if (--lbl_802F1BE0.unk0 < 0)
-            lbl_802F1BE0.unk0 = 7;
+        if (--stageSelection.levelSet < 0)
+            stageSelection.levelSet = 7;
     }
     else if (CONTROLLER_SOMETHING(0, PAD_BUTTON_DOWN))
     {
-        if (++lbl_802F1BE0.unk0 >= 8)
-           lbl_802F1BE0.unk0 = 0;
+        if (++stageSelection.levelSet >= 8)
+           stageSelection.levelSet = 0;
     }
 
-    switch (lbl_802F1BE0.unk0)
+    switch (stageSelection.levelSet)
     {
-    case 0:
-        modeCtrl.unk8 &= ~(1 << 0);
-        modeCtrl.unk8 &= ~8;
-        modeCtrl.unk8 &= ~0x10;
+    case 0:  // all stages
+        modeCtrl.levelSetFlags &= ~(1 << 0);
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         if (CONTROLLER_SOMETHING(0, PAD_BUTTON_LEFT))
         {
             if (--loadingStageIdRequest < 1)
@@ -127,78 +128,76 @@ static void lbl_00000330(void)
                 loadingStageIdRequest = 200;
         }
         break;
-    case 1:
-        modeCtrl.unk4 = 0;
-        modeCtrl.unk8 |=  (1 << 0);
-        modeCtrl.unk8 &= ~(1 << 3);
-        modeCtrl.unk8 &= ~(1 << 4);
+    case 1:  // Beginner
+        modeCtrl.levelSet = LVLSET_BEGINNER;
+        modeCtrl.levelSetFlags |=  (1 << 0);
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         break;
-    case 2:
-        modeCtrl.unk4 = 1;
-        modeCtrl.unk8 |=  (1 << 0);
-        modeCtrl.unk8 &= ~(1 << 3);
-        modeCtrl.unk8 &= ~(1 << 4);
+    case 2:  // Advanced
+        modeCtrl.levelSet = LVLSET_ADVANCED;
+        modeCtrl.levelSetFlags |=  (1 << 0);
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         break;
-    case 3:
-        modeCtrl.unk4 = 2;
-        modeCtrl.unk8 |=  (1 << 0);
-        modeCtrl.unk8 &= ~(1 << 3);
-        modeCtrl.unk8 &= ~(1 << 4);
+    case 3:  // Expert
+        modeCtrl.levelSet = LVLSET_EXPERT;
+        modeCtrl.levelSetFlags |=  (1 << 0);
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         break;
-    case 4:
-        modeCtrl.unk4 = 0;
-        modeCtrl.unk8 |=  (1 << 0);
-        modeCtrl.unk8 |=  (1 << 3);
-        modeCtrl.unk8 &= ~(1 << 4);
+    case 4:  // Beginner Extra
+        modeCtrl.levelSet = LVLSET_BEGINNER;
+        modeCtrl.levelSetFlags |=  (1 << 0);
+        modeCtrl.levelSetFlags |=  LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         break;
-    case 5:
-        modeCtrl.unk4 = 1;
-        modeCtrl.unk8 |=  (1 << 0);
-        modeCtrl.unk8 |=  (1 << 3);
-        modeCtrl.unk8 &= ~(1 << 4);
+    case 5:  // Advanced Extra
+        modeCtrl.levelSet = LVLSET_ADVANCED;
+        modeCtrl.levelSetFlags |=  (1 << 0);
+        modeCtrl.levelSetFlags |=  LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         break;
-    case 6:
-        modeCtrl.unk4 = 2;
-        modeCtrl.unk8 |=  (1 << 0);
-        modeCtrl.unk8 |=  (1 << 3);
-        modeCtrl.unk8 &= ~(1 << 4);
+    case 6:  // Expert Extra
+        modeCtrl.levelSet = LVLSET_EXPERT;
+        modeCtrl.levelSetFlags |=  (1 << 0);
+        modeCtrl.levelSetFlags |=  LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
         break;
-    case 7:
-        modeCtrl.unk4 = 2;
-        modeCtrl.unk8 |= (1 << 0);
-        modeCtrl.unk8 |= (1 << 3);
-        modeCtrl.unk8 |= (1 << 4);
+    case 7:  // Master
+        modeCtrl.levelSet = LVLSET_EXPERT;
+        modeCtrl.levelSetFlags |= (1 << 0);
+        modeCtrl.levelSetFlags |= LVLSET_FLAG_EXTRA;
+        modeCtrl.levelSetFlags |= LVLSET_FLAG_MASTER;
         break;
     }
-    if (lbl_802F1BE0.unk0 != 0)
+    if (stageSelection.levelSet != 0)
     {
         if (CONTROLLER_SOMETHING(0, PAD_BUTTON_LEFT))
-            lbl_802F1BE0.unk4--;
+            stageSelection.levelNum--;
         if (CONTROLLER_SOMETHING(0, PAD_BUTTON_RIGHT))
-            lbl_802F1BE0.unk4++;
+            stageSelection.levelNum++;
 
-        if (lbl_802F1BE0.unk4 < 1)
+        if (stageSelection.levelNum < 1)
             r3 = 1;
+        else if (stageSelection.levelNum > get_last_level_num_of_set(modeCtrl.levelSet, modeCtrl.levelSetFlags))
+            r3 = get_last_level_num_of_set(modeCtrl.levelSet, modeCtrl.levelSetFlags);
         else
-        {
-            if (lbl_802F1BE0.unk4 > func_8006720C(modeCtrl.unk4, modeCtrl.unk8))
-                r3 = func_8006720C(modeCtrl.unk4, modeCtrl.unk8);
-            else
-                r3 = lbl_802F1BE0.unk4;
-        }
-        lbl_802F1BE0.unk4 = r3;
-        loadingStageIdRequest = func_80067100(modeCtrl.unk4, lbl_802F1BE0.unk4, modeCtrl.unk8);
+            r3 = stageSelection.levelNum;
+
+        stageSelection.levelNum = r3;
+        loadingStageIdRequest = level_num_to_stage_id(modeCtrl.levelSet, stageSelection.levelNum, modeCtrl.levelSetFlags);
     }
     if (lbl_0000185D != loadingStageIdRequest)
     {
-        lbl_0x00000C94();
+        dummy_func_C94();
         empty_load_queue();
         preload_stage_files(loadingStageIdRequest);
         lbl_0000185D = loadingStageIdRequest;
     }
     lbl_801F3A58.unk2E = loadingStageIdRequest;
     loadingStageId = loadingStageIdRequest;
-    if (lbl_0000185D != currStageId && is_load_queue_not_empty() == 0)
+    if (lbl_0000185D != currStageId && !is_load_queue_not_empty())
     {
         ev_run_dest(EVENT_EFFECT);
         ev_run_dest(EVENT_ITEM);
@@ -228,7 +227,7 @@ static void lbl_00000330(void)
             lbl_80206BC0[0] = 1;
         else
             lbl_80206BC0[0] = 0;
-        lbl_0x00000C98();
+        dummy_func_C98();
         gameModeRequest = MD_GAME;
         gameSubmodeRequest = SMD_GAME_FIRST_INIT;
     }

@@ -2307,7 +2307,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct Struct80039974 *b, 
         }
         else
         {
-            mathutil_mtxA_from_mtx(lbl_80206E48[b->unk50].unk24);
+            mathutil_mtxA_from_mtx(movableStageParts[b->unk50].unk24);
             mathutil_mtxA_tf_vec(&b->unk44, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
@@ -2432,7 +2432,7 @@ void update_ball_ape_transform(struct Ball *ball, struct Struct80039974 *b, int 
 void func_8003BBF4(struct Struct80039974 *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct Struct80206E48 *r30 = &lbl_80206E48[a->unk50];
+    struct Struct80206E48 *r30 = &movableStageParts[a->unk50];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2541,7 +2541,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct Struct80039974 
         if (c == 0 && b->unk50 > 0)
             func_8003BBF4(b, &sp20);
 
-        mathutil_mtxA_from_mtx(lbl_80206E48[b->unk50].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[b->unk50].unk24);
         mathutil_mtxA_tf_vec(&b->unk44, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;

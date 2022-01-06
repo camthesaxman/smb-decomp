@@ -136,7 +136,7 @@ void camera_func_53(struct Camera *camera, struct Ball *ball);
 void camera_func_ready_init(struct Camera *camera, struct Ball *ball);
 void camera_func_ready_main(struct Camera *camera, struct Ball *ball);
 void camera_func_38(struct Camera *camera, struct Ball *ball);
-void get_curr_stage_fly_in_position(Quaternion *);
+void get_curr_stage_fly_in_position(struct Sphere *);
 void camera_func_0(struct Camera *camera, struct Ball *ball);
 void camera_func_level_main(struct Camera *camera, struct Ball *ball);
 void camera_func_test(struct Camera *camera, struct Ball *ball);

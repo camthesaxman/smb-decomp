@@ -6,6 +6,7 @@
 #include "bitmap.h"
 #include "camera.h"
 #include "input.h"
+#include "load.h"
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
