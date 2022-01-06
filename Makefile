@@ -126,6 +126,7 @@ SOURCES := \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
+	asm/tevutil.s \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	asm/view.s \
