@@ -6,6 +6,7 @@
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
+#include "ord_tbl.h"
 
 struct UnkStruct4
 {
@@ -711,43 +712,67 @@ void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
     }
 }
 
+struct UnkStruct17
+{
+    struct OrdTblNode node;
+    void *unk8;
+    Mtx unkC;
+    void *unk3C;
+    struct GMAMeshHeader *unk40;
+    u32 unk44;
+    u32 unk48;
+    float unk4C;
+    Func802F20EC unk50;
+    Func802F20F0 unk54;
+    u8 unk58;
+    u8 unk59;
+    u32 unk5C;
+    u8 unk60;
+    u8 unk61;
+    u8 unk62;
+    Mtx *unk64;
+    GXColor unk68;
+    GXColor unk6C;
+    u32 unk70;
+};
+
 static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
 {
-    u32 r28;
+    struct OrdTblNode *list;
     u32 r23 = lbl_802F20E8;
-    struct UnkStruct17 *r29 = (void *)g_alloc_some_drawing_mem(0x74);
+    struct UnkStruct17 *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (mesh->unk14 != 0xFF)
-        r28 = func_800857A4(mesh->unk30, -1);
+        list = g_ord_tbl_get_list_head_2(&mesh->unk30, -1);
     else
-        r28 = func_80085698(mesh->unk30);
-    r29->unk4 = lbl_8008F528;
-    r29->unk8 = model;
-    r29->unk40 = mesh;
-    r29->unk3C = mtrl;
-    r29->unk44 = r23;
-    r29->unk48 = func_800223D0();
-    r29->unk4C = lbl_802F20DC;
-    r29->unk50 = lbl_802F20EC;
-    r29->unk54 = lbl_802F20F0;
-    r29->unk58 = zModeCompareEnable;
-    r29->unk59 = zModeUpdateEnable;
-    r29->unk5C = zModeCompareFunc;
-    r29->unk60 = lbl_802F2108;
-    r29->unk61 = lbl_802F210C;
-    r29->unk62 = lbl_802F2114;
-    if (r29->unk60 != 0)
+        list = g_ord_tbl_get_list_head_1(&mesh->unk30);
+    node->node.drawFunc = (OrdTblDrawFunc)lbl_8008F528;
+    node->unk8 = model;
+    node->unk40 = mesh;
+    node->unk3C = mtrl;
+    node->unk44 = r23;
+    node->unk48 = func_800223D0();
+    node->unk4C = lbl_802F20DC;
+    node->unk50 = lbl_802F20EC;
+    node->unk54 = lbl_802F20F0;
+    node->unk58 = zModeCompareEnable;
+    node->unk59 = zModeUpdateEnable;
+    node->unk5C = zModeCompareFunc;
+    node->unk60 = lbl_802F2108;
+    node->unk61 = lbl_802F210C;
+    node->unk62 = lbl_802F2114;
+    if (node->unk60 != 0)
     {
-        r29->unk64 = (void *)g_alloc_some_drawing_mem(0x30);
-        mathutil_mtx_copy(lbl_802B4E6C, *r29->unk64);
+        node->unk64 = ord_tbl_alloc_node(sizeof(*node->unk64));
+        mathutil_mtx_copy(lbl_802B4E6C, *node->unk64);
     }
-    if (r29->unk61 != 0)
-        r29->unk68 = lbl_802F2110;
-    if (r29->unk62 != 0)
-        r29->unk6C = lbl_802F2118;
-    r29->unk70 = lbl_802F211C;
-    mathutil_mtxA_to_mtx(r29->unkC);
-    func_80085B78(r28, r29);
+    if (node->unk61 != 0)
+        node->unk68 = lbl_802F2110;
+    if (node->unk62 != 0)
+        node->unk6C = lbl_802F2118;
+    node->unk70 = lbl_802F211C;
+    mathutil_mtxA_to_mtx(node->unkC);
+    ord_tbl_insert_node(list, &node->node);
     return skip_mesh(mesh);
 }
 

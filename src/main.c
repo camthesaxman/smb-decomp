@@ -8,6 +8,7 @@
 #include "input.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "ord_tbl.h"
 #include "perf.h"
 #include "stage.h"
 
@@ -24,7 +25,7 @@ struct NaomiModel *lbl_802F1B4C;
 void *dvdReadBuffer;
 void *lbl_802F1B44;
 void *lbl_802F1B40;
-Mtx *lbl_802F1B3C;
+struct Struct802F1B3C *lbl_802F1B3C;
 u32 globalFrameCounter;
 u32 unpausedFrameCounter;
 GXRenderModeObj *currRenderMode;
@@ -71,8 +72,8 @@ void main(void)
     func_800487B4();
     camera_init();
     polydisp_init();
-    func_80085B54(lbl_802F1B44, 0x10000);
-    func_800855CC(0.0f, 0.0f, 400.0f, lbl_80292E70, 0x4000);
+    ord_tbl_init_buffer(lbl_802F1B44, 0x10000);
+    g_ord_tbl_init_list_stuff(0.0f, 0.0f, 400.0f, lbl_80292E70, 0x4000);
     func_80092498();
     func_800948F4();
     func_800248DC();

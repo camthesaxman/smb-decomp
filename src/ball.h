@@ -202,4 +202,3 @@ void func_8003CDC0(struct Ball *);
 void func_8003D3C4(struct Ball *);
 void animate_ball_size_change(struct Ball *);
 // ? g_ball_draw();
-void lbl_8003D928(struct Struct80038840 *);

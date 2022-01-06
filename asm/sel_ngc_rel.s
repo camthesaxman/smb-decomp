@@ -19593,10 +19593,10 @@ lbl_00011A3C:
 /* 00011A4C 2C000002 */ cmpwi r0, 2
 /* 00011A50 40820018 */ bne lbl_00011A68
 /* 00011A54 C03F0018 */ lfs f1, 0x18(r31)
-/* 00011A58 4BFEE731 */ bl func_80085678
+/* 00011A58 4BFEE731 */ bl g_ord_tbl_set_some_float
 /* 00011A5C 4BFEE72D */ bl background_draw
 /* 00011A60 C03F0008 */ lfs f1, 8(r31)
-/* 00011A64 4BFEE725 */ bl func_80085678
+/* 00011A64 4BFEE725 */ bl g_ord_tbl_set_some_float
 lbl_00011A68:
 /* 00011A68 3C600000 */ lis r3, eventInfo@ha
 /* 00011A6C 38630000 */ addi r3, r3, eventInfo@l
@@ -19637,7 +19637,7 @@ lbl_00011AD0:
 /* 00011AE8 38600000 */ li r3, 0
 /* 00011AEC 4BFEE69D */ bl g_something_with_lens_flare_1
 lbl_00011AF0:
-/* 00011AF0 4BFEE699 */ bl func_800858CC
+/* 00011AF0 4BFEE699 */ bl ord_tbl_draw_nodes
 /* 00011AF4 801D0000 */ lwz r0, 0(r29)
 /* 00011AF8 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00011AFC 4182000C */ beq lbl_00011B08

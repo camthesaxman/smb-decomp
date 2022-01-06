@@ -11448,10 +11448,10 @@ lbl_0000ACD0:
 /* 0000ACD8 2C000002 */ cmpwi r0, 2
 /* 0000ACDC 40820018 */ bne lbl_0000ACF4
 /* 0000ACE0 C03C0024 */ lfs f1, 0x24(r28)
-/* 0000ACE4 4BFF5481 */ bl func_80085678
+/* 0000ACE4 4BFF5481 */ bl g_ord_tbl_set_some_float
 /* 0000ACE8 4BFF547D */ bl background_draw
 /* 0000ACEC C03C000C */ lfs f1, 0xc(r28)
-/* 0000ACF0 4BFF5475 */ bl func_80085678
+/* 0000ACF0 4BFF5475 */ bl g_ord_tbl_set_some_float
 lbl_0000ACF4:
 /* 0000ACF4 881F0078 */ lbz r0, 0x78(r31)
 /* 0000ACF8 2C000002 */ cmpwi r0, 2
@@ -11475,7 +11475,7 @@ lbl_0000AD24:
 lbl_0000AD34:
 /* 0000AD34 480025C5 */ bl lbl_0000D2F8
 /* 0000AD38 48003CD9 */ bl lbl_0000EA10
-/* 0000AD3C 4BFF5429 */ bl func_800858CC
+/* 0000AD3C 4BFF5429 */ bl ord_tbl_draw_nodes
 /* 0000AD40 80160008 */ lwz r0, 8(r22)
 /* 0000AD44 540007FF */ clrlwi. r0, r0, 0x1f
 /* 0000AD48 4182000C */ beq lbl_0000AD54
@@ -11536,11 +11536,11 @@ lbl_0000ADF8:
 /* 0000AE0C 40820020 */ bne lbl_0000AE2C
 /* 0000AE10 3C600000 */ lis r3, lbl_0001C25C@ha
 /* 0000AE14 C0230000 */ lfs f1, lbl_0001C25C@l(r3)
-/* 0000AE18 4BFF534D */ bl func_80085678
+/* 0000AE18 4BFF534D */ bl g_ord_tbl_set_some_float
 /* 0000AE1C 4BFF5349 */ bl background_draw
 /* 0000AE20 3C600000 */ lis r3, lbl_0001C244@ha
 /* 0000AE24 C0230000 */ lfs f1, lbl_0001C244@l(r3)
-/* 0000AE28 4BFF533D */ bl func_80085678
+/* 0000AE28 4BFF533D */ bl g_ord_tbl_set_some_float
 lbl_0000AE2C:
 /* 0000AE2C 881F0000 */ lbz r0, 0(r31)
 /* 0000AE30 2C000002 */ cmpwi r0, 2
@@ -11577,7 +11577,7 @@ lbl_0000AE88:
 /* 0000AE9C 4BFF52C9 */ bl func_80038840
 lbl_0000AEA0:
 /* 0000AEA0 4BFF52C5 */ bl func_8009CD5C
-/* 0000AEA4 4BFF52C1 */ bl func_800858CC
+/* 0000AEA4 4BFF52C1 */ bl ord_tbl_draw_nodes
 /* 0000AEA8 3C600000 */ lis r3, backgroundInfo@ha
 /* 0000AEAC 38630000 */ addi r3, r3, backgroundInfo@l
 /* 0000AEB0 80030008 */ lwz r0, 8(r3)

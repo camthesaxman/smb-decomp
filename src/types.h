@@ -138,7 +138,8 @@ struct GMAMeshHeader
     /*0x1C*/ u32 vtxFlags;  // vtxFlags
     /*0x20*/ u8 unk20[8];
     /*0x28*/ u32 dispListSizes[2];
-    u8 unk30[0x40-0x30];
+    /*0x30*/ Vec unk30;
+    u8 filler3C[4];
     u32 unk40;
     u8 filler44[0x60-0x44];
     u8 dispListData[0];
@@ -350,60 +351,8 @@ typedef u32 (*Func802F20F0)();
 typedef void (*CameraCallback)(struct Camera *, struct Ball *);
 typedef void (*BallCallback)(struct Ball *);
 
-struct UnkStruct17
-{
-    u8 filler0[4];
-    void (*unk4)(struct UnkStruct17 *);
-    void *unk8;
-    Mtx unkC;
-    void *unk3C;
-    struct GMAMeshHeader *unk40;
-    u32 unk44;
-    u32 unk48;
-    float unk4C;
-    Func802F20EC unk50;
-    Func802F20F0 unk54;
-    u8 unk58;
-    u8 unk59;
-    u32 unk5C;
-    u8 unk60;
-    u8 unk61;
-    u8 unk62;
-    Mtx *unk64;
-    GXColor unk68;
-    GXColor unk6C;
-    u32 unk70;
-};
-
 struct NaomiModel;
 struct NaomiObj;
-
-// like UnkStruct17, but with a different fields starting at 0x3C.
-// possibly has a union?
-struct UnkStruct18
-{
-    u8 filler0[4];
-    void (*unk4)(struct UnkStruct18 *);
-    struct NaomiModel *model;
-    Mtx unkC;
-    struct Color3f unk3C;
-    u32 unk48;
-    struct Color3f unk4C;
-    u32 unk58;
-};
-
-struct UnkStruct19
-{
-    u8 filler0[4];
-    void (*unk4)(struct UnkStruct19 *);
-    struct NaomiModel *model;
-    Mtx unkC;
-    struct Color3f unk3C;
-    float unk48;
-    u32 unk4C;
-    struct Color3f unk50;
-    u32 unk5C;
-};
 
 struct Struct80092B98
 {
@@ -494,14 +443,6 @@ struct Struct8003C550
     Vec unk88;
     u8 filler94[0xA8-0x94];
     float unkA8;
-};
-
-struct Struct80038840
-{
-    u8 filler0[4];
-    void (*unk4)(struct Struct80038840 *);
-    u32 unk8;
-    u32 unkC;
 };
 
 // motload
@@ -777,3 +718,18 @@ struct Struct802BA200
 };
 
 struct Struct80209488;
+
+struct OrdTblNode;
+
+struct Struct802F1B3C
+{
+    Mtx matrices[5];
+    struct OrdTblNode *entries;
+    s32 maxEntries;
+    float unkF8;
+    float unkFC;
+    float unk100;
+    struct OrdTblNode *lastEntry;
+    struct OrdTblNode *firstEntry;
+    float unk10C;
+};

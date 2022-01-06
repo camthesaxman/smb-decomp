@@ -113,7 +113,8 @@ SOURCES := \
 	src/sprite.c \
 	asm/sprite.s \
 	asm/minimap.s \
-	asm/ord_tbl.s \
+	src/ord_tbl.c \
+	asm/code_3.s \
 	asm/mot_ape.s \
 	src/lzs_decompress.c \
 	src/avdisp.c \

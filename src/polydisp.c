@@ -12,6 +12,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "ord_tbl.h"
 #include "stage.h"
 
 #include "../data/common.gma.h"
@@ -89,7 +90,7 @@ void polydisp_main(void)
 
 void draw_3d_scene(void)
 {
-    func_80085620();
+    ord_tbl_reset_list();
     func_800226F4();
     switch (gameMode)
     {
@@ -199,7 +200,7 @@ void draw_3d_scene(void)
         break;
     }
     func_800188D4();
-    func_800858CC();
+    ord_tbl_draw_nodes();
 }
 
 void func_8000B8AC(void)
@@ -224,7 +225,7 @@ void func_8000B8AC(void)
     case 17:
     case 18:
         draw_normal_game_scene();
-        func_800858CC();
+        ord_tbl_draw_nodes();
         func_8000C388();
         break;
     }
@@ -314,9 +315,9 @@ void func_8000B96C(void)
         if (lbl_801EED2C.unk4 & (1 << (31-0x14)))
             func_80094A34();
 
-        func_80085678(400.0f);
+        g_ord_tbl_set_some_float(400.0f);
         background_draw();
-        func_80085678(0.0f);
+        g_ord_tbl_set_some_float(0.0f);
 
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
             func_80095398(16);
@@ -340,7 +341,7 @@ void func_8000B96C(void)
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         g_something_with_lens_flare_1(0);
     func_8000D220();
-    func_800858CC();
+    ord_tbl_draw_nodes();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         g_something_with_lens_flare_2(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -439,7 +440,7 @@ void func_8000BCA4(void)
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     func_8008E564(1.0 - lbl_801EED3C.unkC);
     g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
-    func_800858CC();
+    ord_tbl_draw_nodes();
 }
 
 const GXColor lbl_802F2978 = {0, 0, 0, 0};
@@ -571,9 +572,9 @@ void draw_normal_game_scene(void)
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
-                func_80085678(400.0f);
+                g_ord_tbl_set_some_float(400.0f);
                 background_draw();
-                func_80085678(0.0f);
+                g_ord_tbl_set_some_float(0.0f);
             }
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
@@ -591,7 +592,7 @@ void draw_normal_game_scene(void)
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_1(i);
             func_8000D220();
-            func_800858CC();
+            ord_tbl_draw_nodes();
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -621,9 +622,9 @@ void func_8000C7A4(void)
                 stage_draw();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
-                func_80085678(400.0f);
+                g_ord_tbl_set_some_float(400.0f);
                 background_draw();
-                func_80085678(0.0f);
+                g_ord_tbl_set_some_float(0.0f);
             }
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
                 item_draw();
@@ -633,7 +634,7 @@ void func_8000C7A4(void)
                 func_80038840();
             func_8000C8D4();
             func_8000D220();
-            func_800858CC();
+            ord_tbl_draw_nodes();
         }
     }
     lbl_801EEC90.unk0 &= ~(1 << 3);
@@ -753,7 +754,7 @@ void func_8000CA9C(void)
         background_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
         effect_draw();
-    func_800858CC();
+    ord_tbl_draw_nodes();
     r4 = modeCtrl.unk0;
     if (r4 > 60)
         r4 = 60;
@@ -865,7 +866,7 @@ void func_8000CF94(void)
         background_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
         effect_draw();
-    func_800858CC();
+    ord_tbl_draw_nodes();
 }
 
 void func_8000D018(void)
@@ -897,9 +898,9 @@ void func_8000D018(void)
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
-                func_80085678(400.0f);
+                g_ord_tbl_set_some_float(400.0f);
                 background_draw();
-                func_80085678(0.0f);
+                g_ord_tbl_set_some_float(0.0f);
             }
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(16);
@@ -914,7 +915,7 @@ void func_8000D018(void)
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_1(i);
             func_8000D220();
-            func_800858CC();
+            ord_tbl_draw_nodes();
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -954,7 +955,7 @@ void func_8000D220(void)
         mathutil_mtxA_rotate_z((globalFrameCounter << 8) * 0.8f);
 
         mathutil_mtxA_tf_point_xyz(&light4pos, 0.0f, 10.0f, 0.0f);
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
 
         // Light 2
         GXInitLightSpot(&lightObj, 0.0f, GX_SP_OFF);
@@ -996,7 +997,7 @@ void func_8000D220(void)
         GXSetNumTexGens(0);
         func_8009F2C8(1);
 
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         mathutil_mtxA_translate(&currentCameraStructPtr->lookAt);
         mathutil_mtxA_scale_xyz(0.05f, 0.05f, 0.05f);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -1201,9 +1202,9 @@ void func_8000DEE8(void)
 
 void draw_monkey(void)
 {
-    func_80085684(0.5f);
+    g_ord_tbl_add_some_float(0.5f);
     func_8008D158(0x00FFFF7F);
-    func_80085684(-0.5f);
+    g_ord_tbl_add_some_float(-0.5f);
 }
 
 void func_8000E134(void)

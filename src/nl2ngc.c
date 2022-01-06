@@ -8,6 +8,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
+#include "ord_tbl.h"
 
 float lbl_802F1EFC;
 float lbl_802F1EF8;
@@ -61,7 +62,6 @@ static void prep_some_stuff_before_drawing(void);
 static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh);
 static void prep_some_stuff_before_drawing_2(void);
 void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh);
-static void lbl_80033C8C(struct UnkStruct18 *);
 
 #pragma force_active on
 void func_80030AC4(float a)
@@ -367,6 +367,19 @@ void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
     }
 }
 
+struct UnkStruct18
+{
+    struct OrdTblNode node;
+    struct NaomiModel *model;
+    Mtx unkC;
+    struct Color3f unk3C;
+    u32 unk48;
+    struct Color3f unk4C;
+    u32 unk58;
+};
+
+static void lbl_80033C8C(struct UnkStruct18 *);
+
 void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
 {
     u32 *temp;
@@ -394,10 +407,10 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
-            int r28 = func_80085698(&model->unk8);
-            r29 = g_alloc_some_drawing_mem(0x5C);
+            struct OrdTblNode *list = g_ord_tbl_get_list_head_1(&model->unk8);
+            r29 = ord_tbl_alloc_node(sizeof(*r29));
 
-            r29->unk4 = lbl_80033C8C;
+            r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033C8C;
             r29->model = model;
             r29->unk3C.r = lbl_801B7978.unk0.r;
             r29->unk3C.g = lbl_801B7978.unk0.g;
@@ -408,7 +421,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
             r29->unk4C.b = g_someAmbColor.b;
             r29->unk58 = lbl_802F1EEC;
             mathutil_mtxA_to_mtx(r29->unkC);
-            func_80085B78(r28, r29);
+            ord_tbl_insert_node(list, &r29->node);
         }
     }
 }
@@ -488,12 +501,24 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
     }
 }
 
+struct UnkStruct19
+{
+    struct OrdTblNode node;
+    struct NaomiModel *model;
+    Mtx unkC;
+    struct Color3f unk3C;
+    float unk48;
+    u32 unk4C;
+    struct Color3f unk50;
+    u32 unk5C;
+};
+
 void lbl_80033E6C(struct UnkStruct19 *);
 
 void func_800314B8(struct NaomiModel *model, float b)
 {
     struct UnkStruct19 *r29;
-    int r28;
+    struct OrdTblNode *list;
 
     if (model->unk0 != -1)
     {
@@ -513,10 +538,10 @@ void func_800314B8(struct NaomiModel *model, float b)
             lbl_801B7978.unk18 = 1.0f;
         }
 
-        r28 = func_80085698(&model->unk8);
-        r29 = g_alloc_some_drawing_mem(0x60);
+        list = g_ord_tbl_get_list_head_1(&model->unk8);
+        r29 = ord_tbl_alloc_node(sizeof(*r29));
 
-        r29->unk4 = lbl_80033E6C;
+        r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
         r29->model = model;
         r29->unk48 = b;
         r29->unk3C.r = lbl_801B7978.unk0.r;
@@ -528,7 +553,7 @@ void func_800314B8(struct NaomiModel *model, float b)
         r29->unk50.b = g_someAmbColor.b;
         r29->unk5C = lbl_802F1EEC;
         mathutil_mtxA_to_mtx(r29->unkC);
-        func_80085B78(r28, r29);
+        ord_tbl_insert_node(list, &r29->node);
     }
 }
 

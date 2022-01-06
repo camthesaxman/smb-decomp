@@ -8,6 +8,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
+#include "ord_tbl.h"
 #include "stage.h"
 
 void lbl_00000C9C(void)
@@ -43,9 +44,9 @@ void lbl_00000C9C(void)
 
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
     {
-        func_80085678(400.0f);
+        g_ord_tbl_set_some_float(400.0f);
         background_draw();
-        func_80085678(0.0f);
+        g_ord_tbl_set_some_float(0.0f);
     }
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(16);

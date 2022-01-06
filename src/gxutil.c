@@ -5,6 +5,7 @@
 #include "gxutil.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
+#include "ord_tbl.h"
 
 struct Struct80171B40
 {
@@ -241,8 +242,7 @@ void func_8009AE18(u16 numPoints, Point3d *points, GXColor *color)
 
 struct Struct8009B048_1
 {
-    u8 filler0[4];
-    void (*unk4)(struct Struct8009B048_1 *);
+    struct OrdTblNode node;
     Mtx unk8;
     GXPrimitive primType;
     u16 vtxCount;
@@ -257,11 +257,11 @@ void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
 {
     struct Struct8009B048_1 *r31;
     Point3d *points;
-    int r30 = func_80085698(start);
+    struct OrdTblNode *list = g_ord_tbl_get_list_head_1(start);
 
-    r31 = g_alloc_some_drawing_mem(sizeof(*r31));
-    points = g_alloc_some_drawing_mem(2 * sizeof(Point3d));
-    r31->unk4 = lbl_8009B140;
+    r31 = ord_tbl_alloc_node(sizeof(*r31));
+    points = ord_tbl_alloc_node(2 * sizeof(Point3d));
+    r31->node.drawFunc = (OrdTblDrawFunc)lbl_8009B140;
     r31->primType = GX_LINES;
     r31->vtxCount = 2;
     r31->unk48 = lineInfo;
@@ -270,7 +270,7 @@ void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
     points[1] = *end;
     r31->points = points;
     mathutil_mtxA_to_mtx(r31->unk8);
-    func_80085B78(r30, r31);
+    ord_tbl_insert_node(list, &r31->node);
 }
 
 static void lbl_8009B140(struct Struct8009B048_1 *a)
@@ -321,8 +321,7 @@ void func_8009B474(struct PointWithColor *start, struct PointWithColor *end)
 
 struct Struct8009B538_1
 {
-    u8 filler0[4];
-    void (*unk4)(struct Struct8009B538_1 *);
+    struct OrdTblNode node;
     Mtx unk8;
     GXPrimitive primType;
     u16 vtxCount;
@@ -336,11 +335,11 @@ void func_8009B538(struct PointWithColor *start, struct PointWithColor *end)
 {
     struct Struct8009B538_1 *r31;
     struct PointWithColor *points;
-    int r30 = func_80085698(start);
+    struct OrdTblNode *list = g_ord_tbl_get_list_head_1(&start->pos);
 
-    r31 = g_alloc_some_drawing_mem(sizeof(*r31));
-    points = g_alloc_some_drawing_mem(2 * sizeof(struct PointWithColor));
-    r31->unk4 = lbl_8009B74C;
+    r31 = ord_tbl_alloc_node(sizeof(*r31));
+    points = ord_tbl_alloc_node(2 * sizeof(struct PointWithColor));
+    r31->node.drawFunc = (OrdTblDrawFunc)lbl_8009B74C;
     r31->primType = GX_LINES;
     r31->vtxCount = 2;
     r31->unk44 = lineInfo;
@@ -348,7 +347,7 @@ void func_8009B538(struct PointWithColor *start, struct PointWithColor *end)
     points[1] = *end;
     r31->points = points;
     mathutil_mtxA_to_mtx(r31->unk8);
-    func_80085B78(r30, r31);
+    ord_tbl_insert_node(list, &r31->node);
 }
 
 void prepare_for_drawing_lines(void)

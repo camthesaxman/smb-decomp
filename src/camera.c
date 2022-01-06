@@ -367,10 +367,10 @@ void func_80017FCC(void)
     lbl_802F1C40 = 4;
     lbl_802F1C34 = 4;
     mathutil_mtx_copy(cameraInfo[0].unk144, mathutilData->mtxB);
-    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C[2]);
-    mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C[3]);
-    mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C[0]);
-    mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C[4]);
+    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
+    mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C->matrices[3]);
+    mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C->matrices[0]);
+    mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C->matrices[4]);
     C_MTXPerspective(sp1C, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
     GXSetProjection(sp1C, 0);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
@@ -480,14 +480,14 @@ void camera_apply_viewport(int cameraId)
     lbl_802F1C34 = cameraId;
     currentCameraStructPtr = camera;
     mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
-    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C[2]);
-    mathutil_mtx_copy(camera->unk174, lbl_802F1B3C[3]);
-    mathutil_mtx_copy(camera->unk1A4, lbl_802F1B3C[0]);
-    mathutil_mtx_copy(camera->unk1D4, lbl_802F1B3C[4]);
-    mathutil_mtx_copy(lbl_802F1B3C[0], lbl_802F1B3C[1]);
-    lbl_802F1B3C[1][0][3] = 0.0f;
-    lbl_802F1B3C[1][1][3] = -camera->eye.y;
-    lbl_802F1B3C[1][2][3] = 0.0f;
+    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
+    mathutil_mtx_copy(camera->unk174, lbl_802F1B3C->matrices[3]);
+    mathutil_mtx_copy(camera->unk1A4, lbl_802F1B3C->matrices[0]);
+    mathutil_mtx_copy(camera->unk1D4, lbl_802F1B3C->matrices[4]);
+    mathutil_mtx_copy(lbl_802F1B3C->matrices[0], lbl_802F1B3C->matrices[1]);
+    lbl_802F1B3C->matrices[1][0][3] = 0.0f;
+    lbl_802F1B3C->matrices[1][1][3] = -camera->eye.y;
+    lbl_802F1B3C->matrices[1][2][3] = 0.0f;
     if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && cameraId == 0)
     {
         C_MTXPerspective(
@@ -545,14 +545,14 @@ void camera_apply_viewport_2(int cameraId)
     lbl_802F1C40 = cameraId;
     currentCameraStructPtr = camera;
     mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
-    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C[2]);
-    mathutil_mtx_copy(camera->unk174, lbl_802F1B3C[3]);
-    mathutil_mtx_copy(camera->unk1A4, lbl_802F1B3C[0]);
-    mathutil_mtx_copy(camera->unk1D4, lbl_802F1B3C[4]);
-    mathutil_mtx_copy(lbl_802F1B3C[0], lbl_802F1B3C[1]);
-    lbl_802F1B3C[1][0][3] = 0.0f;
-    lbl_802F1B3C[1][1][3] = -camera->eye.y;
-    lbl_802F1B3C[1][2][3] = 0.0f;
+    mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
+    mathutil_mtx_copy(camera->unk174, lbl_802F1B3C->matrices[3]);
+    mathutil_mtx_copy(camera->unk1A4, lbl_802F1B3C->matrices[0]);
+    mathutil_mtx_copy(camera->unk1D4, lbl_802F1B3C->matrices[4]);
+    mathutil_mtx_copy(lbl_802F1B3C->matrices[0], lbl_802F1B3C->matrices[1]);
+    lbl_802F1B3C->matrices[1][0][3] = 0.0f;
+    lbl_802F1B3C->matrices[1][1][3] = -camera->eye.y;
+    lbl_802F1B3C->matrices[1][2][3] = 0.0f;
     if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && cameraId == 0)
     {
         C_MTXPerspective(

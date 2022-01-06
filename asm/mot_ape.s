@@ -3367,10 +3367,10 @@ lbl_8008C9A8:
 /* 8008C9E8 00088908  41 80 00 78 */	blt lbl_8008CA60
 /* 8008C9EC 0008890C  4B F7 AF C1 */	bl mathutil_mtxA_from_mtxB
 /* 8008C9F0 00088910  38 7F 00 30 */	addi r3, r31, 0x30
-/* 8008C9F4 00088914  4B FF 8C A5 */	bl func_80085698
+/* 8008C9F4 00088914  4B FF 8C A5 */	bl g_ord_tbl_get_list_head_1
 /* 8008C9F8 00088918  3B 83 00 00 */	addi r28, r3, 0
 /* 8008C9FC 0008891C  38 60 00 14 */	li r3, 0x14
-/* 8008CA00 00088920  4B FF 91 89 */	bl g_alloc_some_drawing_mem
+/* 8008CA00 00088920  4B FF 91 89 */	bl ord_tbl_alloc_node
 /* 8008CA04 00088924  3C 80 80 09 */	lis r4, lbl_8008CA80@ha
 /* 8008CA08 00088928  38 04 CA 80 */	addi r0, r4, lbl_8008CA80@l
 /* 8008CA0C 0008892C  90 03 00 04 */	stw r0, 4(r3)
@@ -3389,7 +3389,7 @@ lbl_8008C9A8:
 /* 8008CA40 00088960  7C 05 02 14 */	add r0, r5, r0
 /* 8008CA44 00088964  7C 1E 04 2E */	lfsx f0, r30, r0
 /* 8008CA48 00088968  D0 1D 00 10 */	stfs f0, 0x10(r29)
-/* 8008CA4C 0008896C  4B FF 91 2D */	bl func_80085B78
+/* 8008CA4C 0008896C  4B FF 91 2D */	bl ord_tbl_insert_node
 /* 8008CA50 00088970  48 00 00 10 */	b lbl_8008CA60
 lbl_8008CA54:
 /* 8008CA54 00088974  7F E3 FB 78 */	mr r3, r31

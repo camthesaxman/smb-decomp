@@ -823,10 +823,10 @@ lbl_00000C10:
 /* 00000C1C 2C000002 */ cmpwi r0, 2
 /* 00000C20 40820018 */ bne lbl_00000C38
 /* 00000C24 C03E1CE0 */ lfs f1, 0x1ce0(r30)
-/* 00000C28 4BFFF539 */ bl func_80085678
+/* 00000C28 4BFFF539 */ bl g_ord_tbl_set_some_float
 /* 00000C2C 4BFFF535 */ bl background_draw
 /* 00000C30 C03E1C98 */ lfs f1, 0x1c98(r30)
-/* 00000C34 4BFFF52D */ bl func_80085678
+/* 00000C34 4BFFF52D */ bl g_ord_tbl_set_some_float
 lbl_00000C38:
 /* 00000C38 3C600000 */ lis r3, eventInfo@ha
 /* 00000C3C 38630000 */ addi r3, r3, eventInfo@l

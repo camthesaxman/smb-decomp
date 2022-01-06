@@ -11620,10 +11620,10 @@ lbl_0000AB20:
 /* 0000AB28 2C000002 */ cmpwi r0, 2
 /* 0000AB2C 40820018 */ bne lbl_0000AB44
 /* 0000AB30 C03A0004 */ lfs f1, 4(r26)
-/* 0000AB34 4BFF5649 */ bl func_80085678
+/* 0000AB34 4BFF5649 */ bl g_ord_tbl_set_some_float
 /* 0000AB38 4BFF5645 */ bl background_draw
 /* 0000AB3C C03A0000 */ lfs f1, 0(r26)
-/* 0000AB40 4BFF563D */ bl func_80085678
+/* 0000AB40 4BFF563D */ bl g_ord_tbl_set_some_float
 lbl_0000AB44:
 /* 0000AB44 88160000 */ lbz r0, 0(r22)
 /* 0000AB48 2C000002 */ cmpwi r0, 2
@@ -11665,7 +11665,7 @@ lbl_0000AB88:
 /* 0000ABC8 48000999 */ bl lbl_0000B560
 lbl_0000ABCC:
 /* 0000ABCC 4BFF55B1 */ bl func_8000D220
-/* 0000ABD0 4BFF55AD */ bl func_800858CC
+/* 0000ABD0 4BFF55AD */ bl ord_tbl_draw_nodes
 /* 0000ABD4 80130008 */ lwz r0, 8(r19)
 /* 0000ABD8 540007FF */ clrlwi. r0, r0, 0x1f
 /* 0000ABDC 4182000C */ beq lbl_0000ABE8
@@ -12462,10 +12462,10 @@ lbl_0000B758:
 /* 0000B760 2C000002 */ cmpwi r0, 2
 /* 0000B764 40820018 */ bne lbl_0000B77C
 /* 0000B768 C03C0004 */ lfs f1, 4(r28)
-/* 0000B76C 4BFF4A11 */ bl func_80085678
+/* 0000B76C 4BFF4A11 */ bl g_ord_tbl_set_some_float
 /* 0000B770 4BFF4A0D */ bl background_draw
 /* 0000B774 C03C0000 */ lfs f1, 0(r28)
-/* 0000B778 4BFF4A05 */ bl func_80085678
+/* 0000B778 4BFF4A05 */ bl g_ord_tbl_set_some_float
 lbl_0000B77C:
 /* 0000B77C 88190000 */ lbz r0, 0(r25)
 /* 0000B780 2C000002 */ cmpwi r0, 2
@@ -12494,7 +12494,7 @@ lbl_0000B7C0:
 /* 0000B7CC 4BFF49B1 */ bl func_80038840
 lbl_0000B7D0:
 /* 0000B7D0 4BFF49AD */ bl func_8000D220
-/* 0000B7D4 4BFF49A9 */ bl func_800858CC
+/* 0000B7D4 4BFF49A9 */ bl ord_tbl_draw_nodes
 /* 0000B7D8 80160008 */ lwz r0, 8(r22)
 /* 0000B7DC 540007FF */ clrlwi. r0, r0, 0x1f
 /* 0000B7E0 4182000C */ beq lbl_0000B7EC

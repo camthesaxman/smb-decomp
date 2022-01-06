@@ -717,10 +717,10 @@ void bg_e3_draw(void)
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != 0)
     {
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1099,10 +1099,10 @@ void bg_night_draw(void)
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1134,10 +1134,10 @@ void bg_ice2_draw(void)
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1209,10 +1209,10 @@ void bg_billiards_draw(void)
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1244,10 +1244,10 @@ void bg_golf_draw(void)
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -1279,10 +1279,10 @@ void bg_bowling_draw(void)
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
-        mathutil_mtxA_from_mtx(lbl_802F1B3C[0]);
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);

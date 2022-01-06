@@ -670,7 +670,7 @@ extern struct
 // extern ? lbl_80292CB8;
 // extern ? lbl_80292D18;
 // extern ? lbl_80292D30;
-// extern ? lbl_80292E60;
+// extern ? ordTblAllocInfo;
 extern u8 lbl_80292E70[];
 // extern ? lbl_802B2E70;
 // extern ? lbl_802B37B0;
@@ -1177,7 +1177,8 @@ extern OSHeapHandle memHeap5;
 extern GXRenderModeObj *currRenderMode;
 extern u32 unpausedFrameCounter;
 extern u32 globalFrameCounter;
-extern Mtx *lbl_802F1B3C;
+extern struct Struct802F1B3C *lbl_802F1B3C;
+//extern Mtx *lbl_802F1B3C;
 extern void *lbl_802F1B40;
 extern void *lbl_802F1B44;
 extern void *dvdReadBuffer;

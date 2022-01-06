@@ -12,6 +12,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "ord_tbl.h"
 #include "stage.h"
 
 #include "../data/common.gma.h"
@@ -1071,6 +1072,15 @@ void ev_ball_dest(void)
         ball->unk0 = 0;
 }
 
+struct Struct80038840
+{
+    struct OrdTblNode node;
+    u32 unk8;
+    u32 unkC;
+};
+
+void lbl_8003D928(struct Struct80038840 *);
+
 void func_80038840(void)
 {
     struct Ball *ball;
@@ -1078,7 +1088,7 @@ void func_80038840(void)
     int i;
     int (*func)();
     struct Struct80038840 *r23;
-    int r22;
+    struct OrdTblNode *list;
     Func802F20EC bgfunc;
     int unused;
 
@@ -1109,12 +1119,12 @@ void func_80038840(void)
         {
             // Draw new ball
             mathutil_mtxA_from_mtxB();
-            r22 = func_80085698(&ball->pos);
-            r23 = (void *)g_alloc_some_drawing_mem(16);
-            r23->unk4 = lbl_8003D928;
+            list = g_ord_tbl_get_list_head_1(&ball->pos);
+            r23 = ord_tbl_alloc_node(sizeof(*r23));
+            r23->node.drawFunc = (OrdTblDrawFunc)lbl_8003D928;
             r23->unk8 = func_800223D0();
             r23->unkC = i;
-            func_80085B78(r22, r23);
+            ord_tbl_insert_node(list, &r23->node);
             continue;
         }
 

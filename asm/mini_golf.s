@@ -7134,7 +7134,7 @@ lbl_000069E8:
 /* 000069E8 5720063E */ clrlwi r0, r25, 0x18
 /* 000069EC 28000014 */ cmplwi r0, 0x14
 /* 000069F0 4180FF48 */ blt lbl_00006938
-/* 000069F4 4BFF97DD */ bl func_800858CC
+/* 000069F4 4BFF97DD */ bl ord_tbl_draw_nodes
 /* 000069F8 38600001 */ li r3, 1
 /* 000069FC 4800A46D */ bl lbl_00010E68
 /* 00006A00 48001518 */ b lbl_00007F18
@@ -11876,10 +11876,10 @@ lbl_0000AEC8:
 /* 0000AED0 2C000002 */ cmpwi r0, 2
 /* 0000AED4 40820018 */ bne lbl_0000AEEC
 /* 0000AED8 C03F0280 */ lfs f1, 0x280(r31)
-/* 0000AEDC 4BFF52F5 */ bl func_80085678
+/* 0000AEDC 4BFF52F5 */ bl g_ord_tbl_set_some_float
 /* 0000AEE0 4BFF52F1 */ bl background_draw
 /* 0000AEE4 C03F0000 */ lfs f1, 0(r31)
-/* 0000AEE8 4BFF52E9 */ bl func_80085678
+/* 0000AEE8 4BFF52E9 */ bl g_ord_tbl_set_some_float
 lbl_0000AEEC:
 /* 0000AEEC 880E0018 */ lbz r0, 0x18(r14)
 /* 0000AEF0 7C000774 */ extsb r0, r0
@@ -11916,7 +11916,7 @@ lbl_0000AF4C:
 /* 0000AF54 40820008 */ bne lbl_0000AF5C
 /* 0000AF58 4BFF5279 */ bl func_80038840
 lbl_0000AF5C:
-/* 0000AF5C 4BFF5275 */ bl func_800858CC
+/* 0000AF5C 4BFF5275 */ bl ord_tbl_draw_nodes
 /* 0000AF60 1C160284 */ mulli r0, r22, 0x284
 /* 0000AF64 7E990214 */ add r20, r25, r0
 /* 0000AF68 3B600000 */ li r27, 0
@@ -12101,7 +12101,7 @@ lbl_0000B1F0:
 /* 0000B1F4 807D002C */ lwz r3, 0x2c(r29)
 /* 0000B1F8 4BFF4FD9 */ bl func_80018648
 lbl_0000B1FC:
-/* 0000B1FC 4BFF4FD5 */ bl func_800858CC
+/* 0000B1FC 4BFF4FD5 */ bl ord_tbl_draw_nodes
 /* 0000B200 806101B4 */ lwz r3, 0x1b4(r1)
 /* 0000B204 80030008 */ lwz r0, 8(r3)
 /* 0000B208 540007FF */ clrlwi. r0, r0, 0x1f
@@ -12110,7 +12110,7 @@ lbl_0000B1FC:
 /* 0000B214 4BFF4FBD */ bl g_something_with_lens_flare_1
 lbl_0000B218:
 /* 0000B218 4BFF4FB9 */ bl func_8000D220
-/* 0000B21C 4BFF4FB5 */ bl func_800858CC
+/* 0000B21C 4BFF4FB5 */ bl ord_tbl_draw_nodes
 /* 0000B220 806101B4 */ lwz r3, 0x1b4(r1)
 /* 0000B224 80030008 */ lwz r0, 8(r3)
 /* 0000B228 540007FF */ clrlwi. r0, r0, 0x1f
