@@ -4,6 +4,7 @@
 
 #include "global.h"
 #include "bitmap.h"
+#include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
@@ -65,12 +66,12 @@ static void lbl_80033C8C(struct UnkStruct18 *);
 #pragma force_active on
 void func_80030AC4(float a)
 {
-    func_8009AD24(a * 6.0f);
+    gxutil_set_line_width(a * 6.0f);
 }
 
 void func_80030AF8(int a /*unknown*/, int b /*unknown*/)
 {
-    func_8009AD30(1, a, b, 0);
+    g_gxutil_set_some_line_params(1, a, b, 0);
 }
 
 void func_80030B28(Vec *start, Vec *end, u32 c)
@@ -81,7 +82,7 @@ void func_80030B28(Vec *start, Vec *end, u32 c)
     color.g = (c >> 8) & 0xFF;
     color.b = (c >> 0) & 0xFF;
     color.a = (c >> 24) & 0xFF;
-    g_draw_line(start, end, &color);
+    gxutil_draw_line(start, end, &color);
 }
 #pragma force_active reset
 
@@ -441,7 +442,7 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         }
         if (model->flags & (1 << 1))
         {
-            g_set_vtx_desc(
+            gxutil_set_vtx_attrs(
                 (1 << GX_VA_POS)
               | (1 << GX_VA_CLR0)
               | (1 << GX_VA_TEX0));
@@ -449,7 +450,7 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         }
         else
         {
-            g_set_vtx_desc(
+            gxutil_set_vtx_attrs(
                 (1 << GX_VA_POS)
               | (1 << GX_VA_NRM)
               | (1 << GX_VA_TEX0));
@@ -553,7 +554,7 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
         }
         if (model->flags & (1 << 1))
         {
-            g_set_vtx_desc(
+            gxutil_set_vtx_attrs(
                 (1 << GX_VA_POS)
               | (1 << GX_VA_CLR0)
               | (1 << GX_VA_TEX0));
@@ -561,7 +562,7 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
         }
         else
         {
-            g_set_vtx_desc(
+            gxutil_set_vtx_attrs(
                 (1 << GX_VA_POS)
               | (1 << GX_VA_NRM)
               | (1 << GX_VA_TEX0));
@@ -871,7 +872,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
 
 void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
 {
-    g_set_vtx_desc(
+    gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
       | (1 << GX_VA_NRM)
       | (1 << GX_VA_TEX0));
@@ -981,7 +982,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
 
 void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
 {
-    g_set_vtx_desc(
+    gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
       | (1 << GX_VA_CLR0)
       | (1 << GX_VA_TEX0));
@@ -1374,7 +1375,7 @@ static inline void handle_color_vtx(struct NaomiVtxWithColor *vtx)
 
 void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 {
-    g_set_vtx_desc(
+    gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
       | (1 << GX_VA_CLR0)
       | (1 << GX_VA_TEX0));
@@ -1522,7 +1523,7 @@ void g_draw_naomi_model_3(struct NaomiModel *model)
 
     if (model->flags & (1 << 1))
     {
-        g_set_vtx_desc(
+        gxutil_set_vtx_attrs(
             (1 << GX_VA_POS)
           | (1 << GX_VA_CLR0)
           | (1 << GX_VA_TEX0));
@@ -1530,7 +1531,7 @@ void g_draw_naomi_model_3(struct NaomiModel *model)
     }
     else
     {
-        g_set_vtx_desc(
+        gxutil_set_vtx_attrs(
             (1 << GX_VA_POS)
           | (1 << GX_VA_NRM)
           | (1 << GX_VA_TEX0));
@@ -1604,7 +1605,7 @@ void g_draw_naomi_model_4(struct NaomiModel *model)
 
     if (model->flags & (1 << 1))
     {
-        g_set_vtx_desc(
+        gxutil_set_vtx_attrs(
             (1 << GX_VA_POS)
           | (1 << GX_VA_CLR0)
           | (1 << GX_VA_TEX0));
@@ -1612,7 +1613,7 @@ void g_draw_naomi_model_4(struct NaomiModel *model)
     }
     else
     {
-        g_set_vtx_desc(
+        gxutil_set_vtx_attrs(
             (1 << GX_VA_POS)
           | (1 << GX_VA_NRM)
           | (1 << GX_VA_TEX0));
@@ -1690,7 +1691,7 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
 
     if (model->flags & (1 << 1))
     {
-        g_set_vtx_desc(
+        gxutil_set_vtx_attrs(
             (1 << GX_VA_POS)
           | (1 << GX_VA_CLR0)
           | (1 << GX_VA_TEX0));
@@ -1698,7 +1699,7 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
     }
     else
     {
-        g_set_vtx_desc(
+        gxutil_set_vtx_attrs(
             (1 << GX_VA_POS)
           | (1 << GX_VA_NRM)
           | (1 << GX_VA_TEX0));
@@ -1757,7 +1758,7 @@ void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
         }
         if (model->flags & (1 << 1))
         {
-            g_set_vtx_desc(
+            gxutil_set_vtx_attrs(
                 (1 << GX_VA_POS)
               | (1 << GX_VA_CLR0)
               | (1 << GX_VA_TEX0));
@@ -1765,7 +1766,7 @@ void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
         }
         else
         {
-            g_set_vtx_desc(
+            gxutil_set_vtx_attrs(
                 (1 << GX_VA_POS)
               | (1 << GX_VA_NRM)
               | (1 << GX_VA_TEX0));

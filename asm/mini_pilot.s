@@ -4544,7 +4544,7 @@ lbl_0000424C:
 /* 000042F4 3B630000 */ addi r27, r3, mathutilData@l
 /* 000042F8 807B0000 */ lwz r3, 0(r27)
 /* 000042FC 38800000 */ li r4, 0
-/* 00004300 4BFFBE4D */ bl func_8009AA24
+/* 00004300 4BFFBE4D */ bl g_gxutil_upload_some_mtx
 /* 00004304 3C600000 */ lis r3, lbl_802F1CB8@ha
 /* 00004308 3B830000 */ addi r28, r3, lbl_802F1CB8@l
 /* 0000430C 807C0000 */ lwz r3, 0(r28)
@@ -4565,7 +4565,7 @@ lbl_0000424C:
 /* 00004348 4BFFBE05 */ bl mathutil_mtxA_rotate_y
 /* 0000434C 807B0000 */ lwz r3, 0(r27)
 /* 00004350 38800000 */ li r4, 0
-/* 00004354 4BFFBDF9 */ bl func_8009AA24
+/* 00004354 4BFFBDF9 */ bl g_gxutil_upload_some_mtx
 /* 00004358 807C0000 */ lwz r3, 0(r28)
 /* 0000435C 80630008 */ lwz r3, 8(r3)
 /* 00004360 806300E0 */ lwz r3, 0xe0(r3)
@@ -4582,7 +4582,7 @@ lbl_00004368:
 /* 00004388 38630000 */ addi r3, r3, mathutilData@l
 /* 0000438C 80630000 */ lwz r3, 0(r3)
 /* 00004390 38800000 */ li r4, 0
-/* 00004394 4BFFBDB9 */ bl func_8009AA24
+/* 00004394 4BFFBDB9 */ bl g_gxutil_upload_some_mtx
 /* 00004398 881D014A */ lbz r0, 0x14a(r29)
 /* 0000439C 3C600000 */ lis r3, lbl_802F1CB8@ha
 /* 000043A0 3BE30000 */ addi r31, r3, lbl_802F1CB8@l
@@ -4687,7 +4687,7 @@ lbl_00004450:
 /* 00004524 38630000 */ addi r3, r3, mathutilData@l
 /* 00004528 80630000 */ lwz r3, 0(r3)
 /* 0000452C 38800000 */ li r4, 0
-/* 00004530 4BFFBC1D */ bl func_8009AA24
+/* 00004530 4BFFBC1D */ bl g_gxutil_upload_some_mtx
 /* 00004534 FC20F890 */ fmr f1, f31
 /* 00004538 4BFFBC15 */ bl g_avdisp_set_model_scale
 /* 0000453C 3C600000 */ lis r3, lbl_802F1CB8@ha
@@ -4890,7 +4890,7 @@ lbl_0000475C:
 /* 0000483C 4BFFB911 */ bl g_avdisp_set_model_scale
 /* 00004840 80720000 */ lwz r3, 0(r18)
 /* 00004844 38800000 */ li r4, 0
-/* 00004848 4BFFB905 */ bl func_8009AA24
+/* 00004848 4BFFB905 */ bl g_gxutil_upload_some_mtx
 /* 0000484C C81902A0 */ lfd f0, 0x2a0(r25)
 /* 00004850 FC1E0040 */ fcmpo cr0, f30, f0
 /* 00004854 40800018 */ bge lbl_0000486C
@@ -4989,7 +4989,7 @@ lbl_000049AC:
 /* 000049B0 38630000 */ addi r3, r3, mathutilData@l
 /* 000049B4 80630000 */ lwz r3, 0(r3)
 /* 000049B8 38800000 */ li r4, 0
-/* 000049BC 4BFFB791 */ bl func_8009AA24
+/* 000049BC 4BFFB791 */ bl g_gxutil_upload_some_mtx
 /* 000049C0 3C600000 */ lis r3, commonGma@ha
 /* 000049C4 38630000 */ addi r3, r3, commonGma@l
 /* 000049C8 80630000 */ lwz r3, 0(r3)
@@ -12051,7 +12051,7 @@ lbl_0000B1F0:
 /* 0000B20C 4BFF4F41 */ bl func_8008E564
 /* 0000B210 807D0000 */ lwz r3, 0(r29)
 /* 0000B214 38800000 */ li r4, 0
-/* 0000B218 4BFF4F35 */ bl func_8009AA24
+/* 0000B218 4BFF4F35 */ bl g_gxutil_upload_some_mtx
 /* 0000B21C 7F23CB78 */ mr r3, r25
 /* 0000B220 4BFF4F2D */ bl g_avdisp_draw_model_2
 /* 0000B224 48000204 */ b lbl_0000B428
@@ -12365,12 +12365,12 @@ lbl_0000B624:
 /* 0000B6CC EC220072 */ fmuls f1, f2, f1
 /* 0000B6D0 EC00082A */ fadds f0, f0, f1
 /* 0000B6D4 D01A0008 */ stfs f0, 8(r26)
-/* 0000B6D8 4BFF4A75 */ bl func_8009AD24
+/* 0000B6D8 4BFF4A75 */ bl gxutil_set_line_width
 /* 0000B6DC 38600001 */ li r3, 1
 /* 0000B6E0 38800002 */ li r4, 2
 /* 0000B6E4 38A00001 */ li r5, 1
 /* 0000B6E8 38C0000F */ li r6, 0xf
-/* 0000B6EC 4BFF4A61 */ bl func_8009AD30
+/* 0000B6EC 4BFF4A61 */ bl g_gxutil_set_some_line_params
 /* 0000B6F0 3C600000 */ lis r3, gamePauseStatus@ha
 /* 0000B6F4 3BC30000 */ addi r30, r3, gamePauseStatus@l
 /* 0000B6F8 3B800000 */ li r28, 0
@@ -12733,7 +12733,7 @@ lbl_0000BC40:
 /* 0000BC54 4BFF44F9 */ bl mathutil_mtxA_rotate_z
 /* 0000BC58 807B0000 */ lwz r3, 0(r27)
 /* 0000BC5C 38800000 */ li r4, 0
-/* 0000BC60 4BFF44ED */ bl func_8009AA24
+/* 0000BC60 4BFF44ED */ bl g_gxutil_upload_some_mtx
 /* 0000BC64 6FA08000 */ xoris r0, r29, 0x8000
 /* 0000BC68 C01F00A8 */ lfs f0, 0xa8(r31)
 /* 0000BC6C 9001007C */ stw r0, 0x7c(r1)
@@ -12829,7 +12829,7 @@ lbl_0000BDBC:
 /* 0000BDD0 4BFF437D */ bl mathutil_mtxA_rotate_z
 /* 0000BDD4 80790000 */ lwz r3, 0(r25)
 /* 0000BDD8 38800000 */ li r4, 0
-/* 0000BDDC 4BFF4371 */ bl func_8009AA24
+/* 0000BDDC 4BFF4371 */ bl g_gxutil_upload_some_mtx
 /* 0000BDE0 6FA08000 */ xoris r0, r29, 0x8000
 /* 0000BDE4 C01F00A8 */ lfs f0, 0xa8(r31)
 /* 0000BDE8 9001007C */ stw r0, 0x7c(r1)

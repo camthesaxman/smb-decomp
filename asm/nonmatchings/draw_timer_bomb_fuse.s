@@ -555,7 +555,7 @@ lbl_8000DD90:
 /* 8000DDFC 00009D1C  4B FF 9F CD */	bl mathutil_mtxA_scale_s
 /* 8000DE00 00009D20  80 6D 99 80 */	lwz r3, mathutilData  //@sda21(r13)
 /* 8000DE04 00009D24  38 80 00 00 */	li r4, 0
-/* 8000DE08 00009D28  48 08 CC 1D */	bl func_8009AA24
+/* 8000DE08 00009D28  48 08 CC 1D */	bl g_gxutil_upload_some_mtx
 /* 8000DE0C 00009D2C  FC 20 F0 90 */	fmr f1, f30
 /* 8000DE10 00009D30  48 08 06 11 */	bl g_avdisp_set_model_scale
 /* 8000DE14 00009D34  38 60 00 01 */	li r3, 1

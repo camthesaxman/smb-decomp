@@ -2059,7 +2059,7 @@ lbl_80069D90:
 /* 80069D94 00065CB4  48 02 46 8D */	bl g_avdisp_set_model_scale
 /* 80069D98 00065CB8  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80069D9C 00065CBC  38 80 00 00 */	li r4, 0
-/* 80069DA0 00065CC0  48 03 0C 85 */	bl func_8009AA24
+/* 80069DA0 00065CC0  48 03 0C 85 */	bl g_gxutil_upload_some_mtx
 /* 80069DA4 00065CC4  80 6D 9A D8 */	lwz r3, lbl_802F1CB8@sda21(r13)
 /* 80069DA8 00065CC8  57 C0 18 38 */	slwi r0, r30, 3
 /* 80069DAC 00065CCC  80 63 00 08 */	lwz r3, 8(r3)
@@ -2071,7 +2071,7 @@ lbl_80069DBC:
 /* 80069DC0 00065CE0  48 02 46 61 */	bl g_avdisp_set_model_scale
 /* 80069DC4 00065CE4  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80069DC8 00065CE8  38 80 00 00 */	li r4, 0
-/* 80069DCC 00065CEC  48 03 0C 59 */	bl func_8009AA24
+/* 80069DCC 00065CEC  48 03 0C 59 */	bl g_gxutil_upload_some_mtx
 /* 80069DD0 00065CF0  C0 02 9F 54 */	lfs f0, lbl_802F4754-_SDA2_BASE_(r2)
 /* 80069DD4 00065CF4  FC 1E 00 40 */	fcmpo cr0, f30, f0
 /* 80069DD8 00065CF8  40 80 00 28 */	bge lbl_80069E00
@@ -2155,7 +2155,7 @@ lbl_80069E88:
 /* 80069EEC 00065E0C  4B F9 DE DD */	bl mathutil_mtxA_scale_s
 /* 80069EF0 00065E10  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80069EF4 00065E14  38 80 00 00 */	li r4, 0
-/* 80069EF8 00065E18  48 03 0B 2D */	bl func_8009AA24
+/* 80069EF8 00065E18  48 03 0B 2D */	bl g_gxutil_upload_some_mtx
 /* 80069EFC 00065E1C  80 6D 9A D8 */	lwz r3, lbl_802F1CB8@sda21(r13)
 /* 80069F00 00065E20  80 63 00 08 */	lwz r3, 8(r3)
 /* 80069F04 00065E24  80 63 03 B8 */	lwz r3, 0x3b8(r3)

@@ -1417,7 +1417,7 @@ lbl_8009CDCC:
 /* 8009CDD4 00098CF4  4B F6 B2 29 */	bl mathutil_mtxA_rotate_y
 /* 8009CDD8 00098CF8  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009CDDC 00098CFC  38 80 00 00 */	li r4, 0
-/* 8009CDE0 00098D00  4B FF DC 45 */	bl func_8009AA24
+/* 8009CDE0 00098D00  4B FF DC 45 */	bl g_gxutil_upload_some_mtx
 /* 8009CDE4 00098D04  3B DC 00 38 */	addi r30, r28, 0x38
 /* 8009CDE8 00098D08  80 7C 00 38 */	lwz r3, 0x38(r28)
 /* 8009CDEC 00098D0C  80 63 00 08 */	lwz r3, 8(r3)
@@ -1437,7 +1437,7 @@ lbl_8009CE08:
 /* 8009CE20 00098D40  4B F6 B1 DD */	bl mathutil_mtxA_rotate_y
 /* 8009CE24 00098D44  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009CE28 00098D48  38 80 00 00 */	li r4, 0
-/* 8009CE2C 00098D4C  4B FF DB F9 */	bl func_8009AA24
+/* 8009CE2C 00098D4C  4B FF DB F9 */	bl g_gxutil_upload_some_mtx
 /* 8009CE30 00098D50  80 7E 00 00 */	lwz r3, 0(r30)
 /* 8009CE34 00098D54  80 63 00 08 */	lwz r3, 8(r3)
 /* 8009CE38 00098D58  80 63 00 18 */	lwz r3, 0x18(r3)
@@ -1482,7 +1482,7 @@ lbl_8009CE9C:
 /* 8009CEC8 00098DE8  4B F6 B1 35 */	bl mathutil_mtxA_rotate_y
 /* 8009CECC 00098DEC  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009CED0 00098DF0  38 80 00 00 */	li r4, 0
-/* 8009CED4 00098DF4  4B FF DB 51 */	bl func_8009AA24
+/* 8009CED4 00098DF4  4B FF DB 51 */	bl g_gxutil_upload_some_mtx
 /* 8009CED8 00098DF8  80 7E 00 00 */	lwz r3, 0(r30)
 /* 8009CEDC 00098DFC  80 63 00 08 */	lwz r3, 8(r3)
 /* 8009CEE0 00098E00  80 63 00 18 */	lwz r3, 0x18(r3)
@@ -1565,7 +1565,7 @@ lbl_8009CFF8:
 lbl_8009D000:
 /* 8009D000 00098F20  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009D004 00098F24  38 80 00 00 */	li r4, 0
-/* 8009D008 00098F28  4B FF DA 1D */	bl func_8009AA24
+/* 8009D008 00098F28  4B FF DA 1D */	bl g_gxutil_upload_some_mtx
 /* 8009D00C 00098F2C  C0 22 B2 34 */	lfs f1, lbl_802F5A34-_SDA2_BASE_(r2)
 /* 8009D010 00098F30  4B FF 15 55 */	bl func_8008E564
 /* 8009D014 00098F34  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
@@ -1685,7 +1685,7 @@ lbl_8009D1A4:
 /* 8009D1B0 000990D0  4B F6 AC 29 */	bl mathutil_mtxA_scale_xyz
 /* 8009D1B4 000990D4  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009D1B8 000990D8  38 80 00 00 */	li r4, 0
-/* 8009D1BC 000990DC  4B FF D8 69 */	bl func_8009AA24
+/* 8009D1BC 000990DC  4B FF D8 69 */	bl g_gxutil_upload_some_mtx
 /* 8009D1C0 000990E0  80 7E 00 00 */	lwz r3, 0(r30)
 /* 8009D1C4 000990E4  80 63 00 08 */	lwz r3, 8(r3)
 /* 8009D1C8 000990E8  80 63 00 38 */	lwz r3, 0x38(r3)
@@ -1748,7 +1748,7 @@ lbl_8009D264:
 /* 8009D294 000991B4  4B F6 AB 35 */	bl mathutil_mtxA_scale_s
 /* 8009D298 000991B8  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8009D29C 000991BC  38 80 00 00 */	li r4, 0
-/* 8009D2A0 000991C0  4B FF D7 85 */	bl func_8009AA24
+/* 8009D2A0 000991C0  4B FF D7 85 */	bl g_gxutil_upload_some_mtx
 /* 8009D2A4 000991C4  88 1E 00 2D */	lbz r0, 0x2d(r30)
 /* 8009D2A8 000991C8  7C 00 07 75 */	extsb. r0, r0
 /* 8009D2AC 000991CC  41 82 00 50 */	beq lbl_8009D2FC

@@ -4,6 +4,7 @@
 
 #include "global.h"
 #include "bitmap.h"
+#include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 
@@ -250,8 +251,8 @@ void func_800263A4(void)
 {
     GXColor green = { 0, 255, 0, 255 };
 
-    func_8009AA20();
-    g_set_vtx_desc(
+    gxutil_dummy();
+    gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
       | (1 << GX_VA_TEX0));
     GXSetNumChans(0);

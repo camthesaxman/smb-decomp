@@ -123,7 +123,7 @@ SOURCES := \
 	asm/mouse.s \
 	asm/rend_efc.s \
 	src/relocation.c \
-	src/code_3.c \
+	src/gxutil.c \
 	asm/mini_commend.s \
 	src/memcard.c \
 	src/DEMOPuts.c \

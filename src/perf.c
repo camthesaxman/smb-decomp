@@ -1,6 +1,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "gxutil.h"
 #include "input.h"
 #include "perf.h"
 
@@ -92,9 +93,9 @@ void func_80027388(void)
     {
         PERFEndFrame();
         PERFStopAutoSampling();
-        begin_display_list(perfDispLists[lbl_802F1D20 & 1], 0x3000);
+        gxutil_begin_display_list(perfDispLists[lbl_802F1D20 & 1], 0x3000);
         PERFDumpScreen();
-        perfDispListSizes[lbl_802F1D20 & 1] = end_display_list();
+        perfDispListSizes[lbl_802F1D20 & 1] = gxutil_end_display_list();
     }
     if (lbl_802F1D20 != 0 && perfEnabled)
     {

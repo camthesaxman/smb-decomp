@@ -7,6 +7,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "gxutil.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -461,7 +462,7 @@ void func_8000C144(struct Struct8000C144 *a)
     float z = a->unk10;
     u8 filler[8];
 
-    g_set_vtx_desc((1<< GX_VA_POS));
+    gxutil_set_vtx_attrs((1<< GX_VA_POS));
     func_8009E110(1, 0, 1, 0);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7
@@ -697,7 +698,7 @@ void func_8000C8D4(void)
         mathutil_get_mtxA_translate_xyz(&sp8.x, &sp8.y, &sp8.z);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
-        func_8009AA24(mathutilData->mtxA, 0);
+        g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
@@ -735,7 +736,7 @@ void func_8000CA9C(void)
         if (r31 != NULL)
             r30 = g_avdisp_set_some_func_1(r31);
         mathutil_mtxA_from_mtxB();
-        func_8009AA24(mathutilData->mtxA, 0);
+        g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         g_avdisp_draw_model_1((void *)lbl_802F1F34);
         if (r31 != NULL)
             g_avdisp_set_some_func_1(r30);

@@ -2486,7 +2486,7 @@ lbl_000023AC:
 lbl_000023E8:
 /* 000023E8 4BFFDD75 */ bl func_8009AC8C
 /* 000023EC 38600200 */ li r3, 0x200
-/* 000023F0 4BFFDD6D */ bl g_set_vtx_desc
+/* 000023F0 4BFFDD6D */ bl gxutil_set_vtx_attrs
 /* 000023F4 38600001 */ li r3, 1
 /* 000023F8 38800009 */ li r4, 9
 /* 000023FC 38A00001 */ li r5, 1
@@ -5825,7 +5825,7 @@ lbl_00005384:
 /* 000053C4 3B230000 */ addi r25, r3, mathutilData@l
 /* 000053C8 80790000 */ lwz r3, 0(r25)
 /* 000053CC 38800000 */ li r4, 0
-/* 000053D0 4BFFAD8D */ bl func_8009AA24
+/* 000053D0 4BFFAD8D */ bl g_gxutil_upload_some_mtx
 /* 000053D4 C03D0078 */ lfs f1, 0x78(r29)
 /* 000053D8 4BFFAD85 */ bl mathutil_mtxA_scale_s
 /* 000053DC 480002E1 */ bl lbl_000056BC
@@ -5840,7 +5840,7 @@ lbl_00005384:
 /* 00005400 4BFFAD5D */ bl mathutil_mtxA_rotate_z
 /* 00005404 80790000 */ lwz r3, 0(r25)
 /* 00005408 38800000 */ li r4, 0
-/* 0000540C 4BFFAD51 */ bl func_8009AA24
+/* 0000540C 4BFFAD51 */ bl g_gxutil_upload_some_mtx
 /* 00005410 3B800000 */ li r28, 0
 /* 00005414 3C600000 */ lis r3, globalFrameCounter@ha
 /* 00005418 3C805555 */ lis r4, 0x5555
@@ -8836,7 +8836,7 @@ lbl_00007E18:
 /* 00007E9C 38630000 */ addi r3, r3, mathutilData@l
 /* 00007EA0 80630000 */ lwz r3, 0(r3)
 /* 00007EA4 38800000 */ li r4, 0
-/* 00007EA8 4BFF82B5 */ bl func_8009AA24
+/* 00007EA8 4BFF82B5 */ bl g_gxutil_upload_some_mtx
 /* 00007EAC 807F0D5C */ lwz r3, 0xd5c(r31)
 /* 00007EB0 80630004 */ lwz r3, 4(r3)
 /* 00007EB4 80630008 */ lwz r3, 8(r3)
@@ -10800,7 +10800,7 @@ lbl_00009B24:
 lbl_00009B58:
 /* 00009B58 4BFF6605 */ bl func_8009AC8C
 /* 00009B5C 38600200 */ li r3, 0x200
-/* 00009B60 4BFF65FD */ bl g_set_vtx_desc
+/* 00009B60 4BFF65FD */ bl gxutil_set_vtx_attrs
 /* 00009B64 38600006 */ li r3, 6
 /* 00009B68 38800009 */ li r4, 9
 /* 00009B6C 38A00001 */ li r5, 1
@@ -11182,7 +11182,7 @@ lbl_0000A100:
 lbl_0000A138:
 /* 0000A138 4BFF6025 */ bl func_8009AC8C
 /* 0000A13C 38602200 */ li r3, 0x2200
-/* 0000A140 4BFF601D */ bl g_set_vtx_desc
+/* 0000A140 4BFF601D */ bl gxutil_set_vtx_attrs
 /* 0000A144 38600006 */ li r3, 6
 /* 0000A148 38800009 */ li r4, 9
 /* 0000A14C 38A00001 */ li r5, 1
@@ -12799,7 +12799,7 @@ lbl_0000B6B0:
 /* 0000B9AC C09E001C */ lfs f4, 0x1c(r30)
 /* 0000B9B0 4BFF47AD */ bl func_8009E398
 /* 0000B9B4 38602200 */ li r3, 0x2200
-/* 0000B9B8 4BFF47A5 */ bl g_set_vtx_desc
+/* 0000B9B8 4BFF47A5 */ bl gxutil_set_vtx_attrs
 /* 0000B9BC 38600001 */ li r3, 1
 /* 0000B9C0 38800009 */ li r4, 9
 /* 0000B9C4 38A00001 */ li r5, 1
@@ -13780,7 +13780,7 @@ lbl_0000C84C:
 lbl_0000C888:
 /* 0000C888 4BFF38D5 */ bl func_8009AC8C
 /* 0000C88C 38602200 */ li r3, 0x2200
-/* 0000C890 4BFF38CD */ bl g_set_vtx_desc
+/* 0000C890 4BFF38CD */ bl gxutil_set_vtx_attrs
 /* 0000C894 38600006 */ li r3, 6
 /* 0000C898 38800009 */ li r4, 9
 /* 0000C89C 38A00001 */ li r5, 1
@@ -14231,7 +14231,7 @@ lbl_0000CF2C:
 lbl_0000CF68:
 /* 0000CF68 4BFF31F5 */ bl func_8009AC8C
 /* 0000CF6C 38602200 */ li r3, 0x2200
-/* 0000CF70 4BFF31ED */ bl g_set_vtx_desc
+/* 0000CF70 4BFF31ED */ bl gxutil_set_vtx_attrs
 /* 0000CF74 38600006 */ li r3, 6
 /* 0000CF78 38800009 */ li r4, 9
 /* 0000CF7C 38A00001 */ li r5, 1
@@ -15711,7 +15711,7 @@ lbl_0000E458:
 /* 0000E474 38630000 */ addi r3, r3, mathutilData@l
 /* 0000E478 80630000 */ lwz r3, 0(r3)
 /* 0000E47C 38800000 */ li r4, 0
-/* 0000E480 4BFF1CDD */ bl func_8009AA24
+/* 0000E480 4BFF1CDD */ bl g_gxutil_upload_some_mtx
 /* 0000E484 807F0004 */ lwz r3, 4(r31)
 /* 0000E488 809D0000 */ lwz r4, 0(r29)
 /* 0000E48C 80BD0008 */ lwz r5, 8(r29)
@@ -15809,7 +15809,7 @@ lbl_0000E5DC:
 /* 0000E5EC 38810008 */ addi r4, r1, 8
 /* 0000E5F0 7FC4002E */ lwzx r30, r4, r0
 /* 0000E5F4 38800000 */ li r4, 0
-/* 0000E5F8 4BFF1B65 */ bl func_8009AA24
+/* 0000E5F8 4BFF1B65 */ bl g_gxutil_upload_some_mtx
 /* 0000E5FC 57C01838 */ slwi r0, r30, 3
 /* 0000E600 7C7D002E */ lwzx r3, r29, r0
 /* 0000E604 4BFF1B59 */ bl g_avdisp_draw_model_2

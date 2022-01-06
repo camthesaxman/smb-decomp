@@ -11001,12 +11001,12 @@ lbl_0000A194:
 /* 0000A1E0 C03F0004 */ lfs f1, 4(r31)
 /* 0000A1E4 48009481 */ bl lbl_00013664
 /* 0000A1E8 38600012 */ li r3, 0x12
-/* 0000A1EC 4BFF5FE5 */ bl func_8009AD24
+/* 0000A1EC 4BFF5FE5 */ bl gxutil_set_line_width
 /* 0000A1F0 38600001 */ li r3, 1
 /* 0000A1F4 38800004 */ li r4, 4
 /* 0000A1F8 38A00005 */ li r5, 5
 /* 0000A1FC 38C00000 */ li r6, 0
-/* 0000A200 4BFF5FD1 */ bl func_8009AD30
+/* 0000A200 4BFF5FD1 */ bl g_gxutil_set_some_line_params
 /* 0000A204 801D002C */ lwz r0, 0x2c(r29)
 /* 0000A208 1C000284 */ mulli r0, r0, 0x284
 /* 0000A20C 7C790214 */ add r3, r25, r0
@@ -11374,7 +11374,7 @@ lbl_0000A564:
 /* 0000A798 EC000824 */ fdivs f0, f0, f1
 /* 0000A79C EC03002A */ fadds f0, f3, f0
 /* 0000A7A0 D0010174 */ stfs f0, 0x174(r1)
-/* 0000A7A4 4BFF5A2D */ bl g_draw_line
+/* 0000A7A4 4BFF5A2D */ bl gxutil_draw_line
 /* 0000A7A8 C81F00F0 */ lfd f0, 0xf0(r31)
 /* 0000A7AC 3B5A0001 */ addi r26, r26, 1
 /* 0000A7B0 FFFF0028 */ fsub f31, f31, f0
@@ -11387,7 +11387,7 @@ lbl_0000A7B8:
 /* 0000A7C8 38800001 */ li r4, 1
 /* 0000A7CC 38A00000 */ li r5, 0
 /* 0000A7D0 38C00000 */ li r6, 0
-/* 0000A7D4 4BFF59FD */ bl func_8009AD30
+/* 0000A7D4 4BFF59FD */ bl g_gxutil_set_some_line_params
 lbl_0000A7D8:
 /* 0000A7D8 801D002C */ lwz r0, 0x2c(r29)
 /* 0000A7DC 1C000284 */ mulli r0, r0, 0x284

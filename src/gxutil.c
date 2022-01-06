@@ -2,14 +2,9 @@
 
 #include "global.h"
 #include "background.h"
+#include "gxutil.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
-
-struct PointWithColor
-{
-    Point3d pos;
-    GXColor color;
-};
 
 struct Struct80171B40
 {
@@ -19,34 +14,34 @@ struct Struct80171B40
     float unk4;  // start
     float unk8;  // end
     GXColor unkC;
-} ;
+};
 
-void begin_display_list(void *buffer, u32 size)
+void gxutil_begin_display_list(void *buffer, u32 size)
 {
     GXBeginDisplayList(buffer, size);
 }
 
-u32 end_display_list(void)
+u32 gxutil_end_display_list(void)
 {
     return GXEndDisplayList();
 }
 
-u32 lbl_802F2198;
+u32 vtxAttrs;
 
 void func_8009A9A8(void)
 {
-    lbl_802F2198 = 0;
+    vtxAttrs = 0;
 }
 
 #pragma dont_inline on
-void g_set_vtx_desc(u32 attrs)
+void gxutil_set_vtx_attrs(u32 attrs)
 {
     u32 i;
 
-    if (attrs != lbl_802F2198)
+    if (attrs != vtxAttrs)
     {
         GXClearVtxDesc();
-        lbl_802F2198 = attrs;
+        vtxAttrs = attrs;
         for (i = 0; i <= 16; i++, attrs >>= 1)
         {
             if (attrs & 1)
@@ -56,10 +51,10 @@ void g_set_vtx_desc(u32 attrs)
 }
 #pragma dont_inline reset
 
-void func_8009AA20(void) {}
+void gxutil_dummy(void) {}
 
 #ifdef __MWERKS__
-asm void func_8009AA24(void *a, int b)
+asm void g_gxutil_upload_some_mtx(Mtx a, int b)
 {
     nofralloc
     mr r5, r4
@@ -67,9 +62,9 @@ asm void func_8009AA24(void *a, int b)
     add r4, r4, r5
     li r7, 0x10
     add r5, r4, r4
-    lis r6, 0xCC008000@h
+    lis r6, GXFIFO_ADDR@h
     add r4, r5, r4
-    ori r6, r6, 0xCC008000@l
+    ori r6, r6, GXFIFO_ADDR@l
     add r5, r5, r5
     addis r5, r5, 0xb
     stb r7, 0(r6)
@@ -179,37 +174,37 @@ void func_8009AC8C(void)
         func_8009E398(0, sp10, 0.0f, 100.0f, 0.1f, 20000.0f);
 }
 
-struct Struct801D3EF0
+struct LineInfo
 {
-    u8 unk0;
+    u8 lineWidth;
     u32 unk4;
     u32 unk8;
     u32 unkC;
     u32 unk10;
-    s32 unk14;
+    GXTexOffset texOffset;
     u8 filler18[4];
 };
 
-struct Struct801D3EF0 lbl_801D3EF0 = { 6, 0, 1, 0, 0, 0 };
+struct LineInfo lineInfo = { 6, 0, 1, 0, 0, 0 };
 
-void func_8009AD24(int a)
+void gxutil_set_line_width(int width)
 {
-    lbl_801D3EF0.unk0 = a;
+    lineInfo.lineWidth = width;
 }
 
-void func_8009AD30(int a, int b, int c, int d)
+void g_gxutil_set_some_line_params(int a, int b, int c, int d)
 {
-    lbl_801D3EF0.unk4 = a;
-    lbl_801D3EF0.unk8 = b;
-    lbl_801D3EF0.unkC = c;
-    lbl_801D3EF0.unk10 = d;
+    lineInfo.unk4 = a;
+    lineInfo.unk8 = b;
+    lineInfo.unkC = c;
+    lineInfo.unk10 = d;
 }
 
-void g_draw_line(Vec *start, Vec *end, GXColor *c)
+void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)
 {
     GXColor color;
 
-    func_8009B64C();
+    prepare_for_drawing_lines();
     color = *c;
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXBegin(GX_LINES, GX_VTXFMT0, 2);
@@ -229,7 +224,7 @@ void func_8009AE18(u16 numPoints, Point3d *points, GXColor *color)
 
     if (numPoints < 2)
         return;
-    func_8009B64C();
+    prepare_for_drawing_lines();
     c = *color;
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXBegin(GX_LINESTRIP, GX_VTXFMT0, numPoints);
@@ -249,14 +244,14 @@ struct Struct8009B048_1
     u8 filler0[4];
     void (*unk4)(struct Struct8009B048_1 *);
     Mtx unk8;
-    s32 unk38;
-    u16 unk3C;
+    GXPrimitive primType;
+    u16 vtxCount;
     Point3d *points;
     GXColor color;
-    struct Struct801D3EF0 unk48;
+    struct LineInfo unk48;
 };
 
-void lbl_8009B140(struct Struct8009B048_1 *);
+static void lbl_8009B140(struct Struct8009B048_1 *);
 
 void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
 {
@@ -267,9 +262,9 @@ void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
     r31 = g_alloc_some_drawing_mem(sizeof(*r31));
     points = g_alloc_some_drawing_mem(2 * sizeof(Point3d));
     r31->unk4 = lbl_8009B140;
-    r31->unk38 = GX_LINES;
-    r31->unk3C = 2;
-    r31->unk48 = lbl_801D3EF0;
+    r31->primType = GX_LINES;
+    r31->vtxCount = 2;
+    r31->unk48 = lineInfo;
     r31->color = *c;
     points[0] = *start;
     points[1] = *end;
@@ -278,15 +273,15 @@ void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
     func_80085B78(r30, r31);
 }
 
-void lbl_8009B140(struct Struct8009B048_1 *a)
+static void lbl_8009B140(struct Struct8009B048_1 *a)
 {
-    struct Struct801D3EF0 sp18 = lbl_801D3EF0;
+    struct LineInfo sp18 = lineInfo;
     GXColor c;
     int i;
     Point3d *p;
 
-    lbl_801D3EF0 = a->unk48;
-    func_8009B64C();
+    lineInfo = a->unk48;
+    prepare_for_drawing_lines();
     if (GX_ENABLE != zMode->updateEnable
      || GX_LEQUAL != zMode->compareFunc
      || GX_ENABLE != zMode->compareEnable)
@@ -299,21 +294,21 @@ void lbl_8009B140(struct Struct8009B048_1 *a)
 
     c = a->color;
     GXLoadPosMtxImm(a->unk8, GX_PNMTX0);
-    GXBegin(a->unk38, GX_VTXFMT0, a->unk3C);
+    GXBegin(a->primType, GX_VTXFMT0, a->vtxCount);
     p = a->points;
-    for (i = a->unk3C; i > 0; i--, p++)
+    for (i = a->vtxCount; i > 0; i--, p++)
     {
         GXPosition3f32(p->x, p->y, p->z);
         GXColor4u8(c.r, c.g, c.b, c.a);
     }
     GXEnd();
-    lbl_801D3EF0 = sp18;
+    lineInfo = sp18;
 }
 
 #pragma force_active on
 void func_8009B474(struct PointWithColor *start, struct PointWithColor *end)
 {
-    func_8009B64C();
+    prepare_for_drawing_lines();
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXBegin(GX_LINES, GX_VTXFMT0, 2);
         GXPosition3f32(start->pos.x, start->pos.y, start->pos.z);
@@ -329,43 +324,43 @@ struct Struct8009B538_1
     u8 filler0[4];
     void (*unk4)(struct Struct8009B538_1 *);
     Mtx unk8;
-    s32 unk38;
-    u16 unk3C;
+    GXPrimitive primType;
+    u16 vtxCount;
     struct PointWithColor *points;
-    struct Struct801D3EF0 unk44;
+    struct LineInfo unk44;
 };
 
-void lbl_8009B74C(struct Struct8009B538_1 *);
+static void lbl_8009B74C(struct Struct8009B538_1 *);
 
-void func_8009B538(struct PointWithColor *a, struct PointWithColor *b)
+void func_8009B538(struct PointWithColor *start, struct PointWithColor *end)
 {
     struct Struct8009B538_1 *r31;
     struct PointWithColor *points;
-    int r30 = func_80085698(a);
+    int r30 = func_80085698(start);
 
     r31 = g_alloc_some_drawing_mem(sizeof(*r31));
     points = g_alloc_some_drawing_mem(2 * sizeof(struct PointWithColor));
     r31->unk4 = lbl_8009B74C;
-    r31->unk38 = 0xA8;
-    r31->unk3C = 2;
-    r31->unk44 = lbl_801D3EF0;
-    points[0] = *a;
-    points[1] = *b;
+    r31->primType = GX_LINES;
+    r31->vtxCount = 2;
+    r31->unk44 = lineInfo;
+    points[0] = *start;
+    points[1] = *end;
     r31->points = points;
     mathutil_mtxA_to_mtx(r31->unk8);
     func_80085B78(r30, r31);
 }
 
-void func_8009B64C(void)
+void prepare_for_drawing_lines(void)
 {
-    if (lbl_801D3EF0.unk0 != zMode->lineWidth || lbl_801D3EF0.unk14 != zMode->texOffsets)
+    if (lineInfo.lineWidth != zMode->lineWidth || lineInfo.texOffset != zMode->texOffsets)
     {
-        GXSetLineWidth(lbl_801D3EF0.unk0, lbl_801D3EF0.unk14);
-        zMode->lineWidth = lbl_801D3EF0.unk0;
-        zMode->texOffsets = lbl_801D3EF0.unk14;
+        GXSetLineWidth(lineInfo.lineWidth, lineInfo.texOffset);
+        zMode->lineWidth = lineInfo.lineWidth;
+        zMode->texOffsets = lineInfo.texOffset;
     }
-    g_set_vtx_desc((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
-    func_8009E110(lbl_801D3EF0.unk4, lbl_801D3EF0.unk8, lbl_801D3EF0.unkC, lbl_801D3EF0.unk10);
+    gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
+    func_8009E110(lineInfo.unk4, lineInfo.unk8, lineInfo.unkC, lineInfo.unk10);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -383,14 +378,14 @@ void func_8009B64C(void)
     GXSetNumChans(1);
 }
 
-void lbl_8009B74C(struct Struct8009B538_1 *a)
+static void lbl_8009B74C(struct Struct8009B538_1 *a)
 {
-    struct Struct801D3EF0 sp18 = lbl_801D3EF0;
+    struct LineInfo sp18 = lineInfo;
     int i;
     struct PointWithColor *p;
 
-    lbl_801D3EF0 = a->unk44;
-    func_8009B64C();
+    lineInfo = a->unk44;
+    prepare_for_drawing_lines();
     if (GX_ENABLE != zMode->updateEnable
      || GX_LEQUAL != zMode->compareFunc
      || GX_ENABLE != zMode->compareEnable)
@@ -402,13 +397,13 @@ void lbl_8009B74C(struct Struct8009B538_1 *a)
     }
 
     GXLoadPosMtxImm(a->unk8, GX_PNMTX0);
-    GXBegin(a->unk38, GX_VTXFMT0, a->unk3C);
+    GXBegin(a->primType, GX_VTXFMT0, a->vtxCount);
     p = a->points;
-    for (i = a->unk3C; i > 0; i--, p++)
+    for (i = a->vtxCount; i > 0; i--, p++)
     {
         GXPosition3f32(p->pos.x, p->pos.y, p->pos.z);
         GXColor4u8(p->color.r, p->color.g, p->color.b, p->color.a);
     }
     GXEnd();
-    lbl_801D3EF0 = sp18;
+    lineInfo = sp18;
 }

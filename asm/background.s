@@ -6601,7 +6601,7 @@ lbl_8005CA38:
 /* 8005CA3C 0005895C  38 60 00 02 */	li r3, 2
 /* 8005CA40 00058960  48 04 16 55 */	bl func_8009E094
 /* 8005CA44 00058964  38 60 22 00 */	li r3, 0x2200
-/* 8005CA48 00058968  48 03 DF 6D */	bl g_set_vtx_desc
+/* 8005CA48 00058968  48 03 DF 6D */	bl gxutil_set_vtx_attrs
 /* 8005CA4C 0005896C  4B FA AB 19 */	bl mathutil_mtxA_from_identity
 /* 8005CA50 00058970  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8005CA54 00058974  38 80 00 00 */	li r4, 0

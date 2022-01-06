@@ -8,6 +8,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "gxutil.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
@@ -1151,7 +1152,7 @@ void func_80038840(void)
         if (bgfunc != NULL)
         {
             g_avdisp_set_some_func_1(bgfunc);
-            func_8009AA24(mathutilData->mtxA, 0);
+            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             g_avdisp_maybe_draw_model_3(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
             g_avdisp_set_some_func_1(NULL);
         }
@@ -3097,7 +3098,7 @@ void lbl_8003D928(struct Struct80038840 *a)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
     mathutil_mtxA_scale_s(ball->modelScale);
-    func_8009AA24(mathutilData->mtxA, 0);
+    g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
 
     g_ball_draw(ball, a->unkC);
 
@@ -3121,7 +3122,7 @@ void lbl_8003D928(struct Struct80038840 *a)
     if (bgfunc != NULL)
     {
         g_avdisp_set_some_func_1(bgfunc);
-        func_8009AA24(mathutilData->mtxA, 0);
+        g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         g_avdisp_maybe_draw_model_2(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
         g_avdisp_set_some_func_1(NULL);
     }

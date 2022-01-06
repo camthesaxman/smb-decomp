@@ -3204,7 +3204,7 @@ lbl_8008C75C:
 /* 8008C798 000886B8  4B F7 B5 89 */	bl mathutil_mtxA_translate
 /* 8008C79C 000886BC  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8008C7A0 000886C0  38 80 00 00 */	li r4, 0
-/* 8008C7A4 000886C4  48 00 E2 81 */	bl func_8009AA24
+/* 8008C7A4 000886C4  48 00 E2 81 */	bl g_gxutil_upload_some_mtx
 /* 8008C7A8 000886C8  81 9D 00 10 */	lwz r12, 0x10(r29)
 /* 8008C7AC 000886CC  28 0C 00 00 */	cmplwi r12, 0
 /* 8008C7B0 000886D0  41 82 00 1C */	beq lbl_8008C7CC

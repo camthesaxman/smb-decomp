@@ -6,6 +6,7 @@
 #define MATHUTIL_SIN_INT_PARAM
 #include "global.h"
 #include "background.h"
+#include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"

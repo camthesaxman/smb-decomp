@@ -6309,12 +6309,12 @@ lbl_8004E5D4:
 /* 8004E5DC 0004A4FC  FC 00 00 1E */	fctiwz f0, f0
 /* 8004E5E0 0004A500  D8 01 00 48 */	stfd f0, 0x48(r1)
 /* 8004E5E4 0004A504  80 61 00 4C */	lwz r3, 0x4c(r1)
-/* 8004E5E8 0004A508  48 04 C7 3D */	bl func_8009AD24
+/* 8004E5E8 0004A508  48 04 C7 3D */	bl gxutil_set_line_width
 /* 8004E5EC 0004A50C  38 60 00 01 */	li r3, 1
 /* 8004E5F0 0004A510  38 80 00 01 */	li r4, 1
 /* 8004E5F4 0004A514  38 A0 00 01 */	li r5, 1
 /* 8004E5F8 0004A518  38 C0 00 00 */	li r6, 0
-/* 8004E5FC 0004A51C  48 04 C7 35 */	bl func_8009AD30
+/* 8004E5FC 0004A51C  48 04 C7 35 */	bl g_gxutil_set_some_line_params
 /* 8004E600 0004A520  38 61 00 18 */	addi r3, r1, 0x18
 /* 8004E604 0004A524  38 81 00 28 */	addi r4, r1, 0x28
 /* 8004E608 0004A528  48 04 CF 31 */	bl func_8009B538
@@ -13199,7 +13199,7 @@ lbl_80054BB0:
 /* 80054BF4 00050B14  4B FB 31 D5 */	bl mathutil_mtxA_scale_s
 /* 80054BF8 00050B18  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80054BFC 00050B1C  38 80 00 00 */	li r4, 0
-/* 80054C00 00050B20  48 04 5E 25 */	bl func_8009AA24
+/* 80054C00 00050B20  48 04 5E 25 */	bl g_gxutil_upload_some_mtx
 /* 80054C04 00050B24  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 80054C08 00050B28  80 63 00 08 */	lwz r3, 8(r3)
 /* 80054C0C 00050B2C  80 63 01 18 */	lwz r3, 0x118(r3)
@@ -13233,7 +13233,7 @@ lbl_80054BB0:
 /* 80054C7C 00050B9C  4B FB 31 4D */	bl mathutil_mtxA_scale_s
 /* 80054C80 00050BA0  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80054C84 00050BA4  38 80 00 00 */	li r4, 0
-/* 80054C88 00050BA8  48 04 5D 9D */	bl func_8009AA24
+/* 80054C88 00050BA8  48 04 5D 9D */	bl g_gxutil_upload_some_mtx
 /* 80054C8C 00050BAC  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 80054C90 00050BB0  80 63 00 08 */	lwz r3, 8(r3)
 /* 80054C94 00050BB4  80 63 02 70 */	lwz r3, 0x270(r3)

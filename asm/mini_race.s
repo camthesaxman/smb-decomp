@@ -11768,7 +11768,7 @@ lbl_0000ACF4:
 /* 0000AD38 38630000 */ addi r3, r3, mathutilData@l
 /* 0000AD3C 80630000 */ lwz r3, 0(r3)
 /* 0000AD40 38800000 */ li r4, 0
-/* 0000AD44 4BFF5439 */ bl func_8009AA24
+/* 0000AD44 4BFF5439 */ bl g_gxutil_upload_some_mtx
 /* 0000AD48 3C600000 */ lis r3, lbl_802F1CB8@ha
 /* 0000AD4C 38630000 */ addi r3, r3, lbl_802F1CB8@l
 /* 0000AD50 80630000 */ lwz r3, 0(r3)
@@ -11795,7 +11795,7 @@ lbl_0000AD74:
 /* 0000ADA0 38630000 */ addi r3, r3, mathutilData@l
 /* 0000ADA4 80630000 */ lwz r3, 0(r3)
 /* 0000ADA8 38800000 */ li r4, 0
-/* 0000ADAC 4BFF53D1 */ bl func_8009AA24
+/* 0000ADAC 4BFF53D1 */ bl g_gxutil_upload_some_mtx
 /* 0000ADB0 3C600000 */ lis r3, lbl_802F1CB8@ha
 /* 0000ADB4 38630000 */ addi r3, r3, lbl_802F1CB8@l
 /* 0000ADB8 80630000 */ lwz r3, 0(r3)
@@ -11921,7 +11921,7 @@ lbl_0000AF54:
 /* 0000AF80 4BFF51FD */ bl g_avdisp_set_model_scale
 /* 0000AF84 807E0000 */ lwz r3, 0(r30)
 /* 0000AF88 38800000 */ li r4, 0
-/* 0000AF8C 4BFF51F1 */ bl func_8009AA24
+/* 0000AF8C 4BFF51F1 */ bl g_gxutil_upload_some_mtx
 /* 0000AF90 881B002E */ lbz r0, 0x2e(r27)
 /* 0000AF94 80780000 */ lwz r3, 0(r24)
 /* 0000AF98 7C000774 */ extsb r0, r0
@@ -11994,7 +11994,7 @@ lbl_0000B06C:
 /* 0000B094 38630000 */ addi r3, r3, mathutilData@l
 /* 0000B098 80630000 */ lwz r3, 0(r3)
 /* 0000B09C 38800000 */ li r4, 0
-/* 0000B0A0 4BFF50DD */ bl func_8009AA24
+/* 0000B0A0 4BFF50DD */ bl g_gxutil_upload_some_mtx
 /* 0000B0A4 3C600000 */ lis r3, decodedStageGmaPtr@ha
 /* 0000B0A8 A81A0004 */ lha r0, 4(r26)
 /* 0000B0AC 38630000 */ addi r3, r3, decodedStageGmaPtr@l
@@ -12013,7 +12013,7 @@ lbl_0000B0C8:
 /* 0000B0DC 38630000 */ addi r3, r3, mathutilData@l
 /* 0000B0E0 80630000 */ lwz r3, 0(r3)
 /* 0000B0E4 38800000 */ li r4, 0
-/* 0000B0E8 4BFF5095 */ bl func_8009AA24
+/* 0000B0E8 4BFF5095 */ bl g_gxutil_upload_some_mtx
 /* 0000B0EC 3C600000 */ lis r3, decodedStageGmaPtr@ha
 /* 0000B0F0 A81A0002 */ lha r0, 2(r26)
 /* 0000B0F4 38630000 */ addi r3, r3, decodedStageGmaPtr@l
@@ -12040,7 +12040,7 @@ lbl_0000B124:
 /* 0000B140 4BFF503D */ bl mathutil_mtxA_rotate_x
 /* 0000B144 80790000 */ lwz r3, 0(r25)
 /* 0000B148 38800000 */ li r4, 0
-/* 0000B14C 4BFF5031 */ bl func_8009AA24
+/* 0000B14C 4BFF5031 */ bl g_gxutil_upload_some_mtx
 /* 0000B150 807A0000 */ lwz r3, 0(r26)
 /* 0000B154 80630008 */ lwz r3, 8(r3)
 /* 0000B158 80630050 */ lwz r3, 0x50(r3)
@@ -12068,7 +12068,7 @@ lbl_0000B18C:
 /* 0000B1A8 4BFF4FD5 */ bl mathutil_mtxA_rotate_x
 /* 0000B1AC 807E0000 */ lwz r3, 0(r30)
 /* 0000B1B0 38800000 */ li r4, 0
-/* 0000B1B4 4BFF4FC9 */ bl func_8009AA24
+/* 0000B1B4 4BFF4FC9 */ bl g_gxutil_upload_some_mtx
 /* 0000B1B8 881C0012 */ lbz r0, 0x12(r28)
 /* 0000B1BC 2C000052 */ cmpwi r0, 0x52
 /* 0000B1C0 41820014 */ beq lbl_0000B1D4
@@ -12111,7 +12111,7 @@ lbl_0000B224:
 /* 0000B240 4BFF4F3D */ bl mathutil_mtxA_rotate_x
 /* 0000B244 807C0000 */ lwz r3, 0(r28)
 /* 0000B248 38800000 */ li r4, 0
-/* 0000B24C 4BFF4F31 */ bl func_8009AA24
+/* 0000B24C 4BFF4F31 */ bl g_gxutil_upload_some_mtx
 /* 0000B250 807A0000 */ lwz r3, 0(r26)
 /* 0000B254 80630008 */ lwz r3, 8(r3)
 /* 0000B258 80630010 */ lwz r3, 0x10(r3)
@@ -12139,7 +12139,7 @@ lbl_0000B28C:
 /* 0000B2A8 4BFF4ED5 */ bl mathutil_mtxA_rotate_x
 /* 0000B2AC 807B0000 */ lwz r3, 0(r27)
 /* 0000B2B0 38800000 */ li r4, 0
-/* 0000B2B4 4BFF4EC9 */ bl func_8009AA24
+/* 0000B2B4 4BFF4EC9 */ bl g_gxutil_upload_some_mtx
 /* 0000B2B8 807A0000 */ lwz r3, 0(r26)
 /* 0000B2BC 80630008 */ lwz r3, 8(r3)
 /* 0000B2C0 80630040 */ lwz r3, 0x40(r3)
@@ -12272,7 +12272,7 @@ lbl_0000B488:
 /* 0000B4A0 4BFF4CDD */ bl g_avdisp_set_model_scale
 /* 0000B4A4 807D0000 */ lwz r3, 0(r29)
 /* 0000B4A8 38800000 */ li r4, 0
-/* 0000B4AC 4BFF4CD1 */ bl func_8009AA24
+/* 0000B4AC 4BFF4CD1 */ bl g_gxutil_upload_some_mtx
 /* 0000B4B0 801A0014 */ lwz r0, 0x14(r26)
 /* 0000B4B4 540006B5 */ rlwinm. r0, r0, 0, 0x1a, 0x1a
 /* 0000B4B8 41820050 */ beq lbl_0000B508
@@ -12382,7 +12382,7 @@ lbl_0000B5E0:
 /* 0000B638 38630000 */ addi r3, r3, mathutilData@l
 /* 0000B63C 80630000 */ lwz r3, 0(r3)
 /* 0000B640 38800000 */ li r4, 0
-/* 0000B644 4BFF4B39 */ bl func_8009AA24
+/* 0000B644 4BFF4B39 */ bl g_gxutil_upload_some_mtx
 /* 0000B648 3C600000 */ lis r3, lbl_802F1CB8@ha
 /* 0000B64C 38630000 */ addi r3, r3, lbl_802F1CB8@l
 /* 0000B650 80630000 */ lwz r3, 0(r3)
@@ -14883,7 +14883,7 @@ lbl_0000DB34:
 /* 0000DB40 38630000 */ addi r3, r3, mathutilData@l
 /* 0000DB44 80630000 */ lwz r3, 0(r3)
 /* 0000DB48 38800000 */ li r4, 0
-/* 0000DB4C 4BFF2631 */ bl func_8009AA24
+/* 0000DB4C 4BFF2631 */ bl g_gxutil_upload_some_mtx
 lbl_0000DB50:
 /* 0000DB50 80010044 */ lwz r0, 0x44(r1)
 /* 0000DB54 83E1003C */ lwz r31, 0x3c(r1)
@@ -14936,7 +14936,7 @@ lbl_0000DBCC:
 /* 0000DC08 38630000 */ addi r3, r3, mathutilData@l
 /* 0000DC0C 80630000 */ lwz r3, 0(r3)
 /* 0000DC10 38800000 */ li r4, 0
-/* 0000DC14 4BFF2569 */ bl func_8009AA24
+/* 0000DC14 4BFF2569 */ bl g_gxutil_upload_some_mtx
 /* 0000DC18 3C600000 */ lis r3, decodedStageGmaPtr@ha
 /* 0000DC1C A81A0000 */ lha r0, 0(r26)
 /* 0000DC20 38630000 */ addi r3, r3, decodedStageGmaPtr@l
@@ -15068,7 +15068,7 @@ lbl_0000DDD8:
 /* 0000DE00 4BFF237D */ bl func_8008E564
 /* 0000DE04 80770000 */ lwz r3, 0(r23)
 /* 0000DE08 38800000 */ li r4, 0
-/* 0000DE0C 4BFF2371 */ bl func_8009AA24
+/* 0000DE0C 4BFF2371 */ bl g_gxutil_upload_some_mtx
 /* 0000DE10 881C014A */ lbz r0, 0x14a(r28)
 /* 0000DE14 80780000 */ lwz r3, 0(r24)
 /* 0000DE18 5400083C */ slwi r0, r0, 1
@@ -19025,7 +19025,7 @@ lbl_0001181C:
 /* 00011828 4BFEE955 */ bl g_avdisp_set_model_scale
 /* 0001182C 80790000 */ lwz r3, 0(r25)
 /* 00011830 38800000 */ li r4, 0
-/* 00011834 4BFEE949 */ bl func_8009AA24
+/* 00011834 4BFEE949 */ bl g_gxutil_upload_some_mtx
 /* 00011838 7F63DB78 */ mr r3, r27
 /* 0001183C 4BFEE941 */ bl g_avdisp_draw_model_1
 /* 00011840 3B9C0010 */ addi r28, r28, 0x10

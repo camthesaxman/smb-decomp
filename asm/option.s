@@ -1536,7 +1536,7 @@ lbl_00001660:
 lbl_00001698:
 /* 00001698 4BFFEB15 */ bl mathutil_mtxA_from_identity
 /* 0000169C 38600018 */ li r3, 0x18
-/* 000016A0 4BFFEB0D */ bl func_8009AD24
+/* 000016A0 4BFFEB0D */ bl gxutil_set_line_width
 /* 000016A4 38800000 */ li r4, 0
 /* 000016A8 2C040009 */ cmpwi r4, 9
 /* 000016AC 4080004C */ bge lbl_000016F8

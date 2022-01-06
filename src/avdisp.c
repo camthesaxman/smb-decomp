@@ -3,6 +3,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 
@@ -1054,7 +1055,7 @@ void lbl_8008F528(struct UnkStruct17 *a)
 
     if ((a->unk40->renderFlags & 0x1) == 0)
         func_800223D8(a->unk48);
-    func_8009AA24(a->unkC, 0);
+    g_gxutil_upload_some_mtx(a->unkC, 0);
     mathutil_mtxA_from_mtx(a->unkC);
     func_8009E094(a->unk44);
     lbl_802F20E8 = a->unk44;
@@ -1185,7 +1186,7 @@ void func_8008F8A4(u8 *mtxIndexes)
     for (i = 0; i < 8; i++)
     {
         if ((s32)mtxIndexes[i] != 0xFF)
-            func_8009AA24(&g_transformMtxList[mtxIndexes[i]], i + 1);
+            g_gxutil_upload_some_mtx(g_transformMtxList[mtxIndexes[i]], i + 1);
     }
 }
 
@@ -1228,7 +1229,7 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
         r30 = 1;
     if (model->flags & GCMF_STITCHING)
         func_8008F8A4(mesh->unk20);  // inlined
-    g_set_vtx_desc(mesh->vtxFlags);
+    gxutil_set_vtx_attrs(mesh->vtxFlags);
     dlist = mesh->dispListData;
 
     if (lbl_802F20F0 != NULL)
@@ -1364,7 +1365,7 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct 
         r30 = 0;
     else
         r30 = 2;
-    g_set_vtx_desc(mesh->vtxFlags);
+    gxutil_set_vtx_attrs(mesh->vtxFlags);
 
     if (lbl_802F20F0 != NULL)
     {
