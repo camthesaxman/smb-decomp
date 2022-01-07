@@ -658,10 +658,10 @@ struct Struct802F1F44
 {
     void *unk0;
     u32 **unk4;
-    u32 unk8;
-    u32 unkC;
+    void (*unk8)(Vec *);
+    void (*unkC)(Vec *);
     u8 filler10[0x14-0x10];
-    void *unk14;
+    struct NaomiModel *unk14;
 };
 
 struct Struct801EEC80
@@ -739,3 +739,6 @@ struct Sphere
     Point3d pos;
     float radius;
 };
+
+struct Preview;
+struct NaomiDispList;

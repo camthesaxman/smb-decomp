@@ -71,7 +71,7 @@ int bitmap_is_group_loaded(enum BitmapGroupID grpId);
 void bitmap_free_tpl(struct TPL *tpl);
 void func_80026378(int a);
 void func_80026394(void);
-// ? func_800263A4();
+void func_800263A4(void);
 void bitmap_main(void);
 // ? func_8002687C();
 // ? bitmap_draw();

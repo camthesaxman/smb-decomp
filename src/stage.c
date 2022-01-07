@@ -979,7 +979,7 @@ void func_800456A8(int stageId)
                 if (r26 != NULL)
                 {
                     r31 -= HEADER_OF(r26)->unk4->unk0;
-                    r28->unk14 = r31;
+                    r28->unk14 = (struct NaomiModel *)r31;
                 }
             }
             r25++;
@@ -1361,11 +1361,6 @@ void compute_stage_bounding_sphere(void)
     }
 }
 
-//extern const float lbl_802F37A4;
-//extern const float lbl_802F37A8;
-#define lbl_802F37A4 0.5f
-#define lbl_802F37A8 0.75f
-
 void func_800463E8(Vec *a, float *b)
 {
     Vec v1;
@@ -1429,9 +1424,9 @@ void func_800463E8(Vec *a, float *b)
                 }
             }
         }
-        sp40.x = (v1.x + v2.x) * lbl_802F37A4;
-        sp40.y = (v1.y + v2.y) * lbl_802F37A4;
-        sp40.z = (v1.z + v2.z) * lbl_802F37A4;
+        sp40.x = (v1.x + v2.x) * 0.5f;
+        sp40.y = (v1.y + v2.y) * 0.5f;
+        sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
         iter1 = movableStageParts;
@@ -1460,7 +1455,7 @@ void func_800463E8(Vec *a, float *b)
                 }
             }
         }
-        result *= lbl_802F37A8;
+        result *= 0.75f;
 
         *a = sp40;
         *b = result;
@@ -1508,9 +1503,9 @@ void func_800463E8(Vec *a, float *b)
                 }
             }
         }
-        sp40.x = (v1.x + v2.x) * lbl_802F37A4;
-        sp40.y = (v1.y + v2.y) * lbl_802F37A4;
-        sp40.z = (v1.z + v2.z) * lbl_802F37A4;
+        sp40.x = (v1.x + v2.x) * 0.5f;
+        sp40.y = (v1.y + v2.y) * 0.5f;
+        sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
         iter1 = movableStageParts;
@@ -1527,11 +1522,11 @@ void func_800463E8(Vec *a, float *b)
                 {
                     float var1;
                     float f0;
-                    struct GMAModelHeader *r24 = iter3->unk4;
+                    struct NaomiModel *r24 = (void *)iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&r24->boundingSphereCenter, &sp10);
+                    mathutil_mtxA_tf_point(&r24->unk8, &sp10);
                     var1 = func_80046884(r24);
                     f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
                     if (result < f0)
@@ -1564,9 +1559,9 @@ FORCE_BSS_ORDER(lbl_8020ADE4)
 extern void lbl_800468F0();
 extern void lbl_80046978();
 
-float func_80046884(struct GMAModelHeader *a)
+float func_80046884(struct NaomiModel *a)
 {
-    lbl_8020ADE4.unk0 = a->boundingSphereCenter;
+    lbl_8020ADE4.unk0 = a->unk8;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
     func_80047E18(a, lbl_800468F0, lbl_80046978);
@@ -1957,19 +1952,6 @@ struct Struct80092F90
 };
 
 #define lbl_802F3768 1.0f
-//extern const float lbl_802F3768;
-//extern const float lbl_802F37AC;
-#define lbl_802F37AC 10.0f
-//extern const double lbl_802F37B0;
-#define lbl_802F37B0 2.0
-//extern const float lbl_802F37B8;
-#define lbl_802F37B8 -1.1920928955078125e-07f
-//extern const float lbl_802F37BC;
-#define lbl_802F37BC 0.8f
-//extern const float lbl_802F37C0;
-#define lbl_802F37C0 2.0f
-//extern const float lbl_802F37C4;
-#define lbl_802F37C4 60.0f
 
 void stage_draw(void)
 {
@@ -2266,7 +2248,7 @@ void stage_draw(void)
     }
     if (backgroundInfo.unk8C != 0)
         g_avdisp_set_some_func_1(NULL);
-    if (dipSwitches & (1<<(31-0x14)))
+    if (dipSwitches & DIP_FALL_DISP)
     {
         struct Struct80206E48 *r22;
         struct StageCollHdr *r23;
@@ -2295,9 +2277,147 @@ void stage_draw(void)
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
                 func_80030BA8(f1);
-                func_80033B14(NAOMIOBJ_MODEL(naomiCommonObj, 5), lbl_802F37A4);
+                func_80033B14(NAOMIOBJ_MODEL(naomiCommonObj, 5), 0.5f);
             }
         }
         mathutil_mtx_copy(sp8, mathutilData->mtxB);
+    }
+}
+
+void func_80047D70(void)
+{
+    if (previewLoaded)
+    {
+        mathutil_mtxA_from_mtxB_translate(&currentCameraStructPtr->eye);
+        mathutil_mtxA_translate_xyz(0.0f, lbl_802F1EC8 * 10.0 + 100.0, 0.0f);
+        mathutil_mtxA_rotate_x(0x4000);
+        mathutil_mtxA_scale_s(lbl_802F1EC4 + 15.0);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        func_800263A4();
+        func_800AD180(&stagePreview, -1, 0, -1.0f, lbl_802F3768, 0.0f, 2.0f, -2.0f);
+    }
+}
+
+void func_80047E18(struct NaomiModel *model, void (*b)(Vec *), void (*c)(Vec *))
+{
+    struct NaomiMesh *r6;
+
+    if (model->unk0 == -1)
+        return;
+    r6 = (void *)model->meshStart;
+    while (r6->unk0 != 0)
+    {
+        struct NaomiMesh *r31 = (void *)(r6->dispListStart + r6->dispListSize);
+        switch (r6->type)
+        {
+        case -2:
+            break;
+        case -3:
+            if (c != NULL)
+                func_80047FAC((void *)r6->dispListStart, r31, c);
+            break;
+        default:
+            if (b != NULL)
+                func_80047ED4((void *)r6->dispListStart, r31, b);
+            break;
+        }
+        r6 = r31;
+    }
+}
+
+void func_80047ED4(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
+{
+    int i;
+
+    while (dl < (struct NaomiDispList *)end)
+    {
+        u32 r4;
+        int faceCount;
+        u8 *vtxData;
+
+        r4 = dl->unk0;
+        vtxData = dl->vtxData;
+        faceCount = dl->faceCount;
+        if (r4 & (1 << 4))  // triangle strip
+        {
+            while (faceCount > 0)
+            {
+                if (*(u32 *)vtxData & 1)
+                {
+                    func((Vec *)vtxData);
+                    vtxData += 32;
+                }
+                else
+                    vtxData += 8;
+                faceCount--;
+            }
+        }
+        else if (r4 & (1 << 3))  // triangles
+        {
+            while (faceCount > 0)
+            {
+                for (i = 3; i > 0; i--)
+                {
+                    if (*(u32 *)vtxData & 1)
+                    {
+                        func((Vec *)vtxData);
+                        vtxData += 32;
+                    }
+                    else
+                        vtxData += 8;
+                }
+                faceCount--;
+            }
+        }
+        dl = (struct NaomiDispList *)vtxData;
+    }
+}
+
+// duplicate of func_80047ED4
+void func_80047FAC(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
+{
+    int i;
+
+    while (dl < (struct NaomiDispList *)end)
+    {
+        u32 r4;
+        int faceCount;
+        u8 *vtxData;
+
+        r4 = dl->unk0;
+        vtxData = dl->vtxData;
+        faceCount = dl->faceCount;
+        if (r4 & (1 << 4))  // triangle strip
+        {
+            while (faceCount > 0)
+            {
+                if (*(u32 *)vtxData & 1)
+                {
+                    func((Vec *)vtxData);
+                    vtxData += 32;
+                }
+                else
+                    vtxData += 8;
+                faceCount--;
+            }
+        }
+        else if (r4 & (1 << 3))  // triangles
+        {
+            while (faceCount > 0)
+            {
+                for (i = 3; i > 0; i--)
+                {
+                    if (*(u32 *)vtxData & 1)
+                    {
+                        func((Vec *)vtxData);
+                        vtxData += 32;
+                    }
+                    else
+                        vtxData += 8;
+                }
+                faceCount--;
+            }
+        }
+        dl = (struct NaomiDispList *)vtxData;
     }
 }

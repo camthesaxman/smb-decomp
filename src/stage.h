@@ -438,7 +438,7 @@ int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);
 void compute_stage_bounding_sphere(void);
 // ? func_800463E8();
-float func_80046884(struct GMAModelHeader *);
+float func_80046884(struct NaomiModel *);
 void load_stagedef(int stageId);
 void func_800472E8(void);
 void adjust_stage_anim_ptrs(struct StageAnimHdr **, struct Stage *);
