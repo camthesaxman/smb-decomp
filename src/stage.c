@@ -6,6 +6,7 @@
 #define MATHUTIL_SIN_INT_PARAM
 #include "global.h"
 #include "background.h"
+#include "camera.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
@@ -601,7 +602,7 @@ void load_stage_files(int stageId)
         sprintf(stageDir, "st%03d", stageId);
         DVDChangeDir(stageDir);
         oldHeap = OSSetCurrentHeap(memHeap2);
-        
+
         // Load stagedef (.lz) file
         load_stagedef(stageId);
 
@@ -628,11 +629,12 @@ void load_stage_files(int stageId)
 
 struct Struct802099E8
 {
-    void *unk0;
+    u32 *unk0;
     void *unk4;
-    u32 unk8;
+    s32 unk8;
 };
 
+/*
 struct Struct80209488
 {
     s32 unk0;
@@ -640,9 +642,10 @@ struct Struct80209488
     Vec unk8;
     float unk14;
 };
+*/
 
 u32 lbl_80209368[0x48];
-struct Struct80209488 *lbl_80209488[0x48];
+struct GMAModelHeader *lbl_80209488[0x48];
 u32 lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct802099E8 lbl_80209D48[0x80];
@@ -650,8 +653,8 @@ struct Struct802099E8 lbl_80209D48[0x80];
 struct Struct8020A348_child
 {
     u32 unk0;
-    struct Struct80209488 *unk4;
-    u8 filler8[4];
+    struct GMAModelHeader *unk4;  // GMAModelHeader
+    float unk8;
 };  // size = 0xC
 
 struct Struct8020A348
@@ -662,7 +665,7 @@ struct Struct8020A348
 
 struct Struct8020A348 lbl_8020A348[0x108];  //0x3648
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
-u8 lbl_8020ADC8[0xC];
+struct GMAModelHeader *lbl_8020ADC8[3];
 struct Sphere stageBoundingSphere;
 
 FORCE_BSS_ORDER(lbl_80209368)
@@ -1203,40 +1206,40 @@ void compute_stage_bounding_sphere(void)
 
     if (decodedStageLzPtr->lvlModels == NULL2)
     {
-        struct Struct80209488 **r3 = lbl_80209488;
+        struct GMAModelHeader **r3 = lbl_80209488;
 
         while (*r3 != NULL)
         {
-            struct Struct80209488 *r5 = *r3;
+            struct GMAModelHeader *r5 = *r3;
 
-            if (r5 != NULL2 && r5->unk0 >= 0)
+            if (r5 != NULL2 && (int)r5->magic >= 0)
             {
                 if (!r4)
                 {
                     r4 = TRUE;
-                    min.x = r5->unk8.x - r5->unk14;
-                    min.y = r5->unk8.y - r5->unk14;
-                    min.z = r5->unk8.z - r5->unk14;
+                    min.x = r5->boundingSphereCenter.x - r5->boundingSphereRadius;
+                    min.y = r5->boundingSphereCenter.y - r5->boundingSphereRadius;
+                    min.z = r5->boundingSphereCenter.z - r5->boundingSphereRadius;
 
-                    max.x = r5->unk8.x + r5->unk14;
-                    max.y = r5->unk8.y + r5->unk14;
-                    max.z = r5->unk8.z + r5->unk14;
+                    max.x = r5->boundingSphereCenter.x + r5->boundingSphereRadius;
+                    max.y = r5->boundingSphereCenter.y + r5->boundingSphereRadius;
+                    max.z = r5->boundingSphereCenter.z + r5->boundingSphereRadius;
                 }
                 else
                 {
-                    if (r5->unk8.x - r5->unk14 < min.x)
-                        min.x = r5->unk8.x - r5->unk14;
-                    if (r5->unk8.y - r5->unk14 < min.y)
-                        min.y = r5->unk8.y - r5->unk14;
-                    if (r5->unk8.z - r5->unk14 < min.z)
-                        min.z = r5->unk8.z - r5->unk14;
+                    if (r5->boundingSphereCenter.x - r5->boundingSphereRadius < min.x)
+                        min.x = r5->boundingSphereCenter.x - r5->boundingSphereRadius;
+                    if (r5->boundingSphereCenter.y - r5->boundingSphereRadius < min.y)
+                        min.y = r5->boundingSphereCenter.y - r5->boundingSphereRadius;
+                    if (r5->boundingSphereCenter.z - r5->boundingSphereRadius < min.z)
+                        min.z = r5->boundingSphereCenter.z - r5->boundingSphereRadius;
 
-                    if (r5->unk8.x + r5->unk14 > max.x)
-                        max.x = r5->unk8.x + r5->unk14;
-                    if (r5->unk8.y + r5->unk14 > max.y)
-                        max.y = r5->unk8.y + r5->unk14;
-                    if (r5->unk8.z + r5->unk14 > max.z)
-                        max.z = r5->unk8.z + r5->unk14;
+                    if (r5->boundingSphereCenter.x + r5->boundingSphereRadius > max.x)
+                        max.x = r5->boundingSphereCenter.x + r5->boundingSphereRadius;
+                    if (r5->boundingSphereCenter.y + r5->boundingSphereRadius > max.y)
+                        max.y = r5->boundingSphereCenter.y + r5->boundingSphereRadius;
+                    if (r5->boundingSphereCenter.z + r5->boundingSphereRadius > max.z)
+                        max.z = r5->boundingSphereCenter.z + r5->boundingSphereRadius;
                 }
             }
             r3++;
@@ -1253,36 +1256,36 @@ void compute_stage_bounding_sphere(void)
             int r6;
             for (r6 = 0; r6 < r3->unk4; r6++, r5++)
             {
-                struct Struct80209488 *r7 = r5->unk4;
+                struct GMAModelHeader *r7 = r5->unk4;
 
-                if (r7 != NULL2 && r7->unk0 >= 0)
+                if (r7 != NULL2 && (int)r7->magic >= 0)
                 {
                     if (!r4)
                     {
                         r4 = TRUE;
-                        min.x = r7->unk8.x - r7->unk14;
-                        min.y = r7->unk8.y - r7->unk14;
-                        min.z = r7->unk8.z - r7->unk14;
+                        min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
+                        min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
+                        min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
 
-                        max.x = r7->unk8.x + r7->unk14;
-                        max.y = r7->unk8.y + r7->unk14;
-                        max.z = r7->unk8.z + r7->unk14;
+                        max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
+                        max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
+                        max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
                     }
                     else
                     {
-                        if (r7->unk8.x - r7->unk14 < min.x)
-                            min.x = r7->unk8.x - r7->unk14;
-                        if (r7->unk8.y - r7->unk14 < min.y)
-                            min.y = r7->unk8.y - r7->unk14;
-                        if (r7->unk8.z - r7->unk14 < min.z)
-                            min.z = r7->unk8.z - r7->unk14;
+                        if (r7->boundingSphereCenter.x - r7->boundingSphereRadius < min.x)
+                            min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.y - r7->boundingSphereRadius < min.y)
+                            min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.z - r7->boundingSphereRadius < min.z)
+                            min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
 
-                        if (r7->unk8.x + r7->unk14 > max.x)
-                            max.x = r7->unk8.x + r7->unk14;
-                        if (r7->unk8.y + r7->unk14 > max.y)
-                            max.y = r7->unk8.y + r7->unk14;
-                        if (r7->unk8.z + r7->unk14 > max.z)
-                            max.z = r7->unk8.z + r7->unk14;
+                        if (r7->boundingSphereCenter.x + r7->boundingSphereRadius > max.x)
+                            max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.y + r7->boundingSphereRadius > max.y)
+                            max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.z + r7->boundingSphereRadius > max.z)
+                            max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
                     }
                 }
             }
@@ -1300,36 +1303,36 @@ void compute_stage_bounding_sphere(void)
 
             for (r6 = 0; r6 < r3->unk4; r6++, r5++)
             {
-                struct Struct80209488 *r7 = r5->unk4;
+                struct GMAModelHeader *r7 = r5->unk4;
 
                 if (r7 != NULL2)
                 {
                     if (!r4)
                     {
                         r4 = TRUE;
-                        min.x = r7->unk8.x - r7->unk14;
-                        min.y = r7->unk8.y - r7->unk14;
-                        min.z = r7->unk8.z - r7->unk14;
+                        min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
+                        min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
+                        min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
 
-                        max.x = r7->unk8.x + r7->unk14;
-                        max.y = r7->unk8.y + r7->unk14;
-                        max.z = r7->unk8.z + r7->unk14;
+                        max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
+                        max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
+                        max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
                     }
                     else
                     {
-                        if (r7->unk8.x - r7->unk14 < min.x)
-                            min.x = r7->unk8.x - r7->unk14;
-                        if (r7->unk8.y - r7->unk14 < min.y)
-                            min.y = r7->unk8.y - r7->unk14;
-                        if (r7->unk8.z - r7->unk14 < min.z)
-                            min.z = r7->unk8.z - r7->unk14;
+                        if (r7->boundingSphereCenter.x - r7->boundingSphereRadius < min.x)
+                            min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.y - r7->boundingSphereRadius < min.y)
+                            min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.z - r7->boundingSphereRadius < min.z)
+                            min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
 
-                        if (r7->unk8.x + r7->unk14 > max.x)
-                            max.x = r7->unk8.x + r7->unk14;
-                        if (r7->unk8.y + r7->unk14 > max.y)
-                            max.y = r7->unk8.y + r7->unk14;
-                        if (r7->unk8.z + r7->unk14 > max.z)
-                            max.z = r7->unk8.z + r7->unk14;
+                        if (r7->boundingSphereCenter.x + r7->boundingSphereRadius > max.x)
+                            max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.y + r7->boundingSphereRadius > max.y)
+                            max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
+                        if (r7->boundingSphereCenter.z + r7->boundingSphereRadius > max.z)
+                            max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
                     }
                 }
             }
@@ -1358,8 +1361,10 @@ void compute_stage_bounding_sphere(void)
     }
 }
 
-extern const float lbl_802F37A4;
-extern const float lbl_802F37A8;
+//extern const float lbl_802F37A4;
+//extern const float lbl_802F37A8;
+#define lbl_802F37A4 0.5f
+#define lbl_802F37A8 0.75f
 
 void func_800463E8(Vec *a, float *b)
 {
@@ -1398,10 +1403,10 @@ void func_800463E8(Vec *a, float *b)
                 if ((iter3->unk0 & 3) == 1 && iter3->unk4 != NULL)
                 {
                     float f;
-                    struct Struct80209488 *r28 = iter3->unk4;
+                    struct GMAModelHeader *r28 = iter3->unk4;
 
-                    mathutil_mtxA_tf_point(&r28->unk8, &sp34);
-                    f = r28->unk14;
+                    mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp34);
+                    f = r28->boundingSphereRadius;
                     v.x = sp34.x - f;
                     v.y = sp34.y - f;
                     v.z = sp34.z - f;
@@ -1443,12 +1448,12 @@ void func_800463E8(Vec *a, float *b)
                 {
                     float var1;
                     float f0;
-                    struct Struct80209488 *r28 = iter3->unk4;
+                    struct GMAModelHeader *r28 = iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&r28->unk8, &sp28);
-                    var1 = r28->unk14;
+                    mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp28);
+                    var1 = r28->boundingSphereRadius;
                     f0 = var1 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
                     if (result < f0)
                         result = f0;
@@ -1477,10 +1482,10 @@ void func_800463E8(Vec *a, float *b)
                 if ((iter3->unk0 & 3) == 1 && iter3->unk4 != NULL)
                 {
                     float f;
-                    struct Struct80209488 *r28 = iter3->unk4;
+                    struct GMAModelHeader *r28 = iter3->unk4;
 
-                    mathutil_mtxA_tf_point(&r28->unk8, &sp1C);
-                    f = r28->unk14;
+                    mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp1C);
+                    f = r28->boundingSphereRadius;
                     v.x = sp1C.x - f;
                     v.y = sp1C.y - f;
                     v.z = sp1C.z - f;
@@ -1522,11 +1527,11 @@ void func_800463E8(Vec *a, float *b)
                 {
                     float var1;
                     float f0;
-                    struct Struct80209488 *r24 = iter3->unk4;
+                    struct GMAModelHeader *r24 = iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&r24->unk8, &sp10);
+                    mathutil_mtxA_tf_point(&r24->boundingSphereCenter, &sp10);
                     var1 = func_80046884(r24);
                     f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
                     if (result < f0)
@@ -1559,9 +1564,9 @@ FORCE_BSS_ORDER(lbl_8020ADE4)
 extern void lbl_800468F0();
 extern void lbl_80046978();
 
-float func_80046884(struct Struct80209488 *a)
+float func_80046884(struct GMAModelHeader *a)
 {
-    lbl_8020ADE4.unk0 = a->unk8;
+    lbl_8020ADE4.unk0 = a->boundingSphereCenter;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
     func_80047E18(a, lbl_800468F0, lbl_80046978);
@@ -1944,10 +1949,355 @@ Struct80206DEC_Func func_80047518(Struct80206DEC_Func func)
 }
 #pragma force_active reset
 
-/*
-const double lbl_802F3770 = -0.030833333333333333;
-const float lbl_802F3778 = -1092.0f;
-const float lbl_802F377C = 30.0f;
-const double lbl_802F3780 = 16384.0;
-const float lbl_802F3788 = -6.103515625e-05f;
-*/
+struct Struct80092F90
+{
+    u16 unk0;
+    u16 unk2;
+    void *unk4;
+};
+
+#define lbl_802F3768 1.0f
+//extern const float lbl_802F3768;
+//extern const float lbl_802F37AC;
+#define lbl_802F37AC 10.0f
+//extern const double lbl_802F37B0;
+#define lbl_802F37B0 2.0
+//extern const float lbl_802F37B8;
+#define lbl_802F37B8 -1.1920928955078125e-07f
+//extern const float lbl_802F37BC;
+#define lbl_802F37BC 0.8f
+//extern const float lbl_802F37C0;
+#define lbl_802F37C0 2.0f
+//extern const float lbl_802F37C4;
+#define lbl_802F37C4 60.0f
+
+void stage_draw(void)
+{
+    int r31;
+    struct Struct80206E48 *r28;
+    struct StageCollHdr *r27;
+    int i;
+    int (*r25)();
+    struct Struct80092F90 sp7C;
+    Mtx sp4C;
+    u8 dummy[8];
+    Vec sp38;
+    Mtx sp8;
+
+    r31 = func_80092D34();
+    r25 = backgroundInfo.unk78;
+    if (backgroundInfo.unk8C != 0)
+        g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
+    sp7C.unk0 = 32;
+    r28 = movableStageParts;
+    r27 = decodedStageLzPtr->collHdrs;
+    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r28++, r27++)
+    {
+        struct StageCollHdr_child *r24;
+        int j;
+        struct GMAModelHeader *r22;
+
+        if (r27->unk3C != 0)
+        {
+            mathutil_mtxA_from_mtxB();
+            if (i > 0)
+                mathutil_mtxA_mult_right(r28->unk24);
+            mathutil_mtxA_to_mtx(sp4C);
+            r24 = r27->unk40;
+            for (j = 0; j < r27->unk3C; j++, r24++)
+            {
+                mathutil_mtxA_from_mtx(sp4C);
+                mathutil_mtxA_translate(&r24->unk0);
+                mathutil_mtxA_rotate_z(r24->unk10);
+                mathutil_mtxA_rotate_y(r24->unkE);
+                mathutil_mtxA_rotate_x(r24->unkC);
+                func_8000E338(r24->unk12);
+                switch (r24->unk12)
+                {
+                default:
+                    r22 = lbl_8020ADC8[0];
+                    break;
+                case 0x47:
+                    r22 = lbl_8020ADC8[1];
+                    break;
+                case 0x52:
+                    r22 = lbl_8020ADC8[2];
+                    break;
+                }
+                if (r22 != NULL)
+                {
+                    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+                    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+                    g_avdisp_maybe_draw_model_1(r22);
+                    sp7C.unk2 = 4;
+                    sp7C.unk4 = r22;
+                }
+                else
+                {
+                    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 4));
+                    sp7C.unk2 = 0;
+                    sp7C.unk4 = NAOMIOBJ_MODEL(naomiCommonObj, 4);
+                }
+                if (r31 != 0)
+                    func_80092F90(&sp7C);
+            }
+        }
+    }
+    func_8000E3BC();
+    sp7C.unk0 = 2;
+    if (dipSwitches & DIP_TRIANGLE)
+    {
+        mathutil_mtxA_from_mtxB();
+        mathutil_mtxA_rotate_x(0xC000);
+        mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
+        func_80030BA8(10.0f);
+        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 9));
+    }
+    else if (dipSwitches & DIP_STCOLI)
+        func_800415AC();
+    else
+    {
+        if (decodedStageGmaPtr != NULL)
+        {
+            struct Struct80206E48 *r22;
+            struct Struct8020A348 *r23;
+            int j;
+            struct Struct8020A348_child *r27;
+            struct GMAModelHeader *r28;
+
+            sp7C.unk2 = 6;
+            r22 = movableStageParts;
+            r23 = lbl_8020AB88;
+            for (i = 0; i < movableStagePartCount; i++, r23++, r22++)
+            {
+                mathutil_mtxA_from_mtxB();
+                if (i > 0)
+                    mathutil_mtxA_mult_right(r22->unk24);
+                GXLoadPosMtxImm(mathutilData->mtxA, 0);
+                GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+                r27 = r23->unk0;
+                for (j = 0; j < r23->unk4; j++, r27++)
+                {
+                    if ((r27->unk0 & 3) == 1)
+                    {
+                        r28 = r27->unk4;
+                        if (r28 != NULL && r28 != NULL)  // WTF?
+                        {
+                            if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D)))
+                             || (r27->unk0 & (1<<(31-0x1D))))
+                            {
+                                g_avdisp_maybe_draw_model_2(r28);
+                                if (r31 != 0)
+                                {
+                                    sp7C.unk4 = r28;
+                                    func_80092F90(&sp7C);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (decodedStageLzPtr->lvlModels == NULL)
+        {
+            struct Struct80206E48 *r22;
+            struct Struct802099E8 *r23;
+            void *r24;
+            int j;
+
+            r22 = movableStageParts;
+            r23 = lbl_802099E8;
+            for (i = 0; i < movableStagePartCount; i++, r22++, r23++)
+            {
+                mathutil_mtxA_from_mtxB();
+                if (i > 0)
+                    mathutil_mtxA_mult_right(r22->unk24);
+                for (j = 0; j < r23->unk8; j++)
+                {
+                    r24 = (void *)r23->unk0[j];
+                    func_80033AD4(r24);
+                    if (r25 != NULL)
+                    {
+                        mathutil_mtxA_push();
+                        mathutil_mtxA_from_mtx(r22->unk24);
+                        if (r25(r24, lbl_802F1B4C) != 0)
+                        {
+                            mathutil_mtxA_pop();
+                            g_call_draw_naomi_model_1(lbl_802F1B4C);
+                        }
+                        else
+                            mathutil_mtxA_pop();
+                    }
+                }
+            }
+        }
+        else
+        {
+            struct Struct80206E48 *r22;
+            struct Struct8020A348 *r23;
+            int j;
+            float f29;
+            struct Struct8020A348_child *r27;
+
+            r22 = movableStageParts;
+            f29 = currentCameraStructPtr->sub28.unk38;
+            r23 = lbl_8020A348;
+            for (i = 0; i < movableStagePartCount; i++, r23++, r22++)
+            {
+                mathutil_mtxA_from_mtxB();
+                if (i > 0)
+                    mathutil_mtxA_mult_right(r22->unk24);
+                r27 = r23->unk0;
+                for (j = 0; j < r23->unk4; j++, r27++)
+                {
+                    if ((r27->unk0 & 3) == 1)
+                    {
+                        struct GMAModelHeader *r28 = r27->unk4;
+                        if (r27->unk4 != NULL)
+                        {
+                            float f28 = r28->boundingSphereRadius * 2.0;
+
+                            mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp38);
+                            if (sp38.z < -1.1920928955078125e-07f)
+                            {
+                                float f1 = -sp38.z * f29;
+                                int r3 = r23->unk4;
+                                while (j + 1 < r3 && r27[1].unk0 == 2)
+                                {
+                                    r27++;
+                                    j++;
+                                    if (f28 < r27->unk8 * f1)
+                                    {
+                                        r28 = r27->unk4;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (r28 != NULL)
+                            {
+                                func_80033AD4((void *)r28);
+                                if (r31 != 0)
+                                {
+                                    sp7C.unk2 = 0;
+                                    sp7C.unk4 = r28;
+                                    func_80092F90(&sp7C);
+                                }
+                                if (r25 != NULL)
+                                {
+                                    mathutil_mtxA_push();
+                                    mathutil_mtxA_from_mtx(r22->unk24);
+                                    if (r25(r28, lbl_802F1B4C) != 0)
+                                    {
+                                        mathutil_mtxA_pop();
+                                        g_call_draw_naomi_model_1(lbl_802F1B4C);
+                                    }
+                                    else
+                                        mathutil_mtxA_pop();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (lbl_802F1F44 != NULL)
+        {
+            struct Struct802F1F44 *r22;
+            mathutil_mtxA_from_mtxB();
+            r22 = lbl_802F1F44;
+            while (r22->unk0 != 0)
+            {
+                g_dupe_of_call_draw_naomi_model_1(r22->unk14);
+                if (r31 != 0)
+                {
+                    sp7C.unk2 = 0;
+                    sp7C.unk4 = r22->unk14;
+                    func_80092F90(&sp7C);
+                }
+                r22++;
+            }
+        }
+        if (currStageId == ST_101_BLUR_BRIDGE)
+            func_8004424C();
+        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1<<(31-0x1E))))
+        {
+            func_80030BB8(1.0f, 1.0f, 1.0f);
+            if (lbl_801EEC90.unk0 & (1<<(31-0x1C)))
+            {
+                mathutil_mtxA_from_identity();
+                mathutil_mtxA_scale_s(0.8f);
+                mathutil_mtxA_mult_right(mathutilData->mtxB);
+                mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
+                mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot);
+                mathutil_mtxA_rotate_x(0x4000);
+                mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
+                mathutil_mtxA_scale_s(2.0f);
+            }
+            else
+            {
+                mathutil_mtxA_from_mtxB();
+                mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
+                mathutil_mtxA_rotate_y(-unpausedFrameCounter << 9);
+            }
+            if (lbl_801F3A58.unk1E == 1)
+            {
+                if (modeCtrl.unk0 > 0x78)
+                    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 10));
+                else if (modeCtrl.unk0 > 60)
+                {
+                    func_80033B14(
+                        NAOMIOBJ_MODEL(naomiCommonObj, 10),
+                        (modeCtrl.unk0 - 60) / 60.0f);
+                }
+            }
+            else
+            {
+                if (modeCtrl.unk0 > 0x4B)
+                    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 10));
+                else if (modeCtrl.unk0 > 45)
+                {
+                    func_80033B14(
+                        NAOMIOBJ_MODEL(naomiCommonObj, 10),
+                        (modeCtrl.unk0 - 45) / 30.0f);
+                }
+            }
+            func_8000E3BC();
+        }
+    }
+    if (backgroundInfo.unk8C != 0)
+        g_avdisp_set_some_func_1(NULL);
+    if (dipSwitches & (1<<(31-0x14)))
+    {
+        struct Struct80206E48 *r22;
+        struct StageCollHdr *r23;
+        int i;
+        struct StageCollHdr_child2 *r25;
+        int j;
+
+        mathutil_mtx_copy(mathutilData->mtxB, sp8);
+        r22 = movableStageParts;
+        r23 = decodedStageLzPtr->collHdrs;
+        for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r22++, r23++)
+        {
+            mathutil_mtxA_from_mtx(sp8);
+            mathutil_mtxA_mult_right(r22->unk24);
+            mathutil_mtxA_to_mtx(mathutilData->mtxB);
+            r25 = r23->unk88;
+            for (j = 0; j < r23->unk84; j++, r25++)
+            {
+                float f1;
+                mathutil_mtxA_from_mtxB();
+                mathutil_mtxA_translate(&r25->unk0);
+                mathutil_mtxA_rotate_z(r25->unk1C);
+                mathutil_mtxA_rotate_y(r25->unk1A);
+                mathutil_mtxA_rotate_x(r25->unk18);
+                mathutil_mtxA_scale(&r25->unkC);
+                f1 = MAX(r25->unkC.x, r25->unkC.y);
+                f1 = MAX(f1, r25->unkC.z);
+                func_80030BA8(f1);
+                func_80033B14(NAOMIOBJ_MODEL(naomiCommonObj, 5), lbl_802F37A4);
+            }
+        }
+        mathutil_mtx_copy(sp8, mathutilData->mtxB);
+    }
+}

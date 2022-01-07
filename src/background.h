@@ -46,7 +46,7 @@ struct BackgroundInfo  // size = 0xA8
     float unk40;
     u8 filler44[4];
     Mtx unk48;
-    void (*unk78)(void);
+    int (*unk78)();
     int (*unk7C)();
     u32 unk80;
     float unk84;
@@ -179,7 +179,7 @@ void bg_old_water_main(void);
 void bg_old_water_finish(void);
 void bg_old_water_draw(void);
 void func_8005AD7C(int);
-void func_8005AD80(void);
+int func_8005AD80();
 int func_8005AE1C();
 void bg_jungle_init(void);
 void bg_jungle_main(void);

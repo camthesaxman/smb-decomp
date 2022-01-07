@@ -261,7 +261,7 @@ void (*lbl_801B9658[])(int) =
 };
 
 // 554
-void (*lbl_801B96CC[])(void) =
+int (*lbl_801B96CC[])() =
 {
     NULL,
     NULL,

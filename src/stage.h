@@ -245,6 +245,25 @@ struct DecodedStageLzPtr_child_child4
     u8 filler4[4];
 };  // size = 8
 
+struct StageCollHdr_child
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s8 unk12;
+};
+
+struct StageCollHdr_child2
+{
+    Vec unk0;  // position?
+    Vec unkC;  // scale?
+    s16 unk18;
+    s16 unk1A;
+    s16 unk1C;
+    u8 padding[2];
+};  // size = 0x20
+
 struct StageCollHdr
 {
     Vec unk0;
@@ -260,7 +279,7 @@ struct StageCollHdr
     /*0x34*/ s32 cellsX;  // number of cells in x direction
     /*0x38*/ s32 cellsY;  // number of cells in y direction
     /*0x3C*/ s32 unk3C;
-    Vec *unk40;
+    struct StageCollHdr_child *unk40;
     u8 filler44[4];
     void *unk48;
     u8 filler4C[4];
@@ -277,8 +296,8 @@ struct StageCollHdr
     void *unk78;
     s32 unk7C;
     struct DecodedStageLzPtr_child_child3 *unk80;
-    u8 filler84[4];
-    void *unk88;
+    s32 unk84;
+    struct StageCollHdr_child2 *unk88;
     s32 unk8C;
     struct DecodedStageLzPtr_child_child4 *unk90;
     u8 filler94[0xB8-0x94];
@@ -419,7 +438,7 @@ int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);
 void compute_stage_bounding_sphere(void);
 // ? func_800463E8();
-float func_80046884(struct Struct80209488 *);
+float func_80046884(struct GMAModelHeader *);
 void load_stagedef(int stageId);
 void func_800472E8(void);
 void adjust_stage_anim_ptrs(struct StageAnimHdr **, struct Stage *);
