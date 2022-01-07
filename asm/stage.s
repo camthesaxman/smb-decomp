@@ -424,7 +424,7 @@ lbl_80044060:
 /* 8004407C 0003FF9C  7D 88 03 A6 */	mtlr r12
 /* 80044080 0003FFA0  4E 80 00 21 */	blrl
 lbl_80044084:
-/* 80044084 0003FFA4  80 0D 9D 64 */	lwz r0, lbl_802F1F44@sda21(r13)
+/* 80044084 0003FFA4  80 0D 9D 64 */	lwz r0, dynamicStageParts@sda21(r13)
 /* 80044088 0003FFA8  28 00 00 00 */	cmplwi r0, 0
 /* 8004408C 0003FFAC  41 82 00 40 */	beq lbl_800440CC
 /* 80044090 0003FFB0  7C 1B 03 78 */	mr r27, r0
@@ -438,7 +438,7 @@ lbl_80044098:
 /* 800440AC 0003FFCC  80 7B 00 14 */	lwz r3, 0x14(r27)
 /* 800440B0 0003FFD0  80 9B 00 08 */	lwz r4, 8(r27)
 /* 800440B4 0003FFD4  80 BB 00 0C */	lwz r5, 0xc(r27)
-/* 800440B8 0003FFD8  48 00 3D 61 */	bl func_80047E18
+/* 800440B8 0003FFD8  48 00 3D 61 */	bl g_apply_func_to_naomi_model_vertices
 /* 800440BC 0003FFDC  3B 7B 00 18 */	addi r27, r27, 0x18
 lbl_800440C0:
 /* 800440C0 0003FFE0  80 1B 00 00 */	lwz r0, 0(r27)
@@ -924,8 +924,8 @@ lbl_8004476C:
 /* 8004478C 000406AC  38 21 00 60 */	addi r1, r1, 0x60
 /* 80044790 000406B0  4E 80 00 20 */	blr
 
-.global func_80044794
-func_80044794:
+.global g_initialize_stage_dyn_part_info
+g_initialize_stage_dyn_part_info:
 /* 80044794 000406B4  7C 08 02 A6 */	mflr r0
 /* 80044798 000406B8  38 80 00 00 */	li r4, 0
 /* 8004479C 000406BC  90 01 00 04 */	stw r0, 4(r1)
@@ -941,15 +941,15 @@ func_80044794:
 /* 800447C4 000406E4  3C 80 80 1C */	lis r4, lbl_801B870C@ha
 /* 800447C8 000406E8  7C C5 02 14 */	add r6, r5, r0
 /* 800447CC 000406EC  38 04 87 0C */	addi r0, r4, lbl_801B870C@l
-/* 800447D0 000406F0  3C 60 80 04 */	lis r3, lbl_800457FC@ha
+/* 800447D0 000406F0  3C 60 80 04 */	lis r3, g_bonus_wave_warp_callback_1@ha
 /* 800447D4 000406F4  90 06 00 00 */	stw r0, 0(r6)
-/* 800447D8 000406F8  38 03 57 FC */	addi r0, r3, lbl_800457FC@l
-/* 800447DC 000406FC  3C 80 80 04 */	lis r4, lbl_80045A00@ha
+/* 800447D8 000406F8  38 03 57 FC */	addi r0, r3, g_bonus_wave_warp_callback_1@l
+/* 800447DC 000406FC  3C 80 80 04 */	lis r4, g_bonus_wave_warp_callback_2@ha
 /* 800447E0 00040700  90 06 00 08 */	stw r0, 8(r6)
-/* 800447E4 00040704  38 04 5A 00 */	addi r0, r4, lbl_80045A00@l
-/* 800447E8 00040708  3C 60 80 04 */	lis r3, lbl_80045B54@ha
+/* 800447E4 00040704  38 04 5A 00 */	addi r0, r4, g_bonus_wave_warp_callback_2@l
+/* 800447E8 00040708  3C 60 80 04 */	lis r3, g_bonus_wave_unused_callback@ha
 /* 800447EC 0004070C  90 06 00 0C */	stw r0, 0xc(r6)
-/* 800447F0 00040710  38 03 5B 54 */	addi r0, r3, lbl_80045B54@l
+/* 800447F0 00040710  38 03 5B 54 */	addi r0, r3, g_bonus_wave_unused_callback@l
 /* 800447F4 00040714  90 06 00 10 */	stw r0, 0x10(r6)
 /* 800447F8 00040718  38 80 00 00 */	li r4, 0
 /* 800447FC 0004071C  88 61 00 64 */	lbz r3, 0x64(r1)
@@ -1139,7 +1139,7 @@ lbl_80044A7C:
 /* 80044A88 000409A8  38 63 93 68 */	addi r3, r3, lbl_80209368@l
 /* 80044A8C 000409AC  48 03 FD 09 */	bl func_80084794
 /* 80044A90 000409B0  7F 83 E3 78 */	mr r3, r28
-/* 80044A94 000409B4  48 00 0C 15 */	bl func_800456A8
+/* 80044A94 000409B4  48 00 0C 15 */	bl g_initialize_stuff_for_dynamic_stage_parts
 /* 80044A98 000409B8  48 00 14 01 */	bl compute_stage_bounding_sphere
 /* 80044A9C 000409BC  93 8D 87 B8 */	stw r28, loadedStageId@sda21(r13)
 lbl_80044AA0:
@@ -2043,8 +2043,8 @@ lbl_80045684:
 .endif
 
 .if 0
-.global func_800456A8
-func_800456A8:
+.global g_initialize_stuff_for_dynamic_stage_parts
+g_initialize_stuff_for_dynamic_stage_parts:
 /* 800456A8 000415C8  7C 08 02 A6 */	mflr r0
 /* 800456AC 000415CC  38 CD 87 B0 */	addi r6, r13, lbl_802F0990@sda21
 /* 800456B0 000415D0  90 01 00 04 */	stw r0, 4(r1)
@@ -2062,14 +2062,14 @@ lbl_800456DC:
 /* 800456DC 000415FC  2C 05 00 00 */	cmpwi r5, 0
 /* 800456E0 00041600  41 81 00 10 */	bgt lbl_800456F0
 /* 800456E4 00041604  38 00 00 00 */	li r0, 0
-/* 800456E8 00041608  90 0D 9D 64 */	stw r0, lbl_802F1F44@sda21(r13)
+/* 800456E8 00041608  90 0D 9D 64 */	stw r0, dynamicStageParts@sda21(r13)
 /* 800456EC 0004160C  48 00 00 B8 */	b lbl_800457A4
 lbl_800456F0:
 /* 800456F0 00041610  80 06 00 04 */	lwz r0, 4(r6)
 /* 800456F4 00041614  3C 60 80 1C */	lis r3, lbl_801B8794@ha
 /* 800456F8 00041618  3B C3 87 94 */	addi r30, r3, lbl_801B8794@l
-/* 800456FC 0004161C  90 0D 9D 64 */	stw r0, lbl_802F1F44@sda21(r13)
-/* 80045700 00041620  83 8D 9D 64 */	lwz r28, lbl_802F1F44@sda21(r13)
+/* 800456FC 0004161C  90 0D 9D 64 */	stw r0, dynamicStageParts@sda21(r13)
+/* 80045700 00041620  83 8D 9D 64 */	lwz r28, dynamicStageParts@sda21(r13)
 /* 80045704 00041624  48 00 00 94 */	b lbl_80045798
 lbl_80045708:
 /* 80045708 00041628  3B 3E 00 00 */	addi r25, r30, 0
@@ -2150,7 +2150,7 @@ lbl_800457F4:
 .endif
 
 .if 0
-glabel lbl_800457FC
+glabel g_bonus_wave_warp_callback_1
 /* 800457FC 0004171C  7C 08 02 A6 */	mflr r0
 /* 80045800 00041720  90 01 00 04 */	stw r0, 4(r1)
 /* 80045804 00041724  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -2284,7 +2284,7 @@ lbl_800459E0:
 /* 800459FC 0004191C  4E 80 00 20 */	blr
 .endif
 .if 0
-glabel lbl_80045A00
+glabel g_bonus_wave_warp_callback_2
 /* 80045A00 00041920  7C 08 02 A6 */	mflr r0
 /* 80045A04 00041924  90 01 00 04 */	stw r0, 4(r1)
 /* 80045A08 00041928  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -2372,7 +2372,7 @@ lbl_80045B3C:
 /* 80045B4C 00041A6C  38 21 00 58 */	addi r1, r1, 0x58
 /* 80045B50 00041A70  4E 80 00 20 */	blr
 
-glabel lbl_80045B54
+glabel g_bonus_wave_unused_callback
 /* 80045B54 00041A74  7C 08 02 A6 */	mflr r0
 /* 80045B58 00041A78  90 01 00 04 */	stw r0, 4(r1)
 /* 80045B5C 00041A7C  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -3323,23 +3323,23 @@ func_80046884:
 /* 80046888 000427A8  3C 80 80 20 */	lis r4, lbl_80206D00@ha
 /* 8004688C 000427AC  90 01 00 04 */	stw r0, 4(r1)
 /* 80046890 000427B0  38 C4 6D 00 */	addi r6, r4, lbl_80206D00@l
-/* 80046894 000427B4  3C 80 80 04 */	lis r4, lbl_800468F0@ha
+/* 80046894 000427B4  3C 80 80 04 */	lis r4, g_some_stage_vtx_callback_1@ha
 /* 80046898 000427B8  94 21 FF E8 */	stwu r1, -0x18(r1)
-/* 8004689C 000427BC  38 84 68 F0 */	addi r4, r4, lbl_800468F0@l
+/* 8004689C 000427BC  38 84 68 F0 */	addi r4, r4, g_some_stage_vtx_callback_1@l
 /* 800468A0 000427C0  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800468A4 000427C4  3B E6 40 F4 */	addi r31, r6, 0x40f4
 /* 800468A8 000427C8  80 A3 00 08 */	lwz r5, 8(r3)
 /* 800468AC 000427CC  80 03 00 0C */	lwz r0, 0xc(r3)
 /* 800468B0 000427D0  90 A6 40 E4 */	stw r5, 0x40e4(r6)
-/* 800468B4 000427D4  3C A0 80 04 */	lis r5, lbl_80046978@ha
-/* 800468B8 000427D8  38 A5 69 78 */	addi r5, r5, lbl_80046978@l
+/* 800468B4 000427D4  3C A0 80 04 */	lis r5, g_some_stage_vtx_callback_2@ha
+/* 800468B8 000427D8  38 A5 69 78 */	addi r5, r5, g_some_stage_vtx_callback_2@l
 /* 800468BC 000427DC  90 06 40 E8 */	stw r0, 0x40e8(r6)
 /* 800468C0 000427E0  80 03 00 10 */	lwz r0, 0x10(r3)
 /* 800468C4 000427E4  90 06 40 EC */	stw r0, 0x40ec(r6)
 /* 800468C8 000427E8  C0 02 8F 20 */	lfs f0, lbl_802F3720-_SDA2_BASE_(r2)
 /* 800468CC 000427EC  D0 06 40 F0 */	stfs f0, 0x40f0(r6)
 /* 800468D0 000427F0  D0 06 40 F4 */	stfs f0, 0x40f4(r6)
-/* 800468D4 000427F4  48 00 15 45 */	bl func_80047E18
+/* 800468D4 000427F4  48 00 15 45 */	bl g_apply_func_to_naomi_model_vertices
 /* 800468D8 000427F8  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800468DC 000427FC  C0 3F 00 00 */	lfs f1, 0(r31)
 /* 800468E0 00042800  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -3347,7 +3347,7 @@ func_80046884:
 /* 800468E8 00042808  38 21 00 18 */	addi r1, r1, 0x18
 /* 800468EC 0004280C  4E 80 00 20 */	blr
 
-glabel lbl_800468F0
+glabel g_some_stage_vtx_callback_1
 /* 800468F0 00042810  7C 08 02 A6 */	mflr r0
 /* 800468F4 00042814  3C 80 80 20 */	lis r4, lbl_80206D00@ha
 /* 800468F8 00042818  90 01 00 04 */	stw r0, 4(r1)
@@ -3384,7 +3384,7 @@ lbl_80046964:
 /* 80046970 00042890  7C 08 03 A6 */	mtlr r0
 /* 80046974 00042894  4E 80 00 20 */	blr
 
-glabel lbl_80046978
+glabel g_some_stage_vtx_callback_2
 /* 80046978 00042898  7C 08 02 A6 */	mflr r0
 /* 8004697C 0004289C  3C 80 80 20 */	lis r4, lbl_80206D00@ha
 /* 80046980 000428A0  90 01 00 04 */	stw r0, 4(r1)
@@ -4624,11 +4624,11 @@ lbl_80047A38:
 /* 80047A3C 0004395C  7C 1A 00 00 */	cmpw r26, r0
 /* 80047A40 00043960  41 80 FE BC */	blt lbl_800478FC
 lbl_80047A44:
-/* 80047A44 00043964  80 0D 9D 64 */	lwz r0, lbl_802F1F44@sda21(r13)
+/* 80047A44 00043964  80 0D 9D 64 */	lwz r0, dynamicStageParts@sda21(r13)
 /* 80047A48 00043968  28 00 00 00 */	cmplwi r0, 0
 /* 80047A4C 0004396C  41 82 00 48 */	beq lbl_80047A94
 /* 80047A50 00043970  4B FB FF 5D */	bl mathutil_mtxA_from_mtxB
-/* 80047A54 00043974  82 CD 9D 64 */	lwz r22, lbl_802F1F44@sda21(r13)
+/* 80047A54 00043974  82 CD 9D 64 */	lwz r22, dynamicStageParts@sda21(r13)
 /* 80047A58 00043978  3B 20 00 00 */	li r25, 0
 /* 80047A5C 0004397C  48 00 00 2C */	b lbl_80047A88
 lbl_80047A60:
@@ -4896,8 +4896,8 @@ lbl_80047E08:
 /* 80047E10 00043D30  7C 08 03 A6 */	mtlr r0
 /* 80047E14 00043D34  4E 80 00 20 */	blr
 
-.global func_80047E18
-func_80047E18:
+.global g_apply_func_to_naomi_model_vertices
+g_apply_func_to_naomi_model_vertices:
 /* 80047E18 00043D38  7C 08 02 A6 */	mflr r0
 /* 80047E1C 00043D3C  90 01 00 04 */	stw r0, 4(r1)
 /* 80047E20 00043D40  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4928,7 +4928,7 @@ lbl_80047E74:  ;# -3
 /* 80047E7C 00043D9C  38 9F 00 00 */	addi r4, r31, 0
 /* 80047E80 00043DA0  38 BE 00 00 */	addi r5, r30, 0
 /* 80047E84 00043DA4  38 66 00 50 */	addi r3, r6, 0x50
-/* 80047E88 00043DA8  48 00 01 25 */	bl func_80047FAC
+/* 80047E88 00043DA8  48 00 01 25 */	bl g_apply_func_to_naomi_dl_pos_color_tex
 /* 80047E8C 00043DAC  48 00 00 1C */	b lbl_80047EA8
 lbl_80047E90:  ;# def
 /* 80047E90 00043DB0  28 1D 00 00 */	cmplwi r29, 0
@@ -4936,7 +4936,7 @@ lbl_80047E90:  ;# def
 /* 80047E98 00043DB8  38 9F 00 00 */	addi r4, r31, 0
 /* 80047E9C 00043DBC  38 BD 00 00 */	addi r5, r29, 0
 /* 80047EA0 00043DC0  38 66 00 50 */	addi r3, r6, 0x50
-/* 80047EA4 00043DC4  48 00 00 31 */	bl func_80047ED4
+/* 80047EA4 00043DC4  48 00 00 31 */	bl g_apply_func_to_naomi_dl_pos_nrm_tex
 lbl_80047EA8:  ;# -2
 /* 80047EA8 00043DC8  7F E6 FB 78 */	mr r6, r31
 lbl_80047EAC:
@@ -4952,8 +4952,8 @@ lbl_80047EB8:
 /* 80047ECC 00043DEC  38 21 00 28 */	addi r1, r1, 0x28
 /* 80047ED0 00043DF0  4E 80 00 20 */	blr
 
-.global func_80047ED4
-func_80047ED4:
+.global g_apply_func_to_naomi_dl_pos_nrm_tex
+g_apply_func_to_naomi_dl_pos_nrm_tex:
 /* 80047ED4 00043DF4  7C 08 02 A6 */	mflr r0
 /* 80047ED8 00043DF8  90 01 00 04 */	stw r0, 4(r1)
 /* 80047EDC 00043DFC  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -5022,8 +5022,8 @@ lbl_80047F90:
 /* 80047FA4 00043EC4  7C 08 03 A6 */	mtlr r0
 /* 80047FA8 00043EC8  4E 80 00 20 */	blr
 
-.global func_80047FAC
-func_80047FAC:
+.global g_apply_func_to_naomi_dl_pos_color_tex
+g_apply_func_to_naomi_dl_pos_color_tex:
 /* 80047FAC 00043ECC  7C 08 02 A6 */	mflr r0
 /* 80047FB0 00043ED0  90 01 00 04 */	stw r0, 4(r1)
 /* 80047FB4 00043ED4  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -5136,13 +5136,13 @@ lbl_80048114:
 /* 80048114 00044034  38 99 00 00 */	addi r4, r25, 0
 /* 80048118 00044038  38 BA 00 00 */	addi r5, r26, 0
 /* 8004811C 0004403C  38 7F 00 50 */	addi r3, r31, 0x50
-/* 80048120 00044040  4B FF FE 8D */	bl func_80047FAC
+/* 80048120 00044040  4B FF FE 8D */	bl g_apply_func_to_naomi_dl_pos_color_tex
 /* 80048124 00044044  48 00 00 14 */	b lbl_80048138
 lbl_80048128:
 /* 80048128 00044048  38 99 00 00 */	addi r4, r25, 0
 /* 8004812C 0004404C  38 BB 00 00 */	addi r5, r27, 0
 /* 80048130 00044050  38 7F 00 50 */	addi r3, r31, 0x50
-/* 80048134 00044054  4B FF FD A1 */	bl func_80047ED4
+/* 80048134 00044054  4B FF FD A1 */	bl g_apply_func_to_naomi_dl_pos_nrm_tex
 lbl_80048138:
 /* 80048138 00044058  80 7F 00 00 */	lwz r3, 0(r31)
 /* 8004813C 0004405C  38 00 FF FD */	li r0, -3
@@ -5384,13 +5384,13 @@ lbl_800484B0:
 /* 800484B0 000443D0  38 99 00 00 */	addi r4, r25, 0
 /* 800484B4 000443D4  38 BA 00 00 */	addi r5, r26, 0
 /* 800484B8 000443D8  38 7F 00 50 */	addi r3, r31, 0x50
-/* 800484BC 000443DC  4B FF FA F1 */	bl func_80047FAC
+/* 800484BC 000443DC  4B FF FA F1 */	bl g_apply_func_to_naomi_dl_pos_color_tex
 /* 800484C0 000443E0  48 00 00 14 */	b lbl_800484D4
 lbl_800484C4:
 /* 800484C4 000443E4  38 99 00 00 */	addi r4, r25, 0
 /* 800484C8 000443E8  38 BB 00 00 */	addi r5, r27, 0
 /* 800484CC 000443EC  38 7F 00 50 */	addi r3, r31, 0x50
-/* 800484D0 000443F0  4B FF FA 05 */	bl func_80047ED4
+/* 800484D0 000443F0  4B FF FA 05 */	bl g_apply_func_to_naomi_dl_pos_nrm_tex
 lbl_800484D4:
 /* 800484D4 000443F4  80 7F 00 00 */	lwz r3, 0(r31)
 /* 800484D8 000443F8  38 00 FF FD */	li r0, -3

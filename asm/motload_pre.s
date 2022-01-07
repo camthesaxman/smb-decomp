@@ -359,8 +359,8 @@ decodedStageTplPtr:
 .global lbl_802F1F40
 lbl_802F1F40:
 	.skip 0x4
-.global lbl_802F1F44
-lbl_802F1F44:
+.global dynamicStageParts
+dynamicStageParts:
 	.skip 0x4
 .global movableStagePartCount
 movableStagePartCount:

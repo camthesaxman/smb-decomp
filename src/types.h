@@ -654,14 +654,18 @@ struct StageSelection
     s32 levelNum;
 };
 
-struct Struct802F1F44
+struct NaomiVtxWithNormal;
+struct NaomiVtxWithColor;
+
+// Part of the stage whose vertices are manipulated by functions
+struct DynamicStagePart
 {
-    void *unk0;
-    u32 **unk4;
-    void (*unk8)(Vec *);
-    void (*unkC)(Vec *);
-    u8 filler10[0x14-0x10];
-    struct NaomiModel *unk14;
+    void *modelName;
+    struct NaomiModel *origModel;  // original model
+    void (*posNrmTexFunc)(struct NaomiVtxWithNormal *);
+    void (*posColorTexFunc)(struct NaomiVtxWithColor *);
+    int (*unusedFunc)();
+    struct NaomiModel *tempModel;  // modified copy of the model
 };
 
 struct Struct801EEC80

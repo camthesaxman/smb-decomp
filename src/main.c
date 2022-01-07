@@ -81,7 +81,7 @@ void main(void)
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
     func_8008AE98();
     func_800AD38C();
-    func_80044794();
+    g_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;
     lbl_802F1F40 = 1;
     func_80011E1C();

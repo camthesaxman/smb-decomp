@@ -166,7 +166,7 @@ lbl_8003DCD0:
 /* 8003DCEC 00039C0C  38 80 00 00 */	li r4, 0
 /* 8003DCF0 00039C10  48 00 43 11 */	bl func_80042000
 lbl_8003DCF4:
-/* 8003DCF4 00039C14  80 8D 9D 64 */	lwz r4, lbl_802F1F44@sda21(r13)
+/* 8003DCF4 00039C14  80 8D 9D 64 */	lwz r4, dynamicStageParts@sda21(r13)
 /* 8003DCF8 00039C18  28 04 00 00 */	cmplwi r4, 0
 /* 8003DCFC 00039C1C  41 82 00 0C */	beq lbl_8003DD08
 /* 8003DD00 00039C20  7F 83 E3 78 */	mr r3, r28
@@ -2530,7 +2530,7 @@ lbl_8003FFA8:
 /* 8003FFAC 0003BECC  80 03 00 08 */	lwz r0, 8(r3)
 /* 8003FFB0 0003BED0  7C 1B 00 00 */	cmpw r27, r0
 /* 8003FFB4 0003BED4  41 80 FB F4 */	blt lbl_8003FBA8
-/* 8003FFB8 0003BED8  80 CD 9D 64 */	lwz r6, lbl_802F1F44@sda21(r13)
+/* 8003FFB8 0003BED8  80 CD 9D 64 */	lwz r6, dynamicStageParts@sda21(r13)
 /* 8003FFBC 0003BEDC  28 06 00 00 */	cmplwi r6, 0
 /* 8003FFC0 0003BEE0  41 82 00 94 */	beq lbl_80040054
 /* 8003FFC4 0003BEE4  C0 01 00 84 */	lfs f0, 0x84(r1)
@@ -4266,7 +4266,7 @@ lbl_800418F4:
 /* 80041908 0003D828  38 61 00 24 */	addi r3, r1, 0x24
 /* 8004190C 0003D82C  38 84 00 30 */	addi r4, r4, 0x30
 /* 80041910 0003D830  4B FC 61 0D */	bl mathutil_mtx_copy
-/* 80041914 0003D834  80 6D 9D 64 */	lwz r3, lbl_802F1F44@sda21(r13)
+/* 80041914 0003D834  80 6D 9D 64 */	lwz r3, dynamicStageParts@sda21(r13)
 /* 80041918 0003D838  28 03 00 00 */	cmplwi r3, 0
 /* 8004191C 0003D83C  41 82 00 08 */	beq lbl_80041924
 /* 80041920 0003D840  48 00 00 1D */	bl func_8004193C
@@ -7405,24 +7405,6 @@ lbl_801B86A8:
 	.4byte lbl_80042CFC  ;# ptr
 	.4byte lbl_80042D08  ;# ptr
 	.4byte lbl_80042D10  ;# ptr
-
-.section .sdata
-
-.global lbl_802F0990
-lbl_802F0990:
-	# ROM: 0x1EB0D0
-	.byte 0x00, 0x00, 0x00, 0x5C
-	.4byte lbl_80206D00  ;# ptr
-
-.global loadedStageId
-loadedStageId:
-	# ROM: 0x1EB0D8
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
-
-.global lbl_802F099C
-lbl_802F099C:
-	# ROM: 0x1EB0DC
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
 
 .section .bss
 

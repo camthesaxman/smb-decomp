@@ -1368,7 +1368,7 @@ extern u32 lbl_802F1F34;
 extern struct GMA *decodedStageGmaPtr;
 extern struct TPL *decodedStageTplPtr;
 extern u16 lbl_802F1F40;
-extern struct Struct802F1F44 *lbl_802F1F44;
+extern struct DynamicStagePart *dynamicStageParts;
 extern s32 movableStagePartCount;
 // extern ? lbl_802F1F4C;
 // extern ? lbl_802F1F50;

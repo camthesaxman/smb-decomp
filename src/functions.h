@@ -359,9 +359,9 @@ void ev_world_dest(void);
 float g_interp_stage_anim_probably(u32, void *, float);
 
 void func_80047D70(void);
-void func_80047E18(struct NaomiModel *model, void (*b)(Vec *), void (*c)(Vec *));
-void func_80047ED4(struct NaomiDispList *a, void *b, void (*c)(Vec *));
-void func_80047FAC(struct NaomiDispList *dl, void *end, void (*func)(Vec *));
+void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NaomiVtxWithNormal *), void (*c)(struct NaomiVtxWithColor *));
+void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, void (*func)(struct NaomiVtxWithNormal *));
+void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end, void (*func)(struct NaomiVtxWithColor *));
 // ? func_80048084();
 void func_80048420();
 void func_800487B4(void);

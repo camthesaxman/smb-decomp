@@ -6,6 +6,7 @@
 #define MATHUTIL_SIN_INT_PARAM
 #include "global.h"
 #include "background.h"
+#include "bitmap.h"
 #include "camera.h"
 #include "gxutil.h"
 #include "load.h"
@@ -15,18 +16,40 @@
 #include "preview.h"
 #include "stage.h"
 
+
+struct NaomiModelHeader_child
+{
+    u32 unk0;
+};
+
+struct NaomiModelHeader
+{
+    s8 *unk0;
+    struct NaomiModelHeader_child *unk4;
+};
+
+#define HEADER_OF(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+
 extern u8 lbl_801B86E4[];
 extern int previewLoaded;
 
-struct Struct80206D00
+struct DynamicStagePart lbl_80206D00[5];
+
+// sdata
+
+struct Struct802F0990
 {
-    void *unk0;
-    u8 filler4[4];
-    void (*unk8)();
-    void (*unkC)();
-    void *unk10;
-    u8 filler14[4];
-} lbl_80206D00[5];
+    s32 stageId;
+    struct DynamicStagePart *unk4;
+};
+
+struct Struct802F0990 lbl_802F0990[1] =
+{
+    { ST_092_BONUS_WAVE, lbl_80206D00 },
+};
+
+int loadedStageId = -1;
+int lbl_802F099C = -1;
 
 struct Preview stagePreview;  // 78
 
@@ -45,9 +68,9 @@ char *lbl_801B86D8[] =
     "GOAL_R",
 };
 
-void lbl_800457FC();
-void lbl_80045A00();
-int lbl_80045B54();
+void g_bonus_wave_warp_callback_1();
+void g_bonus_wave_warp_callback_2();
+int g_bonus_wave_unused_callback();
 
 void ev_stage_init(void)
 {
@@ -207,16 +230,20 @@ void ev_stage_main(void)
     }
     if (lbl_80206DEC.unk8 != NULL)
         lbl_80206DEC.unk8();
-    if (lbl_802F1F44 != NULL)
+
+    // process dynamic models?
+    if (dynamicStageParts != NULL)
     {
-        struct Struct802F1F44 *r27 = lbl_802F1F44;
-        while (r27->unk0 != NULL)
+        struct DynamicStagePart *dyn = dynamicStageParts;
+        while (dyn->modelName != NULL)
         {
-            memcpy(r27->unk14, r27->unk4, *r27->unk4[-1]);
-            func_80047E18(r27->unk14, r27->unk8, r27->unkC);
-            r27++;
+            memcpy(dyn->tempModel, dyn->origModel, HEADER_OF(dyn->origModel)->unk4->unk0);
+            // responsible for warping vertices in the Bonus Wave model
+            g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
+            dyn++;
         }
     }
+
     if (!(lbl_80206DEC.unk1C & 1))
         lbl_80206DEC.unk0++;
 }
@@ -374,24 +401,28 @@ void g_animate_stage(float a)
     }
 }
 
-void func_80044794(void)
+void g_initialize_stage_dyn_part_info(void)
 {
-    struct Struct80206D00 *r6;
+    struct DynamicStagePart *dyn;
     struct
     {
         u8 filler0[0x5C];
         s8 unk5C;
         u8 filler65[0xC9-0x5D];
-    } sp8;
+    } useless;
 
-    memset(&sp8, 0, sizeof(sp8));
-    r6 = &lbl_80206D00[sp8.unk5C];
-    r6->unk0 = "SHAPE_STAGE134";
-    r6->unk8 = lbl_800457FC;
-    r6->unkC = lbl_80045A00;
-    r6->unk10 = lbl_80045B54;
-    sp8.unk5C++;
-    lbl_80206D00[sp8.unk5C].unk0 = NULL;
+    memset(&useless, 0, sizeof(useless));
+
+    // for Bonus Wave
+    dyn = &lbl_80206D00[useless.unk5C];
+    dyn->modelName = "SHAPE_STAGE134";
+    dyn->posNrmTexFunc = g_bonus_wave_warp_callback_1;
+    dyn->posColorTexFunc = g_bonus_wave_warp_callback_2;
+    dyn->unusedFunc = g_bonus_wave_unused_callback;
+    useless.unk5C++;
+
+    // end of list
+    lbl_80206D00[useless.unk5C].modelName = NULL;
 }
 
 void func_8004482C(void)
@@ -474,7 +505,7 @@ void load_stage(int stageId)
         func_80044E18();
         func_80045194();
         func_80084794(lbl_80209368);
-        func_800456A8(stageId);
+        g_initialize_stuff_for_dynamic_stage_parts(stageId);
         compute_stage_bounding_sphere();
         loadedStageId = stageId;
     }
@@ -586,8 +617,6 @@ void preload_stage_files(int stageId)
     DVDChangeDir("/test");
 }
 
-extern int lbl_802F099C;
-
 void load_stage_files(int stageId)
 {
     char stageDir[0x100];
@@ -633,16 +662,6 @@ struct Struct802099E8
     void *unk4;
     s32 unk8;
 };
-
-/*
-struct Struct80209488
-{
-    s32 unk0;
-    u8 filler4[4];
-    Vec unk8;
-    float unk14;
-};
-*/
 
 u32 lbl_80209368[0x48];
 struct GMAModelHeader *lbl_80209488[0x48];
@@ -905,53 +924,33 @@ struct GMAModelHeader *find_stage_or_bg_model(char *name)
     return find_model_in_gma_list(gmaList, name);
 }
 
-struct Struct802F0990
-{
-    s32 unk0;
-    void *unk4;
-};
-
-extern struct Struct802F0990 lbl_802F0990[1];  // huh?
-
-struct NaomiModelHeader_child
-{
-    u32 unk0;
-};
-
-struct NaomiModelHeader
-{
-    s8 *unk0;
-    struct NaomiModelHeader_child *unk4;
-};
-
 int string_match_len(s8 *, s8 *);
 
-#define HEADER_OF(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
-
-void func_800456A8(int stageId)
+void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
 {
     int r5;
     struct Struct802F0990 *r6;
-    struct Struct802F1F44 *r28;
+    struct DynamicStagePart *dyn;
     int i;
     u8 *r31;
 
     r6 = &lbl_802F0990[0];
     r5 = 1;
     r31 = (u8 *)lbl_802F1B4C + 0x10000;
-    if (lbl_802F0990[0].unk0 != stageId)
+    if (lbl_802F0990[0].stageId != stageId)
     {
         r5 = 0;
         r6++;
     }
     if (r5 <= 0)
     {
-        lbl_802F1F44 = NULL;
+        dynamicStageParts = NULL;
         return;
     }
-    lbl_802F1F44 = r6->unk4;
-    r28 = lbl_802F1F44;
-    while (r28->unk0 != NULL)
+    dynamicStageParts = r6->unk4;
+
+    dyn = dynamicStageParts;
+    while (dyn->modelName != NULL)
     {
         int r27;
         struct NaomiModel *r26;
@@ -968,23 +967,23 @@ void func_800456A8(int stageId)
                 struct NaomiModel **modelPtrs = nobj->modelPtrs;
                 for (i = 0; modelPtrs[i] != NULL; i++)
                 {
-                    int var = string_match_len(r28->unk0, HEADER_OF(modelPtrs[i])->unk0 + 4);
+                    int var = string_match_len(dyn->modelName, HEADER_OF(modelPtrs[i])->unk0 + 4);
                     if (var > r27)
                     {
                         r27 = var;
                         r26 = modelPtrs[i];
                     }
                 }
-                r28->unk4 = (void *)r26;
+                dyn->origModel = r26;
                 if (r26 != NULL)
                 {
                     r31 -= HEADER_OF(r26)->unk4->unk0;
-                    r28->unk14 = (struct NaomiModel *)r31;
+                    dyn->tempModel = (struct NaomiModel *)r31;
                 }
             }
             r25++;
         }
-        r28++;
+        dyn++;
     }
 }
 
@@ -1002,65 +1001,65 @@ int string_match_len(s8 *a, s8 *b)
     return len;
 }
 
-struct Struct800457FC
+// Called for each vertex in the Bonus Wave floor model.
+// Modifies the y coordinate and normal vector
+void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
 {
-    Vec unk0;
-    Vec unkC;
-    u8 filler18[8];
-};
-
-void lbl_800457FC(struct Struct800457FC *a)
-{
-    struct Struct800457FC sp18 = *a;
-    float f1;
-    float f31;
+    struct NaomiVtxWithNormal vtx = *vtxp;
+    float dstFromOrigin;
+    float amplitude;
     float f2;
     int angle;
     Vec spC;
 
-    f1 = mathutil_sqrt(sp18.unk0.x * sp18.unk0.x + sp18.unk0.z * sp18.unk0.z);
-    f31 = 0.5 + -0.030833333333333333 * f1;
+    // Calculate y position of vertex
+    dstFromOrigin = mathutil_sqrt(vtx.x * vtx.x + vtx.z * vtx.z);
+    amplitude = 0.5 + -0.030833333333333333 * dstFromOrigin;
     f2 = -1092.0f;
     f2 *= (lbl_80206DEC.unk4 - 30.0f);
-    angle = 16384.0 * f1;
+    angle = 16384.0 * dstFromOrigin;
     angle = f2 + angle;
     if (angle > 0)
         return;
-    spC.x = sp18.unk0.x;
+    spC.x = vtx.x;
     spC.y = 0.0f;
-    spC.z = sp18.unk0.z;
-    sp18.unk0.y += mathutil_sin(angle) * f31;
-    mathutil_vec_set_len(&spC, &spC, -(mathutil_cos(angle) * f31));
+    spC.z = vtx.z;
+    vtx.y += mathutil_sin(angle) * amplitude;
+    
+    // Calculate normal vector
+    mathutil_vec_set_len(&spC, &spC, -(mathutil_cos(angle) * amplitude));
     if (angle > -16384)
     {
         float f0 = angle * -6.103515625e-05f;
         spC.x *= f0;
         spC.z *= f0;
     }
-    sp18.unkC.x += spC.x;
-    sp18.unkC.z += spC.z;
-    mathutil_vec_normalize_len(&sp18.unkC);
-    *a = sp18;
+    vtx.nx += spC.x;
+    vtx.nz += spC.z;
+    mathutil_vec_normalize_len((Vec *)&vtx.nx);  // TODO: make this a Vec?
+    *vtxp = vtx;
 }
 
-void lbl_80045A00(struct Struct800457FC *a)
+// does the same as g_bonus_wave_warp_callback_1, but doesn't calculate normals
+void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
 {
-    struct Struct800457FC spC = *a;
-    float f1;
-    float f31;
+    struct NaomiVtxWithColor vtx = *vtxp;
+    float dstFromOrigin;
+    float amplitude;
     float f2;
     int angle;
 
-    f1 = mathutil_sqrt(spC.unk0.x * spC.unk0.x + spC.unk0.z * spC.unk0.z);
-    f31 = 0.5 + -0.030833333333333333 * f1;
+    // Calculate y position of vertex
+    dstFromOrigin = mathutil_sqrt(vtx.x * vtx.x + vtx.z * vtx.z);
+    amplitude = 0.5 + -0.030833333333333333 * dstFromOrigin;
     f2 = -1092.0f;
     f2 *= (lbl_80206DEC.unk4 - 30.0f);
-    angle = 16384.0 * f1;
+    angle = 16384.0 * dstFromOrigin;
     angle = f2 + angle;
     if (angle > 0)
         return;
-    spC.unk0.y += mathutil_sin(angle) * f31;
-    *a = spC;
+    vtx.y += mathutil_sin(angle) * amplitude;
+    *vtxp = vtx;
 }
 
 struct Struct80045B54_1
@@ -1089,7 +1088,7 @@ static inline float sum_of_3_sq(register float a, register float b, register flo
 #endif
 }
 
-int lbl_80045B54(Vec *a, Vec *b, Vec *c)
+int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
 {
     float f1;
     float f31;
@@ -1556,15 +1555,15 @@ struct
 } lbl_8020ADE4;
 FORCE_BSS_ORDER(lbl_8020ADE4)
 
-extern void lbl_800468F0();
-extern void lbl_80046978();
+extern void g_some_stage_vtx_callback_1();
+extern void g_some_stage_vtx_callback_2();
 
 float func_80046884(struct NaomiModel *a)
 {
     lbl_8020ADE4.unk0 = a->unk8;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
-    func_80047E18(a, lbl_800468F0, lbl_80046978);
+    g_apply_func_to_naomi_model_vertices(a, g_some_stage_vtx_callback_1, g_some_stage_vtx_callback_2);
     return lbl_8020ADE4.unk10;
 }
 
@@ -1587,13 +1586,13 @@ static inline float vec_sq_mag(register Vec *v)
 #endif
 }
 
-void lbl_800468F0(Vec *a)
+void g_some_stage_vtx_callback_1(Point3d *vtx)
 {
     Vec spC;
     float f1;
 
-    spC.x = a->x - lbl_8020ADE4.unk0.x;
-    spC.z = a->z - lbl_8020ADE4.unk0.z;
+    spC.x = vtx->x - lbl_8020ADE4.unk0.x;
+    spC.z = vtx->z - lbl_8020ADE4.unk0.z;
     spC.y = 0.0f;
     f1 = vec_sq_mag(&spC);
     if (f1 < lbl_8020ADE4.unkC)
@@ -1602,13 +1601,13 @@ void lbl_800468F0(Vec *a)
     lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
 }
 
-void lbl_80046978(Vec *a)  // duplicate of lbl_800468F0
+void g_some_stage_vtx_callback_2(Point3d *vtx)  // duplicate of g_some_stage_vtx_callback_1
 {
     Vec spC;
     float f1;
 
-    spC.x = a->x - lbl_8020ADE4.unk0.x;
-    spC.z = a->z - lbl_8020ADE4.unk0.z;
+    spC.x = vtx->x - lbl_8020ADE4.unk0.x;
+    spC.z = vtx->z - lbl_8020ADE4.unk0.z;
     spC.y = 0.0f;
     f1 = vec_sq_mag(&spC);
     if (f1 < lbl_8020ADE4.unkC)
@@ -2182,21 +2181,21 @@ void stage_draw(void)
                 }
             }
         }
-        if (lbl_802F1F44 != NULL)
+        if (dynamicStageParts != NULL)
         {
-            struct Struct802F1F44 *r22;
+            struct DynamicStagePart *dyn;
             mathutil_mtxA_from_mtxB();
-            r22 = lbl_802F1F44;
-            while (r22->unk0 != 0)
+            dyn = dynamicStageParts;
+            while (dyn->modelName != NULL)
             {
-                g_dupe_of_call_draw_naomi_model_1(r22->unk14);
+                g_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
                 if (r31 != 0)
                 {
                     sp7C.unk2 = 0;
-                    sp7C.unk4 = r22->unk14;
+                    sp7C.unk4 = dyn->tempModel;
                     func_80092F90(&sp7C);
                 }
-                r22++;
+                dyn++;
             }
         }
         if (currStageId == ST_101_BLUR_BRIDGE)
@@ -2298,7 +2297,7 @@ void func_80047D70(void)
     }
 }
 
-void func_80047E18(struct NaomiModel *model, void (*b)(Vec *), void (*c)(Vec *))
+void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NaomiVtxWithNormal *), void (*c)(struct NaomiVtxWithColor *))
 {
     struct NaomiMesh *r6;
 
@@ -2312,47 +2311,47 @@ void func_80047E18(struct NaomiModel *model, void (*b)(Vec *), void (*c)(Vec *))
         {
         case -2:
             break;
-        case -3:
+        case -3:  // display list has pos, color, tex
             if (c != NULL)
-                func_80047FAC((void *)r6->dispListStart, r31, c);
+                g_apply_func_to_naomi_dl_pos_color_tex((void *)r6->dispListStart, r31, c);
             break;
-        default:
+        default:  // display list has pos, normal, tex
             if (b != NULL)
-                func_80047ED4((void *)r6->dispListStart, r31, b);
+                g_apply_func_to_naomi_dl_pos_nrm_tex((void *)r6->dispListStart, r31, b);
             break;
         }
         r6 = r31;
     }
 }
 
-void func_80047ED4(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
+void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, void (*func)(struct NaomiVtxWithNormal *))
 {
     int i;
 
     while (dl < (struct NaomiDispList *)end)
     {
-        u32 r4;
+        u32 flags;
         int faceCount;
         u8 *vtxData;
 
-        r4 = dl->unk0;
+        flags = dl->unk0;
         vtxData = dl->vtxData;
         faceCount = dl->faceCount;
-        if (r4 & (1 << 4))  // triangle strip
+        if (flags & (1 << 4))  // triangle strip
         {
             while (faceCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
                 {
-                    func((Vec *)vtxData);
+                    func((struct NaomiVtxWithNormal *)vtxData);
                     vtxData += 32;
                 }
                 else
-                    vtxData += 8;
+                    vtxData += 8;  // ignore indirect vertices
                 faceCount--;
             }
         }
-        else if (r4 & (1 << 3))  // triangles
+        else if (flags & (1 << 3))  // triangles
         {
             while (faceCount > 0)
             {
@@ -2360,11 +2359,11 @@ void func_80047ED4(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
                 {
                     if (*(u32 *)vtxData & 1)
                     {
-                        func((Vec *)vtxData);
+                        func((struct NaomiVtxWithNormal *)vtxData);
                         vtxData += 32;
                     }
                     else
-                        vtxData += 8;
+                        vtxData += 8;  // ignore indirect vertices
                 }
                 faceCount--;
             }
@@ -2373,35 +2372,35 @@ void func_80047ED4(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
     }
 }
 
-// duplicate of func_80047ED4
-void func_80047FAC(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
+// duplicate of g_apply_func_to_naomi_dl_pos_nrm_tex
+void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end, void (*func)(struct NaomiVtxWithColor *))
 {
     int i;
 
     while (dl < (struct NaomiDispList *)end)
     {
-        u32 r4;
+        u32 flags;
         int faceCount;
         u8 *vtxData;
 
-        r4 = dl->unk0;
+        flags = dl->unk0;
         vtxData = dl->vtxData;
         faceCount = dl->faceCount;
-        if (r4 & (1 << 4))  // triangle strip
+        if (flags & (1 << 4))  // triangle strip
         {
             while (faceCount > 0)
             {
                 if (*(u32 *)vtxData & 1)
                 {
-                    func((Vec *)vtxData);
+                    func((struct NaomiVtxWithColor *)vtxData);
                     vtxData += 32;
                 }
                 else
-                    vtxData += 8;
+                    vtxData += 8;  // ignore indirect vertices
                 faceCount--;
             }
         }
-        else if (r4 & (1 << 3))  // triangles
+        else if (flags & (1 << 3))  // triangles
         {
             while (faceCount > 0)
             {
@@ -2409,11 +2408,11 @@ void func_80047FAC(struct NaomiDispList *dl, void *end, void (*func)(Vec *))
                 {
                     if (*(u32 *)vtxData & 1)
                     {
-                        func((Vec *)vtxData);
+                        func((struct NaomiVtxWithColor *)vtxData);
                         vtxData += 32;
                     }
                     else
-                        vtxData += 8;
+                        vtxData += 8;  // ignore indirect vertices
                 }
                 faceCount--;
             }
