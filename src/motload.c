@@ -8,104 +8,83 @@
 
 u8 lbl_80205E00[32];
 
-#ifdef NONMATCHING  // register swaps
-int init_ape_model_info(char *a, char *b, char *c, char *d)
+int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {
-    DVDFileInfo sp18;
-    u32 r26;  // ret 1 ->r29
-    void *r27;  // buffer 1 ->r26
-    u32 r25;  // size 1 OK
+    DVDFileInfo file;
+    void *compressed;
+    u32 size;
+    u32 totalSize;
+    u32 compSize;
+    u32 uncompSize;
 
-    u32 r28;  // ret 2 ->r25
-    void *r31_;  // buffer 2 ->r26
-    u32 r29;  // size 2 ->r28
-    //#define r31_ r27
-    //#define r29 r25
-
-    u32 r4;
-    #define r4_ r4
-    //u32 r4_;
-
-    if (!DVDOpen(b, &sp18))
+    // Read label file
+    if (!DVDOpen(labelname, &file))
         return 0;
-    r26 = OSRoundUp32B(sp18.length);
-    lbl_802F20B0 = OSAlloc(r26);
-    g_read_dvd_file(&sp18, lbl_802F20B0, r26, 0);
-    DVDClose(&sp18);
-    lbl_802F20AC = *lbl_802F20B0;
-    lbl_802F20B0++;
-    func_80034AA4(lbl_802F20B0);
+    size = OSRoundUp32B(file.length);
+    motLabel = OSAlloc(size);
+    g_read_dvd_file(&file, motLabel, size, 0);
+    DVDClose(&file);
+    lbl_802F20AC = *motLabel;
+    motLabel++;
+    func_80034AA4(motLabel);
+    totalSize = size;
 
-    if (!DVDOpen(a, &sp18))
+    // dat file
+    if (!DVDOpen(datname, &file))
         return 0;
-    if (g_read_dvd_file(&sp18, lbl_80205E00, 32, 0) < 0)
-        OSPanic("motload.c", 0x5A, "cannot dvd_read");
-    r25 = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    r4 = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
-//    lbl_802F1F00 = OSAlloc(r4);
-    if ((lbl_802F1F00 = OSAlloc(r4)) == NULL)
-        OSPanic("motload.c", 0x5E, "cannot OSAlloc\n");
+    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+        OSPanic("motload.c", 90, "cannot dvd_read");
+    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    if ((motDat = OSAlloc(uncompSize)) == NULL)
+        OSPanic("motload.c", 94, "cannot OSAlloc\n");
 
-    r27 = OSAlloc(r25);
-    if (r27 == NULL)
-        OSPanic("motload.c", 0x5F, "cannot OSAlooc\n");
-    if (g_read_dvd_file(&sp18, r27, r25, 0) < 0)
-        OSPanic("motload.c", 0x61, "cannot dvd_read");
-    if (DVDClose(&sp18) != 1)
-        OSPanic("motload.c", 0x62, "cannot DVDClose");
-    lzs_decompress(r27, lbl_802F1F00);
-    OSFree(r27);
-    func_80034938(lbl_802F1F00);
-    r26 = r26 + r26;
+    compressed = OSAlloc(compSize);
+    if (compressed == NULL)
+        OSPanic("motload.c", 95, "cannot OSAlooc\n");
+    if (g_read_dvd_file(&file, compressed, compSize, 0) < 0)
+        OSPanic("motload.c", 97, "cannot dvd_read");
+    if (DVDClose(&file) != 1)
+        OSPanic("motload.c", 98, "cannot DVDClose");
+    lzs_decompress(compressed, motDat);
+    OSFree(compressed);
+    func_80034938(motDat);
+    totalSize = totalSize + totalSize;
 
-    if (!DVDOpen(c, &sp18))
+    // skeleton file
+    if (!DVDOpen(sklname, &file))
         return 0;
-    r28 = OSRoundUp32B(sp18.length);
-    lbl_802F20A8 = OSAlloc(r28);
-    g_read_dvd_file(&sp18, lbl_802F20A8, r28, 0);
-    DVDClose(&sp18);
-    func_80034B50(lbl_802F20A8);
-    r26 += r28;
-
-    if (!DVDOpen(d, &sp18))
+    size = OSRoundUp32B(file.length);
+    motSkeleton = OSAlloc(size);
+    g_read_dvd_file(&file, motSkeleton, size, 0);
+    DVDClose(&file);
+    func_80034B50(motSkeleton);
+    totalSize += size;
+    
+    // info file
+    if (!DVDOpen(infoname, &file))
         return 0;
-    if (g_read_dvd_file(&sp18, lbl_80205E00, 32, 0) < 0)
-        OSPanic("motload.c", 0x97, "cannot dvd_read");
-    r29 = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    r4_ = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
-    if ((lbl_802F20A4 = OSAlloc(r4_)) == NULL)
-        OSPanic("motload.c", 0x9B, "cannot OSAlloc\n");
+    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+        OSPanic("motload.c", 151, "cannot dvd_read");
+    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    if ((motInfo = OSAlloc(uncompSize)) == NULL)
+        OSPanic("motload.c", 155, "cannot OSAlloc\n");
+        
+    compressed = OSAlloc(compSize);
+    if (compressed == NULL)
+        OSPanic("motload.c", 156, "cannot OSAlooc\n");
+    if (g_read_dvd_file(&file, compressed, compSize, 0) < 0)
+        OSPanic("motload.c", 158, "cannot dvd_read");
+    if (DVDClose(&file) != 1)
+        OSPanic("motload.c", 159, "cannot DVDClose");
+    lzs_decompress(compressed, motInfo);
+    OSFree(compressed);
+    func_80034D88(motInfo);
+    totalSize += size;
 
-    r31_ = OSAlloc(r29);
-    if (r31_ == NULL)
-        OSPanic("motload.c", 0x9C, "cannot OSAlooc\n");
-    if (g_read_dvd_file(&sp18, r31_, r29, 0) < 0)
-        OSPanic("motload.c", 0x9E, "cannot dvd_read");
-    if (DVDClose(&sp18) != 1)
-        OSPanic("motload.c", 0x9F, "cannot DVDClose");
-    lzs_decompress(r31_, lbl_802F20A4);
-    OSFree(r31_);
-    func_80034D88(lbl_802F20A4);
-    r26 += r28;
-
-    return r26;
-    #undef r4_
+    return totalSize;
 }
-#else
-#pragma force_active on
-char lbl_801B7B28[] = "motload.c";
-char string_cannot_dvd_read[] = "cannot dvd_read";
-char string_cannot_OSAlloc_n_2[] = "cannot OSAlloc\n";
-char string_cannot_OSAlooc_n[] = "cannot OSAlooc\n";
-char string_cannot_DVDClose[] = "cannot DVDClose";
-#pragma force_active reset
-asm int init_ape_model_info(char *a, char *b, char *c, char *d)
-{
-    nofralloc
-#include "../asm/nonmatchings/init_ape_model_info.s"
-}
-#pragma peephole on
-#endif
 
 void func_80034938(struct Struct80034938 *a)
 {
@@ -195,7 +174,7 @@ void func_80034D88(struct Struct80034D88 *a)
 #pragma dont_inline on
 u16 func_80034F44(u16 index)
 {
-    return lbl_802F1F00[index - 1].unk0;
+    return motDat[index - 1].unk0;
 }
 #pragma dont_inline reset
 

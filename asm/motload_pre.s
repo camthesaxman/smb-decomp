@@ -127,7 +127,7 @@ func_80034360:
 /* 80034378 00030298  3B C3 00 00 */	addi r30, r3, 0
 /* 8003437C 0003029C  48 00 00 69 */	bl func_800343E4
 /* 80034380 000302A0  57 E0 04 3E */	clrlwi r0, r31, 0x10
-/* 80034384 000302A4  80 6D 9D 20 */	lwz r3, lbl_802F1F00@sda21(r13)
+/* 80034384 000302A4  80 6D 9D 20 */	lwz r3, motDat@sda21(r13)
 /* 80034388 000302A8  1C 00 00 18 */	mulli r0, r0, 0x18
 /* 8003438C 000302AC  7C C3 02 14 */	add r6, r3, r0
 /* 80034390 000302B0  80 A6 FF E8 */	lwz r5, -0x18(r6)
@@ -317,8 +317,8 @@ lbl_802F3308:
 
 .section .sbss
 
-.global lbl_802F1F00
-lbl_802F1F00:
+.global motDat
+motDat:
 	.skip 0x8
 .global lbl_802F1F08
 lbl_802F1F08:
@@ -601,17 +601,17 @@ lbl_802F2094:
 .global lbl_802F209C
 lbl_802F209C:
 	.skip 0x8
-.global lbl_802F20A4
-lbl_802F20A4:
+.global motInfo
+motInfo:
 	.skip 0x4
-.global lbl_802F20A8
-lbl_802F20A8:
+.global motSkeleton
+motSkeleton:
 	.skip 0x4
 .global lbl_802F20AC
 lbl_802F20AC:
 	.skip 0x4
-.global lbl_802F20B0
-lbl_802F20B0:
+.global motLabel
+motLabel:
 	.skip 0x8
 .global lbl_802F20B8
 lbl_802F20B8:
