@@ -663,11 +663,18 @@ struct Struct802099E8
     s32 unk8;
 };
 
-u32 lbl_80209368[0x48];
+struct Struct80209D48  // maybe StageModel?
+{
+    u32 unk0;
+    void *unk4;
+    float unk8;
+};
+
+void *lbl_80209368[0x48];
 struct GMAModelHeader *lbl_80209488[0x48];
-u32 lbl_802095A8[0x110];
+void *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
-struct Struct802099E8 lbl_80209D48[0x80];
+struct Struct80209D48 lbl_80209D48[0x80];
 
 struct Struct8020A348_child
 {
@@ -714,169 +721,184 @@ struct Struct80044E18_2  // r17_
 
 extern u32 lbl_802F1F4C;
 extern u32 lbl_802F1F50;
-char lbl_802F09C8[5] = "_MAP";
 
 #ifdef NONMATCHING
-/*
+// https://decomp.me/scratch/Aoh83
 void func_80044E18(void)
 {
-    char sp10[0xFC];
-    u32 **r31;
-    int j;  // r31
-    int k;  // r23
+    struct NaomiModel *r31;
+    struct GMAModelHeader **r17;
+    void **r30;
+    void **r29;
+    struct Struct802099E8 *r26;
     struct StageCollHdr *r22;
+    char **r21;
+    struct NaomiObj ***r25;
+    struct NaomiObj ***r24;
     int i;  // r20
+    struct Struct80209D48 *r17_;
     struct StageModel *r18;
-    u32 *r17 = lbl_80209488;
-    struct Struct80044E18_2 *r17_;
-    u32 *r30 = lbl_80209368;
     int r30_;
-    u32 *r29 = lbl_802095A8;
-    int r19 = 0;
+    int r19;
+
+    char sp10[0xFC];
+
     struct StageCollHdr *r5;
+    struct Struct8020A348 *r7;
+    int r6;
     int r4;
 
+    r17 = lbl_80209488;
+    r30 = lbl_80209368;
+    r29 = lbl_802095A8;
+    r19 = 0;
     lbl_802F1F50 = 0;
+
+    r26 = lbl_802099E8;
     r22 = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < movableStagePartCount; i++, r22++)
+    for (i = 0; i < movableStagePartCount; r26++, i++, r22++)
     {
-        struct DecodedStageLzPtr_child_child2 *r21;
-        char *r4;
-
-        lbl_802099E8[i].unk0 = r22;
-        lbl_802099E8[i].unk4 = r30;
-        lbl_802099E8[i].unk8 = 0;
-        r21 = r22->unk18;
-        while (r21->unk0 != NULL)
+        r26->unk0 = (void *)r17;
+        r26->unk4 = r30;
+        r26->unk8 = 0;
+        r21 = r22->modelNames;
+        while (*r21 != NULL)
         {
-            u32 **r18 = NULL;
-
-            strncpy(sp10, r21->unk0, 0xFC);
+            struct NaomiModel *r18 = NULL;
+            strncpy(sp10, *r21, 0xFC);
             strncat(sp10, "_MAP", 0x100);
             r31 = NULL;
-            for (j = 0; lbl_801B8794[j] != NULL; j++)
+            r24 = lbl_801B8794;
+            while (*r24 != NULL)
             {
-                struct Struct80044E18 *r3 = *lbl_801B8794[j];
-                if (r3 != NULL)
+                if (**r24 != NULL)
                 {
-                    for (k = 0; r3->unk4[k] != 0; k++)
+                    struct NaomiModel **modelPtrs = (**r24)->modelPtrs;
+                    int j;  // r23
+                    for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(r21->unk0, r3->unk4[k][-2] + 4) == 0)
+                        if (strcmp(*r21, (void *)(HEADER_OF(modelPtrs[j])->unk0 + 4)) == 0)
                         {
-                            r18 = (void *)r3->unk4[k];
-                            break;  //to lbl_80044F00
+                            r18 = modelPtrs[j];
+                            break;
                         }
-                        //lbl_80044EEC
                     }
                 }
                 //lbl_80044F00
-                //addi r24, r24, 4
+                r24++;
+                //lbl_80044F04
             }
-            //80044F10
-            //lbl_80044F18 loop
-            for (j = 0; lbl_801B8794[j] != NULL; j++)
+            r25 = lbl_801B8794;
+            while (*r25 != NULL)
             {
-                struct Struct80044E18 *r3 = *lbl_801B8794[j];
-                if (r3 != NULL)
+                if (**r25 != NULL)
                 {
-                    for (k = 0; r3->unk4[k] != 0; k++)
+                    struct NaomiModel **modelPtrs = (**r25)->modelPtrs;
+                    int j;  // r23
+                    for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(r21->unk0, r3->unk4[k][-2] + 4) == 0)
+                        if (strcmp(sp10, (void *)(HEADER_OF(modelPtrs[j])->unk0 + 4)) == 0)
                         {
-                            r31 = (void *)r3->unk4[k];
-                            break;  //to lbl_80044F70
+                            r31 = modelPtrs[j];
+                            break;
                         }
                     }
                 }
                 //lbl_80044F70
+                r25++;
             }
+
             if (r31 == NULL)
                 r31 = r18;
-            //lbl_80044F8C
             if (r31 != NULL)
             {
-                *r30++ = (u32)r31;
+                *r30++ = r31;
                 if (r31 != r18)
-                    *r29++ = (u32)r31;
+                    *r29++ = r31;
             }
             //lbl_80044FAC
             if (r18 != NULL)
             {
-                *r17++ = (u32)r18;
-                //r17->unk0 = (u32)r18;
-                //r17 = (void *)((u8 *)r17 + 4);
+                *r17++ = (void *)r18;
                 r19++;
-                *r29++ = (u32)r18;
-                lbl_802F1F50 = (u32)*r18[-1];
-                lbl_802099E8[i].unk8++;
+                *r29++ = (void *)r18;
+
+                lbl_802F1F50 += HEADER_OF(r18)->unk4->unk0;
+                r26->unk8++;
                 if (r19 >= 0x47)
                     break;
             }
+            //lbl_80044FF0
+
+
+            r21++;
         }
-        //lbl_80045000
+    //lbl_8004500C
     }
-    //80045018
-    *r17 = 0;
-    *r30 = 0;
-    r17_ = (void *)lbl_80209D48;
-    r30_ = decodedStageLzPtr->unk58 < 0x80 ? decodedStageLzPtr->unk58 : 0x80;
+    *r17 = NULL;
+    *r30 = NULL;
+
+    r17_ = lbl_80209D48;
+    r30_ = decodedStageLzPtr->lvlModelsCount < 0x80 ? decodedStageLzPtr->lvlModelsCount : 0x80;
+    //i = r26
     lbl_802F1F4C = 0;
-    // i : r26
-    r18 = decodedStageLzPtr->unk5C;
-    for (i = 0; i < r30_; i++)
+    r18 = decodedStageLzPtr->lvlModels;
+    for (i = 0; i < r30_; i++, r17_++, r18++)
     {
-        int r19;
-        //lbl_80045050
-        r31 = NULL;
-        r19 = 0;
-        for (j = 0; lbl_801B8794[j] != NULL; j++)
+        struct NaomiObj ***r20 = lbl_801B8794;
+        struct NaomiModel *r31 = NULL;
+        int r19 = 0;
+
+        while (*r20 != NULL)
         {
-            struct Struct80044E18 *r3 = *lbl_801B8794[j];
-            if (r3 != NULL)
+            if (**r20 != NULL)
             {
-                for (k = 0; r3->unk4[k] != NULL; k++)
+                struct NaomiModel **r3 = (**r20)->modelPtrs;
+                int j;
+                for (j = 0; r3[j] != NULL; j++)
                 {
-                    int asdf = string_match_len(r18->unk4 + 4, r3->unk4[k][-2]);
-                    if (asdf > r19)
+                    int len = string_match_len(HEADER_OF(r3[j])->unk0 + 4, (void *)r18->nameOffset);
+                    if (len > r19)
                     {
-                        r19 = asdf;
-                        r31 = (void *)r3->unk4[k];
+                        r19 = len;
+                        r31 = r3[j];
                     }
                 }
             }
+            //lbl_800450B0
+            r20++;
         }
-        //800450C0
         r17_->unk0 = r18->unk0;
         r17_->unk8 = r18->unk8;
-        if (r31 != 0)
+        if (r31 != NULL)
         {
-            r17_->unk4 = (u32)r31;
-            *r29++ = (u32)r31;
+            r17_->unk4 = r31;
+            *r29++ = r31;
             if ((r17_->unk0 & 3) == 1)
-                lbl_802F1F4C += *r31[-1];
+                lbl_802F1F4C += HEADER_OF(r31)->unk4->unk0;
         }
         //lbl_8004510C
         else
-            r17_->unk4 = 0;
+            r17_->unk4 = NULL;
     }
-    //80045128
-    // i = r6?
+
+    // i = r6
+    //r4 = 0;
     r4 = 0;
-    i = 0;
     r5 = decodedStageLzPtr->collHdrs;
-    //for (i = 0; i < movableStagePartCount; i++)
-    while (i < movableStagePartCount)
+    r7 = lbl_8020A348;
+    for (r6 = 0; r6 < movableStagePartCount; r6++, r7++, r5++)
     {
-        lbl_8020A348[i].unk0 = &lbl_80209D48[r4];
-        lbl_8020A348[i].unk4 = r5->unk7C;
+        r7->unk0 = (void *)&lbl_80209D48[r4];
+        r7->unk4 = r5->unk7C;
+        //r7++;
+        //r5++;
         r4 += r5->unk7C;
-        i++;
-        r5++;
     }
-    *r29 = 0;
+    *r29 = NULL;
 }
-*/
 #else
+char lbl_802F09C8[5] = "_MAP";
 asm void func_80044E18(void)
 {
     nofralloc
@@ -1025,7 +1047,7 @@ void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
     spC.y = 0.0f;
     spC.z = vtx.z;
     vtx.y += mathutil_sin(angle) * amplitude;
-    
+
     // Calculate normal vector
     mathutil_vec_set_len(&spC, &spC, -(mathutil_cos(angle) * amplitude));
     if (angle > -16384)
