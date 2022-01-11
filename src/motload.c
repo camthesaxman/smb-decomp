@@ -340,30 +340,21 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
     return sp40;
 }
 
-#ifdef NONMATCHING  // register swaps
-// https://decomp.me/scratch/IXzah
-// https://decomp.me/scratch/HXuyG
 float func_80035438(Vec *a, Vec *b, float c)
 {
-    float f7, f6, f5, f0;
-    f7 = b->x - a->x;
-    f5 = (c - a->x) / f7;
-    f6 = f5 * f5;
-    f7 *= 0.033333333333333333;
-    f0 = f6 - f5;
-    f5 = f5 * f6 - f6;
+    float unkx, unkx2, dx, z1, f5, f0;
+
+    z1 = a->z;
+    dx = b->x - a->x;
+    unkx = (c - a->x) / dx;
+    unkx2 = unkx * unkx;
+    dx *= (1.0 / 30.0);
+    f0 = unkx2 - unkx;
+    f5 = unkx * unkx2 - unkx2;
     return a->y
-         + (f5 + f5 - f6) * (a->y - b->y)
-         + f7 * (f5 * (a->z + b->z) - a->z * f0);
+         + (f5 + f5 - unkx2) * (a->y - b->y)
+         + dx * (f5 * (z1 + b->z) - z1 * f0);
 }
-#else
-asm float func_80035438(Vec *a, Vec *b, float c)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_80035438.s"
-}
-#pragma peephole on
-#endif
 
 void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
 {
