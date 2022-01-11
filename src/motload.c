@@ -26,7 +26,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     DVDClose(&file);
     lbl_802F20AC = *motLabel;
     motLabel++;
-    func_80034AA4(motLabel);
+    adjust_motlabel_pointers(motLabel);
     totalSize = size;
 
     // dat file
@@ -48,7 +48,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
         OSPanic("motload.c", 98, "cannot DVDClose");
     lzs_decompress(compressed, motDat);
     OSFree(compressed);
-    func_80034938(motDat);
+    adjust_motdat_pointers(motDat);
     totalSize = totalSize + totalSize;
 
     // skeleton file
@@ -58,7 +58,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     motSkeleton = OSAlloc(size);
     g_read_dvd_file(&file, motSkeleton, size, 0);
     DVDClose(&file);
-    func_80034B50(motSkeleton);
+    adjust_motskl_pointers(motSkeleton);
     totalSize += size;
     
     // info file
@@ -80,16 +80,16 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
         OSPanic("motload.c", 159, "cannot DVDClose");
     lzs_decompress(compressed, motInfo);
     OSFree(compressed);
-    func_80034D88(motInfo);
+    adjust_motinfo_pointers(motInfo);
     totalSize += size;
 
     return totalSize;
 }
 
-void func_80034938(struct Struct80034938 *a)
+void adjust_motdat_pointers(struct MotDat *a)
 {
     int i;
-    struct Struct80034938 *temp = a;
+    struct MotDat *temp = a;
 
     for (i = lbl_802F20AC; i >= 0; i--)
     {
@@ -102,7 +102,7 @@ void func_80034938(struct Struct80034938 *a)
     }
 }
 
-void func_80034AA4(u32 *a)
+void adjust_motlabel_pointers(u32 *a)
 {
     int i;
     u32 *temp = a;
@@ -114,7 +114,7 @@ void func_80034AA4(u32 *a)
     }
 }
 
-void func_80034B50(struct Struct80034B50 *a)
+void adjust_motskl_pointers(struct MotSkeleton *a)
 {
     struct Struct80034B50_child2 *r6;
     int j;
@@ -155,9 +155,9 @@ void func_80034B50(struct Struct80034B50 *a)
     }
 }
 
-void func_80034D88(struct Struct80034D88 *a)
+void adjust_motinfo_pointers(struct MotInfo *a)
 {
-    struct Struct80034D88 *temp = a;
+    struct MotInfo *temp = a;
     int i;
     int j;
 
@@ -214,12 +214,12 @@ void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struc
 
 void func_80035064(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, u32 c, float d)
 {
-    struct Struct80034F5C_1_sub *r3 = &a->unk54.structs[0];
+    struct Struct80034F5C_1_sub *r3 = &a->unk54[0];
     int unused;
 
     if (r3->unk0 != 0)
     {
-        b->unk1C0.x = func_80035284(r3, d);
+        b->unk1C0.x = g_interp_skelanim_value_maybe(r3, d);
         if (c != 0)
             b->unk1C0.x = -b->unk1C0.x;
     }
@@ -228,13 +228,13 @@ void func_80035064(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, u32 c
     r3++;
 
     if (r3->unk0 != 0)
-        b->unk1C0.y = func_80035284(r3, d);
+        b->unk1C0.y = g_interp_skelanim_value_maybe(r3, d);
     else
         b->unk1C0.y = 0.0f;
     r3++;
 
     if (r3->unk0 != 0)
-        b->unk1C0.z = func_80035284(r3, d);
+        b->unk1C0.z = g_interp_skelanim_value_maybe(r3, d);
     else
         b->unk1C0.z = 0.0f;
 
@@ -248,10 +248,10 @@ void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struc
     mathutil_mtxA_from_identity();
     f31 = 10430.3779296875f;
 
-    sub = &a->unk54.structs[5];
+    sub = &a->unk54[5];
     if (sub->unk0 != 0)
     {
-        float f1 = func_80035284(sub, e);
+        float f1 = g_interp_skelanim_value_maybe(sub, e);
         if (d != 0)
             f1 = c->unk18 + f1 * c->unkC;
         mathutil_mtxA_rotate_z((s16)(f31 * f1));
@@ -260,7 +260,7 @@ void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struc
     sub--;
     if (sub->unk0 != 0)
     {
-        float f1 = func_80035284(sub, e);
+        float f1 = g_interp_skelanim_value_maybe(sub, e);
         if (d != 0)
             f1 = c->unk14 + f1 * c->unk8;
         mathutil_mtxA_rotate_y((s16)(f31 * f1));
@@ -269,7 +269,7 @@ void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struc
     sub--;
     if (sub->unk0 != 0)
     {
-        float f1 = func_80035284(sub, e);
+        float f1 = g_interp_skelanim_value_maybe(sub, e);
         if (d != 0)
             f1 = c->unk10 + f1 * c->unk4;
         mathutil_mtxA_rotate_x((s16)(f31 * f1));
@@ -278,7 +278,7 @@ void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struc
     mathutil_mtxA_sq_to_mtx(b->unk1D8);
 }
 
-float func_80035284(struct Struct80034F5C_1_sub *a, float b)
+float g_interp_skelanim_value_maybe(struct Struct80034F5C_1_sub *a, float b)
 {
     float sp40;
     float sp3C;
@@ -288,7 +288,7 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
     struct Struct80034F5C_1_sub sp10;
     u8 r28 = a->unk0;
     u8 r31 = a->unk1;
-    u8 r27 = 0;
+    u8 type = 0;
 
     while (r31 < r28)
     {
@@ -296,29 +296,26 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
 
         if (fabs(f1 - b) < FLT_EPSILON)
         {
-            r27 = 1;
+            type = 1;
             break;
         }
         else if (f1 > b)
         {
             if (r31 != 0)
-                r27 = 3;
+                type = 3;
             else
-                r27 = 2;
+                type = 2;
             break;
         }
-        else
-        {
-            r31++;
-            func_80035550(a);
-        }
+        r31++;
+        g_skelanim_seek_next(a);
     }
 
-    switch (r27)
+    switch (type)
     {
     default:
         if (a->unk1 < r28)
-            func_80035584(a);
+            g_skelanim_seek_prev(a);
         // fall through
     case 1:
     case 2:
@@ -330,7 +327,7 @@ float func_80035284(struct Struct80034F5C_1_sub *a, float b)
         sp10.unk4 = a->unk4;
         sp10.unk8 = a->unk8;
         sp10.unkC = a->unkC;
-        func_80035584(&sp10);
+        g_skelanim_seek_prev(&sp10);
         sp2C.x = *sp10.unk4;
         func_800354A8(&sp10, &sp3C, &sp2C.z, &sp2C.y);
         sp40 = func_80035438(&sp2C, &sp20, b);
@@ -380,14 +377,14 @@ void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
     }
 }
 
-void func_80035550(struct Struct80034F5C_1_sub *a)
+void g_skelanim_seek_next(struct Struct80034F5C_1_sub *a)
 {
     a->unk4++;
     a->unkC += *a->unk8;
     a->unk8++;
 }
 
-void func_80035584(struct Struct80034F5C_1_sub *a)
+void g_skelanim_seek_prev(struct Struct80034F5C_1_sub *a)
 {
     a->unk4--;
     a->unk8--;

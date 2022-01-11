@@ -64,7 +64,7 @@ static void prep_some_stuff_before_drawing_2(void);
 void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh);
 
 #pragma force_active on
-void func_80030AC4(float a)
+void nl2ngc_set_line_width(float a)
 {
     gxutil_set_line_width(a * 6.0f);
 }
@@ -74,7 +74,7 @@ void func_80030AF8(int a /*unknown*/, int b /*unknown*/)
     g_gxutil_set_some_line_params(1, a, b, 0);
 }
 
-void func_80030B28(Vec *start, Vec *end, u32 c)
+void nl2ngc_draw_line(Point3d *start, Point3d *end, u32 c)
 {
     GXColor color;
 
@@ -86,15 +86,15 @@ void func_80030B28(Vec *start, Vec *end, u32 c)
 }
 #pragma force_active reset
 
-void func_80030B68(Vec *a, Vec *b, u32 c)
+void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 c)
 {
-    GXColor sp14;
+    GXColor color;
 
-    sp14.r = (c >> 16) & 0xFF;
-    sp14.g = (c >> 8) & 0xFF;
-    sp14.b = (c >> 0) & 0xFF;
-    sp14.a = (c >> 24) & 0xFF;
-    func_8009B048(a, b, &sp14);
+    color.r = (c >> 16) & 0xFF;
+    color.g = (c >> 8) & 0xFF;
+    color.b = (c >> 0) & 0xFF;
+    color.a = (c >> 24) & 0xFF;
+    gxutil_draw_line_deferred(start, end, &color);
 }
 
 void func_80030BA8(float x)

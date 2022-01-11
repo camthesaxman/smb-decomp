@@ -6317,7 +6317,7 @@ lbl_8004E5D4:
 /* 8004E5FC 0004A51C  48 04 C7 35 */	bl g_gxutil_set_some_line_params
 /* 8004E600 0004A520  38 61 00 18 */	addi r3, r1, 0x18
 /* 8004E604 0004A524  38 81 00 28 */	addi r4, r1, 0x28
-/* 8004E608 0004A528  48 04 CF 31 */	bl func_8009B538
+/* 8004E608 0004A528  48 04 CF 31 */	bl gxutil_draw_line_multicolor_deferred
 lbl_8004E60C:
 /* 8004E60C 0004A52C  C0 7F 00 A8 */	lfs f3, 0xa8(r31)
 /* 8004E610 0004A530  C8 02 91 28 */	lfd f0, lbl_802F3928-_SDA2_BASE_(r2)
@@ -6633,7 +6633,7 @@ func_8004E96C:
 /* 8004EA88 0004A9A8  38 BE 00 00 */	addi r5, r30, 0
 /* 8004EA8C 0004A9AC  38 61 00 18 */	addi r3, r1, 0x18
 /* 8004EA90 0004A9B0  38 81 00 24 */	addi r4, r1, 0x24
-/* 8004EA94 0004A9B4  4B FE 20 D5 */	bl func_80030B68
+/* 8004EA94 0004A9B4  4B FE 20 D5 */	bl nl2ngc_draw_line_deferred
 /* 8004EA98 0004A9B8  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8004EA9C 0004A9BC  CB E1 00 40 */	lfd f31, 0x40(r1)
 /* 8004EAA0 0004A9C0  83 E1 00 3C */	lwz r31, 0x3c(r1)

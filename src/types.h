@@ -449,7 +449,7 @@ struct Struct8003C550
 
 // motload
 
-struct Struct80034938
+struct MotDat
 {
     u16 unk0;
     u8 filler2[2];
@@ -489,7 +489,7 @@ struct Struct80034B50_child2
     s32 unk10[3];
 };
 
-struct Struct80034B50
+struct MotSkeleton
 {
     struct Struct80034B50_child *unk0;
     u32 unk4;
@@ -497,7 +497,7 @@ struct Struct80034B50
     u32 unkC;
 };
 
-struct Struct80034D88
+struct MotInfo
 {
     u8 filler0[0x30];
     void *unk30[16];
@@ -522,17 +522,11 @@ struct Struct80034F5C_1_sub
     float *unkC;
 };
 
-struct Struct80034F5C_1
+struct Struct80034F5C_1  // Joint object?
 {
     u32 unk0;
     u8 filler4[0x54-0x4];
-    // huh
-    union
-    {
-        struct Struct80034F5C_1_sub structs[6];
-        //struct Struct80034F5C_1_sub unk84[3];
-        //Mtx mtx;  // maybe not?
-    } unk54;
+    struct Struct80034F5C_1_sub unk54[6];
     u8 fillerB4[0x168-0xB4];
     Mtx unk168;
     u8 filler198[0x1C0-0x198];

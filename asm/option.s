@@ -1931,7 +1931,7 @@ lbl_00001AB8:
 /* 00001C98 90010080 */ stw r0, 0x80(r1)
 /* 00001C9C 80010024 */ lwz r0, 0x24(r1)
 /* 00001CA0 90010084 */ stw r0, 0x84(r1)
-/* 00001CA4 4BFFE509 */ bl func_8009AE18
+/* 00001CA4 4BFFE509 */ bl gxutil_draw_line_strip
 /* 00001CA8 C03E0004 */ lfs f1, 4(r30)
 /* 00001CAC 3C600000 */ lis r3, lbl_0000C270@ha
 /* 00001CB0 C81700F8 */ lfd f0, 0xf8(r23)
@@ -2182,7 +2182,7 @@ lbl_00001AB8:
 /* 00002084 90010080 */ stw r0, 0x80(r1)
 /* 00002088 80010024 */ lwz r0, 0x24(r1)
 /* 0000208C 90010084 */ stw r0, 0x84(r1)
-/* 00002090 4BFFE11D */ bl func_8009AE18
+/* 00002090 4BFFE11D */ bl gxutil_draw_line_strip
 lbl_00002094:
 /* 00002094 3BBD0001 */ addi r29, r29, 1
 /* 00002098 2C1D0004 */ cmpwi r29, 4

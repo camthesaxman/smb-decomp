@@ -72,7 +72,7 @@ struct NaomiObj
 #define NAOMIOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
 
 // ? func_80030AF8();
-// ? func_80030B68();
+// ? nl2ngc_draw_line_deferred();
 void func_80030BA8(float);
 void func_80030BB8(float r, float g, float b);
 BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName);

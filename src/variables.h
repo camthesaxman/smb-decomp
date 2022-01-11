@@ -1360,7 +1360,7 @@ extern u32 lbl_802F1ED8;
 extern u32 dipSwitches;
 extern u32 gamePauseStatus;
 
-extern struct Struct80034938 *motDat;
+extern struct MotDat *motDat;
 extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;
 extern void (*lbl_802F1F10)(void);
@@ -1451,7 +1451,7 @@ extern u32 lbl_802F2000;
 // extern ? lbl_802F2090;
 // extern ? lbl_802F2094;
 // extern ? lbl_802F209C;
-extern struct Struct80034D88 *motInfo;
+extern struct MotInfo *motInfo;
 extern void *motSkeleton;
 extern s32 lbl_802F20AC;
 extern u32 *motLabel;

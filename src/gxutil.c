@@ -217,7 +217,7 @@ void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)
 }
 
 #pragma force_active on
-void func_8009AE18(u16 numPoints, Point3d *points, GXColor *color)
+void gxutil_draw_line_strip(u16 numPoints, Point3d *points, GXColor *color)
 {
     GXColor c;
     int i;
@@ -240,47 +240,47 @@ void func_8009AE18(u16 numPoints, Point3d *points, GXColor *color)
 }
 #pragma force_active reset
 
-struct Struct8009B048_1
+struct DrawLineDeferredNode
 {
     struct OrdTblNode node;
-    Mtx unk8;
+    Mtx mtx;
     GXPrimitive primType;
     u16 vtxCount;
     Point3d *points;
     GXColor color;
-    struct LineInfo unk48;
+    struct LineInfo lineInfo;
 };
 
-static void lbl_8009B140(struct Struct8009B048_1 *);
+static void draw_line_deferred_callback(struct DrawLineDeferredNode *);
 
-void func_8009B048(Point3d *start, Point3d *end, GXColor *c)
+void gxutil_draw_line_deferred(Point3d *start, Point3d *end, GXColor *c)
 {
-    struct Struct8009B048_1 *r31;
+    struct DrawLineDeferredNode *node;
     Point3d *points;
-    struct OrdTblNode *list = ord_tbl_get_entry_for_pos(start);
+    struct OrdTblNode *entry = ord_tbl_get_entry_for_pos(start);
 
-    r31 = ord_tbl_alloc_node(sizeof(*r31));
+    node = ord_tbl_alloc_node(sizeof(*node));
     points = ord_tbl_alloc_node(2 * sizeof(Point3d));
-    r31->node.drawFunc = (OrdTblDrawFunc)lbl_8009B140;
-    r31->primType = GX_LINES;
-    r31->vtxCount = 2;
-    r31->unk48 = lineInfo;
-    r31->color = *c;
+    node->node.drawFunc = (OrdTblDrawFunc)draw_line_deferred_callback;
+    node->primType = GX_LINES;
+    node->vtxCount = 2;
+    node->lineInfo = lineInfo;
+    node->color = *c;
     points[0] = *start;
     points[1] = *end;
-    r31->points = points;
-    mathutil_mtxA_to_mtx(r31->unk8);
-    ord_tbl_insert_node(list, &r31->node);
+    node->points = points;
+    mathutil_mtxA_to_mtx(node->mtx);
+    ord_tbl_insert_node(entry, &node->node);
 }
 
-static void lbl_8009B140(struct Struct8009B048_1 *a)
+static void draw_line_deferred_callback(struct DrawLineDeferredNode *node)
 {
-    struct LineInfo sp18 = lineInfo;
+    struct LineInfo lineInfoBackup = lineInfo;
     GXColor c;
     int i;
     Point3d *p;
 
-    lineInfo = a->unk48;
+    lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
     if (GX_ENABLE != zMode->updateEnable
      || GX_LEQUAL != zMode->compareFunc
@@ -292,21 +292,21 @@ static void lbl_8009B140(struct Struct8009B048_1 *a)
         zMode->updateEnable  = GX_ENABLE;
     }
 
-    c = a->color;
-    GXLoadPosMtxImm(a->unk8, GX_PNMTX0);
-    GXBegin(a->primType, GX_VTXFMT0, a->vtxCount);
-    p = a->points;
-    for (i = a->vtxCount; i > 0; i--, p++)
+    c = node->color;
+    GXLoadPosMtxImm(node->mtx, GX_PNMTX0);
+    GXBegin(node->primType, GX_VTXFMT0, node->vtxCount);
+    p = node->points;
+    for (i = node->vtxCount; i > 0; i--, p++)
     {
         GXPosition3f32(p->x, p->y, p->z);
         GXColor4u8(c.r, c.g, c.b, c.a);
     }
     GXEnd();
-    lineInfo = sp18;
+    lineInfo = lineInfoBackup;
 }
 
 #pragma force_active on
-void func_8009B474(struct PointWithColor *start, struct PointWithColor *end)
+void gxutil_draw_line_multicolor(struct PointWithColor *start, struct PointWithColor *end)
 {
     prepare_for_drawing_lines();
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -319,35 +319,35 @@ void func_8009B474(struct PointWithColor *start, struct PointWithColor *end)
 }
 #pragma force_active reset
 
-struct Struct8009B538_1
+struct DrawLineMulticolorDeferredNode
 {
     struct OrdTblNode node;
-    Mtx unk8;
+    Mtx mtx;
     GXPrimitive primType;
     u16 vtxCount;
     struct PointWithColor *points;
-    struct LineInfo unk44;
+    struct LineInfo lineInfo;
 };
 
-static void lbl_8009B74C(struct Struct8009B538_1 *);
+static void draw_line_multicolor_deferred_callback(struct DrawLineMulticolorDeferredNode *);
 
-void func_8009B538(struct PointWithColor *start, struct PointWithColor *end)
+void gxutil_draw_line_multicolor_deferred(struct PointWithColor *start, struct PointWithColor *end)
 {
-    struct Struct8009B538_1 *r31;
+    struct DrawLineMulticolorDeferredNode *node;
     struct PointWithColor *points;
-    struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&start->pos);
+    struct OrdTblNode *entry = ord_tbl_get_entry_for_pos(&start->pos);
 
-    r31 = ord_tbl_alloc_node(sizeof(*r31));
+    node = ord_tbl_alloc_node(sizeof(*node));
     points = ord_tbl_alloc_node(2 * sizeof(struct PointWithColor));
-    r31->node.drawFunc = (OrdTblDrawFunc)lbl_8009B74C;
-    r31->primType = GX_LINES;
-    r31->vtxCount = 2;
-    r31->unk44 = lineInfo;
+    node->node.drawFunc = (OrdTblDrawFunc)draw_line_multicolor_deferred_callback;
+    node->primType = GX_LINES;
+    node->vtxCount = 2;
+    node->lineInfo = lineInfo;
     points[0] = *start;
     points[1] = *end;
-    r31->points = points;
-    mathutil_mtxA_to_mtx(r31->unk8);
-    ord_tbl_insert_node(list, &r31->node);
+    node->points = points;
+    mathutil_mtxA_to_mtx(node->mtx);
+    ord_tbl_insert_node(entry, &node->node);
 }
 
 void prepare_for_drawing_lines(void)
@@ -377,13 +377,13 @@ void prepare_for_drawing_lines(void)
     GXSetNumChans(1);
 }
 
-static void lbl_8009B74C(struct Struct8009B538_1 *a)
+static void draw_line_multicolor_deferred_callback(struct DrawLineMulticolorDeferredNode *node)
 {
-    struct LineInfo sp18 = lineInfo;
+    struct LineInfo lineInfoBackup = lineInfo;
     int i;
     struct PointWithColor *p;
 
-    lineInfo = a->unk44;
+    lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
     if (GX_ENABLE != zMode->updateEnable
      || GX_LEQUAL != zMode->compareFunc
@@ -395,14 +395,14 @@ static void lbl_8009B74C(struct Struct8009B538_1 *a)
         zMode->updateEnable  = GX_ENABLE;
     }
 
-    GXLoadPosMtxImm(a->unk8, GX_PNMTX0);
-    GXBegin(a->primType, GX_VTXFMT0, a->vtxCount);
-    p = a->points;
-    for (i = a->vtxCount; i > 0; i--, p++)
+    GXLoadPosMtxImm(node->mtx, GX_PNMTX0);
+    GXBegin(node->primType, GX_VTXFMT0, node->vtxCount);
+    p = node->points;
+    for (i = node->vtxCount; i > 0; i--, p++)
     {
         GXPosition3f32(p->pos.x, p->pos.y, p->pos.z);
         GXColor4u8(p->color.r, p->color.g, p->color.b, p->color.a);
     }
     GXEnd();
-    lineInfo = sp18;
+    lineInfo = lineInfoBackup;
 }

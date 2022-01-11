@@ -16658,7 +16658,7 @@ lbl_0000F44C:
 /* 0000F4C0 806300A8 */ lwz r3, 0xa8(r3)
 /* 0000F4C4 4BFF0C71 */ bl g_draw_naomi_model_and_do_other_stuff
 /* 0000F4C8 C03F37B8 */ lfs f1, 0x37b8(r31)
-/* 0000F4CC 4BFF0C69 */ bl func_80030AC4
+/* 0000F4CC 4BFF0C69 */ bl nl2ngc_set_line_width
 /* 0000F4D0 C01F3778 */ lfs f0, 0x3778(r31)
 /* 0000F4D4 3C800000 */ lis r4, lbl_100000A4@ha
 /* 0000F4D8 3C600000 */ lis r3, lbl_0001C2B8@ha
@@ -16695,7 +16695,7 @@ lbl_0000F4FC:
 /* 0000F550 C0120024 */ lfs f0, 0x24(r18)
 /* 0000F554 FC000050 */ fneg f0, f0
 /* 0000F558 D00101B4 */ stfs f0, 0x1b4(r1)
-/* 0000F55C 4BFF0BD9 */ bl func_80030B28
+/* 0000F55C 4BFF0BD9 */ bl nl2ngc_draw_line
 /* 0000F560 C0120020 */ lfs f0, 0x20(r18)
 /* 0000F564 386101BC */ addi r3, r1, 0x1bc
 /* 0000F568 388101B0 */ addi r4, r1, 0x1b0
@@ -16708,7 +16708,7 @@ lbl_0000F4FC:
 /* 0000F584 D00101B0 */ stfs f0, 0x1b0(r1)
 /* 0000F588 C0120024 */ lfs f0, 0x24(r18)
 /* 0000F58C D00101B4 */ stfs f0, 0x1b4(r1)
-/* 0000F590 4BFF0BA5 */ bl func_80030B28
+/* 0000F590 4BFF0BA5 */ bl nl2ngc_draw_line
 /* 0000F594 C0120020 */ lfs f0, 0x20(r18)
 /* 0000F598 386101BC */ addi r3, r1, 0x1bc
 /* 0000F59C 388101B0 */ addi r4, r1, 0x1b0
@@ -16723,7 +16723,7 @@ lbl_0000F4FC:
 /* 0000F5C0 C0120024 */ lfs f0, 0x24(r18)
 /* 0000F5C4 FC000050 */ fneg f0, f0
 /* 0000F5C8 D00101B4 */ stfs f0, 0x1b4(r1)
-/* 0000F5CC 4BFF0B69 */ bl func_80030B28
+/* 0000F5CC 4BFF0B69 */ bl nl2ngc_draw_line
 /* 0000F5D0 C0120020 */ lfs f0, 0x20(r18)
 /* 0000F5D4 386101BC */ addi r3, r1, 0x1bc
 /* 0000F5D8 388101B0 */ addi r4, r1, 0x1b0
@@ -16736,7 +16736,7 @@ lbl_0000F4FC:
 /* 0000F5F4 C0120024 */ lfs f0, 0x24(r18)
 /* 0000F5F8 FC000050 */ fneg f0, f0
 /* 0000F5FC D00101B4 */ stfs f0, 0x1b4(r1)
-/* 0000F600 4BFF0B35 */ bl func_80030B28
+/* 0000F600 4BFF0B35 */ bl nl2ngc_draw_line
 /* 0000F604 80750000 */ lwz r3, 0(r21)
 /* 0000F608 806300A8 */ lwz r3, 0xa8(r3)
 /* 0000F60C 4BFF0B29 */ bl g_draw_naomi_model_and_do_other_stuff
@@ -17174,7 +17174,7 @@ lbl_0000FC10:
 /* 0000FC60 EFC1002A */ fadds f30, f1, f0
 /* 0000FC64 4BFF04D1 */ bl mathutil_mtxA_from_mtxB
 /* 0000FC68 C03F37D4 */ lfs f1, 0x37d4(r31)
-/* 0000FC6C 4BFF04C9 */ bl func_80030AC4
+/* 0000FC6C 4BFF04C9 */ bl nl2ngc_set_line_width
 /* 0000FC70 C01F37D8 */ lfs f0, 0x37d8(r31)
 /* 0000FC74 FC1E0040 */ fcmpo cr0, f30, f0
 /* 0000FC78 4081005C */ ble lbl_0000FCD4

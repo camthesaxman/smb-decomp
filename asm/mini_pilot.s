@@ -12312,7 +12312,7 @@ lbl_0000B5FC:
 /* 0000B5FC 4BFF4B51 */ bl mathutil_mtxA_from_mtxB
 /* 0000B600 38610028 */ addi r3, r1, 0x28
 /* 0000B604 38810018 */ addi r4, r1, 0x18
-/* 0000B608 4BFF4B45 */ bl func_8009B474
+/* 0000B608 4BFF4B45 */ bl gxutil_draw_line_multicolor
 /* 0000B60C 8001004C */ lwz r0, 0x4c(r1)
 /* 0000B610 83E10044 */ lwz r31, 0x44(r1)
 /* 0000B614 83C10040 */ lwz r30, 0x40(r1)
