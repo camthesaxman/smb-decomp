@@ -113,7 +113,7 @@ extern struct Event eventInfo[];
 // extern ? lbl_80173FE0;
 // extern ? lbl_801740A8;
 // extern ? lbl_801741B0;
-// extern ? lbl_801741CC;
+extern float lbl_801741CC[];
 // extern ? lbl_801741D8;
 // extern ? lbl_80174E14;
 // extern ? lbl_80174E38;
@@ -525,19 +525,8 @@ extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
 // extern ? lbl_801EECF8;
-extern struct
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-} lbl_801EED04;
-extern struct
-{
-    u8 filler0[4];
-    u32 unk4;
-    s32 unk8;
-    s32 unkC;
-} lbl_801EED2C;
+extern struct Struct801EED04 lbl_801EED04;
+extern struct Struct801EED2C lbl_801EED2C;
 extern struct
 {
     s32 unk0;
@@ -600,7 +589,12 @@ extern struct PerfInfo perfInfo;
 // extern ? lbl_801FE5C8;
 // extern ? lbl_80201418;
 // extern ? lbl_80201454;
-// extern ? lbl_802014E0;
+extern struct
+{
+    s32 unk0;
+    u32 unk4;
+    u8 filler8[1];
+} lbl_802014E0;
 // extern ? lbl_80201500;
 // extern ? lbl_80201928;
 // extern ? lbl_802020D4;
@@ -1194,11 +1188,23 @@ extern s32 lbl_802F1B98;
 extern OSHeapHandle lbl_802F1B9C;
 extern s8 lbl_802F1BA0;
 extern s8 lbl_802F1BA1;
-// extern ? lbl_802F1BA8;
+extern s32 lbl_802F1BA8;
 // extern ? lbl_802F1BAC;
-// extern ? lbl_802F1BB0;
-// extern ? lbl_802F1BB4;
-// extern ? lbl_802F1BBC;
+extern s32 lbl_802F1BB0;
+extern struct
+{
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u16 unk6;
+} lbl_802F1BB4;
+extern struct
+{
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u16 unk6;
+} lbl_802F1BBC;
 // extern ? lbl_802F1BC4;
 extern u32 lbl_802F1BC8;
 extern u32 lbl_802F1BCC;
@@ -1315,7 +1321,7 @@ extern u32 lbl_802F1CD8;
 // extern ? lbl_802F1DF0;
 // extern ? lbl_802F1DF4;
 // extern ? lbl_802F1DF5;
-// extern ? lbl_802F1DF8;
+extern u32 lbl_802F1DF8;
 // extern ? lbl_802F1DFC;
 // extern ? lbl_802F1E00;
 // extern ? lbl_802F1E08;

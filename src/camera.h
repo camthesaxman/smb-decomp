@@ -117,7 +117,7 @@ void func_80018648();
 // ? camera_apply_viewport_2();
 // ? func_800188A8();
 void func_800188D4(void);
-// ? func_8001898C();
+void func_8001898C(int cameraId, int b, Vec *c);
 void camera_set_state(int state);
 void camera_set_or_clear_flags(int flags, int set);
 void camera_clear(struct Camera *camera);

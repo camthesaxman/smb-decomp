@@ -255,7 +255,7 @@ extern void *modeStringPtr;
 extern void *submodeStringPtr;
 extern void (*lbl_802F1B70)(void);
 extern void (*lbl_802F1B74)(void);
-extern u32 lbl_802F1B78;
+extern s32 lbl_802F1B78;
 extern void (*lbl_802F1B7C)(void);
 extern void (*lbl_802F1B80)(void);
 
