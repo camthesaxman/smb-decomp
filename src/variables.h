@@ -589,7 +589,12 @@ extern struct PerfInfo perfInfo;
 // extern ? lbl_801FE5C8;
 // extern ? lbl_80201418;
 // extern ? lbl_80201454;
-// extern ? lbl_802014E0;
+extern struct
+{
+    s32 unk0;
+    u32 unk4;
+    u8 filler8[1];
+} lbl_802014E0;
 // extern ? lbl_80201500;
 // extern ? lbl_80201928;
 // extern ? lbl_802020D4;
@@ -1185,7 +1190,7 @@ extern s8 lbl_802F1BA0;
 extern s8 lbl_802F1BA1;
 extern s32 lbl_802F1BA8;
 // extern ? lbl_802F1BAC;
-extern u32 lbl_802F1BB0;
+extern s32 lbl_802F1BB0;
 extern struct
 {
     u16 unk0;
