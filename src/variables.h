@@ -618,7 +618,7 @@ extern struct World lbl_80206BF0[];
 // extern ? stagePreview;
 extern struct Struct80206DEC lbl_80206DEC;
 extern struct Struct80206E48 movableStageParts[0x48];
-extern u32 lbl_80209368[];
+extern void *lbl_80209368[];
 // extern ? lbl_802099E8;
 // extern ? lbl_8020A348;
 // extern ? lbl_8020AB88;
