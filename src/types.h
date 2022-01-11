@@ -288,7 +288,9 @@ struct World
 {
     s16 unk0;
     s16 unk2;
-    u8 filler4[0x1C-0x4];
+    u8 filler4[0x8-0x4];
+    u8 unk8;
+    u8 filler9[0x1C-0x9];
     float unk1C;
     u16 unk20;
     u8 filler22[0x40-0x22];
@@ -746,3 +748,24 @@ struct Sphere
 
 struct Preview;
 struct NaomiDispList;
+
+struct Struct801EED04
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
+};
+
+struct Struct801EED2C
+{
+    u8 filler0[4];
+    u32 unk4;
+    s32 unk8;
+    s32 unkC;
+};

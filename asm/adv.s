@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global mode_adv_func
 mode_adv_func:
 /* 8000E5A8 0000A4C8  7C 08 02 A6 */	mflr r0
@@ -53,6 +54,7 @@ lbl_8000E648:
 /* 8000E64C 0000A56C  38 21 00 08 */	addi r1, r1, 8
 /* 8000E650 0000A570  7C 08 03 A6 */	mtlr r0
 /* 8000E654 0000A574  4E 80 00 20 */	blr
+
 .global submode_adv_warning_init_func
 submode_adv_warning_init_func:
 /* 8000E658 0000A578  7C 08 02 A6 */	mflr r0
@@ -85,6 +87,7 @@ submode_adv_warning_main_func:
 .global submode_adv_rating_init_func
 submode_adv_rating_init_func:
 /* 8000E6BC 0000A5DC  4E 80 00 20 */	blr
+
 .global submode_adv_rating_main_func
 submode_adv_rating_main_func:
 /* 8000E6C0 0000A5E0  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
@@ -107,6 +110,7 @@ lbl_8000E6FC:
 /* 8000E6FC 0000A61C  7C 00 07 34 */	extsh r0, r0
 /* 8000E700 0000A620  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 8000E704 0000A624  4E 80 00 20 */	blr
+
 .global submode_adv_logo_init_func
 submode_adv_logo_init_func:
 /* 8000E708 0000A628  7C 08 02 A6 */	mflr r0
@@ -463,12 +467,12 @@ lbl_8000EBE4:
 /* 8000EC00 0000AB20  90 61 00 14 */	stw r3, 0x14(r1)
 /* 8000EC04 0000AB24  C8 01 00 20 */	lfd f0, 0x20(r1)
 /* 8000EC08 0000AB28  90 01 00 10 */	stw r0, 0x10(r1)
-/* 8000EC0C 0000AB2C  FC 40 18 28 */	fsub f2, f0, f3
+/* 8000EC0C 0000AB2C  FC 40 18 28 */	fsub f2, f0, f3  ;# 0xF0 - lbl_801EED04.unk14
 /* 8000EC10 0000AB30  C8 A2 83 08 */	lfd f5, lbl_802F2B08-_SDA2_BASE_(r2)
 /* 8000EC14 0000AB34  C8 01 00 10 */	lfd f0, 0x10(r1)
-/* 8000EC18 0000AB38  FC 00 18 28 */	fsub f0, f0, f3
-/* 8000EC1C 0000AB3C  FC 44 00 B2 */	fmul f2, f4, f2
-/* 8000EC20 0000AB40  FC 01 00 32 */	fmul f0, f1, f0
+/* 8000EC18 0000AB38  FC 00 18 28 */	fsub f0, f0, f3  ;# 0xF0 - lbl_801EED04.unk14
+/* 8000EC1C 0000AB3C  FC 44 00 B2 */	fmul f2, f4, f2  ;# (0xF0 - lbl_801EED04.unk14) * lbl_802F2B10
+/* 8000EC20 0000AB40  FC 01 00 32 */	fmul f0, f1, f0  ;# (0xF0 - lbl_801EED04.unk14) * lbl_802F2B18
 /* 8000EC24 0000AB44  FC 25 10 28 */	fsub f1, f5, f2
 /* 8000EC28 0000AB48  FC 05 00 28 */	fsub f0, f5, f0
 /* 8000EC2C 0000AB4C  FC 20 08 1E */	fctiwz f1, f1
@@ -494,6 +498,7 @@ lbl_8000EC68:
 /* 8000EC70 0000AB90  38 21 00 30 */	addi r1, r1, 0x30
 /* 8000EC74 0000AB94  7C 08 03 A6 */	mtlr r0
 /* 8000EC78 0000AB98  4E 80 00 20 */	blr
+
 .global submode_adv_logo_main_func
 submode_adv_logo_main_func:
 /* 8000EC7C 0000AB9C  7C 08 02 A6 */	mflr r0
@@ -613,6 +618,7 @@ lbl_8000EE24:
 /* 8000EE28 0000AD48  38 21 00 08 */	addi r1, r1, 8
 /* 8000EE2C 0000AD4C  7C 08 03 A6 */	mtlr r0
 /* 8000EE30 0000AD50  4E 80 00 20 */	blr
+
 .global submode_adv_demo_init_func
 submode_adv_demo_init_func:
 /* 8000EE34 0000AD54  7C 08 02 A6 */	mflr r0
@@ -743,6 +749,7 @@ lbl_8000F01C:
 /* 8000F024 0000AF44  38 21 00 40 */	addi r1, r1, 0x40
 /* 8000F028 0000AF48  7C 08 03 A6 */	mtlr r0
 /* 8000F02C 0000AF4C  4E 80 00 20 */	blr
+
 lbl_8000F030:
 /* 8000F030 0000AF50  7C 08 02 A6 */	mflr r0
 /* 8000F034 0000AF54  90 01 00 04 */	stw r0, 4(r1)
@@ -783,6 +790,7 @@ lbl_8000F030:
 /* 8000F0C0 0000AFE0  38 21 00 30 */	addi r1, r1, 0x30
 /* 8000F0C4 0000AFE4  7C 08 03 A6 */	mtlr r0
 /* 8000F0C8 0000AFE8  4E 80 00 20 */	blr
+.endif
 
 .global func_8000F0CC
 func_8000F0CC:
@@ -4381,6 +4389,7 @@ lbl_802F02F8:
 
 .section .sdata2
 
+.if 0
 .global lbl_802F2A80
 lbl_802F2A80:
 	# ROM: 0x1EC4A0
@@ -4500,6 +4509,7 @@ lbl_802F2B18:
 	# ROM: 0x1EC538
 	.byte 0x40, 0x21, 0x00, 0x00
 	.4byte 0
+.endif
 
 .global lbl_802F2B20
 lbl_802F2B20:
@@ -6260,6 +6270,7 @@ lbl_8011021C:
 
 .section .bss
 
+.if 0
 .global lbl_801EECF8
 lbl_801EECF8:
 	.skip 0xC
@@ -6269,6 +6280,7 @@ lbl_801EED04:
 .global lbl_801EED2C
 lbl_801EED2C:
 	.skip 0x10
+.endif
 .global lbl_801EED3C
 lbl_801EED3C:
 	.skip 0x14

@@ -460,7 +460,7 @@ void *modeStringPtr;
 void *submodeStringPtr;
 void (*lbl_802F1B80)(void);
 void (*lbl_802F1B7C)(void);
-u32 lbl_802F1B78;
+s32 lbl_802F1B78;
 void (*lbl_802F1B74)(void);
 void (*lbl_802F1B70)(void);
 

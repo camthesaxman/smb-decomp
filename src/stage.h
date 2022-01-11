@@ -426,7 +426,7 @@ void g_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);
 // ? func_80044920();
 void load_stage(int);
-// ? unload_stage();
+void unload_stage(void);
 void preload_stage_files(int);
 void load_stage_files(int stageId);
 void func_80044E18(void);
