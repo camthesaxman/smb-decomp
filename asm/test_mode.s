@@ -165,7 +165,7 @@ lbl_00000270:
 /* 000002A4 38600000 */ li r3, 0
 /* 000002A8 38800000 */ li r4, 0
 /* 000002AC 38A00001 */ li r5, 1
-/* 000002B0 4BFFFEAD */ bl func_800732DC
+/* 000002B0 4BFFFEAD */ bl g_start_screen_fade
 /* 000002B4 3860FFFF */ li r3, -1
 /* 000002B8 38800001 */ li r4, 1
 /* 000002BC 4BFFFEA1 */ bl func_8002CF38
@@ -428,11 +428,11 @@ lbl_00000630:
 /* 00000658 4CC63182 */ crclr 6
 /* 0000065C 4BFFFB01 */ bl g_debug_printf
 /* 00000660 3C800000 */ lis r4, lbl_802F1F40@ha
-/* 00000664 3C600000 */ lis r3, lbl_801B9414@ha
+/* 00000664 3C600000 */ lis r3, bgTypeNames@ha
 /* 00000668 3CA00000 */ lis r5, loadingStageIdRequest@ha
 /* 0000066C 3B7C027C */ addi r27, r28, 0x27c
 /* 00000670 3BC40000 */ addi r30, r4, lbl_802F1F40@l
-/* 00000674 3BE30000 */ addi r31, r3, lbl_801B9414@l
+/* 00000674 3BE30000 */ addi r31, r3, bgTypeNames@l
 /* 00000678 3BA50000 */ addi r29, r5, loadingStageIdRequest@l
 /* 0000067C 3B400000 */ li r26, 0
 lbl_00000680:
@@ -8217,7 +8217,7 @@ lbl_00007598:
 /* 000075B4 41820010 */ beq lbl_000075C4
 /* 000075B8 387B0000 */ addi r3, r27, 0
 /* 000075BC 38800000 */ li r4, 0
-/* 000075C0 4BFF8B9D */ bl func_8008D8D0
+/* 000075C0 4BFF8B9D */ bl g_get_stitching_model_mtx
 lbl_000075C4:
 /* 000075C4 7F63DB78 */ mr r3, r27
 /* 000075C8 4BFF8B95 */ bl g_avdisp_maybe_draw_model_2
@@ -8244,7 +8244,7 @@ lbl_000075E8:
 /* 00007610 41820010 */ beq lbl_00007620
 /* 00007614 387B0000 */ addi r3, r27, 0
 /* 00007618 38800000 */ li r4, 0
-/* 0000761C 4BFF8B41 */ bl func_8008D8D0
+/* 0000761C 4BFF8B41 */ bl g_get_stitching_model_mtx
 lbl_00007620:
 /* 00007620 7F63DB78 */ mr r3, r27
 /* 00007624 4BFF8B39 */ bl g_avdisp_maybe_draw_model_2
@@ -10162,7 +10162,7 @@ lbl_000091D4:
 /* 000091E8 4BFF6F75 */ bl g_debug_printf
 /* 000091EC 4800040D */ bl lbl_000095F8
 /* 000091F0 480007A9 */ bl lbl_00009998
-/* 000091F4 4BFF6F69 */ bl func_8000D220
+/* 000091F4 4BFF6F69 */ bl draw_test_camera_target
 /* 000091F8 4800012C */ b lbl_00009324
 lbl_000091FC:
 /* 000091FC 48002381 */ bl lbl_0000B57C
@@ -10215,7 +10215,7 @@ lbl_00009254:
 /* 000092AC 7C630214 */ add r3, r3, r0
 /* 000092B0 80630004 */ lwz r3, 4(r3)
 /* 000092B4 4BFF6EA9 */ bl g_draw_naomi_model_and_do_other_stuff
-/* 000092B8 4BFF6EA5 */ bl func_8000D220
+/* 000092B8 4BFF6EA5 */ bl draw_test_camera_target
 /* 000092BC 48000068 */ b lbl_00009324
 lbl_000092C0:
 /* 000092C0 4BFF9EF9 */ bl lbl_000031B8

@@ -420,7 +420,7 @@ void ev_stage_main(void);
 void ev_stage_dest(void);
 // ? stage_find_model();
 void find_blur_bridge_accordion(void);
-// ? func_8004424C();
+// ? draw_blur_bridge_accordions();
 // ? g_animate_stage();
 void g_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);

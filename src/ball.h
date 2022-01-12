@@ -43,7 +43,7 @@ enum
     BALL_FLAG_01 = 1 << 1,
     BALL_FLAG_02 = 1 << 2,
     BALL_FLAG_03 = 1 << 3,
-    BALL_FLAG_04 = 1 << 4,
+    BALL_FLAG_INVISIBLE = 1 << 4,
     BALL_FLAG_05 = 1 << 5,
     BALL_FLAG_06 = 1 << 6,
     BALL_FLAG_07 = 1 << 7,
@@ -157,7 +157,7 @@ void ev_ball_init(void);
 void ev_ball_main(void);
 void func_80038528(struct Ball *);
 void ev_ball_dest(void);
-void func_80038840(void);
+void ball_draw(void);
 void func_80038AB4(void);
 void func_80038DF4(void);
 // ? give_bananas();
@@ -204,4 +204,4 @@ void func_8003CDB0(struct Ball *);
 void func_8003CDC0(struct Ball *);
 void func_8003D3C4(struct Ball *);
 void animate_ball_size_change(struct Ball *);
-// ? g_ball_draw();
+// ? draw_ball_hemispheres();

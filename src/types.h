@@ -102,8 +102,8 @@ struct GMAModelHeader
 {
     /*0x00*/ u32 magic;  // "GCMF"
     /*0x04*/ u32 flags;
-    /*0x08*/ Vec boundingSphereCenter;
-    /*0x14*/ float boundingSphereRadius;
+    /*0x08*/ Vec boundsCenter;
+    /*0x14*/ float boundsRadius;
     /*0x18*/ u16 numMaterials;
     /*0x1A*/ u16 numLayer1Meshes;  // opaque count?
     /*0x1C*/ u16 numLayer2Meshes;  // transparent count?
@@ -316,7 +316,7 @@ struct Struct80176434
     float unkC;
 };  // size=0x10
 
-struct Struct80206E48
+struct MovableStagePart
 {
     Vec unk0;
     Vec unkC;
@@ -745,9 +745,9 @@ struct NaomiDispList;
 
 struct Struct801EED04
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
+    Vec pos;
+    s16 xrot;
+    s16 zrot;
     s32 unk10;
     s32 unk14;
     s32 unk18[4];

@@ -3784,8 +3784,8 @@ lbl_800732C4:
 /* 800732D4 0006F1F4  38 21 00 70 */	addi r1, r1, 0x70
 /* 800732D8 0006F1F8  4E 80 00 20 */	blr
 
-.global func_800732DC
-func_800732DC:
+.global g_start_screen_fade
+g_start_screen_fade:
 /* 800732DC 0006F1FC  54 69 06 3E */	clrlwi r9, r3, 0x18
 /* 800732E0 0006F200  94 21 FF C0 */	stwu r1, -0x40(r1)
 /* 800732E4 0006F204  2C 09 00 02 */	cmpwi r9, 2
@@ -19549,7 +19549,7 @@ lbl_80081748:
 /* 80081748 0007D668  C0 1A 00 08 */	lfs f0, 8(r26)
 /* 8008174C 0007D66C  D0 01 00 24 */	stfs f0, 0x24(r1)
 lbl_80081750:
-/* 80081750 0007D670  80 0D 99 E8 */	lwz r0, lbl_802F1BC8@sda21(r13)
+/* 80081750 0007D670  80 0D 99 E8 */	lwz r0, advSubmode@sda21(r13)
 /* 80081754 0007D674  2C 00 00 0E */	cmpwi r0, 0xe
 /* 80081758 0007D678  40 82 00 3C */	bne lbl_80081794
 /* 8008175C 0007D67C  80 7F 00 10 */	lwz r3, 0x10(r31)

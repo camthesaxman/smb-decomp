@@ -57,7 +57,7 @@ GXColor lbl_801B9178_A8[] =
 };
 
 // backgroundInfo + 0x29C
-char *lbl_801B9414[] =
+char *bgTypeNames[] =
 {
     "NULL",
     "BG_TYPE_BLUESKY_A",
@@ -498,7 +498,7 @@ void func_8005507C(void)
     }
 }
 
-void func_80055164(int bgId)
+void preload_bg_files(int bgId)
 {
     char bgDir[64];
     char gmaFileName[64];
@@ -704,8 +704,8 @@ void bg_e3_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_e3_finish(void) {}
@@ -721,19 +721,19 @@ void bg_e3_draw(void)
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
         func_80022274(0);
     }
-    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
     func_80022530();
 }
 
 void func_80055628(int a) {}
 
-void func_8005562C(struct StageBgModel *a, int b, float c)
+void g_animate_background_parts(struct StageBgModel *a, int b, float c)
 {
     int i;
     int r29;
@@ -789,11 +789,11 @@ void func_8005562C(struct StageBgModel *a, int b, float c)
         if (r28->unk1C != NULL2)
             a->scale.z = g_interp_stage_anim_probably(r28->unk18, r28->unk1C, f29);
         if (r28->unk24 != NULL2)
-            a->xrot = g_interp_stage_anim_probably(r28->unk20, r28->unk24, f29) * 182.044448853f;
+            a->xrot = DEGREES_TO_S16(g_interp_stage_anim_probably(r28->unk20, r28->unk24, f29));
         if (r28->unk2C != NULL2)
-            a->yrot = g_interp_stage_anim_probably(r28->unk28, r28->unk2C, f29) * 182.044448853f;
+            a->yrot = DEGREES_TO_S16(g_interp_stage_anim_probably(r28->unk28, r28->unk2C, f29));
         if (r28->unk34 != NULL2)
-            a->zrot = g_interp_stage_anim_probably(r28->unk30, r28->unk34, f29) * 182.044448853f;
+            a->zrot = DEGREES_TO_S16(g_interp_stage_anim_probably(r28->unk30, r28->unk34, f29));
         if (r28->unk3C != NULL2)
             a->pos.x = g_interp_stage_anim_probably(r28->unk38, r28->unk3C, f29);
         if (r28->unk44 != NULL2)
@@ -806,18 +806,18 @@ void func_8005562C(struct StageBgModel *a, int b, float c)
             mathutil_mtxA_rotate_z(a->zrot);
             mathutil_mtxA_rotate_y(a->yrot);
             mathutil_mtxA_rotate_x(a->xrot);
-            mathutil_mtxA_tf_point(&a->model->boundingSphereCenter, &sp1C);
+            mathutil_mtxA_tf_point(&a->model->boundsCenter, &sp1C);
             func_800390C8(5, &sp1C, 1.0f);
         }
     }
 }
 
-void func_80055A18(Mtx a, struct StageBgModel *b, int c)
+void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
 {
     int i;
     int r30;
     float f29;
-    struct GMAModelHeader *r24;
+    struct GMAModelHeader *model;
     int r23;
 
     if (b == NULL)
@@ -839,7 +839,7 @@ void func_80055A18(Mtx a, struct StageBgModel *b, int c)
             continue;
         if (b->unk2C >= 1.0)
             continue;
-        if ((r24 = b->model) == NULL)
+        if ((model = b->model) == NULL)
             continue;
         mathutil_mtxA_from_mtx(a);
         mathutil_mtxA_translate(&b->pos);
@@ -850,9 +850,9 @@ void func_80055A18(Mtx a, struct StageBgModel *b, int c)
         f29 = MAX(b->scale.x, b->scale.y);
         f29 = MAX(b->scale.z, f29);
         if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
-         && func_8000E444(&r24->boundingSphereCenter) < -(f29 * r24->boundingSphereRadius))
+         && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
             continue;
-        if (func_80020FD0(&r24->boundingSphereCenter, r24->boundingSphereRadius, f29) == 0)
+        if (func_80020FD0(&model->boundsCenter, model->boundsRadius, f29) == 0)
             continue;
         r23 = b->unk0 >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -866,11 +866,11 @@ void func_80055A18(Mtx a, struct StageBgModel *b, int c)
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
         g_avdisp_set_model_scale(f29);
         if (b->unk2C < FLT_EPSILON)
-            g_avdisp_draw_model_1(r24);
+            g_avdisp_draw_model_1(model);
         else
         {
             func_8008E564(1.0 - b->unk2C);
-            g_avdisp_draw_model_3(r24);
+            g_avdisp_draw_model_3(model);
         }
         if (b->unk34 != 0)
             func_80055C6C(a, b->unk34);
@@ -1086,8 +1086,8 @@ void bg_night_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_night_finish(void) {}
@@ -1103,13 +1103,13 @@ void bg_night_draw(void)
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
         func_80022274(0);
     }
-    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
     func_80022530();
 }
 
@@ -1121,8 +1121,8 @@ void bg_ice2_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_ice2_finish(void) {}
@@ -1138,13 +1138,13 @@ void bg_ice2_draw(void)
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
         func_80022274(0);
     }
-    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
     func_80022530();
 }
 
@@ -1196,8 +1196,8 @@ void bg_billiards_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_billiards_finish(void) {}
@@ -1213,13 +1213,13 @@ void bg_billiards_draw(void)
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
         func_80022274(0);
     }
-    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
     func_80022530();
 }
 
@@ -1231,8 +1231,8 @@ void bg_golf_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_golf_finish(void) {}
@@ -1248,13 +1248,13 @@ void bg_golf_draw(void)
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
         func_80022274(0);
     }
-    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
     func_80022530();
 }
 
@@ -1266,8 +1266,8 @@ void bg_bowling_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    func_8005562C(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    func_8005562C(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_bowling_finish(void) {}
@@ -1283,13 +1283,13 @@ void bg_bowling_draw(void)
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         func_80022274(4);
     }
-    func_80055A18(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
+    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->unk74 != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
         func_80022274(0);
     }
-    func_80055A18(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
+    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
     func_80022530();
 }
 

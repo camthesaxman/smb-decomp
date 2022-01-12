@@ -1443,7 +1443,7 @@ lbl_800A6BCC:
 /* 800A6BCC 000A2AEC  A8 0D 9D 78 */	lha r0, currStageId@sda21(r13)
 /* 800A6BD0 000A2AF0  2C 00 00 65 */	cmpwi r0, 0x65
 /* 800A6BD4 000A2AF4  40 82 00 08 */	bne lbl_800A6BDC
-/* 800A6BD8 000A2AF8  4B F9 D6 75 */	bl func_8004424C
+/* 800A6BD8 000A2AF8  4B F9 D6 75 */	bl draw_blur_bridge_accordions
 lbl_800A6BDC:
 /* 800A6BDC 000A2AFC  BB 41 00 10 */	lmw r26, 0x10(r1)
 /* 800A6BE0 000A2B00  80 01 00 2C */	lwz r0, 0x2c(r1)

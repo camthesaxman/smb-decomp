@@ -4022,8 +4022,8 @@ lbl_8004156C:
 /* 800415A4 0003D4C4  38 21 09 80 */	addi r1, r1, 0x980
 /* 800415A8 0003D4C8  4E 80 00 20 */	blr
 
-.global func_800415AC
-func_800415AC:
+.global g_draw_stage_collision
+g_draw_stage_collision:
 /* 800415AC 0003D4CC  7C 08 02 A6 */	mflr r0
 /* 800415B0 0003D4D0  90 01 00 04 */	stw r0, 4(r1)
 /* 800415B4 0003D4D4  94 21 FF 60 */	stwu r1, -0xa0(r1)

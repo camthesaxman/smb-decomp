@@ -1,7 +1,7 @@
 // .rodata section
 // extern ? lbl_8010F8A0;
 // extern ? crcTable;
-// extern ? lbl_8010FAB0;
+// extern ? introCutsceneScript;
 // extern ? lbl_8010FF84;
 // extern ? lbl_8010FF90;
 // extern ? lbl_80110004;
@@ -524,7 +524,7 @@ extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
 // extern ? lbl_801EECF8;
-extern struct Struct801EED04 lbl_801EED04;
+extern struct Struct801EED04 introAVLogoInfo;
 extern struct Struct801EED2C lbl_801EED2C;
 extern struct Struct801EED3C lbl_801EED3C;
 // extern ? lbl_801EED50;
@@ -604,13 +604,13 @@ extern struct World lbl_80206BF0[];
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
 extern struct Struct80206DEC lbl_80206DEC;
-extern struct Struct80206E48 movableStageParts[0x48];
+extern struct MovableStagePart movableStageParts[0x48];
 extern void *lbl_80209368[];
 // extern ? lbl_802099E8;
 // extern ? lbl_8020A348;
 // extern ? lbl_8020AB88;
 // extern ? lbl_8020ADC8;
-extern struct Sphere stageBoundingSphere;
+extern struct Sphere stageBounds;
 // extern ? lbl_8020AE20;
 // extern ? lbl_8020AE40;
 extern struct
@@ -1191,8 +1191,8 @@ extern s32 lbl_802F1BB0;
 extern s16 lbl_802F1BB4[4];
 extern s16 lbl_802F1BBC[4];
 // extern ? lbl_802F1BC4;
-extern u32 lbl_802F1BC8;
-extern u32 lbl_802F1BCC;
+extern u32 advSubmode;
+extern u32 introBackdropColor;
 
 extern struct StageSelection stageSelection;
 // extern ? lbl_802F1BE8;

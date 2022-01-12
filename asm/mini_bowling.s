@@ -400,7 +400,7 @@ lbl_000005EC:
 /* 00000628 98DD0007 */ stb r6, 7(r29)
 /* 0000062C 981D0008 */ stb r0, 8(r29)
 /* 00000630 90DD0144 */ stw r6, 0x144(r29)
-/* 00000634 4BFFFB2D */ bl func_800732DC
+/* 00000634 4BFFFB2D */ bl g_start_screen_fade
 /* 00000638 3800FFFF */ li r0, -1
 /* 0000063C 901F000C */ stw r0, 0xc(r31)
 /* 00000640 38600036 */ li r3, 0x36
@@ -837,7 +837,7 @@ lbl_00000C38:
 /* 00000C50 38600010 */ li r3, 0x10
 /* 00000C54 4BFFF50D */ bl func_80095398
 lbl_00000C58:
-/* 00000C58 4BFFF509 */ bl func_8000D220
+/* 00000C58 4BFFF509 */ bl draw_test_camera_target
 /* 00000C5C 881A0000 */ lbz r0, 0(r26)
 /* 00000C60 2C000002 */ cmpwi r0, 2
 /* 00000C64 4082000C */ bne lbl_00000C70
@@ -4189,7 +4189,7 @@ lbl_00003D24:
 /* 00003D74 3883FFFF */ addi r4, r3, -1  ;# fixed addi
 /* 00003D78 38600101 */ li r3, 0x101
 /* 00003D7C 38A0003C */ li r5, 0x3c
-/* 00003D80 4BFFC3E1 */ bl func_800732DC
+/* 00003D80 4BFFC3E1 */ bl g_start_screen_fade
 /* 00003D84 3860003C */ li r3, 0x3c
 /* 00003D88 38800002 */ li r4, 2
 /* 00003D8C 4BFFC3D5 */ bl func_8002CF38

@@ -53,7 +53,7 @@ _prolog:
 /* 00000118 38600100 */ li r3, 0x100
 /* 0000011C 38800000 */ li r4, 0
 /* 00000120 38A0001E */ li r5, 0x1e
-/* 00000124 48000089 */ bl func_800732DC
+/* 00000124 48000089 */ bl g_start_screen_fade
 /* 00000128 3CE00000 */ lis r7, lbl_00000258@ha
 /* 0000012C 3CC00000 */ lis r6, lbl_802F1B74@ha
 /* 00000130 38070000 */ addi r0, r7, lbl_00000258@l
@@ -325,7 +325,7 @@ lbl_000004E8:
 /* 000004F8 38600101 */ li r3, 0x101
 /* 000004FC 38800000 */ li r4, 0
 /* 00000500 80BF0000 */ lwz r5, 0(r31)
-/* 00000504 4BFFFCA9 */ bl func_800732DC
+/* 00000504 4BFFFCA9 */ bl g_start_screen_fade
 /* 00000508 807F0000 */ lwz r3, 0(r31)
 /* 0000050C 38800002 */ li r4, 2
 /* 00000510 4BFFFC9D */ bl func_8002CF38
@@ -2868,7 +2868,7 @@ lbl_00002A1C:
 /* 00002A28 38600101 */ li r3, 0x101
 /* 00002A2C 38800000 */ li r4, 0
 /* 00002A30 38A0001E */ li r5, 0x1e
-/* 00002A34 4BFFD779 */ bl func_800732DC
+/* 00002A34 4BFFD779 */ bl g_start_screen_fade
 /* 00002A38 3800001E */ li r0, 0x1e
 /* 00002A3C 901E001C */ stw r0, 0x1c(r30)
 /* 00002A40 38000004 */ li r0, 4
@@ -3046,7 +3046,7 @@ lbl_00002C74:
 /* 00002CA4 38600101 */ li r3, 0x101
 /* 00002CA8 38800000 */ li r4, 0
 /* 00002CAC 80BF0000 */ lwz r5, 0(r31)
-/* 00002CB0 4BFFD4FD */ bl func_800732DC
+/* 00002CB0 4BFFD4FD */ bl g_start_screen_fade
 /* 00002CB4 807F0000 */ lwz r3, 0(r31)
 /* 00002CB8 38800002 */ li r4, 2
 /* 00002CBC 4BFFD4F1 */ bl func_8002CF38
@@ -3400,7 +3400,7 @@ lbl_0000315C:
 /* 000031D8 38600100 */ li r3, 0x100
 /* 000031DC 38800000 */ li r4, 0
 /* 000031E0 38A0001E */ li r5, 0x1e
-/* 000031E4 4BFFCFC9 */ bl func_800732DC
+/* 000031E4 4BFFCFC9 */ bl g_start_screen_fade
 /* 000031E8 38000000 */ li r0, 0
 /* 000031EC 901A001C */ stw r0, 0x1c(r26)
 /* 000031F0 3C600000 */ lis r3, gameSubmodeRequest@ha
@@ -3547,7 +3547,7 @@ lbl_000033F4:
 /* 00003400 38600100 */ li r3, 0x100
 /* 00003404 38800000 */ li r4, 0
 /* 00003408 38A0001E */ li r5, 0x1e
-/* 0000340C 4BFFCDA1 */ bl func_800732DC
+/* 0000340C 4BFFCDA1 */ bl g_start_screen_fade
 /* 00003410 480036C1 */ bl lbl_00006AD0
 /* 00003414 3C600000 */ lis r3, gameSubmodeRequest@ha
 /* 00003418 380000BD */ li r0, 0xbd
@@ -3575,7 +3575,7 @@ lbl_0000342C:
 /* 0000346C 38600101 */ li r3, 0x101
 /* 00003470 38800000 */ li r4, 0
 /* 00003474 38A0001E */ li r5, 0x1e
-/* 00003478 4BFFCD35 */ bl func_800732DC
+/* 00003478 4BFFCD35 */ bl g_start_screen_fade
 lbl_0000347C:
 /* 0000347C 881A0003 */ lbz r0, 3(r26)
 /* 00003480 2C00000A */ cmpwi r0, 0xa

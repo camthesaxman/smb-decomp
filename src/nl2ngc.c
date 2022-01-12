@@ -389,12 +389,12 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (func_80020EB4(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -407,7 +407,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
-            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->unk8);
+            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundsCenter);
             r29 = ord_tbl_alloc_node(sizeof(*r29));
 
             r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033C8C;
@@ -442,12 +442,12 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (func_80020EB4(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -525,12 +525,12 @@ void func_800314B8(struct NaomiModel *model, float b)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (func_80020EB4(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -538,7 +538,7 @@ void func_800314B8(struct NaomiModel *model, float b)
             lbl_801B7978.unk18 = 1.0f;
         }
 
-        list = ord_tbl_get_entry_for_pos(&model->unk8);
+        list = ord_tbl_get_entry_for_pos(&model->boundsCenter);
         r29 = ord_tbl_alloc_node(sizeof(*r29));
 
         r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
@@ -566,12 +566,12 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (func_80020EB4(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -1770,12 +1770,12 @@ void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (func_80020EB4(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk1C) == 0)
+            if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk1C) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;

@@ -45,8 +45,8 @@ struct NaomiModel
 {
     /*0x00*/ s32 unk0;
     /*0x04*/ u32 flags;
-    /*0x08*/ Vec unk8;
-    /*0x14*/ float unk14;
+    /*0x08*/ Vec boundsCenter;
+    /*0x14*/ float boundsRadius;
     /*0x18*/ u8 meshStart[];  // meshes immediately follow the Model struct
 };
 

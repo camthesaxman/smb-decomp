@@ -1018,9 +1018,9 @@ void camera_func_attract_level(struct Camera *camera, struct Ball *ball)
     float f31 = lbl_801EED2C.unk8;
     Vec sp10;
 
-    if ((f31 >= 1740.0f && f31 < 1850.0f)
-     || (f31 >= 1954.0f && f31 < 2064.0f)
-     || (f31 >= 2498.0f && f31 < 2902.0f))
+    if ((f31 >= 1740.0f && f31 < 1850.0f)  // "Exam-A" level scene
+     || (f31 >= 1954.0f && f31 < 2064.0f)  // "Choice" level scene
+     || (f31 >= 2498.0f && f31 < 2902.0f))  // ???
     {
         camera->eye.x = func_8008CDC0(f31, &lbl_80176434[0x60]);
         camera->eye.y = func_8008CDC0(f31, &lbl_80176434[0x75]);
@@ -1290,7 +1290,7 @@ void get_curr_stage_fly_in_position(struct Sphere *sphere)
         }
         ptr++;
     }
-    *sphere = stageBoundingSphere;
+    *sphere = stageBounds;
     if (sphere->radius < 31.25)
         sphere->radius = 31.25f;
 }

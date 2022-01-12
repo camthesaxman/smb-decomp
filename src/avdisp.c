@@ -210,7 +210,7 @@ void g_avdisp_alloc_matrix_lists(int count)
     avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
-void func_8008D8D0(struct GMAModelHeader *a, Mtx **dest)
+void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
 {
     u8 i;
     int unused1;
@@ -557,7 +557,7 @@ void g_avdisp_set_3_floats(float a, float b, float c)
 
 void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
+    if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -569,7 +569,7 @@ void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 
 void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
+    if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -581,7 +581,7 @@ void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 
 void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
+    if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -804,6 +804,7 @@ void g_avdisp_draw_model_1(struct GMAModelHeader *model)
     lbl_802F20DC = 1.0f;
 }
 
+// for transparent objects?
 void g_avdisp_draw_model_2(struct GMAModelHeader *model)
 {
     struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
@@ -1524,12 +1525,12 @@ void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
     lbl_802B4ECC.unk4C = 0;
     lbl_802B4ECC.unk50 = 0;
     lbl_802B4ECC.unk54 = 0;
-    mathutil_mtxA_tf_point(&model->boundingSphereCenter, &lbl_802B4ECC.unk58);
-    lbl_802B4ECC.unk58.z -= model->boundingSphereRadius;
+    mathutil_mtxA_tf_point(&model->boundsCenter, &lbl_802B4ECC.unk58);
+    lbl_802B4ECC.unk58.z -= model->boundsRadius;
     mathutil_vec_normalize_len(&lbl_802B4ECC.unk58);
 }
 
-void func_8009015C(void)
+void g_compute_texmtx0(void)
 {
     Point3d cameraPos = {0.0f, 0.0f, 0.0f};
     Vec cameraUp = {0.0f, 1.0f, 0.0f};
@@ -1552,7 +1553,7 @@ void func_8009015C(void)
     mathutil_mtxA_pop();
 }
 
-void func_80090268(void)
+void g_compute_texmtx1and2(void)
 {
     Point3d cameraPos = {0.0f, 0.0f, 0.0f};
     Point3d target;
@@ -2320,7 +2321,7 @@ void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     }
     if (lbl_802B4ECC.unk48 == 0)
     {
-        func_8009015C();
+        g_compute_texmtx0();
         lbl_802B4ECC.unk48 = 1;
     }
     func_8009F180(a->tevStage, 12);
@@ -2362,7 +2363,7 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     if (lbl_802B4ECC.unk4C == 0)
     {
         func_8009F430(&unknownTexObj, 0);
-        func_80090268();
+        g_compute_texmtx1and2();
         lbl_802B4ECC.unk4C = 1;
     }
     // unrolled loop?

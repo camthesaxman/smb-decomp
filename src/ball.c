@@ -68,7 +68,7 @@ void func_8003699C(struct Ball_child *a)
         }
     }
 
-    if (!(a->unk14 & (1<<(31-0xE))) && ball->unkA8.w < 0.9941f)
+    if (!(a->unk14 & (1 << 17)) && ball->unkA8.w < 0.9941f)
         return;
 
     mathutil_mtxA_to_mtx(lbl_80205E30);
@@ -77,7 +77,7 @@ void func_8003699C(struct Ball_child *a)
     mathutil_mtxA_rigid_inv_tf_vec(&sp48, &sp48);
 
     f1 = 1.0f - mathutil_vec_dot_normalized(&sp48, &sp3C);
-    if (!(a->unk14 & (1<<(31-0xE))) && f1 > 0.01f)
+    if (!(a->unk14 & (1 << 17)) && f1 > 0.01f)
     {
         Vec sp30 = {0.0f, 1.0f, 0.0f};
         if (f1 > 1.999f)
@@ -1072,29 +1072,23 @@ void ev_ball_dest(void)
         ball->unk0 = 0;
 }
 
-struct Struct80038840
+struct BallDrawNode
 {
     struct OrdTblNode node;
     u32 unk8;
-    u32 unkC;
+    u32 ballId;
 };
 
-void lbl_8003D928(struct Struct80038840 *);
+void ball_draw_callback(struct BallDrawNode *);
 
-void func_80038840(void)
+void ball_draw(void)
 {
     struct Ball *ball;
     s8 *r27;
     int i;
     int (*func)();
-    struct Struct80038840 *r23;
-    struct OrdTblNode *list;
     Func802F20EC bgfunc;
     int unused;
-
-#ifdef NONMATCHING
-    func = NULL;  //! func may used uninitialized.
-#endif
 
     if (dipSwitches & DIP_OLD_BALL)
     {
@@ -1109,22 +1103,24 @@ void func_80038840(void)
     {
         if (*r27 == 0 || *r27 == 4)
             continue;
-        if (ball->flags & BALL_FLAG_04)
+        if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
         if ((lbl_801EEC90.unk0 & (1<<(31-0x1D)))
          && func_8000E4D0(&ball->pos) < 0.0f)
             continue;
 
-        if (!(dipSwitches & DIP_OLD_BALL))
+        if (!(dipSwitches & DIP_OLD_BALL))  // draw new ball
         {
-            // Draw new ball
+            struct BallDrawNode *node;
+            struct OrdTblNode *entry;
+
             mathutil_mtxA_from_mtxB();
-            list = ord_tbl_get_entry_for_pos(&ball->pos);
-            r23 = ord_tbl_alloc_node(sizeof(*r23));
-            r23->node.drawFunc = (OrdTblDrawFunc)lbl_8003D928;
-            r23->unk8 = func_800223D0();
-            r23->unkC = i;
-            ord_tbl_insert_node(list, &r23->node);
+            entry = ord_tbl_get_entry_for_pos(&ball->pos);
+            node = ord_tbl_alloc_node(sizeof(*node));
+            node->node.drawFunc = (OrdTblDrawFunc)ball_draw_callback;
+            node->unk8 = func_800223D0();
+            node->ballId = i;
+            ord_tbl_insert_node(entry, &node->node);
             continue;
         }
 
@@ -1249,7 +1245,7 @@ void func_80038AB4(void)
     sp18.unk20.z = 0.0f;
     mathutil_mtxA_tf_vec(&sp18.unk20, &sp18.unk20);
 
-    tex1 = commonGma->modelEntries[circle_white].modelOffset->texObjs;
+    tex1 = &commonGma->modelEntries[circle_white].modelOffset->texObjs[0];
     GXInitTexObj((tex2 = &lbl_801B7EC4),
         GXGetTexObjData(tex1),
         GXGetTexObjWidth(tex1),
@@ -1268,7 +1264,7 @@ void func_80038AB4(void)
     {
         if (*r26 == 0 || *r26 == 4)
             continue;
-        if (ball->flags & BALL_FLAG_04)
+        if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
         sp18.unk38 = ballShadowColors[ball->colorId];
         sp18.unk0 = spC.x + ball->pos.x;
@@ -1317,7 +1313,7 @@ void func_80038DF4(void)
 
         if (*r25 == 0 || *r25 == 4)
             continue;
-        if (ball->flags & BALL_FLAG_04)
+        if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
         if (func_8003FB48(&ball->pos, &sp14, &sp8) == 0)
             continue;
@@ -1613,7 +1609,7 @@ void ball_func_ready_main(struct Ball *ball)
     mathutil_mtxA_from_translate(&ball->pos);
     mathutil_mtxA_to_mtx(ball->unk30);
 
-    ball->flags |= BALL_FLAG_04;
+    ball->flags |= BALL_FLAG_INVISIBLE;
     ball->unkFC->unk14 |= 0x20;
     ball->state = 0;
     ball->unkC4 = 0.0f;
@@ -1652,7 +1648,7 @@ void ball_func_3(struct Ball *ball)
     mathutil_mtxA_to_mtx(ball->unk30);
     mathutil_mtxA_to_mtx(ball->unkC8);
 
-    ball->flags &= ~BALL_FLAG_04;
+    ball->flags &= ~BALL_FLAG_INVISIBLE;
     ball->flags |= BALL_FLAG_14;
     if (ball->unkFC != NULL)
         ball->unkFC->unk14 &= ~(1<<(31-0x1A));
@@ -1716,7 +1712,7 @@ void ball_func_7(struct Ball *ball)
     ball->unk80 = 0;
     ball->state = 10;
     ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_09|BALL_FLAG_10);
-    ball->flags &= ~BALL_FLAG_04;
+    ball->flags &= ~BALL_FLAG_INVISIBLE;
     if (ball->unkFC != NULL)
         ball->unkFC->unk14 &= ~(1<<(31-0x1A));
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp3C, lbl_80250A68.unk10);
@@ -2432,7 +2428,7 @@ void update_ball_ape_transform(struct Ball *ball, struct Struct80039974 *b, int 
 void func_8003BBF4(struct Struct80039974 *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct Struct80206E48 *r30 = &movableStageParts[a->unk50];
+    struct MovableStagePart *movpart = &movableStageParts[a->unk50];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2441,7 +2437,7 @@ void func_8003BBF4(struct Struct80039974 *a, Vec *b)
     Vec *ptr;
     int unused;
 
-    mathutil_mtxA_from_mtx(r30->unk24);
+    mathutil_mtxA_from_mtx(movpart->unk24);
     mathutil_mtxA_tf_point(&a->unk38, &sp38);
     ptr = &sp44;
     mathutil_mtxA_tf_vec(&a->unk44, ptr);
@@ -2456,7 +2452,7 @@ void func_8003BBF4(struct Struct80039974 *a, Vec *b)
 
     mathutil_mtxA_rigid_inv_tf_point(&sp2C, &sp14);
 
-    mathutil_mtxA_from_mtx(r30->unk54);
+    mathutil_mtxA_from_mtx(movpart->unk54);
     mathutil_mtxA_tf_point(&sp14, &sp20);
 
     sp14.x = sp2C.x - sp20.x;
@@ -3044,29 +3040,29 @@ void animate_ball_size_change(struct Ball *ball)
         ball->unkFC->unk58 = ball->modelScale;
 }
 
-void g_ball_draw(struct Ball *ball, int unused)
+void draw_ball_hemispheres(struct Ball *ball, int unused)
 {
     struct GMAModelEntry *entries = commonGma->modelEntries;
     s16 *coloredParts = coloredBallPartModelIDs[ball->colorId];
-    Vec sp18;
+    Point3d pos;
     u8 unused2[8];
     float f31;  // distance from camera, maybe?
     int lod;  // level of detail?
 
     mathutil_mtxA_push();
     mathutil_mtxA_from_mtx(currentCameraStructPtr->unk144);
-    mathutil_mtxA_tf_point(&ball->pos, &sp18);
-    f31 = -0.25f / (currentCameraStructPtr->sub28.unk38 * sp18.z);
+    mathutil_mtxA_tf_point(&ball->pos, &pos);
+    f31 = -0.25f / (currentCameraStructPtr->sub28.unk38 * pos.z);
     mathutil_mtxA_pop();
 
     func_8000E1A4(ball->unk15C[currentCameraStructPtr->unk204] * 0.5 + 0.5);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
 
     lod = 0;
-    if (modeCtrl.unk30 > 1 && f31 < 0.17299999296665192f)
+    if (modeCtrl.unk30 > 1 && f31 < 0.173f)
     {
         lod = 1;
-        if (f31 < 0.10199999809265137f)
+        if (f31 < 0.102f)
             lod = 2;
     }
 
@@ -3095,22 +3091,22 @@ void g_ball_draw(struct Ball *ball, int unused)
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 }
 
-void lbl_8003D928(struct Struct80038840 *a)
+void ball_draw_callback(struct BallDrawNode *node)
 {
-    struct Ball *ball = &ballInfo[a->unkC];
+    struct Ball *ball = &ballInfo[node->ballId];
     int (*r30)() = backgroundInfo.unk7C;
     Func802F20EC bgfunc;
 
     if (gameMode == MD_GAME && modeCtrl.unk28 == 1 && modeCtrl.playerCount > 3)
         r30 = NULL;
 
-    func_800223D8(a->unk8);
+    func_800223D8(node->unk8);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
     mathutil_mtxA_scale_s(ball->modelScale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
 
-    g_ball_draw(ball, a->unkC);
+    draw_ball_hemispheres(ball, node->ballId);
 
     if (r30 != NULL)
     {

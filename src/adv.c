@@ -1,5 +1,6 @@
 /**
- * adv.c - Implements the attract screen sequence and title screen
+ * adv.c - Implements the "advertise" mode, which includes the attract screen
+ * sequence and title screen
  */
 #include <math.h>
 #include <stddef.h>
@@ -26,7 +27,7 @@ void mode_adv_func(void)
     }
 
     if (!(gameSubmode == SMD_ADV_START_INIT || gameSubmode == SMD_ADV_START_MAIN))
-        lbl_802F1BC8 = gameSubmode;
+        advSubmode = gameSubmode;
 
     if (!(gamePauseStatus & 0xA)
      && lbl_802F1BA8 > 0 && --lbl_802F1BA8 == 0)
@@ -37,7 +38,7 @@ void mode_adv_func(void)
 
 void submode_adv_warning_init_func(void)
 {
-    lbl_802F1BCC = 0;
+    introBackdropColor = 0;
     func_8002FFEC();
     func_8009F49C(2);
     ev_run_init(EVENT_SPRITE);
@@ -64,29 +65,7 @@ void submode_adv_rating_main_func(void)
 
 Vec lbl_801EECF8; FORCE_BSS_ORDER(lbl_801EECF8)
 
-struct Struct801EED04 lbl_801EED04; FORCE_BSS_ORDER(lbl_801EED04)  // + 0xC
-
-#define lbl_802F2A80 0.0f
-#define lbl_802F2A88 4.5f
-#define lbl_802F2A90 1.0
-#define lbl_802F2A98 -0.004
-#define lbl_802F2AA0 280.0
-#define lbl_802F2AA8 1.35
-#define lbl_802F2AB0 10.0
-#define lbl_802F2AB8 1.5
-#define lbl_802F2AC0 127.0
-#define lbl_802F2AC8 15.0
-#define lbl_802F2AD0 80.0
-#define lbl_802F2AD8 0.85000002384185791
-#define lbl_802F2AE0 16.0
-#define lbl_802F2AE8 -64.0
-#define lbl_802F2AF0 63.0
-#define lbl_802F2AF8 0.1
-
-#define lbl_802F2B08 255.0
-#define lbl_802F2B10 2.1
-#define lbl_802F2B18 8.5
-#define lbl_802F2B20 0.25f
+struct Struct801EED04 introAVLogoInfo; FORCE_BSS_ORDER(introAVLogoInfo)  // + 0xC
 
 void submode_adv_logo_init_func(void)
 {
@@ -94,14 +73,14 @@ void submode_adv_logo_init_func(void)
         return;
 
     func_80011D90();
-    lbl_802F1BCC = 0x00FFFFFF;
+    introBackdropColor = 0x00FFFFFF;
     modeCtrl.unk0 = 0x348;
     modeCtrl.levelSetFlags = 0;
-    lbl_801EED04.unk14 = modeCtrl.unk0;
-    lbl_801EED04.unk10 = 0;
-    lbl_801EECF8.x = lbl_802F2A80;
-    lbl_801EECF8.y = lbl_802F2A80;
-    lbl_801EECF8.z = lbl_802F2A80;
+    introAVLogoInfo.unk14 = modeCtrl.unk0;
+    introAVLogoInfo.unk10 = 0;
+    lbl_801EECF8.x = 0.0f;
+    lbl_801EECF8.y = 0.0f;
+    lbl_801EECF8.z = 0.0f;
     func_8002FFEC();
     func_80021DB4(0);
     lbl_80206BC0[0] = 0;
@@ -117,52 +96,52 @@ void submode_adv_logo_init_func(void)
     g_play_sound(0x21);
     preload_stage_files(ST_001_PLAIN);
     func_80021DB4(0);
-    func_800732DC(0x100, 0, 30);
+    g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = 4;
 }
 
-void func_8000E804(void)
+void update_av_logo_pos_and_sound(void)
 {
-    if (lbl_801EED04.unk10 <= 120)
-        lbl_801EED04.unk0.x = lbl_802F2A80;
-    else if (lbl_801EED04.unk10 <= 240)
-        lbl_801EED04.unk0.x = lbl_802F2A88 * (lbl_802F2A90 - __fabs(mathutil_cos((lbl_801EED04.unk10 - 120) * 273)));
+    if (introAVLogoInfo.unk10 <= 120)
+        introAVLogoInfo.pos.x = 0.0f;
+    else if (introAVLogoInfo.unk10 <= 240)
+        introAVLogoInfo.pos.x = 4.5f * (1.0 - __fabs(mathutil_cos((introAVLogoInfo.unk10 - 120) * 273)));
 
-    if (lbl_801EED04.unk10 <= 180)
-        lbl_801EED04.unk0.y = (180 - lbl_801EED04.unk10) * lbl_802F2A98;
+    if (introAVLogoInfo.unk10 <= 180)
+        introAVLogoInfo.pos.y = (180 - introAVLogoInfo.unk10) * -0.004;
 
-    if (lbl_801EED04.unk10 <= 180)
-        lbl_801EED04.unk0.z = (lbl_802F2A90 - mathutil_sin(lbl_801EED04.unk10 * 91)) * lbl_802F2AA0;
-    else if (lbl_801EED04.unk10 > 300 && lbl_801EED04.unk10 <= 420)
-        lbl_801EED04.unk0.z = (lbl_801EED04.unk10 - 300) * lbl_802F2AA8;
+    if (introAVLogoInfo.unk10 <= 180)
+        introAVLogoInfo.pos.z = (1.0 - mathutil_sin(introAVLogoInfo.unk10 * 91)) * 280.0;
+    else if (introAVLogoInfo.unk10 > 300 && introAVLogoInfo.unk10 <= 420)
+        introAVLogoInfo.pos.z = (introAVLogoInfo.unk10 - 300) * 1.35;
 
-    if (lbl_801EED04.unk10 <= 120)
-        lbl_801EED04.unkE = 0;
-    else if (lbl_801EED04.unk10 <= 180)
-        lbl_801EED04.unkE = (lbl_801EED04.unk10 - 120) * -546;
-    else if (lbl_801EED04.unk10 <= 240)
-        lbl_801EED04.unkE = (240 - lbl_801EED04.unk10) * -546;
+    if (introAVLogoInfo.unk10 <= 120)
+        introAVLogoInfo.zrot = 0;
+    else if (introAVLogoInfo.unk10 <= 180)
+        introAVLogoInfo.zrot = (introAVLogoInfo.unk10 - 120) * -546;
+    else if (introAVLogoInfo.unk10 <= 240)
+        introAVLogoInfo.zrot = (240 - introAVLogoInfo.unk10) * -546;
 
-    if (lbl_801EED04.unk10 <= 180)
-        lbl_801EED04.unkC = lbl_801EED04.unk10 * -546;
-    else if (lbl_801EED04.unk10 <= 300)
-        lbl_801EED04.unkC = 0;
-    else if (lbl_801EED04.unk10 <= 420)
-        lbl_801EED04.unkC = (lbl_801EED04.unk10 - 300) * 546;
+    if (introAVLogoInfo.unk10 <= 180)
+        introAVLogoInfo.xrot = introAVLogoInfo.unk10 * -546;
+    else if (introAVLogoInfo.unk10 <= 300)
+        introAVLogoInfo.xrot = 0;
+    else if (introAVLogoInfo.unk10 <= 420)
+        introAVLogoInfo.xrot = (introAVLogoInfo.unk10 - 300) * 546;
 
-    if (lbl_801EED04.unk10 > 0)
+    if (introAVLogoInfo.unk10 > 0)
     {
         s8 r4, r5;
         int r29, r28;
         float f3 = mathutil_sqrt(
-            (lbl_801EED04.unk0.x - lbl_801EECF8.x) * (lbl_801EED04.unk0.x - lbl_801EECF8.x)
-          + (lbl_801EED04.unk0.z - lbl_801EECF8.z) * (lbl_801EED04.unk0.z - lbl_801EECF8.z));
+            (introAVLogoInfo.pos.x - lbl_801EECF8.x) * (introAVLogoInfo.pos.x - lbl_801EECF8.x)
+          + (introAVLogoInfo.pos.z - lbl_801EECF8.z) * (introAVLogoInfo.pos.z - lbl_801EECF8.z));
 
-        f3 *= lbl_802F2AB0;
-        r4 = MIN(f3 * lbl_802F2AB8, lbl_802F2AC0);
-        r5 = MIN(f3 * lbl_802F2AC8, lbl_802F2AD0) * lbl_802F2AD8;
-        r29 = CLAMP(lbl_801EED04.unk0.x * lbl_802F2AE0, lbl_802F2AE8, lbl_802F2AF0);
-        r28 = CLAMP((lbl_802F2AA0 - lbl_801EED04.unk0.z) * lbl_802F2AF8, lbl_802F2AE8, lbl_802F2AF0);
+        f3 *= 10.0;
+        r4 = MIN(f3 * 1.5, 127.0);
+        r5 = MIN(f3 * 15.0, 80.0) * 0.85000002384185791;
+        r29 = CLAMP(introAVLogoInfo.pos.x * 16.0, -64.0, 63.0);
+        r28 = CLAMP((280.0 - introAVLogoInfo.pos.z) * 0.1, -64.0, 63.0);
         lbl_802F1DF8 = 0;
         func_8002CA5C(0, r4, r5);
         lbl_802F1DF8 = 0;
@@ -172,35 +151,35 @@ void func_8000E804(void)
         lbl_802F1DF8 = 0;
         SoundPan(0x53, r29, r28);
     }
-    lbl_801EECF8 = lbl_801EED04.unk0;
+    lbl_801EECF8 = introAVLogoInfo.pos;
 }
 
-void func_8000EB48(void)
+void update_av_logo(void)
 {
-    if (lbl_801EED04.unk14 == 0)
+    if (introAVLogoInfo.unk14 == 0)
         return;
-    if (lbl_801EED04.unk14 <= 660)
-        lbl_801EED04.unk10++;
-    func_8000E804();
-    if (lbl_801EED04.unk14 == 460)
+    if (introAVLogoInfo.unk14 <= 660)
+        introAVLogoInfo.unk10++;
+    update_av_logo_pos_and_sound();
+    if (introAVLogoInfo.unk14 == 460)
         g_play_sound(0x3B1F4);
-    if (lbl_801EED04.unk14 == 240)
+    if (introAVLogoInfo.unk14 == 240)
         func_8002BFCC(0x51F2, 0x51F3);
-    if (lbl_801EED04.unk14 < 240 && lbl_801EED04.unk14 >= 210)
+    if (introAVLogoInfo.unk14 < 240 && introAVLogoInfo.unk14 >= 210)
     {
-        int var1 = 240 - lbl_801EED04.unk14;
-        u32 r0;
+        int var1 = 240 - introAVLogoInfo.unk14;
+        u32 color;
 
         if (var1 >= 30)
-            r0 = 0x00FFC000;
+            color = 0x00FFC000;
         else
-            r0 = 0xFF0000
-               | ((int)(lbl_802F2B08 - var1 * lbl_802F2B10) << 8)
-               | (int)(lbl_802F2B08 - var1 * lbl_802F2B18);
-        lbl_802F1BCC = r0;
+            color = 0x00FF0000
+               | ((int)(255.0 - var1 * 2.1) << 8)
+               | (int)(255.0 - var1 * 8.5);
+        introBackdropColor = color;
     }
-    if (lbl_801EED04.unk14 > 0)
-        lbl_801EED04.unk14--;
+    if (introAVLogoInfo.unk14 > 0)
+        introAVLogoInfo.unk14--;
 }
 
 void submode_adv_logo_main_func(void)
@@ -214,7 +193,7 @@ void submode_adv_logo_main_func(void)
      && (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y))
         modeCtrl.unk0 = 30;
 
-    func_8000EB48();
+    update_av_logo();
 
     if ((dipSwitches & DIP_DEBUG)
      && !(modeCtrl.levelSetFlags & (1<<(31-0x12)))
@@ -245,7 +224,7 @@ void submode_adv_logo_main_func(void)
 
     if (modeCtrl.unk0 == 30)
     {
-        func_800732DC(0x101, 0, 30);
+        g_start_screen_fade(0x101, 0, 30);
         func_80075900(0, 20, NULL);
     }
     if (--modeCtrl.unk0 <= 0)
@@ -260,13 +239,12 @@ struct Struct801EED2C lbl_801EED2C;  FORCE_BSS_ORDER(lbl_801EED2C)
 
 void submode_adv_demo_init_func(void)
 {
-    //u8 dummy[8];
     int i;
 
     if (gamePauseStatus & 0xA)
         return;
     func_80011D90();
-    lbl_802F1BCC = 0x00FFFFFF;
+    introBackdropColor = 0x00FFFFFF;
     modeCtrl.unk0 = 2902;
     modeCtrl.levelSetFlags = 0;
     lbl_802F1BB0 = 0;
@@ -290,7 +268,7 @@ void submode_adv_demo_init_func(void)
     ev_run_init(3);
     for (i = 0; i < 4; i++)
     {
-        lbl_801EED04.unk18[i] = 1;
+        introAVLogoInfo.unk18[i] = 1;
         lbl_802F1BB4[i] = 0;
         lbl_802F1BBC[i] = 0;
     }
@@ -341,124 +319,172 @@ void lbl_8000F030(struct Struct8000F030 *a)
     a->unkE = spC.y + lbl_801741CC[a->unk20 - 1];
 }
 
-struct Struct8010FAB0
+enum
 {
-    s32 unk0;
-    u32 unk4;
-    s32 unk8;
+    CMD_SPEECH_BUBBLE       = 0,  // banana speech bubble
+    CMD_HIDE_SPEECH_BUBBLES = 1,
+    CMD_FADE_FROM_WHITE     = 2,
+    CMD_FADE_TO_WHITE       = 3,
+    CMD_PRELOAD_BG          = 4,  // unused
+    CMD_LOAD_BG             = 5,  // unused
+    CMD_SET_SOME_FLAG       = 6,
+    CMD_CLEAR_SOME_FLAG     = 7,
+    CMD_SHOW_CHARACTER      = 8,
+    CMD_HIDE_CHARACTER      = 9,
+    CMD_PRELOAD_STAGE       = 10,
+    CMD_LOAD_STAGE          = 11,
+
+    CMD_UNK13               = 13,
+    CMD_UNK14               = 14,
+    CMD_UNK15               = 15,
+
+    CMD_AIAI_ANIM           = 16,
+    CMD_MEEMEE_ANIM         = 17,
+    CMD_BABY_ANIM           = 18,
+    CMD_GONGON_ANIM         = 19,  // unused
 };
 
-const struct Struct8010FAB0 lbl_8010FAB0[] =
+struct IntroCutsceneCommand
 {
-    {    0,  9,    3 },
-    {    0, 10,   71 },
-    {    0, 16,   14 },
-    {    0, 17,   14 },
-    {    0, 18,    9 },
-    {    3,  6,   64 },
-    {    0,  6,  128 },
-    {  165,  0,    0 },
-    {  220,  0,    1 },
-    {  275,  0,    2 },
-    {  404,  3,   30 },
-    {  404,  1,   -1 },
-    {  404,  7,  128 },
-    {  434,  2,   30 },
-    {  434,  9,    1 },
-    {  434,  9,    2 },
-    {  434, 16,    1 },
-    {  434,  6,    1 },
-    {  544, 16,    2 },
-    {  651, 11,   71 },
-    {  651,  9,    0 },
-    {  651,  8,    1 },
-    {  652, 10,   61 },
-    {  652,  7,    1 },
-    {  596, 17,    4 },
-    {  651, 17,    3 },
-    {  706, 17,    4 },
-    {  761, 17,    5 },
-    {  816, 17,    4 },
-    {  871, 17,    5 },
-    {  981, 17,    4 },
-    {  869, 11,   61 },
-    {  869,  9,    1 },
-    {  869,  8,    2 },
-    {  870, 10,  101 },
-    {  869, 18,    7 },
-    { 1087, 11,  101 },
-    { 1087,  8,    0 },
-    { 1087,  8,    1 },
-    { 1087, 16,   11 },
-    { 1087, 17,   11 },
-    { 1087, 18,   11 },
-    { 1088, 10,   13 },
-    { 1088,  6,    1 },
-    { 1253,  6,  512 },
-    { 1276,  3,   30 },
-    { 1305,  7,  512 },
-    { 1305, 11,   13 },
-    { 1305,  9,    1 },
-    { 1305,  9,    2 },
-    { 1306, 10,    9 },
-    { 1306,  2,   30 },
-    { 1306,  7,    1 },
-    { 1305, 13,   -1 },
-    { 1305, 14,    0 },
-    { 1305,  6,   32 },
-    { 1306,  6,    2 },
-    { 1306,  6,    4 },
-    { 1739, 15,   -1 },
-    { 1739, 11,    9 },
-    { 1739,  9,    0 },
-    { 1739,  8,    1 },
-    { 1739,  8,    2 },
-    { 1740, 10,   21 },
-    { 1739, 13,   -1 },
-    { 1739, 14,    2 },
-    { 1739, 14,    1 },
-    { 1739,  6,   32 },
-    { 1953, 15,   -1 },
-    { 1953, 11,   21 },
-    { 1953,  8,    0 },
-    { 1953,  8,    1 },
-    { 1953,  8,    2 },
-    { 1954, 10,   95 },
-    { 1954,  8,    3 },
-    { 1954,  9,    0 },
-    { 1954,  9,    1 },
-    { 1954,  9,    2 },
-    { 1953, 13,   -1 },
-    { 1953, 14,    3 },
-    { 1954,  6,   32 },
-    { 2167, 15,   -1 },
-    { 2167, 11,   95 },
-    { 2167,  8,    0 },
-    { 2167,  8,    1 },
-    { 2167,  8,    2 },
-    { 2167,  9,    0 },
-    { 2167,  9,    1 },
-    { 2167,  9,    2 },
-    { 2167,  9,    3 },
-    { 2167, 13,   -1 },
-    { 2167, 14,    3 },
-    { 2167, 14,    2 },
-    { 2167, 14,    1 },
-    { 2167, 14,    0 },
-    { 2167,  6,   32 },
-    { 2168,  6, 2048 },
-    { 2168,  6, 4096 },
-    { 2169,  8,    0 },
-    { 2169,  8,    1 },
-    { 2169,  8,    2 },
-    { 2169,  8,    3 },
-    {   -1,  0,    0 },
+    s32 time;
+    u32 cmdId;
+    s32 param;
 };
 
-void func_8000F0CC(void)
+#define CHARACTER_AIAI   0
+#define CHARACTER_MEEMEE 1
+#define CHARACTER_BABY   2
+#define CHARACTER_GONGON 3
+
+const struct IntroCutsceneCommand introCutsceneScript[] =
+{
+    /* jungle scene */
+    {    0, CMD_HIDE_CHARACTER,      CHARACTER_GONGON     },
+    {    0, CMD_PRELOAD_STAGE,       ST_071_GAPS          },
+    {    0, CMD_AIAI_ANIM,           14                   },
+    {    0, CMD_MEEMEE_ANIM,         14                   },
+    {    0, CMD_BABY_ANIM,           9                    },
+    {    3, CMD_SET_SOME_FLAG,       (1 << 6)             },
+    {    0, CMD_SET_SOME_FLAG,       (1 << 7)             },
+    {  165, CMD_SPEECH_BUBBLE,       CHARACTER_AIAI       },
+    {  220, CMD_SPEECH_BUBBLE,       CHARACTER_MEEMEE     },
+    {  275, CMD_SPEECH_BUBBLE,       CHARACTER_BABY       },
+    {  404, CMD_FADE_TO_WHITE,       30                   },
+    {  404, CMD_HIDE_SPEECH_BUBBLES, -1                   },
+    {  404, CMD_CLEAR_SOME_FLAG,     (1 << 7)             },
+    {  434, CMD_FADE_FROM_WHITE,     30                   },
+    {  434, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
+    {  434, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
+    {  434, CMD_AIAI_ANIM,           1                    },
+    {  434, CMD_SET_SOME_FLAG,       (1 << 0)             },
+    {  544, CMD_AIAI_ANIM,           2                    },
+
+    /* arctic scene (MeeMee) */
+    {  651, CMD_LOAD_STAGE,          ST_071_GAPS          },
+    {  651, CMD_HIDE_CHARACTER,      CHARACTER_AIAI       },
+    {  651, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
+    {  652, CMD_PRELOAD_STAGE,       ST_061_TWIN_ATTACKER },
+    {  652, CMD_CLEAR_SOME_FLAG,     1                    },
+    {  596, CMD_MEEMEE_ANIM,         4                    },
+    {  651, CMD_MEEMEE_ANIM,         3                    },
+    {  706, CMD_MEEMEE_ANIM,         4                    },
+    {  761, CMD_MEEMEE_ANIM,         5                    },
+    {  816, CMD_MEEMEE_ANIM,         4                    },
+    // these two never have any effect because the desert scene starts before them
+    {  871, CMD_MEEMEE_ANIM,         5                    },
+    {  981, CMD_MEEMEE_ANIM,         4                    },
+
+    /* desert scene (Baby) */
+    {  869, CMD_LOAD_STAGE,          ST_061_TWIN_ATTACKER },
+    {  869, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
+    {  869, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
+    {  870, CMD_PRELOAD_STAGE,       ST_101_BLUR_BRIDGE   },
+    {  869, CMD_BABY_ANIM,           7                    },
+
+    /* space scene (AiAi, MeeMee, and Baby) */
+    { 1087, CMD_LOAD_STAGE,          ST_101_BLUR_BRIDGE   },
+    { 1087, CMD_SHOW_CHARACTER,      CHARACTER_AIAI       },
+    { 1087, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
+    { 1087, CMD_AIAI_ANIM,           11                   },
+    { 1087, CMD_MEEMEE_ANIM,         11                   },
+    { 1087, CMD_BABY_ANIM,           11                   },
+    { 1088, CMD_PRELOAD_STAGE,       ST_013_REPULSE       },
+    { 1088, CMD_SET_SOME_FLAG,       (1 << 0)             },
+    { 1253, CMD_SET_SOME_FLAG,       (1 << 9)             },
+    { 1276, CMD_FADE_TO_WHITE,       30                   },
+
+    /* "Repulse" level scene (AiAi) */
+    { 1305, CMD_CLEAR_SOME_FLAG,     (1 << 9)             },
+    { 1305, CMD_LOAD_STAGE,          ST_013_REPULSE       },
+    { 1305, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
+    { 1305, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
+    { 1306, CMD_PRELOAD_STAGE,       ST_009_EXAM_A        },
+    { 1306, CMD_FADE_FROM_WHITE,     30                   },
+    { 1306, CMD_CLEAR_SOME_FLAG,     (1 << 0)             },
+    { 1305, CMD_UNK13,               -1                   },
+    { 1305, CMD_UNK14,               0                    },
+    { 1305, CMD_SET_SOME_FLAG,       (1 << 5)             },
+    { 1306, CMD_SET_SOME_FLAG,       2                    },
+    { 1306, CMD_SET_SOME_FLAG,       4                    },
+
+    /* "Exam-A" level scene (MeeMee and Baby) */
+    { 1739, CMD_UNK15,               -1                   },
+    { 1739, CMD_LOAD_STAGE,          ST_009_EXAM_A        },
+    { 1739, CMD_HIDE_CHARACTER,      CHARACTER_AIAI       },
+    { 1739, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
+    { 1739, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
+    { 1740, CMD_PRELOAD_STAGE,       ST_021_CHOICE        },
+    { 1739, CMD_UNK13,               -1                   },
+    { 1739, CMD_UNK14,               2                    },
+    { 1739, CMD_UNK14,               1                    },
+    { 1739, CMD_SET_SOME_FLAG,       (1 << 5)             },
+
+    /* "Choice" level scene (GonGon) */
+    { 1953, CMD_UNK15,               -1                   },
+    { 1953, CMD_LOAD_STAGE,          ST_021_CHOICE        },
+    { 1953, CMD_SHOW_CHARACTER,      CHARACTER_AIAI       },
+    { 1953, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
+    { 1953, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
+    { 1954, CMD_PRELOAD_STAGE,       ST_095_BONUS_HUNTING },
+    { 1954, CMD_SHOW_CHARACTER,      CHARACTER_GONGON     },
+    { 1954, CMD_HIDE_CHARACTER,      CHARACTER_AIAI       },
+    { 1954, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
+    { 1954, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
+    { 1953, CMD_UNK13,               -1                   },
+    { 1953, CMD_UNK14,               3                    },
+    { 1954, CMD_SET_SOME_FLAG,       (1 << 5)             },
+
+    /* "Bonus Hunting" level scene (all characters) */
+    { 2167, CMD_UNK15,               -1                   },
+    { 2167, CMD_LOAD_STAGE,          ST_095_BONUS_HUNTING },
+    { 2167, CMD_SHOW_CHARACTER,      CHARACTER_AIAI       },
+    { 2167, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
+    { 2167, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
+    { 2167, CMD_HIDE_CHARACTER,      CHARACTER_AIAI       },
+    { 2167, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
+    { 2167, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
+    { 2167, CMD_HIDE_CHARACTER,      CHARACTER_GONGON     },
+    { 2167, CMD_UNK13,               -1                   },
+    { 2167, CMD_UNK14,               3                    },
+    { 2167, CMD_UNK14,               2                    },
+    { 2167, CMD_UNK14,               1                    },
+    { 2167, CMD_UNK14,               0                    },
+    { 2167, CMD_SET_SOME_FLAG,       (1 << 5)             },
+    { 2168, CMD_SET_SOME_FLAG,       (1 << 11)            },
+    { 2168, CMD_SET_SOME_FLAG,       (1 << 12)            },
+    { 2169, CMD_SHOW_CHARACTER,      CHARACTER_AIAI       },
+    { 2169, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
+    { 2169, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
+    { 2169, CMD_SHOW_CHARACTER,      CHARACTER_GONGON     },
+
+    /* End */
+    { -1, 0, 0 },
+};
+
+void run_cutscene_script(void)
 {
     float f28;
-    const struct Struct8010FAB0 *r22;
+    const struct IntroCutsceneCommand *cmd;
     Vec sp3C;
     struct Struct80075900 sp14;
     Vec sp8;
@@ -468,30 +494,30 @@ void func_8000F0CC(void)
     if (lbl_801EED2C.unk8 >= 0xB56)
         return;
     f28 = lbl_801EED2C.unk8;
-    for (r22 = lbl_8010FAB0; r22->unk0 != -1; r22++)
+    for (cmd = introCutsceneScript; cmd->time != -1; cmd++)
     {
-        if (f28 > r22->unk0 || f28 < r22->unk0)
+        if (f28 > cmd->time || f28 < cmd->time)
             continue;
 
-        switch (r22->unk4)
+        switch (cmd->cmdId)
         {
-        case 0:
-            if (!(modeCtrl.levelSetFlags & (1<<(31-0x12))))
+        case CMD_SPEECH_BUBBLE:
+            if (!(modeCtrl.levelSetFlags & (1 << 13)))
             {
                 mathutil_mtxA_from_mtxB();
-                g_math_unk15(&ballInfo[r22->unk8].unkFC->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
+                g_math_unk15(&ballInfo[cmd->param].unkFC->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
                 memset(&sp14, 0, sizeof(sp14));
                 sp14.unkC = sp3C.x;
                 sp14.unkE = sp3C.y;
-                sp14.unk15 = (r22->unk8 == 2) ? 3 : 4;
-                sp14.unk14 = (r22->unk8 == 2) ? 4 : 5;
+                sp14.unk15 = (cmd->param == CHARACTER_BABY) ? 3 : 4;
+                sp14.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
                 sp14.unk16 = 11;
                 sp14.unk1C = lbl_8000F030;
-                func_80075900(r22->unk8 + 1, 1, &sp14);
-                func_80078184(r22->unk8);
+                func_80075900(cmd->param + 1, 1, &sp14);
+                func_80078184(cmd->param);
             }
             break;
-        case 1:
+        case CMD_HIDE_SPEECH_BUBBLES:
             for (i = 0; i < 3; i++)
                 func_80075900(i + 1, 20, NULL);
             sprite = g_find_sprite_with_probably_not_font(30);
@@ -504,23 +530,23 @@ void func_8000F0CC(void)
             if (sprite != NULL)
                 sprite->unk10 = -1;
             break;
-        case 2:
-            func_800732DC(0x100, 0xFFFFFF, r22->unk8);
+        case CMD_FADE_FROM_WHITE:
+            g_start_screen_fade(0x100, 0xFFFFFF, cmd->param);
             break;
-        case 3:
-            func_800732DC(0x101, 0xFFFFFF, r22->unk8);
+        case CMD_FADE_TO_WHITE:
+            g_start_screen_fade(0x101, 0xFFFFFF, cmd->param);
             break;
-        case 4:
-            func_80055164(r22->unk8);
+        case CMD_PRELOAD_BG:
+            preload_bg_files(cmd->param);
             break;
-        case 5:
+        case CMD_LOAD_BG:
             ev_run_dest(EVENT_STAGE);
             ev_run_dest(EVENT_STOBJ);
             ev_run_dest(EVENT_ITEM);
             ev_run_dest(EVENT_EFFECT);
             ev_run_dest(EVENT_REND_EFC);
             ev_run_dest(EVENT_BACKGROUND);
-            load_bg_files(r22->unk8);
+            load_bg_files(cmd->param);
             ev_run_init(EVENT_STAGE);
             ev_run_init(EVENT_STOBJ);
             ev_run_init(EVENT_ITEM);
@@ -528,22 +554,22 @@ void func_8000F0CC(void)
             ev_run_init(EVENT_REND_EFC);
             ev_run_init(EVENT_BACKGROUND);
             break;
-        case 6:
-            lbl_801EED2C.unk4 |= r22->unk8;
+        case CMD_SET_SOME_FLAG:
+            lbl_801EED2C.unk4 |= cmd->param;
             break;
-        case 7:
-            lbl_801EED2C.unk4 &= ~r22->unk8;
+        case CMD_CLEAR_SOME_FLAG:
+            lbl_801EED2C.unk4 &= ~cmd->param;
             break;
-        case 8:
-            ballInfo[r22->unk8].unkFC->unk14 &= ~(1<<(31-0x1A));
+        case CMD_SHOW_CHARACTER:
+            ballInfo[cmd->param].unkFC->unk14 &= ~(1 << 5);
             break;
-        case 9:
-            ballInfo[r22->unk8].unkFC->unk14 |= 0x20;
+        case CMD_HIDE_CHARACTER:
+            ballInfo[cmd->param].unkFC->unk14 |= (1 << 5);
             break;
-        case 10:
-            preload_stage_files(r22->unk8);
+        case CMD_PRELOAD_STAGE:
+            preload_stage_files(cmd->param);
             break;
-        case 11:
+        case CMD_LOAD_STAGE:
             ev_run_dest(EVENT_STAGE);
             ev_run_dest(EVENT_STOBJ);
             ev_run_dest(EVENT_ITEM);
@@ -551,7 +577,7 @@ void func_8000F0CC(void)
             ev_run_dest(EVENT_REND_EFC);
             ev_run_dest(EVENT_BACKGROUND);
             func_800569B4(1);
-            load_stage(r22->unk8);
+            load_stage(cmd->param);
             ev_run_init(EVENT_STAGE);
             ev_run_init(EVENT_STOBJ);
             ev_run_init(EVENT_ITEM);
@@ -563,67 +589,67 @@ void func_8000F0CC(void)
         case 12:
             func_80021DB4(0);
             break;
-        case 13:
+        case CMD_UNK13:  // level camera?
             ev_run_init(EVENT_WORLD);
             ev_run_init(EVENT_INFO);
             camera_set_state(54);
             func_80021DB4(currStageId);
             break;
-        case 14:
-            ball_func_21(&ballInfo[r22->unk8]);
-            ballInfo[r22->unk8].bananas = 0;
-            lbl_80206BF0[r22->unk8].unk8 = 1;
-            lbl_801EED2C.unkC = r22->unk8;
+        case CMD_UNK14:
+            ball_func_21(&ballInfo[cmd->param]);
+            ballInfo[cmd->param].bananas = 0;
+            lbl_80206BF0[cmd->param].unk8 = 1;
+            lbl_801EED2C.unkC = cmd->param;
             break;
-        case 15:
+        case CMD_UNK15:  // cutscene camera?
             ev_run_dest(EVENT_WORLD);
             ev_run_dest(EVENT_INFO);
             camera_set_state(29);
             break;
-        case 16:
-            lbl_801EED04.unk18[0] = r22->unk8;
+        case CMD_AIAI_ANIM:
+            introAVLogoInfo.unk18[0] = cmd->param;
             break;
-        case 17:
-            lbl_801EED04.unk18[1] = r22->unk8;
+        case CMD_MEEMEE_ANIM:
+            introAVLogoInfo.unk18[1] = cmd->param;
             break;
-        case 18:
-            lbl_801EED04.unk18[2] = r22->unk8;
+        case CMD_BABY_ANIM:
+            introAVLogoInfo.unk18[2] = cmd->param;
             break;
-        case 19:
-            lbl_801EED04.unk18[3] = r22->unk8;
+        case CMD_GONGON_ANIM:
+            introAVLogoInfo.unk18[3] = cmd->param;
             break;
         case 21:
-            ballInfo[0].unkFC->unk14 |= r22->unk8;
+            ballInfo[0].unkFC->unk14 |= cmd->param;
             break;
         case 22:
-            ballInfo[0].unkFC->unk14 &= ~r22->unk8;
+            ballInfo[0].unkFC->unk14 &= ~cmd->param;
             break;
         case 23:
-            ballInfo[1].unkFC->unk14 |= r22->unk8;
+            ballInfo[1].unkFC->unk14 |= cmd->param;
             break;
         case 24:
-            ballInfo[1].unkFC->unk14 &= ~r22->unk8;
+            ballInfo[1].unkFC->unk14 &= ~cmd->param;
             break;
         case 25:
-            ballInfo[2].unkFC->unk14 |= r22->unk8;
+            ballInfo[2].unkFC->unk14 |= cmd->param;
             break;
         case 26:
-            ballInfo[2].unkFC->unk14 &= ~r22->unk8;
+            ballInfo[2].unkFC->unk14 &= ~cmd->param;
             break;
         case 27:
-            sp8.x = lbl_802F2A80;
-            sp8.y = lbl_802F2B20;
-            sp8.z = lbl_802F2A80;
-            func_8001898C(0, r22->unk8, &sp8);
+            sp8.x = 0.0f;
+            sp8.y = 0.25f;
+            sp8.z = 0.0f;
+            func_8001898C(0, cmd->param, &sp8);
             break;
         case 28:
-            func_800783C0(r22->unk8);
+            func_800783C0(cmd->param);
             break;
         case 29:
             sprite = g_find_sprite_with_probably_not_font(11);
             if (sprite != NULL)
             {
-                sprite->unk48 = r22->unk8;
+                sprite->unk48 = cmd->param;
                 sprite->unk10 = 0;
             }
             break;
@@ -644,8 +670,8 @@ void submode_adv_demo_main_func(void)
     if (lbl_802F1BB0 == 0)
         return;
     if (lbl_801EED2C.unk8 == 0)
-        func_800732DC(0x100, 0, 60);
-    func_8000F0CC();
+        g_start_screen_fade(0x100, 0, 60);
+    run_cutscene_script();
     if (lbl_801EED2C.unk8 == 0xA2A)
         func_8000FEC8(100);
     if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.unk0 > 60
@@ -660,16 +686,7 @@ void submode_adv_demo_main_func(void)
     modeCtrl.unk0--;
 }
 
-#define lbl_802F2B34 -0.16203702986240387f
-#define lbl_802F2B38 0.00027777778450399637f
-#define lbl_802F2B3C 9.619999885559082f
-#define lbl_802F2B40 0.57999998331069946f
-#define lbl_802F2B44 -4.25f
-#define lbl_802F2B48 -1.0f
-#define lbl_802F2B4C 0.89999997615814209f
-#define lbl_802F2B50 -0.5f
 #define lbl_802F2B54 1.0f
-
 
 struct Struct80176434 lbl_80174254[] =
 {
@@ -919,6 +936,7 @@ struct Struct80176434 lbl_80174D74[] =
     { 2902,    32768,   0,   0 },
 };
 
+// x positions?
 struct Struct80176434 *lbl_80174DD4[] =
 {
     lbl_80174254,
@@ -927,6 +945,7 @@ struct Struct80176434 *lbl_80174DD4[] =
     lbl_80174C24,
 };
 
+// y positions?
 struct Struct80176434 *lbl_80174DE4[] =
 {
     lbl_80174314,
@@ -935,6 +954,7 @@ struct Struct80176434 *lbl_80174DE4[] =
     lbl_80174C84,
 };
 
+// z positions?
 struct Struct80176434 *lbl_80174DF4[] =
 {
     lbl_801743F4,
@@ -943,6 +963,7 @@ struct Struct80176434 *lbl_80174DF4[] =
     lbl_80174D14,
 };
 
+// unknown
 struct Struct80176434 *lbl_80174E04[] =
 {
     lbl_801744B4,
@@ -967,35 +988,35 @@ void lbl_8000F790(struct Ball_child *a, int b)
     }
     if (lbl_801EED2C.unk4 & (1<<(31-0x1A)))
     {
-        struct Ball *r30 = &ballInfo[a->unkC0];
+        struct Ball *ball = &ballInfo[a->unkC0];
 
         if (gamePauseStatus & 0xA)
             return;
-        func_8003FB48(&r30->pos, &sp38, NULL);
+        func_8003FB48(&ball->pos, &sp38, NULL);
         a->unk14 &= -20;
-        if (!(sp38.unk0 & 1) && r30->vel.y < lbl_802F2B34)
+        if (!(sp38.unk0 & 1) && ball->vel.y < -(35.0f / 216.0f))
             a->unk14 |= 2;
-        else if (mathutil_vec_mag(&r30->unkB8) < lbl_802F2B38)
+        else if (mathutil_vec_mag(&ball->unkB8) < (1.0f / 3600.0f))
             a->unk14 |= 1;
-        if (a->unk14 & (1<<(31-0x1A)))
-            r30->flags |= 0x10;
+        if (a->unk14 & (1 << 5))
+            ball->flags |= BALL_FLAG_INVISIBLE;
         else
-            r30->flags &= ~(1<<(31-0x1B));
-        r28 = (r30->flags & (1<<12)) != 0;
+            ball->flags &= ~BALL_FLAG_INVISIBLE;
+        r28 = (ball->flags & (1 << 12)) != 0;
         r28 |= !(a->unk14 & 3);
         func_8003699C(a);
         if (r28)
             f31 = func_80036CAC(a);
         else
         {
-            f31 = lbl_802F2A80;
+            f31 = 0.0f;
             mathutil_mtxA_from_quat(&a->unk60);
             mathutil_mtxA_normalize_basis();
             if (a->unk14 & (1<<(31-0x1E)))
                 func_80037718(a);
         }
-        if (r30->flags & (1<<(31-0x1A)))
-            f31 = mathutil_vec_mag(&r30->vel);
+        if (ball->flags & (1<<(31-0x1A)))
+            f31 = mathutil_vec_mag(&ball->vel);
         func_80036EB8(a);
         mathutil_mtxA_to_quat(&a->unk60);
         func_8003721C(a, f31);
@@ -1003,20 +1024,20 @@ void lbl_8000F790(struct Ball_child *a, int b)
         if (!(a->unk14 & (1<<(31-0x1C))))
             func_8003765C(a);
         if (lbl_801EED2C.unk8 >= 0x682 && lbl_801EED2C.unk8 < 0x6CC)
-            r30->unk104 = currentCameraStructPtr->eye;
+            ball->unk104 = currentCameraStructPtr->eye;
         else if (lbl_801EED2C.unk8 >= 0x51A && lbl_801EED2C.unk8 < 0x6CC)
         {
-            r30->unk104.x = lbl_802F2B3C;
-            r30->unk104.y = lbl_802F2B40;
-            r30->unk104.z = lbl_802F2B44;
+            ball->unk104.x = 9.62f;
+            ball->unk104.y = 0.58f;
+            ball->unk104.z = -4.25f;
         }
         if (lbl_801EED2C.unk8 >= 0x6CC && lbl_801EED2C.unk8 < 0x73A && a->unk10 == 2)
-            r30->unk104.x = a->unk30.x + lbl_802F2A90;
+            ball->unk104.x = a->unk30.x + 1.0;
         if (lbl_801EED2C.unk8 >= 0x73A && lbl_801EED2C.unk8 < 0x7A2)
-            r30->unk104 = ballInfo[1].unkFC->unk30;
-        func_8008C090(a, &r30->unk104);
-        r30->unk100 = 0;
-        r30->unk110 = lbl_802F2A80;
+            ball->unk104 = ballInfo[1].unkFC->unk30;
+        func_8008C090(a, &ball->unk104);
+        ball->unk100 = 0;
+        ball->unk110 = 0.0f;
     }
     else
     {
@@ -1028,9 +1049,9 @@ void lbl_8000F790(struct Ball_child *a, int b)
         r30 = func_8008CDC0(f31, lbl_80174E04[a->unk10]);
         if (a->unk10 == lbl_802F1EB4)
         {
-            a->unk30.x += lbl_802F1ECC * lbl_802F2AF8;
-            a->unk30.y += lbl_802F1EC8 * lbl_802F2AF8;
-            a->unk30.z += lbl_802F1EC4 * lbl_802F2AF8;
+            a->unk30.x += lbl_802F1ECC * 0.1;
+            a->unk30.y += lbl_802F1EC8 * 0.1;
+            a->unk30.z += lbl_802F1EC4 * 0.1;
             r30 += lbl_802F1ED2;
         }
         mathutil_mtxA_from_identity();
@@ -1040,50 +1061,50 @@ void lbl_8000F790(struct Ball_child *a, int b)
         mathutil_mtxA_to_quat(&a->unk60);
         r4 = 6;
         r5 = 0;
-        r6 = lbl_801EED04.unk18[a->unk10];
+        r6 = introAVLogoInfo.unk18[a->unk10];
         if (r6 < 0)
         {
-            switch (r6 + 9)
+            switch (r6)
             {
-            case 8:
+            case -1:
                 r4 = 8;
                 r5 = 1;
                 break;
-            case 7:
+            case -2:
                 r4 = 5;
                 r5 = 4;
                 break;
-            case 6:
+            case -3:
                 r4 = 2;
                 r5 = 15;
                 break;
-            case 5:
+            case -4:
                 r4 = 5;
                 r5 = 6;
                 break;
-            case 4:
+            case -5:
                 r4 = 5;
                 r5 = 8;
                 break;
-            case 3:
+            case -6:
                 r4 = 5;
                 r5 = 2;
                 break;
-            case 2:
+            case -7:
                 r4 = 2;
                 r5 = 0;
                 break;
-            case 1:
+            case -8:
                 r4 = 5;
                 r5 = 0;
                 break;
-            case 0:
+            case -9:
                 r4 = 5;
                 r5 = 10;
                 break;
             }
         }
-        func_8008BBD4(a, r4, r5, r6, lbl_802F2A80);
+        func_8008BBD4(a, r4, r5, r6, 0.0f);
         a->unk3C = (Vec){ 0.0f, -0.12f, 0.0f };
         func_8008C4A8(a);
         if (lbl_801EED2C.unk4 & (1<<(31-0x16)))
@@ -1091,8 +1112,8 @@ void lbl_8000F790(struct Ball_child *a, int b)
             s16 sp30[] = { 0x2E00, 0xE100, 0x1500, 0x0000 };
             s16 sp28[] = { 0x0000, 0x0000, 0x0980, 0x0000 };
 
-            lbl_802F1BB4[a->unk10] += (sp30[a->unk10] - lbl_802F1BB4[a->unk10]) * lbl_802F2AF8;
-            lbl_802F1BBC[a->unk10] += (sp28[a->unk10] - lbl_802F1BBC[a->unk10]) * lbl_802F2AF8;
+            lbl_802F1BB4[a->unk10] += (sp30[a->unk10] - lbl_802F1BB4[a->unk10]) * 0.1;
+            lbl_802F1BBC[a->unk10] += (sp28[a->unk10] - lbl_802F1BBC[a->unk10]) * 0.1;
             func_8008BFDC(a, lbl_802F1ED2 + lbl_802F1BB4[a->unk10], lbl_802F1ED0 + lbl_802F1BBC[a->unk10]);
         }
         else if (a->unk14 & (1<<(31-9)))
@@ -1101,22 +1122,22 @@ void lbl_8000F790(struct Ball_child *a, int b)
             mathutil_mtxA_push();
             mathutil_mtxA_from_quat(&a->unk60);
             mathutil_mtxA_mult_right((void *)((u8 *)a->unk0 + 0x8EC8));
-            mathutil_mtxA_tf_vec_xyz(&sp1C, lbl_802F2A80, lbl_802F2B48, lbl_802F2A80);
-            a->unkAC = lbl_802F2A80;
+            mathutil_mtxA_tf_vec_xyz(&sp1C, 0.0f, -1.0f, 0.0f);
+            a->unkAC = 0.0f;
             switch (a->unk10)
             {
             case 2:
-                a->unkA0.x = lbl_802F2B4C;
-                a->unkA0.y = lbl_802F2B50;
+                a->unkA0.x = 0.9f;
+                a->unkA0.y = -0.5f;
                 break;
             default:
-                a->unkA0.x = lbl_802F2B54;
-                a->unkA0.y = lbl_802F2A80;
+                a->unkA0.x = 1.0f;
+                a->unkA0.y = 0.0f;
                 break;
             }
-            a->unkA0.z = lbl_802F2A80;
+            a->unkA0.z = 0.0f;
             mathutil_vec_normalize_len(&a->unkA0);
-            mathutil_mtxA_tf_vec_xyz(&sp1C, lbl_802F2B54, lbl_802F2A80, lbl_802F2A80);
+            mathutil_mtxA_tf_vec_xyz(&sp1C, 1.0f, 0.0f, 0.0f);
             sp1C.x += a->unk30.x;
             sp1C.y += a->unk30.y;
             sp1C.z += a->unk30.z;
@@ -1195,7 +1216,7 @@ void submode_adv_title_init_func(void)
     ev_run_dest(EVENT_BACKGROUND);
     func_80076620(2);
     if (lbl_80290170.unk8 != 0)
-        func_800732DC(0x100, 0, 30);
+        g_start_screen_fade(0x100, 0, 30);
     file_preload("bmp/bmp_sel.tpl");
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
 }
@@ -1208,7 +1229,7 @@ void submode_adv_title_reinit_func(void)
         return;
 
     func_80011D90();
-    lbl_802F1BCC = 0x00FFFFFF;
+    introBackdropColor = 0x00FFFFFF;
     modeCtrl.unk0 = 0x4B0;
     modeCtrl.levelSetFlags = 0x2000;
     lbl_802F1BA8 = 0;
@@ -1243,7 +1264,7 @@ void submode_adv_title_reinit_func(void)
     func_80021DB4(0);
     g_play_sound(0xA022);
     func_8002CF38(3, 0);
-    func_800732DC(0x100, 0, 30);
+    g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
 }
 
@@ -1305,7 +1326,7 @@ void submode_adv_title_main_func(void)
     }
     if (modeCtrl.unk0 == 30)
     {
-        func_800732DC(0x101, 0, 30);
+        g_start_screen_fade(0x101, 0, 30);
         func_80075900(0, 20, NULL);
         func_8002CF38(modeCtrl.unk0, 2);
     }
@@ -1375,10 +1396,10 @@ void submode_adv_info_init_func(void)
     }
     func_800846B0(4);
     func_800846B0(3);
-    func_800732DC(0x100, 0, 30);
+    g_start_screen_fade(0x100, 0, 30);
     lbl_801EED3C.unk0 = 0;
     lbl_801EED3C.unk4 = 0;
-    lbl_801EED3C.unkC = lbl_802F2A80;
+    lbl_801EED3C.unkC = 0.0f;
     func_8002CF38(0xFFF60014, 0);
     gameSubmodeRequest = 14;
 }

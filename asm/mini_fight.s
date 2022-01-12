@@ -11471,7 +11471,7 @@ lbl_0000AD24:
 /* 0000AD24 881F0048 */ lbz r0, 0x48(r31)
 /* 0000AD28 2C000002 */ cmpwi r0, 2
 /* 0000AD2C 40820008 */ bne lbl_0000AD34
-/* 0000AD30 4BFF5435 */ bl func_80038840
+/* 0000AD30 4BFF5435 */ bl ball_draw
 lbl_0000AD34:
 /* 0000AD34 480025C5 */ bl lbl_0000D2F8
 /* 0000AD38 48003CD9 */ bl lbl_0000EA10
@@ -11574,7 +11574,7 @@ lbl_0000AE88:
 /* 0000AE90 88030048 */ lbz r0, 0x48(r3)
 /* 0000AE94 2C000002 */ cmpwi r0, 2
 /* 0000AE98 40820008 */ bne lbl_0000AEA0
-/* 0000AE9C 4BFF52C9 */ bl func_80038840
+/* 0000AE9C 4BFF52C9 */ bl ball_draw
 lbl_0000AEA0:
 /* 0000AEA0 4BFF52C5 */ bl func_8009CD5C
 /* 0000AEA4 4BFF52C1 */ bl ord_tbl_draw_nodes
@@ -11756,7 +11756,7 @@ lbl_0000B03C:
 /* 0000B13C 38600100 */ li r3, 0x100
 /* 0000B140 38800000 */ li r4, 0
 /* 0000B144 38A0001E */ li r5, 0x1e
-/* 0000B148 4BFF501D */ bl func_800732DC
+/* 0000B148 4BFF501D */ bl g_start_screen_fade
 /* 0000B14C 3C600000 */ lis r3, lbl_801F3A58@ha
 /* 0000B150 84030000 */ lwzu r0, lbl_801F3A58@l(r3)
 /* 0000B154 60000008 */ ori r0, r0, 8
@@ -13350,7 +13350,7 @@ lbl_0000C83C:
 /* 0000C84C 38600101 */ li r3, 0x101
 /* 0000C850 3880FFFF */ li r4, -1
 /* 0000C854 38A0003C */ li r5, 0x3c
-/* 0000C858 4BFF390D */ bl func_800732DC
+/* 0000C858 4BFF390D */ bl g_start_screen_fade
 /* 0000C85C 801C0000 */ lwz r0, 0(r28)
 /* 0000C860 540007FF */ clrlwi. r0, r0, 0x1f
 /* 0000C864 41820010 */ beq lbl_0000C874
@@ -13428,7 +13428,7 @@ lbl_0000C928:
 /* 0000C968 38800000 */ li r4, 0
 /* 0000C96C 90030000 */ stw r0, modeCtrl@l(r3)
 /* 0000C970 38600100 */ li r3, 0x100
-/* 0000C974 4BFF37F1 */ bl func_800732DC
+/* 0000C974 4BFF37F1 */ bl g_start_screen_fade
 /* 0000C978 4BFF37ED */ bl event_clear
 /* 0000C97C 4BFF37E9 */ bl func_80044920
 /* 0000C980 3C600000 */ lis r3, currStageId@ha
@@ -13723,7 +13723,7 @@ lbl_0000CD98:
 /* 0000CDAC 3883FFFF */ addi r4, r3, -1  ;# fixed addi
 /* 0000CDB0 38600101 */ li r3, 0x101
 /* 0000CDB4 38A0003C */ li r5, 0x3c
-/* 0000CDB8 4BFF33AD */ bl func_800732DC
+/* 0000CDB8 4BFF33AD */ bl g_start_screen_fade
 /* 0000CDBC 3860003C */ li r3, 0x3c
 /* 0000CDC0 38800002 */ li r4, 2
 /* 0000CDC4 4BFF33A1 */ bl func_8002CF38

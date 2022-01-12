@@ -67,7 +67,7 @@ void polydisp_main(void)
     if (eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
         func_8000E134();
 
-    func_8000DEE8();
+    set_backdrop_color();
     if (eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
     {
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -96,14 +96,14 @@ void draw_3d_scene(void)
     switch (gameMode)
     {
     default:
-        func_8000D220();
+        draw_test_camera_target();
         break;
     case MD_ADV:
-        func_8000B8AC();
+        draw_adv_3d_scene();
         break;
     case MD_SEL:
         draw_monkey();
-        func_8000D220();
+        draw_test_camera_target();
         func_800125A4();
         break;
     case MD_GAME:
@@ -128,7 +128,7 @@ void draw_3d_scene(void)
         case SMD_GAME_ENDING_INIT:
         case SMD_GAME_ENDING_MAIN:
             func_800B64B0();
-            func_8000D220();
+            draw_test_camera_target();
             break;
         case SMD_GAME_ROLL_INIT:
         case SMD_GAME_ROLL_MAIN:
@@ -137,12 +137,12 @@ void draw_3d_scene(void)
         case SMD_GAME_CONTINUE_INIT:
         case SMD_GAME_CONTINUE_MAIN:
             func_8000CA9C();
-            func_8000D220();
+            draw_test_camera_target();
             break;
         case SMD_GAME_EXTRA_INIT:
         case SMD_GAME_EXTRA_WAIT:
             func_8000CF94();
-            func_8000D220();
+            draw_test_camera_target();
             break;
         case SMD_GAME_OVER_INIT:
         case SMD_GAME_OVER_MAIN:
@@ -169,7 +169,7 @@ void draw_3d_scene(void)
         draw_monkey();
         if (lbl_802F1B70 != NULL)
             lbl_802F1B70();
-        func_8000D220();
+        draw_test_camera_target();
         break;
     case MD_MINI:
         switch (gameSubmode)
@@ -192,39 +192,39 @@ void draw_3d_scene(void)
         case SMD_MINI_SELECT_MAIN:
             break;
         }
-        func_8000D220();
+        draw_test_camera_target();
         break;
     case MD_OPTION:
         if (lbl_802F1B70 != NULL)
             lbl_802F1B70();
-        func_8000D220();
+        draw_test_camera_target();
         break;
     }
     func_800188D4();
     ord_tbl_draw_nodes();
 }
 
-void func_8000B8AC(void)
+void draw_adv_3d_scene(void)
 {
-    switch (lbl_802F1BC8)
+    switch (advSubmode)
     {
-    case 4:
-        func_8000B918();
-        func_8000D220();
+    case SMD_ADV_LOGO_MAIN:
+        draw_intro_av_logo();
+        draw_test_camera_target();
         break;
-    case 2:
+    case SMD_ADV_DEMO_MAIN:
         func_8000B96C();
         break;
-    case 14:
+    case SMD_ADV_INFO_MAIN:
         draw_normal_game_scene();
-        func_8000BCA4();
+        g_draw_tutorial_button_and_joystick();
         break;
-    case 11:
-    case 12:
-    case 15:
-    case 16:
-    case 17:
-    case 18:
+    case SMD_ADV_RANKING_INIT:
+    case SMD_ADV_RANKING_MAIN:
+    case SMD_ADV_GAME_READY_INIT:
+    case SMD_ADV_GAME_READY_MAIN:
+    case SMD_ADV_GAME_PLAY_INIT:
+    case SMD_ADV_GAME_PLAY_MAIN:
         draw_normal_game_scene();
         ord_tbl_draw_nodes();
         func_8000C388();
@@ -246,12 +246,12 @@ struct Struct80173FA8
 
 float lbl_80173FD0[] = { 0.4, 0.25, 0.25, 0.5 };
 
-void func_8000B918(void)
+void draw_intro_av_logo(void)
 {
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&lbl_801EED04.unk0);
-    mathutil_mtxA_rotate_x(lbl_801EED04.unkC);
-    mathutil_mtxA_rotate_z(lbl_801EED04.unkE);
+    mathutil_mtxA_translate(&introAVLogoInfo.pos);
+    mathutil_mtxA_rotate_x(introAVLogoInfo.xrot);
+    mathutil_mtxA_rotate_z(introAVLogoInfo.zrot);
     func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x2C));
 }
 
@@ -336,12 +336,12 @@ void func_8000B96C(void)
             effect_draw();
 
         if (lbl_801EED2C.unk4 & (1 << (31-0x1D)))
-            func_80038840();
+            ball_draw();
     }
     draw_monkey();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         g_something_with_lens_flare_1(0);
-    func_8000D220();
+    draw_test_camera_target();
     ord_tbl_draw_nodes();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         g_something_with_lens_flare_2(0);
@@ -350,7 +350,7 @@ void func_8000B96C(void)
     func_80017FCC();
 }
 
-void func_8000BCA4(void)
+void g_draw_tutorial_button_and_joystick(void)
 {
     Vec sp48;
     u8 filler[16];
@@ -540,7 +540,7 @@ void func_8000C388(void)
         v3 *= 0.2;
         lbl_801EED3C.unk0 = lbl_801EED3C.unk0 + 0.2 * ((float)r30 - (float)lbl_801EED3C.unk0);
         lbl_801EED3C.unk4 = lbl_801EED3C.unk4 + 0.2 * ((float)v3 - (float)lbl_801EED3C.unk4);
-        func_8000BCA4();
+        g_draw_tutorial_button_and_joystick();
     }
 }
 
@@ -589,10 +589,10 @@ void draw_normal_game_scene(void)
             if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
                 effect_draw();  // draws sparks and stars
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-                func_80038840();
+                ball_draw();
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_1(i);
-            func_8000D220();
+            draw_test_camera_target();
             ord_tbl_draw_nodes();
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_2(i);
@@ -632,9 +632,9 @@ void func_8000C7A4(void)
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
                 stobj_draw();
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-                func_80038840();
+                ball_draw();
             func_8000C8D4();
-            func_8000D220();
+            draw_test_camera_target();
             ord_tbl_draw_nodes();
         }
     }
@@ -750,7 +750,7 @@ void func_8000CA9C(void)
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-        func_80038840();
+        ball_draw();
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
         background_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
@@ -862,7 +862,7 @@ void func_8000CF94(void)
     func_80054FF0();
     draw_monkey();
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-        func_80038840();
+        ball_draw();
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
         background_draw();
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
@@ -912,10 +912,10 @@ void func_8000D018(void)
             if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
                 effect_draw();
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-                func_80038840();
+                ball_draw();
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_1(i);
-            func_8000D220();
+            draw_test_camera_target();
             ord_tbl_draw_nodes();
             if (backgroundInfo.unk8 & 1)
                 g_something_with_lens_flare_2(i);
@@ -929,13 +929,13 @@ void func_8000D018(void)
     func_80017FCC();
 }
 
-void func_8000D220(void)
+void draw_test_camera_target(void)
 {
     GXColor amb = {0xFF, 0xFF, 0xFF, 0xFF};
     GXColor mat = {0x00, 0x00, 0x00, 0xFF};
-    GXColor light4color = {0xFF, 0x00, 0x00, 0xFF};
-    GXColor light2color = {0x00, 0xFF, 0x00, 0xFF};
-    GXColor light3color = {0x00, 0x00, 0xFF, 0xFF};
+    GXColor red   = {0xFF, 0x00, 0x00, 0xFF};
+    GXColor green = {0x00, 0xFF, 0x00, 0xFF};
+    GXColor blue  = {0x00, 0x00, 0xFF, 0xFF};
     GXLightObj lightObj;
     Vec light2pos;
     Vec light3pos;
@@ -963,7 +963,7 @@ void func_8000D220(void)
         GXInitLightDistAttn(&lightObj, 150.0f, 0.2f, GX_DA_STEEP);
         mathutil_mtxA_tf_point(&light2pos, &pos);
         GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);
-        GXInitLightColor(&lightObj, light2color);
+        GXInitLightColor(&lightObj, green);
         GXLoadLightObjImm(&lightObj, GX_LIGHT2);
 
         // Light 3
@@ -971,7 +971,7 @@ void func_8000D220(void)
         GXInitLightDistAttn(&lightObj, 150.0f, 0.2f, GX_DA_STEEP);
         mathutil_mtxA_tf_point(&light3pos, &pos);
         GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);
-        GXInitLightColor(&lightObj, light3color);
+        GXInitLightColor(&lightObj, blue);
         GXLoadLightObjImm(&lightObj, GX_LIGHT3);
 
         // Light 4
@@ -979,7 +979,7 @@ void func_8000D220(void)
         GXInitLightDistAttn(&lightObj, 150.0f, 0.2f, GX_DA_STEEP);
         mathutil_mtxA_tf_point(&light4pos, &pos);
         GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);
-        GXInitLightColor(&lightObj, light4color);
+        GXInitLightColor(&lightObj, red);
         GXLoadLightObjImm(&lightObj, GX_LIGHT4);
 
         GXSetChanMatColor(GX_COLOR0, amb);
@@ -1109,7 +1109,7 @@ asm void draw_timer_bomb_fuse(void)
 #endif
 #endif
 
-void func_8000DEE8(void)
+void set_backdrop_color(void)
 {
     BOOL r0 = TRUE;
     GXColor color;
@@ -1159,14 +1159,14 @@ void func_8000DEE8(void)
         case SMD_ADV_RATING_MAIN:
         case SMD_ADV_START_INIT:
         case SMD_ADV_START_MAIN:
-            color.r = lbl_802F1BCC >> 16;
-            color.g = lbl_802F1BCC >> 8;
-            color.b = lbl_802F1BCC >> 0;
-            color.a = lbl_802F1BCC >> 24;
+            color.r = introBackdropColor >> 16;
+            color.g = introBackdropColor >> 8;
+            color.b = introBackdropColor >> 0;
+            color.a = introBackdropColor >> 24;
             break;
         default:
             color = backgroundInfo.unkC;
-            lbl_802F1BCC = (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
+            introBackdropColor = (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
             break;
         }
         break;

@@ -89,7 +89,7 @@ static void sel_stage_init(void)
     dummy_func_C90();
     func_800668A0();
     loadingStageId = lbl_801F3A58.unk2E;
-    func_800732DC(0, 0, 30);
+    g_start_screen_fade(0, 0, 30);
     gameSubmodeRequest = 30;
 }
 

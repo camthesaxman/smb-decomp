@@ -28,7 +28,7 @@ lbl_8000E5EC:
 /* 8000E5F0 0000A510  54 00 04 3E */	clrlwi r0, r0, 0x10
 /* 8000E5F4 0000A514  28 00 00 01 */	cmplwi r0, 1
 /* 8000E5F8 0000A518  40 81 00 08 */	ble lbl_8000E600
-/* 8000E5FC 0000A51C  90 8D 99 E8 */	stw r4, lbl_802F1BC8@sda21(r13)
+/* 8000E5FC 0000A51C  90 8D 99 E8 */	stw r4, advSubmode@sda21(r13)
 lbl_8000E600:
 /* 8000E600 0000A520  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8000E604 0000A524  70 00 00 0A */	andi. r0, r0, 0xa
@@ -61,7 +61,7 @@ submode_adv_warning_init_func:
 /* 8000E65C 0000A57C  90 01 00 04 */	stw r0, 4(r1)
 /* 8000E660 0000A580  38 00 00 00 */	li r0, 0
 /* 8000E664 0000A584  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8000E668 0000A588  90 0D 99 EC */	stw r0, lbl_802F1BCC@sda21(r13)
+/* 8000E668 0000A588  90 0D 99 EC */	stw r0, introBackdropColor@sda21(r13)
 /* 8000E66C 0000A58C  48 02 19 81 */	bl func_8002FFEC
 /* 8000E670 0000A590  38 60 00 02 */	li r3, 2
 /* 8000E674 0000A594  48 09 0E 29 */	bl func_8009F49C
@@ -126,7 +126,7 @@ submode_adv_logo_init_func:
 /* 8000E730 0000A650  48 00 36 61 */	bl func_80011D90
 /* 8000E734 0000A654  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 8000E738 0000A658  38 03 FF FF */	addi r0, r3, 0x00FFFFFF@l
-/* 8000E73C 0000A65C  90 0D 99 EC */	stw r0, lbl_802F1BCC@sda21(r13)
+/* 8000E73C 0000A65C  90 0D 99 EC */	stw r0, introBackdropColor@sda21(r13)
 /* 8000E740 0000A660  38 00 03 48 */	li r0, 0x348
 /* 8000E744 0000A664  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8000E748 0000A668  94 03 EC 20 */	stwu r0, modeCtrl@l(r3)
@@ -167,7 +167,7 @@ submode_adv_logo_init_func:
 /* 8000E7D4 0000A6F4  38 60 01 00 */	li r3, 0x100
 /* 8000E7D8 0000A6F8  38 80 00 00 */	li r4, 0
 /* 8000E7DC 0000A6FC  38 A0 00 1E */	li r5, 0x1e
-/* 8000E7E0 0000A700  48 06 4A FD */	bl func_800732DC
+/* 8000E7E0 0000A700  48 06 4A FD */	bl g_start_screen_fade
 /* 8000E7E4 0000A704  38 00 00 04 */	li r0, 4
 /* 8000E7E8 0000A708  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 lbl_8000E7EC:
@@ -178,8 +178,8 @@ lbl_8000E7EC:
 /* 8000E7FC 0000A71C  38 21 00 10 */	addi r1, r1, 0x10
 /* 8000E800 0000A720  4E 80 00 20 */	blr
 
-.global func_8000E804
-func_8000E804:
+.global update_av_logo_pos_and_sound
+update_av_logo_pos_and_sound:
 /* 8000E804 0000A724  7C 08 02 A6 */	mflr r0
 /* 8000E808 0000A728  3C 60 80 1F */	lis r3, lbl_801EECF8@ha
 /* 8000E80C 0000A72C  90 01 00 04 */	stw r0, 4(r1)
@@ -412,12 +412,12 @@ lbl_8000EB10:
 /* 8000EB40 0000AA60  7C 08 03 A6 */	mtlr r0
 /* 8000EB44 0000AA64  4E 80 00 20 */	blr
 
-.global func_8000EB48
-func_8000EB48:
+.global update_av_logo
+update_av_logo:
 /* 8000EB48 0000AA68  7C 08 02 A6 */	mflr r0
-/* 8000EB4C 0000AA6C  3C 60 80 1F */	lis r3, lbl_801EED04@ha
+/* 8000EB4C 0000AA6C  3C 60 80 1F */	lis r3, introAVLogoInfo@ha
 /* 8000EB50 0000AA70  90 01 00 04 */	stw r0, 4(r1)
-/* 8000EB54 0000AA74  38 83 ED 04 */	addi r4, r3, lbl_801EED04@l
+/* 8000EB54 0000AA74  38 83 ED 04 */	addi r4, r3, introAVLogoInfo@l
 /* 8000EB58 0000AA78  94 21 FF D0 */	stwu r1, -0x30(r1)
 /* 8000EB5C 0000AA7C  93 E1 00 2C */	stw r31, 0x2c(r1)
 /* 8000EB60 0000AA80  3B E4 00 14 */	addi r31, r4, 0x14
@@ -430,7 +430,7 @@ func_8000EB48:
 /* 8000EB7C 0000AA9C  38 03 00 01 */	addi r0, r3, 1
 /* 8000EB80 0000AAA0  90 04 00 10 */	stw r0, 0x10(r4)
 lbl_8000EB84:
-/* 8000EB84 0000AAA4  4B FF FC 81 */	bl func_8000E804
+/* 8000EB84 0000AAA4  4B FF FC 81 */	bl update_av_logo_pos_and_sound
 /* 8000EB88 0000AAA8  80 1F 00 00 */	lwz r0, 0(r31)
 /* 8000EB8C 0000AAAC  2C 00 01 CC */	cmpwi r0, 0x1cc
 /* 8000EB90 0000AAB0  40 82 00 10 */	bne lbl_8000EBA0
@@ -467,12 +467,12 @@ lbl_8000EBE4:
 /* 8000EC00 0000AB20  90 61 00 14 */	stw r3, 0x14(r1)
 /* 8000EC04 0000AB24  C8 01 00 20 */	lfd f0, 0x20(r1)
 /* 8000EC08 0000AB28  90 01 00 10 */	stw r0, 0x10(r1)
-/* 8000EC0C 0000AB2C  FC 40 18 28 */	fsub f2, f0, f3  ;# 0xF0 - lbl_801EED04.unk14
+/* 8000EC0C 0000AB2C  FC 40 18 28 */	fsub f2, f0, f3  ;# 0xF0 - introAVLogoInfo.unk14
 /* 8000EC10 0000AB30  C8 A2 83 08 */	lfd f5, lbl_802F2B08-_SDA2_BASE_(r2)
 /* 8000EC14 0000AB34  C8 01 00 10 */	lfd f0, 0x10(r1)
-/* 8000EC18 0000AB38  FC 00 18 28 */	fsub f0, f0, f3  ;# 0xF0 - lbl_801EED04.unk14
-/* 8000EC1C 0000AB3C  FC 44 00 B2 */	fmul f2, f4, f2  ;# (0xF0 - lbl_801EED04.unk14) * lbl_802F2B10
-/* 8000EC20 0000AB40  FC 01 00 32 */	fmul f0, f1, f0  ;# (0xF0 - lbl_801EED04.unk14) * lbl_802F2B18
+/* 8000EC18 0000AB38  FC 00 18 28 */	fsub f0, f0, f3  ;# 0xF0 - introAVLogoInfo.unk14
+/* 8000EC1C 0000AB3C  FC 44 00 B2 */	fmul f2, f4, f2  ;# (0xF0 - introAVLogoInfo.unk14) * lbl_802F2B10
+/* 8000EC20 0000AB40  FC 01 00 32 */	fmul f0, f1, f0  ;# (0xF0 - introAVLogoInfo.unk14) * lbl_802F2B18
 /* 8000EC24 0000AB44  FC 25 10 28 */	fsub f1, f5, f2
 /* 8000EC28 0000AB48  FC 05 00 28 */	fsub f0, f5, f0
 /* 8000EC2C 0000AB4C  FC 20 08 1E */	fctiwz f1, f1
@@ -485,7 +485,7 @@ lbl_8000EBE4:
 /* 8000EC48 0000AB68  64 63 00 FF */	oris r3, r3, 0xff
 /* 8000EC4C 0000AB6C  7C 60 03 78 */	or r0, r3, r0
 lbl_8000EC50:
-/* 8000EC50 0000AB70  90 0D 99 EC */	stw r0, lbl_802F1BCC@sda21(r13)
+/* 8000EC50 0000AB70  90 0D 99 EC */	stw r0, introBackdropColor@sda21(r13)
 lbl_8000EC54:
 /* 8000EC54 0000AB74  2C 04 00 00 */	cmpwi r4, 0
 /* 8000EC58 0000AB78  40 81 00 10 */	ble lbl_8000EC68
@@ -525,7 +525,7 @@ submode_adv_logo_main_func:
 /* 8000ECD0 0000ABF0  38 00 00 1E */	li r0, 0x1e
 /* 8000ECD4 0000ABF4  90 04 00 00 */	stw r0, 0(r4)
 lbl_8000ECD8:
-/* 8000ECD8 0000ABF8  4B FF FE 71 */	bl func_8000EB48
+/* 8000ECD8 0000ABF8  4B FF FE 71 */	bl update_av_logo
 /* 8000ECDC 0000ABFC  80 0D 9C FC */	lwz r0, dipSwitches@sda21(r13)
 /* 8000ECE0 0000AC00  54 00 07 FF */	clrlwi. r0, r0, 0x1f
 /* 8000ECE4 0000AC04  41 82 00 7C */	beq lbl_8000ED60
@@ -597,7 +597,7 @@ lbl_8000EDCC:
 /* 8000EDDC 0000ACFC  38 60 01 01 */	li r3, 0x101
 /* 8000EDE0 0000AD00  38 80 00 00 */	li r4, 0
 /* 8000EDE4 0000AD04  38 A0 00 1E */	li r5, 0x1e
-/* 8000EDE8 0000AD08  48 06 44 F5 */	bl func_800732DC
+/* 8000EDE8 0000AD08  48 06 44 F5 */	bl g_start_screen_fade
 /* 8000EDEC 0000AD0C  38 60 00 00 */	li r3, 0
 /* 8000EDF0 0000AD10  38 80 00 14 */	li r4, 0x14
 /* 8000EDF4 0000AD14  38 A0 00 00 */	li r5, 0
@@ -634,7 +634,7 @@ submode_adv_demo_init_func:
 /* 8000EE5C 0000AD7C  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 8000EE60 0000AD80  38 03 FF FF */	addi r0, r3, 0x00FFFFFF@l
 /* 8000EE64 0000AD84  3C 60 80 1F */	lis r3, modeCtrl@ha
-/* 8000EE68 0000AD88  90 0D 99 EC */	stw r0, lbl_802F1BCC@sda21(r13)
+/* 8000EE68 0000AD88  90 0D 99 EC */	stw r0, introBackdropColor@sda21(r13)
 /* 8000EE6C 0000AD8C  3B 63 EC 20 */	addi r27, r3, modeCtrl@l
 /* 8000EE70 0000AD90  38 00 0B 56 */	li r0, 0xb56
 /* 8000EE74 0000AD94  90 1B 00 00 */	stw r0, 0(r27)
@@ -792,8 +792,8 @@ lbl_8000F030:
 /* 8000F0C8 0000AFE8  4E 80 00 20 */	blr
 .endif
 .if 0
-.global func_8000F0CC
-func_8000F0CC:
+.global run_cutscene_script
+run_cutscene_script:
 /* 8000F0CC 0000AFEC  7C 08 02 A6 */	mflr r0
 /* 8000F0D0 0000AFF0  3C 60 80 1F */	lis r3, lbl_801EECF8@ha
 /* 8000F0D4 0000AFF4  90 01 00 04 */	stw r0, 4(r1)
@@ -812,10 +812,10 @@ func_8000F0CC:
 /* 8000F108 0000B028  CB A2 83 00 */	lfd f29, lbl_802F2B00-_SDA2_BASE_(r2)
 /* 8000F10C 0000B02C  90 01 00 54 */	stw r0, 0x54(r1)
 /* 8000F110 0000B030  3F 20 43 30 */	lis r25, 0x4330
-/* 8000F114 0000B034  3C 60 80 11 */	lis r3, lbl_8010FAB0@ha
+/* 8000F114 0000B034  3C 60 80 11 */	lis r3, introCutsceneScript@ha
 /* 8000F118 0000B038  C3 C2 82 80 */	lfs f30, lbl_802F2A80-_SDA2_BASE_(r2)
 /* 8000F11C 0000B03C  93 21 00 50 */	stw r25, 0x50(r1)
-/* 8000F120 0000B040  38 03 FA B0 */	addi r0, r3, lbl_8010FAB0@l
+/* 8000F120 0000B040  38 03 FA B0 */	addi r0, r3, introCutsceneScript@l
 /* 8000F124 0000B044  C3 E2 83 20 */	lfs f31, lbl_802F2B20-_SDA2_BASE_(r2)
 /* 8000F128 0000B048  C8 01 00 50 */	lfd f0, 0x50(r1)
 /* 8000F12C 0000B04C  3C 80 80 20 */	lis r4, ballInfo@ha
@@ -951,19 +951,19 @@ lbl_8000F2FC:
 /* 8000F2FC 0000B21C  80 B6 00 08 */	lwz r5, 8(r22)
 /* 8000F300 0000B220  38 9D FF FF */	addi r4, r29, -1
 /* 8000F304 0000B224  38 60 01 00 */	li r3, 0x100
-/* 8000F308 0000B228  48 06 3F D5 */	bl func_800732DC
+/* 8000F308 0000B228  48 06 3F D5 */	bl g_start_screen_fade
 /* 8000F30C 0000B22C  48 00 03 24 */	b lbl_8000F630
 .global lbl_8000F310  ;# 3
 lbl_8000F310:
 /* 8000F310 0000B230  80 B6 00 08 */	lwz r5, 8(r22)
 /* 8000F314 0000B234  38 9D FF FF */	addi r4, r29, -1
 /* 8000F318 0000B238  38 60 01 01 */	li r3, 0x101
-/* 8000F31C 0000B23C  48 06 3F C1 */	bl func_800732DC
+/* 8000F31C 0000B23C  48 06 3F C1 */	bl g_start_screen_fade
 /* 8000F320 0000B240  48 00 03 10 */	b lbl_8000F630
 .global lbl_8000F324  ;# 4
 lbl_8000F324:
 /* 8000F324 0000B244  80 76 00 08 */	lwz r3, 8(r22)
-/* 8000F328 0000B248  48 04 5E 3D */	bl func_80055164
+/* 8000F328 0000B248  48 04 5E 3D */	bl preload_bg_files
 /* 8000F32C 0000B24C  48 00 03 04 */	b lbl_8000F630
 .global lbl_8000F330  ;# 5
 lbl_8000F330:
@@ -1259,9 +1259,9 @@ lbl_8000F6B0:
 /* 8000F6D4 0000B5F4  38 60 01 00 */	li r3, 0x100
 /* 8000F6D8 0000B5F8  38 80 00 00 */	li r4, 0
 /* 8000F6DC 0000B5FC  38 A0 00 3C */	li r5, 0x3c
-/* 8000F6E0 0000B600  48 06 3B FD */	bl func_800732DC
+/* 8000F6E0 0000B600  48 06 3B FD */	bl g_start_screen_fade
 lbl_8000F6E4:
-/* 8000F6E4 0000B604  4B FF F9 E9 */	bl func_8000F0CC
+/* 8000F6E4 0000B604  4B FF F9 E9 */	bl run_cutscene_script
 /* 8000F6E8 0000B608  80 1F 00 00 */	lwz r0, 0(r31)
 /* 8000F6EC 0000B60C  2C 00 0A 2A */	cmpwi r0, 0xa2a
 /* 8000F6F0 0000B610  40 82 00 0C */	bne lbl_8000F6FC
@@ -1966,7 +1966,7 @@ submode_adv_title_init_func:
 /* 800100E0 0000C000  38 60 01 00 */	li r3, 0x100
 /* 800100E4 0000C004  38 80 00 00 */	li r4, 0
 /* 800100E8 0000C008  38 A0 00 1E */	li r5, 0x1e
-/* 800100EC 0000C00C  48 06 31 F1 */	bl func_800732DC
+/* 800100EC 0000C00C  48 06 31 F1 */	bl g_start_screen_fade
 lbl_800100F0:
 /* 800100F0 0000C010  3C 60 80 17 */	lis r3, lbl_80174E38@ha
 /* 800100F4 0000C014  38 63 4E 38 */	addi r3, r3, lbl_80174E38@l
@@ -1992,7 +1992,7 @@ submode_adv_title_reinit_func:
 /* 80010134 0000C054  48 00 1C 5D */	bl func_80011D90
 /* 80010138 0000C058  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 8001013C 0000C05C  38 03 FF FF */	addi r0, r3, 0x00FFFFFF@l
-/* 80010140 0000C060  90 0D 99 EC */	stw r0, lbl_802F1BCC@sda21(r13)
+/* 80010140 0000C060  90 0D 99 EC */	stw r0, introBackdropColor@sda21(r13)
 /* 80010144 0000C064  38 00 04 B0 */	li r0, 0x4b0
 /* 80010148 0000C068  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8001014C 0000C06C  94 03 EC 20 */	stwu r0, modeCtrl@l(r3)
@@ -2066,7 +2066,7 @@ lbl_8001022C:
 /* 80010254 0000C174  38 60 01 00 */	li r3, 0x100
 /* 80010258 0000C178  38 80 00 00 */	li r4, 0
 /* 8001025C 0000C17C  38 A0 00 1E */	li r5, 0x1e
-/* 80010260 0000C180  48 06 30 7D */	bl func_800732DC
+/* 80010260 0000C180  48 06 30 7D */	bl g_start_screen_fade
 /* 80010264 0000C184  38 00 00 14 */	li r0, 0x14
 /* 80010268 0000C188  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 lbl_8001026C:
@@ -2250,7 +2250,7 @@ lbl_800104E4:
 /* 800104F8 0000C418  38 60 01 01 */	li r3, 0x101
 /* 800104FC 0000C41C  38 80 00 00 */	li r4, 0
 /* 80010500 0000C420  38 A0 00 1E */	li r5, 0x1e
-/* 80010504 0000C424  48 06 2D D9 */	bl func_800732DC
+/* 80010504 0000C424  48 06 2D D9 */	bl g_start_screen_fade
 /* 80010508 0000C428  38 60 00 00 */	li r3, 0
 /* 8001050C 0000C42C  38 80 00 14 */	li r4, 0x14
 /* 80010510 0000C430  38 A0 00 00 */	li r5, 0
@@ -2394,7 +2394,7 @@ lbl_80010710:
 /* 80010720 0000C640  38 60 01 00 */	li r3, 0x100
 /* 80010724 0000C644  38 80 00 00 */	li r4, 0
 /* 80010728 0000C648  38 A0 00 1E */	li r5, 0x1e
-/* 8001072C 0000C64C  48 06 2B B1 */	bl func_800732DC
+/* 8001072C 0000C64C  48 06 2B B1 */	bl g_start_screen_fade
 /* 80010730 0000C650  38 00 00 00 */	li r0, 0
 /* 80010734 0000C654  90 1F 00 44 */	stw r0, 0x44(r31)
 /* 80010738 0000C658  3C 60 FF F6 */	lis r3, 0xFFF60014@ha
@@ -2631,7 +2631,7 @@ lbl_80010A58:
 /* 80010A5C 0000C97C  38 60 00 00 */	li r3, 0
 /* 80010A60 0000C980  38 80 00 00 */	li r4, 0
 /* 80010A64 0000C984  7C 05 07 74 */	extsb r5, r0
-/* 80010A68 0000C988  48 06 28 75 */	bl func_800732DC
+/* 80010A68 0000C988  48 06 28 75 */	bl g_start_screen_fade
 /* 80010A6C 0000C98C  48 00 00 7C */	b lbl_80010AE8
 .global lbl_80010A70
 lbl_80010A70:
@@ -2639,7 +2639,7 @@ lbl_80010A70:
 /* 80010A74 0000C994  38 60 00 01 */	li r3, 1
 /* 80010A78 0000C998  38 80 00 00 */	li r4, 0
 /* 80010A7C 0000C99C  7C 05 07 74 */	extsb r5, r0
-/* 80010A80 0000C9A0  48 06 28 5D */	bl func_800732DC
+/* 80010A80 0000C9A0  48 06 28 5D */	bl g_start_screen_fade
 /* 80010A84 0000C9A4  48 00 00 64 */	b lbl_80010AE8
 .global lbl_80010A88
 lbl_80010A88:
@@ -2719,7 +2719,7 @@ lbl_80010B60:
 /* 80010B74 0000CA94  38 60 01 01 */	li r3, 0x101
 /* 80010B78 0000CA98  38 80 00 00 */	li r4, 0
 /* 80010B7C 0000CA9C  38 A0 00 1F */	li r5, 0x1f
-/* 80010B80 0000CAA0  48 06 27 5D */	bl func_800732DC
+/* 80010B80 0000CAA0  48 06 27 5D */	bl g_start_screen_fade
 /* 80010B84 0000CAA4  38 60 00 00 */	li r3, 0
 /* 80010B88 0000CAA8  38 80 00 14 */	li r4, 0x14
 /* 80010B8C 0000CAAC  38 A0 00 00 */	li r5, 0
@@ -2792,7 +2792,7 @@ submode_adv_game_ready_init_func:
 /* 80010C88 0000CBA8  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80010C8C 0000CBAC  38 80 00 00 */	li r4, 0
 /* 80010C90 0000CBB0  38 A0 00 01 */	li r5, 1
-/* 80010C94 0000CBB4  48 06 26 49 */	bl func_800732DC
+/* 80010C94 0000CBB4  48 06 26 49 */	bl g_start_screen_fade
 /* 80010C98 0000CBB8  48 00 01 F0 */	b lbl_80010E88
 lbl_80010C9C:
 /* 80010C9C 0000CBBC  48 03 89 B1 */	bl func_8004964C
@@ -2916,7 +2916,7 @@ lbl_80010E70:
 /* 80010E70 0000CD90  38 60 01 00 */	li r3, 0x100
 /* 80010E74 0000CD94  38 80 00 00 */	li r4, 0
 /* 80010E78 0000CD98  38 A0 00 1E */	li r5, 0x1e
-/* 80010E7C 0000CD9C  48 06 24 61 */	bl func_800732DC
+/* 80010E7C 0000CD9C  48 06 24 61 */	bl g_start_screen_fade
 /* 80010E80 0000CDA0  38 00 00 10 */	li r0, 0x10
 /* 80010E84 0000CDA4  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 lbl_80010E88:
@@ -3608,7 +3608,7 @@ lbl_80011864:
 /* 8001186C 0000D78C  2C 00 00 B4 */	cmpwi r0, 0xb4
 /* 80011870 0000D790  40 82 00 14 */	bne lbl_80011884
 /* 80011874 0000D794  38 60 00 0D */	li r3, 0xd
-/* 80011878 0000D798  48 04 38 ED */	bl func_80055164
+/* 80011878 0000D798  48 04 38 ED */	bl preload_bg_files
 /* 8001187C 0000D79C  38 60 00 01 */	li r3, 1
 /* 80011880 0000D7A0  48 03 33 21 */	bl preload_stage_files
 lbl_80011884:
@@ -3621,7 +3621,7 @@ lbl_80011884:
 /* 8001189C 0000D7BC  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
 /* 800118A0 0000D7C0  38 60 01 01 */	li r3, 0x101
 /* 800118A4 0000D7C4  38 A0 00 1E */	li r5, 0x1e
-/* 800118A8 0000D7C8  48 06 1A 35 */	bl func_800732DC
+/* 800118A8 0000D7C8  48 06 1A 35 */	bl g_start_screen_fade
 /* 800118AC 0000D7CC  38 60 00 00 */	li r3, 0
 /* 800118B0 0000D7D0  38 80 00 14 */	li r4, 0x14
 /* 800118B4 0000D7D4  38 A0 00 00 */	li r5, 0
@@ -3890,7 +3890,7 @@ submode_adv_start_init_func:
 /* 80011C24 0000DB44  38 60 01 01 */	li r3, 0x101
 /* 80011C28 0000DB48  38 80 00 00 */	li r4, 0
 /* 80011C2C 0000DB4C  38 A0 00 20 */	li r5, 0x20
-/* 80011C30 0000DB50  48 06 16 AD */	bl func_800732DC
+/* 80011C30 0000DB50  48 06 16 AD */	bl g_start_screen_fade
 /* 80011C34 0000DB54  38 60 00 00 */	li r3, 0
 /* 80011C38 0000DB58  38 80 00 14 */	li r4, 0x14
 /* 80011C3C 0000DB5C  38 A0 00 00 */	li r5, 0
@@ -5010,8 +5010,8 @@ lbl_8011021C:
 .global lbl_801EECF8
 lbl_801EECF8:
 	.skip 0xC
-.global lbl_801EED04
-lbl_801EED04:
+.global introAVLogoInfo
+introAVLogoInfo:
 	.skip 0x28
 .global lbl_801EED2C
 lbl_801EED2C:
@@ -5056,9 +5056,9 @@ lbl_802F1BBC:
 .global lbl_802F1BC4
 lbl_802F1BC4:
 	.skip 0x4
-.global lbl_802F1BC8
-lbl_802F1BC8:
+.global advSubmode
+advSubmode:
 	.skip 0x4
-.global lbl_802F1BCC
-lbl_802F1BCC:
+.global introBackdropColor
+introBackdropColor:
 	.skip 0x4

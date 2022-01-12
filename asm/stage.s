@@ -562,8 +562,8 @@ lbl_8004422C:
 /* 80044244 00040164  38 21 00 18 */	addi r1, r1, 0x18
 /* 80044248 00040168  4E 80 00 20 */	blr
 
-.global func_8004424C
-func_8004424C:
+.global draw_blur_bridge_accordions
+draw_blur_bridge_accordions:
 /* 8004424C 0004016C  7C 08 02 A6 */	mflr r0
 /* 80044250 00040170  90 01 00 04 */	stw r0, 4(r1)
 /* 80044254 00040174  38 00 00 00 */	li r0, 0
@@ -1230,7 +1230,7 @@ preload_stage_files:
 /* 80044BB8 00040AD8  93 C1 04 10 */	stw r30, 0x410(r1)
 /* 80044BBC 00040ADC  3B C3 00 00 */	addi r30, r3, 0
 /* 80044BC0 00040AE0  48 00 12 8D */	bl get_stage_background_2
-/* 80044BC4 00040AE4  48 01 05 A1 */	bl func_80055164
+/* 80044BC4 00040AE4  48 01 05 A1 */	bl preload_bg_files
 /* 80044BC8 00040AE8  38 BE 00 00 */	addi r5, r30, 0
 /* 80044BCC 00040AEC  4C C6 31 82 */	crclr 6
 /* 80044BD0 00040AF0  38 61 03 0C */	addi r3, r1, 0x30c
@@ -4396,7 +4396,7 @@ lbl_800476C0:
 lbl_80047720:
 /* 80047720 00043640  54 60 07 7B */	rlwinm. r0, r3, 0, 0x1d, 0x1d
 /* 80047724 00043644  41 82 00 0C */	beq lbl_80047730
-/* 80047728 00043648  4B FF 9E 85 */	bl func_800415AC
+/* 80047728 00043648  4B FF 9E 85 */	bl g_draw_stage_collision
 /* 8004772C 0004364C  48 00 05 04 */	b lbl_80047C30
 lbl_80047730:
 /* 80047730 00043650  80 0D 9D 58 */	lwz r0, decodedStageGmaPtr@sda21(r13)
@@ -4651,7 +4651,7 @@ lbl_80047A94:
 /* 80047A94 000439B4  A8 0D 9D 78 */	lha r0, currStageId@sda21(r13)
 /* 80047A98 000439B8  2C 00 00 65 */	cmpwi r0, 0x65
 /* 80047A9C 000439BC  40 82 00 08 */	bne lbl_80047AA4
-/* 80047AA0 000439C0  4B FF C7 AD */	bl func_8004424C
+/* 80047AA0 000439C0  4B FF C7 AD */	bl draw_blur_bridge_accordions
 lbl_80047AA4:
 /* 80047AA4 000439C4  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
 /* 80047AA8 000439C8  2C 00 00 31 */	cmpwi r0, 0x31
@@ -7983,8 +7983,8 @@ lbl_8020AB88:
 .global lbl_8020ADC8
 lbl_8020ADC8:
 	.skip 0xC
-.global stageBoundingSphere
-stageBoundingSphere:
+.global stageBounds
+stageBounds:
     .skip 0x10
     .skip 0x3C
 .endif
