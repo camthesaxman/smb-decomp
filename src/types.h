@@ -750,12 +750,6 @@ struct Struct801EED04
     s16 unkE;
     s32 unk10;
     s32 unk14;
-    /*
-    s32 unk18;  // array here?
-    s32 unk1C;
-    s32 unk20;
-    s32 unk24;
-    */
     s32 unk18[4];
 };
 
@@ -765,4 +759,27 @@ struct Struct801EED2C
     u32 unk4;
     s32 unk8;
     s32 unkC;
+};
+
+struct Struct80075900
+{
+    u8 filler0[0xC];
+    u16 unkC;
+    u16 unkE;
+    u8 filler10[4];
+    s8 unk14;
+    s8 unk15;
+    s8 unk16;
+    u8 filler17[0x1C-0x17];
+    void (*unk1C)();
+    u8 filler20[0x28-0x20];
+};
+
+struct Struct801EED3C
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    float unkC;
+    u8 filler10[4];
 };
