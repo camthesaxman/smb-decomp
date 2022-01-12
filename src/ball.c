@@ -403,7 +403,7 @@ void func_8003765C(struct Ball_child *a)
 // needed here due to float constant ordering
 static float get_0_05(void) {return 0.05f;}
 
-void func_80037718(void)
+void func_80037718(/* struct Ball_child *unused */)
 {
     Quaternion sp30;
     Vec sp24;
@@ -465,7 +465,7 @@ void lbl_8003781C(struct Ball_child *a, int b)
         mathutil_mtxA_from_quat(&a->unk60);
         mathutil_mtxA_normalize_basis();
         if (a->unk14 & (1<<(31-0x1E)))
-            func_80037718();
+            func_80037718(a);
     }
 
     if (r29->flags & BALL_FLAG_05)

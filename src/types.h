@@ -750,10 +750,13 @@ struct Struct801EED04
     s16 unkE;
     s32 unk10;
     s32 unk14;
-    s32 unk18;
+    /*
+    s32 unk18;  // array here?
     s32 unk1C;
     s32 unk20;
     s32 unk24;
+    */
+    s32 unk18[4];
 };
 
 struct Struct801EED2C

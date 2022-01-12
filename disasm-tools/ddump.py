@@ -7,16 +7,15 @@ import sys
 import struct
 
 #startLabel = sys.argv[2]
-startLabel = 'lbl_80171B40'  # starting label
+startLabel = 'lbl_8010FAB0'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>bBBxffBBBB'
+structFmt = '>iIi'
 GXColorFmt = '{%i, %i, %i, %i}'
-#cFmt = '{ %u, %5d, %d, {%3.7g, %3.7g, %3.7g}},'
-cFmt = '{ %i, %i, %i, %3.7g, %3.7g, ' + GXColorFmt + '},'
+cFmt = '{ %4i, %2u, %4i }'
 dumping = False
 
 def print_struct(data):
-    print(cFmt % data)
+    print('    ' + (cFmt % data))
 
 def read_label(line):
     m = re.match(r'glabel\s+(\w+)', line)
@@ -65,7 +64,8 @@ with open(sys.argv[1], 'r') as f:
                 continue
 
 #print(str(len(data)))
-
+print('struct ? %s[] =\n{' % startLabel)
 while len(data) >= structSize:
     print_struct(struct.unpack(structFmt, data[0:structSize]))
     data = data[structSize:]
+print('};')

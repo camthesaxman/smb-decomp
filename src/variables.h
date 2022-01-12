@@ -1191,20 +1191,8 @@ extern s8 lbl_802F1BA1;
 extern s32 lbl_802F1BA8;
 // extern ? lbl_802F1BAC;
 extern s32 lbl_802F1BB0;
-extern struct
-{
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-} lbl_802F1BB4;
-extern struct
-{
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-} lbl_802F1BBC;
+extern s16 lbl_802F1BB4[4];
+extern s16 lbl_802F1BBC[4];
 // extern ? lbl_802F1BC4;
 extern u32 lbl_802F1BC8;
 extern u32 lbl_802F1BCC;
@@ -1349,12 +1337,12 @@ extern u32 lbl_802F1DF8;
 // extern ? lbl_802F1E58;
 // extern ? lbl_802F1EA8;
 extern s32 lbl_802F1EB0;
-// extern ? lbl_802F1EB4;
+extern s32 lbl_802F1EB4;
 extern float lbl_802F1EC4;
 extern float lbl_802F1EC8;
 extern float lbl_802F1ECC;
-// extern ? lbl_802F1ED0;
-// extern ? lbl_802F1ED2;
+extern u16 lbl_802F1ED0;
+extern u16 lbl_802F1ED2;
 // extern ? lbl_802F1ED4;
 extern u32 lbl_802F1ED8;
 extern u32 dipSwitches;
