@@ -1804,5 +1804,210 @@ void submode_adv_ranking_init_func(void)
     modeCtrl.unk0 = 0x9D8;
     g_dest_sprite_with_font(2);
     g_dest_sprite_with_font(18);
-    gameSubmodeRequest = 12;
+    gameSubmodeRequest = SMD_ADV_RANKING_MAIN;
+}
+
+void submode_adv_ranking_main_func(void)
+{
+    struct Ball *r31;
+    struct Ball *r29;
+    struct Ball *r30;
+    s8 *r28;
+    int i;
+
+    if (gamePauseStatus & 0xA)
+        return;
+    r31 = &ballInfo[0];
+    switch (modeCtrl.unk0)
+    {
+    case 0x9D8:
+        g_dest_sprite_with_font(0);
+        g_dest_sprite_with_font(37);
+        g_dest_sprite_with_font(39);
+        func_80076C54(1);
+        func_800886E0(0);
+        if (g_find_sprite_with_probably_not_font(17) != NULL)
+            g_find_sprite_with_probably_not_font(17)->unk48 = 1;
+        lbl_801EED3C.unk8 = 1;
+        break;
+    case 0x99C:
+        break;
+    case 0x870:
+        func_80088A10();
+        if (lbl_802F1BA8 == 0)
+            func_80088F18();
+        break;
+    case 0x834:
+        func_8008897C(0);
+        break;
+    case 0x654:
+        if (lbl_802F1BA8 == 0)
+        {
+            func_800886E0(1);
+            modeCtrl.unk18 = 0xB4;
+        }
+        break;
+    case 0x4EC:
+        func_80088A10();
+        break;
+    case 0x4B0:
+        func_8008897C(0);
+        break;
+    case 0x2D0:
+        if (lbl_802F1BA8 == 0)
+        {
+            func_800886E0(2);
+            modeCtrl.unk18 = 0xB4;
+        }
+        break;
+    case 0x168:
+        func_80088A10();
+        break;
+    case 0x12C:
+        func_8008897C(0);
+        break;
+    case 0x5A:
+        func_80088FD4(0);
+        break;
+    }
+
+    if (r31->state == 4)
+    {
+        struct MaybeReplayInfo sp50;
+
+        g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
+        if (sp50.flags & (1<<(31-0x18)))
+        {
+            r31->state = 5;
+            r31->flags |= 0x3500;
+        }
+    }
+    if (r31->state == 4 || r31->state == 6)
+        lbl_801F3A58.unk0 &= -2065;
+    if (r31->state != 10)
+        modeCtrl.unk18--;
+    if (modeCtrl.unk18 < 0
+     && (r31->state == 6 || r31->state == 4)
+     && (!(modeCtrl.unk0 & 0x1F) || !(lbl_801F3A58.unk0 & (1<<(31-0x1A)))))
+    {
+        if (modeCtrl.unk0 > 180.0)
+        {
+            struct MaybeReplayInfo sp38;
+            struct Struct8009544C sp20;
+            float f1;
+            struct MaybeReplayInfo sp8;
+
+            modeCtrl.unk18 = 0x96;
+            ev_run_dest(1);
+            ev_run_dest(4);
+            ev_run_dest(5);
+            ev_run_dest(13);
+            ev_run_dest(20);
+            ev_run_dest(19);
+            ev_run_dest(3);
+            ev_run_dest(18);
+            lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80011B98();
+            g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
+            currStageId = sp38.unk2;
+            func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+            lbl_801F3A58.unk0 |= 0x10;
+            load_stage(currStageId);
+            ev_run_init(1);
+            ev_run_init(4);
+            ev_run_init(5);
+            ev_run_init(13);
+            ev_run_init(20);
+            ev_run_init(19);
+            ev_run_init(3);
+            ev_run_init(18);
+            func_800972CC();
+            memset(&sp20, 0, sizeof(sp20));
+            sp20.unk6 = 0xFFFF;
+            func_8009544C(2, 3, &sp20);
+            func_80021DB4(currStageId);
+            ballInfo[0].state = 9;
+            ballInfo[0].bananas = 0;
+            if (modeCtrl.unk0 > 0x9D8)
+            {
+                lbl_80206BF0[0].unk8 = 9;
+                camera_set_state(0);
+            }
+            else
+            {
+                lbl_80206BF0[0].unk8 = 6;
+                camera_set_state(func_80011BE0());
+                lbl_801F3A58.unk0 &= ~(1<<(31-0x14));
+            }
+
+            f1 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+            if (sp38.flags & (1<<(31-0x1B)))
+                f1 -= 30.0f;
+            if (f1 > (float)modeCtrl.unk0 - 120.0)
+                f1 = (int)((float)modeCtrl.unk0 - 120.0);
+            else if (f1 > (float)modeCtrl.unk0 * 0.5)
+                f1 = (int)((float)modeCtrl.unk0 * 0.5);
+            lbl_80250A68.unk10 = f1;
+            g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+            g_get_replay_info(func_80011A84(), &sp8);
+            if (gamePauseStatus & (1<<(31-0x1D)))
+                printf("/*-- pre_load_stage(%d) --*/\n", sp8.unk2);
+            preload_stage_files(sp8.unk2);
+        }
+    }
+
+    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+     && modeCtrl.unk0 > 60
+     && lbl_802F1BA8 == 0)
+    {
+        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
+        {
+            func_8000FEC8(30);
+            func_8008897C(0);
+            func_80088FD4(0);
+        }
+    }
+
+    if (modeCtrl.unk0 == 0xB4)
+    {
+        preload_bg_files(0xD);
+        preload_stage_files(1);
+    }
+    if (modeCtrl.unk0 == 30)
+    {
+        g_start_screen_fade(0x101, 0x00FFFFFF, 30);
+        func_80075900(0, 20, 0);
+        func_8002CF38(modeCtrl.unk0, 2);
+    }
+
+    r30 = currentBallStructPtr;
+    r28 = spritePoolInfo.unkC;
+    r29 = &ballInfo[0];
+    for (i = 0; i < spritePoolInfo.unk8; i++, r29++, r28++)
+    {
+        if (*r28 == 2)
+        {
+            currentBallStructPtr = r29;
+            if (!(r29->flags & (1<<(31-0x16))) && (r29->unkFC->unk14 & (1<<(31-0x11))))
+            {
+                r29->flags &= -1281;
+                r29->flags |= 0x200;
+                g_play_sound(0x126);
+            }
+        }
+    }
+    currentBallStructPtr = r30;
+
+    if (--modeCtrl.unk0 <= 0)
+    {
+        lbl_801F3A58.unk0 &= ~(1<<(31-0x14));
+        func_8008897C(1);
+        func_80088FD4(1);
+        g_dest_sprite_with_font(3);
+        func_800705C4(3);
+        camera_setup_singleplayer_viewport();
+        gameSubmodeRequest = SMD_ADV_DEMO_INIT;
+    }
 }

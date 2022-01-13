@@ -783,3 +783,10 @@ struct Struct801EED3C
     float unkC;
     u8 filler10[4];
 };
+
+struct Struct8009544C
+{
+    u8 filler0[0x6];
+    u16 unk6;
+    u8 filler8[0x18-0x8];
+};  // size = 0x18
