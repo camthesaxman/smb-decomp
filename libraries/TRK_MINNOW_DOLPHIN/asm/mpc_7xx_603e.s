@@ -4,8 +4,8 @@
 
 .global TRKSaveExtended1Block
 TRKSaveExtended1Block:
-/* 8010D99C 001098BC  3C 40 80 2E */	lis r2, lbl_802EFD90@h
-/* 8010D9A0 001098C0  60 42 FD 90 */	ori r2, r2, lbl_802EFD90@l
+/* 8010D99C 001098BC  3C 40 80 2E */	lis r2, gTRKCPUState@h
+/* 8010D9A0 001098C0  60 42 FD 90 */	ori r2, r2, gTRKCPUState@l
 /* 8010D9A4 001098C4  7E 00 04 A6 */	mfsr r16, 0
 /* 8010D9A8 001098C8  7E 21 04 A6 */	mfsr r17, 1
 /* 8010D9AC 001098CC  7E 42 04 A6 */	mfsr r18, 2
@@ -119,10 +119,10 @@ lbl_8010DB50:
 
 .global TRKRestoreExtended1Block
 TRKRestoreExtended1Block:
-/* 8010DB54 00109A74  3C 40 80 2E */	lis r2, lbl_802EFD90@h
-/* 8010DB58 00109A78  60 42 FD 90 */	ori r2, r2, lbl_802EFD90@l
-/* 8010DB5C 00109A7C  3C A0 80 1E */	lis r5, lbl_801ED868@h
-/* 8010DB60 00109A80  60 A5 D8 68 */	ori r5, r5, lbl_801ED868@l
+/* 8010DB54 00109A74  3C 40 80 2E */	lis r2, gTRKCPUState@h
+/* 8010DB58 00109A78  60 42 FD 90 */	ori r2, r2, gTRKCPUState@l
+/* 8010DB5C 00109A7C  3C A0 80 1E */	lis r5, gTRKRestoreFlags@h
+/* 8010DB60 00109A80  60 A5 D8 68 */	ori r5, r5, gTRKRestoreFlags@l
 /* 8010DB64 00109A84  88 65 00 00 */	lbz r3, 0(r5)
 /* 8010DB68 00109A88  88 C5 00 01 */	lbz r6, 1(r5)
 /* 8010DB6C 00109A8C  38 00 00 00 */	li r0, 0

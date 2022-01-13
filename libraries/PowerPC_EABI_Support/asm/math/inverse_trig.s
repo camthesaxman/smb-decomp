@@ -184,12 +184,12 @@ _inv_sqrtf:
 lbl_80108C38:
 /* 80108C38 00104B58  FC 01 00 00 */	fcmpu cr0, f1, f0
 /* 80108C3C 00104B5C  41 82 00 10 */	beq lbl_80108C4C
-/* 80108C40 00104B60  3C 60 80 1F */	lis r3, lbl_801ED2F8@ha
-/* 80108C44 00104B64  C0 23 D2 F8 */	lfs f1, lbl_801ED2F8@l(r3)
+/* 80108C40 00104B60  3C 60 80 1F */	lis r3, __float_nan@ha
+/* 80108C44 00104B64  C0 23 D2 F8 */	lfs f1, __float_nan@l(r3)
 /* 80108C48 00104B68  4E 80 00 20 */	blr
 lbl_80108C4C:
-/* 80108C4C 00104B6C  3C 60 80 1F */	lis r3, lbl_801ED2FC@ha
-/* 80108C50 00104B70  C0 23 D2 FC */	lfs f1, lbl_801ED2FC@l(r3)
+/* 80108C4C 00104B6C  3C 60 80 1F */	lis r3, __float_huge@ha
+/* 80108C50 00104B70  C0 23 D2 FC */	lfs f1, __float_huge@l(r3)
 /* 80108C54 00104B74  4E 80 00 20 */	blr
 
 .global acosf

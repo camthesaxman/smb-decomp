@@ -261,6 +261,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem_funcs.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/misc_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/printf.s \
+	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/float.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/rand.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/string.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/wchar_io.s \
@@ -277,6 +278,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/math/s_sin.s \
 	libraries/PowerPC_EABI_Support/asm/math/inverse_trig.s \
 	libraries/PowerPC_EABI_Support/asm/math/trigf.s \
+	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/exponentialsf.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/mainloop.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/nubevent.s \

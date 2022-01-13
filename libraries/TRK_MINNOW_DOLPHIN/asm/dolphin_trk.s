@@ -19,8 +19,8 @@ __TRK_reset:
 InitMetroTRK:
 /* 8010D7A8 001096C8  38 21 FF FC */	addi r1, r1, -4
 /* 8010D7AC 001096CC  90 61 00 00 */	stw r3, 0(r1)
-/* 8010D7B0 001096D0  3C 60 80 2E */	lis r3, lbl_802EFD90@h
-/* 8010D7B4 001096D4  60 63 FD 90 */	ori r3, r3, lbl_802EFD90@l
+/* 8010D7B0 001096D0  3C 60 80 2E */	lis r3, gTRKCPUState@h
+/* 8010D7B4 001096D4  60 63 FD 90 */	ori r3, r3, gTRKCPUState@l
 /* 8010D7B8 001096D8  BC 03 00 00 */	stmw r0, 0(r3)
 /* 8010D7BC 001096DC  80 81 00 00 */	lwz r4, 0(r1)
 /* 8010D7C0 001096E0  38 21 00 04 */	addi r1, r1, 4
@@ -37,8 +37,8 @@ InitMetroTRK:
 /* 8010D7EC 0010970C  7C 60 01 24 */	mtmsr r3
 /* 8010D7F0 00109710  7C 9B 03 A6 */	mtspr 0x1b, r4
 /* 8010D7F4 00109714  48 00 01 A9 */	bl TRKSaveExtended1Block
-/* 8010D7F8 00109718  3C 60 80 2E */	lis r3, lbl_802EFD90@h
-/* 8010D7FC 0010971C  60 63 FD 90 */	ori r3, r3, lbl_802EFD90@l
+/* 8010D7F8 00109718  3C 60 80 2E */	lis r3, gTRKCPUState@h
+/* 8010D7FC 0010971C  60 63 FD 90 */	ori r3, r3, gTRKCPUState@l
 /* 8010D800 00109720  B8 03 00 00 */	.4byte 0xB8030000  /* illegal lmw r0, 0(r3) */
 /* 8010D804 00109724  38 00 00 00 */	li r0, 0
 /* 8010D808 00109728  7C 12 FB A6 */	mtspr 0x3f2, r0
@@ -113,9 +113,9 @@ __TRK_copy_vectors:
 /* 8010D8E8 00109808  4B FF FF 75 */	bl TRKTargetTranslate
 /* 8010D8EC 0010980C  3B A0 00 00 */	li r29, 0
 /* 8010D8F0 00109810  83 83 00 00 */	lwz r28, 0(r3)
-/* 8010D8F4 00109814  3C 60 80 1F */	lis r3, lbl_801ED898@ha
+/* 8010D8F4 00109814  3C 60 80 1F */	lis r3, TRK_ISR_OFFSETS@ha
 /* 8010D8F8 00109818  57 A4 10 3A */	slwi r4, r29, 2
-/* 8010D8FC 0010981C  38 03 D8 98 */	addi r0, r3, lbl_801ED898@l
+/* 8010D8FC 0010981C  38 03 D8 98 */	addi r0, r3, TRK_ISR_OFFSETS@l
 /* 8010D900 00109820  7F C0 22 14 */	add r30, r0, r4
 /* 8010D904 00109824  48 00 00 04 */	b lbl_8010D908
 lbl_8010D908:
@@ -150,8 +150,8 @@ TRKInitializeTarget:
 /* 8010D960 00109880  90 01 00 04 */	stw r0, 4(r1)
 /* 8010D964 00109884  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 8010D968 00109888  93 E1 00 0C */	stw r31, 0xc(r1)
-/* 8010D96C 0010988C  3C 60 80 2F */	lis r3, lbl_802EFCE8@ha
-/* 8010D970 00109890  3B E3 FC E8 */	addi r31, r3, lbl_802EFCE8@l
+/* 8010D96C 0010988C  3C 60 80 2F */	lis r3, gTRKState@ha
+/* 8010D970 00109890  3B E3 FC E8 */	addi r31, r3, gTRKState@l
 /* 8010D974 00109894  38 00 00 01 */	li r0, 1
 /* 8010D978 00109898  90 1F 00 98 */	stw r0, 0x98(r31)
 /* 8010D97C 0010989C  4B FF E8 51 */	bl __TRK_get_MSR
@@ -162,3 +162,25 @@ TRKInitializeTarget:
 /* 8010D990 001098B0  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010D994 001098B4  7C 08 03 A6 */	mtlr r0
 /* 8010D998 001098B8  4E 80 00 20 */	blr
+
+.section .data
+
+.global TRK_ISR_OFFSETS
+TRK_ISR_OFFSETS:
+	# ROM: 0x1EA898
+	.byte 0x00, 0x00, 0x01, 0x00
+	.byte 0x00, 0x00, 0x02, 0x00
+	.byte 0x00, 0x00, 0x03, 0x00
+	.byte 0x00, 0x00, 0x04, 0x00
+	.byte 0x00, 0x00, 0x05, 0x00
+	.byte 0x00, 0x00, 0x06, 0x00
+	.byte 0x00, 0x00, 0x07, 0x00
+	.byte 0x00, 0x00, 0x08, 0x00
+	.byte 0x00, 0x00, 0x09, 0x00
+	.byte 0x00, 0x00, 0x0C, 0x00
+	.byte 0x00, 0x00, 0x0D, 0x00
+	.byte 0x00, 0x00, 0x0F, 0x00
+	.byte 0x00, 0x00, 0x13, 0x00
+	.byte 0x00, 0x00, 0x14, 0x00
+	.byte 0x00, 0x00, 0x17, 0x00
+	.4byte 0

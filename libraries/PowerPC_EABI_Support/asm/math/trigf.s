@@ -96,9 +96,9 @@ lbl_80108D84:
 /* 80108DD4 00104CF4  C0 02 C4 40 */	lfs f0, lbl_802F6C40-_SDA2_BASE_(r2)
 /* 80108DD8 00104CF8  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 80108DDC 00104CFC  40 80 00 24 */	bge lbl_80108E00
-/* 80108DE0 00104D00  3C 60 80 1F */	lis r3, lbl_801ED514@ha
+/* 80108DE0 00104D00  3C 60 80 1F */	lis r3, __sincos_on_quadrant@ha
 /* 80108DE4 00104D04  57 E4 18 38 */	slwi r4, r31, 3
-/* 80108DE8 00104D08  38 03 D5 14 */	addi r0, r3, lbl_801ED514@l
+/* 80108DE8 00104D08  38 03 D5 14 */	addi r0, r3, __sincos_on_quadrant@l
 /* 80108DEC 00104D0C  7C 60 22 14 */	add r3, r0, r4
 /* 80108DF0 00104D10  C0 23 00 00 */	lfs f1, 0(r3)
 /* 80108DF4 00104D14  C0 03 00 04 */	lfs f0, 4(r3)
@@ -108,12 +108,12 @@ lbl_80108E00:
 /* 80108E00 00104D20  57 E0 07 FF */	clrlwi. r0, r31, 0x1f
 /* 80108E04 00104D24  EC 9F 07 F2 */	fmuls f4, f31, f31
 /* 80108E08 00104D28  41 82 00 50 */	beq lbl_80108E58
-/* 80108E0C 00104D2C  3C 60 80 1F */	lis r3, lbl_801ED534@ha
-/* 80108E10 00104D30  38 83 D5 34 */	addi r4, r3, lbl_801ED534@l
+/* 80108E0C 00104D2C  3C 60 80 1F */	lis r3, __sincos_poly@ha
+/* 80108E10 00104D30  38 83 D5 34 */	addi r4, r3, __sincos_poly@l
 /* 80108E14 00104D34  C0 44 00 04 */	lfs f2, 4(r4)
-/* 80108E18 00104D38  3C 60 80 1F */	lis r3, lbl_801ED514@ha
+/* 80108E18 00104D38  3C 60 80 1F */	lis r3, __sincos_on_quadrant@ha
 /* 80108E1C 00104D3C  C0 24 00 0C */	lfs f1, 0xc(r4)
-/* 80108E20 00104D40  38 03 D5 14 */	addi r0, r3, lbl_801ED514@l
+/* 80108E20 00104D40  38 03 D5 14 */	addi r0, r3, __sincos_on_quadrant@l
 /* 80108E24 00104D44  C0 04 00 14 */	lfs f0, 0x14(r4)
 /* 80108E28 00104D48  EC 62 09 3A */	fmadds f3, f2, f4, f1
 /* 80108E2C 00104D4C  C0 44 00 1C */	lfs f2, 0x1c(r4)
@@ -128,12 +128,12 @@ lbl_80108E00:
 /* 80108E50 00104D70  EC 21 00 32 */	fmuls f1, f1, f0
 /* 80108E54 00104D74  48 00 00 48 */	b lbl_80108E9C
 lbl_80108E58:
-/* 80108E58 00104D78  3C 60 80 1F */	lis r3, lbl_801ED534@ha
-/* 80108E5C 00104D7C  38 83 D5 34 */	addi r4, r3, lbl_801ED534@l
+/* 80108E58 00104D78  3C 60 80 1F */	lis r3, __sincos_poly@ha
+/* 80108E5C 00104D7C  38 83 D5 34 */	addi r4, r3, __sincos_poly@l
 /* 80108E60 00104D80  C0 44 00 00 */	lfs f2, 0(r4)
-/* 80108E64 00104D84  3C 60 80 1F */	lis r3, lbl_801ED514@ha
+/* 80108E64 00104D84  3C 60 80 1F */	lis r3, __sincos_on_quadrant@ha
 /* 80108E68 00104D88  C0 24 00 08 */	lfs f1, 8(r4)
-/* 80108E6C 00104D8C  38 63 D5 14 */	addi r3, r3, lbl_801ED514@l
+/* 80108E6C 00104D8C  38 63 D5 14 */	addi r3, r3, __sincos_on_quadrant@l
 /* 80108E70 00104D90  57 E0 18 38 */	slwi r0, r31, 3
 /* 80108E74 00104D94  EC 62 09 3A */	fmadds f3, f2, f4, f1
 /* 80108E78 00104D98  C0 04 00 10 */	lfs f0, 0x10(r4)
@@ -205,13 +205,13 @@ lbl_80108F18:
 /* 80108F68 00104E88  C0 02 C4 40 */	lfs f0, lbl_802F6C40-_SDA2_BASE_(r2)
 /* 80108F6C 00104E8C  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 80108F70 00104E90  40 80 00 34 */	bge lbl_80108FA4
-/* 80108F74 00104E94  3C 60 80 1F */	lis r3, lbl_801ED514@ha
+/* 80108F74 00104E94  3C 60 80 1F */	lis r3, __sincos_on_quadrant@ha
 /* 80108F78 00104E98  57 E4 18 38 */	slwi r4, r31, 3
-/* 80108F7C 00104E9C  38 03 D5 14 */	addi r0, r3, lbl_801ED514@l
+/* 80108F7C 00104E9C  38 03 D5 14 */	addi r0, r3, __sincos_on_quadrant@l
 /* 80108F80 00104EA0  7C 60 22 14 */	add r3, r0, r4
 /* 80108F84 00104EA4  C0 23 00 04 */	lfs f1, 4(r3)
-/* 80108F88 00104EA8  3C 80 80 1F */	lis r4, lbl_801ED534@ha
-/* 80108F8C 00104EAC  38 84 D5 34 */	addi r4, r4, lbl_801ED534@l
+/* 80108F88 00104EA8  3C 80 80 1F */	lis r4, __sincos_poly@ha
+/* 80108F8C 00104EAC  38 84 D5 34 */	addi r4, r4, __sincos_poly@l
 /* 80108F90 00104EB0  C0 03 00 00 */	lfs f0, 0(r3)
 /* 80108F94 00104EB4  EC 3F 00 72 */	fmuls f1, f31, f1
 /* 80108F98 00104EB8  C0 44 00 24 */	lfs f2, 0x24(r4)
@@ -221,12 +221,12 @@ lbl_80108FA4:
 /* 80108FA4 00104EC4  57 E0 07 FF */	clrlwi. r0, r31, 0x1f
 /* 80108FA8 00104EC8  EC 9F 07 F2 */	fmuls f4, f31, f31
 /* 80108FAC 00104ECC  41 82 00 4C */	beq lbl_80108FF8
-/* 80108FB0 00104ED0  3C 60 80 1F */	lis r3, lbl_801ED534@ha
-/* 80108FB4 00104ED4  38 83 D5 34 */	addi r4, r3, lbl_801ED534@l
+/* 80108FB0 00104ED0  3C 60 80 1F */	lis r3, __sincos_poly@ha
+/* 80108FB4 00104ED4  38 83 D5 34 */	addi r4, r3, __sincos_poly@l
 /* 80108FB8 00104ED8  C0 44 00 00 */	lfs f2, 0(r4)
-/* 80108FBC 00104EDC  3C 60 80 1F */	lis r3, lbl_801ED514@ha
+/* 80108FBC 00104EDC  3C 60 80 1F */	lis r3, __sincos_on_quadrant@ha
 /* 80108FC0 00104EE0  C0 24 00 08 */	lfs f1, 8(r4)
-/* 80108FC4 00104EE4  38 03 D5 14 */	addi r0, r3, lbl_801ED514@l
+/* 80108FC4 00104EE4  38 03 D5 14 */	addi r0, r3, __sincos_on_quadrant@l
 /* 80108FC8 00104EE8  C0 04 00 10 */	lfs f0, 0x10(r4)
 /* 80108FCC 00104EEC  EC 62 09 3A */	fmadds f3, f2, f4, f1
 /* 80108FD0 00104EF0  C0 44 00 18 */	lfs f2, 0x18(r4)
@@ -240,12 +240,12 @@ lbl_80108FA4:
 /* 80108FF0 00104F10  EC 21 00 32 */	fmuls f1, f1, f0
 /* 80108FF4 00104F14  48 00 00 4C */	b lbl_80109040
 lbl_80108FF8:
-/* 80108FF8 00104F18  3C 60 80 1F */	lis r3, lbl_801ED534@ha
-/* 80108FFC 00104F1C  38 83 D5 34 */	addi r4, r3, lbl_801ED534@l
+/* 80108FF8 00104F18  3C 60 80 1F */	lis r3, __sincos_poly@ha
+/* 80108FFC 00104F1C  38 83 D5 34 */	addi r4, r3, __sincos_poly@l
 /* 80109000 00104F20  C0 44 00 04 */	lfs f2, 4(r4)
-/* 80109004 00104F24  3C 60 80 1F */	lis r3, lbl_801ED514@ha
+/* 80109004 00104F24  3C 60 80 1F */	lis r3, __sincos_on_quadrant@ha
 /* 80109008 00104F28  C0 24 00 0C */	lfs f1, 0xc(r4)
-/* 8010900C 00104F2C  38 63 D5 14 */	addi r3, r3, lbl_801ED514@l
+/* 8010900C 00104F2C  38 63 D5 14 */	addi r3, r3, __sincos_on_quadrant@l
 /* 80109010 00104F30  57 E0 18 38 */	slwi r0, r31, 3
 /* 80109014 00104F34  EC 62 09 3A */	fmadds f3, f2, f4, f1
 /* 80109018 00104F38  C0 04 00 14 */	lfs f0, 0x14(r4)
@@ -314,12 +314,12 @@ lbl_801090E8:
 lbl_801090F8:
 /* 801090F8 00105018  FC 01 00 00 */	fcmpu cr0, f1, f0
 /* 801090FC 0010501C  41 82 00 10 */	beq lbl_8010910C
-/* 80109100 00105020  3C 60 80 1F */	lis r3, lbl_801ED2F8@ha
-/* 80109104 00105024  C0 23 D2 F8 */	lfs f1, lbl_801ED2F8@l(r3)
+/* 80109100 00105020  3C 60 80 1F */	lis r3, __float_nan@ha
+/* 80109104 00105024  C0 23 D2 F8 */	lfs f1, __float_nan@l(r3)
 /* 80109108 00105028  4E 80 00 20 */	blr
 lbl_8010910C:
-/* 8010910C 0010502C  3C 60 80 1F */	lis r3, lbl_801ED2FC@ha
-/* 80109110 00105030  C0 23 D2 FC */	lfs f1, lbl_801ED2FC@l(r3)
+/* 8010910C 0010502C  3C 60 80 1F */	lis r3, __float_huge@ha
+/* 80109110 00105030  C0 23 D2 FC */	lfs f1, __float_huge@l(r3)
 /* 80109114 00105034  4E 80 00 20 */	blr
 
 .section .sdata2
@@ -373,3 +373,13 @@ lbl_80172300:
 	.byte 0x3C, 0xBE, 0x60, 0x80
 	.byte 0x34, 0x37, 0x22, 0x00
 	.byte 0x2D, 0xA4, 0x41, 0x52
+
+.section .data
+
+.global lbl_801ED300
+lbl_801ED300:
+	# ROM: 0x1EA300
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0

@@ -46,3 +46,43 @@ lbl_8010A8A4:
 /* 8010A8B4 001067D4  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010A8B8 001067D8  7C 08 03 A6 */	mtlr r0
 /* 8010A8BC 001067DC  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801ED7A8
+lbl_801ED7A8:
+	# ROM: 0x1EA7A8
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoConnect  ;# ptr
+	.4byte TRKDoDisconnect  ;# ptr
+	.4byte TRKDoReset  ;# ptr
+	.4byte TRKDoVersions  ;# ptr
+	.4byte TRKDoSupportmedia  ;# ptr
+	.4byte TRKDoCPUType  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoReadMemory  ;# ptr
+	.4byte TRKDoWriteMemory  ;# ptr
+	.4byte TRKDoReadRegisters  ;# ptr
+	.4byte TRKDoWriteRegisters  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoFlushCache  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoContinue  ;# ptr
+	.4byte TRKDoStep  ;# ptr
+	.4byte TRKDoStop  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte 0
+	.4byte 0
