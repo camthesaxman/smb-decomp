@@ -2997,3 +2997,66 @@ autoInvalidation:
 	# ROM: 0x1EC0A0
 	.byte 0x00, 0x00, 0x00, 0x01
 	.4byte 0
+
+.section .sbss
+
+.global __DVDThreadQueue
+__DVDThreadQueue:
+	.skip 0x8
+.global executing
+executing:
+	.skip 0x4
+.global currID
+currID:
+	.skip 0x4
+.global bootInfo
+bootInfo:
+	.skip 0x4
+.global PauseFlag
+PauseFlag:
+	.skip 0x4
+.global PausingFlag
+PausingFlag:
+	.skip 0x4
+.global AutoFinishing
+AutoFinishing:
+	.skip 0x4
+.global FatalErrorFlag
+FatalErrorFlag:
+	.skip 0x4
+.global CurrCommand
+CurrCommand:
+	.skip 0x4
+.global Canceling
+Canceling:
+	.skip 0x4
+.global CancelCallback
+CancelCallback:
+	.skip 0x4
+.global ResumeFromHere
+ResumeFromHere:
+	.skip 0x4
+.global CancelLastError
+CancelLastError:
+	.skip 0x4
+.global LastError
+LastError:
+	.skip 0x4
+.global NumInternalRetry
+NumInternalRetry:
+	.skip 0x4
+.global ResetRequired
+ResetRequired:
+	.skip 0x4
+.global FirstTimeInBootrom
+FirstTimeInBootrom:
+	.skip 0x4
+.global DVDInitialized
+DVDInitialized:
+	.skip 0x4
+.global _DVD_LastState
+_DVD_LastState:
+	.skip 0x4
+.global status
+status:
+	.skip 0x4

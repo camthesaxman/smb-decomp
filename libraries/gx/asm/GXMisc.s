@@ -433,3 +433,18 @@ __GXPEInit:
 /* 800DF660 000DB580  38 21 00 08 */	addi r1, r1, 8
 /* 800DF664 000DB584  7C 08 03 A6 */	mtlr r0
 /* 800DF668 000DB588  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global TokenCB
+TokenCB:
+	.skip 0x4
+.global DrawDoneCB
+DrawDoneCB:
+	.skip 0x4
+.global DrawDone
+DrawDone:
+	.skip 0x4
+.global FinishQueue
+FinishQueue:
+	.skip 0xC

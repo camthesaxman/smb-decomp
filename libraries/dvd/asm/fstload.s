@@ -188,3 +188,12 @@ lbl_802F1970:
 	# ROM: 0x1EC0B0
 	.byte 0x4F, 0x4E, 0x00, 0x00
 	.4byte 0
+
+.section .sbss
+
+.global bb2
+bb2:
+	.skip 0x4
+.global idTmp
+idTmp:
+	.skip 0x8

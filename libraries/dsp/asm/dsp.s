@@ -128,3 +128,12 @@ glabel string_May_22_2001
 glabel string_02_06_43
 	.asciz "02:06:43"
 	.balign 4
+
+.section .sbss
+
+.global __DSP_init_flag
+__DSP_init_flag:
+	.skip 0x4
+.global __DSP_tmp_task
+__DSP_tmp_task:
+	.skip 0x4

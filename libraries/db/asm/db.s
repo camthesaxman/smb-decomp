@@ -84,3 +84,12 @@ lbl_801E7578:
 	# ROM: 0x1E4578
 glabel string_DBExceptionDestination_n
 	.asciz "DBExceptionDestination\n"
+
+.section .sbss
+
+.global __DBInterface
+__DBInterface:
+	.skip 0x4
+.global DBVerbose
+DBVerbose:
+	.skip 0x4

@@ -180,3 +180,9 @@ lbl_800C9FDC:
 /* 800C9FE4 000C5F04  38 21 00 30 */	addi r1, r1, 0x30
 /* 800C9FE8 000C5F08  7C 08 03 A6 */	mtlr r0
 /* 800C9FEC 000C5F0C  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global serEnabled
+serEnabled:
+	.skip 0x8

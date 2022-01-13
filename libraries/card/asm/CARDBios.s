@@ -1430,3 +1430,9 @@ lbl_801E8A60:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+
+.section .sbss
+
+.global __CARDDiskID
+__CARDDiskID:
+	.skip 0x8

@@ -1214,3 +1214,24 @@ lbl_802F6768:
 	# ROM: 0x1F0188
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
+
+.section .sbss
+
+.global __AR_Callback
+__AR_Callback:
+	.skip 0x4
+.global __AR_Size
+__AR_Size:
+	.skip 0x4
+.global __AR_StackPointer
+__AR_StackPointer:
+	.skip 0x4
+.global __AR_FreeBlocks
+__AR_FreeBlocks:
+	.skip 0x4
+.global __AR_BlockLength
+__AR_BlockLength:
+	.skip 0x4
+.global __AR_init_flag
+__AR_init_flag:
+	.skip 0x4

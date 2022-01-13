@@ -1061,3 +1061,15 @@ lbl_800C995C:
 /* 800C9970 000C5890  7C 08 03 A6 */	mtlr r0
 /* 800C9974 000C5894  38 21 00 18 */	addi r1, r1, 0x18
 /* 800C9978 000C5898  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global RunQueueBits
+RunQueueBits:
+	.skip 0x4
+.global RunQueueHint
+RunQueueHint:
+	.skip 0x4
+.global Reschedule
+Reschedule:
+	.skip 0x8

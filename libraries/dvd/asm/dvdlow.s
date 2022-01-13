@@ -1029,3 +1029,57 @@ FirstRead:
 	# ROM: 0x1EC090
 	.byte 0x00, 0x00, 0x00, 0x01
 	.4byte 0
+
+.section .sbss
+
+.global StopAtNextInt
+StopAtNextInt:
+	.skip 0x4
+.global LastLength
+LastLength:
+	.skip 0x4
+.global _DVDLow_Callback
+_DVDLow_Callback:
+	.skip 0x4
+.global ResetCoverCallback
+ResetCoverCallback:
+	.skip 0x4
+.global LastResetEnd
+LastResetEnd:
+	.skip 0x4
+.global lbl_802F237C
+lbl_802F237C:
+	.skip 0x4
+.global ResetOccurred
+ResetOccurred:
+	.skip 0x4
+.global WaitingCoverClose
+WaitingCoverClose:
+	.skip 0x4
+.global Breaking
+Breaking:
+	.skip 0x4
+.global WorkAroundType
+WorkAroundType:
+	.skip 0x4
+.global WorkAroundSeekLocation
+WorkAroundSeekLocation:
+	.skip 0x8
+.global LastReadFinished
+LastReadFinished:
+	.skip 0x4
+.global lbl_802F239C
+lbl_802F239C:
+	.skip 0x4
+.global LastReadIssued
+LastReadIssued:
+	.skip 0x4
+.global lbl_802F23A4
+lbl_802F23A4:
+	.skip 0x4
+.global LastCommandWasRead
+LastCommandWasRead:
+	.skip 0x4
+.global NextCommandNumber
+NextCommandNumber:
+	.skip 0x4

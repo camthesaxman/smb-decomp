@@ -206,3 +206,27 @@ lbl_800C7844:
 /* 800C7864 000C3784  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 800C7868 000C3788  38 21 00 18 */	addi r1, r1, 0x18
 /* 800C786C 000C378C  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global ResetCallback
+ResetCallback:
+	.skip 0x4
+.global Down
+Down:
+	.skip 0x4
+.global LastState
+LastState:
+	.skip 0x8
+.global HoldUp
+HoldUp:
+	.skip 0x4
+.global lbl_802F233C
+lbl_802F233C:
+	.skip 0x4
+.global HoldDown
+HoldDown:
+	.skip 0x4
+.global lbl_802F2344
+lbl_802F2344:
+	.skip 0x4

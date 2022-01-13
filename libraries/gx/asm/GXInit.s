@@ -1111,3 +1111,18 @@ gx:
 	# ROM: 0x1EC0E8
 	.4byte gxData  ;# ptr
 	.4byte 0
+
+.section .sbss
+
+.global __piReg
+__piReg:
+	.skip 0x4
+.global __cpReg
+__cpReg:
+	.skip 0x4
+.global __peReg
+__peReg:
+	.skip 0x4
+.global __memReg
+__memReg:
+	.skip 0x4

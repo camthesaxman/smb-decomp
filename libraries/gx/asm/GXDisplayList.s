@@ -149,3 +149,9 @@ lbl_800E437C:
 /* 800E439C 000E02BC  38 21 00 18 */	addi r1, r1, 0x18
 /* 800E43A0 000E02C0  7C 08 03 A6 */	mtlr r0
 /* 800E43A4 000E02C4  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global OldCPUFifo
+OldCPUFifo:
+	.skip 0x8
