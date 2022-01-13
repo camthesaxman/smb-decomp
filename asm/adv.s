@@ -2415,7 +2415,6 @@ lbl_8001075C:
 /* 80010770 0000C690  83 81 00 30 */	lwz r28, 0x30(r1)
 /* 80010774 0000C694  38 21 00 40 */	addi r1, r1, 0x40
 /* 80010778 0000C698  4E 80 00 20 */	blr
-.endif
 
 .global submode_adv_info_main_func
 submode_adv_info_main_func:
@@ -2436,15 +2435,15 @@ submode_adv_info_main_func:
 /* 800107B4 0000C6D4  A0 03 00 18 */	lhz r0, 0x18(r3)
 /* 800107B8 0000C6D8  54 00 05 29 */	rlwinm. r0, r0, 0, 0x14, 0x14
 /* 800107BC 0000C6DC  41 82 00 1C */	beq lbl_800107D8
-/* 800107C0 0000C6E0  3C 60 80 1F */	lis r3, 0x801f
-/* 800107C4 0000C6E4  84 03 EC 20 */	lwzu r0, -0x13e0(r3)
+/* 800107C0 0000C6E0  3C 60 80 1F */	lis r3, modeCtrl@ha
+/* 800107C4 0000C6E4  84 03 EC 20 */	lwzu r0, modeCtrl@l(r3)
 /* 800107C8 0000C6E8  2C 00 00 1E */	cmpwi r0, 0x1e
 /* 800107CC 0000C6EC  40 81 00 0C */	ble lbl_800107D8
 /* 800107D0 0000C6F0  38 00 00 1E */	li r0, 0x1e
 /* 800107D4 0000C6F4  90 03 00 00 */	stw r0, 0(r3)
 lbl_800107D8:
-/* 800107D8 0000C6F8  3C 60 80 1F */	lis r3, 0x801f
-/* 800107DC 0000C6FC  84 03 EC 20 */	lwzu r0, -0x13e0(r3)
+/* 800107D8 0000C6F8  3C 60 80 1F */	lis r3, modeCtrl@ha
+/* 800107DC 0000C6FC  84 03 EC 20 */	lwzu r0, modeCtrl@l(r3)
 /* 800107E0 0000C700  2C 00 03 34 */	cmpwi r0, 0x334
 /* 800107E4 0000C704  40 82 00 0C */	bne lbl_800107F0
 /* 800107E8 0000C708  38 00 02 58 */	li r0, 0x258
@@ -2469,12 +2468,12 @@ lbl_8001081C:
 /* 8001082C 0000C74C  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 80010830 0000C750  38 83 5E 60 */	addi r4, r3, ballInfo@l
 /* 80010834 0000C754  80 04 00 94 */	lwz r0, 0x94(r4)
-/* 80010838 0000C758  3C 60 80 1F */	lis r3, lbl_801F0000@ha
+/* 80010838 0000C758  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 8001083C 0000C75C  54 00 05 66 */	rlwinm r0, r0, 0, 0x15, 0x13
 /* 80010840 0000C760  90 04 00 94 */	stw r0, 0x94(r4)
-/* 80010844 0000C764  84 03 3A 58 */	lwzu r0, 0x3a58(r3)
+/* 80010844 0000C764  84 03 3A 58 */	lwzu r0, lbl_801F3A58@l(r3)
 /* 80010848 0000C768  54 00 07 76 */	rlwinm r0, r0, 0, 0x1d, 0x1b
-/* 8001084C 0000C76C  90 03 00 00 */	stw r0, lbl_801F0000@l(r3)
+/* 8001084C 0000C76C  90 03 00 00 */	stw r0, 0(r3)
 lbl_80010850:
 /* 80010850 0000C770  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 80010854 0000C774  38 83 3A 58 */	addi r4, r3, lbl_801F3A58@l
@@ -2521,16 +2520,16 @@ lbl_800108D0:
 /* 800108F0 0000C810  40 82 00 08 */	bne lbl_800108F8
 /* 800108F4 0000C814  48 06 74 AD */	bl func_80077DA0
 lbl_800108F8:
-/* 800108F8 0000C818  3C 60 80 11 */	lis r3, lbl_8010FF90@ha
-/* 800108FC 0000C81C  38 03 FF 90 */	addi r0, r3, lbl_8010FF90@l
-/* 80010900 0000C820  3C E0 80 17 */	lis r7, lbl_801754C8@ha
+/* 800108F8 0000C818  3C 60 80 11 */	lis r3, infoScript@ha
+/* 800108FC 0000C81C  38 03 FF 90 */	addi r0, r3, infoScript@l
+/* 80010900 0000C820  3C E0 80 17 */	lis r7, infoEnglishText@ha
 /* 80010904 0000C824  3D 00 80 1F */	lis r8, modeCtrl@ha
 /* 80010908 0000C828  3C C0 80 17 */	lis r6, lbl_80175510@ha
 /* 8001090C 0000C82C  3C A0 80 20 */	lis r5, ballInfo@ha
 /* 80010910 0000C830  3C 80 80 20 */	lis r4, lbl_80206BF0@ha
 /* 80010914 0000C834  3C 60 80 1F */	lis r3, lbl_801EED3C@ha
 /* 80010918 0000C838  7C 19 03 78 */	mr r25, r0
-/* 8001091C 0000C83C  3B 87 54 C8 */	addi r28, r7, lbl_801754C8@l
+/* 8001091C 0000C83C  3B 87 54 C8 */	addi r28, r7, infoEnglishText@l
 /* 80010920 0000C840  3B 68 EC 20 */	addi r27, r8, modeCtrl@l
 /* 80010924 0000C844  3B A6 55 10 */	addi r29, r6, lbl_80175510@l
 /* 80010928 0000C848  3B C5 5E 60 */	addi r30, r5, ballInfo@l
@@ -2597,35 +2596,35 @@ lbl_800109EC:
 /* 80010A04 0000C924  7C 1D 00 2E */	lwzx r0, r29, r0
 /* 80010A08 0000C928  7C 09 03 A6 */	mtctr r0
 /* 80010A0C 0000C92C  4E 80 04 20 */	bctr
-.global lbl_80010A10
+.global lbl_80010A10  ;# 12
 lbl_80010A10:
 /* 80010A10 0000C930  80 79 00 08 */	lwz r3, 8(r25)
 /* 80010A14 0000C934  38 80 00 01 */	li r4, 1
 /* 80010A18 0000C938  48 00 80 5D */	bl camera_set_or_clear_flags
 /* 80010A1C 0000C93C  48 00 00 CC */	b lbl_80010AE8
-.global lbl_80010A20
+.global lbl_80010A20  ;# 11
 lbl_80010A20:
 /* 80010A20 0000C940  80 79 00 08 */	lwz r3, 8(r25)
 /* 80010A24 0000C944  38 80 00 00 */	li r4, 0
 /* 80010A28 0000C948  48 00 80 4D */	bl camera_set_or_clear_flags
 /* 80010A2C 0000C94C  48 00 00 BC */	b lbl_80010AE8
-.global lbl_80010A30
+.global lbl_80010A30  ;# 10
 lbl_80010A30:
 /* 80010A30 0000C950  48 07 3D 91 */	bl func_800847C0
 /* 80010A34 0000C954  48 00 00 B4 */	b lbl_80010AE8
-.global lbl_80010A38
+.global lbl_80010A38  ;# 9
 lbl_80010A38:
 /* 80010A38 0000C958  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010A3C 0000C95C  7C 00 07 74 */	extsb r0, r0
 /* 80010A40 0000C960  98 1E 00 03 */	stb r0, 3(r30)
 /* 80010A44 0000C964  48 00 00 A4 */	b lbl_80010AE8
-.global lbl_80010A48
+.global lbl_80010A48  ;# 8
 lbl_80010A48:
 /* 80010A48 0000C968  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010A4C 0000C96C  7C 00 07 74 */	extsb r0, r0
 /* 80010A50 0000C970  98 1F 00 08 */	stb r0, 8(r31)
 /* 80010A54 0000C974  48 00 00 94 */	b lbl_80010AE8
-.global lbl_80010A58
+.global lbl_80010A58  ;# 7
 lbl_80010A58:
 /* 80010A58 0000C978  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010A5C 0000C97C  38 60 00 00 */	li r3, 0
@@ -2633,7 +2632,7 @@ lbl_80010A58:
 /* 80010A64 0000C984  7C 05 07 74 */	extsb r5, r0
 /* 80010A68 0000C988  48 06 28 75 */	bl g_start_screen_fade
 /* 80010A6C 0000C98C  48 00 00 7C */	b lbl_80010AE8
-.global lbl_80010A70
+.global lbl_80010A70  ;# 6
 lbl_80010A70:
 /* 80010A70 0000C990  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010A74 0000C994  38 60 00 01 */	li r3, 1
@@ -2641,39 +2640,39 @@ lbl_80010A70:
 /* 80010A7C 0000C99C  7C 05 07 74 */	extsb r5, r0
 /* 80010A80 0000C9A0  48 06 28 5D */	bl g_start_screen_fade
 /* 80010A84 0000C9A4  48 00 00 64 */	b lbl_80010AE8
-.global lbl_80010A88
+.global lbl_80010A88  ;# 5
 lbl_80010A88:
 /* 80010A88 0000C9A8  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010A8C 0000C9AC  7C 03 07 74 */	extsb r3, r0
 /* 80010A90 0000C9B0  48 00 7F 75 */	bl camera_set_state
 /* 80010A94 0000C9B4  48 00 00 54 */	b lbl_80010AE8
-.global lbl_80010A98
+.global lbl_80010A98  ;# 4
 lbl_80010A98:
 /* 80010A98 0000C9B8  80 7E 00 94 */	lwz r3, 0x94(r30)
 /* 80010A9C 0000C9BC  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010AA0 0000C9C0  7C 60 03 78 */	or r0, r3, r0
 /* 80010AA4 0000C9C4  90 1E 00 94 */	stw r0, 0x94(r30)
 /* 80010AA8 0000C9C8  48 00 00 40 */	b lbl_80010AE8
-.global lbl_80010AAC
+.global lbl_80010AAC  ;# 3
 lbl_80010AAC:
 /* 80010AAC 0000C9CC  80 7E 00 94 */	lwz r3, 0x94(r30)
 /* 80010AB0 0000C9D0  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010AB4 0000C9D4  7C 60 00 78 */	andc r0, r3, r0
 /* 80010AB8 0000C9D8  90 1E 00 94 */	stw r0, 0x94(r30)
 /* 80010ABC 0000C9DC  48 00 00 2C */	b lbl_80010AE8
-.global lbl_80010AC0
+.global lbl_80010AC0  ;# 2
 lbl_80010AC0:
 /* 80010AC0 0000C9E0  38 60 00 01 */	li r3, 1
 /* 80010AC4 0000C9E4  38 80 00 14 */	li r4, 0x14
 /* 80010AC8 0000C9E8  38 A0 00 00 */	li r5, 0
 /* 80010ACC 0000C9EC  48 06 4E 35 */	bl func_80075900
 /* 80010AD0 0000C9F0  48 00 00 18 */	b lbl_80010AE8
-.global lbl_80010AD4
+.global lbl_80010AD4  ;# 1
 lbl_80010AD4:
 /* 80010AD4 0000C9F4  80 19 00 08 */	lwz r0, 8(r25)
 /* 80010AD8 0000C9F8  90 18 00 08 */	stw r0, 8(r24)
 /* 80010ADC 0000C9FC  48 00 00 0C */	b lbl_80010AE8
-.global lbl_80010AE0
+.global lbl_80010AE0  ;# 0
 lbl_80010AE0:
 /* 80010AE0 0000CA00  80 79 00 08 */	lwz r3, 8(r25)
 /* 80010AE4 0000CA04  48 01 AA C1 */	bl g_play_sound
@@ -2756,6 +2755,7 @@ lbl_80010BF8:
 /* 80010C00 0000CB20  38 21 00 60 */	addi r1, r1, 0x60
 /* 80010C04 0000CB24  7C 08 03 A6 */	mtlr r0
 /* 80010C08 0000CB28  4E 80 00 20 */	blr
+
 .global submode_adv_game_ready_init_func
 submode_adv_game_ready_init_func:
 /* 80010C0C 0000CB2C  7C 08 02 A6 */	mflr r0
@@ -2928,6 +2928,7 @@ lbl_80010E88:
 /* 80010E9C 0000CDBC  83 81 00 20 */	lwz r28, 0x20(r1)
 /* 80010EA0 0000CDC0  38 21 00 30 */	addi r1, r1, 0x30
 /* 80010EA4 0000CDC4  4E 80 00 20 */	blr
+
 .global submode_adv_game_ready_main_func
 submode_adv_game_ready_main_func:
 /* 80010EA8 0000CDC8  7C 08 02 A6 */	mflr r0
@@ -3026,6 +3027,7 @@ lbl_80010FFC:
 /* 80011000 0000CF20  38 21 00 28 */	addi r1, r1, 0x28
 /* 80011004 0000CF24  7C 08 03 A6 */	mtlr r0
 /* 80011008 0000CF28  4E 80 00 20 */	blr
+
 .global submode_adv_game_play_init_func
 submode_adv_game_play_init_func:
 /* 8001100C 0000CF2C  7C 08 02 A6 */	mflr r0
@@ -3174,6 +3176,7 @@ lbl_80011228:
 /* 8001122C 0000D14C  38 21 00 08 */	addi r1, r1, 8
 /* 80011230 0000D150  7C 08 03 A6 */	mtlr r0
 /* 80011234 0000D154  4E 80 00 20 */	blr
+
 .global submode_adv_ranking_init_func
 submode_adv_ranking_init_func:
 /* 80011238 0000D158  7C 08 02 A6 */	mflr r0
@@ -3192,6 +3195,7 @@ submode_adv_ranking_init_func:
 /* 8001126C 0000D18C  38 21 00 08 */	addi r1, r1, 8
 /* 80011270 0000D190  7C 08 03 A6 */	mtlr r0
 /* 80011274 0000D194  4E 80 00 20 */	blr
+.endif
 .global submode_adv_ranking_main_func
 submode_adv_ranking_main_func:
 /* 80011278 0000D198  7C 08 02 A6 */	mflr r0
@@ -4595,7 +4599,6 @@ lbl_802F2B50:
 lbl_802F2B54:
 	# ROM: 0x1EC574
 	.byte 0x3F, 0x80, 0x00, 0x00
-.endif
 
 .global lbl_802F2B58
 lbl_802F2B58:
@@ -4610,9 +4613,8 @@ lbl_802F2B5C:
 .global lbl_802F2B60
 lbl_802F2B60:
 	# ROM: 0x1EC580
-glabel string__s33
-	.asciz "@s33"
-	.balign 4
+    .4byte 0x40733333
+	.4byte 0
 
 .global lbl_802F2B68
 lbl_802F2B68:
@@ -4625,6 +4627,7 @@ lbl_802F2B70:
 	# ROM: 0x1EC590
 	.byte 0x40, 0x3E, 0x00, 0x00
 	.4byte 0
+.endif
 
 .global lbl_802F2B78
 lbl_802F2B78:
@@ -4665,6 +4668,7 @@ lbl_80174E48:
 glabel string_c_0xff5000_____Control_description_____
 	.asciz "c/0xff5000/    Control description!    "
 .endif
+.if 0
 glabel string_k_SU_PA_MONKI_BO_RUh_NOASOBIKATA
 	.asciz "k/SU-PA-MONKI-BO-RUh/NOASOBIKATA"
 	.balign 4
@@ -4715,6 +4719,8 @@ glabel string_k_TAIMUh_GA0NINARUMAENI
 glabel string_k_GO_RUh_SUREBA_p_TSUGI_h_NISUSUMERUYO
 	.asciz "k/GO-RUh/SUREBA p/TSUGI/h/NISUSUMERUYO"
 	.balign 4
+.endif
+.if 0
 glabel string_How_to_play_Super_Monkey_Ball_
 	.asciz "How to play Super Monkey Ball!"
 	.balign 4
@@ -4767,8 +4773,8 @@ glabel string_you_ll_advance_to_the_next_stage_
 	.asciz "you'll advance to the next stage!"
 	.balign 4
 
-.global lbl_801754C8
-lbl_801754C8:
+.global infoEnglishText
+infoEnglishText:
 	# ROM: 0x1724C8
 	.4byte string_How_to_play_Super_Monkey_Ball_  ;# ptr
 	.4byte string_The_further_you_push_the_Control_nStick__the_faster_you_ll_roll_  ;# ptr
@@ -4812,12 +4818,14 @@ lbl_80175544:
 glabel string______pre_load_stage__d_______n
 	.asciz "/*-- pre_load_stage(%d) --*/\n"
 	.balign 4
+.endif
 	.4byte 0
 
 .section .rodata
 
-.global lbl_8010FF90
-lbl_8010FF90:
+.if 0
+.global infoScript
+infoScript:
 	# ROM: 0x10CF90
 	.byte 0x11, 0x1C, 0xF4, 0x00
 	.4byte 0
@@ -4849,8 +4857,6 @@ lbl_8010FF90:
 	.byte 0x0D, 0x5C, 0xFF, 0x00
 	.4byte 0
 
-.global lbl_80110004
-lbl_80110004:
 	# ROM: 0x10D004
 	.byte 0x00, 0x00, 0x00, 0x02
 	.byte 0x0C, 0xE4, 0xF4, 0x00
@@ -4964,6 +4970,7 @@ lbl_80110004:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+.endif
 	.4byte 0
 
 .global lbl_801101C8

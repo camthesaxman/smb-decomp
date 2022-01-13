@@ -4,11 +4,13 @@
  */
 #include <math.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
 #include "background.h"
+#include "bitmap.h"
 #include "ball.h"
 #include "camera.h"
 #include "input.h"
@@ -97,7 +99,7 @@ void submode_adv_logo_init_func(void)
     preload_stage_files(ST_001_PLAIN);
     func_80021DB4(0);
     g_start_screen_fade(0x100, 0, 30);
-    gameSubmodeRequest = 4;
+    gameSubmodeRequest = SMD_ADV_LOGO_MAIN;
 }
 
 void update_av_logo_pos_and_sound(void)
@@ -230,7 +232,7 @@ void submode_adv_logo_main_func(void)
     if (--modeCtrl.unk0 <= 0)
     {
         g_dest_sprite_with_font(3);
-        gameSubmodeRequest = 1;
+        gameSubmodeRequest = SMD_ADV_DEMO_INIT;
     }
 }
 
@@ -1401,5 +1403,406 @@ void submode_adv_info_init_func(void)
     lbl_801EED3C.unk4 = 0;
     lbl_801EED3C.unkC = 0.0f;
     func_8002CF38(0xFFF60014, 0);
-    gameSubmodeRequest = 14;
+    gameSubmodeRequest = SMD_ADV_INFO_MAIN;
+}
+
+enum
+{
+    INFOCMD_CAMERA_SET_FLAGS   = -1,
+    INFOCMD_CAMERA_CLEAR_FLAGS = -2,  // unused
+    INFOCMD_UNK3               = -3,
+    INFOCMD_BALL_STATE         = -4,
+    INFOCMD_UNK5               = -5,
+    INFOCMD_FADE_FROM_BLACK    = -6,
+    INFOCMD_FADE_TO_BLACK      = -7,
+    INFOCMD_CAMERA_STATE       = -8,
+    INFOCMD_BALL_SET_FLAGS     = -9,
+    INFOCMD_BALL_CLEAR_FLAGS   = -10,
+    INFOCMD_UNK11              = -11,
+    INFOCMD_UNK12              = -12,
+    INFOCMD_PLAY_SOUND         = -13,
+};
+
+struct InfoCommand
+{
+    s16 time;
+    s8 cmdId;  // if non-negative, then this is the index of the English translation
+    char *jpText;
+    u32 param;
+};
+
+const struct InfoCommand infoScript[] =
+{
+    { 4380, INFOCMD_UNK12,            NULL, 0    },
+    { 4380, INFOCMD_CAMERA_SET_FLAGS, NULL, 2    },
+    { 4320, 0,  "k/SU-PA-MONKI-BO-RUh/NOASOBIKATA", 0 },
+    { 4140, INFOCMD_BALL_STATE,       NULL, 4    },
+    { 4140, INFOCMD_UNK5,             NULL, 1    },
+    { 4140, INFOCMD_CAMERA_SET_FLAGS, NULL, 2    },
+    { 4140, 1,  "k/KONNTORO-RUSUTEXIKKUh/WO\np/IRE/h/TAHOUNI k/KOROh/GARUYO", 0 },
+    { 3840, 2,  "k/BO-RUh/GAp/UGOku/h/KUTO k/KAMERAh/MOp/UGOku/h/KUKARA", 0 },
+    { 3600, 3,  "h/SORENIp/Au/h/WASETE\nk/KONNTORO-RUSUTEXIKKUh/WOp/IRE/h/YOU", 0 },
+    { 3420, INFOCMD_CAMERA_SET_FLAGS, NULL, 2    },
+    { 3300, INFOCMD_UNK12,            NULL, 1    },
+    { 3240, 4,  "p/MIGI/SHITA/h/NIARUNOHA k/MAPPUh/DAYO", 0 },
+    { 3000, 5,  "c/0xffffff/p/BUTTON_A/c/0x000000/k/BOTANh/WOp/OSU/h/SUTO", 0 },
+    { 2970, INFOCMD_UNK3,             NULL, 0    },
+    { 2970, INFOCMD_UNK12,            NULL, 2    },
+    { 2955, INFOCMD_UNK12,            NULL, 1    },
+    { 2760, 6,  "k/MAPPUh/NOp/OOkii/h/KISAGA p/KAwaru/h/WARUNDA", 0 },
+    { 2730, INFOCMD_UNK3,             NULL, 0    },
+    { 2730, INFOCMD_UNK12,            NULL, 2    },
+    { 2715, INFOCMD_UNK12,            NULL, 1    },
+    { 2520, 7,  "k/GO-RUp/CHITENN/h/YA p/CHIKEI/h/GAYOKUWAKARUYO", 0 },
+    { 2490, INFOCMD_UNK3,             NULL, 0    },
+    { 2490, INFOCMD_UNK12,            NULL, 2    },
+    { 2475, INFOCMD_UNK12,            NULL, 1    },
+    { 2250, INFOCMD_UNK12,            NULL, 0    },
+    { 2220, 8,  "k/BOKUh/HAk/BANANAh/GAk/DA~ISUKI!", 0 },
+    { 1980, 9,  "k/BANANAh/WO100p/HONN/p/TAberu/h/BERUTO", 0 },
+    { 1740, 10, "1UPh/SURUNDAYO", 0 },
+    { 1550, 11, "p/CHIKEI/h/NIp/Au/h/WASETEk/\nk/KONNTORO-RUSUTEXIKKUh/WOp/IRE/h/YOU", 0 },
+    { 1380, 12, "p/SAKAMICHI/h/WONOBORUp/TOKI/h/HA", 0 },
+    { 1240, 13, "k/KONNTORO-RUSUTEXIKKUh/WO\np/OOkii/h/KIKUKATAMUKETENE", 0 },
+    { 1100, 14, "k/HUROAh/KARAp/Ochiru/h/CHIRUTO1k/MISUh/DAYO", 0 },
+    {  960, 15, "p/Ochiru/h/CHINAIYOUNI p/KIbunn/h/WOTUKETENE~!", 1 },
+    {  600, INFOCMD_FADE_TO_BLACK,    NULL, 16   },
+    {  585, INFOCMD_FADE_FROM_BLACK,  NULL, 15   },
+    {  585, INFOCMD_BALL_STATE,       NULL, 16   },
+    {  585, INFOCMD_CAMERA_STATE,     NULL, 43   },
+    {  584, INFOCMD_BALL_STATE,       NULL, 4    },
+    {  584, INFOCMD_CAMERA_SET_FLAGS, NULL, 2    },
+    {  600, 16, "k/TAIMUh/GA0NINARUMAENI", 0 },
+    {  330, 17, "k/GO-RUh/SUREBA p/TSUGI/h/NISUSUMERUYO", 0 },
+    {   90, INFOCMD_BALL_CLEAR_FLAGS, NULL, 256  },
+    {   90, INFOCMD_BALL_CLEAR_FLAGS, NULL, 1024 },
+    {   90, INFOCMD_BALL_SET_FLAGS,   NULL, 512  },
+    {   90, INFOCMD_UNK11,            NULL, 0    },
+    {   90, INFOCMD_PLAY_SOUND,       NULL, 294  },
+
+    /* End */
+    { 0 },
+};
+
+char *infoEnglishText[] =
+{
+    "How to play Super Monkey Ball!",
+    "The further you push the Control\nStick, the faster you'll roll.",
+    "And if the ball starts moving,\nthe camera will follow.",
+    "So, you'll want to make sure\nto remember that when you move.",
+    "There's a map of the stage\nin the bottom right corner.",
+    "If you press the c/0xffffff/p/BUTTON_A/c/0x000000/a/ Button,",
+    "you can change\nthe size of the map!",
+    "The goal and level boundaries\nare easy to see.",
+    "I really love bananas!",
+    "If you eat 100 bananas,",
+    "you'll get an extra life!",
+    "Make sure to use the Control Stick\nand stay on the ground!",
+    "When you want to climb up a hill,",
+    "make sure to press hard\non the Control Stick!",
+    "If you fall off, you'll lose a lifep/TENNTENN/",
+    "Make sure not to fall off!",
+    "If you make it to the goal\nbefore time runs out,",
+    "you'll advance to the next stage!",
+};
+
+float adv_dummy_0_5(void) { return 0.5f; }  // needed to influence ordering of float constants
+
+void submode_adv_info_main_func(void)
+{
+    const struct InfoCommand *cmd;
+
+    if (gamePauseStatus & 0xA)
+        return;
+    if ((dipSwitches & DIP_DEBUG)
+     && (controllerInfo[0].unk0[0].button & (1<<(31-0x15)))
+     && (controllerInfo[0].unk0[2].button & (1<<(31-0x14)))
+     && modeCtrl.unk0 > 30)
+        modeCtrl.unk0 = 30;
+
+    if (modeCtrl.unk0 == 0x334)
+        modeCtrl.unk0 = 0x258;
+
+    if (lbl_801F3A58.unk0 & (1<<(31-0x1D)))
+    {
+        lbl_801F3A58.unk0 &= ~(1<<(31-0x1D));
+        camera_set_state(4);
+        g_play_sound(29);
+    }
+    if (modeCtrl.unk0 == 0x247)
+    {
+        ballInfo[0].flags &= ~(1<<(31-0x14));
+        lbl_801F3A58.unk0 &= ~(1<<(31-0x1C));
+    }
+    if (lbl_801F3A58.unk0 & 1)
+    {
+        lbl_801F3A58.unk0 &= ~1;
+        ballInfo[0].state = 5;
+        ballInfo[0].flags |= 0x500;
+        camera_set_state(14);
+    }
+    if (modeCtrl.unk0 < 0xD20 && modeCtrl.unk0 > 0xAC8)
+    {
+        Vec sp30;
+        sp30.x = 1.15f;
+        sp30.y = 0.5f;
+        sp30.z = 3.8f;
+        func_800390C8(5, &sp30, 1.0f);
+    }
+    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12))) && modeCtrl.unk0 == 0x10E0)
+        func_80077DA0();
+    for (cmd = infoScript; cmd->time != 0; cmd++)
+    {
+        if (modeCtrl.unk0 > cmd->time || modeCtrl.unk0 < cmd->time)
+            continue;
+        if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1<<(31-0x12))))
+        {
+            struct Struct80075900 sp8;
+
+            memset(&sp8, 0, sizeof(sp8));
+            if (cmd->cmdId == 16)
+                sp8.unkE = 0xC8;
+            if (cmd->cmdId == 17)
+                sp8.unkE = 0xB4;
+            sp8.unk15 = 1;
+            sp8.unk16 = (cmd->param != 0) ? 13 : 11;
+            func_80075900(1, 21, &sp8);
+            func_80075C18(1, infoEnglishText[cmd->cmdId]);
+        }
+        switch (cmd->cmdId)
+        {
+        case INFOCMD_CAMERA_SET_FLAGS:
+            camera_set_or_clear_flags(cmd->param, TRUE);
+            break;
+        case INFOCMD_CAMERA_CLEAR_FLAGS:
+            camera_set_or_clear_flags(cmd->param, FALSE);
+            break;
+        case INFOCMD_UNK3:
+            func_800847C0();
+            break;
+        case INFOCMD_BALL_STATE:
+            ballInfo[0].state = cmd->param;
+            break;
+        case INFOCMD_UNK5:
+            lbl_80206BF0[0].unk8 = cmd->param;
+            break;
+        case INFOCMD_FADE_FROM_BLACK:
+            g_start_screen_fade(0, 0, (s8)cmd->param);
+            break;
+        case INFOCMD_FADE_TO_BLACK:
+            g_start_screen_fade(1, 0, (s8)cmd->param);
+            break;
+        case INFOCMD_CAMERA_STATE:
+            camera_set_state((s8)cmd->param);
+            break;
+        case INFOCMD_BALL_SET_FLAGS:
+            ballInfo[0].flags |= cmd->param;
+            break;
+        case INFOCMD_BALL_CLEAR_FLAGS:
+            ballInfo[0].flags &= ~cmd->param;
+            break;
+        case INFOCMD_UNK11:
+            func_80075900(1, 20, 0);
+            break;
+        case INFOCMD_UNK12:
+            lbl_801EED3C.unk8 = cmd->param;
+            break;
+        case INFOCMD_PLAY_SOUND:
+            g_play_sound(cmd->param);
+            break;
+        }
+    }
+    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+     && modeCtrl.unk0 > 60
+     && lbl_802F1BA8 == 0)
+    {
+        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
+            func_8000FEC8(30);
+    }
+    if (modeCtrl.unk0 == 30)
+    {
+        struct Sprite *sprite;
+
+        g_start_screen_fade(0x101, 0, 31);
+        func_80075900(0, 20, NULL);
+        func_80075900(1, 20, NULL);
+        func_80075900(2, 20, NULL);
+        func_8002CF38(modeCtrl.unk0, 2);
+        sprite = g_find_sprite_with_probably_not_font(17);
+        if (sprite != NULL)
+            sprite->unk48 = 1;
+    }
+    if (--modeCtrl.unk0 <= 0)
+        gameSubmodeRequest = SMD_ADV_GAME_READY_INIT;
+}
+
+extern s16 lbl_801101DC[];
+extern u32 lbl_802F1BAC;
+
+void submode_adv_game_ready_init_func(void)
+{
+    struct MaybeReplayInfo sp8;
+    int r4;
+
+    if (gamePauseStatus & 0xA)
+        return;
+    func_800489F8();
+    func_80011BD4();
+    lbl_80250A68.unk14 = 0;
+    lbl_80250A68.unk0[lbl_80250A68.unk14] = func_800119C0();
+    if (lbl_80250A68.unk0[lbl_80250A68.unk14] < 0)
+    {
+        lbl_80250A68.unk0[lbl_80250A68.unk14] = 0;
+        gameSubmodeRequest = 3;
+        g_start_screen_fade(2, 0, 1);
+        return;
+    }
+    //lbl_80010C9C
+    lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+    g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
+    currStageId = sp8.unk2;
+    event_clear();
+    call_something_with_bmp_bmp_com(3);
+    modeCtrl.unk28 = 0;
+    modeCtrl.playerCount = 1;
+    modeCtrl.unk30 = 1;
+    camera_setup_splitscreen_viewports(modeCtrl.playerCount);
+    func_80044920();
+    func_8002FFEC();
+    ev_run_init(EVENT_INFO);
+    func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+    lbl_801F3A58.unk0 |= 0x810;
+    load_stage(currStageId);
+    ev_run_init(EVENT_STAGE);
+    ev_run_init(EVENT_WORLD);
+    ev_run_init(EVENT_BALL);
+    ev_run_init(EVENT_STOBJ);
+    ev_run_init(EVENT_ITEM);
+    ev_run_init(EVENT_OBJ_COLLISION);
+    ev_run_init(EVENT_MINIMAP);
+    ev_run_init(EVENT_CAMERA);
+    ev_run_init(EVENT_SPRITE);
+    ev_run_init(EVENT_SOUND);
+    ev_run_init(EVENT_EFFECT);
+    ev_run_init(EVENT_REND_EFC);
+    ev_run_init(EVENT_BACKGROUND);
+    func_800972CC();
+    ev_suspend(EVENT_WORLD);
+    func_80021DB4(currStageId);
+    func_800846B0(4);
+    bitmap_load_group(BMP_NML);
+    lbl_801F3A58.unk0 |= 0x108;
+    modeCtrl.unk0 = 0x78;
+    ballInfo[0].state = 2;
+    ballInfo[0].bananas = 0;
+    camera_set_state(10);
+    func_80077E34();
+    func_800885EC();
+    func_80088E90();
+    func_80076620(0);
+    func_80076C54(0);
+    func_80088C28();
+    lbl_801EED3C.unk8 = 0;
+    lbl_802F1BAC = 0;
+    r4 = lbl_801101DC[backgroundInfo.bgId];
+    if (r4 != -1 && r4 != lbl_802014E0.unk0 && r4 + 1 != lbl_802014E0.unk0)
+        func_8002CF38(0xFFF60000 | r4, 0);
+    g_start_screen_fade(0x100, 0, 30);
+    gameSubmodeRequest = SMD_ADV_GAME_READY_MAIN;
+}
+
+void submode_adv_game_ready_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+    if (modeCtrl.unk0 == 0x78)
+    {
+        struct Sprite *sprite = g_find_sprite_with_probably_not_font(15);
+
+        if (sprite != NULL)
+            sprite->unk48 = 15;
+        func_800790BC(0x78);
+        func_800846B0(3);
+    }
+    if (modeCtrl.unk0 == 24.0)
+        ballInfo[0].state = 3;
+    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+     && modeCtrl.unk0 > 30
+     && lbl_802F1BA8 == 0)
+    {
+        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
+            func_8000FEC8(30);
+    }
+    if (--modeCtrl.unk0 <= 0)
+    {
+        struct MaybeReplayInfo sp8;
+
+        g_get_replay_info(func_80011A84(), &sp8);
+        if (gamePauseStatus & (1<<(31-0x1D)))
+            printf("/*-- pre_load_stage(%d) --*/\n", sp8.unk2);
+        preload_stage_files(sp8.unk2);
+        gameSubmodeRequest = SMD_ADV_GAME_PLAY_INIT;
+    }
+}
+
+void submode_adv_game_play_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+    modeCtrl.unk0 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
+    ev_restart(2);
+    func_8007C104(60);
+    lbl_801F3A58.unk0 &= -265;
+    ballInfo[0].state = 9;
+    lbl_80206BF0[0].unk8 = 9;
+    camera_set_state(0);
+    lbl_801F3A58.unk0 |= 0x810;
+    lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+    g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+    gameSubmodeRequest = SMD_ADV_GAME_PLAY_MAIN;
+}
+
+void submode_adv_game_play_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+    if (lbl_801F3A58.unk0 & 1)
+    {
+        lbl_801F3A58.unk0 &= ~1;
+        modeCtrl.unk18 = 0xB4;
+        gameSubmodeRequest = SMD_ADV_RANKING_INIT;
+        lbl_80206BF0[0].unk8 = 6;
+        camera_set_state(14);
+        func_800846B0(1);
+    }
+    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+     && modeCtrl.unk0 > 30
+     && lbl_802F1BA8 == 0)
+    {
+        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
+         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
+            func_8000FEC8(30);
+    }
+    modeCtrl.unk0--;
+    if (modeCtrl.unk0 < 0)
+    {
+        gameSubmodeRequest = SMD_ADV_RANKING_INIT;
+        func_800846B0(1);
+    }
+}
+
+void submode_adv_ranking_init_func(void)
+{
+    modeCtrl.unk0 = 0x9D8;
+    g_dest_sprite_with_font(2);
+    g_dest_sprite_with_font(18);
+    gameSubmodeRequest = 12;
 }

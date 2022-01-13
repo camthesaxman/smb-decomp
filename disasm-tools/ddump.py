@@ -7,11 +7,11 @@ import sys
 import struct
 
 #startLabel = sys.argv[2]
-startLabel = 'lbl_8010FAB0'  # starting label
+startLabel = 'lbl_8010FF90'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>iIi'
+structFmt = '>hbxII'
 GXColorFmt = '{%i, %i, %i, %i}'
-cFmt = '{ %4i, %2u, %4i }'
+cFmt = '{ %i, %i, 0x%X, %u },'
 dumping = False
 
 def print_struct(data):
@@ -30,7 +30,10 @@ def read_data(line):
     # .4byte
     m = re.match(r'\s*\.4byte\s+(\w+)', line)
     if m:
-        value = int(m.groups()[0], 0)
+        try:
+            value = int(m.groups()[0], 0)
+        except ValueError:
+            value = 0xDEADBEEF
         return bytearray(
             [(value >> 24) & 0xFF,
             (value >> 16) & 0xFF,

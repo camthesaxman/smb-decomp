@@ -289,7 +289,7 @@ struct World
     s16 unk0;
     s16 unk2;
     u8 filler4[0x8-0x4];
-    u8 unk8;
+    s8 unk8;
     u8 filler9[0x1C-0x9];
     float unk1C;
     u16 unk20;
@@ -333,7 +333,7 @@ struct MovableStagePart
 struct MaybeReplayInfo
 {
     u16 flags;  // (1 << 5) = expert, (1 << 6) = master
-    u8 unk2;
+    u8 unk2;  // stageId?
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 floorNum;
     u8 unk5;

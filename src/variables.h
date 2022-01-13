@@ -3,7 +3,7 @@
 // extern ? crcTable;
 // extern ? introCutsceneScript;
 // extern ? lbl_8010FF84;
-// extern ? lbl_8010FF90;
+// extern ? infoScript;
 // extern ? lbl_80110004;
 // extern ? lbl_801101C8;
 // extern ? lbl_801101DC;
@@ -117,7 +117,7 @@ extern float lbl_801741CC[];
 // extern ? lbl_801741D8;
 // extern ? lbl_80174E14;
 // extern ? lbl_80174E38;
-// extern ? lbl_801754C8;
+// extern ? infoEnglishText;
 // extern ? lbl_80175510;
 // extern ? lbl_80175544;
 // extern ? lbl_80175568;
@@ -615,7 +615,7 @@ extern struct Sphere stageBounds;
 // extern ? lbl_8020AE40;
 extern struct
 {
-    u32 unk0[4];
+    s32 unk0[4];
     float unk10;
     s32 unk14;
 } lbl_80250A68;
