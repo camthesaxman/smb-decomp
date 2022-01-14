@@ -19,6 +19,15 @@
 #include "mode.h"
 #include "stage.h"
 
+u32 introBackdropColor;
+u32 advSubmode;
+s32 lbl_802F1BC4;
+s16 lbl_802F1BBC[4];
+s16 lbl_802F1BB4[4];
+s32 lbl_802F1BB0;
+u32 lbl_802F1BAC;
+s32 lbl_802F1BA8;
+
 void mode_adv_func(void)
 {
     if (!(gameSubmode > SMD_ADV_TOP && gameSubmode < SMD_ADV_BOTTOM))
@@ -1259,7 +1268,7 @@ void submode_adv_title_reinit_func(void)
         sp8.unk16 = 14;
         sp8.unk1C = NULL;
         func_80075900(0, 1, &sp8);
-        func_80075C18(0, lbl_802F02E8);
+        func_80075C18(0, " \n ");
         func_80077734();
     }
     load_stage(ST_150_TUTORIAL);
@@ -1269,6 +1278,9 @@ void submode_adv_title_reinit_func(void)
     g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
 }
+
+s32 lbl_802F02EC = 6;
+s32 lbl_802F02F0 = 6;
 
 void submode_adv_title_main_func(void)
 {
@@ -1302,7 +1314,7 @@ void submode_adv_title_main_func(void)
             sp8.unk16 = 14;
             sp8.unk1C = NULL;
             func_80075900(0, 1, &sp8);
-            func_80075C18(0, lbl_802F02E8);
+            func_80075C18(0, " \n ");
             func_80077734();
         }
     }
@@ -1640,7 +1652,6 @@ void submode_adv_info_main_func(void)
 }
 
 extern s16 lbl_801101DC[];
-extern u32 lbl_802F1BAC;
 
 void submode_adv_game_ready_init_func(void)
 {
@@ -1660,7 +1671,6 @@ void submode_adv_game_ready_init_func(void)
         g_start_screen_fade(2, 0, 1);
         return;
     }
-    //lbl_80010C9C
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
     currStageId = sp8.unk2;
@@ -2010,4 +2020,146 @@ void submode_adv_ranking_main_func(void)
         camera_setup_singleplayer_viewport();
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
     }
+}
+
+int func_800119C0(void)
+{
+    struct MaybeReplayInfo sp8;
+    int i;
+
+    for (i = lbl_802F02EC + 1; i < 7; i++)
+    {
+        g_get_replay_info(i, &sp8);
+        if ((sp8.flags & (1<<(31-0x1B))) && (sp8.flags & 1))
+            break;
+    }
+    if (i >= 7)
+    {
+        for (i = 0; i < lbl_802F02EC; i++)
+        {
+            g_get_replay_info(i, &sp8);
+            if ((sp8.flags & (1<<(31-0x1B))) && (sp8.flags & 1))
+                break;
+        }
+    }
+    lbl_802F02EC = i;
+    g_get_replay_info(lbl_802F02EC, &sp8);
+    if (sp8.unk2 == 0)
+        sp8.unk2 = 1;  // pointless
+    return lbl_802F02EC;
+}
+
+int func_80011A84(void)
+{
+    struct MaybeReplayInfo sp8;
+    int i;
+
+    for (i = lbl_802F02F0 + 1; i < 7; i++)
+    {
+        if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
+            continue;
+        g_get_replay_info(i, &sp8);
+        if (sp8.flags & 0x83)
+            break;
+    }
+    if (i >= 7)
+    {
+        for (i = 0; i <= lbl_802F02F0; i++)
+        {
+            if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
+                continue;
+            g_get_replay_info(i, &sp8);
+            if (sp8.flags & 0x83)
+                break;
+        }
+        if (i > lbl_802F02F0)
+            i = lbl_802F02EC;
+    }
+    lbl_802F02F0 = i;
+    g_get_replay_info(lbl_802F02F0, &sp8);
+    if (sp8.unk2 == 0)
+        sp8.unk2 = 1;  // pointless
+    lbl_802F1BC4 = 1;
+    return lbl_802F02F0;
+}
+
+int func_80011B98(void)
+{
+    int ret = (lbl_802F1BC4 != 0) ? lbl_802F02F0 : func_80011A84();
+
+    lbl_802F1BC4 = 0;
+    return ret;
+}
+
+void func_80011BD4(void)
+{
+    lbl_802F1BC4 = 0;
+}
+
+int func_80011BE0(void)
+{
+    return 44;
+}
+
+void submode_adv_start_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+    modeCtrl.unk0 = 30;
+    lbl_802F1BA8 = 0;
+    func_8002B5C8(2);
+    g_start_screen_fade(0x101, 0, 32);
+    func_80075900(0, 20, 0);
+    func_80075900(1, 20, 0);
+    func_80075900(2, 20, 0);
+    func_80075900(3, 20, 0);
+    func_8002CF38(modeCtrl.unk0, 2);
+    if (g_find_sprite_with_probably_not_font(17) != NULL
+     && g_find_sprite_with_probably_not_font(17)->unk48 == 0)
+        g_find_sprite_with_probably_not_font(17)->unk48 = 1;
+    gameSubmodeRequest = SMD_ADV_START_MAIN;
+}
+
+void submode_adv_start_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+    if (--modeCtrl.unk0 <= 0)
+    {
+        func_80011D90();
+        introAVLogoInfo.unk14 = 0;
+        lbl_801EED2C.unk8 = 0xB56;
+        lbl_801EED2C.unk4 = 0;
+        camera_setup_singleplayer_viewport();
+        if (modeCtrl.levelSetFlags & 1)
+        {
+            gameModeRequest = MD_SEL;
+            gameSubmodeRequest = SMD_SEL_NGC_INIT;
+        }
+        else if (modeCtrl.levelSetFlags & (1<<(31-0xD)))
+        {
+            gameModeRequest = MD_OPTION;
+            gameSubmodeRequest = SMD_OPTION_SELECT_INIT;
+        }
+        else
+        {
+            gameModeRequest = MD_SEL;
+            gameSubmodeRequest = SMD_SEL_STAGE_INIT;
+        }
+    }
+}
+
+void func_80011D90(void)
+{
+    spritePoolInfo.unkC[0] = 2;
+    spritePoolInfo.unkC[1] = 0;
+    spritePoolInfo.unkC[2] = 0;
+    spritePoolInfo.unkC[3] = 0;
+    modeCtrl.playerCount = 1;
+    modeCtrl.unk30 = 1;
+    modeCtrl.unk28 = 0;
+    modeCtrl.unk40 = 0;
+    modeCtrl.unk2C = 0;
+    currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
+    camera_setup_singleplayer_viewport();
 }

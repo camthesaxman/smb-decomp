@@ -73,7 +73,7 @@ SOURCES := \
 	src/polydisp.c \
 	asm/polydisp.s \
 	src/adv.c \
-	asm/adv.s \
+	asm/code_5.s \
 	src/sel.c \
 	asm/game.s \
 	src/camera.c \

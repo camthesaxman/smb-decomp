@@ -815,8 +815,8 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802F0248;
 // extern ? lbl_802F02E0;
 extern char lbl_802F02E8[8];  // unknown type
-// extern ? lbl_802F02EC;
-// extern ? lbl_802F02F0;
+extern s32 lbl_802F02EC;
+extern s32 lbl_802F02F0;
 // extern ? lbl_802F02F8;
 extern s8 lbl_802F0310[8];
 // extern ? lbl_802F03EC;
@@ -1190,7 +1190,7 @@ extern s32 lbl_802F1BA8;
 extern s32 lbl_802F1BB0;
 extern s16 lbl_802F1BB4[4];
 extern s16 lbl_802F1BBC[4];
-// extern ? lbl_802F1BC4;
+extern s32 lbl_802F1BC4;
 extern u32 advSubmode;
 extern u32 introBackdropColor;
 
