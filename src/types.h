@@ -330,10 +330,10 @@ struct MovableStagePart
     Mtx unk54;
 };
 
-struct MaybeReplayInfo
+struct ReplayInfo
 {
     u16 flags;  // (1 << 5) = expert, (1 << 6) = master
-    u8 unk2;  // stageId?
+    u8 stageId;
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 floorNum;
     u8 unk5;
@@ -743,24 +743,6 @@ struct Sphere
 struct Preview;
 struct NaomiDispList;
 
-struct Struct801EED04
-{
-    Vec pos;
-    s16 xrot;
-    s16 zrot;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18[4];
-};
-
-struct Struct801EED2C
-{
-    u8 filler0[4];
-    u32 unk4;
-    s32 unk8;
-    s32 unkC;
-};
-
 struct Struct80075900
 {
     u8 filler0[0xC];
@@ -775,18 +757,18 @@ struct Struct80075900
     u8 filler20[0x28-0x20];
 };
 
-struct Struct801EED3C
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    float unkC;
-    u8 filler10[4];
-};
-
 struct Struct8009544C
 {
     u8 filler0[0x6];
     u16 unk6;
     u8 filler8[0x18-0x8];
 };  // size = 0x18
+
+struct Struct8000F030
+{
+    u8 filler0[0xC];
+    u16 unkC;
+    u16 unkE;
+    u8 filler10[0x20-0x10];
+    s32 unk20;
+};

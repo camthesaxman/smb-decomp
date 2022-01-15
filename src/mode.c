@@ -3,6 +3,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
@@ -665,7 +666,7 @@ void g_menu_input_debug(void)
         if ((gameMode == MD_GAME && (modeCtrl.levelSetFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
-            if (!(lbl_801F3D88[0] & (1<<(31-0x1B))))
+            if (!(lbl_801F3D88[0] & (1 << 4)))
                 bvar = FALSE;
         }
 
@@ -757,9 +758,9 @@ void g_menu_input_notdebug(void)
     switch (gameMode)
     {
     case MD_ADV:
-        if (!(modeCtrl.levelSetFlags & (1<<(31-0x1E)))
+        if (!(modeCtrl.levelSetFlags & (1 << 1))
          && gameSubmode == SMD_ADV_TITLE_MAIN
-         && (modeCtrl.levelSetFlags & (1<<(31-0x1D))))
+         && (modeCtrl.levelSetFlags & (1 << 2)))
         {
             struct Sprite *sprite = g_find_sprite_with_probably_not_font(modeCtrl.unk10 + 12);
             if (sprite != NULL && sprite->unk10 > 0)
@@ -805,7 +806,7 @@ static int unkFunc8000A0F4_inline(void)
 {
     if (lbl_80290170.unk8 != 0)
         return FALSE;
-    if (lbl_801EEC68.unk4 & (1<<(31-0x1E)))
+    if (lbl_801EEC68.unk4 & (1 << 1))
         return FALSE;
     switch (gameSubmode)
     {

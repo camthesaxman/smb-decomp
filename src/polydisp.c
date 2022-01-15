@@ -4,6 +4,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
@@ -249,9 +250,9 @@ float lbl_80173FD0[] = { 0.4, 0.25, 0.25, 0.5 };
 void draw_intro_av_logo(void)
 {
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&introAVLogoInfo.pos);
-    mathutil_mtxA_rotate_x(introAVLogoInfo.xrot);
-    mathutil_mtxA_rotate_z(introAVLogoInfo.zrot);
+    mathutil_mtxA_translate(&advLogoInfo.pos);
+    mathutil_mtxA_rotate_x(advLogoInfo.xrot);
+    mathutil_mtxA_rotate_z(advLogoInfo.zrot);
     func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x2C));
 }
 
@@ -261,8 +262,8 @@ void func_8000B96C(void)
     func_80054FF0();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
-    if (!(lbl_801EED2C.unk4 & (1 << (31-0x1B)))
-     && !(lbl_801EED2C.unk4 & (1 << (31-0x1D))))
+    if (!(advDemoInfo.flags & (1 << (31-0x1B)))
+     && !(advDemoInfo.flags & (1 << (31-0x1D))))
     {
         int i;
         for (i = 0; i < 3; i++)
@@ -284,18 +285,18 @@ void func_8000B96C(void)
         }
         func_8000E3BC();
     }
-    if (lbl_801EED2C.unk4 & 1)
+    if (advDemoInfo.flags & 1)
     {
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(
             ballInfo[0].unkFC->unk30.x,
             ballInfo[0].unkFC->unk30.y - 0.25,
             ballInfo[0].unkFC->unk30.z);
-        if (lbl_801EED2C.unk8 >= 0x440 && lbl_801EED2C.unk8 < 0x51A)
+        if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
         func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x36));
     }
-    if (lbl_801EED2C.unk4 & (1 << (31-0x15)))
+    if (advDemoInfo.flags & (1 << (31-0x15)))
     {
         struct Struct80173FA8 *r27 = lbl_80173FA8;
         int i;
@@ -309,11 +310,11 @@ void func_8000B96C(void)
             func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, r27->unk0));
         }
     }
-    if (!(lbl_801EED2C.unk4 & (1 << (31-0x1B))))
+    if (!(advDemoInfo.flags & (1 << (31-0x1B))))
     {
-        if (lbl_801EED2C.unk4 & (1 << (31-0x1E)))
+        if (advDemoInfo.flags & (1 << (31-0x1E)))
             stage_draw();
-        if (lbl_801EED2C.unk4 & (1 << (31-0x14)))
+        if (advDemoInfo.flags & (1 << (31-0x14)))
             func_80094A34();
 
         ord_tbl_set_depth_offset(400.0f);
@@ -323,19 +324,19 @@ void func_8000B96C(void)
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
             func_80095398(16);
 
-        if ((lbl_801EED2C.unk4 & (1 << (31-0x1A)))
-         && !(lbl_801EED2C.unk4 & (1 << (31-0x13)))
+        if ((advDemoInfo.flags & (1 << (31-0x1A)))
+         && !(advDemoInfo.flags & (1 << (31-0x13)))
          && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
             item_draw();
 
         if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING
-         || (lbl_801EED2C.unk4 & (1 << (31-0x1C))))
+         || (advDemoInfo.flags & (1 << (31-0x1C))))
             stobj_draw();
 
         if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
             effect_draw();
 
-        if (lbl_801EED2C.unk4 & (1 << (31-0x1D)))
+        if (advDemoInfo.flags & (1 << (31-0x1D)))
             ball_draw();
     }
     draw_monkey();
@@ -762,7 +763,7 @@ void func_8000CA9C(void)
 
     r5 = FALSE;
     if ((gameSubmode == SMD_GAME_CONTINUE_INIT || gameSubmode == SMD_GAME_CONTINUE_MAIN)
-     && (modeCtrl.levelSetFlags & (1<<(31-0x1D)))
+     && (modeCtrl.levelSetFlags & (1 << 2))
      && modeCtrl.unk10 == 1)
         r5 = TRUE;
 
@@ -773,7 +774,7 @@ void func_8000CA9C(void)
 
         if (gameSubmode != SMD_GAME_CONTINUE_INIT && gameSubmode != SMD_GAME_CONTINUE_MAIN)
             f1 = 0.0f;
-        else if ((modeCtrl.levelSetFlags & (1<<(31-0x1D))) && modeCtrl.unk10 == 0)
+        else if ((modeCtrl.levelSetFlags & (1 << 2)) && modeCtrl.unk10 == 0)
             f1 = r4 / 60.0f;
         else
             f1 = 1.0f;
@@ -880,10 +881,10 @@ void func_8000D018(void)
         if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
         {
             if ((spritePoolInfo.unkC[i] == 0 || spritePoolInfo.unkC[i] == 4)
-             && !(cameraInfo[i].flags & (1<<(31-0x19))))
+             && !(cameraInfo[i].flags & (1 << 6)))
                 continue;
 
-            if (cameraInfo[i].flags & (1<<(31-0x19)))
+            if (cameraInfo[i].flags & (1 << 6))
                 lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
@@ -921,8 +922,8 @@ void func_8000D018(void)
                 g_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(8);
-            if (cameraInfo[i].flags & (1<<(31-0x19)))
-                lbl_801EEC90.unk0 &= ~(1<<(31-0x1C));
+            if (cameraInfo[i].flags & (1 << 6))
+                lbl_801EEC90.unk0 &= ~(1 << 3);
         }
     }
     currentBallStructPtr = r23;
@@ -1234,7 +1235,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
     case SMD_GAME_NAMEENTRY_READY_INIT:
-        if (!(modeCtrl.levelSetFlags & (1<<(31-0x1A))) && modeCtrl.unk28 != 1)
+        if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.unk28 != 1)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
             g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);

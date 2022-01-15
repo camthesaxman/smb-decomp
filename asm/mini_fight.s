@@ -31674,7 +31674,7 @@ lbl_0001D678:
     .4byte ball_func_18
     .4byte ball_func_19
     .4byte ball_func_20
-    .4byte ball_func_21
+    .4byte ball_func_demo_init
     .4byte ball_func_mini
     .4byte ball_func_mini
     .4byte ball_func_mini

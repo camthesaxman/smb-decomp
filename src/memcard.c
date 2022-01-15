@@ -753,7 +753,7 @@ void init_gamedata_file(void)
 void init_replay_file_data(void)
 {
     DVDFileInfo file;
-    struct MaybeReplayInfo sp88;
+    struct ReplayInfo sp88;
     char category[12];
     char replayFileName[68];
     OSCalendarTime calendarTime;
@@ -766,7 +766,7 @@ void init_replay_file_data(void)
     // copy banner image
     if (DVDOpen("preview/96x32.tpl", &file) == 0)
         OSPanic("memcard.c", 1026, "cannot open replay banner image");
-    if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
+    if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.stageId - 1) * 0x1800) == 0)
         OSPanic("memcard.c", 1029, "cannot read replay banner image");
     memcpy(memcardReplayData->bannerImg, buffer, 0x1800);
     DVDClose(&file);
@@ -843,7 +843,7 @@ void init_replay_file_data(void)
     cardStat.bannerFormat = (cardStat.bannerFormat & ~(0x1<<2));
 
     memcardReplayData->replayFlags = sp88.flags;
-    memcardReplayData->unk4 = sp88.unk2;
+    memcardReplayData->unk4 = sp88.stageId;
     memcardReplayData->difficulty = sp88.difficulty;
     memcardReplayData->floorNum = sp88.floorNum;
     memcardReplayData->unk7 = sp88.unk5;

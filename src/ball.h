@@ -183,7 +183,7 @@ void ball_func_16(struct Ball *);
 void ball_func_18(struct Ball *);
 void ball_func_19(struct Ball *);
 void ball_func_20(struct Ball *);
-void ball_func_21(struct Ball *);
+void ball_func_demo_init(struct Ball *);
 void ball_func_mini(struct Ball *);
 void ball_func_27(struct Ball *);
 void ball_func_28(struct Ball *);

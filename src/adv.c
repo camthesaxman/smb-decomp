@@ -9,6 +9,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
 #include "background.h"
 #include "bitmap.h"
 #include "ball.h"
@@ -27,6 +28,9 @@ s16 lbl_802F1BB4[4];
 s32 lbl_802F1BB0;
 u32 lbl_802F1BAC;
 s32 lbl_802F1BA8;
+
+static void func_8000FEC8(int);
+static void func_80011D90(void);
 
 void mode_adv_func(void)
 {
@@ -47,6 +51,10 @@ void mode_adv_func(void)
     gameSubmodeFuncs[gameSubmode]();
 }
 
+/**
+ * Warning Submode - Displays memory card messages immediately upon bootup
+ */
+
 void submode_adv_warning_init_func(void)
 {
     introBackdropColor = 0;
@@ -63,6 +71,10 @@ void submode_adv_warning_main_func(void)
         gameSubmodeRequest = SMD_ADV_LOGO_INIT;
 }
 
+/**
+ * Rating Submode - Not used
+ */
+
 void submode_adv_rating_init_func(void) {}
 
 void submode_adv_rating_main_func(void)
@@ -74,9 +86,12 @@ void submode_adv_rating_main_func(void)
         gameSubmodeRequest = (lbl_802F1B78 != 0) ? SMD_ADV_LOGO_INIT : SMD_ADV_INFO_INIT;
 }
 
-Vec lbl_801EECF8; FORCE_BSS_ORDER(lbl_801EECF8)
+/**
+ * Logo Submode - Shows a rolling 3D Amusement Vision logo
+ */
 
-struct Struct801EED04 introAVLogoInfo; FORCE_BSS_ORDER(introAVLogoInfo)  // + 0xC
+static Vec prevLogoPos;  // position of the logo on previous frame
+struct AdvLogoInfo advLogoInfo;
 
 void submode_adv_logo_init_func(void)
 {
@@ -85,13 +100,13 @@ void submode_adv_logo_init_func(void)
 
     func_80011D90();
     introBackdropColor = 0x00FFFFFF;
-    modeCtrl.unk0 = 0x348;
+    modeCtrl.unk0 = 840;
     modeCtrl.levelSetFlags = 0;
-    introAVLogoInfo.unk14 = modeCtrl.unk0;
-    introAVLogoInfo.unk10 = 0;
-    lbl_801EECF8.x = 0.0f;
-    lbl_801EECF8.y = 0.0f;
-    lbl_801EECF8.z = 0.0f;
+    advLogoInfo.unk14 = modeCtrl.unk0;
+    advLogoInfo.unk10 = 0;
+    prevLogoPos.x = 0.0f;
+    prevLogoPos.y = 0.0f;
+    prevLogoPos.z = 0.0f;
     func_8002FFEC();
     func_80021DB4(0);
     lbl_80206BC0[0] = 0;
@@ -113,46 +128,46 @@ void submode_adv_logo_init_func(void)
 
 void update_av_logo_pos_and_sound(void)
 {
-    if (introAVLogoInfo.unk10 <= 120)
-        introAVLogoInfo.pos.x = 0.0f;
-    else if (introAVLogoInfo.unk10 <= 240)
-        introAVLogoInfo.pos.x = 4.5f * (1.0 - __fabs(mathutil_cos((introAVLogoInfo.unk10 - 120) * 273)));
+    if (advLogoInfo.unk10 <= 120)
+        advLogoInfo.pos.x = 0.0f;
+    else if (advLogoInfo.unk10 <= 240)
+        advLogoInfo.pos.x = 4.5f * (1.0 - __fabs(mathutil_cos((advLogoInfo.unk10 - 120) * 273)));
 
-    if (introAVLogoInfo.unk10 <= 180)
-        introAVLogoInfo.pos.y = (180 - introAVLogoInfo.unk10) * -0.004;
+    if (advLogoInfo.unk10 <= 180)
+        advLogoInfo.pos.y = (180 - advLogoInfo.unk10) * -0.004;
 
-    if (introAVLogoInfo.unk10 <= 180)
-        introAVLogoInfo.pos.z = (1.0 - mathutil_sin(introAVLogoInfo.unk10 * 91)) * 280.0;
-    else if (introAVLogoInfo.unk10 > 300 && introAVLogoInfo.unk10 <= 420)
-        introAVLogoInfo.pos.z = (introAVLogoInfo.unk10 - 300) * 1.35;
+    if (advLogoInfo.unk10 <= 180)
+        advLogoInfo.pos.z = (1.0 - mathutil_sin(advLogoInfo.unk10 * 91)) * 280.0;
+    else if (advLogoInfo.unk10 > 300 && advLogoInfo.unk10 <= 420)
+        advLogoInfo.pos.z = (advLogoInfo.unk10 - 300) * 1.35;
 
-    if (introAVLogoInfo.unk10 <= 120)
-        introAVLogoInfo.zrot = 0;
-    else if (introAVLogoInfo.unk10 <= 180)
-        introAVLogoInfo.zrot = (introAVLogoInfo.unk10 - 120) * -546;
-    else if (introAVLogoInfo.unk10 <= 240)
-        introAVLogoInfo.zrot = (240 - introAVLogoInfo.unk10) * -546;
+    if (advLogoInfo.unk10 <= 120)
+        advLogoInfo.zrot = 0;
+    else if (advLogoInfo.unk10 <= 180)
+        advLogoInfo.zrot = (advLogoInfo.unk10 - 120) * -546;
+    else if (advLogoInfo.unk10 <= 240)
+        advLogoInfo.zrot = (240 - advLogoInfo.unk10) * -546;
 
-    if (introAVLogoInfo.unk10 <= 180)
-        introAVLogoInfo.xrot = introAVLogoInfo.unk10 * -546;
-    else if (introAVLogoInfo.unk10 <= 300)
-        introAVLogoInfo.xrot = 0;
-    else if (introAVLogoInfo.unk10 <= 420)
-        introAVLogoInfo.xrot = (introAVLogoInfo.unk10 - 300) * 546;
+    if (advLogoInfo.unk10 <= 180)
+        advLogoInfo.xrot = advLogoInfo.unk10 * -546;
+    else if (advLogoInfo.unk10 <= 300)
+        advLogoInfo.xrot = 0;
+    else if (advLogoInfo.unk10 <= 420)
+        advLogoInfo.xrot = (advLogoInfo.unk10 - 300) * 546;
 
-    if (introAVLogoInfo.unk10 > 0)
+    if (advLogoInfo.unk10 > 0)
     {
         s8 r4, r5;
         int r29, r28;
-        float f3 = mathutil_sqrt(
-            (introAVLogoInfo.pos.x - lbl_801EECF8.x) * (introAVLogoInfo.pos.x - lbl_801EECF8.x)
-          + (introAVLogoInfo.pos.z - lbl_801EECF8.z) * (introAVLogoInfo.pos.z - lbl_801EECF8.z));
+        float speed = mathutil_sqrt(
+            (advLogoInfo.pos.x - prevLogoPos.x) * (advLogoInfo.pos.x - prevLogoPos.x)
+          + (advLogoInfo.pos.z - prevLogoPos.z) * (advLogoInfo.pos.z - prevLogoPos.z));
 
-        f3 *= 10.0;
-        r4 = MIN(f3 * 1.5, 127.0);
-        r5 = MIN(f3 * 15.0, 80.0) * 0.85000002384185791;
-        r29 = CLAMP(introAVLogoInfo.pos.x * 16.0, -64.0, 63.0);
-        r28 = CLAMP((280.0 - introAVLogoInfo.pos.z) * 0.1, -64.0, 63.0);
+        speed *= 10.0;
+        r4 = MIN(speed * 1.5, 127.0);
+        r5 = MIN(speed * 15.0, 80.0) * 0.85000002384185791;
+        r29 = CLAMP(advLogoInfo.pos.x * 16.0, -64.0, 63.0);
+        r28 = CLAMP((280.0 - advLogoInfo.pos.z) * 0.1, -64.0, 63.0);
         lbl_802F1DF8 = 0;
         func_8002CA5C(0, r4, r5);
         lbl_802F1DF8 = 0;
@@ -162,23 +177,25 @@ void update_av_logo_pos_and_sound(void)
         lbl_802F1DF8 = 0;
         SoundPan(0x53, r29, r28);
     }
-    lbl_801EECF8 = introAVLogoInfo.pos;
+    prevLogoPos = advLogoInfo.pos;
 }
 
-void update_av_logo(void)
+static void update_av_logo(void)
 {
-    if (introAVLogoInfo.unk14 == 0)
+    if (advLogoInfo.unk14 == 0)
         return;
-    if (introAVLogoInfo.unk14 <= 660)
-        introAVLogoInfo.unk10++;
+    if (advLogoInfo.unk14 <= 660)
+        advLogoInfo.unk10++;
     update_av_logo_pos_and_sound();
-    if (introAVLogoInfo.unk14 == 460)
+    if (advLogoInfo.unk14 == 460)
         g_play_sound(0x3B1F4);
-    if (introAVLogoInfo.unk14 == 240)
+    if (advLogoInfo.unk14 == 240)
         func_8002BFCC(0x51F2, 0x51F3);
-    if (introAVLogoInfo.unk14 < 240 && introAVLogoInfo.unk14 >= 210)
+
+    // Fade background to yellow after frame 210
+    if (advLogoInfo.unk14 < 240 && advLogoInfo.unk14 >= 210)
     {
-        int var1 = 240 - introAVLogoInfo.unk14;
+        int var1 = 240 - advLogoInfo.unk14;
         u32 color;
 
         if (var1 >= 30)
@@ -189,8 +206,8 @@ void update_av_logo(void)
                | (int)(255.0 - var1 * 8.5);
         introBackdropColor = color;
     }
-    if (introAVLogoInfo.unk14 > 0)
-        introAVLogoInfo.unk14--;
+    if (advLogoInfo.unk14 > 0)
+        advLogoInfo.unk14--;
 }
 
 void submode_adv_logo_main_func(void)
@@ -207,7 +224,7 @@ void submode_adv_logo_main_func(void)
     update_av_logo();
 
     if ((dipSwitches & DIP_DEBUG)
-     && !(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+     && !(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.unk0 > 60
      && lbl_802F1BA8 == 0)
     {
@@ -245,8 +262,11 @@ void submode_adv_logo_main_func(void)
     }
 }
 
-// + 0x34
-struct Struct801EED2C lbl_801EED2C;  FORCE_BSS_ORDER(lbl_801EED2C)
+/**
+ * Demo Submode
+ */
+
+struct AdvDemoInfo advDemoInfo;
 
 void submode_adv_demo_init_func(void)
 {
@@ -259,8 +279,8 @@ void submode_adv_demo_init_func(void)
     modeCtrl.unk0 = 2902;
     modeCtrl.levelSetFlags = 0;
     lbl_802F1BB0 = 0;
-    lbl_801EED2C.unk8 = 0;
-    lbl_801EED2C.unk4 = 0x108;
+    advDemoInfo.unk8 = 0;
+    advDemoInfo.flags = 0x108;
     func_800569B4(1);
     load_stage(ST_099_JUNGLE_BG);
     func_8002FFEC();
@@ -279,7 +299,7 @@ void submode_adv_demo_init_func(void)
     ev_run_init(3);
     for (i = 0; i < 4; i++)
     {
-        introAVLogoInfo.unk18[i] = 1;
+        advLogoInfo.unk18[i] = 1;
         lbl_802F1BB4[i] = 0;
         lbl_802F1BBC[i] = 0;
     }
@@ -309,15 +329,6 @@ void submode_adv_demo_init_func(void)
     gameSubmodeRequest = SMD_ADV_DEMO_MAIN;
 }
 
-struct Struct8000F030
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[0x20-0x10];
-    s32 unk20;
-};
-
 float lbl_801741CC[] = { -125, -70, -10 };
 
 void lbl_8000F030(struct Struct8000F030 *a)
@@ -338,15 +349,15 @@ enum
     CMD_FADE_TO_WHITE       = 3,
     CMD_PRELOAD_BG          = 4,  // unused
     CMD_LOAD_BG             = 5,  // unused
-    CMD_SET_SOME_FLAG       = 6,
-    CMD_CLEAR_SOME_FLAG     = 7,
+    CMD_SET_DEMO_FLAG       = 6,
+    CMD_CLEAR_DEMO_FLAG     = 7,
     CMD_SHOW_CHARACTER      = 8,
     CMD_HIDE_CHARACTER      = 9,
     CMD_PRELOAD_STAGE       = 10,
     CMD_LOAD_STAGE          = 11,
 
     CMD_UNK13               = 13,
-    CMD_UNK14               = 14,
+    CMD_INIT_CHARACTER_POS               = 14,
     CMD_UNK15               = 15,
 
     CMD_AIAI_ANIM           = 16,
@@ -375,19 +386,19 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     {    0, CMD_AIAI_ANIM,           14                   },
     {    0, CMD_MEEMEE_ANIM,         14                   },
     {    0, CMD_BABY_ANIM,           9                    },
-    {    3, CMD_SET_SOME_FLAG,       (1 << 6)             },
-    {    0, CMD_SET_SOME_FLAG,       (1 << 7)             },
+    {    3, CMD_SET_DEMO_FLAG,       (1 << 6)             },
+    {    0, CMD_SET_DEMO_FLAG,       (1 << 7)             },
     {  165, CMD_SPEECH_BUBBLE,       CHARACTER_AIAI       },
     {  220, CMD_SPEECH_BUBBLE,       CHARACTER_MEEMEE     },
     {  275, CMD_SPEECH_BUBBLE,       CHARACTER_BABY       },
     {  404, CMD_FADE_TO_WHITE,       30                   },
     {  404, CMD_HIDE_SPEECH_BUBBLES, -1                   },
-    {  404, CMD_CLEAR_SOME_FLAG,     (1 << 7)             },
+    {  404, CMD_CLEAR_DEMO_FLAG,     (1 << 7)             },
     {  434, CMD_FADE_FROM_WHITE,     30                   },
     {  434, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
     {  434, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
     {  434, CMD_AIAI_ANIM,           1                    },
-    {  434, CMD_SET_SOME_FLAG,       (1 << 0)             },
+    {  434, CMD_SET_DEMO_FLAG,       (1 << 0)             },
     {  544, CMD_AIAI_ANIM,           2                    },
 
     /* arctic scene (MeeMee) */
@@ -395,7 +406,7 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     {  651, CMD_HIDE_CHARACTER,      CHARACTER_AIAI       },
     {  651, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
     {  652, CMD_PRELOAD_STAGE,       ST_061_TWIN_ATTACKER },
-    {  652, CMD_CLEAR_SOME_FLAG,     1                    },
+    {  652, CMD_CLEAR_DEMO_FLAG,     1                    },
     {  596, CMD_MEEMEE_ANIM,         4                    },
     {  651, CMD_MEEMEE_ANIM,         3                    },
     {  706, CMD_MEEMEE_ANIM,         4                    },
@@ -420,23 +431,23 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { 1087, CMD_MEEMEE_ANIM,         11                   },
     { 1087, CMD_BABY_ANIM,           11                   },
     { 1088, CMD_PRELOAD_STAGE,       ST_013_REPULSE       },
-    { 1088, CMD_SET_SOME_FLAG,       (1 << 0)             },
-    { 1253, CMD_SET_SOME_FLAG,       (1 << 9)             },
+    { 1088, CMD_SET_DEMO_FLAG,       (1 << 0)             },
+    { 1253, CMD_SET_DEMO_FLAG,       (1 << 9)             },
     { 1276, CMD_FADE_TO_WHITE,       30                   },
 
     /* "Repulse" level scene (AiAi) */
-    { 1305, CMD_CLEAR_SOME_FLAG,     (1 << 9)             },
+    { 1305, CMD_CLEAR_DEMO_FLAG,     (1 << 9)             },
     { 1305, CMD_LOAD_STAGE,          ST_013_REPULSE       },
     { 1305, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
     { 1305, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
     { 1306, CMD_PRELOAD_STAGE,       ST_009_EXAM_A        },
     { 1306, CMD_FADE_FROM_WHITE,     30                   },
-    { 1306, CMD_CLEAR_SOME_FLAG,     (1 << 0)             },
+    { 1306, CMD_CLEAR_DEMO_FLAG,     (1 << 0)             },
     { 1305, CMD_UNK13,               -1                   },
-    { 1305, CMD_UNK14,               0                    },
-    { 1305, CMD_SET_SOME_FLAG,       (1 << 5)             },
-    { 1306, CMD_SET_SOME_FLAG,       2                    },
-    { 1306, CMD_SET_SOME_FLAG,       4                    },
+    { 1305, CMD_INIT_CHARACTER_POS,  0                    },
+    { 1305, CMD_SET_DEMO_FLAG,       (1 << 5)             },
+    { 1306, CMD_SET_DEMO_FLAG,       2                    },
+    { 1306, CMD_SET_DEMO_FLAG,       4                    },
 
     /* "Exam-A" level scene (MeeMee and Baby) */
     { 1739, CMD_UNK15,               -1                   },
@@ -446,9 +457,9 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { 1739, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
     { 1740, CMD_PRELOAD_STAGE,       ST_021_CHOICE        },
     { 1739, CMD_UNK13,               -1                   },
-    { 1739, CMD_UNK14,               2                    },
-    { 1739, CMD_UNK14,               1                    },
-    { 1739, CMD_SET_SOME_FLAG,       (1 << 5)             },
+    { 1739, CMD_INIT_CHARACTER_POS,  2                    },
+    { 1739, CMD_INIT_CHARACTER_POS,  1                    },
+    { 1739, CMD_SET_DEMO_FLAG,       (1 << 5)             },
 
     /* "Choice" level scene (GonGon) */
     { 1953, CMD_UNK15,               -1                   },
@@ -462,8 +473,8 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { 1954, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
     { 1954, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
     { 1953, CMD_UNK13,               -1                   },
-    { 1953, CMD_UNK14,               3                    },
-    { 1954, CMD_SET_SOME_FLAG,       (1 << 5)             },
+    { 1953, CMD_INIT_CHARACTER_POS,  3                    },
+    { 1954, CMD_SET_DEMO_FLAG,       (1 << 5)             },
 
     /* "Bonus Hunting" level scene (all characters) */
     { 2167, CMD_UNK15,               -1                   },
@@ -476,13 +487,13 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { 2167, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
     { 2167, CMD_HIDE_CHARACTER,      CHARACTER_GONGON     },
     { 2167, CMD_UNK13,               -1                   },
-    { 2167, CMD_UNK14,               3                    },
-    { 2167, CMD_UNK14,               2                    },
-    { 2167, CMD_UNK14,               1                    },
-    { 2167, CMD_UNK14,               0                    },
-    { 2167, CMD_SET_SOME_FLAG,       (1 << 5)             },
-    { 2168, CMD_SET_SOME_FLAG,       (1 << 11)            },
-    { 2168, CMD_SET_SOME_FLAG,       (1 << 12)            },
+    { 2167, CMD_INIT_CHARACTER_POS,  3                    },
+    { 2167, CMD_INIT_CHARACTER_POS,  2                    },
+    { 2167, CMD_INIT_CHARACTER_POS,  1                    },
+    { 2167, CMD_INIT_CHARACTER_POS,  0                    },
+    { 2167, CMD_SET_DEMO_FLAG,       (1 << 5)             },
+    { 2168, CMD_SET_DEMO_FLAG,       (1 << 11)            },
+    { 2168, CMD_SET_DEMO_FLAG,       (1 << 12)            },
     { 2169, CMD_SHOW_CHARACTER,      CHARACTER_AIAI       },
     { 2169, CMD_SHOW_CHARACTER,      CHARACTER_MEEMEE     },
     { 2169, CMD_SHOW_CHARACTER,      CHARACTER_BABY       },
@@ -502,9 +513,9 @@ void run_cutscene_script(void)
     int i;
     struct Sprite *sprite;
 
-    if (lbl_801EED2C.unk8 >= 0xB56)
+    if (advDemoInfo.unk8 >= 0xB56)
         return;
-    f28 = lbl_801EED2C.unk8;
+    f28 = advDemoInfo.unk8;
     for (cmd = introCutsceneScript; cmd->time != -1; cmd++)
     {
         if (f28 > cmd->time || f28 < cmd->time)
@@ -565,11 +576,11 @@ void run_cutscene_script(void)
             ev_run_init(EVENT_REND_EFC);
             ev_run_init(EVENT_BACKGROUND);
             break;
-        case CMD_SET_SOME_FLAG:
-            lbl_801EED2C.unk4 |= cmd->param;
+        case CMD_SET_DEMO_FLAG:
+            advDemoInfo.flags |= cmd->param;
             break;
-        case CMD_CLEAR_SOME_FLAG:
-            lbl_801EED2C.unk4 &= ~cmd->param;
+        case CMD_CLEAR_DEMO_FLAG:
+            advDemoInfo.flags &= ~cmd->param;
             break;
         case CMD_SHOW_CHARACTER:
             ballInfo[cmd->param].unkFC->unk14 &= ~(1 << 5);
@@ -606,11 +617,11 @@ void run_cutscene_script(void)
             camera_set_state(54);
             func_80021DB4(currStageId);
             break;
-        case CMD_UNK14:
-            ball_func_21(&ballInfo[cmd->param]);
+        case CMD_INIT_CHARACTER_POS:
+            ball_func_demo_init(&ballInfo[cmd->param]);
             ballInfo[cmd->param].bananas = 0;
             lbl_80206BF0[cmd->param].unk8 = 1;
-            lbl_801EED2C.unkC = cmd->param;
+            advDemoInfo.unkC = cmd->param;
             break;
         case CMD_UNK15:  // cutscene camera?
             ev_run_dest(EVENT_WORLD);
@@ -618,16 +629,16 @@ void run_cutscene_script(void)
             camera_set_state(29);
             break;
         case CMD_AIAI_ANIM:
-            introAVLogoInfo.unk18[0] = cmd->param;
+            advLogoInfo.unk18[0] = cmd->param;
             break;
         case CMD_MEEMEE_ANIM:
-            introAVLogoInfo.unk18[1] = cmd->param;
+            advLogoInfo.unk18[1] = cmd->param;
             break;
         case CMD_BABY_ANIM:
-            introAVLogoInfo.unk18[2] = cmd->param;
+            advLogoInfo.unk18[2] = cmd->param;
             break;
         case CMD_GONGON_ANIM:
-            introAVLogoInfo.unk18[3] = cmd->param;
+            advLogoInfo.unk18[3] = cmd->param;
             break;
         case 21:
             ballInfo[0].unkFC->unk14 |= cmd->param;
@@ -669,7 +680,7 @@ void run_cutscene_script(void)
             break;
         }
     }
-    lbl_801EED2C.unk8++;
+    advDemoInfo.unk8++;
 }
 
 void submode_adv_demo_main_func(void)
@@ -680,10 +691,10 @@ void submode_adv_demo_main_func(void)
         lbl_802F1BB0 = 1;
     if (lbl_802F1BB0 == 0)
         return;
-    if (lbl_801EED2C.unk8 == 0)
+    if (advDemoInfo.unk8 == 0)
         g_start_screen_fade(0x100, 0, 60);
     run_cutscene_script();
-    if (lbl_801EED2C.unk8 == 0xA2A)
+    if (advDemoInfo.unk8 == 0xA2A)
         func_8000FEC8(100);
     if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.unk0 > 60
      && lbl_802F1BA8 == 0)
@@ -696,8 +707,6 @@ void submode_adv_demo_main_func(void)
     }
     modeCtrl.unk0--;
 }
-
-#define lbl_802F2B54 1.0f
 
 struct Struct80176434 lbl_80174254[] =
 {
@@ -989,7 +998,7 @@ void lbl_8000F790(struct Ball_child *a, int b)
     s16 r30;
     int r28;
     int r4, r5, r6;
-    float f31 = lbl_801EED2C.unk8;
+    float f31 = advDemoInfo.unk8;
 
     switch (b)
     {
@@ -997,7 +1006,7 @@ void lbl_8000F790(struct Ball_child *a, int b)
         func_8008B2D4(a);
         return;
     }
-    if (lbl_801EED2C.unk4 & (1<<(31-0x1A)))
+    if (advDemoInfo.flags & (1 << 5))
     {
         struct Ball *ball = &ballInfo[a->unkC0];
 
@@ -1023,28 +1032,28 @@ void lbl_8000F790(struct Ball_child *a, int b)
             f31 = 0.0f;
             mathutil_mtxA_from_quat(&a->unk60);
             mathutil_mtxA_normalize_basis();
-            if (a->unk14 & (1<<(31-0x1E)))
+            if (a->unk14 & (1 << 1))
                 func_80037718(a);
         }
-        if (ball->flags & (1<<(31-0x1A)))
+        if (ball->flags & (1 << 5))
             f31 = mathutil_vec_mag(&ball->vel);
         func_80036EB8(a);
         mathutil_mtxA_to_quat(&a->unk60);
         func_8003721C(a, f31);
         func_8008C4A8(a);
-        if (!(a->unk14 & (1<<(31-0x1C))))
+        if (!(a->unk14 & (1 << 3)))
             func_8003765C(a);
-        if (lbl_801EED2C.unk8 >= 0x682 && lbl_801EED2C.unk8 < 0x6CC)
+        if (advDemoInfo.unk8 >= 0x682 && advDemoInfo.unk8 < 0x6CC)
             ball->unk104 = currentCameraStructPtr->eye;
-        else if (lbl_801EED2C.unk8 >= 0x51A && lbl_801EED2C.unk8 < 0x6CC)
+        else if (advDemoInfo.unk8 >= 0x51A && advDemoInfo.unk8 < 0x6CC)
         {
             ball->unk104.x = 9.62f;
             ball->unk104.y = 0.58f;
             ball->unk104.z = -4.25f;
         }
-        if (lbl_801EED2C.unk8 >= 0x6CC && lbl_801EED2C.unk8 < 0x73A && a->unk10 == 2)
+        if (advDemoInfo.unk8 >= 0x6CC && advDemoInfo.unk8 < 0x73A && a->unk10 == 2)
             ball->unk104.x = a->unk30.x + 1.0;
-        if (lbl_801EED2C.unk8 >= 0x73A && lbl_801EED2C.unk8 < 0x7A2)
+        if (advDemoInfo.unk8 >= 0x73A && advDemoInfo.unk8 < 0x7A2)
             ball->unk104 = ballInfo[1].unkFC->unk30;
         func_8008C090(a, &ball->unk104);
         ball->unk100 = 0;
@@ -1072,7 +1081,7 @@ void lbl_8000F790(struct Ball_child *a, int b)
         mathutil_mtxA_to_quat(&a->unk60);
         r4 = 6;
         r5 = 0;
-        r6 = introAVLogoInfo.unk18[a->unk10];
+        r6 = advLogoInfo.unk18[a->unk10];
         if (r6 < 0)
         {
             switch (r6)
@@ -1118,7 +1127,7 @@ void lbl_8000F790(struct Ball_child *a, int b)
         func_8008BBD4(a, r4, r5, r6, 0.0f);
         a->unk3C = (Vec){ 0.0f, -0.12f, 0.0f };
         func_8008C4A8(a);
-        if (lbl_801EED2C.unk4 & (1<<(31-0x16)))
+        if (advDemoInfo.flags & (1 << 9))
         {
             s16 sp30[] = { 0x2E00, 0xE100, 0x1500, 0x0000 };
             s16 sp28[] = { 0x0000, 0x0000, 0x0980, 0x0000 };
@@ -1158,7 +1167,7 @@ void lbl_8000F790(struct Ball_child *a, int b)
     }
 }
 
-void func_8000FEC8(int a)
+static void func_8000FEC8(int a)
 {
     struct Sprite *sprite;
 
@@ -1204,17 +1213,21 @@ void func_8000FEC8(int a)
     lbl_802F1BA8 = a;
 }
 
+/**
+ * Title Submode
+ */
+
 void submode_adv_title_init_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
 
-    modeCtrl.unk0 = 0x4B0;
+    modeCtrl.unk0 = 1200;
     modeCtrl.unk10 = 0;
-    modeCtrl.levelSetFlags &= ~(1<<(31-0x1D));
+    modeCtrl.levelSetFlags &= ~(1 << 2);
     lbl_802F1BA8 = 0;
-    lbl_801EED2C.unk8 = 0xB56;
-    lbl_801EED2C.unk4 = 0;
+    advDemoInfo.unk8 = 0xB56;
+    advDemoInfo.flags = 0;
     ev_run_dest(EVENT_BALL);
     ev_run_dest(EVENT_STAGE);
     ev_run_dest(EVENT_STOBJ);
@@ -1241,7 +1254,7 @@ void submode_adv_title_reinit_func(void)
 
     func_80011D90();
     introBackdropColor = 0x00FFFFFF;
-    modeCtrl.unk0 = 0x4B0;
+    modeCtrl.unk0 = 1200;
     modeCtrl.levelSetFlags = 0x2000;
     lbl_802F1BA8 = 0;
     func_8002FFEC();
@@ -1287,15 +1300,15 @@ void submode_adv_title_main_func(void)
     int i;
 
     if ((dipSwitches & DIP_DEBUG)
-     && (controllerInfo[0].unk0[0].button & (1<<(31-0x15)))
-     && (controllerInfo[0].unk0[2].button & (1<<(31-0x14)))
+     && (controllerInfo[0].unk0[0].button & (1 << 10))
+     && (controllerInfo[0].unk0[2].button & (1 << 11))
      && modeCtrl.unk0 > 30)
         modeCtrl.unk0 = 30;
 
     if (gamePauseStatus & 0xA)
         return;
 
-    if (lbl_80292B60.unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1<<(31-0x1D))))
+    if (lbl_80292B60.unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1 << 2)))
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
@@ -1318,18 +1331,18 @@ void submode_adv_title_main_func(void)
             func_80077734();
         }
     }
-    if (modeCtrl.levelSetFlags & (1<<(31-0x1D)))
+    if (modeCtrl.levelSetFlags & (1 << 2))
     {
         for (i = 0; i < 4; i++)
         {
-            if (modeCtrl.unk10 != 0 && CONTROLLER_SOMETHING(i, (1<<(31-0x1C))))
+            if (modeCtrl.unk10 != 0 && CONTROLLER_SOMETHING(i, PAD_BUTTON_UP))
             {
                 modeCtrl.unk10 = 0;
                 func_8002B5C8(0x6F);
                 if (modeCtrl.unk0 > 30 && modeCtrl.unk0 < 300)
                     modeCtrl.unk0 = 300;
             }
-            else if (modeCtrl.unk10 != 1 && CONTROLLER_SOMETHING(i, (1<<(31-0x1D))))
+            else if (modeCtrl.unk10 != 1 && CONTROLLER_SOMETHING(i, PAD_BUTTON_DOWN))
             {
                 modeCtrl.unk10 = 1;
                 func_8002B5C8(0x6F);
@@ -1351,8 +1364,11 @@ void submode_adv_title_main_func(void)
     }
 }
 
-// + 0x44
-struct Struct801EED3C lbl_801EED3C;  FORCE_BSS_ORDER(lbl_801EED3C)
+/**
+ * Info Submode - Shows a tutorial explaining controls
+ */
+
+struct Struct801EED3C lbl_801EED3C;
 
 void submode_adv_info_init_func(void)
 {
@@ -1360,7 +1376,7 @@ void submode_adv_info_init_func(void)
         return;
 
     func_80011D90();
-    modeCtrl.unk0 = 0x111C;
+    modeCtrl.unk0 = 4380;
     modeCtrl.levelSetFlags &= -8197;
     modeCtrl.playerCount = 1;
     lbl_80206BC0[0] = 0;
@@ -1387,7 +1403,7 @@ void submode_adv_info_init_func(void)
     call_something_with_bmp_bmp_com(5);
     func_80076620(0);
     func_80076C54(0);
-    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12))))
+    if (!(modeCtrl.levelSetFlags & (1 << 13)))
     {
         struct Struct80075900 sp8;
 
@@ -1527,24 +1543,24 @@ void submode_adv_info_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
     if ((dipSwitches & DIP_DEBUG)
-     && (controllerInfo[0].unk0[0].button & (1<<(31-0x15)))
-     && (controllerInfo[0].unk0[2].button & (1<<(31-0x14)))
+     && (controllerInfo[0].unk0[0].button & PAD_BUTTON_X)
+     && (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y)
      && modeCtrl.unk0 > 30)
         modeCtrl.unk0 = 30;
 
-    if (modeCtrl.unk0 == 0x334)
-        modeCtrl.unk0 = 0x258;
+    if (modeCtrl.unk0 == 820)
+        modeCtrl.unk0 = 600;
 
-    if (lbl_801F3A58.unk0 & (1<<(31-0x1D)))
+    if (lbl_801F3A58.unk0 & (1 << 2))
     {
-        lbl_801F3A58.unk0 &= ~(1<<(31-0x1D));
+        lbl_801F3A58.unk0 &= ~(1 << 2);
         camera_set_state(4);
         g_play_sound(29);
     }
-    if (modeCtrl.unk0 == 0x247)
+    if (modeCtrl.unk0 == 583)
     {
-        ballInfo[0].flags &= ~(1<<(31-0x14));
-        lbl_801F3A58.unk0 &= ~(1<<(31-0x1C));
+        ballInfo[0].flags &= ~(1 << 11);
+        lbl_801F3A58.unk0 &= ~(1 << 3);
     }
     if (lbl_801F3A58.unk0 & 1)
     {
@@ -1553,7 +1569,7 @@ void submode_adv_info_main_func(void)
         ballInfo[0].flags |= 0x500;
         camera_set_state(14);
     }
-    if (modeCtrl.unk0 < 0xD20 && modeCtrl.unk0 > 0xAC8)
+    if (modeCtrl.unk0 < 3360 && modeCtrl.unk0 > 2760)
     {
         Vec sp30;
         sp30.x = 1.15f;
@@ -1561,13 +1577,13 @@ void submode_adv_info_main_func(void)
         sp30.z = 3.8f;
         func_800390C8(5, &sp30, 1.0f);
     }
-    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12))) && modeCtrl.unk0 == 0x10E0)
+    if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.unk0 == 4320)
         func_80077DA0();
     for (cmd = infoScript; cmd->time != 0; cmd++)
     {
         if (modeCtrl.unk0 > cmd->time || modeCtrl.unk0 < cmd->time)
             continue;
-        if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1<<(31-0x12))))
+        if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1 << 13)))
         {
             struct Struct80075900 sp8;
 
@@ -1624,7 +1640,7 @@ void submode_adv_info_main_func(void)
             break;
         }
     }
-    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+    if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.unk0 > 60
      && lbl_802F1BA8 == 0)
     {
@@ -1651,11 +1667,18 @@ void submode_adv_info_main_func(void)
         gameSubmodeRequest = SMD_ADV_GAME_READY_INIT;
 }
 
-extern s16 lbl_801101DC[];
+/**
+ * Game Ready Submode
+ */
+ 
+static int func_800119C0(void);
+static int func_80011A84(void);
+static int func_80011B98(void);
+static void func_80011BD4(void);
 
 void submode_adv_game_ready_init_func(void)
 {
-    struct MaybeReplayInfo sp8;
+    struct ReplayInfo sp8;
     int r4;
 
     if (gamePauseStatus & 0xA)
@@ -1673,7 +1696,7 @@ void submode_adv_game_ready_init_func(void)
     }
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
-    currStageId = sp8.unk2;
+    currStageId = sp8.stageId;
     event_clear();
     call_something_with_bmp_bmp_com(3);
     modeCtrl.unk28 = 0;
@@ -1705,7 +1728,7 @@ void submode_adv_game_ready_init_func(void)
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
     lbl_801F3A58.unk0 |= 0x108;
-    modeCtrl.unk0 = 0x78;
+    modeCtrl.unk0 = 120;
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
     camera_set_state(10);
@@ -1728,7 +1751,7 @@ void submode_adv_game_ready_main_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    if (modeCtrl.unk0 == 0x78)
+    if (modeCtrl.unk0 == 120)
     {
         struct Sprite *sprite = g_find_sprite_with_probably_not_font(15);
 
@@ -1739,7 +1762,7 @@ void submode_adv_game_ready_main_func(void)
     }
     if (modeCtrl.unk0 == 24.0)
         ballInfo[0].state = 3;
-    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+    if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.unk0 > 30
      && lbl_802F1BA8 == 0)
     {
@@ -1751,12 +1774,12 @@ void submode_adv_game_ready_main_func(void)
     }
     if (--modeCtrl.unk0 <= 0)
     {
-        struct MaybeReplayInfo sp8;
+        struct ReplayInfo sp8;
 
         g_get_replay_info(func_80011A84(), &sp8);
-        if (gamePauseStatus & (1<<(31-0x1D)))
-            printf("/*-- pre_load_stage(%d) --*/\n", sp8.unk2);
-        preload_stage_files(sp8.unk2);
+        if (gamePauseStatus & (1 << 2))
+            printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
+        preload_stage_files(sp8.stageId);
         gameSubmodeRequest = SMD_ADV_GAME_PLAY_INIT;
     }
 }
@@ -1791,7 +1814,7 @@ void submode_adv_game_play_main_func(void)
         camera_set_state(14);
         func_800846B0(1);
     }
-    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+    if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.unk0 > 30
      && lbl_802F1BA8 == 0)
     {
@@ -1809,9 +1832,15 @@ void submode_adv_game_play_main_func(void)
     }
 }
 
+/**
+ * Ranking Submode
+ */
+
+static int func_80011BE0(void);
+
 void submode_adv_ranking_init_func(void)
 {
-    modeCtrl.unk0 = 0x9D8;
+    modeCtrl.unk0 = 2520;
     g_dest_sprite_with_font(2);
     g_dest_sprite_with_font(18);
     gameSubmodeRequest = SMD_ADV_RANKING_MAIN;
@@ -1830,7 +1859,7 @@ void submode_adv_ranking_main_func(void)
     r31 = &ballInfo[0];
     switch (modeCtrl.unk0)
     {
-    case 0x9D8:
+    case 2520:
         g_dest_sprite_with_font(0);
         g_dest_sprite_with_font(37);
         g_dest_sprite_with_font(39);
@@ -1840,53 +1869,53 @@ void submode_adv_ranking_main_func(void)
             g_find_sprite_with_probably_not_font(17)->unk48 = 1;
         lbl_801EED3C.unk8 = 1;
         break;
-    case 0x99C:
+    case 2460:
         break;
-    case 0x870:
+    case 2160:
         func_80088A10();
         if (lbl_802F1BA8 == 0)
             func_80088F18();
         break;
-    case 0x834:
+    case 2100:
         func_8008897C(0);
         break;
-    case 0x654:
+    case 1620:
         if (lbl_802F1BA8 == 0)
         {
             func_800886E0(1);
             modeCtrl.unk18 = 0xB4;
         }
         break;
-    case 0x4EC:
+    case 1260:
         func_80088A10();
         break;
-    case 0x4B0:
+    case 1200:
         func_8008897C(0);
         break;
-    case 0x2D0:
+    case 720:
         if (lbl_802F1BA8 == 0)
         {
             func_800886E0(2);
             modeCtrl.unk18 = 0xB4;
         }
         break;
-    case 0x168:
+    case 360:
         func_80088A10();
         break;
-    case 0x12C:
+    case 300:
         func_8008897C(0);
         break;
-    case 0x5A:
+    case 90:
         func_80088FD4(0);
         break;
     }
 
     if (r31->state == 4)
     {
-        struct MaybeReplayInfo sp50;
+        struct ReplayInfo sp50;
 
         g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
-        if (sp50.flags & (1<<(31-0x18)))
+        if (sp50.flags & (1 << 7))
         {
             r31->state = 5;
             r31->flags |= 0x3500;
@@ -1898,14 +1927,14 @@ void submode_adv_ranking_main_func(void)
         modeCtrl.unk18--;
     if (modeCtrl.unk18 < 0
      && (r31->state == 6 || r31->state == 4)
-     && (!(modeCtrl.unk0 & 0x1F) || !(lbl_801F3A58.unk0 & (1<<(31-0x1A)))))
+     && ((modeCtrl.unk0 & 0x1F) == 0 || !(lbl_801F3A58.unk0 & (1 << 5))))
     {
         if (modeCtrl.unk0 > 180.0)
         {
-            struct MaybeReplayInfo sp38;
+            struct ReplayInfo sp38;
             struct Struct8009544C sp20;
             float f1;
-            struct MaybeReplayInfo sp8;
+            struct ReplayInfo sp8;
 
             modeCtrl.unk18 = 0x96;
             ev_run_dest(1);
@@ -1918,7 +1947,7 @@ void submode_adv_ranking_main_func(void)
             ev_run_dest(18);
             lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80011B98();
             g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
-            currStageId = sp38.unk2;
+            currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
             lbl_801F3A58.unk0 |= 0x10;
             load_stage(currStageId);
@@ -1937,7 +1966,7 @@ void submode_adv_ranking_main_func(void)
             func_80021DB4(currStageId);
             ballInfo[0].state = 9;
             ballInfo[0].bananas = 0;
-            if (modeCtrl.unk0 > 0x9D8)
+            if (modeCtrl.unk0 > 2520)
             {
                 lbl_80206BF0[0].unk8 = 9;
                 camera_set_state(0);
@@ -1946,11 +1975,11 @@ void submode_adv_ranking_main_func(void)
             {
                 lbl_80206BF0[0].unk8 = 6;
                 camera_set_state(func_80011BE0());
-                lbl_801F3A58.unk0 &= ~(1<<(31-0x14));
+                lbl_801F3A58.unk0 &= ~(1 << 11);
             }
 
             f1 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-            if (sp38.flags & (1<<(31-0x1B)))
+            if (sp38.flags & (1 << 4))
                 f1 -= 30.0f;
             if (f1 > (float)modeCtrl.unk0 - 120.0)
                 f1 = (int)((float)modeCtrl.unk0 - 120.0);
@@ -1959,13 +1988,13 @@ void submode_adv_ranking_main_func(void)
             lbl_80250A68.unk10 = f1;
             g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
             g_get_replay_info(func_80011A84(), &sp8);
-            if (gamePauseStatus & (1<<(31-0x1D)))
-                printf("/*-- pre_load_stage(%d) --*/\n", sp8.unk2);
-            preload_stage_files(sp8.unk2);
+            if (gamePauseStatus & (1 << 2))
+                printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
+            preload_stage_files(sp8.stageId);
         }
     }
 
-    if (!(modeCtrl.levelSetFlags & (1<<(31-0x12)))
+    if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.unk0 > 60
      && lbl_802F1BA8 == 0)
     {
@@ -1980,10 +2009,10 @@ void submode_adv_ranking_main_func(void)
         }
     }
 
-    if (modeCtrl.unk0 == 0xB4)
+    if (modeCtrl.unk0 == 180)
     {
-        preload_bg_files(0xD);
-        preload_stage_files(1);
+        preload_bg_files(BG_TYPE_JUN);
+        preload_stage_files(ST_001_PLAIN);
     }
     if (modeCtrl.unk0 == 30)
     {
@@ -2000,7 +2029,7 @@ void submode_adv_ranking_main_func(void)
         if (*r28 == 2)
         {
             currentBallStructPtr = r29;
-            if (!(r29->flags & (1<<(31-0x16))) && (r29->unkFC->unk14 & (1<<(31-0x11))))
+            if (!(r29->flags & (1 << 9)) && (r29->unkFC->unk14 & (1 << 14)))
             {
                 r29->flags &= -1281;
                 r29->flags |= 0x200;
@@ -2012,7 +2041,7 @@ void submode_adv_ranking_main_func(void)
 
     if (--modeCtrl.unk0 <= 0)
     {
-        lbl_801F3A58.unk0 &= ~(1<<(31-0x14));
+        lbl_801F3A58.unk0 &= ~(1 << 11);
         func_8008897C(1);
         func_80088FD4(1);
         g_dest_sprite_with_font(3);
@@ -2022,15 +2051,15 @@ void submode_adv_ranking_main_func(void)
     }
 }
 
-int func_800119C0(void)
+static int func_800119C0(void)
 {
-    struct MaybeReplayInfo sp8;
+    struct ReplayInfo sp8;
     int i;
 
     for (i = lbl_802F02EC + 1; i < 7; i++)
     {
         g_get_replay_info(i, &sp8);
-        if ((sp8.flags & (1<<(31-0x1B))) && (sp8.flags & 1))
+        if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
             break;
     }
     if (i >= 7)
@@ -2038,20 +2067,20 @@ int func_800119C0(void)
         for (i = 0; i < lbl_802F02EC; i++)
         {
             g_get_replay_info(i, &sp8);
-            if ((sp8.flags & (1<<(31-0x1B))) && (sp8.flags & 1))
+            if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
                 break;
         }
     }
     lbl_802F02EC = i;
     g_get_replay_info(lbl_802F02EC, &sp8);
-    if (sp8.unk2 == 0)
-        sp8.unk2 = 1;  // pointless
+    if (sp8.stageId == 0)
+        sp8.stageId = 1;  // pointless
     return lbl_802F02EC;
 }
 
-int func_80011A84(void)
+static int func_80011A84(void)
 {
-    struct MaybeReplayInfo sp8;
+    struct ReplayInfo sp8;
     int i;
 
     for (i = lbl_802F02F0 + 1; i < 7; i++)
@@ -2077,13 +2106,13 @@ int func_80011A84(void)
     }
     lbl_802F02F0 = i;
     g_get_replay_info(lbl_802F02F0, &sp8);
-    if (sp8.unk2 == 0)
-        sp8.unk2 = 1;  // pointless
+    if (sp8.stageId == ST_000_DUMMY)
+        sp8.stageId = ST_001_PLAIN;  // pointless
     lbl_802F1BC4 = 1;
     return lbl_802F02F0;
 }
 
-int func_80011B98(void)
+static int func_80011B98(void)
 {
     int ret = (lbl_802F1BC4 != 0) ? lbl_802F02F0 : func_80011A84();
 
@@ -2100,6 +2129,10 @@ int func_80011BE0(void)
 {
     return 44;
 }
+
+/**
+ * Start Submode
+ */
 
 void submode_adv_start_init_func(void)
 {
@@ -2127,16 +2160,16 @@ void submode_adv_start_main_func(void)
     if (--modeCtrl.unk0 <= 0)
     {
         func_80011D90();
-        introAVLogoInfo.unk14 = 0;
-        lbl_801EED2C.unk8 = 0xB56;
-        lbl_801EED2C.unk4 = 0;
+        advLogoInfo.unk14 = 0;
+        advDemoInfo.unk8 = 0xB56;
+        advDemoInfo.flags = 0;
         camera_setup_singleplayer_viewport();
         if (modeCtrl.levelSetFlags & 1)
         {
             gameModeRequest = MD_SEL;
             gameSubmodeRequest = SMD_SEL_NGC_INIT;
         }
-        else if (modeCtrl.levelSetFlags & (1<<(31-0xD)))
+        else if (modeCtrl.levelSetFlags & (1 << 18))
         {
             gameModeRequest = MD_OPTION;
             gameSubmodeRequest = SMD_OPTION_SELECT_INIT;

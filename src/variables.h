@@ -6,7 +6,7 @@
 // extern ? infoScript;
 // extern ? lbl_80110004;
 // extern ? lbl_801101C8;
-// extern ? lbl_801101DC;
+extern const s16 lbl_801101DC[];
 // extern ? lbl_8011021C;
 // extern ? lbl_80110230;
 // extern ? lbl_8011023C;
@@ -523,10 +523,7 @@ extern u8 lbl_801EEBA0[];
 extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
-// extern ? lbl_801EECF8;
-extern struct Struct801EED04 introAVLogoInfo;
-extern struct Struct801EED2C lbl_801EED2C;
-extern struct Struct801EED3C lbl_801EED3C;
+
 // extern ? lbl_801EED50;
 extern struct
 {
@@ -1185,14 +1182,6 @@ extern s32 lbl_802F1B98;
 extern OSHeapHandle lbl_802F1B9C;
 extern s8 lbl_802F1BA0;
 extern s8 lbl_802F1BA1;
-extern s32 lbl_802F1BA8;
-// extern ? lbl_802F1BAC;
-extern s32 lbl_802F1BB0;
-extern s16 lbl_802F1BB4[4];
-extern s16 lbl_802F1BBC[4];
-extern s32 lbl_802F1BC4;
-extern u32 advSubmode;
-extern u32 introBackdropColor;
 
 extern struct StageSelection stageSelection;
 // extern ? lbl_802F1BE8;
