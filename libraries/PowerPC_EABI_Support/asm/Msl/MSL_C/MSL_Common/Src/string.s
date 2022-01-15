@@ -364,6 +364,7 @@ lbl_80106CE4:
 
 .section .sdata
 
+    .balign 8
 .global K1
 K1:
 	# ROM: 0x1EC1F0

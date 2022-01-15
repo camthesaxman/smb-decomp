@@ -40,7 +40,7 @@ RUNTIME_INCLUDE_DIRS := libraries/PowerPC_EABI_Support/Runtime/Inc
 
 ASFLAGS     := -mgekko -I asm
 CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
-CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 DOL_LDFLAGS := -nodefaults -fp hard
 REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
@@ -257,14 +257,14 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/ctype.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/direct_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mbstring.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem_funcs.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/misc_io.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/misc_io.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/printf.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/float.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/rand.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/rand.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/string.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/wchar_io.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/wchar_io.c \
 	libraries/PowerPC_EABI_Support/asm/math/e_rem_pio2.s \
 	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
 	libraries/PowerPC_EABI_Support/asm/math/k_cos.s \
