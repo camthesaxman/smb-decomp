@@ -163,7 +163,7 @@ SOURCES := \
 	libraries/os/asm/OSTime.s \
 	libraries/exi/asm/EXIUart.s \
 	libraries/os/asm/__ppc_eabi_init.s \
-	libraries/db/asm/db.s \
+	libraries/db/db.c \
 	libraries/mtx/asm/mtx.s \
 	libraries/mtx/asm/mtx44.s \
 	libraries/mtx/asm/vec.s \

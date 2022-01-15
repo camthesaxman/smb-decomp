@@ -11,4 +11,6 @@
 #define GQR6 0x396
 #define GQR7 0x397
 
+void PPCHalt(void);
+
 #endif

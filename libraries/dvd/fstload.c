@@ -7,6 +7,9 @@
 static u32 status;
 static struct bb2struct *bb2; // pointer?
 static DVDDiskID *idTmp;
+// TODO: static
+extern u8 bb2Buf[0x3F];
+extern u8 block[0x30];
 
 struct DiskInfo
 {
@@ -16,7 +19,7 @@ struct DiskInfo
 	u32 FSTMaxLength;
 };
 
-void cb(s32 param_1, void* param_2) // param_2 is probably a struct
+static void cb(s32 param_1, void* param_2) // param_2 is probably a struct
 {
 	if (param_1 > 0)
     {
