@@ -681,10 +681,10 @@ struct Struct801EEC90
     Vec unk28;
     Vec unk34;
     Vec unk40;
-    u32 unk4C;  // 5C
+    s32 unk4C;  // 5C
     u8 filler50[4];
     u32 unk54;
-    u32 unk58;
+    s32 unk58;
     float unk5C;
     float unk60;
     u8 filler64[4];

@@ -16,20 +16,6 @@
 #include "preview.h"
 #include "stage.h"
 
-
-struct NaomiModelHeader_child
-{
-    u32 unk0;
-};
-
-struct NaomiModelHeader
-{
-    s8 *unk0;
-    struct NaomiModelHeader_child *unk4;
-};
-
-#define HEADER_OF(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
-
 extern u8 lbl_801B86E4[];
 extern int previewLoaded;
 
@@ -237,7 +223,7 @@ void ev_stage_main(void)
         struct DynamicStagePart *dyn = dynamicStageParts;
         while (dyn->modelName != NULL)
         {
-            memcpy(dyn->tempModel, dyn->origModel, HEADER_OF(dyn->origModel)->unk4->unk0);
+            memcpy(dyn->tempModel, dyn->origModel, NAOMIMODEL_HEADER(dyn->origModel)->unk4->modelSize);
             // responsible for warping vertices in the Bonus Wave model
             g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
             dyn++;
@@ -777,7 +763,7 @@ void func_80044E18(void)
                     int j;  // r23
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(*r21, (void *)(HEADER_OF(modelPtrs[j])->unk0 + 4)) == 0)
+                        if (strcmp(*r21, (void *)(NAOMIMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
                         {
                             r18 = modelPtrs[j];
                             break;
@@ -797,7 +783,7 @@ void func_80044E18(void)
                     int j;  // r23
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(sp10, (void *)(HEADER_OF(modelPtrs[j])->unk0 + 4)) == 0)
+                        if (strcmp(sp10, (void *)(NAOMIMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
                         {
                             r31 = modelPtrs[j];
                             break;
@@ -823,7 +809,7 @@ void func_80044E18(void)
                 r19++;
                 *r29++ = (void *)r18;
 
-                lbl_802F1F50 += HEADER_OF(r18)->unk4->unk0;
+                lbl_802F1F50 += NAOMIMODEL_HEADER(r18)->unk4->modelSize;
                 r26->unk8++;
                 if (r19 >= 0x47)
                     break;
@@ -857,7 +843,7 @@ void func_80044E18(void)
                 int j;
                 for (j = 0; r3[j] != NULL; j++)
                 {
-                    int len = string_match_len(HEADER_OF(r3[j])->unk0 + 4, (void *)r18->nameOffset);
+                    int len = string_match_len(NAOMIMODEL_HEADER(r3[j])->unk0 + 4, (void *)r18->nameOffset);
                     if (len > r19)
                     {
                         r19 = len;
@@ -875,7 +861,7 @@ void func_80044E18(void)
             r17_->unk4 = r31;
             *r29++ = r31;
             if ((r17_->unk0 & 3) == 1)
-                lbl_802F1F4C += HEADER_OF(r31)->unk4->unk0;
+                lbl_802F1F4C += NAOMIMODEL_HEADER(r31)->unk4->modelSize;
         }
         //lbl_8004510C
         else
@@ -989,7 +975,7 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
                 struct NaomiModel **modelPtrs = nobj->modelPtrs;
                 for (i = 0; modelPtrs[i] != NULL; i++)
                 {
-                    int var = string_match_len(dyn->modelName, HEADER_OF(modelPtrs[i])->unk0 + 4);
+                    int var = string_match_len(dyn->modelName, NAOMIMODEL_HEADER(modelPtrs[i])->unk0 + 4);
                     if (var > r27)
                     {
                         r27 = var;
@@ -999,7 +985,7 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
                 dyn->origModel = model;
                 if (model != NULL)
                 {
-                    r31 -= HEADER_OF(model)->unk4->unk0;
+                    r31 -= NAOMIMODEL_HEADER(model)->unk4->modelSize;
                     dyn->tempModel = (struct NaomiModel *)r31;
                 }
             }

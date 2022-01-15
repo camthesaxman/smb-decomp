@@ -50,6 +50,21 @@ struct NaomiModel
     /*0x18*/ u8 meshStart[];  // meshes immediately follow the Model struct
 };
 
+struct NaomiModelHeader_child
+{
+    u32 modelSize;
+};
+
+// immediately before the NaomiModel struct
+// use the NAOMIMODEL_HEADER macro to access it.
+struct NaomiModelHeader
+{
+    /*-0x08*/ s8 *unk0;
+    /*-0x04*/ struct NaomiModelHeader_child *unk4;
+};
+
+#define NAOMIMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+
 struct NaomiObj_UnkChild_Child
 {
     u32 unk0;

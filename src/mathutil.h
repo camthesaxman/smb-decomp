@@ -151,6 +151,31 @@ static inline s32 mathutil_floor_to_int(register float n)
 #endif
 }
 
+static inline float mathutil_floor(register float n)
+{
+#ifdef __MWERKS__
+    s32 buf[2];
+    register float savedFlags;
+    asm
+    {
+        // save FPCSR flags
+        mffs savedFlags
+        // set rounding mode to -inf
+        mtfsb1 30
+        mtfsb1 31
+        // convert to integer
+        fctiw n, n
+        stfd n, buf[0]
+        // restore old FPCSR flags
+        mtfsf 0xFF, savedFlags
+    }
+    return (int)buf[1];
+#else
+    // TODO
+    return (int)n;
+#endif
+}
+
 static inline float mathutil_sum_of_sq(register float a, register float b)
 {
 #ifdef __MWERKS__

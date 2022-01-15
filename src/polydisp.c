@@ -1017,98 +1017,219 @@ void func_8000D5B8(void)
     lbl_801EEC90.unk60 = 0.0f;
 }
 
-#pragma force_active on
-const float lbl_802F2A20 = 320.0f;
-const float lbl_802F2A24 = 56.0f;
-const float lbl_802F2A28 = 240.0f;
-const float lbl_802F2A2C = 1.3333332538604736f;
-const float lbl_802F2A30 = 0.0098999999463558197f;
-const float lbl_802F2A34 = 0.57735025882720947f;
-const float lbl_802F2A38 = 2.0f;
-const float lbl_802F2A3C = 0.75f;
-const double lbl_802F2A40 = 0.001;
-const float lbl_802F2A48 = 0.125f;
-const double lbl_802F2A50 = 0.0083333333333333332;
-const float lbl_802F2A58 = 0.0009399999980814755f;
-const float lbl_802F2A5C = 0.0051899999380111694f;
-const float lbl_802F2A60 = -0.0099999997764825821f;
-const float lbl_802F2A64 = 0.000699999975040555f;
-const double lbl_802F2A68 = 100.0;
-const float lbl_802F2A70 = 0.14100000262260437f;
-const float lbl_802F2A74 = 0.014899999834597111f;
-#pragma force_active off
-
-#if 1
-#ifdef NONMATCHING
-/*
 void draw_timer_bomb_fuse(void)
 {
-    struct Sprite *r3;
+    struct NaomiModel *tempModel;
+    struct Sprite *sprite;  // r3
     float f31, f30;
+    Vec sp94;
+    u8 filler84[0x10];
     Mtx sp54;
-    struct NaomiModel *r4;
+    Vec sp48;
+    Vec sp3C;
+    Vec sp30;
+    Vec sp24;
+    Vec sp18;
     float f4;
     float f3;
-    int r8;
-    int r7;
-    float f1;
+    struct NaomiVtxWithNormal *vtx;
     int i;
-    int r6;
-    struct NaomiMesh *r3_;
-    struct NaomiVtxWithNormal *r5;
+    int r7;
+    int faceCount;
+    float f1;
+    struct NaomiMesh *mesh;
 
-    if (eventInfo[12].state == 2)
+    if (eventInfo[12].state == 2 || lbl_801F3A58.unk4 <= 0)
         return;
-    if (lbl_801F3A58.unk4 <= 0)
-        return;
-    //lbl_8000D634
-    r3 = g_find_sprite_with_probably_not_font(2);
-    if (r3 == NULL)
+
+    sprite = g_find_sprite_with_probably_not_font(2);
+    if (sprite == NULL)
     {
         f31 = 0.0f;
         f30 = 0.0f;
     }
     else
     {
-        f31 = (r3->centerX - 320.0f) / 320.0f;
-        f30 = (56.0f - r3->centerY) / 240.0f;
+        f31 = (sprite->centerX - 320.0f) / 320.0f;
+        f30 = (56.0f - sprite->centerY) / 240.0f;
     }
-    //lbl_8000D674
+
     C_MTXPerspective(sp54, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
     sp54[0][2] -= sp54[0][0] * f31 * 1.3333332538604736f * 0.5773502588272095f;
     sp54[1][2] -= sp54[1][1] * f30 * 0.5773502588272095f;
     GXSetProjection(sp54, 0);
 
-    r4 = naomiCommonObj[0x2B];
+    tempModel = lbl_802F1B4C;
     f31 = (float)lbl_801F3A58.unk4 / (float)lbl_801F3A58.unk6;
-    memcpy(lbl_802F1B4C, r4, ((u32 **)r4)[-1][0]);  // WTF???
-    r3_ = (struct NaomiMesh *)lbl_802F1B4C->meshStart;
-    //r8 = lbl_802F1B4C->unk6C;
-    r8 = ((struct NaomiDispList *)((struct NaomiMesh *)(((struct NaomiMesh *)lbl_802F1B4C->meshStart)->dispListStart)))->vtxCount;
+
+    // Make a temporary copy of the timer fuse, which we will modify
+    memcpy(
+        tempModel,
+        NAOMIOBJ_MODEL(naomiCommonObj, 0x2A),
+        NAOMIMODEL_HEADER(NAOMIOBJ_MODEL(naomiCommonObj, 0x2A))->unk4->modelSize);
+
+    mesh = (struct NaomiMesh *)tempModel->meshStart;
+    faceCount = ((struct NaomiDispList *)(((struct NaomiMesh *)tempModel->meshStart)->dispListStart))->faceCount;
+
     f4 = 2.0 * (f31 - 0.5);
     f4 = CLAMP(f4, 0.0, 1.0);
-    f3 = f4 * (r8 - 2.0);
-    r7 = (float)mathutil_floor_to_int(f3 * 0.5) * 2.0f;
-    r5 = (void *)((struct NaomiDispList *)r3_->dispListStart)->vtxData;
-    f1 = (r7 - f3) * 0.5;
-    r6 = r8 - 1;
-    for (i = 0; i < r6; i++)
-    {
 
+    f3 = f4 * (faceCount - 2.0);
+    r7 = (float)mathutil_floor(f3 * 0.5) * 2.0f;
+    f1 = (f3 - r7) * 0.5;
+
+    vtx = (struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData;
+    for (i = faceCount - 1; i >= 0; i--, vtx++)
+    {
+        if (f31 < 0.5)
+            vtx->s = 0.25;
+        else if (i < r7)
+            vtx->s = 0.75f;
+        else if (i < r7 + 2)
+            vtx->s = f1 * 0.25 + 0.5;
+        else if (i < r7 + 4)
+            vtx->s = 0.25 + f1 * 0.25;
+        else
+            vtx->s = 0.25;
     }
+
+    // Calculate something based on vertex positions?
+    // The result is never used, so this is pointless.
+    if (f31 >= 0.5)
+    {
+        int index = faceCount - 4 - r7;
+        float f2 = 1.0 - f1;
+
+        vtx = &((struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData)[index];
+
+        sp48.x = vtx[0].x * f1 + vtx[2].x * f2;
+        sp48.y = vtx[0].y * f1 + vtx[2].y * f2;
+        sp48.z = vtx[0].z * f1 + vtx[2].z * f2;
+
+        sp3C.x = vtx[1].x * f1 + vtx[3].x * f2;
+        sp3C.y = vtx[1].y * f1 + vtx[3].y * f2;
+        sp3C.z = vtx[1].z * f1 + vtx[3].z * f2;
+
+        sp94.x = 0.5 * (sp48.x + sp3C.x);
+        sp94.y = 0.5 * (sp48.y + sp3C.y);
+        sp94.z = 0.001 + 0.5 * (sp48.z + sp3C.z);
+    }
+
+    // WTF??
+    mesh = (void *)((u32 *)mesh + (((s32)mesh->dispListSize >> 2) + 0x14));
+
+    faceCount = ((struct NaomiDispList *)mesh->dispListStart)->faceCount;
+
+    f4 = f31 * 2.0;
+    f4 = CLAMP(f4, 0.0, 1.0);
+
+    f3 = f4 * (faceCount - 2.0);
+    r7 = mathutil_floor(f3 * 0.5) * 2.0f;
+    f1 = (f3 - r7) * 0.5;
+
+    vtx = (void *)((struct NaomiDispList *)mesh->dispListStart)->vtxData;
+    for (i = faceCount - 1; i >= 0; i--, vtx++)
+    {
+        if (f31 > 0.5)
+            vtx->s = 0.75;
+        else if (i < r7)
+            vtx->s = 0.75;
+        else if (i < r7 + 2)
+            vtx->s = 0.5 + f1 * 0.25;
+        else if (i < r7 + 4)
+            vtx->s = 0.25 + f1 * 0.25;
+        else
+            vtx->s = 0.25;
+    }
+
+    // Calculate something based on vertex positions?
+    // The result is never used, so this is pointless.
+    if (f31 < 0.5)
+    {
+        int index = faceCount - 4 - r7;
+        float f2 = 1.0 - f1;
+
+        vtx = &((struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData)[index];
+
+        sp30.x = vtx[0].x * f1 + vtx[2].x * f2;
+        sp30.y = vtx[0].y * f1 + vtx[2].y * f2;
+        sp30.z = vtx[0].z * f1 + vtx[2].z * f2;
+
+        sp24.x = vtx[1].x * f1 + vtx[3].x * f2;
+        sp24.y = vtx[1].y * f1 + vtx[3].y * f2;
+        sp24.z = vtx[1].z * f1 + vtx[3].z * f2;
+
+        sp94.x = 0.5 * (sp30.x + sp24.x);
+        sp94.y = 0.5 * (sp30.y + sp24.y);
+        sp94.z = 0.001 + 0.5 * (sp30.z + sp24.z);
+    }
+
+    switch (lbl_801EEC90.unk4C)
+    {
+    case 0:
+        if (!(lbl_801F3A58.unk0 & (1<<(31-0x1C))))
+        {
+            lbl_801EEC90.unk4C = 1;
+            lbl_801EEC90.unk60 = 0.125f;
+            lbl_801EEC90.unk58 = -((rand() & 0x3FF) + 0x400);
+        }
+        break;
+    case 1:
+        lbl_801EEC90.unk60 -= 0.0083333333333333332;
+        lbl_801EEC90.unk5C += lbl_801EEC90.unk60;
+        if (lbl_801EEC90.unk5C < 1.0)
+        {
+            lbl_801EEC90.unk5C = 1.0f;
+            lbl_801EEC90.unk60 = 0.0f;
+            lbl_801EEC90.unk4C = 2;
+        }
+        break;
+    case 2:
+        if (lbl_801F3A58.unk0 & (1<<(31-0x1C)))
+            lbl_801EEC90.unk4C = 3;
+        break;
+    case 3:
+        lbl_801EEC90.unk4C = 4;
+        break;
+    case 4:
+        lbl_801EEC90.unk4C = 0;
+        break;
+    }
+    if (lbl_801F3A58.unk0 & (1<<(31-0x1C)))
+        lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
+    else if (f31 > 0.5)
+        lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;
+    else
+        lbl_801EEC90.unk58 += (-1536 - lbl_801EEC90.unk58) >> 4;
+    if (!(gamePauseStatus & 0xA))
+        lbl_801EEC90.unk54 += lbl_801EEC90.unk58;
+    func_80030BB8(1.0f, 1.0f, 1.0f);
+    g_avdisp_set_some_color_1(1.0f, f31, 0.0f, 1.0f);
+    mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - f31) - 0.5, 0.0f);
+    g_avdisp_set_some_matrix(0, mathutilData->mtxA);
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_translate_xyz(
+        0.0009399999980814755f,
+        0.0051899999380111694f,
+        -0.0099999997764825821f);
+    f30 = 0.000699999975040555f;
+    mathutil_mtxA_scale_s(f30);
+    g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+    g_avdisp_set_model_scale(f30);
+    func_8008F6D4(1);
+    g_avdisp_draw_model_1(commonGma->modelEntries[0x50].modelOffset);
+    func_8008F6D4(0);
+    sp18.x = g_interp_stage_anim_probably(10, lbl_80173FE0, (1.0 - f31) * 100.0);
+    sp18.y = g_interp_stage_anim_probably(13, lbl_801740A8, (1.0 - f31) * 100.0);
+    sp18.z = 0.14100000262260437f;
+    mathutil_mtxA_translate(&sp18);
+    mathutil_mtxA_sq_from_identity();
+    mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
+    mathutil_mtxA_scale_s(0.014899999834597111f);
+    mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
+    g_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x28));
+    func_8000E3BC();
 }
-*/
-#else
-extern u8 lbl_80173FE0[];
-extern u8 lbl_801740A8[];
-asm void draw_timer_bomb_fuse(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/draw_timer_bomb_fuse.s"
-}
-#pragma peephole on
-#endif
-#endif
 
 void set_backdrop_color(void)
 {
