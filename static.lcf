@@ -38,6 +38,7 @@ FORCEACTIVE
     memcard_data_padding
     lbl_8028FE58
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
+    lbl_801EED98
 }
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }

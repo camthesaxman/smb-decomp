@@ -772,3 +772,90 @@ struct Struct8000F030
     u8 filler10[0x20-0x10];
     s32 unk20;
 };
+
+struct Struct801EED88
+{
+    u8 unk0;
+    u8 unk1[6];
+    u32 unk8;
+    u32 unkC;
+};  // size = 0x10
+
+struct MemcardGameData_sub
+{
+    /*0x5844*/ u8 filler0[0x44-0x00];
+    /*0x5888*/ u8 unk44;
+    /*0x5889*/ u8 unk45;
+    /*0x588A*/ u8 unk46;
+    /*0x588B*/ u8 unk47;
+    /*0x588C*/ u8 unk48;
+    /*0x588D*/ u8 unk49;
+    /*0x588E*/ u8 unk4A;
+    /*0x588F*/ u8 unk4B;
+    /*0x5890*/ u8 filler4C[2];
+    /*0x5892*/ u8 unk4E;
+    /*0x5893*/ u8 unk4F;
+    /*0x5894*/ u8 unk50;
+    /*0x5895*/ u8 unk51;
+    /*0x5896*/ u8 unk52;
+    /*0x5897*/ u8 unk53;
+    /*0x5898*/ u8 unk54;
+    /*0x5899*/ u8 unk55;
+    /*0x589A*/ u8 filler56[2];
+    /*0x589C*/ s16 unk58;
+    /*0x589E*/ s16 unk5A;
+    /*0x58A0*/ s16 unk5C;
+    /*0x58A2*/ s16 unk5E;
+    /*0x58A4*/ s16 unk60;
+    /*0x58A6*/ s16 unk62;
+    /*0x58A8*/ s16 unk64;
+    /*0x58AA*/ s16 unk66;
+    /*0x58AC*/ s16 unk68;
+    /*0x58AE*/ s16 unk6A;
+    /*0x58B0*/ u8 filler6C[4];
+    /*0x58B4*/ u32 unk70;
+    /*0x58B8*/ u32 unk74;
+    /*0x58BC*/ u32 unk78;
+    /*0x58C0*/ u32 unk7C;
+    /*0x58C4*/ u32 unk80;
+    /*0x58C8*/ u32 unk84;
+    /*0x58CC*/ s16 unk88;
+    /*0x58CE*/ s16 unk8A;
+    /*0x58D0*/ u32 unk8C;
+    /*0x58D4*/ u8 filler90[0xA0-0x90];
+    /*0x58E4*/ u32 unkA0;
+    /*0x58E8*/ u8 unkA4[6];
+    /*0x58EE*/ u8 unkAA;
+    /*0x58EF*/ s8 unkAB;
+    /*0x58F0*/ u8 unkAC;
+    /*0x58F1*/ u8 unkAD;
+    /*0x58F2*/ u8 unkAE;
+    /*0x58F3*/ s8 unkAF;
+    /*0x58F4*/ u8 unkB0[0x1FC];  // size = 0x1FC
+    /*0x5AF0*/ u32 unk2AC;
+    /*0x5AF4*/ u8 unk2B0;
+    /*0x5AF5*/ u8 unk2B1;
+    /*0x5AF6*/ u8 unk2B2;
+    /*0x5AF7*/ u8 unk2B3;
+    /*0x5AF8*/ u8 unk2B4;
+    /*0x5AF9*/ u8 unk2B5;
+    /*0x5AFA*/ u8 unk2B6;
+    /*0x5AFB*/ s8 unk2B7;
+    /*0x5AFC*/ u32 unk2B8;
+    /*0x5B00*/ s8 unk2BC;
+    /*0x5B01*/ u8 unk2BD;
+    /*0x5B02*/ u8 filler2BE[1];
+    /*0x5B03*/ u8 unk2BF;
+    /*0x5B04*/ u8 filler2C0[0x3BC-0x2C0];
+    /*0x5C00*/ u32 unk3BC;
+};  // size = 0x3C0
+
+struct MemcardGameData
+{
+    /*0x0000*/ u16 crc;
+    /*0x0002*/ u16 version;
+    /*0x0004*/ u8 bannerAndIcon[0x5800];
+    /*0x5804*/ char comment[32];
+    /*0x5824*/ char title[32];
+    /*0x5844*/ struct MemcardGameData_sub unk5844;
+};
