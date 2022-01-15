@@ -172,7 +172,7 @@ SOURCES := \
 	libraries/dvd/asm/dvd.s \
 	libraries/dvd/asm/dvdqueue.s \
 	libraries/dvd/asm/dvderror.s \
-	libraries/dvd/asm/fstload.s \
+	libraries/dvd/fstload.c \
 	libraries/vi/asm/vi.s \
 	libraries/demo/asm/DEMOFont.s \
 	libraries/pad/asm/Pad.s \

@@ -1794,6 +1794,7 @@ lbl_801E7C50:
 
 .section .sbss
 
+    .balign 8
 .global retraceCount
 retraceCount:
 	.skip 0x4

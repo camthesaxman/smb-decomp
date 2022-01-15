@@ -3057,6 +3057,3 @@ DVDInitialized:
 .global _DVD_LastState
 _DVD_LastState:
 	.skip 0x4
-.global status
-status:
-	.skip 0x4

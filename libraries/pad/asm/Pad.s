@@ -2490,6 +2490,7 @@ glabel string_PADSetSamplingRate__unknown_TV_format
 
 .section .sdata
 
+    .balign 8
 .global ResettingChan
 ResettingChan:
 	# ROM: 0x1EC0B8
