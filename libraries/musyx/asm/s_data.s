@@ -568,3 +568,9 @@ sndSeqPlayEx:
 /* 800F8604 000F4524  38 21 00 08 */	addi r1, r1, 8
 /* 800F8608 000F4528  7C 08 03 A6 */	mtlr r0
 /* 800F860C 000F452C  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global lbl_802F26C0
+lbl_802F26C0:
+	.skip 0x8

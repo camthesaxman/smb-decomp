@@ -3452,3 +3452,54 @@ lbl_802F6918:
 lbl_802F691C:
 	# ROM: 0x1F033C
 	.byte 0x44, 0xA0, 0x00, 0x00
+
+.section .sbss
+
+.global sndActive_2
+sndActive_2:
+	.skip 0x1
+.global synthJobTableIndex
+synthJobTableIndex:
+	.skip 0x3
+.global synthITDDefault
+synthITDDefault:
+	.skip 0x8
+.global synthAuxBMIDISet
+synthAuxBMIDISet:
+	.skip 0x4
+.global synthAuxBMIDI
+synthAuxBMIDI:
+	.skip 0x4
+.global synthAuxAMIDISet
+synthAuxAMIDISet:
+	.skip 0x4
+.global synthAuxAMIDI
+synthAuxAMIDI:
+	.skip 0x4
+.global synthMasterFaderPauseActiveFlags
+synthMasterFaderPauseActiveFlags:
+	.skip 0x4
+.global synthMasterFaderActiveFlags
+synthMasterFaderActiveFlags:
+	.skip 0x4
+.global synthFlags
+synthFlags:
+	.skip 0x1
+.global lbl_802F261D
+lbl_802F261D:
+	.skip 0x3
+.global synthVoice
+synthVoice:
+	.skip 0x4
+.global synthMessageCallback
+synthMessageCallback:
+	.skip 0x4
+.global synthIdleWaitActive
+synthIdleWaitActive:
+	.skip 0x8
+.global synthRealTime
+synthRealTime:
+	.skip 0x4
+.global lbl_802F2634
+lbl_802F2634:
+	.skip 0x4

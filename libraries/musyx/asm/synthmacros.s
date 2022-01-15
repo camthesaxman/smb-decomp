@@ -4640,3 +4640,24 @@ lbl_801E9608:
 	.4byte def_800F421C  ;# ptr
 	.4byte lbl_800F51F4  ;# ptr
 	.4byte lbl_800F52C4  ;# ptr
+
+.section .sbss
+
+.global DebugMacroSteps
+DebugMacroSteps:
+	.skip 0x4
+.global macActiveMacroRoot
+macActiveMacroRoot:
+	.skip 0x4
+.global macTimeQueueRoot
+macTimeQueueRoot:
+	.skip 0x8
+.global macRealTime
+macRealTime:
+	.skip 0x4
+.global lbl_802F269C
+lbl_802F269C:
+	.skip 0x4
+.global cstep
+cstep:
+	.skip 0x8

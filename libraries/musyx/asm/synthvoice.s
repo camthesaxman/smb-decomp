@@ -1758,3 +1758,30 @@ lbl_800F7520:
 /* 800F76B0 000F35D0  98 03 00 3E */	stb r0, 0x3e(r3)
 /* 800F76B4 000F35D4  98 03 00 3F */	stb r0, 0x3f(r3)
 /* 800F76B8 000F35D8  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global vidCurrentId
+vidCurrentId:
+	.skip 0x4
+.global vidRoot
+vidRoot:
+	.skip 0x4
+.global vidFree
+vidFree:
+	.skip 0x4
+.global voicePrioSortRootListRoot
+voicePrioSortRootListRoot:
+	.skip 0x2
+.global voiceMusicRunning
+voiceMusicRunning:
+	.skip 0x1
+.global voiceFxRunning
+voiceFxRunning:
+	.skip 0x1
+.global voiceListInsert
+voiceListInsert:
+	.skip 0x1
+.global voiceListRoot
+voiceListRoot:
+	.skip 0x7

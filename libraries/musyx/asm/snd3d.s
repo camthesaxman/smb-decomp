@@ -1687,3 +1687,39 @@ lbl_802F6A00:
 lbl_802F6A04:
 	# ROM: 0x1F0424
 	.byte 0x3E, 0x99, 0x99, 0x9A
+
+.section .sbss
+
+.global s3dCallCnt
+s3dCallCnt:
+	.skip 0x4
+.global s3dEmitterRoot
+s3dEmitterRoot:
+	.skip 0x4
+.global s3dListenerRoot
+s3dListenerRoot:
+	.skip 0x4
+.global s3dRoomRoot
+s3dRoomRoot:
+	.skip 0x4
+.global s3dDoorRoot
+s3dDoorRoot:
+	.skip 0x4
+.global snd_used_studios
+snd_used_studios:
+	.skip 0x4
+.global snd_base_studio
+snd_base_studio:
+	.skip 0x1
+.global snd_max_studios
+snd_max_studios:
+	.skip 0x1
+.global startGroupNum
+startGroupNum:
+	.skip 0x1
+.global startListNumnum
+startListNumnum:
+	.skip 0x1
+.global runListNum
+runListNum:
+	.skip 0x4

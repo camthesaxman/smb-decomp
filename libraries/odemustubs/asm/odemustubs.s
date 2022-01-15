@@ -765,3 +765,24 @@ DBClose:
 SendCount:
 	# ROM: 0x1EC218
 	.byte 0x80
+
+.section .sbss
+
+.global MTRCallback
+MTRCallback:
+	.skip 0x4
+.global DBGCallback
+DBGCallback:
+	.skip 0x4
+.global SendMailData
+SendMailData:
+	.skip 0x4
+.global RecvDataLeng
+RecvDataLeng:
+	.skip 0x4
+.global pEXIInputFlag
+pEXIInputFlag:
+	.skip 0x4
+.global EXIInputFlag
+EXIInputFlag:
+	.skip 0x1

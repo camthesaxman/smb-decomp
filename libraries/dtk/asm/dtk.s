@@ -782,3 +782,39 @@ lbl_801033AC:
 /* 801033B4 000FF2D4  38 21 00 18 */	addi r1, r1, 0x18
 /* 801033B8 000FF2D8  7C 08 03 A6 */	mtlr r0
 /* 801033BC 000FF2DC  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global __DTKCurrentTrack
+__DTKCurrentTrack:
+	.skip 0x4
+.global __DTKPlayListHead
+__DTKPlayListHead:
+	.skip 0x4
+.global __DTKPlayListTail
+__DTKPlayListTail:
+	.skip 0x4
+.global __DTKState
+__DTKState:
+	.skip 0x4
+.global __DTKTempState
+__DTKTempState:
+	.skip 0x4
+.global __DTKRepeatMode
+__DTKRepeatMode:
+	.skip 0x4
+.global __DTKPosition
+__DTKPosition:
+	.skip 0x4
+.global __DTKInterruptFrequency
+__DTKInterruptFrequency:
+	.skip 0x4
+.global __DTKVolumeL
+__DTKVolumeL:
+	.skip 0x1
+.global __DTKVolumeR
+__DTKVolumeR:
+	.skip 0x3
+.global __DTKTrackEnded
+__DTKTrackEnded:
+	.skip 0x4

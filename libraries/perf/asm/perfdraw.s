@@ -2859,3 +2859,24 @@ bDrawXFBars:
 bDrawRASBar:
 	# ROM: 0x1EC1B4
 	.byte 0x00, 0x00, 0x00, 0x01
+
+.section .sbss
+
+.global DrawFrameMax
+DrawFrameMax:
+	.skip 0x4
+.global DrawFrameH
+DrawFrameH:
+	.skip 0x4
+.global MaxBusTransactions
+MaxBusTransactions:
+	.skip 0x4
+.global bDrawBWBarKey
+bDrawBWBarKey:
+	.skip 0x4
+.global lastx
+lastx:
+	.skip 0x4
+.global GameDrawInit
+GameDrawInit:
+	.skip 0x4

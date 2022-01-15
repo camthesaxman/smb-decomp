@@ -973,3 +973,12 @@ lbl_801ED8F8:
 	# ROM: 0x1EA8F8
 glabel string_Can_t_select_EXI2_port__n
 	.asciz "Can't select EXI2 port!\n"
+
+.section .sbss
+
+.global fExi2Selected
+fExi2Selected:
+	.skip 0x4
+.global TRK_Callback
+TRK_Callback:
+	.skip 0x8

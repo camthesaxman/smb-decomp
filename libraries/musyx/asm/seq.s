@@ -3716,3 +3716,30 @@ lbl_801E9338:
 	.4byte lbl_800EA97C  ;# ptr
 	.4byte lbl_800EAA08  ;# ptr
 	.4byte lbl_800EA994  ;# ptr
+
+.section .sbss
+
+.global cseq
+cseq:
+	.skip 0x4
+.global noteFree
+noteFree:
+	.skip 0x4
+.global curSeqId
+curSeqId:
+	.skip 0x4
+.global curFadeOutState
+curFadeOutState:
+	.skip 0x4
+.global seq_next_id
+seq_next_id:
+	.skip 0x4
+.global seqFreeRoot
+seqFreeRoot:
+	.skip 0x4
+.global seqPausedRoot
+seqPausedRoot:
+	.skip 0x4
+.global seqActiveRoot
+seqActiveRoot:
+	.skip 0x4

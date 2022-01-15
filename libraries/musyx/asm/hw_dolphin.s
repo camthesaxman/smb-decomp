@@ -2015,3 +2015,36 @@ lbl_801EAE00:
 	.byte 0x0C, 0xE6, 0x02, 0xDF
 	.4byte 0
 	.4byte 0
+
+.section .sbss
+
+.global userCallback
+userCallback:
+	.skip 0x4
+.global salAIBufferBase
+salAIBufferBase:
+	.skip 0x4
+.global salDspIsDone
+salDspIsDone:
+	.skip 0x4
+.global salLogicIsWaiting
+salLogicIsWaiting:
+	.skip 0x4
+.global salLogicActive
+salLogicActive:
+	.skip 0x4
+.global salLastTick
+salLastTick:
+	.skip 0x4
+.global salDspInitIsDone
+salDspInitIsDone:
+	.skip 0x4
+.global hwIrqLevel
+hwIrqLevel:
+	.skip 0x4
+.global oldState
+oldState:
+	.skip 0x4
+.global salAIBufferIndex
+salAIBufferIndex:
+	.skip 0x4

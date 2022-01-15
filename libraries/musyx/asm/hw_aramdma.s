@@ -672,3 +672,30 @@ lbl_80100DD8:
 /* 80100DDC 000FCCFC  90 04 00 00 */	stw r0, 0(r4)
 /* 80100DE0 000FCD00  90 8D A5 6C */	stw r4, aramFreeStreamBuffers@sda21(r13)
 /* 80100DE4 000FCD04  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global aramTop
+aramTop:
+	.skip 0x4
+.global aramWrite
+aramWrite:
+	.skip 0x4
+.global aramStream
+aramStream:
+	.skip 0x4
+.global aramQueueWrite
+aramQueueWrite:
+	.skip 0x1
+.global aramQueueValid
+aramQueueValid:
+	.skip 0x3
+.global aramUsedStreamBuffers
+aramUsedStreamBuffers:
+	.skip 0x4
+.global aramFreeStreamBuffers
+aramFreeStreamBuffers:
+	.skip 0x4
+.global aramIdleStreamBuffers
+aramIdleStreamBuffers:
+	.skip 0x8

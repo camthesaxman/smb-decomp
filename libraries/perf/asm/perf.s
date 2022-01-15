@@ -1488,3 +1488,39 @@ CurrAutoSample:
 CurrToken:
 	# ROM: 0x1EC144
 	.byte 0x00, 0x00, 0xFF, 0xFF
+
+.section .sbss
+
+.global magic
+magic:
+	.skip 0x4
+.global PerfAlloc
+PerfAlloc:
+	.skip 0x4
+.global PerfFree
+PerfFree:
+	.skip 0x4
+.global DSCB
+DSCB:
+	.skip 0x4
+.global PERFCurrSample
+PERFCurrSample:
+	.skip 0x4
+.global PERFCurrFrame
+PERFCurrFrame:
+	.skip 0x4
+.global PERFEvents
+PERFEvents:
+	.skip 0x4
+.global PERFFrames
+PERFFrames:
+	.skip 0x4
+.global PERFNumSamples
+PERFNumSamples:
+	.skip 0x4
+.global PERFNumEvents
+PERFNumEvents:
+	.skip 0x4
+.global PERFNumFrames
+PERFNumFrames:
+	.skip 0x8

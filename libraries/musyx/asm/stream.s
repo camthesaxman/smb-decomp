@@ -1481,3 +1481,15 @@ lbl_802F6928:
 	# ROM: 0x1F0348
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
+
+.section .sbss
+
+.global streamCallCnt
+streamCallCnt:
+	.skip 0x1
+.global streamCallDelay
+streamCallDelay:
+	.skip 0x3
+.global nextPublicID
+nextPublicID:
+	.skip 0x4

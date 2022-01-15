@@ -1247,3 +1247,24 @@ dspCoefSel:
 	# ROM: 0x1EC1C8
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x02, 0x00, 0x00
+
+.section .sbss
+
+.global salTimeOffset
+salTimeOffset:
+	.skip 0x4
+.global salHooks
+salHooks:
+	.skip 0x4
+.global lbl_802F2730
+lbl_802F2730:
+	.skip 0x4
+.global salNumVoices
+salNumVoices:
+	.skip 0x1
+.global salAuxFrame
+salAuxFrame:
+	.skip 0x1
+.global salFrame
+salFrame:
+	.skip 0x2
