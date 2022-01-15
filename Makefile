@@ -180,7 +180,7 @@ SOURCES := \
 	libraries/ar/asm/ar.s \
 	libraries/ar/asm/arq.s \
 	libraries/dsp/asm/dsp.s \
-	libraries/dsp/asm/dsp_debug.s \
+	libraries/dsp/dsp_debug.c \
 	libraries/dsp/asm/dsp_task.s \
 	libraries/card/asm/CARDBios.s \
 	libraries/card/asm/CARDUnlock.s \
@@ -244,7 +244,7 @@ SOURCES := \
 	libraries/musyx/asm/chorus_fx.s \
 	libraries/dtk/asm/dtk.s \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.c \
-	libraries/PowerPC_EABI_Support/asm/Runtime/Src/__va_arg.s \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__va_arg.c \
 	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp \
 	libraries/PowerPC_EABI_Support/asm/Runtime/Src/runtime.s \
@@ -253,7 +253,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Src/ansi_fp.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/buffer_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/char_io.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/PPC_EABI/SRC/critical_regions.ppc_eabi.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/PPC_EABI/SRC/critical_regions.ppc_eabi.c \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/ctype.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/direct_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mbstring.s \

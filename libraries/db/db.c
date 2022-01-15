@@ -13,8 +13,7 @@ static void __DBExceptionDestination();
 void DBInit(void)
 {
 	__DBInterface      = (void *)0x80000040;
-    // WTF??
-    *(u32 *)0x80000048 = (u32)__DBExceptionDestination + 0x80000000;
+    *(u32 *)0x80000048 = (u32)__DBExceptionDestination - 0x80000000;
 	DBVerbose          = 1;
 	return;
 }
