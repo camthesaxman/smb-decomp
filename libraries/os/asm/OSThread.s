@@ -1073,3 +1073,9 @@ RunQueueHint:
 .global Reschedule
 Reschedule:
 	.skip 0x8
+
+.section .bss
+
+.global lbl_802C6E78
+lbl_802C6E78:
+	.skip 0x9E8

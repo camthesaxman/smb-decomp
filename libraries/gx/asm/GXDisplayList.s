@@ -155,3 +155,9 @@ lbl_800E437C:
 .global OldCPUFifo
 OldCPUFifo:
 	.skip 0x8
+
+.section .bss
+
+.global lbl_802C8690
+lbl_802C8690:
+	.skip 0x518

@@ -182,8 +182,8 @@ lbl_800E88A4:
 /* 800E88A8 000E47C8  28 00 FF FF */	cmplwi r0, 0xffff
 /* 800E88AC 000E47CC  41 82 FF 8C */	beq lbl_800E8838
 /* 800E88B0 000E47D0  1C 03 17 A4 */	mulli r0, r3, 0x17a4
-/* 800E88B4 000E47D4  3C 60 80 2D */	lis r3, lbl_802CA060@ha
-/* 800E88B8 000E47D8  38 63 A0 60 */	addi r3, r3, lbl_802CA060@l
+/* 800E88B4 000E47D4  3C 60 80 2D */	lis r3, seqInstance@ha
+/* 800E88B8 000E47D8  38 63 A0 60 */	addi r3, r3, seqInstance@l
 /* 800E88BC 000E47DC  7C 63 02 14 */	add r3, r3, r0
 /* 800E88C0 000E47E0  90 E3 00 0C */	stw r7, 0xc(r3)
 /* 800E88C4 000E47E4  7C E3 3B 78 */	mr r3, r7
@@ -675,10 +675,10 @@ lbl_800E8F9C:
 /* 800E8FB0 000E4ED0  41 80 FF B4 */	blt lbl_800E8F64
 /* 800E8FB4 000E4ED4  80 7C 00 00 */	lwz r3, 0(r28)
 /* 800E8FB8 000E4ED8  38 00 00 10 */	li r0, 0x10
-/* 800E8FBC 000E4EDC  3C 80 80 2D */	lis r4, lbl_802D6A54@ha
+/* 800E8FBC 000E4EDC  3C 80 80 2D */	lis r4, synthTrackVolume@ha
 /* 800E8FC0 000E4EE0  7C 09 03 A6 */	mtctr r0
 /* 800E8FC4 000E4EE4  39 40 00 00 */	li r10, 0
-/* 800E8FC8 000E4EE8  38 C4 6A 54 */	addi r6, r4, lbl_802D6A54@l
+/* 800E8FC8 000E4EE8  38 C4 6A 54 */	addi r6, r4, synthTrackVolume@l
 /* 800E8FCC 000E4EEC  38 FB 00 00 */	addi r7, r27, 0
 /* 800E8FD0 000E4EF0  39 3B 00 00 */	addi r9, r27, 0
 /* 800E8FD4 000E4EF4  38 8A 00 00 */	addi r4, r10, 0
@@ -796,9 +796,9 @@ lbl_800E914C:
 /* 800E9164 000E5084  28 1D 00 00 */	cmplwi r29, 0
 /* 800E9168 000E5088  41 82 01 34 */	beq lbl_800E929C
 /* 800E916C 000E508C  3C 80 00 01 */	lis r4, 0x0000FFFF@ha
-/* 800E9170 000E5090  3C 60 80 2D */	lis r3, lbl_802D5D80@ha
+/* 800E9170 000E5090  3C 60 80 2D */	lis r3, seqMIDIPriority@ha
 /* 800E9174 000E5094  3B C4 FF FF */	addi r30, r4, 0x0000FFFF@l
-/* 800E9178 000E5098  3B E3 5D 80 */	addi r31, r3, lbl_802D5D80@l
+/* 800E9178 000E5098  3B E3 5D 80 */	addi r31, r3, seqMIDIPriority@l
 /* 800E917C 000E509C  3B 80 00 00 */	li r28, 0
 lbl_800E9180:
 /* 800E9180 000E50A0  80 6D A4 00 */	lwz r3, curSeqId@sda21(r13)
@@ -878,8 +878,8 @@ lbl_800E929C:
 /* 800E929C 000E51BC  38 00 00 00 */	li r0, 0
 /* 800E92A0 000E51C0  2C 00 00 10 */	cmpwi r0, 0x10
 /* 800E92A4 000E51C4  40 80 00 5C */	bge lbl_800E9300
-/* 800E92A8 000E51C8  3C 60 80 2D */	lis r3, lbl_802D5D80@ha
-/* 800E92AC 000E51CC  38 03 5D 80 */	addi r0, r3, lbl_802D5D80@l
+/* 800E92A8 000E51C8  3C 60 80 2D */	lis r3, seqMIDIPriority@ha
+/* 800E92AC 000E51CC  38 03 5D 80 */	addi r0, r3, seqMIDIPriority@l
 /* 800E92B0 000E51D0  57 44 28 34 */	slwi r4, r26, 5
 /* 800E92B4 000E51D4  3C 60 00 01 */	lis r3, 0x0000FFFF@ha
 /* 800E92B8 000E51D8  7C 80 22 14 */	add r4, r0, r4
@@ -1081,8 +1081,8 @@ lbl_800E9550:
 /* 800E955C 000E547C  54 80 00 01 */	rlwinm. r0, r4, 0, 0, 0
 /* 800E9560 000E5480  40 82 00 C8 */	bne lbl_800E9628
 /* 800E9564 000E5484  1C 84 17 A4 */	mulli r4, r4, 0x17a4
-/* 800E9568 000E5488  3C 60 80 2D */	lis r3, lbl_802CA060@ha
-/* 800E956C 000E548C  38 03 A0 60 */	addi r0, r3, lbl_802CA060@l
+/* 800E9568 000E5488  3C 60 80 2D */	lis r3, seqInstance@ha
+/* 800E956C 000E548C  38 03 A0 60 */	addi r0, r3, seqInstance@l
 /* 800E9570 000E5490  7C 60 22 14 */	add r3, r0, r4
 /* 800E9574 000E5494  88 03 00 08 */	lbz r0, 8(r3)
 /* 800E9578 000E5498  3B C3 00 00 */	addi r30, r3, 0
@@ -1140,8 +1140,8 @@ lbl_800E9614:
 lbl_800E9628:
 /* 800E9628 000E5548  54 80 00 7E */	clrlwi r0, r4, 1
 /* 800E962C 000E554C  1C 80 17 A4 */	mulli r4, r0, 0x17a4
-/* 800E9630 000E5550  3C 60 80 2D */	lis r3, lbl_802CA060@ha
-/* 800E9634 000E5554  38 03 A0 60 */	addi r0, r3, lbl_802CA060@l
+/* 800E9630 000E5550  3C 60 80 2D */	lis r3, seqInstance@ha
+/* 800E9634 000E5554  38 03 A0 60 */	addi r0, r3, seqInstance@l
 /* 800E9638 000E5558  7C 60 22 14 */	add r3, r0, r4
 /* 800E963C 000E555C  88 03 00 08 */	lbz r0, 8(r3)
 /* 800E9640 000E5560  28 00 00 00 */	cmplwi r0, 0
@@ -1445,8 +1445,8 @@ lbl_800E9A0C:
 /* 800E9A0C 000E592C  54 80 00 01 */	rlwinm. r0, r4, 0, 0, 0
 /* 800E9A10 000E5930  40 82 00 84 */	bne lbl_800E9A94
 /* 800E9A14 000E5934  1C 84 17 A4 */	mulli r4, r4, 0x17a4
-/* 800E9A18 000E5938  3C 60 80 2D */	lis r3, lbl_802CA060@ha
-/* 800E9A1C 000E593C  38 03 A0 60 */	addi r0, r3, lbl_802CA060@l
+/* 800E9A18 000E5938  3C 60 80 2D */	lis r3, seqInstance@ha
+/* 800E9A1C 000E593C  38 03 A0 60 */	addi r0, r3, seqInstance@l
 /* 800E9A20 000E5940  7C 80 22 14 */	add r4, r0, r4
 /* 800E9A24 000E5944  88 04 00 08 */	lbz r0, 8(r4)
 /* 800E9A28 000E5948  28 00 00 02 */	cmplwi r0, 2
@@ -1483,8 +1483,8 @@ lbl_800E9A7C:
 lbl_800E9A94:
 /* 800E9A94 000E59B4  54 80 00 7E */	clrlwi r0, r4, 1
 /* 800E9A98 000E59B8  1C 00 17 A4 */	mulli r0, r0, 0x17a4
-/* 800E9A9C 000E59BC  3C 60 80 2D */	lis r3, lbl_802CA060@ha
-/* 800E9AA0 000E59C0  38 63 A0 60 */	addi r3, r3, lbl_802CA060@l
+/* 800E9A9C 000E59BC  3C 60 80 2D */	lis r3, seqInstance@ha
+/* 800E9AA0 000E59C0  38 63 A0 60 */	addi r3, r3, seqInstance@l
 /* 800E9AA4 000E59C4  7C 63 02 14 */	add r3, r3, r0
 /* 800E9AA8 000E59C8  88 03 0E D6 */	lbz r0, 0xed6(r3)
 /* 800E9AAC 000E59CC  54 00 07 76 */	rlwinm r0, r0, 0, 0x1d, 0x1b
@@ -3743,3 +3743,16 @@ seqPausedRoot:
 .global seqActiveRoot
 seqActiveRoot:
 	.skip 0x4
+
+.section .bss
+
+.global seqNote
+seqNote:
+	.skip 0x1400
+.global seqInstance
+seqInstance:
+	.skip 0xBD20
+.global seqMIDIPriority
+seqMIDIPriority:
+	.skip 0x100
+    

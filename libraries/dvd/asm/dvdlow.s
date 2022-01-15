@@ -1083,3 +1083,12 @@ LastCommandWasRead:
 .global NextCommandNumber
 NextCommandNumber:
 	.skip 0x4
+
+.section .bss
+
+.global CommandList
+CommandList:
+	.skip 0x68
+.global AlarmForTimeout
+AlarmForTimeout:
+	.skip 0x78

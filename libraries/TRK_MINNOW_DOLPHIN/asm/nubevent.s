@@ -5,11 +5,11 @@
 .global TRKInitializeEventQueue
 TRKInitializeEventQueue:
 /* 801099FC 0010591C  7C 08 02 A6 */	mflr r0
-/* 80109A00 00105920  3C 60 80 2F */	lis r3, lbl_802EE240@ha
+/* 80109A00 00105920  3C 60 80 2F */	lis r3, gTRKEventQueue@ha
 /* 80109A04 00105924  90 01 00 04 */	stw r0, 4(r1)
 /* 80109A08 00105928  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 80109A0C 0010592C  93 E1 00 0C */	stw r31, 0xc(r1)
-/* 80109A10 00105930  3B E3 E2 40 */	addi r31, r3, lbl_802EE240@l
+/* 80109A10 00105930  3B E3 E2 40 */	addi r31, r3, gTRKEventQueue@l
 /* 80109A14 00105934  38 7F 00 00 */	addi r3, r31, 0
 /* 80109A18 00105938  48 00 25 C9 */	bl TRKInitializeMutex
 /* 80109A1C 0010593C  7F E3 FB 78 */	mr r3, r31
@@ -43,11 +43,11 @@ TRKCopyEvent:
 .global TRKGetNextEvent
 TRKGetNextEvent:
 /* 80109A7C 0010599C  7C 08 02 A6 */	mflr r0
-/* 80109A80 001059A0  3C 80 80 2F */	lis r4, lbl_802EE240@ha
+/* 80109A80 001059A0  3C 80 80 2F */	lis r4, gTRKEventQueue@ha
 /* 80109A84 001059A4  90 01 00 04 */	stw r0, 4(r1)
 /* 80109A88 001059A8  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80109A8C 001059AC  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 80109A90 001059B0  3B E4 E2 40 */	addi r31, r4, lbl_802EE240@l
+/* 80109A90 001059B0  3B E4 E2 40 */	addi r31, r4, gTRKEventQueue@l
 /* 80109A94 001059B4  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 80109A98 001059B8  93 A1 00 0C */	stw r29, 0xc(r1)
 /* 80109A9C 001059BC  3B A0 00 00 */	li r29, 0
@@ -80,8 +80,8 @@ TRKGetNextEvent:
 lbl_80109B08:
 /* 80109B08 00105A28  3B A0 00 01 */	li r29, 1
 lbl_80109B0C:
-/* 80109B0C 00105A2C  3C 60 80 2F */	lis r3, lbl_802EE240@ha
-/* 80109B10 00105A30  38 63 E2 40 */	addi r3, r3, lbl_802EE240@l
+/* 80109B0C 00105A2C  3C 60 80 2F */	lis r3, gTRKEventQueue@ha
+/* 80109B10 00105A30  38 63 E2 40 */	addi r3, r3, gTRKEventQueue@l
 /* 80109B14 00105A34  48 00 24 DD */	bl TRKReleaseMutex
 /* 80109B18 00105A38  7F A3 EB 78 */	mr r3, r29
 /* 80109B1C 00105A3C  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -96,13 +96,13 @@ lbl_80109B0C:
 .global TRKPostEvent
 TRKPostEvent:
 /* 80109B3C 00105A5C  7C 08 02 A6 */	mflr r0
-/* 80109B40 00105A60  3C 80 80 2F */	lis r4, lbl_802EE240@ha
+/* 80109B40 00105A60  3C 80 80 2F */	lis r4, gTRKEventQueue@ha
 /* 80109B44 00105A64  90 01 00 04 */	stw r0, 4(r1)
 /* 80109B48 00105A68  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80109B4C 00105A6C  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 80109B50 00105A70  3B E3 00 00 */	addi r31, r3, 0
 /* 80109B54 00105A74  93 C1 00 10 */	stw r30, 0x10(r1)
-/* 80109B58 00105A78  3B C4 E2 40 */	addi r30, r4, lbl_802EE240@l
+/* 80109B58 00105A78  3B C4 E2 40 */	addi r30, r4, gTRKEventQueue@l
 /* 80109B5C 00105A7C  38 7E 00 00 */	addi r3, r30, 0
 /* 80109B60 00105A80  93 A1 00 0C */	stw r29, 0xc(r1)
 /* 80109B64 00105A84  93 81 00 08 */	stw r28, 8(r1)
@@ -142,8 +142,8 @@ lbl_80109BE0:
 /* 80109BE4 00105B04  38 03 00 01 */	addi r0, r3, 1
 /* 80109BE8 00105B08  90 1D 00 00 */	stw r0, 0(r29)
 lbl_80109BEC:
-/* 80109BEC 00105B0C  3C 60 80 2F */	lis r3, lbl_802EE240@ha
-/* 80109BF0 00105B10  38 63 E2 40 */	addi r3, r3, lbl_802EE240@l
+/* 80109BEC 00105B0C  3C 60 80 2F */	lis r3, gTRKEventQueue@ha
+/* 80109BF0 00105B10  38 63 E2 40 */	addi r3, r3, gTRKEventQueue@l
 /* 80109BF4 00105B14  48 00 23 FD */	bl TRKReleaseMutex
 /* 80109BF8 00105B18  7F 83 E3 78 */	mr r3, r28
 /* 80109BFC 00105B1C  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -175,3 +175,9 @@ TRKDestructEvent:
 /* 80109C4C 00105B6C  80 01 00 04 */	lwz r0, 4(r1)
 /* 80109C50 00105B70  7C 08 03 A6 */	mtlr r0
 /* 80109C54 00105B74  4E 80 00 20 */	blr
+
+.section .bss
+
+.global gTRKEventQueue
+gTRKEventQueue:
+	.skip 0x28

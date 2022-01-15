@@ -699,3 +699,12 @@ aramFreeStreamBuffers:
 .global aramIdleStreamBuffers
 aramIdleStreamBuffers:
 	.skip 0x8
+
+.section .bss
+
+.global lbl_802EB870
+lbl_802EB870:
+	.skip 0x200
+.global lbl_802EBA70
+lbl_802EBA70:
+	.skip 0x410

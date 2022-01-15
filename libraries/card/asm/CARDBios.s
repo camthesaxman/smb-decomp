@@ -1436,3 +1436,12 @@ lbl_801E8A60:
 .global __CARDDiskID
 __CARDDiskID:
 	.skip 0x8
+
+.section .bss
+
+.global __CARDBlock
+__CARDBlock:
+	.skip 0x210
+.global __CARDDiskNone
+__CARDDiskNone:
+	.skip 0x20

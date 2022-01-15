@@ -648,3 +648,9 @@ lbl_800C8164:
 /* 800C8170 000C4090  7C 08 03 A6 */	mtlr r0
 /* 800C8174 000C4094  38 21 00 20 */	addi r1, r1, 0x20
 /* 800C8178 000C4098  4E 80 00 20 */	blr
+
+.section .bss
+
+.global Scb
+Scb:
+	.skip 0x58

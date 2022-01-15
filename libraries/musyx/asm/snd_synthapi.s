@@ -294,23 +294,23 @@ sndSetAuxProcessingCallbacks:
 /* 800EEE6C 000EAD8C  41 82 00 64 */	beq lbl_800EEED0
 /* 800EEE70 000EAD90  7E E3 BB 78 */	mr r3, r23
 /* 800EEE74 000EAD94  4B FF 9A 59 */	bl seqGetPrivateId
-/* 800EEE78 000EAD98  3C A0 80 2D */	lis r5, lbl_802D6AA4@ha
+/* 800EEE78 000EAD98  3C A0 80 2D */	lis r5, synthAuxACallback@ha
 /* 800EEE7C 000EAD9C  38 CD A4 2C */	addi r6, r13, synthAuxAMIDISet@sda21
 /* 800EEE80 000EADA0  7C 66 C1 AE */	stbx r3, r6, r24
 /* 800EEE84 000EADA4  57 06 10 3A */	slwi r6, r24, 2
-/* 800EEE88 000EADA8  38 05 6A A4 */	addi r0, r5, lbl_802D6AA4@l
+/* 800EEE88 000EADA8  38 05 6A A4 */	addi r0, r5, synthAuxACallback@l
 /* 800EEE8C 000EADAC  7C 60 32 14 */	add r3, r0, r6
-/* 800EEE90 000EADB0  3C 80 80 2D */	lis r4, lbl_802D6A94@ha
+/* 800EEE90 000EADB0  3C 80 80 2D */	lis r4, synthAuxAUser@ha
 /* 800EEE94 000EADB4  93 43 00 00 */	stw r26, 0(r3)
-/* 800EEE98 000EADB8  38 04 6A 94 */	addi r0, r4, lbl_802D6A94@l
+/* 800EEE98 000EADB8  38 04 6A 94 */	addi r0, r4, synthAuxAUser@l
 /* 800EEE9C 000EADBC  7C 60 32 14 */	add r3, r0, r6
 /* 800EEEA0 000EADC0  93 63 00 00 */	stw r27, 0(r3)
 /* 800EEEA4 000EADC4  48 00 00 2C */	b lbl_800EEED0
 lbl_800EEEA8:
 /* 800EEEA8 000EADC8  57 25 06 3E */	clrlwi r5, r25, 0x18
-/* 800EEEAC 000EADCC  3C 60 80 2D */	lis r3, lbl_802D6AA4@ha
+/* 800EEEAC 000EADCC  3C 60 80 2D */	lis r3, synthAuxACallback@ha
 /* 800EEEB0 000EADD0  57 24 15 BA */	rlwinm r4, r25, 2, 0x16, 0x1d
-/* 800EEEB4 000EADD4  38 03 6A A4 */	addi r0, r3, lbl_802D6AA4@l
+/* 800EEEB4 000EADD4  38 03 6A A4 */	addi r0, r3, synthAuxACallback@l
 /* 800EEEB8 000EADD8  7C 60 22 14 */	add r3, r0, r4
 /* 800EEEBC 000EADDC  38 00 00 00 */	li r0, 0
 /* 800EEEC0 000EADE0  90 03 00 00 */	stw r0, 0(r3)
@@ -328,23 +328,23 @@ lbl_800EEED0:
 /* 800EEEEC 000EAE0C  41 82 00 64 */	beq lbl_800EEF50
 /* 800EEEF0 000EAE10  7F E3 FB 78 */	mr r3, r31
 /* 800EEEF4 000EAE14  4B FF 99 D9 */	bl seqGetPrivateId
-/* 800EEEF8 000EAE18  3C A0 80 2D */	lis r5, lbl_802D6AC4@ha
+/* 800EEEF8 000EAE18  3C A0 80 2D */	lis r5, synthAuxBCallback@ha
 /* 800EEEFC 000EAE1C  38 CD A4 24 */	addi r6, r13, synthAuxBMIDISet@sda21
 /* 800EEF00 000EAE20  7C 66 C1 AE */	stbx r3, r6, r24
 /* 800EEF04 000EAE24  57 06 10 3A */	slwi r6, r24, 2
-/* 800EEF08 000EAE28  38 05 6A C4 */	addi r0, r5, lbl_802D6AC4@l
+/* 800EEF08 000EAE28  38 05 6A C4 */	addi r0, r5, synthAuxBCallback@l
 /* 800EEF0C 000EAE2C  7C 60 32 14 */	add r3, r0, r6
-/* 800EEF10 000EAE30  3C 80 80 2D */	lis r4, lbl_802D6AB4@ha
+/* 800EEF10 000EAE30  3C 80 80 2D */	lis r4, synthAuxBUser@ha
 /* 800EEF14 000EAE34  93 83 00 00 */	stw r28, 0(r3)
-/* 800EEF18 000EAE38  38 04 6A B4 */	addi r0, r4, lbl_802D6AB4@l
+/* 800EEF18 000EAE38  38 04 6A B4 */	addi r0, r4, synthAuxBUser@l
 /* 800EEF1C 000EAE3C  7C 60 32 14 */	add r3, r0, r6
 /* 800EEF20 000EAE40  93 A3 00 00 */	stw r29, 0(r3)
 /* 800EEF24 000EAE44  48 00 00 2C */	b lbl_800EEF50
 lbl_800EEF28:
 /* 800EEF28 000EAE48  57 25 06 3E */	clrlwi r5, r25, 0x18
-/* 800EEF2C 000EAE4C  3C 60 80 2D */	lis r3, lbl_802D6AC4@ha
+/* 800EEF2C 000EAE4C  3C 60 80 2D */	lis r3, synthAuxBCallback@ha
 /* 800EEF30 000EAE50  57 24 15 BA */	rlwinm r4, r25, 2, 0x16, 0x1d
-/* 800EEF34 000EAE54  38 03 6A C4 */	addi r0, r3, lbl_802D6AC4@l
+/* 800EEF34 000EAE54  38 03 6A C4 */	addi r0, r3, synthAuxBCallback@l
 /* 800EEF38 000EAE58  7C 60 22 14 */	add r3, r0, r4
 /* 800EEF3C 000EAE5C  38 00 00 00 */	li r0, 0
 /* 800EEF40 000EAE60  90 03 00 00 */	stw r0, 0(r3)
@@ -378,11 +378,11 @@ synthActivateStudio:
 /* 800EEFA0 000EAEC0  3B A3 00 00 */	addi r29, r3, 0
 /* 800EEFA4 000EAEC4  48 01 22 5D */	bl hwDisableIrq
 /* 800EEFA8 000EAEC8  57 A7 06 3E */	clrlwi r7, r29, 0x18
-/* 800EEFAC 000EAECC  3C 80 80 2D */	lis r4, lbl_802D6AA4@ha
-/* 800EEFB0 000EAED0  3C 60 80 2D */	lis r3, lbl_802D6AC4@ha
+/* 800EEFAC 000EAECC  3C 80 80 2D */	lis r4, synthAuxACallback@ha
+/* 800EEFB0 000EAED0  3C 60 80 2D */	lis r3, synthAuxBCallback@ha
 /* 800EEFB4 000EAED4  57 A6 15 BA */	rlwinm r6, r29, 2, 0x16, 0x1d
-/* 800EEFB8 000EAED8  38 84 6A A4 */	addi r4, r4, lbl_802D6AA4@l
-/* 800EEFBC 000EAEDC  38 03 6A C4 */	addi r0, r3, lbl_802D6AC4@l
+/* 800EEFB8 000EAED8  38 84 6A A4 */	addi r4, r4, synthAuxACallback@l
+/* 800EEFBC 000EAEDC  38 03 6A C4 */	addi r0, r3, synthAuxBCallback@l
 /* 800EEFC0 000EAEE0  7C 64 32 14 */	add r3, r4, r6
 /* 800EEFC4 000EAEE4  38 A0 00 00 */	li r5, 0
 /* 800EEFC8 000EAEE8  90 A3 00 00 */	stw r5, 0(r3)
@@ -418,9 +418,9 @@ synthDeactivateStudio:
 /* 800EF034 000EAF54  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 800EF038 000EAF58  BF 61 00 14 */	stmw r27, 0x14(r1)
 /* 800EF03C 000EAF5C  3B E3 00 00 */	addi r31, r3, 0
-/* 800EF040 000EAF60  3C 60 80 2D */	lis r3, lbl_802D6240@ha
+/* 800EF040 000EAF60  3C 60 80 2D */	lis r3, synthInfo@ha
 /* 800EF044 000EAF64  57 FD 06 3E */	clrlwi r29, r31, 0x18
-/* 800EF048 000EAF68  3B C3 62 40 */	addi r30, r3, lbl_802D6240@l
+/* 800EF048 000EAF68  3B C3 62 40 */	addi r30, r3, synthInfo@l
 /* 800EF04C 000EAF6C  3B 60 00 00 */	li r27, 0
 /* 800EF050 000EAF70  3B 80 00 00 */	li r28, 0
 /* 800EF054 000EAF74  48 00 00 58 */	b lbl_800EF0AC
@@ -454,11 +454,11 @@ lbl_800EF0AC:
 /* 800EF0B4 000EAFD4  41 80 FF A4 */	blt lbl_800EF058
 /* 800EF0B8 000EAFD8  48 01 21 49 */	bl hwDisableIrq
 /* 800EF0BC 000EAFDC  57 E6 06 3E */	clrlwi r6, r31, 0x18
-/* 800EF0C0 000EAFE0  3C 80 80 2D */	lis r4, lbl_802D6AA4@ha
-/* 800EF0C4 000EAFE4  3C 60 80 2D */	lis r3, lbl_802D6AC4@ha
+/* 800EF0C0 000EAFE0  3C 80 80 2D */	lis r4, synthAuxACallback@ha
+/* 800EF0C4 000EAFE4  3C 60 80 2D */	lis r3, synthAuxBCallback@ha
 /* 800EF0C8 000EAFE8  57 E5 15 BA */	rlwinm r5, r31, 2, 0x16, 0x1d
-/* 800EF0CC 000EAFEC  38 84 6A A4 */	addi r4, r4, lbl_802D6AA4@l
-/* 800EF0D0 000EAFF0  38 03 6A C4 */	addi r0, r3, lbl_802D6AC4@l
+/* 800EF0CC 000EAFEC  38 84 6A A4 */	addi r4, r4, synthAuxACallback@l
+/* 800EF0D0 000EAFF0  38 03 6A C4 */	addi r0, r3, synthAuxBCallback@l
 /* 800EF0D4 000EAFF4  7C 64 2A 14 */	add r3, r4, r5
 /* 800EF0D8 000EAFF8  38 80 00 00 */	li r4, 0
 /* 800EF0DC 000EAFFC  90 83 00 00 */	stw r4, 0(r3)

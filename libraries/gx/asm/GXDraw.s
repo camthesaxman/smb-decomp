@@ -1037,3 +1037,9 @@ lbl_802F6860:
 lbl_802F6864:
 	# ROM: 0x1F0284
 	.byte 0x3F, 0x13, 0xCD, 0x3A
+
+.section .bss
+
+.global lbl_802C8408
+lbl_802C8408:
+	.skip 0x288

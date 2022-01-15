@@ -5,7 +5,7 @@
 .global dataInitStack
 dataInitStack:
 /* 800F7E8C 000F3DAC  38 00 00 00 */	li r0, 0
-/* 800F7E90 000F3DB0  B0 0D A4 E0 */	sth r0, lbl_802F26C0@sda21(r13)
+/* 800F7E90 000F3DB0  B0 0D A4 E0 */	sth r0, sp@sda21(r13)
 /* 800F7E94 000F3DB4  4E 80 00 20 */	blr
 
 .global InsertData
@@ -295,7 +295,7 @@ sndPushGroup:
 /* 800F8234 000F4154  88 0D A4 18 */	lbz r0, sndActive_2@sda21(r13)
 /* 800F8238 000F4158  28 00 00 00 */	cmplwi r0, 0
 /* 800F823C 000F415C  41 82 01 2C */	beq lbl_800F8368
-/* 800F8240 000F4160  A8 CD A4 E0 */	lha r6, lbl_802F26C0@sda21(r13)
+/* 800F8240 000F4160  A8 CD A4 E0 */	lha r6, sp@sda21(r13)
 /* 800F8244 000F4164  2C 06 00 80 */	cmpwi r6, 0x80
 /* 800F8248 000F4168  40 80 01 20 */	bge lbl_800F8368
 /* 800F824C 000F416C  3B FB 00 00 */	addi r31, r27, 0
@@ -305,8 +305,8 @@ lbl_800F8258:
 /* 800F8258 000F4178  A0 1F 00 04 */	lhz r0, 4(r31)
 /* 800F825C 000F417C  7C 00 20 40 */	cmplw r0, r4
 /* 800F8260 000F4180  40 82 00 F0 */	bne lbl_800F8350
-/* 800F8264 000F4184  3C 60 80 2E */	lis r3, lbl_802E3DB0@ha
-/* 800F8268 000F4188  38 03 3D B0 */	addi r0, r3, lbl_802E3DB0@l
+/* 800F8264 000F4184  3C 60 80 2E */	lis r3, gs@ha
+/* 800F8268 000F4188  38 03 3D B0 */	addi r0, r3, gs@l
 /* 800F826C 000F418C  54 C4 18 38 */	slwi r4, r6, 3
 /* 800F8270 000F4190  7C 80 22 14 */	add r4, r0, r4
 /* 800F8274 000F4194  93 E4 00 00 */	stw r31, 0(r4)
@@ -361,10 +361,10 @@ lbl_800F82B4:
 /* 800F8334 000F4254  4B FF 93 69 */	bl dataInsertFX
 lbl_800F8338:
 /* 800F8338 000F4258  48 00 81 09 */	bl hwSyncSampleMem
-/* 800F833C 000F425C  A8 8D A4 E0 */	lha r4, lbl_802F26C0@sda21(r13)
+/* 800F833C 000F425C  A8 8D A4 E0 */	lha r4, sp@sda21(r13)
 /* 800F8340 000F4260  38 60 00 01 */	li r3, 1
 /* 800F8344 000F4264  38 04 00 01 */	addi r0, r4, 1
-/* 800F8348 000F4268  B0 0D A4 E0 */	sth r0, lbl_802F26C0@sda21(r13)
+/* 800F8348 000F4268  B0 0D A4 E0 */	sth r0, sp@sda21(r13)
 /* 800F834C 000F426C  48 00 00 20 */	b lbl_800F836C
 lbl_800F8350:
 /* 800F8350 000F4270  80 1F 00 00 */	lwz r0, 0(r31)
@@ -386,19 +386,19 @@ lbl_800F836C:
 .global sndPopGroup
 sndPopGroup:
 /* 800F8380 000F42A0  7C 08 02 A6 */	mflr r0
-/* 800F8384 000F42A4  3C 60 80 2E */	lis r3, lbl_802E3DB0@ha
+/* 800F8384 000F42A4  3C 60 80 2E */	lis r3, gs@ha
 /* 800F8388 000F42A8  90 01 00 04 */	stw r0, 4(r1)
-/* 800F838C 000F42AC  38 83 3D B0 */	addi r4, r3, lbl_802E3DB0@l
+/* 800F838C 000F42AC  38 83 3D B0 */	addi r4, r3, gs@l
 /* 800F8390 000F42B0  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 800F8394 000F42B4  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 800F8398 000F42B8  93 C1 00 08 */	stw r30, 8(r1)
-/* 800F839C 000F42BC  A8 AD A4 E0 */	lha r5, lbl_802F26C0@sda21(r13)
+/* 800F839C 000F42BC  A8 AD A4 E0 */	lha r5, sp@sda21(r13)
 /* 800F83A0 000F42C0  38 65 FF FF */	addi r3, r5, -1
 /* 800F83A4 000F42C4  7C 60 07 34 */	extsh r0, r3
-/* 800F83A8 000F42C8  B0 6D A4 E0 */	sth r3, lbl_802F26C0@sda21(r13)
+/* 800F83A8 000F42C8  B0 6D A4 E0 */	sth r3, sp@sda21(r13)
 /* 800F83AC 000F42CC  54 00 18 38 */	slwi r0, r0, 3
 /* 800F83B0 000F42D0  7C 64 02 14 */	add r3, r4, r0
-/* 800F83B4 000F42D4  A8 0D A4 E0 */	lha r0, lbl_802F26C0@sda21(r13)
+/* 800F83B4 000F42D4  A8 0D A4 E0 */	lha r0, sp@sda21(r13)
 /* 800F83B8 000F42D8  83 E3 00 00 */	lwz r31, 0(r3)
 /* 800F83BC 000F42DC  54 03 18 38 */	slwi r3, r0, 3
 /* 800F83C0 000F42E0  A0 1F 00 06 */	lhz r0, 6(r31)
@@ -466,9 +466,9 @@ lbl_800F848C:
 .global seqPlaySong
 seqPlaySong:
 /* 800F84A8 000F43C8  7C 08 02 A6 */	mflr r0
-/* 800F84AC 000F43CC  3D 20 80 2E */	lis r9, lbl_802E3DB0@ha
+/* 800F84AC 000F43CC  3D 20 80 2E */	lis r9, gs@ha
 /* 800F84B0 000F43D0  90 01 00 04 */	stw r0, 4(r1)
-/* 800F84B4 000F43D4  39 29 3D B0 */	addi r9, r9, lbl_802E3DB0@l
+/* 800F84B4 000F43D4  39 29 3D B0 */	addi r9, r9, gs@l
 /* 800F84B8 000F43D8  94 21 FF C0 */	stwu r1, -0x40(r1)
 /* 800F84BC 000F43DC  BF 21 00 24 */	stmw r25, 0x24(r1)
 /* 800F84C0 000F43E0  3B A5 00 00 */	addi r29, r5, 0
@@ -478,7 +478,7 @@ seqPlaySong:
 /* 800F84D0 000F43F0  38 C9 00 00 */	addi r6, r9, 0
 /* 800F84D4 000F43F4  54 65 04 3E */	clrlwi r5, r3, 0x10
 /* 800F84D8 000F43F8  39 00 00 00 */	li r8, 0
-/* 800F84DC 000F43FC  A8 0D A4 E0 */	lha r0, lbl_802F26C0@sda21(r13)
+/* 800F84DC 000F43FC  A8 0D A4 E0 */	lha r0, sp@sda21(r13)
 /* 800F84E0 000F4400  2C 00 00 00 */	cmpwi r0, 0
 /* 800F84E4 000F4404  7C 09 03 A6 */	mtctr r0
 /* 800F84E8 000F4408  40 81 00 E8 */	ble lbl_800F85D0
@@ -571,6 +571,6 @@ sndSeqPlayEx:
 
 .section .sbss
 
-.global lbl_802F26C0
-lbl_802F26C0:
+.global sp
+sp:
 	.skip 0x8

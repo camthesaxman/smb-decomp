@@ -98,3 +98,13 @@ __stdio_exit:
 .global __console_exit
 __console_exit:
 	.skip 0x8
+
+.section .bss
+
+    .balign 8
+.global lbl_802EE040
+lbl_802EE040:
+	.skip 0x100
+.global lbl_802EE140
+lbl_802EE140:
+	.skip 0x100

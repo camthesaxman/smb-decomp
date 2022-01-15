@@ -3057,3 +3057,12 @@ DVDInitialized:
 .global _DVD_LastState
 _DVD_LastState:
 	.skip 0x4
+
+.section .bss
+
+.global tmpBuffer
+tmpBuffer:
+	.skip 0x80
+.global DummyCommandBlock
+DummyCommandBlock:
+	.skip 0x58

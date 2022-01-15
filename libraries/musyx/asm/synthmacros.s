@@ -1582,8 +1582,8 @@ lbl_800F39C8:
 /* 800F39DC 000EF8FC  80 63 00 AC */	lwz r3, 0xac(r3)
 /* 800F39E0 000EF900  48 00 00 18 */	b lbl_800F39F8
 lbl_800F39E4:
-/* 800F39E4 000EF904  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F39E8 000EF908  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F39E4 000EF904  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F39E8 000EF908  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F39EC 000EF90C  54 A0 10 3A */	slwi r0, r5, 2
 /* 800F39F0 000EF910  7C 63 02 14 */	add r3, r3, r0
 /* 800F39F4 000EF914  80 63 FF C0 */	lwz r3, -0x40(r3)
@@ -1613,8 +1613,8 @@ lbl_800F3A2C:
 /* 800F3A40 000EF960  80 03 00 AC */	lwz r0, 0xac(r3)
 /* 800F3A44 000EF964  48 00 00 18 */	b lbl_800F3A5C
 lbl_800F3A48:
-/* 800F3A48 000EF968  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F3A4C 000EF96C  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F3A48 000EF968  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F3A4C 000EF96C  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F3A50 000EF970  54 A0 10 3A */	slwi r0, r5, 2
 /* 800F3A54 000EF974  7C 63 02 14 */	add r3, r3, r0
 /* 800F3A58 000EF978  80 03 FF C0 */	lwz r0, -0x40(r3)
@@ -1645,8 +1645,8 @@ lbl_800F3A94:
 /* 800F3AA8 000EF9C8  90 C3 00 AC */	stw r6, 0xac(r3)
 /* 800F3AAC 000EF9CC  48 00 00 18 */	b lbl_800F3AC4
 lbl_800F3AB0:
-/* 800F3AB0 000EF9D0  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F3AB4 000EF9D4  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F3AB0 000EF9D0  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F3AB4 000EF9D4  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F3AB8 000EF9D8  54 A0 10 3A */	slwi r0, r5, 2
 /* 800F3ABC 000EF9DC  7C 63 02 14 */	add r3, r3, r0
 /* 800F3AC0 000EF9E0  90 C3 FF C0 */	stw r6, -0x40(r3)
@@ -1763,8 +1763,8 @@ mcmdSendMessage:
 /* 800F3C2C 000EFB4C  83 E5 00 AC */	lwz r31, 0xac(r5)
 /* 800F3C30 000EFB50  48 00 00 18 */	b lbl_800F3C48
 lbl_800F3C34:
-/* 800F3C34 000EFB54  3C A0 80 2D */	lis r5, lbl_802D6AD4@ha
-/* 800F3C38 000EFB58  38 A5 6A D4 */	addi r5, r5, lbl_802D6AD4@l
+/* 800F3C34 000EFB54  3C A0 80 2D */	lis r5, synthGlobalVariable@ha
+/* 800F3C38 000EFB58  38 A5 6A D4 */	addi r5, r5, synthGlobalVariable@l
 /* 800F3C3C 000EFB5C  54 00 10 3A */	slwi r0, r0, 2
 /* 800F3C40 000EFB60  7C A5 02 14 */	add r5, r5, r0
 /* 800F3C44 000EFB64  83 E5 FF C0 */	lwz r31, -0x40(r5)
@@ -1776,8 +1776,8 @@ lbl_800F3C48:
 /* 800F3C58 000EFB78  54 BD 84 3E */	srwi r29, r5, 0x10
 /* 800F3C5C 000EFB7C  28 1D FF FF */	cmplwi r29, 0xffff
 /* 800F3C60 000EFB80  41 82 00 E8 */	beq lbl_800F3D48
-/* 800F3C64 000EFB84  3C 60 80 2D */	lis r3, lbl_802D6240@ha
-/* 800F3C68 000EFB88  3B 63 62 40 */	addi r27, r3, lbl_802D6240@l
+/* 800F3C64 000EFB84  3C 60 80 2D */	lis r3, synthInfo@ha
+/* 800F3C68 000EFB88  3B 63 62 40 */	addi r27, r3, synthInfo@l
 /* 800F3C6C 000EFB8C  3B 80 00 00 */	li r28, 0
 /* 800F3C70 000EFB90  3B C0 00 00 */	li r30, 0
 /* 800F3C74 000EFB94  48 00 00 C0 */	b lbl_800F3D34
@@ -1854,8 +1854,8 @@ lbl_800F3D68:
 /* 800F3D7C 000EFC9C  80 63 00 AC */	lwz r3, 0xac(r3)
 /* 800F3D80 000EFCA0  48 00 00 18 */	b lbl_800F3D98
 lbl_800F3D84:
-/* 800F3D84 000EFCA4  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F3D88 000EFCA8  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F3D84 000EFCA4  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F3D88 000EFCA8  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F3D8C 000EFCAC  54 00 10 3A */	slwi r0, r0, 2
 /* 800F3D90 000EFCB0  7C 63 02 14 */	add r3, r3, r0
 /* 800F3D94 000EFCB4  80 63 FF C0 */	lwz r3, -0x40(r3)
@@ -1918,8 +1918,8 @@ mcmdSetKeyGroup:
 /* 800F3E64 000EFD84  30 03 FF FF */	addic r0, r3, -1
 /* 800F3E68 000EFD88  7F 80 19 10 */	subfe r28, r0, r3
 /* 800F3E6C 000EFD8C  41 82 00 8C */	beq lbl_800F3EF8
-/* 800F3E70 000EFD90  3C 60 80 2D */	lis r3, lbl_802D6240@ha
-/* 800F3E74 000EFD94  3B 43 62 40 */	addi r26, r3, lbl_802D6240@l
+/* 800F3E70 000EFD90  3C 60 80 2D */	lis r3, synthInfo@ha
+/* 800F3E74 000EFD94  3B 43 62 40 */	addi r26, r3, synthInfo@l
 /* 800F3E78 000EFD98  3B C0 00 00 */	li r30, 0
 /* 800F3E7C 000EFD9C  48 00 00 6C */	b lbl_800F3EE8
 lbl_800F3E80:
@@ -2115,25 +2115,25 @@ lbl_800F4030:
 lbl_800F414C:
 /* 800F414C 000F006C  38 00 00 00 */	li r0, 0
 /* 800F4150 000F0070  C3 C2 C1 50 */	lfs f30, lbl_802F6950-_SDA2_BASE_(r2)
-/* 800F4154 000F0074  3D 20 80 2D */	lis r9, lbl_802D6B14@ha
+/* 800F4154 000F0074  3D 20 80 2D */	lis r9, inpAuxB@ha
 /* 800F4158 000F0078  98 0D A4 A8 */	stb r0, DebugMacroSteps@sda21(r13)
-/* 800F415C 000F007C  38 09 6B 14 */	addi r0, r9, lbl_802D6B14@l
+/* 800F415C 000F007C  38 09 6B 14 */	addi r0, r9, inpAuxB@l
 /* 800F4160 000F0080  C3 E2 C1 54 */	lfs f31, lbl_802F6954-_SDA2_BASE_(r2)
 /* 800F4164 000F0084  3B AD A4 C0 */	addi r29, r13, cstep@sda21
 /* 800F4168 000F0088  90 01 00 78 */	stw r0, 0x78(r1)
 /* 800F416C 000F008C  3C 60 80 2D */	lis r3, lbl_802D6D54@ha
 /* 800F4170 000F0090  38 03 6D 54 */	addi r0, r3, lbl_802D6D54@l
-/* 800F4174 000F0094  3D 00 80 2D */	lis r8, lbl_802D6240@ha
+/* 800F4174 000F0094  3D 00 80 2D */	lis r8, synthInfo@ha
 /* 800F4178 000F0098  90 01 00 74 */	stw r0, 0x74(r1)
-/* 800F417C 000F009C  3C E0 80 2D */	lis r7, lbl_802D6AD4@ha
+/* 800F417C 000F009C  3C E0 80 2D */	lis r7, synthGlobalVariable@ha
 /* 800F4180 000F00A0  3E 60 00 01 */	lis r19, 0x0000FFFF@ha
 /* 800F4184 000F00A4  3E A0 80 00 */	lis r21, 0x7FFF8000@ha
 /* 800F4188 000F00A8  3C A0 80 1F */	lis r5, dspDLSVolTab@ha
 /* 800F418C 000F00AC  3C 80 80 1F */	lis r4, dspScale2IndexTab@ha
 /* 800F4190 000F00B0  3C C0 80 1F */	lis r6, lbl_801E9608@ha
 /* 800F4194 000F00B4  3D 40 51 EC */	lis r10, 0x51EB851F@ha
-/* 800F4198 000F00B8  3B 48 62 40 */	addi r26, r8, lbl_802D6240@l
-/* 800F419C 000F00BC  3A C7 6A D4 */	addi r22, r7, lbl_802D6AD4@l
+/* 800F4198 000F00B8  3B 48 62 40 */	addi r26, r8, synthInfo@l
+/* 800F419C 000F00BC  3A C7 6A D4 */	addi r22, r7, synthGlobalVariable@l
 /* 800F41A0 000F00C0  39 F3 FF FF */	addi r15, r19, 0x0000FFFF@l
 /* 800F41A4 000F00C4  39 D5 80 00 */	addi r14, r21, 0x7FFF8000@l
 /* 800F41A8 000F00C8  3A 05 A1 54 */	addi r16, r5, dspDLSVolTab@l
@@ -4290,10 +4290,10 @@ lbl_800F5E38:
 macInit:
 /* 800F5E4C 000F1D6C  38 E0 00 00 */	li r7, 0
 /* 800F5E50 000F1D70  90 ED A4 BC */	stw r7, lbl_802F269C@sda21(r13)
-/* 800F5E54 000F1D74  3C 60 80 2D */	lis r3, lbl_802D6240@ha
+/* 800F5E54 000F1D74  3C 60 80 2D */	lis r3, synthInfo@ha
 /* 800F5E58 000F1D78  39 07 00 00 */	addi r8, r7, 0
 /* 800F5E5C 000F1D7C  90 ED A4 AC */	stw r7, macActiveMacroRoot@sda21(r13)
-/* 800F5E60 000F1D80  38 63 62 40 */	addi r3, r3, lbl_802D6240@l
+/* 800F5E60 000F1D80  38 63 62 40 */	addi r3, r3, synthInfo@l
 /* 800F5E64 000F1D84  39 20 00 00 */	li r9, 0
 /* 800F5E68 000F1D88  90 ED A4 B0 */	stw r7, macTimeQueueRoot@sda21(r13)
 /* 800F5E6C 000F1D8C  38 C0 00 02 */	li r6, 2

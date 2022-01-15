@@ -2569,3 +2569,15 @@ __PADSpec:
 .global __PADFixBits
 __PADFixBits:
 	.skip 0x8
+
+.section .bss
+
+.global PADType
+PADType:
+	.skip 0x10
+.global Type
+Type:
+	.skip 0x10
+.global Origin
+Origin:
+	.skip 0x50

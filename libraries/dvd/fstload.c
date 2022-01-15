@@ -5,11 +5,10 @@
 #include "__dvd.h"
 
 static u32 status;
-static struct bb2struct *bb2; // pointer?
+static struct bb2struct *bb2;
 static DVDDiskID *idTmp;
-// TODO: static
-extern u8 bb2Buf[0x3F];
-extern u8 block[0x30];
+static u8 bb2Buf[64];
+static u8 block[48];
 
 struct DiskInfo
 {

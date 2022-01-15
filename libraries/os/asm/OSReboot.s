@@ -158,3 +158,9 @@ lbl_800C7264:
 .global Prepared
 Prepared:
 	.skip 0x8
+
+.section .bss
+
+.global Header
+Header:
+	.skip 0x20

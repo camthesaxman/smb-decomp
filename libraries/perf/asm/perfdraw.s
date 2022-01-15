@@ -2880,3 +2880,9 @@ lastx:
 .global GameDrawInit
 GameDrawInit:
 	.skip 0x4
+
+.section .bss
+
+.global mId
+mId:
+	.skip 0x90

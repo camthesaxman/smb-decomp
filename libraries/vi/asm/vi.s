@@ -1837,3 +1837,15 @@ lbl_802F245C:
 .global Initialized
 Initialized:
 	.skip 0x8
+
+.section .bss
+
+.global regs
+regs:
+	.skip 0x78
+.global shdwRegs
+shdwRegs:
+	.skip 0x78
+.global HorVer
+HorVer:
+	.skip 0x58

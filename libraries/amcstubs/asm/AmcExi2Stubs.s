@@ -982,3 +982,9 @@ fExi2Selected:
 .global TRK_Callback
 TRK_Callback:
 	.skip 0x8
+
+.section .bss
+
+.global lbl_802F01C8
+lbl_802F01C8:
+	.skip 0x18

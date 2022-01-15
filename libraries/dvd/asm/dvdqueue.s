@@ -151,3 +151,9 @@ lbl_800CEA58:
 /* 800CEA60 000CA980  38 21 00 18 */	addi r1, r1, 0x18
 /* 800CEA64 000CA984  7C 08 03 A6 */	mtlr r0
 /* 800CEA68 000CA988  4E 80 00 20 */	blr
+
+.section .bss
+
+.global WaitingQueue
+WaitingQueue:
+	.skip 0x20

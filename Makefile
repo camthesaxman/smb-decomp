@@ -146,10 +146,9 @@ SOURCES := \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
 	libraries/os/asm/OSError.s \
-	libraries/os/asm/OSInterrupt.s \
-	libraries/exi/asm/EXIBios.s \
+	libraries/os/asm/OSExi.s \
 	libraries/os/asm/OSFont.s \
-	libraries/os/asm/OSInterrupt_2.s \
+	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
 	libraries/os/asm/OSMemory.s \
 	libraries/os/asm/OSMutex.s \
@@ -303,8 +302,7 @@ SOURCES := \
 	libraries/TRK_MINNOW_DOLPHIN/asm/targcont.s \
 	libraries/amcstubs/asm/AmcExi2Stubs.s \
 	libraries/odemustubs/asm/odemustubs.s \
-	libraries/amcnotstub/asm/amcnotstub.s \
-	libraries/data.s
+	libraries/amcnotstub/asm/amcnotstub.s
 O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)

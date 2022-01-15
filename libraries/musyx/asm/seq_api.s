@@ -96,9 +96,9 @@ sndSeqVolume:
 
 .global seqGetMIDIPriority
 seqGetMIDIPriority:
-/* 800EEA6C 000EA98C  3C A0 80 2D */	lis r5, lbl_802D5D80@ha
+/* 800EEA6C 000EA98C  3C A0 80 2D */	lis r5, seqMIDIPriority@ha
 /* 800EEA70 000EA990  54 63 2C F4 */	rlwinm r3, r3, 5, 0x13, 0x1a
-/* 800EEA74 000EA994  38 05 5D 80 */	addi r0, r5, lbl_802D5D80@l
+/* 800EEA74 000EA994  38 05 5D 80 */	addi r0, r5, seqMIDIPriority@l
 /* 800EEA78 000EA998  7C 60 1A 14 */	add r3, r0, r3
 /* 800EEA7C 000EA99C  54 80 0D FC */	rlwinm r0, r4, 1, 0x17, 0x1e
 /* 800EEA80 000EA9A0  7C 63 02 14 */	add r3, r3, r0

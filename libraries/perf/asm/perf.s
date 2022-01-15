@@ -1524,3 +1524,9 @@ PERFNumEvents:
 .global PERFNumFrames
 PERFNumFrames:
 	.skip 0x8
+
+.section .bss
+
+.global PERFAlarm
+PERFAlarm:
+	.skip 0x28

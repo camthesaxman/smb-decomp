@@ -818,3 +818,27 @@ __DTKVolumeR:
 .global __DTKTrackEnded
 __DTKTrackEnded:
 	.skip 0x4
+
+.section .bss
+
+.global __block_for_run_callback
+__block_for_run_callback:
+	.skip 0x30
+.global __block_for_prep_callback
+__block_for_prep_callback:
+	.skip 0x30
+.global __block_for_stream_status
+__block_for_stream_status:
+	.skip 0x30
+.global __block_for_ais_isr
+__block_for_ais_isr:
+	.skip 0x30
+.global __block_for_set_state
+__block_for_set_state:
+	.skip 0x30
+.global __block_for_next_track
+__block_for_next_track:
+	.skip 0x30
+.global __block_for_prev_track
+__block_for_prev_track:
+	.skip 0x30

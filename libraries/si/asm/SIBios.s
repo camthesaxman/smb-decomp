@@ -702,3 +702,12 @@ lbl_801E7500:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+
+.section .bss
+
+.global Packet
+Packet:
+	.skip 0x80
+.global Alarm
+Alarm:
+	.skip 0xA0

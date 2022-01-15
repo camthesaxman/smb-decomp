@@ -992,12 +992,12 @@ hwTransAddr:
 .global hwFrq2Pitch
 hwFrq2Pitch:
 /* 801002A8 000FC1C8  7C 08 02 A6 */	mflr r0
-/* 801002AC 000FC1CC  3C 80 80 2D */	lis r4, lbl_802D6240@ha
+/* 801002AC 000FC1CC  3C 80 80 2D */	lis r4, synthInfo@ha
 /* 801002B0 000FC1D0  90 01 00 04 */	stw r0, 4(r1)
 /* 801002B4 000FC1D4  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 801002B8 000FC1D8  90 61 00 1C */	stw r3, 0x1c(r1)
 /* 801002BC 000FC1DC  3C 60 43 30 */	lis r3, 0x4330
-/* 801002C0 000FC1E0  80 04 62 40 */	lwz r0, lbl_802D6240@l(r4)
+/* 801002C0 000FC1E0  80 04 62 40 */	lwz r0, synthInfo@l(r4)
 /* 801002C4 000FC1E4  90 61 00 18 */	stw r3, 0x18(r1)
 /* 801002C8 000FC1E8  C8 42 C2 30 */	lfd f2, lbl_802F6A30-_SDA2_BASE_(r2)
 /* 801002CC 000FC1EC  90 01 00 14 */	stw r0, 0x14(r1)

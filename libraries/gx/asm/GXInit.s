@@ -1126,3 +1126,9 @@ __peReg:
 .global __memReg
 __memReg:
 	.skip 0x4
+
+.section .bss
+
+.global gxData
+gxData:
+	.skip 0x578
