@@ -8,6 +8,13 @@ struct AdvLogoInfo
     s32 unk18[4];
 };
 
+enum
+{
+    ADV_FLAG_SHOW_BLIMP = (1 << 0),
+    ADV_FLAG_SHOW_STAGE = (1 << 1),
+    ADV_FLAG_SHOW_BALLS = (1 << 2),
+};
+
 struct AdvDemoInfo
 {
     u8 filler0[4];

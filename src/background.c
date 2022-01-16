@@ -752,7 +752,6 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
         float f29;
         float f2;
         struct UnkStruct8005562C_child *r28;
-        int r4;
 
         a->unk0 &= ~(1 << (31-15));
         if (!(a->unk0 & r29))
@@ -768,8 +767,7 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
             f29 = lbl_80206DEC.unk4 / 60.0;
         f29 += r28->unk0;
         f2 = (float)(r28->unk4 - r28->unk0);
-        r4 = mathutil_floor_to_int(f29 / f2);
-        f29 -= f2 * (float)r4;
+        f29 -= f2 * mathutil_floor(f29 / f2);
         f29 += (float)r28->unk0;
         if (r28->unk54 != NULL2 && g_interp_stage_anim_probably(r28->unk50, r28->unk54, f29) < 0.5)
         {

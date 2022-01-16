@@ -33,7 +33,7 @@ void polydisp_main(void);
 void draw_3d_scene(void);
 void draw_adv_3d_scene(void);
 void draw_intro_av_logo(void);
-void func_8000B96C(void);
+void draw_adv_demo_scene(void);
 void g_draw_tutorial_button_and_joystick(void);
 // ? func_8000C144();
 void func_8000C388(void);

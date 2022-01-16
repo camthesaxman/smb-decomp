@@ -17,6 +17,7 @@
 #include "stage.h"
 
 #include "../data/common.gma.h"
+#include "../data/common.nlobj.h"
 
 float lbl_80205E20[4];
 Mtx lbl_80205E30;
@@ -205,7 +206,7 @@ int func_80037098(struct Ball_child *a, struct Ball *ball)
     if (lbl_801F3A58.unk22 != 1)
         ret = 5;
     else
-        ret = lbl_801F3A58.unk4 * 5 / lbl_801F3A58.unk6;
+        ret = lbl_801F3A58.timerCurr * 5 / lbl_801F3A58.timerMax;
 
     ret *= 2;
     if (a->unk24 != 5)
@@ -298,13 +299,13 @@ void func_8003721C(struct Ball_child *a, float b)
     }
     else
     {
-        if (a->unk14 & (1<<(31-0x17)))
+        if (a->unk14 & (1 << 8))
         {
             r29 = 1;
             r27 = 6;
             func_8008BF00(a, 0);
         }
-        else if (a->unk14 & (1<<(31-0x14)))
+        else if (a->unk14 & (1 << 11))
         {
             r29 = 2;
             r28 = 13;
@@ -526,7 +527,7 @@ void ev_ball_init(void)
     {
     case 1:
     case 4:
-        if (modeCtrl.playerCount > 2 && !(advDemoInfo.flags & (1<<(31-0x17))))
+        if (modeCtrl.playerCount > 2 && !(advDemoInfo.flags & (1 << 8)))
             func_8008BEF8(2);
         break;
     case 3:
@@ -558,7 +559,7 @@ void ev_ball_init(void)
         r20 = func_8008B838(lbl_80206BC0[i]);
         ball->unkFC = r20;
         r20->unk74 = 0;
-        if (!(advDemoInfo.flags & (1<<(31-0x17))) && modeCtrl.unk30 > 1)
+        if (!(advDemoInfo.flags & (1 << 8)) && modeCtrl.unk30 > 1)
             r20->unk14 |= 0x100000;
         ball->unk14B = 0;
         mathutil_mtxA_from_identity();
@@ -568,7 +569,7 @@ void ev_ball_init(void)
             r20->unkB4 = sp18[lbl_80206BC0[i]];
         else
             r20->unkB4 = i;
-        if (advDemoInfo.flags & (1<<(31-0x17)))
+        if (advDemoInfo.flags & (1 << 8))
             r20->unkB4 = 0;
         r20->unk30 = decodedStageLzPtr->startPos->pos;
         mathutil_mtxA_to_quat(&r20->unk60);
@@ -583,7 +584,7 @@ void ev_ball_init(void)
         case 8:
             break;
         default:
-            if (!(advDemoInfo.flags & (1<<(31-0x17))))
+            if (!(advDemoInfo.flags & (1 << 8)))
                 r20->unkC1 = ~(1 << i);
             break;
         }
@@ -595,7 +596,7 @@ void ev_ball_init(void)
         case 7:
             break;
         default:
-            if (!(advDemoInfo.flags & (1<<(31-0x17))))
+            if (!(advDemoInfo.flags & (1 << 8)))
                 lbl_80206B80[i] = func_8008D1DC(lbl_8003781C, r20, 5);
             break;
         }
@@ -603,7 +604,7 @@ void ev_ball_init(void)
         {
         case 1:
         case 4:
-            if (advDemoInfo.flags & (1<<(31-0x17)))
+            if (advDemoInfo.flags & (1 << 8))
             {
                 func_8008BF00(r20, 0);
                 lbl_802F1F0C |= 1 << (r20->unk10 * 2);
@@ -678,8 +679,8 @@ struct BallPhysicsParams
 
 struct BallPhysicsParams ballPhysicsParams[] =
 {
-    {0, 0.5f, 0.009799992f, 0.5f},
-    {6, 0.5f,  0.02177776f, 0.1f},
+    {NLMODEL_common_BSKBALL,  0.5f, 0.009799992f, 0.5f},
+    {NLMODEL_common_BALL_BLK, 0.5f,  0.02177776f, 0.1f},
 };
 
 s16 clearHemisphereOutsideParts[] = { CLEAR_HEMI_OUTSIDE, CLEAR_HEMI_OUTSIDE_L2, CLEAR_HEMI_OUTSIDE_L3 };
@@ -1135,18 +1136,18 @@ void ball_draw(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            func_80033B14(NAOMIOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
+            func_80033B14(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
         }
         else
         {
-            func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, ball->oldModelId));
+            func_80033AD4(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId));
         }
 
         if (func != NULL)
         {
             mathutil_mtxA_push();
             mathutil_mtxA_from_mtx(ball->unk30);
-            if (func(NAOMIOBJ_MODEL(naomiCommonObj, 0x37), lbl_802F1B4C) != 0)
+            if (func(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
                 g_call_draw_naomi_model_1(lbl_802F1B4C);
@@ -1168,7 +1169,7 @@ void ball_draw(void)
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
         func_80030BA8(ball->modelScale);
-        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x27));  // draw ball edge
+        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 
         func_8000E3BC();
@@ -1190,8 +1191,8 @@ void func_80038AB4(void)
     s8 *r26;
     int i;
 
-    r29 = advDemoInfo.flags & (1<<(31-0x17));
-    if (r29 != 0 && (advDemoInfo.flags & (1<<(31-0x14))))
+    r29 = advDemoInfo.flags & (1 << 8);
+    if (r29 != 0 && (advDemoInfo.flags & (1 << 11)))
     {
         func_80038DF4();
         return;
@@ -2646,7 +2647,7 @@ void func_8003C4A0(struct Ball *ball, int b)
     else
         ball->colorId = 3;
 
-    if (advDemoInfo.flags & (1<<(31-0x17)))
+    if (advDemoInfo.flags & (1 << 8))
         ball->colorId = 3;
 }
 
@@ -2863,7 +2864,7 @@ static inline void func_8003CDC0_sub(struct Ball *ball)
 
 void func_8003CDC0(struct Ball *ball)
 {
-    if (advDemoInfo.flags & (1<<(31-0x17)))
+    if (advDemoInfo.flags & (1 << 8))
         return;
 
     switch (modeCtrl.unk28)
@@ -2993,7 +2994,7 @@ void func_8003D3C4(struct Ball *ball)
         sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
         sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
-        if (!(lbl_801F3A58.unk0 & (1 << 4)) || (lbl_801F3A58.unk0 & (1<<(31-0x14))))
+        if (!(lbl_801F3A58.unk0 & (1 << 4)) || (lbl_801F3A58.unk0 & (1 << 11)))
             f2 = 0.85f;
         else
             f2 = 0.1f;
@@ -3113,7 +3114,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     {
         mathutil_mtxA_push();
         mathutil_mtxA_from_mtx(ball->unk30);
-        if (r30(NAOMIOBJ_MODEL(naomiCommonObj, 0x37), lbl_802F1B4C) != 0)
+        if (r30(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
         {
             mathutil_mtxA_pop();
             mathutil_mtxA_push();

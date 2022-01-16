@@ -547,8 +547,8 @@ extern struct
 extern struct
 {
     u32 unk0;
-    s16 unk4;
-    s16 unk6;
+    s16 timerCurr;  // current clock time (in 60ths of a second)
+    s16 timerMax;  // maximum clock time (in 60ths of a second)
     u8 filler8[0xC - 0x8];
     s16 unkC;
     s16 unkE;

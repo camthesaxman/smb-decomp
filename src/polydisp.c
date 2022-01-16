@@ -17,7 +17,10 @@
 #include "ord_tbl.h"
 #include "stage.h"
 
+#define SCREEN_ASPECT (640.0f / 480.0f)
+
 #include "../data/common.gma.h"
+#include "../data/common.nlobj.h"
 
 struct Struct801EEC80 lbl_801EEC80;
 struct Struct801EEC90 lbl_801EEC90;
@@ -214,7 +217,7 @@ void draw_adv_3d_scene(void)
         draw_test_camera_target();
         break;
     case SMD_ADV_DEMO_MAIN:
-        func_8000B96C();
+        draw_adv_demo_scene();
         break;
     case SMD_ADV_INFO_MAIN:
         draw_normal_game_scene();
@@ -235,14 +238,14 @@ void draw_adv_3d_scene(void)
 
 struct Struct80173FA8
 {
-    u32 unk0;
-    s16 unk4;
-    s16 unk6;
-    Vec unk8;
+    u32 modelId;
+    s16 xrot;
+    s16 yrot;
+    Vec pos;
 } lbl_80173FA8[] =
 {
-    { 56, -25344, 22272, { 0.7, -0.3, 0.2 } },
-    { 57,   8832, 20736, { 0.6, -0.2, 0.2 } },
+    { NLMODEL_common_BSKBALL_L_HALF, -25344, 22272, { 0.7, -0.3, 0.2 } },
+    { NLMODEL_common_BSKBALL_R_HALF,   8832, 20736, { 0.6, -0.2, 0.2 } },
 };
 
 float lbl_80173FD0[] = { 0.4, 0.25, 0.25, 0.5 };
@@ -253,23 +256,23 @@ void draw_intro_av_logo(void)
     mathutil_mtxA_translate(&advLogoInfo.pos);
     mathutil_mtxA_rotate_x(advLogoInfo.xrot);
     mathutil_mtxA_rotate_z(advLogoInfo.zrot);
-    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x2C));
+    func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_av_ball));
 }
 
-void func_8000B96C(void)
+void draw_adv_demo_scene(void)
 {
     func_80092D3C();
     func_80054FF0();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
-    if (!(advDemoInfo.flags & (1 << (31-0x1B)))
-     && !(advDemoInfo.flags & (1 << (31-0x1D))))
+    if (!(advDemoInfo.flags & (1 << 4))
+     && !(advDemoInfo.flags & ADV_FLAG_SHOW_BALLS))
     {
         int i;
         for (i = 0; i < 3; i++)
         {
             float f30;
-            if (ballInfo[i].unkFC->unk14 & (1 << (31-0x1A)))
+            if (ballInfo[i].unkFC->unk14 & (1 << 5))
                 continue;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate_xyz(
@@ -285,7 +288,9 @@ void func_8000B96C(void)
         }
         func_8000E3BC();
     }
-    if (advDemoInfo.flags & 1)
+
+    // Draw blimp
+    if (advDemoInfo.flags & ADV_FLAG_SHOW_BLIMP)
     {
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(
@@ -294,9 +299,11 @@ void func_8000B96C(void)
             ballInfo[0].unkFC->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
-        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 0x36));
+        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
     }
-    if (advDemoInfo.flags & (1 << (31-0x15)))
+
+    // Draws old arcade ball. Leftover from Monkey Ball?
+    if (advDemoInfo.flags & (1 << 10))
     {
         struct Struct80173FA8 *r27 = lbl_80173FA8;
         int i;
@@ -304,17 +311,18 @@ void func_8000B96C(void)
         {
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate(&ballInfo[0].unkFC->unk30);
-            mathutil_mtxA_translate(&r27->unk8);
-            mathutil_mtxA_rotate_y(r27->unk6);
-            mathutil_mtxA_rotate_x(r27->unk4);
-            func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, r27->unk0));
+            mathutil_mtxA_translate(&r27->pos);
+            mathutil_mtxA_rotate_y(r27->yrot);
+            mathutil_mtxA_rotate_x(r27->xrot);
+            func_80033AD4(NLOBJ_MODEL(naomiCommonObj, r27->modelId));
         }
     }
-    if (!(advDemoInfo.flags & (1 << (31-0x1B))))
+
+    if (!(advDemoInfo.flags & (1 << 4)))
     {
-        if (advDemoInfo.flags & (1 << (31-0x1E)))
+        if (advDemoInfo.flags & ADV_FLAG_SHOW_STAGE)
             stage_draw();
-        if (advDemoInfo.flags & (1 << (31-0x14)))
+        if (advDemoInfo.flags & (1 << 11))
             func_80094A34();
 
         ord_tbl_set_depth_offset(400.0f);
@@ -324,19 +332,19 @@ void func_8000B96C(void)
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
             func_80095398(16);
 
-        if ((advDemoInfo.flags & (1 << (31-0x1A)))
-         && !(advDemoInfo.flags & (1 << (31-0x13)))
+        if ((advDemoInfo.flags & (1 << 5))
+         && !(advDemoInfo.flags & (1 << 12))
          && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
             item_draw();
 
         if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING
-         || (advDemoInfo.flags & (1 << (31-0x1C))))
+         || (advDemoInfo.flags & (1 << 3)))
             stobj_draw();
 
         if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
             effect_draw();
 
-        if (advDemoInfo.flags & (1 << (31-0x1D)))
+        if (advDemoInfo.flags & ADV_FLAG_SHOW_BALLS)
             ball_draw();
     }
     draw_monkey();
@@ -747,7 +755,7 @@ void func_8000CA9C(void)
     else
     {
         mathutil_mtxA_from_mtxB();
-        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 2));
+        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BOX));
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -789,14 +797,14 @@ void func_8000CA9C(void)
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         func_80030BA8(MAX(f26, f27));
-        g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3A));
+        g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
         func_80030BB8(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
         func_80030BA8(0.25f);
-        g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3B));
+        g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
     }
     else
     {
@@ -839,7 +847,7 @@ void func_8000CA9C(void)
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             func_80030BA8(4.6f);
-            g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3F));
+            g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             func_80030BB8(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
@@ -849,7 +857,7 @@ void func_8000CA9C(void)
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             func_80030BA8(0.25f);
-            g_dupe_of_call_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x3B));
+            g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         }
     }
 
@@ -1020,11 +1028,14 @@ void func_8000D5B8(void)
 void draw_timer_bomb_fuse(void)
 {
     struct NaomiModel *tempModel;
-    struct Sprite *sprite;  // r3
-    float f31, f30;
+    struct Sprite *sprite;
+    float t;  // portion of clock time remaining (from 0.0 to 1.0)
+    float x;
+    float y;
+    float scale;
     Vec sp94;
     u8 filler84[0x10];
-    Mtx sp54;
+    Mtx mtx;
     Vec sp48;
     Vec sp3C;
     Vec sp30;
@@ -1039,49 +1050,49 @@ void draw_timer_bomb_fuse(void)
     float f1;
     struct NaomiMesh *mesh;
 
-    if (eventInfo[12].state == 2 || lbl_801F3A58.unk4 <= 0)
+    if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || lbl_801F3A58.timerCurr <= 0)
         return;
 
     sprite = g_find_sprite_with_probably_not_font(2);
     if (sprite == NULL)
     {
-        f31 = 0.0f;
-        f30 = 0.0f;
+        x = 0.0f;
+        y = 0.0f;
     }
     else
     {
-        f31 = (sprite->centerX - 320.0f) / 320.0f;
-        f30 = (56.0f - sprite->centerY) / 240.0f;
+        x = (sprite->centerX - 320.0f) / 320.0f;
+        y = (56.0f - sprite->centerY) / 240.0f;
     }
 
-    C_MTXPerspective(sp54, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
-    sp54[0][2] -= sp54[0][0] * f31 * 1.3333332538604736f * 0.5773502588272095f;
-    sp54[1][2] -= sp54[1][1] * f30 * 0.5773502588272095f;
-    GXSetProjection(sp54, 0);
+    C_MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
+    mtx[0][2] -= mtx[0][0] * x * 1.3333332538604736f * 0.5773502588272095f;
+    mtx[1][2] -= mtx[1][1] * y * 0.5773502588272095f;
+    GXSetProjection(mtx, 0);
 
     tempModel = lbl_802F1B4C;
-    f31 = (float)lbl_801F3A58.unk4 / (float)lbl_801F3A58.unk6;
+    t = (float)lbl_801F3A58.timerCurr / (float)lbl_801F3A58.timerMax;
 
     // Make a temporary copy of the timer fuse, which we will modify
     memcpy(
         tempModel,
-        NAOMIOBJ_MODEL(naomiCommonObj, 0x2A),
-        NAOMIMODEL_HEADER(NAOMIOBJ_MODEL(naomiCommonObj, 0x2A))->unk4->modelSize);
+        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_OBJ_COLOR_BAR_03),
+        NLMODEL_HEADER(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_OBJ_COLOR_BAR_03))->unk4->modelSize);
 
     mesh = (struct NaomiMesh *)tempModel->meshStart;
     faceCount = ((struct NaomiDispList *)(((struct NaomiMesh *)tempModel->meshStart)->dispListStart))->faceCount;
 
-    f4 = 2.0 * (f31 - 0.5);
+    f4 = 2.0 * (t - 0.5);
     f4 = CLAMP(f4, 0.0, 1.0);
 
     f3 = f4 * (faceCount - 2.0);
-    r7 = (float)mathutil_floor(f3 * 0.5) * 2.0f;
+    r7 = mathutil_floor(f3 * 0.5) * 2.0f;
     f1 = (f3 - r7) * 0.5;
 
     vtx = (struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData;
     for (i = faceCount - 1; i >= 0; i--, vtx++)
     {
-        if (f31 < 0.5)
+        if (t < 0.5)
             vtx->s = 0.25;
         else if (i < r7)
             vtx->s = 0.75f;
@@ -1095,7 +1106,7 @@ void draw_timer_bomb_fuse(void)
 
     // Calculate something based on vertex positions?
     // The result is never used, so this is pointless.
-    if (f31 >= 0.5)
+    if (t >= 0.5)
     {
         int index = faceCount - 4 - r7;
         float f2 = 1.0 - f1;
@@ -1120,7 +1131,7 @@ void draw_timer_bomb_fuse(void)
 
     faceCount = ((struct NaomiDispList *)mesh->dispListStart)->faceCount;
 
-    f4 = f31 * 2.0;
+    f4 = t * 2.0;
     f4 = CLAMP(f4, 0.0, 1.0);
 
     f3 = f4 * (faceCount - 2.0);
@@ -1130,7 +1141,7 @@ void draw_timer_bomb_fuse(void)
     vtx = (void *)((struct NaomiDispList *)mesh->dispListStart)->vtxData;
     for (i = faceCount - 1; i >= 0; i--, vtx++)
     {
-        if (f31 > 0.5)
+        if (t > 0.5)
             vtx->s = 0.75;
         else if (i < r7)
             vtx->s = 0.75;
@@ -1144,7 +1155,7 @@ void draw_timer_bomb_fuse(void)
 
     // Calculate something based on vertex positions?
     // The result is never used, so this is pointless.
-    if (f31 < 0.5)
+    if (t < 0.5)
     {
         int index = faceCount - 4 - r7;
         float f2 = 1.0 - f1;
@@ -1167,7 +1178,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(lbl_801F3A58.unk0 & (1<<(31-0x1C))))
+        if (!(lbl_801F3A58.unk0 & (1 << 3)))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1185,7 +1196,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (lbl_801F3A58.unk0 & (1<<(31-0x1C)))
+        if (lbl_801F3A58.unk0 & (1 << 3))
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1195,39 +1206,41 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (lbl_801F3A58.unk0 & (1<<(31-0x1C)))
+    if (lbl_801F3A58.unk0 & (1 << 3))
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
-    else if (f31 > 0.5)
+    else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;
     else
         lbl_801EEC90.unk58 += (-1536 - lbl_801EEC90.unk58) >> 4;
     if (!(gamePauseStatus & 0xA))
         lbl_801EEC90.unk54 += lbl_801EEC90.unk58;
+
     func_80030BB8(1.0f, 1.0f, 1.0f);
-    g_avdisp_set_some_color_1(1.0f, f31, 0.0f, 1.0f);
-    mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - f31) - 0.5, 0.0f);
+    g_avdisp_set_some_color_1(1.0f, t, 0.0f, 1.0f);
+    mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
     g_avdisp_set_some_matrix(0, mathutilData->mtxA);
+
+    // Draw new bomb fuse?
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_translate_xyz(
-        0.0009399999980814755f,
-        0.0051899999380111694f,
-        -0.0099999997764825821f);
-    f30 = 0.000699999975040555f;
-    mathutil_mtxA_scale_s(f30);
+    mathutil_mtxA_translate_xyz(0.00094f, 0.00519f, -0.01f);
+    scale = 0.0007f;
+    mathutil_mtxA_scale_s(scale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-    g_avdisp_set_model_scale(f30);
+    g_avdisp_set_model_scale(scale);
     func_8008F6D4(1);
-    g_avdisp_draw_model_1(commonGma->modelEntries[0x50].modelOffset);
+    g_avdisp_draw_model_1(commonGma->modelEntries[BOMB_FUSE].modelOffset);
     func_8008F6D4(0);
-    sp18.x = g_interp_stage_anim_probably(10, lbl_80173FE0, (1.0 - f31) * 100.0);
-    sp18.y = g_interp_stage_anim_probably(13, lbl_801740A8, (1.0 - f31) * 100.0);
-    sp18.z = 0.14100000262260437f;
+
+    // Draw spark
+    sp18.x = g_interp_stage_anim_probably(10, lbl_80173FE0, (1.0 - t) * 100.0);
+    sp18.y = g_interp_stage_anim_probably(13, lbl_801740A8, (1.0 - t) * 100.0);
+    sp18.z = 0.141f;
     mathutil_mtxA_translate(&sp18);
     mathutil_mtxA_sq_from_identity();
     mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
-    mathutil_mtxA_scale_s(0.014899999834597111f);
+    mathutil_mtxA_scale_s(0.0149f);
     mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
-    g_draw_naomi_model_1(NAOMIOBJ_MODEL(naomiCommonObj, 0x28));
+    g_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
     func_8000E3BC();
 }
 

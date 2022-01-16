@@ -56,14 +56,14 @@ struct NaomiModelHeader_child
 };
 
 // immediately before the NaomiModel struct
-// use the NAOMIMODEL_HEADER macro to access it.
+// use the NLMODEL_HEADER macro to access it.
 struct NaomiModelHeader
 {
     /*-0x08*/ s8 *unk0;
     /*-0x04*/ struct NaomiModelHeader_child *unk4;
 };
 
-#define NAOMIMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
 
 struct NaomiObj_UnkChild_Child
 {
@@ -84,7 +84,7 @@ struct NaomiObj
     struct NaomiModel *modelPtrs[];  // array of pointers to the models
 };
 
-#define NAOMIOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
+#define NLOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
 
 // ? func_80030AF8();
 // ? nl2ngc_draw_line_deferred();

@@ -398,7 +398,7 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     {  434, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
     {  434, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
     {  434, CMD_AIAI_ANIM,           1                    },
-    {  434, CMD_SET_DEMO_FLAG,       (1 << 0)             },
+    {  434, CMD_SET_DEMO_FLAG,       ADV_FLAG_SHOW_BLIMP  },
     {  544, CMD_AIAI_ANIM,           2                    },
 
     /* arctic scene (MeeMee) */
@@ -431,7 +431,7 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { 1087, CMD_MEEMEE_ANIM,         11                   },
     { 1087, CMD_BABY_ANIM,           11                   },
     { 1088, CMD_PRELOAD_STAGE,       ST_013_REPULSE       },
-    { 1088, CMD_SET_DEMO_FLAG,       (1 << 0)             },
+    { 1088, CMD_SET_DEMO_FLAG,       ADV_FLAG_SHOW_BLIMP  },
     { 1253, CMD_SET_DEMO_FLAG,       (1 << 9)             },
     { 1276, CMD_FADE_TO_WHITE,       30                   },
 
@@ -442,12 +442,12 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { 1305, CMD_HIDE_CHARACTER,      CHARACTER_BABY       },
     { 1306, CMD_PRELOAD_STAGE,       ST_009_EXAM_A        },
     { 1306, CMD_FADE_FROM_WHITE,     30                   },
-    { 1306, CMD_CLEAR_DEMO_FLAG,     (1 << 0)             },
+    { 1306, CMD_CLEAR_DEMO_FLAG,     ADV_FLAG_SHOW_BLIMP  },
     { 1305, CMD_UNK13,               -1                   },
     { 1305, CMD_INIT_CHARACTER_POS,  0                    },
     { 1305, CMD_SET_DEMO_FLAG,       (1 << 5)             },
-    { 1306, CMD_SET_DEMO_FLAG,       2                    },
-    { 1306, CMD_SET_DEMO_FLAG,       4                    },
+    { 1306, CMD_SET_DEMO_FLAG,       ADV_FLAG_SHOW_STAGE  },
+    { 1306, CMD_SET_DEMO_FLAG,       ADV_FLAG_SHOW_BALLS  },
 
     /* "Exam-A" level scene (MeeMee and Baby) */
     { 1739, CMD_UNK15,               -1                   },
