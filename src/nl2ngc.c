@@ -97,7 +97,7 @@ void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 c)
     gxutil_draw_line_deferred(start, end, &color);
 }
 
-void func_80030BA8(float x)
+void g_nl2ngc_set_scale(float x)
 {
     lbl_801B7978.unk18 = x;
 }

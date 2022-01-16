@@ -14931,7 +14931,7 @@ lbl_0000DBCC:
 /* 0000DBF4 4BFF2589 */ bl g_avdisp_set_model_scale
 /* 0000DBF8 4BFF2585 */ bl mathutil_mtxA_push
 /* 0000DBFC C03A000C */ lfs f1, 0xc(r26)
-/* 0000DC00 4BFF257D */ bl func_8008E564
+/* 0000DC00 4BFF257D */ bl g_avdisp_set_alpha
 /* 0000DC04 3C600000 */ lis r3, mathutilData@ha
 /* 0000DC08 38630000 */ addi r3, r3, mathutilData@l
 /* 0000DC0C 80630000 */ lwz r3, 0(r3)
@@ -15065,7 +15065,7 @@ lbl_0000DDD8:
 /* 0000DDF4 EC3F0032 */ fmuls f1, f31, f0
 /* 0000DDF8 4BFF2385 */ bl g_avdisp_set_model_scale
 /* 0000DDFC C03A0010 */ lfs f1, 0x10(r26)
-/* 0000DE00 4BFF237D */ bl func_8008E564
+/* 0000DE00 4BFF237D */ bl g_avdisp_set_alpha
 /* 0000DE04 80770000 */ lwz r3, 0(r23)
 /* 0000DE08 38800000 */ li r4, 0
 /* 0000DE0C 4BFF2371 */ bl g_gxutil_upload_some_mtx
@@ -19020,7 +19020,7 @@ lbl_00011818:
 /* 00011818 C3BE0038 */ lfs f29, 0x38(r30)
 lbl_0001181C:
 /* 0001181C FC20E890 */ fmr f1, f29
-/* 00011820 4BFEE95D */ bl func_8008E564
+/* 00011820 4BFEE95D */ bl g_avdisp_set_alpha
 /* 00011824 FC20F090 */ fmr f1, f30
 /* 00011828 4BFEE955 */ bl g_avdisp_set_model_scale
 /* 0001182C 80790000 */ lwz r3, 0(r25)

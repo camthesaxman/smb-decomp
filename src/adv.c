@@ -1368,7 +1368,7 @@ void submode_adv_title_main_func(void)
  * Info Submode - Shows a tutorial explaining controls
  */
 
-struct Struct801EED3C lbl_801EED3C;
+struct AdvTutorialInfo advTutorialInfo;
 
 void submode_adv_info_init_func(void)
 {
@@ -1427,9 +1427,9 @@ void submode_adv_info_init_func(void)
     func_800846B0(4);
     func_800846B0(3);
     g_start_screen_fade(0x100, 0, 30);
-    lbl_801EED3C.unk0 = 0;
-    lbl_801EED3C.unk4 = 0;
-    lbl_801EED3C.unkC = 0.0f;
+    advTutorialInfo.stickXRot = 0;
+    advTutorialInfo.stickZRot = 0;
+    advTutorialInfo.transitionValue = 0.0f;
     func_8002CF38(0xFFF60014, 0);
     gameSubmodeRequest = SMD_ADV_INFO_MAIN;
 }
@@ -1633,7 +1633,7 @@ void submode_adv_info_main_func(void)
             func_80075900(1, 20, 0);
             break;
         case INFOCMD_UNK12:
-            lbl_801EED3C.unk8 = cmd->param;
+            advTutorialInfo.state = cmd->param;
             break;
         case INFOCMD_PLAY_SOUND:
             g_play_sound(cmd->param);
@@ -1738,7 +1738,7 @@ void submode_adv_game_ready_init_func(void)
     func_80076620(0);
     func_80076C54(0);
     func_80088C28();
-    lbl_801EED3C.unk8 = 0;
+    advTutorialInfo.state = 0;
     lbl_802F1BAC = 0;
     r4 = lbl_801101DC[backgroundInfo.bgId];
     if (r4 != -1 && r4 != lbl_802014E0.unk0 && r4 + 1 != lbl_802014E0.unk0)
@@ -1867,7 +1867,7 @@ void submode_adv_ranking_main_func(void)
         func_800886E0(0);
         if (g_find_sprite_with_probably_not_font(17) != NULL)
             g_find_sprite_with_probably_not_font(17)->unk48 = 1;
-        lbl_801EED3C.unk8 = 1;
+        advTutorialInfo.state = 1;
         break;
     case 2460:
         break;

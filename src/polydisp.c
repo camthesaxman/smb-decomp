@@ -364,91 +364,102 @@ void g_draw_tutorial_button_and_joystick(void)
     Vec sp48;
     u8 filler[16];
     int i;
-    int r30;
-    int r0;
-    float f31;
-    float f2;
-    float f3;
-    Mtx sp8;
+    float baseScale;  // scale value for the base model
+    float stickX;
+    float stickY;
+    int stickXRot;
+    int stickZRot;
+    Mtx projMtx;
 
-    C_MTXPerspective(sp8, 1.0f, 1.33333333f, 0.1f, 100000.0f);
-    GXSetProjection(sp8, 0);
+    C_MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
+    GXSetProjection(projMtx, 0);
     mathutil_mtxA_from_identity();
     func_80022274(2);
     sp48.x = -0.0055f;
     sp48.y = -0.003f;
     sp48.z = -0.718f;
+
     if (!(gamePauseStatus & 0xA))
     {
-        if (lbl_801EED3C.unk8 > 0)
-            lbl_801EED3C.unkC += 0.05 * -lbl_801EED3C.unkC;
+        if (advTutorialInfo.state > 0)
+            advTutorialInfo.transitionValue += 0.05 * -advTutorialInfo.transitionValue;
         else
-            lbl_801EED3C.unkC += 0.05 * (1.0 - lbl_801EED3C.unkC);
+            advTutorialInfo.transitionValue += 0.05 * (1.0 - advTutorialInfo.transitionValue);
     }
-    f31 = 0.0005f;
+    baseScale = 0.0005f;
+
+    // Draw the analog stick base
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&sp48);
-    mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - lbl_801EED3C.unkC));
-    mathutil_mtxA_scale_xyz(f31, f31, f31);
-    func_80030BA8(f31);
+    mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - advTutorialInfo.transitionValue));
+    mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
+    g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
+
+    // Draw the simulated analog stick
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
     mathutil_mtxA_push();
-    mathutil_mtxA_rotate_x(CLAMP(lbl_801EED3C.unk0 * 12, -0x1000, 0x1000));
-    mathutil_mtxA_rotate_z(CLAMP(lbl_801EED3C.unk4 * 8, -0x1000, 0x1000));
+    mathutil_mtxA_rotate_x(CLAMP(advTutorialInfo.stickXRot * 12, -0x1000, 0x1000));
+    mathutil_mtxA_rotate_z(CLAMP(advTutorialInfo.stickZRot * 8, -0x1000, 0x1000));
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E564(lbl_801EED3C.unkC);
+    g_avdisp_set_alpha(advTutorialInfo.transitionValue);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
-    f2 = 0.0f;
-    f3 = 0.0f;
+
+    // Draw the transparent stick based on the player's analog stick position
+    stickX = 0.0f;
+    stickY = 0.0f;
     for (i = 0; i < 4; i++)
     {
         if (controllerInfo[i].unk0[0].err == 0)
         {
-            f2 = (float)controllerInfo[i].unk0[0].stickX / 60.0;
-            f3 = -(float)controllerInfo[i].unk0[0].stickY / 60.0;
+            stickX = (float)controllerInfo[i].unk0[0].stickX / 60.0;
+            stickY = -(float)controllerInfo[i].unk0[0].stickY / 60.0;
             break;
         }
     }
-    if (f2 < -1.0)
-        f2 = -1.0f;
-    else if (f2 > 1.0)
-        f2 = 1.0f;
-    if (f3 < -1.0)
-        f3 = -1.0f;
-    else if (f3 > 1.0)
-        f3 = 1.0f;
-    r0 = (4187.0f * f3);
-    r30 = (4187.0f * -f2);
-    mathutil_mtxA_rotate_x(CLAMP(r0 * 2, -0x1000, 0x1000));
-    mathutil_mtxA_rotate_z(CLAMP(r30 * 2, -0x1000, 0x1000));
+    if (stickX < -1.0)
+        stickX = -1.0f;
+    else if (stickX > 1.0)
+        stickX = 1.0f;
+    if (stickY < -1.0)
+        stickY = -1.0f;
+    else if (stickY > 1.0)
+        stickY = 1.0f;
+    stickXRot = (4187.0f * stickY);
+    stickZRot = (4187.0f * -stickX);
+    mathutil_mtxA_rotate_x(CLAMP(stickXRot * 2, -0x1000, 0x1000));
+    mathutil_mtxA_rotate_z(CLAMP(stickZRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_scale_s(0.99f);
-    func_80030BA8(0.99f);
+    g_nl2ngc_set_scale(0.99f);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E564(lbl_801EED3C.unkC * 0.5);
+    g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+
+    // Draw the button base
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate(&sp48);
-    mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * lbl_801EED3C.unkC));
+    mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * advTutorialInfo.transitionValue));
     mathutil_mtxA_translate_xyz(0.0f, 0.00058f, 0.0f);
-    mathutil_mtxA_scale_xyz(f31, f31, f31);
-    func_80030BA8(f31);
+    mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
+    g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
-    if (lbl_801EED3C.unk8 == 2)
+
+    // Draw the A button
+    if (advTutorialInfo.state == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
-        func_80030BA8(1.0f);
+        g_nl2ngc_set_scale(1.0f);
     }
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    func_8008E564(1.0 - lbl_801EED3C.unkC);
+    g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
     g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
 }
@@ -531,7 +542,7 @@ void func_8000C388(void)
     sp14.unkC = f3;
     sp14.unk10 = -10000.0f;
     func_8000C144(&sp14);
-    if (lbl_801EED3C.unk8 == 0)
+    if (advTutorialInfo.state == 0)
     {
         s16 r30;
         s16 v3;
@@ -547,8 +558,8 @@ void func_8000C388(void)
         v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq(sp8.z, sp8.y)));
         r30 *= 0.2;
         v3 *= 0.2;
-        lbl_801EED3C.unk0 = lbl_801EED3C.unk0 + 0.2 * ((float)r30 - (float)lbl_801EED3C.unk0);
-        lbl_801EED3C.unk4 = lbl_801EED3C.unk4 + 0.2 * ((float)v3 - (float)lbl_801EED3C.unk4);
+        advTutorialInfo.stickXRot = advTutorialInfo.stickXRot + 0.2 * ((float)r30 - (float)advTutorialInfo.stickXRot);
+        advTutorialInfo.stickZRot = advTutorialInfo.stickZRot + 0.2 * ((float)v3 - (float)advTutorialInfo.stickZRot);
         g_draw_tutorial_button_and_joystick();
     }
 }
@@ -796,14 +807,14 @@ void func_8000CA9C(void)
         f26 = 0.9f;
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
-        func_80030BA8(MAX(f26, f27));
+        g_nl2ngc_set_scale(MAX(f26, f27));
         g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
         func_80030BB8(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
-        func_80030BA8(0.25f);
+        g_nl2ngc_set_scale(0.25f);
         g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
     }
     else
@@ -846,7 +857,7 @@ void func_8000CA9C(void)
             sp2C[2][3] = sp14.z;
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
-            func_80030BA8(4.6f);
+            g_nl2ngc_set_scale(4.6f);
             g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             func_80030BB8(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
@@ -856,7 +867,7 @@ void func_8000CA9C(void)
             mathutil_mtxA_rotate_y(mathutil_atan2(sp8.x, sp8.z) - 32768);
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
-            func_80030BA8(0.25f);
+            g_nl2ngc_set_scale(0.25f);
             g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         }
     }

@@ -591,7 +591,7 @@ void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
         g_avdisp_draw_model_3(model);
 }
 
-void func_8008E564(float a)
+void g_avdisp_set_alpha(float a)
 {
     lbl_802F20DC = a;
 }

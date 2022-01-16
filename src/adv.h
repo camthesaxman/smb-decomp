@@ -23,12 +23,13 @@ struct AdvDemoInfo
     s32 unkC;
 };
 
-struct Struct801EED3C
+struct AdvTutorialInfo
 {
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    float unkC;
+    s32 stickXRot;
+    s32 stickZRot;
+    s32 state;
+    float transitionValue;  // value from 0 to 1. The A button is on top when it is 0,
+                 // and the analog stick is on top when it is 1.
     u8 filler10[4];
 };
 
@@ -41,7 +42,7 @@ extern s32 lbl_802F1BB0;
 extern s32 lbl_802F1BA8;
 extern struct AdvLogoInfo advLogoInfo;
 extern struct AdvDemoInfo advDemoInfo;
-extern struct Struct801EED3C lbl_801EED3C;
+extern struct AdvTutorialInfo advTutorialInfo;
 
 void mode_adv_func(void);
 void submode_adv_warning_init_func(void);

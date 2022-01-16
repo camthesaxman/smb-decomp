@@ -16880,7 +16880,7 @@ lbl_0000F804:
 /* 0000F804 2C100000 */ cmpwi r16, 0
 /* 0000F808 4081000C */ ble lbl_0000F814
 /* 0000F80C C03F37BC */ lfs f1, 0x37bc(r31)
-/* 0000F810 4BFF0925 */ bl func_8008E564
+/* 0000F810 4BFF0925 */ bl g_avdisp_set_alpha
 lbl_0000F814:
 /* 0000F814 7C7F9A14 */ add r3, r31, r19
 /* 0000F818 80950000 */ lwz r4, 0(r21)
@@ -17329,7 +17329,7 @@ lbl_0000FE98:
 /* 0000FEB0 38800000 */ li r4, 0
 /* 0000FEB4 4BFF0281 */ bl GXLoadNrmMtxImm
 /* 0000FEB8 FC20F090 */ fmr f1, f30
-/* 0000FEBC 4BFF0279 */ bl func_8008E564
+/* 0000FEBC 4BFF0279 */ bl g_avdisp_set_alpha
 /* 0000FEC0 3C600000 */ lis r3, commonGma@ha
 /* 0000FEC4 38630000 */ addi r3, r3, commonGma@l
 /* 0000FEC8 80630000 */ lwz r3, 0(r3)
@@ -17876,7 +17876,7 @@ lbl_00010658:
 /* 000106B0 EC210032 */ fmuls f1, f1, f0
 /* 000106B4 4BFEFA81 */ bl mathutil_mtxA_scale_s
 /* 000106B8 C03F37C8 */ lfs f1, 0x37c8(r31)
-/* 000106BC 4BFEFA79 */ bl func_8008E564
+/* 000106BC 4BFEFA79 */ bl g_avdisp_set_alpha
 /* 000106C0 80720000 */ lwz r3, 0(r18)
 /* 000106C4 38800000 */ li r4, 0
 /* 000106C8 4BFEFA6D */ bl GXLoadPosMtxImm
@@ -17946,7 +17946,7 @@ lbl_0001075C:
 /* 000107C0 C03F37C8 */ lfs f1, 0x37c8(r31)
 /* 000107C4 EC00F828 */ fsubs f0, f0, f31
 /* 000107C8 EC210032 */ fmuls f1, f1, f0
-/* 000107CC 4BFEF969 */ bl func_8008E564
+/* 000107CC 4BFEF969 */ bl g_avdisp_set_alpha
 /* 000107D0 80730000 */ lwz r3, 0(r19)
 /* 000107D4 38800000 */ li r4, 0
 /* 000107D8 4BFEF95D */ bl GXLoadPosMtxImm
@@ -18459,7 +18459,7 @@ lbl_00010F48:
 /* 00010F54 C07F37A8 */ lfs f3, 0x37a8(r31)
 /* 00010F58 4BFEF1DD */ bl mathutil_mtxA_scale_xyz
 /* 00010F5C C03F37BC */ lfs f1, 0x37bc(r31)
-/* 00010F60 4BFEF1D5 */ bl func_8008E564
+/* 00010F60 4BFEF1D5 */ bl g_avdisp_set_alpha
 /* 00010F64 3C600000 */ lis r3, mathutilData@ha
 /* 00010F68 39C30000 */ addi r14, r3, mathutilData@l
 /* 00010F6C 806E0000 */ lwz r3, 0(r14)

@@ -8277,7 +8277,7 @@ lbl_00007648:
 /* 0000768C 7F63002E */ lwzx r27, r3, r0
 /* 00007690 4BFF8ACD */ bl mathutil_mtxA_from_mtxB
 /* 00007694 C03E01BC */ lfs f1, 0x1bc(r30)
-/* 00007698 4BFF8AC5 */ bl func_8008E564
+/* 00007698 4BFF8AC5 */ bl g_avdisp_set_alpha
 /* 0000769C 281B0000 */ cmplwi r27, 0
 /* 000076A0 4182000C */ beq lbl_000076AC
 /* 000076A4 387B0008 */ addi r3, r27, 8

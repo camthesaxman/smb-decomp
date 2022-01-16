@@ -882,7 +882,7 @@ void g_avdisp_set_3_floats(float, float, float);
 void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *);
 void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *);
 void g_avdisp_maybe_draw_model_3();
-void func_8008E564(float);
+void g_avdisp_set_alpha(float);
 // ? func_8008E56C();
 void g_avdisp_set_and_normalize_some_vec(Vec *a);
 void g_avdisp_set_3_other_floats(float, float, float);

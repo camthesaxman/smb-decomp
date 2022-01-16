@@ -3448,7 +3448,7 @@ func_8008CAAC:
 /* 8008CB14 00088A34  FC 60 08 90 */	fmr f3, f1
 /* 8008CB18 00088A38  4B F7 B2 C1 */	bl mathutil_mtxA_scale_xyz
 /* 8008CB1C 00088A3C  C0 3C 00 58 */	lfs f1, 0x58(r28)
-/* 8008CB20 00088A40  4B FA 40 89 */	bl func_80030BA8
+/* 8008CB20 00088A40  4B FA 40 89 */	bl g_nl2ngc_set_scale
 /* 8008CB24 00088A44  38 7C 00 3C */	addi r3, r28, 0x3c
 /* 8008CB28 00088A48  4B F7 B1 F9 */	bl mathutil_mtxA_translate
 /* 8008CB2C 00088A4C  7F E3 FB 78 */	mr r3, r31

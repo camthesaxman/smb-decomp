@@ -867,7 +867,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
             g_avdisp_draw_model_1(model);
         else
         {
-            func_8008E564(1.0 - b->unk2C);
+            g_avdisp_set_alpha(1.0 - b->unk2C);
             g_avdisp_draw_model_3(model);
         }
         if (b->unk34 != 0)
