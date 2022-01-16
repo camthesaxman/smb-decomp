@@ -34,7 +34,7 @@ struct BackgroundInfo  // size = 0xA8
     s16 bgId;
     float unk4;
     u32 unk8;
-    GXColor unkC;
+    GXColor backdropColor;
     u8 filler10[0x14-0x10];
     Vec unk14;
     Vec unk20;

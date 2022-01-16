@@ -153,9 +153,9 @@ void ev_stage_main(void)
     for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, coll++)
     {
         int j;
-        struct StageAnimHdr *r27 = coll->animHdr;
+        struct StageAnimHdr *anim = coll->animHdr;
 
-        if (r27 == NULL2)
+        if (anim == NULL2)
             continue;
         if (decodedStageLzPtr->unk78 != 0)
         {
@@ -169,35 +169,35 @@ void ev_stage_main(void)
                 }
             }
         }
-        if (r27->xRotFrames != NULL2)
+        if (anim->xRotFrames != NULL2)
         {
             movpart->unk1E = movpart->unk18;
-            movpart->unk18 = DEGREES_TO_S16(g_interp_stage_anim_probably(r27->xRotFramesCount, r27->xRotFrames, f31));
+            movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
         }
-        if (r27->yRotFrames != NULL2)
+        if (anim->yRotFrames != NULL2)
         {
             movpart->unk20 = movpart->unk1A;
-            movpart->unk1A = DEGREES_TO_S16(g_interp_stage_anim_probably(r27->yRotFramesCount, r27->yRotFrames, f31));
+            movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
         }
-        if (r27->zRotFrames != NULL2)
+        if (anim->zRotFrames != NULL2)
         {
             movpart->unk22 = movpart->unk1C;
-            movpart->unk1C = DEGREES_TO_S16(g_interp_stage_anim_probably(r27->zRotFramesCount, r27->zRotFrames, f31));
+            movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
         }
-        if (r27->xTrnslFrames != NULL2)
+        if (anim->xTrnslFrames != NULL2)
         {
             movpart->unkC.x = movpart->unk0.x - coll->unkB8.x;
-            movpart->unk0.x = g_interp_stage_anim_probably(r27->xTrnslFramesCount, r27->xTrnslFrames, f31);
+            movpart->unk0.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
         }
-        if (r27->yTrnslFrames != NULL2)
+        if (anim->yTrnslFrames != NULL2)
         {
             movpart->unkC.y = movpart->unk0.y - coll->unkB8.y;
-            movpart->unk0.y = g_interp_stage_anim_probably(r27->yTrnslFramesCount, r27->yTrnslFrames, f31);
+            movpart->unk0.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
         }
-        if (r27->zTrnslFrames != NULL2)
+        if (anim->zTrnslFrames != NULL2)
         {
             movpart->unkC.z = movpart->unk0.z - coll->unkB8.z;
-            movpart->unk0.z = g_interp_stage_anim_probably(r27->zTrnslFramesCount, r27->zTrnslFrames, f31);
+            movpart->unk0.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
         }
         mathutil_mtxA_from_translate(&movpart->unk0);
         mathutil_mtxA_rotate_z(movpart->unk1C);
@@ -268,7 +268,7 @@ void find_blur_bridge_accordion(void)
 
 void draw_blur_bridge_accordions(void)
 {
-    float f31;
+    float t;
     float f30;
     struct MovableStagePart *movpart;
     struct StageCollHdr *r30;
@@ -276,11 +276,11 @@ void draw_blur_bridge_accordions(void)
 
     if (blurBridgeAccordion == NULL2)
         return;
-    f31 = lbl_80206DEC.unk4 / 60.0;
-    f31 += (float)decodedStageLzPtr->unk0;
+    t = lbl_80206DEC.unk4 / 60.0;
+    t += (float)decodedStageLzPtr->unk0;
     f30 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
-    f31 -= f30 * mathutil_floor(f31 / f30);
-    f31 += (float)decodedStageLzPtr->unk0;
+    t -= f30 * mathutil_floor(t / f30);
+    t += (float)decodedStageLzPtr->unk0;
     movpart = &movableStageParts[1];
     r30 = decodedStageLzPtr->collHdrs + 1;
     for (i = 1; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r30++)
@@ -293,7 +293,7 @@ void draw_blur_bridge_accordions(void)
 
             f30 = f27;
             if (r30->animHdr->xTrnslFrames != NULL2)
-                f30 = g_interp_stage_anim_probably(r30->animHdr->xTrnslFramesCount, r30->animHdr->xTrnslFrames, f31 - 0.5);
+                f30 = g_interpolate_anim(r30->animHdr->xTrnslFramesCount, r30->animHdr->xTrnslFrames, t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
             {
@@ -327,7 +327,7 @@ void g_animate_stage(float a)
     float f3;
     struct MovableStagePart *movpart;
     struct StageCollHdr *coll;
-    struct StageAnimHdr *r29;
+    struct StageAnimHdr *anim;
     int i;
 
     if (gamePauseStatus & 0xA)
@@ -343,38 +343,38 @@ void g_animate_stage(float a)
     coll = decodedStageLzPtr->collHdrs;
     for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, coll++)
     {
-        r29 = coll->animHdr;
-        if (r29 != NULL2)
+        anim = coll->animHdr;
+        if (anim != NULL2)
         {
-            if (r29->xRotFrames != NULL2)
+            if (anim->xRotFrames != NULL2)
             {
                 movpart->unk1E = movpart->unk18;
-                movpart->unk18 = DEGREES_TO_S16(g_interp_stage_anim_probably(r29->xRotFramesCount, r29->xRotFrames, f31));
+                movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
             }
-            if (r29->yRotFrames != NULL2)
+            if (anim->yRotFrames != NULL2)
             {
                 movpart->unk20 = movpart->unk1A;
-                movpart->unk1A = DEGREES_TO_S16(g_interp_stage_anim_probably(r29->yRotFramesCount, r29->yRotFrames, f31));
+                movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
             }
-            if (r29->zRotFrames != NULL2)
+            if (anim->zRotFrames != NULL2)
             {
                 movpart->unk22 = movpart->unk1C;
-                movpart->unk1C = DEGREES_TO_S16(g_interp_stage_anim_probably(r29->zRotFramesCount, r29->zRotFrames, f31));
+                movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
             }
-            if (r29->xTrnslFrames != NULL2)
+            if (anim->xTrnslFrames != NULL2)
             {
                 movpart->unkC.x = movpart->unk0.x;
-                movpart->unk0.x = g_interp_stage_anim_probably(r29->xTrnslFramesCount, r29->xTrnslFrames, f31);
+                movpart->unk0.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
             }
-            if (r29->yTrnslFrames != NULL2)
+            if (anim->yTrnslFrames != NULL2)
             {
                 movpart->unkC.y = movpart->unk0.y;
-                movpart->unk0.y = g_interp_stage_anim_probably(r29->yTrnslFramesCount, r29->yTrnslFrames, f31);
+                movpart->unk0.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
             }
-            if (r29->zTrnslFrames != NULL2)
+            if (anim->zTrnslFrames != NULL2)
             {
                 movpart->unkC.z = movpart->unk0.z;
-                movpart->unk0.z = g_interp_stage_anim_probably(r29->zTrnslFramesCount, r29->zTrnslFrames, f31);
+                movpart->unk0.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
             }
             mathutil_mtxA_from_translate(&movpart->unk0);
             mathutil_mtxA_rotate_z(movpart->unk1C);

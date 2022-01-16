@@ -1036,7 +1036,7 @@ void func_8000D5B8(void)
     lbl_801EEC90.unk60 = 0.0f;
 }
 
-struct AnimKeyframe lbl_80173FE0[] =
+struct AnimKeyframe bombSparkXKeyframes[] =
 {
     { 1,   0,  8.7540102,          0,          0 },
     { 1,  72, 1.83571005,  -0.090412,  -0.090412 },
@@ -1050,7 +1050,7 @@ struct AnimKeyframe lbl_80173FE0[] =
     { 1, 100,  0.0010883,          0,          0 },
 };
 
-struct AnimKeyframe lbl_801740A8[] =
+struct AnimKeyframe bombSparkYKeyframes[] =
 {
     { 1,   0,   -1.00663,            0,            0 },
     { 1,  49,   -1.00662, -0.000118196, -0.000118196 },
@@ -1082,7 +1082,7 @@ void draw_timer_bomb_fuse(void)
     Vec sp3C;
     Vec sp30;
     Vec sp24;
-    Vec sp18;
+    Point3d sparkPos;
     float f4;
     float f3;
     struct NaomiVtxWithNormal *vtx;
@@ -1111,6 +1111,10 @@ void draw_timer_bomb_fuse(void)
     mtx[0][2] -= mtx[0][0] * x * 1.3333332538604736f * 0.5773502588272095f;
     mtx[1][2] -= mtx[1][1] * y * 0.5773502588272095f;
     GXSetProjection(mtx, 0);
+
+    /* NOTE: Most of the code here deals with manipulating vertices for the
+     * arcade fuse model, which is never drawn in-game.
+     */
 
     tempModel = lbl_802F1B4C;
     t = (float)lbl_801F3A58.timerCurr / (float)lbl_801F3A58.timerMax;
@@ -1262,7 +1266,7 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
     g_avdisp_set_some_matrix(0, mathutilData->mtxA);
 
-    // Draw new bomb fuse?
+    // Draw new bomb fuse
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate_xyz(0.00094f, 0.00519f, -0.01f);
     scale = 0.0007f;
@@ -1274,10 +1278,10 @@ void draw_timer_bomb_fuse(void)
     func_8008F6D4(0);
 
     // Draw spark
-    sp18.x = g_interp_stage_anim_probably(10, lbl_80173FE0, (1.0 - t) * 100.0);
-    sp18.y = g_interp_stage_anim_probably(13, lbl_801740A8, (1.0 - t) * 100.0);
-    sp18.z = 0.141f;
-    mathutil_mtxA_translate(&sp18);
+    sparkPos.x = g_interpolate_anim(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
+    sparkPos.y = g_interpolate_anim(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
+    sparkPos.z = 0.141f;
+    mathutil_mtxA_translate(&sparkPos);
     mathutil_mtxA_sq_from_identity();
     mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
     mathutil_mtxA_scale_s(0.0149f);
@@ -1317,13 +1321,13 @@ void set_backdrop_color(void)
             r0 = FALSE;
             break;
         default:
-            color = backgroundInfo.unkC;
+            color = backgroundInfo.backdropColor;
             break;
         }
         break;
     case MD_SEL:
     case MD_MINI:
-        color = backgroundInfo.unkC;
+        color = backgroundInfo.backdropColor;
         break;
     case MD_ADV:
         switch (gameSubmode)
@@ -1342,7 +1346,7 @@ void set_backdrop_color(void)
             color.a = introBackdropColor >> 24;
             break;
         default:
-            color = backgroundInfo.unkC;
+            color = backgroundInfo.backdropColor;
             introBackdropColor = (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
             break;
         }
@@ -1352,7 +1356,7 @@ void set_backdrop_color(void)
         {
         case SMD_OPTION_REPLAY_PLAY_INIT:
         case SMD_OPTION_REPLAY_PLAY_MAIN:
-            color = backgroundInfo.unkC;
+            color = backgroundInfo.backdropColor;
             break;
         default:
             color.r = color.g = color.b = 0;

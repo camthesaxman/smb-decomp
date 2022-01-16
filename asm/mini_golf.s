@@ -16306,17 +16306,17 @@ lbl_0000F11C:
 /* 0000F13C 3BC30000 */ addi r30, r3, 0
 /* 0000F140 80630018 */ lwz r3, 0x18(r3)
 /* 0000F144 809E001C */ lwz r4, 0x1c(r30)
-/* 0000F148 4BFF1089 */ bl g_interp_stage_anim_probably
+/* 0000F148 4BFF1089 */ bl g_interpolate_anim
 /* 0000F14C D03F0000 */ stfs f1, 0(r31)
 /* 0000F150 FC20F890 */ fmr f1, f31
 /* 0000F154 807E0020 */ lwz r3, 0x20(r30)
 /* 0000F158 809E0024 */ lwz r4, 0x24(r30)
-/* 0000F15C 4BFF1075 */ bl g_interp_stage_anim_probably
+/* 0000F15C 4BFF1075 */ bl g_interpolate_anim
 /* 0000F160 D03F0004 */ stfs f1, 4(r31)
 /* 0000F164 FC20F890 */ fmr f1, f31
 /* 0000F168 807E0028 */ lwz r3, 0x28(r30)
 /* 0000F16C 809E002C */ lwz r4, 0x2c(r30)
-/* 0000F170 4BFF1061 */ bl g_interp_stage_anim_probably
+/* 0000F170 4BFF1061 */ bl g_interpolate_anim
 /* 0000F174 D03F0008 */ stfs f1, 8(r31)
 /* 0000F178 8001002C */ lwz r0, 0x2c(r1)
 /* 0000F17C CBE10020 */ lfd f31, 0x20(r1)

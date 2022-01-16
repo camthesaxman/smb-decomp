@@ -288,7 +288,7 @@ lbl_80043E64:
 /* 80043E7C 0003FD9C  B0 1E 00 1E */	sth r0, 0x1e(r30)
 /* 80043E80 0003FDA0  80 7B 00 00 */	lwz r3, 0(r27)
 /* 80043E84 0003FDA4  80 9B 00 04 */	lwz r4, 4(r27)
-/* 80043E88 0003FDA8  4B FF FA 91 */	bl g_interp_stage_anim_probably
+/* 80043E88 0003FDA8  4B FF FA 91 */	bl g_interpolate_anim
 /* 80043E8C 0003FDAC  EC 1D 00 72 */	fmuls f0, f29, f1
 /* 80043E90 0003FDB0  FC 00 00 1E */	fctiwz f0, f0
 /* 80043E94 0003FDB4  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -304,7 +304,7 @@ lbl_80043EA0:
 /* 80043EB8 0003FDD8  B0 1E 00 20 */	sth r0, 0x20(r30)
 /* 80043EBC 0003FDDC  80 7B 00 08 */	lwz r3, 8(r27)
 /* 80043EC0 0003FDE0  80 9B 00 0C */	lwz r4, 0xc(r27)
-/* 80043EC4 0003FDE4  4B FF FA 55 */	bl g_interp_stage_anim_probably
+/* 80043EC4 0003FDE4  4B FF FA 55 */	bl g_interpolate_anim
 /* 80043EC8 0003FDE8  EC 1D 00 72 */	fmuls f0, f29, f1
 /* 80043ECC 0003FDEC  FC 00 00 1E */	fctiwz f0, f0
 /* 80043ED0 0003FDF0  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -320,7 +320,7 @@ lbl_80043EDC:
 /* 80043EF4 0003FE14  B0 1E 00 22 */	sth r0, 0x22(r30)
 /* 80043EF8 0003FE18  80 7B 00 10 */	lwz r3, 0x10(r27)
 /* 80043EFC 0003FE1C  80 9B 00 14 */	lwz r4, 0x14(r27)
-/* 80043F00 0003FE20  4B FF FA 19 */	bl g_interp_stage_anim_probably
+/* 80043F00 0003FE20  4B FF FA 19 */	bl g_interpolate_anim
 /* 80043F04 0003FE24  EC 1D 00 72 */	fmuls f0, f29, f1
 /* 80043F08 0003FE28  FC 00 00 1E */	fctiwz f0, f0
 /* 80043F0C 0003FE2C  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -338,7 +338,7 @@ lbl_80043F18:
 /* 80043F38 0003FE58  D0 1E 00 0C */	stfs f0, 0xc(r30)
 /* 80043F3C 0003FE5C  80 7B 00 18 */	lwz r3, 0x18(r27)
 /* 80043F40 0003FE60  80 9B 00 1C */	lwz r4, 0x1c(r27)
-/* 80043F44 0003FE64  4B FF F9 D5 */	bl g_interp_stage_anim_probably
+/* 80043F44 0003FE64  4B FF F9 D5 */	bl g_interpolate_anim
 /* 80043F48 0003FE68  D0 3E 00 00 */	stfs f1, 0(r30)
 lbl_80043F4C:
 /* 80043F4C 0003FE6C  80 7B 00 24 */	lwz r3, 0x24(r27)
@@ -352,7 +352,7 @@ lbl_80043F4C:
 /* 80043F6C 0003FE8C  D0 1E 00 10 */	stfs f0, 0x10(r30)
 /* 80043F70 0003FE90  80 7B 00 20 */	lwz r3, 0x20(r27)
 /* 80043F74 0003FE94  80 9B 00 24 */	lwz r4, 0x24(r27)
-/* 80043F78 0003FE98  4B FF F9 A1 */	bl g_interp_stage_anim_probably
+/* 80043F78 0003FE98  4B FF F9 A1 */	bl g_interpolate_anim
 /* 80043F7C 0003FE9C  D0 3E 00 04 */	stfs f1, 4(r30)
 lbl_80043F80:
 /* 80043F80 0003FEA0  80 7B 00 2C */	lwz r3, 0x2c(r27)
@@ -366,7 +366,7 @@ lbl_80043F80:
 /* 80043FA0 0003FEC0  D0 1E 00 14 */	stfs f0, 0x14(r30)
 /* 80043FA4 0003FEC4  80 7B 00 28 */	lwz r3, 0x28(r27)
 /* 80043FA8 0003FEC8  80 9B 00 2C */	lwz r4, 0x2c(r27)
-/* 80043FAC 0003FECC  4B FF F9 6D */	bl g_interp_stage_anim_probably
+/* 80043FAC 0003FECC  4B FF F9 6D */	bl g_interpolate_anim
 /* 80043FB0 0003FED0  D0 3E 00 08 */	stfs f1, 8(r30)
 lbl_80043FB4:
 /* 80043FB4 0003FED4  7F C3 F3 78 */	mr r3, r30
@@ -650,7 +650,7 @@ lbl_80044364:
 /* 80044394 000402B4  FC 3F E0 28 */	fsub f1, f31, f28
 /* 80044398 000402B8  80 63 00 18 */	lwz r3, 0x18(r3)
 /* 8004439C 000402BC  FC 20 08 18 */	frsp f1, f1
-/* 800443A0 000402C0  4B FF F5 79 */	bl g_interp_stage_anim_probably
+/* 800443A0 000402C0  4B FF F5 79 */	bl g_interpolate_anim
 /* 800443A4 000402C4  FF C0 08 90 */	fmr f30, f1
 lbl_800443A8:
 /* 800443A8 000402C8  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
@@ -805,7 +805,7 @@ lbl_800445B0:
 /* 800445D4 000404F4  B0 1F 00 1E */	sth r0, 0x1e(r31)
 /* 800445D8 000404F8  80 7D 00 00 */	lwz r3, 0(r29)
 /* 800445DC 000404FC  80 9D 00 04 */	lwz r4, 4(r29)
-/* 800445E0 00040500  4B FF F3 39 */	bl g_interp_stage_anim_probably
+/* 800445E0 00040500  4B FF F3 39 */	bl g_interpolate_anim
 /* 800445E4 00040504  EC 1E 00 72 */	fmuls f0, f30, f1
 /* 800445E8 00040508  FC 00 00 1E */	fctiwz f0, f0
 /* 800445EC 0004050C  D8 01 00 18 */	stfd f0, 0x18(r1)
@@ -821,7 +821,7 @@ lbl_800445F8:
 /* 80044610 00040530  B0 1F 00 20 */	sth r0, 0x20(r31)
 /* 80044614 00040534  80 7D 00 08 */	lwz r3, 8(r29)
 /* 80044618 00040538  80 9D 00 0C */	lwz r4, 0xc(r29)
-/* 8004461C 0004053C  4B FF F2 FD */	bl g_interp_stage_anim_probably
+/* 8004461C 0004053C  4B FF F2 FD */	bl g_interpolate_anim
 /* 80044620 00040540  EC 1E 00 72 */	fmuls f0, f30, f1
 /* 80044624 00040544  FC 00 00 1E */	fctiwz f0, f0
 /* 80044628 00040548  D8 01 00 18 */	stfd f0, 0x18(r1)
@@ -837,7 +837,7 @@ lbl_80044634:
 /* 8004464C 0004056C  B0 1F 00 22 */	sth r0, 0x22(r31)
 /* 80044650 00040570  80 7D 00 10 */	lwz r3, 0x10(r29)
 /* 80044654 00040574  80 9D 00 14 */	lwz r4, 0x14(r29)
-/* 80044658 00040578  4B FF F2 C1 */	bl g_interp_stage_anim_probably
+/* 80044658 00040578  4B FF F2 C1 */	bl g_interpolate_anim
 /* 8004465C 0004057C  EC 1E 00 72 */	fmuls f0, f30, f1
 /* 80044660 00040580  FC 00 00 1E */	fctiwz f0, f0
 /* 80044664 00040584  D8 01 00 18 */	stfd f0, 0x18(r1)
@@ -853,7 +853,7 @@ lbl_80044670:
 /* 80044688 000405A8  D0 1F 00 0C */	stfs f0, 0xc(r31)
 /* 8004468C 000405AC  80 7D 00 18 */	lwz r3, 0x18(r29)
 /* 80044690 000405B0  80 9D 00 1C */	lwz r4, 0x1c(r29)
-/* 80044694 000405B4  4B FF F2 85 */	bl g_interp_stage_anim_probably
+/* 80044694 000405B4  4B FF F2 85 */	bl g_interpolate_anim
 /* 80044698 000405B8  D0 3F 00 00 */	stfs f1, 0(r31)
 lbl_8004469C:
 /* 8004469C 000405BC  80 7D 00 24 */	lwz r3, 0x24(r29)
@@ -865,7 +865,7 @@ lbl_8004469C:
 /* 800446B4 000405D4  D0 1F 00 10 */	stfs f0, 0x10(r31)
 /* 800446B8 000405D8  80 7D 00 20 */	lwz r3, 0x20(r29)
 /* 800446BC 000405DC  80 9D 00 24 */	lwz r4, 0x24(r29)
-/* 800446C0 000405E0  4B FF F2 59 */	bl g_interp_stage_anim_probably
+/* 800446C0 000405E0  4B FF F2 59 */	bl g_interpolate_anim
 /* 800446C4 000405E4  D0 3F 00 04 */	stfs f1, 4(r31)
 lbl_800446C8:
 /* 800446C8 000405E8  80 7D 00 2C */	lwz r3, 0x2c(r29)
@@ -877,7 +877,7 @@ lbl_800446C8:
 /* 800446E0 00040600  D0 1F 00 14 */	stfs f0, 0x14(r31)
 /* 800446E4 00040604  80 7D 00 28 */	lwz r3, 0x28(r29)
 /* 800446E8 00040608  80 9D 00 2C */	lwz r4, 0x2c(r29)
-/* 800446EC 0004060C  4B FF F2 2D */	bl g_interp_stage_anim_probably
+/* 800446EC 0004060C  4B FF F2 2D */	bl g_interpolate_anim
 /* 800446F0 00040610  D0 3F 00 08 */	stfs f1, 8(r31)
 lbl_800446F4:
 /* 800446F4 00040614  7F E3 FB 78 */	mr r3, r31

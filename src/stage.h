@@ -219,17 +219,17 @@ struct StageBgModel
 struct StageAnimHdr
 {
     /*0x00*/ u32 xRotFramesCount;
-    /*0x04*/ void *xRotFrames;
+    /*0x04*/ struct AnimKeyframe *xRotFrames;
     /*0x08*/ u32 yRotFramesCount;
-    /*0x0C*/ void *yRotFrames;
+    /*0x0C*/ struct AnimKeyframe *yRotFrames;
     /*0x10*/ u32 zRotFramesCount;
-    /*0x14*/ void *zRotFrames;
+    /*0x14*/ struct AnimKeyframe *zRotFrames;
     /*0x18*/ u32 xTrnslFramesCount;
-    /*0x1C*/ void *xTrnslFrames;
+    /*0x1C*/ struct AnimKeyframe *xTrnslFrames;
     /*0x20*/ u32 yTrnslFramesCount;
-    /*0x24*/ void *yTrnslFrames;
+    /*0x24*/ struct AnimKeyframe *yTrnslFrames;
     /*0x28*/ u32 zTrnslFramesCount;
-    /*0x2C*/ void *zTrnslFrames;
+    /*0x2C*/ struct AnimKeyframe *zTrnslFrames;
 };
 
 struct DecodedStageLzPtr_child_child3

@@ -24,7 +24,7 @@ struct BackgroundInfo backgroundInfo =
     { 128, 0, 0, 0 },
 };
 
-GXColor lbl_801B9178_A8[] =
+GXColor bgBackdropColors[] =
 {
     { 0x00, 0x00, 0x00, 0x00 },
     { 0xFF, 0xFF, 0xFF, 0xFF },
@@ -411,7 +411,7 @@ void ev_background_init(void)
     backgroundInfo.unk4 = 0.0f;
     backgroundInfo.unk8 = 0;
 
-    backgroundInfo.unkC = lbl_801B9178_A8[backgroundInfo.bgId];
+    backgroundInfo.backdropColor = bgBackdropColors[backgroundInfo.bgId];
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(backgroundInfo.unk48);
     backgroundInfo.unk78 = lbl_801B96CC[backgroundInfo.bgId];
@@ -749,56 +749,56 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
         r29 = 1;
     for (i = 0; i < b; i++, a++)
     {
-        float f29;
+        float t;
         float f2;
-        struct UnkStruct8005562C_child *r28;
+        struct UnkStruct8005562C_child *anim;
 
-        a->unk0 &= ~(1 << (31-15));
+        a->unk0 &= ~(1 << 16);
         if (!(a->unk0 & r29))
             continue;
         if (a->model == NULL2)
             continue;
         a->unk0 |= 0x10000;
-        r28 = a->unk30;
-        if (r28 == NULL2)
+        anim = a->unk30;
+        if (anim == NULL2)
             continue;
-        f29 = c;
-        if (a->unk0 & (1 << (31-0x19)))
-            f29 = lbl_80206DEC.unk4 / 60.0;
-        f29 += r28->unk0;
-        f2 = (float)(r28->unk4 - r28->unk0);
-        f29 -= f2 * mathutil_floor(f29 / f2);
-        f29 += (float)r28->unk0;
-        if (r28->unk54 != NULL2 && g_interp_stage_anim_probably(r28->unk50, r28->unk54, f29) < 0.5)
+        t = c;
+        if (a->unk0 & (1 << 6))
+            t = lbl_80206DEC.unk4 / 60.0;
+        t += anim->unk0;
+        f2 = (float)(anim->unk4 - anim->unk0);
+        t -= f2 * mathutil_floor(t / f2);
+        t += (float)anim->unk0;
+        if (anim->unk54 != NULL2 && g_interpolate_anim(anim->unk50, anim->unk54, t) < 0.5)
         {
-            a->unk0 &= ~(1 << (31-15));
+            a->unk0 &= ~(1 << 16);
             continue;
         }
-        if (r28->unk5C != NULL2)
+        if (anim->unk5C != NULL2)
         {
-            a->unk2C = g_interp_stage_anim_probably(r28->unk58, r28->unk5C, f29);
+            a->unk2C = g_interpolate_anim(anim->unk58, anim->unk5C, t);
             if (a->unk2C >= 1.0)
                 continue;
         }
-        if (r28->unkC != NULL2)
-            a->scale.x = g_interp_stage_anim_probably(r28->unk8, r28->unkC, f29);
-        if (r28->unk14 != NULL2)
-            a->scale.y = g_interp_stage_anim_probably(r28->unk10, r28->unk14, f29);
-        if (r28->unk1C != NULL2)
-            a->scale.z = g_interp_stage_anim_probably(r28->unk18, r28->unk1C, f29);
-        if (r28->unk24 != NULL2)
-            a->xrot = DEGREES_TO_S16(g_interp_stage_anim_probably(r28->unk20, r28->unk24, f29));
-        if (r28->unk2C != NULL2)
-            a->yrot = DEGREES_TO_S16(g_interp_stage_anim_probably(r28->unk28, r28->unk2C, f29));
-        if (r28->unk34 != NULL2)
-            a->zrot = DEGREES_TO_S16(g_interp_stage_anim_probably(r28->unk30, r28->unk34, f29));
-        if (r28->unk3C != NULL2)
-            a->pos.x = g_interp_stage_anim_probably(r28->unk38, r28->unk3C, f29);
-        if (r28->unk44 != NULL2)
-            a->pos.y = g_interp_stage_anim_probably(r28->unk40, r28->unk44, f29);
-        if (r28->unk4C != NULL2)
-            a->pos.z = g_interp_stage_anim_probably(r28->unk48, r28->unk4C, f29);
-        if ((a->unk0 & (1 << (31-0x1A))) && gameSubmode != SMD_ADV_INFO_MAIN)
+        if (anim->unkC != NULL2)
+            a->scale.x = g_interpolate_anim(anim->unk8, anim->unkC, t);
+        if (anim->unk14 != NULL2)
+            a->scale.y = g_interpolate_anim(anim->unk10, anim->unk14, t);
+        if (anim->unk1C != NULL2)
+            a->scale.z = g_interpolate_anim(anim->unk18, anim->unk1C, t);
+        if (anim->unk24 != NULL2)
+            a->xrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk20, anim->unk24, t));
+        if (anim->unk2C != NULL2)
+            a->yrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk28, anim->unk2C, t));
+        if (anim->unk34 != NULL2)
+            a->zrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk30, anim->unk34, t));
+        if (anim->unk3C != NULL2)
+            a->pos.x = g_interpolate_anim(anim->unk38, anim->unk3C, t);
+        if (anim->unk44 != NULL2)
+            a->pos.y = g_interpolate_anim(anim->unk40, anim->unk44, t);
+        if (anim->unk4C != NULL2)
+            a->pos.z = g_interpolate_anim(anim->unk48, anim->unk4C, t);
+        if ((a->unk0 & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
             mathutil_mtxA_from_translate(&a->pos);
             mathutil_mtxA_rotate_z(a->zrot);
@@ -1006,8 +1006,6 @@ s16 lbl_801B9AE8[] =
     0x26, 0x27,
 };
 
-extern u32 unpausedFrameCounter;
-
 void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
 {
     u8 unused[8];
@@ -1021,7 +1019,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
         for (i = 0; i < b->unk0; i++, r26++)
         {
             int modelId;
-            
+
             mathutil_mtxA_from_mtx(mtx);
             mathutil_mtxA_translate(&r26->unk0);
             mathutil_mtxA_rotate_z(r26->unk10);

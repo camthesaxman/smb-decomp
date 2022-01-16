@@ -325,7 +325,7 @@ void ev_world_dest(void);
 // ? world_sub_9();
 // ? world_sub_10();
 // ? world_sub_11();
-float g_interp_stage_anim_probably(u32, void *, float);
+float g_interpolate_anim(u32, struct AnimKeyframe *, float);
 
 void func_80047D70(void);
 void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NaomiVtxWithNormal *), void (*c)(struct NaomiVtxWithColor *));

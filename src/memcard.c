@@ -1,6 +1,7 @@
 /**
  * memcard.c - Implements memory card loading and saving functionality
  */
+#include <math.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -3241,8 +3242,6 @@ void ev_memcard_dest(void)
     replayFileInfo = NULL;
 }
 
-#pragma force_active on
-
 struct
 {
     u32 unk0;
@@ -3330,33 +3329,26 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     }
 }
 
-struct StringEntry lbl_802F1698 = {(void *)lbl_802C4900, 0};
-
-#pragma force_active off
-
-#ifdef NONMATCHING
-static void g_msg_box_default_pos(struct MemCardMessage *msg)
+// not used. needed here to force float constants into the right order
+static void memcard_dummy(void)
 {
-    draw_memcard_msg(msg, 320.0f, 240.0f);
+    draw_memcard_msg(NULL, 320.0f, 240.0f);
 }
 
-static int int_abs(int x)
-{
-    return ((x >> 31) ^ x) - (x >> 31);
-}
+struct StringEntry lbl_802F1698 = { lbl_802C4900, 0 };
 
 void memcard_draw_ui(void)
 {
-    register int i;
     u32 r29;
     u32 wtf;
+
     func_80071A8C();
     func_80071AD4(0xB3);
-    func_80071B1C(0.00800000037998f);
+    func_80071B1C(0.008f);
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
         if (memcardInfo.msg != NULL)
-            g_msg_box_default_pos(memcardInfo.msg);
+            draw_memcard_msg(memcardInfo.msg, 320.0f, 240.0f);
         if (memcardInfo.unk42 == 0 || memcardInfo.statusFlags & (1 << 19))
         {
             if ((memcardInfo.statusFlags & MC_STATUS_SAVING)
@@ -3365,16 +3357,15 @@ void memcard_draw_ui(void)
             else
                 draw_memcard_msg(&msgPressBButton, 320.0f, 380.0f);
         }
-        //lbl_800A46D8
         if (memcardInfo.statusFlags & (1 << 20))
         {
             if (memcardInfo.unk4D == 0)
                 draw_memcard_msg(&msgMemCardNoFreeBlocks, 320.0f, 100.0f);
             else
             {
-                // TODO
-                struct MemCardMessage sp8 = {(void *)0x802F1698, 0};
+                struct MemCardMessage sp8 = { &lbl_802F1698, 0 };
                 struct MemCardMessage *r29;
+
                 if (memcardInfo.unk4D == 1)
                     r29 = &msgMemCardNumFreeBlock;
                 else
@@ -3384,49 +3375,37 @@ void memcard_draw_ui(void)
                     sp8.lines[0].unk4 = r29->lines[0].unk4 + 1;
                 else
                     sp8.lines[0].unk4 = r29->lines[0].unk4;
-                //lbl_800A4774
                 sp8.numLines = r29->numLines;
                 draw_memcard_msg(&sp8, 320.0f, 100.0f);
             }
         }
-        //lbl_800A478C
         func_80071A8C();
-        // to lbl_800A4CCC
         return;
     }
-    //lbl_800A4794
     else if (memcardInfo.statusFlags & (1 << 2))
     {
-        g_msg_box_default_pos(&msgAccessMemCard);
+        draw_memcard_msg(&msgAccessMemCard, 320.0f, 240.0f);
         return;
     }
-    //lbl_800A47B0
     else if (memcardInfo.statusFlags & (1 << 6))
     {
         if (memcardInfo.statusFlags & (1 << 15))
         {
             func_80071B60(100.0f, 340.0f);
-            g_msg_box_default_pos(&msgSavingGame);
+            draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
         }
-        //lbl_800A47DC
         func_80071A8C();
         return;
     }
-    //lbl_800A47E4
     else if (memcardInfo.statusFlags & (1 << 10))
         draw_memcard_msg(&msgMakeSelection, 320.0f, 380.0f);
-    //lbl_800A47FC
     if (memcardInfo.state == 1)
-        draw_memcard_msg(&msgInsertMemcardSlotAPressA, 320.0f, 380.0f);
+        draw_memcard_msg(&msgInsertMemcardSlotAPressA, 320.0f, 240.0f);
     if (memcardInfo.state == 9)
     {
-        //a0764
-        g_msg_box_default_pos(&msgOverwritePrompt);
+        draw_memcard_msg(&msgFormatPrompt, 320.0f, 240.0f);
 
-        // right float constant load, but compiler adds an unecessary conversion
-        i = (float)(unpausedFrameCounter % 60);
-        wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
-
+        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
         r29 = (wtf << 16) | (wtf << 8) | wtf;
 
         func_80071B2C(1.5f, 1.5f);
@@ -3452,7 +3431,6 @@ void memcard_draw_ui(void)
             func_80071AE4(0);
             func_80071AF8(0);
         }
-        //lbl_800A4980
         func_80071E58("No");
         func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
@@ -3478,16 +3456,13 @@ void memcard_draw_ui(void)
         }
         func_80071E58("No");
     }
-    //lbl_800A4A34
     if (memcardInfo.state == 10)
         draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
     if (memcardInfo.state == 13 && (memcardInfo.statusFlags & (1 << 10)))
     {
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
-        // right float constant load, but compiler adds an unecessary conversion
-        i = (float)(unpausedFrameCounter % 60);
-        wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
+        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
 
         r29 = (wtf << 16) | (wtf << 8) | wtf;
         func_80071B2C(1.5f, 1.5f);
@@ -3538,7 +3513,6 @@ void memcard_draw_ui(void)
         }
         func_80071E58("No");
     }
-    //lbl_800A4C74
     if (memcardInfo.statusFlags & (1 << 15))
     {
         if (memcardInfo.statusFlags & MC_STATUS_REPLAY_FILE)
@@ -3546,45 +3520,10 @@ void memcard_draw_ui(void)
         else
             draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
     }
-    //lbl_800A4CAC
     if (memcardInfo.statusFlags & (1 << 17))
         draw_memcard_msg(&msgLoadingGame, 320.0f, 240.0f);
     func_80071A8C();
 }
-#else
-#pragma force_active on
-
-__declspec(section ".sdata")
-char lbl_802F16A0[] = "Yes ";
-__declspec(section ".sdata")
-char lbl_802F16A8[] = "No";
-
-extern const float lbl_802F5B18;
-const float lbl_802F5B20 = 320.0f;
-const float lbl_802F5B24 = 240.0f;
-const struct MemCardMessage lbl_802F5B28 =
-{
-    &lbl_802F1698, 0
-};
-const float lbl_802F5B30 = 0.00800000037998f;
-const float lbl_802F5B34 = 380.0f;
-const float lbl_802F5B38 = 100.0f;
-const float lbl_802F5B3C = 340.0f;
-const double lbl_802F5B40 = 255.0;
-const double lbl_802F5B48 = 30.0;
-const float lbl_802F5B50 = 1.5f;
-const float lbl_802F5B54 = 242.0f;
-const double lbl_802F5B58 = 4503599627370496;
-extern u32 __cvt_fp2unsigned(float);
-#define _SDA2_BASE_ 0
-asm void memcard_draw_ui(void)
-{
-    nofralloc
-    #include "../asm/nonmatchings/memcard_draw_ui.s"
-}
-#undef _SDA2_BASE_
-#pragma peephole on
-#endif
 
 void func_800A4CEC(void)
 {
