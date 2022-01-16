@@ -256,7 +256,7 @@ void draw_intro_av_logo(void)
     mathutil_mtxA_translate(&advLogoInfo.pos);
     mathutil_mtxA_rotate_x(advLogoInfo.xrot);
     mathutil_mtxA_rotate_z(advLogoInfo.zrot);
-    func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_av_ball));
+    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_av_ball));
 }
 
 void draw_adv_demo_scene(void)
@@ -299,7 +299,7 @@ void draw_adv_demo_scene(void)
             ballInfo[0].unkFC->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
-        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
+        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
     }
 
     // Draws old arcade ball. Leftover from Monkey Ball?
@@ -314,7 +314,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_translate(&r27->pos);
             mathutil_mtxA_rotate_y(r27->yrot);
             mathutil_mtxA_rotate_x(r27->xrot);
-            func_80033AD4(NLOBJ_MODEL(naomiCommonObj, r27->modelId));
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, r27->modelId));
         }
     }
 
@@ -766,7 +766,7 @@ void func_8000CA9C(void)
     else
     {
         mathutil_mtxA_from_mtxB();
-        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BOX));
+        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BOX));
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)

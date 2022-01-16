@@ -18094,7 +18094,7 @@ lbl_00010BA4:
 /* 00010BA4 80780000 */ lwz r3, 0(r24)
 /* 00010BA8 7F23B82E */ lwzx r25, r3, r23
 /* 00010BAC 7F23CB78 */ mr r3, r25
-/* 00010BB0 4BFEF621 */ bl func_80033AD4
+/* 00010BB0 4BFEF621 */ bl g_call_draw_naomi_model_and_do_other_stuff
 /* 00010BB4 281B0000 */ cmplwi r27, 0
 /* 00010BB8 41820040 */ beq lbl_00010BF8
 /* 00010BBC 4BFEF615 */ bl mathutil_mtxA_push
@@ -18200,7 +18200,7 @@ lbl_00010D20:
 /* 00010D20 28140000 */ cmplwi r20, 0
 /* 00010D24 4182006C */ beq lbl_00010D90
 /* 00010D28 7E83A378 */ mr r3, r20
-/* 00010D2C 4BFEF4A5 */ bl func_80033AD4
+/* 00010D2C 4BFEF4A5 */ bl g_call_draw_naomi_model_and_do_other_stuff
 /* 00010D30 2C1E0000 */ cmpwi r30, 0
 /* 00010D34 41820018 */ beq lbl_00010D4C
 /* 00010D38 38000000 */ li r0, 0

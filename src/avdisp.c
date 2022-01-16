@@ -557,7 +557,7 @@ void g_avdisp_set_3_floats(float a, float b, float c)
 
 void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -569,7 +569,7 @@ void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 
 void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -581,7 +581,7 @@ void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 
 void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_802F20E4) == 0)
     {
         lbl_802F20E4 = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);

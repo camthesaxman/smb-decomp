@@ -122,8 +122,8 @@ void submode_game_intr_sel_main_func(void);
 
 void func_80020AB8(Vec *, S16Vec *, float, float, float, float);
 // ? func_80020DB4();
-int func_80020EB4(Vec *, float);
-int func_80020FD0(Vec *, float, float);
+int g_frustum_test_maybe_1(Vec *, float);
+int g_frustum_test_maybe_2(Vec *, float, float);
 // ? func_800210FC();
 // ? func_80021164();
 // ? func_800212A8();

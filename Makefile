@@ -177,7 +177,7 @@ SOURCES := \
 	libraries/ai/asm/ai.s \
 	libraries/ar/asm/ar.s \
 	libraries/ar/asm/arq.s \
-	libraries/dsp/asm/dsp.s \
+	libraries/dsp/dsp.c \
 	libraries/dsp/dsp_debug.c \
 	libraries/dsp/asm/dsp_task.s \
 	libraries/card/asm/CARDBios.s \

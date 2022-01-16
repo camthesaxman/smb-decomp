@@ -1136,11 +1136,11 @@ void ball_draw(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            func_80033B14(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
+            g_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
         }
         else
         {
-            func_80033AD4(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId));
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId));
         }
 
         if (func != NULL)
@@ -1169,7 +1169,7 @@ void ball_draw(void)
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
         g_nl2ngc_set_scale(ball->modelScale);
-        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
+        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 
         func_8000E3BC();

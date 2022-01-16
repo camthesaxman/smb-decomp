@@ -6239,7 +6239,7 @@ lbl_8004E3F8:
 /* 8004E4D0 0004A3F0  EC 25 00 72 */	fmuls f1, f5, f1
 /* 8004E4D4 0004A3F4  D0 41 00 10 */	stfs f2, 0x10(r1)
 /* 8004E4D8 0004A3F8  D0 01 00 14 */	stfs f0, 0x14(r1)
-/* 8004E4DC 0004A3FC  4B FD 29 D9 */	bl func_80020EB4
+/* 8004E4DC 0004A3FC  4B FD 29 D9 */	bl g_frustum_test_maybe_1
 /* 8004E4E0 0004A400  2C 03 00 00 */	cmpwi r3, 0
 /* 8004E4E4 0004A404  41 82 01 28 */	beq lbl_8004E60C
 /* 8004E4E8 0004A408  C0 A2 91 EC */	lfs f5, lbl_802F39EC-_SDA2_BASE_(r2)
@@ -6434,7 +6434,7 @@ func_8004E748:
 /* 8004E7A4 0004A6C4  A8 7F 00 50 */	lha r3, 0x50(r31)
 /* 8004E7A8 0004A6C8  4B FB 98 E1 */	bl mathutil_mtxA_rotate_z
 /* 8004E7AC 0004A6CC  80 7F 00 30 */	lwz r3, 0x30(r31)
-/* 8004E7B0 0004A6D0  4B FE 53 25 */	bl func_80033AD4
+/* 8004E7B0 0004A6D0  4B FE 53 25 */	bl g_call_draw_naomi_model_and_do_other_stuff
 lbl_8004E7B4:
 /* 8004E7B4 0004A6D4  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8004E7B8 0004A6D8  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -7121,7 +7121,7 @@ func_8004F17C:
 /* 8004F1C4 0004B0E4  4B FE 19 E5 */	bl g_nl2ngc_set_scale
 /* 8004F1C8 0004B0E8  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 8004F1CC 0004B0EC  C0 3F 00 A8 */	lfs f1, 0xa8(r31)
-/* 8004F1D0 0004B0F0  4B FE 49 45 */	bl func_80033B14
+/* 8004F1D0 0004B0F0  4B FE 49 45 */	bl g_call_draw_model_with_alpha_deferred
 /* 8004F1D4 0004B0F4  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8004F1D8 0004B0F8  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 8004F1DC 0004B0FC  38 21 00 18 */	addi r1, r1, 0x18
@@ -7347,7 +7347,7 @@ lbl_8004F4E8:
 /* 8004F508 0004B428  40 80 00 14 */	bge lbl_8004F51C
 /* 8004F50C 0004B42C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8004F510 0004B430  80 63 00 D8 */	lwz r3, 0xd8(r3)
-/* 8004F514 0004B434  4B FE 45 C1 */	bl func_80033AD4
+/* 8004F514 0004B434  4B FE 45 C1 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 8004F518 0004B438  48 00 00 3C */	b lbl_8004F554
 lbl_8004F51C:
 /* 8004F51C 0004B43C  20 00 00 3C */	subfic r0, r0, 0x3c
@@ -7363,7 +7363,7 @@ lbl_8004F51C:
 /* 8004F544 0004B464  EC 21 10 28 */	fsubs f1, f1, f2
 /* 8004F548 0004B468  FC 21 00 32 */	fmul f1, f1, f0
 /* 8004F54C 0004B46C  FC 20 08 18 */	frsp f1, f1
-/* 8004F550 0004B470  4B FE 1F 69 */	bl func_800314B8
+/* 8004F550 0004B470  4B FE 1F 69 */	bl g_draw_naomi_model_with_alpha_deferred
 lbl_8004F554:
 /* 8004F554 0004B474  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 8004F558 0004B478  CB E1 00 28 */	lfd f31, 0x28(r1)
@@ -7508,7 +7508,7 @@ func_8004F648:
 /* 8004F75C 0004B67C  C0 7E 00 20 */	lfs f3, 0x20(r30)
 /* 8004F760 0004B680  4B FE 14 59 */	bl func_80030BB8
 /* 8004F764 0004B684  80 7E 00 30 */	lwz r3, 0x30(r30)
-/* 8004F768 0004B688  4B FE 43 6D */	bl func_80033AD4
+/* 8004F768 0004B688  4B FE 43 6D */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 8004F76C 0004B68C  4B FB EC 51 */	bl func_8000E3BC
 lbl_8004F770:
 /* 8004F770 0004B690  80 01 00 2C */	lwz r0, 0x2c(r1)
@@ -7794,7 +7794,7 @@ func_8004FB24:
 /* 8004FBA4 0004BAC4  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8004FBA8 0004BAC8  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
 /* 8004FBAC 0004BACC  80 63 00 9C */	lwz r3, 0x9c(r3)
-/* 8004FBB0 0004BAD0  4B FE 3F 65 */	bl func_80033B14
+/* 8004FBB0 0004BAD0  4B FE 3F 65 */	bl g_call_draw_model_with_alpha_deferred
 /* 8004FBB4 0004BAD4  C0 21 00 0C */	lfs f1, 0xc(r1)
 /* 8004FBB8 0004BAD8  C0 41 00 10 */	lfs f2, 0x10(r1)
 /* 8004FBBC 0004BADC  C0 01 00 14 */	lfs f0, 0x14(r1)
@@ -7837,7 +7837,7 @@ func_8004FB24:
 /* 8004FC50 0004BB70  4B FE 0F 69 */	bl func_80030BB8
 /* 8004FC54 0004BB74  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8004FC58 0004BB78  80 63 00 08 */	lwz r3, 8(r3)
-/* 8004FC5C 0004BB7C  4B FE 3E 79 */	bl func_80033AD4
+/* 8004FC5C 0004BB7C  4B FE 3E 79 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 8004FC60 0004BB80  4B FB E7 5D */	bl func_8000E3BC
 lbl_8004FC64:
 /* 8004FC64 0004BB84  80 01 00 2C */	lwz r0, 0x2c(r1)
@@ -7991,7 +7991,7 @@ func_8004FDCC:
 /* 8004FE90 0004BDB0  4B FE 0D 29 */	bl func_80030BB8
 /* 8004FE94 0004BDB4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8004FE98 0004BDB8  80 63 00 D8 */	lwz r3, 0xd8(r3)
-/* 8004FE9C 0004BDBC  4B FE 3C 39 */	bl func_80033AD4
+/* 8004FE9C 0004BDBC  4B FE 3C 39 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 8004FEA0 0004BDC0  4B FB E5 1D */	bl func_8000E3BC
 /* 8004FEA4 0004BDC4  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 8004FEA8 0004BDC8  CB E1 00 28 */	lfd f31, 0x28(r1)
@@ -8241,7 +8241,7 @@ func_80050138:
 /* 80050250 0004C170  4B FB 7B 89 */	bl mathutil_mtxA_scale_xyz
 /* 80050254 0004C174  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80050258 0004C178  80 63 00 18 */	lwz r3, 0x18(r3)
-/* 8005025C 0004C17C  4B FE 38 79 */	bl func_80033AD4
+/* 8005025C 0004C17C  4B FE 38 79 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80050260 0004C180  4B FB E1 5D */	bl func_8000E3BC
 lbl_80050264:
 /* 80050264 0004C184  80 01 00 3C */	lwz r0, 0x3c(r1)
@@ -8538,7 +8538,7 @@ lbl_80050668:
 /* 800506C4 0004C5E4  EC 60 07 F2 */	fmuls f3, f0, f31
 /* 800506C8 0004C5E8  4B FE 04 F1 */	bl func_80030BB8
 /* 800506CC 0004C5EC  80 7F 00 30 */	lwz r3, 0x30(r31)
-/* 800506D0 0004C5F0  4B FE 34 05 */	bl func_80033AD4
+/* 800506D0 0004C5F0  4B FE 34 05 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 800506D4 0004C5F4  4B FB DC E9 */	bl func_8000E3BC
 lbl_800506D8:
 /* 800506D8 0004C5F8  80 01 00 2C */	lwz r0, 0x2c(r1)
@@ -8648,7 +8648,7 @@ func_80050788:
 /* 80050854 0004C774  4B FE 03 65 */	bl func_80030BB8
 /* 80050858 0004C778  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8005085C 0004C77C  80 63 00 B0 */	lwz r3, 0xb0(r3)
-/* 80050860 0004C780  4B FE 32 75 */	bl func_80033AD4
+/* 80050860 0004C780  4B FE 32 75 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80050864 0004C784  4B FB DB 59 */	bl func_8000E3BC
 lbl_80050868:
 /* 80050868 0004C788  80 01 00 2C */	lwz r0, 0x2c(r1)
@@ -8951,7 +8951,7 @@ func_80050C38:
 /* 80050CD8 0004CBF8  4B FD FE D1 */	bl g_nl2ngc_set_scale
 /* 80050CDC 0004CBFC  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80050CE0 0004CC00  80 63 00 08 */	lwz r3, 8(r3)
-/* 80050CE4 0004CC04  4B FE 2D F1 */	bl func_80033AD4
+/* 80050CE4 0004CC04  4B FE 2D F1 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80050CE8 0004CC08  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
 /* 80050CEC 0004CC0C  FC 40 08 90 */	fmr f2, f1
 /* 80050CF0 0004CC10  FC 60 08 90 */	fmr f3, f1
@@ -8987,7 +8987,7 @@ func_80050C38:
 /* 80050D68 0004CC88  4B FD FE 41 */	bl g_nl2ngc_set_scale
 /* 80050D6C 0004CC8C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80050D70 0004CC90  80 63 00 B0 */	lwz r3, 0xb0(r3)
-/* 80050D74 0004CC94  4B FE 2D 61 */	bl func_80033AD4
+/* 80050D74 0004CC94  4B FE 2D 61 */	bl g_call_draw_naomi_model_and_do_other_stuff
 lbl_80050D78:
 /* 80050D78 0004CC98  4B FB D6 45 */	bl func_8000E3BC
 lbl_80050D7C:
@@ -9133,7 +9133,7 @@ func_80050ED4:
 /* 80050F84 0004CEA4  4B FD FC 35 */	bl func_80030BB8
 /* 80050F88 0004CEA8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80050F8C 0004CEAC  80 63 00 D8 */	lwz r3, 0xd8(r3)
-/* 80050F90 0004CEB0  4B FE 2B 45 */	bl func_80033AD4
+/* 80050F90 0004CEB0  4B FE 2B 45 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80050F94 0004CEB4  4B FB D4 29 */	bl func_8000E3BC
 /* 80050F98 0004CEB8  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 80050F9C 0004CEBC  CB E1 00 28 */	lfd f31, 0x28(r1)
@@ -10446,7 +10446,7 @@ func_800522EC:
 /* 80052358 0004E278  C0 5E 00 24 */	lfs f2, 0x24(r30)
 /* 8005235C 0004E27C  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80052360 0004E280  38 7F 00 08 */	addi r3, r31, 8
-/* 80052364 0004E284  4B FC EC 6D */	bl func_80020FD0
+/* 80052364 0004E284  4B FC EC 6D */	bl g_frustum_test_maybe_2
 /* 80052368 0004E288  2C 03 00 00 */	cmpwi r3, 0
 /* 8005236C 0004E28C  41 82 00 6C */	beq lbl_800523D8
 /* 80052370 0004E290  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
@@ -10869,7 +10869,7 @@ lbl_80052964:
 /* 80052994 0004E8B4  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80052998 0004E8B8  38 7F 00 08 */	addi r3, r31, 8
 /* 8005299C 0004E8BC  C0 5E 00 24 */	lfs f2, 0x24(r30)
-/* 800529A0 0004E8C0  4B FC E6 31 */	bl func_80020FD0
+/* 800529A0 0004E8C0  4B FC E6 31 */	bl g_frustum_test_maybe_2
 /* 800529A4 0004E8C4  2C 03 00 00 */	cmpwi r3, 0
 /* 800529A8 0004E8C8  41 82 00 4C */	beq lbl_800529F4
 /* 800529AC 0004E8CC  C0 3E 00 24 */	lfs f1, 0x24(r30)
@@ -10961,7 +10961,7 @@ func_80052A90:
 /* 80052ADC 0004E9FC  C0 5E 00 24 */	lfs f2, 0x24(r30)
 /* 80052AE0 0004EA00  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80052AE4 0004EA04  38 7F 00 08 */	addi r3, r31, 8
-/* 80052AE8 0004EA08  4B FC E4 E9 */	bl func_80020FD0
+/* 80052AE8 0004EA08  4B FC E4 E9 */	bl g_frustum_test_maybe_2
 /* 80052AEC 0004EA0C  2C 03 00 00 */	cmpwi r3, 0
 /* 80052AF0 0004EA10  41 82 00 2C */	beq lbl_80052B1C
 /* 80052AF4 0004EA14  C0 3E 00 24 */	lfs f1, 0x24(r30)

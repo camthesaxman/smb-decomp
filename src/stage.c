@@ -2020,7 +2020,7 @@ void stage_draw(void)
                 }
                 else
                 {
-                    func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01));
+                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01));
                     sp7C.unk2 = 0;
                     sp7C.unk4 = NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01);
                 }
@@ -2037,7 +2037,7 @@ void stage_draw(void)
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
         g_nl2ngc_set_scale(10.0f);
-        func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
+        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
         g_draw_stage_collision();
@@ -2101,7 +2101,7 @@ void stage_draw(void)
                 for (j = 0; j < r23->unk8; j++)
                 {
                     model = (void *)r23->unk0[j];
-                    func_80033AD4(model);
+                    g_call_draw_naomi_model_and_do_other_stuff(model);
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
@@ -2161,7 +2161,7 @@ void stage_draw(void)
                             }
                             if (model != NULL)
                             {
-                                func_80033AD4(model);
+                                g_call_draw_naomi_model_and_do_other_stuff(model);
                                 if (r31 != 0)
                                 {
                                     sp7C.unk2 = 0;
@@ -2230,10 +2230,10 @@ void stage_draw(void)
             if (lbl_801F3A58.unk1E == 1)
             {
                 if (modeCtrl.unk0 > 120)
-                    func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
+                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.unk0 > 60)
                 {
-                    func_80033B14(
+                    g_call_draw_model_with_alpha_deferred(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.unk0 - 60) / 60.0f);
                 }
@@ -2241,10 +2241,10 @@ void stage_draw(void)
             else
             {
                 if (modeCtrl.unk0 > 75)
-                    func_80033AD4(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
+                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.unk0 > 45)
                 {
-                    func_80033B14(
+                    g_call_draw_model_with_alpha_deferred(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.unk0 - 45) / 30.0f);
                 }
@@ -2283,7 +2283,7 @@ void stage_draw(void)
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
                 g_nl2ngc_set_scale(f1);
-                func_80033B14(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
+                g_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
             }
         }
         mathutil_mtx_copy(sp8, mathutilData->mtxB);

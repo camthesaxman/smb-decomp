@@ -4030,7 +4030,7 @@ lbl_80098D54:
 lbl_80098D90:
 /* 80098D90 00094CB0  80 7D 00 14 */	lwz r3, 0x14(r29)
 /* 80098D94 00094CB4  7F C4 F3 78 */	mr r4, r30
-/* 80098D98 00094CB8  4B F9 B2 B5 */	bl g_draw_naomi_model_6
+/* 80098D98 00094CB8  4B F9 B2 B5 */	bl g_draw_naomi_model_with_mesh_func
 /* 80098D9C 00094CBC  3B BD 00 18 */	addi r29, r29, 0x18
 lbl_80098DA0:
 /* 80098DA0 00094CC0  80 1D 00 00 */	lwz r0, 0(r29)
@@ -4423,7 +4423,7 @@ lbl_80099344:
 lbl_80099374:
 /* 80099374 00095294  80 7E 00 14 */	lwz r3, 0x14(r30)
 /* 80099378 00095298  7F E4 FB 78 */	mr r4, r31
-/* 8009937C 0009529C  4B F9 AC D1 */	bl g_draw_naomi_model_6
+/* 8009937C 0009529C  4B F9 AC D1 */	bl g_draw_naomi_model_with_mesh_func
 /* 80099380 000952A0  3B DE 00 18 */	addi r30, r30, 0x18
 lbl_80099384:
 /* 80099384 000952A4  80 1E 00 00 */	lwz r0, 0(r30)

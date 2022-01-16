@@ -3,6 +3,7 @@
 
 #include <dolphin/types.h>
 #include <dolphin/os.h>
+#include <dolphin/dsp.h>
 #include <dolphin/dvd.h>
 #include <dolphin/gx.h>
 #include <dolphin/mtx.h>

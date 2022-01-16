@@ -57,6 +57,8 @@ enum
     MC_STATE_VERIFY_FILESYSTEM = 5,
     MC_STATE_CHECK_VERIFY_FILESYSTEM_RESULT = 6,
     MC_STATE_OPEN_FILE = 8,
+    MC_STATE_FORMAT_PROMPT = 9,
+    MC_STATE_OVERWRITE_PROMPT = 13,
     MC_STATE_CHECK_CREATE_FILE_RESULT = 14,
     MC_STATE_GET_METADATA = 20,
     MC_STATE_CHECK_FREE_SPACE = 23,
@@ -1098,7 +1100,7 @@ void check_verify_filesystem_result(void)
         if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgMemCardDamaged;
-            memcardInfo.state = 9;
+            memcardInfo.state = MC_STATE_FORMAT_PROMPT;
             lbl_802F21B1 = 0;
             memcardInfo.statusFlags |= (1 << 10);
         }
@@ -1169,7 +1171,7 @@ void open_memcard_file(void)
         if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgCantSaveFile;
-            memcardInfo.state = 9;
+            memcardInfo.state = MC_STATE_FORMAT_PROMPT;
             lbl_802F21B1 = 0;
             memcardInfo.statusFlags |= (1 << 10);
         }
@@ -1192,7 +1194,7 @@ void open_memcard_file(void)
         if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgMemCardDamaged;
-            memcardInfo.state = 9;
+            memcardInfo.state = MC_STATE_FORMAT_PROMPT;
             lbl_802F21B1 = 0;
             memcardInfo.statusFlags |= (1 << 10);
         }
@@ -1408,7 +1410,7 @@ void check_card_free_space(void)
             {
                 memcardInfo.unk42 = 0;
                 memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-                memcardInfo.state = 13;
+                memcardInfo.state = MC_STATE_OVERWRITE_PROMPT;
                 if (memcardInfo.statusFlags & MC_STATUS_GAMEDATA_FILE
                  && ((memcardInfo.statusFlags & ((1 << 16) | (1 << 7))) == ((1 << 16) | (1 << 7))))
                 {
@@ -1967,7 +1969,7 @@ void check_format_memcard_result(void)
         }
         break;
     case CARD_RESULT_READY:
-        memcardInfo.state = 13;
+        memcardInfo.state = MC_STATE_OVERWRITE_PROMPT;
         break;
     }
 }
@@ -3291,7 +3293,7 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     func_80071A8C();
     func_80071AD4(0xB3);
     func_80071B50(0x200000);
-    func_80071B2C(0.649999976158f, 0.800000011921f);
+    func_80071B2C(0.65f, 0.8f);
 
     for (i = 0, f30 = 0.0f, r27 = msg->numLines; i < msg->numLines; i++)
     {
@@ -3401,7 +3403,7 @@ void memcard_draw_ui(void)
         draw_memcard_msg(&msgMakeSelection, 320.0f, 380.0f);
     if (memcardInfo.state == 1)
         draw_memcard_msg(&msgInsertMemcardSlotAPressA, 320.0f, 240.0f);
-    if (memcardInfo.state == 9)
+    if (memcardInfo.state == MC_STATE_FORMAT_PROMPT)
     {
         draw_memcard_msg(&msgFormatPrompt, 320.0f, 240.0f);
 
@@ -3458,7 +3460,7 @@ void memcard_draw_ui(void)
     }
     if (memcardInfo.state == 10)
         draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
-    if (memcardInfo.state == 13 && (memcardInfo.statusFlags & (1 << 10)))
+    if (memcardInfo.state == MC_STATE_OVERWRITE_PROMPT && (memcardInfo.statusFlags & (1 << 10)))
     {
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 

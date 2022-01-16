@@ -273,8 +273,8 @@ lbl_80020EAC:
 /* 80020EAC 0001CDCC  38 60 00 01 */	li r3, 1
 /* 80020EB0 0001CDD0  4E 80 00 20 */	blr
 
-.global func_80020EB4
-func_80020EB4:
+.global g_frustum_test_maybe_1
+g_frustum_test_maybe_1:
 /* 80020EB4 0001CDD4  7C 08 02 A6 */	mflr r0
 /* 80020EB8 0001CDD8  90 01 00 04 */	stw r0, 4(r1)
 /* 80020EBC 0001CDDC  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -353,8 +353,8 @@ lbl_80020FBC:
 /* 80020FC8 0001CEE8  7C 08 03 A6 */	mtlr r0
 /* 80020FCC 0001CEEC  4E 80 00 20 */	blr
 
-.global func_80020FD0
-func_80020FD0:
+.global g_frustum_test_maybe_2
+g_frustum_test_maybe_2:
 /* 80020FD0 0001CEF0  7C 08 02 A6 */	mflr r0
 /* 80020FD4 0001CEF4  90 01 00 04 */	stw r0, 4(r1)
 /* 80020FD8 0001CEF8  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -2084,7 +2084,7 @@ lbl_8002274C:
 /* 800227A0 0001E6C0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800227A4 0001E6C4  C0 22 87 C4 */	lfs f1, lbl_802F2FC4-_SDA2_BASE_(r2)
 /* 800227A8 0001E6C8  80 63 00 08 */	lwz r3, 8(r3)
-/* 800227AC 0001E6CC  48 00 ED 0D */	bl func_800314B8
+/* 800227AC 0001E6CC  48 00 ED 0D */	bl g_draw_naomi_model_with_alpha_deferred
 /* 800227B0 0001E6D0  4B FE 51 FD */	bl mathutil_mtxA_from_mtxB
 /* 800227B4 0001E6D4  38 7F 00 18 */	addi r3, r31, 0x18
 /* 800227B8 0001E6D8  4B FE 55 69 */	bl mathutil_mtxA_translate
@@ -2135,7 +2135,7 @@ lbl_80022808:
 /* 8002285C 0001E77C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80022860 0001E780  C0 22 87 C4 */	lfs f1, lbl_802F2FC4-_SDA2_BASE_(r2)
 /* 80022864 0001E784  80 63 00 08 */	lwz r3, 8(r3)
-/* 80022868 0001E788  48 00 EC 51 */	bl func_800314B8
+/* 80022868 0001E788  48 00 EC 51 */	bl g_draw_naomi_model_with_alpha_deferred
 /* 8002286C 0001E78C  4B FE 51 41 */	bl mathutil_mtxA_from_mtxB
 /* 80022870 0001E790  38 7F 00 18 */	addi r3, r31, 0x18
 /* 80022874 0001E794  4B FE 54 AD */	bl mathutil_mtxA_translate

@@ -850,7 +850,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
          && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
             continue;
-        if (func_80020FD0(&model->boundsCenter, model->boundsRadius, f29) == 0)
+        if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
             continue;
         r23 = b->unk0 >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, 0);

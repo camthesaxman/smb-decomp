@@ -8135,7 +8135,7 @@ lbl_00007454:
 /* 00007478 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 0000747C 80630000 */ lwz r3, 0(r3)
 /* 00007480 806300A8 */ lwz r3, 0xa8(r3)
-/* 00007484 4BFF8CD9 */ bl func_80033AD4
+/* 00007484 4BFF8CD9 */ bl g_call_draw_naomi_model_and_do_other_stuff
 lbl_00007488:
 /* 00007488 4BFF8CD5 */ bl mathutil_mtxA_from_mtxB
 /* 0000748C C03E0060 */ lfs f1, 0x60(r30)
@@ -9616,7 +9616,7 @@ lbl_000089D4:
 /* 00008A00 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00008A04 80630000 */ lwz r3, 0(r3)
 /* 00008A08 8063002C */ lwz r3, 0x2c(r3)
-/* 00008A0C 4BFF7751 */ bl func_80033AD4
+/* 00008A0C 4BFF7751 */ bl g_call_draw_naomi_model_and_do_other_stuff
 lbl_00008A10:
 /* 00008A10 4BFF774D */ bl func_80094A34
 /* 00008A14 3C600000 */ lis r3, eventInfo@ha
@@ -10233,7 +10233,7 @@ lbl_000092D8:
 /* 000092E4 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 000092E8 80630000 */ lwz r3, 0(r3)
 /* 000092EC 8063000C */ lwz r3, 0xc(r3)
-/* 000092F0 4BFF6E6D */ bl func_80033AD4
+/* 000092F0 4BFF6E6D */ bl g_call_draw_naomi_model_and_do_other_stuff
 /* 000092F4 48000030 */ b lbl_00009324
 lbl_000092F8:
 /* 000092F8 4BFFC08D */ bl lbl_00005384

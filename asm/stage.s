@@ -4346,7 +4346,7 @@ lbl_80047638:
 lbl_80047670:
 /* 80047670 00043590  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047674 00043594  80 63 00 14 */	lwz r3, 0x14(r3)
-/* 80047678 00043598  4B FE C4 5D */	bl func_80033AD4
+/* 80047678 00043598  4B FE C4 5D */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 8004767C 0004359C  38 00 00 00 */	li r0, 0
 /* 80047680 000435A0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047684 000435A4  B0 01 00 7E */	sth r0, 0x7e(r1)
@@ -4391,7 +4391,7 @@ lbl_800476C0:
 /* 8004770C 0004362C  4B FE 94 9D */	bl g_nl2ngc_set_scale
 /* 80047710 00043630  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047714 00043634  80 63 00 28 */	lwz r3, 0x28(r3)
-/* 80047718 00043638  4B FE C3 BD */	bl func_80033AD4
+/* 80047718 00043638  4B FE C3 BD */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 8004771C 0004363C  48 00 05 14 */	b lbl_80047C30
 lbl_80047720:
 /* 80047720 00043640  54 60 07 7B */	rlwinm. r0, r3, 0, 0x1d, 0x1d
@@ -4487,7 +4487,7 @@ lbl_80047858:
 /* 80047858 00043778  80 77 00 00 */	lwz r3, 0(r23)
 /* 8004785C 0004377C  7F 03 D0 2E */	lwzx r24, r3, r26
 /* 80047860 00043780  7F 03 C3 78 */	mr r3, r24
-/* 80047864 00043784  4B FE C2 71 */	bl func_80033AD4
+/* 80047864 00043784  4B FE C2 71 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80047868 00043788  28 19 00 00 */	cmplwi r25, 0
 /* 8004786C 0004378C  41 82 00 40 */	beq lbl_800478AC
 /* 80047870 00043790  4B FB FF 81 */	bl mathutil_mtxA_push
@@ -4582,7 +4582,7 @@ lbl_800479A8:
 /* 800479A8 000438C8  28 1C 00 00 */	cmplwi r28, 0
 /* 800479AC 000438CC  41 82 00 6C */	beq lbl_80047A18
 /* 800479B0 000438D0  7F 83 E3 78 */	mr r3, r28
-/* 800479B4 000438D4  4B FE C1 21 */	bl func_80033AD4
+/* 800479B4 000438D4  4B FE C1 21 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 800479B8 000438D8  2C 1F 00 00 */	cmpwi r31, 0
 /* 800479BC 000438DC  41 82 00 18 */	beq lbl_800479D4
 /* 800479C0 000438E0  38 00 00 00 */	li r0, 0
@@ -4711,7 +4711,7 @@ lbl_80047B54:
 /* 80047B78 00043A98  40 81 00 14 */	ble lbl_80047B8C
 /* 80047B7C 00043A9C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047B80 00043AA0  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 80047B84 00043AA4  4B FE BF 51 */	bl func_80033AD4
+/* 80047B84 00043AA4  4B FE BF 51 */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80047B88 00043AA8  48 00 00 A4 */	b lbl_80047C2C
 lbl_80047B8C:
 /* 80047B8C 00043AAC  2C 03 00 3C */	cmpwi r3, 0x3c
@@ -4728,7 +4728,7 @@ lbl_80047B8C:
 /* 80047BB8 00043AD8  C8 21 00 88 */	lfd f1, 0x88(r1)
 /* 80047BBC 00043ADC  EC 21 10 28 */	fsubs f1, f1, f2  ;# unk0 - 60
 /* 80047BC0 00043AE0  EC 21 00 24 */	fdivs f1, f1, f0
-/* 80047BC4 00043AE4  4B FE BF 51 */	bl func_80033B14
+/* 80047BC4 00043AE4  4B FE BF 51 */	bl g_call_draw_model_with_alpha_deferred
 /* 80047BC8 00043AE8  48 00 00 64 */	b lbl_80047C2C
 lbl_80047BCC:
 /* 80047BCC 00043AEC  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -4738,7 +4738,7 @@ lbl_80047BCC:
 /* 80047BDC 00043AFC  40 81 00 14 */	ble lbl_80047BF0
 /* 80047BE0 00043B00  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047BE4 00043B04  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 80047BE8 00043B08  4B FE BE ED */	bl func_80033AD4
+/* 80047BE8 00043B08  4B FE BE ED */	bl g_call_draw_naomi_model_and_do_other_stuff
 /* 80047BEC 00043B0C  48 00 00 40 */	b lbl_80047C2C
 lbl_80047BF0:
 /* 80047BF0 00043B10  2C 03 00 2D */	cmpwi r3, 0x2d
@@ -4755,7 +4755,7 @@ lbl_80047BF0:
 /* 80047C1C 00043B3C  C8 21 00 88 */	lfd f1, 0x88(r1)
 /* 80047C20 00043B40  EC 21 10 28 */	fsubs f1, f1, f2
 /* 80047C24 00043B44  EC 21 00 24 */	fdivs f1, f1, f0
-/* 80047C28 00043B48  4B FE BE ED */	bl func_80033B14
+/* 80047C28 00043B48  4B FE BE ED */	bl g_call_draw_model_with_alpha_deferred
 lbl_80047C2C:
 /* 80047C2C 00043B4C  4B FC 67 91 */	bl func_8000E3BC
 lbl_80047C30:
@@ -4820,7 +4820,7 @@ lbl_80047CF4:
 /* 80047CFC 00043C1C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80047D00 00043C20  C0 22 8F A4 */	lfs f1, lbl_802F37A4-_SDA2_BASE_(r2)
 /* 80047D04 00043C24  80 63 00 18 */	lwz r3, 0x18(r3)
-/* 80047D08 00043C28  4B FE BE 0D */	bl func_80033B14
+/* 80047D08 00043C28  4B FE BE 0D */	bl g_call_draw_model_with_alpha_deferred
 /* 80047D0C 00043C2C  3B 5A 00 01 */	addi r26, r26, 1
 /* 80047D10 00043C30  3B 39 00 20 */	addi r25, r25, 0x20
 lbl_80047D14:
