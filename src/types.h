@@ -859,3 +859,12 @@ struct MemcardGameData
     /*0x5824*/ char title[32];
     /*0x5844*/ struct MemcardGameData_sub unk5844;
 };
+
+struct AnimKeyframe
+{
+    s32 unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+};
