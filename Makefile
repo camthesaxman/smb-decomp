@@ -301,7 +301,7 @@ SOURCES := \
 	libraries/TRK_MINNOW_DOLPHIN/asm/targcont.s \
 	libraries/amcstubs/asm/AmcExi2Stubs.s \
 	libraries/odemustubs/asm/odemustubs.s \
-	libraries/amcnotstub/asm/amcnotstub.s
+	libraries/amcnotstub/amcnotstub.c
 O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)

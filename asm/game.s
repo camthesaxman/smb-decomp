@@ -5735,7 +5735,7 @@ lbl_8001776C:
 
 .section .sdata
 
-    .4byte 0
+    .balign 8
 glabel string_k_CHU_
 	.asciz "k/CHU!"
 	.balign 4

@@ -644,8 +644,8 @@ glabel extab_213
 	.byte 0x08, 0x08, 0x00, 0x00
 	.4byte 0
 
-
 .section _extabindex, "wa"  # 0x80005B80 - 0x800065A0
+extabindex:
 	# ROM: 0x10BE40
 	.4byte seqStartPlay  ;# ptr
 	.byte 0x00, 0x00, 0x0A, 0xA4

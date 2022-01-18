@@ -8379,10 +8379,7 @@ lbl_802F3268:
 
 .section .rodata
 
-.section .rodata
-
-	.4byte 0
-
+	.balign 8
 .global lbl_80110400
 lbl_80110400:
 	# ROM: 0x10D400

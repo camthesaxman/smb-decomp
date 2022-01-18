@@ -18934,7 +18934,7 @@ func_8006800C:
 
 .section .sdata
 
-	.4byte 0
+    .balign 8
 glabel string_WAT_SUB
 	.asciz "WAT_SUB"
 
@@ -19001,8 +19001,7 @@ glabel string_JAMABAR
 
 .section .data
 
-    	.4byte 0
-
+    .balign 8
 .global lbl_801B9B48
 lbl_801B9B48:
 	# ROM: 0x1B6B48
@@ -23594,8 +23593,7 @@ glabel string_Warning____Goal_Tape_Max__d__Over____n
 
 .section .sdata2
 
-	.4byte 0
-
+    .balign 8
 .global lbl_802F3D38
 lbl_802F3D38:
 	# ROM: 0x1ED758

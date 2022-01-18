@@ -27685,8 +27685,7 @@ lbl_801C5758:
 
 .section .sdata
 
-	.4byte 0
-
+    .balign 8
 .global lbl_802F0FB0
 lbl_802F0FB0:
 	# ROM: 0x1EB6F0

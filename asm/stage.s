@@ -7295,6 +7295,7 @@ lbl_802F3CF0:
 
 .section .rodata
 
+    .balign 8
 .global lbl_801179E8
 lbl_801179E8:
 	# ROM: 0x1149E8

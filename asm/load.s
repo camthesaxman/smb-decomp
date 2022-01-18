@@ -1627,8 +1627,7 @@ lbl_80171B10:
 
 .section .data
 
-	.4byte 0
-
+    .balign 8
 .global lbl_801C7ED8
 lbl_801C7ED8:
 	# ROM: 0x1C4ED8
@@ -13662,7 +13661,7 @@ lbl_801D3D78:
 
 .section .sdata
 
-	.4byte 0
+    .balign 8
 glabel string_k_AIAI
 	.asciz "k/AIAI"
 	.balign 4
@@ -13774,7 +13773,7 @@ lbl_802BA1A0:
 
 .section .sbss
 
-	.skip 0x4
+    .balign 8
 .global lbl_802F2150
 lbl_802F2150:
 	.skip 0x4

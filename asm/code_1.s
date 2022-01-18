@@ -2496,6 +2496,8 @@ lbl_802F30A0:
 	.4byte 0
 
 .section .data
+
+    .balign 8
 .global lbl_801818B0
 lbl_801818B0:
 	# ROM: 0x17E8B0

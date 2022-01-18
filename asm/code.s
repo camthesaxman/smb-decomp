@@ -6870,14 +6870,9 @@ lbl_802F3718:
 	.byte 0xC0, 0x00, 0x00, 0x00
 	.4byte 0
 
-.section .rodata
-
-	.balign 8
-
 .section .data
 
     .balign 8
-
 .global lbl_801B7EE8
 lbl_801B7EE8:
 	# ROM: 0x1B4EE8
