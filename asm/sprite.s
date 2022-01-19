@@ -1356,6 +1356,7 @@ lbl_80071138:  ;# outer default, 0x55
 /* 8007113C 0006D05C  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global func_80071140
 func_80071140:
 /* 80071140 0006D060  7C 08 02 A6 */	mflr r0
@@ -1682,7 +1683,7 @@ lbl_80071550:
 lbl_80071560:
 /* 80071560 0006D480  54 63 10 3A */	slwi r3, r3, 2
 /* 80071564 0006D484  7C 60 1A 14 */	add r3, r0, r3
-/* 80071568 0006D488  83 C3 03 C0 */	lwz r30, 0x3c0(r3)
+/* 80071568 0006D488  83 C3 03 C0 */	lwz r30, 0x3c0(r3)  ;# 80117E40
 /* 8007156C 0006D48C  48 00 04 F0 */	b lbl_80071A5C
 lbl_80071570:
 /* 80071570 0006D490  38 64 FF FF */	addi r3, r4, -1
@@ -1697,7 +1698,7 @@ lbl_80071570:
 /* 80071594 0006D4B4  41 82 04 C8 */	beq lbl_80071A5C
 /* 80071598 0006D4B8  2C 1E 00 C8 */	cmpwi r30, 0xc8
 /* 8007159C 0006D4BC  41 80 00 18 */	blt lbl_800715B4
-/* 800715A0 0006D4C0  80 03 0B C0 */	lwz r0, 0xbc0(r3)
+/* 800715A0 0006D4C0  80 03 0B C0 */	lwz r0, 0xbc0(r3)  ;# lbl_80118640
 /* 800715A4 0006D4C4  2C 00 FF FF */	cmpwi r0, -1
 /* 800715A8 0006D4C8  41 82 02 44 */	beq lbl_800717EC
 /* 800715AC 0006D4CC  7C 1E 03 78 */	mr r30, r0
@@ -1896,7 +1897,7 @@ lbl_80071850:
 /* 80071850 0006D770  88 03 00 00 */	lbz r0, 0(r3)
 /* 80071854 0006D774  2C 00 00 2F */	cmpwi r0, 0x2f
 /* 80071858 0006D778  40 82 FF F0 */	bne lbl_80071848
-/* 8007185C 0006D77C  3B 5F 27 24 */	addi r26, r31, 0x2724
+/* 8007185C 0006D77C  3B 5F 27 24 */	addi r26, r31, 0x2724  ;# lbl_801C0B94
 /* 80071860 0006D780  48 00 00 64 */	b lbl_800718C4
 lbl_80071864:
 /* 80071864 0006D784  38 BC 00 00 */	addi r5, r28, 0
@@ -2059,7 +2060,9 @@ lbl_80071A60:
 /* 80071A68 0006D988  38 21 00 40 */	addi r1, r1, 0x40
 /* 80071A6C 0006D98C  7C 08 03 A6 */	mtlr r0
 /* 80071A70 0006D990  4E 80 00 20 */	blr
+.endif
 
+.if 0
 glabel func_80071A74
 /* 80071A74 0006D994  1C 83 00 24 */	mulli r4, r3, 0x24
 /* 80071A78 0006D998  3C 60 80 1C */	lis r3, lbl_801BE4B0@ha
@@ -2067,6 +2070,7 @@ glabel func_80071A74
 /* 80071A80 0006D9A0  7C 60 22 14 */	add r3, r0, r4
 /* 80071A84 0006D9A4  A8 63 00 00 */	lha r3, 0(r3)
 /* 80071A88 0006D9A8  4E 80 00 20 */	blr
+.endif
 
 .global func_80071A8C
 func_80071A8C:
@@ -25070,6 +25074,7 @@ lbl_801C12BC:
 	.4byte lbl_80070D84  ;# ptr
 .endif
 
+.if 0
 .global lbl_801C12E4
 lbl_801C12E4:
 	# ROM: 0x1BE2E4
@@ -25128,6 +25133,8 @@ lbl_801C12E4:
 	.4byte lbl_80071314  ;# ptr
 	.4byte lbl_8007131C  ;# ptr
 	.4byte lbl_80071324  ;# ptr
+.endif
+
 glabel string_nlSprPut___SPRITE_BUFFER_OVER____bmp__d_n
 	.asciz "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n"
 	.balign 4
