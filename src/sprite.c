@@ -199,17 +199,16 @@ struct Struct8028CF28
     u32 unkC;
     u32 unk10;
     u32 unk14;
-    u16 unk18;
+    s16 unk18;
     float unk1C;
     float unk20;
     float unk24;
     float unk28;
-    u8 filler2C[4];
+    u32 unk2C;
 };
 
 struct Struct8028FE58
 {
-    //u32 unk0;
     struct Sprite *unk0;
     struct Struct8028FE58 *unk4;
     struct Struct8028FE58 *unk8;
@@ -224,34 +223,23 @@ extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
 
 void ev_sprite_init(void)
 {
-    struct Struct8028CF28 *r5 = &lbl_8028CF28;
     s8 *status = spritePoolInfo.statusList;
-    /*
-    int i = 0;
-
-    while (i < spritePoolInfo.unk38)
-    {
-        *r6 = 0;
-        i++;
-        r6++;
-    }
-    */
-
     int i;
+
     for (i = 0; i < spritePoolInfo.unk38; i++, status++)
         *status = 0;
 
-    r5->unk0 = 0.0f;
-    r5->unk4 = 0.0f;
-    r5->unk8 = 0.0f;
-    r5->unkC = 0;
-    r5->unk10 = -1;
-    r5->unk14 = 0;
-    r5->unk18 = 0;
-    r5->unk1C = 0.1f;
-    r5->unk20 = 1.0f;
-    r5->unk24 = 1.0f;
-    r5->unk28 = 1.0f;
+    lbl_8028CF28.unk0 = 0.0f;
+    lbl_8028CF28.unk4 = 0.0f;
+    lbl_8028CF28.unk8 = 0.0f;
+    lbl_8028CF28.unkC = 0;
+    lbl_8028CF28.unk10 = -1;
+    lbl_8028CF28.unk14 = 0;
+    lbl_8028CF28.unk18 = 0;
+    lbl_8028CF28.unk1C = 0.1f;
+    lbl_8028CF28.unk20 = 1.0f;
+    lbl_8028CF28.unk24 = 1.0f;
+    lbl_8028CF28.unk28 = 1.0f;
     func_80073E44();
 }
 
@@ -2767,3 +2755,74 @@ int func_80071A74(int a)
 {
     return lbl_801BE4B0[a].unk0;
 }
+
+void func_80071A8C(void)
+{
+    lbl_8028CF28.unkC = 0;
+    lbl_8028CF28.unk10 = 0xFFFFFF;
+    lbl_8028CF28.unk14 = 0;
+    lbl_8028CF28.unk18 = 0;
+    lbl_8028CF28.unk1C = 0.1f;
+    lbl_8028CF28.unk20 = 1.0f;
+    lbl_8028CF28.unk24 = 1.0f;
+    lbl_8028CF28.unk28 = 1.0f;
+    lbl_8028CF28.unk2C = 0x20000;
+}
+
+void func_80071AD4(int a)
+{
+    lbl_8028CF28.unkC = a;
+}
+
+void func_80071AE4(int a)
+{
+    lbl_8028CF28.unk10 = a & 0xFFFFFF;
+}
+
+void func_80071AF8(int a)
+{
+    lbl_8028CF28.unk14 = a;
+}
+
+void func_80071B08(int a)
+{
+    lbl_8028CF28.unk18 = a;
+}
+
+void func_80071B1C(float a)
+{
+    lbl_8028CF28.unk1C = a;
+}
+
+void func_80071B2C(float a, float b)
+{
+    lbl_8028CF28.unk20 = a;
+    lbl_8028CF28.unk24 = b;
+}
+
+void func_80071B40(float a)
+{
+    lbl_8028CF28.unk28 = a;
+}
+
+void func_80071B50(int a)
+{
+    lbl_8028CF28.unk2C = a;
+}
+
+void func_80071B60(float a, float b)
+{
+    lbl_8028CF28.unk4 = a;
+    lbl_8028CF28.unk0 = a;
+    lbl_8028CF28.unk8 = b;
+}
+
+/*
+void func_80071B78()
+{
+    struct FontParams *r5 = &lbl_801BE4B0[lbl_8028CF28.unkC];
+    int r6 = a - lbl_801BE4B0.unkC;
+    int r7 = r6 / lbl_801BE4B0.unkC;
+    
+}
+*/

@@ -2070,7 +2070,6 @@ glabel func_80071A74
 /* 80071A80 0006D9A0  7C 60 22 14 */	add r3, r0, r4
 /* 80071A84 0006D9A4  A8 63 00 00 */	lha r3, 0(r3)
 /* 80071A88 0006D9A8  4E 80 00 20 */	blr
-.endif
 
 .global func_80071A8C
 func_80071A8C:
@@ -2159,6 +2158,7 @@ func_80071B60:
 /* 80071B6C 0006DA8C  D0 23 00 00 */	stfs f1, 0(r3)
 /* 80071B70 0006DA90  D0 43 00 08 */	stfs f2, 8(r3)
 /* 80071B74 0006DA94  4E 80 00 20 */	blr
+.endif
 
 .global func_80071B78
 func_80071B78:
@@ -2174,13 +2174,13 @@ func_80071B78:
 /* 80071B9C 0006DABC  1C A6 00 24 */	mulli r5, r6, 0x24
 /* 80071BA0 0006DAC0  7C A0 2A 14 */	add r5, r0, r5
 /* 80071BA4 0006DAC4  89 05 00 0C */	lbz r8, 0xc(r5)
-/* 80071BA8 0006DAC8  7C 66 07 74 */	extsb r6, r3
+/* 80071BA8 0006DAC8  7C 66 07 74 */	extsb r6, r3  ;# a
 /* 80071BAC 0006DACC  80 E5 00 04 */	lwz r7, 4(r5)
 /* 80071BB0 0006DAD0  3C 00 43 30 */	lis r0, 0x4330
-/* 80071BB4 0006DAD4  7D 08 07 74 */	extsb r8, r8
+/* 80071BB4 0006DAD4  7D 08 07 74 */	extsb r8, r8  ;# lbl_801BE4B0.unkC
 /* 80071BB8 0006DAD8  7C C7 30 50 */	subf r6, r7, r6
 /* 80071BBC 0006DADC  A8 65 00 00 */	lha r3, 0(r5)
-/* 80071BC0 0006DAE0  7C E6 43 D6 */	divw r7, r6, r8
+/* 80071BC0 0006DAE0  7C E6 43 D6 */	divw r7, r6, r8  ;# (a - lbl_801BE4B0.unkC) / lbl_801BE4B0.unkC
 /* 80071BC4 0006DAE4  90 61 00 10 */	stw r3, 0x10(r1)
 /* 80071BC8 0006DAE8  88 65 00 20 */	lbz r3, 0x20(r5)
 /* 80071BCC 0006DAEC  C0 45 00 18 */	lfs f2, 0x18(r5)

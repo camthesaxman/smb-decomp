@@ -19,6 +19,12 @@
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
 
+struct Ball *currentBallStructPtr;
+void (*minigameRelBallCallback)(struct Ball *);
+void (*lbl_802F1F10)(void);
+u32 lbl_802F1F0C;
+u32 lbl_802F1F08;
+
 float lbl_80205E20[4];
 Mtx lbl_80205E30;
 struct Ball ballInfo[8];

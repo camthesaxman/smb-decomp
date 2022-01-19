@@ -60,7 +60,7 @@ struct BufferInit
 
 struct BufferInit bufferInitInfo[] =
 {
-    { &lbl_802F1B4C,  0x10000 },
+    { (void **)&lbl_802F1B4C,  0x10000 },
     { &dvdReadBuffer, 0x18000 },
     { &lbl_802F1B44,  0x10000 },
     { &lbl_802F1B40,  0x8C000 },

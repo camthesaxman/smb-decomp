@@ -46,7 +46,7 @@ REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
 #-------------------------------------------------------------------------------
 # Files
@@ -99,8 +99,8 @@ SOURCES := \
 	asm/sound.s \
 	asm/code_2.s \
 	src/nl2ngc.c \
-	asm/motload_pre.s \
 	src/motload.c \
+	src/motload_2.c \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \

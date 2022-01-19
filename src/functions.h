@@ -246,7 +246,7 @@ int pool_alloc();
 // ? func_80030A50();
 
 // ? func_800341BC();
-void func_80034360();
+void func_80034360(struct Struct80034F5C_1 *a, u16 b);
 // ? func_800343E4();
 // ? func_80034424();
 // ? func_8003453C();
@@ -255,7 +255,7 @@ void adjust_motdat_pointers(struct MotDat *);
 void adjust_motlabel_pointers(u32 *);
 void adjust_motskl_pointers(struct MotSkeleton *);
 void adjust_motinfo_pointers(struct MotInfo *);
-// ? func_80034F44();
+u16 func_80034F44(u16 index);
 // ? func_80034F5C();
 void func_80035064(struct Struct80034F5C_1 *, struct Struct80034F5C_1 *, u32, float);
 void func_8003513C(struct Struct80034F5C_1 *, struct Struct80034F5C_1 *, struct Struct80034F5C_3 *, u32, float);

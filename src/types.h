@@ -449,16 +449,68 @@ struct Struct8003C550
 
 // motload
 
+struct Struct80034F5C_1_sub
+{
+    u8 unk0;
+    u8 unk1;
+    u16 *unk4;
+    u8 *unk8;
+    float *unkC;
+};  // size = 0x10
+
+struct Struct80034F5C_1_sub_child3
+{
+    float unk0;
+    float unk4;
+    float unk8;
+};
+
+struct Struct800341BC_5
+{
+    u8 filler0[0xC];
+};
+
+struct Struct80034F5C_1  // Joint object?
+{
+    u32 unk0;
+    struct Struct800341BC_5 unk4;
+    struct Struct800341BC_5 unk10;
+    Mtx unk1C;
+    u32 unk4C;
+    u8 *unk50;
+    struct Struct80034F5C_1_sub unk54[6];
+    u8 fillerB4[0x168-0xB4];
+    Mtx unk168;
+    u8 filler198[0x1A0-0x198];
+    s32 unk1A0;
+    u8 filler1A4[0x1C0-0x1A4];
+    Point3d unk1C0;
+    Point3d unk1CC;
+    Mtx unk1D8;
+    Mtx unk208;
+};  // size = 0x238
+
+struct MotDat_child
+{
+    u8 unk0;
+};
+
+struct MotDat_child2
+{
+    u8 unk0;
+    u16 unk2;
+};  // size = 0x4
+
 struct MotDat
 {
     u16 unk0;
     u8 filler2[2];
-    void *unk4;
-    void *unk8;
-    void *unkC;
-    void *unk10;
-    void *unk14;
-};
+    struct MotDat_child2 *unk4;  // could be u8*?
+    struct MotDat_child *unk8;
+    u16 *unkC;  // could be u16*?
+    u8 *unk10;
+    float *unk14;
+};  // size = 0x18
 
 struct Struct80034B50_child_child
 {
@@ -503,37 +555,6 @@ struct MotInfo
     void *unk30[16];
     u8 filler70[0xB0-0x70];
     void *unkB0;
-};
-
-struct Struct80034F5C_1_sub_child3
-{
-    float unk0;
-    float unk4;
-    float unk8;
-};
-
-struct Struct80034F5C_1_sub
-{
-    u8 unk0;
-    u8 unk1;
-    u8 filler2[2];
-    u16 *unk4;
-    u8 *unk8;
-    float *unkC;
-};
-
-struct Struct80034F5C_1  // Joint object?
-{
-    u32 unk0;
-    u8 filler4[0x54-0x4];
-    struct Struct80034F5C_1_sub unk54[6];
-    u8 fillerB4[0x168-0xB4];
-    Mtx unk168;
-    u8 filler198[0x1C0-0x198];
-    Point3d unk1C0;
-    Point3d unk1CC;
-    Mtx unk1D8;
-    u8 filler208[0x238-0x208];
 };
 
 struct Struct80034F5C_2
