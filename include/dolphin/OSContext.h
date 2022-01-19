@@ -1,7 +1,7 @@
 #ifndef _DOLPHIN_OSCONTEXT_H_
 #define _DOLPHIN_OSCONTEXT_H_
 
-typedef struct
+typedef struct OSContext
 {
     u32 gpr[32];
     u32 cr;

@@ -136,7 +136,6 @@ SOURCES := \
 	asm/code_4.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \
-	libraries/os/__ppc_eabi_init.c \
 	libraries/os/asm/OS.s \
 	libraries/os/asm/OSAlarm.s \
 	libraries/os/asm/OSAlloc.s \
@@ -150,7 +149,7 @@ SOURCES := \
 	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
 	libraries/os/asm/OSMemory.s \
-	libraries/os/asm/OSMutex.s \
+	libraries/os/OSMutex.c \
 	libraries/os/asm/OSReboot.s \
 	libraries/os/asm/OSReset.s \
 	libraries/os/asm/OSResetSW.s \
@@ -160,7 +159,7 @@ SOURCES := \
 	libraries/os/asm/OSThread.s \
 	libraries/os/asm/OSTime.s \
 	libraries/exi/asm/EXIUart.s \
-	libraries/os/asm/__ppc_eabi_init.s \
+	libraries/os/__ppc_eabi_init.c \
 	libraries/db/db.c \
 	libraries/mtx/asm/mtx.s \
 	libraries/mtx/asm/mtx44.s \

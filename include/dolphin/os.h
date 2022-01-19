@@ -6,6 +6,8 @@
 #include <dolphin/OSContext.h>
 #include <dolphin/OSInterrupt.h>
 #include <dolphin/OSModule.h>
+#include <dolphin/OSThread.h>
+#include <dolphin/OSMutex.h>
 #include <dolphin/OSFont.h>
 #include <dolphin/OSReset.h>
 #include <dolphin/OSResetSW.h>
