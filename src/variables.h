@@ -445,7 +445,7 @@ extern struct FontParams lbl_801BE4B0[];
 // extern ? lbl_801E7AA0;
 // extern ? lbl_801E7B10;
 // extern ? lbl_801E7C50;
-extern u8 DEMOFontBitmap[];
+extern u32 DEMOFontBitmap[];
 // extern ? lbl_801E8880;
 // extern ? lbl_801E88E8;
 // extern ? lbl_801E8920;
