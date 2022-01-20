@@ -901,7 +901,7 @@ int get_texture_max_lod(int width, int height);
 // ? init_material();
 GXTexObj *init_model(struct GMAModelHeader *a, struct TPL *b, GXTexObj *c);
 void g_iteratively_multiply_model_matrices(struct GMAModelHeader *a);
-void lbl_8008F528(struct UnkStruct17 *a);
+void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *a);
 u32 func_8008F6D4(u32);
 void g_avdisp_set_some_matrix(int unused, Mtx mtx);
 void g_avdisp_set_some_color_1(float, float, float, float);

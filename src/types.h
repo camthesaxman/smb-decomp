@@ -74,7 +74,7 @@ struct Color3f { float r, g, b; };
 // avdisp.c
 struct GMAMeshHeader;
 struct GMAMaterial;
-struct UnkStruct17;
+struct DrawMeshDeferredNode;
 struct UnkStruct31;
 struct UnkStruct32;
 
@@ -654,15 +654,31 @@ struct FontParams
     /*0x14*/ float unk14;
     /*0x18*/ float unk18;
     /*0x1C*/ float unk1C;
-    /*0x20*/ u8 unk20;
-    /*0x21*/ u8 unk21;
-    /*0x22*/ u8 unk22;
+    /*0x20*/ s8 unk20;
+    /*0x21*/ s8 unk21;
+    /*0x22*/ s8 unk22;
     /*0x23*/ s8 unk23;
 };
 
 struct Struct801F3DC0
 {
-    u8 filler0[0x50];
+    u32 unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+    float unk20;
+    float unk24;
+    u32 unk28;
+    float unk2C;
+    s32 unk30;
+    u32 unk34;
+    u32 unk38;
+    u32 unk3C;
+    u8 filler40[0x50-0x40];
 };
 
 struct StageSelection

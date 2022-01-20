@@ -1462,7 +1462,7 @@ extern u32 *motLabel;
 // extern ? lbl_802F20D8;
 // extern ? lbl_802F20DC;
 // extern ? lbl_802F20E0;
-// extern ? lbl_802F20E4;
+// extern ? modelScale;
 // extern ? lbl_802F20E8;
 // extern ? lbl_802F20EC;
 // extern ? lbl_802F20F0;
