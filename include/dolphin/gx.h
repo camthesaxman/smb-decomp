@@ -19,5 +19,6 @@
 #include <dolphin/GXFrameBuffer.h>
 #include <dolphin/GXGet.h>
 #include <dolphin/GXDraw.h>
+#include <dolphin/GXPerf.h>
 
 #endif

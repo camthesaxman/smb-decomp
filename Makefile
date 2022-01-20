@@ -210,7 +210,7 @@ SOURCES := \
 	libraries/gx/asm/GXStubs.s \
 	libraries/gx/asm/GXDisplayList.s \
 	libraries/gx/asm/GXTransform.s \
-	libraries/gx/asm/GXPerf.s \
+	libraries/gx/GXPerf.c \
 	libraries/perf/asm/perf.s \
 	libraries/perf/asm/perfdraw.s \
 	libraries/musyx/asm/seq.s \
