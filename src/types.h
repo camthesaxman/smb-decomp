@@ -328,7 +328,7 @@ struct MovableStagePart
     s16 unk22;
     Mtx unk24;
     Mtx unk54;
-};
+};  // size = 0x84
 
 struct ReplayInfo
 {

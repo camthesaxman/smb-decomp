@@ -130,6 +130,7 @@ SOURCES := \
 	asm/tevutil.s \
 	src/memcard.c \
 	src/DEMOPuts.c \
+	src/view.c \
 	asm/view.s \
 	asm/mini_ranking.s \
 	src/preview.c \

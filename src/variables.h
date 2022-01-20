@@ -1522,7 +1522,7 @@ extern OSFontHeader *lbl_802F21D4;
 extern void *LastSheet;
 extern s16 FontSize;
 extern s16 FontSpace;
-// extern ? lbl_802F21E0;
+// extern ? stageViewInfo;
 extern s32 lbl_802F21E8;
 extern float lbl_802F21EC;
 extern float lbl_802F21F0;

@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 # view.s
 .global ev_view_init
 ev_view_init:
@@ -11,8 +12,8 @@ ev_view_init:
 /* 800A5740 000A1660  94 21 FF F8 */	stwu r1, -8(r1)
 /* 800A5744 000A1664  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
 /* 800A5748 000A1668  48 01 CF 85 */	bl OSAllocFromHeap
-/* 800A574C 000A166C  90 6D A0 00 */	stw r3, lbl_802F21E0@sda21(r13)
-/* 800A5750 000A1670  80 0D A0 00 */	lwz r0, lbl_802F21E0@sda21(r13)
+/* 800A574C 000A166C  90 6D A0 00 */	stw r3, stageViewInfo@sda21(r13)
+/* 800A5750 000A1670  80 0D A0 00 */	lwz r0, stageViewInfo@sda21(r13)
 /* 800A5754 000A1674  28 00 00 00 */	cmplwi r0, 0
 /* 800A5758 000A1678  40 82 00 1C */	bne lbl_800A5774
 /* 800A575C 000A167C  3C 60 80 1D */	lis r3, lbl_801D5800@ha
@@ -22,14 +23,14 @@ ev_view_init:
 /* 800A576C 000A168C  38 80 00 72 */	li r4, 0x72
 /* 800A5770 000A1690  48 01 E5 31 */	bl OSPanic
 lbl_800A5774:
-/* 800A5774 000A1694  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5774 000A1694  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5778 000A1698  38 80 00 00 */	li r4, 0
 /* 800A577C 000A169C  38 A0 00 4C */	li r5, 0x4c
 /* 800A5780 000A16A0  4B F5 DB A1 */	bl memset
-/* 800A5784 000A16A4  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5784 000A16A4  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5788 000A16A8  38 63 00 28 */	addi r3, r3, 0x28
 /* 800A578C 000A16AC  48 00 18 95 */	bl func_800A7020
-/* 800A5790 000A16B0  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5790 000A16B0  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5794 000A16B4  38 80 EA 00 */	li r4, -5632
 /* 800A5798 000A16B8  C8 22 B3 80 */	lfd f1, lbl_802F5B80-_SDA2_BASE_(r2)
 /* 800A579C 000A16BC  38 00 00 00 */	li r0, 0
@@ -38,11 +39,11 @@ lbl_800A5774:
 /* 800A57A8 000A16C8  FC 00 00 18 */	frsp f0, f0
 /* 800A57AC 000A16CC  D0 03 00 20 */	stfs f0, 0x20(r3)
 /* 800A57B0 000A16D0  C0 02 B3 88 */	lfs f0, lbl_802F5B88-_SDA2_BASE_(r2)
-/* 800A57B4 000A16D4  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A57B4 000A16D4  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A57B8 000A16D8  D0 03 00 24 */	stfs f0, 0x24(r3)
-/* 800A57BC 000A16DC  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A57BC 000A16DC  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A57C0 000A16E0  B0 83 00 38 */	sth r4, 0x38(r3)
-/* 800A57C4 000A16E4  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A57C4 000A16E4  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A57C8 000A16E8  B0 03 00 3A */	sth r0, 0x3a(r3)
 /* 800A57CC 000A16EC  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
 /* 800A57D0 000A16F0  2C 00 00 00 */	cmpwi r0, 0
@@ -50,9 +51,9 @@ lbl_800A5774:
 /* 800A57D8 000A16F8  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
 /* 800A57DC 000A16FC  38 80 25 20 */	li r4, 0x2520
 /* 800A57E0 000A1700  48 01 CE ED */	bl OSAllocFromHeap
-/* 800A57E4 000A1704  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A57E4 000A1704  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A57E8 000A1708  90 64 00 44 */	stw r3, 0x44(r4)
-/* 800A57EC 000A170C  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A57EC 000A170C  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A57F0 000A1710  80 03 00 44 */	lwz r0, 0x44(r3)
 /* 800A57F4 000A1714  28 00 00 00 */	cmplwi r0, 0
 /* 800A57F8 000A1718  40 82 00 1C */	bne lbl_800A5814
@@ -63,7 +64,7 @@ lbl_800A5774:
 /* 800A580C 000A172C  38 80 00 7E */	li r4, 0x7e
 /* 800A5810 000A1730  48 01 E4 91 */	bl OSPanic
 lbl_800A5814:
-/* 800A5814 000A1734  80 AD A0 00 */	lwz r5, lbl_802F21E0@sda21(r13)
+/* 800A5814 000A1734  80 AD A0 00 */	lwz r5, stageViewInfo@sda21(r13)
 /* 800A5818 000A1738  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 800A581C 000A173C  38 83 6E 48 */	addi r4, r3, movableStageParts@l
 /* 800A5820 000A1740  80 65 00 44 */	lwz r3, 0x44(r5)
@@ -84,6 +85,7 @@ lbl_800A5844:
 /* 800A5854 000A1774  38 21 00 08 */	addi r1, r1, 8
 /* 800A5858 000A1778  7C 08 03 A6 */	mtlr r0
 /* 800A585C 000A177C  4E 80 00 20 */	blr
+
 .global ev_view_main
 ev_view_main:
 /* 800A5860 000A1780  7C 08 02 A6 */	mflr r0
@@ -92,7 +94,7 @@ ev_view_main:
 /* 800A586C 000A178C  48 00 0A AD */	bl func_800A6318
 /* 800A5870 000A1790  48 00 0E 8D */	bl func_800A66FC
 /* 800A5874 000A1794  3C 60 80 1F */	lis r3, lbl_801EEC68@ha
-/* 800A5878 000A1798  80 ED A0 00 */	lwz r7, lbl_802F21E0@sda21(r13)
+/* 800A5878 000A1798  80 ED A0 00 */	lwz r7, stageViewInfo@sda21(r13)
 /* 800A587C 000A179C  38 83 EC 68 */	addi r4, r3, lbl_801EEC68@l
 /* 800A5880 000A17A0  88 04 00 14 */	lbz r0, 0x14(r4)
 /* 800A5884 000A17A4  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -108,7 +110,7 @@ ev_view_main:
 /* 800A58AC 000A17CC  7C 66 1A 14 */	add r3, r6, r3
 /* 800A58B0 000A17D0  B0 67 00 3A */	sth r3, 0x3a(r7)
 /* 800A58B4 000A17D4  88 64 00 14 */	lbz r3, 0x14(r4)
-/* 800A58B8 000A17D8  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A58B8 000A17D8  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A58BC 000A17DC  7C 63 07 74 */	extsb r3, r3
 /* 800A58C0 000A17E0  C8 22 B3 C0 */	lfd f1, lbl_802F5BC0-_SDA2_BASE_(r2)
 /* 800A58C4 000A17E4  1C 63 00 3C */	mulli r3, r3, 0x3c
@@ -121,12 +123,12 @@ ev_view_main:
 /* 800A58E0 000A1800  90 61 00 1C */	stw r3, 0x1c(r1)
 /* 800A58E4 000A1804  90 01 00 18 */	stw r0, 0x18(r1)
 /* 800A58E8 000A1808  C8 01 00 18 */	lfd f0, 0x18(r1)
-/* 800A58EC 000A180C  FC 00 08 28 */	fsub f0, f0, f1
+/* 800A58EC 000A180C  FC 00 08 28 */	fsub f0, f0, f1  ;# stickY
 /* 800A58F0 000A1810  FC 02 00 32 */	fmul f0, f2, f0
 /* 800A58F4 000A1814  FC 03 00 28 */	fsub f0, f3, f0
 /* 800A58F8 000A1818  FC 00 00 18 */	frsp f0, f0
 /* 800A58FC 000A181C  D0 04 00 24 */	stfs f0, 0x24(r4)
-/* 800A5900 000A1820  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5900 000A1820  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5904 000A1824  C8 02 B3 98 */	lfd f0, lbl_802F5B98-_SDA2_BASE_(r2)
 /* 800A5908 000A1828  C0 23 00 24 */	lfs f1, 0x24(r3)
 /* 800A590C 000A182C  FC 01 00 40 */	fcmpo cr0, f1, f0
@@ -142,7 +144,7 @@ lbl_800A5920:
 /* 800A5930 000A1850  D0 03 00 24 */	stfs f0, 0x24(r3)
 lbl_800A5934:
 /* 800A5934 000A1854  3C 60 80 1F */	lis r3, lbl_801EEC68@ha
-/* 800A5938 000A1858  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5938 000A1858  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A593C 000A185C  38 63 EC 68 */	addi r3, r3, lbl_801EEC68@l
 /* 800A5940 000A1860  88 03 00 14 */	lbz r0, 0x14(r3)
 /* 800A5944 000A1864  3C 60 80 1F */	lis r3, controllerInfo@ha
@@ -151,8 +153,8 @@ lbl_800A5934:
 /* 800A5950 000A1870  7C 00 07 74 */	extsb r0, r0
 /* 800A5954 000A1874  1C 00 00 3C */	mulli r0, r0, 0x3c
 /* 800A5958 000A1878  7C A5 02 14 */	add r5, r5, r0
-/* 800A595C 000A187C  88 05 00 05 */	lbz r0, 5(r5)
-/* 800A5960 000A1880  88 A5 00 04 */	lbz r5, 4(r5)
+/* 800A595C 000A187C  88 05 00 05 */	lbz r0, 5(r5)  ;# substickY
+/* 800A5960 000A1880  88 A5 00 04 */	lbz r5, 4(r5)  ;# substickX
 /* 800A5964 000A1884  7C 00 07 74 */	extsb r0, r0
 /* 800A5968 000A1888  54 00 30 32 */	slwi r0, r0, 6
 /* 800A596C 000A188C  7C 03 00 50 */	subf r0, r3, r0
@@ -161,54 +163,54 @@ lbl_800A5934:
 /* 800A5978 000A1898  B0 04 00 3C */	sth r0, 0x3c(r4)
 /* 800A597C 000A189C  7C A0 07 74 */	extsb r0, r5
 /* 800A5980 000A18A0  7C 00 00 D0 */	neg r0, r0
-/* 800A5984 000A18A4  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5984 000A18A4  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A5988 000A18A8  1C 00 00 C0 */	mulli r0, r0, 0xc0
 /* 800A598C 000A18AC  A8 64 00 3E */	lha r3, 0x3e(r4)
 /* 800A5990 000A18B0  7C 03 00 50 */	subf r0, r3, r0
 /* 800A5994 000A18B4  7C 00 2E 70 */	srawi r0, r0, 5
 /* 800A5998 000A18B8  7C 03 02 14 */	add r0, r3, r0
 /* 800A599C 000A18BC  B0 04 00 3E */	sth r0, 0x3e(r4)
-/* 800A59A0 000A18C0  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59A0 000A18C0  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A59A4 000A18C4  38 63 00 28 */	addi r3, r3, 0x28
 /* 800A59A8 000A18C8  4B F6 1C 15 */	bl mathutil_mtxA_from_translate
-/* 800A59AC 000A18CC  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59AC 000A18CC  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A59B0 000A18D0  A8 63 00 3A */	lha r3, 0x3a(r3)
 /* 800A59B4 000A18D4  4B F6 26 49 */	bl mathutil_mtxA_rotate_y
-/* 800A59B8 000A18D8  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59B8 000A18D8  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A59BC 000A18DC  A8 63 00 38 */	lha r3, 0x38(r3)
 /* 800A59C0 000A18E0  4B F6 25 C9 */	bl mathutil_mtxA_rotate_x
-/* 800A59C4 000A18E4  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59C4 000A18E4  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A59C8 000A18E8  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
 /* 800A59CC 000A18EC  C0 63 00 20 */	lfs f3, 0x20(r3)
 /* 800A59D0 000A18F0  C0 03 00 24 */	lfs f0, 0x24(r3)
 /* 800A59D4 000A18F4  FC 40 08 90 */	fmr f2, f1
 /* 800A59D8 000A18F8  EC 63 00 32 */	fmuls f3, f3, f0
 /* 800A59DC 000A18FC  4B F6 23 55 */	bl mathutil_mtxA_translate_xyz
-/* 800A59E0 000A1900  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59E0 000A1900  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A59E4 000A1904  A8 03 00 38 */	lha r0, 0x38(r3)
 /* 800A59E8 000A1908  7C 60 00 D0 */	neg r3, r0
 /* 800A59EC 000A190C  4B F6 25 9D */	bl mathutil_mtxA_rotate_x
-/* 800A59F0 000A1910  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59F0 000A1910  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A59F4 000A1914  A8 63 00 3E */	lha r3, 0x3e(r3)
 /* 800A59F8 000A1918  4B F6 26 05 */	bl mathutil_mtxA_rotate_y
-/* 800A59FC 000A191C  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A59FC 000A191C  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5A00 000A1920  A8 63 00 38 */	lha r3, 0x38(r3)
 /* 800A5A04 000A1924  4B F6 25 85 */	bl mathutil_mtxA_rotate_x
-/* 800A5A08 000A1928  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5A08 000A1928  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5A0C 000A192C  A8 63 00 3C */	lha r3, 0x3c(r3)
 /* 800A5A10 000A1930  4B F6 25 79 */	bl mathutil_mtxA_rotate_x
 /* 800A5A14 000A1934  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
-/* 800A5A18 000A1938  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5A18 000A1938  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5A1C 000A193C  FC 40 08 90 */	fmr f2, f1
 /* 800A5A20 000A1940  FC 60 08 90 */	fmr f3, f1
 /* 800A5A24 000A1944  4B F6 24 31 */	bl mathutil_mtxA_tf_point_xyz
 /* 800A5A28 000A1948  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
-/* 800A5A2C 000A194C  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5A2C 000A194C  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5A30 000A1950  FC 40 08 90 */	fmr f2, f1
 /* 800A5A34 000A1954  C0 62 B3 B8 */	lfs f3, lbl_802F5BB8-_SDA2_BASE_(r2)
 /* 800A5A38 000A1958  38 63 00 0C */	addi r3, r3, 0xc
 /* 800A5A3C 000A195C  4B F6 24 19 */	bl mathutil_mtxA_tf_point_xyz
-/* 800A5A40 000A1960  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5A40 000A1960  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5A44 000A1964  C0 23 00 0C */	lfs f1, 0xc(r3)
 /* 800A5A48 000A1968  C0 03 00 00 */	lfs f0, 0(r3)
 /* 800A5A4C 000A196C  EC 01 00 28 */	fsubs f0, f1, f0
@@ -224,7 +226,7 @@ lbl_800A5934:
 /* 800A5A74 000A1994  C0 21 00 08 */	lfs f1, 8(r1)
 /* 800A5A78 000A1998  C0 41 00 10 */	lfs f2, 0x10(r1)
 /* 800A5A7C 000A199C  4B F6 18 29 */	bl mathutil_atan2
-/* 800A5A80 000A19A0  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5A80 000A19A0  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A5A84 000A19A4  38 03 80 00 */	addi r0, r3, -32768
 /* 800A5A88 000A19A8  B0 04 00 1A */	sth r0, 0x1a(r4)
 /* 800A5A8C 000A19AC  C0 01 00 10 */	lfs f0, 0x10(r1)
@@ -235,12 +237,12 @@ lbl_800A5934:
 /* 800A5AA0 000A19C0  FC 40 08 90 */	fmr f2, f1
 /* 800A5AA4 000A19C4  C0 21 00 0C */	lfs f1, 0xc(r1)
 /* 800A5AA8 000A19C8  4B F6 17 FD */	bl mathutil_atan2
-/* 800A5AAC 000A19CC  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5AAC 000A19CC  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A5AB0 000A19D0  38 00 00 00 */	li r0, 0
 /* 800A5AB4 000A19D4  B0 64 00 18 */	sth r3, 0x18(r4)
-/* 800A5AB8 000A19D8  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5AB8 000A19D8  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5ABC 000A19DC  B0 03 00 1C */	sth r0, 0x1c(r3)
-/* 800A5AC0 000A19E0  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5AC0 000A19E0  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A5AC4 000A19E4  A8 64 00 1E */	lha r3, 0x1e(r4)
 /* 800A5AC8 000A19E8  38 03 00 01 */	addi r0, r3, 1
 /* 800A5ACC 000A19EC  B0 04 00 1E */	sth r0, 0x1e(r4)
@@ -251,6 +253,7 @@ lbl_800A5934:
 /* 800A5AE0 000A1A00  38 21 00 20 */	addi r1, r1, 0x20
 /* 800A5AE4 000A1A04  7C 08 03 A6 */	mtlr r0
 /* 800A5AE8 000A1A08  4E 80 00 20 */	blr
+
 .global ev_view_dest
 ev_view_dest:
 /* 800A5AEC 000A1A0C  7C 08 02 A6 */	mflr r0
@@ -259,7 +262,7 @@ ev_view_dest:
 /* 800A5AF8 000A1A18  48 00 0B D5 */	bl func_800A66CC
 /* 800A5AFC 000A1A1C  48 00 0C 21 */	bl func_800A671C
 /* 800A5B00 000A1A20  48 00 06 DD */	bl func_800A61DC
-/* 800A5B04 000A1A24  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5B04 000A1A24  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5B08 000A1A28  28 03 00 00 */	cmplwi r3, 0
 /* 800A5B0C 000A1A2C  41 82 00 44 */	beq lbl_800A5B50
 /* 800A5B10 000A1A30  80 83 00 44 */	lwz r4, 0x44(r3)
@@ -269,16 +272,16 @@ ev_view_dest:
 /* 800A5B20 000A1A40  38 63 6E 48 */	addi r3, r3, movableStageParts@l
 /* 800A5B24 000A1A44  38 A0 25 20 */	li r5, 0x2520
 /* 800A5B28 000A1A48  4B F5 D8 ED */	bl memcpy
-/* 800A5B2C 000A1A4C  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5B2C 000A1A4C  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A5B30 000A1A50  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
 /* 800A5B34 000A1A54  80 84 00 44 */	lwz r4, 0x44(r4)
 /* 800A5B38 000A1A58  48 01 CC 91 */	bl OSFreeToHeap
 lbl_800A5B3C:
 /* 800A5B3C 000A1A5C  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
-/* 800A5B40 000A1A60  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A5B40 000A1A60  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A5B44 000A1A64  48 01 CC 85 */	bl OSFreeToHeap
 /* 800A5B48 000A1A68  38 00 00 00 */	li r0, 0
-/* 800A5B4C 000A1A6C  90 0D A0 00 */	stw r0, lbl_802F21E0@sda21(r13)
+/* 800A5B4C 000A1A6C  90 0D A0 00 */	stw r0, stageViewInfo@sda21(r13)
 lbl_800A5B50:
 /* 800A5B50 000A1A70  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800A5B54 000A1A74  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -301,11 +304,11 @@ lbl_800A5B94:
 /* 800A5B94 000A1AB4  2C 00 00 04 */	cmpwi r0, 4
 /* 800A5B98 000A1AB8  40 80 00 08 */	bge lbl_800A5BA0
 /* 800A5B9C 000A1ABC  48 00 00 D8 */	b lbl_800A5C74
-lbl_800A5BA0:
+lbl_800A5BA0:  ;# 0
 /* 800A5BA0 000A1AC0  38 60 00 03 */	li r3, 3
 /* 800A5BA4 000A1AC4  4B F7 26 69 */	bl camera_setup_splitscreen_viewports
 /* 800A5BA8 000A1AC8  48 00 00 E8 */	b lbl_800A5C90
-lbl_800A5BAC:
+lbl_800A5BAC:  ;# 1
 /* 800A5BAC 000A1ACC  C0 42 B3 B0 */	lfs f2, lbl_802F5BB0-_SDA2_BASE_(r2)
 /* 800A5BB0 000A1AD0  38 60 00 00 */	li r3, 0
 /* 800A5BB4 000A1AD4  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
@@ -331,7 +334,7 @@ lbl_800A5BAC:
 /* 800A5C04 000A1B24  FC 80 08 90 */	fmr f4, f1
 /* 800A5C08 000A1B28  4B F7 25 21 */	bl setup_camera_viewport
 /* 800A5C0C 000A1B2C  48 00 00 84 */	b lbl_800A5C90
-lbl_800A5C10:
+lbl_800A5C10:  ;# 2
 /* 800A5C10 000A1B30  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4-_SDA2_BASE_(r2)
 /* 800A5C14 000A1B34  38 60 00 00 */	li r3, 0
 /* 800A5C18 000A1B38  C0 62 B3 B0 */	lfs f3, lbl_802F5BB0-_SDA2_BASE_(r2)
@@ -357,7 +360,7 @@ lbl_800A5C10:
 /* 800A5C68 000A1B88  FC 80 08 90 */	fmr f4, f1
 /* 800A5C6C 000A1B8C  4B F7 24 BD */	bl setup_camera_viewport
 /* 800A5C70 000A1B90  48 00 00 20 */	b lbl_800A5C90
-lbl_800A5C74:
+lbl_800A5C74:  ;# 3
 /* 800A5C74 000A1B94  38 60 00 04 */	li r3, 4
 /* 800A5C78 000A1B98  4B F7 25 95 */	bl camera_setup_splitscreen_viewports
 /* 800A5C7C 000A1B9C  48 00 00 14 */	b lbl_800A5C90
@@ -371,6 +374,7 @@ lbl_800A5C90:
 /* 800A5C94 000A1BB4  38 21 00 08 */	addi r1, r1, 8
 /* 800A5C98 000A1BB8  7C 08 03 A6 */	mtlr r0
 /* 800A5C9C 000A1BBC  4E 80 00 20 */	blr
+.endif
 
 .global func_800A5CA0
 func_800A5CA0:
@@ -421,7 +425,7 @@ lbl_800A5CE0:
 /* 800A5D4C 000A1C6C  90 01 00 08 */	stw r0, 8(r1)
 /* 800A5D50 000A1C70  A0 02 B3 CC */	lhz r0, lbl_802F5BCC-_SDA2_BASE_(r2)
 /* 800A5D54 000A1C74  FC 80 18 90 */	fmr f4, f3
-/* 800A5D58 000A1C78  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A5D58 000A1C78  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A5D5C 000A1C7C  B0 01 00 0C */	sth r0, 0xc(r1)
 /* 800A5D60 000A1C80  C0 22 B3 D0 */	lfs f1, lbl_802F5BD0-_SDA2_BASE_(r2)
 /* 800A5D64 000A1C84  A8 03 00 18 */	lha r0, 0x18(r3)
@@ -762,7 +766,7 @@ func_800A6200:
 /* 800A6220 000A2140  3B A0 00 00 */	li r29, 0
 /* 800A6224 000A2144  C0 03 00 04 */	lfs f0, 4(r3)
 /* 800A6228 000A2148  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 800A622C 000A214C  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A622C 000A214C  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A6230 000A2150  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 800A6234 000A2154  7C 1F 03 78 */	mr r31, r0
 /* 800A6238 000A2158  D0 04 00 40 */	stfs f0, 0x40(r4)
@@ -838,7 +842,7 @@ func_800A6318:
 /* 800A633C 000A225C  93 C1 00 48 */	stw r30, 0x48(r1)
 /* 800A6340 000A2260  93 A1 00 44 */	stw r29, 0x44(r1)
 /* 800A6344 000A2264  93 81 00 40 */	stw r28, 0x40(r1)
-/* 800A6348 000A2268  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A6348 000A2268  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A634C 000A226C  C8 42 B3 C0 */	lfd f2, lbl_802F5BC0-_SDA2_BASE_(r2)
 /* 800A6350 000A2270  A8 04 00 1E */	lha r0, 0x1e(r4)
 /* 800A6354 000A2274  6C 00 80 00 */	xoris r0, r0, 0x8000
@@ -847,7 +851,7 @@ func_800A6318:
 /* 800A6360 000A2280  C8 01 00 38 */	lfd f0, 0x38(r1)
 /* 800A6364 000A2284  EC 00 10 28 */	fsubs f0, f0, f2
 /* 800A6368 000A2288  D0 03 00 04 */	stfs f0, 4(r3)
-/* 800A636C 000A228C  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A636C 000A228C  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A6370 000A2290  80 AD 9D 50 */	lwz r5, decodedStageLzPtr@sda21(r13)
 /* 800A6374 000A2294  A8 03 00 1E */	lha r0, 0x1e(r3)
 /* 800A6378 000A2298  C8 02 B4 08 */	lfd f0, lbl_802F5C08-_SDA2_BASE_(r2)
@@ -1078,7 +1082,7 @@ lbl_800A66A4:
 
 .global func_800A66CC
 func_800A66CC:
-/* 800A66CC 000A25EC  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A66CC 000A25EC  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A66D0 000A25F0  3C 60 80 20 */	lis r3, lbl_80206DEC@ha
 /* 800A66D4 000A25F4  38 63 6D EC */	addi r3, r3, lbl_80206DEC@l
 /* 800A66D8 000A25F8  C0 04 00 40 */	lfs f0, 0x40(r4)
@@ -1088,7 +1092,7 @@ func_800A66CC:
 .global func_800A66E4
 func_800A66E4:
 /* 800A66E4 000A2604  3C 80 80 1C */	lis r4, backgroundInfo@ha
-/* 800A66E8 000A2608  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A66E8 000A2608  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A66EC 000A260C  38 84 91 78 */	addi r4, r4, backgroundInfo@l
 /* 800A66F0 000A2610  C0 04 00 04 */	lfs f0, 4(r4)
 /* 800A66F4 000A2614  D0 03 00 48 */	stfs f0, 0x48(r3)
@@ -1107,7 +1111,7 @@ func_800A66FC:
 
 .global func_800A671C
 func_800A671C:
-/* 800A671C 000A263C  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A671C 000A263C  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A6720 000A2640  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 800A6724 000A2644  38 63 91 78 */	addi r3, r3, backgroundInfo@l
 /* 800A6728 000A2648  C0 04 00 48 */	lfs f0, 0x48(r4)
@@ -1168,7 +1172,7 @@ lbl_800A67E0:
 /* 800A67EC 000A270C  4B F6 15 35 */	bl mathutil_mtxA_translate
 /* 800A67F0 000A2710  4B F6 0D A1 */	bl mathutil_mtxA_sq_from_identity
 /* 800A67F4 000A2714  80 18 00 0C */	lwz r0, 0xc(r24)
-/* 800A67F8 000A2718  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A67F8 000A2718  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A67FC 000A271C  54 00 10 3A */	slwi r0, r0, 2
 /* 800A6800 000A2720  A8 63 00 1E */	lha r3, 0x1e(r3)
 /* 800A6804 000A2724  7C 1B 00 2E */	lwzx r0, r27, r0
@@ -1360,7 +1364,7 @@ func_800A6A88:
 /* 800A6AAC 000A29CC  80 6D 9D 50 */	lwz r3, decodedStageLzPtr@sda21(r13)
 /* 800A6AB0 000A29D0  80 63 00 10 */	lwz r3, 0x10(r3)
 /* 800A6AB4 000A29D4  4B F6 12 6D */	bl mathutil_mtxA_translate
-/* 800A6AB8 000A29D8  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A6AB8 000A29D8  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A6ABC 000A29DC  A8 03 00 1E */	lha r0, 0x1e(r3)
 /* 800A6AC0 000A29E0  54 03 48 2C */	slwi r3, r0, 9
 /* 800A6AC4 000A29E4  4B F6 15 39 */	bl mathutil_mtxA_rotate_y
@@ -1615,7 +1619,7 @@ lbl_800A6E1C:
 /* 800A6E38 000A2D58  4B F6 11 C5 */	bl mathutil_mtxA_rotate_y
 /* 800A6E3C 000A2D5C  A8 7D 00 0C */	lha r3, 0xc(r29)
 /* 800A6E40 000A2D60  4B F6 11 49 */	bl mathutil_mtxA_rotate_x
-/* 800A6E44 000A2D64  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A6E44 000A2D64  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A6E48 000A2D68  A8 03 00 1E */	lha r0, 0x1e(r3)
 /* 800A6E4C 000A2D6C  54 03 40 2E */	slwi r3, r0, 8
 /* 800A6E50 000A2D70  4B F6 11 AD */	bl mathutil_mtxA_rotate_y
@@ -1681,7 +1685,7 @@ lbl_800A6F08:
 /* 800A6F2C 000A2E4C  4B F6 10 5D */	bl mathutil_mtxA_rotate_x
 /* 800A6F30 000A2E50  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 800A6F34 000A2E54  38 A0 00 3C */	li r5, 0x3c
-/* 800A6F38 000A2E58  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A6F38 000A2E58  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A6F3C 000A2E5C  80 84 00 30 */	lwz r4, 0x30(r4)
 /* 800A6F40 000A2E60  A8 03 00 1E */	lha r0, 0x1e(r3)
 /* 800A6F44 000A2E64  7C 65 23 D6 */	divw r3, r5, r4
@@ -1779,20 +1783,20 @@ func_800A7084:
 /* 800A708C 000A2FAC  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800A7090 000A2FB0  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 800A7094 000A2FB4  7C 7F 1B 78 */	mr r31, r3
-/* 800A7098 000A2FB8  80 8D A0 00 */	lwz r4, lbl_802F21E0@sda21(r13)
+/* 800A7098 000A2FB8  80 8D A0 00 */	lwz r4, stageViewInfo@sda21(r13)
 /* 800A709C 000A2FBC  80 64 00 00 */	lwz r3, 0(r4)
 /* 800A70A0 000A2FC0  80 04 00 04 */	lwz r0, 4(r4)
 /* 800A70A4 000A2FC4  90 7F 00 00 */	stw r3, 0(r31)
 /* 800A70A8 000A2FC8  90 1F 00 04 */	stw r0, 4(r31)
 /* 800A70AC 000A2FCC  80 04 00 08 */	lwz r0, 8(r4)
 /* 800A70B0 000A2FD0  90 1F 00 08 */	stw r0, 8(r31)
-/* 800A70B4 000A2FD4  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A70B4 000A2FD4  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A70B8 000A2FD8  A8 03 00 18 */	lha r0, 0x18(r3)
 /* 800A70BC 000A2FDC  B0 1F 00 18 */	sth r0, 0x18(r31)
-/* 800A70C0 000A2FE0  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A70C0 000A2FE0  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A70C4 000A2FE4  A8 03 00 1A */	lha r0, 0x1a(r3)
 /* 800A70C8 000A2FE8  B0 1F 00 1A */	sth r0, 0x1a(r31)
-/* 800A70CC 000A2FEC  80 6D A0 00 */	lwz r3, lbl_802F21E0@sda21(r13)
+/* 800A70CC 000A2FEC  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A70D0 000A2FF0  A8 03 00 1C */	lha r0, 0x1c(r3)
 /* 800A70D4 000A2FF4  B0 1F 00 1C */	sth r0, 0x1c(r31)
 /* 800A70D8 000A2FF8  4B F6 04 8D */	bl mathutil_mtxA_from_identity
@@ -2099,6 +2103,7 @@ lbl_800A7518:
 
 .section .sdata2
 
+.if 0
 .global lbl_802F5B80
 lbl_802F5B80:
 	# ROM: 0x1EF5A0
@@ -2156,6 +2161,7 @@ lbl_802F5BC0:
 	# ROM: 0x1EF5E0
 	.byte 0x43, 0x30, 0x00, 0x00
 	.byte 0x80, 0x00, 0x00, 0x00
+.endif
 
 .global lbl_802F5BC8
 lbl_802F5BC8:
@@ -2903,11 +2909,13 @@ glabel lbl_80171BA4
 
 .section .data
 
+.if 0
 .global lbl_801D5800
 lbl_801D5800:
 	# ROM: 0x1D2800
 glabel string_cannot_OSAlloc_n_5
 	.asciz "cannot OSAlloc\n"
+.endif
 glabel string_a_Stage_Overview
 	.asciz "a/Stage Overview"
 	.balign 4
@@ -4104,6 +4112,7 @@ lbl_802C6BD8:
 
 .section .sdata
 
+.if 0
     .balign 0x10
 .global lbl_802F16B0
 lbl_802F16B0:
@@ -4111,6 +4120,7 @@ lbl_802F16B0:
 glabel string_view_c
 	.asciz "view.c"
 	.balign 4
+.endif
 
 .global lbl_802F16B8
 lbl_802F16B8:
@@ -4460,8 +4470,8 @@ glabel lbl_802F1920
 
 .section .sbss
 
-.global lbl_802F21E0
-lbl_802F21E0:
+.global stageViewInfo
+stageViewInfo:
 	.skip 0x8
 .global lbl_802F21E8
 lbl_802F21E8:
