@@ -821,6 +821,7 @@ lbl_800C60A4:
 
 .section .data
 
+    .balign 8
 .global lbl_801E6908
 lbl_801E6908:
 	# ROM: 0x1E3908

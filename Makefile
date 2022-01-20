@@ -143,7 +143,7 @@ SOURCES := \
 	libraries/os/asm/OSAudioSystem.s \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
-	libraries/os/asm/OSError.s \
+	libraries/os/OSError.c \
 	libraries/os/asm/OSExi.s \
 	libraries/os/asm/OSFont.s \
 	libraries/os/asm/OSInterrupt.s \

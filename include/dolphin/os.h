@@ -11,6 +11,7 @@
 #include <dolphin/OSFont.h>
 #include <dolphin/OSReset.h>
 #include <dolphin/OSResetSW.h>
+#include <dolphin/OSError.h>
 
 typedef s64 OSTime;
 typedef u32 OSTick;
