@@ -376,6 +376,7 @@ lbl_800A5C90:
 /* 800A5C9C 000A1BBC  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global func_800A5CA0
 func_800A5CA0:
 /* 800A5CA0 000A1BC0  7C 08 02 A6 */	mflr r0
@@ -599,6 +600,7 @@ lbl_800A5FB0:
 /* 800A5FB8 000A1ED8  38 21 00 08 */	addi r1, r1, 8
 /* 800A5FBC 000A1EDC  7C 08 03 A6 */	mtlr r0
 /* 800A5FC0 000A1EE0  4E 80 00 20 */	blr
+
 lbl_800A5FC4:
 /* 800A5FC4 000A1EE4  7C 08 02 A6 */	mflr r0
 /* 800A5FC8 000A1EE8  90 01 00 04 */	stw r0, 4(r1)
@@ -849,7 +851,7 @@ func_800A6318:
 /* 800A6358 000A2278  90 01 00 3C */	stw r0, 0x3c(r1)
 /* 800A635C 000A227C  90 C1 00 38 */	stw r6, 0x38(r1)
 /* 800A6360 000A2280  C8 01 00 38 */	lfd f0, 0x38(r1)
-/* 800A6364 000A2284  EC 00 10 28 */	fsubs f0, f0, f2
+/* 800A6364 000A2284  EC 00 10 28 */	fsubs f0, f0, f2  ;# stageViewInfo->unk1E
 /* 800A6368 000A2288  D0 03 00 04 */	stfs f0, 4(r3)
 /* 800A636C 000A228C  80 6D A0 00 */	lwz r3, stageViewInfo@sda21(r13)
 /* 800A6370 000A2290  80 AD 9D 50 */	lwz r5, decodedStageLzPtr@sda21(r13)
@@ -861,11 +863,11 @@ func_800A6318:
 /* 800A6388 000A22A8  80 05 00 04 */	lwz r0, 4(r5)
 /* 800A638C 000A22AC  6C 83 80 00 */	xoris r3, r4, 0x8000
 /* 800A6390 000A22B0  90 C1 00 30 */	stw r6, 0x30(r1)
-/* 800A6394 000A22B4  7C 04 00 50 */	subf r0, r4, r0
+/* 800A6394 000A22B4  7C 04 00 50 */	subf r0, r4, r0  ;# unk4 - unk0
 /* 800A6398 000A22B8  C8 21 00 30 */	lfd f1, 0x30(r1)
 /* 800A639C 000A22BC  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 800A63A0 000A22C0  90 61 00 2C */	stw r3, 0x2c(r1)
-/* 800A63A4 000A22C4  FC 21 10 28 */	fsub f1, f1, f2
+/* 800A63A4 000A22C4  FC 21 10 28 */	fsub f1, f1, f2  ;# stageViewInfo->unk1E
 /* 800A63A8 000A22C8  90 01 00 24 */	stw r0, 0x24(r1)
 /* 800A63AC 000A22CC  FF E1 00 24 */	fdiv f31, f1, f0
 /* 800A63B0 000A22D0  90 C1 00 28 */	stw r6, 0x28(r1)
@@ -873,8 +875,8 @@ func_800A6318:
 /* 800A63B8 000A22D8  90 C1 00 20 */	stw r6, 0x20(r1)
 /* 800A63BC 000A22DC  C8 01 00 20 */	lfd f0, 0x20(r1)
 /* 800A63C0 000A22E0  FF E0 F8 18 */	frsp f31, f31
-/* 800A63C4 000A22E4  EC 21 10 28 */	fsubs f1, f1, f2
-/* 800A63C8 000A22E8  EC 60 10 28 */	fsubs f3, f0, f2
+/* 800A63C4 000A22E4  EC 21 10 28 */	fsubs f1, f1, f2  ;# decodedStageLzPtr->unk0
+/* 800A63C8 000A22E8  EC 60 10 28 */	fsubs f3, f0, f2  ;# unk4 - unk0
 /* 800A63CC 000A22EC  EF FF 08 2A */	fadds f31, f31, f1
 /* 800A63D0 000A22F0  EC 3F 18 24 */	fdivs f1, f31, f3
 /* 800A63D4 000A22F4  FC 00 04 8E */	mffs f0
@@ -883,7 +885,7 @@ func_800A6318:
 /* 800A63E0 000A2300  FC 20 08 1C */	fctiw f1, f1
 /* 800A63E4 000A2304  D8 21 00 08 */	stfd f1, 8(r1)
 /* 800A63E8 000A2308  FD FE 05 8E */	mtfsf 0xff, f0
-/* 800A63EC 000A230C  80 81 00 0C */	lwz r4, 0xc(r1)
+/* 800A63EC 000A230C  80 81 00 0C */	lwz r4, 0xc(r1)  ;# int
 /* 800A63F0 000A2310  80 05 00 00 */	lwz r0, 0(r5)
 /* 800A63F4 000A2314  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 800A63F8 000A2318  6C 84 80 00 */	xoris r4, r4, 0x8000
@@ -893,14 +895,14 @@ func_800A6318:
 /* 800A6408 000A2328  83 C5 00 0C */	lwz r30, 0xc(r5)
 /* 800A640C 000A232C  90 C1 00 18 */	stw r6, 0x18(r1)
 /* 800A6410 000A2330  7C 1F 03 78 */	mr r31, r0
-/* 800A6414 000A2334  C8 01 00 18 */	lfd f0, 0x18(r1)
+/* 800A6414 000A2334  C8 01 00 18 */	lfd f0, 0x18(r1)  ;# floor
 /* 800A6418 000A2338  3B A0 00 00 */	li r29, 0
 /* 800A641C 000A233C  90 81 00 14 */	stw r4, 0x14(r1)
-/* 800A6420 000A2340  EC 00 10 28 */	fsubs f0, f0, f2
+/* 800A6420 000A2340  EC 00 10 28 */	fsubs f0, f0, f2  ;# floor
 /* 800A6424 000A2344  90 C1 00 10 */	stw r6, 0x10(r1)
 /* 800A6428 000A2348  EC 23 00 32 */	fmuls f1, f3, f0
 /* 800A642C 000A234C  C8 01 00 10 */	lfd f0, 0x10(r1)
-/* 800A6430 000A2350  EC 00 10 28 */	fsubs f0, f0, f2
+/* 800A6430 000A2350  EC 00 10 28 */	fsubs f0, f0, f2  ;# unk0
 /* 800A6434 000A2354  EF FF 08 28 */	fsubs f31, f31, f1
 /* 800A6438 000A2358  EF FF 00 2A */	fadds f31, f31, f0
 /* 800A643C 000A235C  C3 C2 B4 10 */	lfs f30, lbl_802F5C10-_SDA2_BASE_(r2)
@@ -1254,8 +1256,8 @@ lbl_800A68D8:
 /* 800A6918 000A2838  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 800A691C 000A283C  38 03 6E 48 */	addi r0, r3, movableStageParts@l
 /* 800A6920 000A2840  3B 61 00 70 */	addi r27, r1, 0x70
-/* 800A6924 000A2844  7F 80 22 14 */	add r28, r0, r4
-/* 800A6928 000A2848  3B A0 00 00 */	li r29, 0
+/* 800A6924 000A2844  7F 80 22 14 */	add r28, r0, r4  ;# movableStageParts[i]
+/* 800A6928 000A2848  3B A0 00 00 */	li r29, 0  ;# offset
 /* 800A692C 000A284C  48 00 01 14 */	b lbl_800A6A40
 lbl_800A6930:
 /* 800A6930 000A2850  80 6D 9D 50 */	lwz r3, decodedStageLzPtr@sda21(r13)
@@ -1284,14 +1286,14 @@ lbl_800A6950:
 /* 800A6988 000A28A8  C0 01 00 70 */	lfs f0, 0x70(r1)
 /* 800A698C 000A28AC  38 61 00 14 */	addi r3, r1, 0x14
 /* 800A6990 000A28B0  C0 21 00 74 */	lfs f1, 0x74(r1)
-/* 800A6994 000A28B4  FC 9F 00 32 */	fmul f4, f31, f0
+/* 800A6994 000A28B4  FC 9F 00 32 */	fmul f4, f31, f0  ;# f31 * unk10.x
 /* 800A6998 000A28B8  C0 A1 00 64 */	lfs f5, 0x64(r1)
 /* 800A699C 000A28BC  C0 01 00 78 */	lfs f0, 0x78(r1)
-/* 800A69A0 000A28C0  FC 5F 00 72 */	fmul f2, f31, f1
+/* 800A69A0 000A28C0  FC 5F 00 72 */	fmul f2, f31, f1  ;# f31 * unk10.y
 /* 800A69A4 000A28C4  C0 61 00 68 */	lfs f3, 0x68(r1)
 /* 800A69A8 000A28C8  FC 85 20 2A */	fadd f4, f5, f4
 /* 800A69AC 000A28CC  C0 21 00 6C */	lfs f1, 0x6c(r1)
-/* 800A69B0 000A28D0  FC 1F 00 32 */	fmul f0, f31, f0
+/* 800A69B0 000A28D0  FC 1F 00 32 */	fmul f0, f31, f0  ;# f31 * unk10.z
 /* 800A69B4 000A28D4  FC 43 10 2A */	fadd f2, f3, f2
 /* 800A69B8 000A28D8  FC 60 20 18 */	frsp f3, f4
 /* 800A69BC 000A28DC  FC 01 00 2A */	fadd f0, f1, f0
@@ -1349,6 +1351,7 @@ lbl_800A6A70:
 /* 800A6A7C 000A299C  38 21 00 A8 */	addi r1, r1, 0xa8
 /* 800A6A80 000A29A0  7C 08 03 A6 */	mtlr r0
 /* 800A6A84 000A29A4  4E 80 00 20 */	blr
+.endif
 
 .global func_800A6A88
 func_800A6A88:
@@ -2163,6 +2166,7 @@ lbl_802F5BC0:
 	.byte 0x80, 0x00, 0x00, 0x00
 .endif
 
+.if 0
 .global lbl_802F5BC8
 lbl_802F5BC8:
 	# ROM: 0x1EF5E8
@@ -2197,8 +2201,8 @@ lbl_802F5BDC:
 lbl_802F5BE0:
 	# ROM: 0x1EF600
 	.byte 0x43, 0xC8, 0x00, 0x00
-	.4byte 0
 
+    .balign 8
 .global lbl_802F5BE8
 lbl_802F5BE8:
 	# ROM: 0x1EF608
@@ -2267,6 +2271,7 @@ lbl_802F5C20:
 lbl_802F5C28:
 	# ROM: 0x1EF648
 	.byte 0x3E, 0xE6, 0x66, 0x66
+.endif
 
 .global lbl_802F5C2C
 lbl_802F5C2C:
@@ -2884,6 +2889,7 @@ lbl_802F5ECC:
 
 .section .rodata
 
+.if 0
 .global lbl_80171B70
 lbl_80171B70:
 	# ROM: 0x16EB70
@@ -2891,6 +2897,8 @@ lbl_80171B70:
 	.4byte 0
 	.byte 0xBF, 0x80, 0x00, 0x00
 	.4byte 0
+.endif
+    .balign 8
 glabel lbl_80171B80
 	.byte 0x00, 0x20, 0x00, 0x20
 	.byte 0x00, 0x31, 0x00, 0x31
@@ -2915,7 +2923,6 @@ lbl_801D5800:
 	# ROM: 0x1D2800
 glabel string_cannot_OSAlloc_n_5
 	.asciz "cannot OSAlloc\n"
-.endif
 glabel string_a_Stage_Overview
 	.asciz "a/Stage Overview"
 	.balign 4
@@ -2924,6 +2931,7 @@ glabel string_p_LEVER_a_Rotate_Zoom
 	.balign 4
 glabel string_p_BUTTON_C_a_Pan_camera
 	.asciz "p/BUTTON_C/a/Pan camera"
+.endif
 
 .global lbl_801D5854
 lbl_801D5854:

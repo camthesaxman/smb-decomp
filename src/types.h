@@ -631,7 +631,10 @@ struct Sprite
              s32 unk64;
              u8 filler68[0x6C-0x68];
              float unk6C;
-             u8 filler70[4];
+             u8 unk70;
+             u8 unk71;
+             u8 unk72;
+             u8 filler73[1];
              u32 unk74;
              u32 unk78;
              float unk7C;

@@ -264,6 +264,12 @@ struct StageCollHdr_child2
     u8 padding[2];
 };  // size = 0x20
 
+struct StageCollHdr_child3  // banana?
+{
+    Vec unk0;
+    s32 unkC;
+};
+
 struct StageCollHdr
 {
     Vec unk0;
@@ -286,8 +292,8 @@ struct StageCollHdr
     void *unk50;
     u8 filler54[4];
     void *unk58;
-    u8 filler5C[4];
-    void *unk60;
+    s32 unk5C;
+    struct StageCollHdr_child3 *unk60;
     u8 filler64[4];
     void *unk68;
     u8 filler6C[4];
