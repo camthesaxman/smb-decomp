@@ -1540,6 +1540,7 @@ lbl_801E6A88:
 
 .section .sdata
 
+    .balign 8
 .global lbl_802F1940
 lbl_802F1940:
 	# ROM: 0x1EC080

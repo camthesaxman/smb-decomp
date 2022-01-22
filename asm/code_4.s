@@ -22215,6 +22215,7 @@ lbl_800C16A8:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F5ED0
 lbl_802F5ED0:
 	# ROM: 0x1EF8F0
