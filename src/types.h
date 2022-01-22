@@ -644,6 +644,19 @@ struct Sprite
     /*0x8C*/ char text[0xBC-0x8C];  // text
 };
 
+struct Struct8020A348_child
+{
+    u32 unk0;
+    struct GMAModelHeader *unk4;  // GMAModelHeader
+    float unk8;
+};  // size = 0xC
+
+struct Struct8020A348
+{
+    struct Struct8020A348_child *unk0;
+    s32 unk4;
+};
+
 struct FontParams
 {
     /*0x00*/ s16 unk0;

@@ -131,7 +131,7 @@ SOURCES := \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \
-	asm/view.s \
+	src/code_6.c \
 	asm/mini_ranking.s \
 	src/preview.c \
 	asm/code_4.s \

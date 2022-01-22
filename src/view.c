@@ -19,6 +19,8 @@
 
 #include "../data/common.gma.h"
 
+u8 lbl_802C4960[0x1400];  // TODO: what is this?
+
 struct StageViewInfo
 {
     Vec unk0;
@@ -29,8 +31,7 @@ struct StageViewInfo
     s16 unk1E;
     float unk20;
     float unk24;
-    Vec unk28;
-    float unk34;
+    struct Sphere unk28;
     s16 unk38;
     s16 unk3A;
     s16 unk3C;
@@ -38,9 +39,9 @@ struct StageViewInfo
     float unk40;
     struct MovableStagePart *unk44;
     float unk48;
-};  // size = 0x4C
+};
 
-extern struct StageViewInfo *stageViewInfo;
+struct StageViewInfo *stageViewInfo;
 
 void ev_view_init(void)
 {
@@ -49,7 +50,7 @@ void ev_view_init(void)
         OSPanic("view.c", 0x72, "cannot OSAlloc\n");
     memset(stageViewInfo, 0, sizeof(*stageViewInfo));
     func_800A7020(&stageViewInfo->unk28);
-    stageViewInfo->unk20 = stageViewInfo->unk34 * 1.1313;
+    stageViewInfo->unk20 = stageViewInfo->unk28.radius * 1.1313;
     stageViewInfo->unk24 = 0.75f;
     stageViewInfo->unk38 = -5632;
     stageViewInfo->unk3A = 0;
@@ -84,7 +85,7 @@ void ev_view_main(void)
     cstickX = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickX;
     stageViewInfo->unk3C += (cstickY * 64 - stageViewInfo->unk3C) >> 5;
     stageViewInfo->unk3E += (-cstickX * 0xC0 - stageViewInfo->unk3E) >> 5;
-    mathutil_mtxA_from_translate(&stageViewInfo->unk28);
+    mathutil_mtxA_from_translate(&stageViewInfo->unk28.pos);
     mathutil_mtxA_rotate_y(stageViewInfo->unk3A);
     mathutil_mtxA_rotate_x(stageViewInfo->unk38);
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, stageViewInfo->unk20 * stageViewInfo->unk24);
@@ -521,40 +522,268 @@ void func_800A6874(void)
     }
 }
 
-/*
-const double lbl_802F5B80 = 1.1313;
-const float lbl_802F5B88 = 0.75f;
-const double lbl_802F5B90 = 0.00029999999999999997;
-const double lbl_802F5B98 = 1;
-const float lbl_802F5BA0 = 1f;
-const double lbl_802F5BA8 = 0.5;
-const float lbl_802F5BB0 = 0.5f;
-const float lbl_802F5BB4 = 0f;
-const float lbl_802F5BB8 = -10f;
-const double lbl_802F5BC0 = 4503601774854144;
-don't know about lbl_802F5BC8
-don't know about lbl_802F5BCC
-const float lbl_802F5BD0 = 59.996337890625f;
-const float lbl_802F5BD4 = 1.3333333730697632f;
-const float lbl_802F5BD8 = 0.10000000149011612f;
-const float lbl_802F5BDC = 20000f;
-const float lbl_802F5BE0 = 400f;
-const double lbl_802F5BE8 = 0.10000000000000001;
-const double lbl_802F5BF0 = 2;
-const float lbl_802F5BF8 = 24f;
-const float lbl_802F5BFC = 170f;
-const float lbl_802F5C00 = 435f;
-const float lbl_802F5C04 = 415f;
-const double lbl_802F5C08 = 60;
-const float lbl_802F5C10 = 182.04444885253906f;
-don't know about lbl_802F5C14
-don't know about lbl_802F5C18
-const float lbl_802F5C1C = 0.30000001192092896f;
-const double lbl_802F5C20 = 0.02;
-const float lbl_802F5C28 = 0.44999998807907104f;
+void func_800A6A88(void)
+{
+    struct MovableStagePart *r30;
+    struct Struct8020A348 *r29;
+    int j;
+    int i;
+    struct Struct8020A348_child *r26;
+    u32 dummy;
+
+    func_80030BB8(1.0f, 1.0f, 1.0f);
+    mathutil_mtxA_from_mtxB();
+    mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
+    mathutil_mtxA_rotate_y(stageViewInfo->unk1E << 9);
+    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
+    func_8000E3BC();
+    if (decodedStageGmaPtr != NULL)
+    {
+        r30 = movableStageParts;
+        r29 = lbl_8020AB88;
+        for (i = 0; i < movableStagePartCount; i++, r29++, r30++)
+        {
+            mathutil_mtxA_from_mtxB();
+            if (i > 0)
+                mathutil_mtxA_mult_right(r30->unk24);
+            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            r26 = r29->unk0;
+            for (j = 0; j < r29->unk4; j++, r26++)
+            {
+                if ((r26->unk0 & 3) == 1)
+                {
+                    struct GMAModelHeader *model = r26->unk4;
+                    if (model != NULL)
+                    {
+
+                        if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D))) || (r26->unk0 & (1<<(31-0x1D))))
+                            g_avdisp_maybe_draw_model_2(model);
+                    }
+                }
+            }
+        }
+    }
+    if (dynamicStageParts != NULL)
+    {
+        struct DynamicStagePart *dyn;
+        mathutil_mtxA_from_mtxB();
+        dyn = dynamicStageParts;
+        while (dyn->modelName != NULL)
+        {
+            g_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
+            dyn++;
+        }
+    }
+    if (currStageId == ST_101_BLUR_BRIDGE)
+        draw_blur_bridge_accordions();
+}
+
+extern struct
+{
+    u8 filler0[0x14];
+    struct GMAModelHeader *unk14;
+} lbl_8028C0B0;
+
+extern struct GMAModelHeader *lbl_802F1FFC;
+
+#ifdef NONMATCHING
+// https://decomp.me/scratch/xQ4td
+void func_800A6BF0(void)
+{
+    //struct StageCollHdr_child4 *r29;
+
+        struct GMAModelHeader *r28;
+    //struct StageCollHdr_child *r27;
+    int i;  // r26 -> r29
+    //int i2;
+    //int j;  // r25
+    //int r24;
+    Mtx sp8;
+
+    for (i = 0; i < movableStagePartCount; i++)
+    {
+        int r24;
+        struct StageCollHdr_child *r27;
+        int j;  // r25
+        //#define r27 r29
+        r27 = decodedStageLzPtr->collHdrs[i].unk40;
+        r24 = decodedStageLzPtr->collHdrs[i].unk3C;
+        mathutil_mtxA_from_mtxB();
+        if (i > 0)
+            mathutil_mtxA_mult_right(movableStageParts[i].unk24);
+        mathutil_mtxA_to_mtx(sp8);
+        for (j = 0; j < r24; j++, r27++)
+        {
+            mathutil_mtxA_from_mtx(sp8);
+            mathutil_mtxA_translate(&r27->unk0);
+            mathutil_mtxA_rotate_z(r27->unk10);
+            mathutil_mtxA_rotate_y(r27->unkE);
+            mathutil_mtxA_rotate_x(r27->unkC);
+            switch (r27->unk12)
+            {
+            default:
+                r28 = lbl_8020ADC8[0];
+                break;
+            case 0x47:
+                r28 = lbl_8020ADC8[1];
+                break;
+            case 0x52:
+                r28 = lbl_8020ADC8[2];
+                break;
+            }
+            if (r28 != NULL)
+            {
+                g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+                g_avdisp_maybe_draw_model_1(r28);
+            }
+            //lbl_800A6CE4
+            g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 14));
+
+            mathutil_mtxA_push();
+            mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
+            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            g_avdisp_maybe_draw_model_1(commonGma->modelEntries[0x40].modelOffset);
+            mathutil_mtxA_pop();
+
+            mathutil_mtxA_push();
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
+            mathutil_mtxA_translate_xyz(-0.45f, 0.0f, 0.0f);
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
+            mathutil_mtxA_pop();
+
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
+            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+        }
+        //#undef r27
+    }
+
+    for (i = 0; i < movableStagePartCount; i++)
+    {
+        s32 r27;
+        int j;
+        struct StageCollHdr_child4 *r29;
+        r29 = decodedStageLzPtr->collHdrs[i].unk50;
+        r27 = decodedStageLzPtr->collHdrs[i].unk4C;
+
+        mathutil_mtxA_from_mtxB();
+        if (i > 0)
+            mathutil_mtxA_mult_right(movableStageParts[i].unk24);
+        mathutil_mtxA_to_mtx(sp8);
+        for (j = 0; j < r27; j++, r29++)
+        {
+            mathutil_mtxA_from_mtx(sp8);
+            mathutil_mtxA_translate(&r29->unk0);
+            mathutil_mtxA_rotate_z(r29->unk10);
+            mathutil_mtxA_rotate_y(r29->unkE);
+            mathutil_mtxA_rotate_z(r29->unkC);
+            mathutil_mtxA_rotate_y(stageViewInfo->unk1E << 8);
+            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            g_avdisp_maybe_draw_model_1(lbl_8028C0B0.unk14);
+        }
+    }
+    //800A6E90
+    // i = r29
+    for (i = 0; i < movableStagePartCount; i++)
+    {
+        s32 r26;
+        int j;
+        s32 r28_;
+        struct StageCollHdr_child4 *r29;
+        r29 = (void *)decodedStageLzPtr->collHdrs[i].unk58;
+        r26 = 0;
+        r28_ = decodedStageLzPtr->collHdrs[i].unk54;
+        //int r26;
+        //#define r26 j
+        #define r25 r29
+        //r26 = 0;
+
+        mathutil_mtxA_from_mtxB();
+        if (i > 0)
+            mathutil_mtxA_mult_right(movableStageParts[i].unk24);
+        mathutil_mtxA_to_mtx(sp8);
+        // j = r27
+        for (j = 0; j < r28_; r26++, j++, r25++)
+        {
+            int r4;
+            int r0;
+            float f0;
+
+            mathutil_mtxA_from_mtx(sp8);
+            mathutil_mtxA_translate(&r25->unk0);
+            mathutil_mtxA_rotate_z(r25->unk10);
+            mathutil_mtxA_rotate_y(r25->unkE);
+            mathutil_mtxA_rotate_z(r25->unkC);
+
+            r4 = stageViewInfo->unk1E - (r26 * (60 / decodedStageLzPtr->jamabarsCount));
+            r0 = r4 % 60;
+            f0 = r0 / 60.0f * 2.0;
+            if (f0 >= 1.0)
+                f0 = 2.0 - f0;
+            f0 = -f0;
+            mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * f0);
+            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            g_avdisp_maybe_draw_model_1(lbl_802F1FFC);
+        }
+        #undef r25
+    }
+}
+#else
+#define lbl_802F5BC0 4503601774854144.0
+#define lbl_802F5B98 1.0
+#define lbl_802F5BB4 0.0f
+#define lbl_802F5BF0 2.0
 const float lbl_802F5C2C = 2.7999999523162842f;
 const float lbl_802F5C30 = -0.44999998807907104f;
 const float lbl_802F5C34 = -0.66659998893737793f;
-const float lbl_802F5C38 = 60f;
+const float lbl_802F5C38 = 60.0f;
 const double lbl_802F5C40 = 2.5;
-*/
+asm void func_800A6BF0(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_800A6BF0.s"
+}
+#pragma peephole on
+#endif
+
+struct Struct801D5854
+{
+    s32 unk0;
+    struct Sphere unk4;
+} lbl_801D5854 = {57, {{0, 100, 0}, 18}};
+
+void func_800A7020(struct Sphere *bounds)
+{
+    int id;
+
+    get_curr_stage_fly_in_position(bounds);
+    if (lbl_801D5854.unk0 == (id = currStageId))
+        *bounds = lbl_801D5854.unk4;
+}
+
+void func_800A7084(struct Camera *camera)
+{
+    camera->eye = stageViewInfo->unk0;
+    camera->rotX = stageViewInfo->unk18;
+    camera->rotY = stageViewInfo->unk1A;
+    camera->rotZ = stageViewInfo->unk1C;
+
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_z(-camera->rotZ);
+    mathutil_mtxA_rotate_x(-camera->rotX);
+    mathutil_mtxA_rotate_y(-camera->rotY);
+    mathutil_mtxA_translate_neg(&camera->eye);
+    mathutil_mtx_copy(mathutilData->mtxA, camera->unk144);
+    mathutil_mtx_copy(mathutilData->mtxA, mathutilData->mtxB);
+    mathutil_mtx_copy(mathutilData->mtxA, camera->unk174);
+    mathutil_mtx_copy(mathutilData->mtxA, camera->unk1A4);
+    mathutil_mtx_copy(mathutilData->mtxA, camera->unk1D4);
+    mathutil_mtx_copy(mathutilData->mtxA, mathutilData->mtxB);
+    mathutil_mtx_copy(mathutilData->mtxA, lbl_802F1B3C->matrices[2]);
+    mathutil_mtx_copy(mathutilData->mtxA, lbl_802F1B3C->matrices[3]);
+    mathutil_mtx_copy(mathutilData->mtxA, lbl_802F1B3C->matrices[0]);
+    mathutil_mtx_copy(mathutilData->mtxA, lbl_802F1B3C->matrices[4]);
+    mathutil_mtx_copy(mathutilData->mtxA, lbl_802F1B3C->matrices[1]);
+}
