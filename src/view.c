@@ -23,15 +23,15 @@ u8 lbl_802C4960[0x1400];  // TODO: what is this?
 
 struct StageViewInfo
 {
-    Vec unk0;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    s16 unk1E;
+    Vec eye;
+    Vec target;
+    s16 rotX;
+    s16 rotY;
+    s16 rotZ;
+    s16 frameCounter;
     float unk20;
     float unk24;
-    struct Sphere unk28;
+    struct Sphere stageBounds;
     s16 unk38;
     s16 unk3A;
     s16 unk3C;
@@ -47,10 +47,10 @@ void ev_view_init(void)
 {
     stageViewInfo = OSAlloc(sizeof(*stageViewInfo));
     if (stageViewInfo == NULL)
-        OSPanic("view.c", 0x72, "cannot OSAlloc\n");
+        OSPanic("view.c", 114, "cannot OSAlloc\n");
     memset(stageViewInfo, 0, sizeof(*stageViewInfo));
-    func_800A7020(&stageViewInfo->unk28);
-    stageViewInfo->unk20 = stageViewInfo->unk28.radius * 1.1313;
+    get_curr_stage_view_bounds(&stageViewInfo->stageBounds);
+    stageViewInfo->unk20 = stageViewInfo->stageBounds.radius * 1.1313;
     stageViewInfo->unk24 = 0.75f;
     stageViewInfo->unk38 = -5632;
     stageViewInfo->unk3A = 0;
@@ -58,14 +58,14 @@ void ev_view_init(void)
     {
         stageViewInfo->unk44 = OSAlloc(72 * sizeof(*stageViewInfo->unk44));
         if (stageViewInfo->unk44 == NULL)
-            OSPanic("view.c", 0x7E, "cannot OSAlloc\n");
+            OSPanic("view.c", 126, "cannot OSAlloc\n");
         memcpy(stageViewInfo->unk44, movableStageParts, 72 * sizeof(*stageViewInfo->unk44));
     }
     if (modeCtrl.unk28 == 1)
         camera_setup_singleplayer_viewport();
-    func_800A6200();
+    view_init_stage_anim();
     func_800A66E4();
-    func_800A60AC();
+    view_create_text_sprites();
 }
 
 void ev_view_main(void)
@@ -73,7 +73,7 @@ void ev_view_main(void)
     Vec sp8;
     s8 cstickY, cstickX;
 
-    func_800A6318();
+    view_animate_stage();
     func_800A66FC();
     stageViewInfo->unk3A += controllerInfo[lbl_801EEC68.unk14].unk0[0].stickX * 5;
     stageViewInfo->unk24 -= controllerInfo[lbl_801EEC68.unk14].unk0[0].stickY * 0.0003;
@@ -85,7 +85,7 @@ void ev_view_main(void)
     cstickX = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickX;
     stageViewInfo->unk3C += (cstickY * 64 - stageViewInfo->unk3C) >> 5;
     stageViewInfo->unk3E += (-cstickX * 0xC0 - stageViewInfo->unk3E) >> 5;
-    mathutil_mtxA_from_translate(&stageViewInfo->unk28.pos);
+    mathutil_mtxA_from_translate(&stageViewInfo->stageBounds.pos);
     mathutil_mtxA_rotate_y(stageViewInfo->unk3A);
     mathutil_mtxA_rotate_x(stageViewInfo->unk38);
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, stageViewInfo->unk20 * stageViewInfo->unk24);
@@ -93,16 +93,16 @@ void ev_view_main(void)
     mathutil_mtxA_rotate_y(stageViewInfo->unk3E);
     mathutil_mtxA_rotate_x(stageViewInfo->unk38);
     mathutil_mtxA_rotate_x(stageViewInfo->unk3C);
-    mathutil_mtxA_tf_point_xyz(&stageViewInfo->unk0, 0.0f, 0.0f, 0.0f);  // why?
-    mathutil_mtxA_tf_point_xyz(&stageViewInfo->unkC, 0.0f, 0.0f, -10.0f);
+    mathutil_mtxA_tf_point_xyz(&stageViewInfo->eye, 0.0f, 0.0f, 0.0f);  // why?
+    mathutil_mtxA_tf_point_xyz(&stageViewInfo->target, 0.0f, 0.0f, -10.0f);
 
-    sp8.x = stageViewInfo->unkC.x - stageViewInfo->unk0.x;
-    sp8.y = stageViewInfo->unkC.y - stageViewInfo->unk0.y;
-    sp8.z = stageViewInfo->unkC.z - stageViewInfo->unk0.z;
-    stageViewInfo->unk1A = mathutil_atan2(sp8.x, sp8.z) - 32768;
-    stageViewInfo->unk18 = mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z)));
-    stageViewInfo->unk1C = 0;
-    stageViewInfo->unk1E++;
+    sp8.x = stageViewInfo->target.x - stageViewInfo->eye.x;
+    sp8.y = stageViewInfo->target.y - stageViewInfo->eye.y;
+    sp8.z = stageViewInfo->target.z - stageViewInfo->eye.z;
+    stageViewInfo->rotY = mathutil_atan2(sp8.x, sp8.z) - 32768;
+    stageViewInfo->rotX = mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z)));
+    stageViewInfo->rotZ = 0;
+    stageViewInfo->frameCounter++;
     unpausedFrameCounter++;
 }
 
@@ -110,7 +110,7 @@ void ev_view_dest(void)
 {
     func_800A66CC();
     func_800A671C();
-    func_800A61DC();
+    view_destroy_text_sprites();
     if (stageViewInfo != NULL)
     {
         if (stageViewInfo->unk44 != NULL)
@@ -153,7 +153,7 @@ void ev_view_dest(void)
     }
 }
 
-void func_800A5CA0(void)
+void view_draw(void)
 {
     struct Camera *camera;
     struct Ball *ballBackup;
@@ -163,16 +163,16 @@ void func_800A5CA0(void)
     camera = &cameraInfo[modeCtrl.unk2C];
 
     lbl_801EEC90.unk0 |= 2;
-    func_800A7084(camera);
-    C_MTXPerspective(projMtx, 59.996337890625f, 1.3333333730697632f, 0.1f, 20000.0f);
+    view_apply_camera(camera);
+    C_MTXPerspective(projMtx, 59.99633789f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(projMtx, 0);
 
     {
-        S16Vec sp8 = {0};
-        sp8.x = stageViewInfo->unk18;
-        sp8.y = stageViewInfo->unk1A;
-        sp8.z = stageViewInfo->unk1C;
-        func_80020AB8(&stageViewInfo->unk0, &sp8, 59.996337890625f, 1.3333333730697632f, 0.0f, 0.0f);
+        S16Vec rotation = {0};
+        rotation.x = stageViewInfo->rotX;
+        rotation.y = stageViewInfo->rotY;
+        rotation.z = stageViewInfo->rotZ;
+        func_80020AB8(&stageViewInfo->eye, &rotation, 59.99633789f, 1.33333333f, 0.0f, 0.0f);
     }
 
     func_80021ECC();
@@ -180,14 +180,14 @@ void func_800A5CA0(void)
     currentBallStructPtr = &ballInfo[0];
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(1);
-    func_800A7084(camera);
+    view_apply_camera(camera);
     func_80092D3C();
     func_80054FF0();
     func_800225C0(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
-    func_800A7084(camera);
-    if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == 4)
+    view_apply_camera(camera);
+    if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
         func_800A6A88();
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         func_800A6874();
@@ -199,7 +199,7 @@ void func_800A5CA0(void)
     }
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(16);
-    func_800A7084(camera);
+    view_apply_camera(camera);
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         func_800A6734();
     if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
@@ -207,7 +207,7 @@ void func_800A5CA0(void)
     ord_tbl_draw_nodes();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(8);
-    func_800A7084(camera);
+    view_apply_camera(camera);
     currentBallStructPtr = ballBackup;
     func_80017FCC();
     lbl_801EEC90.unk0 &= ~(1 << 1);
@@ -216,7 +216,7 @@ void func_800A5CA0(void)
 
 void func_800A5F28(void)
 {
-    if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == 4)
+    if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
         func_800A6A88();
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
     {
@@ -231,7 +231,7 @@ void func_800A5F28(void)
     ord_tbl_draw_nodes();
 }
 
-void lbl_800A5FC4(struct Sprite *sprite)
+void view_sprite_func(struct Sprite *sprite)
 {
     func_80071A8C();
     func_80071AD4(sprite->fontId);
@@ -249,7 +249,7 @@ void lbl_800A5FC4(struct Sprite *sprite)
     func_80071E58(sprite->text);
 }
 
-void func_800A60AC(void)
+void view_create_text_sprites(void)
 {
     struct Sprite *sprite;
 
@@ -262,7 +262,7 @@ void func_800A60AC(void)
         sprite->textAlign = 0;
         sprite->fontId = 0xB3;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = lbl_800A5FC4;
+        sprite->unk38 = view_sprite_func;
         strcpy(sprite->text, "a/Stage Overview");
     }
 
@@ -275,7 +275,7 @@ void func_800A60AC(void)
         sprite->textAlign = 8;
         sprite->fontId = 0xB3;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = lbl_800A5FC4;
+        sprite->unk38 = view_sprite_func;
         strcpy(sprite->text, "p/LEVER/a/Rotate/Zoom");
     }
 
@@ -288,17 +288,17 @@ void func_800A60AC(void)
         sprite->textAlign = 8;
         sprite->fontId = 0xB3;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = lbl_800A5FC4;
+        sprite->unk38 = view_sprite_func;
         strcpy(sprite->text, "p/BUTTON_C/a/Pan camera");
     }
 }
 
-void func_800A61DC(void)
+void view_destroy_text_sprites(void)
 {
     g_dest_sprite_with_font(100);
 }
 
-void func_800A6200(void)
+void view_init_stage_anim(void)
 {
     struct MovableStagePart *movpart;
     struct StageCollHdr *r30;
@@ -334,7 +334,7 @@ void func_800A6200(void)
         find_blur_bridge_accordion();
 }
 
-void func_800A6318(void)
+void view_animate_stage(void)
 {
     float t;
     float f3;
@@ -342,8 +342,8 @@ void func_800A6318(void)
     struct StageCollHdr *r30;
     int i;
 
-    lbl_80206DEC.unk4 = stageViewInfo->unk1E;
-    t = stageViewInfo->unk1E / 60.0;
+    lbl_80206DEC.unk4 = stageViewInfo->frameCounter;
+    t = stageViewInfo->frameCounter / 60.0;
     t += decodedStageLzPtr->unk0;
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     t -= f3 * mathutil_floor(t / f3);
@@ -464,7 +464,7 @@ void func_800A6734(void)
                 mathutil_mtxA_from_mtx(movableStageParts[i].unk24);
                 mathutil_mtxA_translate(&r24->unk0);
                 mathutil_mtxA_sq_from_identity();
-                mathutil_mtxA_rotate_y(stageViewInfo->unk1E * sp10[r24->unkC]);
+                mathutil_mtxA_rotate_y(stageViewInfo->frameCounter * sp10[r24->unkC]);
                 mathutil_mtxA_mult_left(mathutilData->mtxB);
                 g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                 g_avdisp_maybe_draw_model_1(models[r24->unkC]);
@@ -534,7 +534,7 @@ void func_800A6A88(void)
     func_80030BB8(1.0f, 1.0f, 1.0f);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
-    mathutil_mtxA_rotate_y(stageViewInfo->unk1E << 9);
+    mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 9);
     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
     func_8000E3BC();
     if (decodedStageGmaPtr != NULL)
@@ -622,13 +622,13 @@ void func_800A6BF0(void)
             switch (r27->unk12)
             {
             default:
-                r28 = lbl_8020ADC8[0];
+                r28 = goalModels[0];
                 break;
-            case 0x47:
-                r28 = lbl_8020ADC8[1];
+            case 'G':
+                r28 = goalModels[1];
                 break;
-            case 0x52:
-                r28 = lbl_8020ADC8[2];
+            case 'R':
+                r28 = goalModels[2];
                 break;
             }
             if (r28 != NULL)
@@ -679,7 +679,7 @@ void func_800A6BF0(void)
             mathutil_mtxA_rotate_z(r29->unk10);
             mathutil_mtxA_rotate_y(r29->unkE);
             mathutil_mtxA_rotate_z(r29->unkC);
-            mathutil_mtxA_rotate_y(stageViewInfo->unk1E << 8);
+            mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             g_avdisp_maybe_draw_model_1(lbl_8028C0B0.unk14);
         }
@@ -717,7 +717,7 @@ void func_800A6BF0(void)
             mathutil_mtxA_rotate_y(r25->unkE);
             mathutil_mtxA_rotate_z(r25->unkC);
 
-            r4 = stageViewInfo->unk1E - (r26 * (60 / decodedStageLzPtr->jamabarsCount));
+            r4 = stageViewInfo->frameCounter - (r26 * (60 / decodedStageLzPtr->jamabarsCount));
             r0 = r4 % 60;
             f0 = r0 / 60.0f * 2.0;
             if (f0 >= 1.0)
@@ -754,7 +754,7 @@ struct Struct801D5854
     struct Sphere unk4;
 } lbl_801D5854 = {57, {{0, 100, 0}, 18}};
 
-void func_800A7020(struct Sphere *bounds)
+void get_curr_stage_view_bounds(struct Sphere *bounds)
 {
     int id;
 
@@ -763,12 +763,12 @@ void func_800A7020(struct Sphere *bounds)
         *bounds = lbl_801D5854.unk4;
 }
 
-void func_800A7084(struct Camera *camera)
+void view_apply_camera(struct Camera *camera)
 {
-    camera->eye = stageViewInfo->unk0;
-    camera->rotX = stageViewInfo->unk18;
-    camera->rotY = stageViewInfo->unk1A;
-    camera->rotZ = stageViewInfo->unk1C;
+    camera->eye = stageViewInfo->eye;
+    camera->rotX = stageViewInfo->rotX;
+    camera->rotY = stageViewInfo->rotY;
+    camera->rotZ = stageViewInfo->rotZ;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_z(-camera->rotZ);

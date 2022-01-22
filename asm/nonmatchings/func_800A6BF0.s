@@ -2,7 +2,7 @@
 /* 800A6BF4 000A2B14  3C 60 80 20 */	lis r3, movableStageParts@ha
 /* 800A6BF8 000A2B18  90 01 00 04 */	stw r0, 4(r1)
 /* 800A6BFC 000A2B1C  38 03 6E 48 */	addi r0, r3, movableStageParts@l
-/* 800A6C00 000A2B20  3C 60 80 21 */	lis r3, lbl_8020ADC8@ha
+/* 800A6C00 000A2B20  3C 60 80 21 */	lis r3, goalModels@ha
 /* 800A6C04 000A2B24  94 21 FF 70 */	stwu r1, -0x90(r1)
 /* 800A6C08 000A2B28  DB E1 00 88 */	stfd f31, 0x88(r1)
 /* 800A6C0C 000A2B2C  DB C1 00 80 */	stfd f30, 0x80(r1)
@@ -13,7 +13,7 @@
 /* 800A6C20 000A2B40  3B 40 00 00 */	li r26, 0
 /* 800A6C24 000A2B44  1C 9A 00 84 */	mulli r4, r26, 0x84
 /* 800A6C28 000A2B48  7F C0 22 14 */	add r30, r0, r4
-/* 800A6C2C 000A2B4C  3A E3 AD C8 */	addi r23, r3, lbl_8020ADC8@l
+/* 800A6C2C 000A2B4C  3A E3 AD C8 */	addi r23, r3, goalModels@l
 /* 800A6C30 000A2B50  3B E0 00 00 */	li r31, 0  
 /* 800A6C34 000A2B54  48 00 01 80 */	b lbl_800A6DB4
 lbl_800A6C38:
