@@ -7981,8 +7981,8 @@ lbl_8020A348:
 .global lbl_8020AB88
 lbl_8020AB88:
 	.skip 0x240
-.global lbl_8020ADC8
-lbl_8020ADC8:
+.global goalModels
+goalModels:
 	.skip 0xC
 .global stageBounds
 stageBounds:

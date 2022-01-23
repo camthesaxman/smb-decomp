@@ -1024,6 +1024,7 @@ __DVDLowSetWAType:
 
 .section .sdata
 
+    .balign 8
 .global FirstRead
 FirstRead:
 	# ROM: 0x1EC090

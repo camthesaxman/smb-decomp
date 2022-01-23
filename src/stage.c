@@ -664,22 +664,9 @@ void *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct80209D48 lbl_80209D48[0x80];
 
-struct Struct8020A348_child
-{
-    u32 unk0;
-    struct GMAModelHeader *unk4;  // GMAModelHeader
-    float unk8;
-};  // size = 0xC
-
-struct Struct8020A348
-{
-    struct Struct8020A348_child *unk0;
-    s32 unk4;
-};
-
 struct Struct8020A348 lbl_8020A348[0x108];  //0x3648
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
-struct GMAModelHeader *lbl_8020ADC8[3];
+struct GMAModelHeader *goalModels[3];
 struct Sphere stageBounds;
 
 FORCE_BSS_ORDER(lbl_80209368)
@@ -689,7 +676,7 @@ FORCE_BSS_ORDER(lbl_802099E8)
 FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
 FORCE_BSS_ORDER(lbl_8020AB88)
-FORCE_BSS_ORDER(lbl_8020ADC8)
+FORCE_BSS_ORDER(goalModels)
 FORCE_BSS_ORDER(stageBounds)
 
 struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj, (struct NaomiObj **)&naomiCommonObj, NULL};
@@ -2001,13 +1988,13 @@ void stage_draw(void)
                 switch (r24->unk12)
                 {
                 default:
-                    model = lbl_8020ADC8[0];
+                    model = goalModels[0];
                     break;
-                case 0x47:
-                    model = lbl_8020ADC8[1];
+                case 'G':
+                    model = goalModels[1];
                     break;
-                case 0x52:
-                    model = lbl_8020ADC8[2];
+                case 'R':
+                    model = goalModels[2];
                     break;
                 }
                 if (model != NULL)

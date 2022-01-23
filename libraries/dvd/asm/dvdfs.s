@@ -842,6 +842,7 @@ glabel string_DVDPrepareStream____The_area_specified__offset_0x_x___length_0x_x_
 
 .section .sdata
 
+    .balign 8
 .global lbl_802F1958
 lbl_802F1958:
 	# ROM: 0x1EC098

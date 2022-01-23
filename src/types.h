@@ -328,7 +328,7 @@ struct MovableStagePart
     s16 unk22;
     Mtx unk24;
     Mtx unk54;
-};
+};  // size = 0x84
 
 struct ReplayInfo
 {
@@ -631,7 +631,10 @@ struct Sprite
              s32 unk64;
              u8 filler68[0x6C-0x68];
              float unk6C;
-             u8 filler70[4];
+             u8 unk70;
+             u8 unk71;
+             u8 unk72;
+             u8 filler73[1];
              u32 unk74;
              u32 unk78;
              float unk7C;
@@ -639,6 +642,19 @@ struct Sprite
              float unk84;
              float unk88;
     /*0x8C*/ char text[0xBC-0x8C];  // text
+};
+
+struct Struct8020A348_child
+{
+    u32 unk0;
+    struct GMAModelHeader *unk4;  // GMAModelHeader
+    float unk8;
+};  // size = 0xC
+
+struct Struct8020A348
+{
+    struct Struct8020A348_child *unk0;
+    s32 unk4;
 };
 
 struct FontParams

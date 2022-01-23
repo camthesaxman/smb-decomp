@@ -81,7 +81,7 @@ void polydisp_main(void)
             func_80095398(2);
     }
     else
-        func_800A5CA0();
+        view_draw();
     func_8000E180();
     if (eventInfo[EVENT_NAME_ENTRY].state == EV_STATE_RUNNING)
         func_800AE408();
