@@ -647,7 +647,7 @@ struct FontParams
     /*0x02*/ u8 spaceWidth;
     /*0x03*/ u8 lineHeight;
     /*0x04*/ s32 unk4;
-    /*0x08*/ u32 unk8;
+    /*0x08*/ s32 unk8;
     /*0x0C*/ s8 unkC;
     /*0x0D*/ s8 unkD;
     /*0x10*/ float unk10;

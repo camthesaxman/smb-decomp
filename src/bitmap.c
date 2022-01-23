@@ -9,7 +9,7 @@
 #include "mathutil.h"
 
 struct TPL *g_unkBitmapTPL;
-u32 lbl_802F1D04;
+s32 lbl_802F1D04;
 s32 g_bmpUnkCountOfSomething;
 u16 lbl_802F1CFC;
 struct Bitmap *bitmapList;

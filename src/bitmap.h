@@ -57,7 +57,7 @@ struct BitmapGroup
 };
 
 extern s32 g_bmpUnkCountOfSomething;
-extern u32 lbl_802F1D04;
+extern s32 lbl_802F1D04;
 extern struct TPL *g_unkBitmapTPL;
 
 extern struct BitmapGroup bitmapGroups[];
