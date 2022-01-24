@@ -160,7 +160,7 @@ void ev_ball_dest(void);
 void ball_draw(void);
 void func_80038AB4(void);
 void func_80038DF4(void);
-// ? give_bananas();
+void give_bananas(int bananas);
 void func_800390C8(int, Vec *, float);
 // ? func_80039410();
 void func_800394C4(struct Ball *);

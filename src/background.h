@@ -73,7 +73,7 @@ void background_draw(void);
 void func_8005507C(void);
 void preload_bg_files(int);
 void load_bg_files(int bgId);
-// ? func_800554A4();
+void func_800554A4(int);
 void bg_e3_init(void);
 void bg_e3_main(void);
 void bg_e3_finish(void);

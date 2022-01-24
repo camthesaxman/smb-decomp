@@ -763,7 +763,6 @@ lbl_80068B00:
 /* 80068B10 00064A30  38 21 00 B8 */	addi r1, r1, 0xb8
 /* 80068B14 00064A34  7C 08 03 A6 */	mtlr r0
 /* 80068B18 00064A38  4E 80 00 20 */	blr
-.endif
 
 glabel func_80068B1C
 /* 80068B1C 00064A3C  28 04 00 00 */	cmplwi r4, 0
@@ -861,6 +860,7 @@ lbl_80068C30:
 /* 80068C6C 00064B8C  90 03 01 0C */	stw r0, 0x10c(r3)
 /* 80068C70 00064B90  38 21 00 30 */	addi r1, r1, 0x30
 /* 80068C74 00064B94  4E 80 00 20 */	blr
+
 .global func_80068C78
 func_80068C78:
 /* 80068C78 00064B98  4E 80 00 20 */	blr
@@ -939,6 +939,7 @@ it_init_coin:
 /* 80068D60 00064C80  C0 03 00 14 */	lfs f0, 0x14(r3)
 /* 80068D64 00064C84  D0 03 00 84 */	stfs f0, 0x84(r3)
 /* 80068D68 00064C88  4E 80 00 20 */	blr
+
 .global func_80068D6C
 func_80068D6C:
 /* 80068D6C 00064C8C  7C 08 02 A6 */	mflr r0
@@ -963,19 +964,19 @@ lbl_80068DB0:
 /* 80068DB4 00064CD4  41 82 00 54 */	beq lbl_80068E08
 /* 80068DB8 00064CD8  40 80 00 8C */	bge lbl_80068E44
 /* 80068DBC 00064CDC  48 00 00 28 */	b lbl_80068DE4
-lbl_80068DC0:
+lbl_80068DC0:  ;# 1
 /* 80068DC0 00064CE0  38 00 00 02 */	li r0, 2
 /* 80068DC4 00064CE4  B0 1F 00 0E */	sth r0, 0xe(r31)
 /* 80068DC8 00064CE8  48 00 00 7C */	b lbl_80068E44
-lbl_80068DCC:
+lbl_80068DCC:  ;# 3
 /* 80068DCC 00064CEC  38 00 00 04 */	li r0, 4
 /* 80068DD0 00064CF0  B0 1F 00 0E */	sth r0, 0xe(r31)
-lbl_80068DD4:
+lbl_80068DD4:  ;# 4
 /* 80068DD4 00064CF4  38 00 00 05 */	li r0, 5
 /* 80068DD8 00064CF8  B0 1F 00 0E */	sth r0, 0xe(r31)
 /* 80068DDC 00064CFC  38 00 00 0F */	li r0, 0xf
 /* 80068DE0 00064D00  B0 1F 00 10 */	sth r0, 0x10(r31)
-lbl_80068DE4:
+lbl_80068DE4:  ;# 5
 /* 80068DE4 00064D04  A8 7F 00 10 */	lha r3, 0x10(r31)
 /* 80068DE8 00064D08  38 03 FF FF */	addi r0, r3, -1
 /* 80068DEC 00064D0C  B0 1F 00 10 */	sth r0, 0x10(r31)
@@ -985,7 +986,7 @@ lbl_80068DE4:
 /* 80068DFC 00064D1C  38 00 00 06 */	li r0, 6
 /* 80068E00 00064D20  B0 1F 00 0E */	sth r0, 0xe(r31)
 /* 80068E04 00064D24  48 00 00 40 */	b lbl_80068E44
-lbl_80068E08:
+lbl_80068E08:  ;# 6
 /* 80068E08 00064D28  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80068E0C 00064D2C  C8 02 9E A8 */	lfd f0, lbl_802F46A8-_SDA2_BASE_(r2)
 /* 80068E10 00064D30  FC 01 00 28 */	fsub f0, f1, f0
@@ -1001,7 +1002,7 @@ lbl_80068E08:
 /* 80068E38 00064D58  60 00 00 01 */	ori r0, r0, 1
 /* 80068E3C 00064D5C  90 1F 00 08 */	stw r0, 8(r31)
 /* 80068E40 00064D60  D0 1F 00 14 */	stfs f0, 0x14(r31)
-lbl_80068E44:
+lbl_80068E44:  ;# 2, end
 /* 80068E44 00064D64  80 7F 00 20 */	lwz r3, 0x20(r31)
 /* 80068E48 00064D68  80 1F 00 24 */	lwz r0, 0x24(r31)
 /* 80068E4C 00064D6C  90 7F 00 44 */	stw r3, 0x44(r31)
@@ -1077,6 +1078,7 @@ lbl_80068F50:
 /* 80068F58 00064E78  38 21 00 20 */	addi r1, r1, 0x20
 /* 80068F5C 00064E7C  7C 08 03 A6 */	mtlr r0
 /* 80068F60 00064E80  4E 80 00 20 */	blr
+
 .global func_80068F64
 func_80068F64:
 /* 80068F64 00064E84  7C 08 02 A6 */	mflr r0
@@ -1416,6 +1418,8 @@ func_800693EC:
 /* 80069448 00065368  7C 08 03 A6 */	mtlr r0
 /* 8006944C 0006536C  38 21 00 18 */	addi r1, r1, 0x18
 /* 80069450 00065370  4E 80 00 20 */	blr
+;# coin end
+.endif
 
 .global func_80069454
 func_80069454:
@@ -8850,7 +8854,6 @@ lbl_801BDD14:
 	.4byte func_80068C88  ;# ptr
 	.4byte func_8006A560  ;# ptr
 	.4byte 0
-.endif
 
 .global lbl_801BDD30
 lbl_801BDD30:
@@ -8930,6 +8933,7 @@ glabel lbl_801BDE80
 	.4byte func_80068C90  ;# ptr
 	.4byte 0
 
+    .balign 8
 .global lbl_801BDEA0
 lbl_801BDEA0:
 	# ROM: 0x1BAEA0
@@ -8950,6 +8954,7 @@ glabel lbl_801BDEC8
 	.4byte 0
 	.byte 0xFF, 0xFF, 0xFF, 0xFF
 	.4byte 0
+glabel lbl_801BDEE0
 	.4byte lbl_802F0B30  ;# ptr
 	.byte 0x3F, 0x00, 0x00, 0x00
 	.byte 0x00, 0x01, 0x00, 0x00
@@ -8980,7 +8985,9 @@ glabel lbl_801BDEC8
 glabel string_Coin_Value___d_n
 	.asciz "Coin Value: %d\n"
 	.4byte 0
+.endif
 
+    .balign 8
 .global lbl_801BDF60
 lbl_801BDF60:
 	# ROM: 0x1BAF60
@@ -9368,7 +9375,6 @@ lbl_802F4698:
 	# ROM: 0x1EE0B8
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
-.endif
 
 .global lbl_802F46A0
 lbl_802F46A0:
@@ -9400,9 +9406,10 @@ lbl_802F46B4:
 lbl_802F46B8:
 	# ROM: 0x1EE0D8
 glabel string__333_2
-	.asciz "?333"
+	.byte 0x3F, 0x33, 0x33, 0x33
 	.balign 4
 
+    .balign 8
 .global lbl_802F46C0
 lbl_802F46C0:
 	# ROM: 0x1EE0E0
@@ -9436,6 +9443,7 @@ lbl_802F46E0:
 	# ROM: 0x1EE100
 	.byte 0x3F, 0xD0, 0x00, 0x00
 	.4byte 0
+.endif
 
 .global lbl_802F46E8
 lbl_802F46E8:
@@ -10228,11 +10236,11 @@ lbl_802F4A6C:
 .if 0
 glabel string_IT_COIN
 	.asciz "IT_COIN"
-.endif
 glabel lbl_802F0B30
 	.4byte lbl_801BDEA0  ;# ptr
 glabel lbl_802F0B34
 	.4byte lbl_801BDEC8  ;# ptr
+.endif
 glabel lbl_802F0B38
 	.4byte lbl_801BDF60  ;# ptr
 glabel lbl_802F0B3C

@@ -444,10 +444,17 @@ struct Struct8003C550
     s16 unk8;
     u8 fillerA[0x14-0xA];
     s16 unk14;
-    u8 filler16[0x34-0x16];
+    u8 filler16[0x24-0x16];
+    float unk24;
+    float unk28;
+    float unk2C;
+    struct GMAModelHeader *unk30;
     Vec unk34;
     Vec unk40;
-    u8 filler4C[0x88-0x4C];
+    s16 unk4C;
+    s16 unk4E;
+    s16 unk50;
+    u8 filler52[0x88-0x52];
     Vec unk88;
     u8 filler94[0xA8-0x94];
     float unkA8;
@@ -931,6 +938,14 @@ struct AnimKeyframe
 struct StageCollHdr;
 struct StageCollHdr_child3;
 
+struct Struct800690DC
+{
+    u8 filler0[0x1C];
+    Vec unk1C;
+    u8 filler28[0x58-0x28];
+    s32 unk58;
+};
+
 struct Item
 {
     s16 unk0;
@@ -939,16 +954,26 @@ struct Item
     s16 unk6;
     u32 unk8;
     s16 unkC;
-    u8 fillerE[0x12-0xE];
+    s16 unkE;
+    s16 unk10;
     s16 unk12;
-    u8 filler14[0x18-0x14];
+    float unk14;
     float unk18;
-    u8 filler1C[4];
-    Vec unk20;
-    u8 filler2C[0x44-0x2C];
+    void **unk1C;
+    Vec unk20;  // position?
+    Vec unk2C;
+    s16 unk38;  // xrot
+    s16 unk3A;  // yrot
+    s16 unk3C;  // zrot
+    s16 unk3E;
+    s16 unk40;
+    s16 unk42;
     Vec unk44;
-    u8 filler50[0x58-0x50];
-    void (*unk58)(struct Item *);
+    s16 unk50;
+    s16 unk52;
+    s16 unk54;
+    u8 filler56[2];
+    void (*unk58)(struct Item *, struct Struct800690DC *);
     s8 unk5C;
     u8 filler5D[1];
     s16 unk5E;

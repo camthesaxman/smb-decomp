@@ -111,6 +111,7 @@ SOURCES := \
 	src/background.c \
 	asm/background.s \
 	src/item.c \
+	src/item_coin.c \
 	asm/item.s \
 	src/sprite.c \
 	asm/sprite.s \

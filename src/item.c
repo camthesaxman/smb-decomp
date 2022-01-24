@@ -54,7 +54,7 @@ void (*lbl_801BDCDC[])(struct Item *) =
     NULL,
 };
 
-void (*lbl_801BDCF8[])(struct Item *) =
+void (*lbl_801BDCF8[])(struct Item *, struct Struct800690DC *) =
 {
     func_800690DC,
     func_80068C84,
@@ -76,7 +76,56 @@ void (*lbl_801BDD14[])(struct Item *) =
     NULL,
 };
 
-extern void (*lbl_801BDD30[])(struct Item *);
+void (*lbl_801BDD30[])(struct Item *) =
+{
+    func_80069394,
+    func_80068C8C,
+    func_80068C8C,
+    func_80068C8C,
+    func_80068C8C,
+    func_8006A564,
+    NULL,
+};
+
+// unused?
+#pragma force_active on
+void (*lbl_801BDD4C[])(struct Item *) =
+{
+    func_800693EC,
+    func_80068C90,
+    func_80068C90,
+    func_80068C90,
+    func_80068C90,
+    func_8006A5BC,
+    NULL,
+};
+
+char string_STATUS___s_n[] = "STATUS: %s\n";
+u8 lbl_801BDD74[] =
+{
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x0A,
+    0x00, 0x00, 0x00, 0x00,
+};
+char string_TYPE___s_n[]          = "TYPE: %s\n";
+char string_POS__X__7_3f_n[]      = "POS: X,%7.3f\n";
+char string______Y__7_3f_n[]      = "     Y,%7.3f\n";
+char string______Z__7_3f_n[]      = "     Z,%7.3f\n";
+char string_SPD__X__7_3f_n[]      = "SPD: X,%7.3f\n";
+char string_ROT__X_0x_04X_n[]     = "ROT: X,0x%04X\n";
+char string______Y_0x_04X_n[]     = "     Y,0x%04X\n";
+char string______Z_0x_04X_n[]     = "     Z,0x%04X\n";
+char string_ROTSPD__X_0x_04X_n[]  = "ROTSPD: X,0x%04X\n";
+char string_________Y_0x_04X_n[]  = "        Y,0x%04X\n";
+char string_________Z_0x_04X_n[]  = "        Z,0x%04X\n";
+char string_COLI_RAD___7_3f_n[]   = "COLI RAD: %7.3f\n";
+char string_Captured_Time___d_n[] = "Captured Time: %d\n";
+char string_Flag__0x_08X_n[]      = "Flag: 0x%08X\n";
+#pragma force_active reset
 
 void ev_item_init(void)
 {
@@ -362,19 +411,78 @@ void func_80068A68(struct StageCollHdr *coll, int count)
     }
 }
 
+struct Struct801BDE80
+{
+    void (*unk0)(struct Item *);
+    void (*unk4)(struct Item *);
+    void (*unk8)(struct Item *);
+    void (*unkC)(struct Item *, struct Struct800690DC *);
+    void (*unk10)(struct Item *);
+    void (*unk14)(struct Item *);
+    void (*unk18)(struct Item *);
+};
+
+struct Struct801BDE80 lbl_801BDE80 =
+{
+    func_80068C78,
+    func_80068C7C,
+    func_80068C80,
+    func_80068C84,
+    func_80068C88,
+    func_80068C8C,
+    func_80068C90,
+};
+
+#pragma force_active on
+void func_80068B1C(int a, struct Struct801BDE80 *b)
+{
+    struct Struct801BDE80 sp10;
+
+    if (b == NULL)
+        sp10 = lbl_801BDE80;
+    else
+    {
+        sp10 = *b;
+        if (sp10.unk0 == NULL)
+            sp10.unk0 = lbl_801BDE80.unk0;
+        if (sp10.unk4 == NULL)
+            sp10.unk4 = lbl_801BDE80.unk4;
+        if (sp10.unk8 == NULL)
+            sp10.unk8 = lbl_801BDE80.unk8;
+        if (sp10.unkC == NULL)
+            sp10.unkC = lbl_801BDE80.unkC;
+        if (sp10.unk10 == NULL)
+            sp10.unk10 = lbl_801BDE80.unk10;
+        if (sp10.unk14 == NULL)
+            sp10.unk14 = lbl_801BDE80.unk14;
+        if (sp10.unk18 == NULL)
+            sp10.unk18 = lbl_801BDE80.unk18;
+    }
+    itemInitFuncs[a] = sp10.unk0;
+    lbl_801BDCC0[a] = sp10.unk4;
+    lbl_801BDCDC[a] = sp10.unk8;
+    lbl_801BDCF8[a] = sp10.unkC;
+    lbl_801BDD14[a] = sp10.unk10;
+    lbl_801BDD30[a] = sp10.unk14;
+    lbl_801BDD4C[a] = sp10.unk18;
+}
+#pragma force_active reset
+
+void func_80068C78(struct Item *item) {}
+
+void func_80068C7C(struct Item *item) {}
+
+void func_80068C80(struct Item *item) {}
+
+void func_80068C84(struct Item *item, struct Struct800690DC *) {}
+
+void func_80068C88(struct Item *item) {}
+
+void func_80068C8C(struct Item *item) {}
+
+void func_80068C90(struct Item *item) {}
+
 /*
-const double lbl_802F4660 = 0;
-const float lbl_802F4668 = 1f;
-const float lbl_802F466C = 0f;
-const float lbl_802F4670 = 0.15000000596046448f;
-const double lbl_802F4678 = 0.033333333333333333;
-const float lbl_802F4680 = -0.0625f;
-const float lbl_802F4684 = 3f;
-const float lbl_802F4688 = 0.5f;
-const float lbl_802F468C = 2f;
-const float lbl_802F4690 = 0.075000002980232239f;
-const float lbl_802F4694 = 0.10000000149011612f;
-const double lbl_802F4698 = 4503599627370496;
 const float lbl_802F46A0 = 0.25f;
 const float lbl_802F46A4 = 0.80000001192092896f;
 const double lbl_802F46A8 = 0.033333333333333333;
