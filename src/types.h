@@ -301,7 +301,10 @@ struct SpritePoolInfo
              u8 filler0[8];
              s32 unk8;
              s8 *unkC;
-             u8 filler10[0x30-0x10];
+             u8 unk10[0x18-0x10];
+             s32 unk18;
+             s8 *unk1C;
+             u8 filler20[0x30-0x20];
              u8 unk30[4];
              u32 unk34;
              s32 unk38;
@@ -377,9 +380,12 @@ struct Struct8009492C
 {
     Vec unk0;
     S16Vec unkC;
+    /*
     float unk14;
     float unk18;
     float unk1C;
+    */
+    Vec unk14;
     float unk20;
     float unk24;
     struct GMAModelHeader *unk28;
@@ -921,3 +927,37 @@ struct AnimKeyframe
     float unkC;
     float unk10;
 };
+
+struct StageCollHdr;
+struct StageCollHdr_child3;
+
+struct Item
+{
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    u32 unk8;
+    s16 unkC;
+    u8 fillerE[0x12-0xE];
+    s16 unk12;
+    u8 filler14[0x18-0x14];
+    float unk18;
+    u8 filler1C[4];
+    Vec unk20;
+    u8 filler2C[0x44-0x2C];
+    Vec unk44;
+    u8 filler50[0x58-0x50];
+    void (*unk58)(struct Item *);
+    s8 unk5C;
+    u8 filler5D[1];
+    s16 unk5E;
+    struct StageCollHdr_child3 *unk60;
+    s32 unk64;
+    struct GMAModelHeader *unk68;
+    S16Vec unk6C;
+    float unk74;
+    GXColor unk78;
+    Vec unk7C;
+    float unk88;
+};  // size = 0x8C

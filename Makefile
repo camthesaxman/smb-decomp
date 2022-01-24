@@ -110,6 +110,7 @@ SOURCES := \
 	asm/recplay.s \
 	src/background.c \
 	asm/background.s \
+	src/item.c \
 	asm/item.s \
 	src/sprite.c \
 	asm/sprite.s \

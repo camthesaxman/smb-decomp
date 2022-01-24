@@ -8037,37 +8037,3 @@ lbl_8027CE18:
 .global lbl_8027CE24
 lbl_8027CE24:
 	.skip 0x34
-.global itemInfo
-itemInfo:
-	.skip 0x8C00
-.global lbl_80285A58
-lbl_80285A58:
-    .skip 0x10
-glabel lbl_80285A68
-	.skip 0x18
-glabel lbl_80285A80
-    .skip 0x30
-.global lbl_80285AB0
-lbl_80285AB0:
-	.skip 0x6600
-.global lbl_8028C0B0
-lbl_8028C0B0:
-	.skip 0x4
-glabel lbl_8028C0B4
-	.skip 0x4
-glabel lbl_8028C0B8
-	.skip 0x4
-glabel lbl_8028C0BC
-	.skip 0x1C
-.global lbl_8028C0D8
-lbl_8028C0D8:
-	.skip 0xCC0
-.global lbl_8028CD98
-lbl_8028CD98:
-	.skip 0x140
-.global lbl_8028CED8
-lbl_8028CED8:
-	.skip 0x28
-.global lbl_8028CF00
-lbl_8028CF00:
-	.skip 0x28
