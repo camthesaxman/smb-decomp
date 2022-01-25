@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 #include <dolphin.h>
@@ -3050,6 +3051,291 @@ void func_80071E58(char *str)
 
     r28->unkC = r25;
     r28->unk20 = f31;
+}
+
+float g_get_text_width(char *str)
+{
+    struct Struct8028CF28 *r29 = &lbl_8028CF28;
+    int r25;
+    struct FontParams *font;
+    int r23;
+    int r22;
+    float width;
+    float f23;
+    struct Struct801F3DC0 unk;
+    struct Struct80071140_a sp2C;
+    u8 dummy2[8];
+    s32 sp20;
+    s32 sp1C;
+    s32 sp18;
+    u8 dummy[8];
+
+    font = &lbl_801BE4B0[r29->unkC];
+    r22 = 0;
+    r25 = r29->unkC;
+    f23 = r29->unk20;
+    sp2C.unk0 = 0;
+    sp2C.unk4 = -1;
+    sp2C.unk8 = 0;
+    sp2C.unkC = 0.0f;
+    width = 0.0f;
+
+    for (; *str != 0; str++)
+    {
+        float f1;
+        int r3;
+
+        if (lbl_802F1D04 != 4 && lbl_802F200C != -1.0f)
+        {
+            if (lbl_802F200C <= (float)r22)
+                break;
+        }
+        if (r29->unkC > 0xAE)
+            r23 = func_80071E58_inline(*str, r29->unkC, font);
+        else
+            r23 = func_80070E9C(str, r29->unkC, font);
+        f1 = func_80071018(str, r29->unkC);
+        if (*str == '\n')
+            continue;
+        if (*str == ' ' || *str < font->unk4 || *str > font->unk8)
+        {
+            r22++;
+            width += r23 * r29->unk20 * f1;
+            sp2C.unkC += r23;
+            continue;
+        }
+        r3 = *str;
+        if (r29->unkC > 0xAE)
+        {
+            sp18 = unk.unk38;
+            sp20 = 0;
+            sp1C = 0;
+            r3 = func_80071140(&sp2C, str, &sp18, &sp20, &sp1C);
+            unk.unk38 = sp18;
+            str += sp20;
+            if (sp1C == 1)
+            {
+                r29->unkC = 0xB0;
+                font = &lbl_801BE4B0[r29->unkC];
+            }
+            else if (sp1C == 2)
+            {
+                r29->unkC = 0xB1;
+                font = &lbl_801BE4B0[r29->unkC];
+            }
+            else if (sp1C == 0x46)
+                r29->unk20 = 0.7f;
+            else if (sp1C == 0x50)
+                r29->unk20 = 0.8f;
+            else if (sp1C == 0x5A)
+                r29->unk20 = 0.9f;
+            else if (sp1C == 0x64)
+                r29->unk20 = 1.0f;
+            if (r3 == -1)
+            {
+                width += r23 * r29->unk20;
+                continue;
+            }
+            if (r3 == -2)
+                continue;
+            switch (r29->unkC)
+            {
+            case 0xB1:
+            case 0xB3:
+                if (r3 >= 0xC8)
+                {
+                    int foo = lbl_80117A80[r3 - 0xC8];
+
+                    if (foo != -1)
+                    {
+                        int r6 = foo + 1;
+
+                        if (r6 < 24)
+                            r6 = foo + 1;
+                        else
+                            r6 = r6 = 24;
+                        f1 = (float)r6 / (float)lbl_801BE4B0[r29->unkC].spaceWidth;
+                        break;
+                    }
+                }
+                // fall through
+            default:
+                f1 = 1.0f;
+                break;
+            }
+            if (sp2C.unk0 & (1<<(31-0xE)))
+                font = &lbl_801BE4B0[0xB2];
+            else
+                font = &lbl_801BE4B0[r29->unkC];
+        }
+        r22++;
+        width += r23 * r29->unk20 * f1;
+        str += sp2C.unk8;
+        sp2C.unkC += r23;
+    }
+    r29->unkC = r25;
+    r29->unk20 = f23;
+    return width;
+}
+
+void func_80072AC0(char *str, ...)
+{
+    va_list args;
+    char buf[0x200];
+
+    va_start(args, str);
+    vsprintf(buf, str, args);
+    va_end(args);
+    func_80071E58(buf);
+}
+
+void func_80072B50(struct Sprite *sprite)
+{
+    lbl_8028CF28.unk0 = sprite->unk58;
+    lbl_8028CF28.unk4 = sprite->unk58;
+    lbl_8028CF28.unk8 = sprite->unk5C;
+    lbl_8028CF28.unkC = sprite->fontId;
+    lbl_8028CF28.unk10 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
+                       | ((sprite->unkC & 0xFF) << 16)
+                       | ((sprite->unkD & 0xFF) <<  8)
+                       | ((sprite->unkE & 0xFF) <<  0);
+    lbl_8028CF28.unk14 = (sprite->unk70 << 16)
+                       | (sprite->unk71 << 8)
+                       | (sprite->unk72 << 0);
+    lbl_8028CF28.unk18 = sprite->unk68;
+    lbl_8028CF28.unk1C = sprite->unk4C;
+    lbl_8028CF28.unk20 = sprite->unk40;
+    lbl_8028CF28.unk24 = sprite->unk44;
+    lbl_8028CF28.unk28 = sprite->unk6C;
+    lbl_8028CF28.unk2C = sprite->unk74;
+    func_80071E58(sprite->text);
+}
+
+void func_80072C68(struct Sprite *sprite)
+{
+    struct Struct801F3DC0 spC;
+
+    spC.unk0 = sprite->unk3C;
+    spC.unk4 = (sprite->unk58 + sprite->unk60) / 2;
+    spC.unk8 = (sprite->unk5C + sprite->unk64) / 2;
+    spC.unkC = sprite->unk4C;
+    spC.unk10 = sprite->unk40;
+    spC.unk14 = sprite->unk44;
+    spC.unk18 = sprite->unk7C;
+    spC.unk1C = sprite->unk80;
+    spC.unk20 = sprite->unk84;
+    spC.unk24 = sprite->unk88;
+    spC.unk28 = sprite->unk68;
+    spC.unk2C = sprite->unk6C;
+    spC.unk30 = -1;
+    spC.unk34 = (sprite->unk74 & ~0xF) | 10;
+    spC.unk38 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
+              | ((sprite->unkC & 0xFF) << 16)
+              | ((sprite->unkD & 0xFF) <<  8)
+              | ((sprite->unkE & 0xFF) <<  0);
+    spC.unk3C = (sprite->unk70 << 16)
+              | (sprite->unk71 << 8)
+              | (sprite->unk72 << 0);
+    func_80073828(&spC);
+}
+
+float func_80072DA8(int r23, char *str, int c)
+{
+    int r27;
+    struct FontParams *font;
+    float f31;
+    struct Struct80071140_a sp28;
+    s32 sp24;
+    s32 sp20;
+    s32 sp1C;
+    u8 dummy[8];
+
+    font = &lbl_801BE4B0[r23];
+    r27 = 0;
+    f31 = 1.0f;
+    sp28.unk0 = 0;
+    sp28.unk4 = -1;
+    sp28.unk8 = 0;
+    sp28.unkC = 0.0f;
+
+    for (; *str != 0; str++)
+    {
+        int r3;
+        float f2;
+
+        if (*str == ' ')
+        {
+            sp28.unkC += func_80071E58_inline(*str, r23, font) * f31;
+            r27++;
+            continue;
+        }
+        sp24 = 0;
+        sp1C = 0;
+        sp20 = 0;
+        r3 = func_80071140(&sp28, str, &sp1C, &sp24, &sp20);
+        if (sp20 == 1)
+        {
+            font = &lbl_801BE4B0[0xB0];
+            r23 = 0xB0;
+        }
+        else if (sp20 == 2)
+        {
+            font = &lbl_801BE4B0[0xB1];
+            r23 = 0xB1;
+        }
+        else if (sp20 == 0x46)
+            f31 = 0.7f;
+        else if (sp20 == 0x50)
+            f31 = 0.8f;
+        else if (sp20 == 0x5A)
+            f31 = 0.9f;
+        else if (sp20 == 0x64)
+            f31 = 1.0f;
+        str += sp24;
+        if (r3 == -1 || r3 == -2)
+            continue;
+        switch (r23)
+        {
+        case 0xB1:
+        case 0xB3:
+            if (r3 >= 0xC8)
+            {
+                int foo = lbl_80117A80[r3 - 0xC8];
+
+                if (foo != -1)
+                {
+                    int r6 = foo + 1;
+
+                    if (r6 < 24)
+                        r6 = foo + 1;
+                    else
+                        r6 = r6 = 24;
+                    f2 = (float)r6 / (float)lbl_801BE4B0[r23].spaceWidth;
+                    break;
+                }
+            }
+        default:
+            f2 = 1.0f;
+            break;
+        }
+        r27++;
+        sp28.unkC += f31 * (font->spaceWidth * f2);
+        str += sp28.unk8;
+    }
+    if (c == 0)
+        return r27;
+    else
+        return sp28.unkC;
+}
+
+float func_80073058(char *str)
+{
+    return func_80072DA8(0, str, 0);
+}
+
+int func_80073084(int a, char *str)
+{
+    return func_80072DA8(a, str, 1);
 }
 
 /*
