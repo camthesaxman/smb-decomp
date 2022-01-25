@@ -22030,7 +22030,7 @@ lbl_000147E0:
 /* 00014840 A87D003C */ lha r3, 0x3c(r29)
 /* 00014844 4BFEB921 */ bl mathutil_mtxA_rotate_z
 /* 00014848 807D001C */ lwz r3, 0x1c(r29)
-/* 0001484C 4BFEB919 */ bl func_80069454
+/* 0001484C 4BFEB919 */ bl find_item_model
 /* 00014850 C0230014 */ lfs f1, 0x14(r3)
 /* 00014854 7C7D1B78 */ mr r29, r3
 /* 00014858 C85E0050 */ lfd f2, 0x50(r30)
@@ -22207,7 +22207,7 @@ lbl_00014A2C:
 /* 00014AF0 A81D003C */ lha r0, 0x3c(r29)
 /* 00014AF4 B0010060 */ sth r0, 0x60(r1)
 /* 00014AF8 807D001C */ lwz r3, 0x1c(r29)
-/* 00014AFC 4BFEB669 */ bl func_80069454
+/* 00014AFC 4BFEB669 */ bl find_item_model
 /* 00014B00 90610040 */ stw r3, 0x40(r1)
 /* 00014B04 38610010 */ addi r3, r1, 0x10
 /* 00014B08 80810040 */ lwz r4, 0x40(r1)

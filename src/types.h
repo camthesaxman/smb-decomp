@@ -986,3 +986,9 @@ struct Item
     Vec unk7C;
     float unk88;
 };  // size = 0x8C
+
+struct ModelLOD
+{
+    s32 modelId;
+    float unk4;
+};

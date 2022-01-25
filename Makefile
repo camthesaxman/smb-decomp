@@ -112,6 +112,7 @@ SOURCES := \
 	asm/background.s \
 	src/item.c \
 	src/item_coin.c \
+	src/item_pilot.c \
 	asm/item.s \
 	src/sprite.c \
 	asm/sprite.s \

@@ -43,9 +43,9 @@ void (*lbl_801BDCC0[])(struct Item *) =
     NULL,
 };
 
-void (*lbl_801BDCDC[])(struct Item *) =
+void (*itemDrawFuncs[])(struct Item *) =
 {
-    func_80068F64,
+    item_coin_draw,
     func_80068C80,
     func_80068C80,
     func_80068C80,
@@ -135,7 +135,7 @@ void ev_item_init(void)
     lbl_802F1FC8 = 0;
     memset(itemInfo, 0, sizeof(itemInfo));
     item = itemInfo;
-    for (i = 0; i < 256; i++, item++)
+    for (i = 0; i < ARRAY_COUNT(itemInfo); i++, item++)
     {
         item->unk0 = i;
         item->unk2 = -1;
@@ -151,8 +151,8 @@ void ev_item_init(void)
     case 1:
         if (func_800672D0(currStageId) != 0
          || gameMode == MD_SEL
-         || (modeCtrl.levelSetFlags & (1<<(31-0x13)))
-         || (advDemoInfo.flags & (1<<(31-0x17))))
+         || (modeCtrl.levelSetFlags & (1 << 12))
+         || (advDemoInfo.flags & (1 << 8)))
             func_80068A68(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
         break;
     default:
@@ -229,7 +229,7 @@ void item_draw(void)
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
                 r28 = item->unk5C;
             }
-            lbl_801BDCDC[item->unk4](item);
+            itemDrawFuncs[item->unk4](item);
         }
     }
     mathutil_mtx_copy(sp8, mathutilData->mtxB);
@@ -256,7 +256,7 @@ int func_80068474(struct Item *a)
     lbl_802F1FC8++;
     if (lbl_802F1FC8 < 0)
         lbl_802F1FC8 = 0;
-    if (r31->unk8 & (1<<(31-0x1A)))
+    if (r31->unk8 & (1 << 5))
     {
         r31->unk64 = 0;
         r31->unk88 = 0.0f;
@@ -284,7 +284,7 @@ void func_800685C4(void)
     for (r28 = spritePoolInfo.unk18; r28 > 0; r28--, r26++, item++)
     {
         if (*r26 == 0
-         || !(item->unk8 & (1<<(31-0x1A)))
+         || !(item->unk8 & (1 << 5))
          || (item->unk8 & 1))
             continue;
 
@@ -460,7 +460,7 @@ void func_80068B1C(int a, struct Struct801BDE80 *b)
     }
     itemInitFuncs[a] = sp10.unk0;
     lbl_801BDCC0[a] = sp10.unk4;
-    lbl_801BDCDC[a] = sp10.unk8;
+    itemDrawFuncs[a] = sp10.unk8;
     lbl_801BDCF8[a] = sp10.unkC;
     lbl_801BDD14[a] = sp10.unk10;
     lbl_801BDD30[a] = sp10.unk14;
@@ -496,10 +496,41 @@ const double lbl_802F46D8 = 0.1875;
 const double lbl_802F46E0 = 0.25;
 const float lbl_802F46E8 = -480f;
 const float lbl_802F46EC = -0.10000000149011612f;
+
 const float lbl_802F46F0 = 0.25f;
 const float lbl_802F46F4 = 0.80000001192092896f;
 const float lbl_802F46F8 = -100f;
 const double lbl_802F4700 = 0.0080000000000000002;
 const double lbl_802F4708 = -1;
 const double lbl_802F4710 = 60;
+const double lbl_802F4718 = 0;
+const double lbl_802F4720 = 0.0050000000000000001;
+const double lbl_802F4728 = 30;
+const float lbl_802F4730 = 0f;
+const double lbl_802F4738 = 0.90000000000000002;
+const double lbl_802F4740 = 0.064814814814814811;
+const double lbl_802F4748 = 0.033333333333333333;
+const float lbl_802F4750 = 1.1920928955078125e-07f;
+const float lbl_802F4754 = 1f;
+const float lbl_802F4758 = -0.40000000596046448f;
+const float lbl_802F475C = 0.69999998807907104f;
+const double lbl_802F4760 = 1.5;
+const double lbl_802F4768 = 20;
+const double lbl_802F4770 = 40;
+const double lbl_802F4778 = 1;
+const float lbl_802F4780 = 0.10000000149011612f;
+const double lbl_802F4788 = 270;
+const double lbl_802F4790 = 200;
+const double lbl_802F4798 = 450;
+const double lbl_802F47A0 = 0.5;
+const float lbl_802F47A8 = 0.5f;
+const double lbl_802F47B0 = 4503601774854144;
+const double lbl_802F47B8 = 4503599627370496;
+const double lbl_802F47C0 = 0.1875;
+const double lbl_802F47C8 = 0.25;
+const double lbl_802F47D0 = 0.92592592592592582;
+const float lbl_802F47D8 = 0.60000002384185791f;
+const double lbl_802F47E0 = 0.1388888888888889;
+const double lbl_802F47E8 = 0.64814814814814814;
+
 */

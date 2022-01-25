@@ -5,55 +5,50 @@
 #include "adv.h"
 #include "background.h"
 #include "ball.h"
+#include "camera.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
 
-u8 lbl_801BDEA0[] =
+#include "../data/common.gma.h"
+
+struct ModelLOD singleBananaModels[] =
 {
-    0x00, 0x00, 0x00, 0x23,
-    0x43, 0x16, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x22,
-    0x42, 0xC8, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x24,
-    0x42, 0x48, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x21,
-    0x00, 0x00, 0x00, 0x00,
-    0xFF, 0xFF, 0xFF, 0xFF,
-    0x00, 0x00, 0x00, 0x00,
+    { OBJ_BANANA_01_LOD150, 150 },
+    { OBJ_BANANA_01_LOD100, 100 },
+    { OBJ_BANANA_01_LOD50,   50 },
+    { OBJ_BANANA_01_LOD0,     0 },
+    { -1, 0 },
 };
 
-u8 lbl_801BDEC8[] =
+struct ModelLOD bananaBunchModels[] =
 {
-    0x00, 0x00, 0x00, 0x26,
-    0x42, 0xC8, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x25,
-    0x00, 0x00, 0x00, 0x00,
-    0xFF, 0xFF, 0xFF, 0xFF,
-    0x00, 0x00, 0x00, 0x00,
+    { OBJ_BANANA_02_LOD100, 100 },
+    { OBJ_BANANA_02_LOD0,     0 },
+    { -1, 0 },
 };
 
 struct Struct801BDEA0
 {
     void **unk0;
     float unk4;
-    s16 unk8;  // banana value?
+    s16 bananaValue;  // number of bananas given when collected
     s16 unkA;
-    s16 unkC;
+    s16 pointValue;  // number of points given when collected
     s16 unkE;
     s16 unk10;
     s16 unk12;
 };
 
-void *lbl_802F0B30 = lbl_801BDEA0;
-void *lbl_802F0B34 = lbl_801BDEC8;
+void *singleBananaModelsPtr = singleBananaModels;
+void *bananaBunchModelsPtr  = bananaBunchModels;
 
 struct Struct801BDEA0 lbl_801BDEE0[] =
 {
-    { &lbl_802F0B30,  0.5,  1, 0,  100, 0, 1024,    0 },
-    { &lbl_802F0B34, 0.75, 10, 1, 1000, 0,  768,    0 },
-    { &lbl_802F0B30,  0.5,  1, 0,  100, 0, 1024, -128 },
-    { &lbl_802F0B34, 0.75, 10, 1, 1000, 0, 1024, -128 },
+    { &singleBananaModelsPtr,  0.5,  1, 0,  100, 0, 1024,    0 },
+    { &bananaBunchModelsPtr,  0.75, 10, 1, 1000, 0,  768,    0 },
+    { &singleBananaModelsPtr,  0.5,  1, 0,  100, 0, 1024, -128 },
+    { &bananaBunchModelsPtr,  0.75, 10, 1, 1000, 0, 1024, -128 },
 };
 
 void it_init_coin(struct Item *item)
@@ -139,9 +134,7 @@ void func_80068D6C(struct Item *item)
     item->unk7C.y = item->unk14 * 0.7f;
 }
 
-extern struct GMAModelHeader *func_80069454(void *);
-
-void func_80068F64(struct Item *item)
+void item_coin_draw(struct Item *item)
 {
     float f31;
     float f30 = item->unk14;
@@ -154,7 +147,7 @@ void func_80068F64(struct Item *item)
     mathutil_mtxA_rotate_y(item->unk3A);
     mathutil_mtxA_rotate_x(item->unk38);
     mathutil_mtxA_rotate_z(item->unk3C);
-    model = func_80069454(item->unk1C);
+    model = find_item_model((void *)item->unk1C);
     f31 = (f30 / model->boundsRadius) * 1.5;
     if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f31) == 0)
         return;
@@ -195,8 +188,8 @@ void func_800690DC(struct Item *item, struct Struct800690DC *b)
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
         item->unk5E = lbl_801F3A58.timerCurr;
-        give_bananas(lbl_801BDEE0[item->unk6].unk8);
-        func_8004C7D4(lbl_801BDEE0[item->unk6].unkA, lbl_801BDEE0[item->unk6].unkC);
+        give_bananas(lbl_801BDEE0[item->unk6].bananaValue);
+        func_8004C7D4(lbl_801BDEE0[item->unk6].unkA, lbl_801BDEE0[item->unk6].pointValue);
         item->unkE = 0;
         item->unk8 |= 1;
         item->unk8 &= ~(1 << 1);
@@ -209,7 +202,7 @@ void func_800690DC(struct Item *item, struct Struct800690DC *b)
         sp10.unk4C = item->unk38;
         sp10.unk4E = item->unk3A;
         sp10.unk50 = item->unk3C;
-        sp10.unk30 = func_80069454(item->unk1C);
+        sp10.unk30 = find_item_model((void *)item->unk1C);
         sp10.unk24 = (item->unk14 / sp10.unk30->boundsRadius) * 1.5;
         sp10.unk28 = sp10.unk24;
         sp10.unk2C = sp10.unk28;
@@ -261,5 +254,43 @@ char wtfisthis[] =
 void func_800693EC(struct Item *item)
 {
     func_8002FCC0(2, wtfisthis);
-    func_8002FCC0(2, "Coin Value: %d\n", lbl_801BDEE0[item->unk6].unk8);
+    func_8002FCC0(2, "Coin Value: %d\n", lbl_801BDEE0[item->unk6].bananaValue);
+}
+
+// needed to force float constant ordering
+float item_coin_dummy(void) { return -480.0f; }
+
+struct GMAModelHeader *find_item_model(struct ModelLOD **a)
+{
+    struct ModelLOD *r31 = *a;
+    struct GMAModelHeader *model;
+    int modelId;
+    float f31;
+    Vec spC;
+    float f1;
+
+    modelId = r31->modelId;
+    model = commonGma->modelEntries[modelId].modelOffset;
+    f31 = model->boundsRadius;
+    mathutil_mtxA_tf_point(&model->boundsCenter, &spC);
+    if (spC.z > f31)
+    {
+        while (r31->modelId > 0)
+        {
+            modelId = r31->modelId;
+            r31++;
+        }
+        return commonGma->modelEntries[modelId].modelOffset;
+    }
+    if (spC.z > -0.1f)
+        return model;
+    f1 = (currentCameraStructPtr->sub28.height * -480.0f) * f31 / (spC.z * currentCameraStructPtr->sub28.unk38);
+    while (r31->modelId > 0)
+    {
+        modelId = r31->modelId;
+        if (r31->unk4 < f1)
+            break;
+        r31++;
+    }
+    return commonGma->modelEntries[modelId].modelOffset;
 }
