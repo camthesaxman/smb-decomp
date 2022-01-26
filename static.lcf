@@ -40,6 +40,8 @@ FORCEACTIVE
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
     lbl_801EED98
     lbl_802C4960
+    lbl_802F1FEC
+    lbl_802F1FD4
 }
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }
@@ -62,12 +64,3 @@ lbl_802F4AC0 = 0x802F4AC0;
 lbl_802F4AC8 = 0x802F4AC8;
 lbl_802F4AD0 = 0x802F4AD0;
 lbl_802F4AD4 = 0x802F4AD4;
-
-/* item.s */
-lbl_802F4718 = 0x802F4718;
-lbl_802F4730 = 0x802F4730;
-lbl_802F4748 = 0x802F4748;
-lbl_802F4754 = 0x802F4754;
-lbl_802F4760 = 0x802F4760;
-lbl_802F4778 = 0x802F4778;
-lbl_802F47B0 = 0x802F47B0;

@@ -113,7 +113,7 @@ SOURCES := \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
-	asm/item.s \
+	asm/stobj.s \
 	src/sprite.c \
 	asm/sprite.s \
 	asm/minimap.s \

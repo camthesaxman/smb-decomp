@@ -5,6 +5,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "item.h"
 #include "perf.h"
 #include "stage.h"
 

@@ -6,6 +6,7 @@
 #include "global.h"
 #include "background.h"
 #include "input.h"
+#include "item.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"

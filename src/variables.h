@@ -243,10 +243,10 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BDC34;
 // extern ? lbl_801BDC40;
 // extern ? itemInitFuncs;
-// extern ? lbl_801BDCC0;
+// extern ? itemMainFuncs;
 // extern ? itemDrawFuncs;
-// extern ? lbl_801BDCF8;
-// extern ? lbl_801BDD14;
+// extern ? itemCollectFuncs;
+// extern ? itemDestroyFuncs;
 // extern ? lbl_801BDD30;
 // extern ? singleBananaModels;
 // extern ? lbl_801BDF60;
@@ -624,7 +624,7 @@ extern struct
 // extern ? lbl_8027CE08;
 // extern ? lbl_8027CE18;
 // extern ? lbl_8027CE24;
-extern struct Item itemInfo[256];
+
 // extern ? lbl_80285A58;
 // extern ? lbl_80285AB0;
 // extern ? lbl_8028C0B0;

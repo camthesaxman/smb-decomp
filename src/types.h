@@ -445,9 +445,7 @@ struct Struct8003C550
     u8 fillerA[0x14-0xA];
     s16 unk14;
     u8 filler16[0x24-0x16];
-    float unk24;
-    float unk28;
-    float unk2C;
+    Vec unk24;
     struct GMAModelHeader *unk30;
     Vec unk34;
     Vec unk40;
@@ -942,50 +940,13 @@ struct Struct800690DC
 {
     u8 filler0[0x1C];
     Vec unk1C;
-    u8 filler28[0x58-0x28];
+    u8 filler28[0x30-0x28];
+    float unk30;
+    u8 filler34[0x58-0x34];
     s32 unk58;
 };
 
-struct Item
-{
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s16 unk6;
-    u32 unk8;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s16 unk12;
-    float unk14;
-    float unk18;
-    void **unk1C;
-    Vec unk20;  // position?
-    Vec unk2C;
-    s16 unk38;  // xrot
-    s16 unk3A;  // yrot
-    s16 unk3C;  // zrot
-    s16 unk3E;
-    s16 unk40;
-    s16 unk42;
-    Vec unk44;
-    s16 unk50;
-    s16 unk52;
-    s16 unk54;
-    u8 filler56[2];
-    void (*unk58)(struct Item *, struct Struct800690DC *);
-    s8 unk5C;
-    u8 filler5D[1];
-    s16 unk5E;
-    struct StageCollHdr_child3 *unk60;
-    s32 unk64;
-    struct GMAModelHeader *unk68;
-    S16Vec unk6C;
-    float unk74;
-    GXColor unk78;
-    Vec unk7C;
-    float unk88;
-};  // size = 0x8C
+struct Item;
 
 struct ModelLOD
 {

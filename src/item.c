@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "adv.h"
+#include "item.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
@@ -23,56 +24,56 @@ char *itemNames[] =
 
 void (*itemInitFuncs[])(struct Item *) =
 {
-    it_init_coin,
-    func_80068C78,
-    func_80068C78,
-    func_80068C78,
-    func_80068C78,
-    it_init_pilot,
+    item_coin_init,
+    item_dummy_init,
+    item_dummy_init,
+    item_dummy_init,
+    item_dummy_init,
+    item_pilot_init,
     NULL,
 };
 
-void (*lbl_801BDCC0[])(struct Item *) =
+void (*itemMainFuncs[])(struct Item *) =
 {
-    func_80068D6C,
-    func_80068C7C,
-    func_80068C7C,
-    func_80068C7C,
-    func_80068C7C,
-    func_80069664,
+    item_coin_main,
+    item_dummy_main,
+    item_dummy_main,
+    item_dummy_main,
+    item_dummy_main,
+    item_pilot_main,
     NULL,
 };
 
 void (*itemDrawFuncs[])(struct Item *) =
 {
     item_coin_draw,
-    func_80068C80,
-    func_80068C80,
-    func_80068C80,
-    func_80068C80,
-    func_80069B54,
+    item_dummy_draw,
+    item_dummy_draw,
+    item_dummy_draw,
+    item_dummy_draw,
+    item_pilot_draw,
     NULL,
 };
 
-void (*lbl_801BDCF8[])(struct Item *, struct Struct800690DC *) =
+void (*itemCollectFuncs[])(struct Item *, struct Struct800690DC *) =
 {
-    func_800690DC,
-    func_80068C84,
-    func_80068C84,
-    func_80068C84,
-    func_80068C84,
-    func_80069F40,
+    item_coin_collect,
+    item_dummy_collect,
+    item_dummy_collect,
+    item_dummy_collect,
+    item_dummy_collect,
+    item_pilot_collect,
     NULL,
 };
 
-void (*lbl_801BDD14[])(struct Item *) =
+void (*itemDestroyFuncs[])(struct Item *) =
 {
-    func_80069390,
-    func_80068C88,
-    func_80068C88,
-    func_80068C88,
-    func_80068C88,
-    func_8006A560,
+    item_coin_destroy,
+    item_dummy_destroy,
+    item_dummy_destroy,
+    item_dummy_destroy,
+    item_dummy_destroy,
+    item_pilot_destroy,
     NULL,
 };
 
@@ -89,14 +90,14 @@ void (*lbl_801BDD30[])(struct Item *) =
 
 // unused?
 #pragma force_active on
-void (*lbl_801BDD4C[])(struct Item *) =
+void (*itemDebugFuncs[])(struct Item *) =
 {
-    func_800693EC,
-    func_80068C90,
-    func_80068C90,
-    func_80068C90,
-    func_80068C90,
-    func_8006A5BC,
+    item_coin_debug,
+    item_dummy_debug,
+    item_dummy_debug,
+    item_dummy_debug,
+    item_dummy_debug,
+    item_pilot_debug,
     NULL,
 };
 
@@ -137,7 +138,7 @@ void ev_item_init(void)
     item = itemInfo;
     for (i = 0; i < ARRAY_COUNT(itemInfo); i++, item++)
     {
-        item->unk0 = i;
+        item->id = i;
         item->unk2 = -1;
     }
 
@@ -180,11 +181,11 @@ void ev_item_main(void)
             item->unk12--;
             if (item->unk12 == 0 || *r29 == 3)
             {
-                lbl_801BDD14[item->unk4](item);
+                itemDestroyFuncs[item->type](item);
                 *r29 = 0;
             }
             else
-                lbl_801BDCC0[item->unk4](item);
+                itemMainFuncs[item->type](item);
         }
     }
 }
@@ -201,7 +202,7 @@ void ev_item_dest(void)
     {
         if (*r27 != 0)
         {
-            lbl_801BDD14[item->unk4](item);
+            itemDestroyFuncs[item->type](item);
             *r27 = 0;
         }
     }
@@ -229,7 +230,7 @@ void item_draw(void)
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
                 r28 = item->unk5C;
             }
-            itemDrawFuncs[item->unk4](item);
+            itemDrawFuncs[item->type](item);
         }
     }
     mathutil_mtx_copy(sp8, mathutilData->mtxB);
@@ -244,14 +245,14 @@ int func_80068474(struct Item *a)
         return -1;
     r31 = &itemInfo[r30];
     memcpy(r31, a, sizeof(struct Item));
-    r31->unk0 = r30;
+    r31->id = r30;
     r31->unk5E = -1;
-    itemInitFuncs[r31->unk4](r31);
+    itemInitFuncs[r31->type](r31);
     r31->unkC = 0;
     if (r31->unk18 <= 0.0)
         r31->unk18 = 1.0f;
     r31->unk44 = r31->unk20;
-    r31->unk58 = lbl_801BDCF8[r31->unk4];
+    r31->unk58 = itemCollectFuncs[r31->type];
     r31->unk2 = lbl_802F1FC8;
     lbl_802F1FC8++;
     if (lbl_802F1FC8 < 0)
@@ -273,7 +274,6 @@ void func_800685C4(void)
     int r23;
     float f2;
     float f1;
-
     struct Struct8003FB48 sp58;
     Vec sp4C;
     Vec sp40;
@@ -339,7 +339,7 @@ void func_800685C4(void)
             item->unk74 = sp8.unk0.y - sp40.y;
         }
         sp8.unk14 = item->unk7C;
-        sp8.unk2C = item->unk78;
+        sp8.unk2C = item->shadowColor;
         f1 = item->unk88;
         sp8.unk2C.r *= f1;
         sp8.unk2C.g *= f1;
@@ -358,7 +358,7 @@ void func_800685C4(void)
             sp8.unk2C.g *= f1;
             sp8.unk2C.b *= f1;
         }
-        sp8.unk28 = item->unk68;
+        sp8.unk28 = item->shadowModel;
         sp8.unk20 = 0.075f;
         sp8.unk24 = 0.1f;
         func_8009492C(&sp8);
@@ -381,9 +381,9 @@ void func_800689B4(int a)
     {
         if (*r26 != 0 && item->unk5E >= 0 && item->unk5E <= a)
         {
-            r28 = item->unk0;
-            lbl_801BDD30[item->unk4](item);
-            item->unk0 = r28;
+            r28 = item->id;
+            lbl_801BDD30[item->type](item);
+            item->id = r28;
         }
     }
 }
@@ -395,7 +395,7 @@ void func_80068A68(struct StageCollHdr *coll, int count)
     int j;
 
     memset(&item, 0, sizeof(item));
-    item.unk4 = 0;
+    item.type = 0;
     for (i = 0; i < count; i++, coll++)
     {
         struct StageCollHdr_child3 *r28 = coll->unk60;
@@ -411,126 +411,62 @@ void func_80068A68(struct StageCollHdr *coll, int count)
     }
 }
 
-struct Struct801BDE80
+struct ItemFuncs dummyItemFuncs =
 {
-    void (*unk0)(struct Item *);
-    void (*unk4)(struct Item *);
-    void (*unk8)(struct Item *);
-    void (*unkC)(struct Item *, struct Struct800690DC *);
-    void (*unk10)(struct Item *);
-    void (*unk14)(struct Item *);
-    void (*unk18)(struct Item *);
-};
-
-struct Struct801BDE80 lbl_801BDE80 =
-{
-    func_80068C78,
-    func_80068C7C,
-    func_80068C80,
-    func_80068C84,
-    func_80068C88,
+    item_dummy_init,
+    item_dummy_main,
+    item_dummy_draw,
+    item_dummy_collect,
+    item_dummy_destroy,
     func_80068C8C,
-    func_80068C90,
+    item_dummy_debug,
 };
 
 #pragma force_active on
-void func_80068B1C(int a, struct Struct801BDE80 *b)
+void item_replace_type_funcs(int itemType, struct ItemFuncs *newFuncs)
 {
-    struct Struct801BDE80 sp10;
+    struct ItemFuncs funcs;
 
-    if (b == NULL)
-        sp10 = lbl_801BDE80;
+    if (newFuncs == NULL)
+        funcs = dummyItemFuncs;
     else
     {
-        sp10 = *b;
-        if (sp10.unk0 == NULL)
-            sp10.unk0 = lbl_801BDE80.unk0;
-        if (sp10.unk4 == NULL)
-            sp10.unk4 = lbl_801BDE80.unk4;
-        if (sp10.unk8 == NULL)
-            sp10.unk8 = lbl_801BDE80.unk8;
-        if (sp10.unkC == NULL)
-            sp10.unkC = lbl_801BDE80.unkC;
-        if (sp10.unk10 == NULL)
-            sp10.unk10 = lbl_801BDE80.unk10;
-        if (sp10.unk14 == NULL)
-            sp10.unk14 = lbl_801BDE80.unk14;
-        if (sp10.unk18 == NULL)
-            sp10.unk18 = lbl_801BDE80.unk18;
+        funcs = *newFuncs;
+        if (funcs.init == NULL)
+            funcs.init = dummyItemFuncs.init;
+        if (funcs.main == NULL)
+            funcs.main = dummyItemFuncs.main;
+        if (funcs.draw == NULL)
+            funcs.draw = dummyItemFuncs.draw;
+        if (funcs.collect == NULL)
+            funcs.collect = dummyItemFuncs.collect;
+        if (funcs.destroy == NULL)
+            funcs.destroy = dummyItemFuncs.destroy;
+        if (funcs.unk14 == NULL)
+            funcs.unk14 = dummyItemFuncs.unk14;
+        if (funcs.debug == NULL)
+            funcs.debug = dummyItemFuncs.debug;
     }
-    itemInitFuncs[a] = sp10.unk0;
-    lbl_801BDCC0[a] = sp10.unk4;
-    itemDrawFuncs[a] = sp10.unk8;
-    lbl_801BDCF8[a] = sp10.unkC;
-    lbl_801BDD14[a] = sp10.unk10;
-    lbl_801BDD30[a] = sp10.unk14;
-    lbl_801BDD4C[a] = sp10.unk18;
+    itemInitFuncs[itemType]    = funcs.init;
+    itemMainFuncs[itemType]    = funcs.main;
+    itemDrawFuncs[itemType]    = funcs.draw;
+    itemCollectFuncs[itemType] = funcs.collect;
+    itemDestroyFuncs[itemType] = funcs.destroy;
+    lbl_801BDD30[itemType]     = funcs.unk14;
+    itemDebugFuncs[itemType]   = funcs.debug;
 }
 #pragma force_active reset
 
-void func_80068C78(struct Item *item) {}
+void item_dummy_init(struct Item *item) {}
 
-void func_80068C7C(struct Item *item) {}
+void item_dummy_main(struct Item *item) {}
 
-void func_80068C80(struct Item *item) {}
+void item_dummy_draw(struct Item *item) {}
 
-void func_80068C84(struct Item *item, struct Struct800690DC *) {}
+void item_dummy_collect(struct Item *item, struct Struct800690DC *) {}
 
-void func_80068C88(struct Item *item) {}
+void item_dummy_destroy(struct Item *item) {}
 
 void func_80068C8C(struct Item *item) {}
 
-void func_80068C90(struct Item *item) {}
-
-/*
-const float lbl_802F46A0 = 0.25f;
-const float lbl_802F46A4 = 0.80000001192092896f;
-const double lbl_802F46A8 = 0.033333333333333333;
-const float lbl_802F46B0 = 1.1920928955078125e-07f;
-const float lbl_802F46B4 = 1f;
-const float lbl_802F46B8 = 1.9375f;
-const double lbl_802F46C8 = 1;
-const float lbl_802F46D0 = 0.10000000149011612f;
-const float lbl_802F46D4 = 0f;
-const double lbl_802F46D8 = 0.1875;
-const double lbl_802F46E0 = 0.25;
-const float lbl_802F46E8 = -480f;
-const float lbl_802F46EC = -0.10000000149011612f;
-
-const float lbl_802F46F0 = 0.25f;
-const float lbl_802F46F4 = 0.80000001192092896f;
-const float lbl_802F46F8 = -100f;
-const double lbl_802F4700 = 0.0080000000000000002;
-const double lbl_802F4708 = -1;
-const double lbl_802F4710 = 60;
-const double lbl_802F4718 = 0;
-const double lbl_802F4720 = 0.0050000000000000001;
-const double lbl_802F4728 = 30;
-const float lbl_802F4730 = 0f;
-const double lbl_802F4738 = 0.90000000000000002;
-const double lbl_802F4740 = 0.064814814814814811;
-const double lbl_802F4748 = 0.033333333333333333;
-const float lbl_802F4750 = 1.1920928955078125e-07f;
-const float lbl_802F4754 = 1f;
-const float lbl_802F4758 = -0.40000000596046448f;
-const float lbl_802F475C = 0.69999998807907104f;
-const double lbl_802F4760 = 1.5;
-const double lbl_802F4768 = 20;
-const double lbl_802F4770 = 40;
-const double lbl_802F4778 = 1;
-const float lbl_802F4780 = 0.10000000149011612f;
-const double lbl_802F4788 = 270;
-const double lbl_802F4790 = 200;
-const double lbl_802F4798 = 450;
-const double lbl_802F47A0 = 0.5;
-const float lbl_802F47A8 = 0.5f;
-const double lbl_802F47B0 = 4503601774854144;
-const double lbl_802F47B8 = 4503599627370496;
-const double lbl_802F47C0 = 0.1875;
-const double lbl_802F47C8 = 0.25;
-const double lbl_802F47D0 = 0.92592592592592582;
-const float lbl_802F47D8 = 0.60000002384185791f;
-const double lbl_802F47E0 = 0.1388888888888889;
-const double lbl_802F47E8 = 0.64814814814814814;
-
-*/
+void item_dummy_debug(struct Item *item) {}
