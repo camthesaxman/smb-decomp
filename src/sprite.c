@@ -5,6 +5,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
 #include "bitmap.h"
 #include "mode.h"
 
@@ -217,8 +218,13 @@ struct Struct8028FE58
 
 // .bss
 struct Struct8028CF28 lbl_8028CF28;
+FORCE_BSS_ORDER(lbl_8028CF28)
 struct Sprite spriteInfo[64];
+FORCE_BSS_ORDER(spriteInfo)
 struct Struct8028FE58 lbl_8028FE58[0x42];
+FORCE_BSS_ORDER(lbl_8028FE58)
+struct Struct80290170 lbl_80290170;
+FORCE_BSS_ORDER(lbl_80290170)
 
 extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
 
@@ -3163,7 +3169,7 @@ float g_get_text_width(char *str)
                 f1 = 1.0f;
                 break;
             }
-            if (sp2C.unk0 & (1<<(31-0xE)))
+            if (sp2C.unk0 & (1 << 17))
                 font = &lbl_801BE4B0[0xB2];
             else
                 font = &lbl_801BE4B0[r29->unkC];
@@ -3336,6 +3342,143 @@ float func_80073058(char *str)
 int func_80073084(int a, char *str)
 {
     return func_80072DA8(a, str, 1);
+}
+
+void func_800730B4(void)
+{
+    struct Struct801F3DC0 sp8;
+
+    if (lbl_80290170.unk8 == 0)
+        return;
+    if (gameMode == 5)
+    {
+        if ((lbl_80290170.unk0 & 0xFF) != 2)
+            lbl_80290170.unk8--;
+    }
+    else
+    {
+        if (!(gamePauseStatus & 0xA) && (lbl_80290170.unk0 & 0xFF) != 2)
+            lbl_80290170.unk8--;
+    }
+    switch (lbl_80290170.unk0 & 0xFF)
+    {
+    case 0:
+        sp8.unk2C = (float)lbl_80290170.unk8 / (float)lbl_80290170.unkC;
+        break;
+    case 1:
+        sp8.unk2C = 1.0 - (float)lbl_80290170.unk8 / (float)lbl_80290170.unkC;
+        break;
+    case 2:
+        sp8.unk2C = 1.0f;
+        break;
+    }
+    sp8.unk0 = 0x4B;
+    sp8.unk4 = 320.0f;
+    sp8.unk8 = 240.1f;
+    sp8.unkC = (lbl_80290170.unk0 & (1 << 8)) ? 0.009 : 0.25;
+    sp8.unk10 = 80.0f;
+    sp8.unk14 = 60.0f;
+    sp8.unk18 = 0.0f;
+    sp8.unk1C = 0.0f;
+    sp8.unk20 = 1.0f;
+    sp8.unk24 = 1.0f;
+    sp8.unk28 = 0;
+    sp8.unk30 = -1;
+    sp8.unk34 = 0x2000A;
+    sp8.unk38 = lbl_80290170.unk4;
+    sp8.unk3C = 0;
+    func_80073828(&sp8);
+    if ((lbl_80290170.unk0 & 0xFF) == 1 && lbl_80290170.unk8 == 0)
+    {
+        lbl_80290170.unk0 = (lbl_80290170.unk0 & (1 << 8)) ? 0x102 : 0x2;
+        lbl_80290170.unk8 = 1;
+        lbl_80290170.unkC = 0;
+    }
+}
+
+void g_start_screen_fade(s32 a, int b, int duration)
+{
+    if ((a & 0xFF) != 2 && duration > 3)
+        duration -= 3;
+
+    if ((lbl_80290170.unk0 & 0xFF) == (a & 0xFF)
+     && (lbl_80290170.unk0 & 0xFF) != 2
+     && lbl_80290170.unk8 > 0)
+        return;
+
+    if ((a & 0xFF) == 1 && (lbl_80290170.unk0 & 0xFF) == 0 && lbl_80290170.unk8 > 0)
+    {
+        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00) | 1;
+        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
+        lbl_80290170.unkC = duration;
+    }
+    else if ((a & 0xFF) == 1 && (lbl_80290170.unk0 & 0xFF) == 1 && lbl_80290170.unk8 > 0)
+    {
+        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00) | 1;
+        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
+        lbl_80290170.unkC = duration;
+    }
+    else if ((a & 0xFF) == 0 && (lbl_80290170.unk0 & 0xFF) == 0 && lbl_80290170.unk8 > 0)
+    {
+        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00);
+        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
+        lbl_80290170.unkC = duration;
+    }
+    else if ((a & 0xFF) == 0 && (lbl_80290170.unk0 & 0xFF) == 1 && lbl_80290170.unk8 > 0)
+    {
+        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00);
+        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
+        lbl_80290170.unkC = duration;
+    }
+    else
+    {
+        lbl_80290170.unk0 = a;
+        if ((a & 0xFF) != 0)
+            lbl_80290170.unk4 = b;
+        lbl_80290170.unk8 = duration;
+        lbl_80290170.unkC = duration;
+    }
+}
+
+static inline int func_80073600_inline(struct Struct801F3DC0 *a)
+{
+    if (g_bmpUnkCountOfSomething == 256)
+    {
+        func_8003026C(2, "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->unk0);
+        OSReport("nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->unk0);
+        return 0;
+    }
+
+    memcpy(&lbl_801F3DC0[g_bmpUnkCountOfSomething], a, sizeof(struct Struct801F3DC0));
+    g_bmpUnkCountOfSomething++;
+    return 1;
+}
+
+int func_80073600(struct Struct801F3DC0 *a)
+{
+    int r4;
+
+    switch (lbl_802F1D04)
+    {
+    case 0:
+        if (func_80073600_inline(a))
+            return 1;
+        else
+            return 1;
+        break;
+    case 1:
+        if (!(a->unk34 & (1 << 18))
+         && lbl_80290170.unk8 > 0
+         && ((lbl_80290170.unk0 & (1 << 8)) ? 0.009 : 0.25) > a->unkC
+         && func_80073600_inline(a))
+            return 1;
+        if ((advDemoInfo.flags & (1 << 7))
+         && (a->unk0 == 12 || a->unk0 == 85)
+         && func_80073600_inline(a))
+            return 1;
+        break;
+    }
+    return 0;
 }
 
 /*

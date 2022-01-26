@@ -690,7 +690,7 @@ struct FontParams
 
 struct Struct801F3DC0
 {
-    u32 unk0;
+    s32 unk0;
     float unk4;
     float unk8;
     float unkC;
@@ -953,4 +953,12 @@ struct ModelLOD
 {
     s32 modelId;
     float unk4;
+};
+
+struct Struct80290170
+{
+    s32 unk0;
+    u32 unk4;
+    s32 unk8;
+    s32 unkC;
 };
