@@ -7324,45 +7324,6 @@ lbl_80117A04:
 	.4byte 0
 	.4byte 0
 
-.global lbl_80117A38
-lbl_80117A38:
-	# ROM: 0x114A38
-	.byte 0x40, 0x60, 0x00, 0x00
-	.byte 0x40, 0x90, 0x00, 0x00
-	.byte 0x40, 0x60, 0x00, 0x00
-	.4byte 0
-
-.global lbl_80117A48
-lbl_80117A48:
-	# ROM: 0x114A48
-	.byte 0x00, 0x5A, 0x00, 0x5B
-	.byte 0x00, 0x5C, 0x00, 0x5D
-	.byte 0x00, 0x5E, 0x00, 0x5F
-	.byte 0x00, 0x60, 0x00, 0x61
-
-.global lbl_80117A58
-lbl_80117A58:
-	# ROM: 0x114A58
-	.4byte 0
-glabel string__c33
-	.asciz "@c33"
-	.balign 4
-
-.global lbl_80117A64
-lbl_80117A64:
-	# ROM: 0x114A64
-	.byte 0x3F, 0x80, 0x00, 0x00
-	.4byte 0
-	.4byte 0
-
-.global lbl_80117A70
-lbl_80117A70:
-	# ROM: 0x114A70
-	.4byte 0
-	.4byte 0
-	.byte 0xBF, 0x80, 0x00, 0x00
-	.4byte 0
-
 .section .data
 
 # stage.s .data start
@@ -8037,37 +7998,3 @@ lbl_8027CE18:
 .global lbl_8027CE24
 lbl_8027CE24:
 	.skip 0x34
-.global itemInfo
-itemInfo:
-	.skip 0x8C00
-.global lbl_80285A58
-lbl_80285A58:
-    .skip 0x10
-glabel lbl_80285A68
-	.skip 0x18
-glabel lbl_80285A80
-    .skip 0x30
-.global lbl_80285AB0
-lbl_80285AB0:
-	.skip 0x6600
-.global lbl_8028C0B0
-lbl_8028C0B0:
-	.skip 0x4
-glabel lbl_8028C0B4
-	.skip 0x4
-glabel lbl_8028C0B8
-	.skip 0x4
-glabel lbl_8028C0BC
-	.skip 0x1C
-.global lbl_8028C0D8
-lbl_8028C0D8:
-	.skip 0xCC0
-.global lbl_8028CD98
-lbl_8028CD98:
-	.skip 0x140
-.global lbl_8028CED8
-lbl_8028CED8:
-	.skip 0x28
-.global lbl_8028CF00
-lbl_8028CF00:
-	.skip 0x28

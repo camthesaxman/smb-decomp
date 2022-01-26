@@ -1334,9 +1334,9 @@ void func_80038DF4(void)
         sp30.unk2C.g *= f2;
         sp30.unk2C.b *= f2;
 
-        sp30.unk14 = ball->currRadius * (1.0f + 2.0f * (1.0f - f2));
-        sp30.unk18 = sp30.unk14;
-        sp30.unk1C = sp30.unk14;
+        sp30.unk14.x = ball->currRadius * (1.0f + 2.0f * (1.0f - f2));
+        sp30.unk14.y = sp30.unk14.x;
+        sp30.unk14.z = sp30.unk14.x;
 
         mathutil_vec_to_euler(&sp14.unk10, &sp30.unkC);
         sp30.unkC.z = ball->unk2C;

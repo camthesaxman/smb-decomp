@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "gxutil.h"
 #include "input.h"
+#include "item.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"

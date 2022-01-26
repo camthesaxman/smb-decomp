@@ -40,6 +40,8 @@ FORCEACTIVE
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
     lbl_801EED98
     lbl_802C4960
+    lbl_802F1FEC
+    lbl_802F1FD4
 }
 
 FORCEFILES { game.o __init_cpp_exceptions.o camera.o }

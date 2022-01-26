@@ -110,7 +110,10 @@ SOURCES := \
 	asm/recplay.s \
 	src/background.c \
 	asm/background.s \
-	asm/item.s \
+	src/item.c \
+	src/item_coin.c \
+	src/item_pilot.c \
+	asm/stobj.s \
 	src/sprite.c \
 	asm/sprite.s \
 	asm/minimap.s \

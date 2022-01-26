@@ -236,7 +236,7 @@ lbl_00000370:
 /* 000003C8 90010024 */ stw r0, 0x24(r1)
 /* 000003CC 801F0018 */ lwz r0, 0x18(r31)
 /* 000003D0 90010028 */ stw r0, 0x28(r1)
-/* 000003D4 4BFFFDA9 */ bl func_80068B1C
+/* 000003D4 4BFFFDA9 */ bl item_replace_type_funcs
 /* 000003D8 48012979 */ bl lbl_00012D50
 /* 000003DC 3C600000 */ lis r3, spritePoolInfo@ha
 /* 000003E0 38630000 */ addi r3, r3, spritePoolInfo@l
@@ -313,7 +313,7 @@ lbl_0000048C:
 /* 000004F8 90010020 */ stw r0, 0x20(r1)
 /* 000004FC 80060018 */ lwz r0, 0x18(r6)
 /* 00000500 90010024 */ stw r0, 0x24(r1)
-/* 00000504 4BFFFC79 */ bl func_80068B1C
+/* 00000504 4BFFFC79 */ bl item_replace_type_funcs
 /* 00000508 3C600000 */ lis r3, spritePoolInfo@ha
 /* 0000050C 881F0004 */ lbz r0, 4(r31)
 /* 00000510 38630000 */ addi r3, r3, spritePoolInfo@l
