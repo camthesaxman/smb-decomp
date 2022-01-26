@@ -198,7 +198,7 @@ SOURCES := \
 	libraries/card/asm/CARDDelete.s \
 	libraries/card/asm/CARDStat.s \
 	libraries/card/asm/CARDRename.s \
-	libraries/hio/asm/hio.s \
+	libraries/hio/hio.c \
 	libraries/gx/asm/GXInit.s \
 	libraries/gx/asm/GXFifo.s \
 	libraries/gx/asm/GXAttr.s \
