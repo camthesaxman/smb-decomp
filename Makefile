@@ -212,7 +212,7 @@ SOURCES := \
 	libraries/gx/asm/GXPixel.s \
 	libraries/gx/asm/GXDraw.s \
 	libraries/gx/asm/GXStubs.s \
-	libraries/gx/asm/GXDisplayList.s \
+	libraries/gx/GXDisplayList.c \
 	libraries/gx/asm/GXTransform.s \
 	libraries/gx/GXPerf.c \
 	libraries/perf/asm/perf.s \

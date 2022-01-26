@@ -1491,6 +1491,7 @@ CurrToken:
 
 .section .sbss
 
+    .balign 8
 .global magic
 magic:
 	.skip 0x4
