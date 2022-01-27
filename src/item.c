@@ -463,7 +463,7 @@ void item_dummy_main(struct Item *item) {}
 
 void item_dummy_draw(struct Item *item) {}
 
-void item_dummy_collect(struct Item *item, struct Struct800690DC *) {}
+void item_dummy_collect(struct Item *item, struct Struct800690DC *b) {}
 
 void item_dummy_destroy(struct Item *item) {}
 

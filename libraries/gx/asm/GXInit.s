@@ -1106,6 +1106,7 @@ lbl_802F6788:
 
 .section .sdata
 
+    .balign 8
 .global gx
 gx:
 	# ROM: 0x1EC0E8
