@@ -7,192 +7,10 @@
 #include "global.h"
 #include "adv.h"
 #include "bitmap.h"
+#include "event.h"
 #include "mathutil.h"
 #include "mode.h"
-
-enum FontID
-{
-    FONT_ASCII,  // 0
-    FONT_ASC_8x16,
-    FONT_ASC_12x12,
-    FONT_DMY00,
-    FONT_DMY01,
-    FONT_DMY02,
-    FONT_DMY03,
-    FONT_DMY04,
-    FONT_DMY05,
-    FONT_ASC_72x64,
-    FONT_DMY06,  // 10
-    FONT_DMY07,
-    FONT_DMY08,
-    FONT_DMY09,
-    FONT_DMY10,
-    FONT_DMY11,
-    FONT_DMY12,
-    FONT_DMY13,
-    FONT_DMY14,
-    FONT_DMY15,
-    FONT_DMY16,  // 20
-    FONT_ICON_SD,
-    FONT_ICON_SD2,
-    FONT_DMY20,
-    FONT_DMY21,
-    FONT_DMY22,
-    FONT_DMY23,
-    FONT_NUM_26x31,
-    FONT_ASC_30x31,
-    FONT_ICON_TPL,
-    FONT_ICON_MDE,  // 30
-    FONT_ICON_RNK,
-    FONT_RNK_32x32,
-    FONT_RNK_NUM,
-    FONT_MINI_RNK,
-    FONT_SCORE_NUM,
-    FONT_DMY_RNK0,
-    FONT_DMY_RNK1,
-    FONT_DMY_RNK2,
-    FONT_DMY_RNK3,
-    FONT_DMY_RNK4,  // 40
-    FONT_DMY_RNK5,
-    FONT_DMY_RNK6,
-    FONT_DMY_RNK7,
-    FONT_DMY_RNK8,
-    FONT_DMY_RNK9,
-    FONT_DMY_RNKa,
-    FONT_DMY_RNKb,
-    FONT_DMY_RNKc,
-    FONT_DMY_RNKd,
-    FONT_DMY_RNKe,  // 50
-    FONT_DMY_RNKf,
-    FONT_NUM_7x10,
-    FONT_NUM_8x10,
-    FONT_NUM_12x24,
-    FONT_ICON_CRS,
-    FONT_DMY40,
-    FONT_DMY41,
-    FONT_DMY42,
-    FONT_DMY43,
-    FONT_BWL_SCORE,  // 60
-    FONT_DMY50,
-    FONT_DMY51,
-    FONT_DMY52,
-    FONT_DMY53,
-    FONT_DMY54,
-    FONT_DMY55,
-    FONT_DMY56,
-    FONT_DMY57,
-    FONT_RAC_ASC16x16,
-    FONT_RAC_PLAYER,  // 70
-    FONT_RAC_RANK,
-    FONT_RAC_RAP_MARK_NUM,
-    FONT_RAC_RAP_NUM,
-    FONT_RAC_TIME_NUM,
-    FONT_RAC_RAP_MARK_NUM_S,
-    FONT_RAC_TIME_NUM_S,
-    FONT_DMY60,
-    FONT_DMY61,
-    FONT_DMY62,
-    FONT_DMY63,  // 80
-    FONT_DMY64,
-    FONT_TGT_PLAYER,
-    FONT_TGT_MSCORE,
-    FONT_TGT_SPEED,
-    FONT_TGT_SCORE,
-    FONT_TGT_ROUND,
-    FONT_TGT_ALT,
-    FONT_TGT_WIND,
-    FONT_TGT_RESULT,
-    FONT_DMY72,  // 90
-    FONT_DMY73,
-    FONT_DMY74,
-    FONT_ICON_LV,
-    FONT_NUM_22x22,
-    FONT_ASC_16x16,
-    FONT_ASC_16x16P,
-    FONT_ASC_18x16,
-    FONT_ASC_20x20,
-    FONT_ASC_20x20P,
-    FONT_ASC_32x32,  // 100
-    FONT_NUM_12x19,
-    FONT_NUM_24x37,
-    FONT_DMY79,
-    FONT_DMY7a,
-    FONT_DMY7b,
-    FONT_DMY7c,
-    FONT_DMY7d,
-    FONT_DMY7e,
-    FONT_DMY7f,
-    FONT_DMY80,  // 110
-    FONT_DMY81,
-    FONT_DMY82,
-    FONT_DMY83,
-    FONT_DMY84,
-    FONT_DMY85,
-    FONT_DMY86,
-    FONT_DMY87,
-    FONT_DMY88,
-    FONT_DMY89,
-    FONT_DMY8a,  // 120
-    FONT_DMY8b,
-    FONT_DMY8c,
-    FONT_DMY8d,
-    FONT_DMY8e,
-    FONT_DMY8f,
-    FONT_DMY90,
-    FONT_DMY91,
-    FONT_DMY92,
-    FONT_DMY93,
-    FONT_DMY94,  // 130
-    FONT_DMY95,
-    FONT_DMY96,
-    FONT_DMY97,
-    FONT_DMY98,
-    FONT_DMY99,
-    FONT_DMY9a,
-    FONT_DMY9b,
-    FONT_DMY9c,
-    FONT_DMY9d,
-    FONT_DMY9e,  // 140
-    FONT_DMY9f,
-    FONT_DMYa0,
-    FONT_DMYa1,
-    FONT_DMYa2,
-    FONT_DMYa3,
-    FONT_DMYa4,
-    FONT_DMYa5,
-    FONT_DMYa6,
-    FONT_DMYa7,
-    FONT_DMYa8,  // 150
-    FONT_DMYa9,
-    FONT_DMYaa,
-    FONT_DMYab,
-    FONT_DMYac,
-    FONT_DMYad,
-    FONT_DMYae,
-    FONT_DMYaf,
-    FONT_DMYb0,
-    FONT_DMYb1,
-    FONT_DMYb2,  // 160
-    FONT_DMYb3,
-    FONT_DMYb4,
-    FONT_DMYb5,
-    FONT_DMYb6,
-    FONT_DMYb7,
-    FONT_DMYb8,
-    FONT_DMYb9,
-    FONT_DMYba,
-    FONT_DMYbb,
-    FONT_DMYbc,  // 170
-    FONT_DMYbd,
-    FONT_DMYbe,
-    FONT_DMYbf,
-    FONT_JAP_TAG,
-    FONT_JAP_DMY,
-    FONT_JAP_24x24_2,
-    FONT_JAP_24x24_2P,
-    FONT_JAP_24x24_I,
-    FONT_JAP_24x24_2Pg,
-};
+#include "sprite.h"
 
 struct Struct8028CF28
 {
@@ -266,7 +84,7 @@ void ev_sprite_main(void)
     {
         if (*status != 0)
         {
-            lbl_802F2000 |= 1 << sprite->unkF;
+            lbl_802F2000 |= 1 << sprite->tag;
             if (sprite->mainFunc != NULL)
                 sprite->mainFunc(status, sprite);
         }
@@ -311,7 +129,7 @@ void func_800700D8(int a)
     struct Sprite *r6;
     struct Struct8028FE58 *r5;
     int i;  // r30
-    int r31 = (eventInfo[12].state == 2);
+    int r31 = (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING);
 
     r12 = 0;
     r5 = &lbl_8028FE58[r12++];
@@ -327,7 +145,7 @@ void func_800700D8(int a)
     r11 = spritePoolInfo.statusList;
     for (i = 0; i < spritePoolInfo.unk38; r8++, i++, r11++)
     {
-        if (*r11 != 0 && (!r31 || r8->unkF == 100))
+        if (*r11 != 0 && (!r31 || r8->tag == 100))
         {
             if (a == 0)
             {
@@ -431,7 +249,7 @@ struct Struct801BE470 lbl_801BE470[] =
 };
 
 // font parameters?
-struct FontParams lbl_801BE4B0[] =
+struct FontParams fontInfo[] =
 {
     //      spaceWidth lineHeight
     {    0,         8,         8,  0, 127, 16,  8,       0.0625,        0.125,     0.0078125,     0.015625, 0, 0, 0, 0},
@@ -1046,7 +864,7 @@ void g_something_with_sprites(struct Sprite *sprite)
 
     if (sprite->unk78 & 1)
         return;
-    g_get_dimensions_for_sprite(sprite, &sprite->unk58, &sprite->unk5C, &sprite->unk60, &sprite->unk64);
+    g_get_dimensions_for_sprite(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
     if (sprite->unk38 != NULL)
     {
         sprite->unk38(sprite);
@@ -1058,37 +876,37 @@ void g_something_with_sprites(struct Sprite *sprite)
         func_80072B50(sprite);
         break;
     case 1:
-        if (!bitmapGroups[(sprite->unk3C & 0xFF00) >> 8].isLoaded)
+        if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
         {
             printf("SPRITE WARNING!! %s's category %s is not load\n",
-                bitmapNames[sprite->unk3C >> 8][sprite->unk3C & 0xFF],
-                bitmapGroups[sprite->unk3C >> 8].name);
+                bitmapNames[sprite->bmpId >> 8][sprite->bmpId & 0xFF],
+                bitmapGroups[sprite->bmpId >> 8].name);
             break;
         }
         func_80072C68(sprite);
         break;
     case 2:
-        if (!bitmapGroups[(sprite->unk3C & 0xFF00) >> 8].isLoaded)
+        if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
         {
             printf("SPRITE WARNING!! %s's category %s is not load\n",
-                bitmapNames[sprite->unk3C >> 8][sprite->unk3C & 0xFF],
-                bitmapGroups[sprite->unk3C >> 8].name);
+                bitmapNames[sprite->bmpId >> 8][sprite->bmpId & 0xFF],
+                bitmapGroups[sprite->bmpId >> 8].name);
             break;
         }
-        r26 = sprite->unk3C & 0xFF;
-        r29 = sprite->unk3C;
+        r26 = sprite->bmpId & 0xFF;
+        r29 = sprite->bmpId;
         x = sprite->centerX;
         y = sprite->centerY;
         for (i = 0; i < 8; i++)
         {
-            sprite->unk3C = (r29 & 0xFF00) | r26;
+            sprite->bmpId = (r29 & 0xFF00) | r26;
             sprite->centerX = (float)(x + lbl_801BE470[i].unk0);
             sprite->centerY = (float)(y + lbl_801BE470[i].unk4);
-            g_get_dimensions_for_sprite(sprite, &sprite->unk58, &sprite->unk5C, &sprite->unk60, &sprite->unk64);
+            g_get_dimensions_for_sprite(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
             func_80072C68(sprite);
             r26++;
         }
-        sprite->unk3C = r29;
+        sprite->bmpId = r29;
         sprite->centerX = x;
         sprite->centerY = y;
     }
@@ -1135,10 +953,10 @@ struct Sprite *create_sprite(void)
         sprite->unk40 = 1.0f;
         sprite->unk44 = 1.0f;
         sprite->unk6C = 1.0f;
-        sprite->unk58 = 0;
-        sprite->unk5C = 0;
-        sprite->unk60 = 1;
-        sprite->unk64 = 1;
+        sprite->left = 0;
+        sprite->top = 0;
+        sprite->right = 1;
+        sprite->bottom = 1;
         sprite->unk7C = 0.0f;
         sprite->unk80 = 0.0f;
         sprite->unk84 = 1.0f;
@@ -1160,8 +978,7 @@ struct Sprite *create_linked_sprite(struct Sprite *sprite)
     return newSprite;
 }
 
-// probably has nothing to do with fonts
-void g_dest_sprite_with_font(int a)
+void destroy_sprite_with_tag(int tag)
 {
     struct Sprite *sprite = spriteInfo;
     s8 *status = spritePoolInfo.statusList;
@@ -1169,7 +986,7 @@ void g_dest_sprite_with_font(int a)
 
     for (i = 0; i < 64; i++)
     {
-        if (*status != 0 && sprite->unkF == a)
+        if (*status != 0 && sprite->tag == tag)
         {
             if (sprite->destFunc != NULL)
                 sprite->destFunc(sprite);
@@ -1199,7 +1016,7 @@ void dest_all_sprites(void)
     }
 }
 
-struct Sprite *g_find_sprite_with_probably_not_font(int a)
+struct Sprite *find_sprite_with_tag(int tag)
 {
     struct Sprite *sprite = spriteInfo;
     s8 *status = spritePoolInfo.statusList;
@@ -1207,13 +1024,13 @@ struct Sprite *g_find_sprite_with_probably_not_font(int a)
 
     for (i = 0; i < 64; i++, sprite++, status++)
     {
-        if (*status != 0 && sprite->unkF == a)
+        if (*status != 0 && sprite->tag == tag)
             return sprite;
     }
     return NULL;
 }
 
-void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, s32 *e)
+void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, s32 *bottom)
 {
     int width = 0;
     int height = 0;
@@ -1224,15 +1041,15 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, 
 
     if (sprite->unk38 != 0)
     {
-        *b = sprite->centerX - 50.0f;
-        *c = sprite->centerY - 50.0f;
-        *d = sprite->centerX + 50.0f;
-        *e = sprite->centerY + 50.0f;
+        *left   = sprite->centerX - 50.0f;
+        *top    = sprite->centerY - 50.0f;
+        *right  = sprite->centerX + 50.0f;
+        *bottom = sprite->centerY + 50.0f;
         return;
     }
     else
     {
-        fontParams = &lbl_801BE4B0[sprite->fontId];
+        fontParams = &fontInfo[sprite->fontId];
         switch (sprite->type)
         {
         case 0:
@@ -1249,8 +1066,8 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, 
                 while (*chr != 0)
                 {
                     float f1;
-                    width += func_80070E9C(chr, sprite->fontId, fontParams) - fontParams->spaceWidth;
-                    f1 = func_80071018(chr, sprite->fontId);
+                    width += get_char_width(chr, sprite->fontId, fontParams) - fontParams->spaceWidth;
+                    f1 = g_get_char_ratio(chr, sprite->fontId);
                     if (f1 != 1.0)
                         width += f1 * fontParams->spaceWidth - fontParams->spaceWidth;
                     chr++;
@@ -1259,19 +1076,19 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, 
             break;
         case 1:
         case 2:
-            if (!bitmapGroups[(sprite->unk3C & 0xFF00) >> 8].isLoaded)
+            if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
             {
                 printf("SPRITE WARNING!! %s's category %s is not load\n",
-                    bitmapNames[sprite->unk3C >> 8][sprite->unk3C & 0xFF],
-                    bitmapGroups[sprite->unk3C >> 8].name);
-                *b = sprite->centerX - 50.0f;
-                *c = sprite->centerY - 50.0f;
-                *d = sprite->centerX + 50.0f;
-                *e = sprite->centerY + 50.0f;
+                    bitmapNames[sprite->bmpId >> 8][sprite->bmpId & 0xFF],
+                    bitmapGroups[sprite->bmpId >> 8].name);
+                *left = sprite->centerX - 50.0f;
+                *top = sprite->centerY - 50.0f;
+                *right = sprite->centerX + 50.0f;
+                *bottom = sprite->centerY + 50.0f;
                 return;
             }
-            width = bitmapGroups[(sprite->unk3C & 0xFF00) >> 8].tpl->texHeaders[sprite->unk3C & 0xFF].width;
-            height = bitmapGroups[(sprite->unk3C & 0xFF00) >> 8].tpl->texHeaders[sprite->unk3C & 0xFF].height;
+            width = bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].tpl->texHeaders[sprite->bmpId & 0xFF].width;
+            height = bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].tpl->texHeaders[sprite->bmpId & 0xFF].height;
             break;
         }
     }
@@ -1314,15 +1131,15 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, 
             y -= height;
             break;
         }
-        *b = x;
-        *c = y;
-        *d = x + width;
-        *e = y + height;
+        *left   = x;
+        *top    = y;
+        *right  = x + width;
+        *bottom = y + height;
     }
     else
     {
-        y = sprite->unk50->unk5C;
-        x = sprite->unk50->unk60;
+        y = sprite->unk50->top;
+        x = sprite->unk50->right;
         switch (sprite->textAlign)
         {
         // centered vertically
@@ -1330,69 +1147,69 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *b, s32 *c, s32 *d, 
         case ALIGN_CC:
         case ALIGN_RC:
         case ALIGN_PIC:
-            y = (y + sprite->unk50->unk64) / 2 - height / 2;
+            y = (y + sprite->unk50->bottom) / 2 - height / 2;
             break;
         // bottom aligned
         case ALIGN_LB:
         case ALIGN_CB:
         case ALIGN_RB:
-            y = sprite->unk50->unk64 - height;
+            y = sprite->unk50->bottom - height;
             break;
         }
         x += sprite->centerX;
         y += sprite->centerY;
-        *b = x;
-        *c = y;
-        *d = x + width;
-        *e = y + height;
+        *left   = x;
+        *top    = y;
+        *right  = x + width;
+        *bottom = y + height;
     }
 }
 
-int func_80070E9C(char *chr, int fontId, struct FontParams *params)
+int get_char_width(char *chr, int fontId, struct FontParams *params)
 {
     switch (fontId)
     {
     case FONT_ASC_20x20P:
         switch (*chr)
         {
-        case 0x20:
+        case ' ':
             return 10;
-        case 0x49:
+        case 'I':
             return 12;
         }
         break;
     case FONT_ASC_72x64:
         switch (*chr)
         {
-        case 0x20:
+        case ' ':
             return 18;
-        case 0x49:
+        case 'I':
             return 30;
         }
         break;
     case FONT_ASC_16x16P:
         switch (*chr)
         {
-        case 0x2C:
-        case 0x27:
-        case 0x2E:
+        case ',':
+        case '\'':
+        case '.':
             return 8;
-        case 0x20:
+        case ' ':
             return 9;
-        case 0x49:
+        case 'I':
             return 8;
-        case 0x69:
+        case 'i':
             return 7;
-        case 0x6A:
+        case 'j':
             return 9;
-        case 0x6C:
+        case 'l':
             return 9;
-        case 0x6D:
+        case 'm':
             return 13;
-        case 0x72:
+        case 'r':
             return 10;
         default:
-            if (*chr >= 0x61 && *chr <= 0x7A)
+            if (*chr >= 'a' && *chr <= 'z')
                 return 11;
             break;
         }
@@ -1403,27 +1220,27 @@ int func_80070E9C(char *chr, int fontId, struct FontParams *params)
     return params->spaceWidth;
 }
 
-float func_80071018(char *chr, int fontId)
+float g_get_char_ratio(char *chr, int fontId)
 {
     switch (fontId)
     {
     case FONT_ASC_72x64:
-        switch (*chr)
+        switch (chr[0])
         {
-        case 0x4F:
-            switch (*(chr + 1))
+        case 'O':
+            switch (chr[1])
             {
-            case 0x41:
-                return 0.949999988079f;
-            case 0x56:
-                return 0.899999976158f;
+            case 'A':
+                return 0.95f;
+            case 'V':
+                return 0.9f;
             }
             break;
-        case 0x44:
-            switch (*(chr + 1))
+        case 'D':
+            switch (chr[1])
             {
-            case 0x59:
-                return 0.899999976158f;
+            case 'Y':
+                return 0.9f;
             }
             break;
         }
@@ -1431,7 +1248,7 @@ float func_80071018(char *chr, int fontId)
     case FONT_NUM_7x10:
         return 0.777769982815f;
     case FONT_RAC_ASC16x16:
-        switch (*chr)
+        switch (chr[0])
         {
         case 0x27:
             return 0.333333343267f;
@@ -1453,7 +1270,7 @@ float func_80071018(char *chr, int fontId)
     return 1.0f;
 }
 
-struct Struct80071140_a
+struct StringParseState
 {
     u32 unk0;
     s32 unk4;
@@ -2372,47 +2189,47 @@ const s32 lbl_80118640[] =
     -1,
 };
 
-int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
+int parse_char_sequence(struct StringParseState *a, char *str, s32 *c, s32 *skip, s32 *e)
 {
     s32 r4;
     s32 r30;
 
     a->unk8 = 0;
 
-    if (b[0] == 'h' && b[1] == '/')
+    if (str[0] == 'h' && str[1] == '/')
     {
         a->unk0 = (a->unk0 & 0xFFFF0000) | 1;
-        *d = 1;
+        *skip = 1;
         return -2;
     }
-    if (b[0] == 'k' && b[1] == '/')
+    if (str[0] == 'k' && str[1] == '/')
     {
         a->unk0 = (a->unk0 & 0xFFFF0000) | 2;
-        *d = 1;
+        *skip = 1;
         return -2;
     }
-    if (b[0] == 'a' && *(b + 1) == '/')
+    if (str[0] == 'a' && *(str + 1) == '/')
     {
         a->unk0 = (a->unk0 & 0xFFFF0000);
-        *d = 1;
+        *skip = 1;
         return -2;
     }
-    if (b[0] == 'p' && *(b + 1) == '/')
+    if (str[0] == 'p' && *(str + 1) == '/')
     {
         a->unk0 = (a->unk0 & 0xFFFF0000) | 3;
-        *d = 1;
+        *skip = 1;
         return -2;
     }
-    if (b[0] == 'c' && *(b + 1) == '/')
+    if (str[0] == 'c' && *(str + 1) == '/')
     {
         int shift = 20;
-        *d += 4;
+        *skip += 4;
         *c = 0;
-        b += 4;
-        while (*b != '/')
+        str += 4;
+        while (*str != '/')
         {
             int digit;
-            switch (*b)
+            switch (*str)
             {
             case '0':
                 digit = 0;
@@ -2467,39 +2284,39 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
                 break;
             }
             *c |= digit << shift;
-            b++;
-            *d += 1;
+            str++;
+            *skip += 1;
             shift -= 4;
         }
         return -2;
     }
-    if (b[0] == 'b' && b[1] == '/')
+    if (str[0] == 'b' && str[1] == '/')
     {
         a->unk0 |= 0x10000;
-        *d = 1;
+        *skip = 1;
         return -2;
     }
-    if (b[0] == '/' && b[1] == 'b')
+    if (str[0] == '/' && str[1] == 'b')
     {
         a->unk0 &= ~0x10000;
-        *d = 1;
+        *skip = 1;
         return -2;
     }
-    if (b[0] == 'f' && b[1] == 't' && b[2] == '/')
+    if (str[0] == 'f' && str[1] == 't' && str[2] == '/')
     {
         *e = 1;
-        *d = 2;
+        *skip = 2;
         return -2;
     }
-    if (b[0] == 'f' && b[1] == 'p' && b[2] == '/')
+    if (str[0] == 'f' && str[1] == 'p' && str[2] == '/')
     {
         *e = 2;
-        *d = 2;
+        *skip = 2;
         return -2;
     }
-    if (b[0] == 'z' && b[2] == '/')
+    if (str[0] == 'z' && str[2] == '/')
     {
-        switch (b[1])
+        switch (str[1])
         {
         case 'r':
             *e = 0x64;
@@ -2514,7 +2331,7 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
             *e = 0x46;
             break;
         }
-        *d = 2;
+        *skip = 2;
         return -2;
     }
     r30 = -1;
@@ -2522,42 +2339,42 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
     r4 = a->unk0 & 0xFFFF;
     if ((u16)a->unk0 == 0)
     {
-        if (*b >= 'A' && *b <= 'Z')
-            r30 = *b + 0x87;
-        else if (*b >= 'a' && *b <= 'z')
-            r30 = *b + 0x8F;
-        else if (*b >= '0' && *b <= '9')
-            r30 = *b + 0xE8;
-        else if (*b == '.')
+        if (str[0] >= 'A' && str[0] <= 'Z')
+            r30 = str[0] + 0x87;
+        else if (str[0] >= 'a' && str[0] <= 'z')
+            r30 = str[0] + 0x8F;
+        else if (str[0] >= '0' && str[0] <= '9')
+            r30 = str[0] + 0xE8;
+        else if (str[0] == '.')
             r30 = 0x155;
-        else if (*b == ',')
+        else if (str[0] == ',')
             r30 = 0x154;
         else
-            r30 = lbl_80117E40[*b];
+            r30 = lbl_80117E40[str[0]];
     }
     else if ((u32)((u16)(a->unk0) - 1) <= 1)
     //else if ((u16)a->unk0 == 1 || (u16)a->unk0 == 2)
     {
-        r30 = lbl_80117E40[*b];
+        r30 = lbl_80117E40[str[0]];
         if (r30 != -1)
         {
             if (r30 >= 0xC8)
             {
-                if (lbl_80118640[*b] != -1)
-                    r30 = lbl_80118640[*b];
+                if (lbl_80118640[str[0]] != -1)
+                    r30 = lbl_80118640[str[0]];
             }
-            else if (*b == 0x58)
+            else if (str[0] == 0x58)
             {
-                int r3 = lbl_80118040[b[1]];
+                int r3 = lbl_80118040[str[1]];
                 if (r3 >= 0)
                 {
                     a->unk8 = 1;
                     r30 = r3 + 10;
                 }
-                else if (b[1] == 0x54)
+                else if (str[1] == 0x54)
                 {
                     r30 = 0x2F;
-                    if (b[2] == 0x53)
+                    if (str[2] == 0x53)
                         a->unk8 = 3;
                     else
                         a->unk8 = 2;
@@ -2565,9 +2382,9 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
             }
             else if (r30 >= 15)
             {
-                if (b[0] == b[1])
+                if (str[0] == str[1])
                 {
-                    if (*b == 0x4E)
+                    if (str[0] == 0x4E)
                     {
                         a->unk8 = 1;
                         r30 = 0x5F;
@@ -2577,30 +2394,30 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
                 }
                 else if (a->unk4 != -1)
                 {
-                    r30 = lbl_80118240[b[1]];
+                    r30 = lbl_80118240[str[1]];
                     a->unk4 = -1;
                     if (r30 == -2)
                     {
-                        *d = 1;
+                        *skip = 1;
                         return -2;
                     }
                     a->unk8 = 1;
                 }
                 else
                 {
-                    r4 = lbl_80118040[b[1]];
+                    r4 = lbl_80118040[str[1]];
                     if (r4 == -2)
                     {
-                        r4 = lbl_80118040[b[2]];
+                        r4 = lbl_80118040[str[2]];
                         a->unk8 = 2;
                     }
                     if (r4 != -1)
                     {
-                        if (b[0] == 0x4A && b[1] == 0x49)
+                        if (str[0] == 0x4A && str[1] == 0x49)
                             a->unk8 = 1;
-                        else if (b[0] == 0x46 || b[0] == 0x4A)
+                        else if (str[0] == 0x46 || str[0] == 0x4A)
                             a->unk4 = r30;
-                        else if (b[0] == 0x43 && b[1] != 0x48)
+                        else if (str[0] == 0x43 && str[1] != 0x48)
                         {
                             a->unk8 = 1;
                             r30 = r4 + 15;
@@ -2614,18 +2431,18 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
                     }
                     else
                     {
-                        if (lbl_80118440[*b] != -1)
+                        if (lbl_80118440[str[0]] != -1)
                             r30++;
-                        if (*b == 0x4E && b[1] != 0x59)
+                        if (str[0] == 0x4E && str[1] != 0x59)
                             r30 = 0x5F;
-                        else if (b[0] == 0x53 && b[1] == 0x48 && b[2] == 0x49)
+                        else if (str[0] == 0x53 && str[1] == 0x48 && str[2] == 0x49)
                             a->unk8 = 2;
                         else
                             a->unk4 = r30;
                     }
                 }
             }
-            else if (b[0] == 0x56)
+            else if (str[0] == 0x56)
                 a->unk4 = r30;
             else if (a->unk4 != -1)
             {
@@ -2651,14 +2468,14 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
             struct Struct801C0B94 *r26;
 
             r30 = -2;
-            for (i = 0; b[i] != '/'; i++)
+            for (i = 0; str[i] != '/'; i++)
                 ;
             r26 = lbl_801C0B94;
             while (r26->unk4 != -1)
             {
                 int j;
 
-                r5 = b;
+                r5 = str;
                 for (j = 0; *r5 != '/'; j++, r5++)
                 {
                     if (*r5 != r26->unk0[j])
@@ -2679,7 +2496,7 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
                 {
                     int j;
 
-                    r5 = b;
+                    r5 = str;
                     for (j = 0; *r5 != '/'; j++, r5++)
                     {
                         if (*r5 != r26->unk0[j])
@@ -2702,7 +2519,7 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
                 {
                     int j;
 
-                    r5 = b;
+                    r5 = str;
                     for (j = 0; *r5 != '/'; j++, r5++)
                     {
                         if (*r5 != r26->unk0[j])
@@ -2725,7 +2542,7 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
                 {
                     int j;
 
-                    r5 = b;
+                    r5 = str;
                     for (j = 0; *r5 != '/'; j++, r5++)
                     {
                         if (*r5 != r25->unk0[j])
@@ -2749,7 +2566,7 @@ int func_80071140(struct Struct80071140_a *a, char *b, s32 *c, s32 *d, s32 *e)
 
 int func_80071A74(int a)
 {
-    return lbl_801BE4B0[a].unk0;
+    return fontInfo[a].unk0;
 }
 
 void func_80071A8C(void)
@@ -2816,8 +2633,8 @@ void func_80071B60(float a, float b)
 #ifdef NONMATCHING
 void func_80071B78(s8 a)
 {
-    struct Struct801F3DC0 sp10;
-    struct FontParams *r5 = &lbl_801BE4B0[lbl_8028CF28.unkC];
+    struct SpriteRequest sp10;
+    struct FontParams *r5 = &fontInfo[lbl_8028CF28.unkC];
     int r6 = a - r5->unk4;
     int div = r6 / r5->unkC;
     int mod = r6 % r5->unkC;
@@ -2825,7 +2642,7 @@ void func_80071B78(s8 a)
     float f5;
     //float f0;
 
-    sp10.unk0 = r5->unk0;
+    sp10.bmpId = r5->unk0;
     sp10.unk4 = lbl_8028CF28.unk4 + r5->unk18 * r5->unk20 /*0xC4*/;
     sp10.unk8 = lbl_8028CF28.unk8 + r5->unk1C * r5->unk22 /*0xBC*/;
     sp10.unkC = lbl_8028CF28.unk1C;
@@ -2887,18 +2704,18 @@ void func_80071E58(char *str)
     float f17;
     float f16;
     float f31;
-    struct Struct801F3DC0 sp38;
-    struct Struct80071140_a sp28;
+    struct SpriteRequest sp38;
+    struct StringParseState sp28;
     u8 dummy[8];
-    s32 sp1C;
+    s32 skip;
     s32 sp18;
     s32 sp14;
 
-    font = &lbl_801BE4B0[r28->unkC];
+    font = &fontInfo[r28->unkC];
     r22 = 0;
     r25 = r28->unkC;
 
-    sp38.unk0 = font->unk0;
+    sp38.bmpId = font->unk0;
     sp38.unkC = r28->unk1C;
     sp38.unk2C = r28->unk28;
     sp38.unk28 = r28->unk18;
@@ -2924,9 +2741,9 @@ void func_80071E58(char *str)
         if (r28->unkC > 0xAE)
             r23 = func_80071E58_inline(*str, r28->unkC, font);
         else
-            r23 = func_80070E9C(str, r28->unkC, font);
+            r23 = get_char_width(str, r28->unkC, font);
         f17 = font->unk10 * (0.5 * (font->spaceWidth - r23) / (font->spaceWidth));
-        f16 = func_80071018(str, r28->unkC);
+        f16 = g_get_char_ratio(str, r28->unkC);
         if (*str == '\n')
         {
             r28->unk4 = r28->unk0;
@@ -2943,21 +2760,21 @@ void func_80071E58(char *str)
         r3 = *str;
         if (r28->unkC > 0xAE)
         {
-            sp1C = 0;
+            skip = 0;
             sp18 = 0;
             sp14 = sp38.unk38;
-            r3 = func_80071140(&sp28, str, &sp14, &sp1C, &sp18);
-            str += sp1C;
+            r3 = parse_char_sequence(&sp28, str, &sp14, &skip, &sp18);
+            str += skip;
             sp38.unk38 = sp14;
             if (sp18 == 1)
             {
                 r28->unkC = 0xB0;
-                font = &lbl_801BE4B0[r28->unkC];
+                font = &fontInfo[r28->unkC];
             }
             else if (sp18 == 2)
             {
                 r28->unkC = 0xB1;
-                font = &lbl_801BE4B0[r28->unkC];
+                font = &fontInfo[r28->unkC];
             }
             else if (sp18 == 0x46)
                 r28->unk20 = 0.7f;
@@ -2994,7 +2811,7 @@ void func_80071E58(char *str)
                                 r6 = r4 + 1;
                             else
                                 r6 = r6 = 24;
-                            f0 = (float)r6 / (float)lbl_801BE4B0[r28->unkC].spaceWidth;
+                            f0 = (float)r6 / (float)fontInfo[r28->unkC].spaceWidth;
                             break;
                         }
                     }
@@ -3005,10 +2822,10 @@ void func_80071E58(char *str)
                 }
                 f16 = f0;
                 if (sp28.unk0 & (1 << 17))
-                    font = &lbl_801BE4B0[0xB2];
+                    font = &fontInfo[0xB2];
                 else
-                    font = &lbl_801BE4B0[r28->unkC];
-                sp38.unk0 = font->unk0;
+                    font = &fontInfo[r28->unkC];
+                sp38.bmpId = font->unk0;
             }
         }
         if (r28->unkC < 0xAE
@@ -3056,15 +2873,15 @@ float g_get_text_width(char *str)
     int r22;
     float width;
     float f23;
-    struct Struct801F3DC0 unk;
-    struct Struct80071140_a sp2C;
+    struct SpriteRequest unk;
+    struct StringParseState sp2C;
     u8 dummy2[8];
-    s32 sp20;
+    s32 skip;
     s32 sp1C;
     s32 sp18;
     u8 dummy[8];
 
-    font = &lbl_801BE4B0[r29->unkC];
+    font = &fontInfo[r29->unkC];
     r22 = 0;
     r25 = r29->unkC;
     f23 = r29->unk20;
@@ -3087,8 +2904,8 @@ float g_get_text_width(char *str)
         if (r29->unkC > 0xAE)
             r23 = func_80071E58_inline(*str, r29->unkC, font);
         else
-            r23 = func_80070E9C(str, r29->unkC, font);
-        f1 = func_80071018(str, r29->unkC);
+            r23 = get_char_width(str, r29->unkC, font);
+        f1 = g_get_char_ratio(str, r29->unkC);
         if (*str == '\n')
             continue;
         if (*str == ' ' || *str < font->unk4 || *str > font->unk8)
@@ -3102,20 +2919,20 @@ float g_get_text_width(char *str)
         if (r29->unkC > 0xAE)
         {
             sp18 = unk.unk38;
-            sp20 = 0;
+            skip = 0;
             sp1C = 0;
-            r3 = func_80071140(&sp2C, str, &sp18, &sp20, &sp1C);
+            r3 = parse_char_sequence(&sp2C, str, &sp18, &skip, &sp1C);
             unk.unk38 = sp18;
-            str += sp20;
+            str += skip;
             if (sp1C == 1)
             {
                 r29->unkC = 0xB0;
-                font = &lbl_801BE4B0[r29->unkC];
+                font = &fontInfo[r29->unkC];
             }
             else if (sp1C == 2)
             {
                 r29->unkC = 0xB1;
-                font = &lbl_801BE4B0[r29->unkC];
+                font = &fontInfo[r29->unkC];
             }
             else if (sp1C == 0x46)
                 r29->unk20 = 0.7f;
@@ -3148,7 +2965,7 @@ float g_get_text_width(char *str)
                             r6 = foo + 1;
                         else
                             r6 = r6 = 24;
-                        f1 = (float)r6 / (float)lbl_801BE4B0[r29->unkC].spaceWidth;
+                        f1 = (float)r6 / (float)fontInfo[r29->unkC].spaceWidth;
                         break;
                     }
                 }
@@ -3158,9 +2975,9 @@ float g_get_text_width(char *str)
                 break;
             }
             if (sp2C.unk0 & (1 << 17))
-                font = &lbl_801BE4B0[0xB2];
+                font = &fontInfo[0xB2];
             else
-                font = &lbl_801BE4B0[r29->unkC];
+                font = &fontInfo[r29->unkC];
         }
         r22++;
         width += r23 * r29->unk20 * f1;
@@ -3185,9 +3002,9 @@ void func_80072AC0(char *str, ...)
 
 void func_80072B50(struct Sprite *sprite)
 {
-    lbl_8028CF28.unk0 = sprite->unk58;
-    lbl_8028CF28.unk4 = sprite->unk58;
-    lbl_8028CF28.unk8 = sprite->unk5C;
+    lbl_8028CF28.unk0 = sprite->left;
+    lbl_8028CF28.unk4 = sprite->left;
+    lbl_8028CF28.unk8 = sprite->top;
     lbl_8028CF28.unkC = sprite->fontId;
     lbl_8028CF28.unk10 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
                        | ((sprite->unkC & 0xFF) << 16)
@@ -3207,11 +3024,11 @@ void func_80072B50(struct Sprite *sprite)
 
 void func_80072C68(struct Sprite *sprite)
 {
-    struct Struct801F3DC0 spC;
+    struct SpriteRequest spC;
 
-    spC.unk0 = sprite->unk3C;
-    spC.unk4 = (sprite->unk58 + sprite->unk60) / 2;
-    spC.unk8 = (sprite->unk5C + sprite->unk64) / 2;
+    spC.bmpId = sprite->bmpId;
+    spC.unk4 = (sprite->left + sprite->right) / 2;
+    spC.unk8 = (sprite->top + sprite->bottom) / 2;
     spC.unkC = sprite->unk4C;
     spC.unk10 = sprite->unk40;
     spC.unk14 = sprite->unk44;
@@ -3238,13 +3055,13 @@ float func_80072DA8(int r23, char *str, int c)
     int r27;
     struct FontParams *font;
     float f31;
-    struct Struct80071140_a sp28;
-    s32 sp24;
+    struct StringParseState sp28;
+    s32 skip;
     s32 sp20;
     s32 sp1C;
     u8 dummy[8];
 
-    font = &lbl_801BE4B0[r23];
+    font = &fontInfo[r23];
     r27 = 0;
     f31 = 1.0f;
     sp28.unk0 = 0;
@@ -3263,18 +3080,18 @@ float func_80072DA8(int r23, char *str, int c)
             r27++;
             continue;
         }
-        sp24 = 0;
+        skip = 0;
         sp1C = 0;
         sp20 = 0;
-        r3 = func_80071140(&sp28, str, &sp1C, &sp24, &sp20);
+        r3 = parse_char_sequence(&sp28, str, &sp1C, &skip, &sp20);
         if (sp20 == 1)
         {
-            font = &lbl_801BE4B0[0xB0];
+            font = &fontInfo[0xB0];
             r23 = 0xB0;
         }
         else if (sp20 == 2)
         {
-            font = &lbl_801BE4B0[0xB1];
+            font = &fontInfo[0xB1];
             r23 = 0xB1;
         }
         else if (sp20 == 0x46)
@@ -3285,7 +3102,7 @@ float func_80072DA8(int r23, char *str, int c)
             f31 = 0.9f;
         else if (sp20 == 0x64)
             f31 = 1.0f;
-        str += sp24;
+        str += skip;
         if (r3 == -1 || r3 == -2)
             continue;
         switch (r23)
@@ -3304,7 +3121,7 @@ float func_80072DA8(int r23, char *str, int c)
                         r6 = foo + 1;
                     else
                         r6 = r6 = 24;
-                    f2 = (float)r6 / (float)lbl_801BE4B0[r23].spaceWidth;
+                    f2 = (float)r6 / (float)fontInfo[r23].spaceWidth;
                     break;
                 }
             }
@@ -3334,11 +3151,11 @@ int func_80073084(int a, char *str)
 
 void func_800730B4(void)
 {
-    struct Struct801F3DC0 sp8;
+    struct SpriteRequest sp8;
 
     if (lbl_80290170.unk8 == 0)
         return;
-    if (gameMode == 5)
+    if (gameMode == MD_OPTION)
     {
         if ((lbl_80290170.unk0 & 0xFF) != 2)
             lbl_80290170.unk8--;
@@ -3360,7 +3177,7 @@ void func_800730B4(void)
         sp8.unk2C = 1.0f;
         break;
     }
-    sp8.unk0 = 0x4B;
+    sp8.bmpId = 0x4B;
     sp8.unk4 = 320.0f;
     sp8.unk8 = 240.1f;
     sp8.unkC = (lbl_80290170.unk0 & (1 << 8)) ? 0.009 : 0.25;
@@ -3428,21 +3245,21 @@ void g_start_screen_fade(s32 a, int b, int duration)
     }
 }
 
-static inline int func_80073600_inline(struct Struct801F3DC0 *a)
+static inline int func_80073600_inline(struct SpriteRequest *a)
 {
     if (g_bmpUnkCountOfSomething == 256)
     {
-        func_8003026C(2, "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->unk0);
-        OSReport("nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->unk0);
+        func_8003026C(2, "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->bmpId);
+        OSReport("nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->bmpId);
         return 0;
     }
 
-    memcpy(&lbl_801F3DC0[g_bmpUnkCountOfSomething], a, sizeof(struct Struct801F3DC0));
+    memcpy(&lbl_801F3DC0[g_bmpUnkCountOfSomething], a, sizeof(struct SpriteRequest));
     g_bmpUnkCountOfSomething++;
     return 1;
 }
 
-int func_80073600(struct Struct801F3DC0 *a)
+int func_80073600(struct SpriteRequest *a)
 {
     int r4;
 
@@ -3461,7 +3278,7 @@ int func_80073600(struct Struct801F3DC0 *a)
          && func_80073600_inline(a))
             return 1;
         if ((advDemoInfo.flags & (1 << 7))
-         && (a->unk0 == 12 || a->unk0 == 85)
+         && (a->bmpId == 12 || a->bmpId == 85)
          && func_80073600_inline(a))
             return 1;
         break;
@@ -3469,7 +3286,7 @@ int func_80073600(struct Struct801F3DC0 *a)
     return 0;
 }
 
-int func_80073828(struct Struct801F3DC0 *a)
+int func_80073828(struct SpriteRequest *a)
 {
     Vec sp54 = {0};
     Vec sp48 = {0};
@@ -3494,20 +3311,20 @@ int func_80073828(struct Struct801F3DC0 *a)
     if (func_80073600(a))
         return 0;
 
-    if (!bitmapGroups[((u32)a->unk0 >> 8) & 0xFF].isLoaded)
+    if (!bitmapGroups[((u32)a->bmpId >> 8) & 0xFF].isLoaded)
     {
         printf(
             "SPRITE WARNING!! bmp_%s's category %s is not load\n",
-            bitmapNames[a->unk0 >> 8][a->unk0 & 0xFF],
-            bitmapGroups[a->unk0 >> 8].name);
+            bitmapNames[a->bmpId >> 8][a->bmpId & 0xFF],
+            bitmapGroups[a->bmpId >> 8].name);
         return 0;
     }
 
     f31 = -a->unkC;
     f1 = a->unk4;
     f2 = a->unk8;
-    texWidth  = bitmapGroups[(a->unk0 >> 8) & 0xFF].tpl->texHeaders[a->unk0 & 0xFF].width;
-    texHeight = bitmapGroups[(a->unk0 >> 8) & 0xFF].tpl->texHeaders[a->unk0 & 0xFF].height;
+    texWidth  = bitmapGroups[(a->bmpId >> 8) & 0xFF].tpl->texHeaders[a->bmpId & 0xFF].width;
+    texHeight = bitmapGroups[(a->bmpId >> 8) & 0xFF].tpl->texHeaders[a->bmpId & 0xFF].height;
     f30 = a->unk18;
     f29 = a->unk20;
     f28 = a->unk1C;
@@ -3581,7 +3398,7 @@ int func_80073828(struct Struct801F3DC0 *a)
         f27 = a->unk1C;
     }
 
-    func_8009F430(&bitmapGroups[(a->unk0 >> 8) & 0xFF].tpl->texObjs[a->unk0 & 0xFF], 0);
+    func_8009F430(&bitmapGroups[(a->bmpId >> 8) & 0xFF].tpl->texObjs[a->bmpId & 0xFF], 0);
     sp2C.r = (a->unk38 >> 16);
     sp2C.g = (a->unk38 >> 8);
     sp2C.b = (a->unk38 >> 0);

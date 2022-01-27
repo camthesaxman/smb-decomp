@@ -1,3 +1,6 @@
+/**
+ * item_pilot.c - Item behavior of collectable bananas in Monkey Target
+ */
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
@@ -30,20 +33,20 @@ struct ModelLOD lbl_801BDF88[] =
 
 struct Struct801BDFA0
 {
-    void *unk0;
+    struct ModelLOD **lodModelsPtr;
     s16 unk4;
     float unk8;
     s16 unkC;
     s16 unkE;
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
+    s16 xrotSpeed;
+    s16 yrotSpeed;
+    s16 zrotSpeed;
 };
 
-void *lbl_802F0B38 = lbl_801BDF60;
-void *lbl_802F0B3C = lbl_801BDF88;
+struct ModelLOD *lbl_802F0B38 = lbl_801BDF60;
+struct ModelLOD *lbl_802F0B3C = lbl_801BDF88;
 
-struct Struct801BDFA0 lbl_801BDFA0[] =
+struct Struct801BDFA0 pilotBananaInfo[] =
 {
     { &lbl_802F0B38, -1,  0.5, 1, 10, 0, 768, 0 },
     { &lbl_802F0B38, -1,  0.5, 1, 10, 0, 768, 0 },
@@ -71,16 +74,16 @@ void item_pilot_init(struct Item *item)
 
     item->unk12 = -1;
     item->state = 1;
-    if (item->unk6 < 3)
-        item->unk1C = lbl_801BDFA0[item->unk6].unk0;
+    if (item->subtype < 3)
+        item->unk1C = pilotBananaInfo[item->subtype].lodModelsPtr;
     else
-        item->unk1C = lbl_802F1CB8->modelEntries[lbl_801BDFA0[item->unk6].unk4].modelOffset;
+        item->unk1C = lbl_802F1CB8->modelEntries[pilotBananaInfo[item->subtype].unk4].modelOffset;
     item->unk8 = 0x22;
-    item->unk14 = lbl_801BDFA0[item->unk6].unk8;
+    item->unk14 = pilotBananaInfo[item->subtype].unk8;
     item->unk18 = 0.25f;
-    item->unk3E = lbl_801BDFA0[item->unk6].unk10;
-    item->unk40 = lbl_801BDFA0[item->unk6].unk12;
-    item->unk42 = lbl_801BDFA0[item->unk6].unk14;
+    item->xrotSpeed = pilotBananaInfo[item->subtype].xrotSpeed;
+    item->yrotSpeed = pilotBananaInfo[item->subtype].yrotSpeed;
+    item->zrotSpeed = pilotBananaInfo[item->subtype].zrotSpeed;
     item->shadowModel = commonGma->modelEntries[polyshadow01].modelOffset;
     item->shadowColor.r = 0x46;
     item->shadowColor.g = 0x47;
@@ -108,13 +111,13 @@ void item_pilot_main(struct Item *item)
         item->state = 2;
         // fall through
     case 2:
-        if (item->unk6 == 3 || item->unk6 == 1)
+        if (item->subtype == 3 || item->subtype == 1)
         {
             item->unk2C.y -= 0.008;
             if (item->unk20.y < -1.0)
                 item->state = 6;
         }
-        else if (item->unk6 == 4)
+        else if (item->subtype == 4)
         {
             Vec sp24;
 
@@ -192,17 +195,17 @@ void item_pilot_main(struct Item *item)
     item->unk20.y += item->unk2C.y;
     item->unk20.z += item->unk2C.z;
 
-    item->xrot += item->unk3E;
-    item->yrot += item->unk40;
-    item->zrot += item->unk42;
+    item->xrot += item->xrotSpeed;
+    item->yrot += item->yrotSpeed;
+    item->zrot += item->zrotSpeed;
 
-    if (item->unk5C == 0)
+    if (item->attachedTo == 0)
         func_800390C8(2, &item->unk20, 1.0f);
     else
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(movableStageParts[item->unk5C].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
         mathutil_mtxA_tf_point(&item->unk20, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
@@ -233,18 +236,18 @@ void item_pilot_draw(struct Item *item)
     mathutil_mtxA_rotate_y(item->yrot);
     mathutil_mtxA_rotate_x(item->xrot);
     mathutil_mtxA_rotate_z(item->zrot);
-    if (item->unk6 < 3)
+    if (item->subtype < 3)
         model = find_item_model(item->unk1C);
     else
         model = item->unk1C;
-    if (item->unk6 == 3)
+    if (item->subtype == 3)
         f31 = 1.0f;
     else
         f31 = (f30 / model->boundsRadius) * 1.5;
     if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f31) == 0)
         return;
     if (lbl_802F1FF6 == 6
-     && (item->unk6 == 4 || item->unk6 == 3))
+     && (item->subtype == 4 || item->subtype == 3))
     {
         float f1 = (lbl_802F1FF0 - 20.0) / 40.0;
 
@@ -260,11 +263,11 @@ void item_pilot_draw(struct Item *item)
     f30 = -((spC.z + f30 + 0.1f) / f30);
     if (f30 > 0.0f)
     {
-        if ((item->unk6 == 4 && -spC.z > 270.0) || (item->unk6 == 3 && -spC.z > 200.0))
+        if ((item->subtype == 4 && -spC.z > 270.0) || (item->subtype == 3 && -spC.z > 200.0))
         {
             int r30_;
 
-            if (item->unk6 == 4)
+            if (item->subtype == 4)
             {
                 if (-spC.z < 450.0)
                     r30_ = 0x86;
@@ -299,7 +302,7 @@ void item_pilot_draw(struct Item *item)
             else
                 g_avdisp_draw_model_2(model);
         }
-        if (item->unk6 == 2)
+        if (item->subtype == 2)
         {
             float f1, f2, f3;
 
@@ -342,11 +345,11 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     item->unk8 &= ~(1 << 1);
     item->state = 3;
     item->unk2C.y += item->unk14 * 0.1875;
-    item->unk40 <<= 2;
+    item->yrotSpeed <<= 2;
     item->unk2C.x += b->unk1C.x * 0.25;
     item->unk2C.y += b->unk1C.y * 0.25;
     item->unk2C.z += b->unk1C.z * 0.25;
-    if (item->unk6 == 0 || item->unk6 == 1 || item->unk6 == 2)
+    if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
     {
         if (item->unk5E < 0
          && (!(lbl_801F3A58.unk0 & (1 << 4)) || (lbl_801F3A58.unk0 & (1 << 11))))
@@ -354,7 +357,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             struct Struct8003C550 sp178;
 
             item->unk5E = lbl_801F3A58.timerCurr;
-            lbl_80285A58[modeCtrl.unk2C] += lbl_801BDFA0[item->unk6].unkE;
+            lbl_80285A58[modeCtrl.unk2C] += pilotBananaInfo[item->subtype].unkE;
             if (lbl_802F1FD0 & (1 << 3))
             {
                 if (++lbl_802F1FE4[modeCtrl.unk2C] >= 6)
@@ -376,10 +379,10 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk24.x = (item->unk14 / sp178.unk30->boundsRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
-            func_8004CF08(&sp178);
+            g_create_pickup_item(&sp178);
         }
     }
-    else if (item->unk6 == 3)
+    else if (item->subtype == 3)
     {
         struct Ball *r31 = currentBallStructPtr;
         struct Struct8003C550 spCC;
@@ -400,9 +403,9 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         spCC.unk34.y = r31->pos.y - 1.0;
         spCC.unk34.z = r31->pos.z;
         spCC.unk24 = (Vec){3.5, 4.5, 3.5};
-        func_8004CF08(&spCC);
+        g_create_pickup_item(&spCC);
     }
-    else if (item->unk6 == 4)
+    else if (item->subtype == 4)
     {
         struct Ball *r31 = currentBallStructPtr;
         struct Struct8003C550 sp20;
@@ -428,18 +431,18 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp20.unk40.x = b->unk1C.x + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.y = b->unk1C.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.z = b->unk1C.z + ((rand() / 32767.0f) * 0.2 - 0.1);
-            func_8004CF08(&sp20);
+            g_create_pickup_item(&sp20);
         }
     }
     if (gameSubmode == 2)
         return;
-    if (item->unk6 == 2)
+    if (item->subtype == 2)
     {
         g_play_sound(0x39);
         if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
             g_play_sound(0x2820);
     }
-    else if (item->unk6 == 0 || item->unk6 == 1)
+    else if (item->subtype == 0 || item->subtype == 1)
     {
         g_play_sound(3);
         if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
@@ -475,5 +478,5 @@ char lbl_801BE018[] =
 void item_pilot_debug(struct Item *item)
 {
     func_8002FCC0(2, lbl_801BE018);
-    func_8002FCC0(2, "Coin Value: %d\n", lbl_801BDFA0[item->unk6].unkC);
+    func_8002FCC0(2, "Coin Value: %d\n", pilotBananaInfo[item->subtype].unkC);
 }

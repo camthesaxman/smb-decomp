@@ -4,9 +4,11 @@
 
 #include "global.h"
 #include "bitmap.h"
+#include "event.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
+#include "sprite.h"
 
 struct TPL *g_unkBitmapTPL;
 s32 lbl_802F1D04;
@@ -20,7 +22,7 @@ float lbl_802F1CE8;
 u16 textY;
 u16 textX;
 u16 textStartX;
-struct Struct801F3DC0 lbl_801F3DC0[0x100];
+struct SpriteRequest lbl_801F3DC0[0x100];
 
 extern char *bmpComNames[];
 extern char *bmpAdvNames[];
@@ -478,7 +480,7 @@ void bitmap_draw(struct Bitmap *bmp)
 
 void bitmap_draw_normal_char(unsigned char chr)
 {
-    struct FontParams *r30 = &lbl_801BE4B0[currFont];
+    struct FontParams *r30 = &fontInfo[currFont];
     float x = textX;
     float y = textY;
     int var1 = chr - r30->unk4;
@@ -545,7 +547,7 @@ void bitmap_draw_normal_char(unsigned char chr)
 
 void bitmap_draw_char(unsigned char chr)
 {
-    struct FontParams *r4 = &lbl_801BE4B0[currFont];
+    struct FontParams *r4 = &fontInfo[currFont];
 
     switch (chr)
     {
@@ -615,7 +617,7 @@ void bitmap_draw_string(void)
 void func_8002704C(void)
 {
     int i;
-    struct Struct801F3DC0 *r30 = &lbl_801F3DC0[0];
+    struct SpriteRequest *r30 = &lbl_801F3DC0[0];
 
     for (i = 0; i < g_bmpUnkCountOfSomething; i++, r30++)
         func_80073828(r30);

@@ -5,8 +5,10 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "event.h"
 #include "item.h"
 #include "perf.h"
+#include "sprite.h"
 #include "stage.h"
 
 struct Event eventInfo[] =
@@ -56,12 +58,12 @@ void event_main(void)
         switch (event->state)
         {
         case 1:
-            ev_run_init(i);
+            event_start(i);
         case EV_STATE_RUNNING:
             event->main();
             break;
         case 3:
-            ev_run_dest(i);
+            event_finish(i);
             break;
         }
         event->time = perf_stop_timer(5);
@@ -69,15 +71,15 @@ void event_main(void)
     func_8008D158(0x00FFFFDF);
 }
 
-void ev_run_init(int id)
+void event_start(int id)
 {
     if (eventInfo[id].state != EV_STATE_INACTIVE)
-        ev_run_dest(id);
+        event_finish(id);
     eventInfo[id].start();
     eventInfo[id].state = EV_STATE_RUNNING;
 }
 
-void ev_run_dest(int id)
+void event_finish(int id)
 {
     if (eventInfo[id].state != EV_STATE_INACTIVE)
     {
@@ -86,12 +88,12 @@ void ev_run_dest(int id)
     }
 }
 
-void ev_suspend(int id)
+void event_suspend(int id)
 {
     eventInfo[id].state = EV_STATE_SUSPENDED;
 }
 
-void ev_restart(int id)
+void event_resume(int id)
 {
     if (eventInfo[id].state == EV_STATE_SUSPENDED)
         eventInfo[id].state = EV_STATE_RUNNING;
@@ -99,7 +101,7 @@ void ev_restart(int id)
         printf("ev_restart: event %s is not suspended\n", eventInfo[id].name);
 }
 
-void event_clear(void)
+void event_finish_all(void)
 {
     struct Event *ev = eventInfo;
     int i;

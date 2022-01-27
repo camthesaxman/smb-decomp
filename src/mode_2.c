@@ -4,8 +4,10 @@
 #include "global.h"
 #include "ball.h"
 #include "bitmap.h"
+#include "event.h"
 #include "input.h"
 #include "mode.h"
+#include "sprite.h"
 
 struct Struct801EEC68 lbl_801EEC68;
 
@@ -100,7 +102,7 @@ void unkFunc8000A26C(struct Sprite *a)
     if (a == NULL)
     {
         func_80075D74();
-        g_find_sprite_with_probably_not_font(4);
+        find_sprite_with_tag(4);
     }
     else
         a->unk48 = 1;
@@ -206,7 +208,7 @@ void unkFunc8000AA00(struct Sprite *a)
         {
         case 0:
             lbl_802F1B98 = 0;
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
             if (modeCtrl.unk28 == 6)
                 lbl_801EEC68.unk4 |= 0x20;
@@ -225,7 +227,7 @@ void unkFunc8000AA00(struct Sprite *a)
         {
         case 0:
             lbl_802F1B98 = 0;
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
             break;
         case 1:
@@ -234,13 +236,13 @@ void unkFunc8000AA00(struct Sprite *a)
                 lbl_802F1B98 = 3;
                 gamePauseStatus |= 8;
                 func_8009F49C(5);
-                ev_run_init(EVENT_MEMCARD);
+                event_start(EVENT_MEMCARD);
             }
             else
             {
                 lbl_802F1B98 = 2;
                 gamePauseStatus |= 8;
-                ev_run_init(EVENT_VIEW);
+                event_start(EVENT_VIEW);
                 if (a != NULL)
                     a->unk78 |= 1;
             }
@@ -267,7 +269,7 @@ void unkFunc8000AA00(struct Sprite *a)
         {
         case 0:
             lbl_802F1B98 = 0;
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
             break;
         case 1:
@@ -293,13 +295,13 @@ void unkFunc8000AA00(struct Sprite *a)
                 lbl_802F1B98 = 3;
                 gamePauseStatus |= 8;
                 func_8009F49C(5);
-                ev_run_init(EVENT_MEMCARD);
+                event_start(EVENT_MEMCARD);
             }
             else
             {
                 lbl_802F1B98 = 2;
                 gamePauseStatus |= 8;
-                ev_run_init(EVENT_VIEW);
+                event_start(EVENT_VIEW);
                 if (a != NULL)
                     a->unk78 |= 1;
             }
@@ -323,11 +325,11 @@ void unkFunc8000AA00(struct Sprite *a)
         {
         case 0:
             lbl_802F1B98 = 0;
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
             break;
         case 1:
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             modeCtrl.levelSetFlags |= 0x4000;
             func_8002CF38(100, 10);
             break;
@@ -345,13 +347,13 @@ void unkFunc8000AA00(struct Sprite *a)
         {
         case 0:
             lbl_802F1B98 = 0;
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
             lbl_801EEC68.unk4 |= 0x20;
             break;
         case 1:
             lbl_802F1B98 = 0;
-            g_dest_sprite_with_font(4);
+            destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
             lbl_801EEC68.unk4 |= 0x20;
             break;
@@ -378,7 +380,7 @@ void unkFunc8000AECC(struct Sprite *a)
          || (controllerInfo[lbl_801EEC68.unk14].unk0[2].button & PAD_BUTTON_B)
          || (controllerInfo[lbl_801EEC68.unk14].unk0[2].button & PAD_BUTTON_START))
         {
-            ev_run_dest(EVENT_VIEW);
+            event_finish(EVENT_VIEW);
             func_8002B5C8(0x70);
             lbl_801EEC68.unk4 &= ~1;
             if (a != NULL)
@@ -395,7 +397,7 @@ void unkFunc8000AECC(struct Sprite *a)
         }
         break;
     case 4:
-        sprite = g_find_sprite_with_probably_not_font(10);
+        sprite = find_sprite_with_tag(10);
         if (sprite != NULL)
             func_80082024(0, sprite);
         if ((controllerInfo[lbl_801EEC68.unk14].unk0[2].button & PAD_BUTTON_A)
@@ -404,7 +406,7 @@ void unkFunc8000AECC(struct Sprite *a)
         {
             func_8002B5C8(0x70);
             lbl_801EEC68.unk4 &= ~1;
-            g_dest_sprite_with_font(10);
+            destroy_sprite_with_tag(10);
             if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
                 lbl_802F1B9C = OSSetCurrentHeap(memHeap4);
             func_800705C4(12);
@@ -420,7 +422,7 @@ void unkFunc8000AECC(struct Sprite *a)
 
 void unkFunc8000B09C(void)
 {
-    struct Sprite *sprite = g_find_sprite_with_probably_not_font(4);
+    struct Sprite *sprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.unk28 == 0 || modeCtrl.unk28 == 2)
      && !(lbl_801F3A58.unk0 & (1<<(31-0x17)))

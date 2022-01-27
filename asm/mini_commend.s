@@ -9,13 +9,13 @@ submode_mini_commend_init_func:
 /* 8009BA04 00097924  90 01 00 04 */	stw r0, 4(r1)
 /* 8009BA08 00097928  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8009BA0C 0009792C  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 8009BA10 00097930  4B F6 F9 19 */	bl ev_run_init
+/* 8009BA10 00097930  4B F6 F9 19 */	bl event_start
 /* 8009BA14 00097934  38 60 00 10 */	li r3, 0x10
-/* 8009BA18 00097938  4B F6 F9 11 */	bl ev_run_init
+/* 8009BA18 00097938  4B F6 F9 11 */	bl event_start
 /* 8009BA1C 0009793C  38 60 00 0D */	li r3, 0xd
-/* 8009BA20 00097940  4B F6 F9 09 */	bl ev_run_init
+/* 8009BA20 00097940  4B F6 F9 09 */	bl event_start
 /* 8009BA24 00097944  38 60 00 12 */	li r3, 0x12
-/* 8009BA28 00097948  4B F6 F9 01 */	bl ev_run_init
+/* 8009BA28 00097948  4B F6 F9 01 */	bl event_start
 /* 8009BA2C 0009794C  38 60 00 46 */	li r3, 0x46
 /* 8009BA30 00097950  4B F7 CF D5 */	bl camera_set_state
 /* 8009BA34 00097954  3C 60 80 1F */	lis r3, cameraInfo@ha
@@ -830,7 +830,7 @@ lbl_8009C59C:
 /* 8009C5A0 000984C0  B0 01 00 56 */	sth r0, 0x56(r1)
 lbl_8009C5A4:
 /* 8009C5A4 000984C4  38 61 00 40 */	addi r3, r1, 0x40
-/* 8009C5A8 000984C8  4B FB 09 61 */	bl func_8004CF08
+/* 8009C5A8 000984C8  4B FB 09 61 */	bl g_create_pickup_item
 /* 8009C5AC 000984CC  3B BD FF FF */	addi r29, r29, -1
 lbl_8009C5B0:
 /* 8009C5B0 000984D0  2C 1D 00 00 */	cmpwi r29, 0
@@ -1306,7 +1306,7 @@ func_8009CC34:
 /* 8009CC50 00098B70  54 00 07 FF */	clrlwi. r0, r0, 0x1f
 /* 8009CC54 00098B74  41 82 00 F4 */	beq lbl_8009CD48
 /* 8009CC58 00098B78  38 60 00 62 */	li r3, 0x62
-/* 8009CC5C 00098B7C  4B FD 3A F5 */	bl g_dest_sprite_with_font
+/* 8009CC5C 00098B7C  4B FD 3A F5 */	bl destroy_sprite_with_tag
 /* 8009CC60 00098B80  3B 9F 00 34 */	addi r28, r31, 0x34
 /* 8009CC64 00098B84  80 1F 00 34 */	lwz r0, 0x34(r31)
 /* 8009CC68 00098B88  28 00 00 00 */	cmplwi r0, 0

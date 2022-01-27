@@ -63,7 +63,7 @@ submode_mini_game_init_func:
 /* 80093ACC 0008F9EC  41 82 00 08 */	beq lbl_80093AD4
 /* 80093AD0 0008F9F0  48 00 00 E5 */	bl func_80093BB4
 lbl_80093AD4:
-/* 80093AD4 0008F9F4  4B F7 79 89 */	bl event_clear
+/* 80093AD4 0008F9F4  4B F7 79 89 */	bl event_finish_all
 /* 80093AD8 0008F9F8  4B FD CB 0D */	bl g_something_with_iteratively_freeing_memory
 /* 80093ADC 0008F9FC  4B F9 0E F9 */	bl func_800249D4
 /* 80093AE0 0008FA00  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
@@ -73,7 +73,7 @@ lbl_80093AD4:
 /* 80093AF0 0008FA10  7C 63 02 14 */	add r3, r3, r0
 /* 80093AF4 0008FA14  80 63 FD C4 */	lwz r3, -0x23c(r3)
 /* 80093AF8 0008FA18  38 8D 9F 88 */	addi r4, r13, lbl_802F2168@sda21
-/* 80093AFC 0008FA1C  48 00 6C CD */	bl minigame_link
+/* 80093AFC 0008FA1C  48 00 6C CD */	bl relocation_load_module
 /* 80093B00 0008FA20  3C 60 80 09 */	lis r3, func_80093BB4@ha
 /* 80093B04 0008FA24  38 03 3B B4 */	addi r0, r3, func_80093BB4@l
 /* 80093B08 0008FA28  38 60 00 01 */	li r3, 1
@@ -144,7 +144,7 @@ func_80093BB4:
 /* 80093BD4 0008FAF4  93 ED 9F 80 */	stw r31, lbl_802F2160@sda21(r13)
 /* 80093BD8 0008FAF8  93 ED 9D 34 */	stw r31, minigameRelBallCallback@sda21(r13)
 /* 80093BDC 0008FAFC  93 ED 9A 58 */	stw r31, minigameRelCameraCallback@sda21(r13)
-/* 80093BE0 0008FB00  48 00 6D 1D */	bl minigame_unlink
+/* 80093BE0 0008FB00  48 00 6D 1D */	bl relocation_unload_module
 /* 80093BE4 0008FB04  93 ED 9F 84 */	stw r31, lbl_802F2164@sda21(r13)
 /* 80093BE8 0008FB08  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 80093BEC 0008FB0C  83 E1 00 0C */	lwz r31, 0xc(r1)
@@ -156,7 +156,7 @@ submode_mini_select_init_func:
 /* 80093BFC 0008FB1C  7C 08 02 A6 */	mflr r0
 /* 80093C00 0008FB20  90 01 00 04 */	stw r0, 4(r1)
 /* 80093C04 0008FB24  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80093C08 0008FB28  4B F7 78 55 */	bl event_clear
+/* 80093C08 0008FB28  4B F7 78 55 */	bl event_finish_all
 /* 80093C0C 0008FB2C  4B FD C9 D9 */	bl g_something_with_iteratively_freeing_memory
 /* 80093C10 0008FB30  38 60 FF FF */	li r3, -1
 /* 80093C14 0008FB34  38 80 00 01 */	li r4, 1

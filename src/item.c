@@ -147,17 +147,17 @@ void ev_item_init(void)
     {
     case 4:
         if (func_800672D0(currStageId) != 0)
-            func_80068A68(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
         break;
     case 1:
         if (func_800672D0(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
-            func_80068A68(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
         break;
     default:
-        func_80068A68(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+        make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
         break;
     }
 }
@@ -223,12 +223,12 @@ void item_draw(void)
     {
         if (*r29 != 0 && !(item->unk8 & 1))
         {
-            if (r28 != item->unk5C)
+            if (r28 != item->attachedTo)
             {
                 mathutil_mtxA_from_mtx(sp8);
-                mathutil_mtxA_mult_right(movableStageParts[item->unk5C].unk24);
+                mathutil_mtxA_mult_right(movableStageParts[item->attachedTo].unk24);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
-                r28 = item->unk5C;
+                r28 = item->attachedTo;
             }
             itemDrawFuncs[item->type](item);
         }
@@ -288,14 +288,14 @@ void func_800685C4(void)
          || (item->unk8 & 1))
             continue;
 
-        if (item->unk5C == 0)
+        if (item->attachedTo == 0)
             sp40 = item->unk20;
         else
         {
-            if (r25 != item->unk5C)
+            if (r25 != item->attachedTo)
             {
-                mathutil_mtxA_from_mtx(movableStageParts[item->unk5C].unk24);
-                r25 = item->unk5C;
+                mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
+                r25 = item->attachedTo;
             }
             mathutil_mtxA_tf_point(&item->unk20, &sp40);
         }
@@ -388,7 +388,7 @@ void func_800689B4(int a)
     }
 }
 
-void func_80068A68(struct StageCollHdr *coll, int count)
+void make_stage_bananas(struct StageCollHdr *coll, int count)
 {
     struct Item item;
     int i;
@@ -403,8 +403,8 @@ void func_80068A68(struct StageCollHdr *coll, int count)
         for (j = 0; j < coll->unk5C; j++, r28++)
         {
             item.unk20 = r28->unk0;
-            item.unk6 = r28->unkC;
-            item.unk5C = i;
+            item.subtype = r28->unkC;
+            item.attachedTo = i;
             item.unk60 = r28;
             func_80068474(&item);
         }

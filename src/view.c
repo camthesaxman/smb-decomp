@@ -9,12 +9,14 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "event.h"
 #include "gxutil.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "sprite.h"
 #include "stage.h"
 
 #include "../data/common.gma.h"
@@ -256,7 +258,7 @@ void view_create_text_sprites(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->unkF = 100;
+        sprite->tag = 100;
         sprite->centerX = 24.0f;
         sprite->centerY = 24.0f;
         sprite->textAlign = 0;
@@ -269,7 +271,7 @@ void view_create_text_sprites(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->unkF = 100;
+        sprite->tag = 100;
         sprite->centerX = 170.0f;
         sprite->centerY = 435.0f;
         sprite->textAlign = 8;
@@ -282,7 +284,7 @@ void view_create_text_sprites(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->unkF = 100;
+        sprite->tag = 100;
         sprite->centerX = 415.0f;
         sprite->centerY = 435.0f;
         sprite->textAlign = 8;
@@ -295,7 +297,7 @@ void view_create_text_sprites(void)
 
 void view_destroy_text_sprites(void)
 {
-    g_dest_sprite_with_font(100);
+    destroy_sprite_with_tag(100);
 }
 
 void view_init_stage_anim(void)

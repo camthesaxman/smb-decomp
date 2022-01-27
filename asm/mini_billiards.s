@@ -141,7 +141,7 @@ lbl_000001E0:
 /* 00000258 901E009C */ stw r0, 0x9c(r30)
 /* 0000025C 901E00A0 */ stw r0, 0xa0(r30)
 lbl_00000260:
-/* 00000260 4BFFFED5 */ bl event_clear
+/* 00000260 4BFFFED5 */ bl event_finish_all
 /* 00000264 4BFFFED1 */ bl g_something_with_iteratively_freeing_memory
 /* 00000268 4BFFFECD */ bl func_800249D4
 /* 0000026C 3C600000 */ lis r3, memHeap2@ha
@@ -163,13 +163,13 @@ lbl_00000260:
 /* 000002AC 7F83E378 */ mr r3, r28
 /* 000002B0 4BFFFE85 */ bl OSSetCurrentHeap
 /* 000002B4 38600010 */ li r3, 0x10
-/* 000002B8 4BFFFE7D */ bl ev_run_init
+/* 000002B8 4BFFFE7D */ bl event_start
 /* 000002BC 38600012 */ li r3, 0x12
-/* 000002C0 4BFFFE75 */ bl ev_run_init
+/* 000002C0 4BFFFE75 */ bl event_start
 /* 000002C4 38600013 */ li r3, 0x13
-/* 000002C8 4BFFFE6D */ bl ev_run_init
+/* 000002C8 4BFFFE6D */ bl event_start
 /* 000002CC 3860000B */ li r3, 0xb
-/* 000002D0 4BFFFE65 */ bl ev_run_init
+/* 000002D0 4BFFFE65 */ bl event_start
 /* 000002D4 3C600000 */ lis r3, currStageId@ha
 /* 000002D8 38630000 */ addi r3, r3, currStageId@l
 /* 000002DC A8630000 */ lha r3, 0(r3)
@@ -229,7 +229,7 @@ lbl_00000350:
 /* 000003A4 38800000 */ li r4, 0
 /* 000003A8 4BFFFD8D */ bl func_8002CF38
 /* 000003AC 3860000F */ li r3, 0xf
-/* 000003B0 4BFFFD85 */ bl ev_run_init
+/* 000003B0 4BFFFD85 */ bl event_start
 /* 000003B4 38600041 */ li r3, 0x41
 /* 000003B8 4BFFFD7D */ bl camera_set_state
 /* 000003BC 3C600000 */ lis r3, currentCameraStructPtr@ha
@@ -1295,7 +1295,7 @@ lbl_00001380:
 /* 000013B4 9B459B50 */ stb r26, -0x64b0(r5)
 /* 000013B8 9B459BB8 */ stb r26, -0x6448(r5)
 /* 000013BC 9B459C20 */ stb r26, -0x63e0(r5)
-/* 000013C0 4BFFED75 */ bl ev_run_init
+/* 000013C0 4BFFED75 */ bl event_start
 /* 000013C4 38600046 */ li r3, 0x46
 /* 000013C8 4BFFED6D */ bl camera_set_state
 /* 000013CC 3C600000 */ lis r3, controllerInfo@ha
@@ -7468,9 +7468,9 @@ lbl_00006D4C:
 /* 00006D4C 7F000775 */ extsb. r0, r24
 /* 00006D50 4182005C */ beq lbl_00006DAC
 /* 00006D54 38600012 */ li r3, 0x12
-/* 00006D58 4BFF93DD */ bl ev_run_dest
+/* 00006D58 4BFF93DD */ bl event_finish
 /* 00006D5C 38600012 */ li r3, 0x12
-/* 00006D60 4BFF93D5 */ bl ev_run_init
+/* 00006D60 4BFF93D5 */ bl event_start
 /* 00006D64 38600064 */ li r3, 0x64
 /* 00006D68 38800008 */ li r4, 8
 /* 00006D6C 4BFF93C9 */ bl func_8002CF38
@@ -7895,14 +7895,14 @@ lbl_00007334:
 /* 00007388 93FE0020 */ stw r31, 0x20(r30)
 /* 0000738C 981E000A */ stb r0, 0xa(r30)
 /* 00007390 9BFE0017 */ stb r31, 0x17(r30)
-/* 00007394 4BFF8DA1 */ bl ev_run_dest
+/* 00007394 4BFF8DA1 */ bl event_finish
 /* 00007398 38600012 */ li r3, 0x12
-/* 0000739C 4BFF8D99 */ bl ev_run_init
+/* 0000739C 4BFF8D99 */ bl event_start
 /* 000073A0 38600064 */ li r3, 0x64
 /* 000073A4 38800008 */ li r4, 8
 /* 000073A8 4BFF8D8D */ bl func_8002CF38
 /* 000073AC 3860000D */ li r3, 0xd
-/* 000073B0 4BFF8D85 */ bl ev_run_init
+/* 000073B0 4BFF8D85 */ bl event_start
 /* 000073B4 881E001E */ lbz r0, 0x1e(r30)
 /* 000073B8 2C000004 */ cmpwi r0, 4
 /* 000073BC 40820094 */ bne lbl_00007450
@@ -18912,7 +18912,7 @@ lbl_000115F4:
 /* 0001160C BEC10058 */ stmw r22, 0x58(r1)
 /* 00011610 3B830000 */ addi r28, r3, lbl_0001CFD0@l
 /* 00011614 38600000 */ li r3, 0
-/* 00011618 4BFEEB1D */ bl g_dest_sprite_with_font
+/* 00011618 4BFEEB1D */ bl destroy_sprite_with_tag
 /* 0001161C 3C600000 */ lis r3, lbl_1000000A@ha
 /* 00011620 88030000 */ lbz r0, lbl_1000000A@l(r3)
 /* 00011624 2C000018 */ cmpwi r0, 0x18

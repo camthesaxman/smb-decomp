@@ -5,6 +5,7 @@
 
 #include "global.h"
 #include "background.h"
+#include "event.h"
 #include "input.h"
 #include "item.h"
 #include "mathutil.h"

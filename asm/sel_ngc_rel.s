@@ -74,7 +74,7 @@ _epilog:
 /* 00000158 7C0802A6 */ mflr r0
 /* 0000015C 90010004 */ stw r0, 4(r1)
 /* 00000160 9421FFF8 */ stwu r1, -8(r1)
-/* 00000164 48000025 */ bl event_clear
+/* 00000164 48000025 */ bl event_finish_all
 /* 00000168 48000021 */ bl func_800249D4
 /* 0000016C 3C600000 */ lis r3, lbl_0001219C@ha
 /* 00000170 38630000 */ addi r3, r3, lbl_0001219C@l
@@ -218,21 +218,21 @@ lbl_0000033C:
 /* 0000036C 40820248 */ bne lbl_000005B4
 /* 00000370 4BFFFE19 */ bl func_8002FFEC
 /* 00000374 38600001 */ li r3, 1
-/* 00000378 4BFFFE11 */ bl ev_run_init
+/* 00000378 4BFFFE11 */ bl event_start
 /* 0000037C 38600004 */ li r3, 4
-/* 00000380 4BFFFE09 */ bl ev_run_init
+/* 00000380 4BFFFE09 */ bl event_start
 /* 00000384 38600005 */ li r3, 5
-/* 00000388 4BFFFE01 */ bl ev_run_init
+/* 00000388 4BFFFE01 */ bl event_start
 /* 0000038C 3860000F */ li r3, 0xf
-/* 00000390 4BFFFDF9 */ bl ev_run_init
+/* 00000390 4BFFFDF9 */ bl event_start
 /* 00000394 38600010 */ li r3, 0x10
-/* 00000398 4BFFFDF1 */ bl ev_run_init
+/* 00000398 4BFFFDF1 */ bl event_start
 /* 0000039C 38600012 */ li r3, 0x12
-/* 000003A0 4BFFFDE9 */ bl ev_run_init
+/* 000003A0 4BFFFDE9 */ bl event_start
 /* 000003A4 3860000D */ li r3, 0xd
-/* 000003A8 4BFFFDE1 */ bl ev_run_init
+/* 000003A8 4BFFFDE1 */ bl event_start
 /* 000003AC 38600013 */ li r3, 0x13
-/* 000003B0 4BFFFDD9 */ bl ev_run_init
+/* 000003B0 4BFFFDD9 */ bl event_start
 /* 000003B4 38600000 */ li r3, 0
 /* 000003B8 4BFFFDD1 */ bl func_80021DB4
 /* 000003BC 38600034 */ li r3, 0x34
@@ -2088,7 +2088,7 @@ lbl_00001D58:
 /* 00001D64 9421FFF0 */ stwu r1, -0x10(r1)
 /* 00001D68 93E1000C */ stw r31, 0xc(r1)
 /* 00001D6C 3BE00000 */ li r31, 0
-/* 00001D70 4BFFE419 */ bl g_find_sprite_with_probably_not_font
+/* 00001D70 4BFFE419 */ bl find_sprite_with_tag
 /* 00001D74 28030000 */ cmplwi r3, 0
 /* 00001D78 41820008 */ beq lbl_00001D80
 /* 00001D7C 3BE00001 */ li r31, 1
@@ -2119,13 +2119,13 @@ lbl_00001DD4:
 /* 00001DD4 38600070 */ li r3, 0x70
 /* 00001DD8 4BFFE3B1 */ bl g_play_sound
 /* 00001DDC 3860000A */ li r3, 0xa
-/* 00001DE0 4BFFE3A9 */ bl g_dest_sprite_with_font
+/* 00001DE0 4BFFE3A9 */ bl destroy_sprite_with_tag
 /* 00001DE4 3860000C */ li r3, 0xc
 /* 00001DE8 4BFFE3A1 */ bl func_800705C4
 /* 00001DEC 3BE00001 */ li r31, 1
 lbl_00001DF0:
 /* 00001DF0 3860000A */ li r3, 0xa
-/* 00001DF4 4BFFE395 */ bl g_find_sprite_with_probably_not_font
+/* 00001DF4 4BFFE395 */ bl find_sprite_with_tag
 /* 00001DF8 80010014 */ lwz r0, 0x14(r1)
 /* 00001DFC 7FE3FB78 */ mr r3, r31
 /* 00001E00 83E1000C */ lwz r31, 0xc(r1)
@@ -2232,7 +2232,7 @@ lbl_00001F5C:
 /* 00001F60 38600017 */ li r3, 0x17
 /* 00001F64 7C1A0214 */ add r0, r26, r0
 /* 00001F68 7F580050 */ subf r26, r24, r0
-/* 00001F6C 4BFFE21D */ bl g_find_sprite_with_probably_not_font
+/* 00001F6C 4BFFE21D */ bl find_sprite_with_tag
 /* 00001F70 28030000 */ cmplwi r3, 0
 /* 00001F74 41820008 */ beq lbl_00001F7C
 /* 00001F78 93430048 */ stw r26, 0x48(r3)
@@ -2299,7 +2299,7 @@ lbl_00002048:
 /* 00002048 2C1A0000 */ cmpwi r26, 0
 /* 0000204C 4081001C */ ble lbl_00002068
 /* 00002050 38600017 */ li r3, 0x17
-/* 00002054 4BFFE135 */ bl g_find_sprite_with_probably_not_font
+/* 00002054 4BFFE135 */ bl find_sprite_with_tag
 /* 00002058 28030000 */ cmplwi r3, 0
 /* 0000205C 4182000C */ beq lbl_00002068
 /* 00002060 381A0013 */ addi r0, r26, 0x13
@@ -2314,7 +2314,7 @@ lbl_00002068:
 /* 00002080 280009C4 */ cmplwi r0, 0x9c4
 /* 00002084 418001C0 */ blt lbl_00002244
 /* 00002088 38600017 */ li r3, 0x17
-/* 0000208C 4BFFE0FD */ bl g_find_sprite_with_probably_not_font
+/* 0000208C 4BFFE0FD */ bl find_sprite_with_tag
 /* 00002090 28030000 */ cmplwi r3, 0
 /* 00002094 418201B0 */ beq lbl_00002244
 /* 00002098 38000019 */ li r0, 0x19
@@ -2351,7 +2351,7 @@ lbl_00002100:
 /* 00002100 2C1A0000 */ cmpwi r26, 0
 /* 00002104 40810140 */ ble lbl_00002244
 /* 00002108 38600017 */ li r3, 0x17
-/* 0000210C 4BFFE07D */ bl g_find_sprite_with_probably_not_font
+/* 0000210C 4BFFE07D */ bl find_sprite_with_tag
 /* 00002110 28030000 */ cmplwi r3, 0
 /* 00002114 41820130 */ beq lbl_00002244
 /* 00002118 381A0005 */ addi r0, r26, 5
@@ -2366,7 +2366,7 @@ lbl_00002124:
 /* 00002138 2C000000 */ cmpwi r0, 0
 /* 0000213C 41820020 */ beq lbl_0000215C
 /* 00002140 38600017 */ li r3, 0x17
-/* 00002144 4BFFE045 */ bl g_find_sprite_with_probably_not_font
+/* 00002144 4BFFE045 */ bl find_sprite_with_tag
 /* 00002148 28030000 */ cmplwi r3, 0
 /* 0000214C 418200F8 */ beq lbl_00002244
 /* 00002150 38000004 */ li r0, 4
@@ -2382,7 +2382,7 @@ lbl_0000215C:
 /* 00002174 2C000000 */ cmpwi r0, 0
 /* 00002178 418200CC */ beq lbl_00002244
 /* 0000217C 38600017 */ li r3, 0x17
-/* 00002180 4BFFE009 */ bl g_find_sprite_with_probably_not_font
+/* 00002180 4BFFE009 */ bl find_sprite_with_tag
 /* 00002184 28030000 */ cmplwi r3, 0
 /* 00002188 418200BC */ beq lbl_00002244
 /* 0000218C 38000005 */ li r0, 5
@@ -2416,7 +2416,7 @@ lbl_000021D8:
 /* 000021EC 2C000000 */ cmpwi r0, 0
 /* 000021F0 41820054 */ beq lbl_00002244
 /* 000021F4 38600017 */ li r3, 0x17
-/* 000021F8 4BFFDF91 */ bl g_find_sprite_with_probably_not_font
+/* 000021F8 4BFFDF91 */ bl find_sprite_with_tag
 /* 000021FC 28030000 */ cmplwi r3, 0
 /* 00002200 41820044 */ beq lbl_00002244
 /* 00002204 3800003D */ li r0, 0x3d
@@ -2431,7 +2431,7 @@ lbl_00002210:
 /* 00002224 2C000000 */ cmpwi r0, 0
 /* 00002228 4182001C */ beq lbl_00002244
 /* 0000222C 38600017 */ li r3, 0x17
-/* 00002230 4BFFDF59 */ bl g_find_sprite_with_probably_not_font
+/* 00002230 4BFFDF59 */ bl find_sprite_with_tag
 /* 00002234 28030000 */ cmplwi r3, 0
 /* 00002238 4182000C */ beq lbl_00002244
 /* 0000223C 3800003C */ li r0, 0x3c
@@ -2446,7 +2446,7 @@ lbl_00002244:
 lbl_0000225C:
 /* 0000225C 7F79D214 */ add r27, r25, r26
 /* 00002260 387B0000 */ addi r3, r27, 0
-/* 00002264 4BFFDF25 */ bl g_find_sprite_with_probably_not_font
+/* 00002264 4BFFDF25 */ bl find_sprite_with_tag
 /* 00002268 28030000 */ cmplwi r3, 0
 /* 0000226C 418200C4 */ beq lbl_00002330
 /* 00002270 80B70000 */ lwz r5, 0(r23)
@@ -2967,15 +2967,15 @@ lbl_000029A8:
 /* 000029B0 90010004 */ stw r0, 4(r1)
 /* 000029B4 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000029B8 93E1000C */ stw r31, 0xc(r1)
-/* 000029BC 4BFFD7CD */ bl ev_run_dest
+/* 000029BC 4BFFD7CD */ bl event_finish
 /* 000029C0 38600004 */ li r3, 4
-/* 000029C4 4BFFD7C5 */ bl ev_run_dest
+/* 000029C4 4BFFD7C5 */ bl event_finish
 /* 000029C8 38600005 */ li r3, 5
-/* 000029CC 4BFFD7BD */ bl ev_run_dest
+/* 000029CC 4BFFD7BD */ bl event_finish
 /* 000029D0 3860000D */ li r3, 0xd
-/* 000029D4 4BFFD7B5 */ bl ev_run_dest
+/* 000029D4 4BFFD7B5 */ bl event_finish
 /* 000029D8 38600013 */ li r3, 0x13
-/* 000029DC 4BFFD7AD */ bl ev_run_dest
+/* 000029DC 4BFFD7AD */ bl event_finish
 /* 000029E0 3C600000 */ lis r3, lbl_1000003C@ha
 /* 000029E4 3BE30000 */ addi r31, r3, lbl_1000003C@l
 /* 000029E8 807F0000 */ lwz r3, 0(r31)
@@ -2983,15 +2983,15 @@ lbl_000029A8:
 /* 000029F0 807F0000 */ lwz r3, 0(r31)
 /* 000029F4 4BFFD795 */ bl load_stage
 /* 000029F8 38600001 */ li r3, 1
-/* 000029FC 4BFFD78D */ bl ev_run_init
+/* 000029FC 4BFFD78D */ bl event_start
 /* 00002A00 38600004 */ li r3, 4
-/* 00002A04 4BFFD785 */ bl ev_run_init
+/* 00002A04 4BFFD785 */ bl event_start
 /* 00002A08 38600005 */ li r3, 5
-/* 00002A0C 4BFFD77D */ bl ev_run_init
+/* 00002A0C 4BFFD77D */ bl event_start
 /* 00002A10 3860000D */ li r3, 0xd
-/* 00002A14 4BFFD775 */ bl ev_run_init
+/* 00002A14 4BFFD775 */ bl event_start
 /* 00002A18 38600013 */ li r3, 0x13
-/* 00002A1C 4BFFD76D */ bl ev_run_init
+/* 00002A1C 4BFFD76D */ bl event_start
 /* 00002A20 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00002A24 84030000 */ lwzu r0, lbl_801EEDA8@l(r3)
 /* 00002A28 2C000014 */ cmpwi r0, 0x14
@@ -3436,7 +3436,7 @@ lbl_00003088:
 /* 00003088 807D0094 */ lwz r3, 0x94(r29)
 /* 0000308C 2C03FFFF */ cmpwi r3, -1
 /* 00003090 41820030 */ beq lbl_000030C0
-/* 00003094 4BFFD0F5 */ bl g_find_sprite_with_probably_not_font
+/* 00003094 4BFFD0F5 */ bl find_sprite_with_tag
 /* 00003098 28030000 */ cmplwi r3, 0
 /* 0000309C 41820010 */ beq lbl_000030AC
 /* 000030A0 93E30048 */ stw r31, 0x48(r3)
@@ -3775,7 +3775,7 @@ lbl_00003548:
 /* 00003558 80630000 */ lwz r3, 0(r3)
 /* 0000355C 2C03FFFF */ cmpwi r3, -1
 /* 00003560 41820018 */ beq lbl_00003578
-/* 00003564 4BFFCC25 */ bl g_find_sprite_with_probably_not_font
+/* 00003564 4BFFCC25 */ bl find_sprite_with_tag
 /* 00003568 28030000 */ cmplwi r3, 0
 /* 0000356C 4182000C */ beq lbl_00003578
 /* 00003570 38000003 */ li r0, 3
@@ -3788,7 +3788,7 @@ lbl_00003584:
 /* 00003584 807C006C */ lwz r3, 0x6c(r28)
 /* 00003588 2C03FFFF */ cmpwi r3, -1
 /* 0000358C 41820018 */ beq lbl_000035A4
-/* 00003590 4BFFCBF9 */ bl g_find_sprite_with_probably_not_font
+/* 00003590 4BFFCBF9 */ bl find_sprite_with_tag
 /* 00003594 28030000 */ cmplwi r3, 0
 /* 00003598 41820008 */ beq lbl_000035A0
 /* 0000359C 92030048 */ stw r16, 0x48(r3)
@@ -3813,7 +3813,7 @@ lbl_000035C8:
 /* 000035DC 39E30000 */ addi r15, r3, lbl_801EEDA8@l
 /* 000035E0 3A0F0068 */ addi r16, r15, 0x68
 /* 000035E4 806F0068 */ lwz r3, 0x68(r15)
-/* 000035E8 4BFFCBA1 */ bl g_find_sprite_with_probably_not_font
+/* 000035E8 4BFFCBA1 */ bl find_sprite_with_tag
 /* 000035EC 28030000 */ cmplwi r3, 0
 /* 000035F0 41820018 */ beq lbl_00003608
 /* 000035F4 38000007 */ li r0, 7
@@ -3864,7 +3864,7 @@ lbl_0000368C:
 /* 0000369C 80720068 */ lwz r3, 0x68(r18)
 /* 000036A0 2C03FFFF */ cmpwi r3, -1
 /* 000036A4 41820020 */ beq lbl_000036C4
-/* 000036A8 4BFFCAE1 */ bl g_find_sprite_with_probably_not_font
+/* 000036A8 4BFFCAE1 */ bl find_sprite_with_tag
 /* 000036AC 28030000 */ cmplwi r3, 0
 /* 000036B0 4182000C */ beq lbl_000036BC
 /* 000036B4 38000002 */ li r0, 2
@@ -3880,7 +3880,7 @@ lbl_000036D0:
 /* 000036D0 807C006C */ lwz r3, 0x6c(r28)
 /* 000036D4 2C03FFFF */ cmpwi r3, -1
 /* 000036D8 41820018 */ beq lbl_000036F0
-/* 000036DC 4BFFCAAD */ bl g_find_sprite_with_probably_not_font
+/* 000036DC 4BFFCAAD */ bl find_sprite_with_tag
 /* 000036E0 28030000 */ cmplwi r3, 0
 /* 000036E4 41820008 */ beq lbl_000036EC
 /* 000036E8 92030048 */ stw r16, 0x48(r3)
@@ -3930,7 +3930,7 @@ lbl_00003774:
 /* 00003784 38600003 */ li r3, 3
 /* 00003788 4BFFCA01 */ bl func_8009F49C
 /* 0000378C 38600000 */ li r3, 0
-/* 00003790 4BFFC9F9 */ bl ev_run_init
+/* 00003790 4BFFC9F9 */ bl event_start
 /* 00003794 38000005 */ li r0, 5
 /* 00003798 90120000 */ stw r0, 0(r18)
 /* 0000379C 480060B8 */ b lbl_00009854
@@ -3965,7 +3965,7 @@ lbl_000037F0:
 /* 00003800 38600016 */ li r3, 0x16
 /* 00003804 7C000774 */ extsb r0, r0
 /* 00003808 90120038 */ stw r0, 0x38(r18)
-/* 0000380C 4BFFC97D */ bl g_find_sprite_with_probably_not_font
+/* 0000380C 4BFFC97D */ bl find_sprite_with_tag
 /* 00003810 28030000 */ cmplwi r3, 0
 /* 00003814 4182000C */ beq lbl_00003820
 /* 00003818 38000003 */ li r0, 3
@@ -4035,7 +4035,7 @@ lbl_000038F4:
 /* 000038F8 A8030000 */ lha r0, currStageId@l(r3)
 /* 000038FC 38600016 */ li r3, 0x16
 /* 00003900 901F003C */ stw r0, 0x3c(r31)
-/* 00003904 4BFFC885 */ bl g_find_sprite_with_probably_not_font
+/* 00003904 4BFFC885 */ bl find_sprite_with_tag
 /* 00003908 28030000 */ cmplwi r3, 0
 /* 0000390C 4182000C */ beq lbl_00003918
 /* 00003910 38000000 */ li r0, 0
@@ -4254,7 +4254,7 @@ lbl_00003C10:
 /* 00003C30 4BFFC559 */ bl func_8002CF38
 lbl_00003C34:
 /* 00003C34 38600016 */ li r3, 0x16
-/* 00003C38 4BFFC551 */ bl g_find_sprite_with_probably_not_font
+/* 00003C38 4BFFC551 */ bl find_sprite_with_tag
 /* 00003C3C 28030000 */ cmplwi r3, 0
 /* 00003C40 4182000C */ beq lbl_00003C4C
 /* 00003C44 38000009 */ li r0, 9
@@ -4406,7 +4406,7 @@ lbl_00003E3C:
 /* 00003E5C 4BFFC32D */ bl func_8002CF38
 lbl_00003E60:
 /* 00003E60 38600016 */ li r3, 0x16
-/* 00003E64 4BFFC325 */ bl g_find_sprite_with_probably_not_font
+/* 00003E64 4BFFC325 */ bl find_sprite_with_tag
 /* 00003E68 28030000 */ cmplwi r3, 0
 /* 00003E6C 4182000C */ beq lbl_00003E78
 /* 00003E70 38000008 */ li r0, 8
@@ -4491,7 +4491,7 @@ lbl_00003F44:
 /* 00003F88 39E00001 */ li r15, 1
 /* 00003F8C 91E30008 */ stw r15, 8(r3)
 /* 00003F90 38600009 */ li r3, 9
-/* 00003F94 4BFFC1F5 */ bl g_find_sprite_with_probably_not_font
+/* 00003F94 4BFFC1F5 */ bl find_sprite_with_tag
 /* 00003F98 28030000 */ cmplwi r3, 0
 /* 00003F9C 418258B8 */ beq lbl_00009854
 /* 00003FA0 91E30048 */ stw r15, 0x48(r3)
@@ -4552,7 +4552,7 @@ lbl_00004048:
 /* 0000406C 2C120000 */ cmpwi r18, 0
 /* 00004070 408257E4 */ bne lbl_00009854
 /* 00004074 38600009 */ li r3, 9
-/* 00004078 4BFFC111 */ bl g_find_sprite_with_probably_not_font
+/* 00004078 4BFFC111 */ bl find_sprite_with_tag
 /* 0000407C 28030000 */ cmplwi r3, 0
 /* 00004080 4182000C */ beq lbl_0000408C
 /* 00004084 38000001 */ li r0, 1
@@ -4591,7 +4591,7 @@ lbl_000040E8:
 /* 000040F4 7C000774 */ extsb r0, r0
 /* 000040F8 98030001 */ stb r0, 1(r3)
 /* 000040FC 38600009 */ li r3, 9
-/* 00004100 4BFFC089 */ bl g_find_sprite_with_probably_not_font
+/* 00004100 4BFFC089 */ bl find_sprite_with_tag
 /* 00004104 28030000 */ cmplwi r3, 0
 /* 00004108 4182000C */ beq lbl_00004114
 /* 0000410C 38000001 */ li r0, 1
@@ -4643,14 +4643,14 @@ lbl_0000418C:
 /* 000041B0 480056A4 */ b lbl_00009854
 lbl_000041B4:
 /* 000041B4 38600016 */ li r3, 0x16
-/* 000041B8 4BFFBFD1 */ bl g_find_sprite_with_probably_not_font
+/* 000041B8 4BFFBFD1 */ bl find_sprite_with_tag
 /* 000041BC 28030000 */ cmplwi r3, 0
 /* 000041C0 4182000C */ beq lbl_000041CC
 /* 000041C4 38000001 */ li r0, 1
 /* 000041C8 90030048 */ stw r0, 0x48(r3)
 lbl_000041CC:
 /* 000041CC 38600017 */ li r3, 0x17
-/* 000041D0 4BFFBFB9 */ bl g_find_sprite_with_probably_not_font
+/* 000041D0 4BFFBFB9 */ bl find_sprite_with_tag
 /* 000041D4 28030000 */ cmplwi r3, 0
 /* 000041D8 4182004C */ beq lbl_00004224
 /* 000041DC 3C800000 */ lis r4, modeCtrl@ha
@@ -4845,7 +4845,7 @@ lbl_00004474:
 /* 00004484 41810074 */ bgt lbl_000044F8
 lbl_00004488:
 /* 00004488 38730034 */ addi r3, r19, 0x34
-/* 0000448C 4BFFBCFD */ bl g_find_sprite_with_probably_not_font
+/* 0000448C 4BFFBCFD */ bl find_sprite_with_tag
 /* 00004490 28030000 */ cmplwi r3, 0
 /* 00004494 41820064 */ beq lbl_000044F8
 /* 00004498 8010003C */ lwz r0, 0x3c(r16)
@@ -4890,7 +4890,7 @@ lbl_000044F8:
 /* 00004524 2C000001 */ cmpwi r0, 1
 /* 00004528 40820020 */ bne lbl_00004548
 /* 0000452C 38600017 */ li r3, 0x17
-/* 00004530 4BFFBC59 */ bl g_find_sprite_with_probably_not_font
+/* 00004530 4BFFBC59 */ bl find_sprite_with_tag
 /* 00004534 28030000 */ cmplwi r3, 0
 /* 00004538 41820074 */ beq lbl_000045AC
 /* 0000453C 3800000B */ li r0, 0xb
@@ -4898,7 +4898,7 @@ lbl_000044F8:
 /* 00004544 48000068 */ b lbl_000045AC
 lbl_00004548:
 /* 00004548 38600017 */ li r3, 0x17
-/* 0000454C 4BFFBC3D */ bl g_find_sprite_with_probably_not_font
+/* 0000454C 4BFFBC3D */ bl find_sprite_with_tag
 /* 00004550 28030000 */ cmplwi r3, 0
 /* 00004554 41820058 */ beq lbl_000045AC
 /* 00004558 3800000C */ li r0, 0xc
@@ -4911,7 +4911,7 @@ lbl_00004564:
 /* 00004570 2C000001 */ cmpwi r0, 1
 /* 00004574 40820020 */ bne lbl_00004594
 /* 00004578 38600017 */ li r3, 0x17
-/* 0000457C 4BFFBC0D */ bl g_find_sprite_with_probably_not_font
+/* 0000457C 4BFFBC0D */ bl find_sprite_with_tag
 /* 00004580 28030000 */ cmplwi r3, 0
 /* 00004584 41820028 */ beq lbl_000045AC
 /* 00004588 3800003E */ li r0, 0x3e
@@ -4919,7 +4919,7 @@ lbl_00004564:
 /* 00004590 4800001C */ b lbl_000045AC
 lbl_00004594:
 /* 00004594 38600017 */ li r3, 0x17
-/* 00004598 4BFFBBF1 */ bl g_find_sprite_with_probably_not_font
+/* 00004598 4BFFBBF1 */ bl find_sprite_with_tag
 /* 0000459C 28030000 */ cmplwi r3, 0
 /* 000045A0 4182000C */ beq lbl_000045AC
 /* 000045A4 3800003F */ li r0, 0x3f
@@ -4941,7 +4941,7 @@ lbl_000045AC:
 /* 000045E0 4800000C */ b lbl_000045EC
 lbl_000045E4:
 /* 000045E4 38600063 */ li r3, 0x63
-/* 000045E8 4BFFBBA1 */ bl g_dest_sprite_with_font
+/* 000045E8 4BFFBBA1 */ bl destroy_sprite_with_tag
 lbl_000045EC:
 /* 000045EC 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 000045F0 38630000 */ addi r3, r3, lbl_801EEDA8@l
@@ -5057,7 +5057,7 @@ lbl_00004768:
 /* 0000476C A8030000 */ lha r0, currStageId@l(r3)
 /* 00004770 38600066 */ li r3, 0x66
 /* 00004774 901F003C */ stw r0, 0x3c(r31)
-/* 00004778 4BFFBA11 */ bl g_dest_sprite_with_font
+/* 00004778 4BFFBA11 */ bl destroy_sprite_with_tag
 /* 0000477C 3C600000 */ lis r3, modeCtrl@ha
 /* 00004780 38630000 */ addi r3, r3, modeCtrl@l
 /* 00004784 80030028 */ lwz r0, 0x28(r3)
@@ -5098,7 +5098,7 @@ lbl_000047EC:
 /* 00004800 90030044 */ stw r0, 0x44(r3)
 /* 00004804 3B440000 */ addi r26, r4, 0
 /* 00004808 38600016 */ li r3, 0x16
-/* 0000480C 4BFFB97D */ bl g_find_sprite_with_probably_not_font
+/* 0000480C 4BFFB97D */ bl find_sprite_with_tag
 /* 00004810 28030000 */ cmplwi r3, 0
 /* 00004814 4182000C */ beq lbl_00004820
 /* 00004818 38000002 */ li r0, 2
@@ -5418,7 +5418,7 @@ lbl_00004C2C:
 /* 00004C6C 2C000000 */ cmpwi r0, 0
 /* 00004C70 41820020 */ beq lbl_00004C90
 /* 00004C74 38600017 */ li r3, 0x17
-/* 00004C78 4BFFB511 */ bl g_find_sprite_with_probably_not_font
+/* 00004C78 4BFFB511 */ bl find_sprite_with_tag
 /* 00004C7C 28030000 */ cmplwi r3, 0
 /* 00004C80 4182004C */ beq lbl_00004CCC
 /* 00004C84 3800000E */ li r0, 0xe
@@ -5428,7 +5428,7 @@ lbl_00004C90:
 /* 00004C90 2C040007 */ cmpwi r4, 7
 /* 00004C94 40820020 */ bne lbl_00004CB4
 /* 00004C98 38600017 */ li r3, 0x17
-/* 00004C9C 4BFFB4ED */ bl g_find_sprite_with_probably_not_font
+/* 00004C9C 4BFFB4ED */ bl find_sprite_with_tag
 /* 00004CA0 28030000 */ cmplwi r3, 0
 /* 00004CA4 41820028 */ beq lbl_00004CCC
 /* 00004CA8 3800000F */ li r0, 0xf
@@ -5436,7 +5436,7 @@ lbl_00004C90:
 /* 00004CB0 4800001C */ b lbl_00004CCC
 lbl_00004CB4:
 /* 00004CB4 38600017 */ li r3, 0x17
-/* 00004CB8 4BFFB4D1 */ bl g_find_sprite_with_probably_not_font
+/* 00004CB8 4BFFB4D1 */ bl find_sprite_with_tag
 /* 00004CBC 28030000 */ cmplwi r3, 0
 /* 00004CC0 4182000C */ beq lbl_00004CCC
 /* 00004CC4 3800000D */ li r0, 0xd
@@ -5466,7 +5466,7 @@ lbl_00004CCC:
 /* 00004D20 91F00000 */ stw r15, 0(r16)
 lbl_00004D24:
 /* 00004D24 3860001D */ li r3, 0x1d
-/* 00004D28 4BFFB461 */ bl g_find_sprite_with_probably_not_font
+/* 00004D28 4BFFB461 */ bl find_sprite_with_tag
 /* 00004D2C 28030000 */ cmplwi r3, 0
 /* 00004D30 4182000C */ beq lbl_00004D3C
 /* 00004D34 38000001 */ li r0, 1
@@ -5581,14 +5581,14 @@ lbl_00004EA4:
 /* 00004EA8 A8030000 */ lha r0, currStageId@l(r3)
 /* 00004EAC 38600066 */ li r3, 0x66
 /* 00004EB0 901F003C */ stw r0, 0x3c(r31)
-/* 00004EB4 4BFFB2D5 */ bl g_dest_sprite_with_font
+/* 00004EB4 4BFFB2D5 */ bl destroy_sprite_with_tag
 /* 00004EB8 38000000 */ li r0, 0
 /* 00004EBC 90120048 */ stw r0, 0x48(r18)
 /* 00004EC0 38600016 */ li r3, 0x16
 /* 00004EC4 9012004C */ stw r0, 0x4c(r18)
 /* 00004EC8 90120050 */ stw r0, 0x50(r18)
 /* 00004ECC 90120054 */ stw r0, 0x54(r18)
-/* 00004ED0 4BFFB2B9 */ bl g_find_sprite_with_probably_not_font
+/* 00004ED0 4BFFB2B9 */ bl find_sprite_with_tag
 /* 00004ED4 28030000 */ cmplwi r3, 0
 /* 00004ED8 4182000C */ beq lbl_00004EE4
 /* 00004EDC 38000002 */ li r0, 2
@@ -5737,7 +5737,7 @@ lbl_000050C4:
 /* 000050D4 4180FF24 */ blt lbl_00004FF8
 lbl_000050D8:
 /* 000050D8 38600017 */ li r3, 0x17
-/* 000050DC 4BFFB0AD */ bl g_find_sprite_with_probably_not_font
+/* 000050DC 4BFFB0AD */ bl find_sprite_with_tag
 /* 000050E0 28030000 */ cmplwi r3, 0
 /* 000050E4 4182000C */ beq lbl_000050F0
 /* 000050E8 3800000D */ li r0, 0xd
@@ -5791,7 +5791,7 @@ lbl_0000515C:
 /* 00005190 900F0000 */ stw r0, 0(r15)
 lbl_00005194:
 /* 00005194 3860001D */ li r3, 0x1d
-/* 00005198 4BFFAFF1 */ bl g_find_sprite_with_probably_not_font
+/* 00005198 4BFFAFF1 */ bl find_sprite_with_tag
 /* 0000519C 28030000 */ cmplwi r3, 0
 /* 000051A0 4182000C */ beq lbl_000051AC
 /* 000051A4 38000001 */ li r0, 1
@@ -5889,7 +5889,7 @@ lbl_000052D4:
 /* 000052E4 48004570 */ b lbl_00009854
 lbl_000052E8:
 /* 000052E8 3860001D */ li r3, 0x1d
-/* 000052EC 4BFFAE9D */ bl g_find_sprite_with_probably_not_font
+/* 000052EC 4BFFAE9D */ bl find_sprite_with_tag
 /* 000052F0 28030000 */ cmplwi r3, 0
 /* 000052F4 4182000C */ beq lbl_00005300
 /* 000052F8 38000001 */ li r0, 1
@@ -5902,14 +5902,14 @@ lbl_00005300:
 /* 00005310 3800000F */ li r0, 0xf
 /* 00005314 38600016 */ li r3, 0x16
 /* 00005318 90190000 */ stw r0, 0(r25)
-/* 0000531C 4BFFAE6D */ bl g_find_sprite_with_probably_not_font
+/* 0000531C 4BFFAE6D */ bl find_sprite_with_tag
 /* 00005320 28030000 */ cmplwi r3, 0
 /* 00005324 4182000C */ beq lbl_00005330
 /* 00005328 38000004 */ li r0, 4
 /* 0000532C 90030048 */ stw r0, 0x48(r3)
 lbl_00005330:
 /* 00005330 38600017 */ li r3, 0x17
-/* 00005334 4BFFAE55 */ bl g_find_sprite_with_probably_not_font
+/* 00005334 4BFFAE55 */ bl find_sprite_with_tag
 /* 00005338 28030000 */ cmplwi r3, 0
 /* 0000533C 4182000C */ beq lbl_00005348
 /* 00005340 3800001A */ li r0, 0x1a
@@ -5925,7 +5925,7 @@ lbl_00005348:
 /* 00005364 4800BFCD */ bl lbl_00011330
 /* 00005368 806F0000 */ lwz r3, 0(r15)
 /* 0000536C 38630005 */ addi r3, r3, 5
-/* 00005370 4BFFAE19 */ bl g_find_sprite_with_probably_not_font
+/* 00005370 4BFFAE19 */ bl find_sprite_with_tag
 /* 00005374 28030000 */ cmplwi r3, 0
 /* 00005378 4182000C */ beq lbl_00005384
 /* 0000537C 38000002 */ li r0, 2
@@ -5944,7 +5944,7 @@ lbl_00005390:
 /* 000053A8 39E30004 */ addi r15, r3, 4
 /* 000053AC 80630004 */ lwz r3, 4(r3)
 /* 000053B0 38630005 */ addi r3, r3, 5
-/* 000053B4 4BFFADD5 */ bl g_find_sprite_with_probably_not_font
+/* 000053B4 4BFFADD5 */ bl find_sprite_with_tag
 /* 000053B8 28030000 */ cmplwi r3, 0
 /* 000053BC 4182000C */ beq lbl_000053C8
 /* 000053C0 38000001 */ li r0, 1
@@ -5959,7 +5959,7 @@ lbl_000053C8:
 lbl_000053E0:
 /* 000053E0 806F0000 */ lwz r3, 0(r15)
 /* 000053E4 38630005 */ addi r3, r3, 5
-/* 000053E8 4BFFADA1 */ bl g_find_sprite_with_probably_not_font
+/* 000053E8 4BFFADA1 */ bl find_sprite_with_tag
 /* 000053EC 28030000 */ cmplwi r3, 0
 /* 000053F0 4182000C */ beq lbl_000053FC
 /* 000053F4 38000002 */ li r0, 2
@@ -5977,7 +5977,7 @@ lbl_00005404:
 /* 0000541C 39E30004 */ addi r15, r3, 4
 /* 00005420 80630004 */ lwz r3, 4(r3)
 /* 00005424 38630005 */ addi r3, r3, 5
-/* 00005428 4BFFAD61 */ bl g_find_sprite_with_probably_not_font
+/* 00005428 4BFFAD61 */ bl find_sprite_with_tag
 /* 0000542C 28030000 */ cmplwi r3, 0
 /* 00005430 4182000C */ beq lbl_0000543C
 /* 00005434 38000001 */ li r0, 1
@@ -5993,7 +5993,7 @@ lbl_0000543C:
 lbl_00005458:
 /* 00005458 806F0000 */ lwz r3, 0(r15)
 /* 0000545C 38630005 */ addi r3, r3, 5
-/* 00005460 4BFFAD29 */ bl g_find_sprite_with_probably_not_font
+/* 00005460 4BFFAD29 */ bl find_sprite_with_tag
 /* 00005464 28030000 */ cmplwi r3, 0
 /* 00005468 4182000C */ beq lbl_00005474
 /* 0000546C 38000002 */ li r0, 2
@@ -6014,7 +6014,7 @@ lbl_0000547C:
 /* 000054A0 39E00005 */ li r15, 5
 lbl_000054A4:
 /* 000054A4 38700005 */ addi r3, r16, 5
-/* 000054A8 4BFFACE1 */ bl g_find_sprite_with_probably_not_font
+/* 000054A8 4BFFACE1 */ bl find_sprite_with_tag
 /* 000054AC 28030000 */ cmplwi r3, 0
 /* 000054B0 41820008 */ beq lbl_000054B8
 /* 000054B4 91E30048 */ stw r15, 0x48(r3)
@@ -6052,7 +6052,7 @@ lbl_00005524:
 /* 00005524 39E00004 */ li r15, 4
 lbl_00005528:
 /* 00005528 38710005 */ addi r3, r17, 5
-/* 0000552C 4BFFAC5D */ bl g_find_sprite_with_probably_not_font
+/* 0000552C 4BFFAC5D */ bl find_sprite_with_tag
 /* 00005530 28030000 */ cmplwi r3, 0
 /* 00005534 41820008 */ beq lbl_0000553C
 /* 00005538 91E30048 */ stw r15, 0x48(r3)
@@ -6063,7 +6063,7 @@ lbl_0000553C:
 /* 00005548 4800430C */ b lbl_00009854
 lbl_0000554C:
 /* 0000554C 3860001D */ li r3, 0x1d
-/* 00005550 4BFFAC39 */ bl g_find_sprite_with_probably_not_font
+/* 00005550 4BFFAC39 */ bl find_sprite_with_tag
 /* 00005554 28030000 */ cmplwi r3, 0
 /* 00005558 4182000C */ beq lbl_00005564
 /* 0000555C 38000001 */ li r0, 1
@@ -6076,7 +6076,7 @@ lbl_00005564:
 /* 00005574 3800000F */ li r0, 0xf
 /* 00005578 38600016 */ li r3, 0x16
 /* 0000557C 90190000 */ stw r0, 0(r25)
-/* 00005580 4BFFAC09 */ bl g_find_sprite_with_probably_not_font
+/* 00005580 4BFFAC09 */ bl find_sprite_with_tag
 /* 00005584 28030000 */ cmplwi r3, 0
 /* 00005588 4182000C */ beq lbl_00005594
 /* 0000558C 38000005 */ li r0, 5
@@ -6179,35 +6179,35 @@ lbl_000056E8:
 /* 000056F0 4BFFAA99 */ bl printf
 lbl_000056F4:
 /* 000056F4 38600017 */ li r3, 0x17
-/* 000056F8 4BFFAA91 */ bl g_find_sprite_with_probably_not_font
+/* 000056F8 4BFFAA91 */ bl find_sprite_with_tag
 /* 000056FC 28030000 */ cmplwi r3, 0
 /* 00005700 4182000C */ beq lbl_0000570C
 /* 00005704 38000000 */ li r0, 0
 /* 00005708 90030048 */ stw r0, 0x48(r3)
 lbl_0000570C:
 /* 0000570C 38600018 */ li r3, 0x18
-/* 00005710 4BFFAA79 */ bl g_find_sprite_with_probably_not_font
+/* 00005710 4BFFAA79 */ bl find_sprite_with_tag
 /* 00005714 28030000 */ cmplwi r3, 0
 /* 00005718 4182000C */ beq lbl_00005724
 /* 0000571C 38000001 */ li r0, 1
 /* 00005720 90030048 */ stw r0, 0x48(r3)
 lbl_00005724:
 /* 00005724 38600019 */ li r3, 0x19
-/* 00005728 4BFFAA61 */ bl g_find_sprite_with_probably_not_font
+/* 00005728 4BFFAA61 */ bl find_sprite_with_tag
 /* 0000572C 28030000 */ cmplwi r3, 0
 /* 00005730 4182000C */ beq lbl_0000573C
 /* 00005734 38000001 */ li r0, 1
 /* 00005738 90030048 */ stw r0, 0x48(r3)
 lbl_0000573C:
 /* 0000573C 3860001B */ li r3, 0x1b
-/* 00005740 4BFFAA49 */ bl g_find_sprite_with_probably_not_font
+/* 00005740 4BFFAA49 */ bl find_sprite_with_tag
 /* 00005744 28030000 */ cmplwi r3, 0
 /* 00005748 4182000C */ beq lbl_00005754
 /* 0000574C 38000001 */ li r0, 1
 /* 00005750 90030048 */ stw r0, 0x48(r3)
 lbl_00005754:
 /* 00005754 3860001C */ li r3, 0x1c
-/* 00005758 4BFFAA31 */ bl g_find_sprite_with_probably_not_font
+/* 00005758 4BFFAA31 */ bl find_sprite_with_tag
 /* 0000575C 28030000 */ cmplwi r3, 0
 /* 00005760 4182000C */ beq lbl_0000576C
 /* 00005764 38000001 */ li r0, 1
@@ -6240,27 +6240,27 @@ lbl_00005790:
 /* 000057C8 90650000 */ stw r3, 0(r5)
 /* 000057CC 38600018 */ li r3, 0x18
 /* 000057D0 90040000 */ stw r0, 0(r4)
-/* 000057D4 4BFFA9B5 */ bl g_find_sprite_with_probably_not_font
+/* 000057D4 4BFFA9B5 */ bl find_sprite_with_tag
 /* 000057D8 28030000 */ cmplwi r3, 0
 /* 000057DC 41820008 */ beq lbl_000057E4
 /* 000057E0 91E30048 */ stw r15, 0x48(r3)
 lbl_000057E4:
 /* 000057E4 38600019 */ li r3, 0x19
-/* 000057E8 4BFFA9A1 */ bl g_find_sprite_with_probably_not_font
+/* 000057E8 4BFFA9A1 */ bl find_sprite_with_tag
 /* 000057EC 28030000 */ cmplwi r3, 0
 /* 000057F0 4182000C */ beq lbl_000057FC
 /* 000057F4 38000002 */ li r0, 2
 /* 000057F8 90030048 */ stw r0, 0x48(r3)
 lbl_000057FC:
 /* 000057FC 3860001B */ li r3, 0x1b
-/* 00005800 4BFFA989 */ bl g_find_sprite_with_probably_not_font
+/* 00005800 4BFFA989 */ bl find_sprite_with_tag
 /* 00005804 28030000 */ cmplwi r3, 0
 /* 00005808 4182000C */ beq lbl_00005814
 /* 0000580C 38000002 */ li r0, 2
 /* 00005810 90030048 */ stw r0, 0x48(r3)
 lbl_00005814:
 /* 00005814 3860001C */ li r3, 0x1c
-/* 00005818 4BFFA971 */ bl g_find_sprite_with_probably_not_font
+/* 00005818 4BFFA971 */ bl find_sprite_with_tag
 /* 0000581C 28030000 */ cmplwi r3, 0
 /* 00005820 4182000C */ beq lbl_0000582C
 /* 00005824 38000002 */ li r0, 2
@@ -6269,14 +6269,14 @@ lbl_0000582C:
 /* 0000582C 3860000C */ li r3, 0xc
 /* 00005830 4BFFA959 */ bl camera_set_state
 /* 00005834 3860001B */ li r3, 0x1b
-/* 00005838 4BFFA951 */ bl g_find_sprite_with_probably_not_font
+/* 00005838 4BFFA951 */ bl find_sprite_with_tag
 /* 0000583C 28030000 */ cmplwi r3, 0
 /* 00005840 4182000C */ beq lbl_0000584C
 /* 00005844 38000001 */ li r0, 1
 /* 00005848 B0030010 */ sth r0, 0x10(r3)
 lbl_0000584C:
 /* 0000584C 38600066 */ li r3, 0x66
-/* 00005850 4BFFA939 */ bl g_find_sprite_with_probably_not_font
+/* 00005850 4BFFA939 */ bl find_sprite_with_tag
 /* 00005854 28030000 */ cmplwi r3, 0
 /* 00005858 4082035C */ bne lbl_00005BB4
 /* 0000585C 4BFFA92D */ bl create_sprite
@@ -6414,27 +6414,27 @@ lbl_00005A1C:
 /* 00005A54 38830000 */ addi r4, r3, lbl_802F1FAC@l
 /* 00005A58 90C40000 */ stw r6, 0(r4)
 /* 00005A5C 38600018 */ li r3, 0x18
-/* 00005A60 4BFFA729 */ bl g_find_sprite_with_probably_not_font
+/* 00005A60 4BFFA729 */ bl find_sprite_with_tag
 /* 00005A64 28030000 */ cmplwi r3, 0
 /* 00005A68 41820008 */ beq lbl_00005A70
 /* 00005A6C 91E30048 */ stw r15, 0x48(r3)
 lbl_00005A70:
 /* 00005A70 38600019 */ li r3, 0x19
-/* 00005A74 4BFFA715 */ bl g_find_sprite_with_probably_not_font
+/* 00005A74 4BFFA715 */ bl find_sprite_with_tag
 /* 00005A78 28030000 */ cmplwi r3, 0
 /* 00005A7C 4182000C */ beq lbl_00005A88
 /* 00005A80 38000002 */ li r0, 2
 /* 00005A84 90030048 */ stw r0, 0x48(r3)
 lbl_00005A88:
 /* 00005A88 3860001B */ li r3, 0x1b
-/* 00005A8C 4BFFA6FD */ bl g_find_sprite_with_probably_not_font
+/* 00005A8C 4BFFA6FD */ bl find_sprite_with_tag
 /* 00005A90 28030000 */ cmplwi r3, 0
 /* 00005A94 4182000C */ beq lbl_00005AA0
 /* 00005A98 38000002 */ li r0, 2
 /* 00005A9C 90030048 */ stw r0, 0x48(r3)
 lbl_00005AA0:
 /* 00005AA0 3860001C */ li r3, 0x1c
-/* 00005AA4 4BFFA6E5 */ bl g_find_sprite_with_probably_not_font
+/* 00005AA4 4BFFA6E5 */ bl find_sprite_with_tag
 /* 00005AA8 28030000 */ cmplwi r3, 0
 /* 00005AAC 4182000C */ beq lbl_00005AB8
 /* 00005AB0 38000000 */ li r0, 0
@@ -6443,21 +6443,21 @@ lbl_00005AB8:
 /* 00005AB8 3860000C */ li r3, 0xc
 /* 00005ABC 4BFFA6CD */ bl camera_set_state
 /* 00005AC0 38600018 */ li r3, 0x18
-/* 00005AC4 4BFFA6C5 */ bl g_find_sprite_with_probably_not_font
+/* 00005AC4 4BFFA6C5 */ bl find_sprite_with_tag
 /* 00005AC8 28030000 */ cmplwi r3, 0
 /* 00005ACC 4182000C */ beq lbl_00005AD8
 /* 00005AD0 38000003 */ li r0, 3
 /* 00005AD4 90030048 */ stw r0, 0x48(r3)
 lbl_00005AD8:
 /* 00005AD8 3860001B */ li r3, 0x1b
-/* 00005ADC 4BFFA6AD */ bl g_find_sprite_with_probably_not_font
+/* 00005ADC 4BFFA6AD */ bl find_sprite_with_tag
 /* 00005AE0 28030000 */ cmplwi r3, 0
 /* 00005AE4 4182000C */ beq lbl_00005AF0
 /* 00005AE8 38000001 */ li r0, 1
 /* 00005AEC B0030010 */ sth r0, 0x10(r3)
 lbl_00005AF0:
 /* 00005AF0 38600066 */ li r3, 0x66
-/* 00005AF4 4BFFA695 */ bl g_find_sprite_with_probably_not_font
+/* 00005AF4 4BFFA695 */ bl find_sprite_with_tag
 /* 00005AF8 28030000 */ cmplwi r3, 0
 /* 00005AFC 408200B8 */ bne lbl_00005BB4
 /* 00005B00 4BFFA689 */ bl create_sprite
@@ -6589,28 +6589,28 @@ lbl_00005CB4:
 /* 00005CD4 38000001 */ li r0, 1
 /* 00005CD8 90030008 */ stw r0, 8(r3)
 /* 00005CDC 38600018 */ li r3, 0x18
-/* 00005CE0 4BFFA4A9 */ bl g_find_sprite_with_probably_not_font
+/* 00005CE0 4BFFA4A9 */ bl find_sprite_with_tag
 /* 00005CE4 28030000 */ cmplwi r3, 0
 /* 00005CE8 4182000C */ beq lbl_00005CF4
 /* 00005CEC 38000000 */ li r0, 0
 /* 00005CF0 90030048 */ stw r0, 0x48(r3)
 lbl_00005CF4:
 /* 00005CF4 38600019 */ li r3, 0x19
-/* 00005CF8 4BFFA491 */ bl g_find_sprite_with_probably_not_font
+/* 00005CF8 4BFFA491 */ bl find_sprite_with_tag
 /* 00005CFC 28030000 */ cmplwi r3, 0
 /* 00005D00 4182000C */ beq lbl_00005D0C
 /* 00005D04 38000000 */ li r0, 0
 /* 00005D08 90030048 */ stw r0, 0x48(r3)
 lbl_00005D0C:
 /* 00005D0C 3860001B */ li r3, 0x1b
-/* 00005D10 4BFFA479 */ bl g_find_sprite_with_probably_not_font
+/* 00005D10 4BFFA479 */ bl find_sprite_with_tag
 /* 00005D14 28030000 */ cmplwi r3, 0
 /* 00005D18 4182000C */ beq lbl_00005D24
 /* 00005D1C 38000000 */ li r0, 0
 /* 00005D20 90030048 */ stw r0, 0x48(r3)
 lbl_00005D24:
 /* 00005D24 3860001C */ li r3, 0x1c
-/* 00005D28 4BFFA461 */ bl g_find_sprite_with_probably_not_font
+/* 00005D28 4BFFA461 */ bl find_sprite_with_tag
 /* 00005D2C 28030000 */ cmplwi r3, 0
 /* 00005D30 41823B24 */ beq lbl_00009854
 /* 00005D34 38000000 */ li r0, 0
@@ -6634,27 +6634,27 @@ lbl_00005D40:
 /* 00005D78 38000000 */ li r0, 0
 /* 00005D7C 90030000 */ stw r0, lbl_802F1FAC@l(r3)
 /* 00005D80 38600018 */ li r3, 0x18
-/* 00005D84 4BFFA405 */ bl g_find_sprite_with_probably_not_font
+/* 00005D84 4BFFA405 */ bl find_sprite_with_tag
 /* 00005D88 28030000 */ cmplwi r3, 0
 /* 00005D8C 41820008 */ beq lbl_00005D94
 /* 00005D90 91E30048 */ stw r15, 0x48(r3)
 lbl_00005D94:
 /* 00005D94 38600019 */ li r3, 0x19
-/* 00005D98 4BFFA3F1 */ bl g_find_sprite_with_probably_not_font
+/* 00005D98 4BFFA3F1 */ bl find_sprite_with_tag
 /* 00005D9C 28030000 */ cmplwi r3, 0
 /* 00005DA0 4182000C */ beq lbl_00005DAC
 /* 00005DA4 38000002 */ li r0, 2
 /* 00005DA8 90030048 */ stw r0, 0x48(r3)
 lbl_00005DAC:
 /* 00005DAC 3860001B */ li r3, 0x1b
-/* 00005DB0 4BFFA3D9 */ bl g_find_sprite_with_probably_not_font
+/* 00005DB0 4BFFA3D9 */ bl find_sprite_with_tag
 /* 00005DB4 28030000 */ cmplwi r3, 0
 /* 00005DB8 4182000C */ beq lbl_00005DC4
 /* 00005DBC 38000002 */ li r0, 2
 /* 00005DC0 90030048 */ stw r0, 0x48(r3)
 lbl_00005DC4:
 /* 00005DC4 3860001C */ li r3, 0x1c
-/* 00005DC8 4BFFA3C1 */ bl g_find_sprite_with_probably_not_font
+/* 00005DC8 4BFFA3C1 */ bl find_sprite_with_tag
 /* 00005DCC 28030000 */ cmplwi r3, 0
 /* 00005DD0 4182000C */ beq lbl_00005DDC
 /* 00005DD4 38000002 */ li r0, 2
@@ -7410,28 +7410,28 @@ lbl_0000688C:
 /* 00006894 38000001 */ li r0, 1
 /* 00006898 90030008 */ stw r0, 8(r3)
 /* 0000689C 38600018 */ li r3, 0x18
-/* 000068A0 4BFF98E9 */ bl g_find_sprite_with_probably_not_font
+/* 000068A0 4BFF98E9 */ bl find_sprite_with_tag
 /* 000068A4 28030000 */ cmplwi r3, 0
 /* 000068A8 4182000C */ beq lbl_000068B4
 /* 000068AC 38000000 */ li r0, 0
 /* 000068B0 90030048 */ stw r0, 0x48(r3)
 lbl_000068B4:
 /* 000068B4 38600019 */ li r3, 0x19
-/* 000068B8 4BFF98D1 */ bl g_find_sprite_with_probably_not_font
+/* 000068B8 4BFF98D1 */ bl find_sprite_with_tag
 /* 000068BC 28030000 */ cmplwi r3, 0
 /* 000068C0 4182000C */ beq lbl_000068CC
 /* 000068C4 38000000 */ li r0, 0
 /* 000068C8 90030048 */ stw r0, 0x48(r3)
 lbl_000068CC:
 /* 000068CC 3860001B */ li r3, 0x1b
-/* 000068D0 4BFF98B9 */ bl g_find_sprite_with_probably_not_font
+/* 000068D0 4BFF98B9 */ bl find_sprite_with_tag
 /* 000068D4 28030000 */ cmplwi r3, 0
 /* 000068D8 4182000C */ beq lbl_000068E4
 /* 000068DC 38000003 */ li r0, 3
 /* 000068E0 90030048 */ stw r0, 0x48(r3)
 lbl_000068E4:
 /* 000068E4 3860001C */ li r3, 0x1c
-/* 000068E8 4BFF98A1 */ bl g_find_sprite_with_probably_not_font
+/* 000068E8 4BFF98A1 */ bl find_sprite_with_tag
 /* 000068EC 28030000 */ cmplwi r3, 0
 /* 000068F0 4182000C */ beq lbl_000068FC
 /* 000068F4 38000003 */ li r0, 3
@@ -7457,35 +7457,35 @@ lbl_00006930:
 /* 0000693C 3860006B */ li r3, 0x6b
 /* 00006940 4BFF9849 */ bl g_play_sound
 /* 00006944 38600017 */ li r3, 0x17
-/* 00006948 4BFF9841 */ bl g_find_sprite_with_probably_not_font
+/* 00006948 4BFF9841 */ bl find_sprite_with_tag
 /* 0000694C 28030000 */ cmplwi r3, 0
 /* 00006950 4182000C */ beq lbl_0000695C
 /* 00006954 38000000 */ li r0, 0
 /* 00006958 90030048 */ stw r0, 0x48(r3)
 lbl_0000695C:
 /* 0000695C 38600018 */ li r3, 0x18
-/* 00006960 4BFF9829 */ bl g_find_sprite_with_probably_not_font
+/* 00006960 4BFF9829 */ bl find_sprite_with_tag
 /* 00006964 28030000 */ cmplwi r3, 0
 /* 00006968 4182000C */ beq lbl_00006974
 /* 0000696C 38000001 */ li r0, 1
 /* 00006970 90030048 */ stw r0, 0x48(r3)
 lbl_00006974:
 /* 00006974 38600019 */ li r3, 0x19
-/* 00006978 4BFF9811 */ bl g_find_sprite_with_probably_not_font
+/* 00006978 4BFF9811 */ bl find_sprite_with_tag
 /* 0000697C 28030000 */ cmplwi r3, 0
 /* 00006980 4182000C */ beq lbl_0000698C
 /* 00006984 38000001 */ li r0, 1
 /* 00006988 90030048 */ stw r0, 0x48(r3)
 lbl_0000698C:
 /* 0000698C 3860001B */ li r3, 0x1b
-/* 00006990 4BFF97F9 */ bl g_find_sprite_with_probably_not_font
+/* 00006990 4BFF97F9 */ bl find_sprite_with_tag
 /* 00006994 28030000 */ cmplwi r3, 0
 /* 00006998 4182000C */ beq lbl_000069A4
 /* 0000699C 38000001 */ li r0, 1
 /* 000069A0 90030048 */ stw r0, 0x48(r3)
 lbl_000069A4:
 /* 000069A4 3860001C */ li r3, 0x1c
-/* 000069A8 4BFF97E1 */ bl g_find_sprite_with_probably_not_font
+/* 000069A8 4BFF97E1 */ bl find_sprite_with_tag
 /* 000069AC 28030000 */ cmplwi r3, 0
 /* 000069B0 4182000C */ beq lbl_000069BC
 /* 000069B4 38000001 */ li r0, 1
@@ -7611,7 +7611,7 @@ lbl_00006B60:
 /* 00006B7C 90040004 */ stw r0, 4(r4)
 lbl_00006B80:
 /* 00006B80 38600019 */ li r3, 0x19
-/* 00006B84 4BFF9605 */ bl g_find_sprite_with_probably_not_font
+/* 00006B84 4BFF9605 */ bl find_sprite_with_tag
 /* 00006B88 28030000 */ cmplwi r3, 0
 /* 00006B8C 4182000C */ beq lbl_00006B98
 /* 00006B90 38000001 */ li r0, 1
@@ -7643,42 +7643,42 @@ lbl_00006BDC:
 /* 00006BE8 A8030000 */ lha r0, currStageId@l(r3)
 /* 00006BEC 38600018 */ li r3, 0x18
 /* 00006BF0 901F003C */ stw r0, 0x3c(r31)
-/* 00006BF4 4BFF9595 */ bl g_find_sprite_with_probably_not_font
+/* 00006BF4 4BFF9595 */ bl find_sprite_with_tag
 /* 00006BF8 28030000 */ cmplwi r3, 0
 /* 00006BFC 4182000C */ beq lbl_00006C08
 /* 00006C00 38000000 */ li r0, 0
 /* 00006C04 90030048 */ stw r0, 0x48(r3)
 lbl_00006C08:
 /* 00006C08 38600019 */ li r3, 0x19
-/* 00006C0C 4BFF957D */ bl g_find_sprite_with_probably_not_font
+/* 00006C0C 4BFF957D */ bl find_sprite_with_tag
 /* 00006C10 28030000 */ cmplwi r3, 0
 /* 00006C14 4182000C */ beq lbl_00006C20
 /* 00006C18 38000000 */ li r0, 0
 /* 00006C1C 90030048 */ stw r0, 0x48(r3)
 lbl_00006C20:
 /* 00006C20 3860001B */ li r3, 0x1b
-/* 00006C24 4BFF9565 */ bl g_find_sprite_with_probably_not_font
+/* 00006C24 4BFF9565 */ bl find_sprite_with_tag
 /* 00006C28 28030000 */ cmplwi r3, 0
 /* 00006C2C 4182000C */ beq lbl_00006C38
 /* 00006C30 38000003 */ li r0, 3
 /* 00006C34 90030048 */ stw r0, 0x48(r3)
 lbl_00006C38:
 /* 00006C38 3860001C */ li r3, 0x1c
-/* 00006C3C 4BFF954D */ bl g_find_sprite_with_probably_not_font
+/* 00006C3C 4BFF954D */ bl find_sprite_with_tag
 /* 00006C40 28030000 */ cmplwi r3, 0
 /* 00006C44 4182000C */ beq lbl_00006C50
 /* 00006C48 38000003 */ li r0, 3
 /* 00006C4C 90030048 */ stw r0, 0x48(r3)
 lbl_00006C50:
 /* 00006C50 38600016 */ li r3, 0x16
-/* 00006C54 4BFF9535 */ bl g_find_sprite_with_probably_not_font
+/* 00006C54 4BFF9535 */ bl find_sprite_with_tag
 /* 00006C58 28030000 */ cmplwi r3, 0
 /* 00006C5C 4182000C */ beq lbl_00006C68
 /* 00006C60 38000006 */ li r0, 6
 /* 00006C64 90030048 */ stw r0, 0x48(r3)
 lbl_00006C68:
 /* 00006C68 3860001A */ li r3, 0x1a
-/* 00006C6C 4BFF951D */ bl g_find_sprite_with_probably_not_font
+/* 00006C6C 4BFF951D */ bl find_sprite_with_tag
 /* 00006C70 28030000 */ cmplwi r3, 0
 /* 00006C74 4182000C */ beq lbl_00006C80
 /* 00006C78 38000001 */ li r0, 1
@@ -7972,7 +7972,7 @@ lbl_00007064:
 /* 00007070 808300F4 */ lwz r4, 0xf4(r3)
 /* 00007074 38600017 */ li r3, 0x17
 /* 00007078 39E4001F */ addi r15, r4, 0x1f
-/* 0000707C 4BFF910D */ bl g_find_sprite_with_probably_not_font
+/* 0000707C 4BFF910D */ bl find_sprite_with_tag
 /* 00007080 28030000 */ cmplwi r3, 0
 /* 00007084 41820008 */ beq lbl_0000708C
 /* 00007088 91E30048 */ stw r15, 0x48(r3)
@@ -7998,14 +7998,14 @@ lbl_0000708C:
 /* 000070D4 38000002 */ li r0, 2
 /* 000070D8 38600017 */ li r3, 0x17
 /* 000070DC 90040000 */ stw r0, 0(r4)
-/* 000070E0 4BFF90A9 */ bl g_find_sprite_with_probably_not_font
+/* 000070E0 4BFF90A9 */ bl find_sprite_with_tag
 /* 000070E4 28030000 */ cmplwi r3, 0
 /* 000070E8 4182000C */ beq lbl_000070F4
 /* 000070EC 38000000 */ li r0, 0
 /* 000070F0 90030048 */ stw r0, 0x48(r3)
 lbl_000070F4:
 /* 000070F4 3860001A */ li r3, 0x1a
-/* 000070F8 4BFF9091 */ bl g_find_sprite_with_probably_not_font
+/* 000070F8 4BFF9091 */ bl find_sprite_with_tag
 /* 000070FC 28030000 */ cmplwi r3, 0
 /* 00007100 41822754 */ beq lbl_00009854
 /* 00007104 38000000 */ li r0, 0
@@ -8051,7 +8051,7 @@ lbl_00007110:
 /* 000071A0 480026B4 */ b lbl_00009854
 lbl_000071A4:
 /* 000071A4 38600016 */ li r3, 0x16
-/* 000071A8 4BFF8FE1 */ bl g_find_sprite_with_probably_not_font
+/* 000071A8 4BFF8FE1 */ bl find_sprite_with_tag
 /* 000071AC 28030000 */ cmplwi r3, 0
 /* 000071B0 4182000C */ beq lbl_000071BC
 /* 000071B4 38000000 */ li r0, 0
@@ -8089,7 +8089,7 @@ lbl_000071FC:
 /* 0000722C 2C030000 */ cmpwi r3, 0
 /* 00007230 41820018 */ beq lbl_00007248
 /* 00007234 38600063 */ li r3, 0x63
-/* 00007238 4BFF8F51 */ bl g_dest_sprite_with_font
+/* 00007238 4BFF8F51 */ bl destroy_sprite_with_tag
 /* 0000723C 38000001 */ li r0, 1
 /* 00007240 90120008 */ stw r0, 8(r18)
 /* 00007244 48002610 */ b lbl_00009854
@@ -8153,7 +8153,7 @@ lbl_00007314:
 /* 00007314 3C600000 */ lis r3, lbl_801EED88@ha
 /* 00007318 3A030000 */ addi r16, r3, lbl_801EED88@l
 /* 0000731C 3860001D */ li r3, 0x1d
-/* 00007320 4BFF8E69 */ bl g_find_sprite_with_probably_not_font
+/* 00007320 4BFF8E69 */ bl find_sprite_with_tag
 /* 00007324 28030000 */ cmplwi r3, 0
 /* 00007328 4182000C */ beq lbl_00007334
 /* 0000732C 38000001 */ li r0, 1
@@ -8168,7 +8168,7 @@ lbl_00007334:
 /* 0000734C 90190000 */ stw r0, 0(r25)
 /* 00007350 4BFF8E39 */ bl camera_set_state
 /* 00007354 38600021 */ li r3, 0x21
-/* 00007358 4BFF8E31 */ bl g_find_sprite_with_probably_not_font
+/* 00007358 4BFF8E31 */ bl find_sprite_with_tag
 /* 0000735C 28030000 */ cmplwi r3, 0
 /* 00007360 41820008 */ beq lbl_00007368
 /* 00007364 91E30048 */ stw r15, 0x48(r3)
@@ -8183,7 +8183,7 @@ lbl_00007368:
 /* 00007384 38000001 */ li r0, 1
 /* 00007388 901F00C0 */ stw r0, 0xc0(r31)
 /* 0000738C 38600016 */ li r3, 0x16
-/* 00007390 4BFF8DF9 */ bl g_find_sprite_with_probably_not_font
+/* 00007390 4BFF8DF9 */ bl find_sprite_with_tag
 /* 00007394 28030000 */ cmplwi r3, 0
 /* 00007398 4182000C */ beq lbl_000073A4
 /* 0000739C 38000007 */ li r0, 7
@@ -8198,13 +8198,13 @@ lbl_000073B8:
 /* 000073B8 39E00029 */ li r15, 0x29
 lbl_000073BC:
 /* 000073BC 38600017 */ li r3, 0x17
-/* 000073C0 4BFF8DC9 */ bl g_find_sprite_with_probably_not_font
+/* 000073C0 4BFF8DC9 */ bl find_sprite_with_tag
 /* 000073C4 28030000 */ cmplwi r3, 0
 /* 000073C8 41820008 */ beq lbl_000073D0
 /* 000073CC 91E30048 */ stw r15, 0x48(r3)
 lbl_000073D0:
 /* 000073D0 38600066 */ li r3, 0x66
-/* 000073D4 4BFF8DB5 */ bl g_find_sprite_with_probably_not_font
+/* 000073D4 4BFF8DB5 */ bl find_sprite_with_tag
 /* 000073D8 28030000 */ cmplwi r3, 0
 /* 000073DC 40820130 */ bne lbl_0000750C
 /* 000073E0 3CA00000 */ lis r5, lbl_00009E40@ha
@@ -8387,7 +8387,7 @@ lbl_0000765C:
 /* 00007674 38000001 */ li r0, 1
 /* 00007678 90030008 */ stw r0, 8(r3)
 /* 0000767C 38600021 */ li r3, 0x21
-/* 00007680 4BFF8B09 */ bl g_find_sprite_with_probably_not_font
+/* 00007680 4BFF8B09 */ bl find_sprite_with_tag
 /* 00007684 28030000 */ cmplwi r3, 0
 /* 00007688 418221CC */ beq lbl_00009854
 /* 0000768C 38000003 */ li r0, 3
@@ -8421,7 +8421,7 @@ lbl_000076DC:
 /* 000076F0 A8030000 */ lha r0, currStageId@l(r3)
 /* 000076F4 3860001D */ li r3, 0x1d
 /* 000076F8 901F003C */ stw r0, 0x3c(r31)
-/* 000076FC 4BFF8A8D */ bl g_find_sprite_with_probably_not_font
+/* 000076FC 4BFF8A8D */ bl find_sprite_with_tag
 /* 00007700 28030000 */ cmplwi r3, 0
 /* 00007704 4182000C */ beq lbl_00007710
 /* 00007708 38000001 */ li r0, 1
@@ -8434,14 +8434,14 @@ lbl_00007710:
 /* 00007720 3800000F */ li r0, 0xf
 /* 00007724 38600021 */ li r3, 0x21
 /* 00007728 90190000 */ stw r0, 0(r25)
-/* 0000772C 4BFF8A5D */ bl g_find_sprite_with_probably_not_font
+/* 0000772C 4BFF8A5D */ bl find_sprite_with_tag
 /* 00007730 28030000 */ cmplwi r3, 0
 /* 00007734 4182000C */ beq lbl_00007740
 /* 00007738 38000003 */ li r0, 3
 /* 0000773C 90030048 */ stw r0, 0x48(r3)
 lbl_00007740:
 /* 00007740 38600016 */ li r3, 0x16
-/* 00007744 4BFF8A45 */ bl g_find_sprite_with_probably_not_font
+/* 00007744 4BFF8A45 */ bl find_sprite_with_tag
 /* 00007748 28030000 */ cmplwi r3, 0
 /* 0000774C 4182000C */ beq lbl_00007758
 /* 00007750 38000006 */ li r0, 6
@@ -8457,7 +8457,7 @@ lbl_00007758:
 /* 00007774 54000739 */ rlwinm. r0, r0, 0, 0x1c, 0x1c
 /* 00007778 41820030 */ beq lbl_000077A8
 /* 0000777C 3860001A */ li r3, 0x1a
-/* 00007780 4BFF8A09 */ bl g_find_sprite_with_probably_not_font
+/* 00007780 4BFF8A09 */ bl find_sprite_with_tag
 /* 00007784 28030000 */ cmplwi r3, 0
 /* 00007788 4182000C */ beq lbl_00007794
 /* 0000778C 38000003 */ li r0, 3
@@ -8470,7 +8470,7 @@ lbl_00007794:
 /* 000077A4 4800002C */ b lbl_000077D0
 lbl_000077A8:
 /* 000077A8 3860001A */ li r3, 0x1a
-/* 000077AC 4BFF89DD */ bl g_find_sprite_with_probably_not_font
+/* 000077AC 4BFF89DD */ bl find_sprite_with_tag
 /* 000077B0 28030000 */ cmplwi r3, 0
 /* 000077B4 4182000C */ beq lbl_000077C0
 /* 000077B8 38000002 */ li r0, 2
@@ -8728,7 +8728,7 @@ lbl_00007B30:
 /* 00007B38 820300F4 */ lwz r16, 0xf4(r3)
 lbl_00007B3C:
 /* 00007B3C 38600017 */ li r3, 0x17
-/* 00007B40 4BFF8649 */ bl g_find_sprite_with_probably_not_font
+/* 00007B40 4BFF8649 */ bl find_sprite_with_tag
 /* 00007B44 28030000 */ cmplwi r3, 0
 /* 00007B48 4182000C */ beq lbl_00007B54
 /* 00007B4C 3810002C */ addi r0, r16, 0x2c
@@ -8742,7 +8742,7 @@ lbl_00007B54:
 /* 00007B68 2C000001 */ cmpwi r0, 1
 /* 00007B6C 40820020 */ bne lbl_00007B8C
 /* 00007B70 38600017 */ li r3, 0x17
-/* 00007B74 4BFF8615 */ bl g_find_sprite_with_probably_not_font
+/* 00007B74 4BFF8615 */ bl find_sprite_with_tag
 /* 00007B78 28030000 */ cmplwi r3, 0
 /* 00007B7C 41820030 */ beq lbl_00007BAC
 /* 00007B80 38000032 */ li r0, 0x32
@@ -8752,7 +8752,7 @@ lbl_00007B8C:
 /* 00007B8C 2C000004 */ cmpwi r0, 4
 /* 00007B90 4082001C */ bne lbl_00007BAC
 /* 00007B94 38600017 */ li r3, 0x17
-/* 00007B98 4BFF85F1 */ bl g_find_sprite_with_probably_not_font
+/* 00007B98 4BFF85F1 */ bl find_sprite_with_tag
 /* 00007B9C 28030000 */ cmplwi r3, 0
 /* 00007BA0 4182000C */ beq lbl_00007BAC
 /* 00007BA4 38000033 */ li r0, 0x33
@@ -8770,7 +8770,7 @@ lbl_00007BAC:
 /* 00007BD0 38000001 */ li r0, 1
 /* 00007BD4 90030008 */ stw r0, 8(r3)
 /* 00007BD8 3860001A */ li r3, 0x1a
-/* 00007BDC 4BFF85AD */ bl g_find_sprite_with_probably_not_font
+/* 00007BDC 4BFF85AD */ bl find_sprite_with_tag
 /* 00007BE0 28030000 */ cmplwi r3, 0
 /* 00007BE4 41821C70 */ beq lbl_00009854
 /* 00007BE8 38000000 */ li r0, 0
@@ -8800,7 +8800,7 @@ lbl_00007C3C:
 /* 00007C3C 3C600000 */ lis r3, lbl_801EED98@ha
 /* 00007C40 3AA30000 */ addi r21, r3, lbl_801EED98@l
 /* 00007C44 3860001D */ li r3, 0x1d
-/* 00007C48 4BFF8541 */ bl g_find_sprite_with_probably_not_font
+/* 00007C48 4BFF8541 */ bl find_sprite_with_tag
 /* 00007C4C 28030000 */ cmplwi r3, 0
 /* 00007C50 4182000C */ beq lbl_00007C5C
 /* 00007C54 38000001 */ li r0, 1
@@ -8815,7 +8815,7 @@ lbl_00007C5C:
 /* 00007C74 90190000 */ stw r0, 0(r25)
 /* 00007C78 4BFF8511 */ bl camera_set_state
 /* 00007C7C 38600022 */ li r3, 0x22
-/* 00007C80 4BFF8509 */ bl g_find_sprite_with_probably_not_font
+/* 00007C80 4BFF8509 */ bl find_sprite_with_tag
 /* 00007C84 28030000 */ cmplwi r3, 0
 /* 00007C88 4182000C */ beq lbl_00007C94
 /* 00007C8C 38000001 */ li r0, 1
@@ -8835,28 +8835,28 @@ lbl_00007C94:
 /* 00007CC0 38600016 */ li r3, 0x16
 /* 00007CC4 88150005 */ lbz r0, 5(r21)
 /* 00007CC8 9815000A */ stb r0, 0xa(r21)
-/* 00007CCC 4BFF84BD */ bl g_find_sprite_with_probably_not_font
+/* 00007CCC 4BFF84BD */ bl find_sprite_with_tag
 /* 00007CD0 28030000 */ cmplwi r3, 0
 /* 00007CD4 4182000C */ beq lbl_00007CE0
 /* 00007CD8 38000005 */ li r0, 5
 /* 00007CDC 90030048 */ stw r0, 0x48(r3)
 lbl_00007CE0:
 /* 00007CE0 38600017 */ li r3, 0x17
-/* 00007CE4 4BFF84A5 */ bl g_find_sprite_with_probably_not_font
+/* 00007CE4 4BFF84A5 */ bl find_sprite_with_tag
 /* 00007CE8 28030000 */ cmplwi r3, 0
 /* 00007CEC 4182000C */ beq lbl_00007CF8
 /* 00007CF0 38000000 */ li r0, 0
 /* 00007CF4 90030048 */ stw r0, 0x48(r3)
 lbl_00007CF8:
 /* 00007CF8 38600018 */ li r3, 0x18
-/* 00007CFC 4BFF848D */ bl g_find_sprite_with_probably_not_font
+/* 00007CFC 4BFF848D */ bl find_sprite_with_tag
 /* 00007D00 28030000 */ cmplwi r3, 0
 /* 00007D04 4182000C */ beq lbl_00007D10
 /* 00007D08 38000004 */ li r0, 4
 /* 00007D0C 90030048 */ stw r0, 0x48(r3)
 lbl_00007D10:
 /* 00007D10 38600066 */ li r3, 0x66
-/* 00007D14 4BFF8475 */ bl g_find_sprite_with_probably_not_font
+/* 00007D14 4BFF8475 */ bl find_sprite_with_tag
 /* 00007D18 28030000 */ cmplwi r3, 0
 /* 00007D1C 4082010C */ bne lbl_00007E28
 /* 00007D20 3A600000 */ li r19, 0
@@ -8947,13 +8947,13 @@ lbl_00007E60:
 /* 00007E60 39E00006 */ li r15, 6
 lbl_00007E64:
 /* 00007E64 38600018 */ li r3, 0x18
-/* 00007E68 4BFF8321 */ bl g_find_sprite_with_probably_not_font
+/* 00007E68 4BFF8321 */ bl find_sprite_with_tag
 /* 00007E6C 28030000 */ cmplwi r3, 0
 /* 00007E70 41820008 */ beq lbl_00007E78
 /* 00007E74 91E30048 */ stw r15, 0x48(r3)
 lbl_00007E78:
 /* 00007E78 38600022 */ li r3, 0x22
-/* 00007E7C 4BFF830D */ bl g_find_sprite_with_probably_not_font
+/* 00007E7C 4BFF830D */ bl find_sprite_with_tag
 /* 00007E80 28030000 */ cmplwi r3, 0
 /* 00007E84 418219D0 */ beq lbl_00009854
 /* 00007E88 38000002 */ li r0, 2
@@ -9009,13 +9009,13 @@ lbl_00007F1C:
 /* 00007F3C 39E00000 */ li r15, 0
 /* 00007F40 38600018 */ li r3, 0x18
 /* 00007F44 91F0000C */ stw r15, 0xc(r16)
-/* 00007F48 4BFF8241 */ bl g_find_sprite_with_probably_not_font
+/* 00007F48 4BFF8241 */ bl find_sprite_with_tag
 /* 00007F4C 28030000 */ cmplwi r3, 0
 /* 00007F50 41820008 */ beq lbl_00007F58
 /* 00007F54 91E30048 */ stw r15, 0x48(r3)
 lbl_00007F58:
 /* 00007F58 38600022 */ li r3, 0x22
-/* 00007F5C 4BFF822D */ bl g_find_sprite_with_probably_not_font
+/* 00007F5C 4BFF822D */ bl find_sprite_with_tag
 /* 00007F60 28030000 */ cmplwi r3, 0
 /* 00007F64 418218F0 */ beq lbl_00009854
 /* 00007F68 38000000 */ li r0, 0
@@ -9042,13 +9042,13 @@ lbl_00007FB4:
 /* 00007FB4 39E00006 */ li r15, 6
 lbl_00007FB8:
 /* 00007FB8 38600018 */ li r3, 0x18
-/* 00007FBC 4BFF81CD */ bl g_find_sprite_with_probably_not_font
+/* 00007FBC 4BFF81CD */ bl find_sprite_with_tag
 /* 00007FC0 28030000 */ cmplwi r3, 0
 /* 00007FC4 41820008 */ beq lbl_00007FCC
 /* 00007FC8 91E30048 */ stw r15, 0x48(r3)
 lbl_00007FCC:
 /* 00007FCC 38600022 */ li r3, 0x22
-/* 00007FD0 4BFF81B9 */ bl g_find_sprite_with_probably_not_font
+/* 00007FD0 4BFF81B9 */ bl find_sprite_with_tag
 /* 00007FD4 28030000 */ cmplwi r3, 0
 /* 00007FD8 4182187C */ beq lbl_00009854
 /* 00007FDC 38000002 */ li r0, 2
@@ -9156,14 +9156,14 @@ lbl_00008124:
 /* 00008154 3860006B */ li r3, 0x6b
 /* 00008158 4BFF8031 */ bl g_play_sound
 /* 0000815C 38600018 */ li r3, 0x18
-/* 00008160 4BFF8029 */ bl g_find_sprite_with_probably_not_font
+/* 00008160 4BFF8029 */ bl find_sprite_with_tag
 /* 00008164 28030000 */ cmplwi r3, 0
 /* 00008168 4182000C */ beq lbl_00008174
 /* 0000816C 38000004 */ li r0, 4
 /* 00008170 90030048 */ stw r0, 0x48(r3)
 lbl_00008174:
 /* 00008174 38600022 */ li r3, 0x22
-/* 00008178 4BFF8011 */ bl g_find_sprite_with_probably_not_font
+/* 00008178 4BFF8011 */ bl find_sprite_with_tag
 /* 0000817C 28030000 */ cmplwi r3, 0
 /* 00008180 418216D4 */ beq lbl_00009854
 /* 00008184 38000001 */ li r0, 1
@@ -9198,7 +9198,7 @@ lbl_000081D4:
 /* 000081E8 A8030000 */ lha r0, currStageId@l(r3)
 /* 000081EC 3860001D */ li r3, 0x1d
 /* 000081F0 901F003C */ stw r0, 0x3c(r31)
-/* 000081F4 4BFF7F95 */ bl g_find_sprite_with_probably_not_font
+/* 000081F4 4BFF7F95 */ bl find_sprite_with_tag
 /* 000081F8 28030000 */ cmplwi r3, 0
 /* 000081FC 4182000C */ beq lbl_00008208
 /* 00008200 38000001 */ li r0, 1
@@ -9211,21 +9211,21 @@ lbl_00008208:
 /* 00008218 3800000F */ li r0, 0xf
 /* 0000821C 38600018 */ li r3, 0x18
 /* 00008220 90190000 */ stw r0, 0(r25)
-/* 00008224 4BFF7F65 */ bl g_find_sprite_with_probably_not_font
+/* 00008224 4BFF7F65 */ bl find_sprite_with_tag
 /* 00008228 28030000 */ cmplwi r3, 0
 /* 0000822C 4182000C */ beq lbl_00008238
 /* 00008230 38000000 */ li r0, 0
 /* 00008234 90030048 */ stw r0, 0x48(r3)
 lbl_00008238:
 /* 00008238 38600022 */ li r3, 0x22
-/* 0000823C 4BFF7F4D */ bl g_find_sprite_with_probably_not_font
+/* 0000823C 4BFF7F4D */ bl find_sprite_with_tag
 /* 00008240 28030000 */ cmplwi r3, 0
 /* 00008244 4182000C */ beq lbl_00008250
 /* 00008248 38000003 */ li r0, 3
 /* 0000824C 90030048 */ stw r0, 0x48(r3)
 lbl_00008250:
 /* 00008250 38600016 */ li r3, 0x16
-/* 00008254 4BFF7F35 */ bl g_find_sprite_with_probably_not_font
+/* 00008254 4BFF7F35 */ bl find_sprite_with_tag
 /* 00008258 28030000 */ cmplwi r3, 0
 /* 0000825C 4182000C */ beq lbl_00008268
 /* 00008260 38000006 */ li r0, 6
@@ -9235,7 +9235,7 @@ lbl_00008268:
 /* 0000826C 38000026 */ li r0, 0x26
 /* 00008270 90030000 */ stw r0, lbl_801EEDA8@l(r3)
 /* 00008274 3860001A */ li r3, 0x1a
-/* 00008278 4BFF7F11 */ bl g_find_sprite_with_probably_not_font
+/* 00008278 4BFF7F11 */ bl find_sprite_with_tag
 /* 0000827C 28030000 */ cmplwi r3, 0
 /* 00008280 4182000C */ beq lbl_0000828C
 /* 00008284 38000004 */ li r0, 4
@@ -9345,7 +9345,7 @@ lbl_000083F0:
 /* 000083FC 808300F4 */ lwz r4, 0xf4(r3)
 /* 00008400 38600017 */ li r3, 0x17
 /* 00008404 39E40034 */ addi r15, r4, 0x34
-/* 00008408 4BFF7D81 */ bl g_find_sprite_with_probably_not_font
+/* 00008408 4BFF7D81 */ bl find_sprite_with_tag
 /* 0000840C 28030000 */ cmplwi r3, 0
 /* 00008410 41820008 */ beq lbl_00008418
 /* 00008414 91E30048 */ stw r15, 0x48(r3)
@@ -9359,7 +9359,7 @@ lbl_00008418:
 /* 00008430 2C000001 */ cmpwi r0, 1
 /* 00008434 40820020 */ bne lbl_00008454
 /* 00008438 38600017 */ li r3, 0x17
-/* 0000843C 4BFF7D4D */ bl g_find_sprite_with_probably_not_font
+/* 0000843C 4BFF7D4D */ bl find_sprite_with_tag
 /* 00008440 28030000 */ cmplwi r3, 0
 /* 00008444 41820030 */ beq lbl_00008474
 /* 00008448 38000037 */ li r0, 0x37
@@ -9369,7 +9369,7 @@ lbl_00008454:
 /* 00008454 2C000004 */ cmpwi r0, 4
 /* 00008458 4082001C */ bne lbl_00008474
 /* 0000845C 38600017 */ li r3, 0x17
-/* 00008460 4BFF7D29 */ bl g_find_sprite_with_probably_not_font
+/* 00008460 4BFF7D29 */ bl find_sprite_with_tag
 /* 00008464 28030000 */ cmplwi r3, 0
 /* 00008468 4182000C */ beq lbl_00008474
 /* 0000846C 38000038 */ li r0, 0x38
@@ -9387,7 +9387,7 @@ lbl_00008474:
 /* 00008498 38000001 */ li r0, 1
 /* 0000849C 90030008 */ stw r0, 8(r3)
 /* 000084A0 3860001A */ li r3, 0x1a
-/* 000084A4 4BFF7CE5 */ bl g_find_sprite_with_probably_not_font
+/* 000084A4 4BFF7CE5 */ bl find_sprite_with_tag
 /* 000084A8 28030000 */ cmplwi r3, 0
 /* 000084AC 418213A8 */ beq lbl_00009854
 /* 000084B0 38000000 */ li r0, 0
@@ -9417,7 +9417,7 @@ lbl_00008504:
 /* 00008504 3860022D */ li r3, 0x22d
 /* 00008508 4BFF7C81 */ bl g_play_sound
 /* 0000850C 3860001D */ li r3, 0x1d
-/* 00008510 4BFF7C79 */ bl g_find_sprite_with_probably_not_font
+/* 00008510 4BFF7C79 */ bl find_sprite_with_tag
 /* 00008514 28030000 */ cmplwi r3, 0
 /* 00008518 4182000C */ beq lbl_00008524
 /* 0000851C 38000001 */ li r0, 1
@@ -9430,7 +9430,7 @@ lbl_00008524:
 /* 00008534 3800000F */ li r0, 0xf
 /* 00008538 38600016 */ li r3, 0x16
 /* 0000853C 90190000 */ stw r0, 0(r25)
-/* 00008540 4BFF7C49 */ bl g_find_sprite_with_probably_not_font
+/* 00008540 4BFF7C49 */ bl find_sprite_with_tag
 /* 00008544 28030000 */ cmplwi r3, 0
 /* 00008548 4182000C */ beq lbl_00008554
 /* 0000854C 38000006 */ li r0, 6
@@ -9440,7 +9440,7 @@ lbl_00008554:
 /* 00008558 38000028 */ li r0, 0x28
 /* 0000855C 90030000 */ stw r0, lbl_801EEDA8@l(r3)
 /* 00008560 3860001A */ li r3, 0x1a
-/* 00008564 4BFF7C25 */ bl g_find_sprite_with_probably_not_font
+/* 00008564 4BFF7C25 */ bl find_sprite_with_tag
 /* 00008568 28030000 */ cmplwi r3, 0
 /* 0000856C 4182000C */ beq lbl_00008578
 /* 00008570 38000008 */ li r0, 8
@@ -9588,7 +9588,7 @@ lbl_00008768:
 /* 00008774 808300F4 */ lwz r4, 0xf4(r3)
 /* 00008778 38600017 */ li r3, 0x17
 /* 0000877C 39E40054 */ addi r15, r4, 0x54
-/* 00008780 4BFF7A09 */ bl g_find_sprite_with_probably_not_font
+/* 00008780 4BFF7A09 */ bl find_sprite_with_tag
 /* 00008784 28030000 */ cmplwi r3, 0
 /* 00008788 41820008 */ beq lbl_00008790
 /* 0000878C 91E30048 */ stw r15, 0x48(r3)
@@ -9601,7 +9601,7 @@ lbl_00008790:
 /* 000087A4 2C000005 */ cmpwi r0, 5
 /* 000087A8 40820020 */ bne lbl_000087C8
 /* 000087AC 38600017 */ li r3, 0x17
-/* 000087B0 4BFF79D9 */ bl g_find_sprite_with_probably_not_font
+/* 000087B0 4BFF79D9 */ bl find_sprite_with_tag
 /* 000087B4 28030000 */ cmplwi r3, 0
 /* 000087B8 41820030 */ beq lbl_000087E8
 /* 000087BC 38000059 */ li r0, 0x59
@@ -9611,7 +9611,7 @@ lbl_000087C8:
 /* 000087C8 2C00000F */ cmpwi r0, 0xf
 /* 000087CC 4082001C */ bne lbl_000087E8
 /* 000087D0 38600017 */ li r3, 0x17
-/* 000087D4 4BFF79B5 */ bl g_find_sprite_with_probably_not_font
+/* 000087D4 4BFF79B5 */ bl find_sprite_with_tag
 /* 000087D8 28030000 */ cmplwi r3, 0
 /* 000087DC 4182000C */ beq lbl_000087E8
 /* 000087E0 3800005A */ li r0, 0x5a
@@ -9629,7 +9629,7 @@ lbl_000087E8:
 /* 0000880C 38000001 */ li r0, 1
 /* 00008810 90030008 */ stw r0, 8(r3)
 /* 00008814 3860001A */ li r3, 0x1a
-/* 00008818 4BFF7971 */ bl g_find_sprite_with_probably_not_font
+/* 00008818 4BFF7971 */ bl find_sprite_with_tag
 /* 0000881C 28030000 */ cmplwi r3, 0
 /* 00008820 41821034 */ beq lbl_00009854
 /* 00008824 38000000 */ li r0, 0
@@ -9657,7 +9657,7 @@ lbl_00008850:
 /* 00008874 48000FE0 */ b lbl_00009854
 lbl_00008878:
 /* 00008878 38600016 */ li r3, 0x16
-/* 0000887C 4BFF790D */ bl g_find_sprite_with_probably_not_font
+/* 0000887C 4BFF790D */ bl find_sprite_with_tag
 /* 00008880 28030000 */ cmplwi r3, 0
 /* 00008884 4182000C */ beq lbl_00008890
 /* 00008888 38000000 */ li r0, 0
@@ -9695,7 +9695,7 @@ lbl_000088D0:
 /* 00008900 2C030000 */ cmpwi r3, 0
 /* 00008904 41820018 */ beq lbl_0000891C
 /* 00008908 38600063 */ li r3, 0x63
-/* 0000890C 4BFF787D */ bl g_dest_sprite_with_font
+/* 0000890C 4BFF787D */ bl destroy_sprite_with_tag
 /* 00008910 38000001 */ li r0, 1
 /* 00008914 90120008 */ stw r0, 8(r18)
 /* 00008918 48000F3C */ b lbl_00009854
@@ -9744,7 +9744,7 @@ lbl_000089B4:
 /* 000089B4 3860022D */ li r3, 0x22d
 /* 000089B8 4BFF77D1 */ bl g_play_sound
 /* 000089BC 3860001D */ li r3, 0x1d
-/* 000089C0 4BFF77C9 */ bl g_find_sprite_with_probably_not_font
+/* 000089C0 4BFF77C9 */ bl find_sprite_with_tag
 /* 000089C4 28030000 */ cmplwi r3, 0
 /* 000089C8 4182000C */ beq lbl_000089D4
 /* 000089CC 38000001 */ li r0, 1
@@ -9757,7 +9757,7 @@ lbl_000089D4:
 /* 000089E4 3800000F */ li r0, 0xf
 /* 000089E8 38600016 */ li r3, 0x16
 /* 000089EC 90190000 */ stw r0, 0(r25)
-/* 000089F0 4BFF7799 */ bl g_find_sprite_with_probably_not_font
+/* 000089F0 4BFF7799 */ bl find_sprite_with_tag
 /* 000089F4 28030000 */ cmplwi r3, 0
 /* 000089F8 4182000C */ beq lbl_00008A04
 /* 000089FC 38000006 */ li r0, 6
@@ -9773,7 +9773,7 @@ lbl_00008A04:
 /* 00008A20 2C000001 */ cmpwi r0, 1
 /* 00008A24 40820030 */ bne lbl_00008A54
 /* 00008A28 3860001A */ li r3, 0x1a
-/* 00008A2C 4BFF775D */ bl g_find_sprite_with_probably_not_font
+/* 00008A2C 4BFF775D */ bl find_sprite_with_tag
 /* 00008A30 28030000 */ cmplwi r3, 0
 /* 00008A34 4182000C */ beq lbl_00008A40
 /* 00008A38 38000007 */ li r0, 7
@@ -9786,7 +9786,7 @@ lbl_00008A40:
 /* 00008A50 4800002C */ b lbl_00008A7C
 lbl_00008A54:
 /* 00008A54 3860001A */ li r3, 0x1a
-/* 00008A58 4BFF7731 */ bl g_find_sprite_with_probably_not_font
+/* 00008A58 4BFF7731 */ bl find_sprite_with_tag
 /* 00008A5C 28030000 */ cmplwi r3, 0
 /* 00008A60 4182000C */ beq lbl_00008A6C
 /* 00008A64 38000006 */ li r0, 6
@@ -9947,7 +9947,7 @@ lbl_00008C8C:
 /* 00008C9C 808300F4 */ lwz r4, 0xf4(r3)
 /* 00008CA0 38600017 */ li r3, 0x17
 /* 00008CA4 3A04004C */ addi r16, r4, 0x4c
-/* 00008CA8 4BFF74E1 */ bl g_find_sprite_with_probably_not_font
+/* 00008CA8 4BFF74E1 */ bl find_sprite_with_tag
 /* 00008CAC 28030000 */ cmplwi r3, 0
 /* 00008CB0 41820030 */ beq lbl_00008CE0
 /* 00008CB4 92030048 */ stw r16, 0x48(r3)
@@ -9958,7 +9958,7 @@ lbl_00008CBC:
 /* 00008CC4 808300F4 */ lwz r4, 0xf4(r3)
 /* 00008CC8 38600017 */ li r3, 0x17
 /* 00008CCC 3A040049 */ addi r16, r4, 0x49
-/* 00008CD0 4BFF74B9 */ bl g_find_sprite_with_probably_not_font
+/* 00008CD0 4BFF74B9 */ bl find_sprite_with_tag
 /* 00008CD4 28030000 */ cmplwi r3, 0
 /* 00008CD8 41820008 */ beq lbl_00008CE0
 /* 00008CDC 92030048 */ stw r16, 0x48(r3)
@@ -9987,7 +9987,7 @@ lbl_00008D00:
 /* 00008D2C 38000001 */ li r0, 1
 /* 00008D30 90030008 */ stw r0, 8(r3)
 /* 00008D34 3860001A */ li r3, 0x1a
-/* 00008D38 4BFF7451 */ bl g_find_sprite_with_probably_not_font
+/* 00008D38 4BFF7451 */ bl find_sprite_with_tag
 /* 00008D3C 28030000 */ cmplwi r3, 0
 /* 00008D40 41820B14 */ beq lbl_00009854
 /* 00008D44 38000000 */ li r0, 0
@@ -10015,7 +10015,7 @@ lbl_00008D78:
 /* 00008D94 48000AC0 */ b lbl_00009854
 lbl_00008D98:
 /* 00008D98 38600016 */ li r3, 0x16
-/* 00008D9C 4BFF73ED */ bl g_find_sprite_with_probably_not_font
+/* 00008D9C 4BFF73ED */ bl find_sprite_with_tag
 /* 00008DA0 28030000 */ cmplwi r3, 0
 /* 00008DA4 4182000C */ beq lbl_00008DB0
 /* 00008DA8 38000000 */ li r0, 0
@@ -10056,7 +10056,7 @@ lbl_00008DF0:
 /* 00008E2C 38000001 */ li r0, 1
 /* 00008E30 90120008 */ stw r0, 8(r18)
 /* 00008E34 38600063 */ li r3, 0x63
-/* 00008E38 4BFF7351 */ bl g_dest_sprite_with_font
+/* 00008E38 4BFF7351 */ bl destroy_sprite_with_tag
 /* 00008E3C 48000A18 */ b lbl_00009854
 lbl_00008E40:
 /* 00008E40 38600006 */ li r3, 6
@@ -10104,7 +10104,7 @@ lbl_00008EB8:
 /* 00008EDC 48000978 */ b lbl_00009854
 lbl_00008EE0:
 /* 00008EE0 38600016 */ li r3, 0x16
-/* 00008EE4 4BFF72A5 */ bl g_find_sprite_with_probably_not_font
+/* 00008EE4 4BFF72A5 */ bl find_sprite_with_tag
 /* 00008EE8 28030000 */ cmplwi r3, 0
 /* 00008EEC 4182000C */ beq lbl_00008EF8
 /* 00008EF0 38000000 */ li r0, 0
@@ -10145,7 +10145,7 @@ lbl_00008F38:
 /* 00008F74 38000001 */ li r0, 1
 /* 00008F78 90120008 */ stw r0, 8(r18)
 /* 00008F7C 38600063 */ li r3, 0x63
-/* 00008F80 4BFF7209 */ bl g_dest_sprite_with_font
+/* 00008F80 4BFF7209 */ bl destroy_sprite_with_tag
 /* 00008F84 480008D0 */ b lbl_00009854
 lbl_00008F88:
 /* 00008F88 38600006 */ li r3, 6
@@ -10213,7 +10213,7 @@ lbl_0000906C:
 /* 0000906C 3860022D */ li r3, 0x22d
 /* 00009070 4BFF7119 */ bl g_play_sound
 /* 00009074 3860001D */ li r3, 0x1d
-/* 00009078 4BFF7111 */ bl g_find_sprite_with_probably_not_font
+/* 00009078 4BFF7111 */ bl find_sprite_with_tag
 /* 0000907C 28030000 */ cmplwi r3, 0
 /* 00009080 4182000C */ beq lbl_0000908C
 /* 00009084 38000001 */ li r0, 1
@@ -10226,7 +10226,7 @@ lbl_0000908C:
 /* 0000909C 3800000F */ li r0, 0xf
 /* 000090A0 38600016 */ li r3, 0x16
 /* 000090A4 90190000 */ stw r0, 0(r25)
-/* 000090A8 4BFF70E1 */ bl g_find_sprite_with_probably_not_font
+/* 000090A8 4BFF70E1 */ bl find_sprite_with_tag
 /* 000090AC 28030000 */ cmplwi r3, 0
 /* 000090B0 4182000C */ beq lbl_000090BC
 /* 000090B4 38000006 */ li r0, 6
@@ -10236,7 +10236,7 @@ lbl_000090BC:
 /* 000090C0 38000032 */ li r0, 0x32
 /* 000090C4 90030000 */ stw r0, lbl_801EEDA8@l(r3)
 /* 000090C8 3860001A */ li r3, 0x1a
-/* 000090CC 4BFF70BD */ bl g_find_sprite_with_probably_not_font
+/* 000090CC 4BFF70BD */ bl find_sprite_with_tag
 /* 000090D0 28030000 */ cmplwi r3, 0
 /* 000090D4 4182000C */ beq lbl_000090E0
 /* 000090D8 38000005 */ li r0, 5
@@ -10339,7 +10339,7 @@ lbl_00009228:
 /* 00009234 808300F4 */ lwz r4, 0xf4(r3)
 /* 00009238 38600017 */ li r3, 0x17
 /* 0000923C 39E40043 */ addi r15, r4, 0x43
-/* 00009240 4BFF6F49 */ bl g_find_sprite_with_probably_not_font
+/* 00009240 4BFF6F49 */ bl find_sprite_with_tag
 /* 00009244 28030000 */ cmplwi r3, 0
 /* 00009248 41820008 */ beq lbl_00009250
 /* 0000924C 91E30048 */ stw r15, 0x48(r3)
@@ -10352,7 +10352,7 @@ lbl_00009250:
 /* 00009264 2C000001 */ cmpwi r0, 1
 /* 00009268 40820020 */ bne lbl_00009288
 /* 0000926C 38600017 */ li r3, 0x17
-/* 00009270 4BFF6F19 */ bl g_find_sprite_with_probably_not_font
+/* 00009270 4BFF6F19 */ bl find_sprite_with_tag
 /* 00009274 28030000 */ cmplwi r3, 0
 /* 00009278 41820058 */ beq lbl_000092D0
 /* 0000927C 38000046 */ li r0, 0x46
@@ -10362,7 +10362,7 @@ lbl_00009288:
 /* 00009288 2C000002 */ cmpwi r0, 2
 /* 0000928C 40820020 */ bne lbl_000092AC
 /* 00009290 38600017 */ li r3, 0x17
-/* 00009294 4BFF6EF5 */ bl g_find_sprite_with_probably_not_font
+/* 00009294 4BFF6EF5 */ bl find_sprite_with_tag
 /* 00009298 28030000 */ cmplwi r3, 0
 /* 0000929C 41820034 */ beq lbl_000092D0
 /* 000092A0 38000047 */ li r0, 0x47
@@ -10373,7 +10373,7 @@ lbl_000092AC:
 /* 000092B0 2C000001 */ cmpwi r0, 1
 /* 000092B4 4082001C */ bne lbl_000092D0
 /* 000092B8 38600017 */ li r3, 0x17
-/* 000092BC 4BFF6ECD */ bl g_find_sprite_with_probably_not_font
+/* 000092BC 4BFF6ECD */ bl find_sprite_with_tag
 /* 000092C0 28030000 */ cmplwi r3, 0
 /* 000092C4 4182000C */ beq lbl_000092D0
 /* 000092C8 38000048 */ li r0, 0x48
@@ -10391,7 +10391,7 @@ lbl_000092D0:
 /* 000092F4 38000001 */ li r0, 1
 /* 000092F8 90030008 */ stw r0, 8(r3)
 /* 000092FC 3860001A */ li r3, 0x1a
-/* 00009300 4BFF6E89 */ bl g_find_sprite_with_probably_not_font
+/* 00009300 4BFF6E89 */ bl find_sprite_with_tag
 /* 00009304 28030000 */ cmplwi r3, 0
 /* 00009308 4182054C */ beq lbl_00009854
 /* 0000930C 38000000 */ li r0, 0
@@ -10576,7 +10576,7 @@ lbl_00009574:
 /* 0000958C 480002C8 */ b lbl_00009854
 lbl_00009590:
 /* 00009590 38600066 */ li r3, 0x66
-/* 00009594 4BFF6BF5 */ bl g_dest_sprite_with_font
+/* 00009594 4BFF6BF5 */ bl destroy_sprite_with_tag
 /* 00009598 3C600000 */ lis r3, lbl_802F1B7C@ha
 /* 0000959C 39E30000 */ addi r15, r3, lbl_802F1B7C@l
 /* 000095A0 818F0000 */ lwz r12, 0(r15)
@@ -11068,7 +11068,7 @@ lbl_00009C80:
 /* 00009C8C 28000000 */ cmplwi r0, 0
 /* 00009C90 40820080 */ bne lbl_00009D10
 /* 00009C94 3860001B */ li r3, 0x1b
-/* 00009C98 4BFF64F1 */ bl g_find_sprite_with_probably_not_font
+/* 00009C98 4BFF64F1 */ bl find_sprite_with_tag
 /* 00009C9C 28030000 */ cmplwi r3, 0
 /* 00009CA0 41820180 */ beq lbl_00009E20
 /* 00009CA4 C0230004 */ lfs f1, 4(r3)
@@ -11102,7 +11102,7 @@ lbl_00009CEC:
 /* 00009D0C 48000114 */ b lbl_00009E20
 lbl_00009D10:
 /* 00009D10 3860001C */ li r3, 0x1c
-/* 00009D14 4BFF6475 */ bl g_find_sprite_with_probably_not_font
+/* 00009D14 4BFF6475 */ bl find_sprite_with_tag
 /* 00009D18 28030000 */ cmplwi r3, 0
 /* 00009D1C 41820104 */ beq lbl_00009E20
 /* 00009D20 C0630004 */ lfs f3, 4(r3)
@@ -11217,7 +11217,7 @@ lbl_00009EB0:
 /* 00009EB0 807E002C */ lwz r3, 0x2c(r30)
 /* 00009EB4 4BFF62D5 */ bl g_preview_maybe_invalidate_tex_cache
 /* 00009EB8 38600021 */ li r3, 0x21
-/* 00009EBC 4BFF62CD */ bl g_find_sprite_with_probably_not_font
+/* 00009EBC 4BFF62CD */ bl find_sprite_with_tag
 /* 00009EC0 28030000 */ cmplwi r3, 0
 /* 00009EC4 4182026C */ beq lbl_0000A130
 /* 00009EC8 C0630004 */ lfs f3, 4(r3)
@@ -11422,7 +11422,7 @@ lbl_0000A1A8:
 /* 0000A1A8 807E002C */ lwz r3, 0x2c(r30)
 /* 0000A1AC 4BFF5FDD */ bl g_preview_maybe_invalidate_tex_cache
 /* 0000A1B0 38600022 */ li r3, 0x22
-/* 0000A1B4 4BFF5FD5 */ bl g_find_sprite_with_probably_not_font
+/* 0000A1B4 4BFF5FD5 */ bl find_sprite_with_tag
 /* 0000A1B8 28030000 */ cmplwi r3, 0
 /* 0000A1BC 418201D0 */ beq lbl_0000A38C
 /* 0000A1C0 C0630004 */ lfs f3, 4(r3)
@@ -14937,12 +14937,12 @@ lbl_0000D4AC:
 /* 0000D4BC B01E0010 */ sth r0, 0x10(r30)
 lbl_0000D4C0:
 /* 0000D4C0 38600021 */ li r3, 0x21
-/* 0000D4C4 4BFF2CC5 */ bl g_find_sprite_with_probably_not_font
+/* 0000D4C4 4BFF2CC5 */ bl find_sprite_with_tag
 /* 0000D4C8 80030048 */ lwz r0, 0x48(r3)
 /* 0000D4CC 2C000000 */ cmpwi r0, 0
 /* 0000D4D0 408200C0 */ bne lbl_0000D590
 /* 0000D4D4 38600022 */ li r3, 0x22
-/* 0000D4D8 4BFF2CB1 */ bl g_find_sprite_with_probably_not_font
+/* 0000D4D8 4BFF2CB1 */ bl find_sprite_with_tag
 /* 0000D4DC 80030048 */ lwz r0, 0x48(r3)
 /* 0000D4E0 2C000000 */ cmpwi r0, 0
 /* 0000D4E4 408200AC */ bne lbl_0000D590
@@ -15498,12 +15498,12 @@ lbl_0000DCA4:
 /* 0000DD1C FC02002A */ fadd f0, f2, f0
 /* 0000DD20 FC000018 */ frsp f0, f0
 /* 0000DD24 D01F0008 */ stfs f0, 8(r31)
-/* 0000DD28 4BFF2461 */ bl g_find_sprite_with_probably_not_font
+/* 0000DD28 4BFF2461 */ bl find_sprite_with_tag
 /* 0000DD2C 80030048 */ lwz r0, 0x48(r3)
 /* 0000DD30 2C000000 */ cmpwi r0, 0
 /* 0000DD34 408200A8 */ bne lbl_0000DDDC
 /* 0000DD38 38600022 */ li r3, 0x22
-/* 0000DD3C 4BFF244D */ bl g_find_sprite_with_probably_not_font
+/* 0000DD3C 4BFF244D */ bl find_sprite_with_tag
 /* 0000DD40 80030048 */ lwz r0, 0x48(r3)
 /* 0000DD44 2C000000 */ cmpwi r0, 0
 /* 0000DD48 40820094 */ bne lbl_0000DDDC
@@ -15640,12 +15640,12 @@ lbl_0000DEC8:
 /* 0000DF40 FC02002A */ fadd f0, f2, f0
 /* 0000DF44 FC000018 */ frsp f0, f0
 /* 0000DF48 D01E0008 */ stfs f0, 8(r30)
-/* 0000DF4C 4BFF223D */ bl g_find_sprite_with_probably_not_font
+/* 0000DF4C 4BFF223D */ bl find_sprite_with_tag
 /* 0000DF50 80030048 */ lwz r0, 0x48(r3)
 /* 0000DF54 2C000000 */ cmpwi r0, 0
 /* 0000DF58 408200F8 */ bne lbl_0000E050
 /* 0000DF5C 38600021 */ li r3, 0x21
-/* 0000DF60 4BFF2229 */ bl g_find_sprite_with_probably_not_font
+/* 0000DF60 4BFF2229 */ bl find_sprite_with_tag
 /* 0000DF64 80030048 */ lwz r0, 0x48(r3)
 /* 0000DF68 2C000000 */ cmpwi r0, 0
 /* 0000DF6C 408200E4 */ bne lbl_0000E050
@@ -15921,7 +15921,7 @@ lbl_0000E368:
 /* 0000E374 9421FFE0 */ stwu r1, -0x20(r1)
 /* 0000E378 93E1001C */ stw r31, 0x1c(r1)
 /* 0000E37C 3BE40000 */ addi r31, r4, 0
-/* 0000E380 4BFF1E09 */ bl g_find_sprite_with_probably_not_font
+/* 0000E380 4BFF1E09 */ bl find_sprite_with_tag
 /* 0000E384 28030000 */ cmplwi r3, 0
 /* 0000E388 418200A0 */ beq lbl_0000E428
 /* 0000E38C 80030048 */ lwz r0, 0x48(r3)
@@ -15981,7 +15981,7 @@ lbl_0000E43C:
 /* 0000E448 9421FFE8 */ stwu r1, -0x18(r1)
 /* 0000E44C 93E10014 */ stw r31, 0x14(r1)
 /* 0000E450 3BE40000 */ addi r31, r4, 0
-/* 0000E454 4BFF1D35 */ bl g_find_sprite_with_probably_not_font
+/* 0000E454 4BFF1D35 */ bl find_sprite_with_tag
 /* 0000E458 28030000 */ cmplwi r3, 0
 /* 0000E45C 4182004C */ beq lbl_0000E4A8
 /* 0000E460 3C800000 */ lis r4, lbl_801EEDA8@ha
@@ -16017,7 +16017,7 @@ lbl_0000E4BC:
 /* 0000E4C8 9421FFE8 */ stwu r1, -0x18(r1)
 /* 0000E4CC 93E10014 */ stw r31, 0x14(r1)
 /* 0000E4D0 3BE40000 */ addi r31, r4, 0
-/* 0000E4D4 4BFF1CB5 */ bl g_find_sprite_with_probably_not_font
+/* 0000E4D4 4BFF1CB5 */ bl find_sprite_with_tag
 /* 0000E4D8 28030000 */ cmplwi r3, 0
 /* 0000E4DC 41820050 */ beq lbl_0000E52C
 /* 0000E4E0 3C800000 */ lis r4, lbl_801EEDA8@ha
@@ -17947,7 +17947,7 @@ lbl_000101BC:
 /* 000101D0 93C10010 */ stw r30, 0x10(r1)
 /* 000101D4 3BC30000 */ addi r30, r3, 0
 /* 000101D8 3860001D */ li r3, 0x1d
-/* 000101DC 4BFEFFAD */ bl g_find_sprite_with_probably_not_font
+/* 000101DC 4BFEFFAD */ bl find_sprite_with_tag
 /* 000101E0 28030000 */ cmplwi r3, 0
 /* 000101E4 40820010 */ bne lbl_000101F4
 /* 000101E8 38000000 */ li r0, 0

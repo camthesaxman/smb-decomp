@@ -8,9 +8,11 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "event.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "sprite.h"
 
 struct StringEntry
 {
@@ -3138,7 +3140,7 @@ void ev_memcard_main(void)
     if (memcardInfo.state == MC_STATE_ERROR && !(memcardInfo.statusFlags & MC_STATUS_ERROR))
     {
         memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
-        ev_run_dest(0);
+        event_finish(0);
         return;
     }
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
@@ -3244,7 +3246,7 @@ void ev_memcard_dest(void)
     replayFileInfo = NULL;
 }
 
-struct Struct801F3DC0 lbl_801D5724 =
+struct SpriteRequest lbl_801D5724 =
 {
     0x4B,
     320.0f,

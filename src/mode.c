@@ -4,10 +4,12 @@
 
 #include "global.h"
 #include "adv.h"
+#include "event.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
 #include "relocation.h"
+#include "sprite.h"
 
 char *gameModeRelNames[] =
 {
@@ -492,7 +494,7 @@ void gm_main(void)
     if ((modeCtrl.levelSetFlags & (1 << 9))
      && gameModeRequest != -1 && gameModeRequest != gameMode)
     {
-        minigame_unlink(&lbl_802F021C);
+        relocation_unload_module(&lbl_802F021C);
         modeCtrl.levelSetFlags &= ~(1 << 9);
     }
 
@@ -522,9 +524,9 @@ void gm_main(void)
     {
         if (lbl_802F021C.info == NULL)
         {
-            event_clear();
+            event_finish_all();
             g_something_with_iteratively_freeing_memory();
-            minigame_link(gameModeRelNames[gameMode], &lbl_802F021C);
+            relocation_load_module(gameModeRelNames[gameMode], &lbl_802F021C);
         }
         if (lbl_802F1B74 != 0)
             lbl_802F1B74();
@@ -762,7 +764,7 @@ void g_menu_input_notdebug(void)
          && gameSubmode == SMD_ADV_TITLE_MAIN
          && (modeCtrl.levelSetFlags & (1 << 2)))
         {
-            struct Sprite *sprite = g_find_sprite_with_probably_not_font(modeCtrl.unk10 + 12);
+            struct Sprite *sprite = find_sprite_with_tag(modeCtrl.unk10 + 12);
             if (sprite != NULL && sprite->unk10 > 0)
                 break;
             if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)

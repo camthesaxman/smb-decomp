@@ -3007,7 +3007,7 @@ lbl_800768A8:
 /* 800768B8 000727D8  93 E1 00 1C */	stw r31, 0x1c(r1)
 /* 800768BC 000727DC  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 800768C0 000727E0  3B C4 00 00 */	addi r30, r4, 0
-/* 800768C4 000727E4  4B FF 9F B9 */	bl g_find_sprite_with_probably_not_font
+/* 800768C4 000727E4  4B FF 9F B9 */	bl find_sprite_with_tag
 /* 800768C8 000727E8  A8 9E 00 10 */	lha r4, 0x10(r30)
 /* 800768CC 000727EC  3B E3 00 00 */	addi r31, r3, 0
 /* 800768D0 000727F0  2C 04 01 89 */	cmpwi r4, 0x189
@@ -6544,7 +6544,7 @@ lbl_80079C18:
 /* 80079C70 00075B90  48 08 CE 3D */	bl strcpy
 lbl_80079C74:
 /* 80079C74 00075B94  38 60 00 0E */	li r3, 0xe
-/* 80079C78 00075B98  4B FF 6C 05 */	bl g_find_sprite_with_probably_not_font
+/* 80079C78 00075B98  4B FF 6C 05 */	bl find_sprite_with_tag
 /* 80079C7C 00075B9C  28 03 00 00 */	cmplwi r3, 0
 /* 80079C80 00075BA0  40 82 00 98 */	bne lbl_80079D18
 /* 80079C84 00075BA4  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -7040,7 +7040,7 @@ lbl_8007A32C:
 /* 8007A3D0 000762F0  48 08 A8 55 */	bl sprintf
 lbl_8007A3D4:
 /* 8007A3D4 000762F4  38 60 00 0E */	li r3, 0xe
-/* 8007A3D8 000762F8  4B FF 64 A5 */	bl g_find_sprite_with_probably_not_font
+/* 8007A3D8 000762F8  4B FF 64 A5 */	bl find_sprite_with_tag
 /* 8007A3DC 000762FC  28 03 00 00 */	cmplwi r3, 0
 /* 8007A3E0 00076300  40 82 00 8C */	bne lbl_8007A46C
 /* 8007A3E4 00076304  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -8129,7 +8129,7 @@ lbl_8007B3CC:
 /* 8007B3F8 00077318  2C 00 00 00 */	cmpwi r0, 0
 /* 8007B3FC 0007731C  41 82 00 68 */	beq lbl_8007B464
 /* 8007B400 00077320  38 60 00 08 */	li r3, 8
-/* 8007B404 00077324  4B FF 54 79 */	bl g_find_sprite_with_probably_not_font
+/* 8007B404 00077324  4B FF 54 79 */	bl find_sprite_with_tag
 /* 8007B408 00077328  28 03 00 00 */	cmplwi r3, 0
 /* 8007B40C 0007732C  41 82 00 58 */	beq lbl_8007B464
 /* 8007B410 00077330  80 03 00 48 */	lwz r0, 0x48(r3)
@@ -11350,7 +11350,7 @@ lbl_8007E234:
 /* 8007E2D4 0007A1F4  48 00 00 48 */	b lbl_8007E31C
 lbl_8007E2D8:
 /* 8007E2D8 0007A1F8  38 60 00 14 */	li r3, 0x14
-/* 8007E2DC 0007A1FC  4B FF 25 A1 */	bl g_find_sprite_with_probably_not_font
+/* 8007E2DC 0007A1FC  4B FF 25 A1 */	bl find_sprite_with_tag
 /* 8007E2E0 0007A200  80 9E 00 48 */	lwz r4, 0x48(r30)
 /* 8007E2E4 0007A204  3C 00 43 30 */	lis r0, 0x4330
 /* 8007E2E8 0007A208  C0 43 00 04 */	lfs f2, 4(r3)
@@ -11363,7 +11363,7 @@ lbl_8007E2D8:
 /* 8007E304 0007A224  EC 00 08 28 */	fsubs f0, f0, f1
 /* 8007E308 0007A228  EC 00 10 2A */	fadds f0, f0, f2
 /* 8007E30C 0007A22C  D0 1E 00 04 */	stfs f0, 4(r30)
-/* 8007E310 0007A230  4B FF 25 6D */	bl g_find_sprite_with_probably_not_font
+/* 8007E310 0007A230  4B FF 25 6D */	bl find_sprite_with_tag
 /* 8007E314 0007A234  C0 03 00 08 */	lfs f0, 8(r3)
 /* 8007E318 0007A238  D0 1E 00 08 */	stfs f0, 8(r30)
 lbl_8007E31C:
@@ -11404,7 +11404,7 @@ func_8007E334:
 /* 8007E398 0007A2B8  48 08 87 15 */	bl strcpy
 lbl_8007E39C:
 /* 8007E39C 0007A2BC  38 60 00 0E */	li r3, 0xe
-/* 8007E3A0 0007A2C0  4B FF 24 DD */	bl g_find_sprite_with_probably_not_font
+/* 8007E3A0 0007A2C0  4B FF 24 DD */	bl find_sprite_with_tag
 /* 8007E3A4 0007A2C4  28 03 00 00 */	cmplwi r3, 0
 /* 8007E3A8 0007A2C8  41 82 00 0C */	beq lbl_8007E3B4
 /* 8007E3AC 0007A2CC  38 00 00 0F */	li r0, 0xf
@@ -13461,7 +13461,7 @@ lbl_800800D4:
 /* 80080194 0007C0B4  38 7F 00 8C */	addi r3, r31, 0x8c
 /* 80080198 0007C0B8  4B FF 1C C1 */	bl func_80071E58
 /* 8008019C 0007C0BC  38 60 00 08 */	li r3, 8
-/* 800801A0 0007C0C0  4B FF 06 DD */	bl g_find_sprite_with_probably_not_font
+/* 800801A0 0007C0C0  4B FF 06 DD */	bl find_sprite_with_tag
 /* 800801A4 0007C0C4  7C 7E 1B 79 */	or. r30, r3, r3
 /* 800801A8 0007C0C8  41 82 01 18 */	beq lbl_800802C0
 /* 800801AC 0007C0CC  80 1E 00 48 */	lwz r0, 0x48(r30)
@@ -14068,7 +14068,7 @@ lbl_80080A78:
 /* 80080A98 0007C9B8  48 00 02 CC */	b lbl_80080D64
 lbl_80080A9C:
 /* 80080A9C 0007C9BC  38 60 00 10 */	li r3, 0x10
-/* 80080AA0 0007C9C0  4B FE FD DD */	bl g_find_sprite_with_probably_not_font
+/* 80080AA0 0007C9C0  4B FE FD DD */	bl find_sprite_with_tag
 /* 80080AA4 0007C9C4  28 03 00 00 */	cmplwi r3, 0
 /* 80080AA8 0007C9C8  41 82 00 10 */	beq lbl_80080AB8
 /* 80080AAC 0007C9CC  38 00 00 0B */	li r0, 0xb
@@ -14376,11 +14376,11 @@ lbl_80080EB0:
 /* 80080ED0 0007CDF0  48 00 00 30 */	b lbl_80080F00
 lbl_80080ED4:
 /* 80080ED4 0007CDF4  38 60 00 10 */	li r3, 0x10
-/* 80080ED8 0007CDF8  4B FE F9 A5 */	bl g_find_sprite_with_probably_not_font
+/* 80080ED8 0007CDF8  4B FE F9 A5 */	bl find_sprite_with_tag
 /* 80080EDC 0007CDFC  28 03 00 00 */	cmplwi r3, 0
 /* 80080EE0 0007CE00  41 82 00 20 */	beq lbl_80080F00
 /* 80080EE4 0007CE04  38 60 00 10 */	li r3, 0x10
-/* 80080EE8 0007CE08  4B FE F9 95 */	bl g_find_sprite_with_probably_not_font
+/* 80080EE8 0007CE08  4B FE F9 95 */	bl find_sprite_with_tag
 /* 80080EEC 0007CE0C  A8 03 00 10 */	lha r0, 0x10(r3)
 /* 80080EF0 0007CE10  2C 00 00 95 */	cmpwi r0, 0x95
 /* 80080EF4 0007CE14  40 82 00 0C */	bne lbl_80080F00

@@ -1,3 +1,6 @@
+/**
+ * item_coin.c - Item behavior of collectable bananas in the main game
+ */
 #include <string.h>
 #include <dolphin.h>
 
@@ -31,20 +34,20 @@ struct ModelLOD bananaBunchModels[] =
 
 struct Struct801BDEA0
 {
-    void **unk0;
+    struct ModelLOD **lodModelsPtr;
     float unk4;
     s16 bananaValue;  // number of bananas given when collected
     s16 unkA;
     s16 pointValue;  // number of points given when collected
-    s16 unkE;
-    s16 unk10;
-    s16 unk12;
+    s16 xrotSpeed;
+    s16 yrotSpeed;
+    s16 zrotSpeed;
 };
 
-void *singleBananaModelsPtr = singleBananaModels;
-void *bananaBunchModelsPtr  = bananaBunchModels;
+struct ModelLOD *singleBananaModelsPtr = singleBananaModels;
+struct ModelLOD *bananaBunchModelsPtr  = bananaBunchModels;
 
-struct Struct801BDEA0 lbl_801BDEE0[] =
+struct Struct801BDEA0 bananaInfo[] =
 {
     { &singleBananaModelsPtr,  0.5,  1, 0,  100, 0, 1024,    0 },
     { &bananaBunchModelsPtr,  0.75, 10, 1, 1000, 0,  768,    0 },
@@ -56,13 +59,13 @@ void item_coin_init(struct Item *item)
 {
     item->unk12 = -1;
     item->state = 1;
-    item->unk1C = lbl_801BDEE0[item->unk6].unk0;
+    item->unk1C = bananaInfo[item->subtype].lodModelsPtr;
     item->unk8 = 0x22;
-    item->unk14 = lbl_801BDEE0[item->unk6].unk4;
+    item->unk14 = bananaInfo[item->subtype].unk4;
     item->unk18 = 0.25f;
-    item->unk3E = lbl_801BDEE0[item->unk6].unkE;
-    item->unk40 = lbl_801BDEE0[item->unk6].unk10;
-    item->unk42 = lbl_801BDEE0[item->unk6].unk12;
+    item->xrotSpeed = bananaInfo[item->subtype].xrotSpeed;
+    item->yrotSpeed = bananaInfo[item->subtype].yrotSpeed;
+    item->zrotSpeed = bananaInfo[item->subtype].zrotSpeed;
     item->shadowModel = commonGma->modelEntries[polyshadow01].modelOffset;
     item->shadowColor.r = 0x46;
     item->shadowColor.g = 0x47;
@@ -116,17 +119,17 @@ void item_coin_main(struct Item *item)
     item->unk20.y += item->unk2C.y;
     item->unk20.z += item->unk2C.z;
 
-    item->xrot += item->unk3E;
-    item->yrot += item->unk40;
-    item->zrot += item->unk42;
+    item->xrot += item->xrotSpeed;
+    item->yrot += item->yrotSpeed;
+    item->zrot += item->zrotSpeed;
 
-    if (item->unk5C == 0)
+    if (item->attachedTo == 0)
         func_800390C8(2, &item->unk20, 1.0f);
     else
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(movableStageParts[item->unk5C].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
         mathutil_mtxA_tf_point(&item->unk20, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
@@ -182,15 +185,15 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     item->unk8 &= ~(1 << 1);
     item->state = 3;
     item->unk2C.y += item->unk14 * 0.1875;
-    item->unk40 <<= 2;
+    item->yrotSpeed <<= 2;
     item->unk2C.x += b->unk1C.x * 0.25;
     item->unk2C.y += b->unk1C.y * 0.25;
     item->unk2C.z += b->unk1C.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
         item->unk5E = lbl_801F3A58.timerCurr;
-        give_bananas(lbl_801BDEE0[item->unk6].bananaValue);
-        func_8004C7D4(lbl_801BDEE0[item->unk6].unkA, lbl_801BDEE0[item->unk6].pointValue);
+        give_bananas(bananaInfo[item->subtype].bananaValue);
+        g_give_points(bananaInfo[item->subtype].unkA, bananaInfo[item->subtype].pointValue);
         item->state = 0;
         item->unk8 |= 1;
         item->unk8 &= ~(1 << 1);
@@ -207,11 +210,11 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk24.x = (item->unk14 / sp10.unk30->boundsRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
-        func_8004CF08(&sp10);
+        g_create_pickup_item(&sp10);
     }
     if (advDemoInfo.flags & (1 << 8))
         return;
-    if (item->unk6 == 1)
+    if (item->subtype == 1)
     {
         g_play_sound(0x39);
         if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
@@ -255,7 +258,7 @@ char wtfisthis[] =
 void item_coin_debug(struct Item *item)
 {
     func_8002FCC0(2, wtfisthis);
-    func_8002FCC0(2, "Coin Value: %d\n", lbl_801BDEE0[item->unk6].bananaValue);
+    func_8002FCC0(2, "Coin Value: %d\n", bananaInfo[item->subtype].bananaValue);
 }
 
 // needed to force float constant ordering
@@ -289,7 +292,7 @@ struct GMAModelHeader *find_item_model(struct ModelLOD **a)
     while (r31->modelId > 0)
     {
         modelId = r31->modelId;
-        if (r31->unk4 < f1)
+        if (r31->distance < f1)
             break;
         r31++;
     }

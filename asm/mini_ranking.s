@@ -8,9 +8,9 @@ submode_mini_ranking_init_func:
 /* 800A7530 000A3450  38 60 00 10 */	li r3, 0x10
 /* 800A7534 000A3454  90 01 00 04 */	stw r0, 4(r1)
 /* 800A7538 000A3458  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800A753C 000A345C  4B F6 3D ED */	bl ev_run_init
+/* 800A753C 000A345C  4B F6 3D ED */	bl event_start
 /* 800A7540 000A3460  38 60 00 12 */	li r3, 0x12
-/* 800A7544 000A3464  4B F6 3D E5 */	bl ev_run_init
+/* 800A7544 000A3464  4B F6 3D E5 */	bl event_start
 /* 800A7548 000A3468  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800A754C 000A346C  38 00 00 00 */	li r0, 0
 /* 800A7550 000A3470  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -4293,7 +4293,7 @@ func_800AB2A0:
 /* 800AB2DC 000A71FC  4B F8 1C 5D */	bl func_8002CF38
 lbl_800AB2E0:
 /* 800AB2E0 000A7200  38 60 00 65 */	li r3, 0x65
-/* 800AB2E4 000A7204  4B FC 54 6D */	bl g_dest_sprite_with_font
+/* 800AB2E4 000A7204  4B FC 54 6D */	bl destroy_sprite_with_tag
 /* 800AB2E8 000A7208  3C 60 80 1D */	lis r3, lbl_801D5960@ha
 /* 800AB2EC 000A720C  57 A4 20 36 */	slwi r4, r29, 4
 /* 800AB2F0 000A7210  38 03 59 60 */	addi r0, r3, lbl_801D5960@l
@@ -4340,7 +4340,7 @@ glabel func_800AB358
 /* 800AB38C 000A72AC  7C 00 07 74 */	extsb r0, r0
 /* 800AB390 000A72B0  54 00 20 36 */	slwi r0, r0, 4
 /* 800AB394 000A72B4  7F 7C 00 2E */	lwzx r27, r28, r0
-/* 800AB398 000A72B8  4B FC 53 B9 */	bl g_dest_sprite_with_font
+/* 800AB398 000A72B8  4B FC 53 B9 */	bl destroy_sprite_with_tag
 /* 800AB39C 000A72BC  57 3D 20 36 */	slwi r29, r25, 4
 /* 800AB3A0 000A72C0  7C 7E EA 14 */	add r3, r30, r29
 /* 800AB3A4 000A72C4  81 83 00 00 */	lwz r12, 0(r3)
@@ -4393,7 +4393,7 @@ func_800AB444:
 /* 800AB448 000A7368  38 60 00 65 */	li r3, 0x65
 /* 800AB44C 000A736C  90 01 00 04 */	stw r0, 4(r1)
 /* 800AB450 000A7370  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800AB454 000A7374  4B FC 52 FD */	bl g_dest_sprite_with_font
+/* 800AB454 000A7374  4B FC 52 FD */	bl destroy_sprite_with_tag
 /* 800AB458 000A7378  38 60 00 03 */	li r3, 3
 /* 800AB45C 000A737C  4B FC 51 69 */	bl func_800705C4
 /* 800AB460 000A7380  3C 60 80 2C */	lis r3, lbl_802C6180@ha

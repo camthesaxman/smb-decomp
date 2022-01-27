@@ -1420,36 +1420,36 @@ glabel func_80049FF0
 /* 8004A008 00045F28  4B FE 5F E5 */	bl func_8002FFEC
 /* 8004A00C 00045F2C  38 00 00 76 */	li r0, 0x76
 /* 8004A010 00045F30  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
-/* 8004A014 00045F34  4B FC 14 49 */	bl event_clear
+/* 8004A014 00045F34  4B FC 14 49 */	bl event_finish_all
 /* 8004A018 00045F38  4B FF A9 09 */	bl func_80044920
 /* 8004A01C 00045F3C  A8 6D 9D 74 */	lha r3, loadingStageIdRequest@sda21(r13)
 /* 8004A020 00045F40  4B FF A9 05 */	bl load_stage
 /* 8004A024 00045F44  38 60 00 01 */	li r3, 1
-/* 8004A028 00045F48  4B FC 13 01 */	bl ev_run_init
+/* 8004A028 00045F48  4B FC 13 01 */	bl event_start
 /* 8004A02C 00045F4C  38 60 00 02 */	li r3, 2
-/* 8004A030 00045F50  4B FC 12 F9 */	bl ev_run_init
+/* 8004A030 00045F50  4B FC 12 F9 */	bl event_start
 /* 8004A034 00045F54  38 60 00 03 */	li r3, 3
-/* 8004A038 00045F58  4B FC 12 F1 */	bl ev_run_init
+/* 8004A038 00045F58  4B FC 12 F1 */	bl event_start
 /* 8004A03C 00045F5C  38 60 00 04 */	li r3, 4
-/* 8004A040 00045F60  4B FC 12 E9 */	bl ev_run_init
+/* 8004A040 00045F60  4B FC 12 E9 */	bl event_start
 /* 8004A044 00045F64  38 60 00 09 */	li r3, 9
-/* 8004A048 00045F68  4B FC 12 E1 */	bl ev_run_init
+/* 8004A048 00045F68  4B FC 12 E1 */	bl event_start
 /* 8004A04C 00045F6C  38 60 00 05 */	li r3, 5
-/* 8004A050 00045F70  4B FC 12 D9 */	bl ev_run_init
+/* 8004A050 00045F70  4B FC 12 D9 */	bl event_start
 /* 8004A054 00045F74  38 60 00 07 */	li r3, 7
-/* 8004A058 00045F78  4B FC 12 D1 */	bl ev_run_init
+/* 8004A058 00045F78  4B FC 12 D1 */	bl event_start
 /* 8004A05C 00045F7C  38 60 00 0F */	li r3, 0xf
-/* 8004A060 00045F80  4B FC 12 C9 */	bl ev_run_init
+/* 8004A060 00045F80  4B FC 12 C9 */	bl event_start
 /* 8004A064 00045F84  38 60 00 10 */	li r3, 0x10
-/* 8004A068 00045F88  4B FC 12 C1 */	bl ev_run_init
+/* 8004A068 00045F88  4B FC 12 C1 */	bl event_start
 /* 8004A06C 00045F8C  38 60 00 12 */	li r3, 0x12
-/* 8004A070 00045F90  4B FC 12 B9 */	bl ev_run_init
+/* 8004A070 00045F90  4B FC 12 B9 */	bl event_start
 /* 8004A074 00045F94  38 60 00 0D */	li r3, 0xd
-/* 8004A078 00045F98  4B FC 12 B1 */	bl ev_run_init
+/* 8004A078 00045F98  4B FC 12 B1 */	bl event_start
 /* 8004A07C 00045F9C  38 60 00 14 */	li r3, 0x14
-/* 8004A080 00045FA0  4B FC 12 A9 */	bl ev_run_init
+/* 8004A080 00045FA0  4B FC 12 A9 */	bl event_start
 /* 8004A084 00045FA4  38 60 00 13 */	li r3, 0x13
-/* 8004A088 00045FA8  4B FC 12 A1 */	bl ev_run_init
+/* 8004A088 00045FA8  4B FC 12 A1 */	bl event_start
 /* 8004A08C 00045FAC  3C 60 80 25 */	lis r3, lbl_80250A68@ha
 /* 8004A090 00045FB0  38 83 0A 68 */	addi r4, r3, lbl_80250A68@l
 /* 8004A094 00045FB4  38 A0 00 00 */	li r5, 0
@@ -1712,7 +1712,7 @@ lbl_8004A3E8:
 /* 8004A434 00046354  88 01 00 17 */	lbz r0, 0x17(r1)
 /* 8004A438 00046358  B0 AD 9D 78 */	sth r5, currStageId@sda21(r13)
 /* 8004A43C 0004635C  90 04 00 04 */	stw r0, 4(r4)
-/* 8004A440 00046360  4B FC 0F 55 */	bl ev_run_dest
+/* 8004A440 00046360  4B FC 0F 55 */	bl event_finish
 /* 8004A444 00046364  80 1D 00 00 */	lwz r0, 0(r29)
 /* 8004A448 00046368  54 00 10 3A */	slwi r0, r0, 2
 /* 8004A44C 0004636C  7C 7E 02 14 */	add r3, r30, r0
@@ -1725,33 +1725,33 @@ lbl_8004A3E8:
 /* 8004A468 00046388  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
 /* 8004A46C 0004638C  4B FF A4 B9 */	bl load_stage
 /* 8004A470 00046390  38 60 00 01 */	li r3, 1
-/* 8004A474 00046394  4B FC 0F 21 */	bl ev_run_dest
+/* 8004A474 00046394  4B FC 0F 21 */	bl event_finish
 /* 8004A478 00046398  38 60 00 04 */	li r3, 4
-/* 8004A47C 0004639C  4B FC 0F 19 */	bl ev_run_dest
+/* 8004A47C 0004639C  4B FC 0F 19 */	bl event_finish
 /* 8004A480 000463A0  38 60 00 05 */	li r3, 5
-/* 8004A484 000463A4  4B FC 0F 11 */	bl ev_run_dest
+/* 8004A484 000463A4  4B FC 0F 11 */	bl event_finish
 /* 8004A488 000463A8  38 60 00 0D */	li r3, 0xd
-/* 8004A48C 000463AC  4B FC 0F 09 */	bl ev_run_dest
+/* 8004A48C 000463AC  4B FC 0F 09 */	bl event_finish
 /* 8004A490 000463B0  38 60 00 14 */	li r3, 0x14
-/* 8004A494 000463B4  4B FC 0F 01 */	bl ev_run_dest
+/* 8004A494 000463B4  4B FC 0F 01 */	bl event_finish
 /* 8004A498 000463B8  38 60 00 13 */	li r3, 0x13
-/* 8004A49C 000463BC  4B FC 0E F9 */	bl ev_run_dest
+/* 8004A49C 000463BC  4B FC 0E F9 */	bl event_finish
 /* 8004A4A0 000463C0  38 60 00 03 */	li r3, 3
-/* 8004A4A4 000463C4  4B FC 0E F1 */	bl ev_run_dest
+/* 8004A4A4 000463C4  4B FC 0E F1 */	bl event_finish
 /* 8004A4A8 000463C8  38 60 00 01 */	li r3, 1
-/* 8004A4AC 000463CC  4B FC 0E 7D */	bl ev_run_init
+/* 8004A4AC 000463CC  4B FC 0E 7D */	bl event_start
 /* 8004A4B0 000463D0  38 60 00 04 */	li r3, 4
-/* 8004A4B4 000463D4  4B FC 0E 75 */	bl ev_run_init
+/* 8004A4B4 000463D4  4B FC 0E 75 */	bl event_start
 /* 8004A4B8 000463D8  38 60 00 05 */	li r3, 5
-/* 8004A4BC 000463DC  4B FC 0E 6D */	bl ev_run_init
+/* 8004A4BC 000463DC  4B FC 0E 6D */	bl event_start
 /* 8004A4C0 000463E0  38 60 00 0D */	li r3, 0xd
-/* 8004A4C4 000463E4  4B FC 0E 65 */	bl ev_run_init
+/* 8004A4C4 000463E4  4B FC 0E 65 */	bl event_start
 /* 8004A4C8 000463E8  38 60 00 14 */	li r3, 0x14
-/* 8004A4CC 000463EC  4B FC 0E 5D */	bl ev_run_init
+/* 8004A4CC 000463EC  4B FC 0E 5D */	bl event_start
 /* 8004A4D0 000463F0  38 60 00 13 */	li r3, 0x13
-/* 8004A4D4 000463F4  4B FC 0E 55 */	bl ev_run_init
+/* 8004A4D4 000463F4  4B FC 0E 55 */	bl event_start
 /* 8004A4D8 000463F8  38 60 00 03 */	li r3, 3
-/* 8004A4DC 000463FC  4B FC 0E 4D */	bl ev_run_init
+/* 8004A4DC 000463FC  4B FC 0E 4D */	bl event_start
 /* 8004A4E0 00046400  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8004A4E4 00046404  80 ED 9D 38 */	lwz r7, currentBallStructPtr@sda21(r13)
 /* 8004A4E8 00046408  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
@@ -4243,8 +4243,8 @@ func_8004C7A8:
 /* 8004C7CC 000486EC  7C 08 03 A6 */	mtlr r0
 /* 8004C7D0 000486F0  4E 80 00 20 */	blr
 
-.global func_8004C7D4
-func_8004C7D4:
+.global g_give_points
+g_give_points:
 /* 8004C7D4 000486F4  7C 08 02 A6 */	mflr r0
 /* 8004C7D8 000486F8  2C 03 00 04 */	cmpwi r3, 4
 /* 8004C7DC 000486FC  90 01 00 04 */	stw r0, 4(r1)
@@ -4763,8 +4763,8 @@ lbl_8004CEF4:
 /* 8004CF00 00048E20  7C 08 03 A6 */	mtlr r0
 /* 8004CF04 00048E24  4E 80 00 20 */	blr
 
-.global func_8004CF08
-func_8004CF08:
+.global g_create_pickup_item
+g_create_pickup_item:
 /* 8004CF08 00048E28  7C 08 02 A6 */	mflr r0
 /* 8004CF0C 00048E2C  3C 80 80 20 */	lis r4, spritePoolInfo@ha
 /* 8004CF10 00048E30  90 01 00 04 */	stw r0, 4(r1)

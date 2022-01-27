@@ -107,7 +107,7 @@ extern void (*gameSubmodeFuncs[])(void);
 // extern ? gameSubmodeNames;
 // extern ? lbl_80173C5C;
 // extern ? lbl_80173C70;
-extern struct Event eventInfo[];
+
 // extern ? lbl_80173FA8;
 // extern ? lbl_80173FD0;
 
@@ -250,7 +250,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BDD30;
 // extern ? singleBananaModels;
 // extern ? lbl_801BDF60;
-// extern ? lbl_801BDFA0;
+// extern ? pilotBananaInfo;
 // extern ? lbl_801BE048;
 // extern ? lbl_801BE130;
 // extern ? lbl_801BE160;
@@ -262,7 +262,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BE434;
 // extern ? lbl_801BE448;
 // extern ? lbl_801BE470;
-extern struct FontParams lbl_801BE4B0[];
+
 // extern ? lbl_801C1264;
 // extern ? lbl_801C1294;
 // extern ? lbl_801C12BC;
@@ -563,7 +563,7 @@ extern struct
 // extern ? lbl_801F3A9C;
 
 // extern ? lzssHeader;
-extern struct Struct801F3DC0 lbl_801F3DC0[];
+extern struct SpriteRequest lbl_801F3DC0[];
 
 extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;

@@ -8,6 +8,7 @@
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "event.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
@@ -451,9 +452,9 @@ void load_stage(int stageId)
     int bgChanged = FALSE;
 
     if (stageEvState != EV_STATE_INACTIVE)
-        ev_run_dest(EVENT_STAGE);
+        event_finish(EVENT_STAGE);
     if (bgEvState != EV_STATE_INACTIVE)
-        ev_run_dest(EVENT_BACKGROUND);
+        event_finish(EVENT_BACKGROUND);
     if (loadedStageId != stageId)
     {
         OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap2);
@@ -501,9 +502,9 @@ void load_stage(int stageId)
     func_8009AAB0();
     currStageId = stageId;
     if (stageEvState != EV_STATE_INACTIVE)
-        ev_run_init(EVENT_STAGE);
+        event_start(EVENT_STAGE);
     if (bgEvState != EV_STATE_INACTIVE)
-        ev_run_init(EVENT_BACKGROUND);
+        event_start(EVENT_BACKGROUND);
 }
 
 void unload_stage(void)

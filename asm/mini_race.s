@@ -214,7 +214,7 @@ lbl_00000370:
 /* 00000370 7C600734 */ extsh r0, r3
 /* 00000374 2C000100 */ cmpwi r0, 0x100
 /* 00000378 4180FEF0 */ blt lbl_00000268
-/* 0000037C 4BFFFE01 */ bl event_clear
+/* 0000037C 4BFFFE01 */ bl event_finish_all
 /* 00000380 4BFFFDFD */ bl unload_stage
 /* 00000384 4BFFFDF9 */ bl func_80024AB4
 /* 00000388 48002D55 */ bl lbl_000030DC
@@ -289,7 +289,7 @@ lbl_0000048C:
 /* 00000498 9421FFC8 */ stwu r1, -0x38(r1)
 /* 0000049C 93E10034 */ stw r31, 0x34(r1)
 /* 000004A0 3BE30000 */ addi r31, r3, lbl_10000000@l
-/* 000004A4 4BFFFCD9 */ bl event_clear
+/* 000004A4 4BFFFCD9 */ bl event_finish_all
 /* 000004A8 48002C35 */ bl lbl_000030DC
 /* 000004AC 4BFFFCD1 */ bl camera_setup_singleplayer_viewport
 /* 000004B0 38600007 */ li r3, 7
@@ -834,29 +834,29 @@ lbl_00000C2C:
 /* 00000C68 80040000 */ lwz r0, 0(r4)
 /* 00000C6C 540007B8 */ rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 00000C70 90040000 */ stw r0, 0(r4)
-/* 00000C74 4BFFF509 */ bl ev_run_init
+/* 00000C74 4BFFF509 */ bl event_start
 /* 00000C78 38600002 */ li r3, 2
-/* 00000C7C 4BFFF501 */ bl ev_run_init
+/* 00000C7C 4BFFF501 */ bl event_start
 /* 00000C80 38600003 */ li r3, 3
-/* 00000C84 4BFFF4F9 */ bl ev_run_init
+/* 00000C84 4BFFF4F9 */ bl event_start
 /* 00000C88 38600004 */ li r3, 4
-/* 00000C8C 4BFFF4F1 */ bl ev_run_init
+/* 00000C8C 4BFFF4F1 */ bl event_start
 /* 00000C90 38600005 */ li r3, 5
-/* 00000C94 4BFFF4E9 */ bl ev_run_init
+/* 00000C94 4BFFF4E9 */ bl event_start
 /* 00000C98 38600007 */ li r3, 7
-/* 00000C9C 4BFFF4E1 */ bl ev_run_init
+/* 00000C9C 4BFFF4E1 */ bl event_start
 /* 00000CA0 3860000F */ li r3, 0xf
-/* 00000CA4 4BFFF4D9 */ bl ev_run_init
+/* 00000CA4 4BFFF4D9 */ bl event_start
 /* 00000CA8 38600010 */ li r3, 0x10
-/* 00000CAC 4BFFF4D1 */ bl ev_run_init
+/* 00000CAC 4BFFF4D1 */ bl event_start
 /* 00000CB0 38600012 */ li r3, 0x12
-/* 00000CB4 4BFFF4C9 */ bl ev_run_init
+/* 00000CB4 4BFFF4C9 */ bl event_start
 /* 00000CB8 3860000D */ li r3, 0xd
-/* 00000CBC 4BFFF4C1 */ bl ev_run_init
+/* 00000CBC 4BFFF4C1 */ bl event_start
 /* 00000CC0 38600013 */ li r3, 0x13
-/* 00000CC4 4BFFF4B9 */ bl ev_run_init
+/* 00000CC4 4BFFF4B9 */ bl event_start
 /* 00000CC8 3860000B */ li r3, 0xb
-/* 00000CCC 4BFFF4B1 */ bl ev_run_init
+/* 00000CCC 4BFFF4B1 */ bl event_start
 /* 00000CD0 3C600000 */ lis r3, spritePoolInfo@ha
 /* 00000CD4 38630000 */ addi r3, r3, spritePoolInfo@l
 /* 00000CD8 3C800000 */ lis r4, currentBallStructPtr@ha
@@ -1703,7 +1703,7 @@ lbl_000018A4:
 /* 000018D8 A8030000 */ lha r0, 0(r3)
 /* 000018DC 2C000000 */ cmpwi r0, 0
 /* 000018E0 41800024 */ blt lbl_00001904
-/* 000018E4 4BFFE899 */ bl event_clear
+/* 000018E4 4BFFE899 */ bl event_finish_all
 /* 000018E8 A89F0038 */ lha r4, 0x38(r31)
 /* 000018EC 38600001 */ li r3, 1
 /* 000018F0 38000000 */ li r0, 0
@@ -1856,10 +1856,10 @@ lbl_00001B04:
 /* 00001B04 7CC00734 */ extsh r0, r6
 /* 00001B08 2C000004 */ cmpwi r0, 4
 /* 00001B0C 4180FF4C */ blt lbl_00001A58
-/* 00001B10 4BFFE66D */ bl event_clear
+/* 00001B10 4BFFE66D */ bl event_finish_all
 /* 00001B14 4BFFE669 */ bl camera_setup_singleplayer_viewport
 /* 00001B18 3860000F */ li r3, 0xf
-/* 00001B1C 4BFFE661 */ bl ev_run_init
+/* 00001B1C 4BFFE661 */ bl event_start
 /* 00001B20 3C600000 */ lis r3, modeCtrl@ha
 /* 00001B24 38630000 */ addi r3, r3, modeCtrl@l
 /* 00001B28 3B630030 */ addi r27, r3, 0x30
@@ -1867,16 +1867,16 @@ lbl_00001B04:
 /* 00001B30 38000001 */ li r0, 1
 /* 00001B34 38600013 */ li r3, 0x13
 /* 00001B38 901B0000 */ stw r0, 0(r27)
-/* 00001B3C 4BFFE641 */ bl ev_run_init
+/* 00001B3C 4BFFE641 */ bl event_start
 /* 00001B40 935B0000 */ stw r26, 0(r27)
 /* 00001B44 3860000D */ li r3, 0xd
-/* 00001B48 4BFFE635 */ bl ev_run_init
+/* 00001B48 4BFFE635 */ bl event_start
 /* 00001B4C 38600001 */ li r3, 1
-/* 00001B50 4BFFE62D */ bl ev_run_init
+/* 00001B50 4BFFE62D */ bl event_start
 /* 00001B54 38600010 */ li r3, 0x10
-/* 00001B58 4BFFE625 */ bl ev_run_init
+/* 00001B58 4BFFE625 */ bl event_start
 /* 00001B5C 38600012 */ li r3, 0x12
-/* 00001B60 4BFFE61D */ bl ev_run_init
+/* 00001B60 4BFFE61D */ bl event_start
 /* 00001B64 38610058 */ addi r3, r1, 0x58
 /* 00001B68 38810054 */ addi r4, r1, 0x54
 /* 00001B6C 4BFFE611 */ bl func_8009C5E4
@@ -2071,11 +2071,11 @@ lbl_00001E14:
 /* 00001E28 3BE30000 */ addi r31, r3, lbl_10000000@l
 /* 00001E2C 93C10008 */ stw r30, 8(r1)
 /* 00001E30 3BDF0028 */ addi r30, r31, 0x28
-/* 00001E34 4BFFE349 */ bl event_clear
+/* 00001E34 4BFFE349 */ bl event_finish_all
 /* 00001E38 38600010 */ li r3, 0x10
-/* 00001E3C 4BFFE341 */ bl ev_run_init
+/* 00001E3C 4BFFE341 */ bl event_start
 /* 00001E40 38600012 */ li r3, 0x12
-/* 00001E44 4BFFE339 */ bl ev_run_init
+/* 00001E44 4BFFE339 */ bl event_start
 /* 00001E48 A07E0000 */ lhz r3, 0(r30)
 /* 00001E4C 389F0018 */ addi r4, r31, 0x18
 /* 00001E50 38A00001 */ li r5, 1
@@ -2171,7 +2171,7 @@ lbl_00001F94:
 /* 00001FA0 9421FFF0 */ stwu r1, -0x10(r1)
 /* 00001FA4 93E1000C */ stw r31, 0xc(r1)
 /* 00001FA8 3BE30000 */ addi r31, r3, lbl_10000000@l
-/* 00001FAC 4BFFE1D1 */ bl event_clear
+/* 00001FAC 4BFFE1D1 */ bl event_finish_all
 /* 00001FB0 A89F0038 */ lha r4, 0x38(r31)
 /* 00001FB4 3860000E */ li r3, 0xe
 /* 00001FB8 38000000 */ li r0, 0
@@ -5926,7 +5926,7 @@ lbl_0000568C:
 /* 000056EC 881C002E */ lbz r0, 0x2e(r28)
 /* 000056F0 7C030774 */ extsb r3, r0
 /* 000056F4 38630067 */ addi r3, r3, 0x67
-/* 000056F8 4BFFAA85 */ bl g_dest_sprite_with_font
+/* 000056F8 4BFFAA85 */ bl destroy_sprite_with_tag
 /* 000056FC A01B0002 */ lhz r0, 2(r27)
 /* 00005700 540006F7 */ rlwinm. r0, r0, 0, 0x1b, 0x1b
 /* 00005704 41820014 */ beq lbl_00005718
@@ -6121,7 +6121,7 @@ lbl_00005998:
 /* 000059CC 881F002E */ lbz r0, 0x2e(r31)
 /* 000059D0 7C030774 */ extsb r3, r0
 /* 000059D4 38630067 */ addi r3, r3, 0x67
-/* 000059D8 4BFFA7A5 */ bl g_dest_sprite_with_font
+/* 000059D8 4BFFA7A5 */ bl destroy_sprite_with_tag
 /* 000059DC 801D0014 */ lwz r0, 0x14(r29)
 /* 000059E0 540007BD */ rlwinm. r0, r0, 0, 0x1e, 0x1e
 /* 000059E4 41820014 */ beq lbl_000059F8
@@ -6569,7 +6569,7 @@ lbl_00006034:
 /* 00006060 881E002E */ lbz r0, 0x2e(r30)
 /* 00006064 7C000774 */ extsb r0, r0
 /* 00006068 B0010028 */ sth r0, 0x28(r1)
-/* 0000606C 4BFFA111 */ bl func_8004CF08
+/* 0000606C 4BFFA111 */ bl g_create_pickup_item
 /* 00006070 38000005 */ li r0, 5
 /* 00006074 B01F026A */ sth r0, 0x26a(r31)
 /* 00006078 A87F026E */ lha r3, 0x26e(r31)
@@ -6832,7 +6832,7 @@ lbl_000063B0:
 /* 00006414 80010028 */ lwz r0, 0x28(r1)
 /* 00006418 90810054 */ stw r4, 0x54(r1)
 /* 0000641C 90010058 */ stw r0, 0x58(r1)
-/* 00006420 4BFF9D5D */ bl func_8004CF08
+/* 00006420 4BFF9D5D */ bl g_create_pickup_item
 /* 00006424 3860290B */ li r3, 0x290b
 /* 00006428 4BFF9D55 */ bl g_play_sound
 /* 0000642C 809F01E8 */ lwz r4, 0x1e8(r31)
@@ -20557,7 +20557,7 @@ lbl_00012E00:
 /* 00012EAC 8001001C */ lwz r0, 0x1c(r1)
 /* 00012EB0 908100B8 */ stw r4, 0xb8(r1)
 /* 00012EB4 900100BC */ stw r0, 0xbc(r1)
-/* 00012EB8 4BFED2C5 */ bl func_8004CF08
+/* 00012EB8 4BFED2C5 */ bl g_create_pickup_item
 /* 00012EBC 800100E4 */ lwz r0, 0xe4(r1)
 /* 00012EC0 83E100DC */ lwz r31, 0xdc(r1)
 /* 00012EC4 382100E0 */ addi r1, r1, 0xe0

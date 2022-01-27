@@ -123,7 +123,7 @@ lbl_000001F8:
 /* 00000214 93C10010 */ stw r30, 0x10(r1)
 /* 00000218 93A1000C */ stw r29, 0xc(r1)
 /* 0000021C 3BA30000 */ addi r29, r3, lbl_0000BE80@l
-/* 00000220 4BFFFF2D */ bl event_clear
+/* 00000220 4BFFFF2D */ bl event_finish_all
 /* 00000224 4BFFFF29 */ bl g_something_with_iteratively_freeing_memory
 /* 00000228 4BFFFF25 */ bl func_800249D4
 /* 0000022C 4BFFFF21 */ bl unload_stage
@@ -233,7 +233,7 @@ lbl_000003B4:
 /* 000003B8 90010004 */ stw r0, 4(r1)
 /* 000003BC 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000003C0 93E1000C */ stw r31, 0xc(r1)
-/* 000003C4 4BFFFD89 */ bl event_clear
+/* 000003C4 4BFFFD89 */ bl event_finish_all
 /* 000003C8 3C800000 */ lis r4, memHeap2@ha
 /* 000003CC 3C600000 */ lis r3, lbl_1000003C@ha
 /* 000003D0 3BE40000 */ addi r31, r4, memHeap2@l
@@ -433,7 +433,7 @@ lbl_00000698:
 /* 000006B0 3BE40000 */ addi r31, r4, lbl_10000000@l
 /* 000006B4 93C10018 */ stw r30, 0x18(r1)
 /* 000006B8 3BC30000 */ addi r30, r3, lbl_0000C740@l
-/* 000006BC 4BFFFA91 */ bl event_clear
+/* 000006BC 4BFFFA91 */ bl event_finish_all
 /* 000006C0 3C600000 */ lis r3, lbl_802F1FD0@ha
 /* 000006C4 38A30000 */ addi r5, r3, lbl_802F1FD0@l
 /* 000006C8 80050000 */ lwz r0, 0(r5)
@@ -1118,7 +1118,7 @@ lbl_0000101C:
 /* 000010FC A81F0064 */ lha r0, 0x64(r31)
 /* 00001100 7C030000 */ cmpw r3, r0
 /* 00001104 41800038 */ blt lbl_0000113C
-/* 00001108 4BFFF045 */ bl event_clear
+/* 00001108 4BFFF045 */ bl event_finish_all
 /* 0000110C 3C600000 */ lis r3, lbl_802F1FF6@ha
 /* 00001110 38000017 */ li r0, 0x17
 /* 00001114 B0030000 */ sth r0, lbl_802F1FF6@l(r3)
@@ -1182,33 +1182,33 @@ lbl_000011CC:
 /* 000011E4 3BE30000 */ addi r31, r3, lbl_0000BE80@l
 /* 000011E8 3BC40000 */ addi r30, r4, lbl_10000000@l
 /* 000011EC 38600001 */ li r3, 1
-/* 000011F0 4BFFEF5D */ bl ev_run_init
+/* 000011F0 4BFFEF5D */ bl event_start
 /* 000011F4 38600002 */ li r3, 2
-/* 000011F8 4BFFEF55 */ bl ev_run_init
+/* 000011F8 4BFFEF55 */ bl event_start
 /* 000011FC 38600003 */ li r3, 3
-/* 00001200 4BFFEF4D */ bl ev_run_init
+/* 00001200 4BFFEF4D */ bl event_start
 /* 00001204 38600004 */ li r3, 4
-/* 00001208 4BFFEF45 */ bl ev_run_init
+/* 00001208 4BFFEF45 */ bl event_start
 /* 0000120C 38600005 */ li r3, 5
-/* 00001210 4BFFEF3D */ bl ev_run_init
+/* 00001210 4BFFEF3D */ bl event_start
 /* 00001214 38600007 */ li r3, 7
-/* 00001218 4BFFEF35 */ bl ev_run_init
+/* 00001218 4BFFEF35 */ bl event_start
 /* 0000121C 3860000B */ li r3, 0xb
-/* 00001220 4BFFEF2D */ bl ev_run_init
+/* 00001220 4BFFEF2D */ bl event_start
 /* 00001224 3860000F */ li r3, 0xf
-/* 00001228 4BFFEF25 */ bl ev_run_init
+/* 00001228 4BFFEF25 */ bl event_start
 /* 0000122C 38600010 */ li r3, 0x10
-/* 00001230 4BFFEF1D */ bl ev_run_init
+/* 00001230 4BFFEF1D */ bl event_start
 /* 00001234 38600012 */ li r3, 0x12
-/* 00001238 4BFFEF15 */ bl ev_run_init
+/* 00001238 4BFFEF15 */ bl event_start
 /* 0000123C 3860000D */ li r3, 0xd
-/* 00001240 4BFFEF0D */ bl ev_run_init
+/* 00001240 4BFFEF0D */ bl event_start
 /* 00001244 38600014 */ li r3, 0x14
-/* 00001248 4BFFEF05 */ bl ev_run_init
+/* 00001248 4BFFEF05 */ bl event_start
 /* 0000124C 38600013 */ li r3, 0x13
-/* 00001250 4BFFEEFD */ bl ev_run_init
+/* 00001250 4BFFEEFD */ bl event_start
 /* 00001254 38600002 */ li r3, 2
-/* 00001258 4BFFEEF5 */ bl ev_suspend
+/* 00001258 4BFFEEF5 */ bl event_suspend
 /* 0000125C 48006ED9 */ bl lbl_00008134
 /* 00001260 48007061 */ bl lbl_000082C0
 /* 00001264 3C800000 */ lis r4, ballInfo@ha
@@ -2481,7 +2481,7 @@ lbl_000024D0:
 /* 000024D4 38600002 */ li r3, 2
 /* 000024D8 90010004 */ stw r0, 4(r1)
 /* 000024DC 9421FFF8 */ stwu r1, -8(r1)
-/* 000024E0 4BFFDC6D */ bl ev_restart
+/* 000024E0 4BFFDC6D */ bl event_resume
 /* 000024E4 3860003C */ li r3, 0x3c
 /* 000024E8 4BFFDC65 */ bl func_8007C104
 /* 000024EC 3C600000 */ lis r3, lbl_802F1FF0@ha
@@ -2903,7 +2903,7 @@ lbl_00002AE8:
 /* 00002B24 7C000775 */ extsb. r0, r0
 /* 00002B28 4082002C */ bne lbl_00002B54
 /* 00002B2C 38600002 */ li r3, 2
-/* 00002B30 4BFFD61D */ bl ev_suspend
+/* 00002B30 4BFFD61D */ bl event_suspend
 /* 00002B34 3C600000 */ lis r3, lbl_80206DEC@ha
 /* 00002B38 38630000 */ addi r3, r3, lbl_80206DEC@l
 /* 00002B3C 8003001C */ lwz r0, 0x1c(r3)
@@ -2981,7 +2981,7 @@ lbl_00002C18:
 /* 00002C40 3C600000 */ lis r3, lbl_0000BE80@ha
 /* 00002C44 3BE30000 */ addi r31, r3, lbl_0000BE80@l
 /* 00002C48 38600002 */ li r3, 2
-/* 00002C4C 4BFFD501 */ bl ev_suspend
+/* 00002C4C 4BFFD501 */ bl event_suspend
 /* 00002C50 38000003 */ li r0, 3
 /* 00002C54 3C600000 */ lis r3, modeCtrl@ha
 /* 00002C58 981D0148 */ stb r0, 0x148(r29)
@@ -3424,21 +3424,21 @@ lbl_00003298:
 /* 000032A8 93E1001C */ stw r31, 0x1c(r1)
 /* 000032AC 93C10018 */ stw r30, 0x18(r1)
 /* 000032B0 3BC30000 */ addi r30, r3, lbl_10000000@l
-/* 000032B4 4BFFCE99 */ bl event_clear
+/* 000032B4 4BFFCE99 */ bl event_finish_all
 /* 000032B8 38600001 */ li r3, 1
-/* 000032BC 4BFFCE91 */ bl ev_run_init
+/* 000032BC 4BFFCE91 */ bl event_start
 /* 000032C0 38600004 */ li r3, 4
-/* 000032C4 4BFFCE89 */ bl ev_run_init
+/* 000032C4 4BFFCE89 */ bl event_start
 /* 000032C8 3860000F */ li r3, 0xf
-/* 000032CC 4BFFCE81 */ bl ev_run_init
+/* 000032CC 4BFFCE81 */ bl event_start
 /* 000032D0 38600010 */ li r3, 0x10
-/* 000032D4 4BFFCE79 */ bl ev_run_init
+/* 000032D4 4BFFCE79 */ bl event_start
 /* 000032D8 38600012 */ li r3, 0x12
-/* 000032DC 4BFFCE71 */ bl ev_run_init
+/* 000032DC 4BFFCE71 */ bl event_start
 /* 000032E0 38600014 */ li r3, 0x14
-/* 000032E4 4BFFCE69 */ bl ev_run_init
+/* 000032E4 4BFFCE69 */ bl event_start
 /* 000032E8 38600013 */ li r3, 0x13
-/* 000032EC 4BFFCE61 */ bl ev_run_init
+/* 000032EC 4BFFCE61 */ bl event_start
 /* 000032F0 38600043 */ li r3, 0x43
 /* 000032F4 4BFFCE59 */ bl camera_set_state
 /* 000032F8 3C600000 */ lis r3, cameraInfo@ha
@@ -3648,23 +3648,23 @@ lbl_000035B8:
 /* 000035DC 3C600000 */ lis r3, lbl_802F1FD4@ha
 /* 000035E0 38000000 */ li r0, 0
 /* 000035E4 90030000 */ stw r0, lbl_802F1FD4@l(r3)
-/* 000035E8 4BFFCB65 */ bl event_clear
+/* 000035E8 4BFFCB65 */ bl event_finish_all
 /* 000035EC 38600001 */ li r3, 1
-/* 000035F0 4BFFCB5D */ bl ev_run_init
+/* 000035F0 4BFFCB5D */ bl event_start
 /* 000035F4 38600004 */ li r3, 4
-/* 000035F8 4BFFCB55 */ bl ev_run_init
+/* 000035F8 4BFFCB55 */ bl event_start
 /* 000035FC 38600014 */ li r3, 0x14
-/* 00003600 4BFFCB4D */ bl ev_run_init
+/* 00003600 4BFFCB4D */ bl event_start
 /* 00003604 38600013 */ li r3, 0x13
-/* 00003608 4BFFCB45 */ bl ev_run_init
+/* 00003608 4BFFCB45 */ bl event_start
 /* 0000360C 38600012 */ li r3, 0x12
-/* 00003610 4BFFCB3D */ bl ev_run_init
+/* 00003610 4BFFCB3D */ bl event_start
 /* 00003614 3860000F */ li r3, 0xf
-/* 00003618 4BFFCB35 */ bl ev_run_init
+/* 00003618 4BFFCB35 */ bl event_start
 /* 0000361C 3860000D */ li r3, 0xd
-/* 00003620 4BFFCB2D */ bl ev_run_init
+/* 00003620 4BFFCB2D */ bl event_start
 /* 00003624 38600010 */ li r3, 0x10
-/* 00003628 4BFFCB25 */ bl ev_run_init
+/* 00003628 4BFFCB25 */ bl event_start
 /* 0000362C 3C600000 */ lis r3, modeCtrl@ha
 /* 00003630 38630000 */ addi r3, r3, modeCtrl@l
 /* 00003634 80030024 */ lwz r0, 0x24(r3)
@@ -3864,11 +3864,11 @@ lbl_000038D4:
 /* 00003908 801E0000 */ lwz r0, 0(r30)
 /* 0000390C 540007B8 */ rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 00003910 901E0000 */ stw r0, 0(r30)
-/* 00003914 4BFFC839 */ bl event_clear
+/* 00003914 4BFFC839 */ bl event_finish_all
 /* 00003918 38600010 */ li r3, 0x10
-/* 0000391C 4BFFC831 */ bl ev_run_init
+/* 0000391C 4BFFC831 */ bl event_start
 /* 00003920 38600012 */ li r3, 0x12
-/* 00003924 4BFFC829 */ bl ev_run_init
+/* 00003924 4BFFC829 */ bl event_start
 /* 00003928 807E0000 */ lwz r3, 0(r30)
 /* 0000392C 54600739 */ rlwinm. r0, r3, 0, 0x1c, 0x1c
 /* 00003930 41820008 */ beq lbl_00003938

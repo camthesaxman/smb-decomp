@@ -50,14 +50,14 @@ submode_game_first_init_func:
 /* 800126A4 0000E5C4  54 63 06 B0 */	rlwinm r3, r3, 0, 0x1a, 0x18
 /* 800126A8 0000E5C8  90 64 00 08 */	stw r3, 8(r4)
 /* 800126AC 0000E5CC  90 04 00 2C */	stw r0, 0x2c(r4)
-/* 800126B0 0000E5D0  4B FF 8D AD */	bl event_clear
+/* 800126B0 0000E5D0  4B FF 8D AD */	bl event_finish_all
 /* 800126B4 0000E5D4  48 05 DF 31 */	bl g_something_with_iteratively_freeing_memory
 /* 800126B8 0000E5D8  48 01 23 1D */	bl func_800249D4
 /* 800126BC 0000E5DC  48 03 22 65 */	bl func_80044920
 /* 800126C0 0000E5E0  38 60 00 03 */	li r3, 3
-/* 800126C4 0000E5E4  4B FF 8C 65 */	bl ev_run_init
+/* 800126C4 0000E5E4  4B FF 8C 65 */	bl event_start
 /* 800126C8 0000E5E8  38 60 00 12 */	li r3, 0x12
-/* 800126CC 0000E5EC  4B FF 8C 5D */	bl ev_run_init
+/* 800126CC 0000E5EC  4B FF 8C 5D */	bl event_start
 /* 800126D0 0000E5F0  38 60 00 05 */	li r3, 5
 /* 800126D4 0000E5F4  48 05 DE D1 */	bl call_something_with_bmp_bmp_com
 /* 800126D8 0000E5F8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
@@ -266,13 +266,13 @@ submode_game_restart_init_func:
 /* 800129B0 0000E8D0  7C 08 02 A6 */	mflr r0
 /* 800129B4 0000E8D4  90 01 00 04 */	stw r0, 4(r1)
 /* 800129B8 0000E8D8  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800129BC 0000E8DC  4B FF 8A A1 */	bl event_clear
+/* 800129BC 0000E8DC  4B FF 8A A1 */	bl event_finish_all
 /* 800129C0 0000E8E0  48 05 DC 25 */	bl g_something_with_iteratively_freeing_memory
 /* 800129C4 0000E8E4  48 03 1F 5D */	bl func_80044920
 /* 800129C8 0000E8E8  38 60 00 03 */	li r3, 3
-/* 800129CC 0000E8EC  4B FF 89 5D */	bl ev_run_init
+/* 800129CC 0000E8EC  4B FF 89 5D */	bl event_start
 /* 800129D0 0000E8F0  38 60 00 12 */	li r3, 0x12
-/* 800129D4 0000E8F4  4B FF 89 55 */	bl ev_run_init
+/* 800129D4 0000E8F4  4B FF 89 55 */	bl event_start
 /* 800129D8 0000E8F8  38 60 00 05 */	li r3, 5
 /* 800129DC 0000E8FC  48 05 DB C9 */	bl call_something_with_bmp_bmp_com
 /* 800129E0 0000E900  3C 60 80 20 */	lis r3, spritePoolInfo@ha
@@ -333,7 +333,7 @@ submode_game_ready_init_func:
 /* 80012AA4 0000E9C4  38 00 00 78 */	li r0, 0x78
 /* 80012AA8 0000E9C8  90 1E 00 00 */	stw r0, 0(r30)
 /* 80012AAC 0000E9CC  48 01 D5 41 */	bl func_8002FFEC
-/* 80012AB0 0000E9D0  4B FF 89 AD */	bl event_clear
+/* 80012AB0 0000E9D0  4B FF 89 AD */	bl event_finish_all
 /* 80012AB4 0000E9D4  3B FE 00 28 */	addi r31, r30, 0x28
 /* 80012AB8 0000E9D8  80 1E 00 28 */	lwz r0, 0x28(r30)
 /* 80012ABC 0000E9DC  2C 00 00 00 */	cmpwi r0, 0
@@ -360,48 +360,48 @@ lbl_80012B00:
 /* 80012B00 0000EA20  A8 6D 9D 76 */	lha r3, loadingStageId@sda21(r13)
 /* 80012B04 0000EA24  48 03 1E 21 */	bl load_stage
 /* 80012B08 0000EA28  38 60 00 01 */	li r3, 1
-/* 80012B0C 0000EA2C  4B FF 88 1D */	bl ev_run_init
+/* 80012B0C 0000EA2C  4B FF 88 1D */	bl event_start
 /* 80012B10 0000EA30  38 60 00 02 */	li r3, 2
-/* 80012B14 0000EA34  4B FF 88 15 */	bl ev_run_init
+/* 80012B14 0000EA34  4B FF 88 15 */	bl event_start
 /* 80012B18 0000EA38  38 60 00 03 */	li r3, 3
-/* 80012B1C 0000EA3C  4B FF 88 0D */	bl ev_run_init
+/* 80012B1C 0000EA3C  4B FF 88 0D */	bl event_start
 /* 80012B20 0000EA40  38 60 00 04 */	li r3, 4
-/* 80012B24 0000EA44  4B FF 88 05 */	bl ev_run_init
+/* 80012B24 0000EA44  4B FF 88 05 */	bl event_start
 /* 80012B28 0000EA48  38 60 00 09 */	li r3, 9
-/* 80012B2C 0000EA4C  4B FF 87 FD */	bl ev_run_init
+/* 80012B2C 0000EA4C  4B FF 87 FD */	bl event_start
 /* 80012B30 0000EA50  38 60 00 05 */	li r3, 5
-/* 80012B34 0000EA54  4B FF 87 F5 */	bl ev_run_init
+/* 80012B34 0000EA54  4B FF 87 F5 */	bl event_start
 /* 80012B38 0000EA58  38 60 00 07 */	li r3, 7
-/* 80012B3C 0000EA5C  4B FF 87 ED */	bl ev_run_init
+/* 80012B3C 0000EA5C  4B FF 87 ED */	bl event_start
 /* 80012B40 0000EA60  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80012B44 0000EA64  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 80012B48 0000EA68  80 03 00 08 */	lwz r0, 8(r3)
 /* 80012B4C 0000EA6C  54 00 07 FF */	clrlwi. r0, r0, 0x1f
 /* 80012B50 0000EA70  41 82 00 0C */	beq lbl_80012B5C
 /* 80012B54 0000EA74  38 60 00 0A */	li r3, 0xa
-/* 80012B58 0000EA78  4B FF 87 D1 */	bl ev_run_init
+/* 80012B58 0000EA78  4B FF 87 D1 */	bl event_start
 lbl_80012B5C:
 /* 80012B5C 0000EA7C  38 60 00 0E */	li r3, 0xe
-/* 80012B60 0000EA80  4B FF 87 C9 */	bl ev_run_init
+/* 80012B60 0000EA80  4B FF 87 C9 */	bl event_start
 /* 80012B64 0000EA84  38 60 00 0F */	li r3, 0xf
-/* 80012B68 0000EA88  4B FF 87 C1 */	bl ev_run_init
+/* 80012B68 0000EA88  4B FF 87 C1 */	bl event_start
 /* 80012B6C 0000EA8C  38 60 00 10 */	li r3, 0x10
-/* 80012B70 0000EA90  4B FF 87 B9 */	bl ev_run_init
+/* 80012B70 0000EA90  4B FF 87 B9 */	bl event_start
 /* 80012B74 0000EA94  38 60 00 12 */	li r3, 0x12
-/* 80012B78 0000EA98  4B FF 87 B1 */	bl ev_run_init
+/* 80012B78 0000EA98  4B FF 87 B1 */	bl event_start
 /* 80012B7C 0000EA9C  38 60 00 06 */	li r3, 6
-/* 80012B80 0000EAA0  4B FF 87 A9 */	bl ev_run_init
+/* 80012B80 0000EAA0  4B FF 87 A9 */	bl event_start
 /* 80012B84 0000EAA4  38 60 00 0D */	li r3, 0xd
-/* 80012B88 0000EAA8  4B FF 87 A1 */	bl ev_run_init
+/* 80012B88 0000EAA8  4B FF 87 A1 */	bl event_start
 /* 80012B8C 0000EAAC  38 60 00 14 */	li r3, 0x14
-/* 80012B90 0000EAB0  4B FF 87 99 */	bl ev_run_init
+/* 80012B90 0000EAB0  4B FF 87 99 */	bl event_start
 /* 80012B94 0000EAB4  38 60 00 13 */	li r3, 0x13
-/* 80012B98 0000EAB8  4B FF 87 91 */	bl ev_run_init
+/* 80012B98 0000EAB8  4B FF 87 91 */	bl event_start
 /* 80012B9C 0000EABC  38 60 00 0B */	li r3, 0xb
-/* 80012BA0 0000EAC0  4B FF 87 89 */	bl ev_run_init
+/* 80012BA0 0000EAC0  4B FF 87 89 */	bl event_start
 /* 80012BA4 0000EAC4  48 08 47 29 */	bl func_800972CC
 /* 80012BA8 0000EAC8  38 60 00 02 */	li r3, 2
-/* 80012BAC 0000EACC  4B FF 88 3D */	bl ev_suspend
+/* 80012BAC 0000EACC  4B FF 88 3D */	bl event_suspend
 /* 80012BB0 0000EAD0  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
 /* 80012BB4 0000EAD4  48 00 F2 01 */	bl func_80021DB4
 /* 80012BB8 0000EAD8  48 00 44 4D */	bl func_80017004
@@ -623,7 +623,7 @@ lbl_80012EC4:
 /* 80012ECC 0000EDEC  2C 00 00 78 */	cmpwi r0, 0x78
 /* 80012ED0 0000EDF0  40 82 00 2C */	bne lbl_80012EFC
 /* 80012ED4 0000EDF4  38 60 00 0F */	li r3, 0xf
-/* 80012ED8 0000EDF8  48 05 D9 A5 */	bl g_find_sprite_with_probably_not_font
+/* 80012ED8 0000EDF8  48 05 D9 A5 */	bl find_sprite_with_tag
 /* 80012EDC 0000EDFC  28 03 00 00 */	cmplwi r3, 0
 /* 80012EE0 0000EE00  41 82 00 0C */	beq lbl_80012EEC
 /* 80012EE4 0000EE04  38 00 00 0F */	li r0, 0xf
@@ -705,7 +705,7 @@ submode_game_play_init_func:
 /* 80012FEC 0000EF0C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80012FF0 0000EF10  40 82 01 34 */	bne lbl_80013124
 /* 80012FF4 0000EF14  38 60 00 02 */	li r3, 2
-/* 80012FF8 0000EF18  4B FF 84 0D */	bl ev_restart
+/* 80012FF8 0000EF18  4B FF 84 0D */	bl event_resume
 /* 80012FFC 0000EF1C  38 60 00 3C */	li r3, 0x3c
 /* 80013000 0000EF20  48 06 91 05 */	bl func_8007C104
 /* 80013004 0000EF24  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -1040,7 +1040,7 @@ lbl_80013488:
 /* 800134A8 0000F3C8  41 82 00 10 */	beq lbl_800134B8
 /* 800134AC 0000F3CC  38 60 00 03 */	li r3, 3
 /* 800134B0 0000F3D0  38 80 00 00 */	li r4, 0
-/* 800134B4 0000F3D4  48 03 93 21 */	bl func_8004C7D4
+/* 800134B4 0000F3D4  48 03 93 21 */	bl g_give_points
 lbl_800134B8:
 /* 800134B8 0000F3D8  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 800134BC 0000F3DC  80 03 3A 58 */	lwz r0, lbl_801F3A58@l(r3)
@@ -1172,7 +1172,7 @@ submode_game_goal_replay_init_func:
 /* 8001367C 0000F59C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80013680 0000F5A0  40 82 03 14 */	bne lbl_80013994
 /* 80013684 0000F5A4  38 60 00 0B */	li r3, 0xb
-/* 80013688 0000F5A8  4B FF 7D 0D */	bl ev_run_dest
+/* 80013688 0000F5A8  4B FF 7D 0D */	bl event_finish
 /* 8001368C 0000F5AC  3C 80 80 1F */	lis r4, modeCtrl@ha
 /* 80013690 0000F5B0  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
 /* 80013694 0000F5B4  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
@@ -1375,7 +1375,7 @@ lbl_800138F4:
 /* 80013978 0000F898  41 82 00 10 */	beq lbl_80013988
 /* 8001397C 0000F89C  38 60 00 02 */	li r3, 2
 /* 80013980 0000F8A0  38 80 00 00 */	li r4, 0
-/* 80013984 0000F8A4  48 03 8E 51 */	bl func_8004C7D4
+/* 80013984 0000F8A4  48 03 8E 51 */	bl g_give_points
 lbl_80013988:
 /* 80013988 0000F8A8  48 03 7C D5 */	bl func_8004B65C
 /* 8001398C 0000F8AC  38 00 00 37 */	li r0, 0x37
@@ -1723,23 +1723,23 @@ submode_game_continue_init_func:
 /* 80013E58 0000FD78  80 1E 00 08 */	lwz r0, 8(r30)
 /* 80013E5C 0000FD7C  54 00 07 B8 */	rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 80013E60 0000FD80  90 1E 00 08 */	stw r0, 8(r30)
-/* 80013E64 0000FD84  4B FF 75 31 */	bl ev_run_dest
+/* 80013E64 0000FD84  4B FF 75 31 */	bl event_finish
 /* 80013E68 0000FD88  38 60 00 02 */	li r3, 2
-/* 80013E6C 0000FD8C  4B FF 75 29 */	bl ev_run_dest
+/* 80013E6C 0000FD8C  4B FF 75 29 */	bl event_finish
 /* 80013E70 0000FD90  38 60 00 04 */	li r3, 4
-/* 80013E74 0000FD94  4B FF 75 21 */	bl ev_run_dest
+/* 80013E74 0000FD94  4B FF 75 21 */	bl event_finish
 /* 80013E78 0000FD98  38 60 00 05 */	li r3, 5
-/* 80013E7C 0000FD9C  4B FF 75 19 */	bl ev_run_dest
+/* 80013E7C 0000FD9C  4B FF 75 19 */	bl event_finish
 /* 80013E80 0000FDA0  38 60 00 07 */	li r3, 7
-/* 80013E84 0000FDA4  4B FF 75 11 */	bl ev_run_dest
+/* 80013E84 0000FDA4  4B FF 75 11 */	bl event_finish
 /* 80013E88 0000FDA8  38 60 00 09 */	li r3, 9
-/* 80013E8C 0000FDAC  4B FF 75 09 */	bl ev_run_dest
+/* 80013E8C 0000FDAC  4B FF 75 09 */	bl event_finish
 /* 80013E90 0000FDB0  38 60 00 10 */	li r3, 0x10
-/* 80013E94 0000FDB4  4B FF 75 01 */	bl ev_run_dest
+/* 80013E94 0000FDB4  4B FF 75 01 */	bl event_finish
 /* 80013E98 0000FDB8  38 60 00 0B */	li r3, 0xb
-/* 80013E9C 0000FDBC  4B FF 74 F9 */	bl ev_run_dest
+/* 80013E9C 0000FDBC  4B FF 74 F9 */	bl event_finish
 /* 80013EA0 0000FDC0  38 60 00 10 */	li r3, 0x10
-/* 80013EA4 0000FDC4  4B FF 74 85 */	bl ev_run_init
+/* 80013EA4 0000FDC4  4B FF 74 85 */	bl event_start
 /* 80013EA8 0000FDC8  3B FE 00 28 */	addi r31, r30, 0x28
 /* 80013EAC 0000FDCC  80 1E 00 28 */	lwz r0, 0x28(r30)
 /* 80013EB0 0000FDD0  2C 00 00 00 */	cmpwi r0, 0
@@ -2119,11 +2119,11 @@ submode_game_timeover_init_func:
 /* 800143F8 00010318  38 00 00 78 */	li r0, 0x78
 /* 800143FC 0001031C  90 03 EC 20 */	stw r0, modeCtrl@l(r3)
 /* 80014400 00010320  38 60 00 01 */	li r3, 1
-/* 80014404 00010324  4B FF 6F E5 */	bl ev_suspend
+/* 80014404 00010324  4B FF 6F E5 */	bl event_suspend
 /* 80014408 00010328  38 60 00 02 */	li r3, 2
-/* 8001440C 0001032C  4B FF 6F 89 */	bl ev_run_dest
+/* 8001440C 0001032C  4B FF 6F 89 */	bl event_finish
 /* 80014410 00010330  38 60 00 0B */	li r3, 0xb
-/* 80014414 00010334  4B FF 6F 81 */	bl ev_run_dest
+/* 80014414 00010334  4B FF 6F 81 */	bl event_finish
 /* 80014418 00010338  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8001441C 0001033C  80 AD 9D 38 */	lwz r5, currentBallStructPtr@sda21(r13)
 /* 80014420 00010340  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
@@ -2708,7 +2708,7 @@ lbl_80014C3C:
 /* 80014C60 00010B80  38 60 00 01 */	li r3, 1
 /* 80014C64 00010B84  54 00 07 34 */	rlwinm r0, r0, 0, 0x1c, 0x1a
 /* 80014C68 00010B88  90 1F 00 00 */	stw r0, 0(r31)
-/* 80014C6C 00010B8C  4B FF 67 7D */	bl ev_suspend
+/* 80014C6C 00010B8C  4B FF 67 7D */	bl event_suspend
 /* 80014C70 00010B90  48 00 23 D1 */	bl func_80017040
 /* 80014C74 00010B94  28 03 00 00 */	cmplwi r3, 0
 /* 80014C78 00010B98  41 82 00 64 */	beq lbl_80014CDC
@@ -2778,9 +2778,9 @@ submode_game_bonus_clear_init_func:
 /* 80014D50 00010C70  80 04 00 08 */	lwz r0, 8(r4)
 /* 80014D54 00010C74  54 00 05 A8 */	rlwinm r0, r0, 0, 0x16, 0x14
 /* 80014D58 00010C78  90 04 00 08 */	stw r0, 8(r4)
-/* 80014D5C 00010C7C  4B FF 66 39 */	bl ev_run_dest
+/* 80014D5C 00010C7C  4B FF 66 39 */	bl event_finish
 /* 80014D60 00010C80  38 60 00 0B */	li r3, 0xb
-/* 80014D64 00010C84  4B FF 66 31 */	bl ev_run_dest
+/* 80014D64 00010C84  4B FF 66 31 */	bl event_finish
 /* 80014D68 00010C88  38 60 00 01 */	li r3, 1
 /* 80014D6C 00010C8C  48 06 F9 45 */	bl func_800846B0
 /* 80014D70 00010C90  3C 60 80 20 */	lis r3, spritePoolInfo@ha
@@ -3035,17 +3035,17 @@ submode_game_over_init_func:
 /* 800150EC 0001100C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800150F0 00011010  40 82 01 08 */	bne lbl_800151F8
 /* 800150F4 00011014  38 60 00 12 */	li r3, 0x12
-/* 800150F8 00011018  4B FF 62 9D */	bl ev_run_dest
+/* 800150F8 00011018  4B FF 62 9D */	bl event_finish
 /* 800150FC 0001101C  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 80015100 00011020  38 63 3C C8 */	addi r3, r3, eventInfo@l
 /* 80015104 00011024  88 03 01 80 */	lbz r0, 0x180(r3)
 /* 80015108 00011028  7C 00 07 75 */	extsb. r0, r0
 /* 8001510C 0001102C  40 82 00 0C */	bne lbl_80015118
 /* 80015110 00011030  38 60 00 10 */	li r3, 0x10
-/* 80015114 00011034  4B FF 62 15 */	bl ev_run_init
+/* 80015114 00011034  4B FF 62 15 */	bl event_start
 lbl_80015118:
 /* 80015118 00011038  38 60 00 12 */	li r3, 0x12
-/* 8001511C 0001103C  4B FF 62 0D */	bl ev_run_init
+/* 8001511C 0001103C  4B FF 62 0D */	bl event_start
 /* 80015120 00011040  38 00 00 78 */	li r0, 0x78
 /* 80015124 00011044  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80015128 00011048  94 03 EC 20 */	stwu r0, modeCtrl@l(r3)
@@ -3165,7 +3165,7 @@ lbl_800152B4:
 /* 800152C4 000111E4  38 60 00 03 */	li r3, 3
 /* 800152C8 000111E8  48 08 A1 D5 */	bl func_8009F49C
 /* 800152CC 000111EC  38 60 00 00 */	li r3, 0
-/* 800152D0 000111F0  4B FF 60 59 */	bl ev_run_init
+/* 800152D0 000111F0  4B FF 60 59 */	bl event_start
 /* 800152D4 000111F4  38 00 00 51 */	li r0, 0x51
 /* 800152D8 000111F8  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 800152DC 000111FC  48 00 00 0C */	b lbl_800152E8
@@ -3188,11 +3188,11 @@ submode_game_over_point_init_func:
 /* 80015310 00011230  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80015314 00011234  38 00 01 2C */	li r0, 0x12c
 /* 80015318 00011238  90 03 EC 20 */	stw r0, modeCtrl@l(r3)
-/* 8001531C 0001123C  4B FF 61 41 */	bl event_clear
+/* 8001531C 0001123C  4B FF 61 41 */	bl event_finish_all
 /* 80015320 00011240  38 60 00 10 */	li r3, 0x10
-/* 80015324 00011244  4B FF 60 05 */	bl ev_run_init
+/* 80015324 00011244  4B FF 60 05 */	bl event_start
 /* 80015328 00011248  38 60 00 12 */	li r3, 0x12
-/* 8001532C 0001124C  4B FF 5F FD */	bl ev_run_init
+/* 8001532C 0001124C  4B FF 5F FD */	bl event_start
 /* 80015330 00011250  38 60 00 02 */	li r3, 2
 /* 80015334 00011254  38 80 01 40 */	li r4, 0x140
 /* 80015338 00011258  38 A0 01 68 */	li r5, 0x168
@@ -3266,7 +3266,7 @@ lbl_80015408:
 /* 80015430 00011350  38 60 00 03 */	li r3, 3
 /* 80015434 00011354  48 08 A0 69 */	bl func_8009F49C
 /* 80015438 00011358  38 60 00 00 */	li r3, 0
-/* 8001543C 0001135C  4B FF 5E ED */	bl ev_run_init
+/* 8001543C 0001135C  4B FF 5E ED */	bl event_start
 /* 80015440 00011360  38 00 00 51 */	li r0, 0x51
 /* 80015444 00011364  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80015448 00011368  48 00 00 0C */	b lbl_80015454
@@ -3411,37 +3411,37 @@ lbl_80015620:
 /* 80015634 00011554  60 00 00 20 */	ori r0, r0, 0x20
 /* 80015638 00011558  90 1F 00 00 */	stw r0, 0(r31)
 /* 8001563C 0001155C  48 02 F2 E9 */	bl load_stage
-/* 80015640 00011560  4B FF 5E 1D */	bl event_clear
+/* 80015640 00011560  4B FF 5E 1D */	bl event_finish_all
 /* 80015644 00011564  38 60 00 03 */	li r3, 3
-/* 80015648 00011568  4B FF 5C E1 */	bl ev_run_init
+/* 80015648 00011568  4B FF 5C E1 */	bl event_start
 /* 8001564C 0001156C  38 60 00 01 */	li r3, 1
-/* 80015650 00011570  4B FF 5C D9 */	bl ev_run_init
+/* 80015650 00011570  4B FF 5C D9 */	bl event_start
 /* 80015654 00011574  38 60 00 02 */	li r3, 2
-/* 80015658 00011578  4B FF 5C D1 */	bl ev_run_init
+/* 80015658 00011578  4B FF 5C D1 */	bl event_start
 /* 8001565C 0001157C  38 60 00 09 */	li r3, 9
-/* 80015660 00011580  4B FF 5C C9 */	bl ev_run_init
+/* 80015660 00011580  4B FF 5C C9 */	bl event_start
 /* 80015664 00011584  38 60 00 07 */	li r3, 7
-/* 80015668 00011588  4B FF 5C C1 */	bl ev_run_init
+/* 80015668 00011588  4B FF 5C C1 */	bl event_start
 /* 8001566C 0001158C  38 60 00 0F */	li r3, 0xf
-/* 80015670 00011590  4B FF 5C B9 */	bl ev_run_init
+/* 80015670 00011590  4B FF 5C B9 */	bl event_start
 /* 80015674 00011594  38 60 00 10 */	li r3, 0x10
-/* 80015678 00011598  4B FF 5C B1 */	bl ev_run_init
+/* 80015678 00011598  4B FF 5C B1 */	bl event_start
 /* 8001567C 0001159C  38 60 00 12 */	li r3, 0x12
-/* 80015680 000115A0  4B FF 5C A9 */	bl ev_run_init
+/* 80015680 000115A0  4B FF 5C A9 */	bl event_start
 /* 80015684 000115A4  38 60 00 06 */	li r3, 6
-/* 80015688 000115A8  4B FF 5C A1 */	bl ev_run_init
+/* 80015688 000115A8  4B FF 5C A1 */	bl event_start
 /* 8001568C 000115AC  38 60 00 04 */	li r3, 4
-/* 80015690 000115B0  4B FF 5C 99 */	bl ev_run_init
+/* 80015690 000115B0  4B FF 5C 99 */	bl event_start
 /* 80015694 000115B4  38 60 00 0D */	li r3, 0xd
-/* 80015698 000115B8  4B FF 5C 91 */	bl ev_run_init
+/* 80015698 000115B8  4B FF 5C 91 */	bl event_start
 /* 8001569C 000115BC  38 60 00 14 */	li r3, 0x14
-/* 800156A0 000115C0  4B FF 5C 89 */	bl ev_run_init
+/* 800156A0 000115C0  4B FF 5C 89 */	bl event_start
 /* 800156A4 000115C4  38 60 00 13 */	li r3, 0x13
-/* 800156A8 000115C8  4B FF 5C 81 */	bl ev_run_init
+/* 800156A8 000115C8  4B FF 5C 81 */	bl event_start
 /* 800156AC 000115CC  38 60 00 08 */	li r3, 8
-/* 800156B0 000115D0  4B FF 5C 79 */	bl ev_run_init
+/* 800156B0 000115D0  4B FF 5C 79 */	bl event_start
 /* 800156B4 000115D4  38 60 00 0B */	li r3, 0xb
-/* 800156B8 000115D8  4B FF 5C 71 */	bl ev_run_init
+/* 800156B8 000115D8  4B FF 5C 71 */	bl event_start
 /* 800156BC 000115DC  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800156C0 000115E0  80 AD 9D 38 */	lwz r5, currentBallStructPtr@sda21(r13)
 /* 800156C4 000115E4  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
@@ -3787,7 +3787,7 @@ lbl_80015B88:
 /* 80015BA0 00011AC0  38 60 00 08 */	li r3, 8
 /* 80015BA4 00011AC4  60 00 00 08 */	ori r0, r0, 8
 /* 80015BA8 00011AC8  90 04 00 00 */	stw r0, 0(r4)
-/* 80015BAC 00011ACC  4B FF 57 E9 */	bl ev_run_dest
+/* 80015BAC 00011ACC  4B FF 57 E9 */	bl event_finish
 /* 80015BB0 00011AD0  38 00 00 3D */	li r0, 0x3d
 /* 80015BB4 00011AD4  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 lbl_80015BB8:
@@ -3950,13 +3950,13 @@ lbl_80015DDC:
 /* 80015DE8 00011D08  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
 /* 80015DEC 00011D0C  48 00 CB 25 */	bl func_80022910
 /* 80015DF0 00011D10  38 60 00 0F */	li r3, 0xf
-/* 80015DF4 00011D14  4B FF 55 A1 */	bl ev_run_dest
+/* 80015DF4 00011D14  4B FF 55 A1 */	bl event_finish
 /* 80015DF8 00011D18  38 60 00 10 */	li r3, 0x10
-/* 80015DFC 00011D1C  4B FF 55 99 */	bl ev_run_dest
+/* 80015DFC 00011D1C  4B FF 55 99 */	bl event_finish
 /* 80015E00 00011D20  38 60 00 0F */	li r3, 0xf
-/* 80015E04 00011D24  4B FF 55 25 */	bl ev_run_init
+/* 80015E04 00011D24  4B FF 55 25 */	bl event_start
 /* 80015E08 00011D28  38 60 00 10 */	li r3, 0x10
-/* 80015E0C 00011D2C  4B FF 55 1D */	bl ev_run_init
+/* 80015E0C 00011D2C  4B FF 55 1D */	bl event_start
 /* 80015E10 00011D30  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80015E14 00011D34  80 CD 9D 38 */	lwz r6, currentBallStructPtr@sda21(r13)
 /* 80015E18 00011D38  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
@@ -4325,13 +4325,13 @@ submode_game_result_init_func:
 /* 80016378 00012298  90 03 EC 20 */	stw r0, modeCtrl@l(r3)
 /* 8001637C 0001229C  38 60 00 0F */	li r3, 0xf
 /* 80016380 000122A0  98 0D 9A 44 */	stb r0, lbl_802F1C24@sda21(r13)
-/* 80016384 000122A4  4B FF 50 11 */	bl ev_run_dest
+/* 80016384 000122A4  4B FF 50 11 */	bl event_finish
 /* 80016388 000122A8  38 60 00 10 */	li r3, 0x10
-/* 8001638C 000122AC  4B FF 50 09 */	bl ev_run_dest
+/* 8001638C 000122AC  4B FF 50 09 */	bl event_finish
 /* 80016390 000122B0  38 60 00 0F */	li r3, 0xf
-/* 80016394 000122B4  4B FF 4F 95 */	bl ev_run_init
+/* 80016394 000122B4  4B FF 4F 95 */	bl event_start
 /* 80016398 000122B8  38 60 00 10 */	li r3, 0x10
-/* 8001639C 000122BC  4B FF 4F 8D */	bl ev_run_init
+/* 8001639C 000122BC  4B FF 4F 8D */	bl event_start
 /* 800163A0 000122C0  A8 0D 9D 78 */	lha r0, currStageId@sda21(r13)
 /* 800163A4 000122C4  2C 00 00 7D */	cmpwi r0, 0x7d
 /* 800163A8 000122C8  41 82 00 0C */	beq lbl_800163B4
@@ -4558,7 +4558,7 @@ lbl_80016664:
 /* 800166D8 000125F8  B0 01 00 6C */	sth r0, 0x6c(r1)
 /* 800166DC 000125FC  38 61 00 1C */	addi r3, r1, 0x1c
 /* 800166E0 00012600  B3 81 00 32 */	sth r28, 0x32(r1)
-/* 800166E4 00012604  48 03 68 25 */	bl func_8004CF08
+/* 800166E4 00012604  48 03 68 25 */	bl g_create_pickup_item
 /* 800166E8 00012608  37 BD FF FF */	addic. r29, r29, -1
 /* 800166EC 0001260C  41 81 FF 78 */	bgt lbl_80016664
 /* 800166F0 00012610  80 01 01 0C */	lwz r0, 0x10c(r1)
@@ -5100,11 +5100,11 @@ submode_game_intr_sel_init_func:
 /* 80016E78 00012D98  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80016E7C 00012D9C  38 00 01 E0 */	li r0, 0x1e0
 /* 80016E80 00012DA0  90 03 EC 20 */	stw r0, modeCtrl@l(r3)
-/* 80016E84 00012DA4  4B FF 45 D9 */	bl event_clear
+/* 80016E84 00012DA4  4B FF 45 D9 */	bl event_finish_all
 /* 80016E88 00012DA8  38 60 00 10 */	li r3, 0x10
-/* 80016E8C 00012DAC  4B FF 44 9D */	bl ev_run_init
+/* 80016E8C 00012DAC  4B FF 44 9D */	bl event_start
 /* 80016E90 00012DB0  38 60 00 12 */	li r3, 0x12
-/* 80016E94 00012DB4  4B FF 44 95 */	bl ev_run_init
+/* 80016E94 00012DB4  4B FF 44 95 */	bl event_start
 /* 80016E98 00012DB8  48 04 F4 49 */	bl func_800662E0
 /* 80016E9C 00012DBC  38 60 00 00 */	li r3, 0
 /* 80016EA0 00012DC0  38 80 01 40 */	li r4, 0x140

@@ -8,6 +8,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "event.h"
 #include "gxutil.h"
 #include "input.h"
 #include "item.h"
@@ -16,6 +17,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "sprite.h"
 #include "stage.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
@@ -1096,7 +1098,7 @@ void draw_timer_bomb_fuse(void)
     if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || lbl_801F3A58.timerCurr <= 0)
         return;
 
-    sprite = g_find_sprite_with_probably_not_font(2);
+    sprite = find_sprite_with_tag(2);
     if (sprite == NULL)
     {
         x = 0.0f;
@@ -1392,9 +1394,9 @@ void draw_monkey(void)
 
 void func_8000E134(void)
 {
-    if (eventInfo[3].state == 2)
+    if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
         func_80038AB4();
-    if (eventInfo[5].state == 2)
+    if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         func_800685C4();
 }
 

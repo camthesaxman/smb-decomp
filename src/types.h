@@ -1,37 +1,3 @@
-// Event states
-enum
-{
-    EV_STATE_INACTIVE = 0,
-    EV_STATE_RUNNING = 2,
-    EV_STATE_SUSPENDED = 4
-};
-
-// Event IDs
-enum
-{
-    EVENT_MEMCARD,  // 0
-    EVENT_STAGE,
-    EVENT_WORLD,
-    EVENT_BALL,
-    EVENT_STOBJ,
-    EVENT_ITEM,  // 5
-    EVENT_RECPLAY,
-    EVENT_OBJ_COLLISION,
-    EVENT_NAME_ENTRY,
-    EVENT_INFO,
-    EVENT_COURSE,  // 10
-    EVENT_VIBRATION,
-    EVENT_VIEW,
-    EVENT_EFFECT,
-    EVENT_MINIMAP,
-    EVENT_CAMERA,  // 15
-    EVENT_SPRITE,
-    EVENT_MOUSE,
-    EVENT_SOUND,
-    EVENT_BACKGROUND,
-    EVENT_REND_EFC,  // 20
-};
-
 // DIP switches
 enum
 {
@@ -207,16 +173,6 @@ struct ZMode
     /*0x08*/ GXBool updateEnable;
     /*0x09*/ u8 lineWidth;
     /*0x0C*/ s32 texOffsets;
-};
-
-struct Event
-{
-    /*0x00*/ s8 state;
-    /*0x04*/ char *name;
-    /*0x08*/ void (*start)(void);
-    /*0x0C*/ void (*main)(void);
-    /*0x10*/ void (*finish)(void);
-    /*0x14*/ u32 time;
 };
 
 struct UnkStruct8005562C_child
@@ -609,53 +565,6 @@ struct CoordsS8
     s8 y;
 };
 
-// sprite
-
-struct Sprite
-{
-    /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???
-    /*0x01*/ u8 fontId;  // fontId
-             s8 unk2;
-    /*0x03*/ s8 textAlign;
-    /*0x04*/ float centerX;
-    /*0x08*/ float centerY;
-             u8 unkC;
-             u8 unkD;
-             u8 unkE;
-             s8 unkF;
-             s16 unk10;
-             u8 filler12[0x30-0x12];
-    /*0x30*/ void (*destFunc)();
-    /*0x34*/ void (*mainFunc)();
-             void (*unk38)(struct Sprite *);
-             u16 unk3C;
-             u8 filler3E[0x40-0x3E];
-             float unk40;
-             float unk44;
-             s32 unk48;
-             float unk4C;
-             struct Sprite *unk50;
-             struct Sprite *unk54;
-             s32 unk58;
-             s32 unk5C;
-             s32 unk60;
-             s32 unk64;
-             s16 unk68;
-             u8 filler6A[2];
-             float unk6C;
-             u8 unk70;
-             u8 unk71;
-             u8 unk72;
-             u8 filler73[1];
-             u32 unk74;
-             u32 unk78;
-             float unk7C;
-             float unk80;
-             float unk84;
-             float unk88;
-    /*0x8C*/ char text[0xBC-0x8C];  // text
-};
-
 struct Struct8020A348_child
 {
     u32 unk0;
@@ -669,28 +578,15 @@ struct Struct8020A348
     s32 unk4;
 };
 
-struct FontParams
+struct StageSelection
 {
-    /*0x00*/ s16 unk0;
-    /*0x02*/ u8 spaceWidth;
-    /*0x03*/ u8 lineHeight;
-    /*0x04*/ s32 unk4;
-    /*0x08*/ s32 unk8;
-    /*0x0C*/ s8 unkC;
-    /*0x0D*/ s8 unkD;
-    /*0x10*/ float unk10;
-    /*0x14*/ float unk14;
-    /*0x18*/ float unk18;
-    /*0x1C*/ float unk1C;
-    /*0x20*/ s8 unk20;
-    /*0x21*/ s8 unk21;
-    /*0x22*/ s8 unk22;
-    /*0x23*/ s8 unk23;
+    s32 levelSet;
+    s32 levelNum;
 };
 
-struct Struct801F3DC0
+struct SpriteRequest
 {
-    s32 unk0;
+    s32 bmpId;
     float unk4;
     float unk8;
     float unkC;
@@ -707,12 +603,6 @@ struct Struct801F3DC0
     u32 unk38;
     u32 unk3C;
     u8 filler40[0x50-0x40];
-};
-
-struct StageSelection
-{
-    s32 levelSet;
-    s32 levelNum;
 };
 
 struct NaomiVtxWithNormal;
@@ -952,7 +842,7 @@ struct Item;
 struct ModelLOD
 {
     s32 modelId;
-    float unk4;
+    float distance;
 };
 
 struct Struct80290170

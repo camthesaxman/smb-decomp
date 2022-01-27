@@ -14,10 +14,12 @@
 #include "bitmap.h"
 #include "ball.h"
 #include "camera.h"
+#include "event.h"
 #include "input.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "sprite.h"
 #include "stage.h"
 
 u32 introBackdropColor;
@@ -60,8 +62,8 @@ void submode_adv_warning_init_func(void)
     introBackdropColor = 0;
     func_8002FFEC();
     func_8009F49C(2);
-    ev_run_init(EVENT_SPRITE);
-    ev_run_init(EVENT_MEMCARD);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_MEMCARD);
     gameSubmodeRequest = SMD_ADV_WARNING_MAIN;
 }
 
@@ -110,11 +112,11 @@ void submode_adv_logo_init_func(void)
     func_8002FFEC();
     func_80021DB4(0);
     lbl_80206BC0[0] = 0;
-    event_clear();
+    event_finish_all();
     g_something_with_iteratively_freeing_memory();
-    ev_run_init(EVENT_CAMERA);
-    ev_run_init(EVENT_SPRITE);
-    ev_run_init(EVENT_SOUND);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_SOUND);
     camera_set_state(27);
     unload_stage();
     call_something_with_bmp_bmp_com(1);
@@ -257,7 +259,7 @@ void submode_adv_logo_main_func(void)
     }
     if (--modeCtrl.unk0 <= 0)
     {
-        g_dest_sprite_with_font(3);
+        destroy_sprite_with_tag(3);
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
     }
 }
@@ -284,7 +286,7 @@ void submode_adv_demo_init_func(void)
     func_800569B4(1);
     load_stage(ST_099_JUNGLE_BG);
     func_8002FFEC();
-    event_clear();
+    event_finish_all();
     g_something_with_iteratively_freeing_memory();
     for (i = 0; i < 4; i++)
         spritePoolInfo.unkC[i] = 2;
@@ -296,23 +298,23 @@ void submode_adv_demo_init_func(void)
     lbl_80206BC0[1] = 1;
     lbl_80206BC0[2] = 2;
     lbl_80206BC0[3] = 3;
-    ev_run_init(3);
+    event_start(EVENT_BALL);
     for (i = 0; i < 4; i++)
     {
         advLogoInfo.unk18[i] = 1;
         lbl_802F1BB4[i] = 0;
         lbl_802F1BBC[i] = 0;
     }
-    ev_run_init(EVENT_STAGE);
-    ev_run_init(EVENT_STOBJ);
-    ev_run_init(EVENT_ITEM);
-    ev_run_init(EVENT_OBJ_COLLISION);
-    ev_run_init(EVENT_CAMERA);
-    ev_run_init(EVENT_SPRITE);
-    ev_run_init(EVENT_EFFECT);
-    ev_run_init(EVENT_REND_EFC);
-    ev_run_init(EVENT_BACKGROUND);
-    ev_run_init(EVENT_SOUND);
+    event_start(EVENT_STAGE);
+    event_start(EVENT_STOBJ);
+    event_start(EVENT_ITEM);
+    event_start(EVENT_OBJ_COLLISION);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_EFFECT);
+    event_start(EVENT_REND_EFC);
+    event_start(EVENT_BACKGROUND);
+    event_start(EVENT_SOUND);
     func_80021DB4(currStageId);
     func_800972CC();
     for (i = 0; i < 4; i++)
@@ -542,13 +544,13 @@ void run_cutscene_script(void)
         case CMD_HIDE_SPEECH_BUBBLES:
             for (i = 0; i < 3; i++)
                 func_80075900(i + 1, 20, NULL);
-            sprite = g_find_sprite_with_probably_not_font(30);
+            sprite = find_sprite_with_tag(30);
             if (sprite != NULL)
                 sprite->unk10 = -1;
-            sprite = g_find_sprite_with_probably_not_font(31);
+            sprite = find_sprite_with_tag(31);
             if (sprite != NULL)
                 sprite->unk10 = -1;
-            sprite = g_find_sprite_with_probably_not_font(32);
+            sprite = find_sprite_with_tag(32);
             if (sprite != NULL)
                 sprite->unk10 = -1;
             break;
@@ -562,19 +564,19 @@ void run_cutscene_script(void)
             preload_bg_files(cmd->param);
             break;
         case CMD_LOAD_BG:
-            ev_run_dest(EVENT_STAGE);
-            ev_run_dest(EVENT_STOBJ);
-            ev_run_dest(EVENT_ITEM);
-            ev_run_dest(EVENT_EFFECT);
-            ev_run_dest(EVENT_REND_EFC);
-            ev_run_dest(EVENT_BACKGROUND);
+            event_finish(EVENT_STAGE);
+            event_finish(EVENT_STOBJ);
+            event_finish(EVENT_ITEM);
+            event_finish(EVENT_EFFECT);
+            event_finish(EVENT_REND_EFC);
+            event_finish(EVENT_BACKGROUND);
             load_bg_files(cmd->param);
-            ev_run_init(EVENT_STAGE);
-            ev_run_init(EVENT_STOBJ);
-            ev_run_init(EVENT_ITEM);
-            ev_run_init(EVENT_EFFECT);
-            ev_run_init(EVENT_REND_EFC);
-            ev_run_init(EVENT_BACKGROUND);
+            event_start(EVENT_STAGE);
+            event_start(EVENT_STOBJ);
+            event_start(EVENT_ITEM);
+            event_start(EVENT_EFFECT);
+            event_start(EVENT_REND_EFC);
+            event_start(EVENT_BACKGROUND);
             break;
         case CMD_SET_DEMO_FLAG:
             advDemoInfo.flags |= cmd->param;
@@ -592,28 +594,28 @@ void run_cutscene_script(void)
             preload_stage_files(cmd->param);
             break;
         case CMD_LOAD_STAGE:
-            ev_run_dest(EVENT_STAGE);
-            ev_run_dest(EVENT_STOBJ);
-            ev_run_dest(EVENT_ITEM);
-            ev_run_dest(EVENT_EFFECT);
-            ev_run_dest(EVENT_REND_EFC);
-            ev_run_dest(EVENT_BACKGROUND);
+            event_finish(EVENT_STAGE);
+            event_finish(EVENT_STOBJ);
+            event_finish(EVENT_ITEM);
+            event_finish(EVENT_EFFECT);
+            event_finish(EVENT_REND_EFC);
+            event_finish(EVENT_BACKGROUND);
             func_800569B4(1);
             load_stage(cmd->param);
-            ev_run_init(EVENT_STAGE);
-            ev_run_init(EVENT_STOBJ);
-            ev_run_init(EVENT_ITEM);
-            ev_run_init(EVENT_EFFECT);
-            ev_run_init(EVENT_REND_EFC);
-            ev_run_init(EVENT_BACKGROUND);
+            event_start(EVENT_STAGE);
+            event_start(EVENT_STOBJ);
+            event_start(EVENT_ITEM);
+            event_start(EVENT_EFFECT);
+            event_start(EVENT_REND_EFC);
+            event_start(EVENT_BACKGROUND);
             func_800972CC();
             break;
         case 12:
             func_80021DB4(0);
             break;
         case CMD_UNK13:  // level camera?
-            ev_run_init(EVENT_WORLD);
-            ev_run_init(EVENT_INFO);
+            event_start(EVENT_WORLD);
+            event_start(EVENT_INFO);
             camera_set_state(54);
             func_80021DB4(currStageId);
             break;
@@ -624,8 +626,8 @@ void run_cutscene_script(void)
             advDemoInfo.unkC = cmd->param;
             break;
         case CMD_UNK15:  // cutscene camera?
-            ev_run_dest(EVENT_WORLD);
-            ev_run_dest(EVENT_INFO);
+            event_finish(EVENT_WORLD);
+            event_finish(EVENT_INFO);
             camera_set_state(29);
             break;
         case CMD_AIAI_ANIM:
@@ -668,7 +670,7 @@ void run_cutscene_script(void)
             func_800783C0(cmd->param);
             break;
         case 29:
-            sprite = g_find_sprite_with_probably_not_font(11);
+            sprite = find_sprite_with_tag(11);
             if (sprite != NULL)
             {
                 sprite->unk48 = cmd->param;
@@ -676,7 +678,7 @@ void run_cutscene_script(void)
             }
             break;
         case 30:
-            g_dest_sprite_with_font(11);
+            destroy_sprite_with_tag(11);
             break;
         }
     }
@@ -1171,15 +1173,15 @@ static void func_8000FEC8(int a)
 {
     struct Sprite *sprite;
 
-    sprite = g_find_sprite_with_probably_not_font(37);
+    sprite = find_sprite_with_tag(37);
     if (sprite != NULL)
         sprite->unk48 = -1;
 
-    sprite = g_find_sprite_with_probably_not_font(38);
+    sprite = find_sprite_with_tag(38);
     if (sprite != NULL)
         sprite->unk48 = -1;
 
-    sprite = g_find_sprite_with_probably_not_font(39);
+    sprite = find_sprite_with_tag(39);
     if (sprite != NULL)
         sprite->unk48 = -1;
 
@@ -1187,21 +1189,21 @@ static void func_8000FEC8(int a)
     func_80075900(2, 20, NULL);
     func_80075900(3, 20, NULL);
 
-    sprite = g_find_sprite_with_probably_not_font(30);
+    sprite = find_sprite_with_tag(30);
     if (sprite != NULL)
         sprite->unk10 = -1;
 
-    sprite = g_find_sprite_with_probably_not_font(31);
+    sprite = find_sprite_with_tag(31);
     if (sprite != NULL)
         sprite->unk10 = -1;
 
-    sprite = g_find_sprite_with_probably_not_font(32);
+    sprite = find_sprite_with_tag(32);
     if (sprite != NULL)
         sprite->unk10 = -1;
 
     func_80075900(0, 20, NULL);
 
-    sprite = g_find_sprite_with_probably_not_font(17);
+    sprite = find_sprite_with_tag(17);
     if (sprite != NULL)
         sprite->unk48 = 1;
 
@@ -1228,16 +1230,16 @@ void submode_adv_title_init_func(void)
     lbl_802F1BA8 = 0;
     advDemoInfo.unk8 = 0xB56;
     advDemoInfo.flags = 0;
-    ev_run_dest(EVENT_BALL);
-    ev_run_dest(EVENT_STAGE);
-    ev_run_dest(EVENT_STOBJ);
-    ev_run_dest(EVENT_ITEM);
-    ev_run_dest(EVENT_OBJ_COLLISION);
-    ev_run_dest(EVENT_CAMERA);
-    ev_run_dest(EVENT_EFFECT);
-    ev_run_dest(EVENT_SOUND);
-    ev_run_dest(EVENT_REND_EFC);
-    ev_run_dest(EVENT_BACKGROUND);
+    event_finish(EVENT_BALL);
+    event_finish(EVENT_STAGE);
+    event_finish(EVENT_STOBJ);
+    event_finish(EVENT_ITEM);
+    event_finish(EVENT_OBJ_COLLISION);
+    event_finish(EVENT_CAMERA);
+    event_finish(EVENT_EFFECT);
+    event_finish(EVENT_SOUND);
+    event_finish(EVENT_REND_EFC);
+    event_finish(EVENT_BACKGROUND);
     func_80076620(2);
     if (lbl_80290170.unk8 != 0)
         g_start_screen_fade(0x100, 0, 30);
@@ -1260,10 +1262,10 @@ void submode_adv_title_reinit_func(void)
     func_8002FFEC();
     func_80021DB4(0);
     lbl_80206BC0[0] = 0;
-    event_clear();
+    event_finish_all();
     g_something_with_iteratively_freeing_memory();
-    ev_run_init(16);
-    ev_run_init(18);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_SOUND);
     camera_set_state(27);
     unload_stage();
     call_something_with_bmp_bmp_com(1);
@@ -1381,21 +1383,21 @@ void submode_adv_info_init_func(void)
     modeCtrl.playerCount = 1;
     lbl_80206BC0[0] = 0;
     func_8002FFEC();
-    event_clear();
+    event_finish_all();
     load_stage(ST_150_TUTORIAL);
-    ev_run_init(EVENT_STAGE);
-    ev_run_init(EVENT_WORLD);
-    ev_run_init(EVENT_BALL);
-    ev_run_init(EVENT_STOBJ);
-    ev_run_init(EVENT_INFO);
-    ev_run_init(EVENT_ITEM);
-    ev_run_init(EVENT_OBJ_COLLISION);
-    ev_run_init(EVENT_MINIMAP);
-    ev_run_init(EVENT_CAMERA);
-    ev_run_init(EVENT_SPRITE);
-    ev_run_init(EVENT_SOUND);
-    ev_run_init(EVENT_EFFECT);
-    ev_run_init(EVENT_BACKGROUND);
+    event_start(EVENT_STAGE);
+    event_start(EVENT_WORLD);
+    event_start(EVENT_BALL);
+    event_start(EVENT_STOBJ);
+    event_start(EVENT_INFO);
+    event_start(EVENT_ITEM);
+    event_start(EVENT_OBJ_COLLISION);
+    event_start(EVENT_MINIMAP);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_SOUND);
+    event_start(EVENT_EFFECT);
+    event_start(EVENT_BACKGROUND);
     func_80021DB4(currStageId);
     ballInfo[0].state = 16;
     ballInfo[0].bananas = 0;
@@ -1659,7 +1661,7 @@ void submode_adv_info_main_func(void)
         func_80075900(1, 20, NULL);
         func_80075900(2, 20, NULL);
         func_8002CF38(modeCtrl.unk0, 2);
-        sprite = g_find_sprite_with_probably_not_font(17);
+        sprite = find_sprite_with_tag(17);
         if (sprite != NULL)
             sprite->unk48 = 1;
     }
@@ -1690,14 +1692,14 @@ void submode_adv_game_ready_init_func(void)
     if (lbl_80250A68.unk0[lbl_80250A68.unk14] < 0)
     {
         lbl_80250A68.unk0[lbl_80250A68.unk14] = 0;
-        gameSubmodeRequest = 3;
+        gameSubmodeRequest = SMD_ADV_LOGO_INIT;
         g_start_screen_fade(2, 0, 1);
         return;
     }
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
     currStageId = sp8.stageId;
-    event_clear();
+    event_finish_all();
     call_something_with_bmp_bmp_com(3);
     modeCtrl.unk28 = 0;
     modeCtrl.playerCount = 1;
@@ -1705,25 +1707,25 @@ void submode_adv_game_ready_init_func(void)
     camera_setup_splitscreen_viewports(modeCtrl.playerCount);
     func_80044920();
     func_8002FFEC();
-    ev_run_init(EVENT_INFO);
+    event_start(EVENT_INFO);
     func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     lbl_801F3A58.unk0 |= 0x810;
     load_stage(currStageId);
-    ev_run_init(EVENT_STAGE);
-    ev_run_init(EVENT_WORLD);
-    ev_run_init(EVENT_BALL);
-    ev_run_init(EVENT_STOBJ);
-    ev_run_init(EVENT_ITEM);
-    ev_run_init(EVENT_OBJ_COLLISION);
-    ev_run_init(EVENT_MINIMAP);
-    ev_run_init(EVENT_CAMERA);
-    ev_run_init(EVENT_SPRITE);
-    ev_run_init(EVENT_SOUND);
-    ev_run_init(EVENT_EFFECT);
-    ev_run_init(EVENT_REND_EFC);
-    ev_run_init(EVENT_BACKGROUND);
+    event_start(EVENT_STAGE);
+    event_start(EVENT_WORLD);
+    event_start(EVENT_BALL);
+    event_start(EVENT_STOBJ);
+    event_start(EVENT_ITEM);
+    event_start(EVENT_OBJ_COLLISION);
+    event_start(EVENT_MINIMAP);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_SOUND);
+    event_start(EVENT_EFFECT);
+    event_start(EVENT_REND_EFC);
+    event_start(EVENT_BACKGROUND);
     func_800972CC();
-    ev_suspend(EVENT_WORLD);
+    event_suspend(EVENT_WORLD);
     func_80021DB4(currStageId);
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
@@ -1753,7 +1755,7 @@ void submode_adv_game_ready_main_func(void)
         return;
     if (modeCtrl.unk0 == 120)
     {
-        struct Sprite *sprite = g_find_sprite_with_probably_not_font(15);
+        struct Sprite *sprite = find_sprite_with_tag(15);
 
         if (sprite != NULL)
             sprite->unk48 = 15;
@@ -1789,7 +1791,7 @@ void submode_adv_game_play_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
     modeCtrl.unk0 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
-    ev_restart(2);
+    event_resume(2);
     func_8007C104(60);
     lbl_801F3A58.unk0 &= -265;
     ballInfo[0].state = 9;
@@ -1841,8 +1843,8 @@ static int func_80011BE0(void);
 void submode_adv_ranking_init_func(void)
 {
     modeCtrl.unk0 = 2520;
-    g_dest_sprite_with_font(2);
-    g_dest_sprite_with_font(18);
+    destroy_sprite_with_tag(2);
+    destroy_sprite_with_tag(18);
     gameSubmodeRequest = SMD_ADV_RANKING_MAIN;
 }
 
@@ -1860,13 +1862,13 @@ void submode_adv_ranking_main_func(void)
     switch (modeCtrl.unk0)
     {
     case 2520:
-        g_dest_sprite_with_font(0);
-        g_dest_sprite_with_font(37);
-        g_dest_sprite_with_font(39);
+        destroy_sprite_with_tag(0);
+        destroy_sprite_with_tag(37);
+        destroy_sprite_with_tag(39);
         func_80076C54(1);
         func_800886E0(0);
-        if (g_find_sprite_with_probably_not_font(17) != NULL)
-            g_find_sprite_with_probably_not_font(17)->unk48 = 1;
+        if (find_sprite_with_tag(17) != NULL)
+            find_sprite_with_tag(17)->unk48 = 1;
         advTutorialInfo.state = 1;
         break;
     case 2460:
@@ -1937,28 +1939,28 @@ void submode_adv_ranking_main_func(void)
             struct ReplayInfo sp8;
 
             modeCtrl.unk18 = 0x96;
-            ev_run_dest(1);
-            ev_run_dest(4);
-            ev_run_dest(5);
-            ev_run_dest(13);
-            ev_run_dest(20);
-            ev_run_dest(19);
-            ev_run_dest(3);
-            ev_run_dest(18);
+            event_finish(EVENT_STAGE);
+            event_finish(EVENT_STOBJ);
+            event_finish(EVENT_ITEM);
+            event_finish(EVENT_EFFECT);
+            event_finish(EVENT_REND_EFC);
+            event_finish(EVENT_BACKGROUND);
+            event_finish(EVENT_BALL);
+            event_finish(EVENT_SOUND);
             lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80011B98();
             g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
             lbl_801F3A58.unk0 |= 0x10;
             load_stage(currStageId);
-            ev_run_init(1);
-            ev_run_init(4);
-            ev_run_init(5);
-            ev_run_init(13);
-            ev_run_init(20);
-            ev_run_init(19);
-            ev_run_init(3);
-            ev_run_init(18);
+            event_start(EVENT_STAGE);
+            event_start(EVENT_STOBJ);
+            event_start(EVENT_ITEM);
+            event_start(EVENT_EFFECT);
+            event_start(EVENT_REND_EFC);
+            event_start(EVENT_BACKGROUND);
+            event_start(EVENT_BALL);
+            event_start(EVENT_SOUND);
             func_800972CC();
             memset(&sp20, 0, sizeof(sp20));
             sp20.unk6 = 0xFFFF;
@@ -2044,7 +2046,7 @@ void submode_adv_ranking_main_func(void)
         lbl_801F3A58.unk0 &= ~(1 << 11);
         func_8008897C(1);
         func_80088FD4(1);
-        g_dest_sprite_with_font(3);
+        destroy_sprite_with_tag(3);
         func_800705C4(3);
         camera_setup_singleplayer_viewport();
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
@@ -2147,9 +2149,9 @@ void submode_adv_start_init_func(void)
     func_80075900(2, 20, 0);
     func_80075900(3, 20, 0);
     func_8002CF38(modeCtrl.unk0, 2);
-    if (g_find_sprite_with_probably_not_font(17) != NULL
-     && g_find_sprite_with_probably_not_font(17)->unk48 == 0)
-        g_find_sprite_with_probably_not_font(17)->unk48 = 1;
+    if (find_sprite_with_tag(17) != NULL
+     && find_sprite_with_tag(17)->unk48 == 0)
+        find_sprite_with_tag(17)->unk48 = 1;
     gameSubmodeRequest = SMD_ADV_START_MAIN;
 }
 

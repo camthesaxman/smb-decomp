@@ -2977,7 +2977,7 @@ lbl_00002C80:
 /* 00002CFC C021005C */ lfs f1, 0x5c(r1)
 /* 00002D00 EC01002A */ fadds f0, f1, f0
 /* 00002D04 D001005C */ stfs f0, 0x5c(r1)
-/* 00002D08 4BFFD45D */ bl func_8004CF08
+/* 00002D08 4BFFD45D */ bl g_create_pickup_item
 /* 00002D0C 3739FFFF */ addic. r25, r25, -1  ;# fixed addi
 /* 00002D10 4181FF70 */ bgt lbl_00002C80
 /* 00002D14 3800002B */ li r0, 0x2b
@@ -3057,7 +3057,7 @@ lbl_00002D40:
 /* 00002E38 C01E0000 */ lfs f0, 0(r30)
 /* 00002E3C EC010032 */ fmuls f0, f1, f0
 /* 00002E40 D0010058 */ stfs f0, 0x58(r1)
-/* 00002E44 4BFFD321 */ bl func_8004CF08
+/* 00002E44 4BFFD321 */ bl g_create_pickup_item
 /* 00002E48 3B39FFFF */ addi r25, r25, -1  ;# fixed addi
 lbl_00002E4C:
 /* 00002E4C 2C190000 */ cmpwi r25, 0
@@ -3113,7 +3113,7 @@ lbl_00002E4C:
 /* 00002F14 FC010032 */ fmul f0, f1, f0
 /* 00002F18 FC000018 */ frsp f0, f0
 /* 00002F1C D00100BC */ stfs f0, 0xbc(r1)
-/* 00002F20 4BFFD245 */ bl func_8004CF08
+/* 00002F20 4BFFD245 */ bl g_create_pickup_item
 /* 00002F24 C03D001C */ lfs f1, 0x1c(r29)
 /* 00002F28 7FE3FB78 */ mr r3, r31
 /* 00002F2C C01A0064 */ lfs f0, 0x64(r26)
@@ -7002,7 +7002,7 @@ lbl_0000683C:
 lbl_00006A04:
 /* 00006A04 4BFF9761 */ bl mathutil_mtxA_push
 /* 00006A08 3861003C */ addi r3, r1, 0x3c
-/* 00006A0C 4BFF9759 */ bl func_8004CF08
+/* 00006A0C 4BFF9759 */ bl g_create_pickup_item
 /* 00006A10 4BFF9755 */ bl mathutil_mtxA_pop
 lbl_00006A14:
 /* 00006A14 3B9C0010 */ addi r28, r28, 0x10
@@ -8077,7 +8077,7 @@ lbl_00007844:
 /* 00007A14 EC02002A */ fadds f0, f2, f0
 /* 00007A18 EC010032 */ fmuls f0, f1, f0
 /* 00007A1C D0010030 */ stfs f0, 0x30(r1)
-/* 00007A20 4BFF8745 */ bl func_8004CF08
+/* 00007A20 4BFF8745 */ bl g_create_pickup_item
 /* 00007A24 C03C0034 */ lfs f1, 0x34(r28)
 /* 00007A28 C01C0040 */ lfs f0, 0x40(r28)
 /* 00007A2C EC01002A */ fadds f0, f1, f0
@@ -8886,7 +8886,7 @@ lbl_00008518:
 /* 00008638 808100BC */ lwz r4, 0xbc(r1)
 /* 0000863C 38040001 */ addi r0, r4, 1
 /* 00008640 90010018 */ stw r0, 0x18(r1)
-/* 00008644 4BFF7B21 */ bl func_8004CF08
+/* 00008644 4BFF7B21 */ bl g_create_pickup_item
 /* 00008648 EFBDF02A */ fadds f29, f29, f30
 /* 0000864C 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 lbl_00008650:
@@ -9052,7 +9052,7 @@ lbl_00008774:
 /* 000088BC 808100DC */ lwz r4, 0xdc(r1)
 /* 000088C0 38040001 */ addi r0, r4, 1
 /* 000088C4 90010018 */ stw r0, 0x18(r1)
-/* 000088C8 4BFF789D */ bl func_8004CF08
+/* 000088C8 4BFF789D */ bl g_create_pickup_item
 /* 000088CC EF9CF02A */ fadds f28, f28, f30
 /* 000088D0 3BBDFFFF */ addi r29, r29, -1  ;# fixed addi
 lbl_000088D4:
@@ -11134,7 +11134,7 @@ lbl_0000A690:
 /* 0000A840 4BFF5925 */ bl OSSetCurrentHeap
 /* 0000A844 3860000B */ li r3, 0xb
 /* 0000A848 4BFF591D */ bl func_80029228
-/* 0000A84C 4BFF5919 */ bl event_clear
+/* 0000A84C 4BFF5919 */ bl event_finish_all
 /* 0000A850 801C0024 */ lwz r0, 0x24(r28)
 /* 0000A854 3C800000 */ lis r4, spritePoolInfo@ha
 /* 0000A858 3C600000 */ lis r3, lbl_80206BC0@ha
@@ -11286,7 +11286,7 @@ lbl_0000A9F0:
 /* 0000AA8C 98030003 */ stb r0, 3(r3)
 /* 0000AA90 881F0143 */ lbz r0, 0x143(r31)
 /* 0000AA94 9004000C */ stw r0, 0xc(r4)
-/* 0000AA98 4BFF56CD */ bl event_clear
+/* 0000AA98 4BFF56CD */ bl event_finish_all
 /* 0000AA9C 3C600000 */ lis r3, lbl_802F1CA4@ha
 /* 0000AAA0 38630000 */ addi r3, r3, lbl_802F1CA4@l
 /* 0000AAA4 80630000 */ lwz r3, 0(r3)
@@ -11616,11 +11616,11 @@ lbl_0000AEEC:
 /* 0000AF28 98040055 */ stb r0, 0x55(r4)
 /* 0000AF2C 88030008 */ lbz r0, 8(r3)
 /* 0000AF30 98040056 */ stb r0, 0x56(r4)
-/* 0000AF34 4BFF5231 */ bl event_clear
+/* 0000AF34 4BFF5231 */ bl event_finish_all
 /* 0000AF38 3860000F */ li r3, 0xf
-/* 0000AF3C 4BFF5229 */ bl ev_run_init
+/* 0000AF3C 4BFF5229 */ bl event_start
 /* 0000AF40 38600003 */ li r3, 3
-/* 0000AF44 4BFF5221 */ bl ev_run_init
+/* 0000AF44 4BFF5221 */ bl event_start
 /* 0000AF48 3860003B */ li r3, 0x3b
 /* 0000AF4C 4BFF5219 */ bl camera_set_state
 /* 0000AF50 3C800000 */ lis r4, currentBallStructPtr@ha
@@ -11702,7 +11702,7 @@ lbl_0000B03C:
 /* 0000B064 94030000 */ stwu r0, modeCtrl@l(r3)
 /* 0000B068 3800001E */ li r0, 0x1e
 /* 0000B06C 90030018 */ stw r0, 0x18(r3)
-/* 0000B070 4BFF50F5 */ bl event_clear
+/* 0000B070 4BFF50F5 */ bl event_finish_all
 /* 0000B074 4BFF50F1 */ bl func_80044920
 /* 0000B078 3C60AAAB */ lis r3, 0xaaab
 /* 0000B07C A89F0148 */ lha r4, 0x148(r31)
@@ -11722,33 +11722,33 @@ lbl_0000B03C:
 /* 0000B0B4 3B7F0148 */ addi r27, r31, 0x148
 /* 0000B0B8 4BFF50AD */ bl load_stage
 /* 0000B0BC 38600001 */ li r3, 1
-/* 0000B0C0 4BFF50A5 */ bl ev_run_init
+/* 0000B0C0 4BFF50A5 */ bl event_start
 /* 0000B0C4 38600002 */ li r3, 2
-/* 0000B0C8 4BFF509D */ bl ev_run_init
+/* 0000B0C8 4BFF509D */ bl event_start
 /* 0000B0CC 38600003 */ li r3, 3
-/* 0000B0D0 4BFF5095 */ bl ev_run_init
+/* 0000B0D0 4BFF5095 */ bl event_start
 /* 0000B0D4 38600004 */ li r3, 4
-/* 0000B0D8 4BFF508D */ bl ev_run_init
+/* 0000B0D8 4BFF508D */ bl event_start
 /* 0000B0DC 38600005 */ li r3, 5
-/* 0000B0E0 4BFF5085 */ bl ev_run_init
+/* 0000B0E0 4BFF5085 */ bl event_start
 /* 0000B0E4 38600007 */ li r3, 7
-/* 0000B0E8 4BFF507D */ bl ev_run_init
+/* 0000B0E8 4BFF507D */ bl event_start
 /* 0000B0EC 3860000F */ li r3, 0xf
-/* 0000B0F0 4BFF5075 */ bl ev_run_init
+/* 0000B0F0 4BFF5075 */ bl event_start
 /* 0000B0F4 38600010 */ li r3, 0x10
-/* 0000B0F8 4BFF506D */ bl ev_run_init
+/* 0000B0F8 4BFF506D */ bl event_start
 /* 0000B0FC 38600012 */ li r3, 0x12
-/* 0000B100 4BFF5065 */ bl ev_run_init
+/* 0000B100 4BFF5065 */ bl event_start
 /* 0000B104 3860000D */ li r3, 0xd
-/* 0000B108 4BFF505D */ bl ev_run_init
+/* 0000B108 4BFF505D */ bl event_start
 /* 0000B10C 38600014 */ li r3, 0x14
-/* 0000B110 4BFF5055 */ bl ev_run_init
+/* 0000B110 4BFF5055 */ bl event_start
 /* 0000B114 38600013 */ li r3, 0x13
-/* 0000B118 4BFF504D */ bl ev_run_init
+/* 0000B118 4BFF504D */ bl event_start
 /* 0000B11C 38600009 */ li r3, 9
-/* 0000B120 4BFF5045 */ bl ev_run_init
+/* 0000B120 4BFF5045 */ bl event_start
 /* 0000B124 3860000B */ li r3, 0xb
-/* 0000B128 4BFF503D */ bl ev_run_init
+/* 0000B128 4BFF503D */ bl event_start
 /* 0000B12C 3C600000 */ lis r3, currStageId@ha
 /* 0000B130 38630000 */ addi r3, r3, currStageId@l
 /* 0000B134 A8630000 */ lha r3, 0(r3)
@@ -11865,7 +11865,7 @@ lbl_0000B2B4:
 /* 0000B2C8 8819002E */ lbz r0, 0x2e(r25)
 /* 0000B2CC 7C000774 */ extsb r0, r0
 /* 0000B2D0 B001001C */ sth r0, 0x1c(r1)
-/* 0000B2D4 4BFF4E91 */ bl func_8004CF08
+/* 0000B2D4 4BFF4E91 */ bl g_create_pickup_item
 lbl_0000B2D8:
 /* 0000B2D8 3AF70001 */ addi r23, r23, 1
 /* 0000B2DC 3B3901A4 */ addi r25, r25, 0x1a4
@@ -13429,34 +13429,34 @@ lbl_0000C928:
 /* 0000C96C 90030000 */ stw r0, modeCtrl@l(r3)
 /* 0000C970 38600100 */ li r3, 0x100
 /* 0000C974 4BFF37F1 */ bl g_start_screen_fade
-/* 0000C978 4BFF37ED */ bl event_clear
+/* 0000C978 4BFF37ED */ bl event_finish_all
 /* 0000C97C 4BFF37E9 */ bl func_80044920
 /* 0000C980 3C600000 */ lis r3, currStageId@ha
 /* 0000C984 3BA30000 */ addi r29, r3, currStageId@l
 /* 0000C988 A87D0000 */ lha r3, 0(r29)
 /* 0000C98C 4BFF37D9 */ bl load_stage
 /* 0000C990 38600001 */ li r3, 1
-/* 0000C994 4BFF37D1 */ bl ev_run_init
+/* 0000C994 4BFF37D1 */ bl event_start
 /* 0000C998 38600004 */ li r3, 4
-/* 0000C99C 4BFF37C9 */ bl ev_run_init
+/* 0000C99C 4BFF37C9 */ bl event_start
 /* 0000C9A0 38600005 */ li r3, 5
-/* 0000C9A4 4BFF37C1 */ bl ev_run_init
+/* 0000C9A4 4BFF37C1 */ bl event_start
 /* 0000C9A8 3860000F */ li r3, 0xf
-/* 0000C9AC 4BFF37B9 */ bl ev_run_init
+/* 0000C9AC 4BFF37B9 */ bl event_start
 /* 0000C9B0 38600010 */ li r3, 0x10
-/* 0000C9B4 4BFF37B1 */ bl ev_run_init
+/* 0000C9B4 4BFF37B1 */ bl event_start
 /* 0000C9B8 38600012 */ li r3, 0x12
-/* 0000C9BC 4BFF37A9 */ bl ev_run_init
+/* 0000C9BC 4BFF37A9 */ bl event_start
 /* 0000C9C0 3860000D */ li r3, 0xd
-/* 0000C9C4 4BFF37A1 */ bl ev_run_init
+/* 0000C9C4 4BFF37A1 */ bl event_start
 /* 0000C9C8 38600014 */ li r3, 0x14
-/* 0000C9CC 4BFF3799 */ bl ev_run_init
+/* 0000C9CC 4BFF3799 */ bl event_start
 /* 0000C9D0 38600013 */ li r3, 0x13
-/* 0000C9D4 4BFF3791 */ bl ev_run_init
+/* 0000C9D4 4BFF3791 */ bl event_start
 /* 0000C9D8 38600009 */ li r3, 9
-/* 0000C9DC 4BFF3789 */ bl ev_run_init
+/* 0000C9DC 4BFF3789 */ bl event_start
 /* 0000C9E0 3860000B */ li r3, 0xb
-/* 0000C9E4 4BFF3781 */ bl ev_run_init
+/* 0000C9E4 4BFF3781 */ bl event_start
 /* 0000C9E8 A87D0000 */ lha r3, 0(r29)
 /* 0000C9EC 4BFF3779 */ bl func_80021DB4
 /* 0000C9F0 4BFF3775 */ bl func_800972CC
@@ -16359,7 +16359,7 @@ lbl_0000F3EC:
 /* 0000F41C 3861000C */ addi r3, r1, 0xc
 /* 0000F420 881E0000 */ lbz r0, 0(r30)
 /* 0000F424 B0010020 */ sth r0, 0x20(r1)
-/* 0000F428 4BFF0D3D */ bl func_8004CF08
+/* 0000F428 4BFF0D3D */ bl g_create_pickup_item
 /* 0000F42C 48000084 */ b lbl_0000F4B0
 lbl_0000F430:
 /* 0000F430 A87E0004 */ lha r3, 4(r30)
@@ -16437,7 +16437,7 @@ lbl_0000F50C:
 /* 0000F53C 386100D8 */ addi r3, r1, 0xd8
 /* 0000F540 881F0000 */ lbz r0, 0(r31)
 /* 0000F544 B00100EC */ sth r0, 0xec(r1)
-/* 0000F548 4BFF0C1D */ bl func_8004CF08
+/* 0000F548 4BFF0C1D */ bl g_create_pickup_item
 /* 0000F54C C03F000C */ lfs f1, 0xc(r31)
 /* 0000F550 C01E0008 */ lfs f0, 8(r30)
 /* 0000F554 FC010040 */ fcmpo cr0, f1, f0
@@ -16528,7 +16528,7 @@ lbl_0000F660:
 /* 0000F690 3861000C */ addi r3, r1, 0xc
 /* 0000F694 881F0000 */ lbz r0, 0(r31)
 /* 0000F698 B0010020 */ sth r0, 0x20(r1)
-/* 0000F69C 4BFF0AC9 */ bl func_8004CF08
+/* 0000F69C 4BFF0AC9 */ bl g_create_pickup_item
 lbl_0000F6A0:
 /* 0000F6A0 A87F0004 */ lha r3, 4(r31)
 /* 0000F6A4 3803FFFF */ addi r0, r3, -1  ;# fixed addi
@@ -16586,7 +16586,7 @@ lbl_0000F73C:
 /* 0000F764 38610098 */ addi r3, r1, 0x98
 /* 0000F768 881D0000 */ lbz r0, 0(r29)
 /* 0000F76C B00100AC */ sth r0, 0xac(r1)
-/* 0000F770 4BFF09F5 */ bl func_8004CF08
+/* 0000F770 4BFF09F5 */ bl g_create_pickup_item
 /* 0000F774 C03D000C */ lfs f1, 0xc(r29)
 /* 0000F778 C01E0008 */ lfs f0, 8(r30)
 /* 0000F77C FC010040 */ fcmpo cr0, f1, f0
@@ -16678,7 +16678,7 @@ lbl_0000F88C:
 /* 0000F8BC 386100D8 */ addi r3, r1, 0xd8
 /* 0000F8C0 881F0000 */ lbz r0, 0(r31)
 /* 0000F8C4 B00100EC */ sth r0, 0xec(r1)
-/* 0000F8C8 4BFF089D */ bl func_8004CF08
+/* 0000F8C8 4BFF089D */ bl g_create_pickup_item
 /* 0000F8CC C03F000C */ lfs f1, 0xc(r31)
 /* 0000F8D0 C01E0008 */ lfs f0, 8(r30)
 /* 0000F8D4 FC010040 */ fcmpo cr0, f1, f0
@@ -17624,7 +17624,7 @@ lbl_00010664:
 /* 000106AC 90A1005C */ stw r5, 0x5c(r1)
 /* 000106B0 90810060 */ stw r4, 0x60(r1)
 /* 000106B4 90010064 */ stw r0, 0x64(r1)
-/* 000106B8 4BFEFAAD */ bl func_8004CF08
+/* 000106B8 4BFEFAAD */ bl g_create_pickup_item
 /* 000106BC 7FC3F378 */ mr r3, r30
 /* 000106C0 4BFFDAF5 */ bl lbl_0000E1B4
 /* 000106C4 9BBE0003 */ stb r29, 3(r30)
@@ -18158,7 +18158,7 @@ lbl_00010E24:
 /* 00010EB0 90A100B8 */ stw r5, 0xb8(r1)
 /* 00010EB4 908100BC */ stw r4, 0xbc(r1)
 /* 00010EB8 900100C0 */ stw r0, 0xc0(r1)
-/* 00010EBC 4BFEF2A9 */ bl func_8004CF08
+/* 00010EBC 4BFEF2A9 */ bl g_create_pickup_item
 /* 00010EC0 7FA3EB78 */ mr r3, r29
 /* 00010EC4 4BFFD2F1 */ bl lbl_0000E1B4
 /* 00010EC8 9BFD0003 */ stb r31, 3(r29)
@@ -21674,7 +21674,7 @@ lbl_0001415C:
 /* 00014310 EC02002A */ fadds f0, f2, f0
 /* 00014314 EC010032 */ fmuls f0, f1, f0
 /* 00014318 D0010034 */ stfs f0, 0x34(r1)
-/* 0001431C 4BFEBE49 */ bl func_8004CF08
+/* 0001431C 4BFEBE49 */ bl g_create_pickup_item
 /* 00014320 A81D0006 */ lha r0, 6(r29)
 /* 00014324 2C000002 */ cmpwi r0, 2
 /* 00014328 41820008 */ beq lbl_00014330
@@ -22222,7 +22222,7 @@ lbl_00014A2C:
 /* 00014B2C D0010038 */ stfs f0, 0x38(r1)
 /* 00014B30 C0010038 */ lfs f0, 0x38(r1)
 /* 00014B34 D001003C */ stfs f0, 0x3c(r1)
-/* 00014B38 4BFEB62D */ bl func_8004CF08
+/* 00014B38 4BFEB62D */ bl g_create_pickup_item
 lbl_00014B3C:
 /* 00014B3C A81D0006 */ lha r0, 6(r29)
 /* 00014B40 2C000001 */ cmpwi r0, 1
