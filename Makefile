@@ -115,7 +115,7 @@ SOURCES := \
 	src/item_pilot.c \
 	asm/stobj.s \
 	src/sprite.c \
-	asm/sprite.s \
+	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	asm/code_3.s \

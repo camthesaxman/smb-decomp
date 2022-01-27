@@ -3244,25 +3244,7 @@ void ev_memcard_dest(void)
     replayFileInfo = NULL;
 }
 
-struct
-{
-    u32 unk0;
-    float unk4;
-    float unk8;
-    float unkC;
-    float unk10;
-    float unk14;
-    float unk18;
-    float unk1C;
-    float unk20;
-    float unk24;
-    u32 unk28;
-    float unk2C;
-    u32 unk30;
-    u32 unk34;
-    u32 unk38;
-    u32 unk3C;
-} lbl_801D5724 =
+struct Struct801F3DC0 lbl_801D5724 =
 {
     0x4B,
     320.0f,
@@ -3276,8 +3258,8 @@ struct
     1.0f,
     0,  // unk28
     0.649999976158f,
-    0xFFFFFFFF,
-    0x0A,
+    -1,
+    10,
     0xFF000000,
     0,
 };
@@ -3612,5 +3594,3 @@ void func_800A4F04(void)
     func_800AFC4C(memcardGameData);
     lbl_802F22C8 = memcardGameData->unk5844.unk3BC;
 }
-
-u8 memcard_data_padding[0x14] = {0};

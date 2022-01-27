@@ -675,7 +675,7 @@ int func_80073084();
 void func_800730B4(void);
 void g_start_screen_fade(s32, int, int);
 // ? func_80073600();
-void func_80073828();
+int func_80073828(struct Struct801F3DC0 *);
 // ? func_80073E00();
 void func_80073E44(void);
 void func_80073EF8(void);

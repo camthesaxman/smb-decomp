@@ -35,7 +35,6 @@ FORCEACTIVE
     free_model
     func_8008E5F8 func_8008E64C set_mesh_render_flags_in_model
     mathutil_alignment
-    memcard_data_padding
     lbl_8028FE58
     fontStrArray alignStrArray lbl_801C0B94 lbl_801C0D24
     lbl_801EED98
@@ -44,14 +43,4 @@ FORCEACTIVE
     lbl_802F1FD4
 }
 
-FORCEFILES { game.o __init_cpp_exceptions.o camera.o }
-
-mathutil_sin_ = mathutil_sin;
-
-/* sprite.s */
-lbl_802F4A70 = 0x802F4A70;
-lbl_802F4A78 = 0x802F4A78;
-lbl_802F4A98 = 0x802F4A98;
-lbl_802F4ABC = 0x802F4ABC;
-lbl_802F4AC8 = 0x802F4AC8;
-lbl_802F4AF8 = 0x802F4AF8;
+FORCEFILES { __init_cpp_exceptions.o camera.o }
