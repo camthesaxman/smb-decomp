@@ -13203,8 +13203,6 @@ lbl_801EFC88:
 .global lbl_801EFC94
 lbl_801EFC94:
 	.skip 0x36C
-.global lbl_801F0000
-lbl_801F0000:
 	.skip 0x3C
 .global lbl_801F003C
 lbl_801F003C:

@@ -475,6 +475,23 @@ clean:
 	find . -name '*.dep' -exec rm {} +
 	find . -name '*.dump' -exec rm {} +
 
+#-------------------------------------------------------------------------------
+# Test Recipes
+#-------------------------------------------------------------------------------
+
+EMULATOR ?= dolphin-emu-nogui
+DVD_ROOT := GMBE8P/files
+DVD_SYS  := GMBE8P/sys
+DVD_FILES := $(DVD_SYS)/main.dol $(addprefix $(DVD_ROOT)/test/,$(ALL_RELS))
+
+$(DVD_ROOT)/test/%.rel: %.rel
+	cp $< $@
+$(DVD_SYS)/main.dol: $(DOL)
+	cp $< $@
+
+test: $(DVD_FILES)
+	$(EMULATOR) $(DVD_SYS)/main.dol
+
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
 	libraries/os/__start.o \
