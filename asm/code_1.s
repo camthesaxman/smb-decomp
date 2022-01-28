@@ -2204,6 +2204,7 @@ lbl_80024B18:
 
 .section .sdata
 
+    .balign 8
 .global lbl_802F0310
 lbl_802F0310:
 	# ROM: 0x1EAA50
@@ -2333,6 +2334,7 @@ glabel string__test
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F2FF0
 lbl_802F2FF0:
 	# ROM: 0x1ECA10
@@ -2642,6 +2644,7 @@ glabel string_init_sel_lz
 
 .section .sbss
 
+    .balign 8
 .global lbl_802F1BE8
 lbl_802F1BE8:
 	.skip 0x8

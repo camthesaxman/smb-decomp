@@ -899,8 +899,8 @@ lbl_800132A0:
 /* 800132B0 0000F1D0  41 82 00 08 */	beq lbl_800132B8
 /* 800132B4 0000F1D4  48 07 15 0D */	bl func_800847C0
 lbl_800132B8:
-/* 800132B8 0000F1D8  3C 60 80 1F */	lis r3, 0x801f
-/* 800132BC 0000F1DC  84 83 3A 58 */	lwzu r4, 0x3a58(r3)
+/* 800132B8 0000F1D8  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
+/* 800132BC 0000F1DC  84 83 3A 58 */	lwzu r4, lbl_801F3A58@l(r3)
 /* 800132C0 0000F1E0  54 80 07 FF */	clrlwi. r0, r4, 0x1f
 /* 800132C4 0000F1E4  41 82 00 18 */	beq lbl_800132DC
 /* 800132C8 0000F1E8  54 80 00 3C */	rlwinm r0, r4, 0, 0, 0x1e
@@ -1000,9 +1000,9 @@ lbl_800133F4:
 /* 80013418 0000F338  38 60 01 28 */	li r3, 0x128
 /* 8001341C 0000F33C  48 01 81 89 */	bl g_play_sound
 lbl_80013420:
-/* 80013420 0000F340  3C 60 80 1F */	lis r3, lbl_801F003C@ha
-/* 80013424 0000F344  84 03 EC 20 */	lwzu r0, -0x13e0(r3)
-/* 80013428 0000F348  90 03 00 3C */	stw r0, lbl_801F003C@l(r3)
+/* 80013420 0000F340  3C 60 80 1F */	lis r3, modeCtrl@ha
+/* 80013424 0000F344  84 03 EC 20 */	lwzu r0, modeCtrl@l(r3)
+/* 80013428 0000F348  90 03 00 3C */	stw r0, 0x3C(r3)
 /* 8001342C 0000F34C  48 00 3B D9 */	bl func_80017004
 /* 80013430 0000F350  3B E3 00 00 */	addi r31, r3, 0
 /* 80013434 0000F354  2C 1F FF FF */	cmpwi r31, -1
@@ -4585,8 +4585,8 @@ submode_game_result_main_func:
 /* 8001673C 0001265C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80016740 00012660  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80016744 00012664  40 82 05 D8 */	bne lbl_80016D1C
-/* 80016748 00012668  3C 60 80 1F */	lis r3, 0x801f
-/* 8001674C 0001266C  84 03 EC 20 */	lwzu r0, -0x13e0(r3)
+/* 80016748 00012668  3C 60 80 1F */	lis r3, modeCtrl@ha
+/* 8001674C 0001266C  84 03 EC 20 */	lwzu r0, modeCtrl@l(r3)
 /* 80016750 00012670  2C 00 00 B4 */	cmpwi r0, 0xb4
 /* 80016754 00012674  40 82 03 1C */	bne lbl_80016A70
 /* 80016758 00012678  38 63 00 24 */	addi r3, r3, 0x24
@@ -5742,6 +5742,7 @@ glabel string_k_CHU_
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F2BA0
 lbl_802F2BA0:
 	# ROM: 0x1EC5C0
@@ -5846,6 +5847,7 @@ lbl_802F2C10:
 
 .section .data
 
+    .balign 8
 .global lbl_801755F8
 lbl_801755F8:
 	# ROM: 0x1725F8
@@ -6228,6 +6230,7 @@ lbl_8011021C:
 
 .section .bss
 
+    .balign 8
 .global lbl_801EEDA8
 lbl_801EEDA8:
 	.skip 0x118

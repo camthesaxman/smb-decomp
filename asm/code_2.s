@@ -2932,6 +2932,7 @@ lbl_80030AB4:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F3270
 lbl_802F3270:
 	# ROM: 0x1ECC90
@@ -3033,6 +3034,7 @@ lbl_802F32E0:
 
 .section .data
 
+    .balign 8
 .global lbl_801B3B18
 lbl_801B3B18:
 	# ROM: 0x1B0B18
@@ -6820,6 +6822,7 @@ lbl_801B7978:
 
 .section .sdata
 
+    .balign 8
 .global lbl_802F0820
 lbl_802F0820:
 	# ROM: 0x1EAF60

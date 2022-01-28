@@ -2374,6 +2374,7 @@ setup_vtx_attrib_fmt:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F2F50
 lbl_802F2F50:
 	# ROM: 0x1EC970
@@ -2535,6 +2536,7 @@ lbl_802F2FE8:
 
 .section .rodata
 
+    .balign 8
 .global lbl_80110260
 lbl_80110260:
 	# ROM: 0x10D260
@@ -2593,8 +2595,7 @@ lbl_80110310:
 
 .section .data
 
-	.4byte 0
-
+	.balign 8
 .global lbl_80177358
 lbl_80177358:
 	# ROM: 0x174358
@@ -13204,8 +13205,6 @@ lbl_801EFC88:
 lbl_801EFC94:
 	.skip 0x36C
 	.skip 0x3C
-.global lbl_801F003C
-lbl_801F003C:
 	.skip 0x5D8
 .global lbl_801F0614
 lbl_801F0614:

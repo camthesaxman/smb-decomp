@@ -6624,6 +6624,7 @@ lbl_800439E4:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F3608
 lbl_802F3608:
 	# ROM: 0x1ED028
@@ -7403,6 +7404,7 @@ lbl_801B86A8:
 
 .section .bss
 
+    .balign 8
 .global lbl_80206BF0
 lbl_80206BF0:
 	.skip 0x100

@@ -8014,6 +8014,7 @@ gamePauseStatus:
 
 .section .bss
 
+    .balign 8
 .global perfInfo
 perfInfo:
 	.skip 0x4
@@ -12750,6 +12751,7 @@ glabel lbl_801147F4
 
 .section .data
 
+    .balign 8
 .global lbl_801AC960
 lbl_801AC960:
 	# ROM: 0x1A9960
@@ -16535,6 +16537,8 @@ glabel string_can_t_allocate_stream_n
 	.4byte 0
 
 .section .sdata
+
+    .balign 8
 glabel string_GRPse04
 	.asciz "GRPse04"
 glabel string_allse
