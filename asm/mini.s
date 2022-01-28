@@ -64,7 +64,7 @@ submode_mini_game_init_func:
 /* 80093AD0 0008F9F0  48 00 00 E5 */	bl func_80093BB4
 lbl_80093AD4:
 /* 80093AD4 0008F9F4  4B F7 79 89 */	bl event_finish_all
-/* 80093AD8 0008F9F8  4B FD CB 0D */	bl g_something_with_iteratively_freeing_memory
+/* 80093AD8 0008F9F8  4B FD CB 0D */	bl free_all_bitmap_groups_except_com
 /* 80093ADC 0008F9FC  4B F9 0E F9 */	bl func_800249D4
 /* 80093AE0 0008FA00  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
 /* 80093AE4 0008FA04  3C 60 80 1D */	lis r3, lbl_801D3BD0@ha
@@ -157,7 +157,7 @@ submode_mini_select_init_func:
 /* 80093C00 0008FB20  90 01 00 04 */	stw r0, 4(r1)
 /* 80093C04 0008FB24  94 21 FF F8 */	stwu r1, -8(r1)
 /* 80093C08 0008FB28  4B F7 78 55 */	bl event_finish_all
-/* 80093C0C 0008FB2C  4B FD C9 D9 */	bl g_something_with_iteratively_freeing_memory
+/* 80093C0C 0008FB2C  4B FD C9 D9 */	bl free_all_bitmap_groups_except_com
 /* 80093C10 0008FB30  38 60 FF FF */	li r3, -1
 /* 80093C14 0008FB34  38 80 00 01 */	li r4, 1
 /* 80093C18 0008FB38  4B F9 93 21 */	bl func_8002CF38

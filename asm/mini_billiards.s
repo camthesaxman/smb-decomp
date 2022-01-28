@@ -142,7 +142,7 @@ lbl_000001E0:
 /* 0000025C 901E00A0 */ stw r0, 0xa0(r30)
 lbl_00000260:
 /* 00000260 4BFFFED5 */ bl event_finish_all
-/* 00000264 4BFFFED1 */ bl g_something_with_iteratively_freeing_memory
+/* 00000264 4BFFFED1 */ bl free_all_bitmap_groups_except_com
 /* 00000268 4BFFFECD */ bl func_800249D4
 /* 0000026C 3C600000 */ lis r3, memHeap2@ha
 /* 00000270 3B830000 */ addi r28, r3, memHeap2@l
@@ -154,7 +154,7 @@ lbl_00000260:
 /* 00000288 7F63DB78 */ mr r3, r27
 /* 0000028C 4BFFFEA9 */ bl OSSetCurrentHeap
 /* 00000290 38600008 */ li r3, 8
-/* 00000294 4BFFFEA1 */ bl call_something_with_bmp_bmp_com
+/* 00000294 4BFFFEA1 */ bl call_bitmap_load_group
 /* 00000298 807C0000 */ lwz r3, 0(r28)
 /* 0000029C 4BFFFE99 */ bl OSSetCurrentHeap
 /* 000002A0 3B830000 */ addi r28, r3, 0

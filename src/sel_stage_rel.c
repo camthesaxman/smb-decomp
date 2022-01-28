@@ -6,6 +6,7 @@
 
 #include "global.h"
 #include "background.h"
+#include "bitmap.h"
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
@@ -66,10 +67,10 @@ static void sel_stage_init(void)
 
     func_8002FFEC();
     event_finish_all();
-    g_something_with_iteratively_freeing_memory();
+    free_all_bitmap_groups_except_com();
     func_800569B4(loadingStageIdRequest);
     load_stage(loadingStageIdRequest);
-    call_something_with_bmp_bmp_com(5);
+    call_bitmap_load_group(BMP_NML);
     preload_stage_files(loadingStageIdRequest);
     lbl_0000185D = loadingStageIdRequest;
 

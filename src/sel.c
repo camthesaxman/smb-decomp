@@ -116,7 +116,7 @@ char *selSubmodeRelNames[] =
 void submode_sel_init_func(void)
 {
     event_finish_all();
-    g_something_with_iteratively_freeing_memory();
+    free_all_bitmap_groups_except_com();
     relocation_load_module(selSubmodeRelNames[gameSubmode - SMD_SEL_TOP], &lbl_802F1BD8);
     lbl_802F1B7C = unload_sel_submode_rel;
 }

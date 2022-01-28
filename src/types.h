@@ -584,22 +584,22 @@ struct StageSelection
     s32 levelNum;
 };
 
-struct SpriteRequest
+struct NaomiSpriteParams
 {
-    s32 bmpId;
-    float unk4;
-    float unk8;
-    float unkC;
-    float unk10;
-    float unk14;
-    float unk18;
-    float unk1C;
-    float unk20;
-    float unk24;
-    u32 unk28;
-    float unk2C;
+    /*0x00*/ s32 bmpId;
+    /*0x04*/ float x;
+    /*0x08*/ float y;
+    /*0x0C*/ float z;
+    /*0x10*/ float zoomX;
+    /*0x14*/ float zoomY;
+    /*0x18*/ float u1;
+    /*0x1C*/ float v1;
+    /*0x20*/ float u2;
+    /*0x24*/ float v2;
+    /*0x28*/ u32 rotation;
+    /*0x2C*/ float alpha;
     s32 unk30;
-    u32 unk34;
+    /*0x34*/ u32 flags;
     u32 unk38;
     u32 unk3C;
     u8 filler40[0x50-0x40];

@@ -113,13 +113,13 @@ void submode_adv_logo_init_func(void)
     func_80021DB4(0);
     lbl_80206BC0[0] = 0;
     event_finish_all();
-    g_something_with_iteratively_freeing_memory();
+    free_all_bitmap_groups_except_com();
     event_start(EVENT_CAMERA);
     event_start(EVENT_SPRITE);
     event_start(EVENT_SOUND);
     camera_set_state(27);
     unload_stage();
-    call_something_with_bmp_bmp_com(1);
+    call_bitmap_load_group(BMP_ADV);
     func_800767D0();
     g_play_sound(0x21);
     preload_stage_files(ST_001_PLAIN);
@@ -287,7 +287,7 @@ void submode_adv_demo_init_func(void)
     load_stage(ST_099_JUNGLE_BG);
     func_8002FFEC();
     event_finish_all();
-    g_something_with_iteratively_freeing_memory();
+    free_all_bitmap_groups_except_com();
     for (i = 0; i < 4; i++)
         spritePoolInfo.unkC[i] = 2;
     modeCtrl.playerCount = 1;
@@ -324,7 +324,7 @@ void submode_adv_demo_init_func(void)
         lbl_80206BF0[i].unk8 = 1;
     }
     camera_set_state(29);
-    call_something_with_bmp_bmp_com(1);
+    call_bitmap_load_group(BMP_ADV);
     func_80076620(0);
     func_80076C54(0);
     func_8002CF38(2, 0);
@@ -1241,7 +1241,7 @@ void submode_adv_title_init_func(void)
     event_finish(EVENT_REND_EFC);
     event_finish(EVENT_BACKGROUND);
     func_80076620(2);
-    if (lbl_80290170.unk8 != 0)
+    if (screenFadeInfo.unk8 != 0)
         g_start_screen_fade(0x100, 0, 30);
     file_preload("bmp/bmp_sel.tpl");
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
@@ -1263,12 +1263,12 @@ void submode_adv_title_reinit_func(void)
     func_80021DB4(0);
     lbl_80206BC0[0] = 0;
     event_finish_all();
-    g_something_with_iteratively_freeing_memory();
+    free_all_bitmap_groups_except_com();
     event_start(EVENT_SPRITE);
     event_start(EVENT_SOUND);
     camera_set_state(27);
     unload_stage();
-    call_something_with_bmp_bmp_com(1);
+    call_bitmap_load_group(BMP_ADV);
     func_80076DCC(1);
     if (dipSwitches & DIP_DEBUG)
         func_80076620(2);
@@ -1402,7 +1402,7 @@ void submode_adv_info_init_func(void)
     ballInfo[0].state = 16;
     ballInfo[0].bananas = 0;
     camera_set_state(43);
-    call_something_with_bmp_bmp_com(5);
+    call_bitmap_load_group(BMP_NML);
     func_80076620(0);
     func_80076C54(0);
     if (!(modeCtrl.levelSetFlags & (1 << 13)))
@@ -1700,7 +1700,7 @@ void submode_adv_game_ready_init_func(void)
     g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
     currStageId = sp8.stageId;
     event_finish_all();
-    call_something_with_bmp_bmp_com(3);
+    call_bitmap_load_group(BMP_RNK);
     modeCtrl.unk28 = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
@@ -2047,7 +2047,7 @@ void submode_adv_ranking_main_func(void)
         func_8008897C(1);
         func_80088FD4(1);
         destroy_sprite_with_tag(3);
-        func_800705C4(3);
+        call_bitmap_free_group(BMP_RNK);
         camera_setup_singleplayer_viewport();
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
     }

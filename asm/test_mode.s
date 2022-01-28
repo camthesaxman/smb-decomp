@@ -3084,10 +3084,10 @@ lbl_00002C8C:
 /* 00002C94 41820508 */ beq lbl_0000319C
 /* 00002C98 2C030000 */ cmpwi r3, 0
 /* 00002C9C 41820008 */ beq lbl_00002CA4
-/* 00002CA0 4BFFD4BD */ bl func_800705C4
+/* 00002CA0 4BFFD4BD */ bl call_bitmap_free_group
 lbl_00002CA4:
 /* 00002CA4 7FA3EB78 */ mr r3, r29
-/* 00002CA8 4BFFD4B5 */ bl call_something_with_bmp_bmp_com
+/* 00002CA8 4BFFD4B5 */ bl call_bitmap_load_group
 /* 00002CAC 807E0008 */ lwz r3, 8(r30)
 /* 00002CB0 38000000 */ li r0, 0
 /* 00002CB4 93A30000 */ stw r29, 0(r3)
@@ -3674,7 +3674,7 @@ lbl_00003458:
 /* 000034B8 C8010088 */ lfd f0, 0x88(r1)
 /* 000034BC EC000828 */ fsubs f0, f0, f1
 /* 000034C0 D0010010 */ stfs f0, 0x10(r1)
-/* 000034C4 4BFFCC99 */ bl func_80073828
+/* 000034C4 4BFFCC99 */ bl draw_naomi_sprite
 /* 000034C8 3B5A0001 */ addi r26, r26, 1
 /* 000034CC 2C1A0008 */ cmpwi r26, 8
 /* 000034D0 3BDE0008 */ addi r30, r30, 8
@@ -3744,7 +3744,7 @@ lbl_000034DC:
 /* 000035CC 5080821E */ rlwimi r0, r4, 0x10, 8, 0xf
 /* 000035D0 7CA00378 */ or r0, r5, r0
 /* 000035D4 90010044 */ stw r0, 0x44(r1)
-/* 000035D8 4BFFCB85 */ bl func_80073828
+/* 000035D8 4BFFCB85 */ bl draw_naomi_sprite
 lbl_000035DC:
 /* 000035DC 3C600000 */ lis r3, controllerInfo@ha
 /* 000035E0 A0030000 */ lhz r0, controllerInfo@l(r3)
@@ -3908,7 +3908,7 @@ lbl_00003838:
 /* 00003844 80630000 */ lwz r3, 0(r3)
 /* 00003848 2C030000 */ cmpwi r3, 0
 /* 0000384C 41820008 */ beq lbl_00003854
-/* 00003850 4BFFC90D */ bl func_800705C4
+/* 00003850 4BFFC90D */ bl call_bitmap_free_group
 lbl_00003854:
 /* 00003854 3B9C0001 */ addi r28, r28, 1
 /* 00003858 1C1C000C */ mulli r0, r28, 0xc
@@ -3923,7 +3923,7 @@ lbl_00003870:
 /* 00003878 80630000 */ lwz r3, 0(r3)
 /* 0000387C 2C030000 */ cmpwi r3, 0
 /* 00003880 41820008 */ beq lbl_00003888
-/* 00003884 4BFFC8D9 */ bl call_something_with_bmp_bmp_com
+/* 00003884 4BFFC8D9 */ bl call_bitmap_load_group
 lbl_00003888:
 /* 00003888 A01D0000 */ lhz r0, 0(r29)
 /* 0000388C 540007FF */ clrlwi. r0, r0, 0x1f
@@ -3952,7 +3952,7 @@ lbl_000038D4:
 /* 000038E0 80630000 */ lwz r3, 0(r3)
 /* 000038E4 2C030000 */ cmpwi r3, 0
 /* 000038E8 41820008 */ beq lbl_000038F0
-/* 000038EC 4BFFC871 */ bl func_800705C4
+/* 000038EC 4BFFC871 */ bl call_bitmap_free_group
 lbl_000038F0:
 /* 000038F0 379CFFFF */ addic. r28, r28, -1  ;# fixed addi
 /* 000038F4 40800028 */ bge lbl_0000391C
@@ -3973,7 +3973,7 @@ lbl_0000391C:
 /* 00003924 80630000 */ lwz r3, 0(r3)
 /* 00003928 2C030000 */ cmpwi r3, 0
 /* 0000392C 41820008 */ beq lbl_00003934
-/* 00003930 4BFFC82D */ bl call_something_with_bmp_bmp_com
+/* 00003930 4BFFC82D */ bl call_bitmap_load_group
 lbl_00003934:
 /* 00003934 801E00B8 */ lwz r0, 0xb8(r30)
 /* 00003938 7C1C0000 */ cmpw r28, r0
@@ -4176,7 +4176,7 @@ lbl_00003B30:
 /* 00003C10 9001003C */ stw r0, 0x3c(r1)
 /* 00003C14 90810040 */ stw r4, 0x40(r1)
 /* 00003C18 90A10044 */ stw r5, 0x44(r1)
-/* 00003C1C 4BFFC541 */ bl func_80073828
+/* 00003C1C 4BFFC541 */ bl draw_naomi_sprite
 lbl_00003C20:
 /* 00003C20 BB410058 */ lmw r26, 0x58(r1)
 /* 00003C24 80010074 */ lwz r0, 0x74(r1)
@@ -9401,7 +9401,7 @@ lbl_000086D0:
 /* 000086E4 3B5A0001 */ addi r26, r26, 1
 /* 000086E8 2C1A00C8 */ cmpwi r26, 0xc8
 /* 000086EC 40810018 */ ble lbl_00008704
-/* 000086F0 4BFF7A6D */ bl dest_all_sprites
+/* 000086F0 4BFF7A6D */ bl destroy_all_sprites
 /* 000086F4 801C0000 */ lwz r0, 0(r28)
 /* 000086F8 540007B8 */ rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 000086FC 901C0000 */ stw r0, 0(r28)
@@ -9462,7 +9462,7 @@ lbl_000087BC:
 /* 000087C4 A0030018 */ lhz r0, 0x18(r3)
 /* 000087C8 540005AD */ rlwinm. r0, r0, 0, 0x16, 0x16
 /* 000087CC 41820014 */ beq lbl_000087E0
-/* 000087D0 4BFF798D */ bl dest_all_sprites
+/* 000087D0 4BFF798D */ bl destroy_all_sprites
 /* 000087D4 801C0000 */ lwz r0, 0(r28)
 /* 000087D8 540007B8 */ rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 000087DC 901C0000 */ stw r0, 0(r28)
@@ -9963,7 +9963,7 @@ lbl_00008EFC:
 /* 00008F04 A0030018 */ lhz r0, 0x18(r3)
 /* 00008F08 540005AD */ rlwinm. r0, r0, 0, 0x16, 0x16
 /* 00008F0C 41820014 */ beq lbl_00008F20
-/* 00008F10 4BFF724D */ bl dest_all_sprites
+/* 00008F10 4BFF724D */ bl destroy_all_sprites
 /* 00008F14 801C0000 */ lwz r0, 0(r28)
 /* 00008F18 540007B8 */ rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 00008F1C 901C0000 */ stw r0, 0(r28)

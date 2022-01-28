@@ -51,7 +51,7 @@ submode_game_first_init_func:
 /* 800126A8 0000E5C8  90 64 00 08 */	stw r3, 8(r4)
 /* 800126AC 0000E5CC  90 04 00 2C */	stw r0, 0x2c(r4)
 /* 800126B0 0000E5D0  4B FF 8D AD */	bl event_finish_all
-/* 800126B4 0000E5D4  48 05 DF 31 */	bl g_something_with_iteratively_freeing_memory
+/* 800126B4 0000E5D4  48 05 DF 31 */	bl free_all_bitmap_groups_except_com
 /* 800126B8 0000E5D8  48 01 23 1D */	bl func_800249D4
 /* 800126BC 0000E5DC  48 03 22 65 */	bl func_80044920
 /* 800126C0 0000E5E0  38 60 00 03 */	li r3, 3
@@ -59,7 +59,7 @@ submode_game_first_init_func:
 /* 800126C8 0000E5E8  38 60 00 12 */	li r3, 0x12
 /* 800126CC 0000E5EC  4B FF 8C 5D */	bl event_start
 /* 800126D0 0000E5F0  38 60 00 05 */	li r3, 5
-/* 800126D4 0000E5F4  48 05 DE D1 */	bl call_something_with_bmp_bmp_com
+/* 800126D4 0000E5F4  48 05 DE D1 */	bl call_bitmap_load_group
 /* 800126D8 0000E5F8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800126DC 0000E5FC  80 ED 9D 38 */	lwz r7, currentBallStructPtr@sda21(r13)
 /* 800126E0 0000E600  38 63 59 88 */	addi r3, r3, spritePoolInfo@l
@@ -267,14 +267,14 @@ submode_game_restart_init_func:
 /* 800129B4 0000E8D4  90 01 00 04 */	stw r0, 4(r1)
 /* 800129B8 0000E8D8  94 21 FF F8 */	stwu r1, -8(r1)
 /* 800129BC 0000E8DC  4B FF 8A A1 */	bl event_finish_all
-/* 800129C0 0000E8E0  48 05 DC 25 */	bl g_something_with_iteratively_freeing_memory
+/* 800129C0 0000E8E0  48 05 DC 25 */	bl free_all_bitmap_groups_except_com
 /* 800129C4 0000E8E4  48 03 1F 5D */	bl func_80044920
 /* 800129C8 0000E8E8  38 60 00 03 */	li r3, 3
 /* 800129CC 0000E8EC  4B FF 89 5D */	bl event_start
 /* 800129D0 0000E8F0  38 60 00 12 */	li r3, 0x12
 /* 800129D4 0000E8F4  4B FF 89 55 */	bl event_start
 /* 800129D8 0000E8F8  38 60 00 05 */	li r3, 5
-/* 800129DC 0000E8FC  48 05 DB C9 */	bl call_something_with_bmp_bmp_com
+/* 800129DC 0000E8FC  48 05 DB C9 */	bl call_bitmap_load_group
 /* 800129E0 0000E900  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800129E4 0000E904  80 CD 9D 38 */	lwz r6, currentBallStructPtr@sda21(r13)
 /* 800129E8 0000E908  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
@@ -3081,8 +3081,8 @@ lbl_80015184:
 lbl_80015194:
 /* 80015194 000110B4  38 60 00 78 */	li r3, 0x78
 /* 80015198 000110B8  48 06 8B 41 */	bl func_8007DCD8
-/* 8001519C 000110BC  3C 60 80 29 */	lis r3, lbl_80290170@ha
-/* 800151A0 000110C0  38 63 01 70 */	addi r3, r3, lbl_80290170@l
+/* 8001519C 000110BC  3C 60 80 29 */	lis r3, screenFadeInfo@ha
+/* 800151A0 000110C0  38 63 01 70 */	addi r3, r3, screenFadeInfo@l
 /* 800151A4 000110C4  80 03 00 08 */	lwz r0, 8(r3)
 /* 800151A8 000110C8  2C 00 00 00 */	cmpwi r0, 0
 /* 800151AC 000110CC  40 82 00 38 */	bne lbl_800151E4

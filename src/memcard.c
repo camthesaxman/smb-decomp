@@ -3246,7 +3246,7 @@ void ev_memcard_dest(void)
     replayFileInfo = NULL;
 }
 
-struct SpriteRequest lbl_801D5724 =
+struct NaomiSpriteParams lbl_801D5724 =
 {
     0x4B,
     320.0f,
@@ -3293,18 +3293,18 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     f1 = f30;
     f1 += 31.19999885559082;
     f2 += 38.40000057220459;
-    lbl_801D5724.unk4 = x;
-    lbl_801D5724.unk8 = y;
+    lbl_801D5724.x = x;
+    lbl_801D5724.y = y;
     {
         float var1 = f1;
         float var2 = f2;
         var1 *= 0.125;
         var2 *= 0.125;
-        lbl_801D5724.unk10 = var1;
-        lbl_801D5724.unk14 = var2;
-        lbl_801D5724.unk2C = 0.65 + 0.1 * lbl_802F1ECC;
+        lbl_801D5724.zoomX = var1;
+        lbl_801D5724.zoomY = var2;
+        lbl_801D5724.alpha = 0.65 + 0.1 * lbl_802F1ECC;
     }
-    func_80073828(&lbl_801D5724);
+    draw_naomi_sprite(&lbl_801D5724);
     for (i = 0; i < msg->numLines; i++)
     {
         float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);

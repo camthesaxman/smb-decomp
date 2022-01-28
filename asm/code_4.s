@@ -280,7 +280,7 @@ lbl_800AD584:
 /* 800AD590 000A94B0  3B 5A 00 04 */	addi r26, r26, 4
 /* 800AD594 000A94B4  41 80 FF 7C */	blt lbl_800AD510
 /* 800AD598 000A94B8  38 60 00 03 */	li r3, 3
-/* 800AD59C 000A94BC  4B FC 30 09 */	bl call_something_with_bmp_bmp_com
+/* 800AD59C 000A94BC  4B FC 30 09 */	bl call_bitmap_load_group
 /* 800AD5A0 000A94C0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800AD5A4 000A94C4  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800AD5A8 000A94C8  80 03 00 2C */	lwz r0, 0x2c(r3)
@@ -1276,7 +1276,7 @@ ev_name_entry_dest:
 /* 800AE3E8 000AA308  38 60 00 03 */	li r3, 3
 /* 800AE3EC 000AA30C  90 01 00 04 */	stw r0, 4(r1)
 /* 800AE3F0 000AA310  94 21 FF F8 */	stwu r1, -8(r1)
-/* 800AE3F4 000AA314  4B FC 21 D1 */	bl func_800705C4
+/* 800AE3F4 000AA314  4B FC 21 D1 */	bl call_bitmap_free_group
 /* 800AE3F8 000AA318  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800AE3FC 000AA31C  38 21 00 08 */	addi r1, r1, 8
 /* 800AE400 000AA320  7C 08 03 A6 */	mtlr r0
@@ -1485,7 +1485,7 @@ func_800AE408:
 /* 800AE720 000AA640  D0 01 00 24 */	stfs f0, 0x24(r1)
 /* 800AE724 000AA644  D0 61 00 28 */	stfs f3, 0x28(r1)
 /* 800AE728 000AA648  D0 61 00 2C */	stfs f3, 0x2c(r1)
-/* 800AE72C 000AA64C  4B FC 50 FD */	bl func_80073828
+/* 800AE72C 000AA64C  4B FC 50 FD */	bl draw_naomi_sprite
 /* 800AE730 000AA650  C0 21 00 0C */	lfs f1, 0xc(r1)
 /* 800AE734 000AA654  38 61 00 08 */	addi r3, r1, 8
 /* 800AE738 000AA658  C0 02 B8 24 */	lfs f0, lbl_802F6024@sda21(r2)
@@ -1500,7 +1500,7 @@ func_800AE408:
 /* 800AE75C 000AA67C  D0 21 00 28 */	stfs f1, 0x28(r1)
 /* 800AE760 000AA680  C0 02 B8 30 */	lfs f0, lbl_802F6030@sda21(r2)
 /* 800AE764 000AA684  D0 01 00 2C */	stfs f0, 0x2c(r1)
-/* 800AE768 000AA688  4B FC 50 C1 */	bl func_80073828
+/* 800AE768 000AA688  4B FC 50 C1 */	bl draw_naomi_sprite
 /* 800AE76C 000AA68C  C0 21 00 0C */	lfs f1, 0xc(r1)
 /* 800AE770 000AA690  38 61 00 08 */	addi r3, r1, 8
 /* 800AE774 000AA694  C0 02 B8 34 */	lfs f0, lbl_802F6034@sda21(r2)
@@ -1515,7 +1515,7 @@ func_800AE408:
 /* 800AE798 000AA6B8  D0 21 00 28 */	stfs f1, 0x28(r1)
 /* 800AE79C 000AA6BC  C0 02 B8 20 */	lfs f0, lbl_802F6020@sda21(r2)
 /* 800AE7A0 000AA6C0  D0 01 00 2C */	stfs f0, 0x2c(r1)
-/* 800AE7A4 000AA6C4  4B FC 50 85 */	bl func_80073828
+/* 800AE7A4 000AA6C4  4B FC 50 85 */	bl draw_naomi_sprite
 /* 800AE7A8 000AA6C8  88 98 00 2E */	lbz r4, 0x2e(r24)
 /* 800AE7AC 000AA6CC  3C 60 80 20 */	lis r3, lbl_80206BC0@ha
 /* 800AE7B0 000AA6D0  38 03 6B C0 */	addi r0, r3, lbl_80206BC0@l
@@ -1569,7 +1569,7 @@ func_800AE408:
 /* 800AE870 000AA790  D0 01 00 24 */	stfs f0, 0x24(r1)
 /* 800AE874 000AA794  D0 21 00 28 */	stfs f1, 0x28(r1)
 /* 800AE878 000AA798  D0 21 00 2C */	stfs f1, 0x2c(r1)
-/* 800AE87C 000AA79C  4B FC 4F AD */	bl func_80073828
+/* 800AE87C 000AA79C  4B FC 4F AD */	bl draw_naomi_sprite
 lbl_800AE880:
 /* 800AE880 000AA7A0  BA E1 01 14 */	lmw r23, 0x114(r1)
 /* 800AE884 000AA7A4  80 01 01 3C */	lwz r0, 0x13c(r1)
@@ -3014,7 +3014,7 @@ func_800AFCB0:
 /* 800AFCD4 000ABBF4  38 60 00 00 */	li r3, 0
 /* 800AFCD8 000ABBF8  4B FC 0A 79 */	bl destroy_sprite_with_tag
 /* 800AFCDC 000ABBFC  38 60 00 02 */	li r3, 2
-/* 800AFCE0 000ABC00  4B FC 08 E5 */	bl func_800705C4
+/* 800AFCE0 000ABC00  4B FC 08 E5 */	bl call_bitmap_free_group
 /* 800AFCE4 000ABC04  38 60 00 46 */	li r3, 0x46
 /* 800AFCE8 000ABC08  38 80 00 01 */	li r4, 1
 /* 800AFCEC 000ABC0C  4B F7 D2 4D */	bl func_8002CF38
@@ -3098,7 +3098,7 @@ lbl_800AFE04:
 /* 800AFE0C 000ABD2C  41 80 FF D8 */	blt lbl_800AFDE4
 /* 800AFE10 000ABD30  90 CD 9D 38 */	stw r6, currentBallStructPtr@sda21(r13)
 /* 800AFE14 000ABD34  38 60 00 02 */	li r3, 2
-/* 800AFE18 000ABD38  4B FC 07 8D */	bl call_something_with_bmp_bmp_com
+/* 800AFE18 000ABD38  4B FC 07 8D */	bl call_bitmap_load_group
 /* 800AFE1C 000ABD3C  4B F7 30 F9 */	bl func_80022F14
 /* 800AFE20 000ABD40  C0 42 B8 B8 */	lfs f2, lbl_802F60B8@sda21(r2)
 /* 800AFE24 000ABD44  3C 80 80 1F */	lis r4, modeCtrl@ha

@@ -525,7 +525,7 @@ void gm_main(void)
         if (lbl_802F021C.info == NULL)
         {
             event_finish_all();
-            g_something_with_iteratively_freeing_memory();
+            free_all_bitmap_groups_except_com();
             relocation_load_module(gameModeRelNames[gameMode], &lbl_802F021C);
         }
         if (lbl_802F1B74 != 0)
@@ -806,7 +806,7 @@ void submode_dummy_func(void)
 
 static int unkFunc8000A0F4_inline(void)
 {
-    if (lbl_80290170.unk8 != 0)
+    if (screenFadeInfo.unk8 != 0)
         return FALSE;
     if (lbl_801EEC68.unk4 & (1 << 1))
         return FALSE;

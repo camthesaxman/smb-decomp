@@ -157,7 +157,7 @@ void unkFunc8000A580(struct Sprite *a)
                 lbl_801EEC68.unk0 = 60;
                 if (a != NULL)
                     a->unk48 = 2;
-                lbl_80290170.unk4 = 0xFFFFFF;
+                screenFadeInfo.unk4 = 0xFFFFFF;
                 func_8002CF38(59, 2);
             }
             break;
@@ -182,11 +182,11 @@ void unkFunc8000A924(struct Sprite *a)
     if (gameMode == MD_MINI && modeCtrl.unk28 == 8)
     {
         OSHeapHandle r30 = OSSetCurrentHeap(memHeap2);
-        call_something_with_bmp_bmp_com(BMP_HOW);
+        call_bitmap_load_group(BMP_HOW);
         OSSetCurrentHeap(r30);
     }
     else
-        call_something_with_bmp_bmp_com(BMP_HOW);
+        call_bitmap_load_group(BMP_HOW);
     if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
         OSSetCurrentHeap(lbl_802F1B9C);
     func_80081F30();
@@ -409,7 +409,7 @@ void unkFunc8000AECC(struct Sprite *a)
             destroy_sprite_with_tag(10);
             if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
                 lbl_802F1B9C = OSSetCurrentHeap(memHeap4);
-            func_800705C4(12);
+            call_bitmap_free_group(12);
             if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
                 OSSetCurrentHeap(lbl_802F1B9C);
             if (a != NULL)

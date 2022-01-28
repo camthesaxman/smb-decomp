@@ -42,8 +42,8 @@ struct Sprite spriteInfo[64];
 FORCE_BSS_ORDER(spriteInfo)
 struct Struct8028FE58 lbl_8028FE58[0x42];
 FORCE_BSS_ORDER(lbl_8028FE58)
-struct Struct80290170 lbl_80290170;
-FORCE_BSS_ORDER(lbl_80290170)
+struct Struct80290170 screenFadeInfo;
+FORCE_BSS_ORDER(screenFadeInfo)
 
 extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
 
@@ -634,53 +634,51 @@ char *alignStrArray[] =
     "ALIGN_PIC",
 };
 
-#pragma unsigned_char off
-
-struct Struct801C0B94
+struct GlyphDesc
 {
-    char *unk0;
+    char *text;
     s32 unk4;
 };
 
 // symbols?
-struct Struct801C0B94 lbl_801C0B94[] =
+struct GlyphDesc symbolGlyphs[] =
 {
-    {"MARU",       0x00000140},
-    {"SANKAKU",    0x00000141},
-    {"SANNKAKU",   0x00000141},
-    {"SIKAKU",     0x00000142},
-    {"HOSI",       0x00000143},
-    {"SUPE-DO",    0x00000144},
-    {"KURO-BA-",   0x00000145},
-    {"HA-TO",      0x00000146},
-    {"DAIYA",      0x00000147},
-    {"NIJYU-MARU", 0x00000148},
-    {"ONNPU",      0x00000149},
-    {"ONPU",       0x00000149},
-    {"ATTOMA-KU",  0x0000014A},
-    {"ANDO",       0x0000014B},
-    {"ANNDO",      0x0000014B},
-    {"SANNKAKU_U", 0x0000014D},
-    {"SANNKAKU_B", 0x0000014E},
-    {"SANNKAKU_D", 0x0000014E},
-    {"SANNKAKU_L", 0x0000014F},
-    {"SANNKAKU_R", 0x00000150},
-    {"!=",         0x00000127},
-    {"LE",         0x0000012A},
-    {"GE",         0x0000012B},
-    {"TENNTENN",   0x00000131},
-    {"!'",         0x0000013C},
-    {"!\"",        0x0000013E},
-    {"KAKERU",     0x00000151},
-    {"KOME",       0x00000152},
-    {"*",          0x00000152},
-    {"MUGENN",     0x00000153},
-    {".",          0x0000012F},
-    {"DMY",        0xFFFFFFFF},
+    {"MARU",       0x140},
+    {"SANKAKU",    0x141},
+    {"SANNKAKU",   0x141},
+    {"SIKAKU",     0x142},
+    {"HOSI",       0x143},
+    {"SUPE-DO",    0x144},
+    {"KURO-BA-",   0x145},
+    {"HA-TO",      0x146},
+    {"DAIYA",      0x147},
+    {"NIJYU-MARU", 0x148},
+    {"ONNPU",      0x149},
+    {"ONPU",       0x149},
+    {"ATTOMA-KU",  0x14A},
+    {"ANDO",       0x14B},
+    {"ANNDO",      0x14B},
+    {"SANNKAKU_U", 0x14D},
+    {"SANNKAKU_B", 0x14E},
+    {"SANNKAKU_D", 0x14E},
+    {"SANNKAKU_L", 0x14F},
+    {"SANNKAKU_R", 0x150},
+    {"!=",         0x127},
+    {"LE",         0x12A},
+    {"GE",         0x12B},
+    {"TENNTENN",   0x131},
+    {"!'",         0x13C},
+    {"!\"",        0x13E},
+    {"KAKERU",     0x151},
+    {"KOME",       0x152},
+    {"*",          0x152},
+    {"MUGENN",     0x153},
+    {".",          0x12F},
+    {"DMY",           -1},
 };
 
 // button icons?
-struct Struct801C0B94 lbl_801C0D24[] =
+struct GlyphDesc buttonGlyphs[] =
 {
     {"BOTANN_A", 0},
     {"BUTTON_A", 0},
@@ -699,99 +697,99 @@ struct Struct801C0B94 lbl_801C0D24[] =
 };
 
 // kanji? capitalized part seems to be the actual kanji
-struct Struct801C0B94 lbl_801C0DAC[] =
+struct GlyphDesc singleKanjiGlyphs[] =
 {
-    {"SHOkyuu",  0x00000168},
-    {"CHUkyuu",  0x00000169},
-    {"NAKA",     0x00000169},
-    {"JYOkyuu",  0x0000016A},
-    {"UE",       0x0000016A},
-    {"KYUU",     0x0000016B},
-    {"NANI",     0x0000016C},
-    {"HONN",     0x0000016D},
-    {"KAchi",    0x0000016E},
-    {"MAke",     0x0000016F},
-    {"SHIyou",   0x00000170},
-    {"TSUKAu",   0x00000170},
-    {"shiYOU",   0x00000171},
-    {"YOU",      0x00000171},
-    {"JIbunn",   0x00000172},
-    {"jiBUNN",   0x00000173},
-    {"HITO",     0x00000174},
-    {"NINN",     0x00000174},
-    {"GENzai",   0x00000175},
-    {"genZAI",   0x00000176},
-    {"KOsuu",    0x00000177},
-    {"DOUji",    0x00000178},
-    {"douJI",    0x00000179},
-    {"TOKI",     0x00000179},
-    {"TAIsenn",  0x0000017A},
-    {"taiSENN",  0x0000017B},
-    {"SENN",     0x0000017B},
-    {"KAIsuu",   0x0000017C},
-    {"KAI",      0x0000017C},
-    {"TSUGI",    0x0000017D},
-    {"RENNshuu", 0x0000017E},
-    {"rennSHUU", 0x0000017F},
-    {"KYOUsou",  0x00000180},
-    {"kyouSOU",  0x00000181},
-    {"SAKI",     0x00000182},
-    {"HOKA",     0x00000183},
-    {"KURAI",    0x00000184},
-    {"KAZU",     0x00000185},
-    {"SUU",      0x00000185},
-    {"OSU",      0x00000186},
-    {"HAI",      0x00000187},
-    {"KEttei",   0x00000188},
-    {"keTTEI",   0x00000189},
-    {"Au",       0x0000018A},
-    {"MIGI",     0x0000018B},
-    {"SHITA",    0x0000018C},
-    {"KUDA",     0x0000018C},
-    {"HIDARI",   0x0000018D},
-    {"TAberu",   0x0000018E},
-    {"IMA",      0x0000018F},
-    {"DOU",      0x00000190},
-    {"UGOku",    0x00000190},
-    {"DAI",      0x00000191},
-    {"OOkii",    0x00000191},
-    {"KIbunn",   0x00000192},
-    {"HENN",     0x00000193},
-    {"KAwaru",   0x00000193},
-    {"CHIkei",   0x00000194},
-    {"chiKEI",   0x00000195},
-    {"chiTENN",  0x00000196},
-    {"TENN",     0x00000196},
-    {"SAKA",     0x00000197},
-    {"MICHI",    0x00000198},
-    {"Ochiru",   0x00000199},
-    {"TOru",     0x0000019A},
-    {"KIkann",   0x0000019B},
-    {"MOUkeru",  0x0000019C},
-    {"TUku",     0x0000019D},
-    {"YOmu",     0x0000019E},
-    {"KARADA",   0x0000019F},
-    {"ATUKAu",   0x000001A0},
-    {"SETSU",    0x000001A1},
-    {"AKArui",   0x000001A2},
-    {"KAku",     0x000001A3},
-    {"DENN",     0x00000166},
-    {"GENN",     0x00000167},
-    {"NUku",     0x00000165},
-    {"SOU",      0x00000164},
-    {"TAMA",     0x00000163},
-    {"DMY",      0xFFFFFFFF},
+    {"SHOkyuu",  0x168},
+    {"CHUkyuu",  0x169},
+    {"NAKA",     0x169},
+    {"JYOkyuu",  0x16A},
+    {"UE",       0x16A},
+    {"KYUU",     0x16B},
+    {"NANI",     0x16C},
+    {"HONN",     0x16D},
+    {"KAchi",    0x16E},
+    {"MAke",     0x16F},
+    {"SHIyou",   0x170},
+    {"TSUKAu",   0x170},
+    {"shiYOU",   0x171},
+    {"YOU",      0x171},
+    {"JIbunn",   0x172},
+    {"jiBUNN",   0x173},
+    {"HITO",     0x174},
+    {"NINN",     0x174},
+    {"GENzai",   0x175},
+    {"genZAI",   0x176},
+    {"KOsuu",    0x177},
+    {"DOUji",    0x178},
+    {"douJI",    0x179},
+    {"TOKI",     0x179},
+    {"TAIsenn",  0x17A},
+    {"taiSENN",  0x17B},
+    {"SENN",     0x17B},
+    {"KAIsuu",   0x17C},
+    {"KAI",      0x17C},
+    {"TSUGI",    0x17D},
+    {"RENNshuu", 0x17E},
+    {"rennSHUU", 0x17F},
+    {"KYOUsou",  0x180},
+    {"kyouSOU",  0x181},
+    {"SAKI",     0x182},
+    {"HOKA",     0x183},
+    {"KURAI",    0x184},
+    {"KAZU",     0x185},
+    {"SUU",      0x185},
+    {"OSU",      0x186},
+    {"HAI",      0x187},
+    {"KEttei",   0x188},
+    {"keTTEI",   0x189},
+    {"Au",       0x18A},
+    {"MIGI",     0x18B},
+    {"SHITA",    0x18C},
+    {"KUDA",     0x18C},
+    {"HIDARI",   0x18D},
+    {"TAberu",   0x18E},
+    {"IMA",      0x18F},
+    {"DOU",      0x190},
+    {"UGOku",    0x190},
+    {"DAI",      0x191},
+    {"OOkii",    0x191},
+    {"KIbunn",   0x192},
+    {"HENN",     0x193},
+    {"KAwaru",   0x193},
+    {"CHIkei",   0x194},
+    {"chiKEI",   0x195},
+    {"chiTENN",  0x196},
+    {"TENN",     0x196},
+    {"SAKA",     0x197},
+    {"MICHI",    0x198},
+    {"Ochiru",   0x199},
+    {"TOru",     0x19A},
+    {"KIkann",   0x19B},
+    {"MOUkeru",  0x19C},
+    {"TUku",     0x19D},
+    {"YOmu",     0x19E},
+    {"KARADA",   0x19F},
+    {"ATUKAu",   0x1A0},
+    {"SETSU",    0x1A1},
+    {"AKArui",   0x1A2},
+    {"KAku",     0x1A3},
+    {"DENN",     0x166},
+    {"GENN",     0x167},
+    {"NUku",     0x165},
+    {"SOU",      0x164},
+    {"TAMA",     0x163},
+    {"DMY",         -1},
 };
 
-struct Struct801C108C
+struct DoubleKanjiGlyph
 {
-    char *unk0;
+    char *text;
     s16 unk4;
     s16 unk6;
 };
 
 // Japanese words composed of two kanji?
-struct /*Struct801C0B94*/ Struct801C108C lbl_801C108C[] =
+struct DoubleKanjiGlyph doubleKanjiGlyphs[] =
 {
     {"SHOKYUU",    0x0168, 0x016B},
     {"CHUKYUU",    0x0169, 0x016B},
@@ -851,7 +849,7 @@ struct /*Struct801C0B94*/ Struct801C108C lbl_801C108C[] =
     {"KIMA",       0x0188, 0x0046},
     {"MAKE",       0x016F, 0x0012},
     {"JYOUGE",     0x016A, 0x018C},
-    {"DMY",        0xFFFF, 0xFFFF},
+    {"DMY",            -1,     -1},
 };
 
 void g_something_with_sprites(struct Sprite *sprite)
@@ -912,19 +910,17 @@ void g_something_with_sprites(struct Sprite *sprite)
     }
 }
 
-#pragma force_active on
-
-void call_something_with_bmp_bmp_com(int grpId)
+void call_bitmap_load_group(int grpId)
 {
     bitmap_load_group(grpId);
 }
 
-void func_800705C4(int grpId)
+void call_bitmap_free_group(int grpId)
 {
     bitmap_free_group(grpId);
 }
 
-void g_something_with_iteratively_freeing_memory(void)
+void free_all_bitmap_groups_except_com(void)
 {
     int i;
     for (i = 0; i < 14; i++)
@@ -997,7 +993,8 @@ void destroy_sprite_with_tag(int tag)
     }
 }
 
-void dest_all_sprites(void)
+#pragma force_active on
+void destroy_all_sprites(void)
 {
     struct Sprite *sprite = spriteInfo;
     s8 *status = spritePoolInfo.statusList;
@@ -1015,6 +1012,7 @@ void dest_all_sprites(void)
         status++;
     }
 }
+#pragma force_active reset
 
 struct Sprite *find_sprite_with_tag(int tag)
 {
@@ -1058,7 +1056,7 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32
             height = fontParams->lineHeight;
             if (sprite->fontId > FONT_JAP_TAG)  // Japanese font
             {
-                width = func_80073084(sprite->fontId, sprite->text);
+                width = get_jpn_text_width(sprite->fontId, sprite->text);
             }
             else  // ASCII font
             {
@@ -1272,7 +1270,7 @@ float g_get_char_ratio(char *chr, int fontId)
 
 struct StringParseState
 {
-    u32 unk0;
+    u32 mode;
     s32 unk4;
     s32 unk8;
     float unkC;
@@ -2189,42 +2187,59 @@ const s32 lbl_80118640[] =
     -1,
 };
 
-int parse_char_sequence(struct StringParseState *a, char *str, s32 *c, s32 *skip, s32 *e)
+enum
 {
-    s32 r4;
-    s32 r30;
+    TEXT_MODE_ASCII,
+    TEXT_MODE_HIRAGANA,  // also attempts to use kanji when possible
+    TEXT_MODE_KATAKANA,
+    TEXT_MODE_PICTURE,
+};
 
-    a->unk8 = 0;
+int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *color, s32 *skip, s32 *e)
+{
+    s32 glyphIndex;
+    int mode;
 
+    parseState->unk8 = 0;
+
+    // hiragana
     if (str[0] == 'h' && str[1] == '/')
     {
-        a->unk0 = (a->unk0 & 0xFFFF0000) | 1;
+        parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_HIRAGANA;
         *skip = 1;
         return -2;
     }
+
+    // katakana
     if (str[0] == 'k' && str[1] == '/')
     {
-        a->unk0 = (a->unk0 & 0xFFFF0000) | 2;
+        parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_KATAKANA;
         *skip = 1;
         return -2;
     }
+
+    // ascii
     if (str[0] == 'a' && *(str + 1) == '/')
     {
-        a->unk0 = (a->unk0 & 0xFFFF0000);
+        parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_ASCII;
         *skip = 1;
         return -2;
     }
+
+    // picture
     if (str[0] == 'p' && *(str + 1) == '/')
     {
-        a->unk0 = (a->unk0 & 0xFFFF0000) | 3;
+        parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_PICTURE;
         *skip = 1;
         return -2;
     }
+
+    // text color
     if (str[0] == 'c' && *(str + 1) == '/')
     {
         int shift = 20;
         *skip += 4;
-        *c = 0;
+        *color = 0;
         str += 4;
         while (*str != '/')
         {
@@ -2283,7 +2298,7 @@ int parse_char_sequence(struct StringParseState *a, char *str, s32 *c, s32 *skip
                 digit = 0;
                 break;
             }
-            *c |= digit << shift;
+            *color |= digit << shift;
             str++;
             *skip += 1;
             shift -= 4;
@@ -2292,13 +2307,13 @@ int parse_char_sequence(struct StringParseState *a, char *str, s32 *c, s32 *skip
     }
     if (str[0] == 'b' && str[1] == '/')
     {
-        a->unk0 |= 0x10000;
+        parseState->mode |= 0x10000;
         *skip = 1;
         return -2;
     }
     if (str[0] == '/' && str[1] == 'b')
     {
-        a->unk0 &= ~0x10000;
+        parseState->mode &= ~0x10000;
         *skip = 1;
         return -2;
     }
@@ -2324,250 +2339,254 @@ int parse_char_sequence(struct StringParseState *a, char *str, s32 *c, s32 *skip
         case '9':
             *e = 0x5A;
             break;
-        case 0x38:
+        case '8':
             *e = 0x50;
             break;
-        case 0x37:
+        case '7':
             *e = 0x46;
             break;
         }
         *skip = 2;
         return -2;
     }
-    r30 = -1;
-    a->unk0 &= ~0x20000;
-    r4 = a->unk0 & 0xFFFF;
-    if ((u16)a->unk0 == 0)
+    glyphIndex = -1;
+    parseState->mode &= ~0x20000;
+
+    mode = (u16)parseState->mode;
+    // ascii character
+    if (mode == TEXT_MODE_ASCII)
     {
         if (str[0] >= 'A' && str[0] <= 'Z')
-            r30 = str[0] + 0x87;
+            glyphIndex = str[0] + 0x87;
         else if (str[0] >= 'a' && str[0] <= 'z')
-            r30 = str[0] + 0x8F;
+            glyphIndex = str[0] + 0x8F;
         else if (str[0] >= '0' && str[0] <= '9')
-            r30 = str[0] + 0xE8;
+            glyphIndex = str[0] + 0xE8;
         else if (str[0] == '.')
-            r30 = 0x155;
+            glyphIndex = 0x155;
         else if (str[0] == ',')
-            r30 = 0x154;
+            glyphIndex = 0x154;
         else
-            r30 = lbl_80117E40[str[0]];
+            glyphIndex = lbl_80117E40[str[0]];
     }
-    else if ((u32)((u16)(a->unk0) - 1) <= 1)
-    //else if ((u16)a->unk0 == 1 || (u16)a->unk0 == 2)
+    // japanese character
+    else if (mode == TEXT_MODE_HIRAGANA || mode == TEXT_MODE_KATAKANA)
     {
-        r30 = lbl_80117E40[str[0]];
-        if (r30 != -1)
+        glyphIndex = lbl_80117E40[str[0]];
+        if (glyphIndex != -1)
         {
-            if (r30 >= 0xC8)
+            if (glyphIndex >= 0xC8)
             {
                 if (lbl_80118640[str[0]] != -1)
-                    r30 = lbl_80118640[str[0]];
+                    glyphIndex = lbl_80118640[str[0]];
             }
-            else if (str[0] == 0x58)
+            else if (str[0] == 'X')
             {
                 int r3 = lbl_80118040[str[1]];
                 if (r3 >= 0)
                 {
-                    a->unk8 = 1;
-                    r30 = r3 + 10;
+                    parseState->unk8 = 1;
+                    glyphIndex = r3 + 10;
                 }
-                else if (str[1] == 0x54)
+                else if (str[1] == 'T')
                 {
-                    r30 = 0x2F;
-                    if (str[2] == 0x53)
-                        a->unk8 = 3;
+                    glyphIndex = 0x2F;
+                    if (str[2] == 'S')
+                        parseState->unk8 = 3;
                     else
-                        a->unk8 = 2;
+                        parseState->unk8 = 2;
                 }
             }
-            else if (r30 >= 15)
+            else if (glyphIndex >= 15)
             {
                 if (str[0] == str[1])
                 {
-                    if (str[0] == 0x4E)
+                    if (str[0] == 'N')
                     {
-                        a->unk8 = 1;
-                        r30 = 0x5F;
+                        parseState->unk8 = 1;
+                        glyphIndex = 0x5F;
                     }
                     else
-                        r30 = 0x2F;
+                        glyphIndex = 0x2F;
                 }
-                else if (a->unk4 != -1)
+                else if (parseState->unk4 != -1)
                 {
-                    r30 = lbl_80118240[str[1]];
-                    a->unk4 = -1;
-                    if (r30 == -2)
+                    glyphIndex = lbl_80118240[str[1]];
+                    parseState->unk4 = -1;
+                    if (glyphIndex == -2)
                     {
                         *skip = 1;
                         return -2;
                     }
-                    a->unk8 = 1;
+                    parseState->unk8 = 1;
                 }
                 else
                 {
-                    r4 = lbl_80118040[str[1]];
+                    s32 r4 = lbl_80118040[str[1]];
                     if (r4 == -2)
                     {
                         r4 = lbl_80118040[str[2]];
-                        a->unk8 = 2;
+                        parseState->unk8 = 2;
                     }
                     if (r4 != -1)
                     {
-                        if (str[0] == 0x4A && str[1] == 0x49)
-                            a->unk8 = 1;
-                        else if (str[0] == 0x46 || str[0] == 0x4A)
-                            a->unk4 = r30;
-                        else if (str[0] == 0x43 && str[1] != 0x48)
+                        if (str[0] == 'J' && str[1] == 'I')
+                            parseState->unk8 = 1;
+                        else if (str[0] == 'F' || str[0] == 'J')
+                            parseState->unk4 = glyphIndex;
+                        else if (str[0] == 'C' && str[1] != 'H')
                         {
-                            a->unk8 = 1;
-                            r30 = r4 + 15;
+                            parseState->unk8 = 1;
+                            glyphIndex = r4 + 15;
                         }
                         else
                         {
-                            r30 += r4;
-                            if (a->unk8 == 0)
-                                a->unk8 = 1;
+                            glyphIndex += r4;
+                            if (parseState->unk8 == 0)
+                                parseState->unk8 = 1;
                         }
                     }
                     else
                     {
                         if (lbl_80118440[str[0]] != -1)
-                            r30++;
-                        if (str[0] == 0x4E && str[1] != 0x59)
-                            r30 = 0x5F;
-                        else if (str[0] == 0x53 && str[1] == 0x48 && str[2] == 0x49)
-                            a->unk8 = 2;
+                            glyphIndex++;
+                        if (str[0] == 'N' && str[1] != 'Y')
+                            glyphIndex = 0x5F;
+                        else if (str[0] == 'S' && str[1] == 'H' && str[2] == 'I')
+                            parseState->unk8 = 2;
                         else
-                            a->unk4 = r30;
+                            parseState->unk4 = glyphIndex;
                     }
                 }
             }
-            else if (str[0] == 0x56)
-                a->unk4 = r30;
-            else if (a->unk4 != -1)
+            else if (str[0] == 'V')
+                parseState->unk4 = glyphIndex;
+            else if (parseState->unk4 != -1)
             {
-                a->unk4 = -1;
-                r30 += 10;
+                parseState->unk4 = -1;
+                glyphIndex += 10;
             }
-            if (r30 < 100 && (u16)a->unk0 == 2)
-                r30 += 100;
+            if (glyphIndex < 100 && (u16)parseState->mode == TEXT_MODE_KATAKANA)
+                glyphIndex += 100;
         }
     }
-    else if ((u16)a->unk0 == 3)
+    else if ((u32)mode == TEXT_MODE_PICTURE)
     {
-        if (a->unk4 != -1)
+        if (parseState->unk4 != -1)
         {
-            r30 = a->unk4;
-            a->unk4 = -1;
-            a->unk8 = 0;
+            glyphIndex = parseState->unk4;
+            parseState->unk4 = -1;
+            parseState->unk8 = 0;
         }
         else
         {
             char *r5;
             int i;
-            struct Struct801C0B94 *r26;
+            struct GlyphDesc *glyph;
 
-            r30 = -2;
+            glyphIndex = -2;
             for (i = 0; str[i] != '/'; i++)
                 ;
-            r26 = lbl_801C0B94;
-            while (r26->unk4 != -1)
+            glyph = symbolGlyphs;
+            while (glyph->unk4 != -1)
             {
                 int j;
 
                 r5 = str;
                 for (j = 0; *r5 != '/'; j++, r5++)
                 {
-                    if (*r5 != r26->unk0[j])
+                    if (*r5 != glyph->text[j])
                         break;
                 }
-                if (i == j && i == (u32)strlen(r26->unk0))
+                if (i == j && i == (u32)strlen(glyph->text))
                 {
-                    r30 = r26->unk4;
-                    a->unk8 = j;
+                    glyphIndex = glyph->unk4;
+                    parseState->unk8 = j;
                     break;
                 }
-                r26++;
+                glyph++;
             }
-            if (r30 == -2)
+            if (glyphIndex == -2)
             {
-                r26 = lbl_801C0D24;
-                while (r26->unk4 != -1)
+                glyph = buttonGlyphs;
+                while (glyph->unk4 != -1)
                 {
                     int j;
 
                     r5 = str;
                     for (j = 0; *r5 != '/'; j++, r5++)
                     {
-                        if (*r5 != r26->unk0[j])
+                        if (*r5 != glyph->text[j])
                             break;
                     }
-                    if (i == j && i == (u32)strlen(r26->unk0))
+                    if (i == j && i == (u32)strlen(glyph->text))
                     {
-                        r30 = r26->unk4;
-                        a->unk8 = j;
-                        a->unk0 |= 0x20000;
+                        glyphIndex = glyph->unk4;
+                        parseState->unk8 = j;
+                        parseState->mode |= 0x20000;
                         break;
                     }
-                    r26++;
+                    glyph++;
                 }
             }
-            if (r30 == -2)
+            if (glyphIndex == -2)
             {
-                r26 = lbl_801C0DAC;
-                while (r26->unk4 != -1)
+                glyph = singleKanjiGlyphs;
+                while (glyph->unk4 != -1)
                 {
                     int j;
 
                     r5 = str;
                     for (j = 0; *r5 != '/'; j++, r5++)
                     {
-                        if (*r5 != r26->unk0[j])
+                        if (*r5 != glyph->text[j])
                             break;
                     }
-                    if (i == j && i == (u32)strlen(r26->unk0))
+                    if (i == j && i == (u32)strlen(glyph->text))
                     {
-                        r30 = r26->unk4;
-                        a->unk8 = j;
+                        glyphIndex = glyph->unk4;
+                        parseState->unk8 = j;
                         break;
                     }
-                    r26++;
+                    glyph++;
                 }
             }
-            if (r30 == -2)
+            if (glyphIndex == -2)
             {
-                struct Struct801C108C *r25 = lbl_801C108C;
+                struct DoubleKanjiGlyph *glyph = doubleKanjiGlyphs;
 
-                while (r25->unk4 != -1)
+                while (glyph->unk4 != -1)
                 {
                     int j;
 
                     r5 = str;
                     for (j = 0; *r5 != '/'; j++, r5++)
                     {
-                        if (*r5 != r25->unk0[j])
+                        if (*r5 != glyph->text[j])
                             break;
                     }
-                    if (i == j && i == (u32)strlen(r25->unk0))
+                    if (i == j && i == (u32)strlen(glyph->text))
                     {
-                        r30 = r25->unk4;
-                        a->unk8 = j - 1;
-                        a->unk4 = r25->unk6;
+                        glyphIndex = glyph->unk4;
+                        parseState->unk8 = j - 1;
+                        parseState->unk4 = glyph->unk6;
                         break;
                     }
-                    r25++;
+                    glyph++;
                 }
             }
         }
     }
 
-    return r30;
+    return glyphIndex;
 }
 
-int func_80071A74(int a)
+#pragma force_active on
+int func_80071A74(int fontId)
 {
-    return fontInfo[a].unk0;
+    return fontInfo[fontId].unk0;
 }
+#pragma force_active reset
 
 void func_80071A8C(void)
 {
@@ -2597,10 +2616,12 @@ void func_80071AF8(int a)
     lbl_8028CF28.unk14 = a;
 }
 
+#pragma force_active on
 void func_80071B08(int a)
 {
     lbl_8028CF28.unk18 = a;
 }
+#pragma force_active reset
 
 void func_80071B1C(float a)
 {
@@ -2633,36 +2654,36 @@ void func_80071B60(float a, float b)
 #ifdef NONMATCHING
 void func_80071B78(s8 a)
 {
-    struct SpriteRequest sp10;
-    struct FontParams *r5 = &fontInfo[lbl_8028CF28.unkC];
-    int r6 = a - r5->unk4;
-    int div = r6 / r5->unkC;
-    int mod = r6 % r5->unkC;
+    struct NaomiSpriteParams params;  // sp + 0x10
+    struct FontParams *font = &fontInfo[lbl_8028CF28.unkC];  // r5
+    int r6 = a - font->unk4;
+    int div = r6 / font->unkC;
+    int mod = r6 % font->unkC;
     float f4;
     float f5;
     //float f0;
 
-    sp10.bmpId = r5->unk0;
-    sp10.unk4 = lbl_8028CF28.unk4 + r5->unk18 * r5->unk20 /*0xC4*/;
-    sp10.unk8 = lbl_8028CF28.unk8 + r5->unk1C * r5->unk22 /*0xBC*/;
-    sp10.unkC = lbl_8028CF28.unk1C;
-    f4 = r5->unk10 * mod;
-    f5 = r5->unk14 * div;  /*0xAC*/
-    sp10.unk18 = f4 + r5->unk18 * r5->unk20;
-    sp10.unk1C = f5 + r5->unk1C * r5->unk22;
-    sp10.unk20 = r5->unk10 + (f4 - r5->unk18 * r5->unk21);
-    sp10.unk24 = r5->unk14 + (f5 - r5->unk1C * r5->unk23);
-    sp10.unk10 = lbl_8028CF28.unk20 * ((r5->unk10 - r5->unk18 * r5->unk20) - r5->unk18 * r5->unk21);
-    //f0 = r5->unk18 * r5->unk23;
-    sp10.unk14 = lbl_8028CF28.unk24 * ((r5->unk14 - r5->unk1C * r5->unk22) - r5->unk18 * r5->unk23);
+    params.bmpId = font->unk0;
+    params.x = lbl_8028CF28.unk4 + font->unk18 * font->unk20 /*0xC4*/;
+    params.y = lbl_8028CF28.unk8 + font->unk1C * font->unk22 /*0xBC*/;
+    params.z = lbl_8028CF28.unk1C;
+    f4 = font->unk10 * mod;
+    f5 = font->unk14 * div;  /*0xAC*/
+    params.u1 = f4 + font->unk18 * font->unk20;
+    params.v1 = f5 + font->unk1C * font->unk22;
+    params.u2 = font->unk10 + (f4 - font->unk18 * font->unk21);
+    params.v2 = font->unk14 + (f5 - font->unk1C * font->unk23);
+    params.zoomX = lbl_8028CF28.unk20 * ((font->unk10 - font->unk18 * font->unk20) - font->unk18 * font->unk21);
+    //f0 = font->unk18 * font->unk23;
+    params.zoomY = lbl_8028CF28.unk24 * ((font->unk14 - font->unk1C * font->unk22) - font->unk18 * font->unk23);
 
-    sp10.unk28 = lbl_8028CF28.unk18;
-    sp10.unk2C = lbl_8028CF28.unk28;
-    sp10.unk30 = -1;
-    sp10.unk34 = (lbl_8028CF28.unk2C & ~0xF) | 5;
-    sp10.unk38 = ((int)(255.0f * lbl_8028CF28.unk28) << 24) | lbl_8028CF28.unk10;
-    sp10.unk3C = lbl_8028CF28.unk14;
-    func_80073828(&sp10);
+    params.rotation = lbl_8028CF28.unk18;
+    params.alpha = lbl_8028CF28.unk28;
+    params.unk30 = -1;
+    params.flags = (lbl_8028CF28.unk2C & ~0xF) | 5;
+    params.unk38 = ((int)(255.0f * lbl_8028CF28.unk28) << 24) | lbl_8028CF28.unk10;
+    params.unk3C = lbl_8028CF28.unk14;
+    draw_naomi_sprite(&params);
 }
 #else
 asm void func_80071B78(s8 a)
@@ -2704,34 +2725,34 @@ void func_80071E58(char *str)
     float f17;
     float f16;
     float f31;
-    struct SpriteRequest sp38;
-    struct StringParseState sp28;
+    struct NaomiSpriteParams params;
+    struct StringParseState parseState;
     u8 dummy[8];
     s32 skip;
     s32 sp18;
-    s32 sp14;
+    s32 color;
 
     font = &fontInfo[r28->unkC];
     r22 = 0;
     r25 = r28->unkC;
 
-    sp38.bmpId = font->unk0;
-    sp38.unkC = r28->unk1C;
-    sp38.unk2C = r28->unk28;
-    sp38.unk28 = r28->unk18;
-    sp38.unk38 = ((int)(r28->unk28 * 255.0f) << 24) | r28->unk10;
-    sp38.unk3C = r28->unk14;
-    sp38.unk30 = -1;
-    sp38.unk34 = (r28->unk2C & ~0xF) | 5;
+    params.bmpId = font->unk0;
+    params.z = r28->unk1C;
+    params.alpha = r28->unk28;
+    params.rotation = r28->unk18;
+    params.unk38 = ((int)(r28->unk28 * 255.0f) << 24) | r28->unk10;
+    params.unk3C = r28->unk14;
+    params.unk30 = -1;
+    params.flags = (r28->unk2C & ~0xF) | 5;
     f31 = r28->unk20;
-    sp28.unk0 = 0;
-    sp28.unk4 = -1;
-    sp28.unk8 = 0;
-    sp28.unkC = 0.0f;
+    parseState.mode = TEXT_MODE_ASCII;
+    parseState.unk4 = -1;
+    parseState.unk8 = 0;
+    parseState.unkC = 0.0f;
 
     for (; *str != 0; str++)
     {
-        int r3;
+        int glyphIndex;
 
         if (lbl_802F1D04 != 4 && lbl_802F200C != -1.0f)
         {
@@ -2754,26 +2775,26 @@ void func_80071E58(char *str)
         {
             r22++;
             r28->unk4 += f16 * (r23 * r28->unk20);
-            sp28.unkC += r23;
+            parseState.unkC += r23;
             continue;
         }
-        r3 = *str;
+        glyphIndex = *str;
         if (r28->unkC > 0xAE)
         {
             skip = 0;
             sp18 = 0;
-            sp14 = sp38.unk38;
-            r3 = parse_char_sequence(&sp28, str, &sp14, &skip, &sp18);
+            color = params.unk38;
+            glyphIndex = parse_char_sequence(&parseState, str, &color, &skip, &sp18);
             str += skip;
-            sp38.unk38 = sp14;
+            params.unk38 = color;
             if (sp18 == 1)
             {
-                r28->unkC = 0xB0;
+                r28->unkC = FONT_JAP_24x24_2;
                 font = &fontInfo[r28->unkC];
             }
             else if (sp18 == 2)
             {
-                r28->unkC = 0xB1;
+                r28->unkC = FONT_JAP_24x24_2P;
                 font = &fontInfo[r28->unkC];
             }
             else if (sp18 == 0x46)
@@ -2784,12 +2805,12 @@ void func_80071E58(char *str)
                 r28->unk20 = 0.9f;
             else if (sp18 == 0x64)
                 r28->unk20 = 1.0f;
-            if (r3 == -1)
+            if (glyphIndex == -1)
             {
                 r28->unk4 += (float)r23 * r28->unk20;
                 continue;
             }
-            else if (r3 == -2)
+            else if (glyphIndex == -2)
                 continue;
             else
             {
@@ -2797,11 +2818,11 @@ void func_80071E58(char *str)
 
                 switch (r28->unkC)
                 {
-                case 0xB1:
-                case 0xB3:
-                    if (r3 >= 0xC8)
+                case FONT_JAP_24x24_2P:
+                case FONT_JAP_24x24_2Pg:
+                    if (glyphIndex >= 0xC8)
                     {
-                        int r4 = lbl_80117A80[r3 - 0xC8];
+                        int r4 = lbl_80117A80[glyphIndex - 0xC8];
 
                         if (r4 != -1)
                         {
@@ -2821,16 +2842,16 @@ void func_80071E58(char *str)
                     break;
                 }
                 f16 = f0;
-                if (sp28.unk0 & (1 << 17))
-                    font = &fontInfo[0xB2];
+                if (parseState.mode & (1 << 17))
+                    font = &fontInfo[FONT_JAP_24x24_I];
                 else
                     font = &fontInfo[r28->unkC];
-                sp38.bmpId = font->unk0;
+                params.bmpId = font->unk0;
             }
         }
         if (r28->unkC < 0xAE
          || lbl_802F200C < lbl_802F2008
-         || !(sp28.unk0 & (1 << 16))
+         || !(parseState.mode & (1 << 16))
          || (unpausedFrameCounter % 60) < 45)
         {
             int div;
@@ -2838,26 +2859,26 @@ void func_80071E58(char *str)
             float f0;
             float f1;
 
-            div = (r3 - font->unk4) / font->unkC;
-            mod = (r3 - font->unk4) % font->unkC;
-            sp38.unk4 = r28->unk4 + font->unk20;
-            sp38.unk8 = r28->unk8 + font->unk22;
+            div = (glyphIndex - font->unk4) / font->unkC;
+            mod = (glyphIndex - font->unk4) % font->unkC;
+            params.x = r28->unk4 + font->unk20;
+            params.y = r28->unk8 + font->unk22;
             f0 = font->unk10 * mod;
             f1 = font->unk14 * div;
-            sp38.unk18 = f17 + (f0 + font->unk18 * font->unk20);
-            sp38.unk1C = f1 + font->unk1C * font->unk22;
-            sp38.unk20 = font->unk10 + (f0 - font->unk18 * font->unk21) - f17 - font->unk10 * CLAMP(1.0 - r28->unk20, 0.0, 1.0) * 0.1;
-            sp38.unk24 = font->unk14 + (f1 - font->unk1C * font->unk23);
-            sp38.unk10 = r28->unk20 * ((font->unk10 - (font->unk18 * font->unk20)) - (font->unk18 * font->unk21) - f17 * 2.0);
-            sp38.unk14 = r28->unk24 * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
-            if (r28->unkC == 0xB3 && *str == 'g')
-                sp38.unk8 += sp38.unk14 * 80.0;
-            func_80073828(&sp38);
+            params.u1 = f17 + (f0 + font->unk18 * font->unk20);
+            params.v1 = f1 + font->unk1C * font->unk22;
+            params.u2 = font->unk10 + (f0 - font->unk18 * font->unk21) - f17 - font->unk10 * CLAMP(1.0 - r28->unk20, 0.0, 1.0) * 0.1;
+            params.v2 = font->unk14 + (f1 - font->unk1C * font->unk23);
+            params.zoomX = r28->unk20 * ((font->unk10 - (font->unk18 * font->unk20)) - (font->unk18 * font->unk21) - f17 * 2.0);
+            params.zoomY = r28->unk24 * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
+            if (r28->unkC == FONT_JAP_24x24_2Pg && *str == 'g')
+                params.y += params.zoomY * 80.0;
+            draw_naomi_sprite(&params);
         }
         r22++;
         r28->unk4 += f16 * (r23 * r28->unk20);
-        str += sp28.unk8;
-        sp28.unkC += r23;
+        str += parseState.unk8;
+        parseState.unkC += r23;
     }
 
     r28->unkC = r25;
@@ -2873,28 +2894,28 @@ float g_get_text_width(char *str)
     int r22;
     float width;
     float f23;
-    struct SpriteRequest unk;
-    struct StringParseState sp2C;
+    struct NaomiSpriteParams params;
+    struct StringParseState parseState;
     u8 dummy2[8];
     s32 skip;
     s32 sp1C;
-    s32 sp18;
+    s32 color;
     u8 dummy[8];
 
     font = &fontInfo[r29->unkC];
     r22 = 0;
     r25 = r29->unkC;
     f23 = r29->unk20;
-    sp2C.unk0 = 0;
-    sp2C.unk4 = -1;
-    sp2C.unk8 = 0;
-    sp2C.unkC = 0.0f;
+    parseState.mode = TEXT_MODE_ASCII;
+    parseState.unk4 = -1;
+    parseState.unk8 = 0;
+    parseState.unkC = 0.0f;
     width = 0.0f;
 
     for (; *str != 0; str++)
     {
         float f1;
-        int r3;
+        int glyphIndex;
 
         if (lbl_802F1D04 != 4 && lbl_802F200C != -1.0f)
         {
@@ -2912,26 +2933,26 @@ float g_get_text_width(char *str)
         {
             r22++;
             width += r23 * r29->unk20 * f1;
-            sp2C.unkC += r23;
+            parseState.unkC += r23;
             continue;
         }
-        r3 = *str;
+        glyphIndex = *str;
         if (r29->unkC > 0xAE)
         {
-            sp18 = unk.unk38;
+            color = params.unk38;
             skip = 0;
             sp1C = 0;
-            r3 = parse_char_sequence(&sp2C, str, &sp18, &skip, &sp1C);
-            unk.unk38 = sp18;
+            glyphIndex = parse_char_sequence(&parseState, str, &color, &skip, &sp1C);
+            params.unk38 = color;
             str += skip;
             if (sp1C == 1)
             {
-                r29->unkC = 0xB0;
+                r29->unkC = FONT_JAP_24x24_2;
                 font = &fontInfo[r29->unkC];
             }
             else if (sp1C == 2)
             {
-                r29->unkC = 0xB1;
+                r29->unkC = FONT_JAP_24x24_2P;
                 font = &fontInfo[r29->unkC];
             }
             else if (sp1C == 0x46)
@@ -2942,20 +2963,20 @@ float g_get_text_width(char *str)
                 r29->unk20 = 0.9f;
             else if (sp1C == 0x64)
                 r29->unk20 = 1.0f;
-            if (r3 == -1)
+            if (glyphIndex == -1)
             {
                 width += r23 * r29->unk20;
                 continue;
             }
-            if (r3 == -2)
+            if (glyphIndex == -2)
                 continue;
             switch (r29->unkC)
             {
-            case 0xB1:
-            case 0xB3:
-                if (r3 >= 0xC8)
+            case FONT_JAP_24x24_2P:
+            case FONT_JAP_24x24_2Pg:
+                if (glyphIndex >= 0xC8)
                 {
-                    int foo = lbl_80117A80[r3 - 0xC8];
+                    int foo = lbl_80117A80[glyphIndex - 0xC8];
 
                     if (foo != -1)
                     {
@@ -2974,15 +2995,15 @@ float g_get_text_width(char *str)
                 f1 = 1.0f;
                 break;
             }
-            if (sp2C.unk0 & (1 << 17))
-                font = &fontInfo[0xB2];
+            if (parseState.mode & (1 << 17))
+                font = &fontInfo[FONT_JAP_24x24_I];
             else
                 font = &fontInfo[r29->unkC];
         }
         r22++;
         width += r23 * r29->unk20 * f1;
-        str += sp2C.unk8;
-        sp2C.unkC += r23;
+        str += parseState.unk8;
+        parseState.unkC += r23;
     }
     r29->unkC = r25;
     r29->unk20 = f23;
@@ -3024,75 +3045,75 @@ void func_80072B50(struct Sprite *sprite)
 
 void func_80072C68(struct Sprite *sprite)
 {
-    struct SpriteRequest spC;
+    struct NaomiSpriteParams params;
 
-    spC.bmpId = sprite->bmpId;
-    spC.unk4 = (sprite->left + sprite->right) / 2;
-    spC.unk8 = (sprite->top + sprite->bottom) / 2;
-    spC.unkC = sprite->unk4C;
-    spC.unk10 = sprite->unk40;
-    spC.unk14 = sprite->unk44;
-    spC.unk18 = sprite->unk7C;
-    spC.unk1C = sprite->unk80;
-    spC.unk20 = sprite->unk84;
-    spC.unk24 = sprite->unk88;
-    spC.unk28 = sprite->unk68;
-    spC.unk2C = sprite->unk6C;
-    spC.unk30 = -1;
-    spC.unk34 = (sprite->unk74 & ~0xF) | 10;
-    spC.unk38 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
+    params.bmpId = sprite->bmpId;
+    params.x = (sprite->left + sprite->right) / 2;
+    params.y = (sprite->top + sprite->bottom) / 2;
+    params.z = sprite->unk4C;
+    params.zoomX = sprite->unk40;
+    params.zoomY = sprite->unk44;
+    params.u1 = sprite->unk7C;
+    params.v1 = sprite->unk80;
+    params.u2 = sprite->unk84;
+    params.v2 = sprite->unk88;
+    params.rotation = sprite->unk68;
+    params.alpha = sprite->unk6C;
+    params.unk30 = -1;
+    params.flags = (sprite->unk74 & ~0xF) | 10;
+    params.unk38 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
               | ((sprite->unkC & 0xFF) << 16)
               | ((sprite->unkD & 0xFF) <<  8)
               | ((sprite->unkE & 0xFF) <<  0);
-    spC.unk3C = (sprite->unk70 << 16)
+    params.unk3C = (sprite->unk70 << 16)
               | (sprite->unk71 << 8)
               | (sprite->unk72 << 0);
-    func_80073828(&spC);
+    draw_naomi_sprite(&params);
 }
 
-float func_80072DA8(int r23, char *str, int c)
+float func_80072DA8(int fontId, char *str, int c)
 {
     int r27;
     struct FontParams *font;
     float f31;
-    struct StringParseState sp28;
+    struct StringParseState parseState;
     s32 skip;
     s32 sp20;
-    s32 sp1C;
+    s32 color;
     u8 dummy[8];
 
-    font = &fontInfo[r23];
+    font = &fontInfo[fontId];
     r27 = 0;
     f31 = 1.0f;
-    sp28.unk0 = 0;
-    sp28.unk4 = -1;
-    sp28.unk8 = 0;
-    sp28.unkC = 0.0f;
+    parseState.mode = TEXT_MODE_ASCII;
+    parseState.unk4 = -1;
+    parseState.unk8 = 0;
+    parseState.unkC = 0.0f;
 
     for (; *str != 0; str++)
     {
-        int r3;
+        int glyphIndex;
         float f2;
 
         if (*str == ' ')
         {
-            sp28.unkC += func_80071E58_inline(*str, r23, font) * f31;
+            parseState.unkC += func_80071E58_inline(*str, fontId, font) * f31;
             r27++;
             continue;
         }
         skip = 0;
-        sp1C = 0;
+        color = 0;
         sp20 = 0;
-        r3 = parse_char_sequence(&sp28, str, &sp1C, &skip, &sp20);
+        glyphIndex = parse_char_sequence(&parseState, str, &color, &skip, &sp20);
         if (sp20 == 1)
         {
-            font = &fontInfo[0xB0];
-            r23 = 0xB0;
+            font = &fontInfo[FONT_JAP_24x24_2];
+            fontId = FONT_JAP_24x24_2;
         }
         else if (sp20 == 2)
         {
-            font = &fontInfo[0xB1];
-            r23 = 0xB1;
+            font = &fontInfo[FONT_JAP_24x24_2P];
+            fontId = FONT_JAP_24x24_2P;
         }
         else if (sp20 == 0x46)
             f31 = 0.7f;
@@ -3103,15 +3124,15 @@ float func_80072DA8(int r23, char *str, int c)
         else if (sp20 == 0x64)
             f31 = 1.0f;
         str += skip;
-        if (r3 == -1 || r3 == -2)
+        if (glyphIndex == -1 || glyphIndex == -2)
             continue;
-        switch (r23)
+        switch (fontId)
         {
-        case 0xB1:
-        case 0xB3:
-            if (r3 >= 0xC8)
+        case FONT_JAP_24x24_2P:
+        case FONT_JAP_24x24_2Pg:
+            if (glyphIndex >= 0xC8)
             {
-                int foo = lbl_80117A80[r3 - 0xC8];
+                int foo = lbl_80117A80[glyphIndex - 0xC8];
 
                 if (foo != -1)
                 {
@@ -3121,7 +3142,7 @@ float func_80072DA8(int r23, char *str, int c)
                         r6 = foo + 1;
                     else
                         r6 = r6 = 24;
-                    f2 = (float)r6 / (float)fontInfo[r23].spaceWidth;
+                    f2 = (float)r6 / (float)fontInfo[fontId].spaceWidth;
                     break;
                 }
             }
@@ -3130,74 +3151,74 @@ float func_80072DA8(int r23, char *str, int c)
             break;
         }
         r27++;
-        sp28.unkC += f31 * (font->spaceWidth * f2);
-        str += sp28.unk8;
+        parseState.unkC += f31 * (font->spaceWidth * f2);
+        str += parseState.unk8;
     }
     if (c == 0)
         return r27;
     else
-        return sp28.unkC;
+        return parseState.unkC;
 }
 
-float func_80073058(char *str)
+float get_ascii_text_width(char *str)
 {
-    return func_80072DA8(0, str, 0);
+    return func_80072DA8(FONT_ASCII, str, 0);
 }
 
-int func_80073084(int a, char *str)
+int get_jpn_text_width(int fontId, char *str)
 {
-    return func_80072DA8(a, str, 1);
+    return func_80072DA8(fontId, str, 1);
 }
 
 void func_800730B4(void)
 {
-    struct SpriteRequest sp8;
+    struct NaomiSpriteParams params;
 
-    if (lbl_80290170.unk8 == 0)
+    if (screenFadeInfo.unk8 == 0)
         return;
     if (gameMode == MD_OPTION)
     {
-        if ((lbl_80290170.unk0 & 0xFF) != 2)
-            lbl_80290170.unk8--;
+        if ((screenFadeInfo.unk0 & 0xFF) != 2)
+            screenFadeInfo.unk8--;
     }
     else
     {
-        if (!(gamePauseStatus & 0xA) && (lbl_80290170.unk0 & 0xFF) != 2)
-            lbl_80290170.unk8--;
+        if (!(gamePauseStatus & 0xA) && (screenFadeInfo.unk0 & 0xFF) != 2)
+            screenFadeInfo.unk8--;
     }
-    switch (lbl_80290170.unk0 & 0xFF)
+    switch (screenFadeInfo.unk0 & 0xFF)
     {
     case 0:
-        sp8.unk2C = (float)lbl_80290170.unk8 / (float)lbl_80290170.unkC;
+        params.alpha = (float)screenFadeInfo.unk8 / (float)screenFadeInfo.unkC;
         break;
     case 1:
-        sp8.unk2C = 1.0 - (float)lbl_80290170.unk8 / (float)lbl_80290170.unkC;
+        params.alpha = 1.0 - (float)screenFadeInfo.unk8 / (float)screenFadeInfo.unkC;
         break;
     case 2:
-        sp8.unk2C = 1.0f;
+        params.alpha = 1.0f;
         break;
     }
-    sp8.bmpId = 0x4B;
-    sp8.unk4 = 320.0f;
-    sp8.unk8 = 240.1f;
-    sp8.unkC = (lbl_80290170.unk0 & (1 << 8)) ? 0.009 : 0.25;
-    sp8.unk10 = 80.0f;
-    sp8.unk14 = 60.0f;
-    sp8.unk18 = 0.0f;
-    sp8.unk1C = 0.0f;
-    sp8.unk20 = 1.0f;
-    sp8.unk24 = 1.0f;
-    sp8.unk28 = 0;
-    sp8.unk30 = -1;
-    sp8.unk34 = 0x2000A;
-    sp8.unk38 = lbl_80290170.unk4;
-    sp8.unk3C = 0;
-    func_80073828(&sp8);
-    if ((lbl_80290170.unk0 & 0xFF) == 1 && lbl_80290170.unk8 == 0)
+    params.bmpId = BITMAP_ID(BMP_COM, BMP_COM_white_mask8x8);
+    params.x = 320.0f;
+    params.y = 240.1f;
+    params.z = (screenFadeInfo.unk0 & (1 << 8)) ? 0.009 : 0.25;
+    params.zoomX = 80.0f;
+    params.zoomY = 60.0f;
+    params.u1 = 0.0f;
+    params.v1 = 0.0f;
+    params.u2 = 1.0f;
+    params.v2 = 1.0f;
+    params.rotation = 0;
+    params.unk30 = -1;
+    params.flags = 0x2000A;
+    params.unk38 = screenFadeInfo.unk4;
+    params.unk3C = 0;
+    draw_naomi_sprite(&params);
+    if ((screenFadeInfo.unk0 & 0xFF) == 1 && screenFadeInfo.unk8 == 0)
     {
-        lbl_80290170.unk0 = (lbl_80290170.unk0 & (1 << 8)) ? 0x102 : 0x2;
-        lbl_80290170.unk8 = 1;
-        lbl_80290170.unkC = 0;
+        screenFadeInfo.unk0 = (screenFadeInfo.unk0 & (1 << 8)) ? 0x102 : 0x2;
+        screenFadeInfo.unk8 = 1;
+        screenFadeInfo.unkC = 0;
     }
 }
 
@@ -3206,87 +3227,87 @@ void g_start_screen_fade(s32 a, int b, int duration)
     if ((a & 0xFF) != 2 && duration > 3)
         duration -= 3;
 
-    if ((lbl_80290170.unk0 & 0xFF) == (a & 0xFF)
-     && (lbl_80290170.unk0 & 0xFF) != 2
-     && lbl_80290170.unk8 > 0)
+    if ((screenFadeInfo.unk0 & 0xFF) == (a & 0xFF)
+     && (screenFadeInfo.unk0 & 0xFF) != 2
+     && screenFadeInfo.unk8 > 0)
         return;
 
-    if ((a & 0xFF) == 1 && (lbl_80290170.unk0 & 0xFF) == 0 && lbl_80290170.unk8 > 0)
+    if ((a & 0xFF) == 1 && (screenFadeInfo.unk0 & 0xFF) == 0 && screenFadeInfo.unk8 > 0)
     {
-        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00) | 1;
-        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
-        lbl_80290170.unkC = duration;
+        screenFadeInfo.unk0 = (screenFadeInfo.unk0 & 0xFF00) | 1;
+        screenFadeInfo.unk8 = duration - screenFadeInfo.unk8 * ((float)duration / (float)screenFadeInfo.unkC);
+        screenFadeInfo.unkC = duration;
     }
-    else if ((a & 0xFF) == 1 && (lbl_80290170.unk0 & 0xFF) == 1 && lbl_80290170.unk8 > 0)
+    else if ((a & 0xFF) == 1 && (screenFadeInfo.unk0 & 0xFF) == 1 && screenFadeInfo.unk8 > 0)
     {
-        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00) | 1;
-        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
-        lbl_80290170.unkC = duration;
+        screenFadeInfo.unk0 = (screenFadeInfo.unk0 & 0xFF00) | 1;
+        screenFadeInfo.unk8 = duration - screenFadeInfo.unk8 * ((float)duration / (float)screenFadeInfo.unkC);
+        screenFadeInfo.unkC = duration;
     }
-    else if ((a & 0xFF) == 0 && (lbl_80290170.unk0 & 0xFF) == 0 && lbl_80290170.unk8 > 0)
+    else if ((a & 0xFF) == 0 && (screenFadeInfo.unk0 & 0xFF) == 0 && screenFadeInfo.unk8 > 0)
     {
-        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00);
-        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
-        lbl_80290170.unkC = duration;
+        screenFadeInfo.unk0 = (screenFadeInfo.unk0 & 0xFF00);
+        screenFadeInfo.unk8 = duration - screenFadeInfo.unk8 * ((float)duration / (float)screenFadeInfo.unkC);
+        screenFadeInfo.unkC = duration;
     }
-    else if ((a & 0xFF) == 0 && (lbl_80290170.unk0 & 0xFF) == 1 && lbl_80290170.unk8 > 0)
+    else if ((a & 0xFF) == 0 && (screenFadeInfo.unk0 & 0xFF) == 1 && screenFadeInfo.unk8 > 0)
     {
-        lbl_80290170.unk0 = (lbl_80290170.unk0 & 0xFF00);
-        lbl_80290170.unk8 = duration - lbl_80290170.unk8 * ((float)duration / (float)lbl_80290170.unkC);
-        lbl_80290170.unkC = duration;
+        screenFadeInfo.unk0 = (screenFadeInfo.unk0 & 0xFF00);
+        screenFadeInfo.unk8 = duration - screenFadeInfo.unk8 * ((float)duration / (float)screenFadeInfo.unkC);
+        screenFadeInfo.unkC = duration;
     }
     else
     {
-        lbl_80290170.unk0 = a;
+        screenFadeInfo.unk0 = a;
         if ((a & 0xFF) != 0)
-            lbl_80290170.unk4 = b;
-        lbl_80290170.unk8 = duration;
-        lbl_80290170.unkC = duration;
+            screenFadeInfo.unk4 = b;
+        screenFadeInfo.unk8 = duration;
+        screenFadeInfo.unkC = duration;
     }
 }
 
-static inline int func_80073600_inline(struct SpriteRequest *a)
+static inline int append_to_sprite_params_buf(struct NaomiSpriteParams *params)
 {
-    if (g_bmpUnkCountOfSomething == 256)
+    if (spriteParamsBufCount == 256)
     {
-        func_8003026C(2, "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->bmpId);
-        OSReport("nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", a->bmpId);
+        func_8003026C(2, "nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", params->bmpId);
+        OSReport("nlSprPut : SPRITE BUFFER OVER !! bmp %d\n", params->bmpId);
         return 0;
     }
 
-    memcpy(&lbl_801F3DC0[g_bmpUnkCountOfSomething], a, sizeof(struct SpriteRequest));
-    g_bmpUnkCountOfSomething++;
+    memcpy(&spriteParamsBuf[spriteParamsBufCount], params, sizeof(struct NaomiSpriteParams));
+    spriteParamsBufCount++;
     return 1;
 }
 
-int func_80073600(struct SpriteRequest *a)
+int add_naomi_sprite(struct NaomiSpriteParams *params)
 {
     int r4;
 
     switch (lbl_802F1D04)
     {
     case 0:
-        if (func_80073600_inline(a))
+        if (append_to_sprite_params_buf(params))
             return 1;
         else
             return 1;
         break;
     case 1:
-        if (!(a->unk34 & (1 << 18))
-         && lbl_80290170.unk8 > 0
-         && ((lbl_80290170.unk0 & (1 << 8)) ? 0.009 : 0.25) > a->unkC
-         && func_80073600_inline(a))
+        if (!(params->flags & (1 << 18))
+         && screenFadeInfo.unk8 > 0
+         && ((screenFadeInfo.unk0 & (1 << 8)) ? 0.009 : 0.25) > params->z
+         && append_to_sprite_params_buf(params))
             return 1;
         if ((advDemoInfo.flags & (1 << 7))
-         && (a->bmpId == 12 || a->bmpId == 85)
-         && func_80073600_inline(a))
+         && (params->bmpId == BITMAP_ID(BMP_COM, BMP_COM_banana_01) || params->bmpId == BITMAP_ID(BMP_COM, BMP_COM_banana_10))
+         && append_to_sprite_params_buf(params))
             return 1;
         break;
     }
     return 0;
 }
 
-int func_80073828(struct SpriteRequest *a)
+int draw_naomi_sprite(struct NaomiSpriteParams *params)
 {
     Vec sp54 = {0};
     Vec sp48 = {0};
@@ -3294,7 +3315,7 @@ int func_80073828(struct SpriteRequest *a)
     Vec sp30 = {0};
     GXColor sp2C;
     u32 dummy;
-    float f31;
+    float z;
     float f30;
     float f29;
     float f28;
@@ -3308,29 +3329,29 @@ int func_80073828(struct SpriteRequest *a)
     s32 r29;
     u8 r28;
 
-    if (func_80073600(a))
+    if (add_naomi_sprite(params))
         return 0;
 
-    if (!bitmapGroups[((u32)a->bmpId >> 8) & 0xFF].isLoaded)
+    if (!bitmapGroups[((u32)params->bmpId >> 8) & 0xFF].isLoaded)
     {
         printf(
             "SPRITE WARNING!! bmp_%s's category %s is not load\n",
-            bitmapNames[a->bmpId >> 8][a->bmpId & 0xFF],
-            bitmapGroups[a->bmpId >> 8].name);
+            bitmapNames[params->bmpId >> 8][params->bmpId & 0xFF],
+            bitmapGroups[params->bmpId >> 8].name);
         return 0;
     }
 
-    f31 = -a->unkC;
-    f1 = a->unk4;
-    f2 = a->unk8;
-    texWidth  = bitmapGroups[(a->bmpId >> 8) & 0xFF].tpl->texHeaders[a->bmpId & 0xFF].width;
-    texHeight = bitmapGroups[(a->bmpId >> 8) & 0xFF].tpl->texHeaders[a->bmpId & 0xFF].height;
-    f30 = a->unk18;
-    f29 = a->unk20;
-    f28 = a->unk1C;
-    f27 = a->unk24;
+    z = -params->z;
+    f1 = params->x;
+    f2 = params->y;
+    texWidth  = bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texHeaders[params->bmpId & 0xFF].width;
+    texHeight = bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texHeaders[params->bmpId & 0xFF].height;
+    f30 = params->u1;
+    f29 = params->u2;
+    f28 = params->v1;
+    f27 = params->v2;
 
-    switch (a->unk34 & 3)
+    switch (params->flags & 3)
     {
     default:
     case 0:
@@ -3348,7 +3369,7 @@ int func_80073828(struct SpriteRequest *a)
         break;
     }
 
-    switch ((a->unk34 >> 2) & 3)
+    switch ((params->flags >> 2) & 3)
     {
     default:
     case 0:
@@ -3366,16 +3387,18 @@ int func_80073828(struct SpriteRequest *a)
         break;
     }
 
+    // Transform all vertices
     mathutil_mtxA_from_translate_xyz(f1, f2, 0.0f);
-    mathutil_mtxA_rotate_z((s16)-a->unk28);
-    mathutil_mtxA_scale_xyz(a->unk10, a->unk14, 1.0f);
+    mathutil_mtxA_rotate_z((s16)-params->rotation);
+    mathutil_mtxA_scale_xyz(params->zoomX, params->zoomY, 1.0f);
     mathutil_mtxA_tf_point(&sp54, &sp54);
     mathutil_mtxA_tf_point(&sp48, &sp48);
     mathutil_mtxA_tf_point(&sp3C, &sp3C);
     mathutil_mtxA_tf_point(&sp30, &sp30);
-    if (a->unk34 & (1 << 18))
+
+    if (params->flags & (1 << 18))
     {
-        float f0 = a->unkC * 0.002405626;
+        float f0 = params->z * 0.002405626;
 
         sp54.x = (sp54.x - 320.0f) * f0;
         sp54.y = -((sp54.y - 240.0f) * f0);
@@ -3387,30 +3410,30 @@ int func_80073828(struct SpriteRequest *a)
         sp30.y = -((sp30.y - 240.0f) * f0);
     }
 
-    if (a->unk34 & (1 << 19))
+    if (params->flags & (1 << 19))
     {
-        f30 = a->unk20;
-        f29 = a->unk18;
+        f30 = params->u2;
+        f29 = params->u1;
     }
-    if (a->unk34 & (1 << 20))
+    if (params->flags & (1 << 20))
     {
-        f28 = a->unk24;
-        f27 = a->unk1C;
+        f28 = params->v2;
+        f27 = params->v1;
     }
 
-    func_8009F430(&bitmapGroups[(a->bmpId >> 8) & 0xFF].tpl->texObjs[a->bmpId & 0xFF], 0);
-    sp2C.r = (a->unk38 >> 16);
-    sp2C.g = (a->unk38 >> 8);
-    sp2C.b = (a->unk38 >> 0);
-    sp2C.a = a->unk2C * 255.0f;
+    func_8009F430(&bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texObjs[params->bmpId & 0xFF], 0);
+    sp2C.r = (params->unk38 >> 16);
+    sp2C.g = (params->unk38 >> 8);
+    sp2C.b = (params->unk38 >> 0);
+    sp2C.a = params->alpha * 255.0f;
     GXSetTevColor(1, sp2C);
-    sp2C.r = (a->unk3C >> 16);
-    sp2C.g = (a->unk3C >> 8);
-    sp2C.b = (a->unk3C >> 0);
-    sp2C.a = (a->unk3C >> 24);
+    sp2C.r = (params->unk3C >> 16);
+    sp2C.g = (params->unk3C >> 8);
+    sp2C.b = (params->unk3C >> 0);
+    sp2C.a = (params->unk3C >> 24);
     GXSetTevColor(2, sp2C);
 
-    if (a->unk34 & (1 << 21))
+    if (params->flags & (1 << 21))
     {
         GXCompare *r4 = &zMode->compareFunc;
         r30 = zMode->compareEnable;
@@ -3422,17 +3445,17 @@ int func_80073828(struct SpriteRequest *a)
 
     zero = 0.0f;
     GXBegin(GX_QUADS, GX_VTXFMT7, 4);
-        GXPosition3f32(sp54.x, sp54.y, f31);
+        GXPosition3f32(sp54.x, sp54.y, z);
         GXTexCoord2f32(f30 + zero, f28 + zero);
-        GXPosition3f32(sp48.x, sp48.y, f31);
+        GXPosition3f32(sp48.x, sp48.y, z);
         GXTexCoord2f32(f29 - zero, f28 + zero);
-        GXPosition3f32(sp30.x, sp30.y, f31);
+        GXPosition3f32(sp30.x, sp30.y, z);
         GXTexCoord2f32(f29 - zero, f27 - zero);
-        GXPosition3f32(sp3C.x, sp3C.y, f31);
+        GXPosition3f32(sp3C.x, sp3C.y, z);
         GXTexCoord2f32(f30 + zero, f27 - zero);
     GXEnd();
 
-    if (a->unk34 & (1 << 21))
+    if (params->flags & (1 << 21))
     {
         CHANGE_Z_MODE(r28, r29, r30);
     }

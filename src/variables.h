@@ -563,7 +563,7 @@ extern struct
 // extern ? lbl_801F3A9C;
 
 // extern ? lzssHeader;
-extern struct SpriteRequest lbl_801F3DC0[];
+extern struct NaomiSpriteParams spriteParamsBuf[];
 
 extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
@@ -634,7 +634,7 @@ extern struct
 // extern ? lbl_8028CF00;
 // extern ? lbl_8028CF28;
 // extern ? spriteInfo;
-extern struct Struct80290170 lbl_80290170;
+extern struct Struct80290170 screenFadeInfo;
 // extern ? lbl_80290180;
 // extern ? lbl_80292AC0;
 extern struct
