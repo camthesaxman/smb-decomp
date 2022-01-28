@@ -8,5 +8,8 @@ typedef struct
 
 void GXInitFifoBase(GXFifoObj *fifo, void *base, u32 size);
 void GXInitFifoPtrs(GXFifoObj *fifo, void *readPtr, void *writePtr);
+GXFifoObj *GXGetCPUFifo(void);
+void GXSetCPUFifo(GXFifoObj *fifo);
+void GXSaveCPUFifo(GXFifoObj *fifo);
 
 #endif

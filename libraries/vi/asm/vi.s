@@ -1791,3 +1791,61 @@ lbl_801E7C50:
 	.4byte func_800CF04C  ;# ptr
 	.4byte 0
 	.4byte 0
+
+.section .sbss
+
+    .balign 8
+.global retraceCount
+retraceCount:
+	.skip 0x4
+.global shdwChangeMode
+shdwChangeMode:
+	.skip 0x4
+.global flushFlag
+flushFlag:
+	.skip 0x4
+.global retraceQueue
+retraceQueue:
+	.skip 0x8
+.global PreCB
+PreCB:
+	.skip 0x4
+.global PostCB
+PostCB:
+	.skip 0x4
+.global encoderType
+encoderType:
+	.skip 0x4
+.global displayOffsetH
+displayOffsetH:
+	.skip 0x2
+.global displayOffsetV
+displayOffsetV:
+	.skip 0x6
+.global changeMode
+changeMode:
+	.skip 0x4
+.global changed
+changed:
+	.skip 0x4
+.global shdwChanged
+shdwChanged:
+	.skip 0x4
+.global lbl_802F245C
+lbl_802F245C:
+	.skip 0x4
+.global Initialized
+Initialized:
+	.skip 0x8
+
+.section .bss
+
+.global regs
+regs:
+	.skip 0x78
+.global shdwRegs
+shdwRegs:
+	.skip 0x78
+.global HorVer
+HorVer:
+	.skip 0x58

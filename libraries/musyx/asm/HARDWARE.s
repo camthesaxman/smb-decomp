@@ -598,7 +598,7 @@ hwSetVolume:
 /* 800FFD50 000FBC70  93 E1 00 64 */	stw r31, 0x64(r1)
 /* 800FFD54 000FBC74  93 C1 00 60 */	stw r30, 0x60(r1)
 /* 800FFD58 000FBC78  3B C5 00 00 */	addi r30, r5, 0
-/* 800FFD5C 000FBC7C  C0 02 C2 20 */	lfs f0, lbl_802F6A20-_SDA2_BASE_(r2)
+/* 800FFD5C 000FBC7C  C0 02 C2 20 */	lfs f0, lbl_802F6A20@sda21(r2)
 /* 800FFD60 000FBC80  80 6D A5 1C */	lwz r3, dspVoice@sda21(r13)
 /* 800FFD64 000FBC84  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800FFD68 000FBC88  7F E3 02 14 */	add r31, r3, r0
@@ -606,13 +606,13 @@ hwSetVolume:
 /* 800FFD70 000FBC90  40 82 00 08 */	bne lbl_800FFD78
 /* 800FFD74 000FBC94  FC 20 00 90 */	fmr f1, f0
 lbl_800FFD78:
-/* 800FFD78 000FBC98  C0 02 C2 20 */	lfs f0, lbl_802F6A20-_SDA2_BASE_(r2)
+/* 800FFD78 000FBC98  C0 02 C2 20 */	lfs f0, lbl_802F6A20@sda21(r2)
 /* 800FFD7C 000FBC9C  FC 02 00 40 */	fcmpo cr0, f2, f0
 /* 800FFD80 000FBCA0  4C 41 13 82 */	cror 2, 1, 2
 /* 800FFD84 000FBCA4  40 82 00 08 */	bne lbl_800FFD8C
 /* 800FFD88 000FBCA8  FC 40 00 90 */	fmr f2, f0
 lbl_800FFD8C:
-/* 800FFD8C 000FBCAC  C0 02 C2 20 */	lfs f0, lbl_802F6A20-_SDA2_BASE_(r2)
+/* 800FFD8C 000FBCAC  C0 02 C2 20 */	lfs f0, lbl_802F6A20@sda21(r2)
 /* 800FFD90 000FBCB0  FC 03 00 40 */	fcmpo cr0, f3, f0
 /* 800FFD94 000FBCB4  4C 41 13 82 */	cror 2, 1, 2
 /* 800FFD98 000FBCB8  40 82 00 08 */	bne lbl_800FFDA0
@@ -636,7 +636,7 @@ lbl_800FFDA0:
 /* 800FFDDC 000FBCFC  38 81 00 24 */	addi r4, r1, 0x24
 /* 800FFDE0 000FBD00  54 08 D9 7E */	srwi r8, r0, 5
 /* 800FFDE4 000FBD04  4B FF BA 3D */	bl salCalcVolume
-/* 800FFDE8 000FBD08  C0 62 C2 24 */	lfs f3, lbl_802F6A24-_SDA2_BASE_(r2)
+/* 800FFDE8 000FBD08  C0 62 C2 24 */	lfs f3, lbl_802F6A24@sda21(r2)
 /* 800FFDEC 000FBD0C  C0 41 00 24 */	lfs f2, 0x24(r1)
 /* 800FFDF0 000FBD10  C0 21 00 28 */	lfs f1, 0x28(r1)
 /* 800FFDF4 000FBD14  C0 01 00 2C */	lfs f0, 0x2c(r1)
@@ -677,7 +677,7 @@ lbl_800FFE64:
 /* 800FFE7C 000FBD9C  90 7F 00 24 */	stw r3, 0x24(r31)
 /* 800FFE80 000FBDA0  98 1F 00 E5 */	stb r0, 0xe5(r31)
 lbl_800FFE84:
-/* 800FFE84 000FBDA4  C0 62 C2 24 */	lfs f3, lbl_802F6A24-_SDA2_BASE_(r2)
+/* 800FFE84 000FBDA4  C0 62 C2 24 */	lfs f3, lbl_802F6A24@sda21(r2)
 /* 800FFE88 000FBDA8  C0 41 00 30 */	lfs f2, 0x30(r1)
 /* 800FFE8C 000FBDAC  C0 21 00 34 */	lfs f1, 0x34(r1)
 /* 800FFE90 000FBDB0  C0 01 00 38 */	lfs f0, 0x38(r1)
@@ -718,7 +718,7 @@ lbl_800FFF00:
 /* 800FFF18 000FBE38  90 7F 00 24 */	stw r3, 0x24(r31)
 /* 800FFF1C 000FBE3C  98 1F 00 E6 */	stb r0, 0xe6(r31)
 lbl_800FFF20:
-/* 800FFF20 000FBE40  C0 62 C2 24 */	lfs f3, lbl_802F6A24-_SDA2_BASE_(r2)
+/* 800FFF20 000FBE40  C0 62 C2 24 */	lfs f3, lbl_802F6A24@sda21(r2)
 /* 800FFF24 000FBE44  C0 41 00 3C */	lfs f2, 0x3c(r1)
 /* 800FFF28 000FBE48  C0 21 00 40 */	lfs f1, 0x40(r1)
 /* 800FFF2C 000FBE4C  C0 01 00 44 */	lfs f0, 0x44(r1)
@@ -992,19 +992,19 @@ hwTransAddr:
 .global hwFrq2Pitch
 hwFrq2Pitch:
 /* 801002A8 000FC1C8  7C 08 02 A6 */	mflr r0
-/* 801002AC 000FC1CC  3C 80 80 2D */	lis r4, lbl_802D6240@ha
+/* 801002AC 000FC1CC  3C 80 80 2D */	lis r4, synthInfo@ha
 /* 801002B0 000FC1D0  90 01 00 04 */	stw r0, 4(r1)
 /* 801002B4 000FC1D4  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 801002B8 000FC1D8  90 61 00 1C */	stw r3, 0x1c(r1)
 /* 801002BC 000FC1DC  3C 60 43 30 */	lis r3, 0x4330
-/* 801002C0 000FC1E0  80 04 62 40 */	lwz r0, lbl_802D6240@l(r4)
+/* 801002C0 000FC1E0  80 04 62 40 */	lwz r0, synthInfo@l(r4)
 /* 801002C4 000FC1E4  90 61 00 18 */	stw r3, 0x18(r1)
-/* 801002C8 000FC1E8  C8 42 C2 30 */	lfd f2, lbl_802F6A30-_SDA2_BASE_(r2)
+/* 801002C8 000FC1E8  C8 42 C2 30 */	lfd f2, lbl_802F6A30@sda21(r2)
 /* 801002CC 000FC1EC  90 01 00 14 */	stw r0, 0x14(r1)
 /* 801002D0 000FC1F0  C8 01 00 18 */	lfd f0, 0x18(r1)
 /* 801002D4 000FC1F4  90 61 00 10 */	stw r3, 0x10(r1)
 /* 801002D8 000FC1F8  EC 20 10 28 */	fsubs f1, f0, f2
-/* 801002DC 000FC1FC  C0 62 C2 28 */	lfs f3, lbl_802F6A28-_SDA2_BASE_(r2)
+/* 801002DC 000FC1FC  C0 62 C2 28 */	lfs f3, lbl_802F6A28@sda21(r2)
 /* 801002E0 000FC200  C8 01 00 10 */	lfd f0, 0x10(r1)
 /* 801002E4 000FC204  EC 23 00 72 */	fmuls f1, f3, f1
 /* 801002E8 000FC208  EC 00 10 28 */	fsubs f0, f0, f2
@@ -1247,3 +1247,24 @@ dspCoefSel:
 	# ROM: 0x1EC1C8
 	.byte 0x00, 0x00, 0x00, 0x01
 	.byte 0x00, 0x02, 0x00, 0x00
+
+.section .sbss
+
+.global salTimeOffset
+salTimeOffset:
+	.skip 0x4
+.global salHooks
+salHooks:
+	.skip 0x4
+.global lbl_802F2730
+lbl_802F2730:
+	.skip 0x4
+.global salNumVoices
+salNumVoices:
+	.skip 0x1
+.global salAuxFrame
+salAuxFrame:
+	.skip 0x1
+.global salFrame
+salFrame:
+	.skip 0x2

@@ -1,12 +1,18 @@
+/**
+ * memcard.c - Implements memory card loading and saving functionality
+ */
+#include <math.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
+#include "event.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "sprite.h"
 
 struct StringEntry
 {
@@ -53,6 +59,8 @@ enum
     MC_STATE_VERIFY_FILESYSTEM = 5,
     MC_STATE_CHECK_VERIFY_FILESYSTEM_RESULT = 6,
     MC_STATE_OPEN_FILE = 8,
+    MC_STATE_FORMAT_PROMPT = 9,
+    MC_STATE_OVERWRITE_PROMPT = 13,
     MC_STATE_CHECK_CREATE_FILE_RESULT = 14,
     MC_STATE_GET_METADATA = 20,
     MC_STATE_CHECK_FREE_SPACE = 23,
@@ -81,7 +89,7 @@ struct MemcardInfo
     u8 unused64[0xC];
 } memcardInfo;
 u8 cardWorkArea[0xA100];
-u8 lbl_802C4480[0x3C0];
+struct MemcardGameData_sub lbl_802C4480;
 char strFmtBufferLine1[64];
 char strFmtBufferLine2[64];
 char strFmtBufferLine3[64];
@@ -137,15 +145,7 @@ s8 lbl_802F21B2;
 u8 lbl_802F21B1;
 
 u8 memcardMode;
-struct
-{
-    u16 crc;
-    u16 version;
-    u8 unk4[0x5800];
-    char unk5804[0x5824-0x5804];
-    char unk5824[0xC04-0x824];
-    u8 unk5C04[100];
-} *memcardGameData;
+struct MemcardGameData *memcardGameData;
 u8 lbl_802F21A8;
 
 #define BLOCK_SIZE 0x2000
@@ -696,22 +696,26 @@ void init_gamedata_file(void)
     int i;
     DVDFileInfo file;
     OSCalendarTime calendarTime;
-    void *buffer = OSAlloc(sizeof(memcardGameData->unk4));
+    void *buffer;
 
+    // set banner and icon
+    buffer = OSAlloc(sizeof(memcardGameData->bannerAndIcon));
     if (buffer == NULL)
         OSPanic("memcard.c", 927, "cannot OSAlloc");
     if (DVDOpen("banner_and_icon.bin", &file) == 0)
         OSPanic("memcard.c", 931, "cannot open banner_and_icon.bin");
-    if (g_read_dvd_file(&file, buffer, sizeof(memcardGameData->unk4), 0) == 0)
+    if (g_read_dvd_file(&file, buffer, sizeof(memcardGameData->bannerAndIcon), 0) == 0)
         OSPanic("memcard.c", 935, "cannot read banner_and_icon.bin");
-    memcpy(memcardGameData->unk4, buffer, sizeof(memcardGameData->unk4));
+    memcpy(memcardGameData->bannerAndIcon, buffer, sizeof(memcardGameData->bannerAndIcon));
     OSFree(buffer);
     DVDClose(&file);
-    cardStat.commentAddr = (u32)memcardGameData->unk5804 - (u32)memcardGameData;
-    strcpy(memcardGameData->unk5804, "Super Monkey Ball");
+
+    // set comment
+    cardStat.commentAddr = (u32)memcardGameData->comment - (u32)memcardGameData;
+    strcpy(memcardGameData->comment, "Super Monkey Ball");
     OSTicksToCalendarTime(memcardInfo.time, &calendarTime);
     sprintf(
-        memcardGameData->unk5824,
+        memcardGameData->title,
         "GameData%02d-%02d-%02d %02d:%02d",
         calendarTime.mon + 1,
         calendarTime.mday,
@@ -719,7 +723,7 @@ void init_gamedata_file(void)
         calendarTime.hour,
         calendarTime.min);
 
-    cardStat.iconAddr = (u32)memcardGameData->unk4 - (u32)memcardGameData;
+    cardStat.iconAddr = (u32)memcardGameData->bannerAndIcon - (u32)memcardGameData;
     cardStat.bannerFormat = (cardStat.bannerFormat & ~0x3) | 2;
 
     // These loops match except for stack
@@ -753,7 +757,7 @@ void init_gamedata_file(void)
 void init_replay_file_data(void)
 {
     DVDFileInfo file;
-    struct MaybeReplayInfo sp88;
+    struct ReplayInfo sp88;
     char category[12];
     char replayFileName[68];
     OSCalendarTime calendarTime;
@@ -762,11 +766,11 @@ void init_replay_file_data(void)
     if (buffer == NULL)
         OSPanic("memcard.c", 1014, "cannot OSAlloc");
     g_get_replay_info(11, &sp88);
-    
+
     // copy banner image
     if (DVDOpen("preview/96x32.tpl", &file) == 0)
         OSPanic("memcard.c", 1026, "cannot open replay banner image");
-    if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.unk2 - 1) * 0x1800) == 0)
+    if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.stageId - 1) * 0x1800) == 0)
         OSPanic("memcard.c", 1029, "cannot read replay banner image");
     memcpy(memcardReplayData->bannerImg, buffer, 0x1800);
     DVDClose(&file);
@@ -843,7 +847,7 @@ void init_replay_file_data(void)
     cardStat.bannerFormat = (cardStat.bannerFormat & ~(0x1<<2));
 
     memcardReplayData->replayFlags = sp88.flags;
-    memcardReplayData->unk4 = sp88.unk2;
+    memcardReplayData->unk4 = sp88.stageId;
     memcardReplayData->difficulty = sp88.difficulty;
     memcardReplayData->floorNum = sp88.floorNum;
     memcardReplayData->unk7 = sp88.unk5;
@@ -1098,7 +1102,7 @@ void check_verify_filesystem_result(void)
         if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgMemCardDamaged;
-            memcardInfo.state = 9;
+            memcardInfo.state = MC_STATE_FORMAT_PROMPT;
             lbl_802F21B1 = 0;
             memcardInfo.statusFlags |= (1 << 10);
         }
@@ -1169,7 +1173,7 @@ void open_memcard_file(void)
         if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgCantSaveFile;
-            memcardInfo.state = 9;
+            memcardInfo.state = MC_STATE_FORMAT_PROMPT;
             lbl_802F21B1 = 0;
             memcardInfo.statusFlags |= (1 << 10);
         }
@@ -1192,7 +1196,7 @@ void open_memcard_file(void)
         if ((memcardInfo.statusFlags & (MC_STATUS_SAVING | (1 << 7))) == (MC_STATUS_SAVING | (1 << 7)))
         {
             memcardInfo.msg = &msgMemCardDamaged;
-            memcardInfo.state = 9;
+            memcardInfo.state = MC_STATE_FORMAT_PROMPT;
             lbl_802F21B1 = 0;
             memcardInfo.statusFlags |= (1 << 10);
         }
@@ -1408,7 +1412,7 @@ void check_card_free_space(void)
             {
                 memcardInfo.unk42 = 0;
                 memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-                memcardInfo.state = 13;
+                memcardInfo.state = MC_STATE_OVERWRITE_PROMPT;
                 if (memcardInfo.statusFlags & MC_STATUS_GAMEDATA_FILE
                  && ((memcardInfo.statusFlags & ((1 << 16) | (1 << 7))) == ((1 << 16) | (1 << 7))))
                 {
@@ -1967,7 +1971,7 @@ void check_format_memcard_result(void)
         }
         break;
     case CARD_RESULT_READY:
-        memcardInfo.state = 13;
+        memcardInfo.state = MC_STATE_OVERWRITE_PROMPT;
         break;
     }
 }
@@ -3112,10 +3116,10 @@ void ev_memcard_init(void)
 
     if (memcardMode == MC_MODE_LOAD_GAMEDATA_2)
     {
-        if ((memcardGameData = OSAlloc(0x5C04)) == NULL)
+        if ((memcardGameData = OSAlloc(sizeof(*memcardGameData))) == NULL)
             OSPanic("memcard.c", 3835, "cannot OSAlloc");
         func_800A4E70();
-        memcpy(lbl_802C4480, memcardGameData->unk5824 + 0x20, 0x3C0);
+        memcpy(&lbl_802C4480, &memcardGameData->unk5844, sizeof(lbl_802C4480));
         OSFree(memcardGameData);
         memcardGameData = NULL;
     }
@@ -3136,7 +3140,7 @@ void ev_memcard_main(void)
     if (memcardInfo.state == MC_STATE_ERROR && !(memcardInfo.statusFlags & MC_STATUS_ERROR))
     {
         memcardInfo.statusFlags &= ~MC_STATUS_WRITE_IN_PROGRESS;
-        ev_run_dest(0);
+        event_finish(0);
         return;
     }
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
@@ -3242,27 +3246,7 @@ void ev_memcard_dest(void)
     replayFileInfo = NULL;
 }
 
-#pragma force_active on
-
-struct
-{
-    u32 unk0;
-    float unk4;
-    float unk8;
-    float unkC;
-    float unk10;
-    float unk14;
-    float unk18;
-    float unk1C;
-    float unk20;
-    float unk24;
-    u32 unk28;
-    float unk2C;
-    u32 unk30;
-    u32 unk34;
-    u32 unk38;
-    u32 unk3C;
-} lbl_801D5724 =
+struct NaomiSpriteParams lbl_801D5724 =
 {
     0x4B,
     320.0f,
@@ -3276,8 +3260,8 @@ struct
     1.0f,
     0,  // unk28
     0.649999976158f,
-    0xFFFFFFFF,
-    0x0A,
+    -1,
+    10,
     0xFF000000,
     0,
 };
@@ -3293,7 +3277,7 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     func_80071A8C();
     func_80071AD4(0xB3);
     func_80071B50(0x200000);
-    func_80071B2C(0.649999976158f, 0.800000011921f);
+    func_80071B2C(0.65f, 0.8f);
 
     for (i = 0, f30 = 0.0f, r27 = msg->numLines; i < msg->numLines; i++)
     {
@@ -3309,18 +3293,18 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     f1 = f30;
     f1 += 31.19999885559082;
     f2 += 38.40000057220459;
-    lbl_801D5724.unk4 = x;
-    lbl_801D5724.unk8 = y;
+    lbl_801D5724.x = x;
+    lbl_801D5724.y = y;
     {
         float var1 = f1;
         float var2 = f2;
         var1 *= 0.125;
         var2 *= 0.125;
-        lbl_801D5724.unk10 = var1;
-        lbl_801D5724.unk14 = var2;
-        lbl_801D5724.unk2C = 0.65 + 0.1 * lbl_802F1ECC;
+        lbl_801D5724.zoomX = var1;
+        lbl_801D5724.zoomY = var2;
+        lbl_801D5724.alpha = 0.65 + 0.1 * lbl_802F1ECC;
     }
-    func_80073828(&lbl_801D5724);
+    draw_naomi_sprite(&lbl_801D5724);
     for (i = 0; i < msg->numLines; i++)
     {
         float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);
@@ -3331,33 +3315,26 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     }
 }
 
-struct StringEntry lbl_802F1698 = {(void *)lbl_802C4900, 0};
-
-#pragma force_active off
-
-#ifdef NONMATCHING
-static void g_msg_box_default_pos(struct MemCardMessage *msg)
+// not used. needed here to force float constants into the right order
+static void memcard_dummy(void)
 {
-    draw_memcard_msg(msg, 320.0f, 240.0f);
+    draw_memcard_msg(NULL, 320.0f, 240.0f);
 }
 
-static int int_abs(int x)
-{
-    return ((x >> 31) ^ x) - (x >> 31);
-}
+struct StringEntry lbl_802F1698 = { lbl_802C4900, 0 };
 
 void memcard_draw_ui(void)
 {
-    register int i;
     u32 r29;
     u32 wtf;
+
     func_80071A8C();
     func_80071AD4(0xB3);
-    func_80071B1C(0.00800000037998f);
+    func_80071B1C(0.008f);
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
         if (memcardInfo.msg != NULL)
-            g_msg_box_default_pos(memcardInfo.msg);
+            draw_memcard_msg(memcardInfo.msg, 320.0f, 240.0f);
         if (memcardInfo.unk42 == 0 || memcardInfo.statusFlags & (1 << 19))
         {
             if ((memcardInfo.statusFlags & MC_STATUS_SAVING)
@@ -3366,16 +3343,15 @@ void memcard_draw_ui(void)
             else
                 draw_memcard_msg(&msgPressBButton, 320.0f, 380.0f);
         }
-        //lbl_800A46D8
         if (memcardInfo.statusFlags & (1 << 20))
         {
             if (memcardInfo.unk4D == 0)
                 draw_memcard_msg(&msgMemCardNoFreeBlocks, 320.0f, 100.0f);
             else
             {
-                // TODO
-                struct MemCardMessage sp8 = {(void *)0x802F1698, 0};
+                struct MemCardMessage sp8 = { &lbl_802F1698, 0 };
                 struct MemCardMessage *r29;
+
                 if (memcardInfo.unk4D == 1)
                     r29 = &msgMemCardNumFreeBlock;
                 else
@@ -3385,49 +3361,37 @@ void memcard_draw_ui(void)
                     sp8.lines[0].unk4 = r29->lines[0].unk4 + 1;
                 else
                     sp8.lines[0].unk4 = r29->lines[0].unk4;
-                //lbl_800A4774
                 sp8.numLines = r29->numLines;
                 draw_memcard_msg(&sp8, 320.0f, 100.0f);
             }
         }
-        //lbl_800A478C
         func_80071A8C();
-        // to lbl_800A4CCC
         return;
     }
-    //lbl_800A4794
     else if (memcardInfo.statusFlags & (1 << 2))
     {
-        g_msg_box_default_pos(&msgAccessMemCard);
+        draw_memcard_msg(&msgAccessMemCard, 320.0f, 240.0f);
         return;
     }
-    //lbl_800A47B0
     else if (memcardInfo.statusFlags & (1 << 6))
     {
         if (memcardInfo.statusFlags & (1 << 15))
         {
             func_80071B60(100.0f, 340.0f);
-            g_msg_box_default_pos(&msgSavingGame);
+            draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
         }
-        //lbl_800A47DC
         func_80071A8C();
         return;
     }
-    //lbl_800A47E4
     else if (memcardInfo.statusFlags & (1 << 10))
         draw_memcard_msg(&msgMakeSelection, 320.0f, 380.0f);
-    //lbl_800A47FC
     if (memcardInfo.state == 1)
-        draw_memcard_msg(&msgInsertMemcardSlotAPressA, 320.0f, 380.0f);
-    if (memcardInfo.state == 9)
+        draw_memcard_msg(&msgInsertMemcardSlotAPressA, 320.0f, 240.0f);
+    if (memcardInfo.state == MC_STATE_FORMAT_PROMPT)
     {
-        //a0764
-        g_msg_box_default_pos(&msgOverwritePrompt);
+        draw_memcard_msg(&msgFormatPrompt, 320.0f, 240.0f);
 
-        // right float constant load, but compiler adds an unecessary conversion
-        i = (float)(unpausedFrameCounter % 60);
-        wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
-
+        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
         r29 = (wtf << 16) | (wtf << 8) | wtf;
 
         func_80071B2C(1.5f, 1.5f);
@@ -3453,7 +3417,6 @@ void memcard_draw_ui(void)
             func_80071AE4(0);
             func_80071AF8(0);
         }
-        //lbl_800A4980
         func_80071E58("No");
         func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
@@ -3479,16 +3442,13 @@ void memcard_draw_ui(void)
         }
         func_80071E58("No");
     }
-    //lbl_800A4A34
     if (memcardInfo.state == 10)
         draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
-    if (memcardInfo.state == 13 && (memcardInfo.statusFlags & (1 << 10)))
+    if (memcardInfo.state == MC_STATE_OVERWRITE_PROMPT && (memcardInfo.statusFlags & (1 << 10)))
     {
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
-        // right float constant load, but compiler adds an unecessary conversion
-        i = (float)(unpausedFrameCounter % 60);
-        wtf = 255.0 * ((float)int_abs(i - 30.0) / 30.0);
+        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
 
         r29 = (wtf << 16) | (wtf << 8) | wtf;
         func_80071B2C(1.5f, 1.5f);
@@ -3539,7 +3499,6 @@ void memcard_draw_ui(void)
         }
         func_80071E58("No");
     }
-    //lbl_800A4C74
     if (memcardInfo.statusFlags & (1 << 15))
     {
         if (memcardInfo.statusFlags & MC_STATUS_REPLAY_FILE)
@@ -3547,45 +3506,10 @@ void memcard_draw_ui(void)
         else
             draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
     }
-    //lbl_800A4CAC
     if (memcardInfo.statusFlags & (1 << 17))
         draw_memcard_msg(&msgLoadingGame, 320.0f, 240.0f);
     func_80071A8C();
 }
-#else
-#pragma force_active on
-
-__declspec(section ".sdata")
-char lbl_802F16A0[] = "Yes ";
-__declspec(section ".sdata")
-char lbl_802F16A8[] = "No";
-
-extern const float lbl_802F5B18;
-const float lbl_802F5B20 = 320.0f;
-const float lbl_802F5B24 = 240.0f;
-const struct MemCardMessage lbl_802F5B28 =
-{
-    &lbl_802F1698, 0
-};
-const float lbl_802F5B30 = 0.00800000037998f;
-const float lbl_802F5B34 = 380.0f;
-const float lbl_802F5B38 = 100.0f;
-const float lbl_802F5B3C = 340.0f;
-const double lbl_802F5B40 = 255.0;
-const double lbl_802F5B48 = 30.0;
-const float lbl_802F5B50 = 1.5f;
-const float lbl_802F5B54 = 242.0f;
-const double lbl_802F5B58 = 4503599627370496;
-extern u32 __cvt_fp2unsigned(float);
-#define _SDA2_BASE_ 0
-asm void memcard_draw_ui(void)
-{
-    nofralloc
-    #include "../asm/nonmatchings/memcard_draw_ui.s"
-}
-#undef _SDA2_BASE_
-#pragma peephole on
-#endif
 
 void func_800A4CEC(void)
 {
@@ -3631,9 +3555,9 @@ error:
 
 void func_800A4DF0(void)
 {
-    if ((memcardGameData = OSAlloc(0x5C04)) == NULL)
+    if ((memcardGameData = OSAlloc(sizeof(*memcardGameData))) == NULL)
         OSPanic("memcard.c", 4462, "cannot OSAlloc");
-    memcpy(memcardGameData->unk5824 + 32, lbl_802C4480, 0x3C0);
+    memcpy(&memcardGameData->unk5844, &lbl_802C4480, sizeof(memcardGameData->unk5844));
     func_800A4F04();
     OSFree(memcardGameData);
     memcardGameData = NULL;
@@ -3647,30 +3571,28 @@ extern u8 func_800B622C(void);
 
 void func_800A4E70(void)
 {
-    memcardGameData->unk5824[0x6E] = lbl_802F21A8;
+    memcardGameData->unk5844.unk4E = lbl_802F21A8;
     func_80025E5C(memcardGameData);
     func_80011F74(memcardGameData);
     func_8002DB10(memcardGameData);
     func_80067FD0(memcardGameData);
-    memcardGameData->unk5824[0xCC] = modeCtrl.unk42;
-    memcpy(memcardGameData->unk5824 + 0xD0, lbl_801D5A20, 0x1FC);
-    memcardGameData->unk5824[0xCD] = func_800B622C();
+    memcardGameData->unk5844.unkAC = modeCtrl.unk42;
+    memcpy(memcardGameData->unk5844.unkB0, lbl_801D5A20, sizeof(memcardGameData->unk5844.unkB0));
+    memcardGameData->unk5844.unkAD = func_800B622C();
     func_800AFC1C(memcardGameData);
-    *(u32 *)(memcardGameData->unk5824 + 0x3DC) = lbl_802F22C8;
+    memcardGameData->unk5844.unk3BC = lbl_802F22C8;
 }
 
 void func_800A4F04(void)
 {
-    lbl_802F21A8 = memcardGameData->unk5824[0x6E];
+    lbl_802F21A8 = memcardGameData->unk5844.unk4E;
     func_80025E8C(memcardGameData);
     func_80012170(memcardGameData);
     func_8002DB24(memcardGameData);
     func_8006800C(memcardGameData);
-    modeCtrl.unk42 = memcardGameData->unk5824[0xCC];
-    memcpy(lbl_801D5A20, memcardGameData->unk5824 + 0xD0, 0x1FC);
-    func_800B6224(memcardGameData->unk5824[0xCD]);
+    modeCtrl.unk42 = memcardGameData->unk5844.unkAC;
+    memcpy(lbl_801D5A20, memcardGameData->unk5844.unkB0, sizeof(memcardGameData->unk5844.unkB0));
+    func_800B6224(memcardGameData->unk5844.unkAD);
     func_800AFC4C(memcardGameData);
-    lbl_802F22C8 = *(u32 *)(memcardGameData->unk5824 + 0x3DC);
+    lbl_802F22C8 = memcardGameData->unk5844.unk3BC;
 }
-
-u8 memcard_data_padding[0x14] = {0};

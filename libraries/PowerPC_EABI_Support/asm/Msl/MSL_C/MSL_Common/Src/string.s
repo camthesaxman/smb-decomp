@@ -364,6 +364,7 @@ lbl_80106CE4:
 
 .section .sdata
 
+    .balign 8
 .global K1
 K1:
 	# ROM: 0x1EC1F0
@@ -373,3 +374,9 @@ K1:
 K2:
 	# ROM: 0x1EC1F4
 	.byte 0xFE, 0xFE, 0xFE, 0xFF
+
+.section .sbss
+
+.global initialized_60
+initialized_60:
+	.skip 0xC

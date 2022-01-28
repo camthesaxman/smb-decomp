@@ -1427,3 +1427,27 @@ lbl_8010BB44:
 /* 8010BB58 00107A78  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010BB5C 00107A7C  7C 08 03 A6 */	mtlr r0
 /* 8010BB60 00107A80  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801ED830
+lbl_801ED830:
+	# ROM: 0x1EA830
+	.4byte lbl_8010B0E4  ;# ptr
+	.4byte lbl_8010B104  ;# ptr
+	.4byte lbl_8010B0DC  ;# ptr
+	.4byte lbl_8010B104  ;# ptr
+	.4byte lbl_8010B0EC  ;# ptr
+	.4byte lbl_8010B0F4  ;# ptr
+	.4byte lbl_8010B0FC  ;# ptr
+
+.global lbl_801ED84C
+lbl_801ED84C:
+	# ROM: 0x1EA84C
+	.4byte lbl_8010B2E0  ;# ptr
+	.4byte lbl_8010B300  ;# ptr
+	.4byte lbl_8010B2D8  ;# ptr
+	.4byte lbl_8010B300  ;# ptr
+	.4byte lbl_8010B2E8  ;# ptr
+	.4byte lbl_8010B2F0  ;# ptr
+	.4byte lbl_8010B2F8  ;# ptr

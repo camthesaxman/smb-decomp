@@ -37,23 +37,23 @@ _prolog:
 /* 000000D8 9421FFF8 */ stwu r1, -8(r1)
 /* 000000DC 90030000 */ stw r0, unusedPadding@l(r3)
 /* 000000E0 480000CD */ bl func_8002FFEC
-/* 000000E4 480000C9 */ bl g_something_with_iteratively_freeing_memory
+/* 000000E4 480000C9 */ bl free_all_bitmap_groups_except_com
 /* 000000E8 480000C5 */ bl func_800249D4
 /* 000000EC 480000C1 */ bl unload_stage
 /* 000000F0 38600000 */ li r3, 0
 /* 000000F4 480000B9 */ bl func_80021DB4
-/* 000000F8 480000B5 */ bl event_clear
+/* 000000F8 480000B5 */ bl event_finish_all
 /* 000000FC 38600010 */ li r3, 0x10
-/* 00000100 480000AD */ bl ev_run_init
+/* 00000100 480000AD */ bl event_start
 /* 00000104 38600012 */ li r3, 0x12
-/* 00000108 480000A5 */ bl ev_run_init
+/* 00000108 480000A5 */ bl event_start
 /* 0000010C 38600004 */ li r3, 4
-/* 00000110 4800009D */ bl call_something_with_bmp_bmp_com
+/* 00000110 4800009D */ bl call_bitmap_load_group
 /* 00000114 480046BD */ bl lbl_000047D0
 /* 00000118 38600100 */ li r3, 0x100
 /* 0000011C 38800000 */ li r4, 0
 /* 00000120 38A0001E */ li r5, 0x1e
-/* 00000124 48000089 */ bl func_800732DC
+/* 00000124 48000089 */ bl g_start_screen_fade
 /* 00000128 3CE00000 */ lis r7, lbl_00000258@ha
 /* 0000012C 3CC00000 */ lis r6, lbl_802F1B74@ha
 /* 00000130 38070000 */ addi r0, r7, lbl_00000258@l
@@ -74,7 +74,7 @@ _epilog:
 /* 00000164 7C0802A6 */ mflr r0
 /* 00000168 90010004 */ stw r0, 4(r1)
 /* 0000016C 9421FFF8 */ stwu r1, -8(r1)
-/* 00000170 4800003D */ bl event_clear
+/* 00000170 4800003D */ bl event_finish_all
 /* 00000174 3C600000 */ lis r3, lbl_802F1B74@ha
 /* 00000178 38830000 */ addi r4, r3, lbl_802F1B74@l
 /* 0000017C 38000000 */ li r0, 0
@@ -325,7 +325,7 @@ lbl_000004E8:
 /* 000004F8 38600101 */ li r3, 0x101
 /* 000004FC 38800000 */ li r4, 0
 /* 00000500 80BF0000 */ lwz r5, 0(r31)
-/* 00000504 4BFFFCA9 */ bl func_800732DC
+/* 00000504 4BFFFCA9 */ bl g_start_screen_fade
 /* 00000508 807F0000 */ lwz r3, 0(r31)
 /* 0000050C 38800002 */ li r4, 2
 /* 00000510 4BFFFC9D */ bl func_8002CF38
@@ -600,7 +600,7 @@ lbl_000008BC:
 /* 000008E8 5403063E */ clrlwi r3, r0, 0x18
 /* 000008EC 4BFFF8C1 */ bl func_8009F49C
 /* 000008F0 38600000 */ li r3, 0
-/* 000008F4 4BFFF8B9 */ bl ev_run_init
+/* 000008F4 4BFFF8B9 */ bl event_start
 /* 000008F8 480001C8 */ b lbl_00000AC0
 lbl_000008FC:
 /* 000008FC 38000001 */ li r0, 1
@@ -617,7 +617,7 @@ lbl_000008FC:
 /* 00000928 5403063E */ clrlwi r3, r0, 0x18
 /* 0000092C 4BFFF881 */ bl func_8009F49C
 /* 00000930 38600000 */ li r3, 0
-/* 00000934 4BFFF879 */ bl ev_run_init
+/* 00000934 4BFFF879 */ bl event_start
 /* 00000938 48000188 */ b lbl_00000AC0
 lbl_0000093C:
 /* 0000093C 4BFFF871 */ bl func_8009F4C4
@@ -1931,7 +1931,7 @@ lbl_00001AB8:
 /* 00001C98 90010080 */ stw r0, 0x80(r1)
 /* 00001C9C 80010024 */ lwz r0, 0x24(r1)
 /* 00001CA0 90010084 */ stw r0, 0x84(r1)
-/* 00001CA4 4BFFE509 */ bl func_8009AE18
+/* 00001CA4 4BFFE509 */ bl gxutil_draw_line_strip
 /* 00001CA8 C03E0004 */ lfs f1, 4(r30)
 /* 00001CAC 3C600000 */ lis r3, lbl_0000C270@ha
 /* 00001CB0 C81700F8 */ lfd f0, 0xf8(r23)
@@ -2182,7 +2182,7 @@ lbl_00001AB8:
 /* 00002084 90010080 */ stw r0, 0x80(r1)
 /* 00002088 80010024 */ lwz r0, 0x24(r1)
 /* 0000208C 90010084 */ stw r0, 0x84(r1)
-/* 00002090 4BFFE11D */ bl func_8009AE18
+/* 00002090 4BFFE11D */ bl gxutil_draw_line_strip
 lbl_00002094:
 /* 00002094 3BBD0001 */ addi r29, r29, 1
 /* 00002098 2C1D0004 */ cmpwi r29, 4
@@ -2382,7 +2382,7 @@ lbl_00002318:
 /* 00002360 4BFFDE4D */ bl OSSetCurrentHeap
 /* 00002364 3BA30000 */ addi r29, r3, 0
 /* 00002368 38600003 */ li r3, 3
-/* 0000236C 4BFFDE41 */ bl call_something_with_bmp_bmp_com
+/* 0000236C 4BFFDE41 */ bl call_bitmap_load_group
 /* 00002370 7FA3EB78 */ mr r3, r29
 /* 00002374 4BFFDE39 */ bl OSSetCurrentHeap
 /* 00002378 4BFFDE35 */ bl func_800885EC
@@ -2435,7 +2435,7 @@ lbl_00002420:
 /* 00002420 7C1D2800 */ cmpw r29, r5
 /* 00002424 41820054 */ beq lbl_00002478
 /* 00002428 38600065 */ li r3, 0x65
-/* 0000242C 4BFFDD81 */ bl g_dest_sprite_with_font
+/* 0000242C 4BFFDD81 */ bl destroy_sprite_with_tag
 /* 00002430 38600000 */ li r3, 0
 /* 00002434 4BFFDD79 */ bl func_8008897C
 /* 00002438 7FA3EB78 */ mr r3, r29
@@ -2571,9 +2571,9 @@ lbl_000025E4:
 /* 00002604 38600001 */ li r3, 1
 /* 00002608 4BFFDBA5 */ bl func_8008897C
 /* 0000260C 38600065 */ li r3, 0x65
-/* 00002610 4BFFDB9D */ bl g_dest_sprite_with_font
+/* 00002610 4BFFDB9D */ bl destroy_sprite_with_tag
 /* 00002614 38600003 */ li r3, 3
-/* 00002618 4BFFDB95 */ bl func_800705C4
+/* 00002618 4BFFDB95 */ bl call_bitmap_free_group
 /* 0000261C 48000018 */ b lbl_00002634
 lbl_00002620:
 /* 00002620 3C600000 */ lis r3, modeCtrl@ha
@@ -2630,7 +2630,7 @@ lbl_000026A0:
 /* 000026D8 38600006 */ li r3, 6
 /* 000026DC 4BFFDAD1 */ bl func_8009F49C
 /* 000026E0 38600000 */ li r3, 0
-/* 000026E4 4BFFDAC9 */ bl ev_run_init
+/* 000026E4 4BFFDAC9 */ bl event_start
 /* 000026E8 3C600000 */ lis r3, gameSubmodeRequest@ha
 /* 000026EC 380000BD */ li r0, 0xbd
 /* 000026F0 B0030000 */ sth r0, gameSubmodeRequest@l(r3)
@@ -2838,7 +2838,7 @@ lbl_00002990:
 /* 000029BC 809E0014 */ lwz r4, 0x14(r30)
 /* 000029C0 4BFFD7ED */ bl func_8009F4B8
 /* 000029C4 38600000 */ li r3, 0
-/* 000029C8 4BFFD7E5 */ bl ev_run_init
+/* 000029C8 4BFFD7E5 */ bl event_start
 /* 000029CC 38000003 */ li r0, 3
 /* 000029D0 901E0010 */ stw r0, 0x10(r30)
 /* 000029D4 4800028C */ b lbl_00002C60
@@ -2868,7 +2868,7 @@ lbl_00002A1C:
 /* 00002A28 38600101 */ li r3, 0x101
 /* 00002A2C 38800000 */ li r4, 0
 /* 00002A30 38A0001E */ li r5, 0x1e
-/* 00002A34 4BFFD779 */ bl func_800732DC
+/* 00002A34 4BFFD779 */ bl g_start_screen_fade
 /* 00002A38 3800001E */ li r0, 0x1e
 /* 00002A3C 901E001C */ stw r0, 0x1c(r30)
 /* 00002A40 38000004 */ li r0, 4
@@ -2945,7 +2945,7 @@ lbl_00002B24:
 /* 00002B38 809E0014 */ lwz r4, 0x14(r30)
 /* 00002B3C 4BFFD671 */ bl func_8009F4B8
 /* 00002B40 38600000 */ li r3, 0
-/* 00002B44 4BFFD669 */ bl ev_run_init
+/* 00002B44 4BFFD669 */ bl event_start
 /* 00002B48 38000006 */ li r0, 6
 /* 00002B4C 901E0010 */ stw r0, 0x10(r30)
 /* 00002B50 48000110 */ b lbl_00002C60
@@ -3038,7 +3038,7 @@ lbl_00002C74:
 /* 00002C84 93E1000C */ stw r31, 0xc(r1)
 /* 00002C88 4BFFD525 */ bl func_8009F49C
 /* 00002C8C 38600000 */ li r3, 0
-/* 00002C90 4BFFD51D */ bl ev_run_init
+/* 00002C90 4BFFD51D */ bl event_start
 /* 00002C94 3C600000 */ lis r3, modeCtrl@ha
 /* 00002C98 3BE30000 */ addi r31, r3, modeCtrl@l
 /* 00002C9C 38000064 */ li r0, 0x64
@@ -3046,7 +3046,7 @@ lbl_00002C74:
 /* 00002CA4 38600101 */ li r3, 0x101
 /* 00002CA8 38800000 */ li r4, 0
 /* 00002CAC 80BF0000 */ lwz r5, 0(r31)
-/* 00002CB0 4BFFD4FD */ bl func_800732DC
+/* 00002CB0 4BFFD4FD */ bl g_start_screen_fade
 /* 00002CB4 807F0000 */ lwz r3, 0(r31)
 /* 00002CB8 38800002 */ li r4, 2
 /* 00002CBC 4BFFD4F1 */ bl func_8002CF38
@@ -3264,7 +3264,7 @@ lbl_00002FA8:
 /* 00002FC4 881D6E9E */ lbz r0, 0x6e9e(r29)
 /* 00002FC8 3B230000 */ addi r25, r3, currStageId@l
 /* 00002FCC B0190000 */ sth r0, 0(r25)
-/* 00002FD0 4BFFD1DD */ bl event_clear
+/* 00002FD0 4BFFD1DD */ bl event_finish_all
 /* 00002FD4 3C600000 */ lis r3, modeCtrl@ha
 /* 00002FD8 38630000 */ addi r3, r3, modeCtrl@l
 /* 00002FDC 93C30028 */ stw r30, 0x28(r3)
@@ -3276,7 +3276,7 @@ lbl_00002FA8:
 /* 00002FF4 4BFFD1B9 */ bl func_80044920
 /* 00002FF8 4BFFD1B5 */ bl func_8002FFEC
 /* 00002FFC 38600009 */ li r3, 9
-/* 00003000 4BFFD1AD */ bl ev_run_init
+/* 00003000 4BFFD1AD */ bl event_start
 /* 00003004 801C0000 */ lwz r0, 0(r28)
 /* 00003008 5400103A */ slwi r0, r0, 2
 /* 0000300C 7C7F0214 */ add r3, r31, r0
@@ -3290,31 +3290,31 @@ lbl_00002FA8:
 /* 0000302C A8790000 */ lha r3, 0(r25)
 /* 00003030 4BFFD17D */ bl load_stage
 /* 00003034 38600001 */ li r3, 1
-/* 00003038 4BFFD175 */ bl ev_run_init
+/* 00003038 4BFFD175 */ bl event_start
 /* 0000303C 38600002 */ li r3, 2
-/* 00003040 4BFFD16D */ bl ev_run_init
+/* 00003040 4BFFD16D */ bl event_start
 /* 00003044 38600003 */ li r3, 3
-/* 00003048 4BFFD165 */ bl ev_run_init
+/* 00003048 4BFFD165 */ bl event_start
 /* 0000304C 38600004 */ li r3, 4
-/* 00003050 4BFFD15D */ bl ev_run_init
+/* 00003050 4BFFD15D */ bl event_start
 /* 00003054 38600005 */ li r3, 5
-/* 00003058 4BFFD155 */ bl ev_run_init
+/* 00003058 4BFFD155 */ bl event_start
 /* 0000305C 38600007 */ li r3, 7
-/* 00003060 4BFFD14D */ bl ev_run_init
+/* 00003060 4BFFD14D */ bl event_start
 /* 00003064 3860000E */ li r3, 0xe
-/* 00003068 4BFFD145 */ bl ev_run_init
+/* 00003068 4BFFD145 */ bl event_start
 /* 0000306C 3860000F */ li r3, 0xf
-/* 00003070 4BFFD13D */ bl ev_run_init
+/* 00003070 4BFFD13D */ bl event_start
 /* 00003074 38600010 */ li r3, 0x10
-/* 00003078 4BFFD135 */ bl ev_run_init
+/* 00003078 4BFFD135 */ bl event_start
 /* 0000307C 38600012 */ li r3, 0x12
-/* 00003080 4BFFD12D */ bl ev_run_init
+/* 00003080 4BFFD12D */ bl event_start
 /* 00003084 3860000D */ li r3, 0xd
-/* 00003088 4BFFD125 */ bl ev_run_init
+/* 00003088 4BFFD125 */ bl event_start
 /* 0000308C 38600014 */ li r3, 0x14
-/* 00003090 4BFFD11D */ bl ev_run_init
+/* 00003090 4BFFD11D */ bl event_start
 /* 00003094 38600013 */ li r3, 0x13
-/* 00003098 4BFFD115 */ bl ev_run_init
+/* 00003098 4BFFD115 */ bl event_start
 /* 0000309C 801E0000 */ lwz r0, 0(r30)
 /* 000030A0 60000008 */ ori r0, r0, 8
 /* 000030A4 901E0000 */ stw r0, 0(r30)
@@ -3396,11 +3396,11 @@ lbl_0000315C:
 /* 000031C8 4BFFCFE5 */ bl func_80049F90
 /* 000031CC 4BFFCFE1 */ bl g_animate_stage
 /* 000031D0 38600005 */ li r3, 5
-/* 000031D4 4BFFCFD9 */ bl call_something_with_bmp_bmp_com
+/* 000031D4 4BFFCFD9 */ bl call_bitmap_load_group
 /* 000031D8 38600100 */ li r3, 0x100
 /* 000031DC 38800000 */ li r4, 0
 /* 000031E0 38A0001E */ li r5, 0x1e
-/* 000031E4 4BFFCFC9 */ bl func_800732DC
+/* 000031E4 4BFFCFC9 */ bl g_start_screen_fade
 /* 000031E8 38000000 */ li r0, 0
 /* 000031EC 901A001C */ stw r0, 0x1c(r26)
 /* 000031F0 3C600000 */ lis r3, gameSubmodeRequest@ha
@@ -3508,15 +3508,15 @@ lbl_00003344:
 /* 00003368 54000776 */ rlwinm r0, r0, 0, 0x1d, 0x1b
 /* 0000336C 90040000 */ stw r0, 0(r4)
 /* 00003370 4BFFCE3D */ bl func_80021DB4
-/* 00003374 4BFFCE39 */ bl event_clear
+/* 00003374 4BFFCE39 */ bl event_finish_all
 /* 00003378 38600010 */ li r3, 0x10
-/* 0000337C 4BFFCE31 */ bl ev_run_init
+/* 0000337C 4BFFCE31 */ bl event_start
 /* 00003380 38600012 */ li r3, 0x12
-/* 00003384 4BFFCE29 */ bl ev_run_init
+/* 00003384 4BFFCE29 */ bl event_start
 /* 00003388 38600005 */ li r3, 5
-/* 0000338C 4BFFCE21 */ bl func_800705C4
+/* 0000338C 4BFFCE21 */ bl call_bitmap_free_group
 /* 00003390 38600004 */ li r3, 4
-/* 00003394 4BFFCE19 */ bl call_something_with_bmp_bmp_com
+/* 00003394 4BFFCE19 */ bl call_bitmap_load_group
 /* 00003398 4BFFCE15 */ bl create_sprite
 /* 0000339C 7C651B79 */ or. r5, r3, r3
 /* 000033A0 41820054 */ beq lbl_000033F4
@@ -3547,7 +3547,7 @@ lbl_000033F4:
 /* 00003400 38600100 */ li r3, 0x100
 /* 00003404 38800000 */ li r4, 0
 /* 00003408 38A0001E */ li r5, 0x1e
-/* 0000340C 4BFFCDA1 */ bl func_800732DC
+/* 0000340C 4BFFCDA1 */ bl g_start_screen_fade
 /* 00003410 480036C1 */ bl lbl_00006AD0
 /* 00003414 3C600000 */ lis r3, gameSubmodeRequest@ha
 /* 00003418 380000BD */ li r0, 0xbd
@@ -3575,7 +3575,7 @@ lbl_0000342C:
 /* 0000346C 38600101 */ li r3, 0x101
 /* 00003470 38800000 */ li r4, 0
 /* 00003474 38A0001E */ li r5, 0x1e
-/* 00003478 4BFFCD35 */ bl func_800732DC
+/* 00003478 4BFFCD35 */ bl g_start_screen_fade
 lbl_0000347C:
 /* 0000347C 881A0003 */ lbz r0, 3(r26)
 /* 00003480 2C00000A */ cmpwi r0, 0xa
@@ -3734,21 +3734,21 @@ lbl_000036A4:
 /* 000036B4 2C000000 */ cmpwi r0, 0
 /* 000036B8 408001DC */ bge lbl_00003894
 /* 000036BC 38600001 */ li r3, 1
-/* 000036C0 4BFFCAED */ bl ev_run_dest
+/* 000036C0 4BFFCAED */ bl event_finish
 /* 000036C4 38600004 */ li r3, 4
-/* 000036C8 4BFFCAE5 */ bl ev_run_dest
+/* 000036C8 4BFFCAE5 */ bl event_finish
 /* 000036CC 38600005 */ li r3, 5
-/* 000036D0 4BFFCADD */ bl ev_run_dest
+/* 000036D0 4BFFCADD */ bl event_finish
 /* 000036D4 3860000D */ li r3, 0xd
-/* 000036D8 4BFFCAD5 */ bl ev_run_dest
+/* 000036D8 4BFFCAD5 */ bl event_finish
 /* 000036DC 38600014 */ li r3, 0x14
-/* 000036E0 4BFFCACD */ bl ev_run_dest
+/* 000036E0 4BFFCACD */ bl event_finish
 /* 000036E4 38600013 */ li r3, 0x13
-/* 000036E8 4BFFCAC5 */ bl ev_run_dest
+/* 000036E8 4BFFCAC5 */ bl event_finish
 /* 000036EC 38600003 */ li r3, 3
-/* 000036F0 4BFFCABD */ bl ev_run_dest
+/* 000036F0 4BFFCABD */ bl event_finish
 /* 000036F4 38600012 */ li r3, 0x12
-/* 000036F8 4BFFCAB5 */ bl ev_run_dest
+/* 000036F8 4BFFCAB5 */ bl event_finish
 /* 000036FC 801C0000 */ lwz r0, 0(r28)
 /* 00003700 3C600000 */ lis r3, lbl_80250A68@ha
 /* 00003704 3BE30000 */ addi r31, r3, lbl_80250A68@l
@@ -3772,21 +3772,21 @@ lbl_000036A4:
 /* 0000374C A8790000 */ lha r3, 0(r25)
 /* 00003750 4BFFCA5D */ bl load_stage
 /* 00003754 38600001 */ li r3, 1
-/* 00003758 4BFFCA55 */ bl ev_run_init
+/* 00003758 4BFFCA55 */ bl event_start
 /* 0000375C 38600004 */ li r3, 4
-/* 00003760 4BFFCA4D */ bl ev_run_init
+/* 00003760 4BFFCA4D */ bl event_start
 /* 00003764 38600005 */ li r3, 5
-/* 00003768 4BFFCA45 */ bl ev_run_init
+/* 00003768 4BFFCA45 */ bl event_start
 /* 0000376C 3860000D */ li r3, 0xd
-/* 00003770 4BFFCA3D */ bl ev_run_init
+/* 00003770 4BFFCA3D */ bl event_start
 /* 00003774 38600014 */ li r3, 0x14
-/* 00003778 4BFFCA35 */ bl ev_run_init
+/* 00003778 4BFFCA35 */ bl event_start
 /* 0000377C 38600013 */ li r3, 0x13
-/* 00003780 4BFFCA2D */ bl ev_run_init
+/* 00003780 4BFFCA2D */ bl event_start
 /* 00003784 38600003 */ li r3, 3
-/* 00003788 4BFFCA25 */ bl ev_run_init
+/* 00003788 4BFFCA25 */ bl event_start
 /* 0000378C 38600012 */ li r3, 0x12
-/* 00003790 4BFFCA1D */ bl ev_run_init
+/* 00003790 4BFFCA1D */ bl event_start
 /* 00003794 80180000 */ lwz r0, 0(r24)
 /* 00003798 60000008 */ ori r0, r0, 8
 /* 0000379C 90180000 */ stw r0, 0(r24)
@@ -4426,7 +4426,7 @@ lbl_00004058:
 lbl_000040AC:
 /* 000040AC 887D000F */ lbz r3, 0xf(r29)
 /* 000040B0 7C630774 */ extsb r3, r3
-/* 000040B4 4BFFC0F9 */ bl g_dest_sprite_with_font
+/* 000040B4 4BFFC0F9 */ bl destroy_sprite_with_tag
 /* 000040B8 4800011C */ b lbl_000041D4
 lbl_000040BC:
 /* 000040BC 887F0001 */ lbz r3, 1(r31)
@@ -4453,7 +4453,7 @@ lbl_000040BC:
 lbl_00004110:
 /* 00004110 887D000F */ lbz r3, 0xf(r29)
 /* 00004114 7C630774 */ extsb r3, r3
-/* 00004118 4BFFC095 */ bl g_dest_sprite_with_font
+/* 00004118 4BFFC095 */ bl destroy_sprite_with_tag
 /* 0000411C 480000B8 */ b lbl_000041D4
 lbl_00004120:
 /* 00004120 887F0001 */ lbz r3, 1(r31)
@@ -4626,7 +4626,7 @@ lbl_0000431C:
 /* 00004390 FF201024 */ fdiv f25, f0, f2
 /* 00004394 FC00C818 */ frsp f0, f25
 /* 00004398 D0010028 */ stfs f0, 0x28(r1)
-/* 0000439C 4BFFBE11 */ bl func_80073828
+/* 0000439C 4BFFBE11 */ bl draw_naomi_sprite
 /* 000043A0 3800000A */ li r0, 0xa
 /* 000043A4 7C0903A6 */ mtctr r0
 /* 000043A8 38A1000C */ addi r5, r1, 0xc
@@ -4657,7 +4657,7 @@ lbl_000043B0:
 /* 00004408 D0210038 */ stfs f1, 0x38(r1)
 /* 0000440C D0010024 */ stfs f0, 0x24(r1)
 /* 00004410 D0210028 */ stfs f1, 0x28(r1)
-/* 00004414 4BFFBD99 */ bl func_80073828
+/* 00004414 4BFFBD99 */ bl draw_naomi_sprite
 /* 00004418 3800000A */ li r0, 0xa
 /* 0000441C 7C0903A6 */ mtctr r0
 /* 00004420 38A1000C */ addi r5, r1, 0xc
@@ -4687,7 +4687,7 @@ lbl_00004428:
 /* 0000447C D0410038 */ stfs f2, 0x38(r1)
 /* 00004480 D0210024 */ stfs f1, 0x24(r1)
 /* 00004484 D0010028 */ stfs f0, 0x28(r1)
-/* 00004488 4BFFBD25 */ bl func_80073828
+/* 00004488 4BFFBD25 */ bl draw_naomi_sprite
 /* 0000448C 3800000A */ li r0, 0xa
 /* 00004490 7C0903A6 */ mtctr r0
 /* 00004494 38A1000C */ addi r5, r1, 0xc
@@ -4718,7 +4718,7 @@ lbl_0000449C:
 /* 000044F4 D0210038 */ stfs f1, 0x38(r1)
 /* 000044F8 D0410024 */ stfs f2, 0x24(r1)
 /* 000044FC D0010028 */ stfs f0, 0x28(r1)
-/* 00004500 4BFFBCAD */ bl func_80073828
+/* 00004500 4BFFBCAD */ bl draw_naomi_sprite
 /* 00004504 3800000A */ li r0, 0xa
 /* 00004508 7C0903A6 */ mtctr r0
 /* 0000450C 38A1000C */ addi r5, r1, 0xc
@@ -4748,7 +4748,7 @@ lbl_00004514:
 /* 00004568 D0410038 */ stfs f2, 0x38(r1)
 /* 0000456C D0210024 */ stfs f1, 0x24(r1)
 /* 00004570 D0010028 */ stfs f0, 0x28(r1)
-/* 00004574 4BFFBC39 */ bl func_80073828
+/* 00004574 4BFFBC39 */ bl draw_naomi_sprite
 /* 00004578 3800000A */ li r0, 0xa
 /* 0000457C 7C0903A6 */ mtctr r0
 /* 00004580 38A1000C */ addi r5, r1, 0xc
@@ -4782,7 +4782,7 @@ lbl_00004588:
 /* 000045EC D0010038 */ stfs f0, 0x38(r1)
 /* 000045F0 D0210024 */ stfs f1, 0x24(r1)
 /* 000045F4 D0010028 */ stfs f0, 0x28(r1)
-/* 000045F8 4BFFBBB5 */ bl func_80073828
+/* 000045F8 4BFFBBB5 */ bl draw_naomi_sprite
 /* 000045FC 3800000A */ li r0, 0xa
 /* 00004600 7C0903A6 */ mtctr r0
 /* 00004604 38A1000C */ addi r5, r1, 0xc
@@ -4817,7 +4817,7 @@ lbl_0000460C:
 /* 00004674 D0210038 */ stfs f1, 0x38(r1)
 /* 00004678 D0010024 */ stfs f0, 0x24(r1)
 /* 0000467C D0210028 */ stfs f1, 0x28(r1)
-/* 00004680 4BFFBB2D */ bl func_80073828
+/* 00004680 4BFFBB2D */ bl draw_naomi_sprite
 /* 00004684 3800000A */ li r0, 0xa
 /* 00004688 7C0903A6 */ mtctr r0
 /* 0000468C 38A1000C */ addi r5, r1, 0xc
@@ -4852,7 +4852,7 @@ lbl_00004694:
 /* 000046FC D0210038 */ stfs f1, 0x38(r1)
 /* 00004700 D0410024 */ stfs f2, 0x24(r1)
 /* 00004704 D0010028 */ stfs f0, 0x28(r1)
-/* 00004708 4BFFBAA5 */ bl func_80073828
+/* 00004708 4BFFBAA5 */ bl draw_naomi_sprite
 /* 0000470C 3800000A */ li r0, 0xa
 /* 00004710 7C0903A6 */ mtctr r0
 /* 00004714 38A1000C */ addi r5, r1, 0xc
@@ -4888,7 +4888,7 @@ lbl_0000471C:
 /* 00004788 D0410038 */ stfs f2, 0x38(r1)
 /* 0000478C D0210024 */ stfs f1, 0x24(r1)
 /* 00004790 D0010028 */ stfs f0, 0x28(r1)
-/* 00004794 4BFFBA19 */ bl func_80073828
+/* 00004794 4BFFBA19 */ bl draw_naomi_sprite
 /* 00004798 800100B4 */ lwz r0, 0xb4(r1)
 /* 0000479C CBE100A8 */ lfd f31, 0xa8(r1)
 /* 000047A0 CBC100A0 */ lfd f30, 0xa0(r1)
@@ -5012,9 +5012,9 @@ lbl_000048F4:
 /* 00004968 4BFFB845 */ bl GXLoadPosMtxImm
 lbl_0000496C:
 /* 0000496C 7F63DB78 */ mr r3, r27
-/* 00004970 4BFFB83D */ bl func_80073828
+/* 00004970 4BFFB83D */ bl draw_naomi_sprite
 /* 00004974 387B00F0 */ addi r3, r27, 0xf0
-/* 00004978 4BFFB835 */ bl func_80073828
+/* 00004978 4BFFB835 */ bl draw_naomi_sprite
 /* 0000497C C01F0088 */ lfs f0, 0x88(r31)
 /* 00004980 3BC1009C */ addi r30, r1, 0x9c
 /* 00004984 38C000B3 */ li r6, 0xb3
@@ -5105,7 +5105,7 @@ lbl_0000496C:
 /* 00004AD8 387B0050 */ addi r3, r27, 0x50
 /* 00004ADC C0040048 */ lfs f0, 0x48(r4)
 /* 00004AE0 D01B0058 */ stfs f0, 0x58(r27)
-/* 00004AE4 4BFFB6C9 */ bl func_80073828
+/* 00004AE4 4BFFB6C9 */ bl draw_naomi_sprite
 /* 00004AE8 3B000000 */ li r24, 0
 /* 00004AEC 5700103A */ slwi r0, r24, 2
 /* 00004AF0 7F5B0214 */ add r26, r27, r0
@@ -5364,7 +5364,7 @@ lbl_00004EB4:
 /* 00004ECC 3BC30000 */ addi r30, r3, lbl_0000C370@l
 /* 00004ED0 38600058 */ li r3, 0x58
 /* 00004ED4 93A10014 */ stw r29, 0x14(r1)
-/* 00004ED8 4BFFB2D5 */ bl g_find_sprite_with_probably_not_font
+/* 00004ED8 4BFFB2D5 */ bl find_sprite_with_tag
 /* 00004EDC 28030000 */ cmplwi r3, 0
 /* 00004EE0 41820018 */ beq lbl_00004EF8
 /* 00004EE4 3C600000 */ lis r3, lbl_10000000@ha
@@ -5711,7 +5711,7 @@ lbl_00005340:
 /* 000053B8 4BFFADF5 */ bl GXLoadPosMtxImm
 lbl_000053BC:
 /* 000053BC 7FA3EB78 */ mr r3, r29
-/* 000053C0 4BFFADED */ bl func_80073828
+/* 000053C0 4BFFADED */ bl draw_naomi_sprite
 /* 000053C4 3C600000 */ lis r3, lbl_10000000@ha
 /* 000053C8 39E30000 */ addi r15, r3, lbl_10000000@l
 /* 000053CC 3A0F000C */ addi r16, r15, 0xc
@@ -5722,7 +5722,7 @@ lbl_000053BC:
 /* 000053E0 C05F0098 */ lfs f2, 0x98(r31)
 /* 000053E4 4BFFEED9 */ bl lbl_000042BC
 /* 000053E8 387D00F0 */ addi r3, r29, 0xf0
-/* 000053EC 4BFFADC1 */ bl func_80073828
+/* 000053EC 4BFFADC1 */ bl draw_naomi_sprite
 /* 000053F0 C01F0088 */ lfs f0, 0x88(r31)
 /* 000053F4 3BC100B0 */ addi r30, r1, 0xb0
 /* 000053F8 388000B3 */ li r4, 0xb3
@@ -6376,7 +6376,7 @@ lbl_00005DA8:
 /* 00005DA8 91D80038 */ stw r14, 0x38(r24)
 lbl_00005DAC:
 /* 00005DAC 7F03C378 */ mr r3, r24
-/* 00005DB0 4BFFA3FD */ bl func_80073828
+/* 00005DB0 4BFFA3FD */ bl draw_naomi_sprite
 lbl_00005DB4:
 /* 00005DB4 3AB50018 */ addi r21, r21, 0x18
 /* 00005DB8 3B390001 */ addi r25, r25, 1
@@ -6396,7 +6396,7 @@ lbl_00005DD4:
 /* 00005DE8 387D0490 */ addi r3, r29, 0x490
 /* 00005DEC C0100000 */ lfs f0, 0(r16)
 /* 00005DF0 D01D0494 */ stfs f0, 0x494(r29)
-/* 00005DF4 4BFFA3B9 */ bl func_80073828
+/* 00005DF4 4BFFA3B9 */ bl draw_naomi_sprite
 /* 00005DF8 3A200000 */ li r17, 0
 /* 00005DFC 5620103A */ slwi r0, r17, 2
 /* 00005E00 7DFD0214 */ add r15, r29, r0
@@ -6530,7 +6530,7 @@ lbl_00005E44:
 /* 00005FF4 3A120014 */ addi r16, r18, 0x14
 /* 00005FF8 387D04E0 */ addi r3, r29, 0x4e0
 /* 00005FFC D01D04E4 */ stfs f0, 0x4e4(r29)
-/* 00006000 4BFFA1AD */ bl func_80073828
+/* 00006000 4BFFA1AD */ bl draw_naomi_sprite
 /* 00006004 380000EF */ li r0, 0xef
 /* 00006008 98010030 */ stb r0, 0x30(r1)
 /* 0000600C 3800009A */ li r0, 0x9a
@@ -7242,7 +7242,7 @@ lbl_00006AD0:
 /* 00006AF0 93A1000C */ stw r29, 0xc(r1)
 /* 00006AF4 3BA30000 */ addi r29, r3, lbl_0000C370@l
 /* 00006AF8 38600059 */ li r3, 0x59
-/* 00006AFC 4BFF96B1 */ bl g_find_sprite_with_probably_not_font
+/* 00006AFC 4BFF96B1 */ bl find_sprite_with_tag
 /* 00006B00 28030000 */ cmplwi r3, 0
 /* 00006B04 41820018 */ beq lbl_00006B1C
 /* 00006B08 3C600000 */ lis r3, lbl_10000000@ha
@@ -7365,7 +7365,7 @@ lbl_00006C54:
 /* 00006CC4 4BFF94E9 */ bl GXLoadPosMtxImm
 lbl_00006CC8:
 /* 00006CC8 7FC3F378 */ mr r3, r30
-/* 00006CCC 4BFF94E1 */ bl func_80073828
+/* 00006CCC 4BFF94E1 */ bl draw_naomi_sprite
 /* 00006CD0 C01F0088 */ lfs f0, 0x88(r31)
 /* 00006CD4 3BA100A8 */ addi r29, r1, 0xa8
 /* 00006CD8 388000B3 */ li r4, 0xb3
@@ -7943,19 +7943,19 @@ lbl_0000755C:
 /* 0000758C C01F0000 */ lfs f0, 0(r31)
 /* 00007590 D01E063C */ stfs f0, 0x63c(r30)
 /* 00007594 92DE066C */ stw r22, 0x66c(r30)
-/* 00007598 4BFF8C15 */ bl func_80073828
+/* 00007598 4BFF8C15 */ bl draw_naomi_sprite
 /* 0000759C D3FE0688 */ stfs f31, 0x688(r30)
 /* 000075A0 7F03C378 */ mr r3, r24
 /* 000075A4 C01F0188 */ lfs f0, 0x188(r31)
 /* 000075A8 D01E068C */ stfs f0, 0x68c(r30)
 /* 000075AC 92DE06BC */ stw r22, 0x6bc(r30)
-/* 000075B0 4BFF8BFD */ bl func_80073828
+/* 000075B0 4BFF8BFD */ bl draw_naomi_sprite
 /* 000075B4 807A0000 */ lwz r3, 0(r26)
 /* 000075B8 D3E30004 */ stfs f31, 4(r3)
 /* 000075BC C01F018C */ lfs f0, 0x18c(r31)
 /* 000075C0 D0030008 */ stfs f0, 8(r3)
 /* 000075C4 92C30038 */ stw r22, 0x38(r3)
-/* 000075C8 4BFF8BE5 */ bl func_80073828
+/* 000075C8 4BFF8BE5 */ bl draw_naomi_sprite
 /* 000075CC 3B9C0001 */ addi r28, r28, 1
 /* 000075D0 2C1C0003 */ cmpwi r28, 3
 /* 000075D4 3B5A0004 */ addi r26, r26, 4
@@ -7968,7 +7968,7 @@ lbl_0000755C:
 /* 000075F0 38800000 */ li r4, 0
 /* 000075F4 4BFF8BB9 */ bl GXLoadPosMtxImm
 /* 000075F8 387E00F0 */ addi r3, r30, 0xf0
-/* 000075FC 4BFF8BB1 */ bl func_80073828
+/* 000075FC 4BFF8BB1 */ bl draw_naomi_sprite
 /* 00007600 387D0000 */ addi r3, r29, 0
 /* 00007604 389E0944 */ addi r4, r30, 0x944
 /* 00007608 4BFF8BA5 */ bl strcpy
@@ -8074,7 +8074,7 @@ lbl_00007790:
 /* 00007794 3860005A */ li r3, 0x5a
 /* 00007798 90010004 */ stw r0, 4(r1)
 /* 0000779C 9421FFF8 */ stwu r1, -8(r1)
-/* 000077A0 4BFF8A0D */ bl g_find_sprite_with_probably_not_font
+/* 000077A0 4BFF8A0D */ bl find_sprite_with_tag
 /* 000077A4 28030000 */ cmplwi r3, 0
 /* 000077A8 41820018 */ beq lbl_000077C0
 /* 000077AC 3C600000 */ lis r3, lbl_10000000@ha
@@ -8159,7 +8159,7 @@ lbl_00007868:
 /* 000078D4 4BFF88D9 */ bl GXLoadPosMtxImm
 lbl_000078D8:
 /* 000078D8 7FA3EB78 */ mr r3, r29
-/* 000078DC 4BFF88D1 */ bl func_80073828
+/* 000078DC 4BFF88D1 */ bl draw_naomi_sprite
 /* 000078E0 C01F0088 */ lfs f0, 0x88(r31)
 /* 000078E4 3BC100A0 */ addi r30, r1, 0xa0
 /* 000078E8 3B6000B3 */ li r27, 0xb3
@@ -8411,7 +8411,7 @@ lbl_000078D8:
 /* 00007CC0 D01D0970 */ stfs f0, 0x970(r29)
 /* 00007CC4 C01F01A8 */ lfs f0, 0x1a8(r31)
 /* 00007CC8 D01D0974 */ stfs f0, 0x974(r29)
-/* 00007CCC 4BFF84E1 */ bl func_80073828
+/* 00007CCC 4BFF84E1 */ bl draw_naomi_sprite
 /* 00007CD0 C01F01AC */ lfs f0, 0x1ac(r31)
 /* 00007CD4 281C0001 */ cmplwi r28, 1
 /* 00007CD8 D0010018 */ stfs f0, 0x18(r1)
@@ -8481,7 +8481,7 @@ lbl_00007D04:
 /* 00007DD0 7FC3F378 */ mr r3, r30
 /* 00007DD4 4BFF83D9 */ bl func_80071E58
 /* 00007DD8 387D00F0 */ addi r3, r29, 0xf0
-/* 00007DDC 4BFF83D1 */ bl func_80073828
+/* 00007DDC 4BFF83D1 */ bl draw_naomi_sprite
 /* 00007DE0 387E0000 */ addi r3, r30, 0
 /* 00007DE4 389D0A00 */ addi r4, r29, 0xa00
 /* 00007DE8 4BFF83C5 */ bl strcpy
@@ -8595,7 +8595,7 @@ lbl_00007F90:
 /* 00007F94 3860005C */ li r3, 0x5c
 /* 00007F98 90010004 */ stw r0, 4(r1)
 /* 00007F9C 9421FFF8 */ stwu r1, -8(r1)
-/* 00007FA0 4BFF820D */ bl g_find_sprite_with_probably_not_font
+/* 00007FA0 4BFF820D */ bl find_sprite_with_tag
 /* 00007FA4 28030000 */ cmplwi r3, 0
 /* 00007FA8 41820018 */ beq lbl_00007FC0
 /* 00007FAC 3C600000 */ lis r3, lbl_10000000@ha
@@ -8680,7 +8680,7 @@ lbl_00008068:
 /* 000080D4 4BFF80D9 */ bl GXLoadPosMtxImm
 lbl_000080D8:
 /* 000080D8 7FC3F378 */ mr r3, r30
-/* 000080DC 4BFF80D1 */ bl func_80073828
+/* 000080DC 4BFF80D1 */ bl draw_naomi_sprite
 /* 000080E0 C01F0088 */ lfs f0, 0x88(r31)
 /* 000080E4 3AA100AC */ addi r21, r1, 0xac
 /* 000080E8 388000B3 */ li r4, 0xb3
@@ -8811,7 +8811,7 @@ lbl_000082D0:
 /* 000082D8 D01E0A30 */ stfs f0, 0xa30(r30)
 /* 000082DC C01D0004 */ lfs f0, 4(r29)
 /* 000082E0 D01E0A34 */ stfs f0, 0xa34(r30)
-/* 000082E4 4BFF7EC9 */ bl func_80073828
+/* 000082E4 4BFF7EC9 */ bl draw_naomi_sprite
 /* 000082E8 881C0000 */ lbz r0, 0(r28)
 /* 000082EC 7C1A0000 */ cmpw r26, r0
 /* 000082F0 4082001C */ bne lbl_0000830C
@@ -8995,7 +8995,7 @@ lbl_000084E0:
 /* 000085A8 901B0038 */ stw r0, 0x38(r27)
 lbl_000085AC:
 /* 000085AC 7F63DB78 */ mr r3, r27
-/* 000085B0 4BFF7BFD */ bl func_80073828
+/* 000085B0 4BFF7BFD */ bl draw_naomi_sprite
 /* 000085B4 C03B0004 */ lfs f1, 4(r27)
 /* 000085B8 7F03C378 */ mr r3, r24
 /* 000085BC C0170018 */ lfs f0, 0x18(r23)
@@ -9086,7 +9086,7 @@ lbl_000086F0:
 /* 00008704 3BBD0018 */ addi r29, r29, 0x18
 /* 00008708 4180FBC8 */ blt lbl_000082D0
 /* 0000870C 387E00F0 */ addi r3, r30, 0xf0
-/* 00008710 4BFF7A9D */ bl func_80073828
+/* 00008710 4BFF7A9D */ bl draw_naomi_sprite
 /* 00008714 380000B3 */ li r0, 0xb3
 /* 00008718 98010021 */ stb r0, 0x21(r1)
 /* 0000871C 38A000FF */ li r5, 0xff
@@ -9292,7 +9292,7 @@ lbl_00008A34:
 /* 00008A38 3860005D */ li r3, 0x5d
 /* 00008A3C 90010004 */ stw r0, 4(r1)
 /* 00008A40 9421FFF8 */ stwu r1, -8(r1)
-/* 00008A44 4BFF7769 */ bl g_find_sprite_with_probably_not_font
+/* 00008A44 4BFF7769 */ bl find_sprite_with_tag
 /* 00008A48 28030000 */ cmplwi r3, 0
 /* 00008A4C 41820018 */ beq lbl_00008A64
 /* 00008A50 3C600000 */ lis r3, lbl_10000000@ha
@@ -9459,7 +9459,7 @@ lbl_00008C40:
 /* 00008CB4 4BFF74F9 */ bl GXLoadPosMtxImm
 lbl_00008CB8:
 /* 00008CB8 7FC3F378 */ mr r3, r30
-/* 00008CBC 4BFF74F1 */ bl func_80073828
+/* 00008CBC 4BFF74F1 */ bl draw_naomi_sprite
 /* 00008CC0 C01F0088 */ lfs f0, 0x88(r31)
 /* 00008CC4 3BA100A0 */ addi r29, r1, 0xa0
 /* 00008CC8 388000B3 */ li r4, 0xb3
@@ -9625,7 +9625,7 @@ lbl_00008F40:
 /* 00008F40 92DC0038 */ stw r22, 0x38(r28)
 lbl_00008F44:
 /* 00008F44 7F83E378 */ mr r3, r28
-/* 00008F48 4BFF7265 */ bl func_80073828
+/* 00008F48 4BFF7265 */ bl draw_naomi_sprite
 /* 00008F4C 801B0014 */ lwz r0, 0x14(r27)
 /* 00008F50 7C1A0000 */ cmpw r26, r0
 /* 00008F54 40820038 */ bne lbl_00008F8C
@@ -9653,7 +9653,7 @@ lbl_00008F94:
 /* 00008FA4 D0030008 */ stfs f0, 8(r3)
 /* 00008FA8 93230038 */ stw r25, 0x38(r3)
 /* 00008FAC 9303003C */ stw r24, 0x3c(r3)
-/* 00008FB0 4BFF71FD */ bl func_80073828
+/* 00008FB0 4BFF71FD */ bl draw_naomi_sprite
 /* 00008FB4 2C1A0000 */ cmpwi r26, 0
 /* 00008FB8 4082000C */ bne lbl_00008FC4
 /* 00008FBC 387E0EF0 */ addi r3, r30, 0xef0
@@ -9667,7 +9667,7 @@ lbl_00008FC8:
 /* 00008FD4 D0030008 */ stfs f0, 8(r3)
 /* 00008FD8 93230038 */ stw r25, 0x38(r3)
 /* 00008FDC 9303003C */ stw r24, 0x3c(r3)
-/* 00008FE0 4BFF71CD */ bl func_80073828
+/* 00008FE0 4BFF71CD */ bl draw_naomi_sprite
 /* 00008FE4 3B5A0001 */ addi r26, r26, 1
 /* 00008FE8 2C1A0003 */ cmpwi r26, 3
 /* 00008FEC 3A730004 */ addi r19, r19, 4
@@ -9681,7 +9681,7 @@ lbl_00008FC8:
 /* 0000900C 38800000 */ li r4, 0
 /* 00009010 4BFF719D */ bl GXLoadPosMtxImm
 /* 00009014 387E00F0 */ addi r3, r30, 0xf0
-/* 00009018 4BFF7195 */ bl func_80073828
+/* 00009018 4BFF7195 */ bl draw_naomi_sprite
 /* 0000901C 380000FF */ li r0, 0xff
 /* 00009020 98010020 */ stb r0, 0x20(r1)
 /* 00009024 3A400000 */ li r18, 0
@@ -9837,7 +9837,7 @@ lbl_0000925C:
 /* 00009270 3BE30000 */ addi r31, r3, lbl_0000C370@l
 /* 00009274 3860005B */ li r3, 0x5b
 /* 00009278 93C10018 */ stw r30, 0x18(r1)
-/* 0000927C 4BFF6F31 */ bl g_find_sprite_with_probably_not_font
+/* 0000927C 4BFF6F31 */ bl find_sprite_with_tag
 /* 00009280 28030000 */ cmplwi r3, 0
 /* 00009284 41820030 */ beq lbl_000092B4
 /* 00009288 3C600000 */ lis r3, lbl_10000000@ha
@@ -9994,7 +9994,7 @@ lbl_00009454:
 /* 000094C8 4BFF6CE5 */ bl GXLoadPosMtxImm
 lbl_000094CC:
 /* 000094CC 7FA3EB78 */ mr r3, r29
-/* 000094D0 4BFF6CDD */ bl func_80073828
+/* 000094D0 4BFF6CDD */ bl draw_naomi_sprite
 /* 000094D4 C01F0088 */ lfs f0, 0x88(r31)
 /* 000094D8 3BC100A0 */ addi r30, r1, 0xa0
 /* 000094DC 388000B3 */ li r4, 0xb3
@@ -10111,7 +10111,7 @@ lbl_000094CC:
 /* 00009698 387D0050 */ addi r3, r29, 0x50
 /* 0000969C C0040108 */ lfs f0, 0x108(r4)
 /* 000096A0 D01D0058 */ stfs f0, 0x58(r29)
-/* 000096A4 4BFF6B09 */ bl func_80073828
+/* 000096A4 4BFF6B09 */ bl draw_naomi_sprite
 /* 000096A8 C03F0148 */ lfs f1, 0x148(r31)
 /* 000096AC 387D1058 */ addi r3, r29, 0x1058
 /* 000096B0 C05F009C */ lfs f2, 0x9c(r31)
@@ -10214,7 +10214,7 @@ lbl_00009740:
 /* 00009828 3B5A0004 */ addi r26, r26, 4
 /* 0000982C 4180FEA0 */ blt lbl_000096CC
 /* 00009830 387D00F0 */ addi r3, r29, 0xf0
-/* 00009834 4BFF6979 */ bl func_80073828
+/* 00009834 4BFF6979 */ bl draw_naomi_sprite
 /* 00009838 380000FF */ li r0, 0xff
 /* 0000983C 98010020 */ stb r0, 0x20(r1)
 /* 00009840 3B200000 */ li r25, 0
@@ -10370,7 +10370,7 @@ lbl_00009A78:
 /* 00009A8C 3BE30000 */ addi r31, r3, lbl_0000C370@l
 /* 00009A90 3860005E */ li r3, 0x5e
 /* 00009A94 93C10008 */ stw r30, 8(r1)
-/* 00009A98 4BFF6715 */ bl g_find_sprite_with_probably_not_font
+/* 00009A98 4BFF6715 */ bl find_sprite_with_tag
 /* 00009A9C 28030000 */ cmplwi r3, 0
 /* 00009AA0 41820030 */ beq lbl_00009AD0
 /* 00009AA4 3C600000 */ lis r3, lbl_10000000@ha
@@ -10512,7 +10512,7 @@ lbl_00009C3C:
 /* 00009CA8 4BFF6505 */ bl GXLoadPosMtxImm
 lbl_00009CAC:
 /* 00009CAC 7FA3EB78 */ mr r3, r29
-/* 00009CB0 4BFF64FD */ bl func_80073828
+/* 00009CB0 4BFF64FD */ bl draw_naomi_sprite
 /* 00009CB4 C01F0088 */ lfs f0, 0x88(r31)
 /* 00009CB8 3BC100A0 */ addi r30, r1, 0xa0
 /* 00009CBC 388000B3 */ li r4, 0xb3
@@ -10629,9 +10629,9 @@ lbl_00009CAC:
 /* 00009E78 387D0050 */ addi r3, r29, 0x50
 /* 00009E7C C01B0148 */ lfs f0, 0x148(r27)
 /* 00009E80 D01D0058 */ stfs f0, 0x58(r29)
-/* 00009E84 4BFF6329 */ bl func_80073828
+/* 00009E84 4BFF6329 */ bl draw_naomi_sprite
 /* 00009E88 387D10A8 */ addi r3, r29, 0x10a8
-/* 00009E8C 4BFF6321 */ bl func_80073828
+/* 00009E8C 4BFF6321 */ bl draw_naomi_sprite
 /* 00009E90 3B400000 */ li r26, 0
 /* 00009E94 3F804330 */ lis r28, 0x4330
 lbl_00009E98:
@@ -10746,7 +10746,7 @@ lbl_00009F0C:
 /* 0000A040 FC03002A */ fadd f0, f3, f0
 /* 0000A044 FC000018 */ frsp f0, f0
 /* 0000A048 D01D11C4 */ stfs f0, 0x11c4(r29)
-/* 0000A04C 4BFF6161 */ bl func_80073828
+/* 0000A04C 4BFF6161 */ bl draw_naomi_sprite
 /* 0000A050 380000B0 */ li r0, 0xb0
 /* 0000A054 98010015 */ stb r0, 0x15(r1)
 /* 0000A058 3CA00000 */ lis r5, lbl_0000C380@ha
@@ -10953,7 +10953,7 @@ lbl_0000A288:
 /* 0000A368 380000B3 */ li r0, 0xb3
 /* 0000A36C 98010015 */ stb r0, 0x15(r1)
 /* 0000A370 387D00F0 */ addi r3, r29, 0xf0
-/* 0000A374 4BFF5E39 */ bl func_80073828
+/* 0000A374 4BFF5E39 */ bl draw_naomi_sprite
 /* 0000A378 388000FF */ li r4, 0xff
 /* 0000A37C 4CC63182 */ crclr 6
 /* 0000A380 98810020 */ stb r4, 0x20(r1)
@@ -11073,7 +11073,7 @@ lbl_0000A534:
 /* 0000A544 93E1000C */ stw r31, 0xc(r1)
 /* 0000A548 3BE30000 */ addi r31, r3, lbl_0000C370@l
 /* 0000A54C 38600060 */ li r3, 0x60
-/* 0000A550 4BFF5C5D */ bl g_find_sprite_with_probably_not_font
+/* 0000A550 4BFF5C5D */ bl find_sprite_with_tag
 /* 0000A554 28030000 */ cmplwi r3, 0
 /* 0000A558 41820018 */ beq lbl_0000A570
 /* 0000A55C 3C600000 */ lis r3, lbl_10000000@ha
@@ -11186,7 +11186,7 @@ lbl_0000A688:
 /* 0000A6F4 4BFF5AB9 */ bl GXLoadPosMtxImm
 lbl_0000A6F8:
 /* 0000A6F8 7FA3EB78 */ mr r3, r29
-/* 0000A6FC 4BFF5AB1 */ bl func_80073828
+/* 0000A6FC 4BFF5AB1 */ bl draw_naomi_sprite
 /* 0000A700 C01F0088 */ lfs f0, 0x88(r31)
 /* 0000A704 3BC100A0 */ addi r30, r1, 0xa0
 /* 0000A708 388000B3 */ li r4, 0xb3
@@ -11799,7 +11799,7 @@ lbl_0000B040:
 /* 0000B050 93E1000C */ stw r31, 0xc(r1)
 /* 0000B054 3BE30000 */ addi r31, r3, lbl_0000C370@l
 /* 0000B058 38600061 */ li r3, 0x61
-/* 0000B05C 4BFF5151 */ bl g_find_sprite_with_probably_not_font
+/* 0000B05C 4BFF5151 */ bl find_sprite_with_tag
 /* 0000B060 28030000 */ cmplwi r3, 0
 /* 0000B064 41820018 */ beq lbl_0000B07C
 /* 0000B068 3C600000 */ lis r3, lbl_10000000@ha
@@ -11950,7 +11950,7 @@ lbl_0000B218:
 /* 0000B284 4BFF4F29 */ bl GXLoadPosMtxImm
 lbl_0000B288:
 /* 0000B288 7FA3EB78 */ mr r3, r29
-/* 0000B28C 4BFF4F21 */ bl func_80073828
+/* 0000B28C 4BFF4F21 */ bl draw_naomi_sprite
 /* 0000B290 C01F0088 */ lfs f0, 0x88(r31)
 /* 0000B294 3BC100A4 */ addi r30, r1, 0xa4
 /* 0000B298 388000B3 */ li r4, 0xb3
@@ -12077,7 +12077,7 @@ lbl_0000B288:
 /* 0000B47C 387D0050 */ addi r3, r29, 0x50
 /* 0000B480 C0170128 */ lfs f0, 0x128(r23)
 /* 0000B484 D01D0058 */ stfs f0, 0x58(r29)
-/* 0000B488 4BFF4D25 */ bl func_80073828
+/* 0000B488 4BFF4D25 */ bl draw_naomi_sprite
 /* 0000B48C 3AC00000 */ li r22, 0
 /* 0000B490 56C0103A */ slwi r0, r22, 2
 /* 0000B494 7F7D0214 */ add r27, r29, r0
@@ -12190,7 +12190,7 @@ lbl_0000B528:
 /* 0000B630 2C000002 */ cmpwi r0, 2
 /* 0000B634 40820120 */ bne lbl_0000B754
 /* 0000B638 387D155C */ addi r3, r29, 0x155c
-/* 0000B63C 4BFF4B71 */ bl func_80073828
+/* 0000B63C 4BFF4B71 */ bl draw_naomi_sprite
 /* 0000B640 388000FF */ li r4, 0xff
 /* 0000B644 98810024 */ stb r4, 0x24(r1)
 /* 0000B648 38000000 */ li r0, 0
@@ -12923,7 +12923,7 @@ lbl_0000C148:
 /* 0000C158 93E1000C */ stw r31, 0xc(r1)
 /* 0000C15C 3BE30000 */ addi r31, r3, lbl_0000C370@l
 /* 0000C160 3860005F */ li r3, 0x5f
-/* 0000C164 4BFF4049 */ bl g_find_sprite_with_probably_not_font
+/* 0000C164 4BFF4049 */ bl find_sprite_with_tag
 /* 0000C168 28030000 */ cmplwi r3, 0
 /* 0000C16C 41820018 */ beq lbl_0000C184
 /* 0000C170 3C600000 */ lis r3, lbl_10000000@ha

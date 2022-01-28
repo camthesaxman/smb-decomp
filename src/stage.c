@@ -8,6 +8,7 @@
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "event.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
@@ -16,19 +17,7 @@
 #include "preview.h"
 #include "stage.h"
 
-
-struct NaomiModelHeader_child
-{
-    u32 unk0;
-};
-
-struct NaomiModelHeader
-{
-    s8 *unk0;
-    struct NaomiModelHeader_child *unk4;
-};
-
-#define HEADER_OF(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+#include "../data/common.nlobj.h"
 
 extern u8 lbl_801B86E4[];
 extern int previewLoaded;
@@ -55,7 +44,7 @@ struct Preview stagePreview;  // 78
 
 struct Struct80206DEC lbl_80206DEC;
 
-struct Struct80206E48 movableStageParts[0x48];  // 148
+struct MovableStagePart movableStageParts[0x48];  // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
@@ -108,7 +97,7 @@ void ev_stage_init(void)
 
 void ev_stage_main(void)
 {
-    struct Struct80206E48 *r30;
+    struct MovableStagePart *movpart;
     struct StageCollHdr *coll;
     float f31;
     float f30;
@@ -135,7 +124,7 @@ void ev_stage_main(void)
     f31 = lbl_80206DEC.unk4 / 60.0;
     f31 += decodedStageLzPtr->unk0;
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
-    f31 -= f3 * (float)mathutil_floor_to_int(f31 / f3);
+    f31 -= f3 * mathutil_floor(f31 / f3);
     f31 += decodedStageLzPtr->unk0;
     f30 = f31;
     if (decodedStageLzPtr->unk78 != 0)
@@ -160,14 +149,14 @@ void ev_stage_main(void)
             *r5 = f3;
         }
     }
-    r30 = movableStageParts;
+    movpart = movableStageParts;
     coll = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r30++, coll++)
+    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, coll++)
     {
         int j;
-        struct StageAnimHdr *r27 = coll->animHdr;
+        struct StageAnimHdr *anim = coll->animHdr;
 
-        if (r27 == NULL2)
+        if (anim == NULL2)
             continue;
         if (decodedStageLzPtr->unk78 != 0)
         {
@@ -181,52 +170,52 @@ void ev_stage_main(void)
                 }
             }
         }
-        if (r27->xRotFrames != NULL2)
+        if (anim->xRotFrames != NULL2)
         {
-            r30->unk1E = r30->unk18;
-            r30->unk18 = DEGREES_TO_S16(g_interp_stage_anim_probably(r27->xRotFramesCount, r27->xRotFrames, f31));
+            movpart->unk1E = movpart->unk18;
+            movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
         }
-        if (r27->yRotFrames != NULL2)
+        if (anim->yRotFrames != NULL2)
         {
-            r30->unk20 = r30->unk1A;
-            r30->unk1A = DEGREES_TO_S16(g_interp_stage_anim_probably(r27->yRotFramesCount, r27->yRotFrames, f31));
+            movpart->unk20 = movpart->unk1A;
+            movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
         }
-        if (r27->zRotFrames != NULL2)
+        if (anim->zRotFrames != NULL2)
         {
-            r30->unk22 = r30->unk1C;
-            r30->unk1C = DEGREES_TO_S16(g_interp_stage_anim_probably(r27->zRotFramesCount, r27->zRotFrames, f31));
+            movpart->unk22 = movpart->unk1C;
+            movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
         }
-        if (r27->xTrnslFrames != NULL2)
+        if (anim->xTrnslFrames != NULL2)
         {
-            r30->unkC.x = r30->unk0.x - coll->unkB8.x;
-            r30->unk0.x = g_interp_stage_anim_probably(r27->xTrnslFramesCount, r27->xTrnslFrames, f31);
+            movpart->unkC.x = movpart->unk0.x - coll->unkB8.x;
+            movpart->unk0.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
         }
-        if (r27->yTrnslFrames != NULL2)
+        if (anim->yTrnslFrames != NULL2)
         {
-            r30->unkC.y = r30->unk0.y - coll->unkB8.y;
-            r30->unk0.y = g_interp_stage_anim_probably(r27->yTrnslFramesCount, r27->yTrnslFrames, f31);
+            movpart->unkC.y = movpart->unk0.y - coll->unkB8.y;
+            movpart->unk0.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
         }
-        if (r27->zTrnslFrames != NULL2)
+        if (anim->zTrnslFrames != NULL2)
         {
-            r30->unkC.z = r30->unk0.z - coll->unkB8.z;
-            r30->unk0.z = g_interp_stage_anim_probably(r27->zTrnslFramesCount, r27->zTrnslFrames, f31);
+            movpart->unkC.z = movpart->unk0.z - coll->unkB8.z;
+            movpart->unk0.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
         }
-        mathutil_mtxA_from_translate(&r30->unk0);
-        mathutil_mtxA_rotate_z(r30->unk1C);
-        mathutil_mtxA_rotate_y(r30->unk1A);
-        mathutil_mtxA_rotate_x(r30->unk18 - coll->initXRot);
+        mathutil_mtxA_from_translate(&movpart->unk0);
+        mathutil_mtxA_rotate_z(movpart->unk1C);
+        mathutil_mtxA_rotate_y(movpart->unk1A);
+        mathutil_mtxA_rotate_x(movpart->unk18 - coll->initXRot);
         mathutil_mtxA_rotate_y(-coll->initYRot);
         mathutil_mtxA_rotate_z(-coll->initZRot);
         mathutil_mtxA_translate_neg(&coll->unk0);
-        mathutil_mtxA_to_mtx(r30->unk24);
-        mathutil_mtxA_from_translate(&r30->unkC);
-        mathutil_mtxA_rotate_z(r30->unk22);
-        mathutil_mtxA_rotate_y(r30->unk20);
-        mathutil_mtxA_rotate_x(r30->unk1E - coll->initXRot);
+        mathutil_mtxA_to_mtx(movpart->unk24);
+        mathutil_mtxA_from_translate(&movpart->unkC);
+        mathutil_mtxA_rotate_z(movpart->unk22);
+        mathutil_mtxA_rotate_y(movpart->unk20);
+        mathutil_mtxA_rotate_x(movpart->unk1E - coll->initXRot);
         mathutil_mtxA_rotate_y(-coll->initYRot);
         mathutil_mtxA_rotate_z(-coll->initZRot);
         mathutil_mtxA_translate_neg(&coll->unk0);
-        mathutil_mtxA_to_mtx(r30->unk54);
+        mathutil_mtxA_to_mtx(movpart->unk54);
     }
     if (lbl_80206DEC.unk8 != NULL)
         lbl_80206DEC.unk8();
@@ -237,7 +226,7 @@ void ev_stage_main(void)
         struct DynamicStagePart *dyn = dynamicStageParts;
         while (dyn->modelName != NULL)
         {
-            memcpy(dyn->tempModel, dyn->origModel, HEADER_OF(dyn->origModel)->unk4->unk0);
+            memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
             // responsible for warping vertices in the Bonus Wave model
             g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
             dyn++;
@@ -278,21 +267,21 @@ void find_blur_bridge_accordion(void)
     blurBridgeAccordion = stage_find_model(decodedStageGmaPtr, "MOT_STAGE101_BLUR");
 }
 
-void func_8004424C(void)
+void draw_blur_bridge_accordions(void)
 {
-    float f31;
+    float t;
     float f30;
-    struct Struct80206E48 *movpart;
+    struct MovableStagePart *movpart;
     struct StageCollHdr *r30;
     int i;
 
     if (blurBridgeAccordion == NULL2)
         return;
-    f31 = lbl_80206DEC.unk4 / 60.0;
-    f31 += (float)decodedStageLzPtr->unk0;
+    t = lbl_80206DEC.unk4 / 60.0;
+    t += (float)decodedStageLzPtr->unk0;
     f30 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
-    f31 -= f30 * (float)mathutil_floor_to_int(f31 / f30);
-    f31 += (float)decodedStageLzPtr->unk0;
+    t -= f30 * mathutil_floor(t / f30);
+    t += (float)decodedStageLzPtr->unk0;
     movpart = &movableStageParts[1];
     r30 = decodedStageLzPtr->collHdrs + 1;
     for (i = 1; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r30++)
@@ -305,7 +294,7 @@ void func_8004424C(void)
 
             f30 = f27;
             if (r30->animHdr->xTrnslFrames != NULL2)
-                f30 = g_interp_stage_anim_probably(r30->animHdr->xTrnslFramesCount, r30->animHdr->xTrnslFrames, f31 - 0.5);
+                f30 = g_interpolate_anim(r30->animHdr->xTrnslFramesCount, r30->animHdr->xTrnslFrames, t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
             {
@@ -337,9 +326,9 @@ void g_animate_stage(float a)
     float f31;
     float f30;
     float f3;
-    struct Struct80206E48 *movpart;
+    struct MovableStagePart *movpart;
     struct StageCollHdr *coll;
-    struct StageAnimHdr *r29;
+    struct StageAnimHdr *anim;
     int i;
 
     if (gamePauseStatus & 0xA)
@@ -349,44 +338,44 @@ void g_animate_stage(float a)
     f31 = lbl_80206DEC.unk4 / 60.0;
     f31 += decodedStageLzPtr->unk0;
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
-    f31 -= f3 * (float)mathutil_floor_to_int(f31 / f3);;
+    f31 -= f3 * mathutil_floor(f31 / f3);
     f31 += decodedStageLzPtr->unk0;
     movpart = movableStageParts;
     coll = decodedStageLzPtr->collHdrs;
     for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, coll++)
     {
-        r29 = coll->animHdr;
-        if (r29 != NULL2)
+        anim = coll->animHdr;
+        if (anim != NULL2)
         {
-            if (r29->xRotFrames != NULL2)
+            if (anim->xRotFrames != NULL2)
             {
                 movpart->unk1E = movpart->unk18;
-                movpart->unk18 = DEGREES_TO_S16(g_interp_stage_anim_probably(r29->xRotFramesCount, r29->xRotFrames, f31));
+                movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
             }
-            if (r29->yRotFrames != NULL2)
+            if (anim->yRotFrames != NULL2)
             {
                 movpart->unk20 = movpart->unk1A;
-                movpart->unk1A = DEGREES_TO_S16(g_interp_stage_anim_probably(r29->yRotFramesCount, r29->yRotFrames, f31));
+                movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
             }
-            if (r29->zRotFrames != NULL2)
+            if (anim->zRotFrames != NULL2)
             {
                 movpart->unk22 = movpart->unk1C;
-                movpart->unk1C = DEGREES_TO_S16(g_interp_stage_anim_probably(r29->zRotFramesCount, r29->zRotFrames, f31));
+                movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
             }
-            if (r29->xTrnslFrames != NULL2)
+            if (anim->xTrnslFrames != NULL2)
             {
                 movpart->unkC.x = movpart->unk0.x;
-                movpart->unk0.x = g_interp_stage_anim_probably(r29->xTrnslFramesCount, r29->xTrnslFrames, f31);
+                movpart->unk0.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
             }
-            if (r29->yTrnslFrames != NULL2)
+            if (anim->yTrnslFrames != NULL2)
             {
                 movpart->unkC.y = movpart->unk0.y;
-                movpart->unk0.y = g_interp_stage_anim_probably(r29->yTrnslFramesCount, r29->yTrnslFrames, f31);
+                movpart->unk0.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
             }
-            if (r29->zTrnslFrames != NULL2)
+            if (anim->zTrnslFrames != NULL2)
             {
                 movpart->unkC.z = movpart->unk0.z;
-                movpart->unk0.z = g_interp_stage_anim_probably(r29->zTrnslFramesCount, r29->zTrnslFrames, f31);
+                movpart->unk0.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
             }
             mathutil_mtxA_from_translate(&movpart->unk0);
             mathutil_mtxA_rotate_z(movpart->unk1C);
@@ -427,7 +416,7 @@ void g_initialize_stage_dyn_part_info(void)
 
 void func_8004482C(void)
 {
-    struct Struct80206E48 *movpart;
+    struct MovableStagePart *movpart;
     struct StageCollHdr *coll;
     int i;
 
@@ -463,9 +452,9 @@ void load_stage(int stageId)
     int bgChanged = FALSE;
 
     if (stageEvState != EV_STATE_INACTIVE)
-        ev_run_dest(EVENT_STAGE);
+        event_finish(EVENT_STAGE);
     if (bgEvState != EV_STATE_INACTIVE)
-        ev_run_dest(EVENT_BACKGROUND);
+        event_finish(EVENT_BACKGROUND);
     if (loadedStageId != stageId)
     {
         OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap2);
@@ -513,9 +502,9 @@ void load_stage(int stageId)
     func_8009AAB0();
     currStageId = stageId;
     if (stageEvState != EV_STATE_INACTIVE)
-        ev_run_init(EVENT_STAGE);
+        event_start(EVENT_STAGE);
     if (bgEvState != EV_STATE_INACTIVE)
-        ev_run_init(EVENT_BACKGROUND);
+        event_start(EVENT_BACKGROUND);
 }
 
 void unload_stage(void)
@@ -595,7 +584,7 @@ void preload_stage_files(int stageId)
     char tplName[0x100];
     char stageLzName[0x100];
 
-    func_80055164(get_stage_background_2(stageId));
+    preload_bg_files(get_stage_background_2(stageId));
     sprintf(stageDir, "st%03d", stageId);
     DVDChangeDir(stageDir);
     sprintf(stageLzName, "STAGE%03d.lz", stageId);
@@ -676,23 +665,10 @@ void *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct80209D48 lbl_80209D48[0x80];
 
-struct Struct8020A348_child
-{
-    u32 unk0;
-    struct GMAModelHeader *unk4;  // GMAModelHeader
-    float unk8;
-};  // size = 0xC
-
-struct Struct8020A348
-{
-    struct Struct8020A348_child *unk0;
-    s32 unk4;
-};
-
 struct Struct8020A348 lbl_8020A348[0x108];  //0x3648
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
-struct GMAModelHeader *lbl_8020ADC8[3];
-struct Sphere stageBoundingSphere;
+struct GMAModelHeader *goalModels[3];
+struct Sphere stageBounds;
 
 FORCE_BSS_ORDER(lbl_80209368)
 FORCE_BSS_ORDER(lbl_80209488)
@@ -701,8 +677,8 @@ FORCE_BSS_ORDER(lbl_802099E8)
 FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
 FORCE_BSS_ORDER(lbl_8020AB88)
-FORCE_BSS_ORDER(lbl_8020ADC8)
-FORCE_BSS_ORDER(stageBoundingSphere)
+FORCE_BSS_ORDER(goalModels)
+FORCE_BSS_ORDER(stageBounds)
 
 struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj, (struct NaomiObj **)&naomiCommonObj, NULL};
 
@@ -777,7 +753,7 @@ void func_80044E18(void)
                     int j;  // r23
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(*r21, (void *)(HEADER_OF(modelPtrs[j])->unk0 + 4)) == 0)
+                        if (strcmp(*r21, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
                         {
                             r18 = modelPtrs[j];
                             break;
@@ -797,7 +773,7 @@ void func_80044E18(void)
                     int j;  // r23
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(sp10, (void *)(HEADER_OF(modelPtrs[j])->unk0 + 4)) == 0)
+                        if (strcmp(sp10, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
                         {
                             r31 = modelPtrs[j];
                             break;
@@ -823,7 +799,7 @@ void func_80044E18(void)
                 r19++;
                 *r29++ = (void *)r18;
 
-                lbl_802F1F50 += HEADER_OF(r18)->unk4->unk0;
+                lbl_802F1F50 += NLMODEL_HEADER(r18)->unk4->modelSize;
                 r26->unk8++;
                 if (r19 >= 0x47)
                     break;
@@ -857,7 +833,7 @@ void func_80044E18(void)
                 int j;
                 for (j = 0; r3[j] != NULL; j++)
                 {
-                    int len = string_match_len(HEADER_OF(r3[j])->unk0 + 4, (void *)r18->nameOffset);
+                    int len = string_match_len(NLMODEL_HEADER(r3[j])->unk0 + 4, (void *)r18->nameOffset);
                     if (len > r19)
                     {
                         r19 = len;
@@ -875,7 +851,7 @@ void func_80044E18(void)
             r17_->unk4 = r31;
             *r29++ = r31;
             if ((r17_->unk0 & 3) == 1)
-                lbl_802F1F4C += HEADER_OF(r31)->unk4->unk0;
+                lbl_802F1F4C += NLMODEL_HEADER(r31)->unk4->modelSize;
         }
         //lbl_8004510C
         else
@@ -975,35 +951,35 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
     while (dyn->modelName != NULL)
     {
         int r27;
-        struct NaomiModel *r26;
-        struct NaomiObj ***r25;
+        struct NaomiModel *model;
+        struct NaomiObj ***objIter;
 
-        r26 = NULL;
+        model = NULL;
         r27 = 0;
-        r25 = &lbl_801B8794[0];
-        while (*r25 != NULL)
+        objIter = &lbl_801B8794[0];
+        while (*objIter != NULL)
         {
-            struct NaomiObj *nobj = **r25;
+            struct NaomiObj *nobj = **objIter;
             if (nobj != NULL)
             {
                 struct NaomiModel **modelPtrs = nobj->modelPtrs;
                 for (i = 0; modelPtrs[i] != NULL; i++)
                 {
-                    int var = string_match_len(dyn->modelName, HEADER_OF(modelPtrs[i])->unk0 + 4);
+                    int var = string_match_len(dyn->modelName, NLMODEL_HEADER(modelPtrs[i])->unk0 + 4);
                     if (var > r27)
                     {
                         r27 = var;
-                        r26 = modelPtrs[i];
+                        model = modelPtrs[i];
                     }
                 }
-                dyn->origModel = r26;
-                if (r26 != NULL)
+                dyn->origModel = model;
+                if (model != NULL)
                 {
-                    r31 -= HEADER_OF(r26)->unk4->unk0;
+                    r31 -= NLMODEL_HEADER(model)->unk4->modelSize;
                     dyn->tempModel = (struct NaomiModel *)r31;
                 }
             }
-            r25++;
+            objIter++;
         }
         dyn++;
     }
@@ -1083,11 +1059,6 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
     vtx.y += mathutil_sin(angle) * amplitude;
     *vtxp = vtx;
 }
-
-struct Struct80045B54_1
-{
-    Vec unk0;
-};
 
 #define lbl_802F3760 0.5
 #define lbl_802F3770 -0.030833333333333333
@@ -1227,40 +1198,40 @@ void compute_stage_bounding_sphere(void)
 
     if (decodedStageLzPtr->lvlModels == NULL2)
     {
-        struct GMAModelHeader **r3 = lbl_80209488;
+        struct NaomiModel **r3 = (void *)lbl_80209488;
 
         while (*r3 != NULL)
         {
-            struct GMAModelHeader *r5 = *r3;
+            struct NaomiModel *model = *r3;
 
-            if (r5 != NULL2 && (int)r5->magic >= 0)
+            if (model != NULL2 && model->unk0 >= 0)
             {
                 if (!r4)
                 {
                     r4 = TRUE;
-                    min.x = r5->boundingSphereCenter.x - r5->boundingSphereRadius;
-                    min.y = r5->boundingSphereCenter.y - r5->boundingSphereRadius;
-                    min.z = r5->boundingSphereCenter.z - r5->boundingSphereRadius;
+                    min.x = model->boundsCenter.x - model->boundsRadius;
+                    min.y = model->boundsCenter.y - model->boundsRadius;
+                    min.z = model->boundsCenter.z - model->boundsRadius;
 
-                    max.x = r5->boundingSphereCenter.x + r5->boundingSphereRadius;
-                    max.y = r5->boundingSphereCenter.y + r5->boundingSphereRadius;
-                    max.z = r5->boundingSphereCenter.z + r5->boundingSphereRadius;
+                    max.x = model->boundsCenter.x + model->boundsRadius;
+                    max.y = model->boundsCenter.y + model->boundsRadius;
+                    max.z = model->boundsCenter.z + model->boundsRadius;
                 }
                 else
                 {
-                    if (r5->boundingSphereCenter.x - r5->boundingSphereRadius < min.x)
-                        min.x = r5->boundingSphereCenter.x - r5->boundingSphereRadius;
-                    if (r5->boundingSphereCenter.y - r5->boundingSphereRadius < min.y)
-                        min.y = r5->boundingSphereCenter.y - r5->boundingSphereRadius;
-                    if (r5->boundingSphereCenter.z - r5->boundingSphereRadius < min.z)
-                        min.z = r5->boundingSphereCenter.z - r5->boundingSphereRadius;
+                    if (model->boundsCenter.x - model->boundsRadius < min.x)
+                        min.x = model->boundsCenter.x - model->boundsRadius;
+                    if (model->boundsCenter.y - model->boundsRadius < min.y)
+                        min.y = model->boundsCenter.y - model->boundsRadius;
+                    if (model->boundsCenter.z - model->boundsRadius < min.z)
+                        min.z = model->boundsCenter.z - model->boundsRadius;
 
-                    if (r5->boundingSphereCenter.x + r5->boundingSphereRadius > max.x)
-                        max.x = r5->boundingSphereCenter.x + r5->boundingSphereRadius;
-                    if (r5->boundingSphereCenter.y + r5->boundingSphereRadius > max.y)
-                        max.y = r5->boundingSphereCenter.y + r5->boundingSphereRadius;
-                    if (r5->boundingSphereCenter.z + r5->boundingSphereRadius > max.z)
-                        max.z = r5->boundingSphereCenter.z + r5->boundingSphereRadius;
+                    if (model->boundsCenter.x + model->boundsRadius > max.x)
+                        max.x = model->boundsCenter.x + model->boundsRadius;
+                    if (model->boundsCenter.y + model->boundsRadius > max.y)
+                        max.y = model->boundsCenter.y + model->boundsRadius;
+                    if (model->boundsCenter.z + model->boundsRadius > max.z)
+                        max.z = model->boundsCenter.z + model->boundsRadius;
                 }
             }
             r3++;
@@ -1277,36 +1248,36 @@ void compute_stage_bounding_sphere(void)
             int r6;
             for (r6 = 0; r6 < r3->unk4; r6++, r5++)
             {
-                struct GMAModelHeader *r7 = r5->unk4;
+                struct NaomiModel *model = (void *)r5->unk4;
 
-                if (r7 != NULL2 && (int)r7->magic >= 0)
+                if (model != NULL2 && model->unk0 >= 0)
                 {
                     if (!r4)
                     {
                         r4 = TRUE;
-                        min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
-                        min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
-                        min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
+                        min.x = model->boundsCenter.x - model->boundsRadius;
+                        min.y = model->boundsCenter.y - model->boundsRadius;
+                        min.z = model->boundsCenter.z - model->boundsRadius;
 
-                        max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
-                        max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
-                        max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
+                        max.x = model->boundsCenter.x + model->boundsRadius;
+                        max.y = model->boundsCenter.y + model->boundsRadius;
+                        max.z = model->boundsCenter.z + model->boundsRadius;
                     }
                     else
                     {
-                        if (r7->boundingSphereCenter.x - r7->boundingSphereRadius < min.x)
-                            min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.y - r7->boundingSphereRadius < min.y)
-                            min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.z - r7->boundingSphereRadius < min.z)
-                            min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
+                        if (model->boundsCenter.x - model->boundsRadius < min.x)
+                            min.x = model->boundsCenter.x - model->boundsRadius;
+                        if (model->boundsCenter.y - model->boundsRadius < min.y)
+                            min.y = model->boundsCenter.y - model->boundsRadius;
+                        if (model->boundsCenter.z - model->boundsRadius < min.z)
+                            min.z = model->boundsCenter.z - model->boundsRadius;
 
-                        if (r7->boundingSphereCenter.x + r7->boundingSphereRadius > max.x)
-                            max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.y + r7->boundingSphereRadius > max.y)
-                            max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.z + r7->boundingSphereRadius > max.z)
-                            max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
+                        if (model->boundsCenter.x + model->boundsRadius > max.x)
+                            max.x = model->boundsCenter.x + model->boundsRadius;
+                        if (model->boundsCenter.y + model->boundsRadius > max.y)
+                            max.y = model->boundsCenter.y + model->boundsRadius;
+                        if (model->boundsCenter.z + model->boundsRadius > max.z)
+                            max.z = model->boundsCenter.z + model->boundsRadius;
                     }
                 }
             }
@@ -1324,36 +1295,36 @@ void compute_stage_bounding_sphere(void)
 
             for (r6 = 0; r6 < r3->unk4; r6++, r5++)
             {
-                struct GMAModelHeader *r7 = r5->unk4;
+                struct GMAModelHeader *model = r5->unk4;
 
-                if (r7 != NULL2)
+                if (model != NULL2)
                 {
                     if (!r4)
                     {
                         r4 = TRUE;
-                        min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
-                        min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
-                        min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
+                        min.x = model->boundsCenter.x - model->boundsRadius;
+                        min.y = model->boundsCenter.y - model->boundsRadius;
+                        min.z = model->boundsCenter.z - model->boundsRadius;
 
-                        max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
-                        max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
-                        max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
+                        max.x = model->boundsCenter.x + model->boundsRadius;
+                        max.y = model->boundsCenter.y + model->boundsRadius;
+                        max.z = model->boundsCenter.z + model->boundsRadius;
                     }
                     else
                     {
-                        if (r7->boundingSphereCenter.x - r7->boundingSphereRadius < min.x)
-                            min.x = r7->boundingSphereCenter.x - r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.y - r7->boundingSphereRadius < min.y)
-                            min.y = r7->boundingSphereCenter.y - r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.z - r7->boundingSphereRadius < min.z)
-                            min.z = r7->boundingSphereCenter.z - r7->boundingSphereRadius;
+                        if (model->boundsCenter.x - model->boundsRadius < min.x)
+                            min.x = model->boundsCenter.x - model->boundsRadius;
+                        if (model->boundsCenter.y - model->boundsRadius < min.y)
+                            min.y = model->boundsCenter.y - model->boundsRadius;
+                        if (model->boundsCenter.z - model->boundsRadius < min.z)
+                            min.z = model->boundsCenter.z - model->boundsRadius;
 
-                        if (r7->boundingSphereCenter.x + r7->boundingSphereRadius > max.x)
-                            max.x = r7->boundingSphereCenter.x + r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.y + r7->boundingSphereRadius > max.y)
-                            max.y = r7->boundingSphereCenter.y + r7->boundingSphereRadius;
-                        if (r7->boundingSphereCenter.z + r7->boundingSphereRadius > max.z)
-                            max.z = r7->boundingSphereCenter.z + r7->boundingSphereRadius;
+                        if (model->boundsCenter.x + model->boundsRadius > max.x)
+                            max.x = model->boundsCenter.x + model->boundsRadius;
+                        if (model->boundsCenter.y + model->boundsRadius > max.y)
+                            max.y = model->boundsCenter.y + model->boundsRadius;
+                        if (model->boundsCenter.z + model->boundsRadius > max.z)
+                            max.z = model->boundsCenter.z + model->boundsRadius;
                     }
                 }
             }
@@ -1364,21 +1335,21 @@ void compute_stage_bounding_sphere(void)
     {
         Vec sp8;
 
-        stageBoundingSphere.pos.x = (max.x + min.x) * 0.5;
-        stageBoundingSphere.pos.y = (max.y + min.y) * 0.5;
-        stageBoundingSphere.pos.z = (max.z + min.z) * 0.5;
+        stageBounds.pos.x = (max.x + min.x) * 0.5;
+        stageBounds.pos.y = (max.y + min.y) * 0.5;
+        stageBounds.pos.z = (max.z + min.z) * 0.5;
 
         sp8.x = (max.x - min.x) * 0.5;
         sp8.y = (max.y - min.y) * 0.5;
         sp8.z = (max.z - min.z) * 0.5;
-        stageBoundingSphere.radius = mathutil_sqrt(sum_of_3_sq(sp8.x, sp8.y, sp8.z));
+        stageBounds.radius = mathutil_sqrt(sum_of_3_sq(sp8.x, sp8.y, sp8.z));
     }
     else
     {
-        stageBoundingSphere.pos.x = 0.0f;
-        stageBoundingSphere.pos.y = 0.0f;
-        stageBoundingSphere.pos.z = 0.0f;
-        stageBoundingSphere.radius = 50.0f;
+        stageBounds.pos.x = 0.0f;
+        stageBounds.pos.y = 0.0f;
+        stageBounds.pos.z = 0.0f;
+        stageBounds.radius = 50.0f;
     }
 }
 
@@ -1403,16 +1374,16 @@ void func_800463E8(Vec *a, float *b)
 
     if (decodedStageGmaPtr != NULL)
     {
-        struct Struct80206E48 *iter1 = movableStageParts;
+        struct MovableStagePart *movpart = movableStageParts;
         struct Struct8020A348 *iter2 = lbl_8020AB88;
         int j;
         int i;
 
-        for (i = 0; i < movableStagePartCount; i++, iter2++, iter1++)
+        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(iter1->unk24);
+            mathutil_mtxA_from_mtx(movpart->unk24);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1421,8 +1392,8 @@ void func_800463E8(Vec *a, float *b)
                     float f;
                     struct GMAModelHeader *r28 = iter3->unk4;
 
-                    mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp34);
-                    f = r28->boundingSphereRadius;
+                    mathutil_mtxA_tf_point(&r28->boundsCenter, &sp34);
+                    f = r28->boundsRadius;
                     v.x = sp34.x - f;
                     v.y = sp34.y - f;
                     v.z = sp34.z - f;
@@ -1450,13 +1421,13 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        iter1 = movableStageParts;
+        movpart = movableStageParts;
         iter2 = lbl_8020AB88;
-        for (i = 0; i < movableStagePartCount; i++, iter2++, iter1++)
+        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(iter1->unk24);
+            mathutil_mtxA_from_mtx(movpart->unk24);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1468,8 +1439,8 @@ void func_800463E8(Vec *a, float *b)
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp28);
-                    var1 = r28->boundingSphereRadius;
+                    mathutil_mtxA_tf_point(&r28->boundsCenter, &sp28);
+                    var1 = r28->boundsRadius;
                     f0 = var1 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
                     if (result < f0)
                         result = f0;
@@ -1483,15 +1454,15 @@ void func_800463E8(Vec *a, float *b)
     }
     else if (decodedStageLzPtr != NULL && decodedStageLzPtr->lvlModels != NULL)
     {
-        struct Struct80206E48 *iter1 = movableStageParts;
+        struct MovableStagePart *movpart = movableStageParts;
         struct Struct8020A348 *iter2 = lbl_8020A348;
         int j;
         int i;
 
-        for (i = 0; i < movableStagePartCount; i++, iter2++, iter1++)
+        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
-            mathutil_mtxA_from_mtx(iter1->unk24);
+            mathutil_mtxA_from_mtx(movpart->unk24);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1500,8 +1471,8 @@ void func_800463E8(Vec *a, float *b)
                     float f;
                     struct GMAModelHeader *r28 = iter3->unk4;
 
-                    mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp1C);
-                    f = r28->boundingSphereRadius;
+                    mathutil_mtxA_tf_point(&r28->boundsCenter, &sp1C);
+                    f = r28->boundsRadius;
                     v.x = sp1C.x - f;
                     v.y = sp1C.y - f;
                     v.z = sp1C.z - f;
@@ -1529,13 +1500,13 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        iter1 = movableStageParts;
+        movpart = movableStageParts;
         iter2 = lbl_8020A348;
-        for (i = 0; i < movableStagePartCount; i++, iter2++, iter1++)
+        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(iter1->unk24);
+            mathutil_mtxA_from_mtx(movpart->unk24);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1543,12 +1514,12 @@ void func_800463E8(Vec *a, float *b)
                 {
                     float var1;
                     float f0;
-                    struct NaomiModel *r24 = (void *)iter3->unk4;
+                    struct NaomiModel *model = (void *)iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&r24->unk8, &sp10);
-                    var1 = func_80046884(r24);
+                    mathutil_mtxA_tf_point(&model->boundsCenter, &sp10);
+                    var1 = func_80046884(model);
                     f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
                     if (result < f0)
                         result = f0;
@@ -1580,12 +1551,12 @@ FORCE_BSS_ORDER(lbl_8020ADE4)
 extern void g_some_stage_vtx_callback_1();
 extern void g_some_stage_vtx_callback_2();
 
-float func_80046884(struct NaomiModel *a)
+float func_80046884(struct NaomiModel *model)
 {
-    lbl_8020ADE4.unk0 = a->unk8;
+    lbl_8020ADE4.unk0 = model->boundsCenter;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
-    g_apply_func_to_naomi_model_vertices(a, g_some_stage_vtx_callback_1, g_some_stage_vtx_callback_2);
+    g_apply_func_to_naomi_model_vertices(model, g_some_stage_vtx_callback_1, g_some_stage_vtx_callback_2);
     return lbl_8020ADE4.unk10;
 }
 
@@ -1977,7 +1948,7 @@ struct Struct80092F90
 void stage_draw(void)
 {
     int r31;
-    struct Struct80206E48 *r28;
+    struct MovableStagePart *r28;
     struct StageCollHdr *r27;
     int i;
     int (*r25)();
@@ -1998,7 +1969,7 @@ void stage_draw(void)
     {
         struct StageCollHdr_child *r24;
         int j;
-        struct GMAModelHeader *r22;
+        struct GMAModelHeader *model;
 
         if (r27->unk3C != 0)
         {
@@ -2018,28 +1989,28 @@ void stage_draw(void)
                 switch (r24->unk12)
                 {
                 default:
-                    r22 = lbl_8020ADC8[0];
+                    model = goalModels[0];
                     break;
-                case 0x47:
-                    r22 = lbl_8020ADC8[1];
+                case 'G':
+                    model = goalModels[1];
                     break;
-                case 0x52:
-                    r22 = lbl_8020ADC8[2];
+                case 'R':
+                    model = goalModels[2];
                     break;
                 }
-                if (r22 != NULL)
+                if (model != NULL)
                 {
                     GXLoadPosMtxImm(mathutilData->mtxA, 0);
                     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-                    g_avdisp_maybe_draw_model_1(r22);
+                    g_avdisp_maybe_draw_model_1(model);
                     sp7C.unk2 = 4;
-                    sp7C.unk4 = r22;
+                    sp7C.unk4 = model;
                 }
                 else
                 {
-                    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 4));
+                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01));
                     sp7C.unk2 = 0;
-                    sp7C.unk4 = NAOMIOBJ_MODEL(naomiCommonObj, 4);
+                    sp7C.unk4 = NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01);
                 }
                 if (r31 != 0)
                     func_80092F90(&sp7C);
@@ -2053,29 +2024,29 @@ void stage_draw(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
-        func_80030BA8(10.0f);
-        func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 9));
+        g_nl2ngc_set_scale(10.0f);
+        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
-        func_800415AC();
+        g_draw_stage_collision();
     else
     {
         if (decodedStageGmaPtr != NULL)
         {
-            struct Struct80206E48 *r22;
+            struct MovableStagePart *movpart;
             struct Struct8020A348 *r23;
             int j;
             struct Struct8020A348_child *r27;
-            struct GMAModelHeader *r28;
+            struct GMAModelHeader *model;
 
             sp7C.unk2 = 6;
-            r22 = movableStageParts;
+            movpart = movableStageParts;
             r23 = lbl_8020AB88;
-            for (i = 0; i < movableStagePartCount; i++, r23++, r22++)
+            for (i = 0; i < movableStagePartCount; i++, r23++, movpart++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(r22->unk24);
+                    mathutil_mtxA_mult_right(movpart->unk24);
                 GXLoadPosMtxImm(mathutilData->mtxA, 0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, 0);
                 r27 = r23->unk0;
@@ -2083,16 +2054,16 @@ void stage_draw(void)
                 {
                     if ((r27->unk0 & 3) == 1)
                     {
-                        r28 = r27->unk4;
-                        if (r28 != NULL && r28 != NULL)  // WTF?
+                        model = r27->unk4;
+                        if (model != NULL && model != NULL)  // WTF?
                         {
                             if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D)))
                              || (r27->unk0 & (1<<(31-0x1D))))
                             {
-                                g_avdisp_maybe_draw_model_2(r28);
+                                g_avdisp_maybe_draw_model_2(model);
                                 if (r31 != 0)
                                 {
-                                    sp7C.unk4 = r28;
+                                    sp7C.unk4 = model;
                                     func_80092F90(&sp7C);
                                 }
                             }
@@ -2103,27 +2074,27 @@ void stage_draw(void)
         }
         else if (decodedStageLzPtr->lvlModels == NULL)
         {
-            struct Struct80206E48 *r22;
+            struct MovableStagePart *movpart;
             struct Struct802099E8 *r23;
-            void *r24;
+            struct NaomiModel *model;
             int j;
 
-            r22 = movableStageParts;
+            movpart = movableStageParts;
             r23 = lbl_802099E8;
-            for (i = 0; i < movableStagePartCount; i++, r22++, r23++)
+            for (i = 0; i < movableStagePartCount; i++, movpart++, r23++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(r22->unk24);
+                    mathutil_mtxA_mult_right(movpart->unk24);
                 for (j = 0; j < r23->unk8; j++)
                 {
-                    r24 = (void *)r23->unk0[j];
-                    func_80033AD4(r24);
+                    model = (void *)r23->unk0[j];
+                    g_call_draw_naomi_model_and_do_other_stuff(model);
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
-                        mathutil_mtxA_from_mtx(r22->unk24);
-                        if (r25(r24, lbl_802F1B4C) != 0)
+                        mathutil_mtxA_from_mtx(movpart->unk24);
+                        if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
                             g_call_draw_naomi_model_1(lbl_802F1B4C);
@@ -2136,31 +2107,31 @@ void stage_draw(void)
         }
         else
         {
-            struct Struct80206E48 *r22;
+            struct MovableStagePart *movpart;
             struct Struct8020A348 *r23;
             int j;
             float f29;
             struct Struct8020A348_child *r27;
 
-            r22 = movableStageParts;
+            movpart = movableStageParts;
             f29 = currentCameraStructPtr->sub28.unk38;
             r23 = lbl_8020A348;
-            for (i = 0; i < movableStagePartCount; i++, r23++, r22++)
+            for (i = 0; i < movableStagePartCount; i++, r23++, movpart++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(r22->unk24);
+                    mathutil_mtxA_mult_right(movpart->unk24);
                 r27 = r23->unk0;
                 for (j = 0; j < r23->unk4; j++, r27++)
                 {
                     if ((r27->unk0 & 3) == 1)
                     {
-                        struct GMAModelHeader *r28 = r27->unk4;
+                        struct NaomiModel *model = (void *)r27->unk4;
                         if (r27->unk4 != NULL)
                         {
-                            float f28 = r28->boundingSphereRadius * 2.0;
+                            float diameter = model->boundsRadius * 2.0;
 
-                            mathutil_mtxA_tf_point(&r28->boundingSphereCenter, &sp38);
+                            mathutil_mtxA_tf_point(&model->boundsCenter, &sp38);
                             if (sp38.z < -1.1920928955078125e-07f)
                             {
                                 float f1 = -sp38.z * f29;
@@ -2169,27 +2140,27 @@ void stage_draw(void)
                                 {
                                     r27++;
                                     j++;
-                                    if (f28 < r27->unk8 * f1)
+                                    if (diameter < r27->unk8 * f1)
                                     {
-                                        r28 = r27->unk4;
+                                        model = (void *)r27->unk4;
                                         break;
                                     }
                                 }
                             }
-                            if (r28 != NULL)
+                            if (model != NULL)
                             {
-                                func_80033AD4((void *)r28);
+                                g_call_draw_naomi_model_and_do_other_stuff(model);
                                 if (r31 != 0)
                                 {
                                     sp7C.unk2 = 0;
-                                    sp7C.unk4 = r28;
+                                    sp7C.unk4 = model;
                                     func_80092F90(&sp7C);
                                 }
                                 if (r25 != NULL)
                                 {
                                     mathutil_mtxA_push();
-                                    mathutil_mtxA_from_mtx(r22->unk24);
-                                    if (r25(r28, lbl_802F1B4C) != 0)
+                                    mathutil_mtxA_from_mtx(movpart->unk24);
+                                    if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
                                         g_call_draw_naomi_model_1(lbl_802F1B4C);
@@ -2221,7 +2192,9 @@ void stage_draw(void)
             }
         }
         if (currStageId == ST_101_BLUR_BRIDGE)
-            func_8004424C();
+            draw_blur_bridge_accordions();
+
+        // draw starting position marker
         if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1<<(31-0x1E))))
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
@@ -2244,23 +2217,23 @@ void stage_draw(void)
             }
             if (lbl_801F3A58.unk1E == 1)
             {
-                if (modeCtrl.unk0 > 0x78)
-                    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 10));
+                if (modeCtrl.unk0 > 120)
+                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.unk0 > 60)
                 {
-                    func_80033B14(
-                        NAOMIOBJ_MODEL(naomiCommonObj, 10),
+                    g_call_draw_model_with_alpha_deferred(
+                        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.unk0 - 60) / 60.0f);
                 }
             }
             else
             {
-                if (modeCtrl.unk0 > 0x4B)
-                    func_80033AD4(NAOMIOBJ_MODEL(naomiCommonObj, 10));
+                if (modeCtrl.unk0 > 75)
+                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.unk0 > 45)
                 {
-                    func_80033B14(
-                        NAOMIOBJ_MODEL(naomiCommonObj, 10),
+                    g_call_draw_model_with_alpha_deferred(
+                        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.unk0 - 45) / 30.0f);
                 }
             }
@@ -2271,19 +2244,19 @@ void stage_draw(void)
         g_avdisp_set_some_func_1(NULL);
     if (dipSwitches & DIP_FALL_DISP)
     {
-        struct Struct80206E48 *r22;
+        struct MovableStagePart *movpart;
         struct StageCollHdr *r23;
         int i;
         struct StageCollHdr_child2 *r25;
         int j;
 
         mathutil_mtx_copy(mathutilData->mtxB, sp8);
-        r22 = movableStageParts;
+        movpart = movableStageParts;
         r23 = decodedStageLzPtr->collHdrs;
-        for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r22++, r23++)
+        for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r23++)
         {
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_mult_right(r22->unk24);
+            mathutil_mtxA_mult_right(movpart->unk24);
             mathutil_mtxA_to_mtx(mathutilData->mtxB);
             r25 = r23->unk88;
             for (j = 0; j < r23->unk84; j++, r25++)
@@ -2297,8 +2270,8 @@ void stage_draw(void)
                 mathutil_mtxA_scale(&r25->unkC);
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
-                func_80030BA8(f1);
-                func_80033B14(NAOMIOBJ_MODEL(naomiCommonObj, 5), 0.5f);
+                g_nl2ngc_set_scale(f1);
+                g_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
             }
         }
         mathutil_mtx_copy(sp8, mathutilData->mtxB);

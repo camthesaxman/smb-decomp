@@ -849,7 +849,7 @@ lbl_800F2F24:
 /* 800F2F78 000EEE98  50 A4 82 1E */	rlwimi r4, r5, 0x10, 8, 0xf
 /* 800F2F7C 000EEE9C  50 C4 C0 0E */	rlwimi r4, r6, 0x18, 0, 7
 /* 800F2F80 000EEEA0  90 81 00 14 */	stw r4, 0x14(r1)
-/* 800F2F84 000EEEA4  C0 02 C1 30 */	lfs f0, lbl_802F6930-_SDA2_BASE_(r2)
+/* 800F2F84 000EEEA4  C0 02 C1 30 */	lfs f0, lbl_802F6930@sda21(r2)
 /* 800F2F88 000EEEA8  EC 00 00 72 */	fmuls f0, f0, f1
 /* 800F2F8C 000EEEAC  FC 00 00 1E */	fctiwz f0, f0
 /* 800F2F90 000EEEB0  D8 01 00 38 */	stfd f0, 0x38(r1)
@@ -881,11 +881,11 @@ lbl_800F2F24:
 /* 800F2FF8 000EEF18  6D 20 80 00 */	xoris r0, r9, 0x8000
 /* 800F2FFC 000EEF1C  3C 60 43 30 */	lis r3, 0x4330
 /* 800F3000 000EEF20  90 01 00 34 */	stw r0, 0x34(r1)
-/* 800F3004 000EEF24  C8 42 C1 40 */	lfd f2, lbl_802F6940-_SDA2_BASE_(r2)
+/* 800F3004 000EEF24  C8 42 C1 40 */	lfd f2, lbl_802F6940@sda21(r2)
 /* 800F3008 000EEF28  90 81 00 3C */	stw r4, 0x3c(r1)
-/* 800F300C 000EEF2C  C0 62 C1 34 */	lfs f3, lbl_802F6934-_SDA2_BASE_(r2)
+/* 800F300C 000EEF2C  C0 62 C1 34 */	lfs f3, lbl_802F6934@sda21(r2)
 /* 800F3010 000EEF30  90 61 00 38 */	stw r3, 0x38(r1)
-/* 800F3014 000EEF34  C8 22 C1 48 */	lfd f1, lbl_802F6948-_SDA2_BASE_(r2)
+/* 800F3014 000EEF34  C8 22 C1 48 */	lfd f1, lbl_802F6948@sda21(r2)
 /* 800F3018 000EEF38  C8 01 00 38 */	lfd f0, 0x38(r1)
 /* 800F301C 000EEF3C  90 61 00 30 */	stw r3, 0x30(r1)
 /* 800F3020 000EEF40  EC 40 10 28 */	fsubs f2, f0, f2
@@ -907,11 +907,11 @@ lbl_800F304C:
 /* 800F305C 000EEF7C  6C A0 80 00 */	xoris r0, r5, 0x8000
 /* 800F3060 000EEF80  3C 60 43 30 */	lis r3, 0x4330
 /* 800F3064 000EEF84  90 01 00 34 */	stw r0, 0x34(r1)
-/* 800F3068 000EEF88  C8 42 C1 40 */	lfd f2, lbl_802F6940-_SDA2_BASE_(r2)
+/* 800F3068 000EEF88  C8 42 C1 40 */	lfd f2, lbl_802F6940@sda21(r2)
 /* 800F306C 000EEF8C  90 81 00 2C */	stw r4, 0x2c(r1)
-/* 800F3070 000EEF90  C0 62 C1 38 */	lfs f3, lbl_802F6938-_SDA2_BASE_(r2)
+/* 800F3070 000EEF90  C0 62 C1 38 */	lfs f3, lbl_802F6938@sda21(r2)
 /* 800F3074 000EEF94  90 61 00 28 */	stw r3, 0x28(r1)
-/* 800F3078 000EEF98  C8 22 C1 48 */	lfd f1, lbl_802F6948-_SDA2_BASE_(r2)
+/* 800F3078 000EEF98  C8 22 C1 48 */	lfd f1, lbl_802F6948@sda21(r2)
 /* 800F307C 000EEF9C  C8 01 00 28 */	lfd f0, 0x28(r1)
 /* 800F3080 000EEFA0  90 61 00 30 */	stw r3, 0x30(r1)
 /* 800F3084 000EEFA4  EC 40 10 28 */	fsubs f2, f0, f2
@@ -1037,11 +1037,11 @@ lbl_800F31A0:
 /* 800F3244 000EF164  6C 83 80 00 */	xoris r3, r4, 0x8000
 /* 800F3248 000EF168  3C 80 43 30 */	lis r4, 0x4330
 /* 800F324C 000EF16C  90 61 00 34 */	stw r3, 0x34(r1)
-/* 800F3250 000EF170  C8 42 C1 40 */	lfd f2, lbl_802F6940-_SDA2_BASE_(r2)
+/* 800F3250 000EF170  C8 42 C1 40 */	lfd f2, lbl_802F6940@sda21(r2)
 /* 800F3254 000EF174  90 A1 00 3C */	stw r5, 0x3c(r1)
-/* 800F3258 000EF178  C0 62 C1 34 */	lfs f3, lbl_802F6934-_SDA2_BASE_(r2)
+/* 800F3258 000EF178  C0 62 C1 34 */	lfs f3, lbl_802F6934@sda21(r2)
 /* 800F325C 000EF17C  90 81 00 38 */	stw r4, 0x38(r1)
-/* 800F3260 000EF180  C8 22 C1 48 */	lfd f1, lbl_802F6948-_SDA2_BASE_(r2)
+/* 800F3260 000EF180  C8 22 C1 48 */	lfd f1, lbl_802F6948@sda21(r2)
 /* 800F3264 000EF184  C8 01 00 38 */	lfd f0, 0x38(r1)
 /* 800F3268 000EF188  90 81 00 30 */	stw r4, 0x30(r1)
 /* 800F326C 000EF18C  EC 40 10 28 */	fsubs f2, f0, f2
@@ -1061,11 +1061,11 @@ lbl_800F3290:
 /* 800F32A0 000EF1C0  6C C3 80 00 */	xoris r3, r6, 0x8000
 /* 800F32A4 000EF1C4  3C 80 43 30 */	lis r4, 0x4330
 /* 800F32A8 000EF1C8  90 61 00 34 */	stw r3, 0x34(r1)
-/* 800F32AC 000EF1CC  C8 42 C1 40 */	lfd f2, lbl_802F6940-_SDA2_BASE_(r2)
+/* 800F32AC 000EF1CC  C8 42 C1 40 */	lfd f2, lbl_802F6940@sda21(r2)
 /* 800F32B0 000EF1D0  90 A1 00 2C */	stw r5, 0x2c(r1)
-/* 800F32B4 000EF1D4  C0 62 C1 38 */	lfs f3, lbl_802F6938-_SDA2_BASE_(r2)
+/* 800F32B4 000EF1D4  C0 62 C1 38 */	lfs f3, lbl_802F6938@sda21(r2)
 /* 800F32B8 000EF1D8  90 81 00 28 */	stw r4, 0x28(r1)
-/* 800F32BC 000EF1DC  C8 22 C1 48 */	lfd f1, lbl_802F6948-_SDA2_BASE_(r2)
+/* 800F32BC 000EF1DC  C8 22 C1 48 */	lfd f1, lbl_802F6948@sda21(r2)
 /* 800F32C0 000EF1E0  C8 01 00 28 */	lfd f0, 0x28(r1)
 /* 800F32C4 000EF1E4  90 81 00 30 */	stw r4, 0x30(r1)
 /* 800F32C8 000EF1E8  EC 40 10 28 */	fsubs f2, f0, f2
@@ -1582,8 +1582,8 @@ lbl_800F39C8:
 /* 800F39DC 000EF8FC  80 63 00 AC */	lwz r3, 0xac(r3)
 /* 800F39E0 000EF900  48 00 00 18 */	b lbl_800F39F8
 lbl_800F39E4:
-/* 800F39E4 000EF904  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F39E8 000EF908  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F39E4 000EF904  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F39E8 000EF908  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F39EC 000EF90C  54 A0 10 3A */	slwi r0, r5, 2
 /* 800F39F0 000EF910  7C 63 02 14 */	add r3, r3, r0
 /* 800F39F4 000EF914  80 63 FF C0 */	lwz r3, -0x40(r3)
@@ -1613,8 +1613,8 @@ lbl_800F3A2C:
 /* 800F3A40 000EF960  80 03 00 AC */	lwz r0, 0xac(r3)
 /* 800F3A44 000EF964  48 00 00 18 */	b lbl_800F3A5C
 lbl_800F3A48:
-/* 800F3A48 000EF968  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F3A4C 000EF96C  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F3A48 000EF968  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F3A4C 000EF96C  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F3A50 000EF970  54 A0 10 3A */	slwi r0, r5, 2
 /* 800F3A54 000EF974  7C 63 02 14 */	add r3, r3, r0
 /* 800F3A58 000EF978  80 03 FF C0 */	lwz r0, -0x40(r3)
@@ -1645,8 +1645,8 @@ lbl_800F3A94:
 /* 800F3AA8 000EF9C8  90 C3 00 AC */	stw r6, 0xac(r3)
 /* 800F3AAC 000EF9CC  48 00 00 18 */	b lbl_800F3AC4
 lbl_800F3AB0:
-/* 800F3AB0 000EF9D0  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F3AB4 000EF9D4  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F3AB0 000EF9D0  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F3AB4 000EF9D4  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F3AB8 000EF9D8  54 A0 10 3A */	slwi r0, r5, 2
 /* 800F3ABC 000EF9DC  7C 63 02 14 */	add r3, r3, r0
 /* 800F3AC0 000EF9E0  90 C3 FF C0 */	stw r6, -0x40(r3)
@@ -1763,8 +1763,8 @@ mcmdSendMessage:
 /* 800F3C2C 000EFB4C  83 E5 00 AC */	lwz r31, 0xac(r5)
 /* 800F3C30 000EFB50  48 00 00 18 */	b lbl_800F3C48
 lbl_800F3C34:
-/* 800F3C34 000EFB54  3C A0 80 2D */	lis r5, lbl_802D6AD4@ha
-/* 800F3C38 000EFB58  38 A5 6A D4 */	addi r5, r5, lbl_802D6AD4@l
+/* 800F3C34 000EFB54  3C A0 80 2D */	lis r5, synthGlobalVariable@ha
+/* 800F3C38 000EFB58  38 A5 6A D4 */	addi r5, r5, synthGlobalVariable@l
 /* 800F3C3C 000EFB5C  54 00 10 3A */	slwi r0, r0, 2
 /* 800F3C40 000EFB60  7C A5 02 14 */	add r5, r5, r0
 /* 800F3C44 000EFB64  83 E5 FF C0 */	lwz r31, -0x40(r5)
@@ -1776,8 +1776,8 @@ lbl_800F3C48:
 /* 800F3C58 000EFB78  54 BD 84 3E */	srwi r29, r5, 0x10
 /* 800F3C5C 000EFB7C  28 1D FF FF */	cmplwi r29, 0xffff
 /* 800F3C60 000EFB80  41 82 00 E8 */	beq lbl_800F3D48
-/* 800F3C64 000EFB84  3C 60 80 2D */	lis r3, lbl_802D6240@ha
-/* 800F3C68 000EFB88  3B 63 62 40 */	addi r27, r3, lbl_802D6240@l
+/* 800F3C64 000EFB84  3C 60 80 2D */	lis r3, synthInfo@ha
+/* 800F3C68 000EFB88  3B 63 62 40 */	addi r27, r3, synthInfo@l
 /* 800F3C6C 000EFB8C  3B 80 00 00 */	li r28, 0
 /* 800F3C70 000EFB90  3B C0 00 00 */	li r30, 0
 /* 800F3C74 000EFB94  48 00 00 C0 */	b lbl_800F3D34
@@ -1854,8 +1854,8 @@ lbl_800F3D68:
 /* 800F3D7C 000EFC9C  80 63 00 AC */	lwz r3, 0xac(r3)
 /* 800F3D80 000EFCA0  48 00 00 18 */	b lbl_800F3D98
 lbl_800F3D84:
-/* 800F3D84 000EFCA4  3C 60 80 2D */	lis r3, lbl_802D6AD4@ha
-/* 800F3D88 000EFCA8  38 63 6A D4 */	addi r3, r3, lbl_802D6AD4@l
+/* 800F3D84 000EFCA4  3C 60 80 2D */	lis r3, synthGlobalVariable@ha
+/* 800F3D88 000EFCA8  38 63 6A D4 */	addi r3, r3, synthGlobalVariable@l
 /* 800F3D8C 000EFCAC  54 00 10 3A */	slwi r0, r0, 2
 /* 800F3D90 000EFCB0  7C 63 02 14 */	add r3, r3, r0
 /* 800F3D94 000EFCB4  80 63 FF C0 */	lwz r3, -0x40(r3)
@@ -1918,8 +1918,8 @@ mcmdSetKeyGroup:
 /* 800F3E64 000EFD84  30 03 FF FF */	addic r0, r3, -1
 /* 800F3E68 000EFD88  7F 80 19 10 */	subfe r28, r0, r3
 /* 800F3E6C 000EFD8C  41 82 00 8C */	beq lbl_800F3EF8
-/* 800F3E70 000EFD90  3C 60 80 2D */	lis r3, lbl_802D6240@ha
-/* 800F3E74 000EFD94  3B 43 62 40 */	addi r26, r3, lbl_802D6240@l
+/* 800F3E70 000EFD90  3C 60 80 2D */	lis r3, synthInfo@ha
+/* 800F3E74 000EFD94  3B 43 62 40 */	addi r26, r3, synthInfo@l
 /* 800F3E78 000EFD98  3B C0 00 00 */	li r30, 0
 /* 800F3E7C 000EFD9C  48 00 00 6C */	b lbl_800F3EE8
 lbl_800F3E80:
@@ -2114,26 +2114,26 @@ lbl_800F4030:
 /* 800F4148 000F0068  4B FF 94 59 */	bl synthStartSynthJobHandling
 lbl_800F414C:
 /* 800F414C 000F006C  38 00 00 00 */	li r0, 0
-/* 800F4150 000F0070  C3 C2 C1 50 */	lfs f30, lbl_802F6950-_SDA2_BASE_(r2)
-/* 800F4154 000F0074  3D 20 80 2D */	lis r9, lbl_802D6B14@ha
+/* 800F4150 000F0070  C3 C2 C1 50 */	lfs f30, lbl_802F6950@sda21(r2)
+/* 800F4154 000F0074  3D 20 80 2D */	lis r9, inpAuxB@ha
 /* 800F4158 000F0078  98 0D A4 A8 */	stb r0, DebugMacroSteps@sda21(r13)
-/* 800F415C 000F007C  38 09 6B 14 */	addi r0, r9, lbl_802D6B14@l
-/* 800F4160 000F0080  C3 E2 C1 54 */	lfs f31, lbl_802F6954-_SDA2_BASE_(r2)
+/* 800F415C 000F007C  38 09 6B 14 */	addi r0, r9, inpAuxB@l
+/* 800F4160 000F0080  C3 E2 C1 54 */	lfs f31, lbl_802F6954@sda21(r2)
 /* 800F4164 000F0084  3B AD A4 C0 */	addi r29, r13, cstep@sda21
 /* 800F4168 000F0088  90 01 00 78 */	stw r0, 0x78(r1)
 /* 800F416C 000F008C  3C 60 80 2D */	lis r3, lbl_802D6D54@ha
 /* 800F4170 000F0090  38 03 6D 54 */	addi r0, r3, lbl_802D6D54@l
-/* 800F4174 000F0094  3D 00 80 2D */	lis r8, lbl_802D6240@ha
+/* 800F4174 000F0094  3D 00 80 2D */	lis r8, synthInfo@ha
 /* 800F4178 000F0098  90 01 00 74 */	stw r0, 0x74(r1)
-/* 800F417C 000F009C  3C E0 80 2D */	lis r7, lbl_802D6AD4@ha
+/* 800F417C 000F009C  3C E0 80 2D */	lis r7, synthGlobalVariable@ha
 /* 800F4180 000F00A0  3E 60 00 01 */	lis r19, 0x0000FFFF@ha
 /* 800F4184 000F00A4  3E A0 80 00 */	lis r21, 0x7FFF8000@ha
 /* 800F4188 000F00A8  3C A0 80 1F */	lis r5, dspDLSVolTab@ha
 /* 800F418C 000F00AC  3C 80 80 1F */	lis r4, dspScale2IndexTab@ha
 /* 800F4190 000F00B0  3C C0 80 1F */	lis r6, lbl_801E9608@ha
 /* 800F4194 000F00B4  3D 40 51 EC */	lis r10, 0x51EB851F@ha
-/* 800F4198 000F00B8  3B 48 62 40 */	addi r26, r8, lbl_802D6240@l
-/* 800F419C 000F00BC  3A C7 6A D4 */	addi r22, r7, lbl_802D6AD4@l
+/* 800F4198 000F00B8  3B 48 62 40 */	addi r26, r8, synthInfo@l
+/* 800F419C 000F00BC  3A C7 6A D4 */	addi r22, r7, synthGlobalVariable@l
 /* 800F41A0 000F00C0  39 F3 FF FF */	addi r15, r19, 0x0000FFFF@l
 /* 800F41A4 000F00C4  39 D5 80 00 */	addi r14, r21, 0x7FFF8000@l
 /* 800F41A8 000F00C8  3A 05 A1 54 */	addi r16, r5, dspDLSVolTab@l
@@ -4290,10 +4290,10 @@ lbl_800F5E38:
 macInit:
 /* 800F5E4C 000F1D6C  38 E0 00 00 */	li r7, 0
 /* 800F5E50 000F1D70  90 ED A4 BC */	stw r7, lbl_802F269C@sda21(r13)
-/* 800F5E54 000F1D74  3C 60 80 2D */	lis r3, lbl_802D6240@ha
+/* 800F5E54 000F1D74  3C 60 80 2D */	lis r3, synthInfo@ha
 /* 800F5E58 000F1D78  39 07 00 00 */	addi r8, r7, 0
 /* 800F5E5C 000F1D7C  90 ED A4 AC */	stw r7, macActiveMacroRoot@sda21(r13)
-/* 800F5E60 000F1D80  38 63 62 40 */	addi r3, r3, lbl_802D6240@l
+/* 800F5E60 000F1D80  38 63 62 40 */	addi r3, r3, synthInfo@l
 /* 800F5E64 000F1D84  39 20 00 00 */	li r9, 0
 /* 800F5E68 000F1D88  90 ED A4 B0 */	stw r7, macTimeQueueRoot@sda21(r13)
 /* 800F5E6C 000F1D8C  38 C0 00 02 */	li r6, 2
@@ -4640,3 +4640,24 @@ lbl_801E9608:
 	.4byte def_800F421C  ;# ptr
 	.4byte lbl_800F51F4  ;# ptr
 	.4byte lbl_800F52C4  ;# ptr
+
+.section .sbss
+
+.global DebugMacroSteps
+DebugMacroSteps:
+	.skip 0x4
+.global macActiveMacroRoot
+macActiveMacroRoot:
+	.skip 0x4
+.global macTimeQueueRoot
+macTimeQueueRoot:
+	.skip 0x8
+.global macRealTime
+macRealTime:
+	.skip 0x4
+.global lbl_802F269C
+lbl_802F269C:
+	.skip 0x4
+.global cstep
+cstep:
+	.skip 0x8

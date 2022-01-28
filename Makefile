@@ -40,13 +40,13 @@ RUNTIME_INCLUDE_DIRS := libraries/PowerPC_EABI_Support/Runtime/Inc
 
 ASFLAGS     := -mgekko -I asm
 CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
-CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 DOL_LDFLAGS := -nodefaults -fp hard
 REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
 #-------------------------------------------------------------------------------
 # Files
@@ -71,9 +71,8 @@ SOURCES := \
 	src/mode_2.c \
 	src/event.c \
 	src/polydisp.c \
-	asm/polydisp.s \
 	src/adv.c \
-	asm/adv.s \
+	src/code_5.c \
 	src/sel.c \
 	asm/game.s \
 	src/camera.c \
@@ -100,8 +99,8 @@ SOURCES := \
 	asm/sound.s \
 	asm/code_2.s \
 	src/nl2ngc.c \
-	asm/motload_pre.s \
 	src/motload.c \
+	src/motload_2.c \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
@@ -111,9 +110,12 @@ SOURCES := \
 	asm/recplay.s \
 	src/background.c \
 	asm/background.s \
-	asm/item.s \
+	src/item.c \
+	src/item_coin.c \
+	src/item_pilot.c \
+	asm/stobj.s \
 	src/sprite.c \
-	asm/sprite.s \
+	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	asm/code_3.s \
@@ -132,13 +134,13 @@ SOURCES := \
 	asm/tevutil.s \
 	src/memcard.c \
 	src/DEMOPuts.c \
-	asm/view.s \
+	src/view.c \
+	src/code_6.c \
 	asm/mini_ranking.s \
 	src/preview.c \
 	asm/code_4.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \
-	libraries/os/__ppc_eabi_init.c \
 	libraries/os/asm/OS.s \
 	libraries/os/asm/OSAlarm.s \
 	libraries/os/asm/OSAlloc.s \
@@ -146,14 +148,13 @@ SOURCES := \
 	libraries/os/asm/OSAudioSystem.s \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
-	libraries/os/asm/OSError.s \
-	libraries/os/asm/OSInterrupt.s \
-	libraries/exi/asm/EXIBios.s \
+	libraries/os/OSError.c \
+	libraries/os/asm/OSExi.s \
 	libraries/os/asm/OSFont.s \
-	libraries/os/asm/OSInterrupt_2.s \
+	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
 	libraries/os/asm/OSMemory.s \
-	libraries/os/asm/OSMutex.s \
+	libraries/os/OSMutex.c \
 	libraries/os/asm/OSReboot.s \
 	libraries/os/asm/OSReset.s \
 	libraries/os/asm/OSResetSW.s \
@@ -163,8 +164,8 @@ SOURCES := \
 	libraries/os/asm/OSThread.s \
 	libraries/os/asm/OSTime.s \
 	libraries/exi/asm/EXIUart.s \
-	libraries/os/asm/__ppc_eabi_init.s \
-	libraries/db/asm/db.s \
+	libraries/os/__ppc_eabi_init.c \
+	libraries/db/db.c \
 	libraries/mtx/asm/mtx.s \
 	libraries/mtx/asm/mtx44.s \
 	libraries/mtx/asm/vec.s \
@@ -173,15 +174,15 @@ SOURCES := \
 	libraries/dvd/asm/dvd.s \
 	libraries/dvd/asm/dvdqueue.s \
 	libraries/dvd/asm/dvderror.s \
-	libraries/dvd/asm/fstload.s \
+	libraries/dvd/fstload.c \
 	libraries/vi/asm/vi.s \
-	libraries/demo/asm/DEMOFont.s \
+	libraries/demo/DEMOFont.c \
 	libraries/pad/asm/Pad.s \
 	libraries/ai/asm/ai.s \
 	libraries/ar/asm/ar.s \
 	libraries/ar/asm/arq.s \
-	libraries/dsp/asm/dsp.s \
-	libraries/dsp/asm/dsp_debug.s \
+	libraries/dsp/dsp.c \
+	libraries/dsp/dsp_debug.c \
 	libraries/dsp/asm/dsp_task.s \
 	libraries/card/asm/CARDBios.s \
 	libraries/card/asm/CARDUnlock.s \
@@ -198,7 +199,7 @@ SOURCES := \
 	libraries/card/asm/CARDDelete.s \
 	libraries/card/asm/CARDStat.s \
 	libraries/card/asm/CARDRename.s \
-	libraries/hio/asm/hio.s \
+	libraries/hio/hio.c \
 	libraries/gx/asm/GXInit.s \
 	libraries/gx/asm/GXFifo.s \
 	libraries/gx/asm/GXAttr.s \
@@ -212,9 +213,9 @@ SOURCES := \
 	libraries/gx/asm/GXPixel.s \
 	libraries/gx/asm/GXDraw.s \
 	libraries/gx/asm/GXStubs.s \
-	libraries/gx/asm/GXDisplayList.s \
+	libraries/gx/GXDisplayList.c \
 	libraries/gx/asm/GXTransform.s \
-	libraries/gx/asm/GXPerf.s \
+	libraries/gx/GXPerf.c \
 	libraries/perf/asm/perf.s \
 	libraries/perf/asm/perfdraw.s \
 	libraries/musyx/asm/seq.s \
@@ -245,7 +246,7 @@ SOURCES := \
 	libraries/musyx/asm/chorus_fx.s \
 	libraries/dtk/asm/dtk.s \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.c \
-	libraries/PowerPC_EABI_Support/asm/Runtime/Src/__va_arg.s \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__va_arg.c \
 	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp \
 	libraries/PowerPC_EABI_Support/asm/Runtime/Src/runtime.s \
@@ -254,17 +255,18 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Src/ansi_fp.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/buffer_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/char_io.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/PPC_EABI/SRC/critical_regions.ppc_eabi.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/PPC_EABI/SRC/critical_regions.ppc_eabi.c \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/ctype.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/direct_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mbstring.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem_funcs.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/misc_io.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/misc_io.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/printf.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/rand.s \
+	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/float.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/rand.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/string.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/wchar_io.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/wchar_io.c \
 	libraries/PowerPC_EABI_Support/asm/math/e_rem_pio2.s \
 	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
 	libraries/PowerPC_EABI_Support/asm/math/k_cos.s \
@@ -278,6 +280,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/math/s_sin.s \
 	libraries/PowerPC_EABI_Support/asm/math/inverse_trig.s \
 	libraries/PowerPC_EABI_Support/asm/math/trigf.s \
+	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/exponentialsf.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/mainloop.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/nubevent.s \
@@ -302,8 +305,7 @@ SOURCES := \
 	libraries/TRK_MINNOW_DOLPHIN/asm/targcont.s \
 	libraries/amcstubs/asm/AmcExi2Stubs.s \
 	libraries/odemustubs/asm/odemustubs.s \
-	libraries/amcnotstub/asm/amcnotstub.s \
-	libraries/data.s
+	libraries/amcnotstub/amcnotstub.c
 O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
@@ -473,6 +475,23 @@ clean:
 	find . -name '*.o' -exec rm {} +
 	find . -name '*.dep' -exec rm {} +
 	find . -name '*.dump' -exec rm {} +
+
+#-------------------------------------------------------------------------------
+# Test Recipes
+#-------------------------------------------------------------------------------
+
+EMULATOR ?= dolphin-emu-nogui
+DVD_ROOT := GMBE8P/files
+DVD_SYS  := GMBE8P/sys
+DVD_FILES := $(DVD_SYS)/main.dol $(addprefix $(DVD_ROOT)/test/,$(ALL_RELS))
+
+$(DVD_ROOT)/test/%.rel: %.rel
+	cp $< $@
+$(DVD_SYS)/main.dol: $(DOL)
+	cp $< $@
+
+test: $(DVD_FILES)
+	$(EMULATOR) $(DVD_SYS)/main.dol
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \

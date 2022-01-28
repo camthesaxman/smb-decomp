@@ -1,7 +1,12 @@
+#include <stddef.h>
+
 #include <__ppc_eabi_init.h>
 
 extern void __OSPSInit(void);
 extern void __OSCacheInit(void);
+extern void (*__init_cpp_exceptions_reference[])(void);
+
+void __init_cpp(void);
 
 asm void __init_hardware(void)
 {
@@ -41,4 +46,25 @@ rept:
     isync
 
     blr
+}
+
+void __init_user(void)
+{
+    __init_cpp();
+}
+
+void __init_cpp(void)
+{
+    void (**func)(void) = __init_cpp_exceptions_reference;
+
+    while (*func != NULL)
+    {
+        (*func)();
+        func++;
+    }
+}
+
+void _ExitProcess(void)
+{
+    PPCHalt();
 }

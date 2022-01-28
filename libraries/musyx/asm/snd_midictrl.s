@@ -4,9 +4,9 @@
 
 .global inpSetGlobalMIDIDirtyFlag
 inpSetGlobalMIDIDirtyFlag:
-/* 800FD814 000F9734  3C C0 80 2F */	lis r6, lbl_802EB5B0@ha
+/* 800FD814 000F9734  3C C0 80 2F */	lis r6, inpGlobalMIDIDirtyFlags@ha
 /* 800FD818 000F9738  54 84 34 B2 */	rlwinm r4, r4, 6, 0x12, 0x19
-/* 800FD81C 000F973C  38 06 B5 B0 */	addi r0, r6, lbl_802EB5B0@l
+/* 800FD81C 000F973C  38 06 B5 B0 */	addi r0, r6, inpGlobalMIDIDirtyFlags@l
 /* 800FD820 000F9740  7C 80 22 14 */	add r4, r0, r4
 /* 800FD824 000F9744  54 60 15 BA */	rlwinm r0, r3, 2, 0x16, 0x1d
 /* 800FD828 000F9748  7C 64 02 14 */	add r3, r4, r0
@@ -21,10 +21,10 @@ inpSetMidiCtrl:
 /* 800FD840 000F9760  54 87 06 3E */	clrlwi r7, r4, 0x18
 /* 800FD844 000F9764  90 01 00 04 */	stw r0, 4(r1)
 /* 800FD848 000F9768  28 07 00 FF */	cmplwi r7, 0xff
-/* 800FD84C 000F976C  3D 00 80 2E */	lis r8, lbl_802E4FB0@ha
+/* 800FD84C 000F976C  3D 00 80 2E */	lis r8, midi_lastNote@ha
 /* 800FD850 000F9770  94 21 FF C8 */	stwu r1, -0x38(r1)
 /* 800FD854 000F9774  BF 21 00 1C */	stmw r25, 0x1c(r1)
-/* 800FD858 000F9778  3B E8 4F B0 */	addi r31, r8, lbl_802E4FB0@l
+/* 800FD858 000F9778  3B E8 4F B0 */	addi r31, r8, midi_lastNote@l
 /* 800FD85C 000F977C  41 82 05 9C */	beq lbl_800FDDF8
 /* 800FD860 000F9780  54 A0 06 3E */	clrlwi r0, r5, 0x18
 /* 800FD864 000F9784  28 00 00 FF */	cmplwi r0, 0xff
@@ -66,11 +66,11 @@ lbl_800FD8D8:
 /* 800FD8E4 000F9804  7C E0 3A 14 */	add r7, r0, r7
 /* 800FD8E8 000F9808  39 80 00 00 */	li r12, 0
 /* 800FD8EC 000F980C  99 07 68 00 */	stb r8, 0x6800(r7)
-/* 800FD8F0 000F9810  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800FD8F0 000F9810  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800FD8F4 000F9814  3B 6C 00 00 */	addi r27, r12, 0
 /* 800FD8F8 000F9818  54 AA 06 3E */	clrlwi r10, r5, 0x18
 /* 800FD8FC 000F981C  54 89 06 3E */	clrlwi r9, r4, 0x18
-/* 800FD900 000F9820  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800FD900 000F9820  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800FD904 000F9824  48 00 00 3C */	b lbl_800FD940
 lbl_800FD908:
 /* 800FD908 000F9828  80 0D A4 40 */	lwz r0, synthVoice@sda21(r13)
@@ -115,11 +115,11 @@ lbl_800FD978:
 lbl_800FD994:
 /* 800FD994 000F98B4  39 60 00 00 */	li r11, 0
 /* 800FD998 000F98B8  9B 47 00 00 */	stb r26, 0(r7)
-/* 800FD99C 000F98BC  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800FD99C 000F98BC  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800FD9A0 000F98C0  39 8B 00 00 */	addi r12, r11, 0
 /* 800FD9A4 000F98C4  54 AA 06 3E */	clrlwi r10, r5, 0x18
 /* 800FD9A8 000F98C8  54 89 06 3E */	clrlwi r9, r4, 0x18
-/* 800FD9AC 000F98CC  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800FD9AC 000F98CC  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800FD9B0 000F98D0  48 00 00 3C */	b lbl_800FD9EC
 lbl_800FD9B4:
 /* 800FD9B4 000F98D4  80 0D A4 40 */	lwz r0, synthVoice@sda21(r13)
@@ -164,11 +164,11 @@ lbl_800FDA24:
 lbl_800FDA40:
 /* 800FDA40 000F9960  39 60 00 00 */	li r11, 0
 /* 800FDA44 000F9964  9B 47 00 00 */	stb r26, 0(r7)
-/* 800FDA48 000F9968  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800FDA48 000F9968  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800FDA4C 000F996C  39 8B 00 00 */	addi r12, r11, 0
 /* 800FDA50 000F9970  54 AA 06 3E */	clrlwi r10, r5, 0x18
 /* 800FDA54 000F9974  54 89 06 3E */	clrlwi r9, r4, 0x18
-/* 800FDA58 000F9978  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800FDA58 000F9978  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800FDA5C 000F997C  48 00 00 3C */	b lbl_800FDA98
 lbl_800FDA60:
 /* 800FDA60 000F9980  80 0D A4 40 */	lwz r0, synthVoice@sda21(r13)
@@ -196,13 +196,13 @@ lbl_800FDAA4:
 /* 800FDAAC 000F99CC  54 9E 06 3E */	clrlwi r30, r4, 0x18
 /* 800FDAB0 000F99D0  1C 1E 00 86 */	mulli r0, r30, 0x86
 /* 800FDAB4 000F99D4  7C BF 2A 14 */	add r5, r31, r5
-/* 800FDAB8 000F99D8  3C 80 80 2D */	lis r4, lbl_802D6240@ha
+/* 800FDAB8 000F99D8  3C 80 80 2D */	lis r4, synthInfo@ha
 /* 800FDABC 000F99DC  7C A5 02 14 */	add r5, r5, r0
 /* 800FDAC0 000F99E0  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800FDAC4 000F99E4  54 C6 06 7E */	clrlwi r6, r6, 0x19
 /* 800FDAC8 000F99E8  7C 65 02 14 */	add r3, r5, r0
 /* 800FDACC 000F99EC  98 C3 00 C0 */	stb r6, 0xc0(r3)
-/* 800FDAD0 000F99F0  3B 84 62 40 */	addi r28, r4, lbl_802D6240@l
+/* 800FDAD0 000F99F0  3B 84 62 40 */	addi r28, r4, synthInfo@l
 /* 800FDAD4 000F99F4  3B 20 00 00 */	li r25, 0
 /* 800FDAD8 000F99F8  3B 40 00 00 */	li r26, 0
 /* 800FDADC 000F99FC  3B 60 1F FF */	li r27, 0x1fff
@@ -272,11 +272,11 @@ lbl_800FDBB0:
 /* 800FDBBC 000F9ADC  7C E0 3A 14 */	add r7, r0, r7
 /* 800FDBC0 000F9AE0  39 80 00 00 */	li r12, 0
 /* 800FDBC4 000F9AE4  99 07 68 00 */	stb r8, 0x6800(r7)
-/* 800FDBC8 000F9AE8  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800FDBC8 000F9AE8  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800FDBCC 000F9AEC  3B 4C 00 00 */	addi r26, r12, 0
 /* 800FDBD0 000F9AF0  54 AA 06 3E */	clrlwi r10, r5, 0x18
 /* 800FDBD4 000F9AF4  54 89 06 3E */	clrlwi r9, r4, 0x18
-/* 800FDBD8 000F9AF8  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800FDBD8 000F9AF8  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800FDBDC 000F9AFC  48 00 00 3C */	b lbl_800FDC18
 lbl_800FDBE0:
 /* 800FDBE0 000F9B00  80 0D A4 40 */	lwz r0, synthVoice@sda21(r13)
@@ -321,11 +321,11 @@ lbl_800FDC50:
 lbl_800FDC6C:
 /* 800FDC6C 000F9B8C  39 60 00 00 */	li r11, 0
 /* 800FDC70 000F9B90  9B 47 00 00 */	stb r26, 0(r7)
-/* 800FDC74 000F9B94  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800FDC74 000F9B94  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800FDC78 000F9B98  39 8B 00 00 */	addi r12, r11, 0
 /* 800FDC7C 000F9B9C  54 AA 06 3E */	clrlwi r10, r5, 0x18
 /* 800FDC80 000F9BA0  54 89 06 3E */	clrlwi r9, r4, 0x18
-/* 800FDC84 000F9BA4  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800FDC84 000F9BA4  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800FDC88 000F9BA8  48 00 00 3C */	b lbl_800FDCC4
 lbl_800FDC8C:
 /* 800FDC8C 000F9BAC  80 0D A4 40 */	lwz r0, synthVoice@sda21(r13)
@@ -370,11 +370,11 @@ lbl_800FDCFC:
 lbl_800FDD18:
 /* 800FDD18 000F9C38  39 60 00 00 */	li r11, 0
 /* 800FDD1C 000F9C3C  9B 47 00 00 */	stb r26, 0(r7)
-/* 800FDD20 000F9C40  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800FDD20 000F9C40  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800FDD24 000F9C44  39 8B 00 00 */	addi r12, r11, 0
 /* 800FDD28 000F9C48  54 AA 06 3E */	clrlwi r10, r5, 0x18
 /* 800FDD2C 000F9C4C  54 89 06 3E */	clrlwi r9, r4, 0x18
-/* 800FDD30 000F9C50  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800FDD30 000F9C50  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800FDD34 000F9C54  48 00 00 3C */	b lbl_800FDD70
 lbl_800FDD38:
 /* 800FDD38 000F9C58  80 0D A4 40 */	lwz r0, synthVoice@sda21(r13)
@@ -402,13 +402,13 @@ lbl_800FDD7C:
 /* 800FDD84 000F9CA4  7C 9F 02 14 */	add r4, r31, r0
 /* 800FDD88 000F9CA8  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800FDD8C 000F9CAC  3B 60 00 00 */	li r27, 0
-/* 800FDD90 000F9CB0  3C 60 80 2D */	lis r3, lbl_802D6240@ha
+/* 800FDD90 000F9CB0  3C 60 80 2D */	lis r3, synthInfo@ha
 /* 800FDD94 000F9CB4  54 C6 06 7E */	clrlwi r6, r6, 0x19
 /* 800FDD98 000F9CB8  7C 84 02 14 */	add r4, r4, r0
 /* 800FDD9C 000F9CBC  98 C4 43 C0 */	stb r6, 0x43c0(r4)
 /* 800FDDA0 000F9CC0  3B 5B 00 00 */	addi r26, r27, 0
 /* 800FDDA4 000F9CC4  54 BF 06 3E */	clrlwi r31, r5, 0x18
-/* 800FDDA8 000F9CC8  3B A3 62 40 */	addi r29, r3, lbl_802D6240@l
+/* 800FDDA8 000F9CC8  3B A3 62 40 */	addi r29, r3, synthInfo@l
 /* 800FDDAC 000F9CCC  3B C0 1F FF */	li r30, 0x1fff
 /* 800FDDB0 000F9CD0  48 00 00 3C */	b lbl_800FDDEC
 lbl_800FDDB4:
@@ -600,8 +600,8 @@ lbl_800FE000:
 inpGetMidiCtrl:
 /* 800FE038 000F9F58  54 88 06 3E */	clrlwi r8, r4, 0x18
 /* 800FE03C 000F9F5C  28 08 00 FF */	cmplwi r8, 0xff
-/* 800FE040 000F9F60  3C C0 80 2E */	lis r6, lbl_802E4FB0@ha
-/* 800FE044 000F9F64  38 06 4F B0 */	addi r0, r6, lbl_802E4FB0@l
+/* 800FE040 000F9F60  3C C0 80 2E */	lis r6, midi_lastNote@ha
+/* 800FE044 000F9F64  38 06 4F B0 */	addi r0, r6, midi_lastNote@l
 /* 800FE048 000F9F68  41 82 02 74 */	beq lbl_800FE2BC
 /* 800FE04C 000F9F6C  54 A7 06 3E */	clrlwi r7, r5, 0x18
 /* 800FE050 000F9F70  28 07 00 FF */	cmplwi r7, 0xff
@@ -871,8 +871,8 @@ inpFXCopyCtrl:
 /* 800FE3E4 000FA304  80 84 00 F4 */	lwz r4, 0xf4(r4)
 /* 800FE3E8 000FA308  80 05 00 F4 */	lwz r0, 0xf4(r5)
 /* 800FE3EC 000FA30C  28 06 00 40 */	cmplwi r6, 0x40
-/* 800FE3F0 000FA310  3C A0 80 2E */	lis r5, lbl_802E4FB0@ha
-/* 800FE3F4 000FA314  38 A5 4F B0 */	addi r5, r5, lbl_802E4FB0@l
+/* 800FE3F0 000FA310  3C A0 80 2E */	lis r5, midi_lastNote@ha
+/* 800FE3F4 000FA314  38 A5 4F B0 */	addi r5, r5, midi_lastNote@l
 /* 800FE3F8 000FA318  54 84 06 3E */	clrlwi r4, r4, 0x18
 /* 800FE3FC 000FA31C  54 07 06 3E */	clrlwi r7, r0, 0x18
 /* 800FE400 000FA320  40 80 00 40 */	bge lbl_800FE440
@@ -947,18 +947,18 @@ inpSetMidiLastNote:
 /* 800FE4FC 000FA41C  54 80 06 3E */	clrlwi r0, r4, 0x18
 /* 800FE500 000FA420  28 00 00 FF */	cmplwi r0, 0xff
 /* 800FE504 000FA424  41 82 00 24 */	beq lbl_800FE528
-/* 800FE508 000FA428  3C 80 80 2E */	lis r4, lbl_802E4FB0@ha
+/* 800FE508 000FA428  3C 80 80 2E */	lis r4, midi_lastNote@ha
 /* 800FE50C 000FA42C  54 06 20 36 */	slwi r6, r0, 4
-/* 800FE510 000FA430  38 04 4F B0 */	addi r0, r4, lbl_802E4FB0@l
+/* 800FE510 000FA430  38 04 4F B0 */	addi r0, r4, midi_lastNote@l
 /* 800FE514 000FA434  7C 80 32 14 */	add r4, r0, r6
 /* 800FE518 000FA438  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800FE51C 000FA43C  7C 64 02 14 */	add r3, r4, r0
 /* 800FE520 000FA440  98 A3 00 00 */	stb r5, 0(r3)
 /* 800FE524 000FA444  4E 80 00 20 */	blr
 lbl_800FE528:
-/* 800FE528 000FA448  3C 80 80 2E */	lis r4, lbl_802E5030@ha
+/* 800FE528 000FA448  3C 80 80 2E */	lis r4, fx_lastNote@ha
 /* 800FE52C 000FA44C  54 63 06 3E */	clrlwi r3, r3, 0x18
-/* 800FE530 000FA450  38 04 50 30 */	addi r0, r4, lbl_802E5030@l
+/* 800FE530 000FA450  38 04 50 30 */	addi r0, r4, fx_lastNote@l
 /* 800FE534 000FA454  7C 60 1A 14 */	add r3, r0, r3
 /* 800FE538 000FA458  98 A3 00 00 */	stb r5, 0(r3)
 /* 800FE53C 000FA45C  4E 80 00 20 */	blr
@@ -968,18 +968,18 @@ inpGetMidiLastNote:
 /* 800FE540 000FA460  54 80 06 3E */	clrlwi r0, r4, 0x18
 /* 800FE544 000FA464  28 00 00 FF */	cmplwi r0, 0xff
 /* 800FE548 000FA468  41 82 00 24 */	beq lbl_800FE56C
-/* 800FE54C 000FA46C  3C 80 80 2E */	lis r4, lbl_802E4FB0@ha
+/* 800FE54C 000FA46C  3C 80 80 2E */	lis r4, midi_lastNote@ha
 /* 800FE550 000FA470  54 05 20 36 */	slwi r5, r0, 4
-/* 800FE554 000FA474  38 04 4F B0 */	addi r0, r4, lbl_802E4FB0@l
+/* 800FE554 000FA474  38 04 4F B0 */	addi r0, r4, midi_lastNote@l
 /* 800FE558 000FA478  7C 80 2A 14 */	add r4, r0, r5
 /* 800FE55C 000FA47C  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800FE560 000FA480  7C 64 02 14 */	add r3, r4, r0
 /* 800FE564 000FA484  88 63 00 00 */	lbz r3, 0(r3)
 /* 800FE568 000FA488  4E 80 00 20 */	blr
 lbl_800FE56C:
-/* 800FE56C 000FA48C  3C 80 80 2E */	lis r4, lbl_802E5030@ha
+/* 800FE56C 000FA48C  3C 80 80 2E */	lis r4, fx_lastNote@ha
 /* 800FE570 000FA490  54 63 06 3E */	clrlwi r3, r3, 0x18
-/* 800FE574 000FA494  38 04 50 30 */	addi r0, r4, lbl_802E5030@l
+/* 800FE574 000FA494  38 04 50 30 */	addi r0, r4, fx_lastNote@l
 /* 800FE578 000FA498  7C 60 1A 14 */	add r3, r0, r3
 /* 800FE57C 000FA49C  88 63 00 00 */	lbz r3, 0(r3)
 /* 800FE580 000FA4A0  4E 80 00 20 */	blr
@@ -1679,7 +1679,7 @@ lbl_800FEE2C:
 .global inpGetAuxA
 inpGetAuxA:
 /* 800FEE3C 000FAD5C  7C 08 02 A6 */	mflr r0
-/* 800FEE40 000FAD60  3C E0 80 2F */	lis r7, lbl_802EB5B0@ha
+/* 800FEE40 000FAD60  3C E0 80 2F */	lis r7, inpGlobalMIDIDirtyFlags@ha
 /* 800FEE44 000FAD64  90 01 00 04 */	stw r0, 4(r1)
 /* 800FEE48 000FAD68  3D 20 80 1F */	lis r9, lbl_801EA5B8@ha
 /* 800FEE4C 000FAD6C  54 80 06 3E */	clrlwi r0, r4, 0x18
@@ -1689,7 +1689,7 @@ inpGetAuxA:
 /* 800FEE5C 000FAD7C  7C 84 52 14 */	add r4, r4, r10
 /* 800FEE60 000FAD80  81 24 00 00 */	lwz r9, 0(r4)
 /* 800FEE64 000FAD84  54 C8 34 B2 */	rlwinm r8, r6, 6, 0x12, 0x19
-/* 800FEE68 000FAD88  38 E7 B5 B0 */	addi r7, r7, lbl_802EB5B0@l
+/* 800FEE68 000FAD88  38 E7 B5 B0 */	addi r7, r7, inpGlobalMIDIDirtyFlags@l
 /* 800FEE6C 000FAD8C  7C E7 42 14 */	add r7, r7, r8
 /* 800FEE70 000FAD90  54 A4 15 BA */	rlwinm r4, r5, 2, 0x16, 0x1d
 /* 800FEE74 000FAD94  7D 47 22 14 */	add r10, r7, r4
@@ -1732,7 +1732,7 @@ lbl_800FEEE8:
 .global inpGetAuxB
 inpGetAuxB:
 /* 800FEEF8 000FAE18  7C 08 02 A6 */	mflr r0
-/* 800FEEFC 000FAE1C  3C E0 80 2F */	lis r7, lbl_802EB5B0@ha
+/* 800FEEFC 000FAE1C  3C E0 80 2F */	lis r7, inpGlobalMIDIDirtyFlags@ha
 /* 800FEF00 000FAE20  90 01 00 04 */	stw r0, 4(r1)
 /* 800FEF04 000FAE24  3D 20 80 1F */	lis r9, lbl_801EA5C8@ha
 /* 800FEF08 000FAE28  54 80 06 3E */	clrlwi r0, r4, 0x18
@@ -1742,7 +1742,7 @@ inpGetAuxB:
 /* 800FEF18 000FAE38  7C 84 52 14 */	add r4, r4, r10
 /* 800FEF1C 000FAE3C  81 24 00 00 */	lwz r9, 0(r4)
 /* 800FEF20 000FAE40  54 C8 34 B2 */	rlwinm r8, r6, 6, 0x12, 0x19
-/* 800FEF24 000FAE44  38 E7 B5 B0 */	addi r7, r7, lbl_802EB5B0@l
+/* 800FEF24 000FAE44  38 E7 B5 B0 */	addi r7, r7, inpGlobalMIDIDirtyFlags@l
 /* 800FEF28 000FAE48  7C E7 42 14 */	add r7, r7, r8
 /* 800FEF2C 000FAE4C  54 A4 15 BA */	rlwinm r4, r5, 2, 0x16, 0x1d
 /* 800FEF30 000FAE50  7D 47 22 14 */	add r10, r7, r4
@@ -1759,8 +1759,8 @@ lbl_800FEF54:
 /* 800FEF58 000FAE78  40 82 00 28 */	bne lbl_800FEF80
 /* 800FEF5C 000FAE7C  54 63 06 3E */	clrlwi r3, r3, 0x18
 /* 800FEF60 000FAE80  1C 63 00 90 */	mulli r3, r3, 0x90
-/* 800FEF64 000FAE84  3C 80 80 2D */	lis r4, lbl_802D6B14@ha
-/* 800FEF68 000FAE88  38 84 6B 14 */	addi r4, r4, lbl_802D6B14@l
+/* 800FEF64 000FAE84  3C 80 80 2D */	lis r4, inpAuxB@ha
+/* 800FEF68 000FAE88  38 84 6B 14 */	addi r4, r4, inpAuxB@l
 /* 800FEF6C 000FAE8C  1C 00 00 24 */	mulli r0, r0, 0x24
 /* 800FEF70 000FAE90  7C 64 1A 14 */	add r3, r4, r3
 /* 800FEF74 000FAE94  7C 63 02 14 */	add r3, r3, r0
@@ -1769,8 +1769,8 @@ lbl_800FEF54:
 lbl_800FEF80:
 /* 800FEF80 000FAEA0  54 63 06 3E */	clrlwi r3, r3, 0x18
 /* 800FEF84 000FAEA4  1C 83 00 90 */	mulli r4, r3, 0x90
-/* 800FEF88 000FAEA8  3C 60 80 2D */	lis r3, lbl_802D6B14@ha
-/* 800FEF8C 000FAEAC  38 63 6B 14 */	addi r3, r3, lbl_802D6B14@l
+/* 800FEF88 000FAEA8  3C 60 80 2D */	lis r3, inpAuxB@ha
+/* 800FEF8C 000FAEAC  38 63 6B 14 */	addi r3, r3, inpAuxB@l
 /* 800FEF90 000FAEB0  1C 00 00 24 */	mulli r0, r0, 0x24
 /* 800FEF94 000FAEB4  7C 63 22 14 */	add r3, r3, r4
 /* 800FEF98 000FAEB8  7C 83 02 14 */	add r4, r3, r0
@@ -1859,15 +1859,15 @@ lbl_800FF0D0:
 /* 800FF0D0 000FAFF0  3C 60 80 2D */	lis r3, lbl_802D6D54@ha
 /* 800FF0D4 000FAFF4  38 A3 6D 54 */	addi r5, r3, lbl_802D6D54@l
 /* 800FF0D8 000FAFF8  38 C0 00 00 */	li r6, 0
-/* 800FF0DC 000FAFFC  3C 60 80 2D */	lis r3, lbl_802D6B14@ha
+/* 800FF0DC 000FAFFC  3C 60 80 2D */	lis r3, inpAuxB@ha
 /* 800FF0E0 000FB000  98 C5 00 22 */	stb r6, 0x22(r5)
-/* 800FF0E4 000FB004  38 83 6B 14 */	addi r4, r3, lbl_802D6B14@l
+/* 800FF0E4 000FB004  38 83 6B 14 */	addi r4, r3, inpAuxB@l
 /* 800FF0E8 000FB008  98 C4 00 22 */	stb r6, 0x22(r4)
 /* 800FF0EC 000FB00C  38 00 00 04 */	li r0, 4
-/* 800FF0F0 000FB010  3C 60 80 2F */	lis r3, lbl_802EB5B0@ha
+/* 800FF0F0 000FB010  3C 60 80 2F */	lis r3, inpGlobalMIDIDirtyFlags@ha
 /* 800FF0F4 000FB014  7C 09 03 A6 */	mtctr r0
 /* 800FF0F8 000FB018  98 C5 00 46 */	stb r6, 0x46(r5)
-/* 800FF0FC 000FB01C  39 03 B5 B0 */	addi r8, r3, lbl_802EB5B0@l
+/* 800FF0FC 000FB01C  39 03 B5 B0 */	addi r8, r3, inpGlobalMIDIDirtyFlags@l
 /* 800FF100 000FB020  98 C4 00 46 */	stb r6, 0x46(r4)
 /* 800FF104 000FB024  98 C5 00 6A */	stb r6, 0x6a(r5)
 /* 800FF108 000FB028  98 C4 00 6A */	stb r6, 0x6a(r4)
@@ -2193,3 +2193,45 @@ lbl_801EA5D8:
 	.4byte func_800FF278  ;# ptr
 	.4byte func_800FF280  ;# ptr
 	.4byte 0
+
+.section .bss
+
+.global gs
+gs:
+	.skip 0x400
+.global lbl_802E41B0
+lbl_802E41B0:
+	.skip 0x6E0
+.global lbl_802E4890
+lbl_802E4890:
+	.skip 0x50
+.global lbl_802E48E0
+lbl_802E48E0:
+	.skip 0x6D0
+.global midi_lastNote
+midi_lastNote:
+	.skip 0x80
+.global fx_lastNote
+fx_lastNote:
+	.skip 0x40
+.global lbl_802E5070
+lbl_802E5070:
+	.skip 0x4300
+.global lbl_802E9370
+lbl_802E9370:
+	.skip 0x2180
+.global lbl_802EB4F0
+lbl_802EB4F0:
+	.skip 0x80
+.global lbl_802EB570
+lbl_802EB570:
+	.skip 0x40
+.global inpGlobalMIDIDirtyFlags
+inpGlobalMIDIDirtyFlags:
+	.skip 0x200
+.global lbl_802EB7B0
+lbl_802EB7B0:
+	.skip 0x80
+.global lbl_802EB830
+lbl_802EB830:
+	.skip 0x40

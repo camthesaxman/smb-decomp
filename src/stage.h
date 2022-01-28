@@ -219,17 +219,17 @@ struct StageBgModel
 struct StageAnimHdr
 {
     /*0x00*/ u32 xRotFramesCount;
-    /*0x04*/ void *xRotFrames;
+    /*0x04*/ struct AnimKeyframe *xRotFrames;
     /*0x08*/ u32 yRotFramesCount;
-    /*0x0C*/ void *yRotFrames;
+    /*0x0C*/ struct AnimKeyframe *yRotFrames;
     /*0x10*/ u32 zRotFramesCount;
-    /*0x14*/ void *zRotFrames;
+    /*0x14*/ struct AnimKeyframe *zRotFrames;
     /*0x18*/ u32 xTrnslFramesCount;
-    /*0x1C*/ void *xTrnslFrames;
+    /*0x1C*/ struct AnimKeyframe *xTrnslFrames;
     /*0x20*/ u32 yTrnslFramesCount;
-    /*0x24*/ void *yTrnslFrames;
+    /*0x24*/ struct AnimKeyframe *yTrnslFrames;
     /*0x28*/ u32 zTrnslFramesCount;
-    /*0x2C*/ void *zTrnslFrames;
+    /*0x2C*/ struct AnimKeyframe *zTrnslFrames;
 };
 
 struct DecodedStageLzPtr_child_child3
@@ -264,6 +264,28 @@ struct StageCollHdr_child2
     u8 padding[2];
 };  // size = 0x20
 
+struct StageCollHdr_child3  // banana?
+{
+    Vec unk0;
+    s32 unkC;
+};
+
+struct StageCollHdr_child4
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+};
+
+struct StageCollHdr_child5
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+};
+
 struct StageCollHdr
 {
     Vec unk0;
@@ -282,12 +304,12 @@ struct StageCollHdr
     struct StageCollHdr_child *unk40;
     u8 filler44[4];
     void *unk48;
-    u8 filler4C[4];
-    void *unk50;
-    u8 filler54[4];
-    void *unk58;
-    u8 filler5C[4];
-    void *unk60;
+    s32 unk4C;
+    struct StageCollHdr_child4 *unk50;
+    s32 unk54;
+    struct StageCollHdr_child5 *unk58;
+    s32 unk5C;
+    struct StageCollHdr_child3 *unk60;
     u8 filler64[4];
     void *unk68;
     u8 filler6C[4];
@@ -420,11 +442,11 @@ void ev_stage_main(void);
 void ev_stage_dest(void);
 // ? stage_find_model();
 void find_blur_bridge_accordion(void);
-// ? func_8004424C();
-// ? g_animate_stage();
+void draw_blur_bridge_accordions(void);
+void g_animate_stage(float);
 void g_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);
-// ? func_80044920();
+void func_80044920(void);
 void load_stage(int);
 void unload_stage(void);
 void preload_stage_files(int);

@@ -5,7 +5,9 @@
 
 #include "global.h"
 #include "background.h"
+#include "event.h"
 #include "input.h"
+#include "item.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
@@ -22,8 +24,8 @@ void sel_stage_draw(void)
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
     mathutil_mtxA_scale_xyz(0.6f, 0.6f, 0.6f);
-    func_80030BA8(0.6f);
-    g_draw_naomi_model_and_do_other_stuff(NAOMIOBJ_MODEL(naomiCommonObj, 10));
+    g_nl2ngc_set_scale(0.6f);
+    g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
     
     for (i = 0, r27 = decodedStageLzPtr->collHdrs; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
     {
@@ -35,7 +37,7 @@ void sel_stage_draw(void)
             mathutil_mtxA_translate(r25);
             mathutil_mtxA_translate_xyz(0.0f, 2.0f, 0.0f);
             mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
-            g_draw_naomi_model_and_do_other_stuff(NAOMIOBJ_MODEL(naomiCommonObj, 7));
+            g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 7));
         }
     }
 

@@ -1,0 +1,12 @@
+
+.section .data
+
+.global __float_nan
+__float_nan:
+	# ROM: 0x1EA2F8
+	.byte 0x7F, 0xFF, 0xFF, 0xFF
+
+.global __float_huge
+__float_huge:
+	# ROM: 0x1EA2FC
+	.byte 0x7F, 0x80, 0x00, 0x00

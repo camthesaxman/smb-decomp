@@ -123,8 +123,8 @@ salInitAi:
 /* 80100F88 000FCEA8  3C 63 80 00 */	addis r3, r3, 0x8000
 /* 80100F8C 000FCEAC  7C 63 02 14 */	add r3, r3, r0
 /* 80100F90 000FCEB0  4B FD 19 99 */	bl AIInitDMA
-/* 80100F94 000FCEB4  3C 60 80 2D */	lis r3, lbl_802D6240@ha
-/* 80100F98 000FCEB8  38 63 62 40 */	addi r3, r3, lbl_802D6240@l
+/* 80100F94 000FCEB4  3C 60 80 2D */	lis r3, synthInfo@ha
+/* 80100F98 000FCEB8  38 63 62 40 */	addi r3, r3, synthInfo@l
 /* 80100F9C 000FCEBC  38 00 00 20 */	li r0, 0x20
 /* 80100FA0 000FCEC0  90 03 00 04 */	stw r0, 4(r3)
 /* 80100FA4 000FCEC4  38 00 7D 00 */	li r0, 0x7d00
@@ -2015,3 +2015,42 @@ lbl_801EAE00:
 	.byte 0x0C, 0xE6, 0x02, 0xDF
 	.4byte 0
 	.4byte 0
+
+.section .sbss
+
+.global userCallback
+userCallback:
+	.skip 0x4
+.global salAIBufferBase
+salAIBufferBase:
+	.skip 0x4
+.global salDspIsDone
+salDspIsDone:
+	.skip 0x4
+.global salLogicIsWaiting
+salLogicIsWaiting:
+	.skip 0x4
+.global salLogicActive
+salLogicActive:
+	.skip 0x4
+.global salLastTick
+salLastTick:
+	.skip 0x4
+.global salDspInitIsDone
+salDspInitIsDone:
+	.skip 0x4
+.global hwIrqLevel
+hwIrqLevel:
+	.skip 0x4
+.global oldState
+oldState:
+	.skip 0x4
+.global salAIBufferIndex
+salAIBufferIndex:
+	.skip 0x4
+
+.section .bss
+
+.global lbl_802EBE80
+lbl_802EBE80:
+	.skip 0x2060

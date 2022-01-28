@@ -35,7 +35,7 @@ struct
     u32 unk10;
     GXColor matColor;
     GXColor ambColor;
-    float unk1C;
+    float alpha;
     u8 unk20;
     u8 filler21[3];
     u32 unk24;
@@ -64,7 +64,7 @@ static void prep_some_stuff_before_drawing_2(void);
 void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh);
 
 #pragma force_active on
-void func_80030AC4(float a)
+void nl2ngc_set_line_width(float a)
 {
     gxutil_set_line_width(a * 6.0f);
 }
@@ -74,7 +74,7 @@ void func_80030AF8(int a /*unknown*/, int b /*unknown*/)
     g_gxutil_set_some_line_params(1, a, b, 0);
 }
 
-void func_80030B28(Vec *start, Vec *end, u32 c)
+void nl2ngc_draw_line(Point3d *start, Point3d *end, u32 c)
 {
     GXColor color;
 
@@ -86,18 +86,18 @@ void func_80030B28(Vec *start, Vec *end, u32 c)
 }
 #pragma force_active reset
 
-void func_80030B68(Vec *a, Vec *b, u32 c)
+void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 c)
 {
-    GXColor sp14;
+    GXColor color;
 
-    sp14.r = (c >> 16) & 0xFF;
-    sp14.g = (c >> 8) & 0xFF;
-    sp14.b = (c >> 0) & 0xFF;
-    sp14.a = (c >> 24) & 0xFF;
-    func_8009B048(a, b, &sp14);
+    color.r = (c >> 16) & 0xFF;
+    color.g = (c >> 8) & 0xFF;
+    color.b = (c >> 0) & 0xFF;
+    color.a = (c >> 24) & 0xFF;
+    gxutil_draw_line_deferred(start, end, &color);
 }
 
-void func_80030BA8(float x)
+void g_nl2ngc_set_scale(float x)
 {
     lbl_801B7978.unk18 = x;
 }
@@ -389,12 +389,12 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -407,7 +407,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
-            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->unk8);
+            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundsCenter);
             r29 = ord_tbl_alloc_node(sizeof(*r29));
 
             r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033C8C;
@@ -442,12 +442,12 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -507,30 +507,30 @@ struct UnkStruct19
     struct NaomiModel *model;
     Mtx unkC;
     struct Color3f unk3C;
-    float unk48;
+    float alpha;
     u32 unk4C;
-    struct Color3f unk50;
+    struct Color3f ambColor;
     u32 unk5C;
 };
 
 void lbl_80033E6C(struct UnkStruct19 *);
 
-void func_800314B8(struct NaomiModel *model, float b)
+void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alpha)
 {
-    struct UnkStruct19 *r29;
-    struct OrdTblNode *list;
+    struct UnkStruct19 *node;
+    struct OrdTblNode *entry;
 
     if (model->unk0 != -1)
     {
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -538,26 +538,26 @@ void func_800314B8(struct NaomiModel *model, float b)
             lbl_801B7978.unk18 = 1.0f;
         }
 
-        list = ord_tbl_get_entry_for_pos(&model->unk8);
-        r29 = ord_tbl_alloc_node(sizeof(*r29));
+        entry = ord_tbl_get_entry_for_pos(&model->boundsCenter);
+        node = ord_tbl_alloc_node(sizeof(*node));
 
-        r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
-        r29->model = model;
-        r29->unk48 = b;
-        r29->unk3C.r = lbl_801B7978.unk0.r;
-        r29->unk3C.g = lbl_801B7978.unk0.g;
-        r29->unk3C.b = lbl_801B7978.unk0.b;
-        r29->unk4C = func_800223D0();
-        r29->unk50.r = g_someAmbColor.r;
-        r29->unk50.g = g_someAmbColor.g;
-        r29->unk50.b = g_someAmbColor.b;
-        r29->unk5C = lbl_802F1EEC;
-        mathutil_mtxA_to_mtx(r29->unkC);
-        ord_tbl_insert_node(list, &r29->node);
+        node->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
+        node->model = model;
+        node->alpha = alpha;
+        node->unk3C.r = lbl_801B7978.unk0.r;
+        node->unk3C.g = lbl_801B7978.unk0.g;
+        node->unk3C.b = lbl_801B7978.unk0.b;
+        node->unk4C = func_800223D0();
+        node->ambColor.r = g_someAmbColor.r;
+        node->ambColor.g = g_someAmbColor.g;
+        node->ambColor.b = g_someAmbColor.b;
+        node->unk5C = lbl_802F1EEC;
+        mathutil_mtxA_to_mtx(node->unkC);
+        ord_tbl_insert_node(entry, &node->node);
     }
 }
 
-void g_draw_naomi_model_2(struct NaomiModel *model, float b)
+void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float alpha)
 {
     struct NaomiMesh *mesh;
 
@@ -566,12 +566,12 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -594,7 +594,7 @@ void g_draw_naomi_model_2(struct NaomiModel *model, float b)
             lbl_80205DAC.unk0 = 0;
         }
 
-        lbl_80205DAC.unk1C = b;
+        lbl_80205DAC.alpha = alpha;
         prep_some_stuff_before_drawing_2();
         GXLoadTexMtxImm(textureMatrix,      GX_TEXMTX0, GX_MTX2x4);
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -1190,7 +1190,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
     lbl_80205DAC.matColor.b = lbl_801B7978.unk0.b * 255.0f;
-    lbl_80205DAC.matColor.a = lbl_80205DAC.unk1C * 255.0f;
+    lbl_80205DAC.matColor.a = lbl_80205DAC.alpha * 255.0f;
     GXSetChanMatColor(GX_COLOR0A0, lbl_80205DAC.matColor);
 
     sp18.r = lbl_80205DAC.ambColor.r = 0;
@@ -1322,7 +1322,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     color.r = mesh.unk30 * lbl_801B7978.unk0.r * 255.0f;
     color.g = mesh.unk34 * lbl_801B7978.unk0.g * 255.0f;
     color.b = mesh.unk38 * lbl_801B7978.unk0.b * 255.0f;
-    color.a = mesh.unk2C * lbl_80205DAC.unk1C * 255.0f;
+    color.a = mesh.unk2C * lbl_80205DAC.alpha * 255.0f;
     if (lbl_80205DAC.matColor.r != color.r
      || lbl_80205DAC.matColor.g != color.g
      || lbl_80205DAC.matColor.b != color.b
@@ -1394,7 +1394,7 @@ static inline void handle_color_vtx(struct NaomiVtxWithColor *vtx)
         ((color >> 16) & 0xFF) * lbl_801B7978.unk0.r,
         ((color >>  8) & 0xFF) * lbl_801B7978.unk0.g,
         ((color >>  0) & 0xFF) * lbl_801B7978.unk0.b,
-        ((color >> 24) & 0xFF) * lbl_80205DAC.unk1C);
+        ((color >> 24) & 0xFF) * lbl_80205DAC.alpha);
     GXTexCoord2f32(vtx->s, vtx->t);
 }
 
@@ -1496,7 +1496,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
     }
 }
 
-void func_80033AD4(struct NaomiModel *model)
+void g_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
 {
     g_draw_naomi_model_and_do_other_stuff(model);
 }
@@ -1506,9 +1506,9 @@ void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
     g_draw_naomi_model_1(model);
 }
 
-void func_80033B14(struct NaomiModel *model, float b)
+void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b)
 {
-    func_800314B8(model, b);
+    g_draw_naomi_model_with_alpha_deferred(model, b);
 }
 
 void g_nl2ngc_set_light_mask(u32 lightMask)
@@ -1693,11 +1693,11 @@ void lbl_80033E6C(struct UnkStruct19 *a)
     lbl_801B7978.unk0.r = a->unk3C.r;
     lbl_801B7978.unk0.g = a->unk3C.g;
     lbl_801B7978.unk0.b = a->unk3C.b;
-    lbl_80205DAC.unk1C = a->unk48;
+    lbl_80205DAC.alpha = a->alpha;
     if (!(a->model->flags & (1 << 10)))
     {
         func_800223D8(a->unk4C);
-        g_nl2ngc_set_ambient_color(a->unk50.r, a->unk50.g, a->unk50.b);
+        g_nl2ngc_set_ambient_color(a->ambColor.r, a->ambColor.g, a->ambColor.b);
     }
     lbl_802F1EEC = a->unk5C;
     g_draw_naomi_model_5(a->model);
@@ -1761,7 +1761,7 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
     func_800341B8();
 }
 
-void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
+void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
 {
     struct NaomiMesh *mesh;
 
@@ -1770,12 +1770,12 @@ void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (func_80020EB4(&model->unk8, model->unk14) == 0)
+            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
                 return;
         }
         else
         {
-            if (func_80020FD0(&model->unk8, model->unk14, lbl_801B7978.unk1C) == 0)
+            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk1C) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -1797,7 +1797,7 @@ void g_draw_naomi_model_6(struct NaomiModel *model, int (*func)())
               | (1 << GX_VA_TEX0));
             lbl_80205DAC.unk0 = 0;
         }
-        lbl_80205DAC.unk1C = 1.0f;
+        lbl_80205DAC.alpha = 1.0f;
 
         mesh = (struct NaomiMesh *)model->meshStart;
         while (mesh->unk0 != 0)

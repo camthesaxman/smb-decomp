@@ -5,8 +5,10 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
 #include "ball.h"
 #include "camera.h"
+#include "event.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -187,8 +189,8 @@ void ev_camera_main(void)
     for (i = 0, camera = &cameraInfo[0], ball = &ballInfo[0]; i < 4; i++, camera++, ball++, r22++)
     {
         if ((*r22 != 0 && *r22 != 4)
-         || (camera->flags & (1<<(31-0x1B)))
-         || (camera->flags & (1<<(31-0x18))))
+         || (camera->flags & (1 << 4))
+         || (camera->flags & (1 << 7)))
         {
             camera->flags &= ~1;
             if (dipSwitches & DIP_TEST_CAM)
@@ -206,11 +208,11 @@ void ev_camera_main(void)
             mathutil_mtxA_rotate_x(-camera->rotX);
             mathutil_mtxA_rotate_y(-camera->rotY);
             mathutil_mtxA_translate_neg(&camera->eye);
-            if (!(camera->flags & (1<<(31-0x1D))))
+            if (!(camera->flags & (1 << 2)))
             {
                 mathutil_mtxA_to_mtx(camera->unk1A4);
                 if (eventInfo[EVENT_WORLD].state == EV_STATE_RUNNING
-                 && !(camera->flags & (1<<(31-0x1C))))
+                 && !(camera->flags & (1 << 3)))
                 {
                     mathutil_mtxA_translate(&ball->pos);
                     mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 * 0.6);
@@ -627,7 +629,7 @@ void camera_set_state(int state)
 
     for (i = 0, camera = &cameraInfo[0]; i < 4; i++, camera++)
     {
-        if (!(camera->flags & (1<<(31-0x1A))))
+        if (!(camera->flags & (1 << 5)))
         {
             camera->state = state;
             camera->unk1F = 0;
@@ -988,7 +990,7 @@ static inline void camera_face_direction(struct Camera *camera, Vec *lookDir)
 
 void camera_func_attract_cutscene(struct Camera *camera, struct Ball *ball)
 {
-    float f31 = lbl_801EED2C.unk8;
+    float f31 = advDemoInfo.unk8;
     Vec sp10;
 
     camera->eye.x = func_8008CDC0(f31, &lbl_80176434[0]);
@@ -1015,12 +1017,12 @@ void camera_func_54(struct Camera *camera, struct Ball *ball)
 
 void camera_func_attract_level(struct Camera *camera, struct Ball *ball)
 {
-    float f31 = lbl_801EED2C.unk8;
+    float f31 = advDemoInfo.unk8;
     Vec sp10;
 
-    if ((f31 >= 1740.0f && f31 < 1850.0f)
-     || (f31 >= 1954.0f && f31 < 2064.0f)
-     || (f31 >= 2498.0f && f31 < 2902.0f))
+    if ((f31 >= 1740.0f && f31 < 1850.0f)  // "Exam-A" level scene
+     || (f31 >= 1954.0f && f31 < 2064.0f)  // "Choice" level scene
+     || (f31 >= 2498.0f && f31 < 2902.0f))  // ???
     {
         camera->eye.x = func_8008CDC0(f31, &lbl_80176434[0x60]);
         camera->eye.y = func_8008CDC0(f31, &lbl_80176434[0x75]);
@@ -1032,13 +1034,13 @@ void camera_func_attract_level(struct Camera *camera, struct Ball *ball)
     }
     else
     {
-        camera->eye.x = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
-        camera->eye.y = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
-        camera->eye.z = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
+        camera->eye.x = ballInfo[advDemoInfo.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
+        camera->eye.y = ballInfo[advDemoInfo.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
+        camera->eye.z = ballInfo[advDemoInfo.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
 
-        camera->lookAt.x = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
-        camera->lookAt.y = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
-        camera->lookAt.z = ballInfo[lbl_801EED2C.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
+        camera->lookAt.x = ballInfo[advDemoInfo.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
+        camera->lookAt.y = ballInfo[advDemoInfo.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
+        camera->lookAt.z = ballInfo[advDemoInfo.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
     }
 
     sp10.x = camera->lookAt.x - camera->eye.x;
@@ -1107,9 +1109,9 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
             for (i = 0; i < modeCtrl.playerCount; i++)
             {
                 r10 = lbl_80206BD0[i];
-                if (camera->unk80 > -0.3 && (analogButtonInfo[r10][0] & (1<<(31-0x18))))
+                if (camera->unk80 > -0.3 && (analogButtonInfo[r10][0] & (1 << 7)))
                     camera->unk80 -= 0.01;
-                if (camera->unk80 < 0.2 && (analogButtonInfo[r10][0] & (1<<(31-0x19))))
+                if (camera->unk80 < 0.2 && (analogButtonInfo[r10][0] & (1 << 6)))
                     camera->unk80 += 0.01;
             }
         }
@@ -1126,9 +1128,9 @@ void camera_func_13(struct Camera *camera, struct Ball *ball)
         for (i = 0; i < modeCtrl.playerCount; i++)
         {
             r10 = lbl_80206BD0[i];
-            if (camera->unk8C < 256 && (analogButtonInfo[r10][0] & (1<<(31-0x1A))))
+            if (camera->unk8C < 256 && (analogButtonInfo[r10][0] & (1 << 5)))
                 camera->unk8C += 8;
-            if (camera->unk8C > -256 && (analogButtonInfo[r10][0] & (1<<(31-0x1B))))
+            if (camera->unk8C > -256 && (analogButtonInfo[r10][0] & (1 << 4)))
                 camera->unk8C -= 8;
         }
         if (camera->timerCurr > 0)
@@ -1290,7 +1292,7 @@ void get_curr_stage_fly_in_position(struct Sphere *sphere)
         }
         ptr++;
     }
-    *sphere = stageBoundingSphere;
+    *sphere = stageBounds;
     if (sphere->radius < 31.25)
         sphere->radius = 31.25f;
 }
@@ -1386,7 +1388,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     yaw = mathutil_atan2(sp28.x, sp28.z) - 32768;
     r3 = (s16)(yaw - camera->rotY);
     yaw = camera->rotY + CLAMP(r3, -512, 512);
-    if (!(camera->flags & (1<<(31-0x1E))) && !(ball->flags & BALL_FLAG_12))
+    if (!(camera->flags & (1 << 1)) && !(ball->flags & BALL_FLAG_12))
     {
         r3 = (s16)(ball->unk92 - yaw);
         if (r3 > 0x800)
@@ -1478,13 +1480,13 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp1C.z = 0.0f;
 
     sp28.x = f0 * controllerInfo[0].unk0[0].stickX / 74.0;
-    if (analogButtonInfo[0][0] & (1<<(31-0x16)))
+    if (analogButtonInfo[0][0] & (1 << 9))
         sp28.y = f0 * controllerInfo[0].unk0[0].stickY / 74.0;
     else
         sp28.z = -f0 * controllerInfo[0].unk0[0].stickY / 74.0;
 
     sp1C.x = f0 * controllerInfo[0].unk0[0].substickX / 74.0;
-    if (analogButtonInfo[0][0] & (1<<(31-0x16)))
+    if (analogButtonInfo[0][0] & (1 << 9))
         sp1C.y = f0 * controllerInfo[0].unk0[0].substickY / 74.0;
     else
         sp1C.z = -f0 * controllerInfo[0].unk0[0].substickY / 74.0;
@@ -2289,7 +2291,7 @@ void camera_func_26(struct Camera *camera, struct Ball *ball)
 
     if (camera->state == 26)
     {
-        if ((modeCtrl.levelSetFlags & (1<<(31-0x1D))) && modeCtrl.unk10 == 1)
+        if ((modeCtrl.levelSetFlags & (1 << 2)) && modeCtrl.unk10 == 1)
         {
             sp1C.z = -5.0f;
             sp10.z = -3.6f;
@@ -2777,7 +2779,7 @@ struct Struct801EFB94
 {
     s32 unk0;
     s32 unk4;
-    struct MaybeReplayInfo unk8;
+    struct ReplayInfo unk8;
 };
 
 struct Struct801EFB94 lbl_801EFB94[4];
@@ -3009,7 +3011,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 {
     Vec sp58;
     Vec sp4C;
-    struct MaybeReplayInfo sp34;
+    struct ReplayInfo sp34;
     Vec sp28;
     Vec sp1C;
     Vec sp10;

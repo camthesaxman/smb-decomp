@@ -39,7 +39,7 @@ lbl_8010DD88:
 /* 8010DDD4 00109CF4  80 5F 01 98 */	lwz r2, 0x198(r31)
 /* 8010DDD8 00109CF8  80 9F 01 9C */	lwz r4, 0x19c(r31)
 /* 8010DDDC 00109CFC  83 FF 00 7C */	lwz r31, 0x7c(r31)
-/* 8010DDE0 00109D00  4B FF ED 8C */	b lbl_8010CB6C
+/* 8010DDE0 00109D00  4B FF ED 8C */	b TRKInterruptHandler
 
 .global TRKEXICallBack
 TRKEXICallBack:
@@ -67,9 +67,9 @@ InitMetroTRKCommTable:
 /* 8010DE2C 00109D4C  40 82 00 68 */	bne lbl_8010DE94
 /* 8010DE30 00109D50  48 00 1A 25 */	bl Hu_IsStub
 /* 8010DE34 00109D54  3C A0 80 11 */	lis r5, DBInitComm@ha
-/* 8010DE38 00109D58  3C 80 80 1F */	lis r4, lbl_801ED8D8@ha
+/* 8010DE38 00109D58  3C 80 80 1F */	lis r4, gDBCommTable@ha
 /* 8010DE3C 00109D5C  38 05 F3 F0 */	addi r0, r5, DBInitComm@l
-/* 8010DE40 00109D60  38 A4 D8 D8 */	addi r5, r4, lbl_801ED8D8@l
+/* 8010DE40 00109D60  38 A4 D8 D8 */	addi r5, r4, gDBCommTable@l
 /* 8010DE44 00109D64  3C 80 80 11 */	lis r4, DBInitInterrupts@ha
 /* 8010DE48 00109D68  90 05 00 00 */	stw r0, 0(r5)
 /* 8010DE4C 00109D6C  38 04 F4 68 */	addi r0, r4, DBInitInterrupts@l
@@ -93,9 +93,9 @@ InitMetroTRKCommTable:
 lbl_8010DE94:
 /* 8010DE94 00109DB4  48 00 19 B9 */	bl AMC_IsStub
 /* 8010DE98 00109DB8  3C A0 80 11 */	lis r5, EXI2_Init@ha
-/* 8010DE9C 00109DBC  3C 80 80 1F */	lis r4, lbl_801ED8D8@ha
+/* 8010DE9C 00109DBC  3C 80 80 1F */	lis r4, gDBCommTable@ha
 /* 8010DEA0 00109DC0  38 05 E7 68 */	addi r0, r5, EXI2_Init@l
-/* 8010DEA4 00109DC4  38 A4 D8 D8 */	addi r5, r4, lbl_801ED8D8@l
+/* 8010DEA4 00109DC4  38 A4 D8 D8 */	addi r5, r4, gDBCommTable@l
 /* 8010DEA8 00109DC8  3C 80 80 11 */	lis r4, EXI2_EnableInterrupts@ha
 /* 8010DEAC 00109DCC  90 05 00 00 */	stw r0, 0(r5)
 /* 8010DEB0 00109DD0  38 04 E8 24 */	addi r0, r4, EXI2_EnableInterrupts@l
@@ -130,8 +130,8 @@ TRKInitializeIntDrivenUART:
 /* 8010DF08 00109E28  7C 08 02 A6 */	mflr r0
 /* 8010DF0C 00109E2C  90 01 00 04 */	stw r0, 4(r1)
 /* 8010DF10 00109E30  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010DF14 00109E34  3C 60 80 1F */	lis r3, lbl_801ED8D8@ha
-/* 8010DF18 00109E38  38 63 D8 D8 */	addi r3, r3, lbl_801ED8D8@l
+/* 8010DF14 00109E34  3C 60 80 1F */	lis r3, gDBCommTable@ha
+/* 8010DF18 00109E38  38 63 D8 D8 */	addi r3, r3, gDBCommTable@l
 /* 8010DF1C 00109E3C  3C 80 80 11 */	lis r4, TRKEXICallBack@ha
 /* 8010DF20 00109E40  81 83 00 00 */	lwz r12, 0(r3)
 /* 8010DF24 00109E44  38 84 DD E4 */	addi r4, r4, TRKEXICallBack@l
@@ -149,8 +149,8 @@ EnableEXI2Interrupts:
 /* 8010DF48 00109E68  7C 08 02 A6 */	mflr r0
 /* 8010DF4C 00109E6C  90 01 00 04 */	stw r0, 4(r1)
 /* 8010DF50 00109E70  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010DF54 00109E74  3C 60 80 1F */	lis r3, lbl_801ED8D8@ha
-/* 8010DF58 00109E78  38 63 D8 D8 */	addi r3, r3, lbl_801ED8D8@l
+/* 8010DF54 00109E74  3C 60 80 1F */	lis r3, gDBCommTable@ha
+/* 8010DF58 00109E78  38 63 D8 D8 */	addi r3, r3, gDBCommTable@l
 /* 8010DF5C 00109E7C  81 83 00 04 */	lwz r12, 4(r3)
 /* 8010DF60 00109E80  7D 88 03 A6 */	mtlr r12
 /* 8010DF64 00109E84  4E 80 00 21 */	blrl
@@ -164,8 +164,8 @@ TRKPollUART:
 /* 8010DF78 00109E98  7C 08 02 A6 */	mflr r0
 /* 8010DF7C 00109E9C  90 01 00 04 */	stw r0, 4(r1)
 /* 8010DF80 00109EA0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010DF84 00109EA4  3C 60 80 1F */	lis r3, lbl_801ED8D8@ha
-/* 8010DF88 00109EA8  38 63 D8 D8 */	addi r3, r3, lbl_801ED8D8@l
+/* 8010DF84 00109EA4  3C 60 80 1F */	lis r3, gDBCommTable@ha
+/* 8010DF88 00109EA8  38 63 D8 D8 */	addi r3, r3, gDBCommTable@l
 /* 8010DF8C 00109EAC  81 83 00 08 */	lwz r12, 8(r3)
 /* 8010DF90 00109EB0  7D 88 03 A6 */	mtlr r12
 /* 8010DF94 00109EB4  4E 80 00 21 */	blrl
@@ -179,8 +179,8 @@ TRKReadUARTN:
 /* 8010DFA8 00109EC8  7C 08 02 A6 */	mflr r0
 /* 8010DFAC 00109ECC  90 01 00 04 */	stw r0, 4(r1)
 /* 8010DFB0 00109ED0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010DFB4 00109ED4  3C A0 80 1F */	lis r5, lbl_801ED8D8@ha
-/* 8010DFB8 00109ED8  38 A5 D8 D8 */	addi r5, r5, lbl_801ED8D8@l
+/* 8010DFB4 00109ED4  3C A0 80 1F */	lis r5, gDBCommTable@ha
+/* 8010DFB8 00109ED8  38 A5 D8 D8 */	addi r5, r5, gDBCommTable@l
 /* 8010DFBC 00109EDC  81 85 00 0C */	lwz r12, 0xc(r5)
 /* 8010DFC0 00109EE0  7D 88 03 A6 */	mtlr r12
 /* 8010DFC4 00109EE4  4E 80 00 21 */	blrl
@@ -201,8 +201,8 @@ TRKWriteUARTN:
 /* 8010DFEC 00109F0C  7C 08 02 A6 */	mflr r0
 /* 8010DFF0 00109F10  90 01 00 04 */	stw r0, 4(r1)
 /* 8010DFF4 00109F14  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010DFF8 00109F18  3C A0 80 1F */	lis r5, lbl_801ED8D8@ha
-/* 8010DFFC 00109F1C  38 A5 D8 D8 */	addi r5, r5, lbl_801ED8D8@l
+/* 8010DFF8 00109F18  3C A0 80 1F */	lis r5, gDBCommTable@ha
+/* 8010DFFC 00109F1C  38 A5 D8 D8 */	addi r5, r5, gDBCommTable@l
 /* 8010E000 00109F20  81 85 00 10 */	lwz r12, 0x10(r5)
 /* 8010E004 00109F24  7D 88 03 A6 */	mtlr r12
 /* 8010E008 00109F28  4E 80 00 21 */	blrl
@@ -223,8 +223,8 @@ ReserveEXI2Port:
 /* 8010E030 00109F50  7C 08 02 A6 */	mflr r0
 /* 8010E034 00109F54  90 01 00 04 */	stw r0, 4(r1)
 /* 8010E038 00109F58  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010E03C 00109F5C  3C 60 80 1F */	lis r3, lbl_801ED8D8@ha
-/* 8010E040 00109F60  38 63 D8 D8 */	addi r3, r3, lbl_801ED8D8@l
+/* 8010E03C 00109F5C  3C 60 80 1F */	lis r3, gDBCommTable@ha
+/* 8010E040 00109F60  38 63 D8 D8 */	addi r3, r3, gDBCommTable@l
 /* 8010E044 00109F64  81 83 00 14 */	lwz r12, 0x14(r3)
 /* 8010E048 00109F68  7D 88 03 A6 */	mtlr r12
 /* 8010E04C 00109F6C  4E 80 00 21 */	blrl
@@ -238,8 +238,8 @@ UnreserveEXI2Port:
 /* 8010E060 00109F80  7C 08 02 A6 */	mflr r0
 /* 8010E064 00109F84  90 01 00 04 */	stw r0, 4(r1)
 /* 8010E068 00109F88  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8010E06C 00109F8C  3C 60 80 1F */	lis r3, lbl_801ED8D8@ha
-/* 8010E070 00109F90  38 63 D8 D8 */	addi r3, r3, lbl_801ED8D8@l
+/* 8010E06C 00109F8C  3C 60 80 1F */	lis r3, gDBCommTable@ha
+/* 8010E070 00109F90  38 63 D8 D8 */	addi r3, r3, gDBCommTable@l
 /* 8010E074 00109F94  81 83 00 18 */	lwz r12, 0x18(r3)
 /* 8010E078 00109F98  7D 88 03 A6 */	mtlr r12
 /* 8010E07C 00109F9C  4E 80 00 21 */	blrl
@@ -259,3 +259,17 @@ TRK_board_display:
 /* 8010E0A8 00109FC8  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010E0AC 00109FCC  7C 08 03 A6 */	mtlr r0
 /* 8010E0B0 00109FD0  4E 80 00 20 */	blr
+
+.section .data
+
+.global gDBCommTable
+gDBCommTable:
+	# ROM: 0x1EA8D8
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0

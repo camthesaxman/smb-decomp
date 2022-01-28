@@ -4,13 +4,15 @@
 
 #include "global.h"
 #include "bitmap.h"
+#include "event.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
+#include "sprite.h"
 
 struct TPL *g_unkBitmapTPL;
-u32 lbl_802F1D04;
-s32 g_bmpUnkCountOfSomething;
+s32 lbl_802F1D04;
+s32 spriteParamsBufCount;
 u16 lbl_802F1CFC;
 struct Bitmap *bitmapList;
 u32 currFont;
@@ -20,7 +22,7 @@ float lbl_802F1CE8;
 u16 textY;
 u16 textX;
 u16 textStartX;
-struct Struct801F3DC0 lbl_801F3DC0[0x100];
+struct NaomiSpriteParams spriteParamsBuf[0x100];
 
 extern char *bmpComNames[];
 extern char *bmpAdvNames[];
@@ -91,7 +93,7 @@ void bitmap_init(void)
         OSPanic("bitmap.c", 122, "cannot OSAlloc");
     lbl_802F1CFC = 0;
     currFont = 0;
-    g_bmpUnkCountOfSomething = 0;
+    spriteParamsBufCount = 0;
     lbl_802F1D04 = 0;
 }
 
@@ -243,7 +245,7 @@ void func_80026378(int grpId)
 
 void func_80026394(void)
 {
-    g_bmpUnkCountOfSomething = 0;
+    spriteParamsBufCount = 0;
     lbl_802F1D04 = 0;
 }
 
@@ -330,7 +332,7 @@ void bitmap_main(void)
     bitmap_draw_string();
     lbl_802F1D04 = 2;
     func_8002704C();
-    g_bmpUnkCountOfSomething = 0;
+    spriteParamsBufCount = 0;
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
         func_800700D8(1);
@@ -478,24 +480,24 @@ void bitmap_draw(struct Bitmap *bmp)
 
 void bitmap_draw_normal_char(unsigned char chr)
 {
-    struct FontParams *r30 = &lbl_801BE4B0[currFont];
+    struct FontParams *font = &fontInfo[currFont];
     float x = textX;
     float y = textY;
-    int var1 = chr - r30->unk4;
-    int var2 = var1 % r30->unkC;
-    int var3 = var1 / r30->unkC;
+    int var1 = chr - font->unk4;
+    int var2 = var1 % font->unkC;
+    int var3 = var1 / font->unkC;
     float f29;
     float f28;
     float f27;
     float f26;
     GXColor tevColor;
 
-    f27 = 128.0f / bitmapGroups[(r30->unk0 >> 8) & 0xFF].tpl->texHeaders[r30->unk0 & 0xFF].width;
-    f26 = 128.0f / bitmapGroups[(r30->unk0 >> 8) & 0xFF].tpl->texHeaders[r30->unk0 & 0xFF].height;
+    f27 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].width;
+    f26 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].height;
 
-    f29 = f27 * (var2 * r30->spaceWidth);
-    f28 = f26 * (var3 * r30->lineHeight);
-    func_8009F430(&bitmapGroups[(r30->unk0 >> 8) & 0xFF].tpl->texObjs[r30->unk0 & 0xFF], 0);
+    f29 = f27 * (var2 * font->spaceWidth);
+    f28 = f26 * (var3 * font->lineHeight);
+    func_8009F430(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], 0);
 
     tevColor.r = 255;
     tevColor.g = 255;
@@ -518,34 +520,34 @@ void bitmap_draw_normal_char(unsigned char chr)
             f29,
             f28);
         GXPosition3f32(
-            x + r30->spaceWidth - 1.0f,
+            x + font->spaceWidth - 1.0f,
             y,
             -1.0f);
         GXTexCoord2f32(
-            f29 + r30->spaceWidth * f27 - 1.0f,
+            f29 + font->spaceWidth * f27 - 1.0f,
             f28);
         GXPosition3f32(
-            x + r30->spaceWidth - 1.0f,
-            y + r30->lineHeight - 1.0f,
+            x + font->spaceWidth - 1.0f,
+            y + font->lineHeight - 1.0f,
             -1.0f);
         GXTexCoord2f32(
-            f29 + r30->spaceWidth * f27 - 1.0f,
-            f28 + r30->lineHeight * f26 - 1.0f);
+            f29 + font->spaceWidth * f27 - 1.0f,
+            f28 + font->lineHeight * f26 - 1.0f);
         GXPosition3f32(
             x,
-            y + r30->lineHeight,
+            y + font->lineHeight,
             -1.0f);
         GXTexCoord2f32(
             f29,
-            f28 + r30->lineHeight * f26 - 1.0f);
+            f28 + font->lineHeight * f26 - 1.0f);
     GXEnd();
 
-    textX += r30->spaceWidth;
+    textX += font->spaceWidth;
 }
 
 void bitmap_draw_char(unsigned char chr)
 {
-    struct FontParams *r4 = &lbl_801BE4B0[currFont];
+    struct FontParams *r4 = &fontInfo[currFont];
 
     switch (chr)
     {
@@ -615,8 +617,8 @@ void bitmap_draw_string(void)
 void func_8002704C(void)
 {
     int i;
-    struct Struct801F3DC0 *r30 = &lbl_801F3DC0[0];
+    struct NaomiSpriteParams *params = &spriteParamsBuf[0];
 
-    for (i = 0; i < g_bmpUnkCountOfSomething; i++, r30++)
-        func_80073828(r30);
+    for (i = 0; i < spriteParamsBufCount; i++, params++)
+        draw_naomi_sprite(params);
 }

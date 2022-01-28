@@ -1,12 +1,12 @@
 // .rodata section
 // extern ? lbl_8010F8A0;
 // extern ? crcTable;
-// extern ? lbl_8010FAB0;
+// extern ? introCutsceneScript;
 // extern ? lbl_8010FF84;
-// extern ? lbl_8010FF90;
+// extern ? infoScript;
 // extern ? lbl_80110004;
 // extern ? lbl_801101C8;
-// extern ? lbl_801101DC;
+extern const s16 lbl_801101DC[];
 // extern ? lbl_8011021C;
 // extern ? lbl_80110230;
 // extern ? lbl_8011023C;
@@ -107,18 +107,16 @@ extern void (*gameSubmodeFuncs[])(void);
 // extern ? gameSubmodeNames;
 // extern ? lbl_80173C5C;
 // extern ? lbl_80173C70;
-extern struct Event eventInfo[];
+
 // extern ? lbl_80173FA8;
 // extern ? lbl_80173FD0;
-// extern ? lbl_80173FE0;
-// extern ? lbl_801740A8;
+
 // extern ? lbl_801741B0;
 extern float lbl_801741CC[];
 // extern ? lbl_801741D8;
 // extern ? lbl_80174E14;
 // extern ? lbl_80174E38;
-// extern ? lbl_80174E48;
-// extern ? lbl_801754C8;
+// extern ? infoEnglishText;
 // extern ? lbl_80175510;
 // extern ? lbl_80175544;
 // extern ? lbl_80175568;
@@ -244,15 +242,15 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BDA2C;
 // extern ? lbl_801BDC34;
 // extern ? lbl_801BDC40;
-// extern ? lbl_801BDCA4;
-// extern ? lbl_801BDCC0;
-// extern ? lbl_801BDCDC;
-// extern ? lbl_801BDCF8;
-// extern ? lbl_801BDD14;
+// extern ? itemInitFuncs;
+// extern ? itemMainFuncs;
+// extern ? itemDrawFuncs;
+// extern ? itemCollectFuncs;
+// extern ? itemDestroyFuncs;
 // extern ? lbl_801BDD30;
-// extern ? lbl_801BDEA0;
+// extern ? singleBananaModels;
 // extern ? lbl_801BDF60;
-// extern ? lbl_801BDFA0;
+// extern ? pilotBananaInfo;
 // extern ? lbl_801BE048;
 // extern ? lbl_801BE130;
 // extern ? lbl_801BE160;
@@ -264,7 +262,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BE434;
 // extern ? lbl_801BE448;
 // extern ? lbl_801BE470;
-extern struct FontParams lbl_801BE4B0[];
+
 // extern ? lbl_801C1264;
 // extern ? lbl_801C1294;
 // extern ? lbl_801C12BC;
@@ -447,7 +445,7 @@ extern struct FontParams lbl_801BE4B0[];
 // extern ? lbl_801E7AA0;
 // extern ? lbl_801E7B10;
 // extern ? lbl_801E7C50;
-extern u8 DEMOFontBitmap[];
+extern u32 DEMOFontBitmap[];
 // extern ? lbl_801E8880;
 // extern ? lbl_801E88E8;
 // extern ? lbl_801E8920;
@@ -499,21 +497,21 @@ extern GXRenderModeObj GXPal528IntDf;
 // extern ? lbl_801ED15C;
 // extern ? lbl_801ED1E0;
 // extern ? lbl_801ED2B0;
-// extern ? lbl_801ED2F8;
-// extern ? lbl_801ED2FC;
+// extern ? __float_nan;
+// extern ? __float_huge;
 // extern ? lbl_801ED300;
-// extern ? lbl_801ED310;
-// extern ? lbl_801ED514;
-// extern ? lbl_801ED534;
+// extern ? __one_over_F;
+// extern ? __sincos_on_quadrant;
+// extern ? __sincos_poly;
 // extern ? lbl_801ED560;
 // extern ? lbl_801ED7A8;
 // extern ? lbl_801ED830;
 // extern ? lbl_801ED84C;
-// extern ? lbl_801ED868;
-// extern ? lbl_801ED874;
+// extern ? gTRKRestoreFlags;
+// extern ? gTRKExceptionStatus;
 // extern ? lbl_801ED884;
-// extern ? lbl_801ED898;
-// extern ? lbl_801ED8D8;
+// extern ? TRK_ISR_OFFSETS;
+// extern ? gDBCommTable;
 // extern ? lbl_801ED8F8;
 
 // .bss section
@@ -524,22 +522,9 @@ extern u8 lbl_801EEBA0[];
 extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
-// extern ? lbl_801EECF8;
-extern struct Struct801EED04 lbl_801EED04;
-extern struct Struct801EED2C lbl_801EED2C;
-extern struct
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    float unkC;
-} lbl_801EED3C;
+
 // extern ? lbl_801EED50;
-extern struct
-{
-    u8 filler0[8];
-    u32 unk8;
-} lbl_801EED88;
+extern struct Struct801EED88 lbl_801EED88;
 // extern ? lbl_801EEDA8;
 // extern ? lbl_801EEEC0;
 
@@ -561,8 +546,8 @@ extern struct
 extern struct
 {
     u32 unk0;
-    s16 unk4;
-    s16 unk6;
+    s16 timerCurr;  // current clock time (in 60ths of a second)
+    s16 timerMax;  // maximum clock time (in 60ths of a second)
     u8 filler8[0xC - 0x8];
     s16 unkC;
     s16 unkE;
@@ -578,7 +563,7 @@ extern struct
 // extern ? lbl_801F3A9C;
 
 // extern ? lzssHeader;
-extern struct Struct801F3DC0 lbl_801F3DC0[];
+extern struct NaomiSpriteParams spriteParamsBuf[];
 
 extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
@@ -611,18 +596,18 @@ extern struct World lbl_80206BF0[];
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
 extern struct Struct80206DEC lbl_80206DEC;
-extern struct Struct80206E48 movableStageParts[0x48];
+extern struct MovableStagePart movableStageParts[0x48];
 extern void *lbl_80209368[];
 // extern ? lbl_802099E8;
 // extern ? lbl_8020A348;
-// extern ? lbl_8020AB88;
-// extern ? lbl_8020ADC8;
-extern struct Sphere stageBoundingSphere;
+extern struct Struct8020A348 lbl_8020AB88[0x48];
+extern struct GMAModelHeader *goalModels[3];
+extern struct Sphere stageBounds;
 // extern ? lbl_8020AE20;
 // extern ? lbl_8020AE40;
 extern struct
 {
-    u32 unk0[4];
+    s32 unk0[4];
     float unk10;
     s32 unk14;
 } lbl_80250A68;
@@ -639,7 +624,7 @@ extern struct
 // extern ? lbl_8027CE08;
 // extern ? lbl_8027CE18;
 // extern ? lbl_8027CE24;
-// extern ? itemInfo;
+
 // extern ? lbl_80285A58;
 // extern ? lbl_80285AB0;
 // extern ? lbl_8028C0B0;
@@ -649,15 +634,14 @@ extern struct
 // extern ? lbl_8028CF00;
 // extern ? lbl_8028CF28;
 // extern ? spriteInfo;
-extern struct
-{
-    u8 filler0[0x4];
-    u32 unk4;
-    s32 unk8;
-} lbl_80290170;
+extern struct Struct80290170 screenFadeInfo;
 // extern ? lbl_80290180;
 // extern ? lbl_80292AC0;
-// extern ? lbl_80292B60;
+extern struct
+{
+    s32 unk0;
+    u8 filler4[5];
+} lbl_80292B60;
 // extern ? lbl_80292C00;
 // extern ? lbl_80292C60;
 // extern ? lbl_80292C90;
@@ -742,18 +726,18 @@ extern GXTexObj fontTexObj;
 // extern ? PERFAlarm;
 // extern ? mId;
 // extern ? seqNote;
-// extern ? lbl_802CA060;
-// extern ? lbl_802D5D80;
-// extern ? lbl_802D5E80;
-// extern ? lbl_802D6240;
-// extern ? lbl_802D6454;
-// extern ? lbl_802D6A54;
-// extern ? lbl_802D6A94;
-// extern ? lbl_802D6AA4;
-// extern ? lbl_802D6AB4;
-// extern ? lbl_802D6AC4;
-// extern ? lbl_802D6AD4;
-// extern ? lbl_802D6B14;
+// extern ? seqInstance;
+// extern ? seqMIDIPriority;
+// extern ? synthTicksPerSecond;
+// extern ? synthInfo;
+// extern ? synthMasterFader;
+// extern ? synthTrackVolume;
+// extern ? synthAuxAUser;
+// extern ? synthAuxACallback;
+// extern ? synthAuxBUser;
+// extern ? synthAuxBCallback;
+// extern ? synthGlobalVariable;
+// extern ? inpAuxB;
 // extern ? lbl_802D6D54;
 // extern ? lbl_802D6F98;
 // extern ? lbl_802D8798;
@@ -763,20 +747,20 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802E2998;
 // extern ? lbl_802E2DD0;
 // extern ? lbl_802E2DF0;
-// extern ? lbl_802E35F0;
-// extern ? lbl_802E3670;
+// extern ? synth_last_started;
+// extern ? synth_last_fxstarted;
 // extern ? lbl_802E3CB0;
-// extern ? lbl_802E3DB0;
+// extern ? gs;
 // extern ? lbl_802E41B0;
 // extern ? lbl_802E4890;
 // extern ? lbl_802E48E0;
-// extern ? lbl_802E4FB0;
-// extern ? lbl_802E5030;
+// extern ? midi_lastNote;
+// extern ? fx_lastNote;
 // extern ? lbl_802E5070;
 // extern ? lbl_802E9370;
 // extern ? lbl_802EB4F0;
 // extern ? lbl_802EB570;
-// extern ? lbl_802EB5B0;
+// extern ? inpGlobalMIDIDirtyFlags;
 // extern ? lbl_802EB7B0;
 // extern ? lbl_802EB830;
 // extern ? lbl_802EB870;
@@ -792,18 +776,18 @@ extern GXTexObj fontTexObj;
 // extern ? fragmentinfo;
 // extern ? lbl_802EE040;
 // extern ? lbl_802EE140;
-// extern ? lbl_802EE240;
-// extern ? lbl_802EE268;
-// extern ? lbl_802EE270;
-// extern ? lbl_802EFC20;
-// extern ? lbl_802EFC34;
-// extern ? lbl_802EFC38;
-// extern ? lbl_802EFC40;
-// extern ? lbl_802EFC44;
-// extern ? lbl_802EFCD8;
-// extern ? lbl_802EFCE8;
-// extern ? lbl_802EFD90;
-// extern ? lbl_802F01C0;
+// extern ? gTRKEventQueue;
+// extern ? gTRKBigEndian;
+// extern ? gTRKMsgBufs;
+// extern ? gTRKFramingState;
+// extern ? gTRKInputPendingPtr;
+// extern ? gTRKDispatchTableSize;
+// extern ? TRK_saved_exceptionID;
+// extern ? gTRKSaveState;
+// extern ? TRKvalue128_temp;
+// extern ? gTRKState;
+// extern ? gTRKCPUState;
+// extern ? TRK_mainError;
 // extern ? lbl_802F01C8;
 
 // .sdata section
@@ -817,9 +801,9 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802F0244;
 // extern ? lbl_802F0248;
 // extern ? lbl_802F02E0;
-// extern ? lbl_802F02E8;
-// extern ? lbl_802F02EC;
-// extern ? lbl_802F02F0;
+extern char lbl_802F02E8[8];  // unknown type
+extern s32 lbl_802F02EC;
+extern s32 lbl_802F02F0;
 // extern ? lbl_802F02F8;
 extern s8 lbl_802F0310[8];
 // extern ? lbl_802F03EC;
@@ -1188,36 +1172,43 @@ extern s32 lbl_802F1B98;
 extern OSHeapHandle lbl_802F1B9C;
 extern s8 lbl_802F1BA0;
 extern s8 lbl_802F1BA1;
-extern s32 lbl_802F1BA8;
-// extern ? lbl_802F1BAC;
-extern s32 lbl_802F1BB0;
-extern struct
-{
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-} lbl_802F1BB4;
-extern struct
-{
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-} lbl_802F1BBC;
-// extern ? lbl_802F1BC4;
-extern u32 lbl_802F1BC8;
-extern u32 lbl_802F1BCC;
 
 extern struct StageSelection stageSelection;
-// extern ? lbl_802F1BE8;
-// extern ? lbl_802F1BF0;
-// extern ? lbl_802F1BF4;
-// extern ? lbl_802F1BFC;
-// extern ? lbl_802F1C04;
-// extern ? lbl_802F1C0C;
-// extern ? lbl_802F1C0D;
-// extern ? lbl_802F1C10;
+extern struct
+{
+    u32 unk0;
+    u8 unk4;
+} lbl_802F1BE8;  // size = 0x8
+extern u32 lbl_802F1BF0;
+extern struct
+{
+    u8 unk0;
+    u8 unk1;
+    u8 filler2[2];
+    u32 unk4;
+} lbl_802F1BF4;  // size = 0x8
+extern struct
+{
+    u8 unk0;
+    u8 filler1[3];
+    u32 unk4;
+} lbl_802F1BFC;  // size = 0x8
+extern struct
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
+} lbl_802F1C04;  // size = 0x8
+extern u8 lbl_802F1C0C;
+extern u8 lbl_802F1C0D;
+extern struct
+{
+    u8 unk0;
+    u8 unk1;
+    s8 unk2;
+    u8 unk3;
+    u8 unk4[4];
+} lbl_802F1C10;  // size = 0x8
 // extern ? lbl_802F1C18;
 // extern ? lbl_802F1C1C;
 // extern ? lbl_802F1C20;
@@ -1256,7 +1247,7 @@ extern void **lbl_802F1CA4;
 // extern ? lbl_802F1CA8;
 // extern ? lbl_802F1CAC;
 // extern ? lbl_802F1CB0;
-// extern ? lbl_802F1CB8;
+extern struct GMA *lbl_802F1CB8;
 // extern ? lbl_802F1CBC;
 extern struct GMA *decodedBgGma;
 extern struct TPL *decodedBgTpl;
@@ -1349,18 +1340,18 @@ extern u32 lbl_802F1DF8;
 // extern ? lbl_802F1E58;
 // extern ? lbl_802F1EA8;
 extern s32 lbl_802F1EB0;
-// extern ? lbl_802F1EB4;
+extern s32 lbl_802F1EB4;
 extern float lbl_802F1EC4;
 extern float lbl_802F1EC8;
 extern float lbl_802F1ECC;
-// extern ? lbl_802F1ED0;
-// extern ? lbl_802F1ED2;
+extern u16 lbl_802F1ED0;
+extern u16 lbl_802F1ED2;
 // extern ? lbl_802F1ED4;
 extern u32 lbl_802F1ED8;
 extern u32 dipSwitches;
 extern u32 gamePauseStatus;
 
-extern struct Struct80034938 *motDat;
+extern struct MotDat *motDat;
 extern u32 lbl_802F1F08;
 extern u32 lbl_802F1F0C;
 extern void (*lbl_802F1F10)(void);
@@ -1399,16 +1390,16 @@ extern u32 lbl_802F1FA4;
 // extern ? lbl_802F1FBC;
 // extern ? lbl_802F1FC0;
 // extern ? lbl_802F1FC4;
-// extern ? lbl_802F1FC8;
+extern s16 lbl_802F1FC8;
 // extern ? lbl_802F1FD0;
 // extern ? lbl_802F1FD4;
 // extern ? lbl_802F1FD8;
 // extern ? lbl_802F1FDC;
 // extern ? lbl_802F1FE0;
 // extern ? lbl_802F1FE4;
-// extern ? lbl_802F1FF0;
+extern s32 lbl_802F1FF0;
 // extern ? lbl_802F1FF4;
-// extern ? lbl_802F1FF6;
+extern s16 lbl_802F1FF6;
 // extern ? lbl_802F1FF8;
 // extern ? lbl_802F1FFC;
 extern u32 lbl_802F2000;
@@ -1451,7 +1442,7 @@ extern u32 lbl_802F2000;
 // extern ? lbl_802F2090;
 // extern ? lbl_802F2094;
 // extern ? lbl_802F209C;
-extern struct Struct80034D88 *motInfo;
+extern struct MotInfo *motInfo;
 extern void *motSkeleton;
 extern s32 lbl_802F20AC;
 extern u32 *motLabel;
@@ -1466,7 +1457,7 @@ extern u32 *motLabel;
 // extern ? lbl_802F20D8;
 // extern ? lbl_802F20DC;
 // extern ? lbl_802F20E0;
-// extern ? lbl_802F20E4;
+// extern ? modelScale;
 // extern ? lbl_802F20E8;
 // extern ? lbl_802F20EC;
 // extern ? lbl_802F20F0;
@@ -1526,7 +1517,7 @@ extern OSFontHeader *lbl_802F21D4;
 extern void *LastSheet;
 extern s16 FontSize;
 extern s16 FontSpace;
-// extern ? lbl_802F21E0;
+// extern ? stageViewInfo;
 extern s32 lbl_802F21E8;
 extern float lbl_802F21EC;
 extern float lbl_802F21F0;
@@ -1811,7 +1802,7 @@ extern float lbl_802F21F0;
 // extern ? voiceFxRunning;
 // extern ? voiceListInsert;
 // extern ? voiceListRoot;
-// extern ? lbl_802F26C0;
+// extern ? sp;
 // extern ? dspARAMZeroBuffer;
 // extern ? dspCmdLastLoad;
 // extern ? dspCmdLastBase;

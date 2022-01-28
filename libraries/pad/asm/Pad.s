@@ -2490,6 +2490,7 @@ glabel string_PADSetSamplingRate__unknown_TV_format
 
 .section .sdata
 
+    .balign 8
 .global ResettingChan
 ResettingChan:
 	# ROM: 0x1EC0B8
@@ -2532,3 +2533,51 @@ glabel string_Pad_c
 	.asciz "Pad.c"
 	.balign 4
 	.4byte 0
+
+.section .sbss
+
+.global lbl_802F2468
+lbl_802F2468:
+	.skip 0x4
+.global EnabledBits
+EnabledBits:
+	.skip 0x4
+.global ResettingBits
+ResettingBits:
+	.skip 0x4
+.global ProbingBits
+ProbingBits:
+	.skip 0x4
+.global RecalibrateBits
+RecalibrateBits:
+	.skip 0x4
+.global WaitingBits
+WaitingBits:
+	.skip 0x4
+.global CheckingBits
+CheckingBits:
+	.skip 0x4
+.global cmdTypeAndStatus
+cmdTypeAndStatus:
+	.skip 0x4
+.global recalibrated
+recalibrated:
+	.skip 0x4
+.global __PADSpec
+__PADSpec:
+	.skip 0x4
+.global __PADFixBits
+__PADFixBits:
+	.skip 0x8
+
+.section .bss
+
+.global PADType
+PADType:
+	.skip 0x10
+.global Type
+Type:
+	.skip 0x10
+.global Origin
+Origin:
+	.skip 0x50

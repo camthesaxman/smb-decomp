@@ -3,10 +3,13 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
+#include "event.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
 #include "relocation.h"
+#include "sprite.h"
 
 char *gameModeRelNames[] =
 {
@@ -491,7 +494,7 @@ void gm_main(void)
     if ((modeCtrl.levelSetFlags & (1 << 9))
      && gameModeRequest != -1 && gameModeRequest != gameMode)
     {
-        minigame_unlink(&lbl_802F021C);
+        relocation_unload_module(&lbl_802F021C);
         modeCtrl.levelSetFlags &= ~(1 << 9);
     }
 
@@ -521,9 +524,9 @@ void gm_main(void)
     {
         if (lbl_802F021C.info == NULL)
         {
-            event_clear();
-            g_something_with_iteratively_freeing_memory();
-            minigame_link(gameModeRelNames[gameMode], &lbl_802F021C);
+            event_finish_all();
+            free_all_bitmap_groups_except_com();
+            relocation_load_module(gameModeRelNames[gameMode], &lbl_802F021C);
         }
         if (lbl_802F1B74 != 0)
             lbl_802F1B74();
@@ -665,7 +668,7 @@ void g_menu_input_debug(void)
         if ((gameMode == MD_GAME && (modeCtrl.levelSetFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
-            if (!(lbl_801F3D88[0] & (1<<(31-0x1B))))
+            if (!(lbl_801F3D88[0] & (1 << 4)))
                 bvar = FALSE;
         }
 
@@ -757,11 +760,11 @@ void g_menu_input_notdebug(void)
     switch (gameMode)
     {
     case MD_ADV:
-        if (!(modeCtrl.levelSetFlags & (1<<(31-0x1E)))
+        if (!(modeCtrl.levelSetFlags & (1 << 1))
          && gameSubmode == SMD_ADV_TITLE_MAIN
-         && (modeCtrl.levelSetFlags & (1<<(31-0x1D))))
+         && (modeCtrl.levelSetFlags & (1 << 2)))
         {
-            struct Sprite *sprite = g_find_sprite_with_probably_not_font(modeCtrl.unk10 + 12);
+            struct Sprite *sprite = find_sprite_with_tag(modeCtrl.unk10 + 12);
             if (sprite != NULL && sprite->unk10 > 0)
                 break;
             if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
@@ -803,9 +806,9 @@ void submode_dummy_func(void)
 
 static int unkFunc8000A0F4_inline(void)
 {
-    if (lbl_80290170.unk8 != 0)
+    if (screenFadeInfo.unk8 != 0)
         return FALSE;
-    if (lbl_801EEC68.unk4 & (1<<(31-0x1E)))
+    if (lbl_801EEC68.unk4 & (1 << 1))
         return FALSE;
     switch (gameSubmode)
     {

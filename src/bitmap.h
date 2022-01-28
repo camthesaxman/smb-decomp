@@ -17,6 +17,108 @@ enum BitmapGroupID
     BMP_ALL,
 };
 
+enum
+{
+    BMP_COM_ASCII,
+    BMP_COM_arrow,
+    BMP_COM_icon_button,
+    BMP_COM_icon_gol_00,
+    BMP_COM_icon_gol_afraid01,
+    BMP_COM_DUMMY05,
+    BMP_COM_asc_ball8x16_02,
+    BMP_COM_icon_gol_afraid02,
+    BMP_COM_icon_gol_afraid03,
+    BMP_COM_icon_gol_afraid04,
+    BMP_COM_icon_gol_afraid05,
+    BMP_COM_icon_gol_angry01,
+    BMP_COM_banana_01,
+    BMP_COM_copyright_02,
+    BMP_COM_icon_gol_angry02,
+    BMP_COM_icon_ape_00,
+    BMP_COM_icon_ape_afraid01,  // 0x10
+    BMP_COM_icon_ape_afraid02,
+    BMP_COM_icon_ape_afraid03,
+    BMP_COM_icon_ape_afraid04,
+    BMP_COM_icon_ape_afraid05,
+    BMP_COM_icon_ape_angry01,
+    BMP_COM_icon_ape_angry02,
+    BMP_COM_icon_ape_angry03,
+    BMP_COM_icon_ape_blink01,
+    BMP_COM_icon_ape_blink02,
+    BMP_COM_icon_ape_booing01,
+    BMP_COM_icon_ape_booing02,
+    BMP_COM_icon_ape_booing03,
+    BMP_COM_icon_ape_booing04,
+    BMP_COM_icon_ape_wakka,
+    BMP_COM_asc12x12,
+    BMP_COM_icon_gal_00,  // 0x20
+    BMP_COM_icon_gal_afraid01,
+    BMP_COM_icon_gal_afraid02,
+    BMP_COM_icon_gal_afraid03,
+    BMP_COM_icon_gal_afraid04,
+    BMP_COM_icon_gal_angry01,
+    BMP_COM_icon_gal_angry02,
+    BMP_COM_icon_gal_angry03,
+    BMP_COM_icon_gal_blink01,
+    BMP_COM_icon_gal_blink02,
+    BMP_COM_icon_gal_booing01,
+    BMP_COM_icon_gal_booing02,
+    BMP_COM_icon_gal_booing03,
+    BMP_COM_icon_gal_booing04,
+    BMP_COM_icon_gal_smile01,
+    BMP_COM_icon_gal_smile02,
+    BMP_COM_icon_gal_smile03,  // 0x30
+    BMP_COM_icon_gal_smile04,
+    BMP_COM_icon_gal_wakka,
+    BMP_COM_icon_kid_00,
+    BMP_COM_icon_kid_afraid01,
+    BMP_COM_icon_kid_afraid02,
+    BMP_COM_icon_kid_afraid03,
+    BMP_COM_icon_kid_angry01,
+    BMP_COM_icon_kid_angry02,
+    BMP_COM_icon_kid_angry03,
+    BMP_COM_icon_kid_blink01,
+    BMP_COM_icon_kid_blink02,
+    BMP_COM_icon_kid_booing01,
+    BMP_COM_icon_kid_booing02,
+    BMP_COM_icon_kid_booing03,
+    BMP_COM_icon_kid_booing04,
+    BMP_COM_icon_kid_smile01,  // 0x40
+    BMP_COM_icon_kid_smile02,
+    BMP_COM_icon_kid_wakka,
+    BMP_COM_icon_kmh_01,
+    BMP_COM_menu_kiwaku,
+    BMP_COM_icon_smile01,
+    BMP_COM_icon_smile02,
+    BMP_COM_icon_smile03,
+    BMP_COM_icon_smile04,
+    BMP_COM_mes_sake24x24,
+    BMP_COM_mes_waku24x24,
+    BMP_COM_white_mask8x8,
+    BMP_COM_frame,
+    BMP_COM_icon_gol_angry03,
+    BMP_COM_icon_gol_blink01,
+    BMP_COM_icon_gol_blink02,
+    BMP_COM_asc_tama72x64_new,  // 0x50
+    BMP_COM_icon_gol_booing01,
+    BMP_COM_str_sega,
+    BMP_COM_icon_gol_booing02,
+    BMP_COM_icon_gol_booing03,
+    BMP_COM_banana_10,
+    BMP_COM_icon_gol_booing04,
+    BMP_COM_icon_gol_smile01,
+    BMP_COM_game_icon_mph,
+    BMP_COM_menu_kiwaku_l,
+    BMP_COM_asc_jap24x24_new,
+    BMP_COM_icon_gol_smile02,
+    BMP_COM_icon_gol_smile03,
+    BMP_COM_icon_gol_smile04,
+    BMP_COM_icon_gol_wakka,
+    BMP_COM_menu_kiwaku_l2,
+};
+
+#define BITMAP_ID(group, bmp) (((group) << 8) | (bmp))
+
 enum Alignment
 {
     ALIGN_LT,
@@ -56,8 +158,8 @@ struct BitmapGroup
     /*0x14*/ OSHeapHandle heap;
 };
 
-extern s32 g_bmpUnkCountOfSomething;
-extern u32 lbl_802F1D04;
+extern s32 spriteParamsBufCount;
+extern s32 lbl_802F1D04;
 extern struct TPL *g_unkBitmapTPL;
 
 extern struct BitmapGroup bitmapGroups[];

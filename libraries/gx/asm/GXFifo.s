@@ -591,3 +591,27 @@ GXGetCPUFifo:
 GXGetGPFifo:
 /* 800DD788 000D96A8  80 6D A3 84 */	lwz r3, GPFifo@sda21(r13)
 /* 800DD78C 000D96AC  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global __GXCurrentThread
+__GXCurrentThread:
+	.skip 0x4
+.global CPGPLinked
+CPGPLinked:
+	.skip 0x4
+.global GXOverflowSuspendInProgress
+GXOverflowSuspendInProgress:
+	.skip 0x4
+.global BreakPointCB
+BreakPointCB:
+	.skip 0x4
+.global __GXOverflowCount
+__GXOverflowCount:
+	.skip 0x4
+.global GPFifo
+GPFifo:
+	.skip 0x4
+.global CPUFifo
+CPUFifo:
+	.skip 0x8

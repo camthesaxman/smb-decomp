@@ -6,12 +6,15 @@
 
 #include "global.h"
 #include "background.h"
+#include "bitmap.h"
 #include "ball.h"
 #include "camera.h"
+#include "event.h"
 #include "input.h"
 #include "mathutil.h"
 #include "load.h"
 #include "mode.h"
+#include "sprite.h"
 #include "stage.h"
 
 static int lbl_0000185D;
@@ -63,23 +66,23 @@ static void sel_stage_init(void)
     modeCtrl.unk2C = 0;
 
     func_8002FFEC();
-    event_clear();
-    g_something_with_iteratively_freeing_memory();
+    event_finish_all();
+    free_all_bitmap_groups_except_com();
     func_800569B4(loadingStageIdRequest);
     load_stage(loadingStageIdRequest);
-    call_something_with_bmp_bmp_com(5);
+    call_bitmap_load_group(BMP_NML);
     preload_stage_files(loadingStageIdRequest);
     lbl_0000185D = loadingStageIdRequest;
 
-    ev_run_init(EVENT_STAGE);
-    ev_run_init(EVENT_CAMERA);
-    ev_run_init(EVENT_SPRITE);
-    ev_run_init(EVENT_SOUND);
-    ev_run_init(EVENT_EFFECT);
-    ev_run_init(EVENT_ITEM);
-    ev_run_init(EVENT_STOBJ);
-    ev_run_init(EVENT_BACKGROUND);
-    ev_run_init(EVENT_REND_EFC);
+    event_start(EVENT_STAGE);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_SOUND);
+    event_start(EVENT_EFFECT);
+    event_start(EVENT_ITEM);
+    event_start(EVENT_STOBJ);
+    event_start(EVENT_BACKGROUND);
+    event_start(EVENT_REND_EFC);
 
     func_800972CC();
     camera_set_state(12);
@@ -89,8 +92,8 @@ static void sel_stage_init(void)
     dummy_func_C90();
     func_800668A0();
     loadingStageId = lbl_801F3A58.unk2E;
-    func_800732DC(0, 0, 30);
-    gameSubmodeRequest = 30;
+    g_start_screen_fade(0, 0, 30);
+    gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
 
 static void sel_stage_handle_input(void)
@@ -199,17 +202,17 @@ static void sel_stage_handle_input(void)
     loadingStageId = loadingStageIdRequest;
     if (lbl_0000185D != currStageId && !is_load_queue_not_empty())
     {
-        ev_run_dest(EVENT_EFFECT);
-        ev_run_dest(EVENT_ITEM);
-        ev_run_dest(EVENT_STOBJ);
-        ev_run_dest(EVENT_REND_EFC);
+        event_finish(EVENT_EFFECT);
+        event_finish(EVENT_ITEM);
+        event_finish(EVENT_STOBJ);
+        event_finish(EVENT_REND_EFC);
         func_800569B4(lbl_0000185D);
         load_stage(lbl_0000185D);
-        ev_run_init(EVENT_EFFECT);
-        ev_run_init(EVENT_ITEM);
-        ev_run_init(EVENT_STOBJ);
-        ev_run_init(EVENT_BACKGROUND);
-        ev_run_init(EVENT_REND_EFC);
+        event_start(EVENT_EFFECT);
+        event_start(EVENT_ITEM);
+        event_start(EVENT_STOBJ);
+        event_start(EVENT_BACKGROUND);
+        event_start(EVENT_REND_EFC);
         camera_set_state(12);
         func_800972CC();
     }

@@ -126,7 +126,7 @@ void g_math_unk16(Vec *a, Vec *b, float c);
 void mathutil_scale_ray(Vec *rayStart, Vec *rayEnd, Vec *outRayEnd, float scale);
 u16 mathutil_calc_crc16(s32 length, u8 *data);
 
-static inline s32 mathutil_floor_to_int(register float n)
+static inline float mathutil_floor(register float n)
 {
 #ifdef __MWERKS__
     s32 buf[2];
@@ -287,6 +287,35 @@ static inline void mathutil_get_mtxA_translate(Vec *v)
         lfs y, 0x1C(mtxA)  // mtxA[1][3]
         lfs z, 0x2C(mtxA)  // mtxA[2][3]
         stfs x, 0(_x)
+        stfs y, 0(_y)
+        stfs z, 0(_z)
+    }
+#else
+    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+#endif
+}
+
+static inline void mathutil_get_mtxA_translate_alt(register Vec *v)
+{
+#ifdef __MWERKS__
+    register float *mtxA;
+    register float *_x = &v->x;
+    register float *_y = &v->y;
+    register float *_z = &v->z;
+    register float x, y, z;
+
+    asm
+    {
+        //addi _x, v, 0
+        addi _y, v, 4
+        addi _z, v, 8
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x0C(mtxA)  // mtxA[0][3]
+        lfs y, 0x1C(mtxA)  // mtxA[1][3]
+        lfs z, 0x2C(mtxA)  // mtxA[2][3]
+        stfs x, 0(v)
         stfs y, 0(_y)
         stfs z, 0(_z)
     }

@@ -20,3 +20,6 @@ tools/lzss
 *.sw*
 *.dump
 __pycache__
+
+# Disc files
+GMBE8P/

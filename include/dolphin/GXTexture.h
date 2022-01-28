@@ -10,5 +10,6 @@ void GXLoadTexObj(GXTexObj *obj, GXTexMapID id);
 u32 GXGetTexBufferSize(u16 width, u16 height, u32 format, GXBool mipmap,
     u8 max_lod);
 void GXInvalidateTexAll(void);
+void GXInitTexObjWrapMode(GXTexObj *obj, GXTexWrapMode s, GXTexWrapMode t);
 
 #endif

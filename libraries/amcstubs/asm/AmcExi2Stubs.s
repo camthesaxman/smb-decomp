@@ -965,3 +965,26 @@ pucEXI2InputPending:
 	# ROM: 0x1EC210
 	.4byte 0x802F27D0  ;# ptr
 	.4byte 0
+
+.section .data
+
+.global lbl_801ED8F8
+lbl_801ED8F8:
+	# ROM: 0x1EA8F8
+glabel string_Can_t_select_EXI2_port__n
+	.asciz "Can't select EXI2 port!\n"
+
+.section .sbss
+
+.global fExi2Selected
+fExi2Selected:
+	.skip 0x4
+.global TRK_Callback
+TRK_Callback:
+	.skip 0x8
+
+.section .bss
+
+.global lbl_802F01C8
+lbl_802F01C8:
+	.skip 0x18

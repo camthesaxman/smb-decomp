@@ -442,7 +442,7 @@ PERFSetEvent:
 /* 800E509C 000E0FBC  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800E50A0 000E0FC0  54 68 25 36 */	rlwinm r8, r3, 4, 0x14, 0x1b
 /* 800E50A4 000E0FC4  38 C0 FF FF */	li r6, -1
-/* 800E50A8 000E0FC8  80 02 C0 80 */	lwz r0, lbl_802F6880-_SDA2_BASE_(r2)
+/* 800E50A8 000E0FC8  80 02 C0 80 */	lwz r0, lbl_802F6880@sda21(r2)
 /* 800E50AC 000E0FCC  80 ED A3 C8 */	lwz r7, PERFEvents@sda21(r13)
 /* 800E50B0 000E0FD0  90 01 00 14 */	stw r0, 0x14(r1)
 /* 800E50B4 000E0FD4  7C 87 41 2E */	stwx r4, r7, r8
@@ -1365,7 +1365,7 @@ PERFStartAutoSampling:
 /* 800E5E28 000E1D48  80 03 00 F8 */	lwz r0, 0x800000F8@l(r3)
 /* 800E5E2C 000E1D4C  3C 60 10 62 */	lis r3, 0x10624DD3@ha
 /* 800E5E30 000E1D50  38 63 4D D3 */	addi r3, r3, 0x10624DD3@l
-/* 800E5E34 000E1D54  C8 42 C0 88 */	lfd f2, lbl_802F6888-_SDA2_BASE_(r2)
+/* 800E5E34 000E1D54  C8 42 C0 88 */	lfd f2, lbl_802F6888@sda21(r2)
 /* 800E5E38 000E1D58  54 00 F0 BE */	srwi r0, r0, 2
 /* 800E5E3C 000E1D5C  7C 03 00 16 */	mulhwu r0, r3, r0
 /* 800E5E40 000E1D60  54 00 D1 BE */	srwi r0, r0, 6
@@ -1488,3 +1488,46 @@ CurrAutoSample:
 CurrToken:
 	# ROM: 0x1EC144
 	.byte 0x00, 0x00, 0xFF, 0xFF
+
+.section .sbss
+
+    .balign 8
+.global magic
+magic:
+	.skip 0x4
+.global PerfAlloc
+PerfAlloc:
+	.skip 0x4
+.global PerfFree
+PerfFree:
+	.skip 0x4
+.global DSCB
+DSCB:
+	.skip 0x4
+.global PERFCurrSample
+PERFCurrSample:
+	.skip 0x4
+.global PERFCurrFrame
+PERFCurrFrame:
+	.skip 0x4
+.global PERFEvents
+PERFEvents:
+	.skip 0x4
+.global PERFFrames
+PERFFrames:
+	.skip 0x4
+.global PERFNumSamples
+PERFNumSamples:
+	.skip 0x4
+.global PERFNumEvents
+PERFNumEvents:
+	.skip 0x4
+.global PERFNumFrames
+PERFNumFrames:
+	.skip 0x8
+
+.section .bss
+
+.global PERFAlarm
+PERFAlarm:
+	.skip 0x28

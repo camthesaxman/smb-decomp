@@ -22,7 +22,7 @@ void relocation_unused(void)
     printf("unresolved        %08xh\n", 0);
 }
 
-void minigame_link(char *name, struct MinigameLink *link)
+void relocation_load_module(char *name, struct MinigameLink *link)
 {
     DVDFileInfo file;
 
@@ -54,7 +54,7 @@ void minigame_link(char *name, struct MinigameLink *link)
     }
 }
 
-void minigame_unlink(struct MinigameLink *link)
+void relocation_unload_module(struct MinigameLink *link)
 {
     if (link->info != NULL)
     {

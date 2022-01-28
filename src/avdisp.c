@@ -40,7 +40,7 @@ float lbl_802F20F4;
 Func802F20F0 lbl_802F20F0;
 Func802F20EC lbl_802F20EC;
 s32 lbl_802F20E8;
-float lbl_802F20E4;
+float modelScale;
 u32 lbl_802F20E0;
 float lbl_802F20DC;
 float lbl_802F20D8;
@@ -183,7 +183,7 @@ void func_8008D788(void)
     lbl_802F20D8 = 1.0f;
     lbl_802F20D4 = 1.0f;
     lbl_802F20D0 = 1.0f;
-    lbl_802F20E4 = 1.0f;
+    modelScale = 1.0f;
     lbl_802F20DC = 1.0f;
     lbl_802F20E0 = 1;
     lbl_802F20F0 = NULL;
@@ -210,7 +210,7 @@ void g_avdisp_alloc_matrix_lists(int count)
     avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
-void func_8008D8D0(struct GMAModelHeader *a, Mtx **dest)
+void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
 {
     u8 i;
     int unused1;
@@ -545,7 +545,7 @@ void free_tpl(struct TPL *tpl)
 
 void g_avdisp_set_model_scale(float a)
 {
-    lbl_802F20E4 = a;
+    modelScale = a;
 }
 
 void g_avdisp_set_3_floats(float a, float b, float c)
@@ -557,9 +557,9 @@ void g_avdisp_set_3_floats(float a, float b, float c)
 
 void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
     {
-        lbl_802F20E4 = 1.0f;
+        modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
         lbl_802F20DC = 1.0f;
     }
@@ -569,9 +569,9 @@ void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
 
 void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
     {
-        lbl_802F20E4 = 1.0f;
+        modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
         lbl_802F20DC = 1.0f;
     }
@@ -581,9 +581,9 @@ void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
 
 void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
 {
-    if (func_80020FD0(&model->boundingSphereCenter, model->boundingSphereRadius, lbl_802F20E4) == 0)
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
     {
-        lbl_802F20E4 = 1.0f;
+        modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
         lbl_802F20DC = 1.0f;
     }
@@ -591,7 +591,7 @@ void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
         g_avdisp_draw_model_3(model);
 }
 
-void func_8008E564(float a)
+void g_avdisp_set_alpha(float a)
 {
     lbl_802F20DC = a;
 }
@@ -712,21 +712,21 @@ void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
     }
 }
 
-struct UnkStruct17
+struct DrawMeshDeferredNode
 {
     struct OrdTblNode node;
-    void *unk8;
-    Mtx unkC;
-    void *unk3C;
-    struct GMAMeshHeader *unk40;
+    struct GMAModelHeader *model;
+    Mtx mtx;
+    struct GMAMaterial *mtrl;
+    struct GMAMeshHeader *mesh;
     u32 unk44;
     u32 unk48;
     float unk4C;
     Func802F20EC unk50;
     Func802F20F0 unk54;
-    u8 unk58;
-    u8 unk59;
-    u32 unk5C;
+    u8 zCompEnable;
+    u8 zUpdEnable;
+    u32 zCompFunc;
     u8 unk60;
     u8 unk61;
     u8 unk62;
@@ -736,28 +736,28 @@ struct UnkStruct17
     u32 unk70;
 };
 
-static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
+static inline struct GMAMeshHeader *draw_mesh_deferred(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
 {
-    struct OrdTblNode *list;
+    struct OrdTblNode *entry;
     u32 r23 = lbl_802F20E8;
-    struct UnkStruct17 *node = ord_tbl_alloc_node(sizeof(*node));
+    struct DrawMeshDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (mesh->unk14 != 0xFF)
-        list = ord_tbl_get_entry_for_pos_offset_index(&mesh->unk30, -1);
+        entry = ord_tbl_get_entry_for_pos_offset_index(&mesh->unk30, -1);
     else
-        list = ord_tbl_get_entry_for_pos(&mesh->unk30);
-    node->node.drawFunc = (OrdTblDrawFunc)lbl_8008F528;
-    node->unk8 = model;
-    node->unk40 = mesh;
-    node->unk3C = mtrl;
+        entry = ord_tbl_get_entry_for_pos(&mesh->unk30);
+    node->node.drawFunc = (OrdTblDrawFunc)draw_mesh_deferred_callback;
+    node->model = model;
+    node->mesh = mesh;
+    node->mtrl = mtrl;
     node->unk44 = r23;
     node->unk48 = func_800223D0();
     node->unk4C = lbl_802F20DC;
     node->unk50 = lbl_802F20EC;
     node->unk54 = lbl_802F20F0;
-    node->unk58 = zModeCompareEnable;
-    node->unk59 = zModeUpdateEnable;
-    node->unk5C = zModeCompareFunc;
+    node->zCompEnable = zModeCompareEnable;
+    node->zUpdEnable = zModeUpdateEnable;
+    node->zCompFunc = zModeCompareFunc;
     node->unk60 = lbl_802F2108;
     node->unk61 = lbl_802F210C;
     node->unk62 = lbl_802F2114;
@@ -771,8 +771,8 @@ static inline struct GMAMeshHeader *func_8008E7AC_inline(struct GMAModelHeader *
     if (node->unk62 != 0)
         node->unk6C = lbl_802F2118;
     node->unk70 = lbl_802F211C;
-    mathutil_mtxA_to_mtx(node->unkC);
-    ord_tbl_insert_node(list, &node->node);
+    mathutil_mtxA_to_mtx(node->mtx);
+    ord_tbl_insert_node(entry, &node->node);
     return skip_mesh(mesh);
 }
 
@@ -796,14 +796,15 @@ void g_avdisp_draw_model_1(struct GMAModelHeader *model)
         for (i = 0; i < model->numLayer1Meshes; i++)
             mesh = draw_model_8008F914(model, mesh, mtrl);
         for (i = 0; i < model->numLayer2Meshes; i++)
-            mesh = func_8008E7AC_inline(model, mesh, mtrl);
+            mesh = draw_mesh_deferred(model, mesh, mtrl);
     }
 
-    lbl_802F20E4 = 1.0f;
+    modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
 }
 
+// for transparent objects?
 void g_avdisp_draw_model_2(struct GMAModelHeader *model)
 {
     struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
@@ -827,7 +828,7 @@ void g_avdisp_draw_model_2(struct GMAModelHeader *model)
             mesh = draw_model_8008F914(model, mesh, mtrl);
     }
 
-    lbl_802F20E4 = 1.0f;
+    modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
 }
@@ -846,11 +847,11 @@ void g_avdisp_draw_model_3(struct GMAModelHeader *model)
         func_8008FE44(model, mesh);
 
     for (i = 0; i < model->numLayer1Meshes; i++)
-        mesh = (void *)func_8008E7AC_inline(model, mesh, mtrl);
+        mesh = (void *)draw_mesh_deferred(model, mesh, mtrl);
     for (i = 0; i < model->numLayer2Meshes; i++)
-        mesh = (void *)func_8008E7AC_inline(model, mesh, mtrl);
+        mesh = (void *)draw_mesh_deferred(model, mesh, mtrl);
 
-    lbl_802F20E4 = 1.0f;
+    modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
 }
@@ -873,7 +874,7 @@ void g_avdisp_draw_model_4(struct GMAModelHeader *model)
             mesh = draw_model_8008F914(model, mesh, mtrl);
     }
 
-    lbl_802F20E4 = 1.0f;
+    modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     lbl_802F20DC = 1.0f;
 }
@@ -1064,7 +1065,7 @@ void g_iteratively_multiply_model_matrices(struct GMAModelHeader *model)
     func_8008F8A4(model->mtxIndexes);
 }
 
-void lbl_8008F528(struct UnkStruct17 *a)
+void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
 {
     Func802F20EC r31;
     Func802F20F0 r30;
@@ -1078,46 +1079,46 @@ void lbl_8008F528(struct UnkStruct17 *a)
     GXColor sp10;
     GXColor spC;
 
-    if ((a->unk40->renderFlags & 0x1) == 0)
-        func_800223D8(a->unk48);
-    g_gxutil_upload_some_mtx(a->unkC, 0);
-    mathutil_mtxA_from_mtx(a->unkC);
-    func_8009E094(a->unk44);
-    lbl_802F20E8 = a->unk44;
+    if ((node->mesh->renderFlags & 0x1) == 0)
+        func_800223D8(node->unk48);
+    g_gxutil_upload_some_mtx(node->mtx, 0);
+    mathutil_mtxA_from_mtx(node->mtx);
+    func_8009E094(node->unk44);
+    lbl_802F20E8 = node->unk44;
     r31 = lbl_802F20EC;
     r30 = lbl_802F20F0;
     r29 = zModeCompareEnable;
     r28 = zModeUpdateEnable;
     r27 = zModeCompareFunc;
     r26 = lbl_802F2108;
-    lbl_802F20DC = a->unk4C;
-    lbl_802F20EC = a->unk50;
-    lbl_802F20F0 = a->unk54;
-    zModeCompareEnable = a->unk58;
-    zModeUpdateEnable = a->unk59;
-    zModeCompareFunc = a->unk5C;
-    lbl_802F2108 = a->unk60;
-    if (a->unk60 != 0)
-        mathutil_mtx_copy(*a->unk64, lbl_802B4E6C);
+    lbl_802F20DC = node->unk4C;
+    lbl_802F20EC = node->unk50;
+    lbl_802F20F0 = node->unk54;
+    zModeCompareEnable = node->zCompEnable;
+    zModeUpdateEnable = node->zUpdEnable;
+    zModeCompareFunc = node->zCompFunc;
+    lbl_802F2108 = node->unk60;
+    if (node->unk60 != 0)
+        mathutil_mtx_copy(*node->unk64, lbl_802B4E6C);
     r25 = lbl_802F210C;
-    lbl_802F210C = a->unk61;
-    if (a->unk61 != 0)
+    lbl_802F210C = node->unk61;
+    if (node->unk61 != 0)
     {
         sp10 = lbl_802F2110;
-        lbl_802F2110 = a->unk68;
+        lbl_802F2110 = node->unk68;
     }
     r23 = lbl_802F2114;
-    lbl_802F2114 = a->unk62;
-    if (a->unk62 != 0)
+    lbl_802F2114 = node->unk62;
+    if (node->unk62 != 0)
     {
         spC = lbl_802F2118;
-        lbl_802F2118 = a->unk6C;
+        lbl_802F2118 = node->unk6C;
     }
     r22 = lbl_802F211C;
-    lbl_802F211C = a->unk70;
+    lbl_802F211C = node->unk70;
     if (lbl_802F20F0 == NULL)
-        func_8008FE44(a->unk8, (void *)a->unk40);
-    draw_model_8008F914(a->unk8, a->unk40, a->unk3C);
+        func_8008FE44(node->model, node->mesh);
+    draw_model_8008F914(node->model, node->mesh, node->mtrl);
     lbl_802F20EC = r31;
     lbl_802F20F0 = r30;
     zModeCompareEnable = r29;
@@ -1125,10 +1126,10 @@ void lbl_8008F528(struct UnkStruct17 *a)
     zModeCompareFunc = r27;
     lbl_802F2108 = r26;
     lbl_802F210C = r25;
-    if (a->unk61 != 0)
+    if (node->unk61 != 0)
         lbl_802F2110 = sp10;
     lbl_802F2114 = r23;
-    if (a->unk62 != 0)
+    if (node->unk62 != 0)
         lbl_802F2118 = spC;
     lbl_802F211C = r22;
     lbl_802F20DC = 1.0f;
@@ -1524,12 +1525,12 @@ void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
     lbl_802B4ECC.unk4C = 0;
     lbl_802B4ECC.unk50 = 0;
     lbl_802B4ECC.unk54 = 0;
-    mathutil_mtxA_tf_point(&model->boundingSphereCenter, &lbl_802B4ECC.unk58);
-    lbl_802B4ECC.unk58.z -= model->boundingSphereRadius;
+    mathutil_mtxA_tf_point(&model->boundsCenter, &lbl_802B4ECC.unk58);
+    lbl_802B4ECC.unk58.z -= model->boundsRadius;
     mathutil_vec_normalize_len(&lbl_802B4ECC.unk58);
 }
 
-void func_8009015C(void)
+void g_compute_texmtx0(void)
 {
     Point3d cameraPos = {0.0f, 0.0f, 0.0f};
     Vec cameraUp = {0.0f, 1.0f, 0.0f};
@@ -1552,7 +1553,7 @@ void func_8009015C(void)
     mathutil_mtxA_pop();
 }
 
-void func_80090268(void)
+void g_compute_texmtx1and2(void)
 {
     Point3d cameraPos = {0.0f, 0.0f, 0.0f};
     Point3d target;
@@ -2320,7 +2321,7 @@ void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     }
     if (lbl_802B4ECC.unk48 == 0)
     {
-        func_8009015C();
+        g_compute_texmtx0();
         lbl_802B4ECC.unk48 = 1;
     }
     func_8009F180(a->tevStage, 12);
@@ -2362,7 +2363,7 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     if (lbl_802B4ECC.unk4C == 0)
     {
         func_8009F430(&unknownTexObj, 0);
-        func_80090268();
+        g_compute_texmtx1and2();
         lbl_802B4ECC.unk4C = 1;
     }
     // unrolled loop?

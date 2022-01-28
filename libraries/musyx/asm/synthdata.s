@@ -2176,3 +2176,57 @@ lbl_800F2390:
 /* 800F2398 000EE2B8  38 21 00 08 */	addi r1, r1, 8
 /* 800F239C 000EE2BC  7C 08 03 A6 */	mtlr r0
 /* 800F23A0 000EE2C0  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global dataSmpSDirNum
+dataSmpSDirNum:
+	.skip 0x2
+.global dataCurveNum
+dataCurveNum:
+	.skip 0x2
+.global dataKeymapNum
+dataKeymapNum:
+	.skip 0x2
+.global dataLayerNum
+dataLayerNum:
+	.skip 0x2
+.global dataMacTotal
+dataMacTotal:
+	.skip 0x2
+.global dataFXGroupNum
+dataFXGroupNum:
+	.skip 0x2
+.global lbl_802F264C
+lbl_802F264C:
+	.skip 0x4
+.global lbl_802F2650
+lbl_802F2650:
+	.skip 0x4
+.global lbl_802F2654
+lbl_802F2654:
+	.skip 0x8
+.global lbl_802F265C
+lbl_802F265C:
+	.skip 0x4
+.global lbl_802F2660
+lbl_802F2660:
+	.skip 0x4
+.global lbl_802F2664
+lbl_802F2664:
+	.skip 0x4
+.global lbl_802F2668
+lbl_802F2668:
+	.skip 0x8
+.global lbl_802F2670
+lbl_802F2670:
+	.skip 0x4
+.global lbl_802F2674
+lbl_802F2674:
+	.skip 0x8
+.global lbl_802F267C
+lbl_802F267C:
+	.skip 0x4
+.global lbl_802F2680
+lbl_802F2680:
+	.skip 0x8

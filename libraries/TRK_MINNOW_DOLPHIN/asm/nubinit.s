@@ -31,8 +31,8 @@ lbl_80109C9C:
 lbl_80109CAC:
 /* 80109CAC 00105BCC  2C 1E 00 00 */	cmpwi r30, 0
 /* 80109CB0 00105BD0  40 82 00 40 */	bne lbl_80109CF0
-/* 80109CB4 00105BD4  3C 60 80 2F */	lis r3, lbl_802EFC34@ha
-/* 80109CB8 00105BD8  3B E3 FC 34 */	addi r31, r3, lbl_802EFC34@l
+/* 80109CB4 00105BD4  3C 60 80 2F */	lis r3, gTRKInputPendingPtr@ha
+/* 80109CB8 00105BD8  3B E3 FC 34 */	addi r31, r3, gTRKInputPendingPtr@l
 /* 80109CBC 00105BDC  3C 60 00 01 */	lis r3, 0x0000E100@ha
 /* 80109CC0 00105BE0  38 DF 00 00 */	addi r6, r31, 0
 /* 80109CC4 00105BE4  38 63 E1 00 */	addi r3, r3, 0x0000E100@l
@@ -92,9 +92,9 @@ TRKNubWelcome:
 
 .global TRKInitializeEndian
 TRKInitializeEndian:
-/* 80109D78 00105C98  3C 60 80 2F */	lis r3, lbl_802EE268@ha
+/* 80109D78 00105C98  3C 60 80 2F */	lis r3, gTRKBigEndian@ha
 /* 80109D7C 00105C9C  94 21 FF F0 */	stwu r1, -0x10(r1)
-/* 80109D80 00105CA0  38 A3 E2 68 */	addi r5, r3, lbl_802EE268@l
+/* 80109D80 00105CA0  38 A3 E2 68 */	addi r5, r3, gTRKBigEndian@l
 /* 80109D84 00105CA4  38 C0 00 01 */	li r6, 1
 /* 80109D88 00105CA8  90 C5 00 00 */	stw r6, 0(r5)
 /* 80109D8C 00105CAC  38 00 00 12 */	li r0, 0x12
@@ -134,3 +134,9 @@ glabel string_MetroTRK_for_Dolphin_v0_8
 	.asciz "MetroTRK for Dolphin v0.8"
 	.balign 4
 	.4byte 0
+
+.section .bss
+
+.global gTRKBigEndian
+gTRKBigEndian:
+	.skip 0x8

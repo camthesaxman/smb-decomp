@@ -1,5 +1,5 @@
 /**
- *  ord_tbl.c - Implements a system for drawing objects in order of depth
+ * ord_tbl.c - Implements a system for drawing objects in order of depth
  *
  * lbl_802F1B3C->entries is an array of OrdTblNodes that also form a linked list
  * with lbl_802F1B3C->firstEntry as a pointer to the first node of the list. The

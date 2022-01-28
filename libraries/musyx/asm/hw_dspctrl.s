@@ -3546,3 +3546,51 @@ lbl_801EA358:
 	.byte 0x0E, 0x74, 0x0E, 0x74
 	.byte 0x04, 0x5B, 0x00, 0x00
 	.4byte 0
+
+.section .sbss
+
+.global dspARAMZeroBuffer
+dspARAMZeroBuffer:
+	.skip 0x4
+.global dspCmdLastLoad
+dspCmdLastLoad:
+	.skip 0x4
+.global dspCmdLastBase
+dspCmdLastBase:
+	.skip 0x4
+.global dspCmdLastSize
+dspCmdLastSize:
+	.skip 0x4
+.global dspCmdCurBase
+dspCmdCurBase:
+	.skip 0x4
+.global dspCmdMaxPtr
+dspCmdMaxPtr:
+	.skip 0x4
+.global dspCmdPtr
+dspCmdPtr:
+	.skip 0x4
+.global dspCmdFirstSize
+dspCmdFirstSize:
+	.skip 0x4
+.global dspCmdList
+dspCmdList:
+	.skip 0x4
+.global dspHRTFOn
+dspHRTFOn:
+	.skip 0x4
+.global dspHrtfHistoryBuffer
+dspHrtfHistoryBuffer:
+	.skip 0x4
+.global dspSurround
+dspSurround:
+	.skip 0x4
+.global dspITDBuffer
+dspITDBuffer:
+	.skip 0x4
+.global dspVoice
+dspVoice:
+	.skip 0x4
+.global salMessageCallback
+salMessageCallback:
+	.skip 0x8

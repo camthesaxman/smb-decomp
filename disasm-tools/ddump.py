@@ -7,16 +7,15 @@ import sys
 import struct
 
 #startLabel = sys.argv[2]
-startLabel = 'lbl_80171B40'  # starting label
+startLabel = 'lbl_801BDFA0'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>bBBxffBBBB'
+structFmt = '>Ihxxfhhhhhxx'
 GXColorFmt = '{%i, %i, %i, %i}'
-#cFmt = '{ %u, %5d, %d, {%3.7g, %3.7g, %3.7g}},'
-cFmt = '{ %i, %i, %i, %3.7g, %3.7g, ' + GXColorFmt + '},'
+cFmt = '{ 0x%X, %i, %4.7g, %i, %i, %i, %i, %i },'
 dumping = False
 
 def print_struct(data):
-    print(cFmt % data)
+    print('    ' + (cFmt % data))
 
 def read_label(line):
     m = re.match(r'glabel\s+(\w+)', line)
@@ -31,7 +30,10 @@ def read_data(line):
     # .4byte
     m = re.match(r'\s*\.4byte\s+(\w+)', line)
     if m:
-        value = int(m.groups()[0], 0)
+        try:
+            value = int(m.groups()[0], 0)
+        except ValueError:
+            value = 0xDEADBEEF
         return bytearray(
             [(value >> 24) & 0xFF,
             (value >> 16) & 0xFF,
@@ -65,7 +67,8 @@ with open(sys.argv[1], 'r') as f:
                 continue
 
 #print(str(len(data)))
-
+print('struct ? %s[] =\n{' % startLabel)
 while len(data) >= structSize:
     print_struct(struct.unpack(structFmt, data[0:structSize]))
     data = data[structSize:]
+print('};')

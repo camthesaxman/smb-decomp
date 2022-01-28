@@ -4,10 +4,14 @@
 #include <dolphin/OSAlloc.h>
 #include <dolphin/OSCache.h>
 #include <dolphin/OSContext.h>
+#include <dolphin/OSInterrupt.h>
 #include <dolphin/OSModule.h>
+#include <dolphin/OSThread.h>
+#include <dolphin/OSMutex.h>
 #include <dolphin/OSFont.h>
 #include <dolphin/OSReset.h>
 #include <dolphin/OSResetSW.h>
+#include <dolphin/OSError.h>
 
 typedef s64 OSTime;
 typedef u32 OSTick;
@@ -38,6 +42,8 @@ typedef struct OSCalendarTime
 OSTick OSGetTick(void);
 OSTime OSGetTime(void);
 void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
+BOOL OSDisableInterrupts(void);
+BOOL OSRestoreInterrupts(BOOL level);
 
 void OSReport(char *, ...);
 void OSPanic(char *file, int line, char *msg, ...);

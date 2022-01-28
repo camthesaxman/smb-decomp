@@ -45,10 +45,25 @@ struct NaomiModel
 {
     /*0x00*/ s32 unk0;
     /*0x04*/ u32 flags;
-    /*0x08*/ Vec unk8;
-    /*0x14*/ float unk14;
+    /*0x08*/ Vec boundsCenter;
+    /*0x14*/ float boundsRadius;
     /*0x18*/ u8 meshStart[];  // meshes immediately follow the Model struct
 };
+
+struct NaomiModelHeader_child
+{
+    u32 modelSize;
+};
+
+// immediately before the NaomiModel struct
+// use the NLMODEL_HEADER macro to access it.
+struct NaomiModelHeader
+{
+    /*-0x08*/ s8 *unk0;
+    /*-0x04*/ struct NaomiModelHeader_child *unk4;
+};
+
+#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
 
 struct NaomiObj_UnkChild_Child
 {
@@ -69,28 +84,28 @@ struct NaomiObj
     struct NaomiModel *modelPtrs[];  // array of pointers to the models
 };
 
-#define NAOMIOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
+#define NLOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
 
 // ? func_80030AF8();
-// ? func_80030B68();
-void func_80030BA8(float);
+// ? nl2ngc_draw_line_deferred();
+void g_nl2ngc_set_scale(float);
 void func_80030BB8(float r, float g, float b);
 BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
 BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl);
 void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
 void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *);
 void g_draw_naomi_model_1(struct NaomiModel *model);
-// ? func_800314B8();
-// ? g_draw_naomi_model_2();
+// ? g_draw_naomi_model_with_alpha_deferred();
+void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float b);
 void func_80031764(struct NaomiModel *a);
 void g_call_draw_naomi_model_1(struct NaomiModel *a);
 void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end);
 void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end);
 void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *);
 void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end);
-void func_80033AD4(struct NaomiModel *model);
+void g_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model);
 void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model);
-void func_80033B14(struct NaomiModel *model, float b);
+void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b);
 // ? g_nl2ngc_set_light_mask();
 // ? g_nl2ngc_set_ambient_color();
 void func_80033B50(int);
@@ -99,5 +114,5 @@ void g_nl2ngc_set_some_other_color(int r, int g, int b);
 void g_draw_naomi_model_3(struct NaomiModel *);
 void g_draw_naomi_model_4(struct NaomiModel *);
 void g_draw_naomi_model_5(struct NaomiModel *);
-void g_draw_naomi_model_6(struct NaomiModel *a, int (*func)());
+void g_draw_naomi_model_with_mesh_func(struct NaomiModel *a, int (*func)());
 void func_800341B8(void);

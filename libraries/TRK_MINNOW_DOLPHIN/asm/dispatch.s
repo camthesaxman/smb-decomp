@@ -4,9 +4,9 @@
 
 .global TRKInitializeDispatcher
 TRKInitializeDispatcher:
-/* 8010A828 00106748  3C 60 80 2F */	lis r3, lbl_802EFC38@ha
+/* 8010A828 00106748  3C 60 80 2F */	lis r3, gTRKDispatchTableSize@ha
 /* 8010A82C 0010674C  38 00 00 20 */	li r0, 0x20
-/* 8010A830 00106750  90 03 FC 38 */	stw r0, lbl_802EFC38@l(r3)
+/* 8010A830 00106750  90 03 FC 38 */	stw r0, gTRKDispatchTableSize@l(r3)
 /* 8010A834 00106754  38 60 00 00 */	li r3, 0
 /* 8010A838 00106758  4E 80 00 20 */	blr
 
@@ -24,9 +24,9 @@ TRKDispatchMessage:
 /* 8010A860 00106780  38 7E 00 00 */	addi r3, r30, 0
 /* 8010A864 00106784  38 81 00 08 */	addi r4, r1, 8
 /* 8010A868 00106788  4B FF FB 21 */	bl TRKReadBuffer1_ui8
-/* 8010A86C 0010678C  3C 60 80 2F */	lis r3, lbl_802EFC38@ha
+/* 8010A86C 0010678C  3C 60 80 2F */	lis r3, gTRKDispatchTableSize@ha
 /* 8010A870 00106790  88 81 00 08 */	lbz r4, 8(r1)
-/* 8010A874 00106794  80 03 FC 38 */	lwz r0, lbl_802EFC38@l(r3)
+/* 8010A874 00106794  80 03 FC 38 */	lwz r0, gTRKDispatchTableSize@l(r3)
 /* 8010A878 00106798  7C 04 00 40 */	cmplw r4, r0
 /* 8010A87C 0010679C  40 80 00 28 */	bge lbl_8010A8A4
 /* 8010A880 001067A0  3C 60 80 1F */	lis r3, lbl_801ED7A8@ha
@@ -46,3 +46,49 @@ lbl_8010A8A4:
 /* 8010A8B4 001067D4  80 01 00 04 */	lwz r0, 4(r1)
 /* 8010A8B8 001067D8  7C 08 03 A6 */	mtlr r0
 /* 8010A8BC 001067DC  4E 80 00 20 */	blr
+
+.section .data
+
+.global lbl_801ED7A8
+lbl_801ED7A8:
+	# ROM: 0x1EA7A8
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoConnect  ;# ptr
+	.4byte TRKDoDisconnect  ;# ptr
+	.4byte TRKDoReset  ;# ptr
+	.4byte TRKDoVersions  ;# ptr
+	.4byte TRKDoSupportmedia  ;# ptr
+	.4byte TRKDoCPUType  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoReadMemory  ;# ptr
+	.4byte TRKDoWriteMemory  ;# ptr
+	.4byte TRKDoReadRegisters  ;# ptr
+	.4byte TRKDoWriteRegisters  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoFlushCache  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoContinue  ;# ptr
+	.4byte TRKDoStep  ;# ptr
+	.4byte TRKDoStop  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte TRKDoUnsupported  ;# ptr
+	.4byte 0
+	.4byte 0
+
+.section .bss
+
+.global gTRKDispatchTableSize
+gTRKDispatchTableSize:
+	.skip 0x8

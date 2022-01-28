@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <NMWException.h>
 
-extern DestructorChain *__global_destructor_chain;
+DestructorChain *__global_destructor_chain;
 
 void __destroy_global_chain(void)
 {

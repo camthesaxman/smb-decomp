@@ -642,9 +642,9 @@ voiceAllocate:
 /* 800F671C 000F263C  40 82 04 20 */	bne lbl_800F6B3C
 /* 800F6720 000F2640  54 C0 06 3F */	clrlwi. r0, r6, 0x18
 /* 800F6724 000F2644  41 82 00 44 */	beq lbl_800F6768
-/* 800F6728 000F2648  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800F6728 000F2648  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800F672C 000F264C  88 0D A4 D7 */	lbz r0, voiceFxRunning@sda21(r13)
-/* 800F6730 000F2650  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800F6730 000F2650  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800F6734 000F2654  89 47 02 12 */	lbz r10, 0x212(r7)
 /* 800F6738 000F2658  39 20 00 00 */	li r9, 0
 /* 800F673C 000F265C  7C 00 50 40 */	cmplw r0, r10
@@ -660,9 +660,9 @@ lbl_800F6754:
 /* 800F6760 000F2680  40 81 01 C0 */	ble lbl_800F6920
 /* 800F6764 000F2684  48 00 00 40 */	b lbl_800F67A4
 lbl_800F6768:
-/* 800F6768 000F2688  3C E0 80 2D */	lis r7, lbl_802D6240@ha
+/* 800F6768 000F2688  3C E0 80 2D */	lis r7, synthInfo@ha
 /* 800F676C 000F268C  88 0D A4 D6 */	lbz r0, voiceMusicRunning@sda21(r13)
-/* 800F6770 000F2690  38 E7 62 40 */	addi r7, r7, lbl_802D6240@l
+/* 800F6770 000F2690  38 E7 62 40 */	addi r7, r7, synthInfo@l
 /* 800F6774 000F2694  89 47 02 11 */	lbz r10, 0x211(r7)
 /* 800F6778 000F2698  39 20 00 00 */	li r9, 0
 /* 800F677C 000F269C  7C 00 50 40 */	cmplw r0, r10
@@ -1017,10 +1017,10 @@ lbl_800F6C14:
 .global synthInitAllocationAids
 synthInitAllocationAids:
 /* 800F6C30 000F2B50  94 21 FF E0 */	stwu r1, -0x20(r1)
-/* 800F6C34 000F2B54  3C 60 80 2D */	lis r3, lbl_802D6240@ha
+/* 800F6C34 000F2B54  3C 60 80 2D */	lis r3, synthInfo@ha
 /* 800F6C38 000F2B58  3C 80 80 2E */	lis r4, lbl_802E2DF0@ha
 /* 800F6C3C 000F2B5C  93 E1 00 1C */	stw r31, 0x1c(r1)
-/* 800F6C40 000F2B60  38 63 62 40 */	addi r3, r3, lbl_802D6240@l
+/* 800F6C40 000F2B60  38 63 62 40 */	addi r3, r3, synthInfo@l
 /* 800F6C44 000F2B64  39 84 2D F0 */	addi r12, r4, lbl_802E2DF0@l
 /* 800F6C48 000F2B68  93 C1 00 18 */	stw r30, 0x18(r1)
 /* 800F6C4C 000F2B6C  3B E0 00 00 */	li r31, 0
@@ -1459,12 +1459,12 @@ lbl_800F7254:
 .global synthKillVoicesByMacroReferences
 synthKillVoicesByMacroReferences:
 /* 800F7278 000F3198  7C 08 02 A6 */	mflr r0
-/* 800F727C 000F319C  3C 80 80 2D */	lis r4, lbl_802D6240@ha
+/* 800F727C 000F319C  3C 80 80 2D */	lis r4, synthInfo@ha
 /* 800F7280 000F31A0  90 01 00 04 */	stw r0, 4(r1)
 /* 800F7284 000F31A4  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 800F7288 000F31A8  BF 61 00 14 */	stmw r27, 0x14(r1)
 /* 800F728C 000F31AC  3B 83 00 00 */	addi r28, r3, 0
-/* 800F7290 000F31B0  3B 64 62 40 */	addi r27, r4, lbl_802D6240@l
+/* 800F7290 000F31B0  3B 64 62 40 */	addi r27, r4, synthInfo@l
 /* 800F7294 000F31B4  48 00 01 04 */	b lbl_800F7398
 lbl_800F7298:
 /* 800F7298 000F31B8  3B A0 00 00 */	li r29, 0
@@ -1562,8 +1562,8 @@ voiceIsLastStarted:
 /* 800F73D8 000F32F8  54 86 06 3E */	clrlwi r6, r4, 0x18
 /* 800F73DC 000F32FC  28 00 00 FF */	cmplwi r0, 0xff
 /* 800F73E0 000F3300  40 82 00 24 */	bne lbl_800F7404
-/* 800F73E4 000F3304  3C 60 80 2E */	lis r3, lbl_802E3670@ha
-/* 800F73E8 000F3308  38 03 36 70 */	addi r0, r3, lbl_802E3670@l
+/* 800F73E4 000F3304  3C 60 80 2E */	lis r3, synth_last_fxstarted@ha
+/* 800F73E8 000F3308  38 03 36 70 */	addi r0, r3, synth_last_fxstarted@l
 /* 800F73EC 000F330C  7C 60 32 14 */	add r3, r0, r6
 /* 800F73F0 000F3310  88 03 00 00 */	lbz r0, 0(r3)
 /* 800F73F4 000F3314  7C 00 30 40 */	cmplw r0, r6
@@ -1571,9 +1571,9 @@ voiceIsLastStarted:
 /* 800F73FC 000F331C  38 60 00 01 */	li r3, 1
 /* 800F7400 000F3320  4E 80 00 20 */	blr
 lbl_800F7404:
-/* 800F7404 000F3324  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
+/* 800F7404 000F3324  3C 60 80 2E */	lis r3, synth_last_started@ha
 /* 800F7408 000F3328  54 04 20 36 */	slwi r4, r0, 4
-/* 800F740C 000F332C  38 03 35 F0 */	addi r0, r3, lbl_802E35F0@l
+/* 800F740C 000F332C  38 03 35 F0 */	addi r0, r3, synth_last_started@l
 /* 800F7410 000F3330  7C 00 22 14 */	add r0, r0, r4
 /* 800F7414 000F3334  7C 60 2A 14 */	add r3, r0, r5
 /* 800F7418 000F3338  88 03 00 00 */	lbz r0, 0(r3)
@@ -1598,15 +1598,15 @@ voiceSetLastStarted:
 /* 800F7454 000F3374  54 86 06 3E */	clrlwi r6, r4, 0x18
 /* 800F7458 000F3378  28 00 00 FF */	cmplwi r0, 0xff
 /* 800F745C 000F337C  40 82 00 18 */	bne lbl_800F7474
-/* 800F7460 000F3380  3C 60 80 2E */	lis r3, lbl_802E3670@ha
-/* 800F7464 000F3384  38 03 36 70 */	addi r0, r3, lbl_802E3670@l
+/* 800F7460 000F3380  3C 60 80 2E */	lis r3, synth_last_fxstarted@ha
+/* 800F7464 000F3384  38 03 36 70 */	addi r0, r3, synth_last_fxstarted@l
 /* 800F7468 000F3388  7C 60 32 14 */	add r3, r0, r6
 /* 800F746C 000F338C  98 C3 00 00 */	stb r6, 0(r3)
 /* 800F7470 000F3390  4E 80 00 20 */	blr
 lbl_800F7474:
-/* 800F7474 000F3394  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
+/* 800F7474 000F3394  3C 60 80 2E */	lis r3, synth_last_started@ha
 /* 800F7478 000F3398  54 04 20 36 */	slwi r4, r0, 4
-/* 800F747C 000F339C  38 03 35 F0 */	addi r0, r3, lbl_802E35F0@l
+/* 800F747C 000F339C  38 03 35 F0 */	addi r0, r3, synth_last_started@l
 /* 800F7480 000F33A0  7C 00 22 14 */	add r0, r0, r4
 /* 800F7484 000F33A4  7C 60 2A 14 */	add r3, r0, r5
 /* 800F7488 000F33A8  98 C3 00 00 */	stb r6, 0(r3)
@@ -1625,8 +1625,8 @@ voiceResetLastStarted:
 /* 800F74B0 000F33D0  54 86 06 3E */	clrlwi r6, r4, 0x18
 /* 800F74B4 000F33D4  28 00 00 FF */	cmplwi r0, 0xff
 /* 800F74B8 000F33D8  40 82 00 28 */	bne lbl_800F74E0
-/* 800F74BC 000F33DC  3C 60 80 2E */	lis r3, lbl_802E3670@ha
-/* 800F74C0 000F33E0  38 03 36 70 */	addi r0, r3, lbl_802E3670@l
+/* 800F74BC 000F33DC  3C 60 80 2E */	lis r3, synth_last_fxstarted@ha
+/* 800F74C0 000F33E0  38 03 36 70 */	addi r0, r3, synth_last_fxstarted@l
 /* 800F74C4 000F33E4  7C 60 32 14 */	add r3, r0, r6
 /* 800F74C8 000F33E8  88 03 00 00 */	lbz r0, 0(r3)
 /* 800F74CC 000F33EC  7C 00 30 40 */	cmplw r0, r6
@@ -1635,9 +1635,9 @@ voiceResetLastStarted:
 /* 800F74D8 000F33F8  98 03 00 00 */	stb r0, 0(r3)
 /* 800F74DC 000F33FC  4E 80 00 20 */	blr
 lbl_800F74E0:
-/* 800F74E0 000F3400  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
+/* 800F74E0 000F3400  3C 60 80 2E */	lis r3, synth_last_started@ha
 /* 800F74E4 000F3404  54 04 20 36 */	slwi r4, r0, 4
-/* 800F74E8 000F3408  38 03 35 F0 */	addi r0, r3, lbl_802E35F0@l
+/* 800F74E8 000F3408  38 03 35 F0 */	addi r0, r3, synth_last_started@l
 /* 800F74EC 000F340C  7C 00 22 14 */	add r0, r0, r4
 /* 800F74F0 000F3410  7C 60 2A 14 */	add r3, r0, r5
 /* 800F74F4 000F3414  88 03 00 00 */	lbz r0, 0(r3)
@@ -1650,9 +1650,9 @@ lbl_800F74E0:
 .global voiceInitLastStarted
 voiceInitLastStarted:
 /* 800F750C 000F342C  38 00 00 04 */	li r0, 4
-/* 800F7510 000F3430  3C 60 80 2E */	lis r3, lbl_802E35F0@ha
+/* 800F7510 000F3430  3C 60 80 2E */	lis r3, synth_last_started@ha
 /* 800F7514 000F3434  7C 09 03 A6 */	mtctr r0
-/* 800F7518 000F3438  38 83 35 F0 */	addi r4, r3, lbl_802E35F0@l
+/* 800F7518 000F3438  38 83 35 F0 */	addi r4, r3, synth_last_started@l
 /* 800F751C 000F343C  38 A0 00 00 */	li r5, 0
 lbl_800F7520:
 /* 800F7520 000F3440  38 00 00 FF */	li r0, 0xff
@@ -1692,8 +1692,8 @@ lbl_800F7520:
 /* 800F75A8 000F34C8  98 04 00 0F */	stb r0, 0xf(r4)
 /* 800F75AC 000F34CC  38 84 00 10 */	addi r4, r4, 0x10
 /* 800F75B0 000F34D0  42 00 FF 70 */	bdnz lbl_800F7520
-/* 800F75B4 000F34D4  3C 60 80 2E */	lis r3, lbl_802E3670@ha
-/* 800F75B8 000F34D8  9C 03 36 70 */	stbu r0, lbl_802E3670@l(r3)
+/* 800F75B4 000F34D4  3C 60 80 2E */	lis r3, synth_last_fxstarted@ha
+/* 800F75B8 000F34D8  9C 03 36 70 */	stbu r0, synth_last_fxstarted@l(r3)
 /* 800F75BC 000F34DC  98 03 00 01 */	stb r0, 1(r3)
 /* 800F75C0 000F34E0  98 03 00 02 */	stb r0, 2(r3)
 /* 800F75C4 000F34E4  98 03 00 03 */	stb r0, 3(r3)
@@ -1758,3 +1758,48 @@ lbl_800F7520:
 /* 800F76B0 000F35D0  98 03 00 3E */	stb r0, 0x3e(r3)
 /* 800F76B4 000F35D4  98 03 00 3F */	stb r0, 0x3f(r3)
 /* 800F76B8 000F35D8  4E 80 00 20 */	blr
+
+.section .sbss
+
+.global vidCurrentId
+vidCurrentId:
+	.skip 0x4
+.global vidRoot
+vidRoot:
+	.skip 0x4
+.global vidFree
+vidFree:
+	.skip 0x4
+.global voicePrioSortRootListRoot
+voicePrioSortRootListRoot:
+	.skip 0x2
+.global voiceMusicRunning
+voiceMusicRunning:
+	.skip 0x1
+.global voiceFxRunning
+voiceFxRunning:
+	.skip 0x1
+.global voiceListInsert
+voiceListInsert:
+	.skip 0x1
+.global voiceListRoot
+voiceListRoot:
+	.skip 0x7
+
+.section .bss
+
+.global lbl_802E2DD0
+lbl_802E2DD0:
+	.skip 0x20
+.global lbl_802E2DF0
+lbl_802E2DF0:
+	.skip 0x800
+.global synth_last_started
+synth_last_started:
+	.skip 0x80
+.global synth_last_fxstarted
+synth_last_fxstarted:
+	.skip 0x640
+.global lbl_802E3CB0
+lbl_802E3CB0:
+	.skip 0x100

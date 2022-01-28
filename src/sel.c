@@ -3,8 +3,10 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "event.h"
 #include "mode.h"
 #include "relocation.h"
+#include "sprite.h"
 
 struct StageSelection stageSelection;
 struct MinigameLink lbl_802F1BD8;
@@ -113,9 +115,9 @@ char *selSubmodeRelNames[] =
 
 void submode_sel_init_func(void)
 {
-    event_clear();
-    g_something_with_iteratively_freeing_memory();
-    minigame_link(selSubmodeRelNames[gameSubmode - SMD_SEL_TOP], &lbl_802F1BD8);
+    event_finish_all();
+    free_all_bitmap_groups_except_com();
+    relocation_load_module(selSubmodeRelNames[gameSubmode - SMD_SEL_TOP], &lbl_802F1BD8);
     lbl_802F1B7C = unload_sel_submode_rel;
 }
 
@@ -137,5 +139,5 @@ void unload_sel_submode_rel(void)
     lbl_802F1BD4 = NULL;
     minigameRelBallCallback = NULL;
     minigameRelCameraCallback = NULL;
-    minigame_unlink(&lbl_802F1BD8);
+    relocation_unload_module(&lbl_802F1BD8);
 }

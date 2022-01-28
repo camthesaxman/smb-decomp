@@ -659,3 +659,21 @@ glabel string___DSP_add_task_____Added_task______0x_08X_n
 	.asciz "__DSP_add_task() : Added task    : 0x%08X\n"
 	.balign 4
 	.4byte 0
+
+.section .sbss
+
+.global __DSP_curr_task
+__DSP_curr_task:
+	.skip 0x4
+.global __DSP_last_task
+__DSP_last_task:
+	.skip 0x4
+.global __DSP_first_task
+__DSP_first_task:
+	.skip 0x8
+.global __DSP_rude_task_pending
+__DSP_rude_task_pending:
+	.skip 0x4
+.global __DSP_rude_task
+__DSP_rude_task:
+	.skip 0x4

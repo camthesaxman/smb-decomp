@@ -4,8 +4,8 @@
 
 .global PSVECNormalize
 PSVECNormalize:
-/* 800CA858 000C6778  C0 02 BF 58 */	lfs f0, lbl_802F6758-_SDA2_BASE_(r2)
-/* 800CA85C 000C677C  C0 22 BF 5C */	lfs f1, lbl_802F675C-_SDA2_BASE_(r2)
+/* 800CA858 000C6778  C0 02 BF 58 */	lfs f0, lbl_802F6758@sda21(r2)
+/* 800CA85C 000C677C  C0 22 BF 5C */	lfs f1, lbl_802F675C@sda21(r2)
 /* 800CA860 000C6780  E0 43 00 00 */	psq_l f2, 0(r3), 0, qr0
 /* 800CA864 000C6784  10 A2 00 B2 */	ps_mul f5, f2, f2
 /* 800CA868 000C6788  E0 63 80 08 */	psq_l f3, 8(r3), 1, qr0

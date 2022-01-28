@@ -24,7 +24,10 @@ struct Ball_child
     Quaternion unk60;
     u8 filler70[0x74-0x70];
     u32 unk74;
-    u8 filler78[0xB4-0x78];
+    u8 filler78[0xA0-0x78];
+    Vec unkA0;
+    float unkAC;
+    u8 fillerB0[4];
     u32 unkB4;
     u8 fillerB8[0xC0-0xB8];
     s8 unkC0;
@@ -40,7 +43,7 @@ enum
     BALL_FLAG_01 = 1 << 1,
     BALL_FLAG_02 = 1 << 2,
     BALL_FLAG_03 = 1 << 3,
-    BALL_FLAG_04 = 1 << 4,
+    BALL_FLAG_INVISIBLE = 1 << 4,
     BALL_FLAG_05 = 1 << 5,
     BALL_FLAG_06 = 1 << 6,
     BALL_FLAG_07 = 1 << 7,
@@ -140,13 +143,13 @@ extern struct Ball ballInfo[];
 extern s32 lbl_80206BC0[4];
 extern s32 lbl_80206BD0[];
 
-// ? func_8003699C();
-// ? func_80036CAC();
-// ? func_80036EB8();
+void func_8003699C(struct Ball_child *a);
+float func_80036CAC(struct Ball_child *a);
+void func_80036EB8(struct Ball_child *a);
 // ? func_80037098();
-// ? func_8003721C();
-// ? func_8003765C();
-// ? func_80037718();
+void func_8003721C(struct Ball_child *a, float b);
+void func_8003765C(struct Ball_child *a);
+void func_80037718();
 // ? func_80037B1C();
 // ? func_80037B20();
 void ev_ball_init(void);
@@ -154,10 +157,10 @@ void ev_ball_init(void);
 void ev_ball_main(void);
 void func_80038528(struct Ball *);
 void ev_ball_dest(void);
-void func_80038840(void);
+void ball_draw(void);
 void func_80038AB4(void);
 void func_80038DF4(void);
-// ? give_bananas();
+void give_bananas(int bananas);
 void func_800390C8(int, Vec *, float);
 // ? func_80039410();
 void func_800394C4(struct Ball *);
@@ -180,7 +183,7 @@ void ball_func_16(struct Ball *);
 void ball_func_18(struct Ball *);
 void ball_func_19(struct Ball *);
 void ball_func_20(struct Ball *);
-void ball_func_21(struct Ball *);
+void ball_func_demo_init(struct Ball *);
 void ball_func_mini(struct Ball *);
 void ball_func_27(struct Ball *);
 void ball_func_28(struct Ball *);
@@ -201,4 +204,4 @@ void func_8003CDB0(struct Ball *);
 void func_8003CDC0(struct Ball *);
 void func_8003D3C4(struct Ball *);
 void animate_ball_size_change(struct Ball *);
-// ? g_ball_draw();
+// ? draw_ball_hemispheres();

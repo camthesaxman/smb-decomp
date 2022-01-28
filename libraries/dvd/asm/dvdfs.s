@@ -842,8 +842,30 @@ glabel string_DVDPrepareStream____The_area_specified__offset_0x_x___length_0x_x_
 
 .section .sdata
 
+    .balign 8
 .global lbl_802F1958
 lbl_802F1958:
 	# ROM: 0x1EC098
 glabel string_dvdfs_c
 	.asciz "dvdfs.c"
+
+.section .sbss
+
+.global _DVDFS_BootInfo
+_DVDFS_BootInfo:
+	.skip 0x4
+.global FstStart
+FstStart:
+	.skip 0x4
+.global FstStringStart
+FstStringStart:
+	.skip 0x4
+.global MaxEntryNum
+MaxEntryNum:
+	.skip 0x4
+.global currentDirectory
+currentDirectory:
+	.skip 0x4
+.global __DVDLongFileNameFlag
+__DVDLongFileNameFlag:
+	.skip 0x4

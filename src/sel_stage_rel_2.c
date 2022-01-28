@@ -6,6 +6,7 @@
 #include "global.h"
 #include "bitmap.h"
 #include "mode.h"
+#include "sprite.h"
 
 static void lvlset_icon_sprite_func(s8 *, struct Sprite *);
 static void stage_name_sprite_func(s8 *, struct Sprite *);

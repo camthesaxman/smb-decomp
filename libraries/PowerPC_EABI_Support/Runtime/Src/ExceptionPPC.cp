@@ -11,7 +11,7 @@ typedef struct ProcessInfo
 
 #define MAXFRAGMENTS 1
 
-extern ProcessInfo fragmentinfo[MAXFRAGMENTS];
+static ProcessInfo fragmentinfo[MAXFRAGMENTS];
 
 #pragma peephole off
 
@@ -19,9 +19,11 @@ void __unregister_fragment(int fragmentID)
 {
     if (fragmentID >= 0 && fragmentID < MAXFRAGMENTS)
     {
-        fragmentinfo[fragmentID].exception_info = NULL;
-        fragmentinfo[fragmentID].TOC = NULL;
-        fragmentinfo[fragmentID].active = 0;
+        ProcessInfo *f = &fragmentinfo[fragmentID];
+
+        f->exception_info = NULL;
+        f->TOC = NULL;
+        f->active = 0;
     }
 }
 

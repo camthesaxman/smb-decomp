@@ -7,8 +7,8 @@ streamInit:
 /* 800EF15C 000EB07C  38 80 00 00 */	li r4, 0
 /* 800EF160 000EB080  38 00 00 03 */	li r0, 3
 /* 800EF164 000EB084  98 8D A4 58 */	stb r4, streamCallCnt@sda21(r13)
-/* 800EF168 000EB088  3C 60 80 2D */	lis r3, lbl_802D6240@ha
-/* 800EF16C 000EB08C  38 63 62 40 */	addi r3, r3, lbl_802D6240@l
+/* 800EF168 000EB088  3C 60 80 2D */	lis r3, synthInfo@ha
+/* 800EF16C 000EB08C  38 63 62 40 */	addi r3, r3, synthInfo@l
 /* 800EF170 000EB090  98 0D A4 59 */	stb r0, streamCallDelay@sda21(r13)
 /* 800EF174 000EB094  38 C3 02 10 */	addi r6, r3, 0x210
 /* 800EF178 000EB098  88 63 02 10 */	lbz r3, 0x210(r3)
@@ -80,15 +80,15 @@ lbl_800EF25C:
 /* 800EF25C 000EB17C  88 AD A4 59 */	lbz r5, streamCallDelay@sda21(r13)
 /* 800EF260 000EB180  3C 60 80 2D */	lis r3, lbl_802D6F98@ha
 /* 800EF264 000EB184  38 03 6F 98 */	addi r0, r3, lbl_802D6F98@l
-/* 800EF268 000EB188  CB A2 C1 28 */	lfd f29, lbl_802F6928-_SDA2_BASE_(r2)
+/* 800EF268 000EB188  CB A2 C1 28 */	lfd f29, lbl_802F6928@sda21(r2)
 /* 800EF26C 000EB18C  3C 60 24 92 */	lis r3, 0x24924925@ha
-/* 800EF270 000EB190  3C 80 80 2D */	lis r4, lbl_802D6240@ha
+/* 800EF270 000EB190  3C 80 80 2D */	lis r4, synthInfo@ha
 /* 800EF274 000EB194  98 AD A4 58 */	stb r5, streamCallCnt@sda21(r13)
-/* 800EF278 000EB198  C3 C2 C1 20 */	lfs f30, lbl_802F6920-_SDA2_BASE_(r2)
+/* 800EF278 000EB198  C3 C2 C1 20 */	lfs f30, lbl_802F6920@sda21(r2)
 /* 800EF27C 000EB19C  7C 1A 03 78 */	mr r26, r0
-/* 800EF280 000EB1A0  C3 E2 C1 24 */	lfs f31, lbl_802F6924-_SDA2_BASE_(r2)
+/* 800EF280 000EB1A0  C3 E2 C1 24 */	lfs f31, lbl_802F6924@sda21(r2)
 /* 800EF284 000EB1A4  3B E3 49 25 */	addi r31, r3, 0x24924925@l
-/* 800EF288 000EB1A8  3B C4 62 40 */	addi r30, r4, lbl_802D6240@l
+/* 800EF288 000EB1A8  3B C4 62 40 */	addi r30, r4, synthInfo@l
 /* 800EF28C 000EB1AC  3B 60 00 00 */	li r27, 0
 /* 800EF290 000EB1B0  3F 80 00 01 */	lis r28, 1
 /* 800EF294 000EB1B4  3F A0 43 30 */	lis r29, 0x4330
@@ -1481,3 +1481,15 @@ lbl_802F6928:
 	# ROM: 0x1F0348
 	.byte 0x43, 0x30, 0x00, 0x00
 	.4byte 0
+
+.section .sbss
+
+.global streamCallCnt
+streamCallCnt:
+	.skip 0x1
+.global streamCallDelay
+streamCallDelay:
+	.skip 0x3
+.global nextPublicID
+nextPublicID:
+	.skip 0x4

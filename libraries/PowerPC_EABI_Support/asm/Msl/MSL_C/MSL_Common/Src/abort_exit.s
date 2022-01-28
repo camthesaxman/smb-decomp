@@ -79,3 +79,32 @@ lbl_80103D3C:
 /* 80103D48 000FFC68  38 21 00 18 */	addi r1, r1, 0x18
 /* 80103D4C 000FFC6C  7C 08 03 A6 */	mtlr r0
 /* 80103D50 000FFC70  4E 80 00 20 */	blr
+
+.section .sbss
+
+    .balign 8
+.global __aborting
+__aborting:
+	.skip 0x4
+.global atexit_curr_func
+atexit_curr_func:
+	.skip 0x4
+.global __atexit_curr_func
+__atexit_curr_func:
+	.skip 0x4
+.global __stdio_exit
+__stdio_exit:
+	.skip 0x4
+.global __console_exit
+__console_exit:
+	.skip 0x8
+
+.section .bss
+
+    .balign 8
+.global lbl_802EE040
+lbl_802EE040:
+	.skip 0x100
+.global lbl_802EE140
+lbl_802EE140:
+	.skip 0x100
