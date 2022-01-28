@@ -46,7 +46,7 @@ REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -Wno-sequence-point -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
 #-------------------------------------------------------------------------------
 # Files
@@ -449,7 +449,7 @@ all: $(DOL) $(ALL_RELS)
 # Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
 # then disassembles the object file
 define COMPILE =
-@echo Compiling $<
+@echo "Compiling " $<
 $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 $(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
