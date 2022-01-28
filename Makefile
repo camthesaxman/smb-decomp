@@ -449,7 +449,7 @@ all: $(DOL) $(ALL_RELS)
 # Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
 # then disassembles the object file
 define COMPILE =
-@echo Compiling $<
+@echo "Compiling " $<
 $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 $(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
