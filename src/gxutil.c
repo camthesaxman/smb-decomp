@@ -29,7 +29,7 @@ u32 gxutil_end_display_list(void)
 
 u32 vtxAttrs;
 
-void func_8009A9A8(void)
+void gxutil_clear_vtx_attrs(void)
 {
     vtxAttrs = 0;
 }

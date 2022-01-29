@@ -6,7 +6,7 @@ struct PointWithColor
 
 void gxutil_begin_display_list(void *, u32);
 u32 gxutil_end_display_list(void);
-// ? func_8009A9A8();
+void gxutil_clear_vtx_attrs(void);
 void gxutil_set_vtx_attrs(u32);
 void gxutil_dummy(void);
 void g_gxutil_upload_some_mtx(Mtx, int);

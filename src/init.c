@@ -7,7 +7,7 @@
 #include "mathutil.h"
 #include "mode.h"
 
-u8 lbl_801EEBA0[0x80];
+GXFifoObj lbl_801EEBA0;
 
 #pragma force_active on
 
@@ -36,11 +36,11 @@ void init_gx(void)
 {
     void *r31;
 
-    lbl_802F1CA4[4] = GXInit(OSAllocFromHeap(__OSCurrHeap, 0x100000), 0x100000);
-    lbl_802F1CA4[5] = lbl_801EEBA0;
+    gfxBufferInfo->fifos[0] = GXInit(OSAllocFromHeap(__OSCurrHeap, 0x100000), 0x100000);
+    gfxBufferInfo->fifos[1] = &lbl_801EEBA0;
     r31 = OSAllocFromHeap(__OSCurrHeap, 0x100000);
-    GXInitFifoBase(lbl_802F1CA4[5], r31, 0x100000);
-    GXInitFifoPtrs(lbl_802F1CA4[5], r31, r31);
+    GXInitFifoBase(gfxBufferInfo->fifos[1], r31, 0x100000);
+    GXInitFifoPtrs(gfxBufferInfo->fifos[1], r31, r31);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
     GXSetDispCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
@@ -48,7 +48,7 @@ void init_gx(void)
     GXSetDispCopyYScale((float)currRenderMode->xfbHeight / (float)currRenderMode->efbHeight);
     GXSetCopyFilter(currRenderMode->aa, currRenderMode->sample_pattern, 1, currRenderMode->vfilter);
     GXSetPixelFmt(GX_PF_RGB8_Z24, GX_ZC_LINEAR);
-    GXCopyDisp(lbl_802F1CA4[0], 1);
+    GXCopyDisp(gfxBufferInfo->currFrameBuf, 1);
     GXSetDispCopyGamma(GX_GM_1_0);
 }
 
@@ -90,8 +90,8 @@ void init_tv(void)
 void init_vi(void)
 {
     VIConfigure(currRenderMode);
-    VISetNextFrameBuffer(lbl_802F1CA4[1]);
-    lbl_802F1CA4[0] = lbl_802F1CA4[2];
+    VISetNextFrameBuffer(gfxBufferInfo->frameBufs[0]);
+    gfxBufferInfo->currFrameBuf = gfxBufferInfo->frameBufs[1];
     VIFlush();
     VIWaitForRetrace();
     if (currRenderMode->viTVmode & 1)
@@ -191,10 +191,10 @@ void init_heap(void)
 
     init_cache_ptrs();
 
-    lbl_802F1CA4[1] = arenaLo;
-    lbl_802F1CA4[2] = ptr2;
-    lbl_802F1CA4[0] = ptr2;
-    lbl_802F1CA4[3] = NULL;
+    gfxBufferInfo->frameBufs[0] = arenaLo;
+    gfxBufferInfo->frameBufs[1] = ptr2;
+    gfxBufferInfo->currFrameBuf = ptr2;
+    gfxBufferInfo->fbNum = 0;
 }
 
 void init_rel(void)
@@ -213,11 +213,21 @@ void init_rel(void)
 
 void init_cache(void)
 {
-    LCEnable();
-    mathutilData = (void *)0xE0000000;
-    lbl_802F1CA4 = (void *)0xE00001B0;
-    lbl_802F1B3C = (void *)0xE00001C8;
-    zMode = (void *)0xE00002D8;
-    printf("locked cache size: %d\n", 0xA0C);
-}
+    size_t size = 0;
 
+    LCEnable();
+
+    mathutilData = (void *)(LC_CACHE_BASE + size);
+    size += sizeof(*mathutilData);
+
+    gfxBufferInfo = (void *)(LC_CACHE_BASE + size);
+    size += sizeof(*gfxBufferInfo);
+
+    lbl_802F1B3C = (void *)(LC_CACHE_BASE + size);
+    size += sizeof(*lbl_802F1B3C);
+
+    zMode = (void *)(LC_CACHE_BASE + size);
+    size += sizeof(*zMode);
+
+    printf("locked cache size: %d\n", size);
+}

@@ -11287,8 +11287,8 @@ lbl_0000A9F0:
 /* 0000AA90 881F0143 */ lbz r0, 0x143(r31)
 /* 0000AA94 9004000C */ stw r0, 0xc(r4)
 /* 0000AA98 4BFF56CD */ bl event_finish_all
-/* 0000AA9C 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 0000AAA0 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 0000AA9C 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 0000AAA0 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 0000AAA4 80630000 */ lwz r3, 0(r3)
 /* 0000AAA8 80630000 */ lwz r3, 0(r3)
 /* 0000AAAC 4BFF56B9 */ bl VISetNextFrameBuffer

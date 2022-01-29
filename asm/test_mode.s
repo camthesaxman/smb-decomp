@@ -7381,8 +7381,8 @@ lbl_00006974:
 /* 000069C0 28000000 */ cmplwi r0, 0
 /* 000069C4 4182001C */ beq lbl_000069E0
 lbl_000069C8:
-/* 000069C8 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 000069CC 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 000069C8 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 000069CC 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 000069D0 80630000 */ lwz r3, 0(r3)
 /* 000069D4 80630000 */ lwz r3, 0(r3)
 /* 000069D8 4BFF9785 */ bl VISetNextFrameBuffer
@@ -7947,8 +7947,8 @@ lbl_00007198:
 /* 000071C4 28000000 */ cmplwi r0, 0
 /* 000071C8 4182001C */ beq lbl_000071E4
 lbl_000071CC:
-/* 000071CC 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 000071D0 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 000071CC 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 000071D0 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 000071D4 80630000 */ lwz r3, 0(r3)
 /* 000071D8 80630000 */ lwz r3, 0(r3)
 /* 000071DC 4BFF8F81 */ bl VISetNextFrameBuffer
@@ -8667,8 +8667,8 @@ lbl_00007BE0:
 /* 00007C20 28000000 */ cmplwi r0, 0
 /* 00007C24 4182001C */ beq lbl_00007C40
 lbl_00007C28:
-/* 00007C28 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 00007C2C 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 00007C28 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 00007C2C 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 00007C30 80630000 */ lwz r3, 0(r3)
 /* 00007C34 80630000 */ lwz r3, 0(r3)
 /* 00007C38 4BFF8525 */ bl VISetNextFrameBuffer

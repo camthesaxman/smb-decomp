@@ -517,7 +517,6 @@ extern GXRenderModeObj GXPal528IntDf;
 // .bss section
 extern u8 lbl_801ED920[];
 extern GXRenderModeObj lbl_801EEB60;
-extern u8 lbl_801EEBA0[];
 
 extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
@@ -1242,8 +1241,8 @@ extern s32 lbl_802F1C40;
 // extern ? lbl_802F1C90;
 // extern ? lbl_802F1C94;
 // extern ? lbl_802F1C98;
-// extern ? lbl_802F1CA0;
-extern void **lbl_802F1CA4;
+// extern ? drawingFinished;
+extern struct GFXBufferInfo *gfxBufferInfo;
 // extern ? lbl_802F1CA8;
 // extern ? lbl_802F1CAC;
 // extern ? lbl_802F1CB0;
