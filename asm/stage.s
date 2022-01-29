@@ -1068,7 +1068,7 @@ lbl_8004496C:
 /* 80044994 000408B4  28 00 00 00 */	cmplwi r0, 0
 /* 80044998 000408B8  41 82 00 14 */	beq lbl_800449AC
 lbl_8004499C:
-/* 8004499C 000408BC  80 6D 9A C4 */	lwz r3, lbl_802F1CA4@sda21(r13)
+/* 8004499C 000408BC  80 6D 9A C4 */	lwz r3, gfxBufferInfo@sda21(r13)
 /* 800449A0 000408C0  80 63 00 00 */	lwz r3, 0(r3)
 /* 800449A4 000408C4  48 08 B9 59 */	bl VISetNextFrameBuffer
 /* 800449A8 000408C8  48 08 AC D9 */	bl VIWaitForRetrace
@@ -1183,7 +1183,7 @@ unload_stage:
 /* 80044B20 00040A40  28 00 00 00 */	cmplwi r0, 0
 /* 80044B24 00040A44  41 82 00 14 */	beq lbl_80044B38
 lbl_80044B28:
-/* 80044B28 00040A48  80 6D 9A C4 */	lwz r3, lbl_802F1CA4@sda21(r13)
+/* 80044B28 00040A48  80 6D 9A C4 */	lwz r3, gfxBufferInfo@sda21(r13)
 /* 80044B2C 00040A4C  80 63 00 00 */	lwz r3, 0(r3)
 /* 80044B30 00040A50  48 08 B7 CD */	bl VISetNextFrameBuffer
 /* 80044B34 00040A54  48 08 AB 4D */	bl VIWaitForRetrace

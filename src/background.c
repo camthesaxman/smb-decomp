@@ -478,7 +478,7 @@ void func_8005507C(void)
         }
         if (decodedBgTpl != NULL || decodedBgGma != NULL)
         {
-            VISetNextFrameBuffer(lbl_802F1CA4[0]);
+            VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
             VIWaitForRetrace();
         }
         if (decodedBgTpl != NULL)
@@ -640,7 +640,7 @@ void load_bg_files(int bgId)
             }
             if (decodedBgTpl != NULL || decodedBgGma != NULL)
             {
-                VISetNextFrameBuffer(lbl_802F1CA4[0]);
+                VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
                 VIWaitForRetrace();
             }
             if (decodedBgTpl != NULL)

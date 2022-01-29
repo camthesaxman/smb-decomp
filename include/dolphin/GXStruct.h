@@ -46,8 +46,8 @@ typedef struct
     /*0x0C*/ u16 viYOrigin;
     /*0x0E*/ u16 viWidth;
     /*0x10*/ u16 viHeight;
-    VIXFBMode xFBmode;
-    u8 field_rendering;
+    /*0x14*/ VIXFBMode xFBmode;
+    /*0x18*/ u8 field_rendering;
     u8 aa;
     u8 sample_pattern[12][2];
     u8 vfilter[7];

@@ -461,7 +461,7 @@ void load_stage(int stageId)
 
         if (decodedStageTplPtr != NULL || decodedStageGmaPtr != NULL)
         {
-            VISetNextFrameBuffer(lbl_802F1CA4[0]);
+            VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
             VIWaitForRetrace();
         }
         if (decodedStageTplPtr != NULL)
@@ -515,7 +515,7 @@ void unload_stage(void)
 
         if (decodedStageTplPtr != NULL || decodedStageGmaPtr != NULL)
         {
-            VISetNextFrameBuffer(lbl_802F1CA4[0]);
+            VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
             VIWaitForRetrace();
         }
         if (decodedStageTplPtr != NULL)

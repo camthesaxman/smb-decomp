@@ -173,6 +173,15 @@ struct ZMode
     /*0x08*/ GXBool updateEnable;
     /*0x09*/ u8 lineWidth;
     /*0x0C*/ s32 texOffsets;
+             u8 filler10[0x734-0x10];
+};
+
+struct GFXBufferInfo
+{
+    /*0x00*/ void *currFrameBuf;
+    /*0x04*/ void *frameBufs[2];
+    /*0x0C*/ u32 fbNum;
+    /*0x10*/ GXFifoObj *fifos[2];
 };
 
 struct UnkStruct8005562C_child

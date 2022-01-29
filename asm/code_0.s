@@ -2210,167 +2210,147 @@ func_80022910:
 /* 8002296C 0001E88C  38 21 00 18 */	addi r1, r1, 0x18
 /* 80022970 0001E890  7C 08 03 A6 */	mtlr r0
 /* 80022974 0001E894  4E 80 00 20 */	blr
-.global lbl_80022978
-lbl_80022978:
-/* 80022978 0001E898  38 00 00 01 */	li r0, 1
-/* 8002297C 0001E89C  98 0D 9A C0 */	stb r0, lbl_802F1CA0@sda21(r13)
-/* 80022980 0001E8A0  4E 80 00 20 */	blr
 
-.global setup_vtx_attrib_fmt
-setup_vtx_attrib_fmt:
-/* 80022984 0001E8A4  7C 08 02 A6 */	mflr r0
-/* 80022988 0001E8A8  90 01 00 04 */	stw r0, 4(r1)
-/* 8002298C 0001E8AC  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80022990 0001E8B0  48 0B B9 79 */	bl GXClearVtxDesc
-/* 80022994 0001E8B4  48 07 80 15 */	bl func_8009A9A8
-/* 80022998 0001E8B8  38 60 00 00 */	li r3, 0
-/* 8002299C 0001E8BC  38 80 00 09 */	li r4, 9
-/* 800229A0 0001E8C0  38 A0 00 01 */	li r5, 1
-/* 800229A4 0001E8C4  38 C0 00 04 */	li r6, 4
-/* 800229A8 0001E8C8  38 E0 00 00 */	li r7, 0
-/* 800229AC 0001E8CC  48 0B B9 A9 */	bl GXSetVtxAttrFmt
-/* 800229B0 0001E8D0  38 60 00 00 */	li r3, 0
-/* 800229B4 0001E8D4  38 80 00 0A */	li r4, 0xa
-/* 800229B8 0001E8D8  38 A0 00 00 */	li r5, 0
-/* 800229BC 0001E8DC  38 C0 00 04 */	li r6, 4
-/* 800229C0 0001E8E0  38 E0 00 00 */	li r7, 0
-/* 800229C4 0001E8E4  48 0B B9 91 */	bl GXSetVtxAttrFmt
-/* 800229C8 0001E8E8  38 60 00 00 */	li r3, 0
-/* 800229CC 0001E8EC  38 80 00 0B */	li r4, 0xb
-/* 800229D0 0001E8F0  38 A0 00 01 */	li r5, 1
-/* 800229D4 0001E8F4  38 C0 00 05 */	li r6, 5
-/* 800229D8 0001E8F8  38 E0 00 00 */	li r7, 0
-/* 800229DC 0001E8FC  48 0B B9 79 */	bl GXSetVtxAttrFmt
-/* 800229E0 0001E900  38 60 00 00 */	li r3, 0
-/* 800229E4 0001E904  38 80 00 0D */	li r4, 0xd
-/* 800229E8 0001E908  38 A0 00 01 */	li r5, 1
-/* 800229EC 0001E90C  38 C0 00 04 */	li r6, 4
-/* 800229F0 0001E910  38 E0 00 00 */	li r7, 0
-/* 800229F4 0001E914  48 0B B9 61 */	bl GXSetVtxAttrFmt
-/* 800229F8 0001E918  38 60 00 00 */	li r3, 0
-/* 800229FC 0001E91C  38 80 00 0E */	li r4, 0xe
-/* 80022A00 0001E920  38 A0 00 01 */	li r5, 1
-/* 80022A04 0001E924  38 C0 00 04 */	li r6, 4
-/* 80022A08 0001E928  38 E0 00 00 */	li r7, 0
-/* 80022A0C 0001E92C  48 0B B9 49 */	bl GXSetVtxAttrFmt
-/* 80022A10 0001E930  38 60 00 00 */	li r3, 0
-/* 80022A14 0001E934  38 80 00 0F */	li r4, 0xf
-/* 80022A18 0001E938  38 A0 00 01 */	li r5, 1
-/* 80022A1C 0001E93C  38 C0 00 04 */	li r6, 4
-/* 80022A20 0001E940  38 E0 00 00 */	li r7, 0
-/* 80022A24 0001E944  48 0B B9 31 */	bl GXSetVtxAttrFmt
-/* 80022A28 0001E948  38 60 00 00 */	li r3, 0
-/* 80022A2C 0001E94C  38 80 00 10 */	li r4, 0x10
-/* 80022A30 0001E950  38 A0 00 01 */	li r5, 1
-/* 80022A34 0001E954  38 C0 00 04 */	li r6, 4
-/* 80022A38 0001E958  38 E0 00 00 */	li r7, 0
-/* 80022A3C 0001E95C  48 0B B9 19 */	bl GXSetVtxAttrFmt
-/* 80022A40 0001E960  38 60 00 00 */	li r3, 0
-/* 80022A44 0001E964  38 80 00 11 */	li r4, 0x11
-/* 80022A48 0001E968  38 A0 00 01 */	li r5, 1
-/* 80022A4C 0001E96C  38 C0 00 04 */	li r6, 4
-/* 80022A50 0001E970  38 E0 00 00 */	li r7, 0
-/* 80022A54 0001E974  48 0B B9 01 */	bl GXSetVtxAttrFmt
-/* 80022A58 0001E978  38 60 00 00 */	li r3, 0
-/* 80022A5C 0001E97C  38 80 00 12 */	li r4, 0x12
-/* 80022A60 0001E980  38 A0 00 01 */	li r5, 1
-/* 80022A64 0001E984  38 C0 00 04 */	li r6, 4
-/* 80022A68 0001E988  38 E0 00 00 */	li r7, 0
-/* 80022A6C 0001E98C  48 0B B8 E9 */	bl GXSetVtxAttrFmt
-/* 80022A70 0001E990  38 60 00 00 */	li r3, 0
-/* 80022A74 0001E994  38 80 00 13 */	li r4, 0x13
-/* 80022A78 0001E998  38 A0 00 01 */	li r5, 1
-/* 80022A7C 0001E99C  38 C0 00 04 */	li r6, 4
-/* 80022A80 0001E9A0  38 E0 00 00 */	li r7, 0
-/* 80022A84 0001E9A4  48 0B B8 D1 */	bl GXSetVtxAttrFmt
-/* 80022A88 0001E9A8  38 60 00 00 */	li r3, 0
-/* 80022A8C 0001E9AC  38 80 00 14 */	li r4, 0x14
-/* 80022A90 0001E9B0  38 A0 00 01 */	li r5, 1
-/* 80022A94 0001E9B4  38 C0 00 04 */	li r6, 4
-/* 80022A98 0001E9B8  38 E0 00 00 */	li r7, 0
-/* 80022A9C 0001E9BC  48 0B B8 B9 */	bl GXSetVtxAttrFmt
-/* 80022AA0 0001E9C0  38 60 00 01 */	li r3, 1
-/* 80022AA4 0001E9C4  38 80 00 09 */	li r4, 9
-/* 80022AA8 0001E9C8  38 A0 00 01 */	li r5, 1
-/* 80022AAC 0001E9CC  38 C0 00 03 */	li r6, 3
-/* 80022AB0 0001E9D0  38 E0 00 0D */	li r7, 0xd
-/* 80022AB4 0001E9D4  48 0B B8 A1 */	bl GXSetVtxAttrFmt
-/* 80022AB8 0001E9D8  38 60 00 01 */	li r3, 1
-/* 80022ABC 0001E9DC  38 80 00 0A */	li r4, 0xa
-/* 80022AC0 0001E9E0  38 A0 00 00 */	li r5, 0
-/* 80022AC4 0001E9E4  38 C0 00 03 */	li r6, 3
-/* 80022AC8 0001E9E8  38 E0 00 0E */	li r7, 0xe
-/* 80022ACC 0001E9EC  48 0B B8 89 */	bl GXSetVtxAttrFmt
-/* 80022AD0 0001E9F0  38 60 00 01 */	li r3, 1
-/* 80022AD4 0001E9F4  38 80 00 0B */	li r4, 0xb
-/* 80022AD8 0001E9F8  38 A0 00 01 */	li r5, 1
-/* 80022ADC 0001E9FC  38 C0 00 05 */	li r6, 5
-/* 80022AE0 0001EA00  38 E0 00 00 */	li r7, 0
-/* 80022AE4 0001EA04  48 0B B8 71 */	bl GXSetVtxAttrFmt
-/* 80022AE8 0001EA08  38 60 00 01 */	li r3, 1
-/* 80022AEC 0001EA0C  38 80 00 0D */	li r4, 0xd
-/* 80022AF0 0001EA10  38 A0 00 01 */	li r5, 1
-/* 80022AF4 0001EA14  38 C0 00 03 */	li r6, 3
-/* 80022AF8 0001EA18  38 E0 00 0D */	li r7, 0xd
-/* 80022AFC 0001EA1C  48 0B B8 59 */	bl GXSetVtxAttrFmt
-/* 80022B00 0001EA20  38 60 00 01 */	li r3, 1
-/* 80022B04 0001EA24  38 80 00 0E */	li r4, 0xe
-/* 80022B08 0001EA28  38 A0 00 01 */	li r5, 1
-/* 80022B0C 0001EA2C  38 C0 00 03 */	li r6, 3
-/* 80022B10 0001EA30  38 E0 00 0D */	li r7, 0xd
-/* 80022B14 0001EA34  48 0B B8 41 */	bl GXSetVtxAttrFmt
-/* 80022B18 0001EA38  38 60 00 01 */	li r3, 1
-/* 80022B1C 0001EA3C  38 80 00 0F */	li r4, 0xf
-/* 80022B20 0001EA40  38 A0 00 01 */	li r5, 1
-/* 80022B24 0001EA44  38 C0 00 03 */	li r6, 3
-/* 80022B28 0001EA48  38 E0 00 0D */	li r7, 0xd
-/* 80022B2C 0001EA4C  48 0B B8 29 */	bl GXSetVtxAttrFmt
-/* 80022B30 0001EA50  38 60 00 01 */	li r3, 1
-/* 80022B34 0001EA54  38 80 00 10 */	li r4, 0x10
-/* 80022B38 0001EA58  38 A0 00 01 */	li r5, 1
-/* 80022B3C 0001EA5C  38 C0 00 04 */	li r6, 4
-/* 80022B40 0001EA60  38 E0 00 00 */	li r7, 0
-/* 80022B44 0001EA64  48 0B B8 11 */	bl GXSetVtxAttrFmt
-/* 80022B48 0001EA68  38 60 00 01 */	li r3, 1
-/* 80022B4C 0001EA6C  38 80 00 11 */	li r4, 0x11
-/* 80022B50 0001EA70  38 A0 00 01 */	li r5, 1
-/* 80022B54 0001EA74  38 C0 00 04 */	li r6, 4
-/* 80022B58 0001EA78  38 E0 00 00 */	li r7, 0
-/* 80022B5C 0001EA7C  48 0B B7 F9 */	bl GXSetVtxAttrFmt
-/* 80022B60 0001EA80  38 60 00 01 */	li r3, 1
-/* 80022B64 0001EA84  38 80 00 12 */	li r4, 0x12
-/* 80022B68 0001EA88  38 A0 00 01 */	li r5, 1
-/* 80022B6C 0001EA8C  38 C0 00 04 */	li r6, 4
-/* 80022B70 0001EA90  38 E0 00 00 */	li r7, 0
-/* 80022B74 0001EA94  48 0B B7 E1 */	bl GXSetVtxAttrFmt
-/* 80022B78 0001EA98  38 60 00 01 */	li r3, 1
-/* 80022B7C 0001EA9C  38 80 00 13 */	li r4, 0x13
-/* 80022B80 0001EAA0  38 A0 00 01 */	li r5, 1
-/* 80022B84 0001EAA4  38 C0 00 04 */	li r6, 4
-/* 80022B88 0001EAA8  38 E0 00 00 */	li r7, 0
-/* 80022B8C 0001EAAC  48 0B B7 C9 */	bl GXSetVtxAttrFmt
-/* 80022B90 0001EAB0  38 60 00 01 */	li r3, 1
-/* 80022B94 0001EAB4  38 80 00 14 */	li r4, 0x14
-/* 80022B98 0001EAB8  38 A0 00 01 */	li r5, 1
-/* 80022B9C 0001EABC  38 C0 00 04 */	li r6, 4
-/* 80022BA0 0001EAC0  38 E0 00 00 */	li r7, 0
-/* 80022BA4 0001EAC4  48 0B B7 B1 */	bl GXSetVtxAttrFmt
-/* 80022BA8 0001EAC8  38 60 00 07 */	li r3, 7
-/* 80022BAC 0001EACC  38 80 00 09 */	li r4, 9
-/* 80022BB0 0001EAD0  38 A0 00 01 */	li r5, 1
-/* 80022BB4 0001EAD4  38 C0 00 04 */	li r6, 4
-/* 80022BB8 0001EAD8  38 E0 00 00 */	li r7, 0
-/* 80022BBC 0001EADC  48 0B B7 99 */	bl GXSetVtxAttrFmt
-/* 80022BC0 0001EAE0  38 60 00 07 */	li r3, 7
-/* 80022BC4 0001EAE4  38 80 00 0D */	li r4, 0xd
-/* 80022BC8 0001EAE8  38 A0 00 01 */	li r5, 1
-/* 80022BCC 0001EAEC  38 C0 00 04 */	li r6, 4
-/* 80022BD0 0001EAF0  38 E0 00 00 */	li r7, 0
-/* 80022BD4 0001EAF4  48 0B B7 81 */	bl GXSetVtxAttrFmt
-/* 80022BD8 0001EAF8  80 01 00 0C */	lwz r0, 0xc(r1)
-/* 80022BDC 0001EAFC  38 21 00 08 */	addi r1, r1, 8
-/* 80022BE0 0001EB00  7C 08 03 A6 */	mtlr r0
-/* 80022BE4 0001EB04  4E 80 00 20 */	blr
+.section .sbss
+
+    .balign 8
+.global lbl_802F1BE8
+lbl_802F1BE8:
+	.skip 0x8
+.global lbl_802F1BF0
+lbl_802F1BF0:
+	.skip 0x4
+.global lbl_802F1BF4
+lbl_802F1BF4:
+	.skip 0x8
+.global lbl_802F1BFC
+lbl_802F1BFC:
+	.skip 0x8
+.global lbl_802F1C04
+lbl_802F1C04:
+	.skip 0x8
+.global lbl_802F1C0C
+lbl_802F1C0C:
+	.skip 0x1
+.global lbl_802F1C0D
+lbl_802F1C0D:
+	.skip 0x3
+.global lbl_802F1C10
+lbl_802F1C10:
+	.skip 0x8
+.global lbl_802F1C18
+lbl_802F1C18:
+	.skip 0x4
+.global lbl_802F1C1C
+lbl_802F1C1C:
+	.skip 0x4
+.global lbl_802F1C20
+lbl_802F1C20:
+	.skip 0x4
+.global lbl_802F1C24
+lbl_802F1C24:
+	.skip 0x1
+.global lbl_802F1C25
+lbl_802F1C25:
+	.skip 0x3
+.global lbl_802F1C28
+lbl_802F1C28:
+	.skip 0x8
+.global lbl_802F1C30
+lbl_802F1C30:
+	.skip 0x2
+.global lbl_802F1C32
+lbl_802F1C32:
+	.skip 0x2
+.global lbl_802F1C34
+lbl_802F1C34:
+	.skip 0x4
+.global minigameRelCameraCallback
+minigameRelCameraCallback:
+	.skip 0x4
+.global currentCameraStructPtr
+currentCameraStructPtr:
+	.skip 0x4
+.global lbl_802F1C40
+lbl_802F1C40:
+	.skip 0x8
+.global lbl_802F1C48
+lbl_802F1C48:
+	.skip 0x4
+.global lbl_802F1C4C
+lbl_802F1C4C:
+	.skip 0x4
+.global lbl_802F1C50
+lbl_802F1C50:
+	.skip 0x4
+.global lbl_802F1C54
+lbl_802F1C54:
+	.skip 0x4
+.global lbl_802F1C58
+lbl_802F1C58:
+	.skip 0x4
+.global lbl_802F1C5C
+lbl_802F1C5C:
+	.skip 0x4
+.global lbl_802F1C60
+lbl_802F1C60:
+	.skip 0x4
+.global lbl_802F1C64
+lbl_802F1C64:
+	.skip 0x4
+.global lbl_802F1C68
+lbl_802F1C68:
+	.skip 0x4
+.global lbl_802F1C6C
+lbl_802F1C6C:
+	.skip 0x1
+glabel lbl_802F1C6D
+	.skip 0x1
+glabel lbl_802F1C6E
+	.skip 0x1
+glabel lbl_802F1C6F
+	.skip 0x1
+glabel lbl_802F1C70
+	.skip 0x1
+glabel lbl_802F1C71
+	.skip 0x1
+glabel lbl_802F1C72
+	.skip 0x1
+glabel lbl_802F1C73
+	.skip 0x1
+.global lbl_802F1C74
+lbl_802F1C74:
+	.skip 0x1
+.global lbl_802F1C75
+lbl_802F1C75:
+	.skip 0x3
+.global lbl_802F1C78
+lbl_802F1C78:
+	.skip 0x4
+.global lbl_802F1C7C
+lbl_802F1C7C:
+	.skip 0x4
+.global lbl_802F1C80
+lbl_802F1C80:
+	.skip 0x4
+.global lbl_802F1C84
+lbl_802F1C84:
+	.skip 0x4
+.global lbl_802F1C88
+lbl_802F1C88:
+	.skip 0x4
+.global lbl_802F1C8C
+lbl_802F1C8C:
+	.skip 0x4
+.global lbl_802F1C90
+lbl_802F1C90:
+	.skip 0x4
+.global lbl_802F1C94
+lbl_802F1C94:
+	.skip 0x4
+.global lbl_802F1C98
+lbl_802F1C98:
+	.skip 0x8
 
 .section .sdata2
 
