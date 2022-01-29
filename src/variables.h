@@ -542,22 +542,7 @@ extern struct
 // extern ? lbl_801F065C;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
-extern struct
-{
-    u32 unk0;
-    s16 timerCurr;  // current clock time (in 60ths of a second)
-    s16 timerMax;  // maximum clock time (in 60ths of a second)
-    u8 filler8[0xC - 0x8];
-    s16 unkC;
-    s16 unkE;
-    Vec unk10;
-    u8 filler1C[0x1E - 0x1C];
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    u8 filler24[0x2E - 0x24];
-    s16 unk2E;
-} lbl_801F3A58;
+extern struct Struct801F3A58 lbl_801F3A58;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
 

@@ -548,7 +548,7 @@ void ev_course_dest(void);
 int level_num_to_stage_id(int, int, int);
 // ? func_800671D4();
 int get_last_level_num_of_set(int, int);
-// ? func_80067264();
+u32 func_80067264();
 u32 func_800672D0(int stageId);
 int func_800673BC(void);
 // ? func_80067508();

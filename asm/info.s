@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global func_80022F14
 func_80022F14:
 /* 80022F14 0001EE34  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
@@ -21,6 +22,7 @@ func_80022F14:
 /* 80022F4C 0001EE6C  90 8D 9A CC */	stw r4, lbl_802F1CAC@sda21(r13)
 /* 80022F50 0001EE70  90 8D 9A C8 */	stw r4, lbl_802F1CA8@sda21(r13)
 /* 80022F54 0001EE74  4E 80 00 20 */	blr
+
 .global ev_info_init
 ev_info_init:
 /* 80022F58 0001EE78  7C 08 02 A6 */	mflr r0
@@ -85,6 +87,8 @@ lbl_80023020:
 /* 80023030 0001EF50  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 80023034 0001EF54  38 21 00 18 */	addi r1, r1, 0x18
 /* 80023038 0001EF58  4E 80 00 20 */	blr
+.endif
+
 .global ev_info_main
 ev_info_main:
 /* 8002303C 0001EF5C  7C 08 02 A6 */	mflr r0
@@ -2425,3 +2429,12 @@ commonGma:
 .global lbl_802F1CCC
 lbl_802F1CCC:
 	.skip 0x4
+
+.section .bss
+
+.global lbl_801F3A8C
+lbl_801F3A8C:
+	.skip 0x10
+.global lbl_801F3A9C
+lbl_801F3A9C:
+	.skip 0xD4

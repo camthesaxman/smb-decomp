@@ -13234,12 +13234,3 @@ glabel lbl_801F3A4C
 	.skip 0x4
 glabel lbl_801F3A50
 	.skip 0x8
-.global lbl_801F3A58
-lbl_801F3A58:
-	.skip 0x34
-.global lbl_801F3A8C
-lbl_801F3A8C:
-	.skip 0x10
-.global lbl_801F3A9C
-lbl_801F3A9C:
-	.skip 0xD4
