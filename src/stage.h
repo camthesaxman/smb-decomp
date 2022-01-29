@@ -301,7 +301,7 @@ struct StageCollHdr
     /*0x34*/ s32 cellsX;  // number of cells in x direction
     /*0x38*/ s32 cellsY;  // number of cells in y direction
     /*0x3C*/ s32 unk3C;
-    struct StageCollHdr_child *unk40;
+    struct StageCollHdr_child *unk40;  // goals?
     u8 filler44[4];
     void *unk48;
     s32 unk4C;

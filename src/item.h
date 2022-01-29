@@ -1,12 +1,12 @@
 struct Item
 {
-    s16 id;
-    s16 unk2;
-    s16 type;
-    s16 subtype;
-    u32 unk8;
-    s16 unkC;
-    s16 state;
+    /*0x00*/ s16 id;
+    /*0x02*/ s16 unk2;
+    /*0x04*/ s16 type;
+    /*0x06*/ s16 subtype;
+    /*0x08*/ u32 unk8;
+    /*0x0C*/ s16 unkC;
+    /*0x0E*/ s16 state;
     s16 unk10;
     s16 unk12;
     float unk14;
