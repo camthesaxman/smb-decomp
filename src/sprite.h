@@ -218,7 +218,7 @@ struct Sprite
     /*0x30*/ void (*destFunc)();
     /*0x34*/ void (*mainFunc)();
              void (*unk38)(struct Sprite *);
-             u16 bmpId;
+    /*0x3C*/ u16 bmpId;
              u8 filler3E[0x40-0x3E];
              float unk40;
              float unk44;

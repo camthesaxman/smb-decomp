@@ -287,7 +287,7 @@ void g_handle_ball_stage_collision(struct Struct80039974 *b, struct Stage *);
 // ? func_8003F248();
 // ? func_8003F378();
 // ? func_8003F608();
-// ? func_8003F890();
+u32 func_8003F890(Vec *, Vec *, struct Struct8003F890 *);
 // ? func_8003F9F4();
 int func_8003FB48(Vec *, struct Struct8003FB48 *, Vec *);
 // ? func_80040138();
