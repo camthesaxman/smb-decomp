@@ -666,45 +666,14 @@ void func_8000C7A4(void)
 
 u16 lbl_802F02E0[4] = { ARROW_1P, ARROW_2P, ARROW_3P, ARROW_4P };
 
-#ifdef NONMATCHING
-static inline void mathutil_get_mtxA_translate_xyz(register float *px, register float *py, register float *pz)
-{
-#ifdef __MWERKS__
-    register float *mtxA;
-    //register float *_x = &v->x;
-    //register float *_y = &v->y;
-    //register float *_z = &v->z;
-    register float x, y, z;
-
-    asm
-    {
-        lis mtxA, LC_CACHE_BASE@ha
-        lfs x, 0x0C(mtxA)  // mtxA[0][3]
-        lfs y, 0x1C(mtxA)  // mtxA[1][3]
-        lfs z, 0x2C(mtxA)  // mtxA[2][3]
-        stfs x, 0(px)
-        stfs y, 0(py)
-        stfs z, 0(pz)
-    }
-
-    //*px = x;
-    //*py = y;
-    //*pz = z;
-
-#else
-    *px = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
-    *py = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
-    *pz = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
-#endif
-}
-
 void func_8000C8D4(void)
 {
-    int i;  // r24
-    struct Ball *ball;  // r26
+    struct Ball *ball;
     s8 *r25 = spritePoolInfo.unkC;
+    int i;
     Vec sp8;
     float f27;
+
     ball = ballInfo;
     for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r25++)
     {
@@ -720,24 +689,13 @@ void func_8000C8D4(void)
         mathutil_mtxA_rotate_y(cameraInfo[i].rotY - 0x8000);
         mathutil_mtxA_rotate_x(-0x4000);
         mathutil_mtxA_translate_xyz(0.0f, ball->currRadius, 0.0f);
-        mathutil_get_mtxA_translate_xyz(&sp8.x, &sp8.y, &sp8.z);
+        mathutil_get_mtxA_translate_alt(&sp8);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
-#else
-const double lbl_802F2998 = 0.8;
-const double lbl_802F29A0 = 0.1;
-const double lbl_802F29A8 = -4.0;
-asm void func_8000C8D4(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_8000C8D4.s"
-}
-#pragma peephole on
-#endif
 
 void func_8000CA9C(void)
 {
