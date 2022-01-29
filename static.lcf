@@ -22,10 +22,21 @@ SECTIONS
         .sdata      ALIGN(0x20) : {}  /* 0x802F01E0  0x1EA920      0x0018F9 */
         .sbss       ALIGN(0x20) : {}  /* 0x802F1AE0  n/a           0x000D15 */
         .sdata2     ALIGN(0x20) : {}  /* 0x802F2800  0x1EC220      0x004480 */
-        .stack      ALIGN(0x20) : {}
+        .sbss2      ALIGN(0x20) : {}  /* unused */
+        .stack      ALIGN(0x100) : {}
     } > text
-    _stack_base = _f_stack;
-    _stack_addr = _f_stack + 0x10000;  /* 0x80306C80 */
+
+    /* stack immediately follows last section */
+    _stack_end = _f_sbss2 + SIZEOF(.sbss2);
+    _stack_addr = (_stack_end + 0x10000 + 0x7) & ~0x7;
+
+    /* debug immediately follows normal stack */
+    _db_stack_end = _stack_addr;
+    _db_stack_addr = _db_stack_end + 0x2000;
+    
+    /* arena follows debug stack */
+    __ArenaLo = (_db_stack_addr + 0x1F) & ~ 0x1F;
+    __ArenaHi = 0x81700000;
 }
 
 FORCEACTIVE

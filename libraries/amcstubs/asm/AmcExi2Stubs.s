@@ -954,6 +954,7 @@ EXI2_Unreserve:
 
 .section .sdata
 
+    .balign 8
 .global exi
 exi:
 	# ROM: 0x1EC208
@@ -963,7 +964,7 @@ exi:
 .global pucEXI2InputPending
 pucEXI2InputPending:
 	# ROM: 0x1EC210
-	.4byte 0x802F27D0  ;# ptr
+	.4byte lbl_802F27D0  ;# ptr
 	.4byte 0
 
 .section .data
@@ -976,6 +977,10 @@ glabel string_Can_t_select_EXI2_port__n
 
 .section .sbss
 
+    .balign 8
+.global lbl_802F27D0
+lbl_802F27D0:
+    .skip 0x4
 .global fExi2Selected
 fExi2Selected:
 	.skip 0x4

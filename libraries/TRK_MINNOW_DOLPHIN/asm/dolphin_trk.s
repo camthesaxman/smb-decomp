@@ -43,8 +43,8 @@ InitMetroTRK:
 /* 8010D804 00109724  38 00 00 00 */	li r0, 0
 /* 8010D808 00109728  7C 12 FB A6 */	mtspr 0x3f2, r0
 /* 8010D80C 0010972C  7C 15 FB A6 */	mtspr 0x3f5, r0
-/* 8010D810 00109730  3C 20 80 30 */	lis r1, 0x80308C80@h
-/* 8010D814 00109734  60 21 8C 80 */	ori r1, r1, 0x80308C80@l
+/* 8010D810 00109730  3C 20 80 30 */	lis r1, _db_stack_addr@h
+/* 8010D814 00109734  60 21 8C 80 */	ori r1, r1, _db_stack_addr@l
 /* 8010D818 00109738  7C A3 2B 78 */	mr r3, r5
 /* 8010D81C 0010973C  48 00 06 01 */	bl InitMetroTRKCommTable
 /* 8010D820 00109740  2C 03 00 01 */	cmpwi r3, 1
