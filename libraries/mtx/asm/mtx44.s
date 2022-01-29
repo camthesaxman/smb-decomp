@@ -145,12 +145,12 @@ C_MTXOrtho:
 .global lbl_802F6740
 lbl_802F6740:
 	# ROM: 0x1F0160
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0x3F800000
 
 .global lbl_802F6744
 lbl_802F6744:
 	# ROM: 0x1F0164
-	.byte 0x40, 0x00, 0x00, 0x00
+	.4byte 0x40000000
 
 .global lbl_802F6748
 lbl_802F6748:
@@ -160,14 +160,14 @@ lbl_802F6748:
 .global lbl_802F674C
 lbl_802F674C:
 	# ROM: 0x1F016C
-	.byte 0xBF, 0x80, 0x00, 0x00
+	.4byte 0xBF800000
 
 .global lbl_802F6750
 lbl_802F6750:
 	# ROM: 0x1F0170
-	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x3F000000
 
 .global lbl_802F6754
 lbl_802F6754:
 	# ROM: 0x1F0174
-	.byte 0x3C, 0x8E, 0xFA, 0x35
+	.4byte 0x3C8EFA35

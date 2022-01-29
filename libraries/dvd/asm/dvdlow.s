@@ -1028,7 +1028,7 @@ __DVDLowSetWAType:
 .global FirstRead
 FirstRead:
 	# ROM: 0x1EC090
-	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x00000001
 	.4byte 0
 
 .section .sbss

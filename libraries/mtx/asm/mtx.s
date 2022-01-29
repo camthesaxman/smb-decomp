@@ -340,14 +340,14 @@ C_MTXLookAt:
 Unit01:
 	# ROM: 0x1EC088
 	.4byte 0
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0x3F800000
 
 .section .sdata2
 
 .global lbl_802F6730
 lbl_802F6730:
 	# ROM: 0x1F0150
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0x3F800000
 
 .global lbl_802F6734
 lbl_802F6734:
@@ -357,5 +357,5 @@ lbl_802F6734:
 .global lbl_802F6738
 lbl_802F6738:
 	# ROM: 0x1F0158
-	.byte 0x40, 0x00, 0x00, 0x00
+	.4byte 0x40000000
 	.4byte 0

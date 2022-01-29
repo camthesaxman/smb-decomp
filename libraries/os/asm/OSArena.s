@@ -27,7 +27,7 @@ OSSetArenaLo:
 .global __OSArenaLo
 __OSArenaLo:
 	# ROM: 0x1EC070
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0xFFFFFFFF
 	.4byte 0
 
 .section .sbss

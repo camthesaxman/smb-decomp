@@ -1423,7 +1423,7 @@ lbl_800D64F8:
 lbl_801E8A60:
 	# ROM: 0x1E5A60
 	.4byte func_800D64B8  ;# ptr
-	.byte 0x00, 0x00, 0x00, 0x7F
+	.4byte 0x0000007F
 	.4byte 0
 	.4byte 0
 	.4byte 0

@@ -108,11 +108,11 @@ lbl_802F6A08:
 .global lbl_802F6A10
 lbl_802F6A10:
 	# ROM: 0x1F0430
-	.byte 0x3F, 0xE0, 0x00, 0x00
+	.4byte 0x3FE00000
 	.4byte 0
 
 .global lbl_802F6A18
 lbl_802F6A18:
 	# ROM: 0x1F0438
-	.byte 0x40, 0x08, 0x00, 0x00
+	.4byte 0x40080000
 	.4byte 0

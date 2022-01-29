@@ -1469,17 +1469,17 @@ lbl_800F05CC:
 .global lbl_802F6920
 lbl_802F6920:
 	# ROM: 0x1F0340
-	.byte 0x45, 0x80, 0x00, 0x00
+	.4byte 0x45800000
 
 .global lbl_802F6924
 lbl_802F6924:
 	# ROM: 0x1F0344
-	.byte 0x3C, 0x01, 0x02, 0x04
+	.4byte 0x3C010204
 
 .global lbl_802F6928
 lbl_802F6928:
 	# ROM: 0x1F0348
-	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0x43300000
 	.4byte 0
 
 .section .sbss

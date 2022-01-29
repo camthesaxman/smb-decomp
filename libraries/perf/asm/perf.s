@@ -1439,13 +1439,13 @@ lbl_800E5F0C:
 .global lbl_802F6880
 lbl_802F6880:
 	# ROM: 0x1F02A0
-	.byte 0xFF, 0x19, 0x00, 0xC8
+	.4byte 0xFF1900C8
 	.4byte 0
 
 .global lbl_802F6888
 lbl_802F6888:
 	# ROM: 0x1F02A8
-	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0x43300000
 	.4byte 0
 
 .section .data
@@ -1482,12 +1482,12 @@ glabel string_PERF___AUTOSAMPLE___0_____SHOULD_NEVER_HAPPEN__n
 .global CurrAutoSample
 CurrAutoSample:
 	# ROM: 0x1EC140
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0xFFFFFFFF
 
 .global CurrToken
 CurrToken:
 	# ROM: 0x1EC144
-	.byte 0x00, 0x00, 0xFF, 0xFF
+	.4byte 0x0000FFFF
 
 .section .sbss
 

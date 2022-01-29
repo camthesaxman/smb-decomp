@@ -120,8 +120,8 @@ lbl_802F6BC8:
 .global lbl_802F6BD0
 lbl_802F6BD0:
 	# ROM: 0x1F05F0
-	.byte 0x7E, 0x37, 0xE4, 0x3C
-	.byte 0x88, 0x00, 0x75, 0x9C
+	.4byte 0x7E37E43C
+	.4byte 0x8800759C
 
 .global lbl_802F6BD8
 lbl_802F6BD8:

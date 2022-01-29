@@ -53,5 +53,5 @@ lbl_80108768:
 .global lbl_802F6BE0
 lbl_802F6BE0:
 	# ROM: 0x1F0600
-	.byte 0x43, 0x50, 0x00, 0x00
+	.4byte 0x43500000
 	.4byte 0

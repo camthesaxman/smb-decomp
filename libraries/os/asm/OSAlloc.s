@@ -553,7 +553,7 @@ glabel string_________Free_n
 .global __OSCurrHeap
 __OSCurrHeap:
 	# ROM: 0x1EC068
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0xFFFFFFFF
 	.4byte 0
 
 .section .sbss

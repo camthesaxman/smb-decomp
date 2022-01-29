@@ -1071,7 +1071,7 @@ lbl_800DCE6C:
 .global lbl_802F6770
 lbl_802F6770:
 	# ROM: 0x1F0190
-	.byte 0x40, 0x40, 0x40, 0xFF
+	.4byte 0x404040FF
 
 .global lbl_802F6774
 lbl_802F6774:
@@ -1081,12 +1081,12 @@ lbl_802F6774:
 .global lbl_802F6778
 lbl_802F6778:
 	# ROM: 0x1F0198
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0xFFFFFFFF
 
 .global lbl_802F677C
 lbl_802F677C:
 	# ROM: 0x1F019C
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0x3F800000
 
 .global lbl_802F6780
 lbl_802F6780:
@@ -1096,12 +1096,12 @@ lbl_802F6780:
 .global lbl_802F6784
 lbl_802F6784:
 	# ROM: 0x1F01A4
-	.byte 0x3D, 0xCC, 0xCC, 0xCD
+	.4byte 0x3DCCCCCD
 
 .global lbl_802F6788
 lbl_802F6788:
 	# ROM: 0x1F01A8
-	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0x43300000
 	.4byte 0
 
 .section .sdata

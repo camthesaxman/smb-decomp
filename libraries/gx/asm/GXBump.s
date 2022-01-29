@@ -468,5 +468,5 @@ __GXFlushTextureState:
 .global lbl_802F6800
 lbl_802F6800:
 	# ROM: 0x1F0220
-	.byte 0x44, 0x80, 0x00, 0x00
+	.4byte 0x44800000
 	.4byte 0
