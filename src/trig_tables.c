@@ -1,7 +1,5 @@
 #include <math.h>
 
-#pragma force_active on
-
 float sinTable[] __attribute__((aligned(32))) =
 {
     0,                     // sin(0x0000)

@@ -353,8 +353,8 @@ lbl_80007344:
 lbl_80007368:
     srw r4, r5, r4
     rlwinm r4, r4, 0, 0x11, 0x1c
-    addis r4, r4, 0x801a
-    addi r4, r4, 0x4960
+    addis r4, r4, unknownTrigTable@ha
+    addi r4, r4, unknownTrigTable@l
     lfs f3, 0(r4)
     lfs f4, 4(r4)
     fmadds f5, f5, f3, f4
