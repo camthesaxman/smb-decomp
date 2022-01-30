@@ -51,8 +51,8 @@ lbl_800C1840:
 /* 800C1844 000BD764  80 63 00 30 */	lwz r3, 0x80000030@l(r3)
 /* 800C1848 000BD768  28 03 00 00 */	cmplwi r3, 0
 /* 800C184C 000BD76C  40 82 00 10 */	bne lbl_800C185C
-/* 800C1850 000BD770  3C 60 80 31 */	lis r3, _db_stack_addr@ha
-/* 800C1854 000BD774  38 63 8C 80 */	addi r3, r3, _db_stack_addr@l
+/* 800C1850 000BD770  3C 60 80 31 */	lis r3, __ArenaLo@ha
+/* 800C1854 000BD774  38 63 8C 80 */	addi r3, r3, __ArenaLo@l
 /* 800C1858 000BD778  48 00 00 04 */	b lbl_800C185C
 lbl_800C185C:
 /* 800C185C 000BD77C  48 00 14 4D */	bl OSSetArenaLo
@@ -66,8 +66,8 @@ lbl_800C185C:
 /* 800C187C 000BD79C  80 03 00 00 */	lwz r0, 0(r3)
 /* 800C1880 000BD7A0  28 00 00 02 */	cmplwi r0, 2
 /* 800C1884 000BD7A4  40 80 00 18 */	bge lbl_800C189C
-/* 800C1888 000BD7A8  3C 60 80 30 */	lis r3, _db_stack_end@ha
-/* 800C188C 000BD7AC  38 63 6C 80 */	addi r3, r3, _db_stack_end@l
+/* 800C1888 000BD7A8  3C 60 80 30 */	lis r3, _stack_addr@ha
+/* 800C188C 000BD7AC  38 63 6C 80 */	addi r3, r3, _stack_addr@l
 /* 800C1890 000BD7B0  38 03 00 1F */	addi r0, r3, 0x1f
 /* 800C1894 000BD7B4  54 03 00 34 */	rlwinm r3, r0, 0, 0, 0x1a
 /* 800C1898 000BD7B8  48 00 14 11 */	bl OSSetArenaLo
