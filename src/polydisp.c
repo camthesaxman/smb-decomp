@@ -154,9 +154,9 @@ void draw_3d_scene(void)
         case SMD_GAME_OVER_INIT:
         case SMD_GAME_OVER_MAIN:
         case SMD_GAME_NAMEENTRY_READY_INIT:
-            switch (modeCtrl.unk28)
+            switch (modeCtrl.gameType)
             {
-            case 1:
+            case GAMETYPE_MAIN_COMPETITION:
                 draw_normal_game_scene();
                 break;
             default:
@@ -1376,7 +1376,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
     case SMD_GAME_NAMEENTRY_READY_INIT:
-        if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.unk28 != 1)
+        if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
             g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);

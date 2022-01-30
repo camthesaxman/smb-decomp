@@ -53,7 +53,7 @@ struct BackgroundInfo  // size = 0xA8
     u8 filler88[4];
     u32 unk8C;
     void (*unk90)();
-    Func802F20EC unk94;
+    /*0x94*/ Func802F20EC ballEnvFunc;
     void (*unk98)();
     void *unk9C;
     u32 unkA0;

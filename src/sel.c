@@ -64,10 +64,10 @@ void func_80012434(int a)
         break;
     }
 
-    if (modeCtrl.unk28 == 1)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         func_80029788();
 
-    if (modeCtrl.unk28 >= 3 || modeCtrl.unk28 < 0)
+    if (modeCtrl.gameType >= GAMETYPE_MINI_RACE || modeCtrl.gameType < GAMETYPE_MAIN_NORMAL)
     {
         if (lbl_802F1B7C != NULL)
         {

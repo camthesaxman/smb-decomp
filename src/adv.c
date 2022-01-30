@@ -292,7 +292,7 @@ void submode_adv_demo_init_func(void)
         spritePoolInfo.unkC[i] = 2;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
-    modeCtrl.unk28 = 0;
+    modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.unk2C = 0;
     lbl_80206BC0[0] = 0;
     lbl_80206BC0[1] = 1;
@@ -1701,7 +1701,7 @@ void submode_adv_game_ready_init_func(void)
     currStageId = sp8.stageId;
     event_finish_all();
     call_bitmap_load_group(BMP_RNK);
-    modeCtrl.unk28 = 0;
+    modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     camera_setup_splitscreen_viewports(modeCtrl.playerCount);
@@ -2192,7 +2192,7 @@ void func_80011D90(void)
     spritePoolInfo.unkC[3] = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
-    modeCtrl.unk28 = 0;
+    modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.unk40 = 0;
     modeCtrl.unk2C = 0;
     currentBallStructPtr = &ballInfo[modeCtrl.unk2C];

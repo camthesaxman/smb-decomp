@@ -76,7 +76,7 @@ void ev_stage_init(void)
     previewLoaded = FALSE;
     if (gameMode == MD_GAME && gameSubmode != SMD_GAME_NAMEENTRY_READY_INIT)
     {
-        if (modeCtrl.unk28 == 0 || modeCtrl.unk28 == 1)
+        if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         {
             int r5 = func_800673BC();
             if (r5 > 0 && r5 <= 200)

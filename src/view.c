@@ -63,7 +63,7 @@ void ev_view_init(void)
             OSPanic("view.c", 126, "cannot OSAlloc\n");
         memcpy(stageViewInfo->unk44, movableStageParts, 72 * sizeof(*stageViewInfo->unk44));
     }
-    if (modeCtrl.unk28 == 1)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         camera_setup_singleplayer_viewport();
     view_init_stage_anim();
     func_800A66E4();
@@ -123,9 +123,9 @@ void ev_view_dest(void)
         OSFree(stageViewInfo);
         stageViewInfo = NULL;
     }
-    if (modeCtrl.unk28 == 1)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
-        if (modeCtrl.unk28 == 1 && modeCtrl.playerCount == 3)
+        if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount == 3)
         {
             switch (modeCtrl.unk42)
             {
@@ -449,7 +449,9 @@ void func_800A6734(void)
 
     s32 sp10[2] = { 0x400, 0x300 };
 
-    if (modeCtrl.unk28 != 1 || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1<<(31-0x13))))
+    if (modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION
+     || func_800672D0(currStageId) != 0
+     || (modeCtrl.levelSetFlags & (1 << 12)))
     {
         struct GMAModelHeader *models[2];
 
@@ -487,7 +489,7 @@ void func_800A6874(void)
     Vec sp14;
     Vec sp8 = { 0, 0, -1 };
 
-    if ((modeCtrl.unk28 != 1 || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1<<(31-0x13))))
+    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananasCount > 0)
     {
         g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3f, 0.3f);

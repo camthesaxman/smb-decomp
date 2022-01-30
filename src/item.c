@@ -143,13 +143,13 @@ void ev_item_init(void)
     }
 
     func_80030A50(spritePoolInfo.unk10);
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 4:
+    case GAMETYPE_MINI_FIGHT:
         if (func_800672D0(currStageId) != 0)
             make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
         break;
-    case 1:
+    case GAMETYPE_MAIN_COMPETITION:
         if (func_800672D0(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))

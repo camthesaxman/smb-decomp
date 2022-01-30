@@ -50,7 +50,7 @@ void unkFunc8000A26C(struct Sprite *a)
     }
     else
     {
-        if (modeCtrl.unk28 == 6)
+        if (modeCtrl.gameType == GAMETYPE_MINI_BILLIARDS)
         {
             if (modeCtrl.playerCount == 1)
                 lbl_801EEC68.unk15 = 0;
@@ -63,18 +63,18 @@ void unkFunc8000A26C(struct Sprite *a)
             lbl_801EEC68.unk15 = modeCtrl.unk2C;
     }
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 0:
+    case GAMETYPE_MAIN_NORMAL:
         lbl_801EEC68.unk10 = 1;
         break;
-    case 1:
+    case GAMETYPE_MAIN_COMPETITION:
         lbl_801EEC68.unk10 = 1;
         break;
-    case 2:
+    case GAMETYPE_MAIN_PRACTICE:
         lbl_801EEC68.unk10 = 2;
         break;
-    case 3:
+    case GAMETYPE_MINI_RACE:
         if (lbl_801EED88.unk8 & (1<<(31-0x1B)))
             lbl_801EEC68.unk10 = 3;
         else if (!(lbl_801EED88.unk8 & (1<<(31-0x1C)))
@@ -83,7 +83,7 @@ void unkFunc8000A26C(struct Sprite *a)
         else
             lbl_801EEC68.unk10 = 0;
         break;
-    case 6:
+    case GAMETYPE_MINI_BILLIARDS:
         if (lbl_801EEC68.unk16 == lbl_801EEC68.unk14)
             lbl_801EEC68.unk10 = 4;
         else
@@ -177,9 +177,9 @@ void unkFunc8000A924(struct Sprite *a)
     lbl_802F1B98 = 4;
     if (a != NULL)
         a->unk48 = 6;
-    if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
+    if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
         lbl_802F1B9C = OSSetCurrentHeap(memHeap4);
-    if (gameMode == MD_MINI && modeCtrl.unk28 == 8)
+    if (gameMode == MD_MINI && modeCtrl.gameType == GAMETYPE_MINI_GOLF)
     {
         OSHeapHandle r30 = OSSetCurrentHeap(memHeap2);
         call_bitmap_load_group(BMP_HOW);
@@ -187,7 +187,7 @@ void unkFunc8000A924(struct Sprite *a)
     }
     else
         call_bitmap_load_group(BMP_HOW);
-    if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
+    if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
         OSSetCurrentHeap(lbl_802F1B9C);
     func_80081F30();
     gamePauseStatus |= 8;
@@ -210,7 +210,7 @@ void unkFunc8000AA00(struct Sprite *a)
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
             func_8002CF38(100, 10);
-            if (modeCtrl.unk28 == 6)
+            if (modeCtrl.gameType == GAMETYPE_MINI_BILLIARDS)
                 lbl_801EEC68.unk4 |= 0x20;
             break;
         case 1:
@@ -251,7 +251,7 @@ void unkFunc8000AA00(struct Sprite *a)
             unkFunc8000A924(a);
             break;
         case 3:
-            if (modeCtrl.unk28 == 0 && modeCtrl.playerCount == 1)
+            if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
             {
                 lbl_802F1B98 = 5;
                 gameSubmodeRequest = SMD_GAME_INTR_SEL_INIT;
@@ -407,10 +407,10 @@ void unkFunc8000AECC(struct Sprite *a)
             func_8002B5C8(0x70);
             lbl_801EEC68.unk4 &= ~1;
             destroy_sprite_with_tag(10);
-            if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
+            if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
                 lbl_802F1B9C = OSSetCurrentHeap(memHeap4);
             call_bitmap_free_group(12);
-            if (modeCtrl.unk28 == 5 || modeCtrl.unk28 == 8)
+            if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
                 OSSetCurrentHeap(lbl_802F1B9C);
             if (a != NULL)
                 a->unk48 = 1;
@@ -424,7 +424,7 @@ void unkFunc8000B09C(void)
 {
     struct Sprite *sprite = find_sprite_with_tag(4);
 
-    if ((modeCtrl.unk28 == 0 || modeCtrl.unk28 == 2)
+    if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
      && !(lbl_801F3A58.unk0 & (1<<(31-0x17)))
      && ((lbl_801F3A58.unk0 & (1<<(31-0x1A))) || (lbl_801F3A58.unk0 & (1<<(31-0x19))) || (lbl_801F3A58.unk0 & (1<<(31-0x1B))))
      && func_8004C70C() != 0)

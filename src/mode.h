@@ -226,6 +226,19 @@ enum
     LVLSET_FLAG_MASTER = (1 << 4),
 };
 
+enum
+{
+    GAMETYPE_MAIN_NORMAL,
+    GAMETYPE_MAIN_COMPETITION,
+    GAMETYPE_MAIN_PRACTICE,
+    GAMETYPE_MINI_RACE,
+    GAMETYPE_MINI_FIGHT,
+    GAMETYPE_MINI_TARGET,
+    GAMETYPE_MINI_BILLIARDS,
+    GAMETYPE_MINI_BOWLING,
+    GAMETYPE_MINI_GOLF,
+};
+
 struct ModeControl
 {
     s32 unk0;
@@ -238,7 +251,7 @@ struct ModeControl
     s32 unk1C;
     /*0x20*/ s32 menuSel;
     /*0x24*/ int playerCount;
-    s32 unk28;
+    /*0x28*/ s32 gameType;
     s32 unk2C;
     s32 unk30;
     u8 filler34[0x40-0x34];

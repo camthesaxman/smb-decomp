@@ -418,7 +418,7 @@ void ev_background_init(void)
     backgroundInfo.unk7C = lbl_801B9740[backgroundInfo.bgId];
     backgroundInfo.unk8C = 0;
     backgroundInfo.unk90 = 0;
-    backgroundInfo.unk94 = NULL;
+    backgroundInfo.ballEnvFunc = NULL;
     if (backgroundInfo.bgId > 0)
     {
         int temp = rand();
@@ -450,7 +450,7 @@ void ev_background_dest(void)
     backgroundInfo.unk7C = 0;
     backgroundInfo.unk8C = 0;
     backgroundInfo.unk90 = 0;
-    backgroundInfo.unk94 = NULL;
+    backgroundInfo.ballEnvFunc = NULL;
 }
 
 void func_80054FF0(void)

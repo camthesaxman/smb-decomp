@@ -218,9 +218,9 @@ int func_80037098(struct Ball_child *a, struct Ball *ball)
     if (a->unk24 != 5)
         return ret;
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 1:
+    case GAMETYPE_MAIN_COMPETITION:
         var1 = ball->unk126;
         var2 = var1 * 0.2f;
         if (var2 > 3.0f)
@@ -281,7 +281,7 @@ void func_8003721C(struct Ball_child *a, float b)
     int r28 = 0;
     int r27 = 0;
 
-    if (modeCtrl.unk28 == 8)
+    if (modeCtrl.gameType == GAMETYPE_MINI_GOLF)
         return;
 
     if (gameSubmode == SMD_GAME_RESULT_MAIN || gameSubmode == SMD_GAME_RESULT_MENU)
@@ -359,7 +359,7 @@ void func_8003721C(struct Ball_child *a, float b)
         else if (ball->flags & BALL_FLAG_15)
         {
             r29 = 9;
-            if (modeCtrl.unk28 == 1)
+            if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
                 r28 = func_8003721C_inline(ball);
             else if (!(lbl_801F3A58.unk0 & (1 << 6)))
                 r28 = (lbl_801F3A58.unk20 & 1) + 2;
@@ -529,14 +529,14 @@ void ev_ball_init(void)
     func_8008C4A0(1.0f);
     lbl_802F1F10 = NULL;
     func_8008BEF8(1);
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 1:
-    case 4:
+    case GAMETYPE_MAIN_COMPETITION:
+    case GAMETYPE_MINI_FIGHT:
         if (modeCtrl.playerCount > 2 && !(advDemoInfo.flags & (1 << 8)))
             func_8008BEF8(2);
         break;
-    case 3:
+    case GAMETYPE_MINI_RACE:
         if (modeCtrl.playerCount >= 2)
             func_8008BEF8(2);
         break;
@@ -547,7 +547,7 @@ void ev_ball_init(void)
 
     for (i = 0; i < 4; i++,  ball++, r21++)
     {
-        if (*r21 == 0 || (modeCtrl.unk28 != 8 && *r21 == 4))
+        if (*r21 == 0 || (modeCtrl.gameType != GAMETYPE_MINI_GOLF && *r21 == 4))
         {
             ball->unk0 = 0;
             ball->unk144 = NULL;
@@ -582,34 +582,34 @@ void ev_ball_init(void)
         lbl_802F1F08 = 0;
         lbl_80205E20[i] = 0.0f;
         sp18[lbl_80206BC0[i]]++;
-        switch (modeCtrl.unk28)
+        switch (modeCtrl.gameType)
         {
-        case 1:
-        case 3:
-        case 4:
-        case 8:
+        case GAMETYPE_MAIN_COMPETITION:
+        case GAMETYPE_MINI_RACE:
+        case GAMETYPE_MINI_FIGHT:
+        case GAMETYPE_MINI_GOLF:
             break;
         default:
             if (!(advDemoInfo.flags & (1 << 8)))
                 r20->unkC1 = ~(1 << i);
             break;
         }
-        switch (modeCtrl.unk28)
+        switch (modeCtrl.gameType)
         {
-        case 3:
-        case 4:
-        case 5:
-        case 7:
+        case GAMETYPE_MINI_RACE:
+        case GAMETYPE_MINI_FIGHT:
+        case GAMETYPE_MINI_TARGET:
+        case GAMETYPE_MINI_BOWLING:
             break;
         default:
             if (!(advDemoInfo.flags & (1 << 8)))
                 lbl_80206B80[i] = func_8008D1DC(lbl_8003781C, r20, 5);
             break;
         }
-        switch (modeCtrl.unk28)
+        switch (modeCtrl.gameType)
         {
-        case 1:
-        case 4:
+        case GAMETYPE_MAIN_COMPETITION:
+        case GAMETYPE_MINI_FIGHT:
             if (advDemoInfo.flags & (1 << 8))
             {
                 func_8008BF00(r20, 0);
@@ -626,7 +626,7 @@ void ev_ball_init(void)
                 lbl_802F1F0C |= 1 << (r20->unk10 * 2);
             }
             break;
-        case 3:
+        case GAMETYPE_MINI_RACE:
             switch (modeCtrl.playerCount)
             {
             case 1:
@@ -647,11 +647,11 @@ void ev_ball_init(void)
             break;
         }
     }
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 0:
-    case 5:
-    case 7:
+    case GAMETYPE_MAIN_NORMAL:
+    case GAMETYPE_MINI_TARGET:
+    case GAMETYPE_MINI_BOWLING:
         currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
         break;
     default:
@@ -895,7 +895,7 @@ void ev_ball_main(void)
         func_8003CDB0(ball);
         func_800390C8(4, &ball->pos, 0.75f);
         ballFuncs[ball->state](ball);
-        if (modeCtrl.unk28 != 3)
+        if (modeCtrl.gameType != GAMETYPE_MINI_RACE)
             func_80038528(ball);
     }
 
@@ -908,7 +908,7 @@ void ev_ball_main(void)
         ball->unk15C[0] = ball->unk15C[1] = ball->unk15C[2] = ball->unk15C[3] = 1.0f;
     }
 
-    if (modeCtrl.unk28 == 1)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         r28 = spritePoolInfo.unkC;
         ball = &ballInfo[0];
@@ -965,7 +965,7 @@ void ev_ball_main(void)
     if (lbl_802F1F10 != NULL)
         lbl_802F1F10();
 
-    if (modeCtrl.unk28 == 3)
+    if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
         r28 = spritePoolInfo.unkC;
         ball = &ballInfo[0];
@@ -978,11 +978,11 @@ void ev_ball_main(void)
         }
     }
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 0:
-    case 5:
-    case 7:
+    case GAMETYPE_MAIN_NORMAL:
+    case GAMETYPE_MINI_TARGET:
+    case GAMETYPE_MINI_BOWLING:
         currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
         break;
     default:
@@ -1053,7 +1053,7 @@ void func_80038528(struct Ball *ball)
 
     func_8003CB88(ball);
     func_8003CCB0();
-    if (modeCtrl.unk28 != 3)
+    if (modeCtrl.gameType != GAMETYPE_MINI_RACE)
         animate_ball_size_change(ball);
     func_8003CDC0(ball);
     if (ball->unk14E > 0)
@@ -1095,13 +1095,13 @@ void ball_draw(void)
     s8 *r27;
     int i;
     int (*func)();
-    Func802F20EC bgfunc;
+    Func802F20EC envFunc;
     int unused;
 
     if (dipSwitches & DIP_OLD_BALL)
     {
         func = backgroundInfo.unk7C;
-        if (gameMode == MD_GAME && modeCtrl.unk28 == 1 && modeCtrl.playerCount > 3)
+        if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount > 3)
             func = NULL;
     }
 
@@ -1162,10 +1162,10 @@ void ball_draw(void)
                 mathutil_mtxA_pop();
         }
 
-        bgfunc = backgroundInfo.unk94;
-        if (bgfunc != NULL)
+        envFunc = backgroundInfo.ballEnvFunc;
+        if (envFunc != NULL)
         {
-            g_avdisp_set_some_func_1(bgfunc);
+            g_avdisp_set_some_func_1(envFunc);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             g_avdisp_maybe_draw_model_3(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
             g_avdisp_set_some_func_1(NULL);
@@ -1204,9 +1204,9 @@ void func_80038AB4(void)
         return;
     }
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 4:
+    case GAMETYPE_MINI_FIGHT:
         if (backgroundInfo.bgId == BG_TYPE_SPA || backgroundInfo.bgId == BG_TYPE_ICE2)
         {
             if (modeCtrl.playerCount > 3)
@@ -1216,7 +1216,7 @@ void func_80038AB4(void)
             }
         }
         break;
-    case 5:
+    case GAMETYPE_MINI_TARGET:
         return;
     default:
         if (modeCtrl.unk30 > 2)
@@ -1234,9 +1234,9 @@ void func_80038AB4(void)
     spC.z = -15.0f;
     mathutil_mtxA_tf_vec(&spC, &spC);
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 1:
+    case GAMETYPE_MAIN_COMPETITION:
         sp18.unk2C = 2;
         sp18.unk30 = 0.1f;
         sp18.unk34 = 0.2f;
@@ -1285,10 +1285,10 @@ void func_80038AB4(void)
             sp18.unk2E = 0xFFFF;
         else
         {
-            switch (modeCtrl.unk28)
+            switch (modeCtrl.gameType)
             {
-            case 4:
-            case 8:
+            case GAMETYPE_MINI_FIGHT:
+            case GAMETYPE_MINI_GOLF:
                 sp18.unk2E = 0xFFFF;
                 break;
             default:
@@ -1349,9 +1349,9 @@ void give_bananas(int bananas)
 {
     struct Ball *ball = currentBallStructPtr;
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 0:
+    case GAMETYPE_MAIN_NORMAL:
         ball->bananas += bananas;
         if (ball->bananas >= 100)
         {
@@ -1361,8 +1361,8 @@ void give_bananas(int bananas)
             g_play_sound(0x2852);  // play 1-up sound?
         }
         break;
-    case 1:
-    case 2:
+    case GAMETYPE_MAIN_COMPETITION:
+    case GAMETYPE_MAIN_PRACTICE:
         ball->bananas += bananas;
         if (ball->bananas > 999)
             ball->bananas = 999;
@@ -1515,7 +1515,7 @@ void func_80039410(struct Ball *ball)
 
     memset(ball, 0, sizeof(*ball));
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
     default:
         if (dipSwitches & DIP_SARU_0)
@@ -1523,8 +1523,8 @@ void func_80039410(struct Ball *ball)
         else
             ball->lives = 3;
         break;
-    case 1:
-    case 2:
+    case GAMETYPE_MAIN_COMPETITION:
+    case GAMETYPE_MAIN_PRACTICE:
         ball->lives = 2;
         break;
     }
@@ -1542,13 +1542,13 @@ void func_800394C4(struct Ball *ball)
 {
     struct Ball backup;
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 2:
+    case GAMETYPE_MAIN_PRACTICE:
         ball->bananas = 0;
         ball->unk7C = 0;
         break;
-    case 1:
+    case GAMETYPE_MAIN_COMPETITION:
         if (ball->flags & BALL_FLAG_23)
         {
             ball->bananas = ball->unk134;
@@ -2407,7 +2407,7 @@ void update_ball_ape_transform(struct Ball *ball, struct Struct80039974 *b, int 
 
     if ((ball->flags & BALL_FLAG_00) && b->unk34 < -0.054999999701976776)
     {
-        int r4 = (modeCtrl.unk28 != 4 && lbl_80206DEC.unk0 < 0xF0);
+        int r4 = (modeCtrl.gameType != GAMETYPE_MINI_FIGHT && lbl_80206DEC.unk0 < 0xF0);
 
         if (r4)
             ball->flags |= BALL_FLAG_27;
@@ -2425,7 +2425,7 @@ void update_ball_ape_transform(struct Ball *ball, struct Struct80039974 *b, int 
     {
         int r4 = 1;
 
-        if (modeCtrl.unk28 == 3 && ball->unk144 != NULL && (ball->unk144->unk14 & (1 << 5)))
+        if (modeCtrl.gameType == GAMETYPE_MINI_RACE && ball->unk144 != NULL && (ball->unk144->unk14 & (1 << 5)))
             r4 = 0;
 
         if (r4)
@@ -2768,7 +2768,7 @@ void func_8003CA98(struct Ball *ball, struct Struct80039974 *b)
     b->unk58 = 0;
     b->unk50 = 0;
 
-    if (modeCtrl.unk28 != 5)
+    if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)
         b->unk54 = 0.01f;
     else
         b->unk54 = 0.005f;
@@ -2824,14 +2824,14 @@ void func_8003CCB0(void)
     struct Ball *ball = currentBallStructPtr;
     int bvar;
 
-    if (modeCtrl.unk28 == 3
+    if (modeCtrl.gameType == GAMETYPE_MINI_RACE
      && ball->unk144 != NULL
      && (ball->unk144->unk14 & (1 << 5)))
         return;
     if (!(ball->flags & BALL_FLAG_06))
         return;
 
-    if (modeCtrl.unk28 != 1)
+    if (modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         bvar = ((ball->flags & BALL_FLAG_09) || (ball->unk80 & 1));
     else if (ball->flags & BALL_FLAG_09)
         bvar = ball->unk80 & 1;
@@ -2873,16 +2873,16 @@ void func_8003CDC0(struct Ball *ball)
     if (advDemoInfo.flags & (1 << 8))
         return;
 
-    switch (modeCtrl.unk28)
+    switch (modeCtrl.gameType)
     {
-    case 4:
+    case GAMETYPE_MINI_FIGHT:
         if (!(ball->flags & BALL_FLAG_21) && ball->unk80 > 0x78)
             func_8003CDC0_sub(ball);
         break;
-    case 7:
+    case GAMETYPE_MINI_BOWLING:
         func_8003CDC0_sub(ball);
         break;
-    case 8:
+    case GAMETYPE_MINI_GOLF:
         break;
     default:
         if (lbl_80206DEC.unk0 > 0xF0
@@ -2930,7 +2930,7 @@ void func_8003CDC0(struct Ball *ball)
     if (gameSubmode == SMD_GAME_ROLL_MAIN)
         return;
 
-    if (modeCtrl.unk28 == 3)
+    if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
         struct Ball_child *r30 = ball->unk144;
         s8 r31 = 0;
@@ -2947,7 +2947,7 @@ void func_8003CDC0(struct Ball *ball)
         if ((unpausedFrameCounter & 7) == 0 || r31 == 0)
             func_8002CA5C(ball->unk2E, r31, r28);
     }
-    else if (modeCtrl.unk28 != 7)
+    else if (modeCtrl.gameType != GAMETYPE_MINI_BOWLING)
     {
         s8 r4;
         s8 r5;
@@ -2974,7 +2974,7 @@ void func_8003D3C4(struct Ball *ball)
 
     if (!(ball->flags & BALL_FLAG_00))
         return;
-    if (modeCtrl.unk28 == 3 && ball->unk144 != NULL && ball->unk144->unk14 & (1 << 5))
+    if (modeCtrl.gameType == GAMETYPE_MINI_RACE && ball->unk144 != NULL && ball->unk144->unk14 & (1 << 5))
         return;
 
     f26 = mathutil_vec_mag(&ball->vel);
@@ -3103,9 +3103,9 @@ void ball_draw_callback(struct BallDrawNode *node)
 {
     struct Ball *ball = &ballInfo[node->ballId];
     int (*r30)() = backgroundInfo.unk7C;
-    Func802F20EC bgfunc;
+    Func802F20EC envFunc;
 
-    if (gameMode == MD_GAME && modeCtrl.unk28 == 1 && modeCtrl.playerCount > 3)
+    if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount > 3)
         r30 = NULL;
 
     func_800223D8(node->unk8);
@@ -3132,10 +3132,10 @@ void ball_draw_callback(struct BallDrawNode *node)
             mathutil_mtxA_pop();
     }
 
-    bgfunc = backgroundInfo.unk94;
-    if (bgfunc != NULL)
+    envFunc = backgroundInfo.ballEnvFunc;
+    if (envFunc != NULL)
     {
-        g_avdisp_set_some_func_1(bgfunc);
+        g_avdisp_set_some_func_1(envFunc);
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         g_avdisp_maybe_draw_model_2(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
         g_avdisp_set_some_func_1(NULL);

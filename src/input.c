@@ -499,9 +499,9 @@ void func_80025640(void)
             break;
         for (i = 0; i < 4; i++, r27++)
         {
-            switch (modeCtrl.unk28)
+            switch (modeCtrl.gameType)
             {
-            case 6:
+            case GAMETYPE_MINI_BILLIARDS:
                 if (i > 1 || lbl_802F0310[i] == 0)
                     continue;
                 break;

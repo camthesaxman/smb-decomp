@@ -159,7 +159,7 @@ void item_coin_draw(struct Item *item)
         mathutil_mtxA_scale_xyz(f31, f31, f31);
     mathutil_get_mtxA_translate_alt(&spC);
     f30 = -(((spC.z + f30) + 0.1f) / f30);
-    if (modeCtrl.unk28 == 1 && (currentBallStructPtr->flags & (1 << 12)))
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         f30 = 0.25f;
     if (f30 > 0.0f)
     {
@@ -180,7 +180,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
 {
     struct Struct8003C550 sp10;
 
-    if (modeCtrl.unk28 == 1 && (currentBallStructPtr->flags & (1 << 12)))
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         return;
     item->unk8 &= ~(1 << 1);
     item->state = 3;
