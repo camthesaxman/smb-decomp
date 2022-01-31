@@ -26,6 +26,14 @@ enum
     CAMERA_STATE_END_CUTSCENE     = 74,
 };
 
+struct Viewport
+{
+    float left;    // screen position (0.0-1.0) of viewport left edge
+    float top;     // screen position (0.0-1.0) of viewport top edge
+    float width;   // width (0.0-1.0) of viewport as a portion of screen width
+    float height;  // height (0.0-1.0) of viewport as a portion of screen height
+};
+
 struct Camera_sub
 {
     // Offsets here are relative to the enclosing Camera struct.
@@ -36,10 +44,7 @@ struct Camera_sub
     /*0x34*/ float aspect;  // aspect ratio (width / height)
     float unk38;
     float unk3C;
-    /*0x40*/ float left;  // screen position (0.0-1.0) of viewport left edge
-    /*0x44*/ float top;  // screen position (0.0-1.0) of viewport top edge
-    /*0x48*/ float width;  // width (0.0-1.0) of viewport as a portion of screen width
-    /*0x4C*/ float height;  // height (0.0-1.0) of viewport as a portion of screen height
+    /*0x40*/ struct Viewport vp;
 };
 
 struct Camera

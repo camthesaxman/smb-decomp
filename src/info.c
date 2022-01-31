@@ -7,6 +7,7 @@
 #include "global.h"
 #include "adv.h"
 #include "ball.h"
+#include "bitmap.h"
 #include "camera.h"
 #include "input.h"
 #include "item.h"
@@ -15,8 +16,11 @@
 #include "sprite.h"
 #include "stage.h"
 
-extern u32 lbl_802F1CAC;
-extern u32 lbl_802F1CA8;
+s8 lbl_802F1CB0[8];
+u32 lbl_802F1CAC;
+u32 lbl_802F1CA8;
+
+extern s32 lbl_802F1DFC;
 
 struct Struct801F3A58 lbl_801F3A58;
 
@@ -33,6 +37,10 @@ void func_80022F14(void)
         lbl_802F1CA8 = 0;
     }
 }
+
+// unknown types
+u8 lbl_801F3A8C[0x10];  FORCE_BSS_ORDER(lbl_801F3A8C)
+u8 lbl_801F3A9C[0xD4];  FORCE_BSS_ORDER(lbl_801F3A9C)
 
 void ev_info_init(void)
 {
@@ -469,34 +477,29 @@ void func_80023AF4(void)
         lbl_802F1CA8 = 0;
 }
 
+#define lbl_802F3000 0.0f
 #define lbl_802F3004 1.0f
 #define lbl_802F3010 0.1
 #define lbl_802F3018 32767.0f
 #define lbl_802F3020 0.01
 #define lbl_802F3028 255.0f
-
-/*
-const float lbl_802F3000 = 0f;
-const float lbl_802F3004 = 1f;
-const float lbl_802F3008 = 2f;
-const double lbl_802F3010 = 0.10000000000000001;
-const float lbl_802F3018 = 32767f;
-const double lbl_802F3020 = 0.01;
-const float lbl_802F3028 = 255f;
-const double lbl_802F3030 = 4503601774854144;
-const double lbl_802F3038 = 1;
-const float lbl_802F3040 = 0.20000000298023224f;
-const float lbl_802F3044 = 15f;
-const double lbl_802F3048 = 0.066666000000000003;
-const double lbl_802F3050 = 640;
-const double lbl_802F3058 = 0.5;
-const double lbl_802F3060 = 480;
-const float lbl_802F3068 = -140f;
-const float lbl_802F306C = 48f;
-const float lbl_802F3070 = 24f;
-const float lbl_802F3074 = -2f;
-const float lbl_802F3078 = 0.30000001192092896f;
-*/
+#define lbl_802F3038 1.0
+#define lbl_802F3040 0.2f
+#define lbl_802F3044 15.0f
+#define lbl_802F3048 0.066666000000000003
+#define lbl_802F3050 640.0
+#define lbl_802F3058 0.5
+#define lbl_802F3060 480.0
+#define lbl_802F3068 -140.0f
+#define lbl_802F306C 48.0f
+#define lbl_802F3070 24.0f
+#define lbl_802F3074 -2.0f
+#define lbl_802F3078 0.3f
+#define lbl_802F3080 130.0
+#define lbl_802F3088 21.0
+#define lbl_802F3090 0.45f
+#define lbl_802F3094 0.7f
+#define lbl_802F30A0 -0.5
 
 int func_80023B9C(struct Ball *ball, u32 *b, s32 *c)
 {
@@ -582,8 +585,6 @@ void func_80023CF4(void)
     }
 }
 
-extern s8 lbl_802F1CB0[8];
-
 void func_80023DB8(struct Ball *ball)
 {
     int r5;
@@ -597,24 +598,20 @@ void func_80023DB8(struct Ball *ball)
     ball->unk138 = r5;
 }
 
-u32 lbl_801818D0[] =
+struct Struct801818D0
 {
-    0,
-    0,
-    0x43200000,
-    0x42400000,
-    0,
-    0,
-    0x43200000,
-    0x42400000,
-    0,
-    0x42400000,
-    0x43000000,
-    0x42400000,
-    0x43200000,
-    0,
-    0x42B00000,
-    0x42400000
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+};
+
+struct Struct801818D0 lbl_801818D0[4] =
+{
+    {  0,  0, 160, 48},
+    {  0,  0, 160, 48},
+    {  0, 48, 128, 48},
+    {160,  0,  88, 48},
 };
 
 void lbl_80023E0C(int dummy, struct Sprite *sprite)
@@ -648,4 +645,217 @@ void lbl_80023EE0(int dummy, struct Sprite *sprite)
     sprite->unk70 = mathutil_sin(sprite->unk10 * 0x2B8) * lbl_802F3028;
     sprite->unk71 = sprite->unk70;
     sprite->unk72 = sprite->unk70;
+}
+
+void lbl_80023FB8(int dummy, struct Sprite *sprite)
+{
+    sprite->unk10++;
+    if (sprite->unk10 <= 15)
+    {
+        sprite->unk40 = lbl_802F3038 + lbl_802F3040 * (lbl_802F3044 - sprite->unk10);
+        sprite->unk44 = sprite->unk40;
+        sprite->unk6C = sprite->unk10 * lbl_802F3048;
+    }
+    if (sprite->unk10 > 60 && sprite->unk10 < 0x69)
+        sprite->centerY -= lbl_802F3004;
+    if (sprite->unk48 != 0 && sprite->unk10 == 0x78)
+    {
+        struct Ball *r30 = &ballInfo[sprite->bmpId];
+        struct Viewport *vp = &cameraInfo[r30->unk2E].sub28.vp;
+        struct Sprite *r28 = create_sprite();
+        struct Sprite *r5;
+
+        if (r28 != NULL)
+        {
+            r28->centerX = (vp->left + vp->width * lbl_802F3058) * lbl_802F3050;
+            r28->centerY = (vp->top + vp->height * lbl_802F3058) * lbl_802F3060;
+            r28->fontId = 0xB0;
+            r28->textAlign = 4;
+            r28->unk48 = r30->unk2E;
+            r28->unkC = 0xFF;
+            r28->unkD = 0xFF;
+            r28->unkE = 0;
+            r28->unk6C = lbl_802F3000;
+            r28->bmpId = r30->unk138;
+            r28->mainFunc = lbl_80023E0C;
+            sprintf(r28->text, "BONUS  +000", r30->unk138);  //! bad format
+            r5 = create_linked_sprite(r28);
+            if (r5 != NULL)
+            {
+                r5->type = 1;
+                r5->centerX = lbl_802F3068;
+                if (r30->unk138 < 10)
+                    r5->centerX += lbl_802F306C;
+                else if (r30->unk138 < 100)
+                    r5->centerX += lbl_802F3070;
+                r5->centerY = lbl_802F3074;
+                r5->bmpId = 12;
+                r5->textAlign = 4;
+                r5->unk40 = lbl_802F3078;
+                r5->unk44 = lbl_802F3078;
+                r5->unk6C = lbl_802F3000;
+                r5->mainFunc = lbl_80023EBC;
+                sprintf(r5->text, "bonus banana.pic");
+            }
+        }
+        if ((modeCtrl.levelSetFlags & (1<<(31-0x14)))
+         && r30->unk126 > 1)
+        {
+            struct Sprite *r11 = create_sprite();
+
+            if (r11 != NULL)
+            {
+                r11->centerX = (vp->left + vp->width * lbl_802F3058) * lbl_802F3050 + lbl_802F3080;
+                r11->centerY = (vp->top + vp->height * lbl_802F3058) * lbl_802F3060 + lbl_802F3088;
+                r11->fontId = 0x63;
+                r11->textAlign = 4;
+                r11->unkC = 0xFF;
+                r11->unkD = 0xC0;
+                r11->unkE = 0;
+                r11->unk6C = lbl_802F3000;
+                r11->unk40 = lbl_802F3090;
+                r11->unk44 = lbl_802F3094;
+                r11->unk10 = 0x2D;
+                r11->mainFunc = lbl_80023EE0;
+                sprintf(r11->text, "STRAIGHT\n VICTORIES X %d", r30->unk126);
+            }
+        }
+    }
+}
+
+void lbl_80024324(struct Sprite *sprite)
+{
+    struct NaomiSpriteParams spC;
+    struct Struct801818D0 *r6;
+    struct TPLTextureHeader *r5;
+
+    spC.bmpId = 0x502;
+    spC.rotation = sprite->unk68;
+    spC.alpha = sprite->unk6C;
+    spC.unk30 = -1;
+    spC.flags = (sprite->unk74 & ~0xF) | 0xA;
+    spC.unk38 = ((int)(sprite->unk6C * lbl_802F3028) << 24)
+              | (sprite->unkC << 16)
+              | (sprite->unkD << 8)
+              | (sprite->unkE << 0);
+    spC.unk3C = (sprite->unk70 << 16)
+              | (sprite->unk71 << 8)
+              | (sprite->unk72 << 0);
+    r6 = &lbl_801818D0[sprite->unk48];
+    r5 = &bitmapGroups[(spC.bmpId >> 8) & 0xFF].tpl->texHeaders[spC.bmpId & 0xFF];
+    spC.x = sprite->centerX;
+    spC.y = sprite->centerY;
+    spC.z = sprite->unk4C;
+    spC.u1 = r6->unk0 / r5->width;
+    spC.v1 = r6->unk4 / r5->height;
+    spC.u2 = spC.u1 + r6->unk8 / r5->width;
+    spC.v2 = spC.v1 + r6->unkC / r5->height;
+    spC.zoomX = (spC.u2 - spC.u1) * sprite->unk40;
+    spC.zoomY = (spC.v2 - spC.v1) * sprite->unk44;
+    draw_naomi_sprite(&spC);
+}
+
+void func_800244E8(struct Ball *ball)
+{
+    struct Viewport *r30;
+    struct Sprite *r9;
+
+    if (ball->unk2F == 0)
+        return;
+    r30 = &cameraInfo[ball->unk2E].sub28.vp;
+    r9 = create_sprite();
+    if (r9 == NULL)
+        return;
+    r9->centerX = (r30->left + r30->width * lbl_802F3058) * lbl_802F3050;
+    r9->centerY = (r30->top + r30->height * lbl_802F3058) * lbl_802F3060;
+    r9->type = 1;
+    r9->textAlign = 4;
+    r9->unk48 = ball->unk2F;
+    r9->bmpId = ball->unk2E;
+    r9->unk10 = 0;
+    r9->mainFunc = lbl_80023FB8;
+    r9->unk38 = lbl_80024324;
+    strcpy(r9->text, "ranking");
+}
+
+void func_800245E4(struct Ball *ball, int goalId, int c)
+{
+    lbl_801F3A58.unkC = goalId;
+    lbl_801F3A58.unkE = c;
+    lbl_801F3A58.unk10 = ball->vel;
+    lbl_801F3A58.unk1C = lbl_801F3A58.timerCurr;
+    if (c > 0)
+    {
+        struct MovableStagePart *r29 = &movableStageParts[c];
+        struct StageGoal *goal = &decodedStageLzPtr->goals[goalId];
+        Vec sp20;
+        Vec sp14;
+        
+        mathutil_mtxA_from_mtx(r29->unk54);
+        mathutil_mtxA_tf_point(&goal->pos, &sp14);
+        mathutil_mtxA_from_mtx(r29->unk24);
+        mathutil_mtxA_tf_point(&goal->pos, &sp20);
+        
+        lbl_801F3A58.unk10.x += sp14.x - sp20.x;
+        lbl_801F3A58.unk10.y += sp14.y - sp20.y;
+        lbl_801F3A58.unk10.z += sp14.z - sp20.z;
+    }
+}
+
+int func_800246F4(struct Ball *ball)
+{
+    struct Struct80039974 sp18;
+    struct StageCollHdr *r30;
+    int i;
+
+    if (ball->pos.y < *decodedStageLzPtr->pFallOutY)
+        return 1;
+    func_8003CA98(ball, &sp18);
+    r30 = decodedStageLzPtr->collHdrs;
+    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r30++)
+    {
+        struct StageCollHdr_child2 *r28;
+        int j;
+
+        if (i != sp18.unk58)
+            func_80042000(&sp18, i);
+        r28 = r30->unk88;
+        for (j = 0; j < r30->unk84; j++, r28++)
+        {
+            Vec spC;
+
+            mathutil_mtxA_from_translate(&r28->unk0);
+            mathutil_mtxA_rotate_z(r28->unk1C);
+            mathutil_mtxA_rotate_y(r28->unk1A);
+            mathutil_mtxA_rotate_x(r28->unk18);
+            mathutil_mtxA_rigid_inv_tf_point(&sp18.unk4, &spC);
+            spC.x /= r28->unkC.x;
+            spC.y /= r28->unkC.y;
+            spC.z /= r28->unkC.z;
+            if (spC.x < lbl_802F30A0 || spC.x > lbl_802F3058)
+                continue;
+            if (spC.y < lbl_802F30A0 || spC.y > lbl_802F3058)
+                continue;
+            if (spC.z < lbl_802F30A0 || spC.z > lbl_802F3058)
+                continue;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// for time bonus?
+void func_80024860(struct Ball *ball)
+{
+    lbl_802F1DFC = ball->unkFC->unk10;
+    lbl_802F1DF8 = ball->unk2E;
+    if (lbl_801F3A58.timerCurr > (lbl_801F3A58.timerMax >> 1))
+    {
+        if (lbl_801F3A58.unk22 != 1)
+            g_play_sound(0x2859);
+        else
+            g_play_sound(0x2858);
+    }
+    else
+        g_play_sound(0x281B);
 }

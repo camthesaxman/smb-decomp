@@ -79,7 +79,7 @@ SOURCES := \
 	asm/code_0.s \
 	src/code_1.c \
 	src/info.c \
-	asm/info.s \
+	src/code_7.c \
 	src/input.c \
 	src/bitmap.c \
 	src/bmp_list_com.c \

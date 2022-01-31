@@ -55,9 +55,3 @@ FORCEACTIVE
 }
 
 FORCEFILES { __init_cpp_exceptions.o camera.o }
-
-lbl_802F3000 = 0x802F3000;
-lbl_802F3004 = 0x802F3004;
-lbl_802F3010 = 0x802F3010;
-lbl_802F3030 = 0x802F3030;
-lbl_802F3028 = 0x802F3028;

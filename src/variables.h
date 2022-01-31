@@ -1119,8 +1119,8 @@ extern struct
 // extern ? lbl_802F1AE0;
 // extern ? lbl_802F1AE4;
 extern struct TPL *naomiBackgroundTpl;
-extern struct TPL *naomiStageTpl;  // unknown type
-// extern ? naomiCommonTpl;
+extern struct TPL *naomiStageTpl;
+extern struct TPL *naomiCommonTpl;
 // extern ? lbl_802F1AF4;
 // extern ? lbl_802F1AF8;
 extern struct NaomiObj *naomiBackgroundObj;
