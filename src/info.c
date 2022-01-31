@@ -30,7 +30,7 @@ void func_80022F14(void)
     lbl_801F3A58.unk20 = 1;
     lbl_801F3A58.unk28 = 0;
     lbl_801F3A58.unk2A = 0;
-    if (modeCtrl.unk28 == 2)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
     {
         lbl_802F1CAC = 0;
         lbl_802F1CA8 = 0;
@@ -87,9 +87,9 @@ void ev_info_main(void)
         if (func_80023B9C(ball, &sp68, &sp64) == 0)
             continue;
         lbl_801F3A58.unk30 = ball->unk2E;
-        switch (modeCtrl.unk28)
+        switch (modeCtrl.gameType)
         {
-        case 1:
+        case GAMETYPE_MAIN_COMPETITION:
             if (ball->flags & (1 << 24))
             {
                 g_get_replay_info(lbl_80250A68.unk0[ball->unk2E], &spC8);
@@ -146,7 +146,7 @@ void ev_info_main(void)
             ball->unk12A = lbl_801F3A58.timerCurr;
             func_80024860(ball);
             break;
-        case 4:
+        case GAMETYPE_MINI_FIGHT:
             break;
         default:
             if (ball->flags & (1 << 11))
@@ -164,7 +164,7 @@ void ev_info_main(void)
             {
                 func_80023CF4();
                 func_800245E4(ball, sp68, sp64);
-                if (modeCtrl.unk28 == 0)
+                if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
                     func_800AEDDC();
             }
             func_80049268(ball->unk2E);
@@ -233,7 +233,7 @@ void ev_info_main(void)
         struct StageCollHdr_child *r7;
         int r9;
 
-        if (modeCtrl.unk28 == 0)
+        if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
             lbl_801F3A58.unk30 = modeCtrl.unk2C;
         else
             lbl_801F3A58.unk30 = 0;
@@ -334,14 +334,14 @@ void ev_info_main(void)
                 continue;
             if (func_800246F4(ball) == 0)
                 continue;
-            switch (modeCtrl.unk28)
+            switch (modeCtrl.gameType)
             {
-            case 1:
+            case GAMETYPE_MAIN_COMPETITION:
                 ball->state = 19;
                 ball->flags |= 0x800;
                 ball->unk150 = ball->pos;
                 break;
-            case 4:
+            case GAMETYPE_MINI_FIGHT:
                 ball->flags |= 0x800;
                 break;
             default:
@@ -360,9 +360,9 @@ void ev_info_main(void)
             lbl_801F3A58.timerCurr--;
         if (lbl_801F3A58.timerCurr <= 0)
         {
-            switch (modeCtrl.unk28)
+            switch (modeCtrl.gameType)
             {
-            case 1:
+            case GAMETYPE_MAIN_COMPETITION:
                 if (lbl_801F3A58.unk2C > 0)
                 {
                     func_80023CF4();
@@ -472,7 +472,7 @@ void func_80023AF4(void)
     lbl_801F3A58.unk2A = unk2A;
     lbl_801F3A58.unk2E = unk2E;
     lbl_801F3A58.unk22 = 1;
-    if (modeCtrl.unk28 == 2)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         lbl_802F1CA8 = 0;
 }
 
@@ -533,7 +533,7 @@ void func_80023CF4(void)
     else
         lbl_801F3A58.unk0 |= 0x29;
 
-    if (modeCtrl.unk28 == 1)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         struct Ball *r6;
         struct Ball *r7;
