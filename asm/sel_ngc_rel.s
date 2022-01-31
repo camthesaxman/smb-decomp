@@ -2615,8 +2615,8 @@ lbl_00002484:
 /* 000024B4 7D085214 */ add r8, r8, r10
 /* 000024B8 38E40000 */ addi r7, r4, lbl_80206BD0@l
 /* 000024BC 91280048 */ stw r9, 0x48(r8)
-/* 000024C0 3C800000 */ lis r4, lbl_80206BC0@ha
-/* 000024C4 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 000024C0 3C800000 */ lis r4, playerCharacterSelection@ha
+/* 000024C4 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 000024C8 7CE75214 */ add r7, r7, r10
 /* 000024CC 90670000 */ stw r3, 0(r7)
 /* 000024D0 7FC05214 */ add r30, r0, r10
@@ -3272,11 +3272,11 @@ lbl_00002DFC:
 /* 00002E24 38A50000 */ addi r5, r5, modeCtrl@l
 /* 00002E28 38840000 */ addi r4, r4, lbl_802F1C10@l
 /* 00002E2C 801F003C */ lwz r0, 0x3c(r31)
-/* 00002E30 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 00002E30 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 00002E34 90050024 */ stw r0, 0x24(r5)
 /* 00002E38 88040004 */ lbz r0, 4(r4)
 /* 00002E3C 7C000774 */ extsb r0, r0
-/* 00002E40 94030000 */ stwu r0, lbl_80206BC0@l(r3)
+/* 00002E40 94030000 */ stwu r0, playerCharacterSelection@l(r3)
 /* 00002E44 88040005 */ lbz r0, 5(r4)
 /* 00002E48 7C000774 */ extsb r0, r0
 /* 00002E4C 90030004 */ stw r0, 4(r3)
@@ -5256,8 +5256,8 @@ lbl_00004A2C:
 /* 00004A2C 2C080000 */ cmpwi r8, 0
 /* 00004A30 40824E24 */ bne lbl_00009854
 lbl_00004A34:
-/* 00004A34 3C600000 */ lis r3, lbl_80206BC0@ha
-/* 00004A38 3BC30000 */ addi r30, r3, lbl_80206BC0@l
+/* 00004A34 3C600000 */ lis r3, playerCharacterSelection@ha
+/* 00004A38 3BC30000 */ addi r30, r3, playerCharacterSelection@l
 /* 00004A3C 3AC00000 */ li r22, 0
 /* 00004A40 3C800000 */ lis r4, lbl_802F1BF4@ha
 /* 00004A44 3C600000 */ lis r3, modeCtrl@ha
@@ -5660,9 +5660,9 @@ lbl_00004FB4:
 lbl_00004FC8:
 /* 00004FC8 2C0F0000 */ cmpwi r15, 0
 /* 00004FCC 40824888 */ bne lbl_00009854
-/* 00004FD0 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 00004FD0 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 00004FD4 3C800000 */ lis r4, analogButtonInfo@ha
-/* 00004FD8 3A430000 */ addi r18, r3, lbl_80206BC0@l
+/* 00004FD8 3A430000 */ addi r18, r3, playerCharacterSelection@l
 /* 00004FDC 3A600000 */ li r19, 0
 /* 00004FE0 3C600000 */ lis r3, modeCtrl@ha
 /* 00004FE4 3A040000 */ addi r16, r4, analogButtonInfo@l
@@ -10525,8 +10525,8 @@ lbl_000094BC:
 /* 000094D4 60000001 */ ori r0, r0, 1
 /* 000094D8 90030008 */ stw r0, 8(r3)
 /* 000094DC 4BFF6CAD */ bl func_800668A0
-/* 000094E0 3C600000 */ lis r3, lbl_801F3A58@ha
-/* 000094E4 38830000 */ addi r4, r3, lbl_801F3A58@l
+/* 000094E0 3C600000 */ lis r3, infoWork@ha
+/* 000094E4 38830000 */ addi r4, r3, infoWork@l
 /* 000094E8 A804002E */ lha r0, 0x2e(r4)
 /* 000094EC 3C600000 */ lis r3, loadingStageId@ha
 /* 000094F0 B0030000 */ sth r0, loadingStageId@l(r3)
@@ -10899,9 +10899,9 @@ lbl_00009A24:
 /* 00009A24 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00009A28 81270000 */ lwz r9, 0(r7)
 /* 00009A2C 38E30000 */ addi r7, r3, lbl_801EEDA8@l
-/* 00009A30 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 00009A30 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 00009A34 81470110 */ lwz r10, 0x110(r7)
-/* 00009A38 38830000 */ addi r4, r3, lbl_80206BC0@l
+/* 00009A38 38830000 */ addi r4, r3, playerCharacterSelection@l
 /* 00009A3C 39800000 */ li r12, 0
 /* 00009A40 48000088 */ b lbl_00009AC8
 lbl_00009A44:
@@ -12574,7 +12574,7 @@ lbl_0000B250:
 /* 0000B2AC 1C130006 */ mulli r0, r19, 6
 /* 0000B2B0 FC230072 */ fmul f1, f3, f1
 /* 0000B2B4 D01F0044 */ stfs f0, 0x44(r31)
-/* 0000B2B8 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 0000B2B8 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 0000B2BC 3A3C0000 */ addi r17, r28, 0
 /* 0000B2C0 3A5C0000 */ addi r18, r28, 0
 /* 0000B2C4 FC00081E */ fctiwz f0, f1
@@ -12587,7 +12587,7 @@ lbl_0000B250:
 /* 0000B2E0 3AB532C8 */ addi r21, r21, 0x32c8
 /* 0000B2E4 3AD6378C */ addi r22, r22, 0x378c
 /* 0000B2E8 7E008050 */ subf r16, r0, r16
-/* 0000B2EC 38030000 */ addi r0, r3, lbl_80206BC0@l
+/* 0000B2EC 38030000 */ addi r0, r3, playerCharacterSelection@l
 /* 0000B2F0 90010018 */ stw r0, 0x18(r1)
 /* 0000B2F4 3C000067 */ lis r0, 0x67
 /* 0000B2F8 39EF38D0 */ addi r15, r15, 0x38d0
@@ -17998,9 +17998,9 @@ lbl_00010278:
 lbl_00010284:
 /* 00010284 3CA00000 */ lis r5, lbl_100009D8@ha
 /* 00010288 39050000 */ addi r8, r5, lbl_100009D8@l
-/* 0001028C 3C800000 */ lis r4, lbl_80206BC0@ha
+/* 0001028C 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 00010290 3CE00000 */ lis r7, lbl_00017048@ha
-/* 00010294 39640000 */ addi r11, r4, lbl_80206BC0@l
+/* 00010294 39640000 */ addi r11, r4, playerCharacterSelection@l
 /* 00010298 2C090000 */ cmpwi r9, 0
 /* 0001029C 3809FFFF */ addi r0, r9, -1  ;# fixed addi
 /* 000102A0 3CC00000 */ lis r6, lbl_00017420@ha
@@ -18504,9 +18504,9 @@ lbl_00010898:
 /* 00010A38 3CC00000 */ lis r6, lbl_100009D8@ha
 /* 00010A3C 3C800000 */ lis r4, lbl_801EEDA8@ha
 /* 00010A40 3A040000 */ addi r16, r4, lbl_801EEDA8@l
-/* 00010A44 3CA00000 */ lis r5, lbl_80206BC0@ha
+/* 00010A44 3CA00000 */ lis r5, playerCharacterSelection@ha
 /* 00010A48 38060000 */ addi r0, r6, lbl_100009D8@l
-/* 00010A4C 3A650000 */ addi r19, r5, lbl_80206BC0@l
+/* 00010A4C 3A650000 */ addi r19, r5, playerCharacterSelection@l
 /* 00010A50 3C600000 */ lis r3, lbl_80206BD0@ha
 /* 00010A54 3BC30000 */ addi r30, r3, lbl_80206BD0@l
 /* 00010A58 3C600000 */ lis r3, bitmapGroups@ha

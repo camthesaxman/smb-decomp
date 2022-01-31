@@ -242,9 +242,9 @@ lbl_00000370:
 /* 000003E0 38630000 */ addi r3, r3, spritePoolInfo@l
 /* 000003E4 88030050 */ lbz r0, 0x50(r3)
 /* 000003E8 38A30050 */ addi r5, r3, 0x50
-/* 000003EC 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 000003EC 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 000003F0 981E0004 */ stb r0, 4(r30)
-/* 000003F4 38830000 */ addi r4, r3, lbl_80206BC0@l
+/* 000003F4 38830000 */ addi r4, r3, playerCharacterSelection@l
 /* 000003F8 3B800000 */ li r28, 0
 /* 000003FC 80040000 */ lwz r0, 0(r4)
 /* 00000400 3860000D */ li r3, 0xd
@@ -319,9 +319,9 @@ lbl_0000048C:
 /* 00000510 38630000 */ addi r3, r3, spritePoolInfo@l
 /* 00000514 98030050 */ stb r0, 0x50(r3)
 /* 00000518 38830050 */ addi r4, r3, 0x50
-/* 0000051C 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 0000051C 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 00000520 801F0008 */ lwz r0, 8(r31)
-/* 00000524 94030000 */ stwu r0, lbl_80206BC0@l(r3)
+/* 00000524 94030000 */ stwu r0, playerCharacterSelection@l(r3)
 /* 00000528 881F0005 */ lbz r0, 5(r31)
 /* 0000052C 98040001 */ stb r0, 1(r4)
 /* 00000530 801F000C */ lwz r0, 0xc(r31)
@@ -643,10 +643,10 @@ lbl_00000998:
 /* 00000998 3C800000 */ lis r4, spritePoolInfo@ha
 /* 0000099C 833E0000 */ lwz r25, 0(r30)
 /* 000009A0 38040000 */ addi r0, r4, spritePoolInfo@l
-/* 000009A4 3C600000 */ lis r3, lbl_80206BC0@ha
+/* 000009A4 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 000009A8 7F60CA14 */ add r27, r0, r25
 /* 000009AC 5724103A */ slwi r4, r25, 2
-/* 000009B0 38030000 */ addi r0, r3, lbl_80206BC0@l
+/* 000009B0 38030000 */ addi r0, r3, playerCharacterSelection@l
 /* 000009B4 7F402214 */ add r26, r0, r4
 /* 000009B8 3B800002 */ li r28, 2
 /* 000009BC 48000030 */ b lbl_000009EC
@@ -4042,9 +4042,9 @@ lbl_00003A90:
 /* 00003AD4 387B0000 */ addi r3, r27, 0
 /* 00003AD8 3BC50000 */ addi r30, r5, lbl_00013740@l
 /* 00003ADC 7F802214 */ add r28, r0, r4
-/* 00003AE0 4BFFC69D */ bl func_80039410
+/* 00003AE0 4BFFC69D */ bl g_ball_init_1
 /* 00003AE4 7F63DB78 */ mr r3, r27
-/* 00003AE8 4BFFC695 */ bl func_800394C4
+/* 00003AE8 4BFFC695 */ bl g_ball_init_2
 /* 00003AEC 38000002 */ li r0, 2
 /* 00003AF0 981B0000 */ stb r0, 0(r27)
 /* 00003AF4 7F63DB78 */ mr r3, r27

@@ -117,6 +117,37 @@ enum
     BMP_COM_menu_kiwaku_l2,
 };
 
+enum
+{
+    BMP_NML_icon_bombtimer,
+    BMP_NML_icon_lv1234_j,
+    BMP_NML_game_rank,
+    BMP_NML_game_result_e3,
+    BMP_NML_game_goal,
+    BMP_NML_asc_ball22x22,
+    BMP_NML_asc_komo16x16,
+    BMP_NML_asc_tama32x32,
+    BMP_NML_asc_ball18x16,
+    BMP_NML_asc_ball20x20,
+    BMP_NML_fukidashi,
+    BMP_NML_game_player,
+    BMP_NML_asc_ball26x38,
+    BMP_NML_asc_ball16x22,
+    BMP_NML_DUMMY14,
+    BMP_NML_DUMMY15,
+    BMP_NML_icon_bomb_hibi,
+    BMP_NML_icon_bomb_part_a,
+    BMP_NML_icon_bomb_part_b,
+    BMP_NML_icon_bomb_part_c,
+    BMP_NML_icon_bomb_part_d,
+    BMP_NML_icon_bomb_part_e,
+    BMP_NML_icon_bomb_part_f,
+    BMP_NML_icon_bomb_part_g,
+    BMP_NML_icon_bomb_part_h,
+    BMP_NML_icon_bomb_part_i,
+    BMP_NML_icon_bomb_part_j,
+};
+
 #define BITMAP_ID(group, bmp) (((group) << 8) | (bmp))
 
 enum Alignment

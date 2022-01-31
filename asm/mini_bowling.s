@@ -4056,9 +4056,9 @@ lbl_00003B34:
 /* 00003B90 3C600000 */ lis r3, lbl_802F1BF0@ha
 /* 00003B94 38C10008 */ addi r6, r1, 8
 /* 00003B98 80A4000C */ lwz r5, 0xc(r4)
-/* 00003B9C 3C800000 */ lis r4, lbl_80206BC0@ha
+/* 00003B9C 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 00003BA0 893E0006 */ lbz r9, 6(r30)
-/* 00003BA4 38840000 */ addi r4, r4, lbl_80206BC0@l
+/* 00003BA4 38840000 */ addi r4, r4, playerCharacterSelection@l
 /* 00003BA8 88050000 */ lbz r0, 0(r5)
 /* 00003BAC 81030000 */ lwz r8, lbl_802F1BF0@l(r3)
 /* 00003BB0 38FE000C */ addi r7, r30, 0xc
@@ -8423,7 +8423,7 @@ lbl_00007A6C:
 /* 00007A8C 3BC50000 */ addi r30, r5, lbl_000153E0@l
 /* 00007A90 93A1002C */ stw r29, 0x2c(r1)
 /* 00007A94 3BA30000 */ addi r29, r3, 0
-/* 00007A98 4BFF86C9 */ bl func_800394C4
+/* 00007A98 4BFF86C9 */ bl g_ball_init_2
 /* 00007A9C C01F0014 */ lfs f0, 0x14(r31)
 /* 00007AA0 38600000 */ li r3, 0
 /* 00007AA4 3800BFDF */ li r0, -16417

@@ -330,8 +330,8 @@ submode_mini_ending_init_func:
 /* 80093E64 0008FD84  93 81 00 08 */	stw r28, 8(r1)
 /* 80093E68 0008FD88  B0 0D 99 AC */	sth r0, gameSubmodeRequest@sda21(r13)
 /* 80093E6C 0008FD8C  4B F8 44 61 */	bl camera_setup_singleplayer_viewport
-/* 80093E70 0008FD90  3C 60 80 20 */	lis r3, lbl_80206BC0@ha
-/* 80093E74 0008FD94  3B A3 6B C0 */	addi r29, r3, lbl_80206BC0@l
+/* 80093E70 0008FD90  3C 60 80 20 */	lis r3, playerCharacterSelection@ha
+/* 80093E74 0008FD94  3B A3 6B C0 */	addi r29, r3, playerCharacterSelection@l
 /* 80093E78 0008FD98  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 80093E7C 0008FD9C  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
 /* 80093E80 0008FDA0  3B 80 00 00 */	li r28, 0

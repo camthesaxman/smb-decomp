@@ -92,7 +92,7 @@ static void sel_stage_init(void)
     create_sel_stage_sprites();
     dummy_func_C90();
     func_800668A0();
-    loadingStageId = lbl_801F3A58.unk2E;
+    loadingStageId = infoWork.unk2E;
     g_start_screen_fade(0, 0, 30);
     gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
@@ -199,7 +199,7 @@ static void sel_stage_handle_input(void)
         preload_stage_files(loadingStageIdRequest);
         lbl_0000185D = loadingStageIdRequest;
     }
-    lbl_801F3A58.unk2E = loadingStageIdRequest;
+    infoWork.unk2E = loadingStageIdRequest;
     loadingStageId = loadingStageIdRequest;
     if (lbl_0000185D != currStageId && !is_load_queue_not_empty())
     {
@@ -224,13 +224,13 @@ static void sel_stage_handle_input(void)
      || (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y))
     {
         if (controllerInfo[0].unk0[0].button & PAD_BUTTON_Y)
-            lbl_80206BC0[0] = 3;
+            playerCharacterSelection[0] = 3;
         else if (controllerInfo[0].unk0[0].button & PAD_BUTTON_X)
-            lbl_80206BC0[0] = 2;
+            playerCharacterSelection[0] = 2;
         else if (controllerInfo[0].unk0[0].button & PAD_BUTTON_B)
-            lbl_80206BC0[0] = 1;
+            playerCharacterSelection[0] = 1;
         else
-            lbl_80206BC0[0] = 0;
+            playerCharacterSelection[0] = 0;
         dummy_func_C98();
         gameModeRequest = MD_GAME;
         gameSubmodeRequest = SMD_GAME_FIRST_INIT;

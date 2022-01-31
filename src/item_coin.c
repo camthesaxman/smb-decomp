@@ -192,7 +192,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     item->unk2C.z += b->unk1C.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
-        item->unk5E = lbl_801F3A58.timerCurr;
+        item->unk5E = infoWork.timerCurr;
         give_bananas(bananaInfo[item->subtype].bananaValue);
         g_give_points(bananaInfo[item->subtype].unkA, bananaInfo[item->subtype].pointValue);
         item->state = 0;
@@ -218,14 +218,14 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 1)
     {
         g_play_sound(0x39);
-        if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
+        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x2820);
         func_800554A4(1);
     }
     else
     {
         g_play_sound(3);
-        if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
+        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x281F);
         func_800554A4(0);
     }

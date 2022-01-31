@@ -28,7 +28,7 @@ do_object_collision:
 /* 8006A658 00066578  7C 08 02 A6 */	mflr r0
 /* 8006A65C 0006657C  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 8006A660 00066580  90 01 00 04 */	stw r0, 4(r1)
-/* 8006A664 00066584  3D 20 80 1F */	lis r9, lbl_801F3A58@ha
+/* 8006A664 00066584  3D 20 80 1F */	lis r9, infoWork@ha
 /* 8006A668 00066588  3C 80 80 07 */	lis r4, func_8006A9B8@ha
 /* 8006A66C 0006658C  94 21 FF 38 */	stwu r1, -0xc8(r1)
 /* 8006A670 00066590  3C A0 80 1F */	lis r5, modeCtrl@ha
@@ -52,7 +52,7 @@ do_object_collision:
 /* 8006A6B8 000665D8  90 01 00 7C */	stw r0, 0x7c(r1)
 /* 8006A6BC 000665DC  38 03 5E 60 */	addi r0, r3, ballInfo@l
 /* 8006A6C0 000665E0  7C 16 03 78 */	mr r22, r0
-/* 8006A6C4 000665E4  38 09 3A 58 */	addi r0, r9, lbl_801F3A58@l
+/* 8006A6C4 000665E4  38 09 3A 58 */	addi r0, r9, infoWork@l
 /* 8006A6C8 000665E8  3C 60 80 07 */	lis r3, func_8006AAEC@ha
 /* 8006A6CC 000665EC  90 01 00 80 */	stw r0, 0x80(r1)
 /* 8006A6D0 000665F0  3B 03 AA EC */	addi r24, r3, func_8006AAEC@l
@@ -2918,8 +2918,8 @@ lbl_8006CFA0:
 /* 8006CFAC 00068ECC  A8 1D 00 0E */	lha r0, 0xe(r29)
 /* 8006CFB0 00068ED0  2C 00 00 00 */	cmpwi r0, 0
 /* 8006CFB4 00068ED4  40 80 00 4C */	bge lbl_8006D000
-/* 8006CFB8 00068ED8  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 8006CFBC 00068EDC  80 03 3A 58 */	lwz r0, lbl_801F3A58@l(r3)
+/* 8006CFB8 00068ED8  3C 60 80 1F */	lis r3, infoWork@ha
+/* 8006CFBC 00068EDC  80 03 3A 58 */	lwz r0, infoWork@l(r3)
 /* 8006CFC0 00068EE0  54 00 06 B5 */	rlwinm. r0, r0, 0, 0x1a, 0x1a
 /* 8006CFC4 00068EE4  40 82 00 10 */	bne lbl_8006CFD4
 /* 8006CFC8 00068EE8  38 00 00 04 */	li r0, 4
@@ -3504,8 +3504,8 @@ lbl_8006D7E4:
 /* 8006D870 00069790  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 8006D874 00069794  48 00 00 30 */	b lbl_8006D8A4
 lbl_8006D878:
-/* 8006D878 00069798  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 8006D87C 0006979C  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
+/* 8006D878 00069798  3C 60 80 1F */	lis r3, infoWork@ha
+/* 8006D87C 0006979C  38 63 3A 58 */	addi r3, r3, infoWork@l
 /* 8006D880 000697A0  A8 03 00 04 */	lha r0, 4(r3)
 /* 8006D884 000697A4  3C 60 88 89 */	lis r3, 0x88888889@ha
 /* 8006D888 000697A8  38 63 88 89 */	addi r3, r3, 0x88888889@l
@@ -4117,8 +4117,8 @@ lbl_8006E170:
 /* 8006E184 0006A0A4  A8 1E 00 0E */	lha r0, 0xe(r30)
 /* 8006E188 0006A0A8  2C 00 00 00 */	cmpwi r0, 0
 /* 8006E18C 0006A0AC  40 82 00 1C */	bne lbl_8006E1A8
-/* 8006E190 0006A0B0  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 8006E194 0006A0B4  80 03 3A 58 */	lwz r0, lbl_801F3A58@l(r3)
+/* 8006E190 0006A0B0  3C 60 80 1F */	lis r3, infoWork@ha
+/* 8006E194 0006A0B4  80 03 3A 58 */	lwz r0, infoWork@l(r3)
 /* 8006E198 0006A0B8  54 00 06 B5 */	rlwinm. r0, r0, 0, 0x1a, 0x1a
 /* 8006E19C 0006A0BC  40 82 00 0C */	bne lbl_8006E1A8
 /* 8006E1A0 0006A0C0  38 00 00 05 */	li r0, 5
@@ -5362,8 +5362,8 @@ func_8006F428:
 func_8006F42C:
 /* 8006F42C 0006B34C  4E 80 00 20 */	blr
 
-.global func_8006F430
-func_8006F430:
+.global g_break_goal_tape
+g_break_goal_tape:
 /* 8006F430 0006B350  7C 08 02 A6 */	mflr r0
 /* 8006F434 0006B354  90 01 00 04 */	stw r0, 4(r1)
 /* 8006F438 0006B358  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -5400,8 +5400,8 @@ func_8006F430:
 /* 8006F4B4 0006B3D4  80 1E 00 10 */	lwz r0, 0x10(r30)
 /* 8006F4B8 0006B3D8  2C 00 00 00 */	cmpwi r0, 0
 /* 8006F4BC 0006B3DC  40 80 00 14 */	bge lbl_8006F4D0
-/* 8006F4C0 0006B3E0  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 8006F4C4 0006B3E4  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
+/* 8006F4C0 0006B3E0  3C 60 80 1F */	lis r3, infoWork@ha
+/* 8006F4C4 0006B3E4  38 63 3A 58 */	addi r3, r3, infoWork@l
 /* 8006F4C8 0006B3E8  A8 03 00 04 */	lha r0, 4(r3)
 /* 8006F4CC 0006B3EC  90 1E 00 10 */	stw r0, 0x10(r30)
 lbl_8006F4D0:
@@ -5658,8 +5658,8 @@ func_8006F760:
 /* 8006F888 0006B7A8  80 1C 00 24 */	lwz r0, 0x24(r28)
 /* 8006F88C 0006B7AC  2C 00 00 00 */	cmpwi r0, 0
 /* 8006F890 0006B7B0  40 80 00 14 */	bge lbl_8006F8A4
-/* 8006F894 0006B7B4  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 8006F898 0006B7B8  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
+/* 8006F894 0006B7B4  3C 60 80 1F */	lis r3, infoWork@ha
+/* 8006F898 0006B7B8  38 63 3A 58 */	addi r3, r3, infoWork@l
 /* 8006F89C 0006B7BC  A8 03 00 04 */	lha r0, 4(r3)
 /* 8006F8A0 0006B7C0  90 1C 00 24 */	stw r0, 0x24(r28)
 lbl_8006F8A4:

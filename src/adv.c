@@ -112,7 +112,7 @@ void submode_adv_logo_init_func(void)
     prevLogoPos.z = 0.0f;
     func_8002FFEC();
     func_80021DB4(0);
-    lbl_80206BC0[0] = 0;
+    playerCharacterSelection[0] = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
     event_start(EVENT_CAMERA);
@@ -295,10 +295,10 @@ void submode_adv_demo_init_func(void)
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.unk2C = 0;
-    lbl_80206BC0[0] = 0;
-    lbl_80206BC0[1] = 1;
-    lbl_80206BC0[2] = 2;
-    lbl_80206BC0[3] = 3;
+    playerCharacterSelection[0] = 0;
+    playerCharacterSelection[1] = 1;
+    playerCharacterSelection[2] = 2;
+    playerCharacterSelection[3] = 3;
     event_start(EVENT_BALL);
     for (i = 0; i < 4; i++)
     {
@@ -339,7 +339,7 @@ void lbl_8000F030(struct Struct8000F030 *a)
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    g_math_unk15(&ballInfo[a->unk20 - 1].unkFC->unk30, &spC, currentCameraStructPtr->sub28.unk38);
+    g_math_unk15(&ballInfo[a->unk20 - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
     a->unkC = spC.x;
     a->unkE = spC.y + lbl_801741CC[a->unk20 - 1];
 }
@@ -530,7 +530,7 @@ void run_cutscene_script(void)
             if (!(modeCtrl.levelSetFlags & (1 << 13)))
             {
                 mathutil_mtxA_from_mtxB();
-                g_math_unk15(&ballInfo[cmd->param].unkFC->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
+                g_math_unk15(&ballInfo[cmd->param].ape->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
                 memset(&sp14, 0, sizeof(sp14));
                 sp14.unkC = sp3C.x;
                 sp14.unkE = sp3C.y;
@@ -586,10 +586,10 @@ void run_cutscene_script(void)
             advDemoInfo.flags &= ~cmd->param;
             break;
         case CMD_SHOW_CHARACTER:
-            ballInfo[cmd->param].unkFC->unk14 &= ~(1 << 5);
+            ballInfo[cmd->param].ape->unk14 &= ~(1 << 5);
             break;
         case CMD_HIDE_CHARACTER:
-            ballInfo[cmd->param].unkFC->unk14 |= (1 << 5);
+            ballInfo[cmd->param].ape->unk14 |= (1 << 5);
             break;
         case CMD_PRELOAD_STAGE:
             preload_stage_files(cmd->param);
@@ -644,22 +644,22 @@ void run_cutscene_script(void)
             advLogoInfo.unk18[3] = cmd->param;
             break;
         case 21:
-            ballInfo[0].unkFC->unk14 |= cmd->param;
+            ballInfo[0].ape->unk14 |= cmd->param;
             break;
         case 22:
-            ballInfo[0].unkFC->unk14 &= ~cmd->param;
+            ballInfo[0].ape->unk14 &= ~cmd->param;
             break;
         case 23:
-            ballInfo[1].unkFC->unk14 |= cmd->param;
+            ballInfo[1].ape->unk14 |= cmd->param;
             break;
         case 24:
-            ballInfo[1].unkFC->unk14 &= ~cmd->param;
+            ballInfo[1].ape->unk14 &= ~cmd->param;
             break;
         case 25:
-            ballInfo[2].unkFC->unk14 |= cmd->param;
+            ballInfo[2].ape->unk14 |= cmd->param;
             break;
         case 26:
-            ballInfo[2].unkFC->unk14 &= ~cmd->param;
+            ballInfo[2].ape->unk14 &= ~cmd->param;
             break;
         case 27:
             sp8.x = 0.0f;
@@ -995,7 +995,7 @@ struct Struct80176434 *lbl_80174E04[] =
     lbl_80174D74,
 };
 
-void lbl_8000F790(struct Ball_child *a, int b)
+void lbl_8000F790(struct Ape *ape, int b)
 {
     struct Struct8003FB48 sp38;
     s16 r30;
@@ -1006,46 +1006,46 @@ void lbl_8000F790(struct Ball_child *a, int b)
     switch (b)
     {
     case 3:
-        func_8008B2D4(a);
+        func_8008B2D4(ape);
         return;
     }
     if (advDemoInfo.flags & (1 << 5))
     {
-        struct Ball *ball = &ballInfo[a->unkC0];
+        struct Ball *ball = &ballInfo[ape->unkC0];
 
         if (gamePauseStatus & 0xA)
             return;
         func_8003FB48(&ball->pos, &sp38, NULL);
-        a->unk14 &= -20;
+        ape->unk14 &= -20;
         if (!(sp38.unk0 & 1) && ball->vel.y < -(35.0f / 216.0f))
-            a->unk14 |= 2;
+            ape->unk14 |= 2;
         else if (mathutil_vec_mag(&ball->unkB8) < (1.0f / 3600.0f))
-            a->unk14 |= 1;
-        if (a->unk14 & (1 << 5))
+            ape->unk14 |= 1;
+        if (ape->unk14 & (1 << 5))
             ball->flags |= BALL_FLAG_INVISIBLE;
         else
             ball->flags &= ~BALL_FLAG_INVISIBLE;
         r28 = (ball->flags & (1 << 12)) != 0;
-        r28 |= !(a->unk14 & 3);
-        func_8003699C(a);
+        r28 |= !(ape->unk14 & 3);
+        func_8003699C(ape);
         if (r28)
-            f31 = func_80036CAC(a);
+            f31 = func_80036CAC(ape);
         else
         {
             f31 = 0.0f;
-            mathutil_mtxA_from_quat(&a->unk60);
+            mathutil_mtxA_from_quat(&ape->unk60);
             mathutil_mtxA_normalize_basis();
-            if (a->unk14 & (1 << 1))
-                func_80037718(a);
+            if (ape->unk14 & (1 << 1))
+                func_80037718(ape);
         }
         if (ball->flags & (1 << 5))
             f31 = mathutil_vec_mag(&ball->vel);
-        func_80036EB8(a);
-        mathutil_mtxA_to_quat(&a->unk60);
-        func_8003721C(a, f31);
-        func_8008C4A8(a);
-        if (!(a->unk14 & (1 << 3)))
-            func_8003765C(a);
+        func_80036EB8(ape);
+        mathutil_mtxA_to_quat(&ape->unk60);
+        func_8003721C(ape, f31);
+        func_8008C4A8(ape);
+        if (!(ape->unk14 & (1 << 3)))
+            func_8003765C(ape);
         if (advDemoInfo.unk8 >= 0x682 && advDemoInfo.unk8 < 0x6CC)
             ball->unk104 = currentCameraStructPtr->eye;
         else if (advDemoInfo.unk8 >= 0x51A && advDemoInfo.unk8 < 0x6CC)
@@ -1054,37 +1054,37 @@ void lbl_8000F790(struct Ball_child *a, int b)
             ball->unk104.y = 0.58f;
             ball->unk104.z = -4.25f;
         }
-        if (advDemoInfo.unk8 >= 0x6CC && advDemoInfo.unk8 < 0x73A && a->unk10 == 2)
-            ball->unk104.x = a->unk30.x + 1.0;
+        if (advDemoInfo.unk8 >= 0x6CC && advDemoInfo.unk8 < 0x73A && ape->unk10 == 2)
+            ball->unk104.x = ape->unk30.x + 1.0;
         if (advDemoInfo.unk8 >= 0x73A && advDemoInfo.unk8 < 0x7A2)
-            ball->unk104 = ballInfo[1].unkFC->unk30;
-        func_8008C090(a, &ball->unk104);
+            ball->unk104 = ballInfo[1].ape->unk30;
+        func_8008C090(ape, &ball->unk104);
         ball->unk100 = 0;
         ball->unk110 = 0.0f;
     }
     else
     {
-        a->unk14 &= -20;
-        a->unk14 |= 1;
-        a->unk30.x = func_8008CDC0(f31, lbl_80174DD4[a->unk10]);
-        a->unk30.y = func_8008CDC0(f31, lbl_80174DE4[a->unk10]);
-        a->unk30.z = func_8008CDC0(f31, lbl_80174DF4[a->unk10]);
-        r30 = func_8008CDC0(f31, lbl_80174E04[a->unk10]);
-        if (a->unk10 == lbl_802F1EB4)
+        ape->unk14 &= -20;
+        ape->unk14 |= 1;
+        ape->unk30.x = func_8008CDC0(f31, lbl_80174DD4[ape->unk10]);
+        ape->unk30.y = func_8008CDC0(f31, lbl_80174DE4[ape->unk10]);
+        ape->unk30.z = func_8008CDC0(f31, lbl_80174DF4[ape->unk10]);
+        r30 = func_8008CDC0(f31, lbl_80174E04[ape->unk10]);
+        if (ape->unk10 == lbl_802F1EB4)
         {
-            a->unk30.x += lbl_802F1ECC * 0.1;
-            a->unk30.y += lbl_802F1EC8 * 0.1;
-            a->unk30.z += lbl_802F1EC4 * 0.1;
+            ape->unk30.x += lbl_802F1ECC * 0.1;
+            ape->unk30.y += lbl_802F1EC8 * 0.1;
+            ape->unk30.z += lbl_802F1EC4 * 0.1;
             r30 += lbl_802F1ED2;
         }
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_translate(&a->unk30);
+        mathutil_mtxA_translate(&ape->unk30);
         mathutil_mtxA_rotate_y(r30);
         mathutil_mtxA_rotate_y(0xC000);
-        mathutil_mtxA_to_quat(&a->unk60);
+        mathutil_mtxA_to_quat(&ape->unk60);
         r4 = 6;
         r5 = 0;
-        r6 = advLogoInfo.unk18[a->unk10];
+        r6 = advLogoInfo.unk18[ape->unk10];
         if (r6 < 0)
         {
             switch (r6)
@@ -1127,44 +1127,44 @@ void lbl_8000F790(struct Ball_child *a, int b)
                 break;
             }
         }
-        func_8008BBD4(a, r4, r5, r6, 0.0f);
-        a->unk3C = (Vec){ 0.0f, -0.12f, 0.0f };
-        func_8008C4A8(a);
+        func_8008BBD4(ape, r4, r5, r6, 0.0f);
+        ape->unk3C = (Vec){ 0.0f, -0.12f, 0.0f };
+        func_8008C4A8(ape);
         if (advDemoInfo.flags & (1 << 9))
         {
             s16 sp30[] = { 0x2E00, 0xE100, 0x1500, 0x0000 };
             s16 sp28[] = { 0x0000, 0x0000, 0x0980, 0x0000 };
 
-            lbl_802F1BB4[a->unk10] += (sp30[a->unk10] - lbl_802F1BB4[a->unk10]) * 0.1;
-            lbl_802F1BBC[a->unk10] += (sp28[a->unk10] - lbl_802F1BBC[a->unk10]) * 0.1;
-            func_8008BFDC(a, lbl_802F1ED2 + lbl_802F1BB4[a->unk10], lbl_802F1ED0 + lbl_802F1BBC[a->unk10]);
+            lbl_802F1BB4[ape->unk10] += (sp30[ape->unk10] - lbl_802F1BB4[ape->unk10]) * 0.1;
+            lbl_802F1BBC[ape->unk10] += (sp28[ape->unk10] - lbl_802F1BBC[ape->unk10]) * 0.1;
+            func_8008BFDC(ape, lbl_802F1ED2 + lbl_802F1BB4[ape->unk10], lbl_802F1ED0 + lbl_802F1BBC[ape->unk10]);
         }
-        else if (a->unk14 & (1<<(31-9)))
+        else if (ape->unk14 & (1<<(31-9)))
         {
             Vec sp1C;
             mathutil_mtxA_push();
-            mathutil_mtxA_from_quat(&a->unk60);
-            mathutil_mtxA_mult_right((void *)((u8 *)a->unk0 + 0x8EC8));
+            mathutil_mtxA_from_quat(&ape->unk60);
+            mathutil_mtxA_mult_right((void *)((u8 *)ape->unk0 + 0x8EC8));
             mathutil_mtxA_tf_vec_xyz(&sp1C, 0.0f, -1.0f, 0.0f);
-            a->unkAC = 0.0f;
-            switch (a->unk10)
+            ape->unkAC = 0.0f;
+            switch (ape->unk10)
             {
             case 2:
-                a->unkA0.x = 0.9f;
-                a->unkA0.y = -0.5f;
+                ape->unkA0.x = 0.9f;
+                ape->unkA0.y = -0.5f;
                 break;
             default:
-                a->unkA0.x = 1.0f;
-                a->unkA0.y = 0.0f;
+                ape->unkA0.x = 1.0f;
+                ape->unkA0.y = 0.0f;
                 break;
             }
-            a->unkA0.z = 0.0f;
-            mathutil_vec_normalize_len(&a->unkA0);
+            ape->unkA0.z = 0.0f;
+            mathutil_vec_normalize_len(&ape->unkA0);
             mathutil_mtxA_tf_vec_xyz(&sp1C, 1.0f, 0.0f, 0.0f);
-            sp1C.x += a->unk30.x;
-            sp1C.y += a->unk30.y;
-            sp1C.z += a->unk30.z;
-            func_8008C090(a, &sp1C);
+            sp1C.x += ape->unk30.x;
+            sp1C.y += ape->unk30.y;
+            sp1C.z += ape->unk30.z;
+            func_8008C090(ape, &sp1C);
             mathutil_mtxA_pop();
         }
     }
@@ -1212,7 +1212,7 @@ static void func_8000FEC8(int a)
     g_play_sound(0xA022);
     if (lbl_802014E0.unk0 != 2)
         func_8002CF38(3, 0);
-    modeCtrl.levelSetFlags |= 0x2000;
+    modeCtrl.levelSetFlags |= (1 << 13);
     lbl_802F1BA8 = a;
 }
 
@@ -1262,7 +1262,7 @@ void submode_adv_title_reinit_func(void)
     lbl_802F1BA8 = 0;
     func_8002FFEC();
     func_80021DB4(0);
-    lbl_80206BC0[0] = 0;
+    playerCharacterSelection[0] = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
     event_start(EVENT_SPRITE);
@@ -1275,7 +1275,7 @@ void submode_adv_title_reinit_func(void)
         func_80076620(2);
     else
     {
-        modeCtrl.levelSetFlags |= 4;
+        modeCtrl.levelSetFlags |= (1 << 2);
         memset(&sp8, 0, sizeof(sp8));
         sp8.unkC = 0x140;
         sp8.unkE = 0x182;
@@ -1382,7 +1382,7 @@ void submode_adv_info_init_func(void)
     modeCtrl.unk0 = 4380;
     modeCtrl.levelSetFlags &= -8197;
     modeCtrl.playerCount = 1;
-    lbl_80206BC0[0] = 0;
+    playerCharacterSelection[0] = 0;
     func_8002FFEC();
     event_finish_all();
     load_stage(ST_150_TUTORIAL);
@@ -1554,20 +1554,20 @@ void submode_adv_info_main_func(void)
     if (modeCtrl.unk0 == 820)
         modeCtrl.unk0 = 600;
 
-    if (lbl_801F3A58.unk0 & (1 << 2))
+    if (infoWork.unk0 & (1 << 2))
     {
-        lbl_801F3A58.unk0 &= ~(1 << 2);
+        infoWork.unk0 &= ~(1 << 2);
         camera_set_state(4);
         g_play_sound(29);
     }
     if (modeCtrl.unk0 == 583)
     {
         ballInfo[0].flags &= ~(1 << 11);
-        lbl_801F3A58.unk0 &= ~(1 << 3);
+        infoWork.unk0 &= ~(1 << 3);
     }
-    if (lbl_801F3A58.unk0 & 1)
+    if (infoWork.unk0 & 1)
     {
-        lbl_801F3A58.unk0 &= ~1;
+        infoWork.unk0 &= ~1;
         ballInfo[0].state = 5;
         ballInfo[0].flags |= 0x500;
         camera_set_state(14);
@@ -1710,7 +1710,7 @@ void submode_adv_game_ready_init_func(void)
     func_8002FFEC();
     event_start(EVENT_INFO);
     func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    lbl_801F3A58.unk0 |= 0x810;
+    infoWork.unk0 |= 0x810;
     load_stage(currStageId);
     event_start(EVENT_STAGE);
     event_start(EVENT_WORLD);
@@ -1730,7 +1730,7 @@ void submode_adv_game_ready_init_func(void)
     func_80021DB4(currStageId);
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
-    lbl_801F3A58.unk0 |= 0x108;
+    infoWork.unk0 |= 0x108;
     modeCtrl.unk0 = 120;
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
@@ -1794,11 +1794,11 @@ void submode_adv_game_play_init_func(void)
     modeCtrl.unk0 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
     event_resume(2);
     func_8007C104(60);
-    lbl_801F3A58.unk0 &= -265;
+    infoWork.unk0 &= -265;
     ballInfo[0].state = 9;
     lbl_80206BF0[0].unk8 = 9;
     camera_set_state(0);
-    lbl_801F3A58.unk0 |= 0x810;
+    infoWork.unk0 |= 0x810;
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
     gameSubmodeRequest = SMD_ADV_GAME_PLAY_MAIN;
@@ -1808,9 +1808,9 @@ void submode_adv_game_play_main_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    if (lbl_801F3A58.unk0 & 1)
+    if (infoWork.unk0 & 1)
     {
-        lbl_801F3A58.unk0 &= ~1;
+        infoWork.unk0 &= ~1;
         modeCtrl.unk18 = 0xB4;
         gameSubmodeRequest = SMD_ADV_RANKING_INIT;
         lbl_80206BF0[0].unk8 = 6;
@@ -1925,12 +1925,12 @@ void submode_adv_ranking_main_func(void)
         }
     }
     if (r31->state == 4 || r31->state == 6)
-        lbl_801F3A58.unk0 &= -2065;
+        infoWork.unk0 &= -2065;
     if (r31->state != 10)
         modeCtrl.unk18--;
     if (modeCtrl.unk18 < 0
      && (r31->state == 6 || r31->state == 4)
-     && ((modeCtrl.unk0 & 0x1F) == 0 || !(lbl_801F3A58.unk0 & (1 << 5))))
+     && ((modeCtrl.unk0 & 0x1F) == 0 || !(infoWork.unk0 & (1 << 5))))
     {
         if (modeCtrl.unk0 > 180.0)
         {
@@ -1952,7 +1952,7 @@ void submode_adv_ranking_main_func(void)
             g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-            lbl_801F3A58.unk0 |= 0x10;
+            infoWork.unk0 |= 0x10;
             load_stage(currStageId);
             event_start(EVENT_STAGE);
             event_start(EVENT_STOBJ);
@@ -1978,7 +1978,7 @@ void submode_adv_ranking_main_func(void)
             {
                 lbl_80206BF0[0].unk8 = 6;
                 camera_set_state(func_80011BE0());
-                lbl_801F3A58.unk0 &= ~(1 << 11);
+                infoWork.unk0 &= ~(1 << 11);
             }
 
             f1 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -2032,7 +2032,7 @@ void submode_adv_ranking_main_func(void)
         if (*r28 == 2)
         {
             currentBallStructPtr = r29;
-            if (!(r29->flags & (1 << 9)) && (r29->unkFC->unk14 & (1 << 14)))
+            if (!(r29->flags & (1 << 9)) && (r29->ape->unk14 & (1 << 14)))
             {
                 r29->flags &= -1281;
                 r29->flags |= 0x200;
@@ -2044,7 +2044,7 @@ void submode_adv_ranking_main_func(void)
 
     if (--modeCtrl.unk0 <= 0)
     {
-        lbl_801F3A58.unk0 &= ~(1 << 11);
+        infoWork.unk0 &= ~(1 << 11);
         func_8008897C(1);
         func_80088FD4(1);
         destroy_sprite_with_tag(3);

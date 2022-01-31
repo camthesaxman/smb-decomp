@@ -274,7 +274,7 @@ void unkFunc8000AA00(struct Sprite *a)
             func_8002CF38(100, 10);
             break;
         case 1:
-            lbl_801F3A58.unk1E++;
+            infoWork.unk1E++;
             r5 = currentBallStructPtr;
             ball = &ballInfo[0];
             r6 = spritePoolInfo.unkC;
@@ -426,8 +426,8 @@ void unkFunc8000B09C(void)
     struct Sprite *sprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-     && !(lbl_801F3A58.unk0 & (1<<(31-0x17)))
-     && ((lbl_801F3A58.unk0 & (1<<(31-0x1A))) || (lbl_801F3A58.unk0 & (1<<(31-0x19))) || (lbl_801F3A58.unk0 & (1<<(31-0x1B))))
+     && !(infoWork.unk0 & (1<<(31-0x17)))
+     && ((infoWork.unk0 & (1<<(31-0x1A))) || (infoWork.unk0 & (1<<(31-0x19))) || (infoWork.unk0 & (1<<(31-0x1B))))
      && func_8004C70C() != 0)
         lbl_801EEC68.unk4 |= 4;
     else

@@ -246,7 +246,7 @@ struct TPL;
 
 typedef void (*Func802F20EC)();
 
-struct Ball_child;
+struct Ape;
 struct Ball;
 
 struct World

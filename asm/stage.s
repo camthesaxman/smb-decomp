@@ -76,8 +76,8 @@ ev_stage_main:
 /* 80043B6C 0003FA8C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80043B70 0003FA90  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80043B74 0003FA94  40 82 05 70 */	bne lbl_800440E4
-/* 80043B78 0003FA98  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 80043B7C 0003FA9C  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
+/* 80043B78 0003FA98  3C 60 80 1F */	lis r3, infoWork@ha
+/* 80043B7C 0003FA9C  38 63 3A 58 */	addi r3, r3, infoWork@l
 /* 80043B80 0003FAA0  80 63 00 00 */	lwz r3, 0(r3)
 /* 80043B84 0003FAA4  54 60 05 EF */	rlwinm. r0, r3, 0, 0x17, 0x17
 /* 80043B88 0003FAA8  41 82 00 50 */	beq lbl_80043BD8
@@ -2586,9 +2586,9 @@ lbl_80045E3C:
 .global get_stage_background_2
 get_stage_background_2:
 /* 80045E4C 00041D6C  7C 08 02 A6 */	mflr r0
-/* 80045E50 00041D70  3C 80 80 1F */	lis r4, lbl_801F3A58@ha
+/* 80045E50 00041D70  3C 80 80 1F */	lis r4, infoWork@ha
 /* 80045E54 00041D74  90 01 00 04 */	stw r0, 4(r1)
-/* 80045E58 00041D78  38 84 3A 58 */	addi r4, r4, lbl_801F3A58@l
+/* 80045E58 00041D78  38 84 3A 58 */	addi r4, r4, infoWork@l
 /* 80045E5C 00041D7C  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80045E60 00041D80  93 E1 00 14 */	stw r31, 0x14(r1)
 /* 80045E64 00041D84  3B E4 00 20 */	addi r31, r4, 0x20
@@ -4699,8 +4699,8 @@ lbl_80047B34:
 /* 80047B4C 00043A6C  54 03 48 2C */	slwi r3, r0, 9
 /* 80047B50 00043A70  4B FC 04 AD */	bl mathutil_mtxA_rotate_y
 lbl_80047B54:
-/* 80047B54 00043A74  3C 60 80 1F */	lis r3, lbl_801F3A58@ha
-/* 80047B58 00043A78  38 63 3A 58 */	addi r3, r3, lbl_801F3A58@l
+/* 80047B54 00043A74  3C 60 80 1F */	lis r3, infoWork@ha
+/* 80047B58 00043A78  38 63 3A 58 */	addi r3, r3, infoWork@l
 /* 80047B5C 00043A7C  A8 03 00 1E */	lha r0, 0x1e(r3)
 /* 80047B60 00043A80  2C 00 00 01 */	cmpwi r0, 1
 /* 80047B64 00043A84  40 82 00 68 */	bne lbl_80047BCC

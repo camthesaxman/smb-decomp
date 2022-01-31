@@ -141,7 +141,7 @@ extern float lbl_801741CC[];
 // extern ? lbl_80180F14;
 // extern ? lbl_80180F64;
 // extern ? lbl_801818B0;
-// extern ? lbl_801818D0;
+// extern ? rankTexOffsets;
 // extern ? lbl_80181970;
 // extern ? minigameGfxFiles;
 // extern ? lbl_80181B80;

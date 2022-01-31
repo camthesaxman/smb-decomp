@@ -276,14 +276,14 @@ void draw_adv_demo_scene(void)
         for (i = 0; i < 3; i++)
         {
             float f30;
-            if (ballInfo[i].unkFC->unk14 & (1 << 5))
+            if (ballInfo[i].ape->unk14 & (1 << 5))
                 continue;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate_xyz(
-                ballInfo[i].unkFC->unk30.x,
-                ballInfo[i].unkFC->unk30.y - 0.45,
-                ballInfo[i].unkFC->unk30.z);
-            f30 = lbl_80173FD0[ballInfo[i].unkFC->unk10];
+                ballInfo[i].ape->unk30.x,
+                ballInfo[i].ape->unk30.y - 0.45,
+                ballInfo[i].ape->unk30.z);
+            f30 = lbl_80173FD0[ballInfo[i].ape->unk10];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
@@ -298,9 +298,9 @@ void draw_adv_demo_scene(void)
     {
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(
-            ballInfo[0].unkFC->unk30.x,
-            ballInfo[0].unkFC->unk30.y - 0.25,
-            ballInfo[0].unkFC->unk30.z);
+            ballInfo[0].ape->unk30.x,
+            ballInfo[0].ape->unk30.y - 0.25,
+            ballInfo[0].ape->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
         g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
@@ -314,7 +314,7 @@ void draw_adv_demo_scene(void)
         for (i = 0; i < 2; i++, r27++)
         {
             mathutil_mtxA_from_mtxB();
-            mathutil_mtxA_translate(&ballInfo[0].unkFC->unk30);
+            mathutil_mtxA_translate(&ballInfo[0].ape->unk30);
             mathutil_mtxA_translate(&r27->pos);
             mathutil_mtxA_rotate_y(r27->yrot);
             mathutil_mtxA_rotate_x(r27->xrot);
@@ -1054,7 +1054,7 @@ void draw_timer_bomb_fuse(void)
     float f1;
     struct NaomiMesh *mesh;
 
-    if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || lbl_801F3A58.timerCurr <= 0)
+    if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || infoWork.timerCurr <= 0)
         return;
 
     sprite = find_sprite_with_tag(2);
@@ -1079,7 +1079,7 @@ void draw_timer_bomb_fuse(void)
      */
 
     tempModel = lbl_802F1B4C;
-    t = (float)lbl_801F3A58.timerCurr / (float)lbl_801F3A58.timerMax;
+    t = (float)infoWork.timerCurr / (float)infoWork.timerMax;
 
     // Make a temporary copy of the timer fuse, which we will modify
     memcpy(
@@ -1186,7 +1186,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(lbl_801F3A58.unk0 & (1 << 3)))
+        if (!(infoWork.unk0 & (1 << 3)))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1204,7 +1204,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (lbl_801F3A58.unk0 & (1 << 3))
+        if (infoWork.unk0 & (1 << 3))
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1214,7 +1214,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (lbl_801F3A58.unk0 & (1 << 3))
+    if (infoWork.unk0 & (1 << 3))
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;

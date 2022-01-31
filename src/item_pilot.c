@@ -353,11 +353,11 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
     {
         if (item->unk5E < 0
-         && (!(lbl_801F3A58.unk0 & (1 << 4)) || (lbl_801F3A58.unk0 & (1 << 11))))
+         && (!(infoWork.unk0 & (1 << 4)) || (infoWork.unk0 & (1 << 11))))
         {
             struct Struct8003C550 sp178;
 
-            item->unk5E = lbl_801F3A58.timerCurr;
+            item->unk5E = infoWork.timerCurr;
             lbl_80285A58[modeCtrl.unk2C] += pilotBananaInfo[item->subtype].unkE;
             if (lbl_802F1FD0 & (1 << 3))
             {
@@ -440,13 +440,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 2)
     {
         g_play_sound(0x39);
-        if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
+        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x2820);
     }
     else if (item->subtype == 0 || item->subtype == 1)
     {
         g_play_sound(3);
-        if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
+        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x281F);
     }
 }

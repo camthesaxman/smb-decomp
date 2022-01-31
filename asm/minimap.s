@@ -1027,7 +1027,7 @@ lbl_8008514C:
 /* 80085168 00081088  38 00 05 0A */	li r0, 0x50a
 /* 8008516C 0008108C  C0 01 00 1C */	lfs f0, 0x1c(r1)
 /* 80085170 00081090  3C A0 80 1F */	lis r5, modeCtrl@ha
-/* 80085174 00081094  3C 80 80 20 */	lis r4, lbl_80206BC0@ha
+/* 80085174 00081094  3C 80 80 20 */	lis r4, playerCharacterSelection@ha
 /* 80085178 00081098  EC 41 00 2A */	fadds f2, f1, f0
 /* 8008517C 0008109C  C8 02 AC 40 */	lfd f0, lbl_802F5440@sda21(r2)
 /* 80085180 000810A0  3C 60 00 02 */	lis r3, 0x0002000A@ha
@@ -1035,7 +1035,7 @@ lbl_8008514C:
 /* 80085188 000810A8  FC 00 07 B2 */	fmul f0, f0, f30
 /* 8008518C 000810AC  D0 41 00 28 */	stfs f2, 0x28(r1)
 /* 80085190 000810B0  38 A5 EC 20 */	addi r5, r5, modeCtrl@l
-/* 80085194 000810B4  38 84 6B C0 */	addi r4, r4, lbl_80206BC0@l
+/* 80085194 000810B4  38 84 6B C0 */	addi r4, r4, playerCharacterSelection@l
 /* 80085198 000810B8  C8 A2 AB E0 */	lfd f5, lbl_802F53E0@sda21(r2)
 /* 8008519C 000810BC  C0 41 00 2C */	lfs f2, 0x2c(r1)
 /* 800851A0 000810C0  FC C0 00 18 */	frsp f6, f0
@@ -1110,8 +1110,8 @@ lbl_800852B0:
 /* 800852B0 000811D0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800852B4 000811D4  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800852B8 000811D8  80 83 00 2C */	lwz r4, 0x2c(r3)
-/* 800852BC 000811DC  3C 60 80 20 */	lis r3, lbl_80206BC0@ha
-/* 800852C0 000811E0  38 03 6B C0 */	addi r0, r3, lbl_80206BC0@l
+/* 800852BC 000811DC  3C 60 80 20 */	lis r3, playerCharacterSelection@ha
+/* 800852C0 000811E0  38 03 6B C0 */	addi r0, r3, playerCharacterSelection@l
 /* 800852C4 000811E4  54 83 10 3A */	slwi r3, r4, 2
 /* 800852C8 000811E8  7C 60 1A 14 */	add r3, r0, r3
 /* 800852CC 000811EC  80 A3 00 00 */	lwz r5, 0(r3)

@@ -715,8 +715,8 @@ lbl_00000AA0:
 /* 00000AB8 8006002C */ lwz r0, 0x2c(r6)
 /* 00000ABC 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 00000AC0 90050000 */ stw r0, 0(r5)
-/* 00000AC4 3C800000 */ lis r4, lbl_80206BC0@ha
-/* 00000AC8 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 00000AC4 3C800000 */ lis r4, playerCharacterSelection@ha
+/* 00000AC8 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 00000ACC 80A50000 */ lwz r5, 0(r5)
 /* 00000AD0 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 00000AD4 54A4103A */ slwi r4, r5, 2
@@ -766,8 +766,8 @@ lbl_00000B58:
 /* 00000B70 8006002C */ lwz r0, 0x2c(r6)
 /* 00000B74 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 00000B78 90050000 */ stw r0, 0(r5)
-/* 00000B7C 3C800000 */ lis r4, lbl_80206BC0@ha
-/* 00000B80 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 00000B7C 3C800000 */ lis r4, playerCharacterSelection@ha
+/* 00000B80 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 00000B84 80A50000 */ lwz r5, 0(r5)
 /* 00000B88 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 00000B8C 54A4103A */ slwi r4, r5, 2
@@ -817,8 +817,8 @@ lbl_00000C10:
 /* 00000C28 8006002C */ lwz r0, 0x2c(r6)
 /* 00000C2C 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 00000C30 90050000 */ stw r0, 0(r5)
-/* 00000C34 3C800000 */ lis r4, lbl_80206BC0@ha
-/* 00000C38 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 00000C34 3C800000 */ lis r4, playerCharacterSelection@ha
+/* 00000C38 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 00000C3C 80A50000 */ lwz r5, 0(r5)
 /* 00000C40 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 00000C44 54A4103A */ slwi r4, r5, 2
@@ -868,8 +868,8 @@ lbl_00000CC8:
 /* 00000CE0 8006002C */ lwz r0, 0x2c(r6)
 /* 00000CE4 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 00000CE8 90050000 */ stw r0, 0(r5)
-/* 00000CEC 3C800000 */ lis r4, lbl_80206BC0@ha
-/* 00000CF0 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 00000CEC 3C800000 */ lis r4, playerCharacterSelection@ha
+/* 00000CF0 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 00000CF4 80A50000 */ lwz r5, 0(r5)
 /* 00000CF8 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 00000CFC 54A4103A */ slwi r4, r5, 2
@@ -2839,10 +2839,10 @@ lbl_0000291C:
 /* 0000294C 8004002C */ lwz r0, 0x2c(r4)
 /* 00002950 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 00002954 90050000 */ stw r0, 0(r5)
-/* 00002958 3C800000 */ lis r4, lbl_80206BC0@ha
+/* 00002958 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 0000295C 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 00002960 80A50000 */ lwz r5, 0(r5)
-/* 00002964 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 00002964 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 00002968 38830000 */ addi r4, r3, lbl_802F1DFC@l
 /* 0000296C 54A3103A */ slwi r3, r5, 2
 /* 00002970 7C601A14 */ add r3, r0, r3
@@ -8601,8 +8601,8 @@ lbl_00007F90:
 /* 00007F90 3C600000 */ lis r3, modeCtrl@ha
 /* 00007F94 3B830000 */ addi r28, r3, modeCtrl@l
 /* 00007F98 801C002C */ lwz r0, 0x2c(r28)
-/* 00007F9C 3C600000 */ lis r3, lbl_801F3A58@ha
-/* 00007FA0 38A30000 */ addi r5, r3, lbl_801F3A58@l
+/* 00007F9C 3C600000 */ lis r3, infoWork@ha
+/* 00007FA0 38A30000 */ addi r5, r3, infoWork@l
 /* 00007FA4 1CC00034 */ mulli r6, r0, 0x34
 /* 00007FA8 80050000 */ lwz r0, 0(r5)
 /* 00007FAC 80850004 */ lwz r4, 4(r5)
@@ -9041,12 +9041,12 @@ lbl_0000859C:
 /* 000085B8 41820048 */ beq lbl_00008600
 /* 000085BC 9305002C */ stw r24, 0x2c(r5)
 /* 000085C0 3C600000 */ lis r3, lbl_802F1DF8@ha
-/* 000085C4 3C800000 */ lis r4, lbl_80206BC0@ha
+/* 000085C4 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 000085C8 8005002C */ lwz r0, 0x2c(r5)
 /* 000085CC 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 000085D0 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 000085D4 90050000 */ stw r0, 0(r5)
-/* 000085D8 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 000085D8 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 000085DC 38830000 */ addi r4, r3, lbl_802F1DFC@l
 /* 000085E0 80A50000 */ lwz r5, 0(r5)
 /* 000085E4 3860001E */ li r3, 0x1e
@@ -9065,12 +9065,12 @@ lbl_0000860C:
 /* 00008610 3BE30000 */ addi r31, r3, modeCtrl@l
 /* 00008614 801F002C */ lwz r0, 0x2c(r31)
 /* 00008618 3C800000 */ lis r4, lbl_801F3A9C@ha
-/* 0000861C 3C600000 */ lis r3, lbl_801F3A58@ha
+/* 0000861C 3C600000 */ lis r3, infoWork@ha
 /* 00008620 1CA00034 */ mulli r5, r0, 0x34
 /* 00008624 38040000 */ addi r0, r4, lbl_801F3A9C@l
 /* 00008628 7CE02A14 */ add r7, r0, r5
 /* 0000862C 80A70000 */ lwz r5, 0(r7)
-/* 00008630 38C30000 */ addi r6, r3, lbl_801F3A58@l
+/* 00008630 38C30000 */ addi r6, r3, infoWork@l
 /* 00008634 80870004 */ lwz r4, 4(r7)
 /* 00008638 3C600000 */ lis r3, lbl_801F3A8C@ha
 /* 0000863C 38030000 */ addi r0, r3, lbl_801F3A8C@l
@@ -40055,10 +40055,10 @@ lbl_00025164:
 /* 000251DC 801C0000 */ lwz r0, 0(r28)
 /* 000251E0 38A30000 */ addi r5, r3, lbl_802F1DF8@l
 /* 000251E4 90050000 */ stw r0, 0(r5)
-/* 000251E8 3C800000 */ lis r4, lbl_80206BC0@ha
+/* 000251E8 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 000251EC 3C600000 */ lis r3, lbl_802F1DFC@ha
 /* 000251F0 80A50000 */ lwz r5, 0(r5)
-/* 000251F4 38040000 */ addi r0, r4, lbl_80206BC0@l
+/* 000251F4 38040000 */ addi r0, r4, playerCharacterSelection@l
 /* 000251F8 38830000 */ addi r4, r3, lbl_802F1DFC@l
 /* 000251FC 54A3103A */ slwi r3, r5, 2
 /* 00025200 7C601A14 */ add r3, r0, r3

@@ -1,3 +1,8 @@
+enum
+{
+    INFO_FLAG_,
+};
+
 struct Struct801F3A58
 {
     u32 unk0;
@@ -20,7 +25,7 @@ struct Struct801F3A58
     u8 filler32[2];
 };
 
-extern struct Struct801F3A58 lbl_801F3A58;
+extern struct Struct801F3A58 infoWork;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
 
@@ -29,10 +34,10 @@ void ev_info_init(void);
 void ev_info_main(void);
 void ev_info_dest(void);
 void func_80023AF4(void);
-int func_80023B9C(struct Ball *, u32 *, s32 *);
-void func_80023CF4(void);
+int check_ball_in_goal(struct Ball *, u32 *, s32 *);
+void g_time_over_all_competition_mode_balls(void);
 void func_80023DB8(struct Ball *);
-void func_800244E8(struct Ball *);
+void create_rank_icon(struct Ball *);
 void func_800245E4(struct Ball *, int, int);
 int func_800246F4(struct Ball *);
 void func_80024860(struct Ball *);

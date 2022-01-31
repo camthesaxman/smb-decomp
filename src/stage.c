@@ -107,7 +107,7 @@ void ev_stage_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    if (lbl_801F3A58.unk0 & (1 << (31-0x17)))
+    if (infoWork.unk0 & (1 << (31-0x17)))
     {
         if (modeCtrl.unk0 > 0x78)
             lbl_80206DEC.unk4 = 0.0f;
@@ -115,7 +115,7 @@ void ev_stage_main(void)
             lbl_80206DEC.unk4 = 0x78 - modeCtrl.unk0;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (lbl_801F3A58.unk0 & (1 << (31-0x1B)))
+    else if (infoWork.unk0 & (1 << (31-0x1B)))
     {
         lbl_80206DEC.unk4 = func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
         lbl_80206DEC.unk0 = lbl_80206DEC.unk4;
@@ -1183,11 +1183,11 @@ int get_stage_background(int stageId)
 int get_stage_background_2(int stageId)
 {
     int bg;
-    int backup = lbl_801F3A58.unk20;
+    int backup = infoWork.unk20;
 
-    lbl_801F3A58.unk20++;
+    infoWork.unk20++;
     bg = get_stage_background(stageId);
-    lbl_801F3A58.unk20 = backup;
+    infoWork.unk20 = backup;
     return bg;
 }
 
@@ -2216,7 +2216,7 @@ void stage_draw(void)
                 mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
                 mathutil_mtxA_rotate_y(-unpausedFrameCounter << 9);
             }
-            if (lbl_801F3A58.unk1E == 1)
+            if (infoWork.unk1E == 1)
             {
                 if (modeCtrl.unk0 > 120)
                     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
