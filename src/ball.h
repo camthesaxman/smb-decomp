@@ -116,7 +116,7 @@ struct Ball
     Vec unk114;
     u32 unk120;
     s16 unk124;
-    s16 unk126;
+    s16 unk126;  // challenge mode win streak?
     s16 unk128;
     s16 unk12A;
     u8 filler12C[0x130-0x12C];

@@ -147,21 +147,10 @@ void init_wait_vblank(void);
 void preproc_main(void);
 void epiproc_main(void);
 void syncwait_main(void);
-// ? func_80022F14();
-void ev_info_init(void);
-void ev_info_main(void);
-void ev_info_dest(void);
-void func_80023AF4(void);
-int func_80023B9C(struct Ball *, u32 *, s32 *);
-void func_80023CF4(void);
-void func_80023DB8(struct Ball *);
-void func_800244E8(struct Ball *);
-void func_800245E4(struct Ball *, int, int);
-int func_800246F4(struct Ball *);
-void func_80024860(struct Ball *);
-int func_800248DC(void);
+
+int load_common_graphics(void);
 // ? func_800249D4();
-void func_80024AB4(void);
+void g_free_minigame_graphics(void);
 
 // ? func_800274E8();
 // ? func_800275A0();

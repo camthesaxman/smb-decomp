@@ -10,6 +10,7 @@
 #include "bitmap.h"
 #include "camera.h"
 #include "input.h"
+#include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -19,8 +20,6 @@
 s8 lbl_802F1CB0[8];
 u32 lbl_802F1CAC;
 u32 lbl_802F1CA8;
-
-extern s32 lbl_802F1DFC;
 
 struct Struct801F3A58 lbl_801F3A58;
 
@@ -477,30 +476,6 @@ void func_80023AF4(void)
         lbl_802F1CA8 = 0;
 }
 
-#define lbl_802F3000 0.0f
-#define lbl_802F3004 1.0f
-#define lbl_802F3010 0.1
-#define lbl_802F3018 32767.0f
-#define lbl_802F3020 0.01
-#define lbl_802F3028 255.0f
-#define lbl_802F3038 1.0
-#define lbl_802F3040 0.2f
-#define lbl_802F3044 15.0f
-#define lbl_802F3048 0.066666000000000003
-#define lbl_802F3050 640.0
-#define lbl_802F3058 0.5
-#define lbl_802F3060 480.0
-#define lbl_802F3068 -140.0f
-#define lbl_802F306C 48.0f
-#define lbl_802F3070 24.0f
-#define lbl_802F3074 -2.0f
-#define lbl_802F3078 0.3f
-#define lbl_802F3080 130.0
-#define lbl_802F3088 21.0
-#define lbl_802F3090 0.45f
-#define lbl_802F3094 0.7f
-#define lbl_802F30A0 -0.5
-
 int func_80023B9C(struct Ball *ball, u32 *b, s32 *c)
 {
     struct Struct80039974 sp3C;
@@ -553,7 +528,7 @@ int func_80023B9C(struct Ball *ball, u32 *b, s32 *c)
 
 void func_80023CF4(void)
 {
-    if (lbl_801F3A58.unk0 & (1<<(31-0x19)))
+    if (lbl_801F3A58.unk0 & (1 << 6))
         lbl_801F3A58.unk0 |= 0x628;
     else
         lbl_801F3A58.unk0 |= 0x29;
@@ -573,7 +548,7 @@ void func_80023CF4(void)
             if (*r8 != 2)
                 continue;
             currentBallStructPtr = r6;
-            if (!(r6->flags & (1<<(31-0x13))))
+            if (!(r6->flags & (1 << 12)))
             {
                 r6->flags |= 0x500;
                 r6->unk126 = 0;
@@ -593,7 +568,7 @@ void func_80023DB8(struct Ball *ball)
         return;
 
     r5 = lbl_802F1CB0[ball->unk2F];
-    if ((modeCtrl.levelSetFlags & (1<<(31-0x14))) && ball->unk126 > 0)
+    if ((modeCtrl.levelSetFlags & (1 << 11)) && ball->unk126 > 0)
         r5 *= ball->unk126;
     ball->unk138 = r5;
 }
@@ -608,17 +583,17 @@ struct Struct801818D0
 
 struct Struct801818D0 lbl_801818D0[4] =
 {
-    {  0,  0, 160, 48},
-    {  0,  0, 160, 48},
-    {  0, 48, 128, 48},
-    {160,  0,  88, 48},
+    {   0,  0, 160, 48 },
+    {   0,  0, 160, 48 },
+    {   0, 48, 128, 48 },
+    { 160,  0,  88, 48 },
 };
 
 void lbl_80023E0C(int dummy, struct Sprite *sprite)
 {
     struct Ball *ball = &ballInfo[sprite->unk48];
 
-    sprite->unk6C += (lbl_802F3004 - sprite->unk6C) * lbl_802F3010;
+    sprite->unk6C += (1.0f - sprite->unk6C) * 0.1;
     if (sprite->bmpId >= 100)
         sprintf(sprite->text, "BONUS  +%3d", ball->unk138);
     else if (sprite->bmpId >= 10)
@@ -629,7 +604,7 @@ void lbl_80023E0C(int dummy, struct Sprite *sprite)
 
 void lbl_80023EBC(int dummy, struct Sprite *sprite)
 {
-    sprite->unk6C += (lbl_802F3004 - sprite->unk6C) * lbl_802F3010;
+    sprite->unk6C += (1.0f - sprite->unk6C) * 0.1;
 }
 
 void lbl_80023EE0(int dummy, struct Sprite *sprite)
@@ -638,11 +613,11 @@ void lbl_80023EE0(int dummy, struct Sprite *sprite)
         sprite->unk10--;
     if (sprite->unk10 == 0)
     {
-        if ((rand() / lbl_802F3018) < lbl_802F3020)
+        if ((rand() / 32767.0f) < 0.01)
             sprite->unk10 = 45;
     }
-    sprite->unk6C += (lbl_802F3004 - sprite->unk6C) * lbl_802F3010;
-    sprite->unk70 = mathutil_sin(sprite->unk10 * 0x2B8) * lbl_802F3028;
+    sprite->unk6C += (1.0f - sprite->unk6C) * 0.1;
+    sprite->unk70 = mathutil_sin(sprite->unk10 * 0x2B8) * 255.0f;
     sprite->unk71 = sprite->unk70;
     sprite->unk72 = sprite->unk70;
 }
@@ -652,72 +627,71 @@ void lbl_80023FB8(int dummy, struct Sprite *sprite)
     sprite->unk10++;
     if (sprite->unk10 <= 15)
     {
-        sprite->unk40 = lbl_802F3038 + lbl_802F3040 * (lbl_802F3044 - sprite->unk10);
+        sprite->unk40 = 1.0 + 0.2f * (15.0f - sprite->unk10);
         sprite->unk44 = sprite->unk40;
-        sprite->unk6C = sprite->unk10 * lbl_802F3048;
+        sprite->unk6C = sprite->unk10 * 0.066666;
     }
     if (sprite->unk10 > 60 && sprite->unk10 < 0x69)
-        sprite->centerY -= lbl_802F3004;
+        sprite->centerY -= 1.0f;
     if (sprite->unk48 != 0 && sprite->unk10 == 0x78)
     {
-        struct Ball *r30 = &ballInfo[sprite->bmpId];
-        struct Viewport *vp = &cameraInfo[r30->unk2E].sub28.vp;
+        struct Ball *ball = &ballInfo[sprite->bmpId];
+        struct Viewport *vp = &cameraInfo[ball->unk2E].sub28.vp;
         struct Sprite *r28 = create_sprite();
         struct Sprite *r5;
 
         if (r28 != NULL)
         {
-            r28->centerX = (vp->left + vp->width * lbl_802F3058) * lbl_802F3050;
-            r28->centerY = (vp->top + vp->height * lbl_802F3058) * lbl_802F3060;
+            r28->centerX = (vp->left + vp->width * 0.5) * 640.0;
+            r28->centerY = (vp->top + vp->height * 0.5) * 480.0;
             r28->fontId = 0xB0;
             r28->textAlign = 4;
-            r28->unk48 = r30->unk2E;
+            r28->unk48 = ball->unk2E;
             r28->unkC = 0xFF;
             r28->unkD = 0xFF;
             r28->unkE = 0;
-            r28->unk6C = lbl_802F3000;
-            r28->bmpId = r30->unk138;
+            r28->unk6C = 0.0f;
+            r28->bmpId = ball->unk138;
             r28->mainFunc = lbl_80023E0C;
-            sprintf(r28->text, "BONUS  +000", r30->unk138);  //! bad format
+            sprintf(r28->text, "BONUS  +000", ball->unk138);  //! bad format
             r5 = create_linked_sprite(r28);
             if (r5 != NULL)
             {
                 r5->type = 1;
-                r5->centerX = lbl_802F3068;
-                if (r30->unk138 < 10)
-                    r5->centerX += lbl_802F306C;
-                else if (r30->unk138 < 100)
-                    r5->centerX += lbl_802F3070;
-                r5->centerY = lbl_802F3074;
+                r5->centerX = -140.0f;
+                if (ball->unk138 < 10)
+                    r5->centerX += 48.0f;
+                else if (ball->unk138 < 100)
+                    r5->centerX += 24.0f;
+                r5->centerY = -2.0f;
                 r5->bmpId = 12;
                 r5->textAlign = 4;
-                r5->unk40 = lbl_802F3078;
-                r5->unk44 = lbl_802F3078;
-                r5->unk6C = lbl_802F3000;
+                r5->unk40 = 0.3f;
+                r5->unk44 = 0.3f;
+                r5->unk6C = 0.0f;
                 r5->mainFunc = lbl_80023EBC;
                 sprintf(r5->text, "bonus banana.pic");
             }
         }
-        if ((modeCtrl.levelSetFlags & (1<<(31-0x14)))
-         && r30->unk126 > 1)
+        if ((modeCtrl.levelSetFlags & (1 << 11)) && ball->unk126 > 1)
         {
             struct Sprite *r11 = create_sprite();
 
             if (r11 != NULL)
             {
-                r11->centerX = (vp->left + vp->width * lbl_802F3058) * lbl_802F3050 + lbl_802F3080;
-                r11->centerY = (vp->top + vp->height * lbl_802F3058) * lbl_802F3060 + lbl_802F3088;
+                r11->centerX = (vp->left + vp->width * 0.5) * 640.0 + 130.0;
+                r11->centerY = (vp->top + vp->height * 0.5) * 480.0 + 21.0;
                 r11->fontId = 0x63;
                 r11->textAlign = 4;
                 r11->unkC = 0xFF;
                 r11->unkD = 0xC0;
                 r11->unkE = 0;
-                r11->unk6C = lbl_802F3000;
-                r11->unk40 = lbl_802F3090;
-                r11->unk44 = lbl_802F3094;
+                r11->unk6C = 0.0f;
+                r11->unk40 = 0.45f;
+                r11->unk44 = 0.7f;
                 r11->unk10 = 0x2D;
                 r11->mainFunc = lbl_80023EE0;
-                sprintf(r11->text, "STRAIGHT\n VICTORIES X %d", r30->unk126);
+                sprintf(r11->text, "STRAIGHT\n VICTORIES X %d", ball->unk126);
             }
         }
     }
@@ -725,49 +699,49 @@ void lbl_80023FB8(int dummy, struct Sprite *sprite)
 
 void lbl_80024324(struct Sprite *sprite)
 {
-    struct NaomiSpriteParams spC;
+    struct NaomiSpriteParams params;
     struct Struct801818D0 *r6;
-    struct TPLTextureHeader *r5;
+    struct TPLTextureHeader *tex;
 
-    spC.bmpId = 0x502;
-    spC.rotation = sprite->unk68;
-    spC.alpha = sprite->unk6C;
-    spC.unk30 = -1;
-    spC.flags = (sprite->unk74 & ~0xF) | 0xA;
-    spC.unk38 = ((int)(sprite->unk6C * lbl_802F3028) << 24)
-              | (sprite->unkC << 16)
-              | (sprite->unkD << 8)
-              | (sprite->unkE << 0);
-    spC.unk3C = (sprite->unk70 << 16)
-              | (sprite->unk71 << 8)
-              | (sprite->unk72 << 0);
+    params.bmpId = 0x502;
+    params.rotation = sprite->unk68;
+    params.alpha = sprite->unk6C;
+    params.unk30 = -1;
+    params.flags = (sprite->unk74 & ~0xF) | 0xA;
+    params.unk38 = ((int)(sprite->unk6C * 255.0f) << 24)
+                 | (sprite->unkC << 16)
+                 | (sprite->unkD << 8)
+                 | (sprite->unkE << 0);
+    params.unk3C = (sprite->unk70 << 16)
+                 | (sprite->unk71 << 8)
+                 | (sprite->unk72 << 0);
     r6 = &lbl_801818D0[sprite->unk48];
-    r5 = &bitmapGroups[(spC.bmpId >> 8) & 0xFF].tpl->texHeaders[spC.bmpId & 0xFF];
-    spC.x = sprite->centerX;
-    spC.y = sprite->centerY;
-    spC.z = sprite->unk4C;
-    spC.u1 = r6->unk0 / r5->width;
-    spC.v1 = r6->unk4 / r5->height;
-    spC.u2 = spC.u1 + r6->unk8 / r5->width;
-    spC.v2 = spC.v1 + r6->unkC / r5->height;
-    spC.zoomX = (spC.u2 - spC.u1) * sprite->unk40;
-    spC.zoomY = (spC.v2 - spC.v1) * sprite->unk44;
-    draw_naomi_sprite(&spC);
+    tex = &bitmapGroups[(params.bmpId >> 8) & 0xFF].tpl->texHeaders[params.bmpId & 0xFF];
+    params.x = sprite->centerX;
+    params.y = sprite->centerY;
+    params.z = sprite->unk4C;
+    params.u1 = r6->unk0 / tex->width;
+    params.v1 = r6->unk4 / tex->height;
+    params.u2 = params.u1 + r6->unk8 / tex->width;
+    params.v2 = params.v1 + r6->unkC / tex->height;
+    params.zoomX = (params.u2 - params.u1) * sprite->unk40;
+    params.zoomY = (params.v2 - params.v1) * sprite->unk44;
+    draw_naomi_sprite(&params);
 }
 
 void func_800244E8(struct Ball *ball)
 {
-    struct Viewport *r30;
+    struct Viewport *vp;
     struct Sprite *r9;
 
     if (ball->unk2F == 0)
         return;
-    r30 = &cameraInfo[ball->unk2E].sub28.vp;
+    vp = &cameraInfo[ball->unk2E].sub28.vp;
     r9 = create_sprite();
     if (r9 == NULL)
         return;
-    r9->centerX = (r30->left + r30->width * lbl_802F3058) * lbl_802F3050;
-    r9->centerY = (r30->top + r30->height * lbl_802F3058) * lbl_802F3060;
+    r9->centerX = (vp->left + vp->width * 0.5) * 640.0;
+    r9->centerY = (vp->top + vp->height * 0.5) * 480.0;
     r9->type = 1;
     r9->textAlign = 4;
     r9->unk48 = ball->unk2F;
@@ -790,12 +764,12 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
         struct StageGoal *goal = &decodedStageLzPtr->goals[goalId];
         Vec sp20;
         Vec sp14;
-        
+
         mathutil_mtxA_from_mtx(r29->unk54);
         mathutil_mtxA_tf_point(&goal->pos, &sp14);
         mathutil_mtxA_from_mtx(r29->unk24);
         mathutil_mtxA_tf_point(&goal->pos, &sp20);
-        
+
         lbl_801F3A58.unk10.x += sp14.x - sp20.x;
         lbl_801F3A58.unk10.y += sp14.y - sp20.y;
         lbl_801F3A58.unk10.z += sp14.z - sp20.z;
@@ -832,11 +806,11 @@ int func_800246F4(struct Ball *ball)
             spC.x /= r28->unkC.x;
             spC.y /= r28->unkC.y;
             spC.z /= r28->unkC.z;
-            if (spC.x < lbl_802F30A0 || spC.x > lbl_802F3058)
+            if (spC.x < -0.5 || spC.x > 0.5)
                 continue;
-            if (spC.y < lbl_802F30A0 || spC.y > lbl_802F3058)
+            if (spC.y < -0.5 || spC.y > 0.5)
                 continue;
-            if (spC.z < lbl_802F30A0 || spC.z > lbl_802F3058)
+            if (spC.z < -0.5 || spC.z > 0.5)
                 continue;
             return 1;
         }

@@ -9,6 +9,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"

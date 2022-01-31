@@ -48,13 +48,13 @@ struct NaomiObj *naomiCommonObj;
 struct NaomiObj *naomiStageObj;
 struct NaomiObj *naomiBackgroundObj;
 struct NaomiObj *lbl_802F1AF8;
-struct NaomiObj *lbl_802F1AF4;
+struct NaomiObj *minigameNaomiObj;
 
 struct TPL *naomiCommonTpl;
 struct TPL *naomiStageTpl;
 struct TPL *naomiBackgroundTpl;
 struct TPL *lbl_802F1AE4;
-struct TPL *lbl_802F1AE0;
+struct TPL *minigameNaomiTpl;
 
 void main(void)
 {
@@ -78,7 +78,7 @@ void main(void)
     ord_tbl_init(0.0f, 0.0f, 400.0f, lbl_80292E70, 0x4000);
     func_80092498();
     func_800948F4();
-    func_800248DC();
+    load_common_graphics();
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
     func_8008AE98();
     func_800AD38C();

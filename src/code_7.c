@@ -4,27 +4,17 @@
 #include "global.h"
 #include "nl2ngc.h"
 
-struct TPL *lbl_802F1CCC;
-struct GMA *commonGma;
-struct TPL *decodedBgTpl;
-struct GMA *decodedBgGma;
-struct TPL *lbl_802F1CBC;
-struct GMA *lbl_802F1CB8;
+#include "../data/common.nlobj.h"
 
-extern struct NaomiObj *lbl_802F1AF8;
-extern struct TPL *lbl_802F1AE4;
-extern struct NaomiObj *lbl_802F1AF4;
-extern struct TPL *lbl_802F1AE0;
-
-struct Struct80181A80
+struct GfxFileInfo
 {
-    char *unk0;
-    char *unk4;
-    char *unk8;
-    char *unkC;
+    char *naomiObjName;
+    char *naomiTplName;
+    char *gmaName;
+    char *tplName;
 };
 
-struct Struct80181A80 lbl_80181A80[] =
+struct GfxFileInfo minigameGfxFiles[] =
 {
     { "init/minit_p.lz", "init/minit.lz", NULL,               NULL               },
     { NULL,              NULL,            "init/m_race.gma",  "init/m_race.tpl"  },
@@ -36,29 +26,36 @@ struct Struct80181A80 lbl_80181A80[] =
     { NULL,              NULL,            "init/roll.gma",    "init/roll.tpl"    },
 };
 
-int func_800248DC(void)
+struct TPL *commonTpl;
+struct GMA *commonGma;
+struct TPL *decodedBgTpl;
+struct GMA *decodedBgGma;
+struct TPL *minigameTpl;
+struct GMA *minigameGma;
+
+int load_common_graphics(void)
 {
-    int r30 = load_nlobj(&naomiCommonObj, &naomiCommonTpl, "init/common_p.lz", "init/common.lz");
+    int success = load_nlobj(&naomiCommonObj, &naomiCommonTpl, "init/common_p.lz", "init/common.lz");
 
     DVDChangeDir("init");
-    lbl_802F1CCC = load_tpl("common.tpl.lz");
-    if (lbl_802F1CCC == NULL)
-        r30 = FALSE;
+    commonTpl = load_tpl("common.tpl.lz");
+    if (commonTpl == NULL)
+        success = FALSE;
     else
     {
-        commonGma = load_gma("common.gma.lz", lbl_802F1CCC);
+        commonGma = load_gma("common.gma.lz", commonTpl);
         if (commonGma == NULL)
-            r30 = FALSE;
+            success = FALSE;
     }
     DVDChangeDir("/test");
-    if (r30)
+    if (success)
     {
-        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 0x2B), 0xFBFFFFFF, 0x4000000);
-        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 0x35), 0xFBFFFFFF, 0x4000000);
-        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 0x3A), 0xFBFFFFFF, 0x4000000);
-        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 0x3F), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_circle_white), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CROSS_LIGHT), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI), 0xFBFFFFFF, 0x4000000);
     }
-    return r30;
+    return success;
 }
 
 void func_800249D4(void)
@@ -67,51 +64,51 @@ void func_800249D4(void)
 }
 
 #pragma force_active on
+int g_load_minigame_graphics(int index)
+{
+    struct GfxFileInfo *gfx;
+    int success = FALSE;
 
+    if (index < 0)
+        index = 0;
+    else if (index > ARRAY_COUNT(minigameGfxFiles) - 1)
+        index = ARRAY_COUNT(minigameGfxFiles) - 1;
+    gfx = &minigameGfxFiles[index];
+    g_free_minigame_graphics();
+    if (gfx->tplName != NULL)
+        minigameTpl = load_tpl(gfx->tplName);
+    if (gfx->gmaName != NULL)
+        minigameGma = load_gma(gfx->gmaName, minigameTpl);
+    if (gfx->naomiTplName != NULL && gfx->naomiObjName != NULL)
+        success = load_nlobj(&minigameNaomiObj, &minigameNaomiTpl, gfx->naomiObjName, gfx->naomiTplName);
+    return success;
+}
+#pragma force_active reset
+
+void g_free_minigame_graphics(void)
+{
+    if (minigameTpl != NULL || minigameGma != NULL)
+    {
+        VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
+        VIWaitForRetrace();
+    }
+    if (minigameTpl != NULL)
+    {
+        free_tpl(minigameTpl);
+        minigameTpl = NULL;
+    }
+    if (minigameGma != NULL)
+    {
+        free_gma(minigameGma);
+        minigameGma = NULL;
+    }
+    free_nlobj(&minigameNaomiObj, &minigameNaomiTpl);
+}
+
+#pragma force_active on
 // unused strings?
 char string_init_chara_p_lz[] = "init/chara_p.lz";
 char string_init_chara_lz[] = "init/chara.lz";
 char string_init_sel_p_lz[] = "init/sel_p.lz";
 char string_init_sel_lz[] = "init/sel.lz";
-
-int func_800249FC(int a)
-{
-    struct Struct80181A80 *r31;
-    int r30 = 0;
-
-    if (a < 0)
-        a = 0;
-    else if (a > 7)
-        a = 7;
-    r31 = &lbl_80181A80[a];
-    func_80024AB4();
-    if (r31->unkC != NULL)
-        lbl_802F1CBC = load_tpl(r31->unkC);
-    if (r31->unk8 != NULL)
-        lbl_802F1CB8 = load_gma(r31->unk8, lbl_802F1CBC);
-    if (r31->unk4 != NULL && r31->unk0 != NULL)
-        r30 = load_nlobj(&lbl_802F1AF4, &lbl_802F1AE0, r31->unk0, r31->unk4);
-    return r30;
-}
-
 #pragma force_active reset
-
-void func_80024AB4(void)
-{
-    if (lbl_802F1CBC != NULL || lbl_802F1CB8 != NULL)
-    {
-        VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
-        VIWaitForRetrace();
-    }
-    if (lbl_802F1CBC != NULL)
-    {
-        free_tpl(lbl_802F1CBC);
-        lbl_802F1CBC = NULL;
-    }
-    if (lbl_802F1CB8 != NULL)
-    {
-        free_gma(lbl_802F1CB8);
-        lbl_802F1CB8 = NULL;
-    }
-    free_nlobj(&lbl_802F1AF4, &lbl_802F1AE0);
-}

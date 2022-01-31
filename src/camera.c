@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "info.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"

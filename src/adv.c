@@ -15,6 +15,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "info.h"
 #include "input.h"
 #include "load.h"
 #include "mathutil.h"

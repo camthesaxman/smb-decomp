@@ -867,25 +867,3 @@ struct Struct80290170
     s32 unk8;
     s32 unkC;
 };
-
-struct Struct801F3A58
-{
-    u32 unk0;
-    s16 timerCurr;  // current clock time (in 60ths of a second)
-    s16 timerMax;  // maximum clock time (in 60ths of a second)
-    u32 unk8;
-    s16 unkC;
-    s16 unkE;
-    Vec unk10;
-    s16 unk1C;
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    s32 unk24;
-    s16 unk28;
-    s16 unk2A;
-    s16 unk2C;
-    s16 unk2E;
-    s16 unk30;
-    u8 filler32[2];
-};
