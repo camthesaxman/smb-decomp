@@ -9,6 +9,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -288,7 +289,7 @@ struct GMAModelHeader *find_item_model(struct ModelLOD **a)
     }
     if (spC.z > -0.1f)
         return model;
-    f1 = (currentCameraStructPtr->sub28.height * -480.0f) * f31 / (spC.z * currentCameraStructPtr->sub28.unk38);
+    f1 = (currentCameraStructPtr->sub28.vp.height * -480.0f) * f31 / (spC.z * currentCameraStructPtr->sub28.unk38);
     while (r31->modelId > 0)
     {
         modelId = r31->modelId;

@@ -8,6 +8,7 @@
 #include "global.h"
 #include "ball.h"
 #include "gxutil.h"
+#include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -77,7 +78,7 @@ void item_pilot_init(struct Item *item)
     if (item->subtype < 3)
         item->unk1C = pilotBananaInfo[item->subtype].lodModelsPtr;
     else
-        item->unk1C = lbl_802F1CB8->modelEntries[pilotBananaInfo[item->subtype].unk4].modelOffset;
+        item->unk1C = minigameGma->modelEntries[pilotBananaInfo[item->subtype].unk4].modelOffset;
     item->unk8 = 0x22;
     item->unk14 = pilotBananaInfo[item->subtype].unk8;
     item->unk18 = 0.25f;
@@ -286,7 +287,7 @@ void item_pilot_draw(struct Item *item)
             }
             g_avdisp_set_model_scale(f31);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_draw_model_1(lbl_802F1CB8->modelEntries[r30_].modelOffset);
+            g_avdisp_draw_model_1(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
@@ -334,7 +335,7 @@ void item_pilot_draw(struct Item *item)
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_draw_model_1(lbl_802F1CB8->modelEntries[0x77].modelOffset);
+            g_avdisp_draw_model_1(minigameGma->modelEntries[0x77].modelOffset);
             g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }

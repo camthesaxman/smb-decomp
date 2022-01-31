@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "event.h"
 #include "gxutil.h"
+#include "info.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"

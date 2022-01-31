@@ -143,7 +143,7 @@ extern float lbl_801741CC[];
 // extern ? lbl_801818B0;
 // extern ? lbl_801818D0;
 // extern ? lbl_80181970;
-// extern ? lbl_80181A80;
+// extern ? minigameGfxFiles;
 // extern ? lbl_80181B80;
 // extern ? lbl_80181BC0;
 // extern ? lbl_80181BD0;
@@ -542,27 +542,6 @@ extern struct
 // extern ? lbl_801F065C;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
-extern struct
-{
-    u32 unk0;
-    s16 timerCurr;  // current clock time (in 60ths of a second)
-    s16 timerMax;  // maximum clock time (in 60ths of a second)
-    u8 filler8[0xC - 0x8];
-    s16 unkC;
-    s16 unkE;
-    Vec unk10;
-    u8 filler1C[0x1E - 0x1C];
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    u8 filler24[0x2E - 0x24];
-    s16 unk2E;
-} lbl_801F3A58;
-// extern ? lbl_801F3A8C;
-// extern ? lbl_801F3A9C;
-
-// extern ? lzssHeader;
-extern struct NaomiSpriteParams spriteParamsBuf[];
 
 extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
@@ -587,8 +566,6 @@ extern struct
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
 extern struct SpritePoolInfo spritePoolInfo;
-
-// extern ? lbl_80205E00;
 
 extern struct World lbl_80206BF0[];
 // extern ? lbl_80206CF0;
@@ -1131,13 +1108,13 @@ extern struct
 // extern ? SendCount;
 
 // .sbss section
-// extern ? lbl_802F1AE0;
-// extern ? lbl_802F1AE4;
+extern struct TPL *minigameNaomiTpl;
+extern struct TPL *lbl_802F1AE4;
 extern struct TPL *naomiBackgroundTpl;
-extern struct TPL *naomiStageTpl;  // unknown type
-// extern ? naomiCommonTpl;
-// extern ? lbl_802F1AF4;
-// extern ? lbl_802F1AF8;
+extern struct TPL *naomiStageTpl;
+extern struct TPL *naomiCommonTpl;
+extern struct NaomiObj *minigameNaomiObj;
+extern struct NaomiObj *lbl_802F1AF8;
 extern struct NaomiObj *naomiBackgroundObj;
 extern struct NaomiObj *naomiStageObj;
 extern struct NaomiObj *naomiCommonObj;
@@ -1246,12 +1223,12 @@ extern struct GFXBufferInfo *gfxBufferInfo;
 // extern ? lbl_802F1CA8;
 // extern ? lbl_802F1CAC;
 // extern ? lbl_802F1CB0;
-extern struct GMA *lbl_802F1CB8;
-// extern ? lbl_802F1CBC;
+extern struct GMA *minigameGma;
+// extern ? minigameTpl;
 extern struct GMA *decodedBgGma;
 extern struct TPL *decodedBgTpl;
 extern struct GMA *commonGma;
-// extern ? lbl_802F1CCC;
+// extern ? commonTpl;
 extern u8 resetCounter;
 extern u8 lbl_802F1CD1;
 extern u8 lbl_802F1CD2;
@@ -1312,7 +1289,7 @@ extern u32 lbl_802F1CD8;
 // extern ? lbl_802F1DF4;
 // extern ? lbl_802F1DF5;
 extern u32 lbl_802F1DF8;
-// extern ? lbl_802F1DFC;
+extern s32 lbl_802F1DFC;
 // extern ? lbl_802F1E00;
 // extern ? lbl_802F1E08;
 // extern ? lbl_802F1E0C;

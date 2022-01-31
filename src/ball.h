@@ -116,13 +116,13 @@ struct Ball
     Vec unk114;
     u32 unk120;
     s16 unk124;
-    s16 unk126;
+    s16 unk126;  // challenge mode win streak?
     s16 unk128;
     s16 unk12A;
     u8 filler12C[0x130-0x12C];
     float unk130;
     u32 unk134;
-    u8 filler138[4];
+    s32 unk138;
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
     struct Ball_child *unk144;  // guessing this is the same type as unkFC?

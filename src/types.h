@@ -345,17 +345,23 @@ struct Struct8009492C
 {
     Vec unk0;
     S16Vec unkC;
-    /*
-    float unk14;
-    float unk18;
-    float unk1C;
-    */
     Vec unk14;
     float unk20;
     float unk24;
     struct GMAModelHeader *unk28;
     GXColor unk2C;
     u8 filler30[0x38-0x30];
+};
+
+struct Struct8003F890
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    u8 filler12[0x20-0x12];
+    float unk20;
+    float unk24;
 };
 
 struct Struct80039974

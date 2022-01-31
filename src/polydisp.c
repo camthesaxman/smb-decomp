@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "event.h"
 #include "gxutil.h"
+#include "info.h"
 #include "input.h"
 #include "item.h"
 #include "load.h"
@@ -573,7 +574,7 @@ void draw_normal_game_scene(void)
     struct Ball *oldBall = currentBallStructPtr;
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
+        if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
             if (spritePoolInfo.unkC[i] == 0
              || spritePoolInfo.unkC[i] == 4
@@ -635,7 +636,7 @@ void func_8000C7A4(void)
     lbl_801EEC90.unk0 |= (1 << 3);
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f
+        if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f
          && (cameraInfo[i].flags & (1 << (31-0x19))))
         {
             currentBallStructPtr = &ballInfo[i];
@@ -858,7 +859,7 @@ void func_8000D018(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
+        if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
             if ((spritePoolInfo.unkC[i] == 0 || spritePoolInfo.unkC[i] == 4)
              && !(cameraInfo[i].flags & (1 << 6)))

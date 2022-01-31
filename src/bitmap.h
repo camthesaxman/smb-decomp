@@ -164,6 +164,7 @@ extern struct TPL *g_unkBitmapTPL;
 
 extern struct BitmapGroup bitmapGroups[];
 extern char **bitmapNames[];
+extern struct NaomiSpriteParams spriteParamsBuf[];
 
 void bitmap_init(void);
 struct TPL *bitmap_load_tpl(char *filename);

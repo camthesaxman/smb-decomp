@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "info.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -57,10 +58,10 @@ void camera_init(void)
         camera->sub28.fov = DEGREES_TO_S16(60);
         camera->sub28.unk32 = DEGREES_TO_S16(60);
         camera->sub28.aspect = SCREEN_ASPECT;
-        camera->sub28.left = 0.0f;
-        camera->sub28.top = 0.0f;
-        camera->sub28.width = 1.0f;
-        camera->sub28.height = 1.0f;
+        camera->sub28.vp.left = 0.0f;
+        camera->sub28.vp.top = 0.0f;
+        camera->sub28.vp.width = 1.0f;
+        camera->sub28.vp.height = 1.0f;
     }
     camera_apply_viewport(0);
 }
@@ -384,10 +385,10 @@ void setup_camera_viewport(int cameraId, float left, float top, float width, flo
 {
     struct Camera *camera = &cameraInfo[cameraId];
 
-    camera->sub28.left = left;
-    camera->sub28.top = top;
-    camera->sub28.width = width;
-    camera->sub28.height = height;
+    camera->sub28.vp.left = left;
+    camera->sub28.vp.top = top;
+    camera->sub28.vp.width = width;
+    camera->sub28.vp.height = height;
     if (width > 0.0f && height > 0.0f)
     {
         camera->sub28.aspect = SCREEN_ASPECT * (width / height);
@@ -511,14 +512,14 @@ void camera_apply_viewport(int cameraId)
     projMtx[0][2] -= projMtx[0][0] * camera->sub28.unk28 * camera->sub28.aspect * camera->sub28.unk38;
     projMtx[1][2] -= projMtx[1][1] * camera->sub28.unk2C * camera->sub28.unk38;
     GXSetProjection(projMtx, 0);
-    if (camera->sub28.width > 0.0f && camera->sub28.height > 0.0f)
+    if (camera->sub28.vp.width > 0.0f && camera->sub28.vp.height > 0.0f)
     {
         float fbW = currRenderMode->fbWidth;
         float fbH = currRenderMode->xfbHeight;
-        float left   = fbW * camera->sub28.left;
-        float top    = fbH * camera->sub28.top;
-        float width  = fbW * camera->sub28.width;
-        float height = fbH * camera->sub28.height;
+        float left   = fbW * camera->sub28.vp.left;
+        float top    = fbH * camera->sub28.vp.top;
+        float width  = fbW * camera->sub28.vp.width;
+        float height = fbH * camera->sub28.vp.height;
         GXSetViewport(left, top, width, height, 0.0f, 1.0f);
         GXSetScissor(left, top, width, height);
     }

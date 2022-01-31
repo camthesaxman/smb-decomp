@@ -137,7 +137,7 @@ lbl_0000020C:
 /* 0000024C 386000B3 */ li r3, 0xb3
 /* 00000250 4BFFFF11 */ bl load_stage
 /* 00000254 38600004 */ li r3, 4
-/* 00000258 4BFFFF09 */ bl func_800249FC
+/* 00000258 4BFFFF09 */ bl g_load_minigame_graphics
 /* 0000025C 38600006 */ li r3, 6
 /* 00000260 4BFFFF01 */ bl call_bitmap_load_group
 /* 00000264 3C800000 */ lis r4, lbl_00001888@ha
@@ -751,8 +751,8 @@ lbl_00000AD0:
 /* 00000B04 807B0000 */ lwz r3, 0(r27)
 /* 00000B08 38800000 */ li r4, 0
 /* 00000B0C 4BFFF655 */ bl GXLoadNrmMtxImm
-/* 00000B10 3C600000 */ lis r3, lbl_802F1CB8@ha
-/* 00000B14 3B830000 */ addi r28, r3, lbl_802F1CB8@l
+/* 00000B10 3C600000 */ lis r3, minigameGma@ha
+/* 00000B14 3B830000 */ addi r28, r3, minigameGma@l
 /* 00000B18 807C0000 */ lwz r3, 0(r28)
 /* 00000B1C 80630008 */ lwz r3, 8(r3)
 /* 00000B20 80630018 */ lwz r3, 0x18(r3)
@@ -939,8 +939,8 @@ lbl_00000DB0:
 /* 00000DCC 807C0000 */ lwz r3, 0(r28)
 /* 00000DD0 38800000 */ li r4, 0
 /* 00000DD4 4BFFF38D */ bl GXLoadNrmMtxImm
-/* 00000DD8 3C600000 */ lis r3, lbl_802F1CB8@ha
-/* 00000DDC 38630000 */ addi r3, r3, lbl_802F1CB8@l
+/* 00000DD8 3C600000 */ lis r3, minigameGma@ha
+/* 00000DDC 38630000 */ addi r3, r3, minigameGma@l
 /* 00000DE0 80630000 */ lwz r3, 0(r3)
 /* 00000DE4 80630008 */ lwz r3, 8(r3)
 /* 00000DE8 80630008 */ lwz r3, 8(r3)
@@ -1669,7 +1669,7 @@ lbl_00001888:
 /* 000018A8 84030000 */ lwzu r0, lbl_801EEC90@l(r3)
 /* 000018AC 540006F2 */ rlwinm r0, r0, 0, 0x1b, 0x19
 /* 000018B0 90030000 */ stw r0, 0(r3)
-/* 000018B4 4BFFE8AD */ bl func_80024AB4
+/* 000018B4 4BFFE8AD */ bl g_free_minigame_graphics
 /* 000018B8 38600006 */ li r3, 6
 /* 000018BC 4BFFE8A5 */ bl bitmap_free_group
 /* 000018C0 4BFFE8A1 */ bl func_80029788
@@ -11696,13 +11696,13 @@ lbl_0000AAAC:
 /* 0000AABC 3CC00000 */ lis r6, lbl_00014800@ha
 /* 0000AAC0 9421FFE0 */ stwu r1, -0x20(r1)
 /* 0000AAC4 3C800000 */ lis r4, mathutilData@ha
-/* 0000AAC8 3C600000 */ lis r3, lbl_802F1CB8@ha
+/* 0000AAC8 3C600000 */ lis r3, minigameGma@ha
 /* 0000AACC BF410008 */ stmw r26, 8(r1)
 /* 0000AAD0 3CA00000 */ lis r5, lbl_801EEC90@ha
 /* 0000AAD4 7C1A0378 */ mr r26, r0
 /* 0000AAD8 3B860000 */ addi r28, r6, lbl_00014800@l
 /* 0000AADC 3BC40000 */ addi r30, r4, mathutilData@l
-/* 0000AAE0 3BE30000 */ addi r31, r3, lbl_802F1CB8@l
+/* 0000AAE0 3BE30000 */ addi r31, r3, minigameGma@l
 /* 0000AAE4 3BA50000 */ addi r29, r5, lbl_801EEC90@l
 /* 0000AAE8 3B600000 */ li r27, 0
 lbl_0000AAEC:

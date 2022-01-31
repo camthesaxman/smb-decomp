@@ -13234,12 +13234,113 @@ glabel lbl_801F3A4C
 	.skip 0x4
 glabel lbl_801F3A50
 	.skip 0x8
-.global lbl_801F3A58
-lbl_801F3A58:
-	.skip 0x34
-.global lbl_801F3A8C
-lbl_801F3A8C:
-	.skip 0x10
-.global lbl_801F3A9C
-lbl_801F3A9C:
-	.skip 0xD4
+
+.section .sdata
+
+    .balign 8
+.global lbl_802F0310
+lbl_802F0310:
+	# ROM: 0x1EAA50
+	.4byte 0
+	.4byte 0
+glabel string_POINT
+	.asciz "POINT"
+	.balign 4
+glabel string_SPOT
+	.asciz "SPOT"
+	.balign 4
+glabel string_TEST
+	.asciz "TEST"
+	.balign 4
+glabel string_STAGE
+	.asciz "STAGE"
+	.balign 4
+glabel string_BUMPER
+	.asciz "BUMPER"
+	.balign 4
+glabel string_AUTO
+	.asciz "AUTO"
+	.balign 4
+glabel lbl_802F0348
+	.4byte 0x42470000
+glabel string_BG_WALL
+	.asciz "BG_WALL"
+glabel string_DEFAULT
+	.asciz "DEFAULT"
+glabel string_SINGLE
+	.asciz "SINGLE"
+	.balign 4
+glabel string_DEF_MIR
+	.asciz "DEF_MIR"
+glabel string_BG_0
+	.asciz "BG_0"
+	.balign 4
+glabel string_BG_1
+	.asciz "BG_1"
+	.balign 4
+glabel string_BG_2
+	.asciz "BG_2"
+	.balign 4
+glabel string_BG_3
+	.asciz "BG_3"
+	.balign 4
+glabel string_BG_4
+	.asciz "BG_4"
+	.balign 4
+glabel string_BG_5
+	.asciz "BG_5"
+	.balign 4
+glabel string_BG_6
+	.asciz "BG_6"
+	.balign 4
+glabel string_BG_7
+	.asciz "BG_7"
+	.balign 4
+glabel string_BG_8
+	.asciz "BG_8"
+	.balign 4
+glabel string_BG_9
+	.asciz "BG_9"
+	.balign 4
+glabel string_BG_a
+	.asciz "BG_a"
+	.balign 4
+glabel string_BG_b
+	.asciz "BG_b"
+	.balign 4
+glabel string_BG_c
+	.asciz "BG_c"
+	.balign 4
+glabel string_BG_d
+	.asciz "BG_d"
+	.balign 4
+glabel string_BG_e
+	.asciz "BG_e"
+	.balign 4
+glabel string_BG_f
+	.asciz "BG_f"
+	.balign 4
+
+.global lbl_802F03EC
+lbl_802F03EC:
+	# ROM: 0x1EAB2C
+	.4byte 0x7B090A00
+
+.global lbl_802F03F0
+lbl_802F03F0:
+	# ROM: 0x1EAB30
+glabel string____n_n
+	.asciz "},\n\n"
+	.balign 4
+glabel lbl_802F03F8
+	.4byte 0x06020603
+	.4byte 0x0604FFFF
+glabel lbl_802F0400
+	.4byte 0x07010702
+	.4byte 0xFFFF0000
+glabel lbl_802F0408
+	.4byte 0x05010608
+	.4byte 0xFFFF0000
+glabel lbl_802F0410
+	.4byte 0x0503FFFF
+	.4byte 0

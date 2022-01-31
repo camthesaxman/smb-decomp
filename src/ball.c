@@ -10,6 +10,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "gxutil.h"
+#include "info.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
