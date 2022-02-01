@@ -271,7 +271,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/math/s_fabs.c \
 	libraries/PowerPC_EABI_Support/math/scalbn.c \
 	libraries/PowerPC_EABI_Support/math/e_rem_pio2.c \
-	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
+	libraries/PowerPC_EABI_Support/math/fminmaxdim.c \
 	libraries/PowerPC_EABI_Support/math/k_cos.c \
 	libraries/PowerPC_EABI_Support/math/k_rem_pio2.c \
 	libraries/PowerPC_EABI_Support/math/k_sin.c \
