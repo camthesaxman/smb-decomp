@@ -468,6 +468,67 @@ void g_draw_tutorial_button_and_joystick(void)
     ord_tbl_draw_nodes();
 }
 
+void draw_analog_stick(void)
+{
+    Vec pos;
+    int i;
+    float baseScale;  // scale value for the base model
+    float stickX;
+    float stickY;
+    int stickXRot;
+    int stickZRot;
+    Mtx projMtx;
+
+    C_MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
+    GXSetProjection(projMtx, 0);
+    mathutil_mtxA_from_identity();
+    func_80022274(2);
+    pos.x = -0.0055f;
+    pos.y = -0.003f;
+    pos.z = -0.718f;
+
+    baseScale = 0.0005f;
+
+    // Draw the analog stick base
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_translate(&pos);
+    mathutil_mtxA_rotate_x(0x4000);
+    mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
+    g_nl2ngc_set_scale(baseScale);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
+
+    // Draw the analog stick
+    mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
+    stickX = 0.0f;
+    stickY = 0.0f;
+    for (i = 0; i < 4; i++)
+    {
+        if (controllerInfo[i].unk0[0].err == 0)
+        {
+            stickX = (float)controllerInfo[i].unk0[0].stickX / 60.0;
+            stickY = -(float)controllerInfo[i].unk0[0].stickY / 60.0;
+            break;
+        }
+    }
+    if (stickX < -1.0)
+        stickX = -1.0f;
+    else if (stickX > 1.0)
+        stickX = 1.0f;
+    if (stickY < -1.0)
+        stickY = -1.0f;
+    else if (stickY > 1.0)
+        stickY = 1.0f;
+    stickXRot = (4187.0f * stickY);
+    stickZRot = (4187.0f * -stickX);
+    mathutil_mtxA_rotate_x(CLAMP(stickXRot * 2, -0x1000, 0x1000));
+    mathutil_mtxA_rotate_z(CLAMP(stickZRot * 2, -0x1000, 0x1000));
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+}
+
 const GXColor lbl_802F2978 = {0, 0, 0, 0};
 
 struct Struct8000C144
@@ -627,6 +688,8 @@ void draw_normal_game_scene(void)
     func_8000C7A4();
     currentBallStructPtr = oldBall;
     func_80017FCC();
+
+    draw_analog_stick();
 }
 
 void func_8000C7A4(void)
