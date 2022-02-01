@@ -5,6 +5,7 @@
 #ifndef __MWERKS__
 extern int __abs(int);
 extern float __fabs(float);
+extern float __frsqrte(float);
 #endif
 
 #define NAN       (0.0f / 0.0f)
