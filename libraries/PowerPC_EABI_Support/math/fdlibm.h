@@ -50,20 +50,16 @@ typedef int _INT32;
 typedef unsigned int _UINT32;
 #endif
 
-#if __IEEE_LITTLE_ENDIAN
+#ifdef __LITTLE_ENDIAN
+#define __HI(x) *(1+(int*)&x)
+#define __LO(x) *(int*)&x
 #define __HIp(x) *(1+(int*)x)
 #define __LOp(x) *(int*)x
-#define __HI(x)  ( sizeof(x)==8 ? *(1+(_INT32*)&x) : (*(_INT32*)&x))
-#define __LO(x)  (*(_INT32*)&x)
-#define __UHI(x) ( sizeof(x)==8 ? *(1+(_UINT32*)&x) : (*(_UINT32*)&x))
-#define __ULO(x) (*(_UINT32*)&x)
 #else
+#define __HI(x) *(int*)&x
+#define __LO(x) *(1+(int*)&x)
 #define __HIp(x) *(int*)x
 #define __LOp(x) *(1+(int*)x)
-#define __LO(x)  ( sizeof(x)==8 ? *(1+(_INT32*)&x) : (*(_INT32*)&x))
-#define __HI(x)  (*(_INT32*)&x)
-#define __ULO(x) ( sizeof(x)==8 ? *(1+(_UINT32*)&x) : (*(_UINT32*)&x))
-#define __UHI(x) (*(_UINT32*)&x)
 #endif
 
 #ifdef __STDC__

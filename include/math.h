@@ -24,9 +24,11 @@ double ldexp(double x, int exp);
 
 inline int abs(int n) { return(__abs(n)); }
 
-//double scalbn(double x, int n);
+double scalbn(double x, int n);
 
 double copysign(double x, double y);
+
+double floor (double x);
 
 #ifdef __MWERKS__
 #pragma cplusplus on
@@ -34,7 +36,7 @@ double copysign(double x, double y);
 
 long __fpclassifyf(float x);
 long __fpclassifyd(double x);
-extern inline double scalbn(double x, int n) {return ldexp(x,n);}
+//extern inline double scalbn(double x, int n) {return ldexp(x,n);}
 inline double fabs(double x) { return __fabs(x); }
 
 #define FP_INFINITE  2

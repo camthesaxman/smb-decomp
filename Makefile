@@ -270,12 +270,12 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/wchar_io.c \
 	libraries/PowerPC_EABI_Support/asm/math/e_rem_pio2.s \
 	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_cos.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_rem_pio2.s \
+	libraries/PowerPC_EABI_Support/math/k_cos.c \
+	libraries/PowerPC_EABI_Support/math/k_rem_pio2.c \
 	libraries/PowerPC_EABI_Support/math/k_sin.c \
 	libraries/PowerPC_EABI_Support/math/s_copysign.c \
-	libraries/PowerPC_EABI_Support/asm/math/s_cos.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_floor.s \
+	libraries/PowerPC_EABI_Support/math/s_cos.c \
+	libraries/PowerPC_EABI_Support/math/s_floor.c \
 	libraries/PowerPC_EABI_Support/math/s_frexp.c \
 	libraries/PowerPC_EABI_Support/math/s_ldexp.c \
 	libraries/PowerPC_EABI_Support/math/s_sin.c \
