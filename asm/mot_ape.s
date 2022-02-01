@@ -4243,3 +4243,125 @@ lbl_801719D0:
 	.4byte 0x4C99FFFF
 	.4byte 0xE5A54CFF
 	.4byte 0x4CB24CFF
+
+.section .data
+
+.global lbl_801C7B8C
+lbl_801C7B8C:
+	# ROM: 0x1C4B8C
+glabel string_mot_ape_c
+	.asciz "mot_ape.c"
+	.balign 4
+glabel string_cannot_OSAlloc_n_3
+	.asciz "cannot OSAlloc\n"
+glabel string________Character_Model_Information_______n
+	.asciz " ===== Character Model Information =====\n"
+	.balign 4
+glabel string_No_Chara_Texture___s__n
+	.asciz "No Chara Texture <%s>\n"
+	.balign 4
+glabel string_Stopped____n
+	.asciz "Stopped...\n"
+glabel string_cannot_OSAlloc_3
+	.asciz "cannot OSAlloc"
+	.balign 4
+glabel string_Not_enough_ARAM_for_CharacterModel__n
+	.asciz "Not enough ARAM for CharacterModel.\n"
+	.balign 4
+glabel string_No_Chara_Model___s__n
+	.asciz "No Chara Model <%s>\n"
+	.balign 4
+glabel string__s___Polygon___x___Texture___x___n
+	.asciz "%s : Polygon[ %x ] Texture[ %x ]\n"
+	.balign 4
+glabel string_change_texture_load___s____x___n
+	.asciz "change texture load. %s [ %x ]\n"
+glabel string____Use_ARAM_Memory_top____x_n
+	.asciz "   Use ARAM Memory top : %x\n"
+	.balign 4
+glabel string__________________________________________n
+	.asciz " =======================================\n"
+	.balign 4
+
+.global lbl_801C7CD8
+lbl_801C7CD8:
+	# ROM: 0x1C4CD8
+glabel string_obj___s_is_nothing__n
+	.asciz "obj: %s is nothing.\n"
+	.balign 4
+
+.global lbl_801C7CF0
+lbl_801C7CF0:
+	# ROM: 0x1C4CF0
+glabel string_rob_init_Heap_Over__n
+	.asciz "rob init Heap Over.\n"
+	.balign 4
+
+.global lbl_801C7D08
+lbl_801C7D08:
+	# ROM: 0x1C4D08
+glabel string__nchara_model_is_already_free__n
+	.asciz "\nchara model is already free.\n"
+	.balign 4
+
+.global lbl_801C7D28
+lbl_801C7D28:
+	# ROM: 0x1C4D28
+glabel string_APE_Allocate_limit_over___n
+	.asciz "APE Allocate limit over!!\n"
+	.balign 4
+
+.global lbl_801C7D44
+lbl_801C7D44:
+	# ROM: 0x1C4D44
+glabel string_ape_face_p_lz
+	.asciz "ape/face_p.lz"
+	.balign 4
+
+.global lbl_801C7D54
+lbl_801C7D54:
+	# ROM: 0x1C4D54
+glabel string_ape_face_lz
+	.asciz "ape/face.lz"
+
+.global lbl_801C7D60
+lbl_801C7D60:
+	# ROM: 0x1C4D60
+	.4byte lbl_8008BE44  ;# ptr
+	.4byte lbl_8008BD38  ;# ptr
+	.4byte lbl_8008BCF0  ;# ptr
+	.4byte lbl_8008BE7C  ;# ptr
+	.4byte lbl_8008BDC8  ;# ptr
+	.4byte lbl_8008BE78  ;# ptr
+	.4byte lbl_8008BE00  ;# ptr
+	.4byte lbl_8008BC34  ;# ptr
+glabel lbl_801C7D80
+	.4byte 0x00090001
+	.4byte 0x00030002
+glabel lbl_801C7D88
+	.4byte 0x00070005
+	.4byte 0x00070006
+glabel lbl_801C7D90
+	.4byte 0x00010001
+	.4byte 0x00030002
+glabel lbl_801C7D98
+	.4byte 0x00070001
+	.4byte 0x00030002
+glabel lbl_801C7DA0
+	.4byte 0x000A0001
+	.4byte 0x00030002
+glabel lbl_801C7DA8
+	.4byte 0x00040009
+	.4byte 0x000B000A
+
+.global lbl_801C7DB0
+lbl_801C7DB0:
+	# ROM: 0x1C4DB0
+	.4byte lbl_801C7D80  ;# ptr
+	.4byte lbl_801C7D88  ;# ptr
+	.4byte 0
+	.4byte 0
+	.4byte lbl_801C7DA0  ;# ptr
+	.4byte lbl_801C7DA8  ;# ptr
+	.4byte lbl_801C7D90  ;# ptr
+	.4byte lbl_801C7D98  ;# ptr

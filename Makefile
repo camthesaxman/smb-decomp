@@ -99,19 +99,22 @@ SOURCES := \
 	src/trig_tables.c \
 	src/perf.c \
 	asm/sound.s \
-	asm/code_2.s \
+	asm/window.s \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
-	asm/code.s \
+	asm/stcoli.s \
+	asm/world.s \
 	src/stage.c \
 	asm/stage.s \
 	asm/recplay.s \
+	asm/effect.s \
 	src/background.c \
 	asm/background.s \
+	asm/course.s \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
@@ -125,7 +128,7 @@ SOURCES := \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
-	asm/load.s \
+	asm/shadow.s \
 	asm/mini.s \
 	asm/mouse.s \
 	asm/rend_efc.s \
@@ -140,6 +143,7 @@ SOURCES := \
 	asm/mini_ranking.s \
 	src/preview.c \
 	asm/code_4.s \
+	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \
 	libraries/os/asm/OS.s \
