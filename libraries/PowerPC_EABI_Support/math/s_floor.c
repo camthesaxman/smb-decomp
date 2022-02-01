@@ -10,12 +10,12 @@
  * ====================================================
  */
 /*
- * ieee_floor(x)
+ * floor(x)
  * Return x rounded toward -inf to integral value
  * Method:
  *	Bit twiddling.
  * Exception:
- *	Inexact flag raised if x not equal to ieee_floor(x).
+ *	Inexact flag raised if x not equal to floor(x).
  */
 #include "fdlibm.h"
 #ifdef __STDC__

@@ -30,14 +30,14 @@ double copysign(double x, double y);
 
 double floor (double x);
 
+double fabs(double x);
+
 #ifdef __MWERKS__
 #pragma cplusplus on
 #endif
 
 long __fpclassifyf(float x);
 long __fpclassifyd(double x);
-//extern inline double scalbn(double x, int n) {return ldexp(x,n);}
-inline double fabs(double x) { return __fabs(x); }
 
 #define FP_INFINITE  2
 #define fpclassify(x) (sizeof(x) == sizeof(float) ? __fpclassifyf((float)(x)) : __fpclassifyd((double)(x)))

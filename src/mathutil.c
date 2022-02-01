@@ -416,14 +416,14 @@ u32 func_80007424(float a)
 {
     u32 r3;
 
-    if (fabs(a) > 1.0)
+    if (__fabs(a) > 1.0)
     {
         if (a > 0.0f)
             return 0;
         else
             return -0x8000;
     }
-    if (fabs(a) > 1.0)  // uh... we already checked that.
+    if (__fabs(a) > 1.0)  // uh... we already checked that.
     {
         if (a > 0.0f)
             r3 = 0x4000;

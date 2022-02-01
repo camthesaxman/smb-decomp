@@ -33,10 +33,10 @@
  *		match x's up to 24 bits.
  *
  *		Example of breaking a double positive z into x[0]+x[1]+x[2]:
- *			e0 = ieee_ilogb(z)-23
- *			z  = ieee_scalbn(z,-e0)
+ *			e0 = ilogb(z)-23
+ *			z  = scalbn(z,-e0)
  *		for i = 0,1,2
- *			x[i] = ieee_floor(z)
+ *			x[i] = floor(z)
  *			z    = (z-x[i])*2**24
  *
  *
@@ -73,7 +73,7 @@
  *			ipio2[i] * 2^(-24(i+1)).
  *
  * External function:
- *	double ieee_scalbn(), ieee_floor();
+ *	double scalbn(), floor();
  *
  *
  * Here is the description of some local variables:

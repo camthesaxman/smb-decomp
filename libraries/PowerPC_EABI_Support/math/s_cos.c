@@ -9,7 +9,7 @@
  * is preserved.
  * ====================================================
  */
-/* ieee_cos(x)
+/* cos(x)
  * Return cosine function of x.
  *
  * kernel function:
@@ -23,7 +23,7 @@
  *	in [-pi/4 , +pi/4], and let n = k mod 4.
  *	We have
  *
- *          n        ieee_sin(x)      ieee_cos(x)        ieee_tan(x)
+ *          n        sin(x)      cos(x)        tan(x)
  *     ----------------------------------------------------------
  *	    0	       S	   C		 T
  *	    1	       C	  -S		-1/T
@@ -54,7 +54,7 @@
     /* |x| ~< pi/4 */
 	ix &= 0x7fffffff;
 	if(ix <= 0x3fe921fb) return __kernel_cos(x,z);
-    /* ieee_cos(Inf or NaN) is NaN */
+    /* cos(Inf or NaN) is NaN */
 	else if (ix>=0x7ff00000) return x-x;
     /* argument reduction needed */
 	else {
