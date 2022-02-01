@@ -22,14 +22,26 @@ float acosf(float x);
 
 double ldexp(double x, int exp);
 
-inline int	abs (int n) { return(__abs(n)); }
+inline int abs(int n) { return(__abs(n)); }
 
-double scalbn(double x, int n);
+//double scalbn(double x, int n);
+
+double copysign(double x, double y);
 
 #ifdef __MWERKS__
 #pragma cplusplus on
-inline double scalbn(double x, int n) {return ldexp(x,n);}
+#endif
+
+long __fpclassifyf(float x);
+long __fpclassifyd(double x);
+extern inline double scalbn(double x, int n) {return ldexp(x,n);}
 inline double fabs(double x) { return __fabs(x); }
+
+#define FP_INFINITE  2
+#define fpclassify(x) (sizeof(x) == sizeof(float) ? __fpclassifyf((float)(x)) : __fpclassifyd((double)(x)))
+#define isfinite(x) ((fpclassify(x) > FP_INFINITE))
+
+#ifdef __MWERKS__
 #pragma cplusplus reset
 #endif
 

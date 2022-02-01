@@ -272,13 +272,13 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
 	libraries/PowerPC_EABI_Support/asm/math/k_cos.s \
 	libraries/PowerPC_EABI_Support/asm/math/k_rem_pio2.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_sin.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_copysign.s \
+	libraries/PowerPC_EABI_Support/math/k_sin.c \
+	libraries/PowerPC_EABI_Support/math/s_copysign.c \
 	libraries/PowerPC_EABI_Support/asm/math/s_cos.s \
 	libraries/PowerPC_EABI_Support/asm/math/s_floor.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_frexp.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_ldexp.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_sin.s \
+	libraries/PowerPC_EABI_Support/math/s_frexp.c \
+	libraries/PowerPC_EABI_Support/math/s_ldexp.c \
+	libraries/PowerPC_EABI_Support/math/s_sin.c \
 	libraries/PowerPC_EABI_Support/asm/math/inverse_trig.s \
 	libraries/PowerPC_EABI_Support/asm/math/trigf.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.s \
@@ -507,6 +507,7 @@ $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
 libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
+libraries/PowerPC_EABI_Support/%.o: CFLAGS += -fp_contract on
 
 # Automatic dependency files
 DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))
