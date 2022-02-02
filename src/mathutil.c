@@ -487,7 +487,7 @@ u32 func_80007424(float a)
     return (0x4000 - r3) & 0xFFFF;
 }
 
-#ifndef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
 float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
 {
     float f12 = vecA->z * vecA->z + vecA->y * vecA->y + vecA->x * vecA->x;
@@ -656,6 +656,19 @@ lbl_800075E0:
 }
 #endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_rotate_x(s16 angle)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float s = mathutil_sin(angle);
+    float c = mathutil_cos(angle);
+
+    (*m)[0][0] =  1;  (*m)[0][1] = 0;  (*m)[0][2] =  0;  (*m)[0][3] = 0;
+    (*m)[1][0] =  0;  (*m)[1][1] = c;  (*m)[1][2] = -s;  (*m)[1][3] = 0;
+    (*m)[2][0] =  0;  (*m)[2][1] = s;  (*m)[2][2] =  c;  (*m)[2][3] = 0;
+}
+#else
 asm void mathutil_mtxA_from_rotate_x(s16 angle)
 {
     nofralloc
@@ -667,12 +680,15 @@ asm void mathutil_mtxA_from_rotate_x(s16 angle)
     lis r4, LC_CACHE_BASE@ha
 
     fneg f3, f1
+    // f1 = sin
+    // f2 = cos
+    // f3 = -sin
     psq_l f4, OFFSET_constOneZero(r4), 0, GQR_U8
-    ps_merge11 f6, f4, f4
-    ps_merge10 f7, f4, f2
-    ps_merge01 f8, f3, f4
-    ps_merge10 f9, f4, f1
-    ps_merge01 f10, f2, f4
+    ps_merge11 f6, f4, f4   // f6  = (0, 0)
+    ps_merge10 f7, f4, f2   // f7  = (0, cos)
+    ps_merge01 f8, f3, f4   // f8  = (-sin, 0)
+    ps_merge10 f9, f4, f1   // f9  = (0, sin)
+    ps_merge01 f10, f2, f4  // f10 = (cos, 0)
 
     psq_st f4,  OFFSET_mtxA+0(r4),  0, GQR_F32
     psq_st f6,  OFFSET_mtxA+8(r4),  0, GQR_F32
@@ -683,7 +699,21 @@ asm void mathutil_mtxA_from_rotate_x(s16 angle)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_rotate_y(s16 angle)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float s = mathutil_sin(angle);
+    float c = mathutil_cos(angle);
+
+    (*m)[0][0] =  c;  (*m)[0][1] = 0;  (*m)[0][2] = s;  (*m)[0][3] = 0;
+    (*m)[1][0] =  0;  (*m)[1][1] = 1;  (*m)[1][2] = 0;  (*m)[1][3] = 0;
+    (*m)[2][0] = -s;  (*m)[2][1] = 0;  (*m)[2][2] = c;  (*m)[2][3] = 0;
+}
+#else
 asm void mathutil_mtxA_from_rotate_y(s16 angle)
 {
     nofralloc
@@ -695,11 +725,14 @@ asm void mathutil_mtxA_from_rotate_y(s16 angle)
     lis r4, LC_CACHE_BASE@ha
 
     fneg f3, f1
+    // f1 = sin
+    // f2 = cos
+    // f3 = -sin
     psq_l f4, OFFSET_constZeroOne(r4), 0, GQR_U8
-    ps_merge00 f5, f2, f4
-    ps_merge00 f6, f1, f4
-    ps_merge00 f8, f4, f4
-    ps_merge00 f9, f3, f4
+    ps_merge00 f5, f2, f4  // f5 = (cos, 0)
+    ps_merge00 f6, f1, f4  // f6 = (sin, 0)
+    ps_merge00 f8, f4, f4  // f8 = (0, 0)
+    ps_merge00 f9, f3, f4  // f9 = (-sin, 0)
 
     psq_st f5, OFFSET_mtxA+0(r4), 0, GQR_F32
     psq_st f6, OFFSET_mtxA+8(r4), 0, GQR_F32
@@ -710,7 +743,21 @@ asm void mathutil_mtxA_from_rotate_y(s16 angle)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_rotate_z(s16 angle)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float s = mathutil_sin(angle);
+    float c = mathutil_cos(angle);
+
+    (*m)[0][0] = c;  (*m)[0][1] = -s;  (*m)[0][2] = 0;  (*m)[0][3] = 0;
+    (*m)[1][0] = s;  (*m)[1][1] =  c;  (*m)[1][2] = 0;  (*m)[1][3] = 0;
+    (*m)[2][0] = 0;  (*m)[2][1] =  0;  (*m)[2][2] = 1;  (*m)[2][3] = 0;
+}
+#else
 asm void mathutil_mtxA_from_rotate_z(s16 angle)
 {
     nofralloc
@@ -722,10 +769,13 @@ asm void mathutil_mtxA_from_rotate_z(s16 angle)
     lis r4, LC_CACHE_BASE@ha
 
     fneg f3, f1
+    // f1 = sin
+    // f2 = cos
+    // f3 = -sin
     psq_l f4, OFFSET_constOneZero(r4), 0, GQR_U8
-    ps_merge00 f5, f2, f3
-    ps_merge11 f6, f4, f4
-    ps_merge00 f7, f1, f2
+    ps_merge00 f5, f2, f3  // f5 = (cos, -sin)
+    ps_merge11 f6, f4, f4  // f6 = (0, 0)
+    ps_merge00 f7, f1, f2  // f7 = (sin, cos)
 
     psq_st f5, OFFSET_mtxA+0(r4), 0, GQR_F32
     psq_st f6, OFFSET_mtxA+8(r4), 0, GQR_F32
@@ -736,6 +786,7 @@ asm void mathutil_mtxA_from_rotate_z(s16 angle)
 
     blr
 }
+#endif
 
 asm void mathutil_mtxA_from_mtxB_translate(register Vec *vec)
 {
@@ -843,7 +894,7 @@ asm void mathutil_mtxA_push(void)
     psq_l f0, 0(r3), 0, GQR_F32
     psq_l f1, 8(r3), 0, GQR_F32
     psq_l f2, 16(r3), 0, GQR_F32
-    addi r4, r4, -48  // increment matrix stack pointer
+    addi r4, r4, -sizeof(Mtx)  // decrement matrix stack pointer
     psq_l f3, 24(r3), 0, GQR_F32
     psq_l f4, 32(r3), 0, GQR_F32
     psq_l f5, 40(r3), 0, GQR_F32
@@ -998,12 +1049,12 @@ asm void mathutil_mtxA_peek(void)
 #endif
 
 #ifdef MATHUTIL_C_ONLY
-func_80007924(void)
+mathutil_incr_mtx_stack(void)
 {
     mathutilData->mtxStackPtr++;
 }
 #else
-asm void func_80007924(void)
+asm void mathutil_incr_mtx_stack(void)
 {
     nofralloc
 
@@ -1016,18 +1067,29 @@ asm void func_80007924(void)
 }
 #endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
+{
+    const Mtx *mtxA = &mathutilData->mtxA;
+
+    // copy everything except for the last column
+    mtx[0][0] = (*mtxA)[0][0];  mtx[0][1] = (*mtxA)[0][1];  mtx[0][2] = (*mtxA)[0][2];
+    mtx[1][0] = (*mtxA)[1][0];  mtx[1][1] = (*mtxA)[1][1];  mtx[1][2] = (*mtxA)[1][2];
+    mtx[2][0] = (*mtxA)[2][0];  mtx[2][1] = (*mtxA)[2][1];  mtx[2][2] = (*mtxA)[2][2];
+}
+#else
 asm void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
-    psq_l f0, OFFSET_mtxA+0(r4), 0, GQR_F32
-    lfs   f1, OFFSET_mtxA+8(r4)
-    psq_l f2, OFFSET_mtxA+16(r4), 0, GQR_F32
-    lfs   f3, OFFSET_mtxA+24(r4)
-    psq_l f4, OFFSET_mtxA+32(r4), 0, GQR_F32
-    lfs   f5, OFFSET_mtxA+40(r4)
+    psq_l f0, OFFSET_mtxA+0(r4), 0, GQR_F32   // f0 = (mtxA[0][0], mtxA[0][1])
+    lfs   f1, OFFSET_mtxA+8(r4)               // f1 = mtxA[0][2]
+    psq_l f2, OFFSET_mtxA+16(r4), 0, GQR_F32  // f2 = (mtxA[1][0], mtxA[1][1])
+    lfs   f3, OFFSET_mtxA+24(r4)              // f3 = mtxA[1][2]
+    psq_l f4, OFFSET_mtxA+32(r4), 0, GQR_F32  // f4 = (mtxA[2][0], mtxA[2][1])
+    lfs   f5, OFFSET_mtxA+40(r4)              // f5 = mtxA[2][2]
 
     psq_st f0, 0(mtx), 0, GQR_F32
     stfs   f1, 8(mtx)
@@ -1038,19 +1100,31 @@ asm void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
+{
+    Mtx *mtxA = &mathutilData->mtxA;
+
+    // copy everything except for the last column
+    (*mtxA)[0][0] = mtx[0][0];  (*mtxA)[0][1] = mtx[0][1];  (*mtxA)[0][2] = mtx[0][2];
+    (*mtxA)[1][0] = mtx[1][0];  (*mtxA)[1][1] = mtx[1][1];  (*mtxA)[1][2] = mtx[1][2];
+    (*mtxA)[2][0] = mtx[2][0];  (*mtxA)[2][1] = mtx[2][1];  (*mtxA)[2][2] = mtx[2][2];
+}
+#else
 asm void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
-    psq_l f0, 0(mtx), 0, GQR_F32
-    lfs   f1, 8(mtx)
-    psq_l f2, 16(mtx), 0, GQR_F32
-    lfs   f3, 0x18(mtx)
-    psq_l f4, 32(mtx), 0, GQR_F32
-    lfs   f5, 0x28(mtx)
+    psq_l f0, 0(mtx), 0, GQR_F32   // f0 = (mtx[0][0], mtx[0][1])
+    lfs   f1, 8(mtx)               // f1 = mtx[0][2]
+    psq_l f2, 16(mtx), 0, GQR_F32  // f2 = (mtx[1][0], mtx[1][1])
+    lfs   f3, 0x18(mtx)            // f3 = mtx[1][2]
+    psq_l f4, 32(mtx), 0, GQR_F32  // f4 = (mtx[2][0], mtx[2][1])
+    lfs   f5, 0x28(mtx)            // f5 = mtx[2][2]
 
     psq_st f0, OFFSET_mtxA+0(r4), 0, GQR_F32
     stfs   f1, OFFSET_mtxA+8(r4)
@@ -1061,6 +1135,7 @@ asm void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
 
     blr
 }
+#endif
 
 #ifdef MATHUTIL_C_ONLY
 void mathutil_mtxA_from_mtxB(void)

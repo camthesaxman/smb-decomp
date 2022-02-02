@@ -15083,7 +15083,7 @@ lbl_0000DE34:
 /* 0000DE34 7F600734 */ extsh r0, r27
 /* 0000DE38 2C000004 */ cmpwi r0, 4
 /* 0000DE3C 4180FE78 */ blt lbl_0000DCB4
-/* 0000DE40 4BFF233D */ bl func_80007924
+/* 0000DE40 4BFF233D */ bl mathutil_incr_mtx_stack
 lbl_0000DE44:
 /* 0000DE44 BAC10048 */ lmw r22, 0x48(r1)
 /* 0000DE48 8001007C */ lwz r0, 0x7c(r1)
