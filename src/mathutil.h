@@ -50,7 +50,7 @@ float mathutil_sin(int angle);
 float mathutil_sin(s16 angle);
 #endif
 #define mathutil_cos(angle) mathutil_sin((angle) + 0x4000)
-void mathutil_sin_cos_v(s16 a, float *b);
+void mathutil_sin_cos_v(s16 a, float *b, float *c);
 void func_80007214();
 void mathutil_sin_cos(s16 angle);
 float mathutil_tan(u32 angle);
