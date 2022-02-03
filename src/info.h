@@ -29,7 +29,7 @@ extern struct Struct801F3A58 infoWork;
 // extern ? lbl_801F3A8C;
 // extern ? lbl_801F3A9C;
 
-// ? func_80022F14();
+void func_80022F14(void);
 void ev_info_init(void);
 void ev_info_main(void);
 void ev_info_dest(void);
