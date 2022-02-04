@@ -222,6 +222,7 @@ enum
 
 enum
 {
+    // (1 << 2) = used a continue?
     LVLSET_FLAG_EXTRA = (1 << 3),
     LVLSET_FLAG_MASTER = (1 << 4),
 };
@@ -254,7 +255,8 @@ struct ModeControl
     /*0x28*/ s32 gameType;
     s32 unk2C;
     s32 unk30;
-    u8 filler34[0x40-0x34];
+    u8 filler34[0x3C-0x34];
+    s32 unk3C;
     s16 unk40;
     u8 unk42;
     u8 filler43[0x48-0x43];

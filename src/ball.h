@@ -157,7 +157,7 @@ void func_8003721C(struct Ape *a, float b);
 void func_8003765C(struct Ape *a);
 void func_80037718();
 // ? func_80037B1C();
-// ? func_80037B20();
+void func_80037B20(void);
 void ev_ball_init(void);
 // ? func_800380A8();
 void ev_ball_main(void);

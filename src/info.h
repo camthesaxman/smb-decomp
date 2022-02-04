@@ -1,6 +1,8 @@
 enum
 {
-    INFO_FLAG_,
+    INFO_FLAG_GOAL     = (1 << 0),
+    INFO_FLAG_TIMEOVER = (1 << 1),
+    INFO_FLAG_FALLOUT  = (1 << 2),
 };
 
 struct Struct801F3A58
@@ -17,8 +19,8 @@ struct Struct801F3A58
     s16 unk20;
     s16 unk22;
     s32 unk24;
-    s16 unk28;
-    s16 unk2A;
+    s16 unk28;  // lives lost?
+    s16 unk2A;  // continues used?
     s16 unk2C;
     s16 unk2E;
     s16 unk30;

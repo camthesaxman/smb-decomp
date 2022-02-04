@@ -173,7 +173,7 @@ void ev_info_main(void)
             }
             func_80049268(ball->unk2E);
             if (gameSubmode == SMD_ADV_GAME_PLAY_MAIN)
-                infoWork.unk0 |= 1;
+                infoWork.unk0 |= INFO_FLAG_GOAL;
             func_8003CA98(ball, &sp6C);
             if (sp64 != sp6C.unk58)
                 func_80042000(&sp6C, sp64);
@@ -374,7 +374,7 @@ void ev_info_main(void)
                     infoWork.unk0 |= 0x2000;
                     break;
                 }
-                infoWork.unk0 |= 0xA;
+                infoWork.unk0 |= 8 | INFO_FLAG_TIMEOVER;
                 func_80049368(ball->unk2E);
                 if (!(infoWork.unk0 & (1 << 6)))
                 {
@@ -417,14 +417,14 @@ void ev_info_main(void)
 
                 break;
             case 4:
-                infoWork.unk0 |= (1 << 1) | (1 << 3);
+                infoWork.unk0 |= INFO_FLAG_TIMEOVER | (1 << 3);
                 break;
             default:
                 {
                     struct Ball *ball;
 
                     ball = currentBallStructPtr;
-                    infoWork.unk0 |= (1 << 1) | (1 << 3);
+                    infoWork.unk0 |= INFO_FLAG_TIMEOVER | (1 << 3);
                     func_80049368(ball->unk2E);
                     ball->flags |= BALL_FLAG_TIMEOVER;
                 }
@@ -536,7 +536,7 @@ void g_time_over_all_competition_mode_balls(void)
     if (infoWork.unk0 & (1 << 6))
         infoWork.unk0 |= 0x628;
     else
-        infoWork.unk0 |= 0x29;
+        infoWork.unk0 |= (1 << 5) | (1 << 3) | INFO_FLAG_GOAL;
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {

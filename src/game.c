@@ -10,6 +10,9 @@
 #include "event.h"
 #include "info.h"
 #include "input.h"
+#include "item.h"
+#include "load.h"
+#include "mathutil.h"
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
@@ -162,13 +165,13 @@ void submode_game_restart_init_func(void)
     gameSubmodeRequest = SMD_GAME_READY_INIT;
 }
 
-const u32 lbl_801101C8[] =
+const s16 lbl_801101C8[] =
 {
-    0x00230024,
-    0x00250026,
-    0x00270028,
-    0x0029002A,
-    0x002B002C,
+    0x0023, 0x0024,
+    0x0025, 0x0026,
+    0x0027, 0x0028,
+    0x0029, 0x002A,
+    0x002B, 0x002C,
 };
 
 const s16 lbl_801101DC[] =
@@ -401,6 +404,486 @@ void submode_game_play_init_func(void)
     }
     camera_set_state(0);
     gameSubmodeRequest = SMD_GAME_PLAY_MAIN;
+}
+
+void submode_game_play_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    if (infoWork.timerCurr % 60 == 59)  // each second
+    {
+        if (infoWork.timerCurr <= 10 * 60)
+        {
+            // countdown
+            g_play_sound(6);
+            g_play_sound(lbl_801101C8[infoWork.timerCurr / 60]);
+        }
+        else
+            g_play_sound(0x3D806);
+        if (infoWork.timerCurr / 60 == 10)
+        {
+            g_play_sound(7);  // hurry up?
+            func_8007E144();
+        }
+    }
+    if (infoWork.timerCurr <= 5 * 60 && infoWork.timerCurr % 60 == 43)
+        g_play_sound(6);
+    if (infoWork.timerCurr <= 10 * 60 && infoWork.timerCurr % 60 == 51)
+        g_play_sound(6);
+    if (lbl_801F3D88[2] & (1 << 8))
+        func_800847C0();
+    if (infoWork.unk0 & INFO_FLAG_GOAL)
+    {
+        infoWork.unk0 &= ~INFO_FLAG_GOAL;
+        gameSubmodeRequest = SMD_GAME_GOAL_INIT;
+    }
+    else if (infoWork.unk0 & INFO_FLAG_TIMEOVER)
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        infoWork.unk0 &= ~INFO_FLAG_TIMEOVER;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->state = 0;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+
+        gameSubmodeRequest = SMD_GAME_TIMEOVER_INIT;
+    }
+    else if (infoWork.unk0 & INFO_FLAG_FALLOUT)
+    {
+        infoWork.unk0 &= ~INFO_FLAG_FALLOUT;
+        camera_set_state(4);
+        func_8004B65C();
+        gameSubmodeRequest = SMD_GAME_RINGOUT_INIT;
+    }
+    else if (infoWork.unk0 & (1 << 9))
+    {
+        infoWork.unk0 &= ~(1 << 9);
+        func_8004B65C();
+        gameSubmodeRequest = SMD_GAME_BONUS_CLEAR_INIT;
+    }
+}
+
+void submode_game_goal_init_func(void)
+{
+    int r31;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    if (!(infoWork.unk0 & (1 << 13)))
+    {
+        modeCtrl.unk0 = 360;
+        modeCtrl.levelSetFlags &= ~(1 << 10);
+    }
+    else
+    {
+        modeCtrl.unk0 = 120;
+        modeCtrl.levelSetFlags &= ~(1 << 10);
+        g_play_sound(11);
+        g_play_sound(0x128);
+    }
+    modeCtrl.unk3C = modeCtrl.unk0;
+    r31 = func_80017004();
+    if (r31 != -1 && r31 != lbl_802F1C18)
+    {
+        preload_stage_files(r31);
+        lbl_802F1C18 = r31;
+    }
+    func_800846B0(1);
+    camera_set_state(14);
+    if (!(infoWork.unk0 & (1 << 13)))
+        func_8007C6AC(0x168);
+    else
+        func_8007D190(120);
+    if (!(infoWork.unk0 & (1 << 6)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
+        g_give_points(3, 0);
+    if (infoWork.unk0 & (1 << 6))
+        func_8004B65C();
+    gameSubmodeRequest = SMD_GAME_GOAL_MAIN;
+}
+
+void submode_game_goal_main_func(void)
+{
+    int r31;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    r31 = (infoWork.unk0 & (1 << 13)) != 0;
+    if (!r31 && modeCtrl.unk0 == 330)
+        g_play_sound(8);
+    if (modeCtrl.unk0 == modeCtrl.unk3C - 60)
+        func_80049158();
+    if (!r31)
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                if (!(ball->flags & (1 << 9)) && (ball->ape->unk14 & (1 << 14)))
+                {
+                    modeCtrl.levelSetFlags |= 0x400;
+                    g_play_sound(0x126);
+                }
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+    if (!r31 && (modeCtrl.levelSetFlags & (1 << 10))
+     && modeCtrl.unk0 > 60 && modeCtrl.unk0 < 240)
+        modeCtrl.unk0 = 60;
+    if (--modeCtrl.unk0 <= 0)
+    {
+        infoWork.unk0 &= ~(1 << 13);
+        gameSubmodeRequest = SMD_GAME_GOAL_REPLAY_INIT;
+    }
+}
+
+void submode_game_goal_replay_init_func(void)
+{
+    float f1;
+    int r31;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    event_finish(EVENT_VIBRATION);
+    modeCtrl.unk0 = 210;
+    f1 = mathutil_vec_mag(&infoWork.unk10);
+    modeCtrl.unk0 += f1 * 300.0;
+    if (modeCtrl.unk0 > 300.0)
+        modeCtrl.unk0 = 300;
+    modeCtrl.levelSetFlags &= ~(1 << 10);
+    modeCtrl.unk18 = 30;
+
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->flags &= ~(1 << 9);
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->state = 9;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+
+    {
+        struct World *r5;
+        s8 *unk;
+        int i;
+
+        unk = spritePoolInfo.unkC;
+        r5 = lbl_80206BF0;
+        for (i = 0; i < spritePoolInfo.unk8; i++, r5++, unk++)
+        {
+            if (*unk == 2)
+                r5->unk8 = 6;
+        }
+    }
+    camera_set_state(16);
+    func_80037B20();
+    func_8004CFF0(0);
+    func_8004CFF0(10);
+
+    lbl_80250A68.unk14 = infoWork.unk30;
+    infoWork.unk0 |= (1 << 4);
+    lbl_80250A68.unk10 = MIN(modeCtrl.unk0 - 60, func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]));
+    g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+    r31 = func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10);
+    func_800689B4(r31);
+    func_8006F5F0(r31);
+    func_8007E334(modeCtrl.unk0);
+    if (!(infoWork.unk0 & (1 << 6)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
+        g_give_points(2, 0);
+    func_8004B65C();
+    gameSubmodeRequest = SMD_GAME_GOAL_REPLAY_MAIN;
+}
+
+void submode_game_goal_replay_main_func(void)
+{
+    int nextStage;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    {
+        struct Ball *r31;
+        struct Ball *ball;
+        s8 *unk;
+        int i;
+
+        r31 = currentBallStructPtr;
+        if (r31->state == 4)
+            infoWork.unk0 &= ~(1 << 4);
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                if (!(ball->flags & (1 << 9)) && (ball->ape->unk14 & (1 << 14)))
+                {
+                    ball->flags &= -1281;
+                    ball->flags |= 0x200;
+                    modeCtrl.levelSetFlags |= 0x400;
+                    g_play_sound(0x126);
+                }
+            }
+        }
+        currentBallStructPtr = r31;
+    }
+
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+    {
+        struct Ball *r31;
+        struct Ball *ball;
+        s8 *unk;
+        int i;
+        int r3;
+
+        r31 = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        r3 = 0;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                if ((unpausedFrameCounter & 3) == 0 && ball->unk138 > 0)
+                {
+                    r3 = 1;
+                    if (ball->unk138 > 100)
+                        r3 = 41;
+                    else if (ball->unk138 > 10)
+                        r3 = 3;
+                    ball->bananas += r3;
+                    ball->unk138 -= r3;
+                    ball->bananas = MIN(ball->bananas, 999);
+                    r3 = 1;
+                }
+            }
+        }
+        currentBallStructPtr = r31;
+        if (r3)
+            g_play_sound(0x67);
+    }
+    modeCtrl.unk18--;
+    nextStage = func_80016FB4();
+    if (!is_load_queue_not_empty()
+     && (lbl_801F3D88[2] & (1 << 8))
+     && modeCtrl.unk18 < 0 && nextStage > 0)
+        modeCtrl.unk0 = 0;
+    if (nextStage < 0 && modeCtrl.unk0 == 60)
+    {
+        g_start_screen_fade(0x101, 0, 0x3D);
+        func_8002CF38(60, 2);
+    }
+    if (--modeCtrl.unk0 > 0)
+        return;
+    infoWork.unk0 &= ~(1 << 4);
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                if (ball->unk138 > 0)
+                {
+                    ball->bananas += ball->unk138;
+                    ball->unk138 = 0;
+                    ball->bananas = MIN(ball->bananas, 999);
+                }
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+    if (nextStage < 0 && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+    {
+        gameSubmodeRequest = SMD_GAME_RESULT_INIT;
+        return;
+    }
+
+    if (nextStage < 0)  // end of level set
+    {
+        u32 gotoExtra;
+
+        if (modeCtrl.levelSet == LVLSET_EXPERT)
+            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.unk2A == 0);
+        else
+            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.unk28 == 0);
+
+        if (gotoExtra && (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA) && modeCtrl.levelSet != LVLSET_EXPERT)
+            gotoExtra = FALSE;
+        if (gotoExtra && (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER))
+            gotoExtra = FALSE;
+
+        if (gotoExtra)
+            gameSubmodeRequest = SMD_GAME_EXTRA_INIT;
+        else
+        {
+            func_80017140();
+            gameSubmodeRequest = SMD_GAME_ENDING_INIT;
+        }
+    }
+    else
+    {
+        if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+        {
+            infoWork.unk1E++;
+            func_8002CF38(100, 8);
+        }
+        else
+            infoWork.unk1E = 1;
+        loadingStageId = nextStage;
+        gameSubmodeRequest = SMD_GAME_READY_INIT;
+    }
+}
+
+void submode_game_continue_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    func_80017140();
+    modeCtrl.unk0 = 659;
+    modeCtrl.unk10 = 1;
+    modeCtrl.levelSetFlags &= ~(1 << 2);
+    event_finish(EVENT_STAGE);
+    event_finish(EVENT_WORLD);
+    event_finish(EVENT_STOBJ);
+    event_finish(EVENT_ITEM);
+    event_finish(EVENT_OBJ_COLLISION);
+    event_finish(EVENT_INFO);
+    event_finish(EVENT_SPRITE);
+    event_finish(EVENT_VIBRATION);
+    event_start(EVENT_SPRITE);
+    if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
+    {
+        if (func_80067674() == 0)
+        {
+            modeCtrl.unk10 = 0;
+            modeCtrl.unk0 = (modeCtrl.playerCount == 1) ? 480 : 180;
+            modeCtrl.levelSetFlags |= (1 << 2);
+        }
+        else
+            func_8007D580();
+    }
+    else
+        func_8007D580();
+    func_800228A8(currStageId);
+
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->state = 18;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                if (ball->ape != NULL)
+                    ball->ape->unk14 |= 0x100;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+
+    camera_set_state(0x19);
+    if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
+    {
+        func_800662E0();
+        func_8006677C(1, 0x140, 0x198);
+    }
+    lbl_802F1C20 = lbl_802014E0.unk0;
+    func_8002CF38(40, 0);
+    gameSubmodeRequest = SMD_GAME_CONTINUE_MAIN;
 }
 
 #define lbl_802F2BA0 0.0f

@@ -57,7 +57,7 @@ void ev_item_dest(void);
 void item_draw();
 // ? func_80068474();
 void func_800685C4(void);
-// ? func_800689B4();
+void func_800689B4(int);
 void make_stage_bananas(struct StageCollHdr *, int);
 void item_dummy_init(struct Item *);
 void item_dummy_main(struct Item *);

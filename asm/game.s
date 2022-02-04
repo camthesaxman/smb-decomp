@@ -798,7 +798,6 @@ lbl_80013124:
 /* 80013134 0000F054  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 80013138 0000F058  38 21 00 18 */	addi r1, r1, 0x18
 /* 8001313C 0000F05C  4E 80 00 20 */	blr
-.endif
 .global submode_game_play_main_func
 submode_game_play_main_func:
 /* 80013140 0000F060  7C 08 02 A6 */	mflr r0
@@ -817,7 +816,7 @@ submode_game_play_main_func:
 /* 80013174 0000F094  3B C3 88 89 */	addi r30, r3, 0x88888889@l
 /* 80013178 0000F098  7C 1E 20 96 */	mulhw r0, r30, r4
 /* 8001317C 0000F09C  7C 00 22 14 */	add r0, r0, r4
-/* 80013180 0000F0A0  7C 00 2E 70 */	srawi r0, r0, 5
+/* 80013180 0000F0A0  7C 00 2E 70 */	srawi r0, r0, 5  ;# / 60
 /* 80013184 0000F0A4  54 03 0F FE */	srwi r3, r0, 0x1f
 /* 80013188 0000F0A8  7C 00 1A 14 */	add r0, r0, r3
 /* 8001318C 0000F0AC  1C 00 00 3C */	mulli r0, r0, 0x3c
@@ -1198,7 +1197,7 @@ submode_game_goal_replay_init_func:
 /* 800136DC 0000F5FC  FC 02 00 72 */	fmul f0, f2, f1
 /* 800136E0 0000F600  90 61 00 18 */	stw r3, 0x18(r1)
 /* 800136E4 0000F604  C8 21 00 18 */	lfd f1, 0x18(r1)
-/* 800136E8 0000F608  FC 21 18 28 */	fsub f1, f1, f3
+/* 800136E8 0000F608  FC 21 18 28 */	fsub f1, f1, f3  ;# unk0
 /* 800136EC 0000F60C  FC 01 00 2A */	fadd f0, f1, f0
 /* 800136F0 0000F610  FC 00 00 1E */	fctiwz f0, f0
 /* 800136F4 0000F614  D8 01 00 10 */	stfd f0, 0x10(r1)
@@ -1209,7 +1208,7 @@ submode_game_goal_replay_init_func:
 /* 80013708 0000F628  90 01 00 0C */	stw r0, 0xc(r1)
 /* 8001370C 0000F62C  90 61 00 08 */	stw r3, 8(r1)
 /* 80013710 0000F630  C8 01 00 08 */	lfd f0, 8(r1)
-/* 80013714 0000F634  FC 00 18 28 */	fsub f0, f0, f3
+/* 80013714 0000F634  FC 00 18 28 */	fsub f0, f0, f3  ;# unk0
 /* 80013718 0000F638  FC 00 10 40 */	fcmpo cr0, f0, f2
 /* 8001371C 0000F63C  40 81 00 0C */	ble lbl_80013728
 /* 80013720 0000F640  38 00 01 2C */	li r0, 0x12c
@@ -1326,7 +1325,7 @@ lbl_80013838:
 /* 800138B4 0000F7D4  90 61 00 0C */	stw r3, 0xc(r1)
 /* 800138B8 0000F7D8  90 01 00 08 */	stw r0, 8(r1)
 /* 800138BC 0000F7DC  C8 01 00 08 */	lfd f0, 8(r1)
-/* 800138C0 0000F7E0  EC 00 10 28 */	fsubs f0, f0, f2
+/* 800138C0 0000F7E0  EC 00 10 28 */	fsubs f0, f0, f2  ;# unk0 - 60
 /* 800138C4 0000F7E4  FC 00 08 40 */	fcmpo cr0, f0, f1
 /* 800138C8 0000F7E8  40 80 00 18 */	bge lbl_800138E0
 /* 800138CC 0000F7EC  90 61 00 0C */	stw r3, 0xc(r1)
@@ -1859,6 +1858,7 @@ lbl_80014028:
 /* 8001403C 0000FF5C  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 80014040 0000FF60  38 21 00 20 */	addi r1, r1, 0x20
 /* 80014044 0000FF64  4E 80 00 20 */	blr
+.endif
 .global submode_game_continue_main_func
 submode_game_continue_main_func:
 /* 80014048 0000FF68  7C 08 02 A6 */	mflr r0
@@ -5774,13 +5774,13 @@ lbl_802F2BB8:
 	# ROM: 0x1EC5D8
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
 
 .global lbl_802F2BC0
 lbl_802F2BC0:
 	# ROM: 0x1EC5E0
 	.4byte 0x4072C000
 	.4byte 0
+.endif
 
 .global lbl_802F2BC8
 lbl_802F2BC8:
