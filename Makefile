@@ -148,8 +148,8 @@ SOURCES := \
 	libraries/os/__start.c \
 	libraries/os/asm/OS.s \
 	libraries/os/asm/OSAlarm.s \
-	libraries/os/asm/OSAlloc.s \
-	libraries/os/asm/OSArena.s \
+	libraries/os/OSAlloc.c \
+	libraries/os/OSArena.c \
 	libraries/os/asm/OSAudioSystem.s \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \

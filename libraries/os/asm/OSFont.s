@@ -1549,6 +1549,7 @@ lbl_802F1940:
 
 .section .sbss
 
+    .balign 8
 .global FontData
 FontData:
 	.skip 0x4
