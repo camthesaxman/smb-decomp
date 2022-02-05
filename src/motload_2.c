@@ -122,7 +122,7 @@ float g_interp_skelanim_value_maybe(struct Struct80034F5C_1_sub *a, float b)
     {
         float f1 = *a->unk4;
 
-        if (fabs(f1 - b) < FLT_EPSILON)
+        if (__fabs(f1 - b) < FLT_EPSILON)
         {
             type = 1;
             break;

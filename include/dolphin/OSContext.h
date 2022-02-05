@@ -22,5 +22,7 @@ typedef struct OSContext
 u32 OSGetStackPointer(void);
 void OSDumpContext(OSContext *context);
 void OSLoadContext(OSContext *context);
+void OSClearContext(OSContext *context);
+void OSSetCurrentContext(OSContext *context);
 
 #endif

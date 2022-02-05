@@ -5,6 +5,7 @@
 #ifndef __MWERKS__
 extern int __abs(int);
 extern float __fabs(float);
+extern float __frsqrte(float);
 #endif
 
 #define NAN       (0.0f / 0.0f)
@@ -22,14 +23,33 @@ float acosf(float x);
 
 double ldexp(double x, int exp);
 
-inline int	abs (int n) { return(__abs(n)); }
+inline int abs(int n) { return(__abs(n)); }
 
 double scalbn(double x, int n);
 
+double copysign(double x, double y);
+
+double floor (double x);
+
+double fabs(double x);
+
 #ifdef __MWERKS__
 #pragma cplusplus on
-inline double scalbn(double x, int n) {return ldexp(x,n);}
-inline double fabs(double x) { return __fabs(x); }
+#endif
+
+long __fpclassifyf(float x);
+long __fpclassifyd(double x);
+
+#define FP_NAN       1
+#define FP_INFINITE  2
+#define FP_ZERO      3
+#define FP_NORMAL    4
+#define FP_SUBNORMAL 5
+
+#define fpclassify(x) (sizeof(x) == sizeof(float) ? __fpclassifyf((float)(x)) : __fpclassifyd((double)(x)))
+#define isfinite(x) ((fpclassify(x) > FP_INFINITE))
+
+#ifdef __MWERKS__
 #pragma cplusplus reset
 #endif
 

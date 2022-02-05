@@ -184,6 +184,7 @@ lbl_800C2EFC:
 
 .section .data
 
+    .balign 8
 .global lbl_801E6248
 lbl_801E6248:
 	# ROM: 0x1E3248

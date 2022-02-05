@@ -2687,7 +2687,7 @@ void func_8003C550(struct Ball *ball)
     sp18.y += f0 * sp24.y;
     sp18.z += f0 * sp24.z;
 
-    r30 = fabs(ball->unk130 / 0.0165f);
+    r30 = __fabs(ball->unk130 / 0.0165f);
     if (r30 > 32)
         r30 = 32;
 

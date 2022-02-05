@@ -1419,6 +1419,7 @@ lbl_800D64F8:
 
 .section .data
 
+    .balign 8
 .global lbl_801E8A60
 lbl_801E8A60:
 	# ROM: 0x1E5A60

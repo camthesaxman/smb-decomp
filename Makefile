@@ -99,19 +99,22 @@ SOURCES := \
 	src/trig_tables.c \
 	src/perf.c \
 	asm/sound.s \
-	asm/code_2.s \
+	asm/window.s \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
-	asm/code.s \
+	asm/stcoli.s \
+	asm/world.s \
 	src/stage.c \
 	asm/stage.s \
 	asm/recplay.s \
+	asm/effect.s \
 	src/background.c \
 	asm/background.s \
+	asm/course.s \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
@@ -125,7 +128,7 @@ SOURCES := \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
-	asm/load.s \
+	asm/shadow.s \
 	asm/mini.s \
 	asm/mouse.s \
 	asm/rend_efc.s \
@@ -140,12 +143,13 @@ SOURCES := \
 	asm/mini_ranking.s \
 	src/preview.c \
 	asm/code_4.s \
+	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \
 	libraries/os/asm/OS.s \
 	libraries/os/asm/OSAlarm.s \
-	libraries/os/asm/OSAlloc.s \
-	libraries/os/asm/OSArena.s \
+	libraries/os/OSAlloc.c \
+	libraries/os/OSArena.c \
 	libraries/os/asm/OSAudioSystem.s \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
@@ -184,7 +188,7 @@ SOURCES := \
 	libraries/ar/asm/arq.s \
 	libraries/dsp/dsp.c \
 	libraries/dsp/dsp_debug.c \
-	libraries/dsp/asm/dsp_task.s \
+	libraries/dsp/dsp_task.c \
 	libraries/card/asm/CARDBios.s \
 	libraries/card/asm/CARDUnlock.s \
 	libraries/card/asm/CARDRdwr.s \
@@ -268,17 +272,19 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/rand.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/string.s \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/wchar_io.c \
-	libraries/PowerPC_EABI_Support/asm/math/e_rem_pio2.s \
-	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_cos.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_rem_pio2.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_sin.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_copysign.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_cos.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_floor.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_frexp.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_ldexp.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_sin.s \
+	libraries/PowerPC_EABI_Support/math/s_fabs.c \
+	libraries/PowerPC_EABI_Support/math/scalbn.c \
+	libraries/PowerPC_EABI_Support/math/e_rem_pio2.c \
+	libraries/PowerPC_EABI_Support/math/fminmaxdim.c \
+	libraries/PowerPC_EABI_Support/math/k_cos.c \
+	libraries/PowerPC_EABI_Support/math/k_rem_pio2.c \
+	libraries/PowerPC_EABI_Support/math/k_sin.c \
+	libraries/PowerPC_EABI_Support/math/s_copysign.c \
+	libraries/PowerPC_EABI_Support/math/s_cos.c \
+	libraries/PowerPC_EABI_Support/math/s_floor.c \
+	libraries/PowerPC_EABI_Support/math/s_frexp.c \
+	libraries/PowerPC_EABI_Support/math/s_ldexp.c \
+	libraries/PowerPC_EABI_Support/math/s_sin.c \
 	libraries/PowerPC_EABI_Support/asm/math/inverse_trig.s \
 	libraries/PowerPC_EABI_Support/asm/math/trigf.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.s \
@@ -507,6 +513,7 @@ $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
 libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
+libraries/PowerPC_EABI_Support/%.o: CFLAGS += -fp_contract on
 
 # Automatic dependency files
 DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))
