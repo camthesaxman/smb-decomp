@@ -867,3 +867,10 @@ struct Struct80290170
     s32 unk8;
     s32 unkC;
 };
+
+struct Struct802C67D4
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 filler8[0x50-0x8];
+};
