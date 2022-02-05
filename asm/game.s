@@ -1858,7 +1858,6 @@ lbl_80014028:
 /* 8001403C 0000FF5C  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 80014040 0000FF60  38 21 00 20 */	addi r1, r1, 0x20
 /* 80014044 0000FF64  4E 80 00 20 */	blr
-.endif
 .global submode_game_continue_main_func
 submode_game_continue_main_func:
 /* 80014048 0000FF68  7C 08 02 A6 */	mflr r0
@@ -2385,6 +2384,7 @@ lbl_800147A8:
 /* 800147AC 000106CC  38 21 00 08 */	addi r1, r1, 8
 /* 800147B0 000106D0  7C 08 03 A6 */	mtlr r0
 /* 800147B4 000106D4  4E 80 00 20 */	blr
+.endif
 .global submode_game_ringout_main_func
 submode_game_ringout_main_func:
 /* 800147B8 000106D8  7C 08 02 A6 */	mflr r0
@@ -4521,7 +4521,7 @@ func_800165C0:
 /* 80016640 00012560  CB 62 83 B8 */	lfd f27, lbl_802F2BB8-_SDA2_BASE_(r2)
 /* 80016644 00012564  3B A0 00 02 */	li r29, 2
 /* 80016648 00012568  D0 01 00 10 */	stfs f0, 0x10(r1)
-/* 8001664C 0001256C  C3 82 83 CC */	lfs f28, lbl_802F2BCC@sda21(r2)
+/* 8001664C 0001256C  C3 82 83 CC */	lfs f28, lbl_802F2BCC-_SDA2_BASE_(r2)
 /* 80016650 00012570  3F E0 43 30 */	lis r31, 0x4330
 /* 80016654 00012574  D0 01 00 14 */	stfs f0, 0x14(r1)
 /* 80016658 00012578  CB A2 84 10 */	lfd f29, lbl_802F2C10@sda21(r2)
@@ -5780,7 +5780,6 @@ lbl_802F2BC0:
 	# ROM: 0x1EC5E0
 	.4byte 0x4072C000
 	.4byte 0
-.endif
 
 .global lbl_802F2BC8
 lbl_802F2BC8:
@@ -5791,6 +5790,7 @@ lbl_802F2BC8:
 lbl_802F2BCC:
 	# ROM: 0x1EC5EC
 	.4byte 0x46FFFE00
+.endif
 
 .global lbl_802F2BD0
 lbl_802F2BD0:

@@ -1186,7 +1186,7 @@ extern struct
     u8 unk4[4];
 } lbl_802F1C10;  // size = 0x8
 // extern ? lbl_802F1C18;
-// extern ? lbl_802F1C1C;
+extern s32 lbl_802F1C1C;
 // extern ? lbl_802F1C20;
 // extern ? lbl_802F1C24;
 // extern ? lbl_802F1C25;

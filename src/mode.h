@@ -247,7 +247,7 @@ struct ModeControl
     u32 levelSetFlags;
     u8 fillerC[0x10-0xC];
     s32 unk10;
-    u8 filler14[4];
+    u32 unk14;
     s32 unk18;
     s32 unk1C;
     /*0x20*/ s32 menuSel;
