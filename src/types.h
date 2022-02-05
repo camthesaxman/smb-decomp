@@ -415,7 +415,8 @@ struct Struct8003C550
     s16 unk8;
     u8 fillerA[0x14-0xA];
     s16 unk14;
-    u8 filler16[0x24-0x16];
+    u16 unk16;
+    u8 filler18[0x24-0x18];
     Vec unk24;
     struct GMAModelHeader *unk30;
     Vec unk34;

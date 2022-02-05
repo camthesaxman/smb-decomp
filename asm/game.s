@@ -3618,7 +3618,6 @@ lbl_8001592C:
 /* 8001593C 0001185C  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 80015940 00011860  38 21 00 20 */	addi r1, r1, 0x20
 /* 80015944 00011864  4E 80 00 20 */	blr
-.endif
 .global submode_game_nameentry_init_func
 submode_game_nameentry_init_func:
 /* 80015948 00011868  7C 08 02 A6 */	mflr r0
@@ -4393,11 +4392,11 @@ lbl_80016468:
 /* 80016468 00012388  2C 00 00 04 */	cmpwi r0, 4
 /* 8001646C 0001238C  40 80 00 08 */	bge lbl_80016474
 /* 80016470 00012390  48 00 00 D8 */	b lbl_80016548
-lbl_80016474:
+lbl_80016474:  ;# 0 default
 /* 80016474 00012394  38 60 00 03 */	li r3, 3
 /* 80016478 00012398  48 00 1D 95 */	bl camera_setup_splitscreen_viewports
 /* 8001647C 0001239C  48 00 00 F8 */	b lbl_80016574
-lbl_80016480:
+lbl_80016480:  ;# 1
 /* 80016480 000123A0  C0 42 83 A8 */	lfs f2, lbl_802F2BA8-_SDA2_BASE_(r2)
 /* 80016484 000123A4  38 60 00 00 */	li r3, 0
 /* 80016488 000123A8  C0 22 83 A0 */	lfs f1, lbl_802F2BA0-_SDA2_BASE_(r2)
@@ -4423,7 +4422,7 @@ lbl_80016480:
 /* 800164D8 000123F8  FC 80 08 90 */	fmr f4, f1
 /* 800164DC 000123FC  48 00 1C 4D */	bl setup_camera_viewport
 /* 800164E0 00012400  48 00 00 94 */	b lbl_80016574
-lbl_800164E4:
+lbl_800164E4:  ;# 2
 /* 800164E4 00012404  C0 22 83 A0 */	lfs f1, lbl_802F2BA0-_SDA2_BASE_(r2)
 /* 800164E8 00012408  38 60 00 00 */	li r3, 0
 /* 800164EC 0001240C  C0 62 83 A8 */	lfs f3, lbl_802F2BA8-_SDA2_BASE_(r2)
@@ -4449,7 +4448,7 @@ lbl_800164E4:
 /* 8001653C 0001245C  FC 80 08 90 */	fmr f4, f1
 /* 80016540 00012460  48 00 1B E9 */	bl setup_camera_viewport
 /* 80016544 00012464  48 00 00 30 */	b lbl_80016574
-lbl_80016548:
+lbl_80016548:  ;# 3
 /* 80016548 00012468  38 60 00 04 */	li r3, 4
 /* 8001654C 0001246C  48 00 1C C1 */	bl camera_setup_splitscreen_viewports
 /* 80016550 00012470  3C 60 80 1F */	lis r3, cameraInfo@ha
@@ -4483,7 +4482,6 @@ lbl_800165B0:
 /* 800165B4 000124D4  38 21 00 08 */	addi r1, r1, 8
 /* 800165B8 000124D8  7C 08 03 A6 */	mtlr r0
 /* 800165BC 000124DC  4E 80 00 20 */	blr
-
 .global func_800165C0
 func_800165C0:
 /* 800165C0 000124E0  7C 08 02 A6 */	mflr r0
@@ -4576,6 +4574,7 @@ lbl_80016664:
 /* 80016718 00012638  83 81 00 D0 */	lwz r28, 0xd0(r1)
 /* 8001671C 0001263C  38 21 01 08 */	addi r1, r1, 0x108
 /* 80016720 00012640  4E 80 00 20 */	blr
+.endif
 .global submode_game_result_main_func
 submode_game_result_main_func:
 /* 80016724 00012644  7C 08 02 A6 */	mflr r0
@@ -5737,10 +5736,12 @@ lbl_8001776C:
 
 .section .sdata
 
+.if 0
     .balign 8
 glabel string_k_CHU_
 	.asciz "k/CHU!"
 	.balign 4
+.endif
 
 .section .sdata2
 
@@ -5826,29 +5827,30 @@ lbl_802F2BF8:
 	# ROM: 0x1EC618
 	.4byte 0x405E0000
 	.4byte 0
-.endif
 
 .global lbl_802F2C00
 lbl_802F2C00:
 	# ROM: 0x1EC620
-	.4byte 0x3FE00000
+	.4byte 0x3FE00000  ;# 0.5
 	.4byte 0
 
 .global lbl_802F2C08
 lbl_802F2C08:
 	# ROM: 0x1EC628
-	.4byte 0x40000000
+	.4byte 0x40000000  ;# 2.0f
 
 .global lbl_802F2C0C
 lbl_802F2C0C:
 	# ROM: 0x1EC62C
-	.4byte 0x3DCCCCCD
+	.4byte 0x3DCCCCCD  ;# 0.1f
 
 .global lbl_802F2C10
 lbl_802F2C10:
 	# ROM: 0x1EC630
 	.4byte 0x3FF00000
 	.4byte 0
+.endif
+    .balign 8
 
 .section .data
 
@@ -5868,7 +5870,6 @@ lbl_80175614:
 glabel string_pre_load_stage_init__d_now__d_n
 	.asciz "pre_load_stage init:%d now:%d\n"
 	.balign 4
-.endif
 glabel string_h_NAMAEWO_OSIETE_
 	.asciz "h/NAMAEWO OSIETE!"
 	.balign 4
@@ -5881,6 +5882,7 @@ glabel string_h_NAMAEWO_OSIETEHOSHIIDEk_CHU_
 glabel string_k_NAMAE_OSIERO__UHO_UHOHO_
 	.asciz "k/NAMAE OSIERO! UHO UHOHO!"
 	.balign 4
+glabel asdfasdf
 	.4byte string_h_NAMAEWO_OSIETE_  ;# ptr
 	.4byte string_h_ONAMAE_OSIETE_  ;# ptr
 	.4byte string_h_NAMAEWO_OSIETEHOSHIIDEk_CHU_  ;# ptr
@@ -5954,6 +5956,7 @@ glabel string_h_UHO_UHOHO
 	.asciz "h/UHO UHOHO"
 glabel string_k_BANANAh_KAIJINNDEHAk_GOZARAh_NUYO
 	.asciz "k/BANANAh/KAIJINNDEHAk/GOZARAh/NUYO"
+glabel asdasdf2
 	.4byte string_h_KONNDOHA_SARANI_2  ;# ptr
 	.4byte string_h_UENOk_REBERUh_DE_ASONNDENE_2  ;# ptr
 	.4byte string_h_KOREDE_k_KIMIh_MO_2  ;# ptr
@@ -6007,6 +6010,7 @@ glabel string_z_grown_up_monkey_like_me
 glabel string_z_You_are_such_grown_up__Remember_
 	.asciz "z/You are such grown up! Remember,"
 	.balign 4
+glabel asdfasdf3
 	.4byte string_z_Let_s_try_higher_level  ;# ptr
 	.4byte string_z_next_time  ;# ptr
 	.4byte string_z_Now_you_ve_become  ;# ptr
@@ -6071,6 +6075,7 @@ glabel string_a_It_s_time_for_a_real_challenge_
 glabel string_a_You_must_rule_over_all_the_stages_
 	.asciz "a/You must rule over all the stages!"
 	.balign 4
+glabel asdfasdf
 	.4byte string_z9_a_Congratulations__You_didn_t_miss_anything_  ;# ptr
 	.4byte string_a_You_get_to_play_the_extra_stages_  ;# ptr
 	.4byte string_a_They_re_all_very_difficult_  ;# ptr
@@ -6111,6 +6116,7 @@ glabel string_a_Onto_the_extra_stages_
 glabel string_a_Go_go_go___
 	.asciz "a/Go go go!!!"
 	.balign 4
+glabel asdfasdf2
 	.4byte string_z8_a_You_cleared_all_the_stages_without_continuing_  ;# ptr
 	.4byte string_a_You_can_play_the_extra_stages_now_  ;# ptr
 	.4byte string_a_They_re_all_very_difficult_  ;# ptr
@@ -6170,6 +6176,7 @@ glabel string_a_Now__onto_your_final_challenge_
 glabel string_a_The_master_stages_
 	.asciz "a/The master stages!"
 	.balign 4
+glabel asdfasdf
 	.4byte string_z8_a_Congratulations__You_cleared_the_extra_stages_  ;# ptr
 	.4byte string_z8_a_Now_you_can_try_to_clear_the_master_stages_  ;# ptr
 	.4byte string_a_If_you_can_pass_these_  ;# ptr
@@ -6186,6 +6193,7 @@ glabel string_a_The_master_stages_
 	.4byte string_a_Congraaaaaatulations__Good_job_  ;# ptr
 	.4byte string_a_Now__onto_your_final_challenge_  ;# ptr
 	.4byte string_a_The_master_stages_  ;# ptr
+.endif
 
 .global lbl_801761F0
 lbl_801761F0:

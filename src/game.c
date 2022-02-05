@@ -391,8 +391,8 @@ void submode_game_play_init_func(void)
         break;
     }
     func_80048F74();
-    unk = spritePoolInfo.unkC;
     r5 = lbl_80206BF0;
+    unk = spritePoolInfo.unkC;
     for (i2 = 0; i2 < spritePoolInfo.unk8; i2++, r5++, unk++)
     {
         if (*unk == 2)
@@ -620,8 +620,8 @@ void submode_game_goal_replay_init_func(void)
         s8 *unk;
         int i;
 
-        unk = spritePoolInfo.unkC;
         r5 = lbl_80206BF0;
+        unk = spritePoolInfo.unkC;
         for (i = 0; i < spritePoolInfo.unk8; i++, r5++, unk++)
         {
             if (*unk == 2)
@@ -915,16 +915,16 @@ void submode_game_continue_main_func(void)
                     infoWork.unk2A++;
                     infoWork.unk1E = 1;
                     currentBallStructPtr->ape->unk14 |= 0x800;
-                    func_80075900(0, 20, 0);
+                    func_80075900(0, 20, NULL);
                     g_play_sound(10);
                     g_play_sound(80);
                     modeCtrl.unk0 = 60;
                     modeCtrl.levelSetFlags |= (1 << 2);
-                    func_80075900(1, 20, 0);
+                    func_80075900(1, 20, NULL);
                 }
                 else
                 {
-                    func_80075900(0, 20, 0);
+                    func_80075900(0, 20, NULL);
                     g_play_sound(48);
                     currentBallStructPtr->ape->unk14 |= 0x40000;
                     modeCtrl.unk0 = 60;
@@ -946,14 +946,14 @@ void submode_game_continue_main_func(void)
                 g_start_screen_fade(0x101, 0xFFFFFF, modeCtrl.unk0);
             else
                 g_start_screen_fade(0x101, 0, modeCtrl.unk0);
-            func_80075900(1, 20, 0);
+            func_80075900(1, 20, NULL);
         }
 
         if (--modeCtrl.unk0 > 0)
             return;
         if (modeCtrl.unk10 == 1)
             gameSubmodeRequest = SMD_GAME_RESTART_INIT;
-        else if (modeCtrl.levelSetFlags & (1 << 3))
+        else if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
         {
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
                 modeCtrl.levelSetFlags |= 0x100000;
@@ -1142,8 +1142,8 @@ void submode_game_ringout_main_func(void)
                 s8 *unk;
                 int i;
 
-                unk = spritePoolInfo.unkC;
                 r5 = lbl_80206BF0;
+                unk = spritePoolInfo.unkC;
                 for (i = 0; i < spritePoolInfo.unk8; i++, r5++, unk++)
                 {
                     if (*unk == 2)
@@ -1458,7 +1458,7 @@ void submode_game_over_point_main_func(void)
     if (func_80066868() != 0 && modeCtrl.unk0 > 30 && (lbl_801F3D88[2] & (1 << 8)))
         modeCtrl.unk0 = 30;
     if (modeCtrl.unk0 == 30)
-        func_80075900(1, 20, 0);
+        func_80075900(1, 20, NULL);
     if (modeCtrl.unk0 == 15)
         g_start_screen_fade(0x101, 0, 15);
     if (--modeCtrl.unk0 > 0)
@@ -1503,7 +1503,7 @@ void submode_game_over_dest_func(void)
     {
         camera_setup_singleplayer_viewport();
         modeCtrl.unk10 = 0;
-        gameModeRequest = 0;
+        gameModeRequest = MD_ADV;
         gameSubmodeRequest = SMD_ADV_TITLE_REINIT;
     }
     else
@@ -1512,6 +1512,24 @@ void submode_game_over_dest_func(void)
         gameSubmodeRequest = SMD_GAME_READY_INIT;
     }
 }
+
+#pragma force_active on
+char *lbl_80175698[] =
+{
+    "h/NAMAEWO OSIETE!",
+    "h/ONAMAE OSIETE!",
+    "h/NAMAEWO OSIETEHOSHIIDEk/CHU!",
+    "k/NAMAE OSIERO! UHO UHOHO!",
+};
+#pragma force_active reset
+
+char *lbl_801756BC[] =
+{
+    "ENTER YOUR NAME!",
+    "ENTER YOUR NAME!",
+    "ENTER YOUR NAME!",
+    "ENTER YOUR NAME!",
+};
 
 void submode_game_nameentry_ready_init_func(void)
 {
@@ -1614,7 +1632,7 @@ void submode_game_nameentry_ready_main_func(void)
 
     if (modeCtrl.unk0 == 120.0)
     {
-        func_80075900(1, 20, 0);
+        func_80075900(1, 20, NULL);
         func_8007E44C(
             func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.unk2C]),
             lbl_802C67D4[modeCtrl.unk2C].unk4);
@@ -1625,6 +1643,533 @@ void submode_game_nameentry_ready_main_func(void)
     if (--modeCtrl.unk0 > 0)
         return;
     gameSubmodeRequest = SMD_GAME_NAMEENTRY_INIT;
+}
+
+void submode_game_nameentry_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    func_8007C104(60);
+    infoWork.unk0 &= ~(1 << 3);
+    {
+        struct World *r5;
+        s8 *unk;
+        int i;
+
+        r5 = lbl_80206BF0;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, r5++, unk++)
+        {
+            if (*unk == 2)
+                r5->unk8 = 1;
+        }
+    }
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->state = 4;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+    camera_set_state(35);
+    gameSubmodeRequest = SMD_GAME_NAMEENTRY_MAIN;
+}
+
+void submode_game_nameentry_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                if (ball->state == 0)
+                    ball->state = 4;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+
+    if (!(infoWork.unk0 & (1 << 3)) && (infoWork.timerCurr % 60 == 0x3B))
+    {
+        if (infoWork.timerCurr <= 0x258)
+        {
+            g_play_sound(6);
+            g_play_sound(lbl_801101C8[infoWork.timerCurr / 60]);
+        }
+        else
+            g_play_sound(6);
+        if (infoWork.timerCurr / 60 == 10)
+            g_play_sound(7);
+    }
+    if (func_800AE894() != 0)
+    {
+        infoWork.unk0 |= (1 << 3);
+        event_finish(EVENT_NAME_ENTRY);
+        gameSubmodeRequest = SMD_GAME_OVER_INIT;
+    }
+}
+
+extern u32 lbl_802F22C8;
+
+void submode_game_ending_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    modeCtrl.levelSetFlags |= (1 << 6);
+    func_800B6234();
+    if (modeCtrl.gameType == 0 && modeCtrl.playerCount == 1
+     && !(modeCtrl.levelSetFlags & (1 << 20)))
+        func_800662E0();
+    g_start_screen_fade(0x100, 0, 30);
+    func_8002CF38(68, 0);
+    g_play_sound(0x46);
+    gameSubmodeRequest = SMD_GAME_ENDING_MAIN;
+}
+
+void submode_game_ending_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    if (func_800B62FC() == 0)
+    {
+        func_800B6430();
+        gameSubmodeRequest = SMD_GAME_ROLL_INIT;
+        lbl_802F22C8 |= 1 << (modeCtrl.levelSet + 2);
+        if (modeCtrl.gameType == 0 && modeCtrl.playerCount == 1
+         && !(modeCtrl.levelSetFlags & (1 << 20)))
+            func_8006634C();
+    }
+}
+
+/**
+ * Roll Submode - Credits (staff roll)
+ */
+
+void submode_game_roll_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    func_800AFD00();
+    modeCtrl.unk0 = 600;
+    gameSubmodeRequest = SMD_GAME_ROLL_MAIN;
+}
+
+void submode_game_roll_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    func_800AFF78();
+    if (modeCtrl.unk0 <= 0)
+    {
+        func_800AFCB0();
+        lbl_802F1B7C = 0;
+        gameSubmodeRequest = SMD_GAME_NAMEENTRY_READY_INIT;
+        lbl_802F22C8 |= 2;
+    }
+}
+
+/**
+ * Extra Submode - Cutscene before entering Extra or Master
+ */
+
+#pragma force_active on
+char *lbl_80175910[] =
+{
+    "h/KONNDOHA SARANI",
+    "h/UENOk/REBERUh/DE ASONNDENE",
+    "h/KOREDE k/KIMIh/MO",
+    "h/ICHININNMAENO Ok/SARUh/SANNDAYO",
+    "k/KIMIh/TTEk/SUGOIh/NE! KOREKARAMO",
+    "k/MONNKI-BO-RUh/WO YOROSIKU!",
+    "h/KONNDOHA MOTTO",
+    "h/UENOk/REBERUh/WO MEZASHITENE",
+    "h/ANATAMO KOREDE",
+    "h/ICHININNMAENO Ok/SARUh/SANNNE",
+    "h/ANATATTEk/SUGOIh/WA! KOREKARAMO",
+    "k/PUREI h/SHIMAKUTTENE",
+    "h/MOTTO UENOk/REBERUh/DE",
+    "h/ASOBITAIDEk/CHU",
+    "h/KOREDE RIPPANA Ok/SARUh/SANNNO",
+    "h/NAKAMAIRIDEk/CHU",
+    "k/SUGOIh/DEk/CHU! h/KOREKARAMO",
+    "h/ZUTTO ASONNDEHOSIIDEk/CHU",
+    "h/MIKANNSEIDEk/GOZARUh/YO",
+    "h/UHO UHOHO",
+    "k/BANANAh/KAIJINNDEHAk/GOZARAh/NUYO",
+    "h/UHO UHOHO",
+    "h/UHO UHOHO",
+    "k/CHU!",
+};
+
+char *lbl_80175AA8[] =
+{
+    "z/Let's try higher level",
+    "z/next time",
+    "z/Now you've become",
+    "z/cool monkey like me",
+    "z/You are so cool! Remember,",
+    "z/Monkey Ball is the best game for you!",
+    "z/Let's try higher level",
+    "z/next time",
+    "z/Now you've become",
+    "z/pretty monkey like me",
+    "z/You are so fantastic! Remember,",
+    "z/Monkey Ball is the best game for you!",
+    "z/I want to play higher level",
+    "z/next time",
+    "z/Now you've become",
+    "z/grown up monkey like me",
+    "z/You are such grown up! Remember,",
+    "z/Monkey Ball is the best game for you!",
+    "z/Let's try higher level",
+    "z/next time",
+    "z/Now you've become",
+    "z/pretty monkey like me",
+    "z/You are so fantastic! Remember,",
+    "z/Monkey Ball is the best game for you!",
+};
+#pragma force_active reset
+
+char *extraIntroSpeech[][4] =
+{
+    {
+        "z9/a/Congratulations! You didn't miss anything!",
+        "a/You get to play the extra stages!",
+        "a/They're all very difficult,",
+        "a/but try your best!",
+    },
+    {
+        "z9/a/I can't believe you didn't miss anything!",
+        "z8/a/But, you still have to clear the extra stages!",
+        "a/Make sure to try your hardest",
+        "a/on these stages, too!",
+    },
+    {
+        "a/Goo goo! You didn't miss anyting!",
+        "a/You can pway da extra stages!",
+        "a/It's a wittle bit hard,",
+        "a/but do your best!",
+    },
+    {
+        "z9/a/You passed everything without missing!!!",
+        "a/Now, onto the extra stages!",
+        "a/It's time for a real challenge!",
+        "a/You must rule over all the stages!",
+    },
+};
+
+char *expertExIntroSpeech[][4] =
+{
+    {
+        "z8/a/You cleared all the stages without continuing!",
+        "a/You can play the extra stages now!",
+        "a/They're all very difficult,",
+        "a/but try your best!",
+    },
+    {
+        "z7/a/You cleared everything without having to continue!",
+        "z7/a/But, there's still extra stages that you have to clear!",
+        "a/Make sure to try your hardest",
+        "a/on these stages, too!",
+    },
+    {
+        "z9/a/You passed eberyting without continuing!",
+        "a/You can pway da extra stages now!",
+        "a/It's a wittle bit hard,",
+        "a/but do your best!",
+    },
+    {
+        "z7/a/Congratulations! You cleared everything without continuing!",
+        "a/Onto the extra stages!",
+        "a/You must rule over all the stages!",
+        "a/Go go go!!!",
+    },
+};
+
+char *masterIntroSpeech[][4] =
+{
+    {
+        "z8/a/Congratulations! You cleared the extra stages!",
+        "z8/a/Now you can try to clear the master stages!",
+        "a/If you can pass these,",
+        "a/you will be the best player ever!",
+    },
+    {
+        "z7/a/Wow\x81\x63 I can't believe you passed the extra stages!",
+        "a/You really are something!",
+        "a/But, there's still more!",
+        "z7/a/Now try to clear the master stages! Good luck!",
+    },
+    {
+        "z7/a/You cleared da extra stages, too??? You are gweat!",
+        "z8/a/But, now you have to pway da master stages!",
+        "a/Dese ones are bery hard,",
+        "a/but do your best!",
+    },
+    {
+        "a/You cleared the extra stages!!!!",
+        "a/Congraaaaaatulations! Good job!",
+        "a/Now, onto your final challenge!",
+        "a/The master stages!",
+    },
+};
+
+void submode_game_extra_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    modeCtrl.unk0 = 600;
+    if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
+        modeCtrl.levelSetFlags |= LVLSET_FLAG_MASTER;
+    modeCtrl.levelSetFlags |= LVLSET_FLAG_EXTRA;
+    func_80022910(currStageId);
+    event_finish(EVENT_CAMERA);
+    event_finish(EVENT_SPRITE);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->state = 13;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+    camera_set_state(51);
+    g_start_screen_fade(0x100, 0, 120);
+    if (lbl_801101DC[backgroundInfo.bgId] != -1)
+        func_8002CF38(0xFFEC0000 | (lbl_801101DC[backgroundInfo.bgId] + 1), 6);
+    func_8002CF38(120, 3);
+    gameSubmodeRequest = SMD_GAME_EXTRA_WAIT;
+}
+
+void submode_game_extra_wait_func(void)
+{
+    struct Struct80075900 sp30;
+    struct Struct80075900 sp8;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    if (modeCtrl.unk0 > 60 && modeCtrl.unk0 < 480 && (lbl_801F3D88[2] & (1 << 8)))
+        modeCtrl.unk0 = 60;
+    if (modeCtrl.unk0 == 540)
+    {
+        memset(&sp30, 0, sizeof(sp30));
+        sp30.unk16 = 11;
+        sp30.unkC = 0x140;
+        sp30.unkE = 0xC8;
+        sp30.unk15 = 2;
+        sp30.unk1C = 0;
+        func_80075900(1, 1, &sp30);
+        if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+        {
+            func_80075C18(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][0]);
+            func_80075C18(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][1]);
+        }
+        else if (modeCtrl.levelSet == LVLSET_EXPERT)
+        {
+            func_80075C18(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][0]);
+            func_80075C18(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][1]);
+        }
+        else
+        {
+            func_80075C18(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][0]);
+            func_80075C18(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][1]);
+        }
+    }
+    if (modeCtrl.unk0 == 300)
+    {
+        memset(&sp8, 0, sizeof(sp8));
+        sp8.unk16 = 11;
+        sp8.unkC = 0x140;
+        sp8.unkE = 0xC8;
+        sp8.unk15 = 2;
+        sp8.unk1C = 0;
+        func_80075900(1, 21, &sp8);
+        if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+        {
+            func_80075C18(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][2]);
+            func_80075C18(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][3]);
+        }
+        else if (modeCtrl.levelSet == LVLSET_EXPERT)
+        {
+            func_80075C18(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][2]);
+            func_80075C18(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][3]);
+        }
+        else
+        {
+            func_80075C18(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][2]);
+            func_80075C18(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][3]);
+        }
+    }
+    if (modeCtrl.unk0 == 60)
+    {
+        func_80075900(1, 20, 0);
+        g_start_screen_fade(0x101, 0, 60);
+        func_8002CF38(60, 2);
+    }
+    if ((600 - modeCtrl.unk0) % 120 == 0)
+        func_8007EB2C((600 - modeCtrl.unk0) / 120);
+    if (--modeCtrl.unk0 > 0)
+        return;
+    infoWork.unk20 = 1;
+    func_800668A0();
+    loadingStageId = infoWork.unk2E;
+    g_start_screen_fade(0, 0, 30);
+    infoWork.unk1E = 1;
+    gameSubmodeRequest = SMD_GAME_READY_INIT;
+}
+
+void submode_game_result_init_func(void)
+{
+    int *playerCountPtr;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    modeCtrl.unk0 = 0;
+    lbl_802F1C24 = 0;
+    event_finish(EVENT_CAMERA);
+    event_finish(EVENT_SPRITE);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    if (currStageId == ST_125_DANCE_MASTER || currStageId == ST_116_ALTERNATE_ROLL_MASTER)
+    {
+        lbl_80206DEC.unk1C |= 1;
+        g_animate_stage(0.0f);
+    }
+
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->state = 11;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+    camera_set_state(56);
+
+    playerCountPtr = &modeCtrl.playerCount;  // fake match
+    if (*playerCountPtr == 3)
+    {
+        switch (modeCtrl.unk42)
+        {
+        default:
+        case 0:
+            camera_setup_splitscreen_viewports(3);
+            break;
+        case 1:
+            setup_camera_viewport(0, 0.0f, 0.5f, 0.5f, 0.5f);
+            setup_camera_viewport(1, 0.0f, 0.0f, 1.0f, 0.5f);
+            setup_camera_viewport(2, 0.5f, 0.5f, 0.5f, 0.5f);
+            setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
+            break;
+        case 2:
+            setup_camera_viewport(0, 0.0f, 0.0f, 0.5f, 0.5f);
+            setup_camera_viewport(1, 0.5f, 0.0f, 0.5f, 0.5f);
+            setup_camera_viewport(2, 0.0f, 0.5f, 1.0f, 0.5f);
+            setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
+            break;
+        case 3:
+            camera_setup_splitscreen_viewports(4);
+            cameraInfo[3].flags |= 0x70;
+            cameraInfo[3].state = 12;
+            break;
+        }
+    }
+    else
+        camera_setup_splitscreen_viewports(*playerCountPtr);
+
+    func_8007ECB8();
+    g_start_screen_fade(0x100, 0, 60);
+    func_8002CF38(62, 0);
+    func_8002CF38(60, 3);
+    g_play_sound(0x1E0);
+    gameSubmodeRequest = SMD_GAME_RESULT_MAIN;
+}
+
+double force_float_order_802F2C00(void) { return 0.5; }
+
+void func_800165C0(struct Ball *ball)
+{
+    int i;
+    struct Struct8003C550 sp1C;
+    Vec sp10;
+    u16 r28 = 1 << ball->unk2E;
+
+    memset(&sp1C, 0, sizeof(sp1C));
+    sp1C.unk8 = 0;
+    mathutil_mtxA_from_translate(&ball->pos);
+    mathutil_mtxA_translate_xyz(0.0f, 2.0f, 0.0f);
+    sp10.x = 0.0f;
+    sp10.y = 0.0f;
+    for (i = 2; i > 0; i--)
+    {
+        float var = 0.1f;
+
+        sp10.z = ((rand() / 32767.0f) + 1.0) * var * 0.5;
+        mathutil_mtxA_rotate_y(rand() & 0x7FFF);
+        mathutil_mtxA_rotate_x(rand() & 0x7FFF);
+        mathutil_mtxA_tf_point(&sp10, &sp1C.unk34);
+        sp1C.unk4C = rand() & 0x7FFF;
+        sp1C.unk4E = rand() & 0x7FFF;
+        sp1C.unk50 = rand() & 0x7FFF;
+        sp1C.unk16 = r28;
+        g_create_pickup_item(&sp1C);
+    }
 }
 
 #define lbl_802F2BA0 0.0f

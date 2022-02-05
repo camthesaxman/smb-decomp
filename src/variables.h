@@ -123,7 +123,7 @@ extern float lbl_801741CC[];
 // extern ? selSubmodeRelNames;
 // extern ? lbl_801755F8;
 // extern ? lbl_80175614;
-extern void *lbl_801756BC[];
+extern char *lbl_801756BC[];
 // extern ? lbl_801761F0;
 // extern ? cameraFuncs;
 // extern ? lbl_8017632C;
@@ -1188,7 +1188,7 @@ extern struct
 extern s32 lbl_802F1C18;
 extern s32 lbl_802F1C1C;
 extern s32 lbl_802F1C20;
-// extern ? lbl_802F1C24;
+extern u8 lbl_802F1C24;
 // extern ? lbl_802F1C25;
 // extern ? lbl_802F1C28;
 extern s16 lbl_802F1C30;
