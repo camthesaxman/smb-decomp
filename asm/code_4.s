@@ -3000,8 +3000,8 @@ lbl_800AFC9C:
 /* 800AFCA8 000ABBC8  7C 08 03 A6 */	mtlr r0
 /* 800AFCAC 000ABBCC  4E 80 00 20 */	blr
 
-.global func_800AFCB0
-func_800AFCB0:
+.global credits_finish
+credits_finish:
 /* 800AFCB0 000ABBD0  7C 08 02 A6 */	mflr r0
 /* 800AFCB4 000ABBD4  90 01 00 04 */	stw r0, 4(r1)
 /* 800AFCB8 000ABBD8  94 21 FF F8 */	stwu r1, -8(r1)
@@ -3023,8 +3023,8 @@ func_800AFCB0:
 /* 800AFCF8 000ABC18  7C 08 03 A6 */	mtlr r0
 /* 800AFCFC 000ABC1C  4E 80 00 20 */	blr
 
-.global func_800AFD00
-func_800AFD00:
+.global credits_init
+credits_init:
 /* 800AFD00 000ABC20  7C 08 02 A6 */	mflr r0
 /* 800AFD04 000ABC24  3C 60 80 2C */	lis r3, lbl_802C6918@ha
 /* 800AFD08 000ABC28  90 01 00 04 */	stw r0, 4(r1)
@@ -3035,8 +3035,8 @@ func_800AFD00:
 /* 800AFD1C 000ABC3C  4B F5 B7 41 */	bl event_finish_all
 /* 800AFD20 000ABC40  38 60 00 C5 */	li r3, 0xc5
 /* 800AFD24 000ABC44  4B F9 4C 01 */	bl load_stage
-/* 800AFD28 000ABC48  3C 60 80 0B */	lis r3, func_800AFCB0@ha
-/* 800AFD2C 000ABC4C  38 03 FC B0 */	addi r0, r3, func_800AFCB0@l
+/* 800AFD28 000ABC48  3C 60 80 0B */	lis r3, credits_finish@ha
+/* 800AFD2C 000ABC4C  38 03 FC B0 */	addi r0, r3, credits_finish@l
 /* 800AFD30 000ABC50  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 800AFD34 000ABC54  90 0D 99 9C */	stw r0, lbl_802F1B7C@sda21(r13)
 /* 800AFD38 000ABC58  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
@@ -3187,8 +3187,8 @@ lbl_800AFE04:
 /* 800AFF70 000ABE90  38 21 00 10 */	addi r1, r1, 0x10
 /* 800AFF74 000ABE94  4E 80 00 20 */	blr
 
-.global func_800AFF78
-func_800AFF78:
+.global credits_main
+credits_main:
 /* 800AFF78 000ABE98  7C 08 02 A6 */	mflr r0
 /* 800AFF7C 000ABE9C  3C 60 80 2C */	lis r3, lbl_802C6918@ha
 /* 800AFF80 000ABEA0  90 01 00 04 */	stw r0, 4(r1)

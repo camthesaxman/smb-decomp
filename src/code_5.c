@@ -45,6 +45,8 @@ struct
     u8 filler9[0x10-0x9];
 } lbl_801EED98;
 
+u8 lbl_801EEDA8[0x118];
+
 void func_80011E1C(void)
 {
     u8 filler[8];

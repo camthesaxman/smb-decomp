@@ -1441,7 +1441,7 @@ enum
 {
     INFOCMD_CAMERA_SET_FLAGS   = -1,
     INFOCMD_CAMERA_CLEAR_FLAGS = -2,  // unused
-    INFOCMD_UNK3               = -3,
+    INFOCMD_MINIMAP_SIZE       = -3,
     INFOCMD_BALL_STATE         = -4,
     INFOCMD_UNK5               = -5,
     INFOCMD_FADE_FROM_BLACK    = -6,
@@ -1477,15 +1477,15 @@ const struct InfoCommand infoScript[] =
     { 3300, INFOCMD_UNK12,            NULL, 1    },
     { 3240, 4,  "p/MIGI/SHITA/h/NIARUNOHA k/MAPPUh/DAYO", 0 },
     { 3000, 5,  "c/0xffffff/p/BUTTON_A/c/0x000000/k/BOTANh/WOp/OSU/h/SUTO", 0 },
-    { 2970, INFOCMD_UNK3,             NULL, 0    },
+    { 2970, INFOCMD_MINIMAP_SIZE,     NULL, 0    },
     { 2970, INFOCMD_UNK12,            NULL, 2    },
     { 2955, INFOCMD_UNK12,            NULL, 1    },
     { 2760, 6,  "k/MAPPUh/NOp/OOkii/h/KISAGA p/KAwaru/h/WARUNDA", 0 },
-    { 2730, INFOCMD_UNK3,             NULL, 0    },
+    { 2730, INFOCMD_MINIMAP_SIZE,     NULL, 0    },
     { 2730, INFOCMD_UNK12,            NULL, 2    },
     { 2715, INFOCMD_UNK12,            NULL, 1    },
     { 2520, 7,  "k/GO-RUp/CHITENN/h/YA p/CHIKEI/h/GAYOKUWAKARUYO", 0 },
-    { 2490, INFOCMD_UNK3,             NULL, 0    },
+    { 2490, INFOCMD_MINIMAP_SIZE,     NULL, 0    },
     { 2490, INFOCMD_UNK12,            NULL, 2    },
     { 2475, INFOCMD_UNK12,            NULL, 1    },
     { 2250, INFOCMD_UNK12,            NULL, 0    },
@@ -1608,8 +1608,8 @@ void submode_adv_info_main_func(void)
         case INFOCMD_CAMERA_CLEAR_FLAGS:
             camera_set_or_clear_flags(cmd->param, FALSE);
             break;
-        case INFOCMD_UNK3:
-            func_800847C0();
+        case INFOCMD_MINIMAP_SIZE:
+            minimap_change_size();
             break;
         case INFOCMD_BALL_STATE:
             ballInfo[0].state = cmd->param;

@@ -679,7 +679,7 @@ lbl_80012F88:
 /* 80012F90 0000EEB0  A0 03 00 04 */	lhz r0, 4(r3)
 /* 80012F94 0000EEB4  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 80012F98 0000EEB8  41 82 00 08 */	beq lbl_80012FA0
-/* 80012F9C 0000EEBC  48 07 18 25 */	bl func_800847C0
+/* 80012F9C 0000EEBC  48 07 18 25 */	bl minimap_change_size
 lbl_80012FA0:
 /* 80012FA0 0000EEC0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80012FA4 0000EEC4  38 83 EC 20 */	addi r4, r3, modeCtrl@l
@@ -898,7 +898,7 @@ lbl_800132A0:
 /* 800132A8 0000F1C8  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800132AC 0000F1CC  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800132B0 0000F1D0  41 82 00 08 */	beq lbl_800132B8
-/* 800132B4 0000F1D4  48 07 15 0D */	bl func_800847C0
+/* 800132B4 0000F1D4  48 07 15 0D */	bl minimap_change_size
 lbl_800132B8:
 /* 800132B8 0000F1D8  3C 60 80 1F */	lis r3, infoWork@ha
 /* 800132BC 0000F1DC  84 83 3A 58 */	lwzu r4, infoWork@l(r3)
@@ -3500,12 +3500,12 @@ lbl_8001571C:
 /* 80015788 000116A8  48 06 01 79 */	bl func_80075900
 /* 8001578C 000116AC  80 1E 00 00 */	lwz r0, 0(r30)
 /* 80015790 000116B0  3C 80 80 20 */	lis r4, playerCharacterSelection@ha
-/* 80015794 000116B4  3C 60 80 17 */	lis r3, lbl_801756BC@ha
+/* 80015794 000116B4  3C 60 80 17 */	lis r3, nameEntryText@ha
 /* 80015798 000116B8  54 05 10 3A */	slwi r5, r0, 2
 /* 8001579C 000116BC  38 04 6B C0 */	addi r0, r4, playerCharacterSelection@l
 /* 800157A0 000116C0  7C 80 2A 14 */	add r4, r0, r5
 /* 800157A4 000116C4  80 84 00 00 */	lwz r4, 0(r4)
-/* 800157A8 000116C8  38 03 56 BC */	addi r0, r3, lbl_801756BC@l
+/* 800157A8 000116C8  38 03 56 BC */	addi r0, r3, nameEntryText@l
 /* 800157AC 000116CC  38 60 00 01 */	li r3, 1
 /* 800157B0 000116D0  54 84 10 3A */	slwi r4, r4, 2
 /* 800157B4 000116D4  7C 80 22 14 */	add r4, r0, r4
@@ -3890,7 +3890,7 @@ submode_game_roll_init_func:
 /* 80015D10 00011C30  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015D14 00011C34  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015D18 00011C38  40 82 00 1C */	bne lbl_80015D34
-/* 80015D1C 00011C3C  48 09 9F E5 */	bl func_800AFD00
+/* 80015D1C 00011C3C  48 09 9F E5 */	bl credits_init
 /* 80015D20 00011C40  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80015D24 00011C44  38 00 02 58 */	li r0, 0x258
 /* 80015D28 00011C48  90 03 EC 20 */	stw r0, modeCtrl@l(r3)
@@ -3909,12 +3909,12 @@ submode_game_roll_main_func:
 /* 80015D50 00011C70  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 80015D54 00011C74  70 00 00 0A */	andi. r0, r0, 0xa
 /* 80015D58 00011C78  40 82 00 38 */	bne lbl_80015D90
-/* 80015D5C 00011C7C  48 09 A2 1D */	bl func_800AFF78
+/* 80015D5C 00011C7C  48 09 A2 1D */	bl credits_main
 /* 80015D60 00011C80  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80015D64 00011C84  80 03 EC 20 */	lwz r0, modeCtrl@l(r3)
 /* 80015D68 00011C88  2C 00 00 00 */	cmpwi r0, 0
 /* 80015D6C 00011C8C  41 81 00 24 */	bgt lbl_80015D90
-/* 80015D70 00011C90  48 09 9F 41 */	bl func_800AFCB0
+/* 80015D70 00011C90  48 09 9F 41 */	bl credits_finish
 /* 80015D74 00011C94  80 0D A0 E8 */	lwz r0, lbl_802F22C8@sda21(r13)
 /* 80015D78 00011C98  38 80 00 00 */	li r4, 0
 /* 80015D7C 00011C9C  38 60 00 44 */	li r3, 0x44
@@ -4575,6 +4575,7 @@ lbl_80016664:
 /* 8001671C 0001263C  38 21 01 08 */	addi r1, r1, 0x108
 /* 80016720 00012640  4E 80 00 20 */	blr
 .endif
+.if 0
 .global submode_game_result_main_func
 submode_game_result_main_func:
 /* 80016724 00012644  7C 08 02 A6 */	mflr r0
@@ -4658,18 +4659,18 @@ lbl_80016834:
 /* 8001684C 0001276C  39 65 00 00 */	addi r11, r5, 0
 /* 80016850 00012770  39 80 00 00 */	li r12, 0
 /* 80016854 00012774  48 00 01 94 */	b lbl_800169E8
-lbl_80016858:
+lbl_80016858:  ;# ball loop
 /* 80016858 00012778  88 A4 00 00 */	lbz r5, 0(r4)
 /* 8001685C 0001277C  2C 05 00 02 */	cmpwi r5, 2
-/* 80016860 00012780  40 82 01 7C */	bne lbl_800169DC
+/* 80016860 00012780  40 82 01 7C */	bne lbl_800169DC  ;# if (*unk == 2)
 /* 80016864 00012784  91 6D 9D 38 */	stw r11, currentBallStructPtr@sda21(r13)
 /* 80016868 00012788  38 FD 00 0C */	addi r7, r29, 0xc
 /* 8001686C 0001278C  39 40 00 00 */	li r10, 0
-/* 80016870 00012790  81 23 00 00 */	lwz r9, 0(r3)
+/* 80016870 00012790  81 23 00 00 */	lwz r9, 0(r3)  ;# playerCount?
 /* 80016874 00012794  2C 09 00 00 */	cmpwi r9, 0
 /* 80016878 00012798  7D 29 03 A6 */	mtctr r9
 /* 8001687C 0001279C  40 81 01 60 */	ble lbl_800169DC
-lbl_80016880:
+lbl_80016880:  ;# playerCount loop
 /* 80016880 000127A0  80 CB 00 78 */	lwz r6, 0x78(r11)
 /* 80016884 000127A4  80 A7 00 04 */	lwz r5, 4(r7)
 /* 80016888 000127A8  7C 06 28 00 */	cmpw r6, r5
@@ -4762,10 +4763,10 @@ lbl_800169D0:
 /* 800169D0 000128F0  38 E7 00 0C */	addi r7, r7, 0xc
 /* 800169D4 000128F4  39 4A 00 01 */	addi r10, r10, 1
 /* 800169D8 000128F8  42 00 FE A8 */	bdnz lbl_80016880
-lbl_800169DC:
-/* 800169DC 000128FC  39 8C 00 01 */	addi r12, r12, 1
-/* 800169E0 00012900  39 6B 01 A4 */	addi r11, r11, 0x1a4
-/* 800169E4 00012904  38 84 00 01 */	addi r4, r4, 1
+lbl_800169DC:  ;# ball loop continue
+/* 800169DC 000128FC  39 8C 00 01 */	addi r12, r12, 1  ;# i++
+/* 800169E0 00012900  39 6B 01 A4 */	addi r11, r11, 0x1a4  ;# ball++
+/* 800169E4 00012904  38 84 00 01 */	addi r4, r4, 1  ;# unk++
 lbl_800169E8:
 /* 800169E8 00012908  80 A8 00 08 */	lwz r5, 8(r8)
 /* 800169EC 0001290C  7C 0C 28 00 */	cmpw r12, r5
@@ -4782,8 +4783,8 @@ lbl_800169E8:
 lbl_80016A18:
 /* 80016A18 00012938  2C 06 00 00 */	cmpwi r6, 0
 /* 80016A1C 0001293C  40 81 00 28 */	ble lbl_80016A44
-/* 80016A20 00012940  80 64 FF F8 */	lwz r3, -8(r4)
-/* 80016A24 00012944  80 04 00 04 */	lwz r0, 4(r4)
+/* 80016A20 00012940  80 64 FF F8 */	lwz r3, -8(r4)  ;# [i].unk4
+/* 80016A24 00012944  80 04 00 04 */	lwz r0, 4(r4)   ;# [i + 1].unk4
 /* 80016A28 00012948  7C 03 00 00 */	cmpw r3, r0
 /* 80016A2C 0001294C  41 82 00 10 */	beq lbl_80016A3C
 /* 80016A30 00012950  7C E7 42 14 */	add r7, r7, r8
@@ -4833,7 +4834,7 @@ lbl_80016AB4:
 /* 80016AC4 000129E4  38 80 00 00 */	li r4, 0
 /* 80016AC8 000129E8  80 7E 00 00 */	lwz r3, 0(r30)
 /* 80016ACC 000129EC  7C 60 16 70 */	srawi r0, r3, 2
-/* 80016AD0 000129F0  7C 00 01 94 */	addze r0, r0
+/* 80016AD0 000129F0  7C 00 01 94 */	addze r0, r0  ;# unk0 / 4
 /* 80016AD4 000129F4  54 00 10 3A */	slwi r0, r0, 2
 /* 80016AD8 000129F8  7C 00 18 11 */	subfc. r0, r0, r3
 /* 80016ADC 000129FC  40 82 00 5C */	bne lbl_80016B38
@@ -5004,6 +5005,7 @@ lbl_80016D1C:
 /* 80016D24 00012C44  38 21 00 38 */	addi r1, r1, 0x38
 /* 80016D28 00012C48  7C 08 03 A6 */	mtlr r0
 /* 80016D2C 00012C4C  4E 80 00 20 */	blr
+.endif
 .global submode_game_result_menu_func
 submode_game_result_menu_func:
 /* 80016D30 00012C50  7C 08 02 A6 */	mflr r0
@@ -5891,8 +5893,8 @@ glabel string_ENTER_YOUR_NAME_
 	.asciz "ENTER YOUR NAME!"
 	.balign 4
 
-.global lbl_801756BC
-lbl_801756BC:
+.global nameEntryText
+nameEntryText:
 	# ROM: 0x1726BC
 	.4byte string_ENTER_YOUR_NAME_  ;# ptr
 	.4byte string_ENTER_YOUR_NAME_  ;# ptr
@@ -6195,6 +6197,7 @@ glabel asdfasdf
 	.4byte string_a_The_master_stages_  ;# ptr
 .endif
 
+.if 0
 .global lbl_801761F0
 lbl_801761F0:
 	# ROM: 0x1731F0
@@ -6202,6 +6205,7 @@ lbl_801761F0:
 	.4byte 0x000001DD
 	.4byte 0x000001DE
 	.4byte 0x000001DF
+.endif
 
 .section .rodata
 
@@ -6245,13 +6249,3 @@ lbl_8011021C:
 	.4byte 0x00000189
 	.4byte 0x0000018A
 .endif
-
-.section .bss
-
-    .balign 8
-.global lbl_801EEDA8
-lbl_801EEDA8:
-	.skip 0x118
-.global lbl_801EEEC0
-lbl_801EEEC0:
-	.skip 0x40

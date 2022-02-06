@@ -384,8 +384,8 @@ func_80084794:
 /* 800847B8 000806D8  7C 08 03 A6 */	mtlr r0
 /* 800847BC 000806DC  4E 80 00 20 */	blr
 
-.global func_800847C0
-func_800847C0:
+.global minimap_change_size
+minimap_change_size:
 /* 800847C0 000806E0  3C 60 80 1C */	lis r3, lbl_801C5758@ha
 /* 800847C4 000806E4  38 63 57 58 */	addi r3, r3, lbl_801C5758@l
 /* 800847C8 000806E8  80 03 00 04 */	lwz r0, 4(r3)
