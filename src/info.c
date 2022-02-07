@@ -37,9 +37,8 @@ void func_80022F14(void)
     }
 }
 
-// unknown types
-u8 lbl_801F3A8C[0x10];  FORCE_BSS_ORDER(lbl_801F3A8C)
-u8 lbl_801F3A9C[0xD4];  FORCE_BSS_ORDER(lbl_801F3A9C)
+u32 lbl_801F3A8C[4];                    FORCE_BSS_ORDER(lbl_801F3A8C)
+struct Struct801F3A58 lbl_801F3A9C[4];  FORCE_BSS_ORDER(lbl_801F3A9C)
 
 void ev_info_init(void)
 {

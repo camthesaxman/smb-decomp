@@ -1547,7 +1547,8 @@ extern float lbl_802F21F0;
 // extern ? lbl_802F22B8;
 // extern ? lbl_802F22BC;
 // extern ? lbl_802F22C0;
-// extern ? lbl_802F22C8;
+extern u32 lbl_802F22C8;
+
 // extern ? BootInfo;
 // extern ? BI2DebugFlag;
 // extern ? AreWeInitialized;

@@ -24,12 +24,12 @@ struct Struct801F3A58
     s16 unk2C;
     s16 unk2E;
     s16 unk30;
-    u8 filler32[2];
+    s16 unk32;
 };
 
 extern struct Struct801F3A58 infoWork;
-// extern ? lbl_801F3A8C;
-// extern ? lbl_801F3A9C;
+extern u32 lbl_801F3A8C[4];
+extern struct Struct801F3A58 lbl_801F3A9C[4];
 
 void func_80022F14(void);
 void ev_info_init(void);

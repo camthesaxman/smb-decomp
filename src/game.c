@@ -1738,8 +1738,6 @@ void submode_game_nameentry_main_func(void)
     }
 }
 
-extern u32 lbl_802F22C8;
-
 void submode_game_ending_init_func(void)
 {
     if (gamePauseStatus & 0xA)
@@ -2390,28 +2388,238 @@ void submode_game_result_main_func(void)
     }
 }
 
-#define lbl_802F2BA0 0.0f
-#define lbl_802F2BA4 1.0f
-#define lbl_802F2BA8 0.5f
-#define lbl_802F2BB0 24.0
+void submode_game_result_menu_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
 
-/*
-const float lbl_802F2BA0 = 0f;
-const float lbl_802F2BA4 = 1f;
-const float lbl_802F2BA8 = 0.5f;
-const double lbl_802F2BB0 = 24;
-const double lbl_802F2BB8 = 4503601774854144;
-const double lbl_802F2BC0 = 300;
-const float lbl_802F2BC8 = 0.75f;
-const float lbl_802F2BCC = 32767f;
-const double lbl_802F2BD0 = 260;
-const double lbl_802F2BD8 = 240;
-const float lbl_802F2BE0 = 120f;
-const double lbl_802F2BE8 = 150;
-const double lbl_802F2BF0 = -0.20000000000000001;
-const double lbl_802F2BF8 = 120;
-const double lbl_802F2C00 = 0.5;
-const float lbl_802F2C08 = 2f;
-const float lbl_802F2C0C = 0.10000000149011612f;
-const double lbl_802F2C10 = 1;
-*/
+    if (lbl_802F1C24 == 1)
+    {
+        {
+            struct Ball *ball;
+            struct Ball *ballBackup;
+            s8 *unk;
+            int i;
+
+            ballBackup = currentBallStructPtr;
+            ball = ballInfo;
+            unk = spritePoolInfo.unkC;
+            for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+            {
+                if (*unk == 2)
+                {
+                    currentBallStructPtr = ball;
+                    if (ball->unk2F == 1)
+                        func_800165C0(ball);
+                }
+            }
+            currentBallStructPtr = ballBackup;
+        }
+    }
+    if (modeCtrl.unk0 > 60 && ((lbl_801F3D88[2] & (1 << 8)) || (lbl_801F3D88[2] & (1 << 12))))
+    {
+        modeCtrl.unk0 = 60;
+        g_play_sound(0xD1);
+    }
+    if (modeCtrl.unk0 == 60)
+    {
+        g_start_screen_fade(0x101, 0xFFFFFF, 60);
+        func_8002CF38(60, 2);
+    }
+    if (--modeCtrl.unk0 == 0)
+        func_80012434(modeCtrl.gameType);
+}
+
+void submode_game_intr_sel_init_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    modeCtrl.unk0 = 0x1E0;
+    event_finish_all();
+    event_start(16);
+    event_start(18);
+    func_800662E0();
+    func_8006677C(0, 0x140, 0x168);
+    g_start_screen_fade(0x102, 0, 1);
+    g_start_screen_fade(0x100, 0, 15);
+    func_8002CF38(0x3E, 0);
+    gameSubmodeRequest = SMD_GAME_INTR_SEL_MAIN;
+}
+
+void submode_game_intr_sel_main_func(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+    if (func_80066868() != 0 && modeCtrl.unk0 > 30 && (lbl_801F3D88[2] & (1 << 8)))
+        modeCtrl.unk0 = 30;
+    if (modeCtrl.unk0 == 30)
+        func_80075900(1, 20, 0);
+    if (modeCtrl.unk0 == 15)
+        g_start_screen_fade(0x101, 0, 15);
+    if (--modeCtrl.unk0 <= 0)
+        func_80012434(-1);
+}
+
+int func_80016FB4(void)
+{
+    if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+        return currStageId;
+    if (modeCtrl.levelSetFlags & (1 << 0))
+        return infoWork.unk2E;
+    if (currStageId + 1 > 200)
+        return -1;
+    return currStageId + 1;
+}
+
+int func_80017004(void)
+{
+    if (modeCtrl.levelSetFlags & (1 << 0))
+        return infoWork.unk32;
+    if (currStageId + 1 <= 200)
+        return currStageId + 1;
+    return -1;
+}
+
+u32 func_80017040(void)
+{
+    if ((infoWork.unk0 & (1 << 6))
+     || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION
+     || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+        return 1;
+
+    infoWork.unk28++;
+    {
+        struct Ball *ball;
+        struct Ball *ballBackup;
+        s8 *unk;
+        int i;
+
+        ballBackup = currentBallStructPtr;
+        ball = ballInfo;
+        unk = spritePoolInfo.unkC;
+        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, unk++)
+        {
+            if (*unk == 2)
+            {
+                currentBallStructPtr = ball;
+                ball->lives--;
+            }
+        }
+        currentBallStructPtr = ballBackup;
+    }
+
+    if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
+        func_800662D4();
+    if (currentBallStructPtr->lives > 0)
+        return 1;
+    return 0;
+}
+
+void func_80017140(void)
+{
+    func_800AEDE0();
+}
+
+#ifdef NONMATCHING
+int func_80017160(void)
+{
+    int i;
+    int r3;
+    int r4 = modeCtrl.unk2C;
+
+    for (i = 0; i < 4; i++, r4++)
+    {
+        r3 = (r4 + 1) & 3;
+        if (spritePoolInfo.unkC[r3] == 4)
+            break;
+    }
+    return r3;
+}
+#else
+asm int func_80017160(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_80017160.s"
+}
+#pragma peephole on
+#endif
+
+// func_80017160 matches in inline contexts
+inline int func_80017160_inline(void)
+{
+    int i;
+    int r3;
+    int r4 = modeCtrl.unk2C;
+
+    for (i = 0; i < 4; i++, r4++)
+    {
+        r3 = (r4 + 1) & 3;
+        if (spritePoolInfo.unkC[r3] == 4)
+            break;
+    }
+    return r3;
+}
+
+void func_800171E0(void)
+{
+    int i;
+
+    for (i = 0; i < 4; i++)
+    {
+        if (spritePoolInfo.unkC[i] != 0)
+            break;
+    }
+    modeCtrl.unk2C = i;
+    for (i = i + 1; i < 4; i++)
+    {
+        if (spritePoolInfo.unkC[i] == 2)
+            spritePoolInfo.unkC[i] = 4;
+    }
+    modeCtrl.levelSetFlags |= (1 << 8);
+    for (i = 0; i < 4; i++)
+    {
+        lbl_801F3A9C[i] = infoWork;
+        lbl_801F3A8C[i] = modeCtrl.levelSetFlags;
+    }
+}
+
+void func_800174C8(void)
+{
+    u32 r0;
+
+    if (spritePoolInfo.unkC[modeCtrl.unk2C] == 2)
+        spritePoolInfo.unkC[modeCtrl.unk2C] = 4;
+    lbl_801F3A9C[modeCtrl.unk2C] = infoWork;
+    lbl_801F3A8C[modeCtrl.unk2C] = modeCtrl.levelSetFlags;
+    r0 = func_80017160_inline();
+    spritePoolInfo.unkC[r0] = 2;
+    if (modeCtrl.unk2C != r0)
+    {
+        modeCtrl.unk2C = r0;
+        infoWork = lbl_801F3A9C[modeCtrl.unk2C];
+        modeCtrl.levelSetFlags = lbl_801F3A8C[modeCtrl.unk2C];
+        loadingStageId = func_80016FB4();
+    }
+}
+
+void func_80017708(int a)
+{
+    spritePoolInfo.unkC[a] = 0;
+}
+
+int func_80017720(void)
+{
+    int r3 = 1;
+    int i;
+
+    for (i = 0; i < 4; i++)
+    {
+        if (spritePoolInfo.unkC[i] != 0)
+        {
+            r3 = 0;
+            break;
+        }
+    }
+    return r3;
+}
