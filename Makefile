@@ -74,7 +74,7 @@ SOURCES := \
 	src/adv.c \
 	src/code_5.c \
 	src/sel.c \
-	asm/game.s \
+	src/game.c \
 	src/camera.c \
 	asm/code_0.s \
 	src/code_1.c \

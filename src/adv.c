@@ -256,7 +256,7 @@ void submode_adv_logo_main_func(void)
     if (modeCtrl.unk0 == 30)
     {
         g_start_screen_fade(0x101, 0, 30);
-        func_80075900(0, 20, NULL);
+        g_create_textbox(0, 20, NULL);
     }
     if (--modeCtrl.unk0 <= 0)
     {
@@ -538,13 +538,13 @@ void run_cutscene_script(void)
                 sp14.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
                 sp14.unk16 = 11;
                 sp14.unk1C = lbl_8000F030;
-                func_80075900(cmd->param + 1, 1, &sp14);
+                g_create_textbox(cmd->param + 1, 1, &sp14);
                 func_80078184(cmd->param);
             }
             break;
         case CMD_HIDE_SPEECH_BUBBLES:
             for (i = 0; i < 3; i++)
-                func_80075900(i + 1, 20, NULL);
+                g_create_textbox(i + 1, 20, NULL);
             sprite = find_sprite_with_tag(30);
             if (sprite != NULL)
                 sprite->unk10 = -1;
@@ -1186,9 +1186,9 @@ static void func_8000FEC8(int a)
     if (sprite != NULL)
         sprite->unk48 = -1;
 
-    func_80075900(1, 20, NULL);
-    func_80075900(2, 20, NULL);
-    func_80075900(3, 20, NULL);
+    g_create_textbox(1, 20, NULL);
+    g_create_textbox(2, 20, NULL);
+    g_create_textbox(3, 20, NULL);
 
     sprite = find_sprite_with_tag(30);
     if (sprite != NULL)
@@ -1202,7 +1202,7 @@ static void func_8000FEC8(int a)
     if (sprite != NULL)
         sprite->unk10 = -1;
 
-    func_80075900(0, 20, NULL);
+    g_create_textbox(0, 20, NULL);
 
     sprite = find_sprite_with_tag(17);
     if (sprite != NULL)
@@ -1283,8 +1283,8 @@ void submode_adv_title_reinit_func(void)
         sp8.unk14 = 12;
         sp8.unk16 = 14;
         sp8.unk1C = NULL;
-        func_80075900(0, 1, &sp8);
-        func_80075C18(0, " \n ");
+        g_create_textbox(0, 1, &sp8);
+        g_set_textbox_text(0, " \n ");
         func_80077734();
     }
     load_stage(ST_150_TUTORIAL);
@@ -1329,8 +1329,8 @@ void submode_adv_title_main_func(void)
             sp8.unk14 = 12;
             sp8.unk16 = 14;
             sp8.unk1C = NULL;
-            func_80075900(0, 1, &sp8);
-            func_80075C18(0, " \n ");
+            g_create_textbox(0, 1, &sp8);
+            g_set_textbox_text(0, " \n ");
             func_80077734();
         }
     }
@@ -1357,7 +1357,7 @@ void submode_adv_title_main_func(void)
     if (modeCtrl.unk0 == 30)
     {
         g_start_screen_fade(0x101, 0, 30);
-        func_80075900(0, 20, NULL);
+        g_create_textbox(0, 20, NULL);
         func_8002CF38(modeCtrl.unk0, 2);
     }
     if (--modeCtrl.unk0 <= 0)
@@ -1417,15 +1417,15 @@ void submode_adv_info_init_func(void)
         sp8.unk14 = 1;
         sp8.unk16 = 11;
         sp8.unk1C = NULL;
-        func_80075900(1, 2, &sp8);
+        g_create_textbox(1, 2, &sp8);
         sp8.unkC = 0x140;
         sp8.unkE = 60;
         sp8.unk15 = 1;
         sp8.unk14 = 0;
         sp8.unk16 = 14;
         sp8.unk1C = NULL;
-        func_80075900(2, 1, &sp8);
-        func_80075C18(2, "c/0xff5000/    Control description!    ");
+        g_create_textbox(2, 1, &sp8);
+        g_set_textbox_text(2, "c/0xff5000/    Control description!    ");
     }
     func_800846B0(4);
     func_800846B0(3);
@@ -1441,7 +1441,7 @@ enum
 {
     INFOCMD_CAMERA_SET_FLAGS   = -1,
     INFOCMD_CAMERA_CLEAR_FLAGS = -2,  // unused
-    INFOCMD_UNK3               = -3,
+    INFOCMD_MINIMAP_SIZE       = -3,
     INFOCMD_BALL_STATE         = -4,
     INFOCMD_UNK5               = -5,
     INFOCMD_FADE_FROM_BLACK    = -6,
@@ -1477,15 +1477,15 @@ const struct InfoCommand infoScript[] =
     { 3300, INFOCMD_UNK12,            NULL, 1    },
     { 3240, 4,  "p/MIGI/SHITA/h/NIARUNOHA k/MAPPUh/DAYO", 0 },
     { 3000, 5,  "c/0xffffff/p/BUTTON_A/c/0x000000/k/BOTANh/WOp/OSU/h/SUTO", 0 },
-    { 2970, INFOCMD_UNK3,             NULL, 0    },
+    { 2970, INFOCMD_MINIMAP_SIZE,     NULL, 0    },
     { 2970, INFOCMD_UNK12,            NULL, 2    },
     { 2955, INFOCMD_UNK12,            NULL, 1    },
     { 2760, 6,  "k/MAPPUh/NOp/OOkii/h/KISAGA p/KAwaru/h/WARUNDA", 0 },
-    { 2730, INFOCMD_UNK3,             NULL, 0    },
+    { 2730, INFOCMD_MINIMAP_SIZE,     NULL, 0    },
     { 2730, INFOCMD_UNK12,            NULL, 2    },
     { 2715, INFOCMD_UNK12,            NULL, 1    },
     { 2520, 7,  "k/GO-RUp/CHITENN/h/YA p/CHIKEI/h/GAYOKUWAKARUYO", 0 },
-    { 2490, INFOCMD_UNK3,             NULL, 0    },
+    { 2490, INFOCMD_MINIMAP_SIZE,     NULL, 0    },
     { 2490, INFOCMD_UNK12,            NULL, 2    },
     { 2475, INFOCMD_UNK12,            NULL, 1    },
     { 2250, INFOCMD_UNK12,            NULL, 0    },
@@ -1597,8 +1597,8 @@ void submode_adv_info_main_func(void)
                 sp8.unkE = 0xB4;
             sp8.unk15 = 1;
             sp8.unk16 = (cmd->param != 0) ? 13 : 11;
-            func_80075900(1, 21, &sp8);
-            func_80075C18(1, infoEnglishText[cmd->cmdId]);
+            g_create_textbox(1, 21, &sp8);
+            g_set_textbox_text(1, infoEnglishText[cmd->cmdId]);
         }
         switch (cmd->cmdId)
         {
@@ -1608,8 +1608,8 @@ void submode_adv_info_main_func(void)
         case INFOCMD_CAMERA_CLEAR_FLAGS:
             camera_set_or_clear_flags(cmd->param, FALSE);
             break;
-        case INFOCMD_UNK3:
-            func_800847C0();
+        case INFOCMD_MINIMAP_SIZE:
+            minimap_change_size();
             break;
         case INFOCMD_BALL_STATE:
             ballInfo[0].state = cmd->param;
@@ -1633,7 +1633,7 @@ void submode_adv_info_main_func(void)
             ballInfo[0].flags &= ~cmd->param;
             break;
         case INFOCMD_UNK11:
-            func_80075900(1, 20, 0);
+            g_create_textbox(1, 20, 0);
             break;
         case INFOCMD_UNK12:
             advTutorialInfo.state = cmd->param;
@@ -1658,9 +1658,9 @@ void submode_adv_info_main_func(void)
         struct Sprite *sprite;
 
         g_start_screen_fade(0x101, 0, 31);
-        func_80075900(0, 20, NULL);
-        func_80075900(1, 20, NULL);
-        func_80075900(2, 20, NULL);
+        g_create_textbox(0, 20, NULL);
+        g_create_textbox(1, 20, NULL);
+        g_create_textbox(2, 20, NULL);
         func_8002CF38(modeCtrl.unk0, 2);
         sprite = find_sprite_with_tag(17);
         if (sprite != NULL)
@@ -2020,7 +2020,7 @@ void submode_adv_ranking_main_func(void)
     if (modeCtrl.unk0 == 30)
     {
         g_start_screen_fade(0x101, 0x00FFFFFF, 30);
-        func_80075900(0, 20, 0);
+        g_create_textbox(0, 20, 0);
         func_8002CF38(modeCtrl.unk0, 2);
     }
 
@@ -2145,10 +2145,10 @@ void submode_adv_start_init_func(void)
     lbl_802F1BA8 = 0;
     func_8002B5C8(2);
     g_start_screen_fade(0x101, 0, 32);
-    func_80075900(0, 20, 0);
-    func_80075900(1, 20, 0);
-    func_80075900(2, 20, 0);
-    func_80075900(3, 20, 0);
+    g_create_textbox(0, 20, 0);
+    g_create_textbox(1, 20, 0);
+    g_create_textbox(2, 20, 0);
+    g_create_textbox(3, 20, 0);
     func_8002CF38(modeCtrl.unk0, 2);
     if (find_sprite_with_tag(17) != NULL
      && find_sprite_with_tag(17)->unk48 == 0)

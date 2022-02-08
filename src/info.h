@@ -1,6 +1,8 @@
 enum
 {
-    INFO_FLAG_,
+    INFO_FLAG_GOAL     = (1 << 0),
+    INFO_FLAG_TIMEOVER = (1 << 1),
+    INFO_FLAG_FALLOUT  = (1 << 2),
 };
 
 struct Struct801F3A58
@@ -17,19 +19,19 @@ struct Struct801F3A58
     s16 unk20;
     s16 unk22;
     s32 unk24;
-    s16 unk28;
-    s16 unk2A;
+    s16 unk28;  // lives lost?
+    s16 unk2A;  // continues used?
     s16 unk2C;
     s16 unk2E;
     s16 unk30;
-    u8 filler32[2];
+    s16 unk32;
 };
 
 extern struct Struct801F3A58 infoWork;
-// extern ? lbl_801F3A8C;
-// extern ? lbl_801F3A9C;
+extern u32 lbl_801F3A8C[4];
+extern struct Struct801F3A58 lbl_801F3A9C[4];
 
-// ? func_80022F14();
+void func_80022F14(void);
 void ev_info_init(void);
 void ev_info_main(void);
 void ev_info_dest(void);
