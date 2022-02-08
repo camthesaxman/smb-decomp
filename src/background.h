@@ -66,6 +66,23 @@ struct Struct80056684
     char *unk4;
 };
 
+struct UnkBackground9C_sub
+{
+    struct StageBgModel *unk0;
+    Vec unk4;
+    Vec unk10;
+    Vec unk1C;
+    Mtx unk28;
+};
+
+struct UnkBackground9C
+{
+    u8 filler0[4];
+    s32 unk4;
+    struct UnkBackground9C_sub unk8[4];
+    s32 unk168;
+};
+
 typedef int (*Func800567DC)(int, struct StageBgModel *);
 
 extern struct BackgroundInfo backgroundInfo;

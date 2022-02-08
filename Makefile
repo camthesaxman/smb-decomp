@@ -125,7 +125,7 @@ SOURCES := \
 	asm/bg_old_sand.s \
 	asm/bg_old_storm.s \
 	asm/bg_old_water.s \
-	asm/bg_jungle.s \
+	src/bg_jungle.c \
 	asm/bg_sand.s \
 	asm/bg_water.s \
 	asm/bg_space.s \
