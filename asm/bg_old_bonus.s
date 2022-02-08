@@ -273,6 +273,7 @@ lbl_80058BD4:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F3F00
 lbl_802F3F00:
 	# ROM: 0x1ED920

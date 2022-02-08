@@ -114,11 +114,11 @@ SOURCES := \
 	asm/effect.s \
 	src/background.c \
 	asm/bg_old_bluesky.s \
-	asm/bg_old_cave.s \
+	src/bg_old_cave.c \
 	asm/bg_old_extramaster.s \
 	asm/bg_old_night.s \
 	asm/bg_old_space.s \
-	asm/bg_old_sunset.s \
+	src/bg_old_sunset.c \
 	asm/bg_old_bonus.s \
 	asm/bg_old_ice.s \
 	asm/bg_old_sand.s \

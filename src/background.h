@@ -48,7 +48,7 @@ struct BackgroundInfo  // size = 0xA8
     Mtx unk48;
     int (*unk78)();
     int (*unk7C)();
-    u32 unk80;
+    struct NaomiModel *unk80;
     float unk84;
     u8 filler88[4];
     u32 unk8C;
