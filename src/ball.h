@@ -142,6 +142,27 @@ struct Ball
     u8 filler16C[0x1A4-0x16C];
 };
 
+// runs 'code' for each active ball
+#define BALL_FOREACH(code) \
+    { \
+        struct Ball *ball; \
+        struct Ball *ballBackup_; \
+        s8 *unk_; \
+        int i_; \
+        ballBackup_ = currentBallStructPtr; \
+        ball = ballInfo; \
+        unk_ = spritePoolInfo.unkC; \
+        for (i_ = 0; i_ < spritePoolInfo.unk8; i_++, ball++, unk_++) \
+        { \
+            if (*unk_ == 2) \
+            { \
+                currentBallStructPtr = ball; \
+                { code } \
+            } \
+        } \
+        currentBallStructPtr = ballBackup_; \
+    }
+
 // extern ? lbl_80205E20;
 // extern ? lbl_80205E30;
 extern struct Ball ballInfo[];

@@ -5,6 +5,7 @@
 #include "global.h"
 #include "adv.h"
 #include "event.h"
+#include "game.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
