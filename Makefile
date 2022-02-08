@@ -117,8 +117,8 @@ SOURCES := \
 	asm/bg_old_bluesky.s \
 	src/bg_old_cave.c \
 	asm/bg_old_extramaster.s \
-	asm/bg_old_night.s \
-	asm/bg_old_space.s \
+	src/bg_old_night.c \
+	src/bg_old_space.c \
 	src/bg_old_sunset.c \
 	asm/bg_old_bonus.s \
 	asm/bg_old_ice.s \
