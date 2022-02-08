@@ -113,7 +113,27 @@ SOURCES := \
 	asm/recplay.s \
 	asm/effect.s \
 	src/background.c \
-	asm/background.s \
+	asm/bg_old_bluesky.s \
+	asm/bg_old_cave.s \
+	asm/bg_old_extramaster.s \
+	asm/bg_old_night.s \
+	asm/bg_old_space.s \
+	asm/bg_old_sunset.s \
+	asm/bg_old_bonus.s \
+	asm/bg_old_ice.s \
+	asm/bg_old_sand.s \
+	asm/bg_old_storm.s \
+	asm/bg_old_water.s \
+	asm/bg_jungle.s \
+	asm/bg_sand.s \
+	asm/bg_water.s \
+	asm/bg_space.s \
+	asm/bg_sunset.s \
+	asm/bg_bonus.s \
+	asm/bg_storm.s \
+	asm/bg_master.s \
+	asm/bg_pilot.s \
+	asm/bg_end.s \
 	asm/course.s \
 	src/item.c \
 	src/item_coin.c \

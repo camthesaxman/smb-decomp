@@ -6153,3 +6153,44 @@ lbl_802F4658:
 	# ROM: 0x1EE078
 	.4byte 0x41800000
 	.4byte 0
+
+.section .sdata
+
+.global lbl_802F0B00
+lbl_802F0B00:
+	# ROM: 0x1EB240
+	.4byte 0x00280046
+	.4byte 0x00830000
+
+.global lbl_802F0B08
+lbl_802F0B08:
+	# ROM: 0x1EB248
+	.4byte 0x163E0000
+
+.global lbl_802F0B0C
+lbl_802F0B0C:
+	# ROM: 0x1EB24C
+	.4byte 0x133E0000
+
+.global lbl_802F0B10
+lbl_802F0B10:
+	# ROM: 0x1EB250
+	.4byte 0x1A3E0000
+
+.global lbl_802F0B14
+lbl_802F0B14:
+	# ROM: 0x1EB254
+	.4byte 0x113E0000
+
+.global lbl_802F0B18
+lbl_802F0B18:
+	# ROM: 0x1EB258
+glabel string_CLEAR
+	.asciz "CLEAR"
+	.balign 4
+
+.global lbl_802F0B20
+lbl_802F0B20:
+	# ROM: 0x1EB260
+	.4byte 0x454E4400
+	.4byte 0

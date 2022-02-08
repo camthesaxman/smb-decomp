@@ -56,7 +56,6 @@ GXColor bgBackdropColors[] =
     { 0xFF, 0xFF, 0xFF, 0xFF },
 };
 
-// backgroundInfo + 0x29C
 char *bgTypeNames[] =
 {
     "NULL",
@@ -90,7 +89,6 @@ char *bgTypeNames[] =
     NULL,
 };
 
-// backgroundInfo + 0x310
 void (*bgInitFuncs[])(void) =
 {
     NULL,
@@ -124,7 +122,6 @@ void (*bgInitFuncs[])(void) =
     NULL,
 };
 
-// 384
 void (*bgMainFuncs[])(void) =
 {
     NULL,
@@ -158,7 +155,6 @@ void (*bgMainFuncs[])(void) =
     NULL,
 };
 
-// 3F8
 void (*bgFinishFuncs[])(void) =
 {
     NULL,
@@ -192,7 +188,6 @@ void (*bgFinishFuncs[])(void) =
     NULL,
 };
 
-// 46C
 void (*bgDrawFuncs[])(void) =
 {
     NULL,
