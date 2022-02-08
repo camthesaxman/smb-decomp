@@ -1343,8 +1343,8 @@ lbl_00001434:
 /* 00001450 3C600000 */ lis r3, lbl_802F1F10@ha
 /* 00001454 38040000 */ addi r0, r4, lbl_00004E84@l
 /* 00001458 90030000 */ stw r0, lbl_802F1F10@l(r3)
-/* 0000145C 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 00001460 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 0000145C 3C600000 */ lis r3, worldInfo@ha
+/* 00001460 38030000 */ addi r0, r3, worldInfo@l
 /* 00001464 80BD0000 */ lwz r5, 0(r29)
 /* 00001468 7C040378 */ mr r4, r0
 /* 0000146C 38C00000 */ li r6, 0
@@ -6723,8 +6723,8 @@ lbl_000061E8:
 lbl_00006314:
 /* 00006314 4BFF9E39 */ bl mathutil_mtxA_from_identity
 /* 00006318 881D002E */ lbz r0, 0x2e(r29)
-/* 0000631C 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 00006320 3BE30000 */ addi r31, r3, lbl_80206BF0@l
+/* 0000631C 3C600000 */ lis r3, worldInfo@ha
+/* 00006320 3BE30000 */ addi r31, r3, worldInfo@l
 /* 00006324 7C000774 */ extsb r0, r0
 /* 00006328 54003032 */ slwi r0, r0, 6
 /* 0000632C 7C7F0214 */ add r3, r31, r0

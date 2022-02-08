@@ -210,6 +210,7 @@ void g_avdisp_alloc_matrix_lists(int count)
     avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
+#pragma force_active on
 void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
 {
     u8 i;
@@ -270,6 +271,7 @@ void free_model(struct GMAModelHeader *model)
         OSFree(model->texObjs);
     OSFree(model);
 }
+#pragma force_active reset
 
 struct GMA *load_gma(char *fileName, struct TPL *tpl)
 {
@@ -641,6 +643,7 @@ struct UnkStruct12
     u32 unk8;
 };
 
+#pragma force_active on
 void *func_8008E5F8(struct GMAModelHeader *model)
 {
     struct UnkStruct12 *r3 = (struct UnkStruct12 *)((u8 *)model + model->headerSize);
@@ -664,6 +667,7 @@ void *func_8008E64C(struct GMAModelHeader *model)
         return NULL;
     }
 }
+#pragma force_active reset
 
 static inline void *skip_mesh(struct GMAMeshHeader *mesh)
 {
@@ -689,6 +693,7 @@ static inline void *skip_mesh(struct GMAMeshHeader *mesh)
     return (void *)ptr;
 }
 
+#pragma force_active on
 void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
 {
     struct GMAMeshHeader *meshPtr = OFFSET_TO_PTR(model, model->headerSize);
@@ -711,6 +716,7 @@ void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
         }
     }
 }
+#pragma force_active reset
 
 struct DrawMeshDeferredNode
 {

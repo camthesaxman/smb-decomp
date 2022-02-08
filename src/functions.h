@@ -247,18 +247,7 @@ void g_draw_stage_collision(void);
 // ? func_80041FA8();
 void func_80042000(struct Struct80039974 *, int);
 // ? func_800427A4();
-void ev_world_init(void);
-void ev_world_main(void);
-void ev_world_dest(void);
-// ? world_clear();
-// ? world_sub_1();
-// ? world_sub_2();
-// ? world_sub_6();
-// ? world_sub_7();
-// ? world_sub_8();
-// ? world_sub_9();
-// ? world_sub_10();
-// ? world_sub_11();
+
 float g_interpolate_anim(u32, struct AnimKeyframe *, float);
 
 void func_80047D70(void);
@@ -287,7 +276,7 @@ void func_800493C4(int);
 void func_80049514(int);
 float func_8004964C(int);
 void func_800496BC(u32, struct Struct800496BC *, float);
-// ? func_80049C1C();
+void func_80049C1C(int, void *, float);
 float func_80049E7C(int, float);
 void g_get_replay_info(int, struct ReplayInfo *);
 float func_80049F90(float, u32);

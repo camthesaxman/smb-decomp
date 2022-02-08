@@ -31,11 +31,11 @@
 .global _prolog
 _prolog:
 /* 000000C8 7C0802A6 */ mflr r0
-/* 000000CC 3C600000 */ lis r3, unusedPadding@ha
+/* 000000CC 3C600000 */ lis r3, lbl_802F2130@ha
 /* 000000D0 90010004 */ stw r0, 4(r1)
 /* 000000D4 38000001 */ li r0, 1
 /* 000000D8 9421FFF8 */ stwu r1, -8(r1)
-/* 000000DC 90030000 */ stw r0, unusedPadding@l(r3)
+/* 000000DC 90030000 */ stw r0, lbl_802F2130@l(r3)
 /* 000000E0 480000CD */ bl func_8002FFEC
 /* 000000E4 480000C9 */ bl free_all_bitmap_groups_except_com
 /* 000000E8 480000C5 */ bl func_800249D4
@@ -3445,10 +3445,10 @@ lbl_00003240:
 /* 00003280 801E6EC0 */ lwz r0, 0x6ec0(r30)
 /* 00003284 1D0A01A4 */ mulli r8, r10, 0x1a4
 /* 00003288 1CCA0284 */ mulli r6, r10, 0x284
-/* 0000328C 3C600000 */ lis r3, lbl_80206BF0@ha
+/* 0000328C 3C600000 */ lis r3, worldInfo@ha
 /* 00003290 2C000000 */ cmpwi r0, 0
 /* 00003294 55443032 */ slwi r4, r10, 6
-/* 00003298 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 00003298 38030000 */ addi r0, r3, worldInfo@l
 /* 0000329C 3BBE005C */ addi r29, r30, 0x5c
 /* 000032A0 7F474214 */ add r26, r7, r8
 /* 000032A4 7F653214 */ add r27, r5, r6
@@ -4062,9 +4062,9 @@ lbl_00003B90:
 /* 00003BA4 9421FFE8 */ stwu r1, -0x18(r1)
 /* 00003BA8 93E10014 */ stw r31, 0x14(r1)
 /* 00003BAC 80040014 */ lwz r0, 0x14(r4)
-/* 00003BB0 3C800000 */ lis r4, lbl_80206BF0@ha
+/* 00003BB0 3C800000 */ lis r4, worldInfo@ha
 /* 00003BB4 54053032 */ slwi r5, r0, 6
-/* 00003BB8 38040000 */ addi r0, r4, lbl_80206BF0@l
+/* 00003BB8 38040000 */ addi r0, r4, worldInfo@l
 /* 00003BBC 7FE02A14 */ add r31, r0, r5
 /* 00003BC0 41820038 */ beq lbl_00003BF8
 /* 00003BC4 40800054 */ bge lbl_00003C18

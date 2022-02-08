@@ -209,8 +209,8 @@ lbl_00000358:
 /* 00000360 4180FFD8 */ blt lbl_00000338
 /* 00000364 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00000368 90E30000 */ stw r7, currentBallStructPtr@l(r3)
-/* 0000036C 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 00000370 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 0000036C 3C600000 */ lis r3, worldInfo@ha
+/* 00000370 38030000 */ addi r0, r3, worldInfo@l
 /* 00000374 80DC0000 */ lwz r6, 0(r28)
 /* 00000378 7C050378 */ mr r5, r0
 /* 0000037C 38E00000 */ li r7, 0
@@ -3488,8 +3488,8 @@ lbl_00003354:
 /* 0000335C 4180FFD8 */ blt lbl_00003334
 /* 00003360 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00003364 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 00003368 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 0000336C 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 00003368 3C600000 */ lis r3, worldInfo@ha
+/* 0000336C 38030000 */ addi r0, r3, worldInfo@l
 /* 00003370 80C60000 */ lwz r6, 0(r6)
 /* 00003374 7C050378 */ mr r5, r0
 /* 00003378 38E00000 */ li r7, 0
@@ -3573,8 +3573,8 @@ lbl_0000348C:
 /* 00003494 4180FFD8 */ blt lbl_0000346C
 /* 00003498 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 0000349C 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 000034A0 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 000034A4 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 000034A0 3C600000 */ lis r3, worldInfo@ha
+/* 000034A4 38030000 */ addi r0, r3, worldInfo@l
 /* 000034A8 80C60000 */ lwz r6, 0(r6)
 /* 000034AC 7C050378 */ mr r5, r0
 /* 000034B0 38E00000 */ li r7, 0
@@ -5044,8 +5044,8 @@ lbl_000049A0:
 /* 000049A8 4180FFD8 */ blt lbl_00004980
 /* 000049AC 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 000049B0 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 000049B4 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 000049B8 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 000049B4 3C600000 */ lis r3, worldInfo@ha
+/* 000049B8 38030000 */ addi r0, r3, worldInfo@l
 /* 000049BC 80C60000 */ lwz r6, 0(r6)
 /* 000049C0 7C050378 */ mr r5, r0
 /* 000049C4 38E00000 */ li r7, 0

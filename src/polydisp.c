@@ -20,6 +20,7 @@
 #include "ord_tbl.h"
 #include "sprite.h"
 #include "stage.h"
+#include "world.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -398,8 +399,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - advTutorialInfo.transitionValue));
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
     g_nl2ngc_set_scale(baseScale);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
 
     // Draw the simulated analog stick
@@ -407,8 +408,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_push();
     mathutil_mtxA_rotate_x(CLAMP(advTutorialInfo.stickXRot * 12, -0x1000, 0x1000));
     mathutil_mtxA_rotate_z(CLAMP(advTutorialInfo.stickZRot * 8, -0x1000, 0x1000));
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(advTutorialInfo.transitionValue);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
@@ -439,8 +440,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_z(CLAMP(stickZRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_scale_s(0.99f);
     g_nl2ngc_set_scale(0.99f);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
 
@@ -451,8 +452,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_translate_xyz(0.0f, 0.00058f, 0.0f);
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
     g_nl2ngc_set_scale(baseScale);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
 
     // Draw the A button
@@ -461,8 +462,8 @@ void g_draw_tutorial_button_and_joystick(void)
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
         g_nl2ngc_set_scale(1.0f);
     }
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
     g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
@@ -488,7 +489,7 @@ void func_8000C144(struct Struct8000C144 *a)
     float z = a->unk10;
     u8 filler[8];
 
-    gxutil_set_vtx_attrs((1<< GX_VA_POS));
+    gxutil_set_vtx_attrs((1 << GX_VA_POS));
     func_8009E110(1, 0, 1, 0);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7
@@ -555,8 +556,8 @@ void func_8000C388(void)
         sp8.z = 0.0f;
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(-currentCameraStructPtr->rotY);
-        mathutil_mtxA_rotate_z(-lbl_80206BF0[0].unk2);
-        mathutil_mtxA_rotate_x(-lbl_80206BF0[0].unk0);
+        mathutil_mtxA_rotate_z(-worldInfo[0].zrot);
+        mathutil_mtxA_rotate_x(-worldInfo[0].xrot);
         mathutil_mtxA_tf_vec(&sp8, &sp8);
         r30 = -mathutil_atan2(sp8.z, sp8.y);
         v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq(sp8.z, sp8.y)));

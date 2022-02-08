@@ -11,6 +11,7 @@
 #include "perf.h"
 #include "sprite.h"
 #include "stage.h"
+#include "world.h"
 
 struct Event eventInfo[] =
 {

@@ -14,6 +14,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
+#include "world.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -216,8 +217,8 @@ void ev_camera_main(void)
                  && !(camera->flags & (1 << 3)))
                 {
                     mathutil_mtxA_translate(&ball->pos);
-                    mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 * 0.6);
-                    mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 * 0.6);
+                    mathutil_mtxA_rotate_x(worldInfo[i].xrot * 0.6);
+                    mathutil_mtxA_rotate_z(worldInfo[i].zrot * 0.6);
                     mathutil_mtxA_translate_neg(&ball->pos);
                 }
                 mathutil_mtxA_to_mtx(camera->unk144);
@@ -226,14 +227,14 @@ void ev_camera_main(void)
             {
                 mathutil_mtxA_push();
                 mathutil_mtxA_translate(&ball->pos);
-                mathutil_mtxA_rotate_z(-lbl_80206BF0[i].unk2 >> 1);
-                mathutil_mtxA_rotate_x(-lbl_80206BF0[i].unk0 >> 1);
+                mathutil_mtxA_rotate_z(-worldInfo[i].zrot >> 1);
+                mathutil_mtxA_rotate_x(-worldInfo[i].xrot >> 1);
                 mathutil_mtxA_translate_neg(&ball->pos);
                 mathutil_mtxA_to_mtx(camera->unk1A4);
                 mathutil_mtxA_pop();
                 mathutil_mtxA_translate(&ball->pos);
-                mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 >> 1);
-                mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 >> 1);
+                mathutil_mtxA_rotate_x(worldInfo[i].xrot >> 1);
+                mathutil_mtxA_rotate_z(worldInfo[i].zrot >> 1);
                 mathutil_mtxA_translate_neg(&ball->pos);
                 mathutil_mtxA_to_mtx(camera->unk144);
             }

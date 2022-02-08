@@ -434,7 +434,6 @@ struct FontParams fontInfo[] =
     {   90,        24,        24,  0, 400, 20, 20, 0.0476190485, 0.0476190485,  0.0019841271, 0.0019841271, 0, 0, 1, 0},
 };
 
-// 0x801c07ac
 char *fontStrArray[] =
 {
     "FONT_ASCII",
@@ -619,7 +618,7 @@ char *fontStrArray[] =
     "FONT_JAP_24x24_2Pg",
 };
 
-// 0x801c0af4
+#pragma force_active on
 char *alignStrArray[] =
 {
     "ALIGN_LT",
@@ -633,6 +632,7 @@ char *alignStrArray[] =
     "ALIGN_RB",
     "ALIGN_PIC",
 };
+#pragma force_active reset
 
 struct GlyphDesc
 {

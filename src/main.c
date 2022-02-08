@@ -13,6 +13,7 @@
 #include "ord_tbl.h"
 #include "perf.h"
 #include "stage.h"
+#include "world.h"
 
 // bss
 u8 lbl_801ED920[0x1240];  // unknown type
@@ -68,7 +69,7 @@ void main(void)
     sound_init();
     func_8008D788();
     currentBallStructPtr = &ballInfo[0];
-    currentWorldStructPtr = &lbl_80206BF0[0];
+    currentWorldStructPtr = &worldInfo[0];
     chkstatus_init();
     func_8008CF00(lbl_801ED920, 0x80);
     func_800487B4();
@@ -175,4 +176,6 @@ void main(void)
     }
 }
 
+#pragma force_active on
 u8 unkData[] = {0, 0, 1, 1, 2, 3, 2, 3, 5, 4, 6, 0};
+#pragma force_active reset

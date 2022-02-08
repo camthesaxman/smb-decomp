@@ -888,8 +888,8 @@ lbl_00000D2C:
 /* 00000D34 4180FFD4 */ blt lbl_00000D08
 /* 00000D38 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00000D3C 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 00000D40 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 00000D44 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 00000D40 3C600000 */ lis r3, worldInfo@ha
+/* 00000D44 38030000 */ addi r0, r3, worldInfo@l
 /* 00000D48 80C60000 */ lwz r6, 0(r6)
 /* 00000D4C 7C050378 */ mr r5, r0
 /* 00000D50 38E00000 */ li r7, 0

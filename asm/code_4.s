@@ -3210,9 +3210,9 @@ credits_main:
 /* 800AFFC0 000ABEE0  40 82 00 58 */	bne lbl_800B0018
 /* 800AFFC4 000ABEE4  3C 60 80 20 */	lis r3, spritePoolInfo@ha
 /* 800AFFC8 000ABEE8  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
-/* 800AFFCC 000ABEEC  3C 60 80 20 */	lis r3, lbl_80206BF0@ha
+/* 800AFFCC 000ABEEC  3C 60 80 20 */	lis r3, worldInfo@ha
 /* 800AFFD0 000ABEF0  80 C4 00 0C */	lwz r6, 0xc(r4)
-/* 800AFFD4 000ABEF4  38 03 6B F0 */	addi r0, r3, lbl_80206BF0@l
+/* 800AFFD4 000ABEF4  38 03 6B F0 */	addi r0, r3, worldInfo@l
 /* 800AFFD8 000ABEF8  7C 05 03 78 */	mr r5, r0
 /* 800AFFDC 000ABEFC  38 E0 00 00 */	li r7, 0
 /* 800AFFE0 000ABF00  38 60 00 0B */	li r3, 0xb

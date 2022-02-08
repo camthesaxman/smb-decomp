@@ -132,7 +132,8 @@ struct Ball
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
     struct Ape *unk144;  // guessing this is the same type as unkFC?
-    u8 filler148[0x14A - 0x148];
+    u8 unk148;
+    u8 filler14A[0x14A - 0x149];
     /*0x14A*/ u8 colorId;
     u8 unk14B;
     u8 filler14C[2];

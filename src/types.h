@@ -249,18 +249,6 @@ typedef void (*Func802F20EC)();
 struct Ape;
 struct Ball;
 
-struct World
-{
-    s16 unk0;
-    s16 unk2;
-    u8 filler4[0x8-0x4];
-    s8 unk8;
-    u8 filler9[0x1C-0x9];
-    float unk1C;
-    u16 unk20;
-    u8 filler22[0x40-0x22];
-};  // size = 0x40
-
 struct SpritePoolInfo
 {
              u8 filler0[8];

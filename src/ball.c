@@ -16,6 +16,7 @@
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "stage.h"
+#include "world.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
@@ -2024,7 +2025,7 @@ void ball_func_18(struct Ball *ball)
 void ball_func_19(struct Ball *ball)
 {
     ball->unk124 = 60;
-    lbl_80206BF0[ball->unk2E].unk20 = 0x5A;
+    worldInfo[ball->unk2E].unk20 = 0x5A;
     cameraInfo[ball->unk2E].state = 4;
     g_play_sound(ball->lives == 1 ? 0x51 : 0x1D);
     g_play_sound(0x15);
@@ -2060,7 +2061,7 @@ void ball_func_20(struct Ball *ball)
     ball->unk98.z = 0.0f;
 
     ball->unk14E = 30;
-    lbl_80206BF0[ball->unk2E].unk20 = 30;
+    worldInfo[ball->unk2E].unk20 = 30;
 
     spC.x = -mathutil_sin(decodedStageLzPtr->startPos->yrot);
     spC.y = 0.0f;
@@ -2246,8 +2247,8 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct Struct80039974 *b, 
     ball->flags &= ~BALL_FLAG_05;
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(lbl_80206BF0[ball->unk2E].unk0);
-    mathutil_mtxA_rotate_z(lbl_80206BF0[ball->unk2E].unk2);
+    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
     stageUp.x = 0.0f;
     stageUp.y = 1.0f;
     stageUp.z = 0.0f;
@@ -2287,8 +2288,8 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct Struct80039974 *b, 
     }
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(lbl_80206BF0[ball->unk2E].unk0);
-    mathutil_mtxA_rotate_z(lbl_80206BF0[ball->unk2E].unk2);
+    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
     mathutil_mtxA_rigid_inv_tf_vec(&accel, &accel);
 
     ball->vel.x += accel.x;
@@ -2335,8 +2336,8 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct St
     ball->flags &= ~BALL_FLAG_05;
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(lbl_80206BF0[ball->unk2E].unk0);
-    mathutil_mtxA_rotate_z(lbl_80206BF0[ball->unk2E].unk2);
+    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
     stageUp.x = 0.0f;
     stageUp.y = 1.0f;
     stageUp.z = 0.0f;
@@ -2376,8 +2377,8 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct St
     }
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(lbl_80206BF0[ball->unk2E].unk0);
-    mathutil_mtxA_rotate_z(lbl_80206BF0[ball->unk2E].unk2);
+    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
     mathutil_mtxA_rigid_inv_tf_vec(&accel, &accel);
 
     ball->vel.x += accel.x;
@@ -2646,7 +2647,7 @@ void func_8003C4A0(struct Ball *ball, int b)
     ball->currRadius = physParams->ballRadius;
     ball->targetRadius = physParams->ballRadius;
     ball->modelScale = 1.0f;
-    ball->unk6C = physParams->unk8 * lbl_80206BF0[ball->unk2E].unk1C;
+    ball->unk6C = physParams->unk8 * worldInfo[ball->unk2E].unk1C;
     ball->restitution = physParams->restitution;
     ball->unk1 = b;
 

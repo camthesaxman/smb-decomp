@@ -141,7 +141,7 @@ void item_coin_main(struct Item *item)
 
 void item_coin_draw(struct Item *item)
 {
-    float f31;
+    float scale;
     float f30 = item->unk14;
     struct GMAModelHeader *model;
     Vec spC;
@@ -153,20 +153,20 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_x(item->xrot);
     mathutil_mtxA_rotate_z(item->zrot);
     model = find_item_model(item->unk1C);
-    f31 = (f30 / model->boundsRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f31) == 0)
+    scale = (f30 / model->boundsRadius) * 1.5;
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, scale) == 0)
         return;
-    if (f31 != 1.0)
-        mathutil_mtxA_scale_xyz(f31, f31, f31);
+    if (scale != 1.0)
+        mathutil_mtxA_scale_xyz(scale, scale, scale);
     mathutil_get_mtxA_translate_alt(&spC);
     f30 = -(((spC.z + f30) + 0.1f) / f30);
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         f30 = 0.25f;
     if (f30 > 0.0f)
     {
-        g_avdisp_set_model_scale(f31);
-        GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        g_avdisp_set_model_scale(scale);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (f30 < 1.0f)
         {
             g_avdisp_set_alpha(f30);

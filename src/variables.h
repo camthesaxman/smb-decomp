@@ -203,7 +203,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B7CF8;
 // extern ? lbl_801B7EE8;
 // extern ? lbl_801B7F88;
-// extern ? lbl_801B7FA8;
+// extern ? tutorialStickInputs;
 // extern ? lbl_801B86A8;
 // extern ? lbl_801B86D8;
 // extern ? lbl_801B86E4;
@@ -567,8 +567,6 @@ extern struct
 // extern ? lbl_80205688;
 extern struct SpritePoolInfo spritePoolInfo;
 
-extern struct World lbl_80206BF0[];
-// extern ? lbl_80206CF0;
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
 extern struct Struct80206DEC lbl_80206DEC;
@@ -1453,7 +1451,7 @@ extern u32 *motLabel;
 // extern ? lbl_802F2124;
 // extern ? lbl_802F2128;
 // extern ? lbl_802F212C;
-// extern ? unusedPadding;
+// extern ? lbl_802F2130;
 // extern ? loadQueueTail;
 // extern ? loadQueueHead;
 // extern ? dvdReadStatus;

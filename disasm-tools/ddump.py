@@ -7,11 +7,11 @@ import sys
 import struct
 
 #startLabel = sys.argv[2]
-startLabel = 'lbl_801BDFA0'  # starting label
+startLabel = 'lbl_801B8618'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>Ihxxfhhhhhxx'
+structFmt = '>ifff'
 GXColorFmt = '{%i, %i, %i, %i}'
-cFmt = '{ 0x%X, %i, %4.7g, %i, %i, %i, %i, %i },'
+cFmt = '{ %4i, %5.7g, %4.7g, %4.7g },'
 dumping = False
 
 def print_struct(data):

@@ -150,12 +150,12 @@ lbl_00000260:
 .global lbl_00000270
 lbl_00000270:
 /* 00000270 7C0802A6 */ mflr r0
-/* 00000274 3C600000 */ lis r3, unusedPadding@ha
+/* 00000274 3C600000 */ lis r3, lbl_802F2130@ha
 /* 00000278 90010004 */ stw r0, 4(r1)
 /* 0000027C 9421FFF0 */ stwu r1, -0x10(r1)
 /* 00000280 93E1000C */ stw r31, 0xc(r1)
 /* 00000284 3BE00000 */ li r31, 0
-/* 00000288 93E30000 */ stw r31, unusedPadding@l(r3)
+/* 00000288 93E30000 */ stw r31, lbl_802F2130@l(r3)
 /* 0000028C 4BFFFED1 */ bl camera_setup_singleplayer_viewport
 /* 00000290 4800B1BD */ bl lbl_0000B44C
 /* 00000294 4800BD0D */ bl lbl_0000BFA0

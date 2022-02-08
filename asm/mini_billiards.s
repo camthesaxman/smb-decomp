@@ -176,9 +176,9 @@ lbl_00000260:
 /* 000002E0 4BFFFE55 */ bl func_80021DB4
 /* 000002E4 3C600000 */ lis r3, spritePoolInfo@ha
 /* 000002E8 38830000 */ addi r4, r3, spritePoolInfo@l
-/* 000002EC 3C600000 */ lis r3, lbl_80206BF0@ha
+/* 000002EC 3C600000 */ lis r3, worldInfo@ha
 /* 000002F0 80C4000C */ lwz r6, 0xc(r4)
-/* 000002F4 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 000002F4 38030000 */ addi r0, r3, worldInfo@l
 /* 000002F8 7C050378 */ mr r5, r0
 /* 000002FC 38E00000 */ li r7, 0
 /* 00000300 38600001 */ li r3, 1

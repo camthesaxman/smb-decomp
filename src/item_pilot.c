@@ -223,7 +223,7 @@ void item_pilot_main(struct Item *item)
 
 void item_pilot_draw(struct Item *item)
 {
-    float f31;
+    float scale;
     float f30;
     struct GMAModelHeader *model;
     Vec spC;
@@ -242,10 +242,10 @@ void item_pilot_draw(struct Item *item)
     else
         model = item->unk1C;
     if (item->subtype == 3)
-        f31 = 1.0f;
+        scale = 1.0f;
     else
-        f31 = (f30 / model->boundsRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f31) == 0)
+        scale = (f30 / model->boundsRadius) * 1.5;
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
      && (item->subtype == 4 || item->subtype == 3))
@@ -256,10 +256,10 @@ void item_pilot_draw(struct Item *item)
             f1 = 1.0f;
         if (f1 < 0.0)
             f1 = 0.0f;
-        f31 *= f1;
+        scale *= f1;
     }
-    if (f31 != 1.0)
-        mathutil_mtxA_scale_xyz(f31, f31, f31);
+    if (scale != 1.0)
+        mathutil_mtxA_scale_xyz(scale, scale, scale);
     mathutil_get_mtxA_translate_alt(&spC);
     f30 = -((spC.z + f30 + 0.1f) / f30);
     if (f30 > 0.0f)
@@ -275,23 +275,23 @@ void item_pilot_draw(struct Item *item)
                 else
                 {
                     mathutil_mtxA_sq_from_identity();
-                    mathutil_mtxA_scale_xyz(f31, f31, f31);
+                    mathutil_mtxA_scale_xyz(scale, scale, scale);
                     r30_ = 0x87;
                 }
             }
             else
             {
                 mathutil_mtxA_sq_from_identity();
-                mathutil_mtxA_scale_xyz(f31, f31, f31);
+                mathutil_mtxA_scale_xyz(scale, scale, scale);
                 r30_ = 0x85;
             }
-            g_avdisp_set_model_scale(f31);
+            g_avdisp_set_model_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             g_avdisp_draw_model_1(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
-            g_avdisp_set_model_scale(f31);
+            g_avdisp_set_model_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             if (f30 < 1.0f)
             {

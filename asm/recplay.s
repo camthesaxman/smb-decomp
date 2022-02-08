@@ -1779,8 +1779,8 @@ lbl_8004A530:
 /* 8004A534 00046454  7C 09 00 00 */	cmpw r9, r0
 /* 8004A538 00046458  41 80 FF D8 */	blt lbl_8004A510
 /* 8004A53C 0004645C  90 ED 9D 38 */	stw r7, currentBallStructPtr@sda21(r13)
-/* 8004A540 00046460  3C 60 80 20 */	lis r3, lbl_80206BF0@ha
-/* 8004A544 00046464  38 03 6B F0 */	addi r0, r3, lbl_80206BF0@l
+/* 8004A540 00046460  3C 60 80 20 */	lis r3, worldInfo@ha
+/* 8004A544 00046464  38 03 6B F0 */	addi r0, r3, worldInfo@l
 /* 8004A548 00046468  80 C5 00 00 */	lwz r6, 0(r5)
 /* 8004A54C 0004646C  7C 05 03 78 */	mr r5, r0
 /* 8004A550 00046470  38 E0 00 00 */	li r7, 0
@@ -1891,8 +1891,8 @@ lbl_8004A6BC:
 /* 8004A6C0 000465E0  7C 09 00 00 */	cmpw r9, r0
 /* 8004A6C4 000465E4  41 80 FF D8 */	blt lbl_8004A69C
 /* 8004A6C8 000465E8  90 ED 9D 38 */	stw r7, currentBallStructPtr@sda21(r13)
-/* 8004A6CC 000465EC  3C 60 80 20 */	lis r3, lbl_80206BF0@ha
-/* 8004A6D0 000465F0  38 03 6B F0 */	addi r0, r3, lbl_80206BF0@l
+/* 8004A6CC 000465EC  3C 60 80 20 */	lis r3, worldInfo@ha
+/* 8004A6D0 000465F0  38 03 6B F0 */	addi r0, r3, worldInfo@l
 /* 8004A6D4 000465F4  80 C5 00 00 */	lwz r6, 0(r5)
 /* 8004A6D8 000465F8  7C 05 03 78 */	mr r5, r0
 /* 8004A6DC 000465FC  38 E0 00 00 */	li r7, 0
@@ -2557,7 +2557,7 @@ func_8004AFD8:
 /* 8004AFE0 00046F00  3C A0 80 20 */	lis r5, ballInfo@ha
 /* 8004AFE4 00046F04  BF 01 00 28 */	stmw r24, 0x28(r1)
 /* 8004AFE8 00046F08  38 63 EC 20 */	addi r3, r3, modeCtrl@l
-/* 8004AFEC 00046F0C  3C 80 80 20 */	lis r4, lbl_80206BF0@ha
+/* 8004AFEC 00046F0C  3C 80 80 20 */	lis r4, worldInfo@ha
 /* 8004AFF0 00046F10  38 C5 5E 60 */	addi r6, r5, ballInfo@l
 /* 8004AFF4 00046F14  81 03 00 2C */	lwz r8, 0x2c(r3)
 /* 8004AFF8 00046F18  3C 60 80 25 */	lis r3, lbl_80250B70@ha
@@ -2565,7 +2565,7 @@ func_8004AFD8:
 /* 8004B000 00046F20  1C E8 01 A4 */	mulli r7, r8, 0x1a4
 /* 8004B004 00046F24  2C 00 00 01 */	cmpwi r0, 1
 /* 8004B008 00046F28  55 05 30 32 */	slwi r5, r8, 6
-/* 8004B00C 00046F2C  38 04 6B F0 */	addi r0, r4, lbl_80206BF0@l
+/* 8004B00C 00046F2C  38 04 6B F0 */	addi r0, r4, worldInfo@l
 /* 8004B010 00046F30  7F A6 3A 14 */	add r29, r6, r7
 /* 8004B014 00046F34  7F 80 2A 14 */	add r28, r0, r5
 /* 8004B018 00046F38  41 82 00 08 */	beq lbl_8004B020

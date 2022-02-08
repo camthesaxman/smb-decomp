@@ -22,6 +22,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "world.h"
 
 u32 introBackdropColor;
 u32 advSubmode;
@@ -320,9 +321,9 @@ void submode_adv_demo_init_func(void)
     func_800972CC();
     for (i = 0; i < 4; i++)
     {
-        ballInfo[i].state = 0x15;
+        ballInfo[i].state = 21;
         ballInfo[i].bananas = 0;
-        lbl_80206BF0[i].unk8 = 1;
+        worldInfo[i].state = 1;
     }
     camera_set_state(29);
     call_bitmap_load_group(BMP_ADV);
@@ -623,7 +624,7 @@ void run_cutscene_script(void)
         case CMD_INIT_CHARACTER_POS:
             ball_func_demo_init(&ballInfo[cmd->param]);
             ballInfo[cmd->param].bananas = 0;
-            lbl_80206BF0[cmd->param].unk8 = 1;
+            worldInfo[cmd->param].state = 1;
             advDemoInfo.unkC = cmd->param;
             break;
         case CMD_UNK15:  // cutscene camera?
@@ -1615,7 +1616,7 @@ void submode_adv_info_main_func(void)
             ballInfo[0].state = cmd->param;
             break;
         case INFOCMD_UNK5:
-            lbl_80206BF0[0].unk8 = cmd->param;
+            worldInfo[0].state = cmd->param;
             break;
         case INFOCMD_FADE_FROM_BLACK:
             g_start_screen_fade(0, 0, (s8)cmd->param);
@@ -1796,7 +1797,7 @@ void submode_adv_game_play_init_func(void)
     func_8007C104(60);
     infoWork.unk0 &= -265;
     ballInfo[0].state = 9;
-    lbl_80206BF0[0].unk8 = 9;
+    worldInfo[0].state = 9;
     camera_set_state(0);
     infoWork.unk0 |= 0x810;
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -1813,7 +1814,7 @@ void submode_adv_game_play_main_func(void)
         infoWork.unk0 &= ~1;
         modeCtrl.unk18 = 0xB4;
         gameSubmodeRequest = SMD_ADV_RANKING_INIT;
-        lbl_80206BF0[0].unk8 = 6;
+        worldInfo[0].state = 6;
         camera_set_state(14);
         func_800846B0(1);
     }
@@ -1971,12 +1972,12 @@ void submode_adv_ranking_main_func(void)
             ballInfo[0].bananas = 0;
             if (modeCtrl.unk0 > 2520)
             {
-                lbl_80206BF0[0].unk8 = 9;
+                worldInfo[0].state = 9;
                 camera_set_state(0);
             }
             else
             {
-                lbl_80206BF0[0].unk8 = 6;
+                worldInfo[0].state = 6;
                 camera_set_state(func_80011BE0());
                 infoWork.unk0 &= ~(1 << 11);
             }

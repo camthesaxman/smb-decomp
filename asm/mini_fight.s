@@ -12170,11 +12170,11 @@ lbl_0000B720:
 /* 0000B730 38000009 */ li r0, 9
 /* 0000B734 9421FFD8 */ stwu r1, -0x28(r1)
 /* 0000B738 3CA00000 */ lis r5, modeCtrl@ha
-/* 0000B73C 3C800000 */ lis r4, lbl_80206BF0@ha
+/* 0000B73C 3C800000 */ lis r4, worldInfo@ha
 /* 0000B740 BF010008 */ stmw r24, 8(r1)
 /* 0000B744 38C00000 */ li r6, 0
 /* 0000B748 B0030002 */ sth r0, 2(r3)
-/* 0000B74C 38040000 */ addi r0, r4, lbl_80206BF0@l
+/* 0000B74C 38040000 */ addi r0, r4, worldInfo@l
 /* 0000B750 38850000 */ addi r4, r5, modeCtrl@l
 /* 0000B754 38A0003C */ li r5, 0x3c
 /* 0000B758 3C600000 */ lis r3, spritePoolInfo@ha
@@ -12297,13 +12297,13 @@ lbl_0000B8C0:
 /* 0000B904 3C600000 */ lis r3, lbl_100188E8@ha
 /* 0000B908 38040000 */ addi r0, r4, ballInfo@l
 /* 0000B90C 3BA30000 */ addi r29, r3, lbl_100188E8@l
-/* 0000B910 3C600000 */ lis r3, lbl_80206BF0@ha
+/* 0000B910 3C600000 */ lis r3, worldInfo@ha
 /* 0000B914 3C800000 */ lis r4, lbl_0001C24C@ha
 /* 0000B918 3CE00000 */ lis r7, controllerInfo@ha
 /* 0000B91C 3CC00000 */ lis r6, lbl_80206BD0@ha
 /* 0000B920 3CA00000 */ lis r5, lbl_0001C268@ha
 /* 0000B924 7C140378 */ mr r20, r0
-/* 0000B928 3BE30000 */ addi r31, r3, lbl_80206BF0@l
+/* 0000B928 3BE30000 */ addi r31, r3, worldInfo@l
 /* 0000B92C 3ABD0004 */ addi r21, r29, 4
 /* 0000B930 3BC40000 */ addi r30, r4, lbl_0001C24C@l
 /* 0000B934 3B270000 */ addi r25, r7, controllerInfo@l
@@ -12561,14 +12561,14 @@ lbl_0000BC94:
 /* 0000BCD8 3C600000 */ lis r3, lbl_100188E8@ha
 /* 0000BCDC 38040000 */ addi r0, r4, ballInfo@l
 /* 0000BCE0 3BA30000 */ addi r29, r3, lbl_100188E8@l
-/* 0000BCE4 3C600000 */ lis r3, lbl_80206BF0@ha
+/* 0000BCE4 3C600000 */ lis r3, worldInfo@ha
 /* 0000BCE8 3C800000 */ lis r4, lbl_0001C24C@ha
 /* 0000BCEC 3CE00000 */ lis r7, controllerInfo@ha
 /* 0000BCF0 3CC00000 */ lis r6, lbl_80206BD0@ha
 /* 0000BCF4 3CA00000 */ lis r5, lbl_0001C268@ha
 /* 0000BCF8 7C120378 */ mr r18, r0
 /* 0000BCFC 39F6014C */ addi r15, r22, 0x14c
-/* 0000BD00 3BE30000 */ addi r31, r3, lbl_80206BF0@l
+/* 0000BD00 3BE30000 */ addi r31, r3, worldInfo@l
 /* 0000BD04 3ABD0004 */ addi r21, r29, 4
 /* 0000BD08 3BC40000 */ addi r30, r4, lbl_0001C24C@l
 /* 0000BD0C 3B270000 */ addi r25, r7, controllerInfo@l
@@ -12853,10 +12853,10 @@ lbl_0000C06C:
 /* 0000C110 3C800000 */ lis r4, ballInfo@ha
 /* 0000C114 83C30008 */ lwz r30, 8(r3)
 /* 0000C118 38040000 */ addi r0, r4, ballInfo@l
-/* 0000C11C 3C600000 */ lis r3, lbl_80206BF0@ha
+/* 0000C11C 3C600000 */ lis r3, worldInfo@ha
 /* 0000C120 7C1D0378 */ mr r29, r0
 /* 0000C124 3B9F014C */ addi r28, r31, 0x14c
-/* 0000C128 3B630000 */ addi r27, r3, lbl_80206BF0@l
+/* 0000C128 3B630000 */ addi r27, r3, worldInfo@l
 /* 0000C12C 480000E4 */ b lbl_0000C210
 lbl_0000C130:
 /* 0000C130 A81C0010 */ lha r0, 0x10(r28)
@@ -13150,8 +13150,8 @@ lbl_0000C550:
 /* 0000C558 4180FF80 */ blt lbl_0000C4D8
 /* 0000C55C 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 0000C560 93230000 */ stw r25, currentBallStructPtr@l(r3)
-/* 0000C564 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 0000C568 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 0000C564 3C600000 */ lis r3, worldInfo@ha
+/* 0000C568 38030000 */ addi r0, r3, worldInfo@l
 /* 0000C56C 80DB0000 */ lwz r6, 0(r27)
 /* 0000C570 7C050378 */ mr r5, r0
 /* 0000C574 38E00000 */ li r7, 0
@@ -17173,9 +17173,9 @@ lbl_0000FFC4:
 /* 0000FFD0 64800040 */ oris r0, r4, 0x40
 /* 0000FFD4 90030094 */ stw r0, 0x94(r3)
 /* 0000FFD8 38000025 */ li r0, 0x25
-/* 0000FFDC 3C800000 */ lis r4, lbl_80206BF0@ha
+/* 0000FFDC 3C800000 */ lis r4, worldInfo@ha
 /* 0000FFE0 98030148 */ stb r0, 0x148(r3)
-/* 0000FFE4 38840000 */ addi r4, r4, lbl_80206BF0@l
+/* 0000FFE4 38840000 */ addi r4, r4, worldInfo@l
 /* 0000FFE8 38C00006 */ li r6, 6
 /* 0000FFEC 8803002E */ lbz r0, 0x2e(r3)
 /* 0000FFF0 7C000774 */ extsb r0, r0
@@ -18819,8 +18819,8 @@ lbl_0001181C:
 /* 0001182C 9421FF90 */ stwu r1, -0x70(r1)
 /* 00011830 93E1006C */ stw r31, 0x6c(r1)
 /* 00011834 88E3002E */ lbz r7, 0x2e(r3)
-/* 00011838 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 0001183C 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 00011838 3C600000 */ lis r3, worldInfo@ha
+/* 0001183C 38030000 */ addi r0, r3, worldInfo@l
 /* 00011840 7CE70774 */ extsb r7, r7
 /* 00011844 54E43032 */ slwi r4, r7, 6
 /* 00011848 7FE02214 */ add r31, r0, r4

@@ -19,6 +19,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "world.h"
 
 void mode_game_func(void)
 {
@@ -315,7 +316,7 @@ void submode_game_play_init_func(void)
         break;
     }
     func_80048F74();
-    WORLD_FOREACH( world->unk8 = 1; )
+    WORLD_FOREACH( world->state = WORLD_STATE_INPUT_INIT; )
     camera_set_state(0);
     gameSubmodeRequest = SMD_GAME_PLAY_MAIN;
 }
@@ -462,7 +463,7 @@ void submode_game_goal_replay_init_func(void)
     modeCtrl.unk18 = 30;
     BALL_FOREACH( ball->flags &= ~(1 << 9); )
     BALL_FOREACH( ball->state = 9; )
-    WORLD_FOREACH( world->unk8 = 6; )
+    WORLD_FOREACH( world->state = 6; )
     camera_set_state(16);
     func_80037B20();
     func_8004CFF0(0);
@@ -834,7 +835,7 @@ void submode_game_ringout_main_func(void)
         {
             func_80049158();
             BALL_FOREACH( ball->state = 7; )
-            WORLD_FOREACH( world->unk8 = 8; )
+            WORLD_FOREACH( world->state = 8; )
             camera_set_state(5);
             lbl_80250A68.unk10 = MIN(func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]), 120.0f);
             g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
@@ -1192,7 +1193,7 @@ void submode_game_nameentry_init_func(void)
 
     func_8007C104(60);
     infoWork.unk0 &= ~(1 << 3);
-    WORLD_FOREACH( world->unk8 = 1; )
+    WORLD_FOREACH( world->state = WORLD_STATE_INPUT_INIT; )
     BALL_FOREACH( ball->state = 4; )
     camera_set_state(35);
     gameSubmodeRequest = SMD_GAME_NAMEENTRY_MAIN;

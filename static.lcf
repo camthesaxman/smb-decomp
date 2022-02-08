@@ -41,17 +41,6 @@ SECTIONS
 
 FORCEACTIVE
 {
-    unkData 
-    g_avdisp_alloc_matrix_lists g_get_stitching_model_mtx load_model
-    free_model
-    func_8008E5F8 func_8008E64C set_mesh_render_flags_in_model
-    mathutil_alignment
-    lbl_8028FE58
-    fontStrArray alignStrArray symbolGlyphs buttonGlyphs
-    lbl_801EED98
     lbl_802C4960
     lbl_802F1FEC
-    lbl_802F1FD4
 }
-
-FORCEFILES { __init_cpp_exceptions.o camera.o }

@@ -31,18 +31,6 @@ do                                                     \
     }                                                  \
 } while (0)
 
-#define WORLD_FOREACH(code) \
-    { \
-        struct World *world = lbl_80206BF0; \
-        s8 *unk_ = spritePoolInfo.unkC; \
-        int i_; \
-        for (i_ = 0; i_ < spritePoolInfo.unk8; i_++, world++, unk_++) \
-        { \
-            if (*unk_ == 2) \
-                { code } \
-        } \
-    }
-
 // intrinsics
 #ifndef __MWERKS__
 extern u32 __cntlzw(u32);

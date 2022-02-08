@@ -801,8 +801,8 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
             continue;
         r23 = b->unk0 >> 28;
-        GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (r23 > 0)
         {
             func_800224CC();
@@ -973,8 +973,8 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             mathutil_mtxA_rotate_z(r26->unk10);
             mathutil_mtxA_rotate_y(r26->unkE);
             mathutil_mtxA_rotate_x(r26->unkC);
-            GXLoadPosMtxImm(mathutilData->mtxA, 0);
-            GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+            GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+            GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = unpausedFrameCounter / 2;
             switch (r26->unk12)
             {
@@ -1015,8 +1015,8 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             mathutil_mtxA_from_mtx(mtx);
             mathutil_mtxA_translate(&r22->unk0);
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
-            GXLoadPosMtxImm(mathutilData->mtxA, 0);
-            GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+            GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+            GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = (unpausedFrameCounter + r22->unkC * 4);
             modelId = lbl_801B9AE8[r4 % 32];
             g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);

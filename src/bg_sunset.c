@@ -152,8 +152,8 @@ void bg_sunset_draw(void)
                 mathutil_mtxA_rotate_y(r31->yrot);
                 mathutil_mtxA_rotate_x(r31->xrot);
                 mathutil_mtxA_scale(&r31->scale);
-                GXLoadPosMtxImm(mathutilData->mtxA, 0);
-                GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+                GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+                GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 g_avdisp_maybe_draw_model_1(r31->model);
             }
         }
