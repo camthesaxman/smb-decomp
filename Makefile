@@ -128,7 +128,7 @@ SOURCES := \
 	asm/bg_sand.s \
 	asm/bg_water.s \
 	asm/bg_space.s \
-	asm/bg_sunset.s \
+	src/bg_sunset.c \
 	asm/bg_bonus.s \
 	asm/bg_storm.s \
 	asm/bg_master.s \

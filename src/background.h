@@ -60,6 +60,14 @@ struct BackgroundInfo  // size = 0xA8
     u32 unkA4;
 };
 
+struct Struct80056684
+{
+    u32 unk0;
+    char *unk4;
+};
+
+typedef int (*Func800567DC)(int, struct StageBgModel *);
+
 extern struct BackgroundInfo backgroundInfo;
 // extern ? bgDrawFuncs;
 // extern ? lbl_801B9658;
@@ -109,7 +117,7 @@ void bg_bowling_draw(void);
 void func_8005660C(int);
 int func_80056610(u32 **a, void *b);
 // ? func_80056684();
-// ? func_800567DC();
+void func_800567DC(struct StageBgModel *r28, int r30_, struct Struct80056684 *a, Func800567DC b);
 // ? func_80056934();
 void func_800569B4(int);
 void bg_old_bluesky_init(void);

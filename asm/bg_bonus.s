@@ -803,6 +803,7 @@ lbl_80061FC4:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F4430
 lbl_802F4430:
 	# ROM: 0x1EDE50

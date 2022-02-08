@@ -1248,12 +1248,6 @@ int func_80056610(u32 **a, void *b)
     return 1;
 }
 
-struct Struct80056684
-{
-    u32 unk0;
-    char *unk4;
-};
-
 void func_80056684(struct Struct80056684 *a, int (*b)())
 {
     int r30;
@@ -1319,7 +1313,7 @@ void func_80056684(struct Struct80056684 *a, int (*b)())
     }
 }
 
-void func_800567DC(struct GMAModelEntry *r28, int r30_, struct Struct80056684 *a, int (*b)())
+void func_800567DC(struct StageBgModel *r28, int r30_, struct Struct80056684 *a, Func800567DC b)
 {
     int r30 = r30_;
     int r29;
@@ -1328,8 +1322,7 @@ void func_800567DC(struct GMAModelEntry *r28, int r30_, struct Struct80056684 *a
 
     while (r30 > 0)
     {
-        // Hmm...
-        if ((r28 + 1)->modelOffset != NULL)
+        if (r28->model != 0)
         {
             char *r26;
             int len1;
@@ -1378,7 +1371,7 @@ void func_800567DC(struct GMAModelEntry *r28, int r30_, struct Struct80056684 *a
                 break;
         }
         r30--;
-        r28 += 7;
+        r28++;
     }
 }
 
