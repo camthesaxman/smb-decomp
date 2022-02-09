@@ -452,7 +452,7 @@ char *gameSubmodeNames[] =
     NULL,
 };
 
-struct MinigameLink lbl_802F021C = {0};
+struct RelModule lbl_802F021C = {0};
 
 struct ModeControl modeCtrl;
 

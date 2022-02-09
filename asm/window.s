@@ -4868,55 +4868,55 @@ glabel lbl_801B5858
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFE
 	.4byte string_sw___  ;# ptr
-	.4byte lbl_802BA200+0xF  ;# ptr
+	.4byte fogInfo+0xF  ;# ptr
 	.4byte lbl_801B3B78  ;# ptr
 	.4byte 0x00000019
 	.4byte 0x00000007
 	.4byte 0
 	.4byte lbl_802F0858  ;# ptr
-	.4byte lbl_802BA200+0xF  ;# ptr
+	.4byte fogInfo+0xF  ;# ptr
 	.4byte lbl_802F0828  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFE
 	.4byte string_type___  ;# ptr
-	.4byte lbl_802BA200  ;# ptr
+	.4byte fogInfo  ;# ptr
 	.4byte lbl_801B57D8  ;# ptr
 	.4byte 0x00000019
 	.4byte 0x00000009
 	.4byte 0
 	.4byte lbl_802F0858  ;# ptr
-	.4byte lbl_802BA200  ;# ptr
+	.4byte fogInfo  ;# ptr
 	.4byte lbl_801B57B8  ;# ptr
 	.4byte 0x00000007
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFE
 	.4byte string_start____5_1f  ;# ptr
-	.4byte lbl_802BA200+4  ;# ptr
+	.4byte fogInfo+4  ;# ptr
 	.4byte lbl_801B57E8  ;# ptr
 	.4byte 0x00000007
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_end______5_1f  ;# ptr
-	.4byte lbl_802BA200+8  ;# ptr
+	.4byte fogInfo+8  ;# ptr
 	.4byte lbl_801B57E8  ;# ptr
 	.4byte 0x00000005
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFE
 	.4byte string_color_r___3d  ;# ptr
-	.4byte lbl_802BA200+0xC  ;# ptr
+	.4byte fogInfo+0xC  ;# ptr
 	.4byte lbl_801B57F8  ;# ptr
 	.4byte 0x00000005
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_color_g___3d  ;# ptr
-	.4byte lbl_802BA200+0xD  ;# ptr
+	.4byte fogInfo+0xD  ;# ptr
 	.4byte lbl_801B57F8  ;# ptr
 	.4byte 0x00000005
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_color_b___3d  ;# ptr
-	.4byte lbl_802BA200+0xE  ;# ptr
+	.4byte fogInfo+0xE  ;# ptr
 	.4byte lbl_801B57F8  ;# ptr
 	.4byte 0x0000001F
 	.4byte 0

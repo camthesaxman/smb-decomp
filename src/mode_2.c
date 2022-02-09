@@ -76,9 +76,9 @@ void unkFunc8000A26C(struct Sprite *a)
         lbl_801EEC68.unk10 = 2;
         break;
     case GAMETYPE_MINI_RACE:
-        if (lbl_801EED88.unk8 & (1<<(31-0x1B)))
+        if (lbl_801EED88.unk8 & (1 << 4))
             lbl_801EEC68.unk10 = 3;
-        else if (!(lbl_801EED88.unk8 & (1<<(31-0x1C)))
+        else if (!(lbl_801EED88.unk8 & (1 << 3))
          && modeCtrl.playerCount == 1)
             lbl_801EEC68.unk10 = 3;
         else
@@ -108,7 +108,7 @@ void unkFunc8000A26C(struct Sprite *a)
     else
         a->unk48 = 1;
     func_8002B5C8(0x70);
-    func_8002CF38(50, 10);
+    g_play_music(50, 10);
 }
 
 void unkFunc8000A580(struct Sprite *a)
@@ -159,7 +159,7 @@ void unkFunc8000A580(struct Sprite *a)
                 if (a != NULL)
                     a->unk48 = 2;
                 screenFadeInfo.unk4 = 0xFFFFFF;
-                func_8002CF38(59, 2);
+                g_play_music(59, 2);
             }
             break;
         }
@@ -168,7 +168,7 @@ void unkFunc8000A580(struct Sprite *a)
             lbl_801EEC68.unk0 = 60;
             if (a != NULL)
                 a->unk48 = 3;
-            func_8002CF38(60, 2);
+            g_play_music(60, 2);
         }
     }
 }
@@ -196,12 +196,7 @@ void unkFunc8000A924(struct Sprite *a)
 
 void unkFunc8000AA00(struct Sprite *a)
 {
-    struct Ball *ball;
-    struct Ball *r5;
-    s8 *r6;
-    int i;
-
-    gamePauseStatus &= ~(1<<(31-0x1C));
+    gamePauseStatus &= ~(1 << 3);
     switch (lbl_801EEC68.unk10)
     {
     case 0:
@@ -210,7 +205,7 @@ void unkFunc8000AA00(struct Sprite *a)
         case 0:
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             if (modeCtrl.gameType == GAMETYPE_MINI_BILLIARDS)
                 lbl_801EEC68.unk4 |= 0x20;
             break;
@@ -229,10 +224,10 @@ void unkFunc8000AA00(struct Sprite *a)
         case 0:
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             break;
         case 1:
-            if (lbl_801EEC68.unk4 & (1<<(31-0x1D)))
+            if (lbl_801EEC68.unk4 & (1 << 2))
             {
                 lbl_802F1B98 = 3;
                 gamePauseStatus |= 8;
@@ -271,27 +266,16 @@ void unkFunc8000AA00(struct Sprite *a)
         case 0:
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             break;
         case 1:
             infoWork.unk1E++;
-            r5 = currentBallStructPtr;
-            ball = &ballInfo[0];
-            r6 = spritePoolInfo.unkC;
-            for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r6++)
-            {
-                if (*r6 == 2)
-                {
-                    currentBallStructPtr = ball;
-                    ball->flags |= 0x800000;
-                }
-            }
-            currentBallStructPtr = r5;
+            BALL_FOREACH( ball->flags |= BALL_FLAG_23; )
             gameSubmodeRequest = SMD_GAME_READY_INIT;
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             break;
         case 2:
-            if (lbl_801EEC68.unk4 & (1<<(31-0x1D)))
+            if (lbl_801EEC68.unk4 & (1 << 2))
             {
                 lbl_802F1B98 = 3;
                 gamePauseStatus |= 8;
@@ -327,12 +311,12 @@ void unkFunc8000AA00(struct Sprite *a)
         case 0:
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             break;
         case 1:
             destroy_sprite_with_tag(4);
             modeCtrl.levelSetFlags |= 0x4000;
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             break;
         case 2:
             unkFunc8000A924(a);
@@ -349,13 +333,13 @@ void unkFunc8000AA00(struct Sprite *a)
         case 0:
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             lbl_801EEC68.unk4 |= 0x20;
             break;
         case 1:
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            func_8002CF38(100, 10);
+            g_play_music(100, 10);
             lbl_801EEC68.unk4 |= 0x20;
             break;
         case 2:
@@ -426,8 +410,8 @@ void unkFunc8000B09C(void)
     struct Sprite *sprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-     && !(infoWork.unk0 & (1<<(31-0x17)))
-     && ((infoWork.unk0 & (1<<(31-0x1A))) || (infoWork.unk0 & (1<<(31-0x19))) || (infoWork.unk0 & (1<<(31-0x1B))))
+     && !(infoWork.unk0 & (1 << 8))
+     && ((infoWork.unk0 & (1 << 5)) || (infoWork.unk0 & (1 << 6)) || (infoWork.unk0 & (1 << 4)))
      && func_8004C70C() != 0)
         lbl_801EEC68.unk4 |= 4;
     else
@@ -439,7 +423,7 @@ void unkFunc8000B09C(void)
         unkFunc8000A26C(sprite);
     else
     {
-        if (gamePauseStatus & (1<<(31-0x1C)))
+        if (gamePauseStatus & (1 << 3))
         {
             if (!(lbl_801EEC68.unk4 & 1))
                 unkFunc8000A580(sprite);
@@ -455,7 +439,7 @@ void unkFunc8000B09C(void)
             }
             else
                 unkFunc8000AECC(sprite);
-            if (!(dipSwitches & DIP_DEBUG) || !(gamePauseStatus & (1<<(31-0x1E))))
+            if (!(dipSwitches & DIP_DEBUG) || !(gamePauseStatus & (1 << 1)))
             {
                 if (sprite != NULL)
                     func_80075E1C(0, sprite);

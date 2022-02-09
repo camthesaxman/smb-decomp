@@ -570,8 +570,8 @@ func_80092D34:
 /* 80092D34 0008EC54  80 6D 9F 70 */	lwz r3, lbl_802F2150@sda21(r13)
 /* 80092D38 0008EC58  4E 80 00 20 */	blr
 
-.global func_80092D3C
-func_80092D3C:
+.global g_draw_ball_shadow
+g_draw_ball_shadow:
 /* 80092D3C 0008EC5C  7C 08 02 A6 */	mflr r0
 /* 80092D40 0008EC60  3C 60 80 2B */	lis r3, lbl_802B57A0@ha
 /* 80092D44 0008EC64  90 01 00 04 */	stw r0, 4(r1)

@@ -667,7 +667,7 @@ struct Struct801EEC68
     s16 unk16;
 };
 
-struct Struct802BA200
+struct FogInfo
 {
     s8 unk0;
     u8 filler1[3];

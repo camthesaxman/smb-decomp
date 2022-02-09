@@ -1,32 +1,39 @@
+/*               id                    fname        oldfname song backdropColor (RGBA)*/
+#define BACKGROUND_LIST \
+/*01*/ DEFINE_BG(BG_TYPE_BLUESKY_A,     NULL,        "bg_a",  -1, 0xFFFFFFFF) \
+/*02*/ DEFINE_BG(BG_TYPE_NIGHT_B,       NULL,        "bg_b",  -1, 0x113967FF) \
+/*03*/ DEFINE_BG(BG_TYPE_SUNSET_C,      NULL,        "bg_c",  -1, 0x383D6CFF) \
+/*04*/ DEFINE_BG(BG_TYPE_WATER_C,       NULL,        "bg_d",  -1, 0x001A4DFF) \
+/*05*/ DEFINE_BG(BG_TYPE_STORM_D,       NULL,        "bg_e",  -1, 0x8398EDFF) \
+/*06*/ DEFINE_BG(BG_TYPE_ICE_E,         NULL,        "bg_f",  -1, 0x00000000) \
+/*07*/ DEFINE_BG(BG_TYPE_SAND_G,        NULL,        "bg_g",  -1, 0x1D4AB500) \
+/*08*/ DEFINE_BG(BG_TYPE_SPACE_H,       NULL,        "bg_h",  -1, 0x00000000) \
+/*09*/ DEFINE_BG(BG_TYPE_CAVE_I,        NULL,        "bg_i",  -1, 0x00000000) \
+/*10*/ DEFINE_BG(BG_TYPE_BONUS_J,       NULL,        "bg_j",  -1, 0x00000000) \
+/*11*/ DEFINE_BG(BG_TYPE_EXTRAMASTER_J, NULL,        "bg_j",  -1, 0x00000000) \
+/*12*/ DEFINE_BG(BG_TYPE_E3,            NULL,        NULL,    20, 0x00000000) \
+/*13*/ DEFINE_BG(BG_TYPE_JUN,           "bg_jun",    NULL,    20, 0xFFFFFFFF) \
+/*14*/ DEFINE_BG(BG_TYPE_WAT,           "bg_wat",    NULL,    22, 0x000000FF) \
+/*15*/ DEFINE_BG(BG_TYPE_NIG,           "bg_nig",    NULL,    24, 0x000000FF) \
+/*16*/ DEFINE_BG(BG_TYPE_SUN,           "bg_sun",    NULL,    26, 0x000000FF) \
+/*17*/ DEFINE_BG(BG_TYPE_SPA,           "bg_spa",    NULL,    28, 0x000000FF) \
+/*18*/ DEFINE_BG(BG_TYPE_SND,           "bg_snd",    NULL,    30, 0xD8BC77FF) \
+/*19*/ DEFINE_BG(BG_TYPE_ICE2,          "bg_ice",    NULL,    32, 0x000000FF) \
+/*20*/ DEFINE_BG(BG_TYPE_STM,           "bg_stm",    NULL,    34, 0x000000FF) \
+/*21*/ DEFINE_BG(BG_TYPE_BNS,           "bg_bns",    NULL,    36, 0x000000FF) \
+/*22*/ DEFINE_BG(BG_TYPE_PIL,           "bg_pil",    NULL,    -1, 0xFFFFFFFF) \
+/*23*/ DEFINE_BG(BG_TYPE_BIL,           NULL,        NULL,    -1, 0xFFFFFFFF) \
+/*24*/ DEFINE_BG(BG_TYPE_GOL,           "bg_gol",    NULL,    -1, 0xFFFFFFFF) \
+/*25*/ DEFINE_BG(BG_TYPE_BOW,           "bg_bow",    NULL,    -1, 0xFFFFFFFF) \
+/*26*/ DEFINE_BG(BG_TYPE_MST,           "bg_mst",    NULL,    38, 0xFFFFCDFF) \
+/*27*/ DEFINE_BG(BG_TYPE_END,           "bg_ending", NULL,    -1, 0xFFFFFFFF)
+
 enum
 {
-    BG_TYPE_BLUESKY_A = 1,
-    BG_TYPE_NIGHT_B,
-    BG_TYPE_SUNSET_C,
-    BG_TYPE_WATER_C,
-    BG_TYPE_STORM_D,  // 5
-    BG_TYPE_ICE_E,
-    BG_TYPE_SAND_G,
-    BG_TYPE_SPACE_H,
-    BG_TYPE_CAVE_I,
-    BG_TYPE_BONUS_J,  // 10
-    BG_TYPE_EXTRAMASTER_J,
-    BG_TYPE_E3,
-    BG_TYPE_JUN,
-    BG_TYPE_WAT,
-    BG_TYPE_NIG,  // 15
-    BG_TYPE_SUN,
-    BG_TYPE_SPA,
-    BG_TYPE_SND,
-    BG_TYPE_ICE2,
-    BG_TYPE_STM,  // 20
-    BG_TYPE_BNS,
-    BG_TYPE_PIL,
-    BG_TYPE_BIL,
-    BG_TYPE_GOL,
-    BG_TYPE_BOW,  // 25
-    BG_TYPE_MST,
-    BG_TYPE_END,
+    BG_NULL = 0,
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) id,
+    BACKGROUND_LIST
+#undef DEFINE_BG
 };
 
 struct BackgroundInfo  // size = 0xA8

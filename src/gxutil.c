@@ -7,9 +7,9 @@
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 
-struct Struct80171B40
+struct FogParams
 {
-    s8 unk0;
+    s8 bgId;
     u8 unk1;
     u8 filler2;
     float unk4;  // start
@@ -100,53 +100,53 @@ asm void g_gxutil_upload_some_mtx(Mtx a, int b)
 
 #pragma peephole on  // above function isn't pure asm?
 
-const struct Struct80171B40 lbl_80171B40[] =
+const struct FogParams bgFogParamsTable[] =
 {
-    { 19, 5, 0, 150.0f, 1880.0f, { 236, 250, 255, 0 } },
-    { -1, 0, 0,   0.0f,    0.0f, { 0 } },
+    { BG_TYPE_ICE2, 5, 0, 150.0f, 1880.0f, { 236, 250, 255, 0 } },
+    { -1,           0, 0,   0.0f,    0.0f, { 0 } },
 };
 
-struct Struct802BA200 lbl_802BA200;
+struct FogInfo fogInfo;
 
-void func_8009AAB0(void)
+void g_init_bg_fog_params(void)
 {
-    const struct Struct80171B40 *r6 = lbl_80171B40;
+    const struct FogParams *params = bgFogParamsTable;
 
-    while (r6->unk0 != -1)
+    while (params->bgId != -1)
     {
-        if (r6->unk0 == backgroundInfo.bgId)
+        if (params->bgId == backgroundInfo.bgId)
         {
-            lbl_802BA200.unkF = 1;
-            lbl_802BA200.unk0 = r6->unk1;
-            lbl_802BA200.unk4 = r6->unk4;
-            lbl_802BA200.unk8 = r6->unk8;
-            lbl_802BA200.r = r6->unkC.r;
-            lbl_802BA200.g = r6->unkC.g;
-            lbl_802BA200.b = r6->unkC.b;
+            fogInfo.unkF = 1;
+            fogInfo.unk0 = params->unk1;
+            fogInfo.unk4 = params->unk4;
+            fogInfo.unk8 = params->unk8;
+            fogInfo.r = params->unkC.r;
+            fogInfo.g = params->unkC.g;
+            fogInfo.b = params->unkC.b;
             return;
         }
-        r6++;
+        params++;
     }
 
-    lbl_802BA200.unkF = 0;
-    lbl_802BA200.unk0 = 5;
-    lbl_802BA200.unk4 = 0.0f;
-    lbl_802BA200.unk8 = 100.0f;
-    lbl_802BA200.r = 0;
-    lbl_802BA200.g = 0;
-    lbl_802BA200.b = 0;
+    fogInfo.unkF = 0;
+    fogInfo.unk0 = 5;
+    fogInfo.unk4 = 0.0f;
+    fogInfo.unk8 = 100.0f;
+    fogInfo.r = 0;
+    fogInfo.g = 0;
+    fogInfo.b = 0;
 }
 
 void func_8009AB5C(void)
 {
-    func_8008F878(lbl_802BA200.unkF);
-    func_80033B50(lbl_802BA200.unkF);
-    if (lbl_802BA200.unkF != 0)
+    func_8008F878(fogInfo.unkF);
+    func_80033B50(fogInfo.unkF);
+    if (fogInfo.unkF != 0)
     {
-        func_8008F880(lbl_802BA200.unk0, lbl_802BA200.unk4, lbl_802BA200.unk8);
-        func_8008F890(lbl_802BA200.r, lbl_802BA200.g, lbl_802BA200.b);
-        func_80033B58(lbl_802BA200.unk0, lbl_802BA200.unk4, lbl_802BA200.unk8);
-        g_nl2ngc_set_some_other_color(lbl_802BA200.r, lbl_802BA200.g, lbl_802BA200.b);
+        func_8008F880(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
+        func_8008F890(fogInfo.r, fogInfo.g, fogInfo.b);
+        func_80033B58(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
+        g_nl2ngc_set_some_other_color(fogInfo.r, fogInfo.g, fogInfo.b);
     }
 }
 
@@ -158,19 +158,19 @@ void func_8009AC0C(s8 a)
 
 void func_8009AC44(void)
 {
-    func_8008F878(lbl_802BA200.unkF);
-    func_80033B50(lbl_802BA200.unkF);
+    func_8008F878(fogInfo.unkF);
+    func_80033B50(fogInfo.unkF);
 }
 
 void func_8009AC8C(void)
 {
     GXColor sp10;
 
-    sp10.r = lbl_802BA200.r;
-    sp10.g = lbl_802BA200.g;
-    sp10.b = lbl_802BA200.b;
-    if (lbl_802BA200.unkF != 0)
-        func_8009E398(lbl_802BA200.unk0, sp10, lbl_802BA200.unk4, lbl_802BA200.unk8, 0.1f, 20000.0f);
+    sp10.r = fogInfo.r;
+    sp10.g = fogInfo.g;
+    sp10.b = fogInfo.b;
+    if (fogInfo.unkF != 0)
+        func_8009E398(fogInfo.unk0, sp10, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f);
     else
         func_8009E398(0, sp10, 0.0f, 100.0f, 0.1f, 20000.0f);
 }

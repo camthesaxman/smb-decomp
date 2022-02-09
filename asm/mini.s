@@ -160,7 +160,7 @@ submode_mini_select_init_func:
 /* 80093C0C 0008FB2C  4B FD C9 D9 */	bl free_all_bitmap_groups_except_com
 /* 80093C10 0008FB30  38 60 FF FF */	li r3, -1
 /* 80093C14 0008FB34  38 80 00 01 */	li r4, 1
-/* 80093C18 0008FB38  4B F9 93 21 */	bl func_8002CF38
+/* 80093C18 0008FB38  4B F9 93 21 */	bl g_play_music
 /* 80093C1C 0008FB3C  38 60 00 00 */	li r3, 0
 /* 80093C20 0008FB40  38 00 00 91 */	li r0, 0x91
 /* 80093C24 0008FB44  B0 6D 9F 90 */	sth r3, lbl_802F2170@sda21(r13)

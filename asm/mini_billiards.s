@@ -227,7 +227,7 @@ lbl_00000350:
 /* 0000039C B0030000 */ sth r0, gameSubmodeRequest@l(r3)
 /* 000003A0 38600034 */ li r3, 0x34
 /* 000003A4 38800000 */ li r4, 0
-/* 000003A8 4BFFFD8D */ bl func_8002CF38
+/* 000003A8 4BFFFD8D */ bl g_play_music
 /* 000003AC 3860000F */ li r3, 0xf
 /* 000003B0 4BFFFD85 */ bl event_start
 /* 000003B4 38600041 */ li r3, 0x41
@@ -1857,7 +1857,7 @@ lbl_00001B28:
 lbl_00001B8C:
 /* 00001B8C 38600064 */ li r3, 0x64
 /* 00001B90 38800008 */ li r4, 8
-/* 00001B94 4BFFE5A1 */ bl func_8002CF38
+/* 00001B94 4BFFE5A1 */ bl g_play_music
 /* 00001B98 480007BC */ b lbl_00002354
 lbl_00001B9C:
 /* 00001B9C 2C000017 */ cmpwi r0, 0x17
@@ -2130,7 +2130,7 @@ lbl_00001DC8:
 /* 00001FA0 4BFFE195 */ bl func_8002BFCC
 /* 00001FA4 38600000 */ li r3, 0
 /* 00001FA8 38800008 */ li r4, 8
-/* 00001FAC 4BFFE189 */ bl func_8002CF38
+/* 00001FAC 4BFFE189 */ bl g_play_music
 /* 00001FB0 480003A4 */ b lbl_00002354
 lbl_00001FB4:
 /* 00001FB4 3C600000 */ lis r3, lbl_802F1DFC@ha
@@ -2252,7 +2252,7 @@ lbl_0000207C:
 /* 00002170 4BFFDFC5 */ bl func_8002BFCC
 /* 00002174 38600000 */ li r3, 0
 /* 00002178 38800008 */ li r4, 8
-/* 0000217C 4BFFDFB9 */ bl func_8002CF38
+/* 0000217C 4BFFDFB9 */ bl g_play_music
 /* 00002180 3BE00000 */ li r31, 0
 /* 00002184 9BFC000F */ stb r31, 0xf(r28)
 /* 00002188 38600002 */ li r3, 2
@@ -6051,7 +6051,7 @@ lbl_00005894:
 lbl_000058A0:
 /* 000058A0 38600000 */ li r3, 0
 /* 000058A4 38800008 */ li r4, 8
-/* 000058A8 4BFFA88D */ bl func_8002CF38
+/* 000058A8 4BFFA88D */ bl g_play_music
 /* 000058AC C01F08B4 */ lfs f0, 0x8b4(r31)
 /* 000058B0 3C600000 */ lis r3, cameraInfo@ha
 /* 000058B4 D4030000 */ stfsu f0, cameraInfo@l(r3)
@@ -6395,7 +6395,7 @@ lbl_00005C70:
 /* 00005DA4 4BFFDF25 */ bl lbl_00003CC8
 /* 00005DA8 38600064 */ li r3, 0x64
 /* 00005DAC 38800008 */ li r4, 8
-/* 00005DB0 4BFFA385 */ bl func_8002CF38
+/* 00005DB0 4BFFA385 */ bl g_play_music
 lbl_00005DB4:
 /* 00005DB4 8001001C */ lwz r0, 0x1c(r1)
 /* 00005DB8 83E10014 */ lwz r31, 0x14(r1)
@@ -7473,7 +7473,7 @@ lbl_00006D4C:
 /* 00006D60 4BFF93D5 */ bl event_start
 /* 00006D64 38600064 */ li r3, 0x64
 /* 00006D68 38800008 */ li r4, 8
-/* 00006D6C 4BFF93C9 */ bl func_8002CF38
+/* 00006D6C 4BFF93C9 */ bl g_play_music
 /* 00006D70 48011299 */ bl lbl_00018008
 /* 00006D74 881A0004 */ lbz r0, 4(r26)
 /* 00006D78 7C000775 */ extsb. r0, r0
@@ -7900,7 +7900,7 @@ lbl_00007334:
 /* 0000739C 4BFF8D99 */ bl event_start
 /* 000073A0 38600064 */ li r3, 0x64
 /* 000073A4 38800008 */ li r4, 8
-/* 000073A8 4BFF8D8D */ bl func_8002CF38
+/* 000073A8 4BFF8D8D */ bl g_play_music
 /* 000073AC 3860000D */ li r3, 0xd
 /* 000073B0 4BFF8D85 */ bl event_start
 /* 000073B4 881E001E */ lbz r0, 0x1e(r30)
@@ -8135,7 +8135,7 @@ lbl_000075F0:
 /* 0000771C 4BFFC5AD */ bl lbl_00003CC8
 /* 00007720 38600064 */ li r3, 0x64
 /* 00007724 38800008 */ li r4, 8
-/* 00007728 4BFF8A0D */ bl func_8002CF38
+/* 00007728 4BFF8A0D */ bl g_play_music
 /* 0000772C 48000098 */ b lbl_000077C4
 lbl_00007730:
 /* 00007730 38000000 */ li r0, 0
@@ -8174,7 +8174,7 @@ lbl_00007730:
 /* 000077B4 4BFF8981 */ bl func_8008C4A0
 /* 000077B8 38600064 */ li r3, 0x64
 /* 000077BC 38800008 */ li r4, 8
-/* 000077C0 4BFF8975 */ bl func_8002CF38
+/* 000077C0 4BFF8975 */ bl g_play_music
 lbl_000077C4:
 /* 000077C4 BAA10034 */ lmw r21, 0x34(r1)
 /* 000077C8 80010064 */ lwz r0, 0x64(r1)
@@ -8275,7 +8275,7 @@ lbl_00007908:
 /* 0000792C 4BFF8809 */ bl g_start_screen_fade
 /* 00007930 3860003C */ li r3, 0x3c
 /* 00007934 38800002 */ li r4, 2
-/* 00007938 4BFF87FD */ bl func_8002CF38
+/* 00007938 4BFF87FD */ bl g_play_music
 lbl_0000793C:
 /* 0000793C 801F0020 */ lwz r0, 0x20(r31)
 /* 00007940 2C00FFFF */ cmpwi r0, -1

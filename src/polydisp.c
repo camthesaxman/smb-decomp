@@ -35,7 +35,7 @@ FORCE_BSS_ORDER(lbl_801EEC90)
 
 void polydisp_init(void)
 {
-    func_8009AAB0();
+    g_init_bg_fog_params();
 }
 
 static inline void show_loading_msg(void)
@@ -266,7 +266,7 @@ void draw_intro_av_logo(void)
 
 void draw_adv_demo_scene(void)
 {
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
@@ -579,14 +579,14 @@ void draw_normal_game_scene(void)
         {
             if (spritePoolInfo.unkC[i] == 0
              || spritePoolInfo.unkC[i] == 4
-             || (cameraInfo[i].flags & (1 << (31-0x19))))
+             || (cameraInfo[i].flags & (1 << 6)))
             {
-                if (!(cameraInfo[i].flags & (1 << (31-0x18))))
+                if (!(cameraInfo[i].flags & (1 << 7)))
                     continue;
             }
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
-            func_80092D3C();
+            g_draw_ball_shadow();
             func_80054FF0();
             func_800225C0(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -594,7 +594,7 @@ void draw_normal_game_scene(void)
             draw_monkey();
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                stage_draw();  // draws stage
+                stage_draw();
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
@@ -638,7 +638,7 @@ void func_8000C7A4(void)
     for (i = 0; i < 4; i++)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f
-         && (cameraInfo[i].flags & (1 << (31-0x19))))
+         && (cameraInfo[i].flags & (1 << 6)))
         {
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
@@ -681,7 +681,7 @@ void func_8000C8D4(void)
     {
         if (*r25 == 0 || *r25 == 4)
             continue;
-        if ((ball->flags & (1 << (31-0x1B))))
+        if ((ball->flags & (1 << 4)))
             continue;
         mathutil_mtxA_from_identity();
         f27 = 0.8 - 0.1 * (((unpausedFrameCounter / 16) + i) % 3);
@@ -710,7 +710,7 @@ void func_8000CA9C(void)
 
     lbl_801EEC90.unk0 |= 1;
     func_80018648(modeCtrl.unk2C);
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     func_800225C0(modeCtrl.unk2C);
     draw_monkey();
@@ -841,7 +841,7 @@ void func_8000CA9C(void)
 void func_8000CF94(void)
 {
     func_80018648(modeCtrl.unk2C);
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     draw_monkey();
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -870,7 +870,7 @@ void func_8000D018(void)
                 lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
-            func_80092D3C();
+            g_draw_ball_shadow();
             func_80054FF0();
             func_800225C0(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -1267,7 +1267,7 @@ void set_backdrop_color(void)
         case SMD_GAME_INTR_SEL_MAIN:
         case SMD_GAME_OVER_POINT_INIT:
         case SMD_GAME_OVER_POINT_MAIN:
-            if ((modeCtrl.levelSetFlags & (3<<(31-0x1A))) == 0)
+            if ((modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))) == 0)
             {
                 color.r = 0;
                 color.g = 0;
@@ -1336,11 +1336,11 @@ void set_backdrop_color(void)
         break;
     }
 
-    if (r0 && lbl_802BA200.unkF != 0)
+    if (r0 && fogInfo.unkF != 0)
     {
-        color.r = lbl_802BA200.r;
-        color.g = lbl_802BA200.g;
-        color.b = lbl_802BA200.b;
+        color.r = fogInfo.r;
+        color.g = fogInfo.g;
+        color.b = fogInfo.b;
     }
     GXSetCopyClear(color, 0x00FFFFFF);
 }

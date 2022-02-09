@@ -28,7 +28,7 @@ submode_mini_ranking_init_func:
 /* 800A7580 000A34A0  98 05 00 01 */	stb r0, 1(r5)
 /* 800A7584 000A34A4  98 05 00 02 */	stb r0, 2(r5)
 /* 800A7588 000A34A8  98 05 00 03 */	stb r0, 3(r5)
-/* 800A758C 000A34AC  4B F8 59 AD */	bl func_8002CF38
+/* 800A758C 000A34AC  4B F8 59 AD */	bl g_play_music
 /* 800A7590 000A34B0  3C 60 80 0A */	lis r3, lbl_800A7A6C@ha
 /* 800A7594 000A34B4  38 63 7A 6C */	addi r3, r3, lbl_800A7A6C@l
 /* 800A7598 000A34B8  38 00 00 A5 */	li r0, 0xa5
@@ -4290,7 +4290,7 @@ func_800AB2A0:
 /* 800AB2D0 000A71F0  41 82 00 10 */	beq lbl_800AB2E0
 /* 800AB2D4 000A71F4  38 60 00 42 */	li r3, 0x42
 /* 800AB2D8 000A71F8  38 80 00 00 */	li r4, 0
-/* 800AB2DC 000A71FC  4B F8 1C 5D */	bl func_8002CF38
+/* 800AB2DC 000A71FC  4B F8 1C 5D */	bl g_play_music
 lbl_800AB2E0:
 /* 800AB2E0 000A7200  38 60 00 65 */	li r3, 0x65
 /* 800AB2E4 000A7204  4B FC 54 6D */	bl destroy_sprite_with_tag

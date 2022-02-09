@@ -27,65 +27,18 @@ struct BackgroundInfo backgroundInfo =
 GXColor bgBackdropColors[] =
 {
     { 0x00, 0x00, 0x00, 0x00 },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0x11, 0x39, 0x67, 0xFF },
-    { 0x38, 0x3D, 0x6C, 0xFF },
-    { 0x00, 0x1A, 0x4D, 0xFF },
-    { 0x83, 0x98, 0xED, 0xFF },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x1D, 0x4A, 0xB5, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0xD8, 0xBC, 0x77, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xCD, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) \
+    { (backdropColor >> 24) & 0xFF, (backdropColor >> 16) & 0xFF, (backdropColor >> 8) & 0xFF, (backdropColor >> 0) & 0xFF },
+    BACKGROUND_LIST
+#undef DEFINE_BG
 };
 
 char *bgTypeNames[] =
 {
     "NULL",
-    "BG_TYPE_BLUESKY_A",
-    "BG_TYPE_NIGHT_B",
-    "BG_TYPE_SUNSET_C",
-    "BG_TYPE_WATER_C",
-    "BG_TYPE_STORM_D",
-    "BG_TYPE_ICE_E",
-    "BG_TYPE_SAND_G",
-    "BG_TYPE_SPACE_H",
-    "BG_TYPE_CAVE_I",
-    "BG_TYPE_BONUS_J",
-    "BG_TYPE_EXTRAMASTER_J",
-    "BG_TYPE_E3",
-    "BG_TYPE_JUN",
-    "BG_TYPE_WAT",
-    "BG_TYPE_NIG",
-    "BG_TYPE_SUN",
-    "BG_TYPE_SPA",
-    "BG_TYPE_SND",
-    "BG_TYPE_ICE2",
-    "BG_TYPE_STM",
-    "BG_TYPE_BNS",
-    "BG_TYPE_PIL",
-    "BG_TYPE_BIL",
-    "BG_TYPE_GOL",
-    "BG_TYPE_BOW",
-    "BG_TYPE_MST",
-    "BG_TYPE_END",
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) #id,
+    BACKGROUND_LIST
+#undef DEFINE_BG
     NULL,
 };
 
@@ -221,7 +174,6 @@ void (*bgDrawFuncs[])(void) =
     NULL,
 };
 
-// 4E0
 void (*lbl_801B9658[])(int) =
 {
     NULL,
@@ -255,7 +207,6 @@ void (*lbl_801B9658[])(int) =
     NULL,
 };
 
-// 554
 int (*lbl_801B96CC[])() =
 {
     NULL,
@@ -289,7 +240,6 @@ int (*lbl_801B96CC[])() =
     NULL,
 };
 
-// 5C8
 int (*lbl_801B9740[])() =
 {
     NULL,
@@ -323,71 +273,21 @@ int (*lbl_801B9740[])() =
     NULL,
 };
 
-// 648
 char *bgFileNames[] =
 {
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    "bg_jun",
-    "bg_wat",
-    "bg_nig",
-    "bg_sun",
-    "bg_spa",
-    "bg_snd",
-    "bg_ice",
-    "bg_stm",
-    "bg_bns",
-    "bg_pil",
-    NULL,
-    "bg_gol",
-    "bg_bow",
-    "bg_mst",
-    "bg_ending",
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) fname,
+    BACKGROUND_LIST
+#undef DEFINE_BG
     NULL,
 };
 
-// 6BC
 char *oldBgFileNames[] =
 {
     NULL,
-    "bg_a",
-    "bg_b",
-    "bg_c",
-    "bg_d",
-    "bg_e",
-    "bg_f",
-    "bg_g",
-    "bg_h",
-    "bg_i",
-    "bg_j",
-    "bg_j",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) oldfname,
+    BACKGROUND_LIST
+#undef DEFINE_BG
     NULL,
 };
 
@@ -564,7 +464,7 @@ u32 lbl_801B98A8[] =
 u8 stageBackgrounds[] =
 {
 #define DEFINE_STAGE(id, bg) bg,
-STAGE_LIST
+    STAGE_LIST
 #undef DEFINE_STAGE
 };
 
@@ -768,8 +668,8 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
 
     if (b == NULL)
         return;
-    if (lbl_801EEC90.unk0 & 0x11)
-        r30 = 16;
+    if (lbl_801EEC90.unk0 & ((1 << 0)|(1 << 4)))
+        r30 = 1 << 4;
     else if (gameMode == MD_GAME || gameMode == MD_MINI)
         r30 = 1 << (modeCtrl.unk30 - 1);
     else
@@ -778,10 +678,10 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
     {
         if (!(b->unk0 & r30))
             continue;
-        if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
-         && (b->unk0 & (1 << (31-0x18))))
+        if ((lbl_801EEC90.unk0 & (1 << 2))
+         && (b->unk0 & (1 << 7)))
             continue;
-        if (!(b->unk0 & (1 << (31-15))))
+        if (!(b->unk0 & (1 << 16)))
             continue;
         if (b->unk2C >= 1.0)
             continue;
@@ -795,7 +695,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         mathutil_mtxA_scale(&b->scale);
         f29 = MAX(b->scale.x, b->scale.y);
         f29 = MAX(b->scale.z, f29);
-        if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
+        if ((lbl_801EEC90.unk0 & (1 << 2))
          && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
             continue;
         if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
@@ -808,7 +708,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
             func_800224CC();
             func_80022274(r23 + 6);
         }
-        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << (31-7))))
+        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
         g_avdisp_set_model_scale(f29);
         if (b->unk2C < FLT_EPSILON)

@@ -3017,7 +3017,7 @@ credits_finish:
 /* 800AFCE0 000ABC00  4B FC 08 E5 */	bl call_bitmap_free_group
 /* 800AFCE4 000ABC04  38 60 00 46 */	li r3, 0x46
 /* 800AFCE8 000ABC08  38 80 00 01 */	li r4, 1
-/* 800AFCEC 000ABC0C  4B F7 D2 4D */	bl func_8002CF38
+/* 800AFCEC 000ABC0C  4B F7 D2 4D */	bl g_play_music
 /* 800AFCF0 000ABC10  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800AFCF4 000ABC14  38 21 00 08 */	addi r1, r1, 8
 /* 800AFCF8 000ABC18  7C 08 03 A6 */	mtlr r0
@@ -3067,7 +3067,7 @@ credits_init:
 /* 800AFD9C 000ABCBC  4B F5 B5 8D */	bl event_start
 /* 800AFDA0 000ABCC0  38 60 00 46 */	li r3, 0x46
 /* 800AFDA4 000ABCC4  38 80 00 00 */	li r4, 0
-/* 800AFDA8 000ABCC8  4B F7 D1 91 */	bl func_8002CF38
+/* 800AFDA8 000ABCC8  4B F7 D1 91 */	bl g_play_music
 /* 800AFDAC 000ABCCC  38 60 00 3F */	li r3, 0x3f
 /* 800AFDB0 000ABCD0  4B F6 8C 55 */	bl camera_set_state
 /* 800AFDB4 000ABCD4  38 60 00 03 */	li r3, 3
@@ -4014,7 +4014,7 @@ func_800B0B48:
 /* 800B0B78 000ACA98  3B 83 EC 20 */	addi r28, r3, modeCtrl@l
 /* 800B0B7C 000ACA9C  80 7C 00 2C */	lwz r3, 0x2c(r28)
 /* 800B0B80 000ACAA0  4B F6 7A C9 */	bl func_80018648
-/* 800B0B84 000ACAA4  4B FE 21 B9 */	bl func_80092D3C
+/* 800B0B84 000ACAA4  4B FE 21 B9 */	bl g_draw_ball_shadow
 /* 800B0B88 000ACAA8  4B FA 44 69 */	bl func_80054FF0
 /* 800B0B8C 000ACAAC  80 7C 00 2C */	lwz r3, 0x2c(r28)
 /* 800B0B90 000ACAB0  4B F7 1A 31 */	bl func_800225C0

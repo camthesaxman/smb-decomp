@@ -183,7 +183,7 @@ void view_draw(void)
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(1);
     view_apply_camera(camera);
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     func_800225C0(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)

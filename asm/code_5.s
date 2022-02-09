@@ -5953,8 +5953,8 @@ lbl_800793B4:
 /* 800793C4 000752E4  38 21 00 28 */	addi r1, r1, 0x28
 /* 800793C8 000752E8  4E 80 00 20 */	blr
 
-.global func_800793CC
-func_800793CC:
+.global g_init_main_normal_hud
+g_init_main_normal_hud:
 /* 800793CC 000752EC  7C 08 02 A6 */	mflr r0
 /* 800793D0 000752F0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800793D4 000752F4  90 01 00 04 */	stw r0, 4(r1)
@@ -6929,8 +6929,8 @@ lbl_8007A1FC:
 /* 8007A220 00076140  38 21 00 58 */	addi r1, r1, 0x58
 /* 8007A224 00076144  4E 80 00 20 */	blr
 
-.global func_8007A228
-func_8007A228:
+.global g_init_main_competition_hud
+g_init_main_competition_hud:
 /* 8007A228 00076148  7C 08 02 A6 */	mflr r0
 /* 8007A22C 0007614C  3C 60 80 1F */	lis r3, infoWork@ha
 /* 8007A230 00076150  90 01 00 04 */	stw r0, 4(r1)
@@ -13286,7 +13286,7 @@ lbl_8007FEF0:
 /* 8007FF04 0007BE24  4B FA C3 F1 */	bl SoundPitch
 /* 8007FF08 0007BE28  38 60 00 1E */	li r3, 0x1e
 /* 8007FF0C 0007BE2C  38 80 00 08 */	li r4, 8
-/* 8007FF10 0007BE30  4B FA D0 29 */	bl func_8002CF38
+/* 8007FF10 0007BE30  4B FA D0 29 */	bl g_play_music
 /* 8007FF14 0007BE34  38 00 00 02 */	li r0, 2
 /* 8007FF18 0007BE38  90 1F 00 48 */	stw r0, 0x48(r31)
 /* 8007FF1C 0007BE3C  38 00 00 78 */	li r0, 0x78
@@ -13302,7 +13302,7 @@ lbl_8007FF28:
 /* 8007FF40 0007BE60  90 1F 00 48 */	stw r0, 0x48(r31)
 /* 8007FF44 0007BE64  38 60 00 64 */	li r3, 0x64
 /* 8007FF48 0007BE68  38 80 00 08 */	li r4, 8
-/* 8007FF4C 0007BE6C  4B FA CF ED */	bl func_8002CF38
+/* 8007FF4C 0007BE6C  4B FA CF ED */	bl g_play_music
 lbl_8007FF50:
 /* 8007FF50 0007BE70  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8007FF54 0007BE74  83 E1 00 14 */	lwz r31, 0x14(r1)

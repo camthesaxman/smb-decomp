@@ -10,7 +10,7 @@ void gxutil_clear_vtx_attrs(void);
 void gxutil_set_vtx_attrs(u32);
 void gxutil_dummy(void);
 void g_gxutil_upload_some_mtx(Mtx, int);
-void func_8009AAB0(void);
+void g_init_bg_fog_params(void);
 void func_8009AB5C();
 // ? func_8009AC0C();
 // ? func_8009AC44();

@@ -500,7 +500,7 @@ void load_stage(int stageId)
         loadedStageId = stageId;
     }
     func_80021DB4(stageId);
-    func_8009AAB0();
+    g_init_bg_fog_params();
     currStageId = stageId;
     if (stageEvState != EV_STATE_INACTIVE)
         event_start(EVENT_STAGE);

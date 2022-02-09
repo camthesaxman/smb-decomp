@@ -213,6 +213,7 @@ void ev_camera_main(void)
             if (!(camera->flags & (1 << 2)))
             {
                 mathutil_mtxA_to_mtx(camera->unk1A4);
+                // do stage tilt
                 if (eventInfo[EVENT_WORLD].state == EV_STATE_RUNNING
                  && !(camera->flags & (1 << 3)))
                 {

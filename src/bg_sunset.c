@@ -119,6 +119,7 @@ void bg_sunset_draw(void)
     r30_ = r30->unk8;
     for (i = r30->unk4; i > 0; i--, r30_++)
         r30_->unk0->unk0 &= ~0x10000;
+    // draw cloud layers
     if (r30->unk4 != 0)
     {
         func_8008F6D4(1);

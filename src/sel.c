@@ -9,7 +9,7 @@
 #include "sprite.h"
 
 struct StageSelection stageSelection;
-struct MinigameLink lbl_802F1BD8;
+struct RelModule lbl_802F1BD8;
 void (*lbl_802F1BD4)(void);
 void (*menuCallback)(void);
 

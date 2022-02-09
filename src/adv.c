@@ -238,7 +238,7 @@ void submode_adv_logo_main_func(void)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
         {
             func_8000FEC8(30);
-            func_8002CF38(2, 0);
+            g_play_music(2, 0);
         }
     }
 
@@ -329,7 +329,7 @@ void submode_adv_demo_init_func(void)
     call_bitmap_load_group(BMP_ADV);
     func_80076620(0);
     func_80076C54(0);
-    func_8002CF38(2, 0);
+    g_play_music(2, 0);
     gameSubmodeRequest = SMD_ADV_DEMO_MAIN;
 }
 
@@ -1212,7 +1212,7 @@ static void func_8000FEC8(int a)
     func_80076DCC(a);
     g_play_sound(0xA022);
     if (lbl_802014E0.unk0 != 2)
-        func_8002CF38(3, 0);
+        g_play_music(3, 0);
     modeCtrl.levelSetFlags |= (1 << 13);
     lbl_802F1BA8 = a;
 }
@@ -1291,7 +1291,7 @@ void submode_adv_title_reinit_func(void)
     load_stage(ST_150_TUTORIAL);
     func_80021DB4(0);
     g_play_sound(0xA022);
-    func_8002CF38(3, 0);
+    g_play_music(3, 0);
     g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
 }
@@ -1359,7 +1359,7 @@ void submode_adv_title_main_func(void)
     {
         g_start_screen_fade(0x101, 0, 30);
         g_create_textbox(0, 20, NULL);
-        func_8002CF38(modeCtrl.unk0, 2);
+        g_play_music(modeCtrl.unk0, 2);
     }
     if (--modeCtrl.unk0 <= 0)
     {
@@ -1434,7 +1434,7 @@ void submode_adv_info_init_func(void)
     advTutorialInfo.stickXRot = 0;
     advTutorialInfo.stickZRot = 0;
     advTutorialInfo.transitionValue = 0.0f;
-    func_8002CF38(0xFFF60014, 0);
+    g_play_music(0xFFF60014, 0);
     gameSubmodeRequest = SMD_ADV_INFO_MAIN;
 }
 
@@ -1662,7 +1662,7 @@ void submode_adv_info_main_func(void)
         g_create_textbox(0, 20, NULL);
         g_create_textbox(1, 20, NULL);
         g_create_textbox(2, 20, NULL);
-        func_8002CF38(modeCtrl.unk0, 2);
+        g_play_music(modeCtrl.unk0, 2);
         sprite = find_sprite_with_tag(17);
         if (sprite != NULL)
             sprite->unk48 = 1;
@@ -1744,9 +1744,9 @@ void submode_adv_game_ready_init_func(void)
     func_80088C28();
     advTutorialInfo.state = 0;
     lbl_802F1BAC = 0;
-    r4 = lbl_801101DC[backgroundInfo.bgId];
+    r4 = backgroundSongs[backgroundInfo.bgId];
     if (r4 != -1 && r4 != lbl_802014E0.unk0 && r4 + 1 != lbl_802014E0.unk0)
-        func_8002CF38(0xFFF60000 | r4, 0);
+        g_play_music(0xFFF60000 | r4, 0);
     g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = SMD_ADV_GAME_READY_MAIN;
 }
@@ -2022,7 +2022,7 @@ void submode_adv_ranking_main_func(void)
     {
         g_start_screen_fade(0x101, 0x00FFFFFF, 30);
         g_create_textbox(0, 20, 0);
-        func_8002CF38(modeCtrl.unk0, 2);
+        g_play_music(modeCtrl.unk0, 2);
     }
 
     r30 = currentBallStructPtr;
@@ -2150,7 +2150,7 @@ void submode_adv_start_init_func(void)
     g_create_textbox(1, 20, 0);
     g_create_textbox(2, 20, 0);
     g_create_textbox(3, 20, 0);
-    func_8002CF38(modeCtrl.unk0, 2);
+    g_play_music(modeCtrl.unk0, 2);
     if (find_sprite_with_tag(17) != NULL
      && find_sprite_with_tag(17)->unk48 == 0)
         find_sprite_with_tag(17)->unk48 = 1;

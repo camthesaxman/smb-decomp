@@ -7,11 +7,11 @@ struct MinigameLinkInfo
     void (*finish)();
 };
 
-struct MinigameLink
+struct RelModule
 {
     struct MinigameLinkInfo *info;
     void *bss;
 };
 
-void relocation_load_module(char *name, struct MinigameLink *link);
-void relocation_unload_module(struct MinigameLink *link);
+void relocation_load_module(char *name, struct RelModule *link);
+void relocation_unload_module(struct RelModule *link);
