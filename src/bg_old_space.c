@@ -1,5 +1,5 @@
 /**
- * bg_old_cave.c - Code for the unused cave background from arcade Monkey Ball
+ * bg_old_space.c - Code for the space background from arcade Monkey Ball
  */
 #include <stdlib.h>
 #include <string.h>

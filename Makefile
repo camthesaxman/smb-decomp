@@ -122,7 +122,7 @@ SOURCES := \
 	src/bg_old_sunset.c \
 	asm/bg_old_bonus.s \
 	asm/bg_old_ice.s \
-	asm/bg_old_sand.s \
+	src/bg_old_sand.c \
 	asm/bg_old_storm.s \
 	asm/bg_old_water.s \
 	src/bg_jungle.c \
