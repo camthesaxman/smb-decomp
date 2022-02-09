@@ -63,7 +63,7 @@ struct NaomiModelHeader
     /*-0x04*/ struct NaomiModelHeader_child *unk4;
 };
 
-#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)(model) - 8))
 
 struct NaomiObj_UnkChild_Child
 {

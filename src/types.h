@@ -401,7 +401,8 @@ struct Struct8003C550
 {
     u8 filler0[8];
     s16 unk8;
-    u8 fillerA[0x14-0xA];
+    u8 fillerA[0x10-0xA];
+    s32 unk10;
     s16 unk14;
     u16 unk16;
     u8 filler18[0x24-0x18];

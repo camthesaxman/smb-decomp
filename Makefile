@@ -46,7 +46,7 @@ REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -fsigned-char -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
 #-------------------------------------------------------------------------------
 # Files
@@ -120,7 +120,7 @@ SOURCES := \
 	src/bg_old_night.c \
 	src/bg_old_space.c \
 	src/bg_old_sunset.c \
-	asm/bg_old_bonus.s \
+	src/bg_old_bonus.c \
 	asm/bg_old_ice.s \
 	src/bg_old_sand.c \
 	asm/bg_old_storm.s \

@@ -777,6 +777,7 @@ func_80059764:
 
 .section .sdata2
 
+    .balign 8
 .global lbl_802F3F70
 lbl_802F3F70:
 	# ROM: 0x1ED990
