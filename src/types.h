@@ -455,7 +455,8 @@ struct Struct80034F5C_1  // Joint object?
     Mtx unk168;
     u8 filler198[0x1A0-0x198];
     s32 unk1A0;
-    u8 filler1A4[0x1C0-0x1A4];
+    Vec unk1A4;
+    Quaternion unk1B0;
     Point3d unk1C0;
     Point3d unk1CC;
     Mtx unk1D8;

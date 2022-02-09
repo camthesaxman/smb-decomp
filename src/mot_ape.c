@@ -6,6 +6,7 @@
 
 #include "global.h"
 #include "load.h"
+#include "mathutil.h"
 #include "mode.h"
 
 struct UnkMotApe1
@@ -414,6 +415,66 @@ struct Struct800355B8 *func_80089AB8(struct Struct800341BC_2 *a)
     func_800355B8(r30);
     func_800355FC(r30);
     return r30;
+}
+
+void func_80089BD4(struct Struct80034F5C_1 *a)
+{
+    int i;
+    struct Struct80034F5C_1 *r4;
+    Vec spC;
+    struct Struct80034F5C_1 *var = a;
+
+    for (i = 0; i < 0x1D; i++)
+    {
+        if (!(a->unk0 & 1))
+        {
+            a++;
+            continue;
+        }
+        mathutil_mtxA_from_mtx(a->unk208);
+        mathutil_mtxA_to_quat(&a->unk1B0);
+        if (a->unk1A0 != 0xFFFFFFFF)
+        {
+            r4 = var + a->unk1A0;
+            while (r4->unk1A0 != 0xFFFFFFFF)
+            {
+                if (r4->unk0 & 1)
+                    break;
+                r4 = var + r4->unk1A0;
+            }
+            mathutil_mtxA_from_mtx(r4->unk208);
+        }
+        else
+            mathutil_mtxA_from_identity();
+        spC.x = a->unk208[0][3];
+        spC.y = a->unk208[1][3];
+        spC.z = a->unk208[2][3];
+        mathutil_mtxA_rigid_inv_tf_point(&spC, &a->unk1A4);
+        a++;
+    }
+}
+
+struct Struct80089CBC
+{
+    u8 filler0[0x10];
+    s32 unk10;
+    s32 unk14;
+    u8 filler18[0x20-0x18];
+};  // size = 0x20
+
+struct Struct80089CBC *func_80089CBC(int unused, int b, int c)
+{
+    struct Struct80089CBC *r6 = (void *)((u8 *)motInfo + 0x28000);
+
+    while (c != 0)
+    {
+        struct Struct80089CBC *r3 = &r6[c];
+
+        if (r3->unk10 == b)
+            return r3;
+        c = r3->unk14;
+    }
+    return NULL;
 }
 
 /*
