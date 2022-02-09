@@ -43,4 +43,17 @@ FORCEACTIVE
 {
     lbl_802C4960
     lbl_802F1FEC
+    lbl_802B4710
+    charaTplSizes
+    charaTplAramSizes
+    charaGmaSizes
+    charaGmaAramSizes
+    lbl_802B47B0
+    lbl_802B47C0
+    lbl_802B47D0
 }
+
+lbl_802F56A8 = 0x802F56A8;
+lbl_802F56AC = 0x802F56AC;
+lbl_801C7B8C = 0x801C7B8C;
+lbl_80171950 = 0x80171950;

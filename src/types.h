@@ -523,10 +523,20 @@ struct MotSkeleton
 
 struct MotInfo
 {
-    u8 filler0[0x30];
+    struct MotInfo *unk0;
+    u8 filler4[0x30-0x4];
     void *unk30[16];
     u8 filler70[0xB0-0x70];
     void *unkB0;
+};
+
+struct Struct800341BC_2
+{
+    u8 filler0[4];
+    void *unk4;
+    void *unk8;
+    struct Struct800341BC_5 *unkC;
+    struct Struct800341BC_5 *unk10;
 };
 
 struct Struct80034F5C_2
@@ -550,15 +560,18 @@ struct Struct80034F5C_3
 struct Struct800355B8  // maybe the same as Struct80034F5C_1?
 {
     u32 unk0;
-    u8 filler4[0x2E - 0x4];
+    u8 filler4[0x28-0x4];
+    u16 unk28;
+    u16 unk2A;
+    u16 unk2C;
     s16 unk2E;
     u8 filler30[2];
     u16 unk32;
-    u8 filler34[2];
+    u16 unk34;
     u16 unk36;
     u16 unk38;
     u16 unk3A;
-    u8 filler3C[0x40-0x3C];
+    float unk3C;
     float unk40;
     u8 filler44[0x54-0x44];
     Mtx unk54;

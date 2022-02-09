@@ -179,7 +179,7 @@ void chkstatus_main(void);
 int pool_alloc();
 void func_80030A50(void *);
 
-// ? func_800341BC();
+void func_800341BC(struct Struct80034F5C_1 *a, struct Struct800341BC_2 *b, u16 c);
 void func_80034360(struct Struct80034F5C_1 *a, u16 b);
 // ? func_800343E4();
 // ? func_80034424();
@@ -206,7 +206,7 @@ void func_80035748();
 // ? func_80035DEC();
 // ? func_80035E7C();
 // ? func_80035F18();
-// ? func_80035FDC();
+void func_80035FDC(struct Struct800355B8 *);
 // ? func_80036064();
 // ? func_80036510();
 // ? func_80036544();

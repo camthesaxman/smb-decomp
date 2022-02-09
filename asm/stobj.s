@@ -7103,36 +7103,3 @@ lbl_802F2088:
 .global lbl_802F208C
 lbl_802F208C:
 	.skip 0x4
-.global lbl_802F2090
-lbl_802F2090:
-	.skip 0x4
-.global lbl_802F2094
-lbl_802F2094:
-	.skip 0x8
-.global lbl_802F209C
-lbl_802F209C:
-	.skip 0x8
-.global motInfo
-motInfo:
-	.skip 0x4
-.global motSkeleton
-motSkeleton:
-	.skip 0x4
-.global lbl_802F20AC
-lbl_802F20AC:
-	.skip 0x4
-.global motLabel
-motLabel:
-	.skip 0x8
-.global lbl_802F20B8
-lbl_802F20B8:
-	.skip 0x4
-.global lbl_802F20BC
-lbl_802F20BC:
-	.skip 0x4
-.global lbl_802F20C0
-lbl_802F20C0:
-	.skip 0x4
-.global lbl_802F20C4
-lbl_802F20C4:
-	.skip 0x4

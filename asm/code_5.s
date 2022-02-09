@@ -23381,6 +23381,8 @@ lbl_802F1278:
 glabel string_REPLAY_2
 	.asciz "REPLAY"
 	.balign 4
+
+.if 0
 glabel string_BOY_H
 	.asciz "BOY H"
 	.balign 4
@@ -23405,40 +23407,7 @@ glabel string_GOR_H
 glabel string_GOR_L
 	.asciz "GOR_L"
 	.balign 4
-
-.global lbl_802F12C0
-lbl_802F12C0:
-	# ROM: 0x1EBA00
-	.asciz "ape"
-
-.global lbl_802F12C4
-lbl_802F12C4:
-	# ROM: 0x1EBA04
-glabel string__tpl_lz
-	.asciz ".tpl.lz"
-
-.global lbl_802F12CC
-lbl_802F12CC:
-	# ROM: 0x1EBA0C
-glabel string__gma_lz
-	.asciz ".gma.lz"
-
-.global lbl_802F12D4
-lbl_802F12D4:
-	# ROM: 0x1EBA14
-	.4byte 0x2E2E0000
-
-.global lbl_802F12D8
-lbl_802F12D8:
-	# ROM: 0x1EBA18
-	.4byte 0x00000204
-	.4byte 0x06000000
-
-.global lbl_802F12E0
-lbl_802F12E0:
-	# ROM: 0x1EBA20
-	.4byte 0x01010305
-	.4byte 0x07000000
+.endif
 
 .section .rodata
 

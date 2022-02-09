@@ -8,15 +8,6 @@ struct MotDat *motDat;
 
 extern void *lbl_80114F68[];
 
-struct Struct800341BC_2
-{
-    u8 filler0[4];
-    void *unk4;
-    void *unk8;
-    struct Struct800341BC_5 *unkC;
-    struct Struct800341BC_5 *unk10;
-};
-
 struct Struct800341BC_4
 {
     u32 unk0;

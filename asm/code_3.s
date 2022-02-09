@@ -3892,7 +3892,8 @@ lbl_800893AC:
 /* 800893D0 000852F0  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800893D4 000852F4  38 21 00 30 */	addi r1, r1, 0x30
 /* 800893D8 000852F8  4E 80 00 20 */	blr
-lbl_800893DC:
+.if 0
+glabel lbl_800893DC
 /* 800893DC 000852FC  38 00 00 00 */	li r0, 0
 /* 800893E0 00085300  90 0D 9E 90 */	stw r0, lbl_802F2070@sda21(r13)
 /* 800893E4 00085304  4E 80 00 20 */	blr
@@ -4310,7 +4311,9 @@ lbl_800899DC:
 /* 800899F8 00085918  38 21 01 F8 */	addi r1, r1, 0x1f8
 /* 800899FC 0008591C  7C 08 03 A6 */	mtlr r0
 /* 80089A00 00085920  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global func_80089A04
 func_80089A04:
 /* 80089A04 00085924  7C 08 02 A6 */	mflr r0
@@ -4320,14 +4323,14 @@ func_80089A04:
 /* 80089A14 00085934  94 21 FF C8 */	stwu r1, -0x38(r1)
 /* 80089A18 00085938  BF 21 00 1C */	stmw r25, 0x1c(r1)
 /* 80089A1C 0008593C  3B 40 00 00 */	li r26, 0
-/* 80089A20 00085940  3B 25 00 00 */	addi r25, r5, 0
-/* 80089A24 00085944  7C A3 02 14 */	add r5, r3, r0
+/* 80089A20 00085940  3B 25 00 00 */	addi r25, r5, 0  ;# c
+/* 80089A24 00085944  7C A3 02 14 */	add r5, r3, r0  ;# &a[(b>>1)&1]
 /* 80089A28 00085948  54 9B 10 3A */	slwi r27, r4, 2
 /* 80089A2C 0008594C  54 83 17 7A */	rlwinm r3, r4, 2, 0x1d, 0x1d
 /* 80089A30 00085950  54 80 0F BC */	rlwinm r0, r4, 1, 0x1e, 0x1e
-/* 80089A34 00085954  57 5F 28 34 */	slwi r31, r26, 5
-/* 80089A38 00085958  7F C5 1A 14 */	add r30, r5, r3
-/* 80089A3C 0008595C  7F B9 DA 14 */	add r29, r25, r27
+/* 80089A34 00085954  57 5F 28 34 */	slwi r31, r26, 5  ;# r31 = i * 0x20
+/* 80089A38 00085958  7F C5 1A 14 */	add r30, r5, r3  ;# &a[(b>>1)&1] + (b&1) * 4
+/* 80089A3C 0008595C  7F B9 DA 14 */	add r29, r25, r27  ;# c + b * 4
 /* 80089A40 00085960  7F 85 02 14 */	add r28, r5, r0
 /* 80089A44 00085964  48 00 00 34 */	b lbl_80089A78
 lbl_80089A48:
@@ -4362,6 +4365,7 @@ lbl_80089AA4:
 /* 80089AAC 000859CC  38 21 00 38 */	addi r1, r1, 0x38
 /* 80089AB0 000859D0  7C 08 03 A6 */	mtlr r0
 /* 80089AB4 000859D4  4E 80 00 20 */	blr
+.endif
 
 .section .bss
 
@@ -4380,27 +4384,6 @@ lbl_802B37F0:
 .global lbl_802B395C
 lbl_802B395C:
 	.skip 0x64
-.global lbl_802B39C0
-lbl_802B39C0:
-	.skip 0xCF0
-.global lbl_802B46B0
-lbl_802B46B0:
-	.skip 0x40
-.global lbl_802B46F0
-lbl_802B46F0:
-	.skip 0xF0
-.global lbl_802B47E0
-lbl_802B47E0:
-	.skip 0x20
-.global lbl_802B4800
-lbl_802B4800:
-	.skip 0x5F0
-.global lbl_802B4DF0
-lbl_802B4DF0:
-	.skip 0x20
-.global lbl_802B4E10
-lbl_802B4E10:
-	.skip 0x50
 
 .section .sdata2
 
@@ -4907,46 +4890,6 @@ lbl_802F56A0:
 	.4byte 0
 
 .section .rodata
-
-.global lbl_80171950
-lbl_80171950:
-	# ROM: 0x16E950
-	.4byte string_BOY_H  ;# ptr
-	.4byte string_BOY_L  ;# ptr
-	.4byte string_GAL_H  ;# ptr
-	.4byte string_GAL_L  ;# ptr
-	.4byte string_KID_H  ;# ptr
-	.4byte string_KID_L  ;# ptr
-	.4byte string_GOR_H  ;# ptr
-	.4byte string_GOR_L  ;# ptr
-
-.global lbl_80171970
-lbl_80171970:
-	# ROM: 0x16E970
-	.4byte string_boy_ch_tpl_lz  ;# ptr
-	.4byte 0
-	.4byte string_kid_ch_tpl_lz  ;# ptr
-	.4byte string_gor_ch_tpl_lz  ;# ptr
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
 
 .section .data
 
@@ -7105,6 +7048,8 @@ glabel string_FLOOR__d_2
 	.asciz "FLOOR %d"
 	.balign 4
 
+.if 0
+# mot_ape .data
 .global lbl_801C7A70
 lbl_801C7A70:
 	# ROM: 0x1C4A70
@@ -7195,4 +7140,31 @@ glabel string_kid_ch_tpl_lz
 	.balign 4
 glabel string_gor_ch_tpl_lz
 	.asciz "gor_ch.tpl.lz"
-	.balign 4
+	.balign 8
+.endif
+
+.section .sdata
+
+.if 0
+.global lbl_802F12C0
+lbl_802F12C0:
+	# ROM: 0x1EBA00
+	.asciz "ape"
+
+.global lbl_802F12C4
+lbl_802F12C4:
+	# ROM: 0x1EBA04
+glabel string__tpl_lz
+	.asciz ".tpl.lz"
+
+.global lbl_802F12CC
+lbl_802F12CC:
+	# ROM: 0x1EBA0C
+glabel string__gma_lz
+	.asciz ".gma.lz"
+
+.global lbl_802F12D4
+lbl_802F12D4:
+	# ROM: 0x1EBA14
+	.4byte 0x2E2E0000
+.endif
