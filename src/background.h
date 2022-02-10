@@ -60,7 +60,7 @@ struct BackgroundInfo  // size = 0xA8
     u8 filler88[4];
     u32 unk8C;
     void (*unk90)();
-    /*0x94*/ Func802F20EC ballEnvFunc;
+    /*0x94*/ BallEnvFunc ballEnvFunc;
     void (*unk98)();
     void *unk9C;
     u32 unkA0;
@@ -140,7 +140,7 @@ void bg_bowling_finish(void);
 void bg_bowling_draw(void);
 void func_8005660C(int);
 int func_80056610(u32 **a, void *b);
-// ? func_80056684();
+void func_80056684(struct Struct80056684 *a, int (*b)());
 void func_800567DC(struct StageBgModel *r28, int r30_, struct Struct80056684 *a, Func800567DC b);
 // ? func_80056934();
 void func_800569B4(int);

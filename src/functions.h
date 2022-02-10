@@ -50,7 +50,7 @@ void func_8000E3BC(void);
 // ? func_8000E428();
 float func_8000E444(Vec *);
 float func_8000E4D0(Vec *);
-// ? func_8000E53C();
+float func_8000E53C(Vec *pos);
 
 void func_80011E1C(void);
 void func_80011F74();
@@ -739,7 +739,7 @@ void g_avdisp_set_alpha(float);
 void g_avdisp_set_and_normalize_some_vec(Vec *a);
 void g_avdisp_set_3_other_floats(float, float, float);
 void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updateEnable);
-Func802F20EC g_avdisp_set_some_func_1(Func802F20EC a);
+BallEnvFunc g_avdisp_set_some_func_1(BallEnvFunc a);
 // ? g_avdisp_set_some_func_2();
 // ? func_8008E5F8();
 // ? func_8008E64C();

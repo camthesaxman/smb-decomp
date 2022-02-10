@@ -130,7 +130,7 @@ SOURCES := \
 	asm/bg_water.s \
 	asm/bg_space.s \
 	src/bg_sunset.c \
-	asm/bg_bonus.s \
+	src/bg_bonus.c \
 	asm/bg_storm.s \
 	asm/bg_master.s \
 	asm/bg_pilot.s \

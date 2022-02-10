@@ -946,6 +946,7 @@ lbl_802F44E0:
 
 .section .data
 
+    .balign 8
 glabel string_STM_RAIN00
 	.asciz "STM_RAIN00"
 	.balign 4

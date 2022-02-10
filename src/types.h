@@ -236,16 +236,11 @@ struct UnkStruct8005562C_child2
 };
 
 struct StageBgModel;
-
 struct Camera;
-
 struct Sprite;
 struct FontParams;
 struct GMA;
 struct TPL;
-
-typedef void (*Func802F20EC)();
-
 struct Ape;
 struct Ball;
 
@@ -864,3 +859,22 @@ struct Struct802C67D4
     u32 unk4;
     u8 filler8[0x50-0x8];
 };
+
+struct Struct80061BC4_sub
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u8 filler10[4];
+    u32 unk14;
+    u8 filler18[0x2C-0x18];
+};
+
+struct Struct80061BC4
+{
+    u8 filler0[0xC];
+    struct Struct80061BC4_sub unkC;
+};
+
+typedef void (*BallEnvFunc)(struct Struct80061BC4 *);

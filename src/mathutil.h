@@ -346,9 +346,6 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = v->z;
 #else
     register float *mtxA;
-    register float *_x = &v->x;
-    register float *_y = &v->y;
-    register float *_z = &v->z;
     register float x, y, z;
 
     asm
@@ -356,6 +353,25 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
         lfs x, v->x
         lfs y, v->y
         lfs z, v->z
+        lis mtxA, LC_CACHE_BASE@ha
+        stfs x, 0x0C(mtxA)  // mtxA[0][3]
+        stfs y, 0x1C(mtxA)  // mtxA[1][3]
+        stfs z, 0x2C(mtxA)  // mtxA[2][3]
+    }
+#endif
+}
+
+static inline void mathutil_set_mtxA_translate_xyz(register float x, register float y, register float z)
+{
+#ifdef MATHUTIL_C_ONLY
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = x;
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3] = y;
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = z;
+#else
+    register float *mtxA;
+
+    asm
+    {
         lis mtxA, LC_CACHE_BASE@ha
         stfs x, 0x0C(mtxA)  // mtxA[0][3]
         stfs y, 0x1C(mtxA)  // mtxA[1][3]

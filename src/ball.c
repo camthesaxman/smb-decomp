@@ -1098,7 +1098,7 @@ void ball_draw(void)
     s8 *r27;
     int i;
     int (*func)();
-    Func802F20EC envFunc;
+    BallEnvFunc envFunc;
     int unused;
 
     if (dipSwitches & DIP_OLD_BALL)
@@ -3106,7 +3106,7 @@ void ball_draw_callback(struct BallDrawNode *node)
 {
     struct Ball *ball = &ballInfo[node->ballId];
     int (*r30)() = backgroundInfo.unk7C;
-    Func802F20EC envFunc;
+    BallEnvFunc envFunc;
 
     if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount > 3)
         r30 = NULL;
