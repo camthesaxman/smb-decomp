@@ -30,10 +30,9 @@ struct UnkBackground9C_alt
     void *unk8;
     struct GMAModelHeader *unkC;
     s32 unk10;
-    struct UnkBackground9C_alt_sub unk14[2];
-    u8 filler4C[0x714-0x4C];
+    struct UnkBackground9C_alt_sub unk14[64];
     GXTexObj *unk714;
-    u32 unk718;
+    GXTexObj *unk718;
     Mtx unk71C;
     Mtx unk74C;
     Mtx unk77C;
@@ -41,7 +40,7 @@ struct UnkBackground9C_alt
     Mtx unk7DC;
 };
 
-struct Struct80056684 lbl_801BA010[] =
+struct BGModelEntry lbl_801BA010[] =
 {
     { 1, "BNS_SHOTSTAR" },
     { 0, "STARLIGHT_" },
@@ -51,7 +50,7 @@ struct Struct80056684 lbl_801BA010[] =
     { 3, NULL },
 };
 
-struct Struct80056684 lbl_801BA04C[] =
+struct BGModelEntry lbl_801BA04C[] =
 {
     { 1, "BNS_MAIN" },
     { 3, NULL },
@@ -59,7 +58,7 @@ struct Struct80056684 lbl_801BA04C[] =
 
 void lbl_80061B58(void);
 void lbl_80061BC4(struct Struct80061BC4 *a);
-int lbl_80061EF0(int a, void **b);
+int lbl_80061EF0(int a, struct GMAModelEntry *b);
 int lbl_80061FA8(int, struct StageBgModel *);
 
 void bg_bonus_init(void)
@@ -74,15 +73,15 @@ void bg_bonus_init(void)
     if (r31->unk0 == 0)
     {
         r31->unk10 = 0;
-        func_80056684(lbl_801BA010, lbl_80061EF0);
+        g_process_background_models(lbl_801BA010, lbl_80061EF0);
         r31->unk0 = 1;
     }
-    func_800567DC(
+    g_process_stage_bg_models(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         lbl_801BA04C,
         lbl_80061FA8);
-    func_800567DC(
+    g_process_stage_bg_models(
         decodedStageLzPtr->unk74,
         decodedStageLzPtr->unk70,
         lbl_801BA04C,
@@ -202,9 +201,9 @@ void bg_bonus_draw(void)
     avdisp_set_z_mode(1, 3, 1);
 }
 
-void func_80061920(int a)
+void bg_bonus_interact(int a)
 {
-    struct Struct8003C550 sp18;
+    struct Struct8003C550 star;
     Vec spC;
     float f31;
 
@@ -212,25 +211,26 @@ void func_80061920(int a)
     {
     case 0:
     case 1:
-        memset(&sp18, 0, sizeof(sp18));
-        sp18.unk8 = 32;
-        sp18.unk14 = currentBallStructPtr->unk2E;
-        mathutil_mtxA_from_mtx(cameraInfo[sp18.unk14].unk1A4);
+        // spawn shooting star
+        memset(&star, 0, sizeof(star));
+        star.unk8 = 32;
+        star.unk14 = currentBallStructPtr->unk2E;
+        mathutil_mtxA_from_mtx(cameraInfo[star.unk14].unk1A4);
         spC.z = -120.0f + (rand() / 32767.0f) * -225.0f;
         spC.x = spC.z * -(8.0f / 3.0f) * currentCameraStructPtr->sub28.unk38 * ((rand() / 32767.0f) - 0.5f);
         spC.y = spC.z * -1.1f * currentCameraStructPtr->sub28.unk38;
-        mathutil_mtxA_rigid_inv_tf_point(&spC, &sp18.unk34);
+        mathutil_mtxA_rigid_inv_tf_point(&spC, &star.unk34);
         f31 = -spC.z * (1.0f / 300.0f);
-        sp18.unk40.x = (1.0f + (rand() / 32767.0f)) * f31;
-        sp18.unk40.y = (-3.0f + (rand() / 32767.0f) * -1.0f) * f31;
-        sp18.unk40.z = (1.0f + (rand() / 32767.0f)) * f31;
+        star.unk40.x = (1.0f + (rand() / 32767.0f)) * f31;
+        star.unk40.y = (-3.0f + (rand() / 32767.0f) * -1.0f) * f31;
+        star.unk40.z = (1.0f + (rand() / 32767.0f)) * f31;
         spC.x = 0.0f;
         spC.y = 0.0f;
         spC.z = 0.0f;
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
-        mathutil_ray_to_euler_xy(&spC, &sp18.unk34, &sp18.unk4C, &sp18.unk4E);
-        sp18.unk50 = rand() & 0x7FFF;
-        g_create_pickup_item(&sp18);
+        mathutil_ray_to_euler_xy(&spC, &star.unk34, &star.unk4C, &star.unk4E);
+        star.unk50 = rand() & 0x7FFF;
+        g_spawn_effect_object(&star);
         break;
     }
 }
@@ -307,31 +307,30 @@ struct Struct80061EF0_2
     Vec unk8;
 };
 
-// TODO: figure out types
-int lbl_80061EF0(int a, void **b)
+int lbl_80061EF0(int index, struct GMAModelEntry *b)
 {
     struct UnkBackground9C_alt *r7 = (void *)backgroundInfo.unk9C;
 
-    switch (a)
+    switch (index)
     {
     case 0:
-        r7->unk8 = *b;
+        r7->unk8 = b->modelOffset;
         break;
     case 1:
-        r7->unkC = *b;
+        r7->unkC = b->modelOffset;
         break;
     case 2:
-        r7->unk714 = ((struct Struct80061EF0 *)*b)->unk24;
+        r7->unk714 = b->modelOffset->texObjs;
         break;
     case 3:
-        r7->unk718 = (u32)((struct Struct80061EF0 *)*b)->unk24;
+        r7->unk718 = b->modelOffset->texObjs;
         break;
     case 4:
         if (r7->unk10 < 64)
         {
             struct UnkBackground9C_alt_sub *r4 = &r7->unk14[r7->unk10];
 
-            r4->unk0 = ((struct Struct80061EF0_2 *)*b)->unk8;
+            r4->unk0 = b->modelOffset->boundsCenter;
             r7->unk10++;
         }
         break;
@@ -346,7 +345,7 @@ int lbl_80061FA8(int a, struct StageBgModel *b)
     switch (a)
     {
     case 0:
-        r3->unk4 = (void *)b;
+        r3->unk4 = b;
         break;
     }
     return 1;

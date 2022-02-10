@@ -11,7 +11,7 @@
 #include "mode.h"
 #include "stage.h"
 
-struct Struct80056684 lbl_801B9BA0[] =
+struct BGModelEntry lbl_801B9BA0[] =
 {
     { 0, "JUN_FIG_CLOUD_" },
     { 3, NULL },
@@ -31,12 +31,12 @@ void bg_jungle_init(void)
     func_800946DC(lbl_801F0614.unk42, 0xC00);
     backgroundInfo.unk8 |= 1;
     r28->unk4 = 0;
-    func_800567DC(
+    g_process_stage_bg_models(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         lbl_801B9BA0,
         lbl_8005B86C);
-    func_800567DC(
+    g_process_stage_bg_models(
         decodedStageLzPtr->unk74,
         decodedStageLzPtr->unk70,
         lbl_801B9BA0,
@@ -173,7 +173,7 @@ void bg_jungle_draw(void)
         func_8000E3BC();
 }
 
-void func_8005B868(int a) {}
+void bg_jungle_interact(int a) {}
 
 static int lbl_8005B86C(int a, struct StageBgModel *bgModel)
 {

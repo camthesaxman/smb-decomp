@@ -35,7 +35,7 @@ bg_master_init:
 /* 80062C9C 0005EBBC  90 1F 0A F4 */	stw r0, 0xaf4(r31)
 /* 80062CA0 0005EBC0  38 83 3E 10 */	addi r4, r3, lbl_80063E10@l
 /* 80062CA4 0005EBC4  38 7C 00 5C */	addi r3, r28, 0x5c
-/* 80062CA8 0005EBC8  4B FF 39 DD */	bl func_80056684
+/* 80062CA8 0005EBC8  4B FF 39 DD */	bl g_process_background_models
 /* 80062CAC 0005EBCC  38 00 00 01 */	li r0, 1
 /* 80062CB0 0005EBD0  90 1F 00 00 */	stw r0, 0(r31)
 lbl_80062CB4:
@@ -49,13 +49,13 @@ lbl_80062CB4:
 /* 80062CD0 0005EBF0  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 80062CD4 0005EBF4  80 64 00 6C */	lwz r3, 0x6c(r4)
 /* 80062CD8 0005EBF8  80 84 00 68 */	lwz r4, 0x68(r4)
-/* 80062CDC 0005EBFC  4B FF 3B 01 */	bl func_800567DC
+/* 80062CDC 0005EBFC  4B FF 3B 01 */	bl g_process_stage_bg_models
 /* 80062CE0 0005EC00  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 80062CE4 0005EC04  7F C6 F3 78 */	mr r6, r30
 /* 80062CE8 0005EC08  38 BC 00 E4 */	addi r5, r28, 0xe4
 /* 80062CEC 0005EC0C  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 80062CF0 0005EC10  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 80062CF4 0005EC14  4B FF 3A E9 */	bl func_800567DC
+/* 80062CF4 0005EC14  4B FF 3A E9 */	bl g_process_stage_bg_models
 /* 80062CF8 0005EC18  80 1F 00 08 */	lwz r0, 8(r31)
 /* 80062CFC 0005EC1C  2C 00 00 00 */	cmpwi r0, 0
 /* 80062D00 0005EC20  41 82 01 34 */	beq lbl_80062E34
@@ -670,7 +670,7 @@ lbl_80063530:
 /* 8006362C 0005F54C  C0 04 00 20 */	lfs f0, 0x20(r4)
 /* 80063630 0005F550  EC 1E 00 32 */	fmuls f0, f30, f0
 /* 80063634 0005F554  D0 01 00 90 */	stfs f0, 0x90(r1)
-/* 80063638 0005F558  4B FE 98 D1 */	bl g_create_pickup_item
+/* 80063638 0005F558  4B FE 98 D1 */	bl g_spawn_effect_object
 /* 8006363C 0005F55C  C0 1B 00 04 */	lfs f0, 4(r27)
 /* 80063640 0005F560  EC 00 D0 28 */	fsubs f0, f0, f26
 /* 80063644 0005F564  D0 1B 00 04 */	stfs f0, 4(r27)
@@ -989,8 +989,8 @@ lbl_80063AC0:
 /* 80063AC8 0005F9E8  38 21 00 30 */	addi r1, r1, 0x30
 /* 80063ACC 0005F9EC  7C 08 03 A6 */	mtlr r0
 /* 80063AD0 0005F9F0  4E 80 00 20 */	blr
-.global func_80063AD4
-func_80063AD4:
+.global bg_master_interact
+bg_master_interact:
 /* 80063AD4 0005F9F4  4E 80 00 20 */	blr
 lbl_80063AD8:
 /* 80063AD8 0005F9F8  7C 08 02 A6 */	mflr r0
@@ -1303,7 +1303,7 @@ lbl_80063F5C:
 /* 80063F70 0005FE90  B0 01 00 18 */	sth r0, 0x18(r1)
 /* 80063F74 0005FE94  38 61 00 10 */	addi r3, r1, 0x10
 /* 80063F78 0005FE98  93 E1 00 40 */	stw r31, 0x40(r1)
-/* 80063F7C 0005FE9C  4B FE 8F 8D */	bl g_create_pickup_item
+/* 80063F7C 0005FE9C  4B FE 8F 8D */	bl g_spawn_effect_object
 lbl_80063F80:
 /* 80063F80 0005FEA0  80 01 00 CC */	lwz r0, 0xcc(r1)
 /* 80063F84 0005FEA4  38 60 00 01 */	li r3, 1

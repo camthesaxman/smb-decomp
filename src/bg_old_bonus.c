@@ -35,7 +35,7 @@ void bg_old_bonus_init(void)
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
         {
             sp8.unk34 = (*r29)->boundsCenter;
-            g_create_pickup_item(&sp8);
+            g_spawn_effect_object(&sp8);
             sp8.unk10 += 30.0;
         }
         r29++;
@@ -56,7 +56,7 @@ void bg_old_bonus_draw(void)
     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBackgroundObj, 0));
 }
 
-void func_800589AC(int a)
+void bg_old_bonus_interact(int a)
 {
     struct Struct8003C550 sp18;
     Vec spC;
@@ -84,7 +84,7 @@ void func_800589AC(int a)
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
         mathutil_ray_to_euler_xy(&spC, &sp18.unk34, &sp18.unk4C, &sp18.unk4E);
         sp18.unk50 = rand() & 0x7FFF;
-        g_create_pickup_item(&sp18);
+        g_spawn_effect_object(&sp18);
         break;
     }
 }

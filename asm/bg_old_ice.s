@@ -42,7 +42,7 @@ bg_old_ice_init:
 /* 80058C7C 00054B9C  D0 41 00 78 */	stfs f2, 0x78(r1)
 /* 80058C80 00054BA0  D0 01 00 7C */	stfs f0, 0x7c(r1)
 /* 80058C84 00054BA4  D0 41 00 80 */	stfs f2, 0x80(r1)
-/* 80058C88 00054BA8  4B FF 42 81 */	bl g_create_pickup_item
+/* 80058C88 00054BA8  4B FF 42 81 */	bl g_spawn_effect_object
 /* 80058C8C 00054BAC  80 01 00 C4 */	lwz r0, 0xc4(r1)
 /* 80058C90 00054BB0  83 E1 00 BC */	lwz r31, 0xbc(r1)
 /* 80058C94 00054BB4  38 21 00 C0 */	addi r1, r1, 0xc0
@@ -69,8 +69,8 @@ bg_old_ice_draw:
 /* 80058CD0 00054BF0  38 21 00 08 */	addi r1, r1, 8
 /* 80058CD4 00054BF4  7C 08 03 A6 */	mtlr r0
 /* 80058CD8 00054BF8  4E 80 00 20 */	blr
-.global func_80058CDC
-func_80058CDC:
+.global bg_old_ice_interact
+bg_old_ice_interact:
 /* 80058CDC 00054BFC  4E 80 00 20 */	blr
 .global func_80058CE0
 func_80058CE0:
@@ -288,7 +288,7 @@ func_80058D44:
 /* 80059024 00054F44  38 03 00 20 */	addi r0, r3, 0x20
 /* 80059028 00054F48  90 01 00 18 */	stw r0, 0x18(r1)
 /* 8005902C 00054F4C  38 61 00 0C */	addi r3, r1, 0xc
-/* 80059030 00054F50  4B FF 3E D9 */	bl g_create_pickup_item
+/* 80059030 00054F50  4B FF 3E D9 */	bl g_spawn_effect_object
 lbl_80059034:
 /* 80059034 00054F54  80 1F 00 04 */	lwz r0, 4(r31)
 /* 80059038 00054F58  54 00 00 3C */	rlwinm r0, r0, 0, 0, 0x1e

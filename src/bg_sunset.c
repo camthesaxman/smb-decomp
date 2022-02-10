@@ -11,7 +11,7 @@
 #include "mode.h"
 #include "stage.h"
 
-struct Struct80056684 lbl_801B9FB0[] =
+struct BGModelEntry lbl_801B9FB0[] =
 {
     { 1, "SUN_GROUND" },
     { 0, "SUN_CLOUD_" },
@@ -29,12 +29,12 @@ void bg_sunset_init(void)
 
     bg_e3_init();
     r28->unk4 = 0;
-    func_800567DC(
+    g_process_stage_bg_models(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         lbl_801B9FB0,
         lbl_80061394);
-    func_800567DC(
+    g_process_stage_bg_models(
         decodedStageLzPtr->unk74,
         decodedStageLzPtr->unk70,
         lbl_801B9FB0,
@@ -146,7 +146,7 @@ void bg_sunset_draw(void)
     bg_e3_draw();
 }
 
-void func_80061390(int a) {}
+void bg_sunset_interact(int a) {}
 
 static int lbl_80061394(int a, struct StageBgModel *bgModel)
 {

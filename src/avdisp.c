@@ -1242,7 +1242,7 @@ struct UnkStruct31
 {
     u32 unk0;
     u8 filler4[4];
-    u32 unk8;
+    GXTexObj *unk8;
     u8 fillerC[0x20-0xC];
 };
 

@@ -5203,7 +5203,7 @@ lbl_8006F158:
 /* 8006F200 0006B120  D0 81 00 74 */	stfs f4, 0x74(r1)
 /* 8006F204 0006B124  D0 41 00 78 */	stfs f2, 0x78(r1)
 /* 8006F208 0006B128  D0 01 00 7C */	stfs f0, 0x7c(r1)
-/* 8006F20C 0006B12C  4B FD DC FD */	bl g_create_pickup_item
+/* 8006F20C 0006B12C  4B FD DC FD */	bl g_spawn_effect_object
 /* 8006F210 0006B130  3B DE FF FF */	addi r30, r30, -1
 lbl_8006F214:
 /* 8006F214 0006B134  2C 1E 00 00 */	cmpwi r30, 0
@@ -5272,7 +5272,7 @@ lbl_8006F260:
 /* 8006F308 0006B228  D0 81 00 74 */	stfs f4, 0x74(r1)
 /* 8006F30C 0006B22C  D0 41 00 78 */	stfs f2, 0x78(r1)
 /* 8006F310 0006B230  D0 01 00 7C */	stfs f0, 0x7c(r1)
-/* 8006F314 0006B234  4B FD DB F5 */	bl g_create_pickup_item
+/* 8006F314 0006B234  4B FD DB F5 */	bl g_spawn_effect_object
 /* 8006F318 0006B238  3B DE FF FF */	addi r30, r30, -1
 lbl_8006F31C:
 /* 8006F31C 0006B23C  2C 1E 00 00 */	cmpwi r30, 0
@@ -5815,7 +5815,7 @@ lbl_8006FAD0:
 /* 8006FAD4 0006B9F4  B0 01 00 4A */	sth r0, 0x4a(r1)
 lbl_8006FAD8:
 /* 8006FAD8 0006B9F8  38 61 00 34 */	addi r3, r1, 0x34
-/* 8006FADC 0006B9FC  4B FD D4 2D */	bl g_create_pickup_item
+/* 8006FADC 0006B9FC  4B FD D4 2D */	bl g_spawn_effect_object
 /* 8006FAE0 0006BA00  3B FF FF FF */	addi r31, r31, -1
 lbl_8006FAE4:
 /* 8006FAE4 0006BA04  2C 1F 00 00 */	cmpwi r31, 0

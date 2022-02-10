@@ -174,36 +174,36 @@ void (*bgDrawFuncs[])(void) =
     NULL,
 };
 
-void (*lbl_801B9658[])(int) =
+void (*bgInteractFuncs[])(int) =
 {
     NULL,
-    func_800573A0,
-    func_8005851C,
-    func_800587F8,
-    func_8005AD7C,
-    func_8005A178,
-    func_80058CDC,
-    func_800599F8,
-    func_80058728,
-    func_80057A98,
-    func_800589AC,
-    func_8005828C,
-    func_80055628,
-    func_8005B868,
-    func_8005E910,
-    func_8005601C,
-    func_80061390,
-    func_800609A8,
-    func_8005C3B4,
-    func_8005615C,
-    func_80062BD0,
-    func_80061920,
-    func_80064C2C,
-    func_8005638C,
-    func_800564CC,
-    func_8005660C,
-    func_80063AD4,
-    func_800654F0,
+    bg_old_bluesky_interact,
+    bg_old_night_interact,
+    bg_old_sunset_interact,
+    bg_old_water_interact,
+    bg_old_storm_interact,
+    bg_old_ice_interact,
+    bg_old_sand_interact,
+    bg_old_space_interact,
+    bg_old_cave_interact,
+    bg_old_bonus_interact,
+    bg_old_extramaster_interact,
+    bg_e3_interact,
+    bg_jungle_interact,
+    bg_water_interact,
+    bg_night_interact,
+    bg_sunset_interact,
+    bg_space_interact,
+    bg_sand_interact,
+    bg_ice2_interact,
+    bg_storm_interact,
+    bg_bonus_interact,
+    bg_pilot_interact,
+    bg_billiards_interact,
+    bg_golf_interact,
+    bg_bowling_interact,
+    bg_master_interact,
+    bg_end_interact,
     NULL,
 };
 
@@ -540,10 +540,10 @@ void load_bg_files(int bgId)
     }
 }
 
-void func_800554A4(int a)
+void background_interact(int a)
 {
     if (backgroundInfo.bgId > 0)
-        lbl_801B9658[backgroundInfo.bgId](a);
+        bgInteractFuncs[backgroundInfo.bgId](a);
 }
 
 void bg_e3_init(void) {}
@@ -579,7 +579,7 @@ void bg_e3_draw(void)
     func_80022530();
 }
 
-void func_80055628(int a) {}
+void bg_e3_interact(int a) {}
 
 void g_animate_background_parts(struct StageBgModel *a, int b, float c)
 {
@@ -957,7 +957,7 @@ void bg_night_draw(void)
     func_80022530();
 }
 
-void func_8005601C(int a) {}
+void bg_night_interact(int a) {}
 
 void bg_ice2_init(void) {}
 
@@ -992,7 +992,7 @@ void bg_ice2_draw(void)
     func_80022530();
 }
 
-void func_8005615C(int a) {}
+void bg_ice2_interact(int a) {}
 
 extern struct Struct80180F14
 {
@@ -1067,7 +1067,7 @@ void bg_billiards_draw(void)
     func_80022530();
 }
 
-void func_8005638C(int a) {}
+void bg_billiards_interact(int a) {}
 
 void bg_golf_init(void) {}
 
@@ -1102,7 +1102,7 @@ void bg_golf_draw(void)
     func_80022530();
 }
 
-void func_800564CC(int a) {}
+void bg_golf_interact(int a) {}
 
 void bg_bowling_init(void) {}
 
@@ -1137,7 +1137,7 @@ void bg_bowling_draw(void)
     func_80022530();
 }
 
-void func_8005660C(int a) {}
+void bg_bowling_interact(int a) {}
 
 int func_80056610(u32 **a, void *b)
 {
@@ -1148,130 +1148,118 @@ int func_80056610(u32 **a, void *b)
     return 1;
 }
 
-void func_80056684(struct Struct80056684 *a, int (*b)())
+void g_process_background_models(struct BGModelEntry *entries, int (*func)(int, struct GMAModelEntry *))
 {
-    int r30;
-    int r29;
-    struct GMAModelEntry *r28;
-    struct Struct80056684 *r27;
-    char *r26;
+    int i;
+    int j;
+    struct GMAModelEntry *gmaEntry;
+    struct BGModelEntry *entry;
+    char *modelName;
     int r25;
 
     if (decodedBgGma == NULL)
         return;
-    r28 = decodedBgGma->modelEntries;
-    r30 = decodedBgGma->numModels;
+    gmaEntry = decodedBgGma->modelEntries;
     r25 = 1;
-    while (r30 > 0)
+    for (i = decodedBgGma->numModels; i > 0; i--, gmaEntry++)
     {
         int len1;
 
-        r26 = r28->name;
-        len1 = strlen(r26);
-        r27 = a;
-        r29 = 0;
-        while (r27->unk4 != NULL)
-        {
-            int matched;
+        modelName = gmaEntry->name;
+        len1 = strlen(modelName);
 
-            switch (r27->unk0)
+        // find entries for the model
+        for (j = 0, entry = entries; entry->name != NULL; j++, entry++)
+        {
+            BOOL matched;
+
+            switch (entry->unk0)
             {
-            case 0:
-                matched = !strncmp(r26, r27->unk4, strlen(r27->unk4));
+            case 0:  // entry name is prefix of model name
+                matched = !strncmp(modelName, entry->name, strlen(entry->name));
                 break;
-            case 1:
-                matched = !strcmp(r26, r27->unk4);
+            case 1:  // compare full name
+                matched = !strcmp(modelName, entry->name);
                 break;
-            case 2:
+            case 2:  // entry name is suffix of model name
                 {
-                    int len2 = strlen(r27->unk4);
+                    int len2 = strlen(entry->name);
                     if (len2 > len1)
-                        matched = 0;
+                        matched = FALSE;
                     else
-                        matched = !strncmp(r26 + (len1 - len2), r27->unk4, len2);
+                        matched = !strncmp(modelName + (len1 - len2), entry->name, len2);
                 }
                 break;
             default:
-                matched = 0;
+                matched = FALSE;
                 break;
             }
             if (matched)
             {
-                r25 = b(r29, r28);
+                r25 = func(j, gmaEntry);
                 if (r25 == 0)
                     break;
             }
             if (r25 == 0)
                 break;
-            r29++;
-            r27++;
         }
         if (r25 == 0)
             break;
-        r30--;
-        r28++;
     }
 }
 
-void func_800567DC(struct StageBgModel *r28, int r30_, struct Struct80056684 *a, Func800567DC b)
+void g_process_stage_bg_models(struct StageBgModel *bgModels, int count, struct BGModelEntry *entries, Func800567DC func)
 {
-    int r30 = r30_;
-    int r29;
+    int i;
+    int j;
     int r25 = 1;
-    struct Struct80056684 *r27;
+    struct BGModelEntry *entry;
 
-    while (r30 > 0)
+    for (i = count; i > 0; i--, bgModels++)
     {
-        if (r28->model != 0)
+        if (bgModels->model != 0)
         {
-            char *r26;
-            int len1;
+            char *modelName = bgModels->name;
+            int len1 = strlen(modelName);
 
-            r26 = r28->name;
-            len1 = strlen(r26);
-            r27 = a;
-            r29 = 0;
-            while (r27->unk4 != NULL)
+            // find entries for the model
+            for (j = 0, entry = entries; entry->name != NULL; j++, entry++)
             {
-                int matched;
+                BOOL matched;
 
-                switch (r27->unk0)
+                switch (entry->unk0)
                 {
-                case 0:
-                    matched = !strncmp(r26, r27->unk4, strlen(r27->unk4));
+                case 0:  // entry name is prefix of model name
+                    matched = !strncmp(modelName, entry->name, strlen(entry->name));
                     break;
-                case 1:
-                    matched = !strcmp(r26, r27->unk4);
+                case 1:  // compare full name
+                    matched = !strcmp(modelName, entry->name);
                     break;
-                case 2:
+                case 2:  // entry name is suffix of model name
                     {
-                        int len2 = strlen(r27->unk4);
+                        int len2 = strlen(entry->name);
                         if (len2 > len1)
-                            matched = 0;
+                            matched = FALSE;
                         else
-                            matched = !strncmp(r26 + (len1 - len2), r27->unk4, len2);
+                            matched = !strncmp(modelName + (len1 - len2), entry->name, len2);
                     }
                     break;
                 default:
-                    matched = 0;
+                    matched = FALSE;
                     break;
                 }
                 if (matched)
                 {
-                    r25 = b(r29, r28);
+                    r25 = func(j, bgModels);
                     if (r25 == 0)
                         break;
                 }
                 if (r25 == 0)
                     break;
-                r29++;
-                r27++;
             }
             if (r25 == 0)
                 break;
         }
-        r30--;
-        r28++;
     }
 }
 

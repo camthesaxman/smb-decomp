@@ -29,7 +29,7 @@ bg_storm_init:
 /* 80062024 0005DF44  3C 80 80 06 */	lis r4, lbl_80062BD4@ha
 /* 80062028 0005DF48  38 63 A0 84 */	addi r3, r3, lbl_801BA084@l
 /* 8006202C 0005DF4C  38 84 2B D4 */	addi r4, r4, lbl_80062BD4@l
-/* 80062030 0005DF50  4B FF 46 55 */	bl func_80056684
+/* 80062030 0005DF50  4B FF 46 55 */	bl g_process_background_models
 lbl_80062034:
 /* 80062034 0005DF54  48 0A 48 31 */	bl rand
 /* 80062038 0005DF58  6C 60 80 00 */	xoris r0, r3, 0x8000
@@ -351,7 +351,7 @@ lbl_800623CC:
 /* 800624E8 0005E408  38 61 00 08 */	addi r3, r1, 8
 /* 800624EC 0005E40C  80 19 00 0C */	lwz r0, 0xc(r25)
 /* 800624F0 0005E410  90 01 00 38 */	stw r0, 0x38(r1)
-/* 800624F4 0005E414  4B FE AA 15 */	bl g_create_pickup_item
+/* 800624F4 0005E414  4B FE AA 15 */	bl g_spawn_effect_object
 /* 800624F8 0005E418  48 00 01 94 */	b lbl_8006268C
 lbl_800624FC:
 /* 800624FC 0005E41C  3C 60 80 1F */	lis r3, cameraInfo@ha
@@ -449,7 +449,7 @@ lbl_8006253C:
 /* 80062668 0005E588  38 61 00 08 */	addi r3, r1, 8
 /* 8006266C 0005E58C  80 19 00 0C */	lwz r0, 0xc(r25)
 /* 80062670 0005E590  90 01 00 38 */	stw r0, 0x38(r1)
-/* 80062674 0005E594  4B FE A8 95 */	bl g_create_pickup_item
+/* 80062674 0005E594  4B FE A8 95 */	bl g_spawn_effect_object
 lbl_80062678:
 /* 80062678 0005E598  3B 18 00 01 */	addi r24, r24, 1
 /* 8006267C 0005E59C  2C 18 00 04 */	cmpwi r24, 4
@@ -808,8 +808,8 @@ lbl_80062B9C:
 /* 80062BC4 0005EAE4  CB 01 00 C0 */	lfd f24, 0xc0(r1)
 /* 80062BC8 0005EAE8  38 21 01 00 */	addi r1, r1, 0x100
 /* 80062BCC 0005EAEC  4E 80 00 20 */	blr
-.global func_80062BD0
-func_80062BD0:
+.global bg_storm_interact
+bg_storm_interact:
 /* 80062BD0 0005EAF0  4E 80 00 20 */	blr
 lbl_80062BD4:
 /* 80062BD4 0005EAF4  3C A0 80 1C */	lis r5, backgroundInfo@ha

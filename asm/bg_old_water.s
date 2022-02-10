@@ -359,7 +359,7 @@ lbl_8005A5A0:
 /* 8005A6E0 00056600  D0 01 00 44 */	stfs f0, 0x44(r1)
 /* 8005A6E4 00056604  80 04 00 18 */	lwz r0, 0x18(r4)
 /* 8005A6E8 00056608  90 01 00 38 */	stw r0, 0x38(r1)
-/* 8005A6EC 0005660C  4B FF 28 1D */	bl g_create_pickup_item
+/* 8005A6EC 0005660C  4B FF 28 1D */	bl g_spawn_effect_object
 lbl_8005A6F0:
 /* 8005A6F0 00056610  38 61 00 08 */	addi r3, r1, 8
 /* 8005A6F4 00056614  38 80 00 00 */	li r4, 0
@@ -478,7 +478,7 @@ lbl_8005A6F0:
 /* 8005A8B8 000567D8  38 61 00 08 */	addi r3, r1, 8
 /* 8005A8BC 000567DC  80 04 00 14 */	lwz r0, 0x14(r4)
 /* 8005A8C0 000567E0  90 01 00 38 */	stw r0, 0x38(r1)
-/* 8005A8C4 000567E4  4B FF 26 45 */	bl g_create_pickup_item
+/* 8005A8C4 000567E4  4B FF 26 45 */	bl g_spawn_effect_object
 lbl_8005A8C8:
 /* 8005A8C8 000567E8  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 8005A8CC 000567EC  3B E3 91 78 */	addi r31, r3, backgroundInfo@l
@@ -794,8 +794,8 @@ bg_old_water_draw:
 /* 8005AD70 00056C90  38 21 00 08 */	addi r1, r1, 8
 /* 8005AD74 00056C94  7C 08 03 A6 */	mtlr r0
 /* 8005AD78 00056C98  4E 80 00 20 */	blr
-.global func_8005AD7C
-func_8005AD7C:
+.global bg_old_water_interact
+bg_old_water_interact:
 /* 8005AD7C 00056C9C  4E 80 00 20 */	blr
 .global func_8005AD80
 func_8005AD80:

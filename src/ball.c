@@ -2701,7 +2701,7 @@ void func_8003C550(struct Ball *ball)
     sp30.unk34 = spC;
     sp30.unk88 = sp24;
     sp30.unkA8 = ball->unk130;
-    g_create_pickup_item(&sp30);
+    g_spawn_effect_object(&sp30);
 
     memset(&sp30, 0, sizeof(sp30));
 
@@ -2720,7 +2720,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        g_create_pickup_item(&sp30);
+        g_spawn_effect_object(&sp30);
     }
     r30 -= r30 >> 1;
 
@@ -2744,7 +2744,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        g_create_pickup_item(&sp30);
+        g_spawn_effect_object(&sp30);
     }
 }
 
@@ -2849,7 +2849,7 @@ void func_8003CCB0(void)
         sp8.unk8 = 10;
         sp8.unk14 = ball->unk2E;
         sp8.unk34 = ball->pos;
-        g_create_pickup_item(&sp8);
+        g_spawn_effect_object(&sp8);
     }
 }
 
@@ -3020,7 +3020,7 @@ void func_8003D3C4(struct Ball *ball)
             sp18.unk40.y = (spC.y + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.y;
             sp18.unk40.z = (spC.z + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.z;
 
-            g_create_pickup_item(&sp18);
+            g_spawn_effect_object(&sp18);
         }
     }
 }

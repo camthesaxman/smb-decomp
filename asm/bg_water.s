@@ -43,7 +43,7 @@ lbl_8005E198:
 /* 8005E1C4 0005A0E4  3C 60 80 06 */	lis r3, lbl_8005F88C@ha
 /* 8005E1C8 0005A0E8  38 83 F8 8C */	addi r4, r3, lbl_8005F88C@l
 /* 8005E1CC 0005A0EC  38 7F 00 8C */	addi r3, r31, 0x8c
-/* 8005E1D0 0005A0F0  4B FF 84 B5 */	bl func_80056684
+/* 8005E1D0 0005A0F0  4B FF 84 B5 */	bl g_process_background_models
 /* 8005E1D4 0005A0F4  38 00 00 01 */	li r0, 1
 /* 8005E1D8 0005A0F8  90 1E 00 00 */	stw r0, 0(r30)
 lbl_8005E1DC:
@@ -57,13 +57,13 @@ lbl_8005E1DC:
 /* 8005E1F8 0005A118  38 BF 01 20 */	addi r5, r31, 0x120
 /* 8005E1FC 0005A11C  80 64 00 6C */	lwz r3, 0x6c(r4)
 /* 8005E200 0005A120  80 84 00 68 */	lwz r4, 0x68(r4)
-/* 8005E204 0005A124  4B FF 85 D9 */	bl func_800567DC
+/* 8005E204 0005A124  4B FF 85 D9 */	bl g_process_stage_bg_models
 /* 8005E208 0005A128  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8005E20C 0005A12C  7F A6 EB 78 */	mr r6, r29
 /* 8005E210 0005A130  38 BF 01 20 */	addi r5, r31, 0x120
 /* 8005E214 0005A134  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 8005E218 0005A138  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 8005E21C 0005A13C  4B FF 85 C1 */	bl func_800567DC
+/* 8005E21C 0005A13C  4B FF 85 C1 */	bl g_process_stage_bg_models
 /* 8005E220 0005A140  48 0A 86 45 */	bl rand
 /* 8005E224 0005A144  6C 60 80 00 */	xoris r0, r3, 0x8000
 /* 8005E228 0005A148  C8 62 9A E0 */	lfd f3, lbl_802F42E0@sda21(r2)
@@ -519,8 +519,8 @@ lbl_8005E8C0:
 /* 8005E904 0005A824  7C 08 03 A6 */	mtlr r0
 /* 8005E908 0005A828  38 21 00 10 */	addi r1, r1, 0x10
 /* 8005E90C 0005A82C  4E 80 00 20 */	blr
-.global func_8005E910
-func_8005E910:
+.global bg_water_interact
+bg_water_interact:
 /* 8005E910 0005A830  4E 80 00 20 */	blr
 lbl_8005E914:
 /* 8005E914 0005A834  7C 08 02 A6 */	mflr r0
@@ -1602,7 +1602,7 @@ lbl_8005F95C:
 /* 8005F970 0005B890  B0 01 00 18 */	sth r0, 0x18(r1)
 /* 8005F974 0005B894  38 61 00 10 */	addi r3, r1, 0x10
 /* 8005F978 0005B898  93 E1 00 40 */	stw r31, 0x40(r1)
-/* 8005F97C 0005B89C  4B FE D5 8D */	bl g_create_pickup_item
+/* 8005F97C 0005B89C  4B FE D5 8D */	bl g_spawn_effect_object
 /* 8005F980 0005B8A0  48 00 00 18 */	b lbl_8005F998
 lbl_8005F984:
 /* 8005F984 0005B8A4  93 E5 01 90 */	stw r31, 0x190(r5)

@@ -58,7 +58,7 @@ void bg_old_sand_draw(void)
     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBackgroundObj, 4));
 }
 
-void func_800599F8(int a) {}
+void bg_old_sand_interact(int a) {}
 
 static void lbl_800599FC(struct NaomiVtxWithNormal *vtx)
 {

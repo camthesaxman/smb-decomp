@@ -1874,7 +1874,7 @@ lbl_800B7880:
 /* 800B79BC 000B38DC  C0 1E 00 20 */	lfs f0, 0x20(r30)
 /* 800B79C0 000B38E0  EC 01 00 2A */	fadds f0, f1, f0
 /* 800B79C4 000B38E4  D0 01 00 50 */	stfs f0, 0x50(r1)
-/* 800B79C8 000B38E8  4B F9 55 41 */	bl g_create_pickup_item
+/* 800B79C8 000B38E8  4B F9 55 41 */	bl g_spawn_effect_object
 /* 800B79CC 000B38EC  A8 1E 00 56 */	lha r0, 0x56(r30)
 /* 800B79D0 000B38F0  38 7C 00 00 */	addi r3, r28, 0
 /* 800B79D4 000B38F4  38 9B 00 00 */	addi r4, r27, 0
@@ -1907,7 +1907,7 @@ lbl_800B7880:
 /* 800B7A40 000B3960  C0 1E 00 20 */	lfs f0, 0x20(r30)
 /* 800B7A44 000B3964  EC 01 00 2A */	fadds f0, f1, f0
 /* 800B7A48 000B3968  D0 01 00 50 */	stfs f0, 0x50(r1)
-/* 800B7A4C 000B396C  4B F9 54 BD */	bl g_create_pickup_item
+/* 800B7A4C 000B396C  4B F9 54 BD */	bl g_spawn_effect_object
 /* 800B7A50 000B3970  B3 BE 00 56 */	sth r29, 0x56(r30)
 /* 800B7A54 000B3974  38 60 02 33 */	li r3, 0x233
 /* 800B7A58 000B3978  4B F7 3B 4D */	bl g_play_sound
@@ -6602,7 +6602,7 @@ lbl_800BBFAC:
 /* 800BBFFC 000B7F1C  90 01 00 5C */	stw r0, 0x5c(r1)
 /* 800BC000 000B7F20  80 10 00 14 */	lwz r0, 0x14(r16)
 /* 800BC004 000B7F24  90 01 00 60 */	stw r0, 0x60(r1)
-/* 800BC008 000B7F28  4B F9 0F 01 */	bl g_create_pickup_item
+/* 800BC008 000B7F28  4B F9 0F 01 */	bl g_spawn_effect_object
 /* 800BC00C 000B7F2C  48 00 00 28 */	b lbl_800BC034
 lbl_800BC010:
 /* 800BC010 000B7F30  C0 10 00 18 */	lfs f0, 0x18(r16)
@@ -6671,7 +6671,7 @@ lbl_800BC0D0:
 /* 800BC0FC 000B801C  90 01 00 5C */	stw r0, 0x5c(r1)
 /* 800BC100 000B8020  80 10 00 14 */	lwz r0, 0x14(r16)
 /* 800BC104 000B8024  90 01 00 60 */	stw r0, 0x60(r1)
-/* 800BC108 000B8028  4B F9 0E 01 */	bl g_create_pickup_item
+/* 800BC108 000B8028  4B F9 0E 01 */	bl g_spawn_effect_object
 /* 800BC10C 000B802C  48 00 06 98 */	b lbl_800BC7A4
 .global lbl_800BC110
 lbl_800BC110:
@@ -6779,7 +6779,7 @@ lbl_800BC260:
 /* 800BC28C 000B81AC  90 01 00 5C */	stw r0, 0x5c(r1)
 /* 800BC290 000B81B0  80 10 00 14 */	lwz r0, 0x14(r16)
 /* 800BC294 000B81B4  90 01 00 60 */	stw r0, 0x60(r1)
-/* 800BC298 000B81B8  4B F9 0C 71 */	bl g_create_pickup_item
+/* 800BC298 000B81B8  4B F9 0C 71 */	bl g_spawn_effect_object
 .global lbl_800BC29C
 lbl_800BC29C:
 /* 800BC29C 000B81BC  38 70 00 0C */	addi r3, r16, 0xc
@@ -6862,7 +6862,7 @@ lbl_800BC368:
 /* 800BC3C8 000B82E8  D3 41 00 B0 */	stfs f26, 0xb0(r1)
 /* 800BC3CC 000B82EC  D3 E1 00 B4 */	stfs f31, 0xb4(r1)
 /* 800BC3D0 000B82F0  D0 01 00 CC */	stfs f0, 0xcc(r1)
-/* 800BC3D4 000B82F4  4B F9 0B 35 */	bl g_create_pickup_item
+/* 800BC3D4 000B82F4  4B F9 0B 35 */	bl g_spawn_effect_object
 /* 800BC3D8 000B82F8  48 00 03 CC */	b lbl_800BC7A4
 .global lbl_800BC3DC
 lbl_800BC3DC:
@@ -9201,7 +9201,7 @@ lbl_800BE5AC:
 /* 800BE66C 000BA58C  90 01 00 70 */	stw r0, 0x70(r1)
 /* 800BE670 000BA590  80 1D 00 14 */	lwz r0, 0x14(r29)
 /* 800BE674 000BA594  90 01 00 74 */	stw r0, 0x74(r1)
-/* 800BE678 000BA598  4B F8 E8 91 */	bl g_create_pickup_item
+/* 800BE678 000BA598  4B F8 E8 91 */	bl g_spawn_effect_object
 lbl_800BE67C:
 /* 800BE67C 000BA59C  C0 1D 00 48 */	lfs f0, 0x48(r29)
 /* 800BE680 000BA5A0  EC 2F 00 28 */	fsubs f1, f15, f0

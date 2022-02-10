@@ -24,4 +24,4 @@ void bg_old_night_draw(void)
     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBackgroundObj, 0));
 }
 
-void func_8005851C(int a) {}
+void bg_old_night_interact(int a) {}
