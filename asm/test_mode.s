@@ -4292,7 +4292,7 @@ lbl_00003D94:
 /* 00003DC0 408002DC */ bge lbl_0000409C
 /* 00003DC4 807F0158 */ lwz r3, 0x158(r31)
 /* 00003DC8 38800000 */ li r4, 0
-/* 00003DCC 4BFFC391 */ bl func_8008ABB4
+/* 00003DCC 4BFFC391 */ bl g_load_character_graphics
 /* 00003DD0 809F0154 */ lwz r4, 0x154(r31)
 /* 00003DD4 2C040000 */ cmpwi r4, 0
 /* 00003DD8 40800020 */ bge lbl_00003DF8
@@ -15762,9 +15762,9 @@ lbl_0000E4B8:
 /* 0000E538 4CC63182 */ crclr 6
 /* 0000E53C 4BFF1C21 */ bl g_debug_printf
 /* 0000E540 80BE005C */ lwz r5, 0x5c(r30)
-/* 0000E544 3C600000 */ lis r3, lbl_802B46F0@ha
+/* 0000E544 3C600000 */ lis r3, charaGMAs@ha
 /* 0000E548 801E0060 */ lwz r0, 0x60(r30)
-/* 0000E54C 38830000 */ addi r4, r3, lbl_802B46F0@l
+/* 0000E54C 38830000 */ addi r4, r3, charaGMAs@l
 /* 0000E550 90A10008 */ stw r5, 8(r1)
 /* 0000E554 9001000C */ stw r0, 0xc(r1)
 /* 0000E558 807E0064 */ lwz r3, 0x64(r30)

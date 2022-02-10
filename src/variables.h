@@ -630,7 +630,7 @@ extern u8 lbl_80292E70[];
 // extern ? lbl_802B395C;
 // extern ? lbl_802B39C0;
 // extern ? lbl_802B46B0;
-// extern ? lbl_802B46F0;
+// extern ? charaGMAs;
 // extern ? lbl_802B47E0;
 // extern ? lbl_802B4800;
 // extern ? lbl_802B4DF0;

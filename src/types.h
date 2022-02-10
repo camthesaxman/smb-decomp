@@ -430,13 +430,6 @@ struct Struct80034F5C_1_sub
     float *unkC;
 };  // size = 0x10
 
-struct Struct80034F5C_1_sub_child3
-{
-    float unk0;
-    float unk4;
-    float unk8;
-};
-
 struct Struct800341BC_5
 {
     u8 filler0[0xC];
@@ -528,8 +521,8 @@ struct MotInfo
     u8 filler4[0x30-0x4];
     void *unk30[16];
     u8 filler70[0xB0-0x70];
-    void *unkB0;
-};
+    u8 *unkB0;
+};  // size = 0xB4
 
 struct Struct800341BC_2
 {

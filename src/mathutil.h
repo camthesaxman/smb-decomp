@@ -346,9 +346,6 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = v->z;
 #else
     register float *mtxA;
-    register float *_x = &v->x;
-    register float *_y = &v->y;
-    register float *_z = &v->z;
     register float x, y, z;
 
     asm
