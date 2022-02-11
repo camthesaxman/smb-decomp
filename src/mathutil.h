@@ -144,11 +144,36 @@ static inline float mathutil_floor(register float n)
     register float savedFlags;
     asm
     {
-        // save FPCSR flags
+        // save FPSCR flags
         mffs savedFlags
-        // set rounding mode to -inf
+        // set rounding mode to -inf (FPSCR bits 30-31 are 11)
         mtfsb1 30
         mtfsb1 31
+        // convert to integer
+        fctiw n, n
+        stfd n, buf[0]
+        // restore old FPCSR flags
+        mtfsf 0xFF, savedFlags
+    }
+    return buf[1];
+#else
+    // TODO
+    return (s32)n;
+#endif
+}
+
+static inline float mathutil_ceil(register float n)
+{
+#ifdef __MWERKS__
+    s32 buf[2];
+    register float savedFlags;
+    asm
+    {
+        // save FPSCR flags
+        mffs savedFlags
+        // set rounding mode to -inf (FPSCR bits 30-31 are 10)
+        mtfsb1 30
+        mtfsb0 31
         // convert to integer
         fctiw n, n
         stfd n, buf[0]

@@ -131,7 +131,7 @@ SOURCES := \
 	asm/bg_space.s \
 	src/bg_sunset.c \
 	src/bg_bonus.c \
-	asm/bg_storm.s \
+	src/bg_storm.c \
 	asm/bg_master.s \
 	asm/bg_pilot.s \
 	asm/bg_end.s \

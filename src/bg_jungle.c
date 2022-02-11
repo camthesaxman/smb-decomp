@@ -11,41 +11,43 @@
 #include "mode.h"
 #include "stage.h"
 
-struct BGModelEntry lbl_801B9BA0[] =
+static struct BGModelSearch jungleModelFind[] =
 {
-    { 0, "JUN_FIG_CLOUD_" },
-    { 3, NULL },
+    { BG_MDL_CMP_PREFIX, "JUN_FIG_CLOUD_" },
+    { BG_MDL_CMP_END,    NULL },
 };
 
-static int lbl_8005B86C(int a, struct StageBgModel *bgModel);
+static int jungle_model_find_proc(int, struct StageBgModel *);
 
 void bg_jungle_init(void)
 {
-    struct UnkBackground9C *r28 = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.unk9C;
     int i;
-    struct UnkBackground9C_sub *r29;
+    struct BGJungleCloud *r29;
     Vec sp8;
 
     bg_e3_init();
     func_800940B8();
     func_800946DC(lbl_801F0614.unk42, 0xC00);
     backgroundInfo.unk8 |= 1;
-    r28->unk4 = 0;
-    g_process_stage_bg_models(
+
+    // find models
+    work->bgModelsCount = 0;
+    g_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
-        lbl_801B9BA0,
-        lbl_8005B86C);
-    g_process_stage_bg_models(
+        jungleModelFind,
+        jungle_model_find_proc);
+    g_search_bg_models_from_list(
         decodedStageLzPtr->unk74,
         decodedStageLzPtr->unk70,
-        lbl_801B9BA0,
-        lbl_8005B86C);
-
-    if (r28->unk4 == 0)
+        jungleModelFind,
+        jungle_model_find_proc);
+    if (work->bgModelsCount == 0)
         return;
-    r28->unk168 = 0;
-    for (i = r28->unk4, r29 = r28->unk8; i > 0; i--, r29++)
+
+    work->unk168 = 0;
+    for (i = work->bgModelsCount, r29 = work->bgModels; i > 0; i--, r29++)
     {
         r29->unk4.x = rand() / 32767.0f;
         r29->unk4.y = rand() / 32767.0f;
@@ -61,9 +63,9 @@ void bg_jungle_init(void)
 
 void bg_jungle_main(void)
 {
-    struct UnkBackground9C *r31 = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.unk9C;
     int i;
-    struct UnkBackground9C_sub *r29;
+    struct BGJungleCloud *r29;
     int r28;
     Vec sp8;
 
@@ -81,17 +83,17 @@ void bg_jungle_main(void)
     }
     if (gamePauseStatus & 0xA)
         return;
-    if (r31->unk4 == 0)
+    if (work->bgModelsCount == 0)
         return;
-    if (r31->unk168 == 0 && infoWork.timerCurr < (infoWork.timerMax >> 1))
+    if (work->unk168 == 0 && infoWork.timerCurr < (infoWork.timerMax >> 1))
     {
-        r31->unk168 = 1;
+        work->unk168 = 1;
         r28 = 1;
     }
     else
         r28 = 0;
-    r29 = r31->unk8;
-    for (i = r31->unk4; i > 0; i--, r29++)
+    r29 = work->bgModels;
+    for (i = work->bgModelsCount; i > 0; i--, r29++)
     {
         if (r28)
         {
@@ -114,11 +116,11 @@ void bg_jungle_finish(void) {}
 
 void bg_jungle_draw(void)
 {
-    struct UnkBackground9C *r30 = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.unk9C;
     struct StageBgModel *r31;
     u32 r28;
     int i;
-    struct UnkBackground9C_sub *r30_;
+    struct BGJungleCloud *r30_;
 
     if (gameSubmode == SMD_GAME_CONTINUE_INIT
      || gameSubmode == SMD_GAME_CONTINUE_MAIN
@@ -136,16 +138,16 @@ void bg_jungle_draw(void)
         else
             r28 = 1 << 0;
     }
-    r30_ = r30->unk8;
-    for (i = r30->unk4; i > 0; i--, r30_++)
+    r30_ = work->bgModels;
+    for (i = work->bgModelsCount; i > 0; i--, r30_++)
         r30_->unk0->unk0 &= ~0x10000;
     bg_e3_draw();
-    if (r30->unk4 != 0)
+    if (work->bgModelsCount != 0)
     {
         func_8008F6D4(1);
         avdisp_set_z_mode(1, 3, 0);
-        r30_ = r30->unk8;
-        for (i = r30->unk4; i > 0; i--, r30_++)
+        r30_ = work->bgModels;
+        for (i = work->bgModelsCount; i > 0; i--, r30_++)
         {
             r31 = r30_->unk0;
             if (r31->unk0 & r28)
@@ -175,17 +177,17 @@ void bg_jungle_draw(void)
 
 void bg_jungle_interact(int a) {}
 
-static int lbl_8005B86C(int a, struct StageBgModel *bgModel)
+static int jungle_model_find_proc(int index, struct StageBgModel *bgModel)
 {
-    struct UnkBackground9C *r5 = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.unk9C;
 
-    switch (a)
+    switch (index)
     {
-    case 0:
-        if (bgModel->model != NULL && r5->unk4 < 2)
+    case 0:  // JUN_FIG_CLOUD_
+        if (bgModel->model != NULL && work->bgModelsCount < 2)
         {
-            r5->unk8[r5->unk4].unk0 = bgModel;
-            r5->unk4++;
+            work->bgModels[work->bgModelsCount].unk0 = bgModel;
+            work->bgModelsCount++;
         }
         break;
     }

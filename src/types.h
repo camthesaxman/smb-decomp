@@ -408,7 +408,13 @@ struct Struct8003C550
     s16 unk4C;
     s16 unk4E;
     s16 unk50;
-    u8 filler52[0x88-0x52];
+    u8 filler52[0x70-0x52];
+    /*
+    float unk74;
+    u8 filler78[4];
+    */
+    Vec unk70;
+    Vec unk7C;
     Vec unk88;
     u8 filler94[0xA8-0x94];
     float unkA8;

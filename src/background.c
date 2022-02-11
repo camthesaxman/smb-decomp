@@ -402,6 +402,7 @@ void preload_bg_files(int bgId)
 
     if (backgroundInfo.bgId != bgId)
     {
+        // preload GMA/TPL
         bgName = bgFileNames[bgId];
         if (bgName != NULL)
         {
@@ -413,6 +414,8 @@ void preload_bg_files(int bgId)
             file_preload(tplFileName);
             DVDChangeDir("/test");
         }
+
+        // preload old NAOMI files
         bgName = oldBgFileNames[bgId];
         if (bgName != NULL)
         {
@@ -427,7 +430,7 @@ void preload_bg_files(int bgId)
     }
 }
 
-u32 lbl_801B98A8[] =
+u32 bgWorkSizes[] =
 {
     0,
     0,
@@ -442,15 +445,15 @@ u32 lbl_801B98A8[] =
     0,
     0,
     0,
-    0x16C,
+    sizeof(struct BGJungleWork),
     0x194,
     0,
-    0x16C,
+    sizeof(struct BGSunsetWork),
     0xAC,
     0x56C,
     0,
-    0x428,
-    0x80C,
+    sizeof(struct BGStormWork),
+    sizeof(struct BGBonusWork),
     0x1EC,
     0,
     0,
@@ -481,11 +484,14 @@ void load_bg_files(int bgId)
 
         if (backgroundInfo.bgId > 0)
         {
+            // free working memory
             if (backgroundInfo.unk9C != NULL)
             {
                 OSFree(backgroundInfo.unk9C);
                 backgroundInfo.unk9C = NULL;
             }
+
+            // free GMA/TPL
             if (decodedBgTpl != NULL || decodedBgGma != NULL)
             {
                 VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
@@ -501,10 +507,13 @@ void load_bg_files(int bgId)
                 free_gma(decodedBgGma);
                 decodedBgGma = NULL;
             }
+
+            // free old NAOMI resources
             free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
         }
         if (bgId > 0)
         {
+            // load GMA/TPL files
             bgName = bgFileNames[bgId];
             if (bgName != NULL)
             {
@@ -516,6 +525,8 @@ void load_bg_files(int bgId)
                 decodedBgGma = load_gma(gmaFileName, decodedBgTpl);
                 DVDChangeDir("/test");
             }
+
+            // load old NAOMI files
             bgName = oldBgFileNames[bgId];
             if (bgName != NULL)
             {
@@ -526,12 +537,14 @@ void load_bg_files(int bgId)
                 load_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl, gmaFileName, tplFileName);
                 DVDChangeDir("/test");
             }
-            if (lbl_801B98A8[bgId] != 0)
+
+            // allocate working memory for background
+            if (bgWorkSizes[bgId] != 0)
             {
-                backgroundInfo.unk9C = OSAlloc(lbl_801B98A8[bgId]);
+                backgroundInfo.unk9C = OSAlloc(bgWorkSizes[bgId]);
                 if (backgroundInfo.unk9C == NULL)
                     OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
-                memset(backgroundInfo.unk9C, 0, lbl_801B98A8[bgId]);
+                memset(backgroundInfo.unk9C, 0, bgWorkSizes[bgId]);
             }
         }
         OSSetCurrentHeap(oldHeap);
@@ -1148,12 +1161,12 @@ int func_80056610(u32 **a, void *b)
     return 1;
 }
 
-void g_process_background_models(struct BGModelEntry *entries, int (*func)(int, struct GMAModelEntry *))
+void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struct GMAModelEntry *))
 {
     int i;
     int j;
     struct GMAModelEntry *gmaEntry;
-    struct BGModelEntry *entry;
+    struct BGModelSearch *search;
     char *modelName;
     int r25;
 
@@ -1169,25 +1182,25 @@ void g_process_background_models(struct BGModelEntry *entries, int (*func)(int, 
         len1 = strlen(modelName);
 
         // find entries for the model
-        for (j = 0, entry = entries; entry->name != NULL; j++, entry++)
+        for (j = 0, search = searchList; search->name != NULL; j++, search++)
         {
             BOOL matched;
 
-            switch (entry->unk0)
+            switch (search->cmpType)
             {
-            case 0:  // entry name is prefix of model name
-                matched = !strncmp(modelName, entry->name, strlen(entry->name));
+            case BG_MDL_CMP_PREFIX:  // prefix of model name
+                matched = !strncmp(modelName, search->name, strlen(search->name));
                 break;
-            case 1:  // compare full name
-                matched = !strcmp(modelName, entry->name);
+            case BG_MDL_CMP_FULL:  // full name
+                matched = !strcmp(modelName, search->name);
                 break;
-            case 2:  // entry name is suffix of model name
+            case BG_MDL_CMP_SUFFIX:  // suffix of model name
                 {
-                    int len2 = strlen(entry->name);
+                    int len2 = strlen(search->name);
                     if (len2 > len1)
                         matched = FALSE;
                     else
-                        matched = !strncmp(modelName + (len1 - len2), entry->name, len2);
+                        matched = !strncmp(modelName + (len1 - len2), search->name, len2);
                 }
                 break;
             default:
@@ -1208,12 +1221,12 @@ void g_process_background_models(struct BGModelEntry *entries, int (*func)(int, 
     }
 }
 
-void g_process_stage_bg_models(struct StageBgModel *bgModels, int count, struct BGModelEntry *entries, Func800567DC func)
+void g_search_bg_models_from_list(struct StageBgModel *bgModels, int count, struct BGModelSearch *searchList, Func800567DC func)
 {
     int i;
     int j;
     int r25 = 1;
-    struct BGModelEntry *entry;
+    struct BGModelSearch *search;
 
     for (i = count; i > 0; i--, bgModels++)
     {
@@ -1223,25 +1236,25 @@ void g_process_stage_bg_models(struct StageBgModel *bgModels, int count, struct 
             int len1 = strlen(modelName);
 
             // find entries for the model
-            for (j = 0, entry = entries; entry->name != NULL; j++, entry++)
+            for (j = 0, search = searchList; search->name != NULL; j++, search++)
             {
                 BOOL matched;
 
-                switch (entry->unk0)
+                switch (search->cmpType)
                 {
-                case 0:  // entry name is prefix of model name
-                    matched = !strncmp(modelName, entry->name, strlen(entry->name));
+                case BG_MDL_CMP_PREFIX:  // prefix of model name
+                    matched = !strncmp(modelName, search->name, strlen(search->name));
                     break;
-                case 1:  // compare full name
-                    matched = !strcmp(modelName, entry->name);
+                case BG_MDL_CMP_FULL:  // full name
+                    matched = !strcmp(modelName, search->name);
                     break;
-                case 2:  // entry name is suffix of model name
+                case BG_MDL_CMP_SUFFIX:  // suffix of model name
                     {
-                        int len2 = strlen(entry->name);
+                        int len2 = strlen(search->name);
                         if (len2 > len1)
                             matched = FALSE;
                         else
-                            matched = !strncmp(modelName + (len1 - len2), entry->name, len2);
+                            matched = !strncmp(modelName + (len1 - len2), search->name, len2);
                     }
                     break;
                 default:

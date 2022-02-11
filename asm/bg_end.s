@@ -22,7 +22,7 @@ bg_end_init:
 /* 80065200 00061120  3C 60 80 06 */	lis r3, lbl_80065B8C@ha
 /* 80065204 00061124  38 83 5B 8C */	addi r4, r3, lbl_80065B8C@l
 /* 80065208 00061128  38 7D 00 50 */	addi r3, r29, 0x50
-/* 8006520C 0006112C  4B FF 14 79 */	bl g_process_background_models
+/* 8006520C 0006112C  4B FF 14 79 */	bl g_search_bg_models
 /* 80065210 00061130  38 00 00 01 */	li r0, 1
 /* 80065214 00061134  90 1F 00 00 */	stw r0, 0(r31)
 lbl_80065218:
@@ -33,13 +33,13 @@ lbl_80065218:
 /* 80065228 00061148  7F C6 F3 78 */	mr r6, r30
 /* 8006522C 0006114C  80 84 00 68 */	lwz r4, 0x68(r4)
 /* 80065230 00061150  38 BD 00 88 */	addi r5, r29, 0x88
-/* 80065234 00061154  4B FF 15 A9 */	bl g_process_stage_bg_models
+/* 80065234 00061154  4B FF 15 A9 */	bl g_search_bg_models_from_list
 /* 80065238 00061158  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8006523C 0006115C  7F C6 F3 78 */	mr r6, r30
 /* 80065240 00061160  38 BD 00 88 */	addi r5, r29, 0x88
 /* 80065244 00061164  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 80065248 00061168  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 8006524C 0006116C  4B FF 15 91 */	bl g_process_stage_bg_models
+/* 8006524C 0006116C  4B FF 15 91 */	bl g_search_bg_models_from_list
 /* 80065250 00061170  3C 60 80 06 */	lis r3, lbl_8006582C@ha
 /* 80065254 00061174  38 03 58 2C */	addi r0, r3, lbl_8006582C@l
 /* 80065258 00061178  3C 60 80 06 */	lis r3, lbl_800654F4@ha

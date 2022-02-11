@@ -13,110 +13,87 @@
 #include "mathutil.h"
 #include "stage.h"
 
-struct UnkBackground9C_alt_sub
+static struct BGModelSearch bonusMiscFind[] =
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    float unk10;
-    float unk14;
-    float unk18;
+    { BG_MDL_CMP_FULL,   "BNS_SHOTSTAR" },
+    { BG_MDL_CMP_PREFIX, "STARLIGHT_" },
+    { BG_MDL_CMP_FULL,   "BNS_LIGHTMAP" },
+    { BG_MDL_CMP_FULL,   "BNS_LIGHTMAP_A" },
+    { BG_MDL_CMP_PREFIX, "STARPOINT" },
+    { BG_MDL_CMP_END,    NULL },
 };
 
-struct UnkBackground9C_alt
+static struct BGModelSearch bonusMainFind[] =
 {
-    s32 unk0;
-    struct StageBgModel *unk4;
-    void *unk8;
-    struct GMAModelHeader *unkC;
-    s32 unk10;
-    struct UnkBackground9C_alt_sub unk14[64];
-    GXTexObj *unk714;
-    GXTexObj *unk718;
-    Mtx unk71C;
-    Mtx unk74C;
-    Mtx unk77C;
-    Mtx unk7AC;
-    Mtx unk7DC;
-};
-
-struct BGModelEntry lbl_801BA010[] =
-{
-    { 1, "BNS_SHOTSTAR" },
-    { 0, "STARLIGHT_" },
-    { 1, "BNS_LIGHTMAP" },
-    { 1, "BNS_LIGHTMAP_A" },
-    { 0, "STARPOINT" },
-    { 3, NULL },
-};
-
-struct BGModelEntry lbl_801BA04C[] =
-{
-    { 1, "BNS_MAIN" },
-    { 3, NULL },
+    { BG_MDL_CMP_FULL, "BNS_MAIN" },
+    { BG_MDL_CMP_END,  NULL },
 };
 
 void lbl_80061B58(void);
 void lbl_80061BC4(struct Struct80061BC4 *a);
-int lbl_80061EF0(int a, struct GMAModelEntry *b);
-int lbl_80061FA8(int, struct StageBgModel *);
+static int bonus_misc_find_proc(int, struct GMAModelEntry *);
+static int bonus_main_find_proc(int, struct StageBgModel *);
 
 void bg_bonus_init(void)
 {
-    struct UnkBackground9C_alt *r31 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     int i;
-    struct UnkBackground9C_alt_sub *r30;
+    struct BGBonusStarpoint *starpoint;
 
     bg_e3_init();
     backgroundInfo.ballEnvFunc = lbl_80061BC4;
     backgroundInfo.unk98 = lbl_80061B58;
-    if (r31->unk0 == 0)
+
+    // find models
+    if (work->unk0 == 0)
     {
-        r31->unk10 = 0;
-        g_process_background_models(lbl_801BA010, lbl_80061EF0);
-        r31->unk0 = 1;
+        work->starpointsCount = 0;
+        g_search_bg_models(bonusMiscFind, bonus_misc_find_proc);
+        work->unk0 = 1;
     }
-    g_process_stage_bg_models(
+    g_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
-        lbl_801BA04C,
-        lbl_80061FA8);
-    g_process_stage_bg_models(
+        bonusMainFind,
+        bonus_main_find_proc);
+    g_search_bg_models_from_list(
         decodedStageLzPtr->unk74,
         decodedStageLzPtr->unk70,
-        lbl_801BA04C,
-        lbl_80061FA8);
-    r30 = r31->unk14;
-    for (i = r31->unk10; i > 0; i--, r30++)
+        bonusMainFind,
+        bonus_main_find_proc);
+
+    starpoint = work->starpoints;
+    for (i = work->starpointsCount; i > 0; i--, starpoint++)
     {
-        r30->unkC = rand() & 0x7FFF;
-        r30->unkE = (((rand() / 32767.0f) * 0.5f + 1.0f) * 65536.0f) / 180.0f;
+        starpoint->unkC = rand() & 0x7FFF;
+        starpoint->unkE = (((rand() / 32767.0f) * 0.5f + 1.0f) * 65536.0f) / 180.0f;
     }
 }
 
 void bg_bonus_main(void)
 {
-    struct UnkBackground9C_alt *r31 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     int i;
-    struct UnkBackground9C_alt_sub *r29;
+    struct BGBonusStarpoint *starpoint;
     Vec sp8;
 
     bg_e3_main();
     if (gamePauseStatus & 0xA)
         return;
-    r29 = r31->unk14;
-    for (i = r31->unk10; i > 0; i--, r29++)
+
+    starpoint = work->starpoints;
+    for (i = work->starpointsCount; i > 0; i--, starpoint++)
     {
         float f2;
-        r29->unkC += r29->unkE;
-        f2 = (mathutil_sin(r29->unkC) + 1.0f) * 0.25f + 0.5f;
-        r29->unk10 = f2 * 1.1f;
-        r29->unk14 = f2 * 1.05f;
-        r29->unk18 = f2;
-        if (r29->unk10 > 1.0f)
-            r29->unk10 = 1.0f;
-        if (r29->unk14 > 1.0f)
-            r29->unk14 = 1.0f;
+        starpoint->unkC += starpoint->unkE;
+        f2 = (mathutil_sin(starpoint->unkC) + 1.0f) * 0.25f + 0.5f;
+        starpoint->unk10 = f2 * 1.1f;
+        starpoint->unk14 = f2 * 1.05f;
+        starpoint->unk18 = f2;
+        if (starpoint->unk10 > 1.0f)
+            starpoint->unk10 = 1.0f;
+        if (starpoint->unk14 > 1.0f)
+            starpoint->unk14 = 1.0f;
     }
 
     mathutil_mtxA_from_identity();
@@ -126,12 +103,12 @@ void bg_bonus_main(void)
     mathutil_mtxA_scale(&sp8);
     mathutil_mtxA_rotate_y(0x1000);
     mathutil_mtxA_rotate_x(0x4000);
-    mathutil_mtxA_to_mtx(r31->unk71C);
+    mathutil_mtxA_to_mtx(work->unk71C);
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_y(0x1000);
     mathutil_mtxA_rotate_x(0x4000);
-    mathutil_mtxA_to_mtx(r31->unk74C);
+    mathutil_mtxA_to_mtx(work->unk74C);
 
     mathutil_mtxA_from_identity();
     mathutilData->mtxA[0][0] = 0.0f;
@@ -140,23 +117,23 @@ void bg_bonus_main(void)
     mathutilData->mtxA[1][3] = 0.5f;
     mathutilData->mtxA[2][2] = 0.0f;
     mathutilData->mtxA[2][3] = 1.0f;
-    mathutil_mtxA_to_mtx(r31->unk77C);
+    mathutil_mtxA_to_mtx(work->unk77C);
 }
 
 void bg_bonus_finish(void) {}
 
 void bg_bonus_draw(void)
 {
-    struct UnkBackground9C_alt *r30 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     int i;
     Vec sp14;
     Vec sp8;
-    struct UnkBackground9C_alt_sub *r28;
-    struct GMAModelHeader *r27_;
+    struct BGBonusStarpoint *starpoint;
+    struct GMAModelHeader *starlightModel;
     struct StageBgModel *r27;
 
     bg_e3_draw();
-    r27 = r30->unk4;
+    r27 = work->unk4;
     sp8 = r27->scale;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
     mathutil_mtxA_translate(&r27->pos);
@@ -165,21 +142,22 @@ void bg_bonus_draw(void)
     mathutil_mtxA_rotate_x(r27->xrot);
     mathutil_mtxA_scale(&sp8);
     avdisp_set_z_mode(1, 3, 0);
-    r27_ = r30->unkC;
-    for (i = r30->unk10, r28 = r30->unk14; i > 0; i--, r28++)
+    starlightModel = work->starlightModel;
+
+    for (i = work->starpointsCount, starpoint = work->starpoints; i > 0; i--, starpoint++)
     {
-        float f30 = (r28->unk10 + r28->unk14 + r28->unk18) * 0.75f;
+        float f30 = (starpoint->unk10 + starpoint->unk14 + starpoint->unk18) * 0.75f;
 
         if (lbl_801EEC90.unk0 & (1 << 2))
         {
-            sp14.x = r28->unk0.x * sp8.x;
-            sp14.y = r28->unk0.y * sp8.y;
-            sp14.z = r28->unk0.z * sp8.z;
-            if (func_8000E53C(&sp14) < -(r27_->boundsRadius * f30))
+            sp14.x = starpoint->unk0.x * sp8.x;
+            sp14.y = starpoint->unk0.y * sp8.y;
+            sp14.z = starpoint->unk0.z * sp8.z;
+            if (func_8000E53C(&sp14) < -(starlightModel->boundsRadius * f30))
                 continue;
         }
         mathutil_mtxA_push();
-        mathutil_mtxA_translate(&r28->unk0);
+        mathutil_mtxA_translate(&starpoint->unk0);
         mathutil_mtxA_sq_from_identity();
         mathutil_get_mtxA_translate_alt(&sp14);
         if (sp14.z < -30.0f)
@@ -192,8 +170,8 @@ void bg_bonus_draw(void)
             mathutil_set_mtxA_translate(&sp14);
             f30 *= f3;
             mathutil_mtxA_scale_s(f30);
-            g_avdisp_set_some_color_1(r28->unk10, r28->unk14, r28->unk18, 1.0f);
-            g_avdisp_maybe_draw_model_1(r27_);
+            g_avdisp_set_some_color_1(starpoint->unk10, starpoint->unk14, starpoint->unk18, 1.0f);
+            g_avdisp_maybe_draw_model_1(starlightModel);
             func_8000E3BC();
         }
         mathutil_mtxA_pop();
@@ -237,29 +215,29 @@ void bg_bonus_interact(int a)
 
 void lbl_80061B58(void)
 {
-    struct UnkBackground9C_alt *r31 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     Mtx sp8;
 
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
     mathutil_mtxA_rigid_invert();
     mathutil_mtxA_to_mtx(sp8);
-    mathutil_mtxA_mult_left(r31->unk71C);
-    mathutil_mtxA_to_mtx(r31->unk7AC);
+    mathutil_mtxA_mult_left(work->unk71C);
+    mathutil_mtxA_to_mtx(work->unk7AC);
     mathutil_mtxA_from_mtx(sp8);
-    mathutil_mtxA_mult_left(r31->unk74C);
-    mathutil_mtxA_to_mtx(r31->unk7DC);
+    mathutil_mtxA_mult_left(work->unk74C);
+    mathutil_mtxA_to_mtx(work->unk7DC);
 }
 
 void lbl_80061BC4(struct Struct80061BC4 *a)
 {
-    struct UnkBackground9C_alt *r31 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     struct Struct80061BC4_sub spC = a->unkC;
 
     func_8009E110(1, 1, 1, 0);
     func_8009AC8C();
-    func_8009F430(r31->unk714, spC.unkC);
+    func_8009F430(work->lightmapTex, spC.unkC);
     mathutil_mtxA_push();
-    mathutil_mtxA_mult_left(r31->unk7AC);
+    mathutil_mtxA_mult_left(work->unk7AC);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXSetTexCoordGen(spC.unk4, GX_TG_MTX2x4, GX_TG_POS, spC.unk8);
@@ -274,12 +252,12 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     spC.unk8 += 3;
     spC.unkC++;
     mathutil_mtxA_push();
-    mathutil_mtxA_mult_left(r31->unk7DC);
+    mathutil_mtxA_mult_left(work->unk7DC);
     mathutil_set_mtxA_translate_xyz(0.0f, 0.0f, 0.0f);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
-    GXLoadTexMtxImm(r31->unk77C, spC.unk14, GX_MTX3x4);
-    func_8009F430(r31->unk718, spC.unkC);
+    GXLoadTexMtxImm(work->unk77C, spC.unk14, GX_MTX3x4);
+    func_8009F430(work->lightmapATex, spC.unkC);
     GXSetTexCoordGen2(spC.unk4, GX_TG_MTX3x4, GX_TG_NRM, spC.unk8, GX_TRUE, spC.unk14);
     GXSetTevDirect(spC.unk0);
     func_8009EFF4(spC.unk0, spC.unk4, spC.unkC, 0xFF);
@@ -295,57 +273,45 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     a->unkC = spC;
 }
 
-struct Struct80061EF0
+static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
 {
-    u8 filler0[0x24];
-    void *unk24;
-};
-
-struct Struct80061EF0_2
-{
-    u8 filler0[0x8];
-    Vec unk8;
-};
-
-int lbl_80061EF0(int index, struct GMAModelEntry *b)
-{
-    struct UnkBackground9C_alt *r7 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = backgroundInfo.unk9C;
 
     switch (index)
     {
-    case 0:
-        r7->unk8 = b->modelOffset;
+    case 0:  // BNS_SHOTSTAR
+        work->shotstarModel = entry->modelOffset;
         break;
-    case 1:
-        r7->unkC = b->modelOffset;
+    case 1:  // STARLIGHT_
+        work->starlightModel = entry->modelOffset;
         break;
-    case 2:
-        r7->unk714 = b->modelOffset->texObjs;
+    case 2:  // BNS_LIGHTMAP
+        work->lightmapTex = entry->modelOffset->texObjs;
         break;
-    case 3:
-        r7->unk718 = b->modelOffset->texObjs;
+    case 3:  // BNS_LIGHTMAP_A
+        work->lightmapATex = entry->modelOffset->texObjs;
         break;
-    case 4:
-        if (r7->unk10 < 64)
+    case 4:  // STARPOINT
+        if (work->starpointsCount < 64)
         {
-            struct UnkBackground9C_alt_sub *r4 = &r7->unk14[r7->unk10];
+            struct BGBonusStarpoint *starpoint = &work->starpoints[work->starpointsCount];
 
-            r4->unk0 = b->modelOffset->boundsCenter;
-            r7->unk10++;
+            starpoint->unk0 = entry->modelOffset->boundsCenter;
+            work->starpointsCount++;
         }
         break;
     }
     return 1;
 }
 
-int lbl_80061FA8(int a, struct StageBgModel *b)
+static int bonus_main_find_proc(int index, struct StageBgModel *b)
 {
-    struct UnkBackground9C_alt *r3 = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = backgroundInfo.unk9C;
 
-    switch (a)
+    switch (index)
     {
-    case 0:
-        r3->unk4 = b;
+    case 0:  // BNS_MAIN
+        work->unk4 = b;
         break;
     }
     return 1;

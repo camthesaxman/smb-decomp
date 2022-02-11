@@ -67,13 +67,23 @@ struct BackgroundInfo  // size = 0xA8
     u32 unkA4;
 };
 
-struct BGModelEntry
+enum
 {
-    u32 unk0;
+    BG_MDL_CMP_PREFIX,
+    BG_MDL_CMP_FULL,
+    BG_MDL_CMP_SUFFIX,
+    BG_MDL_CMP_END,
+};
+
+struct BGModelSearch
+{
+    u32 cmpType;
     char *name;
 };
 
-struct UnkBackground9C_sub
+/* Jungle background */
+
+struct BGJungleCloud
 {
     struct StageBgModel *unk0;
     Vec unk4;
@@ -82,12 +92,81 @@ struct UnkBackground9C_sub
     Mtx unk28;
 };
 
-struct UnkBackground9C
+struct BGJungleWork
 {
     u8 filler0[4];
-    s32 unk4;
-    struct UnkBackground9C_sub unk8[4];
+    s32 bgModelsCount;
+    struct BGJungleCloud bgModels[4];
     s32 unk168;
+};
+
+/* Sunset background */
+
+struct BGSunsetModel
+{
+    struct StageBgModel *unk0;
+    Vec unk4;
+    Vec unk10;
+    Vec unk1C;
+    Mtx unk28;
+};
+
+struct BGSunsetWork
+{
+    u8 filler0[4];
+    s32 bgModelsCount;
+    struct BGSunsetModel bgModels[4];
+    s32 unk168;
+};
+
+/* Storm background */
+
+struct BGStormWork_child
+{
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+};
+
+struct BGStormWork
+{
+    s32 unk0;
+    struct GMAModelHeader *rain00Model;
+    struct GMAModelHeader *rain01Model;
+    struct GMAModelHeader *rain02Model;
+    Vec unk10;
+    Vec unk1C;
+    struct BGStormWork_child unk28[64];
+};
+
+/* Bonus background */
+
+struct BGBonusStarpoint
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    float unk10;
+    float unk14;
+    float unk18;
+};
+
+struct BGBonusWork
+{
+    s32 unk0;
+    struct StageBgModel *unk4;
+    struct GMAModelHeader *shotstarModel;
+    struct GMAModelHeader *starlightModel;
+    s32 starpointsCount;
+    struct BGBonusStarpoint starpoints[64];
+    GXTexObj *lightmapTex;
+    GXTexObj *lightmapATex;
+    Mtx unk71C;
+    Mtx unk74C;
+    Mtx unk77C;
+    Mtx unk7AC;
+    Mtx unk7DC;
 };
 
 typedef int (*Func800567DC)(int, struct StageBgModel *);
@@ -140,8 +219,8 @@ void bg_bowling_finish(void);
 void bg_bowling_draw(void);
 void bg_bowling_interact(int);
 int func_80056610(u32 **a, void *b);
-void g_process_background_models(struct BGModelEntry *a, int (*func)(int, struct GMAModelEntry *));
-void g_process_stage_bg_models(struct StageBgModel *r28, int r30_, struct BGModelEntry *a, Func800567DC b);
+void g_search_bg_models(struct BGModelSearch *a, int (*func)(int, struct GMAModelEntry *));
+void g_search_bg_models_from_list(struct StageBgModel *r28, int r30_, struct BGModelSearch *a, Func800567DC b);
 // ? func_80056934();
 void func_800569B4(int);
 void bg_old_bluesky_init(void);
