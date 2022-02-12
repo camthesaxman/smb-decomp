@@ -249,6 +249,42 @@ typedef void (*Func802F20EC)();
 struct Ape;
 struct Ball;
 
+struct Ape
+{
+    struct Struct8003699C_child *unk0;
+    void *unk4;
+    u8 filler8[0x10-0x8];
+    s32 unk10;
+    u32 unk14;
+    u8 filler18[0x24-0x18];
+    s32 unk24;
+    u8 filler28[0x30-0x28];
+    Vec unk30;
+    Vec unk3C;
+    Vec unk48;
+    s32 unk54;
+    float unk58;
+    u32 unk5C;
+    Quaternion unk60;
+    u8 filler70[0x74-0x70];
+    u32 unk74;
+    u8 filler78[0x90-0x78];
+    s32 unk90;
+    u8 filler94[4];
+    void *unk98;
+    u8 filler9C[4];
+    Vec unkA0;
+    float unkAC;
+    u8 fillerB0[4];
+    /*0x0B4*/ u32 colorId;
+    u8 fillerB8[0xC0-0xB8];
+    s8 unkC0;
+    u8 unkC1;
+    s16 unkC2;
+    u8 fillerC4[0x1CE - 0xC4];
+    s16 unk1CE;  // used in the Ball.unk144 one
+};
+
 struct SpritePoolInfo
 {
              u8 filler0[8];
@@ -492,7 +528,7 @@ struct Struct80034B50_child
     void *unkC;
     void *unk10;
     void *unk14;
-};
+};  // size = 0x18
 
 struct Struct80034B50_child2_child
 {
@@ -517,10 +553,10 @@ struct MotSkeleton
 
 struct MotInfo
 {
-    struct MotInfo *unk0;
-    u8 filler4[0x30-0x4];
-    void *unk30[16];
-    u8 filler70[0xB0-0x70];
+    char unk0[0x18];
+    char unk18[0x30-0x18];
+    u8 * unk30[16];
+    u32 unk70[16];
     u8 *unkB0;
 };  // size = 0xB4
 

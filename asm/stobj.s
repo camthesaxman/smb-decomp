@@ -7091,11 +7091,11 @@ lbl_802F2078:
 .global lbl_802F207C
 lbl_802F207C:
 	.skip 0x4
-.global lbl_802F2080
-lbl_802F2080:
+.global apeFaceTpl
+apeFaceTpl:
 	.skip 0x4
-.global lbl_802F2084
-lbl_802F2084:
+.global apeFaceObj
+apeFaceObj:
 	.skip 0x4
 .global lbl_802F2088
 lbl_802F2088:

@@ -6,37 +6,6 @@ struct Struct8003699C_child
     float unk3C;
 };
 
-struct Ape
-{
-    struct Struct8003699C_child *unk0;
-    u8 filler4[0x10-4];
-    s32 unk10;
-    u32 unk14;
-    u8 filler18[0x24-0x18];
-    s32 unk24;
-    u8 filler28[0x30-0x28];
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    s32 unk54;
-    float unk58;
-    u8 filler5C[0x60-0x5C];
-    Quaternion unk60;
-    u8 filler70[0x74-0x70];
-    u32 unk74;
-    u8 filler78[0xA0-0x78];
-    Vec unkA0;
-    float unkAC;
-    u8 fillerB0[4];
-    /*0x0B4*/ u32 colorId;
-    u8 fillerB8[0xC0-0xB8];
-    s8 unkC0;
-    u8 unkC1;
-    s16 unkC2;
-    u8 fillerC4[0x1CE - 0xC4];
-    s16 unk1CE;  // used in the Ball.unk144 one
-};
-
 enum
 {
     BALL_FLAG_00 = 1 << 0,
