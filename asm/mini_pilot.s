@@ -4277,7 +4277,7 @@ lbl_00003E94:
 /* 00003EF8 38810024 */ addi r4, r1, 0x24
 /* 00003EFC 38A00000 */ li r5, 0
 /* 00003F00 38630004 */ addi r3, r3, 4
-/* 00003F04 4BFFC249 */ bl func_8003FB48
+/* 00003F04 4BFFC249 */ bl stcoli_sub16
 /* 00003F08 28030000 */ cmplwi r3, 0
 /* 00003F0C 408200B8 */ bne lbl_00003FC4
 /* 00003F10 80750000 */ lwz r3, 0(r21)
@@ -4951,7 +4951,7 @@ lbl_000048C0:
 /* 00004920 387E0004 */ addi r3, r30, 4
 /* 00004924 38810054 */ addi r4, r1, 0x54
 /* 00004928 38A00000 */ li r5, 0
-/* 0000492C 4BFFB821 */ bl func_8003FB48
+/* 0000492C 4BFFB821 */ bl stcoli_sub16
 /* 00004930 28030000 */ cmplwi r3, 0
 /* 00004934 418200A4 */ beq lbl_000049D8
 /* 00004938 4BFFB815 */ bl mathutil_mtxA_from_identity
@@ -5574,7 +5574,7 @@ lbl_00005200:
 /* 00005220 387E0004 */ addi r3, r30, 4
 /* 00005224 38810010 */ addi r4, r1, 0x10
 /* 00005228 38A00000 */ li r5, 0
-/* 0000522C 4BFFAF21 */ bl func_8003FB48
+/* 0000522C 4BFFAF21 */ bl stcoli_sub16
 /* 00005230 807D0014 */ lwz r3, 0x14(r29)
 /* 00005234 3800FFEC */ li r0, -20
 /* 00005238 7C600038 */ and r0, r3, r0
@@ -7289,7 +7289,7 @@ lbl_00006B5C:
 /* 00006B6C A8050000 */ lha r0, currStageId@l(r5)
 /* 00006B70 2C000097 */ cmpwi r0, 0x97
 /* 00006B74 4082000C */ bne lbl_00006B80
-/* 00006B78 4BFF95D5 */ bl func_800428F4
+/* 00006B78 4BFF95D5 */ bl stcoli_sub35
 /* 00006B7C 48000008 */ b lbl_00006B84
 lbl_00006B80:
 /* 00006B80 4BFF95CD */ bl g_handle_ball_stage_collision
@@ -7336,7 +7336,7 @@ lbl_00006BF4:
 /* 00006C14 3881000C */ addi r4, r1, 0xc
 /* 00006C18 93C10028 */ stw r30, 0x28(r1)
 /* 00006C1C 3BC00001 */ li r30, 1
-/* 00006C20 4BFF952D */ bl func_8003FB48
+/* 00006C20 4BFF952D */ bl stcoli_sub16
 /* 00006C24 28030000 */ cmplwi r3, 0
 /* 00006C28 41820014 */ beq lbl_00006C3C
 /* 00006C2C 8061000C */ lwz r3, 0xc(r1)

@@ -1016,7 +1016,7 @@ void lbl_8000F790(struct Ape *ape, int b)
 
         if (gamePauseStatus & 0xA)
             return;
-        func_8003FB48(&ball->pos, &sp38, NULL);
+        stcoli_sub16(&ball->pos, &sp38, NULL);
         ape->unk14 &= -20;
         if (!(sp38.unk0 & 1) && ball->vel.y < -(35.0f / 216.0f))
             ape->unk14 |= 2;
