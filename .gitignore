@@ -28,3 +28,5 @@ __pycache__
 GMBE8P/
 
 /.vscode/**
+/compile_commands.json
+/.cache/**
