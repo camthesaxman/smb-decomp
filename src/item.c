@@ -301,7 +301,7 @@ void func_800685C4(void)
         }
 
         mathutil_mtxA_push();
-        r23 = stcoli_sub16(&sp40, &sp58, &sp4C);
+        r23 = func_8003FB48(&sp40, &sp58, &sp4C);
         mathutil_mtxA_pop();
 
         if (r23 != 0)

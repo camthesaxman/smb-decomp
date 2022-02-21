@@ -144,7 +144,7 @@ void ev_info_main(void)
             }
             func_8003CA98(ball, &sp6C);
             if (sp64 != sp6C.unk58)
-                stcoli_sub32(&sp6C, sp64);
+                func_80042000(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
             func_80024860(ball);
@@ -175,7 +175,7 @@ void ev_info_main(void)
                 infoWork.unk0 |= INFO_FLAG_GOAL;
             func_8003CA98(ball, &sp6C);
             if (sp64 != sp6C.unk58)
-                stcoli_sub32(&sp6C, sp64);
+                func_80042000(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
             func_80024860(ball);
@@ -498,7 +498,7 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
             int j;
 
             if (i != sp3C.unk58)
-                stcoli_sub32(&sp3C, i);
+                func_80042000(&sp3C, i);
             r24 = r27->unk40;
             for (j = 0; j < r27->unk3C; j++, r24++)
             {
@@ -517,7 +517,7 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
                 sp14.unk10 = r24->unk10;
                 sp14.unk20 = 2.0f;
                 sp14.unk24 = 2.0f;
-                if (line_intersects_rect(&sp3C.unk4, &sp3C.unk10, &sp14) != 0)
+                if (g_test_for_goal(&sp3C.unk4, &sp3C.unk10, &sp14) != 0)
                 {
                     *goalIdPtr = goalId;
                     *c = i;
@@ -797,7 +797,7 @@ int func_800246F4(struct Ball *ball)
         int j;
 
         if (i != sp18.unk58)
-            stcoli_sub32(&sp18, i);
+            func_80042000(&sp18, i);
         r28 = r30->unk88;
         for (j = 0; j < r30->unk84; j++, r28++)
         {

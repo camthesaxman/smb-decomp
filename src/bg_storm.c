@@ -109,7 +109,7 @@ void bg_storm_main(void)
             spD0.x += camera->lookAt.x;
             spD0.y += camera->lookAt.y + 10.0f;
             spD0.z += camera->lookAt.z;
-            if ((u32)stcoli_sub16(&spD0, &spB4, &sp8.unk7C) != 0)
+            if ((u32)func_8003FB48(&spD0, &spB4, &sp8.unk7C) != 0)
             {
                 sp8.unk34 = spB4.unk4;
                 sp8.unk70 = spB4.unk10;
