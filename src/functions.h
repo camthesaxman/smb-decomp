@@ -522,7 +522,7 @@ void stobj_draw(void);
 // ? func_8006F408();
 // ? func_8006F428();
 // ? func_8006F42C();
-void g_break_goal_tape(int, struct Struct80039974 *);
+void g_break_goal_tape(int, struct PhysicsBall *);
 void func_8006F5F0(int);
 // ? func_8006F760();
 // ? func_8006FB20();

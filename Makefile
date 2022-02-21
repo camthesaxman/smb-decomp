@@ -107,6 +107,7 @@ SOURCES := \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
 	asm/stcoli.s \
+	src/stcoli.c \
 	src/world.c \
 	asm/interp_anim.s \
 	src/stage.c \

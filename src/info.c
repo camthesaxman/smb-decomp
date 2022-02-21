@@ -69,7 +69,7 @@ void ev_info_main(void)
     int r20;
     struct Ball *ball;
     struct ReplayInfo spC8;
-    struct Struct80039974 sp6C;
+    struct PhysicsBall sp6C;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -316,7 +316,7 @@ void ev_info_main(void)
         g_time_over_all_competition_mode_balls();
         if (!(infoWork.unk0 & (1 << 6)))
         {
-            struct Struct80039974 sp8;
+            struct PhysicsBall sp8;
 
             func_8003CA98(&ballInfo[0], &sp8);
             g_break_goal_tape(infoWork.unkC, &sp8);
@@ -483,7 +483,7 @@ void func_80023AF4(void)
 
 int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
 {
-    struct Struct80039974 sp3C;
+    struct PhysicsBall sp3C;
     struct StageCollHdr *r27;
     int goalId;
     int i;
@@ -518,7 +518,7 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
                 sp14.unk10 = r24->unk10;
                 sp14.unk20 = 2.0f;
                 sp14.unk24 = 2.0f;
-                if (line_intersects_rect(&sp3C.unk4, &sp3C.unk10, &sp14) != 0)
+                if (line_intersects_rect(&sp3C.pos, &sp3C.prevPos, &sp14) != 0)
                 {
                     *goalIdPtr = goalId;
                     *c = i;
@@ -784,7 +784,7 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
 #pragma force_active on
 int func_800246F4(struct Ball *ball)
 {
-    struct Struct80039974 sp18;
+    struct PhysicsBall sp18;
     struct StageCollHdr *r30;
     int i;
 
@@ -808,7 +808,7 @@ int func_800246F4(struct Ball *ball)
             mathutil_mtxA_rotate_z(r28->unk1C);
             mathutil_mtxA_rotate_y(r28->unk1A);
             mathutil_mtxA_rotate_x(r28->unk18);
-            mathutil_mtxA_rigid_inv_tf_point(&sp18.unk4, &spC);
+            mathutil_mtxA_rigid_inv_tf_point(&sp18.pos, &spC);
             spC.x /= r28->unkC.x;
             spC.y /= r28->unkC.y;
             spC.z /= r28->unkC.z;

@@ -4,8 +4,8 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
-void g_handle_ball_stage_collision(struct Struct80039974 *b, struct Stage *);
-// ? stcoli_sub02();
+void g_handle_ball_stage_collision(struct PhysicsBall *b, struct Stage *);
+// ? meshcoli_grid_lookup();
 // ? stcoli_sub03();
 // ? stcoli_sub04();
 // ? stcoli_sub05();
@@ -35,7 +35,7 @@ void g_draw_stage_collision(void);
 // ? stcoli_sub29();
 // ? stcoli_sub30();
 // ? stcoli_sub31();
-void stcoli_sub32(struct Struct80039974 *, int);
+void stcoli_sub32(struct PhysicsBall *, int);
 // ? stcoli_sub33();
 // ? stcoli_sub34();
 

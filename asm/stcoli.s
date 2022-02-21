@@ -62,7 +62,7 @@ lbl_8003DB8C:
 /* 8003DB8C 00039AAC  C0 3C 00 04 */	lfs f1, 4(r28)
 /* 8003DB90 00039AB0  7F E3 FB 78 */	mr r3, r31
 /* 8003DB94 00039AB4  C0 5C 00 0C */	lfs f2, 0xc(r28)
-/* 8003DB98 00039AB8  48 00 01 85 */	bl stcoli_sub02
+/* 8003DB98 00039AB8  48 00 01 85 */	bl meshcoli_grid_lookup
 /* 8003DB9C 00039ABC  7C 7A 1B 79 */	or. r26, r3, r3
 /* 8003DBA0 00039AC0  41 82 00 88 */	beq lbl_8003DC28
 /* 8003DBA4 00039AC4  7F 5B D3 78 */	mr r27, r26
@@ -178,8 +178,8 @@ lbl_8003DD08:
 /* 8003DD14 00039C34  7C 08 03 A6 */	mtlr r0
 /* 8003DD18 00039C38  4E 80 00 20 */	blr
 
-.global stcoli_sub02
-stcoli_sub02:
+.global meshcoli_grid_lookup
+meshcoli_grid_lookup:
 /* 8003DD1C 00039C3C  94 21 FF B8 */	stwu r1, -0x48(r1)
 /* 8003DD20 00039C40  38 00 00 00 */	li r0, 0
 /* 8003DD24 00039C44  80 83 00 20 */	lwz r4, 0x20(r3)

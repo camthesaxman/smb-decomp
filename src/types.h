@@ -356,19 +356,19 @@ struct Struct8003F890
     float unk24;
 };
 
-struct Struct80039974
+struct PhysicsBall
 {
-    u32 unk0;
-    Vec unk4;
-    Vec unk10;
-    Vec unk1C;
-    float unk28;
-    float unk2C;
-    float unk30;
-    float unk34;
+    u32 flags;
+    Vec pos;
+    Vec prevPos;
+    Vec vel;
+    float radius;
+    float accel;
+    float restitution;
+    float g_jerk;
     Vec unk38;
     Vec unk44;
-    s32 unk50;
+    s32 itemgroupId;
     float unk54;
     s32 unk58;
 };
