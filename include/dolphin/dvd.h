@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_DVD_H_
 #define _DOLPHIN_DVD_H_
 
+#include <dolphin/types.h>
+
 typedef struct
 {
     char gameName[4];

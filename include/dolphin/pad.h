@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_PAD_H_
 #define _DOLPHIN_PAD_H_
 
+#include <dolphin/types.h>
+
 #define PAD_MAX_CONTROLLERS     4
 
 #define PAD_BUTTON_LEFT  (1 << 0)   // 0x0001

@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_OSMODULE_H_
 #define _DOLPHIN_OSMODULE_H_
 
+#include <dolphin/types.h>
+
 typedef u32 OSModuleID;
 
 struct OSModuleInfo;

@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_CARD_H_
 #define _DOLPHIN_CARD_H_
 
+#include <dolphin/types.h>
+
 #define CARD_RESULT_UNLOCKED       1
 #define CARD_RESULT_READY          0
 #define CARD_RESULT_BUSY          -1
