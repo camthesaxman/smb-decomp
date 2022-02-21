@@ -11,13 +11,14 @@ def main():
         if not src_path.suffix == ".c":
             continue
 
-        obj_path = src_path.with_suffix(".o")
-        include_dir = script_dir / "include"
-        command = f"/usr/bin/cc -I {script_dir} -I {include_dir} -m32 -std=c99 -c {src_path} -o {obj_path}"
+        command = f"/usr/bin/cc \
+            -I {script_dir} -I {script_dir / 'include'} \
+            -m32 -std=c99 -D __GNUC__ \
+            -c {src_path} -o {src_path.with_suffix('.o')}"
         cmds.append(
             {
                 "directory": str(script_dir),
-                "command": str(command),
+                "command": command,
                 "file": str(src_path),
             }
         )
