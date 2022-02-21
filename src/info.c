@@ -16,6 +16,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stcoli.h"
 
 s8 lbl_802F1CB0[8];
 u32 lbl_802F1CAC;

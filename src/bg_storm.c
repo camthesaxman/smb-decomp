@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "event.h"
 #include "mathutil.h"
+#include "stcoli.h"
 
 static struct BGModelSearch stormModelFind[] =
 {

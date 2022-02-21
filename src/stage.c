@@ -17,6 +17,7 @@
 #include "nl2ngc.h"
 #include "preview.h"
 #include "stage.h"
+#include "stcoli.h"
 
 #include "../data/common.nlobj.h"
 

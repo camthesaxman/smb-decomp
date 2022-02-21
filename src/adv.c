@@ -23,6 +23,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
+#include "stcoli.h"
 
 u32 introBackdropColor;
 u32 advSubmode;

@@ -18,6 +18,7 @@
 #include "ord_tbl.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stcoli.h"
 
 #include "../data/common.gma.h"
 

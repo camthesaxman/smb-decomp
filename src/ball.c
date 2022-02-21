@@ -17,6 +17,7 @@
 #include "ord_tbl.h"
 #include "stage.h"
 #include "world.h"
+#include "stcoli.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"

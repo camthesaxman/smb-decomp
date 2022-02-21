@@ -7,6 +7,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
+#include "stcoli.h"
 
 struct Item itemInfo[256];
 
