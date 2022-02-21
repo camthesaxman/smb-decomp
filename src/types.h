@@ -1,3 +1,12 @@
+#ifndef _SRC_TYPES_H_
+#define _SRC_TYPES_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/GXEnum.h>
+#include <dolphin/GXFifo.h>
+#include <dolphin/mtx.h>
+
 // DIP switches
 enum
 {
@@ -884,3 +893,5 @@ struct Struct80061BC4
 };
 
 typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
+
+#endif

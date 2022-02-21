@@ -1,3 +1,8 @@
+#ifndef _SRC_EVENT_H_
+#define _SRC_EVENT_H_
+
+#include <dolphin/types.h>
+
 // Event states
 enum
 {
@@ -51,3 +56,5 @@ void event_finish(int);
 void event_suspend(int);
 void event_resume(int);
 void event_finish_all(void);
+
+#endif

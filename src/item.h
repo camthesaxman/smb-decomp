@@ -1,3 +1,10 @@
+#ifndef _SRC_ITEM_H_
+#define _SRC_ITEM_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+#include <dolphin/GXStruct.h>
+
 struct Item
 {
     /*0x00*/ s16 id;
@@ -81,3 +88,5 @@ void item_pilot_collect(struct Item *, struct Struct800690DC *);
 void item_pilot_destroy(struct Item *);
 void func_8006A564(struct Item *);
 void item_pilot_debug(struct Item *);
+
+#endif

@@ -1,3 +1,11 @@
+#ifndef _SRC_BITMAP_H_
+#define _SRC_BITMAP_H_
+
+#include <dolphin/types.h>
+#include <dolphin/OSAlloc.h>
+
+#include "types.h"
+
 enum BitmapGroupID
 {
     BMP_COM,
@@ -213,3 +221,5 @@ void bitmap_main(void);
 // ? bitmap_draw_char();
 void bitmap_draw_string(void);
 void func_8002704C(void);
+
+#endif

@@ -1,3 +1,9 @@
+#ifndef _SRC_RELOCATION_H_
+#define _SRC_RELOCATION_H_
+
+#include <dolphin/types.h>
+#include <dolphin/OSModule.h>
+
 struct MinigameLinkInfo
 {
     OSModuleInfo module;
@@ -15,3 +21,5 @@ struct RelModule
 
 void relocation_load_module(char *name, struct RelModule *link);
 void relocation_unload_module(struct RelModule *link);
+
+#endif

@@ -1,3 +1,8 @@
+#ifndef _SRC_MODE_H_
+#define _SRC_MODE_H_
+
+#include <dolphin/types.h>
+
 // Game Modes
 enum
 {
@@ -277,3 +282,5 @@ extern void (*lbl_802F1B80)(void);
 
 void gm_init(void);
 void gm_main(void);
+
+#endif

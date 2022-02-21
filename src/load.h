@@ -1,3 +1,9 @@
+#ifndef _SRC_LOAD_H_
+#define _SRC_LOAD_H_
+
+#include <dolphin/types.h>
+#include <dolphin/dvd.h>
+
 struct FileCacheEntry
 {
     s32 hasData;
@@ -23,3 +29,5 @@ int is_load_queue_not_empty(void);
 void empty_load_queue(void);
 int get_load_queue_count(void);
 void empty_file_cache(void);
+
+#endif

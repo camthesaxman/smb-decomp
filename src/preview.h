@@ -1,3 +1,11 @@
+#ifndef _SRC_PREVIEW_H_
+#define _SRC_PREVIEW_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/OSAlloc.h>
+#include <dolphin/dvd.h>
+
 struct Preview
 {
     u8 state;
@@ -19,3 +27,5 @@ void start_preview_image_read(struct Preview *preview, int index);
 void g_preview_wait_then_do_something(struct Preview *preview);
 void g_preview_maybe_invalidate_tex_cache(struct Preview *preview);
 void preview_free();
+
+#endif

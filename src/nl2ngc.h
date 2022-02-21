@@ -1,3 +1,10 @@
+#ifndef _SRC_NL2NGC_H_
+#define _SRC_NL2NGC_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+#include <dolphin/GXStruct.h>
+
 struct NaomiVtxWithNormal
 {
     /*0x00*/ float x, y, z;
@@ -116,3 +123,5 @@ void g_draw_naomi_model_4(struct NaomiModel *);
 void g_draw_naomi_model_5(struct NaomiModel *);
 void g_draw_naomi_model_with_mesh_func(struct NaomiModel *a, int (*func)());
 void func_800341B8(void);
+
+#endif

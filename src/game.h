@@ -1,3 +1,8 @@
+#ifndef _SRC_GAME_H_
+#define _SRC_GAME_H_
+
+#include <dolphin/types.h>
+
 void mode_game_func(void);
 void submode_game_first_init_func(void);
 void submode_game_restart_init_func(void);
@@ -48,3 +53,5 @@ void func_800171E0(void);
 void func_800174C8(void);
 void func_80017708(int);
 int func_80017720(void);
+
+#endif

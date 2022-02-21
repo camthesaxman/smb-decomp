@@ -1,3 +1,9 @@
+#ifndef _SRC_INFO_H_
+#define _SRC_INFO_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 enum
 {
     INFO_FLAG_GOAL     = (1 << 0),
@@ -43,3 +49,5 @@ void create_rank_icon(struct Ball *);
 void func_800245E4(struct Ball *, int, int);
 int func_800246F4(struct Ball *);
 void func_80024860(struct Ball *);
+
+#endif

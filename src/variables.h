@@ -1,3 +1,13 @@
+#ifndef _SRC_VARIABLES_H_
+#define _SRC_VARIABLES_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/OSAlloc.h>
+#include <dolphin/OSFont.h>
+
+#include "types.h"
+
 // .rodata section
 // extern ? lbl_8010F8A0;
 // extern ? crcTable;
@@ -4794,3 +4804,5 @@ extern const s8 lbl_802F28B0[8];
 // extern ? lbl_802F6C6C;
 // extern ? lbl_802F6C70;
 // extern ? lbl_802F6C78;
+
+#endif
