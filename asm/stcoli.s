@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global g_handle_ball_stage_collision
 g_handle_ball_stage_collision:
 /* 8003DABC 000399DC  7C 08 02 A6 */	mflr r0
@@ -177,6 +178,7 @@ lbl_8003DD08:
 /* 8003DD10 00039C30  38 21 00 68 */	addi r1, r1, 0x68
 /* 8003DD14 00039C34  7C 08 03 A6 */	mtlr r0
 /* 8003DD18 00039C38  4E 80 00 20 */	blr
+.endif
 
 .global meshcoli_grid_lookup
 meshcoli_grid_lookup:
