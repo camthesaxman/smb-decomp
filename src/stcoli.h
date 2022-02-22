@@ -4,9 +4,22 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
+#include "types.h"
+
+struct StageColiTri {
+    Point3d vert1;
+    Vec normal;
+    S16Vec rotFromXY;
+    u16 flags;
+    Vec2d vert2Delta;  // Vertex 2 - Vertex 1
+    Vec2d vert3Delta;  // Vertex 3 - Vertex 1
+    Vec2d tangent;
+    Vec2d bitangent;
+};
+
 void g_handle_ball_stage_collision(struct PhysicsBall *b, struct Stage *);
-// ? meshcoli_grid_lookup();
-// ? stcoli_sub03();
+s16 *meshcoli_grid_lookup(struct StageCollHdr coliHeader, float x, float z);
+void stcoli_sub03(struct PhysicsBall *physBall, struct StageColiTri *tri);
 // ? stcoli_sub04();
 // ? stcoli_sub05();
 // ? stcoli_sub06();
@@ -17,7 +30,7 @@ void g_handle_ball_stage_collision(struct PhysicsBall *b, struct Stage *);
 // ? stcoli_sub11();
 // ? stcoli_sub12();
 // ? stcoli_sub13();
-u32 line_intersects_rect(Vec *, Vec *, struct Struct8003F890 *);
+u32 test_line_intersects_rect(Vec *, Vec *, struct Struct8003F890 *);
 // ? stcoli_sub15();
 int stcoli_sub16(Vec *, struct Struct8003FB48 *, Vec *);
 // ? stcoli_sub17();
@@ -35,7 +48,7 @@ void g_draw_stage_collision(void);
 // ? stcoli_sub29();
 // ? stcoli_sub30();
 // ? stcoli_sub31();
-void stcoli_sub32(struct PhysicsBall *, int);
+void tf_physball_to_itemgroup_space(struct PhysicsBall *physBall, int itemgroupId);
 // ? stcoli_sub33();
 // ? stcoli_sub34();
 

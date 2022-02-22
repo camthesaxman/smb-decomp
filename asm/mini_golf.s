@@ -17366,7 +17366,7 @@ lbl_000100F8:
 /* 00010100 41820010 */ beq lbl_00010110
 /* 00010104 387E0000 */ addi r3, r30, 0
 /* 00010108 389D0000 */ addi r4, r29, 0
-/* 0001010C 4BFF00C5 */ bl stcoli_sub32
+/* 0001010C 4BFF00C5 */ bl tf_physball_to_itemgroup_space
 lbl_00010110:
 /* 00010110 C03E0010 */ lfs f1, 0x10(r30)
 /* 00010114 7F83E378 */ mr r3, r28
@@ -17439,7 +17439,7 @@ lbl_000101EC:
 /* 000101F4 41820010 */ beq lbl_00010204
 /* 000101F8 387E0000 */ addi r3, r30, 0
 /* 000101FC 389C0000 */ addi r4, r28, 0
-/* 00010200 4BFEFFD1 */ bl stcoli_sub32
+/* 00010200 4BFEFFD1 */ bl tf_physball_to_itemgroup_space
 lbl_00010204:
 /* 00010204 C03E0010 */ lfs f1, 0x10(r30)
 /* 00010208 7FA3EB78 */ mr r3, r29
@@ -17476,7 +17476,7 @@ lbl_00010268:
 /* 00010270 41820010 */ beq lbl_00010280
 /* 00010274 387E0000 */ addi r3, r30, 0
 /* 00010278 389C0000 */ addi r4, r28, 0
-/* 0001027C 4BFEFF55 */ bl stcoli_sub32
+/* 0001027C 4BFEFF55 */ bl tf_physball_to_itemgroup_space
 lbl_00010280:
 /* 00010280 C03E0010 */ lfs f1, 0x10(r30)
 /* 00010284 7FA3EB78 */ mr r3, r29
@@ -17509,7 +17509,7 @@ lbl_000102CC:
 /* 000102E0 41820010 */ beq lbl_000102F0
 /* 000102E4 387E0000 */ addi r3, r30, 0
 /* 000102E8 38800000 */ li r4, 0
-/* 000102EC 4BFEFEE5 */ bl stcoli_sub32
+/* 000102EC 4BFEFEE5 */ bl tf_physball_to_itemgroup_space
 lbl_000102F0:
 /* 000102F0 BB410010 */ lmw r26, 0x10(r1)
 /* 000102F4 8001002C */ lwz r0, 0x2c(r1)

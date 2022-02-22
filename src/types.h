@@ -7,6 +7,10 @@
 #include <dolphin/GXFifo.h>
 #include <dolphin/mtx.h>
 
+typedef struct {
+    f32 x, y;
+} Vec2d, *Vec2dPtr, Point2d, *Point2dPtr;
+
 // DIP switches
 enum
 {
@@ -368,7 +372,11 @@ struct PhysicsBall
     float g_jerk;
     Vec unk38;
     Vec unk44;
-    s32 itemgroupId;
+
+    // PhysicsBall pos/vel/etc is in the local space of this itemgroup.
+    // As a reminder, ID 0 is world space.
+    s32 itemgroupId;  
+
     float unk54;
     s32 unk58;
 };
