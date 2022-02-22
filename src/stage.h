@@ -4,6 +4,8 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
+#include "types.h"
+
 #define STAGE_LIST \
     DEFINE_STAGE(ST_000_DUMMY,                  BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_001_PLAIN,                  BG_TYPE_JUN) \
@@ -215,6 +217,38 @@ STAGE_LIST
 #undef DEFINE_STAGE
 };
 
+struct StageColiTri {
+    Point3d vert1;
+    Vec normal;
+    S16Vec rotFromXY;
+    u16 flags;
+    Vec2d vert2Delta;  // Vertex 2 - Vertex 1
+    Vec2d vert3Delta;  // Vertex 3 - Vertex 1
+    Vec2d tangent;
+    Vec2d bitangent;
+};
+
+struct StageColiCone {
+    Vec pos;
+    S16Vec rot;
+    u16 flags;
+    Vec scale;
+};
+
+struct StageColiSphere {
+    Vec pos;
+    float radius;
+    u16 flags;
+};
+
+struct StageColiCylinder {
+    Vec pos;
+    float radius;
+    float height;
+    S16Vec rot;
+    u16 flags;
+};
+
 struct StageBgModel
 {
     u32 unk0;
@@ -309,7 +343,7 @@ struct StageCollHdr
     u16 unk12;
     /*0x14*/ struct StageAnimHdr *animHdr;
     /*0x18*/ char **modelNames;
-    /*0x1C*/ void *triangles;
+    /*0x1C*/ struct StageColiTri *triangles;
     /*0x20*/ void *collCells;
     u8 filler24[0x34-0x24];
     /*0x34*/ s32 cellsX;  // number of cells in x direction
@@ -324,12 +358,12 @@ struct StageCollHdr
     struct StageCollHdr_child5 *unk58;
     s32 unk5C;
     struct StageCollHdr_child3 *unk60;
-    u8 filler64[4];
-    void *unk68;
-    u8 filler6C[4];
-    void *unk70;
-    u8 filler74[4];
-    void *unk78;
+    s32 coliConeCount;
+    struct StageColiCone *coliCones;
+    s32 coliSphereCount;
+    struct StageColiSphere *coliSpheres;
+    s32 coliCylinderCount;
+    struct StageColiCylinder *coliCylinders;
     s32 unk7C;
     struct DecodedStageLzPtr_child_child3 *unk80;
     s32 unk84;

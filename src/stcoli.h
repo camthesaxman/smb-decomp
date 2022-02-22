@@ -4,21 +4,10 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
+#include "stage.h"
 #include "types.h"
-
-struct StageColiTri {
-    Point3d vert1;
-    Vec normal;
-    S16Vec rotFromXY;
-    u16 flags;
-    Vec2d vert2Delta;  // Vertex 2 - Vertex 1
-    Vec2d vert3Delta;  // Vertex 3 - Vertex 1
-    Vec2d tangent;
-    Vec2d bitangent;
-};
-
 void g_handle_ball_stage_collision(struct PhysicsBall *b, struct Stage *);
-s16 *meshcoli_grid_lookup(struct StageCollHdr coliHeader, float x, float z);
+s16 *meshcoli_grid_lookup(struct StageCollHdr *coliHeader, float x, float z);
 void stcoli_sub03(struct PhysicsBall *physBall, struct StageColiTri *tri);
 // ? stcoli_sub04();
 // ? stcoli_sub05();

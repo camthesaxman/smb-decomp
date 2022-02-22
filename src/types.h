@@ -372,13 +372,12 @@ struct PhysicsBall
     float g_jerk;
     Vec unk38;
     Vec unk44;
-
-    // PhysicsBall pos/vel/etc is in the local space of this itemgroup.
-    // As a reminder, ID 0 is world space.
-    s32 itemgroupId;  
-
+    s32 unk50;  
     float unk54;
-    s32 unk58;
+
+    // Itemgroup whose local space we are in.
+    // As a reminder, ID 0 is world space.
+    s32 itemgroupId;
 };
 
 struct Struct800496BC

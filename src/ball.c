@@ -2307,7 +2307,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
 
     if (b->flags & 1)
     {
-        if (b->itemgroupId == 0)
+        if (b->unk50 == 0)
         {
             ball->unk114.x = -b->unk44.x;
             ball->unk114.y = -b->unk44.y;
@@ -2315,7 +2315,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
         }
         else
         {
-            mathutil_mtxA_from_mtx(movableStageParts[b->itemgroupId].unk24);
+            mathutil_mtxA_from_mtx(movableStageParts[b->unk50].unk24);
             mathutil_mtxA_tf_vec(&b->unk44, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
@@ -2440,7 +2440,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
 void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct MovableStagePart *movpart = &movableStageParts[a->itemgroupId];
+    struct MovableStagePart *movpart = &movableStageParts[a->unk50];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2546,10 +2546,10 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         sp20.x = ball->pos.x - ball->prevPos.x;
         sp20.y = ball->pos.y - ball->prevPos.y;
         sp20.z = ball->pos.z - ball->prevPos.z;
-        if (c == 0 && b->itemgroupId > 0)
+        if (c == 0 && b->unk50 > 0)
             func_8003BBF4(b, &sp20);
 
-        mathutil_mtxA_from_mtx(movableStageParts[b->itemgroupId].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[b->unk50].unk24);
         mathutil_mtxA_tf_vec(&b->unk44, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;
@@ -2769,8 +2769,8 @@ void func_8003CA98(struct Ball *ball, struct PhysicsBall *b)
     b->accel = ball->unk6C;
     b->restitution = ball->restitution;
     b->g_jerk = 0.0f;
-    b->unk58 = 0;
     b->itemgroupId = 0;
+    b->unk50 = 0;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)
         b->unk54 = 0.01f;

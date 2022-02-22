@@ -1709,12 +1709,12 @@ void load_stagedef(int stageId)
             coll->unk58 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk58);
         if (coll->unk60 != NULL)
             coll->unk60 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk60);
-        if (coll->unk68 != NULL)
-            coll->unk68 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk68);
-        if (coll->unk70 != NULL)
-            coll->unk70 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk70);
-        if (coll->unk78 != NULL)
-            coll->unk78 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk78);
+        if (coll->coliCones != NULL)
+            coll->coliCones = OFFSET_TO_PTR(decodedStageLzPtr, coll->coliCones);
+        if (coll->coliSpheres != NULL)
+            coll->coliSpheres = OFFSET_TO_PTR(decodedStageLzPtr, coll->coliSpheres);
+        if (coll->coliCylinders != NULL)
+            coll->coliCylinders = OFFSET_TO_PTR(decodedStageLzPtr, coll->coliCylinders);
         if (coll->unk80 != NULL)
         {
             struct DecodedStageLzPtr_child_child3 *r4;

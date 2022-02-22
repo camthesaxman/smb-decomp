@@ -144,7 +144,7 @@ void ev_info_main(void)
                 func_80049268(ball->unk2E);
             }
             func_8003CA98(ball, &sp6C);
-            if (sp64 != sp6C.unk58)
+            if (sp64 != sp6C.itemgroupId)
                 tf_physball_to_itemgroup_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
@@ -175,7 +175,7 @@ void ev_info_main(void)
             if (gameSubmode == SMD_ADV_GAME_PLAY_MAIN)
                 infoWork.unk0 |= INFO_FLAG_GOAL;
             func_8003CA98(ball, &sp6C);
-            if (sp64 != sp6C.unk58)
+            if (sp64 != sp6C.itemgroupId)
                 tf_physball_to_itemgroup_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
@@ -498,7 +498,7 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
             struct StageCollHdr_child *r24;
             int j;
 
-            if (i != sp3C.unk58)
+            if (i != sp3C.itemgroupId)
                 tf_physball_to_itemgroup_space(&sp3C, i);
             r24 = r27->unk40;
             for (j = 0; j < r27->unk3C; j++, r24++)
@@ -797,7 +797,7 @@ int func_800246F4(struct Ball *ball)
         struct StageCollHdr_child2 *r28;
         int j;
 
-        if (i != sp18.unk58)
+        if (i != sp18.itemgroupId)
             tf_physball_to_itemgroup_space(&sp18, i);
         r28 = r30->unk88;
         for (j = 0; j < r30->unk84; j++, r28++)
