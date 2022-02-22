@@ -7,6 +7,10 @@
 #include <dolphin/GXFifo.h>
 #include <dolphin/mtx.h>
 
+typedef struct {
+    f32 x, y;
+} Vec2d, *Vec2dPtr, Point2d, *Point2dPtr;
+
 // DIP switches
 enum
 {
