@@ -1,3 +1,9 @@
+#ifndef _SRC_ORD_TBL_H_
+#define _SRC_ORD_TBL_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 typedef void (*OrdTblDrawFunc)(struct OrdTblNode *);
 
 struct OrdTblNode
@@ -16,3 +22,5 @@ void ord_tbl_draw_nodes(void);
 void ord_tbl_init_buffer(void *addr, u32 size);
 void ord_tbl_insert_node(struct OrdTblNode *tblEntry, struct OrdTblNode *newNode);
 void *ord_tbl_alloc_node(u32 size);
+
+#endif

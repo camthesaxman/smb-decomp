@@ -1,3 +1,10 @@
+#ifndef _SRC_GLOBAL_H_
+#define _SRC_GLOBAL_H_
+
+#include "types.h"
+#include "functions.h"
+#include "variables.h"
+
 #define ARRAY_COUNT(arr) ((int)(sizeof(arr)/sizeof(arr[0])))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -40,6 +47,4 @@ u32 __lwbrx(void *, u32);
 #define qr0 0
 #define qr2 2
 
-#include "types.h"
-#include "functions.h"
-#include "variables.h"
+#endif

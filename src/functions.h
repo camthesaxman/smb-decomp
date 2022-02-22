@@ -1,3 +1,8 @@
+#ifndef _SRC_FUNCTIONS_H_
+#define _SRC_FUNCTIONS_H_
+
+#include "types.h"
+
 // ? main();
 void initialize(void);
 void init_gx(void);
@@ -2448,3 +2453,5 @@ void __GXSetDirtyState(void);
 // ? DBClose();
 // ? AMC_IsStub();
 // ? Hu_IsStub();
+
+#endif

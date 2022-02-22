@@ -5,6 +5,8 @@
 #define OS_RESET_HOTRESET 1
 #define OS_RESET_SHUTDOWN 2
 
+#include <dolphin/types.h>
+
 void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu);
 
 #endif

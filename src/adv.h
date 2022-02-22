@@ -1,3 +1,9 @@
+#ifndef _SRC_ADV_H_
+#define _SRC_ADV_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 struct AdvLogoInfo
 {
     Vec pos;
@@ -66,3 +72,5 @@ void submode_adv_ranking_init_func(void);
 void submode_adv_ranking_main_func(void);
 void submode_adv_start_init_func(void);
 void submode_adv_start_main_func(void);
+
+#endif

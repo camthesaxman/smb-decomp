@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_DSP_H_
 #define _DOLPHIN_DSP_H_
 
+#include <dolphin/os.h>
+
 typedef struct DSPTaskInfo DSPTaskInfo;
 typedef void (*DSPCallback)(void *task);
 struct DSPTaskInfo

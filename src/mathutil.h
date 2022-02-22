@@ -1,3 +1,9 @@
+#ifndef _SRC_MATHUTIL_H_
+#define _SRC_MATHUTIL_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 #ifndef __MWERKS__
 #define MATHUTIL_C_ONLY
 #endif
@@ -438,3 +444,5 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
     };
 #endif
 }
+
+#endif

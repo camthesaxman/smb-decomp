@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_GXENUM_H_
 #define _DOLPHIN_GXENUM_H_
 
+#include <dolphin/types.h>
+
 typedef u8 GXBool;
 
 #define GX_FALSE ((GXBool)0)

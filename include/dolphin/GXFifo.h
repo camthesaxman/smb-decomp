@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_GXFIFO_H_
 #define _DOLPHIN_GXFIFO_H_
 
+#include <dolphin/GXEnum.h>
+
 typedef struct
 {
     u8 pad[128];

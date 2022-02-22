@@ -1,3 +1,12 @@
+#ifndef _SRC_BG_H_
+#define _SRC_BG_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+#include <dolphin/GXStruct.h>
+
+#include "types.h"
+
 /*               id                    fname        oldfname song backdropColor (RGBA)*/
 #define BACKGROUND_LIST \
 /*01*/ DEFINE_BG(BG_TYPE_BLUESKY_A,     NULL,        "bg_a",  -1, 0xFFFFFFFF) \
@@ -346,3 +355,5 @@ void bg_end_init(void);
 void bg_end_main(void);
 void bg_end_finish(void);
 void bg_end_draw(void);
+
+#endif

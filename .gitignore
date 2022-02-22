@@ -26,3 +26,7 @@ __pycache__
 
 # Disc files
 GMBE8P/
+
+/.vscode/**
+/compile_commands.json
+/.cache/**

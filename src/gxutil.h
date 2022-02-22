@@ -1,3 +1,9 @@
+#ifndef _SRC_GXUTIL_H_
+#define _SRC_GXUTIL_H_
+
+#include <dolphin/mtx.h>
+#include <dolphin/GXStruct.h>
+
 struct PointWithColor
 {
     Point3d pos;
@@ -22,3 +28,5 @@ void gxutil_draw_line_strip(u16 numPoints, Point3d *points, GXColor *color);
 void gxutil_draw_line_deferred(Point3d *start, Point3d *end, GXColor *c);
 // ? gxutil_draw_line_multicolor_deferred();
 void prepare_for_drawing_lines(void);
+
+#endif

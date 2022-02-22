@@ -1,3 +1,9 @@
+#ifndef _SRC_CAMERA_H_
+#define _SRC_CAMERA_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 enum
 {
     CAMERA_STATE_LEVEL_MAIN       = 1,  // main game in level
@@ -196,3 +202,5 @@ void camera_func_71(struct Camera *camera, struct Ball *ball);
 void camera_func_72(struct Camera *camera, struct Ball *ball);
 void camera_func_73(struct Camera *camera, struct Ball *ball);
 void camera_func_mini(struct Camera *camera, struct Ball *ball);
+
+#endif

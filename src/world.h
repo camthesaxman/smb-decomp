@@ -1,3 +1,9 @@
+#ifndef _SRC_WORLD_H_
+#define _SRC_WORLD_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 enum
 {
     WORLD_STATE_INPUT_INIT = 1,
@@ -47,3 +53,5 @@ void world_sub_8(struct World *);
 void world_sub_9(struct World *);
 void world_sub_10(struct World *);
 void world_sub_11(struct World *);
+
+#endif

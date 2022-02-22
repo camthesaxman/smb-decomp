@@ -1,3 +1,9 @@
+#ifndef _SRC_STAGE_H_
+#define _SRC_STAGE_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 #define STAGE_LIST \
     DEFINE_STAGE(ST_000_DUMMY,                  BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_001_PLAIN,                  BG_TYPE_JUN) \
@@ -475,3 +481,5 @@ void adjust_stage_anim_ptrs(struct StageAnimHdr **, struct Stage *);
 void func_800473C0(struct UnkStruct8005562C_child **, struct Stage *);
 void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
 void stage_draw(void);
+
+#endif
