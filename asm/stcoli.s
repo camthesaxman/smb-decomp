@@ -5591,6 +5591,8 @@ lbl_80042BBC:
 .section .sdata2
 
     .balign 8
+
+.if 0
 .global lbl_802F3608
 lbl_802F3608:
 	# ROM: 0x1ED028
@@ -5610,6 +5612,7 @@ lbl_802F3610:
 lbl_802F3614:
 	# ROM: 0x1ED034
 	.4byte 0xBF350481
+.endif
 
 .global lbl_802F3618
 lbl_802F3618:
