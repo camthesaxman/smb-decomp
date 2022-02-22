@@ -6,7 +6,7 @@ import json
 
 def main():
     cmds = []
-    script_dir = Path(__file__).parent
+    script_dir = Path(__file__).parent.resolve()
     for src_path in (script_dir / "src").iterdir():
         if not src_path.suffix == ".c":
             continue
