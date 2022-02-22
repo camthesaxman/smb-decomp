@@ -1969,7 +1969,7 @@ void stage_draw(void)
     r27 = decodedStageLzPtr->collHdrs;
     for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r28++, r27++)
     {
-        struct StageCollHdr_child *r24;
+        struct StageGoal *r24;
         int j;
         struct GMAModelHeader *model;
 
@@ -1983,12 +1983,12 @@ void stage_draw(void)
             for (j = 0; j < r27->unk3C; j++, r24++)
             {
                 mathutil_mtxA_from_mtx(sp4C);
-                mathutil_mtxA_translate(&r24->unk0);
-                mathutil_mtxA_rotate_z(r24->unk10);
-                mathutil_mtxA_rotate_y(r24->unkE);
-                mathutil_mtxA_rotate_x(r24->unkC);
-                func_8000E338(r24->unk12);
-                switch (r24->unk12)
+                mathutil_mtxA_translate(&r24->pos);
+                mathutil_mtxA_rotate_z(r24->rotZ);
+                mathutil_mtxA_rotate_y(r24->rotY);
+                mathutil_mtxA_rotate_x(r24->rotX);
+                func_8000E338(r24->type);
+                switch (r24->type)
                 {
                 default:
                     model = goalModels[0];

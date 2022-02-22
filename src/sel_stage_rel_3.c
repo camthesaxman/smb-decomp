@@ -29,7 +29,7 @@ void sel_stage_draw(void)
     
     for (i = 0, r27 = decodedStageLzPtr->collHdrs; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
     {
-        Vec *r25 = &r27->unk40->unk0;
+        Vec *r25 = &r27->unk40->pos;
         int j;
         for (j = 0; j < r27->unk3C; j++)
         {

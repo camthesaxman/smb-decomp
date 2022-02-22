@@ -234,7 +234,7 @@ void ev_info_main(void)
      && (lbl_801F3D88[0] & (1 << 10))
      && (lbl_801F3D88[0] & (1 << 11)))
     {
-        struct StageCollHdr_child *r7;
+        struct StageGoal *r7;
         int r9;
 
         if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
@@ -246,7 +246,7 @@ void ev_info_main(void)
         r7 = decodedStageLzPtr->collHdrs[0].unk40;
         for (i = 0; i < decodedStageLzPtr->collHdrs[0].unk3C; i++, r7++)
         {
-            if (r7->unk12 == 0x42)
+            if (r7->type == 0x42)
             {
                 r9 = i;
                 break;
@@ -260,17 +260,17 @@ void ev_info_main(void)
             r7 = ((volatile struct StageCollHdr *)&decodedStageLzPtr->collHdrs[0])->unk40;
             for (i = 0; i < decodedStageLzPtr->collHdrs[0].unk3C; i++, r7++)
             {
-                if ((lbl_801F3D88[0] & (1 << 3)) && r7->unk12 == 'R')
+                if ((lbl_801F3D88[0] & (1 << 3)) && r7->type == 'R')
                 {
                     r9 = i;
                     break;
                 }
-                if ((lbl_801F3D88[0] & (1 << 1)) && r7->unk12 == 'G')
+                if ((lbl_801F3D88[0] & (1 << 1)) && r7->type == 'G')
                 {
                     r9 = i;
                     break;
                 }
-                if ((lbl_801F3D88[0] & (1 << 2)) && r7->unk12 == 'B')
+                if ((lbl_801F3D88[0] & (1 << 2)) && r7->type == 'B')
                 {
                     r9 = i;
                     break;
@@ -495,7 +495,7 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
     {
         if (r27->unk3C > 0)
         {
-            struct StageCollHdr_child *r24;
+            struct StageGoal *r24;
             int j;
 
             if (i != sp3C.itemgroupId)
@@ -505,17 +505,17 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
             {
                 struct Struct8003F890 sp14;
 
-                mathutil_mtxA_from_translate(&r24->unk0);
-                mathutil_mtxA_rotate_z(r24->unk10);
-                mathutil_mtxA_rotate_y(r24->unkE);
-                mathutil_mtxA_rotate_x(r24->unkC);
+                mathutil_mtxA_from_translate(&r24->pos);
+                mathutil_mtxA_rotate_z(r24->rotZ);
+                mathutil_mtxA_rotate_y(r24->rotY);
+                mathutil_mtxA_rotate_x(r24->rotX);
                 sp14.unk0.x = 0.0f;
                 sp14.unk0.y = 1.0f;
                 sp14.unk0.z = 0.0f;
                 mathutil_mtxA_tf_point(&sp14.unk0, &sp14.unk0);
-                sp14.unkC = r24->unkC;
-                sp14.unkE = r24->unkE;
-                sp14.unk10 = r24->unk10;
+                sp14.unkC = r24->rotX;
+                sp14.unkE = r24->rotY;
+                sp14.unk10 = r24->rotZ;
                 sp14.unk20 = 2.0f;
                 sp14.unk24 = 2.0f;
                 if (test_line_intersects_rect(&sp3C.pos, &sp3C.prevPos, &sp14) != 0)

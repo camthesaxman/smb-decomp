@@ -293,15 +293,6 @@ struct DecodedStageLzPtr_child_child4
     u8 filler4[4];
 };  // size = 8
 
-struct StageCollHdr_child
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s8 unk12;
-};
-
 struct StageCollHdr_child2
 {
     Vec unk0;  // position?
@@ -349,7 +340,7 @@ struct StageCollHdr
     /*0x34*/ s32 cellsX;  // number of cells in x direction
     /*0x38*/ s32 cellsY;  // number of cells in y direction
     /*0x3C*/ s32 unk3C;
-    struct StageCollHdr_child *unk40;  // goals?
+    struct StageGoal *unk40;  // goals?
     u8 filler44[4];
     void *unk48;
     s32 unk4C;
@@ -393,11 +384,11 @@ struct StageStartPos
 struct StageGoal
 {
     /*0x00*/ Point3d pos;
-    /*0x0C*/ s16 xrot;
-    /*0x0E*/ s16 yrot;
-    /*0x10*/ s16 zrot;
-    u8 filler12[0x14-0x12];
-};  // size = 0x14
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    char type;  // 'B', 'G', or 'R' for blue, green, or red goal
+};
 
 struct DecodedStageLzPtr_child5_child
 {

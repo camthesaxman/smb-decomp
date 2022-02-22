@@ -1916,9 +1916,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     {
         camera->state = CAMERA_STATE_GOAL_REPLAY;
         mathutil_mtxA_from_translate(&goal.pos);
-        mathutil_mtxA_rotate_z(goal.zrot);
-        mathutil_mtxA_rotate_y(goal.yrot);
-        mathutil_mtxA_rotate_x(goal.xrot);
+        mathutil_mtxA_rotate_z(goal.rotZ);
+        mathutil_mtxA_rotate_y(goal.rotY);
+        mathutil_mtxA_rotate_x(goal.rotX);
         f31 = mathutil_vec_mag(&infoWork.unk10);
         if (mathutil_vec_distance(&goal.pos, &sp34.unk0) > 2.5 && (rand() & 3) && sp34.unk0.y > goal.pos.y)
         {
@@ -1975,9 +1975,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 goalp = &decodedStageLzPtr->goals[infoWork.unkC];
                 mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
                 mathutil_mtxA_translate(&goalp->pos);
-                mathutil_mtxA_rotate_z(goalp->zrot);
-                mathutil_mtxA_rotate_y(goalp->yrot);
-                mathutil_mtxA_rotate_x(goalp->xrot);
+                mathutil_mtxA_rotate_z(goalp->rotZ);
+                mathutil_mtxA_rotate_y(goalp->rotY);
+                mathutil_mtxA_rotate_x(goalp->rotX);
                 mathutil_mtxA_tf_point(&camera->unk54, &sp10);
                 sp1C.x = sp10.x - ball->pos.x;
                 sp1C.y = sp10.y - ball->pos.y;
@@ -2182,9 +2182,9 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     goal = &decodedStageLzPtr->goals[infoWork.unkC];
     mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
     mathutil_mtxA_translate(&goal->pos);
-    mathutil_mtxA_rotate_z(goal->zrot);
-    mathutil_mtxA_rotate_y(goal->yrot);
-    mathutil_mtxA_rotate_x(goal->xrot);
+    mathutil_mtxA_rotate_z(goal->rotZ);
+    mathutil_mtxA_rotate_y(goal->rotY);
+    mathutil_mtxA_rotate_x(goal->rotX);
     mathutil_mtxA_tf_point(&camera->unk54, &sp10);
 
     sp28.x = sp10.x - ball->pos.x;
