@@ -1796,7 +1796,7 @@ lbl_8008B358:
 /* 8008B3B4 000872D4  4E 80 00 20 */	blr
 .endif
 
-.if 1
+.if 0
 .global func_8008B3B8
 func_8008B3B8:
 /* 8008B3B8 000872D8  7C 08 02 A6 */	mflr r0
@@ -4127,6 +4127,7 @@ lbl_802F20C4:
 
 .section .sdata
 
+.if 0
     .balign 8
 .global lbl_802F12D8
 lbl_802F12D8:
@@ -4139,7 +4140,7 @@ lbl_802F12E0:
 	# ROM: 0x1EBA20
 	.4byte 0x01010305
 	.4byte 0x07000000
-
+.endif
 
 .section .sdata2
 
@@ -4181,12 +4182,12 @@ lbl_802F56C8:
 	# ROM: 0x1EF0E8
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
 
 .global lbl_802F56D0
 lbl_802F56D0:
 	# ROM: 0x1EF0F0
 	.4byte 0xBF800000
+.endif
 
 .global lbl_802F56D4
 lbl_802F56D4:

@@ -234,7 +234,8 @@ struct Struct801C7824
     u8 filler20[4];
 };  // size = 0x24
 
-extern struct Struct801C7824 lbl_801C7824[];
+//#define lbl_801C7824 lbl_801C7824_
+extern struct Struct801C7824 lbl_801C7824[4];
 
 void lbl_800893DC(u32 a)
 {
@@ -423,6 +424,7 @@ void func_800893E8(void)
     OSSetCurrentHeap(oldHeap);
 }
 
+//#pragma dont_inline on
 void func_80089A04(struct Struct80089A04_1 *a, int b, struct Struct80089A04 *c)
 {
     int i;
@@ -441,6 +443,7 @@ void func_80089A04(struct Struct80089A04_1 *a, int b, struct Struct80089A04 *c)
     printf("obj: %s is nothing.\n", c->unk4[b]);
     c->unk30[b] = -1;
 }
+//#pragma dont_inline reset
 
 struct Struct800355B8 *func_80089AB8(struct Struct800341BC_2 *a)
 {
@@ -591,10 +594,7 @@ extern s32 lbl_802F206C;
 struct Struct801C63B0
 {
     u8 filler0[0x30];
-    u32 unk30;
-    u32 unk34;
-    u32 unk38;
-    u8 filler3C[4];
+    s32 unk30[4];
 };  // size = 0x40
 
 extern struct Struct801C63B0 *lbl_801C63B0[];
@@ -609,9 +609,9 @@ static inline void func_80089CF4_inline(struct Struct80089CF4_1 *a)
 
         if (a->unk98[i].unkC == NULL)
             a->unk98[i].unkC = func_80089CBC(a->unk98, i, a->unk1C->unk1C);
-        a->unk98[i].unk14 = r24->unk30;
-        a->unk98[i].unk18 = r24->unk34;
-        a->unk98[i].unk1C = r24->unk38;
+        a->unk98[i].unk14 = r24->unk30[0];
+        a->unk98[i].unk18 = r24->unk30[1];
+        a->unk98[i].unk1C = r24->unk30[2];
     }
 }
 
@@ -1261,30 +1261,104 @@ void func_8008B2D4(struct Ape *ape)
 }
 
 extern s32 lbl_801C63C0[];
-//extern struct Struct80089A04 *lbl_801C63B0[];
-extern u8 lbl_802F12D8[];
-extern u8 lbl_802F12E0[];
+
+u8 lbl_802F12D8[8] = {0x00, 0x00, 0x02, 0x04, 0x06, 0x00, 0x00, 0x00};
+u8 lbl_802F12E0[8] = {0x01, 0x01, 0x03, 0x05, 0x07, 0x00, 0x00, 0x00};
 
 void func_8008C924();
+void func_80035F18();
 
-/*
+#ifdef NONMATCHING
+
+struct Blah
+{
+    u8 filler0[0x84];
+    u8 filler84[0x4114-0x84];
+    u8 filler4114[1];
+};
+
+void test(struct Blah *r24_, u8 r21)
+{
+    //r24_ = (u8 *)r26->unk0;
+    void *r3 = r24_->filler4114;
+    func_80035F18(r3, r24_->filler0, 1, lbl_802F12D8[r21]);
+    r3 = r24_->filler84;
+    func_80035F18(r3, r24_->filler0, 2, lbl_802F12E0[r21]);
+}
+
+void test2(struct Struct802B39C0_B0 *r26, u32 index)
+{
+    int i;  // r28
+    struct Struct801C7824 *r27_;
+
+    index *= 2;
+    r27_ = &lbl_801C7824[index];
+    // i = r28
+    for (i = 0; i < lbl_801C63C0[r26->unk10]; i++)  // lbl_8008B6B8
+    {
+        u8 r24;
+        int j;  // r23
+        //r0 = lbl_801C63B0[r26->unk10];
+        struct Struct801C63B0 *r20 = &lbl_801C63B0[r26->unk10][i];
+
+        for (j = 0; j < 4; j++)
+        {
+            func_80089A04((void *)r27_, j, (void *)r20);
+            r26->unk98[i].unk14[j] = r20->unk30[j];
+        }
+    }
+}
+
+int test3(char *a)
+{
+    int r23;
+    int i;
+    for (i = 0, r23 = 0; (u8)i < motSkeleton->unk4; i++)
+    {
+        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
+        {
+            r23 = i;
+            break;
+        }
+    }
+    return r23;
+}
+
+void* test5(char *a)
+{
+    struct Struct80034B50_child *r27 = &motSkeleton->unk0[0];
+    int i;
+    for (i = 0; i < motSkeleton->unk4; i++)
+    {
+        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
+        {
+            r27 = &motSkeleton->unk0[i];
+            break;
+        }
+    }
+    return r27;
+}
+
 void *func_8008B3B8(char *a)
 {
-    struct Struct801C7824 *r27_;
+    struct Struct800355B8 *r31;
+    struct Struct800355B8 *r24;
+    //struct Struct801C7824 *r27_;
     struct Struct80034B50_child *r27;
     struct Struct802B39C0_B0 *r26 = lbl_802B46B0[lbl_802F2068];
-    int r20 = r26->unk70;
     int i;  // r24
-    struct Struct800355B8 *r24;
-    struct Struct800355B8 *r31;
+    //u8 *r24_;
+    //u8 *r23_;
     int r23;
-    u8 r21;
-    u8 *r24_;
-    u8 *r23_;
-    u8 filler[4];
+    int r21;
+    //#define r20 i
+    int r20;
+    r20 = r26->unk70;
 
     memset(r26, 0, sizeof (*r26));
     r26->unk70 = r20;
+
+
     r27 = &motSkeleton->unk0[0];
     for (i = 0; i < motSkeleton->unk4; i++)
     {
@@ -1294,6 +1368,8 @@ void *func_8008B3B8(char *a)
             break;
         }
     }
+    //r27 = test5(a);
+
     r24 = func_80089AB8((void *)r27);
     r31 = func_80089AB8((void *)r27);
     r26->unk94 = 5;
@@ -1302,6 +1378,7 @@ void *func_8008B3B8(char *a)
         OSPanic("mot_ape.c", 0x5D6, "cannot OSAlloc\n");
     //lbl_8008B4BC
     // i = r8
+
     for (i = 0; i < r26->unk94; i++)
     {
         struct Struct802B39C0_B0_child *var = &r26->unk98[i];
@@ -1313,6 +1390,8 @@ void *func_8008B3B8(char *a)
         var->unk10 = 0.0f;
         var->unk20 = 0;
     }
+
+    //test4(r26);
     r26->unk0 = r24;
     r26->unk4 = r31;
     r26->unk1C = lbl_801C7A70;
@@ -1337,8 +1416,9 @@ void *func_8008B3B8(char *a)
     r26->unk60 = (Quaternion){ 0, 0, 0, 0 };  //0x70
     r26->unkB4 = 0;
     r26->unk90 = lbl_802F207C;
-
-    r27_ = &lbl_801C7824[r26->unk10 * 2];
+    //test5(r26);
+/*
+    r27_ = &lbl_801C7824[r26->unk10 << 1];
     // i = r28
     for (i = 0; i < lbl_801C63C0[r26->unk10]; i++)  // lbl_8008B6B8
     {
@@ -1353,7 +1433,10 @@ void *func_8008B3B8(char *a)
             r26->unk98[i].unk14[j] = r20->unk30[j];
         }
     }
+*/
+    test2(r26, r26->unk10);
 
+/*
     // i = r24
     r23 = 0;
     for (i = 0; (u8)i < motSkeleton->unk4; i++)
@@ -1365,13 +1448,23 @@ void *func_8008B3B8(char *a)
         }
     }
     //lbl_8008B780
+    */
+    r23 = test3(a);
     r21 = r23;
+    //#define r21 (u8)r23
+
+    /*
     r24_ = (u8 *)r26->unk0;
     func_80035F18(r24_ + 0x4114, r24_, 1, lbl_802F12D8[r21]);
     func_80035F18(r24_ + 0x84,   r24_, 2, lbl_802F12E0[r21]);
     r23_ = (u8 *)r26->unk4;
-    func_80035F18(r24_ + 0x4114, r23_, 1, lbl_802F12D8[r21]);
-    func_80035F18(r24_ + 0x84,   r23_, 2, lbl_802F12D8[r21]);
+    r21 = r23;
+    func_80035F18(r23_ + 0x4114, r23_, 1, lbl_802F12D8[r21]);
+    func_80035F18(r23_ + 0x84,   r23_, 2, lbl_802F12E0[r21]);
+    */
+    test((void *)r26->unk0, r21);
+    r21 = r23;
+    test((void *)r26->unk4, r21);
 
     r26->unkB8 = lbl_8008A10C;
     r26->unkBC = lbl_8008A108;
@@ -1379,7 +1472,16 @@ void *func_8008B3B8(char *a)
     lbl_802F2068++;
     return r26;
 }
-*/
+#else
+extern u8 lbl_80171950[];
+const float lbl_802F56D0 = -1.0f;
+asm void *func_8008B3B8(char *a)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_8008B3B8.s"
+}
+#endif
+
 /*
 const float lbl_802F56A8 = 1f;
 const float lbl_802F56AC = 0f;
