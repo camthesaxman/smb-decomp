@@ -334,7 +334,7 @@ SOURCES := \
 	libraries/amcstubs/asm/AmcExi2Stubs.s \
 	libraries/odemustubs/asm/odemustubs.s \
 	libraries/amcnotstub/amcnotstub.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
 
@@ -342,7 +342,7 @@ $(ELF): $(O_FILES)
 SOURCES := \
 	src/sel_ngc_rel.c \
 	asm/sel_ngc_rel.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.sel_ngc.plf: $(O_FILES)
 mkbe.sel_ngc.rel: ELF2REL_ARGS := -i 1 -o 0x0 -l 0x1D -c 18
@@ -353,7 +353,7 @@ SOURCES := \
 	src/sel_stage_rel.c \
 	src/sel_stage_rel_2.c \
 	src/sel_stage_rel_3.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.sel_stage.plf: $(O_FILES)
 mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
@@ -363,7 +363,7 @@ ALL_RELS += mkbe.sel_stage.rel
 SOURCES := \
 	src/mini_race.c \
 	asm/mini_race.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_race.plf: $(O_FILES)
 mkbe.rel_mini_race.rel: ELF2REL_ARGS := -i 3 -o 0x3C -l 0x23 -c 18
@@ -373,7 +373,7 @@ ALL_RELS += mkbe.rel_mini_race.rel
 SOURCES := \
 	src/mini_bowling.c \
 	asm/mini_bowling.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_bowling.plf: $(O_FILES)
 mkbe.rel_mini_bowling.rel: ELF2REL_ARGS := -i 4 -o 0x5F -l 0x26 -c 18
@@ -382,7 +382,7 @@ ALL_RELS += mkbe.rel_mini_bowling.rel
 # mkbe.rel_mini_fight.rel sources
 SOURCES := \
 	asm/mini_fight.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_fight.plf: $(O_FILES)
 mkbe.rel_mini_fight.rel: ELF2REL_ARGS := -i 5 -o 0x85 -l 0x24 -c 17
@@ -392,7 +392,7 @@ ALL_RELS += mkbe.rel_mini_fight.rel
 SOURCES := \
 	src/mini_pilot.c \
 	asm/mini_pilot.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_pilot.plf: $(O_FILES)
 mkbe.rel_mini_pilot.rel: ELF2REL_ARGS := -i 6 -o 0xA9 -l 0x24 -c 18
@@ -400,9 +400,9 @@ ALL_RELS += mkbe.rel_mini_pilot.rel
 
 # mkbe.rel_mini_golf.rel sources
 SOURCES := \
-	src/mini_golf.s \
+	src/mini_golf.c \
 	asm/mini_golf.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_golf.plf: $(O_FILES)
 mkbe.rel_mini_golf.rel: ELF2REL_ARGS := -i 7 -o 0xCD -l 0x23 -c 17
@@ -412,7 +412,7 @@ ALL_RELS += mkbe.rel_mini_golf.rel
 SOURCES := \
 	src/mini_billiards.c \
 	asm/mini_billiards.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_billiards.plf: $(O_FILES)
 mkbe.rel_mini_billiards.rel: ELF2REL_ARGS := -i 8 -o 0xF0 -l 0x28 -c 17
@@ -421,7 +421,7 @@ ALL_RELS += mkbe.rel_mini_billiards.rel
 # mkbe.rel_sample.rel sources
 SOURCES := \
 	src/rel_sample.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_sample.plf: $(O_FILES)
 mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
@@ -431,7 +431,7 @@ ALL_RELS += mkbe.rel_sample.rel
 SOURCES := \
 	src/test_mode.c \
 	asm/test_mode.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.test_mode.plf: $(O_FILES)
 mkbe.test_mode.rel: ELF2REL_ARGS := -i 10 -o 0x138 -l 0x1F -c 18
@@ -441,7 +441,7 @@ ALL_RELS += mkbe.test_mode.rel
 SOURCES := \
 	src/option.c \
 	asm/option.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.option.plf: $(O_FILES)
 mkbe.option.rel: ELF2REL_ARGS := -i 11 -o 0x157 -l 0x1C -c 17
@@ -452,6 +452,10 @@ ALL_RELS += mkbe.option.rel
 #-------------------------------------------------------------------------------
 
 .PHONY: all default
+
+# remove implicit rules
+.SUFFIXES:
+MAKEFLAGS += -r
 
 all: $(DOL) $(ALL_RELS)
 	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
@@ -487,14 +491,14 @@ endef
 # relocatable modules must not use the small data sections
 %.plf: CFLAGS += -sdata 0 -sdata2 0 -g
 
-%.o: %.c
+%.c.o: %.c
 	$(COMPILE)
-%.o: %.cpp
+%.cpp.o: %.cpp
 	$(COMPILE)
-%.o: %.cp
+%.cp.o: %.cp
 	$(COMPILE)
 
-%.o: %.s
+%.s.o: %.s
 	@echo Assembling $<
 	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
 
@@ -523,17 +527,17 @@ test: $(DVD_FILES)
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
-	libraries/os/__start.o \
-	libraries/os/__ppc_eabi_init.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.o
+	libraries/os/__start.c.o \
+	libraries/os/__ppc_eabi_init.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o
 
 $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
-libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
+libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c.o: CC_CHECK := true
 libraries/PowerPC_EABI_Support/%.o: CFLAGS += -fp_contract on
 
 # Automatic dependency files
