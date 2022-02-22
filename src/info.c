@@ -243,8 +243,8 @@ void ev_info_main(void)
             infoWork.unk30 = 0;
 
         r9 = 0;
-        r7 = decodedStageLzPtr->collHdrs[0].unk40;
-        for (i = 0; i < decodedStageLzPtr->collHdrs[0].unk3C; i++, r7++)
+        r7 = decodedStageLzPtr->collHdrs[0].goals;
+        for (i = 0; i < decodedStageLzPtr->collHdrs[0].goalCount; i++, r7++)
         {
             if (r7->type == 0x42)
             {
@@ -257,8 +257,8 @@ void ev_info_main(void)
          || (lbl_801F3D88[0] & (1 << 2)))
         {
             // fake match
-            r7 = ((volatile struct StageCollHdr *)&decodedStageLzPtr->collHdrs[0])->unk40;
-            for (i = 0; i < decodedStageLzPtr->collHdrs[0].unk3C; i++, r7++)
+            r7 = ((volatile struct StageCollHdr *)&decodedStageLzPtr->collHdrs[0])->goals;
+            for (i = 0; i < decodedStageLzPtr->collHdrs[0].goalCount; i++, r7++)
             {
                 if ((lbl_801F3D88[0] & (1 << 3)) && r7->type == 'R')
                 {
@@ -493,15 +493,15 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
     goalId = 0;
     for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
     {
-        if (r27->unk3C > 0)
+        if (r27->goalCount > 0)
         {
             struct StageGoal *r24;
             int j;
 
             if (i != sp3C.itemgroupId)
                 tf_physball_to_itemgroup_space(&sp3C, i);
-            r24 = r27->unk40;
-            for (j = 0; j < r27->unk3C; j++, r24++)
+            r24 = r27->goals;
+            for (j = 0; j < r27->goalCount; j++, r24++)
             {
                 struct Struct8003F890 sp14;
 

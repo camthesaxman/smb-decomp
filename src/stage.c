@@ -1699,8 +1699,8 @@ void load_stagedef(int stageId)
                     *r5 = OFFSET_TO_PTR(decodedStageLzPtr, *r5);
             }
         }
-        if (coll->unk40 != NULL)
-            coll->unk40 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk40);
+        if (coll->goals != NULL)
+            coll->goals = OFFSET_TO_PTR(decodedStageLzPtr, coll->goals);
         if (coll->unk48 != NULL)
             coll->unk48 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk48);
         if (coll->unk50 != NULL)
@@ -1973,14 +1973,14 @@ void stage_draw(void)
         int j;
         struct GMAModelHeader *model;
 
-        if (r27->unk3C != 0)
+        if (r27->goalCount != 0)
         {
             mathutil_mtxA_from_mtxB();
             if (i > 0)
                 mathutil_mtxA_mult_right(r28->unk24);
             mathutil_mtxA_to_mtx(sp4C);
-            r24 = r27->unk40;
-            for (j = 0; j < r27->unk3C; j++, r24++)
+            r24 = r27->goals;
+            for (j = 0; j < r27->goalCount; j++, r24++)
             {
                 mathutil_mtxA_from_mtx(sp4C);
                 mathutil_mtxA_translate(&r24->pos);

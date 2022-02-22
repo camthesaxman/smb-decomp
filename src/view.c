@@ -611,8 +611,8 @@ void func_800A6BF0(void)
         struct StageGoal *r27;
         int j;  // r25
         //#define r27 r29
-        r27 = decodedStageLzPtr->collHdrs[i].unk40;
-        r24 = decodedStageLzPtr->collHdrs[i].unk3C;
+        r27 = decodedStageLzPtr->collHdrs[i].goals;
+        r24 = decodedStageLzPtr->collHdrs[i].goalCount;
         mathutil_mtxA_from_mtxB();
         if (i > 0)
             mathutil_mtxA_mult_right(movableStageParts[i].unk24);
