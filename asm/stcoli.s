@@ -180,6 +180,7 @@ lbl_8003DD08:
 /* 8003DD18 00039C38  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global meshcoli_grid_lookup
 meshcoli_grid_lookup:
 /* 8003DD1C 00039C3C  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -256,6 +257,7 @@ lbl_8003DE10:
 lbl_8003DE24:
 /* 8003DE24 00039D44  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003DE28 00039D48  4E 80 00 20 */	blr
+.endif
 
 .global stcoli_sub03
 stcoli_sub03:

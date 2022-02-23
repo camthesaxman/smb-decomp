@@ -1690,10 +1690,10 @@ void load_stagedef(int stageId)
         if (coll->gridCells != NULL)
         {
             int j;
-            void **r5;
+            s16 **r5;
 
             coll->gridCells = OFFSET_TO_PTR(decodedStageLzPtr, coll->gridCells);
-            for (j = 0, r5 = coll->gridCells; j < coll->gridCellCountX * coll->gridCellsY; j++, r5++)
+            for (j = 0, r5 = coll->gridCells; j < coll->gridDimX * coll->gridDimZ; j++, r5++)
             {
                 if (*r5 != NULL)
                     *r5 = OFFSET_TO_PTR(decodedStageLzPtr, *r5);
