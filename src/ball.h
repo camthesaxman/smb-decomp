@@ -1,10 +1,3 @@
-struct Struct8003699C_child
-{
-    u8 filler0[0x38];
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-};
 
 enum
 {
@@ -46,6 +39,14 @@ enum
 {
     BALL_STATE_GOAL_INIT = 5,  // ball slows to a stop after entering the goal
     BALL_STATE_GOAL_MAIN = 6,
+};
+
+struct Ball_child
+{
+    u8 filler0[0x14];
+    u32 unk14;
+    u8 filler18[0x1CE - 0x18];
+    s16 unk1CE;
 };
 
 struct Ball
@@ -100,7 +101,7 @@ struct Ball
     s32 unk138;
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
-    struct Ape *unk144;  // guessing this is the same type as unkFC?
+    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 unk148;
     u8 filler14A[0x14A - 0x149];
     /*0x14A*/ u8 colorId;

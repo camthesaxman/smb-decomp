@@ -249,16 +249,111 @@ typedef void (*Func802F20EC)();
 struct Ape;
 struct Ball;
 
+struct Struct80089CBC
+{
+    s32 unk0;
+    s32 unk4;
+    u32 unk8;
+    u32 unkC;
+    s32 unk10;
+    s32 unk14;
+    u8 filler18[0x20-0x18];
+};  // size = 0x20
+
+struct Struct802B39C0_B0_child
+{
+    u32 unk0;
+    float unk4;
+    s32 unk8;
+    struct Struct80089CBC *unkC;
+    float unk10;
+    u32 unk14[3];
+    s32 unk20;
+};  // size = 0x24
+
+struct Struct80034F5C_1_sub
+{
+    u8 unk0;
+    u8 unk1;
+    u16 *unk4;
+    u8 *unk8;
+    float *unkC;
+};  // size = 0x10
+
+struct Struct800341BC_5
+{
+    u8 filler0[0xC];
+};
+
+struct Struct80034F5C_1  // Joint object?
+{
+    u32 unk0;
+    struct Struct800341BC_5 unk4;
+    struct Struct800341BC_5 unk10;
+    Mtx unk1C;
+    u32 unk4C;
+    u8 *unk50;
+    struct Struct80034F5C_1_sub unk54[6];
+    u8 fillerB4[0x168-0xB4];
+    Mtx unk168;
+    u8 filler198[0x1A0-0x198];
+    s32 unk1A0;
+    Vec unk1A4;
+    Quaternion unk1B0;
+    Point3d unk1C0;
+    Point3d unk1CC;
+    Mtx unk1D8;
+    Mtx unk208;
+};  // size = 0x238
+
+struct Struct8003699C_child
+{
+    u32 unk0;
+    u8 filler4[0x28-0x4];
+    u16 unk28;
+    u16 unk2A;
+    u16 unk2C;
+    s16 unk2E;
+    u8 filler30[2];
+    u16 unk32;
+    u16 unk34;
+    u16 unk36;
+    u16 unk38;
+    u16 unk3A;
+    float unk3C;
+    float unk40;
+    u8 filler44[0x54-0x44];
+    Mtx unk54;
+    u8 filler84[0x81A8-0x84];
+    struct Struct80034F5C_1 unk81A8;
+};
+
+struct Ape_child
+{
+    float unk0;
+    s32 unk4;
+    u32 unk8;
+    u32 unkC;
+    s32 unk10;
+    s32 unk14;
+    float unk18;
+    u32 unk1C;
+};  // size = 0x20
+
 struct Ape
 {
     struct Struct8003699C_child *unk0;
-    void *unk4;
-    u8 filler8[0x10-0x8];
+    struct Struct8003699C_child *unk4;
+    float unk8;
+    float unkC;
     s32 unk10;
     u32 unk14;
-    u8 filler18[0x24-0x18];
+    s32 unk18;
+    struct Ape_child *unk1C;
+    struct Ape_child *unk20;
     s32 unk24;
-    u8 filler28[0x30-0x28];
+    s32 unk28;
+    void *unk2C;
     Vec unk30;
     Vec unk3C;
     Vec unk48;
@@ -266,24 +361,23 @@ struct Ape
     float unk58;
     u32 unk5C;
     Quaternion unk60;
-    u8 filler70[0x74-0x70];
+    u32 unk70;
     u32 unk74;
     u8 filler78[0x90-0x78];
     s32 unk90;
-    u8 filler94[4];
-    void *unk98;
-    u8 filler9C[4];
+    u32 unk94;
+    struct Struct802B39C0_B0_child *unk98;
+    u32 unk9C;
     Vec unkA0;
     float unkAC;
-    u8 fillerB0[4];
+    u32 unkB0;
     /*0x0B4*/ u32 colorId;
-    u8 fillerB8[0xC0-0xB8];
+    void *unkB8;
+    void *unkBC;
     s8 unkC0;
     u8 unkC1;
     s16 unkC2;
-    u8 fillerC4[0x1CE - 0xC4];
-    s16 unk1CE;  // used in the Ball.unk144 one
-};
+};  // size = 0xC4
 
 struct SpritePoolInfo
 {
@@ -457,41 +551,6 @@ struct Struct8003C550
 
 // motload
 
-struct Struct80034F5C_1_sub
-{
-    u8 unk0;
-    u8 unk1;
-    u16 *unk4;
-    u8 *unk8;
-    float *unkC;
-};  // size = 0x10
-
-struct Struct800341BC_5
-{
-    u8 filler0[0xC];
-};
-
-struct Struct80034F5C_1  // Joint object?
-{
-    u32 unk0;
-    struct Struct800341BC_5 unk4;
-    struct Struct800341BC_5 unk10;
-    Mtx unk1C;
-    u32 unk4C;
-    u8 *unk50;
-    struct Struct80034F5C_1_sub unk54[6];
-    u8 fillerB4[0x168-0xB4];
-    Mtx unk168;
-    u8 filler198[0x1A0-0x198];
-    s32 unk1A0;
-    Vec unk1A4;
-    Quaternion unk1B0;
-    Point3d unk1C0;
-    Point3d unk1CC;
-    Mtx unk1D8;
-    Mtx unk208;
-};  // size = 0x238
-
 struct MotDat_child
 {
     u8 unk0;
@@ -586,26 +645,6 @@ struct Struct80034F5C_3
     float unk14;
     float unk18;
 };  // size = 0x1C
-
-struct Struct800355B8  // maybe the same as Struct80034F5C_1?
-{
-    u32 unk0;
-    u8 filler4[0x28-0x4];
-    u16 unk28;
-    u16 unk2A;
-    u16 unk2C;
-    s16 unk2E;
-    u8 filler30[2];
-    u16 unk32;
-    u16 unk34;
-    u16 unk36;
-    u16 unk38;
-    u16 unk3A;
-    float unk3C;
-    float unk40;
-    u8 filler44[0x54-0x44];
-    Mtx unk54;
-};
 
 struct CoordsS8
 {

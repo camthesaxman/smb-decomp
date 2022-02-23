@@ -219,21 +219,21 @@ void g_skelanim_seek_prev(struct Struct80034F5C_1_sub *a)
     a->unkC -= *a->unk8;
 }
 
-void func_800355B8(struct Struct800355B8 *a)
+void func_800355B8(struct Struct8003699C_child *a)
 {
     a->unk3A = func_80034F44(a->unk32);
-    func_80034360((struct Struct80034F5C_1 *)((u8 *)a + 0x81A8), a->unk32);
+    func_80034360(&a->unk81A8, a->unk32);
 }
 
-void func_800355FC(struct Struct800355B8 *a)
+void func_800355FC(struct Struct8003699C_child *a)
 {
-    u32 wtf;
+    struct Struct80034F5C_1 *unk;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(a->unk54);
     func_80035648(a);
-    wtf = (u32)a + 0x81A8;
-    func_80035748(wtf, wtf);
+    unk = &a->unk81A8;
+    func_80035748(unk, unk);
 }
 
 #pragma force_active on
@@ -803,7 +803,7 @@ const struct Struct80034F5C_2 *const lbl_80114DE0[] =
 
 // different file due to float constants?
 /*
-void func_80035648(struct Struct800355B8 *a)
+void func_80035648(struct Struct8003699C_child *a)
 {
     u32 flags;
     struct Struct80034F5C_1 *r31 = (void *)((u32)a + 0x81A8);

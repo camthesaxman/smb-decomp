@@ -2935,12 +2935,12 @@ void func_8003CDC0(struct Ball *ball)
 
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
-        struct Ape *ape = ball->unk144;
+        struct Ball_child *unk = ball->unk144;
         s8 r31 = 0;
         s8 r28 = 0;
         float f2 = mathutil_vec_mag(&ball->vel) * 216000.0 / 1000.0;
 
-        if (ape->unk1CE > 3 && f2 > 10.0)
+        if (unk->unk1CE > 3 && f2 > 10.0)
         {
             float f4 = (f2 - 10.0f) / 130.0f;
 

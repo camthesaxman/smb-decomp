@@ -79,6 +79,10 @@ u32 lbl_801C7ADC[] =
     0x00000006,
     0x00000009,
     0x00000010,
+};
+
+u32 lbl_801C7AF4[] =
+{
     0x00000018,
     0x00000004,
     0x00000006,
@@ -91,7 +95,7 @@ u32 lbl_801C7ADC[] =
     0x00000014,
 };
 
-u32 lbl_801C7B1C[] =
+s32 lbl_801C7B1C[] =
 {
     0,
     0x00000004,
@@ -148,58 +152,11 @@ struct Struct80089A04
     s32 unk30[11];
 };
 
-struct Struct802B39C0_B0_child
-{
-    u32 unk0;
-    float unk4;
-    u32 unk8;
-    u32 unkC;
-    float unk10;
-    u32 unk14[3];  // hmm
-    //u8 filler14[0x20-0x14];
-    u32 unk20;
-};  // size = 0x24
-
-struct Struct802B39C0_B0  // probably Ape
-{
-    struct Struct800355B8 *unk0;
-    struct Struct800355B8 *unk4;
-    float unk8;
-    float unkC;
-    u32 unk10;
-    u32 unk14;
-    u32 unk18;
-    void *unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    void *unk2C;
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    u32 unk54;
-    float unk58;
-    u32 unk5C;
-    Quaternion unk60;
-    u32 unk70;
-    u8 filler74[0x90-0x74];
-    u32 unk90;
-    u32 unk94;  // count of unk98
-    struct Struct802B39C0_B0_child *unk98;
-    u32 unk9C;
-    Quaternion unkA0;
-    u32 unkB0;
-    u32 unkB4;
-    void *unkB8;
-    void *unkBC;
-    u8 fillerC0[4];
-};  // size = 0xC4
-
 // bss
 u8 lbl_802B39C0[0x30];
 u32 lbl_802B39C0_30[0x20];
-struct Struct802B39C0_B0 lbl_802B39C0_B0[16];  // B0
-void *lbl_802B46B0[16];  // CF0
+struct Ape lbl_802B39C0_B0[16];  // B0
+struct Ape *lbl_802B46B0[16];  // CF0
 
 FORCE_BSS_ORDER(lbl_802B39C0)
 FORCE_BSS_ORDER(lbl_802B39C0_30)
@@ -424,7 +381,7 @@ void func_800893E8(void)
     OSSetCurrentHeap(oldHeap);
 }
 
-//#pragma dont_inline on
+#pragma dont_inline on
 void func_80089A04(struct Struct80089A04_1 *a, int b, struct Struct80089A04 *c)
 {
     int i;
@@ -443,11 +400,11 @@ void func_80089A04(struct Struct80089A04_1 *a, int b, struct Struct80089A04 *c)
     printf("obj: %s is nothing.\n", c->unk4[b]);
     c->unk30[b] = -1;
 }
-//#pragma dont_inline reset
+#pragma dont_inline reset
 
-struct Struct800355B8 *func_80089AB8(struct Struct800341BC_2 *a)
+struct Struct8003699C_child *func_80089AB8(struct Struct800341BC_2 *a)
 {
-    struct Struct800355B8 *r30;
+    struct Struct8003699C_child *r30;
 
     if (gameSubmode == SMD_MINI_BILLIARDS_INIT || gameSubmode == SMD_MINI_BILLIARDS_MAIN)
     {
@@ -472,7 +429,7 @@ struct Struct800355B8 *func_80089AB8(struct Struct800341BC_2 *a)
     r30->unk2E = 0x4000;
     r30->unk2A = 0;
     r30->unk28 = 0;
-    func_800341BC((void *)((u8 *)r30 + 0x81A8), a, r30->unk36);
+    func_800341BC(&r30->unk81A8, a, r30->unk36);
     func_80035FDC(r30);
     func_800355B8(r30);
     func_800355FC(r30);
@@ -516,17 +473,6 @@ void func_80089BD4(struct Struct80034F5C_1 *a)
     }
 }
 
-struct Struct80089CBC
-{
-    s32 unk0;
-    s32 unk4;
-    u32 unk8;
-    u32 unkC;
-    s32 unk10;
-    s32 unk14;
-    u8 filler18[0x20-0x18];
-};  // size = 0x20
-
 struct Struct80089CBC *func_80089CBC(void *unused, int b, int c)
 {
     struct Struct80089CBC *r6 = (void *)((u8 *)motInfo + 0x28000);
@@ -542,53 +488,6 @@ struct Struct80089CBC *func_80089CBC(void *unused, int b, int c)
     return NULL;
 }
 
-struct Struct80089CF4_1_child2
-{
-    u8 filler0[0x8];
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    s32 unk14;
-    float unk18;
-    u32 unk1C;
-};
-
-struct Struct80089CF4_1_child
-{
-    u32 unk0;
-    float unk4;
-    s32 unk8;
-    struct Struct80089CBC *unkC;
-    float unk10;
-    u32 unk14;
-    u32 unk18;
-    u32 unk1C;
-    s32 unk20;
-};  // size = 0x24
-
-struct Struct80089CF4_1
-{
-    struct Struct800355B8 *unk0;
-    struct Struct800355B8 *unk4;
-    float unk8;
-    float unkC;
-    u32 unk10;
-    u32 unk14;
-    s32 unk18;
-    struct Struct80089CF4_1_child2 *unk1C;
-    struct Struct80089CF4_1_child2 *unk20;
-    u32 unk24;
-    u32 unk28;
-    u8 filler2C[0x94-0x2C];
-    u32 unk94;
-    struct Struct80089CF4_1_child *unk98;
-    u32 unk9C;
-    u8 fillerA0[0xB0-0xA0];
-    u32 unkB0;
-    u8 fillerB4[0xC2-0xB4];
-    s16 unkC2;
-};
-
 extern s32 lbl_802F206C;
 
 struct Struct801C63B0
@@ -599,7 +498,7 @@ struct Struct801C63B0
 
 extern struct Struct801C63B0 *lbl_801C63B0[];
 
-static inline void func_80089CF4_inline(struct Struct80089CF4_1 *a)
+static inline void func_80089CF4_inline(struct Ape *a)
 {
     int i;
 
@@ -609,20 +508,20 @@ static inline void func_80089CF4_inline(struct Struct80089CF4_1 *a)
 
         if (a->unk98[i].unkC == NULL)
             a->unk98[i].unkC = func_80089CBC(a->unk98, i, a->unk1C->unk1C);
-        a->unk98[i].unk14 = r24->unk30[0];
-        a->unk98[i].unk18 = r24->unk30[1];
-        a->unk98[i].unk1C = r24->unk30[2];
+        a->unk98[i].unk14[0] = r24->unk30[0];
+        a->unk98[i].unk14[1] = r24->unk30[1];
+        a->unk98[i].unk14[2] = r24->unk30[2];
     }
 }
 
-void func_8008A55C(u32 a, struct Struct80089CF4_1_child *b, int c, int d);
+void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d);
 
-void func_80089CF4(struct Struct80089CF4_1 *a, int r29)
+void func_80089CF4(struct Ape *a, int r29)
 {
-    struct Struct800355B8 *r6 = a->unk0;
+    struct Struct8003699C_child *r6 = a->unk0;
     float f31 = (float)r6->unk38 / (float)r6->unk3A;
-    struct Struct800355B8 *r28;
-    struct Struct800355B8 *r27;
+    struct Struct8003699C_child *r28;
+    struct Struct8003699C_child *r27;
     u32 i;
     u8 dummy[0x10];
 
@@ -639,13 +538,13 @@ void func_80089CF4(struct Struct80089CF4_1 *a, int r29)
     if (a->unk14 & (1 << 9))
     {
         // swap
-        struct Struct800355B8 *temp = a->unk0;
+        struct Struct8003699C_child *temp = a->unk0;
         a->unk0 = a->unk4;
         a->unk4 = temp;
     }
     else
     {
-        func_80089BD4((void *)((u8 *)a->unk0 + 0x81A8));
+        func_80089BD4((void *)&a->unk0->unk81A8);
     }
     r27 = a->unk0;
     r28 = a->unk4;
@@ -690,7 +589,7 @@ void func_80089CF4(struct Struct80089CF4_1 *a, int r29)
     }
     for (i = 0; i < a->unk94; i++)
     {
-        struct Struct80089CF4_1_child *var = &a->unk98[i];
+        struct Struct802B39C0_B0_child *var = &a->unk98[i];
 
         var->unkC = 0;
         var->unk20 = 0;
@@ -698,7 +597,7 @@ void func_80089CF4(struct Struct80089CF4_1 *a, int r29)
     func_80089CF4_inline(a);
     for (i = 0; i < a->unk94; i++)
     {
-        struct Struct80089CF4_1_child *r28 = &a->unk98[i];
+        struct Struct802B39C0_B0_child *r28 = &a->unk98[i];
 
         if (r28->unkC != NULL)
             r28->unk10 = 0.0f;
@@ -877,7 +776,7 @@ void func_8008A3A4(struct Struct80034F5C_1 *r28, struct Struct80034F5C_1 *r29, f
 
 extern const double lbl_802F56D8;
 
-void func_8008A55C(u32 a, struct Struct80089CF4_1_child *b, int c, int d)
+void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d)
 {
     int dummy;
     int r8;
@@ -947,9 +846,9 @@ void func_8008A55C(u32 a, struct Struct80089CF4_1_child *b, int c, int d)
     }
 }
 
-void func_8008A7F0_inline(struct Struct80089CF4_1 *a, struct Struct800355B8 *b)
+void func_8008A7F0_inline(struct Ape *a, struct Struct8003699C_child *b)
 {
-    struct Struct80089CF4_1_child *r28;
+    struct Struct802B39C0_B0_child *r28;
     int i;
     r28 = a->unk98;
 
@@ -957,7 +856,7 @@ void func_8008A7F0_inline(struct Struct80089CF4_1 *a, struct Struct800355B8 *b)
         func_8008A55C(a->unk10, r28++, b->unk3A, b->unk38);
 }
 
-void func_8008A7F0(struct Struct80089CF4_1 *a, struct Struct800355B8 *b)
+void func_8008A7F0(struct Ape *a, struct Struct8003699C_child *b)
 {
     u8 dummy[16];
 
@@ -1179,7 +1078,7 @@ struct GMAMeshHeader *func_8008AE2C(struct GMAMeshHeader *mesh)
 extern struct NaomiObj *apeFaceObj;
 extern struct TPL *apeFaceTpl;
 extern u32 lbl_802F2068;
-extern u32 lbl_802F207C;
+extern s32 lbl_802F207C;
 extern float lbl_802F2078;
 extern void *lbl_802F2088;
 
@@ -1225,8 +1124,11 @@ void func_8008B0AC(void)
                 r10 = 0x400;
             // hmm...
             motInfo[i].unk30[j] = (void *)((uintptr_t)motInfo + 0x2000 + (i * 0x80 + r10) * 0x20);
-            // TODO: figure out which array this is part of
+#ifdef NONMATCHING
+            motInfo[i].unk70[j] = lbl_801C7ADC[j] - lbl_801C7AF4[j];
+#else
             motInfo[i].unk70[j] = lbl_801C7ADC[j] - lbl_801C7B1C[j - 10];
+#endif
             r10 += lbl_801C7ADC[j];
         }
         if (i >= 4)
@@ -1286,7 +1188,7 @@ void test(struct Blah *r24_, u8 r21)
     func_80035F18(r3, r24_->filler0, 2, lbl_802F12E0[r21]);
 }
 
-void test2(struct Struct802B39C0_B0 *r26, u32 index)
+void test2(struct Ape *r26, u32 index)
 {
     int i;  // r28
     struct Struct801C7824 *r27_;
@@ -1339,13 +1241,13 @@ void* test5(char *a)
     return r27;
 }
 
-void *func_8008B3B8(char *a)
+struct Ape *func_8008B3B8(char *a, void *unused)
 {
-    struct Struct800355B8 *r31;
-    struct Struct800355B8 *r24;
+    struct Struct8003699C_child *r31;
+    struct Struct8003699C_child *r24;
     //struct Struct801C7824 *r27_;
     struct Struct80034B50_child *r27;
-    struct Struct802B39C0_B0 *r26 = lbl_802B46B0[lbl_802F2068];
+    struct Ape *r26 = lbl_802B46B0[lbl_802F2068];
     int i;  // r24
     //u8 *r24_;
     //u8 *r23_;
@@ -1392,9 +1294,9 @@ void *func_8008B3B8(char *a)
     }
 
     //test4(r26);
-    r26->unk0 = r24;
-    r26->unk4 = r31;
-    r26->unk1C = lbl_801C7A70;
+    r26->unk0 = (void *)r24;
+    r26->unk4 = (void *)r31;
+    r26->unk1C = (void *)lbl_801C7A70;
     r26->unk20 = 0;
     r26->unk8 = 0.0f;
     r26->unk10 = 0;
@@ -1411,10 +1313,10 @@ void *func_8008B3B8(char *a)
     r26->unk30 = (Vec){ 1, 0, 0 };  //0x3C
     r26->unk3C = (Vec){ 0, 0, 0 };  //0x48
     r26->unk48 = (Vec){ 0, 0, 0 };  //0x54
-    r26->unkA0 = (Quaternion){ 0, 0, 0, 1 }; //0x60
+    *(Quaternion *)&r26->unkA0 = (Quaternion){ 0, 0, 0, 1 }; //0x60
     r26->unk58 = 1.0f;
     r26->unk60 = (Quaternion){ 0, 0, 0, 0 };  //0x70
-    r26->unkB4 = 0;
+    r26->colorId = 0;
     r26->unk90 = lbl_802F207C;
     //test5(r26);
 /*
@@ -1470,17 +1372,314 @@ void *func_8008B3B8(char *a)
     r26->unkBC = lbl_8008A108;
     r26->unk5C = func_8008D1DC(func_8008C924, (void *)r26, 7);
     lbl_802F2068++;
-    return r26;
+    return (void *)r26;
 }
 #else
 extern u8 lbl_80171950[];
 const float lbl_802F56D0 = -1.0f;
-asm void *func_8008B3B8(char *a)
+asm struct Ape *func_8008B3B8(char *a, void *unused)
 {
     nofralloc
 #include "../asm/nonmatchings/func_8008B3B8.s"
 }
+#pragma peephole on
 #endif
+
+void g_make_ape_inline(struct Ape *ape)
+{
+    int i;
+    int j;
+    struct Struct801C63B0 *r19;
+    int index = ape->unk10 * 2;
+
+    for (i = 0; i < lbl_801C63C0[ape->unk10]; i++)
+    {
+        r19 = &lbl_801C63B0[ape->unk10][i];
+        for (j = 0; j < 4; j++)
+        {
+            func_80089A04((void *)&lbl_801C7824[index], j, (void *)r19);
+            ape->unk98[i].unk14[j] = r19->unk30[j];
+        }
+    }
+}
+
+struct Dunno
+{
+    u8 filler0[0x180];
+    struct Ape_child unk180;
+};
+
+struct MotInfo2
+{
+    u8 filler0[0x38];
+    struct Dunno *unk38;
+    u8 filler3C[0xB4-0x3C];
+};
+
+struct Ape *g_make_ape(int charaId)
+{
+    struct Ape *ape;
+    struct Struct80034F5C_1 *r5;
+
+    ape = func_8008B3B8(motInfo[charaId].unk0, motInfo[charaId].unk18);
+    ape->unk10 = charaId & 3;
+    ape->unk20 = &((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180;
+    ape->unk28 = 1;
+
+    g_make_ape_inline(ape);
+
+    ape->unkB0 = 0;
+    g_load_character_graphics(charaId, lbl_802F207C >> 1);
+    func_80089CF4(ape, ((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180.unk10);
+    func_800355FC(ape->unk0);
+
+    r5 = &ape->unk0->unk81A8;
+    r5->unk1A4.x = r5->unk208[0][3];
+    r5->unk1A4.y = r5->unk208[1][3];
+    r5->unk1A4.z = r5->unk208[2][3];
+
+    ape->unk4->unk81A8.unk208[0][3] = r5->unk1A4.x;
+    ape->unk4->unk81A8.unk208[1][3] = r5->unk1A4.y;
+    ape->unk4->unk81A8.unk208[2][3] = r5->unk1A4.z;
+
+    return ape;
+}
+
+#pragma force_active on
+void func_8008B9DC(struct Ape *a, int b)
+{
+    if (a->unk18 <= 0)
+    {
+        if (a->unk1C->unkC & (1 << 1))
+            a->unk0->unk34 = b;
+        else
+            func_80089CF4(a, b);
+    }
+}
+#pragma force_active reset
+
+void func_8008BA24(int a)
+{
+    lbl_802F206C = a;
+}
+
+void func_8008BA2C(struct Ape *ape, int b, int c)
+{
+    struct Ape_child *r6 = ((struct Ape_child *)(((struct MotInfo *)&motInfo[ape->unk10])->unk30[b]));
+
+    ape->unk20 = &r6[c];
+    ape->unk28 = b;
+    ape->unkB0 = c;
+    ape->unk18 = 0;
+    func_80089CF4(ape, r6[c].unk10);
+    func_800355FC(ape->unk0);
+    ape->unkC = 0.0f;
+}
+
+#pragma force_active on
+void func_8008BAA8(int *a, int *b)
+{
+    int i;
+
+    if (*b < 4)
+        return;
+    *a = 10;
+    *b -= 4;
+    for (i = 0; i < 6; i++)
+    {
+        if (*b < lbl_801C7B1C[i])
+            break;
+        *b -= lbl_801C7B1C[i];
+        (*a)++;
+    }
+    *b += lbl_801C7ADC[*a] - lbl_801C7AF4[*a];
+}
+#pragma force_active reset
+
+float force_lbl_802F56D4() { return 60.0f; }
+const double lbl_802F56D8 = 9.9999999392252903e-09;
+
+void func_8008BBD4(struct Ape *ape, int b, int c, int d, float e)
+{
+    struct MotInfo *r30;
+    struct Struct8003699C_child *r7;
+    struct Ape_child *r8;
+    int r9;
+    u32 r10;
+    int i;
+    struct Ape_child *r5;
+
+    r10 = 0xFFFFFFFF;
+    r9 = 0;
+    r7 = ape->unk0;
+    r30 = &motInfo[ape->unk10];
+    r8 = (void *)((struct MotInfo *)r30)->unk30[b];
+    switch (b)
+    {
+    case 7:
+        r10 = c;
+        func_8008BAA8(&b, &c);
+        r8 = (void *)((struct MotInfo *)r30)->unk30[b];
+        r9 = c;
+        break;
+    case 2:
+        if (c < 9)
+        {
+            r9 = c * 3;
+            r9++; r9--;  // needed to match
+            for (i = 0; i < 2; i++, r9++)
+            {
+                if (r8[r9].unk0 > e * 216.0f)
+                    break;
+            }
+        }
+        else
+            r9 = c;
+        break;
+    case 1:
+        if (d != 0)
+            r9 = d - 1;
+        else
+        {
+            for (i = 0; r8[i].unk4 == 0; i++, r9++)
+            {
+                if (r8[i].unk0 > e / 60.0f)
+                    break;
+            }
+            r5 = &r8[r9];
+            if (r8[r9].unk4 == 1 && r7->unk32 != r8[r9].unk10)
+            {
+                if (r7->unk32 != r8[r9 + 1].unk10 || r7->unk38 < r7->unk3A - r5->unk14)
+                    r9++;
+            }
+        }
+        break;
+    case 4:
+        for (i = 2; i > 0; i--)
+        {
+            if (r8[i].unk0 < e * 216.0f)
+                break;
+        }
+        r9 = i;
+        break;
+    case 6:
+        if (d != 0)
+            r9 = d - 1;
+        else
+        {
+            for (i = 0; r8[i].unk4 == 0; i++, r9++)
+            {
+                if (r8[i].unk0 > e * 216.0f)
+                    break;
+            }
+        }
+        break;
+    case 0:
+        for (i = 0; r8[i].unk4 == 0; i++, r9++)
+        {
+            if (r8[i].unk0 > e * 216.0f)
+                break;
+        }
+        break;
+    case 3:
+        break;
+    default:
+        r9 = c;
+        break;
+    }
+    r8 += r9;
+    if (ape->unk1C != r8)
+    {
+        int r4;
+
+        ape->unk20 = r8;
+        ape->unk28 = b;
+        if (r10 != 0xFFFFFFFF)
+            ape->unkB0 = r10;
+        else
+            ape->unkB0 = r9;
+        func_8008B9DC(ape, r8->unk10);
+    }
+}
+
+void func_8008BEF8(int a)
+{
+    lbl_802F207C = a;
+}
+
+void func_8008BF00(struct Ape *ape, int b)
+{
+    int unk;
+
+    if (b >= 4 || b < 0)
+        return;
+    unk = ape->unk90;
+    if (unk >= 2 && b <= 1)
+    {
+        lbl_802F2090 = 0;
+        g_free_character_graphics(ape->unk10, 1);
+        g_load_character_graphics(ape->unk10, 0);
+    }
+    else if (b >= 2 && unk <= 1)
+    {
+        lbl_802F2090 = 0;
+        g_free_character_graphics(ape->unk10, 0);
+        g_load_character_graphics(ape->unk10, 1);
+    }
+    ape->unk90 = b;
+}
+
+void func_8008BFB4(struct Ape *ape, int b, int *c, float *d)
+{
+    *c = ape->unk98[b].unk0;
+    *d = ape->unk98[b].unk4;
+}
+
+#pragma force_active on
+void func_8008BFD8(void) {}
+#pragma force_active reset
+
+void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
+{
+    struct Struct80034F5C_1 *r31;
+    struct Struct80034F5C_1 *r30 = (void *)&ape->unk0->unk81A8;
+    Mtx sp10;
+
+    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
+        return;
+    r31 = &r30[5];
+    mathutil_mtxA_from_mtx(r30[1].unk208);
+    mathutil_mtxA_invert();
+    mathutil_mtxA_mult_right(r31->unk208);
+    mathutil_mtxA_to_mtx(sp10);
+    mathutil_mtxA_from_mtx(r30[1].unk208);
+    mathutil_mtxA_rotate_x((u16)b);
+    mathutil_mtxA_rotate_y((u16)c);
+    mathutil_mtxA_mult_right(sp10);
+    mathutil_mtxA_to_mtx(r31->unk208);
+}
+
+/*
+void func_8008BFDC(struct Ape *ape, int b, int c)
+{
+    struct Struct80034F5C_1 *r30 = (void *)&ape->unk0->unk81A8;
+    struct Struct80034F5C_1 *r31;
+    Mtx sp10;
+
+    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1<<(31-0x1C))))
+        return;
+    r31 = &r30[5];
+    mathutil_mtxA_from_mtx(r30[1].unk208);
+    mathutil_mtxA_invert();
+    mathutil_mtxA_mult_right(r31->unk208);
+    mathutil_mtxA_to_mtx(sp10);
+    mathutil_mtxA_from_mtx(r30[1].unk208);
+    mathutil_mtxA_rotate_x((u16)b);
+    mathutil_mtxA_rotate_y((u16)c);
+    mathutil_mtxA_mult_right(sp10);
+    mathutil_mtxA_to_mtx(r31->unk208);
+}
+*/
 
 /*
 const float lbl_802F56A8 = 1f;
