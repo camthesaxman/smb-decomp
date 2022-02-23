@@ -5614,13 +5614,13 @@ lbl_802F3610:
 lbl_802F3614:
 	# ROM: 0x1ED034
 	.4byte 0xBF350481
-.endif
 
 .global lbl_802F3618
 lbl_802F3618:
 	# ROM: 0x1ED038
 	.4byte 0x43300000
 	.4byte 0x80000000
+.endif
 
 .global lbl_802F3620
 lbl_802F3620:
