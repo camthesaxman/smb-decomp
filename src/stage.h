@@ -335,10 +335,13 @@ struct StageCollHdr
     /*0x14*/ struct StageAnimHdr *animHdr;
     /*0x18*/ char **modelNames;
     /*0x1C*/ struct StageColiTri *triangles;
-    /*0x20*/ void *collCells;
-    u8 filler24[0x34-0x24];
-    /*0x34*/ s32 cellsX;  // number of cells in x direction
-    /*0x38*/ s32 cellsY;  // number of cells in y direction
+    /*0x20*/ s16 **gridCells;
+    /*0x24*/ f32 gridOriginX;
+    /*0x28*/ f32 gridOriginZ;
+    /*0x2C*/ f32 gridStepX;
+    /*0x30*/ f32 gridStepZ;
+    /*0x34*/ s32 gridDimX;  // Number of cells in X direction
+    /*0x38*/ s32 gridDimZ;  // Number of cells in Z direction
     /*0x3C*/ s32 goalCount;
     struct StageGoal *goals;
     u8 filler44[4];

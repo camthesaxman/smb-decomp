@@ -1687,13 +1687,13 @@ void load_stagedef(int stageId)
         }
         if (coll->triangles != NULL)
             coll->triangles = OFFSET_TO_PTR(decodedStageLzPtr, coll->triangles);
-        if (coll->collCells != NULL)
+        if (coll->gridCells != NULL)
         {
             int j;
             void **r5;
 
-            coll->collCells = OFFSET_TO_PTR(decodedStageLzPtr, coll->collCells);
-            for (j = 0, r5 = coll->collCells; j < coll->cellsX * coll->cellsY; j++, r5++)
+            coll->gridCells = OFFSET_TO_PTR(decodedStageLzPtr, coll->gridCells);
+            for (j = 0, r5 = coll->gridCells; j < coll->gridCellCountX * coll->gridCellsY; j++, r5++)
             {
                 if (*r5 != NULL)
                     *r5 = OFFSET_TO_PTR(decodedStageLzPtr, *r5);

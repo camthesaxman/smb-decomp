@@ -4,6 +4,7 @@
 #include "types.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "mathutil.h"
 
 void g_handle_ball_stage_collision(struct PhysicsBall* b, struct Stage* arg1) {
     struct StageColiTri tri;
@@ -85,4 +86,24 @@ void g_handle_ball_stage_collision(struct PhysicsBall* b, struct Stage* arg1) {
     if (dynamicStageParts != NULL) {
         stcoli_sub25(b, dynamicStageParts);
     }
+}
+
+s16 *meshcoli_grid_lookup(struct StageCollHdr* coliHeader, f32 x, f32 z) {
+    int cellX;
+    int cellZ;
+
+    if (coliHeader->gridCells == NULL2) {
+        return NULL;
+    }
+
+    cellX = mathutil_floor((x - coliHeader->gridOriginX) / coliHeader->gridStepX);
+    cellZ = mathutil_floor((z - coliHeader->gridOriginZ) / coliHeader->gridStepZ);
+
+    if (cellX < 0 || cellX >= coliHeader->gridDimX) {
+        return NULL;
+    }
+    if (cellZ < 0 || cellZ >= coliHeader->gridDimZ) {
+        return NULL;
+    }
+    return coliHeader->gridCells[cellZ * coliHeader->gridDimX + cellX];
 }

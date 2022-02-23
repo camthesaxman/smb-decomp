@@ -8,7 +8,7 @@
 #include "types.h"
 
 void g_handle_ball_stage_collision(struct PhysicsBall *b, struct Stage *);
-s16 *meshcoli_grid_lookup(struct StageCollHdr *coliHeader, float x, float z);
+s16 *meshcoli_grid_lookup(struct StageCollHdr* coliHeader, f32 x, f32 z);
 void stcoli_sub03(struct PhysicsBall *physBall, struct StageColiTri *tri);
 void stcoli_sub04(struct PhysicsBall *physBall, struct StageColiTri *tri);
 // ? stcoli_sub05();
