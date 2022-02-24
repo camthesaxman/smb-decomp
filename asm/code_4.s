@@ -3007,7 +3007,7 @@ credits_finish:
 /* 800AFCB8 000ABBD8  94 21 FF F8 */	stwu r1, -8(r1)
 /* 800AFCBC 000ABBDC  4B F7 4D F9 */	bl g_free_minigame_graphics
 /* 800AFCC0 000ABBE0  80 6D A0 74 */	lwz r3, lbl_802F2254@sda21(r13)
-/* 800AFCC4 000ABBE4  4B FD B6 11 */	bl func_8008B2D4
+/* 800AFCC4 000ABBE4  4B FD B6 11 */	bl g_ape_free
 /* 800AFCC8 000ABBE8  38 00 00 00 */	li r0, 0
 /* 800AFCCC 000ABBEC  90 0D A0 74 */	stw r0, lbl_802F2254@sda21(r13)
 /* 800AFCD0 000ABBF0  4B F5 B7 8D */	bl event_finish_all

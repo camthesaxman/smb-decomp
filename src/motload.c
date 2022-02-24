@@ -18,7 +18,7 @@ void func_800343E4(struct Struct80034F5C_1 *b);
 void func_80034424(struct MotDat *dat, struct Struct80034F5C_1 *b);
 void func_8003453C(struct MotDat *a, struct Struct80034F5C_1_sub *b);
 
-void func_800341BC(struct Struct80034F5C_1 *a, struct Struct800341BC_2 *b, u16 c)
+void func_800341BC(struct Struct80034F5C_1 *a, struct Struct80034B50_child *b, u16 c)
 {
     struct Struct80034F5C_1 *r31 = a;
     u32 *r30;
@@ -30,7 +30,7 @@ void func_800341BC(struct Struct80034F5C_1 *a, struct Struct800341BC_2 *b, u16 c
 
     r29 = b->unkC;
     r28 = b->unk10;
-    r27 = b->unk4;
+    r27 = (void *)b->unk4;
     r26 = b->unk8;
     r30 = lbl_80114F68[c];
     mathutil_mtxA_from_identity();

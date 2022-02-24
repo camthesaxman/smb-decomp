@@ -7073,33 +7073,3 @@ lbl_802F2058:
 .global lbl_802F2060
 lbl_802F2060:
 	.skip 0x8
-.global lbl_802F2068
-lbl_802F2068:
-	.skip 0x4
-.global lbl_802F206C
-lbl_802F206C:
-	.skip 0x4
-.global lbl_802F2070
-lbl_802F2070:
-	.skip 0x4
-.global lbl_802F2074
-lbl_802F2074:
-	.skip 0x4
-.global lbl_802F2078
-lbl_802F2078:
-	.skip 0x4
-.global lbl_802F207C
-lbl_802F207C:
-	.skip 0x4
-.global apeFaceTpl
-apeFaceTpl:
-	.skip 0x4
-.global apeFaceObj
-apeFaceObj:
-	.skip 0x4
-.global lbl_802F2088
-lbl_802F2088:
-	.skip 0x4
-.global lbl_802F208C
-lbl_802F208C:
-	.skip 0x4

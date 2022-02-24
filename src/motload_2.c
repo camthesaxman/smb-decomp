@@ -222,7 +222,7 @@ void g_skelanim_seek_prev(struct Struct80034F5C_1_sub *a)
 void func_800355B8(struct Struct8003699C_child *a)
 {
     a->unk3A = func_80034F44(a->unk32);
-    func_80034360(&a->unk81A8, a->unk32);
+    func_80034360(a->unk81A8, a->unk32);
 }
 
 void func_800355FC(struct Struct8003699C_child *a)
@@ -232,7 +232,7 @@ void func_800355FC(struct Struct8003699C_child *a)
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(a->unk54);
     func_80035648(a);
-    unk = &a->unk81A8;
+    unk = a->unk81A8;
     func_80035748(unk, unk);
 }
 

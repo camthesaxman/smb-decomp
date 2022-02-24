@@ -6,200 +6,115 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "ball.h"
+#include "camera.h"
+#include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
-
-struct UnkMotApe1
-{
-    u32 unk0;
-    u8 filler4[0x28-0x4];
-    u16 unk28;
-    u16 unk2A;
-    u16 unk2C;
-    u16 unk2E;
-    u8 filler30[2];
-    u16 unk32;
-    u16 unk34;
-    u16 unk36;
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-    float unk40;
-    u8 filler44[0xC200-0x44];
-};
-
-extern s8 lbl_802F2074;
-
-u32 lbl_801C7A70[] =
-{
-    0,
-    0,
-    0,
-    0,
-    1,
-    0,
-    0x3F800000,
-    0,
-};
-
-u32 lbl_801C7A90[] =
-{
-    0x00000001,
-    0x00000005,
-    0x00000007,
-    0x00000008,
-    0x0000000C,
-    0x0000000D,
-    0x00000010,
-    0x00000012,
-    0x00000013,
-    0x00000015,
-    0x00000016,
-    0x00000017,
-    0x00000018,
-    0x0000001A,
-    0x0000001B,
-};
-
-u32 lbl_801C7ACC[] =
-{
-    0x41B80000,
-    0x41A8CCCD,
-    0x41B00000,
-    0x41AC0000,
-};
-
-u32 lbl_801C7ADC[] =
-{
-    0x00000010,
-    0x00000008,
-    0x00000020,
-    0x00000006,
-    0x00000009,
-    0x00000010,
-};
-
-u32 lbl_801C7AF4[] =
-{
-    0x00000018,
-    0x00000004,
-    0x00000006,
-    0x00000004,
-    0x0000000E,
-    0x00000014,
-    0x00000018,
-    0x0000001E,
-    0x00000014,
-    0x00000014,
-};
-
-s32 lbl_801C7B1C[] =
-{
-    0,
-    0x00000004,
-    0x00000006,
-    0x0000000E,
-    0x00000006,
-    0x0000000A,
-};
-
-void func_8008A114(int);
-void func_8008A118(int);
-void func_8008A11C(int);
-void func_8008A120(int);
-
-void (*lbl_801C7B34[])(int) =
-{
-    func_8008A114,
-    func_8008A118,
-    func_8008A11C,
-    func_8008A120,
-    func_8008A120,
-    func_8008A120,
-    func_8008A120,
-    func_8008A120,
-    func_8008A120,
-    func_8008A120,
-};
-
-#define lbl_801C7B8C "mot_ape.c"
-
-struct Struct80089A04_1_child_sub
-{
-    char *unk0;
-    u8 filler4[0x20-0x4];
-};  // size = 0x20
-
-struct Struct80089A04_1_child
-{
-    u8 filler0[0x14];
-    struct Struct80089A04_1_child_sub unk14[2];
-};
-
-struct Struct80089A04_1
-{
-    u8 filler0[4];
-    struct Struct80089A04_1_child *unk4[4];
-    s16 unk14[8];
-};  // size = 0x24
+#include "ord_tbl.h"
 
 struct Struct80089A04
 {
     u8 filler0[4];
     char *unk4[11];
-    s32 unk30[11];
+    s32 unk30[4];
+};
+
+struct Ape_child lbl_801C7A70 =
+{
+    0.0f,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1.0f,
+    0,
+};
+
+u32 lbl_801C7A90[] = { 1, 5, 7, 8, 12, 13, 16, 18, 19, 21, 22, 23, 24, 26, 27 };
+
+// yaw angles for something?
+float lbl_801C7ACC[] = { 23.0f, 21.1f, 22.0f, 21.5f };
+
+u32 lbl_801C7ADC[] = { 16, 8, 32, 6, 9, 16 };
+u32 lbl_801C7AF4[] = { 24, 4, 6, 4, 14, 20, 24, 30, 20, 20 };
+s32 lbl_801C7B1C[] = { 0, 4, 6, 14, 6, 10 };
+
+void ape_dummy_1(struct Ape *);
+void ape_dummy_2(struct Ape *);
+void ape_dummy_3(struct Ape *);
+void ape_dummy_4(struct Ape *);
+
+// none of these functions actually do anything
+void (*apeDummyFuncs[])(struct Ape *) =
+{
+    ape_dummy_1,
+    ape_dummy_2,
+    ape_dummy_3,
+    ape_dummy_4,
+    ape_dummy_4,
+    ape_dummy_4,
+    ape_dummy_4,
+    ape_dummy_4,
+    ape_dummy_4,
+    ape_dummy_4,
 };
 
 // bss
 Mtx lbl_802B39C0;
 u32 lbl_802B39C0_30[0x20];
-struct Ape lbl_802B39C0_B0[16];  // B0
-struct Ape *lbl_802B46B0[16];  // CF0
+struct Ape apeStructs[16];  // B0
+struct Ape *apeStructPtrs[16];  // CF0
 
 FORCE_BSS_ORDER(lbl_802B39C0)
 FORCE_BSS_ORDER(lbl_802B39C0_30)
-FORCE_BSS_ORDER(lbl_802B39C0_B0)
-FORCE_BSS_ORDER(lbl_802B46B0)
+FORCE_BSS_ORDER(apeStructs)
+FORCE_BSS_ORDER(apeStructPtrs)
 
 struct GMA *charaGMAs[8];  // D30
 struct TPL *charaTPLs[8];  // D50
 u32 charaTplSizes[8];  // D70
-u32 charaTplAramSizes[8];  // D90
+u32 charaTplAramAddrs[8];  // D90
 u32 charaGmaSizes[8];  // DB0
-u32 charaGmaAramSizes[8];  // DD0
+u32 charaGmaAramAddrs[8];  // DD0
 u32 lbl_802B47B0[4];  // DF0
 u32 lbl_802B47C0[4];  // E00
 struct TPL *lbl_802B47D0[4];  // E10
 GXTexObj *lbl_802B47E0[4];  // E20
 struct GMAMeshHeader *lbl_802B47F0[4];  // E30
-u32 lbl_802B4800[8];  // E40
+struct GMAMaterial *lbl_802B4800[8];  // E40
 Mtx lbl_802B4820;  // E60
+Mtx lbl_802B4850[15];  // E90
+u8 lbl_802B4B20[0x2D0];
+GXTexObj *lbl_802B4DF0[8];
 
-extern u8 lbl_802F209C[8];
-extern u8 lbl_802F2094[8];
-extern u8 lbl_802F208C;
-extern int lbl_802F2090;
-extern volatile int lbl_802F2070;
+u32 *motLabel;
+s32 lbl_802F20AC;
+struct MotSkeleton *motSkeleton;
+struct MotInfo *motInfo;
+u8 lbl_802F209C[8];
+u8 lbl_802F2094[8];
+int lbl_802F2090;
+u8 lbl_802F208C;
+void **lbl_802F2088;
+struct NaomiObj *apeFaceObj;
+struct TPL *apeFaceTpl;
+s32 lbl_802F207C;
+float lbl_802F2078;
+s8 lbl_802F2074;
+volatile int transferInProgress;
+s32 lbl_802F206C;
+u32 nextApeIndex;
 
-struct Struct801C7824
+static void aram_transfer_callback(u32 a)
 {
-    char *unk0;
-    u8 filler4[0x1C-0x4];
-    s16 unk1C[2];
-    u8 filler20[4];
-};  // size = 0x24
-
-//#define lbl_801C7824 lbl_801C7824_
-extern struct Struct801C7824 lbl_801C7824[4];
-
-void lbl_800893DC(u32 a)
-{
-    lbl_802F2070 = 0;
+    transferInProgress = FALSE;
 }
 
-void func_800893E8(void)
+void load_character_resources(void)
 {
     OSHeapHandle oldHeap;
     ARQRequest arqReq;
@@ -253,14 +168,14 @@ void func_800893E8(void)
             charaTPLs[index] = NULL;
             lbl_802F209C[index] = 0;
             lbl_802F2094[index] = 0;
-            baseLen = strlen(lbl_801C7824[index].unk0);
-            strcpy(filename, lbl_801C7824[index].unk0);
+            baseLen = strlen(apeGfxFileInfo[index].basename);
+            strcpy(filename, apeGfxFileInfo[index].basename);
             suffix = filename + baseLen;
 
             strcpy(suffix, ".tpl.lz");
             if (file_open(filename, &file) == 0)
             {
-                printf("No Chara Texture <%s>\n", lbl_801C7824[index].unk0);
+                printf("No Chara Texture <%s>\n", apeGfxFileInfo[index].basename);
                 OSPanic("mot_ape.c", 250, "Stopped...\n");
             }
             fileSize = OSRoundUp32B(file_size(&file));
@@ -272,11 +187,11 @@ void func_800893E8(void)
             aramTop -= charaTplSizes[index];
             if (aramTop < 0xB00000)
                 OSPanic("mot_ape.c", 260, "Not enough ARAM for CharacterModel.\n");
-            charaTplAramSizes[index] = aramTop;
+            charaTplAramAddrs[index] = aramTop;
             lzs_decompress(compressed, work);
             OSFreeToHeap(memHeap5, compressed);
             DCStoreRange(work, charaTplSizes[index]);
-            lbl_802F2070 = 1;
+            transferInProgress = TRUE;
             ARQPostRequest(
                 &arqReq,
                 0,
@@ -285,15 +200,15 @@ void func_800893E8(void)
                 (uintptr_t)work,
                 aramTop,
                 (((charaTplSizes[index] - 1) >> 2) + 1) << 2,
-                lbl_800893DC);
-            while (lbl_802F2070 != 0)
+                aram_transfer_callback);
+            while (transferInProgress != 0)
                 ;
             file_close(&file);
 
             strcpy(suffix, ".gma.lz");
             if (file_open(filename, &file) == 0)
             {
-                printf("No Chara Model <%s>\n", lbl_801C7824[index].unk0);
+                printf("No Chara Model <%s>\n", apeGfxFileInfo[index].basename);
                 OSPanic("mot_ape.c", 277, "Stopped...\n");
             }
             fileSize = OSRoundUp32B(file_size(&file));
@@ -305,11 +220,11 @@ void func_800893E8(void)
             aramTop -= charaGmaSizes[index];
             if (aramTop < 0xB00000)
                 OSPanic("mot_ape.c", 287, "Not enough ARAM for CharacterModel.\n");
-            charaGmaAramSizes[index] = aramTop;
+            charaGmaAramAddrs[index] = aramTop;
             lzs_decompress(compressed, work);
             DCStoreRange(work, charaGmaSizes[index]);
             OSFreeToHeap(memHeap5, compressed);
-            lbl_802F2070 = 1;
+            transferInProgress = TRUE;
             ARQPostRequest(
                 &arqReq,
                 0,
@@ -318,8 +233,8 @@ void func_800893E8(void)
                 (uintptr_t)work,
                 aramTop,
                 (((charaGmaSizes[index] - 1) >> 2) + 1) << 2,
-                lbl_800893DC);
-            while (lbl_802F2070 != 0)
+                aram_transfer_callback);
+            while (transferInProgress != 0)
                 ;
             file_close(&file);
 
@@ -348,7 +263,7 @@ void func_800893E8(void)
             lzs_decompress(compressed, work);
             DCStoreRange(work, lbl_802B47B0[i]);
             OSFreeToHeap(memHeap5, compressed);
-            lbl_802F2070 = 1;
+            transferInProgress = 1;
             ARQPostRequest(
                 &arqReq,
                 0,
@@ -357,8 +272,8 @@ void func_800893E8(void)
                 (uintptr_t)work,
                 aramTop,
                 (((lbl_802B47B0[i] - 1) >> 2) + 1) << 2,
-                lbl_800893DC);
-            while (lbl_802F2070 != 0)
+                aram_transfer_callback);
+            while (transferInProgress != 0)
                 ;
             file_close(&file);
             if (gamePauseStatus & (1 << 2))
@@ -381,17 +296,16 @@ void func_800893E8(void)
     OSSetCurrentHeap(oldHeap);
 }
 
-#pragma dont_inline on
-void func_80089A04(struct Struct80089A04_1 *a, int b, struct Struct80089A04 *c)
+void func_80089A04(struct ApeGfxFileInfo *a, int b, struct Struct80089A04 *c)
 {
     int i;
-    struct Struct80089A04_1 *dunno = &a[(b >> 1) & 1];
+    struct ApeGfxFileInfo *dunno = &a[(b >> 1) & 1];
 
-    for (i = 0; i < dunno->unk14[b & 1]; i++)
+    for (i = 0; i < dunno->partCounts[b & 1]; i++)
     {
-        struct Struct80089A04_1_child *temp = dunno->unk4[b & 1];
+        struct ApeFacePart *facePart = dunno->facePartInfo[b & 1];
 
-        if (strcmp(temp->unk14[i].unk0, c->unk4[b]) == 0)
+        if (strcmp(facePart->unk14[i].unk0, c->unk4[b]) == 0)
         {
             c->unk30[b] = i;
             return;
@@ -400,21 +314,20 @@ void func_80089A04(struct Struct80089A04_1 *a, int b, struct Struct80089A04 *c)
     printf("obj: %s is nothing.\n", c->unk4[b]);
     c->unk30[b] = -1;
 }
-#pragma dont_inline reset
 
-struct Struct8003699C_child *func_80089AB8(struct Struct800341BC_2 *a)
+struct Struct8003699C_child *g_create_joints_probably(struct Struct80034B50_child *a)
 {
     struct Struct8003699C_child *r30;
 
     if (gameSubmode == SMD_MINI_BILLIARDS_INIT || gameSubmode == SMD_MINI_BILLIARDS_MAIN)
     {
         lbl_802F2074 = 2;
-        r30 = OSAllocFromHeap(memHeap3, 0xC200);
+        r30 = OSAllocFromHeap(memHeap3, sizeof(*r30));
     }
     else
     {
         lbl_802F2074 = 0;
-        r30 = OSAllocFromHeap(memHeap1, 0xC200);
+        r30 = OSAllocFromHeap(memHeap1, sizeof(*r30));
     }
     if (r30 == NULL)
         OSPanic("mot_ape.c", 396, "rob init Heap Over.\n");
@@ -429,7 +342,7 @@ struct Struct8003699C_child *func_80089AB8(struct Struct800341BC_2 *a)
     r30->unk2E = 0x4000;
     r30->unk2A = 0;
     r30->unk28 = 0;
-    func_800341BC(&r30->unk81A8, a, r30->unk36);
+    func_800341BC(r30->unk81A8, a, r30->unk36);
     func_80035FDC(r30);
     func_800355B8(r30);
     func_800355FC(r30);
@@ -488,84 +401,72 @@ struct Struct80089CBC *func_80089CBC(void *unused, int b, int c)
     return NULL;
 }
 
-extern s32 lbl_802F206C;
-
-struct Struct801C63B0
-{
-    u8 filler0[0x30];
-    s32 unk30[4];
-};  // size = 0x40
-
-extern struct Struct801C63B0 *lbl_801C63B0[];
-
-static inline void func_80089CF4_inline(struct Ape *a)
+static inline void func_80089CF4_inline(struct Ape *ape)
 {
     int i;
 
-    for (i = 0; i < a->unk94; i++)
+    for (i = 0; i < ape->unk94; i++)
     {
-        struct Struct801C63B0 *r24 = &lbl_801C63B0[a->unk10][i];
+        struct Struct80089A04 *r24 = &lbl_801C63B0[ape->charaId][i];
 
-        if (a->unk98[i].unkC == NULL)
-            a->unk98[i].unkC = func_80089CBC(a->unk98, i, a->unk1C->unk1C);
-        a->unk98[i].unk14[0] = r24->unk30[0];
-        a->unk98[i].unk14[1] = r24->unk30[1];
-        a->unk98[i].unk14[2] = r24->unk30[2];
+        if (ape->unk98[i].unkC == NULL)
+            ape->unk98[i].unkC = func_80089CBC(ape->unk98, i, ape->unk1C->unk1C);
+        ape->unk98[i].unk14[0] = r24->unk30[0];
+        ape->unk98[i].unk14[1] = r24->unk30[1];
+        ape->unk98[i].unk14[2] = r24->unk30[2];
     }
 }
 
-void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d);
-
-void func_80089CF4(struct Ape *a, int r29)
+void func_80089CF4(struct Ape *ape, int r29)
 {
-    struct Struct8003699C_child *r6 = a->unk0;
+    struct Struct8003699C_child *r6 = ape->unk0;
     float f31 = (float)r6->unk38 / (float)r6->unk3A;
     struct Struct8003699C_child *r28;
     struct Struct8003699C_child *r27;
     u32 i;
     u8 dummy[0x10];
 
-    if (a->unk1C->unkC & (1 << 2))
-        a->unk14 |= 0x200;
+    if (ape->unk1C->unkC & (1 << 2))
+        ape->unk14 |= (1 << 9);
     else
-        a->unk14 &= ~(1 << 9);
-    if (a->unk20 != NULL)
+        ape->unk14 &= ~(1 << 9);
+    if (ape->unk20 != NULL)
     {
-        a->unk1C = a->unk20;
-        a->unk20 = NULL;
-        r29 = a->unk1C->unk10;
+        ape->unk1C = ape->unk20;
+        ape->unk20 = NULL;
+        r29 = ape->unk1C->unk10;
     }
-    if (a->unk14 & (1 << 9))
+    if (ape->unk14 & (1 << 9))
     {
         // swap
-        struct Struct8003699C_child *temp = a->unk0;
-        a->unk0 = a->unk4;
-        a->unk4 = temp;
+        struct Struct8003699C_child *temp = ape->unk0;
+        ape->unk0 = ape->unk4;
+        ape->unk4 = temp;
     }
     else
     {
-        func_80089BD4((void *)&a->unk0->unk81A8);
+        func_80089BD4(ape->unk0->unk81A8);
     }
-    r27 = a->unk0;
-    r28 = a->unk4;
-    a->unk8 = 0.0f;
-    a->unkC2 = 0;
-    a->unk14 &= ~((1 << 12)|(1 << 13));
+    r27 = ape->unk0;
+    r28 = ape->unk4;
+    ape->unk8 = 0.0f;
+    ape->unkC2 = 0;
+    ape->unk14 &= ~((1 << 12)|(1 << 13));
     if (lbl_802F206C != 0)
-        a->unkC = a->unk1C->unk14;
+        ape->unkC = ape->unk1C->unk14;
     else
-        a->unkC = 0.0f;
+        ape->unkC = 0.0f;
     r27->unk32 = r29;
     r27->unk38 = 1;
-    a->unk24 = a->unk28;
-    a->unk9C = a->unkB0;
-    a->unk18 = a->unkC + 1.0f;
+    ape->unk24 = ape->unk28;
+    ape->unk9C = ape->unkB0;
+    ape->unk18 = ape->unkC + 1.0f;
     r27->unk40 = 0.0f;
     func_80035FDC(r27);
     if (r27->unk32 == 0)
         r27->unk32 = 1;
     func_800355B8(r27);
-    if (a->unkC > 9.9999999392252903e-09f && (a->unk14 & (1 << 9)))
+    if (ape->unkC > 9.9999999392252903e-09f && (ape->unk14 & (1 << 9)))
     {
         float f4 = ((float)r28->unk3A / r28->unk3C);
 
@@ -574,34 +475,34 @@ void func_80089CF4(struct Ape *a, int r29)
         if (f4 < 1.0f)
         {
             r28->unk3C *= f4;
-            r27->unk3C = a->unk1C->unk18;
+            r27->unk3C = ape->unk1C->unk18;
         }
         else
-            r27->unk3C = a->unk1C->unk18 / f4;
+            r27->unk3C = ape->unk1C->unk18 / f4;
     }
     else
-        r27->unk3C = a->unk1C->unk18;
-    if (a->unk1C->unkC & (1 << 3))
+        r27->unk3C = ape->unk1C->unk18;
+    if (ape->unk1C->unkC & (1 << 3))
     {
         r27->unk38 = f31 * r27->unk3A;
         if (r27->unk38 >= r27->unk3A)
             r27->unk38 = 1;
     }
-    for (i = 0; i < a->unk94; i++)
+    for (i = 0; i < ape->unk94; i++)
     {
-        struct Struct802B39C0_B0_child *var = &a->unk98[i];
+        struct Struct802B39C0_B0_child *var = &ape->unk98[i];
 
         var->unkC = 0;
         var->unk20 = 0;
     }
-    func_80089CF4_inline(a);
-    for (i = 0; i < a->unk94; i++)
+    func_80089CF4_inline(ape);
+    for (i = 0; i < ape->unk94; i++)
     {
-        struct Struct802B39C0_B0_child *r28 = &a->unk98[i];
+        struct Struct802B39C0_B0_child *r28 = &ape->unk98[i];
 
         if (r28->unkC != NULL)
             r28->unk10 = 0.0f;
-        func_8008A55C(a->unk10, r28, r27->unk3A, 1);
+        func_8008A55C(ape->charaId, r28, r27->unk3A, 1);
         if (r28->unkC == NULL)
         {
             if (r28->unk4 > 0.0f)
@@ -620,20 +521,20 @@ int lbl_8008A10C(void)
     return 0;
 }
 
-void func_8008A114(int a) {}
+void ape_dummy_1(struct Ape *ape) {}
 
-void func_8008A118(int a) {}
+void ape_dummy_2(struct Ape *ape) {}
 
-void func_8008A11C(int a) {}
+void ape_dummy_3(struct Ape *ape) {}
 
-void func_8008A120(int a) {}
+void ape_dummy_4(struct Ape *ape) {}
 
 void func_8008A124(struct Struct80034F5C_1 *r29, float b)
 {
     int i;
     struct Struct80034F5C_1 *a = r29;
 
-    for (i = 0; i < 0x1D; i++)
+    for (i = 0; i < 29; i++)
     {
         Vec sp20;
         Quaternion sp10;
@@ -682,7 +583,7 @@ void func_8008A2C4(struct Struct80034F5C_1 *r29)
     int i;
     struct Struct80034F5C_1 *a = r29;
 
-    for (i = 0; i < 0x1D; i++)
+    for (i = 0; i < 29; i++)
     {
         Vec spC;
 
@@ -721,7 +622,7 @@ void func_8008A3A4(struct Struct80034F5C_1 *r28, struct Struct80034F5C_1 *r29, f
     int i;
     struct Struct80034F5C_1 *a = r28;
 
-    for (i = 0; i < 0x1D; i++)
+    for (i = 0; i < 29; i++)
     {
         Vec sp30;
         Quaternion sp20;
@@ -846,23 +747,23 @@ void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d)
     }
 }
 
-void func_8008A7F0_inline(struct Ape *a, struct Struct8003699C_child *b)
+void func_8008A7F0_inline(struct Ape *ape, struct Struct8003699C_child *b)
 {
     struct Struct802B39C0_B0_child *r28;
     int i;
-    r28 = a->unk98;
+    r28 = ape->unk98;
 
-    for (i = 0; i < a->unk94; i++)
-        func_8008A55C(a->unk10, r28++, b->unk3A, b->unk38);
+    for (i = 0; i < ape->unk94; i++)
+        func_8008A55C(ape->charaId, r28++, b->unk3A, b->unk38);
 }
 
-void func_8008A7F0(struct Ape *a, struct Struct8003699C_child *b)
+void func_8008A7F0(struct Ape *ape, struct Struct8003699C_child *b)
 {
     u8 dummy[16];
 
     if (b->unk40 >= 1.0f)
     {
-        if (!(a->unk14 & (1 << 13)))
+        if (!(ape->unk14 & (1 << 13)))
         {
             do
             {
@@ -872,39 +773,39 @@ void func_8008A7F0(struct Ape *a, struct Struct8003699C_child *b)
         }
         else
             b->unk40 = 0.0f;
-        func_8008A7F0_inline(a, b);
+        func_8008A7F0_inline(ape, b);
     }
     if (b->unk38 >= b->unk3A)
     {
-        if (!(a->unk14 & (1 << 12)))
+        if (!(ape->unk14 & (1 << 12)))
         {
-            if (a->unk1C->unkC & (1 << 4))
-                b->unk38 = a->unk1C->unk8;
+            if (ape->unk1C->unkC & (1 << 4))
+                b->unk38 = ape->unk1C->unk8;
             else
                 b->unk38 = 1;
-            a->unkC2++;
+            ape->unkC2++;
             if (b->unk34 != 0xFFFF)
             {
                 b->unk32 = b->unk34;
                 b->unk34 = 0xFFFF;
-                func_80089CF4(a, b->unk32);
+                func_80089CF4(ape, b->unk32);
             }
             else
             {
                 func_80035FDC(b);
                 func_800355B8(b);
-                func_80089CF4_inline(a);
-                func_8008A7F0_inline(a, b);
+                func_80089CF4_inline(ape);
+                func_8008A7F0_inline(ape, b);
             }
         }
         else
         {
-            a->unk14 |= 0x2000;
+            ape->unk14 |= 0x2000;
             if (b->unk34 != 0xFFFF)
             {
                 b->unk32 = b->unk34;
                 b->unk34 = 0xFFFF;
-                func_80089CF4(a, b->unk32);
+                func_80089CF4(ape, b->unk32);
             }
         }
     }
@@ -965,7 +866,7 @@ void g_free_character_graphics(int chara, int lod)
     OSSetCurrentHeap(oldHeap);
 }
 
-void *func_8008ABB4_inline(struct GMAModelHeader *model)
+void *g_find_some_mesh_with_red(struct GMAModelHeader *model)
 {
     struct GMAMeshHeader *mesh;
     int i;
@@ -975,7 +876,7 @@ void *func_8008ABB4_inline(struct GMAModelHeader *model)
     {
         if (mesh->unk4.r == 0xFF)
             return mesh;
-        mesh = func_8008AE2C(mesh);
+        mesh = next_mesh(mesh);
     }
     return NULL;
 }
@@ -991,6 +892,7 @@ void g_load_character_graphics(int chara, int lod)
 
     if (lbl_802F209C[index] != 0)
     {
+        // already loaded
         lbl_802F209C[index]++;
         return;
     }
@@ -1021,8 +923,8 @@ void g_load_character_graphics(int chara, int lod)
         lbl_802B47E0[chara] = create_tpl_tex_objs(lbl_802B47D0[chara]);
     }
 
-    charaTPLs[index] = load_tpl_from_aram(charaTplAramSizes[index], charaTplSizes[index]);
-    charaGMAs[index] = load_gma_from_aram(charaGmaAramSizes[index], charaGmaSizes[index], charaTPLs[index]);
+    charaTPLs[index] = load_tpl_from_aram(charaTplAramAddrs[index], charaTplSizes[index]);
+    charaGMAs[index] = load_gma_from_aram(charaGmaAramAddrs[index], charaGmaSizes[index], charaTPLs[index]);
     lbl_802F209C[index]++;
     OSSetCurrentHeap(oldHeap);
     if (chara == 1)
@@ -1032,16 +934,16 @@ void g_load_character_graphics(int chara, int lod)
 
         for (i = 0; i < 2; i++)
         {
-            model = charaGMAs[index]->modelEntries[lbl_801C7824[index].unk1C[i]].modelOffset;
-            lbl_802B47F0[lod * 2 + i] = func_8008ABB4_inline(model);
+            model = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[i]].modelOffset;
+            lbl_802B47F0[lod * 2 + i] = g_find_some_mesh_with_red(model);
         }
-        lbl_802B4800[index + 0] = 0;
-        lbl_802B4800[index + 1] = 0;
+        lbl_802B4800[index + 0] = NULL;
+        lbl_802B4800[index + 1] = NULL;
     }
     else
     {
-        struct GMAModelHeader *model1 = charaGMAs[index]->modelEntries[lbl_801C7824[index].unk1C[0]].modelOffset;
-        struct GMAModelHeader *model2 = charaGMAs[index]->modelEntries[lbl_801C7824[index].unk1C[1]].modelOffset;
+        struct GMAModelHeader *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].modelOffset;
+        struct GMAModelHeader *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].modelOffset;
 
         func_8008CBD0(chara, lod, model1, model2);
     }
@@ -1054,7 +956,7 @@ struct Struct8008AE2C
     u32 unkC;
 };
 
-struct GMAMeshHeader *func_8008AE2C(struct GMAMeshHeader *mesh)
+struct GMAMeshHeader *next_mesh(struct GMAMeshHeader *mesh)
 {
     int i;
     u8 *ret = (u8 *)mesh + 0x60;
@@ -1075,29 +977,22 @@ struct GMAMeshHeader *func_8008AE2C(struct GMAMeshHeader *mesh)
     return (struct GMAMeshHeader *)ret;
 }
 
-extern struct NaomiObj *apeFaceObj;
-extern struct TPL *apeFaceTpl;
-extern u32 lbl_802F2068;
-extern s32 lbl_802F207C;
-extern float lbl_802F2078;
-extern void *lbl_802F2088;
-
 void mot_ape_init(void)
 {
     int i;
 
-    lbl_802F2068 = 0;
+    nextApeIndex = 0;
     lbl_802F207C = 1;
     for (i = 0; i < 16; i++)
     {
-        lbl_802B46B0[i] = &lbl_802B39C0_B0[i];
-        lbl_802B39C0_B0[i].unk70 = i;
+        apeStructPtrs[i] = &apeStructs[i];
+        apeStructs[i].unk70 = i;
     }
     for (i = 0; i < 32; i++)
         lbl_802B39C0_30[i] = 0;
     lbl_802F206C = 1;
     lbl_802F2078 = 1.0f;
-    func_800893E8();
+    load_character_resources();
     lbl_802F2088 = g_avdisp_alloc_matrix_lists(30);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
@@ -1139,7 +1034,7 @@ void func_8008B0AC(void)
     }
 }
 
-void func_8008B2D4(struct Ape *ape)
+void g_ape_free(struct Ape *ape)
 {
     func_8008D29C(ape->unk5C);
     if (lbl_802F2074 == 2)
@@ -1158,64 +1053,50 @@ void func_8008B2D4(struct Ape *ape)
         OSFreeToHeap(memHeap1, ape->unk4);
     }
     OSFreeToHeap(memHeap1, ape->unk98);
-    lbl_802B46B0[--lbl_802F2068] = ape;
-    g_free_character_graphics(ape->unk10, (ape->unk90 >= 2));
+    apeStructPtrs[--nextApeIndex] = ape;
+    g_free_character_graphics(ape->charaId, (ape->unk90 >= 2));
 }
 
-extern s32 lbl_801C63C0[];
+u8 lbl_802F12D8[8] = {0, 0, 2, 4, 6, 0, 0, 0};
+u8 lbl_802F12E0[8] = {1, 1, 3, 5, 7, 0, 0, 0};
 
-u8 lbl_802F12D8[8] = {0x00, 0x00, 0x02, 0x04, 0x06, 0x00, 0x00, 0x00};
-u8 lbl_802F12E0[8] = {0x01, 0x01, 0x03, 0x05, 0x07, 0x00, 0x00, 0x00};
-
-void func_8008C924();
-void func_80035F18();
-
-#ifdef NONMATCHING
-
-struct Blah
+void g_make_ape_inline(struct Ape *ape)
 {
-    u8 filler0[0x84];
-    u8 filler84[0x4114-0x84];
-    u8 filler4114[1];
-};
+    int i;
+    int j;
+    struct Struct80089A04 *r19;
+    int index = ape->charaId * 2;
 
-void test(struct Blah *r24_, u8 r21)
-{
-    //r24_ = (u8 *)r26->unk0;
-    void *r3 = r24_->filler4114;
-    func_80035F18(r3, r24_->filler0, 1, lbl_802F12D8[r21]);
-    r3 = r24_->filler84;
-    func_80035F18(r3, r24_->filler0, 2, lbl_802F12E0[r21]);
-}
-
-void test2(struct Ape *r26, u32 index)
-{
-    int i;  // r28
-    struct Struct801C7824 *r27_;
-
-    index *= 2;
-    r27_ = &lbl_801C7824[index];
-    // i = r28
-    for (i = 0; i < lbl_801C63C0[r26->unk10]; i++)  // lbl_8008B6B8
+    for (i = 0; i < lbl_801C63C0[ape->charaId]; i++)
     {
-        u8 r24;
-        int j;  // r23
-        //r0 = lbl_801C63B0[r26->unk10];
-        struct Struct801C63B0 *r20 = &lbl_801C63B0[r26->unk10][i];
-
+        r19 = &lbl_801C63B0[ape->charaId][i];
         for (j = 0; j < 4; j++)
         {
-            func_80089A04((void *)r27_, j, (void *)r20);
-            r26->unk98[i].unk14[j] = r20->unk30[j];
+            func_80089A04(&apeGfxFileInfo[index], j, r19);
+            ape->unk98[i].unk14[j] = r19->unk30[j];
         }
     }
 }
 
-int test3(char *a)
+#ifdef NONMATCHING
+
+// https://decomp.me/scratch/SQSRv
+
+void test(struct Struct8003699C_child *r24_, int r21)
 {
-    int r23;
-    int i;
-    for (i = 0, r23 = 0; (u8)i < motSkeleton->unk4; i++)
+    //r24_ = (u8 *)r26->unk0;
+    int foo = r21;
+    void *r3 = r24_->filler4114;
+    func_80035F18(r3, r24_, 1, lbl_802F12D8[foo]);
+    r3 = r24_->filler84;
+    func_80035F18(r3, r24_, 2, lbl_802F12E0[foo]);
+}
+
+u8 test3(char *a)
+{
+    u8 i;
+    u8 r23 = 0;
+    for (i = 0; i < motSkeleton->unk4; i++)
     {
         if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
         {
@@ -1226,61 +1107,56 @@ int test3(char *a)
     return r23;
 }
 
-void* test5(char *a)
+void test6(char *a, struct Struct80034B50_child **r27)
 {
-    struct Struct80034B50_child *r27 = &motSkeleton->unk0[0];
     int i;
+    *r27 = &motSkeleton->unk0[0];
     for (i = 0; i < motSkeleton->unk4; i++)
     {
         if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
         {
-            r27 = &motSkeleton->unk0[i];
+            *r27 = &motSkeleton->unk0[i];
             break;
         }
     }
-    return r27;
+    //return r27;
 }
 
-struct Ape *func_8008B3B8(char *a, void *unused)
+struct Ape *func_8008B3B8(char *a, char *unused)
 {
-    struct Struct8003699C_child *r31;
+    struct Ape *r26;
     struct Struct8003699C_child *r24;
-    //struct Struct801C7824 *r27_;
+    struct Struct8003699C_child *r31;
+    //struct ApeGfxFileInfo *r27_;
     struct Struct80034B50_child *r27;
-    struct Ape *r26 = lbl_802B46B0[lbl_802F2068];
-    int i;  // r24
+    //int i;  // r24
+    int i;
     //u8 *r24_;
+    //struct Struct8003699C_child *r24_;
     //u8 *r23_;
-    int r23;
-    int r21;
+    u8 r23;
+    //u8 r21;
     //#define r20 i
     int r20;
+    //void *ptr;
+
+    r26 = apeStructPtrs[nextApeIndex];
     r20 = r26->unk70;
 
-    memset(r26, 0, sizeof (*r26));
+    memset(r26, 0, sizeof(*r26));
     r26->unk70 = r20;
 
+    test6(a, &r27);
 
-    r27 = &motSkeleton->unk0[0];
-    for (i = 0; i < motSkeleton->unk4; i++)
-    {
-        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
-        {
-            r27 = &motSkeleton->unk0[i];
-            break;
-        }
-    }
-    //r27 = test5(a);
-
-    r24 = func_80089AB8((void *)r27);
-    r31 = func_80089AB8((void *)r27);
+    r24 = g_create_joints_probably(r27);
+    r31 = g_create_joints_probably(r27);
     r26->unk94 = 5;
     r26->unk98 = OSAllocFromHeap(memHeap1, r26->unk94 * 0x24);
     if (r26->unk98 == NULL)
         OSPanic("mot_ape.c", 0x5D6, "cannot OSAlloc\n");
     //lbl_8008B4BC
     // i = r8
-
+//#define i i2
     for (i = 0; i < r26->unk94; i++)
     {
         struct Struct802B39C0_B0_child *var = &r26->unk98[i];
@@ -1292,14 +1168,14 @@ struct Ape *func_8008B3B8(char *a, void *unused)
         var->unk10 = 0.0f;
         var->unk20 = 0;
     }
-
+#undef i
     //test4(r26);
-    r26->unk0 = (void *)r24;
-    r26->unk4 = (void *)r31;
-    r26->unk1C = (void *)lbl_801C7A70;
+    r26->unk0 = r24;
+    r26->unk4 = r31;
+    r26->unk1C = &lbl_801C7A70;
     r26->unk20 = 0;
     r26->unk8 = 0.0f;
-    r26->unk10 = 0;
+    r26->charaId = 0;
     r26->unkC = 0.0f;
     r26->unk14 = 0;
     r26->unk18 = 0;
@@ -1318,63 +1194,45 @@ struct Ape *func_8008B3B8(char *a, void *unused)
     r26->unk60 = (Quaternion){ 0, 0, 0, 0 };  //0x70
     r26->colorId = 0;
     r26->unk90 = lbl_802F207C;
-    //test5(r26);
-/*
-    r27_ = &lbl_801C7824[r26->unk10 << 1];
-    // i = r28
-    for (i = 0; i < lbl_801C63C0[r26->unk10]; i++)  // lbl_8008B6B8
-    {
-        u8 r24;
-        int j;  // r23
-        //r0 = lbl_801C63B0[r26->unk10];
-        struct Struct80089A04 *r20 = (void *)&lbl_801C63B0[r26->unk10][i];
 
-        for (j = 0; j < 4; j++)
-        {
-            func_80089A04((void *)r27_, j, r20);
-            r26->unk98[i].unk14[j] = r20->unk30[j];
-        }
-    }
-*/
-    test2(r26, r26->unk10);
+    g_make_ape_inline(r26);
 
-/*
-    // i = r24
-    r23 = 0;
-    for (i = 0; (u8)i < motSkeleton->unk4; i++)
-    {
-        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
-        {
-            r23 = i;
-            break;
-        }
-    }
-    //lbl_8008B780
-    */
     r23 = test3(a);
-    r21 = r23;
-    //#define r21 (u8)r23
-
-    /*
-    r24_ = (u8 *)r26->unk0;
-    func_80035F18(r24_ + 0x4114, r24_, 1, lbl_802F12D8[r21]);
-    func_80035F18(r24_ + 0x84,   r24_, 2, lbl_802F12E0[r21]);
-    r23_ = (u8 *)r26->unk4;
-    r21 = r23;
-    func_80035F18(r23_ + 0x4114, r23_, 1, lbl_802F12D8[r21]);
-    func_80035F18(r23_ + 0x84,   r23_, 2, lbl_802F12E0[r21]);
-    */
-    test((void *)r26->unk0, r21);
-    r21 = r23;
-    test((void *)r26->unk4, r21);
+    test(r26->unk0, r23);
+    test(r26->unk4, r23);
 
     r26->unkB8 = lbl_8008A10C;
     r26->unkBC = lbl_8008A108;
-    r26->unk5C = func_8008D1DC(func_8008C924, (void *)r26, 7);
-    lbl_802F2068++;
-    return (void *)r26;
+    r26->unk5C = func_8008D1DC(func_8008C924, r26, 7);
+    nextApeIndex++;
+    return r26;
 }
 #else
+#pragma force_active on
+const u32 lbl_80171980[] =
+{
+    0x3F800000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0x3F800000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0x3F800000,
+};
+#pragma force_active reset
 extern u8 lbl_80171950[];
 const float lbl_802F56D0 = -1.0f;
 asm struct Ape *func_8008B3B8(char *a, void *unused)
@@ -1384,24 +1242,6 @@ asm struct Ape *func_8008B3B8(char *a, void *unused)
 }
 #pragma peephole on
 #endif
-
-void g_make_ape_inline(struct Ape *ape)
-{
-    int i;
-    int j;
-    struct Struct801C63B0 *r19;
-    int index = ape->unk10 * 2;
-
-    for (i = 0; i < lbl_801C63C0[ape->unk10]; i++)
-    {
-        r19 = &lbl_801C63B0[ape->unk10][i];
-        for (j = 0; j < 4; j++)
-        {
-            func_80089A04((void *)&lbl_801C7824[index], j, (void *)r19);
-            ape->unk98[i].unk14[j] = r19->unk30[j];
-        }
-    }
-}
 
 struct Dunno
 {
@@ -1416,13 +1256,16 @@ struct MotInfo2
     u8 filler3C[0xB4-0x3C];
 };
 
+float force_lbl_802F56D4() { return 60.0f; }
+const double lbl_802F56D8 = 0.0000000099999999392252903;
+
 struct Ape *g_make_ape(int charaId)
 {
     struct Ape *ape;
     struct Struct80034F5C_1 *r5;
 
     ape = func_8008B3B8(motInfo[charaId].unk0, motInfo[charaId].unk18);
-    ape->unk10 = charaId & 3;
+    ape->charaId = charaId & 3;
     ape->unk20 = &((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180;
     ape->unk28 = 1;
 
@@ -1433,14 +1276,14 @@ struct Ape *g_make_ape(int charaId)
     func_80089CF4(ape, ((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180.unk10);
     func_800355FC(ape->unk0);
 
-    r5 = &ape->unk0->unk81A8;
+    r5 = &ape->unk0->unk81A8[0];
     r5->unk1A4.x = r5->unk208[0][3];
     r5->unk1A4.y = r5->unk208[1][3];
     r5->unk1A4.z = r5->unk208[2][3];
 
-    ape->unk4->unk81A8.unk208[0][3] = r5->unk1A4.x;
-    ape->unk4->unk81A8.unk208[1][3] = r5->unk1A4.y;
-    ape->unk4->unk81A8.unk208[2][3] = r5->unk1A4.z;
+    ape->unk4->unk81A8[0].unk208[0][3] = r5->unk1A4.x;
+    ape->unk4->unk81A8[0].unk208[1][3] = r5->unk1A4.y;
+    ape->unk4->unk81A8[0].unk208[2][3] = r5->unk1A4.z;
 
     return ape;
 }
@@ -1465,7 +1308,7 @@ void func_8008BA24(int a)
 
 void func_8008BA2C(struct Ape *ape, int b, int c)
 {
-    struct Ape_child *r6 = ((struct Ape_child *)(((struct MotInfo *)&motInfo[ape->unk10])->unk30[b]));
+    struct Ape_child *r6 = ((struct Ape_child *)(((struct MotInfo *)&motInfo[ape->charaId])->unk30[b]));
 
     ape->unk20 = &r6[c];
     ape->unk28 = b;
@@ -1496,9 +1339,6 @@ void func_8008BAA8(int *a, int *b)
 }
 #pragma force_active reset
 
-float force_lbl_802F56D4() { return 60.0f; }
-const double lbl_802F56D8 = 9.9999999392252903e-09;
-
 void func_8008BBD4(struct Ape *ape, int b, int c, int d, float e)
 {
     struct MotInfo *r30;
@@ -1512,7 +1352,7 @@ void func_8008BBD4(struct Ape *ape, int b, int c, int d, float e)
     r10 = 0xFFFFFFFF;
     r9 = 0;
     r7 = ape->unk0;
-    r30 = &motInfo[ape->unk10];
+    r30 = &motInfo[ape->charaId];
     r8 = (void *)((struct MotInfo *)r30)->unk30[b];
     switch (b)
     {
@@ -1617,14 +1457,14 @@ void func_8008BF00(struct Ape *ape, int b)
     if (unk >= 2 && b <= 1)
     {
         lbl_802F2090 = 0;
-        g_free_character_graphics(ape->unk10, 1);
-        g_load_character_graphics(ape->unk10, 0);
+        g_free_character_graphics(ape->charaId, 1);
+        g_load_character_graphics(ape->charaId, 0);
     }
     else if (b >= 2 && unk <= 1)
     {
         lbl_802F2090 = 0;
-        g_free_character_graphics(ape->unk10, 0);
-        g_load_character_graphics(ape->unk10, 1);
+        g_free_character_graphics(ape->charaId, 0);
+        g_load_character_graphics(ape->charaId, 1);
     }
     ape->unk90 = b;
 }
@@ -1642,7 +1482,7 @@ void func_8008BFD8(void) {}
 void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 {
     struct Struct80034F5C_1 *r31;
-    struct Struct80034F5C_1 *r30 = &ape->unk0->unk81A8;
+    struct Struct80034F5C_1 *r30 = ape->unk0->unk81A8;
     Mtx sp10;
 
     if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
@@ -1661,7 +1501,7 @@ void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 
 void func_8008C090(struct Ape *ape, Vec *b)
 {
-    struct Struct80034F5C_1 *r27 = &ape->unk0->unk81A8;
+    struct Struct80034F5C_1 *r27 = ape->unk0->unk81A8;
     Vec sp2C;
     int r3;
     int r27_;
@@ -1672,14 +1512,14 @@ void func_8008C090(struct Ape *ape, Vec *b)
 
     if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
         return;
-    if (!(ape->unk1C->unkC & 1) && (ape->unk14 & (1<<(31-0x19))))
+    if (!(ape->unk1C->unkC & 1) && (ape->unk14 & (1 << 6)))
         return;
 
     r27++;
     mathutil_mtxA_from_quat(&ape->unk60);
     mathutil_mtxA_to_mtx(lbl_802B39C0);
     mathutil_mtxA_mult_right(r27->unk208);
-    if (ape->unk10 == 2 && (ape->unk14 & (1<<(31-0x9))))
+    if (ape->charaId == 2 && (ape->unk14 & (1 << 22)))
         mathutil_mtxA_rotate_z(-5461);
     else
         mathutil_mtxA_rotate_z(-16384);
@@ -1692,7 +1532,7 @@ void func_8008C090(struct Ape *ape, Vec *b)
     r30 = r27 + 4;
     r3 = sp2C.x < -0.8f;
     if (!r27_)
-        ape->unk14 &= ~(1<<(31-0x19));
+        ape->unk14 &= ~(1 << 6);
     if (r3 || r27_)
     {
         mathutil_mtxA_push();
@@ -1709,7 +1549,7 @@ void func_8008C090(struct Ape *ape, Vec *b)
     else if (sp2C.y < -0.3f)
         sp2C.y = -0.3f;
     f1 = mathutil_vec_dot_normalized(&sp2C, &ape->unkA0);
-    if (f1 > 0.996f || (ape->unk14 & (1<<(31-0x19))))
+    if (f1 > 0.996f || (ape->unk14 & (1 << 6)))
     {
         ape->unkA0 = sp2C;
         if (r27_)
@@ -1729,7 +1569,7 @@ void func_8008C090(struct Ape *ape, Vec *b)
         mathutil_vec_cross_prod(&ape->unkA0, &sp2C, &sp2C);
         mathutil_vec_normalize_len(&sp2C);
         ape->unkAC = 0.0f;
-        mathutil_quat_from_axis_angle(&sp10, &sp2C, f31 * 182.04444885253906f);
+        mathutil_quat_from_axis_angle(&sp10, &sp2C, DEGREES_TO_S16(f31));
         mathutil_quat_mult((Quaternion *)&ape->unkA0, &sp10, (Quaternion *)&ape->unkA0);
     }
     mathutil_vec_normalize_len(&ape->unkA0);
@@ -1776,7 +1616,7 @@ void func_8008C4A8(struct Ape *ape)
         return;
 
     ape->unk18--;
-    ape->unk14 &= ~(1<<(31-0xF));
+    ape->unk14 &= ~(1 << 16);
     func_80085DB0(ape);
     r31->unk40 += r31->unk3C * lbl_802F2078;
     func_8008A7F0(ape, r31);
@@ -1784,7 +1624,7 @@ void func_8008C4A8(struct Ape *ape)
     {
         r29 = ape->unk4;
         r31 = ape->unk0;
-        if (ape->unk14 & (1<<(31-0x16)))
+        if (ape->unk14 & (1 << 9))
         {
             r29->unk40 += r29->unk3C;
             if (r29->unk40 >= 1.0f)
@@ -1794,19 +1634,19 @@ void func_8008C4A8(struct Ape *ape)
             }
             if (r29->unk38 >= r29->unk3A)
             {
-                if (ape->unk1C->unkC & (1<<(31-0x1B)))
+                if (ape->unk1C->unkC & (1 << 4))
                     r29->unk38 = ape->unk1C->unk8;
                 else
                     r29->unk38 = 1;
                 func_800355B8(r29);
             }
             func_800355FC(r29);
-            func_8008A2C4(&r31->unk81A8);
-            func_8008A2C4(&r29->unk81A8);
-            func_8008A3A4(&r31->unk81A8, &r29->unk81A8, ape->unk8 / ape->unkC);
+            func_8008A2C4(r31->unk81A8);
+            func_8008A2C4(r29->unk81A8);
+            func_8008A3A4(r31->unk81A8, r29->unk81A8, ape->unk8 / ape->unkC);
         }
         else
-            func_8008A124(&r31->unk81A8, ape->unk8 / ape->unkC);
+            func_8008A124(r31->unk81A8, ape->unk8 / ape->unkC);
         ape->unk8 += 1.0f;
         if (ape->unk8 > ape->unkC)
         {
@@ -1817,33 +1657,246 @@ void func_8008C4A8(struct Ape *ape)
     func_80036064(r31);
 }
 
-/*
-const float lbl_802F56A8 = 1f;
-const float lbl_802F56AC = 0f;
-const float lbl_802F56B0 = 9.9999999392252903e-09f;
-const float lbl_802F56B4 = -2f;
-const float lbl_802F56B8 = 2f;
-const double lbl_802F56C0 = 4503599627370496;
-const double lbl_802F56C8 = 4503601774854144;
-const float lbl_802F56D0 = -1f;
-const float lbl_802F56D4 = 60f;
-const double lbl_802F56D8 = 9.9999999392252903e-09;
-const float lbl_802F56E0 = 216f;
-const float lbl_802F56E4 = -0.80000001192092896f;
-const float lbl_802F56E8 = 0.090000003576278687f;
-const float lbl_802F56EC = 0.40000000596046448f;
-const float lbl_802F56F0 = -0.30000001192092896f;
-const float lbl_802F56F4 = 0.99599999189376831f;
-const float lbl_802F56F8 = 5f;
-const float lbl_802F56FC = 8f;
-const float lbl_802F5700 = 0.80000001192092896f;
-const float lbl_802F5704 = 6f;
-const float lbl_802F5708 = 182.04444885253906f;
-const float lbl_802F570C = 1.1920928955078125e-07f;
-const float lbl_802F5710 = 0.5f;
-const double lbl_802F5718 = 3;
-const double lbl_802F5720 = 1;
-const double lbl_802F5728 = 2;
-const double lbl_802F5730 = -2;
-const double lbl_802F5738 = 4503601774854144;
-*/
+struct Struct8008C674
+{
+    s16 unk0;
+    s16 unk2;
+    Vec unk4;
+    void (*unk10)();
+    u8 filler14[0x20-0x14];
+};  // size = 0x20
+
+void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
+{
+    int i;
+    u32 index = (ape->unk90 >> 1) + (ape->charaId * 2);
+    struct ApeGfxFileInfo *r27 = &apeGfxFileInfo[index];
+    struct Struct8008C674 *r29 = (void *)r27->facePartInfo[ape->unk90 & 1];
+    struct GMAModelHeader *model;
+    struct Struct802B39C0_B0_child *sp18[10];
+    struct Struct802B39C0_B0_child *r6;
+    struct Struct802B39C0_B0_child **ptr;
+    u8 dummy[8];
+
+    ptr = sp18;
+    for (i = 0; i < r27->partCounts[ape->unk90 & 1]; ptr++, i++)
+        *ptr = NULL;
+
+    r6 = ape->unk98;
+    for (i = 0; i < ape->unk94; r6++, i++)
+    {
+        if (r6->unk14[ape->unk90] != -1)
+           sp18[r6->unk14[ape->unk90]] = r6;
+    }
+
+    ptr = sp18;
+    for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
+    {
+        struct Struct80034F5C_1 *r22 = &b[r29->unk2];
+        struct GMAModelHeader *model = charaGMAs[index]->modelEntries[r29->unk0].modelOffset;
+
+        if (model != NULL)
+        {
+            mathutil_mtxA_push();
+            mathutil_mtxA_mult_right(r22->unk208);
+            mathutil_mtxA_translate(&r29->unk4);
+            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            if (r29->unk10 != NULL)
+                r29->unk10(ape, r29, *ptr);
+            else
+                g_avdisp_draw_model_2(model);
+            mathutil_mtxA_pop();
+        }
+    }
+
+    for (i = 0; (u32)i < 15; i++)
+    {
+        struct Struct80034F5C_1 *r4 = &b[lbl_801C7A90[i]];
+
+        if (i == 9 || i == 10 || i == 13 || i == 14)
+        {
+            mathutil_mtx_mult(r4->unk208, lbl_802B4820, lbl_802B4850[i]);
+            if (i == 10 || i == 14)
+            {
+                mathutil_mtxA_push();
+                mathutil_mtxA_from_mtx(lbl_802B4850[i]);
+                mathutil_mtxA_rotate_z(DEGREES_TO_S16(lbl_801C7ACC[ape->charaId]));
+                mathutil_mtxA_to_mtx(lbl_802B4850[i]);
+                mathutil_mtxA_pop();
+            }
+            lbl_802F2088[i] = lbl_802B4850[i];
+        }
+        else
+            lbl_802F2088[i] = r4->unk208;
+    }
+
+    model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].modelOffset;
+    func_8008CCB8(ape, model);
+    g_avdisp_draw_model_2(model);
+}
+
+struct Struct8008C924
+{
+    struct OrdTblNode node;
+    u32 unk8;
+    struct Ape *ape;
+    float unk10;
+};  // 0x14
+
+void lbl_8008CA80(struct Struct8008C924 *);
+
+void func_8008C924(struct Ape *ape, int b)
+{
+    int r3 = (b == 3 || (ape->unk14 & (1 << 5)));
+    u8 dummy[16];
+
+    if (r3)
+        return;
+    if (ape->unkC1 & (1 << currentCameraStructPtr->unk204))
+        return;
+    if ((lbl_801EEC90.unk0 & (1 << 2)) && func_8000E4D0(&ape->unk30) < 0.0f)
+        return;
+
+    if (ape->unk14 & (1 << 20))
+    {
+        struct Struct8008C924 *node;
+        struct OrdTblNode *entry;
+
+        if (ballInfo[ape->unkC0].unk15C[currentCameraStructPtr->unk204] < 1.1920928955078125e-07f)
+            return;
+        mathutil_mtxA_from_mtxB();
+        entry = ord_tbl_get_entry_for_pos(&ape->unk30);
+        node = ord_tbl_alloc_node(sizeof(*node));
+        node->node.drawFunc = (OrdTblDrawFunc)lbl_8008CA80;
+        node->unk8 = func_800223D0();
+        node->ape = ape;
+        node->unk10 = ballInfo[ape->unkC0].unk15C[currentCameraStructPtr->unk204];
+        ord_tbl_insert_node(entry, &node->node);
+    }
+    else
+        func_8008CAAC(ape, 1.0f);
+}
+
+void lbl_8008CA80(struct Struct8008C924 *node)
+{
+    struct Ape *ape = node->ape;
+
+    func_8008CAAC(ape, node->unk10);
+}
+
+void func_8008CAAC(struct Ape *ape, float b)
+{
+    int r30 = ape->charaId;
+    struct Struct80034F5C_1 *r29 = ape->unk0->unk81A8;
+    u8 dummy[8];
+    Vec sp10;
+
+    func_8000E1A4(b);
+
+    mathutil_mtxA_push();
+    mathutil_mtxA_from_quat(&ape->unk60);
+    mathutil_mtxA_to_mtx(lbl_802B39C0);
+    mathutil_mtxA_pop();
+
+    mathutil_mtxA_from_mtxB();
+    mathutil_mtxA_translate(&ape->unk30);
+    mathutil_mtxA_scale_xyz(ape->unk58, ape->unk58, ape->unk58);
+    g_nl2ngc_set_scale(ape->unk58);
+    mathutil_mtxA_translate(&ape->unk3C);
+    mathutil_mtxA_mult_right(lbl_802B39C0);
+    sp10.x = ape->unk0->unk81A8[0].unk208[0][3];
+    sp10.y = ape->unk0->unk81A8[0].unk208[1][3];
+    sp10.z = ape->unk0->unk81A8[0].unk208[2][3];
+    if (g_frustum_test_maybe_2(&sp10, ape->unk58 * 0.5f, ape->unk58) != 0)
+    {
+        apeDummyFuncs[r30](ape);
+        g_draw_ape_transformed(ape, r29);
+    }
+    func_8000E3BC();
+}
+
+u16 lbl_801C7D80[] = { 9, 1, 3, 2 };
+u16 lbl_801C7D88[] = { 7, 5, 7, 6 };
+u16 lbl_801C7D90[] = { 1, 1, 3, 2 };
+u16 lbl_801C7D98[] = { 7, 1, 3, 2 };
+u16 lbl_801C7DA0[] = { 10, 1, 3, 2 };
+u16 lbl_801C7DA8[] = { 4, 9, 11, 10 };
+
+u16 *lbl_801C7DB0[] =
+{
+    lbl_801C7D80,
+    lbl_801C7D88,
+    NULL,
+    NULL,
+    lbl_801C7DA0,
+    lbl_801C7DA8,
+    lbl_801C7D90,
+    lbl_801C7D98,
+};
+
+struct GMAMaterial *find_material(struct GMAModelHeader *model, u32 id)
+{
+    struct GMAMaterial *materials = model->materials;
+    int i;
+
+    for (i = 0; i < model->numMaterials; i++)
+    {
+        if (id == materials[i].unk4)
+        {
+            materials[i].texObj = &model->texObjs[i];
+            materials[i].flags &= ~(1 << 16);
+            return &materials[i];
+        }
+    }
+    return NULL;
+}
+
+FORCE_BSS_ORDER(lbl_802B4B20)
+
+void func_8008CBD0(int charaId, int lod, struct GMAModelHeader *model1, struct GMAModelHeader *model2)
+{
+    int i;
+    struct GMAModelHeader *models[2];
+    u8 dummy[4];
+    u32 var = charaId * 2;
+
+    models[0] = model1;
+    models[1] = model2;
+    for (i = 0; i < 2; i++)
+    {
+        struct GMAMaterial *mtrl = find_material(models[i], lbl_801C7DB0[var + lod][0]);
+
+        lbl_802B4DF0[var + i] = mtrl->texObj;
+        lbl_802B4800[var + i] = mtrl;
+    }
+}
+
+void func_8008CCB8(struct Ape *ape, struct GMAModelHeader *unused)
+{
+    u32 index = (ape->charaId * 2) + (ape->unk90 & 1);
+
+    if (lbl_802B4800[index] != NULL)
+    {
+        struct GMAMaterial *mtrl = lbl_802B4800[index];
+        u16 *r7 = lbl_801C7DB0[(ape->charaId * 2) + (ape->unk90 >> 1)];
+
+        if (ape->colorId != 0)
+            mtrl->texObj = &lbl_802B47E0[ape->charaId][r7[ape->colorId]];
+        else
+            mtrl->texObj = lbl_802B4DF0[index];
+        mtrl->flags |= (1 << 16);
+    }
+    else
+    {
+        GXColor colors[] =
+        {
+            {0xFF, 0x7F, 0xBF, 0xFF},  // pink
+            {0x4C, 0x99, 0xFF, 0xFF},  // blue
+            {0xE5, 0xA5, 0x4C, 0xFF},  // orange
+            {0x4C, 0xB2, 0x4C, 0xFF},  // green
+        };
+
+        lbl_802B47F0[ape->unk90]->unk4 = colors[ape->colorId];
+        lbl_802B47F0[ape->unk90]->unk8 = colors[ape->colorId];
+    }
+}

@@ -146,7 +146,7 @@ SOURCES := \
 	src/ord_tbl.c \
 	asm/code_3.s \
 	src/mot_ape.c \
-	asm/mot_ape.s \
+	asm/code_2.s \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \

@@ -267,7 +267,7 @@ struct Struct802B39C0_B0_child
     s32 unk8;
     struct Struct80089CBC *unkC;
     float unk10;
-    u32 unk14[3];
+    s32 unk14[3];
     s32 unk20;
 };  // size = 0x24
 
@@ -324,8 +324,9 @@ struct Struct8003699C_child
     float unk40;
     u8 filler44[0x54-0x44];
     Mtx unk54;
-    u8 filler84[0x81A8-0x84];
-    struct Struct80034F5C_1 unk81A8;
+    u8 filler84[0x4114-0x84];
+    u8 filler4114[0x81A8-0x4114];
+    struct Struct80034F5C_1 unk81A8[29];
 };
 
 struct Ape_child
@@ -346,7 +347,7 @@ struct Ape
     struct Struct8003699C_child *unk4;
     float unk8;
     float unkC;
-    s32 unk10;
+    /*0x010*/ s32 charaId;
     u32 unk14;
     s32 unk18;
     struct Ape_child *unk1C;
@@ -354,13 +355,13 @@ struct Ape
     s32 unk24;
     s32 unk28;
     void *unk2C;
-    Vec unk30;
+    Vec unk30;  // position?
     Vec unk3C;
     Vec unk48;
     s32 unk54;
-    float unk58;
+    float unk58;  // model scale?
     u32 unk5C;
-    Quaternion unk60;
+    Quaternion unk60;  // orientation?
     u32 unk70;
     u32 unk74;
     u8 filler78[0x90-0x78];
@@ -371,7 +372,7 @@ struct Ape
     Vec unkA0;
     float unkAC;
     u32 unkB0;
-    /*0x0B4*/ u32 colorId;
+    /*0x0B4*/ int colorId;
     void *unkB8;
     void *unkBC;
     s8 unkC0;
@@ -579,13 +580,13 @@ struct Struct80034B50_child_child
     void *unk4;
 };
 
-struct Struct80034B50_child
+struct Struct80034B50_child  // Struct80034B50_child
 {
     void *unk0;
     struct Struct80034B50_child_child *unk4;
     void *unk8;
-    void *unkC;
-    void *unk10;
+    struct Struct800341BC_5 *unkC;
+    struct Struct800341BC_5 *unk10;
     void *unk14;
 };  // size = 0x18
 
@@ -618,15 +619,6 @@ struct MotInfo
     u32 unk70[16];
     u8 *unkB0;
 };  // size = 0xB4
-
-struct Struct800341BC_2
-{
-    u8 filler0[4];
-    void *unk4;
-    void *unk8;
-    struct Struct800341BC_5 *unkC;
-    struct Struct800341BC_5 *unk10;
-};
 
 struct Struct80034F5C_2
 {
@@ -946,3 +938,24 @@ struct Struct802C67D4
     u32 unk4;
     u8 filler8[0x50-0x8];
 };
+
+struct Struct80089A04_1_child_sub
+{
+    char *unk0;
+    u8 filler4[0x20-0x4];
+};  // size = 0x20
+
+struct ApeFacePart
+{
+    u8 filler0[0x14];
+    struct Struct80089A04_1_child_sub unk14[2];
+};
+
+struct ApeGfxFileInfo
+{
+    char *basename;  // base name of the file (without suffix)
+    struct ApeFacePart *facePartInfo[4];  // face part info per LOD?
+    /*0x14*/ s16 partCounts[4];  // counts?
+    s16 unk1C[2];
+    u8 filler20[4];
+};  // size = 0x24

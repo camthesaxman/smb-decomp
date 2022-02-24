@@ -1007,7 +1007,7 @@ void lbl_8000F790(struct Ape *ape, int b)
     switch (b)
     {
     case 3:
-        func_8008B2D4(ape);
+        g_ape_free(ape);
         return;
     }
     if (advDemoInfo.flags & (1 << 5))
@@ -1055,7 +1055,7 @@ void lbl_8000F790(struct Ape *ape, int b)
             ball->unk104.y = 0.58f;
             ball->unk104.z = -4.25f;
         }
-        if (advDemoInfo.unk8 >= 0x6CC && advDemoInfo.unk8 < 0x73A && ape->unk10 == 2)
+        if (advDemoInfo.unk8 >= 0x6CC && advDemoInfo.unk8 < 0x73A && ape->charaId == 2)
             ball->unk104.x = ape->unk30.x + 1.0;
         if (advDemoInfo.unk8 >= 0x73A && advDemoInfo.unk8 < 0x7A2)
             ball->unk104 = ballInfo[1].ape->unk30;
@@ -1067,11 +1067,11 @@ void lbl_8000F790(struct Ape *ape, int b)
     {
         ape->unk14 &= -20;
         ape->unk14 |= 1;
-        ape->unk30.x = func_8008CDC0(f31, lbl_80174DD4[ape->unk10]);
-        ape->unk30.y = func_8008CDC0(f31, lbl_80174DE4[ape->unk10]);
-        ape->unk30.z = func_8008CDC0(f31, lbl_80174DF4[ape->unk10]);
-        r30 = func_8008CDC0(f31, lbl_80174E04[ape->unk10]);
-        if (ape->unk10 == lbl_802F1EB4)
+        ape->unk30.x = func_8008CDC0(f31, lbl_80174DD4[ape->charaId]);
+        ape->unk30.y = func_8008CDC0(f31, lbl_80174DE4[ape->charaId]);
+        ape->unk30.z = func_8008CDC0(f31, lbl_80174DF4[ape->charaId]);
+        r30 = func_8008CDC0(f31, lbl_80174E04[ape->charaId]);
+        if (ape->charaId == lbl_802F1EB4)
         {
             ape->unk30.x += lbl_802F1ECC * 0.1;
             ape->unk30.y += lbl_802F1EC8 * 0.1;
@@ -1085,7 +1085,7 @@ void lbl_8000F790(struct Ape *ape, int b)
         mathutil_mtxA_to_quat(&ape->unk60);
         r4 = 6;
         r5 = 0;
-        r6 = advLogoInfo.unk18[ape->unk10];
+        r6 = advLogoInfo.unk18[ape->charaId];
         if (r6 < 0)
         {
             switch (r6)
@@ -1136,9 +1136,9 @@ void lbl_8000F790(struct Ape *ape, int b)
             s16 sp30[] = { 0x2E00, 0xE100, 0x1500, 0x0000 };
             s16 sp28[] = { 0x0000, 0x0000, 0x0980, 0x0000 };
 
-            lbl_802F1BB4[ape->unk10] += (sp30[ape->unk10] - lbl_802F1BB4[ape->unk10]) * 0.1;
-            lbl_802F1BBC[ape->unk10] += (sp28[ape->unk10] - lbl_802F1BBC[ape->unk10]) * 0.1;
-            func_8008BFDC(ape, lbl_802F1ED2 + lbl_802F1BB4[ape->unk10], lbl_802F1ED0 + lbl_802F1BBC[ape->unk10]);
+            lbl_802F1BB4[ape->charaId] += (sp30[ape->charaId] - lbl_802F1BB4[ape->charaId]) * 0.1;
+            lbl_802F1BBC[ape->charaId] += (sp28[ape->charaId] - lbl_802F1BBC[ape->charaId]) * 0.1;
+            func_8008BFDC(ape, lbl_802F1ED2 + lbl_802F1BB4[ape->charaId], lbl_802F1ED0 + lbl_802F1BBC[ape->charaId]);
         }
         else if (ape->unk14 & (1<<(31-9)))
         {
@@ -1148,7 +1148,7 @@ void lbl_8000F790(struct Ape *ape, int b)
             mathutil_mtxA_mult_right((void *)((u8 *)ape->unk0 + 0x8EC8));
             mathutil_mtxA_tf_vec_xyz(&sp1C, 0.0f, -1.0f, 0.0f);
             ape->unkAC = 0.0f;
-            switch (ape->unk10)
+            switch (ape->charaId)
             {
             case 2:
                 ape->unkA0.x = 0.9f;

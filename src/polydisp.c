@@ -284,7 +284,7 @@ void draw_adv_demo_scene(void)
                 ballInfo[i].ape->unk30.x,
                 ballInfo[i].ape->unk30.y - 0.45,
                 ballInfo[i].ape->unk30.z);
-            f30 = lbl_80173FD0[ballInfo[i].ape->unk10];
+            f30 = lbl_80173FD0[ballInfo[i].ape->charaId];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
