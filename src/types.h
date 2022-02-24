@@ -369,10 +369,10 @@ struct PhysicsBall
     float radius;
     float accel;
     float restitution;
-    float g_jerk;
-    Vec unk38;
-    Vec unk44;
-    s32 unk50;  
+    float g_hardestColiVel;
+    Vec g_coliPos;
+    Vec g_coliNormal;
+    s32 g_hardestColiItemgroupId;  
     float unk54;
 
     // Itemgroup whose local space we are in.

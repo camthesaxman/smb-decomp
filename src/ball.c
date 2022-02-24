@@ -2307,16 +2307,16 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
 
     if (b->flags & 1)
     {
-        if (b->unk50 == 0)
+        if (b->g_hardestColiItemgroupId == 0)
         {
-            ball->unk114.x = -b->unk44.x;
-            ball->unk114.y = -b->unk44.y;
-            ball->unk114.z = -b->unk44.z;
+            ball->unk114.x = -b->g_coliNormal.x;
+            ball->unk114.y = -b->g_coliNormal.y;
+            ball->unk114.z = -b->g_coliNormal.z;
         }
         else
         {
-            mathutil_mtxA_from_mtx(movableStageParts[b->unk50].unk24);
-            mathutil_mtxA_tf_vec(&b->unk44, &ball->unk114);
+            mathutil_mtxA_from_mtx(movableStageParts[b->g_hardestColiItemgroupId].unk24);
+            mathutil_mtxA_tf_vec(&b->g_coliNormal, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
             ball->unk114.z = -ball->unk114.z;
@@ -2403,23 +2403,23 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
     if (c == 0)
         func_8003C38C(ball);
 
-    ball->unk130 = b->g_jerk;
-    if ((ball->flags & BALL_FLAG_00) && b->g_jerk < -0.11f)
+    ball->unk130 = b->g_hardestColiVel;
+    if ((ball->flags & BALL_FLAG_00) && b->g_hardestColiVel < -0.11f)
         ball->flags |= BALL_FLAG_02;
-    if (b->g_jerk < -0.15f)
+    if (b->g_hardestColiVel < -0.15f)
         ball->flags |= BALL_FLAG_05;
 
-    if ((ball->flags & BALL_FLAG_00) && b->g_jerk < -0.054999999701976776)
+    if ((ball->flags & BALL_FLAG_00) && b->g_hardestColiVel < -0.054999999701976776)
     {
         int r4 = (modeCtrl.gameType != GAMETYPE_MINI_FIGHT && lbl_80206DEC.unk0 < 0xF0);
 
         if (r4)
             ball->flags |= BALL_FLAG_27;
-        else if (b->g_jerk < -0.18699999898672104)
+        else if (b->g_hardestColiVel < -0.18699999898672104)
             ball->flags |= BALL_FLAG_28;
-        else if (b->g_jerk < -0.14299999922513962)
+        else if (b->g_hardestColiVel < -0.14299999922513962)
             ball->flags |= BALL_FLAG_29;
-        else if (b->g_jerk < -0.098999999463558197)
+        else if (b->g_hardestColiVel < -0.098999999463558197)
             ball->flags |= BALL_FLAG_30;
         else
             ball->flags |= BALL_FLAG_31;
@@ -2440,7 +2440,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
 void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct MovableStagePart *movpart = &movableStageParts[a->unk50];
+    struct MovableStagePart *movpart = &movableStageParts[a->g_hardestColiItemgroupId];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2450,9 +2450,9 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
     int unused;
 
     mathutil_mtxA_from_mtx(movpart->unk24);
-    mathutil_mtxA_tf_point(&a->unk38, &sp38);
+    mathutil_mtxA_tf_point(&a->g_coliPos, &sp38);
     ptr = &sp44;
-    mathutil_mtxA_tf_vec(&a->unk44, ptr);
+    mathutil_mtxA_tf_vec(&a->g_coliNormal, ptr);
 
     sp14.x = sp38.x - ball->pos.x;
     sp14.y = sp38.y - ball->pos.y;
@@ -2479,7 +2479,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 void func_8003BD68(struct PhysicsBall *a, Vec *b, Vec *c)
 {
     struct Ball *ball = currentBallStructPtr;
-    float f2 = mathutil_vec_dot_prod(b, &a->unk44);
+    float f2 = mathutil_vec_dot_prod(b, &a->g_coliNormal);
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2487,9 +2487,9 @@ void func_8003BD68(struct PhysicsBall *a, Vec *b, Vec *c)
     Vec sp14;
     float f4;
 
-    sp2C.x = f2 * a->unk44.x;
-    sp2C.y = f2 * a->unk44.y;
-    sp2C.z = f2 * a->unk44.z;
+    sp2C.x = f2 * a->g_coliNormal.x;
+    sp2C.y = f2 * a->g_coliNormal.y;
+    sp2C.z = f2 * a->g_coliNormal.z;
 
     sp38.x = sp2C.x + (b->x - sp2C.x) * 0.92;
     sp38.y = sp2C.y + (b->y - sp2C.y) * 0.92;
@@ -2532,7 +2532,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
 
     if (c != 0)
     {
-        if (b->g_jerk < 0.0)
+        if (b->g_hardestColiVel < 0.0)
             r3 = 1;
     }
     else
@@ -2546,11 +2546,11 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         sp20.x = ball->pos.x - ball->prevPos.x;
         sp20.y = ball->pos.y - ball->prevPos.y;
         sp20.z = ball->pos.z - ball->prevPos.z;
-        if (c == 0 && b->unk50 > 0)
+        if (c == 0 && b->g_hardestColiItemgroupId > 0)
             func_8003BBF4(b, &sp20);
 
-        mathutil_mtxA_from_mtx(movableStageParts[b->unk50].unk24);
-        mathutil_mtxA_tf_vec(&b->unk44, &sp14);
+        mathutil_mtxA_from_mtx(movableStageParts[b->g_hardestColiItemgroupId].unk24);
+        mathutil_mtxA_tf_vec(&b->g_coliNormal, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;
         sp38.z = -sp14.z * ball->currRadius;
@@ -2768,9 +2768,9 @@ void func_8003CA98(struct Ball *ball, struct PhysicsBall *b)
     b->radius = ball->currRadius;
     b->accel = ball->unk6C;
     b->restitution = ball->restitution;
-    b->g_jerk = 0.0f;
+    b->g_hardestColiVel = 0.0f;
     b->itemgroupId = 0;
-    b->unk50 = 0;
+    b->g_hardestColiItemgroupId = 0;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)
         b->unk54 = 0.01f;
