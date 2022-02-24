@@ -1,3 +1,13 @@
+#ifndef _SRC_VARIABLES_H_
+#define _SRC_VARIABLES_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/OSAlloc.h>
+#include <dolphin/OSFont.h>
+
+#include "types.h"
+
 // .rodata section
 // extern ? lbl_8010F8A0;
 // extern ? crcTable;
@@ -223,16 +233,16 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B9B48;
 // extern ? lbl_801B9B58;
 // extern ? lbl_801B9B68;
-// extern ? lbl_801B9BA0;
+// extern ? jungleModelFind;
 // extern ? lbl_801B9BB0;
 // extern ? lbl_801B9D48;
 // extern ? lbl_801B9D78;
 // extern ? lbl_801B9ED8;
 // extern ? lbl_801B9EF8;
 // extern ? lbl_801B9F64;
-// extern ? lbl_801B9FB0;
+// extern ? sunsetModelFind;
 // extern ? lbl_801B9FC8;
-// extern ? lbl_801BA084;
+// extern ? stormModelFind;
 // extern ? lbl_801BA0A4;
 // extern ? lbl_801BA0F8;
 // extern ? lbl_801BA210;
@@ -4794,3 +4804,5 @@ extern const s8 lbl_802F28B0[8];
 // extern ? lbl_802F6C6C;
 // extern ? lbl_802F6C70;
 // extern ? lbl_802F6C78;
+
+#endif

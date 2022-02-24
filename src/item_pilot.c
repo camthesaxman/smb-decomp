@@ -380,7 +380,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk24.x = (item->unk14 / sp178.unk30->boundsRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
-            g_create_pickup_item(&sp178);
+            g_spawn_effect_object(&sp178);
         }
     }
     else if (item->subtype == 3)
@@ -404,7 +404,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         spCC.unk34.y = r31->pos.y - 1.0;
         spCC.unk34.z = r31->pos.z;
         spCC.unk24 = (Vec){3.5, 4.5, 3.5};
-        g_create_pickup_item(&spCC);
+        g_spawn_effect_object(&spCC);
     }
     else if (item->subtype == 4)
     {
@@ -432,7 +432,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp20.unk40.x = b->unk1C.x + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.y = b->unk1C.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.z = b->unk1C.z + ((rand() / 32767.0f) * 0.2 - 0.1);
-            g_create_pickup_item(&sp20);
+            g_spawn_effect_object(&sp20);
         }
     }
     if (gameSubmode == 2)

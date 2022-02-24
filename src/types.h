@@ -1,3 +1,12 @@
+#ifndef _SRC_TYPES_H_
+#define _SRC_TYPES_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/GXEnum.h>
+#include <dolphin/GXFifo.h>
+#include <dolphin/mtx.h>
+
 // DIP switches
 enum
 {
@@ -236,16 +245,11 @@ struct UnkStruct8005562C_child2
 };
 
 struct StageBgModel;
-
 struct Camera;
-
 struct Sprite;
 struct FontParams;
 struct GMA;
 struct TPL;
-
-typedef void (*Func802F20EC)();
-
 struct Ape;
 struct Ball;
 
@@ -544,7 +548,13 @@ struct Struct8003C550
     s16 unk4C;
     s16 unk4E;
     s16 unk50;
-    u8 filler52[0x88-0x52];
+    u8 filler52[0x70-0x52];
+    /*
+    float unk74;
+    u8 filler78[4];
+    */
+    Vec unk70;
+    Vec unk7C;
     Vec unk88;
     u8 filler94[0xA8-0x94];
     float unkA8;
@@ -959,3 +969,24 @@ struct ApeGfxFileInfo
     s16 unk1C[2];
     u8 filler20[4];
 };  // size = 0x24
+
+struct Struct80061BC4_sub
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u8 filler10[4];
+    u32 unk14;
+    u8 filler18[0x2C-0x18];
+};
+
+struct Struct80061BC4
+{
+    u8 filler0[0xC];
+    struct Struct80061BC4_sub unkC;
+};
+
+typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
+
+#endif

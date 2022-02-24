@@ -1,3 +1,9 @@
+#ifndef _SRC_MATHUTIL_H_
+#define _SRC_MATHUTIL_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 #ifndef __MWERKS__
 #define MATHUTIL_C_ONLY
 #endif
@@ -144,11 +150,36 @@ static inline float mathutil_floor(register float n)
     register float savedFlags;
     asm
     {
-        // save FPCSR flags
+        // save FPSCR flags
         mffs savedFlags
-        // set rounding mode to -inf
+        // set rounding mode to -inf (FPSCR bits 30-31 are 11)
         mtfsb1 30
         mtfsb1 31
+        // convert to integer
+        fctiw n, n
+        stfd n, buf[0]
+        // restore old FPCSR flags
+        mtfsf 0xFF, savedFlags
+    }
+    return buf[1];
+#else
+    // TODO
+    return (s32)n;
+#endif
+}
+
+static inline float mathutil_ceil(register float n)
+{
+#ifdef __MWERKS__
+    s32 buf[2];
+    register float savedFlags;
+    asm
+    {
+        // save FPSCR flags
+        mffs savedFlags
+        // set rounding mode to -inf (FPSCR bits 30-31 are 10)
+        mtfsb1 30
+        mtfsb0 31
         // convert to integer
         fctiw n, n
         stfd n, buf[0]
@@ -361,6 +392,25 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
 #endif
 }
 
+static inline void mathutil_set_mtxA_translate_xyz(register float x, register float y, register float z)
+{
+#ifdef MATHUTIL_C_ONLY
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = x;
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3] = y;
+    ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = z;
+#else
+    register float *mtxA;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        stfs x, 0x0C(mtxA)  // mtxA[0][3]
+        stfs y, 0x1C(mtxA)  // mtxA[1][3]
+        stfs z, 0x2C(mtxA)  // mtxA[2][3]
+    }
+#endif
+}
+
 static inline void mathutil_unk_inline(register float a, register Vec *v)
 {
     register void *mtxA;
@@ -394,3 +444,5 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
     };
 #endif
 }
+
+#endif

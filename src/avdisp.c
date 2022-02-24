@@ -38,7 +38,7 @@ float lbl_802F20FC;
 float lbl_802F20F8;
 float lbl_802F20F4;
 Func802F20F0 lbl_802F20F0;
-Func802F20EC lbl_802F20EC;
+BallEnvFunc lbl_802F20EC;
 s32 lbl_802F20E8;
 float modelScale;
 u32 lbl_802F20E0;
@@ -623,9 +623,9 @@ void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updat
     zModeUpdateEnable  = updateEnable;
 }
 
-Func802F20EC g_avdisp_set_some_func_1(Func802F20EC func)
+BallEnvFunc g_avdisp_set_some_func_1(BallEnvFunc func)
 {
-    Func802F20EC old = lbl_802F20EC;
+    BallEnvFunc old = lbl_802F20EC;
     lbl_802F20EC = func;
     return old;
 }
@@ -728,7 +728,7 @@ struct DrawMeshDeferredNode
     u32 unk44;
     u32 unk48;
     float unk4C;
-    Func802F20EC unk50;
+    BallEnvFunc unk50;
     Func802F20F0 unk54;
     u8 zCompEnable;
     u8 zUpdEnable;
@@ -1073,7 +1073,7 @@ void g_iteratively_multiply_model_matrices(struct GMAModelHeader *model)
 
 void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
 {
-    Func802F20EC r31;
+    BallEnvFunc r31;
     Func802F20F0 r30;
     u8 r29;
     u8 r28;
@@ -1242,7 +1242,7 @@ struct UnkStruct31
 {
     u32 unk0;
     u8 filler4[4];
-    u32 unk8;
+    GXTexObj *unk8;
     u8 fillerC[0x20-0xC];
 };
 
@@ -2180,7 +2180,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
         sp3C.unk4 = a;
         sp3C.unk8 = b;
         sp3C.unkC = sp7C;
-        lbl_802F20EC(&sp3C);
+        lbl_802F20EC((void *)&sp3C);
         sp7C = sp3C.unkC;
     }
     //lbl_800910F8

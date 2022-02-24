@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_MTX_H_
 #define _DOLPHIN_MTX_H_
 
+#include <dolphin/types.h>
+
 typedef struct
 {
 	f32 x, y, z;

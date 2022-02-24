@@ -1,3 +1,8 @@
+#ifndef _SRC_FUNCTIONS_H_
+#define _SRC_FUNCTIONS_H_
+
+#include "types.h"
+
 // ? main();
 void initialize(void);
 void init_gx(void);
@@ -50,7 +55,7 @@ void func_8000E3BC(void);
 // ? func_8000E428();
 float func_8000E444(Vec *);
 float func_8000E4D0(Vec *);
-// ? func_8000E53C();
+float func_8000E53C(Vec *pos);
 
 void func_80011E1C(void);
 void func_80011F74();
@@ -327,7 +332,7 @@ void ev_effect_init(void);
 void ev_effect_main(void);
 void ev_effect_dest(void);
 void effect_draw(void);
-void g_create_pickup_item(struct Struct8003C550 *);
+void g_spawn_effect_object(struct Struct8003C550 *);
 void func_8004CFF0(int);
 // ? func_8004D054();
 // ? func_8004D194();
@@ -455,7 +460,7 @@ void func_8004CFF0(int);
 // ? func_80054CE0();
 // ? func_80054E00();
 
-void func_800654F0(int);
+void bg_end_interact(int);
 void func_80065C58(void);
 void func_80066294(void);
 void func_800662D4(void);
@@ -739,7 +744,7 @@ void g_avdisp_set_alpha(float);
 void g_avdisp_set_and_normalize_some_vec(Vec *a);
 void g_avdisp_set_3_other_floats(float, float, float);
 void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updateEnable);
-Func802F20EC g_avdisp_set_some_func_1(Func802F20EC a);
+BallEnvFunc g_avdisp_set_some_func_1(BallEnvFunc a);
 // ? g_avdisp_set_some_func_2();
 // ? func_8008E5F8();
 // ? func_8008E64C();
@@ -932,7 +937,7 @@ void func_8009F2C8();
 void func_8009F314(void);
 void func_8009F33C();
 // ? func_8009F3D8();
-void func_8009F430();
+void func_8009F430(GXTexObj *, int);
 void func_8009F49C(int);
 int memcard_is_write_in_progress(void);
 u8 func_8009F4C4(void);
@@ -2448,3 +2453,5 @@ void __GXSetDirtyState(void);
 // ? DBClose();
 // ? AMC_IsStub();
 // ? Hu_IsStub();
+
+#endif

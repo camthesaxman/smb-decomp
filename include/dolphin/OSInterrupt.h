@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_OSINTERRUPT_H_
 #define _DOLPHIN_OSINTERRUPT_H_
 
+#include <dolphin/types.h>
+
 typedef s16 __OSInterrupt;
 typedef u32  OSInterruptMask;
 

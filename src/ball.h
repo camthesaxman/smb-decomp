@@ -1,3 +1,8 @@
+#ifndef _SRC_BALL_H_
+#define _SRC_BALL_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
 
 enum
 {
@@ -203,3 +208,5 @@ void func_8003CDC0(struct Ball *);
 void func_8003D3C4(struct Ball *);
 void animate_ball_size_change(struct Ball *);
 // ? draw_ball_hemispheres();
+
+#endif

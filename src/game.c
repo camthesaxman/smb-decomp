@@ -1633,7 +1633,7 @@ void func_800165C0(struct Ball *ball)
         sp1C.unk4E = rand() & 0x7FFF;
         sp1C.unk50 = rand() & 0x7FFF;
         sp1C.unk16 = r28;
-        g_create_pickup_item(&sp1C);
+        g_spawn_effect_object(&sp1C);
     }
 }
 

@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_GXVERT_H_
 #define _DOLPHIN_GXVERT_H_
 
+#include <dolphin/types.h>
+
 #define GXFIFO_ADDR 0xCC008000
 
 typedef union

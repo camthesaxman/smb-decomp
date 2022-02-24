@@ -47,7 +47,7 @@ void bg_old_space_draw(void)
     g_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
 }
 
-void func_80058728(int a) {}
+void bg_old_space_interact(int a) {}
 
 static void lbl_8005872C(struct NaomiVtxWithNormal *vtx)
 {

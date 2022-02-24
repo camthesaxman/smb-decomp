@@ -7,7 +7,7 @@ import sys
 import struct
 
 #startLabel = sys.argv[2]
-startLabel = 'asdf'  # starting label
+startLabel = 'lbl_801BA0A4'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
 structFmt = '>fff'
 GXColorFmt = '{%i, %i, %i, %i}'

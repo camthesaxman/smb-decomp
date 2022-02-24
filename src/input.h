@@ -1,3 +1,8 @@
+#ifndef _SRC_INPUT_H_
+#define _SRC_INPUT_H_
+
+#include <dolphin/types.h>
+#include <dolphin/pad.h>
 
 struct ControllerInfo
 {
@@ -40,3 +45,5 @@ void handle_reset_input(PADStatus *);
 void func_80025B1C(struct CoordsS8 *, s8 *);
 void func_80025E5C(void *);
 void func_80025E8C(void *);
+
+#endif

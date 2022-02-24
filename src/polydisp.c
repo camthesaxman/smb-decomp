@@ -701,8 +701,8 @@ void func_8000C8D4(void)
 
 void func_8000CA9C(void)
 {
-    Func802F20EC r31;
-    Func802F20EC r30;
+    BallEnvFunc r31;
+    BallEnvFunc r30;
     int r4;
     u32 r5;
     Vec sp5C;

@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_OSFONT_H_
 #define _DOLPHIN_OSFONT_H_
 
+#include <dolphin/types.h>
+
 #define OS_FONT_ENCODE_ANSI 0u
 #define OS_FONT_ENCODE_SJIS 1u
 #define OS_FONT_SIZE_ANSI (288 + 131072)    // 9 sheets

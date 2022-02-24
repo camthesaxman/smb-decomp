@@ -211,7 +211,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk24.x = (item->unk14 / sp10.unk30->boundsRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
-        g_create_pickup_item(&sp10);
+        g_spawn_effect_object(&sp10);
     }
     if (advDemoInfo.flags & (1 << 8))
         return;
@@ -220,14 +220,14 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         g_play_sound(0x39);
         if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x2820);
-        func_800554A4(1);
+        background_interact(1);
     }
     else
     {
         g_play_sound(3);
         if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x281F);
-        func_800554A4(0);
+        background_interact(0);
     }
 }
 

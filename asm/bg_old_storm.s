@@ -58,7 +58,7 @@ bg_old_storm_init:
 /* 80059B68 00055A88  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059B6C 00055A8C  80 04 00 08 */	lwz r0, 8(r4)
 /* 80059B70 00055A90  90 01 00 38 */	stw r0, 0x38(r1)
-/* 80059B74 00055A94  4B FF 33 95 */	bl g_create_pickup_item
+/* 80059B74 00055A94  4B FF 33 95 */	bl g_spawn_effect_object
 /* 80059B78 00055A98  48 0A CC ED */	bl rand
 /* 80059B7C 00055A9C  54 63 05 7E */	clrlwi r3, r3, 0x15
 /* 80059B80 00055AA0  38 03 FC 01 */	addi r0, r3, -1023
@@ -81,7 +81,7 @@ bg_old_storm_init:
 /* 80059BC4 00055AE4  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059BC8 00055AE8  80 04 00 0C */	lwz r0, 0xc(r4)
 /* 80059BCC 00055AEC  90 01 00 38 */	stw r0, 0x38(r1)
-/* 80059BD0 00055AF0  4B FF 33 39 */	bl g_create_pickup_item
+/* 80059BD0 00055AF0  4B FF 33 39 */	bl g_spawn_effect_object
 /* 80059BD4 00055AF4  48 0A CC 91 */	bl rand
 /* 80059BD8 00055AF8  54 63 05 7E */	clrlwi r3, r3, 0x15
 /* 80059BDC 00055AFC  38 03 FC 01 */	addi r0, r3, -1023
@@ -104,7 +104,7 @@ bg_old_storm_init:
 /* 80059C20 00055B40  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059C24 00055B44  80 04 00 18 */	lwz r0, 0x18(r4)
 /* 80059C28 00055B48  90 01 00 38 */	stw r0, 0x38(r1)
-/* 80059C2C 00055B4C  4B FF 32 DD */	bl g_create_pickup_item
+/* 80059C2C 00055B4C  4B FF 32 DD */	bl g_spawn_effect_object
 /* 80059C30 00055B50  48 0A CC 35 */	bl rand
 /* 80059C34 00055B54  54 63 05 7E */	clrlwi r3, r3, 0x15
 /* 80059C38 00055B58  38 03 FC 01 */	addi r0, r3, -1023
@@ -127,7 +127,7 @@ bg_old_storm_init:
 /* 80059C7C 00055B9C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
 /* 80059C80 00055BA0  80 04 00 1C */	lwz r0, 0x1c(r4)
 /* 80059C84 00055BA4  90 01 00 38 */	stw r0, 0x38(r1)
-/* 80059C88 00055BA8  4B FF 32 81 */	bl g_create_pickup_item
+/* 80059C88 00055BA8  4B FF 32 81 */	bl g_spawn_effect_object
 /* 80059C8C 00055BAC  80 01 00 CC */	lwz r0, 0xcc(r1)
 /* 80059C90 00055BB0  83 E1 00 C4 */	lwz r31, 0xc4(r1)
 /* 80059C94 00055BB4  38 21 00 C8 */	addi r1, r1, 0xc8
@@ -282,7 +282,7 @@ bg_old_storm_main:
 /* 80059EE0 00055E00  D0 41 00 3C */	stfs f2, 0x3c(r1)
 /* 80059EE4 00055E04  D0 21 00 40 */	stfs f1, 0x40(r1)
 /* 80059EE8 00055E08  D0 01 00 44 */	stfs f0, 0x44(r1)
-/* 80059EEC 00055E0C  4B FF 30 1D */	bl g_create_pickup_item
+/* 80059EEC 00055E0C  4B FF 30 1D */	bl g_spawn_effect_object
 /* 80059EF0 00055E10  4B FA DA BD */	bl mathutil_mtxA_from_mtxB
 /* 80059EF4 00055E14  C0 02 98 8C */	lfs f0, lbl_802F408C@sda21(r2)
 /* 80059EF8 00055E18  38 61 00 D0 */	addi r3, r1, 0xd0
@@ -368,7 +368,7 @@ bg_old_storm_main:
 /* 8005A038 00055F58  38 61 00 24 */	addi r3, r1, 0x24
 /* 8005A03C 00055F5C  80 04 00 24 */	lwz r0, 0x24(r4)
 /* 8005A040 00055F60  90 01 00 54 */	stw r0, 0x54(r1)
-/* 8005A044 00055F64  4B FF 2E C5 */	bl g_create_pickup_item
+/* 8005A044 00055F64  4B FF 2E C5 */	bl g_spawn_effect_object
 /* 8005A048 00055F68  48 00 00 D4 */	b lbl_8005A11C
 lbl_8005A04C:
 /* 8005A04C 00055F6C  38 61 00 D0 */	addi r3, r1, 0xd0
@@ -422,7 +422,7 @@ lbl_8005A04C:
 /* 8005A10C 0005602C  38 61 00 24 */	addi r3, r1, 0x24
 /* 8005A110 00056030  80 04 00 24 */	lwz r0, 0x24(r4)
 /* 8005A114 00056034  90 01 00 54 */	stw r0, 0x54(r1)
-/* 8005A118 00056038  4B FF 2D F1 */	bl g_create_pickup_item
+/* 8005A118 00056038  4B FF 2D F1 */	bl g_spawn_effect_object
 lbl_8005A11C:
 /* 8005A11C 0005603C  80 01 01 1C */	lwz r0, 0x11c(r1)
 /* 8005A120 00056040  83 E1 01 14 */	lwz r31, 0x114(r1)
@@ -451,8 +451,8 @@ bg_old_storm_draw:
 /* 8005A16C 0005608C  38 21 00 08 */	addi r1, r1, 8
 /* 8005A170 00056090  7C 08 03 A6 */	mtlr r0
 /* 8005A174 00056094  4E 80 00 20 */	blr
-.global func_8005A178
-func_8005A178:
+.global bg_old_storm_interact
+bg_old_storm_interact:
 /* 8005A178 00056098  4E 80 00 20 */	blr
 
 .section .sdata2

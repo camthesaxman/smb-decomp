@@ -24,7 +24,7 @@ bg_pilot_init:
 /* 80063FDC 0005FEFC  90 1D 00 2C */	stw r0, 0x2c(r29)
 /* 80063FE0 0005FF00  38 83 50 84 */	addi r4, r3, lbl_80065084@l
 /* 80063FE4 0005FF04  38 7F 00 70 */	addi r3, r31, 0x70
-/* 80063FE8 0005FF08  4B FF 26 9D */	bl func_80056684
+/* 80063FE8 0005FF08  4B FF 26 9D */	bl g_search_bg_models
 lbl_80063FEC:
 /* 80063FEC 0005FF0C  38 00 00 00 */	li r0, 0
 /* 80063FF0 0005FF10  90 1D 00 14 */	stw r0, 0x14(r29)
@@ -35,13 +35,13 @@ lbl_80063FEC:
 /* 80064004 0005FF24  38 BF 00 FC */	addi r5, r31, 0xfc
 /* 80064008 0005FF28  80 64 00 6C */	lwz r3, 0x6c(r4)
 /* 8006400C 0005FF2C  80 84 00 68 */	lwz r4, 0x68(r4)
-/* 80064010 0005FF30  4B FF 27 CD */	bl func_800567DC
+/* 80064010 0005FF30  4B FF 27 CD */	bl g_search_bg_models_from_list
 /* 80064014 0005FF34  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 80064018 0005FF38  7F C6 F3 78 */	mr r6, r30
 /* 8006401C 0005FF3C  38 BF 00 FC */	addi r5, r31, 0xfc
 /* 80064020 0005FF40  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 80064024 0005FF44  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 80064028 0005FF48  4B FF 27 B5 */	bl func_800567DC
+/* 80064028 0005FF48  4B FF 27 B5 */	bl g_search_bg_models_from_list
 /* 8006402C 0005FF4C  38 61 00 14 */	addi r3, r1, 0x14
 /* 80064030 0005FF50  38 80 00 00 */	li r4, 0
 /* 80064034 0005FF54  38 A0 00 18 */	li r5, 0x18
@@ -828,8 +828,8 @@ lbl_80064C14:
 /* 80064C20 00060B40  38 21 01 28 */	addi r1, r1, 0x128
 /* 80064C24 00060B44  7C 08 03 A6 */	mtlr r0
 /* 80064C28 00060B48  4E 80 00 20 */	blr
-.global func_80064C2C
-func_80064C2C:
+.global bg_pilot_interact
+bg_pilot_interact:
 /* 80064C2C 00060B4C  4E 80 00 20 */	blr
 lbl_80064C30:
 /* 80064C30 00060B50  7C 08 02 A6 */	mflr r0
