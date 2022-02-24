@@ -153,7 +153,7 @@ struct Struct80089A04
 };
 
 // bss
-u8 lbl_802B39C0[0x30];
+Mtx lbl_802B39C0;
 u32 lbl_802B39C0_30[0x20];
 struct Ape lbl_802B39C0_B0[16];  // B0
 struct Ape *lbl_802B46B0[16];  // CF0
@@ -1642,7 +1642,7 @@ void func_8008BFD8(void) {}
 void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 {
     struct Struct80034F5C_1 *r31;
-    struct Struct80034F5C_1 *r30 = (void *)&ape->unk0->unk81A8;
+    struct Struct80034F5C_1 *r30 = &ape->unk0->unk81A8;
     Mtx sp10;
 
     if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
@@ -1653,33 +1653,169 @@ void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
     mathutil_mtxA_mult_right(r31->unk208);
     mathutil_mtxA_to_mtx(sp10);
     mathutil_mtxA_from_mtx(r30[1].unk208);
-    mathutil_mtxA_rotate_x((u16)b);
-    mathutil_mtxA_rotate_y((u16)c);
+    mathutil_mtxA_rotate_x(b);
+    mathutil_mtxA_rotate_y(c);
     mathutil_mtxA_mult_right(sp10);
     mathutil_mtxA_to_mtx(r31->unk208);
 }
 
-/*
-void func_8008BFDC(struct Ape *ape, int b, int c)
+void func_8008C090(struct Ape *ape, Vec *b)
 {
-    struct Struct80034F5C_1 *r30 = (void *)&ape->unk0->unk81A8;
-    struct Struct80034F5C_1 *r31;
-    Mtx sp10;
+    struct Struct80034F5C_1 *r27 = &ape->unk0->unk81A8;
+    Vec sp2C;
+    int r3;
+    int r27_;
+    struct Struct80034F5C_1 *r30;
+    float f1;
+    Vec sp20;
+    Quaternion sp10;
 
-    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1<<(31-0x1C))))
+    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
         return;
-    r31 = &r30[5];
-    mathutil_mtxA_from_mtx(r30[1].unk208);
-    mathutil_mtxA_invert();
-    mathutil_mtxA_mult_right(r31->unk208);
-    mathutil_mtxA_to_mtx(sp10);
-    mathutil_mtxA_from_mtx(r30[1].unk208);
-    mathutil_mtxA_rotate_x((u16)b);
-    mathutil_mtxA_rotate_y((u16)c);
-    mathutil_mtxA_mult_right(sp10);
-    mathutil_mtxA_to_mtx(r31->unk208);
+    if (!(ape->unk1C->unkC & 1) && (ape->unk14 & (1<<(31-0x19))))
+        return;
+
+    r27++;
+    mathutil_mtxA_from_quat(&ape->unk60);
+    mathutil_mtxA_to_mtx(lbl_802B39C0);
+    mathutil_mtxA_mult_right(r27->unk208);
+    if (ape->unk10 == 2 && (ape->unk14 & (1<<(31-0x9))))
+        mathutil_mtxA_rotate_z(-5461);
+    else
+        mathutil_mtxA_rotate_z(-16384);
+    sp2C.x = b->x - ape->unk30.x;
+    sp2C.y = b->y - ape->unk30.y;
+    sp2C.z = b->z - ape->unk30.z;
+    mathutil_mtxA_rigid_inv_tf_vec(&sp2C, &sp2C);
+    mathutil_vec_normalize_len(&sp2C);
+    r27_ = (ape->unk1C->unkC & 1) == 0;
+    r30 = r27 + 4;
+    r3 = sp2C.x < -0.8f;
+    if (!r27_)
+        ape->unk14 &= ~(1<<(31-0x19));
+    if (r3 || r27_)
+    {
+        mathutil_mtxA_push();
+        mathutil_mtxA_from_mtx(lbl_802B39C0);
+        mathutil_mtxA_mult_right(r30->unk208);
+        mathutil_mtxA_tf_vec_xyz(&sp2C, 1.0f, 0.0f, 0.0f);
+        mathutil_mtxA_pop();
+        mathutil_mtxA_rigid_inv_tf_vec(&sp2C, &sp2C);
+    }
+    else if (sp2C.x < 0.09f)
+        sp2C = ape->unkA0;
+    if (sp2C.y > 0.4f)
+        sp2C.y = 0.4f;
+    else if (sp2C.y < -0.3f)
+        sp2C.y = -0.3f;
+    f1 = mathutil_vec_dot_normalized(&sp2C, &ape->unkA0);
+    if (f1 > 0.996f || (ape->unk14 & (1<<(31-0x19))))
+    {
+        ape->unkA0 = sp2C;
+        if (r27_)
+            ape->unk14 |= (1 << 6);
+    }
+    else
+    {
+        float f31;
+
+        f31 = 5.0f;
+        if (r27_)
+            f31 = 8.0f;
+        f31 *= mathutil_sqrt(1.0f - f1 * f1) * 0.8f + 0.4f;
+        if (f31 > 6.0f)
+            f31 = 6.0f;
+        mathutil_vec_normalize_len(&sp2C);
+        mathutil_vec_cross_prod(&ape->unkA0, &sp2C, &sp2C);
+        mathutil_vec_normalize_len(&sp2C);
+        ape->unkAC = 0.0f;
+        mathutil_quat_from_axis_angle(&sp10, &sp2C, f31 * 182.04444885253906f);
+        mathutil_quat_mult((Quaternion *)&ape->unkA0, &sp10, (Quaternion *)&ape->unkA0);
+    }
+    mathutil_vec_normalize_len(&ape->unkA0);
+    mathutil_mtxA_tf_vec(&ape->unkA0, &sp2C);
+    mathutil_mtxA_from_mtx(lbl_802B39C0);
+    mathutil_mtxA_mult_right(r30->unk208);
+    mathutil_mtxA_rigid_inv_tf_vec(&sp2C, &sp2C);
+    sp20.x = 1.0f;
+    sp20.y = 0.0f;
+    sp20.z = 0.0f;
+    mathutil_quat_from_dirs(&sp10, &sp20, &sp2C);
+    mathutil_mtxA_from_quat(&sp10);
+    mathutil_mtxA_mult_left(r30->unk208);
+    mathutil_mtxA_to_mtx(r30->unk208);
 }
-*/
+
+void func_8008C408(struct Ape *ape, Vec *b)
+{
+    Vec sp10 = *b;
+
+    sp10.y = 0.0f;
+    mathutil_vec_normalize_len(&sp10);
+    sp10.x = -sp10.x;
+    sp10.z = -sp10.z;
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y_sin_cos(-sp10.z, sp10.x);
+    ape->unkA0.x = 1.0f;
+    ape->unkA0.y = 0.0f;
+    ape->unkA0.z = 0.0f;
+    mathutil_mtxA_to_quat(&ape->unk60);
+}
+
+void func_8008C4A0(float a)
+{
+    lbl_802F2078 = a;
+}
+
+void func_8008C4A8(struct Ape *ape)
+{
+    struct Struct8003699C_child *r31 = ape->unk0;
+    struct Struct8003699C_child *r29;
+
+    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
+        return;
+
+    ape->unk18--;
+    ape->unk14 &= ~(1<<(31-0xF));
+    func_80085DB0(ape);
+    r31->unk40 += r31->unk3C * lbl_802F2078;
+    func_8008A7F0(ape, r31);
+    if (ape->unkC > 9.9999999392252903e-09f)
+    {
+        r29 = ape->unk4;
+        r31 = ape->unk0;
+        if (ape->unk14 & (1<<(31-0x16)))
+        {
+            r29->unk40 += r29->unk3C;
+            if (r29->unk40 >= 1.0f)
+            {
+                r29->unk38++;
+                r29->unk40 -= 1.0f;
+            }
+            if (r29->unk38 >= r29->unk3A)
+            {
+                if (ape->unk1C->unkC & (1<<(31-0x1B)))
+                    r29->unk38 = ape->unk1C->unk8;
+                else
+                    r29->unk38 = 1;
+                func_800355B8(r29);
+            }
+            func_800355FC(r29);
+            func_8008A2C4(&r31->unk81A8);
+            func_8008A2C4(&r29->unk81A8);
+            func_8008A3A4(&r31->unk81A8, &r29->unk81A8, ape->unk8 / ape->unkC);
+        }
+        else
+            func_8008A124(&r31->unk81A8, ape->unk8 / ape->unkC);
+        ape->unk8 += 1.0f;
+        if (ape->unk8 > ape->unkC)
+        {
+            ape->unkC = 0.0f;
+            r31->unk3C = ape->unk1C->unk18;
+        }
+    }
+    func_80036064(r31);
+}
 
 /*
 const float lbl_802F56A8 = 1f;
