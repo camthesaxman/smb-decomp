@@ -19,7 +19,7 @@ void stcoli_sub09(struct PhysicsBall *, struct StageColiCylinder *cylinder);
 // ? stcoli_sub10();
 void stcoli_sub11(struct PhysicsBall *, struct StageColiSphere *sphere);
 void stcoli_sub12(struct PhysicsBall *, struct StageColiCone *cone);
-// ? stcoli_sub13();
+void stcoli_sub13(struct PhysicsBall *physBall, struct Struct8003DE2C_Stcoli *coliHit);
 u32 test_line_intersects_rect(Vec *, Vec *, struct Struct8003F890 *);
 // ? stcoli_sub15();
 int stcoli_sub16(Vec *, struct Struct8003FB48 *, Vec *);

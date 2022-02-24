@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <math.h>
 
 #include "global.h"
 #include "types.h"
@@ -106,4 +107,59 @@ s16 *meshcoli_grid_lookup(struct StageCollHdr* coliHeader, f32 x, f32 z) {
         return NULL;
     }
     return coliHeader->gridCells[cellZ * coliHeader->gridDimX + cellX];
+}
+
+static inline float dumb_dot(float x1, float y1, float x2, float y2) {
+    return x1 * x2 + y1 * y2;
+}
+
+void stcoli_sub03(struct PhysicsBall* physBall, struct StageColiTri* tri) {
+    struct Struct8003DE2C_Stcoli coliHit;
+    float x;
+    float y;
+    float z;
+    Vec pos;
+    Vec prevPos;
+
+    // Only necessary for stack size/alignment,
+    // can also be completely unused and swapped for float literals
+    float upX;
+    float upY;
+
+    prevPos = physBall->prevPos;
+    pos = physBall->pos;
+
+    x = prevPos.x - tri->vert1.x;
+    y = prevPos.y - tri->vert1.y;
+    z = prevPos.z - tri->vert1.z;
+    if (x * tri->normal.x +
+          y * tri->normal.y +
+          z * tri->normal.z < 0.0) return;
+    x = pos.x - tri->vert1.x;
+    y = pos.y - tri->vert1.y;
+    z = pos.z - tri->vert1.z;
+    if (x * tri->normal.x +
+          y * tri->normal.y +
+          z * tri->normal.z > physBall->radius) return;
+
+    mathutil_mtxA_from_translate(&tri->vert1);
+    mathutil_mtxA_rotate_y(tri->rotFromXY.y);
+    mathutil_mtxA_rotate_x(tri->rotFromXY.x);
+    mathutil_mtxA_rotate_z(tri->rotFromXY.z);
+    mathutil_mtxA_rigid_inv_tf_point(&prevPos, &prevPos);
+    mathutil_mtxA_rigid_inv_tf_point(&pos, &pos);
+
+    upX = 0;
+    upY = 1;
+
+    if (!(((dumb_dot(upX, upY, prevPos.x, prevPos.y) < -FLT_EPSILON) ||
+     (((prevPos.x - tri->vert2Delta.x) * tri->tangent.x) + ((prevPos.y - tri->vert2Delta.y) * tri->tangent.y) < -FLT_EPSILON) ||
+     (((prevPos.x - tri->vert3Delta.x) * tri->bitangent.x) + ((prevPos.y - tri->vert3Delta.y) * tri->bitangent.y) < -FLT_EPSILON)) &&
+    ((dumb_dot(upX, upY, pos.x, pos.y) < -FLT_EPSILON) ||
+     (((pos.x - tri->vert2Delta.x) * tri->tangent.x) + ((pos.y - tri->vert2Delta.y) * tri->tangent.y) < -FLT_EPSILON) ||
+     (((pos.x - tri->vert3Delta.x) * tri->bitangent.x) + ((pos.y - tri->vert3Delta.y) * tri->bitangent.y) < -FLT_EPSILON)))) {
+        coliHit.pos = tri->vert1;
+        coliHit.normal = tri->normal;
+        stcoli_sub13(physBall, &coliHit);
+     }
 }

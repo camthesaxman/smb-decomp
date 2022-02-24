@@ -380,6 +380,12 @@ struct PhysicsBall
     s32 itemgroupId;
 };
 
+struct Struct8003DE2C_Stcoli
+{
+    Vec pos;
+    Vec normal;
+};
+
 struct Struct800496BC
 {
     Vec unk0;
