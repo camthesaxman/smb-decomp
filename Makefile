@@ -142,6 +142,7 @@ SOURCES := \
 	asm/stobj.s \
 	src/sprite.c \
 	asm/code_5.s \
+	src/minimap.c \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	asm/code_3.s \
