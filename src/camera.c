@@ -3029,7 +3029,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 
     if (!(sp34.flags & 1)
      || infoWork.unkC >= decodedStageLzPtr->goalsCount
-     || infoWork.unkE >= decodedStageLzPtr->collHdrsCount)
+     || infoWork.unkE >= decodedStageLzPtr->itemgroupCount)
     {
         camera->unk10E = 0;
         camera->unk110 = -1;

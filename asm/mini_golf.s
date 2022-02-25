@@ -17381,7 +17381,7 @@ lbl_00010130:
 /* 00010134 54603032 */ slwi r0, r3, 6
 /* 00010138 387E0000 */ addi r3, r30, 0
 /* 0001013C 7C840214 */ add r4, r4, r0
-/* 00010140 4BFF0091 */ bl stcoli_sub03
+/* 00010140 4BFF0091 */ bl g_collide_ball_with_tri_face
 /* 00010144 3B7B0002 */ addi r27, r27, 2
 lbl_00010148:
 /* 00010148 A87B0000 */ lha r3, 0(r27)
@@ -17394,7 +17394,7 @@ lbl_00010154:
 lbl_00010160:
 /* 00010160 387E0000 */ addi r3, r30, 0
 /* 00010164 389B0000 */ addi r4, r27, 0
-/* 00010168 4BFF0069 */ bl stcoli_sub12
+/* 00010168 4BFF0069 */ bl g_collide_ball_with_cone
 /* 0001016C 3B5AFFFF */ addi r26, r26, -1  ;# fixed addi
 /* 00010170 3B7B0020 */ addi r27, r27, 0x20
 lbl_00010174:
@@ -17406,7 +17406,7 @@ lbl_00010174:
 lbl_00010188:
 /* 00010188 387E0000 */ addi r3, r30, 0
 /* 0001018C 389A0000 */ addi r4, r26, 0
-/* 00010190 4BFF0041 */ bl stcoli_sub11
+/* 00010190 4BFF0041 */ bl g_collide_ball_with_sphere
 /* 00010194 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 /* 00010198 3B5A0014 */ addi r26, r26, 0x14
 lbl_0001019C:
@@ -17418,7 +17418,7 @@ lbl_0001019C:
 lbl_000101B0:
 /* 000101B0 387E0000 */ addi r3, r30, 0
 /* 000101B4 389A0000 */ addi r4, r26, 0
-/* 000101B8 4BFF0019 */ bl stcoli_sub09
+/* 000101B8 4BFF0019 */ bl g_collide_ball_with_cylinder
 /* 000101BC 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 /* 000101C0 3B5A001C */ addi r26, r26, 0x1c
 lbl_000101C4:
@@ -17454,7 +17454,7 @@ lbl_00010224:
 /* 00010228 54603032 */ slwi r0, r3, 6
 /* 0001022C 387E0000 */ addi r3, r30, 0
 /* 00010230 7C840214 */ add r4, r4, r0
-/* 00010234 4BFEFF9D */ bl stcoli_sub04
+/* 00010234 4BFEFF9D */ bl g_collide_ball_with_tri_edges
 /* 00010238 3B5A0002 */ addi r26, r26, 2
 lbl_0001023C:
 /* 0001023C A87A0000 */ lha r3, 0(r26)
@@ -17491,7 +17491,7 @@ lbl_000102A0:
 /* 000102A4 54603032 */ slwi r0, r3, 6
 /* 000102A8 387E0000 */ addi r3, r30, 0
 /* 000102AC 7C840214 */ add r4, r4, r0
-/* 000102B0 4BFEFF21 */ bl stcoli_sub06
+/* 000102B0 4BFEFF21 */ bl g_collide_ball_with_tri_verts
 /* 000102B4 3B5A0002 */ addi r26, r26, 2
 lbl_000102B8:
 /* 000102B8 A87A0000 */ lha r3, 0(r26)

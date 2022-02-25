@@ -3,8 +3,8 @@
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
 .if 0
-.global g_handle_ball_stage_collision
-g_handle_ball_stage_collision:
+.global g_collide_ball_with_stage
+g_collide_ball_with_stage:
 /* 8003DABC 000399DC  7C 08 02 A6 */	mflr r0
 /* 8003DAC0 000399E0  90 01 00 04 */	stw r0, 4(r1)
 /* 8003DAC4 000399E4  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -40,13 +40,13 @@ g_handle_ball_stage_collision:
 /* 8003DB3C 00039A5C  D0 41 00 48 */	stfs f2, 0x48(r1)
 /* 8003DB40 00039A60  D0 61 00 4C */	stfs f3, 0x4c(r1)
 /* 8003DB44 00039A64  90 1C 00 58 */	stw r0, 0x58(r28)
-/* 8003DB48 00039A68  48 00 02 E5 */	bl stcoli_sub03
+/* 8003DB48 00039A68  48 00 02 E5 */	bl g_collide_ball_with_tri_face
 /* 8003DB4C 00039A6C  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DB50 00039A70  38 81 00 10 */	addi r4, r1, 0x10
-/* 8003DB54 00039A74  48 00 05 39 */	bl stcoli_sub04
+/* 8003DB54 00039A74  48 00 05 39 */	bl g_collide_ball_with_tri_edges
 /* 8003DB58 00039A78  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DB5C 00039A7C  38 81 00 10 */	addi r4, r1, 0x10
-/* 8003DB60 00039A80  48 00 0A 75 */	bl stcoli_sub06
+/* 8003DB60 00039A80  48 00 0A 75 */	bl g_collide_ball_with_tri_verts
 /* 8003DB64 00039A84  48 00 01 A4 */	b lbl_8003DD08
 lbl_8003DB68:
 /* 8003DB68 00039A88  83 FD 00 0C */	lwz r31, 0xc(r29)
@@ -73,7 +73,7 @@ lbl_8003DBAC:
 /* 8003DBB0 00039AD0  54 60 30 32 */	slwi r0, r3, 6
 /* 8003DBB4 00039AD4  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DBB8 00039AD8  7C 84 02 14 */	add r4, r4, r0
-/* 8003DBBC 00039ADC  48 00 02 71 */	bl stcoli_sub03
+/* 8003DBBC 00039ADC  48 00 02 71 */	bl g_collide_ball_with_tri_face
 /* 8003DBC0 00039AE0  3B 7B 00 02 */	addi r27, r27, 2
 lbl_8003DBC4:
 /* 8003DBC4 00039AE4  A8 7B 00 00 */	lha r3, 0(r27)
@@ -86,7 +86,7 @@ lbl_8003DBD8:
 /* 8003DBDC 00039AFC  54 60 30 32 */	slwi r0, r3, 6
 /* 8003DBE0 00039B00  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DBE4 00039B04  7C 84 02 14 */	add r4, r4, r0
-/* 8003DBE8 00039B08  48 00 04 A5 */	bl stcoli_sub04
+/* 8003DBE8 00039B08  48 00 04 A5 */	bl g_collide_ball_with_tri_edges
 /* 8003DBEC 00039B0C  3B 7B 00 02 */	addi r27, r27, 2
 lbl_8003DBF0:
 /* 8003DBF0 00039B10  A8 7B 00 00 */	lha r3, 0(r27)
@@ -99,7 +99,7 @@ lbl_8003DC04:
 /* 8003DC08 00039B28  54 60 30 32 */	slwi r0, r3, 6
 /* 8003DC0C 00039B2C  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DC10 00039B30  7C 84 02 14 */	add r4, r4, r0
-/* 8003DC14 00039B34  48 00 09 C1 */	bl stcoli_sub06
+/* 8003DC14 00039B34  48 00 09 C1 */	bl g_collide_ball_with_tri_verts
 /* 8003DC18 00039B38  3B 7B 00 02 */	addi r27, r27, 2
 lbl_8003DC1C:
 /* 8003DC1C 00039B3C  A8 7B 00 00 */	lha r3, 0(r27)
@@ -112,7 +112,7 @@ lbl_8003DC28:
 lbl_8003DC34:
 /* 8003DC34 00039B54  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DC38 00039B58  38 9A 00 00 */	addi r4, r26, 0
-/* 8003DC3C 00039B5C  48 00 17 3D */	bl stcoli_sub12
+/* 8003DC3C 00039B5C  48 00 17 3D */	bl g_collide_ball_with_cone
 /* 8003DC40 00039B60  3B 7B FF FF */	addi r27, r27, -1
 /* 8003DC44 00039B64  3B 5A 00 20 */	addi r26, r26, 0x20
 lbl_8003DC48:
@@ -124,7 +124,7 @@ lbl_8003DC48:
 lbl_8003DC5C:
 /* 8003DC5C 00039B7C  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DC60 00039B80  38 9A 00 00 */	addi r4, r26, 0
-/* 8003DC64 00039B84  48 00 15 E5 */	bl stcoli_sub11
+/* 8003DC64 00039B84  48 00 15 E5 */	bl g_collide_ball_with_sphere
 /* 8003DC68 00039B88  3B 7B FF FF */	addi r27, r27, -1
 /* 8003DC6C 00039B8C  3B 5A 00 14 */	addi r26, r26, 0x14
 lbl_8003DC70:
@@ -136,7 +136,7 @@ lbl_8003DC70:
 lbl_8003DC84:
 /* 8003DC84 00039BA4  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DC88 00039BA8  38 9A 00 00 */	addi r4, r26, 0
-/* 8003DC8C 00039BAC  48 00 11 25 */	bl stcoli_sub09
+/* 8003DC8C 00039BAC  48 00 11 25 */	bl g_collide_ball_with_cylinder
 /* 8003DC90 00039BB0  3B 7B FF FF */	addi r27, r27, -1
 /* 8003DC94 00039BB4  3B 5A 00 1C */	addi r26, r26, 0x1c
 lbl_8003DC98:
@@ -148,7 +148,7 @@ lbl_8003DC98:
 lbl_8003DCAC:
 /* 8003DCAC 00039BCC  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DCB0 00039BD0  38 9A 00 00 */	addi r4, r26, 0
-/* 8003DCB4 00039BD4  48 00 2E 6D */	bl stcoli_sub21
+/* 8003DCB4 00039BD4  48 00 2E 6D */	bl g_collide_ball_with_goal
 /* 8003DCB8 00039BD8  3B 7B FF FF */	addi r27, r27, -1
 /* 8003DCBC 00039BDC  3B 5A 00 14 */	addi r26, r26, 0x14
 lbl_8003DCC0:
@@ -171,7 +171,7 @@ lbl_8003DCF4:
 /* 8003DCF8 00039C18  28 04 00 00 */	cmplwi r4, 0
 /* 8003DCFC 00039C1C  41 82 00 0C */	beq lbl_8003DD08
 /* 8003DD00 00039C20  7F 83 E3 78 */	mr r3, r28
-/* 8003DD04 00039C24  48 00 35 29 */	bl stcoli_sub25
+/* 8003DD04 00039C24  48 00 35 29 */	bl g_collide_ball_with_dynstageparts
 lbl_8003DD08:
 /* 8003DD08 00039C28  BB 41 00 50 */	lmw r26, 0x50(r1)
 /* 8003DD0C 00039C2C  80 01 00 6C */	lwz r0, 0x6c(r1)
@@ -260,8 +260,8 @@ lbl_8003DE24:
 .endif
 
 .if 0
-.global stcoli_sub03
-stcoli_sub03:
+.global g_collide_ball_with_tri_face
+g_collide_ball_with_tri_face:
 /* 8003DE2C 00039D4C  7C 08 02 A6 */	mflr r0
 /* 8003DE30 00039D50  90 01 00 04 */	stw r0, 4(r1)
 /* 8003DE34 00039D54  94 21 FF 88 */	stwu r1, -0x78(r1)
@@ -409,7 +409,7 @@ lbl_8003E038:
 /* 8003E064 00039F84  90 01 00 64 */	stw r0, 0x64(r1)
 /* 8003E068 00039F88  80 1F 00 14 */	lwz r0, 0x14(r31)
 /* 8003E06C 00039F8C  90 01 00 68 */	stw r0, 0x68(r1)
-/* 8003E070 00039F90  48 00 15 99 */	bl stcoli_sub13
+/* 8003E070 00039F90  48 00 15 99 */	bl g_apply_coli_response
 lbl_8003E074:
 /* 8003E074 00039F94  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 8003E078 00039F98  83 E1 00 74 */	lwz r31, 0x74(r1)
@@ -419,8 +419,8 @@ lbl_8003E074:
 /* 8003E088 00039FA8  4E 80 00 20 */	blr
 .endif
 
-.global stcoli_sub04
-stcoli_sub04:
+.global g_collide_ball_with_tri_edges
+g_collide_ball_with_tri_edges:
 /* 8003E08C 00039FAC  7C 08 02 A6 */	mflr r0
 /* 8003E090 00039FB0  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E094 00039FB4  94 21 FF 90 */	stwu r1, -0x70(r1)
@@ -764,7 +764,7 @@ lbl_8003E538:
 /* 8003E5A0 0003A4C0  4B FC 98 8D */	bl mathutil_mtxA_tf_point
 /* 8003E5A4 0003A4C4  38 7C 00 00 */	addi r3, r28, 0
 /* 8003E5A8 0003A4C8  38 9F 00 00 */	addi r4, r31, 0
-/* 8003E5AC 0003A4CC  48 00 10 5D */	bl stcoli_sub13
+/* 8003E5AC 0003A4CC  48 00 10 5D */	bl g_apply_coli_response
 lbl_8003E5B0:
 /* 8003E5B0 0003A4D0  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 8003E5B4 0003A4D4  CB E1 00 70 */	lfd f31, 0x70(r1)
@@ -776,8 +776,8 @@ lbl_8003E5B0:
 /* 8003E5CC 0003A4EC  38 21 00 78 */	addi r1, r1, 0x78
 /* 8003E5D0 0003A4F0  4E 80 00 20 */	blr
 
-.global stcoli_sub06
-stcoli_sub06:
+.global g_collide_ball_with_tri_verts
+g_collide_ball_with_tri_verts:
 /* 8003E5D4 0003A4F4  7C 08 02 A6 */	mflr r0
 /* 8003E5D8 0003A4F8  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E5DC 0003A4FC  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -940,7 +940,7 @@ stcoli_sub07:
 /* 8003E840 0003A760  4B FC 8F B1 */	bl mathutil_mtxA_push
 /* 8003E844 0003A764  38 7E 00 00 */	addi r3, r30, 0
 /* 8003E848 0003A768  38 81 00 20 */	addi r4, r1, 0x20
-/* 8003E84C 0003A76C  48 00 0D BD */	bl stcoli_sub13
+/* 8003E84C 0003A76C  48 00 0D BD */	bl g_apply_coli_response
 /* 8003E850 0003A770  4B FC 8F E5 */	bl mathutil_mtxA_pop
 lbl_8003E854:
 /* 8003E854 0003A774  80 01 00 44 */	lwz r0, 0x44(r1)
@@ -1117,7 +1117,7 @@ lbl_8003EAC4:
 /* 8003EAEC 0003AA0C  4B FC 93 41 */	bl mathutil_mtxA_tf_point
 /* 8003EAF0 0003AA10  38 7E 00 00 */	addi r3, r30, 0
 /* 8003EAF4 0003AA14  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003EAF8 0003AA18  48 00 0B 11 */	bl stcoli_sub13
+/* 8003EAF8 0003AA18  48 00 0B 11 */	bl g_apply_coli_response
 /* 8003EAFC 0003AA1C  48 00 02 94 */	b lbl_8003ED90
 lbl_8003EB00:
 /* 8003EB00 0003AA20  FC 05 F8 40 */	fcmpo cr0, f5, f31
@@ -1166,7 +1166,7 @@ lbl_8003EB80:
 /* 8003EBA4 0003AAC4  4B FC 92 89 */	bl mathutil_mtxA_tf_point
 /* 8003EBA8 0003AAC8  38 7E 00 00 */	addi r3, r30, 0
 /* 8003EBAC 0003AACC  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003EBB0 0003AAD0  48 00 0A 59 */	bl stcoli_sub13
+/* 8003EBB0 0003AAD0  48 00 0A 59 */	bl g_apply_coli_response
 /* 8003EBB4 0003AAD4  48 00 01 DC */	b lbl_8003ED90
 lbl_8003EBB8:
 /* 8003EBB8 0003AAD8  FC 02 08 40 */	fcmpo cr0, f2, f1
@@ -1216,7 +1216,7 @@ lbl_8003EC38:
 /* 8003EC60 0003AB80  4B FC 91 CD */	bl mathutil_mtxA_tf_point
 /* 8003EC64 0003AB84  38 7E 00 00 */	addi r3, r30, 0
 /* 8003EC68 0003AB88  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003EC6C 0003AB8C  48 00 09 9D */	bl stcoli_sub13
+/* 8003EC6C 0003AB8C  48 00 09 9D */	bl g_apply_coli_response
 /* 8003EC70 0003AB90  48 00 01 20 */	b lbl_8003ED90
 lbl_8003EC74:
 /* 8003EC74 0003AB94  FC 02 F0 40 */	fcmpo cr0, f2, f30
@@ -1265,7 +1265,7 @@ lbl_8003ECF4:
 /* 8003ED18 0003AC38  4B FC 91 15 */	bl mathutil_mtxA_tf_point
 /* 8003ED1C 0003AC3C  38 7E 00 00 */	addi r3, r30, 0
 /* 8003ED20 0003AC40  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003ED24 0003AC44  48 00 08 E5 */	bl stcoli_sub13
+/* 8003ED24 0003AC44  48 00 08 E5 */	bl g_apply_coli_response
 /* 8003ED28 0003AC48  48 00 00 68 */	b lbl_8003ED90
 lbl_8003ED2C:
 /* 8003ED2C 0003AC4C  FC 05 20 40 */	fcmpo cr0, f5, f4
@@ -1294,7 +1294,7 @@ lbl_8003ED54:
 /* 8003ED80 0003ACA0  90 01 00 50 */	stw r0, 0x50(r1)
 /* 8003ED84 0003ACA4  80 1F 00 1C */	lwz r0, 0x1c(r31)
 /* 8003ED88 0003ACA8  90 01 00 54 */	stw r0, 0x54(r1)
-/* 8003ED8C 0003ACAC  48 00 08 7D */	bl stcoli_sub13
+/* 8003ED8C 0003ACAC  48 00 08 7D */	bl g_apply_coli_response
 lbl_8003ED90:
 /* 8003ED90 0003ACB0  80 01 00 74 */	lwz r0, 0x74(r1)
 /* 8003ED94 0003ACB4  CB E1 00 68 */	lfd f31, 0x68(r1)
@@ -1305,8 +1305,8 @@ lbl_8003ED90:
 /* 8003EDA8 0003ACC8  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003EDAC 0003ACCC  4E 80 00 20 */	blr
 
-.global stcoli_sub09
-stcoli_sub09:
+.global g_collide_ball_with_cylinder
+g_collide_ball_with_cylinder:
 /* 8003EDB0 0003ACD0  7C 08 02 A6 */	mflr r0
 /* 8003EDB4 0003ACD4  90 01 00 04 */	stw r0, 4(r1)
 /* 8003EDB8 0003ACD8  94 21 FF 70 */	stwu r1, -0x90(r1)
@@ -1460,7 +1460,7 @@ lbl_8003EF90:
 /* 8003F000 0003AF20  4B FC 8E 2D */	bl mathutil_mtxA_tf_point
 /* 8003F004 0003AF24  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F008 0003AF28  38 81 00 64 */	addi r4, r1, 0x64
-/* 8003F00C 0003AF2C  48 00 05 FD */	bl stcoli_sub13
+/* 8003F00C 0003AF2C  48 00 05 FD */	bl g_apply_coli_response
 lbl_8003F010:
 /* 8003F010 0003AF30  80 01 00 94 */	lwz r0, 0x94(r1)
 /* 8003F014 0003AF34  CB E1 00 88 */	lfd f31, 0x88(r1)
@@ -1542,7 +1542,7 @@ stcoli_sub10:
 /* 8003F138 0003B058  4B FC 8D 05 */	bl mathutil_mtxA_tf_vec
 /* 8003F13C 0003B05C  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F140 0003B060  38 9F 00 00 */	addi r4, r31, 0
-/* 8003F144 0003B064  48 00 04 C5 */	bl stcoli_sub13
+/* 8003F144 0003B064  48 00 04 C5 */	bl g_apply_coli_response
 /* 8003F148 0003B068  48 00 00 E8 */	b lbl_8003F230
 lbl_8003F14C:
 /* 8003F14C 0003B06C  C0 1E 00 28 */	lfs f0, 0x28(r30)
@@ -1601,7 +1601,7 @@ lbl_8003F14C:
 /* 8003F220 0003B140  4B FC 8C 1D */	bl mathutil_mtxA_tf_vec
 /* 8003F224 0003B144  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F228 0003B148  38 81 00 28 */	addi r4, r1, 0x28
-/* 8003F22C 0003B14C  48 00 03 DD */	bl stcoli_sub13
+/* 8003F22C 0003B14C  48 00 03 DD */	bl g_apply_coli_response
 lbl_8003F230:
 /* 8003F230 0003B150  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8003F234 0003B154  83 E1 00 44 */	lwz r31, 0x44(r1)
@@ -1610,8 +1610,8 @@ lbl_8003F230:
 /* 8003F240 0003B160  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003F244 0003B164  4E 80 00 20 */	blr
 
-.global stcoli_sub11
-stcoli_sub11:
+.global g_collide_ball_with_sphere
+g_collide_ball_with_sphere:
 /* 8003F248 0003B168  7C 08 02 A6 */	mflr r0
 /* 8003F24C 0003B16C  90 01 00 04 */	stw r0, 4(r1)
 /* 8003F250 0003B170  94 21 FF C0 */	stwu r1, -0x40(r1)
@@ -1681,7 +1681,7 @@ stcoli_sub11:
 /* 8003F350 0003B270  D0 81 00 28 */	stfs f4, 0x28(r1)
 /* 8003F354 0003B274  D0 61 00 2C */	stfs f3, 0x2c(r1)
 /* 8003F358 0003B278  D0 21 00 30 */	stfs f1, 0x30(r1)
-/* 8003F35C 0003B27C  48 00 02 AD */	bl stcoli_sub13
+/* 8003F35C 0003B27C  48 00 02 AD */	bl g_apply_coli_response
 lbl_8003F360:
 /* 8003F360 0003B280  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 8003F364 0003B284  83 E1 00 3C */	lwz r31, 0x3c(r1)
@@ -1690,8 +1690,8 @@ lbl_8003F360:
 /* 8003F370 0003B290  38 21 00 40 */	addi r1, r1, 0x40
 /* 8003F374 0003B294  4E 80 00 20 */	blr
 
-.global stcoli_sub12
-stcoli_sub12:
+.global g_collide_ball_with_cone
+g_collide_ball_with_cone:
 /* 8003F378 0003B298  7C 08 02 A6 */	mflr r0
 /* 8003F37C 0003B29C  90 01 00 04 */	stw r0, 4(r1)
 /* 8003F380 0003B2A0  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -1819,7 +1819,7 @@ lbl_8003F3F4:
 /* 8003F560 0003B480  4B FC 88 DD */	bl mathutil_mtxA_tf_vec
 /* 8003F564 0003B484  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F568 0003B488  38 9F 00 00 */	addi r4, r31, 0
-/* 8003F56C 0003B48C  48 00 00 9D */	bl stcoli_sub13
+/* 8003F56C 0003B48C  48 00 00 9D */	bl g_apply_coli_response
 /* 8003F570 0003B490  48 00 00 80 */	b lbl_8003F5F0
 lbl_8003F574:
 /* 8003F574 0003B494  C0 1F 00 18 */	lfs f0, 0x18(r31)
@@ -1852,7 +1852,7 @@ lbl_8003F574:
 /* 8003F5E0 0003B500  4B FC 88 5D */	bl mathutil_mtxA_tf_vec
 /* 8003F5E4 0003B504  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F5E8 0003B508  38 9F 00 00 */	addi r4, r31, 0
-/* 8003F5EC 0003B50C  48 00 00 1D */	bl stcoli_sub13
+/* 8003F5EC 0003B50C  48 00 00 1D */	bl g_apply_coli_response
 lbl_8003F5F0:
 /* 8003F5F0 0003B510  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8003F5F4 0003B514  83 E1 00 44 */	lwz r31, 0x44(r1)
@@ -1861,8 +1861,8 @@ lbl_8003F5F0:
 /* 8003F600 0003B520  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003F604 0003B524  4E 80 00 20 */	blr
 
-.global stcoli_sub13
-stcoli_sub13:
+.global g_apply_coli_response
+g_apply_coli_response:
 /* 8003F608 0003B528  94 21 FF 98 */	stwu r1, -0x68(r1)
 /* 8003F60C 0003B52C  DB E1 00 60 */	stfd f31, 0x60(r1)
 /* 8003F610 0003B530  DB C1 00 58 */	stfd f30, 0x58(r1)
@@ -3311,8 +3311,8 @@ lbl_80040B04:
 /* 80040B18 0003CA38  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040B1C 0003CA3C  4E 80 00 20 */	blr
 
-.global stcoli_sub21
-stcoli_sub21:
+.global g_collide_ball_with_goal
+g_collide_ball_with_goal:
 /* 80040B20 0003CA40  7C 08 02 A6 */	mflr r0
 /* 80040B24 0003CA44  90 01 00 04 */	stw r0, 4(r1)
 /* 80040B28 0003CA48  94 21 FF 78 */	stwu r1, -0x88(r1)
@@ -3421,7 +3421,7 @@ stcoli_sub21:
 /* 80040CC4 0003CBE4  B0 01 00 6C */	sth r0, 0x6c(r1)
 /* 80040CC8 0003CBE8  D0 21 00 60 */	stfs f1, 0x60(r1)
 /* 80040CCC 0003CBEC  D0 01 00 64 */	stfs f0, 0x64(r1)
-/* 80040CD0 0003CBF0  4B FF E0 E1 */	bl stcoli_sub09
+/* 80040CD0 0003CBF0  4B FF E0 E1 */	bl g_collide_ball_with_cylinder
 /* 80040CD4 0003CBF4  4B FC 6B 61 */	bl mathutil_mtxA_pop
 /* 80040CD8 0003CBF8  4B FC 6B 19 */	bl mathutil_mtxA_push
 /* 80040CDC 0003CBFC  C0 02 8E 94 */	lfs f0, lbl_802F3694-_SDA2_BASE_(r2)
@@ -3445,7 +3445,7 @@ stcoli_sub21:
 /* 80040D24 0003CC44  B0 01 00 6C */	sth r0, 0x6c(r1)
 /* 80040D28 0003CC48  D0 21 00 60 */	stfs f1, 0x60(r1)
 /* 80040D2C 0003CC4C  D0 01 00 64 */	stfs f0, 0x64(r1)
-/* 80040D30 0003CC50  4B FF E0 81 */	bl stcoli_sub09
+/* 80040D30 0003CC50  4B FF E0 81 */	bl g_collide_ball_with_cylinder
 /* 80040D34 0003CC54  4B FC 6B 01 */	bl mathutil_mtxA_pop
 lbl_80040D38:
 /* 80040D38 0003CC58  80 01 00 8C */	lwz r0, 0x8c(r1)
@@ -3571,7 +3571,7 @@ lbl_80040DE8:
 /* 80040F08 0003CE28  4B FC 6F 25 */	bl mathutil_mtxA_tf_point
 /* 80040F0C 0003CE2C  38 7D 00 00 */	addi r3, r29, 0
 /* 80040F10 0003CE30  38 81 00 10 */	addi r4, r1, 0x10
-/* 80040F14 0003CE34  4B FF E6 F5 */	bl stcoli_sub13
+/* 80040F14 0003CE34  4B FF E6 F5 */	bl g_apply_coli_response
 lbl_80040F18:
 /* 80040F18 0003CE38  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 80040F1C 0003CE3C  CB E1 00 70 */	lfd f31, 0x70(r1)
@@ -3770,7 +3770,7 @@ lbl_8004114C:
 /* 800411FC 0003D11C  4B FC 6C 31 */	bl mathutil_mtxA_tf_point
 /* 80041200 0003D120  38 7D 00 00 */	addi r3, r29, 0
 /* 80041204 0003D124  38 81 00 10 */	addi r4, r1, 0x10
-/* 80041208 0003D128  4B FF E4 01 */	bl stcoli_sub13
+/* 80041208 0003D128  4B FF E4 01 */	bl g_apply_coli_response
 lbl_8004120C:
 /* 8004120C 0003D12C  80 01 00 74 */	lwz r0, 0x74(r1)
 /* 80041210 0003D130  CB E1 00 68 */	lfd f31, 0x68(r1)
@@ -3781,8 +3781,8 @@ lbl_8004120C:
 /* 80041224 0003D144  38 21 00 70 */	addi r1, r1, 0x70
 /* 80041228 0003D148  4E 80 00 20 */	blr
 
-.global stcoli_sub25
-stcoli_sub25:
+.global g_collide_ball_with_dynstageparts
+g_collide_ball_with_dynstageparts:
 /* 8004122C 0003D14C  7C 08 02 A6 */	mflr r0
 /* 80041230 0003D150  90 01 00 04 */	stw r0, 4(r1)
 /* 80041234 0003D154  94 21 F6 80 */	stwu r1, -0x980(r1)
@@ -3951,7 +3951,7 @@ lbl_80041490:
 /* 80041498 0003D3B8  40 82 00 10 */	bne lbl_800414A8
 /* 8004149C 0003D3BC  38 76 00 00 */	addi r3, r22, 0
 /* 800414A0 0003D3C0  38 9C 00 00 */	addi r4, r28, 0
-/* 800414A4 0003D3C4  4B FF C9 89 */	bl stcoli_sub03
+/* 800414A4 0003D3C4  4B FF C9 89 */	bl g_collide_ball_with_tri_face
 lbl_800414A8:
 /* 800414A8 0003D3C8  A0 1C 00 5E */	lhz r0, 0x5e(r28)
 /* 800414AC 0003D3CC  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -3959,7 +3959,7 @@ lbl_800414A8:
 /* 800414B4 0003D3D4  40 82 00 10 */	bne lbl_800414C4
 /* 800414B8 0003D3D8  38 76 00 00 */	addi r3, r22, 0
 /* 800414BC 0003D3DC  38 9C 00 00 */	addi r4, r28, 0
-/* 800414C0 0003D3E0  4B FF C9 6D */	bl stcoli_sub03
+/* 800414C0 0003D3E0  4B FF C9 6D */	bl g_collide_ball_with_tri_face
 lbl_800414C4:
 /* 800414C4 0003D3E4  37 18 FF FF */	addic. r24, r24, -1
 /* 800414C8 0003D3E8  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -3976,7 +3976,7 @@ lbl_800414E4:
 /* 800414EC 0003D40C  40 82 00 10 */	bne lbl_800414FC
 /* 800414F0 0003D410  38 76 00 00 */	addi r3, r22, 0
 /* 800414F4 0003D414  38 9C 00 00 */	addi r4, r28, 0
-/* 800414F8 0003D418  4B FF CB 95 */	bl stcoli_sub04
+/* 800414F8 0003D418  4B FF CB 95 */	bl g_collide_ball_with_tri_edges
 lbl_800414FC:
 /* 800414FC 0003D41C  A0 1C 00 5E */	lhz r0, 0x5e(r28)
 /* 80041500 0003D420  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -3984,7 +3984,7 @@ lbl_800414FC:
 /* 80041508 0003D428  40 82 00 10 */	bne lbl_80041518
 /* 8004150C 0003D42C  38 76 00 00 */	addi r3, r22, 0
 /* 80041510 0003D430  38 9C 00 00 */	addi r4, r28, 0
-/* 80041514 0003D434  4B FF CB 79 */	bl stcoli_sub04
+/* 80041514 0003D434  4B FF CB 79 */	bl g_collide_ball_with_tri_edges
 lbl_80041518:
 /* 80041518 0003D438  37 18 FF FF */	addic. r24, r24, -1
 /* 8004151C 0003D43C  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -4001,7 +4001,7 @@ lbl_80041538:
 /* 80041540 0003D460  40 82 00 10 */	bne lbl_80041550
 /* 80041544 0003D464  38 76 00 00 */	addi r3, r22, 0
 /* 80041548 0003D468  38 9C 00 00 */	addi r4, r28, 0
-/* 8004154C 0003D46C  4B FF D0 89 */	bl stcoli_sub06
+/* 8004154C 0003D46C  4B FF D0 89 */	bl g_collide_ball_with_tri_verts
 lbl_80041550:
 /* 80041550 0003D470  A0 1C 00 5E */	lhz r0, 0x5e(r28)
 /* 80041554 0003D474  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -4009,7 +4009,7 @@ lbl_80041550:
 /* 8004155C 0003D47C  40 82 00 10 */	bne lbl_8004156C
 /* 80041560 0003D480  38 76 00 00 */	addi r3, r22, 0
 /* 80041564 0003D484  38 9C 00 00 */	addi r4, r28, 0
-/* 80041568 0003D488  4B FF D0 6D */	bl stcoli_sub06
+/* 80041568 0003D488  4B FF D0 6D */	bl g_collide_ball_with_tri_verts
 lbl_8004156C:
 /* 8004156C 0003D48C  3B 18 00 01 */	addi r24, r24, 1
 /* 80041570 0003D490  2C 18 00 03 */	cmpwi r24, 3
@@ -4992,7 +4992,7 @@ lbl_8004238C:
 /* 80042394 0003E2B4  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042398 0003E2B8  54 00 30 32 */	slwi r0, r0, 6
 /* 8004239C 0003E2BC  7C 84 02 14 */	add r4, r4, r0
-/* 800423A0 0003E2C0  4B FF BA 8D */	bl stcoli_sub03
+/* 800423A0 0003E2C0  4B FF BA 8D */	bl g_collide_ball_with_tri_face
 /* 800423A4 0003E2C4  3B 5A 00 02 */	addi r26, r26, 2
 lbl_800423A8:
 /* 800423A8 0003E2C8  A8 1A 00 00 */	lha r0, 0(r26)
@@ -5005,7 +5005,7 @@ lbl_800423B4:
 lbl_800423C0:
 /* 800423C0 0003E2E0  38 7B 00 00 */	addi r3, r27, 0
 /* 800423C4 0003E2E4  38 9A 00 00 */	addi r4, r26, 0
-/* 800423C8 0003E2E8  4B FF CF B1 */	bl stcoli_sub12
+/* 800423C8 0003E2E8  4B FF CF B1 */	bl g_collide_ball_with_cone
 /* 800423CC 0003E2EC  3B 39 FF FF */	addi r25, r25, -1
 /* 800423D0 0003E2F0  3B 5A 00 20 */	addi r26, r26, 0x20
 lbl_800423D4:
@@ -5017,7 +5017,7 @@ lbl_800423D4:
 lbl_800423E8:
 /* 800423E8 0003E308  38 7B 00 00 */	addi r3, r27, 0
 /* 800423EC 0003E30C  38 99 00 00 */	addi r4, r25, 0
-/* 800423F0 0003E310  4B FF CE 59 */	bl stcoli_sub11
+/* 800423F0 0003E310  4B FF CE 59 */	bl g_collide_ball_with_sphere
 /* 800423F4 0003E314  3B 5A FF FF */	addi r26, r26, -1
 /* 800423F8 0003E318  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_800423FC:
@@ -5029,7 +5029,7 @@ lbl_800423FC:
 lbl_80042410:
 /* 80042410 0003E330  38 7B 00 00 */	addi r3, r27, 0
 /* 80042414 0003E334  38 99 00 00 */	addi r4, r25, 0
-/* 80042418 0003E338  4B FF C9 99 */	bl stcoli_sub09
+/* 80042418 0003E338  4B FF C9 99 */	bl g_collide_ball_with_cylinder
 /* 8004241C 0003E33C  3B 5A FF FF */	addi r26, r26, -1
 /* 80042420 0003E340  3B 39 00 1C */	addi r25, r25, 0x1c
 lbl_80042424:
@@ -5041,7 +5041,7 @@ lbl_80042424:
 lbl_80042438:
 /* 80042438 0003E358  38 7B 00 00 */	addi r3, r27, 0
 /* 8004243C 0003E35C  38 99 00 00 */	addi r4, r25, 0
-/* 80042440 0003E360  4B FF E6 E1 */	bl stcoli_sub21
+/* 80042440 0003E360  4B FF E6 E1 */	bl g_collide_ball_with_goal
 /* 80042444 0003E364  3B 5A FF FF */	addi r26, r26, -1
 /* 80042448 0003E368  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_8004244C:
@@ -5150,7 +5150,7 @@ lbl_800425B4:
 /* 800425BC 0003E4DC  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 800425C0 0003E4E0  54 00 30 32 */	slwi r0, r0, 6
 /* 800425C4 0003E4E4  7C 84 02 14 */	add r4, r4, r0
-/* 800425C8 0003E4E8  4B FF BA C5 */	bl stcoli_sub04
+/* 800425C8 0003E4E8  4B FF BA C5 */	bl g_collide_ball_with_tri_edges
 /* 800425CC 0003E4EC  3B 39 00 02 */	addi r25, r25, 2
 lbl_800425D0:
 /* 800425D0 0003E4F0  A8 19 00 00 */	lha r0, 0(r25)
@@ -5257,7 +5257,7 @@ lbl_80042730:
 /* 80042738 0003E658  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 8004273C 0003E65C  54 00 30 32 */	slwi r0, r0, 6
 /* 80042740 0003E660  7C 84 02 14 */	add r4, r4, r0
-/* 80042744 0003E664  4B FF BE 91 */	bl stcoli_sub06
+/* 80042744 0003E664  4B FF BE 91 */	bl g_collide_ball_with_tri_verts
 /* 80042748 0003E668  3B 39 00 02 */	addi r25, r25, 2
 lbl_8004274C:
 /* 8004274C 0003E66C  A8 19 00 00 */	lha r0, 0(r25)
@@ -5488,7 +5488,7 @@ lbl_80042A68:
 /* 80042A70 0003E990  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042A74 0003E994  54 00 30 32 */	slwi r0, r0, 6
 /* 80042A78 0003E998  7C 84 02 14 */	add r4, r4, r0
-/* 80042A7C 0003E99C  4B FF B3 B1 */	bl stcoli_sub03
+/* 80042A7C 0003E99C  4B FF B3 B1 */	bl g_collide_ball_with_tri_face
 /* 80042A80 0003E9A0  3B 9C 00 02 */	addi r28, r28, 2
 lbl_80042A84:
 /* 80042A84 0003E9A4  A8 1C 00 00 */	lha r0, 0(r28)
@@ -5502,7 +5502,7 @@ lbl_80042A98:
 /* 80042AA0 0003E9C0  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042AA4 0003E9C4  54 00 30 32 */	slwi r0, r0, 6
 /* 80042AA8 0003E9C8  7C 84 02 14 */	add r4, r4, r0
-/* 80042AAC 0003E9CC  4B FF B5 E1 */	bl stcoli_sub04
+/* 80042AAC 0003E9CC  4B FF B5 E1 */	bl g_collide_ball_with_tri_edges
 /* 80042AB0 0003E9D0  3B 9C 00 02 */	addi r28, r28, 2
 lbl_80042AB4:
 /* 80042AB4 0003E9D4  A8 1C 00 00 */	lha r0, 0(r28)
@@ -5516,7 +5516,7 @@ lbl_80042AC8:
 /* 80042AD0 0003E9F0  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042AD4 0003E9F4  54 00 30 32 */	slwi r0, r0, 6
 /* 80042AD8 0003E9F8  7C 84 02 14 */	add r4, r4, r0
-/* 80042ADC 0003E9FC  4B FF BA F9 */	bl stcoli_sub06
+/* 80042ADC 0003E9FC  4B FF BA F9 */	bl g_collide_ball_with_tri_verts
 /* 80042AE0 0003EA00  3B 9C 00 02 */	addi r28, r28, 2
 lbl_80042AE4:
 /* 80042AE4 0003EA04  A8 1C 00 00 */	lha r0, 0(r28)
@@ -5529,7 +5529,7 @@ lbl_80042AF0:
 lbl_80042AFC:
 /* 80042AFC 0003EA1C  38 7A 00 00 */	addi r3, r26, 0
 /* 80042B00 0003EA20  38 99 00 00 */	addi r4, r25, 0
-/* 80042B04 0003EA24  4B FF C8 75 */	bl stcoli_sub12
+/* 80042B04 0003EA24  4B FF C8 75 */	bl g_collide_ball_with_cone
 /* 80042B08 0003EA28  3B 9C FF FF */	addi r28, r28, -1
 /* 80042B0C 0003EA2C  3B 39 00 20 */	addi r25, r25, 0x20
 lbl_80042B10:
@@ -5541,7 +5541,7 @@ lbl_80042B10:
 lbl_80042B24:
 /* 80042B24 0003EA44  38 7A 00 00 */	addi r3, r26, 0
 /* 80042B28 0003EA48  38 99 00 00 */	addi r4, r25, 0
-/* 80042B2C 0003EA4C  4B FF C7 1D */	bl stcoli_sub11
+/* 80042B2C 0003EA4C  4B FF C7 1D */	bl g_collide_ball_with_sphere
 /* 80042B30 0003EA50  3B 9C FF FF */	addi r28, r28, -1
 /* 80042B34 0003EA54  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_80042B38:
@@ -5553,7 +5553,7 @@ lbl_80042B38:
 lbl_80042B4C:
 /* 80042B4C 0003EA6C  38 7A 00 00 */	addi r3, r26, 0
 /* 80042B50 0003EA70  38 99 00 00 */	addi r4, r25, 0
-/* 80042B54 0003EA74  4B FF C2 5D */	bl stcoli_sub09
+/* 80042B54 0003EA74  4B FF C2 5D */	bl g_collide_ball_with_cylinder
 /* 80042B58 0003EA78  3B 9C FF FF */	addi r28, r28, -1
 /* 80042B5C 0003EA7C  3B 39 00 1C */	addi r25, r25, 0x1c
 lbl_80042B60:
@@ -5565,7 +5565,7 @@ lbl_80042B60:
 lbl_80042B74:
 /* 80042B74 0003EA94  38 7A 00 00 */	addi r3, r26, 0
 /* 80042B78 0003EA98  38 99 00 00 */	addi r4, r25, 0
-/* 80042B7C 0003EA9C  4B FF DF A5 */	bl stcoli_sub21
+/* 80042B7C 0003EA9C  4B FF DF A5 */	bl g_collide_ball_with_goal
 /* 80042B80 0003EAA0  3B 9C FF FF */	addi r28, r28, -1
 /* 80042B84 0003EAA4  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_80042B88:

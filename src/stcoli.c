@@ -7,9 +7,9 @@
 #include "stcoli.h"
 #include "mathutil.h"
 
-void g_handle_ball_stage_collision(struct PhysicsBall* b, struct Stage* arg1) {
+void g_collide_ball_with_stage(struct PhysicsBall* b, struct Stage* arg1) {
     struct StageColiTri tri;
-    struct StageCollHdr *collHdr;
+    struct StageItemgroup *collHdr;
     int itemgroupId;
     s16 *cellTris;
     s16 *cellTriIdx;
@@ -39,45 +39,45 @@ void g_handle_ball_stage_collision(struct PhysicsBall* b, struct Stage* arg1) {
         tri.bitangent.x = 1.0f;
         tri.bitangent.y = 0.0f;
         b->itemgroupId = 0;
-        stcoli_sub03(b, &tri);
-        stcoli_sub04(b, &tri);
-        stcoli_sub06(b, &tri);
+        g_collide_ball_with_tri_face(b, &tri);
+        g_collide_ball_with_tri_edges(b, &tri);
+        g_collide_ball_with_tri_verts(b, &tri);
         return;
     }
 
-    collHdr = arg1->collHdrs;
-    for (itemgroupId = 0; itemgroupId < arg1->collHdrsCount; itemgroupId++, collHdr++) {
+    collHdr = arg1->itemgroups;
+    for (itemgroupId = 0; itemgroupId < arg1->itemgroupCount; itemgroupId++, collHdr++) {
         if (itemgroupId != b->itemgroupId) {
             tf_physball_to_itemgroup_space(b, itemgroupId);
         }
         cellTris = meshcoli_grid_lookup(collHdr, b->pos.x, b->pos.z);
         if (cellTris != NULL) {
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++) {
-                stcoli_sub03(b, &collHdr->triangles[*cellTriIdx]);
+                g_collide_ball_with_tri_face(b, &collHdr->triangles[*cellTriIdx]);
             }
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++) {
-                stcoli_sub04(b, &collHdr->triangles[*cellTriIdx]);
+                g_collide_ball_with_tri_edges(b, &collHdr->triangles[*cellTriIdx]);
             }
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++) {
-                stcoli_sub06(b, &collHdr->triangles[*cellTriIdx]);
+                g_collide_ball_with_tri_verts(b, &collHdr->triangles[*cellTriIdx]);
             }
         }
 
         cone = collHdr->coliCones;
         for (i = collHdr->coliConeCount; i > 0; i--, cone++) {
-            stcoli_sub12(b, cone);
+            g_collide_ball_with_cone(b, cone);
         }
         sphere = collHdr->coliSpheres;
         for (i = collHdr->coliSphereCount; i > 0; i--, sphere++) {
-            stcoli_sub11(b, sphere);
+            g_collide_ball_with_sphere(b, sphere);
         }
         cylinder = collHdr->coliCylinders;
         for (i = collHdr->coliCylinderCount; i > 0; i--, cylinder++) {
-            stcoli_sub09(b, cylinder);
+            g_collide_ball_with_cylinder(b, cylinder);
         }
         goal = collHdr->goals;
         for (i = collHdr->goalCount; i > 0; i--, goal++) {
-            stcoli_sub21(b, goal);
+            g_collide_ball_with_goal(b, goal);
         }
     }
 
@@ -85,11 +85,11 @@ void g_handle_ball_stage_collision(struct PhysicsBall* b, struct Stage* arg1) {
         tf_physball_to_itemgroup_space(b, 0);
     }
     if (dynamicStageParts != NULL) {
-        stcoli_sub25(b, dynamicStageParts);
+        g_collide_ball_with_dynstageparts(b, dynamicStageParts);
     }
 }
 
-s16 *meshcoli_grid_lookup(struct StageCollHdr* coliHeader, f32 x, f32 z) {
+s16 *meshcoli_grid_lookup(struct StageItemgroup* coliHeader, f32 x, f32 z) {
     int cellX;
     int cellZ;
 
@@ -113,7 +113,7 @@ static inline float dumb_dot(float x1, float y1, float x2, float y2) {
     return x1 * x2 + y1 * y2;
 }
 
-void stcoli_sub03(struct PhysicsBall* physBall, struct StageColiTri* tri) {
+void g_collide_ball_with_tri_face(struct PhysicsBall* physBall, struct StageColiTri* tri) {
     struct Struct8003DE2C_Stcoli coliHit;
     float x;
     float y;
@@ -160,6 +160,6 @@ void stcoli_sub03(struct PhysicsBall* physBall, struct StageColiTri* tri) {
      (((pos.x - tri->vert3Delta.x) * tri->bitangent.x) + ((pos.y - tri->vert3Delta.y) * tri->bitangent.y) < -FLT_EPSILON)))) {
         coliHit.pos = tri->vert1;
         coliHit.normal = tri->normal;
-        stcoli_sub13(physBall, &coliHit);
+        g_apply_coli_response(physBall, &coliHit);
      }
 }

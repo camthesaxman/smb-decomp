@@ -2302,7 +2302,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     ball->pos.z += ball->vel.z;
 
     func_8003CA98(ball, b);
-    g_handle_ball_stage_collision(b, decodedStageLzPtr);
+    g_collide_ball_with_stage(b, decodedStageLzPtr);
     func_8003CB3C(ball, b);
 
     if (b->flags & 1)
@@ -2440,7 +2440,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
 void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct MovableStagePart *movpart = &movableStageParts[a->g_hardestColiItemgroupId];
+    struct ItemgroupInfo *movpart = &movableStageParts[a->g_hardestColiItemgroupId];
     Vec sp44;
     Vec sp38;
     Vec sp2C;

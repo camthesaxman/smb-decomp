@@ -580,7 +580,7 @@ extern struct SpritePoolInfo spritePoolInfo;
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
 extern struct Struct80206DEC lbl_80206DEC;
-extern struct MovableStagePart movableStageParts[0x48];
+extern struct ItemgroupInfo movableStageParts[0x48];
 extern void *lbl_80209368[];
 // extern ? lbl_802099E8;
 // extern ? lbl_8020A348;

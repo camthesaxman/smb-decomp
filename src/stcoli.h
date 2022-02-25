@@ -7,19 +7,19 @@
 #include "stage.h"
 #include "types.h"
 
-void g_handle_ball_stage_collision(struct PhysicsBall *b, struct Stage *);
-s16 *meshcoli_grid_lookup(struct StageCollHdr* coliHeader, f32 x, f32 z);
-void stcoli_sub03(struct PhysicsBall *physBall, struct StageColiTri *tri);
-void stcoli_sub04(struct PhysicsBall *physBall, struct StageColiTri *tri);
+void g_collide_ball_with_stage(struct PhysicsBall *b, struct Stage *);
+s16 *meshcoli_grid_lookup(struct StageItemgroup* coliHeader, f32 x, f32 z);
+void g_collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri);
+void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri);
 // ? stcoli_sub05();
-void stcoli_sub06(struct PhysicsBall *physBall, struct StageColiTri *tri);
+void g_collide_ball_with_tri_verts(struct PhysicsBall *physBall, struct StageColiTri *tri);
 // ? stcoli_sub07();
 // ? stcoli_sub08();
-void stcoli_sub09(struct PhysicsBall *, struct StageColiCylinder *cylinder);
+void g_collide_ball_with_cylinder(struct PhysicsBall *, struct StageColiCylinder *cylinder);
 // ? stcoli_sub10();
-void stcoli_sub11(struct PhysicsBall *, struct StageColiSphere *sphere);
-void stcoli_sub12(struct PhysicsBall *, struct StageColiCone *cone);
-void stcoli_sub13(struct PhysicsBall *physBall, struct Struct8003DE2C_Stcoli *coliHit);
+void g_collide_ball_with_sphere(struct PhysicsBall *, struct StageColiSphere *sphere);
+void g_collide_ball_with_cone(struct PhysicsBall *, struct StageColiCone *cone);
+void g_apply_coli_response(struct PhysicsBall *physBall, struct Struct8003DE2C_Stcoli *coliHit);
 u32 test_line_intersects_rect(Vec *, Vec *, struct Struct8003F890 *);
 // ? stcoli_sub15();
 int stcoli_sub16(Vec *, struct Struct8003FB48 *, Vec *);
@@ -27,11 +27,11 @@ int stcoli_sub16(Vec *, struct Struct8003FB48 *, Vec *);
 // ? stcoli_sub18();
 // ? stcoli_sub19();
 // ? stcoli_sub20();
-void stcoli_sub21(struct PhysicsBall *, struct StageGoal *goal);
+void g_collide_ball_with_goal(struct PhysicsBall *, struct StageGoal *goal);
 // ? stcoli_sub22();
 // ? stcoli_sub23();
 // ? stcoli_sub24();
-void stcoli_sub25(struct PhysicsBall *, struct DynamicStagePart *dynStageParts);
+void g_collide_ball_with_dynstageparts(struct PhysicsBall *, struct DynamicStagePart *dynStageParts);
 void g_draw_stage_collision(void);
 // ? stcoli_sub27();
 // ? stcoli_sub28();

@@ -280,7 +280,7 @@ struct Struct80176434
     float unkC;
 };  // size=0x10
 
-struct MovableStagePart
+struct ItemgroupInfo
 {
     Vec unk0;
     Vec unkC;
@@ -852,7 +852,7 @@ struct AnimKeyframe
     float unk10;
 };
 
-struct StageCollHdr;
+struct StageItemgroup;
 struct StageCollHdr_child3;
 
 struct Struct800690DC

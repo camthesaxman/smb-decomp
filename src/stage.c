@@ -46,7 +46,7 @@ struct Preview stagePreview;  // 78
 
 struct Struct80206DEC lbl_80206DEC;
 
-struct MovableStagePart movableStageParts[0x48];  // 148
+struct ItemgroupInfo movableStageParts[0x48];  // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
@@ -99,8 +99,8 @@ void ev_stage_init(void)
 
 void ev_stage_main(void)
 {
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *coll;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *coll;
     float f31;
     float f30;
     float f3;
@@ -152,8 +152,8 @@ void ev_stage_main(void)
         }
     }
     movpart = movableStageParts;
-    coll = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, coll++)
+    coll = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
     {
         int j;
         struct StageAnimHdr *anim = coll->animHdr;
@@ -273,8 +273,8 @@ void draw_blur_bridge_accordions(void)
 {
     float t;
     float f30;
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *r30;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *r30;
     int i;
 
     if (blurBridgeAccordion == NULL2)
@@ -285,8 +285,8 @@ void draw_blur_bridge_accordions(void)
     t -= f30 * mathutil_floor(t / f30);
     t += (float)decodedStageLzPtr->unk0;
     movpart = &movableStageParts[1];
-    r30 = decodedStageLzPtr->collHdrs + 1;
-    for (i = 1; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r30++)
+    r30 = decodedStageLzPtr->itemgroups + 1;
+    for (i = 1; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
         if (r30->unk7C > 0 && r30->animHdr != NULL2)
         {
@@ -328,8 +328,8 @@ void g_animate_stage(float a)
     float f31;
     float f30;
     float f3;
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *coll;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *coll;
     struct StageAnimHdr *anim;
     int i;
 
@@ -343,8 +343,8 @@ void g_animate_stage(float a)
     f31 -= f3 * mathutil_floor(f31 / f3);
     f31 += decodedStageLzPtr->unk0;
     movpart = movableStageParts;
-    coll = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, coll++)
+    coll = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
     {
         anim = coll->animHdr;
         if (anim != NULL2)
@@ -418,12 +418,12 @@ void g_initialize_stage_dyn_part_info(void)
 
 void func_8004482C(void)
 {
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *coll;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *coll;
     int i;
 
     movpart = movableStageParts;
-    coll = decodedStageLzPtr->collHdrs;
+    coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 0x48; i++, movpart++, coll++)
     {
         movpart->unk0.x = coll->unk0.x;
@@ -490,7 +490,7 @@ void load_stage(int stageId)
     load_bg_files(get_stage_background(stageId));
     if (loadedStageId != stageId || bgChanged)
     {
-        movableStagePartCount = decodedStageLzPtr->collHdrsCount < 0x48 ? decodedStageLzPtr->collHdrsCount : 0x48;
+        movableStagePartCount = decodedStageLzPtr->itemgroupCount < 0x48 ? decodedStageLzPtr->itemgroupCount : 0x48;
         if (gamePauseStatus & (1 << (31-0x1D)))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
@@ -709,7 +709,7 @@ void func_80044E18(void)
     void **r30;
     void **r29;
     struct Struct802099E8 *r26;
-    struct StageCollHdr *r22;
+    struct StageItemgroup *r22;
     char **r21;
     struct NaomiObj ***r25;
     struct NaomiObj ***r24;
@@ -721,7 +721,7 @@ void func_80044E18(void)
 
     char sp10[0xFC];
 
-    struct StageCollHdr *r5;
+    struct StageItemgroup *r5;
     struct Struct8020A348 *r7;
     int r6;
     int r4;
@@ -733,7 +733,7 @@ void func_80044E18(void)
     lbl_802F1F50 = 0;
 
     r26 = lbl_802099E8;
-    r22 = decodedStageLzPtr->collHdrs;
+    r22 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < movableStagePartCount; r26++, i++, r22++)
     {
         r26->unk0 = (void *)r17;
@@ -863,7 +863,7 @@ void func_80044E18(void)
     // i = r6
     //r4 = 0;
     r4 = 0;
-    r5 = decodedStageLzPtr->collHdrs;
+    r5 = decodedStageLzPtr->itemgroups;
     r7 = lbl_8020A348;
     for (r6 = 0; r6 < movableStagePartCount; r6++, r7++, r5++)
     {
@@ -1376,7 +1376,7 @@ void func_800463E8(Vec *a, float *b)
 
     if (decodedStageGmaPtr != NULL)
     {
-        struct MovableStagePart *movpart = movableStageParts;
+        struct ItemgroupInfo *movpart = movableStageParts;
         struct Struct8020A348 *iter2 = lbl_8020AB88;
         int j;
         int i;
@@ -1456,7 +1456,7 @@ void func_800463E8(Vec *a, float *b)
     }
     else if (decodedStageLzPtr != NULL && decodedStageLzPtr->lvlModels != NULL)
     {
-        struct MovableStagePart *movpart = movableStageParts;
+        struct ItemgroupInfo *movpart = movableStageParts;
         struct Struct8020A348 *iter2 = lbl_8020A348;
         int j;
         int i;
@@ -1632,7 +1632,7 @@ void load_stagedef(int stageId)
     u32 uncompSize;
     void *compData;
     void *uncompData;
-    struct StageCollHdr *coll;
+    struct StageItemgroup *coll;
     int i;
 
     sprintf(filename, "STAGE%03d.lz", stageId);
@@ -1667,10 +1667,10 @@ void load_stagedef(int stageId)
     decodedStageLzPtr = uncompData;
     if (uncompData == NULL)
         OSPanic("stage.c", 1976, "cannot open stcoli\n");
-    decodedStageLzPtr->collHdrs = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->collHdrs);
+    decodedStageLzPtr->itemgroups = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->itemgroups);
 
-    coll = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, coll++)
+    coll = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, coll++)
     {
         if (coll->animHdr != NULL)
             adjust_stage_anim_ptrs(&coll->animHdr, decodedStageLzPtr);
@@ -1950,8 +1950,8 @@ struct Struct80092F90
 void stage_draw(void)
 {
     int r31;
-    struct MovableStagePart *r28;
-    struct StageCollHdr *r27;
+    struct ItemgroupInfo *r28;
+    struct StageItemgroup *r27;
     int i;
     int (*r25)();
     struct Struct80092F90 sp7C;
@@ -1966,8 +1966,8 @@ void stage_draw(void)
         g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
     sp7C.unk0 = 32;
     r28 = movableStageParts;
-    r27 = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r28++, r27++)
+    r27 = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r28++, r27++)
     {
         struct StageGoal *r24;
         int j;
@@ -2035,7 +2035,7 @@ void stage_draw(void)
     {
         if (decodedStageGmaPtr != NULL)
         {
-            struct MovableStagePart *movpart;
+            struct ItemgroupInfo *movpart;
             struct Struct8020A348 *r23;
             int j;
             struct Struct8020A348_child *r27;
@@ -2076,7 +2076,7 @@ void stage_draw(void)
         }
         else if (decodedStageLzPtr->lvlModels == NULL)
         {
-            struct MovableStagePart *movpart;
+            struct ItemgroupInfo *movpart;
             struct Struct802099E8 *r23;
             struct NaomiModel *model;
             int j;
@@ -2109,7 +2109,7 @@ void stage_draw(void)
         }
         else
         {
-            struct MovableStagePart *movpart;
+            struct ItemgroupInfo *movpart;
             struct Struct8020A348 *r23;
             int j;
             float f29;
@@ -2246,16 +2246,16 @@ void stage_draw(void)
         g_avdisp_set_some_func_1(NULL);
     if (dipSwitches & DIP_FALL_DISP)
     {
-        struct MovableStagePart *movpart;
-        struct StageCollHdr *r23;
+        struct ItemgroupInfo *movpart;
+        struct StageItemgroup *r23;
         int i;
         struct StageCollHdr_child2 *r25;
         int j;
 
         mathutil_mtx_copy(mathutilData->mtxB, sp8);
         movpart = movableStageParts;
-        r23 = decodedStageLzPtr->collHdrs;
-        for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r23++)
+        r23 = decodedStageLzPtr->itemgroups;
+        for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r23++)
         {
             mathutil_mtxA_from_mtx(sp8);
             mathutil_mtxA_mult_right(movpart->unk24);

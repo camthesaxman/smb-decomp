@@ -243,8 +243,8 @@ void ev_info_main(void)
             infoWork.unk30 = 0;
 
         r9 = 0;
-        r7 = decodedStageLzPtr->collHdrs[0].goals;
-        for (i = 0; i < decodedStageLzPtr->collHdrs[0].goalCount; i++, r7++)
+        r7 = decodedStageLzPtr->itemgroups[0].goals;
+        for (i = 0; i < decodedStageLzPtr->itemgroups[0].goalCount; i++, r7++)
         {
             if (r7->type == 0x42)
             {
@@ -257,8 +257,8 @@ void ev_info_main(void)
          || (lbl_801F3D88[0] & (1 << 2)))
         {
             // fake match
-            r7 = ((volatile struct StageCollHdr *)&decodedStageLzPtr->collHdrs[0])->goals;
-            for (i = 0; i < decodedStageLzPtr->collHdrs[0].goalCount; i++, r7++)
+            r7 = ((volatile struct StageItemgroup *)&decodedStageLzPtr->itemgroups[0])->goals;
+            for (i = 0; i < decodedStageLzPtr->itemgroups[0].goalCount; i++, r7++)
             {
                 if ((lbl_801F3D88[0] & (1 << 3)) && r7->type == 'R')
                 {
@@ -484,14 +484,14 @@ void func_80023AF4(void)
 int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
 {
     struct PhysicsBall sp3C;
-    struct StageCollHdr *r27;
+    struct StageItemgroup *r27;
     int goalId;
     int i;
 
     func_8003CA98(ball, &sp3C);
-    r27 = decodedStageLzPtr->collHdrs;
+    r27 = decodedStageLzPtr->itemgroups;
     goalId = 0;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r27++)
     {
         if (r27->goalCount > 0)
         {
@@ -765,7 +765,7 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
     infoWork.unk1C = infoWork.timerCurr;
     if (c > 0)
     {
-        struct MovableStagePart *r29 = &movableStageParts[c];
+        struct ItemgroupInfo *r29 = &movableStageParts[c];
         struct StageGoal *goal = &decodedStageLzPtr->goals[goalId];
         Vec sp20;
         Vec sp14;
@@ -785,14 +785,14 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
 int func_800246F4(struct Ball *ball)
 {
     struct PhysicsBall sp18;
-    struct StageCollHdr *r30;
+    struct StageItemgroup *r30;
     int i;
 
     if (ball->pos.y < *decodedStageLzPtr->pFallOutY)
         return 1;
     func_8003CA98(ball, &sp18);
-    r30 = decodedStageLzPtr->collHdrs;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, r30++)
+    r30 = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r30++)
     {
         struct StageCollHdr_child2 *r28;
         int j;

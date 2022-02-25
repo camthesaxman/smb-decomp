@@ -325,7 +325,7 @@ struct StageCollHdr_child5
     s16 unk10;
 };
 
-struct StageCollHdr
+struct StageItemgroup
 {
     Vec unk0;
     /*0x0C*/ s16 initXRot;
@@ -444,8 +444,8 @@ struct Stage
 {
     s32 unk0;
     s32 unk4;
-    /*0x08*/ s32 collHdrsCount;
-    /*0x0C*/ struct StageCollHdr *collHdrs;
+    /*0x08*/ s32 itemgroupCount;
+    /*0x0C*/ struct StageItemgroup *itemgroups;
     /*0x10*/ struct StageStartPos *startPos;
     /*0x14*/ float *pFallOutY;
     /*0x18*/ s32 goalsCount;

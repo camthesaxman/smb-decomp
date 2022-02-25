@@ -148,17 +148,17 @@ void ev_item_init(void)
     {
     case GAMETYPE_MINI_FIGHT:
         if (func_800672D0(currStageId) != 0)
-            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
         break;
     case GAMETYPE_MAIN_COMPETITION:
         if (func_800672D0(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
-            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
         break;
     default:
-        make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+        make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
         break;
     }
 }
@@ -389,7 +389,7 @@ void func_800689B4(int a)
     }
 }
 
-void make_stage_bananas(struct StageCollHdr *coll, int count)
+void make_stage_bananas(struct StageItemgroup *coll, int count)
 {
     struct Item item;
     int i;

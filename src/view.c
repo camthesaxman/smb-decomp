@@ -40,7 +40,7 @@ struct StageViewInfo
     s16 unk3C;
     s16 unk3E;
     float unk40;
-    struct MovableStagePart *unk44;
+    struct ItemgroupInfo *unk44;
     float unk48;
 };
 
@@ -303,13 +303,13 @@ void view_destroy_text_sprites(void)
 
 void view_init_stage_anim(void)
 {
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *r30;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *r30;
     int i;
 
     stageViewInfo->unk40 = lbl_80206DEC.unk4;
     movpart = movableStageParts;
-    r30 = decodedStageLzPtr->collHdrs;
+    r30 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 72; i++, movpart++, r30++)
     {
         movpart->unk0.x = r30->unk0.x;
@@ -341,8 +341,8 @@ void view_animate_stage(void)
 {
     float t;
     float f3;
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *r30;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *r30;
     int i;
 
     lbl_80206DEC.unk4 = stageViewInfo->frameCounter;
@@ -351,9 +351,9 @@ void view_animate_stage(void)
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     t -= f3 * mathutil_floor(t / f3);
     t += decodedStageLzPtr->unk0;
-    r30 = decodedStageLzPtr->collHdrs;
+    r30 = decodedStageLzPtr->itemgroups;
     movpart = movableStageParts;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r30++)
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
         struct StageAnimHdr *r28 = r30->animHdr;
 
@@ -460,8 +460,8 @@ void func_800A6734(void)
         models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
         for (i = 0; i < movableStagePartCount; i++)
         {
-            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->collHdrs[i].unk60;
-            int r23 = decodedStageLzPtr->collHdrs[i].unk5C;
+            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->itemgroups[i].unk60;
+            int r23 = decodedStageLzPtr->itemgroups[i].unk5C;
             int j;
 
             for (j = 0; j < r23; j++, r24++)
@@ -498,8 +498,8 @@ void func_800A6874(void)
 
         for (i = 0; i < movableStagePartCount; i++)
         {
-            r26 = decodedStageLzPtr->collHdrs[i].unk60;
-            r25 = decodedStageLzPtr->collHdrs[i].unk5C;
+            r26 = decodedStageLzPtr->itemgroups[i].unk60;
+            r25 = decodedStageLzPtr->itemgroups[i].unk5C;
 
             for (j = 0; j < r25; j++, r26++)
             {
@@ -529,7 +529,7 @@ void func_800A6874(void)
 
 void func_800A6A88(void)
 {
-    struct MovableStagePart *r30;
+    struct ItemgroupInfo *r30;
     struct Struct8020A348 *r29;
     int j;
     int i;
@@ -611,8 +611,8 @@ void func_800A6BF0(void)
         struct StageGoal *r27;
         int j;  // r25
         //#define r27 r29
-        r27 = decodedStageLzPtr->collHdrs[i].goals;
-        r24 = decodedStageLzPtr->collHdrs[i].goalCount;
+        r27 = decodedStageLzPtr->itemgroups[i].goals;
+        r24 = decodedStageLzPtr->itemgroups[i].goalCount;
         mathutil_mtxA_from_mtxB();
         if (i > 0)
             mathutil_mtxA_mult_right(movableStageParts[i].unk24);
@@ -670,8 +670,8 @@ void func_800A6BF0(void)
         s32 r27;
         int j;
         struct StageCollHdr_child4 *r29;
-        r29 = decodedStageLzPtr->collHdrs[i].unk50;
-        r27 = decodedStageLzPtr->collHdrs[i].unk4C;
+        r29 = decodedStageLzPtr->itemgroups[i].unk50;
+        r27 = decodedStageLzPtr->itemgroups[i].unk4C;
 
         mathutil_mtxA_from_mtxB();
         if (i > 0)
@@ -697,9 +697,9 @@ void func_800A6BF0(void)
         int j;
         s32 r28_;
         struct StageCollHdr_child4 *r29;
-        r29 = (void *)decodedStageLzPtr->collHdrs[i].unk58;
+        r29 = (void *)decodedStageLzPtr->itemgroups[i].unk58;
         r26 = 0;
-        r28_ = decodedStageLzPtr->collHdrs[i].unk54;
+        r28_ = decodedStageLzPtr->itemgroups[i].unk54;
         //int r26;
         //#define r26 j
         #define r25 r29
