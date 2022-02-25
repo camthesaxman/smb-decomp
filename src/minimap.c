@@ -1,7 +1,10 @@
+#include <stdlib.h>
 #include <dolphin.h>
 
 #include "global.h"
 #include "ball.h"
+#include "gxutil.h"
+#include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
 
@@ -198,6 +201,99 @@ void ev_minimap_dest(void)
     lbl_801C5758.unk34 = 0;
     lbl_801C5758.unk38 = 0;
     lbl_801C5758.unk3C = 0.0f;
+}
+
+void func_800846B0(int a)
+{
+    switch (a)
+    {
+    case 0:
+        lbl_801C5758.unk34 = 0;
+        lbl_801C5758.unk3C = 0.0f;
+        break;
+    case 2:
+        lbl_801C5758.unk34 = 0x140;
+        break;
+    case 3:
+        if (lbl_801C5758.unk34 == 0)
+            lbl_801C5758.unk38 = (rand() & 0x3FF) + 0x200;
+        break;
+    case 4:
+        a = lbl_801C5758.unk4;
+        lbl_801C5758.unk34 = 0;
+        lbl_801C5758.unk3C = 0.0f;
+        lbl_801C5758.unk1C = 0;
+        lbl_801C5758.unk20 = 0.26499998569488525f;
+        break;
+    }
+
+    if (lbl_801C5758.unk4 == 0)
+    {
+        lbl_801C5758.unk24 = 0.0f;
+        lbl_801C5758.unk28 = 0.0f;
+        lbl_801C5758.unk2C = 0.0f;
+    }
+    lbl_801C5758.unk4 = a;
+}
+
+void func_80084794(void *unused)
+{
+    func_800463E8(&lbl_80292D30.unk0, &lbl_80292D30.unkC);
+}
+
+void minimap_change_size(void)
+{
+    if (lbl_801C5758.unk4 != 0)
+    {
+        lbl_801C5758.unk1C++;
+        if (lbl_801C5758.unk1C > 2)
+            lbl_801C5758.unk1C = 0;
+    }
+}
+
+struct Struct800847FC
+{
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+};
+
+void func_800847FC(struct Struct800847FC *a)
+{
+    float f31 = a->unk0;
+    float f30 = a->unk4;
+    float f29 = a->unk8;
+    float f28 = a->unkC;
+    float f27 = a->unk10;
+
+    gxutil_set_vtx_attrs(1 << GX_VA_POS);
+    func_8009E110(1, 0, 1, 0);
+    CHANGE_Z_MODE(1, 7, 1);
+    {
+        GXColor color = {0, 0, 0, 0};
+        func_8009E398(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
+    }
+    func_8009E094(0);
+    GXSetTevDirect(0);
+    func_8009EFF4(0, 0xFF, 0xFF, 0xFF);
+    func_8009F224(0, 0);
+    func_8009E618(0, 15, 15, 15, 15);
+    func_8009E800(0, 0, 0, 0, 1, 0);
+    func_8009E70C(0, 7, 7, 7, 6);
+    func_8009E918(0, 0, 0, 3, 1, 0);
+    func_8009F2C8(1);
+    mathutil_mtxA_push();
+    mathutil_mtxA_from_identity();
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    mathutil_mtxA_pop();
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(f29, f30, f27);
+    GXPosition3f32(f31, f30, f27);
+    GXPosition3f32(f31, f28, f27);
+    GXPosition3f32(f29, f28, f27);
+    CHANGE_Z_MODE(1, 3, 1);
 }
 
 /*
