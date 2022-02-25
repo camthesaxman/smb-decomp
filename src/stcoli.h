@@ -11,7 +11,8 @@ void g_collide_ball_with_stage(struct PhysicsBall *b, struct Stage *);
 s16 *meshcoli_grid_lookup(struct StageItemgroup *coliHeader, f32 x, f32 z);
 void g_collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri);
 void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri);
-// ? stcoli_sub05();
+void stcoli_sub05(struct PhysicsBall *physBall, Vec *localBallPos, Vec *localBallPrevPos,
+                  struct ColiEdge *edge);
 void g_collide_ball_with_tri_verts(struct PhysicsBall *physBall, struct StageColiTri *tri);
 // ? stcoli_sub07();
 // ? stcoli_sub08();

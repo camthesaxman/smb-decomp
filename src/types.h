@@ -380,6 +380,16 @@ struct PhysicsBall
     s32 itemgroupId;
 };
 
+struct ColiEdge
+{
+    // Winds counterclockwise around tri up normal
+    Vec2d start;
+    Vec2d end;
+
+    // Coplanar with triangle, points inside triangle
+    Vec2d normal;
+};
+
 struct Struct8003DE2C_Stcoli
 {
     Vec pos;

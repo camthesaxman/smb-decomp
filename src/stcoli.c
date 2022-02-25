@@ -168,3 +168,82 @@ void g_collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColi
         g_apply_coli_response(physBall, &coliHit);
     }
 }
+
+void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri)
+{
+    struct ColiEdge edge;
+    float unused1[3];
+    Vec pos;
+    Vec prevPos;
+    float unused2[5];
+    float x;
+    float y;
+    float z;
+
+    prevPos = physBall->prevPos;
+    pos = physBall->pos;
+
+    x = prevPos.x - tri->vert1.x;
+    y = prevPos.y - tri->vert1.y;
+    z = prevPos.z - tri->vert1.z;
+    if (x * tri->normal.x + y * tri->normal.y + z * tri->normal.z < 0.0)
+        return;
+    x = pos.x - tri->vert1.x;
+    y = pos.y - tri->vert1.y; 
+    z = pos.z - tri->vert1.z;
+    if (x * tri->normal.x + y * tri->normal.y + z * tri->normal.z > physBall->radius)
+        return;
+
+    mathutil_mtxA_from_translate(&tri->vert1);
+    mathutil_mtxA_rotate_y(tri->rotFromXY.y);
+    mathutil_mtxA_rotate_x(tri->rotFromXY.x);
+    mathutil_mtxA_rotate_z(tri->rotFromXY.z);
+    mathutil_mtxA_rigid_inv_tf_point(&prevPos, &prevPos);
+    mathutil_mtxA_rigid_inv_tf_point(&pos, &pos);
+
+    x = 0;
+    y = 1;
+    if (((x * (pos.x) + y * (pos.y) < -physBall->radius)) &&
+    (x * (prevPos.x) + y * (prevPos.y) < -physBall->radius))
+        return;
+
+    x = tri->tangent.x;
+    y = tri->tangent.y;
+    if (((x * (pos.x - tri->vert2Delta.x) +
+        y * (pos.y - tri->vert2Delta.y) < -physBall->radius)) &&
+        (x * (prevPos.x - tri->vert2Delta.x) +
+        y * (prevPos.y - tri->vert2Delta.y) < -physBall->radius))
+        return;
+
+    x = tri->bitangent.x;
+    y = tri->bitangent.y;
+    if (((x * (pos.x - tri->vert3Delta.x) +
+        y * (pos.y - tri->vert3Delta.y) < -physBall->radius)) &&
+        (x * (prevPos.x - tri->vert3Delta.x) +
+        y * (prevPos.y - tri->vert3Delta.y) < -physBall->radius))
+        return;
+
+    edge.start.x = 0;
+    edge.start.y = 0;
+    edge.end.x = tri->vert2Delta.x;
+    edge.end.y = tri->vert2Delta.y;
+    edge.normal.x = 0;
+    edge.normal.y = 1;
+    stcoli_sub05(physBall, &pos, &prevPos, &edge);
+
+    edge.start.x = tri->vert2Delta.x;
+    edge.start.y = tri->vert2Delta.y;
+    edge.end.x = tri->vert3Delta.x;
+    edge.end.y = tri->vert3Delta.y;
+    edge.normal.x = tri->tangent.x;
+    edge.normal.y = tri->tangent.y;
+    stcoli_sub05(physBall, &pos, &prevPos, &edge);
+
+    edge.start.x = tri->vert3Delta.x;
+    edge.start.y = tri->vert3Delta.y;
+    edge.end.x = 0;
+    edge.end.y = 0;
+    edge.normal.x = tri->bitangent.x;
+    edge.normal.y = tri->bitangent.y;
+    stcoli_sub05(physBall, &pos, &prevPos, &edge);
+}

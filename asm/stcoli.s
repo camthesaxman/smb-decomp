@@ -419,6 +419,7 @@ lbl_8003E074:
 /* 8003E088 00039FA8  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global g_collide_ball_with_tri_edges
 g_collide_ball_with_tri_edges:
 /* 8003E08C 00039FAC  7C 08 02 A6 */	mflr r0
@@ -604,6 +605,7 @@ lbl_8003E340:
 /* 8003E34C 0003A26C  7C 08 03 A6 */	mtlr r0
 /* 8003E350 0003A270  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003E354 0003A274  4E 80 00 20 */	blr
+.endif
 
 .global stcoli_sub05
 stcoli_sub05:
