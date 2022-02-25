@@ -5594,7 +5594,7 @@ lbl_80042BBC:
 
 .section .sdata2
 
-    .balign 8
+    .balign 4
 
 .if 0
 .global lbl_802F3608
