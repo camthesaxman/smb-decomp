@@ -210,15 +210,13 @@ void collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiT
     x = tri->edge2Normal.x;
     y = tri->edge2Normal.y;
     if (((x * (pos.x - tri->vert2.x) + y * (pos.y - tri->vert2.y) < -physBall->radius)) &&
-        (x * (prevPos.x - tri->vert2.x) + y * (prevPos.y - tri->vert2.y) <
-         -physBall->radius))
+        (x * (prevPos.x - tri->vert2.x) + y * (prevPos.y - tri->vert2.y) < -physBall->radius))
         return;
 
     x = tri->edge3Normal.x;
     y = tri->edge3Normal.y;
     if (((x * (pos.x - tri->vert3.x) + y * (pos.y - tri->vert3.y) < -physBall->radius)) &&
-        (x * (prevPos.x - tri->vert3.x) + y * (prevPos.y - tri->vert3.y) <
-         -physBall->radius))
+        (x * (prevPos.x - tri->vert3.x) + y * (prevPos.y - tri->vert3.y) < -physBall->radius))
         return;
 
     edge.start.x = 0;
@@ -246,8 +244,8 @@ void collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiT
     collide_ball_with_tri_edge(physBall, &pos, &prevPos, &edge);
 }
 
-void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_rt_tri, Point3d *ballPrevPos_rt_tri,
-                  struct ColiEdge *edge)
+void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_rt_tri,
+                                Point3d *ballPrevPos_rt_tri, struct ColiEdge *edge)
 {
     f32 tempp_f1_2;
     f32 tempp_f1_3;
@@ -298,9 +296,10 @@ void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_r
     vec.z = phi_f1;
     if ((ballPrevPos_rt_edge.z > phi_f1) && (ballPos_rt_edge.z < phi_f1))
     {
-        phi_f1_2 = ballPrevPos_rt_edge.x +
-                   ((ballPos_rt_edge.x - ballPrevPos_rt_edge.x) *
-                    ((phi_f1 - ballPrevPos_rt_edge.z) / (ballPos_rt_edge.z - ballPrevPos_rt_edge.z)));
+        phi_f1_2 =
+            ballPrevPos_rt_edge.x +
+            ((ballPos_rt_edge.x - ballPrevPos_rt_edge.x) *
+             ((phi_f1 - ballPrevPos_rt_edge.z) / (ballPos_rt_edge.z - ballPrevPos_rt_edge.z)));
     }
     else
         phi_f1_2 = ballPos_rt_edge.x;
@@ -328,4 +327,48 @@ void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_r
     mathutil_mtxA_tf_vec(&coliHit.normal, &coliHit.normal);
     mathutil_mtxA_tf_point(&coliHit.pos, &coliHit.pos);
     g_apply_coli_response(physBall, &coliHit);
+}
+
+void collide_ball_with_tri_verts(struct PhysicsBall *physBall, struct StageColiTri *tri)
+{
+    float unused1[4];
+    Point3d pos;  // 0x34, 0x38, 0x3c
+    Point3d prevPos;  // 0x28, 0x2c, 0x30
+    float unused2;
+    Point2d vert; // 0x1c, 0x20
+
+    float x;
+    float y;
+    float z;
+
+    prevPos = physBall->prevPos;
+    x = prevPos.x - tri->pos.x;
+    y = prevPos.y - tri->pos.y;
+    z = prevPos.z - tri->pos.z;
+    if (x * tri->normal.x + y * tri->normal.y + z * tri->normal.z < 0.0)
+        return;
+
+    pos = physBall->pos;
+    x = pos.x - tri->pos.x;
+    y = pos.y - tri->pos.y;
+    z = pos.z - tri->pos.z;
+    if (x * tri->normal.x + y * tri->normal.y + z * tri->normal.z > physBall->radius)
+        return;
+
+    mathutil_mtxA_from_translate(&tri->pos);
+    mathutil_mtxA_rotate_y(tri->rot.y);
+    mathutil_mtxA_rotate_x(tri->rot.x);
+    mathutil_mtxA_rotate_z(tri->rot.z);
+    mathutil_mtxA_rigid_inv_tf_point(&prevPos, &prevPos);
+    mathutil_mtxA_rigid_inv_tf_point(&pos, &pos);
+
+    vert.x = 0;
+    vert.y = 0;
+    collide_ball_with_tri_vert(physBall, &pos, &vert);
+    vert.x = tri->vert2.x;
+    vert.y = tri->vert2.y;
+    collide_ball_with_tri_vert(physBall, &pos, &vert);
+    vert.x = tri->vert3.x;
+    vert.y = tri->vert3.y;
+    collide_ball_with_tri_vert(physBall, &pos, &vert);
 }

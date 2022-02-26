@@ -780,6 +780,7 @@ lbl_8003E5B0:
 /* 8003E5D0 0003A4F0  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global collide_ball_with_tri_verts
 collide_ball_with_tri_verts:
 /* 8003E5D4 0003A4F4  7C 08 02 A6 */	mflr r0
@@ -885,6 +886,7 @@ lbl_8003E754:
 /* 8003E760 0003A680  7C 08 03 A6 */	mtlr r0
 /* 8003E764 0003A684  38 21 00 58 */	addi r1, r1, 0x58
 /* 8003E768 0003A688  4E 80 00 20 */	blr
+.endif
 
 .global collide_ball_with_tri_vert
 collide_ball_with_tri_vert:
