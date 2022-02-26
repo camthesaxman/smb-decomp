@@ -332,8 +332,8 @@ void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_r
 void collide_ball_with_tri_verts(struct PhysicsBall *physBall, struct StageColiTri *tri)
 {
     float unused1[4];
-    Point3d pos;  // 0x34, 0x38, 0x3c
-    Point3d prevPos;  // 0x28, 0x2c, 0x30
+    Point3d pos;     // 0x34, 0x38, 0x3c
+    Point3d prevPos; // 0x28, 0x2c, 0x30
     float unused2;
     Point2d vert; // 0x1c, 0x20
 
@@ -371,4 +371,51 @@ void collide_ball_with_tri_verts(struct PhysicsBall *physBall, struct StageColiT
     vert.x = tri->vert3.x;
     vert.y = tri->vert3.y;
     collide_ball_with_tri_vert(physBall, &pos, &vert);
+}
+
+// belongs in mathutil.h?
+static inline float sum_of_3_sq(register float a, register float b, register float c)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
+#else
+    return a * a + b * b + c * c;
+#endif
+}
+
+void collide_ball_with_tri_vert(struct PhysicsBall *ball_rt_ig, Point3d *ballPos_rt_tri,
+                                Point2d *vert_rt_tri)
+{
+    struct G_ColiHit hit;
+    Vec vec;
+    f32 distSq;
+    f32 inverseDist;
+
+    vec.x = ballPos_rt_tri->x - vert_rt_tri->x;
+    vec.y = ballPos_rt_tri->y - vert_rt_tri->y;
+    vec.z = ballPos_rt_tri->z;
+    distSq = sum_of_3_sq(vec.x, vec.y, vec.z);
+    if (!(distSq > (ball_rt_ig->radius * ball_rt_ig->radius)) && !(distSq <= FLT_EPSILON))
+    {
+        inverseDist = mathutil_rsqrt(distSq);
+        vec.x *= inverseDist;
+        vec.y *= inverseDist;
+        vec.z *= inverseDist;
+        mathutil_mtxA_tf_vec(&vec, &hit.normal);
+
+        vec.x = vert_rt_tri->x;
+        vec.y = vert_rt_tri->y;
+        vec.z = 0;
+        mathutil_mtxA_tf_point(&vec, &hit.pos);
+
+        mathutil_mtxA_push();
+        g_apply_coli_response(ball_rt_ig, &hit);
+        mathutil_mtxA_pop();
+    }
 }
