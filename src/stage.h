@@ -217,31 +217,38 @@ STAGE_LIST
 #undef DEFINE_STAGE
 };
 
-struct StageColiTri {
-    Point3d vert1;
-    Vec normal;
-    S16Vec rotFromXY;
+struct StageColiTri
+{
+    Point3d pos; // Position of vertex 1 in itemgroup space
+    Vec normal;  // Triangle normal in itemgroup space
+    S16Vec rot;  // Rotation to bring from triangle -> itemgroup space
     u16 flags;
-    Vec2d vert2Delta;  // Vertex 2 - Vertex 1
-    Vec2d vert3Delta;  // Vertex 3 - Vertex 1
-    Vec2d tangent;
-    Vec2d bitangent;
+
+    // Vertex 1 in triangle space is (0, 0)
+    Vec2d vert2;       // Vertex 2 in triangle space
+    Vec2d vert3;       // Vertex 3 in triangle space
+    // Edge 1 normal in triangle space is (0, 1)
+    Vec2d edge2Normal; // Normal of edge from vertex 2 -> vertex 3, in triangle space
+    Vec2d edge3Normal; // Normal of edge from vertex 3 -> vertex 1, in triangle space
 };
 
-struct StageColiCone {
+struct StageColiCone
+{
     Vec pos;
     S16Vec rot;
     u16 flags;
     Vec scale;
 };
 
-struct StageColiSphere {
+struct StageColiSphere
+{
     Vec pos;
     float radius;
     u16 flags;
 };
 
-struct StageColiCylinder {
+struct StageColiCylinder
+{
     Vec pos;
     float radius;
     float height;
@@ -285,7 +292,7 @@ struct DecodedStageLzPtr_child_child3
     u8 filler0[4];
     void *unk4;
     u8 filler8[4];
-};  // size = 0xC
+}; // size = 0xC
 
 struct DecodedStageLzPtr_child_child4
 {
