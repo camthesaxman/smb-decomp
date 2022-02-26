@@ -607,6 +607,7 @@ lbl_8003E340:
 /* 8003E354 0003A274  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global stcoli_sub05
 stcoli_sub05:
 /* 8003E358 0003A278  7C 08 02 A6 */	mflr r0
@@ -777,6 +778,7 @@ lbl_8003E5B0:
 /* 8003E5C8 0003A4E8  83 81 00 60 */	lwz r28, 0x60(r1)
 /* 8003E5CC 0003A4EC  38 21 00 78 */	addi r1, r1, 0x78
 /* 8003E5D0 0003A4F0  4E 80 00 20 */	blr
+.endif
 
 .global g_collide_ball_with_tri_verts
 g_collide_ball_with_tri_verts:
@@ -5635,12 +5637,12 @@ lbl_802F3620:
 lbl_802F3628:
 	# ROM: 0x1ED048
 	.4byte 0xB4000000
-.endif
 
 .global lbl_802F362C
 lbl_802F362C:
 	# ROM: 0x1ED04C
 	.4byte 0x34000000
+.endif
 
 .global lbl_802F3630
 lbl_802F3630:

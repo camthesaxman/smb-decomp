@@ -390,7 +390,7 @@ struct ColiEdge
     Vec2d normal;
 };
 
-struct Struct8003DE2C_Stcoli
+struct G_ColiHit
 {
     Vec pos;
     Vec normal;
