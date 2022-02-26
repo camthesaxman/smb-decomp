@@ -2302,7 +2302,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     ball->pos.z += ball->vel.z;
 
     func_8003CA98(ball, b);
-    g_collide_ball_with_stage(b, decodedStageLzPtr);
+    collide_ball_with_stage(b, decodedStageLzPtr);
     func_8003CB3C(ball, b);
 
     if (b->flags & 1)
@@ -2396,7 +2396,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
     mathutil_mtxA_from_quat(&ball->unk98);
     mathutil_mtxA_normalize_basis();
     mathutil_mtxA_mult_left(ball->unk30);
-    mathutil_set_mtxA_translate(&ball->pos);
+    mathutil_mtxA_set_translate(&ball->pos);
     mathutil_mtxA_to_mtx(ball->unk30);
     mathutil_mtxA_to_euler_yxz(&ball->unk2A, &ball->unk28, &ball->unk2C);
 

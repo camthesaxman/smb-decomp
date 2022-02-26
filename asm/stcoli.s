@@ -3,8 +3,8 @@
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
 .if 0
-.global g_collide_ball_with_stage
-g_collide_ball_with_stage:
+.global collide_ball_with_stage
+collide_ball_with_stage:
 /* 8003DABC 000399DC  7C 08 02 A6 */	mflr r0
 /* 8003DAC0 000399E0  90 01 00 04 */	stw r0, 4(r1)
 /* 8003DAC4 000399E4  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -40,13 +40,13 @@ g_collide_ball_with_stage:
 /* 8003DB3C 00039A5C  D0 41 00 48 */	stfs f2, 0x48(r1)
 /* 8003DB40 00039A60  D0 61 00 4C */	stfs f3, 0x4c(r1)
 /* 8003DB44 00039A64  90 1C 00 58 */	stw r0, 0x58(r28)
-/* 8003DB48 00039A68  48 00 02 E5 */	bl g_collide_ball_with_tri_face
+/* 8003DB48 00039A68  48 00 02 E5 */	bl collide_ball_with_tri_face
 /* 8003DB4C 00039A6C  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DB50 00039A70  38 81 00 10 */	addi r4, r1, 0x10
-/* 8003DB54 00039A74  48 00 05 39 */	bl g_collide_ball_with_tri_edges
+/* 8003DB54 00039A74  48 00 05 39 */	bl collide_ball_with_tri_edges
 /* 8003DB58 00039A78  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DB5C 00039A7C  38 81 00 10 */	addi r4, r1, 0x10
-/* 8003DB60 00039A80  48 00 0A 75 */	bl g_collide_ball_with_tri_verts
+/* 8003DB60 00039A80  48 00 0A 75 */	bl collide_ball_with_tri_verts
 /* 8003DB64 00039A84  48 00 01 A4 */	b lbl_8003DD08
 lbl_8003DB68:
 /* 8003DB68 00039A88  83 FD 00 0C */	lwz r31, 0xc(r29)
@@ -73,7 +73,7 @@ lbl_8003DBAC:
 /* 8003DBB0 00039AD0  54 60 30 32 */	slwi r0, r3, 6
 /* 8003DBB4 00039AD4  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DBB8 00039AD8  7C 84 02 14 */	add r4, r4, r0
-/* 8003DBBC 00039ADC  48 00 02 71 */	bl g_collide_ball_with_tri_face
+/* 8003DBBC 00039ADC  48 00 02 71 */	bl collide_ball_with_tri_face
 /* 8003DBC0 00039AE0  3B 7B 00 02 */	addi r27, r27, 2
 lbl_8003DBC4:
 /* 8003DBC4 00039AE4  A8 7B 00 00 */	lha r3, 0(r27)
@@ -86,7 +86,7 @@ lbl_8003DBD8:
 /* 8003DBDC 00039AFC  54 60 30 32 */	slwi r0, r3, 6
 /* 8003DBE0 00039B00  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DBE4 00039B04  7C 84 02 14 */	add r4, r4, r0
-/* 8003DBE8 00039B08  48 00 04 A5 */	bl g_collide_ball_with_tri_edges
+/* 8003DBE8 00039B08  48 00 04 A5 */	bl collide_ball_with_tri_edges
 /* 8003DBEC 00039B0C  3B 7B 00 02 */	addi r27, r27, 2
 lbl_8003DBF0:
 /* 8003DBF0 00039B10  A8 7B 00 00 */	lha r3, 0(r27)
@@ -99,7 +99,7 @@ lbl_8003DC04:
 /* 8003DC08 00039B28  54 60 30 32 */	slwi r0, r3, 6
 /* 8003DC0C 00039B2C  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DC10 00039B30  7C 84 02 14 */	add r4, r4, r0
-/* 8003DC14 00039B34  48 00 09 C1 */	bl g_collide_ball_with_tri_verts
+/* 8003DC14 00039B34  48 00 09 C1 */	bl collide_ball_with_tri_verts
 /* 8003DC18 00039B38  3B 7B 00 02 */	addi r27, r27, 2
 lbl_8003DC1C:
 /* 8003DC1C 00039B3C  A8 7B 00 00 */	lha r3, 0(r27)
@@ -260,8 +260,8 @@ lbl_8003DE24:
 .endif
 
 .if 0
-.global g_collide_ball_with_tri_face
-g_collide_ball_with_tri_face:
+.global collide_ball_with_tri_face
+collide_ball_with_tri_face:
 /* 8003DE2C 00039D4C  7C 08 02 A6 */	mflr r0
 /* 8003DE30 00039D50  90 01 00 04 */	stw r0, 4(r1)
 /* 8003DE34 00039D54  94 21 FF 88 */	stwu r1, -0x78(r1)
@@ -420,8 +420,8 @@ lbl_8003E074:
 .endif
 
 .if 0
-.global g_collide_ball_with_tri_edges
-g_collide_ball_with_tri_edges:
+.global collide_ball_with_tri_edges
+collide_ball_with_tri_edges:
 /* 8003E08C 00039FAC  7C 08 02 A6 */	mflr r0
 /* 8003E090 00039FB0  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E094 00039FB4  94 21 FF 90 */	stwu r1, -0x70(r1)
@@ -564,7 +564,7 @@ lbl_8003E280:
 /* 8003E2AC 0003A1CC  D0 21 00 5C */	stfs f1, 0x5c(r1)
 /* 8003E2B0 0003A1D0  C0 02 8E 0C */	lfs f0, lbl_802F360C-_SDA2_BASE_(r2)
 /* 8003E2B4 0003A1D4  D0 01 00 60 */	stfs f0, 0x60(r1)
-/* 8003E2B8 0003A1D8  48 00 00 A1 */	bl stcoli_sub05
+/* 8003E2B8 0003A1D8  48 00 00 A1 */	bl collide_ball_with_tri_edge
 /* 8003E2BC 0003A1DC  C0 1F 00 20 */	lfs f0, 0x20(r31)
 /* 8003E2C0 0003A1E0  38 7E 00 00 */	addi r3, r30, 0
 /* 8003E2C4 0003A1E4  38 81 00 34 */	addi r4, r1, 0x34
@@ -581,7 +581,7 @@ lbl_8003E280:
 /* 8003E2F0 0003A210  D0 01 00 5C */	stfs f0, 0x5c(r1)
 /* 8003E2F4 0003A214  C0 1F 00 34 */	lfs f0, 0x34(r31)
 /* 8003E2F8 0003A218  D0 01 00 60 */	stfs f0, 0x60(r1)
-/* 8003E2FC 0003A21C  48 00 00 5D */	bl stcoli_sub05
+/* 8003E2FC 0003A21C  48 00 00 5D */	bl collide_ball_with_tri_edge
 /* 8003E300 0003A220  C0 1F 00 28 */	lfs f0, 0x28(r31)
 /* 8003E304 0003A224  38 7E 00 00 */	addi r3, r30, 0
 /* 8003E308 0003A228  38 81 00 34 */	addi r4, r1, 0x34
@@ -597,7 +597,7 @@ lbl_8003E280:
 /* 8003E330 0003A250  D0 01 00 5C */	stfs f0, 0x5c(r1)
 /* 8003E334 0003A254  C0 1F 00 3C */	lfs f0, 0x3c(r31)
 /* 8003E338 0003A258  D0 01 00 60 */	stfs f0, 0x60(r1)
-/* 8003E33C 0003A25C  48 00 00 1D */	bl stcoli_sub05
+/* 8003E33C 0003A25C  48 00 00 1D */	bl collide_ball_with_tri_edge
 lbl_8003E340:
 /* 8003E340 0003A260  80 01 00 74 */	lwz r0, 0x74(r1)
 /* 8003E344 0003A264  83 E1 00 6C */	lwz r31, 0x6c(r1)
@@ -608,8 +608,8 @@ lbl_8003E340:
 .endif
 
 .if 0
-.global stcoli_sub05
-stcoli_sub05:
+.global collide_ball_with_tri_edge
+collide_ball_with_tri_edge:
 /* 8003E358 0003A278  7C 08 02 A6 */	mflr r0
 /* 8003E35C 0003A27C  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E360 0003A280  94 21 FF 88 */	stwu r1, -0x78(r1)
@@ -780,8 +780,8 @@ lbl_8003E5B0:
 /* 8003E5D0 0003A4F0  4E 80 00 20 */	blr
 .endif
 
-.global g_collide_ball_with_tri_verts
-g_collide_ball_with_tri_verts:
+.global collide_ball_with_tri_verts
+collide_ball_with_tri_verts:
 /* 8003E5D4 0003A4F4  7C 08 02 A6 */	mflr r0
 /* 8003E5D8 0003A4F8  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E5DC 0003A4FC  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -861,7 +861,7 @@ g_collide_ball_with_tri_verts:
 /* 8003E704 0003A624  D0 01 00 1C */	stfs f0, 0x1c(r1)
 /* 8003E708 0003A628  38 A1 00 1C */	addi r5, r1, 0x1c
 /* 8003E70C 0003A62C  D0 01 00 20 */	stfs f0, 0x20(r1)
-/* 8003E710 0003A630  48 00 00 5D */	bl stcoli_sub07
+/* 8003E710 0003A630  48 00 00 5D */	bl collide_ball_with_tri_vert
 /* 8003E714 0003A634  C0 1F 00 20 */	lfs f0, 0x20(r31)
 /* 8003E718 0003A638  38 7E 00 00 */	addi r3, r30, 0
 /* 8003E71C 0003A63C  38 81 00 34 */	addi r4, r1, 0x34
@@ -869,7 +869,7 @@ g_collide_ball_with_tri_verts:
 /* 8003E724 0003A644  38 A1 00 1C */	addi r5, r1, 0x1c
 /* 8003E728 0003A648  C0 1F 00 24 */	lfs f0, 0x24(r31)
 /* 8003E72C 0003A64C  D0 01 00 20 */	stfs f0, 0x20(r1)
-/* 8003E730 0003A650  48 00 00 3D */	bl stcoli_sub07
+/* 8003E730 0003A650  48 00 00 3D */	bl collide_ball_with_tri_vert
 /* 8003E734 0003A654  C0 1F 00 28 */	lfs f0, 0x28(r31)
 /* 8003E738 0003A658  38 7E 00 00 */	addi r3, r30, 0
 /* 8003E73C 0003A65C  38 81 00 34 */	addi r4, r1, 0x34
@@ -877,7 +877,7 @@ g_collide_ball_with_tri_verts:
 /* 8003E744 0003A664  38 A1 00 1C */	addi r5, r1, 0x1c
 /* 8003E748 0003A668  C0 1F 00 2C */	lfs f0, 0x2c(r31)
 /* 8003E74C 0003A66C  D0 01 00 20 */	stfs f0, 0x20(r1)
-/* 8003E750 0003A670  48 00 00 1D */	bl stcoli_sub07
+/* 8003E750 0003A670  48 00 00 1D */	bl collide_ball_with_tri_vert
 lbl_8003E754:
 /* 8003E754 0003A674  80 01 00 5C */	lwz r0, 0x5c(r1)
 /* 8003E758 0003A678  83 E1 00 54 */	lwz r31, 0x54(r1)
@@ -886,8 +886,8 @@ lbl_8003E754:
 /* 8003E764 0003A684  38 21 00 58 */	addi r1, r1, 0x58
 /* 8003E768 0003A688  4E 80 00 20 */	blr
 
-.global stcoli_sub07
-stcoli_sub07:
+.global collide_ball_with_tri_vert
+collide_ball_with_tri_vert:
 /* 8003E76C 0003A68C  7C 08 02 A6 */	mflr r0
 /* 8003E770 0003A690  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E774 0003A694  94 21 FF C0 */	stwu r1, -0x40(r1)
@@ -3955,7 +3955,7 @@ lbl_80041490:
 /* 80041498 0003D3B8  40 82 00 10 */	bne lbl_800414A8
 /* 8004149C 0003D3BC  38 76 00 00 */	addi r3, r22, 0
 /* 800414A0 0003D3C0  38 9C 00 00 */	addi r4, r28, 0
-/* 800414A4 0003D3C4  4B FF C9 89 */	bl g_collide_ball_with_tri_face
+/* 800414A4 0003D3C4  4B FF C9 89 */	bl collide_ball_with_tri_face
 lbl_800414A8:
 /* 800414A8 0003D3C8  A0 1C 00 5E */	lhz r0, 0x5e(r28)
 /* 800414AC 0003D3CC  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -3963,7 +3963,7 @@ lbl_800414A8:
 /* 800414B4 0003D3D4  40 82 00 10 */	bne lbl_800414C4
 /* 800414B8 0003D3D8  38 76 00 00 */	addi r3, r22, 0
 /* 800414BC 0003D3DC  38 9C 00 00 */	addi r4, r28, 0
-/* 800414C0 0003D3E0  4B FF C9 6D */	bl g_collide_ball_with_tri_face
+/* 800414C0 0003D3E0  4B FF C9 6D */	bl collide_ball_with_tri_face
 lbl_800414C4:
 /* 800414C4 0003D3E4  37 18 FF FF */	addic. r24, r24, -1
 /* 800414C8 0003D3E8  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -3980,7 +3980,7 @@ lbl_800414E4:
 /* 800414EC 0003D40C  40 82 00 10 */	bne lbl_800414FC
 /* 800414F0 0003D410  38 76 00 00 */	addi r3, r22, 0
 /* 800414F4 0003D414  38 9C 00 00 */	addi r4, r28, 0
-/* 800414F8 0003D418  4B FF CB 95 */	bl g_collide_ball_with_tri_edges
+/* 800414F8 0003D418  4B FF CB 95 */	bl collide_ball_with_tri_edges
 lbl_800414FC:
 /* 800414FC 0003D41C  A0 1C 00 5E */	lhz r0, 0x5e(r28)
 /* 80041500 0003D420  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -3988,7 +3988,7 @@ lbl_800414FC:
 /* 80041508 0003D428  40 82 00 10 */	bne lbl_80041518
 /* 8004150C 0003D42C  38 76 00 00 */	addi r3, r22, 0
 /* 80041510 0003D430  38 9C 00 00 */	addi r4, r28, 0
-/* 80041514 0003D434  4B FF CB 79 */	bl g_collide_ball_with_tri_edges
+/* 80041514 0003D434  4B FF CB 79 */	bl collide_ball_with_tri_edges
 lbl_80041518:
 /* 80041518 0003D438  37 18 FF FF */	addic. r24, r24, -1
 /* 8004151C 0003D43C  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -4005,7 +4005,7 @@ lbl_80041538:
 /* 80041540 0003D460  40 82 00 10 */	bne lbl_80041550
 /* 80041544 0003D464  38 76 00 00 */	addi r3, r22, 0
 /* 80041548 0003D468  38 9C 00 00 */	addi r4, r28, 0
-/* 8004154C 0003D46C  4B FF D0 89 */	bl g_collide_ball_with_tri_verts
+/* 8004154C 0003D46C  4B FF D0 89 */	bl collide_ball_with_tri_verts
 lbl_80041550:
 /* 80041550 0003D470  A0 1C 00 5E */	lhz r0, 0x5e(r28)
 /* 80041554 0003D474  3B 9C 00 40 */	addi r28, r28, 0x40
@@ -4013,7 +4013,7 @@ lbl_80041550:
 /* 8004155C 0003D47C  40 82 00 10 */	bne lbl_8004156C
 /* 80041560 0003D480  38 76 00 00 */	addi r3, r22, 0
 /* 80041564 0003D484  38 9C 00 00 */	addi r4, r28, 0
-/* 80041568 0003D488  4B FF D0 6D */	bl g_collide_ball_with_tri_verts
+/* 80041568 0003D488  4B FF D0 6D */	bl collide_ball_with_tri_verts
 lbl_8004156C:
 /* 8004156C 0003D48C  3B 18 00 01 */	addi r24, r24, 1
 /* 80041570 0003D490  2C 18 00 03 */	cmpwi r24, 3
@@ -4996,7 +4996,7 @@ lbl_8004238C:
 /* 80042394 0003E2B4  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042398 0003E2B8  54 00 30 32 */	slwi r0, r0, 6
 /* 8004239C 0003E2BC  7C 84 02 14 */	add r4, r4, r0
-/* 800423A0 0003E2C0  4B FF BA 8D */	bl g_collide_ball_with_tri_face
+/* 800423A0 0003E2C0  4B FF BA 8D */	bl collide_ball_with_tri_face
 /* 800423A4 0003E2C4  3B 5A 00 02 */	addi r26, r26, 2
 lbl_800423A8:
 /* 800423A8 0003E2C8  A8 1A 00 00 */	lha r0, 0(r26)
@@ -5154,7 +5154,7 @@ lbl_800425B4:
 /* 800425BC 0003E4DC  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 800425C0 0003E4E0  54 00 30 32 */	slwi r0, r0, 6
 /* 800425C4 0003E4E4  7C 84 02 14 */	add r4, r4, r0
-/* 800425C8 0003E4E8  4B FF BA C5 */	bl g_collide_ball_with_tri_edges
+/* 800425C8 0003E4E8  4B FF BA C5 */	bl collide_ball_with_tri_edges
 /* 800425CC 0003E4EC  3B 39 00 02 */	addi r25, r25, 2
 lbl_800425D0:
 /* 800425D0 0003E4F0  A8 19 00 00 */	lha r0, 0(r25)
@@ -5261,7 +5261,7 @@ lbl_80042730:
 /* 80042738 0003E658  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 8004273C 0003E65C  54 00 30 32 */	slwi r0, r0, 6
 /* 80042740 0003E660  7C 84 02 14 */	add r4, r4, r0
-/* 80042744 0003E664  4B FF BE 91 */	bl g_collide_ball_with_tri_verts
+/* 80042744 0003E664  4B FF BE 91 */	bl collide_ball_with_tri_verts
 /* 80042748 0003E668  3B 39 00 02 */	addi r25, r25, 2
 lbl_8004274C:
 /* 8004274C 0003E66C  A8 19 00 00 */	lha r0, 0(r25)
@@ -5492,7 +5492,7 @@ lbl_80042A68:
 /* 80042A70 0003E990  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042A74 0003E994  54 00 30 32 */	slwi r0, r0, 6
 /* 80042A78 0003E998  7C 84 02 14 */	add r4, r4, r0
-/* 80042A7C 0003E99C  4B FF B3 B1 */	bl g_collide_ball_with_tri_face
+/* 80042A7C 0003E99C  4B FF B3 B1 */	bl collide_ball_with_tri_face
 /* 80042A80 0003E9A0  3B 9C 00 02 */	addi r28, r28, 2
 lbl_80042A84:
 /* 80042A84 0003E9A4  A8 1C 00 00 */	lha r0, 0(r28)
@@ -5506,7 +5506,7 @@ lbl_80042A98:
 /* 80042AA0 0003E9C0  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042AA4 0003E9C4  54 00 30 32 */	slwi r0, r0, 6
 /* 80042AA8 0003E9C8  7C 84 02 14 */	add r4, r4, r0
-/* 80042AAC 0003E9CC  4B FF B5 E1 */	bl g_collide_ball_with_tri_edges
+/* 80042AAC 0003E9CC  4B FF B5 E1 */	bl collide_ball_with_tri_edges
 /* 80042AB0 0003E9D0  3B 9C 00 02 */	addi r28, r28, 2
 lbl_80042AB4:
 /* 80042AB4 0003E9D4  A8 1C 00 00 */	lha r0, 0(r28)
@@ -5520,7 +5520,7 @@ lbl_80042AC8:
 /* 80042AD0 0003E9F0  80 9E 00 1C */	lwz r4, 0x1c(r30)
 /* 80042AD4 0003E9F4  54 00 30 32 */	slwi r0, r0, 6
 /* 80042AD8 0003E9F8  7C 84 02 14 */	add r4, r4, r0
-/* 80042ADC 0003E9FC  4B FF BA F9 */	bl g_collide_ball_with_tri_verts
+/* 80042ADC 0003E9FC  4B FF BA F9 */	bl collide_ball_with_tri_verts
 /* 80042AE0 0003EA00  3B 9C 00 02 */	addi r28, r28, 2
 lbl_80042AE4:
 /* 80042AE4 0003EA04  A8 1C 00 00 */	lha r0, 0(r28)

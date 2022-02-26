@@ -159,7 +159,7 @@ void bg_bonus_draw(void)
         mathutil_mtxA_push();
         mathutil_mtxA_translate(&starpoint->unk0);
         mathutil_mtxA_sq_from_identity();
-        mathutil_get_mtxA_translate_alt(&sp14);
+        mathutil_mtxA_get_translate_alt(&sp14);
         if (sp14.z < -30.0f)
         {
             float f3 = (26.0f + sp14.z) / sp14.z;
@@ -167,7 +167,7 @@ void bg_bonus_draw(void)
             sp14.x *= f3;
             sp14.y *= f3;
             sp14.z *= f3;
-            mathutil_set_mtxA_translate(&sp14);
+            mathutil_mtxA_set_translate(&sp14);
             f30 *= f3;
             mathutil_mtxA_scale_s(f30);
             g_avdisp_set_some_color_1(starpoint->unk10, starpoint->unk14, starpoint->unk18, 1.0f);
@@ -253,7 +253,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     spC.unkC++;
     mathutil_mtxA_push();
     mathutil_mtxA_mult_left(work->unk7DC);
-    mathutil_set_mtxA_translate_xyz(0.0f, 0.0f, 0.0f);
+    mathutil_mtxA_set_translate_xyz(0.0f, 0.0f, 0.0f);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXLoadTexMtxImm(work->unk77C, spC.unk14, GX_MTX3x4);

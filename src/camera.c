@@ -3534,7 +3534,7 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, f31);
 
-    mathutil_get_mtxA_translate(eye);
+    mathutil_mtxA_get_translate(eye);
 
     mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
 }
@@ -3554,7 +3554,7 @@ void func_80020334(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, sp24.radius * 1.2);
 
-    mathutil_get_mtxA_translate(eye);
+    mathutil_mtxA_get_translate(eye);
 
     mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
 }
@@ -3671,7 +3671,7 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_x(camera->rotX);
     mathutil_mtxA_rotate_z(camera->rotZ);
 
-    mathutil_get_mtxA_translate(&camera->eye);
+    mathutil_mtxA_get_translate(&camera->eye);
     mathutil_mtxA_to_euler_yxz(&camera->rotY, &camera->rotX, &camera->rotZ);
     mathutil_mtxA_tf_point_xyz(&camera->lookAt, 0.0f, 0.0f, -1.0f);
     camera->timerCurr++;

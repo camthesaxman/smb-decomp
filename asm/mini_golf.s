@@ -17381,7 +17381,7 @@ lbl_00010130:
 /* 00010134 54603032 */ slwi r0, r3, 6
 /* 00010138 387E0000 */ addi r3, r30, 0
 /* 0001013C 7C840214 */ add r4, r4, r0
-/* 00010140 4BFF0091 */ bl g_collide_ball_with_tri_face
+/* 00010140 4BFF0091 */ bl collide_ball_with_tri_face
 /* 00010144 3B7B0002 */ addi r27, r27, 2
 lbl_00010148:
 /* 00010148 A87B0000 */ lha r3, 0(r27)
@@ -17454,7 +17454,7 @@ lbl_00010224:
 /* 00010228 54603032 */ slwi r0, r3, 6
 /* 0001022C 387E0000 */ addi r3, r30, 0
 /* 00010230 7C840214 */ add r4, r4, r0
-/* 00010234 4BFEFF9D */ bl g_collide_ball_with_tri_edges
+/* 00010234 4BFEFF9D */ bl collide_ball_with_tri_edges
 /* 00010238 3B5A0002 */ addi r26, r26, 2
 lbl_0001023C:
 /* 0001023C A87A0000 */ lha r3, 0(r26)
@@ -17491,7 +17491,7 @@ lbl_000102A0:
 /* 000102A4 54603032 */ slwi r0, r3, 6
 /* 000102A8 387E0000 */ addi r3, r30, 0
 /* 000102AC 7C840214 */ add r4, r4, r0
-/* 000102B0 4BFEFF21 */ bl g_collide_ball_with_tri_verts
+/* 000102B0 4BFEFF21 */ bl collide_ball_with_tri_verts
 /* 000102B4 3B5A0002 */ addi r26, r26, 2
 lbl_000102B8:
 /* 000102B8 A87A0000 */ lha r3, 0(r26)

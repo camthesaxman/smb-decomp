@@ -691,7 +691,7 @@ void func_8000C8D4(void)
         mathutil_mtxA_rotate_y(cameraInfo[i].rotY - 0x8000);
         mathutil_mtxA_rotate_x(-0x4000);
         mathutil_mtxA_translate_xyz(0.0f, ball->currRadius, 0.0f);
-        mathutil_get_mtxA_translate_alt(&sp8);
+        mathutil_mtxA_get_translate_alt(&sp8);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);

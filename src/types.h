@@ -363,14 +363,14 @@ struct Struct8003F890
 struct PhysicsBall
 {
     u32 flags;
-    Vec pos;
-    Vec prevPos;
+    Point3d pos;
+    Point3d prevPos;
     Vec vel;
     float radius;
     float accel;
     float restitution;
     float g_hardestColiVel;
-    Vec g_coliPos;
+    Point3d g_coliPos;
     Vec g_coliNormal;
     s32 g_hardestColiItemgroupId;  
     float unk54;
@@ -383,8 +383,8 @@ struct PhysicsBall
 struct ColiEdge
 {
     // Winds counterclockwise around tri up normal
-    Vec2d start;
-    Vec2d end;
+    Point2d start;
+    Point2d end;
 
     // Coplanar with triangle, points inside triangle
     Vec2d normal;
@@ -392,7 +392,7 @@ struct ColiEdge
 
 struct G_ColiHit
 {
-    Vec pos;
+    Point3d pos;
     Vec normal;
 };
 

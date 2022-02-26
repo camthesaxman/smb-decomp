@@ -8,10 +8,10 @@
 #include "stcoli.h"
 #include "types.h"
 
-void g_collide_ball_with_stage(struct PhysicsBall *b, struct Stage *arg1)
+void collide_ball_with_stage(struct PhysicsBall *b, struct Stage *stage)
 {
     struct StageColiTri tri;
-    struct StageItemgroup *collHdr;
+    struct StageItemgroup *stageIg;
     int itemgroupId;
     s16 *cellTris;
     s16 *cellTriIdx;
@@ -42,42 +42,42 @@ void g_collide_ball_with_stage(struct PhysicsBall *b, struct Stage *arg1)
         tri.bitangent.x = 1.0f;
         tri.bitangent.y = 0.0f;
         b->itemgroupId = 0;
-        g_collide_ball_with_tri_face(b, &tri);
-        g_collide_ball_with_tri_edges(b, &tri);
-        g_collide_ball_with_tri_verts(b, &tri);
+        collide_ball_with_tri_face(b, &tri);
+        collide_ball_with_tri_edges(b, &tri);
+        collide_ball_with_tri_verts(b, &tri);
         return;
     }
 
-    collHdr = arg1->itemgroups;
-    for (itemgroupId = 0; itemgroupId < arg1->itemgroupCount; itemgroupId++, collHdr++)
+    stageIg = stage->itemgroups;
+    for (itemgroupId = 0; itemgroupId < stage->itemgroupCount; itemgroupId++, stageIg++)
     {
         if (itemgroupId != b->itemgroupId)
             tf_physball_to_itemgroup_space(b, itemgroupId);
-        cellTris = meshcoli_grid_lookup(collHdr, b->pos.x, b->pos.z);
+        cellTris = meshcoli_grid_lookup(stageIg, b->pos.x, b->pos.z);
         if (cellTris != NULL)
         {
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
-                g_collide_ball_with_tri_face(b, &collHdr->triangles[*cellTriIdx]);
+                collide_ball_with_tri_face(b, &stageIg->triangles[*cellTriIdx]);
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
-                g_collide_ball_with_tri_edges(b, &collHdr->triangles[*cellTriIdx]);
+                collide_ball_with_tri_edges(b, &stageIg->triangles[*cellTriIdx]);
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
-                g_collide_ball_with_tri_verts(b, &collHdr->triangles[*cellTriIdx]);
+                collide_ball_with_tri_verts(b, &stageIg->triangles[*cellTriIdx]);
         }
 
-        cone = collHdr->coliCones;
-        for (i = collHdr->coliConeCount; i > 0; i--, cone++)
+        cone = stageIg->coliCones;
+        for (i = stageIg->coliConeCount; i > 0; i--, cone++)
             g_collide_ball_with_cone(b, cone);
 
-        sphere = collHdr->coliSpheres;
-        for (i = collHdr->coliSphereCount; i > 0; i--, sphere++)
+        sphere = stageIg->coliSpheres;
+        for (i = stageIg->coliSphereCount; i > 0; i--, sphere++)
             g_collide_ball_with_sphere(b, sphere);
 
-        cylinder = collHdr->coliCylinders;
-        for (i = collHdr->coliCylinderCount; i > 0; i--, cylinder++)
+        cylinder = stageIg->coliCylinders;
+        for (i = stageIg->coliCylinderCount; i > 0; i--, cylinder++)
             g_collide_ball_with_cylinder(b, cylinder);
 
-        goal = collHdr->goals;
-        for (i = collHdr->goalCount; i > 0; i--, goal++)
+        goal = stageIg->goals;
+        for (i = stageIg->goalCount; i > 0; i--, goal++)
             g_collide_ball_with_goal(b, goal);
     }
 
@@ -87,22 +87,22 @@ void g_collide_ball_with_stage(struct PhysicsBall *b, struct Stage *arg1)
         g_collide_ball_with_dynstageparts(b, dynamicStageParts);
 }
 
-s16 *meshcoli_grid_lookup(struct StageItemgroup *coliHeader, f32 x, f32 z)
+s16 *meshcoli_grid_lookup(struct StageItemgroup *stageIg, f32 x, f32 z)
 {
     int cellX;
     int cellZ;
 
-    if (coliHeader->gridCells == NULL2)
+    if (stageIg->gridCells == NULL2)
         return NULL;
 
-    cellX = mathutil_floor((x - coliHeader->gridOriginX) / coliHeader->gridStepX);
-    cellZ = mathutil_floor((z - coliHeader->gridOriginZ) / coliHeader->gridStepZ);
+    cellX = mathutil_floor((x - stageIg->gridOriginX) / stageIg->gridStepX);
+    cellZ = mathutil_floor((z - stageIg->gridOriginZ) / stageIg->gridStepZ);
 
-    if (cellX < 0 || cellX >= coliHeader->gridDimX)
+    if (cellX < 0 || cellX >= stageIg->gridDimX)
         return NULL;
-    if (cellZ < 0 || cellZ >= coliHeader->gridDimZ)
+    if (cellZ < 0 || cellZ >= stageIg->gridDimZ)
         return NULL;
-    return coliHeader->gridCells[cellZ * coliHeader->gridDimX + cellX];
+    return stageIg->gridCells[cellZ * stageIg->gridDimX + cellX];
 }
 
 static inline float dumb_dot(float x1, float y1, float x2, float y2)
@@ -110,14 +110,14 @@ static inline float dumb_dot(float x1, float y1, float x2, float y2)
     return x1 * x2 + y1 * y2;
 }
 
-void g_collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri)
+void collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri)
 {
     struct G_ColiHit coliHit;
     float x;
     float y;
     float z;
-    Vec pos;
-    Vec prevPos;
+    Point3d pos;
+    Point3d prevPos;
 
     // Only necessary for stack size/alignment,
     // can also be completely unused and swapped for float literals
@@ -169,12 +169,12 @@ void g_collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColi
     }
 }
 
-void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri)
+void collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri)
 {
     struct ColiEdge edge;
     float unused1[3];
-    Vec pos;
-    Vec prevPos;
+    Point3d pos;
+    Point3d prevPos;
     float unused2[5];
     float x;
     float y;
@@ -227,7 +227,7 @@ void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageCol
     edge.end.y = tri->vert2Delta.y;
     edge.normal.x = 0;
     edge.normal.y = 1;
-    stcoli_sub05(physBall, &pos, &prevPos, &edge);
+    collide_ball_with_tri_edge(physBall, &pos, &prevPos, &edge);
 
     edge.start.x = tri->vert2Delta.x;
     edge.start.y = tri->vert2Delta.y;
@@ -235,7 +235,7 @@ void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageCol
     edge.end.y = tri->vert3Delta.y;
     edge.normal.x = tri->tangent.x;
     edge.normal.y = tri->tangent.y;
-    stcoli_sub05(physBall, &pos, &prevPos, &edge);
+    collide_ball_with_tri_edge(physBall, &pos, &prevPos, &edge);
 
     edge.start.x = tri->vert3Delta.x;
     edge.start.y = tri->vert3Delta.y;
@@ -243,10 +243,10 @@ void g_collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageCol
     edge.end.y = 0;
     edge.normal.x = tri->bitangent.x;
     edge.normal.y = tri->bitangent.y;
-    stcoli_sub05(physBall, &pos, &prevPos, &edge);
+    collide_ball_with_tri_edge(physBall, &pos, &prevPos, &edge);
 }
 
-void stcoli_sub05(struct PhysicsBall *physBall, Point3d *ballPos_rtTri, Point3d *ballPrevPos_rtTri,
+void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_rt_tri, Point3d *ballPrevPos_rt_tri,
                   struct ColiEdge *edge)
 {
     f32 tempp_f1_2;
@@ -255,57 +255,57 @@ void stcoli_sub05(struct PhysicsBall *physBall, Point3d *ballPos_rtTri, Point3d 
     f32 phi_f1_2;
     f32 someY;
     struct G_ColiHit coliHit;
-    Point3d ballPrevPos_rtEdge;
-    Point3d ballPos_rtEdge;
-    Point3d edgeEnd_rtEdge;
+    Point3d ballPrevPos_rt_edge;
+    Point3d ballPos_rt_edge;
+    Point3d edgeEnd_rt_edge;
     Vec vec;
 
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     mathutil_mtxA_translate_xyz(edge->start.x, edge->start.y, 0);
     mathutil_mtxA_rotate_z(-mathutil_atan2(edge->normal.x, edge->normal.y));
-    mathutil_mtxA_rigid_inv_tf_point(ballPrevPos_rtTri, &ballPrevPos_rtEdge);
-    mathutil_mtxA_rigid_inv_tf_point(ballPos_rtTri, &ballPos_rtEdge);
-    edgeEnd_rtEdge.x = edge->end.x;
-    edgeEnd_rtEdge.y = edge->end.y;
-    edgeEnd_rtEdge.z = 0;
-    mathutil_mtxA_rigid_inv_tf_point(&edgeEnd_rtEdge, &edgeEnd_rtEdge);
+    mathutil_mtxA_rigid_inv_tf_point(ballPrevPos_rt_tri, &ballPrevPos_rt_edge);
+    mathutil_mtxA_rigid_inv_tf_point(ballPos_rt_tri, &ballPos_rt_edge);
+    edgeEnd_rt_edge.x = edge->end.x;
+    edgeEnd_rt_edge.y = edge->end.y;
+    edgeEnd_rt_edge.z = 0;
+    mathutil_mtxA_rigid_inv_tf_point(&edgeEnd_rt_edge, &edgeEnd_rt_edge);
 
-    vec.y = ballPos_rtEdge.y - ballPrevPos_rtEdge.y;
-    vec.z = ballPos_rtEdge.z - ballPrevPos_rtEdge.z;
+    vec.y = ballPos_rt_edge.y - ballPrevPos_rt_edge.y;
+    vec.z = ballPos_rt_edge.z - ballPrevPos_rt_edge.z;
     mathutil_mtxA_rotate_x(-mathutil_atan2(vec.y, vec.z) - 0x8000);
-    mathutil_mtxA_rigid_inv_tf_point(ballPos_rtTri, &ballPos_rtEdge);
-    mathutil_mtxA_rigid_inv_tf_point(ballPrevPos_rtTri, &ballPrevPos_rtEdge);
+    mathutil_mtxA_rigid_inv_tf_point(ballPos_rt_tri, &ballPos_rt_edge);
+    mathutil_mtxA_rigid_inv_tf_point(ballPrevPos_rt_tri, &ballPrevPos_rt_edge);
 
     // radius = physBall->radius;
-    someY = ballPos_rtEdge.y;
+    someY = ballPos_rt_edge.y;
     if (__fabs(someY) > physBall->radius)
     {
         mathutil_mtxA_pop();
         return;
     }
     phi_f1 = mathutil_sqrt((physBall->radius * physBall->radius) -
-                           (ballPos_rtEdge.y * ballPos_rtEdge.y));
-    if (__fabs(ballPos_rtEdge.z) > phi_f1)
+                           (ballPos_rt_edge.y * ballPos_rt_edge.y));
+    if (__fabs(ballPos_rt_edge.z) > phi_f1)
     {
         mathutil_mtxA_pop();
         return;
     }
-    if (ballPrevPos_rtEdge.z < 0.0)
+    if (ballPrevPos_rt_edge.z < 0.0)
         phi_f1 = -phi_f1;
     vec.x = 0;
     vec.y = someY;
     vec.z = phi_f1;
-    if ((ballPrevPos_rtEdge.z > phi_f1) && (ballPos_rtEdge.z < phi_f1))
+    if ((ballPrevPos_rt_edge.z > phi_f1) && (ballPos_rt_edge.z < phi_f1))
     {
-        phi_f1_2 = ballPrevPos_rtEdge.x +
-                   ((ballPos_rtEdge.x - ballPrevPos_rtEdge.x) *
-                    ((phi_f1 - ballPrevPos_rtEdge.z) / (ballPos_rtEdge.z - ballPrevPos_rtEdge.z)));
+        phi_f1_2 = ballPrevPos_rt_edge.x +
+                   ((ballPos_rt_edge.x - ballPrevPos_rt_edge.x) *
+                    ((phi_f1 - ballPrevPos_rt_edge.z) / (ballPos_rt_edge.z - ballPrevPos_rt_edge.z)));
     }
     else
-        phi_f1_2 = ballPos_rtEdge.x;
+        phi_f1_2 = ballPos_rt_edge.x;
 
-    if ((phi_f1_2 < 0.0) || (phi_f1_2 > edgeEnd_rtEdge.x))
+    if ((phi_f1_2 < 0.0) || (phi_f1_2 > edgeEnd_rt_edge.x))
     {
         mathutil_mtxA_pop();
         return;
@@ -322,7 +322,7 @@ void stcoli_sub05(struct PhysicsBall *physBall, Point3d *ballPos_rtTri, Point3d 
     vec.z *= tempp_f1_3;
     mathutil_mtxA_tf_vec(&vec, &coliHit.normal);
 
-    mathutil_get_mtxA_translate_alt(&coliHit.pos);
+    mathutil_mtxA_get_translate_alt(&coliHit.pos);
 
     mathutil_mtxA_pop();
     mathutil_mtxA_tf_vec(&coliHit.normal, &coliHit.normal);

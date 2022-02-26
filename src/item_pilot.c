@@ -260,7 +260,7 @@ void item_pilot_draw(struct Item *item)
     }
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);
-    mathutil_get_mtxA_translate_alt(&spC);
+    mathutil_mtxA_get_translate_alt(&spC);
     f30 = -((spC.z + f30 + 0.1f) / f30);
     if (f30 > 0.0f)
     {

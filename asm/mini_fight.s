@@ -3393,7 +3393,7 @@ lbl_000032B8:
 /* 00003358 90C10064 */ stw r6, 0x64(r1)
 /* 0000335C 90C1005C */ stw r6, 0x5c(r1)
 /* 00003360 80840000 */ lwz r4, 0(r4)
-/* 00003364 4BFFCE01 */ bl g_collide_ball_with_stage
+/* 00003364 4BFFCE01 */ bl collide_ball_with_stage
 /* 00003368 80610010 */ lwz r3, 0x10(r1)
 /* 0000336C 80010014 */ lwz r0, 0x14(r1)
 /* 00003370 907F0058 */ stw r3, 0x58(r31)
@@ -6415,7 +6415,7 @@ lbl_000060A4:
 /* 0000612C 90C10144 */ stw r6, 0x144(r1)
 /* 00006130 90C1013C */ stw r6, 0x13c(r1)
 /* 00006134 80840000 */ lwz r4, 0(r4)
-/* 00006138 4BFFA02D */ bl g_collide_ball_with_stage
+/* 00006138 4BFFA02D */ bl collide_ball_with_stage
 /* 0000613C 800100EC */ lwz r0, 0xec(r1)
 /* 00006140 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00006144 4182049C */ beq lbl_000065E0

@@ -314,7 +314,7 @@ extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, reg
 #endif
 }
 
-static inline void mathutil_get_mtxA_translate(Vec *v)
+static inline void mathutil_mtxA_get_translate(Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
@@ -340,7 +340,7 @@ static inline void mathutil_get_mtxA_translate(Vec *v)
 #endif
 }
 
-static inline void mathutil_get_mtxA_translate_alt(register Vec *v)
+static inline void mathutil_mtxA_get_translate_alt(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
@@ -369,7 +369,7 @@ static inline void mathutil_get_mtxA_translate_alt(register Vec *v)
 #endif
 }
 
-static inline void mathutil_set_mtxA_translate(register Vec *v)
+static inline void mathutil_mtxA_set_translate(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = v->x;
@@ -392,7 +392,7 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
 #endif
 }
 
-static inline void mathutil_set_mtxA_translate_xyz(register float x, register float y, register float z)
+static inline void mathutil_mtxA_set_translate_xyz(register float x, register float y, register float z)
 {
 #ifdef MATHUTIL_C_ONLY
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = x;

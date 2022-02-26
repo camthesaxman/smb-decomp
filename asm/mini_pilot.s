@@ -7292,7 +7292,7 @@ lbl_00006B5C:
 /* 00006B78 4BFF95D5 */ bl stcoli_sub35
 /* 00006B7C 48000008 */ b lbl_00006B84
 lbl_00006B80:
-/* 00006B80 4BFF95CD */ bl g_collide_ball_with_stage
+/* 00006B80 4BFF95CD */ bl collide_ball_with_stage
 lbl_00006B84:
 /* 00006B84 8001000C */ lwz r0, 0xc(r1)
 /* 00006B88 38210008 */ addi r1, r1, 8
