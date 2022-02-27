@@ -23,22 +23,6 @@
 
 struct Camera cameraInfo[5];
 
-// belongs in mathutil.h?
-static inline float sum_of_3_sq(register float a, register float b, register float c)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
-#else
-    return a * a + b * b + c * c;
-#endif
-}
-
 void camera_init(void)
 {
     int i;
@@ -1356,7 +1340,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.y = camera->unkAC.y - camera->lookAt.y;
     sp28.z = camera->unkAC.z - camera->lookAt.z;
 
-    f1 = sum_of_3_sq(sp28.x, sp28.y, sp28.z);
+    f1 = mathutil_vec_mag_sq_xyz(sp28.x, sp28.y, sp28.z);
     if (f1 > FLT_EPSILON)
     {
         f1 = mathutil_rsqrt(f1);
@@ -1472,7 +1456,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp10.y = camera->lookAt.y - camera->eye.y;
     sp10.z = camera->lookAt.z - camera->eye.z;
 
-    f0 = 0.1 * mathutil_sqrt(sum_of_3_sq(sp10.x, sp10.y, sp10.z)) / 5.0;
+    f0 = 0.1 * mathutil_sqrt(mathutil_vec_mag_sq_xyz(sp10.x, sp10.y, sp10.z)) / 5.0;
     f0 *= 1.0 + 9.0 * controllerInfo[0].unk0[0].triggerLeft / 170.0;
 
     sp28.x = 0.0f;
@@ -1510,7 +1494,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp10.y = camera->lookAt.y - camera->eye.y;
     sp10.z = camera->lookAt.z - camera->eye.z;
 
-    f1 = sum_of_3_sq(sp10.x, sp10.y, sp10.z);
+    f1 = mathutil_vec_mag_sq_xyz(sp10.x, sp10.y, sp10.z);
     if (f1 < 0.09)
     {
         float f2 = 0.3 / mathutil_sqrt(f1);

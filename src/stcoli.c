@@ -372,23 +372,6 @@ void collide_ball_with_tri_verts(struct PhysicsBall *physBall, struct StageColiT
     vert.y = tri->vert3.y;
     collide_ball_with_tri_vert(physBall, &pos, &vert);
 }
-
-// belongs in mathutil.h?
-static inline float sum_of_3_sq(register float a, register float b, register float c)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
-#else
-    return a * a + b * b + c * c;
-#endif
-}
-
 void collide_ball_with_tri_vert(struct PhysicsBall *ball_rt_ig, Point3d *ballPos_rt_tri,
                                 Point2d *vert_rt_tri)
 {
@@ -400,7 +383,7 @@ void collide_ball_with_tri_vert(struct PhysicsBall *ball_rt_ig, Point3d *ballPos
     vec.x = ballPos_rt_tri->x - vert_rt_tri->x;
     vec.y = ballPos_rt_tri->y - vert_rt_tri->y;
     vec.z = ballPos_rt_tri->z;
-    distSq = sum_of_3_sq(vec.x, vec.y, vec.z);
+    distSq = mathutil_vec_mag_sq_xyz(vec.x, vec.y, vec.z);
     if (!(distSq > (ball_rt_ig->radius * ball_rt_ig->radius)) && !(distSq <= FLT_EPSILON))
     {
         inverseDist = mathutil_rsqrt(distSq);

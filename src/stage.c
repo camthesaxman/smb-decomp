@@ -1068,21 +1068,6 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
 #define lbl_802F377C 30.0f
 #define lbl_802F3780 16384.0
 
-static inline float sum_of_3_sq(register float a, register float b, register float c)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
-#else
-    return a * a + b * b + c * c;
-#endif
-}
-
 int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
 {
     float f1;
@@ -1135,7 +1120,7 @@ int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
         sp14.x *= f2;
         sp14.z *= f2;
         sp14.y = 1.0f;
-        f1 = sum_of_3_sq(sp14.x, sp14.y, sp14.z);
+        f1 = mathutil_vec_mag_sq_xyz(sp14.x, sp14.y, sp14.z);
         if (f1 <= 1.19209289550781e-07f)
             return 1;
         f2 = mathutil_rsqrt(f1);
@@ -1344,7 +1329,7 @@ void compute_stage_bounding_sphere(void)
         sp8.x = (max.x - min.x) * 0.5;
         sp8.y = (max.y - min.y) * 0.5;
         sp8.z = (max.z - min.z) * 0.5;
-        stageBounds.radius = mathutil_sqrt(sum_of_3_sq(sp8.x, sp8.y, sp8.z));
+        stageBounds.radius = mathutil_sqrt(mathutil_vec_mag_sq_xyz(sp8.x, sp8.y, sp8.z));
     }
     else
     {

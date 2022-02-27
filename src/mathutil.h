@@ -445,4 +445,19 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
 #endif
 }
 
+static inline float mathutil_vec_mag_sq_xyz(register float a, register float b, register float c)
+{
+#ifdef __MWERKS__
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
+#else
+    return a * a + b * b + c * c;
+#endif
+}
+
 #endif
