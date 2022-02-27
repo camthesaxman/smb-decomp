@@ -112,7 +112,7 @@ static inline float dumb_dot(float x1, float y1, float x2, float y2)
 
 void collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri)
 {
-    struct G_ColiHit coliHit;
+    struct ColiHit coliHit;
     float x;
     float y;
     float z;
@@ -252,7 +252,7 @@ void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Point3d *ballPos_r
     f32 phi_f1;
     f32 phi_f1_2;
     f32 someY;
-    struct G_ColiHit coliHit;
+    struct ColiHit coliHit;
     Point3d ballPrevPos_rt_edge;
     Point3d ballPos_rt_edge;
     Point3d edgeEnd_rt_edge;
@@ -392,7 +392,7 @@ static inline float sum_of_3_sq(register float a, register float b, register flo
 void collide_ball_with_tri_vert(struct PhysicsBall *ball_rt_ig, Point3d *ballPos_rt_tri,
                                 Point2d *vert_rt_tri)
 {
-    struct G_ColiHit hit;
+    struct ColiHit hit;
     Vec vec;
     f32 distSq;
     f32 inverseDist;
