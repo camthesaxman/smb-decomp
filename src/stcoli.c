@@ -375,26 +375,26 @@ void collide_ball_with_tri_vert(struct PhysicsBall *ball, Point3d *ballPos_rt_tr
                                 Point2d *vert_rt_tri)
 {
     struct ColiHit hit;
-    Vec vec;
+    Vec tmpVec;
     f32 distSq;
     f32 inverseDist;
 
-    vec.x = ballPos_rt_tri->x - vert_rt_tri->x;
-    vec.y = ballPos_rt_tri->y - vert_rt_tri->y;
-    vec.z = ballPos_rt_tri->z;
-    distSq = mathutil_sum_of_sq_3(vec.x, vec.y, vec.z);
+    tmpVec.x = ballPos_rt_tri->x - vert_rt_tri->x;
+    tmpVec.y = ballPos_rt_tri->y - vert_rt_tri->y;
+    tmpVec.z = ballPos_rt_tri->z;
+    distSq = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
     if (!(distSq > (ball->radius * ball->radius)) && !(distSq <= FLT_EPSILON))
     {
         inverseDist = mathutil_rsqrt(distSq);
-        vec.x *= inverseDist;
-        vec.y *= inverseDist;
-        vec.z *= inverseDist;
-        mathutil_mtxA_tf_vec(&vec, &hit.normal);
+        tmpVec.x *= inverseDist;
+        tmpVec.y *= inverseDist;
+        tmpVec.z *= inverseDist;
+        mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
 
-        vec.x = vert_rt_tri->x;
-        vec.y = vert_rt_tri->y;
-        vec.z = 0;
-        mathutil_mtxA_tf_point(&vec, &hit.pos);
+        tmpVec.x = vert_rt_tri->x;
+        tmpVec.y = vert_rt_tri->y;
+        tmpVec.z = 0;
+        mathutil_mtxA_tf_point(&tmpVec, &hit.pos);
 
         mathutil_mtxA_push();
         g_apply_coli_response(ball, &hit);
