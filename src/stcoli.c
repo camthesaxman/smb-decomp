@@ -646,3 +646,62 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
     mathutil_mtxA_tf_point(&hit.pos, &hit.pos);
     g_apply_coli_response(ball, &hit);
 }
+
+void collide_ball_with_circle(struct PhysicsBall* ball, struct ColiCircle* circle) {
+    struct ColiHit sp28_hit;
+    Point3d sp1C_pt2;
+    Point3d sp10_pt1;
+
+    f32 radiusSum;
+    f32 temp_f0_4;
+    f32 temp_f1_2;
+    f32 temp_f1_5;
+    f32 temp_f1_6;
+    f32 distSq;
+
+    sp10_pt1.x = ball->pos.x - circle->pos.x;
+    sp10_pt1.y = ball->pos.y - circle->pos.y;
+    sp10_pt1.z = ball->pos.z - circle->pos.z;
+    distSq = mathutil_sum_of_sq_3(sp10_pt1.x, sp10_pt1.y, sp10_pt1.z);
+    radiusSum = ball->radius + circle->radius;
+    if (distSq > radiusSum * radiusSum)
+        return;
+
+    mathutil_mtxA_from_translate(&circle->pos);
+    mathutil_mtxA_rotate_z(circle->rot.z);
+    mathutil_mtxA_rotate_y(circle->rot.y);
+    mathutil_mtxA_rotate_x(circle->rot.x);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp1C_pt2);
+    temp_f1_2 = mathutil_sum_of_sq_2(sp1C_pt2.x, sp1C_pt2.z);
+    if (temp_f1_2 < (circle->radius * circle->radius)) {
+        mathutil_mtxA_get_translate_alt(&sp28_hit.pos);
+        sp28_hit.normal.x = 0.0f;
+        sp28_hit.normal.y = 1.0f;
+        sp28_hit.normal.z = 0.0f;
+        mathutil_mtxA_tf_vec(&sp28_hit.normal, &sp28_hit.normal);
+        g_apply_coli_response(ball, &sp28_hit);
+        return;
+    }
+
+    radiusSum = ball->radius + circle->radius;
+    if ((temp_f1_2 < (radiusSum * radiusSum)) && (temp_f1_2 > FLT_EPSILON)) {
+        temp_f0_4 = circle->radius * mathutil_rsqrt(temp_f1_2);
+        sp28_hit.pos.x = sp1C_pt2.x * temp_f0_4;
+        sp28_hit.pos.y = 0.0f;
+        sp28_hit.pos.z = sp1C_pt2.z * temp_f0_4;
+        sp10_pt1.x = sp1C_pt2.x - sp28_hit.pos.x;
+        sp10_pt1.y = sp1C_pt2.y - sp28_hit.pos.y;
+        sp10_pt1.z = sp1C_pt2.z - sp28_hit.pos.z;
+
+        temp_f1_5 = mathutil_sum_of_sq_3(sp10_pt1.x, sp10_pt1.y, sp10_pt1.z);
+        if (temp_f1_5 > FLT_EPSILON) {
+            temp_f1_6 = mathutil_rsqrt(temp_f1_5);
+            sp28_hit.normal.x = sp10_pt1.x * temp_f1_6;
+            sp28_hit.normal.y = sp10_pt1.y * temp_f1_6;
+            sp28_hit.normal.z = sp10_pt1.z * temp_f1_6;
+            mathutil_mtxA_tf_point(&sp28_hit.pos, &sp28_hit.pos);
+            mathutil_mtxA_tf_vec(&sp28_hit.normal, &sp28_hit.normal);
+            g_apply_coli_response(ball, &sp28_hit);
+        }
+    }
+}

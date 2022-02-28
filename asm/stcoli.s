@@ -1482,6 +1482,7 @@ lbl_8003F010:
 /* 8003F028 0003AF48  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global collide_ball_with_circle
 collide_ball_with_circle:
 /* 8003F02C 0003AF4C  7C 08 02 A6 */	mflr r0
@@ -1621,6 +1622,7 @@ lbl_8003F230:
 /* 8003F23C 0003B15C  7C 08 03 A6 */	mtlr r0
 /* 8003F240 0003B160  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003F244 0003B164  4E 80 00 20 */	blr
+.endif
 
 .global g_collide_ball_with_sphere
 g_collide_ball_with_sphere:
