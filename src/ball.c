@@ -2269,7 +2269,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
      && (ball->unk120 & 1))
     {
         Vec vel = ball->vel;
-        float f1 = mathutil_sum_of_sq(vel.x, vel.z);
+        float f1 = mathutil_sum_of_sq_2(vel.x, vel.z);
 
         if (f1 > FLT_EPSILON)
         {
@@ -2358,7 +2358,7 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
      && (ball->unk120 & 1))
     {
         Vec vel = ball->vel;
-        float f1 = mathutil_sum_of_sq(vel.x, vel.z);
+        float f1 = mathutil_sum_of_sq_2(vel.x, vel.z);
 
         if (f1 > FLT_EPSILON)
         {
@@ -2618,7 +2618,7 @@ void func_8003C38C(struct Ball *ball)
     spC.x = ball->unk84.x - ball->pos.x;
     spC.z = ball->unk84.z - ball->pos.z;
 
-    f1 = mathutil_sum_of_sq(spC.x, spC.z);
+    f1 = mathutil_sum_of_sq_2(spC.x, spC.z);
     if (f1 > FLT_EPSILON)
     {
         f1 = 1.0 / mathutil_sqrt(f1);
@@ -2810,7 +2810,7 @@ void func_8003CB88(struct Ball *ball)
     r31 = mathutil_atan2(spC.x, spC.z) - 32768;
     r30 = mathutil_atan2(ball->vel.x, ball->vel.z) - 32768;
 
-    f1 = mathutil_sqrt(mathutil_sum_of_sq(ball->vel.x, ball->vel.z));
+    f1 = mathutil_sqrt(mathutil_sum_of_sq_2(ball->vel.x, ball->vel.z));
     if (f1 < 0.23148148148148145)
         f3 = 0.0f;
     else if (f1 < 0.37037037037037035)

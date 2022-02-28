@@ -261,7 +261,8 @@ struct ColiRect
     Point3d pos;
     S16Vec rot;
     Vec normal;
-    Vec2d dim;
+    float width;
+    float height;
 };
 
 struct StageBgModel

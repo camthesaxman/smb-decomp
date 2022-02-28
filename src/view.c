@@ -103,7 +103,7 @@ void ev_view_main(void)
     sp8.y = stageViewInfo->target.y - stageViewInfo->eye.y;
     sp8.z = stageViewInfo->target.z - stageViewInfo->eye.z;
     stageViewInfo->rotY = mathutil_atan2(sp8.x, sp8.z) - 32768;
-    stageViewInfo->rotX = mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z)));
+    stageViewInfo->rotX = mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z)));
     stageViewInfo->rotZ = 0;
     stageViewInfo->frameCounter++;
     unpausedFrameCounter++;

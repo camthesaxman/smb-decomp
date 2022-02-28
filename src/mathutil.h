@@ -193,7 +193,7 @@ static inline float mathutil_ceil(register float n)
 #endif
 }
 
-static inline float mathutil_sum_of_sq(register float a, register float b)
+static inline float mathutil_sum_of_sq_2(register float a, register float b)
 {
 #ifdef MATHUTIL_C_ONLY
     return a * a + b * b;
@@ -445,7 +445,7 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
 #endif
 }
 
-static inline float mathutil_vec_mag_sq_xyz(register float a, register float b, register float c)
+static inline float mathutil_sum_of_sq_3(register float a, register float b, register float c)
 {
 #ifdef __MWERKS__
     asm

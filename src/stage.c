@@ -1113,14 +1113,14 @@ int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
         c->z = 0.0f;
         sp14.x = a->x;
         sp14.z = a->z;
-        f1 = mathutil_sum_of_sq(sp14.x, sp14.z);
+        f1 = mathutil_sum_of_sq_2(sp14.x, sp14.z);
         if (f1 <= 1.19209289550781e-07f)
             return 1;
         f2 = -(mathutil_cos(angle) * f31) * mathutil_rsqrt(f1);
         sp14.x *= f2;
         sp14.z *= f2;
         sp14.y = 1.0f;
-        f1 = mathutil_vec_mag_sq_xyz(sp14.x, sp14.y, sp14.z);
+        f1 = mathutil_sum_of_sq_3(sp14.x, sp14.y, sp14.z);
         if (f1 <= 1.19209289550781e-07f)
             return 1;
         f2 = mathutil_rsqrt(f1);
@@ -1329,7 +1329,7 @@ void compute_stage_bounding_sphere(void)
         sp8.x = (max.x - min.x) * 0.5;
         sp8.y = (max.y - min.y) * 0.5;
         sp8.z = (max.z - min.z) * 0.5;
-        stageBounds.radius = mathutil_sqrt(mathutil_vec_mag_sq_xyz(sp8.x, sp8.y, sp8.z));
+        stageBounds.radius = mathutil_sqrt(mathutil_sum_of_sq_3(sp8.x, sp8.y, sp8.z));
     }
     else
     {

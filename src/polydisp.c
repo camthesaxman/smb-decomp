@@ -560,7 +560,7 @@ void func_8000C388(void)
         mathutil_mtxA_rotate_x(-worldInfo[0].xrot);
         mathutil_mtxA_tf_vec(&sp8, &sp8);
         r30 = -mathutil_atan2(sp8.z, sp8.y);
-        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq(sp8.z, sp8.y)));
+        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.z, sp8.y)));
         r30 *= 0.2;
         v3 *= 0.2;
         advTutorialInfo.stickXRot = advTutorialInfo.stickXRot + 0.2 * ((float)r30 - (float)advTutorialInfo.stickXRot);
@@ -828,7 +828,7 @@ void func_8000CA9C(void)
             sp8.y = sp14.y - sp20.y;
             sp8.z = sp14.z - sp20.z;
             mathutil_mtxA_rotate_y(mathutil_atan2(sp8.x, sp8.z) - 32768);
-            mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z))));
+            mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             g_nl2ngc_set_scale(0.25f);
             g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
