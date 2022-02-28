@@ -709,3 +709,35 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
         }
     }
 }
+
+void g_collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere *sphere)
+{
+    struct ColiHit sp1C_hit;
+    Vec sp10_vec1;
+
+    f32 radiusSum;
+    f32 invDist;
+    f32 distSq;
+
+    sp10_vec1.x = ball->pos.x - sphere->pos.x;
+    sp10_vec1.y = ball->pos.y - sphere->pos.y;
+    sp10_vec1.z = ball->pos.z - sphere->pos.z;
+    distSq = mathutil_sum_of_sq_3(sp10_vec1.x, sp10_vec1.y, sp10_vec1.z);
+    radiusSum = sphere->radius + ball->radius;
+    if (distSq > (radiusSum * radiusSum))
+        return;
+    if (distSq <= FLT_EPSILON)
+        return;
+
+    invDist = mathutil_rsqrt(distSq);
+    sp10_vec1.x *= invDist;
+    sp10_vec1.y *= invDist;
+    sp10_vec1.z *= invDist;
+    sp1C_hit.pos.x = sphere->pos.x + (sp10_vec1.x * sphere->radius);
+    sp1C_hit.pos.y = sphere->pos.y + (sp10_vec1.y * sphere->radius);
+    sp1C_hit.pos.z = sphere->pos.z + (sp10_vec1.z * sphere->radius);
+    sp1C_hit.normal.x = sp10_vec1.x;
+    sp1C_hit.normal.y = sp10_vec1.y;
+    sp1C_hit.normal.z = sp10_vec1.z;
+    g_apply_coli_response(ball, &sp1C_hit);
+}
