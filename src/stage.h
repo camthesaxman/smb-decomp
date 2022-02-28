@@ -256,6 +256,14 @@ struct StageColiCylinder
     u16 flags;
 };
 
+struct ColiRect
+{
+    Point3d pos;
+    S16Vec rot;
+    Vec normal;
+    Vec2d dim;
+};
+
 struct StageBgModel
 {
     u32 unk0;

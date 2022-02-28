@@ -958,8 +958,9 @@ lbl_8003E854:
 /* 8003E868 0003A788  4E 80 00 20 */	blr
 .endif
 
-.global stcoli_sub08
-stcoli_sub08:
+.if 0
+.global collide_ball_with_rect
+collide_ball_with_rect:
 /* 8003E86C 0003A78C  7C 08 02 A6 */	mflr r0
 /* 8003E870 0003A790  90 01 00 04 */	stw r0, 4(r1)
 /* 8003E874 0003A794  94 21 FF 90 */	stwu r1, -0x70(r1)
@@ -1312,6 +1313,7 @@ lbl_8003ED90:
 /* 8003EDA4 0003ACC4  83 C1 00 58 */	lwz r30, 0x58(r1)
 /* 8003EDA8 0003ACC8  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003EDAC 0003ACCC  4E 80 00 20 */	blr
+.endif
 
 .global g_collide_ball_with_cylinder
 g_collide_ball_with_cylinder:
@@ -2177,7 +2179,7 @@ stcoli_sub15:
 lbl_8003FA6C:
 /* 8003FA6C 0003B98C  38 7C 00 00 */	addi r3, r28, 0
 /* 8003FA70 0003B990  38 9F 00 00 */	addi r4, r31, 0
-/* 8003FA74 0003B994  4B FF ED F9 */	bl stcoli_sub08
+/* 8003FA74 0003B994  4B FF ED F9 */	bl collide_ball_with_rect
 /* 8003FA78 0003B998  3B DE 00 01 */	addi r30, r30, 1
 /* 8003FA7C 0003B99C  2C 1E 00 04 */	cmpwi r30, 4
 /* 8003FA80 0003B9A0  3B FF 00 28 */	addi r31, r31, 0x28
@@ -5646,7 +5648,6 @@ lbl_802F3628:
 lbl_802F362C:
 	# ROM: 0x1ED04C
 	.4byte 0x34000000
-.endif
 
 .global lbl_802F3630
 lbl_802F3630:
@@ -5658,6 +5659,8 @@ lbl_802F3630:
 lbl_802F3638:
 	# ROM: 0x1ED058
 	.4byte 0xBF800000
+
+.endif
 	.4byte 0
 
 .global lbl_802F3640

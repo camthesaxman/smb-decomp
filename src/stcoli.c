@@ -402,3 +402,180 @@ void collide_ball_with_tri_vert(struct PhysicsBall *ball_rt_ig, Point3d *ballPos
         mathutil_mtxA_pop();
     }
 }
+
+void collide_ball_with_rect(struct PhysicsBall *physBall, struct ColiRect *rect)
+{
+    struct ColiHit hit; // 0x40, 0x44, 0x48, 0x4c, 0x50, 0x54
+    Point3d pos;        // 0x34
+    Point3d prevPos;
+    Vec tmpVec;
+    Vec pos_rt_rect; // 0x10
+
+    float ballEdgeDistSq;
+    float invBallEdgeDist;
+    float halfWidth;
+    float halfHeight;
+
+    prevPos = physBall->prevPos;
+
+    tmpVec.x = prevPos.x - rect->pos.x;
+    tmpVec.y = prevPos.y - rect->pos.y;
+    tmpVec.z = prevPos.z - rect->pos.z;
+    if (tmpVec.x * rect->normal.x + tmpVec.y * rect->normal.y + tmpVec.z * rect->normal.z < 0.0)
+        return;
+
+    pos = physBall->pos;
+
+    tmpVec.x = pos.x - rect->pos.x;
+    tmpVec.y = pos.y - rect->pos.y;
+    tmpVec.z = pos.z - rect->pos.z;
+    if (tmpVec.x * rect->normal.x + tmpVec.y * rect->normal.y + tmpVec.z * rect->normal.z >
+        physBall->radius)
+        return;
+
+    mathutil_mtxA_from_translate(&rect->pos);
+    mathutil_mtxA_rotate_y(mathutil_atan2(rect->normal.x, rect->normal.z));
+    mathutil_mtxA_rotate_x(-mathutil_atan2(
+        rect->normal.y, mathutil_sqrt(mathutil_sum_of_sq(rect->normal.x, rect->normal.z))));
+    mathutil_mtxA_rigid_inv_tf_point(&pos, &pos_rt_rect);
+
+    halfWidth = 0.5 * rect->dim.x;
+    halfHeight = 0.5 * rect->dim.y;
+
+    if (pos_rt_rect.x < -halfWidth - physBall->radius)
+        return;
+    if (pos_rt_rect.x > halfWidth + physBall->radius)
+        return;
+    if (pos_rt_rect.y < -halfHeight - physBall->radius)
+        return;
+    if (pos_rt_rect.y > halfHeight + physBall->radius)
+        return;
+
+    if (pos_rt_rect.x < -halfWidth)
+    {
+        tmpVec.x = pos_rt_rect.x + halfWidth;
+        tmpVec.z = pos_rt_rect.z;
+        // ballEdgeDistSq = (pos_rt_rect.z * pos_rt_rect.z) + (tmpVec.x * tmpVec.x);
+        ballEdgeDistSq = mathutil_sum_of_sq(tmpVec.x, tmpVec.z);
+        // ballEdgeDistSq = mathutil_sum_of_sq(tmpVec.x, pos_rt_rect.z);
+        if (!(ballEdgeDistSq > (physBall->radius * physBall->radius)))
+        {
+            if (ballEdgeDistSq > FLT_EPSILON)
+            {
+                invBallEdgeDist = mathutil_rsqrt(ballEdgeDistSq);
+                tmpVec.x *= invBallEdgeDist;
+                tmpVec.y = 0;
+                tmpVec.z *= invBallEdgeDist;
+            }
+            else
+            {
+                tmpVec.x = -1;
+                tmpVec.y = 0;
+                tmpVec.z = 0;
+            }
+            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            tmpVec.x = -halfWidth;
+            tmpVec.y = 0;
+            tmpVec.z = 0;
+            mathutil_mtxA_tf_point(&tmpVec, &hit.pos);
+            g_apply_coli_response(physBall, &hit);
+        }
+    }
+    else if (pos_rt_rect.x > halfWidth)
+    {
+        tmpVec.x = pos_rt_rect.x - halfWidth;
+        tmpVec.z = pos_rt_rect.z;
+        // ballEdgeDistSq = (pos_rt_rect.z * pos_rt_rect.z) + (tmpVec.x * tmpVec.x);
+        ballEdgeDistSq = mathutil_sum_of_sq(tmpVec.x, tmpVec.z);
+        if (!(ballEdgeDistSq > (physBall->radius * physBall->radius)))
+        {
+            if (ballEdgeDistSq > FLT_EPSILON)
+            {
+                invBallEdgeDist = mathutil_rsqrt(ballEdgeDistSq);
+                tmpVec.x *= invBallEdgeDist;
+                tmpVec.y = 0;
+                tmpVec.z *= invBallEdgeDist;
+            }
+            else
+            {
+                tmpVec.x = 1;
+                tmpVec.y = 0;
+                tmpVec.z = 0;
+            }
+            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            tmpVec.x = halfWidth;
+            tmpVec.y = 0;
+            tmpVec.z = 0;
+            mathutil_mtxA_tf_point(&tmpVec, &hit.pos);
+            g_apply_coli_response(physBall, &hit);
+        }
+    }
+    else if (pos_rt_rect.y < -halfHeight)
+    {
+        tmpVec.y = pos_rt_rect.y + halfHeight;
+        tmpVec.z = pos_rt_rect.z;
+        // ballEdgeDistSq = (pos_rt_rect.z * pos_rt_rect.z) + (tmpVec.y * tmpVec.y);
+        ballEdgeDistSq = mathutil_sum_of_sq(tmpVec.y, tmpVec.z);
+        if (!(ballEdgeDistSq > (physBall->radius * physBall->radius)))
+        {
+            if (ballEdgeDistSq > FLT_EPSILON)
+            {
+                invBallEdgeDist = mathutil_rsqrt(ballEdgeDistSq);
+                tmpVec.x = 0;
+                tmpVec.y *= invBallEdgeDist;
+                tmpVec.z *= invBallEdgeDist;
+            }
+            else
+            {
+                tmpVec.x = 0;
+                tmpVec.y = -1;
+                tmpVec.z = 0;
+            }
+            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            tmpVec.x = 0;
+            tmpVec.y = -halfHeight;
+            tmpVec.z = 0;
+            mathutil_mtxA_tf_point(&tmpVec, &hit.pos);
+            g_apply_coli_response(physBall, &hit);
+        }
+    }
+    else if (pos_rt_rect.y > halfHeight)
+    {
+        tmpVec.y = pos_rt_rect.y - halfHeight;
+        tmpVec.z = pos_rt_rect.z;
+        // ballEdgeDistSq = (pos_rt_rect.z * pos_rt_rect.z) + (tmpVec.y * tmpVec.y);
+        ballEdgeDistSq = mathutil_sum_of_sq(tmpVec.y, tmpVec.z);
+        if (!(ballEdgeDistSq > (physBall->radius * physBall->radius)))
+        {
+            if (ballEdgeDistSq > FLT_EPSILON)
+            {
+                invBallEdgeDist = mathutil_rsqrt(ballEdgeDistSq);
+                tmpVec.x = 0;
+                tmpVec.y *= invBallEdgeDist;
+                tmpVec.z *= invBallEdgeDist;
+            }
+            else
+            {
+                tmpVec.x = 0;
+                tmpVec.y = 1;
+                tmpVec.z = 0;
+            }
+            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            tmpVec.x = 0;
+            tmpVec.y = halfHeight;
+            tmpVec.z = 0;
+            mathutil_mtxA_tf_point(&tmpVec, &hit.pos);
+            g_apply_coli_response(physBall, &hit);
+        }
+    }
+    else if (pos_rt_rect.x < -halfWidth || pos_rt_rect.x > halfWidth)
+        return;
+    else if (pos_rt_rect.y < -halfHeight || pos_rt_rect.y > halfHeight)
+        return;
+    else
+    {
+        hit.pos = rect->pos;
+        hit.normal = rect->normal;
+        g_apply_coli_response(physBall, &hit);
+    }
+}
