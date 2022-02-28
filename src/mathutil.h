@@ -145,7 +145,10 @@ u16 mathutil_calc_crc16(s32 length, u8 *data);
 
 static inline float mathutil_floor(register float n)
 {
-#ifdef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
+    // TODO
+    return (s32)n;
+#else
     s32 buf[2];
     register float savedFlags;
     asm
@@ -162,15 +165,15 @@ static inline float mathutil_floor(register float n)
         mtfsf 0xFF, savedFlags
     }
     return buf[1];
-#else
-    // TODO
-    return (s32)n;
 #endif
 }
 
 static inline float mathutil_ceil(register float n)
 {
-#ifdef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
+    // TODO
+    return (s32)n;
+#else
     s32 buf[2];
     register float savedFlags;
     asm
@@ -187,9 +190,6 @@ static inline float mathutil_ceil(register float n)
         mtfsf 0xFF, savedFlags
     }
     return buf[1];
-#else
-    // TODO
-    return (s32)n;
 #endif
 }
 
@@ -447,7 +447,9 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
 
 static inline float mathutil_sum_of_sq_3(register float a, register float b, register float c)
 {
-#ifdef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
+    return a * a + b * b + c * c;
+#else
     asm
     {
         fmuls a, a, a
@@ -455,8 +457,6 @@ static inline float mathutil_sum_of_sq_3(register float a, register float b, reg
         fmadds a, c, c, a
     }
     return a;
-#else
-    return a * a + b * b + c * c;
 #endif
 }
 
