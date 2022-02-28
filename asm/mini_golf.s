@@ -17418,7 +17418,7 @@ lbl_0001019C:
 lbl_000101B0:
 /* 000101B0 387E0000 */ addi r3, r30, 0
 /* 000101B4 389A0000 */ addi r4, r26, 0
-/* 000101B8 4BFF0019 */ bl g_collide_ball_with_cylinder
+/* 000101B8 4BFF0019 */ bl collide_ball_with_cylinder
 /* 000101BC 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 /* 000101C0 3B5A001C */ addi r26, r26, 0x1c
 lbl_000101C4:

@@ -74,7 +74,7 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
 
         cylinder = stageIg->coliCylinders;
         for (i = stageIg->coliCylinderCount; i > 0; i--, cylinder++)
-            g_collide_ball_with_cylinder(ball, cylinder);
+            collide_ball_with_cylinder(ball, cylinder);
 
         goal = stageIg->goals;
         for (i = stageIg->goalCount; i > 0; i--, goal++)
@@ -570,4 +570,79 @@ void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
         hit.normal = rect->normal;
         g_apply_coli_response(ball, &hit);
     }
+}
+
+void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylinder *cylinder)
+{
+    struct ColiHit hit;
+    Vec tmpVec;
+    Point3d sp4C;
+    Point3d sp40;
+    struct ColiCircle topCircle;
+    struct ColiCircle bottomCircle;
+
+    f32 temp_f0_3;
+    f32 temp_f0_4;
+    f32 temp_f1_4;
+    f32 temp_f2_2;
+    f32 ballCylDistSq;
+
+    tmpVec.x = ball->pos.x - cylinder->pos.x;
+    tmpVec.y = ball->pos.y - cylinder->pos.y;
+    tmpVec.z = ball->pos.z - cylinder->pos.z;
+    ballCylDistSq = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
+    temp_f0_3 =
+        ball->radius + mathutil_sqrt(mathutil_sum_of_sq_2(cylinder->radius, cylinder->height));
+    if (ballCylDistSq > (temp_f0_3 * temp_f0_3))
+        return;
+    mathutil_mtxA_from_translate(&cylinder->pos);
+    mathutil_mtxA_rotate_z(cylinder->rot.z);
+    mathutil_mtxA_rotate_y(cylinder->rot.y);
+    mathutil_mtxA_rotate_x(cylinder->rot.x);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp4C);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->prevPos, &sp40);
+    temp_f2_2 = mathutil_sum_of_sq_2(sp4C.x, sp4C.z);
+    temp_f0_4 = cylinder->radius + ball->radius;
+    if (temp_f2_2 > (temp_f0_4 * temp_f0_4))
+        return;
+    if (temp_f2_2 < FLT_EPSILON)
+        return;
+
+    if (sp40.y < (0.5 * -cylinder->height))
+    {
+        topCircle.pos.x = 0.0f;
+        topCircle.pos.y = (0.5 * -cylinder->height);
+        topCircle.pos.z = 0.0f;
+        mathutil_mtxA_tf_point(&topCircle.pos, &topCircle.pos);
+        topCircle.radius = cylinder->radius;
+        topCircle.rot.x = cylinder->rot.x - 0x8000;
+        topCircle.rot.y = cylinder->rot.y;
+        topCircle.rot.z = cylinder->rot.z;
+        collide_ball_with_circle(ball, &topCircle);
+        return;
+    }
+    if (sp40.y > (0.5 * cylinder->height))
+    {
+        bottomCircle.pos.x = 0.0f;
+        bottomCircle.pos.y = (0.5 * cylinder->height);
+        bottomCircle.pos.z = 0.0f;
+        mathutil_mtxA_tf_point(&bottomCircle.pos, &bottomCircle.pos);
+        bottomCircle.radius = cylinder->radius;
+        bottomCircle.rot.x = cylinder->rot.x;
+        bottomCircle.rot.y = cylinder->rot.y;
+        bottomCircle.rot.z = cylinder->rot.z;
+        collide_ball_with_circle(ball, &bottomCircle);
+        return;
+    }
+
+    temp_f1_4 = mathutil_rsqrt(temp_f2_2);
+    hit.normal.x = sp4C.x * temp_f1_4;
+    hit.normal.y = 0.0f;
+    hit.normal.z = sp4C.z * temp_f1_4;
+    hit.pos.x = hit.normal.x * cylinder->radius;
+    hit.pos.y = sp4C.y + (hit.normal.y * cylinder->radius);
+    hit.pos.z = hit.normal.z * cylinder->radius;
+    mathutil_mtxA_tf_vec(&hit.normal, &hit.normal);
+    mathutil_mtxA_tf_point(&hit.pos, &hit.pos);
+    g_apply_coli_response(ball, &hit);
 }

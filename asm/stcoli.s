@@ -136,7 +136,7 @@ lbl_8003DC70:
 lbl_8003DC84:
 /* 8003DC84 00039BA4  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DC88 00039BA8  38 9A 00 00 */	addi r4, r26, 0
-/* 8003DC8C 00039BAC  48 00 11 25 */	bl g_collide_ball_with_cylinder
+/* 8003DC8C 00039BAC  48 00 11 25 */	bl collide_ball_with_cylinder
 /* 8003DC90 00039BB0  3B 7B FF FF */	addi r27, r27, -1
 /* 8003DC94 00039BB4  3B 5A 00 1C */	addi r26, r26, 0x1c
 lbl_8003DC98:
@@ -1315,8 +1315,9 @@ lbl_8003ED90:
 /* 8003EDAC 0003ACCC  4E 80 00 20 */	blr
 .endif
 
-.global g_collide_ball_with_cylinder
-g_collide_ball_with_cylinder:
+.if 0
+.global collide_ball_with_cylinder
+collide_ball_with_cylinder:
 /* 8003EDB0 0003ACD0  7C 08 02 A6 */	mflr r0
 /* 8003EDB4 0003ACD4  90 01 00 04 */	stw r0, 4(r1)
 /* 8003EDB8 0003ACD8  94 21 FF 70 */	stwu r1, -0x90(r1)
@@ -1410,7 +1411,7 @@ g_collide_ball_with_cylinder:
 /* 8003EF18 0003AE38  B0 01 00 3A */	sth r0, 0x3a(r1)
 /* 8003EF1C 0003AE3C  A8 1F 00 18 */	lha r0, 0x18(r31)
 /* 8003EF20 0003AE40  B0 01 00 3C */	sth r0, 0x3c(r1)
-/* 8003EF24 0003AE44  48 00 01 09 */	bl stcoli_sub10
+/* 8003EF24 0003AE44  48 00 01 09 */	bl collide_ball_with_circle
 /* 8003EF28 0003AE48  48 00 00 E8 */	b lbl_8003F010
 lbl_8003EF2C:
 /* 8003EF2C 0003AE4C  FC 03 00 B2 */	fmul f0, f3, f2
@@ -1436,7 +1437,7 @@ lbl_8003EF2C:
 /* 8003EF7C 0003AE9C  B0 01 00 22 */	sth r0, 0x22(r1)
 /* 8003EF80 0003AEA0  A8 1F 00 18 */	lha r0, 0x18(r31)
 /* 8003EF84 0003AEA4  B0 01 00 24 */	sth r0, 0x24(r1)
-/* 8003EF88 0003AEA8  48 00 00 A5 */	bl stcoli_sub10
+/* 8003EF88 0003AEA8  48 00 00 A5 */	bl collide_ball_with_circle
 /* 8003EF8C 0003AEAC  48 00 00 84 */	b lbl_8003F010
 lbl_8003EF90:
 /* 8003EF90 0003AEB0  4B FC 81 A9 */	bl mathutil_rsqrt
@@ -1479,9 +1480,10 @@ lbl_8003F010:
 /* 8003F020 0003AF40  83 C1 00 80 */	lwz r30, 0x80(r1)
 /* 8003F024 0003AF44  38 21 00 90 */	addi r1, r1, 0x90
 /* 8003F028 0003AF48  4E 80 00 20 */	blr
+.endif
 
-.global stcoli_sub10
-stcoli_sub10:
+.global collide_ball_with_circle
+collide_ball_with_circle:
 /* 8003F02C 0003AF4C  7C 08 02 A6 */	mflr r0
 /* 8003F030 0003AF50  90 01 00 04 */	stw r0, 4(r1)
 /* 8003F034 0003AF54  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -3431,7 +3433,7 @@ g_collide_ball_with_goal:
 /* 80040CC4 0003CBE4  B0 01 00 6C */	sth r0, 0x6c(r1)
 /* 80040CC8 0003CBE8  D0 21 00 60 */	stfs f1, 0x60(r1)
 /* 80040CCC 0003CBEC  D0 01 00 64 */	stfs f0, 0x64(r1)
-/* 80040CD0 0003CBF0  4B FF E0 E1 */	bl g_collide_ball_with_cylinder
+/* 80040CD0 0003CBF0  4B FF E0 E1 */	bl collide_ball_with_cylinder
 /* 80040CD4 0003CBF4  4B FC 6B 61 */	bl mathutil_mtxA_pop
 /* 80040CD8 0003CBF8  4B FC 6B 19 */	bl mathutil_mtxA_push
 /* 80040CDC 0003CBFC  C0 02 8E 94 */	lfs f0, lbl_802F3694-_SDA2_BASE_(r2)
@@ -3455,7 +3457,7 @@ g_collide_ball_with_goal:
 /* 80040D24 0003CC44  B0 01 00 6C */	sth r0, 0x6c(r1)
 /* 80040D28 0003CC48  D0 21 00 60 */	stfs f1, 0x60(r1)
 /* 80040D2C 0003CC4C  D0 01 00 64 */	stfs f0, 0x64(r1)
-/* 80040D30 0003CC50  4B FF E0 81 */	bl g_collide_ball_with_cylinder
+/* 80040D30 0003CC50  4B FF E0 81 */	bl collide_ball_with_cylinder
 /* 80040D34 0003CC54  4B FC 6B 01 */	bl mathutil_mtxA_pop
 lbl_80040D38:
 /* 80040D38 0003CC58  80 01 00 8C */	lwz r0, 0x8c(r1)
@@ -5039,7 +5041,7 @@ lbl_800423FC:
 lbl_80042410:
 /* 80042410 0003E330  38 7B 00 00 */	addi r3, r27, 0
 /* 80042414 0003E334  38 99 00 00 */	addi r4, r25, 0
-/* 80042418 0003E338  4B FF C9 99 */	bl g_collide_ball_with_cylinder
+/* 80042418 0003E338  4B FF C9 99 */	bl collide_ball_with_cylinder
 /* 8004241C 0003E33C  3B 5A FF FF */	addi r26, r26, -1
 /* 80042420 0003E340  3B 39 00 1C */	addi r25, r25, 0x1c
 lbl_80042424:
@@ -5563,7 +5565,7 @@ lbl_80042B38:
 lbl_80042B4C:
 /* 80042B4C 0003EA6C  38 7A 00 00 */	addi r3, r26, 0
 /* 80042B50 0003EA70  38 99 00 00 */	addi r4, r25, 0
-/* 80042B54 0003EA74  4B FF C2 5D */	bl g_collide_ball_with_cylinder
+/* 80042B54 0003EA74  4B FF C2 5D */	bl collide_ball_with_cylinder
 /* 80042B58 0003EA78  3B 9C FF FF */	addi r28, r28, -1
 /* 80042B5C 0003EA7C  3B 39 00 1C */	addi r25, r25, 0x1c
 lbl_80042B60:
@@ -5659,7 +5661,6 @@ lbl_802F3630:
 lbl_802F3638:
 	# ROM: 0x1ED058
 	.4byte 0xBF800000
-
 .endif
 	.4byte 0
 

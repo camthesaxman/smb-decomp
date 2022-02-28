@@ -234,7 +234,7 @@ struct StageColiTri
 
 struct StageColiCone
 {
-    Vec pos;
+    Point3d pos;
     S16Vec rot;
     u16 flags;
     Vec scale;
@@ -242,14 +242,14 @@ struct StageColiCone
 
 struct StageColiSphere
 {
-    Vec pos;
+    Point3d pos;
     float radius;
     u16 flags;
 };
 
 struct StageColiCylinder
 {
-    Vec pos;
+    Point3d pos;
     float radius;
     float height;
     S16Vec rot;
@@ -263,6 +263,13 @@ struct ColiRect
     Vec normal;
     float width;
     float height;
+};
+
+struct ColiCircle
+{
+    Point3d pos;
+    float radius;
+    S16Vec rot;
 };
 
 struct StageBgModel
