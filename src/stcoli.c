@@ -649,9 +649,9 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
 
 void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circle)
 {
-    struct ColiHit sp28_hit;
-    Point3d sp1C_pt2;
-    Point3d sp10_pt1;
+    struct ColiHit hit;
+    Point3d ballPos_rt_circle;
+    Vec tmpVec;
 
     f32 radiusSum;
     f32 temp_f0_4;
@@ -660,10 +660,10 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
     f32 temp_f1_6;
     f32 distSq;
 
-    sp10_pt1.x = ball->pos.x - circle->pos.x;
-    sp10_pt1.y = ball->pos.y - circle->pos.y;
-    sp10_pt1.z = ball->pos.z - circle->pos.z;
-    distSq = mathutil_sum_of_sq_3(sp10_pt1.x, sp10_pt1.y, sp10_pt1.z);
+    tmpVec.x = ball->pos.x - circle->pos.x;
+    tmpVec.y = ball->pos.y - circle->pos.y;
+    tmpVec.z = ball->pos.z - circle->pos.z;
+    distSq = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
     radiusSum = ball->radius + circle->radius;
     if (distSq > radiusSum * radiusSum)
         return;
@@ -672,16 +672,16 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
     mathutil_mtxA_rotate_z(circle->rot.z);
     mathutil_mtxA_rotate_y(circle->rot.y);
     mathutil_mtxA_rotate_x(circle->rot.x);
-    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp1C_pt2);
-    temp_f1_2 = mathutil_sum_of_sq_2(sp1C_pt2.x, sp1C_pt2.z);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &ballPos_rt_circle);
+    temp_f1_2 = mathutil_sum_of_sq_2(ballPos_rt_circle.x, ballPos_rt_circle.z);
     if (temp_f1_2 < (circle->radius * circle->radius))
     {
-        mathutil_mtxA_get_translate_alt(&sp28_hit.pos);
-        sp28_hit.normal.x = 0.0f;
-        sp28_hit.normal.y = 1.0f;
-        sp28_hit.normal.z = 0.0f;
-        mathutil_mtxA_tf_vec(&sp28_hit.normal, &sp28_hit.normal);
-        g_apply_coli_response(ball, &sp28_hit);
+        mathutil_mtxA_get_translate_alt(&hit.pos);
+        hit.normal.x = 0.0f;
+        hit.normal.y = 1.0f;
+        hit.normal.z = 0.0f;
+        mathutil_mtxA_tf_vec(&hit.normal, &hit.normal);
+        g_apply_coli_response(ball, &hit);
         return;
     }
 
@@ -689,23 +689,23 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
     if ((temp_f1_2 < (radiusSum * radiusSum)) && (temp_f1_2 > FLT_EPSILON))
     {
         temp_f0_4 = circle->radius * mathutil_rsqrt(temp_f1_2);
-        sp28_hit.pos.x = sp1C_pt2.x * temp_f0_4;
-        sp28_hit.pos.y = 0.0f;
-        sp28_hit.pos.z = sp1C_pt2.z * temp_f0_4;
-        sp10_pt1.x = sp1C_pt2.x - sp28_hit.pos.x;
-        sp10_pt1.y = sp1C_pt2.y - sp28_hit.pos.y;
-        sp10_pt1.z = sp1C_pt2.z - sp28_hit.pos.z;
+        hit.pos.x = ballPos_rt_circle.x * temp_f0_4;
+        hit.pos.y = 0.0f;
+        hit.pos.z = ballPos_rt_circle.z * temp_f0_4;
+        tmpVec.x = ballPos_rt_circle.x - hit.pos.x;
+        tmpVec.y = ballPos_rt_circle.y - hit.pos.y;
+        tmpVec.z = ballPos_rt_circle.z - hit.pos.z;
 
-        temp_f1_5 = mathutil_sum_of_sq_3(sp10_pt1.x, sp10_pt1.y, sp10_pt1.z);
+        temp_f1_5 = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
         if (temp_f1_5 > FLT_EPSILON)
         {
             temp_f1_6 = mathutil_rsqrt(temp_f1_5);
-            sp28_hit.normal.x = sp10_pt1.x * temp_f1_6;
-            sp28_hit.normal.y = sp10_pt1.y * temp_f1_6;
-            sp28_hit.normal.z = sp10_pt1.z * temp_f1_6;
-            mathutil_mtxA_tf_point(&sp28_hit.pos, &sp28_hit.pos);
-            mathutil_mtxA_tf_vec(&sp28_hit.normal, &sp28_hit.normal);
-            g_apply_coli_response(ball, &sp28_hit);
+            hit.normal.x = tmpVec.x * temp_f1_6;
+            hit.normal.y = tmpVec.y * temp_f1_6;
+            hit.normal.z = tmpVec.z * temp_f1_6;
+            mathutil_mtxA_tf_point(&hit.pos, &hit.pos);
+            mathutil_mtxA_tf_vec(&hit.normal, &hit.normal);
+            g_apply_coli_response(ball, &hit);
         }
     }
 }
