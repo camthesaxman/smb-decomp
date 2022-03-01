@@ -742,75 +742,56 @@ void g_collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere
     g_apply_coli_response(ball, &sp1C_hit);
 }
 
-void g_collide_ball_with_cone(struct PhysicsBall* ball, struct StageColiCone* cone) {
-    struct ColiHit sp28_hit;
+void g_collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone)
+{
+    struct ColiHit hit;
     Vec tmpVec;
-    Point3d sp10;
+    Point3d ballPos_rt_cone;
 
-    // f32 tmpVec.x;
-    // f32 tmpVec.y;
-    // f32 tmpVec.z;
-
-    // f32 sp28;
-    // Point3d sp34;
-    f32 temp_f0_3;
-    f32 temp_f0_4;
+    f32 cullingRadius;
+    f32 cylCullRadius;
     f32 temp_f1_3;
     f32 temp_f1_4;
     f32 maxConeScale;
-    f32 temp1;
-    f32 tmpVecLenSq;
+    f32 dist2dSq;
+    f32 distSq;
     f32 temp2;
 
     tmpVec.x = ball->pos.x - cone->pos.x;
     tmpVec.y = ball->pos.y - cone->pos.y;
     tmpVec.z = ball->pos.z - cone->pos.z;
 
-    tmpVecLenSq = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
+    distSq = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
 
     maxConeScale = (cone->scale.x > cone->scale.y) ? cone->scale.x : cone->scale.y;
 
-    temp_f0_3 = maxConeScale + ball->radius;
-    if (tmpVecLenSq > (temp_f0_3 * temp_f0_3))
+    cullingRadius = maxConeScale + ball->radius;
+    if (distSq > (cullingRadius * cullingRadius))
         return;
-    // if (!((
-    //     (tmpVec.z * tmpVec.z) + 
-    //     ((tmpVec.y * tmpVec.y) +
-    //     (tmpVec.x * tmpVec.x))
-    //     ) > (temp_f0_3 * temp_f0_3))
-    mathutil_mtxA_from_translate(&cone->pos); 
-    mathutil_mtxA_rotate_z((s32) cone->rot.z); 
-    mathutil_mtxA_rotate_y((s32) cone->rot.y); 
-    mathutil_mtxA_rotate_x((s32) cone->rot.x); 
-    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp10);
-    if (sp10.y < -ball->radius)
+
+    mathutil_mtxA_from_translate(&cone->pos);
+    mathutil_mtxA_rotate_z((s32)cone->rot.z);
+    mathutil_mtxA_rotate_y((s32)cone->rot.y);
+    mathutil_mtxA_rotate_x((s32)cone->rot.x);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &ballPos_rt_cone);
+    if (ballPos_rt_cone.y < -ball->radius)
         return;
-    // ((sp10.y < -ball->radius) == 0)) && 
-    if (sp10.y > (cone->scale.y + ball->radius))
+    if (ballPos_rt_cone.y > (cone->scale.y + ball->radius))
         return;
-    // ((sp10.y > (cone->scale.y + ball->radius)) == 0)) && 
-    // (sp10.x = sp10.x, 
-    temp1 = mathutil_sum_of_sq_2(sp10.x, sp10.z);
-    temp_f0_4 = cone->scale.x + ball->radius;
-    if (temp1 > temp_f0_4 * temp_f0_4)
+
+    dist2dSq = mathutil_sum_of_sq_2(ballPos_rt_cone.x, ballPos_rt_cone.z);
+    cylCullRadius = cone->scale.x + ball->radius;
+    if (dist2dSq > cylCullRadius * cylCullRadius)
         return;
-    // ((((sp10.z * sp10.z) + (sp10.x * sp10.x)) > 
-    // (temp_f0_4 * temp_f0_4))
 
     mathutil_mtxA_translate_xyz(0.0f, cone->scale.y, 0.0f);
-    mathutil_mtxA_rotate_y(-mathutil_atan2(sp10.z, sp10.x));
+    mathutil_mtxA_rotate_y(-mathutil_atan2(ballPos_rt_cone.z, ballPos_rt_cone.x));
     mathutil_mtxA_rotate_z(-mathutil_atan2(cone->scale.y, cone->scale.x));
     mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &tmpVec);
 
-    if (tmpVec.x < 0.0) {
-        // temp_r31 = &sp28;
-        // temp_r4 = temp_r31 + 4;
-        // temp_r3 = temp_r31 + 8;
-        // sp28 = *(f32* )0xE0000000;
-        // *temp_r4 = *(f32* )0xE000001C;
-        // *temp_r3 = *(f32* )0xE000002C;
-        mathutil_mtxA_get_translate_alt(&sp28_hit.pos);
-        // temp_f1_3 = (tmpVec.z * tmpVec.z) + ((tmpVec.y * tmpVec.y) + (tmpVec.x * tmpVec.x));
+    if (tmpVec.x < 0.0)
+    {
+        mathutil_mtxA_get_translate_alt(&hit.pos);
         temp_f1_3 = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
         if (temp_f1_3 <= FLT_EPSILON)
             return;
@@ -818,17 +799,19 @@ void g_collide_ball_with_cone(struct PhysicsBall* ball, struct StageColiCone* co
         tmpVec.x *= temp_f1_4;
         tmpVec.y *= temp_f1_4;
         tmpVec.z *= temp_f1_4;
-        mathutil_mtxA_tf_vec(&tmpVec, &sp28_hit.normal);
-        g_apply_coli_response(ball, &sp28_hit);
-    } else {
+        mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+        g_apply_coli_response(ball, &hit);
+    }
+    else
+    {
         temp2 = mathutil_sqrt(mathutil_sum_of_sq_2(cone->scale.x, cone->scale.y));
         if (tmpVec.x > (ball->radius + temp2))
             return;
-        mathutil_mtxA_get_translate_alt(&sp28_hit.pos);
+        mathutil_mtxA_get_translate_alt(&hit.pos);
         tmpVec.x = 0.0f;
         tmpVec.y = 1.0f;
         tmpVec.z = 0.0f;
-        mathutil_mtxA_tf_vec(&tmpVec, &sp28_hit.normal);
-        g_apply_coli_response(ball, &sp28_hit);
+        mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+        g_apply_coli_response(ball, &hit);
     }
 }
