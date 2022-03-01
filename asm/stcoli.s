@@ -1706,6 +1706,7 @@ lbl_8003F360:
 /* 8003F374 0003B294  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global g_collide_ball_with_cone
 g_collide_ball_with_cone:
 /* 8003F378 0003B298  7C 08 02 A6 */	mflr r0
@@ -1876,6 +1877,7 @@ lbl_8003F5F0:
 /* 8003F5FC 0003B51C  7C 08 03 A6 */	mtlr r0
 /* 8003F600 0003B520  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003F604 0003B524  4E 80 00 20 */	blr
+.endif
 
 .global g_apply_coli_response
 g_apply_coli_response:
@@ -5665,7 +5667,6 @@ lbl_802F3630:
 lbl_802F3638:
 	# ROM: 0x1ED058
 	.4byte 0xBF800000
-.endif
 	.4byte 0
 
 .global lbl_802F3640
@@ -5673,6 +5674,7 @@ lbl_802F3640:
 	# ROM: 0x1ED060
 	.4byte 0x3FF00000
 	.4byte 0
+.endif
 
 .global lbl_802F3648
 lbl_802F3648:
