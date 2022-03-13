@@ -362,22 +362,47 @@ struct Struct8003F890
 
 struct ColiPlane
 {
-    Point3d point;  // A point on the plane
-    Vec normal;     // Normal of plane
+    Point3d point; // A point on the plane
+    Vec normal;    // Normal of plane
 };
 
 struct PhysicsBall
 {
     u32 flags;
-    Point3d pos;
-    Point3d prevPos;
-    Vec vel;
+
+    // Current center position in itemgroupId's local space
+    Point3d pos;     
+
+    // Center position at end of previous frame in itemgroupId's previous frame local space
+    Point3d prevPos; 
+
+    // Current velocity in itemgroupId's local space
+    Vec vel;         
+
     float radius;
     float accel;
     float restitution;
+
+    // The ball may collide with more than one surface during a frame. The "hardest" collision is
+    // recorded, which is used to draw visual collision effects for example.
+
+    // Largest (in magnitude) itemgroup-relative ball velocity along the collision normal. It's
+    // always negative because when a collision occurs, the ball's itemgroup-relative velocity is
+    // pointing away from the normal.
     float hardestColiSpeed;
+
+    // Collision plane of the hardest collision, in hardestColiItemgroupId's local space
     struct ColiPlane hardestColiPlane;
-    s32 hardestColiItemgroupId;  
+
+    // Itemgroup ID of the hardest collision
+    s32 hardestColiItemgroupId;
+
+    // Friction applied to the ball's velocity on each contact with a surface.
+    //
+    // Specifically, it is the fraction of the ball's velocity parallel to the contact surface which
+    // is thrown away upon contact. The ball's velocity in this context is relative to the contact
+    // surface's velocity. For example, the relative velocity of a motionless ball on a platform
+    // with velocity (1, 0, 0) would be (-1, 0, 0).
     float friction;
 
     // Itemgroup whose local space we are in.
