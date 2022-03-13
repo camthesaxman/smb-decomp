@@ -225,8 +225,8 @@ struct StageColiTri
     u16 flags;
 
     // Vertex 1 in triangle space is (0, 0)
-    Vec2d vert2;       // Vertex 2 in triangle space
-    Vec2d vert3;       // Vertex 3 in triangle space
+    Point2d vert2;       // Vertex 2 in triangle space
+    Point2d vert3;       // Vertex 3 in triangle space
     // Edge 1 normal in triangle space is (0, 1)
     Vec2d edge2Normal; // Normal of edge from vertex 2 -> vertex 3, in triangle space
     Vec2d edge3Normal; // Normal of edge from vertex 3 -> vertex 1, in triangle space

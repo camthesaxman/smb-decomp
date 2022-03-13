@@ -17394,7 +17394,7 @@ lbl_00010154:
 lbl_00010160:
 /* 00010160 387E0000 */ addi r3, r30, 0
 /* 00010164 389B0000 */ addi r4, r27, 0
-/* 00010168 4BFF0069 */ bl g_collide_ball_with_cone
+/* 00010168 4BFF0069 */ bl collide_ball_with_cone
 /* 0001016C 3B5AFFFF */ addi r26, r26, -1  ;# fixed addi
 /* 00010170 3B7B0020 */ addi r27, r27, 0x20
 lbl_00010174:
@@ -17406,7 +17406,7 @@ lbl_00010174:
 lbl_00010188:
 /* 00010188 387E0000 */ addi r3, r30, 0
 /* 0001018C 389A0000 */ addi r4, r26, 0
-/* 00010190 4BFF0041 */ bl g_collide_ball_with_sphere
+/* 00010190 4BFF0041 */ bl collide_ball_with_sphere
 /* 00010194 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 /* 00010198 3B5A0014 */ addi r26, r26, 0x14
 lbl_0001019C:

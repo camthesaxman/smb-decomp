@@ -66,11 +66,11 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
 
         cone = stageIg->coliCones;
         for (i = stageIg->coliConeCount; i > 0; i--, cone++)
-            g_collide_ball_with_cone(ball, cone);
+            collide_ball_with_cone(ball, cone);
 
         sphere = stageIg->coliSpheres;
         for (i = stageIg->coliSphereCount; i > 0; i--, sphere++)
-            g_collide_ball_with_sphere(ball, sphere);
+            collide_ball_with_sphere(ball, sphere);
 
         cylinder = stageIg->coliCylinders;
         for (i = stageIg->coliCylinderCount; i > 0; i--, cylinder++)
@@ -364,6 +364,7 @@ void collide_ball_with_tri_verts(struct PhysicsBall *ball, struct StageColiTri *
     vert.y = tri->vert3.y;
     collide_ball_with_tri_vert(ball, &pos, &vert);
 }
+
 void collide_ball_with_tri_vert(struct PhysicsBall *ball, Point3d *ballPos_rt_tri,
                                 Point2d *vert_rt_tri)
 {
@@ -703,7 +704,7 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
     }
 }
 
-void g_collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere *sphere)
+void collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere *sphere)
 {
     struct ColiPlane plane;
     Vec sp10_vec1;
@@ -735,7 +736,7 @@ void g_collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere
     collide_ball_with_plane(ball, &plane);
 }
 
-void g_collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone)
+void collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone)
 {
     struct ColiPlane plane;
     Vec tmpVec;
