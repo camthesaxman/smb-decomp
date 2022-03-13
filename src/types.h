@@ -360,6 +360,12 @@ struct Struct8003F890
     float unk24;
 };
 
+struct ColiPlane
+{
+    Point3d point;  // A point on the plane
+    Vec normal;     // Normal of plane
+};
+
 struct PhysicsBall
 {
     u32 flags;
@@ -369,11 +375,10 @@ struct PhysicsBall
     float radius;
     float accel;
     float restitution;
-    float g_hardestColiVel;
-    Point3d g_coliPos;
-    Vec g_coliNormal;
-    s32 g_hardestColiItemgroupId;  
-    float unk54;
+    float hardestColiSpeed;
+    struct ColiPlane hardestColiPlane;
+    s32 hardestColiItemgroupId;  
+    float friction;
 
     // Itemgroup whose local space we are in.
     // As a reminder, ID 0 is world space.
@@ -388,12 +393,6 @@ struct ColiEdge
 
     // Coplanar with triangle, points inside triangle
     Vec2d normal;
-};
-
-struct ColiHit
-{
-    Point3d pos;
-    Vec normal;
 };
 
 struct Struct800496BC
