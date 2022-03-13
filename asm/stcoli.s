@@ -409,7 +409,7 @@ lbl_8003E038:
 /* 8003E064 00039F84  90 01 00 64 */	stw r0, 0x64(r1)
 /* 8003E068 00039F88  80 1F 00 14 */	lwz r0, 0x14(r31)
 /* 8003E06C 00039F8C  90 01 00 68 */	stw r0, 0x68(r1)
-/* 8003E070 00039F90  48 00 15 99 */	bl g_apply_coli_response
+/* 8003E070 00039F90  48 00 15 99 */	bl collide_ball_with_plane
 lbl_8003E074:
 /* 8003E074 00039F94  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 8003E078 00039F98  83 E1 00 74 */	lwz r31, 0x74(r1)
@@ -767,7 +767,7 @@ lbl_8003E538:
 /* 8003E5A0 0003A4C0  4B FC 98 8D */	bl mathutil_mtxA_tf_point
 /* 8003E5A4 0003A4C4  38 7C 00 00 */	addi r3, r28, 0
 /* 8003E5A8 0003A4C8  38 9F 00 00 */	addi r4, r31, 0
-/* 8003E5AC 0003A4CC  48 00 10 5D */	bl g_apply_coli_response
+/* 8003E5AC 0003A4CC  48 00 10 5D */	bl collide_ball_with_plane
 lbl_8003E5B0:
 /* 8003E5B0 0003A4D0  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 8003E5B4 0003A4D4  CB E1 00 70 */	lfd f31, 0x70(r1)
@@ -947,7 +947,7 @@ collide_ball_with_tri_vert:
 /* 8003E840 0003A760  4B FC 8F B1 */	bl mathutil_mtxA_push
 /* 8003E844 0003A764  38 7E 00 00 */	addi r3, r30, 0
 /* 8003E848 0003A768  38 81 00 20 */	addi r4, r1, 0x20
-/* 8003E84C 0003A76C  48 00 0D BD */	bl g_apply_coli_response
+/* 8003E84C 0003A76C  48 00 0D BD */	bl collide_ball_with_plane
 /* 8003E850 0003A770  4B FC 8F E5 */	bl mathutil_mtxA_pop
 lbl_8003E854:
 /* 8003E854 0003A774  80 01 00 44 */	lwz r0, 0x44(r1)
@@ -1126,7 +1126,7 @@ lbl_8003EAC4:
 /* 8003EAEC 0003AA0C  4B FC 93 41 */	bl mathutil_mtxA_tf_point
 /* 8003EAF0 0003AA10  38 7E 00 00 */	addi r3, r30, 0
 /* 8003EAF4 0003AA14  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003EAF8 0003AA18  48 00 0B 11 */	bl g_apply_coli_response
+/* 8003EAF8 0003AA18  48 00 0B 11 */	bl collide_ball_with_plane
 /* 8003EAFC 0003AA1C  48 00 02 94 */	b lbl_8003ED90
 lbl_8003EB00:
 /* 8003EB00 0003AA20  FC 05 F8 40 */	fcmpo cr0, f5, f31
@@ -1175,7 +1175,7 @@ lbl_8003EB80:
 /* 8003EBA4 0003AAC4  4B FC 92 89 */	bl mathutil_mtxA_tf_point
 /* 8003EBA8 0003AAC8  38 7E 00 00 */	addi r3, r30, 0
 /* 8003EBAC 0003AACC  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003EBB0 0003AAD0  48 00 0A 59 */	bl g_apply_coli_response
+/* 8003EBB0 0003AAD0  48 00 0A 59 */	bl collide_ball_with_plane
 /* 8003EBB4 0003AAD4  48 00 01 DC */	b lbl_8003ED90
 lbl_8003EBB8:
 /* 8003EBB8 0003AAD8  FC 02 08 40 */	fcmpo cr0, f2, f1
@@ -1225,7 +1225,7 @@ lbl_8003EC38:
 /* 8003EC60 0003AB80  4B FC 91 CD */	bl mathutil_mtxA_tf_point
 /* 8003EC64 0003AB84  38 7E 00 00 */	addi r3, r30, 0
 /* 8003EC68 0003AB88  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003EC6C 0003AB8C  48 00 09 9D */	bl g_apply_coli_response
+/* 8003EC6C 0003AB8C  48 00 09 9D */	bl collide_ball_with_plane
 /* 8003EC70 0003AB90  48 00 01 20 */	b lbl_8003ED90
 lbl_8003EC74:
 /* 8003EC74 0003AB94  FC 02 F0 40 */	fcmpo cr0, f2, f30
@@ -1274,7 +1274,7 @@ lbl_8003ECF4:
 /* 8003ED18 0003AC38  4B FC 91 15 */	bl mathutil_mtxA_tf_point
 /* 8003ED1C 0003AC3C  38 7E 00 00 */	addi r3, r30, 0
 /* 8003ED20 0003AC40  38 81 00 40 */	addi r4, r1, 0x40
-/* 8003ED24 0003AC44  48 00 08 E5 */	bl g_apply_coli_response
+/* 8003ED24 0003AC44  48 00 08 E5 */	bl collide_ball_with_plane
 /* 8003ED28 0003AC48  48 00 00 68 */	b lbl_8003ED90
 lbl_8003ED2C:
 /* 8003ED2C 0003AC4C  FC 05 20 40 */	fcmpo cr0, f5, f4
@@ -1303,7 +1303,7 @@ lbl_8003ED54:
 /* 8003ED80 0003ACA0  90 01 00 50 */	stw r0, 0x50(r1)
 /* 8003ED84 0003ACA4  80 1F 00 1C */	lwz r0, 0x1c(r31)
 /* 8003ED88 0003ACA8  90 01 00 54 */	stw r0, 0x54(r1)
-/* 8003ED8C 0003ACAC  48 00 08 7D */	bl g_apply_coli_response
+/* 8003ED8C 0003ACAC  48 00 08 7D */	bl collide_ball_with_plane
 lbl_8003ED90:
 /* 8003ED90 0003ACB0  80 01 00 74 */	lwz r0, 0x74(r1)
 /* 8003ED94 0003ACB4  CB E1 00 68 */	lfd f31, 0x68(r1)
@@ -1471,7 +1471,7 @@ lbl_8003EF90:
 /* 8003F000 0003AF20  4B FC 8E 2D */	bl mathutil_mtxA_tf_point
 /* 8003F004 0003AF24  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F008 0003AF28  38 81 00 64 */	addi r4, r1, 0x64
-/* 8003F00C 0003AF2C  48 00 05 FD */	bl g_apply_coli_response
+/* 8003F00C 0003AF2C  48 00 05 FD */	bl collide_ball_with_plane
 lbl_8003F010:
 /* 8003F010 0003AF30  80 01 00 94 */	lwz r0, 0x94(r1)
 /* 8003F014 0003AF34  CB E1 00 88 */	lfd f31, 0x88(r1)
@@ -1555,7 +1555,7 @@ collide_ball_with_circle:
 /* 8003F138 0003B058  4B FC 8D 05 */	bl mathutil_mtxA_tf_vec
 /* 8003F13C 0003B05C  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F140 0003B060  38 9F 00 00 */	addi r4, r31, 0
-/* 8003F144 0003B064  48 00 04 C5 */	bl g_apply_coli_response
+/* 8003F144 0003B064  48 00 04 C5 */	bl collide_ball_with_plane
 /* 8003F148 0003B068  48 00 00 E8 */	b lbl_8003F230
 lbl_8003F14C:
 /* 8003F14C 0003B06C  C0 1E 00 28 */	lfs f0, 0x28(r30)
@@ -1614,7 +1614,7 @@ lbl_8003F14C:
 /* 8003F220 0003B140  4B FC 8C 1D */	bl mathutil_mtxA_tf_vec
 /* 8003F224 0003B144  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F228 0003B148  38 81 00 28 */	addi r4, r1, 0x28
-/* 8003F22C 0003B14C  48 00 03 DD */	bl g_apply_coli_response
+/* 8003F22C 0003B14C  48 00 03 DD */	bl collide_ball_with_plane
 lbl_8003F230:
 /* 8003F230 0003B150  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8003F234 0003B154  83 E1 00 44 */	lwz r31, 0x44(r1)
@@ -1696,7 +1696,7 @@ g_collide_ball_with_sphere:
 /* 8003F350 0003B270  D0 81 00 28 */	stfs f4, 0x28(r1)
 /* 8003F354 0003B274  D0 61 00 2C */	stfs f3, 0x2c(r1)
 /* 8003F358 0003B278  D0 21 00 30 */	stfs f1, 0x30(r1)
-/* 8003F35C 0003B27C  48 00 02 AD */	bl g_apply_coli_response
+/* 8003F35C 0003B27C  48 00 02 AD */	bl collide_ball_with_plane
 lbl_8003F360:
 /* 8003F360 0003B280  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 8003F364 0003B284  83 E1 00 3C */	lwz r31, 0x3c(r1)
@@ -1836,7 +1836,7 @@ lbl_8003F3F4:
 /* 8003F560 0003B480  4B FC 88 DD */	bl mathutil_mtxA_tf_vec
 /* 8003F564 0003B484  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F568 0003B488  38 9F 00 00 */	addi r4, r31, 0
-/* 8003F56C 0003B48C  48 00 00 9D */	bl g_apply_coli_response
+/* 8003F56C 0003B48C  48 00 00 9D */	bl collide_ball_with_plane
 /* 8003F570 0003B490  48 00 00 80 */	b lbl_8003F5F0
 lbl_8003F574:
 /* 8003F574 0003B494  C0 1F 00 18 */	lfs f0, 0x18(r31)
@@ -1869,7 +1869,7 @@ lbl_8003F574:
 /* 8003F5E0 0003B500  4B FC 88 5D */	bl mathutil_mtxA_tf_vec
 /* 8003F5E4 0003B504  38 7E 00 00 */	addi r3, r30, 0
 /* 8003F5E8 0003B508  38 9F 00 00 */	addi r4, r31, 0
-/* 8003F5EC 0003B50C  48 00 00 1D */	bl g_apply_coli_response
+/* 8003F5EC 0003B50C  48 00 00 1D */	bl collide_ball_with_plane
 lbl_8003F5F0:
 /* 8003F5F0 0003B510  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8003F5F4 0003B514  83 E1 00 44 */	lwz r31, 0x44(r1)
@@ -1879,8 +1879,8 @@ lbl_8003F5F0:
 /* 8003F604 0003B524  4E 80 00 20 */	blr
 .endif
 
-.global g_apply_coli_response
-g_apply_coli_response:
+.global collide_ball_with_plane
+collide_ball_with_plane:
 /* 8003F608 0003B528  94 21 FF 98 */	stwu r1, -0x68(r1)
 /* 8003F60C 0003B52C  DB E1 00 60 */	stfd f31, 0x60(r1)
 /* 8003F610 0003B530  DB C1 00 58 */	stfd f30, 0x58(r1)
@@ -3589,7 +3589,7 @@ lbl_80040DE8:
 /* 80040F08 0003CE28  4B FC 6F 25 */	bl mathutil_mtxA_tf_point
 /* 80040F0C 0003CE2C  38 7D 00 00 */	addi r3, r29, 0
 /* 80040F10 0003CE30  38 81 00 10 */	addi r4, r1, 0x10
-/* 80040F14 0003CE34  4B FF E6 F5 */	bl g_apply_coli_response
+/* 80040F14 0003CE34  4B FF E6 F5 */	bl collide_ball_with_plane
 lbl_80040F18:
 /* 80040F18 0003CE38  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 80040F1C 0003CE3C  CB E1 00 70 */	lfd f31, 0x70(r1)
@@ -3788,7 +3788,7 @@ lbl_8004114C:
 /* 800411FC 0003D11C  4B FC 6C 31 */	bl mathutil_mtxA_tf_point
 /* 80041200 0003D120  38 7D 00 00 */	addi r3, r29, 0
 /* 80041204 0003D124  38 81 00 10 */	addi r4, r1, 0x10
-/* 80041208 0003D128  4B FF E4 01 */	bl g_apply_coli_response
+/* 80041208 0003D128  4B FF E4 01 */	bl collide_ball_with_plane
 lbl_8004120C:
 /* 8004120C 0003D12C  80 01 00 74 */	lwz r0, 0x74(r1)
 /* 80041210 0003D130  CB E1 00 68 */	lfd f31, 0x68(r1)
