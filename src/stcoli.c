@@ -112,7 +112,7 @@ static inline float dumb_dot(float x1, float y1, float x2, float y2)
 
 void collide_ball_with_tri_face(struct PhysicsBall *ball, struct StageColiTri *tri)
 {
-    struct ColiPlane coliHit;
+    struct ColiPlane plane;
     float x;
     float y;
     float z;
@@ -163,9 +163,9 @@ void collide_ball_with_tri_face(struct PhysicsBall *ball, struct StageColiTri *t
                 ((pos.y - tri->vert3.y) * tri->edge3Normal.y) <
             -FLT_EPSILON))))
     {
-        coliHit.point = tri->pos;
-        coliHit.normal = tri->normal;
-        g_apply_coli_response(ball, &coliHit);
+        plane.point = tri->pos;
+        plane.normal = tri->normal;
+        g_apply_coli_response(ball, &plane);
     }
 }
 
@@ -252,7 +252,7 @@ void collide_ball_with_tri_edge(struct PhysicsBall *ball, Point3d *ballPos_rt_tr
     f32 phi_f1;
     f32 phi_f1_2;
     f32 someY;
-    struct ColiPlane coliHit;
+    struct ColiPlane plane;
     Point3d ballPrevPos_rt_edge;
     Point3d ballPos_rt_edge;
     Point3d edgeEnd_rt_edge;
@@ -318,14 +318,14 @@ void collide_ball_with_tri_edge(struct PhysicsBall *ball, Point3d *ballPos_rt_tr
     tempp_f1_3 = mathutil_rsqrt(tempp_f1_2);
     vec.y *= tempp_f1_3;
     vec.z *= tempp_f1_3;
-    mathutil_mtxA_tf_vec(&vec, &coliHit.normal);
+    mathutil_mtxA_tf_vec(&vec, &plane.normal);
 
-    mathutil_mtxA_get_translate_alt(&coliHit.point);
+    mathutil_mtxA_get_translate_alt(&plane.point);
 
     mathutil_mtxA_pop();
-    mathutil_mtxA_tf_vec(&coliHit.normal, &coliHit.normal);
-    mathutil_mtxA_tf_point(&coliHit.point, &coliHit.point);
-    g_apply_coli_response(ball, &coliHit);
+    mathutil_mtxA_tf_vec(&plane.normal, &plane.normal);
+    mathutil_mtxA_tf_point(&plane.point, &plane.point);
+    g_apply_coli_response(ball, &plane);
 }
 
 void collide_ball_with_tri_verts(struct PhysicsBall *ball, struct StageColiTri *tri)
@@ -374,7 +374,7 @@ void collide_ball_with_tri_verts(struct PhysicsBall *ball, struct StageColiTri *
 void collide_ball_with_tri_vert(struct PhysicsBall *ball, Point3d *ballPos_rt_tri,
                                 Point2d *vert_rt_tri)
 {
-    struct ColiPlane hit;
+    struct ColiPlane plane;
     Vec tmpVec;
     f32 distSq;
     f32 inverseDist;
@@ -389,22 +389,22 @@ void collide_ball_with_tri_vert(struct PhysicsBall *ball, Point3d *ballPos_rt_tr
         tmpVec.x *= inverseDist;
         tmpVec.y *= inverseDist;
         tmpVec.z *= inverseDist;
-        mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+        mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
 
         tmpVec.x = vert_rt_tri->x;
         tmpVec.y = vert_rt_tri->y;
         tmpVec.z = 0;
-        mathutil_mtxA_tf_point(&tmpVec, &hit.point);
+        mathutil_mtxA_tf_point(&tmpVec, &plane.point);
 
         mathutil_mtxA_push();
-        g_apply_coli_response(ball, &hit);
+        g_apply_coli_response(ball, &plane);
         mathutil_mtxA_pop();
     }
 }
 
 void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
 {
-    struct ColiPlane hit;
+    struct ColiPlane plane;
     Point3d pos;
     Point3d prevPos;
     Vec tmpVec;
@@ -468,12 +468,12 @@ void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
                 tmpVec.y = 0;
                 tmpVec.z = 0;
             }
-            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
             tmpVec.x = -halfWidth;
             tmpVec.y = 0;
             tmpVec.z = 0;
-            mathutil_mtxA_tf_point(&tmpVec, &hit.point);
-            g_apply_coli_response(ball, &hit);
+            mathutil_mtxA_tf_point(&tmpVec, &plane.point);
+            g_apply_coli_response(ball, &plane);
         }
     }
     else if (pos_rt_rect.x > halfWidth)
@@ -496,12 +496,12 @@ void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
                 tmpVec.y = 0;
                 tmpVec.z = 0;
             }
-            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
             tmpVec.x = halfWidth;
             tmpVec.y = 0;
             tmpVec.z = 0;
-            mathutil_mtxA_tf_point(&tmpVec, &hit.point);
-            g_apply_coli_response(ball, &hit);
+            mathutil_mtxA_tf_point(&tmpVec, &plane.point);
+            g_apply_coli_response(ball, &plane);
         }
     }
     else if (pos_rt_rect.y < -halfHeight)
@@ -524,12 +524,12 @@ void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
                 tmpVec.y = -1;
                 tmpVec.z = 0;
             }
-            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
             tmpVec.x = 0;
             tmpVec.y = -halfHeight;
             tmpVec.z = 0;
-            mathutil_mtxA_tf_point(&tmpVec, &hit.point);
-            g_apply_coli_response(ball, &hit);
+            mathutil_mtxA_tf_point(&tmpVec, &plane.point);
+            g_apply_coli_response(ball, &plane);
         }
     }
     else if (pos_rt_rect.y > halfHeight)
@@ -552,12 +552,12 @@ void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
                 tmpVec.y = 1;
                 tmpVec.z = 0;
             }
-            mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
+            mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
             tmpVec.x = 0;
             tmpVec.y = halfHeight;
             tmpVec.z = 0;
-            mathutil_mtxA_tf_point(&tmpVec, &hit.point);
-            g_apply_coli_response(ball, &hit);
+            mathutil_mtxA_tf_point(&tmpVec, &plane.point);
+            g_apply_coli_response(ball, &plane);
         }
     }
     else if (pos_rt_rect.x < -halfWidth || pos_rt_rect.x > halfWidth)
@@ -566,15 +566,15 @@ void collide_ball_with_rect(struct PhysicsBall *ball, struct ColiRect *rect)
         return;
     else
     {
-        hit.point = rect->pos;
-        hit.normal = rect->normal;
-        g_apply_coli_response(ball, &hit);
+        plane.point = rect->pos;
+        plane.normal = rect->normal;
+        g_apply_coli_response(ball, &plane);
     }
 }
 
 void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylinder *cylinder)
 {
-    struct ColiPlane hit;
+    struct ColiPlane plane;
     Vec tmpVec;
     Point3d sp4C;
     Point3d sp40;
@@ -636,20 +636,20 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
     }
 
     temp_f1_4 = mathutil_rsqrt(temp_f2_2);
-    hit.normal.x = sp4C.x * temp_f1_4;
-    hit.normal.y = 0.0f;
-    hit.normal.z = sp4C.z * temp_f1_4;
-    hit.point.x = hit.normal.x * cylinder->radius;
-    hit.point.y = sp4C.y + (hit.normal.y * cylinder->radius);
-    hit.point.z = hit.normal.z * cylinder->radius;
-    mathutil_mtxA_tf_vec(&hit.normal, &hit.normal);
-    mathutil_mtxA_tf_point(&hit.point, &hit.point);
-    g_apply_coli_response(ball, &hit);
+    plane.normal.x = sp4C.x * temp_f1_4;
+    plane.normal.y = 0.0f;
+    plane.normal.z = sp4C.z * temp_f1_4;
+    plane.point.x = plane.normal.x * cylinder->radius;
+    plane.point.y = sp4C.y + (plane.normal.y * cylinder->radius);
+    plane.point.z = plane.normal.z * cylinder->radius;
+    mathutil_mtxA_tf_vec(&plane.normal, &plane.normal);
+    mathutil_mtxA_tf_point(&plane.point, &plane.point);
+    g_apply_coli_response(ball, &plane);
 }
 
 void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circle)
 {
-    struct ColiPlane hit;
+    struct ColiPlane plane;
     Point3d ballPos_rt_circle;
     Vec tmpVec;
 
@@ -676,12 +676,12 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
     temp_f1_2 = mathutil_sum_of_sq_2(ballPos_rt_circle.x, ballPos_rt_circle.z);
     if (temp_f1_2 < (circle->radius * circle->radius))
     {
-        mathutil_mtxA_get_translate_alt(&hit.point);
-        hit.normal.x = 0.0f;
-        hit.normal.y = 1.0f;
-        hit.normal.z = 0.0f;
-        mathutil_mtxA_tf_vec(&hit.normal, &hit.normal);
-        g_apply_coli_response(ball, &hit);
+        mathutil_mtxA_get_translate_alt(&plane.point);
+        plane.normal.x = 0.0f;
+        plane.normal.y = 1.0f;
+        plane.normal.z = 0.0f;
+        mathutil_mtxA_tf_vec(&plane.normal, &plane.normal);
+        g_apply_coli_response(ball, &plane);
         return;
     }
 
@@ -689,30 +689,30 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
     if ((temp_f1_2 < (radiusSum * radiusSum)) && (temp_f1_2 > FLT_EPSILON))
     {
         temp_f0_4 = circle->radius * mathutil_rsqrt(temp_f1_2);
-        hit.point.x = ballPos_rt_circle.x * temp_f0_4;
-        hit.point.y = 0.0f;
-        hit.point.z = ballPos_rt_circle.z * temp_f0_4;
-        tmpVec.x = ballPos_rt_circle.x - hit.point.x;
-        tmpVec.y = ballPos_rt_circle.y - hit.point.y;
-        tmpVec.z = ballPos_rt_circle.z - hit.point.z;
+        plane.point.x = ballPos_rt_circle.x * temp_f0_4;
+        plane.point.y = 0.0f;
+        plane.point.z = ballPos_rt_circle.z * temp_f0_4;
+        tmpVec.x = ballPos_rt_circle.x - plane.point.x;
+        tmpVec.y = ballPos_rt_circle.y - plane.point.y;
+        tmpVec.z = ballPos_rt_circle.z - plane.point.z;
 
         temp_f1_5 = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
         if (temp_f1_5 > FLT_EPSILON)
         {
             temp_f1_6 = mathutil_rsqrt(temp_f1_5);
-            hit.normal.x = tmpVec.x * temp_f1_6;
-            hit.normal.y = tmpVec.y * temp_f1_6;
-            hit.normal.z = tmpVec.z * temp_f1_6;
-            mathutil_mtxA_tf_point(&hit.point, &hit.point);
-            mathutil_mtxA_tf_vec(&hit.normal, &hit.normal);
-            g_apply_coli_response(ball, &hit);
+            plane.normal.x = tmpVec.x * temp_f1_6;
+            plane.normal.y = tmpVec.y * temp_f1_6;
+            plane.normal.z = tmpVec.z * temp_f1_6;
+            mathutil_mtxA_tf_point(&plane.point, &plane.point);
+            mathutil_mtxA_tf_vec(&plane.normal, &plane.normal);
+            g_apply_coli_response(ball, &plane);
         }
     }
 }
 
 void g_collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere *sphere)
 {
-    struct ColiPlane sp1C_hit;
+    struct ColiPlane plane;
     Vec sp10_vec1;
 
     f32 radiusSum;
@@ -733,18 +733,18 @@ void g_collide_ball_with_sphere(struct PhysicsBall *ball, struct StageColiSphere
     sp10_vec1.x *= invDist;
     sp10_vec1.y *= invDist;
     sp10_vec1.z *= invDist;
-    sp1C_hit.point.x = sphere->pos.x + (sp10_vec1.x * sphere->radius);
-    sp1C_hit.point.y = sphere->pos.y + (sp10_vec1.y * sphere->radius);
-    sp1C_hit.point.z = sphere->pos.z + (sp10_vec1.z * sphere->radius);
-    sp1C_hit.normal.x = sp10_vec1.x;
-    sp1C_hit.normal.y = sp10_vec1.y;
-    sp1C_hit.normal.z = sp10_vec1.z;
-    g_apply_coli_response(ball, &sp1C_hit);
+    plane.point.x = sphere->pos.x + (sp10_vec1.x * sphere->radius);
+    plane.point.y = sphere->pos.y + (sp10_vec1.y * sphere->radius);
+    plane.point.z = sphere->pos.z + (sp10_vec1.z * sphere->radius);
+    plane.normal.x = sp10_vec1.x;
+    plane.normal.y = sp10_vec1.y;
+    plane.normal.z = sp10_vec1.z;
+    g_apply_coli_response(ball, &plane);
 }
 
 void g_collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone)
 {
-    struct ColiPlane hit;
+    struct ColiPlane plane;
     Vec tmpVec;
     Point3d ballPos_rt_cone;
 
@@ -791,7 +791,7 @@ void g_collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *co
 
     if (tmpVec.x < 0.0)
     {
-        mathutil_mtxA_get_translate_alt(&hit.point);
+        mathutil_mtxA_get_translate_alt(&plane.point);
         temp_f1_3 = mathutil_sum_of_sq_3(tmpVec.x, tmpVec.y, tmpVec.z);
         if (temp_f1_3 <= FLT_EPSILON)
             return;
@@ -799,19 +799,19 @@ void g_collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *co
         tmpVec.x *= temp_f1_4;
         tmpVec.y *= temp_f1_4;
         tmpVec.z *= temp_f1_4;
-        mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
-        g_apply_coli_response(ball, &hit);
+        mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
+        g_apply_coli_response(ball, &plane);
     }
     else
     {
         temp2 = mathutil_sqrt(mathutil_sum_of_sq_2(cone->scale.x, cone->scale.y));
         if (tmpVec.x > (ball->radius + temp2))
             return;
-        mathutil_mtxA_get_translate_alt(&hit.point);
+        mathutil_mtxA_get_translate_alt(&plane.point);
         tmpVec.x = 0.0f;
         tmpVec.y = 1.0f;
         tmpVec.z = 0.0f;
-        mathutil_mtxA_tf_vec(&tmpVec, &hit.normal);
-        g_apply_coli_response(ball, &hit);
+        mathutil_mtxA_tf_vec(&tmpVec, &plane.normal);
+        g_apply_coli_response(ball, &plane);
     }
 }
