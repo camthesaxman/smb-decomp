@@ -518,7 +518,7 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalItem
                 goalTrigger.rot.z = goal->rotZ;
                 goalTrigger.width = 2.0f;
                 goalTrigger.height = 2.0f;
-                if (test_line_intersects_rect(&physBall.pos, &physBall.prevPos, &goalTrigger) != 0)
+                if (test_line_intersects_rect(&physBall.pos, &physBall.prevPos, &goalTrigger))
                 {
                     *outGoalId = goalId;
                     *outGoalItemgroupId = itemgroupId;

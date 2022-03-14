@@ -92,17 +92,17 @@ s16 *meshcoli_grid_lookup(struct StageItemgroup *stageIg, f32 x, f32 z)
     int cellX;
     int cellZ;
 
-    if (stageIg->gridCells == NULL2)
+    if (stageIg->gridCellTris == NULL2)
         return NULL;
 
     cellX = mathutil_floor((x - stageIg->gridOriginX) / stageIg->gridStepX);
     cellZ = mathutil_floor((z - stageIg->gridOriginZ) / stageIg->gridStepZ);
 
-    if (cellX < 0 || cellX >= stageIg->gridDimX)
+    if (cellX < 0 || cellX >= stageIg->gridCellCountX)
         return NULL;
-    if (cellZ < 0 || cellZ >= stageIg->gridDimZ)
+    if (cellZ < 0 || cellZ >= stageIg->gridCellCountZ)
         return NULL;
-    return stageIg->gridCells[cellZ * stageIg->gridDimX + cellX];
+    return stageIg->gridCellTris[cellZ * stageIg->gridCellCountX + cellX];
 }
 
 static inline float dumb_dot(float x1, float y1, float x2, float y2)

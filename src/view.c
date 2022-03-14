@@ -312,21 +312,21 @@ void view_init_stage_anim(void)
     r30 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 72; i++, movpart++, r30++)
     {
-        movpart->unk0.x = r30->unk0.x;
-        movpart->unk0.y = r30->unk0.y;
-        movpart->unk0.z = r30->unk0.z;
+        movpart->unk0.x = r30->initPos.x;
+        movpart->unk0.y = r30->initPos.y;
+        movpart->unk0.z = r30->initPos.z;
 
-        movpart->unkC.x = r30->unk0.x - r30->unkB8.x;
-        movpart->unkC.y = r30->unk0.y - r30->unkB8.y;
-        movpart->unkC.z = r30->unk0.z - r30->unkB8.z;
+        movpart->unkC.x = r30->initPos.x - r30->unkB8.x;
+        movpart->unkC.y = r30->initPos.y - r30->unkB8.y;
+        movpart->unkC.z = r30->initPos.z - r30->unkB8.z;
 
-        movpart->unk18 = r30->initXRot;
-        movpart->unk1A = r30->initYRot;
-        movpart->unk1C = r30->initZRot;
+        movpart->unk18 = r30->initRot.x;
+        movpart->unk1A = r30->initRot.y;
+        movpart->unk1C = r30->initRot.z;
 
-        movpart->unk1E = r30->initXRot;
-        movpart->unk20 = r30->initYRot;
-        movpart->unk22 = r30->initZRot;
+        movpart->unk1E = r30->initRot.x;
+        movpart->unk20 = r30->initRot.y;
+        movpart->unk22 = r30->initRot.z;
 
         mathutil_mtxA_from_identity();
         mathutil_mtxA_to_mtx(movpart->unk24);
@@ -395,19 +395,19 @@ void view_animate_stage(void)
         mathutil_mtxA_from_translate(&movpart->unk0);
         mathutil_mtxA_rotate_z(movpart->unk1C);
         mathutil_mtxA_rotate_y(movpart->unk1A);
-        mathutil_mtxA_rotate_x(movpart->unk18 - r30->initXRot);
-        mathutil_mtxA_rotate_y(-r30->initYRot);
-        mathutil_mtxA_rotate_z(-r30->initZRot);
-        mathutil_mtxA_translate_neg(&r30->unk0);
+        mathutil_mtxA_rotate_x(movpart->unk18 - r30->initRot.x);
+        mathutil_mtxA_rotate_y(-r30->initRot.y);
+        mathutil_mtxA_rotate_z(-r30->initRot.z);
+        mathutil_mtxA_translate_neg(&r30->initPos);
         mathutil_mtxA_to_mtx(movpart->unk24);
 
         mathutil_mtxA_from_translate(&movpart->unkC);
         mathutil_mtxA_rotate_z(movpart->unk22);
         mathutil_mtxA_rotate_y(movpart->unk20);
-        mathutil_mtxA_rotate_x(movpart->unk1E - r30->initXRot);
-        mathutil_mtxA_rotate_y(-r30->initYRot);
-        mathutil_mtxA_rotate_z(-r30->initZRot);
-        mathutil_mtxA_translate_neg(&r30->unk0);
+        mathutil_mtxA_rotate_x(movpart->unk1E - r30->initRot.x);
+        mathutil_mtxA_rotate_y(-r30->initRot.y);
+        mathutil_mtxA_rotate_z(-r30->initRot.z);
+        mathutil_mtxA_translate_neg(&r30->initPos);
         mathutil_mtxA_to_mtx(movpart->unk54);
     }
 

@@ -350,21 +350,22 @@ struct StageCollHdr_child5
 
 struct StageItemgroup
 {
-    Vec unk0;
-    /*0x0C*/ s16 initXRot;
-    /*0x0E*/ s16 initYRot;
-    /*0x10*/ s16 initZRot;
+    Point3d initPos;
+    S16Vec initRot;
     u16 unk12;
+
     /*0x14*/ struct StageAnimHdr *animHdr;
     /*0x18*/ char **modelNames;
     /*0x1C*/ struct StageColiTri *triangles;
-    /*0x20*/ s16 **gridCells;
+
+    /*0x20*/ s16 **gridCellTris;
     /*0x24*/ f32 gridOriginX;
     /*0x28*/ f32 gridOriginZ;
     /*0x2C*/ f32 gridStepX;
     /*0x30*/ f32 gridStepZ;
-    /*0x34*/ s32 gridDimX;  // Number of cells in X direction
-    /*0x38*/ s32 gridDimZ;  // Number of cells in Z direction
+    /*0x34*/ s32 gridCellCountX;  // Number of cells in X direction
+    /*0x38*/ s32 gridCellCountZ;  // Number of cells in Z direction
+
     /*0x3C*/ s32 goalCount;
     struct StageGoal *goals;
     u8 filler44[4];

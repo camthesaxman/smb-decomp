@@ -205,18 +205,18 @@ void ev_stage_main(void)
         mathutil_mtxA_from_translate(&movpart->unk0);
         mathutil_mtxA_rotate_z(movpart->unk1C);
         mathutil_mtxA_rotate_y(movpart->unk1A);
-        mathutil_mtxA_rotate_x(movpart->unk18 - coll->initXRot);
-        mathutil_mtxA_rotate_y(-coll->initYRot);
-        mathutil_mtxA_rotate_z(-coll->initZRot);
-        mathutil_mtxA_translate_neg(&coll->unk0);
+        mathutil_mtxA_rotate_x(movpart->unk18 - coll->initRot.x);
+        mathutil_mtxA_rotate_y(-coll->initRot.y);
+        mathutil_mtxA_rotate_z(-coll->initRot.z);
+        mathutil_mtxA_translate_neg(&coll->initPos);
         mathutil_mtxA_to_mtx(movpart->unk24);
         mathutil_mtxA_from_translate(&movpart->unkC);
         mathutil_mtxA_rotate_z(movpart->unk22);
         mathutil_mtxA_rotate_y(movpart->unk20);
-        mathutil_mtxA_rotate_x(movpart->unk1E - coll->initXRot);
-        mathutil_mtxA_rotate_y(-coll->initYRot);
-        mathutil_mtxA_rotate_z(-coll->initZRot);
-        mathutil_mtxA_translate_neg(&coll->unk0);
+        mathutil_mtxA_rotate_x(movpart->unk1E - coll->initRot.x);
+        mathutil_mtxA_rotate_y(-coll->initRot.y);
+        mathutil_mtxA_rotate_z(-coll->initRot.z);
+        mathutil_mtxA_translate_neg(&coll->initPos);
         mathutil_mtxA_to_mtx(movpart->unk54);
     }
     if (lbl_80206DEC.unk8 != NULL)
@@ -382,10 +382,10 @@ void g_animate_stage(float a)
             mathutil_mtxA_from_translate(&movpart->unk0);
             mathutil_mtxA_rotate_z(movpart->unk1C);
             mathutil_mtxA_rotate_y(movpart->unk1A);
-            mathutil_mtxA_rotate_x(movpart->unk18 - coll->initXRot);
-            mathutil_mtxA_rotate_y(-coll->initYRot);
-            mathutil_mtxA_rotate_z(-coll->initZRot);
-            mathutil_mtxA_translate_neg(&coll->unk0);
+            mathutil_mtxA_rotate_x(movpart->unk18 - coll->initRot.x);
+            mathutil_mtxA_rotate_y(-coll->initRot.y);
+            mathutil_mtxA_rotate_z(-coll->initRot.z);
+            mathutil_mtxA_translate_neg(&coll->initPos);
             mathutil_mtxA_to_mtx(movpart->unk24);
             mathutil_mtx_copy(movpart->unk54, movpart->unk24);
         }
@@ -426,18 +426,18 @@ void func_8004482C(void)
     coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 0x48; i++, movpart++, coll++)
     {
-        movpart->unk0.x = coll->unk0.x;
-        movpart->unk0.y = coll->unk0.y;
-        movpart->unk0.z = coll->unk0.z;
-        movpart->unkC.x = coll->unk0.x - coll->unkB8.x;
-        movpart->unkC.y = coll->unk0.y - coll->unkB8.y;
-        movpart->unkC.z = coll->unk0.z - coll->unkB8.z;
-        movpart->unk18 = coll->initXRot;
-        movpart->unk1A = coll->initYRot;
-        movpart->unk1C = coll->initZRot;
-        movpart->unk1E = coll->initXRot;
-        movpart->unk20 = coll->initYRot;
-        movpart->unk22 = coll->initZRot;
+        movpart->unk0.x = coll->initPos.x;
+        movpart->unk0.y = coll->initPos.y;
+        movpart->unk0.z = coll->initPos.z;
+        movpart->unkC.x = coll->initPos.x - coll->unkB8.x;
+        movpart->unkC.y = coll->initPos.y - coll->unkB8.y;
+        movpart->unkC.z = coll->initPos.z - coll->unkB8.z;
+        movpart->unk18 = coll->initRot.x;
+        movpart->unk1A = coll->initRot.y;
+        movpart->unk1C = coll->initRot.z;
+        movpart->unk1E = coll->initRot.x;
+        movpart->unk20 = coll->initRot.y;
+        movpart->unk22 = coll->initRot.z;
         mathutil_mtxA_from_identity();
         mathutil_mtxA_to_mtx(movpart->unk24);
         mathutil_mtxA_translate_neg(&coll->unkB8);
@@ -1672,13 +1672,13 @@ void load_stagedef(int stageId)
         }
         if (coll->triangles != NULL)
             coll->triangles = OFFSET_TO_PTR(decodedStageLzPtr, coll->triangles);
-        if (coll->gridCells != NULL)
+        if (coll->gridCellTris != NULL)
         {
             int j;
             s16 **r5;
 
-            coll->gridCells = OFFSET_TO_PTR(decodedStageLzPtr, coll->gridCells);
-            for (j = 0, r5 = coll->gridCells; j < coll->gridDimX * coll->gridDimZ; j++, r5++)
+            coll->gridCellTris = OFFSET_TO_PTR(decodedStageLzPtr, coll->gridCellTris);
+            for (j = 0, r5 = coll->gridCellTris; j < coll->gridCellCountX * coll->gridCellCountZ; j++, r5++)
             {
                 if (*r5 != NULL)
                     *r5 = OFFSET_TO_PTR(decodedStageLzPtr, *r5);
