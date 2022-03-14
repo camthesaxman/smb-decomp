@@ -349,17 +349,6 @@ struct Struct8009492C
     u8 filler30[0x38-0x30];
 };
 
-struct Struct8003F890
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u8 filler12[0x20-0x12];
-    float unk20;
-    float unk24;
-};
-
 struct ColiPlane
 {
     Point3d point; // A point on the plane

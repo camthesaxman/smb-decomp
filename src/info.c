@@ -503,21 +503,21 @@ int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
             r24 = r27->goals;
             for (j = 0; j < r27->goalCount; j++, r24++)
             {
-                struct Struct8003F890 sp14;
+                struct ColiRect sp14;
 
                 mathutil_mtxA_from_translate(&r24->pos);
                 mathutil_mtxA_rotate_z(r24->rotZ);
                 mathutil_mtxA_rotate_y(r24->rotY);
                 mathutil_mtxA_rotate_x(r24->rotX);
-                sp14.unk0.x = 0.0f;
-                sp14.unk0.y = 1.0f;
-                sp14.unk0.z = 0.0f;
-                mathutil_mtxA_tf_point(&sp14.unk0, &sp14.unk0);
-                sp14.unkC = r24->rotX;
-                sp14.unkE = r24->rotY;
-                sp14.unk10 = r24->rotZ;
-                sp14.unk20 = 2.0f;
-                sp14.unk24 = 2.0f;
+                sp14.pos.x = 0.0f;
+                sp14.pos.y = 1.0f;
+                sp14.pos.z = 0.0f;
+                mathutil_mtxA_tf_point(&sp14.pos, &sp14.pos);
+                sp14.rot.x = r24->rotX;
+                sp14.rot.y = r24->rotY;
+                sp14.rot.z = r24->rotZ;
+                sp14.width = 2.0f;
+                sp14.height = 2.0f;
                 if (test_line_intersects_rect(&sp3C.pos, &sp3C.prevPos, &sp14) != 0)
                 {
                     *goalIdPtr = goalId;

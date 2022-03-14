@@ -21,7 +21,7 @@ void collide_ball_with_circle(struct PhysicsBall *ball, struct ColiCircle *circl
 void collide_ball_with_sphere(struct PhysicsBall *, struct StageColiSphere *sphere);
 void collide_ball_with_cone(struct PhysicsBall *, struct StageColiCone *cone);
 void collide_ball_with_plane(struct PhysicsBall *physBall, struct ColiPlane *coliHit);
-u32 test_line_intersects_rect(Vec *, Vec *, struct Struct8003F890 *);
+u32 test_line_intersects_rect(Vec *, Vec *, struct ColiRect *);
 // ? stcoli_sub15();
 int stcoli_sub16(Vec *, struct Struct8003FB48 *, Vec *);
 // ? stcoli_sub17();
