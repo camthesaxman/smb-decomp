@@ -88,7 +88,7 @@ void ev_info_main(void)
             continue;
 
         currentBallStructPtr = ball;
-        if (!check_ball_in_goal(ball, &goalId, &sp64))
+        if (!check_ball_entered_goal(ball, &goalId, &sp64))
             continue;
         infoWork.unk30 = ball->unk2E;
         switch (modeCtrl.gameType)
@@ -143,7 +143,7 @@ void ev_info_main(void)
                     func_800245E4(ball, goalId, sp64);
                 func_80049268(ball->unk2E);
             }
-            func_8003CA98(ball, &sp6C);
+            init_physball_from_ball(ball, &sp6C);
             if (sp64 != sp6C.itemgroupId)
                 tf_physball_to_itemgroup_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
@@ -174,7 +174,7 @@ void ev_info_main(void)
             func_80049268(ball->unk2E);
             if (gameSubmode == SMD_ADV_GAME_PLAY_MAIN)
                 infoWork.unk0 |= INFO_FLAG_GOAL;
-            func_8003CA98(ball, &sp6C);
+            init_physball_from_ball(ball, &sp6C);
             if (sp64 != sp6C.itemgroupId)
                 tf_physball_to_itemgroup_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
@@ -318,7 +318,7 @@ void ev_info_main(void)
         {
             struct PhysicsBall sp8;
 
-            func_8003CA98(&ballInfo[0], &sp8);
+            init_physball_from_ball(&ballInfo[0], &sp8);
             g_break_goal_tape(infoWork.unkC, &sp8);
             ball->unk12A = infoWork.timerCurr;
             g_play_sound(0x16);
@@ -481,47 +481,47 @@ void func_80023AF4(void)
         lbl_802F1CA8 = 0;
 }
 
-int check_ball_in_goal(struct Ball *ball, u32 *goalIdPtr, s32 *c)
+BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalItemgroupId)
 {
-    struct PhysicsBall sp3C;
-    struct StageItemgroup *r27;
+    struct PhysicsBall physBall;
+    struct StageItemgroup *stageIg;
     int goalId;
-    int i;
+    int itemgroupId;
 
-    func_8003CA98(ball, &sp3C);
-    r27 = decodedStageLzPtr->itemgroups;
+    init_physball_from_ball(ball, &physBall);
+    stageIg = decodedStageLzPtr->itemgroups;
     goalId = 0;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r27++)
+    for (itemgroupId = 0; itemgroupId < decodedStageLzPtr->itemgroupCount; itemgroupId++, stageIg++)
     {
-        if (r27->goalCount > 0)
+        if (stageIg->goalCount > 0)
         {
-            struct StageGoal *r24;
-            int j;
+            struct StageGoal *goal;
+            int igGoalIdx;
 
-            if (i != sp3C.itemgroupId)
-                tf_physball_to_itemgroup_space(&sp3C, i);
-            r24 = r27->goals;
-            for (j = 0; j < r27->goalCount; j++, r24++)
+            if (itemgroupId != physBall.itemgroupId)
+                tf_physball_to_itemgroup_space(&physBall, itemgroupId);
+            goal = stageIg->goals;
+            for (igGoalIdx = 0; igGoalIdx < stageIg->goalCount; igGoalIdx++, goal++)
             {
-                struct ColiRect sp14;
+                struct ColiRect goalTrigger;
 
-                mathutil_mtxA_from_translate(&r24->pos);
-                mathutil_mtxA_rotate_z(r24->rotZ);
-                mathutil_mtxA_rotate_y(r24->rotY);
-                mathutil_mtxA_rotate_x(r24->rotX);
-                sp14.pos.x = 0.0f;
-                sp14.pos.y = 1.0f;
-                sp14.pos.z = 0.0f;
-                mathutil_mtxA_tf_point(&sp14.pos, &sp14.pos);
-                sp14.rot.x = r24->rotX;
-                sp14.rot.y = r24->rotY;
-                sp14.rot.z = r24->rotZ;
-                sp14.width = 2.0f;
-                sp14.height = 2.0f;
-                if (test_line_intersects_rect(&sp3C.pos, &sp3C.prevPos, &sp14) != 0)
+                mathutil_mtxA_from_translate(&goal->pos);
+                mathutil_mtxA_rotate_z(goal->rotZ);
+                mathutil_mtxA_rotate_y(goal->rotY);
+                mathutil_mtxA_rotate_x(goal->rotX);
+                goalTrigger.pos.x = 0.0f;
+                goalTrigger.pos.y = 1.0f;
+                goalTrigger.pos.z = 0.0f;
+                mathutil_mtxA_tf_point(&goalTrigger.pos, &goalTrigger.pos);
+                goalTrigger.rot.x = goal->rotX;
+                goalTrigger.rot.y = goal->rotY;
+                goalTrigger.rot.z = goal->rotZ;
+                goalTrigger.width = 2.0f;
+                goalTrigger.height = 2.0f;
+                if (test_line_intersects_rect(&physBall.pos, &physBall.prevPos, &goalTrigger) != 0)
                 {
-                    *goalIdPtr = goalId;
-                    *c = i;
+                    *outGoalId = goalId;
+                    *outGoalItemgroupId = itemgroupId;
                     return TRUE;
                 }
                 goalId++;
@@ -790,7 +790,7 @@ int func_800246F4(struct Ball *ball)
 
     if (ball->pos.y < *decodedStageLzPtr->pFallOutY)
         return 1;
-    func_8003CA98(ball, &sp18);
+    init_physball_from_ball(ball, &sp18);
     r30 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r30++)
     {

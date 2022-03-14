@@ -6765,7 +6765,7 @@ lbl_00006314:
 /* 000063B8 C01D0024 */ lfs f0, 0x24(r29)
 /* 000063BC EC01002A */ fadds f0, f1, f0
 /* 000063C0 D01D000C */ stfs f0, 0xc(r29)
-/* 000063C4 4BFF9D89 */ bl func_8003CA98
+/* 000063C4 4BFF9D89 */ bl init_physball_from_ball
 /* 000063C8 3C600000 */ lis r3, decodedStageLzPtr@ha
 /* 000063CC 80830000 */ lwz r4, decodedStageLzPtr@l(r3)
 /* 000063D0 7FC3F378 */ mr r3, r30
@@ -7234,7 +7234,7 @@ lbl_00006A94:
 /* 00006AA8 3BE40000 */ addi r31, r4, 0
 /* 00006AAC 93C10010 */ stw r30, 0x10(r1)
 /* 00006AB0 3BC50000 */ addi r30, r5, lbl_0000BE80@l
-/* 00006AB4 4BFF9699 */ bl func_8003CA98
+/* 00006AB4 4BFF9699 */ bl init_physball_from_ball
 /* 00006AB8 3C600000 */ lis r3, lbl_802F1FF6@ha
 /* 00006ABC A8030000 */ lha r0, lbl_802F1FF6@l(r3)
 /* 00006AC0 2C000012 */ cmpwi r0, 0x12

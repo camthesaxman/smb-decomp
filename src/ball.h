@@ -105,7 +105,7 @@ struct Ball
     s16 unk64;
     s16 oldModelId;  // id of Naomi model
     /*0x68*/ float currRadius;
-    float unk6C;
+    float accel;
     /*0x70*/ float restitution;
     /*0x74*/ float modelScale;
     /*0x78*/ s32 bananas;
@@ -230,7 +230,7 @@ void handle_ball_rotational_kinematics(struct Ball *, struct PhysicsBall *, int)
 void func_8003C38C(struct Ball *);
 void func_8003C4A0(struct Ball *, int);
 void func_8003C550(struct Ball *);
-void func_8003CA98(struct Ball *, struct PhysicsBall *b);
+void init_physball_from_ball(struct Ball *, struct PhysicsBall *b);
 void func_8003CB3C(struct Ball *, struct PhysicsBall *b);
 void func_8003CB88(struct Ball *);
 void func_8003CCB0(void);

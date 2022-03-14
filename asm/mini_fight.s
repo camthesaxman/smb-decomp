@@ -18951,7 +18951,7 @@ lbl_00011A1C:
 /* 00011A30 408206C0 */ bne lbl_000120F0
 /* 00011A34 38760000 */ addi r3, r22, 0
 /* 00011A38 38810094 */ addi r4, r1, 0x94
-/* 00011A3C 4BFEE729 */ bl func_8003CA98
+/* 00011A3C 4BFEE729 */ bl init_physball_from_ball
 /* 00011A40 80160094 */ lwz r0, 0x94(r22)
 /* 00011A44 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00011A48 41820010 */ beq lbl_00011A58
@@ -18977,7 +18977,7 @@ lbl_00011A7C:
 /* 00011A90 4082063C */ bne lbl_000120CC
 /* 00011A94 38740000 */ addi r3, r20, 0
 /* 00011A98 38810038 */ addi r4, r1, 0x38
-/* 00011A9C 4BFEE6C9 */ bl func_8003CA98
+/* 00011A9C 4BFEE6C9 */ bl init_physball_from_ball
 /* 00011AA0 80140094 */ lwz r0, 0x94(r20)
 /* 00011AA4 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00011AA8 41820010 */ beq lbl_00011AB8

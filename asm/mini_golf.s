@@ -16822,7 +16822,7 @@ lbl_0000F888:
 /* 0000F8F0 C01D0014 */ lfs f0, 0x14(r29)
 /* 0000F8F4 EC010028 */ fsubs f0, f1, f0
 /* 0000F8F8 D01D0020 */ stfs f0, 0x20(r29)
-/* 0000F8FC 4BFF08D5 */ bl func_8003CA98
+/* 0000F8FC 4BFF08D5 */ bl init_physball_from_ball
 /* 0000F900 480000BC */ b lbl_0000F9BC
 lbl_0000F904:
 /* 0000F904 4082004C */ bne lbl_0000F950
@@ -16842,7 +16842,7 @@ lbl_0000F904:
 /* 0000F93C 1C000284 */ mulli r0, r0, 0x284
 /* 0000F940 7CA50214 */ add r5, r5, r0
 /* 0000F944 98C5001F */ stb r6, 0x1f(r5)
-/* 0000F948 4BFF0889 */ bl func_8003CA98
+/* 0000F948 4BFF0889 */ bl init_physball_from_ball
 /* 0000F94C 48000070 */ b lbl_0000F9BC
 lbl_0000F950:
 /* 0000F950 807D00FC */ lwz r3, 0xfc(r29)
@@ -16940,7 +16940,7 @@ lbl_0000FA18:
 /* 0000FAB4 C01E0014 */ lfs f0, 0x14(r30)
 /* 0000FAB8 EC010028 */ fsubs f0, f1, f0
 /* 0000FABC D01E0020 */ stfs f0, 0x20(r30)
-/* 0000FAC0 4BFF0711 */ bl func_8003CA98
+/* 0000FAC0 4BFF0711 */ bl init_physball_from_ball
 /* 0000FAC4 480000B0 */ b lbl_0000FB74
 lbl_0000FAC8:
 /* 0000FAC8 40820040 */ bne lbl_0000FB08
@@ -16957,7 +16957,7 @@ lbl_0000FAC8:
 /* 0000FAF4 60C60040 */ ori r6, r6, 0x40
 /* 0000FAF8 90DE0094 */ stw r6, 0x94(r30)
 /* 0000FAFC 9805001F */ stb r0, 0x1f(r5)
-/* 0000FB00 4BFF06D1 */ bl func_8003CA98
+/* 0000FB00 4BFF06D1 */ bl init_physball_from_ball
 /* 0000FB04 48000070 */ b lbl_0000FB74
 lbl_0000FB08:
 /* 0000FB08 807E00FC */ lwz r3, 0xfc(r30)
@@ -17709,7 +17709,7 @@ lbl_00010548:
 /* 000105EC C01C0024 */ lfs f0, 0x24(r28)
 /* 000105F0 EC01002A */ fadds f0, f1, f0
 /* 000105F4 D01C000C */ stfs f0, 0xc(r28)
-/* 000105F8 4BFEFBD9 */ bl func_8003CA98
+/* 000105F8 4BFEFBD9 */ bl init_physball_from_ball
 /* 000105FC 3C600000 */ lis r3, decodedStageLzPtr@ha
 /* 00010600 80830000 */ lwz r4, decodedStageLzPtr@l(r3)
 /* 00010604 7FA3EB78 */ mr r3, r29

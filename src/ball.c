@@ -1611,7 +1611,7 @@ void ball_func_ready_main(struct Ball *ball)
     g_ball_init_2(ball);
 
     ball->pos.x = decodedStageLzPtr->startPos->pos.x;
-    ball->pos.y = decodedStageLzPtr->startPos->pos.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
+    ball->pos.y = decodedStageLzPtr->startPos->pos.y + ((ball->accel * 24.0) * 24.0) * 0.5;
     ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->prevPos.x = ball->pos.x;
@@ -1646,7 +1646,7 @@ void ball_func_3(struct Ball *ball)
     f2 = (decodedStageLzPtr->startPos->pos.y - ball->pos.y) / f4;
 
     ball->vel.x = (zero = 0.0f);  // fake match
-    ball->vel.y = (ball->unk6C * f4) * 0.5 + f2;
+    ball->vel.y = (ball->accel * f4) * 0.5 + f2;
     ball->vel.z = zero;
 
     ball->unk28 = 0x2000;
@@ -2047,7 +2047,7 @@ void ball_func_20(struct Ball *ball)
         return;
 
     ball->pos.x = ball->prevPos.x = decodedStageLzPtr->startPos->pos.x;
-    ball->pos.y = ball->prevPos.y = decodedStageLzPtr->startPos->pos.y + ((ball->unk6C * 24.0) * 24.0) * 0.5;
+    ball->pos.y = ball->prevPos.y = decodedStageLzPtr->startPos->pos.y + ((ball->accel * 24.0) * 24.0) * 0.5;
     ball->pos.z = ball->prevPos.z = decodedStageLzPtr->startPos->pos.z;
 
     ball->vel.x = 0.0f;
@@ -2256,7 +2256,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     mathutil_mtxA_tf_vec(&stageUp, &stageUp);
 
     accel.x = 0.0f;
-    accel.y = -ball->unk6C;
+    accel.y = -ball->accel;
     accel.z = 0.0f;
     if (ball->flags & BALL_FLAG_09)
         accel.y = -accel.y;
@@ -2301,7 +2301,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     ball->pos.y += ball->vel.y;
     ball->pos.z += ball->vel.z;
 
-    func_8003CA98(ball, b);
+    init_physball_from_ball(ball, b);
     collide_ball_with_stage(b, decodedStageLzPtr);
     func_8003CB3C(ball, b);
 
@@ -2345,7 +2345,7 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
     mathutil_mtxA_tf_vec(&stageUp, &stageUp);
 
     accel.x = 0.0f;
-    accel.y = -ball->unk6C;
+    accel.y = -ball->accel;
     accel.z = 0.0f;
     if (ball->flags & BALL_FLAG_09)
         accel.y = -accel.y;
@@ -2648,7 +2648,7 @@ void func_8003C4A0(struct Ball *ball, int b)
     ball->currRadius = physParams->ballRadius;
     ball->targetRadius = physParams->ballRadius;
     ball->modelScale = 1.0f;
-    ball->unk6C = physParams->unk8 * worldInfo[ball->unk2E].unk1C;
+    ball->accel = physParams->unk8 * worldInfo[ball->unk2E].unk1C;
     ball->restitution = physParams->restitution;
     ball->unk1 = b;
 
@@ -2749,33 +2749,33 @@ void func_8003C550(struct Ball *ball)
     }
 }
 
-void func_8003CA98(struct Ball *ball, struct PhysicsBall *b)
+void init_physball_from_ball(struct Ball *ball, struct PhysicsBall *physBall)
 {
-    b->flags = 0;
+    physBall->flags = 0;
 
-    b->pos.x = ball->pos.x;
-    b->pos.y = ball->pos.y;
-    b->pos.z = ball->pos.z;
+    physBall->pos.x = ball->pos.x;
+    physBall->pos.y = ball->pos.y;
+    physBall->pos.z = ball->pos.z;
 
-    b->prevPos.x = ball->prevPos.x;
-    b->prevPos.y = ball->prevPos.y;
-    b->prevPos.z = ball->prevPos.z;
+    physBall->prevPos.x = ball->prevPos.x;
+    physBall->prevPos.y = ball->prevPos.y;
+    physBall->prevPos.z = ball->prevPos.z;
 
-    b->vel.x = ball->vel.x;
-    b->vel.y = ball->vel.y;
-    b->vel.z = ball->vel.z;
+    physBall->vel.x = ball->vel.x;
+    physBall->vel.y = ball->vel.y;
+    physBall->vel.z = ball->vel.z;
 
-    b->radius = ball->currRadius;
-    b->accel = ball->unk6C;
-    b->restitution = ball->restitution;
-    b->hardestColiSpeed = 0.0f;
-    b->itemgroupId = 0;
-    b->hardestColiItemgroupId = 0;
+    physBall->radius = ball->currRadius;
+    physBall->accel = ball->accel;
+    physBall->restitution = ball->restitution;
+    physBall->hardestColiSpeed = 0.0f;
+    physBall->itemgroupId = 0;
+    physBall->hardestColiItemgroupId = 0;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)
-        b->friction = 0.01f;
+        physBall->friction = 0.01f;
     else
-        b->friction = 0.005f;
+        physBall->friction = 0.005f;
 }
 
 void func_8003CB3C(struct Ball *ball, struct PhysicsBall *b)
