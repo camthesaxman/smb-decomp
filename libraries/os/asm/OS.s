@@ -51,8 +51,8 @@ lbl_800C1840:
 /* 800C1844 000BD764  80 63 00 30 */	lwz r3, 0x80000030@l(r3)
 /* 800C1848 000BD768  28 03 00 00 */	cmplwi r3, 0
 /* 800C184C 000BD76C  40 82 00 10 */	bne lbl_800C185C
-/* 800C1850 000BD770  3C 60 80 31 */	lis r3, 0x80308C80@ha
-/* 800C1854 000BD774  38 63 8C 80 */	addi r3, r3, 0x80308C80@l
+/* 800C1850 000BD770  3C 60 80 31 */	lis r3, __ArenaLo@ha
+/* 800C1854 000BD774  38 63 8C 80 */	addi r3, r3, __ArenaLo@l
 /* 800C1858 000BD778  48 00 00 04 */	b lbl_800C185C
 lbl_800C185C:
 /* 800C185C 000BD77C  48 00 14 4D */	bl OSSetArenaLo
@@ -66,8 +66,8 @@ lbl_800C185C:
 /* 800C187C 000BD79C  80 03 00 00 */	lwz r0, 0(r3)
 /* 800C1880 000BD7A0  28 00 00 02 */	cmplwi r0, 2
 /* 800C1884 000BD7A4  40 80 00 18 */	bge lbl_800C189C
-/* 800C1888 000BD7A8  3C 60 80 30 */	lis r3, 0x80306C80@ha
-/* 800C188C 000BD7AC  38 63 6C 80 */	addi r3, r3, 0x80306C80@l
+/* 800C1888 000BD7A8  3C 60 80 30 */	lis r3, _stack_addr@ha
+/* 800C188C 000BD7AC  38 63 6C 80 */	addi r3, r3, _stack_addr@l
 /* 800C1890 000BD7B0  38 03 00 1F */	addi r0, r3, 0x1f
 /* 800C1894 000BD7B4  54 03 00 34 */	rlwinm r3, r0, 0, 0, 0x1a
 /* 800C1898 000BD7B8  48 00 14 11 */	bl OSSetArenaLo
@@ -76,8 +76,8 @@ lbl_800C189C:
 /* 800C18A0 000BD7C0  80 63 00 34 */	lwz r3, 0x34(r3)
 /* 800C18A4 000BD7C4  28 03 00 00 */	cmplwi r3, 0
 /* 800C18A8 000BD7C8  40 82 00 10 */	bne lbl_800C18B8
-/* 800C18AC 000BD7CC  3C 60 81 70 */	lis r3, 0x81700000@ha
-/* 800C18B0 000BD7D0  38 63 00 00 */	addi r3, r3, 0x81700000@l
+/* 800C18AC 000BD7CC  3C 60 81 70 */	lis r3, __ArenaHi@ha
+/* 800C18B0 000BD7D0  38 63 00 00 */	addi r3, r3, __ArenaHi@l
 /* 800C18B4 000BD7D4  48 00 00 04 */	b lbl_800C18B8
 lbl_800C18B8:
 /* 800C18B8 000BD7D8  48 00 13 E9 */	bl OSSetArenaHi
@@ -574,21 +574,21 @@ glabel string_Memory__d_MB_n
 glabel string_Arena___0x_x___0x_x_n
 	.asciz "Arena : 0x%x - 0x%x\n"
 	.balign 4
-	.byte 0x00, 0x00, 0x01, 0x00
-	.byte 0x00, 0x00, 0x02, 0x00
-	.byte 0x00, 0x00, 0x03, 0x00
-	.byte 0x00, 0x00, 0x04, 0x00
-	.byte 0x00, 0x00, 0x05, 0x00
-	.byte 0x00, 0x00, 0x06, 0x00
-	.byte 0x00, 0x00, 0x07, 0x00
-	.byte 0x00, 0x00, 0x08, 0x00
-	.byte 0x00, 0x00, 0x09, 0x00
-	.byte 0x00, 0x00, 0x0C, 0x00
-	.byte 0x00, 0x00, 0x0D, 0x00
-	.byte 0x00, 0x00, 0x0F, 0x00
-	.byte 0x00, 0x00, 0x13, 0x00
-	.byte 0x00, 0x00, 0x14, 0x00
-	.byte 0x00, 0x00, 0x17, 0x00
+	.4byte 0x00000100
+	.4byte 0x00000200
+	.4byte 0x00000300
+	.4byte 0x00000400
+	.4byte 0x00000500
+	.4byte 0x00000600
+	.4byte 0x00000700
+	.4byte 0x00000800
+	.4byte 0x00000900
+	.4byte 0x00000C00
+	.4byte 0x00000D00
+	.4byte 0x00000F00
+	.4byte 0x00001300
+	.4byte 0x00001400
+	.4byte 0x00001700
 glabel string_Installing_OSDBIntegrator_n
 	.asciz "Installing OSDBIntegrator\n"
 	.balign 4

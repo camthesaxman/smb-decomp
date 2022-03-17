@@ -1,3 +1,10 @@
+#ifndef _SRC_NL2NGC_H_
+#define _SRC_NL2NGC_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+#include <dolphin/GXStruct.h>
+
 struct NaomiVtxWithNormal
 {
     /*0x00*/ float x, y, z;
@@ -63,7 +70,7 @@ struct NaomiModelHeader
     /*-0x04*/ struct NaomiModelHeader_child *unk4;
 };
 
-#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)model - 8))
+#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)(model) - 8))
 
 struct NaomiObj_UnkChild_Child
 {
@@ -116,3 +123,5 @@ void g_draw_naomi_model_4(struct NaomiModel *);
 void g_draw_naomi_model_5(struct NaomiModel *);
 void g_draw_naomi_model_with_mesh_func(struct NaomiModel *a, int (*func)());
 void func_800341B8(void);
+
+#endif

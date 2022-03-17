@@ -1182,7 +1182,7 @@ lbl_8008AADC:
 /* 8008AAF8 00086A18  28 00 00 00 */	cmplwi r0, 0
 /* 8008AAFC 00086A1C  41 82 00 14 */	beq lbl_8008AB10
 lbl_8008AB00:
-/* 8008AB00 00086A20  80 6D 9A C4 */	lwz r3, lbl_802F1CA4@sda21(r13)
+/* 8008AB00 00086A20  80 6D 9A C4 */	lwz r3, gfxBufferInfo@sda21(r13)
 /* 8008AB04 00086A24  80 63 00 00 */	lwz r3, 0(r3)
 /* 8008AB08 00086A28  48 04 57 F5 */	bl VISetNextFrameBuffer
 /* 8008AB0C 00086A2C  48 04 4B 75 */	bl VIWaitForRetrace
@@ -2096,8 +2096,8 @@ lbl_8008B780:
 /* 8008B830 00087750  7C 08 03 A6 */	mtlr r0
 /* 8008B834 00087754  4E 80 00 20 */	blr
 
-.global func_8008B838
-func_8008B838:
+.global g_make_ape
+g_make_ape:
 /* 8008B838 00087758  7C 08 02 A6 */	mflr r0
 /* 8008B83C 0008775C  90 01 00 04 */	stw r0, 4(r1)
 /* 8008B840 00087760  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -4087,7 +4087,7 @@ lbl_8008D3D4:
 .global lbl_802F56A8
 lbl_802F56A8:
 	# ROM: 0x1EF0C8
-	.byte 0x3F, 0x80, 0x00, 0x00
+	.4byte 0x3F800000
 
 .global lbl_802F56AC
 lbl_802F56AC:
@@ -4097,149 +4097,271 @@ lbl_802F56AC:
 .global lbl_802F56B0
 lbl_802F56B0:
 	# ROM: 0x1EF0D0
-	.byte 0x32, 0x2B, 0xCC, 0x77
+	.4byte 0x322BCC77
 
 .global lbl_802F56B4
 lbl_802F56B4:
 	# ROM: 0x1EF0D4
-	.byte 0xC0, 0x00, 0x00, 0x00
+	.4byte 0xC0000000
 
 .global lbl_802F56B8
 lbl_802F56B8:
 	# ROM: 0x1EF0D8
-	.byte 0x40, 0x00, 0x00, 0x00
+	.4byte 0x40000000
 	.4byte 0
 
 .global lbl_802F56C0
 lbl_802F56C0:
 	# ROM: 0x1EF0E0
-	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0x43300000
 	.4byte 0
 
 .global lbl_802F56C8
 lbl_802F56C8:
 	# ROM: 0x1EF0E8
-	.byte 0x43, 0x30, 0x00, 0x00
-	.byte 0x80, 0x00, 0x00, 0x00
+	.4byte 0x43300000
+	.4byte 0x80000000
 
 .global lbl_802F56D0
 lbl_802F56D0:
 	# ROM: 0x1EF0F0
-	.byte 0xBF, 0x80, 0x00, 0x00
+	.4byte 0xBF800000
 
 .global lbl_802F56D4
 lbl_802F56D4:
 	# ROM: 0x1EF0F4
-	.byte 0x42, 0x70, 0x00, 0x00
+	.4byte 0x42700000
 
 .global lbl_802F56D8
 lbl_802F56D8:
 	# ROM: 0x1EF0F8
-	.byte 0x3E, 0x45, 0x79, 0x8E
-	.byte 0xE0, 0x00, 0x00, 0x00
+	.4byte 0x3E45798E
+	.4byte 0xE0000000
 
 .global lbl_802F56E0
 lbl_802F56E0:
 	# ROM: 0x1EF100
-	.byte 0x43, 0x58, 0x00, 0x00
+	.4byte 0x43580000
 
 .global lbl_802F56E4
 lbl_802F56E4:
 	# ROM: 0x1EF104
-	.byte 0xBF, 0x4C, 0xCC, 0xCD
+	.4byte 0xBF4CCCCD
 
 .global lbl_802F56E8
 lbl_802F56E8:
 	# ROM: 0x1EF108
-	.byte 0x3D, 0xB8, 0x51, 0xEC
+	.4byte 0x3DB851EC
 
 .global lbl_802F56EC
 lbl_802F56EC:
 	# ROM: 0x1EF10C
-	.byte 0x3E, 0xCC, 0xCC, 0xCD
+	.4byte 0x3ECCCCCD
 
 .global lbl_802F56F0
 lbl_802F56F0:
 	# ROM: 0x1EF110
-	.byte 0xBE, 0x99, 0x99, 0x9A
+	.4byte 0xBE99999A
 
 .global lbl_802F56F4
 lbl_802F56F4:
 	# ROM: 0x1EF114
-	.byte 0x3F, 0x7E, 0xF9, 0xDB
+	.4byte 0x3F7EF9DB
 
 .global lbl_802F56F8
 lbl_802F56F8:
 	# ROM: 0x1EF118
-	.byte 0x40, 0xA0, 0x00, 0x00
+	.4byte 0x40A00000
 
 .global lbl_802F56FC
 lbl_802F56FC:
 	# ROM: 0x1EF11C
-	.byte 0x41, 0x00, 0x00, 0x00
+	.4byte 0x41000000
 
 .global lbl_802F5700
 lbl_802F5700:
 	# ROM: 0x1EF120
-	.byte 0x3F, 0x4C, 0xCC, 0xCD
+	.4byte 0x3F4CCCCD
 
 .global lbl_802F5704
 lbl_802F5704:
 	# ROM: 0x1EF124
-	.byte 0x40, 0xC0, 0x00, 0x00
+	.4byte 0x40C00000
 
 .global lbl_802F5708
 lbl_802F5708:
 	# ROM: 0x1EF128
-	.byte 0x43, 0x36, 0x0B, 0x61
+	.4byte 0x43360B61
 
 .global lbl_802F570C
 lbl_802F570C:
 	# ROM: 0x1EF12C
-	.byte 0x34, 0x00, 0x00, 0x00
+	.4byte 0x34000000
 
 .global lbl_802F5710
 lbl_802F5710:
 	# ROM: 0x1EF130
-	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x3F000000
 	.4byte 0
 
 .global lbl_802F5718
 lbl_802F5718:
 	# ROM: 0x1EF138
-	.byte 0x40, 0x08, 0x00, 0x00
+	.4byte 0x40080000
 	.4byte 0
 
 .global lbl_802F5720
 lbl_802F5720:
 	# ROM: 0x1EF140
-	.byte 0x3F, 0xF0, 0x00, 0x00
+	.4byte 0x3FF00000
 	.4byte 0
 
 .global lbl_802F5728
 lbl_802F5728:
 	# ROM: 0x1EF148
-	.byte 0x40, 0x00, 0x00, 0x00
+	.4byte 0x40000000
 	.4byte 0
 
 .global lbl_802F5730
 lbl_802F5730:
 	# ROM: 0x1EF150
-	.byte 0xC0, 0x00, 0x00, 0x00
+	.4byte 0xC0000000
 	.4byte 0
 
 .global lbl_802F5738
 lbl_802F5738:
 	# ROM: 0x1EF158
-	.byte 0x43, 0x30, 0x00, 0x00
-	.byte 0x80, 0x00, 0x00, 0x00
+	.4byte 0x43300000
+	.4byte 0x80000000
 
 .section .rodata
 
 .global lbl_801719D0
 lbl_801719D0:
 	# ROM: 0x16E9D0
-	.byte 0xFF, 0x7F, 0xBF, 0xFF
-	.byte 0x4C, 0x99, 0xFF, 0xFF
-	.byte 0xE5, 0xA5, 0x4C, 0xFF
-	.byte 0x4C, 0xB2, 0x4C, 0xFF
+	.4byte 0xFF7FBFFF
+	.4byte 0x4C99FFFF
+	.4byte 0xE5A54CFF
+	.4byte 0x4CB24CFF
+
+.section .data
+
+.global lbl_801C7B8C
+lbl_801C7B8C:
+	# ROM: 0x1C4B8C
+glabel string_mot_ape_c
+	.asciz "mot_ape.c"
+	.balign 4
+glabel string_cannot_OSAlloc_n_3
+	.asciz "cannot OSAlloc\n"
+glabel string________Character_Model_Information_______n
+	.asciz " ===== Character Model Information =====\n"
+	.balign 4
+glabel string_No_Chara_Texture___s__n
+	.asciz "No Chara Texture <%s>\n"
+	.balign 4
+glabel string_Stopped____n
+	.asciz "Stopped...\n"
+glabel string_cannot_OSAlloc_3
+	.asciz "cannot OSAlloc"
+	.balign 4
+glabel string_Not_enough_ARAM_for_CharacterModel__n
+	.asciz "Not enough ARAM for CharacterModel.\n"
+	.balign 4
+glabel string_No_Chara_Model___s__n
+	.asciz "No Chara Model <%s>\n"
+	.balign 4
+glabel string__s___Polygon___x___Texture___x___n
+	.asciz "%s : Polygon[ %x ] Texture[ %x ]\n"
+	.balign 4
+glabel string_change_texture_load___s____x___n
+	.asciz "change texture load. %s [ %x ]\n"
+glabel string____Use_ARAM_Memory_top____x_n
+	.asciz "   Use ARAM Memory top : %x\n"
+	.balign 4
+glabel string__________________________________________n
+	.asciz " =======================================\n"
+	.balign 4
+
+.global lbl_801C7CD8
+lbl_801C7CD8:
+	# ROM: 0x1C4CD8
+glabel string_obj___s_is_nothing__n
+	.asciz "obj: %s is nothing.\n"
+	.balign 4
+
+.global lbl_801C7CF0
+lbl_801C7CF0:
+	# ROM: 0x1C4CF0
+glabel string_rob_init_Heap_Over__n
+	.asciz "rob init Heap Over.\n"
+	.balign 4
+
+.global lbl_801C7D08
+lbl_801C7D08:
+	# ROM: 0x1C4D08
+glabel string__nchara_model_is_already_free__n
+	.asciz "\nchara model is already free.\n"
+	.balign 4
+
+.global lbl_801C7D28
+lbl_801C7D28:
+	# ROM: 0x1C4D28
+glabel string_APE_Allocate_limit_over___n
+	.asciz "APE Allocate limit over!!\n"
+	.balign 4
+
+.global lbl_801C7D44
+lbl_801C7D44:
+	# ROM: 0x1C4D44
+glabel string_ape_face_p_lz
+	.asciz "ape/face_p.lz"
+	.balign 4
+
+.global lbl_801C7D54
+lbl_801C7D54:
+	# ROM: 0x1C4D54
+glabel string_ape_face_lz
+	.asciz "ape/face.lz"
+
+.global lbl_801C7D60
+lbl_801C7D60:
+	# ROM: 0x1C4D60
+	.4byte lbl_8008BE44  ;# ptr
+	.4byte lbl_8008BD38  ;# ptr
+	.4byte lbl_8008BCF0  ;# ptr
+	.4byte lbl_8008BE7C  ;# ptr
+	.4byte lbl_8008BDC8  ;# ptr
+	.4byte lbl_8008BE78  ;# ptr
+	.4byte lbl_8008BE00  ;# ptr
+	.4byte lbl_8008BC34  ;# ptr
+glabel lbl_801C7D80
+	.4byte 0x00090001
+	.4byte 0x00030002
+glabel lbl_801C7D88
+	.4byte 0x00070005
+	.4byte 0x00070006
+glabel lbl_801C7D90
+	.4byte 0x00010001
+	.4byte 0x00030002
+glabel lbl_801C7D98
+	.4byte 0x00070001
+	.4byte 0x00030002
+glabel lbl_801C7DA0
+	.4byte 0x000A0001
+	.4byte 0x00030002
+glabel lbl_801C7DA8
+	.4byte 0x00040009
+	.4byte 0x000B000A
+
+.global lbl_801C7DB0
+lbl_801C7DB0:
+	# ROM: 0x1C4DB0
+	.4byte lbl_801C7D80  ;# ptr
+	.4byte lbl_801C7D88  ;# ptr
+	.4byte 0
+	.4byte 0
+	.4byte lbl_801C7DA0  ;# ptr
+	.4byte lbl_801C7DA8  ;# ptr
+	.4byte lbl_801C7D90  ;# ptr
+	.4byte lbl_801C7D98  ;# ptr

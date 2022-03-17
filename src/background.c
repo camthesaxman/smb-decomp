@@ -27,70 +27,21 @@ struct BackgroundInfo backgroundInfo =
 GXColor bgBackdropColors[] =
 {
     { 0x00, 0x00, 0x00, 0x00 },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0x11, 0x39, 0x67, 0xFF },
-    { 0x38, 0x3D, 0x6C, 0xFF },
-    { 0x00, 0x1A, 0x4D, 0xFF },
-    { 0x83, 0x98, 0xED, 0xFF },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x1D, 0x4A, 0xB5, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0x00, 0x00, 0x00, 0x00 },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0xD8, 0xBC, 0x77, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0x00, 0x00, 0x00, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
-    { 0xFF, 0xFF, 0xCD, 0xFF },
-    { 0xFF, 0xFF, 0xFF, 0xFF },
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) \
+    { (backdropColor >> 24) & 0xFF, (backdropColor >> 16) & 0xFF, (backdropColor >> 8) & 0xFF, (backdropColor >> 0) & 0xFF },
+    BACKGROUND_LIST
+#undef DEFINE_BG
 };
 
-// backgroundInfo + 0x29C
 char *bgTypeNames[] =
 {
     "NULL",
-    "BG_TYPE_BLUESKY_A",
-    "BG_TYPE_NIGHT_B",
-    "BG_TYPE_SUNSET_C",
-    "BG_TYPE_WATER_C",
-    "BG_TYPE_STORM_D",
-    "BG_TYPE_ICE_E",
-    "BG_TYPE_SAND_G",
-    "BG_TYPE_SPACE_H",
-    "BG_TYPE_CAVE_I",
-    "BG_TYPE_BONUS_J",
-    "BG_TYPE_EXTRAMASTER_J",
-    "BG_TYPE_E3",
-    "BG_TYPE_JUN",
-    "BG_TYPE_WAT",
-    "BG_TYPE_NIG",
-    "BG_TYPE_SUN",
-    "BG_TYPE_SPA",
-    "BG_TYPE_SND",
-    "BG_TYPE_ICE2",
-    "BG_TYPE_STM",
-    "BG_TYPE_BNS",
-    "BG_TYPE_PIL",
-    "BG_TYPE_BIL",
-    "BG_TYPE_GOL",
-    "BG_TYPE_BOW",
-    "BG_TYPE_MST",
-    "BG_TYPE_END",
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) #id,
+    BACKGROUND_LIST
+#undef DEFINE_BG
     NULL,
 };
 
-// backgroundInfo + 0x310
 void (*bgInitFuncs[])(void) =
 {
     NULL,
@@ -124,7 +75,6 @@ void (*bgInitFuncs[])(void) =
     NULL,
 };
 
-// 384
 void (*bgMainFuncs[])(void) =
 {
     NULL,
@@ -158,7 +108,6 @@ void (*bgMainFuncs[])(void) =
     NULL,
 };
 
-// 3F8
 void (*bgFinishFuncs[])(void) =
 {
     NULL,
@@ -192,7 +141,6 @@ void (*bgFinishFuncs[])(void) =
     NULL,
 };
 
-// 46C
 void (*bgDrawFuncs[])(void) =
 {
     NULL,
@@ -226,41 +174,39 @@ void (*bgDrawFuncs[])(void) =
     NULL,
 };
 
-// 4E0
-void (*lbl_801B9658[])(int) =
+void (*bgInteractFuncs[])(int) =
 {
     NULL,
-    func_800573A0,
-    func_8005851C,
-    func_800587F8,
-    func_8005AD7C,
-    func_8005A178,
-    func_80058CDC,
-    func_800599F8,
-    func_80058728,
-    func_80057A98,
-    func_800589AC,
-    func_8005828C,
-    func_80055628,
-    func_8005B868,
-    func_8005E910,
-    func_8005601C,
-    func_80061390,
-    func_800609A8,
-    func_8005C3B4,
-    func_8005615C,
-    func_80062BD0,
-    func_80061920,
-    func_80064C2C,
-    func_8005638C,
-    func_800564CC,
-    func_8005660C,
-    func_80063AD4,
-    func_800654F0,
+    bg_old_bluesky_interact,
+    bg_old_night_interact,
+    bg_old_sunset_interact,
+    bg_old_water_interact,
+    bg_old_storm_interact,
+    bg_old_ice_interact,
+    bg_old_sand_interact,
+    bg_old_space_interact,
+    bg_old_cave_interact,
+    bg_old_bonus_interact,
+    bg_old_extramaster_interact,
+    bg_e3_interact,
+    bg_jungle_interact,
+    bg_water_interact,
+    bg_night_interact,
+    bg_sunset_interact,
+    bg_space_interact,
+    bg_sand_interact,
+    bg_ice2_interact,
+    bg_storm_interact,
+    bg_bonus_interact,
+    bg_pilot_interact,
+    bg_billiards_interact,
+    bg_golf_interact,
+    bg_bowling_interact,
+    bg_master_interact,
+    bg_end_interact,
     NULL,
 };
 
-// 554
 int (*lbl_801B96CC[])() =
 {
     NULL,
@@ -294,7 +240,6 @@ int (*lbl_801B96CC[])() =
     NULL,
 };
 
-// 5C8
 int (*lbl_801B9740[])() =
 {
     NULL,
@@ -328,71 +273,21 @@ int (*lbl_801B9740[])() =
     NULL,
 };
 
-// 648
 char *bgFileNames[] =
 {
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    "bg_jun",
-    "bg_wat",
-    "bg_nig",
-    "bg_sun",
-    "bg_spa",
-    "bg_snd",
-    "bg_ice",
-    "bg_stm",
-    "bg_bns",
-    "bg_pil",
-    NULL,
-    "bg_gol",
-    "bg_bow",
-    "bg_mst",
-    "bg_ending",
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) fname,
+    BACKGROUND_LIST
+#undef DEFINE_BG
     NULL,
 };
 
-// 6BC
 char *oldBgFileNames[] =
 {
     NULL,
-    "bg_a",
-    "bg_b",
-    "bg_c",
-    "bg_d",
-    "bg_e",
-    "bg_f",
-    "bg_g",
-    "bg_h",
-    "bg_i",
-    "bg_j",
-    "bg_j",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+#define DEFINE_BG(id, fname, oldfname, song, backdropColor) oldfname,
+    BACKGROUND_LIST
+#undef DEFINE_BG
     NULL,
 };
 
@@ -418,7 +313,7 @@ void ev_background_init(void)
     backgroundInfo.unk7C = lbl_801B9740[backgroundInfo.bgId];
     backgroundInfo.unk8C = 0;
     backgroundInfo.unk90 = 0;
-    backgroundInfo.unk94 = NULL;
+    backgroundInfo.ballEnvFunc = NULL;
     if (backgroundInfo.bgId > 0)
     {
         int temp = rand();
@@ -450,7 +345,7 @@ void ev_background_dest(void)
     backgroundInfo.unk7C = 0;
     backgroundInfo.unk8C = 0;
     backgroundInfo.unk90 = 0;
-    backgroundInfo.unk94 = NULL;
+    backgroundInfo.ballEnvFunc = NULL;
 }
 
 void func_80054FF0(void)
@@ -478,7 +373,7 @@ void func_8005507C(void)
         }
         if (decodedBgTpl != NULL || decodedBgGma != NULL)
         {
-            VISetNextFrameBuffer(lbl_802F1CA4[0]);
+            VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
             VIWaitForRetrace();
         }
         if (decodedBgTpl != NULL)
@@ -507,6 +402,7 @@ void preload_bg_files(int bgId)
 
     if (backgroundInfo.bgId != bgId)
     {
+        // preload GMA/TPL
         bgName = bgFileNames[bgId];
         if (bgName != NULL)
         {
@@ -518,6 +414,8 @@ void preload_bg_files(int bgId)
             file_preload(tplFileName);
             DVDChangeDir("/test");
         }
+
+        // preload old NAOMI files
         bgName = oldBgFileNames[bgId];
         if (bgName != NULL)
         {
@@ -532,7 +430,7 @@ void preload_bg_files(int bgId)
     }
 }
 
-u32 lbl_801B98A8[] =
+u32 bgWorkSizes[] =
 {
     0,
     0,
@@ -547,15 +445,15 @@ u32 lbl_801B98A8[] =
     0,
     0,
     0,
-    0x16C,
+    sizeof(struct BGJungleWork),
     0x194,
     0,
-    0x16C,
+    sizeof(struct BGSunsetWork),
     0xAC,
     0x56C,
     0,
-    0x428,
-    0x80C,
+    sizeof(struct BGStormWork),
+    sizeof(struct BGBonusWork),
     0x1EC,
     0,
     0,
@@ -565,59 +463,12 @@ u32 lbl_801B98A8[] =
     0,
 };
 
+// Define stage backgrounds
 u8 stageBackgrounds[] =
 {
-    0x01, 0x0D, 0x0D, 0x0D,
-    0x0D, 0x10, 0x10, 0x10,
-    0x10, 0x10, 0x01, 0x0D,
-    0x0D, 0x0D, 0x0D, 0x10,
-    0x10, 0x10, 0x10, 0x01,
-    0x01, 0x0F, 0x0F, 0x0F,
-    0x0F, 0x0F, 0x0F, 0x0F,
-    0x0F, 0x0F, 0x01, 0x0E,
-    0x0E, 0x0E, 0x0E, 0x0E,
-    0x0E, 0x0E, 0x0E, 0x0E,
-    0x0E, 0x0D, 0x0D, 0x0D,
-    0x0D, 0x0F, 0x0F, 0x0F,
-    0x0F, 0x01, 0x01, 0x0E,
-    0x0E, 0x0E, 0x0E, 0x0E,
-    0x0E, 0x0E, 0x0E, 0x0E,
-    0x01, 0x12, 0x12, 0x12,
-    0x12, 0x12, 0x12, 0x12,
-    0x12, 0x12, 0x01, 0x13,
-    0x13, 0x13, 0x13, 0x13,
-    0x13, 0x13, 0x13, 0x13,
-    0x01, 0x14, 0x14, 0x14,
-    0x14, 0x14, 0x14, 0x14,
-    0x14, 0x14, 0x14, 0x15,
-    0x15, 0x15, 0x15, 0x15,
-    0x01, 0x01, 0x01, 0x0D,
-    0x01, 0x11, 0x11, 0x11,
-    0x11, 0x11, 0x11, 0x11,
-    0x11, 0x11, 0x11, 0x11,
-    0x11, 0x11, 0x01, 0x1A,
-    0x1A, 0x1A, 0x1A, 0x1A,
-    0x1A, 0x1A, 0x1A, 0x1A,
-    0x1A, 0x1A, 0x1A, 0x1A,
-    0x1A, 0x1A, 0x1A, 0x11,
-    0x12, 0x0D, 0x13, 0x0F,
-    0x0E, 0x0F, 0x12, 0x10,
-    0x11, 0x11, 0x0E, 0x0D,
-    0x13, 0x11, 0x11, 0x11,
-    0x11, 0x11, 0x0D, 0x16,
-    0x16, 0x16, 0x16, 0x16,
-    0x16, 0x16, 0x16, 0x16,
-    0x16, 0x0D, 0x0D, 0x0D,
-    0x0D, 0x0D, 0x0D, 0x0D,
-    0x0D, 0x0D, 0x0D, 0x0D,
-    0x0D, 0x0D, 0x0D, 0x0D,
-    0x0D, 0x0D, 0x0D, 0x19,
-    0x17, 0x01, 0x01, 0x01,
-    0x01, 0x01, 0x01, 0x01,
-    0x01, 0x01, 0x00, 0x01,
-    0x01, 0x01, 0x01, 0x01,
-    0x01, 0x15, 0x1B, 0x0D,
-    0x01, 0x00, 0x00, 0x00,
+#define DEFINE_STAGE(id, bg) bg,
+    STAGE_LIST
+#undef DEFINE_STAGE
 };
 
 void load_bg_files(int bgId)
@@ -633,14 +484,17 @@ void load_bg_files(int bgId)
 
         if (backgroundInfo.bgId > 0)
         {
+            // free working memory
             if (backgroundInfo.unk9C != NULL)
             {
                 OSFree(backgroundInfo.unk9C);
                 backgroundInfo.unk9C = NULL;
             }
+
+            // free GMA/TPL
             if (decodedBgTpl != NULL || decodedBgGma != NULL)
             {
-                VISetNextFrameBuffer(lbl_802F1CA4[0]);
+                VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
                 VIWaitForRetrace();
             }
             if (decodedBgTpl != NULL)
@@ -653,10 +507,13 @@ void load_bg_files(int bgId)
                 free_gma(decodedBgGma);
                 decodedBgGma = NULL;
             }
+
+            // free old NAOMI resources
             free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
         }
         if (bgId > 0)
         {
+            // load GMA/TPL files
             bgName = bgFileNames[bgId];
             if (bgName != NULL)
             {
@@ -668,6 +525,8 @@ void load_bg_files(int bgId)
                 decodedBgGma = load_gma(gmaFileName, decodedBgTpl);
                 DVDChangeDir("/test");
             }
+
+            // load old NAOMI files
             bgName = oldBgFileNames[bgId];
             if (bgName != NULL)
             {
@@ -678,12 +537,14 @@ void load_bg_files(int bgId)
                 load_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl, gmaFileName, tplFileName);
                 DVDChangeDir("/test");
             }
-            if (lbl_801B98A8[bgId] != 0)
+
+            // allocate working memory for background
+            if (bgWorkSizes[bgId] != 0)
             {
-                backgroundInfo.unk9C = OSAlloc(lbl_801B98A8[bgId]);
+                backgroundInfo.unk9C = OSAlloc(bgWorkSizes[bgId]);
                 if (backgroundInfo.unk9C == NULL)
                     OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
-                memset(backgroundInfo.unk9C, 0, lbl_801B98A8[bgId]);
+                memset(backgroundInfo.unk9C, 0, bgWorkSizes[bgId]);
             }
         }
         OSSetCurrentHeap(oldHeap);
@@ -692,10 +553,10 @@ void load_bg_files(int bgId)
     }
 }
 
-void func_800554A4(int a)
+void background_interact(int a)
 {
     if (backgroundInfo.bgId > 0)
-        lbl_801B9658[backgroundInfo.bgId](a);
+        bgInteractFuncs[backgroundInfo.bgId](a);
 }
 
 void bg_e3_init(void) {}
@@ -731,7 +592,7 @@ void bg_e3_draw(void)
     func_80022530();
 }
 
-void func_80055628(int a) {}
+void bg_e3_interact(int a) {}
 
 void g_animate_background_parts(struct StageBgModel *a, int b, float c)
 {
@@ -820,8 +681,8 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
 
     if (b == NULL)
         return;
-    if (lbl_801EEC90.unk0 & 0x11)
-        r30 = 16;
+    if (lbl_801EEC90.unk0 & ((1 << 0)|(1 << 4)))
+        r30 = 1 << 4;
     else if (gameMode == MD_GAME || gameMode == MD_MINI)
         r30 = 1 << (modeCtrl.unk30 - 1);
     else
@@ -830,10 +691,10 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
     {
         if (!(b->unk0 & r30))
             continue;
-        if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
-         && (b->unk0 & (1 << (31-0x18))))
+        if ((lbl_801EEC90.unk0 & (1 << 2))
+         && (b->unk0 & (1 << 7)))
             continue;
-        if (!(b->unk0 & (1 << (31-15))))
+        if (!(b->unk0 & (1 << 16)))
             continue;
         if (b->unk2C >= 1.0)
             continue;
@@ -847,20 +708,20 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         mathutil_mtxA_scale(&b->scale);
         f29 = MAX(b->scale.x, b->scale.y);
         f29 = MAX(b->scale.z, f29);
-        if ((lbl_801EEC90.unk0 & (1 << (31-0x1D)))
+        if ((lbl_801EEC90.unk0 & (1 << 2))
          && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
             continue;
         if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
             continue;
         r23 = b->unk0 >> 28;
-        GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (r23 > 0)
         {
             func_800224CC();
             func_80022274(r23 + 6);
         }
-        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << (31-7))))
+        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
         g_avdisp_set_model_scale(f29);
         if (b->unk2C < FLT_EPSILON)
@@ -1025,8 +886,8 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             mathutil_mtxA_rotate_z(r26->unk10);
             mathutil_mtxA_rotate_y(r26->unkE);
             mathutil_mtxA_rotate_x(r26->unkC);
-            GXLoadPosMtxImm(mathutilData->mtxA, 0);
-            GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+            GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+            GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = unpausedFrameCounter / 2;
             switch (r26->unk12)
             {
@@ -1067,8 +928,8 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             mathutil_mtxA_from_mtx(mtx);
             mathutil_mtxA_translate(&r22->unk0);
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
-            GXLoadPosMtxImm(mathutilData->mtxA, 0);
-            GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+            GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+            GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = (unpausedFrameCounter + r22->unkC * 4);
             modelId = lbl_801B9AE8[r4 % 32];
             g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);
@@ -1109,7 +970,7 @@ void bg_night_draw(void)
     func_80022530();
 }
 
-void func_8005601C(int a) {}
+void bg_night_interact(int a) {}
 
 void bg_ice2_init(void) {}
 
@@ -1144,7 +1005,7 @@ void bg_ice2_draw(void)
     func_80022530();
 }
 
-void func_8005615C(int a) {}
+void bg_ice2_interact(int a) {}
 
 extern struct Struct80180F14
 {
@@ -1219,7 +1080,7 @@ void bg_billiards_draw(void)
     func_80022530();
 }
 
-void func_8005638C(int a) {}
+void bg_billiards_interact(int a) {}
 
 void bg_golf_init(void) {}
 
@@ -1254,7 +1115,7 @@ void bg_golf_draw(void)
     func_80022530();
 }
 
-void func_800564CC(int a) {}
+void bg_golf_interact(int a) {}
 
 void bg_bowling_init(void) {}
 
@@ -1289,7 +1150,7 @@ void bg_bowling_draw(void)
     func_80022530();
 }
 
-void func_8005660C(int a) {}
+void bg_bowling_interact(int a) {}
 
 int func_80056610(u32 **a, void *b)
 {
@@ -1300,137 +1161,118 @@ int func_80056610(u32 **a, void *b)
     return 1;
 }
 
-struct Struct80056684
+void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struct GMAModelEntry *))
 {
-    u32 unk0;
-    char *unk4;
-};
-
-void func_80056684(struct Struct80056684 *a, int (*b)())
-{
-    int r30;
-    int r29;
-    struct GMAModelEntry *r28;
-    struct Struct80056684 *r27;
-    char *r26;
+    int i;
+    int j;
+    struct GMAModelEntry *gmaEntry;
+    struct BGModelSearch *search;
+    char *modelName;
     int r25;
 
     if (decodedBgGma == NULL)
         return;
-    r28 = decodedBgGma->modelEntries;
-    r30 = decodedBgGma->numModels;
+    gmaEntry = decodedBgGma->modelEntries;
     r25 = 1;
-    while (r30 > 0)
+    for (i = decodedBgGma->numModels; i > 0; i--, gmaEntry++)
     {
         int len1;
 
-        r26 = r28->name;
-        len1 = strlen(r26);
-        r27 = a;
-        r29 = 0;
-        while (r27->unk4 != NULL)
-        {
-            int matched;
+        modelName = gmaEntry->name;
+        len1 = strlen(modelName);
 
-            switch (r27->unk0)
+        // find entries for the model
+        for (j = 0, search = searchList; search->name != NULL; j++, search++)
+        {
+            BOOL matched;
+
+            switch (search->cmpType)
             {
-            case 0:
-                matched = !strncmp(r26, r27->unk4, strlen(r27->unk4));
+            case BG_MDL_CMP_PREFIX:  // prefix of model name
+                matched = !strncmp(modelName, search->name, strlen(search->name));
                 break;
-            case 1:
-                matched = !strcmp(r26, r27->unk4);
+            case BG_MDL_CMP_FULL:  // full name
+                matched = !strcmp(modelName, search->name);
                 break;
-            case 2:
+            case BG_MDL_CMP_SUFFIX:  // suffix of model name
                 {
-                    int len2 = strlen(r27->unk4);
+                    int len2 = strlen(search->name);
                     if (len2 > len1)
-                        matched = 0;
+                        matched = FALSE;
                     else
-                        matched = !strncmp(r26 + (len1 - len2), r27->unk4, len2);
+                        matched = !strncmp(modelName + (len1 - len2), search->name, len2);
                 }
                 break;
             default:
-                matched = 0;
+                matched = FALSE;
                 break;
             }
             if (matched)
             {
-                r25 = b(r29, r28);
+                r25 = func(j, gmaEntry);
                 if (r25 == 0)
                     break;
             }
             if (r25 == 0)
                 break;
-            r29++;
-            r27++;
         }
         if (r25 == 0)
             break;
-        r30--;
-        r28++;
     }
 }
 
-void func_800567DC(struct GMAModelEntry *r28, int r30_, struct Struct80056684 *a, int (*b)())
+void g_search_bg_models_from_list(struct StageBgModel *bgModels, int count, struct BGModelSearch *searchList, Func800567DC func)
 {
-    int r30 = r30_;
-    int r29;
+    int i;
+    int j;
     int r25 = 1;
-    struct Struct80056684 *r27;
+    struct BGModelSearch *search;
 
-    while (r30 > 0)
+    for (i = count; i > 0; i--, bgModels++)
     {
-        // Hmm...
-        if ((r28 + 1)->modelOffset != NULL)
+        if (bgModels->model != 0)
         {
-            char *r26;
-            int len1;
+            char *modelName = bgModels->name;
+            int len1 = strlen(modelName);
 
-            r26 = r28->name;
-            len1 = strlen(r26);
-            r27 = a;
-            r29 = 0;
-            while (r27->unk4 != NULL)
+            // find entries for the model
+            for (j = 0, search = searchList; search->name != NULL; j++, search++)
             {
-                int matched;
+                BOOL matched;
 
-                switch (r27->unk0)
+                switch (search->cmpType)
                 {
-                case 0:
-                    matched = !strncmp(r26, r27->unk4, strlen(r27->unk4));
+                case BG_MDL_CMP_PREFIX:  // prefix of model name
+                    matched = !strncmp(modelName, search->name, strlen(search->name));
                     break;
-                case 1:
-                    matched = !strcmp(r26, r27->unk4);
+                case BG_MDL_CMP_FULL:  // full name
+                    matched = !strcmp(modelName, search->name);
                     break;
-                case 2:
+                case BG_MDL_CMP_SUFFIX:  // suffix of model name
                     {
-                        int len2 = strlen(r27->unk4);
+                        int len2 = strlen(search->name);
                         if (len2 > len1)
-                            matched = 0;
+                            matched = FALSE;
                         else
-                            matched = !strncmp(r26 + (len1 - len2), r27->unk4, len2);
+                            matched = !strncmp(modelName + (len1 - len2), search->name, len2);
                     }
                     break;
                 default:
-                    matched = 0;
+                    matched = FALSE;
                     break;
                 }
                 if (matched)
                 {
-                    r25 = b(r29, r28);
+                    r25 = func(j, bgModels);
                     if (r25 == 0)
                         break;
                 }
                 if (r25 == 0)
                     break;
-                r29++;
-                r27++;
             }
             if (r25 == 0)
                 break;
         }
-        r30--;
-        r28 += 7;
     }
 }
 

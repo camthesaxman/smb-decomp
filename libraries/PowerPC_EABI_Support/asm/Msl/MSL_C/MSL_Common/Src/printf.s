@@ -2131,10 +2131,10 @@ lbl_80106848:
 .global lbl_80172060
 lbl_80172060:
 	# ROM: 0x16F060
-	.byte 0x00, 0x2D, 0x49, 0x6E
-	.byte 0x66, 0x00, 0x49, 0x6E
-	.byte 0x66, 0x00, 0x4E, 0x61
-	.byte 0x4E, 0x00, 0x00, 0x00
+	.4byte 0x002D496E
+	.4byte 0x6600496E
+	.4byte 0x66004E61
+	.4byte 0x4E000000
 
 .section .sdata2
 
@@ -2159,14 +2159,14 @@ _wstringBase0:
 lbl_801ED000:
 	# ROM: 0x1EA000
 	.4byte 0
-	.byte 0x08, 0x80, 0x00, 0x00
+	.4byte 0x08800000
 	.4byte 0
 glabel lbl_801ED00C
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte lbl_801ED00C  ;# ptr
-	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x00000001
 	.4byte lbl_801ED00C  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -2178,14 +2178,14 @@ glabel lbl_801ED00C
 	.4byte func_80106B80  ;# ptr
 	.4byte 0
 	.4byte 0
-	.byte 0x10, 0x80, 0x00, 0x00
+	.4byte 0x10800000
 	.4byte 0
 glabel lbl_801ED054
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte lbl_801ED054  ;# ptr
-	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x00000001
 	.4byte lbl_801ED054  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -2197,14 +2197,14 @@ glabel lbl_801ED054
 	.4byte func_80106B80  ;# ptr
 	.4byte 0
 	.4byte 0
-	.byte 0x10, 0x80, 0x00, 0x00
+	.4byte 0x10800000
 	.4byte 0
 glabel lbl_801ED09C
 	.4byte 0
 	.4byte 0
 	.4byte 0
 	.4byte lbl_801ED09C  ;# ptr
-	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x00000001
 	.4byte lbl_801ED09C  ;# ptr
 	.4byte 0
 	.4byte 0

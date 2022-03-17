@@ -5,6 +5,7 @@
 #include "global.h"
 #include "adv.h"
 #include "event.h"
+#include "game.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
@@ -451,7 +452,7 @@ char *gameSubmodeNames[] =
     NULL,
 };
 
-struct MinigameLink lbl_802F021C = {0};
+struct RelModule lbl_802F021C = {0};
 
 struct ModeControl modeCtrl;
 

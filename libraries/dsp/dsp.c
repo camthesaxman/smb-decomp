@@ -6,12 +6,12 @@
 #define BUILD_DATE "May 22 2001"
 #define BUILD_TIME "02:06:43"
 
-int DSPCheckMailToDSP(void)
+u32 DSPCheckMailToDSP(void)
 {
     return (__DSPRegs[0] >> 15) & 1;
 }
 
-int DSPCheckMailFromDSP(void)
+u32 DSPCheckMailFromDSP(void)
 {
     return (__DSPRegs[2] >> 15) & 1;
 }
@@ -29,6 +29,10 @@ void DSPSendMailToDSP(u32 msg)
 
 static int __DSP_init_flag;
 static DSPTaskInfo *__DSP_tmp_task;
+
+DSPTaskInfo *__DSP_first_task;
+DSPTaskInfo *__DSP_last_task;
+DSPTaskInfo *__DSP_curr_task;
 
 void DSPInit(void)
 {

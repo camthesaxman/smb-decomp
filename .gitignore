@@ -21,5 +21,13 @@ tools/lzss
 *.dump
 __pycache__
 
+# Scripts
+*.bat
+
 # Disc files
 GMBE8P/
+
+/.vscode/**
+/compile_commands.json
+/.cache/**
+/.clangd/**

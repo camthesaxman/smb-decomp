@@ -368,15 +368,15 @@ lbl_80106CE4:
 .global K1
 K1:
 	# ROM: 0x1EC1F0
-	.byte 0x80, 0x80, 0x80, 0x80
+	.4byte 0x80808080
 
 .global K2
 K2:
 	# ROM: 0x1EC1F4
-	.byte 0xFE, 0xFE, 0xFE, 0xFF
+	.4byte 0xFEFEFEFF
 
 .section .sbss
 
 .global initialized_60
 initialized_60:
-	.skip 0xC
+	.skip 0x8

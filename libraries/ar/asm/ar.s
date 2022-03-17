@@ -1202,17 +1202,17 @@ lbl_800D43C4:
 .global lbl_802F6760
 lbl_802F6760:
 	# ROM: 0x1F0180
-	.byte 0x43, 0x44, 0x00, 0x00
+	.4byte 0x43440000
 
 .global lbl_802F6764
 lbl_802F6764:
 	# ROM: 0x1F0184
-	.byte 0x4D, 0x41, 0x1E, 0x7A
+	.4byte 0x4D411E7A
 
 .global lbl_802F6768
 lbl_802F6768:
 	# ROM: 0x1F0188
-	.byte 0x43, 0x30, 0x00, 0x00
+	.4byte 0x43300000
 	.4byte 0
 
 .section .sbss

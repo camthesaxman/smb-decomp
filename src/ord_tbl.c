@@ -7,7 +7,7 @@
  * places where other nodes (that do draw objects) can be inserted. Using this as
  * an array allows for quick O(1) lookup, since an appropriate spot to insert a
  * new node can be found by simply computing the depth of the object's position
- * in screen space, and using that value to index into the array.
+ * in view space, and using that value to index into the array.
  */
 #include <stddef.h>
 #include <dolphin.h>
@@ -50,24 +50,24 @@ void ord_tbl_add_depth_offset(float offset)
     lbl_802F1B3C->depthOffset += offset;
 }
 
-/* Returns the entry in the ordering table based on the depth of 'pos' in screen
+/* Returns the entry in the ordering table based on the depth of 'pos' in view
  * space. Before calling this function, mathutilData->mtxA must be initialized
- * with a matrix that converts 'pos' to screen space. */
+ * with a matrix that converts 'pos' to view space. */
 struct OrdTblNode *ord_tbl_get_entry_for_pos(Point3d *pos)
 {
-    Vec scrnSpace;
+    Vec viewSpace;
     float minDepth;
     float depth;
     int index;
     struct OrdTblNode *entry;
 
-    // Convert the point into screen space coordinates
-    mathutil_mtxA_tf_point(pos, &scrnSpace);
+    // Convert the point into view space coordinates
+    mathutil_mtxA_tf_point(pos, &viewSpace);
     minDepth = lbl_802F1B3C->minDepth;
-    scrnSpace.z = -scrnSpace.z;
-    if (scrnSpace.z < minDepth)
-        scrnSpace.z = minDepth;
-    depth = mathutil_vec_mag(&scrnSpace) + lbl_802F1B3C->depthOffset - minDepth;
+    viewSpace.z = -viewSpace.z;
+    if (viewSpace.z < minDepth)
+        viewSpace.z = minDepth;
+    depth = mathutil_vec_mag(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
 
     // Convert the depth to an index into the table
     if (depth < 0.0f)
@@ -91,19 +91,19 @@ struct OrdTblNode *ord_tbl_get_entry_for_pos(Point3d *pos)
  * is added to the computed index. */
 struct OrdTblNode *ord_tbl_get_entry_for_pos_offset_index(Point3d *pos, int indexOffset)
 {
-    Vec scrnSpace;
+    Vec viewSpace;
     float minDepth;
     float depth;
     int index;
     struct OrdTblNode *entry;
 
-    // Convert the point into screen space coordinates
-    mathutil_mtxA_tf_point(pos, &scrnSpace);
+    // Convert the point into view space coordinates
+    mathutil_mtxA_tf_point(pos, &viewSpace);
     minDepth = lbl_802F1B3C->minDepth;
-    scrnSpace.z = -scrnSpace.z;
-    if (scrnSpace.z < minDepth)
-        scrnSpace.z = minDepth;
-    depth = mathutil_vec_mag(&scrnSpace) + lbl_802F1B3C->depthOffset - minDepth;
+    viewSpace.z = -viewSpace.z;
+    if (viewSpace.z < minDepth)
+        viewSpace.z = minDepth;
+    depth = mathutil_vec_mag(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
 
     // Convert the depth to an index into the table
     if (depth < 0.0f)

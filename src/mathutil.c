@@ -94,8 +94,23 @@ entry _return_neg_inf  // unused?
     addi r1, r1, 0x10
     blr
 }
+#endif
 
 // Returns an approximation of the inverse square root of `num`
+// TODO: use this once the callers have been converted to C
+#ifndef __MWERKS__
+float approx_rsqrt(register float num, register float oneHalf)
+{
+    float x = __frsqrte(num);
+
+    /*
+    x = x * (1.5f - 0.5f * num * x * x);
+    x = x * (1.5f - 0.5f * num * x * x);
+    x = x * (1.5f - 0.5f * num * x * x);
+    */
+    return x;
+}
+#else
 asm float approx_rsqrt(register float num, register float oneHalf)
 {
     nofralloc
@@ -126,7 +141,9 @@ asm float approx_rsqrt(register float num, register float oneHalf)
     blr
     blr
 }
+#endif
 
+#ifdef __MWERKS__
 asm float mathutil_sqrt_(double n)
 {
     nofralloc
@@ -141,7 +158,7 @@ entry mathutil_sqrt
     lis r4, LC_CACHE_BASE@ha
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
-    lfs f2, OFFSET_CONST_ONE_HALF(r4)
+    lfs f2, OFFSET_constOneHalfF(r4)
     bso cr1, _sqrt_return_special
     bso cr0, _return_zero
     ble cr1, _return_zero
@@ -161,7 +178,7 @@ entry mathutil_rsqrt
     lis r4, LC_CACHE_BASE@ha
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
-    lfs f2, OFFSET_CONST_ONE_HALF(r4)
+    lfs f2, OFFSET_constOneHalfF(r4)
     bso cr1, _rsqrt_return_special
     bso cr0, _return_inf
     ble cr1, _return_inf
@@ -180,7 +197,7 @@ asm float func_8000716C(double a)
     lis r4, LC_CACHE_BASE@ha
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
-    lfs f2, OFFSET_CONST_ONE_HALF(r4)
+    lfs f2, OFFSET_constOneHalfF(r4)
     bso cr1, lbl_800071A8
     bso lbl_800071BC
     ble cr1, lbl_800071BC
@@ -210,7 +227,20 @@ lbl_800071D0:
     lfs f1, 0x98(r4)
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+float mathutil_sin(register s16 angle)
+{
+    int index = angle & 0x3FFF;
+    float result;
+
+    if (angle & 0x4000)
+        index = 0x4000 - index;
+    result = sinTable[index];
+    return (angle & 0x8000) ? -result : result;
+}
+#else
 asm float mathutil_sin(register s16 angle)
 {
     nofralloc
@@ -229,8 +259,10 @@ asm float mathutil_sin(register s16 angle)
     fneg f1, f1
     blr
 }
+#endif
 
-asm void mathutil_sin_cos_v(s16 a, float *b)
+#ifdef __MWERKS__
+asm void mathutil_sin_cos_v(s16 a, float *b, float *c)
 {
     nofralloc
 
@@ -269,6 +301,17 @@ lbl_80007264:
     blr
 }
 
+#ifdef MATHUTIL_C_ONLY
+float mathutil_tan(register u32 angle)
+{
+    int index = angle & 0x3FFF;
+
+    if (angle & 0x4000)
+        return -fabs(tanTable[0x4000 - index]);
+    else
+        return tanTable[index];
+}
+#else
 asm float mathutil_tan(register u32 angle)
 {
     nofralloc
@@ -287,6 +330,7 @@ asm float mathutil_tan(register u32 angle)
     lfsx f1, r5, r4
     blr
 }
+#endif
 
 asm s16 mathutil_atan2(double a, float b)
 {
@@ -330,7 +374,7 @@ entry mathutil_atan
     b lbl_800073DC
 lbl_80007320:
     beq cr5, lbl_80007400
-    lfs f3, OFFSET_CONST_ONE(r7)
+    lfs f3, OFFSET_constOneF(r7)
     fabs f5, f1
     crmove 12, 20
     fcmpu cr0, f5, f3
@@ -353,8 +397,8 @@ lbl_80007344:
 lbl_80007368:
     srw r4, r5, r4
     rlwinm r4, r4, 0, 0x11, 0x1c
-    addis r4, r4, 0x801a
-    addi r4, r4, 0x4960
+    addis r4, r4, unknownTrigTable@ha
+    addi r4, r4, unknownTrigTable@l
     lfs f3, 0(r4)
     lfs f4, 4(r4)
     fmadds f5, f5, f3, f4
@@ -416,14 +460,14 @@ u32 func_80007424(float a)
 {
     u32 r3;
 
-    if (fabs(a) > 1.0)
+    if (__fabs(a) > 1.0)
     {
         if (a > 0.0f)
             return 0;
         else
             return -0x8000;
     }
-    if (fabs(a) > 1.0)  // uh... we already checked that.
+    if (__fabs(a) > 1.0)  // uh... we already checked that.
     {
         if (a > 0.0f)
             r3 = 0x4000;
@@ -443,7 +487,15 @@ u32 func_80007424(float a)
     return (0x4000 - r3) & 0xFFFF;
 }
 
-#ifdef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
+float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
+{
+    float f12 = vecA->z * vecA->z + vecA->y * vecA->y + vecA->x * vecA->x;
+    float f13 = vecB->z * vecB->z + vecB->y * vecB->y + vecB->x * vecB->x;
+    float f0  = vecA->z * vecB->z + vecA->y * vecB->y + vecA->x * vecB->x;
+    return approx_rsqrt(f12 * f13, 0.5f) * f0;
+}
+#else
 asm float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
 {
     nofralloc
@@ -451,20 +503,20 @@ asm float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
     lis r5, LC_CACHE_BASE@ha
     lfs f6, vecA->x
     lfs f9, vecB->x
-    fmuls f12, f6, f6
+    fmuls f12, f6, f6  // vecA->x * vecA->x
     lfs f7, vecA->y
-    fmuls f13, f9, f9
+    fmuls f13, f9, f9  // vecB->x * vecB->x
     lfs f10, vecB->y
-    fmuls f0, f6, f9
+    fmuls f0, f6, f9   // vecA->x * vecB->x
     lfs f8, vecA->z
-    fmadds f12, f7, f7, f12
+    fmadds f12, f7, f7, f12  // vecA->y * vecA->y + vecA->x * vecA->x
     lfs f11, vecB->z
-    fmadds f13, f10, f10, f13
-    fmadds f0, f7, f10, f0
-    fmadds f12, f8, f8, f12
-    fmadds f13, f11, f11, f13
-    fmadds f0, f8, f11, f0
-    lfs f2, OFFSET_CONST_ONE_HALF(r5)
+    fmadds f13, f10, f10, f13  // vecB->y * vecB->y + vecB->x * vecB->x
+    fmadds f0, f7, f10, f0     // vecA->y * vecB->y + vecA->x * vecB->x
+    fmadds f12, f8, f8, f12    // vecA->z * vecA->z + vecA->y * vecA->y + vecA->x * vecA->x
+    fmadds f13, f11, f11, f13  // vecB->z * vecB->z + vecB->y * vecB->y + vecB->x * vecB->x
+    fmadds f0, f8, f11, f0     // vecA->z * vecB->z + vecA->y * vecB->y + vecA->x * vecB->x
+    lfs f2, OFFSET_constOneHalfF(r5)
     fmuls f1, f12, f13
     mflr r6
     bl approx_rsqrt
@@ -472,98 +524,151 @@ asm float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
     fmuls f1, f1, f0
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtx_from_identity(register Mtx mtx)
+{
+    int row, col;
+
+    for (row = 0; row < 3; row++)
+    {
+        for (col = 0; col < 4; col++)
+            mtx[row][col] = (row == col) ? 1.0f : 0.0f;
+    }
+}
+#else
 asm void mathutil_mtx_from_identity(register Mtx mtx)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha
-    psq_l f1, OFFSET_UNK1AC(r4), 0, GQR_U8
-    psq_l f2, OFFSET_UNK1AE(r4), 0, GQR_U8
-    ps_sub f0, f1, f1
+    psq_l f1, OFFSET_constZeroOne(r4), 0, GQR_U8  // f1 = (0, 1)
+    psq_l f2, OFFSET_constOneZero(r4), 0, GQR_U8  // f2 = (1, 0)
+    ps_sub f0, f1, f1                             // f0 = (0, 0)
 
-    psq_st f2, 0(mtx),  0, GQR_F32
-    psq_st f0, 8(mtx),  0, GQR_F32
-    psq_st f1, 16(mtx), 0, GQR_F32
-    psq_st f0, 24(mtx), 0, GQR_F32
-    psq_st f0, 32(mtx), 0, GQR_F32
-    psq_st f2, 40(mtx), 0, GQR_F32
+    psq_st f2, 0(mtx),  0, GQR_F32  // mtx[0][0] = 1, mtx[0][1] = 0
+    psq_st f0, 8(mtx),  0, GQR_F32  // mtx[0][2] = 0, mtx[0][3] = 0
+    psq_st f1, 16(mtx), 0, GQR_F32  // mtx[1][0] = 0, mtx[1][1] = 1
+    psq_st f0, 24(mtx), 0, GQR_F32  // mtx[1][2] = 0, mtx[1][3] = 0
+    psq_st f0, 32(mtx), 0, GQR_F32  // mtx[2][0] = 0, mtx[2][1] = 0
+    psq_st f2, 40(mtx), 0, GQR_F32  // mtx[2][2] = 1, mtx[2][3] = 0
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_identity(void)
+{
+    mathutil_mtx_from_identity(mathutilData->mtxA);
+}
+#else
 asm void mathutil_mtxA_from_identity(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha
-    psq_l f1, OFFSET_UNK1AC(r3), 0, GQR_U8
-    psq_l f2, OFFSET_UNK1AE(r3), 0, GQR_U8
+    psq_l f1, OFFSET_constZeroOne(r3), 0, GQR_U8
+    psq_l f2, OFFSET_constOneZero(r3), 0, GQR_U8
     ps_sub f0, f1, f1
 
-    psq_st f2, OFFSET_MTX_A+0(r3),  0, GQR_F32
-    psq_st f0, OFFSET_MTX_A+8(r3),  0, GQR_F32
-    psq_st f1, OFFSET_MTX_A+16(r3), 0, GQR_F32
-    psq_st f0, OFFSET_MTX_A+24(r3), 0, GQR_F32
-    psq_st f0, OFFSET_MTX_A+32(r3), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_A+40(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+0(r3),  0, GQR_F32
+    psq_st f0, OFFSET_mtxA+8(r3),  0, GQR_F32
+    psq_st f1, OFFSET_mtxA+16(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+24(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+32(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+40(r3), 0, GQR_F32
 
     blr
 }
+#endif
 
+#ifdef __MWERKS__
 asm void mathutil_mtxA_sq_from_identity(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha
-    psq_l f1, OFFSET_UNK1AC(r3), 0, GQR_U8
-    psq_l f2, OFFSET_UNK1AE(r3), 0, GQR_U8
+    psq_l f1, OFFSET_constZeroOne(r3), 0, GQR_U8
+    psq_l f2, OFFSET_constOneZero(r3), 0, GQR_U8
     ps_sub f0, f1, f1
 
-    psq_st f2, OFFSET_MTX_A+0(r3),  0, GQR_F32
-    psq_st f0, OFFSET_MTX_A+8(r3),  1, GQR_F32
-    psq_st f1, OFFSET_MTX_A+16(r3), 0, GQR_F32
-    psq_st f0, OFFSET_MTX_A+24(r3), 1, GQR_F32
-    psq_st f0, OFFSET_MTX_A+32(r3), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_A+40(r3), 1, GQR_F32
+    psq_st f2, OFFSET_mtxA+0(r3),  0, GQR_F32
+    psq_st f0, OFFSET_mtxA+8(r3),  1, GQR_F32
+    psq_st f1, OFFSET_mtxA+16(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+24(r3), 1, GQR_F32
+    psq_st f0, OFFSET_mtxA+32(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+40(r3), 1, GQR_F32
 
     blr
 }
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_translate(register Vec *vec)
+{
+    mathutil_mtxA_from_translate_xyz(vec->x, vec->y, vec->z);
+}
+
+void mathutil_mtxA_from_translate_xyz(float x, float y, float z)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    (*m)[0][0] = 1;  (*m)[0][1] = 0;  (*m)[0][2] = 0;  (*m)[0][3] = x;
+    (*m)[1][0] = 0;  (*m)[1][1] = 1;  (*m)[1][2] = 0;  (*m)[1][3] = y;
+    (*m)[2][0] = 0;  (*m)[2][1] = 0;  (*m)[2][2] = 1;  (*m)[2][3] = z;
+}
+#else
 asm void mathutil_mtxA_from_translate(register Vec *vec)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha
-    psq_l f1, 0(vec), 0, GQR_F32
-    lfs f4, OFFSET_CONST_ZERO(r4)
-    lfs f3, 8(vec)
-    ps_merge01 f9, f4, f1
+    psq_l f1, 0(vec), 0, GQR_F32   // f1 = (x, y)
+    lfs f4, OFFSET_constZeroF(r4)
+    lfs f3, 8(vec)                 // f3 = z
+    ps_merge01 f9, f4, f1          // f9 = (0, y)
     b lbl_800075E0
 
 // void mathutil_mtxA_from_translate_xyz(float x, float y, float z)
 entry mathutil_mtxA_from_translate_xyz
     lis r4, LC_CACHE_BASE@ha
-    lfs f4, OFFSET_CONST_ZERO(r4)
-    ps_merge00 f9, f4, f2
+    lfs f4, OFFSET_constZeroF(r4)
+    ps_merge00 f9, f4, f2          // f9 = (0, y)
 
+    // f1 = (x, y), f3 = z, f9 = (0, y), f4 = 0
+    // r4 = mathutilData
 lbl_800075E0:
-    lfs f7, OFFSET_CONST_ONE(r4)
-    ps_merge00 f8, f4, f1
-    ps_merge00 f10, f7, f3
-    psq_l f5, OFFSET_UNK1AC(r4), 0, GQR_U8
-    psq_l f6, OFFSET_UNK1AE(r4), 0, GQR_U8
+    lfs f7, OFFSET_constOneF(r4)
+    ps_merge00 f8, f4, f1                         // f8 = (0, x)
+    ps_merge00 f10, f7, f3                        // f10 = (1, z)
+    psq_l f5, OFFSET_constZeroOne(r4), 0, GQR_U8  // f5 = (0, 1)
+    psq_l f6, OFFSET_constOneZero(r4), 0, GQR_U8  // f6 = (1, 0)
 
-    psq_st f4,  OFFSET_MTX_A+32(r4), 0, GQR_F32
-    psq_st f8,  OFFSET_MTX_A+8(r4),  0, GQR_F32
-    psq_st f9,  OFFSET_MTX_A+24(r4), 0, GQR_F32
-    psq_st f10, OFFSET_MTX_A+40(r4), 0, GQR_F32
-    psq_st f5,  OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_st f6,  OFFSET_MTX_A+0(r4),  0, GQR_F32
+    psq_st f4,  OFFSET_mtxA+32(r4), 0, GQR_F32  // mtxA[2][0] = 0, mtxA[2][1] = 0
+    psq_st f8,  OFFSET_mtxA+8(r4),  0, GQR_F32  // mtxA[0][2] = 0, mtxA[0][3] = x
+    psq_st f9,  OFFSET_mtxA+24(r4), 0, GQR_F32  // mtxA[1][2] = 0, mtxA[1][3] = y
+    psq_st f10, OFFSET_mtxA+40(r4), 0, GQR_F32  // mtxA[2][2] = 1, mtxA[2][3] = z
+    psq_st f5,  OFFSET_mtxA+16(r4), 0, GQR_F32  // mtxA[1][0] = 0, mtxA[1][1] = 1
+    psq_st f6,  OFFSET_mtxA+0(r4),  0, GQR_F32  // mtxA[0][0] = 1, mtxA[0][1] = 0
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_rotate_x(s16 angle)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float s = mathutil_sin(angle);
+    float c = mathutil_cos(angle);
+
+    (*m)[0][0] =  1;  (*m)[0][1] = 0;  (*m)[0][2] =  0;  (*m)[0][3] = 0;
+    (*m)[1][0] =  0;  (*m)[1][1] = c;  (*m)[1][2] = -s;  (*m)[1][3] = 0;
+    (*m)[2][0] =  0;  (*m)[2][1] = s;  (*m)[2][2] =  c;  (*m)[2][3] = 0;
+}
+#else
 asm void mathutil_mtxA_from_rotate_x(s16 angle)
 {
     nofralloc
@@ -575,23 +680,40 @@ asm void mathutil_mtxA_from_rotate_x(s16 angle)
     lis r4, LC_CACHE_BASE@ha
 
     fneg f3, f1
-    psq_l f4, OFFSET_UNK1AE(r4), 0, GQR_U8
-    ps_merge11 f6, f4, f4
-    ps_merge10 f7, f4, f2
-    ps_merge01 f8, f3, f4
-    ps_merge10 f9, f4, f1
-    ps_merge01 f10, f2, f4
+    // f1 = sin
+    // f2 = cos
+    // f3 = -sin
+    psq_l f4, OFFSET_constOneZero(r4), 0, GQR_U8
+    ps_merge11 f6, f4, f4   // f6  = (0, 0)
+    ps_merge10 f7, f4, f2   // f7  = (0, cos)
+    ps_merge01 f8, f3, f4   // f8  = (-sin, 0)
+    ps_merge10 f9, f4, f1   // f9  = (0, sin)
+    ps_merge01 f10, f2, f4  // f10 = (cos, 0)
 
-    psq_st f4,  OFFSET_MTX_A+0(r4),  0, GQR_F32
-    psq_st f6,  OFFSET_MTX_A+8(r4),  0, GQR_F32
-    psq_st f8,  OFFSET_MTX_A+24(r4), 0, GQR_F32
-    psq_st f7,  OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_st f9,  OFFSET_MTX_A+32(r4), 0, GQR_F32
-    psq_st f10, OFFSET_MTX_A+40(r4), 0, GQR_F32
+    psq_st f4,  OFFSET_mtxA+0(r4),  0, GQR_F32
+    psq_st f6,  OFFSET_mtxA+8(r4),  0, GQR_F32
+    psq_st f8,  OFFSET_mtxA+24(r4), 0, GQR_F32
+    psq_st f7,  OFFSET_mtxA+16(r4), 0, GQR_F32
+    psq_st f9,  OFFSET_mtxA+32(r4), 0, GQR_F32
+    psq_st f10, OFFSET_mtxA+40(r4), 0, GQR_F32
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_rotate_y(s16 angle)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float s = mathutil_sin(angle);
+    float c = mathutil_cos(angle);
+
+    (*m)[0][0] =  c;  (*m)[0][1] = 0;  (*m)[0][2] = s;  (*m)[0][3] = 0;
+    (*m)[1][0] =  0;  (*m)[1][1] = 1;  (*m)[1][2] = 0;  (*m)[1][3] = 0;
+    (*m)[2][0] = -s;  (*m)[2][1] = 0;  (*m)[2][2] = c;  (*m)[2][3] = 0;
+}
+#else
 asm void mathutil_mtxA_from_rotate_y(s16 angle)
 {
     nofralloc
@@ -603,22 +725,39 @@ asm void mathutil_mtxA_from_rotate_y(s16 angle)
     lis r4, LC_CACHE_BASE@ha
 
     fneg f3, f1
-    psq_l f4, OFFSET_UNK1AC(r4), 0, GQR_U8
-    ps_merge00 f5, f2, f4
-    ps_merge00 f6, f1, f4
-    ps_merge00 f8, f4, f4
-    ps_merge00 f9, f3, f4
+    // f1 = sin
+    // f2 = cos
+    // f3 = -sin
+    psq_l f4, OFFSET_constZeroOne(r4), 0, GQR_U8
+    ps_merge00 f5, f2, f4  // f5 = (cos, 0)
+    ps_merge00 f6, f1, f4  // f6 = (sin, 0)
+    ps_merge00 f8, f4, f4  // f8 = (0, 0)
+    ps_merge00 f9, f3, f4  // f9 = (-sin, 0)
 
-    psq_st f5, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    psq_st f6, OFFSET_MTX_A+8(r4), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_st f8, OFFSET_MTX_A+24(r4), 0, GQR_F32
-    psq_st f9, OFFSET_MTX_A+32(r4), 0, GQR_F32
-    psq_st f5, OFFSET_MTX_A+40(r4), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+0(r4), 0, GQR_F32
+    psq_st f6, OFFSET_mtxA+8(r4), 0, GQR_F32
+    psq_st f4, OFFSET_mtxA+16(r4), 0, GQR_F32
+    psq_st f8, OFFSET_mtxA+24(r4), 0, GQR_F32
+    psq_st f9, OFFSET_mtxA+32(r4), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+40(r4), 0, GQR_F32
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_rotate_z(s16 angle)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float s = mathutil_sin(angle);
+    float c = mathutil_cos(angle);
+
+    (*m)[0][0] = c;  (*m)[0][1] = -s;  (*m)[0][2] = 0;  (*m)[0][3] = 0;
+    (*m)[1][0] = s;  (*m)[1][1] =  c;  (*m)[1][2] = 0;  (*m)[1][3] = 0;
+    (*m)[2][0] = 0;  (*m)[2][1] =  0;  (*m)[2][2] = 1;  (*m)[2][3] = 0;
+}
+#else
 asm void mathutil_mtxA_from_rotate_z(s16 angle)
 {
     nofralloc
@@ -630,20 +769,24 @@ asm void mathutil_mtxA_from_rotate_z(s16 angle)
     lis r4, LC_CACHE_BASE@ha
 
     fneg f3, f1
-    psq_l f4, OFFSET_UNK1AE(r4), 0, GQR_U8
-    ps_merge00 f5, f2, f3
-    ps_merge11 f6, f4, f4
-    ps_merge00 f7, f1, f2
+    // f1 = sin
+    // f2 = cos
+    // f3 = -sin
+    psq_l f4, OFFSET_constOneZero(r4), 0, GQR_U8
+    ps_merge00 f5, f2, f3  // f5 = (cos, -sin)
+    ps_merge11 f6, f4, f4  // f6 = (0, 0)
+    ps_merge00 f7, f1, f2  // f7 = (sin, cos)
 
-    psq_st f5, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    psq_st f6, OFFSET_MTX_A+8(r4), 0, GQR_F32
-    psq_st f7, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_st f6, OFFSET_MTX_A+24(r4), 0, GQR_F32
-    psq_st f6, OFFSET_MTX_A+32(r4), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_A+40(r4), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+0(r4), 0, GQR_F32
+    psq_st f6, OFFSET_mtxA+8(r4), 0, GQR_F32
+    psq_st f7, OFFSET_mtxA+16(r4), 0, GQR_F32
+    psq_st f6, OFFSET_mtxA+24(r4), 0, GQR_F32
+    psq_st f6, OFFSET_mtxA+32(r4), 0, GQR_F32
+    psq_st f4, OFFSET_mtxA+40(r4), 0, GQR_F32
 
     blr
 }
+#endif
 
 asm void mathutil_mtxA_from_mtxB_translate(register Vec *vec)
 {
@@ -659,32 +802,32 @@ asm void mathutil_mtxA_from_mtxB_translate(register Vec *vec)
 entry mathutil_mtxA_from_mtxB_translate_xyz
     lis r4, LC_CACHE_BASE@ha
 
-    lfs f4, OFFSET_CONST_ONE(r4)
+    lfs f4, OFFSET_constOneF(r4)
     ps_merge00 f1, f1, f2
     ps_merge00 f3, f3, f4
 
 lbl_800076FC:
-    psq_l   f4, OFFSET_MTX_B+0(r4), 0, GQR_F32
-    psq_st  f4, OFFSET_MTX_A+0(r4), 0, GQR_F32
+    psq_l   f4, OFFSET_mtxB+0(r4), 0, GQR_F32
+    psq_st  f4, OFFSET_mtxA+0(r4), 0, GQR_F32
     ps_mul  f4, f4, f1
-    psq_l   f6, OFFSET_MTX_B+16(r4), 0, GQR_F32
-    psq_st  f6, OFFSET_MTX_A+16(r4), 0, GQR_F32
+    psq_l   f6, OFFSET_mtxB+16(r4), 0, GQR_F32
+    psq_st  f6, OFFSET_mtxA+16(r4), 0, GQR_F32
     ps_mul  f6, f6, f1
-    psq_l   f8, OFFSET_MTX_B+32(r4), 0, GQR_F32
-    psq_st  f8, OFFSET_MTX_A+32(r4), 0, GQR_F32
+    psq_l   f8, OFFSET_mtxB+32(r4), 0, GQR_F32
+    psq_st  f8, OFFSET_mtxA+32(r4), 0, GQR_F32
     ps_mul  f8, f8, f1
-    psq_l   f5, OFFSET_MTX_B+8(r4), 0, GQR_F32
+    psq_l   f5, OFFSET_mtxB+8(r4), 0, GQR_F32
     ps_madd f4, f5, f3, f4
-    psq_l   f7, OFFSET_MTX_B+24(r4), 0, GQR_F32
+    psq_l   f7, OFFSET_mtxB+24(r4), 0, GQR_F32
     ps_madd f6, f7, f3, f6
-    psq_l   f9, OFFSET_MTX_B+40(r4), 0, GQR_F32
+    psq_l   f9, OFFSET_mtxB+40(r4), 0, GQR_F32
     ps_madd f8, f9, f3, f8
     ps_sum1 f5, f4, f5, f4
-    psq_st  f5, OFFSET_MTX_A+8(r4), 0, GQR_F32
+    psq_st  f5, OFFSET_mtxA+8(r4), 0, GQR_F32
     ps_sum1 f7, f6, f7, f6
-    psq_st  f7, OFFSET_MTX_A+24(r4), 0, GQR_F32
+    psq_st  f7, OFFSET_mtxA+24(r4), 0, GQR_F32
     ps_sum1 f9, f8, f9, f8
-    psq_st  f9, OFFSET_MTX_A+40(r4), 0, GQR_F32
+    psq_st  f9, OFFSET_mtxA+40(r4), 0, GQR_F32
     blr
 }
 
@@ -694,17 +837,17 @@ asm void mathutil_mtxA_normalize_basis(void)
 
     lis r3, LC_CACHE_BASE@ha
     mflr r4
-    lfs f2, OFFSET_CONST_ONE_HALF(r3)
-    psq_l f6, OFFSET_MTX_A+0(r3), 0, GQR_F32
-    lfs f7, OFFSET_MTX_A+8(r3)
+    lfs f2, OFFSET_constOneHalfF(r3)
+    psq_l f6, OFFSET_mtxA+0(r3), 0, GQR_F32
+    lfs f7, OFFSET_mtxA+8(r3)
     ps_mul f12, f6, f6
-    psq_l f8, OFFSET_MTX_A+16(r3), 0, GQR_F32
+    psq_l f8, OFFSET_mtxA+16(r3), 0, GQR_F32
     fmuls f13, f7, f7
-    lfs f9, OFFSET_MTX_A+24(r3)
+    lfs f9, OFFSET_mtxA+24(r3)
     ps_madd f12, f8, f8, f12
-    psq_l f10, OFFSET_MTX_A+32(r3), 0, GQR_F32
+    psq_l f10, OFFSET_mtxA+32(r3), 0, GQR_F32
     fmadds f13, f9, f9, f13
-    lfs f11, OFFSET_MTX_A+40(r3)
+    lfs f11, OFFSET_mtxA+40(r3)
     ps_madd f12, f10, f10, f12
     fmadds f13, f11, f11, f13
     fmr f1, f12
@@ -716,35 +859,42 @@ asm void mathutil_mtxA_normalize_basis(void)
     frsp f1, f1
     ps_merge00 f1, f12, f1
     ps_mul f6, f6, f1
-    psq_st f6, OFFSET_MTX_A+0(r3), 0, GQR_F32
+    psq_st f6, OFFSET_mtxA+0(r3), 0, GQR_F32
     ps_mul f8, f8, f1
-    psq_st f8, OFFSET_MTX_A+16(r3), 0, GQR_F32
+    psq_st f8, OFFSET_mtxA+16(r3), 0, GQR_F32
     ps_mul f10, f10, f1
-    psq_st f10, OFFSET_MTX_A+32(r3), 0, GQR_F32
+    psq_st f10, OFFSET_mtxA+32(r3), 0, GQR_F32
     fmr f1, f13
     bl approx_rsqrt
     mtlr r4
     fmuls f7, f7, f1
-    stfs f7, OFFSET_MTX_A+8(r3)
+    stfs f7, OFFSET_mtxA+8(r3)
     fmuls f9, f9, f1
-    stfs f9, OFFSET_MTX_A+24(r3)
+    stfs f9, OFFSET_mtxA+24(r3)
     fmuls f11, f11, f1
-    stfs f11, OFFSET_MTX_A+40(r3)
+    stfs f11, OFFSET_mtxA+40(r3)
     blr
 }
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_push(void)
+{
+    mathutilData->mtxStackPtr--;
+    mathutil_mtx_copy(mathutilData->mtxA, *mathutilData->mtxStackPtr);
+}
+#else
 asm void mathutil_mtxA_push(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha  // get pointer to Matrix A
-    lwz r4, OFFSET_MTX_STACK_PTR(r3)  // get matrix stack pointer
+    lwz r4, OFFSET_mtxStackPtr(r3)  // get matrix stack pointer
 
     // load from Matrix A
     psq_l f0, 0(r3), 0, GQR_F32
     psq_l f1, 8(r3), 0, GQR_F32
     psq_l f2, 16(r3), 0, GQR_F32
-    addi r4, r4, -48  // increment matrix stack pointer
+    addi r4, r4, -sizeof(Mtx)  // decrement matrix stack pointer
     psq_l f3, 24(r3), 0, GQR_F32
     psq_l f4, 32(r3), 0, GQR_F32
     psq_l f5, 40(r3), 0, GQR_F32
@@ -761,13 +911,21 @@ asm void mathutil_mtxA_push(void)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_pop(void)
+{
+    mathutil_mtx_copy(*mathutilData->mtxStackPtr, mathutilData->mtxA);
+    mathutilData->mtxStackPtr++;
+}
+#else
 asm void mathutil_mtxA_pop(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha  // get pointer to Matrix A
-    lwz r4, OFFSET_MTX_STACK_PTR(r3)  // get matrix stack pointer
+    lwz r4, OFFSET_mtxStackPtr(r3)  // get matrix stack pointer
 
     // load from stack matrix
     psq_l f0, 0(r4), 0, GQR_F32
@@ -780,18 +938,25 @@ asm void mathutil_mtxA_pop(void)
     addi r4, r4, sizeof(Mtx)  // increment matrix stack pointer
 
     // store to Matrix A
-    psq_st f0, OFFSET_MTX_A+0(r3), 0, GQR_F32
-    psq_st f1, OFFSET_MTX_A+8(r3), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_A+16(r3), 0, GQR_F32
-    psq_st f3, OFFSET_MTX_A+24(r3), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_A+32(r3), 0, GQR_F32
-    psq_st f5, OFFSET_MTX_A+40(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0(r3), 0, GQR_F32
+    psq_st f1, OFFSET_mtxA+8(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+16(r3), 0, GQR_F32
+    psq_st f3, OFFSET_mtxA+24(r3), 0, GQR_F32
+    psq_st f4, OFFSET_mtxA+32(r3), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+40(r3), 0, GQR_F32
 
     stw r4, 0x94(r3)  // set new stack pointer
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_to_mtx(register Mtx mtx)
+{
+    mathutil_mtx_copy(mathutilData->mtxA, mtx);
+}
+#else
 asm void mathutil_mtxA_to_mtx(register Mtx mtx)
 {
     nofralloc
@@ -799,12 +964,12 @@ asm void mathutil_mtxA_to_mtx(register Mtx mtx)
     lis r4, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
     // load from Matrix A
-    psq_l f0, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    psq_l f1, OFFSET_MTX_A+8(r4), 0, GQR_F32
-    psq_l f2, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_l f3, OFFSET_MTX_A+24(r4), 0, GQR_F32
-    psq_l f4, OFFSET_MTX_A+32(r4), 0, GQR_F32
-    psq_l f5, OFFSET_MTX_A+40(r4), 0, GQR_F32
+    psq_l f0, OFFSET_mtxA+0(r4), 0, GQR_F32
+    psq_l f1, OFFSET_mtxA+8(r4), 0, GQR_F32
+    psq_l f2, OFFSET_mtxA+16(r4), 0, GQR_F32
+    psq_l f3, OFFSET_mtxA+24(r4), 0, GQR_F32
+    psq_l f4, OFFSET_mtxA+32(r4), 0, GQR_F32
+    psq_l f5, OFFSET_mtxA+40(r4), 0, GQR_F32
 
     // store to dest matrix
     psq_st f0, 0(mtx), 0, GQR_F32
@@ -816,7 +981,14 @@ asm void mathutil_mtxA_to_mtx(register Mtx mtx)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_mtx(register Mtx mtx)
+{
+    mathutil_mtx_copy(mtx, mathutilData->mtxA);
+}
+#else
 asm void mathutil_mtxA_from_mtx(register Mtx mtx)
 {
     nofralloc
@@ -832,22 +1004,29 @@ asm void mathutil_mtxA_from_mtx(register Mtx mtx)
     psq_l f5, 40(mtx), 0, GQR_F32
 
     // store to Matrix A
-    psq_st f0, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    psq_st f1, OFFSET_MTX_A+8(r4), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_st f3, OFFSET_MTX_A+24(r4), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_A+32(r4), 0, GQR_F32
-    psq_st f5, OFFSET_MTX_A+40(r4), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0(r4), 0, GQR_F32
+    psq_st f1, OFFSET_mtxA+8(r4), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+16(r4), 0, GQR_F32
+    psq_st f3, OFFSET_mtxA+24(r4), 0, GQR_F32
+    psq_st f4, OFFSET_mtxA+32(r4), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+40(r4), 0, GQR_F32
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_peek(void)
+{
+    mathutil_mtx_copy(*mathutilData->mtxStackPtr, mathutilData->mtxA);
+}
+#else
 asm void mathutil_mtxA_peek(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha  // get pointer to Matrix A
-    lwz r4, OFFSET_MTX_STACK_PTR(r3)  // get matrix stack pointer
+    lwz r4, OFFSET_mtxStackPtr(r3)  // get matrix stack pointer
 
     // load from stack matrix
     psq_l f0, 0(r4), 0, GQR_F32
@@ -858,40 +1037,59 @@ asm void mathutil_mtxA_peek(void)
     psq_l f5, 40(r4), 0, GQR_F32
 
     // store to Matrix A
-    psq_st f0, OFFSET_MTX_A+0(r3), 0, GQR_F32
-    psq_st f1, OFFSET_MTX_A+8(r3), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_A+16(r3), 0, GQR_F32
-    psq_st f3, OFFSET_MTX_A+24(r3), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_A+32(r3), 0, GQR_F32
-    psq_st f5, OFFSET_MTX_A+40(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0(r3), 0, GQR_F32
+    psq_st f1, OFFSET_mtxA+8(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+16(r3), 0, GQR_F32
+    psq_st f3, OFFSET_mtxA+24(r3), 0, GQR_F32
+    psq_st f4, OFFSET_mtxA+32(r3), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+40(r3), 0, GQR_F32
 
     blr
 }
+#endif
 
-asm void func_80007924(void)
+#ifdef MATHUTIL_C_ONLY
+mathutil_incr_mtx_stack(void)
+{
+    mathutilData->mtxStackPtr++;
+}
+#else
+asm void mathutil_incr_mtx_stack(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha
-    lwz r4, OFFSET_MTX_STACK_PTR(r3)
+    lwz r4, OFFSET_mtxStackPtr(r3)
     addi r4, r4, sizeof(Mtx)
-    stw r4, OFFSET_MTX_STACK_PTR(r3)
+    stw r4, OFFSET_mtxStackPtr(r3)
     blr
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
+{
+    const Mtx *mtxA = &mathutilData->mtxA;
+
+    // copy everything except for the last column
+    mtx[0][0] = (*mtxA)[0][0];  mtx[0][1] = (*mtxA)[0][1];  mtx[0][2] = (*mtxA)[0][2];
+    mtx[1][0] = (*mtxA)[1][0];  mtx[1][1] = (*mtxA)[1][1];  mtx[1][2] = (*mtxA)[1][2];
+    mtx[2][0] = (*mtxA)[2][0];  mtx[2][1] = (*mtxA)[2][1];  mtx[2][2] = (*mtxA)[2][2];
+}
+#else
 asm void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
-    psq_l f0, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    lfs   f1, OFFSET_MTX_A+8(r4)
-    psq_l f2, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    lfs   f3, OFFSET_MTX_A+24(r4)
-    psq_l f4, OFFSET_MTX_A+32(r4), 0, GQR_F32
-    lfs   f5, OFFSET_MTX_A+40(r4)
+    psq_l f0, OFFSET_mtxA+0(r4), 0, GQR_F32   // f0 = (mtxA[0][0], mtxA[0][1])
+    lfs   f1, OFFSET_mtxA+8(r4)               // f1 = mtxA[0][2]
+    psq_l f2, OFFSET_mtxA+16(r4), 0, GQR_F32  // f2 = (mtxA[1][0], mtxA[1][1])
+    lfs   f3, OFFSET_mtxA+24(r4)              // f3 = mtxA[1][2]
+    psq_l f4, OFFSET_mtxA+32(r4), 0, GQR_F32  // f4 = (mtxA[2][0], mtxA[2][1])
+    lfs   f5, OFFSET_mtxA+40(r4)              // f5 = mtxA[2][2]
 
     psq_st f0, 0(mtx), 0, GQR_F32
     stfs   f1, 8(mtx)
@@ -902,30 +1100,49 @@ asm void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
+{
+    Mtx *mtxA = &mathutilData->mtxA;
+
+    // copy everything except for the last column
+    (*mtxA)[0][0] = mtx[0][0];  (*mtxA)[0][1] = mtx[0][1];  (*mtxA)[0][2] = mtx[0][2];
+    (*mtxA)[1][0] = mtx[1][0];  (*mtxA)[1][1] = mtx[1][1];  (*mtxA)[1][2] = mtx[1][2];
+    (*mtxA)[2][0] = mtx[2][0];  (*mtxA)[2][1] = mtx[2][1];  (*mtxA)[2][2] = mtx[2][2];
+}
+#else
 asm void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
-    psq_l f0, 0(mtx), 0, GQR_F32
-    lfs   f1, 8(mtx)
-    psq_l f2, 16(mtx), 0, GQR_F32
-    lfs   f3, 0x18(mtx)
-    psq_l f4, 32(mtx), 0, GQR_F32
-    lfs   f5, 0x28(mtx)
+    psq_l f0, 0(mtx), 0, GQR_F32   // f0 = (mtx[0][0], mtx[0][1])
+    lfs   f1, 8(mtx)               // f1 = mtx[0][2]
+    psq_l f2, 16(mtx), 0, GQR_F32  // f2 = (mtx[1][0], mtx[1][1])
+    lfs   f3, 0x18(mtx)            // f3 = mtx[1][2]
+    psq_l f4, 32(mtx), 0, GQR_F32  // f4 = (mtx[2][0], mtx[2][1])
+    lfs   f5, 0x28(mtx)            // f5 = mtx[2][2]
 
-    psq_st f0, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    stfs   f1, OFFSET_MTX_A+8(r4)
-    psq_st f2, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    stfs   f3, OFFSET_MTX_A+24(r4)
-    psq_st f4, OFFSET_MTX_A+32(r4), 0, GQR_F32
-    stfs   f5, OFFSET_MTX_A+40(r4)
+    psq_st f0, OFFSET_mtxA+0(r4), 0, GQR_F32
+    stfs   f1, OFFSET_mtxA+8(r4)
+    psq_st f2, OFFSET_mtxA+16(r4), 0, GQR_F32
+    stfs   f3, OFFSET_mtxA+24(r4)
+    psq_st f4, OFFSET_mtxA+32(r4), 0, GQR_F32
+    stfs   f5, OFFSET_mtxA+40(r4)
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_from_mtxB(void)
+{
+    mathutil_mtx_copy(mathutilData->mtxB, mathutilData->mtxA);
+}
+#else
 asm void mathutil_mtxA_from_mtxB(void)
 {
     nofralloc
@@ -933,24 +1150,31 @@ asm void mathutil_mtxA_from_mtxB(void)
     lis r3, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
     // load from Matrix B
-    psq_l f0, OFFSET_MTX_B+0(r3), 0, GQR_F32
-    psq_l f1, OFFSET_MTX_B+8(r3), 0, GQR_F32
-    psq_l f2, OFFSET_MTX_B+16(r3), 0, GQR_F32
-    psq_l f3, OFFSET_MTX_B+24(r3), 0, GQR_F32
-    psq_l f4, OFFSET_MTX_B+32(r3), 0, GQR_F32
-    psq_l f5, OFFSET_MTX_B+40(r3), 0, GQR_F32
+    psq_l f0, OFFSET_mtxB+0(r3), 0, GQR_F32
+    psq_l f1, OFFSET_mtxB+8(r3), 0, GQR_F32
+    psq_l f2, OFFSET_mtxB+16(r3), 0, GQR_F32
+    psq_l f3, OFFSET_mtxB+24(r3), 0, GQR_F32
+    psq_l f4, OFFSET_mtxB+32(r3), 0, GQR_F32
+    psq_l f5, OFFSET_mtxB+40(r3), 0, GQR_F32
 
     // store to Matrix A
-    psq_st f0, OFFSET_MTX_A+0(r3), 0, GQR_F32
-    psq_st f1, OFFSET_MTX_A+8(r3), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_A+16(r3), 0, GQR_F32
-    psq_st f3, OFFSET_MTX_A+24(r3), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_A+32(r3), 0, GQR_F32
-    psq_st f5, OFFSET_MTX_A+40(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0(r3), 0, GQR_F32
+    psq_st f1, OFFSET_mtxA+8(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+16(r3), 0, GQR_F32
+    psq_st f3, OFFSET_mtxA+24(r3), 0, GQR_F32
+    psq_st f4, OFFSET_mtxA+32(r3), 0, GQR_F32
+    psq_st f5, OFFSET_mtxA+40(r3), 0, GQR_F32
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_to_mtxB(void)
+{
+    mathutil_mtx_copy(mathutilData->mtxA, mathutilData->mtxB);
+}
+#else
 asm void mathutil_mtxA_to_mtxB(void)
 {
     nofralloc
@@ -958,24 +1182,31 @@ asm void mathutil_mtxA_to_mtxB(void)
     lis r3, LC_CACHE_BASE@ha  // get pointer to Matrix A
 
     // load from Matrix A
-    psq_l f0, OFFSET_MTX_A+0(r3), 0, GQR_F32
-    psq_l f1, OFFSET_MTX_A+8(r3), 0, GQR_F32
-    psq_l f2, OFFSET_MTX_A+16(r3), 0, GQR_F32
-    psq_l f3, OFFSET_MTX_A+24(r3), 0, GQR_F32
-    psq_l f4, OFFSET_MTX_A+32(r3), 0, GQR_F32
-    psq_l f5, OFFSET_MTX_A+40(r3), 0, GQR_F32
+    psq_l f0, OFFSET_mtxA+0(r3), 0, GQR_F32
+    psq_l f1, OFFSET_mtxA+8(r3), 0, GQR_F32
+    psq_l f2, OFFSET_mtxA+16(r3), 0, GQR_F32
+    psq_l f3, OFFSET_mtxA+24(r3), 0, GQR_F32
+    psq_l f4, OFFSET_mtxA+32(r3), 0, GQR_F32
+    psq_l f5, OFFSET_mtxA+40(r3), 0, GQR_F32
 
     // store to Matrix B
-    psq_st f0, OFFSET_MTX_B+0(r3), 0, GQR_F32
-    psq_st f1, OFFSET_MTX_B+8(r3), 0, GQR_F32
-    psq_st f2, OFFSET_MTX_B+16(r3), 0, GQR_F32
-    psq_st f3, OFFSET_MTX_B+24(r3), 0, GQR_F32
-    psq_st f4, OFFSET_MTX_B+32(r3), 0, GQR_F32
-    psq_st f5, OFFSET_MTX_B+40(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxB+0(r3), 0, GQR_F32
+    psq_st f1, OFFSET_mtxB+8(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxB+16(r3), 0, GQR_F32
+    psq_st f3, OFFSET_mtxB+24(r3), 0, GQR_F32
+    psq_st f4, OFFSET_mtxB+32(r3), 0, GQR_F32
+    psq_st f5, OFFSET_mtxB+40(r3), 0, GQR_F32
 
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtx_copy(register Mtx src, register Mtx dest)
+{
+    memcpy(dest, src, sizeof(Mtx));
+}
+#else
 asm void mathutil_mtx_copy(register Mtx src, register Mtx dest)
 {
     nofralloc
@@ -998,6 +1229,7 @@ asm void mathutil_mtx_copy(register Mtx src, register Mtx dest)
 
     blr
 }
+#endif
 
 asm void mathutil_mtxA_invert(void)
 {
@@ -1017,29 +1249,29 @@ asm void mathutil_mtxA_invert(void)
     stfd f23, 0xe0(r3)
     stfd f24, 0xe8(r3)
 
-    lfs f10, OFFSET_MTX_A+36(r3)
-    lfs f7, OFFSET_MTX_A+24(r3)
+    lfs f10, OFFSET_mtxA+36(r3)
+    lfs f7, OFFSET_mtxA+24(r3)
     fmuls f13, f10, f7
-    lfs f2, OFFSET_MTX_A+4(r3)
-    lfs f11, OFFSET_MTX_A+40(r3)
+    lfs f2, OFFSET_mtxA+4(r3)
+    lfs f11, OFFSET_mtxA+40(r3)
     fmuls f14, f2, f11
-    lfs f6, OFFSET_MTX_A+20(r3)
-    lfs f3, OFFSET_MTX_A+8(r3)
+    lfs f6, OFFSET_mtxA+20(r3)
+    lfs f3, OFFSET_mtxA+8(r3)
     fmuls f15, f6, f3
-    lfs f5, OFFSET_MTX_A+16(r3)
+    lfs f5, OFFSET_mtxA+16(r3)
     fmuls f17, f11, f5
     fmuls f23, f5, f2
-    lfs f9, OFFSET_MTX_A+32(r3)
+    lfs f9, OFFSET_mtxA+32(r3)
     fmuls f18, f3, f9
     fmuls f21, f9, f6
-    lfs f1, OFFSET_MTX_A+0(r3)
+    lfs f1, OFFSET_mtxA+0(r3)
     fmuls f19, f7, f1
     fmuls f22, f1, f10
-    lfs f4, OFFSET_MTX_A+12(r3)
+    lfs f4, OFFSET_mtxA+12(r3)
     fmsubs f13, f6, f11, f13
-    lfs f8, OFFSET_MTX_A+28(r3)
+    lfs f8, OFFSET_mtxA+28(r3)
     fmsubs f14, f10, f3, f14
-    lfs f12, OFFSET_MTX_A+44(r3)
+    lfs f12, OFFSET_mtxA+44(r3)
     fmsubs f15, f2, f7, f15
     fmsubs f17, f7, f9, f17
     fmsubs f18, f11, f1, f18
@@ -1048,7 +1280,7 @@ asm void mathutil_mtxA_invert(void)
     fmsubs f22, f9, f2, f22
     fmsubs f23, f1, f6, f23
     fmuls f0, f1, f13
-    lfs f1, OFFSET_CONST_ONE(r3)
+    lfs f1, OFFSET_constOneF(r3)
     fmuls f16, f4, f13
     fmuls f20, f4, f17
     fmadds f0, f5, f14, f0
@@ -1062,29 +1294,29 @@ asm void mathutil_mtxA_invert(void)
     fnmadds f20, f12, f19, f20
     fnmadds f24, f12, f23, f24
     fmuls f1, f13, f0
-    stfs f1, OFFSET_MTX_A+0(r3)
+    stfs f1, OFFSET_mtxA+0(r3)
     fmuls f2, f14, f0
-    stfs f2, OFFSET_MTX_A+4(r3)
+    stfs f2, OFFSET_mtxA+4(r3)
     fmuls f3, f15, f0
-    stfs f3, OFFSET_MTX_A+8(r3)
+    stfs f3, OFFSET_mtxA+8(r3)
     fmuls f4, f16, f0
-    stfs f4, OFFSET_MTX_A+12(r3)
+    stfs f4, OFFSET_mtxA+12(r3)
     fmuls f5, f17, f0
-    stfs f5, OFFSET_MTX_A+16(r3)
+    stfs f5, OFFSET_mtxA+16(r3)
     fmuls f6, f18, f0
-    stfs f6, OFFSET_MTX_A+20(r3)
+    stfs f6, OFFSET_mtxA+20(r3)
     fmuls f7, f19, f0
-    stfs f7, OFFSET_MTX_A+24(r3)
+    stfs f7, OFFSET_mtxA+24(r3)
     fmuls f8, f20, f0
-    stfs f8, OFFSET_MTX_A+28(r3)
+    stfs f8, OFFSET_mtxA+28(r3)
     fmuls f9, f21, f0
-    stfs f9, OFFSET_MTX_A+32(r3)
+    stfs f9, OFFSET_mtxA+32(r3)
     fmuls f10, f22, f0
-    stfs f10, OFFSET_MTX_A+36(r3)
+    stfs f10, OFFSET_mtxA+36(r3)
     fmuls f11, f23, f0
-    stfs f11, OFFSET_MTX_A+40(r3)
+    stfs f11, OFFSET_mtxA+40(r3)
     fmuls f12, f24, f0
-    stfs f12, OFFSET_MTX_A+44(r3)
+    stfs f12, OFFSET_mtxA+44(r3)
 
     lfd f14, 0x98(r3)
     lfd f15, 0xa0(r3)
@@ -1105,36 +1337,36 @@ asm void mathutil_mtxA_rigid_invert(void)
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha
-    lfs f3,   OFFSET_MTX_A+12(r3)
-    lfs f0,   OFFSET_MTX_A+0(r3)
-    lfs f1,   OFFSET_MTX_A+4(r3)
-    lfs f2,   OFFSET_MTX_A+8(r3)
+    lfs f3,   OFFSET_mtxA+12(r3)
+    lfs f0,   OFFSET_mtxA+0(r3)
+    lfs f1,   OFFSET_mtxA+4(r3)
+    lfs f2,   OFFSET_mtxA+8(r3)
     fmuls f12, f3, f0
-    lfs f7,   OFFSET_MTX_A+28(r3)
+    lfs f7,   OFFSET_mtxA+28(r3)
     fmuls f13, f3, f1
-    lfs f4,   OFFSET_MTX_A+16(r3)
+    lfs f4,   OFFSET_mtxA+16(r3)
     fmuls f0, f3, f2
-    lfs f5,   OFFSET_MTX_A+20(r3)
-    lfs f6,   OFFSET_MTX_A+24(r3)
+    lfs f5,   OFFSET_mtxA+20(r3)
+    lfs f6,   OFFSET_mtxA+24(r3)
     fmadds f12, f7, f4, f12
-    lfs f11,  OFFSET_MTX_A+44(r3)
-    lfs f8,   OFFSET_MTX_A+32(r3)
+    lfs f11,  OFFSET_mtxA+44(r3)
+    lfs f8,   OFFSET_mtxA+32(r3)
     fmadds f13, f7, f5, f13
-    lfs f9,   OFFSET_MTX_A+36(r3)
-    lfs f10,  OFFSET_MTX_A+40(r3)
+    lfs f9,   OFFSET_mtxA+36(r3)
+    lfs f10,  OFFSET_mtxA+40(r3)
     fmadds f0, f7, f6, f0
-    stfs f1,  OFFSET_MTX_A+16(r3)
-    stfs f2,  OFFSET_MTX_A+32(r3)
+    stfs f1,  OFFSET_mtxA+16(r3)
+    stfs f2,  OFFSET_mtxA+32(r3)
     fnmadds f12, f11, f8, f12
-    stfs f6,  OFFSET_MTX_A+36(r3)
-    stfs f4,  OFFSET_MTX_A+4(r3)
+    stfs f6,  OFFSET_mtxA+36(r3)
+    stfs f4,  OFFSET_mtxA+4(r3)
     fnmadds f13, f11, f9, f13
-    stfs f8,  OFFSET_MTX_A+8(r3)
-    stfs f9,  OFFSET_MTX_A+24(r3)
+    stfs f8,  OFFSET_mtxA+8(r3)
+    stfs f9,  OFFSET_mtxA+24(r3)
     fnmadds f0, f11, f10, f0
-    stfs f12, OFFSET_MTX_A+12(r3)
-    stfs f13, OFFSET_MTX_A+28(r3)
-    stfs f0,  OFFSET_MTX_A+44(r3)
+    stfs f12, OFFSET_mtxA+12(r3)
+    stfs f13, OFFSET_mtxA+28(r3)
+    stfs f0,  OFFSET_mtxA+44(r3)
 
     blr
 }
@@ -1145,23 +1377,23 @@ asm void mathutil_mtxA_mult_right(Mtx mtx)
 
     lis r6, LC_CACHE_BASE@ha
     mr r4, r3
-    addi r3, r6, OFFSET_MTX_A
-    addi r5, r6, OFFSET_MTX_A
+    addi r3, r6, OFFSET_mtxA
+    addi r5, r6, OFFSET_mtxA
     b @do_mult
 
 // void mathutil_mtxA_mult_left(Mtx mtx)
 entry mathutil_mtxA_mult_left
     lis r6, LC_CACHE_BASE@ha
-    addi r4, r6, OFFSET_MTX_A
-    addi r5, r6, OFFSET_MTX_A
+    addi r4, r6, OFFSET_mtxA
+    addi r5, r6, OFFSET_mtxA
     b @do_mult
 
 // void mathutil_mtxA_from_mtxB_mult_mtx(Mtx mtx)
 entry mathutil_mtxA_from_mtxB_mult_mtx
     lis r6, LC_CACHE_BASE@ha
     mr r4, r3
-    addi r3, r6, OFFSET_MTX_B
-    addi r5, r6, OFFSET_MTX_A
+    addi r3, r6, OFFSET_mtxB
+    addi r5, r6, OFFSET_mtxA
     b @do_mult
 
 // void mathutil_mtx_mult(Mtx a, Mtx b, Mtx result)
@@ -1212,20 +1444,49 @@ entry mathutil_mtx_mult
     blr
 }
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_translate_xyz(float x, float y, float z)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    float a = (*m)[0][2] * z + (*m)[0][0] * x + (*m)[0][3] * 1 + (*m)[0][1] * y;
+    float b = (*m)[1][2] * z + (*m)[1][0] * x + (*m)[1][3] * 1 + (*m)[1][1] * y;
+    float c = (*m)[2][2] * z + (*m)[2][0] * x + (*m)[2][3] * 1 + (*m)[2][1] * y;
+
+    (*m)[0][3] = a;
+    (*m)[1][3] = b;
+    (*m)[2][3] = c;
+}
+
+void mathutil_mtxA_translate(register Vec *vec)
+{
+    mathutil_mtxA_translate_xyz(vec->x, vec->y, vec->z);
+}
+
+void mathutil_mtxA_translate_neg(Vec *vec)
+{
+    mathutil_mtxA_translate_xyz(-vec->x, -vec->y, -vec->z);
+}
+
+void mathutil_mtxA_translate_neg_xyz(float x, float y, float z)
+{
+    mathutil_mtxA_translate_xyz(-x, -y, -z);
+}
+#else
 asm void mathutil_mtxA_translate(register Vec *vec)
 {
     nofralloc
 
     lis r4, LC_CACHE_BASE@ha
-    psq_l f1, 0(r3), 0, GQR_F32
-    psq_l f3, 8(r3), 1, GQR_F32
+    psq_l f1, 0(r3), 0, GQR_F32  // f1 = (x, y)
+    psq_l f3, 8(r3), 1, GQR_F32  // f3 = (z, 1)
     b @do_translate
 
 // void mathutil_mtxA_translate_xyz(float x, float y, float z)
 entry mathutil_mtxA_translate_xyz
     lis r4, LC_CACHE_BASE@ha
     ps_merge00 f1, f1, f2
-    lfs f0, OFFSET_CONST_ONE(r4)
+    lfs f0, OFFSET_constOneF(r4)
     ps_merge00 f3, f3, f0
     b @do_translate
 
@@ -1241,25 +1502,27 @@ entry mathutil_mtxA_translate_neg_xyz
     lis r4, LC_CACHE_BASE@ha
     ps_merge00 f1, f1, f2
 
-@negate:
-    lfs f0, OFFSET_CONST_ONE(r4)
-    fneg f3, f3
-    ps_neg f1, f1
-    ps_merge00 f3, f3, f0
+@negate:  // f1 = (x, y), f3 = z
+    lfs f0, OFFSET_constOneF(r4)
+    fneg f3, f3            // f3 = -z
+    ps_neg f1, f1          // f1 = (-x, -y)
+    ps_merge00 f3, f3, f0  // f3 = (-z, 1)
 
+    // f1 = (x, y), f3 = (z, 1)
 @do_translate:
     psq_l f4, 0(r4), 0, GQR_F32
     psq_l f6, 16(r4), 0, GQR_F32
     psq_l f8, 32(r4), 0, GQR_F32
-    ps_mul f4, f4, f1
-    psq_l f5, 8(r4), 0, GQR_F32
-    ps_mul f6, f6, f1
-    psq_l f7, 24(r4), 0, GQR_F32
-    ps_mul f8, f8, f1
-    psq_l f9, 40(r4), 0, GQR_F32
-    ps_madd f4, f5, f3, f4
-    ps_madd f6, f7, f3, f6
-    ps_madd f8, f9, f3, f8
+    ps_mul f4, f4, f1             // f4 = (m[0][0] * x, m[0][1] * y)
+    psq_l f5, 8(r4), 0, GQR_F32   // f5 = (m[0][2],     m[0][3])
+    ps_mul f6, f6, f1             // f6 = (m[1][0] * x, m[1][1] * y)
+    psq_l f7, 24(r4), 0, GQR_F32  // f7 = (m[1][2],     m[1][3])
+    ps_mul f8, f8, f1             // f8 = (m[2][0] * x, m[2][1] * y)
+    psq_l f9, 40(r4), 0, GQR_F32  // f9 = (m[2][2],     m[2][3])
+
+    ps_madd f4, f5, f3, f4  // f4 = (m[0][2] * z + m[0][0] * x, m[0][3] * 1 + m[0][1] * y)
+    ps_madd f6, f7, f3, f6  // f6 = (m[1][2] * z + m[1][0] * x, m[1][3] * 1 + m[1][1] * y)
+    ps_madd f8, f9, f3, f8  // f8 = (m[2][2] * z + m[2][0] * x, m[2][3] * 1 + m[2][1] * y)
     ps_sum0 f4, f4, f4, f4
     stfs f4, 12(r4)
     ps_sum0 f6, f6, f6, f6
@@ -1268,7 +1531,28 @@ entry mathutil_mtxA_translate_neg_xyz
     stfs f8, 44(r4)
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_scale_xyz(float x, float y, float z)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    (*m)[0][0] *= x;  (*m)[0][1] *= y;  (*m)[0][2] *= z;
+    (*m)[1][0] *= x;  (*m)[1][1] *= y;  (*m)[1][2] *= z;
+    (*m)[2][0] *= x;  (*m)[2][1] *= y;  (*m)[2][2] *= z;
+}
+
+void mathutil_mtxA_scale(Vec *vec)
+{
+    mathutil_mtxA_scale_xyz(vec->x, vec->y, vec->z);
+}
+
+void mathutil_mtxA_scale_s(float scale)
+{
+    mathutil_mtxA_scale_xyz(scale, scale, scale);
+}
+#else
 asm void mathutil_mtxA_scale(Vec *vec)
 {
     nofralloc
@@ -1288,29 +1572,32 @@ entry mathutil_mtxA_scale_s
 // void mathutil_mtxA_scale_xyz(float x, float y, float z)
 entry mathutil_mtxA_scale_xyz
     lis r4, LC_CACHE_BASE@ha
-    ps_merge00 f1, f1, f2
+    ps_merge00 f1, f1, f2  // f1 = (x, y)
 
+    // f1 = (x, y)
+    // f3 = z
 @do_scale:
-    psq_l f0, 0(r4), 0, GQR_F32
-    lfs f4, 8(r4)
-    psq_l f5, 16(r4), 0, GQR_F32
-    ps_mul f0, f0, f1
-    lfs f6, 24(r4)
-    fmuls f4, f4, f3
-    psq_l f7, 32(r4), 0, GQR_F32
-    lfs f8, 40(r4)
-    ps_mul f5, f5, f1
-    psq_st f0, 0(r4), 0, GQR_F32
-    fmuls f6, f6, f3
-    stfs f4, 8(r4)
+    psq_l f0,  0(r4), 0, GQR_F32  // f0 = (m[0][0], m[0][1])
+    lfs f4,    8(r4)              // f4 = m[0][2]
+    psq_l f5, 16(r4), 0, GQR_F32  // f5 = (m[1][0], m[1][1])
+    ps_mul f0, f0, f1  // (m[0][0] * x, m[0][1] * y)
+    lfs f6,   24(r4)              // f6 = m[1][2]
+    fmuls f4, f4, f3   // m[0][2] * z
+    psq_l f7, 32(r4), 0, GQR_F32  // f7 = (m[2][0], m[2][1])
+    lfs f8,   40(r4)              // f8 = m[2][2]
+    ps_mul f5, f5, f1  // (m[1][0] * x, m[1][1] * y)
+    psq_st f0,  0(r4), 0, GQR_F32
+    fmuls f6, f6, f3   // m[1][2] * z
+    stfs f4,    8(r4)
     psq_st f5, 16(r4), 0, GQR_F32
-    ps_mul f7, f7, f1
-    stfs f6, 24(r4)
+    ps_mul f7, f7, f1  // (m[2][0] * x, m[2][1] * y)
+    stfs f6,   24(r4)
     psq_st f7, 32(r4), 0, GQR_F32
-    fmuls f8, f8, f3
-    stfs f8, 40(r4)
+    fmuls f8, f8, f3   // m[2][2] * z
+    stfs f8,   40(r4)
     blr
 }
+#endif
 
 asm void mathutil_mtxA_tf_point(Vec *src, Vec *dest)
 {
@@ -1325,7 +1612,7 @@ asm void mathutil_mtxA_tf_point(Vec *src, Vec *dest)
 entry mathutil_mtxA_tf_vec
     lis r5, LC_CACHE_BASE@ha
     lfs f3, 8(r3)
-    lfs f0, OFFSET_CONST_ZERO(r5)
+    lfs f0, OFFSET_constZeroF(r5)
     psq_l f1, 0(r3), 0, GQR_F32
     ps_merge00 f3, f3, f0
     b @do_tf
@@ -1334,7 +1621,7 @@ entry mathutil_mtxA_tf_vec
 entry mathutil_mtxA_tf_point_xyz
     lis r5, LC_CACHE_BASE@ha
     ps_merge00 f1, f1, f2
-    lfs f0, OFFSET_CONST_ONE(r5)
+    lfs f0, OFFSET_constOneF(r5)
     mr r4, r3
     ps_merge00 f3, f3, f0
     b @do_tf
@@ -1343,7 +1630,7 @@ entry mathutil_mtxA_tf_point_xyz
 entry mathutil_mtxA_tf_vec_xyz
     lis r5, LC_CACHE_BASE@ha
     ps_merge00 f1, f1, f2
-    lfs f0, OFFSET_CONST_ZERO(r5)
+    lfs f0, OFFSET_constZeroF(r5)
     mr r4, r3
     ps_merge00 f3, f3, f0
 
@@ -1450,9 +1737,9 @@ asm void mathutil_mtxA_rotate_x(int angle)
 entry mathutil_mtxA_rotate_x_sin_cos
     lis r4, LC_CACHE_BASE@ha
     ps_merge00 f0, f2, f1
-    psq_l f3, OFFSET_MTX_A+4(r4), 0, GQR_F32
-    psq_l f4, OFFSET_MTX_A+20(r4), 0, GQR_F32
-    psq_l f5, OFFSET_MTX_A+36(r4), 0, GQR_F32
+    psq_l f3, OFFSET_mtxA+4(r4), 0, GQR_F32
+    psq_l f4, OFFSET_mtxA+20(r4), 0, GQR_F32
+    psq_l f5, OFFSET_mtxA+36(r4), 0, GQR_F32
     ps_mul f6, f3, f0
     ps_mul f7, f4, f0
     ps_mul f8, f5, f0
@@ -1461,18 +1748,18 @@ entry mathutil_mtxA_rotate_x_sin_cos
     ps_sum0 f7, f7, f7, f7
     ps_sum0 f8, f8, f8, f8
     ps_merge00 f0, f1, f2
-    stfs f6, OFFSET_MTX_A+4(r4)
+    stfs f6, OFFSET_mtxA+4(r4)
     ps_mul f6, f3, f0
-    stfs f7, OFFSET_MTX_A+20(r4)
+    stfs f7, OFFSET_mtxA+20(r4)
     ps_mul f7, f4, f0
-    stfs f8, OFFSET_MTX_A+36(r4)
+    stfs f8, OFFSET_mtxA+36(r4)
     ps_mul f8, f5, f0
     ps_sum0 f6, f6, f6, f6
-    stfs f6, OFFSET_MTX_A+8(r4)
+    stfs f6, OFFSET_mtxA+8(r4)
     ps_sum0 f7, f7, f7, f7
-    stfs f7, OFFSET_MTX_A+24(r4)
+    stfs f7, OFFSET_mtxA+24(r4)
     ps_sum0 f8, f8, f8, f8
-    stfs f8, OFFSET_MTX_A+40(r4)
+    stfs f8, OFFSET_mtxA+40(r4)
     blr
 }
 
@@ -1488,12 +1775,12 @@ asm void mathutil_mtxA_rotate_y(int angle)
 entry mathutil_mtxA_rotate_y_sin_cos
     lis r4, LC_CACHE_BASE@ha
     ps_merge00 f0, f1, f2
-    lfs f3, OFFSET_MTX_A+0(r4)
-    lfs f6, OFFSET_MTX_A+8(r4)
-    lfs f4, OFFSET_MTX_A+16(r4)
-    lfs f7, OFFSET_MTX_A+24(r4)
-    lfs f5, OFFSET_MTX_A+32(r4)
-    lfs f8, OFFSET_MTX_A+40(r4)
+    lfs f3, OFFSET_mtxA+0(r4)
+    lfs f6, OFFSET_mtxA+8(r4)
+    lfs f4, OFFSET_mtxA+16(r4)
+    lfs f7, OFFSET_mtxA+24(r4)
+    lfs f5, OFFSET_mtxA+32(r4)
+    lfs f8, OFFSET_mtxA+40(r4)
     ps_merge00 f3, f3, f6
     ps_merge00 f4, f4, f7
     ps_merge00 f5, f5, f8
@@ -1505,18 +1792,18 @@ entry mathutil_mtxA_rotate_y_sin_cos
     ps_sum0 f7, f7, f7, f7
     ps_sum0 f8, f8, f8, f8
     ps_merge00 f0, f2, f1
-    stfs f6, OFFSET_MTX_A+8(r4)
+    stfs f6, OFFSET_mtxA+8(r4)
     ps_mul f6, f3, f0
-    stfs f7, OFFSET_MTX_A+24(r4)
+    stfs f7, OFFSET_mtxA+24(r4)
     ps_mul f7, f4, f0
-    stfs f8, OFFSET_MTX_A+40(r4)
+    stfs f8, OFFSET_mtxA+40(r4)
     ps_mul f8, f5, f0
     ps_sum0 f6, f6, f6, f6
-    stfs f6, OFFSET_MTX_A+0(r4)
+    stfs f6, OFFSET_mtxA+0(r4)
     ps_sum0 f7, f7, f7, f7
-    stfs f7, OFFSET_MTX_A+16(r4)
+    stfs f7, OFFSET_mtxA+16(r4)
     ps_sum0 f8, f8, f8, f8
-    stfs f8, OFFSET_MTX_A+32(r4)
+    stfs f8, OFFSET_mtxA+32(r4)
     blr
 }
 
@@ -1532,9 +1819,9 @@ asm void mathutil_mtxA_rotate_z(int angle)
 entry mathutil_mtxA_rotate_z_sin_cos
     lis r4, LC_CACHE_BASE@ha
     ps_merge00 f0, f2, f1
-    psq_l f3, OFFSET_MTX_A+0(r4), 0, GQR_F32
-    psq_l f4, OFFSET_MTX_A+16(r4), 0, GQR_F32
-    psq_l f5, OFFSET_MTX_A+32(r4), 0, GQR_F32
+    psq_l f3, OFFSET_mtxA+0(r4), 0, GQR_F32
+    psq_l f4, OFFSET_mtxA+16(r4), 0, GQR_F32
+    psq_l f5, OFFSET_mtxA+32(r4), 0, GQR_F32
     ps_mul f6, f3, f0
     ps_mul f7, f4, f0
     ps_mul f8, f5, f0
@@ -1543,18 +1830,18 @@ entry mathutil_mtxA_rotate_z_sin_cos
     ps_sum0 f7, f7, f7, f7
     ps_sum0 f8, f8, f8, f8
     ps_merge00 f0, f1, f2
-    stfs f6, OFFSET_MTX_A+0(r4)
+    stfs f6, OFFSET_mtxA+0(r4)
     ps_mul f6, f3, f0
-    stfs f7, OFFSET_MTX_A+16(r4)
+    stfs f7, OFFSET_mtxA+16(r4)
     ps_mul f7, f4, f0
-    stfs f8, OFFSET_MTX_A+32(r4)
+    stfs f8, OFFSET_mtxA+32(r4)
     ps_mul f8, f5, f0
     ps_sum0 f6, f6, f6, f6
-    stfs f6, OFFSET_MTX_A+4(r4)
+    stfs f6, OFFSET_mtxA+4(r4)
     ps_sum0 f7, f7, f7, f7
-    stfs f7, OFFSET_MTX_A+20(r4)
+    stfs f7, OFFSET_mtxA+20(r4)
     ps_sum0 f8, f8, f8, f8
-    stfs f8, OFFSET_MTX_A+36(r4)
+    stfs f8, OFFSET_mtxA+36(r4)
     blr
 }
 
@@ -1573,7 +1860,7 @@ asm float mathutil_vec_normalize_len(register Vec *vec)
     fmadds f1, f7, f7, f1
     fmadds f1, f8, f8, f1  // f1 = vec->x*vec->x + vec->y*vec->y + vec->z*vec->z
 
-    lfs f2, OFFSET_CONST_ONE_HALF(r5)
+    lfs f2, OFFSET_constOneHalfF(r5)
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
     bso cr1, lbl_80008160
@@ -1595,7 +1882,7 @@ asm float mathutil_vec_normalize_len(register Vec *vec)
     blr
 
 lbl_80008160:
-    lfs f1, OFFSET_CONST_ZERO(r5)
+    lfs f1, OFFSET_constZeroF(r5)
     stfs f1, vec->x
     stfs f1, vec->y
     stfs f1, vec->z
@@ -1617,7 +1904,7 @@ asm void mathutil_vec_set_len(register Vec *src, register Vec *dest, register fl
 
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
-    lfs f2, OFFSET_CONST_ONE_HALF(r6)
+    lfs f2, OFFSET_constOneHalfF(r6)
     bso cr1, lbl_800081D8
     bso lbl_800081D8
     ble cr1, lbl_800081D8
@@ -1635,7 +1922,7 @@ asm void mathutil_vec_set_len(register Vec *src, register Vec *dest, register fl
     blr
 
 lbl_800081D8:
-    lfs f6, OFFSET_CONST_ZERO(r6)
+    lfs f6, OFFSET_constZeroF(r6)
     stfs f6, dest->x
     stfs f6, dest->y
     stfs f6, dest->z
@@ -1670,7 +1957,7 @@ asm float mathutil_vec_dot_normalized_safe(register Vec *a, register Vec *b)
 
     mcrfs cr1, 4//cr4
     mcrfs cr0, 3//cr3
-    lfs f2, OFFSET_CONST_ONE_HALF(r6)
+    lfs f2, OFFSET_constOneHalfF(r6)
     bso cr1, _sqrt_return_special
     bso _return_zero
     ble cr1, _return_zero
@@ -1689,14 +1976,14 @@ asm void mathutil_mtxA_from_quat(register Quaternion *quat)
     lis r4, LC_CACHE_BASE@ha
     lfs f0, quat->x
     lfs f1, quat->y
-    lfs f5, OFFSET_CONST_ONE(r4)
+    lfs f5, OFFSET_constOneF(r4)
     lfs f2, quat->z
     fsubs f4, f5, f5
     lfs f3, quat->w
     fadds f6, f5, f5
-    stfs f4, OFFSET_MTX_A+12(r4)
-    stfs f4, OFFSET_MTX_A+28(r4)
-    stfs f4, OFFSET_MTX_A+44(r4)
+    stfs f4, OFFSET_mtxA+12(r4)
+    stfs f4, OFFSET_mtxA+28(r4)
+    stfs f4, OFFSET_mtxA+44(r4)
     fmuls f9, f0, f0
     fmuls f7, f1, f1
     fmuls f8, f2, f2
@@ -1704,11 +1991,11 @@ asm void mathutil_mtxA_from_quat(register Quaternion *quat)
     fmadds f7, f0, f0, f7
     fmadds f8, f1, f1, f8
     fnmsubs f9, f9, f6, f5
-    stfs f9, OFFSET_MTX_A+20(r4)
+    stfs f9, OFFSET_mtxA+20(r4)
     fnmsubs f7, f7, f6, f5
-    stfs f7, OFFSET_MTX_A+40(r4)
+    stfs f7, OFFSET_mtxA+40(r4)
     fnmsubs f8, f8, f6, f5
-    stfs f8, OFFSET_MTX_A+0(r4)
+    stfs f8, OFFSET_mtxA+0(r4)
     fadds f6, f0, f0
     fadds f4, f1, f1
     fadds f5, f2, f2
@@ -1716,17 +2003,17 @@ asm void mathutil_mtxA_from_quat(register Quaternion *quat)
     fmuls f7, f3, f4
     fmuls f8, f3, f5
     fmsubs f9, f1, f5, f6
-    stfs f9,  OFFSET_MTX_A+24(r4)
+    stfs f9,  OFFSET_mtxA+24(r4)
     fmadds f10, f1, f5, f6
-    stfs f10, OFFSET_MTX_A+36(r4)
+    stfs f10, OFFSET_mtxA+36(r4)
     fmsubs f11, f0, f5, f7
-    stfs f11, OFFSET_MTX_A+32(r4)
+    stfs f11, OFFSET_mtxA+32(r4)
     fmadds f12, f0, f5, f7
-    stfs f12, OFFSET_MTX_A+8(r4)
+    stfs f12, OFFSET_mtxA+8(r4)
     fmsubs f13, f0, f4, f8
-    stfs f13, OFFSET_MTX_A+4(r4)
+    stfs f13, OFFSET_mtxA+4(r4)
     fmadds f2, f0, f4, f8
-    stfs f2,  OFFSET_MTX_A+16(r4)
+    stfs f2,  OFFSET_mtxA+16(r4)
     blr
 }
 
@@ -1782,7 +2069,7 @@ lbl_8000838C:
     ps_mul f2, f0, f0
     ps_madd f2, f1, f1, f2
     ps_sum0 f2, f2, f2, f2
-    lfs f4, OFFSET_CONST_ZERO(r5)
+    lfs f4, OFFSET_constZeroF(r5)
     fcmpu cr0, f2, f4
     blt lbl_800083B4
     ps_merge00 f2, f2, f2
@@ -2460,11 +2747,7 @@ const u16 crcTable[] =
     0x7C26, 0x6C07, 0x5C64, 0x4C45, 0x3CA2, 0x2C83, 0x1CE0, 0x0CC1,
     0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8,
     0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0,
-
-    0, 0  // TODO: align .rodata sections and remove
 };
-
-const u32 mathutil_alignment = 0;  // TODO: align .sdata2 sections and remove
 
 u16 mathutil_calc_crc16(s32 length, u8 *data)
 {

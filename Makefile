@@ -46,7 +46,7 @@ REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -fsigned-char -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
 
 #-------------------------------------------------------------------------------
 # Files
@@ -74,10 +74,12 @@ SOURCES := \
 	src/adv.c \
 	src/code_5.c \
 	src/sel.c \
-	asm/game.s \
+	src/game.c \
 	src/camera.c \
 	asm/code_0.s \
-	asm/code_1.s \
+	src/code_1.c \
+	src/info.c \
+	src/code_7.c \
 	src/input.c \
 	src/bitmap.c \
 	src/bmp_list_com.c \
@@ -97,19 +99,43 @@ SOURCES := \
 	src/trig_tables.c \
 	src/perf.c \
 	asm/sound.s \
-	asm/code_2.s \
+	asm/window.s \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
-	asm/code.s \
+	asm/stcoli.s \
+	src/world.c \
+	asm/interp_anim.s \
 	src/stage.c \
 	asm/stage.s \
 	asm/recplay.s \
+	asm/effect.s \
 	src/background.c \
-	asm/background.s \
+	asm/bg_old_bluesky.s \
+	src/bg_old_cave.c \
+	asm/bg_old_extramaster.s \
+	src/bg_old_night.c \
+	src/bg_old_space.c \
+	src/bg_old_sunset.c \
+	src/bg_old_bonus.c \
+	asm/bg_old_ice.s \
+	src/bg_old_sand.c \
+	asm/bg_old_storm.s \
+	asm/bg_old_water.s \
+	src/bg_jungle.c \
+	asm/bg_sand.s \
+	asm/bg_water.s \
+	asm/bg_space.s \
+	src/bg_sunset.c \
+	src/bg_bonus.c \
+	src/bg_storm.c \
+	asm/bg_master.s \
+	asm/bg_pilot.s \
+	asm/bg_end.s \
+	asm/course.s \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
@@ -123,7 +149,7 @@ SOURCES := \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
-	asm/load.s \
+	asm/shadow.s \
 	asm/mini.s \
 	src/mouse.c \
 	asm/mouse.s \
@@ -139,12 +165,13 @@ SOURCES := \
 	asm/mini_ranking.s \
 	src/preview.c \
 	asm/code_4.s \
+	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \
 	libraries/os/asm/OS.s \
 	libraries/os/asm/OSAlarm.s \
-	libraries/os/asm/OSAlloc.s \
-	libraries/os/asm/OSArena.s \
+	libraries/os/OSAlloc.c \
+	libraries/os/OSArena.c \
 	libraries/os/asm/OSAudioSystem.s \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
@@ -183,7 +210,7 @@ SOURCES := \
 	libraries/ar/asm/arq.s \
 	libraries/dsp/dsp.c \
 	libraries/dsp/dsp_debug.c \
-	libraries/dsp/asm/dsp_task.s \
+	libraries/dsp/dsp_task.c \
 	libraries/card/asm/CARDBios.s \
 	libraries/card/asm/CARDUnlock.s \
 	libraries/card/asm/CARDRdwr.s \
@@ -267,17 +294,19 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/rand.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/string.s \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/wchar_io.c \
-	libraries/PowerPC_EABI_Support/asm/math/e_rem_pio2.s \
-	libraries/PowerPC_EABI_Support/asm/math/fminmaxdim.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_cos.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_rem_pio2.s \
-	libraries/PowerPC_EABI_Support/asm/math/k_sin.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_copysign.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_cos.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_floor.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_frexp.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_ldexp.s \
-	libraries/PowerPC_EABI_Support/asm/math/s_sin.s \
+	libraries/PowerPC_EABI_Support/math/s_fabs.c \
+	libraries/PowerPC_EABI_Support/math/scalbn.c \
+	libraries/PowerPC_EABI_Support/math/e_rem_pio2.c \
+	libraries/PowerPC_EABI_Support/math/fminmaxdim.c \
+	libraries/PowerPC_EABI_Support/math/k_cos.c \
+	libraries/PowerPC_EABI_Support/math/k_rem_pio2.c \
+	libraries/PowerPC_EABI_Support/math/k_sin.c \
+	libraries/PowerPC_EABI_Support/math/s_copysign.c \
+	libraries/PowerPC_EABI_Support/math/s_cos.c \
+	libraries/PowerPC_EABI_Support/math/s_floor.c \
+	libraries/PowerPC_EABI_Support/math/s_frexp.c \
+	libraries/PowerPC_EABI_Support/math/s_ldexp.c \
+	libraries/PowerPC_EABI_Support/math/s_sin.c \
 	libraries/PowerPC_EABI_Support/asm/math/inverse_trig.s \
 	libraries/PowerPC_EABI_Support/asm/math/trigf.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.s \
@@ -306,7 +335,7 @@ SOURCES := \
 	libraries/amcstubs/asm/AmcExi2Stubs.s \
 	libraries/odemustubs/asm/odemustubs.s \
 	libraries/amcnotstub/amcnotstub.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES := $(O_FILES)
 $(ELF): $(O_FILES)
 
@@ -314,7 +343,7 @@ $(ELF): $(O_FILES)
 SOURCES := \
 	src/sel_ngc_rel.c \
 	asm/sel_ngc_rel.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.sel_ngc.plf: $(O_FILES)
 mkbe.sel_ngc.rel: ELF2REL_ARGS := -i 1 -o 0x0 -l 0x1D -c 18
@@ -325,7 +354,7 @@ SOURCES := \
 	src/sel_stage_rel.c \
 	src/sel_stage_rel_2.c \
 	src/sel_stage_rel_3.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.sel_stage.plf: $(O_FILES)
 mkbe.sel_stage.rel: ELF2REL_ARGS := -i 2 -o 0x1D -l 0x1F
@@ -335,7 +364,7 @@ ALL_RELS += mkbe.sel_stage.rel
 SOURCES := \
 	src/mini_race.c \
 	asm/mini_race.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_race.plf: $(O_FILES)
 mkbe.rel_mini_race.rel: ELF2REL_ARGS := -i 3 -o 0x3C -l 0x23 -c 18
@@ -345,7 +374,7 @@ ALL_RELS += mkbe.rel_mini_race.rel
 SOURCES := \
 	src/mini_bowling.c \
 	asm/mini_bowling.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_bowling.plf: $(O_FILES)
 mkbe.rel_mini_bowling.rel: ELF2REL_ARGS := -i 4 -o 0x5F -l 0x26 -c 18
@@ -354,7 +383,7 @@ ALL_RELS += mkbe.rel_mini_bowling.rel
 # mkbe.rel_mini_fight.rel sources
 SOURCES := \
 	asm/mini_fight.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_fight.plf: $(O_FILES)
 mkbe.rel_mini_fight.rel: ELF2REL_ARGS := -i 5 -o 0x85 -l 0x24 -c 17
@@ -364,7 +393,7 @@ ALL_RELS += mkbe.rel_mini_fight.rel
 SOURCES := \
 	src/mini_pilot.c \
 	asm/mini_pilot.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_pilot.plf: $(O_FILES)
 mkbe.rel_mini_pilot.rel: ELF2REL_ARGS := -i 6 -o 0xA9 -l 0x24 -c 18
@@ -372,9 +401,9 @@ ALL_RELS += mkbe.rel_mini_pilot.rel
 
 # mkbe.rel_mini_golf.rel sources
 SOURCES := \
-	src/mini_golf.s \
+	src/mini_golf.c \
 	asm/mini_golf.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_golf.plf: $(O_FILES)
 mkbe.rel_mini_golf.rel: ELF2REL_ARGS := -i 7 -o 0xCD -l 0x23 -c 17
@@ -384,7 +413,7 @@ ALL_RELS += mkbe.rel_mini_golf.rel
 SOURCES := \
 	src/mini_billiards.c \
 	asm/mini_billiards.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_mini_billiards.plf: $(O_FILES)
 mkbe.rel_mini_billiards.rel: ELF2REL_ARGS := -i 8 -o 0xF0 -l 0x28 -c 17
@@ -393,7 +422,7 @@ ALL_RELS += mkbe.rel_mini_billiards.rel
 # mkbe.rel_sample.rel sources
 SOURCES := \
 	src/rel_sample.c
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.rel_sample.plf: $(O_FILES)
 mkbe.rel_sample.rel: ELF2REL_ARGS := -i 9 -o 0x118 -l 0x20
@@ -403,7 +432,7 @@ ALL_RELS += mkbe.rel_sample.rel
 SOURCES := \
 	src/test_mode.c \
 	asm/test_mode.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.test_mode.plf: $(O_FILES)
 mkbe.test_mode.rel: ELF2REL_ARGS := -i 10 -o 0x138 -l 0x1F -c 18
@@ -413,7 +442,7 @@ ALL_RELS += mkbe.test_mode.rel
 SOURCES := \
 	src/option.c \
 	asm/option.s
-O_FILES := $(addsuffix .o,$(basename $(SOURCES)))
+O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES += $(O_FILES)
 mkbe.option.plf: $(O_FILES)
 mkbe.option.rel: ELF2REL_ARGS := -i 11 -o 0x157 -l 0x1C -c 17
@@ -424,6 +453,10 @@ ALL_RELS += mkbe.option.rel
 #-------------------------------------------------------------------------------
 
 .PHONY: all default
+
+# remove implicit rules
+.SUFFIXES:
+MAKEFLAGS += -r
 
 all: $(DOL) $(ALL_RELS)
 	$(QUIET) $(SHA1SUM) -c supermonkeyball.sha1
@@ -450,7 +483,7 @@ all: $(DOL) $(ALL_RELS)
 # Uses CC_CHECK to check syntax and generate dependencies, compiles the file,
 # then disassembles the object file
 define COMPILE =
-@echo Compiling $<
+@echo "Compiling " $<
 $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 $(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
@@ -459,14 +492,14 @@ endef
 # relocatable modules must not use the small data sections
 %.plf: CFLAGS += -sdata 0 -sdata2 0 -g
 
-%.o: %.c
+%.c.o: %.c
 	$(COMPILE)
-%.o: %.cpp
+%.cpp.o: %.cpp
 	$(COMPILE)
-%.o: %.cp
+%.cp.o: %.cp
 	$(COMPILE)
 
-%.o: %.s
+%.s.o: %.s
 	@echo Assembling $<
 	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
 
@@ -495,17 +528,18 @@ test: $(DVD_FILES)
 
 # These need an extra include directory and are incompatible with gcc
 RUNTIME_OBJECTS := \
-	libraries/os/__start.o \
-	libraries/os/__ppc_eabi_init.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.o
+	libraries/os/__start.c.o \
+	libraries/os/__ppc_eabi_init.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o
 
 $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
 
-libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.o: CC_CHECK := true
+libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c.o: CC_CHECK := true
+libraries/PowerPC_EABI_Support/%.o: CFLAGS += -fp_contract on
 
 # Automatic dependency files
 DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))

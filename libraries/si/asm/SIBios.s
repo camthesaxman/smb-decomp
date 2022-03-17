@@ -696,7 +696,7 @@ lbl_800C8AE8:
 .global lbl_801E7500
 lbl_801E7500:
 	# ROM: 0x1E4500
-	.byte 0xFF, 0xFF, 0xFF, 0xFF
+	.4byte 0xFFFFFFFF
 	.4byte 0
 	.4byte 0
 	.4byte 0

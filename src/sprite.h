@@ -1,3 +1,8 @@
+#ifndef _SRC_SPRITE_H_
+#define _SRC_SPRITE_H_
+
+#include <dolphin/types.h>
+
 enum FontID
 {
     FONT_ASCII,  // 0
@@ -218,7 +223,7 @@ struct Sprite
     /*0x30*/ void (*destFunc)();
     /*0x34*/ void (*mainFunc)();
              void (*unk38)(struct Sprite *);
-             u16 bmpId;
+    /*0x3C*/ u16 bmpId;
              u8 filler3E[0x40-0x3E];
              float unk40;
              float unk44;
@@ -289,3 +294,5 @@ void g_start_screen_fade(s32, int, int);
 // ? add_naomi_sprite();
 int draw_naomi_sprite(struct NaomiSpriteParams *);
 // ? func_80073E00();
+
+#endif

@@ -2995,7 +2995,7 @@ lbl_801E7A28:
 .global autoInvalidation
 autoInvalidation:
 	# ROM: 0x1EC0A0
-	.byte 0x00, 0x00, 0x00, 0x01
+	.4byte 0x00000001
 	.4byte 0
 
 .section .sbss

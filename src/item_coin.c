@@ -9,6 +9,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -140,7 +141,7 @@ void item_coin_main(struct Item *item)
 
 void item_coin_draw(struct Item *item)
 {
-    float f31;
+    float scale;
     float f30 = item->unk14;
     struct GMAModelHeader *model;
     Vec spC;
@@ -152,20 +153,20 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_x(item->xrot);
     mathutil_mtxA_rotate_z(item->zrot);
     model = find_item_model(item->unk1C);
-    f31 = (f30 / model->boundsRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f31) == 0)
+    scale = (f30 / model->boundsRadius) * 1.5;
+    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, scale) == 0)
         return;
-    if (f31 != 1.0)
-        mathutil_mtxA_scale_xyz(f31, f31, f31);
+    if (scale != 1.0)
+        mathutil_mtxA_scale_xyz(scale, scale, scale);
     mathutil_get_mtxA_translate_alt(&spC);
     f30 = -(((spC.z + f30) + 0.1f) / f30);
-    if (modeCtrl.unk28 == 1 && (currentBallStructPtr->flags & (1 << 12)))
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         f30 = 0.25f;
     if (f30 > 0.0f)
     {
-        g_avdisp_set_model_scale(f31);
-        GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        g_avdisp_set_model_scale(scale);
+        GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (f30 < 1.0f)
         {
             g_avdisp_set_alpha(f30);
@@ -180,7 +181,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
 {
     struct Struct8003C550 sp10;
 
-    if (modeCtrl.unk28 == 1 && (currentBallStructPtr->flags & (1 << 12)))
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         return;
     item->unk8 &= ~(1 << 1);
     item->state = 3;
@@ -191,7 +192,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     item->unk2C.z += b->unk1C.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
-        item->unk5E = lbl_801F3A58.timerCurr;
+        item->unk5E = infoWork.timerCurr;
         give_bananas(bananaInfo[item->subtype].bananaValue);
         g_give_points(bananaInfo[item->subtype].unkA, bananaInfo[item->subtype].pointValue);
         item->state = 0;
@@ -210,23 +211,23 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk24.x = (item->unk14 / sp10.unk30->boundsRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
-        g_create_pickup_item(&sp10);
+        g_spawn_effect_object(&sp10);
     }
     if (advDemoInfo.flags & (1 << 8))
         return;
     if (item->subtype == 1)
     {
         g_play_sound(0x39);
-        if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
+        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x2820);
-        func_800554A4(1);
+        background_interact(1);
     }
     else
     {
         g_play_sound(3);
-        if ((lbl_801F3A58.unk0 & (1 << 11)) || !(lbl_801F3A58.unk0 & (1 << 4)))
+        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
             g_play_sound(0x281F);
-        func_800554A4(0);
+        background_interact(0);
     }
 }
 
@@ -288,7 +289,7 @@ struct GMAModelHeader *find_item_model(struct ModelLOD **a)
     }
     if (spC.z > -0.1f)
         return model;
-    f1 = (currentCameraStructPtr->sub28.height * -480.0f) * f31 / (spC.z * currentCameraStructPtr->sub28.unk38);
+    f1 = (currentCameraStructPtr->sub28.vp.height * -480.0f) * f31 / (spC.z * currentCameraStructPtr->sub28.unk38);
     while (r31->modelId > 0)
     {
         modelId = r31->modelId;

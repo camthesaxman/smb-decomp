@@ -1,3 +1,8 @@
+#ifndef _SRC_MODE_H_
+#define _SRC_MODE_H_
+
+#include <dolphin/types.h>
+
 // Game Modes
 enum
 {
@@ -222,8 +227,22 @@ enum
 
 enum
 {
+    // (1 << 2) = used a continue?
     LVLSET_FLAG_EXTRA = (1 << 3),
     LVLSET_FLAG_MASTER = (1 << 4),
+};
+
+enum
+{
+    GAMETYPE_MAIN_NORMAL,
+    GAMETYPE_MAIN_COMPETITION,
+    GAMETYPE_MAIN_PRACTICE,
+    GAMETYPE_MINI_RACE,
+    GAMETYPE_MINI_FIGHT,
+    GAMETYPE_MINI_TARGET,
+    GAMETYPE_MINI_BILLIARDS,
+    GAMETYPE_MINI_BOWLING,
+    GAMETYPE_MINI_GOLF,
 };
 
 struct ModeControl
@@ -233,15 +252,16 @@ struct ModeControl
     u32 levelSetFlags;
     u8 fillerC[0x10-0xC];
     s32 unk10;
-    u8 filler14[4];
+    u32 unk14;
     s32 unk18;
     s32 unk1C;
     /*0x20*/ s32 menuSel;
     /*0x24*/ int playerCount;
-    s32 unk28;
+    /*0x28*/ s32 gameType;
     s32 unk2C;
     s32 unk30;
-    u8 filler34[0x40-0x34];
+    u8 filler34[0x3C-0x34];
+    s32 unk3C;
     s16 unk40;
     u8 unk42;
     u8 filler43[0x48-0x43];
@@ -262,3 +282,5 @@ extern void (*lbl_802F1B80)(void);
 
 void gm_init(void);
 void gm_main(void);
+
+#endif

@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_OSTHREAD_H_
 #define _DOLPHIN_OSTHREAD_H_
 
+#include <dolphin/OSContext.h>
+
 typedef s32 OSPriority;
 
 struct OSThread;

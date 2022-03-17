@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_OSCONTEXT_H_
 #define _DOLPHIN_OSCONTEXT_H_
 
+#include <dolphin/types.h>
+
 typedef struct OSContext
 {
     /*0x000*/ u32 gpr[32];
@@ -22,5 +24,7 @@ typedef struct OSContext
 u32 OSGetStackPointer(void);
 void OSDumpContext(OSContext *context);
 void OSLoadContext(OSContext *context);
+void OSClearContext(OSContext *context);
+void OSSetCurrentContext(OSContext *context);
 
 #endif

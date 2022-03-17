@@ -1612,15 +1612,15 @@ lbl_802F5A8C:
 .global lbl_802F5A90
 lbl_802F5A90:
 	# ROM: 0x1EF4B0
-	.byte 0x42, 0xC8, 0x00, 0x00
+	.4byte 0x42C80000
 
 .global lbl_802F5A94
 lbl_802F5A94:
 	# ROM: 0x1EF4B4
-	.byte 0x3D, 0xCC, 0xCC, 0xCD
+	.4byte 0x3DCCCCCD
 
 .global lbl_802F5A98
 lbl_802F5A98:
 	# ROM: 0x1EF4B8
-	.byte 0x46, 0x9C, 0x40, 0x00
+	.4byte 0x469C4000
 	.4byte 0

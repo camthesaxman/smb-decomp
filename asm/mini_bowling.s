@@ -137,7 +137,7 @@ lbl_0000020C:
 /* 0000024C 386000B3 */ li r3, 0xb3
 /* 00000250 4BFFFF11 */ bl load_stage
 /* 00000254 38600004 */ li r3, 4
-/* 00000258 4BFFFF09 */ bl func_800249FC
+/* 00000258 4BFFFF09 */ bl g_load_minigame_graphics
 /* 0000025C 38600006 */ li r3, 6
 /* 00000260 4BFFFF01 */ bl call_bitmap_load_group
 /* 00000264 3C800000 */ lis r4, lbl_00001888@ha
@@ -209,8 +209,8 @@ lbl_00000358:
 /* 00000360 4180FFD8 */ blt lbl_00000338
 /* 00000364 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00000368 90E30000 */ stw r7, currentBallStructPtr@l(r3)
-/* 0000036C 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 00000370 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 0000036C 3C600000 */ lis r3, worldInfo@ha
+/* 00000370 38030000 */ addi r0, r3, worldInfo@l
 /* 00000374 80DC0000 */ lwz r6, 0(r28)
 /* 00000378 7C050378 */ mr r5, r0
 /* 0000037C 38E00000 */ li r7, 0
@@ -405,7 +405,7 @@ lbl_000005EC:
 /* 0000063C 901F000C */ stw r0, 0xc(r31)
 /* 00000640 38600036 */ li r3, 0x36
 /* 00000644 38800000 */ li r4, 0
-/* 00000648 4BFFFB19 */ bl func_8002CF38
+/* 00000648 4BFFFB19 */ bl g_play_music
 /* 0000064C 4800A1BD */ bl lbl_0000A808
 /* 00000650 3C600000 */ lis r3, lbl_802F1BF0@ha
 /* 00000654 80030000 */ lwz r0, lbl_802F1BF0@l(r3)
@@ -751,8 +751,8 @@ lbl_00000AD0:
 /* 00000B04 807B0000 */ lwz r3, 0(r27)
 /* 00000B08 38800000 */ li r4, 0
 /* 00000B0C 4BFFF655 */ bl GXLoadNrmMtxImm
-/* 00000B10 3C600000 */ lis r3, lbl_802F1CB8@ha
-/* 00000B14 3B830000 */ addi r28, r3, lbl_802F1CB8@l
+/* 00000B10 3C600000 */ lis r3, minigameGma@ha
+/* 00000B14 3B830000 */ addi r28, r3, minigameGma@l
 /* 00000B18 807C0000 */ lwz r3, 0(r28)
 /* 00000B1C 80630008 */ lwz r3, 8(r3)
 /* 00000B20 80630018 */ lwz r3, 0x18(r3)
@@ -801,7 +801,7 @@ lbl_00000AD0:
 /* 00000BCC 418200A8 */ beq lbl_00000C74
 /* 00000BD0 38600000 */ li r3, 0
 /* 00000BD4 4BFFF58D */ bl func_80018648
-/* 00000BD8 4BFFF589 */ bl func_80092D3C
+/* 00000BD8 4BFFF589 */ bl g_draw_ball_shadow
 /* 00000BDC 4BFFF585 */ bl func_80054FF0
 /* 00000BE0 38600000 */ li r3, 0
 /* 00000BE4 4BFFF57D */ bl func_800225C0
@@ -939,8 +939,8 @@ lbl_00000DB0:
 /* 00000DCC 807C0000 */ lwz r3, 0(r28)
 /* 00000DD0 38800000 */ li r4, 0
 /* 00000DD4 4BFFF38D */ bl GXLoadNrmMtxImm
-/* 00000DD8 3C600000 */ lis r3, lbl_802F1CB8@ha
-/* 00000DDC 38630000 */ addi r3, r3, lbl_802F1CB8@l
+/* 00000DD8 3C600000 */ lis r3, minigameGma@ha
+/* 00000DDC 38630000 */ addi r3, r3, minigameGma@l
 /* 00000DE0 80630000 */ lwz r3, 0(r3)
 /* 00000DE4 80630008 */ lwz r3, 8(r3)
 /* 00000DE8 80630008 */ lwz r3, 8(r3)
@@ -1669,7 +1669,7 @@ lbl_00001888:
 /* 000018A8 84030000 */ lwzu r0, lbl_801EEC90@l(r3)
 /* 000018AC 540006F2 */ rlwinm r0, r0, 0, 0x1b, 0x19
 /* 000018B0 90030000 */ stw r0, 0(r3)
-/* 000018B4 4BFFE8AD */ bl func_80024AB4
+/* 000018B4 4BFFE8AD */ bl g_free_minigame_graphics
 /* 000018B8 38600006 */ li r3, 6
 /* 000018BC 4BFFE8A5 */ bl bitmap_free_group
 /* 000018C0 4BFFE8A1 */ bl func_80029788
@@ -3488,8 +3488,8 @@ lbl_00003354:
 /* 0000335C 4180FFD8 */ blt lbl_00003334
 /* 00003360 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00003364 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 00003368 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 0000336C 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 00003368 3C600000 */ lis r3, worldInfo@ha
+/* 0000336C 38030000 */ addi r0, r3, worldInfo@l
 /* 00003370 80C60000 */ lwz r6, 0(r6)
 /* 00003374 7C050378 */ mr r5, r0
 /* 00003378 38E00000 */ li r7, 0
@@ -3573,8 +3573,8 @@ lbl_0000348C:
 /* 00003494 4180FFD8 */ blt lbl_0000346C
 /* 00003498 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 0000349C 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 000034A0 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 000034A4 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 000034A0 3C600000 */ lis r3, worldInfo@ha
+/* 000034A4 38030000 */ addi r0, r3, worldInfo@l
 /* 000034A8 80C60000 */ lwz r6, 0(r6)
 /* 000034AC 7C050378 */ mr r5, r0
 /* 000034B0 38E00000 */ li r7, 0
@@ -4056,9 +4056,9 @@ lbl_00003B34:
 /* 00003B90 3C600000 */ lis r3, lbl_802F1BF0@ha
 /* 00003B94 38C10008 */ addi r6, r1, 8
 /* 00003B98 80A4000C */ lwz r5, 0xc(r4)
-/* 00003B9C 3C800000 */ lis r4, lbl_80206BC0@ha
+/* 00003B9C 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 00003BA0 893E0006 */ lbz r9, 6(r30)
-/* 00003BA4 38840000 */ addi r4, r4, lbl_80206BC0@l
+/* 00003BA4 38840000 */ addi r4, r4, playerCharacterSelection@l
 /* 00003BA8 88050000 */ lbz r0, 0(r5)
 /* 00003BAC 81030000 */ lwz r8, lbl_802F1BF0@l(r3)
 /* 00003BB0 38FE000C */ addi r7, r30, 0xc
@@ -4192,7 +4192,7 @@ lbl_00003D24:
 /* 00003D80 4BFFC3E1 */ bl g_start_screen_fade
 /* 00003D84 3860003C */ li r3, 0x3c
 /* 00003D88 38800002 */ li r4, 2
-/* 00003D8C 4BFFC3D5 */ bl func_8002CF38
+/* 00003D8C 4BFFC3D5 */ bl g_play_music
 /* 00003D90 4800001C */ b lbl_00003DAC
 lbl_00003D94:
 /* 00003D94 3403FFFF */ addic. r0, r3, -1  ;# fixed addi
@@ -5044,8 +5044,8 @@ lbl_000049A0:
 /* 000049A8 4180FFD8 */ blt lbl_00004980
 /* 000049AC 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 000049B0 91030000 */ stw r8, currentBallStructPtr@l(r3)
-/* 000049B4 3C600000 */ lis r3, lbl_80206BF0@ha
-/* 000049B8 38030000 */ addi r0, r3, lbl_80206BF0@l
+/* 000049B4 3C600000 */ lis r3, worldInfo@ha
+/* 000049B8 38030000 */ addi r0, r3, worldInfo@l
 /* 000049BC 80C60000 */ lwz r6, 0(r6)
 /* 000049C0 7C050378 */ mr r5, r0
 /* 000049C4 38E00000 */ li r7, 0
@@ -8153,7 +8153,7 @@ lbl_00007650:
 /* 000076B0 D8010018 */ stfd f0, 0x18(r1)
 /* 000076B4 8001001C */ lwz r0, 0x1c(r1)
 /* 000076B8 B007015E */ sth r0, 0x15e(r7)
-/* 000076BC 4BFF8AA5 */ bl func_8002CF38
+/* 000076BC 4BFF8AA5 */ bl g_play_music
 /* 000076C0 8001002C */ lwz r0, 0x2c(r1)
 /* 000076C4 38210028 */ addi r1, r1, 0x28
 /* 000076C8 7C0803A6 */ mtlr r0
@@ -8199,7 +8199,7 @@ lbl_00007740:
 /* 00007758 38800008 */ li r4, 8
 /* 0000775C B0030008 */ sth r0, 8(r3)
 /* 00007760 38600064 */ li r3, 0x64
-/* 00007764 4BFF89FD */ bl func_8002CF38
+/* 00007764 4BFF89FD */ bl g_play_music
 /* 00007768 8001000C */ lwz r0, 0xc(r1)
 /* 0000776C 38210008 */ addi r1, r1, 8
 /* 00007770 7C0803A6 */ mtlr r0
@@ -8423,7 +8423,7 @@ lbl_00007A6C:
 /* 00007A8C 3BC50000 */ addi r30, r5, lbl_000153E0@l
 /* 00007A90 93A1002C */ stw r29, 0x2c(r1)
 /* 00007A94 3BA30000 */ addi r29, r3, 0
-/* 00007A98 4BFF86C9 */ bl func_800394C4
+/* 00007A98 4BFF86C9 */ bl g_ball_init_2
 /* 00007A9C C01F0014 */ lfs f0, 0x14(r31)
 /* 00007AA0 38600000 */ li r3, 0
 /* 00007AA4 3800BFDF */ li r0, -16417
@@ -11696,13 +11696,13 @@ lbl_0000AAAC:
 /* 0000AABC 3CC00000 */ lis r6, lbl_00014800@ha
 /* 0000AAC0 9421FFE0 */ stwu r1, -0x20(r1)
 /* 0000AAC4 3C800000 */ lis r4, mathutilData@ha
-/* 0000AAC8 3C600000 */ lis r3, lbl_802F1CB8@ha
+/* 0000AAC8 3C600000 */ lis r3, minigameGma@ha
 /* 0000AACC BF410008 */ stmw r26, 8(r1)
 /* 0000AAD0 3CA00000 */ lis r5, lbl_801EEC90@ha
 /* 0000AAD4 7C1A0378 */ mr r26, r0
 /* 0000AAD8 3B860000 */ addi r28, r6, lbl_00014800@l
 /* 0000AADC 3BC40000 */ addi r30, r4, mathutilData@l
-/* 0000AAE0 3BE30000 */ addi r31, r3, lbl_802F1CB8@l
+/* 0000AAE0 3BE30000 */ addi r31, r3, minigameGma@l
 /* 0000AAE4 3BA50000 */ addi r29, r5, lbl_801EEC90@l
 /* 0000AAE8 3B600000 */ li r27, 0
 lbl_0000AAEC:

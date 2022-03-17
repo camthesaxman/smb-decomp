@@ -1,3 +1,9 @@
+#ifndef _SRC_BALL_H_
+#define _SRC_BALL_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+
 struct Struct8003699C_child
 {
     u8 filler0[0x38];
@@ -6,7 +12,7 @@ struct Struct8003699C_child
     float unk3C;
 };
 
-struct Ball_child
+struct Ape
 {
     struct Struct8003699C_child *unk0;
     u8 filler4[0x10-4];
@@ -28,7 +34,7 @@ struct Ball_child
     Vec unkA0;
     float unkAC;
     u8 fillerB0[4];
-    u32 unkB4;
+    /*0x0B4*/ u32 colorId;
     u8 fillerB8[0xC0-0xB8];
     s8 unkC0;
     u8 unkC1;
@@ -51,10 +57,10 @@ enum
     BALL_FLAG_09 = 1 << 9,
     BALL_FLAG_10 = 1 << 10,
     BALL_FLAG_11 = 1 << 11,
-    BALL_FLAG_12 = 1 << 12,
+    BALL_FLAG_GOAL = 1 << 12,  // monkey dances and cannot move horizontally
     BALL_FLAG_13 = 1 << 13,
     BALL_FLAG_14 = 1 << 14,
-    BALL_FLAG_15 = 1 << 15,
+    BALL_FLAG_TIMEOVER = 1 << 15,  // monkey does a sad animation
     BALL_FLAG_16 = 1 << 16,
     BALL_FLAG_17 = 1 << 17,
     BALL_FLAG_18 = 1 << 18,
@@ -73,6 +79,12 @@ enum
     BALL_FLAG_31 = 1 << 31,
 };
 
+enum
+{
+    BALL_STATE_GOAL_INIT = 5,  // ball slows to a stop after entering the goal
+    BALL_STATE_GOAL_MAIN = 6,
+};
+
 struct Ball
 {
     u8 unk0;
@@ -86,7 +98,7 @@ struct Ball
     s16 unk2A;
     s16 unk2C;
     s8 unk2E;  // playerId?
-    s8 unk2F;
+    s8 unk2F;  // rank?
     Mtx unk30;
     s16 unk60;
     s16 unk62;
@@ -109,24 +121,25 @@ struct Ball
     float unkC4;
     Mtx unkC8;
     float unkF8;
-    struct Ball_child *unkFC;
+    struct Ape *ape;
     u32 unk100;
     Vec unk104;
     float unk110;
     Vec unk114;
     u32 unk120;
     s16 unk124;
-    s16 unk126;
+    s16 unk126;  // challenge mode win streak?
     s16 unk128;
     s16 unk12A;
     u8 filler12C[0x130-0x12C];
     float unk130;
     u32 unk134;
-    u8 filler138[4];
+    s32 unk138;
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
-    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
-    u8 filler148[0x14A - 0x148];
+    struct Ape *unk144;  // guessing this is the same type as unkFC?
+    u8 unk148;
+    u8 filler14A[0x14A - 0x149];
     /*0x14A*/ u8 colorId;
     u8 unk14B;
     u8 filler14C[2];
@@ -136,22 +149,43 @@ struct Ball
     u8 filler16C[0x1A4-0x16C];
 };
 
+// runs 'code' for each active ball
+#define BALL_FOREACH(code) \
+    { \
+        struct Ball *ball; \
+        struct Ball *ballBackup_; \
+        s8 *unk_; \
+        int i_; \
+        ballBackup_ = currentBallStructPtr; \
+        ball = ballInfo; \
+        unk_ = spritePoolInfo.unkC; \
+        for (i_ = 0; i_ < spritePoolInfo.unk8; i_++, ball++, unk_++) \
+        { \
+            if (*unk_ == 2) \
+            { \
+                currentBallStructPtr = ball; \
+                { code } \
+            } \
+        } \
+        currentBallStructPtr = ballBackup_; \
+    }
+
 // extern ? lbl_80205E20;
 // extern ? lbl_80205E30;
 extern struct Ball ballInfo[];
 // extern ? lbl_80206B80;
-extern s32 lbl_80206BC0[4];
+extern s32 playerCharacterSelection[4];
 extern s32 lbl_80206BD0[];
 
-void func_8003699C(struct Ball_child *a);
-float func_80036CAC(struct Ball_child *a);
-void func_80036EB8(struct Ball_child *a);
+void func_8003699C(struct Ape *a);
+float func_80036CAC(struct Ape *a);
+void func_80036EB8(struct Ape *a);
 // ? func_80037098();
-void func_8003721C(struct Ball_child *a, float b);
-void func_8003765C(struct Ball_child *a);
+void func_8003721C(struct Ape *a, float b);
+void func_8003765C(struct Ape *a);
 void func_80037718();
 // ? func_80037B1C();
-// ? func_80037B20();
+void func_80037B20(void);
 void ev_ball_init(void);
 // ? func_800380A8();
 void ev_ball_main(void);
@@ -162,14 +196,14 @@ void func_80038AB4(void);
 void func_80038DF4(void);
 void give_bananas(int bananas);
 void func_800390C8(int, Vec *, float);
-// ? func_80039410();
-void func_800394C4(struct Ball *);
+// ? g_ball_init_1();
+void g_ball_init_2(struct Ball *);
 void ball_func_0(struct Ball *);
 void ball_func_1(struct Ball *);
 void ball_func_ready_main(struct Ball *);
 void ball_func_3(struct Ball *);
 void ball_func_4(struct Ball *);
-void ball_func_5(struct Ball *);
+void ball_func_goal_init(struct Ball *);
 void ball_func_goal_main(struct Ball *);
 void ball_func_7(struct Ball *);
 void ball_func_replay_main(struct Ball *);
@@ -205,3 +239,5 @@ void func_8003CDC0(struct Ball *);
 void func_8003D3C4(struct Ball *);
 void animate_ball_size_change(struct Ball *);
 // ? draw_ball_hemispheres();
+
+#endif

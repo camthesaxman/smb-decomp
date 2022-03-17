@@ -1,3 +1,12 @@
+#ifndef _SRC_TYPES_H_
+#define _SRC_TYPES_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/GXEnum.h>
+#include <dolphin/GXFifo.h>
+#include <dolphin/mtx.h>
+
 // DIP switches
 enum
 {
@@ -173,6 +182,15 @@ struct ZMode
     /*0x08*/ GXBool updateEnable;
     /*0x09*/ u8 lineWidth;
     /*0x0C*/ s32 texOffsets;
+             u8 filler10[0x734-0x10];
+};
+
+struct GFXBufferInfo
+{
+    /*0x00*/ void *currFrameBuf;
+    /*0x04*/ void *frameBufs[2];
+    /*0x0C*/ u32 fbNum;
+    /*0x10*/ GXFifoObj *fifos[2];
 };
 
 struct UnkStruct8005562C_child
@@ -227,30 +245,13 @@ struct UnkStruct8005562C_child2
 };
 
 struct StageBgModel;
-
 struct Camera;
-
 struct Sprite;
 struct FontParams;
 struct GMA;
 struct TPL;
-
-typedef void (*Func802F20EC)();
-
-struct Ball_child;
+struct Ape;
 struct Ball;
-
-struct World
-{
-    s16 unk0;
-    s16 unk2;
-    u8 filler4[0x8-0x4];
-    s8 unk8;
-    u8 filler9[0x1C-0x9];
-    float unk1C;
-    u16 unk20;
-    u8 filler22[0x40-0x22];
-};  // size = 0x40
 
 struct SpritePoolInfo
 {
@@ -336,17 +337,23 @@ struct Struct8009492C
 {
     Vec unk0;
     S16Vec unkC;
-    /*
-    float unk14;
-    float unk18;
-    float unk1C;
-    */
     Vec unk14;
     float unk20;
     float unk24;
     struct GMAModelHeader *unk28;
     GXColor unk2C;
     u8 filler30[0x38-0x30];
+};
+
+struct Struct8003F890
+{
+    Vec unk0;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    u8 filler12[0x20-0x12];
+    float unk20;
+    float unk24;
 };
 
 struct Struct80039974
@@ -398,9 +405,11 @@ struct Struct8003C550
 {
     u8 filler0[8];
     s16 unk8;
-    u8 fillerA[0x14-0xA];
+    u8 fillerA[0x10-0xA];
+    s32 unk10;
     s16 unk14;
-    u8 filler16[0x24-0x16];
+    u16 unk16;
+    u8 filler18[0x24-0x18];
     Vec unk24;
     struct GMAModelHeader *unk30;
     Vec unk34;
@@ -408,7 +417,13 @@ struct Struct8003C550
     s16 unk4C;
     s16 unk4E;
     s16 unk50;
-    u8 filler52[0x88-0x52];
+    u8 filler52[0x70-0x52];
+    /*
+    float unk74;
+    u8 filler78[4];
+    */
+    Vec unk70;
+    Vec unk7C;
     Vec unk88;
     u8 filler94[0xA8-0x94];
     float unkA8;
@@ -662,7 +677,7 @@ struct Struct801EEC68
     s16 unk16;
 };
 
-struct Struct802BA200
+struct FogInfo
 {
     s8 unk0;
     u8 filler1[3];
@@ -852,3 +867,31 @@ struct Struct80290170
     s32 unk8;
     s32 unkC;
 };
+
+struct Struct802C67D4
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 filler8[0x50-0x8];
+};
+
+struct Struct80061BC4_sub
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u8 filler10[4];
+    u32 unk14;
+    u8 filler18[0x2C-0x18];
+};
+
+struct Struct80061BC4
+{
+    u8 filler0[0xC];
+    struct Struct80061BC4_sub unkC;
+};
+
+typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
+
+#endif

@@ -1,6 +1,8 @@
 #ifndef _DOLPHIN_GXSTRUCT_H_
 #define _DOLPHIN_GXSTRUCT_H_
 
+#include <dolphin/types.h>
+
 #define VI_TVMODE(format, interlace)  (((format) << 2) + (interlace))
 
 #define VI_INTERLACE     0
@@ -46,8 +48,8 @@ typedef struct
     /*0x0C*/ u16 viYOrigin;
     /*0x0E*/ u16 viWidth;
     /*0x10*/ u16 viHeight;
-    VIXFBMode xFBmode;
-    u8 field_rendering;
+    /*0x14*/ VIXFBMode xFBmode;
+    /*0x18*/ u8 field_rendering;
     u8 aa;
     u8 sample_pattern[12][2];
     u8 vfilter[7];

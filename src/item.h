@@ -1,12 +1,19 @@
+#ifndef _SRC_ITEM_H_
+#define _SRC_ITEM_H_
+
+#include <dolphin/types.h>
+#include <dolphin/mtx.h>
+#include <dolphin/GXStruct.h>
+
 struct Item
 {
-    s16 id;
-    s16 unk2;
-    s16 type;
-    s16 subtype;
-    u32 unk8;
-    s16 unkC;
-    s16 state;
+    /*0x00*/ s16 id;
+    /*0x02*/ s16 unk2;
+    /*0x04*/ s16 type;
+    /*0x06*/ s16 subtype;
+    /*0x08*/ u32 unk8;
+    /*0x0C*/ s16 unkC;
+    /*0x0E*/ s16 state;
     s16 unk10;
     s16 unk12;
     float unk14;
@@ -57,7 +64,7 @@ void ev_item_dest(void);
 void item_draw();
 // ? func_80068474();
 void func_800685C4(void);
-// ? func_800689B4();
+void func_800689B4(int);
 void make_stage_bananas(struct StageCollHdr *, int);
 void item_dummy_init(struct Item *);
 void item_dummy_main(struct Item *);
@@ -81,3 +88,5 @@ void item_pilot_collect(struct Item *, struct Struct800690DC *);
 void item_pilot_destroy(struct Item *);
 void func_8006A564(struct Item *);
 void item_pilot_debug(struct Item *);
+
+#endif

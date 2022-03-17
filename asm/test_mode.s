@@ -150,12 +150,12 @@ lbl_00000260:
 .global lbl_00000270
 lbl_00000270:
 /* 00000270 7C0802A6 */ mflr r0
-/* 00000274 3C600000 */ lis r3, unusedPadding@ha
+/* 00000274 3C600000 */ lis r3, lbl_802F2130@ha
 /* 00000278 90010004 */ stw r0, 4(r1)
 /* 0000027C 9421FFF0 */ stwu r1, -0x10(r1)
 /* 00000280 93E1000C */ stw r31, 0xc(r1)
 /* 00000284 3BE00000 */ li r31, 0
-/* 00000288 93E30000 */ stw r31, unusedPadding@l(r3)
+/* 00000288 93E30000 */ stw r31, lbl_802F2130@l(r3)
 /* 0000028C 4BFFFED1 */ bl camera_setup_singleplayer_viewport
 /* 00000290 4800B1BD */ bl lbl_0000B44C
 /* 00000294 4800BD0D */ bl lbl_0000BFA0
@@ -168,7 +168,7 @@ lbl_00000270:
 /* 000002B0 4BFFFEAD */ bl g_start_screen_fade
 /* 000002B4 3860FFFF */ li r3, -1
 /* 000002B8 38800001 */ li r4, 1
-/* 000002BC 4BFFFEA1 */ bl func_8002CF38
+/* 000002BC 4BFFFEA1 */ bl g_play_music
 /* 000002C0 3860000E */ li r3, 0xe
 /* 000002C4 4BFFFE99 */ bl bitmap_free_group
 /* 000002C8 4BFFFE95 */ bl func_800249D4
@@ -1130,7 +1130,7 @@ lbl_00001008:
 /* 00001024 4BFFF139 */ bl event_start
 /* 00001028 38600001 */ li r3, 1
 /* 0000102C 38800003 */ li r4, 3
-/* 00001030 4BFFF12D */ bl func_8002CF38
+/* 00001030 4BFFF12D */ bl g_play_music
 /* 00001034 38000001 */ li r0, 1
 /* 00001038 901F000C */ stw r0, 0xc(r31)
 /* 0000103C 38E00000 */ li r7, 0
@@ -1777,21 +1777,21 @@ lbl_00001994:
 /* 00001998 41820010 */ beq lbl_000019A8
 /* 0000199C 3860FFFF */ li r3, -1
 /* 000019A0 38800005 */ li r4, 5
-/* 000019A4 4BFFE7B9 */ bl func_8002CF38
+/* 000019A4 4BFFE7B9 */ bl g_play_music
 lbl_000019A8:
 /* 000019A8 A01B0000 */ lhz r0, 0(r27)
 /* 000019AC 540005EF */ rlwinm. r0, r0, 0, 0x17, 0x17
 /* 000019B0 41820010 */ beq lbl_000019C0
 /* 000019B4 807D0034 */ lwz r3, 0x34(r29)
 /* 000019B8 38800000 */ li r4, 0
-/* 000019BC 4BFFE7A1 */ bl func_8002CF38
+/* 000019BC 4BFFE7A1 */ bl g_play_music
 lbl_000019C0:
 /* 000019C0 A01B0000 */ lhz r0, 0(r27)
 /* 000019C4 540005AD */ rlwinm. r0, r0, 0, 0x16, 0x16
 /* 000019C8 4182019C */ beq lbl_00001B64
 /* 000019CC 3860FFFF */ li r3, -1
 /* 000019D0 38800001 */ li r4, 1
-/* 000019D4 4BFFE789 */ bl func_8002CF38
+/* 000019D4 4BFFE789 */ bl g_play_music
 /* 000019D8 4800018C */ b lbl_00001B64
 lbl_000019DC:
 /* 000019DC A01B0000 */ lhz r0, 0(r27)
@@ -7381,8 +7381,8 @@ lbl_00006974:
 /* 000069C0 28000000 */ cmplwi r0, 0
 /* 000069C4 4182001C */ beq lbl_000069E0
 lbl_000069C8:
-/* 000069C8 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 000069CC 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 000069C8 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 000069CC 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 000069D0 80630000 */ lwz r3, 0(r3)
 /* 000069D4 80630000 */ lwz r3, 0(r3)
 /* 000069D8 4BFF9785 */ bl VISetNextFrameBuffer
@@ -7947,8 +7947,8 @@ lbl_00007198:
 /* 000071C4 28000000 */ cmplwi r0, 0
 /* 000071C8 4182001C */ beq lbl_000071E4
 lbl_000071CC:
-/* 000071CC 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 000071D0 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 000071CC 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 000071D0 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 000071D4 80630000 */ lwz r3, 0(r3)
 /* 000071D8 80630000 */ lwz r3, 0(r3)
 /* 000071DC 4BFF8F81 */ bl VISetNextFrameBuffer
@@ -8667,8 +8667,8 @@ lbl_00007BE0:
 /* 00007C20 28000000 */ cmplwi r0, 0
 /* 00007C24 4182001C */ beq lbl_00007C40
 lbl_00007C28:
-/* 00007C28 3C600000 */ lis r3, lbl_802F1CA4@ha
-/* 00007C2C 38630000 */ addi r3, r3, lbl_802F1CA4@l
+/* 00007C28 3C600000 */ lis r3, gfxBufferInfo@ha
+/* 00007C2C 38630000 */ addi r3, r3, gfxBufferInfo@l
 /* 00007C30 80630000 */ lwz r3, 0(r3)
 /* 00007C34 80630000 */ lwz r3, 0(r3)
 /* 00007C38 4BFF8525 */ bl VISetNextFrameBuffer
@@ -9580,7 +9580,7 @@ lbl_00008954:
 lbl_00008980:
 /* 00008980 38600000 */ li r3, 0
 /* 00008984 4BFF77D9 */ bl func_80018648
-/* 00008988 4BFF77D5 */ bl func_80092D3C
+/* 00008988 4BFF77D5 */ bl g_draw_ball_shadow
 /* 0000898C 4BFF77D1 */ bl func_80054FF0
 /* 00008990 38600000 */ li r3, 0
 /* 00008994 4BFF77C9 */ bl func_800225C0
@@ -14995,7 +14995,7 @@ lbl_0000D9FC:
 /* 0000DA2C 4BFF2731 */ bl func_8008B2D4
 lbl_0000DA30:
 /* 0000DA30 807F006C */ lwz r3, 0x6c(r31)
-/* 0000DA34 4BFF2729 */ bl func_8008B838
+/* 0000DA34 4BFF2729 */ bl g_make_ape
 /* 0000DA38 907F0004 */ stw r3, 4(r31)
 /* 0000DA3C C01E0000 */ lfs f0, 0(r30)
 /* 0000DA40 D01F000C */ stfs f0, 0xc(r31)

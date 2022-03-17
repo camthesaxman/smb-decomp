@@ -9,10 +9,12 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "info.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
+#include "world.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -57,10 +59,10 @@ void camera_init(void)
         camera->sub28.fov = DEGREES_TO_S16(60);
         camera->sub28.unk32 = DEGREES_TO_S16(60);
         camera->sub28.aspect = SCREEN_ASPECT;
-        camera->sub28.left = 0.0f;
-        camera->sub28.top = 0.0f;
-        camera->sub28.width = 1.0f;
-        camera->sub28.height = 1.0f;
+        camera->sub28.vp.left = 0.0f;
+        camera->sub28.vp.top = 0.0f;
+        camera->sub28.vp.width = 1.0f;
+        camera->sub28.vp.height = 1.0f;
     }
     camera_apply_viewport(0);
 }
@@ -211,12 +213,13 @@ void ev_camera_main(void)
             if (!(camera->flags & (1 << 2)))
             {
                 mathutil_mtxA_to_mtx(camera->unk1A4);
+                // do stage tilt
                 if (eventInfo[EVENT_WORLD].state == EV_STATE_RUNNING
                  && !(camera->flags & (1 << 3)))
                 {
                     mathutil_mtxA_translate(&ball->pos);
-                    mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 * 0.6);
-                    mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 * 0.6);
+                    mathutil_mtxA_rotate_x(worldInfo[i].xrot * 0.6);
+                    mathutil_mtxA_rotate_z(worldInfo[i].zrot * 0.6);
                     mathutil_mtxA_translate_neg(&ball->pos);
                 }
                 mathutil_mtxA_to_mtx(camera->unk144);
@@ -225,14 +228,14 @@ void ev_camera_main(void)
             {
                 mathutil_mtxA_push();
                 mathutil_mtxA_translate(&ball->pos);
-                mathutil_mtxA_rotate_z(-lbl_80206BF0[i].unk2 >> 1);
-                mathutil_mtxA_rotate_x(-lbl_80206BF0[i].unk0 >> 1);
+                mathutil_mtxA_rotate_z(-worldInfo[i].zrot >> 1);
+                mathutil_mtxA_rotate_x(-worldInfo[i].xrot >> 1);
                 mathutil_mtxA_translate_neg(&ball->pos);
                 mathutil_mtxA_to_mtx(camera->unk1A4);
                 mathutil_mtxA_pop();
                 mathutil_mtxA_translate(&ball->pos);
-                mathutil_mtxA_rotate_x(lbl_80206BF0[i].unk0 >> 1);
-                mathutil_mtxA_rotate_z(lbl_80206BF0[i].unk2 >> 1);
+                mathutil_mtxA_rotate_x(worldInfo[i].xrot >> 1);
+                mathutil_mtxA_rotate_z(worldInfo[i].zrot >> 1);
                 mathutil_mtxA_translate_neg(&ball->pos);
                 mathutil_mtxA_to_mtx(camera->unk144);
             }
@@ -384,10 +387,10 @@ void setup_camera_viewport(int cameraId, float left, float top, float width, flo
 {
     struct Camera *camera = &cameraInfo[cameraId];
 
-    camera->sub28.left = left;
-    camera->sub28.top = top;
-    camera->sub28.width = width;
-    camera->sub28.height = height;
+    camera->sub28.vp.left = left;
+    camera->sub28.vp.top = top;
+    camera->sub28.vp.width = width;
+    camera->sub28.vp.height = height;
     if (width > 0.0f && height > 0.0f)
     {
         camera->sub28.aspect = SCREEN_ASPECT * (width / height);
@@ -511,14 +514,14 @@ void camera_apply_viewport(int cameraId)
     projMtx[0][2] -= projMtx[0][0] * camera->sub28.unk28 * camera->sub28.aspect * camera->sub28.unk38;
     projMtx[1][2] -= projMtx[1][1] * camera->sub28.unk2C * camera->sub28.unk38;
     GXSetProjection(projMtx, 0);
-    if (camera->sub28.width > 0.0f && camera->sub28.height > 0.0f)
+    if (camera->sub28.vp.width > 0.0f && camera->sub28.vp.height > 0.0f)
     {
         float fbW = currRenderMode->fbWidth;
         float fbH = currRenderMode->xfbHeight;
-        float left   = fbW * camera->sub28.left;
-        float top    = fbH * camera->sub28.top;
-        float width  = fbW * camera->sub28.width;
-        float height = fbH * camera->sub28.height;
+        float left   = fbW * camera->sub28.vp.left;
+        float top    = fbH * camera->sub28.vp.top;
+        float width  = fbW * camera->sub28.vp.width;
+        float height = fbH * camera->sub28.vp.height;
         GXSetViewport(left, top, width, height, 0.0f, 1.0f);
         GXSetScissor(left, top, width, height);
     }
@@ -1034,13 +1037,13 @@ void camera_func_attract_level(struct Camera *camera, struct Ball *ball)
     }
     else
     {
-        camera->eye.x = ballInfo[advDemoInfo.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
-        camera->eye.y = ballInfo[advDemoInfo.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
-        camera->eye.z = ballInfo[advDemoInfo.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
+        camera->eye.x = ballInfo[advDemoInfo.unkC].ape->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x60]);
+        camera->eye.y = ballInfo[advDemoInfo.unkC].ape->unk30.y + func_8008CDC0(f31, &lbl_80176434[0x75]);
+        camera->eye.z = ballInfo[advDemoInfo.unkC].ape->unk30.z + func_8008CDC0(f31, &lbl_80176434[0x8A]);
 
-        camera->lookAt.x = ballInfo[advDemoInfo.unkC].unkFC->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
-        camera->lookAt.y = ballInfo[advDemoInfo.unkC].unkFC->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
-        camera->lookAt.z = ballInfo[advDemoInfo.unkC].unkFC->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
+        camera->lookAt.x = ballInfo[advDemoInfo.unkC].ape->unk30.x + func_8008CDC0(f31, &lbl_80176434[0x9F]);
+        camera->lookAt.y = ballInfo[advDemoInfo.unkC].ape->unk30.y + func_8008CDC0(f31, &lbl_80176434[0xB4]);
+        camera->lookAt.z = ballInfo[advDemoInfo.unkC].ape->unk30.z + func_8008CDC0(f31, &lbl_80176434[0xC9]);
     }
 
     sp10.x = camera->lookAt.x - camera->eye.x;
@@ -1233,7 +1236,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (lbl_801F3A58.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.unk0 > 0x78)
+            if (infoWork.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.unk0 > 0x78)
                 camera->timerCurr--;
         }
 
@@ -1388,7 +1391,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     yaw = mathutil_atan2(sp28.x, sp28.z) - 32768;
     r3 = (s16)(yaw - camera->rotY);
     yaw = camera->rotY + CLAMP(r3, -512, 512);
-    if (!(camera->flags & (1 << 1)) && !(ball->flags & BALL_FLAG_12))
+    if (!(camera->flags & (1 << 1)) && !(ball->flags & BALL_FLAG_GOAL))
     {
         r3 = (s16)(ball->unk92 - yaw);
         if (r3 > 0x800)
@@ -1903,10 +1906,10 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     }
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp34, 0.0f);
-    goal = decodedStageLzPtr->goals[lbl_801F3A58.unkC];
-    if (lbl_801F3A58.unkE > 0)
+    goal = decodedStageLzPtr->goals[infoWork.unkC];
+    if (infoWork.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
         mathutil_mtxA_tf_point(&goal.pos, &goal.pos);
     }
     if (mathutil_vec_distance(&goal.pos, &ball->pos) < 16.0)
@@ -1916,7 +1919,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_rotate_z(goal.zrot);
         mathutil_mtxA_rotate_y(goal.yrot);
         mathutil_mtxA_rotate_x(goal.xrot);
-        f31 = mathutil_vec_mag(&lbl_801F3A58.unk10);
+        f31 = mathutil_vec_mag(&infoWork.unk10);
         if (mathutil_vec_distance(&goal.pos, &sp34.unk0) > 2.5 && (rand() & 3) && sp34.unk0.y > goal.pos.y)
         {
             double zero;
@@ -1969,8 +1972,8 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 if (rand() & 1)
                     camera->unk54.x = -camera->unk54.x;
                 camera->unk60 = camera->unk54.y + 0.5 * (0.5 + (rand() / 32767.0f));
-                goalp = &decodedStageLzPtr->goals[lbl_801F3A58.unkC];
-                mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
+                goalp = &decodedStageLzPtr->goals[infoWork.unkC];
+                mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
                 mathutil_mtxA_translate(&goalp->pos);
                 mathutil_mtxA_rotate_z(goalp->zrot);
                 mathutil_mtxA_rotate_y(goalp->yrot);
@@ -1992,11 +1995,11 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 sp60.x = 9.0 * (f31 * ((rand() / 32767.0f) - 0.5));
                 sp60.y = 2.5f;
                 sp60.z = 5.0f;
-                mathutil_mtxA_rigid_inv_tf_vec(&lbl_801F3A58.unk10, &sp54);
+                mathutil_mtxA_rigid_inv_tf_vec(&infoWork.unk10, &sp54);
                 if (sp54.z > 0.0)
                     sp60.z = -sp60.z;
                 mathutil_mtxA_tf_point(&sp60, &camera->eye);
-                if (lbl_801F3A58.unkE > 0)
+                if (infoWork.unkE > 0)
                     camera->state = 19;
             }
         }
@@ -2064,12 +2067,12 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[lbl_801F3A58.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.unkC];
     sp1C = goal->pos;
 
-    if (lbl_801F3A58.unkE > 0)
+    if (infoWork.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
         mathutil_mtxA_tf_point(&sp1C, &sp1C);
     }
 
@@ -2120,18 +2123,18 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[lbl_801F3A58.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.unkC];
     sp10 = goal->pos;
 
-    if (lbl_801F3A58.unkE > 0)
+    if (infoWork.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
+        mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
         mathutil_mtxA_tf_point(&sp10, &sp10);
     }
 
-    sp28.x = lbl_801F3A58.unk10.x;
-    sp28.y = lbl_801F3A58.unk10.y * 0.05;
-    sp28.z = lbl_801F3A58.unk10.z;
+    sp28.x = infoWork.unk10.x;
+    sp28.y = infoWork.unk10.y * 0.05;
+    sp28.z = infoWork.unk10.z;
     mathutil_vec_set_len(&sp28, &sp28, -4.0f);
 
     sp28.y += 2.5;
@@ -2176,8 +2179,8 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[lbl_801F3A58.unkC];
-    mathutil_mtxA_from_mtx(movableStageParts[lbl_801F3A58.unkE].unk24);
+    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
     mathutil_mtxA_translate(&goal->pos);
     mathutil_mtxA_rotate_z(goal->zrot);
     mathutil_mtxA_rotate_y(goal->yrot);
@@ -3025,8 +3028,8 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     g_get_replay_info(lbl_80250A68.unk0[ball->unk2E], &sp34);
 
     if (!(sp34.flags & 1)
-     || lbl_801F3A58.unkC >= decodedStageLzPtr->goalsCount
-     || lbl_801F3A58.unkE >= decodedStageLzPtr->collHdrsCount)
+     || infoWork.unkC >= decodedStageLzPtr->goalsCount
+     || infoWork.unkE >= decodedStageLzPtr->collHdrsCount)
     {
         camera->unk10E = 0;
         camera->unk110 = -1;
@@ -3038,8 +3041,8 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     }
     else
     {
-        camera->unk10E = lbl_801F3A58.unkE;
-        camera->unk110 = lbl_801F3A58.unkC;
+        camera->unk10E = infoWork.unkE;
+        camera->unk110 = infoWork.unkC;
 
         sp58 = decodedStageLzPtr->goals[camera->unk110].pos;
         mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
@@ -3296,7 +3299,7 @@ void camera_func_56(struct Camera *camera, struct Ball *ball)
     camera->unk70 = 0;
     camera->unk8C = ball->unk2A + 0x10000 - 0x8000;
 
-    if (ball->unkFC->unk10 == 2)
+    if (ball->ape->unk10 == 2)
         camera->unk88 = -3265;
     else
         camera->unk88 = -1753;
@@ -3452,7 +3455,7 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
 
     for (i = 0, b = &ballInfo[0]; i < 3; i++, b++)
     {
-        if (b->flags & (BALL_FLAG_11|BALL_FLAG_12))
+        if (b->flags & (BALL_FLAG_11|BALL_FLAG_GOAL))
             sp28 = b->unk150;
         else
         {

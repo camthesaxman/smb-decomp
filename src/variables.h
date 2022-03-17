@@ -1,3 +1,13 @@
+#ifndef _SRC_VARIABLES_H_
+#define _SRC_VARIABLES_H_
+
+#include <dolphin/types.h>
+#include <dolphin/GXStruct.h>
+#include <dolphin/OSAlloc.h>
+#include <dolphin/OSFont.h>
+
+#include "types.h"
+
 // .rodata section
 // extern ? lbl_8010F8A0;
 // extern ? crcTable;
@@ -5,8 +15,8 @@
 // extern ? lbl_8010FF84;
 // extern ? infoScript;
 // extern ? lbl_80110004;
-// extern ? lbl_801101C8;
-extern const s16 lbl_801101DC[];
+// extern ? countdownSounds;
+extern const s16 backgroundSongs[];
 // extern ? lbl_8011021C;
 // extern ? lbl_80110230;
 // extern ? lbl_8011023C;
@@ -70,7 +80,7 @@ extern const s16 lbl_801101DC[];
 // extern ? lbl_80171AA4;
 // extern ? lbl_80171AB0;
 // extern ? lbl_80171B10;
-// extern ? lbl_80171B40;
+// extern ? bgFogParamsTable;
 // extern ? lbl_80171B60;
 // extern ? lbl_80171B70;
 // extern ? lbl_80171BB0;
@@ -123,7 +133,7 @@ extern float lbl_801741CC[];
 // extern ? selSubmodeRelNames;
 // extern ? lbl_801755F8;
 // extern ? lbl_80175614;
-// extern ? lbl_801756BC;
+extern char *nameEntryText[];
 // extern ? lbl_801761F0;
 // extern ? cameraFuncs;
 // extern ? lbl_8017632C;
@@ -141,9 +151,9 @@ extern float lbl_801741CC[];
 // extern ? lbl_80180F14;
 // extern ? lbl_80180F64;
 // extern ? lbl_801818B0;
-// extern ? lbl_801818D0;
+// extern ? rankTexOffsets;
 // extern ? lbl_80181970;
-// extern ? lbl_80181A80;
+// extern ? minigameGfxFiles;
 // extern ? lbl_80181B80;
 // extern ? lbl_80181BC0;
 // extern ? lbl_80181BD0;
@@ -203,7 +213,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B7CF8;
 // extern ? lbl_801B7EE8;
 // extern ? lbl_801B7F88;
-// extern ? lbl_801B7FA8;
+// extern ? tutorialStickInputs;
 // extern ? lbl_801B86A8;
 // extern ? lbl_801B86D8;
 // extern ? lbl_801B86E4;
@@ -223,16 +233,16 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B9B48;
 // extern ? lbl_801B9B58;
 // extern ? lbl_801B9B68;
-// extern ? lbl_801B9BA0;
+// extern ? jungleModelFind;
 // extern ? lbl_801B9BB0;
 // extern ? lbl_801B9D48;
 // extern ? lbl_801B9D78;
 // extern ? lbl_801B9ED8;
 // extern ? lbl_801B9EF8;
 // extern ? lbl_801B9F64;
-// extern ? lbl_801B9FB0;
+// extern ? sunsetModelFind;
 // extern ? lbl_801B9FC8;
-// extern ? lbl_801BA084;
+// extern ? stormModelFind;
 // extern ? lbl_801BA0A4;
 // extern ? lbl_801BA0F8;
 // extern ? lbl_801BA210;
@@ -517,7 +527,6 @@ extern GXRenderModeObj GXPal528IntDf;
 // .bss section
 extern u8 lbl_801ED920[];
 extern GXRenderModeObj lbl_801EEB60;
-extern u8 lbl_801EEBA0[];
 
 extern struct Struct801EEC68 lbl_801EEC68;
 extern struct Struct801EEC80 lbl_801EEC80;
@@ -543,27 +552,6 @@ extern struct
 // extern ? lbl_801F065C;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
-extern struct
-{
-    u32 unk0;
-    s16 timerCurr;  // current clock time (in 60ths of a second)
-    s16 timerMax;  // maximum clock time (in 60ths of a second)
-    u8 filler8[0xC - 0x8];
-    s16 unkC;
-    s16 unkE;
-    Vec unk10;
-    u8 filler1C[0x1E - 0x1C];
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    u8 filler24[0x2E - 0x24];
-    s16 unk2E;
-} lbl_801F3A58;
-// extern ? lbl_801F3A8C;
-// extern ? lbl_801F3A9C;
-
-// extern ? lzssHeader;
-extern struct NaomiSpriteParams spriteParamsBuf[];
 
 extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
@@ -589,10 +577,6 @@ extern struct
 // extern ? lbl_80205688;
 extern struct SpritePoolInfo spritePoolInfo;
 
-// extern ? lbl_80205E00;
-
-extern struct World lbl_80206BF0[];
-// extern ? lbl_80206CF0;
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
 extern struct Struct80206DEC lbl_80206DEC;
@@ -680,7 +664,7 @@ extern u8 lbl_802B57A0[];
 // extern ? lbl_802B9390;
 // extern ? lbl_802BA190;
 // extern ? lbl_802BA1A0;
-extern struct Struct802BA200 lbl_802BA200;
+extern struct FogInfo fogInfo;
 // extern ? lbl_802BA210;
 // extern ? cardStat;
 // extern ? memcardInfo;
@@ -693,7 +677,7 @@ extern GXTexObj fontTexObj;
 // extern ? lbl_802C6314;
 // extern ? lbl_802C63D4;
 // extern ? lbl_802C6794;
-// extern ? lbl_802C67D4;
+extern struct Struct802C67D4 lbl_802C67D4[];
 // extern ? lbl_802C6918;
 // extern ? lbl_802C6BB8;
 // extern ? lbl_802C6BC8;
@@ -1132,13 +1116,13 @@ extern struct
 // extern ? SendCount;
 
 // .sbss section
-// extern ? lbl_802F1AE0;
-// extern ? lbl_802F1AE4;
+extern struct TPL *minigameNaomiTpl;
+extern struct TPL *lbl_802F1AE4;
 extern struct TPL *naomiBackgroundTpl;
-extern struct TPL *naomiStageTpl;  // unknown type
-// extern ? naomiCommonTpl;
-// extern ? lbl_802F1AF4;
-// extern ? lbl_802F1AF8;
+extern struct TPL *naomiStageTpl;
+extern struct TPL *naomiCommonTpl;
+extern struct NaomiObj *minigameNaomiObj;
+extern struct NaomiObj *lbl_802F1AF8;
 extern struct NaomiObj *naomiBackgroundObj;
 extern struct NaomiObj *naomiStageObj;
 extern struct NaomiObj *naomiCommonObj;
@@ -1209,11 +1193,11 @@ extern struct
     u8 unk3;
     u8 unk4[4];
 } lbl_802F1C10;  // size = 0x8
-// extern ? lbl_802F1C18;
-// extern ? lbl_802F1C1C;
-// extern ? lbl_802F1C20;
-// extern ? lbl_802F1C24;
-// extern ? lbl_802F1C25;
+extern s32 lbl_802F1C18;
+extern s32 lbl_802F1C1C;
+extern s32 lbl_802F1C20;
+extern s8 lbl_802F1C24;
+extern s8 lbl_802F1C25;
 // extern ? lbl_802F1C28;
 extern s16 lbl_802F1C30;
 extern s8 lbl_802F1C32;
@@ -1242,17 +1226,17 @@ extern s32 lbl_802F1C40;
 // extern ? lbl_802F1C90;
 // extern ? lbl_802F1C94;
 // extern ? lbl_802F1C98;
-// extern ? lbl_802F1CA0;
-extern void **lbl_802F1CA4;
+// extern ? drawingFinished;
+extern struct GFXBufferInfo *gfxBufferInfo;
 // extern ? lbl_802F1CA8;
 // extern ? lbl_802F1CAC;
 // extern ? lbl_802F1CB0;
-extern struct GMA *lbl_802F1CB8;
-// extern ? lbl_802F1CBC;
+extern struct GMA *minigameGma;
+// extern ? minigameTpl;
 extern struct GMA *decodedBgGma;
 extern struct TPL *decodedBgTpl;
 extern struct GMA *commonGma;
-// extern ? lbl_802F1CCC;
+// extern ? commonTpl;
 extern u8 resetCounter;
 extern u8 lbl_802F1CD1;
 extern u8 lbl_802F1CD2;
@@ -1313,7 +1297,7 @@ extern u32 lbl_802F1CD8;
 // extern ? lbl_802F1DF4;
 // extern ? lbl_802F1DF5;
 extern u32 lbl_802F1DF8;
-// extern ? lbl_802F1DFC;
+extern s32 lbl_802F1DFC;
 // extern ? lbl_802F1E00;
 // extern ? lbl_802F1E08;
 // extern ? lbl_802F1E0C;
@@ -1378,16 +1362,16 @@ extern s16 currStageId;
 // extern ? lbl_802F1F70;
 // extern ? lbl_802F1F74;
 // extern ? lbl_802F1F78;
-// extern ? lbl_802F1F80;
+extern int lbl_802F1F80;
 // extern ? lbl_802F1F88;
 // extern ? lbl_802F1F90;
 // extern ? lbl_802F1F98;
 // extern ? lbl_802F1F9C;
 // extern ? lbl_802F1FA0;
 extern u32 lbl_802F1FA4;
-// extern ? lbl_802F1FB0;
+extern int lbl_802F1FB0;
 // extern ? lbl_802F1FB8;
-// extern ? lbl_802F1FBC;
+extern u32 lbl_802F1FBC;
 // extern ? lbl_802F1FC0;
 // extern ? lbl_802F1FC4;
 extern s16 lbl_802F1FC8;
@@ -1477,7 +1461,7 @@ extern u32 *motLabel;
 // extern ? lbl_802F2124;
 // extern ? lbl_802F2128;
 // extern ? lbl_802F212C;
-// extern ? unusedPadding;
+// extern ? lbl_802F2130;
 // extern ? loadQueueTail;
 // extern ? loadQueueHead;
 // extern ? dvdReadStatus;
@@ -1571,7 +1555,8 @@ extern float lbl_802F21F0;
 // extern ? lbl_802F22B8;
 // extern ? lbl_802F22BC;
 // extern ? lbl_802F22C0;
-// extern ? lbl_802F22C8;
+extern u32 lbl_802F22C8;
+
 // extern ? BootInfo;
 // extern ? BI2DebugFlag;
 // extern ? AreWeInitialized;
@@ -4819,3 +4804,5 @@ extern const s8 lbl_802F28B0[8];
 // extern ? lbl_802F6C6C;
 // extern ? lbl_802F6C70;
 // extern ? lbl_802F6C78;
+
+#endif

@@ -46,9 +46,9 @@ PSVECCrossProduct:
 .global lbl_802F6758
 lbl_802F6758:
 	# ROM: 0x1F0178
-	.byte 0x3F, 0x00, 0x00, 0x00
+	.4byte 0x3F000000
 
 .global lbl_802F675C
 lbl_802F675C:
 	# ROM: 0x1F017C
-	.byte 0x40, 0x40, 0x00, 0x00
+	.4byte 0x40400000

@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "event.h"
 #include "gxutil.h"
+#include "info.h"
 #include "input.h"
 #include "item.h"
 #include "load.h"
@@ -19,6 +20,7 @@
 #include "ord_tbl.h"
 #include "sprite.h"
 #include "stage.h"
+#include "world.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -33,7 +35,7 @@ FORCE_BSS_ORDER(lbl_801EEC90)
 
 void polydisp_init(void)
 {
-    func_8009AAB0();
+    g_init_bg_fog_params();
 }
 
 static inline void show_loading_msg(void)
@@ -154,9 +156,9 @@ void draw_3d_scene(void)
         case SMD_GAME_OVER_INIT:
         case SMD_GAME_OVER_MAIN:
         case SMD_GAME_NAMEENTRY_READY_INIT:
-            switch (modeCtrl.unk28)
+            switch (modeCtrl.gameType)
             {
-            case 1:
+            case GAMETYPE_MAIN_COMPETITION:
                 draw_normal_game_scene();
                 break;
             default:
@@ -264,7 +266,7 @@ void draw_intro_av_logo(void)
 
 void draw_adv_demo_scene(void)
 {
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
@@ -275,14 +277,14 @@ void draw_adv_demo_scene(void)
         for (i = 0; i < 3; i++)
         {
             float f30;
-            if (ballInfo[i].unkFC->unk14 & (1 << 5))
+            if (ballInfo[i].ape->unk14 & (1 << 5))
                 continue;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate_xyz(
-                ballInfo[i].unkFC->unk30.x,
-                ballInfo[i].unkFC->unk30.y - 0.45,
-                ballInfo[i].unkFC->unk30.z);
-            f30 = lbl_80173FD0[ballInfo[i].unkFC->unk10];
+                ballInfo[i].ape->unk30.x,
+                ballInfo[i].ape->unk30.y - 0.45,
+                ballInfo[i].ape->unk30.z);
+            f30 = lbl_80173FD0[ballInfo[i].ape->unk10];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
@@ -297,9 +299,9 @@ void draw_adv_demo_scene(void)
     {
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(
-            ballInfo[0].unkFC->unk30.x,
-            ballInfo[0].unkFC->unk30.y - 0.25,
-            ballInfo[0].unkFC->unk30.z);
+            ballInfo[0].ape->unk30.x,
+            ballInfo[0].ape->unk30.y - 0.25,
+            ballInfo[0].ape->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
         g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
@@ -313,7 +315,7 @@ void draw_adv_demo_scene(void)
         for (i = 0; i < 2; i++, r27++)
         {
             mathutil_mtxA_from_mtxB();
-            mathutil_mtxA_translate(&ballInfo[0].unkFC->unk30);
+            mathutil_mtxA_translate(&ballInfo[0].ape->unk30);
             mathutil_mtxA_translate(&r27->pos);
             mathutil_mtxA_rotate_y(r27->yrot);
             mathutil_mtxA_rotate_x(r27->xrot);
@@ -397,8 +399,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - advTutorialInfo.transitionValue));
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
     g_nl2ngc_set_scale(baseScale);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
 
     // Draw the simulated analog stick
@@ -406,8 +408,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_push();
     mathutil_mtxA_rotate_x(CLAMP(advTutorialInfo.stickXRot * 12, -0x1000, 0x1000));
     mathutil_mtxA_rotate_z(CLAMP(advTutorialInfo.stickZRot * 8, -0x1000, 0x1000));
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(advTutorialInfo.transitionValue);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
@@ -438,8 +440,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_z(CLAMP(stickZRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_scale_s(0.99f);
     g_nl2ngc_set_scale(0.99f);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
     g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
 
@@ -450,8 +452,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_translate_xyz(0.0f, 0.00058f, 0.0f);
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
     g_nl2ngc_set_scale(baseScale);
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
 
     // Draw the A button
@@ -460,8 +462,8 @@ void g_draw_tutorial_button_and_joystick(void)
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
         g_nl2ngc_set_scale(1.0f);
     }
-    GXLoadPosMtxImm(mathutilData->mtxA, 0);
-    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
     g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
@@ -487,7 +489,7 @@ void func_8000C144(struct Struct8000C144 *a)
     float z = a->unk10;
     u8 filler[8];
 
-    gxutil_set_vtx_attrs((1<< GX_VA_POS));
+    gxutil_set_vtx_attrs((1 << GX_VA_POS));
     func_8009E110(1, 0, 1, 0);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7
@@ -554,8 +556,8 @@ void func_8000C388(void)
         sp8.z = 0.0f;
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(-currentCameraStructPtr->rotY);
-        mathutil_mtxA_rotate_z(-lbl_80206BF0[0].unk2);
-        mathutil_mtxA_rotate_x(-lbl_80206BF0[0].unk0);
+        mathutil_mtxA_rotate_z(-worldInfo[0].zrot);
+        mathutil_mtxA_rotate_x(-worldInfo[0].xrot);
         mathutil_mtxA_tf_vec(&sp8, &sp8);
         r30 = -mathutil_atan2(sp8.z, sp8.y);
         v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq(sp8.z, sp8.y)));
@@ -573,18 +575,18 @@ void draw_normal_game_scene(void)
     struct Ball *oldBall = currentBallStructPtr;
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
+        if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
             if (spritePoolInfo.unkC[i] == 0
              || spritePoolInfo.unkC[i] == 4
-             || (cameraInfo[i].flags & (1 << (31-0x19))))
+             || (cameraInfo[i].flags & (1 << 6)))
             {
-                if (!(cameraInfo[i].flags & (1 << (31-0x18))))
+                if (!(cameraInfo[i].flags & (1 << 7)))
                     continue;
             }
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
-            func_80092D3C();
+            g_draw_ball_shadow();
             func_80054FF0();
             func_800225C0(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -592,7 +594,7 @@ void draw_normal_game_scene(void)
             draw_monkey();
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                stage_draw();  // draws stage
+                stage_draw();
             func_80094A34();
             if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
             {
@@ -635,8 +637,8 @@ void func_8000C7A4(void)
     lbl_801EEC90.unk0 |= (1 << 3);
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f
-         && (cameraInfo[i].flags & (1 << (31-0x19))))
+        if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f
+         && (cameraInfo[i].flags & (1 << 6)))
         {
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
@@ -666,51 +668,20 @@ void func_8000C7A4(void)
 
 u16 lbl_802F02E0[4] = { ARROW_1P, ARROW_2P, ARROW_3P, ARROW_4P };
 
-#ifdef NONMATCHING
-static inline void mathutil_get_mtxA_translate_xyz(register float *px, register float *py, register float *pz)
-{
-#ifdef __MWERKS__
-    register float *mtxA;
-    //register float *_x = &v->x;
-    //register float *_y = &v->y;
-    //register float *_z = &v->z;
-    register float x, y, z;
-
-    asm
-    {
-        lis mtxA, LC_CACHE_BASE@ha
-        lfs x, 0x0C(mtxA)  // mtxA[0][3]
-        lfs y, 0x1C(mtxA)  // mtxA[1][3]
-        lfs z, 0x2C(mtxA)  // mtxA[2][3]
-        stfs x, 0(px)
-        stfs y, 0(py)
-        stfs z, 0(pz)
-    }
-
-    //*px = x;
-    //*py = y;
-    //*pz = z;
-
-#else
-    *px = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
-    *py = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
-    *pz = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
-#endif
-}
-
 void func_8000C8D4(void)
 {
-    int i;  // r24
-    struct Ball *ball;  // r26
+    struct Ball *ball;
     s8 *r25 = spritePoolInfo.unkC;
+    int i;
     Vec sp8;
     float f27;
+
     ball = ballInfo;
     for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r25++)
     {
         if (*r25 == 0 || *r25 == 4)
             continue;
-        if ((ball->flags & (1 << (31-0x1B))))
+        if ((ball->flags & (1 << 4)))
             continue;
         mathutil_mtxA_from_identity();
         f27 = 0.8 - 0.1 * (((unpausedFrameCounter / 16) + i) % 3);
@@ -720,29 +691,18 @@ void func_8000C8D4(void)
         mathutil_mtxA_rotate_y(cameraInfo[i].rotY - 0x8000);
         mathutil_mtxA_rotate_x(-0x4000);
         mathutil_mtxA_translate_xyz(0.0f, ball->currRadius, 0.0f);
-        mathutil_get_mtxA_translate_xyz(&sp8.x, &sp8.y, &sp8.z);
+        mathutil_get_mtxA_translate_alt(&sp8);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
-#else
-const double lbl_802F2998 = 0.8;
-const double lbl_802F29A0 = 0.1;
-const double lbl_802F29A8 = -4.0;
-asm void func_8000C8D4(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_8000C8D4.s"
-}
-#pragma peephole on
-#endif
 
 void func_8000CA9C(void)
 {
-    Func802F20EC r31;
-    Func802F20EC r30;
+    BallEnvFunc r31;
+    BallEnvFunc r30;
     int r4;
     u32 r5;
     Vec sp5C;
@@ -750,7 +710,7 @@ void func_8000CA9C(void)
 
     lbl_801EEC90.unk0 |= 1;
     func_80018648(modeCtrl.unk2C);
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     func_800225C0(modeCtrl.unk2C);
     draw_monkey();
@@ -881,7 +841,7 @@ void func_8000CA9C(void)
 void func_8000CF94(void)
 {
     func_80018648(modeCtrl.unk2C);
-    func_80092D3C();
+    g_draw_ball_shadow();
     func_80054FF0();
     draw_monkey();
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -900,7 +860,7 @@ void func_8000D018(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (cameraInfo[i].sub28.width > 0.0f && cameraInfo[i].sub28.height > 0.0f)
+        if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
             if ((spritePoolInfo.unkC[i] == 0 || spritePoolInfo.unkC[i] == 4)
              && !(cameraInfo[i].flags & (1 << 6)))
@@ -910,7 +870,7 @@ void func_8000D018(void)
                 lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
             func_80018648(i);
-            func_80092D3C();
+            g_draw_ball_shadow();
             func_80054FF0();
             func_800225C0(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -1095,7 +1055,7 @@ void draw_timer_bomb_fuse(void)
     float f1;
     struct NaomiMesh *mesh;
 
-    if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || lbl_801F3A58.timerCurr <= 0)
+    if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || infoWork.timerCurr <= 0)
         return;
 
     sprite = find_sprite_with_tag(2);
@@ -1120,7 +1080,7 @@ void draw_timer_bomb_fuse(void)
      */
 
     tempModel = lbl_802F1B4C;
-    t = (float)lbl_801F3A58.timerCurr / (float)lbl_801F3A58.timerMax;
+    t = (float)infoWork.timerCurr / (float)infoWork.timerMax;
 
     // Make a temporary copy of the timer fuse, which we will modify
     memcpy(
@@ -1227,7 +1187,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(lbl_801F3A58.unk0 & (1 << 3)))
+        if (!(infoWork.unk0 & (1 << 3)))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1245,7 +1205,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (lbl_801F3A58.unk0 & (1 << 3))
+        if (infoWork.unk0 & (1 << 3))
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1255,7 +1215,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (lbl_801F3A58.unk0 & (1 << 3))
+    if (infoWork.unk0 & (1 << 3))
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;
@@ -1307,7 +1267,7 @@ void set_backdrop_color(void)
         case SMD_GAME_INTR_SEL_MAIN:
         case SMD_GAME_OVER_POINT_INIT:
         case SMD_GAME_OVER_POINT_MAIN:
-            if ((modeCtrl.levelSetFlags & (3<<(31-0x1A))) == 0)
+            if ((modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))) == 0)
             {
                 color.r = 0;
                 color.g = 0;
@@ -1376,11 +1336,11 @@ void set_backdrop_color(void)
         break;
     }
 
-    if (r0 && lbl_802BA200.unkF != 0)
+    if (r0 && fogInfo.unkF != 0)
     {
-        color.r = lbl_802BA200.r;
-        color.g = lbl_802BA200.g;
-        color.b = lbl_802BA200.b;
+        color.r = fogInfo.r;
+        color.g = fogInfo.g;
+        color.b = fogInfo.b;
     }
     GXSetCopyClear(color, 0x00FFFFFF);
 }
@@ -1418,7 +1378,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
     case SMD_GAME_NAMEENTRY_READY_INIT:
-        if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.unk28 != 1)
+        if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
             g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);

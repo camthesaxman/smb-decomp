@@ -29,7 +29,7 @@ volatile int mramToAramInProgress;
 volatile int dvdReadStatus;
 int loadQueueHead;  // index of first added file
 int loadQueueTail;  // index of most recently added file
-u32 unusedPadding;
+u32 lbl_802F2130;
 
 #define ARAM_BASE 0x700000
 #define ARAM_SIZE 0x400000

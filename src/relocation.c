@@ -11,7 +11,7 @@ void relocation_unused(void)
     printf("id                %d\n", 0);
     printf("numSections       %d\n", 0);
     printf("sectionInfoOffset %08xh\n", 0);
-    printf("nameOffset        %08xh [%s]\n", 0, (char *)1);
+    printf("nameOffset        %08xh [%s]\n", 0, NULL);
     printf("nameSize          %d\n", 0);
     printf("bssSize           %d\n", 0);
     printf("relOffset         %08xh\n", 0);
@@ -22,47 +22,47 @@ void relocation_unused(void)
     printf("unresolved        %08xh\n", 0);
 }
 
-void relocation_load_module(char *name, struct MinigameLink *link)
+void relocation_load_module(char *name, struct RelModule *rel)
 {
     DVDFileInfo file;
 
-    link->info = NULL;
-    link->bss = NULL;
+    rel->info = NULL;
+    rel->bss = NULL;
     if (DVDOpen(name, &file))
     {
         u32 size = OSRoundUp32B(file.length);
 
-        link->info = OSAlloc(size);
-        if (link->info == NULL)
+        rel->info = OSAlloc(size);
+        if (rel->info == NULL)
             OSPanic("relocation.c", 64, "cannot OSAlloc\n");
 
-        if (g_read_dvd_file(&file, link->info, size, 0) != 0)
+        if (g_read_dvd_file(&file, rel->info, size, 0) != 0)
         {
-            link->bss = OSAlloc(link->info->bssSize != 0 ? link->info->bssSize : 32);
-            if (link->bss == NULL)
+            rel->bss = OSAlloc(rel->info->bssSize != 0 ? rel->info->bssSize : 32);
+            if (rel->bss == NULL)
                 OSPanic("relocation.c", 68, "cannot OSAlloc\n");
-            OSLink(&link->info->module, link->bss);
-            link->info->init();
+            OSLink(&rel->info->module, rel->bss);
+            rel->info->init();
         }
         else
         {
-            OSFree(link->info);
-            link->info = NULL;
+            OSFree(rel->info);
+            rel->info = NULL;
         }
 
         DVDClose(&file);
     }
 }
 
-void relocation_unload_module(struct MinigameLink *link)
+void relocation_unload_module(struct RelModule *rel)
 {
-    if (link->info != NULL)
+    if (rel->info != NULL)
     {
-        link->info->finish();
-        OSUnlink(&link->info->module);
-        OSFree(link->bss);
-        OSFree(link->info);
-        link->info = NULL;
-        link->bss = NULL;
+        rel->info->finish();
+        OSUnlink(&rel->info->module);
+        OSFree(rel->bss);
+        OSFree(rel->info);
+        rel->info = NULL;
+        rel->bss = NULL;
     }
 }
