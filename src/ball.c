@@ -2766,7 +2766,7 @@ void init_physball_from_ball(struct Ball *ball, struct PhysicsBall *physBall)
     physBall->vel.z = ball->vel.z;
 
     physBall->radius = ball->currRadius;
-    physBall->accel = ball->accel;
+    physBall->gravityAccel = ball->accel;
     physBall->restitution = ball->restitution;
     physBall->hardestColiSpeed = 0.0f;
     physBall->itemgroupId = 0;

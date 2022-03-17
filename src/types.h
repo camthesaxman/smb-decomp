@@ -374,7 +374,7 @@ struct PhysicsBall
     Vec vel;         
 
     float radius;
-    float accel;
+    float gravityAccel;
     float restitution;
 
     // The ball may collide with more than one surface during a frame. The "hardest" collision is

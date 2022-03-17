@@ -918,13 +918,13 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
         however, a constant velocity loss is first applied. This prevents the ball from
         bouncing tiny amounts when its normal velocity is small.
 
-        The constant velocity loss has a magnitude of 5 * ball->accel. This is the speed that the
-        ball would have if it fell from rest for five frames.
+        The constant velocity loss has a magnitude of 5 * ball->gravityAccel. This is the speed that
+        the ball would have if it fell from rest for five frames.
         */
 
         // If the ball's normal velocity is already smaller than the constant normal velocity
         // loss...
-        if (normalSpeed >= (-5.0 * ball->accel))
+        if (normalSpeed >= (-5.0 * ball->gravityAccel))
         {
             // Set the ball's normal velocity to zero
             ballVel.x -= coliNormal.x * normalSpeed;
@@ -934,12 +934,12 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
         else
         {
             // This is the ball's speed after applying the constant speed loss (negated)
-            adjustedBallSpeed = normalSpeed + 5.0 * ball->accel;
+            adjustedBallSpeed = normalSpeed + 5.0 * ball->gravityAccel;
 
             // Apply the constant normal velocity loss to the ball's velocity
-            ballVel.x -= coliNormal.x * (-5.0 * ball->accel);
-            ballVel.y -= coliNormal.y * (-5.0 * ball->accel);
-            ballVel.z -= coliNormal.z * (-5.0 * ball->accel);
+            ballVel.x -= coliNormal.x * (-5.0 * ball->gravityAccel);
+            ballVel.y -= coliNormal.y * (-5.0 * ball->gravityAccel);
+            ballVel.z -= coliNormal.z * (-5.0 * ball->gravityAccel);
 
             // Scale the ball's remaining normal velocity by the restitution, pointing it
             // in the opposite direction it was before the collision. The negations make this a
