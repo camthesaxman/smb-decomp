@@ -813,8 +813,8 @@ void collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone
 /*
 This function is responsible for placing the ball back on the outside of the surface it collided
 with, as well as applying friction and bounce restitution to the ball's translational velocity. The
-ball's rotation on the other hand is not affected here - it's a visual effect which does not affect
-physics.
+ball's rotation, on the other hand, is not affected here - it's a visual effect which does not
+affect physics.
 
 All other ball-stage collision functions ultimately call this one at least once. For example, if the
 ball collided with a triangle face, coliPlane->point would be one of the triangle's vertices and
@@ -870,7 +870,8 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
     ball->pos = ballPos;
 
     // Compute the component of the ball's velocity which is parallel to the collision normal,
-    // a.k.a. its "normal speed". It will be negative if a collision actually occurred.
+    // a.k.a. its "normal velocity". The dot product of the ball's velocity with the collision
+    // normal a.k.a. the "normal speed" will be negative when a collision actually occurred.
     coliNormal = coliPlane->normal;
     ballVel.x = ball->vel.x;
     ballVel.y = ball->vel.y;
@@ -896,11 +897,11 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
         Apply friction to the ball.
 
         The friction constant (ball->friction) is simply the fraction of the ball's velocity
-        _parallel to the surface_ that is lost per collision. The ball's normal velocity (velocity
-        parallel to the collision normal) is unaffected by friction.
+        _parallel to the surface_ that is lost per collision. The ball's normal velocity is
+        unaffected by friction.
         */
 
-        // Compute the component of the ball's velocity which is parallel to the collision surface
+        // Compute the ball's parallel velocity
         parallelVelX = ballVel.x - (coliNormal.x * normalSpeed);
         parallelVelY = ballVel.y - (coliNormal.y * normalSpeed);
         parallelVelZ = ballVel.z - (coliNormal.z * normalSpeed);
@@ -914,10 +915,10 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
 
         The restitution constant (ball->restitution) is the fraction of the ball's normal velocity
         which is retained after a collision. Before this proportional restitution is applied
-        however, a constant normal velocity loss is first applied. This prevents the ball from
+        however, a constant velocity loss is first applied. This prevents the ball from
         bouncing tiny amounts when its normal velocity is small.
 
-        The constant velocity loss has a magnitude of 5 * ball->accel. This is the velocity that the
+        The constant velocity loss has a magnitude of 5 * ball->accel. This is the speed that the
         ball would have if it fell from rest for five frames.
         */
 
@@ -925,7 +926,7 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
         // loss...
         if (normalSpeed >= (-5.0 * ball->accel))
         {
-            // ... set the ball's normal velocity to zero
+            // Set the ball's normal velocity to zero
             ballVel.x -= coliNormal.x * normalSpeed;
             ballVel.y -= coliNormal.y * normalSpeed;
             ballVel.z -= coliNormal.z * normalSpeed;
@@ -940,7 +941,7 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
             ballVel.y -= coliNormal.y * (-5.0 * ball->accel);
             ballVel.z -= coliNormal.z * (-5.0 * ball->accel);
 
-            // Scale the ball's remaining velocity by the restitution, pointing the normal velocity
+            // Scale the ball's remaining normal velocity by the restitution, pointing it
             // in the opposite direction it was before the collision. The negations make this a
             // little confusing to see. The 1.0 added to ball->restitution essentially brings the
             // ball's normal velocity back to zero.
