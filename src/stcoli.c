@@ -809,3 +809,96 @@ void collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone
         collide_ball_with_plane(ball, &plane);
     }
 }
+
+void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPlane)
+{
+    Vec ballVel;
+    Vec coliNormal;
+    Point3d ballPos;
+    f32 planeDeltaX;
+    f32 planeDeltaY;
+    f32 planeDeltaZ;
+    f32 planeDist;
+    f32 penetrationDist;
+    f32 normalSpeed;
+    u32 isHardestColi;
+    f32 parallelVelX;
+    f32 parallelVelY;
+    f32 parallelVelZ;
+    f32 adjustedBallSpeed;
+
+    // Compute the ball center's distance from the plane
+    ballPos = ball->pos;
+    planeDeltaX = ballPos.x - coliPlane->point.x;
+    planeDeltaY = ballPos.y - coliPlane->point.y;
+    planeDeltaZ = ballPos.z - coliPlane->point.z;
+    planeDist = planeDeltaX * coliPlane->normal.x + planeDeltaY * coliPlane->normal.y +
+                planeDeltaZ * coliPlane->normal.z;
+    if (planeDist > ball->radius)
+        return;
+
+    isHardestColi = -1;
+    if (!(ball->flags & 1))
+        isHardestColi = 0;
+
+    penetrationDist = ball->radius - planeDist;
+    ballPos.x += coliPlane->normal.x * penetrationDist;
+    ballPos.y += coliPlane->normal.y * penetrationDist;
+    ballPos.z += coliPlane->normal.z * penetrationDist;
+
+    ball->pos = ballPos;
+    coliNormal = coliPlane->normal;
+
+    ballVel.x = ball->vel.x;
+    ballVel.y = ball->vel.y;
+    ballVel.z = ball->vel.z;
+
+    normalSpeed =
+        (coliNormal.x * ballVel.x) + (coliNormal.y * ballVel.y) + (coliNormal.z * ballVel.z);
+
+    if ((normalSpeed < 0.0) && (ball->restitution > FLT_EPSILON))
+    {
+        if (normalSpeed < ball->hardestColiSpeed)
+        {
+            ball->hardestColiSpeed = normalSpeed;
+            ball->hardestColiItemgroupId = ball->itemgroupId;
+            isHardestColi = 0;
+        }
+
+        parallelVelX = ballVel.x - (coliNormal.x * normalSpeed);
+        parallelVelY = ballVel.y - (coliNormal.y * normalSpeed);
+        parallelVelZ = ballVel.z - (coliNormal.z * normalSpeed);
+        ballVel.x -= parallelVelX * ball->friction;
+        ballVel.y -= parallelVelY * ball->friction;
+        ballVel.z -= parallelVelZ * ball->friction;
+
+        if (normalSpeed >= (-5.0 * ball->accel))
+        {
+            ballVel.x -= coliNormal.x * normalSpeed;
+            ballVel.y -= coliNormal.y * normalSpeed;
+            ballVel.z -= coliNormal.z * normalSpeed;
+        }
+        else
+        {
+            adjustedBallSpeed = normalSpeed + 5.0 * ball->accel;
+
+            ballVel.x -= coliNormal.x * (-5.0 * ball->accel);
+            ballVel.y -= coliNormal.y * (-5.0 * ball->accel);
+            ballVel.z -= coliNormal.z * (-5.0 * ball->accel);
+            ballVel.x -= (1.0 + ball->restitution) * (coliNormal.x * adjustedBallSpeed);
+            ballVel.y -= (1.0 + ball->restitution) * (coliNormal.y * adjustedBallSpeed);
+            ballVel.z -= (1.0 + ball->restitution) * (coliNormal.z * adjustedBallSpeed);
+        }
+
+        ball->vel.x = ballVel.x;
+        ball->vel.y = ballVel.y;
+        ball->vel.z = ballVel.z;
+    }
+
+    if (isHardestColi == 0)
+    {
+        ball->hardestColiPlane = *coliPlane;
+    }
+
+    ball->flags |= 1;
+}

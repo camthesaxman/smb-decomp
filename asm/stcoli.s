@@ -1879,6 +1879,7 @@ lbl_8003F5F0:
 /* 8003F604 0003B524  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global collide_ball_with_plane
 collide_ball_with_plane:
 /* 8003F608 0003B528  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -2050,6 +2051,7 @@ lbl_8003F87C:
 /* 8003F884 0003B7A4  CB A1 00 50 */	lfd f29, 0x50(r1)
 /* 8003F888 0003B7A8  38 21 00 68 */	addi r1, r1, 0x68
 /* 8003F88C 0003B7AC  4E 80 00 20 */	blr
+.endif
 
 .global test_line_intersects_rect
 test_line_intersects_rect:
@@ -5674,7 +5676,6 @@ lbl_802F3640:
 	# ROM: 0x1ED060
 	.4byte 0x3FF00000
 	.4byte 0
-.endif
 
 .global lbl_802F3648
 lbl_802F3648:
@@ -5687,6 +5688,7 @@ lbl_802F3650:
 	# ROM: 0x1ED070
 	.4byte 0x40140000
 	.4byte 0
+.endif
 
 .global lbl_802F3658
 lbl_802F3658:
