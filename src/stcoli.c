@@ -827,17 +827,17 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
     Vec ballVel;
     Vec coliNormal;
     Point3d ballPos;
-    f32 planeDeltaX;
-    f32 planeDeltaY;
-    f32 planeDeltaZ;
-    f32 planeDist;
-    f32 penetrationDist;
-    f32 normalSpeed;
     u32 isHardestColi;
-    f32 parallelVelX;
-    f32 parallelVelY;
-    f32 parallelVelZ;
-    f32 adjustedBallSpeed;
+    float planeDeltaX;
+    float planeDeltaY;
+    float planeDeltaZ;
+    float planeDist;
+    float penetrationDist;
+    float normalSpeed;
+    float parallelVelX;
+    float parallelVelY;
+    float parallelVelZ;
+    float adjustedBallSpeed;
 
     // Compute the ball center's distance from the collision plane
     ballPos = ball->pos;
