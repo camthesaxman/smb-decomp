@@ -349,6 +349,11 @@ struct Struct8009492C
     u8 filler30[0x38-0x30];
 };
 
+enum
+{
+    COLI_FLAG_OCCURRED = 1 << 0, // If at least one ball collision occurred on the current frame
+};
+
 struct ColiPlane
 {
     Point3d point; // A point on the plane

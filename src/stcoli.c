@@ -810,6 +810,18 @@ void collide_ball_with_cone(struct PhysicsBall *ball, struct StageColiCone *cone
     }
 }
 
+/*
+This function is responsible for placing the ball back on the outside of the surface it collided
+with, as well as applying friction and bounce restitution to the ball's translational velocity. The
+ball's rotation on the other hand is not affected here - it's a visual effect which does not affect
+physics.
+
+All other ball-stage collision functions ultimately call this one at least once. For example, if the
+ball collided with a triangle face, coliPlane->point would be one of the triangle's vertices and
+coliPlane->normal would be the triangle's normal. If the ball collided with the circular edge of a
+cylinder, coliPlane->point would be the nearest point on the circular edge to the ball's center, and
+coliPlane->normal would be the direction from the circular edge's point to the ball's center.
+*/
 void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPlane)
 {
     Vec ballVel;
@@ -827,78 +839,127 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
     f32 parallelVelZ;
     f32 adjustedBallSpeed;
 
-    // Compute the ball center's distance from the plane
+    // Compute the ball center's distance from the collision plane
     ballPos = ball->pos;
     planeDeltaX = ballPos.x - coliPlane->point.x;
     planeDeltaY = ballPos.y - coliPlane->point.y;
     planeDeltaZ = ballPos.z - coliPlane->point.z;
     planeDist = planeDeltaX * coliPlane->normal.x + planeDeltaY * coliPlane->normal.y +
                 planeDeltaZ * coliPlane->normal.z;
+
+    // If the ball is too far in front of the plane to be touching it, don't count a collision
     if (planeDist > ball->radius)
         return;
 
+    // The ball can collide with more than one surface during a frame. Keep track of which of these
+    // collisions is the "hardest" so that visual collision effects can be applied based on it.
+
+    // If the ball hasn't collided with any surface yet this frame, this collision is the hardest
+    // one. Note that isHardestColi == 0 is "true" and -1 is "false" for some reason
     isHardestColi = -1;
-    if (!(ball->flags & 1))
+    if (!(ball->flags & COLI_FLAG_OCCURRED))
         isHardestColi = 0;
 
+    // Plane the ball back on top of / outside the collision surface
     penetrationDist = ball->radius - planeDist;
     ballPos.x += coliPlane->normal.x * penetrationDist;
     ballPos.y += coliPlane->normal.y * penetrationDist;
     ballPos.z += coliPlane->normal.z * penetrationDist;
 
+    // Record the ball's new position
     ball->pos = ballPos;
-    coliNormal = coliPlane->normal;
 
+    // Compute the component of the ball's velocity which is parallel to the collision normal,
+    // a.k.a. its "normal speed". It will be negative if a collision actually occurred.
+    coliNormal = coliPlane->normal;
     ballVel.x = ball->vel.x;
     ballVel.y = ball->vel.y;
     ballVel.z = ball->vel.z;
-
     normalSpeed =
         (coliNormal.x * ballVel.x) + (coliNormal.y * ballVel.y) + (coliNormal.z * ballVel.z);
 
+    // If the ball's velocity points into the surface and our bounce restitution is greater than
+    // zero, a collision actually occurred
     if ((normalSpeed < 0.0) && (ball->restitution > FLT_EPSILON))
     {
+        // If this collision is harder than the current hardest collision, record this collision as
+        // the hardest one. A collision is "harder" if the ball's normal speed is greater in
+        // magnitude.
         if (normalSpeed < ball->hardestColiSpeed)
         {
             ball->hardestColiSpeed = normalSpeed;
             ball->hardestColiItemgroupId = ball->itemgroupId;
-            isHardestColi = 0;
+            isHardestColi = 0; // true
         }
 
+        /*
+        Apply friction to the ball.
+
+        The friction constant (ball->friction) is simply the fraction of the ball's velocity
+        _parallel to the surface_ that is lost per collision. The ball's normal velocity (velocity
+        parallel to the collision normal) is unaffected by friction.
+        */
+
+        // Compute the component of the ball's velocity which is parallel to the collision surface
         parallelVelX = ballVel.x - (coliNormal.x * normalSpeed);
         parallelVelY = ballVel.y - (coliNormal.y * normalSpeed);
         parallelVelZ = ballVel.z - (coliNormal.z * normalSpeed);
+        // Subtract a portion of the parallel velocity from the ball's overall velocity
         ballVel.x -= parallelVelX * ball->friction;
         ballVel.y -= parallelVelY * ball->friction;
         ballVel.z -= parallelVelZ * ball->friction;
 
+        /*
+        Apply bounce restitution to the ball.
+
+        The restitution constant (ball->restitution) is the fraction of the ball's normal velocity
+        which is retained after a collision. Before this proportional restitution is applied
+        however, a constant normal velocity loss is first applied. This prevents the ball from
+        bouncing tiny amounts when its normal velocity is small.
+
+        The constant velocity loss has a magnitude of 5 * ball->accel. This is the velocity that the
+        ball would have if it fell from rest for five frames.
+        */
+
+        // If the ball's normal velocity is already smaller than the constant normal velocity
+        // loss...
         if (normalSpeed >= (-5.0 * ball->accel))
         {
+            // ... set the ball's normal velocity to zero
             ballVel.x -= coliNormal.x * normalSpeed;
             ballVel.y -= coliNormal.y * normalSpeed;
             ballVel.z -= coliNormal.z * normalSpeed;
         }
         else
         {
+            // This is the ball's speed after applying the constant speed loss (negated)
             adjustedBallSpeed = normalSpeed + 5.0 * ball->accel;
 
+            // Apply the constant normal velocity loss to the ball's velocity
             ballVel.x -= coliNormal.x * (-5.0 * ball->accel);
             ballVel.y -= coliNormal.y * (-5.0 * ball->accel);
             ballVel.z -= coliNormal.z * (-5.0 * ball->accel);
+
+            // Scale the ball's remaining velocity by the restitution, pointing the normal velocity
+            // in the opposite direction it was before the collision. The negations make this a
+            // little confusing to see. The 1.0 added to ball->restitution essentially brings the
+            // ball's normal velocity back to zero.
             ballVel.x -= (1.0 + ball->restitution) * (coliNormal.x * adjustedBallSpeed);
             ballVel.y -= (1.0 + ball->restitution) * (coliNormal.y * adjustedBallSpeed);
             ballVel.z -= (1.0 + ball->restitution) * (coliNormal.z * adjustedBallSpeed);
         }
 
+        // Record the ball's new velocity
         ball->vel.x = ballVel.x;
         ball->vel.y = ballVel.y;
         ball->vel.z = ballVel.z;
     }
 
+    // If this collision was the hardest one, also record the collision plane (used for drawing
+    // visual collision effects)
     if (isHardestColi == 0)
-    {
         ball->hardestColiPlane = *coliPlane;
-    }
 
-    ball->flags |= 1;
+    // Mark that a collision occurred on this frame
+    ball->flags |= COLI_FLAG_OCCURRED;
 }
