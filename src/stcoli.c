@@ -964,3 +964,55 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
     // Mark that a collision occurred on this frame
     ball->flags |= COLI_FLAG_OCCURRED;
 }
+
+u32 test_line_intersects_rect(Vec *lineStart, Vec *lineEnd, struct ColiRect *rect)
+{
+    Vec start;
+    Vec end;
+    Vec planePoint;
+    float halfWidth;
+    float halfHeight;
+    u32 intersects;
+
+    start = *lineStart;
+    end = *lineEnd;
+
+    // Transform line into rectangle local space
+    mathutil_mtxA_from_translate(&rect->pos);
+    mathutil_mtxA_rotate_z(rect->rot.z);
+    mathutil_mtxA_rotate_y(rect->rot.y);
+    mathutil_mtxA_rotate_x(rect->rot.x);
+    mathutil_mtxA_rigid_inv_tf_point(&start, &start);
+    mathutil_mtxA_rigid_inv_tf_point(&end, &end);
+
+    // Test if line crosses plane
+    if ((end.z < 0.0 && start.z < 0.0) || (end.z > 0.0 && start.z > 0.0))
+        intersects = FALSE;
+    else
+    {
+        planePoint.x = start.x - end.x;
+        planePoint.y = start.y - end.y;
+        planePoint.z = start.z - end.z;
+
+        if (planePoint.z > FLT_EPSILON)
+        {
+            planePoint.x = end.x - planePoint.x * (end.z / planePoint.z);
+            planePoint.y = end.y - planePoint.y * (end.z / planePoint.z);
+        }
+        else
+        {
+            planePoint.x = end.x;
+            planePoint.y = end.y;
+        }
+
+        halfWidth = 0.5 * rect->width;
+        halfHeight = 0.5 * rect->height;
+        if (planePoint.x < -halfWidth || planePoint.x > halfWidth)
+            intersects = FALSE;
+        else if (planePoint.y < -halfHeight || planePoint.y > halfHeight)
+            intersects = FALSE;
+        else
+            intersects = TRUE;
+    }
+    return intersects;
+}

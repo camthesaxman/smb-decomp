@@ -2053,6 +2053,7 @@ lbl_8003F87C:
 /* 8003F88C 0003B7AC  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global test_line_intersects_rect
 test_line_intersects_rect:
 /* 8003F890 0003B7B0  7C 08 02 A6 */	mflr r0
@@ -2153,6 +2154,7 @@ lbl_8003F9E0:
 /* 8003F9E8 0003B908  38 21 00 40 */	addi r1, r1, 0x40
 /* 8003F9EC 0003B90C  7C 08 03 A6 */	mtlr r0
 /* 8003F9F0 0003B910  4E 80 00 20 */	blr
+.endif
 
 .global stcoli_sub15
 stcoli_sub15:
