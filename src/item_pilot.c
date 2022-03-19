@@ -206,7 +206,7 @@ void item_pilot_main(struct Item *item)
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].unk24);
         mathutil_mtxA_tf_point(&item->unk20, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
@@ -370,7 +370,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->unk2E;
-            mathutil_mtxA_from_mtx(movableStageParts[b->unk58].unk24);
+            mathutil_mtxA_from_mtx(itemgroups[b->unk58].unk24);
             mathutil_mtxA_tf_point(&item->unk20, &sp178.unk34);
             mathutil_mtxA_tf_vec(&item->unk2C, &sp178.unk40);
             sp178.unk4C = item->xrot;

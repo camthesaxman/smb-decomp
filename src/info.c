@@ -765,7 +765,7 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
     infoWork.unk1C = infoWork.timerCurr;
     if (c > 0)
     {
-        struct ItemgroupInfo *r29 = &movableStageParts[c];
+        struct ItemgroupInfo *r29 = &itemgroups[c];
         struct StageGoal *goal = &decodedStageLzPtr->goals[goalId];
         Vec sp20;
         Vec sp14;

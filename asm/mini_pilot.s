@@ -6791,8 +6791,8 @@ lbl_00006314:
 /* 00006420 4800004C */ b lbl_0000646C
 lbl_00006424:
 /* 00006424 1C800084 */ mulli r4, r0, 0x84
-/* 00006428 3C600000 */ lis r3, movableStageParts@ha
-/* 0000642C 38030000 */ addi r0, r3, movableStageParts@l
+/* 00006428 3C600000 */ lis r3, itemgroups@ha
+/* 0000642C 38030000 */ addi r0, r3, itemgroups@l
 /* 00006430 7C602214 */ add r3, r0, r4
 /* 00006434 38630024 */ addi r3, r3, 0x24
 /* 00006438 4BFF9D15 */ bl mathutil_mtxA_from_mtx
@@ -6870,8 +6870,8 @@ lbl_00006490:
 /* 00006550 4800004C */ b lbl_0000659C
 lbl_00006554:
 /* 00006554 1C800084 */ mulli r4, r0, 0x84
-/* 00006558 3C600000 */ lis r3, movableStageParts@ha
-/* 0000655C 38030000 */ addi r0, r3, movableStageParts@l
+/* 00006558 3C600000 */ lis r3, itemgroups@ha
+/* 0000655C 38030000 */ addi r0, r3, itemgroups@l
 /* 00006560 7C602214 */ add r3, r0, r4
 /* 00006564 38630024 */ addi r3, r3, 0x24
 /* 00006568 4BFF9BE5 */ bl mathutil_mtxA_from_mtx
@@ -7105,8 +7105,8 @@ lbl_00006890:
 /* 000068CC 4800004C */ b lbl_00006918
 lbl_000068D0:
 /* 000068D0 1C800084 */ mulli r4, r0, 0x84
-/* 000068D4 3C600000 */ lis r3, movableStageParts@ha
-/* 000068D8 38030000 */ addi r0, r3, movableStageParts@l
+/* 000068D4 3C600000 */ lis r3, itemgroups@ha
+/* 000068D8 38030000 */ addi r0, r3, itemgroups@l
 /* 000068DC 7C602214 */ add r3, r0, r4
 /* 000068E0 38630024 */ addi r3, r3, 0x24
 /* 000068E4 4BFF9869 */ bl mathutil_mtxA_from_mtx

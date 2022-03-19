@@ -12147,16 +12147,16 @@ lbl_0000B280:
 /* 0000B294 80030000 */ lwz r0, decodedStageGmaPtr@l(r3)
 /* 0000B298 28000000 */ cmplwi r0, 0
 /* 0000B29C 418200BC */ beq lbl_0000B358
-/* 0000B2A0 3C800000 */ lis r4, movableStageParts@ha
+/* 0000B2A0 3C800000 */ lis r4, itemgroups@ha
 /* 0000B2A4 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 0000B2A8 38A40000 */ addi r5, r4, movableStageParts@l
+/* 0000B2A8 38A40000 */ addi r5, r4, itemgroups@l
 /* 0000B2AC 38030000 */ addi r0, r3, lbl_8020AB88@l
 /* 0000B2B0 3C800000 */ lis r4, mathutilData@ha
-/* 0000B2B4 3C600000 */ lis r3, movableStagePartCount@ha
+/* 0000B2B4 3C600000 */ lis r3, itemgroupCount@ha
 /* 0000B2B8 3B650000 */ addi r27, r5, 0
 /* 0000B2BC 7C1A0378 */ mr r26, r0
 /* 0000B2C0 3BC40000 */ addi r30, r4, mathutilData@l
-/* 0000B2C4 3BE30000 */ addi r31, r3, movableStagePartCount@l
+/* 0000B2C4 3BE30000 */ addi r31, r3, itemgroupCount@l
 /* 0000B2C8 3BA00000 */ li r29, 0
 /* 0000B2CC 48000080 */ b lbl_0000B34C
 lbl_0000B2D0:
@@ -17735,8 +17735,8 @@ lbl_00010548:
 /* 00010654 4800004C */ b lbl_000106A0
 lbl_00010658:
 /* 00010658 1C800084 */ mulli r4, r0, 0x84
-/* 0001065C 3C600000 */ lis r3, movableStageParts@ha
-/* 00010660 38030000 */ addi r0, r3, movableStageParts@l
+/* 0001065C 3C600000 */ lis r3, itemgroups@ha
+/* 00010660 38030000 */ addi r0, r3, itemgroups@l
 /* 00010664 7C602214 */ add r3, r0, r4
 /* 00010668 38630024 */ addi r3, r3, 0x24
 /* 0001066C 4BFEFB65 */ bl mathutil_mtxA_from_mtx
@@ -17861,9 +17861,9 @@ lbl_00010808:
 /* 00010834 1C860084 */ mulli r4, r6, 0x84
 /* 00010838 80A3000C */ lwz r5, 0xc(r3)
 /* 0001083C 5400801E */ slwi r0, r0, 0x10
-/* 00010840 3C600000 */ lis r3, movableStageParts@ha
+/* 00010840 3C600000 */ lis r3, itemgroups@ha
 /* 00010844 7C003670 */ srawi r0, r0, 6
-/* 00010848 3BE30000 */ addi r31, r3, movableStageParts@l
+/* 00010848 3BE30000 */ addi r31, r3, itemgroups@l
 /* 0001084C 7FBF2214 */ add r29, r31, r4
 /* 00010850 7C000194 */ addze r0, r0
 /* 00010854 7C000734 */ extsh r0, r0
@@ -17988,19 +17988,19 @@ lbl_00010A18:
 /* 00010A28 28000000 */ cmplwi r0, 0
 /* 00010A2C 41820108 */ beq lbl_00010B34
 /* 00010A30 38000006 */ li r0, 6
-/* 00010A34 3C800000 */ lis r4, movableStageParts@ha
+/* 00010A34 3C800000 */ lis r4, itemgroups@ha
 /* 00010A38 B001011E */ sth r0, 0x11e(r1)
 /* 00010A3C 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 00010A40 38C40000 */ addi r6, r4, movableStageParts@l
+/* 00010A40 38C40000 */ addi r6, r4, itemgroups@l
 /* 00010A44 38030000 */ addi r0, r3, lbl_8020AB88@l
 /* 00010A48 3C800000 */ lis r4, lbl_801EEC90@ha
 /* 00010A4C 3CA00000 */ lis r5, mathutilData@ha
-/* 00010A50 3C600000 */ lis r3, movableStagePartCount@ha
+/* 00010A50 3C600000 */ lis r3, itemgroupCount@ha
 /* 00010A54 3B660000 */ addi r27, r6, 0
 /* 00010A58 7C1A0378 */ mr r26, r0
 /* 00010A5C 3AC40000 */ addi r22, r4, lbl_801EEC90@l
 /* 00010A60 3BE50000 */ addi r31, r5, mathutilData@l
-/* 00010A64 3AA30000 */ addi r21, r3, movableStagePartCount@l
+/* 00010A64 3AA30000 */ addi r21, r3, itemgroupCount@l
 /* 00010A68 3B000000 */ li r24, 0
 /* 00010A6C 480000B8 */ b lbl_00010B24
 lbl_00010A70:
@@ -18066,16 +18066,16 @@ lbl_00010B34:
 /* 00010B40 8003005C */ lwz r0, 0x5c(r3)
 /* 00010B44 28000000 */ cmplwi r0, 0
 /* 00010B48 408200E0 */ bne lbl_00010C28
-/* 00010B4C 3C800000 */ lis r4, movableStageParts@ha
-/* 00010B50 38A40000 */ addi r5, r4, movableStageParts@l
+/* 00010B4C 3C800000 */ lis r4, itemgroups@ha
+/* 00010B50 38A40000 */ addi r5, r4, itemgroups@l
 /* 00010B54 3C600000 */ lis r3, lbl_802099E8@ha
 /* 00010B58 38030000 */ addi r0, r3, lbl_802099E8@l
 /* 00010B5C 3C800000 */ lis r4, lbl_802F1B4C@ha
-/* 00010B60 3C600000 */ lis r3, movableStagePartCount@ha
+/* 00010B60 3C600000 */ lis r3, itemgroupCount@ha
 /* 00010B64 3A850000 */ addi r20, r5, 0
 /* 00010B68 7C180378 */ mr r24, r0
 /* 00010B6C 3AC40000 */ addi r22, r4, lbl_802F1B4C@l
-/* 00010B70 3AA30000 */ addi r21, r3, movableStagePartCount@l
+/* 00010B70 3AA30000 */ addi r21, r3, itemgroupCount@l
 /* 00010B74 3B400000 */ li r26, 0
 /* 00010B78 480000A0 */ b lbl_00010C18
 lbl_00010B7C:
@@ -18131,17 +18131,17 @@ lbl_00010C18:
 lbl_00010C28:
 /* 00010C28 3C600000 */ lis r3, currentCameraStructPtr@ha
 /* 00010C2C 80C30000 */ lwz r6, currentCameraStructPtr@l(r3)
-/* 00010C30 3C800000 */ lis r4, movableStageParts@ha
+/* 00010C30 3C800000 */ lis r4, itemgroups@ha
 /* 00010C34 3C600000 */ lis r3, lbl_8020A348@ha
-/* 00010C38 38A40000 */ addi r5, r4, movableStageParts@l
+/* 00010C38 38A40000 */ addi r5, r4, itemgroups@l
 /* 00010C3C C3E60038 */ lfs f31, 0x38(r6)
 /* 00010C40 38030000 */ addi r0, r3, lbl_8020A348@l
 /* 00010C44 3C800000 */ lis r4, lbl_802F1B4C@ha
-/* 00010C48 3C600000 */ lis r3, movableStagePartCount@ha
+/* 00010C48 3C600000 */ lis r3, itemgroupCount@ha
 /* 00010C4C 3AE50000 */ addi r23, r5, 0
 /* 00010C50 7C180378 */ mr r24, r0
 /* 00010C54 3AA40000 */ addi r21, r4, lbl_802F1B4C@l
-/* 00010C58 3AC30000 */ addi r22, r3, movableStagePartCount@l
+/* 00010C58 3AC30000 */ addi r22, r3, itemgroupCount@l
 /* 00010C5C 3BE00000 */ li r31, 0
 /* 00010C60 48000150 */ b lbl_00010DB0
 lbl_00010C64:

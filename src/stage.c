@@ -46,7 +46,7 @@ struct Preview stagePreview;  // 78
 
 struct Struct80206DEC lbl_80206DEC;
 
-struct ItemgroupInfo movableStageParts[0x48];  // 148
+struct ItemgroupInfo itemgroups[0x48];  // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
@@ -151,7 +151,7 @@ void ev_stage_main(void)
             *r5 = f3;
         }
     }
-    movpart = movableStageParts;
+    movpart = itemgroups;
     coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
     {
@@ -284,7 +284,7 @@ void draw_blur_bridge_accordions(void)
     f30 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     t -= f30 * mathutil_floor(t / f30);
     t += (float)decodedStageLzPtr->unk0;
-    movpart = &movableStageParts[1];
+    movpart = &itemgroups[1];
     r30 = decodedStageLzPtr->itemgroups + 1;
     for (i = 1; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
@@ -342,7 +342,7 @@ void g_animate_stage(float a)
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     f31 -= f3 * mathutil_floor(f31 / f3);
     f31 += decodedStageLzPtr->unk0;
-    movpart = movableStageParts;
+    movpart = itemgroups;
     coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
     {
@@ -422,7 +422,7 @@ void func_8004482C(void)
     struct StageItemgroup *coll;
     int i;
 
-    movpart = movableStageParts;
+    movpart = itemgroups;
     coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 0x48; i++, movpart++, coll++)
     {
@@ -490,7 +490,7 @@ void load_stage(int stageId)
     load_bg_files(get_stage_background(stageId));
     if (loadedStageId != stageId || bgChanged)
     {
-        movableStagePartCount = decodedStageLzPtr->itemgroupCount < 0x48 ? decodedStageLzPtr->itemgroupCount : 0x48;
+        itemgroupCount = decodedStageLzPtr->itemgroupCount < 0x48 ? decodedStageLzPtr->itemgroupCount : 0x48;
         if (gamePauseStatus & (1 << (31-0x1D)))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
@@ -734,7 +734,7 @@ void func_80044E18(void)
 
     r26 = lbl_802099E8;
     r22 = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < movableStagePartCount; r26++, i++, r22++)
+    for (i = 0; i < itemgroupCount; r26++, i++, r22++)
     {
         r26->unk0 = (void *)r17;
         r26->unk4 = r30;
@@ -865,7 +865,7 @@ void func_80044E18(void)
     r4 = 0;
     r5 = decodedStageLzPtr->itemgroups;
     r7 = lbl_8020A348;
-    for (r6 = 0; r6 < movableStagePartCount; r6++, r7++, r5++)
+    for (r6 = 0; r6 < itemgroupCount; r6++, r7++, r5++)
     {
         r7->unk0 = (void *)&lbl_80209D48[r4];
         r7->unk4 = r5->unk7C;
@@ -1229,7 +1229,7 @@ void compute_stage_bounding_sphere(void)
         struct Struct8020A348 *r3 = lbl_8020A348;
         int i;
 
-        for (i = 0; i < movableStagePartCount; i++, r3++)
+        for (i = 0; i < itemgroupCount; i++, r3++)
         {
             struct Struct8020A348_child *r5 = r3->unk0;
             int r6;
@@ -1275,7 +1275,7 @@ void compute_stage_bounding_sphere(void)
         struct Struct8020A348 *r3 = lbl_8020AB88;
         int i;
 
-        for (i = 0; i < movableStagePartCount; i++, r3++)
+        for (i = 0; i < itemgroupCount; i++, r3++)
         {
             struct Struct8020A348_child *r5 = r3->unk0;
             int r6;
@@ -1361,12 +1361,12 @@ void func_800463E8(Vec *a, float *b)
 
     if (decodedStageGmaPtr != NULL)
     {
-        struct ItemgroupInfo *movpart = movableStageParts;
+        struct ItemgroupInfo *movpart = itemgroups;
         struct Struct8020A348 *iter2 = lbl_8020AB88;
         int j;
         int i;
 
-        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
 
@@ -1408,9 +1408,9 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        movpart = movableStageParts;
+        movpart = itemgroups;
         iter2 = lbl_8020AB88;
-        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
 
@@ -1441,12 +1441,12 @@ void func_800463E8(Vec *a, float *b)
     }
     else if (decodedStageLzPtr != NULL && decodedStageLzPtr->lvlModels != NULL)
     {
-        struct ItemgroupInfo *movpart = movableStageParts;
+        struct ItemgroupInfo *movpart = itemgroups;
         struct Struct8020A348 *iter2 = lbl_8020A348;
         int j;
         int i;
 
-        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
             mathutil_mtxA_from_mtx(movpart->unk24);
@@ -1487,9 +1487,9 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        movpart = movableStageParts;
+        movpart = itemgroups;
         iter2 = lbl_8020A348;
-        for (i = 0; i < movableStagePartCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
 
@@ -1950,7 +1950,7 @@ void stage_draw(void)
     if (backgroundInfo.unk8C != 0)
         g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
     sp7C.unk0 = 32;
-    r28 = movableStageParts;
+    r28 = itemgroups;
     r27 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r28++, r27++)
     {
@@ -2027,9 +2027,9 @@ void stage_draw(void)
             struct GMAModelHeader *model;
 
             sp7C.unk2 = 6;
-            movpart = movableStageParts;
+            movpart = itemgroups;
             r23 = lbl_8020AB88;
-            for (i = 0; i < movableStagePartCount; i++, r23++, movpart++)
+            for (i = 0; i < itemgroupCount; i++, r23++, movpart++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
@@ -2066,9 +2066,9 @@ void stage_draw(void)
             struct NaomiModel *model;
             int j;
 
-            movpart = movableStageParts;
+            movpart = itemgroups;
             r23 = lbl_802099E8;
-            for (i = 0; i < movableStagePartCount; i++, movpart++, r23++)
+            for (i = 0; i < itemgroupCount; i++, movpart++, r23++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
@@ -2100,10 +2100,10 @@ void stage_draw(void)
             float f29;
             struct Struct8020A348_child *r27;
 
-            movpart = movableStageParts;
+            movpart = itemgroups;
             f29 = currentCameraStructPtr->sub28.unk38;
             r23 = lbl_8020A348;
-            for (i = 0; i < movableStagePartCount; i++, r23++, movpart++)
+            for (i = 0; i < itemgroupCount; i++, r23++, movpart++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
@@ -2238,7 +2238,7 @@ void stage_draw(void)
         int j;
 
         mathutil_mtx_copy(mathutilData->mtxB, sp8);
-        movpart = movableStageParts;
+        movpart = itemgroups;
         r23 = decodedStageLzPtr->itemgroups;
         for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r23++)
         {

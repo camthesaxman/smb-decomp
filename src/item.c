@@ -227,7 +227,7 @@ void item_draw(void)
             if (r28 != item->attachedTo)
             {
                 mathutil_mtxA_from_mtx(sp8);
-                mathutil_mtxA_mult_right(movableStageParts[item->attachedTo].unk24);
+                mathutil_mtxA_mult_right(itemgroups[item->attachedTo].unk24);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
                 r28 = item->attachedTo;
             }
@@ -295,7 +295,7 @@ void func_800685C4(void)
         {
             if (r25 != item->attachedTo)
             {
-                mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
+                mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].unk24);
                 r25 = item->attachedTo;
             }
             mathutil_mtxA_tf_point(&item->unk20, &sp40);

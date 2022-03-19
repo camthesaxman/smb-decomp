@@ -97,7 +97,7 @@ lbl_800452C0:
 /* 800452E4 00041204  38 A5 00 C4 */	addi r5, r5, 0xc4
 /* 800452E8 00041208  7C C6 02 14 */	add r6, r6, r0
 lbl_800452EC:
-/* 800452EC 0004120C  80 0D 9D 68 */	lwz r0, movableStagePartCount //@sda21(r13)
+/* 800452EC 0004120C  80 0D 9D 68 */	lwz r0, itemgroupCount //@sda21(r13)
 /* 800452F0 00041210  7C 04 00 00 */	cmpw r4, r0
 /* 800452F4 00041214  41 80 FF CC */	blt lbl_800452C0
 /* 800452F8 00041218  80 6D 9D 50 */	lwz r3, decodedStageLzPtr //@sda21(r13)

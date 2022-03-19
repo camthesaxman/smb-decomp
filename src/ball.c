@@ -2315,7 +2315,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
         }
         else
         {
-            mathutil_mtxA_from_mtx(movableStageParts[b->hardestColiItemgroupId].unk24);
+            mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].unk24);
             mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
@@ -2440,7 +2440,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
 void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct ItemgroupInfo *movpart = &movableStageParts[a->hardestColiItemgroupId];
+    struct ItemgroupInfo *movpart = &itemgroups[a->hardestColiItemgroupId];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2549,7 +2549,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         if (c == 0 && b->hardestColiItemgroupId > 0)
             func_8003BBF4(b, &sp20);
 
-        mathutil_mtxA_from_mtx(movableStageParts[b->hardestColiItemgroupId].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].unk24);
         mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;
