@@ -1016,3 +1016,69 @@ u32 test_line_intersects_rect(Vec *lineStart, Vec *lineEnd, struct ColiRect *rec
     }
     return intersects;
 }
+
+static struct ColiRect jamabarColiRects[] = {
+    {
+        {0, 0.5, 1.75},
+        {0, 0, 0},
+        {0, 0, 1},
+        1,
+        1,
+    },
+    {
+        {-0.5, 0.5, 0},
+        {0, DEGREES_TO_S16(-90), 0},
+        {-1, 0, 0},
+        3.5,
+        1,
+    },
+    {
+        {0, 0.5, -1.75},
+        {0, DEGREES_TO_S16(180), 0},
+        {0, 0, -1},
+        1,
+        1,
+    },
+    {
+        {0.5, 0.5, 0},
+        {0, DEGREES_TO_S16(90), 0},
+        {1, 0, 0},
+        3.5,
+        1,
+    },
+};
+
+void stcoli_sub15(struct PhysicsBall *ball, struct Stobj *stobj)
+{
+    Point3d ballPos_sp14;
+    f32 temp_f1;
+    f32 temp_f2;
+    s32 temp_r30;
+    struct ColiRect *coliRect;
+    s32 i;
+
+    mathutil_mtxA_from_translate(&stobj->g_some_pos);
+    mathutil_mtxA_rotate_x(stobj->rot.x);
+    mathutil_mtxA_rotate_y(stobj->rot.y);
+    mathutil_mtxA_rotate_z(stobj->rot.z);
+    stcoli_sub31(ball, ball);
+    ballPos_sp14 = ball->pos;
+
+    coliRect = jamabarColiRects;
+    for (i = 0; i < 4; i++, coliRect++)
+        collide_ball_with_rect(ball, coliRect);
+    temp_f1 = 0.75 * (ball->pos.z - ballPos_sp14.z);
+    stobj->g_local_pos.z -= temp_f1;
+    ball->pos.z += temp_f1;
+    temp_f2 = stobj->g_local_vel.z;
+    if ((temp_f1 * temp_f2) > 0.0)
+    {
+        stobj->g_local_vel.z *= 0.5;
+        ball->vel.z = (ball->vel.z + (2.5 * (temp_f2 - stobj->g_local_vel.z)));
+    }
+    mathutil_mtxA_from_translate(&stobj->g_some_pos);
+    mathutil_mtxA_rotate_x((s32)stobj->rot.x);
+    mathutil_mtxA_rotate_y((s32)stobj->rot.y);
+    mathutil_mtxA_rotate_z((s32)stobj->rot.z);
+    stcoli_sub30(ball, ball);
+}

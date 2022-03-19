@@ -2156,6 +2156,7 @@ lbl_8003F9E0:
 /* 8003F9F0 0003B910  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global stcoli_sub15
 stcoli_sub15:
 /* 8003F9F4 0003B914  7C 08 02 A6 */	mflr r0
@@ -2245,6 +2246,7 @@ lbl_8003FAFC:
 /* 8003FB3C 0003BA5C  83 81 00 20 */	lwz r28, 0x20(r1)
 /* 8003FB40 0003BA60  38 21 00 30 */	addi r1, r1, 0x30
 /* 8003FB44 0003BA64  4E 80 00 20 */	blr
+.endif
 
 .global stcoli_sub16
 stcoli_sub16:
@@ -5690,7 +5692,6 @@ lbl_802F3650:
 	# ROM: 0x1ED070
 	.4byte 0x40140000
 	.4byte 0
-.endif
 
 .global lbl_802F3658
 lbl_802F3658:
@@ -5703,6 +5704,7 @@ lbl_802F3660:
 	# ROM: 0x1ED080
 	.4byte 0x40040000
 	.4byte 0
+.endif
 
 .global lbl_802F3668
 lbl_802F3668:
@@ -5771,6 +5773,8 @@ lbl_802F36A0:
 .section .data
 
     .balign 8
+
+.if 0
 .global lbl_801B7EE8
 lbl_801B7EE8:
 	# ROM: 0x1B4EE8
@@ -5814,6 +5818,7 @@ lbl_801B7EE8:
 	.4byte 0
 	.4byte 0x40600000
 	.4byte 0x3F800000
+.endif
 
 .global lbl_801B7F88
 lbl_801B7F88:

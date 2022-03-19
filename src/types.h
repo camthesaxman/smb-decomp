@@ -935,4 +935,56 @@ struct Struct80061BC4
 
 typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
 
+// Stage object (stobj) type
+enum
+{
+    SOT_BUMPER,
+    SOT_JAMABAR,
+    SOT_GOALTAPE,
+    SOT_GOALBAG,
+    SOT_GOALBAG_EXMASTER,
+    SOT_MF_PNL_BUMPER,
+    SOT_MF_PNL_ELECTRAP,
+    SOT_MF_BULLET_TEST,
+    SOT_MF_BOX,
+    SOT_BUMPER_BGSPECIAL,
+    SOT_NAMEENT_BTN,
+};
+
+struct Stobj 
+{ /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
+    s32 id;
+    s16 g_some_id;
+    u16 type;
+    u32 g_some_bitflag;
+    s16 g_mode;
+    s16 g_counter;
+    Point3d g_model_origin;
+    Point3d position;
+    Point3d position_2; /* Copy of position? */
+    float bounding_sphere_radius; /* Has something to do w/ collision */
+    void (* coli_func)(struct Stobj *, struct PhysicsBall *);
+    Vec scale;
+    float unk48;
+    float unk4c;
+    float unk50;
+    struct GmaModelHeader *model;
+    Point3d g_some_pos; /* Has something to do w/ position */
+    Vec vel;
+    S16Vec rot;
+    short unk76;
+    short unk78;
+    Point3d g_prev_pos;
+    S16Vec g_prev_rot;
+    float unk90;
+    float unk94;
+    float unk98;
+    float unk9c;
+    s8 itemgroup_id;
+    void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
+    Point3d g_some_pos2;
+    Point3d g_local_pos;
+    Vec g_local_vel;
+};
+
 #endif
