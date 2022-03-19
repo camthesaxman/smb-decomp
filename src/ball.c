@@ -161,8 +161,8 @@ float func_80036CAC(struct Ape *a)
 void func_80036EB8(struct Ape *a)
 {
     struct Ball *ball = &ballInfo[a->unkC0];
-    struct Struct8003FB48 sp70;
-    struct Struct8003FB48 sp54;
+    struct RaycastHit sp70;
+    struct RaycastHit sp54;
     Vec sp48;
     Vec sp3C;
     Vec spC[] =
@@ -192,7 +192,7 @@ void func_80036EB8(struct Ape *a)
         mathutil_mtxA_tf_point(&spC[i], &sp48);
         stcoli_sub16(&sp48, &sp54, NULL);
         mathutil_mtxA_pop();
-        if (sp54.unk0 == 0 || sp54.unk4.y < sp70.unk4.y - 1.0)
+        if (sp54.flags == 0 || sp54.pos.y < sp70.pos.y - 1.0)
         {
             ball->flags |= BALL_FLAG_01;
             sp3C.x = sp48.x;
@@ -442,7 +442,7 @@ void lbl_8003781C(struct Ape *a, int b)
 {
     struct Ball *r31;
     struct Ball *r29 = &ballInfo[a->unkC0];
-    struct Struct8003FB48 sp50;
+    struct RaycastHit sp50;
     int r27;
     float f31;
 
@@ -458,7 +458,7 @@ void lbl_8003781C(struct Ape *a, int b)
 
     stcoli_sub16(&r29->pos, &sp50, NULL);
     a->unk14 &= -20;
-    if (!(sp50.unk0 & 1) && r29->vel.y < -0.16203702986240387f)
+    if (!(sp50.flags & 1) && r29->vel.y < -0.16203702986240387f)
         a->unk14 |= 2;
     else if (mathutil_vec_mag(&r29->unkB8) < 0.00027777777f)
         a->unk14 |= 1;
@@ -1307,7 +1307,7 @@ void func_80038AB4(void)
 void func_80038DF4(void)
 {
     struct Struct8009492C sp30;
-    struct Struct8003FB48 sp14;
+    struct RaycastHit sp14;
     Vec sp8;
     struct Ball *ball;
     s8 *r25;
@@ -1329,7 +1329,7 @@ void func_80038DF4(void)
             continue;
         if (stcoli_sub16(&ball->pos, &sp14, &sp8) == 0)
             continue;
-        f2 = 1.0 - (ball->pos.y - sp14.unk4.y) * 0.2;
+        f2 = 1.0 - (ball->pos.y - sp14.pos.y) * 0.2;
         if (f2 < 0.0f)
             continue;
 
@@ -1342,9 +1342,9 @@ void func_80038DF4(void)
         sp30.unk14.y = sp30.unk14.x;
         sp30.unk14.z = sp30.unk14.x;
 
-        mathutil_vec_to_euler(&sp14.unk10, &sp30.unkC);
+        mathutil_vec_to_euler(&sp14.normal, &sp30.unkC);
         sp30.unkC.z = ball->unk2C;
-        sp30.unk0 = sp14.unk4;
+        sp30.unk0 = sp14.pos;
         func_8009492C(&sp30);
     }
 }

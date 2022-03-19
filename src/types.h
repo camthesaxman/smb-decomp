@@ -306,11 +306,11 @@ struct ReplayInfo
     u8 filler14[4];
 };
 
-struct Struct8003FB48
+struct RaycastHit
 {
-    u32 unk0;
-    Vec unk4;
-    Vec unk10;
+    u32 flags;
+    Point3d pos;
+    Vec normal;
 };
 
 typedef u32 (*Func802F20F0)();

@@ -275,7 +275,7 @@ void func_800685C4(void)
     int r23;
     float f2;
     float f1;
-    struct Struct8003FB48 sp58;
+    struct RaycastHit sp58;
     Vec sp4C;
     Vec sp40;
     struct Struct8009492C sp8;
@@ -332,11 +332,11 @@ void func_800685C4(void)
         }
         else
         {
-            mathutil_vec_to_euler(&sp58.unk10, &sp8.unkC);
+            mathutil_vec_to_euler(&sp58.normal, &sp8.unkC);
             item->unk6C.x = sp8.unkC.x;
             item->unk6C.y = sp8.unkC.y;
             sp8.unkC.z = item->unk6C.z;
-            sp8.unk0 = sp58.unk4;
+            sp8.unk0 = sp58.pos;
             item->unk74 = sp8.unk0.y - sp40.y;
         }
         sp8.unk14 = item->unk7C;

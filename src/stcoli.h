@@ -23,7 +23,7 @@ void collide_ball_with_cone(struct PhysicsBall *, struct StageColiCone *cone);
 void collide_ball_with_plane(struct PhysicsBall *physBall, struct ColiPlane *coliHit);
 u32 test_line_intersects_rect(Point3d *lineStart, Point3d *lineEnd, struct ColiRect *rect);
 void stcoli_sub15(struct PhysicsBall *ball, struct Stobj *stobj);
-int stcoli_sub16(Vec *, struct Struct8003FB48 *, Vec *);
+int stcoli_sub16(Vec *, struct RaycastHit *, Vec *);
 // ? stcoli_sub17();
 // ? stcoli_sub18();
 // ? stcoli_sub19();

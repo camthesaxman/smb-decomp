@@ -484,7 +484,7 @@ void func_800A6874(void)
     int i;
     int r25;
     int j;
-    struct Struct8003FB48 sp60;
+    struct RaycastHit sp60;
     Quaternion sp50;
     Mtx sp20;
     Vec sp14;
@@ -508,12 +508,12 @@ void func_800A6874(void)
                 if ((u32)stcoli_sub16(&sp14, &sp60, 0) != 0)
                 {
                     mathutil_mtxA_from_mtx(mathutilData->mtxB);
-                    sp14.x = sp60.unk4.x + sp60.unk10.x * 0.02;
-                    sp14.y = sp60.unk4.y + sp60.unk10.y * 0.02;
-                    sp14.z = sp60.unk4.z + sp60.unk10.z * 0.02;
+                    sp14.x = sp60.pos.x + sp60.normal.x * 0.02;
+                    sp14.y = sp60.pos.y + sp60.normal.y * 0.02;
+                    sp14.z = sp60.pos.z + sp60.normal.z * 0.02;
                     mathutil_mtxA_translate(&sp14);
                     mathutil_mtxA_to_mtx(sp20);
-                    mathutil_quat_from_dirs(&sp50, &sp8, &sp60.unk10);
+                    mathutil_quat_from_dirs(&sp50, &sp8, &sp60.normal);
                     mathutil_mtxA_from_quat(&sp50);
                     mathutil_mtxA_mult_left(sp20);
                     mathutil_mtxA_scale_s(0.45f);

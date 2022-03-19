@@ -49,7 +49,7 @@ void bg_storm_main(void)
     struct BGStormWork *work;
     Vec spDC;
     Vec spD0;
-    struct Struct8003FB48 spB4;
+    struct RaycastHit spB4;
     struct Struct8003C550 sp8;
     int i;
     struct Camera *camera;
@@ -92,7 +92,7 @@ void bg_storm_main(void)
         spD0.z = (rand() / 32767.0f) - 0.5f;
         mathutil_vec_set_len(&spD0, &sp8.unk34, ((rand() / 32767.0f) + 0.1f) * 3.6000001430511475f);
         sp8.unk70.y = 1.0f;
-        mathutil_vec_to_euler_xy(&spB4.unk10, &sp8.unk4C, &sp8.unk4E);
+        mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
         sp8.unk50 = rand() & 0x7FFF;
         sp8.unk30 = work->rain02Model;
         g_spawn_effect_object(&sp8);
@@ -112,9 +112,9 @@ void bg_storm_main(void)
             spD0.z += camera->lookAt.z;
             if ((u32)stcoli_sub16(&spD0, &spB4, &sp8.unk7C) != 0)
             {
-                sp8.unk34 = spB4.unk4;
-                sp8.unk70 = spB4.unk10;
-                mathutil_vec_to_euler_xy(&spB4.unk10, &sp8.unk4C, &sp8.unk4E);
+                sp8.unk34 = spB4.pos;
+                sp8.unk70 = spB4.normal;
+                mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
                 sp8.unk50 = rand() & 0x7FFF;
                 sp8.unk30 = work->rain02Model;
                 g_spawn_effect_object(&sp8);
