@@ -2295,7 +2295,7 @@ func_8006C69C:
 /* 8006C6A8 000685C8  38 64 00 00 */	addi r3, r4, 0
 /* 8006C6AC 000685CC  94 21 FF F8 */	stwu r1, -8(r1)
 /* 8006C6B0 000685D0  7C 04 03 78 */	mr r4, r0
-/* 8006C6B4 000685D4  4B FD 33 41 */	bl stcoli_sub15
+/* 8006C6B4 000685D4  4B FD 33 41 */	bl collide_ball_with_jamabar
 /* 8006C6B8 000685D8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006C6BC 000685DC  38 21 00 08 */	addi r1, r1, 8
 /* 8006C6C0 000685E0  7C 08 03 A6 */	mtlr r0
@@ -2589,7 +2589,7 @@ func_8006CA1C:
 /* 8006CAB8 000689D8  38 61 00 28 */	addi r3, r1, 0x28
 /* 8006CABC 000689DC  38 81 00 0C */	addi r4, r1, 0xc
 /* 8006CAC0 000689E0  38 A0 00 00 */	li r5, 0
-/* 8006CAC4 000689E4  4B FD 30 85 */	bl stcoli_sub16
+/* 8006CAC4 000689E4  4B FD 30 85 */	bl raycast_stage_down
 /* 8006CAC8 000689E8  4B F9 AD 6D */	bl mathutil_mtxA_pop
 /* 8006CACC 000689EC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006CAD0 000689F0  54 00 07 FF */	clrlwi. r0, r0, 0x1f

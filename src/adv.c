@@ -1017,7 +1017,7 @@ void lbl_8000F790(struct Ape *ape, int b)
 
         if (gamePauseStatus & 0xA)
             return;
-        stcoli_sub16(&ball->pos, &sp38, NULL);
+        raycast_stage_down(&ball->pos, &sp38, NULL);
         ape->unk14 &= -20;
         if (!(sp38.flags & 1) && ball->vel.y < -(35.0f / 216.0f))
             ape->unk14 |= 2;

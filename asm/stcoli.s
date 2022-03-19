@@ -2157,8 +2157,8 @@ lbl_8003F9E0:
 .endif
 
 .if 0
-.global stcoli_sub15
-stcoli_sub15:
+.global collide_ball_with_jamabar
+collide_ball_with_jamabar:
 /* 8003F9F4 0003B914  7C 08 02 A6 */	mflr r0
 /* 8003F9F8 0003B918  90 01 00 04 */	stw r0, 4(r1)
 /* 8003F9FC 0003B91C  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -2248,8 +2248,8 @@ lbl_8003FAFC:
 /* 8003FB44 0003BA64  4E 80 00 20 */	blr
 .endif
 
-.global stcoli_sub16
-stcoli_sub16:
+.global raycast_stage_down
+raycast_stage_down:
 /* 8003FB48 0003BA68  7C 08 02 A6 */	mflr r0
 /* 8003FB4C 0003BA6C  90 01 00 04 */	stw r0, 4(r1)
 /* 8003FB50 0003BA70  38 00 00 00 */	li r0, 0

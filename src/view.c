@@ -505,7 +505,7 @@ void func_800A6874(void)
             {
                 mathutil_mtxA_from_mtx(movableStageParts[i].unk24);
                 mathutil_mtxA_tf_point(&r26->unk0, &sp14);
-                if ((u32)stcoli_sub16(&sp14, &sp60, 0) != 0)
+                if ((u32)raycast_stage_down(&sp14, &sp60, 0) != 0)
                 {
                     mathutil_mtxA_from_mtx(mathutilData->mtxB);
                     sp14.x = sp60.pos.x + sp60.normal.x * 0.02;

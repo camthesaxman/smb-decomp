@@ -1048,7 +1048,7 @@ static struct ColiRect jamabarColiRects[] = {
     },
 };
 
-void stcoli_sub15(struct PhysicsBall *ball, struct Stobj *stobj)
+void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
 {
     Point3d ballPos;
     float temp_f1;

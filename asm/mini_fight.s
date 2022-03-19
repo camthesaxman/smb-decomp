@@ -5972,7 +5972,7 @@ lbl_00005A08:
 /* 00005A9C 90010068 */ stw r0, 0x68(r1)
 /* 00005AA0 C01F0044 */ lfs f0, 0x44(r31)
 /* 00005AA4 D0010070 */ stfs f0, 0x70(r1)
-/* 00005AA8 4BFFA6BD */ bl stcoli_sub16
+/* 00005AA8 4BFFA6BD */ bl raycast_stage_down
 /* 00005AAC 28030000 */ cmplwi r3, 0
 /* 00005AB0 408200DC */ bne lbl_00005B8C
 /* 00005AB4 A87E0096 */ lha r3, 0x96(r30)
@@ -6332,7 +6332,7 @@ lbl_00005E98:
 /* 00005FF0 A01E0094 */ lhz r0, 0x94(r30)
 /* 00005FF4 5400003C */ rlwinm r0, r0, 0, 0, 0x1e
 /* 00005FF8 B01E0094 */ sth r0, 0x94(r30)
-/* 00005FFC 4BFFA169 */ bl stcoli_sub16
+/* 00005FFC 4BFFA169 */ bl raycast_stage_down
 /* 00006000 28030000 */ cmplwi r3, 0
 /* 00006004 4082001C */ bne lbl_00006020
 /* 00006008 C01F0000 */ lfs f0, 0(r31)
@@ -9467,7 +9467,7 @@ lbl_00008E64:
 /* 00008F0C 387F0034 */ addi r3, r31, 0x34
 /* 00008F10 3881000C */ addi r4, r1, 0xc
 /* 00008F14 38BF007C */ addi r5, r31, 0x7c
-/* 00008F18 4BFF724D */ bl stcoli_sub16
+/* 00008F18 4BFF724D */ bl raycast_stage_down
 /* 00008F1C 28030000 */ cmplwi r3, 0
 /* 00008F20 40820010 */ bne lbl_00008F30
 /* 00008F24 38000000 */ li r0, 0
@@ -9655,7 +9655,7 @@ lbl_00008F80:
 /* 000091F0 387E0034 */ addi r3, r30, 0x34
 /* 000091F4 38810018 */ addi r4, r1, 0x18
 /* 000091F8 38BE007C */ addi r5, r30, 0x7c
-/* 000091FC 4BFF6F69 */ bl stcoli_sub16
+/* 000091FC 4BFF6F69 */ bl raycast_stage_down
 /* 00009200 28030000 */ cmplwi r3, 0
 /* 00009204 40820010 */ bne lbl_00009214
 /* 00009208 38000000 */ li r0, 0
@@ -15363,7 +15363,7 @@ lbl_0000E550:
 /* 0000E574 387D001C */ addi r3, r29, 0x1c
 /* 0000E578 38810058 */ addi r4, r1, 0x58
 /* 0000E57C 38A1004C */ addi r5, r1, 0x4c
-/* 0000E580 4BFF1BE5 */ bl stcoli_sub16
+/* 0000E580 4BFF1BE5 */ bl raycast_stage_down
 /* 0000E584 2C030000 */ cmpwi r3, 0
 /* 0000E588 418200B8 */ beq lbl_0000E640
 /* 0000E58C C03D005C */ lfs f1, 0x5c(r29)
@@ -15453,7 +15453,7 @@ lbl_0000E69C:
 /* 0000E6D0 D001000C */ stfs f0, 0xc(r1)
 /* 0000E6D4 C01E0024 */ lfs f0, 0x24(r30)
 /* 0000E6D8 D0010010 */ stfs f0, 0x10(r1)
-/* 0000E6DC 4BFF1A89 */ bl stcoli_sub16
+/* 0000E6DC 4BFF1A89 */ bl raycast_stage_down
 /* 0000E6E0 2C030000 */ cmpwi r3, 0
 /* 0000E6E4 418200F4 */ beq lbl_0000E7D8
 /* 0000E6E8 C03E005C */ lfs f1, 0x5c(r30)
@@ -15554,7 +15554,7 @@ lbl_0000E840:
 /* 0000E858 38760004 */ addi r3, r22, 4
 /* 0000E85C 38810058 */ addi r4, r1, 0x58
 /* 0000E860 38A1004C */ addi r5, r1, 0x4c
-/* 0000E864 4BFF1901 */ bl stcoli_sub16
+/* 0000E864 4BFF1901 */ bl raycast_stage_down
 /* 0000E868 2C030000 */ cmpwi r3, 0
 /* 0000E86C 41820140 */ beq lbl_0000E9AC
 /* 0000E870 C0360008 */ lfs f1, 8(r22)
@@ -18302,7 +18302,7 @@ lbl_000110C8:
 /* 000110D8 387E0004 */ addi r3, r30, 4
 /* 000110DC 38810010 */ addi r4, r1, 0x10
 /* 000110E0 38A00000 */ li r5, 0
-/* 000110E4 4BFEF081 */ bl stcoli_sub16
+/* 000110E4 4BFEF081 */ bl raycast_stage_down
 /* 000110E8 807D0014 */ lwz r3, 0x14(r29)
 /* 000110EC 3800FFEC */ li r0, -20
 /* 000110F0 7C600038 */ and r0, r3, r0
@@ -21358,7 +21358,7 @@ lbl_00013E08:
 /* 00013E48 C01E0014 */ lfs f0, 0x14(r30)
 /* 00013E4C EC01002A */ fadds f0, f1, f0
 /* 00013E50 D01F0030 */ stfs f0, 0x30(r31)
-/* 00013E54 4BFEC311 */ bl stcoli_sub16
+/* 00013E54 4BFEC311 */ bl raycast_stage_down
 /* 00013E58 28030000 */ cmplwi r3, 0
 /* 00013E5C 41820040 */ beq lbl_00013E9C
 /* 00013E60 C03E0008 */ lfs f1, 8(r30)
@@ -28380,7 +28380,7 @@ lbl_0001A680:
 /* 0001A6E0 EC010032 */ fmuls f0, f1, f0
 /* 0001A6E4 EC02002A */ fadds f0, f2, f0
 /* 0001A6E8 D00100F4 */ stfs f0, 0xf4(r1)
-/* 0001A6EC 4BFE5A79 */ bl stcoli_sub16
+/* 0001A6EC 4BFE5A79 */ bl raycast_stage_down
 /* 0001A6F0 2C030000 */ cmpwi r3, 0
 /* 0001A6F4 41820028 */ beq lbl_0001A71C
 /* 0001A6F8 3C800000 */ lis r4, decodedStageLzPtr@ha
@@ -28866,7 +28866,7 @@ lbl_0001ADDC:
 /* 0001AE3C EC010032 */ fmuls f0, f1, f0
 /* 0001AE40 EC02002A */ fadds f0, f2, f0
 /* 0001AE44 D001006C */ stfs f0, 0x6c(r1)
-/* 0001AE48 4BFE531D */ bl stcoli_sub16
+/* 0001AE48 4BFE531D */ bl raycast_stage_down
 /* 0001AE4C 2C030000 */ cmpwi r3, 0
 /* 0001AE50 41820028 */ beq lbl_0001AE78
 /* 0001AE54 3C800000 */ lis r4, decodedStageLzPtr@ha
@@ -28941,7 +28941,7 @@ lbl_0001AE78:
 /* 0001AF64 EC010032 */ fmuls f0, f1, f0
 /* 0001AF68 EC02002A */ fadds f0, f2, f0
 /* 0001AF6C D001006C */ stfs f0, 0x6c(r1)
-/* 0001AF70 4BFE51F5 */ bl stcoli_sub16
+/* 0001AF70 4BFE51F5 */ bl raycast_stage_down
 /* 0001AF74 2C030000 */ cmpwi r3, 0
 /* 0001AF78 41820028 */ beq lbl_0001AFA0
 /* 0001AF7C 3C800000 */ lis r4, decodedStageLzPtr@ha

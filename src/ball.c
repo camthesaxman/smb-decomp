@@ -181,7 +181,7 @@ void func_80036EB8(struct Ape *a)
     sp48.z = 0.0f;
     mathutil_mtxA_tf_vec(&sp48, &sp48);
     r29 = -mathutil_atan2(sp48.z, sp48.x) - 32768;
-    stcoli_sub16(&ball->pos, &sp70, NULL);
+    raycast_stage_down(&ball->pos, &sp70, NULL);
     mathutil_mtxA_from_translate(&ball->pos);
     mathutil_mtxA_rotate_y(r29);
     ball->flags &= ~BALL_FLAG_01;
@@ -190,7 +190,7 @@ void func_80036EB8(struct Ape *a)
     {
         mathutil_mtxA_push();
         mathutil_mtxA_tf_point(&spC[i], &sp48);
-        stcoli_sub16(&sp48, &sp54, NULL);
+        raycast_stage_down(&sp48, &sp54, NULL);
         mathutil_mtxA_pop();
         if (sp54.flags == 0 || sp54.pos.y < sp70.pos.y - 1.0)
         {
@@ -456,7 +456,7 @@ void lbl_8003781C(struct Ape *a, int b)
     if (gamePauseStatus & 0xA)
         return;
 
-    stcoli_sub16(&r29->pos, &sp50, NULL);
+    raycast_stage_down(&r29->pos, &sp50, NULL);
     a->unk14 &= -20;
     if (!(sp50.flags & 1) && r29->vel.y < -0.16203702986240387f)
         a->unk14 |= 2;
@@ -1327,7 +1327,7 @@ void func_80038DF4(void)
             continue;
         if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
-        if (stcoli_sub16(&ball->pos, &sp14, &sp8) == 0)
+        if (raycast_stage_down(&ball->pos, &sp14, &sp8) == 0)
             continue;
         f2 = 1.0 - (ball->pos.y - sp14.pos.y) * 0.2;
         if (f2 < 0.0f)

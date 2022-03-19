@@ -13744,7 +13744,7 @@ lbl_0000C86C:
 /* 0000CA6C D01D0014 */ stfs f0, 0x14(r29)
 /* 0000CA70 C01E0000 */ lfs f0, 0(r30)
 /* 0000CA74 D01D0010 */ stfs f0, 0x10(r29)
-/* 0000CA78 4BFF3759 */ bl stcoli_sub16
+/* 0000CA78 4BFF3759 */ bl raycast_stage_down
 /* 0000CA7C 8001001C */ lwz r0, 0x1c(r1)
 /* 0000CA80 28000000 */ cmplwi r0, 0
 /* 0000CA84 41820068 */ beq lbl_0000CAEC
@@ -13921,7 +13921,7 @@ lbl_0000CB3C:
 /* 0000CD28 D01D0014 */ stfs f0, 0x14(r29)
 /* 0000CD2C C01E0000 */ lfs f0, 0(r30)
 /* 0000CD30 D01D0010 */ stfs f0, 0x10(r29)
-/* 0000CD34 4BFF349D */ bl stcoli_sub16
+/* 0000CD34 4BFF349D */ bl raycast_stage_down
 /* 0000CD38 8001001C */ lwz r0, 0x1c(r1)
 /* 0000CD3C 28000000 */ cmplwi r0, 0
 /* 0000CD40 41820068 */ beq lbl_0000CDA8
@@ -14984,7 +14984,7 @@ lbl_0000DCE4:
 /* 0000DD0C C01D0000 */ lfs f0, 0(r29)
 /* 0000DD10 EC01002A */ fadds f0, f1, f0
 /* 0000DD14 D0010044 */ stfs f0, 0x44(r1)
-/* 0000DD18 4BFF24B9 */ bl stcoli_sub16
+/* 0000DD18 4BFF24B9 */ bl raycast_stage_down
 /* 0000DD1C 8001004C */ lwz r0, 0x4c(r1)
 /* 0000DD20 28000000 */ cmplwi r0, 0
 /* 0000DD24 41820024 */ beq lbl_0000DD48
