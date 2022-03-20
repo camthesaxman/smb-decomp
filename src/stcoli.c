@@ -78,7 +78,7 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
 
         goal = stageIg->goals;
         for (i = stageIg->goalCount; i > 0; i--, goal++)
-            g_collide_ball_with_goal(ball, goal);
+            collide_ball_with_goal(ball, goal);
     }
 
     if (ball->itemgroupId != 0)

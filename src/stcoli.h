@@ -24,11 +24,14 @@ void collide_ball_with_plane(struct PhysicsBall *physBall, struct ColiPlane *col
 u32 test_line_intersects_rect(Point3d *lineStart, Point3d *lineEnd, struct ColiRect *rect);
 void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj);
 int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVelAtPoint);
-// ? stcoli_sub17();
-// ? stcoli_sub18();
-// ? stcoli_sub19();
-// ? stcoli_sub20();
-void g_collide_ball_with_goal(struct PhysicsBall *, struct StageGoal *goal);
+u32 raycast_tri(Point3d *rayOrigin, Vec *rayDir, struct StageColiTri *tri);
+u32 raycast_cone(Point3d *rayOrigin, Point3d *rayDir, struct StageColiCone *cone,
+                 Point3d *outHitPos, Vec *outHitNormal);
+u32 raycast_sphere(Point3d *rayOrigin, Point3d *rayDir, struct StageColiSphere *sphere,
+                   Point3d *outHitPos, Vec *outHitNormal);
+u32 raycast_cylinder(Point3d *rayOrigin, Point3d *rayDir, struct StageColiCylinder *cylinder,
+                     Point3d *outHitPos, Vec *outHitNormal);
+void collide_ball_with_goal(struct PhysicsBall *ball, struct StageGoal *goal);
 // ? stcoli_sub22();
 // ? stcoli_sub23();
 // ? stcoli_sub24();

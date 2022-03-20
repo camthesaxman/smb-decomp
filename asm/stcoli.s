@@ -148,7 +148,7 @@ lbl_8003DC98:
 lbl_8003DCAC:
 /* 8003DCAC 00039BCC  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DCB0 00039BD0  38 9A 00 00 */	addi r4, r26, 0
-/* 8003DCB4 00039BD4  48 00 2E 6D */	bl g_collide_ball_with_goal
+/* 8003DCB4 00039BD4  48 00 2E 6D */	bl collide_ball_with_goal
 /* 8003DCB8 00039BD8  3B 7B FF FF */	addi r27, r27, -1
 /* 8003DCBC 00039BDC  3B 5A 00 14 */	addi r26, r26, 0x14
 lbl_8003DCC0:
@@ -2384,7 +2384,7 @@ lbl_8003FD08:
 /* 8003FD30 0003BC50  54 00 30 32 */	slwi r0, r0, 6
 /* 8003FD34 0003BC54  7E C5 02 14 */	add r22, r5, r0
 /* 8003FD38 0003BC58  38 B6 00 00 */	addi r5, r22, 0
-/* 8003FD3C 0003BC5C  48 00 03 FD */	bl stcoli_sub17
+/* 8003FD3C 0003BC5C  48 00 03 FD */	bl rastcast_tri
 /* 8003FD40 0003BC60  28 03 00 00 */	cmplwi r3, 0
 /* 8003FD44 0003BC64  41 82 00 68 */	beq lbl_8003FDAC
 /* 8003FD48 0003BC68  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2429,7 +2429,7 @@ lbl_8003FDC8:
 /* 8003FDD0 0003BCF0  38 81 00 6C */	addi r4, r1, 0x6c
 /* 8003FDD4 0003BCF4  38 C1 00 78 */	addi r6, r1, 0x78
 /* 8003FDD8 0003BCF8  38 E1 00 60 */	addi r7, r1, 0x60
-/* 8003FDDC 0003BCFC  48 00 05 5D */	bl stcoli_sub18
+/* 8003FDDC 0003BCFC  48 00 05 5D */	bl rastcast_cone
 /* 8003FDE0 0003BD00  28 03 00 00 */	cmplwi r3, 0
 /* 8003FDE4 0003BD04  41 82 00 68 */	beq lbl_8003FE4C
 /* 8003FDE8 0003BD08  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2473,7 +2473,7 @@ lbl_8003FE68:
 /* 8003FE70 0003BD90  38 81 00 6C */	addi r4, r1, 0x6c
 /* 8003FE74 0003BD94  38 C1 00 78 */	addi r6, r1, 0x78
 /* 8003FE78 0003BD98  38 E1 00 54 */	addi r7, r1, 0x54
-/* 8003FE7C 0003BD9C  48 00 07 A9 */	bl stcoli_sub19
+/* 8003FE7C 0003BD9C  48 00 07 A9 */	bl rastcast_sphere
 /* 8003FE80 0003BDA0  28 03 00 00 */	cmplwi r3, 0
 /* 8003FE84 0003BDA4  41 82 00 68 */	beq lbl_8003FEEC
 /* 8003FE88 0003BDA8  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2517,7 +2517,7 @@ lbl_8003FF08:
 /* 8003FF10 0003BE30  38 81 00 6C */	addi r4, r1, 0x6c
 /* 8003FF14 0003BE34  38 C1 00 78 */	addi r6, r1, 0x78
 /* 8003FF18 0003BE38  38 E1 00 48 */	addi r7, r1, 0x48
-/* 8003FF1C 0003BE3C  48 00 08 ED */	bl stcoli_sub20
+/* 8003FF1C 0003BE3C  48 00 08 ED */	bl rastcast_cylinder
 /* 8003FF20 0003BE40  28 03 00 00 */	cmplwi r3, 0
 /* 8003FF24 0003BE44  41 82 00 68 */	beq lbl_8003FF8C
 /* 8003FF28 0003BE48  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2661,8 +2661,8 @@ lbl_80040104:
 /* 80040130 0003C050  7C 08 03 A6 */	mtlr r0
 /* 80040134 0003C054  4E 80 00 20 */	blr
 
-.global stcoli_sub17
-stcoli_sub17:
+.global rastcast_tri
+rastcast_tri:
 /* 80040138 0003C058  7C 08 02 A6 */	mflr r0
 /* 8004013C 0003C05C  90 01 00 04 */	stw r0, 4(r1)
 /* 80040140 0003C060  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -2799,8 +2799,8 @@ lbl_8004031C:
 /* 80040330 0003C250  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040334 0003C254  4E 80 00 20 */	blr
 
-.global stcoli_sub18
-stcoli_sub18:
+.global rastcast_cone
+rastcast_cone:
 /* 80040338 0003C258  7C 08 02 A6 */	mflr r0
 /* 8004033C 0003C25C  90 01 00 04 */	stw r0, 4(r1)
 /* 80040340 0003C260  94 21 FF 90 */	stwu r1, -0x70(r1)
@@ -2997,8 +2997,8 @@ lbl_80040604:
 /* 8004061C 0003C53C  38 21 00 70 */	addi r1, r1, 0x70
 /* 80040620 0003C540  4E 80 00 20 */	blr
 
-.global stcoli_sub19
-stcoli_sub19:
+.global rastcast_sphere
+rastcast_sphere:
 /* 80040624 0003C544  7C 08 02 A6 */	mflr r0
 /* 80040628 0003C548  90 01 00 04 */	stw r0, 4(r1)
 /* 8004062C 0003C54C  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -3126,8 +3126,8 @@ lbl_800407E0:
 /* 80040800 0003C720  38 21 00 58 */	addi r1, r1, 0x58
 /* 80040804 0003C724  4E 80 00 20 */	blr
 
-.global stcoli_sub20
-stcoli_sub20:
+.global rastcast_cylinder
+rastcast_cylinder:
 /* 80040808 0003C728  7C 08 02 A6 */	mflr r0
 /* 8004080C 0003C72C  90 01 00 04 */	stw r0, 4(r1)
 /* 80040810 0003C730  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -3335,8 +3335,8 @@ lbl_80040B04:
 /* 80040B18 0003CA38  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040B1C 0003CA3C  4E 80 00 20 */	blr
 
-.global g_collide_ball_with_goal
-g_collide_ball_with_goal:
+.global collide_ball_with_goal
+collide_ball_with_goal:
 /* 80040B20 0003CA40  7C 08 02 A6 */	mflr r0
 /* 80040B24 0003CA44  90 01 00 04 */	stw r0, 4(r1)
 /* 80040B28 0003CA48  94 21 FF 78 */	stwu r1, -0x88(r1)
@@ -5065,7 +5065,7 @@ lbl_80042424:
 lbl_80042438:
 /* 80042438 0003E358  38 7B 00 00 */	addi r3, r27, 0
 /* 8004243C 0003E35C  38 99 00 00 */	addi r4, r25, 0
-/* 80042440 0003E360  4B FF E6 E1 */	bl g_collide_ball_with_goal
+/* 80042440 0003E360  4B FF E6 E1 */	bl collide_ball_with_goal
 /* 80042444 0003E364  3B 5A FF FF */	addi r26, r26, -1
 /* 80042448 0003E368  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_8004244C:
@@ -5589,7 +5589,7 @@ lbl_80042B60:
 lbl_80042B74:
 /* 80042B74 0003EA94  38 7A 00 00 */	addi r3, r26, 0
 /* 80042B78 0003EA98  38 99 00 00 */	addi r4, r25, 0
-/* 80042B7C 0003EA9C  4B FF DF A5 */	bl g_collide_ball_with_goal
+/* 80042B7C 0003EA9C  4B FF DF A5 */	bl collide_ball_with_goal
 /* 80042B80 0003EAA0  3B 9C FF FF */	addi r28, r28, -1
 /* 80042B84 0003EAA4  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_80042B88:
