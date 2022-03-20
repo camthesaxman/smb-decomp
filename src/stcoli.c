@@ -572,7 +572,7 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
     struct ColiPlane plane;
     Vec tmpVec;
     Point3d sp4C;
-    Point3d sp40;
+    Point3d rayOrigin_rt_tri_sp40;
     struct ColiCircle topCircle;
     struct ColiCircle bottomCircle;
 
@@ -595,7 +595,7 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
     mathutil_mtxA_rotate_y(cylinder->rot.y);
     mathutil_mtxA_rotate_x(cylinder->rot.x);
     mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp4C);
-    mathutil_mtxA_rigid_inv_tf_point(&ball->prevPos, &sp40);
+    mathutil_mtxA_rigid_inv_tf_point(&ball->prevPos, &rayOrigin_rt_tri_sp40);
     temp_f2_2 = mathutil_sum_of_sq_2(sp4C.x, sp4C.z);
     temp_f0_4 = cylinder->radius + ball->radius;
     if (temp_f2_2 > (temp_f0_4 * temp_f0_4))
@@ -603,7 +603,7 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
     if (temp_f2_2 < FLT_EPSILON)
         return;
 
-    if (sp40.y < (0.5 * -cylinder->height))
+    if (rayOrigin_rt_tri_sp40.y < (0.5 * -cylinder->height))
     {
         topCircle.pos.x = 0.0f;
         topCircle.pos.y = (0.5 * -cylinder->height);
@@ -616,7 +616,7 @@ void collide_ball_with_cylinder(struct PhysicsBall *ball, struct StageColiCylind
         collide_ball_with_circle(ball, &topCircle);
         return;
     }
-    if (sp40.y > (0.5 * cylinder->height))
+    if (rayOrigin_rt_tri_sp40.y > (0.5 * cylinder->height))
     {
         bottomCircle.pos.x = 0.0f;
         bottomCircle.pos.y = (0.5 * cylinder->height);
@@ -1265,4 +1265,55 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
     }
 
     return (outHit->flags & COLI_FLAG_OCCURRED) != 0;
+}
+
+u32 raycast_tri(Point3d *rayOrigin, Point3d *rayDir, struct StageColiTri *tri)
+{
+    u8 unused1[8];
+    Point3d rayOrigin_rt_tri_sp40;
+    Vec rayDir_rt_tri_sp34;
+    u8 unused2[8];
+
+    f32 temp_f3_2;
+
+    float x;
+    float y;
+    float z;
+
+    // If ray origin is not in front of triangle, no hit
+    x = rayOrigin->x - tri->pos.x;
+    y = rayOrigin->y - tri->pos.y;
+    z = rayOrigin->z - tri->pos.z;
+    if ((((x * tri->normal.x) + (y * tri->normal.y)) + (z * tri->normal.z)) < 0.0)
+        return 0U;
+
+    // If ray direction is not towards triangle, no hit
+    if (((rayDir->z * tri->normal.z) +
+         ((rayDir->x * tri->normal.x) + (rayDir->y * tri->normal.y))) > 0.0)
+        return 0U;
+
+    mathutil_mtxA_from_translate(&tri->pos);
+    mathutil_mtxA_rotate_y(tri->rot.y);
+    mathutil_mtxA_rotate_x(tri->rot.x);
+    mathutil_mtxA_rotate_z(tri->rot.z);
+    mathutil_mtxA_rigid_inv_tf_point(rayOrigin, &rayOrigin_rt_tri_sp40);
+    mathutil_mtxA_rigid_inv_tf_vec(rayDir, &rayDir_rt_tri_sp34);
+    if (__fabs(rayDir_rt_tri_sp34.z) <= FLT_EPSILON)
+        return 0U;
+
+    temp_f3_2 = -rayOrigin_rt_tri_sp40.z / rayDir_rt_tri_sp34.z;
+    rayOrigin_rt_tri_sp40.x += rayDir_rt_tri_sp34.x * temp_f3_2;
+    rayOrigin_rt_tri_sp40.y += rayDir_rt_tri_sp34.y * temp_f3_2;
+    rayOrigin_rt_tri_sp40.z = 0.0f;
+    if (dumb_dot(0, 1, rayOrigin_rt_tri_sp40.x, rayOrigin_rt_tri_sp40.y) < -0.01)
+        return 0U;
+    if (((tri->edge2Normal.x * (rayOrigin_rt_tri_sp40.x - tri->vert2.x)) +
+         (tri->edge2Normal.y * (rayOrigin_rt_tri_sp40.y - tri->vert2.y))) < -0.01)
+        return 0U;
+    if (((tri->edge3Normal.x * (rayOrigin_rt_tri_sp40.x - tri->vert3.x)) +
+         (tri->edge3Normal.y * (rayOrigin_rt_tri_sp40.y - tri->vert3.y))) < -0.01)
+        return 0U;
+
+    mathutil_mtxA_tf_point(&rayOrigin_rt_tri_sp40, rayOrigin);
+    return 1U;
 }

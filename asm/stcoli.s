@@ -2663,6 +2663,7 @@ lbl_80040104:
 /* 80040134 0003C054  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global raycast_tri
 raycast_tri:
 /* 80040138 0003C058  7C 08 02 A6 */	mflr r0
@@ -2800,6 +2801,7 @@ lbl_8004031C:
 /* 8004032C 0003C24C  83 A1 00 5C */	lwz r29, 0x5c(r1)
 /* 80040330 0003C250  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040334 0003C254  4E 80 00 20 */	blr
+.endif
 
 .global raycast_cone
 raycast_cone:
@@ -5706,7 +5708,6 @@ lbl_802F3660:
 	# ROM: 0x1ED080
 	.4byte 0x40040000
 	.4byte 0
-.endif
 
 .global lbl_802F3668
 lbl_802F3668:
@@ -5719,6 +5720,7 @@ lbl_802F3670:
 	# ROM: 0x1ED090
 	.4byte 0xBF847AE1
 	.4byte 0x47AE147B
+.endif
 
 .global lbl_802F3678
 lbl_802F3678:
