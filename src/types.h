@@ -282,16 +282,12 @@ struct Struct80176434
 
 struct ItemgroupInfo
 {
-    Vec unk0;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    Mtx unk24;
-    Mtx unk54;
+    Vec pos;
+    Vec prevPos;
+    S16Vec rot;
+    S16Vec prevRot;
+    Mtx transform;  // Transform from itemgroup space to world space
+    Mtx prevTransform;  // Previous frame transform from itemgroup space to world space
 };  // size = 0x84
 
 struct ReplayInfo

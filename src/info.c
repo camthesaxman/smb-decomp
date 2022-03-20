@@ -770,9 +770,9 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
         Vec sp20;
         Vec sp14;
 
-        mathutil_mtxA_from_mtx(r29->unk54);
+        mathutil_mtxA_from_mtx(r29->prevTransform);
         mathutil_mtxA_tf_point(&goal->pos, &sp14);
-        mathutil_mtxA_from_mtx(r29->unk24);
+        mathutil_mtxA_from_mtx(r29->transform);
         mathutil_mtxA_tf_point(&goal->pos, &sp20);
 
         infoWork.unk10.x += sp14.x - sp20.x;

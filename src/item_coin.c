@@ -130,7 +130,7 @@ void item_coin_main(struct Item *item)
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].transform);
         mathutil_mtxA_tf_point(&item->unk20, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
@@ -201,7 +201,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 8;
         sp10.unk14 = currentBallStructPtr->unk2E;
-        mathutil_mtxA_from_mtx(itemgroups[b->unk58].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[b->unk58].transform);
         mathutil_mtxA_tf_point(&item->unk20, &sp10.unk34);
         mathutil_mtxA_tf_vec(&item->unk2C, &sp10.unk40);
         sp10.unk4C = item->xrot;

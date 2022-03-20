@@ -174,50 +174,50 @@ void ev_stage_main(void)
         }
         if (anim->xRotFrames != NULL2)
         {
-            movpart->unk1E = movpart->unk18;
-            movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
+            movpart->prevRot.x = movpart->rot.x;
+            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
         }
         if (anim->yRotFrames != NULL2)
         {
-            movpart->unk20 = movpart->unk1A;
-            movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
+            movpart->prevRot.y = movpart->rot.y;
+            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
         }
         if (anim->zRotFrames != NULL2)
         {
-            movpart->unk22 = movpart->unk1C;
-            movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
+            movpart->prevRot.z = movpart->rot.z;
+            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
         }
         if (anim->xTrnslFrames != NULL2)
         {
-            movpart->unkC.x = movpart->unk0.x - coll->unkB8.x;
-            movpart->unk0.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
+            movpart->prevPos.x = movpart->pos.x - coll->unkB8.x;
+            movpart->pos.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
         }
         if (anim->yTrnslFrames != NULL2)
         {
-            movpart->unkC.y = movpart->unk0.y - coll->unkB8.y;
-            movpart->unk0.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
+            movpart->prevPos.y = movpart->pos.y - coll->unkB8.y;
+            movpart->pos.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
         }
         if (anim->zTrnslFrames != NULL2)
         {
-            movpart->unkC.z = movpart->unk0.z - coll->unkB8.z;
-            movpart->unk0.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
+            movpart->prevPos.z = movpart->pos.z - coll->unkB8.z;
+            movpart->pos.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
         }
-        mathutil_mtxA_from_translate(&movpart->unk0);
-        mathutil_mtxA_rotate_z(movpart->unk1C);
-        mathutil_mtxA_rotate_y(movpart->unk1A);
-        mathutil_mtxA_rotate_x(movpart->unk18 - coll->initRot.x);
+        mathutil_mtxA_from_translate(&movpart->pos);
+        mathutil_mtxA_rotate_z(movpart->rot.z);
+        mathutil_mtxA_rotate_y(movpart->rot.y);
+        mathutil_mtxA_rotate_x(movpart->rot.x - coll->initRot.x);
         mathutil_mtxA_rotate_y(-coll->initRot.y);
         mathutil_mtxA_rotate_z(-coll->initRot.z);
         mathutil_mtxA_translate_neg(&coll->initPos);
-        mathutil_mtxA_to_mtx(movpart->unk24);
-        mathutil_mtxA_from_translate(&movpart->unkC);
-        mathutil_mtxA_rotate_z(movpart->unk22);
-        mathutil_mtxA_rotate_y(movpart->unk20);
-        mathutil_mtxA_rotate_x(movpart->unk1E - coll->initRot.x);
+        mathutil_mtxA_to_mtx(movpart->transform);
+        mathutil_mtxA_from_translate(&movpart->prevPos);
+        mathutil_mtxA_rotate_z(movpart->prevRot.z);
+        mathutil_mtxA_rotate_y(movpart->prevRot.y);
+        mathutil_mtxA_rotate_x(movpart->prevRot.x - coll->initRot.x);
         mathutil_mtxA_rotate_y(-coll->initRot.y);
         mathutil_mtxA_rotate_z(-coll->initRot.z);
         mathutil_mtxA_translate_neg(&coll->initPos);
-        mathutil_mtxA_to_mtx(movpart->unk54);
+        mathutil_mtxA_to_mtx(movpart->prevTransform);
     }
     if (lbl_80206DEC.unk8 != NULL)
         lbl_80206DEC.unk8();
@@ -292,7 +292,7 @@ void draw_blur_bridge_accordions(void)
         {
             u32 r28;
             Vec sp10;
-            float f27 = movpart->unk0.x;
+            float f27 = movpart->pos.x;
 
             f30 = f27;
             if (r30->animHdr->xTrnslFrames != NULL2)
@@ -310,8 +310,8 @@ void draw_blur_bridge_accordions(void)
                 f30 = f30 - f27;
                 r28 = 1;
             }
-            sp10.y = movpart->unk0.y;
-            sp10.z = movpart->unk0.z;
+            sp10.y = movpart->pos.y;
+            sp10.z = movpart->pos.z;
             mathutil_mtxA_translate(&sp10);
             if (r28)
                 mathutil_mtxA_rotate_y(-0x8000);
@@ -351,43 +351,43 @@ void g_animate_stage(float a)
         {
             if (anim->xRotFrames != NULL2)
             {
-                movpart->unk1E = movpart->unk18;
-                movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
+                movpart->prevRot.x = movpart->rot.x;
+                movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
             }
             if (anim->yRotFrames != NULL2)
             {
-                movpart->unk20 = movpart->unk1A;
-                movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
+                movpart->prevRot.y = movpart->rot.y;
+                movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
             }
             if (anim->zRotFrames != NULL2)
             {
-                movpart->unk22 = movpart->unk1C;
-                movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
+                movpart->prevRot.z = movpart->rot.z;
+                movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
             }
             if (anim->xTrnslFrames != NULL2)
             {
-                movpart->unkC.x = movpart->unk0.x;
-                movpart->unk0.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
+                movpart->prevPos.x = movpart->pos.x;
+                movpart->pos.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
             }
             if (anim->yTrnslFrames != NULL2)
             {
-                movpart->unkC.y = movpart->unk0.y;
-                movpart->unk0.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
+                movpart->prevPos.y = movpart->pos.y;
+                movpart->pos.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
             }
             if (anim->zTrnslFrames != NULL2)
             {
-                movpart->unkC.z = movpart->unk0.z;
-                movpart->unk0.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
+                movpart->prevPos.z = movpart->pos.z;
+                movpart->pos.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
             }
-            mathutil_mtxA_from_translate(&movpart->unk0);
-            mathutil_mtxA_rotate_z(movpart->unk1C);
-            mathutil_mtxA_rotate_y(movpart->unk1A);
-            mathutil_mtxA_rotate_x(movpart->unk18 - coll->initRot.x);
+            mathutil_mtxA_from_translate(&movpart->pos);
+            mathutil_mtxA_rotate_z(movpart->rot.z);
+            mathutil_mtxA_rotate_y(movpart->rot.y);
+            mathutil_mtxA_rotate_x(movpart->rot.x - coll->initRot.x);
             mathutil_mtxA_rotate_y(-coll->initRot.y);
             mathutil_mtxA_rotate_z(-coll->initRot.z);
             mathutil_mtxA_translate_neg(&coll->initPos);
-            mathutil_mtxA_to_mtx(movpart->unk24);
-            mathutil_mtx_copy(movpart->unk54, movpart->unk24);
+            mathutil_mtxA_to_mtx(movpart->transform);
+            mathutil_mtx_copy(movpart->prevTransform, movpart->transform);
         }
     }
 }
@@ -426,22 +426,22 @@ void func_8004482C(void)
     coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 0x48; i++, movpart++, coll++)
     {
-        movpart->unk0.x = coll->initPos.x;
-        movpart->unk0.y = coll->initPos.y;
-        movpart->unk0.z = coll->initPos.z;
-        movpart->unkC.x = coll->initPos.x - coll->unkB8.x;
-        movpart->unkC.y = coll->initPos.y - coll->unkB8.y;
-        movpart->unkC.z = coll->initPos.z - coll->unkB8.z;
-        movpart->unk18 = coll->initRot.x;
-        movpart->unk1A = coll->initRot.y;
-        movpart->unk1C = coll->initRot.z;
-        movpart->unk1E = coll->initRot.x;
-        movpart->unk20 = coll->initRot.y;
-        movpart->unk22 = coll->initRot.z;
+        movpart->pos.x = coll->initPos.x;
+        movpart->pos.y = coll->initPos.y;
+        movpart->pos.z = coll->initPos.z;
+        movpart->prevPos.x = coll->initPos.x - coll->unkB8.x;
+        movpart->prevPos.y = coll->initPos.y - coll->unkB8.y;
+        movpart->prevPos.z = coll->initPos.z - coll->unkB8.z;
+        movpart->rot.x = coll->initRot.x;
+        movpart->rot.y = coll->initRot.y;
+        movpart->rot.z = coll->initRot.z;
+        movpart->prevRot.x = coll->initRot.x;
+        movpart->prevRot.y = coll->initRot.y;
+        movpart->prevRot.z = coll->initRot.z;
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_to_mtx(movpart->unk24);
+        mathutil_mtxA_to_mtx(movpart->transform);
         mathutil_mtxA_translate_neg(&coll->unkB8);
-        mathutil_mtxA_to_mtx(movpart->unk54);
+        mathutil_mtxA_to_mtx(movpart->prevTransform);
     }
 }
 
@@ -1370,7 +1370,7 @@ void func_800463E8(Vec *a, float *b)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(movpart->unk24);
+            mathutil_mtxA_from_mtx(movpart->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1414,7 +1414,7 @@ void func_800463E8(Vec *a, float *b)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(movpart->unk24);
+            mathutil_mtxA_from_mtx(movpart->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1449,7 +1449,7 @@ void func_800463E8(Vec *a, float *b)
         for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
         {
             struct Struct8020A348_child *iter3;
-            mathutil_mtxA_from_mtx(movpart->unk24);
+            mathutil_mtxA_from_mtx(movpart->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1493,7 +1493,7 @@ void func_800463E8(Vec *a, float *b)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(movpart->unk24);
+            mathutil_mtxA_from_mtx(movpart->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1962,7 +1962,7 @@ void stage_draw(void)
         {
             mathutil_mtxA_from_mtxB();
             if (i > 0)
-                mathutil_mtxA_mult_right(r28->unk24);
+                mathutil_mtxA_mult_right(r28->transform);
             mathutil_mtxA_to_mtx(sp4C);
             r24 = r27->goals;
             for (j = 0; j < r27->goalCount; j++, r24++)
@@ -2033,7 +2033,7 @@ void stage_draw(void)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(movpart->unk24);
+                    mathutil_mtxA_mult_right(movpart->transform);
                 GXLoadPosMtxImm(mathutilData->mtxA, 0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, 0);
                 r27 = r23->unk0;
@@ -2072,7 +2072,7 @@ void stage_draw(void)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(movpart->unk24);
+                    mathutil_mtxA_mult_right(movpart->transform);
                 for (j = 0; j < r23->unk8; j++)
                 {
                     model = (void *)r23->unk0[j];
@@ -2080,7 +2080,7 @@ void stage_draw(void)
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
-                        mathutil_mtxA_from_mtx(movpart->unk24);
+                        mathutil_mtxA_from_mtx(movpart->transform);
                         if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
@@ -2107,7 +2107,7 @@ void stage_draw(void)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(movpart->unk24);
+                    mathutil_mtxA_mult_right(movpart->transform);
                 r27 = r23->unk0;
                 for (j = 0; j < r23->unk4; j++, r27++)
                 {
@@ -2146,7 +2146,7 @@ void stage_draw(void)
                                 if (r25 != NULL)
                                 {
                                     mathutil_mtxA_push();
-                                    mathutil_mtxA_from_mtx(movpart->unk24);
+                                    mathutil_mtxA_from_mtx(movpart->transform);
                                     if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
@@ -2243,7 +2243,7 @@ void stage_draw(void)
         for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r23++)
         {
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_mult_right(movpart->unk24);
+            mathutil_mtxA_mult_right(movpart->transform);
             mathutil_mtxA_to_mtx(mathutilData->mtxB);
             r25 = r23->unk88;
             for (j = 0; j < r23->unk84; j++, r25++)

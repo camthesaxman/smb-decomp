@@ -2315,7 +2315,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
         }
         else
         {
-            mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].unk24);
+            mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].transform);
             mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
@@ -2449,7 +2449,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
     Vec *ptr;
     int unused;
 
-    mathutil_mtxA_from_mtx(movpart->unk24);
+    mathutil_mtxA_from_mtx(movpart->transform);
     mathutil_mtxA_tf_point(&a->hardestColiPlane.point, &sp38);
     ptr = &sp44;
     mathutil_mtxA_tf_vec(&a->hardestColiPlane.normal, ptr);
@@ -2464,7 +2464,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 
     mathutil_mtxA_rigid_inv_tf_point(&sp2C, &sp14);
 
-    mathutil_mtxA_from_mtx(movpart->unk54);
+    mathutil_mtxA_from_mtx(movpart->prevTransform);
     mathutil_mtxA_tf_point(&sp14, &sp20);
 
     sp14.x = sp2C.x - sp20.x;
@@ -2549,7 +2549,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         if (c == 0 && b->hardestColiItemgroupId > 0)
             func_8003BBF4(b, &sp20);
 
-        mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].transform);
         mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;
