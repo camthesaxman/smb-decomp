@@ -1270,11 +1270,11 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
 u32 raycast_tri(Point3d *rayOrigin, Point3d *rayDir, struct StageColiTri *tri)
 {
     u8 unused1[8];
-    Point3d rayOrigin_rt_tri_sp40;
-    Vec rayDir_rt_tri_sp34;
+    Point3d rayOrigin_rt_tri;
+    Vec rayDir_rt_tri;
     u8 unused2[8];
 
-    f32 temp_f3_2;
+    f32 scale;
 
     float x;
     float y;
@@ -1292,28 +1292,34 @@ u32 raycast_tri(Point3d *rayOrigin, Point3d *rayDir, struct StageColiTri *tri)
          ((rayDir->x * tri->normal.x) + (rayDir->y * tri->normal.y))) > 0.0)
         return 0U;
 
+    // Transform ray origin and direction into triangle space
     mathutil_mtxA_from_translate(&tri->pos);
     mathutil_mtxA_rotate_y(tri->rot.y);
     mathutil_mtxA_rotate_x(tri->rot.x);
     mathutil_mtxA_rotate_z(tri->rot.z);
-    mathutil_mtxA_rigid_inv_tf_point(rayOrigin, &rayOrigin_rt_tri_sp40);
-    mathutil_mtxA_rigid_inv_tf_vec(rayDir, &rayDir_rt_tri_sp34);
-    if (__fabs(rayDir_rt_tri_sp34.z) <= FLT_EPSILON)
+    mathutil_mtxA_rigid_inv_tf_point(rayOrigin, &rayOrigin_rt_tri);
+    mathutil_mtxA_rigid_inv_tf_vec(rayDir, &rayDir_rt_tri);
+
+    // If ray is nearly parallel to plane, no hit
+    if (__fabs(rayDir_rt_tri.z) <= FLT_EPSILON)
         return 0U;
 
-    temp_f3_2 = -rayOrigin_rt_tri_sp40.z / rayDir_rt_tri_sp34.z;
-    rayOrigin_rt_tri_sp40.x += rayDir_rt_tri_sp34.x * temp_f3_2;
-    rayOrigin_rt_tri_sp40.y += rayDir_rt_tri_sp34.y * temp_f3_2;
-    rayOrigin_rt_tri_sp40.z = 0.0f;
-    if (dumb_dot(0, 1, rayOrigin_rt_tri_sp40.x, rayOrigin_rt_tri_sp40.y) < -0.01)
+    // Find the ray-plane intersection point
+    scale = -rayOrigin_rt_tri.z / rayDir_rt_tri.z;
+    rayOrigin_rt_tri.x += rayDir_rt_tri.x * scale;
+    rayOrigin_rt_tri.y += rayDir_rt_tri.y * scale;
+    rayOrigin_rt_tri.z = 0.0f;
+
+    // Check if ray-plane point is on the innner side of each triangle edge
+    if (dumb_dot(0, 1, rayOrigin_rt_tri.x, rayOrigin_rt_tri.y) < -0.01)
         return 0U;
-    if (((tri->edge2Normal.x * (rayOrigin_rt_tri_sp40.x - tri->vert2.x)) +
-         (tri->edge2Normal.y * (rayOrigin_rt_tri_sp40.y - tri->vert2.y))) < -0.01)
+    if (((tri->edge2Normal.x * (rayOrigin_rt_tri.x - tri->vert2.x)) +
+         (tri->edge2Normal.y * (rayOrigin_rt_tri.y - tri->vert2.y))) < -0.01)
         return 0U;
-    if (((tri->edge3Normal.x * (rayOrigin_rt_tri_sp40.x - tri->vert3.x)) +
-         (tri->edge3Normal.y * (rayOrigin_rt_tri_sp40.y - tri->vert3.y))) < -0.01)
+    if (((tri->edge3Normal.x * (rayOrigin_rt_tri.x - tri->vert3.x)) +
+         (tri->edge3Normal.y * (rayOrigin_rt_tri.y - tri->vert3.y))) < -0.01)
         return 0U;
 
-    mathutil_mtxA_tf_point(&rayOrigin_rt_tri_sp40, rayOrigin);
+    mathutil_mtxA_tf_point(&rayOrigin_rt_tri, rayOrigin);
     return 1U;
 }
