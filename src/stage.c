@@ -61,7 +61,7 @@ char *lbl_801B86D8[] =
 
 void g_bonus_wave_warp_callback_1();
 void g_bonus_wave_warp_callback_2();
-int g_bonus_wave_unused_callback();
+int bonus_wave_raycast_down();
 
 void ev_stage_init(void)
 {
@@ -409,7 +409,7 @@ void g_initialize_stage_dyn_part_info(void)
     dyn->modelName = "SHAPE_STAGE134";
     dyn->posNrmTexFunc = g_bonus_wave_warp_callback_1;
     dyn->posColorTexFunc = g_bonus_wave_warp_callback_2;
-    dyn->unusedFunc = g_bonus_wave_unused_callback;
+    dyn->raycastDownFunc = bonus_wave_raycast_down;
     useless.unk5C++;
 
     // end of list
@@ -1068,7 +1068,7 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
 #define lbl_802F377C 30.0f
 #define lbl_802F3780 16384.0
 
-int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
+int bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal)
 {
     float f1;
     float f31;
@@ -1077,12 +1077,12 @@ int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
     int angle;
     Vec sp14;
 
-    if (a->x < -10.01 || a->x > 10.01)
+    if (rayOrigin->x < -10.01 || rayOrigin->x > 10.01)
         return 0;
-    if (a->z < -10.01 || a->z > 10.01)
+    if (rayOrigin->z < -10.01 || rayOrigin->z > 10.01)
         return 0;
 
-    f1 = mathutil_sqrt(a->x * a->x + a->z * a->z);
+    f1 = mathutil_sqrt(rayOrigin->x * rayOrigin->x + rayOrigin->z * rayOrigin->z);
     f31 = 0.5 + -0.030833333333333333 * f1;
     f2 = -1092.0f;
     f2 *= (lbl_80206DEC.unk4 - 30.0f);
@@ -1090,29 +1090,29 @@ int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
     angle = f2 + r3;
     if (angle > 0)
     {
-        b->x = a->x;
-        b->y = 0.0f;
-        b->z = a->z;
-        if (c != NULL)
+        outHitPos->x = rayOrigin->x;
+        outHitPos->y = 0.0f;
+        outHitPos->z = rayOrigin->z;
+        if (outHitNormal != NULL)
         {
-            c->x = 0.0f;
-            c->y = 1.0f;
-            c->z = 0.0f;
+            outHitNormal->x = 0.0f;
+            outHitNormal->y = 1.0f;
+            outHitNormal->z = 0.0f;
         }
         return 1;
     }
-    b->x = a->x;
-    b->y = mathutil_sin(angle) * f31;
-    b->z = a->z;
-    if (c != NULL)
+    outHitPos->x = rayOrigin->x;
+    outHitPos->y = mathutil_sin(angle) * f31;
+    outHitPos->z = rayOrigin->z;
+    if (outHitNormal != NULL)
     {
         float f2;
 
-        c->x = 0.0f;
-        c->y = 1.0f;
-        c->z = 0.0f;
-        sp14.x = a->x;
-        sp14.z = a->z;
+        outHitNormal->x = 0.0f;
+        outHitNormal->y = 1.0f;
+        outHitNormal->z = 0.0f;
+        sp14.x = rayOrigin->x;
+        sp14.z = rayOrigin->z;
         f1 = mathutil_sum_of_sq_2(sp14.x, sp14.z);
         if (f1 <= 1.19209289550781e-07f)
             return 1;
@@ -1127,9 +1127,9 @@ int g_bonus_wave_unused_callback(Vec *a, Vec *b, Vec *c)
         sp14.x *= f2;
         sp14.y *= f2;
         sp14.z *= f2;
-        c->x = sp14.x;
-        c->y = sp14.y;
-        c->z = sp14.z;
+        outHitNormal->x = sp14.x;
+        outHitNormal->y = sp14.y;
+        outHitNormal->z = sp14.z;
     }
     return 1;
 }

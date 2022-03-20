@@ -667,7 +667,7 @@ struct DynamicStagePart
     struct NaomiModel *origModel;  // original model
     void (*posNrmTexFunc)(struct NaomiVtxWithNormal *);
     void (*posColorTexFunc)(struct NaomiVtxWithColor *);
-    int (*unusedFunc)();
+    int (*raycastDownFunc)(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal);
     struct NaomiModel *tempModel;  // modified copy of the model
 };
 

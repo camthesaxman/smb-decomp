@@ -1226,7 +1226,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
         hitPos.x = rayOrigin_rt_ig.x;
         hitPos.y = rayOrigin_rt_ig.y;
         hitPos.z = rayOrigin_rt_ig.z;
-        if (dynamicStageParts[0].unusedFunc(&hitPos, &hitPos,
+        if (dynamicStageParts[0].raycastDownFunc(&hitPos, &hitPos,
                                             &dynStagePartHitNormal) != 0U)
         {
             if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
