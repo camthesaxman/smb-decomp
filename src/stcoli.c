@@ -4,10 +4,10 @@
 
 #include "global.h"
 #include "mathutil.h"
-#include "variables.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "types.h"
+#include "variables.h"
 
 void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
 {
@@ -1085,171 +1085,179 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
     stcoli_sub30(ball, ball);
 }
 
-int raycast_stage_down(Point3d* rayOrigin, struct RaycastHit* outHit, Vec* outVelAtPoint) {
+int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVelAtPoint)
+{
+    Point3d rayOrigin_rt_ig;
+    Point3d hitPos;
+    Vec rayDir_rt_ig;
+    Vec coneHitNormal;
+    Vec sphereHitNormal;
+    Point3d cylinderHitNormal;
+    Vec dynStagePartHitNormal;
+    Point3d currHitPos;
+    Point3d prevHitPos;
 
-    Point3d rayOrigin_rt_ig_sp84;
-    Point3d hitPos_sp78;
-    Vec rayDir_rt_ig_sp6c;
-    Vec coneHitNormal_sp60;
-    Vec sphereHitNormal_sp54;
-    Point3d cylinderHitNormal_sp48;
-    Vec dynStagePartHitNormal_sp3c;
-    Point3d hitPos_sp30;
-    Point3d prevHitPos_sp24;
+    struct ItemgroupInfo *itemgroupInfo;
+    struct StageColiTri *tri;
+    struct StageItemgroup *stageIg;
+    s16 *cellTris;
+    s16 *cellTriIdx;
 
-    struct ItemgroupInfo* itemgroupInfo;
-    struct StageColiTri* tri;
-    struct StageItemgroup* stageIg;
-    s16* cellTris;
-    s16* cellTriIdx;
-    struct StageColiCone* cone;
+    struct StageColiCone *cone;
     s32 coneCtr;
-    struct StageColiSphere* sphere;
+    struct StageColiSphere *sphere;
     s32 sphereCtr;
-    struct StageColiCylinder* cylinder;
+    struct StageColiCylinder *cylinder;
     s32 cylinderCtr;
+
     s32 itemgroupId;
-    s32 g_hitItemgroupId1;
-    // s32 g_hitItemgroupId2;
-    // s32 g_hitItemgroupId3;
-    // s32 g_hitItemgroupId4;
-    // s32 g_hitItemgroupId5;
-    // s32 g_hitItemgroupId6;
+    s32 hitItemgroupId;
 
     outHit->flags = 0;
     itemgroupId = 0;
     itemgroupInfo = itemgroups;
     stageIg = decodedStageLzPtr->itemgroups;
-    g_hitItemgroupId1 = 0;
-    // g_hitItemgroupId2 = 0;
+    hitItemgroupId = 0;
 
-    for (itemgroupId = 0; itemgroupId < decodedStageLzPtr->itemgroupCount; itemgroupId++, itemgroupInfo++, stageIg++)
+    for (itemgroupId = 0; itemgroupId < decodedStageLzPtr->itemgroupCount;
+         itemgroupId++, itemgroupInfo++, stageIg++)
     {
-        // g_hitItemgroupId1 = g_hitItemgroupId2;
-        // g_hitItemgroupId5 = g_hitItemgroupId2;
-        // g_hitItemgroupId6 = g_hitItemgroupId2;
-
-        rayOrigin_rt_ig_sp84.x = rayOrigin->x;
-        rayOrigin_rt_ig_sp84.y = rayOrigin->y;
-        rayOrigin_rt_ig_sp84.z = rayOrigin->z;
-        rayDir_rt_ig_sp6c.x = 0.0f;
-        rayDir_rt_ig_sp6c.y = -1.0f;
-        rayDir_rt_ig_sp6c.z = 0.0f;
-        if (itemgroupId > 0) {
+        rayOrigin_rt_ig.x = rayOrigin->x;
+        rayOrigin_rt_ig.y = rayOrigin->y;
+        rayOrigin_rt_ig.z = rayOrigin->z;
+        rayDir_rt_ig.x = 0.0f;
+        rayDir_rt_ig.y = -1.0f;
+        rayDir_rt_ig.z = 0.0f;
+        if (itemgroupId > 0)
+        {
             mathutil_mtxA_from_mtx(itemgroupInfo->transform);
-            mathutil_mtxA_rigid_inv_tf_point(&rayOrigin_rt_ig_sp84, &rayOrigin_rt_ig_sp84);
-            mathutil_mtxA_rigid_inv_tf_vec(&rayDir_rt_ig_sp6c, &rayDir_rt_ig_sp6c);
+            mathutil_mtxA_rigid_inv_tf_point(&rayOrigin_rt_ig, &rayOrigin_rt_ig);
+            mathutil_mtxA_rigid_inv_tf_vec(&rayDir_rt_ig, &rayDir_rt_ig);
         }
 
-        cellTris = coligrid_lookup(stageIg, rayOrigin_rt_ig_sp84.x, rayOrigin_rt_ig_sp84.z);
-        if (cellTris != NULL2) {
+        cellTris = coligrid_lookup(stageIg, rayOrigin_rt_ig.x, rayOrigin_rt_ig.z);
+        if (cellTris != NULL2)
+        {
             cellTriIdx = cellTris;
-            for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++) {
-                // g_hitItemgroupId5 = g_hitItemgroupId6;
-                hitPos_sp78.x = rayOrigin_rt_ig_sp84.x;
-                hitPos_sp78.y = rayOrigin_rt_ig_sp84.y;
-                hitPos_sp78.z = rayOrigin_rt_ig_sp84.z;
+            for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
+            {
+                hitPos.x = rayOrigin_rt_ig.x;
+                hitPos.y = rayOrigin_rt_ig.y;
+                hitPos.z = rayOrigin_rt_ig.z;
                 tri = &stageIg->triangles[*cellTriIdx];
-                if (raycast_tri(&hitPos_sp78, &rayDir_rt_ig_sp6c, tri))
+                if (raycast_tri(&hitPos, &rayDir_rt_ig, tri))
                 {
                     mathutil_mtxA_from_mtx(itemgroupInfo->transform);
-                    mathutil_mtxA_tf_point(&hitPos_sp78, &hitPos_sp78);
+                    mathutil_mtxA_tf_point(&hitPos, &hitPos);
                     if (((outHit->flags & COLI_FLAG_OCCURRED) == 0 ||
-                         hitPos_sp78.y > outHit->pos.y))
+                         hitPos.y > outHit->pos.y))
                     {
                         outHit->flags = tri->flags | COLI_FLAG_OCCURRED;
-                        outHit->pos.x = hitPos_sp78.x;
-                        outHit->pos.y = hitPos_sp78.y;
-                        outHit->pos.z = hitPos_sp78.z;
+                        outHit->pos.x = hitPos.x;
+                        outHit->pos.y = hitPos.y;
+                        outHit->pos.z = hitPos.z;
                         mathutil_mtxA_tf_vec(&tri->normal, &outHit->normal);
-                        g_hitItemgroupId1 = itemgroupId;
+                        hitItemgroupId = itemgroupId;
                     }
                 }
             }
         }
         cone = stageIg->coliCones;
-        for (coneCtr = stageIg->coliConeCount; coneCtr > 0; coneCtr--, cone++) {
-            // g_hitItemgroupId4 = g_hitItemgroupId5;
-            if (raycast_cone(&rayOrigin_rt_ig_sp84, &rayDir_rt_ig_sp6c, cone, &hitPos_sp78, &coneHitNormal_sp60)) {
+        for (coneCtr = stageIg->coliConeCount; coneCtr > 0; coneCtr--, cone++)
+        {
+            if (raycast_cone(&rayOrigin_rt_ig, &rayDir_rt_ig, cone, &hitPos,
+                             &coneHitNormal))
+            {
                 mathutil_mtxA_from_mtx(itemgroupInfo->transform);
-                mathutil_mtxA_tf_point(&hitPos_sp78, &hitPos_sp78);
-                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                mathutil_mtxA_tf_point(&hitPos, &hitPos);
+                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
+                {
                     outHit->flags = cone->flags | COLI_FLAG_OCCURRED;
-                    outHit->pos.x = hitPos_sp78.x;
-                    outHit->pos.y = hitPos_sp78.y;
-                    outHit->pos.z = hitPos_sp78.z;
-                    mathutil_mtxA_tf_vec(&coneHitNormal_sp60, &outHit->normal);
-                    g_hitItemgroupId1 = itemgroupId;
+                    outHit->pos.x = hitPos.x;
+                    outHit->pos.y = hitPos.y;
+                    outHit->pos.z = hitPos.z;
+                    mathutil_mtxA_tf_vec(&coneHitNormal, &outHit->normal);
+                    hitItemgroupId = itemgroupId;
                 }
             }
         }
         sphere = stageIg->coliSpheres;
-        for (sphereCtr = stageIg->coliSphereCount; sphereCtr > 0; sphereCtr--, sphere++) {
-            // g_hitItemgroupId3 = g_hitItemgroupId4;
-            if ((raycast_sphere(&rayOrigin_rt_ig_sp84, &rayDir_rt_ig_sp6c, sphere,
-                                &hitPos_sp78, &sphereHitNormal_sp54)))
+        for (sphereCtr = stageIg->coliSphereCount; sphereCtr > 0; sphereCtr--, sphere++)
+        {
+            if ((raycast_sphere(&rayOrigin_rt_ig, &rayDir_rt_ig, sphere, &hitPos,
+                                &sphereHitNormal)))
             {
-                mathutil_mtxA_from_mtx(itemgroupInfo->transform); 
-                mathutil_mtxA_tf_point(&hitPos_sp78,  &hitPos_sp78);
-                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                mathutil_mtxA_tf_point(&hitPos, &hitPos);
+                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
+                {
                     outHit->flags = sphere->flags | COLI_FLAG_OCCURRED;
-                    outHit->pos.x = hitPos_sp78.x;
-                    outHit->pos.y = hitPos_sp78.y;
-                    outHit->pos.z = hitPos_sp78.z;
-                    mathutil_mtxA_tf_vec(&sphereHitNormal_sp54, &outHit->normal);
-                    g_hitItemgroupId1 = itemgroupId;
+                    outHit->pos.x = hitPos.x;
+                    outHit->pos.y = hitPos.y;
+                    outHit->pos.z = hitPos.z;
+                    mathutil_mtxA_tf_vec(&sphereHitNormal, &outHit->normal);
+                    hitItemgroupId = itemgroupId;
                 }
             }
         }
         cylinder = stageIg->coliCylinders;
-        for (cylinderCtr = stageIg->coliCylinderCount; cylinderCtr > 0; cylinderCtr--, cylinder++) {
-            // g_hitItemgroupId2 = g_hitItemgroupId3;
-            if (raycast_cylinder(&rayOrigin_rt_ig_sp84, &rayDir_rt_ig_sp6c, cylinder, &hitPos_sp78, &cylinderHitNormal_sp48)) {
+        for (cylinderCtr = stageIg->coliCylinderCount; cylinderCtr > 0; cylinderCtr--, cylinder++)
+        {
+            if (raycast_cylinder(&rayOrigin_rt_ig, &rayDir_rt_ig, cylinder, &hitPos,
+                                 &cylinderHitNormal))
+            {
                 mathutil_mtxA_from_mtx(itemgroupInfo->transform);
-                mathutil_mtxA_tf_point(&hitPos_sp78, &hitPos_sp78);
-                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                mathutil_mtxA_tf_point(&hitPos, &hitPos);
+                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
+                {
                     outHit->flags = cylinder->flags | COLI_FLAG_OCCURRED;
-                    outHit->pos.x = hitPos_sp78.x;
-                    outHit->pos.y = hitPos_sp78.y;
-                    outHit->pos.z = hitPos_sp78.z;
-                    mathutil_mtxA_tf_vec(&cylinderHitNormal_sp48, &outHit->normal);
-                    g_hitItemgroupId1 = itemgroupId;
+                    outHit->pos.x = hitPos.x;
+                    outHit->pos.y = hitPos.y;
+                    outHit->pos.z = hitPos.z;
+                    mathutil_mtxA_tf_vec(&cylinderHitNormal, &outHit->normal);
+                    hitItemgroupId = itemgroupId;
                 }
             }
         }
     }
-    
-    if (dynamicStageParts != 0U) {
-        hitPos_sp78.x = rayOrigin_rt_ig_sp84.x;
-        hitPos_sp78.y = rayOrigin_rt_ig_sp84.y;
-        hitPos_sp78.z = rayOrigin_rt_ig_sp84.z;
-        if (dynamicStageParts->unusedFunc(&hitPos_sp78, &hitPos_sp78, &dynStagePartHitNormal_sp3c) != 0U) {
-            if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
-                g_hitItemgroupId1 = 0;
+
+    if (dynamicStageParts)
+    {
+        hitPos.x = rayOrigin_rt_ig.x;
+        hitPos.y = rayOrigin_rt_ig.y;
+        hitPos.z = rayOrigin_rt_ig.z;
+        if (dynamicStageParts[0].unusedFunc(&hitPos, &hitPos,
+                                            &dynStagePartHitNormal) != 0U)
+        {
+            if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
+            {
+                hitItemgroupId = 0;
                 outHit->flags = COLI_FLAG_OCCURRED;
-                outHit->pos.x = hitPos_sp78.x;
-                outHit->pos.y = hitPos_sp78.y;
-                outHit->pos.z = hitPos_sp78.z;
-                outHit->normal.x = dynStagePartHitNormal_sp3c.x;
-                outHit->normal.y = dynStagePartHitNormal_sp3c.y;
-                outHit->normal.z = dynStagePartHitNormal_sp3c.z;
+                outHit->pos.x = hitPos.x;
+                outHit->pos.y = hitPos.y;
+                outHit->pos.z = hitPos.z;
+                outHit->normal.x = dynStagePartHitNormal.x;
+                outHit->normal.y = dynStagePartHitNormal.y;
+                outHit->normal.z = dynStagePartHitNormal.z;
             }
         }
     }
-    
-    if (outVelAtPoint != 0U) {
-        if (((outHit->flags & COLI_FLAG_OCCURRED) != 0) && (g_hitItemgroupId1 > 0)) {
-            hitPos_sp30.x = outHit->pos.x;
-            hitPos_sp30.y = outHit->pos.y;
-            hitPos_sp30.z = outHit->pos.z;
-            itemgroupInfo = &itemgroups[g_hitItemgroupId1];
+
+    if (outVelAtPoint)
+    {
+        if (((outHit->flags & COLI_FLAG_OCCURRED) != 0) && (hitItemgroupId > 0))
+        {
+            currHitPos.x = outHit->pos.x;
+            currHitPos.y = outHit->pos.y;
+            currHitPos.z = outHit->pos.z;
+            itemgroupInfo = &itemgroups[hitItemgroupId];
             mathutil_mtxA_from_mtx(itemgroupInfo->transform);
-            mathutil_mtxA_rigid_inv_tf_point(&hitPos_sp30, &hitPos_sp78);
+            mathutil_mtxA_rigid_inv_tf_point(&currHitPos, &hitPos);
             mathutil_mtxA_from_mtx(itemgroupInfo->prevTransform);
-            mathutil_mtxA_tf_point(&hitPos_sp78, &prevHitPos_sp24);
-            outVelAtPoint->x = hitPos_sp30.x - prevHitPos_sp24.x;
-            outVelAtPoint->y = hitPos_sp30.y - prevHitPos_sp24.y;
-            outVelAtPoint->z = hitPos_sp30.z - prevHitPos_sp24.z;
+            mathutil_mtxA_tf_point(&hitPos, &prevHitPos);
+            outVelAtPoint->x = currHitPos.x - prevHitPos.x;
+            outVelAtPoint->y = currHitPos.y - prevHitPos.y;
+            outVelAtPoint->z = currHitPos.z - prevHitPos.z;
         }
         else
         {
