@@ -1149,8 +1149,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
                 {
                     mathutil_mtxA_from_mtx(itemgroupInfo->transform);
                     mathutil_mtxA_tf_point(&hitPos, &hitPos);
-                    if (((outHit->flags & COLI_FLAG_OCCURRED) == 0 ||
-                         hitPos.y > outHit->pos.y))
+                    if (((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y))
                     {
                         outHit->flags = tri->flags | COLI_FLAG_OCCURRED;
                         outHit->pos.x = hitPos.x;
@@ -1165,8 +1164,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
         cone = stageIg->coliCones;
         for (coneCtr = stageIg->coliConeCount; coneCtr > 0; coneCtr--, cone++)
         {
-            if (raycast_cone(&rayOrigin_rt_ig, &rayDir_rt_ig, cone, &hitPos,
-                             &coneHitNormal))
+            if (raycast_cone(&rayOrigin_rt_ig, &rayDir_rt_ig, cone, &hitPos, &coneHitNormal))
             {
                 mathutil_mtxA_from_mtx(itemgroupInfo->transform);
                 mathutil_mtxA_tf_point(&hitPos, &hitPos);
@@ -1226,8 +1224,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
         hitPos.x = rayOrigin_rt_ig.x;
         hitPos.y = rayOrigin_rt_ig.y;
         hitPos.z = rayOrigin_rt_ig.z;
-        if (dynamicStageParts[0].raycastDownFunc(&hitPos, &hitPos,
-                                            &dynStagePartHitNormal) != 0U)
+        if (dynamicStageParts[0].raycastDownFunc(&hitPos, &hitPos, &dynStagePartHitNormal))
         {
             if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
             {
@@ -1245,7 +1242,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
 
     if (outVelAtPoint)
     {
-        if (((outHit->flags & COLI_FLAG_OCCURRED) != 0) && (hitItemgroupId > 0))
+        if ((outHit->flags & COLI_FLAG_OCCURRED) && (hitItemgroupId > 0))
         {
             currHitPos.x = outHit->pos.x;
             currHitPos.y = outHit->pos.y;

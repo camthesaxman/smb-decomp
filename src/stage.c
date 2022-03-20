@@ -61,7 +61,7 @@ char *lbl_801B86D8[] =
 
 void g_bonus_wave_warp_callback_1();
 void g_bonus_wave_warp_callback_2();
-int bonus_wave_raycast_down();
+u32 bonus_wave_raycast_down();
 
 void ev_stage_init(void)
 {
@@ -1068,7 +1068,7 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
 #define lbl_802F377C 30.0f
 #define lbl_802F3780 16384.0
 
-int bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal)
+u32 bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal)
 {
     float f1;
     float f31;
