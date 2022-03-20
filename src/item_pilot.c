@@ -125,7 +125,7 @@ void item_pilot_main(struct Item *item)
             sp24.x = r29->pos.x - item->unk20.x;
             sp24.y = r29->pos.y - item->unk20.y;
             sp24.z = r29->pos.z - item->unk20.z;
-            if (mathutil_vec_mag(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
+            if (mathutil_vec_len(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
             {
                 Vec sp18;
 
@@ -147,7 +147,7 @@ void item_pilot_main(struct Item *item)
                 item->unk2C.x += sp24.x;
                 item->unk2C.y += sp24.y;
                 item->unk2C.z += sp24.z;
-                if (mathutil_vec_mag(&item->unk2C) > 0.064814814814814811)
+                if (mathutil_vec_len(&item->unk2C) > 0.064814814814814811)
                 {
                     mathutil_vec_normalize_len(&item->unk2C);
                     item->unk2C.x = 0.064814814814814811 * item->unk2C.x;

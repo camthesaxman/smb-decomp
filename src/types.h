@@ -282,13 +282,13 @@ struct Struct80176434
 
 struct ItemgroupInfo
 {
-    Vec pos;
-    Vec prevPos;
+    Point3d pos;
+    Point3d prevPos;
     S16Vec rot;
     S16Vec prevRot;
-    Mtx transform;  // Transform from itemgroup space to world space
-    Mtx prevTransform;  // Previous frame transform from itemgroup space to world space
-};  // size = 0x84
+    Mtx transform;     // Transform from itemgroup space to world space
+    Mtx prevTransform; // Previous frame transform from itemgroup space to world space
+};
 
 struct ReplayInfo
 {

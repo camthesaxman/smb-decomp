@@ -8,7 +8,7 @@
 #include "types.h"
 
 void collide_ball_with_stage(struct PhysicsBall *b, struct Stage *);
-s16 *meshcoli_grid_lookup(struct StageItemgroup *coliHeader, f32 x, f32 z);
+s16 *coligrid_lookup(struct StageItemgroup *coliHeader, f32 x, f32 z);
 void collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri);
 void collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri);
 void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Vec *localBallPos,

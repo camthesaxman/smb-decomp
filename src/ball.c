@@ -67,8 +67,8 @@ void func_8003699C(struct Ape *a)
 
     if (!(ball->flags & BALL_FLAG_05))
     {
-        float f31 = mathutil_vec_mag(&ball->vel);
-        float f1 = mathutil_vec_mag(&ball->unkB8);
+        float f31 = mathutil_vec_len(&ball->vel);
+        float f1 = mathutil_vec_len(&ball->unkB8);
 
         if (f31 > 0.032407406717538834f)
         {
@@ -119,7 +119,7 @@ float func_80036CAC(struct Ape *a)
     sp4C = ball->vel;
     sp4C.y = 0.0f;
 
-    if (mathutil_vec_mag(&sp4C) < 0.00027777777f)
+    if (mathutil_vec_len(&sp4C) < 0.00027777777f)
         return 0.0f;
 
     mathutil_vec_normalize_len(&sp4C);
@@ -155,7 +155,7 @@ float func_80036CAC(struct Ape *a)
     mathutil_mtxA_to_mtx(lbl_80205E30);
     mathutil_mtxA_pop();
     mathutil_mtxA_mult_right(lbl_80205E30);
-    return mathutil_vec_mag(&ball->unkB8) * 1.5f;
+    return mathutil_vec_len(&ball->unkB8) * 1.5f;
 }
 
 void func_80036EB8(struct Ape *a)
@@ -372,7 +372,7 @@ void func_8003721C(struct Ape *a, float b)
         else if (ball->flags & BALL_FLAG_05)
         {
             r29 = 4;
-            f31 = mathutil_vec_mag(&ball->vel);
+            f31 = mathutil_vec_len(&ball->vel);
             lbl_80205E20[ball->unk2E] = f31;
         }
         else if (ball->flags & BALL_FLAG_01)
@@ -460,7 +460,7 @@ void lbl_8003781C(struct Ape *a, int b)
     a->unk14 &= -20;
     if (!(sp50.flags & 1) && r29->vel.y < -0.16203702986240387f)
         a->unk14 |= 2;
-    else if (mathutil_vec_mag(&r29->unkB8) < 0.00027777777f)
+    else if (mathutil_vec_len(&r29->unkB8) < 0.00027777777f)
         a->unk14 |= 1;
 
     r27 = (r29->flags & BALL_FLAG_GOAL) != 0;
@@ -480,7 +480,7 @@ void lbl_8003781C(struct Ape *a, int b)
     }
 
     if (r29->flags & BALL_FLAG_05)
-        f31 = mathutil_vec_mag(&r29->vel);
+        f31 = mathutil_vec_len(&r29->vel);
 
     func_80036EB8(a);
     mathutil_mtxA_to_quat(&a->unk60);
@@ -1017,7 +1017,7 @@ void func_80038528(struct Ball *ball)
         func_8003C550(ball);
 
     mathutil_mtxA_from_mtx(ball->unk30);
-    ball->unkC4 = mathutil_vec_mag(&ball->unkB8);
+    ball->unkC4 = mathutil_vec_len(&ball->unkB8);
     mathutil_mtxA_tf_vec_xyz(&sp58, 0.0f, 1.0f, 0.0f);
     mathutil_mtxA_tf_vec_xyz(&sp40, 1.0f, 0.0f, 0.0f);
     mathutil_mtxA_tf_vec_xyz(&sp28, 0.0f, 0.0f, 1.0f);
@@ -1901,7 +1901,7 @@ void ball_func_15(struct Ball *ball)
     sp28.y = ((rand() / 32767.0f) - 0.5) * 0.5;
     sp28.z = ((rand() / 32767.0f) - 0.5) * 0.5;
 
-    if (ball->currRadius > FLT_EPSILON && mathutil_vec_mag(&sp28) != 0.0f)
+    if (ball->currRadius > FLT_EPSILON && mathutil_vec_len(&sp28) != 0.0f)
     {
         float f1 = mathutil_vec_normalize_len(&sp28);
 
@@ -2244,7 +2244,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     ball->prevPos.y = ball->pos.y;
     ball->prevPos.z = ball->pos.z;
 
-    ball->unkF8 = mathutil_vec_mag(&ball->vel);
+    ball->unkF8 = mathutil_vec_len(&ball->vel);
     ball->flags &= ~BALL_FLAG_05;
 
     mathutil_mtxA_from_identity();
@@ -2333,7 +2333,7 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
     ball->prevPos.y = ball->pos.y;
     ball->prevPos.z = ball->pos.z;
 
-    ball->unkF8 = mathutil_vec_mag(&ball->vel);
+    ball->unkF8 = mathutil_vec_len(&ball->vel);
     ball->flags &= ~BALL_FLAG_05;
 
     mathutil_mtxA_from_identity();
@@ -2578,7 +2578,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
 
         if (ball->currRadius > FLT_EPSILON)
         {
-            f1 = mathutil_vec_mag(&sp2C);
+            f1 = mathutil_vec_len(&sp2C);
             if (f1 != 0.0f)
             {
                 f1 = mathutil_vec_normalize_len(&sp2C);
@@ -2939,7 +2939,7 @@ void func_8003CDC0(struct Ball *ball)
         struct Ape *ape = ball->unk144;
         s8 r31 = 0;
         s8 r28 = 0;
-        float f2 = mathutil_vec_mag(&ball->vel) * 216000.0 / 1000.0;
+        float f2 = mathutil_vec_len(&ball->vel) * 216000.0 / 1000.0;
 
         if (ape->unk1CE > 3 && f2 > 10.0)
         {
@@ -2955,7 +2955,7 @@ void func_8003CDC0(struct Ball *ball)
     {
         s8 r4;
         s8 r5;
-        float f4 = mathutil_vec_mag(&ball->vel) * 216000.0 / 1000.0;
+        float f4 = mathutil_vec_len(&ball->vel) * 216000.0 / 1000.0;
 
         if ((ball->flags & BALL_FLAG_00) && f4 > 10.0)
         {
@@ -2981,7 +2981,7 @@ void func_8003D3C4(struct Ball *ball)
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE && ball->unk144 != NULL && ball->unk144->unk14 & (1 << 5))
         return;
 
-    f26 = mathutil_vec_mag(&ball->vel);
+    f26 = mathutil_vec_len(&ball->vel);
     f26 *= 5.0;
     if (f26 > 1.5f)
     {

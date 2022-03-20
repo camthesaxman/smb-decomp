@@ -4,6 +4,7 @@
 
 #include "global.h"
 #include "mathutil.h"
+#include "variables.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "types.h"
@@ -53,7 +54,7 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
     {
         if (itemgroupId != ball->itemgroupId)
             tf_physball_to_itemgroup_space(ball, itemgroupId);
-        cellTris = meshcoli_grid_lookup(stageIg, ball->pos.x, ball->pos.z);
+        cellTris = coligrid_lookup(stageIg, ball->pos.x, ball->pos.z);
         if (cellTris != NULL)
         {
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
@@ -87,7 +88,7 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
         g_collide_ball_with_dynstageparts(ball, dynamicStageParts);
 }
 
-s16 *meshcoli_grid_lookup(struct StageItemgroup *stageIg, f32 x, f32 z)
+s16 *coligrid_lookup(struct StageItemgroup *stageIg, f32 x, f32 z)
 {
     int cellX;
     int cellZ;
@@ -1053,7 +1054,7 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
     Point3d ballPos;
     float temp_f1;
     float temp_f2;
-    float temp_r30;
+    float hitItemgroupInfo;
     struct ColiRect *coliRect;
     s32 i;
 
@@ -1084,233 +1085,179 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
     stcoli_sub30(ball, ball);
 }
 
-// s32 raycast_stage_down(Point3d* rayOrigin, struct RaycastHit* outHit, Point3d* outVelAtPoint) {
-//     f64 sp14;
-//     f64 sp1C;
-//     Point3d sp24;
-//     f32 sp30;
-//     f32 sp34;
-//     f32 sp38;
-//     f32 sp3C;
-//     Point3d sp48;
-//     Point3d sp54;
-//     Point3d sp60;
-//     f32 sp6C;
-//     f32 sp70;
-//     f32 sp74;
-//     f32 sp78;
-//     f32 sp7C;
-//     f32 sp80;
-//     f32 sp84;
-//     f32 sp88;
-//     f32 sp8C;
-//     f64 sp90;
-//     s32 sp98;
-//     s32 sp9C;
-//     f64 spA0;
-//     s32 spA8;
-//     s32 spAC;
-//     f32 temp_f0;
-//     f32 temp_f29;
-//     f32* temp_r3_4;
-//     f32* temp_r3_5;
-//     f32* temp_r4;
-//     f64 temp_f31;
-//     s32 temp_r3;
-//     s32 temp_r3_2;
-//     s32 temp_r3_3;
-//     struct DynamicStagePart* temp_r6;
-//     struct ItemgroupInfo* temp_r30;
-//     void* temp_r22;
-//     s32 phi_r27;
-//     struct ItemgroupInfo* phi_r30;
-//     struct StageItemgroup* phi_r29;
-//     s16* phi_r3;
-//     s16* phi_r28;
-//     s32 phi_r28_2;
-//     struct StageColiCone* phi_r22;
-//     s32 phi_r28_3;
-//     struct StageColiSphere* phi_r22_2;
-//     s32 phi_r28_4;
-//     struct StageColiCylinder* phi_r22_3;
-//     s32 phi_r26;
-//     s32 phi_r26_2;
-//     s32 phi_r26_3;
-//     s32 phi_r26_4;
-//     s32 phi_r26_5;
-//     s32 phi_r26_6;
+int raycast_stage_down(Point3d* rayOrigin, struct RaycastHit* outHit, Vec* outVelAtPoint) {
 
-//     outHit->flags = 0;
-//     temp_f31 = 4503601774854144;
-//     temp_f29 = 0.0;
-//     phi_r27 = 0;
-//     phi_r30 = itemgroups;
-//     phi_r29 = decodedStageLzPtr->itemgroups;
-//     phi_r26 = 0;
-//     phi_r26_2 = 0;
-// loop_42:
-//     phi_r26 = phi_r26_2;
-//     phi_r26_5 = phi_r26_2;
-//     phi_r26_6 = phi_r26_2;
-//     if (phi_r27 < (s32) decodedStageLzPtr->itemgroupCount) {
-//         sp84 = rayOrigin->x;
-//         sp88 = rayOrigin->y;
-//         sp6C = temp_f29;
-//         sp70 = -1.0f;
-//         sp8C = rayOrigin->z;
-//         sp74 = temp_f29;
-//         if (phi_r27 > 0) {
-//             mathutil_mtxA_from_mtx(phi_r30 + 0x24);
-//             mathutil_mtxA_rigid_inv_tf_point((Point3d* ) &sp84, (Point3d* ) &sp84);
-//             mathutil_mtxA_rigid_inv_tf_vec((Point3d* ) &sp6C, (Point3d* ) &sp6C);
-//         }
-//         phi_r3 = NULL;
-//         if ((u32) phi_r29->gridCellTris == NULL) {
+    Point3d rayOrigin_rt_ig_sp84;
+    Point3d hitPos_sp78;
+    Vec rayDir_rt_ig_sp6c;
+    Vec coneHitNormal_sp60;
+    Vec sphereHitNormal_sp54;
+    Point3d cylinderHitNormal_sp48;
+    Vec dynStagePartHitNormal_sp3c;
+    Point3d hitPos_sp30;
+    Point3d prevHitPos_sp24;
 
-//         } else {
-//             MIPS2C_ERROR(unknown instruction: mffs $f0);
-//             MIPS2C_ERROR(unknown instruction: mtfsb1 0x1e);
-//             MIPS2C_ERROR(unknown instruction: mtfsb1 0x1f);
-//             sp1C = MIPS2C_ERROR(unknown instruction: fctiw $f1, $f1);
-//             MIPS2C_ERROR(unknown instruction: mtfsf 0xff, $f0);
-//             spAC = unksp20 ^ 0x80000000;
-//             spA8 = 0x43300000;
-//             spA0 = (bitwise f64) (s32) ((f32) (bitwise f64) spA8 - (f32) temp_f31);
-//             MIPS2C_ERROR(unknown instruction: mffs $f0);
-//             MIPS2C_ERROR(unknown instruction: mtfsb1 0x1e);
-//             MIPS2C_ERROR(unknown instruction: mtfsb1 0x1f);
-//             sp14 = MIPS2C_ERROR(unknown instruction: fctiw $f1, $f1);
-//             MIPS2C_ERROR(unknown instruction: mtfsf 0xff, $f0);
-//             sp9C = unksp18 ^ 0x80000000;
-//             sp98 = 0x43300000;
-//             sp90 = (bitwise f64) (s32) ((f32) (bitwise f64) sp98 - (f32) temp_f31);
-//             if ((unkspA4 < 0) || (temp_r3_3 = phi_r29->gridCellCountX, ((unkspA4 < temp_r3_3) == 0))) {
+    struct ItemgroupInfo* itemgroupInfo;
+    struct StageColiTri* tri;
+    struct StageItemgroup* stageIg;
+    s16* cellTris;
+    s16* cellTriIdx;
+    struct StageColiCone* cone;
+    s32 coneCtr;
+    struct StageColiSphere* sphere;
+    s32 sphereCtr;
+    struct StageColiCylinder* cylinder;
+    s32 cylinderCtr;
+    s32 itemgroupId;
+    s32 g_hitItemgroupId1;
+    // s32 g_hitItemgroupId2;
+    // s32 g_hitItemgroupId3;
+    // s32 g_hitItemgroupId4;
+    // s32 g_hitItemgroupId5;
+    // s32 g_hitItemgroupId6;
 
-//             } else if ((unksp94 < 0) || (unksp94 >= (s32) phi_r29->gridCellCountZ)) {
+    outHit->flags = 0;
+    itemgroupId = 0;
+    itemgroupInfo = itemgroups;
+    stageIg = decodedStageLzPtr->itemgroups;
+    g_hitItemgroupId1 = 0;
+    // g_hitItemgroupId2 = 0;
 
-//             } else {
-//                 phi_r3 = *(phi_r29->gridCellTris + ((unkspA4 + (unksp94 * temp_r3_3)) * 4));
-//             }
-//         }
-//         if (phi_r3 != 0U) {
-//             phi_r28 = phi_r3;
-// loop_19:
-//             phi_r26_5 = phi_r26_6;
-//             if ((s16) *phi_r28 >= 0) {
-//                 temp_r3_4 = &sp78;
-//                 sp78 = sp84;
-//                 sp7C = sp88;
-//                 sp80 = sp8C;
-//                 temp_r22 = phi_r29->triangles + (*phi_r28 << 6);
-//                 if ((rastcast_tri(temp_r3_4, &sp6C, temp_r22, sp88) != 0U) && ((mathutil_mtxA_from_mtx(phi_r30 + 0x24), mathutil_mtxA_tf_point((Point3d* ) &sp78, (Point3d* ) &sp78), (((outHit->flags & 1) == 0) != 0)) || (sp7C > outHit->pos.y))) {
-//                     outHit->flags = temp_r22->unk1E | 1;
-//                     outHit->pos.x = sp78;
-//                     outHit->pos.y = sp7C;
-//                     outHit->pos.z = sp80;
-//                     mathutil_mtxA_tf_vec(temp_r22 + 0xC, &outHit->normal);
-//                     phi_r26_6 = phi_r27;
-//                 }
-//                 phi_r28 += 2;
-//                 goto loop_19;
-//             }
-//         }
-//         phi_r28_2 = phi_r29->coliConeCount;
-//         phi_r22 = phi_r29->coliCones;
-// loop_26:
-//         phi_r26_4 = phi_r26_5;
-//         if (phi_r28_2 > 0) {
-//             if ((rastcast_cone(&sp84, &sp6C, phi_r22, &sp78, &sp60) != 0U) && ((mathutil_mtxA_from_mtx(phi_r30 + 0x24), mathutil_mtxA_tf_point((Point3d* ) &sp78, (Point3d* ) &sp78), (((outHit->flags & 1) == 0) != 0)) || (sp7C > outHit->pos.y))) {
-//                 outHit->flags = phi_r22->flags | 1;
-//                 outHit->pos.x = sp78;
-//                 outHit->pos.y = sp7C;
-//                 outHit->pos.z = sp80;
-//                 mathutil_mtxA_tf_vec(&sp60, &outHit->normal);
-//                 phi_r26_5 = phi_r27;
-//             }
-//             phi_r28_2 += -1;
-//             phi_r22 += 0x20;
-//             goto loop_26;
-//         }
-//         phi_r28_3 = phi_r29->coliSphereCount;
-//         phi_r22_2 = phi_r29->coliSpheres;
-// loop_33:
-//         phi_r26_3 = phi_r26_4;
-//         if (phi_r28_3 > 0) {
-//             if ((rastcast_sphere(&sp84, &sp6C, phi_r22_2, &sp78, &sp54) != 0U) && ((mathutil_mtxA_from_mtx(phi_r30 + 0x24), mathutil_mtxA_tf_point((Point3d* ) &sp78, (Point3d* ) &sp78), (((outHit->flags & 1) == 0) != 0)) || (sp7C > outHit->pos.y))) {
-//                 outHit->flags = phi_r22_2->flags | 1;
-//                 outHit->pos.x = sp78;
-//                 outHit->pos.y = sp7C;
-//                 outHit->pos.z = sp80;
-//                 mathutil_mtxA_tf_vec(&sp54, &outHit->normal);
-//                 phi_r26_4 = phi_r27;
-//             }
-//             phi_r28_3 += -1;
-//             phi_r22_2 += 0x14;
-//             goto loop_33;
-//         }
-//         phi_r28_4 = phi_r29->coliCylinderCount;
-//         phi_r22_3 = phi_r29->coliCylinders;
-// loop_40:
-//         phi_r26_2 = phi_r26_3;
-//         if (phi_r28_4 > 0) {
-//             if ((rastcast_cylinder(&sp84, &sp6C, phi_r22_3, &sp78, &sp48) != 0U) && ((mathutil_mtxA_from_mtx(phi_r30 + 0x24), mathutil_mtxA_tf_point((Point3d* ) &sp78, (Point3d* ) &sp78), (((outHit->flags & 1) == 0) != 0)) || (sp7C > outHit->pos.y))) {
-//                 outHit->flags = phi_r22_3->flags | 1;
-//                 outHit->pos.x = sp78;
-//                 outHit->pos.y = sp7C;
-//                 outHit->pos.z = sp80;
-//                 mathutil_mtxA_tf_vec(&sp48, &outHit->normal);
-//                 phi_r26_3 = phi_r27;
-//             }
-//             phi_r28_4 += -1;
-//             phi_r22_3 += 0x1C;
-//             goto loop_40;
-//         }
-//         phi_r27 += 1;
-//         phi_r30 += 0x84;
-//         phi_r29 += 0xC4;
-//         goto loop_42;
-//     }
-//     temp_r6 = dynamicStageParts;
-//     if (temp_r6 != 0U) {
-//         temp_r3_5 = &sp78;
-//         temp_r4 = temp_r3_5;
-//         sp78 = sp84;
-//         sp7C = sp88;
-//         sp80 = sp8C;
-//         if ((temp_r6->unusedFunc(temp_r3_5, temp_r4, &sp3C, sp88) != 0U) && (((outHit->flags & 1) == 0) || (sp7C > outHit->pos.y))) {
-//             outHit->flags = 1;
-//             outHit->pos.x = sp78;
-//             outHit->pos.y = sp7C;
-//             outHit->pos.z = sp80;
-//             outHit->normal.x = sp3C;
-//             outHit->normal.y = sp40;
-//             outHit->normal.z = sp44;
-//         }
-//     }
-//     if (outVelAtPoint != 0U) {
-//         if (((outHit->flags & 1) != 0) && (phi_r26 > 0)) {
-//             sp30 = outHit->pos.x;
-//             temp_r30 = &itemgroups[phi_r26];
-//             sp34 = outHit->pos.y;
-//             sp38 = outHit->pos.z;
-//             mathutil_mtxA_from_mtx((f32 (*)[4]) temp_r30->unk24[0]);
-//             mathutil_mtxA_rigid_inv_tf_point((Point3d* ) &sp30, (Point3d* ) &sp78);
-//             mathutil_mtxA_from_mtx((f32 (*)[4]) temp_r30->unk54[0]);
-//             mathutil_mtxA_tf_point((Point3d* ) &sp78, &sp24);
-//             outVelAtPoint->x = sp30 - (bitwise f32) sp24;
-//             outVelAtPoint->y = sp34 - sp24.y;
-//             outVelAtPoint->z = sp38 - sp24.z;
-//             temp_r3_2 = -(outHit->flags & 1);
-//             return (temp_r3_2 - (temp_r3_2 - 1)) - !MIPS2C_CARRY;
-//         }
-//         temp_f0 = 0.0;
-//         outVelAtPoint->x = temp_f0;
-//         outVelAtPoint->y = temp_f0;
-//         outVelAtPoint->z = temp_f0;
-//         /* Duplicate return node #53. Try simplifying control flow for better match */
-//         temp_r3 = -(outHit->flags & 1);
-//         return (temp_r3 - (temp_r3 - 1)) - !MIPS2C_CARRY;
-//     }
-//     temp_r3 = -(outHit->flags & 1);
-//     return (temp_r3 - (temp_r3 - 1)) - !MIPS2C_CARRY;
-// }
+    for (itemgroupId = 0; itemgroupId < decodedStageLzPtr->itemgroupCount; itemgroupId++, itemgroupInfo++, stageIg++)
+    {
+        // g_hitItemgroupId1 = g_hitItemgroupId2;
+        // g_hitItemgroupId5 = g_hitItemgroupId2;
+        // g_hitItemgroupId6 = g_hitItemgroupId2;
+
+        rayOrigin_rt_ig_sp84.x = rayOrigin->x;
+        rayOrigin_rt_ig_sp84.y = rayOrigin->y;
+        rayOrigin_rt_ig_sp84.z = rayOrigin->z;
+        rayDir_rt_ig_sp6c.x = 0.0f;
+        rayDir_rt_ig_sp6c.y = -1.0f;
+        rayDir_rt_ig_sp6c.z = 0.0f;
+        if (itemgroupId > 0) {
+            mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+            mathutil_mtxA_rigid_inv_tf_point(&rayOrigin_rt_ig_sp84, &rayOrigin_rt_ig_sp84);
+            mathutil_mtxA_rigid_inv_tf_vec(&rayDir_rt_ig_sp6c, &rayDir_rt_ig_sp6c);
+        }
+
+        cellTris = coligrid_lookup(stageIg, rayOrigin_rt_ig_sp84.x, rayOrigin_rt_ig_sp84.z);
+        if (cellTris != NULL2) {
+            cellTriIdx = cellTris;
+            for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++) {
+                // g_hitItemgroupId5 = g_hitItemgroupId6;
+                hitPos_sp78.x = rayOrigin_rt_ig_sp84.x;
+                hitPos_sp78.y = rayOrigin_rt_ig_sp84.y;
+                hitPos_sp78.z = rayOrigin_rt_ig_sp84.z;
+                tri = &stageIg->triangles[*cellTriIdx];
+                if (raycast_tri(&hitPos_sp78, &rayDir_rt_ig_sp6c, tri))
+                {
+                    mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                    mathutil_mtxA_tf_point(&hitPos_sp78, &hitPos_sp78);
+                    if (((outHit->flags & COLI_FLAG_OCCURRED) == 0 ||
+                         hitPos_sp78.y > outHit->pos.y))
+                    {
+                        outHit->flags = tri->flags | COLI_FLAG_OCCURRED;
+                        outHit->pos.x = hitPos_sp78.x;
+                        outHit->pos.y = hitPos_sp78.y;
+                        outHit->pos.z = hitPos_sp78.z;
+                        mathutil_mtxA_tf_vec(&tri->normal, &outHit->normal);
+                        g_hitItemgroupId1 = itemgroupId;
+                    }
+                }
+            }
+        }
+        cone = stageIg->coliCones;
+        for (coneCtr = stageIg->coliConeCount; coneCtr > 0; coneCtr--, cone++) {
+            // g_hitItemgroupId4 = g_hitItemgroupId5;
+            if (raycast_cone(&rayOrigin_rt_ig_sp84, &rayDir_rt_ig_sp6c, cone, &hitPos_sp78, &coneHitNormal_sp60)) {
+                mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                mathutil_mtxA_tf_point(&hitPos_sp78, &hitPos_sp78);
+                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                    outHit->flags = cone->flags | COLI_FLAG_OCCURRED;
+                    outHit->pos.x = hitPos_sp78.x;
+                    outHit->pos.y = hitPos_sp78.y;
+                    outHit->pos.z = hitPos_sp78.z;
+                    mathutil_mtxA_tf_vec(&coneHitNormal_sp60, &outHit->normal);
+                    g_hitItemgroupId1 = itemgroupId;
+                }
+            }
+        }
+        sphere = stageIg->coliSpheres;
+        for (sphereCtr = stageIg->coliSphereCount; sphereCtr > 0; sphereCtr--, sphere++) {
+            // g_hitItemgroupId3 = g_hitItemgroupId4;
+            if ((raycast_sphere(&rayOrigin_rt_ig_sp84, &rayDir_rt_ig_sp6c, sphere,
+                                &hitPos_sp78, &sphereHitNormal_sp54)))
+            {
+                mathutil_mtxA_from_mtx(itemgroupInfo->transform); 
+                mathutil_mtxA_tf_point(&hitPos_sp78,  &hitPos_sp78);
+                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                    outHit->flags = sphere->flags | COLI_FLAG_OCCURRED;
+                    outHit->pos.x = hitPos_sp78.x;
+                    outHit->pos.y = hitPos_sp78.y;
+                    outHit->pos.z = hitPos_sp78.z;
+                    mathutil_mtxA_tf_vec(&sphereHitNormal_sp54, &outHit->normal);
+                    g_hitItemgroupId1 = itemgroupId;
+                }
+            }
+        }
+        cylinder = stageIg->coliCylinders;
+        for (cylinderCtr = stageIg->coliCylinderCount; cylinderCtr > 0; cylinderCtr--, cylinder++) {
+            // g_hitItemgroupId2 = g_hitItemgroupId3;
+            if (raycast_cylinder(&rayOrigin_rt_ig_sp84, &rayDir_rt_ig_sp6c, cylinder, &hitPos_sp78, &cylinderHitNormal_sp48)) {
+                mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                mathutil_mtxA_tf_point(&hitPos_sp78, &hitPos_sp78);
+                if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                    outHit->flags = cylinder->flags | COLI_FLAG_OCCURRED;
+                    outHit->pos.x = hitPos_sp78.x;
+                    outHit->pos.y = hitPos_sp78.y;
+                    outHit->pos.z = hitPos_sp78.z;
+                    mathutil_mtxA_tf_vec(&cylinderHitNormal_sp48, &outHit->normal);
+                    g_hitItemgroupId1 = itemgroupId;
+                }
+            }
+        }
+    }
+    
+    if (dynamicStageParts != 0U) {
+        hitPos_sp78.x = rayOrigin_rt_ig_sp84.x;
+        hitPos_sp78.y = rayOrigin_rt_ig_sp84.y;
+        hitPos_sp78.z = rayOrigin_rt_ig_sp84.z;
+        if (dynamicStageParts->unusedFunc(&hitPos_sp78, &hitPos_sp78, &dynStagePartHitNormal_sp3c) != 0U) {
+            if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos_sp78.y > outHit->pos.y) {
+                g_hitItemgroupId1 = 0;
+                outHit->flags = COLI_FLAG_OCCURRED;
+                outHit->pos.x = hitPos_sp78.x;
+                outHit->pos.y = hitPos_sp78.y;
+                outHit->pos.z = hitPos_sp78.z;
+                outHit->normal.x = dynStagePartHitNormal_sp3c.x;
+                outHit->normal.y = dynStagePartHitNormal_sp3c.y;
+                outHit->normal.z = dynStagePartHitNormal_sp3c.z;
+            }
+        }
+    }
+    
+    if (outVelAtPoint != 0U) {
+        if (((outHit->flags & COLI_FLAG_OCCURRED) != 0) && (g_hitItemgroupId1 > 0)) {
+            hitPos_sp30.x = outHit->pos.x;
+            hitPos_sp30.y = outHit->pos.y;
+            hitPos_sp30.z = outHit->pos.z;
+            itemgroupInfo = &itemgroups[g_hitItemgroupId1];
+            mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+            mathutil_mtxA_rigid_inv_tf_point(&hitPos_sp30, &hitPos_sp78);
+            mathutil_mtxA_from_mtx(itemgroupInfo->prevTransform);
+            mathutil_mtxA_tf_point(&hitPos_sp78, &prevHitPos_sp24);
+            outVelAtPoint->x = hitPos_sp30.x - prevHitPos_sp24.x;
+            outVelAtPoint->y = hitPos_sp30.y - prevHitPos_sp24.y;
+            outVelAtPoint->z = hitPos_sp30.z - prevHitPos_sp24.z;
+        }
+        else
+        {
+            outVelAtPoint->x = 0;
+            outVelAtPoint->y = 0;
+            outVelAtPoint->z = 0;
+        }
+    }
+
+    return (outHit->flags & COLI_FLAG_OCCURRED) != 0;
+}

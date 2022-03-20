@@ -207,7 +207,7 @@ static inline float mathutil_sum_of_sq_2(register float a, register float b)
 #endif
 }
 
-static inline float mathutil_vec_mag(register Vec *v)
+static inline float mathutil_vec_len(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     return mathutil_sqrt(v->x * v->x + v->y * v->y + v->z * v->z);

@@ -1604,7 +1604,7 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     sp30.y = camera->eye.y - sp10.unk0.y;
     sp30.z = camera->eye.z - sp10.unk0.z;
 
-    f1 = 1.0f / mathutil_vec_mag(&sp30);
+    f1 = 1.0f / mathutil_vec_len(&sp30);
     f3_ = sp30.y;
     if (f1 * f3_ > 0.96592582630000001)
     {
@@ -1682,7 +1682,7 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     sp50.y = camera->eye.y - sp30.unk0.y;
     sp50.z = camera->eye.z - sp30.unk0.z;
 
-    f1 = 1.0f / mathutil_vec_mag(&sp50);
+    f1 = 1.0f / mathutil_vec_len(&sp50);
     f3_ = sp50.y;
     if (f1 * f3_ > 0.96592582630000001)
     {
@@ -1903,7 +1903,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_rotate_z(goal.rotZ);
         mathutil_mtxA_rotate_y(goal.rotY);
         mathutil_mtxA_rotate_x(goal.rotX);
-        f31 = mathutil_vec_mag(&infoWork.unk10);
+        f31 = mathutil_vec_len(&infoWork.unk10);
         if (mathutil_vec_distance(&goal.pos, &sp34.unk0) > 2.5 && (rand() & 3) && sp34.unk0.y > goal.pos.y)
         {
             double zero;
@@ -2441,7 +2441,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     sp34.x = -ball->pos.x;
     sp34.y = 0.0f;
     sp34.z = -ball->pos.z;
-    f31 = mathutil_vec_mag(&sp34);
+    f31 = mathutil_vec_len(&sp34);
     mathutil_vec_set_len(&sp34, &sp34, f30);
 
     mathutil_mtxA_from_identity();
@@ -2525,7 +2525,7 @@ void camera_func_36(struct Camera *camera, struct Ball *ball)
     sp28.y = 0.0f;
     sp28.z = -ball->pos.z;
 
-    f31 = mathutil_vec_mag(&sp28);
+    f31 = mathutil_vec_len(&sp28);
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
 
     sp28.x += ball->pos.x;

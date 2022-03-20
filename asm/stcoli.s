@@ -63,7 +63,7 @@ lbl_8003DB8C:
 /* 8003DB8C 00039AAC  C0 3C 00 04 */	lfs f1, 4(r28)
 /* 8003DB90 00039AB0  7F E3 FB 78 */	mr r3, r31
 /* 8003DB94 00039AB4  C0 5C 00 0C */	lfs f2, 0xc(r28)
-/* 8003DB98 00039AB8  48 00 01 85 */	bl meshcoli_grid_lookup
+/* 8003DB98 00039AB8  48 00 01 85 */	bl coligrid_lookup
 /* 8003DB9C 00039ABC  7C 7A 1B 79 */	or. r26, r3, r3
 /* 8003DBA0 00039AC0  41 82 00 88 */	beq lbl_8003DC28
 /* 8003DBA4 00039AC4  7F 5B D3 78 */	mr r27, r26
@@ -181,8 +181,8 @@ lbl_8003DD08:
 .endif
 
 .if 0
-.global meshcoli_grid_lookup
-meshcoli_grid_lookup:
+.global coligrid_lookup
+coligrid_lookup:
 /* 8003DD1C 00039C3C  94 21 FF B8 */	stwu r1, -0x48(r1)
 /* 8003DD20 00039C40  38 00 00 00 */	li r0, 0
 /* 8003DD24 00039C44  80 83 00 20 */	lwz r4, 0x20(r3)
@@ -2248,6 +2248,7 @@ lbl_8003FAFC:
 /* 8003FB44 0003BA64  4E 80 00 20 */	blr
 .endif
 
+.if 0
 .global raycast_stage_down
 raycast_stage_down:
 /* 8003FB48 0003BA68  7C 08 02 A6 */	mflr r0
@@ -2384,7 +2385,7 @@ lbl_8003FD08:
 /* 8003FD30 0003BC50  54 00 30 32 */	slwi r0, r0, 6
 /* 8003FD34 0003BC54  7E C5 02 14 */	add r22, r5, r0
 /* 8003FD38 0003BC58  38 B6 00 00 */	addi r5, r22, 0
-/* 8003FD3C 0003BC5C  48 00 03 FD */	bl rastcast_tri
+/* 8003FD3C 0003BC5C  48 00 03 FD */	bl raycast_tri
 /* 8003FD40 0003BC60  28 03 00 00 */	cmplwi r3, 0
 /* 8003FD44 0003BC64  41 82 00 68 */	beq lbl_8003FDAC
 /* 8003FD48 0003BC68  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2429,7 +2430,7 @@ lbl_8003FDC8:
 /* 8003FDD0 0003BCF0  38 81 00 6C */	addi r4, r1, 0x6c
 /* 8003FDD4 0003BCF4  38 C1 00 78 */	addi r6, r1, 0x78
 /* 8003FDD8 0003BCF8  38 E1 00 60 */	addi r7, r1, 0x60
-/* 8003FDDC 0003BCFC  48 00 05 5D */	bl rastcast_cone
+/* 8003FDDC 0003BCFC  48 00 05 5D */	bl raycast_cone
 /* 8003FDE0 0003BD00  28 03 00 00 */	cmplwi r3, 0
 /* 8003FDE4 0003BD04  41 82 00 68 */	beq lbl_8003FE4C
 /* 8003FDE8 0003BD08  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2473,7 +2474,7 @@ lbl_8003FE68:
 /* 8003FE70 0003BD90  38 81 00 6C */	addi r4, r1, 0x6c
 /* 8003FE74 0003BD94  38 C1 00 78 */	addi r6, r1, 0x78
 /* 8003FE78 0003BD98  38 E1 00 54 */	addi r7, r1, 0x54
-/* 8003FE7C 0003BD9C  48 00 07 A9 */	bl rastcast_sphere
+/* 8003FE7C 0003BD9C  48 00 07 A9 */	bl raycast_sphere
 /* 8003FE80 0003BDA0  28 03 00 00 */	cmplwi r3, 0
 /* 8003FE84 0003BDA4  41 82 00 68 */	beq lbl_8003FEEC
 /* 8003FE88 0003BDA8  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2517,7 +2518,7 @@ lbl_8003FF08:
 /* 8003FF10 0003BE30  38 81 00 6C */	addi r4, r1, 0x6c
 /* 8003FF14 0003BE34  38 C1 00 78 */	addi r6, r1, 0x78
 /* 8003FF18 0003BE38  38 E1 00 48 */	addi r7, r1, 0x48
-/* 8003FF1C 0003BE3C  48 00 08 ED */	bl rastcast_cylinder
+/* 8003FF1C 0003BE3C  48 00 08 ED */	bl raycast_cylinder
 /* 8003FF20 0003BE40  28 03 00 00 */	cmplwi r3, 0
 /* 8003FF24 0003BE44  41 82 00 68 */	beq lbl_8003FF8C
 /* 8003FF28 0003BE48  38 7E 00 24 */	addi r3, r30, 0x24
@@ -2660,9 +2661,10 @@ lbl_80040104:
 /* 8004012C 0003C04C  38 21 00 F0 */	addi r1, r1, 0xf0
 /* 80040130 0003C050  7C 08 03 A6 */	mtlr r0
 /* 80040134 0003C054  4E 80 00 20 */	blr
+.endif
 
-.global rastcast_tri
-rastcast_tri:
+.global raycast_tri
+raycast_tri:
 /* 80040138 0003C058  7C 08 02 A6 */	mflr r0
 /* 8004013C 0003C05C  90 01 00 04 */	stw r0, 4(r1)
 /* 80040140 0003C060  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -2799,8 +2801,8 @@ lbl_8004031C:
 /* 80040330 0003C250  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040334 0003C254  4E 80 00 20 */	blr
 
-.global rastcast_cone
-rastcast_cone:
+.global raycast_cone
+raycast_cone:
 /* 80040338 0003C258  7C 08 02 A6 */	mflr r0
 /* 8004033C 0003C25C  90 01 00 04 */	stw r0, 4(r1)
 /* 80040340 0003C260  94 21 FF 90 */	stwu r1, -0x70(r1)
@@ -2997,8 +2999,8 @@ lbl_80040604:
 /* 8004061C 0003C53C  38 21 00 70 */	addi r1, r1, 0x70
 /* 80040620 0003C540  4E 80 00 20 */	blr
 
-.global rastcast_sphere
-rastcast_sphere:
+.global raycast_sphere
+raycast_sphere:
 /* 80040624 0003C544  7C 08 02 A6 */	mflr r0
 /* 80040628 0003C548  90 01 00 04 */	stw r0, 4(r1)
 /* 8004062C 0003C54C  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -3126,8 +3128,8 @@ lbl_800407E0:
 /* 80040800 0003C720  38 21 00 58 */	addi r1, r1, 0x58
 /* 80040804 0003C724  4E 80 00 20 */	blr
 
-.global rastcast_cylinder
-rastcast_cylinder:
+.global raycast_cylinder
+raycast_cylinder:
 /* 80040808 0003C728  7C 08 02 A6 */	mflr r0
 /* 8004080C 0003C72C  90 01 00 04 */	stw r0, 4(r1)
 /* 80040810 0003C730  94 21 FF 98 */	stwu r1, -0x68(r1)
