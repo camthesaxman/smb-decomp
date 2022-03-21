@@ -3001,6 +3001,7 @@ lbl_80040604:
 /* 8004061C 0003C53C  38 21 00 70 */	addi r1, r1, 0x70
 /* 80040620 0003C540  4E 80 00 20 */	blr
 
+.if 0
 .global raycast_sphere
 raycast_sphere:
 /* 80040624 0003C544  7C 08 02 A6 */	mflr r0
@@ -3129,7 +3130,9 @@ lbl_800407E0:
 /* 800407FC 0003C71C  83 81 00 38 */	lwz r28, 0x38(r1)
 /* 80040800 0003C720  38 21 00 58 */	addi r1, r1, 0x58
 /* 80040804 0003C724  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global raycast_cylinder
 raycast_cylinder:
 /* 80040808 0003C728  7C 08 02 A6 */	mflr r0
@@ -3338,6 +3341,7 @@ lbl_80040B04:
 /* 80040B14 0003CA34  7C 08 03 A6 */	mtlr r0
 /* 80040B18 0003CA38  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040B1C 0003CA3C  4E 80 00 20 */	blr
+.endif
 
 .global collide_ball_with_goal
 collide_ball_with_goal:
