@@ -1323,3 +1323,50 @@ u32 raycast_tri(Point3d *rayOrigin, Point3d *rayDir, struct StageColiTri *tri)
     mathutil_mtxA_tf_point(&rayOrigin_rt_tri, rayOrigin);
     return 1U;
 }
+
+// TODO: raycast_cone()
+// https://decomp.me/scratch/ASf06
+
+// OK on decomp.me: https://decomp.me/scratch/Lj0vK
+u32 raycast_sphere(Point3d* rayOrigin, Vec* rayDir, struct StageColiSphere* sphere, Point3d* outHitPos, Vec* outHitNormal) {
+    Vec delta_sp28;
+    Vec rayDir_sp1c;
+    f32 dot;
+    f32 temp_f1;
+    f32 temp_f2;
+    f32 temp_f2_2;
+    f32 temp_f31;
+
+    rayDir_sp1c.x = rayDir->x;
+    rayDir_sp1c.y = rayDir->y;
+    rayDir_sp1c.z = rayDir->z;
+    delta_sp28.x = rayOrigin->x - sphere->pos.x;
+    delta_sp28.y = rayOrigin->y - sphere->pos.y;
+    delta_sp28.z = rayOrigin->z - sphere->pos.z;
+    // temp_f31 = (rayDir_sp1c.z * rayDir_sp1c.z) + ((rayDir_sp1c.y * rayDir_sp1c.y) + (rayDir_sp1c.x * rayDir_sp1c.x));
+    temp_f31 = mathutil_sum_of_sq_3(rayDir_sp1c.x, rayDir_sp1c.y, rayDir_sp1c.z);
+    if (temp_f31 < FLT_EPSILON) {
+        return 0U;
+    }
+    dot = (rayDir_sp1c.z * delta_sp28.z) + ((rayDir_sp1c.x * delta_sp28.x) + (rayDir_sp1c.y * delta_sp28.y));
+    // temp_f2 = ((delta_sp28.z * delta_sp28.z) + ((delta_sp28.y * delta_sp28.y) + (delta_sp28.x * delta_sp28.x))) - (sphere->radius * sphere->radius);
+    temp_f2 = mathutil_sum_of_sq_3(delta_sp28.x, delta_sp28.y, delta_sp28.z) - sphere->radius * sphere->radius;
+    temp_f1 = (dot * dot) - (temp_f31 * temp_f2);
+    if (temp_f1 < FLT_EPSILON) {
+        return 0U;
+    }
+    if (temp_f2 < 0.0f) {
+        return 0U;
+    }
+    if (dot > 0.0f) {
+        return 0U;
+    }
+    temp_f2_2 = -(dot + mathutil_sqrt((f64) temp_f1)) / temp_f31;
+    outHitPos->x = rayOrigin->x + (rayDir_sp1c.x * temp_f2_2);
+    outHitPos->y = rayOrigin->y + (rayDir_sp1c.y * temp_f2_2);
+    outHitPos->z = rayOrigin->z + (rayDir_sp1c.z * temp_f2_2);
+    outHitNormal->x = (outHitPos->x - sphere->pos.x) / sphere->radius;
+    outHitNormal->y = (outHitPos->y - sphere->pos.y) / sphere->radius;
+    outHitNormal->z = (outHitPos->z - sphere->pos.z) / sphere->radius;
+    return 1U;
+}
