@@ -57,6 +57,43 @@ struct TPL *naomiBackgroundTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *minigameNaomiTpl;
 
+static struct Camera s_freeCam;
+static struct Camera s_prevCam;
+static BOOL s_inFreecam;
+
+static BOOL any_controller_pressed(u16 buttonMask) {
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (controllerInfo[i].unk0[2].button & buttonMask) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+static void freecam_update(void) {
+    if (any_controller_pressed(PAD_BUTTON_A)) {
+        s_inFreecam = !s_inFreecam;
+        if (s_inFreecam) {
+            s_freeCam = cameraInfo[0];
+        }
+    }
+
+    if (s_inFreecam) {
+        s_prevCam = cameraInfo[0];
+
+        s_freeCam.eye.z -= 0.1f;
+
+        cameraInfo[0] = s_freeCam;
+    }
+}
+
+static void freecam_putback() {
+    if (s_inFreecam) {
+        cameraInfo[0] = s_prevCam;
+    }
+}
+
 void main(void)
 {
     globalFrameCounter = 0;
@@ -143,9 +180,13 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(2);
 
+        freecam_update();
+
         perf_init_timer(4);
         polydisp_main();
         perfInfo.unk20 = perf_stop_timer(4);
+
+        freecam_putback();
 
         perf_init_timer(4);
         bitmap_main();
