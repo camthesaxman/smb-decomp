@@ -482,10 +482,12 @@ struct Stage
     /*0x34*/ struct StageJamabar *jamabars;
     /*0x38*/ s32 bananaCount;
     /*0x3C*/ struct StageBanana *bananas;
-    u8 filler40[4];
-    void *unk44;
-    u8 filler48[0x54-0x48];
-    void *unk54;
+    s32 coliConeCount;
+    struct ColiCone *coliCones;
+    s32 coliSphereCount;
+    struct ColiSphere *coliSpheres;
+    s32 coliCylinderCount;
+    struct ColiCylinder *coliCylinders;
     /*0x58*/ s32 lvlModelsCount;
     /*0x5C*/ struct StageModel *lvlModels;
     u8 filler60[4];

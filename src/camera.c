@@ -174,13 +174,13 @@ static void freecam_update(struct Camera *camera) {
     float substickY = (float)controllerInfo[0].unk0[0].substickY / 60.f;
     float triggerLeft = (float)controllerInfo[0].unk0[0].triggerLeft / 128.f;
     float triggerRight = (float)controllerInfo[0].unk0[0].triggerRight / 128.f;
-    BOOL fast = controllerInfo[0].unk0[0].button & PAD_TRIGGER_Z;
+    BOOL fast = controllerInfo[0].unk0[0].button & PAD_BUTTON_Y;
     Vec deltaPos;
 
     float speedMult = fast ? 3.0f : 1.0f;
 
     // New rotation
-    s_fcRot.x -= substickY * 150;
+    s_fcRot.x -= substickY * 300;
     s_fcRot.y += substickX * 500;
     s_fcRot.z = 0;
 

@@ -1736,10 +1736,10 @@ void load_stagedef(int stageId)
         decodedStageLzPtr->jamabars = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->jamabars);
     if (decodedStageLzPtr->bananas != NULL)
         decodedStageLzPtr->bananas = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->bananas);
-    if (decodedStageLzPtr->unk44 != NULL)
-        decodedStageLzPtr->unk44 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk44);
-    if (decodedStageLzPtr->unk54 != NULL)
-        decodedStageLzPtr->unk54 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk54);
+    if (decodedStageLzPtr->coliCones != NULL)
+        decodedStageLzPtr->coliCones = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCones);
+    if (decodedStageLzPtr->coliCylinders != NULL)
+        decodedStageLzPtr->coliCylinders = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCylinders);
     if (decodedStageLzPtr->lvlModels != NULL)
         decodedStageLzPtr->lvlModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->lvlModels);
     if (decodedStageLzPtr->unk64 != NULL)
