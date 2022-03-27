@@ -35,7 +35,7 @@ struct Item
     void (*unk58)(struct Item *, struct Struct800690DC *);
     s8 attachedTo;  // index of moving stage part that this item is attached to
     s16 unk5E;
-    struct StageCollHdr_child3 *unk60;
+    struct StageBanana *unk60;
     s32 unk64;
     struct GMAModelHeader *shadowModel;
     S16Vec unk6C;

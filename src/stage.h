@@ -326,13 +326,13 @@ struct StageCollHdr_child2
     u8 padding[2];
 };  // size = 0x20
 
-struct StageCollHdr_child3  // banana?
+struct StageBanana  // banana?
 {
     Vec unk0;
     s32 unkC;
 };
 
-struct StageCollHdr_child4
+struct StageBumper
 {
     Vec unk0;
     s16 unkC;
@@ -340,7 +340,7 @@ struct StageCollHdr_child4
     s16 unk10;
 };
 
-struct StageCollHdr_child5
+struct StageJamabar
 {
     Vec unk0;
     s16 unkC;
@@ -371,11 +371,11 @@ struct StageItemgroup
     u8 filler44[4];
     void *unk48;
     s32 bumperCount;
-    struct StageCollHdr_child4 *bumpers;
+    struct StageBumper *bumpers;
     s32 jamabarCount;
-    struct StageCollHdr_child5 *unk58;
+    struct StageJamabar *jamabars;
     s32 bananaCount;
-    struct StageCollHdr_child3 *bananas;
+    struct StageBanana *bananas;
     s32 coliConeCount;
     struct StageColiCone *coliCones;
     s32 coliSphereCount;

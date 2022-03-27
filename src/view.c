@@ -460,7 +460,7 @@ void func_800A6734(void)
         models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
         for (i = 0; i < itemgroupCount; i++)
         {
-            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->itemgroups[i].bananas;
+            struct StageBanana *r24 = decodedStageLzPtr->itemgroups[i].bananas;
             int r23 = decodedStageLzPtr->itemgroups[i].bananaCount;
             int j;
 
@@ -480,7 +480,7 @@ void func_800A6734(void)
 
 void func_800A6874(void)
 {
-    struct StageCollHdr_child3 *r26;
+    struct StageBanana *r26;
     int i;
     int r25;
     int j;
@@ -669,7 +669,7 @@ void func_800A6BF0(void)
     {
         s32 r27;
         int j;
-        struct StageCollHdr_child4 *r29;
+        struct StageBumper *r29;
         r29 = decodedStageLzPtr->itemgroups[i].bumpers;
         r27 = decodedStageLzPtr->itemgroups[i].bumperCount;
 
@@ -696,8 +696,8 @@ void func_800A6BF0(void)
         s32 r26;
         int j;
         s32 r28_;
-        struct StageCollHdr_child4 *r29;
-        r29 = (void *)decodedStageLzPtr->itemgroups[i].unk58;
+        struct StageBumper *r29;
+        r29 = (void *)decodedStageLzPtr->itemgroups[i].jamabars;
         r26 = 0;
         r28_ = decodedStageLzPtr->itemgroups[i].jamabarCount;
         //int r26;

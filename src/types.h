@@ -877,7 +877,7 @@ struct AnimKeyframe
 };
 
 struct StageItemgroup;
-struct StageCollHdr_child3;
+struct StageBanana;
 
 struct Struct800690DC
 {
