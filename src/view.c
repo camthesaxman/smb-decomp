@@ -460,8 +460,8 @@ void func_800A6734(void)
         models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
         for (i = 0; i < itemgroupCount; i++)
         {
-            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->itemgroups[i].unk60;
-            int r23 = decodedStageLzPtr->itemgroups[i].unk5C;
+            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->itemgroups[i].bananas;
+            int r23 = decodedStageLzPtr->itemgroups[i].bananaCount;
             int j;
 
             for (j = 0; j < r23; j++, r24++)
@@ -491,15 +491,15 @@ void func_800A6874(void)
     Vec sp8 = { 0, 0, -1 };
 
     if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
-     && decodedStageLzPtr->bananasCount > 0)
+     && decodedStageLzPtr->bananaCount > 0)
     {
         g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3f, 0.3f);
         avdisp_set_z_mode(1, 3, 0);
 
         for (i = 0; i < itemgroupCount; i++)
         {
-            r26 = decodedStageLzPtr->itemgroups[i].unk60;
-            r25 = decodedStageLzPtr->itemgroups[i].unk5C;
+            r26 = decodedStageLzPtr->itemgroups[i].bananas;
+            r25 = decodedStageLzPtr->itemgroups[i].bananaCount;
 
             for (j = 0; j < r25; j++, r26++)
             {
@@ -670,8 +670,8 @@ void func_800A6BF0(void)
         s32 r27;
         int j;
         struct StageCollHdr_child4 *r29;
-        r29 = decodedStageLzPtr->itemgroups[i].unk50;
-        r27 = decodedStageLzPtr->itemgroups[i].unk4C;
+        r29 = decodedStageLzPtr->itemgroups[i].bumpers;
+        r27 = decodedStageLzPtr->itemgroups[i].bumperCount;
 
         mathutil_mtxA_from_mtxB();
         if (i > 0)
@@ -699,7 +699,7 @@ void func_800A6BF0(void)
         struct StageCollHdr_child4 *r29;
         r29 = (void *)decodedStageLzPtr->itemgroups[i].unk58;
         r26 = 0;
-        r28_ = decodedStageLzPtr->itemgroups[i].unk54;
+        r28_ = decodedStageLzPtr->itemgroups[i].jamabarCount;
         //int r26;
         //#define r26 j
         #define r25 r29
@@ -722,7 +722,7 @@ void func_800A6BF0(void)
             mathutil_mtxA_rotate_y(r25->unkE);
             mathutil_mtxA_rotate_z(r25->unkC);
 
-            r4 = stageViewInfo->frameCounter - (r26 * (60 / decodedStageLzPtr->jamabarsCount));
+            r4 = stageViewInfo->frameCounter - (r26 * (60 / decodedStageLzPtr->jamabarCount));
             r0 = r4 % 60;
             f0 = r0 / 60.0f * 2.0;
             if (f0 >= 1.0)

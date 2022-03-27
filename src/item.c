@@ -399,9 +399,9 @@ void make_stage_bananas(struct StageItemgroup *coll, int count)
     item.type = 0;
     for (i = 0; i < count; i++, coll++)
     {
-        struct StageCollHdr_child3 *r28 = coll->unk60;
+        struct StageCollHdr_child3 *r28 = coll->bananas;
 
-        for (j = 0; j < coll->unk5C; j++, r28++)
+        for (j = 0; j < coll->bananaCount; j++, r28++)
         {
             item.unk20 = r28->unk0;
             item.subtype = r28->unkC;

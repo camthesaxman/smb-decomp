@@ -108,7 +108,6 @@ struct TPL *bitmap_load_tpl(char *filename)
 
     if (!file_open(filename, &file))
         return 0;
-    OSReport("Loading TPL: %s\n", filename);
     size = OSRoundUp32B(file_size(&file));
     len = strlen(filename);
     if (len >= 3 && strncmp(filename + (len - 3), ".lz", 3) == 0)
@@ -127,8 +126,6 @@ struct TPL *bitmap_load_tpl(char *filename)
             OSPanic("bitmap.c", 164, "cannot OSAlloc\n");
 
         // Read whole file
-        OSReport("Compressed bmp size: %d\n", compressedSize);
-        OSReport("Uncompressed bmp size: %d\n", size);
         lzData = OSAllocFromHeap(mainHeap, compressedSize);
         if (lzData == NULL)
             OSPanic("bitmap.c", 165, "cannot OSAlloc\n");

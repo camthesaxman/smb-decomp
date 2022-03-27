@@ -1688,12 +1688,12 @@ void load_stagedef(int stageId)
             coll->goals = OFFSET_TO_PTR(decodedStageLzPtr, coll->goals);
         if (coll->unk48 != NULL)
             coll->unk48 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk48);
-        if (coll->unk50 != NULL)
-            coll->unk50 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk50);
+        if (coll->bumpers != NULL)
+            coll->bumpers = OFFSET_TO_PTR(decodedStageLzPtr, coll->bumpers);
         if (coll->unk58 != NULL)
             coll->unk58 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk58);
-        if (coll->unk60 != NULL)
-            coll->unk60 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk60);
+        if (coll->bananas != NULL)
+            coll->bananas = OFFSET_TO_PTR(decodedStageLzPtr, coll->bananas);
         if (coll->coliCones != NULL)
             coll->coliCones = OFFSET_TO_PTR(decodedStageLzPtr, coll->coliCones);
         if (coll->coliSpheres != NULL)
