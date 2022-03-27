@@ -1615,7 +1615,7 @@ char string_warning_BG__s___no_match_n[] = "warning BG %s : no match\n";
 char string_warning_MV__s___no_match_n[] = "warning MV %s : no match\n";
 u8 lbl_801B87FC[] = { 1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0 };
 
-u8 lbl_8020AE00[0x20];
+u8 lbl_8020AE00[0x20] __attribute__((aligned(32)));
 FORCE_BSS_ORDER(lbl_8020AE00)
 
 // parameters swapped?

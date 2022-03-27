@@ -85,7 +85,7 @@ static Mtx lbl_802B4E9C;
 static struct Struct802B4ECC lbl_802B4ECC;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
-static u8 lzssHeader[32];
+static u8 lzssHeader[32] __attribute__((aligned(32)));
 static u8 unknownTexImg[64];
 
 FORCE_BSS_ORDER(lbl_802B4E60)
