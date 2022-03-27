@@ -142,7 +142,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
             return FALSE;
 
         // Read whole file
-        compressed = OSAllocFromHeap(memHeap5, size);
+        compressed = OSAllocFromHeap(mainHeap, size);
         if (compressed == NULL)
         {
             OSFree(uncompressed);
@@ -155,7 +155,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
 
         // Decompress data
         lzs_decompress(compressed, uncompressed);
-        OSFreeToHeap(memHeap5, compressed);
+        OSFreeToHeap(mainHeap, compressed);
         *pobj = uncompressed;
         if (*pobj == NULL)
             return FALSE;

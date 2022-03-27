@@ -27,12 +27,12 @@ u32 perf_stop_timer(volatile /* why ?*/ int timerId2)
 
 void perf_free(void *ptr)
 {
-    OSFreeToHeap(memHeap1, ptr);
+    OSFreeToHeap(subHeap, ptr);
 }
 
 void *perf_alloc(u32 size)
 {
-    return OSAllocFromHeap(memHeap1, size);
+    return OSAllocFromHeap(subHeap, size);
 }
 
 void perf_init_draw(void)

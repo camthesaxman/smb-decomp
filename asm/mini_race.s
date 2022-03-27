@@ -3345,9 +3345,9 @@ lbl_00003068:
 /* 00003090 4E800020 */ blr 
 lbl_00003094:
 /* 00003094 7C0802A6 */ mflr r0
-/* 00003098 3C600000 */ lis r3, memHeap2@ha
+/* 00003098 3C600000 */ lis r3, stageHeap@ha
 /* 0000309C 90010004 */ stw r0, 4(r1)
-/* 000030A0 38630000 */ addi r3, r3, memHeap2@l
+/* 000030A0 38630000 */ addi r3, r3, stageHeap@l
 /* 000030A4 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000030A8 93E1000C */ stw r31, 0xc(r1)
 /* 000030AC 80630000 */ lwz r3, 0(r3)
@@ -3364,9 +3364,9 @@ lbl_00003094:
 /* 000030D8 4E800020 */ blr 
 lbl_000030DC:
 /* 000030DC 7C0802A6 */ mflr r0
-/* 000030E0 3C600000 */ lis r3, memHeap2@ha
+/* 000030E0 3C600000 */ lis r3, stageHeap@ha
 /* 000030E4 90010004 */ stw r0, 4(r1)
-/* 000030E8 38630000 */ addi r3, r3, memHeap2@l
+/* 000030E8 38630000 */ addi r3, r3, stageHeap@l
 /* 000030EC 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000030F0 93E1000C */ stw r31, 0xc(r1)
 /* 000030F4 80630000 */ lwz r3, 0(r3)

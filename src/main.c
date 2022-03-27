@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <dolphin.h>
+#include <string.h>
 
 #include "global.h"
 #include "ball.h"
@@ -33,17 +34,17 @@ u32 globalFrameCounter;
 u32 unpausedFrameCounter;
 GXRenderModeObj *currRenderMode;
 
-OSHeapHandle memHeap5;
-OSHeapHandle memHeap1;
-OSHeapHandle memHeap2;
-OSHeapHandle memHeap3;
-OSHeapHandle memHeap4;
+OSHeapHandle mainHeap;
+OSHeapHandle subHeap;
+OSHeapHandle stageHeap;
+OSHeapHandle backgroundHeap;
+OSHeapHandle charaHeap;
 
-long memHeap5Size;
-long memHeap1Size;
-long memHeap2Size;
-long memHeap3Size;
-long memHeap4Size;
+long mainHeapSize;
+long subHeapSize;
+long stageHeapSize;
+long backgroundHeapSize;
+long charaHeapSize;
 
 struct NaomiObj *naomiCommonObj;
 struct NaomiObj *naomiStageObj;
@@ -56,43 +57,6 @@ struct TPL *naomiStageTpl;
 struct TPL *naomiBackgroundTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *minigameNaomiTpl;
-
-static struct Camera s_freeCam;
-static struct Camera s_prevCam;
-static BOOL s_inFreecam;
-
-static BOOL any_controller_pressed(u16 buttonMask) {
-    int i;
-    for (i = 0; i < 4; i++) {
-        if (controllerInfo[i].unk0[2].button & buttonMask) {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-static void freecam_update(void) {
-    if (any_controller_pressed(PAD_BUTTON_A)) {
-        s_inFreecam = !s_inFreecam;
-        if (s_inFreecam) {
-            s_freeCam = cameraInfo[0];
-        }
-    }
-
-    if (s_inFreecam) {
-        s_prevCam = cameraInfo[0];
-
-        s_freeCam.eye.z -= 0.1f;
-
-        cameraInfo[0] = s_freeCam;
-    }
-}
-
-static void freecam_putback() {
-    if (s_inFreecam) {
-        cameraInfo[0] = s_prevCam;
-    }
-}
 
 void main(void)
 {
@@ -130,6 +94,7 @@ void main(void)
 
     while (1)
     {
+        dipSwitches |= DIP_DEBUG | DIP_TIME_STOP;
         if (perfEnabled)
             PERFEventStart(0);
 
@@ -180,13 +145,9 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(2);
 
-        freecam_update();
-
         perf_init_timer(4);
         polydisp_main();
         perfInfo.unk20 = perf_stop_timer(4);
-
-        freecam_putback();
 
         perf_init_timer(4);
         bitmap_main();

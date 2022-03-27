@@ -13,6 +13,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "variables.h"
 #include "stage.h"
 #include "world.h"
 
@@ -37,6 +38,13 @@ static inline float sum_of_3_sq(register float a, register float b, register flo
 #else
     return a * a + b * b + c * c;
 #endif
+}
+
+static inline void camera_face_direction(struct Camera *camera, Vec *lookDir)
+{
+    camera->rotY = mathutil_atan2(lookDir->x, lookDir->z) - 32768;
+    camera->rotX = mathutil_atan2(lookDir->y, mathutil_sqrt(mathutil_sum_of_sq(lookDir->x, lookDir->z)));
+    camera->rotZ = 0;
 }
 
 void camera_init(void)
@@ -163,6 +171,54 @@ void (*cameraFuncs[])(struct Camera *, struct Ball *) =
     camera_func_mini,
 };
 
+static Point3d s_fcEye = {};
+static S16Vec s_fcRot = {};
+
+static void freecam_update(struct Camera *camera) {
+    float stickX = (float)controllerInfo[0].unk0[0].stickX / 60.f;
+    float stickY = (float)controllerInfo[0].unk0[0].stickY / 60.f;
+    float substickX = (float)controllerInfo[0].unk0[0].substickX / 60.f;
+    float substickY = (float)controllerInfo[0].unk0[0].substickY / 60.f;
+    float triggerLeft = (float)controllerInfo[0].unk0[0].triggerLeft / 128.f;
+    float triggerRight = (float)controllerInfo[0].unk0[0].triggerRight / 128.f;
+    BOOL fast = controllerInfo[0].unk0[0].button & PAD_TRIGGER_Z;
+    Vec deltaPos;
+
+    float speedMult = fast ? 3.0f : 1.0f;
+
+    // New rotation
+    s_fcRot.x -= substickY * 150;
+    s_fcRot.y += substickX * 500;
+    s_fcRot.z = 0;
+
+    // New position
+    deltaPos.x = stickX * speedMult;
+    deltaPos.y = 0;
+    deltaPos.z = -stickY * speedMult;
+    mathutil_mtxA_push();
+    mathutil_mtxA_from_rotate_y(s_fcRot.y);
+    mathutil_mtxA_rotate_x(s_fcRot.x);
+    mathutil_mtxA_rotate_z(s_fcRot.z);
+    mathutil_mtxA_tf_vec(&deltaPos, &deltaPos);
+    mathutil_mtxA_pop();
+    s_fcEye.x += deltaPos.x;
+    s_fcEye.y += deltaPos.y - triggerLeft + triggerRight;
+    s_fcEye.z += deltaPos.z;
+
+    camera->eye = s_fcEye;
+    camera->rotX = s_fcRot.x;
+    camera->rotY = s_fcRot.y;
+    camera->rotZ = s_fcRot.z;
+
+    // Lock ball in place
+    if (gameSubmode == SMD_GAME_PLAY_MAIN) {
+        ballInfo[0].pos = decodedStageLzPtr->startPos->pos;
+        ballInfo[0].vel.x = 0;
+        ballInfo[0].vel.y = 0;
+        ballInfo[0].vel.z = 0;
+    }
+}
+
 void ev_camera_main(void)
 {
     int i;
@@ -199,6 +255,7 @@ void ev_camera_main(void)
                 cameraFuncs[CAMERA_STATE_TEST](camera, ball);
             else
                 cameraFuncs[camera->state](camera, ball);
+            freecam_update(camera);
             mathutil_mtxA_from_translate(&ball->pos);
             mathutil_mtxA_rotate_y(camera->rotY);
             mathutil_mtxA_rigid_inv_tf_point(&camera->eye, &camera->unkBC);
@@ -984,13 +1041,6 @@ struct Struct80176434 lbl_80176434[] =
     {2902,   107.49, 0, 0},
 };
 
-static inline void camera_face_direction(struct Camera *camera, Vec *lookDir)
-{
-    camera->rotY = mathutil_atan2(lookDir->x, lookDir->z) - 32768;
-    camera->rotX = mathutil_atan2(lookDir->y, mathutil_sqrt(mathutil_sum_of_sq(lookDir->x, lookDir->z)));
-    camera->rotZ = 0;
-}
-
 void camera_func_attract_cutscene(struct Camera *camera, struct Ball *ball)
 {
     float f31 = advDemoInfo.unk8;
@@ -1451,13 +1501,13 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.z = mathutil_sqrt(mathutil_sum_of_sq(3.0f, 1.0f));
     mathutil_mtxA_tf_point(&sp28, &camera->eye);
 
-    camera->unk94.x = camera->eye.x - prevEyePos.x;
-    camera->unk94.y = camera->eye.y - prevEyePos.y;
-    camera->unk94.z = camera->eye.z - prevEyePos.z;
+    camera->eyeVel.x = camera->eye.x - prevEyePos.x;
+    camera->eyeVel.y = camera->eye.y - prevEyePos.y;
+    camera->eyeVel.z = camera->eye.z - prevEyePos.z;
 
-    camera->unkA0.x = camera->lookAt.x - prevLookAt.x;
-    camera->unkA0.y = camera->lookAt.y - prevLookAt.y;
-    camera->unkA0.z = camera->lookAt.z - prevLookAt.z;
+    camera->lookAtVel.x = camera->lookAt.x - prevLookAt.x;
+    camera->lookAtVel.y = camera->lookAt.y - prevLookAt.y;
+    camera->lookAtVel.z = camera->lookAt.z - prevLookAt.z;
 }
 
 void camera_func_test(struct Camera *camera, struct Ball *ball)
@@ -1559,13 +1609,13 @@ void camera_func_4(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    camera->unk94.x *= 0.97;
-    camera->unk94.y *= 0.955;
-    camera->unk94.z *= 0.97;
+    camera->eyeVel.x *= 0.97;
+    camera->eyeVel.y *= 0.955;
+    camera->eyeVel.z *= 0.97;
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     camera->lookAt.x = ball->pos.x;
     camera->lookAt.y = ball->pos.y;
@@ -1630,9 +1680,9 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
         camera->eye.z = sp10.unk0.z + sp30.z;
     }
 
-    camera->unk94.x *= 0.25;
-    camera->unk94.y *= 0.25;
-    camera->unk94.z *= 0.25;
+    camera->eyeVel.x *= 0.25;
+    camera->eyeVel.y *= 0.25;
+    camera->eyeVel.z *= 0.25;
 
     f31 = (lbl_80250A68.unk10 < 60.0f) ? lbl_80250A68.unk10 : 60.0f;
 
@@ -1640,9 +1690,9 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
 
     f3 = 1.0 / f31;
 
-    camera->unk94.x += f3 * (sp10.unk0.x - ball->pos.x);
-    camera->unk94.y += f3 * (sp10.unk0.y - ball->pos.y);
-    camera->unk94.z += f3 * (sp10.unk0.z - ball->pos.z);
+    camera->eyeVel.x += f3 * (sp10.unk0.x - ball->pos.x);
+    camera->eyeVel.y += f3 * (sp10.unk0.y - ball->pos.y);
+    camera->eyeVel.z += f3 * (sp10.unk0.z - ball->pos.z);
 
     camera->lookAt.x = ball->pos.x;
     camera->lookAt.y = ball->pos.y;
@@ -1708,16 +1758,16 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
         camera->eye.z = sp30.unk0.z + sp50.z;
     }
 
-    camera->unk94.x *= 0.1;
-    camera->unk94.y *= 0.1;
-    camera->unk94.z *= 0.1;
+    camera->eyeVel.x *= 0.1;
+    camera->eyeVel.y *= 0.1;
+    camera->eyeVel.z *= 0.1;
 
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, f31);
     func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, 1.0 + f31);
 
-    camera->unk94.x -= 0.6 * (sp30.unk0.x - sp10.unk0.x);
-    camera->unk94.y -= 0.6 * (sp30.unk0.y - sp10.unk0.y);
-    camera->unk94.z -= 0.6 * (sp30.unk0.z - sp10.unk0.z);
+    camera->eyeVel.x -= 0.6 * (sp30.unk0.x - sp10.unk0.x);
+    camera->eyeVel.y -= 0.6 * (sp30.unk0.y - sp10.unk0.y);
+    camera->eyeVel.z -= 0.6 * (sp30.unk0.z - sp10.unk0.z);
 
     camera->lookAt.x = ball->pos.x;
     camera->lookAt.y = ball->pos.y;
@@ -1735,25 +1785,25 @@ void camera_func_fallout_replay(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    camera->unk94.x *= 0.97;
-    camera->unk94.y *= 0.955;
-    camera->unk94.z *= 0.97;
+    camera->eyeVel.x *= 0.97;
+    camera->eyeVel.y *= 0.955;
+    camera->eyeVel.z *= 0.97;
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp10.x = ball->pos.x - camera->lookAt.x;
     sp10.y = ball->pos.y - camera->lookAt.y;
     sp10.z = ball->pos.z - camera->lookAt.z;
 
-    camera->unkA0.x = 0.15 * sp10.x;
-    camera->unkA0.y = 0.15 * sp10.y;
-    camera->unkA0.z = 0.15 * sp10.z;
+    camera->lookAtVel.x = 0.15 * sp10.x;
+    camera->lookAtVel.y = 0.15 * sp10.y;
+    camera->lookAtVel.z = 0.15 * sp10.z;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp10.x = camera->lookAt.x - camera->eye.x;
     sp10.y = camera->lookAt.y - camera->eye.y;
@@ -1808,31 +1858,31 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.y = 0.0f;
     sp10.z = ball->pos.z - camera->eye.z;
 
-    f31 = vec_dot_prod(&sp10, &camera->unk94);
+    f31 = vec_dot_prod(&sp10, &camera->eyeVel);
     mathutil_vec_normalize_len(&sp10);
 
-    camera->unk94.y *= 0.97;
+    camera->eyeVel.y *= 0.97;
     f2 = -0.01 * f31;
-    camera->unk94.x += f2 * sp10.x;
-    camera->unk94.z += f2 * sp10.z;
+    camera->eyeVel.x += f2 * sp10.x;
+    camera->eyeVel.z += f2 * sp10.z;
     if (f2 < 0.0)
     {
         f2 *= 0.5;
-        camera->unk94.x += f2 * sp10.z;
-        camera->unk94.z += f2 * sp10.x;
+        camera->eyeVel.x += f2 * sp10.z;
+        camera->eyeVel.z += f2 * sp10.x;
     }
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
-    camera->unkA0.x = 0.3 * (ball->pos.x - camera->lookAt.x);
-    camera->unkA0.y = 0.3 * (ball->pos.y - camera->lookAt.y);
-    camera->unkA0.z = 0.3 * (ball->pos.z - camera->lookAt.z);
+    camera->lookAtVel.x = 0.3 * (ball->pos.x - camera->lookAt.x);
+    camera->lookAtVel.y = 0.3 * (ball->pos.y - camera->lookAt.y);
+    camera->lookAtVel.z = 0.3 * (ball->pos.z - camera->lookAt.z);
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp10.x = camera->eye.x - camera->lookAt.x;
     sp10.y = 0.0f;
@@ -1924,9 +1974,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
         {
             double zero;
 
-            camera->unk94.x *= 0.02;
-            camera->unk94.y *= 0.02;
-            camera->unk94.z *= 0.02;
+            camera->eyeVel.x *= 0.02;
+            camera->eyeVel.y *= 0.02;
+            camera->eyeVel.z *= 0.02;
 
             sp28.x = 0.0f;
             sp28.y = 2.0f;
@@ -1989,9 +2039,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
             }
             else
             {
-                camera->unk94.x *= 0.02;
-                camera->unk94.y = 0.0f;
-                camera->unk94.z *= 0.02;
+                camera->eyeVel.x *= 0.02;
+                camera->eyeVel.y = 0.0f;
+                camera->eyeVel.z *= 0.02;
                 sp60.x = 9.0 * (f31 * ((rand() / 32767.0f) - 0.5));
                 sp60.y = 2.5f;
                 sp60.z = 5.0f;
@@ -2031,25 +2081,25 @@ void camera_func_goal_replay(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    camera->unk94.x *= 0.98;
-    camera->unk94.y *= 0.98;
-    camera->unk94.z *= 0.98;
+    camera->eyeVel.x *= 0.98;
+    camera->eyeVel.y *= 0.98;
+    camera->eyeVel.z *= 0.98;
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp10.x = ball->pos.x - camera->lookAt.x;
     sp10.y = ball->pos.y - camera->lookAt.y;
     sp10.z = ball->pos.z - camera->lookAt.z;
 
-    camera->unkA0.x = sp10.x * 0.15;
-    camera->unkA0.y = sp10.y * 0.15;
-    camera->unkA0.z = sp10.z * 0.15;
+    camera->lookAtVel.x = sp10.x * 0.15;
+    camera->lookAtVel.y = sp10.y * 0.15;
+    camera->lookAtVel.z = sp10.z * 0.15;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp10.x = camera->lookAt.x - camera->eye.x;
     sp10.y = camera->lookAt.y - camera->eye.y;
@@ -2086,25 +2136,25 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     sp10.y = (ball->vel.y * 4.0) + (ball->pos.y + sp1C.y * 2.0) + 2.0;
     sp10.z = (ball->vel.z * 4.0) + (ball->pos.z + sp1C.z * 2.0);
 
-    camera->unk94.x = 0.04 * (sp10.x - camera->eye.x);
-    camera->unk94.y = 0.04 * (sp10.y - camera->eye.y);
-    camera->unk94.z = 0.04 * (sp10.z - camera->eye.z);
+    camera->eyeVel.x = 0.04 * (sp10.x - camera->eye.x);
+    camera->eyeVel.y = 0.04 * (sp10.y - camera->eye.y);
+    camera->eyeVel.z = 0.04 * (sp10.z - camera->eye.z);
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp1C.x = ball->pos.x - camera->lookAt.x;
     sp1C.y = ball->pos.y - camera->lookAt.y;
     sp1C.z = ball->pos.z - camera->lookAt.z;
 
-    camera->unkA0.x = sp1C.x * 0.15;
-    camera->unkA0.y = sp1C.y * 0.15;
-    camera->unkA0.z = sp1C.z * 0.15;
+    camera->lookAtVel.x = sp1C.x * 0.15;
+    camera->lookAtVel.y = sp1C.y * 0.15;
+    camera->lookAtVel.z = sp1C.z * 0.15;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp1C.x = camera->lookAt.x - camera->eye.x;
     sp1C.y = camera->lookAt.y - camera->eye.y;
@@ -2142,25 +2192,25 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
     sp1C.y = sp10.y + sp28.y;
     sp1C.z = sp10.z + sp28.z;
 
-    camera->unk94.x = 0.04 * (sp1C.x - camera->eye.x);
-    camera->unk94.y = 0.04 * (sp1C.y - camera->eye.y);
-    camera->unk94.z = 0.04 * (sp1C.z - camera->eye.z);
+    camera->eyeVel.x = 0.04 * (sp1C.x - camera->eye.x);
+    camera->eyeVel.y = 0.04 * (sp1C.y - camera->eye.y);
+    camera->eyeVel.z = 0.04 * (sp1C.z - camera->eye.z);
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp28.x = ball->pos.x - camera->lookAt.x;
     sp28.y = ball->pos.y - camera->lookAt.y;
     sp28.z = ball->pos.z - camera->lookAt.z;
 
-    camera->unkA0.x = sp28.x * 0.15;
-    camera->unkA0.y = sp28.y * 0.15;
-    camera->unkA0.z = sp28.z * 0.15;
+    camera->lookAtVel.x = sp28.x * 0.15;
+    camera->lookAtVel.y = sp28.y * 0.15;
+    camera->lookAtVel.z = sp28.z * 0.15;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp28.x = camera->lookAt.x - camera->eye.x;
     sp28.y = camera->lookAt.y - camera->eye.y;
@@ -2196,25 +2246,25 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     sp1C.y = sp10.y + sp28.y;
     sp1C.z = sp10.z + sp28.z;
 
-    camera->unk94.x = 0.02 * (sp1C.x - camera->eye.x);
-    camera->unk94.y = 0.02 * (sp1C.y - camera->eye.y);
-    camera->unk94.z = 0.02 * (sp1C.z - camera->eye.z);
+    camera->eyeVel.x = 0.02 * (sp1C.x - camera->eye.x);
+    camera->eyeVel.y = 0.02 * (sp1C.y - camera->eye.y);
+    camera->eyeVel.z = 0.02 * (sp1C.z - camera->eye.z);
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp28.x = ball->pos.x - camera->lookAt.x;
     sp28.y = ball->pos.y - camera->lookAt.y;
     sp28.z = ball->pos.z - camera->lookAt.z;
 
-    camera->unkA0.x = sp28.x * 0.15;
-    camera->unkA0.y = sp28.y * 0.15;
-    camera->unkA0.z = sp28.z * 0.15;
+    camera->lookAtVel.x = sp28.x * 0.15;
+    camera->lookAtVel.y = sp28.y * 0.15;
+    camera->lookAtVel.z = sp28.z * 0.15;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp28.x = camera->lookAt.x - camera->eye.x;
     sp28.y = camera->lookAt.y - camera->eye.y;
@@ -2236,25 +2286,25 @@ void camera_func_22_23_24(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    camera->unk94.x *= 0.92;
-    camera->unk94.y *= 0.92;
-    camera->unk94.z *= 0.92;
+    camera->eyeVel.x *= 0.92;
+    camera->eyeVel.y *= 0.92;
+    camera->eyeVel.z *= 0.92;
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp10.x = ball->pos.x - camera->lookAt.x;
     sp10.y = ball->pos.y - camera->lookAt.y;
     sp10.z = ball->pos.z - camera->lookAt.z;
 
-    camera->unkA0.x = (sp10.x - camera->unkA0.x) * 0.1;
-    camera->unkA0.y = (sp10.y - camera->unkA0.y) * 0.1;
-    camera->unkA0.z = (sp10.z - camera->unkA0.z) * 0.1;
+    camera->lookAtVel.x = (sp10.x - camera->lookAtVel.x) * 0.1;
+    camera->lookAtVel.y = (sp10.y - camera->lookAtVel.y) * 0.1;
+    camera->lookAtVel.z = (sp10.z - camera->lookAtVel.z) * 0.1;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp10.x = camera->lookAt.x - camera->eye.x;
     sp10.y = camera->lookAt.y - camera->eye.y;
@@ -2366,9 +2416,9 @@ void camera_func_32(struct Camera *camera, struct Ball *ball)
     camera->lookAt.y += (ball->pos.y - camera->lookAt.y) * 0.25;
     camera->lookAt.z += (ball->pos.z - camera->lookAt.z) * 0.25;
 
-    camera->unk94.x = 0.0f;
-    camera->unk94.y = 0.0f;
-    camera->unk94.z = 0.0f;
+    camera->eyeVel.x = 0.0f;
+    camera->eyeVel.y = 0.0f;
+    camera->eyeVel.z = 0.0f;
 
     camera->eye.x = decodedStageLzPtr->startPos->pos.z;
     camera->eye.y = decodedStageLzPtr->startPos->pos.y;
@@ -2380,9 +2430,9 @@ void camera_func_32(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp28);
 
-    camera->unkA0.x = camera->lookAt.x - sp10.x;
-    camera->unkA0.y = camera->lookAt.y - sp10.y;
-    camera->unkA0.z = camera->lookAt.z - sp10.z;
+    camera->lookAtVel.x = camera->lookAt.x - sp10.x;
+    camera->lookAtVel.y = camera->lookAt.y - sp10.y;
+    camera->lookAtVel.z = camera->lookAt.z - sp10.z;
 }
 
 void camera_func_33(struct Camera *camera, struct Ball *ball)
@@ -2470,20 +2520,20 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
 
     if (modeCtrl.unk0 > 15)
     {
-        camera->unk94.x += ((sp28.x - camera->eye.x) * 0.15 - camera->unk94.x) * 0.4;
-        camera->unk94.y += ((sp28.y - camera->eye.y) * 0.15 - camera->unk94.y) * 0.4;
-        camera->unk94.z += ((sp28.z - camera->eye.z) * 0.15 - camera->unk94.z) * 0.4;
+        camera->eyeVel.x += ((sp28.x - camera->eye.x) * 0.15 - camera->eyeVel.x) * 0.4;
+        camera->eyeVel.y += ((sp28.y - camera->eye.y) * 0.15 - camera->eyeVel.y) * 0.4;
+        camera->eyeVel.z += ((sp28.z - camera->eye.z) * 0.15 - camera->eyeVel.z) * 0.4;
     }
     else
     {
-        camera->unk94.x += ((sp28.x - camera->eye.x) * 0.3 - camera->unk94.x) * 0.8;
-        camera->unk94.y += ((sp28.y - camera->eye.y) * 0.3 - camera->unk94.y) * 0.8;
-        camera->unk94.z += ((sp28.z - camera->eye.z) * 0.3 - camera->unk94.z) * 0.8;
+        camera->eyeVel.x += ((sp28.x - camera->eye.x) * 0.3 - camera->eyeVel.x) * 0.8;
+        camera->eyeVel.y += ((sp28.y - camera->eye.y) * 0.3 - camera->eyeVel.y) * 0.8;
+        camera->eyeVel.z += ((sp28.z - camera->eye.z) * 0.3 - camera->eyeVel.z) * 0.8;
     }
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp34.x = camera->lookAt.x - camera->eye.x;
     sp34.y = camera->lookAt.y - camera->eye.y;
@@ -2491,9 +2541,9 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp34);
 
-    camera->unkA0.x = camera->lookAt.x - sp10.x;
-    camera->unkA0.y = camera->lookAt.y - sp10.y;
-    camera->unkA0.z = camera->lookAt.z - sp10.z;
+    camera->lookAtVel.x = camera->lookAt.x - sp10.x;
+    camera->lookAtVel.y = camera->lookAt.y - sp10.y;
+    camera->lookAtVel.z = camera->lookAt.z - sp10.z;
 }
 
 void camera_func_35(struct Camera *camera, struct Ball *ball)
@@ -2589,13 +2639,13 @@ void camera_func_36(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp28);
 
-    camera->unk94.x = camera->eye.x - sp1C.x;
-    camera->unk94.y = camera->eye.y - sp1C.y;
-    camera->unk94.z = camera->eye.z - sp1C.z;
+    camera->eyeVel.x = camera->eye.x - sp1C.x;
+    camera->eyeVel.y = camera->eye.y - sp1C.y;
+    camera->eyeVel.z = camera->eye.z - sp1C.z;
 
-    camera->unkA0.x = camera->lookAt.x - sp10.x;
-    camera->unkA0.y = camera->lookAt.y - sp10.y;
-    camera->unkA0.z = camera->lookAt.z - sp10.z;
+    camera->lookAtVel.x = camera->lookAt.x - sp10.x;
+    camera->lookAtVel.y = camera->lookAt.y - sp10.y;
+    camera->lookAtVel.z = camera->lookAt.z - sp10.z;
 }
 
 void camera_func_37(struct Camera *camera, struct Ball *ball)
@@ -2637,13 +2687,13 @@ void camera_func_37(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp28);
 
-    camera->unk94.x = camera->eye.x - sp1C.x;
-    camera->unk94.y = camera->eye.y - sp1C.y;
-    camera->unk94.z = camera->eye.z - sp1C.z;
+    camera->eyeVel.x = camera->eye.x - sp1C.x;
+    camera->eyeVel.y = camera->eye.y - sp1C.y;
+    camera->eyeVel.z = camera->eye.z - sp1C.z;
 
-    camera->unkA0.x = camera->lookAt.x - sp10.x;
-    camera->unkA0.y = camera->lookAt.y - sp10.y;
-    camera->unkA0.z = camera->lookAt.z - sp10.z;
+    camera->lookAtVel.x = camera->lookAt.x - sp10.x;
+    camera->lookAtVel.y = camera->lookAt.y - sp10.y;
+    camera->lookAtVel.z = camera->lookAt.z - sp10.z;
 }
 
 void camera_func_39(struct Camera *camera, struct Ball *ball) {}
@@ -2980,25 +3030,25 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
     camera->unk54.y = sp10.unk0.y;
     camera->unk54.z = sp10.unk0.z;
 
-    camera->unk94.x = (sp10.unk0.x + camera->unk74.x - camera->eye.x) * 0.1;
-    camera->unk94.y = (sp10.unk0.y + camera->unk64 - camera->eye.y) * 0.1;
-    camera->unk94.z = (sp10.unk0.z + camera->unk74.z - camera->eye.z) * 0.1;
+    camera->eyeVel.x = (sp10.unk0.x + camera->unk74.x - camera->eye.x) * 0.1;
+    camera->eyeVel.y = (sp10.unk0.y + camera->unk64 - camera->eye.y) * 0.1;
+    camera->eyeVel.z = (sp10.unk0.z + camera->unk74.z - camera->eye.z) * 0.1;
 
-    camera->eye.x += camera->unk94.x;
-    camera->eye.y += camera->unk94.y;
-    camera->eye.z += camera->unk94.z;
+    camera->eye.x += camera->eyeVel.x;
+    camera->eye.y += camera->eyeVel.y;
+    camera->eye.z += camera->eyeVel.z;
 
     sp3C.x = (ball->pos.x + 6.0 * ball->vel.x) - camera->lookAt.x;
     sp3C.y = (ball->pos.y + 6.0 * ball->vel.y) - camera->lookAt.y;
     sp3C.z = (ball->pos.z + 6.0 * ball->vel.z) - camera->lookAt.z;
 
-    camera->unkA0.x = sp3C.x * 0.1;
-    camera->unkA0.y = sp3C.y * 0.1;
-    camera->unkA0.z = sp3C.z * 0.1;
+    camera->lookAtVel.x = sp3C.x * 0.1;
+    camera->lookAtVel.y = sp3C.y * 0.1;
+    camera->lookAtVel.z = sp3C.z * 0.1;
 
-    camera->lookAt.x += camera->unkA0.x;
-    camera->lookAt.y += camera->unkA0.y;
-    camera->lookAt.z += camera->unkA0.z;
+    camera->lookAt.x += camera->lookAtVel.x;
+    camera->lookAt.y += camera->lookAtVel.y;
+    camera->lookAt.z += camera->lookAtVel.z;
 
     sp3C.x = camera->lookAt.x - camera->eye.x;
     sp3C.y = camera->lookAt.y - camera->eye.y;
@@ -3119,7 +3169,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     sp4C.y = sp1C.y - sp10.y;
     sp4C.z = sp1C.z - sp10.z;
 
-    camera->unk94 = sp4C;
+    camera->eyeVel = sp4C;
     camera->unk54 = sp4C;
     camera->unk68 = 1;
     camera->state = 49;
@@ -3149,9 +3199,9 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         sp34 = camera->eye;
         mathutil_mtxA_tf_point(&camera->unk114, &camera->eye);
 
-        camera->unk94.x = camera->eye.x - sp34.x;
-        camera->unk94.y = camera->eye.y - sp34.y;
-        camera->unk94.z = camera->eye.z - sp34.z;
+        camera->eyeVel.x = camera->eye.x - sp34.x;
+        camera->eyeVel.y = camera->eye.y - sp34.y;
+        camera->eyeVel.z = camera->eye.z - sp34.z;
 
         camera->unk138.x *= 0.92;
         camera->unk138.y *= 0.92;
@@ -3175,9 +3225,9 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         sp34 = camera->lookAt;
         mathutil_mtxA_tf_point(&camera->unk12C, &camera->lookAt);
 
-        camera->unkA0.x = camera->lookAt.x - sp34.x;
-        camera->unkA0.y = camera->lookAt.y - sp34.y;
-        camera->unkA0.z = camera->lookAt.z - sp34.z;
+        camera->lookAtVel.x = camera->lookAt.x - sp34.x;
+        camera->lookAtVel.y = camera->lookAt.y - sp34.y;
+        camera->lookAtVel.z = camera->lookAt.z - sp34.z;
 
         mathutil_mtxA_push();
         mathutil_mtxA_tf_point(&camera->unk114, &sp1C);
@@ -3209,30 +3259,30 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
     }
     else
     {
-        camera->unk94.x *= 0.96f;
-        camera->unk94.y *= 0.92f;
-        camera->unk94.z *= 0.96f;
+        camera->eyeVel.x *= 0.96f;
+        camera->eyeVel.y *= 0.92f;
+        camera->eyeVel.z *= 0.96f;
 
-        camera->eye.x += camera->unk94.x;
-        camera->eye.y += camera->unk94.y;
-        camera->eye.z += camera->unk94.z;
+        camera->eye.x += camera->eyeVel.x;
+        camera->eye.y += camera->eyeVel.y;
+        camera->eye.z += camera->eyeVel.z;
 
-        camera->unkA0.x *= 0.92;
-        camera->unkA0.y *= 0.92;
-        camera->unkA0.z *= 0.92;
+        camera->lookAtVel.x *= 0.92;
+        camera->lookAtVel.y *= 0.92;
+        camera->lookAtVel.z *= 0.92;
 
         sp28.x = ball->pos.x + ball->vel.x * 12.0;
         sp28.y = ball->pos.y + ball->vel.y * 12.0;
         sp28.z = ball->pos.z + ball->vel.z * 12.0;
 
         //! possible oversight: subtracts unk1A0.x on all of them
-        camera->unkA0.x += (sp28.x - camera->lookAt.x - camera->unkA0.x) * 0.01;
-        camera->unkA0.y += (sp28.y - camera->lookAt.y - camera->unkA0.x) * 0.01;
-        camera->unkA0.z += (sp28.z - camera->lookAt.z - camera->unkA0.x) * 0.01;
+        camera->lookAtVel.x += (sp28.x - camera->lookAt.x - camera->lookAtVel.x) * 0.01;
+        camera->lookAtVel.y += (sp28.y - camera->lookAt.y - camera->lookAtVel.x) * 0.01;
+        camera->lookAtVel.z += (sp28.z - camera->lookAt.z - camera->lookAtVel.x) * 0.01;
 
-        camera->lookAt.x += camera->unkA0.x;
-        camera->lookAt.y += camera->unkA0.y;
-        camera->lookAt.z += camera->unkA0.z;
+        camera->lookAt.x += camera->lookAtVel.x;
+        camera->lookAt.y += camera->lookAtVel.y;
+        camera->lookAt.z += camera->lookAtVel.z;
     }
 
     sp34.x = camera->lookAt.x - camera->eye.x;

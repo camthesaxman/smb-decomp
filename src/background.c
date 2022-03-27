@@ -364,7 +364,7 @@ void func_8005507C(void)
 {
     if (backgroundInfo.bgId > 0)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
         if (backgroundInfo.unk9C != NULL)
         {
@@ -480,7 +480,7 @@ void load_bg_files(int bgId)
 
     if (backgroundInfo.bgId != bgId)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
         if (backgroundInfo.bgId > 0)
         {

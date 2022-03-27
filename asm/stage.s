@@ -1058,7 +1058,7 @@ lbl_8004496C:
 /* 8004496C 0004088C  80 0D 87 B8 */	lwz r0, loadedStageId@sda21(r13)
 /* 80044970 00040890  7C 00 E0 00 */	cmpw r0, r28
 /* 80044974 00040894  41 82 00 80 */	beq lbl_800449F4
-/* 80044978 00040898  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80044978 00040898  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 8004497C 0004089C  48 07 DE C9 */	bl OSSetCurrentHeap
 /* 80044980 000408A0  80 0D 9D 5C */	lwz r0, decodedStageTplPtr@sda21(r13)
 /* 80044984 000408A4  3B 63 00 00 */	addi r27, r3, 0
@@ -1173,7 +1173,7 @@ unload_stage:
 /* 80044AF8 00040A18  80 0D 87 B8 */	lwz r0, loadedStageId@sda21(r13)
 /* 80044AFC 00040A1C  2C 00 FF FF */	cmpwi r0, -1
 /* 80044B00 00040A20  41 82 00 88 */	beq lbl_80044B88
-/* 80044B04 00040A24  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80044B04 00040A24  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80044B08 00040A28  48 07 DD 3D */	bl OSSetCurrentHeap
 /* 80044B0C 00040A2C  80 0D 9D 5C */	lwz r0, decodedStageTplPtr@sda21(r13)
 /* 80044B10 00040A30  3B E3 00 00 */	addi r31, r3, 0
@@ -1325,7 +1325,7 @@ load_stage_files:
 /* 80044D10 00040C30  48 0B FF 15 */	bl sprintf
 /* 80044D14 00040C34  38 61 02 0C */	addi r3, r1, 0x20c
 /* 80044D18 00040C38  48 08 70 B5 */	bl DVDChangeDir
-/* 80044D1C 00040C3C  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80044D1C 00040C3C  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80044D20 00040C40  48 07 DB 25 */	bl OSSetCurrentHeap
 /* 80044D24 00040C44  3B C3 00 00 */	addi r30, r3, 0
 /* 80044D28 00040C48  38 7D 00 00 */	addi r3, r29, 0
