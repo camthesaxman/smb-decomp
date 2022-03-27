@@ -612,12 +612,12 @@ draw_blur_bridge_accordions:
 /* 80044300 00040220  FD FE 05 8E */	mtfsf 0xff, f0
 /* 80044304 00040224  80 61 00 0C */	lwz r3, 0xc(r1)  ;# floor(div)
 /* 80044308 00040228  80 06 00 00 */	lwz r0, 0(r6)
-/* 8004430C 0004022C  3C 80 80 20 */	lis r4, movableStageParts@ha
+/* 8004430C 0004022C  3C 80 80 20 */	lis r4, itemgroups@ha
 /* 80044310 00040230  6C 63 80 00 */	xoris r3, r3, 0x8000
 /* 80044314 00040234  90 61 00 2C */	stw r3, 0x2c(r1)
 /* 80044318 00040238  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 8004431C 0004023C  80 66 00 0C */	lwz r3, 0xc(r6)
-/* 80044320 00040240  38 84 6E 48 */	addi r4, r4, movableStageParts@l
+/* 80044320 00040240  38 84 6E 48 */	addi r4, r4, itemgroups@l
 /* 80044324 00040244  90 A1 00 28 */	stw r5, 0x28(r1)
 /* 80044328 00040248  3B E4 00 84 */	addi r31, r4, 0x84
 /* 8004432C 0004024C  C8 01 00 28 */	lfd f0, 0x28(r1)
@@ -968,12 +968,12 @@ g_initialize_stage_dyn_part_info:
 .global func_8004482C
 func_8004482C:
 /* 8004482C 0004074C  7C 08 02 A6 */	mflr r0
-/* 80044830 00040750  3C 80 80 20 */	lis r4, movableStageParts@ha
+/* 80044830 00040750  3C 80 80 20 */	lis r4, itemgroups@ha
 /* 80044834 00040754  90 01 00 04 */	stw r0, 4(r1)
-/* 80044838 00040758  38 04 6E 48 */	addi r0, r4, movableStageParts@l
+/* 80044838 00040758  38 04 6E 48 */	addi r0, r4, itemgroups@l
 /* 8004483C 0004075C  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80044840 00040760  93 E1 00 14 */	stw r31, 0x14(r1)
-/* 80044844 00040764  7C 1F 03 78 */	mr r31, r0  ;# movableStageParts
+/* 80044844 00040764  7C 1F 03 78 */	mr r31, r0  ;# itemgroups
 /* 80044848 00040768  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 8004484C 0004076C  93 A1 00 0C */	stw r29, 0xc(r1)
 /* 80044850 00040770  3B A0 00 00 */	li r29, 0
@@ -1124,7 +1124,7 @@ lbl_80044A54:
 /* 80044A54 00040974  38 60 00 48 */	li r3, 0x48
 lbl_80044A58:
 /* 80044A58 00040978  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
-/* 80044A5C 0004097C  90 6D 9D 68 */	stw r3, movableStagePartCount@sda21(r13)
+/* 80044A5C 0004097C  90 6D 9D 68 */	stw r3, itemgroupCount@sda21(r13)
 /* 80044A60 00040980  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80044A64 00040984  41 82 00 18 */	beq lbl_80044A7C
 /* 80044A68 00040988  3C 60 80 1C */	lis r3, lbl_801B871C@ha
@@ -1544,7 +1544,7 @@ lbl_80045000:
 /* 80045004 00040F24  3A 94 00 01 */	addi r20, r20, 1
 /* 80045008 00040F28  3A D6 00 C4 */	addi r22, r22, 0xc4
 lbl_8004500C:
-/* 8004500C 00040F2C  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 8004500C 00040F2C  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80045010 00040F30  7C 14 00 00 */	cmpw r20, r0
 /* 80045014 00040F34  41 80 FE 50 */	blt lbl_80044E64
 /* 80045018 00040F38  38 00 00 00 */	li r0, 0
@@ -1646,7 +1646,7 @@ lbl_80045140:
 /* 80045164 00041084  38 A5 00 C4 */	addi r5, r5, 0xc4
 /* 80045168 00041088  7C 84 02 14 */	add r4, r4, r0
 lbl_8004516C:
-/* 8004516C 0004108C  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 8004516C 0004108C  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80045170 00041090  7C 06 00 00 */	cmpw r6, r0
 /* 80045174 00041094  41 80 FF CC */	blt lbl_80045140
 /* 80045178 00041098  38 00 00 00 */	li r0, 0
@@ -1759,7 +1759,7 @@ lbl_800452C0:
 /* 800452E4 00041204  38 A5 00 C4 */	addi r5, r5, 0xc4
 /* 800452E8 00041208  7C C6 02 14 */	add r6, r6, r0
 lbl_800452EC:
-/* 800452EC 0004120C  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 800452EC 0004120C  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 800452F0 00041210  7C 04 00 00 */	cmpw r4, r0
 /* 800452F4 00041214  41 80 FF CC */	blt lbl_800452C0
 /* 800452F8 00041218  80 6D 9D 50 */	lwz r3, decodedStageLzPtr@sda21(r13)
@@ -2718,7 +2718,7 @@ lbl_80046018:
 /* 80046018 00041F38  80 0D 9D 58 */	lwz r0, decodedStageGmaPtr@sda21(r13)
 /* 8004601C 00041F3C  7C 00 18 40 */	cmplw r0, r3
 /* 80046020 00041F40  40 82 01 78 */	bne lbl_80046198
-/* 80046024 00041F44  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80046024 00041F44  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80046028 00041F48  38 7F 36 48 */	addi r3, r31, 0x3648
 /* 8004602C 00041F4C  2C 00 00 00 */	cmpwi r0, 0
 /* 80046030 00041F50  7C 09 03 A6 */	mtctr r0
@@ -2822,7 +2822,7 @@ lbl_80046180:
 /* 80046190 000420B0  42 00 FE A8 */	bdnz lbl_80046038
 /* 80046194 000420B4  48 00 01 68 */	b lbl_800462FC
 lbl_80046198:
-/* 80046198 000420B8  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80046198 000420B8  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 8004619C 000420BC  38 7F 3E 88 */	addi r3, r31, 0x3e88
 /* 800461A0 000420C0  2C 00 00 00 */	cmpwi r0, 0
 /* 800461A4 000420C4  7C 09 03 A6 */	mtctr r0
@@ -3011,7 +3011,7 @@ func_800463E8:
 /* 80046438 00042358  FF 60 F8 90 */	fmr f27, f31
 /* 8004643C 0004235C  FF 40 F8 90 */	fmr f26, f31
 /* 80046440 00042360  41 82 01 F4 */	beq lbl_80046634
-/* 80046444 00042364  3B 3D 01 48 */	addi r25, r29, 0x148  ;# movableStageParts
+/* 80046444 00042364  3B 3D 01 48 */	addi r25, r29, 0x148  ;# itemgroups
 /* 80046448 00042368  3B 5D 3E 88 */	addi r26, r29, 0x3e88  ;# lbl_8020AB88
 /* 8004644C 0004236C  3B 00 00 00 */	li r24, 0
 /* 80046450 00042370  48 00 00 D0 */	b lbl_80046520
@@ -3076,13 +3076,13 @@ lbl_80046508:
 /* 80046518 00042438  3B 5A 00 08 */	addi r26, r26, 8
 /* 8004651C 0004243C  3B 39 00 84 */	addi r25, r25, 0x84
 lbl_80046520:
-/* 80046520 00042440  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80046520 00042440  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80046524 00042444  7C 18 00 00 */	cmpw r24, r0
 /* 80046528 00042448  41 80 FF 2C */	blt lbl_80046454
 /* 8004652C 0004244C  EC 5F E0 2A */	fadds f2, f31, f28
 /* 80046530 00042450  C0 62 8F A4 */	lfs f3, lbl_802F37A4@sda21(r2)
 /* 80046534 00042454  EC 3E D8 2A */	fadds f1, f30, f27
-/* 80046538 00042458  3B 7D 01 48 */	addi r27, r29, 0x148  ;# movableStageParts
+/* 80046538 00042458  3B 7D 01 48 */	addi r27, r29, 0x148  ;# itemgroups
 /* 8004653C 0004245C  EC 1D D0 2A */	fadds f0, f29, f26
 /* 80046540 00042460  EC 43 00 B2 */	fmuls f2, f3, f2
 /* 80046544 00042464  3B BD 3E 88 */	addi r29, r29, 0x3e88  ;# lbl_8020AB88
@@ -3137,7 +3137,7 @@ lbl_800465E8:
 /* 800465F8 00042518  3B BD 00 08 */	addi r29, r29, 8
 /* 800465FC 0004251C  3B 7B 00 84 */	addi r27, r27, 0x84
 lbl_80046600:
-/* 80046600 00042520  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80046600 00042520  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80046604 00042524  7C 1A 00 00 */	cmpw r26, r0
 /* 80046608 00042528  41 80 FF 64 */	blt lbl_8004656C
 /* 8004660C 0004252C  C0 02 8F A8 */	lfs f0, lbl_802F37A8@sda21(r2)
@@ -3157,7 +3157,7 @@ lbl_80046634:
 /* 80046640 00042560  80 03 00 5C */	lwz r0, 0x5c(r3)
 /* 80046644 00042564  28 00 00 00 */	cmplwi r0, 0
 /* 80046648 00042568  41 82 01 F8 */	beq lbl_80046840
-/* 8004664C 0004256C  3A FD 01 48 */	addi r23, r29, 0x148  ;# movableStageParts
+/* 8004664C 0004256C  3A FD 01 48 */	addi r23, r29, 0x148  ;# itemgroups
 /* 80046650 00042570  3B 1D 36 48 */	addi r24, r29, 0x3648  ;# lbl_8020A348
 /* 80046654 00042574  3B 40 00 00 */	li r26, 0
 /* 80046658 00042578  48 00 00 D0 */	b lbl_80046728
@@ -3222,7 +3222,7 @@ lbl_80046710:
 /* 80046720 00042640  3B 18 00 08 */	addi r24, r24, 8
 /* 80046724 00042644  3A F7 00 84 */	addi r23, r23, 0x84
 lbl_80046728:
-/* 80046728 00042648  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80046728 00042648  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 8004672C 0004264C  7C 1A 00 00 */	cmpw r26, r0
 /* 80046730 00042650  41 80 FF 2C */	blt lbl_8004665C
 /* 80046734 00042654  EC 5F E0 2A */	fadds f2, f31, f28
@@ -3286,7 +3286,7 @@ lbl_800467FC:
 /* 8004680C 0004272C  3B 5A 00 08 */	addi r26, r26, 8
 /* 80046810 00042730  3B 39 00 84 */	addi r25, r25, 0x84
 lbl_80046814:
-/* 80046814 00042734  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80046814 00042734  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80046818 00042738  7C 1B 00 00 */	cmpw r27, r0
 /* 8004681C 0004273C  41 80 FF 58 */	blt lbl_80046774
 /* 80046820 00042740  80 61 00 40 */	lwz r3, 0x40(r1)
@@ -4460,7 +4460,7 @@ lbl_800477F0:
 /* 80047800 00043720  3A F7 00 08 */	addi r23, r23, 8
 /* 80047804 00043724  3A D6 00 84 */	addi r22, r22, 0x84
 lbl_80047808:
-/* 80047808 00043728  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80047808 00043728  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 8004780C 0004372C  7C 1A 00 00 */	cmpw r26, r0
 /* 80047810 00043730  41 80 FF 4C */	blt lbl_8004775C
 /* 80047814 00043734  48 00 02 30 */	b lbl_80047A44
@@ -4517,7 +4517,7 @@ lbl_800478B4:
 /* 800478C4 000437E4  3A D6 00 84 */	addi r22, r22, 0x84
 /* 800478C8 000437E8  3A F7 00 0C */	addi r23, r23, 0xc
 lbl_800478CC:
-/* 800478CC 000437EC  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 800478CC 000437EC  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 800478D0 000437F0  7C 1B 00 00 */	cmpw r27, r0
 /* 800478D4 000437F4  41 80 FF 64 */	blt lbl_80047838
 /* 800478D8 000437F8  48 00 01 6C */	b lbl_80047A44
@@ -4620,7 +4620,7 @@ lbl_80047A20:
 /* 80047A30 00043950  3A F7 00 08 */	addi r23, r23, 8
 /* 80047A34 00043954  3A D6 00 84 */	addi r22, r22, 0x84
 lbl_80047A38:
-/* 80047A38 00043958  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80047A38 00043958  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80047A3C 0004395C  7C 1A 00 00 */	cmpw r26, r0
 /* 80047A40 00043960  41 80 FE BC */	blt lbl_800478FC
 lbl_80047A44:
@@ -7919,8 +7919,8 @@ lbl_80206DEC:
 	.skip 0x5C
 .endif
 .if 0
-.global movableStageParts
-movableStageParts:
+.global itemgroups
+itemgroups:
 	.skip 0x2520
 .endif
 .if 0

@@ -12147,16 +12147,16 @@ lbl_0000B280:
 /* 0000B294 80030000 */ lwz r0, decodedStageGmaPtr@l(r3)
 /* 0000B298 28000000 */ cmplwi r0, 0
 /* 0000B29C 418200BC */ beq lbl_0000B358
-/* 0000B2A0 3C800000 */ lis r4, movableStageParts@ha
+/* 0000B2A0 3C800000 */ lis r4, itemgroups@ha
 /* 0000B2A4 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 0000B2A8 38A40000 */ addi r5, r4, movableStageParts@l
+/* 0000B2A8 38A40000 */ addi r5, r4, itemgroups@l
 /* 0000B2AC 38030000 */ addi r0, r3, lbl_8020AB88@l
 /* 0000B2B0 3C800000 */ lis r4, mathutilData@ha
-/* 0000B2B4 3C600000 */ lis r3, movableStagePartCount@ha
+/* 0000B2B4 3C600000 */ lis r3, itemgroupCount@ha
 /* 0000B2B8 3B650000 */ addi r27, r5, 0
 /* 0000B2BC 7C1A0378 */ mr r26, r0
 /* 0000B2C0 3BC40000 */ addi r30, r4, mathutilData@l
-/* 0000B2C4 3BE30000 */ addi r31, r3, movableStagePartCount@l
+/* 0000B2C4 3BE30000 */ addi r31, r3, itemgroupCount@l
 /* 0000B2C8 3BA00000 */ li r29, 0
 /* 0000B2CC 48000080 */ b lbl_0000B34C
 lbl_0000B2D0:
@@ -13744,7 +13744,7 @@ lbl_0000C86C:
 /* 0000CA6C D01D0014 */ stfs f0, 0x14(r29)
 /* 0000CA70 C01E0000 */ lfs f0, 0(r30)
 /* 0000CA74 D01D0010 */ stfs f0, 0x10(r29)
-/* 0000CA78 4BFF3759 */ bl func_8003FB48
+/* 0000CA78 4BFF3759 */ bl raycast_stage_down
 /* 0000CA7C 8001001C */ lwz r0, 0x1c(r1)
 /* 0000CA80 28000000 */ cmplwi r0, 0
 /* 0000CA84 41820068 */ beq lbl_0000CAEC
@@ -13921,7 +13921,7 @@ lbl_0000CB3C:
 /* 0000CD28 D01D0014 */ stfs f0, 0x14(r29)
 /* 0000CD2C C01E0000 */ lfs f0, 0(r30)
 /* 0000CD30 D01D0010 */ stfs f0, 0x10(r29)
-/* 0000CD34 4BFF349D */ bl func_8003FB48
+/* 0000CD34 4BFF349D */ bl raycast_stage_down
 /* 0000CD38 8001001C */ lwz r0, 0x1c(r1)
 /* 0000CD3C 28000000 */ cmplwi r0, 0
 /* 0000CD40 41820068 */ beq lbl_0000CDA8
@@ -14984,7 +14984,7 @@ lbl_0000DCE4:
 /* 0000DD0C C01D0000 */ lfs f0, 0(r29)
 /* 0000DD10 EC01002A */ fadds f0, f1, f0
 /* 0000DD14 D0010044 */ stfs f0, 0x44(r1)
-/* 0000DD18 4BFF24B9 */ bl func_8003FB48
+/* 0000DD18 4BFF24B9 */ bl raycast_stage_down
 /* 0000DD1C 8001004C */ lwz r0, 0x4c(r1)
 /* 0000DD20 28000000 */ cmplwi r0, 0
 /* 0000DD24 41820024 */ beq lbl_0000DD48
@@ -16822,7 +16822,7 @@ lbl_0000F888:
 /* 0000F8F0 C01D0014 */ lfs f0, 0x14(r29)
 /* 0000F8F4 EC010028 */ fsubs f0, f1, f0
 /* 0000F8F8 D01D0020 */ stfs f0, 0x20(r29)
-/* 0000F8FC 4BFF08D5 */ bl func_8003CA98
+/* 0000F8FC 4BFF08D5 */ bl init_physball_from_ball
 /* 0000F900 480000BC */ b lbl_0000F9BC
 lbl_0000F904:
 /* 0000F904 4082004C */ bne lbl_0000F950
@@ -16842,7 +16842,7 @@ lbl_0000F904:
 /* 0000F93C 1C000284 */ mulli r0, r0, 0x284
 /* 0000F940 7CA50214 */ add r5, r5, r0
 /* 0000F944 98C5001F */ stb r6, 0x1f(r5)
-/* 0000F948 4BFF0889 */ bl func_8003CA98
+/* 0000F948 4BFF0889 */ bl init_physball_from_ball
 /* 0000F94C 48000070 */ b lbl_0000F9BC
 lbl_0000F950:
 /* 0000F950 807D00FC */ lwz r3, 0xfc(r29)
@@ -16940,7 +16940,7 @@ lbl_0000FA18:
 /* 0000FAB4 C01E0014 */ lfs f0, 0x14(r30)
 /* 0000FAB8 EC010028 */ fsubs f0, f1, f0
 /* 0000FABC D01E0020 */ stfs f0, 0x20(r30)
-/* 0000FAC0 4BFF0711 */ bl func_8003CA98
+/* 0000FAC0 4BFF0711 */ bl init_physball_from_ball
 /* 0000FAC4 480000B0 */ b lbl_0000FB74
 lbl_0000FAC8:
 /* 0000FAC8 40820040 */ bne lbl_0000FB08
@@ -16957,7 +16957,7 @@ lbl_0000FAC8:
 /* 0000FAF4 60C60040 */ ori r6, r6, 0x40
 /* 0000FAF8 90DE0094 */ stw r6, 0x94(r30)
 /* 0000FAFC 9805001F */ stb r0, 0x1f(r5)
-/* 0000FB00 4BFF06D1 */ bl func_8003CA98
+/* 0000FB00 4BFF06D1 */ bl init_physball_from_ball
 /* 0000FB04 48000070 */ b lbl_0000FB74
 lbl_0000FB08:
 /* 0000FB08 807E00FC */ lwz r3, 0xfc(r30)
@@ -17366,12 +17366,12 @@ lbl_000100F8:
 /* 00010100 41820010 */ beq lbl_00010110
 /* 00010104 387E0000 */ addi r3, r30, 0
 /* 00010108 389D0000 */ addi r4, r29, 0
-/* 0001010C 4BFF00C5 */ bl func_80042000
+/* 0001010C 4BFF00C5 */ bl tf_physball_to_itemgroup_space
 lbl_00010110:
 /* 00010110 C03E0010 */ lfs f1, 0x10(r30)
 /* 00010114 7F83E378 */ mr r3, r28
 /* 00010118 C05E0018 */ lfs f2, 0x18(r30)
-/* 0001011C 4BFF00B5 */ bl func_8003DD1C
+/* 0001011C 4BFF00B5 */ bl coligrid_lookup
 /* 00010120 28030000 */ cmplwi r3, 0
 /* 00010124 41820030 */ beq lbl_00010154
 /* 00010128 7C7B1B78 */ mr r27, r3
@@ -17381,7 +17381,7 @@ lbl_00010130:
 /* 00010134 54603032 */ slwi r0, r3, 6
 /* 00010138 387E0000 */ addi r3, r30, 0
 /* 0001013C 7C840214 */ add r4, r4, r0
-/* 00010140 4BFF0091 */ bl func_8003DE2C
+/* 00010140 4BFF0091 */ bl collide_ball_with_tri_face
 /* 00010144 3B7B0002 */ addi r27, r27, 2
 lbl_00010148:
 /* 00010148 A87B0000 */ lha r3, 0(r27)
@@ -17394,7 +17394,7 @@ lbl_00010154:
 lbl_00010160:
 /* 00010160 387E0000 */ addi r3, r30, 0
 /* 00010164 389B0000 */ addi r4, r27, 0
-/* 00010168 4BFF0069 */ bl func_8003F378
+/* 00010168 4BFF0069 */ bl collide_ball_with_cone
 /* 0001016C 3B5AFFFF */ addi r26, r26, -1  ;# fixed addi
 /* 00010170 3B7B0020 */ addi r27, r27, 0x20
 lbl_00010174:
@@ -17406,7 +17406,7 @@ lbl_00010174:
 lbl_00010188:
 /* 00010188 387E0000 */ addi r3, r30, 0
 /* 0001018C 389A0000 */ addi r4, r26, 0
-/* 00010190 4BFF0041 */ bl func_8003F248
+/* 00010190 4BFF0041 */ bl collide_ball_with_sphere
 /* 00010194 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 /* 00010198 3B5A0014 */ addi r26, r26, 0x14
 lbl_0001019C:
@@ -17418,7 +17418,7 @@ lbl_0001019C:
 lbl_000101B0:
 /* 000101B0 387E0000 */ addi r3, r30, 0
 /* 000101B4 389A0000 */ addi r4, r26, 0
-/* 000101B8 4BFF0019 */ bl func_8003EDB0
+/* 000101B8 4BFF0019 */ bl collide_ball_with_cylinder
 /* 000101BC 3B7BFFFF */ addi r27, r27, -1  ;# fixed addi
 /* 000101C0 3B5A001C */ addi r26, r26, 0x1c
 lbl_000101C4:
@@ -17439,12 +17439,12 @@ lbl_000101EC:
 /* 000101F4 41820010 */ beq lbl_00010204
 /* 000101F8 387E0000 */ addi r3, r30, 0
 /* 000101FC 389C0000 */ addi r4, r28, 0
-/* 00010200 4BFEFFD1 */ bl func_80042000
+/* 00010200 4BFEFFD1 */ bl tf_physball_to_itemgroup_space
 lbl_00010204:
 /* 00010204 C03E0010 */ lfs f1, 0x10(r30)
 /* 00010208 7FA3EB78 */ mr r3, r29
 /* 0001020C C05E0018 */ lfs f2, 0x18(r30)
-/* 00010210 4BFEFFC1 */ bl func_8003DD1C
+/* 00010210 4BFEFFC1 */ bl coligrid_lookup
 /* 00010214 28030000 */ cmplwi r3, 0
 /* 00010218 41820030 */ beq lbl_00010248
 /* 0001021C 7C7A1B78 */ mr r26, r3
@@ -17454,7 +17454,7 @@ lbl_00010224:
 /* 00010228 54603032 */ slwi r0, r3, 6
 /* 0001022C 387E0000 */ addi r3, r30, 0
 /* 00010230 7C840214 */ add r4, r4, r0
-/* 00010234 4BFEFF9D */ bl func_8003E08C
+/* 00010234 4BFEFF9D */ bl collide_ball_with_tri_edges
 /* 00010238 3B5A0002 */ addi r26, r26, 2
 lbl_0001023C:
 /* 0001023C A87A0000 */ lha r3, 0(r26)
@@ -17476,12 +17476,12 @@ lbl_00010268:
 /* 00010270 41820010 */ beq lbl_00010280
 /* 00010274 387E0000 */ addi r3, r30, 0
 /* 00010278 389C0000 */ addi r4, r28, 0
-/* 0001027C 4BFEFF55 */ bl func_80042000
+/* 0001027C 4BFEFF55 */ bl tf_physball_to_itemgroup_space
 lbl_00010280:
 /* 00010280 C03E0010 */ lfs f1, 0x10(r30)
 /* 00010284 7FA3EB78 */ mr r3, r29
 /* 00010288 C05E0018 */ lfs f2, 0x18(r30)
-/* 0001028C 4BFEFF45 */ bl func_8003DD1C
+/* 0001028C 4BFEFF45 */ bl coligrid_lookup
 /* 00010290 28030000 */ cmplwi r3, 0
 /* 00010294 41820030 */ beq lbl_000102C4
 /* 00010298 7C7A1B78 */ mr r26, r3
@@ -17491,7 +17491,7 @@ lbl_000102A0:
 /* 000102A4 54603032 */ slwi r0, r3, 6
 /* 000102A8 387E0000 */ addi r3, r30, 0
 /* 000102AC 7C840214 */ add r4, r4, r0
-/* 000102B0 4BFEFF21 */ bl func_8003E5D4
+/* 000102B0 4BFEFF21 */ bl collide_ball_with_tri_verts
 /* 000102B4 3B5A0002 */ addi r26, r26, 2
 lbl_000102B8:
 /* 000102B8 A87A0000 */ lha r3, 0(r26)
@@ -17509,7 +17509,7 @@ lbl_000102CC:
 /* 000102E0 41820010 */ beq lbl_000102F0
 /* 000102E4 387E0000 */ addi r3, r30, 0
 /* 000102E8 38800000 */ li r4, 0
-/* 000102EC 4BFEFEE5 */ bl func_80042000
+/* 000102EC 4BFEFEE5 */ bl tf_physball_to_itemgroup_space
 lbl_000102F0:
 /* 000102F0 BB410010 */ lmw r26, 0x10(r1)
 /* 000102F4 8001002C */ lwz r0, 0x2c(r1)
@@ -17709,7 +17709,7 @@ lbl_00010548:
 /* 000105EC C01C0024 */ lfs f0, 0x24(r28)
 /* 000105F0 EC01002A */ fadds f0, f1, f0
 /* 000105F4 D01C000C */ stfs f0, 0xc(r28)
-/* 000105F8 4BFEFBD9 */ bl func_8003CA98
+/* 000105F8 4BFEFBD9 */ bl init_physball_from_ball
 /* 000105FC 3C600000 */ lis r3, decodedStageLzPtr@ha
 /* 00010600 80830000 */ lwz r4, decodedStageLzPtr@l(r3)
 /* 00010604 7FA3EB78 */ mr r3, r29
@@ -17735,8 +17735,8 @@ lbl_00010548:
 /* 00010654 4800004C */ b lbl_000106A0
 lbl_00010658:
 /* 00010658 1C800084 */ mulli r4, r0, 0x84
-/* 0001065C 3C600000 */ lis r3, movableStageParts@ha
-/* 00010660 38030000 */ addi r0, r3, movableStageParts@l
+/* 0001065C 3C600000 */ lis r3, itemgroups@ha
+/* 00010660 38030000 */ addi r0, r3, itemgroups@l
 /* 00010664 7C602214 */ add r3, r0, r4
 /* 00010668 38630024 */ addi r3, r3, 0x24
 /* 0001066C 4BFEFB65 */ bl mathutil_mtxA_from_mtx
@@ -17861,9 +17861,9 @@ lbl_00010808:
 /* 00010834 1C860084 */ mulli r4, r6, 0x84
 /* 00010838 80A3000C */ lwz r5, 0xc(r3)
 /* 0001083C 5400801E */ slwi r0, r0, 0x10
-/* 00010840 3C600000 */ lis r3, movableStageParts@ha
+/* 00010840 3C600000 */ lis r3, itemgroups@ha
 /* 00010844 7C003670 */ srawi r0, r0, 6
-/* 00010848 3BE30000 */ addi r31, r3, movableStageParts@l
+/* 00010848 3BE30000 */ addi r31, r3, itemgroups@l
 /* 0001084C 7FBF2214 */ add r29, r31, r4
 /* 00010850 7C000194 */ addze r0, r0
 /* 00010854 7C000734 */ extsh r0, r0
@@ -17988,19 +17988,19 @@ lbl_00010A18:
 /* 00010A28 28000000 */ cmplwi r0, 0
 /* 00010A2C 41820108 */ beq lbl_00010B34
 /* 00010A30 38000006 */ li r0, 6
-/* 00010A34 3C800000 */ lis r4, movableStageParts@ha
+/* 00010A34 3C800000 */ lis r4, itemgroups@ha
 /* 00010A38 B001011E */ sth r0, 0x11e(r1)
 /* 00010A3C 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 00010A40 38C40000 */ addi r6, r4, movableStageParts@l
+/* 00010A40 38C40000 */ addi r6, r4, itemgroups@l
 /* 00010A44 38030000 */ addi r0, r3, lbl_8020AB88@l
 /* 00010A48 3C800000 */ lis r4, lbl_801EEC90@ha
 /* 00010A4C 3CA00000 */ lis r5, mathutilData@ha
-/* 00010A50 3C600000 */ lis r3, movableStagePartCount@ha
+/* 00010A50 3C600000 */ lis r3, itemgroupCount@ha
 /* 00010A54 3B660000 */ addi r27, r6, 0
 /* 00010A58 7C1A0378 */ mr r26, r0
 /* 00010A5C 3AC40000 */ addi r22, r4, lbl_801EEC90@l
 /* 00010A60 3BE50000 */ addi r31, r5, mathutilData@l
-/* 00010A64 3AA30000 */ addi r21, r3, movableStagePartCount@l
+/* 00010A64 3AA30000 */ addi r21, r3, itemgroupCount@l
 /* 00010A68 3B000000 */ li r24, 0
 /* 00010A6C 480000B8 */ b lbl_00010B24
 lbl_00010A70:
@@ -18066,16 +18066,16 @@ lbl_00010B34:
 /* 00010B40 8003005C */ lwz r0, 0x5c(r3)
 /* 00010B44 28000000 */ cmplwi r0, 0
 /* 00010B48 408200E0 */ bne lbl_00010C28
-/* 00010B4C 3C800000 */ lis r4, movableStageParts@ha
-/* 00010B50 38A40000 */ addi r5, r4, movableStageParts@l
+/* 00010B4C 3C800000 */ lis r4, itemgroups@ha
+/* 00010B50 38A40000 */ addi r5, r4, itemgroups@l
 /* 00010B54 3C600000 */ lis r3, lbl_802099E8@ha
 /* 00010B58 38030000 */ addi r0, r3, lbl_802099E8@l
 /* 00010B5C 3C800000 */ lis r4, lbl_802F1B4C@ha
-/* 00010B60 3C600000 */ lis r3, movableStagePartCount@ha
+/* 00010B60 3C600000 */ lis r3, itemgroupCount@ha
 /* 00010B64 3A850000 */ addi r20, r5, 0
 /* 00010B68 7C180378 */ mr r24, r0
 /* 00010B6C 3AC40000 */ addi r22, r4, lbl_802F1B4C@l
-/* 00010B70 3AA30000 */ addi r21, r3, movableStagePartCount@l
+/* 00010B70 3AA30000 */ addi r21, r3, itemgroupCount@l
 /* 00010B74 3B400000 */ li r26, 0
 /* 00010B78 480000A0 */ b lbl_00010C18
 lbl_00010B7C:
@@ -18131,17 +18131,17 @@ lbl_00010C18:
 lbl_00010C28:
 /* 00010C28 3C600000 */ lis r3, currentCameraStructPtr@ha
 /* 00010C2C 80C30000 */ lwz r6, currentCameraStructPtr@l(r3)
-/* 00010C30 3C800000 */ lis r4, movableStageParts@ha
+/* 00010C30 3C800000 */ lis r4, itemgroups@ha
 /* 00010C34 3C600000 */ lis r3, lbl_8020A348@ha
-/* 00010C38 38A40000 */ addi r5, r4, movableStageParts@l
+/* 00010C38 38A40000 */ addi r5, r4, itemgroups@l
 /* 00010C3C C3E60038 */ lfs f31, 0x38(r6)
 /* 00010C40 38030000 */ addi r0, r3, lbl_8020A348@l
 /* 00010C44 3C800000 */ lis r4, lbl_802F1B4C@ha
-/* 00010C48 3C600000 */ lis r3, movableStagePartCount@ha
+/* 00010C48 3C600000 */ lis r3, itemgroupCount@ha
 /* 00010C4C 3AE50000 */ addi r23, r5, 0
 /* 00010C50 7C180378 */ mr r24, r0
 /* 00010C54 3AA40000 */ addi r21, r4, lbl_802F1B4C@l
-/* 00010C58 3AC30000 */ addi r22, r3, movableStagePartCount@l
+/* 00010C58 3AC30000 */ addi r22, r3, itemgroupCount@l
 /* 00010C5C 3BE00000 */ li r31, 0
 /* 00010C60 48000150 */ b lbl_00010DB0
 lbl_00010C64:

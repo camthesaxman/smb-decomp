@@ -125,7 +125,7 @@ void item_pilot_main(struct Item *item)
             sp24.x = r29->pos.x - item->unk20.x;
             sp24.y = r29->pos.y - item->unk20.y;
             sp24.z = r29->pos.z - item->unk20.z;
-            if (mathutil_vec_mag(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
+            if (mathutil_vec_len(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
             {
                 Vec sp18;
 
@@ -147,7 +147,7 @@ void item_pilot_main(struct Item *item)
                 item->unk2C.x += sp24.x;
                 item->unk2C.y += sp24.y;
                 item->unk2C.z += sp24.z;
-                if (mathutil_vec_mag(&item->unk2C) > 0.064814814814814811)
+                if (mathutil_vec_len(&item->unk2C) > 0.064814814814814811)
                 {
                     mathutil_vec_normalize_len(&item->unk2C);
                     item->unk2C.x = 0.064814814814814811 * item->unk2C.x;
@@ -206,7 +206,7 @@ void item_pilot_main(struct Item *item)
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].transform);
         mathutil_mtxA_tf_point(&item->unk20, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
@@ -260,7 +260,7 @@ void item_pilot_draw(struct Item *item)
     }
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);
-    mathutil_get_mtxA_translate_alt(&spC);
+    mathutil_mtxA_get_translate_alt(&spC);
     f30 = -((spC.z + f30 + 0.1f) / f30);
     if (f30 > 0.0f)
     {
@@ -370,7 +370,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->unk2E;
-            mathutil_mtxA_from_mtx(movableStageParts[b->unk58].unk24);
+            mathutil_mtxA_from_mtx(itemgroups[b->unk58].transform);
             mathutil_mtxA_tf_point(&item->unk20, &sp178.unk34);
             mathutil_mtxA_tf_vec(&item->unk2C, &sp178.unk40);
             sp178.unk4C = item->xrot;

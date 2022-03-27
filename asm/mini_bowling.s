@@ -3188,9 +3188,9 @@ lbl_00002ED0:
 /* 00002F14 3C004330 */ lis r0, 0x4330
 /* 00002F18 3C600000 */ lis r3, lbl_00010D58@ha
 /* 00002F1C 90010008 */ stw r0, 8(r1)
-/* 00002F20 3C800000 */ lis r4, movableStageParts@ha
+/* 00002F20 3C800000 */ lis r4, itemgroups@ha
 /* 00002F24 C8430000 */ lfd f2, lbl_00010D58@l(r3)
-/* 00002F28 38640000 */ addi r3, r4, movableStageParts@l
+/* 00002F28 38640000 */ addi r3, r4, itemgroups@l
 /* 00002F2C C8210008 */ lfd f1, 8(r1)
 /* 00002F30 FC211028 */ fsub f1, f1, f2
 /* 00002F34 C0430088 */ lfs f2, 0x88(r3)
@@ -3201,9 +3201,9 @@ lbl_00002ED0:
 /* 00002F48 48008165 */ bl lbl_0000B0AC
 /* 00002F4C 4800002C */ b lbl_00002F78
 lbl_00002F50:
-/* 00002F50 3C600000 */ lis r3, movableStageParts@ha
+/* 00002F50 3C600000 */ lis r3, itemgroups@ha
 /* 00002F54 C81E1F40 */ lfd f0, 0x1f40(r30)
-/* 00002F58 38630000 */ addi r3, r3, movableStageParts@l
+/* 00002F58 38630000 */ addi r3, r3, itemgroups@l
 /* 00002F5C C0230088 */ lfs f1, 0x88(r3)
 /* 00002F60 FC210028 */ fsub f1, f1, f0
 /* 00002F64 FC200818 */ frsp f1, f1
@@ -3219,9 +3219,9 @@ lbl_00002F78:
 /* 00002F84 4081012C */ ble lbl_000030B0
 /* 00002F88 2C000BB8 */ cmpwi r0, 0xbb8
 /* 00002F8C 40800124 */ bge lbl_000030B0
-/* 00002F90 3C600000 */ lis r3, movableStageParts@ha
+/* 00002F90 3C600000 */ lis r3, itemgroups@ha
 /* 00002F94 C81E1F50 */ lfd f0, 0x1f50(r30)
-/* 00002F98 38630000 */ addi r3, r3, movableStageParts@l
+/* 00002F98 38630000 */ addi r3, r3, itemgroups@l
 /* 00002F9C C0230110 */ lfs f1, 0x110(r3)
 /* 00002FA0 FC210028 */ fsub f1, f1, f0
 /* 00002FA4 FC200818 */ frsp f1, f1
@@ -3258,9 +3258,9 @@ lbl_00002FE0:
 /* 00003014 3C004330 */ lis r0, 0x4330
 /* 00003018 3C600000 */ lis r3, lbl_00010D58@ha
 /* 0000301C 90010008 */ stw r0, 8(r1)
-/* 00003020 3C800000 */ lis r4, movableStageParts@ha
+/* 00003020 3C800000 */ lis r4, itemgroups@ha
 /* 00003024 C8430000 */ lfd f2, lbl_00010D58@l(r3)
-/* 00003028 38640000 */ addi r3, r4, movableStageParts@l
+/* 00003028 38640000 */ addi r3, r4, itemgroups@l
 /* 0000302C C8210008 */ lfd f1, 8(r1)
 /* 00003030 FC211028 */ fsub f1, f1, f2
 /* 00003034 C0430088 */ lfs f2, 0x88(r3)
@@ -3270,9 +3270,9 @@ lbl_00002FE0:
 /* 00003044 FC200818 */ frsp f1, f1
 /* 00003048 4800001C */ b lbl_00003064
 lbl_0000304C:
-/* 0000304C 3C600000 */ lis r3, movableStageParts@ha
+/* 0000304C 3C600000 */ lis r3, itemgroups@ha
 /* 00003050 C81E1F40 */ lfd f0, 0x1f40(r30)
-/* 00003054 38630000 */ addi r3, r3, movableStageParts@l
+/* 00003054 38630000 */ addi r3, r3, itemgroups@l
 /* 00003058 C0230088 */ lfs f1, 0x88(r3)
 /* 0000305C FC210028 */ fsub f1, f1, f0
 /* 00003060 FC200818 */ frsp f1, f1
@@ -3291,9 +3291,9 @@ lbl_0000307C:
 /* 00003088 40810028 */ ble lbl_000030B0
 /* 0000308C 2C002328 */ cmpwi r0, 0x2328
 /* 00003090 40800020 */ bge lbl_000030B0
-/* 00003094 3C600000 */ lis r3, movableStageParts@ha
+/* 00003094 3C600000 */ lis r3, itemgroups@ha
 /* 00003098 C81E1F50 */ lfd f0, 0x1f50(r30)
-/* 0000309C 38630000 */ addi r3, r3, movableStageParts@l
+/* 0000309C 38630000 */ addi r3, r3, itemgroups@l
 /* 000030A0 C0230110 */ lfs f1, 0x110(r3)
 /* 000030A4 FC210028 */ fsub f1, f1, f0
 /* 000030A8 FC200818 */ frsp f1, f1
@@ -4843,9 +4843,9 @@ lbl_00004698:
 /* 000046CC 3C004330 */ lis r0, 0x4330
 /* 000046D0 3C600000 */ lis r3, lbl_00010D58@ha
 /* 000046D4 90010008 */ stw r0, 8(r1)
-/* 000046D8 3C800000 */ lis r4, movableStageParts@ha
+/* 000046D8 3C800000 */ lis r4, itemgroups@ha
 /* 000046DC C8430000 */ lfd f2, lbl_00010D58@l(r3)
-/* 000046E0 38640000 */ addi r3, r4, movableStageParts@l
+/* 000046E0 38640000 */ addi r3, r4, itemgroups@l
 /* 000046E4 C8210008 */ lfd f1, 8(r1)
 /* 000046E8 FC211028 */ fsub f1, f1, f2
 /* 000046EC C0430088 */ lfs f2, 0x88(r3)
@@ -4855,9 +4855,9 @@ lbl_00004698:
 /* 000046FC FC200818 */ frsp f1, f1
 /* 00004700 4800001C */ b lbl_0000471C
 lbl_00004704:
-/* 00004704 3C600000 */ lis r3, movableStageParts@ha
+/* 00004704 3C600000 */ lis r3, itemgroups@ha
 /* 00004708 C81E1F40 */ lfd f0, 0x1f40(r30)
-/* 0000470C 38630000 */ addi r3, r3, movableStageParts@l
+/* 0000470C 38630000 */ addi r3, r3, itemgroups@l
 /* 00004710 C0230088 */ lfs f1, 0x88(r3)
 /* 00004714 FC210028 */ fsub f1, f1, f0
 /* 00004718 FC200818 */ frsp f1, f1
@@ -4876,9 +4876,9 @@ lbl_00004734:
 /* 00004740 40810028 */ ble lbl_00004768
 /* 00004744 2C002328 */ cmpwi r0, 0x2328
 /* 00004748 40800020 */ bge lbl_00004768
-/* 0000474C 3C600000 */ lis r3, movableStageParts@ha
+/* 0000474C 3C600000 */ lis r3, itemgroups@ha
 /* 00004750 C81E1F50 */ lfd f0, 0x1f50(r30)
-/* 00004754 38630000 */ addi r3, r3, movableStageParts@l
+/* 00004754 38630000 */ addi r3, r3, itemgroups@l
 /* 00004758 C0230110 */ lfs f1, 0x110(r3)
 /* 0000475C FC210028 */ fsub f1, f1, f0
 /* 00004760 FC200818 */ frsp f1, f1
@@ -7100,7 +7100,7 @@ lbl_00006720:
 /* 00006744 387E0004 */ addi r3, r30, 4
 /* 00006748 38810010 */ addi r4, r1, 0x10
 /* 0000674C 38A00000 */ li r5, 0
-/* 00006750 4BFF9A11 */ bl func_8003FB48
+/* 00006750 4BFF9A11 */ bl raycast_stage_down
 /* 00006754 807D0014 */ lwz r3, 0x14(r29)
 /* 00006758 3800FFEC */ li r0, -20
 /* 0000675C 7C600038 */ and r0, r3, r0

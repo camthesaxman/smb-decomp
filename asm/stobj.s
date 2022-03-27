@@ -67,7 +67,7 @@ lbl_8006A6D8:
 /* 8006A6F0 00066610  41 82 02 94 */	beq lbl_8006A984
 /* 8006A6F4 00066614  38 76 00 00 */	addi r3, r22, 0
 /* 8006A6F8 00066618  38 81 00 14 */	addi r4, r1, 0x14
-/* 8006A6FC 0006661C  4B FD 23 9D */	bl func_8003CA98
+/* 8006A6FC 0006661C  4B FD 23 9D */	bl init_physball_from_ball
 /* 8006A700 00066620  88 12 00 60 */	lbz r0, 0x60(r18)
 /* 8006A704 00066624  2C 00 00 02 */	cmpwi r0, 2
 /* 8006A708 00066628  40 82 00 94 */	bne lbl_8006A79C
@@ -88,7 +88,7 @@ lbl_8006A71C:
 /* 8006A740 00066660  7C 00 20 00 */	cmpw r0, r4
 /* 8006A744 00066664  41 82 00 0C */	beq lbl_8006A750
 /* 8006A748 00066668  38 61 00 14 */	addi r3, r1, 0x14
-/* 8006A74C 0006666C  4B FD 78 B5 */	bl func_80042000
+/* 8006A74C 0006666C  4B FD 78 B5 */	bl tf_physball_to_itemgroup_space
 lbl_8006A750:
 /* 8006A750 00066670  C0 21 00 3C */	lfs f1, 0x3c(r1)
 /* 8006A754 00066674  7F 63 DB 78 */	mr r3, r27
@@ -143,7 +143,7 @@ lbl_8006A7C4:
 /* 8006A808 00066728  41 82 00 18 */	beq lbl_8006A820
 /* 8006A80C 0006672C  38 61 00 14 */	addi r3, r1, 0x14
 /* 8006A810 00066730  7C 04 07 74 */	extsb r4, r0
-/* 8006A814 00066734  4B FD 7F 91 */	bl func_800427A4
+/* 8006A814 00066734  4B FD 7F 91 */	bl stcoli_sub34
 /* 8006A818 00066738  2C 03 00 00 */	cmpwi r3, 0
 /* 8006A81C 0006673C  41 82 01 20 */	beq lbl_8006A93C
 lbl_8006A820:
@@ -153,7 +153,7 @@ lbl_8006A820:
 /* 8006A82C 0006674C  7C 00 20 00 */	cmpw r0, r4
 /* 8006A830 00066750  41 82 00 0C */	beq lbl_8006A83C
 /* 8006A834 00066754  38 61 00 14 */	addi r3, r1, 0x14
-/* 8006A838 00066758  4B FD 77 C9 */	bl func_80042000
+/* 8006A838 00066758  4B FD 77 C9 */	bl tf_physball_to_itemgroup_space
 lbl_8006A83C:
 /* 8006A83C 0006675C  80 1F 00 08 */	lwz r0, 8(r31)
 /* 8006A840 00066760  54 00 07 39 */	rlwinm. r0, r0, 0, 0x1c, 0x1c
@@ -239,7 +239,7 @@ lbl_8006A950:
 /* 8006A968 00066888  41 82 00 10 */	beq lbl_8006A978
 /* 8006A96C 0006688C  38 61 00 14 */	addi r3, r1, 0x14
 /* 8006A970 00066890  38 80 00 00 */	li r4, 0
-/* 8006A974 00066894  4B FD 76 8D */	bl func_80042000
+/* 8006A974 00066894  4B FD 76 8D */	bl tf_physball_to_itemgroup_space
 lbl_8006A978:
 /* 8006A978 00066898  38 76 00 00 */	addi r3, r22, 0
 /* 8006A97C 0006689C  38 81 00 14 */	addi r4, r1, 0x14
@@ -653,11 +653,11 @@ ev_stobj_main:
 /* 8006AF6C 00066E8C  83 64 00 2C */	lwz r27, 0x2c(r4)
 /* 8006AF70 00066E90  38 03 5A B0 */	addi r0, r3, lbl_80285AB0@l
 /* 8006AF74 00066E94  83 A4 00 28 */	lwz r29, 0x28(r4)
-/* 8006AF78 00066E98  3C 60 80 20 */	lis r3, movableStageParts@ha
+/* 8006AF78 00066E98  3C 60 80 20 */	lis r3, itemgroups@ha
 /* 8006AF7C 00066E9C  3C 80 80 1C */	lis r4, lbl_801BE160@ha
 /* 8006AF80 00066EA0  3C A0 80 1C */	lis r5, lbl_801BE1F0@ha
 /* 8006AF84 00066EA4  7C 1C 03 78 */	mr r28, r0
-/* 8006AF88 00066EA8  3B 43 6E 48 */	addi r26, r3, movableStageParts@l
+/* 8006AF88 00066EA8  3B 43 6E 48 */	addi r26, r3, itemgroups@l
 /* 8006AF8C 00066EAC  3B E4 E1 60 */	addi r31, r4, lbl_801BE160@l
 /* 8006AF90 00066EB0  3B C5 E1 F0 */	addi r30, r5, lbl_801BE1F0@l
 /* 8006AF94 00066EB4  48 00 01 58 */	b lbl_8006B0EC
@@ -829,10 +829,10 @@ lbl_8006B1C8:
 /* 8006B1E4 00067104  83 A4 00 2C */	lwz r29, 0x2c(r4)
 /* 8006B1E8 00067108  38 03 5A B0 */	addi r0, r3, lbl_80285AB0@l
 /* 8006B1EC 0006710C  83 E4 00 28 */	lwz r31, 0x28(r4)
-/* 8006B1F0 00067110  3C 80 80 20 */	lis r4, movableStageParts@ha
+/* 8006B1F0 00067110  3C 80 80 20 */	lis r4, itemgroups@ha
 /* 8006B1F4 00067114  3C 60 80 1C */	lis r3, lbl_801BE190@ha
 /* 8006B1F8 00067118  7C 1E 03 78 */	mr r30, r0
-/* 8006B1FC 0006711C  3B 44 6E 48 */	addi r26, r4, movableStageParts@l
+/* 8006B1FC 0006711C  3B 44 6E 48 */	addi r26, r4, itemgroups@l
 /* 8006B200 00067120  3B 63 E1 90 */	addi r27, r3, lbl_801BE190@l
 /* 8006B204 00067124  3B 20 00 00 */	li r25, 0
 /* 8006B208 00067128  48 00 00 7C */	b lbl_8006B284
@@ -2168,8 +2168,8 @@ func_8006C494:
 /* 8006C4C4 000683E4  4B F9 BA C5 */	bl mathutil_mtxA_rotate_x
 /* 8006C4C8 000683E8  4B F9 B3 29 */	bl mathutil_mtxA_push
 /* 8006C4CC 000683EC  88 9F 00 A0 */	lbz r4, 0xa0(r31)
-/* 8006C4D0 000683F0  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006C4D4 000683F4  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006C4D0 000683F0  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006C4D4 000683F4  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006C4D8 000683F8  7C 83 07 74 */	extsb r3, r4
 /* 8006C4DC 000683FC  1C 63 00 84 */	mulli r3, r3, 0x84
 /* 8006C4E0 00068400  7C 60 1A 14 */	add r3, r0, r3
@@ -2295,7 +2295,7 @@ func_8006C69C:
 /* 8006C6A8 000685C8  38 64 00 00 */	addi r3, r4, 0
 /* 8006C6AC 000685CC  94 21 FF F8 */	stwu r1, -8(r1)
 /* 8006C6B0 000685D0  7C 04 03 78 */	mr r4, r0
-/* 8006C6B4 000685D4  4B FD 33 41 */	bl func_8003F9F4
+/* 8006C6B4 000685D4  4B FD 33 41 */	bl collide_ball_with_jamabar
 /* 8006C6B8 000685D8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006C6BC 000685DC  38 21 00 08 */	addi r1, r1, 8
 /* 8006C6C0 000685E0  7C 08 03 A6 */	mtlr r0
@@ -2589,7 +2589,7 @@ func_8006CA1C:
 /* 8006CAB8 000689D8  38 61 00 28 */	addi r3, r1, 0x28
 /* 8006CABC 000689DC  38 81 00 0C */	addi r4, r1, 0xc
 /* 8006CAC0 000689E0  38 A0 00 00 */	li r5, 0
-/* 8006CAC4 000689E4  4B FD 30 85 */	bl func_8003FB48
+/* 8006CAC4 000689E4  4B FD 30 85 */	bl raycast_stage_down
 /* 8006CAC8 000689E8  4B F9 AD 6D */	bl mathutil_mtxA_pop
 /* 8006CACC 000689EC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006CAD0 000689F0  54 00 07 FF */	clrlwi. r0, r0, 0x1f
@@ -2947,8 +2947,8 @@ lbl_8006D000:
 lbl_8006D014:
 /* 8006D014 00068F34  7C 60 07 74 */	extsb r0, r3
 /* 8006D018 00068F38  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 8006D01C 00068F3C  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006D020 00068F40  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006D01C 00068F3C  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006D020 00068F40  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006D024 00068F44  7F 60 22 14 */	add r27, r0, r4
 /* 8006D028 00068F48  38 7B 00 54 */	addi r3, r27, 0x54
 /* 8006D02C 00068F4C  3B C0 00 01 */	li r30, 1
@@ -2984,8 +2984,8 @@ lbl_8006D014:
 /* 8006D0A4 00068FC4  4B F9 AE 7D */	bl mathutil_mtxA_rigid_inv_tf_vec
 lbl_8006D0A8:
 /* 8006D0A8 00068FC8  88 9D 00 A0 */	lbz r4, 0xa0(r29)
-/* 8006D0AC 00068FCC  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006D0B0 00068FD0  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006D0AC 00068FCC  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006D0B0 00068FD0  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006D0B4 00068FD4  7C 83 07 74 */	extsb r3, r4
 /* 8006D0B8 00068FD8  1C 63 00 84 */	mulli r3, r3, 0x84
 /* 8006D0BC 00068FDC  7C 60 1A 14 */	add r3, r0, r3
@@ -4265,8 +4265,8 @@ lbl_8006E384:
 /* 8006E3B8 0006A2D8  40 81 00 2C */	ble lbl_8006E3E4
 /* 8006E3BC 0006A2DC  7C 60 07 74 */	extsb r0, r3
 /* 8006E3C0 0006A2E0  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 8006E3C4 0006A2E4  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006E3C8 0006A2E8  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006E3C4 0006A2E4  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006E3C8 0006A2E8  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006E3CC 0006A2EC  7C 60 22 14 */	add r3, r0, r4
 /* 8006E3D0 0006A2F0  38 63 00 24 */	addi r3, r3, 0x24
 /* 8006E3D4 0006A2F4  4B F9 94 DD */	bl mathutil_mtxA_from_mtx
@@ -4291,8 +4291,8 @@ lbl_8006E3E4:
 /* 8006E41C 0006A33C  40 81 00 D8 */	ble lbl_8006E4F4
 /* 8006E420 0006A340  7C 60 07 74 */	extsb r0, r3
 /* 8006E424 0006A344  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 8006E428 0006A348  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006E42C 0006A34C  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006E428 0006A348  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006E42C 0006A34C  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006E430 0006A350  7F A0 22 14 */	add r29, r0, r4
 /* 8006E434 0006A354  38 7D 00 54 */	addi r3, r29, 0x54
 /* 8006E438 0006A358  4B F9 94 79 */	bl mathutil_mtxA_from_mtx
@@ -4598,8 +4598,8 @@ lbl_8006E78C:
 /* 8006E8DC 0006A7FC  40 81 00 2C */	ble lbl_8006E908
 /* 8006E8E0 0006A800  7C 60 07 74 */	extsb r0, r3
 /* 8006E8E4 0006A804  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 8006E8E8 0006A808  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006E8EC 0006A80C  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006E8E8 0006A808  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006E8EC 0006A80C  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006E8F0 0006A810  7C 60 22 14 */	add r3, r0, r4
 /* 8006E8F4 0006A814  38 63 00 24 */	addi r3, r3, 0x24
 /* 8006E8F8 0006A818  4B F9 8F B9 */	bl mathutil_mtxA_from_mtx
@@ -5073,8 +5073,8 @@ lbl_8006EFB4:
 /* 8006F008 0006AF28  40 81 00 44 */	ble lbl_8006F04C
 /* 8006F00C 0006AF2C  7C 60 07 74 */	extsb r0, r3
 /* 8006F010 0006AF30  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 8006F014 0006AF34  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006F018 0006AF38  38 03 6E 48 */	addi r0, r3, movableStageParts@l
+/* 8006F014 0006AF34  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006F018 0006AF38  38 03 6E 48 */	addi r0, r3, itemgroups@l
 /* 8006F01C 0006AF3C  7C 60 22 14 */	add r3, r0, r4
 /* 8006F020 0006AF40  38 63 00 24 */	addi r3, r3, 0x24
 /* 8006F024 0006AF44  4B F9 88 8D */	bl mathutil_mtxA_from_mtx
@@ -5675,8 +5675,8 @@ lbl_8006F8A4:
 /* 8006F8C8 0006B7E8  4B F9 3A 59 */	bl memset
 /* 8006F8CC 0006B7EC  38 00 00 00 */	li r0, 0
 /* 8006F8D0 0006B7F0  B0 01 00 3C */	sth r0, 0x3c(r1)
-/* 8006F8D4 0006B7F4  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 8006F8D8 0006B7F8  3B 83 6E 48 */	addi r28, r3, movableStageParts@l
+/* 8006F8D4 0006B7F4  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 8006F8D8 0006B7F8  3B 83 6E 48 */	addi r28, r3, itemgroups@l
 /* 8006F8DC 0006B7FC  88 1F 00 A0 */	lbz r0, 0xa0(r31)
 /* 8006F8E0 0006B800  7C 00 07 74 */	extsb r0, r0
 /* 8006F8E4 0006B804  1C 00 00 84 */	mulli r0, r0, 0x84

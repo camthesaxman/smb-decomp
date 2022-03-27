@@ -23,6 +23,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
+#include "stcoli.h"
 
 u32 introBackdropColor;
 u32 advSubmode;
@@ -998,7 +999,7 @@ struct Struct80176434 *lbl_80174E04[] =
 
 void lbl_8000F790(struct Ape *ape, int b)
 {
-    struct Struct8003FB48 sp38;
+    struct RaycastHit sp38;
     s16 r30;
     int r28;
     int r4, r5, r6;
@@ -1016,11 +1017,11 @@ void lbl_8000F790(struct Ape *ape, int b)
 
         if (gamePauseStatus & 0xA)
             return;
-        func_8003FB48(&ball->pos, &sp38, NULL);
+        raycast_stage_down(&ball->pos, &sp38, NULL);
         ape->unk14 &= -20;
-        if (!(sp38.unk0 & 1) && ball->vel.y < -(35.0f / 216.0f))
+        if (!(sp38.flags & 1) && ball->vel.y < -(35.0f / 216.0f))
             ape->unk14 |= 2;
-        else if (mathutil_vec_mag(&ball->unkB8) < (1.0f / 3600.0f))
+        else if (mathutil_vec_len(&ball->unkB8) < (1.0f / 3600.0f))
             ape->unk14 |= 1;
         if (ape->unk14 & (1 << 5))
             ball->flags |= BALL_FLAG_INVISIBLE;
@@ -1040,7 +1041,7 @@ void lbl_8000F790(struct Ape *ape, int b)
                 func_80037718(ape);
         }
         if (ball->flags & (1 << 5))
-            f31 = mathutil_vec_mag(&ball->vel);
+            f31 = mathutil_vec_len(&ball->vel);
         func_80036EB8(ape);
         mathutil_mtxA_to_quat(&ape->unk60);
         func_8003721C(ape, f31);

@@ -65,7 +65,7 @@ void item_draw();
 // ? func_80068474();
 void func_800685C4(void);
 void func_800689B4(int);
-void make_stage_bananas(struct StageCollHdr *, int);
+void make_stage_bananas(struct StageItemgroup *, int);
 void item_dummy_init(struct Item *);
 void item_dummy_main(struct Item *);
 void item_dummy_draw(struct Item *);

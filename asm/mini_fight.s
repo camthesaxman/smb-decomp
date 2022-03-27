@@ -3393,7 +3393,7 @@ lbl_000032B8:
 /* 00003358 90C10064 */ stw r6, 0x64(r1)
 /* 0000335C 90C1005C */ stw r6, 0x5c(r1)
 /* 00003360 80840000 */ lwz r4, 0(r4)
-/* 00003364 4BFFCE01 */ bl g_handle_ball_stage_collision
+/* 00003364 4BFFCE01 */ bl collide_ball_with_stage
 /* 00003368 80610010 */ lwz r3, 0x10(r1)
 /* 0000336C 80010014 */ lwz r0, 0x14(r1)
 /* 00003370 907F0058 */ stw r3, 0x58(r31)
@@ -5972,7 +5972,7 @@ lbl_00005A08:
 /* 00005A9C 90010068 */ stw r0, 0x68(r1)
 /* 00005AA0 C01F0044 */ lfs f0, 0x44(r31)
 /* 00005AA4 D0010070 */ stfs f0, 0x70(r1)
-/* 00005AA8 4BFFA6BD */ bl func_8003FB48
+/* 00005AA8 4BFFA6BD */ bl raycast_stage_down
 /* 00005AAC 28030000 */ cmplwi r3, 0
 /* 00005AB0 408200DC */ bne lbl_00005B8C
 /* 00005AB4 A87E0096 */ lha r3, 0x96(r30)
@@ -6332,7 +6332,7 @@ lbl_00005E98:
 /* 00005FF0 A01E0094 */ lhz r0, 0x94(r30)
 /* 00005FF4 5400003C */ rlwinm r0, r0, 0, 0, 0x1e
 /* 00005FF8 B01E0094 */ sth r0, 0x94(r30)
-/* 00005FFC 4BFFA169 */ bl func_8003FB48
+/* 00005FFC 4BFFA169 */ bl raycast_stage_down
 /* 00006000 28030000 */ cmplwi r3, 0
 /* 00006004 4082001C */ bne lbl_00006020
 /* 00006008 C01F0000 */ lfs f0, 0(r31)
@@ -6415,7 +6415,7 @@ lbl_000060A4:
 /* 0000612C 90C10144 */ stw r6, 0x144(r1)
 /* 00006130 90C1013C */ stw r6, 0x13c(r1)
 /* 00006134 80840000 */ lwz r4, 0(r4)
-/* 00006138 4BFFA02D */ bl g_handle_ball_stage_collision
+/* 00006138 4BFFA02D */ bl collide_ball_with_stage
 /* 0000613C 800100EC */ lwz r0, 0xec(r1)
 /* 00006140 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00006144 4182049C */ beq lbl_000065E0
@@ -6517,8 +6517,8 @@ lbl_0000618C:
 /* 000062C0 2C000000 */ cmpwi r0, 0
 /* 000062C4 40810028 */ ble lbl_000062EC
 /* 000062C8 1C800084 */ mulli r4, r0, 0x84
-/* 000062CC 3C600000 */ lis r3, movableStageParts@ha
-/* 000062D0 38030000 */ addi r0, r3, movableStageParts@l
+/* 000062CC 3C600000 */ lis r3, itemgroups@ha
+/* 000062D0 38030000 */ addi r0, r3, itemgroups@l
 /* 000062D4 7C602214 */ add r3, r0, r4
 /* 000062D8 38630024 */ addi r3, r3, 0x24
 /* 000062DC 4BFF9E89 */ bl mathutil_mtxA_from_mtx
@@ -9467,7 +9467,7 @@ lbl_00008E64:
 /* 00008F0C 387F0034 */ addi r3, r31, 0x34
 /* 00008F10 3881000C */ addi r4, r1, 0xc
 /* 00008F14 38BF007C */ addi r5, r31, 0x7c
-/* 00008F18 4BFF724D */ bl func_8003FB48
+/* 00008F18 4BFF724D */ bl raycast_stage_down
 /* 00008F1C 28030000 */ cmplwi r3, 0
 /* 00008F20 40820010 */ bne lbl_00008F30
 /* 00008F24 38000000 */ li r0, 0
@@ -9655,7 +9655,7 @@ lbl_00008F80:
 /* 000091F0 387E0034 */ addi r3, r30, 0x34
 /* 000091F4 38810018 */ addi r4, r1, 0x18
 /* 000091F8 38BE007C */ addi r5, r30, 0x7c
-/* 000091FC 4BFF6F69 */ bl func_8003FB48
+/* 000091FC 4BFF6F69 */ bl raycast_stage_down
 /* 00009200 28030000 */ cmplwi r3, 0
 /* 00009204 40820010 */ bne lbl_00009214
 /* 00009208 38000000 */ li r0, 0
@@ -15363,7 +15363,7 @@ lbl_0000E550:
 /* 0000E574 387D001C */ addi r3, r29, 0x1c
 /* 0000E578 38810058 */ addi r4, r1, 0x58
 /* 0000E57C 38A1004C */ addi r5, r1, 0x4c
-/* 0000E580 4BFF1BE5 */ bl func_8003FB48
+/* 0000E580 4BFF1BE5 */ bl raycast_stage_down
 /* 0000E584 2C030000 */ cmpwi r3, 0
 /* 0000E588 418200B8 */ beq lbl_0000E640
 /* 0000E58C C03D005C */ lfs f1, 0x5c(r29)
@@ -15453,7 +15453,7 @@ lbl_0000E69C:
 /* 0000E6D0 D001000C */ stfs f0, 0xc(r1)
 /* 0000E6D4 C01E0024 */ lfs f0, 0x24(r30)
 /* 0000E6D8 D0010010 */ stfs f0, 0x10(r1)
-/* 0000E6DC 4BFF1A89 */ bl func_8003FB48
+/* 0000E6DC 4BFF1A89 */ bl raycast_stage_down
 /* 0000E6E0 2C030000 */ cmpwi r3, 0
 /* 0000E6E4 418200F4 */ beq lbl_0000E7D8
 /* 0000E6E8 C03E005C */ lfs f1, 0x5c(r30)
@@ -15554,7 +15554,7 @@ lbl_0000E840:
 /* 0000E858 38760004 */ addi r3, r22, 4
 /* 0000E85C 38810058 */ addi r4, r1, 0x58
 /* 0000E860 38A1004C */ addi r5, r1, 0x4c
-/* 0000E864 4BFF1901 */ bl func_8003FB48
+/* 0000E864 4BFF1901 */ bl raycast_stage_down
 /* 0000E868 2C030000 */ cmpwi r3, 0
 /* 0000E86C 41820140 */ beq lbl_0000E9AC
 /* 0000E870 C0360008 */ lfs f1, 8(r22)
@@ -16057,10 +16057,10 @@ lbl_0000EF90:
 /* 0000EFBC 3C600000 */ lis r3, decodedStageLzPtr@ha
 /* 0000EFC0 80A30000 */ lwz r5, decodedStageLzPtr@l(r3)
 /* 0000EFC4 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 0000EFC8 3C800000 */ lis r4, movableStageParts@ha
+/* 0000EFC8 3C800000 */ lis r4, itemgroups@ha
 /* 0000EFCC 80C50008 */ lwz r6, 8(r5)
 /* 0000EFD0 391F0000 */ addi r8, r31, 0
-/* 0000EFD4 38A40000 */ addi r5, r4, movableStageParts@l
+/* 0000EFD4 38A40000 */ addi r5, r4, itemgroups@l
 /* 0000EFD8 38C6FFFF */ addi r6, r6, -1  ;# fixed addi
 /* 0000EFDC 38630000 */ addi r3, r3, lbl_8020AB88@l
 /* 0000EFE0 38E00000 */ li r7, 0
@@ -18302,7 +18302,7 @@ lbl_000110C8:
 /* 000110D8 387E0004 */ addi r3, r30, 4
 /* 000110DC 38810010 */ addi r4, r1, 0x10
 /* 000110E0 38A00000 */ li r5, 0
-/* 000110E4 4BFEF081 */ bl func_8003FB48
+/* 000110E4 4BFEF081 */ bl raycast_stage_down
 /* 000110E8 807D0014 */ lwz r3, 0x14(r29)
 /* 000110EC 3800FFEC */ li r0, -20
 /* 000110F0 7C600038 */ and r0, r3, r0
@@ -18951,7 +18951,7 @@ lbl_00011A1C:
 /* 00011A30 408206C0 */ bne lbl_000120F0
 /* 00011A34 38760000 */ addi r3, r22, 0
 /* 00011A38 38810094 */ addi r4, r1, 0x94
-/* 00011A3C 4BFEE729 */ bl func_8003CA98
+/* 00011A3C 4BFEE729 */ bl init_physball_from_ball
 /* 00011A40 80160094 */ lwz r0, 0x94(r22)
 /* 00011A44 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00011A48 41820010 */ beq lbl_00011A58
@@ -18977,7 +18977,7 @@ lbl_00011A7C:
 /* 00011A90 4082063C */ bne lbl_000120CC
 /* 00011A94 38740000 */ addi r3, r20, 0
 /* 00011A98 38810038 */ addi r4, r1, 0x38
-/* 00011A9C 4BFEE6C9 */ bl func_8003CA98
+/* 00011A9C 4BFEE6C9 */ bl init_physball_from_ball
 /* 00011AA0 80140094 */ lwz r0, 0x94(r20)
 /* 00011AA4 540007FF */ clrlwi. r0, r0, 0x1f
 /* 00011AA8 41820010 */ beq lbl_00011AB8
@@ -21358,7 +21358,7 @@ lbl_00013E08:
 /* 00013E48 C01E0014 */ lfs f0, 0x14(r30)
 /* 00013E4C EC01002A */ fadds f0, f1, f0
 /* 00013E50 D01F0030 */ stfs f0, 0x30(r31)
-/* 00013E54 4BFEC311 */ bl func_8003FB48
+/* 00013E54 4BFEC311 */ bl raycast_stage_down
 /* 00013E58 28030000 */ cmplwi r3, 0
 /* 00013E5C 41820040 */ beq lbl_00013E9C
 /* 00013E60 C03E0008 */ lfs f1, 8(r30)
@@ -21973,8 +21973,8 @@ lbl_0001471C:
 lbl_0001476C:
 /* 0001476C 7C600774 */ extsb r0, r3
 /* 00014770 1C800084 */ mulli r4, r0, 0x84
-/* 00014774 3C600000 */ lis r3, movableStageParts@ha
-/* 00014778 38030000 */ addi r0, r3, movableStageParts@l
+/* 00014774 3C600000 */ lis r3, itemgroups@ha
+/* 00014778 38030000 */ addi r0, r3, itemgroups@l
 /* 0001477C 7C602214 */ add r3, r0, r4
 /* 00014780 38630024 */ addi r3, r3, 0x24
 /* 00014784 4BFEB9E1 */ bl mathutil_mtxA_from_mtx
@@ -22184,8 +22184,8 @@ lbl_00014A2C:
 /* 00014A94 B0010018 */ sth r0, 0x18(r1)
 /* 00014A98 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00014A9C 80830000 */ lwz r4, currentBallStructPtr@l(r3)
-/* 00014AA0 3C600000 */ lis r3, movableStageParts@ha
-/* 00014AA4 38030000 */ addi r0, r3, movableStageParts@l
+/* 00014AA0 3C600000 */ lis r3, itemgroups@ha
+/* 00014AA4 38030000 */ addi r0, r3, itemgroups@l
 /* 00014AA8 8864002E */ lbz r3, 0x2e(r4)
 /* 00014AAC 7C630774 */ extsb r3, r3
 /* 00014AB0 B0610024 */ sth r3, 0x24(r1)
@@ -22535,8 +22535,8 @@ lbl_00014F64:
 lbl_00014FB4:
 /* 00014FB4 7C600774 */ extsb r0, r3
 /* 00014FB8 1C800084 */ mulli r4, r0, 0x84
-/* 00014FBC 3C600000 */ lis r3, movableStageParts@ha
-/* 00014FC0 38030000 */ addi r0, r3, movableStageParts@l
+/* 00014FBC 3C600000 */ lis r3, itemgroups@ha
+/* 00014FC0 38030000 */ addi r0, r3, itemgroups@l
 /* 00014FC4 7C602214 */ add r3, r0, r4
 /* 00014FC8 38630024 */ addi r3, r3, 0x24
 /* 00014FCC 4BFEB199 */ bl mathutil_mtxA_from_mtx
@@ -28380,7 +28380,7 @@ lbl_0001A680:
 /* 0001A6E0 EC010032 */ fmuls f0, f1, f0
 /* 0001A6E4 EC02002A */ fadds f0, f2, f0
 /* 0001A6E8 D00100F4 */ stfs f0, 0xf4(r1)
-/* 0001A6EC 4BFE5A79 */ bl func_8003FB48
+/* 0001A6EC 4BFE5A79 */ bl raycast_stage_down
 /* 0001A6F0 2C030000 */ cmpwi r3, 0
 /* 0001A6F4 41820028 */ beq lbl_0001A71C
 /* 0001A6F8 3C800000 */ lis r4, decodedStageLzPtr@ha
@@ -28866,7 +28866,7 @@ lbl_0001ADDC:
 /* 0001AE3C EC010032 */ fmuls f0, f1, f0
 /* 0001AE40 EC02002A */ fadds f0, f2, f0
 /* 0001AE44 D001006C */ stfs f0, 0x6c(r1)
-/* 0001AE48 4BFE531D */ bl func_8003FB48
+/* 0001AE48 4BFE531D */ bl raycast_stage_down
 /* 0001AE4C 2C030000 */ cmpwi r3, 0
 /* 0001AE50 41820028 */ beq lbl_0001AE78
 /* 0001AE54 3C800000 */ lis r4, decodedStageLzPtr@ha
@@ -28941,7 +28941,7 @@ lbl_0001AE78:
 /* 0001AF64 EC010032 */ fmuls f0, f1, f0
 /* 0001AF68 EC02002A */ fadds f0, f2, f0
 /* 0001AF6C D001006C */ stfs f0, 0x6c(r1)
-/* 0001AF70 4BFE51F5 */ bl func_8003FB48
+/* 0001AF70 4BFE51F5 */ bl raycast_stage_down
 /* 0001AF74 2C030000 */ cmpwi r3, 0
 /* 0001AF78 41820028 */ beq lbl_0001AFA0
 /* 0001AF7C 3C800000 */ lis r4, decodedStageLzPtr@ha

@@ -40,13 +40,6 @@ static inline float sum_of_3_sq(register float a, register float b, register flo
 #endif
 }
 
-static inline void camera_face_direction(struct Camera *camera, Vec *lookDir)
-{
-    camera->rotY = mathutil_atan2(lookDir->x, lookDir->z) - 32768;
-    camera->rotX = mathutil_atan2(lookDir->y, mathutil_sqrt(mathutil_sum_of_sq(lookDir->x, lookDir->z)));
-    camera->rotZ = 0;
-}
-
 void camera_init(void)
 {
     int i;
@@ -349,7 +342,7 @@ void ev_camera_main(void)
                     camera->sub28.fov = DEGREES_TO_S16(120);
                 else
                 {
-                    float f1 = 2.0 * ball->currRadius + mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.y));
+                    float f1 = 2.0 * ball->currRadius + mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.y));
                     s16 r0 = mathutil_atan2(f1, -sp8.z) * 2;
                     if (r0 > DEGREES_TO_S16(120))
                         r0 = DEGREES_TO_S16(120);
@@ -1041,6 +1034,13 @@ struct Struct80176434 lbl_80176434[] =
     {2902,   107.49, 0, 0},
 };
 
+static inline void camera_face_direction(struct Camera *camera, Vec *lookDir)
+{
+    camera->rotY = mathutil_atan2(lookDir->x, lookDir->z) - 32768;
+    camera->rotX = mathutil_atan2(lookDir->y, mathutil_sqrt(mathutil_sum_of_sq_2(lookDir->x, lookDir->z)));
+    camera->rotZ = 0;
+}
+
 void camera_func_attract_cutscene(struct Camera *camera, struct Ball *ball)
 {
     float f31 = advDemoInfo.unk8;
@@ -1250,7 +1250,7 @@ void camera_func_ready_init(struct Camera *camera, struct Ball *ball)
     sp10.y = camera->unk54.y - sp10.y;
     sp10.z = camera->unk54.z - sp10.z;
     camera->unk6C = (s16)(mathutil_atan2(sp10.x, sp10.z) - 32768);
-    camera->unk68 = mathutil_atan2(sp10.y, mathutil_sqrt(mathutil_sum_of_sq(sp10.x, sp10.z)));
+    camera->unk68 = mathutil_atan2(sp10.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp10.x, sp10.z)));
     camera->unk70 = 0;
     camera->unk74.x = decodedStageLzPtr->startPos->pos.x;
     camera->unk74.y = decodedStageLzPtr->startPos->pos.y + 0.5;
@@ -1265,7 +1265,7 @@ void camera_func_ready_init(struct Camera *camera, struct Ball *ball)
     sp10.y = camera->unk74.y - sp10.y;
     sp10.z = camera->unk74.z - sp10.z;
     camera->unk8C = (s16)(mathutil_atan2(sp10.x, sp10.z) - 32768) + 0x10000;
-    camera->unk88 = mathutil_atan2(sp10.y, mathutil_sqrt(mathutil_sum_of_sq(sp10.x, sp10.z)));
+    camera->unk88 = mathutil_atan2(sp10.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp10.x, sp10.z)));
     camera->unk90 = 0;
     camera->flags |= 1;
     camera->timerCurr = 90;
@@ -1406,7 +1406,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     sp28.y = camera->unkAC.y - camera->lookAt.y;
     sp28.z = camera->unkAC.z - camera->lookAt.z;
 
-    f1 = sum_of_3_sq(sp28.x, sp28.y, sp28.z);
+    f1 = mathutil_sum_of_sq_3(sp28.x, sp28.y, sp28.z);
     if (f1 > FLT_EPSILON)
     {
         f1 = mathutil_rsqrt(f1);
@@ -1436,7 +1436,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     if (ball->unk80 < 60)
         r31 = 0;
     else
-        r31 = mathutil_atan2(sp28.y, mathutil_sqrt(mathutil_sum_of_sq(sp28.x, sp28.z)));
+        r31 = mathutil_atan2(sp28.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp28.x, sp28.z)));
 
     yaw = mathutil_atan2(sp28.x, sp28.z) - 32768;
     r3 = (s16)(yaw - camera->rotY);
@@ -1498,7 +1498,7 @@ void camera_func_level_main(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_x(camera->rotX);
     sp28.x = 0.0f;
     sp28.y = 0.0f;
-    sp28.z = mathutil_sqrt(mathutil_sum_of_sq(3.0f, 1.0f));
+    sp28.z = mathutil_sqrt(mathutil_sum_of_sq_2(3.0f, 1.0f));
     mathutil_mtxA_tf_point(&sp28, &camera->eye);
 
     camera->eyeVel.x = camera->eye.x - prevEyePos.x;
@@ -1522,7 +1522,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp10.y = camera->lookAt.y - camera->eye.y;
     sp10.z = camera->lookAt.z - camera->eye.z;
 
-    f0 = 0.1 * mathutil_sqrt(sum_of_3_sq(sp10.x, sp10.y, sp10.z)) / 5.0;
+    f0 = 0.1 * mathutil_sqrt(mathutil_sum_of_sq_3(sp10.x, sp10.y, sp10.z)) / 5.0;
     f0 *= 1.0 + 9.0 * controllerInfo[0].unk0[0].triggerLeft / 170.0;
 
     sp28.x = 0.0f;
@@ -1560,7 +1560,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp10.y = camera->lookAt.y - camera->eye.y;
     sp10.z = camera->lookAt.z - camera->eye.z;
 
-    f1 = sum_of_3_sq(sp10.x, sp10.y, sp10.z);
+    f1 = mathutil_sum_of_sq_3(sp10.x, sp10.y, sp10.z);
     if (f1 < 0.09)
     {
         float f2 = 0.3 / mathutil_sqrt(f1);
@@ -1596,7 +1596,7 @@ void camera_func_62(struct Camera *camera, struct Ball *ball)
     v.z = camera->lookAt.z - camera->eye.z;
 
     camera->rotY = mathutil_atan2(v.x, v.z) - 32768;
-    camera->rotX = mathutil_atan2(v.y, mathutil_sqrt(mathutil_sum_of_sq(v.x, v.z)));
+    camera->rotX = mathutil_atan2(v.y, mathutil_sqrt(mathutil_sum_of_sq_2(v.x, v.z)));
     camera->rotZ = currentCameraStructPtr->rotZ;
 }
 
@@ -1670,7 +1670,7 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     sp30.y = camera->eye.y - sp10.unk0.y;
     sp30.z = camera->eye.z - sp10.unk0.z;
 
-    f1 = 1.0f / mathutil_vec_mag(&sp30);
+    f1 = 1.0f / mathutil_vec_len(&sp30);
     f3_ = sp30.y;
     if (f1 * f3_ > 0.96592582630000001)
     {
@@ -1748,7 +1748,7 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     sp50.y = camera->eye.y - sp30.unk0.y;
     sp50.z = camera->eye.z - sp30.unk0.z;
 
-    f1 = 1.0f / mathutil_vec_mag(&sp50);
+    f1 = 1.0f / mathutil_vec_len(&sp50);
     f3_ = sp50.y;
     if (f1 * f3_ > 0.96592582630000001)
     {
@@ -1888,7 +1888,7 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.y = 0.0f;
     sp10.z = camera->eye.z - camera->lookAt.z;
 
-    f1 = mathutil_sqrt(mathutil_sum_of_sq(sp10.x, sp10.z));
+    f1 = mathutil_sqrt(mathutil_sum_of_sq_2(sp10.x, sp10.z));
     if (f1 > FLT_EPSILON)
     {
         float f3 = (f1 + 0.08 * (2.0 - f1)) / f1;
@@ -1959,17 +1959,17 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     goal = decodedStageLzPtr->goals[infoWork.unkC];
     if (infoWork.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[infoWork.unkE].transform);
         mathutil_mtxA_tf_point(&goal.pos, &goal.pos);
     }
     if (mathutil_vec_distance(&goal.pos, &ball->pos) < 16.0)
     {
         camera->state = CAMERA_STATE_GOAL_REPLAY;
         mathutil_mtxA_from_translate(&goal.pos);
-        mathutil_mtxA_rotate_z(goal.zrot);
-        mathutil_mtxA_rotate_y(goal.yrot);
-        mathutil_mtxA_rotate_x(goal.xrot);
-        f31 = mathutil_vec_mag(&infoWork.unk10);
+        mathutil_mtxA_rotate_z(goal.rotZ);
+        mathutil_mtxA_rotate_y(goal.rotY);
+        mathutil_mtxA_rotate_x(goal.rotX);
+        f31 = mathutil_vec_len(&infoWork.unk10);
         if (mathutil_vec_distance(&goal.pos, &sp34.unk0) > 2.5 && (rand() & 3) && sp34.unk0.y > goal.pos.y)
         {
             double zero;
@@ -2023,11 +2023,11 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                     camera->unk54.x = -camera->unk54.x;
                 camera->unk60 = camera->unk54.y + 0.5 * (0.5 + (rand() / 32767.0f));
                 goalp = &decodedStageLzPtr->goals[infoWork.unkC];
-                mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
+                mathutil_mtxA_from_mtx(itemgroups[infoWork.unkE].transform);
                 mathutil_mtxA_translate(&goalp->pos);
-                mathutil_mtxA_rotate_z(goalp->zrot);
-                mathutil_mtxA_rotate_y(goalp->yrot);
-                mathutil_mtxA_rotate_x(goalp->xrot);
+                mathutil_mtxA_rotate_z(goalp->rotZ);
+                mathutil_mtxA_rotate_y(goalp->rotY);
+                mathutil_mtxA_rotate_x(goalp->rotX);
                 mathutil_mtxA_tf_point(&camera->unk54, &sp10);
                 sp1C.x = sp10.x - ball->pos.x;
                 sp1C.y = sp10.y - ball->pos.y;
@@ -2122,7 +2122,7 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
 
     if (infoWork.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[infoWork.unkE].transform);
         mathutil_mtxA_tf_point(&sp1C, &sp1C);
     }
 
@@ -2178,7 +2178,7 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
 
     if (infoWork.unkE > 0)
     {
-        mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[infoWork.unkE].transform);
         mathutil_mtxA_tf_point(&sp10, &sp10);
     }
 
@@ -2230,11 +2230,11 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
         return;
 
     goal = &decodedStageLzPtr->goals[infoWork.unkC];
-    mathutil_mtxA_from_mtx(movableStageParts[infoWork.unkE].unk24);
+    mathutil_mtxA_from_mtx(itemgroups[infoWork.unkE].transform);
     mathutil_mtxA_translate(&goal->pos);
-    mathutil_mtxA_rotate_z(goal->zrot);
-    mathutil_mtxA_rotate_y(goal->yrot);
-    mathutil_mtxA_rotate_x(goal->xrot);
+    mathutil_mtxA_rotate_z(goal->rotZ);
+    mathutil_mtxA_rotate_y(goal->rotY);
+    mathutil_mtxA_rotate_x(goal->rotX);
     mathutil_mtxA_tf_point(&camera->unk54, &sp10);
 
     sp28.x = sp10.x - ball->pos.x;
@@ -2507,7 +2507,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     sp34.x = -ball->pos.x;
     sp34.y = 0.0f;
     sp34.z = -ball->pos.z;
-    f31 = mathutil_vec_mag(&sp34);
+    f31 = mathutil_vec_len(&sp34);
     mathutil_vec_set_len(&sp34, &sp34, f30);
 
     mathutil_mtxA_from_identity();
@@ -2591,7 +2591,7 @@ void camera_func_36(struct Camera *camera, struct Ball *ball)
     sp28.y = 0.0f;
     sp28.z = -ball->pos.z;
 
-    f31 = mathutil_vec_mag(&sp28);
+    f31 = mathutil_vec_len(&sp28);
     mathutil_vec_set_len(&sp28, &sp28, 3.0f);
 
     sp28.x += ball->pos.x;
@@ -3079,7 +3079,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 
     if (!(sp34.flags & 1)
      || infoWork.unkC >= decodedStageLzPtr->goalsCount
-     || infoWork.unkE >= decodedStageLzPtr->collHdrsCount)
+     || infoWork.unkE >= decodedStageLzPtr->itemgroupCount)
     {
         camera->unk10E = 0;
         camera->unk110 = -1;
@@ -3095,7 +3095,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
         camera->unk110 = infoWork.unkC;
 
         sp58 = decodedStageLzPtr->goals[camera->unk110].pos;
-        mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
+        mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].transform);
         mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &sp28);
 
         f31 = mathutil_vec_distance(&sp58, &sp28);
@@ -3125,7 +3125,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     }
     camera->unk114 = sp58;
 
-    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].transform);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3137,7 +3137,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &camera->unk12C);
     mathutil_mtxA_rigid_inv_tf_vec(&ball->vel, &camera->unk138);
 
-    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].transform);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3149,7 +3149,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     camera->unk6C = ((rand() / 32767.0f) + 0.5f) * 15.0f;
     sp4C = camera->unk114;
 
-    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].transform);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3157,7 +3157,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     }
     mathutil_mtxA_tf_point(&sp4C, &sp1C);
 
-    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk54);
+    mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].prevTransform);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3188,7 +3188,7 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk24);
+    mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].transform);
     if (camera->unk110 >= 0)
     {
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3232,7 +3232,7 @@ void camera_func_49(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_push();
         mathutil_mtxA_tf_point(&camera->unk114, &sp1C);
 
-        mathutil_mtxA_from_mtx(movableStageParts[camera->unk10E].unk54);
+        mathutil_mtxA_from_mtx(itemgroups[camera->unk10E].prevTransform);
         if (camera->unk110 >= 0)
         {
             mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
@@ -3571,7 +3571,7 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
 
         sp28.x = lookAt->x - sp4C[i].x;
         sp28.z = lookAt->z - sp4C[i].z;
-        var1 = mathutil_sum_of_sq(sp28.x, sp28.z);
+        var1 = mathutil_sum_of_sq_2(sp28.x, sp28.z);
         if (var1 > f31)
             f31 = var1;
     }
@@ -3584,7 +3584,7 @@ void func_8001FF2C(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, f31);
 
-    mathutil_get_mtxA_translate(eye);
+    mathutil_mtxA_get_translate(eye);
 
     mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
 }
@@ -3604,7 +3604,7 @@ void func_80020334(struct Camera *camera, struct Ball *ball, Vec *eye, Vec *look
     mathutil_mtxA_rotate_x(DEGREES_TO_S16(-90));
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, sp24.radius * 1.2);
 
-    mathutil_get_mtxA_translate(eye);
+    mathutil_mtxA_get_translate(eye);
 
     mathutil_mtxA_to_euler_yxz(yrot, xrot, zrot);
 }
@@ -3721,7 +3721,7 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_x(camera->rotX);
     mathutil_mtxA_rotate_z(camera->rotZ);
 
-    mathutil_get_mtxA_translate(&camera->eye);
+    mathutil_mtxA_get_translate(&camera->eye);
     mathutil_mtxA_to_euler_yxz(&camera->rotY, &camera->rotX, &camera->rotZ);
     mathutil_mtxA_tf_point_xyz(&camera->lookAt, 0.0f, 0.0f, -1.0f);
     camera->timerCurr++;

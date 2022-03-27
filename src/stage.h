@@ -4,6 +4,8 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
+#include "types.h"
+
 #define STAGE_LIST \
     DEFINE_STAGE(ST_000_DUMMY,                  BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_001_PLAIN,                  BG_TYPE_JUN) \
@@ -215,6 +217,61 @@ STAGE_LIST
 #undef DEFINE_STAGE
 };
 
+struct StageColiTri
+{
+    Point3d pos; // Position of vertex 1 in itemgroup space
+    Vec normal;  // Triangle normal in itemgroup space
+    S16Vec rot;  // Rotation to bring from triangle -> itemgroup space
+    u16 flags;
+
+    // Vertex 1 in triangle space is (0, 0)
+    Point2d vert2;       // Vertex 2 in triangle space
+    Point2d vert3;       // Vertex 3 in triangle space
+    // Edge 1 normal in triangle space is (0, 1)
+    Vec2d edge2Normal; // Normal of edge from vertex 2 -> vertex 3, in triangle space
+    Vec2d edge3Normal; // Normal of edge from vertex 3 -> vertex 1, in triangle space
+};
+
+struct StageColiCone
+{
+    Point3d pos;
+    S16Vec rot;
+    u16 flags;
+    Vec scale;
+};
+
+struct StageColiSphere
+{
+    Point3d pos;
+    float radius;
+    u16 flags;
+};
+
+struct StageColiCylinder
+{
+    Point3d pos;
+    float radius;
+    float height;
+    S16Vec rot;
+    u16 flags;
+};
+
+struct ColiRect
+{
+    Point3d pos;
+    S16Vec rot;
+    Vec normal;
+    float width;
+    float height;
+};
+
+struct ColiCircle
+{
+    Point3d pos;
+    float radius;
+    S16Vec rot;
+};
+
 struct StageBgModel
 {
     u32 unk0;
@@ -251,22 +308,13 @@ struct DecodedStageLzPtr_child_child3
     u8 filler0[4];
     void *unk4;
     u8 filler8[4];
-};  // size = 0xC
+}; // size = 0xC
 
 struct DecodedStageLzPtr_child_child4
 {
     void *unk0;
     u8 filler4[4];
 };  // size = 8
-
-struct StageCollHdr_child
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s8 unk12;
-};
 
 struct StageCollHdr_child2
 {
@@ -300,22 +348,26 @@ struct StageCollHdr_child5
     s16 unk10;
 };
 
-struct StageCollHdr
+struct StageItemgroup
 {
-    Vec unk0;
-    /*0x0C*/ s16 initXRot;
-    /*0x0E*/ s16 initYRot;
-    /*0x10*/ s16 initZRot;
+    Point3d initPos;
+    S16Vec initRot;
     u16 unk12;
+
     /*0x14*/ struct StageAnimHdr *animHdr;
     /*0x18*/ char **modelNames;
-    /*0x1C*/ void *triangles;
-    /*0x20*/ void *collCells;
-    u8 filler24[0x34-0x24];
-    /*0x34*/ s32 cellsX;  // number of cells in x direction
-    /*0x38*/ s32 cellsY;  // number of cells in y direction
-    /*0x3C*/ s32 unk3C;
-    struct StageCollHdr_child *unk40;  // goals?
+    /*0x1C*/ struct StageColiTri *triangles;
+
+    /*0x20*/ s16 **gridCellTris;
+    /*0x24*/ f32 gridOriginX;
+    /*0x28*/ f32 gridOriginZ;
+    /*0x2C*/ f32 gridStepX;
+    /*0x30*/ f32 gridStepZ;
+    /*0x34*/ s32 gridCellCountX;  // Number of cells in X direction
+    /*0x38*/ s32 gridCellCountZ;  // Number of cells in Z direction
+
+    /*0x3C*/ s32 goalCount;
+    struct StageGoal *goals;
     u8 filler44[4];
     void *unk48;
     s32 unk4C;
@@ -324,12 +376,12 @@ struct StageCollHdr
     struct StageCollHdr_child5 *unk58;
     s32 unk5C;
     struct StageCollHdr_child3 *unk60;
-    u8 filler64[4];
-    void *unk68;
-    u8 filler6C[4];
-    void *unk70;
-    u8 filler74[4];
-    void *unk78;
+    s32 coliConeCount;
+    struct StageColiCone *coliCones;
+    s32 coliSphereCount;
+    struct StageColiSphere *coliSpheres;
+    s32 coliCylinderCount;
+    struct StageColiCylinder *coliCylinders;
     s32 unk7C;
     struct DecodedStageLzPtr_child_child3 *unk80;
     s32 unk84;
@@ -359,11 +411,11 @@ struct StageStartPos
 struct StageGoal
 {
     /*0x00*/ Point3d pos;
-    /*0x0C*/ s16 xrot;
-    /*0x0E*/ s16 yrot;
-    /*0x10*/ s16 zrot;
-    u8 filler12[0x14-0x12];
-};  // size = 0x14
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    char type;  // 'B', 'G', or 'R' for blue, green, or red goal
+};
 
 struct DecodedStageLzPtr_child5_child
 {
@@ -416,8 +468,8 @@ struct Stage
 {
     s32 unk0;
     s32 unk4;
-    /*0x08*/ s32 collHdrsCount;
-    /*0x0C*/ struct StageCollHdr *collHdrs;
+    /*0x08*/ s32 itemgroupCount;
+    /*0x0C*/ struct StageItemgroup *itemgroups;
     /*0x10*/ struct StageStartPos *startPos;
     /*0x14*/ float *pFallOutY;
     /*0x18*/ s32 goalsCount;

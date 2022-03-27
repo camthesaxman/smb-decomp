@@ -7,6 +7,10 @@
 #include <dolphin/GXFifo.h>
 #include <dolphin/mtx.h>
 
+typedef struct {
+    f32 x, y;
+} Vec2d, *Vec2dPtr, Point2d, *Point2dPtr;
+
 // DIP switches
 enum
 {
@@ -276,19 +280,15 @@ struct Struct80176434
     float unkC;
 };  // size=0x10
 
-struct MovableStagePart
+struct ItemgroupInfo
 {
-    Vec unk0;
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    s16 unk1E;
-    s16 unk20;
-    s16 unk22;
-    Mtx unk24;
-    Mtx unk54;
-};  // size = 0x84
+    Point3d pos;
+    Point3d prevPos;
+    S16Vec rot;
+    S16Vec prevRot;
+    Mtx transform;     // Transform from itemgroup space to world space
+    Mtx prevTransform; // Previous frame transform from itemgroup space to world space
+};
 
 struct ReplayInfo
 {
@@ -302,11 +302,11 @@ struct ReplayInfo
     u8 filler14[4];
 };
 
-struct Struct8003FB48
+struct RaycastHit
 {
-    u32 unk0;
-    Vec unk4;
-    Vec unk10;
+    u32 flags;
+    Point3d pos;
+    Vec normal;
 };
 
 typedef u32 (*Func802F20F0)();
@@ -345,32 +345,69 @@ struct Struct8009492C
     u8 filler30[0x38-0x30];
 };
 
-struct Struct8003F890
+enum
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u8 filler12[0x20-0x12];
-    float unk20;
-    float unk24;
+    COLI_FLAG_OCCURRED = 1 << 0, // If at least one ball collision occurred on the current frame
 };
 
-struct Struct80039974
+struct ColiPlane
 {
-    u32 unk0;
-    Vec unk4;
-    Vec unk10;
-    Vec unk1C;
-    float unk28;
-    float unk2C;
-    float unk30;
-    float unk34;
-    Vec unk38;
-    Vec unk44;
-    s32 unk50;
-    float unk54;
-    s32 unk58;
+    Point3d point; // A point on the plane
+    Vec normal;    // Normal of plane
+};
+
+struct PhysicsBall
+{
+    u32 flags;
+
+    // Current center position in itemgroupId's local space
+    Point3d pos;     
+
+    // Center position at end of previous frame in itemgroupId's previous frame local space
+    Point3d prevPos; 
+
+    // Current velocity in itemgroupId's local space
+    Vec vel;         
+
+    float radius;
+    float gravityAccel;
+    float restitution;
+
+    // The ball may collide with more than one surface during a frame. The "hardest" collision is
+    // recorded, which is used to draw visual collision effects for example.
+
+    // Largest (in magnitude) itemgroup-relative ball velocity along the collision normal. It's
+    // always negative because when a collision occurs, the ball's itemgroup-relative velocity is
+    // pointing away from the normal.
+    float hardestColiSpeed;
+
+    // Collision plane of the hardest collision, in hardestColiItemgroupId's local space
+    struct ColiPlane hardestColiPlane;
+
+    // Itemgroup ID of the hardest collision
+    s32 hardestColiItemgroupId;
+
+    // Friction applied to the ball's velocity on each contact with a surface.
+    //
+    // Specifically, it is the fraction of the ball's velocity parallel to the contact surface which
+    // is thrown away upon contact. The ball's velocity in this context is relative to the contact
+    // surface's velocity. For example, the relative velocity of a motionless ball on a platform
+    // with velocity (1, 0, 0) would be (-1, 0, 0).
+    float friction;
+
+    // Itemgroup whose local space we are in.
+    // As a reminder, ID 0 is world space.
+    s32 itemgroupId;
+};
+
+struct ColiEdge
+{
+    // Winds counterclockwise around tri up normal
+    Point2d start;
+    Point2d end;
+
+    // Coplanar with triangle, points inside triangle
+    Vec2d normal;
 };
 
 struct Struct800496BC
@@ -630,7 +667,7 @@ struct DynamicStagePart
     struct NaomiModel *origModel;  // original model
     void (*posNrmTexFunc)(struct NaomiVtxWithNormal *);
     void (*posColorTexFunc)(struct NaomiVtxWithColor *);
-    int (*unusedFunc)();
+    u32 (*raycastDownFunc)(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal);
     struct NaomiModel *tempModel;  // modified copy of the model
 };
 
@@ -839,7 +876,7 @@ struct AnimKeyframe
     float unk10;
 };
 
-struct StageCollHdr;
+struct StageItemgroup;
 struct StageCollHdr_child3;
 
 struct Struct800690DC
@@ -893,5 +930,57 @@ struct Struct80061BC4
 };
 
 typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
+
+// Stage object (stobj) type
+enum
+{
+    SOT_BUMPER,
+    SOT_JAMABAR,
+    SOT_GOALTAPE,
+    SOT_GOALBAG,
+    SOT_GOALBAG_EXMASTER,
+    SOT_MF_PNL_BUMPER,
+    SOT_MF_PNL_ELECTRAP,
+    SOT_MF_BULLET_TEST,
+    SOT_MF_BOX,
+    SOT_BUMPER_BGSPECIAL,
+    SOT_NAMEENT_BTN,
+};
+
+struct Stobj 
+{ /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
+    s32 id;
+    s16 g_some_id;
+    u16 type;
+    u32 g_some_bitflag;
+    s16 g_mode;
+    s16 g_counter;
+    Point3d g_model_origin;
+    Point3d position;
+    Point3d position_2; /* Copy of position? */
+    float bounding_sphere_radius; /* Has something to do w/ collision */
+    void (* coli_func)(struct Stobj *, struct PhysicsBall *);
+    Vec scale;
+    float unk48;
+    float unk4c;
+    float unk50;
+    struct GmaModelHeader *model;
+    Point3d g_some_pos; /* Has something to do w/ position */
+    Vec vel;
+    S16Vec rot;
+    short unk76;
+    short unk78;
+    Point3d g_prev_pos;
+    S16Vec g_prev_rot;
+    float unk90;
+    float unk94;
+    float unk98;
+    float unk9c;
+    s8 itemgroup_id;
+    void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
+    Point3d g_some_pos2;
+    Point3d g_local_pos;
+    Vec g_local_vel;
+};
 
 #endif

@@ -2550,8 +2550,8 @@ lbl_8009775C:
 /* 80097794 000936B4  48 00 00 80 */	b lbl_80097814
 lbl_80097798:
 /* 80097798 000936B8  4B F6 FD CD */	bl mathutil_mtxA_from_identity
-/* 8009779C 000936BC  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 800977A0 000936C0  3B 83 6E 48 */	addi r28, r3, movableStageParts@l
+/* 8009779C 000936BC  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 800977A0 000936C0  3B 83 6E 48 */	addi r28, r3, itemgroups@l
 /* 800977A4 000936C4  38 7C 00 84 */	addi r3, r28, 0x84
 /* 800977A8 000936C8  4B F7 05 79 */	bl mathutil_mtxA_translate
 /* 800977AC 000936CC  A8 7C 00 A0 */	lha r3, 0xa0(r28)
@@ -3207,8 +3207,8 @@ lbl_80098170:
 /* 80098174 00094094  3C 60 80 0A */	lis r3, lbl_8009825C@ha
 /* 80098178 00094098  38 63 82 5C */	addi r3, r3, lbl_8009825C@l
 /* 8009817C 0009409C  4B FF 64 6D */	bl g_avdisp_set_some_func_2
-/* 80098180 000940A0  3C 80 80 20 */	lis r4, movableStageParts@ha
-/* 80098184 000940A4  38 04 6E 48 */	addi r0, r4, movableStageParts@l
+/* 80098180 000940A0  3C 80 80 20 */	lis r4, itemgroups@ha
+/* 80098184 000940A4  38 04 6E 48 */	addi r0, r4, itemgroups@l
 /* 80098188 000940A8  3B 83 00 00 */	addi r28, r3, 0
 /* 8009818C 000940AC  7C 1F 03 78 */	mr r31, r0
 /* 80098190 000940B0  3B 60 00 00 */	li r27, 0
@@ -3258,7 +3258,7 @@ lbl_80098210:
 /* 8009822C 0009414C  3B 7B 00 01 */	addi r27, r27, 1
 /* 80098230 00094150  3B FF 00 84 */	addi r31, r31, 0x84
 lbl_80098234:
-/* 80098234 00094154  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80098234 00094154  80 0D 9D 68 */	lwz r0, itemgroupCount@sda21(r13)
 /* 80098238 00094158  7C 1B 00 00 */	cmpw r27, r0
 /* 8009823C 0009415C  41 80 FF 60 */	blt lbl_8009819C
 /* 80098240 00094160  7F 83 E3 78 */	mr r3, r28

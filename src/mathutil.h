@@ -145,7 +145,10 @@ u16 mathutil_calc_crc16(s32 length, u8 *data);
 
 static inline float mathutil_floor(register float n)
 {
-#ifdef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
+    // TODO
+    return (s32)n;
+#else
     s32 buf[2];
     register float savedFlags;
     asm
@@ -162,15 +165,15 @@ static inline float mathutil_floor(register float n)
         mtfsf 0xFF, savedFlags
     }
     return buf[1];
-#else
-    // TODO
-    return (s32)n;
 #endif
 }
 
 static inline float mathutil_ceil(register float n)
 {
-#ifdef __MWERKS__
+#ifdef MATHUTIL_C_ONLY
+    // TODO
+    return (s32)n;
+#else
     s32 buf[2];
     register float savedFlags;
     asm
@@ -187,13 +190,10 @@ static inline float mathutil_ceil(register float n)
         mtfsf 0xFF, savedFlags
     }
     return buf[1];
-#else
-    // TODO
-    return (s32)n;
 #endif
 }
 
-static inline float mathutil_sum_of_sq(register float a, register float b)
+static inline float mathutil_sum_of_sq_2(register float a, register float b)
 {
 #ifdef MATHUTIL_C_ONLY
     return a * a + b * b;
@@ -207,7 +207,7 @@ static inline float mathutil_sum_of_sq(register float a, register float b)
 #endif
 }
 
-static inline float mathutil_vec_mag(register Vec *v)
+static inline float mathutil_vec_len(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     return mathutil_sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
@@ -314,7 +314,7 @@ extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, reg
 #endif
 }
 
-static inline void mathutil_get_mtxA_translate(Vec *v)
+static inline void mathutil_mtxA_get_translate(Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
@@ -340,7 +340,7 @@ static inline void mathutil_get_mtxA_translate(Vec *v)
 #endif
 }
 
-static inline void mathutil_get_mtxA_translate_alt(register Vec *v)
+static inline void mathutil_mtxA_get_translate_alt(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
@@ -369,7 +369,7 @@ static inline void mathutil_get_mtxA_translate_alt(register Vec *v)
 #endif
 }
 
-static inline void mathutil_set_mtxA_translate(register Vec *v)
+static inline void mathutil_mtxA_set_translate(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = v->x;
@@ -392,7 +392,7 @@ static inline void mathutil_set_mtxA_translate(register Vec *v)
 #endif
 }
 
-static inline void mathutil_set_mtxA_translate_xyz(register float x, register float y, register float z)
+static inline void mathutil_mtxA_set_translate_xyz(register float x, register float y, register float z)
 {
 #ifdef MATHUTIL_C_ONLY
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = x;
@@ -442,6 +442,21 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
         fmadds var5, var5, a, var6
         stfs var5, v->z
     };
+#endif
+}
+
+static inline float mathutil_sum_of_sq_3(register float a, register float b, register float c)
+{
+#ifdef MATHUTIL_C_ONLY
+    return a * a + b * b + c * c;
+#else
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
 #endif
 }
 

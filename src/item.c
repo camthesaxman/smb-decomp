@@ -7,6 +7,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
+#include "stcoli.h"
 
 struct Item itemInfo[256];
 
@@ -147,17 +148,17 @@ void ev_item_init(void)
     {
     case GAMETYPE_MINI_FIGHT:
         if (func_800672D0(currStageId) != 0)
-            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
         break;
     case GAMETYPE_MAIN_COMPETITION:
         if (func_800672D0(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
-            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
         break;
     default:
-        make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+        make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
         break;
     }
 }
@@ -226,7 +227,7 @@ void item_draw(void)
             if (r28 != item->attachedTo)
             {
                 mathutil_mtxA_from_mtx(sp8);
-                mathutil_mtxA_mult_right(movableStageParts[item->attachedTo].unk24);
+                mathutil_mtxA_mult_right(itemgroups[item->attachedTo].transform);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
                 r28 = item->attachedTo;
             }
@@ -274,7 +275,7 @@ void func_800685C4(void)
     int r23;
     float f2;
     float f1;
-    struct Struct8003FB48 sp58;
+    struct RaycastHit sp58;
     Vec sp4C;
     Vec sp40;
     struct Struct8009492C sp8;
@@ -294,14 +295,14 @@ void func_800685C4(void)
         {
             if (r25 != item->attachedTo)
             {
-                mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
+                mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].transform);
                 r25 = item->attachedTo;
             }
             mathutil_mtxA_tf_point(&item->unk20, &sp40);
         }
 
         mathutil_mtxA_push();
-        r23 = func_8003FB48(&sp40, &sp58, &sp4C);
+        r23 = raycast_stage_down(&sp40, &sp58, &sp4C);
         mathutil_mtxA_pop();
 
         if (r23 != 0)
@@ -331,11 +332,11 @@ void func_800685C4(void)
         }
         else
         {
-            mathutil_vec_to_euler(&sp58.unk10, &sp8.unkC);
+            mathutil_vec_to_euler(&sp58.normal, &sp8.unkC);
             item->unk6C.x = sp8.unkC.x;
             item->unk6C.y = sp8.unkC.y;
             sp8.unkC.z = item->unk6C.z;
-            sp8.unk0 = sp58.unk4;
+            sp8.unk0 = sp58.pos;
             item->unk74 = sp8.unk0.y - sp40.y;
         }
         sp8.unk14 = item->unk7C;
@@ -388,7 +389,7 @@ void func_800689B4(int a)
     }
 }
 
-void make_stage_bananas(struct StageCollHdr *coll, int count)
+void make_stage_bananas(struct StageItemgroup *coll, int count)
 {
     struct Item item;
     int i;

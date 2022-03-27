@@ -67,7 +67,7 @@ struct OrdTblNode *ord_tbl_get_entry_for_pos(Point3d *pos)
     viewSpace.z = -viewSpace.z;
     if (viewSpace.z < minDepth)
         viewSpace.z = minDepth;
-    depth = mathutil_vec_mag(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
+    depth = mathutil_vec_len(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
 
     // Convert the depth to an index into the table
     if (depth < 0.0f)
@@ -103,7 +103,7 @@ struct OrdTblNode *ord_tbl_get_entry_for_pos_offset_index(Point3d *pos, int inde
     viewSpace.z = -viewSpace.z;
     if (viewSpace.z < minDepth)
         viewSpace.z = minDepth;
-    depth = mathutil_vec_mag(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
+    depth = mathutil_vec_len(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
 
     // Convert the depth to an index into the table
     if (depth < 0.0f)

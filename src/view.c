@@ -18,6 +18,7 @@
 #include "ord_tbl.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stcoli.h"
 
 #include "../data/common.gma.h"
 
@@ -39,7 +40,7 @@ struct StageViewInfo
     s16 unk3C;
     s16 unk3E;
     float unk40;
-    struct MovableStagePart *unk44;
+    struct ItemgroupInfo *unk44;
     float unk48;
 };
 
@@ -56,12 +57,12 @@ void ev_view_init(void)
     stageViewInfo->unk24 = 0.75f;
     stageViewInfo->unk38 = -5632;
     stageViewInfo->unk3A = 0;
-    if (movableStagePartCount > 0)
+    if (itemgroupCount > 0)
     {
         stageViewInfo->unk44 = OSAlloc(72 * sizeof(*stageViewInfo->unk44));
         if (stageViewInfo->unk44 == NULL)
             OSPanic("view.c", 126, "cannot OSAlloc\n");
-        memcpy(stageViewInfo->unk44, movableStageParts, 72 * sizeof(*stageViewInfo->unk44));
+        memcpy(stageViewInfo->unk44, itemgroups, 72 * sizeof(*stageViewInfo->unk44));
     }
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         camera_setup_singleplayer_viewport();
@@ -102,7 +103,7 @@ void ev_view_main(void)
     sp8.y = stageViewInfo->target.y - stageViewInfo->eye.y;
     sp8.z = stageViewInfo->target.z - stageViewInfo->eye.z;
     stageViewInfo->rotY = mathutil_atan2(sp8.x, sp8.z) - 32768;
-    stageViewInfo->rotX = mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z)));
+    stageViewInfo->rotX = mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z)));
     stageViewInfo->rotZ = 0;
     stageViewInfo->frameCounter++;
     unpausedFrameCounter++;
@@ -117,7 +118,7 @@ void ev_view_dest(void)
     {
         if (stageViewInfo->unk44 != NULL)
         {
-            memcpy(movableStageParts, stageViewInfo->unk44, 72 * sizeof(*stageViewInfo->unk44));
+            memcpy(itemgroups, stageViewInfo->unk44, 72 * sizeof(*stageViewInfo->unk44));
             OSFree(stageViewInfo->unk44);
         }
         OSFree(stageViewInfo);
@@ -302,35 +303,35 @@ void view_destroy_text_sprites(void)
 
 void view_init_stage_anim(void)
 {
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *r30;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *r30;
     int i;
 
     stageViewInfo->unk40 = lbl_80206DEC.unk4;
-    movpart = movableStageParts;
-    r30 = decodedStageLzPtr->collHdrs;
+    movpart = itemgroups;
+    r30 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 72; i++, movpart++, r30++)
     {
-        movpart->unk0.x = r30->unk0.x;
-        movpart->unk0.y = r30->unk0.y;
-        movpart->unk0.z = r30->unk0.z;
+        movpart->pos.x = r30->initPos.x;
+        movpart->pos.y = r30->initPos.y;
+        movpart->pos.z = r30->initPos.z;
 
-        movpart->unkC.x = r30->unk0.x - r30->unkB8.x;
-        movpart->unkC.y = r30->unk0.y - r30->unkB8.y;
-        movpart->unkC.z = r30->unk0.z - r30->unkB8.z;
+        movpart->prevPos.x = r30->initPos.x - r30->unkB8.x;
+        movpart->prevPos.y = r30->initPos.y - r30->unkB8.y;
+        movpart->prevPos.z = r30->initPos.z - r30->unkB8.z;
 
-        movpart->unk18 = r30->initXRot;
-        movpart->unk1A = r30->initYRot;
-        movpart->unk1C = r30->initZRot;
+        movpart->rot.x = r30->initRot.x;
+        movpart->rot.y = r30->initRot.y;
+        movpart->rot.z = r30->initRot.z;
 
-        movpart->unk1E = r30->initXRot;
-        movpart->unk20 = r30->initYRot;
-        movpart->unk22 = r30->initZRot;
+        movpart->prevRot.x = r30->initRot.x;
+        movpart->prevRot.y = r30->initRot.y;
+        movpart->prevRot.z = r30->initRot.z;
 
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_to_mtx(movpart->unk24);
+        mathutil_mtxA_to_mtx(movpart->transform);
         mathutil_mtxA_translate_neg(&r30->unkB8);
-        mathutil_mtxA_to_mtx(movpart->unk54);
+        mathutil_mtxA_to_mtx(movpart->prevTransform);
     }
     if (currStageId == ST_101_BLUR_BRIDGE)
         find_blur_bridge_accordion();
@@ -340,8 +341,8 @@ void view_animate_stage(void)
 {
     float t;
     float f3;
-    struct MovableStagePart *movpart;
-    struct StageCollHdr *r30;
+    struct ItemgroupInfo *movpart;
+    struct StageItemgroup *r30;
     int i;
 
     lbl_80206DEC.unk4 = stageViewInfo->frameCounter;
@@ -350,9 +351,9 @@ void view_animate_stage(void)
     f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
     t -= f3 * mathutil_floor(t / f3);
     t += decodedStageLzPtr->unk0;
-    r30 = decodedStageLzPtr->collHdrs;
-    movpart = movableStageParts;
-    for (i = 0; i < decodedStageLzPtr->collHdrsCount; i++, movpart++, r30++)
+    r30 = decodedStageLzPtr->itemgroups;
+    movpart = itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
         struct StageAnimHdr *r28 = r30->animHdr;
 
@@ -361,53 +362,53 @@ void view_animate_stage(void)
 
         if (r28->xRotFrames != NULL2)
         {
-            movpart->unk1E = movpart->unk18;
-            movpart->unk18 = DEGREES_TO_S16(g_interpolate_anim(r28->xRotFramesCount, r28->xRotFrames, t));
+            movpart->prevRot.x = movpart->rot.x;
+            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(r28->xRotFramesCount, r28->xRotFrames, t));
         }
         if (r28->yRotFrames != NULL2)
         {
-            movpart->unk20 = movpart->unk1A;
-            movpart->unk1A = DEGREES_TO_S16(g_interpolate_anim(r28->yRotFramesCount, r28->yRotFrames, t));
+            movpart->prevRot.y = movpart->rot.y;
+            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(r28->yRotFramesCount, r28->yRotFrames, t));
         }
         if (r28->zRotFrames != NULL2)
         {
-            movpart->unk22 = movpart->unk1C;
-            movpart->unk1C = DEGREES_TO_S16(g_interpolate_anim(r28->zRotFramesCount, r28->zRotFrames, t));
+            movpart->prevRot.z = movpart->rot.z;
+            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(r28->zRotFramesCount, r28->zRotFrames, t));
         }
 
         if (r28->xTrnslFrames != NULL2)
         {
-            movpart->unkC.x = movpart->unk0.x - r30->unkB8.x;
-            movpart->unk0.x = g_interpolate_anim(r28->xTrnslFramesCount, r28->xTrnslFrames, t);
+            movpart->prevPos.x = movpart->pos.x - r30->unkB8.x;
+            movpart->pos.x = g_interpolate_anim(r28->xTrnslFramesCount, r28->xTrnslFrames, t);
         }
         if (r28->yTrnslFrames != NULL2)
         {
-            movpart->unkC.y = movpart->unk0.y - r30->unkB8.y;
-            movpart->unk0.y = g_interpolate_anim(r28->yTrnslFramesCount, r28->yTrnslFrames, t);
+            movpart->prevPos.y = movpart->pos.y - r30->unkB8.y;
+            movpart->pos.y = g_interpolate_anim(r28->yTrnslFramesCount, r28->yTrnslFrames, t);
         }
         if (r28->zTrnslFrames != NULL2)
         {
-            movpart->unkC.z = movpart->unk0.z - r30->unkB8.z;
-            movpart->unk0.z = g_interpolate_anim(r28->zTrnslFramesCount, r28->zTrnslFrames, t);
+            movpart->prevPos.z = movpart->pos.z - r30->unkB8.z;
+            movpart->pos.z = g_interpolate_anim(r28->zTrnslFramesCount, r28->zTrnslFrames, t);
         }
 
-        mathutil_mtxA_from_translate(&movpart->unk0);
-        mathutil_mtxA_rotate_z(movpart->unk1C);
-        mathutil_mtxA_rotate_y(movpart->unk1A);
-        mathutil_mtxA_rotate_x(movpart->unk18 - r30->initXRot);
-        mathutil_mtxA_rotate_y(-r30->initYRot);
-        mathutil_mtxA_rotate_z(-r30->initZRot);
-        mathutil_mtxA_translate_neg(&r30->unk0);
-        mathutil_mtxA_to_mtx(movpart->unk24);
+        mathutil_mtxA_from_translate(&movpart->pos);
+        mathutil_mtxA_rotate_z(movpart->rot.z);
+        mathutil_mtxA_rotate_y(movpart->rot.y);
+        mathutil_mtxA_rotate_x(movpart->rot.x - r30->initRot.x);
+        mathutil_mtxA_rotate_y(-r30->initRot.y);
+        mathutil_mtxA_rotate_z(-r30->initRot.z);
+        mathutil_mtxA_translate_neg(&r30->initPos);
+        mathutil_mtxA_to_mtx(movpart->transform);
 
-        mathutil_mtxA_from_translate(&movpart->unkC);
-        mathutil_mtxA_rotate_z(movpart->unk22);
-        mathutil_mtxA_rotate_y(movpart->unk20);
-        mathutil_mtxA_rotate_x(movpart->unk1E - r30->initXRot);
-        mathutil_mtxA_rotate_y(-r30->initYRot);
-        mathutil_mtxA_rotate_z(-r30->initZRot);
-        mathutil_mtxA_translate_neg(&r30->unk0);
-        mathutil_mtxA_to_mtx(movpart->unk54);
+        mathutil_mtxA_from_translate(&movpart->prevPos);
+        mathutil_mtxA_rotate_z(movpart->prevRot.z);
+        mathutil_mtxA_rotate_y(movpart->prevRot.y);
+        mathutil_mtxA_rotate_x(movpart->prevRot.x - r30->initRot.x);
+        mathutil_mtxA_rotate_y(-r30->initRot.y);
+        mathutil_mtxA_rotate_z(-r30->initRot.z);
+        mathutil_mtxA_translate_neg(&r30->initPos);
+        mathutil_mtxA_to_mtx(movpart->prevTransform);
     }
 
     // Warp vertices for dynamic stage parts
@@ -457,15 +458,15 @@ void func_800A6734(void)
 
         models[0] = commonGma->modelEntries[OBJ_BANANA_01_LOD150].modelOffset;
         models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
-        for (i = 0; i < movableStagePartCount; i++)
+        for (i = 0; i < itemgroupCount; i++)
         {
-            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->collHdrs[i].unk60;
-            int r23 = decodedStageLzPtr->collHdrs[i].unk5C;
+            struct StageCollHdr_child3 *r24 = decodedStageLzPtr->itemgroups[i].unk60;
+            int r23 = decodedStageLzPtr->itemgroups[i].unk5C;
             int j;
 
             for (j = 0; j < r23; j++, r24++)
             {
-                mathutil_mtxA_from_mtx(movableStageParts[i].unk24);
+                mathutil_mtxA_from_mtx(itemgroups[i].transform);
                 mathutil_mtxA_translate(&r24->unk0);
                 mathutil_mtxA_sq_from_identity();
                 mathutil_mtxA_rotate_y(stageViewInfo->frameCounter * sp10[r24->unkC]);
@@ -483,7 +484,7 @@ void func_800A6874(void)
     int i;
     int r25;
     int j;
-    struct Struct8003FB48 sp60;
+    struct RaycastHit sp60;
     Quaternion sp50;
     Mtx sp20;
     Vec sp14;
@@ -495,24 +496,24 @@ void func_800A6874(void)
         g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3f, 0.3f);
         avdisp_set_z_mode(1, 3, 0);
 
-        for (i = 0; i < movableStagePartCount; i++)
+        for (i = 0; i < itemgroupCount; i++)
         {
-            r26 = decodedStageLzPtr->collHdrs[i].unk60;
-            r25 = decodedStageLzPtr->collHdrs[i].unk5C;
+            r26 = decodedStageLzPtr->itemgroups[i].unk60;
+            r25 = decodedStageLzPtr->itemgroups[i].unk5C;
 
             for (j = 0; j < r25; j++, r26++)
             {
-                mathutil_mtxA_from_mtx(movableStageParts[i].unk24);
+                mathutil_mtxA_from_mtx(itemgroups[i].transform);
                 mathutil_mtxA_tf_point(&r26->unk0, &sp14);
-                if ((u32)func_8003FB48(&sp14, &sp60, 0) != 0)
+                if ((u32)raycast_stage_down(&sp14, &sp60, 0) != 0)
                 {
                     mathutil_mtxA_from_mtx(mathutilData->mtxB);
-                    sp14.x = sp60.unk4.x + sp60.unk10.x * 0.02;
-                    sp14.y = sp60.unk4.y + sp60.unk10.y * 0.02;
-                    sp14.z = sp60.unk4.z + sp60.unk10.z * 0.02;
+                    sp14.x = sp60.pos.x + sp60.normal.x * 0.02;
+                    sp14.y = sp60.pos.y + sp60.normal.y * 0.02;
+                    sp14.z = sp60.pos.z + sp60.normal.z * 0.02;
                     mathutil_mtxA_translate(&sp14);
                     mathutil_mtxA_to_mtx(sp20);
-                    mathutil_quat_from_dirs(&sp50, &sp8, &sp60.unk10);
+                    mathutil_quat_from_dirs(&sp50, &sp8, &sp60.normal);
                     mathutil_mtxA_from_quat(&sp50);
                     mathutil_mtxA_mult_left(sp20);
                     mathutil_mtxA_scale_s(0.45f);
@@ -528,7 +529,7 @@ void func_800A6874(void)
 
 void func_800A6A88(void)
 {
-    struct MovableStagePart *r30;
+    struct ItemgroupInfo *r30;
     struct Struct8020A348 *r29;
     int j;
     int i;
@@ -543,13 +544,13 @@ void func_800A6A88(void)
     func_8000E3BC();
     if (decodedStageGmaPtr != NULL)
     {
-        r30 = movableStageParts;
+        r30 = itemgroups;
         r29 = lbl_8020AB88;
-        for (i = 0; i < movableStagePartCount; i++, r29++, r30++)
+        for (i = 0; i < itemgroupCount; i++, r29++, r30++)
         {
             mathutil_mtxA_from_mtxB();
             if (i > 0)
-                mathutil_mtxA_mult_right(r30->unk24);
+                mathutil_mtxA_mult_right(r30->transform);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             r26 = r29->unk0;
             for (j = 0; j < r29->unk4; j++, r26++)
@@ -597,33 +598,33 @@ void func_800A6BF0(void)
     //struct StageCollHdr_child4 *r29;
 
         struct GMAModelHeader *r28;
-    //struct StageCollHdr_child *r27;
+    //struct StageGoal *r27;
     int i;  // r26 -> r29
     //int i2;
     //int j;  // r25
     //int r24;
     Mtx sp8;
 
-    for (i = 0; i < movableStagePartCount; i++)
+    for (i = 0; i < itemgroupCount; i++)
     {
         int r24;
-        struct StageCollHdr_child *r27;
+        struct StageGoal *r27;
         int j;  // r25
         //#define r27 r29
-        r27 = decodedStageLzPtr->collHdrs[i].unk40;
-        r24 = decodedStageLzPtr->collHdrs[i].unk3C;
+        r27 = decodedStageLzPtr->itemgroups[i].goals;
+        r24 = decodedStageLzPtr->itemgroups[i].goalCount;
         mathutil_mtxA_from_mtxB();
         if (i > 0)
-            mathutil_mtxA_mult_right(movableStageParts[i].unk24);
+            mathutil_mtxA_mult_right(itemgroups[i].transform);
         mathutil_mtxA_to_mtx(sp8);
         for (j = 0; j < r24; j++, r27++)
         {
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_translate(&r27->unk0);
-            mathutil_mtxA_rotate_z(r27->unk10);
-            mathutil_mtxA_rotate_y(r27->unkE);
-            mathutil_mtxA_rotate_x(r27->unkC);
-            switch (r27->unk12)
+            mathutil_mtxA_translate(&r27->pos);
+            mathutil_mtxA_rotate_z(r27->rotZ);
+            mathutil_mtxA_rotate_y(r27->rotY);
+            mathutil_mtxA_rotate_x(r27->rotX);
+            switch (r27->type)
             {
             default:
                 r28 = goalModels[0];
@@ -664,17 +665,17 @@ void func_800A6BF0(void)
         //#undef r27
     }
 
-    for (i = 0; i < movableStagePartCount; i++)
+    for (i = 0; i < itemgroupCount; i++)
     {
         s32 r27;
         int j;
         struct StageCollHdr_child4 *r29;
-        r29 = decodedStageLzPtr->collHdrs[i].unk50;
-        r27 = decodedStageLzPtr->collHdrs[i].unk4C;
+        r29 = decodedStageLzPtr->itemgroups[i].unk50;
+        r27 = decodedStageLzPtr->itemgroups[i].unk4C;
 
         mathutil_mtxA_from_mtxB();
         if (i > 0)
-            mathutil_mtxA_mult_right(movableStageParts[i].unk24);
+            mathutil_mtxA_mult_right(itemgroups[i].transform);
         mathutil_mtxA_to_mtx(sp8);
         for (j = 0; j < r27; j++, r29++)
         {
@@ -690,15 +691,15 @@ void func_800A6BF0(void)
     }
     //800A6E90
     // i = r29
-    for (i = 0; i < movableStagePartCount; i++)
+    for (i = 0; i < itemgroupCount; i++)
     {
         s32 r26;
         int j;
         s32 r28_;
         struct StageCollHdr_child4 *r29;
-        r29 = (void *)decodedStageLzPtr->collHdrs[i].unk58;
+        r29 = (void *)decodedStageLzPtr->itemgroups[i].unk58;
         r26 = 0;
-        r28_ = decodedStageLzPtr->collHdrs[i].unk54;
+        r28_ = decodedStageLzPtr->itemgroups[i].unk54;
         //int r26;
         //#define r26 j
         #define r25 r29
@@ -706,7 +707,7 @@ void func_800A6BF0(void)
 
         mathutil_mtxA_from_mtxB();
         if (i > 0)
-            mathutil_mtxA_mult_right(movableStageParts[i].unk24);
+            mathutil_mtxA_mult_right(itemgroups[i].transform);
         mathutil_mtxA_to_mtx(sp8);
         // j = r27
         for (j = 0; j < r28_; r26++, j++, r25++)

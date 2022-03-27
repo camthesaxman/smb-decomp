@@ -334,7 +334,7 @@ void world_sub_input_main(struct World *world)
         spC.z = 0.0f;
         mathutil_mtxA_tf_vec(&spC, &spC);
         inpXRot = (s16)mathutil_atan2(spC.z, spC.y);
-        inpYRot = -(s16)mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq(spC.z, spC.y)));
+        inpYRot = -(s16)mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq_2(spC.z, spC.y)));
     }
     else
     {
@@ -386,7 +386,7 @@ void world_sub_input_main(struct World *world)
             spC.z = 0.0f;
             mathutil_mtxA_tf_vec(&spC, &spC);
             inpXRot = mathutil_atan2(spC.z, spC.y);
-            inpYRot = -mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq(spC.z, spC.y)));
+            inpYRot = -mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq_2(spC.z, spC.y)));
         }
     }
 

@@ -448,7 +448,7 @@ void submode_game_goal_replay_init_func(void)
 
     event_finish(EVENT_VIBRATION);
     modeCtrl.unk0 = 210;
-    f1 = mathutil_vec_mag(&infoWork.unk10);
+    f1 = mathutil_vec_len(&infoWork.unk10);
     modeCtrl.unk0 += f1 * 300.0;
     if (modeCtrl.unk0 > 300.0)
         modeCtrl.unk0 = 300;
