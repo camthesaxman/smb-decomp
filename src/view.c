@@ -467,12 +467,12 @@ void func_800A6734(void)
             for (j = 0; j < r23; j++, r24++)
             {
                 mathutil_mtxA_from_mtx(itemgroups[i].transform);
-                mathutil_mtxA_translate(&r24->unk0);
+                mathutil_mtxA_translate(&r24->pos);
                 mathutil_mtxA_sq_from_identity();
-                mathutil_mtxA_rotate_y(stageViewInfo->frameCounter * sp10[r24->unkC]);
+                mathutil_mtxA_rotate_y(stageViewInfo->frameCounter * sp10[r24->type]);
                 mathutil_mtxA_mult_left(mathutilData->mtxB);
                 g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                g_avdisp_maybe_draw_model_1(models[r24->unkC]);
+                g_avdisp_maybe_draw_model_1(models[r24->type]);
             }
         }
     }
@@ -504,7 +504,7 @@ void func_800A6874(void)
             for (j = 0; j < r25; j++, r26++)
             {
                 mathutil_mtxA_from_mtx(itemgroups[i].transform);
-                mathutil_mtxA_tf_point(&r26->unk0, &sp14);
+                mathutil_mtxA_tf_point(&r26->pos, &sp14);
                 if ((u32)raycast_stage_down(&sp14, &sp60, 0) != 0)
                 {
                     mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -680,10 +680,10 @@ void func_800A6BF0(void)
         for (j = 0; j < r27; j++, r29++)
         {
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_translate(&r29->unk0);
-            mathutil_mtxA_rotate_z(r29->unk10);
-            mathutil_mtxA_rotate_y(r29->unkE);
-            mathutil_mtxA_rotate_z(r29->unkC);
+            mathutil_mtxA_translate(&r29->pos);
+            mathutil_mtxA_rotate_z(r29->rotZ);
+            mathutil_mtxA_rotate_y(r29->rotY);
+            mathutil_mtxA_rotate_z(r29->rotX);
             mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             g_avdisp_maybe_draw_model_1(lbl_8028C0B0.unk14);
@@ -717,10 +717,10 @@ void func_800A6BF0(void)
             float f0;
 
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_translate(&r25->unk0);
-            mathutil_mtxA_rotate_z(r25->unk10);
-            mathutil_mtxA_rotate_y(r25->unkE);
-            mathutil_mtxA_rotate_z(r25->unkC);
+            mathutil_mtxA_translate(&r25->pos);
+            mathutil_mtxA_rotate_z(r25->rotZ);
+            mathutil_mtxA_rotate_y(r25->rotY);
+            mathutil_mtxA_rotate_z(r25->rotX);
 
             r4 = stageViewInfo->frameCounter - (r26 * (60 / decodedStageLzPtr->jamabarCount));
             r0 = r4 % 60;

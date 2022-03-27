@@ -403,8 +403,8 @@ void make_stage_bananas(struct StageItemgroup *coll, int count)
 
         for (j = 0; j < coll->bananaCount; j++, r28++)
         {
-            item.unk20 = r28->unk0;
-            item.subtype = r28->unkC;
+            item.unk20 = r28->pos;
+            item.subtype = r28->type;
             item.attachedTo = i;
             item.unk60 = r28;
             func_80068474(&item);

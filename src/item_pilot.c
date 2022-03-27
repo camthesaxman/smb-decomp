@@ -457,7 +457,7 @@ void func_8006A564(struct Item *item)
 {
     if (item->state != 2)
     {
-        item->unk20 = item->unk60->unk0;
+        item->unk20 = item->unk60->pos;
         item->unk2C.x = 0.0f;
         item->unk2C.y = 0.0f;
         item->unk2C.z = 0.0f;
