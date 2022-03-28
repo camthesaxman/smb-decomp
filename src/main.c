@@ -94,7 +94,6 @@ void main(void)
 
     while (1)
     {
-        dipSwitches |= DIP_DEBUG | DIP_TIME_STOP;
         if (perfEnabled)
             PERFEventStart(0);
 

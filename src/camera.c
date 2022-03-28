@@ -164,54 +164,6 @@ void (*cameraFuncs[])(struct Camera *, struct Ball *) =
     camera_func_mini,
 };
 
-static Point3d s_fcEye = {};
-static S16Vec s_fcRot = {};
-
-static void freecam_update(struct Camera *camera) {
-    float stickX = (float)controllerInfo[0].unk0[0].stickX / 60.f;
-    float stickY = (float)controllerInfo[0].unk0[0].stickY / 60.f;
-    float substickX = (float)controllerInfo[0].unk0[0].substickX / 60.f;
-    float substickY = (float)controllerInfo[0].unk0[0].substickY / 60.f;
-    float triggerLeft = (float)controllerInfo[0].unk0[0].triggerLeft / 128.f;
-    float triggerRight = (float)controllerInfo[0].unk0[0].triggerRight / 128.f;
-    BOOL fast = controllerInfo[0].unk0[0].button & PAD_BUTTON_Y;
-    Vec deltaPos;
-
-    float speedMult = fast ? 3.0f : 1.0f;
-
-    // New rotation
-    s_fcRot.x -= substickY * 300;
-    s_fcRot.y += substickX * 500;
-    s_fcRot.z = 0;
-
-    // New position
-    deltaPos.x = stickX * speedMult;
-    deltaPos.y = 0;
-    deltaPos.z = -stickY * speedMult;
-    mathutil_mtxA_push();
-    mathutil_mtxA_from_rotate_y(s_fcRot.y);
-    mathutil_mtxA_rotate_x(s_fcRot.x);
-    mathutil_mtxA_rotate_z(s_fcRot.z);
-    mathutil_mtxA_tf_vec(&deltaPos, &deltaPos);
-    mathutil_mtxA_pop();
-    s_fcEye.x += deltaPos.x;
-    s_fcEye.y += deltaPos.y - triggerLeft + triggerRight;
-    s_fcEye.z += deltaPos.z;
-
-    camera->eye = s_fcEye;
-    camera->rotX = s_fcRot.x;
-    camera->rotY = s_fcRot.y;
-    camera->rotZ = s_fcRot.z;
-
-    // Lock ball in place
-    if (gameSubmode == SMD_GAME_PLAY_MAIN) {
-        ballInfo[0].pos = decodedStageLzPtr->startPos->pos;
-        ballInfo[0].vel.x = 0;
-        ballInfo[0].vel.y = 0;
-        ballInfo[0].vel.z = 0;
-    }
-}
-
 void ev_camera_main(void)
 {
     int i;
@@ -248,7 +200,6 @@ void ev_camera_main(void)
                 cameraFuncs[CAMERA_STATE_TEST](camera, ball);
             else
                 cameraFuncs[camera->state](camera, ball);
-            freecam_update(camera);
             mathutil_mtxA_from_translate(&ball->pos);
             mathutil_mtxA_rotate_y(camera->rotY);
             mathutil_mtxA_rigid_inv_tf_point(&camera->eye, &camera->unkBC);

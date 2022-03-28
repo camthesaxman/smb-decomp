@@ -2,7 +2,6 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
-.if 0
 .global collide_ball_with_stage
 collide_ball_with_stage:
 /* 8003DABC 000399DC  7C 08 02 A6 */	mflr r0
@@ -178,9 +177,7 @@ lbl_8003DD08:
 /* 8003DD10 00039C30  38 21 00 68 */	addi r1, r1, 0x68
 /* 8003DD14 00039C34  7C 08 03 A6 */	mtlr r0
 /* 8003DD18 00039C38  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global coligrid_lookup
 coligrid_lookup:
 /* 8003DD1C 00039C3C  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -257,9 +254,7 @@ lbl_8003DE10:
 lbl_8003DE24:
 /* 8003DE24 00039D44  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003DE28 00039D48  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_tri_face
 collide_ball_with_tri_face:
 /* 8003DE2C 00039D4C  7C 08 02 A6 */	mflr r0
@@ -417,9 +412,7 @@ lbl_8003E074:
 /* 8003E080 00039FA0  7C 08 03 A6 */	mtlr r0
 /* 8003E084 00039FA4  38 21 00 78 */	addi r1, r1, 0x78
 /* 8003E088 00039FA8  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_tri_edges
 collide_ball_with_tri_edges:
 /* 8003E08C 00039FAC  7C 08 02 A6 */	mflr r0
@@ -605,9 +598,7 @@ lbl_8003E340:
 /* 8003E34C 0003A26C  7C 08 03 A6 */	mtlr r0
 /* 8003E350 0003A270  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003E354 0003A274  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_tri_edge
 collide_ball_with_tri_edge:
 /* 8003E358 0003A278  7C 08 02 A6 */	mflr r0
@@ -778,9 +769,7 @@ lbl_8003E5B0:
 /* 8003E5C8 0003A4E8  83 81 00 60 */	lwz r28, 0x60(r1)
 /* 8003E5CC 0003A4EC  38 21 00 78 */	addi r1, r1, 0x78
 /* 8003E5D0 0003A4F0  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_tri_verts
 collide_ball_with_tri_verts:
 /* 8003E5D4 0003A4F4  7C 08 02 A6 */	mflr r0
@@ -886,9 +875,7 @@ lbl_8003E754:
 /* 8003E760 0003A680  7C 08 03 A6 */	mtlr r0
 /* 8003E764 0003A684  38 21 00 58 */	addi r1, r1, 0x58
 /* 8003E768 0003A688  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_tri_vert
 collide_ball_with_tri_vert:
 /* 8003E76C 0003A68C  7C 08 02 A6 */	mflr r0
@@ -956,9 +943,7 @@ lbl_8003E854:
 /* 8003E860 0003A780  7C 08 03 A6 */	mtlr r0
 /* 8003E864 0003A784  38 21 00 40 */	addi r1, r1, 0x40
 /* 8003E868 0003A788  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_rect
 collide_ball_with_rect:
 /* 8003E86C 0003A78C  7C 08 02 A6 */	mflr r0
@@ -1313,9 +1298,7 @@ lbl_8003ED90:
 /* 8003EDA4 0003ACC4  83 C1 00 58 */	lwz r30, 0x58(r1)
 /* 8003EDA8 0003ACC8  38 21 00 70 */	addi r1, r1, 0x70
 /* 8003EDAC 0003ACCC  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_cylinder
 collide_ball_with_cylinder:
 /* 8003EDB0 0003ACD0  7C 08 02 A6 */	mflr r0
@@ -1480,9 +1463,7 @@ lbl_8003F010:
 /* 8003F020 0003AF40  83 C1 00 80 */	lwz r30, 0x80(r1)
 /* 8003F024 0003AF44  38 21 00 90 */	addi r1, r1, 0x90
 /* 8003F028 0003AF48  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_circle
 collide_ball_with_circle:
 /* 8003F02C 0003AF4C  7C 08 02 A6 */	mflr r0
@@ -1622,9 +1603,7 @@ lbl_8003F230:
 /* 8003F23C 0003B15C  7C 08 03 A6 */	mtlr r0
 /* 8003F240 0003B160  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003F244 0003B164  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_sphere
 collide_ball_with_sphere:
 /* 8003F248 0003B168  7C 08 02 A6 */	mflr r0
@@ -1704,9 +1683,7 @@ lbl_8003F360:
 /* 8003F36C 0003B28C  7C 08 03 A6 */	mtlr r0
 /* 8003F370 0003B290  38 21 00 40 */	addi r1, r1, 0x40
 /* 8003F374 0003B294  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_cone
 collide_ball_with_cone:
 /* 8003F378 0003B298  7C 08 02 A6 */	mflr r0
@@ -1877,9 +1854,7 @@ lbl_8003F5F0:
 /* 8003F5FC 0003B51C  7C 08 03 A6 */	mtlr r0
 /* 8003F600 0003B520  38 21 00 48 */	addi r1, r1, 0x48
 /* 8003F604 0003B524  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_plane
 collide_ball_with_plane:
 /* 8003F608 0003B528  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -2051,9 +2026,7 @@ lbl_8003F87C:
 /* 8003F884 0003B7A4  CB A1 00 50 */	lfd f29, 0x50(r1)
 /* 8003F888 0003B7A8  38 21 00 68 */	addi r1, r1, 0x68
 /* 8003F88C 0003B7AC  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global test_line_intersects_rect
 test_line_intersects_rect:
 /* 8003F890 0003B7B0  7C 08 02 A6 */	mflr r0
@@ -2154,9 +2127,7 @@ lbl_8003F9E0:
 /* 8003F9E8 0003B908  38 21 00 40 */	addi r1, r1, 0x40
 /* 8003F9EC 0003B90C  7C 08 03 A6 */	mtlr r0
 /* 8003F9F0 0003B910  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global collide_ball_with_jamabar
 collide_ball_with_jamabar:
 /* 8003F9F4 0003B914  7C 08 02 A6 */	mflr r0
@@ -2246,9 +2217,7 @@ lbl_8003FAFC:
 /* 8003FB3C 0003BA5C  83 81 00 20 */	lwz r28, 0x20(r1)
 /* 8003FB40 0003BA60  38 21 00 30 */	addi r1, r1, 0x30
 /* 8003FB44 0003BA64  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global raycast_stage_down
 raycast_stage_down:
 /* 8003FB48 0003BA68  7C 08 02 A6 */	mflr r0
@@ -2661,9 +2630,7 @@ lbl_80040104:
 /* 8004012C 0003C04C  38 21 00 F0 */	addi r1, r1, 0xf0
 /* 80040130 0003C050  7C 08 03 A6 */	mtlr r0
 /* 80040134 0003C054  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global raycast_tri
 raycast_tri:
 /* 80040138 0003C058  7C 08 02 A6 */	mflr r0
@@ -2801,7 +2768,6 @@ lbl_8004031C:
 /* 8004032C 0003C24C  83 A1 00 5C */	lwz r29, 0x5c(r1)
 /* 80040330 0003C250  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040334 0003C254  4E 80 00 20 */	blr
-.endif
 
 .global raycast_cone
 raycast_cone:
@@ -3001,7 +2967,6 @@ lbl_80040604:
 /* 8004061C 0003C53C  38 21 00 70 */	addi r1, r1, 0x70
 /* 80040620 0003C540  4E 80 00 20 */	blr
 
-.if 0
 .global raycast_sphere
 raycast_sphere:
 /* 80040624 0003C544  7C 08 02 A6 */	mflr r0
@@ -3130,9 +3095,7 @@ lbl_800407E0:
 /* 800407FC 0003C71C  83 81 00 38 */	lwz r28, 0x38(r1)
 /* 80040800 0003C720  38 21 00 58 */	addi r1, r1, 0x58
 /* 80040804 0003C724  4E 80 00 20 */	blr
-.endif
 
-.if 0
 .global raycast_cylinder
 raycast_cylinder:
 /* 80040808 0003C728  7C 08 02 A6 */	mflr r0
@@ -3341,7 +3304,6 @@ lbl_80040B04:
 /* 80040B14 0003CA34  7C 08 03 A6 */	mtlr r0
 /* 80040B18 0003CA38  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040B1C 0003CA3C  4E 80 00 20 */	blr
-.endif
 
 .global collide_ball_with_goal
 collide_ball_with_goal:
@@ -5626,9 +5588,8 @@ lbl_80042BBC:
 
 .section .sdata2
 
-    .balign 4
+    .balign 8
 
-.if 0
 .global lbl_802F3608
 lbl_802F3608:
 	# ROM: 0x1ED028
@@ -5724,7 +5685,6 @@ lbl_802F3670:
 	# ROM: 0x1ED090
 	.4byte 0xBF847AE1
 	.4byte 0x47AE147B
-.endif
 
 .global lbl_802F3678
 lbl_802F3678:
@@ -5782,7 +5742,6 @@ lbl_802F36A0:
 
     .balign 8
 
-.if 0
 .global lbl_801B7EE8
 lbl_801B7EE8:
 	# ROM: 0x1B4EE8
@@ -5826,7 +5785,6 @@ lbl_801B7EE8:
 	.4byte 0
 	.4byte 0x40600000
 	.4byte 0x3F800000
-.endif
 
 .global lbl_801B7F88
 lbl_801B7F88:

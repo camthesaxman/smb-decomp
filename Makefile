@@ -106,7 +106,6 @@ SOURCES := \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
-	src/stcoli.c \
 	asm/stcoli.s \
 	src/world.c \
 	asm/interp_anim.s \
