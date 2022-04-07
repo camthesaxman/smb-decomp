@@ -44,7 +44,7 @@ struct
 } lbl_80205DAC;
 FORCE_BSS_ORDER(lbl_80205DAC)
 
-static u8 lzssHeader[32];
+static u8 lzssHeader[32] __attribute__((aligned(32)));
 
 struct
 {

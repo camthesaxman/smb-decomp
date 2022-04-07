@@ -173,7 +173,7 @@ void func_8003453C(struct MotDat *dat, struct Struct80034F5C_1_sub *b)
     dat->unk14 += (u16)r6;
 }
 
-u8 lbl_80205E00[32];
+u8 lbl_80205E00[32] __attribute__((aligned(32)));
 
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {
