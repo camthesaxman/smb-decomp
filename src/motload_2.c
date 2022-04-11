@@ -813,9 +813,9 @@ void func_80035648(struct Struct800355B8 *a)
     //void *r5 = lbl_80114DE0[a->unk36];
     //void *r4 = lbl_80114DD0[a->unk36];
 
-    func_80034F5C(r31, lbl_80114DD0[a->unk36], lbl_80114DE0[a->unk36], (float)a->unk38 + a->unk40, a->unk0 & (1<<(31-0x1D)));
+    func_80034F5C(r31, lbl_80114DD0[a->unk36], lbl_80114DE0[a->unk36], (float)a->posXKeyframes + a->posYKeyframes, a->unk0 & (1<<(31-0x1D)));
     r30 = r31;
-    mathutil_mtxA_from_mtx(a->unk54);
+    mathutil_mtxA_from_mtx(a->unk54Keyframes);
     mathutil_mtxA_rotate_y(a->unk2E);
     mathutil_mtxA_to_mtx(r31->unk168);
     //#define r30 r31

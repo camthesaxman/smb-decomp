@@ -1377,7 +1377,7 @@ void give_bananas(int bananas)
     }
 }
 
-void func_800390C8(int a, Vec *b, float c)
+void func_800390C8(int a, Vec *sphereCenter, float c)
 {
     Vec sp50;
     Vec sp44;
@@ -1401,9 +1401,9 @@ void func_800390C8(int a, Vec *b, float c)
         if (a == 4 && r28 == i)
             continue;
 
-        sp50.x = b->x - ball->pos.x;
-        sp50.y = b->y - ball->pos.y;
-        sp50.z = b->z - ball->pos.z;
+        sp50.x = sphereCenter->x - ball->pos.x;
+        sp50.y = sphereCenter->y - ball->pos.y;
+        sp50.z = sphereCenter->z - ball->pos.z;
         f1 = mathutil_vec_normalize_len(&sp50);
         if (f1 > FLT_EPSILON)
             c /= f1;
@@ -1443,7 +1443,7 @@ void func_800390C8(int a, Vec *b, float c)
         if (ball->unk110 < c)
         {
             ball->unk100 = a;
-            ball->unk104 = *b;
+            ball->unk104 = *sphereCenter;
             ball->unk110 = c;
         }
     }

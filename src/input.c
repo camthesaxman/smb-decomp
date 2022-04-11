@@ -182,7 +182,7 @@ void input_main(void)
         r6->tangentIn.button = r6->unk0.button;
         r6->unk0 = sp10[i];
         r6->unk18.button = sp10[i].button & ~r6->tangentIn.button;
-        r6->unk24.button = r6->tangentIn.button & ~sp10[i].button;
+        r6->rotXKeyframeCount.button = r6->tangentIn.button & ~sp10[i].button;
     }
     */
 
@@ -272,7 +272,7 @@ void input_main(void)
         /*
         controllerInfo[i].unk0 = sp10[i];
         controllerInfo[i].unk18.button = sp10[i].button & ~controllerInfo[i].tangentIn.button;
-        controllerInfo[i].unk24.button = controllerInfo[i].tangentIn.button & ~sp10[i].button;
+        controllerInfo[i].rotXKeyframeCount.button = controllerInfo[i].tangentIn.button & ~sp10[i].button;
         */
         test3(&controllerInfo[i], &sp10[i]);
     }

@@ -729,7 +729,7 @@ void init_gamedata_file(void)
     // These loops match except for stack
     /*
     for (i = 0; i < 8; i++)
-        cardStat.unk34 = (cardStat.unk34 & ~(3 << (2*i))) | (2 << (2*i));
+        cardStat.rotZKeyframeCount = (cardStat.rotZKeyframeCount & ~(3 << (2*i))) | (2 << (2*i));
     for (i = 0; i < 8; i++)
         cardStat.unk36 = (cardStat.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
     */
@@ -3258,7 +3258,7 @@ struct NaomiSpriteParams lbl_801D5724 =
     0.0f,
     1.0f,
     1.0f,
-    0,  // unk28
+    0,  // rotYKeyframes
     0.649999976158f,
     -1,
     10,

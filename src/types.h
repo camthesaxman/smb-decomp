@@ -199,30 +199,30 @@ struct GFXBufferInfo
 
 struct StageBgAnim
 {
-    s32 unk0;
-    s32 unk4;
-    u32 unk8;
-    void *unkC;
-    u32 unk10;
-    void *unk14;
-    u32 unk18;
-    void *unk1C;
-    u32 unk20;
-    void *unk24;
-    u32 unk28;
-    void *unk2C;
-    u32 unk30;
-    void *unk34;
-    u32 unk38;
-    void *unk3C;
-    u32 unk40;
-    void *unk44;
-    u32 unk48;
-    void *unk4C;
-    u32 unk50;
-    void *unk54;
+    s32 loopStartSeconds;
+    s32 loopEndSeconds;
+    u32 scaleXKeyframeCount;
+    struct Keyframe *scaleXKeyframes;
+    u32 scaleYKeyframeCount;
+    struct Keyframe *scaleYKeyframes;
+    u32 scaleZKeyframeCount;
+    struct Keyframe *scaleZKeyframes;
+    u32 rotXKeyframes;
+    struct Keyframe *rotXKeyframeCount;
+    u32 rotYKeyframes;
+    struct Keyframe *rotYKeyframeCount;
+    u32 rotZKeyframes;
+    struct Keyframe *rotZKeyframeCount;
+    u32 posXKeyframes;
+    struct Keyframe *posXKeyframeCount;
+    u32 posYKeyframes;
+    struct Keyframe *posYKeyframeCount;
+    u32 posZKeyframes;
+    struct Keyframe *posZKeyframeCount;
+    u32 unk50KeyframeCount;
+    struct Keyframe *unk54Keyframes;
     u32 translucencyKeyframeCount;
-    void *translucencyKeyframes;
+    struct Keyframe *translucencyKeyframes;
 };
 
 struct UnkStruct8005562C_child2_child

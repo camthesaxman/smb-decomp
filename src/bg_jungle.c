@@ -153,11 +153,11 @@ void bg_jungle_draw(void)
             if (r31->flags & r28)
             {
                 g_avdisp_set_some_matrix(0, r30_->unk28);
-                mathutil_mtxA_translate(&r31->initPos);
-                mathutil_mtxA_rotate_z(r31->initRotZ);
-                mathutil_mtxA_rotate_y(r31->initRotY);
-                mathutil_mtxA_rotate_x(r31->initRotX);
-                mathutil_mtxA_scale(&r31->initScale);
+                mathutil_mtxA_translate(&r31->pos);
+                mathutil_mtxA_rotate_z(r31->rotZ);
+                mathutil_mtxA_rotate_y(r31->rotY);
+                mathutil_mtxA_rotate_x(r31->rotX);
+                mathutil_mtxA_scale(&r31->scale);
                 GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 g_avdisp_maybe_draw_model_1(r31->model);

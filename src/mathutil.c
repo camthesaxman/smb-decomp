@@ -1548,9 +1548,9 @@ void mathutil_mtxA_scale(Vec *vec)
     mathutil_mtxA_scale_xyz(vec->x, vec->y, vec->z);
 }
 
-void mathutil_mtxA_scale_s(float initScale)
+void mathutil_mtxA_scale_s(float scale)
 {
-    mathutil_mtxA_scale_xyz(initScale, initScale, initScale);
+    mathutil_mtxA_scale_xyz(scale, scale, scale);
 }
 #else
 asm void mathutil_mtxA_scale(Vec *vec)
@@ -1562,7 +1562,7 @@ asm void mathutil_mtxA_scale(Vec *vec)
     lfs f3, 8(r3)
     b @do_scale
 
-// void mathutil_mtxA_scale_s(float initScale)
+// void mathutil_mtxA_scale_s(float scale)
 entry mathutil_mtxA_scale_s
     lis r4, LC_CACHE_BASE@ha
     fmr f3, f1

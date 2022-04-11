@@ -277,12 +277,15 @@ struct StageBgModel
     u32 flags;
     /*0x04*/ char *name;
     /*0x08*/ struct GMAModel *model;
-    /*0x0C*/ Point3d initPos;
-    /*0x18*/ s16 initRotX;
-    /*0x1A*/ s16 initRotY;
-    /*0x1C*/ s16 initRotZ;
-    /*0x20*/ Vec initScale;
-    /*0x2C*/ float translucency;  // Current animated translucency (1 - alpha)?
+
+    // These hold initial values, but are overwritten by animated values at runtime
+    /*0x0C*/ Point3d pos;
+    /*0x18*/ s16 rotX;
+    /*0x1A*/ s16 rotY;
+    /*0x1C*/ s16 rotZ;
+    /*0x20*/ Vec scale;
+    /*0x2C*/ float translucency;
+
     /*0x30*/ struct StageBgAnim *anim;
     /*0x34*/ struct UnkStruct8005562C_child2 *unk34;
 };
@@ -319,7 +322,7 @@ struct DecodedStageLzPtr_child_child4
 struct StageCollHdr_child2
 {
     Vec unk0;  // position?
-    Vec unkC;  // initScale?
+    Vec unkC;  // scale?
     s16 unk18;
     s16 unk1A;
     s16 unk1C;

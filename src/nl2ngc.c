@@ -389,12 +389,12 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -407,7 +407,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
-            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundsCenter);
+            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
             r29 = ord_tbl_alloc_node(sizeof(*r29));
 
             r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033C8C;
@@ -442,12 +442,12 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -525,12 +525,12 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -538,7 +538,7 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
             lbl_801B7978.unk18 = 1.0f;
         }
 
-        entry = ord_tbl_get_entry_for_pos(&model->boundsCenter);
+        entry = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
         node = ord_tbl_alloc_node(sizeof(*node));
 
         node->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
@@ -566,12 +566,12 @@ void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float alpha)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -1770,12 +1770,12 @@ void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk1C) == 0)
+            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;

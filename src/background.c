@@ -598,7 +598,7 @@ void g_animate_background_parts(struct StageBgModel *bgModel, int b, float c)
 {
     int i;
     int r29;
-    Vec sp1C;
+    Vec boundSphereCenter;
 
     if (bgModel == NULL2)
         return;
@@ -610,8 +610,8 @@ void g_animate_background_parts(struct StageBgModel *bgModel, int b, float c)
         r29 = 1;
     for (i = 0; i < b; i++, bgModel++)
     {
-        float t;
-        float f2;
+        float timeSeconds;
+        float loopDurationSeconds;
         struct StageBgAnim *anim;
 
         bgModel->flags &= ~(1 << 16);
@@ -619,54 +619,54 @@ void g_animate_background_parts(struct StageBgModel *bgModel, int b, float c)
             continue;
         if (bgModel->model == NULL2)
             continue;
-        bgModel->flags |= 0x10000;
+        bgModel->flags |= (1 << 16);
         anim = bgModel->anim;
         if (anim == NULL2)
             continue;
-        t = c;
+        timeSeconds = c;
         if (bgModel->flags & (1 << 6))
-            t = lbl_80206DEC.g_stageTimer / 60.0;
-        t += anim->unk0;
-        f2 = (float)(anim->unk4 - anim->unk0);
-        t -= f2 * mathutil_floor(t / f2);
-        t += (float)anim->unk0;
-        if (anim->unk54 != NULL2 && interpolate_keyframes(anim->unk50, anim->unk54, t) < 0.5)
+            timeSeconds = lbl_80206DEC.g_stageTimer / 60.0;
+        timeSeconds += anim->loopStartSeconds;
+        loopDurationSeconds = (float)(anim->loopEndSeconds - anim->loopStartSeconds);
+        timeSeconds -= loopDurationSeconds * mathutil_floor(timeSeconds / loopDurationSeconds);
+        timeSeconds += (float)anim->loopStartSeconds;
+        if (anim->unk54Keyframes != NULL2 && interpolate_keyframes(anim->unk50KeyframeCount, anim->unk54Keyframes, timeSeconds) < 0.5)
         {
             bgModel->flags &= ~(1 << 16);
             continue;
         }
         if (anim->translucencyKeyframes != NULL2)
         {
-            bgModel->translucency = interpolate_keyframes(anim->translucencyKeyframeCount, anim->translucencyKeyframes, t);
+            bgModel->translucency = interpolate_keyframes(anim->translucencyKeyframeCount, anim->translucencyKeyframes, timeSeconds);
             if (bgModel->translucency >= 1.0)
                 continue;
         }
-        if (anim->unkC != NULL2)
-            bgModel->initScale.x = interpolate_keyframes(anim->unk8, anim->unkC, t);
-        if (anim->unk14 != NULL2)
-            bgModel->initScale.y = interpolate_keyframes(anim->unk10, anim->unk14, t);
-        if (anim->unk1C != NULL2)
-            bgModel->initScale.z = interpolate_keyframes(anim->unk18, anim->unk1C, t);
-        if (anim->unk24 != NULL2)
-            bgModel->initRotX = DEGREES_TO_S16(interpolate_keyframes(anim->unk20, anim->unk24, t));
-        if (anim->unk2C != NULL2)
-            bgModel->initRotY = DEGREES_TO_S16(interpolate_keyframes(anim->unk28, anim->unk2C, t));
-        if (anim->unk34 != NULL2)
-            bgModel->initRotZ = DEGREES_TO_S16(interpolate_keyframes(anim->unk30, anim->unk34, t));
-        if (anim->unk3C != NULL2)
-            bgModel->initPos.x = interpolate_keyframes(anim->unk38, anim->unk3C, t);
-        if (anim->unk44 != NULL2)
-            bgModel->initPos.y = interpolate_keyframes(anim->unk40, anim->unk44, t);
-        if (anim->unk4C != NULL2)
-            bgModel->initPos.z = interpolate_keyframes(anim->unk48, anim->unk4C, t);
+        if (anim->scaleXKeyframes != NULL2)
+            bgModel->scale.x = interpolate_keyframes(anim->scaleXKeyframeCount, anim->scaleXKeyframes, timeSeconds);
+        if (anim->scaleYKeyframes != NULL2)
+            bgModel->scale.y = interpolate_keyframes(anim->scaleYKeyframeCount, anim->scaleYKeyframes, timeSeconds);
+        if (anim->scaleZKeyframes != NULL2)
+            bgModel->scale.z = interpolate_keyframes(anim->scaleZKeyframeCount, anim->scaleZKeyframes, timeSeconds);
+        if (anim->rotXKeyframeCount != NULL2)
+            bgModel->rotX = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframes, anim->rotXKeyframeCount, timeSeconds));
+        if (anim->rotYKeyframeCount != NULL2)
+            bgModel->rotY = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframes, anim->rotYKeyframeCount, timeSeconds));
+        if (anim->rotZKeyframeCount != NULL2)
+            bgModel->rotZ = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframes, anim->rotZKeyframeCount, timeSeconds));
+        if (anim->posXKeyframeCount != NULL2)
+            bgModel->pos.x = interpolate_keyframes(anim->posXKeyframes, anim->posXKeyframeCount, timeSeconds);
+        if (anim->posYKeyframeCount != NULL2)
+            bgModel->pos.y = interpolate_keyframes(anim->posYKeyframes, anim->posYKeyframeCount, timeSeconds);
+        if (anim->posZKeyframeCount != NULL2)
+            bgModel->pos.z = interpolate_keyframes(anim->posZKeyframes, anim->posZKeyframeCount, timeSeconds);
         if ((bgModel->flags & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
-            mathutil_mtxA_from_translate(&bgModel->initPos);
-            mathutil_mtxA_rotate_z(bgModel->initRotZ);
-            mathutil_mtxA_rotate_y(bgModel->initRotY);
-            mathutil_mtxA_rotate_x(bgModel->initRotX);
-            mathutil_mtxA_tf_point(&bgModel->model->boundSphereCenter, &sp1C);
-            func_800390C8(5, &sp1C, 1.0f);
+            mathutil_mtxA_from_translate(&bgModel->pos);
+            mathutil_mtxA_rotate_z(bgModel->rotZ);
+            mathutil_mtxA_rotate_y(bgModel->rotY);
+            mathutil_mtxA_rotate_x(bgModel->rotX);
+            mathutil_mtxA_tf_point(&bgModel->model->boundSphereCenter, &boundSphereCenter);
+            func_800390C8(5, &boundSphereCenter, 1.0f);
         }
     }
 }
@@ -701,13 +701,13 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         if ((model = b->model) == NULL)
             continue;
         mathutil_mtxA_from_mtx(a);
-        mathutil_mtxA_translate(&b->initPos);
-        mathutil_mtxA_rotate_z(b->initRotZ);
-        mathutil_mtxA_rotate_y(b->initRotY);
-        mathutil_mtxA_rotate_x(b->initRotX);
-        mathutil_mtxA_scale(&b->initScale);
-        f29 = MAX(b->initScale.x, b->initScale.y);
-        f29 = MAX(b->initScale.z, f29);
+        mathutil_mtxA_translate(&b->pos);
+        mathutil_mtxA_rotate_z(b->rotZ);
+        mathutil_mtxA_rotate_y(b->rotY);
+        mathutil_mtxA_rotate_x(b->rotX);
+        mathutil_mtxA_scale(&b->scale);
+        f29 = MAX(b->scale.x, b->scale.y);
+        f29 = MAX(b->scale.z, f29);
         if ((lbl_801EEC90.unk0 & (1 << 2))
          && func_8000E444(&model->boundSphereCenter) < -(f29 * model->boundSphereRadius))
             continue;

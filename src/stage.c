@@ -1196,29 +1196,29 @@ void compute_stage_bounding_sphere(void)
                 if (!r4)
                 {
                     r4 = TRUE;
-                    min.x = model->boundsCenter.x - model->boundsRadius;
-                    min.y = model->boundsCenter.y - model->boundsRadius;
-                    min.z = model->boundsCenter.z - model->boundsRadius;
+                    min.x = model->boundSphereCenter.x - model->boundSphereRadius;
+                    min.y = model->boundSphereCenter.y - model->boundSphereRadius;
+                    min.z = model->boundSphereCenter.z - model->boundSphereRadius;
 
-                    max.x = model->boundsCenter.x + model->boundsRadius;
-                    max.y = model->boundsCenter.y + model->boundsRadius;
-                    max.z = model->boundsCenter.z + model->boundsRadius;
+                    max.x = model->boundSphereCenter.x + model->boundSphereRadius;
+                    max.y = model->boundSphereCenter.y + model->boundSphereRadius;
+                    max.z = model->boundSphereCenter.z + model->boundSphereRadius;
                 }
                 else
                 {
-                    if (model->boundsCenter.x - model->boundsRadius < min.x)
-                        min.x = model->boundsCenter.x - model->boundsRadius;
-                    if (model->boundsCenter.y - model->boundsRadius < min.y)
-                        min.y = model->boundsCenter.y - model->boundsRadius;
-                    if (model->boundsCenter.z - model->boundsRadius < min.z)
-                        min.z = model->boundsCenter.z - model->boundsRadius;
+                    if (model->boundSphereCenter.x - model->boundSphereRadius < min.x)
+                        min.x = model->boundSphereCenter.x - model->boundSphereRadius;
+                    if (model->boundSphereCenter.y - model->boundSphereRadius < min.y)
+                        min.y = model->boundSphereCenter.y - model->boundSphereRadius;
+                    if (model->boundSphereCenter.z - model->boundSphereRadius < min.z)
+                        min.z = model->boundSphereCenter.z - model->boundSphereRadius;
 
-                    if (model->boundsCenter.x + model->boundsRadius > max.x)
-                        max.x = model->boundsCenter.x + model->boundsRadius;
-                    if (model->boundsCenter.y + model->boundsRadius > max.y)
-                        max.y = model->boundsCenter.y + model->boundsRadius;
-                    if (model->boundsCenter.z + model->boundsRadius > max.z)
-                        max.z = model->boundsCenter.z + model->boundsRadius;
+                    if (model->boundSphereCenter.x + model->boundSphereRadius > max.x)
+                        max.x = model->boundSphereCenter.x + model->boundSphereRadius;
+                    if (model->boundSphereCenter.y + model->boundSphereRadius > max.y)
+                        max.y = model->boundSphereCenter.y + model->boundSphereRadius;
+                    if (model->boundSphereCenter.z + model->boundSphereRadius > max.z)
+                        max.z = model->boundSphereCenter.z + model->boundSphereRadius;
                 }
             }
             r3++;
@@ -1242,29 +1242,29 @@ void compute_stage_bounding_sphere(void)
                     if (!r4)
                     {
                         r4 = TRUE;
-                        min.x = model->boundsCenter.x - model->boundsRadius;
-                        min.y = model->boundsCenter.y - model->boundsRadius;
-                        min.z = model->boundsCenter.z - model->boundsRadius;
+                        min.x = model->boundSphereCenter.x - model->boundSphereRadius;
+                        min.y = model->boundSphereCenter.y - model->boundSphereRadius;
+                        min.z = model->boundSphereCenter.z - model->boundSphereRadius;
 
-                        max.x = model->boundsCenter.x + model->boundsRadius;
-                        max.y = model->boundsCenter.y + model->boundsRadius;
-                        max.z = model->boundsCenter.z + model->boundsRadius;
+                        max.x = model->boundSphereCenter.x + model->boundSphereRadius;
+                        max.y = model->boundSphereCenter.y + model->boundSphereRadius;
+                        max.z = model->boundSphereCenter.z + model->boundSphereRadius;
                     }
                     else
                     {
-                        if (model->boundsCenter.x - model->boundsRadius < min.x)
-                            min.x = model->boundsCenter.x - model->boundsRadius;
-                        if (model->boundsCenter.y - model->boundsRadius < min.y)
-                            min.y = model->boundsCenter.y - model->boundsRadius;
-                        if (model->boundsCenter.z - model->boundsRadius < min.z)
-                            min.z = model->boundsCenter.z - model->boundsRadius;
+                        if (model->boundSphereCenter.x - model->boundSphereRadius < min.x)
+                            min.x = model->boundSphereCenter.x - model->boundSphereRadius;
+                        if (model->boundSphereCenter.y - model->boundSphereRadius < min.y)
+                            min.y = model->boundSphereCenter.y - model->boundSphereRadius;
+                        if (model->boundSphereCenter.z - model->boundSphereRadius < min.z)
+                            min.z = model->boundSphereCenter.z - model->boundSphereRadius;
 
-                        if (model->boundsCenter.x + model->boundsRadius > max.x)
-                            max.x = model->boundsCenter.x + model->boundsRadius;
-                        if (model->boundsCenter.y + model->boundsRadius > max.y)
-                            max.y = model->boundsCenter.y + model->boundsRadius;
-                        if (model->boundsCenter.z + model->boundsRadius > max.z)
-                            max.z = model->boundsCenter.z + model->boundsRadius;
+                        if (model->boundSphereCenter.x + model->boundSphereRadius > max.x)
+                            max.x = model->boundSphereCenter.x + model->boundSphereRadius;
+                        if (model->boundSphereCenter.y + model->boundSphereRadius > max.y)
+                            max.y = model->boundSphereCenter.y + model->boundSphereRadius;
+                        if (model->boundSphereCenter.z + model->boundSphereRadius > max.z)
+                            max.z = model->boundSphereCenter.z + model->boundSphereRadius;
                     }
                 }
             }
@@ -1505,7 +1505,7 @@ void func_800463E8(Vec *a, float *b)
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&model->boundsCenter, &sp10);
+                    mathutil_mtxA_tf_point(&model->boundSphereCenter, &sp10);
                     var1 = func_80046884(model);
                     f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
                     if (result < f0)
@@ -1540,7 +1540,7 @@ extern void g_some_stage_vtx_callback_2();
 
 float func_80046884(struct NaomiModel *model)
 {
-    lbl_8020ADE4.unk0 = model->boundsCenter;
+    lbl_8020ADE4.unk0 = model->boundSphereCenter;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
     g_apply_func_to_naomi_model_vertices(model, g_some_stage_vtx_callback_1, g_some_stage_vtx_callback_2);
@@ -1880,26 +1880,26 @@ void adjust_stage_anim_ptrs(struct StageItemgroupAnim **animp, struct Stage *bas
 void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
 {
     *unkp = OFFSET_TO_PTR(baseptr, *unkp);
-    if ((*unkp)->unkC != NULL)
-        (*unkp)->unkC = OFFSET_TO_PTR(baseptr, (*unkp)->unkC);
-    if ((*unkp)->unk14 != NULL)
-        (*unkp)->unk14 = OFFSET_TO_PTR(baseptr, (*unkp)->unk14);
-    if ((*unkp)->unk1C != NULL)
-        (*unkp)->unk1C = OFFSET_TO_PTR(baseptr, (*unkp)->unk1C);
-    if ((*unkp)->unk24 != NULL)
-        (*unkp)->unk24 = OFFSET_TO_PTR(baseptr, (*unkp)->unk24);
-    if ((*unkp)->unk2C != NULL)
-        (*unkp)->unk2C = OFFSET_TO_PTR(baseptr, (*unkp)->unk2C);
-    if ((*unkp)->unk34 != NULL)
-        (*unkp)->unk34 = OFFSET_TO_PTR(baseptr, (*unkp)->unk34);
-    if ((*unkp)->unk3C != NULL)
-        (*unkp)->unk3C = OFFSET_TO_PTR(baseptr, (*unkp)->unk3C);
-    if ((*unkp)->unk44 != NULL)
-        (*unkp)->unk44 = OFFSET_TO_PTR(baseptr, (*unkp)->unk44);
-    if ((*unkp)->unk4C != NULL)
-        (*unkp)->unk4C = OFFSET_TO_PTR(baseptr, (*unkp)->unk4C);
-    if ((*unkp)->unk54 != NULL)
-        (*unkp)->unk54 = OFFSET_TO_PTR(baseptr, (*unkp)->unk54);
+    if ((*unkp)->scaleXKeyframes != NULL)
+        (*unkp)->scaleXKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->scaleXKeyframes);
+    if ((*unkp)->scaleYKeyframes != NULL)
+        (*unkp)->scaleYKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->scaleYKeyframes);
+    if ((*unkp)->scaleZKeyframes != NULL)
+        (*unkp)->scaleZKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->scaleZKeyframes);
+    if ((*unkp)->rotXKeyframeCount != NULL)
+        (*unkp)->rotXKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->rotXKeyframeCount);
+    if ((*unkp)->rotYKeyframeCount != NULL)
+        (*unkp)->rotYKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->rotYKeyframeCount);
+    if ((*unkp)->rotZKeyframeCount != NULL)
+        (*unkp)->rotZKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->rotZKeyframeCount);
+    if ((*unkp)->posXKeyframeCount != NULL)
+        (*unkp)->posXKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posXKeyframeCount);
+    if ((*unkp)->posYKeyframeCount != NULL)
+        (*unkp)->posYKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posYKeyframeCount);
+    if ((*unkp)->posZKeyframeCount != NULL)
+        (*unkp)->posZKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posZKeyframeCount);
+    if ((*unkp)->unk54Keyframes != NULL)
+        (*unkp)->unk54Keyframes = OFFSET_TO_PTR(baseptr, (*unkp)->unk54Keyframes);
     if ((*unkp)->translucencyKeyframes != NULL)
         (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }
@@ -2116,9 +2116,9 @@ void stage_draw(void)
                         struct NaomiModel *model = (void *)r27->unk4;
                         if (r27->unk4 != NULL)
                         {
-                            float diameter = model->boundsRadius * 2.0;
+                            float diameter = model->boundSphereRadius * 2.0;
 
-                            mathutil_mtxA_tf_point(&model->boundsCenter, &sp38);
+                            mathutil_mtxA_tf_point(&model->boundSphereCenter, &sp38);
                             if (sp38.z < -1.1920928955078125e-07f)
                             {
                                 float f1 = -sp38.z * f29;
