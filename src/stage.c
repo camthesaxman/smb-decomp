@@ -1,14 +1,14 @@
+#include <dolphin.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <dolphin.h>
 
 #define MATHUTIL_SIN_INT_PARAM
-#include "global.h"
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
 #include "event.h"
+#include "global.h"
 #include "gxutil.h"
 #include "info.h"
 #include "load.h"
@@ -34,26 +34,24 @@ struct Struct802F0990
     struct DynamicStagePart *unk4;
 };
 
-struct Struct802F0990 lbl_802F0990[1] =
-{
-    { ST_092_BONUS_WAVE, lbl_80206D00 },
+struct Struct802F0990 lbl_802F0990[1] = {
+    {ST_092_BONUS_WAVE, lbl_80206D00},
 };
 
 int loadedStageId = -1;
 int lbl_802F099C = -1;
 
-struct Preview stagePreview;  // 78
+struct Preview stagePreview; // 78
 
 struct Struct80206DEC lbl_80206DEC;
 
-struct ItemgroupInfo itemgroups[0x48];  // 148
+struct ItemgroupInfo itemgroups[0x48]; // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
 FORCE_BSS_ORDER(lbl_80206DEC)
 
-char *lbl_801B86D8[] =
-{
+char *lbl_801B86D8[] = {
     "GOAL",
     "GOAL_G",
     "GOAL_R",
@@ -78,18 +76,14 @@ void ev_stage_init(void)
     previewLoaded = FALSE;
     if (gameMode == MD_GAME && gameSubmode != SMD_GAME_NAMEENTRY_READY_INIT)
     {
-        if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+        if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL ||
+            modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         {
             int r5 = func_800673BC();
             if (r5 > 0 && r5 <= 200)
             {
-                preview_create_with_alloc_img(
-                    &stagePreview,
-                    "preview/140x140.tpl",
-                    r5 - 1,
-                    140,
-                    140,
-                    GX_TF_RGB5A3);
+                preview_create_with_alloc_img(&stagePreview, "preview/140x140.tpl", r5 - 1, 140,
+                                              140, GX_TF_RGB5A3);
                 g_preview_wait_then_do_something(&stagePreview);
                 previewLoaded = TRUE;
             }
@@ -99,7 +93,7 @@ void ev_stage_init(void)
 
 void ev_stage_main(void)
 {
-    struct ItemgroupInfo *movpart;
+    struct ItemgroupInfo *itemgroup;
     struct StageItemgroup *coll;
     float f31;
     float f30;
@@ -108,7 +102,7 @@ void ev_stage_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    if (infoWork.unk0 & (1 << (31-0x17)))
+    if (infoWork.unk0 & (1 << (31 - 0x17)))
     {
         if (modeCtrl.unk0 > 0x78)
             lbl_80206DEC.g_stageTimer = 0.0f;
@@ -116,9 +110,10 @@ void ev_stage_main(void)
             lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.unk0;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (infoWork.unk0 & (1 << (31-0x1B)))
+    else if (infoWork.unk0 & (1 << (31 - 0x1B)))
     {
-        lbl_80206DEC.g_stageTimer = func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
+        lbl_80206DEC.g_stageTimer =
+            func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
         lbl_80206DEC.unk0 = lbl_80206DEC.g_stageTimer;
     }
     else
@@ -151,9 +146,9 @@ void ev_stage_main(void)
             *r5 = f3;
         }
     }
-    movpart = itemgroups;
+    itemgroup = itemgroups;
     coll = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, coll++)
     {
         int j;
         struct StageItemgroupAnim *anim = coll->anim;
@@ -174,50 +169,56 @@ void ev_stage_main(void)
         }
         if (anim->rotXKeyframes != NULL2)
         {
-            movpart->prevRot.x = movpart->rot.x;
-            movpart->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
+            itemgroup->prevRot.x = itemgroup->rot.x;
+            itemgroup->rot.x = DEGREES_TO_S16(
+                interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
         }
         if (anim->rotYKeyframes != NULL2)
         {
-            movpart->prevRot.y = movpart->rot.y;
-            movpart->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
+            itemgroup->prevRot.y = itemgroup->rot.y;
+            itemgroup->rot.y = DEGREES_TO_S16(
+                interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
         }
         if (anim->rotZKeyframes != NULL2)
         {
-            movpart->prevRot.z = movpart->rot.z;
-            movpart->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
+            itemgroup->prevRot.z = itemgroup->rot.z;
+            itemgroup->rot.z = DEGREES_TO_S16(
+                interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
         }
         if (anim->posXKeyframes != NULL2)
         {
-            movpart->prevPos.x = movpart->pos.x - coll->unkB8.x;
-            movpart->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, f31);
+            itemgroup->prevPos.x = itemgroup->pos.x - coll->unkB8.x;
+            itemgroup->pos.x =
+                interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, f31);
         }
         if (anim->posYKeyframes != NULL2)
         {
-            movpart->prevPos.y = movpart->pos.y - coll->unkB8.y;
-            movpart->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, f31);
+            itemgroup->prevPos.y = itemgroup->pos.y - coll->unkB8.y;
+            itemgroup->pos.y =
+                interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, f31);
         }
         if (anim->posZKeyframes != NULL2)
         {
-            movpart->prevPos.z = movpart->pos.z - coll->unkB8.z;
-            movpart->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, f31);
+            itemgroup->prevPos.z = itemgroup->pos.z - coll->unkB8.z;
+            itemgroup->pos.z =
+                interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, f31);
         }
-        mathutil_mtxA_from_translate(&movpart->pos);
-        mathutil_mtxA_rotate_z(movpart->rot.z);
-        mathutil_mtxA_rotate_y(movpart->rot.y);
-        mathutil_mtxA_rotate_x(movpart->rot.x - coll->initRot.x);
+        mathutil_mtxA_from_translate(&itemgroup->pos);
+        mathutil_mtxA_rotate_z(itemgroup->rot.z);
+        mathutil_mtxA_rotate_y(itemgroup->rot.y);
+        mathutil_mtxA_rotate_x(itemgroup->rot.x - coll->initRot.x);
         mathutil_mtxA_rotate_y(-coll->initRot.y);
         mathutil_mtxA_rotate_z(-coll->initRot.z);
         mathutil_mtxA_translate_neg(&coll->initPos);
-        mathutil_mtxA_to_mtx(movpart->transform);
-        mathutil_mtxA_from_translate(&movpart->prevPos);
-        mathutil_mtxA_rotate_z(movpart->prevRot.z);
-        mathutil_mtxA_rotate_y(movpart->prevRot.y);
-        mathutil_mtxA_rotate_x(movpart->prevRot.x - coll->initRot.x);
+        mathutil_mtxA_to_mtx(itemgroup->transform);
+        mathutil_mtxA_from_translate(&itemgroup->prevPos);
+        mathutil_mtxA_rotate_z(itemgroup->prevRot.z);
+        mathutil_mtxA_rotate_y(itemgroup->prevRot.y);
+        mathutil_mtxA_rotate_x(itemgroup->prevRot.x - coll->initRot.x);
         mathutil_mtxA_rotate_y(-coll->initRot.y);
         mathutil_mtxA_rotate_z(-coll->initRot.z);
         mathutil_mtxA_translate_neg(&coll->initPos);
-        mathutil_mtxA_to_mtx(movpart->prevTransform);
+        mathutil_mtxA_to_mtx(itemgroup->prevTransform);
     }
     if (lbl_80206DEC.unk8 != NULL)
         lbl_80206DEC.unk8();
@@ -230,7 +231,8 @@ void ev_stage_main(void)
         {
             memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
             // responsible for warping vertices in the Bonus Wave model
-            g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
+            g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc,
+                                                 dyn->posColorTexFunc);
             dyn++;
         }
     }
@@ -273,8 +275,8 @@ void draw_blur_bridge_accordions(void)
 {
     float t;
     float f30;
-    struct ItemgroupInfo *movpart;
-    struct StageItemgroup *r30;
+    struct ItemgroupInfo *itemgroup;
+    struct StageItemgroup *stageIg;
     int i;
 
     if (blurBridgeAccordion == NULL2)
@@ -284,19 +286,21 @@ void draw_blur_bridge_accordions(void)
     f30 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     t -= f30 * mathutil_floor(t / f30);
     t += (float)decodedStageLzPtr->loopStartSeconds;
-    movpart = &itemgroups[1];
-    r30 = decodedStageLzPtr->itemgroups + 1;
-    for (i = 1; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
+    itemgroup = &itemgroups[1];
+    stageIg = decodedStageLzPtr->itemgroups + 1;
+    for (i = 1; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, stageIg++)
     {
-        if (r30->unk7C > 0 && r30->anim != NULL2)
+        if (stageIg->unk7C > 0 && stageIg->anim != NULL2)
         {
             u32 r28;
             Vec sp10;
-            float f27 = movpart->pos.x;
+            float f27 = itemgroup->pos.x;
 
             f30 = f27;
-            if (r30->anim->posXKeyframes != NULL2)
-                f30 = interpolate_keyframes(r30->anim->posXKeyframeCount, r30->anim->posXKeyframes, t - 0.5);
+            if (stageIg->anim->posXKeyframes != NULL2)
+                f30 = interpolate_keyframes(stageIg->anim->posXKeyframeCount,
+                                            stageIg->anim->posXKeyframes,
+                                            t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
             {
@@ -310,8 +314,8 @@ void draw_blur_bridge_accordions(void)
                 f30 = f30 - f27;
                 r28 = 1;
             }
-            sp10.y = movpart->pos.y;
-            sp10.z = movpart->pos.z;
+            sp10.y = itemgroup->pos.y;
+            sp10.z = itemgroup->pos.z;
             mathutil_mtxA_translate(&sp10);
             if (r28)
                 mathutil_mtxA_rotate_y(-0x8000);
@@ -352,32 +356,38 @@ void animate_itemgroups(float a)
             if (anim->rotXKeyframes != NULL2)
             {
                 itemgroup->prevRot.x = itemgroup->rot.x;
-                itemgroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, timeSeconds));
+                itemgroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(
+                    anim->rotXKeyframeCount, anim->rotXKeyframes, timeSeconds));
             }
             if (anim->rotYKeyframes != NULL2)
             {
                 itemgroup->prevRot.y = itemgroup->rot.y;
-                itemgroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, timeSeconds));
+                itemgroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(
+                    anim->rotYKeyframeCount, anim->rotYKeyframes, timeSeconds));
             }
             if (anim->rotZKeyframes != NULL2)
             {
                 itemgroup->prevRot.z = itemgroup->rot.z;
-                itemgroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, timeSeconds));
+                itemgroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(
+                    anim->rotZKeyframeCount, anim->rotZKeyframes, timeSeconds));
             }
             if (anim->posXKeyframes != NULL2)
             {
                 itemgroup->prevPos.x = itemgroup->pos.x;
-                itemgroup->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, timeSeconds);
+                itemgroup->pos.x = interpolate_keyframes(anim->posXKeyframeCount,
+                                                         anim->posXKeyframes, timeSeconds);
             }
             if (anim->posYKeyframes != NULL2)
             {
                 itemgroup->prevPos.y = itemgroup->pos.y;
-                itemgroup->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, timeSeconds);
+                itemgroup->pos.y = interpolate_keyframes(anim->posYKeyframeCount,
+                                                         anim->posYKeyframes, timeSeconds);
             }
             if (anim->posZKeyframes != NULL2)
             {
                 itemgroup->prevPos.z = itemgroup->pos.z;
-                itemgroup->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, timeSeconds);
+                itemgroup->pos.z = interpolate_keyframes(anim->posZKeyframeCount,
+                                                         anim->posZKeyframes, timeSeconds);
             }
             mathutil_mtxA_from_translate(&itemgroup->pos);
             mathutil_mtxA_rotate_z(itemgroup->rot.z);
@@ -399,7 +409,7 @@ void g_initialize_stage_dyn_part_info(void)
     {
         u8 filler0[0x5C];
         s8 unk5C;
-        u8 filler65[0xC9-0x5D];
+        u8 filler65[0xC9 - 0x5D];
     } useless;
 
     memset(&useless, 0, sizeof(useless));
@@ -418,34 +428,36 @@ void g_initialize_stage_dyn_part_info(void)
 
 void func_8004482C(void)
 {
-    struct ItemgroupInfo *movpart;
-    struct StageItemgroup *coll;
+    struct ItemgroupInfo *itemgroup;
+    struct StageItemgroup *stageIg;
     int i;
 
-    movpart = itemgroups;
-    coll = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < 0x48; i++, movpart++, coll++)
+    itemgroup = itemgroups;
+    stageIg = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < 0x48; i++, itemgroup++, stageIg++)
     {
-        movpart->pos.x = coll->initPos.x;
-        movpart->pos.y = coll->initPos.y;
-        movpart->pos.z = coll->initPos.z;
-        movpart->prevPos.x = coll->initPos.x - coll->unkB8.x;
-        movpart->prevPos.y = coll->initPos.y - coll->unkB8.y;
-        movpart->prevPos.z = coll->initPos.z - coll->unkB8.z;
-        movpart->rot.x = coll->initRot.x;
-        movpart->rot.y = coll->initRot.y;
-        movpart->rot.z = coll->initRot.z;
-        movpart->prevRot.x = coll->initRot.x;
-        movpart->prevRot.y = coll->initRot.y;
-        movpart->prevRot.z = coll->initRot.z;
+        itemgroup->pos.x = stageIg->initPos.x;
+        itemgroup->pos.y = stageIg->initPos.y;
+        itemgroup->pos.z = stageIg->initPos.z;
+        itemgroup->prevPos.x = stageIg->initPos.x - stageIg->unkB8.x;
+        itemgroup->prevPos.y = stageIg->initPos.y - stageIg->unkB8.y;
+        itemgroup->prevPos.z = stageIg->initPos.z - stageIg->unkB8.z;
+        itemgroup->rot.x = stageIg->initRot.x;
+        itemgroup->rot.y = stageIg->initRot.y;
+        itemgroup->rot.z = stageIg->initRot.z;
+        itemgroup->prevRot.x = stageIg->initRot.x;
+        itemgroup->prevRot.y = stageIg->initRot.y;
+        itemgroup->prevRot.z = stageIg->initRot.z;
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_to_mtx(movpart->transform);
-        mathutil_mtxA_translate_neg(&coll->unkB8);
-        mathutil_mtxA_to_mtx(movpart->prevTransform);
+        mathutil_mtxA_to_mtx(itemgroup->transform);
+        mathutil_mtxA_translate_neg(&stageIg->unkB8);
+        mathutil_mtxA_to_mtx(itemgroup->prevTransform);
     }
 }
 
-void func_80044920(void) {}
+void func_80044920(void)
+{
+}
 
 void load_stage(int stageId)
 {
@@ -490,8 +502,9 @@ void load_stage(int stageId)
     load_bg_files(get_stage_background(stageId));
     if (loadedStageId != stageId || bgChanged)
     {
-        itemgroupCount = decodedStageLzPtr->itemgroupCount < 0x48 ? decodedStageLzPtr->itemgroupCount : 0x48;
-        if (gamePauseStatus & (1 << (31-0x1D)))
+        itemgroupCount =
+            decodedStageLzPtr->itemgroupCount < 0x48 ? decodedStageLzPtr->itemgroupCount : 0x48;
+        if (gamePauseStatus & (1 << (31 - 0x1D)))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
         func_80045194();
@@ -540,8 +553,7 @@ void unload_stage(void)
     func_8005507C();
 }
 
-u8 naomiStages[] =
-{
+u8 naomiStages[] = {
     ST_010_ARCADE_SPIRAL_HARD,
     ST_019_ARCADE_DIAMOND,
     ST_020_ARCADE_TRACKS,
@@ -654,7 +666,7 @@ struct Struct802099E8
     s32 unk8;
 };
 
-struct Struct80209D48  // maybe StageModel?
+struct Struct80209D48 // maybe StageModel?
 {
     u32 unk0;
     void *unk4;
@@ -667,7 +679,7 @@ void *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct80209D48 lbl_80209D48[0x80];
 
-struct Struct8020A348 lbl_8020A348[0x108];  //0x3648
+struct Struct8020A348 lbl_8020A348[0x108]; // 0x3648
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
 struct GMAModel *goalModels[3];
 struct Sphere stageBounds;
@@ -682,7 +694,8 @@ FORCE_BSS_ORDER(lbl_8020AB88)
 FORCE_BSS_ORDER(goalModels)
 FORCE_BSS_ORDER(stageBounds)
 
-struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj, (struct NaomiObj **)&naomiCommonObj, NULL};
+struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj,
+                                    (struct NaomiObj **)&naomiCommonObj, NULL};
 
 struct Struct80044E18
 {
@@ -690,7 +703,7 @@ struct Struct80044E18
     char **unk4[];
 };
 
-struct Struct80044E18_2  // r17_
+struct Struct80044E18_2 // r17_
 {
     u32 unk0;
     u32 unk4;
@@ -713,7 +726,7 @@ void func_80044E18(void)
     char **r21;
     struct NaomiObj ***r25;
     struct NaomiObj ***r24;
-    int i;  // r20
+    int i; // r20
     struct Struct80209D48 *r17_;
     struct StageModel *r18;
     int r30_;
@@ -752,7 +765,7 @@ void func_80044E18(void)
                 if (**r24 != NULL)
                 {
                     struct NaomiModel **modelPtrs = (**r24)->modelPtrs;
-                    int j;  // r23
+                    int j; // r23
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
                         if (strcmp(*r21, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
@@ -762,9 +775,9 @@ void func_80044E18(void)
                         }
                     }
                 }
-                //lbl_80044F00
+                // lbl_80044F00
                 r24++;
-                //lbl_80044F04
+                // lbl_80044F04
             }
             r25 = lbl_801B8794;
             while (*r25 != NULL)
@@ -772,7 +785,7 @@ void func_80044E18(void)
                 if (**r25 != NULL)
                 {
                     struct NaomiModel **modelPtrs = (**r25)->modelPtrs;
-                    int j;  // r23
+                    int j; // r23
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
                         if (strcmp(sp10, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
@@ -782,7 +795,7 @@ void func_80044E18(void)
                         }
                     }
                 }
-                //lbl_80044F70
+                // lbl_80044F70
                 r25++;
             }
 
@@ -794,7 +807,7 @@ void func_80044E18(void)
                 if (r31 != r18)
                     *r29++ = r31;
             }
-            //lbl_80044FAC
+            // lbl_80044FAC
             if (r18 != NULL)
             {
                 *r17++ = (void *)r18;
@@ -806,19 +819,18 @@ void func_80044E18(void)
                 if (r19 >= 0x47)
                     break;
             }
-            //lbl_80044FF0
-
+            // lbl_80044FF0
 
             r21++;
         }
-    //lbl_8004500C
+        // lbl_8004500C
     }
     *r17 = NULL;
     *r30 = NULL;
 
     r17_ = lbl_80209D48;
     r30_ = decodedStageLzPtr->lvlModelsCount < 0x80 ? decodedStageLzPtr->lvlModelsCount : 0x80;
-    //i = r26
+    // i = r26
     lbl_802F1F4C = 0;
     r18 = decodedStageLzPtr->lvlModels;
     for (i = 0; i < r30_; i++, r17_++, r18++)
@@ -835,7 +847,8 @@ void func_80044E18(void)
                 int j;
                 for (j = 0; r3[j] != NULL; j++)
                 {
-                    int len = string_match_len(NLMODEL_HEADER(r3[j])->unk0 + 4, (void *)r18->nameOffset);
+                    int len =
+                        string_match_len(NLMODEL_HEADER(r3[j])->unk0 + 4, (void *)r18->nameOffset);
                     if (len > r19)
                     {
                         r19 = len;
@@ -843,7 +856,7 @@ void func_80044E18(void)
                     }
                 }
             }
-            //lbl_800450B0
+            // lbl_800450B0
             r20++;
         }
         r17_->unk0 = r18->unk0;
@@ -855,13 +868,13 @@ void func_80044E18(void)
             if ((r17_->unk0 & 3) == 1)
                 lbl_802F1F4C += NLMODEL_HEADER(r31)->unk4->modelSize;
         }
-        //lbl_8004510C
+        // lbl_8004510C
         else
             r17_->unk4 = NULL;
     }
 
     // i = r6
-    //r4 = 0;
+    // r4 = 0;
     r4 = 0;
     r5 = decodedStageLzPtr->itemgroups;
     r7 = lbl_8020A348;
@@ -869,8 +882,8 @@ void func_80044E18(void)
     {
         r7->unk0 = (void *)&lbl_80209D48[r4];
         r7->unk4 = r5->unk7C;
-        //r7++;
-        //r5++;
+        // r7++;
+        // r5++;
         r4 += r5->unk7C;
     }
     *r29 = NULL;
@@ -967,7 +980,8 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
                 struct NaomiModel **modelPtrs = nobj->modelPtrs;
                 for (i = 0; modelPtrs[i] != NULL; i++)
                 {
-                    int var = string_match_len(dyn->modelName, NLMODEL_HEADER(modelPtrs[i])->unk0 + 4);
+                    int var =
+                        string_match_len(dyn->modelName, NLMODEL_HEADER(modelPtrs[i])->unk0 + 4);
                     if (var > r27)
                     {
                         r27 = var;
@@ -1036,7 +1050,7 @@ void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
     }
     vtx.nx += spC.x;
     vtx.nz += spC.z;
-    mathutil_vec_normalize_len((Vec *)&vtx.nx);  // TODO: make this a Vec?
+    mathutil_vec_normalize_len((Vec *)&vtx.nx); // TODO: make this a Vec?
     *vtxp = vtx;
 }
 
@@ -1361,16 +1375,16 @@ void func_800463E8(Vec *a, float *b)
 
     if (decodedStageGmaPtr != NULL)
     {
-        struct ItemgroupInfo *movpart = itemgroups;
+        struct ItemgroupInfo *itemgroup = itemgroups;
         struct Struct8020A348 *iter2 = lbl_8020AB88;
         int j;
         int i;
 
-        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(movpart->transform);
+            mathutil_mtxA_from_mtx(itemgroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1408,13 +1422,13 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        movpart = itemgroups;
+        itemgroup = itemgroups;
         iter2 = lbl_8020AB88;
-        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(movpart->transform);
+            mathutil_mtxA_from_mtx(itemgroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1428,7 +1442,8 @@ void func_800463E8(Vec *a, float *b)
                         continue;
                     mathutil_mtxA_tf_point(&r28->boundSphereCenter, &sp28);
                     var1 = r28->boundSphereRadius;
-                    f0 = var1 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
+                    f0 = var1 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) +
+                                              (sp40.z - sp28.z) * (sp40.z - sp28.z));
                     if (result < f0)
                         result = f0;
                 }
@@ -1441,15 +1456,15 @@ void func_800463E8(Vec *a, float *b)
     }
     else if (decodedStageLzPtr != NULL && decodedStageLzPtr->lvlModels != NULL)
     {
-        struct ItemgroupInfo *movpart = itemgroups;
+        struct ItemgroupInfo *itemgroup = itemgroups;
         struct Struct8020A348 *iter2 = lbl_8020A348;
         int j;
         int i;
 
-        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
         {
             struct Struct8020A348_child *iter3;
-            mathutil_mtxA_from_mtx(movpart->transform);
+            mathutil_mtxA_from_mtx(itemgroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1487,13 +1502,13 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        movpart = itemgroups;
+        itemgroup = itemgroups;
         iter2 = lbl_8020A348;
-        for (i = 0; i < itemgroupCount; i++, iter2++, movpart++)
+        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(movpart->transform);
+            mathutil_mtxA_from_mtx(itemgroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1507,7 +1522,8 @@ void func_800463E8(Vec *a, float *b)
                         continue;
                     mathutil_mtxA_tf_point(&model->boundSphereCenter, &sp10);
                     var1 = func_80046884(model);
-                    f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) + (sp40.z - sp10.z) * (sp40.z - sp10.z));
+                    f0 = var1 + mathutil_sqrt((sp40.x - sp10.x) * (sp40.x - sp10.x) +
+                                              (sp40.z - sp10.z) * (sp40.z - sp10.z));
                     if (result < f0)
                         result = f0;
                 }
@@ -1531,7 +1547,7 @@ struct
     Vec unk0;
     float unkC;
     float unk10;
-    u8 filler14[0x1C-0x14];
+    u8 filler14[0x1C - 0x14];
 } lbl_8020ADE4;
 FORCE_BSS_ORDER(lbl_8020ADE4)
 
@@ -1543,7 +1559,8 @@ float func_80046884(struct NaomiModel *model)
     lbl_8020ADE4.unk0 = model->boundSphereCenter;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
-    g_apply_func_to_naomi_model_vertices(model, g_some_stage_vtx_callback_1, g_some_stage_vtx_callback_2);
+    g_apply_func_to_naomi_model_vertices(model, g_some_stage_vtx_callback_1,
+                                         g_some_stage_vtx_callback_2);
     return lbl_8020ADE4.unk10;
 }
 
@@ -1581,7 +1598,7 @@ void g_some_stage_vtx_callback_1(Point3d *vtx)
     lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
 }
 
-void g_some_stage_vtx_callback_2(Point3d *vtx)  // duplicate of g_some_stage_vtx_callback_1
+void g_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of g_some_stage_vtx_callback_1
 {
     Vec spC;
     float f1;
@@ -1599,7 +1616,7 @@ void g_some_stage_vtx_callback_2(Point3d *vtx)  // duplicate of g_some_stage_vtx
 char string_warning__s___no_match_n[] = "warning %s : no match\n";
 char string_warning_BG__s___no_match_n[] = "warning BG %s : no match\n";
 char string_warning_MV__s___no_match_n[] = "warning MV %s : no match\n";
-u8 lbl_801B87FC[] = { 1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0 };
+u8 lbl_801B87FC[] = {1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0};
 
 u8 lbl_8020AE00[0x20] __attribute__((aligned(32)));
 FORCE_BSS_ORDER(lbl_8020AE00)
@@ -1678,7 +1695,8 @@ void load_stagedef(int stageId)
             s16 **r5;
 
             coll->gridCellTris = OFFSET_TO_PTR(decodedStageLzPtr, coll->gridCellTris);
-            for (j = 0, r5 = coll->gridCellTris; j < coll->gridCellCountX * coll->gridCellCountZ; j++, r5++)
+            for (j = 0, r5 = coll->gridCellTris; j < coll->gridCellCountX * coll->gridCellCountZ;
+                 j++, r5++)
             {
                 if (*r5 != NULL)
                     *r5 = OFFSET_TO_PTR(decodedStageLzPtr, *r5);
@@ -1725,7 +1743,8 @@ void load_stagedef(int stageId)
     if (decodedStageLzPtr->startPos != NULL)
         decodedStageLzPtr->startPos = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->startPos);
     if (decodedStageLzPtr->pFallOutY != NULL)
-        decodedStageLzPtr->pFallOutY = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->pFallOutY);
+        decodedStageLzPtr->pFallOutY =
+            OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->pFallOutY);
     if (decodedStageLzPtr->goals != NULL)
         decodedStageLzPtr->goals = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->goals);
     if (decodedStageLzPtr->unk24 != NULL)
@@ -1737,11 +1756,14 @@ void load_stagedef(int stageId)
     if (decodedStageLzPtr->bananas != NULL)
         decodedStageLzPtr->bananas = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->bananas);
     if (decodedStageLzPtr->coliCones != NULL)
-        decodedStageLzPtr->coliCones = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCones);
+        decodedStageLzPtr->coliCones =
+            OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCones);
     if (decodedStageLzPtr->coliCylinders != NULL)
-        decodedStageLzPtr->coliCylinders = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCylinders);
+        decodedStageLzPtr->coliCylinders =
+            OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCylinders);
     if (decodedStageLzPtr->lvlModels != NULL)
-        decodedStageLzPtr->lvlModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->lvlModels);
+        decodedStageLzPtr->lvlModels =
+            OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->lvlModels);
     if (decodedStageLzPtr->unk64 != NULL)
         decodedStageLzPtr->unk64 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk64);
     if (decodedStageLzPtr->reflObjs != NULL)
@@ -1752,11 +1774,12 @@ void load_stagedef(int stageId)
         struct StageBgModel *r28;
 
         decodedStageLzPtr->bgModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->bgModels);
-        for (i = 0, r28 = decodedStageLzPtr->bgModels; i < decodedStageLzPtr->bgModelsCount; i++, r28++)
+        for (i = 0, r28 = decodedStageLzPtr->bgModels; i < decodedStageLzPtr->bgModelsCount;
+             i++, r28++)
         {
             u32 r3 = r28->flags;
 
-            if (r3 & (1<<(31-0x10)))
+            if (r3 & (1 << (31 - 0x10)))
             {
                 r28->flags &= 0xF;
                 r28->flags |= (r3 >> 12) & 0xFFFF0;
@@ -1778,7 +1801,7 @@ void load_stagedef(int stageId)
         {
             u32 r3 = r28->flags;
 
-            if (r3 & (1<<(31-0x10)))
+            if (r3 & (1 << (31 - 0x10)))
             {
                 r28->flags = r3 & 0xF;
                 r28->flags |= (r3 >> 12) & 0xFFFF0;
@@ -1995,7 +2018,8 @@ void stage_draw(void)
                 }
                 else
                 {
-                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01));
+                    g_call_draw_naomi_model_and_do_other_stuff(
+                        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01));
                     sp7C.unk2 = 0;
                     sp7C.unk4 = NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01);
                 }
@@ -2012,7 +2036,8 @@ void stage_draw(void)
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
         g_nl2ngc_set_scale(10.0f);
-        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
+        g_call_draw_naomi_model_and_do_other_stuff(
+            NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
         g_draw_stage_collision();
@@ -2020,20 +2045,20 @@ void stage_draw(void)
     {
         if (decodedStageGmaPtr != NULL)
         {
-            struct ItemgroupInfo *movpart;
+            struct ItemgroupInfo *itemgroup;
             struct Struct8020A348 *r23;
             int j;
             struct Struct8020A348_child *r27;
             struct GMAModel *model;
 
             sp7C.unk2 = 6;
-            movpart = itemgroups;
+            itemgroup = itemgroups;
             r23 = lbl_8020AB88;
-            for (i = 0; i < itemgroupCount; i++, r23++, movpart++)
+            for (i = 0; i < itemgroupCount; i++, r23++, itemgroup++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(movpart->transform);
+                    mathutil_mtxA_mult_right(itemgroup->transform);
                 GXLoadPosMtxImm(mathutilData->mtxA, 0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, 0);
                 r27 = r23->unk0;
@@ -2042,10 +2067,10 @@ void stage_draw(void)
                     if ((r27->unk0 & 3) == 1)
                     {
                         model = r27->unk4;
-                        if (model != NULL && model != NULL)  // WTF?
+                        if (model != NULL && model != NULL) // WTF?
                         {
-                            if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D)))
-                             || (r27->unk0 & (1<<(31-0x1D))))
+                            if (!(lbl_801EEC90.unk0 & (1 << (31 - 0x1D))) ||
+                                (r27->unk0 & (1 << (31 - 0x1D))))
                             {
                                 g_avdisp_maybe_draw_model_2(model);
                                 if (r31 != 0)
@@ -2061,18 +2086,18 @@ void stage_draw(void)
         }
         else if (decodedStageLzPtr->lvlModels == NULL)
         {
-            struct ItemgroupInfo *movpart;
+            struct ItemgroupInfo *itemgroup;
             struct Struct802099E8 *r23;
             struct NaomiModel *model;
             int j;
 
-            movpart = itemgroups;
+            itemgroup = itemgroups;
             r23 = lbl_802099E8;
-            for (i = 0; i < itemgroupCount; i++, movpart++, r23++)
+            for (i = 0; i < itemgroupCount; i++, itemgroup++, r23++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(movpart->transform);
+                    mathutil_mtxA_mult_right(itemgroup->transform);
                 for (j = 0; j < r23->unk8; j++)
                 {
                     model = (void *)r23->unk0[j];
@@ -2080,7 +2105,7 @@ void stage_draw(void)
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
-                        mathutil_mtxA_from_mtx(movpart->transform);
+                        mathutil_mtxA_from_mtx(itemgroup->transform);
                         if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
@@ -2094,20 +2119,20 @@ void stage_draw(void)
         }
         else
         {
-            struct ItemgroupInfo *movpart;
+            struct ItemgroupInfo *itemgroup;
             struct Struct8020A348 *r23;
             int j;
             float f29;
             struct Struct8020A348_child *r27;
 
-            movpart = itemgroups;
+            itemgroup = itemgroups;
             f29 = currentCameraStructPtr->sub28.unk38;
             r23 = lbl_8020A348;
-            for (i = 0; i < itemgroupCount; i++, r23++, movpart++)
+            for (i = 0; i < itemgroupCount; i++, r23++, itemgroup++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(movpart->transform);
+                    mathutil_mtxA_mult_right(itemgroup->transform);
                 r27 = r23->unk0;
                 for (j = 0; j < r23->unk4; j++, r27++)
                 {
@@ -2146,7 +2171,7 @@ void stage_draw(void)
                                 if (r25 != NULL)
                                 {
                                     mathutil_mtxA_push();
-                                    mathutil_mtxA_from_mtx(movpart->transform);
+                                    mathutil_mtxA_from_mtx(itemgroup->transform);
                                     if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
@@ -2182,10 +2207,10 @@ void stage_draw(void)
             draw_blur_bridge_accordions();
 
         // draw starting position marker
-        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1<<(31-0x1E))))
+        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << (31 - 0x1E))))
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
-            if (lbl_801EEC90.unk0 & (1<<(31-0x1C)))
+            if (lbl_801EEC90.unk0 & (1 << (31 - 0x1C)))
             {
                 mathutil_mtxA_from_identity();
                 mathutil_mtxA_scale_s(0.8f);
@@ -2205,7 +2230,8 @@ void stage_draw(void)
             if (infoWork.unk1E == 1)
             {
                 if (modeCtrl.unk0 > 120)
-                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
+                    g_call_draw_naomi_model_and_do_other_stuff(
+                        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.unk0 > 60)
                 {
                     g_call_draw_model_with_alpha_deferred(
@@ -2216,7 +2242,8 @@ void stage_draw(void)
             else
             {
                 if (modeCtrl.unk0 > 75)
-                    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
+                    g_call_draw_naomi_model_and_do_other_stuff(
+                        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.unk0 > 45)
                 {
                     g_call_draw_model_with_alpha_deferred(
@@ -2231,19 +2258,19 @@ void stage_draw(void)
         g_avdisp_set_some_func_1(NULL);
     if (dipSwitches & DIP_FALL_DISP)
     {
-        struct ItemgroupInfo *movpart;
+        struct ItemgroupInfo *itemgroup;
         struct StageItemgroup *r23;
         int i;
         struct StageCollHdr_child2 *r25;
         int j;
 
         mathutil_mtx_copy(mathutilData->mtxB, sp8);
-        movpart = itemgroups;
+        itemgroup = itemgroups;
         r23 = decodedStageLzPtr->itemgroups;
-        for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r23++)
+        for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, r23++)
         {
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_mult_right(movpart->transform);
+            mathutil_mtxA_mult_right(itemgroup->transform);
             mathutil_mtxA_to_mtx(mathutilData->mtxB);
             r25 = r23->unk88;
             for (j = 0; j < r23->unk84; j++, r25++)
@@ -2258,7 +2285,8 @@ void stage_draw(void)
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
                 g_nl2ngc_set_scale(f1);
-                g_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
+                g_call_draw_model_with_alpha_deferred(
+                    NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
             }
         }
         mathutil_mtx_copy(sp8, mathutilData->mtxB);
@@ -2279,7 +2307,9 @@ void func_80047D70(void)
     }
 }
 
-void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NaomiVtxWithNormal *), void (*c)(struct NaomiVtxWithColor *))
+void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
+                                          void (*b)(struct NaomiVtxWithNormal *),
+                                          void (*c)(struct NaomiVtxWithColor *))
 {
     struct NaomiMesh *r6;
 
@@ -2293,11 +2323,11 @@ void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(st
         {
         case -2:
             break;
-        case -3:  // display list has pos, color, tex
+        case -3: // display list has pos, color, tex
             if (c != NULL)
                 g_apply_func_to_naomi_dl_pos_color_tex((void *)r6->dispListStart, r31, c);
             break;
-        default:  // display list has pos, normal, tex
+        default: // display list has pos, normal, tex
             if (b != NULL)
                 g_apply_func_to_naomi_dl_pos_nrm_tex((void *)r6->dispListStart, r31, b);
             break;
@@ -2306,7 +2336,8 @@ void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(st
     }
 }
 
-void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, void (*func)(struct NaomiVtxWithNormal *))
+void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
+                                          void (*func)(struct NaomiVtxWithNormal *))
 {
     int i;
 
@@ -2319,7 +2350,7 @@ void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, v
         flags = dl->unk0;
         vtxData = dl->vtxData;
         faceCount = dl->faceCount;
-        if (flags & (1 << 4))  // triangle strip
+        if (flags & (1 << 4)) // triangle strip
         {
             while (faceCount > 0)
             {
@@ -2329,11 +2360,11 @@ void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, v
                     vtxData += 32;
                 }
                 else
-                    vtxData += 8;  // ignore indirect vertices
+                    vtxData += 8; // ignore indirect vertices
                 faceCount--;
             }
         }
-        else if (flags & (1 << 3))  // triangles
+        else if (flags & (1 << 3)) // triangles
         {
             while (faceCount > 0)
             {
@@ -2345,7 +2376,7 @@ void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, v
                         vtxData += 32;
                     }
                     else
-                        vtxData += 8;  // ignore indirect vertices
+                        vtxData += 8; // ignore indirect vertices
                 }
                 faceCount--;
             }
@@ -2355,7 +2386,8 @@ void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end, v
 }
 
 // duplicate of g_apply_func_to_naomi_dl_pos_nrm_tex
-void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end, void (*func)(struct NaomiVtxWithColor *))
+void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
+                                            void (*func)(struct NaomiVtxWithColor *))
 {
     int i;
 
@@ -2368,7 +2400,7 @@ void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
         flags = dl->unk0;
         vtxData = dl->vtxData;
         faceCount = dl->faceCount;
-        if (flags & (1 << 4))  // triangle strip
+        if (flags & (1 << 4)) // triangle strip
         {
             while (faceCount > 0)
             {
@@ -2378,11 +2410,11 @@ void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
                     vtxData += 32;
                 }
                 else
-                    vtxData += 8;  // ignore indirect vertices
+                    vtxData += 8; // ignore indirect vertices
                 faceCount--;
             }
         }
-        else if (flags & (1 << 3))  // triangles
+        else if (flags & (1 << 3)) // triangles
         {
             while (faceCount > 0)
             {
@@ -2394,7 +2426,7 @@ void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
                         vtxData += 32;
                     }
                     else
-                        vtxData += 8;  // ignore indirect vertices
+                        vtxData += 8; // ignore indirect vertices
                 }
                 faceCount--;
             }

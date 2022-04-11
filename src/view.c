@@ -303,35 +303,35 @@ void view_destroy_text_sprites(void)
 
 void view_init_stage_anim(void)
 {
-    struct ItemgroupInfo *movpart;
+    struct ItemgroupInfo *itemgroup;
     struct StageItemgroup *r30;
     int i;
 
     stageViewInfo->unk40 = lbl_80206DEC.g_stageTimer;
-    movpart = itemgroups;
+    itemgroup = itemgroups;
     r30 = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < 72; i++, movpart++, r30++)
+    for (i = 0; i < 72; i++, itemgroup++, r30++)
     {
-        movpart->pos.x = r30->initPos.x;
-        movpart->pos.y = r30->initPos.y;
-        movpart->pos.z = r30->initPos.z;
+        itemgroup->pos.x = r30->initPos.x;
+        itemgroup->pos.y = r30->initPos.y;
+        itemgroup->pos.z = r30->initPos.z;
 
-        movpart->prevPos.x = r30->initPos.x - r30->unkB8.x;
-        movpart->prevPos.y = r30->initPos.y - r30->unkB8.y;
-        movpart->prevPos.z = r30->initPos.z - r30->unkB8.z;
+        itemgroup->prevPos.x = r30->initPos.x - r30->unkB8.x;
+        itemgroup->prevPos.y = r30->initPos.y - r30->unkB8.y;
+        itemgroup->prevPos.z = r30->initPos.z - r30->unkB8.z;
 
-        movpart->rot.x = r30->initRot.x;
-        movpart->rot.y = r30->initRot.y;
-        movpart->rot.z = r30->initRot.z;
+        itemgroup->rot.x = r30->initRot.x;
+        itemgroup->rot.y = r30->initRot.y;
+        itemgroup->rot.z = r30->initRot.z;
 
-        movpart->prevRot.x = r30->initRot.x;
-        movpart->prevRot.y = r30->initRot.y;
-        movpart->prevRot.z = r30->initRot.z;
+        itemgroup->prevRot.x = r30->initRot.x;
+        itemgroup->prevRot.y = r30->initRot.y;
+        itemgroup->prevRot.z = r30->initRot.z;
 
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_to_mtx(movpart->transform);
+        mathutil_mtxA_to_mtx(itemgroup->transform);
         mathutil_mtxA_translate_neg(&r30->unkB8);
-        mathutil_mtxA_to_mtx(movpart->prevTransform);
+        mathutil_mtxA_to_mtx(itemgroup->prevTransform);
     }
     if (currStageId == ST_101_BLUR_BRIDGE)
         find_blur_bridge_accordion();
@@ -341,7 +341,7 @@ void view_animate_stage(void)
 {
     float t;
     float f3;
-    struct ItemgroupInfo *movpart;
+    struct ItemgroupInfo *itemgroup;
     struct StageItemgroup *r30;
     int i;
 
@@ -352,8 +352,8 @@ void view_animate_stage(void)
     t -= f3 * mathutil_floor(t / f3);
     t += decodedStageLzPtr->loopStartSeconds;
     r30 = decodedStageLzPtr->itemgroups;
-    movpart = itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
+    itemgroup = itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, r30++)
     {
         struct StageItemgroupAnim *r28 = r30->anim;
 
@@ -362,53 +362,53 @@ void view_animate_stage(void)
 
         if (r28->rotXKeyframes != NULL2)
         {
-            movpart->prevRot.x = movpart->rot.x;
-            movpart->rot.x = DEGREES_TO_S16(interpolate_keyframes(r28->rotXKeyframeCount, r28->rotXKeyframes, t));
+            itemgroup->prevRot.x = itemgroup->rot.x;
+            itemgroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(r28->rotXKeyframeCount, r28->rotXKeyframes, t));
         }
         if (r28->rotYKeyframes != NULL2)
         {
-            movpart->prevRot.y = movpart->rot.y;
-            movpart->rot.y = DEGREES_TO_S16(interpolate_keyframes(r28->rotYKeyframeCount, r28->rotYKeyframes, t));
+            itemgroup->prevRot.y = itemgroup->rot.y;
+            itemgroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(r28->rotYKeyframeCount, r28->rotYKeyframes, t));
         }
         if (r28->rotZKeyframes != NULL2)
         {
-            movpart->prevRot.z = movpart->rot.z;
-            movpart->rot.z = DEGREES_TO_S16(interpolate_keyframes(r28->rotZKeyframeCount, r28->rotZKeyframes, t));
+            itemgroup->prevRot.z = itemgroup->rot.z;
+            itemgroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(r28->rotZKeyframeCount, r28->rotZKeyframes, t));
         }
 
         if (r28->posXKeyframes != NULL2)
         {
-            movpart->prevPos.x = movpart->pos.x - r30->unkB8.x;
-            movpart->pos.x = interpolate_keyframes(r28->posXKeyframeCount, r28->posXKeyframes, t);
+            itemgroup->prevPos.x = itemgroup->pos.x - r30->unkB8.x;
+            itemgroup->pos.x = interpolate_keyframes(r28->posXKeyframeCount, r28->posXKeyframes, t);
         }
         if (r28->posYKeyframes != NULL2)
         {
-            movpart->prevPos.y = movpart->pos.y - r30->unkB8.y;
-            movpart->pos.y = interpolate_keyframes(r28->posYKeyframeCount, r28->posYKeyframes, t);
+            itemgroup->prevPos.y = itemgroup->pos.y - r30->unkB8.y;
+            itemgroup->pos.y = interpolate_keyframes(r28->posYKeyframeCount, r28->posYKeyframes, t);
         }
         if (r28->posZKeyframes != NULL2)
         {
-            movpart->prevPos.z = movpart->pos.z - r30->unkB8.z;
-            movpart->pos.z = interpolate_keyframes(r28->posZKeyframeCount, r28->posZKeyframes, t);
+            itemgroup->prevPos.z = itemgroup->pos.z - r30->unkB8.z;
+            itemgroup->pos.z = interpolate_keyframes(r28->posZKeyframeCount, r28->posZKeyframes, t);
         }
 
-        mathutil_mtxA_from_translate(&movpart->pos);
-        mathutil_mtxA_rotate_z(movpart->rot.z);
-        mathutil_mtxA_rotate_y(movpart->rot.y);
-        mathutil_mtxA_rotate_x(movpart->rot.x - r30->initRot.x);
+        mathutil_mtxA_from_translate(&itemgroup->pos);
+        mathutil_mtxA_rotate_z(itemgroup->rot.z);
+        mathutil_mtxA_rotate_y(itemgroup->rot.y);
+        mathutil_mtxA_rotate_x(itemgroup->rot.x - r30->initRot.x);
         mathutil_mtxA_rotate_y(-r30->initRot.y);
         mathutil_mtxA_rotate_z(-r30->initRot.z);
         mathutil_mtxA_translate_neg(&r30->initPos);
-        mathutil_mtxA_to_mtx(movpart->transform);
+        mathutil_mtxA_to_mtx(itemgroup->transform);
 
-        mathutil_mtxA_from_translate(&movpart->prevPos);
-        mathutil_mtxA_rotate_z(movpart->prevRot.z);
-        mathutil_mtxA_rotate_y(movpart->prevRot.y);
-        mathutil_mtxA_rotate_x(movpart->prevRot.x - r30->initRot.x);
+        mathutil_mtxA_from_translate(&itemgroup->prevPos);
+        mathutil_mtxA_rotate_z(itemgroup->prevRot.z);
+        mathutil_mtxA_rotate_y(itemgroup->prevRot.y);
+        mathutil_mtxA_rotate_x(itemgroup->prevRot.x - r30->initRot.x);
         mathutil_mtxA_rotate_y(-r30->initRot.y);
         mathutil_mtxA_rotate_z(-r30->initRot.z);
         mathutil_mtxA_translate_neg(&r30->initPos);
-        mathutil_mtxA_to_mtx(movpart->prevTransform);
+        mathutil_mtxA_to_mtx(itemgroup->prevTransform);
     }
 
     // Warp vertices for dynamic stage parts

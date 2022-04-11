@@ -2440,7 +2440,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
 void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct ItemgroupInfo *movpart = &itemgroups[a->hardestColiItemgroupId];
+    struct ItemgroupInfo *itemgroup = &itemgroups[a->hardestColiItemgroupId];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2449,7 +2449,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
     Vec *ptr;
     int unused;
 
-    mathutil_mtxA_from_mtx(movpart->transform);
+    mathutil_mtxA_from_mtx(itemgroup->transform);
     mathutil_mtxA_tf_point(&a->hardestColiPlane.point, &sp38);
     ptr = &sp44;
     mathutil_mtxA_tf_vec(&a->hardestColiPlane.normal, ptr);
@@ -2464,7 +2464,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 
     mathutil_mtxA_rigid_inv_tf_point(&sp2C, &sp14);
 
-    mathutil_mtxA_from_mtx(movpart->prevTransform);
+    mathutil_mtxA_from_mtx(itemgroup->prevTransform);
     mathutil_mtxA_tf_point(&sp14, &sp20);
 
     sp14.x = sp2C.x - sp20.x;
