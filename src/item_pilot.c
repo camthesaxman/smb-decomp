@@ -225,7 +225,7 @@ void item_pilot_draw(struct Item *item)
 {
     float scale;
     float f30;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     Vec spC;
 
     if (lbl_801EEC90.unk0 & (1 << 2))
@@ -244,8 +244,8 @@ void item_pilot_draw(struct Item *item)
     if (item->subtype == 3)
         scale = 1.0f;
     else
-        scale = (f30 / model->boundsRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, scale) == 0)
+        scale = (f30 / model->boundSphereRadius) * 1.5;
+    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
      && (item->subtype == 4 || item->subtype == 3))
@@ -377,7 +377,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk4E = item->yrot;
             sp178.unk50 = item->zrot;
             sp178.unk30 = find_item_model(item->unk1C);
-            sp178.unk24.x = (item->unk14 / sp178.unk30->boundsRadius) * 1.5;
+            sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
             g_spawn_effect_object(&sp178);

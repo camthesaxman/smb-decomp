@@ -51,13 +51,13 @@ enum
 struct Color3f { float r, g, b; };
 
 // avdisp.c
-struct GMAMeshHeader;
-struct GMAMaterial;
+struct GMAShape;
+struct GMASampler;
 struct DrawMeshDeferredNode;
 struct UnkStruct31;
 struct UnkStruct32;
 
-// GMAModelHeader.flags
+// GMAModel.flags
 enum
 {
     GCMF_16BIT = 0x01,
@@ -66,8 +66,8 @@ enum
     GCMF_EFFECTIVE = 0x10,
 };
 
-// at GMAModelHeader + 0x40
-struct GMAMaterial
+// at GMAModel + 0x40
+struct GMASampler
 {
     u32 flags;
     u16 unk4;
@@ -77,26 +77,26 @@ struct GMAMaterial
     u8 fillerC[0x20-0xC];
 };
 
-struct GMAModelHeader
+struct GMAModel
 {
     /*0x00*/ u32 magic;  // "GCMF"
     /*0x04*/ u32 flags;
-    /*0x08*/ Vec boundsCenter;
-    /*0x14*/ float boundsRadius;
-    /*0x18*/ u16 numMaterials;
-    /*0x1A*/ u16 numLayer1Meshes;  // opaque count?
-    /*0x1C*/ u16 numLayer2Meshes;  // transparent count?
+    /*0x08*/ Vec boundSphereCenter;
+    /*0x14*/ float boundSphereRadius;
+    /*0x18*/ u16 samplerCount;
+    /*0x1A*/ u16 opaqueShapeCount;
+    /*0x1C*/ u16 translucentShapeCount;
     /*0x1E*/ u8 mtxCount;
     u8 filler1F[1];
     /*0x20*/ u32 headerSize;
     /*0x24*/ GXTexObj *texObjs;
     /*0x28*/ u8 mtxIndexes[8];
              u8 filler30[0x10];
-    /*0x40*/ struct GMAMaterial materials[0];
+    /*0x40*/ struct GMASampler samplers[0];
 };
 
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
-struct GMAMeshHeader
+struct GMAShape
 {
     /*0x00*/ u32 renderFlags;
     /*0x04*/ GXColor unk4;
@@ -117,7 +117,7 @@ struct GMAMeshHeader
     /*0x1C*/ u32 vtxFlags;  // vtxFlags
     /*0x20*/ u8 unk20[8];
     /*0x28*/ u32 dispListSizes[2];
-    /*0x30*/ Vec unk30;
+    /*0x30*/ Vec boundSphereCenter;
     u8 filler3C[4];
     u32 unk40;
     u8 filler44[0x60-0x44];
@@ -126,7 +126,7 @@ struct GMAMeshHeader
 
 struct GMAModelEntry
 {
-    struct GMAModelHeader *modelOffset;
+    struct GMAModel *modelOffset;
     char *name;
 };
 
@@ -340,7 +340,7 @@ struct Struct8009492C
     Vec unk14;
     float unk20;
     float unk24;
-    struct GMAModelHeader *unk28;
+    struct GMAModel *unk28;
     GXColor unk2C;
     u8 filler30[0x38-0x30];
 };
@@ -448,7 +448,7 @@ struct Struct8003C550
     u16 unk16;
     u8 filler18[0x24-0x18];
     Vec unk24;
-    struct GMAModelHeader *unk30;
+    struct GMAModel *unk30;
     Vec unk34;
     Vec unk40;
     s16 unk4C;
@@ -620,7 +620,7 @@ struct CoordsS8
 struct Struct8020A348_child
 {
     u32 unk0;
-    struct GMAModelHeader *unk4;  // GMAModelHeader
+    struct GMAModel *unk4;  // GMAModel
     float unk8;
 };  // size = 0xC
 
@@ -867,7 +867,7 @@ struct MemcardGameData
     /*0x5844*/ struct MemcardGameData_sub unk5844;
 };
 
-struct AnimKeyframe
+struct Keyframe
 {
     s32 unk0;
     float unk4;

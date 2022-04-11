@@ -143,7 +143,7 @@ void item_coin_draw(struct Item *item)
 {
     float scale;
     float f30 = item->unk14;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
@@ -153,8 +153,8 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_x(item->xrot);
     mathutil_mtxA_rotate_z(item->zrot);
     model = find_item_model(item->unk1C);
-    scale = (f30 / model->boundsRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, scale) == 0)
+    scale = (f30 / model->boundSphereRadius) * 1.5;
+    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);
@@ -208,7 +208,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk4E = item->yrot;
         sp10.unk50 = item->zrot;
         sp10.unk30 = find_item_model((void *)item->unk1C);
-        sp10.unk24.x = (item->unk14 / sp10.unk30->boundsRadius) * 1.5;
+        sp10.unk24.x = (item->unk14 / sp10.unk30->boundSphereRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
         g_spawn_effect_object(&sp10);
@@ -265,10 +265,10 @@ void item_coin_debug(struct Item *item)
 // needed to force float constant ordering
 float item_coin_dummy(void) { return -480.0f; }
 
-struct GMAModelHeader *find_item_model(struct ModelLOD **a)
+struct GMAModel *find_item_model(struct ModelLOD **a)
 {
     struct ModelLOD *r31 = *a;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     int modelId;
     float f31;
     Vec spC;
@@ -276,8 +276,8 @@ struct GMAModelHeader *find_item_model(struct ModelLOD **a)
 
     modelId = r31->modelId;
     model = commonGma->modelEntries[modelId].modelOffset;
-    f31 = model->boundsRadius;
-    mathutil_mtxA_tf_point(&model->boundsCenter, &spC);
+    f31 = model->boundSphereRadius;
+    mathutil_mtxA_tf_point(&model->boundSphereCenter, &spC);
     if (spC.z > f31)
     {
         while (r31->modelId > 0)

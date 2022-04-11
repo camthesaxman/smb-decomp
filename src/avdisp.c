@@ -211,13 +211,13 @@ void g_avdisp_alloc_matrix_lists(int count)
 }
 
 #pragma force_active on
-void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
+void g_get_stitching_model_mtx(struct GMAModel *a, Mtx **dest)
 {
     u8 i;
     int unused1;
     int unused2;
-    // matrices are stored immediately after materials
-    Mtx *pMtx = (void *)((u8 *)a->materials + a->numMaterials * sizeof(struct GMAMaterial));
+    // matrices are stored immediately after samplers
+    Mtx *pMtx = (void *)((u8 *)a->samplers + a->samplerCount * sizeof(struct GMASampler));
 
     if (dest == NULL)
     {
@@ -241,9 +241,9 @@ void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
     }
 }
 
-struct GMAModelHeader *load_model(char *fileName, struct TPL *tpl)
+struct GMAModel *load_model(char *fileName, struct TPL *tpl)
 {
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     u32 size;
     struct File file;
 
@@ -265,7 +265,7 @@ struct GMAModelHeader *load_model(char *fileName, struct TPL *tpl)
     return model;
 }
 
-void free_model(struct GMAModelHeader *model)
+void free_model(struct GMAModel *model)
 {
     if (model->texObjs != NULL)
         OSFree(model->texObjs);
@@ -412,7 +412,7 @@ void free_gma(struct GMA *gma)
 
     for (i = 0; i < (s32)gma->numModels; i++)
     {
-        struct GMAModelHeader *model = gma->modelEntries[i].modelOffset;
+        struct GMAModel *model = gma->modelEntries[i].modelOffset;
 
         if (model != NULL && model->texObjs != NULL)
             OSFree(model->texObjs);
@@ -557,9 +557,9 @@ void g_avdisp_set_3_floats(float a, float b, float c)
     lbl_802F20D8 = c;
 }
 
-void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
+void g_avdisp_maybe_draw_model_1(struct GMAModel *model)
 {
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
+    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, modelScale) == 0)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -569,9 +569,9 @@ void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
         g_avdisp_draw_model_1(model);
 }
 
-void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
+void g_avdisp_maybe_draw_model_2(struct GMAModel *model)
 {
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
+    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, modelScale) == 0)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -581,9 +581,9 @@ void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
         g_avdisp_draw_model_2(model);
 }
 
-void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
+void g_avdisp_maybe_draw_model_3(struct GMAModel *model)
 {
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
+    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, modelScale) == 0)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -644,7 +644,7 @@ struct UnkStruct12
 };
 
 #pragma force_active on
-void *func_8008E5F8(struct GMAModelHeader *model)
+void *func_8008E5F8(struct GMAModel *model)
 {
     struct UnkStruct12 *r3 = (struct UnkStruct12 *)((u8 *)model + model->headerSize);
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
@@ -656,7 +656,7 @@ void *func_8008E5F8(struct GMAModelHeader *model)
     }
 }
 
-void *func_8008E64C(struct GMAModelHeader *model)
+void *func_8008E64C(struct GMAModel *model)
 {
     // hmm... with these flags, this shouldn't point to the mesh?
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
@@ -669,7 +669,7 @@ void *func_8008E64C(struct GMAModelHeader *model)
 }
 #pragma force_active reset
 
-static inline void *skip_mesh(struct GMAMeshHeader *mesh)
+static inline void *skip_mesh(struct GMAShape *mesh)
 {
     u8 *ptr = mesh->dispListData;
     int i;
@@ -694,22 +694,22 @@ static inline void *skip_mesh(struct GMAMeshHeader *mesh)
 }
 
 #pragma force_active on
-void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
+void set_mesh_render_flags_in_model(struct GMAModel *model, u32 flags)
 {
-    struct GMAMeshHeader *meshPtr = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMAShape *meshPtr = OFFSET_TO_PTR(model, model->headerSize);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
     {
         u32 i;
-        struct GMAMeshHeader *meshes = OFFSET_TO_PTR(meshPtr, 32);
-        for (i = 0; i < model->numLayer1Meshes + model->numLayer2Meshes; i++)
+        struct GMAShape *meshes = OFFSET_TO_PTR(meshPtr, 32);
+        for (i = 0; i < model->opaqueShapeCount + model->translucentShapeCount; i++)
             meshes[i].renderFlags |= flags;
     }
     else
     {
         u32 i;
-        struct GMAMeshHeader *mesh = meshPtr;
-        for (i = 0; i < model->numLayer1Meshes + model->numLayer2Meshes; i++)
+        struct GMAShape *mesh = meshPtr;
+        for (i = 0; i < model->opaqueShapeCount + model->translucentShapeCount; i++)
         {
             mesh->renderFlags |= flags;
             mesh = skip_mesh(mesh);
@@ -721,10 +721,10 @@ void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
 struct DrawMeshDeferredNode
 {
     struct OrdTblNode node;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     Mtx mtx;
-    struct GMAMaterial *mtrl;
-    struct GMAMeshHeader *mesh;
+    struct GMASampler *mtrl;
+    struct GMAShape *mesh;
     u32 unk44;
     u32 unk48;
     float unk4C;
@@ -742,16 +742,16 @@ struct DrawMeshDeferredNode
     u32 unk70;
 };
 
-static inline struct GMAMeshHeader *draw_mesh_deferred(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
+static inline struct GMAShape *draw_mesh_deferred(struct GMAModel *model, struct GMAShape *mesh, struct GMASampler *mtrl)
 {
     struct OrdTblNode *entry;
     u32 r23 = lbl_802F20E8;
     struct DrawMeshDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (mesh->unk14 != 0xFF)
-        entry = ord_tbl_get_entry_for_pos_offset_index(&mesh->unk30, -1);
+        entry = ord_tbl_get_entry_for_pos_offset_index(&mesh->boundSphereCenter, -1);
     else
-        entry = ord_tbl_get_entry_for_pos(&mesh->unk30);
+        entry = ord_tbl_get_entry_for_pos(&mesh->boundSphereCenter);
     node->node.drawFunc = (OrdTblDrawFunc)draw_mesh_deferred_callback;
     node->model = model;
     node->mesh = mesh;
@@ -782,10 +782,10 @@ static inline struct GMAMeshHeader *draw_mesh_deferred(struct GMAModelHeader *mo
     return skip_mesh(mesh);
 }
 
-void g_avdisp_draw_model_1(struct GMAModelHeader *model)
+void g_avdisp_draw_model_1(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMASampler *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
     lbl_802F20E8 = 2;
@@ -799,9 +799,9 @@ void g_avdisp_draw_model_1(struct GMAModelHeader *model)
         draw_model_0x18(model, mesh, mtrl);
     else
     {
-        for (i = 0; i < model->numLayer1Meshes; i++)
+        for (i = 0; i < model->opaqueShapeCount; i++)
             mesh = draw_model_8008F914(model, mesh, mtrl);
-        for (i = 0; i < model->numLayer2Meshes; i++)
+        for (i = 0; i < model->translucentShapeCount; i++)
             mesh = draw_mesh_deferred(model, mesh, mtrl);
     }
 
@@ -811,10 +811,10 @@ void g_avdisp_draw_model_1(struct GMAModelHeader *model)
 }
 
 // for transparent objects?
-void g_avdisp_draw_model_2(struct GMAModelHeader *model)
+void g_avdisp_draw_model_2(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMASampler *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
     lbl_802F20E8 = 2;
@@ -828,9 +828,9 @@ void g_avdisp_draw_model_2(struct GMAModelHeader *model)
         draw_model_0x18(model, mesh, mtrl);
     else
     {
-        for (i = 0; i < model->numLayer1Meshes; i++)
+        for (i = 0; i < model->opaqueShapeCount; i++)
             mesh = draw_model_8008F914(model, mesh, mtrl);
-        for (i = 0; i < model->numLayer2Meshes; i++)
+        for (i = 0; i < model->translucentShapeCount; i++)
             mesh = draw_model_8008F914(model, mesh, mtrl);
     }
 
@@ -839,10 +839,10 @@ void g_avdisp_draw_model_2(struct GMAModelHeader *model)
     lbl_802F20DC = 1.0f;
 }
 
-void g_avdisp_draw_model_3(struct GMAModelHeader *model)
+void g_avdisp_draw_model_3(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMASampler *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
     lbl_802F20E8 = 2;
@@ -852,9 +852,9 @@ void g_avdisp_draw_model_3(struct GMAModelHeader *model)
     if (lbl_802F20F0 == NULL)
         func_8008FE44(model, mesh);
 
-    for (i = 0; i < model->numLayer1Meshes; i++)
+    for (i = 0; i < model->opaqueShapeCount; i++)
         mesh = (void *)draw_mesh_deferred(model, mesh, mtrl);
-    for (i = 0; i < model->numLayer2Meshes; i++)
+    for (i = 0; i < model->translucentShapeCount; i++)
         mesh = (void *)draw_mesh_deferred(model, mesh, mtrl);
 
     modelScale = 1.0f;
@@ -862,10 +862,10 @@ void g_avdisp_draw_model_3(struct GMAModelHeader *model)
     lbl_802F20DC = 1.0f;
 }
 
-void g_avdisp_draw_model_4(struct GMAModelHeader *model)
+void g_avdisp_draw_model_4(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *mesh = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMASampler *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
     lbl_802F20E8 = 2;
@@ -876,7 +876,7 @@ void g_avdisp_draw_model_4(struct GMAModelHeader *model)
         draw_model_0x18(model, mesh, mtrl);
     else
     {
-        for (i = 0; i < model->numLayer1Meshes; i++)
+        for (i = 0; i < model->opaqueShapeCount; i++)
             mesh = draw_model_8008F914(model, mesh, mtrl);
     }
 
@@ -899,7 +899,7 @@ int get_texture_max_lod(int width, int height)
     return lod;
 }
 
-void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, struct TPL *tpl)
+void init_material(struct GMASampler *mtrl, struct TPLTextureHeader *texHdr, struct TPL *tpl)
 {
     u8 maxLOD;
     int wrapS;
@@ -985,7 +985,7 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
         mtrl->unk7);  // max_aniso
 }
 
-static inline struct GMAMeshHeader *init_mesh_render_flags(struct GMAMeshHeader *mesh)
+static inline struct GMAShape *init_mesh_render_flags(struct GMAShape *mesh)
 {
     if (mesh->vtxFlags & (1 << GX_VA_CLR0))
         mesh->renderFlags |= 0x100;
@@ -994,34 +994,34 @@ static inline struct GMAMeshHeader *init_mesh_render_flags(struct GMAMeshHeader 
     return skip_mesh(mesh);
 }
 
-GXTexObj *init_model(struct GMAModelHeader *model, struct TPL *tpl, GXTexObj *texObj)
+GXTexObj *init_model(struct GMAModel *model, struct TPL *tpl, GXTexObj *texObj)
 {
-    struct GMAMaterial *materials;
-    struct GMAMeshHeader *mesh;
+    struct GMASampler *materials;
+    struct GMAShape *mesh;
     int i;
 
     if (tpl == NULL)
-        model->numMaterials = 0;
-    materials = (void *)model->materials;
+        model->samplerCount = 0;
+    materials = (void *)model->samplers;
 
-    // Allocate GX texture objects for materials
-    if (model->numMaterials != 0)
+    // Allocate GX texture objects for samplers
+    if (model->samplerCount != 0)
     {
         if (texObj != NULL)
         {
             model->texObjs = texObj;
-            texObj += model->numMaterials;
+            texObj += model->samplerCount;
         }
         else
-            model->texObjs = OSAlloc(model->numMaterials * sizeof(GXTexObj));
+            model->texObjs = OSAlloc(model->samplerCount * sizeof(GXTexObj));
         if (model->texObjs == NULL)
             OSPanic("avdisp.c", 0x58B, "cannot OSAlloc");
     }
     else
         model->texObjs = NULL;
 
-    // Initialize materials
-    for (i = 0; i < model->numMaterials; i++)
+    // Initialize samplers
+    for (i = 0; i < model->samplerCount; i++)
     {
         materials[i].texObj = &model->texObjs[i];
         init_material(&materials[i], &tpl->texHeaders[materials[i].unk4], tpl);
@@ -1033,26 +1033,26 @@ GXTexObj *init_model(struct GMAModelHeader *model, struct TPL *tpl, GXTexObj *te
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         mesh = OFFSET_TO_PTR((u32)mesh, 32);
 
-    for (i = 0; i < model->numLayer1Meshes; i++)
+    for (i = 0; i < model->opaqueShapeCount; i++)
     {
         if (tpl == NULL)
             mesh->unk12 = 0;
         if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
-            struct GMAMeshHeader *r3 = mesh;
+            struct GMAShape *r3 = mesh;
             mesh++;
             init_mesh_render_flags(r3);
         }
         else
             mesh = init_mesh_render_flags(mesh);
     }
-    for (i = 0; i < model->numLayer2Meshes; i++)
+    for (i = 0; i < model->translucentShapeCount; i++)
     {
         if (tpl == NULL)
             mesh->unk12 = 0;
         if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
-            struct GMAMeshHeader *r3 = mesh;
+            struct GMAShape *r3 = mesh;
             mesh++;
             init_mesh_render_flags(r3);
         }
@@ -1062,7 +1062,7 @@ GXTexObj *init_model(struct GMAModelHeader *model, struct TPL *tpl, GXTexObj *te
     return texObj;
 }
 
-void g_iteratively_multiply_model_matrices(struct GMAModelHeader *model)
+void g_iteratively_multiply_model_matrices(struct GMAModel *model)
 {
     unsigned int i;
 
@@ -1233,8 +1233,8 @@ struct UnkStruct25
 struct UnkStruct27
 {
     u8 filler0[4];
-    struct GMAMeshHeader *mesh;
-    struct GMAMaterial *mtrl;
+    struct GMAShape *mesh;
+    struct GMASampler *mtrl;
     u8 fillerC[0x38-0xC];
 };
 
@@ -1246,7 +1246,7 @@ struct UnkStruct31
     u8 fillerC[0x20-0xC];
 };
 
-struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
+struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *mesh, struct GMASampler *mtrl)
 {
     int i;
     u8 *dlist;
@@ -1313,7 +1313,7 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
     {
         return skip_mesh(mesh);
     }
-    return (struct GMAMeshHeader *)dlist;
+    return (struct GMAShape *)dlist;
 }
 
 #ifdef __MWERKS__
@@ -1385,7 +1385,7 @@ struct UnkStruct29
     u32 unk8;
 };
 
-void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct UnkStruct29 *c, u8 *d)
+void *draw_mesh_reflection_maybe(struct GMAShape *mesh, void *mtrl, struct UnkStruct29 *c, u8 *d)
 {
     int i;
     int r30;
@@ -1436,30 +1436,30 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct 
     return d;
 }
 
-void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, struct GMAMaterial *mtrl)
+void draw_model_0x18(struct GMAModel *model, struct GMAShape *b, struct GMASampler *mtrl)
 {
     int i;  // r31
     u8 *r30 = b->unk20;
-    struct GMAMeshHeader *r6 = (void *)((u8 *)b + b->unkC.asU32);
+    struct GMAShape *r6 = (void *)((u8 *)b + b->unkC.asU32);
 
     lbl_802F20E8 = 1;
-    for (i = 0; i < model->numLayer1Meshes; i++)
+    for (i = 0; i < model->opaqueShapeCount; i++)
     {
         r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
         r30 += 0x60;
     }
-    for (i = 0; i < model->numLayer2Meshes; i++)
+    for (i = 0; i < model->translucentShapeCount; i++)
     {
         r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
         r30 += 0x60;
     }
 }
 
-void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
+void func_8008FE44(struct GMAModel *model, struct GMAShape *mesh)
 {
     lbl_802B4ECC.unk0 = 1;
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        mesh = (struct GMAMeshHeader *)((u8 *)mesh + 0x20);
+        mesh = (struct GMAShape *)((u8 *)mesh + 0x20);
     if (lbl_802F2108 != 0)
         GXLoadTexMtxImm(lbl_802B4E6C, GX_TEXMTX1, GX_MTX3x4);
     else
@@ -1531,8 +1531,8 @@ void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
     lbl_802B4ECC.unk4C = 0;
     lbl_802B4ECC.unk50 = 0;
     lbl_802B4ECC.unk54 = 0;
-    mathutil_mtxA_tf_point(&model->boundsCenter, &lbl_802B4ECC.unk58);
-    lbl_802B4ECC.unk58.z -= model->boundsRadius;
+    mathutil_mtxA_tf_point(&model->boundSphereCenter, &lbl_802B4ECC.unk58);
+    lbl_802B4ECC.unk58.z -= model->boundSphereRadius;
     mathutil_vec_normalize_len(&lbl_802B4ECC.unk58);
 }
 
@@ -1713,7 +1713,7 @@ static inline void inline_test5(s8 c)
 //#if 1
 // stack differences
 // DOL: 0x8C444
-void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
+void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
 {
     struct UnkStruct32 sp7C;  // correct
     GXColor sp78;  // correct
@@ -2229,7 +2229,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
         lbl_802B4ECC.unk1 = a->unk12;
 }
 #else
-asm void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
+asm void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
 {
 #define _SDA_BASE_ 0
 #define _SDA2_BASE_ 0

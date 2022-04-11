@@ -665,7 +665,7 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
             mathutil_mtxA_rotate_z(a->zrot);
             mathutil_mtxA_rotate_y(a->yrot);
             mathutil_mtxA_rotate_x(a->xrot);
-            mathutil_mtxA_tf_point(&a->model->boundsCenter, &sp1C);
+            mathutil_mtxA_tf_point(&a->model->boundSphereCenter, &sp1C);
             func_800390C8(5, &sp1C, 1.0f);
         }
     }
@@ -676,7 +676,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
     int i;
     int r30;
     float f29;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     int r23;
 
     if (b == NULL)
@@ -709,9 +709,9 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         f29 = MAX(b->scale.x, b->scale.y);
         f29 = MAX(b->scale.z, f29);
         if ((lbl_801EEC90.unk0 & (1 << 2))
-         && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
+         && func_8000E444(&model->boundSphereCenter) < -(f29 * model->boundSphereRadius))
             continue;
-        if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
+        if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
         r23 = b->unk0 >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);

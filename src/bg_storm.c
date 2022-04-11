@@ -148,7 +148,7 @@ void bg_storm_draw(void)
     int j;  // r27
     struct BGStormWork_child *r30;
     Vec *r26;
-    struct GMAModelHeader *r25;
+    struct GMAModel *r25;
     float f25;
     float f24;
 

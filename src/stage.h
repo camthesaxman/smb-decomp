@@ -276,7 +276,7 @@ struct StageBgModel
 {
     u32 unk0;
     /*0x04*/ char *name;
-    /*0x08*/ struct GMAModelHeader *model;
+    /*0x08*/ struct GMAModel *model;
     /*0x0C*/ Point3d pos;
     /*0x18*/ s16 xrot;
     /*0x1A*/ s16 yrot;
@@ -287,20 +287,20 @@ struct StageBgModel
     struct UnkStruct8005562C_child2 *unk34;
 };
 
-struct StageAnimHdr
+struct StageItemgroupAnim
 {
-    /*0x00*/ u32 xRotFramesCount;
-    /*0x04*/ struct AnimKeyframe *xRotFrames;
-    /*0x08*/ u32 yRotFramesCount;
-    /*0x0C*/ struct AnimKeyframe *yRotFrames;
-    /*0x10*/ u32 zRotFramesCount;
-    /*0x14*/ struct AnimKeyframe *zRotFrames;
-    /*0x18*/ u32 xTrnslFramesCount;
-    /*0x1C*/ struct AnimKeyframe *xTrnslFrames;
-    /*0x20*/ u32 yTrnslFramesCount;
-    /*0x24*/ struct AnimKeyframe *yTrnslFrames;
-    /*0x28*/ u32 zTrnslFramesCount;
-    /*0x2C*/ struct AnimKeyframe *zTrnslFrames;
+    /*0x00*/ u32 rotXKeyframeCount;
+    /*0x04*/ struct Keyframe *rotXKeyframes;
+    /*0x08*/ u32 rotYKeyframeCount;
+    /*0x0C*/ struct Keyframe *rotYKeyframes;
+    /*0x10*/ u32 rotZKeyframeCount;
+    /*0x14*/ struct Keyframe *rotZKeyframes;
+    /*0x18*/ u32 posXKeyframeCount;
+    /*0x1C*/ struct Keyframe *posXKeyframes;
+    /*0x20*/ u32 posYKeyframeCount;
+    /*0x24*/ struct Keyframe *posYKeyframes;
+    /*0x28*/ u32 posZKeyframeCount;
+    /*0x2C*/ struct Keyframe *posZKeyframes;
 };
 
 struct DecodedStageLzPtr_child_child3
@@ -354,7 +354,7 @@ struct StageItemgroup
     S16Vec initRot;
     u16 unk12;
 
-    /*0x14*/ struct StageAnimHdr *animHdr;
+    /*0x14*/ struct StageItemgroupAnim *animHdr;
     /*0x18*/ char **modelNames;
     /*0x1C*/ struct StageColiTri *triangles;
 
@@ -460,8 +460,8 @@ struct DecodedStageLzPtr_child5
 struct DecodedStageLzPtr_child6
 {
     u8 filler0[0xC];
-    struct StageAnimHdr *unkC;
-    struct StageAnimHdr *unk10;
+    struct StageItemgroupAnim *unkC;
+    struct StageItemgroupAnim *unk10;
 };
 
 struct Stage
@@ -531,7 +531,7 @@ void compute_stage_bounding_sphere(void);
 float func_80046884(struct NaomiModel *);
 void load_stagedef(int stageId);
 void func_800472E8(void);
-void adjust_stage_anim_ptrs(struct StageAnimHdr **, struct Stage *);
+void adjust_stage_anim_ptrs(struct StageItemgroupAnim **, struct Stage *);
 void func_800473C0(struct UnkStruct8005562C_child **, struct Stage *);
 void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
 void stage_draw(void);

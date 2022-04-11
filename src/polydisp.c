@@ -999,7 +999,7 @@ void func_8000D5B8(void)
     lbl_801EEC90.unk60 = 0.0f;
 }
 
-struct AnimKeyframe bombSparkXKeyframes[] =
+struct Keyframe bombSparkXKeyframes[] =
 {
     { 1,   0,  8.7540102,          0,          0 },
     { 1,  72, 1.83571005,  -0.090412,  -0.090412 },
@@ -1013,7 +1013,7 @@ struct AnimKeyframe bombSparkXKeyframes[] =
     { 1, 100,  0.0010883,          0,          0 },
 };
 
-struct AnimKeyframe bombSparkYKeyframes[] =
+struct Keyframe bombSparkYKeyframes[] =
 {
     { 1,   0,   -1.00663,            0,            0 },
     { 1,  49,   -1.00662, -0.000118196, -0.000118196 },

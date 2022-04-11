@@ -156,7 +156,7 @@ void ev_stage_main(void)
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
     {
         int j;
-        struct StageAnimHdr *anim = coll->animHdr;
+        struct StageItemgroupAnim *anim = coll->animHdr;
 
         if (anim == NULL2)
             continue;
@@ -172,35 +172,35 @@ void ev_stage_main(void)
                 }
             }
         }
-        if (anim->xRotFrames != NULL2)
+        if (anim->rotXKeyframes != NULL2)
         {
             movpart->prevRot.x = movpart->rot.x;
-            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
+            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
         }
-        if (anim->yRotFrames != NULL2)
+        if (anim->rotYKeyframes != NULL2)
         {
             movpart->prevRot.y = movpart->rot.y;
-            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
+            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
         }
-        if (anim->zRotFrames != NULL2)
+        if (anim->rotZKeyframes != NULL2)
         {
             movpart->prevRot.z = movpart->rot.z;
-            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
+            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
         }
-        if (anim->xTrnslFrames != NULL2)
+        if (anim->posXKeyframes != NULL2)
         {
             movpart->prevPos.x = movpart->pos.x - coll->unkB8.x;
-            movpart->pos.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
+            movpart->pos.x = g_interpolate_anim(anim->posXKeyframeCount, anim->posXKeyframes, f31);
         }
-        if (anim->yTrnslFrames != NULL2)
+        if (anim->posYKeyframes != NULL2)
         {
             movpart->prevPos.y = movpart->pos.y - coll->unkB8.y;
-            movpart->pos.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
+            movpart->pos.y = g_interpolate_anim(anim->posYKeyframeCount, anim->posYKeyframes, f31);
         }
-        if (anim->zTrnslFrames != NULL2)
+        if (anim->posZKeyframes != NULL2)
         {
             movpart->prevPos.z = movpart->pos.z - coll->unkB8.z;
-            movpart->pos.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
+            movpart->pos.z = g_interpolate_anim(anim->posZKeyframeCount, anim->posZKeyframes, f31);
         }
         mathutil_mtxA_from_translate(&movpart->pos);
         mathutil_mtxA_rotate_z(movpart->rot.z);
@@ -245,7 +245,7 @@ void ev_stage_dest(void)
         preview_free(&stagePreview);
 }
 
-struct GMAModelHeader *stage_find_model(struct GMA *gma, char *name)
+struct GMAModel *stage_find_model(struct GMA *gma, char *name)
 {
     struct GMAModelEntry *entry;
     int numModels;
@@ -295,8 +295,8 @@ void draw_blur_bridge_accordions(void)
             float f27 = movpart->pos.x;
 
             f30 = f27;
-            if (r30->animHdr->xTrnslFrames != NULL2)
-                f30 = g_interpolate_anim(r30->animHdr->xTrnslFramesCount, r30->animHdr->xTrnslFrames, t - 0.5);
+            if (r30->animHdr->posXKeyframes != NULL2)
+                f30 = g_interpolate_anim(r30->animHdr->posXKeyframeCount, r30->animHdr->posXKeyframes, t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
             {
@@ -330,7 +330,7 @@ void g_animate_stage(float a)
     float f3;
     struct ItemgroupInfo *movpart;
     struct StageItemgroup *coll;
-    struct StageAnimHdr *anim;
+    struct StageItemgroupAnim *anim;
     int i;
 
     if (gamePauseStatus & 0xA)
@@ -349,35 +349,35 @@ void g_animate_stage(float a)
         anim = coll->animHdr;
         if (anim != NULL2)
         {
-            if (anim->xRotFrames != NULL2)
+            if (anim->rotXKeyframes != NULL2)
             {
                 movpart->prevRot.x = movpart->rot.x;
-                movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->xRotFramesCount, anim->xRotFrames, f31));
+                movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
             }
-            if (anim->yRotFrames != NULL2)
+            if (anim->rotYKeyframes != NULL2)
             {
                 movpart->prevRot.y = movpart->rot.y;
-                movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->yRotFramesCount, anim->yRotFrames, f31));
+                movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
             }
-            if (anim->zRotFrames != NULL2)
+            if (anim->rotZKeyframes != NULL2)
             {
                 movpart->prevRot.z = movpart->rot.z;
-                movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->zRotFramesCount, anim->zRotFrames, f31));
+                movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
             }
-            if (anim->xTrnslFrames != NULL2)
+            if (anim->posXKeyframes != NULL2)
             {
                 movpart->prevPos.x = movpart->pos.x;
-                movpart->pos.x = g_interpolate_anim(anim->xTrnslFramesCount, anim->xTrnslFrames, f31);
+                movpart->pos.x = g_interpolate_anim(anim->posXKeyframeCount, anim->posXKeyframes, f31);
             }
-            if (anim->yTrnslFrames != NULL2)
+            if (anim->posYKeyframes != NULL2)
             {
                 movpart->prevPos.y = movpart->pos.y;
-                movpart->pos.y = g_interpolate_anim(anim->yTrnslFramesCount, anim->yTrnslFrames, f31);
+                movpart->pos.y = g_interpolate_anim(anim->posYKeyframeCount, anim->posYKeyframes, f31);
             }
-            if (anim->zTrnslFrames != NULL2)
+            if (anim->posZKeyframes != NULL2)
             {
                 movpart->prevPos.z = movpart->pos.z;
-                movpart->pos.z = g_interpolate_anim(anim->zTrnslFramesCount, anim->zTrnslFrames, f31);
+                movpart->pos.z = g_interpolate_anim(anim->posZKeyframeCount, anim->posZKeyframes, f31);
             }
             mathutil_mtxA_from_translate(&movpart->pos);
             mathutil_mtxA_rotate_z(movpart->rot.z);
@@ -662,14 +662,14 @@ struct Struct80209D48  // maybe StageModel?
 };
 
 void *lbl_80209368[0x48];
-struct GMAModelHeader *lbl_80209488[0x48];
+struct GMAModel *lbl_80209488[0x48];
 void *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct80209D48 lbl_80209D48[0x80];
 
 struct Struct8020A348 lbl_8020A348[0x108];  //0x3648
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
-struct GMAModelHeader *goalModels[3];
+struct GMAModel *goalModels[3];
 struct Sphere stageBounds;
 
 FORCE_BSS_ORDER(lbl_80209368)
@@ -705,7 +705,7 @@ extern u32 lbl_802F1F50;
 void func_80044E18(void)
 {
     struct NaomiModel *r31;
-    struct GMAModelHeader **r17;
+    struct GMAModel **r17;
     void **r30;
     void **r29;
     struct Struct802099E8 *r26;
@@ -897,9 +897,9 @@ asm void func_80045194(void)
 #pragma peephole on
 #endif
 
-inline struct GMAModelHeader *find_model_in_gma_list(struct GMA ***list, char *name)
+inline struct GMAModel *find_model_in_gma_list(struct GMA ***list, char *name)
 {
-    struct GMAModelHeader *model = NULL;
+    struct GMAModel *model = NULL;
     int i;
 
     while (*list != NULL)
@@ -917,7 +917,7 @@ inline struct GMAModelHeader *find_model_in_gma_list(struct GMA ***list, char *n
     return model;
 }
 
-struct GMAModelHeader *find_stage_or_bg_model(char *name)
+struct GMAModel *find_stage_or_bg_model(char *name)
 {
     static struct GMA **gmaList[] = {&decodedStageGmaPtr, &decodedBgGma, NULL};
 
@@ -1282,36 +1282,36 @@ void compute_stage_bounding_sphere(void)
 
             for (r6 = 0; r6 < r3->unk4; r6++, r5++)
             {
-                struct GMAModelHeader *model = r5->unk4;
+                struct GMAModel *model = r5->unk4;
 
                 if (model != NULL2)
                 {
                     if (!r4)
                     {
                         r4 = TRUE;
-                        min.x = model->boundsCenter.x - model->boundsRadius;
-                        min.y = model->boundsCenter.y - model->boundsRadius;
-                        min.z = model->boundsCenter.z - model->boundsRadius;
+                        min.x = model->boundSphereCenter.x - model->boundSphereRadius;
+                        min.y = model->boundSphereCenter.y - model->boundSphereRadius;
+                        min.z = model->boundSphereCenter.z - model->boundSphereRadius;
 
-                        max.x = model->boundsCenter.x + model->boundsRadius;
-                        max.y = model->boundsCenter.y + model->boundsRadius;
-                        max.z = model->boundsCenter.z + model->boundsRadius;
+                        max.x = model->boundSphereCenter.x + model->boundSphereRadius;
+                        max.y = model->boundSphereCenter.y + model->boundSphereRadius;
+                        max.z = model->boundSphereCenter.z + model->boundSphereRadius;
                     }
                     else
                     {
-                        if (model->boundsCenter.x - model->boundsRadius < min.x)
-                            min.x = model->boundsCenter.x - model->boundsRadius;
-                        if (model->boundsCenter.y - model->boundsRadius < min.y)
-                            min.y = model->boundsCenter.y - model->boundsRadius;
-                        if (model->boundsCenter.z - model->boundsRadius < min.z)
-                            min.z = model->boundsCenter.z - model->boundsRadius;
+                        if (model->boundSphereCenter.x - model->boundSphereRadius < min.x)
+                            min.x = model->boundSphereCenter.x - model->boundSphereRadius;
+                        if (model->boundSphereCenter.y - model->boundSphereRadius < min.y)
+                            min.y = model->boundSphereCenter.y - model->boundSphereRadius;
+                        if (model->boundSphereCenter.z - model->boundSphereRadius < min.z)
+                            min.z = model->boundSphereCenter.z - model->boundSphereRadius;
 
-                        if (model->boundsCenter.x + model->boundsRadius > max.x)
-                            max.x = model->boundsCenter.x + model->boundsRadius;
-                        if (model->boundsCenter.y + model->boundsRadius > max.y)
-                            max.y = model->boundsCenter.y + model->boundsRadius;
-                        if (model->boundsCenter.z + model->boundsRadius > max.z)
-                            max.z = model->boundsCenter.z + model->boundsRadius;
+                        if (model->boundSphereCenter.x + model->boundSphereRadius > max.x)
+                            max.x = model->boundSphereCenter.x + model->boundSphereRadius;
+                        if (model->boundSphereCenter.y + model->boundSphereRadius > max.y)
+                            max.y = model->boundSphereCenter.y + model->boundSphereRadius;
+                        if (model->boundSphereCenter.z + model->boundSphereRadius > max.z)
+                            max.z = model->boundSphereCenter.z + model->boundSphereRadius;
                     }
                 }
             }
@@ -1377,10 +1377,10 @@ void func_800463E8(Vec *a, float *b)
                 if ((iter3->unk0 & 3) == 1 && iter3->unk4 != NULL)
                 {
                     float f;
-                    struct GMAModelHeader *r28 = iter3->unk4;
+                    struct GMAModel *r28 = iter3->unk4;
 
-                    mathutil_mtxA_tf_point(&r28->boundsCenter, &sp34);
-                    f = r28->boundsRadius;
+                    mathutil_mtxA_tf_point(&r28->boundSphereCenter, &sp34);
+                    f = r28->boundSphereRadius;
                     v.x = sp34.x - f;
                     v.y = sp34.y - f;
                     v.z = sp34.z - f;
@@ -1422,12 +1422,12 @@ void func_800463E8(Vec *a, float *b)
                 {
                     float var1;
                     float f0;
-                    struct GMAModelHeader *r28 = iter3->unk4;
+                    struct GMAModel *r28 = iter3->unk4;
 
                     if (iter3->unk4 == NULL)
                         continue;
-                    mathutil_mtxA_tf_point(&r28->boundsCenter, &sp28);
-                    var1 = r28->boundsRadius;
+                    mathutil_mtxA_tf_point(&r28->boundSphereCenter, &sp28);
+                    var1 = r28->boundSphereRadius;
                     f0 = var1 + mathutil_sqrt((sp40.x - sp28.x) * (sp40.x - sp28.x) + (sp40.z - sp28.z) * (sp40.z - sp28.z));
                     if (result < f0)
                         result = f0;
@@ -1456,10 +1456,10 @@ void func_800463E8(Vec *a, float *b)
                 if ((iter3->unk0 & 3) == 1 && iter3->unk4 != NULL)
                 {
                     float f;
-                    struct GMAModelHeader *r28 = iter3->unk4;
+                    struct GMAModel *r28 = iter3->unk4;
 
-                    mathutil_mtxA_tf_point(&r28->boundsCenter, &sp1C);
-                    f = r28->boundsRadius;
+                    mathutil_mtxA_tf_point(&r28->boundSphereCenter, &sp1C);
+                    f = r28->boundSphereRadius;
                     v.x = sp1C.x - f;
                     v.y = sp1C.y - f;
                     v.z = sp1C.z - f;
@@ -1860,21 +1860,21 @@ void func_800472E8(void)
     }
 }
 
-void adjust_stage_anim_ptrs(struct StageAnimHdr **animp, struct Stage *baseptr)
+void adjust_stage_anim_ptrs(struct StageItemgroupAnim **animp, struct Stage *baseptr)
 {
     *animp = OFFSET_TO_PTR(baseptr, *animp);
-    if ((*animp)->xRotFrames != NULL)
-        (*animp)->xRotFrames = OFFSET_TO_PTR(baseptr, (*animp)->xRotFrames);
-    if ((*animp)->yRotFrames != NULL)
-        (*animp)->yRotFrames = OFFSET_TO_PTR(baseptr, (*animp)->yRotFrames);
-    if ((*animp)->zRotFrames != NULL)
-        (*animp)->zRotFrames = OFFSET_TO_PTR(baseptr, (*animp)->zRotFrames);
-    if ((*animp)->xTrnslFrames != NULL)
-        (*animp)->xTrnslFrames = OFFSET_TO_PTR(baseptr, (*animp)->xTrnslFrames);
-    if ((*animp)->yTrnslFrames != NULL)
-        (*animp)->yTrnslFrames = OFFSET_TO_PTR(baseptr, (*animp)->yTrnslFrames);
-    if ((*animp)->zTrnslFrames != NULL)
-        (*animp)->zTrnslFrames = OFFSET_TO_PTR(baseptr, (*animp)->zTrnslFrames);
+    if ((*animp)->rotXKeyframes != NULL)
+        (*animp)->rotXKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->rotXKeyframes);
+    if ((*animp)->rotYKeyframes != NULL)
+        (*animp)->rotYKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->rotYKeyframes);
+    if ((*animp)->rotZKeyframes != NULL)
+        (*animp)->rotZKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->rotZKeyframes);
+    if ((*animp)->posXKeyframes != NULL)
+        (*animp)->posXKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->posXKeyframes);
+    if ((*animp)->posYKeyframes != NULL)
+        (*animp)->posYKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->posYKeyframes);
+    if ((*animp)->posZKeyframes != NULL)
+        (*animp)->posZKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->posZKeyframes);
 }
 
 void func_800473C0(struct UnkStruct8005562C_child **unkp, struct Stage *baseptr)
@@ -1956,7 +1956,7 @@ void stage_draw(void)
     {
         struct StageGoal *r24;
         int j;
-        struct GMAModelHeader *model;
+        struct GMAModel *model;
 
         if (r27->goalCount != 0)
         {
@@ -2024,7 +2024,7 @@ void stage_draw(void)
             struct Struct8020A348 *r23;
             int j;
             struct Struct8020A348_child *r27;
-            struct GMAModelHeader *model;
+            struct GMAModel *model;
 
             sp7C.unk2 = 6;
             movpart = itemgroups;

@@ -355,41 +355,41 @@ void view_animate_stage(void)
     movpart = itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
-        struct StageAnimHdr *r28 = r30->animHdr;
+        struct StageItemgroupAnim *r28 = r30->animHdr;
 
         if (r28 == NULL2)
             continue;
 
-        if (r28->xRotFrames != NULL2)
+        if (r28->rotXKeyframes != NULL2)
         {
             movpart->prevRot.x = movpart->rot.x;
-            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(r28->xRotFramesCount, r28->xRotFrames, t));
+            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(r28->rotXKeyframeCount, r28->rotXKeyframes, t));
         }
-        if (r28->yRotFrames != NULL2)
+        if (r28->rotYKeyframes != NULL2)
         {
             movpart->prevRot.y = movpart->rot.y;
-            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(r28->yRotFramesCount, r28->yRotFrames, t));
+            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(r28->rotYKeyframeCount, r28->rotYKeyframes, t));
         }
-        if (r28->zRotFrames != NULL2)
+        if (r28->rotZKeyframes != NULL2)
         {
             movpart->prevRot.z = movpart->rot.z;
-            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(r28->zRotFramesCount, r28->zRotFrames, t));
+            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(r28->rotZKeyframeCount, r28->rotZKeyframes, t));
         }
 
-        if (r28->xTrnslFrames != NULL2)
+        if (r28->posXKeyframes != NULL2)
         {
             movpart->prevPos.x = movpart->pos.x - r30->unkB8.x;
-            movpart->pos.x = g_interpolate_anim(r28->xTrnslFramesCount, r28->xTrnslFrames, t);
+            movpart->pos.x = g_interpolate_anim(r28->posXKeyframeCount, r28->posXKeyframes, t);
         }
-        if (r28->yTrnslFrames != NULL2)
+        if (r28->posYKeyframes != NULL2)
         {
             movpart->prevPos.y = movpart->pos.y - r30->unkB8.y;
-            movpart->pos.y = g_interpolate_anim(r28->yTrnslFramesCount, r28->yTrnslFrames, t);
+            movpart->pos.y = g_interpolate_anim(r28->posYKeyframeCount, r28->posYKeyframes, t);
         }
-        if (r28->zTrnslFrames != NULL2)
+        if (r28->posZKeyframes != NULL2)
         {
             movpart->prevPos.z = movpart->pos.z - r30->unkB8.z;
-            movpart->pos.z = g_interpolate_anim(r28->zTrnslFramesCount, r28->zTrnslFrames, t);
+            movpart->pos.z = g_interpolate_anim(r28->posZKeyframeCount, r28->posZKeyframes, t);
         }
 
         mathutil_mtxA_from_translate(&movpart->pos);
@@ -454,7 +454,7 @@ void func_800A6734(void)
      || func_800672D0(currStageId) != 0
      || (modeCtrl.levelSetFlags & (1 << 12)))
     {
-        struct GMAModelHeader *models[2];
+        struct GMAModel *models[2];
 
         models[0] = commonGma->modelEntries[OBJ_BANANA_01_LOD150].modelOffset;
         models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
@@ -557,7 +557,7 @@ void func_800A6A88(void)
             {
                 if ((r26->unk0 & 3) == 1)
                 {
-                    struct GMAModelHeader *model = r26->unk4;
+                    struct GMAModel *model = r26->unk4;
                     if (model != NULL)
                     {
 
@@ -586,10 +586,10 @@ void func_800A6A88(void)
 extern struct
 {
     u8 filler0[0x14];
-    struct GMAModelHeader *unk14;
+    struct GMAModel *unk14;
 } lbl_8028C0B0;
 
-extern struct GMAModelHeader *lbl_802F1FFC;
+extern struct GMAModel *lbl_802F1FFC;
 
 #ifdef NONMATCHING
 // https://decomp.me/scratch/xQ4td
@@ -597,7 +597,7 @@ void func_800A6BF0(void)
 {
     //struct StageCollHdr_child4 *r29;
 
-        struct GMAModelHeader *r28;
+        struct GMAModel *r28;
     //struct StageGoal *r27;
     int i;  // r26 -> r29
     //int i2;

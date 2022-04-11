@@ -37,7 +37,7 @@ struct Item
     s16 unk5E;
     struct StageBanana *unk60;
     s32 unk64;
-    struct GMAModelHeader *shadowModel;
+    struct GMAModel *shadowModel;
     S16Vec unk6C;
     float unk74;
     GXColor shadowColor;
@@ -80,7 +80,7 @@ void item_coin_collect(struct Item *, struct Struct800690DC *);
 void item_coin_destroy(struct Item *);
 void func_80069394(struct Item *);
 void item_coin_debug(struct Item *);
-struct GMAModelHeader *find_item_model(struct ModelLOD **a);
+struct GMAModel *find_item_model(struct ModelLOD **a);
 void item_pilot_init(struct Item *);
 void item_pilot_main(struct Item *);
 void item_pilot_draw(struct Item *);

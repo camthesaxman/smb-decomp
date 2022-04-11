@@ -129,7 +129,7 @@ void bg_bonus_draw(void)
     Vec sp14;
     Vec sp8;
     struct BGBonusStarpoint *starpoint;
-    struct GMAModelHeader *starlightModel;
+    struct GMAModel *starlightModel;
     struct StageBgModel *r27;
 
     bg_e3_draw();
@@ -153,7 +153,7 @@ void bg_bonus_draw(void)
             sp14.x = starpoint->unk0.x * sp8.x;
             sp14.y = starpoint->unk0.y * sp8.y;
             sp14.z = starpoint->unk0.z * sp8.z;
-            if (func_8000E53C(&sp14) < -(starlightModel->boundsRadius * f30))
+            if (func_8000E53C(&sp14) < -(starlightModel->boundSphereRadius * f30))
                 continue;
         }
         mathutil_mtxA_push();
@@ -296,7 +296,7 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
         {
             struct BGBonusStarpoint *starpoint = &work->starpoints[work->starpointsCount];
 
-            starpoint->unk0 = entry->modelOffset->boundsCenter;
+            starpoint->unk0 = entry->modelOffset->boundSphereCenter;
             work->starpointsCount++;
         }
         break;
