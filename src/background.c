@@ -631,8 +631,8 @@ void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float ti
         timeSecondsLooped -=
             loopDurationSeconds * mathutil_floor(timeSecondsLooped / loopDurationSeconds);
         timeSecondsLooped += (float)anim->loopStartSeconds;
-        if (anim->visibilityKeyframes != NULL2 &&
-            interpolate_keyframes(anim->visibilityKeyframeCount, anim->visibilityKeyframes,
+        if (anim->visibleKeyframes != NULL2 &&
+            interpolate_keyframes(anim->visibleKeyframeCount, anim->visibleKeyframes,
                                   timeSecondsLooped) < 0.5)
         {
             bgModels->flags &= ~(1 << 16);

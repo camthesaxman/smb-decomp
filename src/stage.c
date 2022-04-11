@@ -1898,8 +1898,8 @@ void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
         (*unkp)->posYKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posYKeyframeCount);
     if ((*unkp)->posZKeyframeCount != NULL)
         (*unkp)->posZKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posZKeyframeCount);
-    if ((*unkp)->visibilityKeyframes != NULL)
-        (*unkp)->visibilityKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->visibilityKeyframes);
+    if ((*unkp)->visibleKeyframes != NULL)
+        (*unkp)->visibleKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->visibleKeyframes);
     if ((*unkp)->translucencyKeyframes != NULL)
         (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }

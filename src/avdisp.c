@@ -1959,9 +1959,9 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
         // r18 = &a->unk16
         // r17 = &lbl_802B4ECC.translucency
         // r15 = &lbl_802B4ECC.posXKeyframeCount
-        // r24 = &lbl_802B4ECC.visibilityKeyframes doesn't change
+        // r24 = &lbl_802B4ECC.visibleKeyframes doesn't change
         // r14 = &sp2C doesn't change
-        // r25 = &lbl_802B4ECC.visibilityKeyframeCount  doesn't change
+        // r25 = &lbl_802B4ECC.visibleKeyframeCount  doesn't change
         // maybe indexed instead?
         u16 *r18 = &a->unk16;
         u32 *r17 = lbl_802B4ECC.unk2C;
@@ -2026,7 +2026,7 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
                     }
                     //lbl_80090BEC
                     func_8009F33C(0, sp28);
-                    lbl_802B4ECC.visibilityKeyframeCount = 1;
+                    lbl_802B4ECC.visibleKeyframeCount = 1;
                     */
                     // 40 -> 44 (lbl_802B4ECC.unk18 temp)
                     // r14 44 -> 28 (arg to func_8009F33C)
@@ -2059,7 +2059,7 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
                     func_8009F33C(1, sp20);
-                    lbl_802B4ECC.visibilityKeyframes = 1;
+                    lbl_802B4ECC.visibleKeyframes = 1;
                     */
                     // 32 -> 40 (lbl_802B4ECC.unk18 temp)
                     // r27 36 -> 24 (arg to func_8009F33C)
@@ -2125,7 +2125,7 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
                         sp28.b = 255;
                     }
                     func_8009F33C(0, sp28);
-                    lbl_802B4ECC.visibilityKeyframeCount = 1;
+                    lbl_802B4ECC.visibleKeyframeCount = 1;
                     */
                     // 24 -> 36 (lbl_802B4ECC.unk18 temp)
                     // 28 -> 20 (arg to func_8009F33C)
@@ -2151,7 +2151,7 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
                     func_8009F33C(1, sp20);
-                    lbl_802B4ECC.visibilityKeyframes = 1;
+                    lbl_802B4ECC.visibleKeyframes = 1;
                     */
                     // 16 -> 32 (lbl_802B4ECC.unk18 temp)
                     // r21 20 -> 16 (arg to func_8009F33C)
