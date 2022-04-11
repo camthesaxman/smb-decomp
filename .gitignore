@@ -31,3 +31,5 @@ GMBE8P/
 /compile_commands.json
 /.cache/**
 /.clangd/**
+
+.idea
