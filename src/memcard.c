@@ -3258,7 +3258,7 @@ struct NaomiSpriteParams lbl_801D5724 =
     0.0f,
     1.0f,
     1.0f,
-    0,  // rotYKeyframes
+    0,  // unk28
     0.649999976158f,
     -1,
     10,
