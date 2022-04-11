@@ -1802,7 +1802,7 @@ void submode_adv_game_play_init_func(void)
     camera_set_state(0);
     infoWork.unk0 |= 0x810;
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+    animate_itemgroups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
     gameSubmodeRequest = SMD_ADV_GAME_PLAY_MAIN;
 }
 
@@ -1991,7 +1991,7 @@ void submode_adv_ranking_main_func(void)
             else if (f1 > (float)modeCtrl.unk0 * 0.5)
                 f1 = (int)((float)modeCtrl.unk0 * 0.5);
             lbl_80250A68.unk10 = f1;
-            g_animate_stage(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+            animate_itemgroups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
             g_get_replay_info(func_80011A84(), &sp8);
             if (gamePauseStatus & (1 << 2))
                 printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);

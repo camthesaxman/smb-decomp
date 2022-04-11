@@ -565,8 +565,8 @@ void bg_e3_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_e3_finish(void) {}
@@ -594,13 +594,13 @@ void bg_e3_draw(void)
 
 void bg_e3_interact(int a) {}
 
-void g_animate_background_parts(struct StageBgModel *bgModel, int b, float c)
+void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds)
 {
     int i;
     int r29;
     Vec boundSphereCenter;
 
-    if (bgModel == NULL2)
+    if (bgModels == NULL2)
         return;
     if (lbl_801EEC90.unk0 & 0x11)
         r29 = 16;
@@ -608,64 +608,77 @@ void g_animate_background_parts(struct StageBgModel *bgModel, int b, float c)
         r29 = 1 << (modeCtrl.unk30 - 1);
     else
         r29 = 1;
-    for (i = 0; i < b; i++, bgModel++)
+    for (i = 0; i < bgModelCount; i++, bgModels++)
     {
-        float timeSeconds;
+        float timeSecondsLooped;
         float loopDurationSeconds;
         struct StageBgAnim *anim;
 
-        bgModel->flags &= ~(1 << 16);
-        if (!(bgModel->flags & r29))
+        bgModels->flags &= ~(1 << 16);
+        if (!(bgModels->flags & r29))
             continue;
-        if (bgModel->model == NULL2)
+        if (bgModels->model == NULL2)
             continue;
-        bgModel->flags |= (1 << 16);
-        anim = bgModel->anim;
+        bgModels->flags |= (1 << 16);
+        anim = bgModels->anim;
         if (anim == NULL2)
             continue;
-        timeSeconds = c;
-        if (bgModel->flags & (1 << 6))
-            timeSeconds = lbl_80206DEC.g_stageTimer / 60.0;
-        timeSeconds += anim->loopStartSeconds;
+        timeSecondsLooped = timeSeconds;
+        if (bgModels->flags & (1 << 6))
+            timeSecondsLooped = lbl_80206DEC.g_stageTimer / 60.0;
+        timeSecondsLooped += anim->loopStartSeconds;
         loopDurationSeconds = (float)(anim->loopEndSeconds - anim->loopStartSeconds);
-        timeSeconds -= loopDurationSeconds * mathutil_floor(timeSeconds / loopDurationSeconds);
-        timeSeconds += (float)anim->loopStartSeconds;
-        if (anim->unk54Keyframes != NULL2 && interpolate_keyframes(anim->unk50KeyframeCount, anim->unk54Keyframes, timeSeconds) < 0.5)
+        timeSecondsLooped -=
+            loopDurationSeconds * mathutil_floor(timeSecondsLooped / loopDurationSeconds);
+        timeSecondsLooped += (float)anim->loopStartSeconds;
+        if (anim->visibilityKeyframes != NULL2 &&
+            interpolate_keyframes(anim->visibilityKeyframeCount, anim->visibilityKeyframes,
+                                  timeSecondsLooped) < 0.5)
         {
-            bgModel->flags &= ~(1 << 16);
+            bgModels->flags &= ~(1 << 16);
             continue;
         }
         if (anim->translucencyKeyframes != NULL2)
         {
-            bgModel->translucency = interpolate_keyframes(anim->translucencyKeyframeCount, anim->translucencyKeyframes, timeSeconds);
-            if (bgModel->translucency >= 1.0)
+            bgModels->translucency = interpolate_keyframes(
+                anim->translucencyKeyframeCount, anim->translucencyKeyframes, timeSecondsLooped);
+            if (bgModels->translucency >= 1.0)
                 continue;
         }
         if (anim->scaleXKeyframes != NULL2)
-            bgModel->scale.x = interpolate_keyframes(anim->scaleXKeyframeCount, anim->scaleXKeyframes, timeSeconds);
+            bgModels->scale.x = interpolate_keyframes(anim->scaleXKeyframeCount,
+                                                      anim->scaleXKeyframes, timeSecondsLooped);
         if (anim->scaleYKeyframes != NULL2)
-            bgModel->scale.y = interpolate_keyframes(anim->scaleYKeyframeCount, anim->scaleYKeyframes, timeSeconds);
+            bgModels->scale.y = interpolate_keyframes(anim->scaleYKeyframeCount,
+                                                      anim->scaleYKeyframes, timeSecondsLooped);
         if (anim->scaleZKeyframes != NULL2)
-            bgModel->scale.z = interpolate_keyframes(anim->scaleZKeyframeCount, anim->scaleZKeyframes, timeSeconds);
+            bgModels->scale.z = interpolate_keyframes(anim->scaleZKeyframeCount,
+                                                      anim->scaleZKeyframes, timeSecondsLooped);
         if (anim->rotXKeyframeCount != NULL2)
-            bgModel->rotX = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframes, anim->rotXKeyframeCount, timeSeconds));
+            bgModels->rotX = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotXKeyframes, anim->rotXKeyframeCount, timeSecondsLooped));
         if (anim->rotYKeyframeCount != NULL2)
-            bgModel->rotY = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframes, anim->rotYKeyframeCount, timeSeconds));
+            bgModels->rotY = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotYKeyframes, anim->rotYKeyframeCount, timeSecondsLooped));
         if (anim->rotZKeyframeCount != NULL2)
-            bgModel->rotZ = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframes, anim->rotZKeyframeCount, timeSeconds));
+            bgModels->rotZ = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotZKeyframes, anim->rotZKeyframeCount, timeSecondsLooped));
         if (anim->posXKeyframeCount != NULL2)
-            bgModel->pos.x = interpolate_keyframes(anim->posXKeyframes, anim->posXKeyframeCount, timeSeconds);
+            bgModels->pos.x = interpolate_keyframes(anim->posXKeyframes, anim->posXKeyframeCount,
+                                                    timeSecondsLooped);
         if (anim->posYKeyframeCount != NULL2)
-            bgModel->pos.y = interpolate_keyframes(anim->posYKeyframes, anim->posYKeyframeCount, timeSeconds);
+            bgModels->pos.y = interpolate_keyframes(anim->posYKeyframes, anim->posYKeyframeCount,
+                                                    timeSecondsLooped);
         if (anim->posZKeyframeCount != NULL2)
-            bgModel->pos.z = interpolate_keyframes(anim->posZKeyframes, anim->posZKeyframeCount, timeSeconds);
-        if ((bgModel->flags & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
+            bgModels->pos.z = interpolate_keyframes(anim->posZKeyframes, anim->posZKeyframeCount,
+                                                    timeSecondsLooped);
+        if ((bgModels->flags & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
-            mathutil_mtxA_from_translate(&bgModel->pos);
-            mathutil_mtxA_rotate_z(bgModel->rotZ);
-            mathutil_mtxA_rotate_y(bgModel->rotY);
-            mathutil_mtxA_rotate_x(bgModel->rotX);
-            mathutil_mtxA_tf_point(&bgModel->model->boundSphereCenter, &boundSphereCenter);
+            mathutil_mtxA_from_translate(&bgModels->pos);
+            mathutil_mtxA_rotate_z(bgModels->rotZ);
+            mathutil_mtxA_rotate_y(bgModels->rotY);
+            mathutil_mtxA_rotate_x(bgModels->rotX);
+            mathutil_mtxA_tf_point(&bgModels->model->boundSphereCenter, &boundSphereCenter);
             func_800390C8(5, &boundSphereCenter, 1.0f);
         }
     }
@@ -943,8 +956,8 @@ void bg_night_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_night_finish(void) {}
@@ -978,8 +991,8 @@ void bg_ice2_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_ice2_finish(void) {}
@@ -1053,8 +1066,8 @@ void bg_billiards_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_billiards_finish(void) {}
@@ -1088,8 +1101,8 @@ void bg_golf_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_golf_finish(void) {}
@@ -1123,8 +1136,8 @@ void bg_bowling_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_bowling_finish(void) {}

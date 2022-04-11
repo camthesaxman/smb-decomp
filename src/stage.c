@@ -323,7 +323,7 @@ void draw_blur_bridge_accordions(void)
     }
 }
 
-void g_animate_stage(float a)
+void animate_itemgroups(float a)
 {
     float timeSeconds;
     float f30;
@@ -1898,8 +1898,8 @@ void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
         (*unkp)->posYKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posYKeyframeCount);
     if ((*unkp)->posZKeyframeCount != NULL)
         (*unkp)->posZKeyframeCount = OFFSET_TO_PTR(baseptr, (*unkp)->posZKeyframeCount);
-    if ((*unkp)->unk54Keyframes != NULL)
-        (*unkp)->unk54Keyframes = OFFSET_TO_PTR(baseptr, (*unkp)->unk54Keyframes);
+    if ((*unkp)->visibilityKeyframes != NULL)
+        (*unkp)->visibilityKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->visibilityKeyframes);
     if ((*unkp)->translucencyKeyframes != NULL)
         (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }

@@ -219,8 +219,8 @@ struct StageBgAnim
     struct Keyframe *posYKeyframeCount;
     u32 posZKeyframes;
     struct Keyframe *posZKeyframeCount;
-    u32 unk50KeyframeCount;
-    struct Keyframe *unk54Keyframes;
+    u32 visibilityKeyframeCount;
+    struct Keyframe *visibilityKeyframes;  // Model visible if value >= 0.5?
     u32 translucencyKeyframeCount;
     struct Keyframe *translucencyKeyframes;
 };

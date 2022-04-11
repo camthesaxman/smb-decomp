@@ -723,8 +723,8 @@ lbl_80044470:
 /* 8004449C 000403BC  38 21 00 78 */	addi r1, r1, 0x78
 /* 800444A0 000403C0  4E 80 00 20 */	blr
 
-.global g_animate_stage
-g_animate_stage:
+.global animate_itemgroups
+animate_itemgroups:
 /* 800444A4 000403C4  7C 08 02 A6 */	mflr r0
 /* 800444A8 000403C8  3C 60 80 20 */	lis r3, lbl_80206D00@ha
 /* 800444AC 000403CC  90 01 00 04 */	stw r0, 4(r1)
