@@ -219,7 +219,7 @@ void func_80035748();
 // ? func_80036720();
 // ? func_800367E4();
 
-float g_interpolate_anim(u32, struct Keyframe *, float);
+float interpolate_keyframes(u32, struct Keyframe *, float);
 
 void func_80047D70(void);
 void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NaomiVtxWithNormal *), void (*c)(struct NaomiVtxWithColor *));

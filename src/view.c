@@ -363,33 +363,33 @@ void view_animate_stage(void)
         if (r28->rotXKeyframes != NULL2)
         {
             movpart->prevRot.x = movpart->rot.x;
-            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(r28->rotXKeyframeCount, r28->rotXKeyframes, t));
+            movpart->rot.x = DEGREES_TO_S16(interpolate_keyframes(r28->rotXKeyframeCount, r28->rotXKeyframes, t));
         }
         if (r28->rotYKeyframes != NULL2)
         {
             movpart->prevRot.y = movpart->rot.y;
-            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(r28->rotYKeyframeCount, r28->rotYKeyframes, t));
+            movpart->rot.y = DEGREES_TO_S16(interpolate_keyframes(r28->rotYKeyframeCount, r28->rotYKeyframes, t));
         }
         if (r28->rotZKeyframes != NULL2)
         {
             movpart->prevRot.z = movpart->rot.z;
-            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(r28->rotZKeyframeCount, r28->rotZKeyframes, t));
+            movpart->rot.z = DEGREES_TO_S16(interpolate_keyframes(r28->rotZKeyframeCount, r28->rotZKeyframes, t));
         }
 
         if (r28->posXKeyframes != NULL2)
         {
             movpart->prevPos.x = movpart->pos.x - r30->unkB8.x;
-            movpart->pos.x = g_interpolate_anim(r28->posXKeyframeCount, r28->posXKeyframes, t);
+            movpart->pos.x = interpolate_keyframes(r28->posXKeyframeCount, r28->posXKeyframes, t);
         }
         if (r28->posYKeyframes != NULL2)
         {
             movpart->prevPos.y = movpart->pos.y - r30->unkB8.y;
-            movpart->pos.y = g_interpolate_anim(r28->posYKeyframeCount, r28->posYKeyframes, t);
+            movpart->pos.y = interpolate_keyframes(r28->posYKeyframeCount, r28->posYKeyframes, t);
         }
         if (r28->posZKeyframes != NULL2)
         {
             movpart->prevPos.z = movpart->pos.z - r30->unkB8.z;
-            movpart->pos.z = g_interpolate_anim(r28->posZKeyframeCount, r28->posZKeyframes, t);
+            movpart->pos.z = interpolate_keyframes(r28->posZKeyframeCount, r28->posZKeyframes, t);
         }
 
         mathutil_mtxA_from_translate(&movpart->pos);

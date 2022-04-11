@@ -630,35 +630,35 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
         f2 = (float)(anim->unk4 - anim->unk0);
         t -= f2 * mathutil_floor(t / f2);
         t += (float)anim->unk0;
-        if (anim->unk54 != NULL2 && g_interpolate_anim(anim->unk50, anim->unk54, t) < 0.5)
+        if (anim->unk54 != NULL2 && interpolate_keyframes(anim->unk50, anim->unk54, t) < 0.5)
         {
             a->unk0 &= ~(1 << 16);
             continue;
         }
         if (anim->unk5C != NULL2)
         {
-            a->unk2C = g_interpolate_anim(anim->unk58, anim->unk5C, t);
+            a->unk2C = interpolate_keyframes(anim->unk58, anim->unk5C, t);
             if (a->unk2C >= 1.0)
                 continue;
         }
         if (anim->unkC != NULL2)
-            a->scale.x = g_interpolate_anim(anim->unk8, anim->unkC, t);
+            a->scale.x = interpolate_keyframes(anim->unk8, anim->unkC, t);
         if (anim->unk14 != NULL2)
-            a->scale.y = g_interpolate_anim(anim->unk10, anim->unk14, t);
+            a->scale.y = interpolate_keyframes(anim->unk10, anim->unk14, t);
         if (anim->unk1C != NULL2)
-            a->scale.z = g_interpolate_anim(anim->unk18, anim->unk1C, t);
+            a->scale.z = interpolate_keyframes(anim->unk18, anim->unk1C, t);
         if (anim->unk24 != NULL2)
-            a->xrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk20, anim->unk24, t));
+            a->xrot = DEGREES_TO_S16(interpolate_keyframes(anim->unk20, anim->unk24, t));
         if (anim->unk2C != NULL2)
-            a->yrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk28, anim->unk2C, t));
+            a->yrot = DEGREES_TO_S16(interpolate_keyframes(anim->unk28, anim->unk2C, t));
         if (anim->unk34 != NULL2)
-            a->zrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk30, anim->unk34, t));
+            a->zrot = DEGREES_TO_S16(interpolate_keyframes(anim->unk30, anim->unk34, t));
         if (anim->unk3C != NULL2)
-            a->pos.x = g_interpolate_anim(anim->unk38, anim->unk3C, t);
+            a->pos.x = interpolate_keyframes(anim->unk38, anim->unk3C, t);
         if (anim->unk44 != NULL2)
-            a->pos.y = g_interpolate_anim(anim->unk40, anim->unk44, t);
+            a->pos.y = interpolate_keyframes(anim->unk40, anim->unk44, t);
         if (anim->unk4C != NULL2)
-            a->pos.z = g_interpolate_anim(anim->unk48, anim->unk4C, t);
+            a->pos.z = interpolate_keyframes(anim->unk48, anim->unk4C, t);
         if ((a->unk0 & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
             mathutil_mtxA_from_translate(&a->pos);

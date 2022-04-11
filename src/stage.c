@@ -175,32 +175,32 @@ void ev_stage_main(void)
         if (anim->rotXKeyframes != NULL2)
         {
             movpart->prevRot.x = movpart->rot.x;
-            movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
+            movpart->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
         }
         if (anim->rotYKeyframes != NULL2)
         {
             movpart->prevRot.y = movpart->rot.y;
-            movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
+            movpart->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
         }
         if (anim->rotZKeyframes != NULL2)
         {
             movpart->prevRot.z = movpart->rot.z;
-            movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
+            movpart->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
         }
         if (anim->posXKeyframes != NULL2)
         {
             movpart->prevPos.x = movpart->pos.x - coll->unkB8.x;
-            movpart->pos.x = g_interpolate_anim(anim->posXKeyframeCount, anim->posXKeyframes, f31);
+            movpart->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, f31);
         }
         if (anim->posYKeyframes != NULL2)
         {
             movpart->prevPos.y = movpart->pos.y - coll->unkB8.y;
-            movpart->pos.y = g_interpolate_anim(anim->posYKeyframeCount, anim->posYKeyframes, f31);
+            movpart->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, f31);
         }
         if (anim->posZKeyframes != NULL2)
         {
             movpart->prevPos.z = movpart->pos.z - coll->unkB8.z;
-            movpart->pos.z = g_interpolate_anim(anim->posZKeyframeCount, anim->posZKeyframes, f31);
+            movpart->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, f31);
         }
         mathutil_mtxA_from_translate(&movpart->pos);
         mathutil_mtxA_rotate_z(movpart->rot.z);
@@ -296,7 +296,7 @@ void draw_blur_bridge_accordions(void)
 
             f30 = f27;
             if (r30->animHdr->posXKeyframes != NULL2)
-                f30 = g_interpolate_anim(r30->animHdr->posXKeyframeCount, r30->animHdr->posXKeyframes, t - 0.5);
+                f30 = interpolate_keyframes(r30->animHdr->posXKeyframeCount, r30->animHdr->posXKeyframes, t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
             {
@@ -352,32 +352,32 @@ void g_animate_stage(float a)
             if (anim->rotXKeyframes != NULL2)
             {
                 movpart->prevRot.x = movpart->rot.x;
-                movpart->rot.x = DEGREES_TO_S16(g_interpolate_anim(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
+                movpart->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
             }
             if (anim->rotYKeyframes != NULL2)
             {
                 movpart->prevRot.y = movpart->rot.y;
-                movpart->rot.y = DEGREES_TO_S16(g_interpolate_anim(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
+                movpart->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
             }
             if (anim->rotZKeyframes != NULL2)
             {
                 movpart->prevRot.z = movpart->rot.z;
-                movpart->rot.z = DEGREES_TO_S16(g_interpolate_anim(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
+                movpart->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
             }
             if (anim->posXKeyframes != NULL2)
             {
                 movpart->prevPos.x = movpart->pos.x;
-                movpart->pos.x = g_interpolate_anim(anim->posXKeyframeCount, anim->posXKeyframes, f31);
+                movpart->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, f31);
             }
             if (anim->posYKeyframes != NULL2)
             {
                 movpart->prevPos.y = movpart->pos.y;
-                movpart->pos.y = g_interpolate_anim(anim->posYKeyframeCount, anim->posYKeyframes, f31);
+                movpart->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, f31);
             }
             if (anim->posZKeyframes != NULL2)
             {
                 movpart->prevPos.z = movpart->pos.z;
-                movpart->pos.z = g_interpolate_anim(anim->posZKeyframeCount, anim->posZKeyframes, f31);
+                movpart->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, f31);
             }
             mathutil_mtxA_from_translate(&movpart->pos);
             mathutil_mtxA_rotate_z(movpart->rot.z);

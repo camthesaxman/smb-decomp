@@ -869,11 +869,11 @@ struct MemcardGameData
 
 struct Keyframe
 {
-    s32 unk0;
-    float unk4;
-    float unk8;
-    float unkC;
-    float unk10;
+    s32 easeType;
+    float timeSeconds;
+    float value;
+    float tangentIn;
+    float tangentOut;
 };
 
 struct StageItemgroup;

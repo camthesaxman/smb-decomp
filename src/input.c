@@ -179,10 +179,10 @@ void input_main(void)
     /*
     for (r6 = &lbl_801F3C60[0], i = 0; i < 4; i++, r6++)
     {
-        r6->unkC.button = r6->unk0.button;
+        r6->tangentIn.button = r6->unk0.button;
         r6->unk0 = sp10[i];
-        r6->unk18.button = sp10[i].button & ~r6->unkC.button;
-        r6->unk24.button = r6->unkC.button & ~sp10[i].button;
+        r6->unk18.button = sp10[i].button & ~r6->tangentIn.button;
+        r6->unk24.button = r6->tangentIn.button & ~sp10[i].button;
     }
     */
 
@@ -271,8 +271,8 @@ void input_main(void)
         //lbl_800250D0
         /*
         controllerInfo[i].unk0 = sp10[i];
-        controllerInfo[i].unk18.button = sp10[i].button & ~controllerInfo[i].unkC.button;
-        controllerInfo[i].unk24.button = controllerInfo[i].unkC.button & ~sp10[i].button;
+        controllerInfo[i].unk18.button = sp10[i].button & ~controllerInfo[i].tangentIn.button;
+        controllerInfo[i].unk24.button = controllerInfo[i].tangentIn.button & ~sp10[i].button;
         */
         test3(&controllerInfo[i], &sp10[i]);
     }

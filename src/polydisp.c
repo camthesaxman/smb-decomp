@@ -1241,8 +1241,8 @@ void draw_timer_bomb_fuse(void)
     func_8008F6D4(0);
 
     // Draw spark
-    sparkPos.x = g_interpolate_anim(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
-    sparkPos.y = g_interpolate_anim(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
+    sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
+    sparkPos.y = interpolate_keyframes(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
     sparkPos.z = 0.141f;
     mathutil_mtxA_translate(&sparkPos);
     mathutil_mtxA_sq_from_identity();
