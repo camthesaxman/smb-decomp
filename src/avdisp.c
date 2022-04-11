@@ -1957,7 +1957,7 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
         s32 r19 = 4;
         // loop:
         // r18 = &a->unk16
-        // r17 = &lbl_802B4ECC.unk2C
+        // r17 = &lbl_802B4ECC.translucency
         // r15 = &lbl_802B4ECC.unk3C
         // r24 = &lbl_802B4ECC.unk54 doesn't change
         // r14 = &sp2C doesn't change

@@ -111,23 +111,23 @@ void ev_stage_main(void)
     if (infoWork.unk0 & (1 << (31-0x17)))
     {
         if (modeCtrl.unk0 > 0x78)
-            lbl_80206DEC.unk4 = 0.0f;
+            lbl_80206DEC.g_stageTimer = 0.0f;
         else
-            lbl_80206DEC.unk4 = 0x78 - modeCtrl.unk0;
+            lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.unk0;
         lbl_80206DEC.unk0 = 0x77;
     }
     else if (infoWork.unk0 & (1 << (31-0x1B)))
     {
-        lbl_80206DEC.unk4 = func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
-        lbl_80206DEC.unk0 = lbl_80206DEC.unk4;
+        lbl_80206DEC.g_stageTimer = func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
+        lbl_80206DEC.unk0 = lbl_80206DEC.g_stageTimer;
     }
     else
-        lbl_80206DEC.unk4 = lbl_80206DEC.unk0;
-    f31 = lbl_80206DEC.unk4 / 60.0;
-    f31 += decodedStageLzPtr->unk0;
-    f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
+        lbl_80206DEC.g_stageTimer = lbl_80206DEC.unk0;
+    f31 = lbl_80206DEC.g_stageTimer / 60.0;
+    f31 += decodedStageLzPtr->loopStartSeconds;
+    f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     f31 -= f3 * mathutil_floor(f31 / f3);
-    f31 += decodedStageLzPtr->unk0;
+    f31 += decodedStageLzPtr->loopStartSeconds;
     f30 = f31;
     if (decodedStageLzPtr->unk78 != 0)
     {
@@ -156,7 +156,7 @@ void ev_stage_main(void)
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
     {
         int j;
-        struct StageItemgroupAnim *anim = coll->animHdr;
+        struct StageItemgroupAnim *anim = coll->anim;
 
         if (anim == NULL2)
             continue;
@@ -279,24 +279,24 @@ void draw_blur_bridge_accordions(void)
 
     if (blurBridgeAccordion == NULL2)
         return;
-    t = lbl_80206DEC.unk4 / 60.0;
-    t += (float)decodedStageLzPtr->unk0;
-    f30 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
+    t = lbl_80206DEC.g_stageTimer / 60.0;
+    t += (float)decodedStageLzPtr->loopStartSeconds;
+    f30 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     t -= f30 * mathutil_floor(t / f30);
-    t += (float)decodedStageLzPtr->unk0;
+    t += (float)decodedStageLzPtr->loopStartSeconds;
     movpart = &itemgroups[1];
     r30 = decodedStageLzPtr->itemgroups + 1;
     for (i = 1; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
-        if (r30->unk7C > 0 && r30->animHdr != NULL2)
+        if (r30->unk7C > 0 && r30->anim != NULL2)
         {
             u32 r28;
             Vec sp10;
             float f27 = movpart->pos.x;
 
             f30 = f27;
-            if (r30->animHdr->posXKeyframes != NULL2)
-                f30 = interpolate_keyframes(r30->animHdr->posXKeyframeCount, r30->animHdr->posXKeyframes, t - 0.5);
+            if (r30->anim->posXKeyframes != NULL2)
+                f30 = interpolate_keyframes(r30->anim->posXKeyframeCount, r30->anim->posXKeyframes, t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
             {
@@ -325,69 +325,69 @@ void draw_blur_bridge_accordions(void)
 
 void g_animate_stage(float a)
 {
-    float f31;
+    float timeSeconds;
     float f30;
     float f3;
-    struct ItemgroupInfo *movpart;
-    struct StageItemgroup *coll;
+    struct ItemgroupInfo *itemgroup;
+    struct StageItemgroup *stageIg;
     struct StageItemgroupAnim *anim;
     int i;
 
     if (gamePauseStatus & 0xA)
         return;
-    lbl_80206DEC.unk4 = a;
+    lbl_80206DEC.g_stageTimer = a;
     lbl_80206DEC.unk0 = a;
-    f31 = lbl_80206DEC.unk4 / 60.0;
-    f31 += decodedStageLzPtr->unk0;
-    f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
-    f31 -= f3 * mathutil_floor(f31 / f3);
-    f31 += decodedStageLzPtr->unk0;
-    movpart = itemgroups;
-    coll = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, coll++)
+    timeSeconds = lbl_80206DEC.g_stageTimer / 60.0;
+    timeSeconds += decodedStageLzPtr->loopStartSeconds;
+    f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
+    timeSeconds -= f3 * mathutil_floor(timeSeconds / f3);
+    timeSeconds += decodedStageLzPtr->loopStartSeconds;
+    itemgroup = itemgroups;
+    stageIg = decodedStageLzPtr->itemgroups;
+    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, stageIg++)
     {
-        anim = coll->animHdr;
+        anim = stageIg->anim;
         if (anim != NULL2)
         {
             if (anim->rotXKeyframes != NULL2)
             {
-                movpart->prevRot.x = movpart->rot.x;
-                movpart->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
+                itemgroup->prevRot.x = itemgroup->rot.x;
+                itemgroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, timeSeconds));
             }
             if (anim->rotYKeyframes != NULL2)
             {
-                movpart->prevRot.y = movpart->rot.y;
-                movpart->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
+                itemgroup->prevRot.y = itemgroup->rot.y;
+                itemgroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, timeSeconds));
             }
             if (anim->rotZKeyframes != NULL2)
             {
-                movpart->prevRot.z = movpart->rot.z;
-                movpart->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
+                itemgroup->prevRot.z = itemgroup->rot.z;
+                itemgroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, timeSeconds));
             }
             if (anim->posXKeyframes != NULL2)
             {
-                movpart->prevPos.x = movpart->pos.x;
-                movpart->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, f31);
+                itemgroup->prevPos.x = itemgroup->pos.x;
+                itemgroup->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, timeSeconds);
             }
             if (anim->posYKeyframes != NULL2)
             {
-                movpart->prevPos.y = movpart->pos.y;
-                movpart->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, f31);
+                itemgroup->prevPos.y = itemgroup->pos.y;
+                itemgroup->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, timeSeconds);
             }
             if (anim->posZKeyframes != NULL2)
             {
-                movpart->prevPos.z = movpart->pos.z;
-                movpart->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, f31);
+                itemgroup->prevPos.z = itemgroup->pos.z;
+                itemgroup->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, timeSeconds);
             }
-            mathutil_mtxA_from_translate(&movpart->pos);
-            mathutil_mtxA_rotate_z(movpart->rot.z);
-            mathutil_mtxA_rotate_y(movpart->rot.y);
-            mathutil_mtxA_rotate_x(movpart->rot.x - coll->initRot.x);
-            mathutil_mtxA_rotate_y(-coll->initRot.y);
-            mathutil_mtxA_rotate_z(-coll->initRot.z);
-            mathutil_mtxA_translate_neg(&coll->initPos);
-            mathutil_mtxA_to_mtx(movpart->transform);
-            mathutil_mtx_copy(movpart->prevTransform, movpart->transform);
+            mathutil_mtxA_from_translate(&itemgroup->pos);
+            mathutil_mtxA_rotate_z(itemgroup->rot.z);
+            mathutil_mtxA_rotate_y(itemgroup->rot.y);
+            mathutil_mtxA_rotate_x(itemgroup->rot.x - stageIg->initRot.x);
+            mathutil_mtxA_rotate_y(-stageIg->initRot.y);
+            mathutil_mtxA_rotate_z(-stageIg->initRot.z);
+            mathutil_mtxA_translate_neg(&stageIg->initPos);
+            mathutil_mtxA_to_mtx(itemgroup->transform);
+            mathutil_mtx_copy(itemgroup->prevTransform, itemgroup->transform);
         }
     }
 }
@@ -1016,7 +1016,7 @@ void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
     dstFromOrigin = mathutil_sqrt(vtx.x * vtx.x + vtx.z * vtx.z);
     amplitude = 0.5 + -0.030833333333333333 * dstFromOrigin;
     f2 = -1092.0f;
-    f2 *= (lbl_80206DEC.unk4 - 30.0f);
+    f2 *= (lbl_80206DEC.g_stageTimer - 30.0f);
     angle = 16384.0 * dstFromOrigin;
     angle = f2 + angle;
     if (angle > 0)
@@ -1053,7 +1053,7 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
     dstFromOrigin = mathutil_sqrt(vtx.x * vtx.x + vtx.z * vtx.z);
     amplitude = 0.5 + -0.030833333333333333 * dstFromOrigin;
     f2 = -1092.0f;
-    f2 *= (lbl_80206DEC.unk4 - 30.0f);
+    f2 *= (lbl_80206DEC.g_stageTimer - 30.0f);
     angle = 16384.0 * dstFromOrigin;
     angle = f2 + angle;
     if (angle > 0)
@@ -1085,7 +1085,7 @@ u32 bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitN
     f1 = mathutil_sqrt(rayOrigin->x * rayOrigin->x + rayOrigin->z * rayOrigin->z);
     f31 = 0.5 + -0.030833333333333333 * f1;
     f2 = -1092.0f;
-    f2 *= (lbl_80206DEC.unk4 - 30.0f);
+    f2 *= (lbl_80206DEC.g_stageTimer - 30.0f);
     r3 = 16384.0 * f1;
     angle = f2 + r3;
     if (angle > 0)
@@ -1657,8 +1657,8 @@ void load_stagedef(int stageId)
     coll = decodedStageLzPtr->itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, coll++)
     {
-        if (coll->animHdr != NULL)
-            adjust_stage_anim_ptrs(&coll->animHdr, decodedStageLzPtr);
+        if (coll->anim != NULL)
+            adjust_stage_anim_ptrs(&coll->anim, decodedStageLzPtr);
         if (coll->modelNames != NULL)
         {
             char **namep;
@@ -1754,16 +1754,16 @@ void load_stagedef(int stageId)
         decodedStageLzPtr->bgModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->bgModels);
         for (i = 0, r28 = decodedStageLzPtr->bgModels; i < decodedStageLzPtr->bgModelsCount; i++, r28++)
         {
-            u32 r3 = r28->unk0;
+            u32 r3 = r28->flags;
 
             if (r3 & (1<<(31-0x10)))
             {
-                r28->unk0 &= 0xF;
-                r28->unk0 |= (r3 >> 12) & 0xFFFF0;
+                r28->flags &= 0xF;
+                r28->flags |= (r3 >> 12) & 0xFFFF0;
             }
             r28->name = OFFSET_TO_PTR(decodedStageLzPtr, r28->name);
-            if (r28->unk30 != NULL)
-                func_800473C0(&r28->unk30, decodedStageLzPtr);
+            if (r28->anim != NULL)
+                func_800473C0(&r28->anim, decodedStageLzPtr);
             if (r28->unk34 != NULL)
                 func_800474D8(&r28->unk34, decodedStageLzPtr);
         }
@@ -1776,16 +1776,16 @@ void load_stagedef(int stageId)
         decodedStageLzPtr->unk74 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk74);
         for (i = 0, r28 = decodedStageLzPtr->unk74; i < decodedStageLzPtr->unk70; i++, r28++)
         {
-            u32 r3 = r28->unk0;
+            u32 r3 = r28->flags;
 
             if (r3 & (1<<(31-0x10)))
             {
-                r28->unk0 = r3 & 0xF;
-                r28->unk0 |= (r3 >> 12) & 0xFFFF0;
+                r28->flags = r3 & 0xF;
+                r28->flags |= (r3 >> 12) & 0xFFFF0;
             }
             r28->name = OFFSET_TO_PTR(decodedStageLzPtr, r28->name);
-            if (r28->unk30 != NULL)
-                func_800473C0(&r28->unk30, decodedStageLzPtr);
+            if (r28->anim != NULL)
+                func_800473C0(&r28->anim, decodedStageLzPtr);
             if (r28->unk34 != NULL)
                 func_800474D8(&r28->unk34, decodedStageLzPtr);
         }
@@ -1877,7 +1877,7 @@ void adjust_stage_anim_ptrs(struct StageItemgroupAnim **animp, struct Stage *bas
         (*animp)->posZKeyframes = OFFSET_TO_PTR(baseptr, (*animp)->posZKeyframes);
 }
 
-void func_800473C0(struct UnkStruct8005562C_child **unkp, struct Stage *baseptr)
+void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
 {
     *unkp = OFFSET_TO_PTR(baseptr, *unkp);
     if ((*unkp)->unkC != NULL)
@@ -1900,8 +1900,8 @@ void func_800473C0(struct UnkStruct8005562C_child **unkp, struct Stage *baseptr)
         (*unkp)->unk4C = OFFSET_TO_PTR(baseptr, (*unkp)->unk4C);
     if ((*unkp)->unk54 != NULL)
         (*unkp)->unk54 = OFFSET_TO_PTR(baseptr, (*unkp)->unk54);
-    if ((*unkp)->unk5C != NULL)
-        (*unkp)->unk5C = OFFSET_TO_PTR(baseptr, (*unkp)->unk5C);
+    if ((*unkp)->translucencyKeyframes != NULL)
+        (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }
 
 void func_800474D8(struct UnkStruct8005562C_child2 **unkp, struct Stage *baseptr)

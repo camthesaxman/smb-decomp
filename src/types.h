@@ -197,7 +197,7 @@ struct GFXBufferInfo
     /*0x10*/ GXFifoObj *fifos[2];
 };
 
-struct UnkStruct8005562C_child
+struct StageBgAnim
 {
     s32 unk0;
     s32 unk4;
@@ -221,8 +221,8 @@ struct UnkStruct8005562C_child
     void *unk4C;
     u32 unk50;
     void *unk54;
-    u32 unk58;
-    void *unk5C;
+    u32 translucencyKeyframeCount;
+    void *translucencyKeyframes;
 };
 
 struct UnkStruct8005562C_child2_child
@@ -428,7 +428,7 @@ typedef void (*Struct80206DEC_Func)(void);
 struct Struct80206DEC
 {
     s32 unk0;
-    float unk4;
+    float g_stageTimer;
     Struct80206DEC_Func unk8;
     u32 unkC;
     float unk10[3];

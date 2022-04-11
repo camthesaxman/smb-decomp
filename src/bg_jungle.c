@@ -140,7 +140,7 @@ void bg_jungle_draw(void)
     }
     r30_ = work->bgModels;
     for (i = work->bgModelsCount; i > 0; i--, r30_++)
-        r30_->unk0->unk0 &= ~0x10000;
+        r30_->unk0->flags &= ~0x10000;
     bg_e3_draw();
     if (work->bgModelsCount != 0)
     {
@@ -150,14 +150,14 @@ void bg_jungle_draw(void)
         for (i = work->bgModelsCount; i > 0; i--, r30_++)
         {
             r31 = r30_->unk0;
-            if (r31->unk0 & r28)
+            if (r31->flags & r28)
             {
                 g_avdisp_set_some_matrix(0, r30_->unk28);
-                mathutil_mtxA_translate(&r31->pos);
-                mathutil_mtxA_rotate_z(r31->zrot);
-                mathutil_mtxA_rotate_y(r31->yrot);
-                mathutil_mtxA_rotate_x(r31->xrot);
-                mathutil_mtxA_scale(&r31->scale);
+                mathutil_mtxA_translate(&r31->initPos);
+                mathutil_mtxA_rotate_z(r31->initRotZ);
+                mathutil_mtxA_rotate_y(r31->initRotY);
+                mathutil_mtxA_rotate_x(r31->initRotX);
+                mathutil_mtxA_scale(&r31->initScale);
                 GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 g_avdisp_maybe_draw_model_1(r31->model);

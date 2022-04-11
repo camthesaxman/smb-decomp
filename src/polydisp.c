@@ -369,7 +369,7 @@ void g_draw_tutorial_button_and_joystick(void)
     Vec sp48;
     u8 filler[16];
     int i;
-    float baseScale;  // scale value for the base model
+    float baseScale;  // initScale value for the base model
     float stickX;
     float stickY;
     int stickXRot;

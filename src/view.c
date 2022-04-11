@@ -307,7 +307,7 @@ void view_init_stage_anim(void)
     struct StageItemgroup *r30;
     int i;
 
-    stageViewInfo->unk40 = lbl_80206DEC.unk4;
+    stageViewInfo->unk40 = lbl_80206DEC.g_stageTimer;
     movpart = itemgroups;
     r30 = decodedStageLzPtr->itemgroups;
     for (i = 0; i < 72; i++, movpart++, r30++)
@@ -345,17 +345,17 @@ void view_animate_stage(void)
     struct StageItemgroup *r30;
     int i;
 
-    lbl_80206DEC.unk4 = stageViewInfo->frameCounter;
+    lbl_80206DEC.g_stageTimer = stageViewInfo->frameCounter;
     t = stageViewInfo->frameCounter / 60.0;
-    t += decodedStageLzPtr->unk0;
-    f3 = (float)(decodedStageLzPtr->unk4 - decodedStageLzPtr->unk0);
+    t += decodedStageLzPtr->loopStartSeconds;
+    f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     t -= f3 * mathutil_floor(t / f3);
-    t += decodedStageLzPtr->unk0;
+    t += decodedStageLzPtr->loopStartSeconds;
     r30 = decodedStageLzPtr->itemgroups;
     movpart = itemgroups;
     for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, movpart++, r30++)
     {
-        struct StageItemgroupAnim *r28 = r30->animHdr;
+        struct StageItemgroupAnim *r28 = r30->anim;
 
         if (r28 == NULL2)
             continue;
@@ -426,7 +426,7 @@ void view_animate_stage(void)
 
 void func_800A66CC(void)
 {
-    lbl_80206DEC.unk4 = stageViewInfo->unk40;
+    lbl_80206DEC.g_stageTimer = stageViewInfo->unk40;
 }
 
 void func_800A66E4(void)

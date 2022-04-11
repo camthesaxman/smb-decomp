@@ -134,12 +134,12 @@ void bg_bonus_draw(void)
 
     bg_e3_draw();
     r27 = work->unk4;
-    sp8 = r27->scale;
+    sp8 = r27->initScale;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-    mathutil_mtxA_translate(&r27->pos);
-    mathutil_mtxA_rotate_z(r27->zrot);
-    mathutil_mtxA_rotate_y(r27->yrot);
-    mathutil_mtxA_rotate_x(r27->xrot);
+    mathutil_mtxA_translate(&r27->initPos);
+    mathutil_mtxA_rotate_z(r27->initRotZ);
+    mathutil_mtxA_rotate_y(r27->initRotY);
+    mathutil_mtxA_rotate_x(r27->initRotX);
     mathutil_mtxA_scale(&sp8);
     avdisp_set_z_mode(1, 3, 0);
     starlightModel = work->starlightModel;

@@ -274,17 +274,17 @@ struct ColiCircle
 
 struct StageBgModel
 {
-    u32 unk0;
+    u32 flags;
     /*0x04*/ char *name;
     /*0x08*/ struct GMAModel *model;
-    /*0x0C*/ Point3d pos;
-    /*0x18*/ s16 xrot;
-    /*0x1A*/ s16 yrot;
-    /*0x1C*/ s16 zrot;
-    /*0x20*/ Vec scale;
-    float unk2C;
-    struct UnkStruct8005562C_child *unk30;
-    struct UnkStruct8005562C_child2 *unk34;
+    /*0x0C*/ Point3d initPos;
+    /*0x18*/ s16 initRotX;
+    /*0x1A*/ s16 initRotY;
+    /*0x1C*/ s16 initRotZ;
+    /*0x20*/ Vec initScale;
+    /*0x2C*/ float translucency;  // Current animated translucency (1 - alpha)?
+    /*0x30*/ struct StageBgAnim *anim;
+    /*0x34*/ struct UnkStruct8005562C_child2 *unk34;
 };
 
 struct StageItemgroupAnim
@@ -319,7 +319,7 @@ struct DecodedStageLzPtr_child_child4
 struct StageCollHdr_child2
 {
     Vec unk0;  // position?
-    Vec unkC;  // scale?
+    Vec unkC;  // initScale?
     s16 unk18;
     s16 unk1A;
     s16 unk1C;
@@ -354,7 +354,7 @@ struct StageItemgroup
     S16Vec initRot;
     u16 unk12;
 
-    /*0x14*/ struct StageItemgroupAnim *animHdr;
+    /*0x14*/ struct StageItemgroupAnim *anim;
     /*0x18*/ char **modelNames;
     /*0x1C*/ struct StageColiTri *triangles;
 
@@ -466,8 +466,8 @@ struct DecodedStageLzPtr_child6
 
 struct Stage
 {
-    s32 unk0;
-    s32 unk4;
+    s32 loopStartSeconds;
+    s32 loopEndSeconds;
     /*0x08*/ s32 itemgroupCount;
     /*0x0C*/ struct StageItemgroup *itemgroups;
     /*0x10*/ struct StageStartPos *startPos;
@@ -532,7 +532,7 @@ float func_80046884(struct NaomiModel *);
 void load_stagedef(int stageId);
 void func_800472E8(void);
 void adjust_stage_anim_ptrs(struct StageItemgroupAnim **, struct Stage *);
-void func_800473C0(struct UnkStruct8005562C_child **, struct Stage *);
+void func_800473C0(struct StageBgAnim **, struct Stage *);
 void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
 void stage_draw(void);
 
