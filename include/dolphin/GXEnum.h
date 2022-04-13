@@ -601,7 +601,7 @@ typedef enum
     GX_MAX_TEVBIAS
 } GXTevBias;
 
-typedef enum _GXTevScale
+typedef enum
 {
     GX_CS_SCALE_1,
     GX_CS_SCALE_2,
