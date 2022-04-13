@@ -202,7 +202,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B7998;
 // extern ? lbl_801B79A4;
 // extern ? textureMatrix;
-// extern ? lbl_801B7B14;
+// extern ? g_naomiToGXCullModes;
 // extern ? lbl_801B7B28;
 // extern ? ballPhysicsParams;
 // extern ? clearHemisphereOutsideParts;

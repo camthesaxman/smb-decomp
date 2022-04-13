@@ -665,7 +665,7 @@ GXCompare naomiToGCCompare[] =
     GX_LEQUAL,
     GX_ALWAYS
 };
-u32 lbl_801B7B14[] = { 3, 0, 2, 1, 0 };
+GXCullMode g_naomiToGXCullModes[] = { GX_CULL_ALL, GX_CULL_NONE, GX_CULL_BACK, GX_CULL_FRONT, GX_CULL_NONE };
 
 static void prep_some_stuff_before_drawing(void)
 {
@@ -697,7 +697,7 @@ static void prep_some_stuff_before_drawing(void)
         GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
 
     lbl_80205DAC.unkA = 2;
-    GXSetCullMode_cached(lbl_801B7B14[2]);
+    GXSetCullMode_cached(g_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.unk10 = 0;
 
@@ -918,7 +918,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1028,7 +1028,7 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1184,7 +1184,7 @@ static void prep_some_stuff_before_drawing_2(void)
         GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
 
     lbl_80205DAC.unkA = 2;
-    GXSetCullMode_cached(lbl_801B7B14[2]);
+    GXSetCullMode_cached(g_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.unk10 = 0;
 
@@ -1421,7 +1421,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
