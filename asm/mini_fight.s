@@ -27811,7 +27811,7 @@ lbl_00019E2C:
 /* 00019E78 38800000 */ li r4, 0
 /* 00019E7C 38A00001 */ li r5, 1
 /* 00019E80 38C00000 */ li r6, 0
-/* 00019E84 4BFE62E1 */ bl func_8009E110
+/* 00019E84 4BFE62E1 */ bl GXSetBlendMode_cached
 /* 00019E88 3C600000 */ lis r3, zMode@ha
 /* 00019E8C 38630000 */ addi r3, r3, zMode@l
 /* 00019E90 80630000 */ lwz r3, 0(r3)
@@ -27848,47 +27848,47 @@ lbl_00019EF0:
 /* 00019F04 C05F0094 */ lfs f2, 0x94(r31)
 /* 00019F08 C07F0044 */ lfs f3, 0x44(r31)
 /* 00019F0C C09F0098 */ lfs f4, 0x98(r31)
-/* 00019F10 4BFE6255 */ bl func_8009E398
+/* 00019F10 4BFE6255 */ bl GXSetFog_cached
 /* 00019F14 38600000 */ li r3, 0
-/* 00019F18 4BFE624D */ bl func_8009E094
+/* 00019F18 4BFE624D */ bl GXSetCullMode_cached
 /* 00019F1C 38600000 */ li r3, 0
 /* 00019F20 4BFE6245 */ bl GXSetTevDirect
 /* 00019F24 38600000 */ li r3, 0
 /* 00019F28 388000FF */ li r4, 0xff
 /* 00019F2C 38A000FF */ li r5, 0xff
 /* 00019F30 38C000FF */ li r6, 0xff
-/* 00019F34 4BFE6231 */ bl func_8009EFF4
+/* 00019F34 4BFE6231 */ bl GXSetTevOrder_cached
 /* 00019F38 38600000 */ li r3, 0
 /* 00019F3C 38800000 */ li r4, 0
-/* 00019F40 4BFE6225 */ bl func_8009F224
+/* 00019F40 4BFE6225 */ bl GXSetTevKAlphaSel_cached
 /* 00019F44 38600000 */ li r3, 0
 /* 00019F48 3880000F */ li r4, 0xf
 /* 00019F4C 38A0000F */ li r5, 0xf
 /* 00019F50 38C0000F */ li r6, 0xf
 /* 00019F54 38E0000F */ li r7, 0xf
-/* 00019F58 4BFE620D */ bl func_8009E618
+/* 00019F58 4BFE620D */ bl GXSetTevColorIn_cached
 /* 00019F5C 38600000 */ li r3, 0
 /* 00019F60 38800000 */ li r4, 0
 /* 00019F64 38A00000 */ li r5, 0
 /* 00019F68 38C00000 */ li r6, 0
 /* 00019F6C 38E00001 */ li r7, 1
 /* 00019F70 39000000 */ li r8, 0
-/* 00019F74 4BFE61F1 */ bl func_8009E800
+/* 00019F74 4BFE61F1 */ bl GXSetTevColorOp_cached
 /* 00019F78 38600000 */ li r3, 0
 /* 00019F7C 38800007 */ li r4, 7
 /* 00019F80 38A00007 */ li r5, 7
 /* 00019F84 38C00007 */ li r6, 7
 /* 00019F88 38E00006 */ li r7, 6
-/* 00019F8C 4BFE61D9 */ bl func_8009E70C
+/* 00019F8C 4BFE61D9 */ bl GXSetTevAlphaIn_cached
 /* 00019F90 38600000 */ li r3, 0
 /* 00019F94 38800000 */ li r4, 0
 /* 00019F98 38A00000 */ li r5, 0
 /* 00019F9C 38C00003 */ li r6, 3
 /* 00019FA0 38E00001 */ li r7, 1
 /* 00019FA4 39000000 */ li r8, 0
-/* 00019FA8 4BFE61BD */ bl func_8009E918
+/* 00019FA8 4BFE61BD */ bl GXSetTevAlphaOp_cached
 /* 00019FAC 38600001 */ li r3, 1
-/* 00019FB0 4BFE61B5 */ bl func_8009F2C8
+/* 00019FB0 4BFE61B5 */ bl GXSetNumTevStages_cached
 /* 00019FB4 4BFE61B1 */ bl mathutil_mtxA_push
 /* 00019FB8 4BFE61AD */ bl mathutil_mtxA_from_identity
 /* 00019FBC 3C600000 */ lis r3, mathutilData@ha

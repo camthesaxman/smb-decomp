@@ -2,8 +2,8 @@
 
 .section .text
 
-.global func_8009DE44
-func_8009DE44:
+.global tevutil_init
+tevutil_init:
 /* 8009DE44 00099D64  7C 08 02 A6 */	mflr r0
 /* 8009DE48 00099D68  38 80 00 00 */	li r4, 0
 /* 8009DE4C 00099D6C  90 01 00 04 */	stw r0, 4(r1)
@@ -36,56 +36,56 @@ func_8009DE44:
 /* 8009DEB8 00099DD8  38 60 00 02 */	li r3, 2
 /* 8009DEBC 00099DDC  80 8D 9F C0 */	lwz r4, zMode@sda21(r13)
 /* 8009DEC0 00099DE0  90 04 00 0C */	stw r0, 0xc(r4)
-/* 8009DEC4 00099DE4  48 00 02 19 */	bl func_8009E0DC
+/* 8009DEC4 00099DE4  48 00 02 19 */	bl GXSetCullMode_cached_init
 /* 8009DEC8 00099DE8  38 60 00 00 */	li r3, 0
 /* 8009DECC 00099DEC  38 80 00 01 */	li r4, 1
 /* 8009DED0 00099DF0  38 A0 00 00 */	li r5, 0
 /* 8009DED4 00099DF4  38 C0 00 00 */	li r6, 0
-/* 8009DED8 00099DF8  48 00 03 29 */	bl func_8009E200
+/* 8009DED8 00099DF8  48 00 03 29 */	bl GXSetBlendMode_cached_init
 /* 8009DEDC 00099DFC  38 60 00 00 */	li r3, 0
 /* 8009DEE0 00099E00  38 80 00 00 */	li r4, 0
 /* 8009DEE4 00099E04  38 A0 00 01 */	li r5, 1
 /* 8009DEE8 00099E08  38 C0 00 02 */	li r6, 2
 /* 8009DEEC 00099E0C  38 E0 00 03 */	li r7, 3
-/* 8009DEF0 00099E10  48 00 03 81 */	bl func_8009E270
+/* 8009DEF0 00099E10  48 00 03 81 */	bl GXSetTevSwapModeTable_cached_init
 /* 8009DEF4 00099E14  38 60 00 01 */	li r3, 1
 /* 8009DEF8 00099E18  38 80 00 00 */	li r4, 0
 /* 8009DEFC 00099E1C  38 A0 00 01 */	li r5, 1
 /* 8009DF00 00099E20  38 C0 00 02 */	li r6, 2
 /* 8009DF04 00099E24  38 E0 00 00 */	li r7, 0
-/* 8009DF08 00099E28  48 00 03 69 */	bl func_8009E270
+/* 8009DF08 00099E28  48 00 03 69 */	bl GXSetTevSwapModeTable_cached_init
 /* 8009DF0C 00099E2C  38 60 00 02 */	li r3, 2
 /* 8009DF10 00099E30  38 80 00 00 */	li r4, 0
 /* 8009DF14 00099E34  38 A0 00 01 */	li r5, 1
 /* 8009DF18 00099E38  38 C0 00 02 */	li r6, 2
 /* 8009DF1C 00099E3C  38 E0 00 01 */	li r7, 1
-/* 8009DF20 00099E40  48 00 03 51 */	bl func_8009E270
+/* 8009DF20 00099E40  48 00 03 51 */	bl GXSetTevSwapModeTable_cached_init
 /* 8009DF24 00099E44  38 60 00 03 */	li r3, 3
 /* 8009DF28 00099E48  38 80 00 00 */	li r4, 0
 /* 8009DF2C 00099E4C  38 A0 00 01 */	li r5, 1
 /* 8009DF30 00099E50  38 C0 00 02 */	li r6, 2
 /* 8009DF34 00099E54  38 E0 00 02 */	li r7, 2
-/* 8009DF38 00099E58  48 00 03 39 */	bl func_8009E270
+/* 8009DF38 00099E58  48 00 03 39 */	bl GXSetTevSwapModeTable_cached_init
 /* 8009DF3C 00099E5C  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8009DF40 00099E60  38 81 00 18 */	addi r4, r1, 0x18
 /* 8009DF44 00099E64  38 60 00 00 */	li r3, 0
 /* 8009DF48 00099E68  90 01 00 18 */	stw r0, 0x18(r1)
-/* 8009DF4C 00099E6C  48 00 14 8D */	bl func_8009F3D8
+/* 8009DF4C 00099E6C  48 00 14 8D */	bl GXSetTevKColor_cached_init
 /* 8009DF50 00099E70  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8009DF54 00099E74  38 81 00 14 */	addi r4, r1, 0x14
 /* 8009DF58 00099E78  38 60 00 01 */	li r3, 1
 /* 8009DF5C 00099E7C  90 01 00 14 */	stw r0, 0x14(r1)
-/* 8009DF60 00099E80  48 00 14 79 */	bl func_8009F3D8
+/* 8009DF60 00099E80  48 00 14 79 */	bl GXSetTevKColor_cached_init
 /* 8009DF64 00099E84  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8009DF68 00099E88  38 81 00 10 */	addi r4, r1, 0x10
 /* 8009DF6C 00099E8C  38 60 00 02 */	li r3, 2
 /* 8009DF70 00099E90  90 01 00 10 */	stw r0, 0x10(r1)
-/* 8009DF74 00099E94  48 00 14 65 */	bl func_8009F3D8
+/* 8009DF74 00099E94  48 00 14 65 */	bl GXSetTevKColor_cached_init
 /* 8009DF78 00099E98  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8009DF7C 00099E9C  38 81 00 0C */	addi r4, r1, 0xc
 /* 8009DF80 00099EA0  38 60 00 03 */	li r3, 3
 /* 8009DF84 00099EA4  90 01 00 0C */	stw r0, 0xc(r1)
-/* 8009DF88 00099EA8  48 00 14 51 */	bl func_8009F3D8
+/* 8009DF88 00099EA8  48 00 14 51 */	bl GXSetTevKColor_cached_init
 /* 8009DF8C 00099EAC  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8009DF90 00099EB0  38 81 00 08 */	addi r4, r1, 8
 /* 8009DF94 00099EB4  C0 22 B2 8C */	lfs f1, lbl_802F5A8C@sda21(r2)
@@ -94,56 +94,56 @@ func_8009DE44:
 /* 8009DFA0 00099EC0  C0 42 B2 90 */	lfs f2, lbl_802F5A90@sda21(r2)
 /* 8009DFA4 00099EC4  C0 62 B2 94 */	lfs f3, lbl_802F5A94@sda21(r2)
 /* 8009DFA8 00099EC8  C0 82 B2 98 */	lfs f4, lbl_802F5A98@sda21(r2)
-/* 8009DFAC 00099ECC  48 00 04 99 */	bl func_8009E444
+/* 8009DFAC 00099ECC  48 00 04 99 */	bl GXSetFog_cached_init
 /* 8009DFB0 00099ED0  38 60 00 01 */	li r3, 1
-/* 8009DFB4 00099ED4  48 00 05 6D */	bl func_8009E520
+/* 8009DFB4 00099ED4  48 00 05 6D */	bl GXSetColorUpdate_cached_init
 /* 8009DFB8 00099ED8  38 60 00 01 */	li r3, 1
-/* 8009DFBC 00099EDC  48 00 05 99 */	bl func_8009E554
+/* 8009DFBC 00099EDC  48 00 05 99 */	bl GXSestAlphaUpdate_cached_init
 /* 8009DFC0 00099EE0  38 60 00 01 */	li r3, 1
-/* 8009DFC4 00099EE4  48 00 06 21 */	bl func_8009E5E4
+/* 8009DFC4 00099EE4  48 00 06 21 */	bl GXSetZCompLoc_cached_init
 /* 8009DFC8 00099EE8  3B E0 00 00 */	li r31, 0
 lbl_8009DFCC:
 /* 8009DFCC 00099EEC  38 7F 00 00 */	addi r3, r31, 0
 /* 8009DFD0 00099EF0  38 80 00 00 */	li r4, 0
 /* 8009DFD4 00099EF4  38 A0 00 00 */	li r5, 0
-/* 8009DFD8 00099EF8  48 00 03 69 */	bl func_8009E340
+/* 8009DFD8 00099EF8  48 00 03 69 */	bl GXSetTevSwapMode_cached_init
 /* 8009DFDC 00099EFC  38 7F 00 00 */	addi r3, r31, 0
 /* 8009DFE0 00099F00  38 80 00 0F */	li r4, 0xf
 /* 8009DFE4 00099F04  38 A0 00 0F */	li r5, 0xf
 /* 8009DFE8 00099F08  38 C0 00 0F */	li r6, 0xf
 /* 8009DFEC 00099F0C  38 E0 00 0F */	li r7, 0xf
-/* 8009DFF0 00099F10  48 00 06 C1 */	bl func_8009E6B0
+/* 8009DFF0 00099F10  48 00 06 C1 */	bl GXSetTevColorIn_cached_init
 /* 8009DFF4 00099F14  38 7F 00 00 */	addi r3, r31, 0
 /* 8009DFF8 00099F18  38 80 00 07 */	li r4, 7
 /* 8009DFFC 00099F1C  38 A0 00 07 */	li r5, 7
 /* 8009E000 00099F20  38 C0 00 07 */	li r6, 7
 /* 8009E004 00099F24  38 E0 00 07 */	li r7, 7
-/* 8009E008 00099F28  48 00 07 9D */	bl func_8009E7A4
+/* 8009E008 00099F28  48 00 07 9D */	bl GXSetTevAlphaIn_cached_init
 /* 8009E00C 00099F2C  38 7F 00 00 */	addi r3, r31, 0
 /* 8009E010 00099F30  38 80 00 00 */	li r4, 0
 /* 8009E014 00099F34  38 A0 00 00 */	li r5, 0
 /* 8009E018 00099F38  38 C0 00 00 */	li r6, 0
 /* 8009E01C 00099F3C  38 E0 00 01 */	li r7, 1
 /* 8009E020 00099F40  39 00 00 00 */	li r8, 0
-/* 8009E024 00099F44  48 00 08 91 */	bl func_8009E8B4
+/* 8009E024 00099F44  48 00 08 91 */	bl GXSetTevColorOp_cached_init
 /* 8009E028 00099F48  38 7F 00 00 */	addi r3, r31, 0
 /* 8009E02C 00099F4C  38 80 00 00 */	li r4, 0
 /* 8009E030 00099F50  38 A0 00 00 */	li r5, 0
 /* 8009E034 00099F54  38 C0 00 00 */	li r6, 0
 /* 8009E038 00099F58  38 E0 00 01 */	li r7, 1
 /* 8009E03C 00099F5C  39 00 00 00 */	li r8, 0
-/* 8009E040 00099F60  48 00 09 8D */	bl func_8009E9CC
+/* 8009E040 00099F60  48 00 09 8D */	bl GXSetTevAlphaOp_cached_init
 /* 8009E044 00099F64  38 7F 00 00 */	addi r3, r31, 0
 /* 8009E048 00099F68  38 80 00 00 */	li r4, 0
 /* 8009E04C 00099F6C  38 A0 00 00 */	li r5, 0
 /* 8009E050 00099F70  38 C0 00 04 */	li r6, 4
-/* 8009E054 00099F74  48 00 10 B9 */	bl func_8009F10C
+/* 8009E054 00099F74  48 00 10 B9 */	bl GXSetTevOrder_cached_init
 /* 8009E058 00099F78  38 7F 00 00 */	addi r3, r31, 0
 /* 8009E05C 00099F7C  38 80 00 00 */	li r4, 0
-/* 8009E060 00099F80  48 00 11 7D */	bl func_8009F1DC
+/* 8009E060 00099F80  48 00 11 7D */	bl GXSetTevKColorSel_cached_init
 /* 8009E064 00099F84  38 7F 00 00 */	addi r3, r31, 0
 /* 8009E068 00099F88  38 80 00 00 */	li r4, 0
-/* 8009E06C 00099F8C  48 00 12 15 */	bl func_8009F280
+/* 8009E06C 00099F8C  48 00 12 15 */	bl GXSetTevKAlphaSel_cached_init
 /* 8009E070 00099F90  3B FF 00 01 */	addi r31, r31, 1
 /* 8009E074 00099F94  2C 1F 00 10 */	cmpwi r31, 0x10
 /* 8009E078 00099F98  41 80 FF 54 */	blt lbl_8009DFCC
@@ -154,8 +154,8 @@ lbl_8009DFCC:
 /* 8009E08C 00099FAC  7C 08 03 A6 */	mtlr r0
 /* 8009E090 00099FB0  4E 80 00 20 */	blr
 
-.global func_8009E094
-func_8009E094:
+.global GXSetCullMode_cached
+GXSetCullMode_cached:
 /* 8009E094 00099FB4  7C 08 02 A6 */	mflr r0
 /* 8009E098 00099FB8  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E09C 00099FBC  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -176,8 +176,8 @@ lbl_8009E0C8:
 /* 8009E0D4 00099FF4  7C 08 03 A6 */	mtlr r0
 /* 8009E0D8 00099FF8  4E 80 00 20 */	blr
 
-.global func_8009E0DC
-func_8009E0DC:
+.global GXSetCullMode_cached_init
+GXSetCullMode_cached_init:
 /* 8009E0DC 00099FFC  7C 08 02 A6 */	mflr r0
 /* 8009E0E0 0009A000  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E0E4 0009A004  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -192,8 +192,8 @@ func_8009E0DC:
 /* 8009E108 0009A028  7C 08 03 A6 */	mtlr r0
 /* 8009E10C 0009A02C  4E 80 00 20 */	blr
 
-.global func_8009E110
-func_8009E110:
+.global GXSetBlendMode_cached
+GXSetBlendMode_cached:
 /* 8009E110 0009A030  7C 08 02 A6 */	mflr r0
 /* 8009E114 0009A034  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E118 0009A038  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -259,8 +259,8 @@ lbl_8009E1E0:
 /* 8009E1F8 0009A118  38 21 00 28 */	addi r1, r1, 0x28
 /* 8009E1FC 0009A11C  4E 80 00 20 */	blr
 
-.global func_8009E200
-func_8009E200:
+.global GXSetBlendMode_cached_init
+GXSetBlendMode_cached_init:
 /* 8009E200 0009A120  7C 08 02 A6 */	mflr r0
 /* 8009E204 0009A124  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E208 0009A128  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -290,8 +290,8 @@ func_8009E200:
 /* 8009E268 0009A188  7C 08 03 A6 */	mtlr r0
 /* 8009E26C 0009A18C  4E 80 00 20 */	blr
 
-.global func_8009E270
-func_8009E270:
+.global GXSetTevSwapModeTable_cached_init
+GXSetTevSwapModeTable_cached_init:
 /* 8009E270 0009A190  7C 08 02 A6 */	mflr r0
 /* 8009E274 0009A194  54 68 20 36 */	slwi r8, r3, 4
 /* 8009E278 0009A198  90 01 00 04 */	stw r0, 4(r1)
@@ -315,8 +315,8 @@ func_8009E270:
 /* 8009E2C0 0009A1E0  7C 08 03 A6 */	mtlr r0
 /* 8009E2C4 0009A1E4  4E 80 00 20 */	blr
 
-.global func_8009E2C8
-func_8009E2C8:
+.global GXSetTevSwapMode_cached
+GXSetTevSwapMode_cached:
 /* 8009E2C8 0009A1E8  7C 08 02 A6 */	mflr r0
 /* 8009E2CC 0009A1EC  54 66 18 38 */	slwi r6, r3, 3
 /* 8009E2D0 0009A1F0  90 01 00 04 */	stw r0, 4(r1)
@@ -350,8 +350,8 @@ lbl_8009E324:
 /* 8009E338 0009A258  38 21 00 28 */	addi r1, r1, 0x28
 /* 8009E33C 0009A25C  4E 80 00 20 */	blr
 
-.global func_8009E340
-func_8009E340:
+.global GXSetTevSwapMode_cached_init
+GXSetTevSwapMode_cached_init:
 /* 8009E340 0009A260  7C 08 02 A6 */	mflr r0
 /* 8009E344 0009A264  54 66 18 38 */	slwi r6, r3, 3
 /* 8009E348 0009A268  90 01 00 04 */	stw r0, 4(r1)
@@ -375,8 +375,8 @@ func_8009E340:
 /* 8009E390 0009A2B0  38 21 00 28 */	addi r1, r1, 0x28
 /* 8009E394 0009A2B4  4E 80 00 20 */	blr
 
-.global func_8009E398
-func_8009E398:
+.global GXSetFog_cached
+GXSetFog_cached:
 /* 8009E398 0009A2B8  7C 08 02 A6 */	mflr r0
 /* 8009E39C 0009A2BC  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E3A0 0009A2C0  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -416,15 +416,15 @@ lbl_8009E424:
 /* 8009E424 0009A344  80 04 00 00 */	lwz r0, 0(r4)
 /* 8009E428 0009A348  38 81 00 20 */	addi r4, r1, 0x20
 /* 8009E42C 0009A34C  90 01 00 20 */	stw r0, 0x20(r1)
-/* 8009E430 0009A350  48 00 00 15 */	bl func_8009E444
+/* 8009E430 0009A350  48 00 00 15 */	bl GXSetFog_cached_init
 lbl_8009E434:
 /* 8009E434 0009A354  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 8009E438 0009A358  38 21 00 28 */	addi r1, r1, 0x28
 /* 8009E43C 0009A35C  7C 08 03 A6 */	mtlr r0
 /* 8009E440 0009A360  4E 80 00 20 */	blr
 
-.global func_8009E444
-func_8009E444:
+.global GXSetFog_cached_init
+GXSetFog_cached_init:
 /* 8009E444 0009A364  7C 08 02 A6 */	mflr r0
 /* 8009E448 0009A368  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E44C 0009A36C  94 21 FF B0 */	stwu r1, -0x50(r1)
@@ -468,8 +468,8 @@ func_8009E444:
 /* 8009E4E4 0009A404  7C 08 03 A6 */	mtlr r0
 /* 8009E4E8 0009A408  4E 80 00 20 */	blr
 
-.global func_8009E4EC
-func_8009E4EC:
+.global GXSetColorUpdate_cached
+GXSetColorUpdate_cached:
 /* 8009E4EC 0009A40C  7C 08 02 A6 */	mflr r0
 /* 8009E4F0 0009A410  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E4F4 0009A414  54 60 06 3E */	clrlwi r0, r3, 0x18
@@ -478,15 +478,15 @@ func_8009E4EC:
 /* 8009E500 0009A420  88 84 00 FC */	lbz r4, 0xfc(r4)
 /* 8009E504 0009A424  7C 04 00 40 */	cmplw r4, r0
 /* 8009E508 0009A428  41 82 00 08 */	beq lbl_8009E510
-/* 8009E50C 0009A42C  48 00 00 15 */	bl func_8009E520
+/* 8009E50C 0009A42C  48 00 00 15 */	bl GXSetColorUpdate_cached_init
 lbl_8009E510:
 /* 8009E510 0009A430  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8009E514 0009A434  38 21 00 08 */	addi r1, r1, 8
 /* 8009E518 0009A438  7C 08 03 A6 */	mtlr r0
 /* 8009E51C 0009A43C  4E 80 00 20 */	blr
 
-.global func_8009E520
-func_8009E520:
+.global GXSetColorUpdate_cached_init
+GXSetColorUpdate_cached_init:
 /* 8009E520 0009A440  7C 08 02 A6 */	mflr r0
 /* 8009E524 0009A444  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E528 0009A448  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -501,8 +501,8 @@ func_8009E520:
 /* 8009E54C 0009A46C  7C 08 03 A6 */	mtlr r0
 /* 8009E550 0009A470  4E 80 00 20 */	blr
 
-.global func_8009E554
-func_8009E554:
+.global GXSestAlphaUpdate_cached_init
+GXSestAlphaUpdate_cached_init:
 /* 8009E554 0009A474  7C 08 02 A6 */	mflr r0
 /* 8009E558 0009A478  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E55C 0009A47C  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -517,8 +517,8 @@ func_8009E554:
 /* 8009E580 0009A4A0  7C 08 03 A6 */	mtlr r0
 /* 8009E584 0009A4A4  4E 80 00 20 */	blr
 
-.global func_8009E588
-func_8009E588:
+.global GXSetZCompLoc_cached
+GXSetZCompLoc_cached:
 /* 8009E588 0009A4A8  7C 08 02 A6 */	mflr r0
 /* 8009E58C 0009A4AC  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E590 0009A4B0  54 60 06 3E */	clrlwi r0, r3, 0x18
@@ -527,15 +527,15 @@ func_8009E588:
 /* 8009E59C 0009A4BC  88 84 00 FE */	lbz r4, 0xfe(r4)
 /* 8009E5A0 0009A4C0  7C 04 00 40 */	cmplw r4, r0
 /* 8009E5A4 0009A4C4  41 82 00 08 */	beq lbl_8009E5AC
-/* 8009E5A8 0009A4C8  48 00 00 3D */	bl func_8009E5E4
+/* 8009E5A8 0009A4C8  48 00 00 3D */	bl GXSetZCompLoc_cached_init
 lbl_8009E5AC:
 /* 8009E5AC 0009A4CC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8009E5B0 0009A4D0  38 21 00 08 */	addi r1, r1, 8
 /* 8009E5B4 0009A4D4  7C 08 03 A6 */	mtlr r0
 /* 8009E5B8 0009A4D8  4E 80 00 20 */	blr
 
-.global func_8009E5BC
-func_8009E5BC:
+.global GXSetZCompLoc_from_cache
+GXSetZCompLoc_from_cache:
 /* 8009E5BC 0009A4DC  7C 08 02 A6 */	mflr r0
 /* 8009E5C0 0009A4E0  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E5C4 0009A4E4  94 21 FF F8 */	stwu r1, -8(r1)
@@ -547,8 +547,8 @@ func_8009E5BC:
 /* 8009E5DC 0009A4FC  7C 08 03 A6 */	mtlr r0
 /* 8009E5E0 0009A500  4E 80 00 20 */	blr
 
-.global func_8009E5E4
-func_8009E5E4:
+.global GXSetZCompLoc_cached_init
+GXSetZCompLoc_cached_init:
 /* 8009E5E4 0009A504  7C 08 02 A6 */	mflr r0
 /* 8009E5E8 0009A508  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E5EC 0009A50C  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -563,8 +563,8 @@ func_8009E5E4:
 /* 8009E610 0009A530  7C 08 03 A6 */	mtlr r0
 /* 8009E614 0009A534  4E 80 00 20 */	blr
 
-.global func_8009E618
-func_8009E618:
+.global GXSetTevColorIn_cached
+GXSetTevColorIn_cached:
 /* 8009E618 0009A538  7C 08 02 A6 */	mflr r0
 /* 8009E61C 0009A53C  54 68 20 36 */	slwi r8, r3, 4
 /* 8009E620 0009A540  90 01 00 04 */	stw r0, 4(r1)
@@ -606,8 +606,8 @@ lbl_8009E69C:
 /* 8009E6A8 0009A5C8  7C 08 03 A6 */	mtlr r0
 /* 8009E6AC 0009A5CC  4E 80 00 20 */	blr
 
-.global func_8009E6B0
-func_8009E6B0:
+.global GXSetTevColorIn_cached_init
+GXSetTevColorIn_cached_init:
 /* 8009E6B0 0009A5D0  7C 08 02 A6 */	mflr r0
 /* 8009E6B4 0009A5D4  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E6B8 0009A5D8  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -632,8 +632,8 @@ func_8009E6B0:
 /* 8009E704 0009A624  7C 08 03 A6 */	mtlr r0
 /* 8009E708 0009A628  4E 80 00 20 */	blr
 
-.global func_8009E70C
-func_8009E70C:
+.global GXSetTevAlphaIn_cached
+GXSetTevAlphaIn_cached:
 /* 8009E70C 0009A62C  7C 08 02 A6 */	mflr r0
 /* 8009E710 0009A630  54 68 20 36 */	slwi r8, r3, 4
 /* 8009E714 0009A634  90 01 00 04 */	stw r0, 4(r1)
@@ -675,8 +675,8 @@ lbl_8009E790:
 /* 8009E79C 0009A6BC  7C 08 03 A6 */	mtlr r0
 /* 8009E7A0 0009A6C0  4E 80 00 20 */	blr
 
-.global func_8009E7A4
-func_8009E7A4:
+.global GXSetTevAlphaIn_cached_init
+GXSetTevAlphaIn_cached_init:
 /* 8009E7A4 0009A6C4  7C 08 02 A6 */	mflr r0
 /* 8009E7A8 0009A6C8  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E7AC 0009A6CC  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -701,8 +701,8 @@ func_8009E7A4:
 /* 8009E7F8 0009A718  7C 08 03 A6 */	mtlr r0
 /* 8009E7FC 0009A71C  4E 80 00 20 */	blr
 
-.global func_8009E800
-func_8009E800:
+.global GXSetTevColorOp_cached
+GXSetTevColorOp_cached:
 /* 8009E800 0009A720  7C 08 02 A6 */	mflr r0
 /* 8009E804 0009A724  1D 23 00 14 */	mulli r9, r3, 0x14
 /* 8009E808 0009A728  90 01 00 04 */	stw r0, 4(r1)
@@ -751,8 +751,8 @@ lbl_8009E8A0:
 /* 8009E8AC 0009A7CC  7C 08 03 A6 */	mtlr r0
 /* 8009E8B0 0009A7D0  4E 80 00 20 */	blr
 
-.global func_8009E8B4
-func_8009E8B4:
+.global GXSetTevColorOp_cached_init
+GXSetTevColorOp_cached_init:
 /* 8009E8B4 0009A7D4  7C 08 02 A6 */	mflr r0
 /* 8009E8B8 0009A7D8  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E8BC 0009A7DC  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -779,8 +779,8 @@ func_8009E8B4:
 /* 8009E910 0009A830  7C 08 03 A6 */	mtlr r0
 /* 8009E914 0009A834  4E 80 00 20 */	blr
 
-.global func_8009E918
-func_8009E918:
+.global GXSetTevAlphaOp_cached
+GXSetTevAlphaOp_cached:
 /* 8009E918 0009A838  7C 08 02 A6 */	mflr r0
 /* 8009E91C 0009A83C  1D 23 00 14 */	mulli r9, r3, 0x14
 /* 8009E920 0009A840  90 01 00 04 */	stw r0, 4(r1)
@@ -829,8 +829,8 @@ lbl_8009E9B8:
 /* 8009E9C4 0009A8E4  7C 08 03 A6 */	mtlr r0
 /* 8009E9C8 0009A8E8  4E 80 00 20 */	blr
 
-.global func_8009E9CC
-func_8009E9CC:
+.global GXSetTevAlphaOp_cached_init
+GXSetTevAlphaOp_cached_init:
 /* 8009E9CC 0009A8EC  7C 08 02 A6 */	mflr r0
 /* 8009E9D0 0009A8F0  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E9D4 0009A8F4  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -1257,8 +1257,8 @@ lbl_8009EFE0:
 /* 8009EFEC 0009AF0C  7C 08 03 A6 */	mtlr r0
 /* 8009EFF0 0009AF10  4E 80 00 20 */	blr
 
-.global func_8009EFF4
-func_8009EFF4:
+.global GXSetTevOrder_cached
+GXSetTevOrder_cached:
 /* 8009EFF4 0009AF14  7C 08 02 A6 */	mflr r0
 /* 8009EFF8 0009AF18  90 01 00 04 */	stw r0, 4(r1)
 /* 8009EFFC 0009AF1C  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -1334,8 +1334,8 @@ lbl_8009F0F8:
 /* 8009F104 0009B024  7C 08 03 A6 */	mtlr r0
 /* 8009F108 0009B028  4E 80 00 20 */	blr
 
-.global func_8009F10C
-func_8009F10C:
+.global GXSetTevOrder_cached_init
+GXSetTevOrder_cached_init:
 /* 8009F10C 0009B02C  7C 08 02 A6 */	mflr r0
 /* 8009F110 0009B030  54 67 20 36 */	slwi r7, r3, 4
 /* 8009F114 0009B034  90 01 00 04 */	stw r0, 4(r1)
@@ -1366,8 +1366,8 @@ func_8009F10C:
 /* 8009F178 0009B098  7C 08 03 A6 */	mtlr r0
 /* 8009F17C 0009B09C  4E 80 00 20 */	blr
 
-.global func_8009F180
-func_8009F180:
+.global GXSetTevKColorSel_cached
+GXSetTevKColorSel_cached:
 /* 8009F180 0009B0A0  7C 08 02 A6 */	mflr r0
 /* 8009F184 0009B0A4  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F188 0009B0A8  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -1393,8 +1393,8 @@ lbl_8009F1C4:
 /* 8009F1D4 0009B0F4  38 21 00 18 */	addi r1, r1, 0x18
 /* 8009F1D8 0009B0F8  4E 80 00 20 */	blr
 
-.global func_8009F1DC
-func_8009F1DC:
+.global GXSetTevKColorSel_cached_init
+GXSetTevKColorSel_cached_init:
 /* 8009F1DC 0009B0FC  7C 08 02 A6 */	mflr r0
 /* 8009F1E0 0009B100  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F1E4 0009B104  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -1414,8 +1414,8 @@ func_8009F1DC:
 /* 8009F21C 0009B13C  7C 08 03 A6 */	mtlr r0
 /* 8009F220 0009B140  4E 80 00 20 */	blr
 
-.global func_8009F224
-func_8009F224:
+.global GXSetTevKAlphaSel_cached
+GXSetTevKAlphaSel_cached:
 /* 8009F224 0009B144  7C 08 02 A6 */	mflr r0
 /* 8009F228 0009B148  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F22C 0009B14C  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -1441,8 +1441,8 @@ lbl_8009F268:
 /* 8009F278 0009B198  38 21 00 18 */	addi r1, r1, 0x18
 /* 8009F27C 0009B19C  4E 80 00 20 */	blr
 
-.global func_8009F280
-func_8009F280:
+.global GXSetTevKAlphaSel_cached_init
+GXSetTevKAlphaSel_cached_init:
 /* 8009F280 0009B1A0  7C 08 02 A6 */	mflr r0
 /* 8009F284 0009B1A4  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F288 0009B1A8  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -1462,8 +1462,8 @@ func_8009F280:
 /* 8009F2C0 0009B1E0  7C 08 03 A6 */	mtlr r0
 /* 8009F2C4 0009B1E4  4E 80 00 20 */	blr
 
-.global func_8009F2C8
-func_8009F2C8:
+.global GXSetNumTevStages_cached
+GXSetNumTevStages_cached:
 /* 8009F2C8 0009B1E8  7C 08 02 A6 */	mflr r0
 /* 8009F2CC 0009B1EC  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F2D0 0009B1F0  54 60 06 3E */	clrlwi r0, r3, 0x18
@@ -1485,8 +1485,8 @@ lbl_8009F300:
 /* 8009F30C 0009B22C  7C 08 03 A6 */	mtlr r0
 /* 8009F310 0009B230  4E 80 00 20 */	blr
 
-.global func_8009F314
-func_8009F314:
+.global GXSetNumTevStages_from_cache
+GXSetNumTevStages_from_cache:
 /* 8009F314 0009B234  7C 08 02 A6 */	mflr r0
 /* 8009F318 0009B238  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F31C 0009B23C  94 21 FF F8 */	stwu r1, -8(r1)
@@ -1498,8 +1498,8 @@ func_8009F314:
 /* 8009F334 0009B254  7C 08 03 A6 */	mtlr r0
 /* 8009F338 0009B258  4E 80 00 20 */	blr
 
-.global func_8009F33C
-func_8009F33C:
+.global GXSetTevKColor_cached
+GXSetTevKColor_cached:
 /* 8009F33C 0009B25C  7C 08 02 A6 */	mflr r0
 /* 8009F340 0009B260  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F344 0009B264  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -1542,8 +1542,8 @@ lbl_8009F3C0:
 /* 8009F3D0 0009B2F0  38 21 00 20 */	addi r1, r1, 0x20
 /* 8009F3D4 0009B2F4  4E 80 00 20 */	blr
 
-.global func_8009F3D8
-func_8009F3D8:
+.global GXSetTevKColor_cached_init
+GXSetTevKColor_cached_init:
 /* 8009F3D8 0009B2F8  7C 08 02 A6 */	mflr r0
 /* 8009F3DC 0009B2FC  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F3E0 0009B300  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -1567,8 +1567,8 @@ func_8009F3D8:
 /* 8009F428 0009B348  7C 08 03 A6 */	mtlr r0
 /* 8009F42C 0009B34C  4E 80 00 20 */	blr
 
-.global func_8009F430
-func_8009F430:
+.global GXLoadTexObj_cached
+GXLoadTexObj_cached:
 /* 8009F430 0009B350  7C 08 02 A6 */	mflr r0
 /* 8009F434 0009B354  90 01 00 04 */	stw r0, 4(r1)
 /* 8009F438 0009B358  94 21 FF E0 */	stwu r1, -0x20(r1)
