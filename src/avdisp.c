@@ -7,6 +7,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "ord_tbl.h"
+#include "tevutil.h"
 
 struct UnkStruct4
 {

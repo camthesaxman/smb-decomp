@@ -12,6 +12,7 @@
 #include "gxutil.h"
 #include "mathutil.h"
 #include "stage.h"
+#include "tevutil.h"
 
 static struct BGModelSearch bonusMiscFind[] =
 {

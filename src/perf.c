@@ -4,6 +4,7 @@
 #include "gxutil.h"
 #include "input.h"
 #include "perf.h"
+#include "tevutil.h"
 
 OSTick perfTimers[8];
 u32 perfEnabled;

@@ -9,6 +9,7 @@
 #include "input.h"
 #include "mode.h"
 #include "sprite.h"
+#include "tevutil.h"
 
 struct Struct801EEC68 lbl_801EEC68;
 

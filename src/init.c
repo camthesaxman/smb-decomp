@@ -6,6 +6,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "tevutil.h"
 
 GXFifoObj lbl_801EEBA0;
 

@@ -11,6 +11,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "sprite.h"
+#include "tevutil.h"
 
 struct Struct8028CF28
 {

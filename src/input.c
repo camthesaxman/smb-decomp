@@ -7,6 +7,7 @@
 #include "ball.h"
 #include "input.h"
 #include "mode.h"
+#include "tevutil.h"
 
 struct ControllerInfo controllerInfo[4];
 struct ControllerInfo lbl_801F3C60[4];
