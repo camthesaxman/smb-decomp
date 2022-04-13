@@ -490,7 +490,7 @@ void func_8000C144(struct Struct8000C144 *a)
     u8 filler[8];
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
-    func_8009E110(1, 0, 1, 0);
+    GXSetBlendMode_cached(1, 0, 1, 0);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7
      || zMode->compareEnable != GX_ENABLE)
@@ -501,16 +501,16 @@ void func_8000C144(struct Struct8000C144 *a)
         zMode->updateEnable  = GX_ENABLE;
     }
 
-    func_8009E398(0, lbl_802F2978, 0.0f, 100.0f, 0.1f, 20000.0f);
-    func_8009E094(0);
+    GXSetFog_cached(0, lbl_802F2978, 0.0f, 100.0f, 0.1f, 20000.0f);
+    GXSetCullMode_cached(0);
     GXSetTevDirect(0);
-    func_8009EFF4(0, 0xFF, 0xFF, 0xFF);
-    func_8009F224(0, 0);
-    func_8009E618(0, 15, 15, 15, 15);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 7, 7, 6);
-    func_8009E918(0, 0, 0, 3, 1, 0);
-    func_8009F2C8(1);
+    GXSetTevOrder_cached(0, 0xFF, 0xFF, 0xFF);
+    GXSetTevKAlphaSel_cached(0, 0);
+    GXSetTevColorIn_cached(0, 15, 15, 15, 15);
+    GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(0, 7, 7, 7, 6);
+    GXSetTevAlphaOp_cached(0, 0, 0, 3, 1, 0);
+    GXSetNumTevStages_cached(1);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -976,10 +976,10 @@ void draw_test_camera_target(void)
             GX_DF_CLAMP,  // diff_fn
             GX_AF_NONE);  // attn_fn
         GXSetNumChans(1);
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
         func_8009EA30(0, 4);
         GXSetNumTexGens(0);
-        func_8009F2C8(1);
+        GXSetNumTevStages_cached(1);
 
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         mathutil_mtxA_translate(&currentCameraStructPtr->lookAt);

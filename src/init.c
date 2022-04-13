@@ -105,8 +105,8 @@ void init_gx_2(void)
 
     C_MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
     GXSetProjection(mtx, GX_PERSPECTIVE);
-    func_8009E588(0);
-    func_8009E110(1, 4, 5, 0);
+    GXSetZCompLoc_cached(0);
+    GXSetBlendMode_cached(1, 4, 5, 0);
     GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_GREATER, 0);
     GXSetCopyClear(clearColor, 0x00FFFFFF);
     GXSetDither(FALSE);

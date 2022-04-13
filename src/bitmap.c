@@ -259,7 +259,7 @@ void func_800263A4(void)
       | (1 << GX_VA_TEX0));
     GXSetNumChans(0);
     GXSetNumTexGens(1);
-    func_8009F2C8(1);
+    GXSetNumTevStages_cached(1);
     GXSetTevDirect(GX_TEVSTAGE0);
     func_8009EA30(0, 0);
     GXSetTexCoordGen(
@@ -267,12 +267,12 @@ void func_800263A4(void)
         GX_TG_MTX2x4,  // func
         GX_TG_TEX0,  // src_param
         GX_IDENTITY);  // mtx
-    func_8009EFF4(0, 0, 0, 0xFF);
-    func_8009E2C8(0, 0, 0);
-    func_8009E618(0, 15, 2, 8, 4);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 1, 4, 2);
-    func_8009E918(0, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(0, 0, 0, 0xFF);
+    GXSetTevSwapMode_cached(0, 0, 0);
+    GXSetTevColorIn_cached(0, 15, 2, 8, 4);
+    GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(0, 7, 1, 4, 2);
+    GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -293,12 +293,12 @@ void func_800263A4(void)
         zMode->updateEnable = GX_ENABLE;
     }
 
-    func_8009E110(1, 4, 5, 0);
+    GXSetBlendMode_cached(1, 4, 5, 0);
     {
         GXColor color = {0, 0, 0, 0};
-        func_8009E398(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
     }
-    func_8009E094(2);
+    GXSetCullMode_cached(2);
 }
 
 void bitmap_main(void)
@@ -452,7 +452,7 @@ void bitmap_draw(struct Bitmap *bmp)
     mathutil_mtxA_tf_vec(&sp38, &sp38);
     mathutil_mtxA_tf_vec(&sp2C, &sp2C);
 
-    func_8009F430(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], 0);
 
     tevColor.r = bmp->r;
     tevColor.g = bmp->g;
@@ -497,7 +497,7 @@ void bitmap_draw_normal_char(unsigned char chr)
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    func_8009F430(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], 0);
 
     tevColor.r = 255;
     tevColor.g = 255;

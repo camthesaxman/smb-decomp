@@ -673,7 +673,7 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unk4 = 0;
     lbl_80205DAC.unk5 = 1;
     lbl_80205DAC.unk6 = 0;
-    func_8009E110(0, lbl_801B7AB4[1], lbl_801B7AD4[0], 0);
+    GXSetBlendMode_cached(0, lbl_801B7AB4[1], lbl_801B7AD4[0], 0);
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk24 = zMode->compareFunc;
     lbl_80205DAC.unk28 = zMode->updateEnable;
@@ -691,12 +691,12 @@ static void prep_some_stuff_before_drawing(void)
     }
 
     if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
 
     lbl_80205DAC.unkA = 2;
-    func_8009E094(lbl_801B7B14[2]);
+    GXSetCullMode_cached(lbl_801B7B14[2]);
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.unk10 = 0;
 
@@ -722,8 +722,8 @@ static void prep_some_stuff_before_drawing(void)
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009E2C8(0, 0, 0);
-    func_8009F2C8(1);
+    GXSetTevSwapMode_cached(0, 0, 0);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(1);
     GXSetNumIndStages(0);
     GXSetNumChans(1);
@@ -744,7 +744,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     case 0:
         if (lbl_80205DAC.unk4 != 0)
         {
-            func_8009E110(0, 1, 0, 0);
+            GXSetBlendMode_cached(0, 1, 0, 0);
             lbl_80205DAC.unk4 = 0;
             lbl_80205DAC.unk5 = 1;
             lbl_80205DAC.unk6 = 0;
@@ -755,7 +755,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
-            func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            GXSetBlendMode_cached(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
             lbl_80205DAC.unk4 = 2;
             lbl_80205DAC.unk5 = r25;
             lbl_80205DAC.unk6 = r27;
@@ -781,13 +781,13 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     }
 
     if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
 
     if (mesh.unk20 < 0)
     {
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
         func_8009EA30(0, 4);
     }
     else
@@ -800,31 +800,31 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
             if (--r25 < 0)
                 r25 = 7;
             lbl_80205DAC.unk10 = r25;
-            func_8009F430(mesh.texObj, r25);
+            GXLoadTexObj_cached(mesh.texObj, r25);
         }
-        func_8009EFF4(0, 0, r25, 4);
+        GXSetTevOrder_cached(0, 0, r25, 4);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
             func_8009EA30(0, 3);
             break;
         case 1:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 7, 7, 4);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 7, 7, 4);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         case 2:
-            func_8009E618(0, 10, 8, 9, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 7, 7, 5);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 10, 8, 9, 15);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 7, 7, 5);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         case 3:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 5, 4, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 5, 4, 7);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         }
     }
@@ -917,7 +917,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            func_8009E094(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(lbl_801B7B14[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1027,7 +1027,7 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            func_8009E094(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(lbl_801B7B14[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1159,7 +1159,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.unk5 = 4;
     lbl_80205DAC.unk6 = 5;
 
-    func_8009E110(1, lbl_801B7AB4[4], lbl_801B7AD4[5], 0);
+    GXSetBlendMode_cached(1, lbl_801B7AB4[4], lbl_801B7AD4[5], 0);
 
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk20 = zMode->compareFunc;  //! mistake?
@@ -1178,12 +1178,12 @@ static void prep_some_stuff_before_drawing_2(void)
     }
 
     if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
 
     lbl_80205DAC.unkA = 2;
-    func_8009E094(lbl_801B7B14[2]);
+    GXSetCullMode_cached(lbl_801B7B14[2]);
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.unk10 = 0;
 
@@ -1209,8 +1209,8 @@ static void prep_some_stuff_before_drawing_2(void)
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009E2C8(0, 0, 0);
-    func_8009F2C8(1);
+    GXSetTevSwapMode_cached(0, 0, 0);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(1);
     GXSetNumIndStages(0);
     GXSetNumChans(1);
@@ -1231,7 +1231,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     case 0:
         if (lbl_80205DAC.unk4 != 0)
         {
-            func_8009E110(1, 4, 5, 0);
+            GXSetBlendMode_cached(1, 4, 5, 0);
             lbl_80205DAC.unk4 = 0;
             lbl_80205DAC.unk5 = 4;
             lbl_80205DAC.unk6 = 5;
@@ -1242,7 +1242,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
-            func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            GXSetBlendMode_cached(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
             lbl_80205DAC.unk4 = 2;
             lbl_80205DAC.unk5 = r25;
             lbl_80205DAC.unk6 = r27;
@@ -1268,13 +1268,13 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     }
 
     if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
 
     if (mesh.unk20 < 0)
     {
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
         func_8009EA30(0, 4);
     }
     else
@@ -1287,34 +1287,34 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
             if (--r25 < 0)
                 r25 = 7;
             lbl_80205DAC.unk10 = r25;
-            func_8009F430(mesh.texObj, r25);
+            GXLoadTexObj_cached(mesh.texObj, r25);
         }
-        func_8009EFF4(0, 0, r25, 4);
+        GXSetTevOrder_cached(0, 0, r25, 4);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
-            func_8009E618(0, 15, 15, 15, 8);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 4, 5, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 15, 15, 15, 8);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 4, 5, 7);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         case 1:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 4, 5, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 4, 5, 7);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         case 2:
-            func_8009E618(0, 10, 8, 9, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 7, 7, 5);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 10, 8, 9, 15);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 7, 7, 5);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         case 3:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 5, 4, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
+            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(0, 7, 5, 4, 7);
+            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
             break;
         }
     }
@@ -1420,7 +1420,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            func_8009E094(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(lbl_801B7B14[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
