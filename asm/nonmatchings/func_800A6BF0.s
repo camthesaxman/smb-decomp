@@ -1,7 +1,7 @@
 /* 800A6BF0 000A2B10  7C 08 02 A6 */	mflr r0
-/* 800A6BF4 000A2B14  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 800A6BF4 000A2B14  3C 60 80 20 */	lis r3, animGroups@ha
 /* 800A6BF8 000A2B18  90 01 00 04 */	stw r0, 4(r1)
-/* 800A6BFC 000A2B1C  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 800A6BFC 000A2B1C  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 800A6C00 000A2B20  3C 60 80 21 */	lis r3, goalModels@ha
 /* 800A6C04 000A2B24  94 21 FF 70 */	stwu r1, -0x90(r1)
 /* 800A6C08 000A2B28  DB E1 00 88 */	stfd f31, 0x88(r1)
@@ -121,13 +121,13 @@ lbl_800A6DA0:
 /* 800A6DAC 000A2CCC  3B DE 00 84 */	addi r30, r30, 0x84
 /* 800A6DB0 000A2CD0  3B 5A 00 01 */	addi r26, r26, 1
 lbl_800A6DB4:
-/* 800A6DB4 000A2CD4  80 0D 9D 68 */	lwz r0, itemgroupCount  // @sda21(r13)
+/* 800A6DB4 000A2CD4  80 0D 9D 68 */	lwz r0, animGroupCount  // @sda21(r13)
 /* 800A6DB8 000A2CD8  7C 1A 00 00 */	cmpw r26, r0
 /* 800A6DBC 000A2CDC  41 80 FE 7C */	blt lbl_800A6C38
 /* 800A6DC0 000A2CE0  3B 40 00 00 */	li r26, 0
 /* 800A6DC4 000A2CE4  1C 9A 00 84 */	mulli r4, r26, 0x84
-/* 800A6DC8 000A2CE8  3C 60 80 20 */	lis r3, itemgroups@ha
-/* 800A6DCC 000A2CEC  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 800A6DC8 000A2CE8  3C 60 80 20 */	lis r3, animGroups@ha
+/* 800A6DCC 000A2CEC  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 800A6DD0 000A2CF0  3C 60 80 29 */	lis r3, lbl_8028C0B0@ha
 /* 800A6DD4 000A2CF4  7F 20 22 14 */	add r25, r0, r4
 /* 800A6DD8 000A2CF8  3B 1A 00 00 */	addi r24, r26, 0
@@ -178,7 +178,7 @@ lbl_800A6E70:
 /* 800A6E7C 000A2D9C  3B 39 00 84 */	addi r25, r25, 0x84
 /* 800A6E80 000A2DA0  3B 5A 00 01 */	addi r26, r26, 1
 lbl_800A6E84:
-/* 800A6E84 000A2DA4  80 0D 9D 68 */	lwz r0, itemgroupCount  // @sda21(r13)
+/* 800A6E84 000A2DA4  80 0D 9D 68 */	lwz r0, animGroupCount  // @sda21(r13)
 /* 800A6E88 000A2DA8  7C 1A 00 00 */	cmpw r26, r0
 /* 800A6E8C 000A2DAC  41 80 FF 58 */	blt lbl_800A6DE4
 /* 800A6E90 000A2DB0  3B A0 00 00 */	li r29, 0
@@ -187,8 +187,8 @@ lbl_800A6E84:
 /* 800A6E9C 000A2DBC  C3 82 B4 38 */	lfs f28, lbl_802F5C38  // @sda21(r2)
 /* 800A6EA0 000A2DC0  CB A2 B3 F0 */	lfd f29, lbl_802F5BF0  // @sda21(r2)
 /* 800A6EA4 000A2DC4  CB C2 B3 98 */	lfd f30, lbl_802F5B98  // @sda21(r2)
-/* 800A6EA8 000A2DC8  3C 60 80 20 */	lis r3, itemgroups@ha
-/* 800A6EAC 000A2DCC  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 800A6EA8 000A2DC8  3C 60 80 20 */	lis r3, animGroups@ha
+/* 800A6EAC 000A2DCC  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 800A6EB0 000A2DD0  CB E2 B4 40 */	lfd f31, lbl_802F5C40  // @sda21(r2)
 /* 800A6EB4 000A2DD4  3C 60 88 89 */	lis r3, 0x88888889@ha
 /* 800A6EB8 000A2DD8  7F E0 22 14 */	add r31, r0, r4
@@ -274,7 +274,7 @@ lbl_800A6FD8:
 /* 800A6FE4 000A2F04  3B FF 00 84 */	addi r31, r31, 0x84
 /* 800A6FE8 000A2F08  3B BD 00 01 */	addi r29, r29, 1
 lbl_800A6FEC:
-/* 800A6FEC 000A2F0C  80 0D 9D 68 */	lwz r0, itemgroupCount  // @sda21(r13)
+/* 800A6FEC 000A2F0C  80 0D 9D 68 */	lwz r0, animGroupCount  // @sda21(r13)
 /* 800A6FF0 000A2F10  7C 1D 00 00 */	cmpw r29, r0
 /* 800A6FF4 000A2F14  41 80 FE DC */	blt lbl_800A6ED0
 /* 800A6FF8 000A2F18  BA E1 00 44 */	lmw r23, 0x44(r1)

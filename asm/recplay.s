@@ -1853,7 +1853,7 @@ lbl_8004A618:
 /* 8004A63C 0004655C  EC 00 10 28 */	fsubs f0, f0, f2
 /* 8004A640 00046560  EC 20 08 28 */	fsubs f1, f0, f1
 lbl_8004A644:
-/* 8004A644 00046564  4B FF 9E 61 */	bl animate_itemgroups
+/* 8004A644 00046564  4B FF 9E 61 */	bl animate_animgroups
 lbl_8004A648:
 /* 8004A648 00046568  28 1B 00 00 */	cmplwi r27, 0
 /* 8004A64C 0004656C  41 82 00 E8 */	beq lbl_8004A734

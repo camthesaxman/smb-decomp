@@ -280,14 +280,14 @@ struct Struct80176434
     float unkC;
 };  // size=0x10
 
-struct ItemgroupInfo
+struct AnimGroupInfo
 {
     Point3d pos;
     Point3d prevPos;
     S16Vec rot;
     S16Vec prevRot;
-    Mtx transform;     // Transform from itemgroup space to world space
-    Mtx prevTransform; // Previous frame transform from itemgroup space to world space
+    Mtx transform;     // Transform from animGroup space to world space
+    Mtx prevTransform; // Previous frame transform from animGroup space to world space
 };
 
 struct ReplayInfo
@@ -360,13 +360,13 @@ struct PhysicsBall
 {
     u32 flags;
 
-    // Current center position in itemgroupId's local space
+    // Current center position in aniimGroupId's local space
     Point3d pos;     
 
-    // Center position at end of previous frame in itemgroupId's previous frame local space
+    // Center position at end of previous frame in aniimGroupId's previous frame local space
     Point3d prevPos; 
 
-    // Current velocity in itemgroupId's local space
+    // Current velocity in aniimGroupId's local space
     Vec vel;         
 
     float radius;
@@ -376,16 +376,16 @@ struct PhysicsBall
     // The ball may collide with more than one surface during a frame. The "hardest" collision is
     // recorded, which is used to draw visual collision effects for example.
 
-    // Largest (in magnitude) itemgroup-relative ball velocity along the collision normal. It's
-    // always negative because when a collision occurs, the ball's itemgroup-relative velocity is
+    // Largest (in magnitude) animGroup-relative ball velocity along the collision normal. It's
+    // always negative because when a collision occurs, the ball's animGroup-relative velocity is
     // pointing away from the normal.
     float hardestColiSpeed;
 
-    // Collision plane of the hardest collision, in hardestColiItemgroupId's local space
+    // Collision plane of the hardest collision, in hardestColiAnimGroupId's local space
     struct ColiPlane hardestColiPlane;
 
-    // Itemgroup ID of the hardest collision
-    s32 hardestColiItemgroupId;
+    // animGroup ID of the hardest collision
+    s32 hardestColiAnimGroupId;
 
     // Friction applied to the ball's velocity on each contact with a surface.
     //
@@ -395,9 +395,9 @@ struct PhysicsBall
     // with velocity (1, 0, 0) would be (-1, 0, 0).
     float friction;
 
-    // Itemgroup whose local space we are in.
+    // animGroup whose local space we are in.
     // As a reminder, ID 0 is world space.
-    s32 itemgroupId;
+    s32 aniimGroupId;
 };
 
 struct ColiEdge
@@ -876,7 +876,7 @@ struct Keyframe
     float tangentOut;
 };
 
-struct StageItemgroup;
+struct StageAnimGroup;
 struct StageBanana;
 
 struct Struct800690DC
@@ -976,7 +976,7 @@ struct Stobj
     float unk94;
     float unk98;
     float unk9c;
-    s8 itemgroup_id;
+    s8 animGroupId;
     void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
     Point3d g_some_pos2;
     Point3d g_local_pos;

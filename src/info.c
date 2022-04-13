@@ -144,8 +144,8 @@ void ev_info_main(void)
                 func_80049268(ball->unk2E);
             }
             init_physball_from_ball(ball, &sp6C);
-            if (sp64 != sp6C.itemgroupId)
-                tf_physball_to_itemgroup_space(&sp6C, sp64);
+            if (sp64 != sp6C.aniimGroupId)
+                tf_physball_to_animgroup_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
             func_80024860(ball);
@@ -175,8 +175,8 @@ void ev_info_main(void)
             if (gameSubmode == SMD_ADV_GAME_PLAY_MAIN)
                 infoWork.unk0 |= INFO_FLAG_GOAL;
             init_physball_from_ball(ball, &sp6C);
-            if (sp64 != sp6C.itemgroupId)
-                tf_physball_to_itemgroup_space(&sp6C, sp64);
+            if (sp64 != sp6C.aniimGroupId)
+                tf_physball_to_animgroup_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
             func_80024860(ball);
@@ -243,8 +243,8 @@ void ev_info_main(void)
             infoWork.unk30 = 0;
 
         r9 = 0;
-        r7 = decodedStageLzPtr->itemgroups[0].goals;
-        for (i = 0; i < decodedStageLzPtr->itemgroups[0].goalCount; i++, r7++)
+        r7 = decodedStageLzPtr->animGroups[0].goals;
+        for (i = 0; i < decodedStageLzPtr->animGroups[0].goalCount; i++, r7++)
         {
             if (r7->type == 0x42)
             {
@@ -257,8 +257,8 @@ void ev_info_main(void)
          || (lbl_801F3D88[0] & (1 << 2)))
         {
             // fake match
-            r7 = ((volatile struct StageItemgroup *)&decodedStageLzPtr->itemgroups[0])->goals;
-            for (i = 0; i < decodedStageLzPtr->itemgroups[0].goalCount; i++, r7++)
+            r7 = ((volatile struct StageAnimGroup *)&decodedStageLzPtr->animGroups[0])->goals;
+            for (i = 0; i < decodedStageLzPtr->animGroups[0].goalCount; i++, r7++)
             {
                 if ((lbl_801F3D88[0] & (1 << 3)) && r7->type == 'R')
                 {
@@ -481,25 +481,25 @@ void func_80023AF4(void)
         lbl_802F1CA8 = 0;
 }
 
-BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalItemgroupId)
+BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnimGroupId)
 {
     struct PhysicsBall physBall;
-    struct StageItemgroup *stageIg;
+    struct StageAnimGroup *stageIg;
     int goalId;
-    int itemgroupId;
+    int aniimGroupId;
 
     init_physball_from_ball(ball, &physBall);
-    stageIg = decodedStageLzPtr->itemgroups;
+    stageIg = decodedStageLzPtr->animGroups;
     goalId = 0;
-    for (itemgroupId = 0; itemgroupId < decodedStageLzPtr->itemgroupCount; itemgroupId++, stageIg++)
+    for (aniimGroupId = 0; aniimGroupId < decodedStageLzPtr->animGroupCount; aniimGroupId++, stageIg++)
     {
         if (stageIg->goalCount > 0)
         {
             struct StageGoal *goal;
             int igGoalIdx;
 
-            if (itemgroupId != physBall.itemgroupId)
-                tf_physball_to_itemgroup_space(&physBall, itemgroupId);
+            if (aniimGroupId != physBall.aniimGroupId)
+                tf_physball_to_animgroup_space(&physBall, aniimGroupId);
             goal = stageIg->goals;
             for (igGoalIdx = 0; igGoalIdx < stageIg->goalCount; igGoalIdx++, goal++)
             {
@@ -521,7 +521,7 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalItem
                 if (test_line_intersects_rect(&physBall.pos, &physBall.prevPos, &goalTrigger))
                 {
                     *outGoalId = goalId;
-                    *outGoalItemgroupId = itemgroupId;
+                    *outGoalAnimGroupId = aniimGroupId;
                     return TRUE;
                 }
                 goalId++;
@@ -765,7 +765,7 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
     infoWork.unk1C = infoWork.timerCurr;
     if (c > 0)
     {
-        struct ItemgroupInfo *r29 = &itemgroups[c];
+        struct AnimGroupInfo *r29 = &animGroups[c];
         struct StageGoal *goal = &decodedStageLzPtr->goals[goalId];
         Vec sp20;
         Vec sp14;
@@ -785,20 +785,20 @@ void func_800245E4(struct Ball *ball, int goalId, int c)
 int func_800246F4(struct Ball *ball)
 {
     struct PhysicsBall sp18;
-    struct StageItemgroup *r30;
+    struct StageAnimGroup *r30;
     int i;
 
     if (ball->pos.y < *decodedStageLzPtr->pFallOutY)
         return 1;
     init_physball_from_ball(ball, &sp18);
-    r30 = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r30++)
+    r30 = decodedStageLzPtr->animGroups;
+    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, r30++)
     {
         struct StageCollHdr_child2 *r28;
         int j;
 
-        if (i != sp18.itemgroupId)
-            tf_physball_to_itemgroup_space(&sp18, i);
+        if (i != sp18.aniimGroupId)
+            tf_physball_to_animgroup_space(&sp18, i);
         r28 = r30->unk88;
         for (j = 0; j < r30->unk84; j++, r28++)
         {

@@ -8,7 +8,7 @@
 #include "types.h"
 
 void collide_ball_with_stage(struct PhysicsBall *b, struct Stage *);
-s16 *coligrid_lookup(struct StageItemgroup *coliHeader, f32 x, f32 z);
+s16 *coligrid_lookup(struct StageAnimGroup *coliHeader, f32 x, f32 z);
 void collide_ball_with_tri_face(struct PhysicsBall *physBall, struct StageColiTri *tri);
 void collide_ball_with_tri_edges(struct PhysicsBall *physBall, struct StageColiTri *tri);
 void collide_ball_with_tri_edge(struct PhysicsBall *physBall, Vec *localBallPos,
@@ -43,7 +43,7 @@ void g_draw_stage_collision(void);
 // ? stcoli_sub29();
 void stcoli_sub30(struct PhysicsBall *src, struct PhysicsBall *dest);
 void stcoli_sub31(struct PhysicsBall *src, struct PhysicsBall *dest);
-void tf_physball_to_itemgroup_space(struct PhysicsBall *physBall, int itemgroupId);
+void tf_physball_to_animgroup_space(struct PhysicsBall *physBall, int aniimGroupId);
 // ? stcoli_sub33();
 // ? stcoli_sub34();
 

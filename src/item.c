@@ -148,17 +148,17 @@ void ev_item_init(void)
     {
     case GAMETYPE_MINI_FIGHT:
         if (func_800672D0(currStageId) != 0)
-            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
+            make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     case GAMETYPE_MAIN_COMPETITION:
         if (func_800672D0(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
-            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
+            make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     default:
-        make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
+        make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     }
 }
@@ -227,7 +227,7 @@ void item_draw(void)
             if (r28 != item->attachedTo)
             {
                 mathutil_mtxA_from_mtx(sp8);
-                mathutil_mtxA_mult_right(itemgroups[item->attachedTo].transform);
+                mathutil_mtxA_mult_right(animGroups[item->attachedTo].transform);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
                 r28 = item->attachedTo;
             }
@@ -295,7 +295,7 @@ void func_800685C4(void)
         {
             if (r25 != item->attachedTo)
             {
-                mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].transform);
+                mathutil_mtxA_from_mtx(animGroups[item->attachedTo].transform);
                 r25 = item->attachedTo;
             }
             mathutil_mtxA_tf_point(&item->unk20, &sp40);
@@ -389,7 +389,7 @@ void func_800689B4(int a)
     }
 }
 
-void make_stage_bananas(struct StageItemgroup *coll, int count)
+void make_stage_bananas(struct StageAnimGroup *coll, int count)
 {
     struct Item item;
     int i;

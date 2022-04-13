@@ -45,7 +45,7 @@ struct Preview stagePreview; // 78
 
 struct Struct80206DEC lbl_80206DEC;
 
-struct ItemgroupInfo itemgroups[0x48]; // 148
+struct AnimGroupInfo animGroups[0x48]; // 148
 
 FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
@@ -93,8 +93,8 @@ void ev_stage_init(void)
 
 void ev_stage_main(void)
 {
-    struct ItemgroupInfo *itemgroup;
-    struct StageItemgroup *coll;
+    struct AnimGroupInfo *animGroup;
+    struct StageAnimGroup *coll;
     float f31;
     float f30;
     float f3;
@@ -146,12 +146,12 @@ void ev_stage_main(void)
             *r5 = f3;
         }
     }
-    itemgroup = itemgroups;
-    coll = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, coll++)
+    animGroup = animGroups;
+    coll = decodedStageLzPtr->animGroups;
+    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, coll++)
     {
         int j;
-        struct StageItemgroupAnim *anim = coll->anim;
+        struct StageAnimGroupAnim *anim = coll->anim;
 
         if (anim == NULL2)
             continue;
@@ -169,56 +169,56 @@ void ev_stage_main(void)
         }
         if (anim->rotXKeyframes != NULL2)
         {
-            itemgroup->prevRot.x = itemgroup->rot.x;
-            itemgroup->rot.x = DEGREES_TO_S16(
+            animGroup->prevRot.x = animGroup->rot.x;
+            animGroup->rot.x = DEGREES_TO_S16(
                 interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, f31));
         }
         if (anim->rotYKeyframes != NULL2)
         {
-            itemgroup->prevRot.y = itemgroup->rot.y;
-            itemgroup->rot.y = DEGREES_TO_S16(
+            animGroup->prevRot.y = animGroup->rot.y;
+            animGroup->rot.y = DEGREES_TO_S16(
                 interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, f31));
         }
         if (anim->rotZKeyframes != NULL2)
         {
-            itemgroup->prevRot.z = itemgroup->rot.z;
-            itemgroup->rot.z = DEGREES_TO_S16(
+            animGroup->prevRot.z = animGroup->rot.z;
+            animGroup->rot.z = DEGREES_TO_S16(
                 interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, f31));
         }
         if (anim->posXKeyframes != NULL2)
         {
-            itemgroup->prevPos.x = itemgroup->pos.x - coll->unkB8.x;
-            itemgroup->pos.x =
+            animGroup->prevPos.x = animGroup->pos.x - coll->unkB8.x;
+            animGroup->pos.x =
                 interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, f31);
         }
         if (anim->posYKeyframes != NULL2)
         {
-            itemgroup->prevPos.y = itemgroup->pos.y - coll->unkB8.y;
-            itemgroup->pos.y =
+            animGroup->prevPos.y = animGroup->pos.y - coll->unkB8.y;
+            animGroup->pos.y =
                 interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, f31);
         }
         if (anim->posZKeyframes != NULL2)
         {
-            itemgroup->prevPos.z = itemgroup->pos.z - coll->unkB8.z;
-            itemgroup->pos.z =
+            animGroup->prevPos.z = animGroup->pos.z - coll->unkB8.z;
+            animGroup->pos.z =
                 interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, f31);
         }
-        mathutil_mtxA_from_translate(&itemgroup->pos);
-        mathutil_mtxA_rotate_z(itemgroup->rot.z);
-        mathutil_mtxA_rotate_y(itemgroup->rot.y);
-        mathutil_mtxA_rotate_x(itemgroup->rot.x - coll->initRot.x);
+        mathutil_mtxA_from_translate(&animGroup->pos);
+        mathutil_mtxA_rotate_z(animGroup->rot.z);
+        mathutil_mtxA_rotate_y(animGroup->rot.y);
+        mathutil_mtxA_rotate_x(animGroup->rot.x - coll->initRot.x);
         mathutil_mtxA_rotate_y(-coll->initRot.y);
         mathutil_mtxA_rotate_z(-coll->initRot.z);
         mathutil_mtxA_translate_neg(&coll->initPos);
-        mathutil_mtxA_to_mtx(itemgroup->transform);
-        mathutil_mtxA_from_translate(&itemgroup->prevPos);
-        mathutil_mtxA_rotate_z(itemgroup->prevRot.z);
-        mathutil_mtxA_rotate_y(itemgroup->prevRot.y);
-        mathutil_mtxA_rotate_x(itemgroup->prevRot.x - coll->initRot.x);
+        mathutil_mtxA_to_mtx(animGroup->transform);
+        mathutil_mtxA_from_translate(&animGroup->prevPos);
+        mathutil_mtxA_rotate_z(animGroup->prevRot.z);
+        mathutil_mtxA_rotate_y(animGroup->prevRot.y);
+        mathutil_mtxA_rotate_x(animGroup->prevRot.x - coll->initRot.x);
         mathutil_mtxA_rotate_y(-coll->initRot.y);
         mathutil_mtxA_rotate_z(-coll->initRot.z);
         mathutil_mtxA_translate_neg(&coll->initPos);
-        mathutil_mtxA_to_mtx(itemgroup->prevTransform);
+        mathutil_mtxA_to_mtx(animGroup->prevTransform);
     }
     if (lbl_80206DEC.unk8 != NULL)
         lbl_80206DEC.unk8();
@@ -275,8 +275,8 @@ void draw_blur_bridge_accordions(void)
 {
     float t;
     float f30;
-    struct ItemgroupInfo *itemgroup;
-    struct StageItemgroup *stageIg;
+    struct AnimGroupInfo *animGroup;
+    struct StageAnimGroup *stageIg;
     int i;
 
     if (blurBridgeAccordion == NULL2)
@@ -286,15 +286,15 @@ void draw_blur_bridge_accordions(void)
     f30 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     t -= f30 * mathutil_floor(t / f30);
     t += (float)decodedStageLzPtr->loopStartSeconds;
-    itemgroup = &itemgroups[1];
-    stageIg = decodedStageLzPtr->itemgroups + 1;
-    for (i = 1; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, stageIg++)
+    animGroup = &animGroups[1];
+    stageIg = decodedStageLzPtr->animGroups + 1;
+    for (i = 1; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageIg++)
     {
         if (stageIg->unk7C > 0 && stageIg->anim != NULL2)
         {
             u32 r28;
             Vec sp10;
-            float f27 = itemgroup->pos.x;
+            float f27 = animGroup->pos.x;
 
             f30 = f27;
             if (stageIg->anim->posXKeyframes != NULL2)
@@ -314,8 +314,8 @@ void draw_blur_bridge_accordions(void)
                 f30 = f30 - f27;
                 r28 = 1;
             }
-            sp10.y = itemgroup->pos.y;
-            sp10.z = itemgroup->pos.z;
+            sp10.y = animGroup->pos.y;
+            sp10.z = animGroup->pos.z;
             mathutil_mtxA_translate(&sp10);
             if (r28)
                 mathutil_mtxA_rotate_y(-0x8000);
@@ -327,14 +327,14 @@ void draw_blur_bridge_accordions(void)
     }
 }
 
-void animate_itemgroups(float a)
+void animate_animgroups(float a)
 {
     float timeSeconds;
     float f30;
     float f3;
-    struct ItemgroupInfo *itemgroup;
-    struct StageItemgroup *stageIg;
-    struct StageItemgroupAnim *anim;
+    struct AnimGroupInfo *animGroup;
+    struct StageAnimGroup *stageIg;
+    struct StageAnimGroupAnim *anim;
     int i;
 
     if (gamePauseStatus & 0xA)
@@ -346,58 +346,58 @@ void animate_itemgroups(float a)
     f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     timeSeconds -= f3 * mathutil_floor(timeSeconds / f3);
     timeSeconds += decodedStageLzPtr->loopStartSeconds;
-    itemgroup = itemgroups;
-    stageIg = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, stageIg++)
+    animGroup = animGroups;
+    stageIg = decodedStageLzPtr->animGroups;
+    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageIg++)
     {
         anim = stageIg->anim;
         if (anim != NULL2)
         {
             if (anim->rotXKeyframes != NULL2)
             {
-                itemgroup->prevRot.x = itemgroup->rot.x;
-                itemgroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(
+                animGroup->prevRot.x = animGroup->rot.x;
+                animGroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(
                     anim->rotXKeyframeCount, anim->rotXKeyframes, timeSeconds));
             }
             if (anim->rotYKeyframes != NULL2)
             {
-                itemgroup->prevRot.y = itemgroup->rot.y;
-                itemgroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(
+                animGroup->prevRot.y = animGroup->rot.y;
+                animGroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(
                     anim->rotYKeyframeCount, anim->rotYKeyframes, timeSeconds));
             }
             if (anim->rotZKeyframes != NULL2)
             {
-                itemgroup->prevRot.z = itemgroup->rot.z;
-                itemgroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(
+                animGroup->prevRot.z = animGroup->rot.z;
+                animGroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(
                     anim->rotZKeyframeCount, anim->rotZKeyframes, timeSeconds));
             }
             if (anim->posXKeyframes != NULL2)
             {
-                itemgroup->prevPos.x = itemgroup->pos.x;
-                itemgroup->pos.x = interpolate_keyframes(anim->posXKeyframeCount,
+                animGroup->prevPos.x = animGroup->pos.x;
+                animGroup->pos.x = interpolate_keyframes(anim->posXKeyframeCount,
                                                          anim->posXKeyframes, timeSeconds);
             }
             if (anim->posYKeyframes != NULL2)
             {
-                itemgroup->prevPos.y = itemgroup->pos.y;
-                itemgroup->pos.y = interpolate_keyframes(anim->posYKeyframeCount,
+                animGroup->prevPos.y = animGroup->pos.y;
+                animGroup->pos.y = interpolate_keyframes(anim->posYKeyframeCount,
                                                          anim->posYKeyframes, timeSeconds);
             }
             if (anim->posZKeyframes != NULL2)
             {
-                itemgroup->prevPos.z = itemgroup->pos.z;
-                itemgroup->pos.z = interpolate_keyframes(anim->posZKeyframeCount,
+                animGroup->prevPos.z = animGroup->pos.z;
+                animGroup->pos.z = interpolate_keyframes(anim->posZKeyframeCount,
                                                          anim->posZKeyframes, timeSeconds);
             }
-            mathutil_mtxA_from_translate(&itemgroup->pos);
-            mathutil_mtxA_rotate_z(itemgroup->rot.z);
-            mathutil_mtxA_rotate_y(itemgroup->rot.y);
-            mathutil_mtxA_rotate_x(itemgroup->rot.x - stageIg->initRot.x);
+            mathutil_mtxA_from_translate(&animGroup->pos);
+            mathutil_mtxA_rotate_z(animGroup->rot.z);
+            mathutil_mtxA_rotate_y(animGroup->rot.y);
+            mathutil_mtxA_rotate_x(animGroup->rot.x - stageIg->initRot.x);
             mathutil_mtxA_rotate_y(-stageIg->initRot.y);
             mathutil_mtxA_rotate_z(-stageIg->initRot.z);
             mathutil_mtxA_translate_neg(&stageIg->initPos);
-            mathutil_mtxA_to_mtx(itemgroup->transform);
-            mathutil_mtx_copy(itemgroup->prevTransform, itemgroup->transform);
+            mathutil_mtxA_to_mtx(animGroup->transform);
+            mathutil_mtx_copy(animGroup->prevTransform, animGroup->transform);
         }
     }
 }
@@ -428,30 +428,30 @@ void g_initialize_stage_dyn_part_info(void)
 
 void func_8004482C(void)
 {
-    struct ItemgroupInfo *itemgroup;
-    struct StageItemgroup *stageIg;
+    struct AnimGroupInfo *animGroup;
+    struct StageAnimGroup *stageIg;
     int i;
 
-    itemgroup = itemgroups;
-    stageIg = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < 0x48; i++, itemgroup++, stageIg++)
+    animGroup = animGroups;
+    stageIg = decodedStageLzPtr->animGroups;
+    for (i = 0; i < 0x48; i++, animGroup++, stageIg++)
     {
-        itemgroup->pos.x = stageIg->initPos.x;
-        itemgroup->pos.y = stageIg->initPos.y;
-        itemgroup->pos.z = stageIg->initPos.z;
-        itemgroup->prevPos.x = stageIg->initPos.x - stageIg->unkB8.x;
-        itemgroup->prevPos.y = stageIg->initPos.y - stageIg->unkB8.y;
-        itemgroup->prevPos.z = stageIg->initPos.z - stageIg->unkB8.z;
-        itemgroup->rot.x = stageIg->initRot.x;
-        itemgroup->rot.y = stageIg->initRot.y;
-        itemgroup->rot.z = stageIg->initRot.z;
-        itemgroup->prevRot.x = stageIg->initRot.x;
-        itemgroup->prevRot.y = stageIg->initRot.y;
-        itemgroup->prevRot.z = stageIg->initRot.z;
+        animGroup->pos.x = stageIg->initPos.x;
+        animGroup->pos.y = stageIg->initPos.y;
+        animGroup->pos.z = stageIg->initPos.z;
+        animGroup->prevPos.x = stageIg->initPos.x - stageIg->unkB8.x;
+        animGroup->prevPos.y = stageIg->initPos.y - stageIg->unkB8.y;
+        animGroup->prevPos.z = stageIg->initPos.z - stageIg->unkB8.z;
+        animGroup->rot.x = stageIg->initRot.x;
+        animGroup->rot.y = stageIg->initRot.y;
+        animGroup->rot.z = stageIg->initRot.z;
+        animGroup->prevRot.x = stageIg->initRot.x;
+        animGroup->prevRot.y = stageIg->initRot.y;
+        animGroup->prevRot.z = stageIg->initRot.z;
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_to_mtx(itemgroup->transform);
+        mathutil_mtxA_to_mtx(animGroup->transform);
         mathutil_mtxA_translate_neg(&stageIg->unkB8);
-        mathutil_mtxA_to_mtx(itemgroup->prevTransform);
+        mathutil_mtxA_to_mtx(animGroup->prevTransform);
     }
 }
 
@@ -502,8 +502,8 @@ void load_stage(int stageId)
     load_bg_files(get_stage_background(stageId));
     if (loadedStageId != stageId || bgChanged)
     {
-        itemgroupCount =
-            decodedStageLzPtr->itemgroupCount < 0x48 ? decodedStageLzPtr->itemgroupCount : 0x48;
+        animGroupCount =
+            decodedStageLzPtr->animGroupCount < 0x48 ? decodedStageLzPtr->animGroupCount : 0x48;
         if (gamePauseStatus & (1 << (31 - 0x1D)))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
@@ -722,7 +722,7 @@ void func_80044E18(void)
     void **r30;
     void **r29;
     struct Struct802099E8 *r26;
-    struct StageItemgroup *r22;
+    struct StageAnimGroup *r22;
     char **r21;
     struct NaomiObj ***r25;
     struct NaomiObj ***r24;
@@ -734,7 +734,7 @@ void func_80044E18(void)
 
     char sp10[0xFC];
 
-    struct StageItemgroup *r5;
+    struct StageAnimGroup *r5;
     struct Struct8020A348 *r7;
     int r6;
     int r4;
@@ -746,8 +746,8 @@ void func_80044E18(void)
     lbl_802F1F50 = 0;
 
     r26 = lbl_802099E8;
-    r22 = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < itemgroupCount; r26++, i++, r22++)
+    r22 = decodedStageLzPtr->animGroups;
+    for (i = 0; i < animGroupCount; r26++, i++, r22++)
     {
         r26->unk0 = (void *)r17;
         r26->unk4 = r30;
@@ -876,9 +876,9 @@ void func_80044E18(void)
     // i = r6
     // r4 = 0;
     r4 = 0;
-    r5 = decodedStageLzPtr->itemgroups;
+    r5 = decodedStageLzPtr->animGroups;
     r7 = lbl_8020A348;
-    for (r6 = 0; r6 < itemgroupCount; r6++, r7++, r5++)
+    for (r6 = 0; r6 < animGroupCount; r6++, r7++, r5++)
     {
         r7->unk0 = (void *)&lbl_80209D48[r4];
         r7->unk4 = r5->unk7C;
@@ -1243,7 +1243,7 @@ void compute_stage_bounding_sphere(void)
         struct Struct8020A348 *r3 = lbl_8020A348;
         int i;
 
-        for (i = 0; i < itemgroupCount; i++, r3++)
+        for (i = 0; i < animGroupCount; i++, r3++)
         {
             struct Struct8020A348_child *r5 = r3->unk0;
             int r6;
@@ -1289,7 +1289,7 @@ void compute_stage_bounding_sphere(void)
         struct Struct8020A348 *r3 = lbl_8020AB88;
         int i;
 
-        for (i = 0; i < itemgroupCount; i++, r3++)
+        for (i = 0; i < animGroupCount; i++, r3++)
         {
             struct Struct8020A348_child *r5 = r3->unk0;
             int r6;
@@ -1375,16 +1375,16 @@ void func_800463E8(Vec *a, float *b)
 
     if (decodedStageGmaPtr != NULL)
     {
-        struct ItemgroupInfo *itemgroup = itemgroups;
+        struct AnimGroupInfo *animGroup = animGroups;
         struct Struct8020A348 *iter2 = lbl_8020AB88;
         int j;
         int i;
 
-        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
+        for (i = 0; i < animGroupCount; i++, iter2++, animGroup++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(itemgroup->transform);
+            mathutil_mtxA_from_mtx(animGroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1422,13 +1422,13 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        itemgroup = itemgroups;
+        animGroup = animGroups;
         iter2 = lbl_8020AB88;
-        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
+        for (i = 0; i < animGroupCount; i++, iter2++, animGroup++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(itemgroup->transform);
+            mathutil_mtxA_from_mtx(animGroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1456,15 +1456,15 @@ void func_800463E8(Vec *a, float *b)
     }
     else if (decodedStageLzPtr != NULL && decodedStageLzPtr->lvlModels != NULL)
     {
-        struct ItemgroupInfo *itemgroup = itemgroups;
+        struct AnimGroupInfo *animGroup = animGroups;
         struct Struct8020A348 *iter2 = lbl_8020A348;
         int j;
         int i;
 
-        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
+        for (i = 0; i < animGroupCount; i++, iter2++, animGroup++)
         {
             struct Struct8020A348_child *iter3;
-            mathutil_mtxA_from_mtx(itemgroup->transform);
+            mathutil_mtxA_from_mtx(animGroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1502,13 +1502,13 @@ void func_800463E8(Vec *a, float *b)
         sp40.z = (v1.z + v2.z) * 0.5f;
 
         result = 0.0f;
-        itemgroup = itemgroups;
+        animGroup = animGroups;
         iter2 = lbl_8020A348;
-        for (i = 0; i < itemgroupCount; i++, iter2++, itemgroup++)
+        for (i = 0; i < animGroupCount; i++, iter2++, animGroup++)
         {
             struct Struct8020A348_child *iter3;
 
-            mathutil_mtxA_from_mtx(itemgroup->transform);
+            mathutil_mtxA_from_mtx(animGroup->transform);
             iter3 = iter2->unk0;
             for (j = 0; j < iter2->unk4; j++, iter3++)
             {
@@ -1634,7 +1634,7 @@ void load_stagedef(int stageId)
     u32 uncompSize;
     void *compData;
     void *uncompData;
-    struct StageItemgroup *coll;
+    struct StageAnimGroup *coll;
     int i;
 
     sprintf(filename, "STAGE%03d.lz", stageId);
@@ -1669,10 +1669,10 @@ void load_stagedef(int stageId)
     decodedStageLzPtr = uncompData;
     if (uncompData == NULL)
         OSPanic("stage.c", 1976, "cannot open stcoli\n");
-    decodedStageLzPtr->itemgroups = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->itemgroups);
+    decodedStageLzPtr->animGroups = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->animGroups);
 
-    coll = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, coll++)
+    coll = decodedStageLzPtr->animGroups;
+    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, coll++)
     {
         if (coll->anim != NULL)
             adjust_stage_anim_ptrs(&coll->anim, decodedStageLzPtr);
@@ -1883,7 +1883,7 @@ void func_800472E8(void)
     }
 }
 
-void adjust_stage_anim_ptrs(struct StageItemgroupAnim **animp, struct Stage *baseptr)
+void adjust_stage_anim_ptrs(struct StageAnimGroupAnim **animp, struct Stage *baseptr)
 {
     *animp = OFFSET_TO_PTR(baseptr, *animp);
     if ((*animp)->rotXKeyframes != NULL)
@@ -1958,8 +1958,8 @@ struct Struct80092F90
 void stage_draw(void)
 {
     int r31;
-    struct ItemgroupInfo *r28;
-    struct StageItemgroup *r27;
+    struct AnimGroupInfo *r28;
+    struct StageAnimGroup *r27;
     int i;
     int (*r25)();
     struct Struct80092F90 sp7C;
@@ -1973,9 +1973,9 @@ void stage_draw(void)
     if (backgroundInfo.unk8C != 0)
         g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
     sp7C.unk0 = 32;
-    r28 = itemgroups;
-    r27 = decodedStageLzPtr->itemgroups;
-    for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, r28++, r27++)
+    r28 = animGroups;
+    r27 = decodedStageLzPtr->animGroups;
+    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, r28++, r27++)
     {
         struct StageGoal *r24;
         int j;
@@ -2045,20 +2045,20 @@ void stage_draw(void)
     {
         if (decodedStageGmaPtr != NULL)
         {
-            struct ItemgroupInfo *itemgroup;
+            struct AnimGroupInfo *animGroup;
             struct Struct8020A348 *r23;
             int j;
             struct Struct8020A348_child *r27;
             struct GMAModel *model;
 
             sp7C.unk2 = 6;
-            itemgroup = itemgroups;
+            animGroup = animGroups;
             r23 = lbl_8020AB88;
-            for (i = 0; i < itemgroupCount; i++, r23++, itemgroup++)
+            for (i = 0; i < animGroupCount; i++, r23++, animGroup++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(itemgroup->transform);
+                    mathutil_mtxA_mult_right(animGroup->transform);
                 GXLoadPosMtxImm(mathutilData->mtxA, 0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, 0);
                 r27 = r23->unk0;
@@ -2086,18 +2086,18 @@ void stage_draw(void)
         }
         else if (decodedStageLzPtr->lvlModels == NULL)
         {
-            struct ItemgroupInfo *itemgroup;
+            struct AnimGroupInfo *animGroup;
             struct Struct802099E8 *r23;
             struct NaomiModel *model;
             int j;
 
-            itemgroup = itemgroups;
+            animGroup = animGroups;
             r23 = lbl_802099E8;
-            for (i = 0; i < itemgroupCount; i++, itemgroup++, r23++)
+            for (i = 0; i < animGroupCount; i++, animGroup++, r23++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(itemgroup->transform);
+                    mathutil_mtxA_mult_right(animGroup->transform);
                 for (j = 0; j < r23->unk8; j++)
                 {
                     model = (void *)r23->unk0[j];
@@ -2105,7 +2105,7 @@ void stage_draw(void)
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
-                        mathutil_mtxA_from_mtx(itemgroup->transform);
+                        mathutil_mtxA_from_mtx(animGroup->transform);
                         if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
@@ -2119,20 +2119,20 @@ void stage_draw(void)
         }
         else
         {
-            struct ItemgroupInfo *itemgroup;
+            struct AnimGroupInfo *animGroup;
             struct Struct8020A348 *r23;
             int j;
             float f29;
             struct Struct8020A348_child *r27;
 
-            itemgroup = itemgroups;
+            animGroup = animGroups;
             f29 = currentCameraStructPtr->sub28.unk38;
             r23 = lbl_8020A348;
-            for (i = 0; i < itemgroupCount; i++, r23++, itemgroup++)
+            for (i = 0; i < animGroupCount; i++, r23++, animGroup++)
             {
                 mathutil_mtxA_from_mtxB();
                 if (i > 0)
-                    mathutil_mtxA_mult_right(itemgroup->transform);
+                    mathutil_mtxA_mult_right(animGroup->transform);
                 r27 = r23->unk0;
                 for (j = 0; j < r23->unk4; j++, r27++)
                 {
@@ -2171,7 +2171,7 @@ void stage_draw(void)
                                 if (r25 != NULL)
                                 {
                                     mathutil_mtxA_push();
-                                    mathutil_mtxA_from_mtx(itemgroup->transform);
+                                    mathutil_mtxA_from_mtx(animGroup->transform);
                                     if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
@@ -2258,19 +2258,19 @@ void stage_draw(void)
         g_avdisp_set_some_func_1(NULL);
     if (dipSwitches & DIP_FALL_DISP)
     {
-        struct ItemgroupInfo *itemgroup;
-        struct StageItemgroup *r23;
+        struct AnimGroupInfo *animGroup;
+        struct StageAnimGroup *r23;
         int i;
         struct StageCollHdr_child2 *r25;
         int j;
 
         mathutil_mtx_copy(mathutilData->mtxB, sp8);
-        itemgroup = itemgroups;
-        r23 = decodedStageLzPtr->itemgroups;
-        for (i = 0; i < decodedStageLzPtr->itemgroupCount; i++, itemgroup++, r23++)
+        animGroup = animGroups;
+        r23 = decodedStageLzPtr->animGroups;
+        for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, r23++)
         {
             mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_mult_right(itemgroup->transform);
+            mathutil_mtxA_mult_right(animGroup->transform);
             mathutil_mtxA_to_mtx(mathutilData->mtxB);
             r25 = r23->unk88;
             for (j = 0; j < r23->unk84; j++, r25++)

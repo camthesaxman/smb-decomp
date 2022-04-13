@@ -219,9 +219,9 @@ STAGE_LIST
 
 struct StageColiTri
 {
-    Point3d pos; // Position of vertex 1 in itemgroup space
-    Vec normal;  // Triangle normal in itemgroup space
-    S16Vec rot;  // Rotation to bring from triangle -> itemgroup space
+    Point3d pos; // Position of vertex 1 in animGroup space
+    Vec normal;  // Triangle normal in animGroup space
+    S16Vec rot;  // Rotation to bring from triangle -> animGroup space
     u16 flags;
 
     // Vertex 1 in triangle space is (0, 0)
@@ -290,7 +290,7 @@ struct StageBgModel
     /*0x34*/ struct UnkStruct8005562C_child2 *unk34;
 };
 
-struct StageItemgroupAnim
+struct StageAnimGroupAnim
 {
     /*0x00*/ u32 rotXKeyframeCount;
     /*0x04*/ struct Keyframe *rotXKeyframes;
@@ -351,13 +351,13 @@ struct StageJamabar
     s16 rotZ;
 };
 
-struct StageItemgroup
+struct StageAnimGroup
 {
     Point3d initPos;
     S16Vec initRot;
     u16 unk12;
 
-    /*0x14*/ struct StageItemgroupAnim *anim;
+    /*0x14*/ struct StageAnimGroupAnim *anim;
     /*0x18*/ char **modelNames;
     /*0x1C*/ struct StageColiTri *triangles;
 
@@ -463,16 +463,16 @@ struct DecodedStageLzPtr_child5
 struct DecodedStageLzPtr_child6
 {
     u8 filler0[0xC];
-    struct StageItemgroupAnim *unkC;
-    struct StageItemgroupAnim *unk10;
+    struct StageAnimGroupAnim *unkC;
+    struct StageAnimGroupAnim *unk10;
 };
 
 struct Stage
 {
     s32 loopStartSeconds;
     s32 loopEndSeconds;
-    /*0x08*/ s32 itemgroupCount;
-    /*0x0C*/ struct StageItemgroup *itemgroups;
+    /*0x08*/ s32 animGroupCount;
+    /*0x0C*/ struct StageAnimGroup *animGroups;
     /*0x10*/ struct StageStartPos *startPos;
     /*0x14*/ float *pFallOutY;
     /*0x18*/ s32 goalsCount;
@@ -514,7 +514,7 @@ void ev_stage_dest(void);
 // ? stage_find_model();
 void find_blur_bridge_accordion(void);
 void draw_blur_bridge_accordions(void);
-void animate_itemgroups(float);
+void animate_animgroups(float);
 void g_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);
 void func_80044920(void);
@@ -534,7 +534,7 @@ void compute_stage_bounding_sphere(void);
 float func_80046884(struct NaomiModel *);
 void load_stagedef(int stageId);
 void func_800472E8(void);
-void adjust_stage_anim_ptrs(struct StageItemgroupAnim **, struct Stage *);
+void adjust_stage_anim_ptrs(struct StageAnimGroupAnim **, struct Stage *);
 void func_800473C0(struct StageBgAnim **, struct Stage *);
 void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
 void stage_draw(void);

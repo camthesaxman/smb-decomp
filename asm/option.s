@@ -3394,7 +3394,7 @@ lbl_0000315C:
 /* 000031C0 7C7E0214 */ add r3, r30, r0
 /* 000031C4 80630000 */ lwz r3, 0(r3)
 /* 000031C8 4BFFCFE5 */ bl func_80049F90
-/* 000031CC 4BFFCFE1 */ bl animate_itemgroups
+/* 000031CC 4BFFCFE1 */ bl animate_animgroups
 /* 000031D0 38600005 */ li r3, 5
 /* 000031D4 4BFFCFD9 */ bl call_bitmap_load_group
 /* 000031D8 38600100 */ li r3, 0x100
@@ -3820,7 +3820,7 @@ lbl_000036A4:
 /* 0000380C 7C7F0214 */ add r3, r31, r0
 /* 00003810 80630000 */ lwz r3, 0(r3)
 /* 00003814 4BFFC999 */ bl func_80049F90
-/* 00003818 4BFFC995 */ bl animate_itemgroups
+/* 00003818 4BFFC995 */ bl animate_animgroups
 /* 0000381C A87E6EB4 */ lha r3, 0x6eb4(r30)
 /* 00003820 48000371 */ bl lbl_00003B90
 /* 00003824 A01E6E9C */ lhz r0, 0x6e9c(r30)

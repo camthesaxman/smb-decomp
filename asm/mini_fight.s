@@ -6517,8 +6517,8 @@ lbl_0000618C:
 /* 000062C0 2C000000 */ cmpwi r0, 0
 /* 000062C4 40810028 */ ble lbl_000062EC
 /* 000062C8 1C800084 */ mulli r4, r0, 0x84
-/* 000062CC 3C600000 */ lis r3, itemgroups@ha
-/* 000062D0 38030000 */ addi r0, r3, itemgroups@l
+/* 000062CC 3C600000 */ lis r3, animGroups@ha
+/* 000062D0 38030000 */ addi r0, r3, animGroups@l
 /* 000062D4 7C602214 */ add r3, r0, r4
 /* 000062D8 38630024 */ addi r3, r3, 0x24
 /* 000062DC 4BFF9E89 */ bl mathutil_mtxA_from_mtx
@@ -16057,10 +16057,10 @@ lbl_0000EF90:
 /* 0000EFBC 3C600000 */ lis r3, decodedStageLzPtr@ha
 /* 0000EFC0 80A30000 */ lwz r5, decodedStageLzPtr@l(r3)
 /* 0000EFC4 3C600000 */ lis r3, lbl_8020AB88@ha
-/* 0000EFC8 3C800000 */ lis r4, itemgroups@ha
+/* 0000EFC8 3C800000 */ lis r4, animGroups@ha
 /* 0000EFCC 80C50008 */ lwz r6, 8(r5)
 /* 0000EFD0 391F0000 */ addi r8, r31, 0
-/* 0000EFD4 38A40000 */ addi r5, r4, itemgroups@l
+/* 0000EFD4 38A40000 */ addi r5, r4, animGroups@l
 /* 0000EFD8 38C6FFFF */ addi r6, r6, -1  ;# fixed addi
 /* 0000EFDC 38630000 */ addi r3, r3, lbl_8020AB88@l
 /* 0000EFE0 38E00000 */ li r7, 0
@@ -21973,8 +21973,8 @@ lbl_0001471C:
 lbl_0001476C:
 /* 0001476C 7C600774 */ extsb r0, r3
 /* 00014770 1C800084 */ mulli r4, r0, 0x84
-/* 00014774 3C600000 */ lis r3, itemgroups@ha
-/* 00014778 38030000 */ addi r0, r3, itemgroups@l
+/* 00014774 3C600000 */ lis r3, animGroups@ha
+/* 00014778 38030000 */ addi r0, r3, animGroups@l
 /* 0001477C 7C602214 */ add r3, r0, r4
 /* 00014780 38630024 */ addi r3, r3, 0x24
 /* 00014784 4BFEB9E1 */ bl mathutil_mtxA_from_mtx
@@ -22184,8 +22184,8 @@ lbl_00014A2C:
 /* 00014A94 B0010018 */ sth r0, 0x18(r1)
 /* 00014A98 3C600000 */ lis r3, currentBallStructPtr@ha
 /* 00014A9C 80830000 */ lwz r4, currentBallStructPtr@l(r3)
-/* 00014AA0 3C600000 */ lis r3, itemgroups@ha
-/* 00014AA4 38030000 */ addi r0, r3, itemgroups@l
+/* 00014AA0 3C600000 */ lis r3, animGroups@ha
+/* 00014AA4 38030000 */ addi r0, r3, animGroups@l
 /* 00014AA8 8864002E */ lbz r3, 0x2e(r4)
 /* 00014AAC 7C630774 */ extsb r3, r3
 /* 00014AB0 B0610024 */ sth r3, 0x24(r1)
@@ -22535,8 +22535,8 @@ lbl_00014F64:
 lbl_00014FB4:
 /* 00014FB4 7C600774 */ extsb r0, r3
 /* 00014FB8 1C800084 */ mulli r4, r0, 0x84
-/* 00014FBC 3C600000 */ lis r3, itemgroups@ha
-/* 00014FC0 38030000 */ addi r0, r3, itemgroups@l
+/* 00014FBC 3C600000 */ lis r3, animGroups@ha
+/* 00014FC0 38030000 */ addi r0, r3, animGroups@l
 /* 00014FC4 7C602214 */ add r3, r0, r4
 /* 00014FC8 38630024 */ addi r3, r3, 0x24
 /* 00014FCC 4BFEB199 */ bl mathutil_mtxA_from_mtx
