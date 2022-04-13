@@ -3,7 +3,7 @@
 
 #include <dolphin/gx.h>
 
-void tevutil_init(void);
+u32 tevutil_init(void);
 void GXSetCullMode_cached(GXCullMode mode);
 void GXSetCullMode_cached_init(GXCullMode mode);
 void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op);

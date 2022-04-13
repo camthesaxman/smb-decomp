@@ -175,14 +175,40 @@ struct PerfInfo
     u32 unk34;
 };
 
-struct ZMode
+typedef struct
+{
+    s32 unk0x00;
+    s32 unk0x04;
+    s32 unk0x08;
+    s32 unk0x0C;
+} ZMode_child_0x14;
+
+typedef struct
+{
+    u32 unk0x00;
+    u32 unk0x04;
+    u32 unk0x08;
+    u32 unk0x0C;
+} ZMode_child_0x24;
+
+typedef struct
+{
+    s32 unk0x00;
+    s32 unk0x04;
+} ZMode_child_0x64;
+
+struct ZMode // GXCache
 {
     /*0x00*/ GXBool compareEnable;
     /*0x04*/ GXCompare compareFunc;
     /*0x08*/ GXBool updateEnable;
     /*0x09*/ u8 lineWidth;
     /*0x0C*/ s32 texOffsets;
-             u8 filler10[0x734-0x10];
+    /*0x10*/ s32 unk0x10;
+    /*0x14*/ ZMode_child_0x14 unk0x14;
+    /*0x24*/ ZMode_child_0x24 unk0x24[4];
+    /*0x64*/ ZMode_child_0x64 unk0x64[4];
+    /*0x84*/ u8 filler84[0x734-0x84];
 };
 
 struct GFXBufferInfo
