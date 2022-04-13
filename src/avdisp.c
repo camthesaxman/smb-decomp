@@ -7,6 +7,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "ord_tbl.h"
+#include "tevutil.h"
 
 struct UnkStruct4
 {
@@ -39,7 +40,7 @@ float lbl_802F20F8;
 float lbl_802F20F4;
 Func802F20F0 lbl_802F20F0;
 BallEnvFunc lbl_802F20EC;
-s32 lbl_802F20E8;
+s32 g_cullMode;
 float modelScale;
 u32 lbl_802F20E0;
 float lbl_802F20DC;
@@ -745,7 +746,7 @@ struct DrawMeshDeferredNode
 static inline struct GMAMeshHeader *draw_mesh_deferred(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
 {
     struct OrdTblNode *entry;
-    u32 r23 = lbl_802F20E8;
+    u32 r23 = g_cullMode;
     struct DrawMeshDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (mesh->unk14 != 0xFF)
@@ -788,8 +789,8 @@ void g_avdisp_draw_model_1(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    func_8009E094(lbl_802F20E8);
+    g_cullMode = GX_CULL_BACK;
+    GXSetCullMode_cached(g_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -817,8 +818,8 @@ void g_avdisp_draw_model_2(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    func_8009E094(lbl_802F20E8);
+    g_cullMode = 2;
+    GXSetCullMode_cached(g_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -845,8 +846,8 @@ void g_avdisp_draw_model_3(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    func_8009E094(lbl_802F20E8);
+    g_cullMode = 2;
+    GXSetCullMode_cached(g_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -868,7 +869,7 @@ void g_avdisp_draw_model_4(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
+    g_cullMode = 2;
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
 
@@ -1089,8 +1090,8 @@ void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
         func_800223D8(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
-    func_8009E094(node->unk44);
-    lbl_802F20E8 = node->unk44;
+    GXSetCullMode_cached(node->unk44);
+    g_cullMode = node->unk44;
     r31 = lbl_802F20EC;
     r30 = lbl_802F20F0;
     r29 = zModeCompareEnable;
@@ -1250,15 +1251,15 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
 {
     int i;
     u8 *dlist;
-    s32 r30;
+    GXCullMode cullMode;
     u8 bvar;
     struct UnkStruct27 sp20;
     u8 unused[12];
 
     if (mesh->renderFlags & 2)
-        r30 = 0;
+        cullMode = GX_CULL_NONE;
     else
-        r30 = 1;
+        cullMode = GX_CULL_FRONT;
     if (model->flags & GCMF_STITCHING)
         func_8008F8A4(mesh->unk20);  // inlined
     gxutil_set_vtx_attrs(mesh->vtxFlags);
@@ -1282,16 +1283,16 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
         {
             if (mesh->unk13 & (1 << i))
             {
-                if (lbl_802F20E8 != r30)
+                if (g_cullMode != cullMode)
                 {
-                    lbl_802F20E8 = r30;
-                    func_8009E094(r30);
+                    g_cullMode = cullMode;
+                    GXSetCullMode_cached(cullMode);
                 }
                 GXCallDisplayList(dlist, mesh->dispListSizes[i]);
                 dlist += mesh->dispListSizes[i];
             }
-            if (r30 != 0)
-                r30 = 2;
+            if (cullMode != GX_CULL_NONE)
+                cullMode = GX_CULL_BACK;
         }
         if ((mesh->unk13 & 0xC) != 0)
         {
@@ -1301,9 +1302,9 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
             for (i = 0; i < 2; i++)
             {
                 if (i == 0)
-                    func_8009E094(1);
+                    GXSetCullMode_cached(GX_CULL_FRONT);
                 else
-                    func_8009E094(2);
+                    GXSetCullMode_cached(GX_CULL_BACK);
                 GXCallDisplayList(dlist, r26->unk8[i]);
                 dlist += r26->unk8[i];
             }
@@ -1418,10 +1419,10 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct 
         {
             if (mesh->unk13 & (1 << i))
             {
-                if (lbl_802F20E8 != r30)
+                if (g_cullMode != r30)
                 {
                     u32 r3;
-                    lbl_802F20E8 = r30;
+                    g_cullMode = r30;
                     r3 = (gx->unk204 & ~0xC000) | r30 << 14;
                     gx->unk204 = r3;
                     func_8008D6BC(r3);
@@ -1442,7 +1443,7 @@ void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, stru
     u8 *r30 = b->unk20;
     struct GMAMeshHeader *r6 = (void *)((u8 *)b + b->unkC.asU32);
 
-    lbl_802F20E8 = 1;
+    g_cullMode = 1;
     for (i = 0; i < model->numLayer1Meshes; i++)
     {
         r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
@@ -1474,9 +1475,9 @@ void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
         zMode->updateEnable  = zModeUpdateEnable;
     }
     if (lbl_802F211C != 0)
-        func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
     else
-        func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
     if (mesh->renderFlags & 0x88)
         lbl_802B4ECC.unk10 = mesh->unk4;
     else
@@ -1508,16 +1509,16 @@ void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
     lbl_802B4ECC.unk8 = 16;
     lbl_802B4ECC.unkC = 16;
     if (lbl_802F210C != 0)
-        func_8009F33C(2, lbl_802F2110);
+        GXSetTevKColor_cached(2, lbl_802F2110);
     if (lbl_802F2114 != 0)
-        func_8009F33C(3, lbl_802F2118);
+        GXSetTevKColor_cached(3, lbl_802F2118);
     lbl_802B4ECC.unk24 = 4;
     lbl_802B4ECC.unk28 = 5;
     if (mesh->renderFlags & 0x20)
         lbl_802B4ECC.unk24 = mesh->unk40 & 0xF;
     if (mesh->renderFlags & 0x40)
         lbl_802B4ECC.unk28 = (mesh->unk40 >> 4) & 0xF;
-    func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
+    GXSetBlendMode_cached(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
     lbl_802B4ECC.unk1 = -1;
     lbl_802B4ECC.unk2C[0] = -1;
     lbl_802B4ECC.unk2C[1] = -1;
@@ -1665,7 +1666,7 @@ static inline void inline_test1(GXColor sp28)
                         sp28.b = 255;
                     }
                     //lbl_80090BEC
-                    func_8009F33C(0, sp28);
+                    GXSetTevKColor_cached(0, sp28);
 }
 
 static inline void inline_test2(GXColor sp20)
@@ -1679,7 +1680,7 @@ static inline void inline_test2(GXColor sp20)
                     sp20.r = (float)sp20.r * lbl_802F20F4;
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
-                    func_8009F33C(1, sp20);
+                    GXSetTevKColor_cached(1, sp20);
 }
 
 static inline void inline_test3(s8 a)
@@ -1687,7 +1688,7 @@ static inline void inline_test3(s8 a)
     if (lbl_802B4ECC.unk3 != a)
     {
         lbl_802B4ECC.unk3 = a;
-        func_8009F2C8(a);
+        GXSetNumTevStages_cached(a);
     }
 }
 
@@ -1908,9 +1909,9 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
     if (lbl_802F211C != 0)
     {
         if (a->renderFlags & 4)
-            func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+            GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
         else
-            func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+            GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
     }
     //lbl_8009093C
     if (lbl_802B4ECC.unk1C != r23)
@@ -1927,11 +1928,11 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
     {
         if (lbl_802B4ECC.unk1 != 0 || r21 != 0 || r14 != 0)
         {
-            func_8009EFF4(sp7C.tevStage, 0xFF, 0xFF, 4);
-            func_8009E618(sp7C.tevStage, 15, 15, 15, r23);
-            func_8009E800(sp7C.tevStage, 0, 0, 0, 1, 0);
-            func_8009E70C(sp7C.tevStage, 7, 7, 7, r22);
-            func_8009E918(sp7C.tevStage, 0, 0, 0, 1, 0);
+            GXSetTevOrder_cached(sp7C.tevStage, 0xFF, 0xFF, 4);
+            GXSetTevColorIn_cached(sp7C.tevStage, 15, 15, 15, r23);
+            GXSetTevColorOp_cached(sp7C.tevStage, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(sp7C.tevStage, 7, 7, 7, r22);
+            GXSetTevAlphaOp_cached(sp7C.tevStage, 0, 0, 0, 1, 0);
         }
         //lbl_80090A1C
         else
@@ -1939,10 +1940,10 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
             if (r21 != 0)
             {
                 if (r21 != 0)
-                    func_8009E618(sp7C.tevStage, 15, 15, 15, r23);
+                    GXSetTevColorIn_cached(sp7C.tevStage, 15, 15, 15, r23);
                 //lbl_80090A40
                 if (r14 != 0)
-                    func_8009E70C(sp7C.tevStage, 7, 7, 7, r22);
+                    GXSetTevAlphaIn_cached(sp7C.tevStage, 7, 7, 7, r22);
             }
         }
         //lbl_80090A60
@@ -1976,7 +1977,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                 break;
             if (*r15 != *r18 || (r3->unk0 & 0x10000))
             {
-                func_8009F430(r3->unk8, sp7C.unkC);
+                GXLoadTexObj_cached(r3->unk8, sp7C.unkC);
                 *r15 = *r18;
             }
             //lbl_80090B00
@@ -2025,11 +2026,11 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                         sp28.b = 255;
                     }
                     //lbl_80090BEC
-                    func_8009F33C(0, sp28);
+                    GXSetTevKColor_cached(0, sp28);
                     lbl_802B4ECC.unk50 = 1;
                     */
                     // 40 -> 44 (lbl_802B4ECC.unk18 temp)
-                    // r14 44 -> 28 (arg to func_8009F33C)
+                    // r14 44 -> 28 (arg to GXSetTevKColor_cached)
                     inline_test1(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk50 = 1;
                 }
@@ -2058,11 +2059,11 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                     sp20.r = (float)sp20.r * lbl_802F20F4;
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
-                    func_8009F33C(1, sp20);
+                    GXSetTevKColor_cached(1, sp20);
                     lbl_802B4ECC.unk54 = 1;
                     */
                     // 32 -> 40 (lbl_802B4ECC.unk18 temp)
-                    // r27 36 -> 24 (arg to func_8009F33C)
+                    // r27 36 -> 24 (arg to GXSetTevKColor_cached)
                     inline_test2(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk54 = 1;
                 }
@@ -2093,7 +2094,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
             *r17 = r16;
             if (*r15 != *r18 || (r3->unk0 & 0x10000))
             {
-                func_8009F430(r3->unk8, sp7C.unkC);
+                GXLoadTexObj_cached(r3->unk8, sp7C.unkC);
                 *r15 = *r18;
             }
             if (r16 == 0)
@@ -2124,11 +2125,11 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                         sp28.g = 255;
                         sp28.b = 255;
                     }
-                    func_8009F33C(0, sp28);
+                    GXSetTevKColor_cached(0, sp28);
                     lbl_802B4ECC.unk50 = 1;
                     */
                     // 24 -> 36 (lbl_802B4ECC.unk18 temp)
-                    // 28 -> 20 (arg to func_8009F33C)
+                    // 28 -> 20 (arg to GXSetTevKColor_cached)
                     inline_test1(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk50 = 1;
                 }
@@ -2150,11 +2151,11 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                     sp20.r = (float)sp20.r * lbl_802F20F4;
                     sp20.g = (float)sp20.g * lbl_802F20F8;
                     sp20.b = (float)sp20.b * lbl_802F20FC;
-                    func_8009F33C(1, sp20);
+                    GXSetTevKColor_cached(1, sp20);
                     lbl_802B4ECC.unk54 = 1;
                     */
                     // 16 -> 32 (lbl_802B4ECC.unk18 temp)
-                    // r21 20 -> 16 (arg to func_8009F33C)
+                    // r21 20 -> 16 (arg to GXSetTevKColor_cached)
                     inline_test2(lbl_802B4ECC.unk18);
                     lbl_802B4ECC.unk54 = 1;
                 }
@@ -2217,7 +2218,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
         r16_ = (a->unk40 >> 4) & 0xF;
     if (lbl_802B4ECC.unk24 != r15_ || lbl_802B4ECC.unk28 != r16_)
     {
-        func_8009E110(1, r15_, r16_, 0);
+        GXSetBlendMode_cached(1, r15_, r16_, 0);
         lbl_802B4ECC.unk24 = r15_;
         lbl_802B4ECC.unk28 = r16_;
     }
@@ -2240,44 +2241,44 @@ asm void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
 
 void func_8009127C(GXTevStageID tevStage)
 {
-    func_8009F180(tevStage, 14);
-    func_8009F224(tevStage, 30);
+    GXSetTevKColorSel_cached(tevStage, 14);
+    GXSetTevKAlphaSel_cached(tevStage, 30);
     GXSetTevDirect(tevStage);
-    func_8009EFF4(tevStage, 0xFF, 0xFF, 4);
-    func_8009E618(tevStage, 15, 0, 14, 15);
-    func_8009E800(tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(tevStage, 7, 0, 6, 7);
-    func_8009E918(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(tevStage, 0xFF, 0xFF, 4);
+    GXSetTevColorIn_cached(tevStage, 15, 0, 14, 15);
+    GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(tevStage, 7, 0, 6, 7);
+    GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
 }
 
 void func_80091340(GXTevStageID tevStage)
 {
-    func_8009F180(tevStage, 15);
-    func_8009F224(tevStage, 31);
+    GXSetTevKColorSel_cached(tevStage, 15);
+    GXSetTevKAlphaSel_cached(tevStage, 31);
     GXSetTevDirect(tevStage);
-    func_8009EFF4(tevStage, 0xFF, 0xFF, 4);
-    func_8009E618(tevStage, 0, 15, 15, 14);
-    func_8009E800(tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(tevStage, 0, 7, 7, 6);
-    func_8009E918(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(tevStage, 0xFF, 0xFF, 4);
+    GXSetTevColorIn_cached(tevStage, 0, 15, 15, 14);
+    GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(tevStage, 0, 7, 7, 6);
+    GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
 }
 
 void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
 {
     GXSetTevDirect(a->tevStage);
-    func_8009E2C8(a->tevStage, 0, 0);
+    GXSetTevSwapMode_cached(a->tevStage, 0, 0);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E618(a->tevStage, 15, 8, b, 15);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->unkC, 4);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, b, 15);
+    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
+    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
 }
 
 void func_80091500(struct UnkStruct32 *a, u32 b, u32 c)
 {
-    func_8009E618(a->tevStage, 15, 8, b, 15);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, b, 15);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
 }
 
 void func_80091564(struct UnkStruct32 *a)
@@ -2290,18 +2291,18 @@ void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
 {
     GXSetTevDirect(a->tevStage);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E2C8(a->tevStage, 0, 1);
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->unkC, 4);
+    GXSetTevSwapMode_cached(a->tevStage, 0, 1);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
+    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
+    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
 }
 
 void func_8009167C(struct UnkStruct32 *a, u32 b, u32 c)
 {
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
 }
 
 // duplicate of func_80091564
@@ -2314,7 +2315,7 @@ void func_800916E0(struct UnkStruct32 *a)
 void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
 {
     GXSetTevDirect(a->tevStage);
-    func_8009E2C8(a->tevStage, 0, 0);
+    GXSetTevSwapMode_cached(a->tevStage, 0, 0);
     if (lbl_802B4ECC.unk44 == 0)
     {
         mathutil_mtxA_push();
@@ -2330,19 +2331,19 @@ void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
         g_compute_texmtx0();
         lbl_802B4ECC.unk48 = 1;
     }
-    func_8009F180(a->tevStage, 12);
+    GXSetTevKColorSel_cached(a->tevStage, 12);
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E618(a->tevStage, 15, 8, 14, b);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->unkC, 4);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, b);
+    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
+    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
 }
 
 void func_80091878(struct UnkStruct32 *a, u32 b, u32 c)
 {
-    func_8009E618(a->tevStage, 15, 8, 14, b);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, b);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
 }
 
 // duplicate of func_80091564
@@ -2368,7 +2369,7 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     }
     if (lbl_802B4ECC.unk4C == 0)
     {
-        func_8009F430(&unknownTexObj, 0);
+        GXLoadTexObj_cached(&unknownTexObj, 0);
         g_compute_texmtx1and2();
         lbl_802B4ECC.unk4C = 1;
     }
@@ -2376,29 +2377,29 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     tevStage = a->tevStage;
 
     GXSetTevDirect(tevStage);
-    func_8009E2C8(a->tevStage, 0, 0);
-    func_8009F180(tevStage, 13);
+    GXSetTevSwapMode_cached(a->tevStage, 0, 0);
+    GXSetTevKColorSel_cached(tevStage, 13);
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
-    func_8009EFF4(tevStage, a->texCoordID, 0, 4);
-    func_8009E618(tevStage, 15, 8, 14, 15);
-    func_8009E800(tevStage, 0, 0, 0, 1, 3);
-    func_8009E70C(tevStage, 7, 7, 7, c);
-    func_8009E918(tevStage, 0, 0, 0, 1, 3);
+    GXSetTevOrder_cached(tevStage, a->texCoordID, 0, 4);
+    GXSetTevColorIn_cached(tevStage, 15, 8, 14, 15);
+    GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 3);
+    GXSetTevAlphaIn_cached(tevStage, 7, 7, 7, c);
+    GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 3);
 
     GXSetTevDirect(tevStage + 1);
-    func_8009E2C8(a->tevStage, 0, 0);
+    GXSetTevSwapMode_cached(a->tevStage, 0, 0);
     GXSetTexCoordGen2(a->texCoordID + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
-    func_8009EFF4(tevStage + 1, a->texCoordID + 1, a->unkC, 4);
-    func_8009E618(tevStage + 1, 15, 8, 6, b);
-    func_8009E800(tevStage + 1, 0, 0, 0, 1, 0);
-    func_8009E70C(tevStage + 1, 7, 7, 7, c);
-    func_8009E918(tevStage + 1, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(tevStage + 1, a->texCoordID + 1, a->unkC, 4);
+    GXSetTevColorIn_cached(tevStage + 1, 15, 8, 6, b);
+    GXSetTevColorOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(tevStage + 1, 7, 7, 7, c);
+    GXSetTevAlphaOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
 }
 
 void func_80091B1C(struct UnkStruct32 *a, u32 b, u32 c)
 {
-    func_8009E618(a->tevStage + 1, 15, 8, 6, b);
-    func_8009E70C(a->tevStage + 1, 7, 7, 7, c);
+    GXSetTevColorIn_cached(a->tevStage + 1, 15, 8, 6, b);
+    GXSetTevAlphaIn_cached(a->tevStage + 1, 7, 7, 7, c);
 }
 
 void func_80091B88(struct UnkStruct32 *a)
@@ -2411,11 +2412,11 @@ void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
 {
     GXSetTevDirect(a->tevStage);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->unkC, 4);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
+    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
+    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     a->unk20 = 1;
     a->unk24 = a->texCoordID;
     a->unk28 = a->unkC;
@@ -2423,8 +2424,8 @@ void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
 
 void func_80091CA8(struct UnkStruct32 *a, u32 b, u32 c)
 {
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
 }
 
 // duplicate of func_80091564
