@@ -17,7 +17,6 @@
 #include "nl2ngc.h"
 #include "preview.h"
 #include "stage.h"
-#include "tevutil.h"
 
 #include "../data/common.nlobj.h"
 

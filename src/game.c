@@ -20,7 +20,6 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
-#include "tevutil.h"
 
 void mode_game_func(void)
 {
