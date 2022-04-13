@@ -43,7 +43,7 @@ void g_draw_stage_collision(void);
 // ? stcoli_sub29();
 void stcoli_sub30(struct PhysicsBall *src, struct PhysicsBall *dest);
 void stcoli_sub31(struct PhysicsBall *src, struct PhysicsBall *dest);
-void tf_physball_to_animgroup_space(struct PhysicsBall *physBall, int aniimGroupId);
+void tf_physball_to_anim_group_space(struct PhysicsBall *physBall, int aniimGroupId);
 // ? stcoli_sub33();
 // ? stcoli_sub34();
 

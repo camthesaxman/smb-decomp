@@ -327,7 +327,7 @@ void draw_blur_bridge_accordions(void)
     }
 }
 
-void animate_animgroups(float a)
+void animate_anim_groups(float a)
 {
     float timeSeconds;
     float f30;

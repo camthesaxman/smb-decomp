@@ -145,7 +145,7 @@ void ev_info_main(void)
             }
             init_physball_from_ball(ball, &sp6C);
             if (sp64 != sp6C.aniimGroupId)
-                tf_physball_to_animgroup_space(&sp6C, sp64);
+                tf_physball_to_anim_group_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
             func_80024860(ball);
@@ -176,7 +176,7 @@ void ev_info_main(void)
                 infoWork.unk0 |= INFO_FLAG_GOAL;
             init_physball_from_ball(ball, &sp6C);
             if (sp64 != sp6C.aniimGroupId)
-                tf_physball_to_animgroup_space(&sp6C, sp64);
+                tf_physball_to_anim_group_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
             func_80024860(ball);
@@ -499,7 +499,7 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnim
             int igGoalIdx;
 
             if (aniimGroupId != physBall.aniimGroupId)
-                tf_physball_to_animgroup_space(&physBall, aniimGroupId);
+                tf_physball_to_anim_group_space(&physBall, aniimGroupId);
             goal = stageIg->goals;
             for (igGoalIdx = 0; igGoalIdx < stageIg->goalCount; igGoalIdx++, goal++)
             {
@@ -798,7 +798,7 @@ int func_800246F4(struct Ball *ball)
         int j;
 
         if (i != sp18.aniimGroupId)
-            tf_physball_to_animgroup_space(&sp18, i);
+            tf_physball_to_anim_group_space(&sp18, i);
         r28 = r30->unk88;
         for (j = 0; j < r30->unk84; j++, r28++)
         {

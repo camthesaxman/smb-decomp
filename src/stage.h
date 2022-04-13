@@ -514,7 +514,7 @@ void ev_stage_dest(void);
 // ? stage_find_model();
 void find_blur_bridge_accordion(void);
 void draw_blur_bridge_accordions(void);
-void animate_animgroups(float);
+void animate_anim_groups(float);
 void g_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);
 void func_80044920(void);
