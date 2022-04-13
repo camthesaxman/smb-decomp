@@ -40,7 +40,7 @@ float lbl_802F20F8;
 float lbl_802F20F4;
 Func802F20F0 lbl_802F20F0;
 BallEnvFunc lbl_802F20EC;
-s32 lbl_802F20E8;
+s32 g_cullMode;
 float modelScale;
 u32 lbl_802F20E0;
 float lbl_802F20DC;
@@ -746,7 +746,7 @@ struct DrawMeshDeferredNode
 static inline struct GMAMeshHeader *draw_mesh_deferred(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
 {
     struct OrdTblNode *entry;
-    u32 r23 = lbl_802F20E8;
+    u32 r23 = g_cullMode;
     struct DrawMeshDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (mesh->unk14 != 0xFF)
@@ -789,8 +789,8 @@ void g_avdisp_draw_model_1(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    GXSetCullMode_cached(lbl_802F20E8);
+    g_cullMode = GX_CULL_BACK;
+    GXSetCullMode_cached(g_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -818,8 +818,8 @@ void g_avdisp_draw_model_2(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    GXSetCullMode_cached(lbl_802F20E8);
+    g_cullMode = 2;
+    GXSetCullMode_cached(g_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -846,8 +846,8 @@ void g_avdisp_draw_model_3(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    GXSetCullMode_cached(lbl_802F20E8);
+    g_cullMode = 2;
+    GXSetCullMode_cached(g_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -869,7 +869,7 @@ void g_avdisp_draw_model_4(struct GMAModelHeader *model)
     struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
+    g_cullMode = 2;
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
 
@@ -1091,7 +1091,7 @@ void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
     GXSetCullMode_cached(node->unk44);
-    lbl_802F20E8 = node->unk44;
+    g_cullMode = node->unk44;
     r31 = lbl_802F20EC;
     r30 = lbl_802F20F0;
     r29 = zModeCompareEnable;
@@ -1251,15 +1251,15 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
 {
     int i;
     u8 *dlist;
-    s32 r30;
+    GXCullMode cullMode;
     u8 bvar;
     struct UnkStruct27 sp20;
     u8 unused[12];
 
     if (mesh->renderFlags & 2)
-        r30 = 0;
+        cullMode = GX_CULL_NONE;
     else
-        r30 = 1;
+        cullMode = GX_CULL_FRONT;
     if (model->flags & GCMF_STITCHING)
         func_8008F8A4(mesh->unk20);  // inlined
     gxutil_set_vtx_attrs(mesh->vtxFlags);
@@ -1283,16 +1283,16 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
         {
             if (mesh->unk13 & (1 << i))
             {
-                if (lbl_802F20E8 != r30)
+                if (g_cullMode != cullMode)
                 {
-                    lbl_802F20E8 = r30;
-                    GXSetCullMode_cached(r30);
+                    g_cullMode = cullMode;
+                    GXSetCullMode_cached(cullMode);
                 }
                 GXCallDisplayList(dlist, mesh->dispListSizes[i]);
                 dlist += mesh->dispListSizes[i];
             }
-            if (r30 != 0)
-                r30 = 2;
+            if (cullMode != GX_CULL_NONE)
+                cullMode = GX_CULL_BACK;
         }
         if ((mesh->unk13 & 0xC) != 0)
         {
@@ -1302,9 +1302,9 @@ struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct G
             for (i = 0; i < 2; i++)
             {
                 if (i == 0)
-                    GXSetCullMode_cached(1);
+                    GXSetCullMode_cached(GX_CULL_FRONT);
                 else
-                    GXSetCullMode_cached(2);
+                    GXSetCullMode_cached(GX_CULL_BACK);
                 GXCallDisplayList(dlist, r26->unk8[i]);
                 dlist += r26->unk8[i];
             }
@@ -1419,10 +1419,10 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct 
         {
             if (mesh->unk13 & (1 << i))
             {
-                if (lbl_802F20E8 != r30)
+                if (g_cullMode != r30)
                 {
                     u32 r3;
-                    lbl_802F20E8 = r30;
+                    g_cullMode = r30;
                     r3 = (gx->unk204 & ~0xC000) | r30 << 14;
                     gx->unk204 = r3;
                     func_8008D6BC(r3);
@@ -1443,7 +1443,7 @@ void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, stru
     u8 *r30 = b->unk20;
     struct GMAMeshHeader *r6 = (void *)((u8 *)b + b->unkC.asU32);
 
-    lbl_802F20E8 = 1;
+    g_cullMode = 1;
     for (i = 0; i < model->numLayer1Meshes; i++)
     {
         r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);

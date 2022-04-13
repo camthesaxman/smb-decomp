@@ -299,7 +299,7 @@ void func_800263A4(void)
         GXColor color = {0, 0, 0, 0};
         GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, color);
     }
-    GXSetCullMode_cached(2);
+    GXSetCullMode_cached(GX_CULL_BACK);
 }
 
 void bitmap_main(void)
