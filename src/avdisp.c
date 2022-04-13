@@ -1475,9 +1475,9 @@ void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
         zMode->updateEnable  = zModeUpdateEnable;
     }
     if (lbl_802F211C != 0)
-        GXSetFog_cached(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
     else
-        GXSetFog_cached(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
     if (mesh->renderFlags & 0x88)
         lbl_802B4ECC.unk10 = mesh->unk4;
     else
@@ -1909,9 +1909,9 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
     if (lbl_802F211C != 0)
     {
         if (a->renderFlags & 4)
-            GXSetFog_cached(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+            GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
         else
-            GXSetFog_cached(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+            GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
     }
     //lbl_8009093C
     if (lbl_802B4ECC.unk1C != r23)

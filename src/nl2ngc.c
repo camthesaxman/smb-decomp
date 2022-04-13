@@ -692,9 +692,9 @@ static void prep_some_stuff_before_drawing(void)
     }
 
     if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
     else
-        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
 
     lbl_80205DAC.unkA = 2;
     GXSetCullMode_cached(lbl_801B7B14[2]);
@@ -782,9 +782,9 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     }
 
     if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
     else
-        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
 
     if (mesh.unk20 < 0)
     {
@@ -1179,9 +1179,9 @@ static void prep_some_stuff_before_drawing_2(void)
     }
 
     if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
     else
-        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
 
     lbl_80205DAC.unkA = 2;
     GXSetCullMode_cached(lbl_801B7B14[2]);
@@ -1269,9 +1269,9 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     }
 
     if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
     else
-        GXSetFog_cached(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
 
     if (mesh.unk20 < 0)
     {

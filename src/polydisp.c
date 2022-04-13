@@ -502,7 +502,7 @@ void func_8000C144(struct Struct8000C144 *a)
         zMode->updateEnable  = GX_ENABLE;
     }
 
-    GXSetFog_cached(0, lbl_802F2978, 0.0f, 100.0f, 0.1f, 20000.0f);
+    GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
     GXSetCullMode_cached(0);
     GXSetTevDirect(0);
     GXSetTevOrder_cached(0, 0xFF, 0xFF, 0xFF);

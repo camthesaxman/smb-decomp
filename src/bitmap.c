@@ -297,7 +297,7 @@ void func_800263A4(void)
     GXSetBlendMode_cached(1, 4, 5, 0);
     {
         GXColor color = {0, 0, 0, 0};
-        GXSetFog_cached(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, color);
     }
     GXSetCullMode_cached(2);
 }

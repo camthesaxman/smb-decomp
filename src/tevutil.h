@@ -11,10 +11,8 @@ void GXSetBlendMode_cached_init(GXBlendMode type,GXBlendFactor src_factor,GXBlen
 void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id,GXTevColorChan red,GXTevColorChan green,GXTevColorChan blue,GXTevColorChan alpha);
 void GXSetTevSwapMode_cached(GXTevStageID stage,GXTevSwapSel ras_sel,GXTevSwapSel tex_sel);
 void GXSetTevSwapMode_cached_init(GXTevStageID stage,GXTevSwapSel ras_sel,GXTevSwapSel tex_sel);
-// void GXSetFog_cached(GXFogType type,float startz,float endz,float nearz,float farz,GXColor color);
-// void GXSetFog_cached_init(GXFogType type,float startz,float endz,float nearz,float farz,GXColor color);
-void GXSetFog_cached(GXFogType type,GXColor color, float startz,float endz,float nearz,float farz);
-void GXSetFog_cached_init(GXFogType type,GXColor color, float startz,float endz,float nearz,float farz);
+void GXSetFog_cached(GXFogType type,float startz,float endz,float nearz,float farz,GXColor color);
+void GXSetFog_cached_init(GXFogType type,float startz,float endz,float nearz,float farz,GXColor color);
 void GXSetColorUpdate_cached(GXBool update_enable);
 void GXSetColorUpdate_cached_init(GXBool update_enable);
 void GXSestAlphaUpdate_cached_init(GXBool update_enable);

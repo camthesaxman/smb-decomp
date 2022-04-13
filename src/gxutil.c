@@ -171,9 +171,9 @@ void func_8009AC8C(void)
     sp10.g = fogInfo.g;
     sp10.b = fogInfo.b;
     if (fogInfo.unkF != 0)
-        GXSetFog_cached(fogInfo.unk0, sp10, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f);
+        GXSetFog_cached(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f, sp10);
     else
-        GXSetFog_cached(0, sp10, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, sp10);
 }
 
 struct LineInfo
