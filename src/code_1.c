@@ -4,6 +4,7 @@
 #include "global.h"
 #include "gxutil.h"
 #include "perf.h"
+#include "tevutil.h"
 
 struct GFXBufferInfo *gfxBufferInfo;
 static GXBool drawingFinished;
@@ -66,7 +67,7 @@ void init_wait_vblank(void)
     zMode->compareEnable = GX_ENABLE;
     zMode->compareFunc   = GX_LEQUAL;
     zMode->updateEnable  = GX_ENABLE;
-    func_8009DE44();
+    tevutil_init();
 }
 
 void preproc_main(void)
@@ -112,12 +113,12 @@ void preproc_main(void)
     }
 
     GXSetGPFifo(gfxBufferInfo->fifos[fifoNum]);
-    func_8009E4EC(1);
+    GXSetColorUpdate_cached(1);
     GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     zMode->compareEnable = GX_ENABLE;
     zMode->compareFunc   = GX_LEQUAL;
     zMode->updateEnable  = GX_ENABLE;
-    func_8009E588(0);
+    GXSetZCompLoc_cached(0);
     GXCopyDisp(gfxBufferInfo->currFrameBuf, GX_TRUE);
     setup_vtx_attrib_fmt();
 }

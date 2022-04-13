@@ -6,6 +6,7 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "tevutil.h"
 
 struct FogParams
 {
@@ -170,9 +171,9 @@ void func_8009AC8C(void)
     sp10.g = fogInfo.g;
     sp10.b = fogInfo.b;
     if (fogInfo.unkF != 0)
-        func_8009E398(fogInfo.unk0, sp10, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f);
+        GXSetFog_cached(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f, sp10);
     else
-        func_8009E398(0, sp10, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, sp10);
 }
 
 struct LineInfo
@@ -359,7 +360,7 @@ void prepare_for_drawing_lines(void)
         zMode->texOffsets = lineInfo.texOffset;
     }
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
-    func_8009E110(lineInfo.unk4, lineInfo.unk8, lineInfo.unkC, lineInfo.unk10);
+    GXSetBlendMode_cached(lineInfo.unk4, lineInfo.unk8, lineInfo.unkC, lineInfo.unk10);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -368,10 +369,10 @@ void prepare_for_drawing_lines(void)
         GX_LIGHT_NULL,  // light_mask
         GX_DF_CLAMP,  // diff_fn
         GX_AF_SPOT);  // attn_fn
-    func_8009EFF4(0, 0xFF, 0xFF, 4);
+    GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
     func_8009EA30(0, 4);
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009F2C8(1);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(0);
     GXSetNumIndStages(0);
     GXSetNumChans(1);
