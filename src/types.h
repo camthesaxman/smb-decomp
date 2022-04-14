@@ -98,7 +98,7 @@ struct GMAModel
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
 struct GMAShape
 {
-    /*0x00*/ u32 renderFlags;
+    /*0x00*/ u32 flags;
     /*0x04*/ GXColor unk4;
     /*0x08*/ GXColor unk8;
              union
@@ -112,8 +112,7 @@ struct GMAShape
     /*0x13*/ u8 unk13;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16-0x15];
-             u16 unk16;
-             u8 filler18[0x1C-0x18];
+             u16 samplerIdxs[3];
     /*0x1C*/ u32 vtxFlags;  // vtxFlags
     /*0x20*/ u8 unk20[8];
     /*0x28*/ u32 dispListSizes[2];

@@ -42,7 +42,7 @@ Func802F20F0 lbl_802F20F0;
 BallEnvFunc lbl_802F20EC;
 s32 g_cullMode;
 float modelScale;
-u32 lbl_802F20E0;
+u32 g_someLightMask;
 float lbl_802F20DC;
 float lbl_802F20D8;
 float lbl_802F20D4;
@@ -186,7 +186,7 @@ void func_8008D788(void)
     lbl_802F20D0 = 1.0f;
     modelScale = 1.0f;
     lbl_802F20DC = 1.0f;
-    lbl_802F20E0 = 1;
+    g_someLightMask = 1;
     lbl_802F20F0 = NULL;
     init_some_texture();
     sp8.x = 0.0f;
@@ -601,7 +601,7 @@ void g_avdisp_set_alpha(float a)
 
 void func_8008E56C(u32 a)
 {
-    lbl_802F20E0 = a;
+    g_someLightMask = a;
 }
 
 void g_avdisp_set_and_normalize_some_vec(Vec *a)
@@ -704,7 +704,7 @@ void set_mesh_render_flags_in_model(struct GMAModel *model, u32 flags)
         u32 i;
         struct GMAShape *meshes = OFFSET_TO_PTR(meshPtr, 32);
         for (i = 0; i < model->opaqueShapeCount + model->translucentShapeCount; i++)
-            meshes[i].renderFlags |= flags;
+            meshes[i].flags |= flags;
     }
     else
     {
@@ -712,7 +712,7 @@ void set_mesh_render_flags_in_model(struct GMAModel *model, u32 flags)
         struct GMAShape *mesh = meshPtr;
         for (i = 0; i < model->opaqueShapeCount + model->translucentShapeCount; i++)
         {
-            mesh->renderFlags |= flags;
+            mesh->flags |= flags;
             mesh = skip_mesh(mesh);
         }
     }
@@ -989,9 +989,9 @@ void init_material(struct GMASampler *mtrl, struct TPLTextureHeader *texHdr, str
 static inline struct GMAShape *init_mesh_render_flags(struct GMAShape *mesh)
 {
     if (mesh->vtxFlags & (1 << GX_VA_CLR0))
-        mesh->renderFlags |= 0x100;
+        mesh->flags |= 0x100;
     if (mesh->unk12 == 0)
-        mesh->renderFlags |= 0x80;
+        mesh->flags |= 0x80;
     return skip_mesh(mesh);
 }
 
@@ -1086,7 +1086,7 @@ void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
     GXColor sp10;
     GXColor spC;
 
-    if ((node->mesh->renderFlags & 0x1) == 0)
+    if ((node->mesh->flags & 0x1) == 0)
         func_800223D8(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
@@ -1248,7 +1248,7 @@ struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *me
     struct UnkStruct27 sp20;
     u8 unused[12];
 
-    if (mesh->renderFlags & 2)
+    if (mesh->flags & 2)
         cullMode = GX_CULL_NONE;
     else
         cullMode = GX_CULL_FRONT;
@@ -1265,7 +1265,7 @@ struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *me
     }
     else
     {
-        func_80090524((void *)mesh, (void *)mtrl);
+        g_build_tev_material((void *)mesh, (void *)mtrl);
         bvar = 1;
     }
 
@@ -1386,7 +1386,7 @@ void *draw_mesh_reflection_maybe(struct GMAShape *mesh, void *mtrl, struct UnkSt
     u8 bvar;
     struct UnkStruct27 sp20;
 
-    if (mesh->renderFlags & 2)
+    if (mesh->flags & 2)
         r30 = 0;
     else
         r30 = 2;
@@ -1400,7 +1400,7 @@ void *draw_mesh_reflection_maybe(struct GMAShape *mesh, void *mtrl, struct UnkSt
     }
     else
     {
-        func_80090524((void *)mesh, (void *)mtrl);
+        g_build_tev_material((void *)mesh, (void *)mtrl);
         bvar = 1;
     }
 
@@ -1470,7 +1470,7 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *mesh)
         GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
     else
         GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
-    if (mesh->renderFlags & 0x88)
+    if (mesh->flags & 0x88)
         lbl_802B4ECC.unk10 = mesh->unk4;
     else
     {
@@ -1479,7 +1479,7 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *mesh)
         lbl_802B4ECC.unk10.b = 255;
     }
     lbl_802B4ECC.unk10.a = mesh->unk11;
-    if (mesh->renderFlags & 0x8)
+    if (mesh->flags & 0x8)
         lbl_802B4ECC.unk14 = mesh->unk8;
     else
     {
@@ -1506,9 +1506,9 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *mesh)
         GXSetTevKColor_cached(3, lbl_802F2118);
     lbl_802B4ECC.unk24 = 4;
     lbl_802B4ECC.unk28 = 5;
-    if (mesh->renderFlags & 0x20)
+    if (mesh->flags & 0x20)
         lbl_802B4ECC.unk24 = mesh->unk40 & 0xF;
-    if (mesh->renderFlags & 0x40)
+    if (mesh->flags & 0x40)
         lbl_802B4ECC.unk28 = (mesh->unk40 >> 4) & 0xF;
     GXSetBlendMode_cached(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
     lbl_802B4ECC.unk1 = -1;
@@ -1706,10 +1706,10 @@ static inline void inline_test5(s8 c)
 //#if 1
 // stack differences
 // DOL: 0x8C444
-void func_80090524(struct GMAShape *a, struct GMASampler *b)
+void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSamplers)
 {
     struct UnkStruct32 sp7C;  // correct
-    GXColor sp78;  // correct
+    GXColor g_someTevColor;  // correct
     s32 r23;
     s32 r22;
     s32 r21;
@@ -1734,49 +1734,49 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
     sp7C.unk14 = 0x49;  // 90
     sp7C.unk18 = 4;  // 94
 
-    if (lbl_802B4ECC.unk18.r != a->unkC.asColor.r
-     || lbl_802B4ECC.unk18.g != a->unkC.asColor.g
-     || lbl_802B4ECC.unk18.b != a->unkC.asColor.b)
+    if (lbl_802B4ECC.unk18.r != shape->unkC.asColor.r
+     || lbl_802B4ECC.unk18.g != shape->unkC.asColor.g
+     || lbl_802B4ECC.unk18.b != shape->unkC.asColor.b)
     {
         lbl_802B4ECC.unk50 = 0;
         lbl_802B4ECC.unk54 = 0;
-        lbl_802B4ECC.unk18.r = a->unkC.asColor.r;
-        lbl_802B4ECC.unk18.g = a->unkC.asColor.g;
-        lbl_802B4ECC.unk18.b = a->unkC.asColor.b;
+        lbl_802B4ECC.unk18.r = shape->unkC.asColor.r;
+        lbl_802B4ECC.unk18.g = shape->unkC.asColor.g;
+        lbl_802B4ECC.unk18.b = shape->unkC.asColor.b;
     }
     //lbl_800905F8
-    if ((a->renderFlags & 1) == 0)
+    if ((shape->flags & 1) == 0)
     {
         GXColor color_r5;
         int r0 = 0;
-        if (a->renderFlags & 0x88)
+        if (shape->flags & 0x88)
         {
-            sp78.r = a->unk4.r;
-            sp78.g = a->unk4.g;
-            sp78.b = a->unk4.b;
+            g_someTevColor.r = shape->unk4.r;
+            g_someTevColor.g = shape->unk4.g;
+            g_someTevColor.b = shape->unk4.b;
         }
         else
         {
-            sp78.r = 255;
-            sp78.g = 255;
-            sp78.b = 255;
+            g_someTevColor.r = 255;
+            g_someTevColor.g = 255;
+            g_someTevColor.b = 255;
         }
         //lbl_80090644
-        sp78.a = a->unk11;
-        if (lbl_802B4ECC.unk10.r != sp78.r
-         || lbl_802B4ECC.unk10.g != sp78.g
-         || lbl_802B4ECC.unk10.b != sp78.b
-         || lbl_802B4ECC.unk10.a != sp78.a)
+        g_someTevColor.a = shape->unk11;
+        if (lbl_802B4ECC.unk10.r != g_someTevColor.r
+         || lbl_802B4ECC.unk10.g != g_someTevColor.g
+         || lbl_802B4ECC.unk10.b != g_someTevColor.b
+         || lbl_802B4ECC.unk10.a != g_someTevColor.a)
         {
             r0 = 1;
-            lbl_802B4ECC.unk10 = sp78;
+            lbl_802B4ECC.unk10 = g_someTevColor;
         }
         //lbl_8009069C
-        if (a->renderFlags & 8)
+        if (shape->flags & 8)
         {
-            color_r5.r = a->unk8.r;
-            color_r5.g = a->unk8.g;
-            color_r5.b = a->unk8.b;
+            color_r5.r = shape->unk8.r;
+            color_r5.g = shape->unk8.g;
+            color_r5.b = shape->unk8.b;
         }
         else
         {
@@ -1796,14 +1796,14 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
         }
         //lbl_8009070C
         if (r0)
-            func_8008D6D4(a);
+            func_8008D6D4(shape);
     }
     //lbl_8009071C
     r23 = 10;
     r22 = 5;
-    if (a->renderFlags & 1)
+    if (shape->flags & 1)
     {
-        if (a->renderFlags & 0x100)
+        if (shape->flags & 0x100)
         {
             if (lbl_802B4ECC.unk2 != 2)
             {
@@ -1823,22 +1823,22 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
         else
         {
             lbl_802B4ECC.unk2 = 1;
-            if (a->renderFlags & 0x88)
+            if (shape->flags & 0x88)
             {
-                sp78.r = a->unk4.r;
-                sp78.g = a->unk4.g;
-                sp78.b = a->unk4.b;
+                g_someTevColor.r = shape->unk4.r;
+                g_someTevColor.g = shape->unk4.g;
+                g_someTevColor.b = shape->unk4.b;
             }
             else
             {
-                sp78.r = 255;
-                sp78.g = 255;
-                sp78.b = 255;
+                g_someTevColor.r = 255;
+                g_someTevColor.g = 255;
+                g_someTevColor.b = 255;
             }
             //lbl_800907C0
-            sp78.a = (float)a->unk11 * lbl_802F20DC;
+            g_someTevColor.a = (float)shape->unk11 * lbl_802F20DC;
             //sp38 = sp78;
-            GXSetTevColor(1, sp78);
+            GXSetTevColor(1, g_someTevColor);
             r23 = 2;
             r22 = 1;
             //to lbl_800908D4
@@ -1847,7 +1847,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
     //lbl_80090814
     else
     {
-        if (a->renderFlags & 0x100)
+        if (shape->flags & 0x100)
         {
             if (lbl_802B4ECC.unk2 != 4)
             {
@@ -1865,7 +1865,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
                     GX_ENABLE,  // enable
                     GX_SRC_REG,  // amb_src
                     GX_SRC_VTX,  // mat_src
-                    lbl_802F20E0,  // light_mask
+                    g_someLightMask,  // light_mask
                     GX_DF_CLAMP,  // diff_fn
                     GX_AF_SPOT);  // attn_fn
             }
@@ -1890,7 +1890,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
                     GX_ENABLE,  // enable
                     GX_SRC_REG,  // amb_src
                     GX_SRC_REG,  // mat_src
-                    lbl_802F20E0,  // light_mask
+                    g_someLightMask,  // light_mask
                     GX_DF_CLAMP,  // diff_fn
                     GX_AF_SPOT);  // attn_fn
             }
@@ -1900,7 +1900,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
 
     if (lbl_802F211C != 0)
     {
-        if (a->renderFlags & 4)
+        if (shape->flags & 4)
             GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
         else
             GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
@@ -1916,7 +1916,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
         lbl_802B4ECC.unk20 = r22;
         r14 = 1;
     }
-    if (a->renderFlags & 0x80)
+    if (shape->flags & 0x80)
     {
         if (lbl_802B4ECC.unk1 != 0 || r21 != 0 || r14 != 0)
         {
@@ -1946,7 +1946,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
     //lbl_80090A78
     else
     {
-        s32 r20 = a->unk12;
+        s32 r20 = shape->unk12;
         s32 r19 = 4;
         // loop:
         // r18 = &a->unk16
@@ -1956,20 +1956,20 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
         // r14 = &sp2C doesn't change
         // r25 = &lbl_802B4ECC.visibleKeyframeCount  doesn't change
         // maybe indexed instead?
-        u16 *r18 = &a->unk16;
+        u16 *r18 = shape->samplerIdxs;
         u32 *r17 = lbl_802B4ECC.unk2C;
         u32 r16;
         u16 *r15 = lbl_802B4ECC.unk3C;
         while (r20 > 0)
         {
-            struct GMASampler *r3 = &b[*r18];
-            r16 = r3->flags;
+            struct GMASampler *sampler = &modelSamplers[*r18];
+            r16 = sampler->flags;
             r16 &= 0xA003;
             if (*r17 != r16)
                 break;
-            if (*r15 != *r18 || (r3->flags & 0x10000))
+            if (*r15 != *r18 || (sampler->flags & 0x10000))
             {
-                GXLoadTexObj_cached(r3->texObj, sp7C.unkC);
+                GXLoadTexObj_cached(sampler->texObj, sp7C.unkC);
                 *r15 = *r18;
             }
             //lbl_80090B00
@@ -2080,7 +2080,7 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
         //lbl_80090D70
         while (r20 > 0)
         {
-            struct GMASampler *r3 = &b[*r18];  // r4
+            struct GMASampler *r3 = &modelSamplers[*r18];  // r4
             u32 r16 = r3->flags;  // actually, r27
             r16 &= 0xA003;
             *r17 = r16;
@@ -2170,8 +2170,8 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
     {
         struct UnkStruct33 sp3C;
         sp3C.unk0 = lbl_802B4ECC.unk0;
-        sp3C.unk4 = a;
-        sp3C.unk8 = b;
+        sp3C.unk4 = shape;
+        sp3C.unk8 = modelSamplers;
         sp3C.unkC = sp7C;
         lbl_802F20EC((void *)&sp3C);
         sp7C = sp3C.unkC;
@@ -2204,10 +2204,10 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
     //lbl_800911D0
     r15_ = 4;
     r16_ = 5;
-    if (a->renderFlags & 0x20)
-        r15_ = a->unk40 & 0xF;
-    if (a->renderFlags & 0x40)
-        r16_ = (a->unk40 >> 4) & 0xF;
+    if (shape->flags & 0x20)
+        r15_ = shape->unk40 & 0xF;
+    if (shape->flags & 0x40)
+        r16_ = (shape->unk40 >> 4) & 0xF;
     if (lbl_802B4ECC.unk24 != r15_ || lbl_802B4ECC.unk28 != r16_)
     {
         GXSetBlendMode_cached(1, r15_, r16_, 0);
@@ -2216,18 +2216,18 @@ void func_80090524(struct GMAShape *a, struct GMASampler *b)
     }
     //lbl_8009123C
     lbl_802B4ECC.unk0 = 0;
-    if (a->renderFlags & 0x80)
+    if (shape->flags & 0x80)
         lbl_802B4ECC.unk1 = 0;
     else
-        lbl_802B4ECC.unk1 = a->unk12;
+        lbl_802B4ECC.unk1 = shape->unk12;
 }
 #else
-asm void func_80090524(struct GMAShape *a, struct GMASampler *b)
+asm void g_build_tev_material(struct GMAShape *a, struct GMASampler *b)
 {
 #define _SDA_BASE_ 0
 #define _SDA2_BASE_ 0
     nofralloc
-#include "../asm/nonmatchings/func_80090524.s"
+#include "../asm/nonmatchings/g_build_tev_material.s"
 }
 #endif
 

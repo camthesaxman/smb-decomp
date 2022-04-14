@@ -741,7 +741,7 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *b);
 // ? g_compute_texmtx0();
 // ? g_compute_texmtx1and2();
 void init_some_texture(void);
-void func_80090524(struct GMAShape *a, struct GMASampler *b);
+void g_build_tev_material(struct GMAShape *a, struct GMASampler *b);
 void func_8009127C(GXTevStageID a);
 void func_80091340(GXTevStageID a);
 void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
