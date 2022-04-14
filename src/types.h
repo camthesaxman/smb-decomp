@@ -927,7 +927,7 @@ struct Struct80061BC4_sub
     u32 unk0;
     u32 unk4;
     u32 unk8;
-    u32 unkC;
+    GXTexMapID g_texMapId;
     u8 filler10[4];
     u32 unk14;
     u8 filler18[0x2C-0x18];

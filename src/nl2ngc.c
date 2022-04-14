@@ -34,7 +34,7 @@ struct
     u8 unkA;
     u8 fillerB[1];
     GXTexObj *unkC;
-    u32 unk10;
+    GXTexMapID g_texMapId;
     GXColor matColor;
     GXColor ambColor;
     float alpha;
@@ -700,7 +700,7 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unkA = 2;
     GXSetCullMode_cached(g_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
-    lbl_80205DAC.unk10 = 0;
+    lbl_80205DAC.g_texMapId = 0;
 
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
@@ -794,17 +794,17 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     }
     else
     {
-        int r25 = lbl_80205DAC.unk10;
+        GXTexMapID g_texMapId = lbl_80205DAC.g_texMapId;
 
         if (lbl_80205DAC.unkC != mesh.texObj)
         {
             lbl_80205DAC.unkC = mesh.texObj;
-            if (--r25 < 0)
-                r25 = 7;
-            lbl_80205DAC.unk10 = r25;
-            GXLoadTexObj_cached(mesh.texObj, r25);
+            if (--g_texMapId < 0)
+                g_texMapId = 7;
+            lbl_80205DAC.g_texMapId = g_texMapId;
+            GXLoadTexObj_cached(mesh.texObj, g_texMapId);
         }
-        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, g_texMapId, GX_COLOR0A0);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
@@ -1187,7 +1187,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.unkA = 2;
     GXSetCullMode_cached(g_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
-    lbl_80205DAC.unk10 = 0;
+    lbl_80205DAC.g_texMapId = 0;
 
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
@@ -1281,14 +1281,14 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     }
     else
     {
-        int r25 = lbl_80205DAC.unk10;
+        int r25 = lbl_80205DAC.g_texMapId;
 
         if (lbl_80205DAC.unkC != mesh.texObj)
         {
             lbl_80205DAC.unkC = mesh.texObj;
             if (--r25 < 0)
                 r25 = 7;
-            lbl_80205DAC.unk10 = r25;
+            lbl_80205DAC.g_texMapId = r25;
             GXLoadTexObj_cached(mesh.texObj, r25);
         }
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);

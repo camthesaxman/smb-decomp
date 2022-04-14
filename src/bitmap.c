@@ -454,7 +454,7 @@ void bitmap_draw(struct Bitmap *bmp)
     mathutil_mtxA_tf_vec(&sp38, &sp38);
     mathutil_mtxA_tf_vec(&sp2C, &sp2C);
 
-    GXLoadTexObj_cached(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = bmp->r;
     tevColor.g = bmp->g;
@@ -499,7 +499,7 @@ void bitmap_draw_normal_char(unsigned char chr)
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], GX_TEXMAP0);
 
     tevColor.r = 255;
     tevColor.g = 255;
