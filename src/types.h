@@ -97,7 +97,13 @@ struct GMAModel
 
 enum
 {
-    GMA_SHAPE_FLAG_SIMPLE_MATERIAL = 1 << 7,
+    GMA_SHAPE_FLAG_UNK0 = 1 << 0,
+    GMA_SHAPE_FLAG_DOUBLE_SIDED = 1 << 1, // Draw front and back sides of tris/quads
+    GMA_SHAPE_FLAG_NO_FOG = 1 << 2,
+    GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC = 1 << 5,
+    GMA_SHAPE_FLAG_CUSTOM_BLEND_DST = 1 << 6,
+    GMA_SHAPE_FLAG_SIMPLE_MATERIAL = 1 << 7, // Only 1 tev stage that spits out color/alpha input D directly
+    GMA_SHAPE_FLAG_VERT_COLORS = 1 << 8,
 };
 
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
@@ -118,8 +124,8 @@ struct GMAShape
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16-0x15];
              u16 samplerIdxs[3];
-    /*0x1C*/ u32 vtxFlags;  // vtxFlags
-    /*0x20*/ u8 unk20[8];
+    /*0x1C*/ u32 vtxAttrs; // One bit for each GXAttr vertex attr format
+    /*0x20*/ u8 mtxIndices[8];
     /*0x28*/ u32 dispListSizes[2];
     /*0x30*/ Vec boundSphereCenter;
     u8 filler3C[4];
