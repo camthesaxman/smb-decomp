@@ -251,14 +251,14 @@ lbl_8009087C:
 /* 800908CC 0008C7EC  39 20 00 01 */	li r9, 1
 /* 800908D0 0008C7F0  48 05 04 51 */	bl GXSetChanCtrl
 lbl_800908D4:
-/* 800908D4 0008C7F4  80 0D 9F 3C */	lwz r0, g_customFogEnabled
+/* 800908D4 0008C7F4  80 0D 9F 3C */	lwz r0, s_g_customFogEnabled
 /* 800908D8 0008C7F8  2C 00 00 00 */	cmpwi r0, 0
 /* 800908DC 0008C7FC  41 82 00 60 */	beq lbl_8009093C
 /* 800908E0 0008C800  80 1E 00 00 */	lwz r0, 0(r30)
 /* 800908E4 0008C804  54 00 07 7A */	rlwinm r0, r0, 0, 0x1d, 0x1d
 /* 800908E8 0008C808  28 00 00 00 */	cmplwi r0, 0
 /* 800908EC 0008C80C  41 82 00 2C */	beq lbl_80090918
-/* 800908F0 0008C810  80 0D 9F 44 */	lwz r0, g_fogColor
+/* 800908F0 0008C810  80 0D 9F 44 */	lwz r0, s_fogColor
 /* 800908F4 0008C814  38 81 00 34 */	addi r4, r1, 0x34
 /* 800908F8 0008C818  C0 22 AF 44 */	lfs f1, 0.0f  //lbl_802F5744@sda21(r2)
 /* 800908FC 0008C81C  38 60 00 00 */	li r3, 0
@@ -269,12 +269,12 @@ lbl_800908D4:
 /* 80090910 0008C830  48 00 DA 89 */	bl GXSetFog_cached
 /* 80090914 0008C834  48 00 00 28 */	b lbl_8009093C
 lbl_80090918:
-/* 80090918 0008C838  80 0D 9F 44 */	lwz r0, g_fogColor
+/* 80090918 0008C838  80 0D 9F 44 */	lwz r0, s_fogColor
 /* 8009091C 0008C83C  38 81 00 30 */	addi r4, r1, 0x30
-/* 80090920 0008C840  80 6D 9F 40 */	lwz r3, g_fogType
+/* 80090920 0008C840  80 6D 9F 40 */	lwz r3, s_fogType
 /* 80090924 0008C844  90 01 00 30 */	stw r0, 0x30(r1)
-/* 80090928 0008C848  C0 2D 9F 48 */	lfs f1, g_fogStartZ
-/* 8009092C 0008C84C  C0 4D 9F 4C */	lfs f2, g_fogEndZ
+/* 80090928 0008C848  C0 2D 9F 48 */	lfs f1, s_fogStartZ
+/* 8009092C 0008C84C  C0 4D 9F 4C */	lfs f2, s_fogEndZ
 /* 80090930 0008C850  C0 62 AF 6C */	lfs f3, 0.1f  //lbl_802F576C@sda21(r2)
 /* 80090934 0008C854  C0 82 AF 70 */	lfs f4, 20000.0f  //lbl_802F5770@sda21(r2)
 /* 80090938 0008C858  48 00 DA 61 */	bl GXSetFog_cached
