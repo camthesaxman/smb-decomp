@@ -1703,7 +1703,7 @@ static inline void inline_test5(s8 c)
     }
 }
 
-// #ifdef NONMATCHING
+#ifdef NONMATCHING
 //#if 1
 // stack differences
 // DOL: 0x8C444
@@ -2223,15 +2223,15 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
     else
         lbl_802B4ECC.unk1 = shape->tevStageCount;
 }
-// #else
-// asm void g_build_tev_material(struct GMAShape *a, struct GMASampler *b)
-// {
-// #define _SDA_BASE_ 0
-// #define _SDA2_BASE_ 0
-//     nofralloc
-// #include "../asm/nonmatchings/g_build_tev_material.s"
-// }
-// #endif
+#else
+asm void g_build_tev_material(struct GMAShape *a, struct GMASampler *b)
+{
+#define _SDA_BASE_ 0
+#define _SDA2_BASE_ 0
+    nofralloc
+#include "../asm/nonmatchings/g_build_tev_material.s"
+}
+#endif
 
 void func_8009127C(GXTevStageID tevStage)
 {
