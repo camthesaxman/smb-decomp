@@ -502,7 +502,7 @@ void func_8000C144(struct Struct8000C144 *a)
         zMode->updateEnable  = GX_ENABLE;
     }
 
-    GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
     GXSetCullMode_cached(GX_CULL_NONE);
     GXSetTevDirect(0);
     GXSetTevOrder_cached(0, 0xFF, 0xFF, 0xFF);
@@ -1337,7 +1337,7 @@ void set_backdrop_color(void)
         break;
     }
 
-    if (r0 && fogInfo.unkF != 0)
+    if (r0 && fogInfo.g_enabled != 0)
     {
         color.r = fogInfo.r;
         color.g = fogInfo.g;

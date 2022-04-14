@@ -1471,7 +1471,7 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *shape)
     if (g_customFogEnabled != 0)
         GXSetFog_cached(g_fogType, g_fogStartZ, g_fogEndZ, 0.1f, 20000.0f, g_fogColor);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, g_fogColor);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, g_fogColor);
     if (shape->flags & 0x88)
         g_tevStageCache.unk10 = shape->unk4;
     else

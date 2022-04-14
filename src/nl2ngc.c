@@ -12,11 +12,11 @@
 #include "ord_tbl.h"
 #include "tevutil.h"
 
-float lbl_802F1EFC;
-float lbl_802F1EF8;
-GXColor lbl_802F1EF4;
-u32 lbl_802F1EF0;
-s32 lbl_802F1EEC;
+float fogEndZ;
+float fogStartZ;
+GXColor fogColor;
+GXFogType fogType;
+s32 g_fogEnabled;
 u32 nlObjLightMask;
 
 struct Color3f g_someAmbColor;
@@ -421,7 +421,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
             r29->unk4C.r = g_someAmbColor.r;
             r29->unk4C.g = g_someAmbColor.g;
             r29->unk4C.b = g_someAmbColor.b;
-            r29->unk58 = lbl_802F1EEC;
+            r29->unk58 = g_fogEnabled;
             mathutil_mtxA_to_mtx(r29->unkC);
             ord_tbl_insert_node(list, &r29->node);
         }
@@ -553,7 +553,7 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
         node->ambColor.r = g_someAmbColor.r;
         node->ambColor.g = g_someAmbColor.g;
         node->ambColor.b = g_someAmbColor.b;
-        node->unk5C = lbl_802F1EEC;
+        node->unk5C = g_fogEnabled;
         mathutil_mtxA_to_mtx(node->unkC);
         ord_tbl_insert_node(entry, &node->node);
     }
@@ -692,10 +692,10 @@ static void prep_some_stuff_before_drawing(void)
         zMode->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
-    if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
     GXSetCullMode_cached(g_naomiToGXCullModes[2]);
@@ -782,10 +782,10 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         lbl_80205DAC.unk8 = r26;
     }
 
-    if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     if (mesh.unk20 < 0)
     {
@@ -1179,10 +1179,10 @@ static void prep_some_stuff_before_drawing_2(void)
         zMode->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
-    if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
     GXSetCullMode_cached(g_naomiToGXCullModes[2]);
@@ -1269,10 +1269,10 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         lbl_80205DAC.unk8 = r26;
     }
 
-    if (lbl_802F1EEC != 0)
-        GXSetFog_cached(lbl_802F1EF0, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f, lbl_802F1EF4);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F1EF4);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     if (mesh.unk20 < 0)
     {
@@ -1527,21 +1527,21 @@ void g_nl2ngc_set_ambient_color(float r, float g, float b)
 
 void func_80033B50(int a)
 {
-    lbl_802F1EEC = a;
+    g_fogEnabled = a;
 }
 
 void func_80033B58(u32 a, float b, float c)
 {
-    lbl_802F1EF0 = a;
-    lbl_802F1EF8 = b;
-    lbl_802F1EFC = c;
+    fogType = a;
+    fogStartZ = b;
+    fogEndZ = c;
 }
 
 void g_nl2ngc_set_some_other_color(int r, int g, int b)
 {
-    lbl_802F1EF4.r = r;
-    lbl_802F1EF4.g = g;
-    lbl_802F1EF4.b = b;
+    fogColor.r = r;
+    fogColor.g = g;
+    fogColor.b = b;
 }
 
 void g_draw_naomi_model_3(struct NaomiModel *model)
@@ -1618,7 +1618,7 @@ static void lbl_80033C8C(struct UnkStruct18 *a)
         func_800223D8(a->unk48);
         g_nl2ngc_set_ambient_color(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
-    lbl_802F1EEC = a->unk58;
+    g_fogEnabled = a->unk58;
     g_draw_naomi_model_4(a->model);
 
     lbl_801B7978.unk0.r = f31;
@@ -1701,7 +1701,7 @@ void lbl_80033E6C(struct UnkStruct19 *a)
         func_800223D8(a->unk4C);
         g_nl2ngc_set_ambient_color(a->ambColor.r, a->ambColor.g, a->ambColor.b);
     }
-    lbl_802F1EEC = a->unk5C;
+    g_fogEnabled = a->unk5C;
     g_draw_naomi_model_5(a->model);
 
     lbl_801B7978.unk0.r = f31;

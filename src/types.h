@@ -731,7 +731,7 @@ struct FogInfo
     float unk4;
     float unk8;
     u8 r, g, b;
-    s8 unkF;
+    s8 g_enabled;
 };
 
 struct Struct80209488;

@@ -62,7 +62,7 @@ void perf_init_draw(void)
         zMode->compareFunc   = GX_LEQUAL;
         zMode->updateEnable  = GX_ENABLE;
     }
-    GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
     GXSetZCompLoc_cached(1);
     GXSetNumTexGens(1);
     GXSetNumChans(1);

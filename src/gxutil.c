@@ -117,7 +117,7 @@ void g_init_bg_fog_params(void)
     {
         if (params->bgId == backgroundInfo.bgId)
         {
-            fogInfo.unkF = 1;
+            fogInfo.g_enabled = 1;
             fogInfo.unk0 = params->unk1;
             fogInfo.unk4 = params->unk4;
             fogInfo.unk8 = params->unk8;
@@ -129,7 +129,7 @@ void g_init_bg_fog_params(void)
         params++;
     }
 
-    fogInfo.unkF = 0;
+    fogInfo.g_enabled = 0;
     fogInfo.unk0 = 5;
     fogInfo.unk4 = 0.0f;
     fogInfo.unk8 = 100.0f;
@@ -140,9 +140,9 @@ void g_init_bg_fog_params(void)
 
 void func_8009AB5C(void)
 {
-    g_avdisp_enable_custom_fog(fogInfo.unkF);
-    func_80033B50(fogInfo.unkF);
-    if (fogInfo.unkF != 0)
+    g_avdisp_enable_custom_fog(fogInfo.g_enabled);
+    func_80033B50(fogInfo.g_enabled);
+    if (fogInfo.g_enabled != 0)
     {
         func_8008F880(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
         func_8008F890(fogInfo.r, fogInfo.g, fogInfo.b);
@@ -159,8 +159,8 @@ void func_8009AC0C(s8 a)
 
 void func_8009AC44(void)
 {
-    g_avdisp_enable_custom_fog(fogInfo.unkF);
-    func_80033B50(fogInfo.unkF);
+    g_avdisp_enable_custom_fog(fogInfo.g_enabled);
+    func_80033B50(fogInfo.g_enabled);
 }
 
 void func_8009AC8C(void)
@@ -170,10 +170,10 @@ void func_8009AC8C(void)
     sp10.r = fogInfo.r;
     sp10.g = fogInfo.g;
     sp10.b = fogInfo.b;
-    if (fogInfo.unkF != 0)
+    if (fogInfo.g_enabled != 0)
         GXSetFog_cached(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f, sp10);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, sp10);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, sp10);
 }
 
 struct LineInfo
