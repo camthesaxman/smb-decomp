@@ -648,7 +648,7 @@ extern u8 lbl_80292E70[];
 // extern ? lbl_802B4E60;
 // extern ? lbl_802B4E6C;
 // extern ? lbl_802B4E9C;
-// extern ? lbl_802B4ECC;
+// extern ? g_tevStageCache;
 // extern ? unknownTexObj;
 // extern ? filler_802B4F50;
 // extern ? lzssHeader;

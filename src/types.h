@@ -118,7 +118,7 @@ struct GMAShape
     /*0x28*/ u32 dispListSizes[2];
     /*0x30*/ Vec boundSphereCenter;
     u8 filler3C[4];
-    u32 unk40;
+    u32 g_blendFlags; // 0xF bitmask is src blend factor, 0xF0 is dst blend factor
     u8 filler44[0x60-0x44];
     u8 dispListData[0];
 };  // size = 0x60

@@ -744,7 +744,7 @@ void init_some_texture(void);
 void g_build_tev_material(struct GMAShape *a, struct GMASampler *b);
 void func_8009127C(GXTevStageID a);
 void func_80091340(GXTevStageID a);
-void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
+void func_80091404(struct UnkStruct32 *a, GXTevColorArg b, GXTevAlphaArg c, GXTexGenSrc texGenSrc);
 void func_80091500(struct UnkStruct32 *a, u32 b, u32 c);
 void func_80091564(struct UnkStruct32 *a);
 void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 d);
