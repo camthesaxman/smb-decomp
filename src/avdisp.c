@@ -22,11 +22,11 @@ struct UnkStruct4
 char *invalidModelName = "Invalid Model";
 
 // .sbss
-float lbl_802F212C;
-float lbl_802F2128;
-GXColor lbl_802F2124;
-u32 lbl_802F2120;
-s32 lbl_802F211C;
+float g_fogEndZ;
+float g_fogStartZ;
+GXColor g_fogColor;
+u32 g_fogType;
+s32 g_customFogEnabled;
 GXColor lbl_802F2118;
 s32 lbl_802F2114;
 GXColor lbl_802F2110;
@@ -43,7 +43,7 @@ BallEnvFunc lbl_802F20EC;
 s32 g_cullMode;
 float modelScale;
 u32 g_someLightMask;
-float lbl_802F20DC;
+float g_globalAlpha;
 float lbl_802F20D8;
 float lbl_802F20D4;
 float lbl_802F20D0;
@@ -185,7 +185,7 @@ void func_8008D788(void)
     lbl_802F20D4 = 1.0f;
     lbl_802F20D0 = 1.0f;
     modelScale = 1.0f;
-    lbl_802F20DC = 1.0f;
+    g_globalAlpha = 1.0f;
     g_someLightMask = 1;
     lbl_802F20F0 = NULL;
     init_some_texture();
@@ -200,7 +200,7 @@ void func_8008D788(void)
     mathutil_mtxA_to_mtx(lbl_802B4E9C);
     g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
     g_avdisp_set_some_color_2(0.0f, 0.0f, 0.0f, 0.0f);
-    func_8008F878(0);
+    g_avdisp_enable_custom_fog(0);
     func_8008F880(2, 0.0f, 100.0f);
     func_8008F890(0, 0, 0);
 }
@@ -564,7 +564,7 @@ void g_avdisp_maybe_draw_model_1(struct GMAModel *model)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        lbl_802F20DC = 1.0f;
+        g_globalAlpha = 1.0f;
     }
     else
         g_avdisp_draw_model_1(model);
@@ -576,7 +576,7 @@ void g_avdisp_maybe_draw_model_2(struct GMAModel *model)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        lbl_802F20DC = 1.0f;
+        g_globalAlpha = 1.0f;
     }
     else
         g_avdisp_draw_model_2(model);
@@ -588,7 +588,7 @@ void g_avdisp_maybe_draw_model_3(struct GMAModel *model)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        lbl_802F20DC = 1.0f;
+        g_globalAlpha = 1.0f;
     }
     else
         g_avdisp_draw_model_3(model);
@@ -596,10 +596,10 @@ void g_avdisp_maybe_draw_model_3(struct GMAModel *model)
 
 void g_avdisp_set_alpha(float a)
 {
-    lbl_802F20DC = a;
+    g_globalAlpha = a;
 }
 
-void func_8008E56C(u32 a)
+void g_avdisp_set_light_mask(u32 a)
 {
     g_someLightMask = a;
 }
@@ -740,7 +740,7 @@ struct DrawMeshDeferredNode
     Mtx *unk64;
     GXColor unk68;
     GXColor unk6C;
-    u32 unk70;
+    u32 g_customFogEnabled;
 };
 
 static inline struct GMAShape *draw_mesh_deferred(struct GMAModel *model, struct GMAShape *mesh, struct GMASampler *mtrl)
@@ -759,7 +759,7 @@ static inline struct GMAShape *draw_mesh_deferred(struct GMAModel *model, struct
     node->mtrl = mtrl;
     node->unk44 = r23;
     node->unk48 = func_800223D0();
-    node->unk4C = lbl_802F20DC;
+    node->unk4C = g_globalAlpha;
     node->unk50 = lbl_802F20EC;
     node->unk54 = lbl_802F20F0;
     node->zCompEnable = zModeCompareEnable;
@@ -777,7 +777,7 @@ static inline struct GMAShape *draw_mesh_deferred(struct GMAModel *model, struct
         node->unk68 = lbl_802F2110;
     if (node->unk62 != 0)
         node->unk6C = lbl_802F2118;
-    node->unk70 = lbl_802F211C;
+    node->g_customFogEnabled = g_customFogEnabled;
     mathutil_mtxA_to_mtx(node->mtx);
     ord_tbl_insert_node(entry, &node->node);
     return skip_mesh(mesh);
@@ -808,7 +808,7 @@ void g_avdisp_draw_model_1(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    g_globalAlpha = 1.0f;
 }
 
 // for transparent objects?
@@ -837,7 +837,7 @@ void g_avdisp_draw_model_2(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    g_globalAlpha = 1.0f;
 }
 
 void g_avdisp_draw_model_3(struct GMAModel *model)
@@ -860,7 +860,7 @@ void g_avdisp_draw_model_3(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    g_globalAlpha = 1.0f;
 }
 
 void g_avdisp_draw_model_4(struct GMAModel *model)
@@ -883,7 +883,7 @@ void g_avdisp_draw_model_4(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    g_globalAlpha = 1.0f;
 }
 
 int get_texture_max_lod(int width, int height)
@@ -1098,7 +1098,7 @@ void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
     r28 = zModeUpdateEnable;
     r27 = zModeCompareFunc;
     r26 = lbl_802F2108;
-    lbl_802F20DC = node->unk4C;
+    g_globalAlpha = node->unk4C;
     lbl_802F20EC = node->unk50;
     lbl_802F20F0 = node->unk54;
     zModeCompareEnable = node->zCompEnable;
@@ -1121,8 +1121,8 @@ void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
         spC = lbl_802F2118;
         lbl_802F2118 = node->unk6C;
     }
-    r22 = lbl_802F211C;
-    lbl_802F211C = node->unk70;
+    r22 = g_customFogEnabled;
+    g_customFogEnabled = node->g_customFogEnabled;
     if (lbl_802F20F0 == NULL)
         func_8008FE44(node->model, node->mesh);
     draw_model_8008F914(node->model, node->mesh, node->mtrl);
@@ -1138,8 +1138,8 @@ void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
     lbl_802F2114 = r23;
     if (node->unk62 != 0)
         lbl_802F2118 = spC;
-    lbl_802F211C = r22;
-    lbl_802F20DC = 1.0f;
+    g_customFogEnabled = r22;
+    g_globalAlpha = 1.0f;
 }
 
 u32 func_8008F6D4(u32 a)
@@ -1194,23 +1194,23 @@ void g_avdisp_set_some_color_2(float a, float b, float c, float d)
     }
 }
 
-void func_8008F878(int a)
+void g_avdisp_enable_custom_fog(int a)
 {
-    lbl_802F211C = a;
+    g_customFogEnabled = a;
 }
 
 void func_8008F880(int a, float b, float c)
 {
-    lbl_802F2120 = a;
-    lbl_802F2128 = b;
-    lbl_802F212C = c;
+    g_fogType = a;
+    g_fogStartZ = b;
+    g_fogEndZ = c;
 }
 
 void func_8008F890(u8 a, u8 b, u8 c)
 {
-    lbl_802F2124.r = a;
-    lbl_802F2124.g = b;
-    lbl_802F2124.b = c;
+    g_fogColor.r = a;
+    g_fogColor.g = b;
+    g_fogColor.b = c;
 }
 
 void func_8008F8A4(u8 *mtxIndexes)
@@ -1466,10 +1466,10 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *mesh)
         zMode->compareFunc   = zModeCompareFunc;
         zMode->updateEnable  = zModeUpdateEnable;
     }
-    if (lbl_802F211C != 0)
-        GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
+    if (g_customFogEnabled != 0)
+        GXSetFog_cached(g_fogType, g_fogStartZ, g_fogEndZ, 0.1f, 20000.0f, g_fogColor);
     else
-        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, g_fogColor);
     if (mesh->flags & 0x88)
         lbl_802B4ECC.unk10 = mesh->unk4;
     else
@@ -1744,7 +1744,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
         lbl_802B4ECC.unk18.g = shape->unkC.asColor.g;
         lbl_802B4ECC.unk18.b = shape->unkC.asColor.b;
     }
-    //lbl_800905F8
+    // lbl_800905F8
     if ((shape->flags & 1) == 0)
     {
         GXColor color_r5;
@@ -1836,7 +1836,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
                 g_someTevColor.b = 255;
             }
             //lbl_800907C0
-            g_someTevColor.a = (float)shape->unk11 * lbl_802F20DC;
+            g_someTevColor.a = (float)shape->unk11 * g_globalAlpha;
             //sp38 = sp78;
             GXSetTevColor(1, g_someTevColor);
             r23 = 2;
@@ -1898,12 +1898,12 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
     }
     //lbl_800908D4
 
-    if (lbl_802F211C != 0)
+    if (g_customFogEnabled != 0)
     {
         if (shape->flags & 4)
-            GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2124);
+            GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, g_fogColor);
         else
-            GXSetFog_cached(lbl_802F2120, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f, lbl_802F2124);
+            GXSetFog_cached(g_fogType, g_fogStartZ, g_fogEndZ, 0.1f, 20000.0f, g_fogColor);
     }
     //lbl_8009093C
     if (lbl_802B4ECC.unk1C != r23)

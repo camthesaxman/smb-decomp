@@ -140,7 +140,7 @@ void g_init_bg_fog_params(void)
 
 void func_8009AB5C(void)
 {
-    func_8008F878(fogInfo.unkF);
+    g_avdisp_enable_custom_fog(fogInfo.unkF);
     func_80033B50(fogInfo.unkF);
     if (fogInfo.unkF != 0)
     {
@@ -153,13 +153,13 @@ void func_8009AB5C(void)
 
 void func_8009AC0C(s8 a)
 {
-    func_8008F878(a);
+    g_avdisp_enable_custom_fog(a);
     func_80033B50(a);
 }
 
 void func_8009AC44(void)
 {
-    func_8008F878(fogInfo.unkF);
+    g_avdisp_enable_custom_fog(fogInfo.unkF);
     func_80033B50(fogInfo.unkF);
 }
 
