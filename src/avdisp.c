@@ -2287,7 +2287,7 @@ void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
     GXSetTevDirect(a->tevStage);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevSwapMode_cached(a->tevStage, 0, 1);
+    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
     GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
@@ -2310,7 +2310,7 @@ void func_800916E0(struct UnkStruct32 *a)
 void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
 {
     GXSetTevDirect(a->tevStage);
-    GXSetTevSwapMode_cached(a->tevStage, 0, 0);
+    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
     if (g_tevStageCache.unk44 == 0)
     {
         mathutil_mtxA_push();
@@ -2372,7 +2372,7 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     tevStage = a->tevStage;
 
     GXSetTevDirect(tevStage);
-    GXSetTevSwapMode_cached(a->tevStage, 0, 0);
+    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetTevKColorSel_cached(tevStage, 13);
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
     GXSetTevOrder_cached(tevStage, a->texCoordID, 0, 4);

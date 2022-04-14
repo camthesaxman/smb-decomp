@@ -724,7 +724,7 @@ static void prep_some_stuff_before_drawing(void)
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
-    GXSetTevSwapMode_cached(0, 0, 0);
+    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetNumTevStages_cached(1);
     GXSetNumTexGens(1);
     GXSetNumIndStages(0);
@@ -1211,7 +1211,7 @@ static void prep_some_stuff_before_drawing_2(void)
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
-    GXSetTevSwapMode_cached(0, 0, 0);
+    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetNumTevStages_cached(1);
     GXSetNumTexGens(1);
     GXSetNumIndStages(0);
