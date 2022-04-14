@@ -273,7 +273,7 @@ void func_800263A4(void)
     GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_C0, GX_CC_TEXC, GX_CC_C1);
     GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(0, 7, 1, 4, 2);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_A0, GX_CA_TEXA, GX_CA_A1);
     GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan

@@ -813,19 +813,19 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         case 1:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 4);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 2:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 5);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_RASA);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 3:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 5, 4, 7);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_RASA, GX_CA_TEXA, GX_CA_ZERO);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         }
@@ -1297,25 +1297,25 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         case 0:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 4, 5, 7);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA,GX_CA_ZERO);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 1:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 4, 5, 7);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA, GX_CA_ZERO);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 2:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 5);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_RASA);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 3:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
             GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 5, 4, 7);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_RASA, GX_CA_TEXA, GX_CA_ZERO);
             GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         }

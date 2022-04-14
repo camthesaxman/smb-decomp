@@ -510,7 +510,7 @@ void func_8000C144(struct Struct8000C144 *a)
     GXSetTevKAlphaSel_cached(0, 0);
     GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
     GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 6);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
     GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 3, 1, 0);
     GXSetNumTevStages_cached(1);
     mathutil_mtxA_push();
