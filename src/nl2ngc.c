@@ -2,6 +2,7 @@
 #include <string.h>
 #include <dolphin.h>
 
+#include "dolphin/GXEnum.h"
 #include "global.h"
 #include "bitmap.h"
 #include "gxutil.h"
@@ -652,8 +653,8 @@ void *lbl_801B7AA4[] =
     lbl_801B7A64,
 };
 
-u32 lbl_801B7AB4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
-u32 lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+GXBlendFactor lbl_801B7AB4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+GXBlendFactor lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 GXCompare naomiToGCCompare[] =
 {
     GX_NEVER,
@@ -674,7 +675,7 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unk4 = 0;
     lbl_80205DAC.unk5 = 1;
     lbl_80205DAC.unk6 = 0;
-    GXSetBlendMode_cached(0, lbl_801B7AB4[1], lbl_801B7AD4[0], 0);
+    GXSetBlendMode_cached(GX_BM_NONE, lbl_801B7AB4[1], lbl_801B7AD4[0], GX_LO_CLEAR);
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk24 = zMode->compareFunc;
     lbl_80205DAC.unk28 = zMode->updateEnable;
@@ -745,7 +746,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     case 0:
         if (lbl_80205DAC.unk4 != 0)
         {
-            GXSetBlendMode_cached(0, 1, 0, 0);
+            GXSetBlendMode_cached(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 0;
             lbl_80205DAC.unk5 = 1;
             lbl_80205DAC.unk6 = 0;
@@ -756,7 +757,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
-            GXSetBlendMode_cached(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[r25], lbl_801B7AD4[r27], GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 2;
             lbl_80205DAC.unk5 = r25;
             lbl_80205DAC.unk6 = r27;
@@ -1160,7 +1161,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.unk5 = 4;
     lbl_80205DAC.unk6 = 5;
 
-    GXSetBlendMode_cached(1, lbl_801B7AB4[4], lbl_801B7AD4[5], 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[4], lbl_801B7AD4[5], GX_LO_CLEAR);
 
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk20 = zMode->compareFunc;  //! mistake?
@@ -1232,7 +1233,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     case 0:
         if (lbl_80205DAC.unk4 != 0)
         {
-            GXSetBlendMode_cached(1, 4, 5, 0);
+            GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 0;
             lbl_80205DAC.unk5 = 4;
             lbl_80205DAC.unk6 = 5;
@@ -1243,7 +1244,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
-            GXSetBlendMode_cached(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[r25], lbl_801B7AD4[r27], GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 2;
             lbl_80205DAC.unk5 = r25;
             lbl_80205DAC.unk6 = r27;

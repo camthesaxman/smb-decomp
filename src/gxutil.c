@@ -179,10 +179,10 @@ void func_8009AC8C(void)
 struct LineInfo
 {
     u8 lineWidth;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
+    GXBlendMode blendMode;
+    GXBlendFactor blendSrcFactor;
+    GXBlendFactor blendDstFactor;
+    GXLogicOp blendLogicOp;
     GXTexOffset texOffset;
     u8 filler18[4];
 };
@@ -196,10 +196,10 @@ void gxutil_set_line_width(int width)
 
 void g_gxutil_set_some_line_params(int a, int b, int c, int d)
 {
-    lineInfo.unk4 = a;
-    lineInfo.unk8 = b;
-    lineInfo.unkC = c;
-    lineInfo.unk10 = d;
+    lineInfo.blendMode = a;
+    lineInfo.blendSrcFactor = b;
+    lineInfo.blendDstFactor = c;
+    lineInfo.blendLogicOp = d;
 }
 
 void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)
@@ -360,7 +360,7 @@ void prepare_for_drawing_lines(void)
         zMode->texOffsets = lineInfo.texOffset;
     }
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
-    GXSetBlendMode_cached(lineInfo.unk4, lineInfo.unk8, lineInfo.unkC, lineInfo.unk10);
+    GXSetBlendMode_cached(lineInfo.blendMode, lineInfo.blendSrcFactor, lineInfo.blendDstFactor, lineInfo.blendLogicOp);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable

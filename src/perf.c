@@ -1,5 +1,6 @@
 #include <dolphin.h>
 
+#include "dolphin/GXEnum.h"
 #include "global.h"
 #include "gxutil.h"
 #include "input.h"
@@ -51,7 +52,7 @@ void perf_init_draw(void)
         GX_AF_NONE);  // attn_fn
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
     GXSetChanMatColor(GX_COLOR0A0, matColor);
-    GXSetBlendMode_cached(1, 4, 5, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != GX_LEQUAL
      || zMode->compareEnable != GX_ENABLE)

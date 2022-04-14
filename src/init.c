@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <dolphin.h>
 
+#include "dolphin/GXEnum.h"
 #include "global.h"
 #include "input.h"
 #include "mathutil.h"
@@ -107,7 +108,7 @@ void init_gx_2(void)
     C_MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
     GXSetProjection(mtx, GX_PERSPECTIVE);
     GXSetZCompLoc_cached(0);
-    GXSetBlendMode_cached(1, 4, 5, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_GREATER, 0);
     GXSetCopyClear(clearColor, 0x00FFFFFF);
     GXSetDither(FALSE);

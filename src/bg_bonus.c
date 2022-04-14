@@ -5,6 +5,7 @@
 #include <string.h>
 #include <dolphin.h>
 
+#include "dolphin/GXEnum.h"
 #include "global.h"
 #include "background.h"
 #include "ball.h"
@@ -234,7 +235,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     struct Struct80061BC4_sub spC = a->unkC;
 
-    GXSetBlendMode_cached(1, 1, 1, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
     func_8009AC8C();
     GXLoadTexObj_cached(work->lightmapTex, spC.unkC);
     mathutil_mtxA_push();

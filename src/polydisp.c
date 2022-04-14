@@ -491,7 +491,7 @@ void func_8000C144(struct Struct8000C144 *a)
     u8 filler[8];
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
-    GXSetBlendMode_cached(1, 0, 1, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ZERO, GX_BL_ONE, GX_LO_CLEAR);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7
      || zMode->compareEnable != GX_ENABLE)
