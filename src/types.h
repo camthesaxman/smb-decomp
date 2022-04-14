@@ -53,7 +53,7 @@ struct Color3f { float r, g, b; };
 // avdisp.c
 struct GMAShape;
 struct GMASampler;
-struct DrawMeshDeferredNode;
+struct DrawShapeDeferredNode;
 struct GMASampler;
 struct UnkStruct32;
 
@@ -93,6 +93,11 @@ struct GMAModel
     /*0x28*/ u8 mtxIndexes[8];
              u8 filler30[0x10];
     /*0x40*/ struct GMASampler samplers[0];
+};
+
+enum
+{
+    GMA_SHAPE_FLAG_SIMPLE_MATERIAL = 1 << 7,
 };
 
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?

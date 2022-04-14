@@ -5750,22 +5750,22 @@ lbl_000052AC:
 lbl_000052BC:
 /* 000052BC 807E0160 */ lwz r3, 0x160(r30)
 /* 000052C0 38800008 */ li r4, 8
-/* 000052C4 4BFFAE99 */ bl set_mesh_render_flags_in_model
+/* 000052C4 4BFFAE99 */ bl set_shape_flags_in_model
 /* 000052C8 48000030 */ b lbl_000052F8
 lbl_000052CC:
 /* 000052CC 807E0160 */ lwz r3, 0x160(r30)
 /* 000052D0 38800001 */ li r4, 1
-/* 000052D4 4BFFAE89 */ bl set_mesh_render_flags_in_model
+/* 000052D4 4BFFAE89 */ bl set_shape_flags_in_model
 /* 000052D8 48000020 */ b lbl_000052F8
 lbl_000052DC:
 /* 000052DC 807E0160 */ lwz r3, 0x160(r30)
 /* 000052E0 38800002 */ li r4, 2
-/* 000052E4 4BFFAE79 */ bl set_mesh_render_flags_in_model
+/* 000052E4 4BFFAE79 */ bl set_shape_flags_in_model
 /* 000052E8 48000010 */ b lbl_000052F8
 lbl_000052EC:
 /* 000052EC 807E0160 */ lwz r3, 0x160(r30)
 /* 000052F0 38800004 */ li r4, 4
-/* 000052F4 4BFFAE69 */ bl set_mesh_render_flags_in_model
+/* 000052F4 4BFFAE69 */ bl set_shape_flags_in_model
 lbl_000052F8:
 /* 000052F8 3B600000 */ li r27, 0
 /* 000052FC 5760103A */ slwi r0, r27, 2

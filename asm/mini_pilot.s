@@ -12755,7 +12755,7 @@ lbl_0000BC40:
 /* 0000BCAC 54001838 */ slwi r0, r0, 3
 /* 0000BCB0 7F1E002E */ lwzx r24, r30, r0
 /* 0000BCB4 7F03C378 */ mr r3, r24
-/* 0000BCB8 4BFF4495 */ bl set_mesh_render_flags_in_model
+/* 0000BCB8 4BFF4495 */ bl set_shape_flags_in_model
 /* 0000BCBC 38780000 */ addi r3, r24, 0
 /* 0000BCC0 3B9C0001 */ addi r28, r28, 1
 /* 0000BCC4 4BFF4489 */ bl g_avdisp_draw_model_2
@@ -12851,7 +12851,7 @@ lbl_0000BDBC:
 /* 0000BE28 54001838 */ slwi r0, r0, 3
 /* 0000BE2C 7F1E002E */ lwzx r24, r30, r0
 /* 0000BE30 7F03C378 */ mr r3, r24
-/* 0000BE34 4BFF4319 */ bl set_mesh_render_flags_in_model
+/* 0000BE34 4BFF4319 */ bl set_shape_flags_in_model
 /* 0000BE38 38780000 */ addi r3, r24, 0
 /* 0000BE3C 3B9C0001 */ addi r28, r28, 1
 /* 0000BE40 4BFF430D */ bl g_avdisp_draw_model_2
