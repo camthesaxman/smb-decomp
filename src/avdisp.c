@@ -1935,10 +1935,10 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
             if (g_isNewTevColorInD != 0) // Impossible
             {
                 if (g_isNewTevColorInD != 0)
-                    GXSetTevColorIn_cached(sp7C.tevStage, 15, 15, 15, g_tevColorInD);
+                    GXSetTevColorIn_cached(sp7C.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, g_tevColorInD);
                 //lbl_80090A40
                 if (g_isNewTevAlphaInD != 0)
-                    GXSetTevAlphaIn_cached(sp7C.tevStage, 7, 7, 7, g_tevAlphaInD);
+                    GXSetTevAlphaIn_cached(sp7C.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, g_tevAlphaInD);
             }
         }
         //lbl_80090A60
@@ -2240,7 +2240,7 @@ void func_8009127C(GXTevStageID tevStage)
     GXSetTevKAlphaSel_cached(tevStage, 30);
     GXSetTevDirect(tevStage);
     GXSetTevOrder_cached(tevStage, 0xFF, 0xFF, 4);
-    GXSetTevColorIn_cached(tevStage, 15, 0, 14, 15);
+    GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_CPREV, GX_CC_KONST, GX_CC_ZERO);
     GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(tevStage, 7, 0, 6, 7);
     GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
@@ -2252,7 +2252,7 @@ void func_80091340(GXTevStageID tevStage)
     GXSetTevKAlphaSel_cached(tevStage, 31);
     GXSetTevDirect(tevStage);
     GXSetTevOrder_cached(tevStage, 0xFF, 0xFF, 4);
-    GXSetTevColorIn_cached(tevStage, 0, 15, 15, 14);
+    GXSetTevColorIn_cached(tevStage, GX_CC_CPREV, GX_CC_ZERO, GX_CC_ZERO, GX_CC_KONST);
     GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(tevStage, 0, 7, 7, 6);
     GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
@@ -2264,7 +2264,7 @@ void func_80091404(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, colorArg, 15);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
@@ -2272,7 +2272,7 @@ void func_80091404(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
 
 void func_80091500(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, colorArg, 15);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
 }
 
@@ -2288,7 +2288,7 @@ void func_80091580(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
@@ -2296,7 +2296,7 @@ void func_80091580(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
 
 void func_8009167C(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
 }
 
@@ -2329,7 +2329,7 @@ void func_800916FC(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTevKColorSel_cached(a->tevStage, 12);
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, colorArg);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
@@ -2337,7 +2337,7 @@ void func_800916FC(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
 
 void func_80091878(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, colorArg);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
 }
 
@@ -2376,7 +2376,7 @@ void func_800918F8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTevKColorSel_cached(tevStage, 13);
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
     GXSetTevOrder_cached(tevStage, a->texCoordID, 0, 4);
-    GXSetTevColorIn_cached(tevStage, 15, 8, 14, 15);
+    GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
     GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 3);
     GXSetTevAlphaIn_cached(tevStage, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 3);
@@ -2385,7 +2385,7 @@ void func_800918F8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTevSwapMode_cached(a->tevStage, 0, 0);
     GXSetTexCoordGen2(a->texCoordID + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
     GXSetTevOrder_cached(tevStage + 1, a->texCoordID + 1, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(tevStage + 1, 15, 8, 6, colorArg);
+    GXSetTevColorIn_cached(tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorArg);
     GXSetTevColorOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(tevStage + 1, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
@@ -2393,7 +2393,7 @@ void func_800918F8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
 
 void func_80091B1C(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage + 1, 15, 8, 6, colorArg);
+    GXSetTevColorIn_cached(a->tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorArg);
     GXSetTevAlphaIn_cached(a->tevStage + 1, 7, 7, 7, alphaArg);
 }
 
@@ -2408,7 +2408,7 @@ void func_80091BA4(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTevDirect(a->tevStage);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
@@ -2419,8 +2419,8 @@ void func_80091BA4(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
 
 void func_80091CA8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
+    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
+    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
 }
 
 // duplicate of func_80091564

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dolphin.h>
 
+#include "dolphin/GXEnum.h"
 #include "global.h"
 #include "adv.h"
 #include "background.h"
@@ -507,10 +508,10 @@ void func_8000C144(struct Struct8000C144 *a)
     GXSetTevDirect(0);
     GXSetTevOrder_cached(0, 0xFF, 0xFF, 0xFF);
     GXSetTevKAlphaSel_cached(0, 0);
-    GXSetTevColorIn_cached(0, 15, 15, 15, 15);
-    GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(0, 7, 7, 7, 6);
-    GXSetTevAlphaOp_cached(0, 0, 0, 3, 1, 0);
+    GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+    GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 6);
+    GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 3, 1, 0);
     GXSetNumTevStages_cached(1);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();

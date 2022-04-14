@@ -811,22 +811,22 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
             func_8009EA30(0, 3);
             break;
         case 1:
-            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 7, 7, 4);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 4);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 2:
-            GXSetTevColorIn_cached(0, 10, 8, 9, 15);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 7, 7, 5);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 5);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 3:
-            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 5, 4, 7);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 5, 4, 7);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         }
     }
@@ -1295,28 +1295,28 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
-            GXSetTevColorIn_cached(0, 15, 15, 15, 8);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 4, 5, 7);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 4, 5, 7);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 1:
-            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 4, 5, 7);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 4, 5, 7);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 2:
-            GXSetTevColorIn_cached(0, 10, 8, 9, 15);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 7, 7, 5);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 7, 7, 5);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         case 3:
-            GXSetTevColorIn_cached(0, 15, 10, 8, 15);
-            GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
-            GXSetTevAlphaIn_cached(0, 7, 5, 4, 7);
-            GXSetTevAlphaOp_cached(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, 7, 5, 4, 7);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, 0, 0, 0, 1, 0);
             break;
         }
     }
