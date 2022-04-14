@@ -54,7 +54,7 @@ struct Color3f { float r, g, b; };
 struct GMAShape;
 struct GMASampler;
 struct DrawMeshDeferredNode;
-struct UnkStruct31;
+struct GMASampler;
 struct UnkStruct32;
 
 // GMAModel.flags

@@ -1239,14 +1239,6 @@ struct UnkStruct27
     u8 fillerC[0x38-0xC];
 };
 
-struct UnkStruct31
-{
-    u32 unk0;
-    u8 filler4[4];
-    GXTexObj *unk8;
-    u8 fillerC[0x20-0xC];
-};
-
 struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *mesh, struct GMASampler *mtrl)
 {
     int i;
@@ -1714,7 +1706,7 @@ static inline void inline_test5(s8 c)
 //#if 1
 // stack differences
 // DOL: 0x8C444
-void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
+void func_80090524(struct GMAShape *a, struct GMASampler *b)
 {
     struct UnkStruct32 sp7C;  // correct
     GXColor sp78;  // correct
@@ -1970,14 +1962,14 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
         u16 *r15 = lbl_802B4ECC.unk3C;
         while (r20 > 0)
         {
-            struct UnkStruct31 *r3 = &b[*r18];
-            r16 = r3->unk0;
+            struct GMASampler *r3 = &b[*r18];
+            r16 = r3->flags;
             r16 &= 0xA003;
             if (*r17 != r16)
                 break;
-            if (*r15 != *r18 || (r3->unk0 & 0x10000))
+            if (*r15 != *r18 || (r3->flags & 0x10000))
             {
-                GXLoadTexObj_cached(r3->unk8, sp7C.unkC);
+                GXLoadTexObj_cached(r3->texObj, sp7C.unkC);
                 *r15 = *r18;
             }
             //lbl_80090B00
@@ -2088,13 +2080,13 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
         //lbl_80090D70
         while (r20 > 0)
         {
-            struct UnkStruct31 *r3 = &b[*r18];  // r4
-            u32 r16 = r3->unk0;  // actually, r27
+            struct GMASampler *r3 = &b[*r18];  // r4
+            u32 r16 = r3->flags;  // actually, r27
             r16 &= 0xA003;
             *r17 = r16;
-            if (*r15 != *r18 || (r3->unk0 & 0x10000))
+            if (*r15 != *r18 || (r3->flags & 0x10000))
             {
-                GXLoadTexObj_cached(r3->unk8, sp7C.unkC);
+                GXLoadTexObj_cached(r3->texObj, sp7C.unkC);
                 *r15 = *r18;
             }
             if (r16 == 0)
@@ -2230,7 +2222,7 @@ void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
         lbl_802B4ECC.unk1 = a->unk12;
 }
 #else
-asm void func_80090524(struct GMAShape *a, struct UnkStruct31 *b)
+asm void func_80090524(struct GMAShape *a, struct GMASampler *b)
 {
 #define _SDA_BASE_ 0
 #define _SDA2_BASE_ 0
