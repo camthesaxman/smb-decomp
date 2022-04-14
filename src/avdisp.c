@@ -70,7 +70,7 @@ struct Struct802B4ECC
     s32 unk28;
     u32 unk2C[3];  // 0x98  array?
     u32 unk38;  // 0xA4
-    u16 unk3C[3];  // 0xA8
+    u16 g_samplerIdxs[3];  // 0xA8
     s32 unk44;  // 0xB0
     s32 unk48;  // 0xB4
     s32 unk4C;  // 0xB8
@@ -1516,9 +1516,9 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *mesh)
     lbl_802B4ECC.unk2C[1] = -1;
     lbl_802B4ECC.unk2C[2] = -1;
     lbl_802B4ECC.unk38 = -1;
-    lbl_802B4ECC.unk3C[0] = 0xFFFF;
-    lbl_802B4ECC.unk3C[1] = 0xFFFF;
-    lbl_802B4ECC.unk3C[2] = 0xFFFF;
+    lbl_802B4ECC.g_samplerIdxs[0] = 0xFFFF;
+    lbl_802B4ECC.g_samplerIdxs[1] = 0xFFFF;
+    lbl_802B4ECC.g_samplerIdxs[2] = 0xFFFF;
     lbl_802B4ECC.unk44 = 0;
     lbl_802B4ECC.unk48 = 0;
     lbl_802B4ECC.unk4C = 0;
@@ -1956,21 +1956,21 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
         // r14 = &sp2C doesn't change
         // r25 = &lbl_802B4ECC.visibleKeyframeCount  doesn't change
         // maybe indexed instead?
-        u16 *r18 = shape->samplerIdxs;
+        u16 *samplerIdx = shape->samplerIdxs;
         u32 *r17 = lbl_802B4ECC.unk2C;
         u32 r16;
-        u16 *r15 = lbl_802B4ECC.unk3C;
+        u16 *g_someSamplerIdx = lbl_802B4ECC.g_samplerIdxs;
         while (r20 > 0)
         {
-            struct GMASampler *sampler = &modelSamplers[*r18];
+            struct GMASampler *sampler = &modelSamplers[*samplerIdx];
             r16 = sampler->flags;
             r16 &= 0xA003;
             if (*r17 != r16)
                 break;
-            if (*r15 != *r18 || (sampler->flags & 0x10000))
+            if (*g_someSamplerIdx != *samplerIdx || (sampler->flags & 0x10000))
             {
                 GXLoadTexObj_cached(sampler->texObj, sp7C.unkC);
-                *r15 = *r18;
+                *g_someSamplerIdx = *samplerIdx;
             }
             //lbl_80090B00
             if (r16 == 0)
@@ -2071,23 +2071,23 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
             sp7C.unkC++;
             r19++;
             r20--;
-            r18++;
+            samplerIdx++;
             r17++;
-            r15++;
+            g_someSamplerIdx++;
             r23 = 0;
             r22 = 0;
         }
         //lbl_80090D70
         while (r20 > 0)
         {
-            struct GMASampler *r3 = &modelSamplers[*r18];  // r4
+            struct GMASampler *r3 = &modelSamplers[*samplerIdx];  // r4
             u32 r16 = r3->flags;  // actually, r27
             r16 &= 0xA003;
             *r17 = r16;
-            if (*r15 != *r18 || (r3->flags & 0x10000))
+            if (*g_someSamplerIdx != *samplerIdx || (r3->flags & 0x10000))
             {
                 GXLoadTexObj_cached(r3->texObj, sp7C.unkC);
-                *r15 = *r18;
+                *g_someSamplerIdx = *samplerIdx;
             }
             if (r16 == 0)
             {
@@ -2157,9 +2157,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMASampler *modelSample
             sp7C.unkC++;
             r19++;
             r20--;
-            r18++;
+            samplerIdx++;
             r17++;
-            r15++;
+            g_someSamplerIdx++;
             r23 = 0;
             r22 = 0;
         }
