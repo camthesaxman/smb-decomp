@@ -464,7 +464,7 @@ void submode_game_goal_replay_init_func(void)
     lbl_80250A68.unk14 = infoWork.unk30;
     infoWork.unk0 |= (1 << 4);
     lbl_80250A68.unk10 = MIN(modeCtrl.unk0 - 60, func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]));
-    animate_itemgroups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+    animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
     r31 = func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10);
     func_800689B4(r31);
     func_8006F5F0(r31);
@@ -831,7 +831,7 @@ void submode_game_ringout_main_func(void)
             WORLD_FOREACH( world->state = 8; )
             camera_set_state(5);
             lbl_80250A68.unk10 = MIN(func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]), 120.0f);
-            animate_itemgroups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+            animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
             infoWork.unk0 |= (1 << 4);
             func_800689B4(func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10));
             func_8007E334(modeCtrl.unk0);
@@ -842,7 +842,7 @@ void submode_game_ringout_main_func(void)
             BALL_FOREACH( ball->state = 7; )
             camera_set_state(7);
             lbl_80250A68.unk10 = MIN(func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]), modeCtrl.unk0 - 60);
-            animate_itemgroups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
+            animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
             infoWork.unk0 |= (1 << 4);
             func_800689B4(func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10));
             lbl_802F1C1C = 60;
@@ -1562,7 +1562,7 @@ void submode_game_result_init_func(void)
     if (currStageId == ST_125_DANCE_MASTER || currStageId == ST_116_ALTERNATE_ROLL_MASTER)
     {
         lbl_80206DEC.unk1C |= 1;
-        animate_itemgroups(0.0f);
+        animate_anim_groups(0.0f);
     }
     BALL_FOREACH( ball->state = 11; )
     camera_set_state(56);

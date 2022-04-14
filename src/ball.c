@@ -2307,7 +2307,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
 
     if (b->flags & 1)
     {
-        if (b->hardestColiItemgroupId == 0)
+        if (b->hardestColiAnimGroupId == 0)
         {
             ball->unk114.x = -b->hardestColiPlane.normal.x;
             ball->unk114.y = -b->hardestColiPlane.normal.y;
@@ -2315,7 +2315,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
         }
         else
         {
-            mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].transform);
+            mathutil_mtxA_from_mtx(animGroups[b->hardestColiAnimGroupId].transform);
             mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
@@ -2440,7 +2440,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
 void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct ItemgroupInfo *itemgroup = &itemgroups[a->hardestColiItemgroupId];
+    struct AnimGroupInfo *animGroup = &animGroups[a->hardestColiAnimGroupId];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2449,7 +2449,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
     Vec *ptr;
     int unused;
 
-    mathutil_mtxA_from_mtx(itemgroup->transform);
+    mathutil_mtxA_from_mtx(animGroup->transform);
     mathutil_mtxA_tf_point(&a->hardestColiPlane.point, &sp38);
     ptr = &sp44;
     mathutil_mtxA_tf_vec(&a->hardestColiPlane.normal, ptr);
@@ -2464,7 +2464,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 
     mathutil_mtxA_rigid_inv_tf_point(&sp2C, &sp14);
 
-    mathutil_mtxA_from_mtx(itemgroup->prevTransform);
+    mathutil_mtxA_from_mtx(animGroup->prevTransform);
     mathutil_mtxA_tf_point(&sp14, &sp20);
 
     sp14.x = sp2C.x - sp20.x;
@@ -2546,10 +2546,10 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         sp20.x = ball->pos.x - ball->prevPos.x;
         sp20.y = ball->pos.y - ball->prevPos.y;
         sp20.z = ball->pos.z - ball->prevPos.z;
-        if (c == 0 && b->hardestColiItemgroupId > 0)
+        if (c == 0 && b->hardestColiAnimGroupId > 0)
             func_8003BBF4(b, &sp20);
 
-        mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].transform);
+        mathutil_mtxA_from_mtx(animGroups[b->hardestColiAnimGroupId].transform);
         mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;
@@ -2769,8 +2769,8 @@ void init_physball_from_ball(struct Ball *ball, struct PhysicsBall *physBall)
     physBall->gravityAccel = ball->accel;
     physBall->restitution = ball->restitution;
     physBall->hardestColiSpeed = 0.0f;
-    physBall->itemgroupId = 0;
-    physBall->hardestColiItemgroupId = 0;
+    physBall->aniimGroupId = 0;
+    physBall->hardestColiAnimGroupId = 0;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)
         physBall->friction = 0.01f;
