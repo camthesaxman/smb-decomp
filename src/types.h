@@ -360,13 +360,13 @@ struct PhysicsBall
 {
     u32 flags;
 
-    // Current center position in aniimGroupId's local space
+    // Current center position in animGroupId's local space
     Point3d pos;     
 
-    // Center position at end of previous frame in aniimGroupId's previous frame local space
+    // Center position at end of previous frame in animGroupId's previous frame local space
     Point3d prevPos; 
 
-    // Current velocity in aniimGroupId's local space
+    // Current velocity in animGroupId's local space
     Vec vel;         
 
     float radius;
@@ -397,7 +397,7 @@ struct PhysicsBall
 
     // animGroup whose local space we are in.
     // As a reminder, ID 0 is world space.
-    s32 aniimGroupId;
+    s32 animGroupId;
 };
 
 struct ColiEdge
