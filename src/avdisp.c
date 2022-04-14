@@ -2258,22 +2258,22 @@ void func_80091340(GXTevStageID tevStage)
     GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
 }
 
-void func_80091404(struct UnkStruct32 *a, GXTevColorArg b, GXTevAlphaArg c, GXTexGenSrc texGenSrc)
+void func_80091404(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
 {
     GXSetTevDirect(a->tevStage);
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, b, 15);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, colorArg, 15);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
 }
 
-void func_80091500(struct UnkStruct32 *a, u32 b, u32 c)
+void func_80091500(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, b, 15);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, colorArg, 15);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
 }
 
 void func_80091564(struct UnkStruct32 *a)
@@ -2282,22 +2282,22 @@ void func_80091564(struct UnkStruct32 *a)
     a->texCoordID++;
 }
 
-void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
+void func_80091580(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
 {
     GXSetTevDirect(a->tevStage);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
 }
 
-void func_8009167C(struct UnkStruct32 *a, u32 b, u32 c)
+void func_8009167C(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, c, 7);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 4, alphaArg, 7);
 }
 
 // duplicate of func_80091564
@@ -2307,7 +2307,7 @@ void func_800916E0(struct UnkStruct32 *a)
     a->texCoordID++;
 }
 
-void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+void func_800916FC(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d)
 {
     GXSetTevDirect(a->tevStage);
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
@@ -2329,16 +2329,16 @@ void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     GXSetTevKColorSel_cached(a->tevStage, 12);
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, b);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, colorArg);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
 }
 
-void func_80091878(struct UnkStruct32 *a, u32 b, u32 c)
+void func_80091878(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, b);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
+    GXSetTevColorIn_cached(a->tevStage, 15, 8, 14, colorArg);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
 }
 
 // duplicate of func_80091564
@@ -2348,7 +2348,7 @@ void func_800918DC(struct UnkStruct32 *a)
     a->texCoordID++;
 }
 
-void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+void func_800918F8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d)
 {
     u32 tevStage;
 
@@ -2378,23 +2378,23 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
     GXSetTevOrder_cached(tevStage, a->texCoordID, 0, 4);
     GXSetTevColorIn_cached(tevStage, 15, 8, 14, 15);
     GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 3);
-    GXSetTevAlphaIn_cached(tevStage, 7, 7, 7, c);
+    GXSetTevAlphaIn_cached(tevStage, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 3);
 
     GXSetTevDirect(tevStage + 1);
     GXSetTevSwapMode_cached(a->tevStage, 0, 0);
     GXSetTexCoordGen2(a->texCoordID + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
     GXSetTevOrder_cached(tevStage + 1, a->texCoordID + 1, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(tevStage + 1, 15, 8, 6, b);
+    GXSetTevColorIn_cached(tevStage + 1, 15, 8, 6, colorArg);
     GXSetTevColorOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(tevStage + 1, 7, 7, 7, c);
+    GXSetTevAlphaIn_cached(tevStage + 1, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
 }
 
-void func_80091B1C(struct UnkStruct32 *a, u32 b, u32 c)
+void func_80091B1C(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage + 1, 15, 8, 6, b);
-    GXSetTevAlphaIn_cached(a->tevStage + 1, 7, 7, 7, c);
+    GXSetTevColorIn_cached(a->tevStage + 1, 15, 8, 6, colorArg);
+    GXSetTevAlphaIn_cached(a->tevStage + 1, 7, 7, 7, alphaArg);
 }
 
 void func_80091B88(struct UnkStruct32 *a)
@@ -2403,24 +2403,24 @@ void func_80091B88(struct UnkStruct32 *a)
     a->texCoordID += 2;
 }
 
-void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
+void func_80091BA4(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
 {
     GXSetTevDirect(a->tevStage);
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
     GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
     GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
     a->unk20 = 1;
     a->unk24 = a->texCoordID;
     a->unk28 = a->g_someTexmapId;
 }
 
-void func_80091CA8(struct UnkStruct32 *a, u32 b, u32 c)
+void func_80091CA8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, b);
-    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, c);
+    GXSetTevColorIn_cached(a->tevStage, 15, 15, 15, colorArg);
+    GXSetTevAlphaIn_cached(a->tevStage, 7, 7, 7, alphaArg);
 }
 
 // duplicate of func_80091564
