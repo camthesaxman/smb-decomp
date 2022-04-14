@@ -2769,7 +2769,7 @@ void init_physball_from_ball(struct Ball *ball, struct PhysicsBall *physBall)
     physBall->gravityAccel = ball->accel;
     physBall->restitution = ball->restitution;
     physBall->hardestColiSpeed = 0.0f;
-    physBall->aniimGroupId = 0;
+    physBall->animGroupId = 0;
     physBall->hardestColiAnimGroupId = 0;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)

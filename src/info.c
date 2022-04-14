@@ -144,7 +144,7 @@ void ev_info_main(void)
                 func_80049268(ball->unk2E);
             }
             init_physball_from_ball(ball, &sp6C);
-            if (sp64 != sp6C.aniimGroupId)
+            if (sp64 != sp6C.animGroupId)
                 tf_physball_to_anim_group_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
@@ -175,7 +175,7 @@ void ev_info_main(void)
             if (gameSubmode == SMD_ADV_GAME_PLAY_MAIN)
                 infoWork.unk0 |= INFO_FLAG_GOAL;
             init_physball_from_ball(ball, &sp6C);
-            if (sp64 != sp6C.aniimGroupId)
+            if (sp64 != sp6C.animGroupId)
                 tf_physball_to_anim_group_space(&sp6C, sp64);
             g_break_goal_tape(goalId, &sp6C);
             ball->unk12A = infoWork.timerCurr;
@@ -486,20 +486,20 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnim
     struct PhysicsBall physBall;
     struct StageAnimGroup *stageIg;
     int goalId;
-    int aniimGroupId;
+    int animGroupId;
 
     init_physball_from_ball(ball, &physBall);
     stageIg = decodedStageLzPtr->animGroups;
     goalId = 0;
-    for (aniimGroupId = 0; aniimGroupId < decodedStageLzPtr->animGroupCount; aniimGroupId++, stageIg++)
+    for (animGroupId = 0; animGroupId < decodedStageLzPtr->animGroupCount; animGroupId++, stageIg++)
     {
         if (stageIg->goalCount > 0)
         {
             struct StageGoal *goal;
             int igGoalIdx;
 
-            if (aniimGroupId != physBall.aniimGroupId)
-                tf_physball_to_anim_group_space(&physBall, aniimGroupId);
+            if (animGroupId != physBall.animGroupId)
+                tf_physball_to_anim_group_space(&physBall, animGroupId);
             goal = stageIg->goals;
             for (igGoalIdx = 0; igGoalIdx < stageIg->goalCount; igGoalIdx++, goal++)
             {
@@ -521,7 +521,7 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnim
                 if (test_line_intersects_rect(&physBall.pos, &physBall.prevPos, &goalTrigger))
                 {
                     *outGoalId = goalId;
-                    *outGoalAnimGroupId = aniimGroupId;
+                    *outGoalAnimGroupId = animGroupId;
                     return TRUE;
                 }
                 goalId++;
@@ -797,7 +797,7 @@ int func_800246F4(struct Ball *ball)
         struct StageCollHdr_child2 *r28;
         int j;
 
-        if (i != sp18.aniimGroupId)
+        if (i != sp18.animGroupId)
             tf_physball_to_anim_group_space(&sp18, i);
         r28 = r30->unk88;
         for (j = 0; j < r30->unk84; j++, r28++)
