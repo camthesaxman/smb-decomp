@@ -246,9 +246,9 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     GXSetTevDirect(spC.unk0);
     GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.unkC, 0xFF);
     GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
-    GXSetTevColorOp_cached(spC.unk0, 0, 0, 0, 1, 2);
+    GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG1);
     GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
-    GXSetTevAlphaOp_cached(spC.unk0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     spC.unk0++;
     spC.unk4++;
     spC.unk8 += 3;
@@ -264,9 +264,9 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     GXSetTevDirect(spC.unk0);
     GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.unkC, 0xFF);
     GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C1, GX_CC_ZERO);
-    GXSetTevColorOp_cached(spC.unk0, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
-    GXSetTevAlphaOp_cached(spC.unk0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     spC.unk0++;
     spC.unk4++;
     spC.unk8 += 3;

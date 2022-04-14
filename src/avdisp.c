@@ -2241,9 +2241,9 @@ void func_8009127C(GXTevStageID tevStage)
     GXSetTevDirect(tevStage);
     GXSetTevOrder_cached(tevStage, 0xFF, 0xFF, 4);
     GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_CPREV, GX_CC_KONST, GX_CC_ZERO);
-    GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(tevStage, GX_CA_ZERO, GX_CA_APREV, GX_CA_KONST, GX_CA_ZERO);
-    GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void func_80091340(GXTevStageID tevStage)
@@ -2253,9 +2253,9 @@ void func_80091340(GXTevStageID tevStage)
     GXSetTevDirect(tevStage);
     GXSetTevOrder_cached(tevStage, 0xFF, 0xFF, 4);
     GXSetTevColorIn_cached(tevStage, GX_CC_CPREV, GX_CC_ZERO, GX_CC_ZERO, GX_CC_KONST);
-    GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(tevStage, GX_CA_APREV, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
-    GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void func_80091404(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
@@ -2265,9 +2265,9 @@ void func_80091404(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
     GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
-    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
-    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void func_80091500(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
@@ -2289,9 +2289,9 @@ void func_80091580(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
     GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
-    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
-    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void func_8009167C(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
@@ -2330,9 +2330,9 @@ void func_800916FC(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
     GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
-    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
-    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void func_80091878(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
@@ -2377,18 +2377,18 @@ void func_800918F8(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
     GXSetTevOrder_cached(tevStage, a->texCoordID, 0, 4);
     GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
-    GXSetTevColorOp_cached(tevStage, 0, 0, 0, 1, 3);
+    GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG2);
     GXSetTevAlphaIn_cached(tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
-    GXSetTevAlphaOp_cached(tevStage, 0, 0, 0, 1, 3);
+    GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG2);
 
     GXSetTevDirect(tevStage + 1);
     GXSetTevSwapMode_cached(a->tevStage, 0, 0);
     GXSetTexCoordGen2(a->texCoordID + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
     GXSetTevOrder_cached(tevStage + 1, a->texCoordID + 1, a->g_someTexmapId, 4);
     GXSetTevColorIn_cached(tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorArg);
-    GXSetTevColorOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
-    GXSetTevAlphaOp_cached(tevStage + 1, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void func_80091B1C(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
@@ -2409,9 +2409,9 @@ void func_80091BA4(struct UnkStruct32 *a, GXTevColorArg colorArg, GXTevAlphaArg 
     GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
     GXSetTevOrder_cached(a->tevStage, a->texCoordID, a->g_someTexmapId, 4);
     GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
-    GXSetTevColorOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
-    GXSetTevAlphaOp_cached(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     a->unk20 = 1;
     a->unk24 = a->texCoordID;
     a->unk28 = a->g_someTexmapId;
