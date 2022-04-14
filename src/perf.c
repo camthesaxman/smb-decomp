@@ -66,7 +66,7 @@ void perf_init_draw(void)
     GXSetZCompLoc_cached(1);
     GXSetNumTexGens(1);
     GXSetNumChans(1);
-    GXSetTevOrder_cached(0, 0, 0, 4);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
     func_8009EA30(0, 1);
     perfEnabled = FALSE;
 }

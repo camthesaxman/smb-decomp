@@ -506,7 +506,7 @@ void func_8000C144(struct Struct8000C144 *a)
     GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
     GXSetCullMode_cached(GX_CULL_NONE);
     GXSetTevDirect(0);
-    GXSetTevOrder_cached(0, 0xFF, 0xFF, 0xFF);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR_NULL);
     GXSetTevKAlphaSel_cached(0, 0);
     GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
     GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
@@ -978,7 +978,7 @@ void draw_test_camera_target(void)
             GX_DF_CLAMP,  // diff_fn
             GX_AF_NONE);  // attn_fn
         GXSetNumChans(1);
-        GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         func_8009EA30(0, 4);
         GXSetNumTexGens(0);
         GXSetNumTevStages_cached(1);

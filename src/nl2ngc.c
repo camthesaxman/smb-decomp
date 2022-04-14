@@ -789,7 +789,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
 
     if (mesh.unk20 < 0)
     {
-        GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         func_8009EA30(0, 4);
     }
     else
@@ -804,7 +804,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
             lbl_80205DAC.unk10 = r25;
             GXLoadTexObj_cached(mesh.texObj, r25);
         }
-        GXSetTevOrder_cached(0, 0, r25, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
@@ -1276,7 +1276,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
 
     if (mesh.unk20 < 0)
     {
-        GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         func_8009EA30(0, 4);
     }
     else
@@ -1291,7 +1291,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
             lbl_80205DAC.unk10 = r25;
             GXLoadTexObj_cached(mesh.texObj, r25);
         }
-        GXSetTevOrder_cached(0, 0, r25, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:

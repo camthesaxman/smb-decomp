@@ -369,7 +369,7 @@ void prepare_for_drawing_lines(void)
         GX_LIGHT_NULL,  // light_mask
         GX_DF_CLAMP,  // diff_fn
         GX_AF_SPOT);  // attn_fn
-    GXSetTevOrder_cached(0, 0xFF, 0xFF, 4);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
     func_8009EA30(0, 4);
     GXSetTevDirect(GX_TEVSTAGE0);
     GXSetNumTevStages_cached(1);

@@ -244,7 +244,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     mathutil_mtxA_pop();
     GXSetTexCoordGen(spC.unk4, GX_TG_MTX2x4, GX_TG_POS, spC.unk8);
     GXSetTevDirect(spC.unk0);
-    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.unkC, 0xFF);
+    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.unkC, GX_COLOR_NULL);
     GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
     GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG1);
     GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
@@ -262,7 +262,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     GXLoadTexObj_cached(work->lightmapATex, spC.unkC);
     GXSetTexCoordGen2(spC.unk4, GX_TG_MTX3x4, GX_TG_NRM, spC.unk8, GX_TRUE, spC.unk14);
     GXSetTevDirect(spC.unk0);
-    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.unkC, 0xFF);
+    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.unkC, GX_COLOR_NULL);
     GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C1, GX_CC_ZERO);
     GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
