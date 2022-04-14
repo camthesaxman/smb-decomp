@@ -108,8 +108,8 @@ struct GMAShape
              } unkC;
     /*0x10*/ u8 filler10[1];
              u8 unk11;
-    /*0x12*/ u8 unk12;
-    /*0x13*/ u8 unk13;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
+    /*0x12*/ u8 tevStageCount;
+    /*0x13*/ u8 g_vtxRenderFlags;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16-0x15];
              u16 samplerIdxs[3];
