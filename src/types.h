@@ -105,7 +105,7 @@ struct GMAModel
 
 enum
 {
-    GMA_SHAPE_FLAG_G_UNLIT = 1 << 0,
+    GMA_SHAPE_FLAG_UNLIT = 1 << 0,
     GMA_SHAPE_FLAG_DOUBLE_SIDED = 1 << 1, // Draw front and back sides of tris/quads
     GMA_SHAPE_FLAG_NO_FOG = 1 << 2,
     GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC = 1 << 5,

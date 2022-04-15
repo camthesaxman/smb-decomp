@@ -1088,7 +1088,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     GXColor sp10;
     GXColor spC;
 
-    if ((node->shape->flags & GMA_SHAPE_FLAG_G_UNLIT) == 0)
+    if ((node->shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
         func_800223D8(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
@@ -1747,7 +1747,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         g_tevCache.unk18.b = shape->unkC.asColor.b;
     }
     // lbl_800905F8
-    if ((shape->flags & GMA_SHAPE_FLAG_G_UNLIT) == 0)
+    if ((shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
     {
         GXColor color_r5;
         int g_someColorChanged = 0;
@@ -1803,7 +1803,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     //lbl_8009071C
     g_tevColorArg = GX_CC_RASC;
     g_tevAlphaArg = GX_CA_RASA;
-    if (shape->flags & GMA_SHAPE_FLAG_G_UNLIT)
+    if (shape->flags & GMA_SHAPE_FLAG_UNLIT)
     {
         if (shape->flags & GMA_SHAPE_FLAG_VERT_COLORS)
         {
@@ -2009,7 +2009,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 //to lbl_80090D3C
             }
             //lbl_80090B98
-            else if (flags & GMA_SHAPE_FLAG_G_UNLIT)
+            else if (flags & GMA_SHAPE_FLAG_UNLIT)
             {
                 if (g_tevCache.unk50 == 0)
                 {
