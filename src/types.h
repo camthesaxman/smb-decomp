@@ -55,7 +55,7 @@ struct GMAShape;
 struct GMATevStageDesc;
 struct DrawShapeDeferredNode;
 struct GMATevStageDesc;
-struct UnkStruct32;
+struct G_TevStageInfo;
 
 // GMAModel.flags
 enum
@@ -64,6 +64,14 @@ enum
     GCMF_STITCHING = 0x04,
     GCMF_SKIN = 0x08,
     GCMF_EFFECTIVE = 0x10,
+};
+
+enum
+{
+    GMA_TEV_STAGE_FLAG_UNK0 = 1 << 0,
+    GMA_TEV_STAGE_FLAG_UNK1 = 1 << 1,
+    GMA_TEV_STAGE_FLAG_UNK13 = 1 << 13,
+    GMA_TEV_STAGE_FLAG_UNK15 = 1 << 15,
 };
 
 // at GMAModel + 0x40
@@ -97,7 +105,7 @@ struct GMAModel
 
 enum
 {
-    GMA_SHAPE_FLAG_UNK0 = 1 << 0,
+    GMA_SHAPE_FLAG_G_UNLIT = 1 << 0,
     GMA_SHAPE_FLAG_DOUBLE_SIDED = 1 << 1, // Draw front and back sides of tris/quads
     GMA_SHAPE_FLAG_NO_FOG = 1 << 2,
     GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC = 1 << 5,
