@@ -11,7 +11,8 @@
 // float lbl_802F5A98 = 20000.0;
 
 // TDOO: decomp this
-// u32 tevutil_init(void) {
+// u32 tevutil_init(void) 
+// {
 //     GXTevStageID stage;
 //     GXColor *local_c;
 //     GXColor *local_10;
@@ -118,42 +119,56 @@ void GXSetBlendMode_cached_init(GXBlendMode type, GXBlendFactor src_factor, GXBl
     return;
 }
 
-// // "rlwinm" register diffrent
-// // Maybe this seems to correct...
-// void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha)
-// {
-//     ZMode_child_0x24 *child_0x24 = zMode->unk0x24 + id;
+void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha)
+{
+    ZMode_child_0x24 *child_0x24 = zMode->unk0x24 + id;
     
-//     GXSetTevSwapModeTable();
-//     child_0x24->unk0x00 = red;
-//     child_0x24->unk0x04 = green;
-//     child_0x24->unk0x08 = blue;
-//     child_0x24->unk0x0C = alpha;
+    GXSetTevSwapModeTable(id);
+    child_0x24->unk0x00 = red;
+    child_0x24->unk0x04 = green;
+    child_0x24->unk0x08 = blue;
+    child_0x24->unk0x0C = alpha;
     
-//     return;
-// }
+    return;
+}
 
-// void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
-// {
-//     ZMode_child_0x64 *child_0x64 = zMode->unk0x64 + stage;
+void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
+{
+    ZMode_child_0x64 *child_0x64 = zMode->unk0x64 + stage;
     
-//     if ((child_0x64->unk0x00 != ras_sel) || (child_0x64->unk0x04 != tex_sel)) {
-//         GXSetTevSwapMode(stage, ras_sel, tex_sel);
-//         child_0x64->unk0x00 = ras_sel;
-//         child_0x64->unk0x04 = tex_sel;
+    if ((child_0x64->unk0x00 != ras_sel) || (child_0x64->unk0x04 != tex_sel)) {
+        GXSetTevSwapMode(stage, ras_sel, tex_sel);
+        child_0x64->unk0x00 = ras_sel;
+        child_0x64->unk0x04 = tex_sel;
+    }
+    return;
+}
+
+void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
+{
+    ZMode_child_0x64 *child_0x64 = zMode->unk0x64 + stage;
+    
+    GXSetTevSwapMode(stage);
+    child_0x64->unk0x00 = ras_sel;
+    child_0x64->unk0x04 = tex_sel;
+    return;
+}
+
+// void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
+// {
+//     GXColor _color;
+    
+//     if (
+//         zMode->unk0x84[0].unk0x60 != type ||
+//         zMode->unk0x84[0].unk0x74.r != color.r || zMode->unk0x84[0].unk0x74.g != color.g || zMode->unk0x84[0].unk0x74.b != color.b || zMode->unk0x84[0].unk0x74.a != color.a ||
+//         zMode->unk0x84[0].unk0x64 != startz || zMode->unk0x84[0].unk0x68 != endz || 
+//         zMode->unk0x84[0].unk0x6C != nearz || zMode->unk0x84[0].unk0x70 != farz
+//     )
+//     {
+//         // not much something 
+//         _color = color;
+//         func_8009E444(startz, endz, nearz, farz, type, &_color);
 //     }
 //     return;
-// }
-
-// // "rlwinm" register diffrent
-// // Maybe this seems to correct...
-// void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
-// {
-//     // ZMode_child_0x64 *child_0x64 = zMode->unk0x64 + stage;
-    
-//     // GXSetTevSwapMode();
-//     // child_0x64->unk0x00 = ras_sel;
-//     // child_0x64->unk0x04 = tex_sel;
-//     // return;
 // }
 

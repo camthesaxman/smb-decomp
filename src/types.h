@@ -197,18 +197,32 @@ typedef struct
     s32 unk0x04;
 } ZMode_child_0x64;
 
+typedef struct
+{
+    u8 filler0x00[0x60];
+    GXFogType unk0x60;
+    float unk0x64;
+    float unk0x68;
+    float unk0x6C;
+    float unk0x70;
+    GXColor unk0x74;
+    u32 unk0x78;
+    u32 unk0x7C;
+} ZMode_child_0x84;
+
 struct ZMode // GXCache
 {
-    /*0x00*/ GXBool compareEnable;
-    /*0x04*/ GXCompare compareFunc;
-    /*0x08*/ GXBool updateEnable;
-    /*0x09*/ u8 lineWidth;
-    /*0x0C*/ s32 texOffsets;
-    /*0x10*/ s32 unk0x10;
-    /*0x14*/ ZMode_child_0x14 unk0x14;
-    /*0x24*/ ZMode_child_0x24 unk0x24[4];
-    /*0x64*/ ZMode_child_0x64 unk0x64[4];
-    /*0x84*/ u8 filler84[0x734-0x84];
+    /*0x000*/ GXBool compareEnable;
+    /*0x004*/ GXCompare compareFunc;
+    /*0x008*/ GXBool updateEnable;
+    /*0x009*/ u8 lineWidth;
+    /*0x00C*/ s32 texOffsets;
+    /*0x010*/ s32 unk0x10;
+    /*0x014*/ ZMode_child_0x14 unk0x14;
+    /*0x024*/ ZMode_child_0x24 unk0x24[4];
+    /*0x064*/ ZMode_child_0x64 unk0x64[4];
+    /*0x084*/ ZMode_child_0x84 unk0x84[4];
+    /*0x284*/ u8 filler184[0x734-0x284];
 };
 
 struct GFXBufferInfo
