@@ -52,9 +52,9 @@ struct Color3f { float r, g, b; };
 
 // avdisp.c
 struct GMAShape;
-struct GMASampler;
+struct GMATevStageDesc;
 struct DrawShapeDeferredNode;
-struct GMASampler;
+struct GMATevStageDesc;
 struct UnkStruct32;
 
 // GMAModel.flags
@@ -67,7 +67,7 @@ enum
 };
 
 // at GMAModel + 0x40
-struct GMASampler
+struct GMATevStageDesc
 {
     u32 flags;
     u16 unk4;
@@ -83,7 +83,7 @@ struct GMAModel
     /*0x04*/ u32 flags;
     /*0x08*/ Vec boundSphereCenter;
     /*0x14*/ float boundSphereRadius;
-    /*0x18*/ u16 samplerCount;
+    /*0x18*/ u16 tevStageDescCount;
     /*0x1A*/ u16 opaqueShapeCount;
     /*0x1C*/ u16 translucentShapeCount;
     /*0x1E*/ u8 mtxCount;
@@ -92,7 +92,7 @@ struct GMAModel
     /*0x24*/ GXTexObj *texObjs;
     /*0x28*/ u8 mtxIndexes[8];
              u8 filler30[0x10];
-    /*0x40*/ struct GMASampler samplers[0];
+    /*0x40*/ struct GMATevStageDesc tevStageDescs[0];
 };
 
 enum
@@ -123,7 +123,7 @@ struct GMAShape
     /*0x13*/ u8 g_vtxRenderFlags;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16-0x15];
-             u16 samplerIdxs[3];
+             u16 tevStageDescIdxs[3];
     /*0x1C*/ u32 vtxAttrs; // One bit for each GXAttr vertex attr format
     /*0x20*/ u8 mtxIndices[8];
     /*0x28*/ u32 dispListSizes[2];
