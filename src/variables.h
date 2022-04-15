@@ -1456,7 +1456,6 @@ extern u32 *motLabel;
 // extern ? g_tevKColor2;
 // extern ? lbl_802F2114;
 // extern ? g_tevKColor3;
-// extern ? g_customFogEnabled;
 // extern ? g_fogType;
 // extern ? g_fogColor;
 // extern ? g_fogStartZ;
