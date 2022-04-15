@@ -28,7 +28,7 @@ float s_fogEndZ;
 float s_fogStartZ;
 GXColor s_fogColor;
 u32 s_fogType;
-s32 s_g_customFogEnabled;
+s32 s_fogEnabled;
 GXColor g_tevKColor3;
 s32 lbl_802F2114;
 GXColor g_tevKColor2;
@@ -42,30 +42,40 @@ float lbl_802F20F8;
 float lbl_802F20F4;
 Func802F20F0 lbl_802F20F0;
 BallEnvFunc lbl_802F20EC;
-s32 g_cullMode;
+GXCullMode s_cullMode;
 float modelScale;
 u32 g_someLightMask;
-float g_globalAlpha;
+float s_alpha;
 float lbl_802F20D8;
 float lbl_802F20D4;
 float lbl_802F20D0;
 Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 Mtx **avdispMtxPtrList;
 
-struct G_TevCache
+// Initial RAS color source ("rasterized" aka from lighting, vert colors, ambient)
+enum
+{
+    TEVMATCACHE_INITIAL_RAS_NULL,
+    TEVMATCACHE_INITIAL_RAS_UNLIT,
+    TEVMATCACHE_INITIAL_RAS_UNLIT_VERTCOLORS,
+    TEVMATCACHE_INITIAL_RAS_LIGHTS,
+    TEVMATCACHE_INITIAL_RAS_LIGHTS_VERTCOLORS,
+};
+
+struct TevMaterialCache
 {
     u8 unk0;  // 0x6c
-    s8 g_tevStageCount;
-    u8 unk2;
+    s8 tevStageCount;
+    u8 initialRas;
     s8 unk3;
     s8 unk4;
     s8 unk5;
     u8 filler6[2];
     s32 unk8;
     s32 unkC;
-    GXColor unk10;  // 0x7C
-    GXColor unk14;
-    GXColor unk18;
+    GXColor g_someTevColor1;  // 0x7C
+    GXColor g_someTevColor2;
+    GXColor g_someTevColor3;
     s32 g_tevColorArg;
     s32 g_tevAlphaArg;
     GXBlendFactor g_blendSrcFactor;
@@ -85,7 +95,7 @@ struct G_TevCache
 static Vec lbl_802B4E60;
 static Mtx lbl_802B4E6C;
 static Mtx lbl_802B4E9C;
-static struct G_TevCache g_tevCache;
+static struct TevMaterialCache s_materialCache;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
 static u8 lzssHeader[32] __attribute__((aligned(32)));
@@ -94,7 +104,7 @@ static u8 unknownTexImg[64];
 FORCE_BSS_ORDER(lbl_802B4E60)
 FORCE_BSS_ORDER(lbl_802B4E6C)
 FORCE_BSS_ORDER(lbl_802B4E9C)
-FORCE_BSS_ORDER(g_tevCache)
+FORCE_BSS_ORDER(s_materialCache)
 FORCE_BSS_ORDER(unknownTexObj)
 FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lzssHeader)
@@ -187,7 +197,7 @@ void func_8008D788(void)
     lbl_802F20D4 = 1.0f;
     lbl_802F20D0 = 1.0f;
     modelScale = 1.0f;
-    g_globalAlpha = 1.0f;
+    s_alpha = 1.0f;
     g_someLightMask = 1;
     lbl_802F20F0 = NULL;
     init_some_texture();
@@ -566,7 +576,7 @@ void g_avdisp_maybe_draw_model_1(struct GMAModel *model)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        g_globalAlpha = 1.0f;
+        s_alpha = 1.0f;
     }
     else
         g_avdisp_draw_model_1(model);
@@ -578,7 +588,7 @@ void g_avdisp_maybe_draw_model_2(struct GMAModel *model)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        g_globalAlpha = 1.0f;
+        s_alpha = 1.0f;
     }
     else
         g_avdisp_draw_model_2(model);
@@ -590,7 +600,7 @@ void g_avdisp_maybe_draw_model_3(struct GMAModel *model)
     {
         modelScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        g_globalAlpha = 1.0f;
+        s_alpha = 1.0f;
     }
     else
         g_avdisp_draw_model_3(model);
@@ -598,7 +608,7 @@ void g_avdisp_maybe_draw_model_3(struct GMAModel *model)
 
 void g_avdisp_set_alpha(float a)
 {
-    g_globalAlpha = a;
+    s_alpha = a;
 }
 
 void g_avdisp_set_light_mask(u32 a)
@@ -728,9 +738,9 @@ struct DrawShapeDeferredNode
     Mtx mtx;
     struct GMATevStageDesc *modelSamplers;
     struct GMAShape *shape;
-    u32 unk44;
+    GXCullMode cullMode;
     u32 unk48;
-    float unk4C;
+    float alpha;
     BallEnvFunc unk50;
     Func802F20F0 unk54;
     u8 zCompEnable;
@@ -742,13 +752,13 @@ struct DrawShapeDeferredNode
     Mtx *unk64;
     GXColor unk68;
     GXColor unk6C;
-    u32 g_customFogEnabled;
+    u32 fogEnabled;
 };
 
 static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struct GMAShape *shape, struct GMATevStageDesc *modelSamplers)
 {
     struct OrdTblNode *entry;
-    u32 r23 = g_cullMode;
+    GXCullMode cullMode = s_cullMode;
     struct DrawShapeDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
 
     if (shape->unk14 != 0xFF)
@@ -759,9 +769,9 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->model = model;
     node->shape = shape;
     node->modelSamplers = modelSamplers;
-    node->unk44 = r23;
+    node->cullMode = cullMode;
     node->unk48 = func_800223D0();
-    node->unk4C = g_globalAlpha;
+    node->alpha = s_alpha;
     node->unk50 = lbl_802F20EC;
     node->unk54 = lbl_802F20F0;
     node->zCompEnable = s_zModeCompareEnable;
@@ -779,7 +789,7 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
         node->unk68 = g_tevKColor2;
     if (node->unk62 != 0)
         node->unk6C = g_tevKColor3;
-    node->g_customFogEnabled = s_g_customFogEnabled;
+    node->fogEnabled = s_fogEnabled;
     mathutil_mtxA_to_mtx(node->mtx);
     ord_tbl_insert_node(entry, &node->node);
     return skip_shape(shape);
@@ -791,8 +801,8 @@ void g_avdisp_draw_model_1(struct GMAModel *model)
     struct GMATevStageDesc *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    g_cullMode = GX_CULL_BACK;
-    GXSetCullMode_cached(g_cullMode);
+    s_cullMode = GX_CULL_BACK;
+    GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -810,7 +820,7 @@ void g_avdisp_draw_model_1(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    g_globalAlpha = 1.0f;
+    s_alpha = 1.0f;
 }
 
 // for transparent objects?
@@ -820,8 +830,8 @@ void g_avdisp_draw_model_2(struct GMAModel *model)
     struct GMATevStageDesc *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    g_cullMode = 2;
-    GXSetCullMode_cached(g_cullMode);
+    s_cullMode = 2;
+    GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -839,7 +849,7 @@ void g_avdisp_draw_model_2(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    g_globalAlpha = 1.0f;
+    s_alpha = 1.0f;
 }
 
 void g_avdisp_draw_model_3(struct GMAModel *model)
@@ -848,8 +858,8 @@ void g_avdisp_draw_model_3(struct GMAModel *model)
     struct GMATevStageDesc *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    g_cullMode = 2;
-    GXSetCullMode_cached(g_cullMode);
+    s_cullMode = 2;
+    GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
     if (lbl_802F20F0 == NULL)
@@ -862,7 +872,7 @@ void g_avdisp_draw_model_3(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    g_globalAlpha = 1.0f;
+    s_alpha = 1.0f;
 }
 
 void g_avdisp_draw_model_4(struct GMAModel *model)
@@ -871,7 +881,7 @@ void g_avdisp_draw_model_4(struct GMAModel *model)
     struct GMATevStageDesc *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    g_cullMode = 2;
+    s_cullMode = 2;
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
 
@@ -885,7 +895,7 @@ void g_avdisp_draw_model_4(struct GMAModel *model)
 
     modelScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    g_globalAlpha = 1.0f;
+    s_alpha = 1.0f;
 }
 
 int get_texture_max_lod(int width, int height)
@@ -1084,7 +1094,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     u32 r26;
     u32 r25;
     u32 r23;
-    u32 r22;
+    u32 fogEnabled;
     GXColor sp10;
     GXColor spC;
 
@@ -1092,15 +1102,15 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
         func_800223D8(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
-    GXSetCullMode_cached(node->unk44);
-    g_cullMode = node->unk44;
+    GXSetCullMode_cached(node->cullMode);
+    s_cullMode = node->cullMode;
     r31 = lbl_802F20EC;
     r30 = lbl_802F20F0;
     r29 = s_zModeCompareEnable;
     r28 = s_zModeUpdateEnable;
     r27 = s_zModeCompareFunc;
     r26 = lbl_802F2108;
-    g_globalAlpha = node->unk4C;
+    s_alpha = node->alpha;
     lbl_802F20EC = node->unk50;
     lbl_802F20F0 = node->unk54;
     s_zModeCompareEnable = node->zCompEnable;
@@ -1123,8 +1133,8 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
         spC = g_tevKColor3;
         g_tevKColor3 = node->unk6C;
     }
-    r22 = s_g_customFogEnabled;
-    s_g_customFogEnabled = node->g_customFogEnabled;
+    fogEnabled = s_fogEnabled;
+    s_fogEnabled = node->fogEnabled;
     if (lbl_802F20F0 == NULL)
         func_8008FE44(node->model, node->shape);
     draw_model_8008F914(node->model, node->shape, node->modelSamplers);
@@ -1140,8 +1150,8 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     lbl_802F2114 = r23;
     if (node->unk62 != 0)
         g_tevKColor3 = spC;
-    s_g_customFogEnabled = r22;
-    g_globalAlpha = 1.0f;
+    s_fogEnabled = fogEnabled;
+    s_alpha = 1.0f;
 }
 
 u32 func_8008F6D4(u32 a)
@@ -1198,7 +1208,7 @@ void g_avdisp_set_some_color_2(float a, float b, float c, float d)
 
 void g_avdisp_enable_custom_fog(int a)
 {
-    s_g_customFogEnabled = a;
+    s_fogEnabled = a;
 }
 
 void func_8008F880(int a, float b, float c)
@@ -1277,9 +1287,9 @@ struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *sh
         {
             if (shape->g_vtxRenderFlags & (1 << i))
             {
-                if (g_cullMode != cullMode)
+                if (s_cullMode != cullMode)
                 {
-                    g_cullMode = cullMode;
+                    s_cullMode = cullMode;
                     GXSetCullMode_cached(cullMode);
                 }
                 GXCallDisplayList(dlist, shape->dispListSizes[i]);
@@ -1413,10 +1423,10 @@ void *draw_shape_reflection_maybe(struct GMAShape *shape, void *modelSamplers, s
         {
             if (shape->g_vtxRenderFlags & (1 << i))
             {
-                if (g_cullMode != cullMode)
+                if (s_cullMode != cullMode)
                 {
                     u32 r3;
-                    g_cullMode = cullMode;
+                    s_cullMode = cullMode;
                     r3 = (gx->unk204 & ~0xC000) | cullMode << 14;
                     gx->unk204 = r3;
                     func_8008D6BC(r3);
@@ -1435,9 +1445,9 @@ void draw_model_0x18(struct GMAModel *model, struct GMAShape *b, struct GMATevSt
 {
     int i;  // r31
     u8 *r30 = b->mtxIndices;
-    struct GMAShape *r6 = (void *)((u8 *)b + b->unkC.asU32);
+    struct GMAShape *r6 = (void *)((u8 *)b + b->g_color3.asU32);
 
-    g_cullMode = 1;
+    s_cullMode = GX_CULL_FRONT;
     for (i = 0; i < model->opaqueShapeCount; i++)
     {
         r6 = draw_shape_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
@@ -1452,7 +1462,7 @@ void draw_model_0x18(struct GMAModel *model, struct GMAShape *b, struct GMATevSt
 
 void func_8008FE44(struct GMAModel *model, struct GMAShape *shape)
 {
-    g_tevCache.unk0 = 1;
+    s_materialCache.unk0 = 1;
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         shape = (struct GMAShape *)((u8 *)shape + 0x20);
     if (lbl_802F2108 != 0)
@@ -1468,67 +1478,67 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *shape)
         zMode->compareFunc   = s_zModeCompareFunc;
         zMode->updateEnable  = s_zModeUpdateEnable;
     }
-    if (s_g_customFogEnabled != 0)
+    if (s_fogEnabled != 0)
         GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, s_fogColor);
-    if (shape->flags & 0x88)
-        g_tevCache.unk10 = shape->unk4;
+    if (shape->flags & (GMA_SHAPE_FLAG_UNK3 | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
+        s_materialCache.g_someTevColor1 = shape->g_color1;
     else
     {
-        g_tevCache.unk10.r = 255;
-        g_tevCache.unk10.g = 255;
-        g_tevCache.unk10.b = 255;
+        s_materialCache.g_someTevColor1.r = 255;
+        s_materialCache.g_someTevColor1.g = 255;
+        s_materialCache.g_someTevColor1.b = 255;
     }
-    g_tevCache.unk10.a = shape->unk11;
-    if (shape->flags & 0x8)
-        g_tevCache.unk14 = shape->unk8;
+    s_materialCache.g_someTevColor1.a = shape->g_alpha;
+    if (shape->flags & GMA_SHAPE_FLAG_UNK3)
+        s_materialCache.g_someTevColor2 = shape->g_color2;
     else
     {
-        g_tevCache.unk14.r = 255;
-        g_tevCache.unk14.g = 255;
-        g_tevCache.unk14.b = 255;
+        s_materialCache.g_someTevColor2.r = 255;
+        s_materialCache.g_someTevColor2.g = 255;
+        s_materialCache.g_someTevColor2.b = 255;
     }
-    g_tevCache.unk14.a = 255;
+    s_materialCache.g_someTevColor2.a = 255;
     func_8008D6D4(shape);
-    g_tevCache.unk18.r = shape->unkC.asColor.r;
-    g_tevCache.unk18.g = shape->unkC.asColor.g;
-    g_tevCache.unk18.b = shape->unkC.asColor.b;
-    g_tevCache.unk2 = 0;
-    g_tevCache.g_tevColorArg = 15;
-    g_tevCache.g_tevAlphaArg = 7;
-    g_tevCache.unk3 = -1;
-    g_tevCache.unk4 = -1;
-    g_tevCache.unk5 = -1;
-    g_tevCache.unk8 = 16;
-    g_tevCache.unkC = 16;
+    s_materialCache.g_someTevColor3.r = shape->g_color3.asColor.r;
+    s_materialCache.g_someTevColor3.g = shape->g_color3.asColor.g;
+    s_materialCache.g_someTevColor3.b = shape->g_color3.asColor.b;
+    s_materialCache.initialRas = TEVMATCACHE_INITIAL_RAS_NULL;
+    s_materialCache.g_tevColorArg = 15;
+    s_materialCache.g_tevAlphaArg = 7;
+    s_materialCache.unk3 = -1;
+    s_materialCache.unk4 = -1;
+    s_materialCache.unk5 = -1;
+    s_materialCache.unk8 = 16;
+    s_materialCache.unkC = 16;
     if (lbl_802F210C != 0)
         GXSetTevKColor_cached(GX_KCOLOR2, g_tevKColor2);
     if (lbl_802F2114 != 0)
         GXSetTevKColor_cached(GX_KCOLOR3, g_tevKColor3);
-    g_tevCache.g_blendSrcFactor = 4;
-    g_tevCache.g_blendDstFactor = 5;
+    s_materialCache.g_blendSrcFactor = 4;
+    s_materialCache.g_blendDstFactor = 5;
     if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC)
-        g_tevCache.g_blendSrcFactor = shape->g_blendFlags & 0xF;
+        s_materialCache.g_blendSrcFactor = shape->g_blendFlags & 0xF;
     if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_DST)
-        g_tevCache.g_blendDstFactor = (shape->g_blendFlags >> 4) & 0xF;
-    GXSetBlendMode_cached(GX_BM_BLEND, g_tevCache.g_blendSrcFactor, g_tevCache.g_blendDstFactor, GX_LO_CLEAR);
-    g_tevCache.g_tevStageCount = -1;
-    g_tevCache.tevStageDescFlags[0] = -1;
-    g_tevCache.tevStageDescFlags[1] = -1;
-    g_tevCache.tevStageDescFlags[2] = -1;
-    g_tevCache.unk38 = -1;
-    g_tevCache.g_tevStageDescIdxs[0] = 0xFFFF;
-    g_tevCache.g_tevStageDescIdxs[1] = 0xFFFF;
-    g_tevCache.g_tevStageDescIdxs[2] = 0xFFFF;
-    g_tevCache.unk44 = 0;
-    g_tevCache.unk48 = 0;
-    g_tevCache.unk4C = 0;
-    g_tevCache.unk50 = 0;
-    g_tevCache.unk54 = 0;
-    mathutil_mtxA_tf_point(&model->boundSphereCenter, &g_tevCache.unk58);
-    g_tevCache.unk58.z -= model->boundSphereRadius;
-    mathutil_vec_normalize_len(&g_tevCache.unk58);
+        s_materialCache.g_blendDstFactor = (shape->g_blendFlags >> 4) & 0xF;
+    GXSetBlendMode_cached(GX_BM_BLEND, s_materialCache.g_blendSrcFactor, s_materialCache.g_blendDstFactor, GX_LO_CLEAR);
+    s_materialCache.tevStageCount = -1;
+    s_materialCache.tevStageDescFlags[0] = -1;
+    s_materialCache.tevStageDescFlags[1] = -1;
+    s_materialCache.tevStageDescFlags[2] = -1;
+    s_materialCache.unk38 = -1;
+    s_materialCache.g_tevStageDescIdxs[0] = 0xFFFF;
+    s_materialCache.g_tevStageDescIdxs[1] = 0xFFFF;
+    s_materialCache.g_tevStageDescIdxs[2] = 0xFFFF;
+    s_materialCache.unk44 = 0;
+    s_materialCache.unk48 = 0;
+    s_materialCache.unk4C = 0;
+    s_materialCache.unk50 = 0;
+    s_materialCache.unk54 = 0;
+    mathutil_mtxA_tf_point(&model->boundSphereCenter, &s_materialCache.unk58);
+    s_materialCache.unk58.z -= model->boundSphereRadius;
+    mathutil_vec_normalize_len(&s_materialCache.unk58);
 }
 
 void g_compute_texmtx0(void)
@@ -1538,7 +1548,7 @@ void g_compute_texmtx0(void)
     Mtx mtx;
 
     mathutil_mtxA_push();
-    MTXLookAt(mtx, &cameraPos, &cameraUp, &g_tevCache.unk58);
+    MTXLookAt(mtx, &cameraPos, &cameraUp, &s_materialCache.unk58);
     mathutil_mtxA_from_mtx(mtx);
     mathutilData->mtxA[0][3] = 0.5f;
     mathutilData->mtxA[1][0] *= -1.0f;
@@ -1564,7 +1574,7 @@ void g_compute_texmtx1and2(void)
 
     mathutil_mtxA_push();
     target = lbl_802B4E60;
-    sp44 = g_tevCache.unk58;
+    sp44 = s_materialCache.unk58;
     sp44.x *= -0.9f;
     sp44.y *= -0.9f;
     sp44.z *= -0.9f;
@@ -1679,27 +1689,27 @@ static inline void inline_test2(GXColor sp20)
 
 static inline void inline_test3(s8 a)
 {
-    if (g_tevCache.unk3 != a)
+    if (s_materialCache.unk3 != a)
     {
-        g_tevCache.unk3 = a;
+        s_materialCache.unk3 = a;
         GXSetNumTevStages_cached(a);
     }
 }
 
 static inline void inline_test4(s8 b)
 {
-    if (g_tevCache.unk4 != b)
+    if (s_materialCache.unk4 != b)
     {
-        g_tevCache.unk4 = b;
+        s_materialCache.unk4 = b;
         GXSetNumTexGens(b);
     }
 }
 
 static inline void inline_test5(s8 c)
 {
-    if (g_tevCache.unk5 != c)
+    if (s_materialCache.unk5 != c)
     {
-        g_tevCache.unk5 = c;
+        s_materialCache.unk5 = c;
         GXSetNumIndStages(c);
     }
 }
@@ -1711,7 +1721,7 @@ static inline void inline_test5(s8 c)
 void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevStageDescs)
 {
     struct G_TevStageInfo g_tevStageInfo;  // correct
-    GXColor g_someTevColor;  // correct
+    GXColor g_someTevColor1;  // correct
     GXTevColorArg g_tevColorArg;
     s32 g_tevAlphaArg;
     s32 g_isNewTevColorArg;
@@ -1731,70 +1741,70 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     g_tevStageInfo.unk1C = 1;  // 98
     g_tevStageInfo.unk20 = 0;  // 9C
 
-    g_tevStageInfo.g_someTexmapId1 = 1;  // 88
+    g_tevStageInfo.g_someTexmapId1 = GX_TEXMAP1;  // 88
     g_tevStageInfo.unk8 = 0x24;  // 84
     g_tevStageInfo.unk14 = 0x49;  // 90
     g_tevStageInfo.unk18 = 4;  // 94
 
-    if (g_tevCache.unk18.r != shape->unkC.asColor.r
-     || g_tevCache.unk18.g != shape->unkC.asColor.g
-     || g_tevCache.unk18.b != shape->unkC.asColor.b)
+    if (s_materialCache.g_someTevColor3.r != shape->g_color3.asColor.r
+     || s_materialCache.g_someTevColor3.g != shape->g_color3.asColor.g
+     || s_materialCache.g_someTevColor3.b != shape->g_color3.asColor.b)
     {
-        g_tevCache.unk50 = 0;
-        g_tevCache.unk54 = 0;
-        g_tevCache.unk18.r = shape->unkC.asColor.r;
-        g_tevCache.unk18.g = shape->unkC.asColor.g;
-        g_tevCache.unk18.b = shape->unkC.asColor.b;
+        s_materialCache.unk50 = 0;
+        s_materialCache.unk54 = 0;
+        s_materialCache.g_someTevColor3.r = shape->g_color3.asColor.r;
+        s_materialCache.g_someTevColor3.g = shape->g_color3.asColor.g;
+        s_materialCache.g_someTevColor3.b = shape->g_color3.asColor.b;
     }
     // lbl_800905F8
     if ((shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
     {
-        GXColor color_r5;
+        GXColor g_someTevColor2;
         int g_someColorChanged = 0;
         if (shape->flags & 0x88)
         {
-            g_someTevColor.r = shape->unk4.r;
-            g_someTevColor.g = shape->unk4.g;
-            g_someTevColor.b = shape->unk4.b;
+            g_someTevColor1.r = shape->g_color1.r;
+            g_someTevColor1.g = shape->g_color1.g;
+            g_someTevColor1.b = shape->g_color1.b;
         }
         else
         {
-            g_someTevColor.r = 255;
-            g_someTevColor.g = 255;
-            g_someTevColor.b = 255;
+            g_someTevColor1.r = 255;
+            g_someTevColor1.g = 255;
+            g_someTevColor1.b = 255;
         }
         //lbl_80090644
-        g_someTevColor.a = shape->unk11;
-        if (g_tevCache.unk10.r != g_someTevColor.r
-         || g_tevCache.unk10.g != g_someTevColor.g
-         || g_tevCache.unk10.b != g_someTevColor.b
-         || g_tevCache.unk10.a != g_someTevColor.a)
+        g_someTevColor1.a = shape->g_alpha;
+        if (s_materialCache.g_someTevColor1.r != g_someTevColor1.r
+         || s_materialCache.g_someTevColor1.g != g_someTevColor1.g
+         || s_materialCache.g_someTevColor1.b != g_someTevColor1.b
+         || s_materialCache.g_someTevColor1.a != g_someTevColor1.a)
         {
             g_someColorChanged = 1;
-            g_tevCache.unk10 = g_someTevColor;
+            s_materialCache.g_someTevColor1 = g_someTevColor1;
         }
         //lbl_8009069C
         if (shape->flags & 8)
         {
-            color_r5.r = shape->unk8.r;
-            color_r5.g = shape->unk8.g;
-            color_r5.b = shape->unk8.b;
+            g_someTevColor2.r = shape->g_color2.r;
+            g_someTevColor2.g = shape->g_color2.g;
+            g_someTevColor2.b = shape->g_color2.b;
         }
         else
         {
-            color_r5.r = 255;
-            color_r5.g = 255;
-            color_r5.b = 255;
+            g_someTevColor2.r = 255;
+            g_someTevColor2.g = 255;
+            g_someTevColor2.b = 255;
         }
         //lbl_800906C8
-        if (g_tevCache.unk14.r != color_r5.r
-         || g_tevCache.unk14.g != color_r5.g
-         || g_tevCache.unk14.b != color_r5.b)
+        if (s_materialCache.g_someTevColor2.r != g_someTevColor2.r
+         || s_materialCache.g_someTevColor2.g != g_someTevColor2.g
+         || s_materialCache.g_someTevColor2.b != g_someTevColor2.b)
         {
             g_someColorChanged = 1;
-            g_tevCache.unk14.r = color_r5.r;
-            g_tevCache.unk14.g = color_r5.g;
-            g_tevCache.unk14.b = color_r5.b;
+            s_materialCache.g_someTevColor2.r = g_someTevColor2.r;
+            s_materialCache.g_someTevColor2.g = g_someTevColor2.g;
+            s_materialCache.g_someTevColor2.b = g_someTevColor2.b;
         }
         //lbl_8009070C
         if (g_someColorChanged)
@@ -1807,9 +1817,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     {
         if (shape->flags & GMA_SHAPE_FLAG_VERT_COLORS)
         {
-            if (g_tevCache.unk2 != 2)
+            if (s_materialCache.initialRas != TEVMATCACHE_INITIAL_RAS_UNLIT_VERTCOLORS)
             {
-                g_tevCache.unk2 = 2;
+                s_materialCache.initialRas = TEVMATCACHE_INITIAL_RAS_UNLIT_VERTCOLORS;
                 GXSetChanCtrl(
                     GX_COLOR0A0,  // chan
                     GX_DISABLE,  // enable
@@ -1824,23 +1834,23 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         //lbl_8009077C
         else
         {
-            g_tevCache.unk2 = 1;
-            if (shape->flags & 0x88)
+            s_materialCache.initialRas = TEVMATCACHE_INITIAL_RAS_UNLIT;
+            if (shape->flags & (GMA_SHAPE_FLAG_UNK3 | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
             {
-                g_someTevColor.r = shape->unk4.r;
-                g_someTevColor.g = shape->unk4.g;
-                g_someTevColor.b = shape->unk4.b;
+                g_someTevColor1.r = shape->g_color1.r;
+                g_someTevColor1.g = shape->g_color1.g;
+                g_someTevColor1.b = shape->g_color1.b;
             }
             else
             {
-                g_someTevColor.r = 255;
-                g_someTevColor.g = 255;
-                g_someTevColor.b = 255;
+                g_someTevColor1.r = 255;
+                g_someTevColor1.g = 255;
+                g_someTevColor1.b = 255;
             }
             //lbl_800907C0
-            g_someTevColor.a = (float)shape->unk11 * g_globalAlpha;
+            g_someTevColor1.a = (float)shape->g_alpha * s_alpha;
             //sp38 = sp78;
-            GXSetTevColor(GX_TEVREG0, g_someTevColor);
+            GXSetTevColor(GX_TEVREG0, g_someTevColor1);
             g_tevColorArg = GX_CC_C0;
             g_tevAlphaArg = GX_CA_A0;
             //to lbl_800908D4
@@ -1851,9 +1861,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     {
         if (shape->flags & GMA_SHAPE_FLAG_VERT_COLORS)
         {
-            if (g_tevCache.unk2 != 4)
+            if (s_materialCache.initialRas != TEVMATCACHE_INITIAL_RAS_LIGHTS_VERTCOLORS)
             {
-                g_tevCache.unk2 = 4;
+                s_materialCache.initialRas = TEVMATCACHE_INITIAL_RAS_LIGHTS_VERTCOLORS;
                 GXSetChanCtrl(
                     GX_ALPHA0,  // chan
                     GX_DISABLE,  // enable
@@ -1876,9 +1886,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         //lbl_8009087C
         else
         {
-            if (g_tevCache.unk2 != 3)
+            if (s_materialCache.initialRas != TEVMATCACHE_INITIAL_RAS_LIGHTS)
             {
-                g_tevCache.unk2 = 3;
+                s_materialCache.initialRas = TEVMATCACHE_INITIAL_RAS_LIGHTS;
                 GXSetChanCtrl(
                     GX_ALPHA0,  // chan
                     GX_DISABLE,  // enable
@@ -1900,7 +1910,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     }
     //lbl_800908D4
 
-    if (s_g_customFogEnabled != 0)
+    if (s_fogEnabled != 0)
     {
         if (shape->flags & GMA_SHAPE_FLAG_NO_FOG)
             GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, s_fogColor);
@@ -1908,19 +1918,19 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     }
     //lbl_8009093C
-    if (g_tevCache.g_tevColorArg != g_tevColorArg)
+    if (s_materialCache.g_tevColorArg != g_tevColorArg)
     {
-        g_tevCache.g_tevColorArg = g_tevColorArg;
+        s_materialCache.g_tevColorArg = g_tevColorArg;
         g_isNewTevColorArg = 1;
     }
-    if (g_tevCache.g_tevAlphaArg != g_tevAlphaArg)
+    if (s_materialCache.g_tevAlphaArg != g_tevAlphaArg)
     {
-        g_tevCache.g_tevAlphaArg = g_tevAlphaArg;
+        s_materialCache.g_tevAlphaArg = g_tevAlphaArg;
         g_isNewTevAlphaArg = 1;
     }
     if (shape->flags & GMA_SHAPE_FLAG_SIMPLE_MATERIAL) // Simple single-stage material? Used for ball start pos marker for example
     {
-        if (g_tevCache.g_tevStageCount != 0 || g_isNewTevColorArg != 0 || g_isNewTevAlphaArg != 0)
+        if (s_materialCache.tevStageCount != 0 || g_isNewTevColorArg != 0 || g_isNewTevAlphaArg != 0)
         {
             // Use color/alpha directly from D input with no modifications for this tev stage
             GXSetTevOrder_cached(g_tevStageInfo.tevStage, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
@@ -1942,7 +1952,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             }
         }
         //lbl_80090A60
-        g_tevCache.tevStageDescFlags[0] = -1;
+        s_materialCache.tevStageDescFlags[0] = -1;
         g_tevStageInfo.tevStage++;
         //to lbl_80091020
     }
@@ -1960,9 +1970,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         // r25 = &g_tevCache.visibleKeyframeCount  doesn't change
         // maybe indexed instead?
         u16 *tevStageDescIdx = shape->tevStageDescIdxs;
-        u32 *cachedTevStageDescFlags = g_tevCache.tevStageDescFlags;
+        u32 *cachedTevStageDescFlags = s_materialCache.tevStageDescFlags;
         u32 flags;
-        u16 *g_someTevStageDescIdx = g_tevCache.g_tevStageDescIdxs;
+        u16 *g_someTevStageDescIdx = s_materialCache.g_tevStageDescIdxs;
         while (tevStageCounter > 0)
         {
             struct GMATevStageDesc *tevStageDesc = &tevStageDescs[*tevStageDescIdx];
@@ -2011,7 +2021,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             //lbl_80090B98
             else if (flags & GMA_SHAPE_FLAG_UNLIT)
             {
-                if (g_tevCache.unk50 == 0)
+                if (s_materialCache.unk50 == 0)
                 {
                     /*
                     GXColor sp28 = g_tevCache.unk18;
@@ -2027,8 +2037,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     */
                     // 40 -> 44 (g_tevCache.unk18 temp)
                     // r14 44 -> 28 (arg to GXSetTevKColor_cached)
-                    inline_test1(g_tevCache.unk18);
-                    g_tevCache.unk50 = 1;
+                    inline_test1(s_materialCache.g_someTevColor3);
+                    s_materialCache.unk50 = 1;
                 }
                 //lbl_80090C08
                 if (g_isNewTevColorArg != 0)
@@ -2042,7 +2052,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             //lbl_80090C30
             else // (flags & GMA_TEV_STAGE_FLAG_UNK15)
             {
-                if (g_tevCache.unk54 == 0)
+                if (s_materialCache.unk54 == 0)
                 {
                     /*
                     GXColor sp20 = g_tevCache.unk18;
@@ -2060,8 +2070,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     */
                     // 32 -> 40 (g_tevCache.unk18 temp)
                     // r27 36 -> 24 (arg to GXSetTevKColor_cached)
-                    inline_test2(g_tevCache.unk18);
-                    g_tevCache.unk54 = 1;
+                    inline_test2(s_materialCache.g_someTevColor3);
+                    s_materialCache.unk54 = 1;
                 }
                 //lbl_80090D18
                 if (g_isNewTevColorArg != 0)
@@ -2111,7 +2121,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             //lbl_80090E54
             else if (tevStageDescFlags & 1)
             {
-                if (g_tevCache.unk50 == 0)
+                if (s_materialCache.unk50 == 0)
                 {
                     /*
                     GXColor sp28 = g_tevCache.unk18;
@@ -2126,15 +2136,15 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     */
                     // 24 -> 36 (g_tevCache.unk18 temp)
                     // 28 -> 20 (arg to GXSetTevKColor_cached)
-                    inline_test1(g_tevCache.unk18);
-                    g_tevCache.unk50 = 1;
+                    inline_test1(s_materialCache.g_someTevColor3);
+                    s_materialCache.unk50 = 1;
                 }
                 func_800916FC(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
                 func_800918DC(&g_tevStageInfo);
             }
             else
             {
-                if (g_tevCache.unk54 == 0)
+                if (s_materialCache.unk54 == 0)
                 {
                     /*
                     GXColor sp20 = g_tevCache.unk18;
@@ -2152,8 +2162,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     */
                     // 16 -> 32 (g_tevCache.unk18 temp)
                     // r21 20 -> 16 (arg to GXSetTevKColor_cached)
-                    inline_test2(g_tevCache.unk18);
-                    g_tevCache.unk54 = 1;
+                    inline_test2(s_materialCache.g_someTevColor3);
+                    s_materialCache.unk54 = 1;
                 }
                 func_800918F8(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
                 func_80091B88(&g_tevStageInfo);
@@ -2173,7 +2183,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     if (lbl_802F20EC != NULL)
     {
         struct UnkStruct33 sp3C;
-        sp3C.unk0 = g_tevCache.unk0;
+        sp3C.unk0 = s_materialCache.unk0;
         sp3C.unk4 = shape;
         sp3C.unk8 = tevStageDescs;
         sp3C.unkC = g_tevStageInfo;
@@ -2183,9 +2193,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     //lbl_800910F8
     if (lbl_802F210C != 0)
     {
-        if (g_tevCache.unk8 != g_tevStageInfo.tevStage)
+        if (s_materialCache.unk8 != g_tevStageInfo.tevStage)
         {
-            g_tevCache.unk8 = g_tevStageInfo.tevStage;
+            s_materialCache.unk8 = g_tevStageInfo.tevStage;
             func_8009127C(g_tevStageInfo.tevStage);
         }
         g_tevStageInfo.tevStage++;
@@ -2193,9 +2203,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     //lbl_8009112C
     if (lbl_802F2114 != 0)
     {
-        if (g_tevCache.unkC != g_tevStageInfo.tevStage)
+        if (s_materialCache.unkC != g_tevStageInfo.tevStage)
         {
-            g_tevCache.unk8 = g_tevStageInfo.tevStage;
+            s_materialCache.unk8 = g_tevStageInfo.tevStage;
             func_80091340(g_tevStageInfo.tevStage);
         }
         g_tevStageInfo.tevStage++;
@@ -2212,18 +2222,18 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         g_blendSrcFactor = shape->g_blendFlags & 0xF;
     if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_DST)
         g_blendDstFactor = (shape->g_blendFlags >> 4) & 0xF;
-    if (g_tevCache.g_blendSrcFactor != g_blendSrcFactor || g_tevCache.g_blendDstFactor != g_blendDstFactor)
+    if (s_materialCache.g_blendSrcFactor != g_blendSrcFactor || s_materialCache.g_blendDstFactor != g_blendDstFactor)
     {
         GXSetBlendMode_cached(GX_BM_BLEND, g_blendSrcFactor, g_blendDstFactor, GX_LO_CLEAR);
-        g_tevCache.g_blendSrcFactor = g_blendSrcFactor;
-        g_tevCache.g_blendDstFactor = g_blendDstFactor;
+        s_materialCache.g_blendSrcFactor = g_blendSrcFactor;
+        s_materialCache.g_blendDstFactor = g_blendDstFactor;
     }
     //lbl_8009123C
-    g_tevCache.unk0 = 0;
+    s_materialCache.unk0 = 0;
     if (shape->flags & GMA_SHAPE_FLAG_SIMPLE_MATERIAL)
-        g_tevCache.g_tevStageCount = 0;
+        s_materialCache.tevStageCount = 0;
     else
-        g_tevCache.g_tevStageCount = shape->tevStageCount;
+        s_materialCache.tevStageCount = shape->tevStageCount;
 }
 // #else
 // asm void g_build_tev_material(struct GMAShape *a, struct GMASampler *b)
@@ -2312,7 +2322,7 @@ void func_800916FC(struct G_TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaA
 {
     GXSetTevDirect(a->tevStage);
     GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
-    if (g_tevCache.unk44 == 0)
+    if (s_materialCache.unk44 == 0)
     {
         mathutil_mtxA_push();
         mathutilData->mtxA[0][3] = 0.0f;
@@ -2320,12 +2330,12 @@ void func_800916FC(struct G_TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaA
         mathutilData->mtxA[2][3] = 0.0f;
         GXLoadTexMtxImm(mathutilData->mtxA, GX_TEXMTX0, GX_MTX3x4);
         mathutil_mtxA_pop();
-        g_tevCache.unk44 = 1;
+        s_materialCache.unk44 = 1;
     }
-    if (g_tevCache.unk48 == 0)
+    if (s_materialCache.unk48 == 0)
     {
         g_compute_texmtx0();
-        g_tevCache.unk48 = 1;
+        s_materialCache.unk48 = 1;
     }
     GXSetTevKColorSel_cached(a->tevStage, GX_TEV_KCSEL_K0);
     GXSetTexCoordGen2(a->g_texCoordId1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
@@ -2353,7 +2363,7 @@ void func_800918F8(struct G_TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaA
 {
     u32 tevStage;
 
-    if (g_tevCache.unk44 == 0)
+    if (s_materialCache.unk44 == 0)
     {
         mathutil_mtxA_push();
         mathutilData->mtxA[0][3] = 0.0f;
@@ -2361,13 +2371,13 @@ void func_800918F8(struct G_TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaA
         mathutilData->mtxA[2][3] = 0.0f;
         GXLoadTexMtxImm(mathutilData->mtxA, GX_TEXMTX0, GX_MTX3x4);
         mathutil_mtxA_pop();
-        g_tevCache.unk44 = 1;
+        s_materialCache.unk44 = 1;
     }
-    if (g_tevCache.unk4C == 0)
+    if (s_materialCache.unk4C == 0)
     {
         GXLoadTexObj_cached(&unknownTexObj, GX_TEXMAP0);
         g_compute_texmtx1and2();
-        g_tevCache.unk4C = 1;
+        s_materialCache.unk4C = 1;
     }
     // unrolled loop?
     tevStage = a->tevStage;

@@ -108,6 +108,7 @@ enum
     GMA_SHAPE_FLAG_UNLIT = 1 << 0,
     GMA_SHAPE_FLAG_DOUBLE_SIDED = 1 << 1, // Draw front and back sides of tris/quads
     GMA_SHAPE_FLAG_NO_FOG = 1 << 2,
+    GMA_SHAPE_FLAG_UNK3 = 1 << 3,
     GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC = 1 << 5,
     GMA_SHAPE_FLAG_CUSTOM_BLEND_DST = 1 << 6,
     GMA_SHAPE_FLAG_SIMPLE_MATERIAL = 1 << 7, // Only 1 tev stage that spits out color/alpha input D directly
@@ -118,15 +119,15 @@ enum
 struct GMAShape
 {
     /*0x00*/ u32 flags;
-    /*0x04*/ GXColor unk4;
-    /*0x08*/ GXColor unk8;
+    /*0x04*/ GXColor g_color1;
+    /*0x08*/ GXColor g_color2;
              union
              {
                  u32 asU32;
                  GXColor asColor;
-             } unkC;
+             } g_color3;
     /*0x10*/ u8 filler10[1];
-             u8 unk11;
+             u8 g_alpha;
     /*0x12*/ u8 tevStageCount;
     /*0x13*/ u8 g_vtxRenderFlags;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
     /*0x14*/ u8 unk14;
