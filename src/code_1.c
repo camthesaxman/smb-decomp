@@ -20,7 +20,7 @@ static void draw_done_callback(void)
     drawingFinished = TRUE;
 }
 
-void setup_vtx_attrib_fmt(void)
+void init_vtx_attr_fmts(void)
 {
     GXClearVtxDesc();
     gxutil_clear_vtx_attrs();
@@ -62,7 +62,7 @@ void init_wait_vblank(void)
     GXSetDrawDoneCallback(draw_done_callback);
     drawingFinished = FALSE;
     GXDrawDone();
-    setup_vtx_attrib_fmt();
+    init_vtx_attr_fmts();
     GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     zMode->compareEnable = GX_ENABLE;
     zMode->compareFunc   = GX_LEQUAL;
@@ -120,7 +120,7 @@ void preproc_main(void)
     zMode->updateEnable  = GX_ENABLE;
     GXSetZCompLoc_cached(0);
     GXCopyDisp(gfxBufferInfo->currFrameBuf, GX_TRUE);
-    setup_vtx_attrib_fmt();
+    init_vtx_attr_fmts();
 }
 
 void epiproc_main(void)

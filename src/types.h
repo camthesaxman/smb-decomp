@@ -115,6 +115,15 @@ enum
     GMA_SHAPE_FLAG_VERT_COLORS = 1 << 8,
 };
 
+enum
+{
+    GMA_SHAPE_DLIST_FLAG_DLIST0= 1 << 0, // Display list 0 present, cull front faces by default
+    GMA_SHAPE_DLIST_FLAG_DLIST1= 1 << 1, // Display list 1 present, cull back faces by default
+    // Extra display lists (always both present or neither?)
+    GMA_SHAPE_DLIST_FLAG_DLIST2 = 1 << 2, // Display list 2 present, cull front faces
+    GMA_SHAPE_DLIST_FLAG_DLIST3 = 1 << 3, // Display list 3 present, cull back faces
+};
+
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
 struct GMAShape
 {
@@ -129,16 +138,16 @@ struct GMAShape
     /*0x10*/ u8 filler10[1];
              u8 g_alpha;
     /*0x12*/ u8 tevStageCount;
-    /*0x13*/ u8 g_vtxRenderFlags;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
+    /*0x13*/ u8 dispListFlags;
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16-0x15];
-             u16 tevStageDescIdxs[3];
-    /*0x1C*/ u32 vtxAttrs; // One bit for each GXAttr vertex attr format
+             u16 tevStageDescIdxs[3]; // Up to 3 indices into model's tev stage desc list. -1 means end of list
+    /*0x1C*/ u32 vtxAttrs; // One bit for each GXAttr vertex attribute
     /*0x20*/ u8 mtxIndices[8];
     /*0x28*/ u32 dispListSizes[2];
-    /*0x30*/ Vec boundSphereCenter;
+    /*0x30*/ Point3d origin; // Reference point for depth sorting
     u8 filler3C[4];
-    u32 g_blendFlags; // 0xF bitmask is src blend factor, 0xF0 is dst blend factor
+    u32 blendFactors; // 0xF bitmask is src blend factor, 0xF0 is dst blend factor
     u8 filler44[0x60-0x44];
     u8 dispListData[0];
 };  // size = 0x60
@@ -740,7 +749,7 @@ struct FogInfo
     float unk4;
     float unk8;
     u8 r, g, b;
-    s8 g_enabled;
+    s8 enabled;
 };
 
 struct Struct80209488;

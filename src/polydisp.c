@@ -1338,7 +1338,7 @@ void set_backdrop_color(void)
         break;
     }
 
-    if (r0 && fogInfo.g_enabled != 0)
+    if (r0 && fogInfo.enabled != 0)
     {
         color.r = fogInfo.r;
         color.g = fogInfo.g;
