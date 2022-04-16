@@ -9,7 +9,7 @@
 enum
 {
     GMA_TEV_STAGE_FLAG_UNK0 = 1 << 0,
-    GMA_TEV_STAGE_FLAG_UNK1 = 1 << 1,
+    GMA_TEV_STAGE_FLAG_UNK1 = 1 << 1, // Unused/ignored?
     // Bits 2-3 for S wrap mode
     // Bits 4-5 for T wrap mode
     GMA_TEV_STAGE_FLAG_UNK6 = 1 << 6,

@@ -77,8 +77,8 @@ struct TevMaterialCache
     GXColor g_someTevColor1;  // 0x7C
     GXColor g_someTevColor2;
     GXColor g_someTevColor3;
-    s32 g_tevColorArg;
-    s32 g_tevAlphaArg;
+    s32 colorSrc;
+    s32 alphaSrc;
     GXBlendFactor blendSrcFactor;
     GXBlendFactor blendDstFactor;
     u32 tevStageDescFlags[3]; // 0x98  array?
@@ -1509,8 +1509,8 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *shape)
     s_materialCache.g_someTevColor3.g = shape->g_color3.asColor.g;
     s_materialCache.g_someTevColor3.b = shape->g_color3.asColor.b;
     s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_NULL;
-    s_materialCache.g_tevColorArg = GX_CC_ZERO;
-    s_materialCache.g_tevAlphaArg = GX_CA_ZERO;
+    s_materialCache.colorSrc = GX_CC_ZERO;
+    s_materialCache.alphaSrc = GX_CA_ZERO;
     s_materialCache.unk3 = -1;
     s_materialCache.unk4 = -1;
     s_materialCache.unk5 = -1;
@@ -1726,10 +1726,10 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
 {
     struct G_TevStageInfo g_tevStageInfo;  // correct
     GXColor g_someTevColor1;  // correct
-    GXTevColorArg g_tevColorArg;
-    s32 g_tevAlphaArg;
-    s32 g_isNewTevColorArg;
-    s32 g_isNewTevAlphaArg;
+    GXTevColorArg colorSrc;
+    GXTevAlphaArg alphaSrc;
+    s32 haveNewColorSrc;
+    s32 haveNewAlphaSrc;
     s32 blendSrcFactor;
     s32 blendDstFactor;
 
@@ -1738,9 +1738,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     g_tevStageInfo.unk8 = 0x1E;  // 84
     g_tevStageInfo.g_someTexmapId1 = GX_TEXMAP0;  // 88
     g_tevStageInfo.tevIndStage = 0;  // 8C
-    g_isNewTevColorArg = 0;
+    haveNewColorSrc = 0;
     g_tevStageInfo.unk14 = 0x40;  // 0x90
-    g_isNewTevAlphaArg = 0;
+    haveNewAlphaSrc = 0;
     g_tevStageInfo.unk18 = 0;  // 94
     g_tevStageInfo.unk1C = 1;  // 98
     g_tevStageInfo.unk20 = 0;  // 9C
@@ -1815,8 +1815,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             func_8008D6D4(shape);
     }
     //lbl_8009071C
-    g_tevColorArg = GX_CC_RASC;
-    g_tevAlphaArg = GX_CA_RASA;
+    colorSrc = GX_CC_RASC;
+    alphaSrc = GX_CA_RASA;
     if (shape->flags & GMA_SHAPE_FLAG_UNLIT)
     {
         if (shape->flags & GMA_SHAPE_FLAG_VERT_COLORS)
@@ -1855,8 +1855,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             g_someTevColor1.a = (float)shape->g_alpha * s_alpha;
             //sp38 = sp78;
             GXSetTevColor(GX_TEVREG0, g_someTevColor1);
-            g_tevColorArg = GX_CC_C0;
-            g_tevAlphaArg = GX_CA_A0;
+            colorSrc = GX_CC_C0;
+            alphaSrc = GX_CA_A0;
             //to lbl_800908D4
         }
     }
@@ -1922,37 +1922,37 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     }
     //lbl_8009093C
-    if (s_materialCache.g_tevColorArg != g_tevColorArg)
+    if (s_materialCache.colorSrc != colorSrc)
     {
-        s_materialCache.g_tevColorArg = g_tevColorArg;
-        g_isNewTevColorArg = 1;
+        s_materialCache.colorSrc = colorSrc;
+        haveNewColorSrc = 1;
     }
-    if (s_materialCache.g_tevAlphaArg != g_tevAlphaArg)
+    if (s_materialCache.alphaSrc != alphaSrc)
     {
-        s_materialCache.g_tevAlphaArg = g_tevAlphaArg;
-        g_isNewTevAlphaArg = 1;
+        s_materialCache.alphaSrc = alphaSrc;
+        haveNewAlphaSrc = 1;
     }
     if (shape->flags & GMA_SHAPE_FLAG_SIMPLE_MATERIAL) // Simple single TEV stage, zero texture material?
     {
-        if (s_materialCache.tevStageCount != 0 || g_isNewTevColorArg != 0 || g_isNewTevAlphaArg != 0)
+        if (s_materialCache.tevStageCount != 0 || haveNewColorSrc != 0 || haveNewAlphaSrc != 0)
         {
             // Use color/alpha directly from D input with no modifications for this tev stage
             GXSetTevOrder_cached(g_tevStageInfo.tevStage, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-            GXSetTevColorIn_cached(g_tevStageInfo.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, g_tevColorArg);
+            GXSetTevColorIn_cached(g_tevStageInfo.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorSrc);
             GXSetTevColorOp_cached(g_tevStageInfo.tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-            GXSetTevAlphaIn_cached(g_tevStageInfo.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, g_tevAlphaArg);
+            GXSetTevAlphaIn_cached(g_tevStageInfo.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaSrc);
             GXSetTevAlphaOp_cached(g_tevStageInfo.tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
         }
         //lbl_80090A1C
         else
         {
-            if (g_isNewTevColorArg != 0) // Impossible
+            if (haveNewColorSrc != 0) // Impossible
             {
-                if (g_isNewTevColorArg != 0)
-                    GXSetTevColorIn_cached(g_tevStageInfo.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, g_tevColorArg);
+                if (haveNewColorSrc != 0)
+                    GXSetTevColorIn_cached(g_tevStageInfo.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorSrc);
                 //lbl_80090A40
-                if (g_isNewTevAlphaArg != 0)
-                    GXSetTevAlphaIn_cached(g_tevStageInfo.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, g_tevAlphaArg);
+                if (haveNewAlphaSrc != 0)
+                    GXSetTevAlphaIn_cached(g_tevStageInfo.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaSrc);
             }
         }
         //lbl_80090A60
@@ -1993,10 +1993,10 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             //lbl_80090B00
             if (tevStageDescFlags == 0)
             {
-                if (g_isNewTevColorArg != 0)
+                if (haveNewColorSrc != 0)
                 {
-                    func_80091500(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg);
-                    g_isNewTevColorArg = 0;
+                    func_80091500(&g_tevStageInfo, colorSrc, alphaSrc);
+                    haveNewColorSrc = 0;
                 }
                 func_80091564(&g_tevStageInfo);
                 //to lbl_80090D3C
@@ -2004,20 +2004,20 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             //lbl_80090B30
             else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK13)
             {
-                if (g_isNewTevColorArg != 0)
+                if (haveNewColorSrc != 0)
                 {
-                    func_8009167C(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg);
-                    g_isNewTevColorArg = 0;
+                    func_8009167C(&g_tevStageInfo, colorSrc, alphaSrc);
+                    haveNewColorSrc = 0;
                 }
                 func_800916E0(&g_tevStageInfo);
                 //to lbl_80090D3C
             }
             else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK1)
             {
-                if (g_isNewTevColorArg != 0)
+                if (haveNewColorSrc != 0)
                 {
-                    func_80091CA8(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg);
-                    g_isNewTevColorArg = 0;
+                    func_80091CA8(&g_tevStageInfo, colorSrc, alphaSrc);
+                    haveNewColorSrc = 0;
                 }
                 func_80091D0C(&g_tevStageInfo);
                 //to lbl_80090D3C
@@ -2045,10 +2045,10 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     s_materialCache.unk50 = 1;
                 }
                 //lbl_80090C08
-                if (g_isNewTevColorArg != 0)
+                if (haveNewColorSrc != 0)
                 {
-                    func_80091878(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg);
-                    g_isNewTevColorArg = 0;
+                    func_80091878(&g_tevStageInfo, colorSrc, alphaSrc);
+                    haveNewColorSrc = 0;
                 }
                 func_800918DC(&g_tevStageInfo);
                 //to lbl_80090D3C
@@ -2078,10 +2078,10 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     s_materialCache.unk54 = 1;
                 }
                 //lbl_80090D18
-                if (g_isNewTevColorArg != 0)
+                if (haveNewColorSrc != 0)
                 {
-                    func_80091B1C(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg);
-                    g_isNewTevColorArg = 0;
+                    func_80091B1C(&g_tevStageInfo, colorSrc, alphaSrc);
+                    haveNewColorSrc = 0;
                 }
                 func_80091B88(&g_tevStageInfo);
             }
@@ -2092,8 +2092,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             tevStageDescIdx++;
             cachedTevStageDescFlags++;
             cachedTevStageDescIdx++;
-            g_tevColorArg = GX_CC_CPREV;
-            g_tevAlphaArg = GX_CA_APREV;
+            colorSrc = GX_CC_CPREV;
+            alphaSrc = GX_CA_APREV;
         }
         //lbl_80090D70
         while (tevStageCounter > 0)
@@ -2109,17 +2109,17 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             }
             if (tevStageDescFlags == 0)
             {
-                func_80091404(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
+                func_80091404(&g_tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 func_80091564(&g_tevStageInfo);
             }
             else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK13)
             {
-                func_80091580(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
+                func_80091580(&g_tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 func_800916E0(&g_tevStageInfo);
             }
             else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK13) // same thing, unreachable
             {
-                func_80091BA4(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
+                func_80091BA4(&g_tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 func_80091D0C(&g_tevStageInfo);
             }
             //lbl_80090E54
@@ -2143,7 +2143,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     material_set_tev_kcolor0(s_materialCache.g_someTevColor3);
                     s_materialCache.unk50 = 1;
                 }
-                func_800916FC(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
+                func_800916FC(&g_tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 func_800918DC(&g_tevStageInfo);
             }
             else
@@ -2169,7 +2169,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                     material_set_tev_kcolor1(s_materialCache.g_someTevColor3);
                     s_materialCache.unk54 = 1;
                 }
-                func_800918F8(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
+                func_800918F8(&g_tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 func_80091B88(&g_tevStageInfo);
             }
             g_tevStageInfo.g_someTexmapId1++;
@@ -2178,8 +2178,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             tevStageDescIdx++;
             cachedTevStageDescFlags++;
             cachedTevStageDescIdx++;
-            g_tevColorArg = 0;
-            g_tevAlphaArg = 0;
+            colorSrc = GX_CC_CPREV;
+            alphaSrc = GX_CA_APREV;
         }
         *cachedTevStageDescFlags = -1;
     }
