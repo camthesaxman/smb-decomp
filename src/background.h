@@ -6,6 +6,7 @@
 #include <dolphin/GXStruct.h>
 
 #include "types.h"
+#include "gma.h"
 
 /*               id                    fname        oldfname song backdropColor (RGBA)*/
 #define BACKGROUND_LIST \

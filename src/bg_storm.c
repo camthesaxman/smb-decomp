@@ -8,6 +8,7 @@
 #include "event.h"
 #include "mathutil.h"
 #include "stcoli.h"
+#include "gma.h"
 
 static struct BGModelSearch stormModelFind[] =
 {

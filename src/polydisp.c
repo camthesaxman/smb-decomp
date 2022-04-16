@@ -23,6 +23,7 @@
 #include "stage.h"
 #include "world.h"
 #include "tevutil.h"
+#include "gma.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 

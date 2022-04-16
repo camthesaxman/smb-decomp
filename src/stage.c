@@ -18,6 +18,7 @@
 #include "preview.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "gma.h"
 
 #include "../data/common.nlobj.h"
 

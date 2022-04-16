@@ -18,6 +18,7 @@
 #include "stage.h"
 #include "world.h"
 #include "stcoli.h"
+#include "gma.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"

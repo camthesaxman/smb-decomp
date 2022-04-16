@@ -10,6 +10,7 @@
 #include "ord_tbl.h"
 #include "types.h"
 #include "tevutil.h"
+#include "gma.h"
 
 struct UnkStruct4
 {
@@ -40,7 +41,7 @@ GXBool s_zModeCompareEnable;
 float lbl_802F20FC;
 float lbl_802F20F8;
 float lbl_802F20F4;
-Func802F20F0 lbl_802F20F0;
+Func802F20F0 g_customMaterialFunc;
 BallEnvFunc lbl_802F20EC;
 GXCullMode s_cullMode;
 float modelScale;
@@ -52,7 +53,7 @@ float lbl_802F20D0;
 Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 Mtx **avdispMtxPtrList;
 
-// Initial RAS color source ("rasterized" aka from lighting, vert colors, ambient)
+// How lighting channel (lighting, vert colors, ambient) is configured
 enum
 {
     TEVMATCACHE_CHAN_CONFIG_NULL,
@@ -199,7 +200,7 @@ void func_8008D788(void)
     modelScale = 1.0f;
     s_alpha = 1.0f;
     g_someLightMask = 1;
-    lbl_802F20F0 = NULL;
+    g_customMaterialFunc = NULL;
     init_some_texture();
     sp8.x = 0.0f;
     sp8.y = 1.0f;
@@ -645,8 +646,8 @@ BallEnvFunc g_avdisp_set_some_func_1(BallEnvFunc func)
 
 Func802F20F0 g_avdisp_set_some_func_2(Func802F20F0 func)
 {
-    Func802F20F0 old = lbl_802F20F0;
-    lbl_802F20F0 = func;
+    Func802F20F0 old = g_customMaterialFunc;
+    g_customMaterialFunc = func;
     return old;
 }
 
@@ -685,7 +686,7 @@ void *func_8008E64C(struct GMAModel *model)
 // Returns the shape that follows after the given shape and all of its display lists
 static inline struct GMAShape *next_shape(struct GMAShape *shape)
 {
-    u8 *ptr = shape->dispListData;
+    u8 *ptr = shape->dispLists;
     int i;
 
     // skip over display lists
@@ -774,7 +775,7 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->unk48 = func_800223D0();
     node->alpha = s_alpha;
     node->unk50 = lbl_802F20EC;
-    node->unk54 = lbl_802F20F0;
+    node->unk54 = g_customMaterialFunc;
     node->zCompEnable = s_zModeCompareEnable;
     node->zUpdEnable = s_zModeUpdateEnable;
     node->zCompFunc = s_zModeCompareFunc;
@@ -806,7 +807,7 @@ void g_avdisp_draw_model_1(struct GMAModel *model)
     GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
-    if (lbl_802F20F0 == NULL)
+    if (g_customMaterialFunc == NULL)
         func_8008FE44(model, shape);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
@@ -835,7 +836,7 @@ void g_avdisp_draw_model_2(struct GMAModel *model)
     GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
-    if (lbl_802F20F0 == NULL)
+    if (g_customMaterialFunc == NULL)
         func_8008FE44(model, shape);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
@@ -863,7 +864,7 @@ void g_avdisp_draw_model_3(struct GMAModel *model)
     GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
-    if (lbl_802F20F0 == NULL)
+    if (g_customMaterialFunc == NULL)
         func_8008FE44(model, shape);
 
     for (i = 0; i < model->opaqueShapeCount; i++)
@@ -971,7 +972,7 @@ void init_tevstagedesc_texobj(struct GMATevStageDesc *tevStageDesc, struct TPLTe
         wrapT,  // wrap_t
         maxLOD != 0);  // mipmap
 
-    if (tevStageDesc->flags & 0x800)
+    if (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK11)
     {
         magFilt = GX_NEAR;
         if (maxLOD != 0)
@@ -993,10 +994,10 @@ void init_tevstagedesc_texobj(struct GMATevStageDesc *tevStageDesc, struct TPLTe
         magFilt,  // mag_filt
         0.0f,  // min_lod
         maxLOD,  // max_lod
-        tevStageDesc->unk6 / 10.0f,  // lod_bias
+        tevStageDesc->lodBias / 10.0f,  // lod_bias
         FALSE,  // bias_clamp
-        (tevStageDesc->flags & 0x40) != 0,  // do_edge_lod
-        tevStageDesc->unk7);  // max_aniso
+        (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK6) != 0,  // do_edge_lod
+        tevStageDesc->maxAniso);  // max_aniso
 }
 
 static inline struct GMAShape *init_shape_render_flags(struct GMAShape *shape)
@@ -1106,14 +1107,14 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     GXSetCullMode_cached(node->cullMode);
     s_cullMode = node->cullMode;
     r31 = lbl_802F20EC;
-    r30 = lbl_802F20F0;
+    r30 = g_customMaterialFunc;
     zModeCompareEnable = s_zModeCompareEnable;
     zModeUpdateEnable = s_zModeUpdateEnable;
     zModeCompareFunc = s_zModeCompareFunc;
     r26 = lbl_802F2108;
     s_alpha = node->alpha;
     lbl_802F20EC = node->unk50;
-    lbl_802F20F0 = node->unk54;
+    g_customMaterialFunc = node->unk54;
     s_zModeCompareEnable = node->zCompEnable;
     s_zModeUpdateEnable = node->zUpdEnable;
     s_zModeCompareFunc = node->zCompFunc;
@@ -1136,11 +1137,11 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     }
     fogEnabled = s_fogEnabled;
     s_fogEnabled = node->fogEnabled;
-    if (lbl_802F20F0 == NULL)
+    if (g_customMaterialFunc == NULL)
         func_8008FE44(node->model, node->shape);
     draw_model_8008F914(node->model, node->shape, node->modelSamplers);
     lbl_802F20EC = r31;
-    lbl_802F20F0 = r30;
+    g_customMaterialFunc = r30;
     s_zModeCompareEnable = zModeCompareEnable;
     s_zModeUpdateEnable = zModeUpdateEnable;
     s_zModeCompareFunc = zModeCompareFunc;
@@ -1250,16 +1251,16 @@ struct UnkStruct27
 {
     u8 filler0[4];
     struct GMAShape *shape;
-    struct GMATevStageDesc *modelSamplers;
+    struct GMATevStageDesc *modelTevStageDescs;
     u8 fillerC[0x38-0xC];
 };
 
-struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *shape, struct GMATevStageDesc *modelSamplers)
+struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *shape, struct GMATevStageDesc *modelTevStageDescs)
 {
     int i;
     u8 *dlist;
     GXCullMode cullMode;
-    u8 bvar;
+    u8 doDraw;
     struct UnkStruct27 sp20;
     u8 unused[12];
 
@@ -1270,21 +1271,21 @@ struct GMAShape *draw_model_8008F914(struct GMAModel *model, struct GMAShape *sh
     if (model->flags & GCMF_STITCHING)
         func_8008F8A4(shape->mtxIndices);  // inlined
     gxutil_set_vtx_attrs(shape->vtxAttrs);
-    dlist = shape->dispListData;
+    dlist = shape->dispLists;
 
-    if (lbl_802F20F0 != NULL)
+    if (g_customMaterialFunc != NULL)
     {
         sp20.shape = (void *)shape;
-        sp20.modelSamplers = modelSamplers;
-        bvar = lbl_802F20F0(&sp20);
+        sp20.modelTevStageDescs = modelTevStageDescs;
+        doDraw = g_customMaterialFunc(&sp20);
     }
     else
     {
-        g_build_tev_material((void *)shape, (void *)modelSamplers);
-        bvar = 1;
+        g_build_tev_material(shape, modelTevStageDescs);
+        doDraw = 1;
     }
 
-    if (bvar)
+    if (doDraw)
     {
         for (i = 0; i < 2; i++)
         {
@@ -1407,11 +1408,11 @@ void *draw_shape_reflection_maybe(struct GMAShape *shape, void *modelSamplers, s
         cullMode = GX_CULL_BACK;
     gxutil_set_vtx_attrs(shape->vtxAttrs);
 
-    if (lbl_802F20F0 != NULL)
+    if (g_customMaterialFunc != NULL)
     {
         sp20.shape = shape;
-        sp20.modelSamplers = modelSamplers;
-        bvar = lbl_802F20F0(&sp20);
+        sp20.modelTevStageDescs = modelSamplers;
+        bvar = g_customMaterialFunc(&sp20);
     }
     else
     {
@@ -1975,7 +1976,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         u16 *tevStageDescIdx = shape->tevStageDescIdxs;
         u32 *cachedTevStageDescFlags = s_materialCache.tevStageDescFlags;
         u32 flags;
-        u16 *g_someTevStageDescIdx = s_materialCache.g_tevStageDescIdxs;
+        u16 *cachedTevStageDescIdx = s_materialCache.g_tevStageDescIdxs;
         while (tevStageCounter > 0)
         {
             struct GMATevStageDesc *tevStageDesc = &tevStageDescs[*tevStageDescIdx];
@@ -1984,10 +1985,10 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                       GMA_TEV_STAGE_FLAG_UNK15);
             if (*cachedTevStageDescFlags != flags)
                 break;
-            if (*g_someTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & 0x10000))
+            if (*cachedTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK16))
             {
                 GXLoadTexObj_cached(tevStageDesc->texObj, g_tevStageInfo.g_someTexmapId1);
-                *g_someTevStageDescIdx = *tevStageDescIdx;
+                *cachedTevStageDescIdx = *tevStageDescIdx;
             }
             //lbl_80090B00
             if (flags == 0)
@@ -2022,7 +2023,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 //to lbl_80090D3C
             }
             //lbl_80090B98
-            else if (flags & GMA_SHAPE_FLAG_UNLIT)
+            else if (flags & GMA_TEV_STAGE_FLAG_UNK0)
             {
                 if (s_materialCache.unk50 == 0)
                 {
@@ -2090,9 +2091,9 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             tevStageCounter--;
             tevStageDescIdx++;
             cachedTevStageDescFlags++;
-            g_someTevStageDescIdx++;
-            g_tevColorArg = 0;
-            g_tevAlphaArg = 0;
+            cachedTevStageDescIdx++;
+            g_tevColorArg = GX_CC_CPREV;
+            g_tevAlphaArg = GX_CA_APREV;
         }
         //lbl_80090D70
         while (tevStageCounter > 0)
@@ -2101,28 +2102,28 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             u32 tevStageDescFlags = tevStageDesc->flags; // actually, r27
             tevStageDescFlags &= 0xA003;
             *cachedTevStageDescFlags = tevStageDescFlags;
-            if (*g_someTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & 0x10000))
+            if (*cachedTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK16))
             {
                 GXLoadTexObj_cached(tevStageDesc->texObj, g_tevStageInfo.g_someTexmapId1);
-                *g_someTevStageDescIdx = *tevStageDescIdx;
+                *cachedTevStageDescIdx = *tevStageDescIdx;
             }
             if (tevStageDescFlags == 0)
             {
                 func_80091404(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
                 func_80091564(&g_tevStageInfo);
             }
-            else if (tevStageDescFlags & 0x2000)
+            else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK13)
             {
                 func_80091580(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
                 func_800916E0(&g_tevStageInfo);
             }
-            else if (tevStageDescFlags & 0x2000) // same thing, unreachable
+            else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK13) // same thing, unreachable
             {
                 func_80091BA4(&g_tevStageInfo, g_tevColorArg, g_tevAlphaArg, g_texGenSrc);
                 func_80091D0C(&g_tevStageInfo);
             }
             //lbl_80090E54
-            else if (tevStageDescFlags & 1)
+            else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK0)
             {
                 if (s_materialCache.unk50 == 0)
                 {
@@ -2176,7 +2177,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             tevStageCounter--;
             tevStageDescIdx++;
             cachedTevStageDescFlags++;
-            g_someTevStageDescIdx++;
+            cachedTevStageDescIdx++;
             g_tevColorArg = 0;
             g_tevAlphaArg = 0;
         }

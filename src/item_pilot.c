@@ -13,6 +13,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
+#include "gma.h"
 
 #include "../data/common.gma.h"
 

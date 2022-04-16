@@ -1444,7 +1444,7 @@ extern u32 *motLabel;
 // extern ? modelScale;
 // extern ? s_g_cullMode;
 // extern ? lbl_802F20EC;
-// extern ? lbl_802F20F0;
+// extern ? g_customMaterialFunc;
 // extern ? lbl_802F20F4;
 // extern ? lbl_802F20F8;
 // extern ? lbl_802F20FC;
