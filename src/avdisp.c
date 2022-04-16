@@ -1975,15 +1975,15 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         // maybe indexed instead?
         u16 *tevStageDescIdx = shape->tevStageDescIdxs;
         u32 *cachedTevStageDescFlags = s_materialCache.tevStageDescFlags;
-        u32 flags;
+        u32 tevStageDescFlags;
         u16 *cachedTevStageDescIdx = s_materialCache.g_tevStageDescIdxs;
         while (tevStageCounter > 0)
         {
             struct GMATevStageDesc *tevStageDesc = &tevStageDescs[*tevStageDescIdx];
-            flags = tevStageDesc->flags;
-            flags &= (GMA_TEV_STAGE_FLAG_UNK13 | GMA_TEV_STAGE_FLAG_UNK1 | GMA_TEV_STAGE_FLAG_UNK0 |
+            tevStageDescFlags = tevStageDesc->flags;
+            tevStageDescFlags &= (GMA_TEV_STAGE_FLAG_UNK13 | GMA_TEV_STAGE_FLAG_UNK1 | GMA_TEV_STAGE_FLAG_UNK0 |
                       GMA_TEV_STAGE_FLAG_UNK15);
-            if (*cachedTevStageDescFlags != flags)
+            if (*cachedTevStageDescFlags != tevStageDescFlags)
                 break;
             if (*cachedTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK16))
             {
@@ -1991,7 +1991,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 *cachedTevStageDescIdx = *tevStageDescIdx;
             }
             //lbl_80090B00
-            if (flags == 0)
+            if (tevStageDescFlags == 0)
             {
                 if (g_isNewTevColorArg != 0)
                 {
@@ -2002,7 +2002,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 //to lbl_80090D3C
             }
             //lbl_80090B30
-            else if (flags & GMA_TEV_STAGE_FLAG_UNK13)
+            else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK13)
             {
                 if (g_isNewTevColorArg != 0)
                 {
@@ -2012,7 +2012,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 func_800916E0(&g_tevStageInfo);
                 //to lbl_80090D3C
             }
-            else if (flags & GMA_TEV_STAGE_FLAG_UNK1)
+            else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK1)
             {
                 if (g_isNewTevColorArg != 0)
                 {
@@ -2023,7 +2023,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 //to lbl_80090D3C
             }
             //lbl_80090B98
-            else if (flags & GMA_TEV_STAGE_FLAG_UNK0)
+            else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_UNK0)
             {
                 if (s_materialCache.unk50 == 0)
                 {

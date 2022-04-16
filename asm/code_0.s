@@ -1321,7 +1321,7 @@ lbl_80021C9C:
 /* 80021D14 0001DC34  EC 24 18 24 */	fdivs f1, f4, f3
 /* 80021D18 0001DC38  EC 42 18 24 */	fdivs f2, f2, f3
 /* 80021D1C 0001DC3C  EC 60 18 24 */	fdivs f3, f0, f3
-/* 80021D20 0001DC40  48 06 C8 99 */	bl g_avdisp_set_3_other_floats
+/* 80021D20 0001DC40  48 06 C8 99 */	bl g_avdisp_set_some_color_scale
 /* 80021D24 0001DC44  48 00 00 7C */	b lbl_80021DA0
 lbl_80021D28:
 /* 80021D28 0001DC48  48 07 B8 B1 */	bl func_8009D5D8
@@ -1348,13 +1348,13 @@ lbl_80021D28:
 /* 80021D7C 0001DC9C  C0 22 87 98 */	lfs f1, lbl_802F2F98@sda21(r2)
 /* 80021D80 0001DCA0  FC 40 08 90 */	fmr f2, f1
 /* 80021D84 0001DCA4  FC 60 08 90 */	fmr f3, f1
-/* 80021D88 0001DCA8  48 06 C8 31 */	bl g_avdisp_set_3_other_floats
+/* 80021D88 0001DCA8  48 06 C8 31 */	bl g_avdisp_set_some_color_scale
 /* 80021D8C 0001DCAC  48 00 00 14 */	b lbl_80021DA0
 lbl_80021D90:
 /* 80021D90 0001DCB0  C0 22 87 78 */	lfs f1, lbl_802F2F78@sda21(r2)
 /* 80021D94 0001DCB4  FC 40 08 90 */	fmr f2, f1
 /* 80021D98 0001DCB8  FC 60 08 90 */	fmr f3, f1
-/* 80021D9C 0001DCBC  48 06 C8 1D */	bl g_avdisp_set_3_other_floats
+/* 80021D9C 0001DCBC  48 06 C8 1D */	bl g_avdisp_set_some_color_scale
 lbl_80021DA0:
 /* 80021DA0 0001DCC0  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 80021DA4 0001DCC4  83 E1 00 44 */	lwz r31, 0x44(r1)

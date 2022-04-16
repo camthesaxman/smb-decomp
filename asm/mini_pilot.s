@@ -4131,11 +4131,11 @@ lbl_00003CD0:
 /* 00003CE4 C03401C0 */ lfs f1, 0x1c0(r20)
 /* 00003CE8 38600002 */ li r3, 2
 /* 00003CEC C05401C4 */ lfs f2, 0x1c4(r20)
-/* 00003CF0 4BFFC45D */ bl func_8008F880
+/* 00003CF0 4BFFC45D */ bl avdisp_set_fog_params
 /* 00003CF4 38600000 */ li r3, 0
 /* 00003CF8 38800064 */ li r4, 0x64
 /* 00003CFC 38A00096 */ li r5, 0x96
-/* 00003D00 4BFFC44D */ bl func_8008F890
+/* 00003D00 4BFFC44D */ bl avdisp_set_fog_color
 /* 00003D04 38600001 */ li r3, 1
 /* 00003D08 4BFFC445 */ bl func_8009AC0C
 lbl_00003D0C:

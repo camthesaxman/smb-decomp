@@ -98,7 +98,7 @@ tevutil_init:
 /* 8009DFB0 00099ED0  38 60 00 01 */	li r3, 1
 /* 8009DFB4 00099ED4  48 00 05 6D */	bl GXSetColorUpdate_cached_init
 /* 8009DFB8 00099ED8  38 60 00 01 */	li r3, 1
-/* 8009DFBC 00099EDC  48 00 05 99 */	bl GXSestAlphaUpdate_cached_init
+/* 8009DFBC 00099EDC  48 00 05 99 */	bl GXSetAlphaUpdate_cached_init
 /* 8009DFC0 00099EE0  38 60 00 01 */	li r3, 1
 /* 8009DFC4 00099EE4  48 00 06 21 */	bl GXSetZCompLoc_cached_init
 /* 8009DFC8 00099EE8  3B E0 00 00 */	li r31, 0
@@ -501,8 +501,8 @@ GXSetColorUpdate_cached_init:
 /* 8009E54C 0009A46C  7C 08 03 A6 */	mtlr r0
 /* 8009E550 0009A470  4E 80 00 20 */	blr
 
-.global GXSestAlphaUpdate_cached_init
-GXSestAlphaUpdate_cached_init:
+.global GXSetAlphaUpdate_cached_init
+GXSetAlphaUpdate_cached_init:
 /* 8009E554 0009A474  7C 08 02 A6 */	mflr r0
 /* 8009E558 0009A478  90 01 00 04 */	stw r0, 4(r1)
 /* 8009E55C 0009A47C  94 21 FF E8 */	stwu r1, -0x18(r1)
