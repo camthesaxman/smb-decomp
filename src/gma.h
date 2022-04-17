@@ -13,7 +13,7 @@ enum
 
     // "Specular" light layer pointing in view direction?
     // Used in Water and Master at least
-    GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_VIEW = 1 << 0,
+    GMA_TEV_LAYER_FLAG_TYPE_VIEW_SPECULAR = 1 << 0,
 
     GMA_TEV_LAYER_FLAG_TYPE3 = 1 << 1, // Unused/ignored?
 
@@ -29,7 +29,7 @@ enum
 
     // "Specular" light layer pointing in fixed direction?
     // Used for specular highlight on party ball and monkey ball
-    GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_WORLD = 1 << 15,
+    GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR = 1 << 15,
 
     GMA_TEV_STAGE_FLAG_UNK16 = 1 << 16,
 };
