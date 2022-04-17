@@ -1991,8 +1991,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
         {
             struct GMATevLayer *tevLayer = &modelTevLayers[*tevLayerIdx];
             tevLayerFlags = tevLayer->flags;
-            tevLayerFlags &= (GMA_TEV_STAGE_FLAG_G_TYPE2 | GMA_TEV_STAGE_FLAG_G_TYPE3 | GMA_TEV_STAGE_FLAG_G_TYPE4 |
-                      GMA_TEV_STAGE_FLAG_G_TYPE5);
+            tevLayerFlags &= (GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND | GMA_TEV_LAYER_FLAG_TYPE3 | GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_VIEW |
+                      GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_WORLD);
             if (*cachedTevLayerFlags != tevLayerFlags)
                 break;
             if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_STAGE_FLAG_UNK16))
@@ -2012,7 +2012,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
                 //to lbl_80090D3C
             }
             //lbl_80090B30
-            else if (tevLayerFlags & GMA_TEV_STAGE_FLAG_G_TYPE2)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND)
             {
                 if (haveNewColorSrc != 0)
                 {
@@ -2022,7 +2022,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
                 g_layer_type2_next(&tevStageInfo);
                 //to lbl_80090D3C
             }
-            else if (tevLayerFlags & GMA_TEV_STAGE_FLAG_G_TYPE3)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE3)
             {
                 if (haveNewColorSrc != 0)
                 {
@@ -2033,7 +2033,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
                 //to lbl_80090D3C
             }
             //lbl_80090B98
-            else if (tevLayerFlags & GMA_TEV_STAGE_FLAG_G_TYPE4)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_VIEW)
             {
                 if (s_materialCache.unk50 == 0)
                 {
@@ -2064,7 +2064,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
                 //to lbl_80090D3C
             }
             //lbl_80090C30
-            else // (flags & GMA_TEV_STAGE_FLAG_G_TYPE5)
+            else // (flags & GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_WORLD)
             {
                 if (s_materialCache.unk54 == 0)
                 {
@@ -2110,8 +2110,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
         {
             struct GMATevLayer *tevLayer = &modelTevLayers[*tevLayerIdx];  // r4
             u32 tevLayerFlags = tevLayer->flags; // actually, r27
-            tevLayerFlags &= (GMA_TEV_STAGE_FLAG_G_TYPE2 | GMA_TEV_STAGE_FLAG_G_TYPE3 | GMA_TEV_STAGE_FLAG_G_TYPE4 |
-                      GMA_TEV_STAGE_FLAG_G_TYPE5);
+            tevLayerFlags &= (GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND | GMA_TEV_LAYER_FLAG_TYPE3 | GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_VIEW |
+                      GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_WORLD);
             *cachedTevLayerFlags = tevLayerFlags;
             if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_STAGE_FLAG_UNK16))
             {
@@ -2123,18 +2123,18 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLa
                 g_layer_type1_build_uncached(&tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 g_layer_type1_next(&tevStageInfo);
             }
-            else if (tevLayerFlags & GMA_TEV_STAGE_FLAG_G_TYPE2)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND)
             {
                 g_layer_type2_build_uncached(&tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 g_layer_type2_next(&tevStageInfo);
             }
-            else if (tevLayerFlags & GMA_TEV_STAGE_FLAG_G_TYPE2) // same thing, unreachable
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND) // same thing, unreachable
             {
                 g_layer_type3_build_uncached(&tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 g_layer_type3_next(&tevStageInfo);
             }
             //lbl_80090E54
-            else if (tevLayerFlags & GMA_TEV_STAGE_FLAG_G_TYPE4)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_SPECULAR_VIEW)
             {
                 if (s_materialCache.unk50 == 0)
                 {
