@@ -31,9 +31,9 @@ GXColor s_fogColor;
 u32 s_fogType;
 s32 s_fogEnabled;
 GXColor g_tevKColor3;
-s32 g_useFinalTevStage2;
+s32 usePostAddTevStage;
 GXColor g_tevKColor2;
-s32 g_useFinalTevStage1;
+s32 usePostMultiplyTevStage;
 s32 lbl_802F2108;
 GXCompare s_zModeCompareFunc;
 GXBool s_zModeUpdateEnable;
@@ -72,8 +72,8 @@ struct TevMaterialCache
     s8 num_tex_gens;
     s8 num_ind_stages;
     u8 filler6[2];
-    s32 g_finalTevStage1Idx;
-    s32 g_finalTevStage2Idx;
+    s32 postMultiplyTevStageIdx;
+    s32 postAddTevStageIdx;
     GXColor g_someTevColor1;  // 0x7C
     GXColor g_someTevColor2;
     GXColor g_someTevColor3;
@@ -749,8 +749,8 @@ struct DrawShapeDeferredNode
     u8 zUpdEnable;
     u32 zCompFunc;
     u8 unk60;
-    u8 g_useFinalTevStage1;
-    u8 g_useFinalTevStage2;
+    u8 usePostMultiplyTevStage;
+    u8 usePostAddTevStage;
     Mtx *unk64;
     GXColor unk68;
     GXColor unk6C;
@@ -780,16 +780,16 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->zUpdEnable = s_zModeUpdateEnable;
     node->zCompFunc = s_zModeCompareFunc;
     node->unk60 = lbl_802F2108;
-    node->g_useFinalTevStage1 = g_useFinalTevStage1;
-    node->g_useFinalTevStage2 = g_useFinalTevStage2;
+    node->usePostMultiplyTevStage = usePostMultiplyTevStage;
+    node->usePostAddTevStage = usePostAddTevStage;
     if (node->unk60 != 0)
     {
         node->unk64 = ord_tbl_alloc_node(sizeof(*node->unk64));
         mathutil_mtx_copy(lbl_802B4E6C, *node->unk64);
     }
-    if (node->g_useFinalTevStage1)
+    if (node->usePostMultiplyTevStage)
         node->unk68 = g_tevKColor2;
-    if (node->g_useFinalTevStage2)
+    if (node->usePostAddTevStage)
         node->unk6C = g_tevKColor3;
     node->fogEnabled = s_fogEnabled;
     mathutil_mtxA_to_mtx(node->mtx);
@@ -1121,16 +1121,16 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     lbl_802F2108 = node->unk60;
     if (node->unk60 != 0)
         mathutil_mtx_copy(*node->unk64, lbl_802B4E6C);
-    r25 = g_useFinalTevStage1;
-    g_useFinalTevStage1 = node->g_useFinalTevStage1;
-    if (node->g_useFinalTevStage1 != 0)
+    r25 = usePostMultiplyTevStage;
+    usePostMultiplyTevStage = node->usePostMultiplyTevStage;
+    if (node->usePostMultiplyTevStage != 0)
     {
         sp10 = g_tevKColor2;
         g_tevKColor2 = node->unk68;
     }
-    r23 = g_useFinalTevStage2;
-    g_useFinalTevStage2 = node->g_useFinalTevStage2;
-    if (node->g_useFinalTevStage2 != 0)
+    r23 = usePostAddTevStage;
+    usePostAddTevStage = node->usePostAddTevStage;
+    if (node->usePostAddTevStage != 0)
     {
         spC = g_tevKColor3;
         g_tevKColor3 = node->unk6C;
@@ -1146,11 +1146,11 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     s_zModeUpdateEnable = zModeUpdateEnable;
     s_zModeCompareFunc = zModeCompareFunc;
     lbl_802F2108 = r26;
-    g_useFinalTevStage1 = r25;
-    if (node->g_useFinalTevStage1 != 0)
+    usePostMultiplyTevStage = r25;
+    if (node->usePostMultiplyTevStage != 0)
         g_tevKColor2 = sp10;
-    g_useFinalTevStage2 = r23;
-    if (node->g_useFinalTevStage2 != 0)
+    usePostAddTevStage = r23;
+    if (node->usePostAddTevStage != 0)
         g_tevKColor3 = spC;
     s_fogEnabled = fogEnabled;
     s_alpha = 1.0f;
@@ -1172,7 +1172,7 @@ void g_avdisp_set_some_color_1(float a, float b, float c, float d)
 {
     if (a != 1.0f || b != 1.0f || c != 1.0f || d != 1.0f)
     {
-        g_useFinalTevStage1 = 1;
+        usePostMultiplyTevStage = 1;
         g_tevKColor2.r = a * 255.0f;
         g_tevKColor2.g = b * 255.0f;
         g_tevKColor2.b = c * 255.0f;
@@ -1180,7 +1180,7 @@ void g_avdisp_set_some_color_1(float a, float b, float c, float d)
     }
     else
     {
-        g_useFinalTevStage1 = 0;
+        usePostMultiplyTevStage = 0;
         g_tevKColor2.r = 255;
         g_tevKColor2.g = 255;
         g_tevKColor2.b = 255;
@@ -1192,7 +1192,7 @@ void g_avdisp_set_some_color_2(float a, float b, float c, float d)
 {
     if (a != 0.0f || b != 0.0f || c != 0.0f || d != 0.0f)
     {
-        g_useFinalTevStage2 = 1;
+        usePostAddTevStage = 1;
         g_tevKColor3.r = a * 255.0f;
         g_tevKColor3.g = b * 255.0f;
         g_tevKColor3.b = c * 255.0f;
@@ -1200,7 +1200,7 @@ void g_avdisp_set_some_color_2(float a, float b, float c, float d)
     }
     else
     {
-        g_useFinalTevStage2 = 0;
+        usePostAddTevStage = 0;
         g_tevKColor3.r = 0;
         g_tevKColor3.g = 0;
         g_tevKColor3.b = 0;
@@ -1514,11 +1514,11 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *shape)
     s_materialCache.num_tev_stages = -1;
     s_materialCache.num_tex_gens = -1;
     s_materialCache.num_ind_stages = -1;
-    s_materialCache.g_finalTevStage1Idx = 16;
-    s_materialCache.g_finalTevStage2Idx = 16;
-    if (g_useFinalTevStage1)
+    s_materialCache.postMultiplyTevStageIdx = 16;
+    s_materialCache.postAddTevStageIdx = 16;
+    if (usePostMultiplyTevStage)
         GXSetTevKColor_cached(GX_KCOLOR2, g_tevKColor2);
-    if (g_useFinalTevStage2)
+    if (usePostAddTevStage)
         GXSetTevKColor_cached(GX_KCOLOR3, g_tevKColor3);
     s_materialCache.blendSrcFactor = 4;
     s_materialCache.blendDstFactor = 5;
@@ -2196,23 +2196,23 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
         tevStageInfo = sp3C.unkC;
     }
     //lbl_800910F8
-    if (g_useFinalTevStage1)
+    if (usePostMultiplyTevStage)
     {
-        if (s_materialCache.g_finalTevStage1Idx != tevStageInfo.tevStage)
+        if (s_materialCache.postMultiplyTevStageIdx != tevStageInfo.tevStage)
         {
-            s_materialCache.g_finalTevStage1Idx = tevStageInfo.tevStage;
-            g_build_final_tev_stage1(tevStageInfo.tevStage);
+            s_materialCache.postMultiplyTevStageIdx = tevStageInfo.tevStage;
+            build_tev_post_multiply_stage(tevStageInfo.tevStage);
         }
         tevStageInfo.tevStage++;
     }
     //lbl_8009112C
-    if (g_useFinalTevStage2)
+    if (usePostAddTevStage)
     {
-        if (s_materialCache.g_finalTevStage2Idx != tevStageInfo.tevStage)
+        if (s_materialCache.postAddTevStageIdx != tevStageInfo.tevStage)
         {
             // Bug?
-            s_materialCache.g_finalTevStage1Idx = tevStageInfo.tevStage;
-            g_build_final_tev_stage2(tevStageInfo.tevStage);
+            s_materialCache.postMultiplyTevStageIdx = tevStageInfo.tevStage;
+            build_tev_post_add_stage(tevStageInfo.tevStage);
         }
         tevStageInfo.tevStage++;
     }
@@ -2251,7 +2251,8 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
 // }
 // #endif
 
-void g_build_final_tev_stage1(GXTevStageID tevStage)
+// Optionally multiply a color/alpha to tev end result
+void build_tev_post_multiply_stage(GXTevStageID tevStage)
 {
     GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K2);
     GXSetTevKAlphaSel_cached(tevStage, GX_TEV_KASEL_K2_A);
@@ -2263,7 +2264,8 @@ void g_build_final_tev_stage1(GXTevStageID tevStage)
     GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void g_build_final_tev_stage2(GXTevStageID tevStage)
+// Optionally add a color/alpha to tev end result
+void build_tev_post_add_stage(GXTevStageID tevStage)
 {
     GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K3);
     GXSetTevKAlphaSel_cached(tevStage, GX_TEV_KASEL_K3_A);
