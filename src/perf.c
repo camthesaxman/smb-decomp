@@ -1,5 +1,6 @@
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "gxutil.h"
 #include "input.h"
@@ -28,12 +29,12 @@ u32 perf_stop_timer(volatile /* why ?*/ int timerId2)
 
 void perf_free(void *ptr)
 {
-    OSFreeToHeap(memHeap1, ptr);
+    OSFreeToHeap(subHeap, ptr);
 }
 
 void *perf_alloc(u32 size)
 {
-    return OSAllocFromHeap(memHeap1, size);
+    return OSAllocFromHeap(subHeap, size);
 }
 
 void perf_init_draw(void)
@@ -51,7 +52,7 @@ void perf_init_draw(void)
         GX_AF_NONE);  // attn_fn
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
     GXSetChanMatColor(GX_COLOR0A0, matColor);
-    GXSetBlendMode_cached(1, 4, 5, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != GX_LEQUAL
      || zMode->compareEnable != GX_ENABLE)
@@ -61,11 +62,11 @@ void perf_init_draw(void)
         zMode->compareFunc   = GX_LEQUAL;
         zMode->updateEnable  = GX_ENABLE;
     }
-    GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
     GXSetZCompLoc_cached(1);
     GXSetNumTexGens(1);
     GXSetNumChans(1);
-    GXSetTevOrder_cached(0, 0, 0, 4);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
     func_8009EA30(0, 1);
     perfEnabled = FALSE;
 }

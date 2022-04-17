@@ -882,7 +882,7 @@ lbl_800638DC:
 /* 80063938 0005F858  38 80 00 00 */	li r4, 0
 /* 8006393C 0005F85C  48 08 0C 81 */	bl GXLoadNrmMtxImm
 /* 80063940 0005F860  80 7D 00 08 */	lwz r3, 8(r29)
-/* 80063944 0005F864  48 02 AA F5 */	bl g_avdisp_maybe_draw_model_1
+/* 80063944 0005F864  48 02 AA F5 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_80063948:
 /* 80063948 0005F868  3B 7B FF FF */	addi r27, r27, -1
 /* 8006394C 0005F86C  3B 9C 00 58 */	addi r28, r28, 0x58
@@ -950,7 +950,7 @@ lbl_800639A4:
 /* 80063A38 0005F958  38 9B 00 38 */	addi r4, r27, 0x38
 /* 80063A3C 0005F95C  48 02 BC A9 */	bl g_avdisp_set_some_matrix
 /* 80063A40 0005F960  80 7F 0B 08 */	lwz r3, 0xb08(r31)
-/* 80063A44 0005F964  48 02 A9 F5 */	bl g_avdisp_maybe_draw_model_1
+/* 80063A44 0005F964  48 02 A9 F5 */	bl avdisp_draw_model_culled_sort_translucent
 /* 80063A48 0005F968  4B FA 3D ED */	bl mathutil_mtxA_pop
 /* 80063A4C 0005F96C  C0 42 9D 00 */	lfs f2, lbl_802F4500@sda21(r2)
 /* 80063A50 0005F970  C0 22 9D 70 */	lfs f1, lbl_802F4570@sda21(r2)
@@ -970,7 +970,7 @@ lbl_800639A4:
 /* 80063A88 0005F9A8  38 9B 00 68 */	addi r4, r27, 0x68
 /* 80063A8C 0005F9AC  48 02 BC 59 */	bl g_avdisp_set_some_matrix
 /* 80063A90 0005F9B0  80 7F 0B 08 */	lwz r3, 0xb08(r31)
-/* 80063A94 0005F9B4  48 02 A9 A5 */	bl g_avdisp_maybe_draw_model_1
+/* 80063A94 0005F9B4  48 02 A9 A5 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_80063A98:
 /* 80063A98 0005F9B8  3B 9C FF FF */	addi r28, r28, -1
 /* 80063A9C 0005F9BC  3B 7B 00 98 */	addi r27, r27, 0x98

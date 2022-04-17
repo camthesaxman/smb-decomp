@@ -81,8 +81,8 @@ struct Camera
     s32 unk88;
     s32 unk8C;
     s32 unk90;
-    Vec unk94;
-    Vec unkA0;
+    Vec eyeVel;
+    Vec lookAtVel;
     Vec unkAC;
     s16 unkB8;
     u8 fillerBA[2];
