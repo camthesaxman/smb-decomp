@@ -246,7 +246,7 @@ void item_pilot_draw(struct Item *item)
         scale = 1.0f;
     else
         scale = (f30 / model->boundSphereRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
      && (item->subtype == 4 || item->subtype == 3))
@@ -288,7 +288,7 @@ void item_pilot_draw(struct Item *item)
             }
             g_avdisp_set_model_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_draw_model_1(minigameGma->modelEntries[r30_].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
@@ -299,10 +299,10 @@ void item_pilot_draw(struct Item *item)
                 if (f30 < 0.5)
                     f30 = 0.5f;
                 g_avdisp_set_alpha(f30);
-                g_avdisp_draw_model_3(model);
+                avdisp_draw_model_unculled_sort_all(model);
             }
             else
-                g_avdisp_draw_model_2(model);
+                avdisp_draw_model_unculled_sort_none(model);
         }
         if (item->subtype == 2)
         {
@@ -336,7 +336,7 @@ void item_pilot_draw(struct Item *item)
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_draw_model_1(minigameGma->modelEntries[0x77].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].modelOffset);
             g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }

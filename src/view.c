@@ -473,7 +473,7 @@ void func_800A6734(void)
                 mathutil_mtxA_rotate_y(stageViewInfo->frameCounter * sp10[r24->type]);
                 mathutil_mtxA_mult_left(mathutilData->mtxB);
                 g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                g_avdisp_maybe_draw_model_1(models[r24->type]);
+                avdisp_draw_model_culled_sort_translucent(models[r24->type]);
             }
         }
     }
@@ -519,7 +519,7 @@ void func_800A6874(void)
                     mathutil_mtxA_mult_left(sp20);
                     mathutil_mtxA_scale_s(0.45f);
                     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                    g_avdisp_maybe_draw_model_1(commonGma->modelEntries[0x4E].modelOffset);
+                    avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x4E].modelOffset);
                 }
             }
         }
@@ -563,7 +563,7 @@ void func_800A6A88(void)
                     {
 
                         if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D))) || (r26->unk0 & (1<<(31-0x1D))))
-                            g_avdisp_maybe_draw_model_2(model);
+                            avdisp_draw_model_culled_sort_none(model);
                     }
                 }
             }
@@ -640,7 +640,7 @@ void func_800A6BF0(void)
             if (r28 != NULL)
             {
                 g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                g_avdisp_maybe_draw_model_1(r28);
+                avdisp_draw_model_culled_sort_translucent(r28);
             }
             //lbl_800A6CE4
             g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 14));
@@ -648,7 +648,7 @@ void func_800A6BF0(void)
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_1(commonGma->modelEntries[0x40].modelOffset);
+            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x40].modelOffset);
             mathutil_mtxA_pop();
 
             mathutil_mtxA_push();
@@ -687,7 +687,7 @@ void func_800A6BF0(void)
             mathutil_mtxA_rotate_z(r29->rotX);
             mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_1(lbl_8028C0B0.unk14);
+            avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14);
         }
     }
     //800A6E90
@@ -731,7 +731,7 @@ void func_800A6BF0(void)
             f0 = -f0;
             mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * f0);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_1(lbl_802F1FFC);
+            avdisp_draw_model_culled_sort_translucent(lbl_802F1FFC);
         }
         #undef r25
     }

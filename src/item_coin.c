@@ -155,7 +155,7 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_z(item->zrot);
     model = find_item_model(item->unk1C);
     scale = (f30 / model->boundSphereRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);
@@ -171,10 +171,10 @@ void item_coin_draw(struct Item *item)
         if (f30 < 1.0f)
         {
             g_avdisp_set_alpha(f30);
-            g_avdisp_draw_model_3(model);
+            avdisp_draw_model_unculled_sort_all(model);
         }
         else
-            g_avdisp_draw_model_2(model);
+            avdisp_draw_model_unculled_sort_none(model);
     }
 }
 

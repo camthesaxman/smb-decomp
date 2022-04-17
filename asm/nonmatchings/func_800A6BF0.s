@@ -65,7 +65,7 @@ lbl_800A6CC8:
 /* 800A6CD4 000A2BF4  38 80 00 00 */	li r4, 0
 /* 800A6CD8 000A2BF8  4B FF 3D 4D */	bl g_gxutil_upload_some_mtx
 /* 800A6CDC 000A2BFC  7F 83 E3 78 */	mr r3, r28
-/* 800A6CE0 000A2C00  4B FE 77 59 */	bl g_avdisp_maybe_draw_model_1
+/* 800A6CE0 000A2C00  4B FE 77 59 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_800A6CE4:
 /* 800A6CE4 000A2C04  80 6D 99 24 */	lwz r3, naomiCommonObj  // @sda21(r13)
 /* 800A6CE8 000A2C08  80 63 00 3C */	lwz r3, 0x3c(r3)
@@ -81,7 +81,7 @@ lbl_800A6CE4:
 /* 800A6D10 000A2C30  80 6D 9A E8 */	lwz r3, commonGma  // @sda21(r13)
 /* 800A6D14 000A2C34  80 63 00 08 */	lwz r3, 8(r3)
 /* 800A6D18 000A2C38  80 63 01 00 */	lwz r3, 0x100(r3)
-/* 800A6D1C 000A2C3C  4B FE 77 1D */	bl g_avdisp_maybe_draw_model_1
+/* 800A6D1C 000A2C3C  4B FE 77 1D */	bl avdisp_draw_model_culled_sort_translucent
 /* 800A6D20 000A2C40  4B F6 0B 15 */	bl mathutil_mtxA_pop
 /* 800A6D24 000A2C44  4B F6 0A CD */	bl mathutil_mtxA_push
 /* 800A6D28 000A2C48  80 6D 99 24 */	lwz r3, naomiCommonObj  // @sda21(r13)
@@ -168,7 +168,7 @@ lbl_800A6E1C:
 /* 800A6E58 000A2D78  38 80 00 00 */	li r4, 0
 /* 800A6E5C 000A2D7C  4B FF 3B C9 */	bl g_gxutil_upload_some_mtx
 /* 800A6E60 000A2D80  80 77 00 14 */	lwz r3, 0x14(r23)
-/* 800A6E64 000A2D84  4B FE 75 D5 */	bl g_avdisp_maybe_draw_model_1
+/* 800A6E64 000A2D84  4B FE 75 D5 */	bl avdisp_draw_model_culled_sort_translucent
 /* 800A6E68 000A2D88  3B 9C 00 01 */	addi r28, r28, 1
 /* 800A6E6C 000A2D8C  3B BD 00 20 */	addi r29, r29, 0x20
 lbl_800A6E70:
@@ -263,7 +263,7 @@ lbl_800A6FA0:
 /* 800A6FBC 000A2EDC  38 80 00 00 */	li r4, 0
 /* 800A6FC0 000A2EE0  4B FF 3A 65 */	bl g_gxutil_upload_some_mtx
 /* 800A6FC4 000A2EE4  80 6D 9E 1C */	lwz r3, lbl_802F1FFC  // @sda21(r13)
-/* 800A6FC8 000A2EE8  4B FE 74 71 */	bl g_avdisp_maybe_draw_model_1
+/* 800A6FC8 000A2EE8  4B FE 74 71 */	bl avdisp_draw_model_culled_sort_translucent
 /* 800A6FCC 000A2EEC  3B 5A 00 01 */	addi r26, r26, 1
 /* 800A6FD0 000A2EF0  3B 7B 00 01 */	addi r27, r27, 1
 /* 800A6FD4 000A2EF4  3B 39 00 20 */	addi r25, r25, 0x20

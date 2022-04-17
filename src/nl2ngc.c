@@ -391,12 +391,12 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -444,12 +444,12 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -527,12 +527,12 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -568,12 +568,12 @@ void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float alpha)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -1772,12 +1772,12 @@ void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;

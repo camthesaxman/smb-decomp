@@ -1172,7 +1172,7 @@ void ball_draw(void)
         {
             g_avdisp_set_some_func_1(envFunc);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
             g_avdisp_set_some_func_1(NULL);
         }
 
@@ -3081,24 +3081,24 @@ void draw_ball_hemispheres(struct Ball *ball, int unused)
 
     // Draw inside of clear hemisphere
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[clearHemisphereInsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].modelOffset);
 
     // Draw inside of colored hemisphere
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[coloredParts[0 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].modelOffset);
 
     // Draw edge ring between ball halves
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[coloredParts[6 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].modelOffset);
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
     // Draw outside of clear hemisphere
-    g_avdisp_draw_model_2(entries[clearHemisphereOutsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].modelOffset);
 
     // Draw outside of colored hemisphere
     g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[coloredParts[3 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].modelOffset);
 
     func_8000E3BC();
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
@@ -3142,7 +3142,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     {
         g_avdisp_set_some_func_1(envFunc);
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_maybe_draw_model_2(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+        avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
         g_avdisp_set_some_func_1(NULL);
     }
 }

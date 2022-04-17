@@ -323,7 +323,7 @@ void draw_blur_bridge_accordions(void)
             mathutil_mtxA_scale_xyz(0.5 * f30, 1.0f, 1.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_1(blurBridgeAccordion);
+            avdisp_draw_model_culled_sort_translucent(blurBridgeAccordion);
         }
     }
 }
@@ -2013,7 +2013,7 @@ void stage_draw(void)
                 {
                     GXLoadPosMtxImm(mathutilData->mtxA, 0);
                     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-                    g_avdisp_maybe_draw_model_1(model);
+                    avdisp_draw_model_culled_sort_translucent(model);
                     sp7C.unk2 = 4;
                     sp7C.unk4 = model;
                 }
@@ -2073,7 +2073,7 @@ void stage_draw(void)
                             if (!(lbl_801EEC90.unk0 & (1 << (31 - 0x1D))) ||
                                 (r27->unk0 & (1 << (31 - 0x1D))))
                             {
-                                g_avdisp_maybe_draw_model_2(model);
+                                avdisp_draw_model_culled_sort_none(model);
                                 if (r31 != 0)
                                 {
                                     sp7C.unk4 = model;

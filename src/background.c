@@ -724,7 +724,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         if ((lbl_801EEC90.unk0 & (1 << 2))
          && func_8000E444(&model->boundSphereCenter) < -(f29 * model->boundSphereRadius))
             continue;
-        if (g_frustum_test_maybe_2(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
+        if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
         r23 = b->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -738,11 +738,11 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
         g_avdisp_set_model_scale(f29);
         if (b->translucency < FLT_EPSILON)
-            g_avdisp_draw_model_1(model);
+            avdisp_draw_model_unculled_sort_translucent(model);
         else
         {
             g_avdisp_set_alpha(1.0 - b->translucency);
-            g_avdisp_draw_model_3(model);
+            avdisp_draw_model_unculled_sort_all(model);
         }
         if (b->unk34 != 0)
             func_80055C6C(a, b->unk34);
@@ -927,7 +927,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
                 modelId = lbl_801B9AC8[(r4 % 15)];
                 break;
             }
-            g_avdisp_draw_model_2(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].modelOffset);
         }
     }
     if (b->unkC != NULL)
@@ -945,7 +945,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = (unpausedFrameCounter + r22->unkC * 4);
             modelId = lbl_801B9AE8[r4 % 32];
-            g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].modelOffset);
         }
     }
 }

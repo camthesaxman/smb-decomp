@@ -1009,7 +1009,7 @@ lbl_800933A4:
 /* 800933AC 0008F2CC  48 00 00 0C */	b lbl_800933B8
 lbl_800933B0:
 /* 800933B0 0008F2D0  80 61 00 64 */	lwz r3, 0x64(r1)
-/* 800933B4 0008F2D4  4B FF B6 B1 */	bl g_avdisp_draw_model_2
+/* 800933B4 0008F2D4  4B FF B6 B1 */	bl avdisp_draw_model_unculled_sort_none
 lbl_800933B8:
 /* 800933B8 0008F2D8  38 60 00 00 */	li r3, 0
 /* 800933BC 0008F2DC  90 61 00 14 */	stw r3, 0x14(r1)
@@ -1063,7 +1063,7 @@ lbl_8009345C:
 /* 80093464 0008F384  48 00 00 0C */	b lbl_80093470
 lbl_80093468:
 /* 80093468 0008F388  80 61 00 64 */	lwz r3, 0x64(r1)
-/* 8009346C 0008F38C  4B FF B5 F9 */	bl g_avdisp_draw_model_2
+/* 8009346C 0008F38C  4B FF B5 F9 */	bl avdisp_draw_model_unculled_sort_none
 lbl_80093470:
 /* 80093470 0008F390  A0 01 00 62 */	lhz r0, 0x62(r1)
 /* 80093474 0008F394  28 00 00 03 */	cmplwi r0, 3

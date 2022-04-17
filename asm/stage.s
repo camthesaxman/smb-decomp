@@ -698,7 +698,7 @@ lbl_80044420:
 /* 80044444 00040364  38 80 00 00 */	li r4, 0
 /* 80044448 00040368  48 0A 01 75 */	bl GXLoadNrmMtxImm
 /* 8004444C 0004036C  80 6D 9D 4C */	lwz r3, blurBridgeAccordion@sda21(r13)
-/* 80044450 00040370  48 04 9F E9 */	bl g_avdisp_maybe_draw_model_1
+/* 80044450 00040370  48 04 9F E9 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_80044454:
 /* 80044454 00040374  3B BD 00 01 */	addi r29, r29, 1
 /* 80044458 00040378  3B FF 00 84 */	addi r31, r31, 0x84
@@ -4338,7 +4338,7 @@ lbl_80047638:
 /* 80047650 00043570  38 80 00 00 */	li r4, 0
 /* 80047654 00043574  48 09 CF 69 */	bl GXLoadNrmMtxImm
 /* 80047658 00043578  7E C3 B3 78 */	mr r3, r22
-/* 8004765C 0004357C  48 04 6D DD */	bl g_avdisp_maybe_draw_model_1
+/* 8004765C 0004357C  48 04 6D DD */	bl avdisp_draw_model_culled_sort_translucent
 /* 80047660 00043580  38 00 00 04 */	li r0, 4
 /* 80047664 00043584  B0 01 00 7E */	sth r0, 0x7e(r1)
 /* 80047668 00043588  92 C1 00 80 */	stw r22, 0x80(r1)
@@ -4443,7 +4443,7 @@ lbl_80047794:
 /* 800477C8 000436E8  41 82 00 20 */	beq lbl_800477E8
 lbl_800477CC:
 /* 800477CC 000436EC  7F 83 E3 78 */	mr r3, r28
-/* 800477D0 000436F0  48 04 6C CD */	bl g_avdisp_maybe_draw_model_2
+/* 800477D0 000436F0  48 04 6C CD */	bl avdisp_draw_model_culled_sort_none
 /* 800477D4 000436F4  2C 1F 00 00 */	cmpwi r31, 0
 /* 800477D8 000436F8  41 82 00 10 */	beq lbl_800477E8
 /* 800477DC 000436FC  93 81 00 80 */	stw r28, 0x80(r1)

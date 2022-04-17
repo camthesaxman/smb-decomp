@@ -174,7 +174,7 @@ void bg_bonus_draw(void)
             f30 *= f3;
             mathutil_mtxA_scale_s(f30);
             g_avdisp_set_some_color_1(starpoint->unk10, starpoint->unk14, starpoint->unk18, 1.0f);
-            g_avdisp_maybe_draw_model_1(starlightModel);
+            avdisp_draw_model_culled_sort_translucent(starlightModel);
             func_8000E3BC();
         }
         mathutil_mtxA_pop();

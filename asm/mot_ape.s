@@ -3216,7 +3216,7 @@ lbl_8008C75C:
 /* 8008C7C8 000886E8  48 00 00 0C */	b lbl_8008C7D4
 lbl_8008C7CC:
 /* 8008C7CC 000886EC  7F C3 F3 78 */	mr r3, r30
-/* 8008C7D0 000886F0  48 00 22 95 */	bl g_avdisp_draw_model_2
+/* 8008C7D0 000886F0  48 00 22 95 */	bl avdisp_draw_model_unculled_sort_none
 lbl_8008C7D4:
 /* 8008C7D4 000886F4  4B F7 B0 61 */	bl mathutil_mtxA_pop
 lbl_8008C7D8:
@@ -3303,7 +3303,7 @@ lbl_8008C8C0:
 /* 8008C8FC 0008881C  7E C4 B3 78 */	mr r4, r22
 /* 8008C900 00088820  48 00 03 B9 */	bl func_8008CCB8
 /* 8008C904 00088824  7E C3 B3 78 */	mr r3, r22
-/* 8008C908 00088828  48 00 21 5D */	bl g_avdisp_draw_model_2
+/* 8008C908 00088828  48 00 21 5D */	bl avdisp_draw_model_unculled_sort_none
 /* 8008C90C 0008882C  BA C1 00 48 */	lmw r22, 0x48(r1)
 /* 8008C910 00088830  80 01 00 7C */	lwz r0, 0x7c(r1)
 /* 8008C914 00088834  CB E1 00 70 */	lfd f31, 0x70(r1)
@@ -3469,7 +3469,7 @@ func_8008CAAC:
 /* 8008CB68 00088A88  D0 21 00 18 */	stfs f1, 0x18(r1)
 /* 8008CB6C 00088A8C  C0 5C 00 58 */	lfs f2, 0x58(r28)
 /* 8008CB70 00088A90  EC 20 00 B2 */	fmuls f1, f0, f2
-/* 8008CB74 00088A94  4B F9 44 5D */	bl g_frustum_test_maybe_2
+/* 8008CB74 00088A94  4B F9 44 5D */	bl g_test_scaled_sphere_in_frustum
 /* 8008CB78 00088A98  2C 03 00 00 */	cmpwi r3, 0
 /* 8008CB7C 00088A9C  41 82 00 30 */	beq lbl_8008CBAC
 /* 8008CB80 00088AA0  3C 60 80 1C */	lis r3, lbl_801C7B34@ha

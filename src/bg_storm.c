@@ -233,7 +233,7 @@ void bg_storm_draw(void)
             else
                 alpha = 1.0f - 0.2f * (f25 - 1.0f);
             g_avdisp_set_alpha(alpha);
-            g_avdisp_maybe_draw_model_1(r25);
+            avdisp_draw_model_culled_sort_translucent(r25);
         }
     }
 }

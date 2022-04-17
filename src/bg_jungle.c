@@ -160,7 +160,7 @@ void bg_jungle_draw(void)
                 mathutil_mtxA_scale(&r31->scale);
                 GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-                g_avdisp_maybe_draw_model_1(r31->model);
+                avdisp_draw_model_culled_sort_translucent(r31->model);
             }
         }
         avdisp_set_z_mode(1, 3, 1);

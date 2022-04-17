@@ -292,7 +292,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
             g_avdisp_set_model_scale(f30);
-            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[polyshadow01].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].modelOffset);
         }
         func_8000E3BC();
     }
@@ -404,7 +404,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].modelOffset);
 
     // Draw the simulated analog stick
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
@@ -414,7 +414,7 @@ void g_draw_tutorial_button_and_joystick(void)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(advTutorialInfo.transitionValue);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
 
     // Draw the transparent stick based on the player's analog stick position
@@ -446,7 +446,7 @@ void g_draw_tutorial_button_and_joystick(void)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
 
     // Draw the button base
     mathutil_mtxA_from_identity();
@@ -457,7 +457,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].modelOffset);
 
     // Draw the A button
     if (advTutorialInfo.state == 2)
@@ -468,7 +468,7 @@ void g_draw_tutorial_button_and_joystick(void)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
-    g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
 }
 
@@ -698,7 +698,7 @@ void func_8000C8D4(void)
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
+        avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
 
@@ -725,7 +725,7 @@ void func_8000CA9C(void)
             r30 = g_avdisp_set_some_func_1(r31);
         mathutil_mtxA_from_mtxB();
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1((void *)lbl_802F1F34);
+        avdisp_draw_model_unculled_sort_translucent((void *)lbl_802F1F34);
         if (r31 != NULL)
             g_avdisp_set_some_func_1(r30);
     }
@@ -1240,7 +1240,7 @@ void draw_timer_bomb_fuse(void)
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     g_avdisp_set_model_scale(scale);
     func_8008F6D4(1);
-    g_avdisp_draw_model_1(commonGma->modelEntries[BOMB_FUSE].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
     func_8008F6D4(0);
 
     // Draw spark

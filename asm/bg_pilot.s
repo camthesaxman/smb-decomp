@@ -522,22 +522,22 @@ lbl_80064750:
 /* 80064770 00060690  80 7E 00 04 */	lwz r3, 4(r30)
 /* 80064774 00060694  28 03 00 00 */	cmplwi r3, 0
 /* 80064778 00060698  41 82 00 08 */	beq lbl_80064780
-/* 8006477C 0006069C  48 02 9D 21 */	bl g_avdisp_maybe_draw_model_2
+/* 8006477C 0006069C  48 02 9D 21 */	bl avdisp_draw_model_culled_sort_none
 lbl_80064780:
 /* 80064780 000606A0  80 7E 00 08 */	lwz r3, 8(r30)
 /* 80064784 000606A4  28 03 00 00 */	cmplwi r3, 0
 /* 80064788 000606A8  41 82 00 08 */	beq lbl_80064790
-/* 8006478C 000606AC  48 02 9D 11 */	bl g_avdisp_maybe_draw_model_2
+/* 8006478C 000606AC  48 02 9D 11 */	bl avdisp_draw_model_culled_sort_none
 lbl_80064790:
 /* 80064790 000606B0  80 7E 00 0C */	lwz r3, 0xc(r30)
 /* 80064794 000606B4  28 03 00 00 */	cmplwi r3, 0
 /* 80064798 000606B8  41 82 00 08 */	beq lbl_800647A0
-/* 8006479C 000606BC  48 02 9D 01 */	bl g_avdisp_maybe_draw_model_2
+/* 8006479C 000606BC  48 02 9D 01 */	bl avdisp_draw_model_culled_sort_none
 lbl_800647A0:
 /* 800647A0 000606C0  80 7E 00 10 */	lwz r3, 0x10(r30)
 /* 800647A4 000606C4  28 03 00 00 */	cmplwi r3, 0
 /* 800647A8 000606C8  41 82 00 08 */	beq lbl_800647B0
-/* 800647AC 000606CC  48 02 9C F1 */	bl g_avdisp_maybe_draw_model_2
+/* 800647AC 000606CC  48 02 9C F1 */	bl avdisp_draw_model_culled_sort_none
 lbl_800647B0:
 /* 800647B0 000606D0  83 FE 00 14 */	lwz r31, 0x14(r30)
 /* 800647B4 000606D4  28 1F 00 00 */	cmplwi r31, 0
@@ -794,7 +794,7 @@ lbl_800647B0:
 /* 80064BA0 00060AC0  38 A0 00 00 */	li r5, 0
 /* 80064BA4 00060AC4  48 02 9A 25 */	bl avdisp_set_z_mode
 /* 80064BA8 00060AC8  80 7F 00 08 */	lwz r3, 8(r31)
-/* 80064BAC 00060ACC  48 02 98 F1 */	bl g_avdisp_maybe_draw_model_2
+/* 80064BAC 00060ACC  48 02 98 F1 */	bl avdisp_draw_model_culled_sort_none
 /* 80064BB0 00060AD0  38 60 00 01 */	li r3, 1
 /* 80064BB4 00060AD4  38 80 00 03 */	li r4, 3
 /* 80064BB8 00060AD8  38 A0 00 01 */	li r5, 1
@@ -820,7 +820,7 @@ lbl_80064BCC:
 /* 80064C04 00060B24  38 80 00 00 */	li r4, 0
 /* 80064C08 00060B28  48 07 F9 B5 */	bl GXLoadNrmMtxImm
 /* 80064C0C 00060B2C  80 7F 00 08 */	lwz r3, 8(r31)
-/* 80064C10 00060B30  48 02 98 29 */	bl g_avdisp_maybe_draw_model_1
+/* 80064C10 00060B30  48 02 98 29 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_80064C14:
 /* 80064C14 00060B34  BB 61 01 0C */	lmw r27, 0x10c(r1)
 /* 80064C18 00060B38  80 01 01 2C */	lwz r0, 0x12c(r1)

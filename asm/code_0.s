@@ -273,8 +273,8 @@ lbl_80020EAC:
 /* 80020EAC 0001CDCC  38 60 00 01 */	li r3, 1
 /* 80020EB0 0001CDD0  4E 80 00 20 */	blr
 
-.global g_frustum_test_maybe_1
-g_frustum_test_maybe_1:
+.global g_test_sphere_in_frustum
+g_test_sphere_in_frustum:
 /* 80020EB4 0001CDD4  7C 08 02 A6 */	mflr r0
 /* 80020EB8 0001CDD8  90 01 00 04 */	stw r0, 4(r1)
 /* 80020EBC 0001CDDC  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -353,8 +353,8 @@ lbl_80020FBC:
 /* 80020FC8 0001CEE8  7C 08 03 A6 */	mtlr r0
 /* 80020FCC 0001CEEC  4E 80 00 20 */	blr
 
-.global g_frustum_test_maybe_2
-g_frustum_test_maybe_2:
+.global g_test_scaled_sphere_in_frustum
+g_test_scaled_sphere_in_frustum:
 /* 80020FD0 0001CEF0  7C 08 02 A6 */	mflr r0
 /* 80020FD4 0001CEF4  90 01 00 04 */	stw r0, 4(r1)
 /* 80020FD8 0001CEF8  94 21 FF D0 */	stwu r1, -0x30(r1)

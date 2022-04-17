@@ -1304,7 +1304,7 @@ lbl_8005CB90:
 /* 8005CC08 00058B28  38 80 00 00 */	li r4, 0
 /* 8005CC0C 00058B2C  48 08 79 B1 */	bl GXLoadNrmMtxImm
 /* 8005CC10 00058B30  80 7E 00 08 */	lwz r3, 8(r30)
-/* 8005CC14 00058B34  48 03 18 89 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CC14 00058B34  48 03 18 89 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CC18 00058B38  38 60 00 01 */	li r3, 1
 /* 8005CC1C 00058B3C  38 80 00 03 */	li r4, 3
 /* 8005CC20 00058B40  38 A0 00 01 */	li r5, 1
@@ -1381,7 +1381,7 @@ lbl_8005CCEC:
 /* 8005CD34 00058C54  FC 60 08 90 */	fmr f3, f1
 /* 8005CD38 00058C58  48 03 29 DD */	bl g_avdisp_set_some_color_1
 /* 8005CD3C 00058C5C  80 7B 00 00 */	lwz r3, 0(r27)
-/* 8005CD40 00058C60  48 03 17 5D */	bl g_avdisp_maybe_draw_model_2
+/* 8005CD40 00058C60  48 03 17 5D */	bl avdisp_draw_model_culled_sort_none
 /* 8005CD44 00058C64  4B FA AA F1 */	bl mathutil_mtxA_pop
 /* 8005CD48 00058C68  37 FF FF FF */	addic. r31, r31, -1
 /* 8005CD4C 00058C6C  3B 7B 00 10 */	addi r27, r27, 0x10
@@ -1408,9 +1408,9 @@ lbl_8005CCEC:
 /* 8005CDA0 00058CC0  38 80 00 00 */	li r4, 0
 /* 8005CDA4 00058CC4  48 08 78 19 */	bl GXLoadNrmMtxImm
 /* 8005CDA8 00058CC8  80 7E 05 54 */	lwz r3, 0x554(r30)
-/* 8005CDAC 00058CCC  48 03 16 F1 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CDAC 00058CCC  48 03 16 F1 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CDB0 00058CD0  80 7E 05 5C */	lwz r3, 0x55c(r30)
-/* 8005CDB4 00058CD4  48 03 16 E9 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CDB4 00058CD4  48 03 16 E9 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CDB8 00058CD8  4B FA AA 7D */	bl mathutil_mtxA_pop
 /* 8005CDBC 00058CDC  4B FA AA 35 */	bl mathutil_mtxA_push
 /* 8005CDC0 00058CE0  7F 83 E3 78 */	mr r3, r28
@@ -1446,19 +1446,19 @@ lbl_8005CE18:
 /* 8005CE30 00058D50  7F E3 FB 78 */	mr r3, r31
 /* 8005CE34 00058D54  48 03 17 A5 */	bl g_avdisp_set_some_func_1
 /* 8005CE38 00058D58  80 7E 05 48 */	lwz r3, 0x548(r30)
-/* 8005CE3C 00058D5C  48 03 16 61 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CE3C 00058D5C  48 03 16 61 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CE40 00058D60  7F 83 E3 78 */	mr r3, r28
 /* 8005CE44 00058D64  48 03 17 95 */	bl g_avdisp_set_some_func_1
 /* 8005CE48 00058D68  80 7E 05 40 */	lwz r3, 0x540(r30)
-/* 8005CE4C 00058D6C  48 03 16 51 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CE4C 00058D6C  48 03 16 51 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CE50 00058D70  7F E3 FB 78 */	mr r3, r31
 /* 8005CE54 00058D74  48 03 17 85 */	bl g_avdisp_set_some_func_1
 /* 8005CE58 00058D78  80 7E 05 44 */	lwz r3, 0x544(r30)
-/* 8005CE5C 00058D7C  48 03 16 41 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CE5C 00058D7C  48 03 16 41 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CE60 00058D80  7F 83 E3 78 */	mr r3, r28
 /* 8005CE64 00058D84  48 03 17 75 */	bl g_avdisp_set_some_func_1
 /* 8005CE68 00058D88  80 7D 00 08 */	lwz r3, 8(r29)
-/* 8005CE6C 00058D8C  48 03 16 31 */	bl g_avdisp_maybe_draw_model_2
+/* 8005CE6C 00058D8C  48 03 16 31 */	bl avdisp_draw_model_culled_sort_none
 /* 8005CE70 00058D90  38 60 00 00 */	li r3, 0
 /* 8005CE74 00058D94  48 03 17 65 */	bl g_avdisp_set_some_func_1
 /* 8005CE78 00058D98  38 60 00 00 */	li r3, 0

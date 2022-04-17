@@ -310,7 +310,7 @@ lbl_80062B6C:
 lbl_80062B78:
 /* 80062B78 0005EA98  48 02 B9 ED */	bl g_avdisp_set_alpha
 /* 80062B7C 0005EA9C  7F 23 CB 78 */	mr r3, r25
-/* 80062B80 0005EAA0  48 02 B8 B9 */	bl g_avdisp_maybe_draw_model_1
+/* 80062B80 0005EAA0  48 02 B8 B9 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_80062B84:
 /* 80062B84 0005EAA4  37 7B FF FF */	addic. r27, r27, -1
 /* 80062B88 0005EAA8  3B 5A 00 0C */	addi r26, r26, 0xc
