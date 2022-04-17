@@ -2,7 +2,7 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include "dolphin/GXEnum.h"
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "gxutil.h"
 #include "load.h"

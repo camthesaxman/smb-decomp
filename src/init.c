@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <dolphin.h>
 
-#include "dolphin/GXEnum.h"
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "input.h"
 #include "mathutil.h"

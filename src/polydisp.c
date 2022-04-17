@@ -3,7 +3,7 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include "dolphin/GXEnum.h"
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "adv.h"
 #include "background.h"
