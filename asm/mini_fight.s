@@ -7121,7 +7121,7 @@ lbl_00006B30:
 /* 00006BC0 FC1E0040 */ fcmpo cr0, f30, f0
 /* 00006BC4 40800028 */ bge lbl_00006BEC
 /* 00006BC8 FC20F090 */ fmr f1, f30
-/* 00006BCC 4BFF9599 */ bl g_avdisp_set_alpha
+/* 00006BCC 4BFF9599 */ bl avdisp_set_alpha
 /* 00006BD0 3C600000 */ lis r3, minigameGma@ha
 /* 00006BD4 38630000 */ addi r3, r3, minigameGma@l
 /* 00006BD8 80630000 */ lwz r3, 0(r3)
@@ -7182,7 +7182,7 @@ lbl_00006C88:
 /* 00006C98 FC1E0040 */ fcmpo cr0, f30, f0
 /* 00006C9C 40800018 */ bge lbl_00006CB4
 /* 00006CA0 FC20F090 */ fmr f1, f30
-/* 00006CA4 4BFF94C1 */ bl g_avdisp_set_alpha
+/* 00006CA4 4BFF94C1 */ bl avdisp_set_alpha
 /* 00006CA8 807C0054 */ lwz r3, 0x54(r28)
 /* 00006CAC 4BFF94B9 */ bl avdisp_draw_model_culled_sort_all
 /* 00006CB0 4800025C */ b lbl_00006F0C
@@ -7253,14 +7253,14 @@ lbl_00006D34:
 /* 00006DA4 38630008 */ addi r3, r3, 8
 /* 00006DA8 4BFF93BD */ bl mathutil_mtxA_translate_neg
 /* 00006DAC FC20F090 */ fmr f1, f30
-/* 00006DB0 4BFF93B5 */ bl g_avdisp_set_alpha
+/* 00006DB0 4BFF93B5 */ bl avdisp_set_alpha
 /* 00006DB4 807D0000 */ lwz r3, 0(r29)
 /* 00006DB8 4BFF93AD */ bl avdisp_draw_model_unculled_sort_all
 /* 00006DBC 4BFF93A9 */ bl mathutil_mtxA_pop
 /* 00006DC0 48000014 */ b lbl_00006DD4
 lbl_00006DC4:
 /* 00006DC4 FC20F090 */ fmr f1, f30
-/* 00006DC8 4BFF939D */ bl g_avdisp_set_alpha
+/* 00006DC8 4BFF939D */ bl avdisp_set_alpha
 /* 00006DCC 807D0000 */ lwz r3, 0(r29)
 /* 00006DD0 4BFF9395 */ bl avdisp_draw_model_unculled_sort_all
 lbl_00006DD4:
@@ -22083,7 +22083,7 @@ lbl_00014898:
 /* 00014910 FC1E0040 */ fcmpo cr0, f30, f0
 /* 00014914 40800018 */ bge lbl_0001492C
 /* 00014918 FC20F090 */ fmr f1, f30
-/* 0001491C 4BFEB849 */ bl g_avdisp_set_alpha
+/* 0001491C 4BFEB849 */ bl avdisp_set_alpha
 /* 00014920 7FA3EB78 */ mr r3, r29
 /* 00014924 4BFEB841 */ bl avdisp_draw_model_unculled_sort_all
 /* 00014928 4800000C */ b lbl_00014934
@@ -22643,7 +22643,7 @@ lbl_000150D8:
 /* 00015150 FC1E0040 */ fcmpo cr0, f30, f0
 /* 00015154 40800018 */ bge lbl_0001516C
 /* 00015158 FC20F090 */ fmr f1, f30
-/* 0001515C 4BFEB009 */ bl g_avdisp_set_alpha
+/* 0001515C 4BFEB009 */ bl avdisp_set_alpha
 /* 00015160 7FA3EB78 */ mr r3, r29
 /* 00015164 4BFEB001 */ bl avdisp_draw_model_unculled_sort_all
 /* 00015168 4800000C */ b lbl_00015174

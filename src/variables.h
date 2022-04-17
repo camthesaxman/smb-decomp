@@ -1440,7 +1440,7 @@ extern u32 *motLabel;
 // extern ? lbl_802F20D4;
 // extern ? lbl_802F20D8;
 // extern ? s_alpha;
-// extern ? g_someLightMask;
+// extern ? s_lightMask;
 // extern ? modelScale;
 // extern ? s_g_cullMode;
 // extern ? lbl_802F20EC;

@@ -741,7 +741,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
             avdisp_draw_model_unculled_sort_translucent(model);
         else
         {
-            g_avdisp_set_alpha(1.0 - b->translucency);
+            avdisp_set_alpha(1.0 - b->translucency);
             avdisp_draw_model_unculled_sort_all(model);
         }
         if (b->unk34 != 0)

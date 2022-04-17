@@ -1005,7 +1005,7 @@ lbl_00000DF0:
 /* 00000ED0 38800000 */ li r4, 0
 /* 00000ED4 4BFFF28D */ bl GXLoadNrmMtxImm
 /* 00000ED8 C03E1C9C */ lfs f1, 0x1c9c(r30)
-/* 00000EDC 4BFFF285 */ bl g_avdisp_set_alpha
+/* 00000EDC 4BFFF285 */ bl avdisp_set_alpha
 /* 00000EE0 807C0000 */ lwz r3, 0(r28)
 /* 00000EE4 80630008 */ lwz r3, 8(r3)
 /* 00000EE8 806305F8 */ lwz r3, 0x5f8(r3)
@@ -1034,7 +1034,7 @@ lbl_00000EF4:
 /* 00000F40 FC020032 */ fmul f0, f2, f0
 /* 00000F44 FC230028 */ fsub f1, f3, f0
 /* 00000F48 FC200818 */ frsp f1, f1
-/* 00000F4C 4BFFF215 */ bl g_avdisp_set_alpha
+/* 00000F4C 4BFFF215 */ bl avdisp_set_alpha
 /* 00000F50 807C0000 */ lwz r3, 0(r28)
 /* 00000F54 80630008 */ lwz r3, 8(r3)
 /* 00000F58 806305F8 */ lwz r3, 0x5f8(r3)

@@ -45,7 +45,7 @@ Func802F20F0 g_customMaterialFunc;
 BallEnvFunc lbl_802F20EC;
 GXCullMode s_cullMode;
 float s_modelScale;
-u32 g_someLightMask;
+u32 s_lightMask;
 float s_alpha;
 float lbl_802F20D8;
 float lbl_802F20D4;
@@ -199,7 +199,7 @@ void func_8008D788(void)
     lbl_802F20D0 = 1.0f;
     s_modelScale = 1.0f;
     s_alpha = 1.0f;
-    g_someLightMask = 1;
+    s_lightMask = 1;
     g_customMaterialFunc = NULL;
     init_some_texture();
     sp8.x = 0.0f;
@@ -612,14 +612,14 @@ void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
         avdisp_draw_model_unculled_sort_all(model);
 }
 
-void g_avdisp_set_alpha(float a)
+void avdisp_set_alpha(float a)
 {
     s_alpha = a;
 }
 
-void g_avdisp_set_light_mask(u32 a)
+void avdisp_set_light_mask(u32 a)
 {
-    g_someLightMask = a;
+    s_lightMask = a;
 }
 
 void g_avdisp_set_and_normalize_some_vec(Vec *a)
@@ -1891,7 +1891,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
                     GX_ENABLE,  // enable
                     GX_SRC_REG,  // amb_src
                     GX_SRC_VTX,  // mat_src
-                    g_someLightMask,  // light_mask
+                    s_lightMask,  // light_mask
                     GX_DF_CLAMP,  // diff_fn
                     GX_AF_SPOT);  // attn_fn
             }
@@ -1916,7 +1916,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
                     GX_ENABLE,  // enable
                     GX_SRC_REG,  // amb_src
                     GX_SRC_REG,  // mat_src
-                    g_someLightMask,  // light_mask
+                    s_lightMask,  // light_mask
                     GX_DF_CLAMP,  // diff_fn
                     GX_AF_SPOT);  // attn_fn
             }

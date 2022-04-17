@@ -413,7 +413,7 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_z(CLAMP(advTutorialInfo.stickZRot * 8, -0x1000, 0x1000));
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(advTutorialInfo.transitionValue);
+    avdisp_set_alpha(advTutorialInfo.transitionValue);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
 
@@ -445,7 +445,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(0.99f);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
+    avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
 
     // Draw the button base
@@ -467,7 +467,7 @@ void g_draw_tutorial_button_and_joystick(void)
     }
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
+    avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
 }

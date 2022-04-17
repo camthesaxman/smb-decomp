@@ -7638,7 +7638,7 @@ lbl_00006FF0:
 /* 00007148 92610228 */ stw r19, 0x228(r1)
 /* 0000714C C8010228 */ lfd f0, 0x228(r1)
 /* 00007150 EC200828 */ fsubs f1, f0, f1
-/* 00007154 4BFF907D */ bl g_avdisp_set_alpha
+/* 00007154 4BFF907D */ bl avdisp_set_alpha
 /* 00007158 480002B4 */ b lbl_0000740C
 lbl_0000715C:
 /* 0000715C 4801CC69 */ bl lbl_00023DC4
@@ -7697,7 +7697,7 @@ lbl_0000715C:
 /* 00007230 92610228 */ stw r19, 0x228(r1)
 /* 00007234 C8010228 */ lfd f0, 0x228(r1)
 /* 00007238 EC200828 */ fsubs f1, f0, f1
-/* 0000723C 4BFF8F95 */ bl g_avdisp_set_alpha
+/* 0000723C 4BFF8F95 */ bl avdisp_set_alpha
 /* 00007240 480001CC */ b lbl_0000740C
 lbl_00007244:
 /* 00007244 4801CB81 */ bl lbl_00023DC4
@@ -7756,7 +7756,7 @@ lbl_00007244:
 /* 00007318 92610228 */ stw r19, 0x228(r1)
 /* 0000731C C8010228 */ lfd f0, 0x228(r1)
 /* 00007320 EC200828 */ fsubs f1, f0, f1
-/* 00007324 4BFF8EAD */ bl g_avdisp_set_alpha
+/* 00007324 4BFF8EAD */ bl avdisp_set_alpha
 /* 00007328 480000E4 */ b lbl_0000740C
 lbl_0000732C:
 /* 0000732C 4801CA99 */ bl lbl_00023DC4
@@ -7814,7 +7814,7 @@ lbl_0000732C:
 /* 000073FC 92610228 */ stw r19, 0x228(r1)
 /* 00007400 C8010228 */ lfd f0, 0x228(r1)
 /* 00007404 EC200828 */ fsubs f1, f0, f1
-/* 00007408 4BFF8DC9 */ bl g_avdisp_set_alpha
+/* 00007408 4BFF8DC9 */ bl avdisp_set_alpha
 lbl_0000740C:
 /* 0000740C 3C600000 */ lis r3, mathutilData@ha
 /* 00007410 3A630000 */ addi r19, r3, mathutilData@l
@@ -10980,7 +10980,7 @@ lbl_0000A180:
 /* 0000A190 4BFF6041 */ bl g_avdisp_set_some_color_1
 lbl_0000A194:
 /* 0000A194 C03F0190 */ lfs f1, 0x190(r31)
-/* 0000A198 4BFF6039 */ bl g_avdisp_set_alpha
+/* 0000A198 4BFF6039 */ bl avdisp_set_alpha
 /* 0000A19C 80730000 */ lwz r3, 0(r19)
 /* 0000A1A0 38800000 */ li r4, 0
 /* 0000A1A4 4BFF602D */ bl GXLoadPosMtxImm
@@ -10997,7 +10997,7 @@ lbl_0000A194:
 /* 0000A1D0 FC800890 */ fmr f4, f1
 /* 0000A1D4 4BFF5FFD */ bl g_avdisp_set_some_color_1
 /* 0000A1D8 C03F0004 */ lfs f1, 4(r31)
-/* 0000A1DC 4BFF5FF5 */ bl g_avdisp_set_alpha
+/* 0000A1DC 4BFF5FF5 */ bl avdisp_set_alpha
 /* 0000A1E0 C03F0004 */ lfs f1, 4(r31)
 /* 0000A1E4 48009481 */ bl lbl_00013664
 /* 0000A1E8 38600012 */ li r3, 0x12
@@ -12040,7 +12040,7 @@ lbl_0000B048:
 /* 0000B118 2C000000 */ cmpwi r0, 0
 /* 0000B11C 41810078 */ bgt lbl_0000B194
 /* 0000B120 C03F00E8 */ lfs f1, 0xe8(r31)
-/* 0000B124 4BFF50AD */ bl g_avdisp_set_alpha
+/* 0000B124 4BFF50AD */ bl avdisp_set_alpha
 /* 0000B128 807D002C */ lwz r3, 0x2c(r29)
 /* 0000B12C 38630001 */ addi r3, r3, 1
 /* 0000B130 7C601670 */ srawi r0, r3, 2

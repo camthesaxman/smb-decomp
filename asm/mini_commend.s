@@ -1567,7 +1567,7 @@ lbl_8009D000:
 /* 8009D004 00098F24  38 80 00 00 */	li r4, 0
 /* 8009D008 00098F28  4B FF DA 1D */	bl g_gxutil_upload_some_mtx
 /* 8009D00C 00098F2C  C0 22 B2 34 */	lfs f1, lbl_802F5A34@sda21(r2)
-/* 8009D010 00098F30  4B FF 15 55 */	bl g_avdisp_set_alpha
+/* 8009D010 00098F30  4B FF 15 55 */	bl avdisp_set_alpha
 /* 8009D014 00098F34  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 8009D018 00098F38  80 63 00 08 */	lwz r3, 8(r3)
 /* 8009D01C 00098F3C  80 63 02 70 */	lwz r3, 0x270(r3)

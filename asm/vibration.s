@@ -10131,7 +10131,7 @@ lbl_800BF454:
 /* 800BF468 000BB388  FC 1C F8 40 */	fcmpo cr0, f28, f31
 /* 800BF46C 000BB38C  40 80 00 18 */	bge lbl_800BF484
 /* 800BF470 000BB390  FC 20 E0 90 */	fmr f1, f28
-/* 800BF474 000BB394  4B FC F0 F1 */	bl g_avdisp_set_alpha
+/* 800BF474 000BB394  4B FC F0 F1 */	bl avdisp_set_alpha
 /* 800BF478 000BB398  7F 83 E3 78 */	mr r3, r28
 /* 800BF47C 000BB39C  4B FC F7 19 */	bl avdisp_draw_model_unculled_sort_all
 /* 800BF480 000BB3A0  48 00 00 38 */	b lbl_800BF4B8

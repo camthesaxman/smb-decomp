@@ -170,7 +170,7 @@ void item_coin_draw(struct Item *item)
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (f30 < 1.0f)
         {
-            g_avdisp_set_alpha(f30);
+            avdisp_set_alpha(f30);
             avdisp_draw_model_unculled_sort_all(model);
         }
         else

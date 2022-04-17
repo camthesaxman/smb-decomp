@@ -298,7 +298,7 @@ void item_pilot_draw(struct Item *item)
             {
                 if (f30 < 0.5)
                     f30 = 0.5f;
-                g_avdisp_set_alpha(f30);
+                avdisp_set_alpha(f30);
                 avdisp_draw_model_unculled_sort_all(model);
             }
             else
