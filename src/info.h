@@ -42,7 +42,7 @@ void ev_info_init(void);
 void ev_info_main(void);
 void ev_info_dest(void);
 void func_80023AF4(void);
-int check_ball_entered_goal(struct Ball *, u32 *, s32 *);
+BOOL check_ball_entered_goal(struct Ball *, u32 *, s32 *);
 void g_time_over_all_competition_mode_balls(void);
 void func_80023DB8(struct Ball *);
 void create_rank_icon(struct Ball *);
