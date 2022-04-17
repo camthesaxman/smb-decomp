@@ -19,9 +19,9 @@ enum
 
     // Bits 2-3 for S wrap mode
     // Bits 4-5 for T wrap mode
-    GMA_TEV_STAGE_FLAG_UNK6 = 1 << 6,
+    GMA_TEV_LAYER_FLAG_UNK6 = 1 << 6,
     // Bits 7-10 for max LOD
-    GMA_TEV_STAGE_FLAG_UNK11 = 1 << 11,
+    GMA_TEV_LAYER_FLAG_MAGFILT_NEAR = 1 << 11,
 
     // Alpha blend layer. Passes color through unchanged, multiplies alpha by lookup from alpha
     // texture
@@ -31,7 +31,7 @@ enum
     // Used for specular highlight on party ball and monkey ball
     GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR = 1 << 15,
 
-    GMA_TEV_STAGE_FLAG_UNK16 = 1 << 16,
+    GMA_TEV_LAYER_FLAG_UNK16 = 1 << 16,
 };
 
 // A TEV layer describes how to set up one or more consecutive TEV stages. Each layer is fed an

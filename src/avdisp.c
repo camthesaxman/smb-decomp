@@ -982,7 +982,7 @@ void init_tev_layer_texobj(struct GMATevLayer *tevLayer, struct TPLTextureHeader
         wrapT,  // wrap_t
         maxLOD != 0);  // mipmap
 
-    if (tevLayer->flags & GMA_TEV_STAGE_FLAG_UNK11)
+    if (tevLayer->flags & GMA_TEV_LAYER_FLAG_MAGFILT_NEAR)
     {
         magFilt = GX_NEAR;
         if (maxLOD != 0)
@@ -1006,7 +1006,7 @@ void init_tev_layer_texobj(struct GMATevLayer *tevLayer, struct TPLTextureHeader
         maxLOD,  // max_lod
         tevLayer->lodBias / 10.0f,  // lod_bias
         FALSE,  // bias_clamp
-        (tevLayer->flags & GMA_TEV_STAGE_FLAG_UNK6) != 0,  // do_edge_lod
+        (tevLayer->flags & GMA_TEV_LAYER_FLAG_UNK6) != 0,  // do_edge_lod
         tevLayer->maxAniso);  // max_aniso
 }
 
@@ -1995,7 +1995,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
                       GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR);
             if (*cachedTevLayerFlags != tevLayerFlags)
                 break;
-            if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_STAGE_FLAG_UNK16))
+            if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_LAYER_FLAG_UNK16))
             {
                 GXLoadTexObj_cached(tevLayer->texObj, tevStageInfo.texMapId);
                 *cachedTevLayerIdx = *tevLayerIdx;
@@ -2113,7 +2113,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
             tevLayerFlags &= (GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND | GMA_TEV_LAYER_FLAG_TYPE3 | GMA_TEV_LAYER_FLAG_TYPE_VIEW_SPECULAR |
                       GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR);
             *cachedTevLayerFlags = tevLayerFlags;
-            if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_STAGE_FLAG_UNK16))
+            if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_LAYER_FLAG_UNK16))
             {
                 GXLoadTexObj_cached(tevLayer->texObj, tevStageInfo.texMapId);
                 *cachedTevLayerIdx = *tevLayerIdx;
