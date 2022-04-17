@@ -19,7 +19,7 @@ enum
 
     // Bits 2-3 for S wrap mode
     // Bits 4-5 for T wrap mode
-    GMA_TEV_LAYER_FLAG_UNK6 = 1 << 6,
+    GMA_TEV_LAYER_FLAG_DO_EDGE_LOD = 1 << 6,
     // Bits 7-10 for max LOD
     GMA_TEV_LAYER_FLAG_MAGFILT_NEAR = 1 << 11,
 

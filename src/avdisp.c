@@ -1006,7 +1006,7 @@ void init_tev_layer_texobj(struct GMATevLayer *tevLayer, struct TPLTextureHeader
         maxLOD,  // max_lod
         tevLayer->lodBias / 10.0f,  // lod_bias
         FALSE,  // bias_clamp
-        (tevLayer->flags & GMA_TEV_LAYER_FLAG_UNK6) != 0,  // do_edge_lod
+        (tevLayer->flags & GMA_TEV_LAYER_FLAG_DO_EDGE_LOD) != 0,  // do_edge_lod
         tevLayer->maxAniso);  // max_aniso
 }
 
