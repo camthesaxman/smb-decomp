@@ -484,24 +484,24 @@ void func_80023AF4(void)
 BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnimGroupId)
 {
     struct PhysicsBall physBall;
-    struct StageAnimGroup *stageIg;
+    struct StageAnimGroup *stageAg;
     int goalId;
     int animGroupId;
 
     init_physball_from_ball(ball, &physBall);
-    stageIg = decodedStageLzPtr->animGroups;
+    stageAg = decodedStageLzPtr->animGroups;
     goalId = 0;
-    for (animGroupId = 0; animGroupId < decodedStageLzPtr->animGroupCount; animGroupId++, stageIg++)
+    for (animGroupId = 0; animGroupId < decodedStageLzPtr->animGroupCount; animGroupId++, stageAg++)
     {
-        if (stageIg->goalCount > 0)
+        if (stageAg->goalCount > 0)
         {
             struct StageGoal *goal;
-            int igGoalIdx;
+            int agGoalIdx;
 
             if (animGroupId != physBall.animGroupId)
                 tf_physball_to_anim_group_space(&physBall, animGroupId);
-            goal = stageIg->goals;
-            for (igGoalIdx = 0; igGoalIdx < stageIg->goalCount; igGoalIdx++, goal++)
+            goal = stageAg->goals;
+            for (agGoalIdx = 0; agGoalIdx < stageAg->goalCount; agGoalIdx++, goal++)
             {
                 struct ColiRect goalTrigger;
 
