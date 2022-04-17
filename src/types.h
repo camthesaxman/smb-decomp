@@ -55,7 +55,7 @@ struct GMAShape;
 struct GMATevStageDesc;
 struct DrawShapeDeferredNode;
 struct GMATevStageDesc;
-struct G_TevStageInfo;
+struct TevStageInfo;
 
 
 

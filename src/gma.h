@@ -8,15 +8,15 @@
 
 enum
 {
-    GMA_TEV_STAGE_FLAG_UNK0 = 1 << 0,
-    GMA_TEV_STAGE_FLAG_UNK1 = 1 << 1, // Unused/ignored?
+    GMA_TEV_STAGE_FLAG_G_TYPE4 = 1 << 0,
+    GMA_TEV_STAGE_FLAG_G_TYPE3 = 1 << 1, // Unused/ignored?
     // Bits 2-3 for S wrap mode
     // Bits 4-5 for T wrap mode
     GMA_TEV_STAGE_FLAG_UNK6 = 1 << 6,
     // Bits 7-10 for max LOD
     GMA_TEV_STAGE_FLAG_UNK11 = 1 << 11,
-    GMA_TEV_STAGE_FLAG_UNK13 = 1 << 13,
-    GMA_TEV_STAGE_FLAG_UNK15 = 1 << 15,
+    GMA_TEV_STAGE_FLAG_G_TYPE2 = 1 << 13,
+    GMA_TEV_STAGE_FLAG_G_TYPE5 = 1 << 15,
     GMA_TEV_STAGE_FLAG_UNK16 = 1 << 16,
 };
 
@@ -71,11 +71,11 @@ enum
 
 enum
 {
-    GMA_SHAPE_DLIST_FLAG_DLIST0= 1 << 0, // Display list 0 present, cull front faces by default
-    GMA_SHAPE_DLIST_FLAG_DLIST1= 1 << 1, // Display list 1 present, cull back faces by default
+    GMA_SHAPE_HAS_DLIST0= 1 << 0, // Display list 0 present, cull front faces by default
+    GMA_SHAPE_HAS_DLIST1= 1 << 1, // Display list 1 present, cull back faces by default
     // Extra display lists (always both present or neither?)
-    GMA_SHAPE_DLIST_FLAG_DLIST2 = 1 << 2, // Display list 2 present, cull front faces
-    GMA_SHAPE_DLIST_FLAG_DLIST3 = 1 << 3, // Display list 3 present, cull back faces
+    GMA_SHAPE_HAS_DLIST2 = 1 << 2, // Display list 2 present, cull front faces
+    GMA_SHAPE_HAS_DLIST3 = 1 << 3, // Display list 3 present, cull back faces
 };
 
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
