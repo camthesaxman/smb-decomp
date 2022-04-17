@@ -1728,7 +1728,7 @@ static inline void material_set_num_ind_stages(s8 c)
     }
 }
 
-// #ifdef NONMATCHING
+#ifdef NONMATCHING
 // //#if 1
 // // stack differences
 // // DOL: 0x8C444
@@ -2253,15 +2253,15 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
     else
         s_materialCache.tevStageCount = shape->tevStageCount;
 }
-// #else
-// asm void build_tev_material(struct GMAShape *a, struct GMATevLayer *b)
-// {
-// #define _SDA_BASE_ 0
-// #define _SDA2_BASE_ 0
-//     nofralloc
-// #include "../asm/nonmatchings/build_tev_material.s"
-// }
-// #endif
+#else
+asm void build_tev_material(struct GMAShape *a, struct GMATevLayer *b)
+{
+#define _SDA_BASE_ 0
+#define _SDA2_BASE_ 0
+    nofralloc
+#include "../asm/nonmatchings/build_tev_material.s"
+}
+#endif
 
 // Optionally multiply a color/alpha with tev end result
 void post_multiply_tev_stage_build(GXTevStageID tevStage)
