@@ -756,7 +756,7 @@ void g_layer_type4_next(struct TevStageInfo *a);
 void g_layer_type5_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d);
 void g_layer_type5_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg);
 void g_layer_type5_next(struct TevStageInfo *a);
-void func_80091BA4(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc);
+void g_layer_type3_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc);
 void g_layer_type3_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg);
 void g_layer_type3_next(struct TevStageInfo *a);
 

@@ -1645,7 +1645,7 @@ struct TevStageInfo
     s32 tevStage;  // 7C
     GXTexCoordID texCoordId;  // 80
     u32 unk8;  // 84
-    GXTexMapID g_someTexmapId1;  // 88
+    GXTexMapID texMapId;  // 88
 
     u32 tevIndStage;  // 8C
     u32 unk14;  // 90
@@ -1736,7 +1736,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     tevStageInfo.tevStage = GX_TEVSTAGE0;  // 7C
     tevStageInfo.texCoordId = GX_TEXCOORD0;  // 80
     tevStageInfo.unk8 = 0x1E;  // 84
-    tevStageInfo.g_someTexmapId1 = GX_TEXMAP0;  // 88
+    tevStageInfo.texMapId = GX_TEXMAP0;  // 88
     tevStageInfo.tevIndStage = 0;  // 8C
     haveNewColorSrc = 0;
     tevStageInfo.unk14 = 0x40;  // 0x90
@@ -1745,7 +1745,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
     tevStageInfo.unk1C = 1;  // 98
     tevStageInfo.unk20 = 0;  // 9C
 
-    tevStageInfo.g_someTexmapId1 = GX_TEXMAP1;  // 88
+    tevStageInfo.texMapId = GX_TEXMAP1;  // 88
     tevStageInfo.unk8 = 0x24;  // 84
     tevStageInfo.unk14 = 0x49;  // 90
     tevStageInfo.unk18 = 4;  // 94
@@ -1987,7 +1987,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 break;
             if (*cachedTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK16))
             {
-                GXLoadTexObj_cached(tevStageDesc->texObj, tevStageInfo.g_someTexmapId1);
+                GXLoadTexObj_cached(tevStageDesc->texObj, tevStageInfo.texMapId);
                 *cachedTevStageDescIdx = *tevStageDescIdx;
             }
             //lbl_80090B00
@@ -2086,7 +2086,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 g_layer_type5_next(&tevStageInfo);
             }
             //lbl_80090D3C
-            tevStageInfo.g_someTexmapId1++;
+            tevStageInfo.texMapId++;
             g_texGenSrc++;
             tevStageCounter--;
             tevStageDescIdx++;
@@ -2105,7 +2105,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             *cachedTevStageDescFlags = tevStageDescFlags;
             if (*cachedTevStageDescIdx != *tevStageDescIdx || (tevStageDesc->flags & GMA_TEV_STAGE_FLAG_UNK16))
             {
-                GXLoadTexObj_cached(tevStageDesc->texObj, tevStageInfo.g_someTexmapId1);
+                GXLoadTexObj_cached(tevStageDesc->texObj, tevStageInfo.texMapId);
                 *cachedTevStageDescIdx = *tevStageDescIdx;
             }
             if (tevStageDescFlags == 0)
@@ -2120,7 +2120,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
             }
             else if (tevStageDescFlags & GMA_TEV_STAGE_FLAG_G_TYPE2) // same thing, unreachable
             {
-                func_80091BA4(&tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
+                g_layer_type3_build_uncached(&tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 g_layer_type3_next(&tevStageInfo);
             }
             //lbl_80090E54
@@ -2173,7 +2173,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
                 g_layer_type5_build_uncached(&tevStageInfo, colorSrc, alphaSrc, g_texGenSrc);
                 g_layer_type5_next(&tevStageInfo);
             }
-            tevStageInfo.g_someTexmapId1++;
+            tevStageInfo.texMapId++;
             g_texGenSrc++;
             tevStageCounter--;
             tevStageDescIdx++;
@@ -2251,7 +2251,7 @@ void g_build_tev_material(struct GMAShape *shape, struct GMATevStageDesc *tevSta
 // }
 // #endif
 
-// Optionally multiply a color/alpha to tev end result
+// Optionally multiply a color/alpha with tev end result
 void build_tev_post_multiply_stage(GXTevStageID tevStage)
 {
     GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K2);
@@ -2277,22 +2277,22 @@ void build_tev_post_add_stage(GXTevStageID tevStage)
     GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void g_layer_type1_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
+void g_layer_type1_build_uncached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
 {
-    GXSetTevDirect(a->tevStage);
-    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
-    GXSetTexCoordGen(a->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    GXSetTevOrder_cached(a->tevStage, a->texCoordId, a->g_someTexmapId1, GX_COLOR0A0);
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
-    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
-    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevDirect(info->tevStage);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTexCoordGen(info->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void g_layer_type1_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
+void g_layer_type1_build_cached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorArg, GX_CC_ZERO);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
 }
 
 void g_layer_type1_next(struct TevStageInfo *a)
@@ -2301,22 +2301,22 @@ void g_layer_type1_next(struct TevStageInfo *a)
     a->texCoordId++;
 }
 
-void g_layer_type2_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
+void g_layer_type2_build_uncached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
 {
-    GXSetTevDirect(a->tevStage);
-    GXSetTexCoordGen(a->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    GXSetTevOrder_cached(a->tevStage, a->texCoordId, a->g_someTexmapId1, GX_COLOR0A0);
-    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
-    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
-    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevDirect(info->tevStage);
+    GXSetTexCoordGen(info->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void g_layer_type2_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
+void g_layer_type2_build_cached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaArg, GX_CA_ZERO);
 }
 
 void g_layer_type2_next(struct TevStageInfo *a)
@@ -2325,10 +2325,10 @@ void g_layer_type2_next(struct TevStageInfo *a)
     a->texCoordId++;
 }
 
-void g_layer_type4_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d)
+void g_layer_type4_build_uncached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d)
 {
-    GXSetTevDirect(a->tevStage);
-    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(info->tevStage);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
     if (s_materialCache.unk44 == 0)
     {
         mathutil_mtxA_push();
@@ -2344,19 +2344,19 @@ void g_layer_type4_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg
         g_compute_texmtx0();
         s_materialCache.unk48 = 1;
     }
-    GXSetTevKColorSel_cached(a->tevStage, GX_TEV_KCSEL_K0);
-    GXSetTexCoordGen2(a->texCoordId, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
-    GXSetTevOrder_cached(a->tevStage, a->texCoordId, a->g_someTexmapId1, GX_COLOR0A0);
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
-    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
-    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevKColorSel_cached(info->tevStage, GX_TEV_KCSEL_K0);
+    GXSetTexCoordGen2(info->texCoordId, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void g_layer_type4_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
+void g_layer_type4_build_cached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorArg);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
 }
 
 // duplicate of g_layer_type1_next
@@ -2366,7 +2366,7 @@ void g_layer_type4_next(struct TevStageInfo *a)
     a->texCoordId++;
 }
 
-void g_layer_type5_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d)
+void g_layer_type5_build_uncached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, u32 d)
 {
     u32 tevStage;
 
@@ -2387,63 +2387,65 @@ void g_layer_type5_build_uncached(struct TevStageInfo *a, GXTevColorArg colorArg
         s_materialCache.unk4C = 1;
     }
     // unrolled loop?
-    tevStage = a->tevStage;
+    tevStage = info->tevStage;
 
     GXSetTevDirect(tevStage);
-    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
     GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K1);
-    GXSetTexCoordGen2(a->texCoordId, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
-    GXSetTevOrder_cached(tevStage, a->texCoordId, GX_TEXMAP0, GX_COLOR0A0);
+    GXSetTexCoordGen2(info->texCoordId, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
+    GXSetTevOrder_cached(tevStage, info->texCoordId, GX_TEXMAP0, GX_COLOR0A0);
     GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
     GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG2);
     GXSetTevAlphaIn_cached(tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
     GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG2);
 
     GXSetTevDirect(tevStage + 1);
-    GXSetTevSwapMode_cached(a->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
-    GXSetTexCoordGen2(a->texCoordId + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
-    GXSetTevOrder_cached(tevStage + 1, a->texCoordId + 1, a->g_someTexmapId1, GX_COLOR0A0);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTexCoordGen2(info->texCoordId + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
+    GXSetTevOrder_cached(tevStage + 1, info->texCoordId + 1, info->texMapId, GX_COLOR0A0);
     GXSetTevColorIn_cached(tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorArg);
     GXSetTevColorOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
     GXSetTevAlphaOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void g_layer_type5_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
+void g_layer_type5_build_cached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorArg);
-    GXSetTevAlphaIn_cached(a->tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
+    GXSetTevColorIn_cached(info->tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorArg);
+    GXSetTevAlphaIn_cached(info->tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
 }
 
-void g_layer_type5_next(struct TevStageInfo *a)
+void g_layer_type5_next(struct TevStageInfo *info)
 {
-    a->tevStage += 2;
-    a->texCoordId += 2;
+    info->tevStage += 2;
+    info->texCoordId += 2;
 }
 
-void func_80091BA4(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
+// Type 3 seems unused/unreachable
+
+void g_layer_type3_build_uncached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc)
 {
-    GXSetTevDirect(a->tevStage);
-    GXSetTexCoordGen(a->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    GXSetTevOrder_cached(a->tevStage, a->texCoordId, a->g_someTexmapId1, GX_COLOR0A0);
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
-    GXSetTevColorOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
-    GXSetTevAlphaOp_cached(a->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-    a->unk20 = 1;
-    a->g_texCoordId2 = a->texCoordId;
-    a->g_someTexmapId2 = a->g_someTexmapId1;
+    GXSetTevDirect(info->tevStage);
+    GXSetTexCoordGen(info->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    info->unk20 = 1;
+    info->g_texCoordId2 = info->texCoordId;
+    info->g_someTexmapId2 = info->texMapId;
 }
 
-void g_layer_type3_build_cached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
+void g_layer_type3_build_cached(struct TevStageInfo *info, GXTevColorArg colorArg, GXTevAlphaArg alphaArg)
 {
-    GXSetTevColorIn_cached(a->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
-    GXSetTevAlphaIn_cached(a->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorArg);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaArg);
 }
 
 // duplicate of g_layer_type1_next
-void g_layer_type3_next(struct TevStageInfo *a)
+void g_layer_type3_next(struct TevStageInfo *info)
 {
-    a->tevStage++;
-    a->texCoordId++;
+    info->tevStage++;
+    info->texCoordId++;
 }

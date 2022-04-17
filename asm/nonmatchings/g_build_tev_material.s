@@ -635,7 +635,7 @@ lbl_80090E30:
 /* 80090E38 0008CD58  7E C5 B3 78 */	mr r5, r22
 /* 80090E3C 0008CD5C  7E 66 9B 78 */	mr r6, r19
 /* 80090E40 0008CD60  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090E44 0008CD64  48 00 0D 61 */	bl func_80091BA4
+/* 80090E44 0008CD64  48 00 0D 61 */	bl g_layer_type3_build_uncached
 /* 80090E48 0008CD68  38 61 00 7C */	addi r3, r1, 0x7c
 /* 80090E4C 0008CD6C  48 00 0E C1 */	bl g_layer_type3_next
 /* 80090E50 0008CD70  48 00 01 98 */	b lbl_80090FE8
