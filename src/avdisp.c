@@ -2371,7 +2371,6 @@ void view_specular_layer_build_cached(struct TevStageInfo *info, GXTevColorArg c
     GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
 }
 
-// duplicate of diffuse_layer_next
 void view_specular_layer_next(struct TevStageInfo *a)
 {
     a->tevStage++;
@@ -2455,7 +2454,6 @@ void unk3_layer_build_cached(struct TevStageInfo *info, GXTevColorArg colorIn, G
     GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
 }
 
-// duplicate of diffuse_layer_next
 void unk3_layer_next(struct TevStageInfo *info)
 {
     info->tevStage++;
