@@ -277,7 +277,7 @@ void draw_blur_bridge_accordions(void)
     float t;
     float f30;
     struct AnimGroupInfo *animGroup;
-    struct StageAnimGroup *stageIg;
+    struct StageAnimGroup *stageAg;
     int i;
 
     if (blurBridgeAccordion == NULL2)
@@ -288,19 +288,19 @@ void draw_blur_bridge_accordions(void)
     t -= f30 * mathutil_floor(t / f30);
     t += (float)decodedStageLzPtr->loopStartSeconds;
     animGroup = &animGroups[1];
-    stageIg = decodedStageLzPtr->animGroups + 1;
-    for (i = 1; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageIg++)
+    stageAg = decodedStageLzPtr->animGroups + 1;
+    for (i = 1; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageAg++)
     {
-        if (stageIg->unk7C > 0 && stageIg->anim != NULL2)
+        if (stageAg->unk7C > 0 && stageAg->anim != NULL2)
         {
             u32 r28;
             Vec sp10;
             float f27 = animGroup->pos.x;
 
             f30 = f27;
-            if (stageIg->anim->posXKeyframes != NULL2)
-                f30 = interpolate_keyframes(stageIg->anim->posXKeyframeCount,
-                                            stageIg->anim->posXKeyframes,
+            if (stageAg->anim->posXKeyframes != NULL2)
+                f30 = interpolate_keyframes(stageAg->anim->posXKeyframeCount,
+                                            stageAg->anim->posXKeyframes,
                                             t - 0.5);
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             if (f30 < f27)
@@ -334,7 +334,7 @@ void animate_anim_groups(float a)
     float f30;
     float f3;
     struct AnimGroupInfo *animGroup;
-    struct StageAnimGroup *stageIg;
+    struct StageAnimGroup *stageAg;
     struct StageAnimGroupAnim *anim;
     int i;
 
@@ -348,10 +348,10 @@ void animate_anim_groups(float a)
     timeSeconds -= f3 * mathutil_floor(timeSeconds / f3);
     timeSeconds += decodedStageLzPtr->loopStartSeconds;
     animGroup = animGroups;
-    stageIg = decodedStageLzPtr->animGroups;
-    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageIg++)
+    stageAg = decodedStageLzPtr->animGroups;
+    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageAg++)
     {
-        anim = stageIg->anim;
+        anim = stageAg->anim;
         if (anim != NULL2)
         {
             if (anim->rotXKeyframes != NULL2)
@@ -393,10 +393,10 @@ void animate_anim_groups(float a)
             mathutil_mtxA_from_translate(&animGroup->pos);
             mathutil_mtxA_rotate_z(animGroup->rot.z);
             mathutil_mtxA_rotate_y(animGroup->rot.y);
-            mathutil_mtxA_rotate_x(animGroup->rot.x - stageIg->initRot.x);
-            mathutil_mtxA_rotate_y(-stageIg->initRot.y);
-            mathutil_mtxA_rotate_z(-stageIg->initRot.z);
-            mathutil_mtxA_translate_neg(&stageIg->initPos);
+            mathutil_mtxA_rotate_x(animGroup->rot.x - stageAg->initRot.x);
+            mathutil_mtxA_rotate_y(-stageAg->initRot.y);
+            mathutil_mtxA_rotate_z(-stageAg->initRot.z);
+            mathutil_mtxA_translate_neg(&stageAg->initPos);
             mathutil_mtxA_to_mtx(animGroup->transform);
             mathutil_mtx_copy(animGroup->prevTransform, animGroup->transform);
         }
@@ -430,28 +430,28 @@ void g_initialize_stage_dyn_part_info(void)
 void func_8004482C(void)
 {
     struct AnimGroupInfo *animGroup;
-    struct StageAnimGroup *stageIg;
+    struct StageAnimGroup *stageAg;
     int i;
 
     animGroup = animGroups;
-    stageIg = decodedStageLzPtr->animGroups;
-    for (i = 0; i < 0x48; i++, animGroup++, stageIg++)
+    stageAg = decodedStageLzPtr->animGroups;
+    for (i = 0; i < 0x48; i++, animGroup++, stageAg++)
     {
-        animGroup->pos.x = stageIg->initPos.x;
-        animGroup->pos.y = stageIg->initPos.y;
-        animGroup->pos.z = stageIg->initPos.z;
-        animGroup->prevPos.x = stageIg->initPos.x - stageIg->unkB8.x;
-        animGroup->prevPos.y = stageIg->initPos.y - stageIg->unkB8.y;
-        animGroup->prevPos.z = stageIg->initPos.z - stageIg->unkB8.z;
-        animGroup->rot.x = stageIg->initRot.x;
-        animGroup->rot.y = stageIg->initRot.y;
-        animGroup->rot.z = stageIg->initRot.z;
-        animGroup->prevRot.x = stageIg->initRot.x;
-        animGroup->prevRot.y = stageIg->initRot.y;
-        animGroup->prevRot.z = stageIg->initRot.z;
+        animGroup->pos.x = stageAg->initPos.x;
+        animGroup->pos.y = stageAg->initPos.y;
+        animGroup->pos.z = stageAg->initPos.z;
+        animGroup->prevPos.x = stageAg->initPos.x - stageAg->unkB8.x;
+        animGroup->prevPos.y = stageAg->initPos.y - stageAg->unkB8.y;
+        animGroup->prevPos.z = stageAg->initPos.z - stageAg->unkB8.z;
+        animGroup->rot.x = stageAg->initRot.x;
+        animGroup->rot.y = stageAg->initRot.y;
+        animGroup->rot.z = stageAg->initRot.z;
+        animGroup->prevRot.x = stageAg->initRot.x;
+        animGroup->prevRot.y = stageAg->initRot.y;
+        animGroup->prevRot.z = stageAg->initRot.z;
         mathutil_mtxA_from_identity();
         mathutil_mtxA_to_mtx(animGroup->transform);
-        mathutil_mtxA_translate_neg(&stageIg->unkB8);
+        mathutil_mtxA_translate_neg(&stageAg->unkB8);
         mathutil_mtxA_to_mtx(animGroup->prevTransform);
     }
 }
