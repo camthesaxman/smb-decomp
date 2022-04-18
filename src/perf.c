@@ -53,14 +53,14 @@ void perf_init_draw(void)
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
     GXSetChanMatColor(GX_COLOR0A0, matColor);
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != GX_LEQUAL
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable  != GX_ENABLE
+     || gxCache->compareFunc   != GX_LEQUAL
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = GX_LEQUAL;
+        gxCache->updateEnable  = GX_ENABLE;
     }
     GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
     GXSetZCompLoc_cached(1);
@@ -106,7 +106,7 @@ void func_80027388(void)
             perfDispLists[lbl_802F1D20 & 1],
             perfDispListSizes[lbl_802F1D20 & 1]);
         PERFPostDraw();
-        GXSetLineWidth(zMode->lineWidth, zMode->texOffsets);
+        GXSetLineWidth(gxCache->lineWidth, gxCache->texOffsets);
         GXSetZCompLoc_from_cache();
         GXSetNumTevStages_from_cache();
     }

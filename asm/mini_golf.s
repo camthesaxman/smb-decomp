@@ -40778,8 +40778,8 @@ lbl_00025BD0:
 /* 00025C68 38A00005 */ li r5, 5
 /* 00025C6C 38C00000 */ li r6, 0
 /* 00025C70 4BFDA561 */ bl GXSetBlendMode_cached
-/* 00025C74 3C600000 */ lis r3, zMode@ha
-/* 00025C78 38630000 */ addi r3, r3, zMode@l
+/* 00025C74 3C600000 */ lis r3, gxCache@ha
+/* 00025C78 38630000 */ addi r3, r3, gxCache@l
 /* 00025C7C 80630000 */ lwz r3, 0(r3)
 /* 00025C80 88030008 */ lbz r0, 8(r3)
 /* 00025C84 28000001 */ cmplwi r0, 1
@@ -40795,8 +40795,8 @@ lbl_00025CA4:
 /* 00025CA8 38800002 */ li r4, 2
 /* 00025CAC 38A00001 */ li r5, 1
 /* 00025CB0 4BFDA521 */ bl GXSetZMode
-/* 00025CB4 3C600000 */ lis r3, zMode@ha
-/* 00025CB8 38830000 */ addi r4, r3, zMode@l
+/* 00025CB4 3C600000 */ lis r3, gxCache@ha
+/* 00025CB8 38830000 */ addi r4, r3, gxCache@l
 /* 00025CBC 80640000 */ lwz r3, 0(r4)
 /* 00025CC0 38A00001 */ li r5, 1
 /* 00025CC4 38000002 */ li r0, 2
@@ -40956,8 +40956,8 @@ lbl_00025EA8:
 /* 00025F24 38A00005 */ li r5, 5
 /* 00025F28 38C00000 */ li r6, 0
 /* 00025F2C 4BFDA2A5 */ bl GXSetBlendMode_cached
-/* 00025F30 3C600000 */ lis r3, zMode@ha
-/* 00025F34 38630000 */ addi r3, r3, zMode@l
+/* 00025F30 3C600000 */ lis r3, gxCache@ha
+/* 00025F34 38630000 */ addi r3, r3, gxCache@l
 /* 00025F38 80630000 */ lwz r3, 0(r3)
 /* 00025F3C 88030008 */ lbz r0, 8(r3)
 /* 00025F40 28000001 */ cmplwi r0, 1
@@ -40973,8 +40973,8 @@ lbl_00025F60:
 /* 00025F64 38800002 */ li r4, 2
 /* 00025F68 38A00001 */ li r5, 1
 /* 00025F6C 4BFDA265 */ bl GXSetZMode
-/* 00025F70 3C600000 */ lis r3, zMode@ha
-/* 00025F74 38830000 */ addi r4, r3, zMode@l
+/* 00025F70 3C600000 */ lis r3, gxCache@ha
+/* 00025F74 38830000 */ addi r4, r3, gxCache@l
 /* 00025F78 80640000 */ lwz r3, 0(r4)
 /* 00025F7C 38A00001 */ li r5, 1
 /* 00025F80 38000002 */ li r0, 2

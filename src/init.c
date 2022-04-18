@@ -228,8 +228,8 @@ void init_cache(void)
     lbl_802F1B3C = (void *)(LC_CACHE_BASE + size);
     size += sizeof(*lbl_802F1B3C);
 
-    zMode = (void *)(LC_CACHE_BASE + size);
-    size += sizeof(*zMode);
+    gxCache = (void *)(LC_CACHE_BASE + size);
+    size += sizeof(*gxCache);
 
     printf("locked cache size: %d\n", size);
 }

@@ -2815,8 +2815,8 @@ lbl_802BA210:
 .section .sbss
 
     .balign 8
-.global zMode
-zMode:
+.global gxCache
+gxCache:
 	.skip 0x8
 
 

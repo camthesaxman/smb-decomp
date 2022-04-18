@@ -190,7 +190,7 @@ void func_8008D6D4(register void *arg)
 }
 #endif
 
-void func_8008D788(void)
+void avdisp_init(void)
 {
     Vec sp8;
     lbl_802F20EC = NULL;
@@ -1014,7 +1014,7 @@ static inline struct GMAShape *init_shape_render_flags(struct GMAShape *shape)
 {
     if (shape->vtxAttrs & (1 << GX_VA_CLR0))
         shape->flags |= GMA_SHAPE_FLAG_VERT_COLORS;
-    if (shape->tevStageCount == 0)
+    if (shape->tevLayerCount == 0)
         shape->flags |= GMA_SHAPE_FLAG_SIMPLE_MATERIAL;
     return next_shape(shape);
 }
@@ -1061,7 +1061,7 @@ GXTexObj *init_model(struct GMAModel *model, struct TPL *tpl, GXTexObj *texObj)
     for (i = 0; i < model->opaqueShapeCount; i++)
     {
         if (tpl == NULL)
-            shape->tevStageCount = 0;
+            shape->tevLayerCount = 0;
         if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
             struct GMAShape *r3 = shape;
@@ -1074,7 +1074,7 @@ GXTexObj *init_model(struct GMAModel *model, struct TPL *tpl, GXTexObj *texObj)
     for (i = 0; i < model->translucentShapeCount; i++)
     {
         if (tpl == NULL)
-            shape->tevStageCount = 0;
+            shape->tevLayerCount = 0;
         if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
             struct GMAShape *r3 = shape;
@@ -1247,15 +1247,6 @@ void func_8008F8A4(u8 *mtxIndexes)
     }
 }
 
-// Two extra display lists which may be included in a shape. Follows directly after first two disp
-// lists if present.
-struct GMAExtraDispLists
-{
-    u8 mtxIndices[8];
-    u32 dispListSizes[2];
-    u8 filler10[0x20-0x10];
-    u8 dlists[];
-};
 
 struct UnkStruct27
 {
@@ -1483,14 +1474,14 @@ void func_8008FE44(struct GMAModel *model, struct GMAShape *shape)
         GXLoadTexMtxImm(lbl_802B4E6C, GX_TEXMTX1, GX_MTX3x4);
     else
         GXLoadTexMtxImm(lbl_802B4E9C, GX_TEXMTX1, GX_MTX3x4);
-    if (s_zModeUpdateEnable  != zMode->updateEnable
-     || s_zModeCompareFunc   != zMode->compareFunc
-     || s_zModeCompareEnable != zMode->compareEnable)
+    if (s_zModeUpdateEnable  != gxCache->updateEnable
+     || s_zModeCompareFunc   != gxCache->compareFunc
+     || s_zModeCompareEnable != gxCache->compareEnable)
     {
         GXSetZMode(s_zModeCompareEnable, s_zModeCompareFunc, s_zModeUpdateEnable);
-        zMode->compareEnable = s_zModeCompareEnable;
-        zMode->compareFunc   = s_zModeCompareFunc;
-        zMode->updateEnable  = s_zModeUpdateEnable;
+        gxCache->compareEnable = s_zModeCompareEnable;
+        gxCache->compareFunc   = s_zModeCompareFunc;
+        gxCache->updateEnable  = s_zModeUpdateEnable;
     }
     if (s_fogEnabled != 0)
         GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
@@ -1973,7 +1964,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
     //lbl_80090A78
     else
     {
-        s32 tevStageCounter = shape->tevStageCount;
+        s32 tevStageCounter = shape->tevLayerCount;
         GXTexGenSrc g_texGenSrc = GX_TG_TEX0;
         // loop:
         // r18 = &a->unk16
@@ -2251,7 +2242,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
     if (shape->flags & GMA_SHAPE_FLAG_SIMPLE_MATERIAL)
         s_materialCache.tevStageCount = 0;
     else
-        s_materialCache.tevStageCount = shape->tevStageCount;
+        s_materialCache.tevStageCount = shape->tevLayerCount;
 }
 #else
 asm void build_tev_material(struct GMAShape *a, struct GMATevLayer *b)

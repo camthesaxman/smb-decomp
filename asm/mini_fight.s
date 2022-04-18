@@ -27812,8 +27812,8 @@ lbl_00019E2C:
 /* 00019E7C 38A00001 */ li r5, 1
 /* 00019E80 38C00000 */ li r6, 0
 /* 00019E84 4BFE62E1 */ bl GXSetBlendMode_cached
-/* 00019E88 3C600000 */ lis r3, zMode@ha
-/* 00019E8C 38630000 */ addi r3, r3, zMode@l
+/* 00019E88 3C600000 */ lis r3, gxCache@ha
+/* 00019E8C 38630000 */ addi r3, r3, gxCache@l
 /* 00019E90 80630000 */ lwz r3, 0(r3)
 /* 00019E94 88030008 */ lbz r0, 8(r3)
 /* 00019E98 28000001 */ cmplwi r0, 1
@@ -27829,8 +27829,8 @@ lbl_00019EB8:
 /* 00019EBC 38800007 */ li r4, 7
 /* 00019EC0 38A00001 */ li r5, 1
 /* 00019EC4 4BFE62A1 */ bl GXSetZMode
-/* 00019EC8 3C600000 */ lis r3, zMode@ha
-/* 00019ECC 38830000 */ addi r4, r3, zMode@l
+/* 00019EC8 3C600000 */ lis r3, gxCache@ha
+/* 00019ECC 38830000 */ addi r4, r3, gxCache@l
 /* 00019ED0 80640000 */ lwz r3, 0(r4)
 /* 00019ED4 38A00001 */ li r5, 1
 /* 00019ED8 38000007 */ li r0, 7
@@ -27903,8 +27903,8 @@ lbl_00019EF0:
 /* 00019FE0 4BFE6185 */ bl GXBegin
 /* 00019FE4 3C80CC01 */ lis r4, 0xcc01
 /* 00019FE8 D3A48000 */ stfs f29, -0x8000(r4)
-/* 00019FEC 3C600000 */ lis r3, zMode@ha
-/* 00019FF0 38630000 */ addi r3, r3, zMode@l
+/* 00019FEC 3C600000 */ lis r3, gxCache@ha
+/* 00019FF0 38630000 */ addi r3, r3, gxCache@l
 /* 00019FF4 D3C48000 */ stfs f30, -0x8000(r4)
 /* 00019FF8 80630000 */ lwz r3, 0(r3)
 /* 00019FFC D3648000 */ stfs f27, -0x8000(r4)
@@ -27931,8 +27931,8 @@ lbl_0001A048:
 /* 0001A04C 38800003 */ li r4, 3
 /* 0001A050 38A00001 */ li r5, 1
 /* 0001A054 4BFE6111 */ bl GXSetZMode
-/* 0001A058 3C600000 */ lis r3, zMode@ha
-/* 0001A05C 38830000 */ addi r4, r3, zMode@l
+/* 0001A058 3C600000 */ lis r3, gxCache@ha
+/* 0001A05C 38830000 */ addi r4, r3, gxCache@l
 /* 0001A060 80640000 */ lwz r3, 0(r4)
 /* 0001A064 38A00001 */ li r5, 1
 /* 0001A068 38000003 */ li r0, 3
@@ -27954,14 +27954,14 @@ lbl_0001A080:
 /* 0001A0A4 4E800020 */ blr 
 lbl_0001A0A8:
 /* 0001A0A8 7C0802A6 */ mflr r0
-/* 0001A0AC 3C600000 */ lis r3, zMode@ha
+/* 0001A0AC 3C600000 */ lis r3, gxCache@ha
 /* 0001A0B0 90010004 */ stw r0, 4(r1)
 /* 0001A0B4 9421FFB0 */ stwu r1, -0x50(r1)
 /* 0001A0B8 DBE10048 */ stfd f31, 0x48(r1)
 /* 0001A0BC DBC10040 */ stfd f30, 0x40(r1)
 /* 0001A0C0 DBA10038 */ stfd f29, 0x38(r1)
 /* 0001A0C4 93E10034 */ stw r31, 0x34(r1)
-/* 0001A0C8 80830000 */ lwz r4, zMode@l(r3)
+/* 0001A0C8 80830000 */ lwz r4, gxCache@l(r3)
 /* 0001A0CC 3C600000 */ lis r3, lbl_0001C7D8@ha
 /* 0001A0D0 3BE30000 */ addi r31, r3, lbl_0001C7D8@l
 /* 0001A0D4 88040008 */ lbz r0, 8(r4)
@@ -27978,8 +27978,8 @@ lbl_0001A0F8:
 /* 0001A0FC 38800007 */ li r4, 7
 /* 0001A100 38A00001 */ li r5, 1
 /* 0001A104 4BFE6061 */ bl GXSetZMode
-/* 0001A108 3C600000 */ lis r3, zMode@ha
-/* 0001A10C 38830000 */ addi r4, r3, zMode@l
+/* 0001A108 3C600000 */ lis r3, gxCache@ha
+/* 0001A10C 38830000 */ addi r4, r3, gxCache@l
 /* 0001A110 80640000 */ lwz r3, 0(r4)
 /* 0001A114 38A00001 */ li r5, 1
 /* 0001A118 38000007 */ li r0, 7
@@ -28088,8 +28088,8 @@ lbl_0001A24C:
 /* 0001A29C D0438000 */ stfs f2, -0x8000(r3)
 /* 0001A2A0 D0238000 */ stfs f1, -0x8000(r3)
 /* 0001A2A4 4200FF04 */ bdnz lbl_0001A1A8
-/* 0001A2A8 3C600000 */ lis r3, zMode@ha
-/* 0001A2AC 38630000 */ addi r3, r3, zMode@l
+/* 0001A2A8 3C600000 */ lis r3, gxCache@ha
+/* 0001A2AC 38630000 */ addi r3, r3, gxCache@l
 /* 0001A2B0 80630000 */ lwz r3, 0(r3)
 /* 0001A2B4 88030008 */ lbz r0, 8(r3)
 /* 0001A2B8 28000001 */ cmplwi r0, 1
@@ -28105,8 +28105,8 @@ lbl_0001A2D8:
 /* 0001A2DC 38800003 */ li r4, 3
 /* 0001A2E0 38A00001 */ li r5, 1
 /* 0001A2E4 4BFE5E81 */ bl GXSetZMode
-/* 0001A2E8 3C600000 */ lis r3, zMode@ha
-/* 0001A2EC 38830000 */ addi r4, r3, zMode@l
+/* 0001A2E8 3C600000 */ lis r3, gxCache@ha
+/* 0001A2EC 38830000 */ addi r4, r3, gxCache@l
 /* 0001A2F0 80640000 */ lwz r3, 0(r4)
 /* 0001A2F4 38A00001 */ li r5, 1
 /* 0001A2F8 38000003 */ li r0, 3

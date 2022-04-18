@@ -101,6 +101,16 @@ enum
     GMA_SHAPE_HAS_DLIST3 = 1 << 3, // Display list 3 present, cull back faces
 };
 
+// Two extra display lists which may be included in a shape. Follows directly after first two disp
+// lists if present.
+struct GMAExtraDispLists
+{
+    u8 mtxIndices[8];
+    u32 dispListSizes[2];
+    u8 filler10[0x20-0x10];
+    u8 dlists[];
+};
+
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
 struct GMAShape
 {
@@ -113,7 +123,7 @@ struct GMAShape
     } g_color3;
     /*0x10*/ u8 filler10[1];
     u8 g_alpha;
-    /*0x12*/ u8 tevStageCount;
+    /*0x12*/ u8 tevLayerCount;
     /*0x13*/ u8 dispListFlags;
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16 - 0x15];

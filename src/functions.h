@@ -688,7 +688,7 @@ void func_8008D36C(struct NaomiModel *, u32, u32);
 int lzs_decompress(u8 *, void *);
 // ? func_8008D6BC();
 // ? func_8008D6D4();
-void func_8008D788(void);
+void avdisp_init(void);
 // ? g_avdisp_alloc_matrix_lists();
 // ? g_get_stitching_model_mtx();
 // ? load_model();

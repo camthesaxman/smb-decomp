@@ -98,7 +98,7 @@ struct PerfInfo
     u32 unk34;
 };
 
-struct ZMode
+struct GXCache
 {
     /*0x00*/ GXBool compareEnable;
     /*0x04*/ GXCompare compareFunc;

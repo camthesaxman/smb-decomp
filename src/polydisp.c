@@ -494,14 +494,14 @@ void func_8000C144(struct Struct8000C144 *a)
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ZERO, GX_BL_ONE, GX_LO_CLEAR);
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != 7
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable  != GX_ENABLE
+     || gxCache->compareFunc   != GX_ALWAYS
+     || gxCache->compareEnable != GX_ENABLE)
     {
-        GXSetZMode(GX_ENABLE, 7, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = 7;
-        zMode->updateEnable  = GX_ENABLE;
+        GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_ENABLE);
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = GX_ALWAYS;
+        gxCache->updateEnable  = GX_ENABLE;
     }
 
     GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
@@ -526,14 +526,14 @@ void func_8000C144(struct Struct8000C144 *a)
         GXPosition3f32(x2, y2, z);
     GXEnd();
 
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != 3
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable  != GX_ENABLE
+     || gxCache->compareFunc   != 3
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, 3, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = 3;
-        zMode->updateEnable  = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = 3;
+        gxCache->updateEnable  = GX_ENABLE;
     }
 }
 
