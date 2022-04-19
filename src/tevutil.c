@@ -4,73 +4,51 @@
 #include "global.h"
 #include "tevutil.h"
 
-// u32 lbl_802F5A88 = 0;
-// float lbl_802F5A8C = 0.0;
-// float lbl_802F5A90 = 100.0;
-// float lbl_802F5A94 = 0.1;
-// float lbl_802F5A98 = 20000.0;
+GXColor lbl_802F5A88;
 
-// TDOO: decomp this
-// u32 tevutil_init(void) 
-// {
-//     GXTevStageID stage;
-//     GXColor *local_c;
-//     GXColor *local_10;
-//     GXColor *local_14;
-//     GXColor *local_18;
-//     GXColor *local_1c;
-//     GXColor *local_20;
-    
-//     local_c = lbl_802F5A88;
-    
-//     memset(zMode, 0x00, 0x734);
-//     GXSetZMode(1, 3, 1);
-//     zMode->compareEnable = GX_TRUE;
-//     zMode->compareFunc = GX_LEQUAL;
-//     zMode->updateEnable = GX_TRUE;
-//     GXSetLineWidth(6, 0);
-//     zMode->lineWidth = 6;
-//     zMode->texOffsets = 0;
-    
-//     func_8009E0DC(2);
-//     func_8009E200(0, 1, 0, 0);
-//     func_8009E270(0, 0, 1, 2, 3);
-//     func_8009E270(1, 0, 1, 2, 0);
-//     func_8009E270(2, 0, 1, 2, 1);
-//     func_8009E270(3, 0, 1, 2, 2);
+u32 tevutil_init(void) {
+    struct ZMode *_ZMode;
+    GXTevStageID stage;
+    GXColor color = {0, 0, 0, 0};
 
-//     //
-//     local_10 = local_c;
-//     func_8009F3D8(0, local_10);
-//     local_14 = local_c;
-//     func_8009F3D8(1, &local_14);
-//     local_18 = local_c;
-//     func_8009F3D8(2, &local_18);
-//     local_1c = local_c;
-//     func_8009F3D8(3, &local_1c);
-//     local_20 = local_c;
-//     func_8009E444(
-//         lbl_802F5A8C, lbl_802F5A90, lbl_802F5A94, lbl_802F5A98, 
-//         0, &local_20);
-//     //
-    
-//     func_8009E520(1);
-//     func_8009E554(1);
-//     func_8009E5E4(1);
-    
-//     for (stage = 0; stage < 0x10; stage++) {
-//         func_8009E340(stage, 0, 0);
-//         func_8009E6B0(stage, 0xf, 0xf, 0xf, 0xf);
-//         func_8009E7A4(stage, 7, 7, 7, 7);
-//         func_8009E8B4(stage, 0, 0, 0, 1, 0);
-//         func_8009E9CC(stage, 0, 0, 0, 1, 0);
-//         func_8009F10C(stage, 0, 0, 4);
-//         func_8009F1DC(stage, 0);
-//         func_8009F280(stage, 0);
-//     }
-    
-//     return 1;
-// }
+    memset(zMode, 0, 0x734);
+    GXSetZMode(1, GX_LEQUAL, 1);
+    zMode->compareEnable = GX_TRUE;
+    zMode->compareFunc = GX_LEQUAL;
+    zMode->updateEnable = GX_TRUE;
+    GXSetLineWidth(6, GX_TO_ZERO);
+    zMode->lineWidth = 6;
+    _ZMode = zMode;
+    zMode->texOffsets = GX_TO_ZERO;
+    GXSetCullMode_cached_init(GX_CULL_BACK, _ZMode);
+    GXSetBlendMode_cached_init(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, GX_LO_CLEAR);
+    GXSetTevSwapModeTable_cached_init(GX_TEV_SWAP0, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_ALPHA);
+    GXSetTevSwapModeTable_cached_init(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
+    GXSetTevSwapModeTable_cached_init(GX_TEV_SWAP2,GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_GREEN);
+    GXSetTevSwapModeTable_cached_init(GX_TEV_SWAP3, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_BLUE);
+
+    GXSetTevKColor_cached_init(GX_KCOLOR0, color);
+    GXSetTevKColor_cached_init(GX_KCOLOR1, color);
+    GXSetTevKColor_cached_init(GX_KCOLOR2, color);
+    GXSetTevKColor_cached_init(GX_KCOLOR3, color);
+    GXSetFog_cached_init(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, color);
+
+    GXSetColorUpdate_cached_init(1);
+    GXSestAlphaUpdate_cached_init(1);
+    GXSetZCompLoc_cached_init(1);
+
+    for (stage = GX_TEVSTAGE0; stage < 0x10; stage++) {
+        GXSetTevSwapMode_cached_init(stage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+        GXSetTevColorIn_cached_init(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+        GXSetTevAlphaIn_cached_init(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
+        GXSetTevColorOp_cached_init(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+        GXSetTevAlphaOp_cached_init(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+        GXSetTevOrder_cached_init(stage, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+        GXSetTevKColorSel_cached_init(stage, GX_TEV_KCSEL_1);
+        GXSetTevKAlphaSel_cached_init(stage, GX_TEV_KASEL_1);
+    }
+    return 1;
+}
 
 void GXSetCullMode_cached(GXCullMode mode)
 {
@@ -81,7 +59,7 @@ void GXSetCullMode_cached(GXCullMode mode)
     return;
 }
 
-void GXSetCullMode_cached_init(GXCullMode mode)
+void GXSetCullMode_cached_init(GXCullMode mode, struct ZMode *_ZMode)
 {   
     GXSetCullMode(mode);
     zMode->unk0x10 = mode;
