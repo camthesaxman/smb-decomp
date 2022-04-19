@@ -179,10 +179,10 @@ void unkFunc8000A924(struct Sprite *a)
     if (a != NULL)
         a->unk48 = 6;
     if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
-        lbl_802F1B9C = OSSetCurrentHeap(memHeap4);
+        lbl_802F1B9C = OSSetCurrentHeap(charaHeap);
     if (gameMode == MD_MINI && modeCtrl.gameType == GAMETYPE_MINI_GOLF)
     {
-        OSHeapHandle r30 = OSSetCurrentHeap(memHeap2);
+        OSHeapHandle r30 = OSSetCurrentHeap(stageHeap);
         call_bitmap_load_group(BMP_HOW);
         OSSetCurrentHeap(r30);
     }
@@ -393,7 +393,7 @@ void unkFunc8000AECC(struct Sprite *a)
             lbl_801EEC68.unk4 &= ~1;
             destroy_sprite_with_tag(10);
             if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
-                lbl_802F1B9C = OSSetCurrentHeap(memHeap4);
+                lbl_802F1B9C = OSSetCurrentHeap(charaHeap);
             call_bitmap_free_group(12);
             if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
                 OSSetCurrentHeap(lbl_802F1B9C);
@@ -410,8 +410,8 @@ void unkFunc8000B09C(void)
     struct Sprite *sprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-     && !(infoWork.unk0 & (1 << 8))
-     && ((infoWork.unk0 & (1 << 5)) || (infoWork.unk0 & (1 << 6)) || (infoWork.unk0 & (1 << 4)))
+     && !(infoWork.flags & (1 << 8))
+     && ((infoWork.flags & (1 << 5)) || (infoWork.flags & INFO_FLAG_BONUS_STAGE) || (infoWork.flags & (1 << 4)))
      && func_8004C70C() != 0)
         lbl_801EEC68.unk4 |= 4;
     else

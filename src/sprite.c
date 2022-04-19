@@ -3422,7 +3422,7 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
         f27 = params->v1;
     }
 
-    GXLoadTexObj_cached(&bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texObjs[params->bmpId & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texObjs[params->bmpId & 0xFF], GX_TEXMAP0);
     sp2C.r = (params->unk38 >> 16);
     sp2C.g = (params->unk38 >> 8);
     sp2C.b = (params->unk38 >> 0);

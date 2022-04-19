@@ -15,7 +15,7 @@ void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, floa
 void GXSetFog_cached_init(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color);
 void GXSetColorUpdate_cached(GXBool update_enable);
 void GXSetColorUpdate_cached_init(GXBool update_enable);
-void GXSestAlphaUpdate_cached_init(GXBool update_enable);
+void GXSetAlphaUpdate_cached_init(GXBool update_enable);
 void GXSetZCompLoc_cached(GXBool before_tex);
 void GXSetZCompLoc_from_cache(void);
 void GXSetZCompLoc_cached_init(GXBool before_tex);

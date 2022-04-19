@@ -509,7 +509,7 @@ lbl_8005E8C0:
 /* 8005E8DC 0005A7FC  38 63 F5 20 */	addi r3, r3, lbl_8005F520@l
 /* 8005E8E0 0005A800  48 02 FC F9 */	bl g_avdisp_set_some_func_1
 /* 8005E8E4 0005A804  80 7E 00 24 */	lwz r3, 0x24(r30)
-/* 8005E8E8 0005A808  48 02 FB B5 */	bl g_avdisp_maybe_draw_model_2
+/* 8005E8E8 0005A808  48 02 FB B5 */	bl avdisp_draw_model_culled_sort_none
 /* 8005E8EC 0005A80C  38 60 00 00 */	li r3, 0
 /* 8005E8F0 0005A810  48 02 FC E9 */	bl g_avdisp_set_some_func_1
 /* 8005E8F4 0005A814  4B FF 6C 65 */	bl bg_e3_draw

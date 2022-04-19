@@ -2268,7 +2268,7 @@ func_800973A0:
 /* 800973BC 000932DC  3B C3 00 00 */	addi r30, r3, 0
 /* 800973C0 000932E0  93 A1 00 14 */	stw r29, 0x14(r1)
 /* 800973C4 000932E4  90 03 00 08 */	stw r0, 8(r3)
-/* 800973C8 000932E8  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800973C8 000932E8  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800973CC 000932EC  48 02 B3 01 */	bl OSAllocFromHeap
 /* 800973D0 000932F0  7C 7F 1B 79 */	or. r31, r3, r3
 /* 800973D4 000932F4  40 82 00 10 */	bne lbl_800973E4
@@ -2387,14 +2387,14 @@ lbl_80097554:
 /* 80097564 00093484  80 BF 00 20 */	lwz r5, 0x20(r31)
 /* 80097568 00093488  48 04 99 9D */	bl GXGetTexBufferSize
 /* 8009756C 0009348C  7C 60 1B 78 */	mr r0, r3
-/* 80097570 00093490  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80097570 00093490  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80097574 00093494  7C 04 03 78 */	mr r4, r0
 /* 80097578 00093498  48 02 B1 55 */	bl OSAllocFromHeap
 /* 8009757C 0009349C  90 7F 00 24 */	stw r3, 0x24(r31)
 /* 80097580 000934A0  80 1F 00 24 */	lwz r0, 0x24(r31)
 /* 80097584 000934A4  28 00 00 00 */	cmplwi r0, 0
 /* 80097588 000934A8  40 82 00 1C */	bne lbl_800975A4
-/* 8009758C 000934AC  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 8009758C 000934AC  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80097590 000934B0  7F E4 FB 78 */	mr r4, r31
 /* 80097594 000934B4  48 02 B2 35 */	bl OSFreeToHeap
 /* 80097598 000934B8  38 00 00 00 */	li r0, 0
@@ -2469,10 +2469,10 @@ func_80097664:
 /* 80097684 000935A4  80 83 00 24 */	lwz r4, 0x24(r3)
 /* 80097688 000935A8  28 04 00 00 */	cmplwi r4, 0
 /* 8009768C 000935AC  41 82 00 0C */	beq lbl_80097698
-/* 80097690 000935B0  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80097690 000935B0  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80097694 000935B4  48 02 B1 35 */	bl OSFreeToHeap
 lbl_80097698:
-/* 80097698 000935B8  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80097698 000935B8  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 8009769C 000935BC  80 9F 00 10 */	lwz r4, 0x10(r31)
 /* 800976A0 000935C0  48 02 B1 29 */	bl OSFreeToHeap
 lbl_800976A4:
@@ -2550,8 +2550,8 @@ lbl_8009775C:
 /* 80097794 000936B4  48 00 00 80 */	b lbl_80097814
 lbl_80097798:
 /* 80097798 000936B8  4B F6 FD CD */	bl mathutil_mtxA_from_identity
-/* 8009779C 000936BC  3C 60 80 20 */	lis r3, movableStageParts@ha
-/* 800977A0 000936C0  3B 83 6E 48 */	addi r28, r3, movableStageParts@l
+/* 8009779C 000936BC  3C 60 80 20 */	lis r3, animGroups@ha
+/* 800977A0 000936C0  3B 83 6E 48 */	addi r28, r3, animGroups@l
 /* 800977A4 000936C4  38 7C 00 84 */	addi r3, r28, 0x84
 /* 800977A8 000936C8  4B F7 05 79 */	bl mathutil_mtxA_translate
 /* 800977AC 000936CC  A8 7C 00 A0 */	lha r3, 0xa0(r28)
@@ -3207,8 +3207,8 @@ lbl_80098170:
 /* 80098174 00094094  3C 60 80 0A */	lis r3, lbl_8009825C@ha
 /* 80098178 00094098  38 63 82 5C */	addi r3, r3, lbl_8009825C@l
 /* 8009817C 0009409C  4B FF 64 6D */	bl g_avdisp_set_some_func_2
-/* 80098180 000940A0  3C 80 80 20 */	lis r4, movableStageParts@ha
-/* 80098184 000940A4  38 04 6E 48 */	addi r0, r4, movableStageParts@l
+/* 80098180 000940A0  3C 80 80 20 */	lis r4, animGroups@ha
+/* 80098184 000940A4  38 04 6E 48 */	addi r0, r4, animGroups@l
 /* 80098188 000940A8  3B 83 00 00 */	addi r28, r3, 0
 /* 8009818C 000940AC  7C 1F 03 78 */	mr r31, r0
 /* 80098190 000940B0  3B 60 00 00 */	li r27, 0
@@ -3243,7 +3243,7 @@ lbl_800981F8:
 /* 800981F8 00094118  80 7D 00 04 */	lwz r3, 4(r29)
 /* 800981FC 0009411C  28 03 00 00 */	cmplwi r3, 0
 /* 80098200 00094120  41 82 00 08 */	beq lbl_80098208
-/* 80098204 00094124  4B FF 68 61 */	bl g_avdisp_draw_model_2
+/* 80098204 00094124  4B FF 68 61 */	bl avdisp_draw_model_unculled_sort_none
 lbl_80098208:
 /* 80098208 00094128  3B 5A 00 01 */	addi r26, r26, 1
 /* 8009820C 0009412C  3B BD 00 08 */	addi r29, r29, 8
@@ -3258,7 +3258,7 @@ lbl_80098210:
 /* 8009822C 0009414C  3B 7B 00 01 */	addi r27, r27, 1
 /* 80098230 00094150  3B FF 00 84 */	addi r31, r31, 0x84
 lbl_80098234:
-/* 80098234 00094154  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80098234 00094154  80 0D 9D 68 */	lwz r0, animGroupCount@sda21(r13)
 /* 80098238 00094158  7C 1B 00 00 */	cmpw r27, r0
 /* 8009823C 0009415C  41 80 FF 60 */	blt lbl_8009819C
 /* 80098240 00094160  7F 83 E3 78 */	mr r3, r28
@@ -3285,7 +3285,7 @@ func_8009826C:
 /* 80098284 000941A4  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 80098288 000941A8  3B C3 00 00 */	addi r30, r3, 0
 /* 8009828C 000941AC  90 03 00 08 */	stw r0, 8(r3)
-/* 80098290 000941B0  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80098290 000941B0  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80098294 000941B4  48 02 A4 39 */	bl OSAllocFromHeap
 /* 80098298 000941B8  7C 7F 1B 79 */	or. r31, r3, r3
 /* 8009829C 000941BC  40 82 00 10 */	bne lbl_800982AC
@@ -3311,14 +3311,14 @@ lbl_800982AC:
 /* 800982E8 00094208  80 BF 00 20 */	lwz r5, 0x20(r31)
 /* 800982EC 0009420C  48 04 8C 19 */	bl GXGetTexBufferSize
 /* 800982F0 00094210  7C 60 1B 78 */	mr r0, r3
-/* 800982F4 00094214  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800982F4 00094214  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800982F8 00094218  7C 04 03 78 */	mr r4, r0
 /* 800982FC 0009421C  48 02 A3 D1 */	bl OSAllocFromHeap
 /* 80098300 00094220  90 7F 00 28 */	stw r3, 0x28(r31)
 /* 80098304 00094224  80 1F 00 28 */	lwz r0, 0x28(r31)
 /* 80098308 00094228  28 00 00 00 */	cmplwi r0, 0
 /* 8009830C 0009422C  40 82 00 1C */	bne lbl_80098328
-/* 80098310 00094230  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80098310 00094230  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80098314 00094234  7F E4 FB 78 */	mr r4, r31
 /* 80098318 00094238  48 02 A4 B1 */	bl OSFreeToHeap
 /* 8009831C 0009423C  38 00 00 00 */	li r0, 0
@@ -3332,16 +3332,16 @@ lbl_80098328:
 /* 80098338 00094258  38 E0 00 00 */	li r7, 0
 /* 8009833C 0009425C  48 04 8B C9 */	bl GXGetTexBufferSize
 /* 80098340 00094260  7C 64 1B 78 */	mr r4, r3
-/* 80098344 00094264  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80098344 00094264  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80098348 00094268  48 02 A3 85 */	bl OSAllocFromHeap
 /* 8009834C 0009426C  90 7F 00 B4 */	stw r3, 0xb4(r31)
 /* 80098350 00094270  80 1F 00 B4 */	lwz r0, 0xb4(r31)
 /* 80098354 00094274  28 00 00 00 */	cmplwi r0, 0
 /* 80098358 00094278  40 82 00 28 */	bne lbl_80098380
-/* 8009835C 0009427C  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 8009835C 0009427C  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80098360 00094280  80 9F 00 28 */	lwz r4, 0x28(r31)
 /* 80098364 00094284  48 02 A4 65 */	bl OSFreeToHeap
-/* 80098368 00094288  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80098368 00094288  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 8009836C 0009428C  7F E4 FB 78 */	mr r4, r31
 /* 80098370 00094290  48 02 A4 59 */	bl OSFreeToHeap
 /* 80098374 00094294  38 00 00 00 */	li r0, 0
@@ -3370,17 +3370,17 @@ func_800983A0:
 /* 800983C0 000942E0  80 83 00 28 */	lwz r4, 0x28(r3)
 /* 800983C4 000942E4  28 04 00 00 */	cmplwi r4, 0
 /* 800983C8 000942E8  41 82 00 0C */	beq lbl_800983D4
-/* 800983CC 000942EC  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800983CC 000942EC  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800983D0 000942F0  48 02 A3 F9 */	bl OSFreeToHeap
 lbl_800983D4:
 /* 800983D4 000942F4  80 7F 00 10 */	lwz r3, 0x10(r31)
 /* 800983D8 000942F8  80 83 00 B4 */	lwz r4, 0xb4(r3)
 /* 800983DC 000942FC  28 04 00 00 */	cmplwi r4, 0
 /* 800983E0 00094300  41 82 00 0C */	beq lbl_800983EC
-/* 800983E4 00094304  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800983E4 00094304  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800983E8 00094308  48 02 A3 E1 */	bl OSFreeToHeap
 lbl_800983EC:
-/* 800983EC 0009430C  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800983EC 0009430C  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800983F0 00094310  80 9F 00 10 */	lwz r4, 0x10(r31)
 /* 800983F4 00094314  48 02 A3 D5 */	bl OSFreeToHeap
 lbl_800983F8:
@@ -4447,7 +4447,7 @@ func_800993A8:
 /* 800993C0 000952E0  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800993C4 000952E4  3B C3 00 00 */	addi r30, r3, 0
 /* 800993C8 000952E8  90 03 00 08 */	stw r0, 8(r3)
-/* 800993CC 000952EC  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800993CC 000952EC  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800993D0 000952F0  48 02 92 FD */	bl OSAllocFromHeap
 /* 800993D4 000952F4  7C 7F 1B 79 */	or. r31, r3, r3
 /* 800993D8 000952F8  40 82 00 10 */	bne lbl_800993E8
@@ -4475,14 +4475,14 @@ lbl_800993E8:
 /* 8009942C 0009534C  90 1F 00 24 */	stw r0, 0x24(r31)
 /* 80099430 00095350  48 04 7A D5 */	bl GXGetTexBufferSize
 /* 80099434 00095354  7C 60 1B 78 */	mr r0, r3
-/* 80099438 00095358  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80099438 00095358  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 8009943C 0009535C  7C 04 03 78 */	mr r4, r0
 /* 80099440 00095360  48 02 92 8D */	bl OSAllocFromHeap
 /* 80099444 00095364  90 7F 00 4C */	stw r3, 0x4c(r31)
 /* 80099448 00095368  80 1F 00 4C */	lwz r0, 0x4c(r31)
 /* 8009944C 0009536C  28 00 00 00 */	cmplwi r0, 0
 /* 80099450 00095370  40 82 00 1C */	bne lbl_8009946C
-/* 80099454 00095374  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 80099454 00095374  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 80099458 00095378  7F E4 FB 78 */	mr r4, r31
 /* 8009945C 0009537C  48 02 93 6D */	bl OSFreeToHeap
 /* 80099460 00095380  38 00 00 00 */	li r0, 0
@@ -4518,10 +4518,10 @@ func_800994A8:
 /* 800994C8 000953E8  80 83 00 4C */	lwz r4, 0x4c(r3)
 /* 800994CC 000953EC  28 04 00 00 */	cmplwi r4, 0
 /* 800994D0 000953F0  41 82 00 0C */	beq lbl_800994DC
-/* 800994D4 000953F4  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800994D4 000953F4  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800994D8 000953F8  48 02 92 F1 */	bl OSFreeToHeap
 lbl_800994DC:
-/* 800994DC 000953FC  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800994DC 000953FC  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800994E0 00095400  80 9F 00 10 */	lwz r4, 0x10(r31)
 /* 800994E4 00095404  48 02 92 E5 */	bl OSFreeToHeap
 lbl_800994E8:
@@ -5465,7 +5465,7 @@ func_8009A2A4:
 /* 8009A2EC 0009620C  7C 60 1B 78 */	mr r0, r3
 /* 8009A2F0 00096210  80 7E 00 24 */	lwz r3, 0x24(r30)
 /* 8009A2F4 00096214  7C 1E 03 78 */	mr r30, r0
-/* 8009A2F8 00096218  4B FF 41 A5 */	bl g_avdisp_maybe_draw_model_2
+/* 8009A2F8 00096218  4B FF 41 A5 */	bl avdisp_draw_model_culled_sort_none
 /* 8009A2FC 0009621C  7F C3 F3 78 */	mr r3, r30
 /* 8009A300 00096220  4B FF 42 D9 */	bl g_avdisp_set_some_func_1
 /* 8009A304 00096224  80 01 00 1C */	lwz r0, 0x1c(r1)
@@ -5761,7 +5761,7 @@ lbl_8009A724:
 /* 8009A778 00096698  FC 80 08 90 */	fmr f4, f1
 /* 8009A77C 0009669C  4B FF 4F 99 */	bl g_avdisp_set_some_color_1
 /* 8009A780 000966A0  80 7E 00 1C */	lwz r3, 0x1c(r30)
-/* 8009A784 000966A4  4B FF 3D 19 */	bl g_avdisp_maybe_draw_model_2
+/* 8009A784 000966A4  4B FF 3D 19 */	bl avdisp_draw_model_culled_sort_none
 /* 8009A788 000966A8  4B F6 D0 AD */	bl mathutil_mtxA_pop
 lbl_8009A78C:
 /* 8009A78C 000966AC  37 FF FF FF */	addic. r31, r31, -1

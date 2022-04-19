@@ -2375,9 +2375,9 @@ lbl_00002318:
 /* 00002344 3800001E */ li r0, 0x1e
 /* 00002348 901C001C */ stw r0, 0x1c(r28)
 /* 0000234C 38000000 */ li r0, 0
-/* 00002350 3C600000 */ lis r3, memHeap2@ha
+/* 00002350 3C600000 */ lis r3, stageHeap@ha
 /* 00002354 901C0018 */ stw r0, 0x18(r28)
-/* 00002358 38630000 */ addi r3, r3, memHeap2@l
+/* 00002358 38630000 */ addi r3, r3, stageHeap@l
 /* 0000235C 80630000 */ lwz r3, 0(r3)
 /* 00002360 4BFFDE4D */ bl OSSetCurrentHeap
 /* 00002364 3BA30000 */ addi r29, r3, 0
@@ -2477,9 +2477,9 @@ lbl_00002490:
 /* 000024AC 41810138 */ bgt lbl_000025E4
 /* 000024B0 80BC0014 */ lwz r5, 0x14(r28)
 /* 000024B4 38000000 */ li r0, 0
-/* 000024B8 3C600000 */ lis r3, memHeap2@ha
+/* 000024B8 3C600000 */ lis r3, stageHeap@ha
 /* 000024BC 901C0018 */ stw r0, 0x18(r28)
-/* 000024C0 38630000 */ addi r3, r3, memHeap2@l
+/* 000024C0 38630000 */ addi r3, r3, stageHeap@l
 /* 000024C4 3C800000 */ lis r4, lbl_0000C850@ha
 /* 000024C8 54A51838 */ slwi r5, r5, 3
 /* 000024CC 80630000 */ lwz r3, 0(r3)
@@ -3394,7 +3394,7 @@ lbl_0000315C:
 /* 000031C0 7C7E0214 */ add r3, r30, r0
 /* 000031C4 80630000 */ lwz r3, 0(r3)
 /* 000031C8 4BFFCFE5 */ bl func_80049F90
-/* 000031CC 4BFFCFE1 */ bl g_animate_stage
+/* 000031CC 4BFFCFE1 */ bl animate_anim_groups
 /* 000031D0 38600005 */ li r3, 5
 /* 000031D4 4BFFCFD9 */ bl call_bitmap_load_group
 /* 000031D8 38600100 */ li r3, 0x100
@@ -3820,7 +3820,7 @@ lbl_000036A4:
 /* 0000380C 7C7F0214 */ add r3, r31, r0
 /* 00003810 80630000 */ lwz r3, 0(r3)
 /* 00003814 4BFFC999 */ bl func_80049F90
-/* 00003818 4BFFC995 */ bl g_animate_stage
+/* 00003818 4BFFC995 */ bl animate_anim_groups
 /* 0000381C A87E6EB4 */ lha r3, 0x6eb4(r30)
 /* 00003820 48000371 */ bl lbl_00003B90
 /* 00003824 A01E6E9C */ lhz r0, 0x6e9c(r30)

@@ -342,7 +342,7 @@ lbl_80057FAC:
 /* 80057FB8 00053ED8  3B 39 00 01 */	addi r25, r25, 1
 /* 80057FBC 00053EDC  3B 7B 00 0C */	addi r27, r27, 0xc
 lbl_80057FC0:
-/* 80057FC0 00053EE0  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80057FC0 00053EE0  80 0D 9D 68 */	lwz r0, animGroupCount@sda21(r13)
 /* 80057FC4 00053EE4  7C 19 00 00 */	cmpw r25, r0
 /* 80057FC8 00053EE8  41 80 FF 9C */	blt lbl_80057F64
 /* 80057FCC 00053EEC  48 00 00 88 */	b lbl_80058054
@@ -382,7 +382,7 @@ lbl_80058034:
 /* 80058040 00053F60  3B 39 00 01 */	addi r25, r25, 1
 /* 80058044 00053F64  3B 7B 00 08 */	addi r27, r27, 8
 lbl_80058048:
-/* 80058048 00053F68  80 0D 9D 68 */	lwz r0, movableStagePartCount@sda21(r13)
+/* 80058048 00053F68  80 0D 9D 68 */	lwz r0, animGroupCount@sda21(r13)
 /* 8005804C 00053F6C  7C 19 00 00 */	cmpw r25, r0
 /* 80058050 00053F70  41 80 FF 94 */	blt lbl_80057FE4
 lbl_80058054:
