@@ -132,21 +132,29 @@ void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTe
     return;
 }
 
-// void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
-// {
-//     GXColor _color;
-    
-//     if (
-//         zMode->unk0x84[0].unk0x60 != type ||
-//         zMode->unk0x84[0].unk0x74.r != color.r || zMode->unk0x84[0].unk0x74.g != color.g || zMode->unk0x84[0].unk0x74.b != color.b || zMode->unk0x84[0].unk0x74.a != color.a ||
-//         zMode->unk0x84[0].unk0x64 != startz || zMode->unk0x84[0].unk0x68 != endz || 
-//         zMode->unk0x84[0].unk0x6C != nearz || zMode->unk0x84[0].unk0x70 != farz
-//     )
-//     {
-//         // not much something 
-//         _color = color;
-//         func_8009E444(startz, endz, nearz, farz, type, &_color);
-//     }
-//     return;
-// }
+void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
+{    
+    if (
+        zMode->unk0x84[0].unk0x60 != type ||
+        zMode->unk0x84[0].unk0x74.r != color.r || zMode->unk0x84[0].unk0x74.g != color.g || zMode->unk0x84[0].unk0x74.b != color.b || zMode->unk0x84[0].unk0x74.a != color.a ||
+        zMode->unk0x84[0].unk0x64 != startz || zMode->unk0x84[0].unk0x68 != endz || 
+        zMode->unk0x84[0].unk0x6C != nearz || zMode->unk0x84[0].unk0x70 != farz
+    )
+    {
+        // if something has differnt
+        GXSetFog_cached_init(type, startz, endz, nearz, farz, color);
+    }
+    return;
+}
 
+void GXSetFog_cached_init (GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
+{
+    GXSetFog(type, startz, endz, nearz, farz, color);
+    zMode->unk0x84[0].unk0x60 = type;
+    zMode->unk0x84[0].unk0x64 = startz;
+    zMode->unk0x84[0].unk0x68 = endz;
+    zMode->unk0x84[0].unk0x6C = nearz;
+    zMode->unk0x84[0].unk0x70 = farz;
+    zMode->unk0x84[0].unk0x74 = color;
+    return;
+}

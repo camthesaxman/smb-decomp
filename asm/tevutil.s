@@ -1,6 +1,8 @@
 .include "macros.inc"
 
 .section .text
+
+.if 0
 .global GXSetFog_cached
 GXSetFog_cached:
 /* 8009E398 0009A2B8  7C 08 02 A6 */	mflr r0
@@ -93,6 +95,7 @@ GXSetFog_cached_init:
 /* 8009E4E0 0009A400  38 21 00 50 */	addi r1, r1, 0x50
 /* 8009E4E4 0009A404  7C 08 03 A6 */	mtlr r0
 /* 8009E4E8 0009A408  4E 80 00 20 */	blr
+.endif
 
 .global GXSetColorUpdate_cached
 GXSetColorUpdate_cached:
