@@ -165,7 +165,7 @@ void item_coin_draw(struct Item *item)
         f30 = 0.25f;
     if (f30 > 0.0f)
     {
-        g_avdisp_set_model_scale(scale);
+        avdisp_set_scale(scale);
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (f30 < 1.0f)

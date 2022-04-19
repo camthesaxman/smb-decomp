@@ -1793,12 +1793,12 @@ void load_stagedef(int stageId)
         }
     }
 
-    if (decodedStageLzPtr->unk74 != NULL)
+    if (decodedStageLzPtr->fgModels != NULL)
     {
         struct StageBgModel *r28;
 
-        decodedStageLzPtr->unk74 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk74);
-        for (i = 0, r28 = decodedStageLzPtr->unk74; i < decodedStageLzPtr->unk70; i++, r28++)
+        decodedStageLzPtr->fgModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->fgModels);
+        for (i = 0, r28 = decodedStageLzPtr->fgModels; i < decodedStageLzPtr->fgModelCount; i++, r28++)
         {
             u32 r3 = r28->flags;
 

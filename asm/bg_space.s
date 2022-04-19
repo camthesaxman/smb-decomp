@@ -1044,7 +1044,7 @@ lbl_80060948:
 lbl_80060950:
 /* 80060950 0005C870  FC 20 18 90 */	fmr f1, f3
 lbl_80060954:
-/* 80060954 0005C874  48 02 DA CD */	bl g_avdisp_set_model_scale
+/* 80060954 0005C874  48 02 DA CD */	bl avdisp_set_scale
 /* 80060958 0005C878  3C 60 80 1F */	lis r3, lbl_801EEC90@ha
 /* 8006095C 0005C87C  80 03 EC 90 */	lwz r0, lbl_801EEC90@l(r3)
 /* 80060960 0005C880  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d

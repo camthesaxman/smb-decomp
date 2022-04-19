@@ -2353,7 +2353,7 @@ lbl_800AF35C:
 /* 800AF35C 000AB27C  FF E0 F0 90 */	fmr f31, f30
 lbl_800AF360:
 /* 800AF360 000AB280  FC 20 F8 90 */	fmr f1, f31
-/* 800AF364 000AB284  4B FD F0 BD */	bl g_avdisp_set_model_scale
+/* 800AF364 000AB284  4B FD F0 BD */	bl avdisp_set_scale
 /* 800AF368 000AB288  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800AF36C 000AB28C  38 80 00 00 */	li r4, 0
 /* 800AF370 000AB290  48 03 52 11 */	bl GXLoadPosMtxImm
@@ -2575,7 +2575,7 @@ func_800AF62C:
 /* 800AF690 000AB5B0  C0 7F 00 2C */	lfs f3, 0x2c(r31)
 /* 800AF694 000AB5B4  4B F5 87 45 */	bl mathutil_mtxA_scale_xyz
 /* 800AF698 000AB5B8  C0 3F 00 28 */	lfs f1, 0x28(r31)
-/* 800AF69C 000AB5BC  4B FD ED 85 */	bl g_avdisp_set_model_scale
+/* 800AF69C 000AB5BC  4B FD ED 85 */	bl avdisp_set_scale
 /* 800AF6A0 000AB5C0  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800AF6A4 000AB5C4  38 80 00 00 */	li r4, 0
 /* 800AF6A8 000AB5C8  48 03 4E D9 */	bl GXLoadPosMtxImm
@@ -2802,7 +2802,7 @@ lbl_800AF8D8:
 /* 800AF9E0 000AB900  38 80 00 00 */	li r4, 0
 /* 800AF9E4 000AB904  48 03 4B D9 */	bl GXLoadNrmMtxImm
 /* 800AF9E8 000AB908  FC 20 F8 90 */	fmr f1, f31
-/* 800AF9EC 000AB90C  4B FD EA 35 */	bl g_avdisp_set_model_scale
+/* 800AF9EC 000AB90C  4B FD EA 35 */	bl avdisp_set_scale
 /* 800AF9F0 000AB910  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 800AF9F4 000AB914  80 63 00 08 */	lwz r3, 8(r3)
 /* 800AF9F8 000AB918  80 63 02 D0 */	lwz r3, 0x2d0(r3)

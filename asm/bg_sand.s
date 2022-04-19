@@ -1290,7 +1290,7 @@ lbl_8005CB90:
 /* 8005CBD0 00058AF0  80 8D 99 80 */	lwz r4, mathutilData@sda21(r13)
 /* 8005CBD4 00058AF4  48 03 2B 11 */	bl g_avdisp_set_some_matrix
 /* 8005CBD8 00058AF8  38 60 00 01 */	li r3, 1
-/* 8005CBDC 00058AFC  48 03 2A F9 */	bl g_avdisp_set_some_int
+/* 8005CBDC 00058AFC  48 03 2A F9 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CBE0 00058B00  38 60 00 01 */	li r3, 1
 /* 8005CBE4 00058B04  38 80 00 03 */	li r4, 3
 /* 8005CBE8 00058B08  38 A0 00 00 */	li r5, 0
@@ -1310,7 +1310,7 @@ lbl_8005CB90:
 /* 8005CC20 00058B40  38 A0 00 01 */	li r5, 1
 /* 8005CC24 00058B44  48 03 19 A5 */	bl avdisp_set_z_mode
 /* 8005CC28 00058B48  38 60 00 00 */	li r3, 0
-/* 8005CC2C 00058B4C  48 03 2A A9 */	bl g_avdisp_set_some_int
+/* 8005CC2C 00058B4C  48 03 2A A9 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CC30 00058B50  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 8005CC34 00058B54  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 8005CC38 00058B58  83 C1 00 18 */	lwz r30, 0x18(r1)
@@ -1420,7 +1420,7 @@ lbl_8005CCEC:
 /* 8005CDD0 00058CF0  48 03 29 15 */	bl g_avdisp_set_some_matrix
 /* 8005CDD4 00058CF4  4B FA AA 61 */	bl mathutil_mtxA_pop
 /* 8005CDD8 00058CF8  38 60 00 01 */	li r3, 1
-/* 8005CDDC 00058CFC  48 03 28 F9 */	bl g_avdisp_set_some_int
+/* 8005CDDC 00058CFC  48 03 28 F9 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CDE0 00058D00  80 1E 00 38 */	lwz r0, 0x38(r30)
 /* 8005CDE4 00058D04  28 00 00 00 */	cmplwi r0, 0
 /* 8005CDE8 00058D08  41 82 00 20 */	beq lbl_8005CE08
@@ -1462,7 +1462,7 @@ lbl_8005CE18:
 /* 8005CE70 00058D90  38 60 00 00 */	li r3, 0
 /* 8005CE74 00058D94  48 03 17 65 */	bl g_avdisp_set_some_func_1
 /* 8005CE78 00058D98  38 60 00 00 */	li r3, 0
-/* 8005CE7C 00058D9C  48 03 28 59 */	bl g_avdisp_set_some_int
+/* 8005CE7C 00058D9C  48 03 28 59 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CE80 00058DA0  38 60 00 01 */	li r3, 1
 /* 8005CE84 00058DA4  38 80 00 03 */	li r4, 3
 /* 8005CE88 00058DA8  38 A0 00 01 */	li r5, 1

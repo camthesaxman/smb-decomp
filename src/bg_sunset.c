@@ -37,8 +37,8 @@ void bg_sunset_init(void)
         sunsetModelFind,
         sunset_model_find_proc);
     g_search_bg_models_from_list(
-        decodedStageLzPtr->unk74,
-        decodedStageLzPtr->unk70,
+        decodedStageLzPtr->fgModels,
+        decodedStageLzPtr->fgModelCount,
         sunsetModelFind,
         sunset_model_find_proc);
     if (work->bgModelsCount == 0)
@@ -126,7 +126,7 @@ void bg_sunset_draw(void)
     // draw cloud layers
     if (work->bgModelsCount != 0)
     {
-        g_avdisp_set_some_int(1);
+        g_avdisp_set_some_tex_mtx_sel(1);
         r30_ = work->bgModels;
         for (i = work->bgModelsCount; i > 0; i--, r30_++)
         {
@@ -145,7 +145,7 @@ void bg_sunset_draw(void)
                 avdisp_draw_model_culled_sort_translucent(r31->model);
             }
         }
-        g_avdisp_set_some_int(0);
+        g_avdisp_set_some_tex_mtx_sel(0);
     }
     bg_e3_draw();
 }

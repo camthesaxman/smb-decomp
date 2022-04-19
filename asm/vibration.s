@@ -7289,7 +7289,7 @@ lbl_800BC974:
 /* 800BC9FC 000B891C  38 80 00 00 */	li r4, 0
 /* 800BCA00 000B8920  4B FD E0 25 */	bl g_gxutil_upload_some_mtx
 /* 800BCA04 000B8924  C0 3A 00 58 */	lfs f1, 0x58(r26)
-/* 800BCA08 000B8928  4B FD 1A 19 */	bl g_avdisp_set_model_scale
+/* 800BCA08 000B8928  4B FD 1A 19 */	bl avdisp_set_scale
 /* 800BCA0C 000B892C  7E A3 AB 78 */	mr r3, r21
 /* 800BCA10 000B8930  4B FD 1A 29 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_800BCA14:
@@ -7460,7 +7460,7 @@ lbl_800BCB38:
 /* 800BCC98 000B8BB8  38 80 00 00 */	li r4, 0
 /* 800BCC9C 000B8BBC  4B FD DD 89 */	bl g_gxutil_upload_some_mtx
 /* 800BCCA0 000B8BC0  FC 20 A8 90 */	fmr f1, f21
-/* 800BCCA4 000B8BC4  4B FD 17 7D */	bl g_avdisp_set_model_scale
+/* 800BCCA4 000B8BC4  4B FD 17 7D */	bl avdisp_set_scale
 /* 800BCCA8 000B8BC8  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 800BCCAC 000B8BCC  80 63 00 08 */	lwz r3, 8(r3)
 /* 800BCCB0 000B8BD0  80 63 02 70 */	lwz r3, 0x270(r3)

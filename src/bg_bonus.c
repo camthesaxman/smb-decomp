@@ -60,8 +60,8 @@ void bg_bonus_init(void)
         bonusMainFind,
         bonus_main_find_proc);
     g_search_bg_models_from_list(
-        decodedStageLzPtr->unk74,
-        decodedStageLzPtr->unk70,
+        decodedStageLzPtr->fgModels,
+        decodedStageLzPtr->fgModelCount,
         bonusMainFind,
         bonus_main_find_proc);
 

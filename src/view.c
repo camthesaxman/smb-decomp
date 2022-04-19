@@ -432,17 +432,17 @@ void func_800A66CC(void)
 
 void func_800A66E4(void)
 {
-    stageViewInfo->unk48 = backgroundInfo.unk4;
+    stageViewInfo->unk48 = backgroundInfo.animTimer;
 }
 
 void func_800A66FC(void)
 {
-    backgroundInfo.unk4 += 1.0;
+    backgroundInfo.animTimer += 1.0;
 }
 
 void func_800A671C(void)
 {
-    backgroundInfo.unk4 = stageViewInfo->unk48;
+    backgroundInfo.animTimer = stageViewInfo->unk48;
 }
 
 void func_800A6734(void)

@@ -44,7 +44,7 @@ float g_someColorScaleR;
 Func802F20F0 g_customMaterialFunc;
 BallEnvFunc lbl_802F20EC;
 GXCullMode s_cullMode;
-float s_modelScale;
+float s_scale;
 u32 s_lightMask;
 float s_alpha;
 float lbl_802F20D8;
@@ -197,7 +197,7 @@ void avdisp_init(void)
     lbl_802F20D8 = 1.0f;
     lbl_802F20D4 = 1.0f;
     lbl_802F20D0 = 1.0f;
-    s_modelScale = 1.0f;
+    s_scale = 1.0f;
     s_alpha = 1.0f;
     s_lightMask = 1;
     g_customMaterialFunc = NULL;
@@ -559,9 +559,9 @@ void free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void g_avdisp_set_model_scale(float a)
+void avdisp_set_scale(float a)
 {
-    s_modelScale = a;
+    s_scale = a;
 }
 
 void g_avdisp_set_3_floats(float a, float b, float c)
@@ -574,9 +574,9 @@ void g_avdisp_set_3_floats(float a, float b, float c)
 // Draw opaque shapes immediately and depth-sort translucent shapes, a reasonable default
 void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 {
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_modelScale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_scale) == 0)
     {
-        s_modelScale = 1.0f;
+        s_scale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
         s_alpha = 1.0f;
     }
@@ -588,9 +588,9 @@ void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 // translucent shapes in a specific order instead of using the ord table?
 void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 {
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_modelScale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_scale) == 0)
     {
-        s_modelScale = 1.0f;
+        s_scale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
         s_alpha = 1.0f;
     }
@@ -602,9 +602,9 @@ void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 // e.g. by calling avdisp_set_alpha() ?
 void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
 {
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_modelScale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_scale) == 0)
     {
-        s_modelScale = 1.0f;
+        s_scale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
         s_alpha = 1.0f;
     }
@@ -826,7 +826,7 @@ void avdisp_draw_model_unculled_sort_translucent(struct GMAModel *model)
             shape = draw_shape_deferred(model, shape, modelSamplers);
     }
 
-    s_modelScale = 1.0f;
+    s_scale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     s_alpha = 1.0f;
 }
@@ -856,7 +856,7 @@ void avdisp_draw_model_unculled_sort_none(struct GMAModel *model)
             shape = draw_shape(model, shape, modelSamplers);
     }
 
-    s_modelScale = 1.0f;
+    s_scale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     s_alpha = 1.0f;
 }
@@ -881,7 +881,7 @@ void avdisp_draw_model_unculled_sort_all(struct GMAModel *model)
     for (i = 0; i < model->translucentShapeCount; i++)
         shape = (void *)draw_shape_deferred(model, shape, modelSamplers);
 
-    s_modelScale = 1.0f;
+    s_scale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     s_alpha = 1.0f;
 }
@@ -905,7 +905,7 @@ void g_avdisp_draw_model_4(struct GMAModel *model)
             shape = draw_shape(model, shape, modelSamplers);
     }
 
-    s_modelScale = 1.0f;
+    s_scale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
     s_alpha = 1.0f;
 }
@@ -1166,7 +1166,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     s_alpha = 1.0f;
 }
 
-u32 g_avdisp_set_some_int(u32 a)
+u32 g_avdisp_set_some_tex_mtx_sel(u32 a)
 {
     u32 old = lbl_802F2108;
     lbl_802F2108 = a;

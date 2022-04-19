@@ -40,8 +40,8 @@ void bg_jungle_init(void)
         jungleModelFind,
         jungle_model_find_proc);
     g_search_bg_models_from_list(
-        decodedStageLzPtr->unk74,
-        decodedStageLzPtr->unk70,
+        decodedStageLzPtr->fgModels,
+        decodedStageLzPtr->fgModelCount,
         jungleModelFind,
         jungle_model_find_proc);
     if (work->cloudModelCount == 0)
@@ -145,7 +145,7 @@ void bg_jungle_draw(void)
     bg_e3_draw();
     if (work->cloudModelCount != 0)
     {
-        g_avdisp_set_some_int(1);
+        g_avdisp_set_some_tex_mtx_sel(1);
         avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
         cloudModel = work->cloudModels;
         for (i = work->cloudModelCount; i > 0; i--, cloudModel++)
@@ -165,7 +165,7 @@ void bg_jungle_draw(void)
             }
         }
         avdisp_set_z_mode(1, 3, 1);
-        g_avdisp_set_some_int(0);
+        g_avdisp_set_some_tex_mtx_sel(0);
     }
 
     if (gameSubmode == SMD_GAME_CONTINUE_INIT

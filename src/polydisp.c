@@ -291,7 +291,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             avdisp_set_post_multiply_color(0.38f, 0.39f, 0.4f, 1.0f);
-            g_avdisp_set_model_scale(f30);
+            avdisp_set_scale(f30);
             avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].modelOffset);
         }
         func_8000E3BC();
@@ -1238,10 +1238,10 @@ void draw_timer_bomb_fuse(void)
     scale = 0.0007f;
     mathutil_mtxA_scale_s(scale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-    g_avdisp_set_model_scale(scale);
-    g_avdisp_set_some_int(1);
+    avdisp_set_scale(scale);
+    g_avdisp_set_some_tex_mtx_sel(1);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
-    g_avdisp_set_some_int(0);
+    g_avdisp_set_some_tex_mtx_sel(0);
 
     // Draw spark
     sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
