@@ -99,6 +99,7 @@ SOURCES := \
 	src/trig_tables.c \
 	src/perf.c \
 	asm/sound.s \
+	src/window.c \
 	asm/window.s \
 	src/nl2ngc.c \
 	src/motload.c \
