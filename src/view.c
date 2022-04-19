@@ -452,7 +452,7 @@ void func_800A6734(void)
     s32 sp10[2] = { 0x400, 0x300 };
 
     if (modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION
-     || func_800672D0(currStageId) != 0
+     || is_bonus_stage(currStageId) != 0
      || (modeCtrl.levelSetFlags & (1 << 12)))
     {
         struct GMAModel *models[2];
@@ -491,7 +491,7 @@ void func_800A6874(void)
     Vec sp14;
     Vec sp8 = { 0, 0, -1 };
 
-    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
+    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
         g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3f, 0.3f);

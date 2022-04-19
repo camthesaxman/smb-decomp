@@ -410,8 +410,8 @@ void unkFunc8000B09C(void)
     struct Sprite *sprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-     && !(infoWork.unk0 & (1 << 8))
-     && ((infoWork.unk0 & (1 << 5)) || (infoWork.unk0 & (1 << 6)) || (infoWork.unk0 & (1 << 4)))
+     && !(infoWork.flags & (1 << 8))
+     && ((infoWork.flags & (1 << 5)) || (infoWork.flags & INFO_FLAG_BONUS_STAGE) || (infoWork.flags & (1 << 4)))
      && func_8004C70C() != 0)
         lbl_801EEC68.unk4 |= 4;
     else

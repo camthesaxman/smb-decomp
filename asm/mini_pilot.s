@@ -2411,7 +2411,7 @@ lbl_000023BC:
 /* 000023CC 9421FFF8 */ stwu r1, -8(r1)
 /* 000023D0 4BFFDD7D */ bl g_play_music
 /* 000023D4 38600078 */ li r3, 0x78
-/* 000023D8 4BFFDD75 */ bl func_800790BC
+/* 000023D8 4BFFDD75 */ bl show_ready_text
 /* 000023DC 3C600000 */ lis r3, lbl_802F1FF0@ha
 /* 000023E0 38830000 */ addi r4, r3, lbl_802F1FF0@l
 /* 000023E4 38000000 */ li r0, 0
@@ -2483,7 +2483,7 @@ lbl_000024D0:
 /* 000024DC 9421FFF8 */ stwu r1, -8(r1)
 /* 000024E0 4BFFDC6D */ bl event_resume
 /* 000024E4 3860003C */ li r3, 0x3c
-/* 000024E8 4BFFDC65 */ bl func_8007C104
+/* 000024E8 4BFFDC65 */ bl show_go_text
 /* 000024EC 3C600000 */ lis r3, lbl_802F1FF0@ha
 /* 000024F0 38830000 */ addi r4, r3, lbl_802F1FF0@l
 /* 000024F4 38000000 */ li r0, 0
@@ -5137,7 +5137,7 @@ lbl_00004BB8:
 /* 00004BC4 386000B4 */ li r3, 0xb4
 /* 00004BC8 60000200 */ ori r0, r0, 0x200
 /* 00004BCC 90040000 */ stw r0, 0(r4)
-/* 00004BD0 4BFFB57D */ bl func_8007CE50
+/* 00004BD0 4BFFB57D */ bl show_fallout_text
 /* 00004BD4 3860016A */ li r3, 0x16a
 /* 00004BD8 3880016B */ li r4, 0x16b
 /* 00004BDC 4BFFB571 */ bl func_8002BFCC

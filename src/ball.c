@@ -9,6 +9,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "mathutil.h"
@@ -18,7 +19,6 @@
 #include "stage.h"
 #include "world.h"
 #include "stcoli.h"
-#include "gma.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
@@ -332,7 +332,7 @@ void func_8003721C(struct Ape *a, float b)
         }
         else if (a->unk14 & (1 << 1))
             r29 = 3;
-        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.unk0 & (1 << 4)))
+        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.flags & (1 << 4)))
         {
             r29 = 5;
             if (gameMode == MD_ADV && gameSubmode == SMD_ADV_INFO_MAIN)
@@ -342,7 +342,7 @@ void func_8003721C(struct Ape *a, float b)
                 r29 = 2;
                 r28 = 14;
             }
-            else if (infoWork.unk0 & (1 << 6))
+            else if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
             {
                 r29 = 2;
                 r28 = 15;
@@ -365,7 +365,7 @@ void func_8003721C(struct Ape *a, float b)
             r29 = 9;
             if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
                 r28 = func_8003721C_inline(ball);
-            else if (!(infoWork.unk0 & (1 << 6)))
+            else if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE))
                 r28 = (infoWork.unk20 & 1) + 2;
             else
                 r28 = 0;
@@ -1362,7 +1362,7 @@ void give_bananas(int bananas)
         {
             ball->lives++;
             ball->bananas -= 100;
-            func_8007DEC8(0x78);
+            show_1up_text(0x78);
             g_play_sound(0x2852);  // play 1-up sound?
         }
         break;
@@ -1793,7 +1793,7 @@ void ball_func_replay_main(struct Ball *ball)
     ball->flags = spC.unk18 | BALL_FLAG_24;
     ball->unk130 = spC.unk1C;
 
-    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.unk0 & (1 << 4)))
+    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.flags & (1 << 4)))
         ball->state = 4;
 
     mathutil_mtxA_from_translate(&ball->pos);
@@ -2898,8 +2898,8 @@ void func_8003CDC0(struct Ball *ball)
          && gameSubmode != SMD_GAME_OVER_SAVE
          && gameSubmode != SMD_GAME_OVER_DEST)
         {
-            if ((!(infoWork.unk0 & (1 << 5)) && !(infoWork.unk0 & (1 << 3)))
-             || (infoWork.unk0 & (1 << 4)))
+            if ((!(infoWork.flags & (1 << 5)) && !(infoWork.flags & (1 << 3)))
+             || (infoWork.flags & (1 << 4)))
             {
                 if (!(ball->flags & BALL_FLAG_08) && !(ball->flags & BALL_FLAG_09))
                     func_8003CDC0_sub(ball);
@@ -3005,7 +3005,7 @@ void func_8003D3C4(struct Ball *ball)
         sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
         sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
-        if (!(infoWork.unk0 & (1 << 4)) || (infoWork.unk0 & (1 << 11)))
+        if (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11)))
             f2 = 0.85f;
         else
             f2 = 0.1f;

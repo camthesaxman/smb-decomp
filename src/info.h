@@ -6,14 +6,15 @@
 
 enum
 {
-    INFO_FLAG_GOAL     = (1 << 0),
-    INFO_FLAG_TIMEOVER = (1 << 1),
-    INFO_FLAG_FALLOUT  = (1 << 2),
+    INFO_FLAG_GOAL        = (1 << 0),
+    INFO_FLAG_TIMEOVER    = (1 << 1),
+    INFO_FLAG_FALLOUT     = (1 << 2),
+    INFO_FLAG_BONUS_STAGE = (1 << 6),
 };
 
 struct Struct801F3A58
 {
-    u32 unk0;
+    u32 flags;
     s16 timerCurr;  // current clock time (in 60ths of a second)
     s16 timerMax;  // maximum clock time (in 60ths of a second)
     u32 unk8;

@@ -438,7 +438,7 @@ void world_sub_7(struct World *world)
     sp10.x = 0.0f;
     sp10.y = -1.0f;
     sp10.z = 0.0f;
-    if (infoWork.unk0 & (1 << 4))
+    if (infoWork.flags & (1 << 4))
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_x(spC[0]);

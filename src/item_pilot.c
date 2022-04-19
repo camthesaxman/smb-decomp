@@ -7,13 +7,13 @@
 
 #include "global.h"
 #include "ball.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
-#include "gma.h"
 
 #include "../data/common.gma.h"
 
@@ -354,7 +354,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
     {
         if (item->unk5E < 0
-         && (!(infoWork.unk0 & (1 << 4)) || (infoWork.unk0 & (1 << 11))))
+         && (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11))))
         {
             struct Struct8003C550 sp178;
 
@@ -441,13 +441,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 2)
     {
         g_play_sound(0x39);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x2820);
     }
     else if (item->subtype == 0 || item->subtype == 1)
     {
         g_play_sound(3);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x281F);
     }
 }

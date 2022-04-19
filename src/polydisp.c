@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
-
 #include <dolphin/GXEnum.h>
+
 #include "global.h"
 #include "adv.h"
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "input.h"
@@ -23,7 +24,6 @@
 #include "stage.h"
 #include "world.h"
 #include "tevutil.h"
-#include "gma.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -1190,7 +1190,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(infoWork.unk0 & (1 << 3)))
+        if (!(infoWork.flags & (1 << 3)))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1208,7 +1208,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (infoWork.unk0 & (1 << 3))
+        if (infoWork.flags & (1 << 3))
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1218,7 +1218,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (infoWork.unk0 & (1 << 3))
+    if (infoWork.flags & (1 << 3))
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;

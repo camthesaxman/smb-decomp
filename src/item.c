@@ -147,11 +147,11 @@ void ev_item_init(void)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MINI_FIGHT:
-        if (func_800672D0(currStageId) != 0)
+        if (is_bonus_stage(currStageId) != 0)
             make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     case GAMETYPE_MAIN_COMPETITION:
-        if (func_800672D0(currStageId) != 0
+        if (is_bonus_stage(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))

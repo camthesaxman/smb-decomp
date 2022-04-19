@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "event.h"
 #include "global.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "load.h"
@@ -18,7 +19,6 @@
 #include "preview.h"
 #include "stage.h"
 #include "stcoli.h"
-#include "gma.h"
 
 #include "../data/common.nlobj.h"
 
@@ -103,7 +103,7 @@ void ev_stage_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    if (infoWork.unk0 & (1 << (31 - 0x17)))
+    if (infoWork.flags & (1 << 8))
     {
         if (modeCtrl.unk0 > 0x78)
             lbl_80206DEC.g_stageTimer = 0.0f;
@@ -111,7 +111,7 @@ void ev_stage_main(void)
             lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.unk0;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (infoWork.unk0 & (1 << (31 - 0x1B)))
+    else if (infoWork.flags & (1 << 4))
     {
         lbl_80206DEC.g_stageTimer =
             func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -505,7 +505,7 @@ void load_stage(int stageId)
     {
         animGroupCount =
             decodedStageLzPtr->animGroupCount < 0x48 ? decodedStageLzPtr->animGroupCount : 0x48;
-        if (gamePauseStatus & (1 << (31 - 0x1D)))
+        if (gamePauseStatus & (1 << 2))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
         func_80045194();
@@ -1780,7 +1780,7 @@ void load_stagedef(int stageId)
         {
             u32 r3 = r28->flags;
 
-            if (r3 & (1 << (31 - 0x10)))
+            if (r3 & (1 << 15))
             {
                 r28->flags &= 0xF;
                 r28->flags |= (r3 >> 12) & 0xFFFF0;
@@ -1802,7 +1802,7 @@ void load_stagedef(int stageId)
         {
             u32 r3 = r28->flags;
 
-            if (r3 & (1 << (31 - 0x10)))
+            if (r3 & (1 << 15))
             {
                 r28->flags = r3 & 0xF;
                 r28->flags |= (r3 >> 12) & 0xFFFF0;
@@ -2070,8 +2070,8 @@ void stage_draw(void)
                         model = r27->unk4;
                         if (model != NULL && model != NULL) // WTF?
                         {
-                            if (!(lbl_801EEC90.unk0 & (1 << (31 - 0x1D))) ||
-                                (r27->unk0 & (1 << (31 - 0x1D))))
+                            if (!(lbl_801EEC90.unk0 & (1 << 2)) ||
+                                (r27->unk0 & (1 << 2)))
                             {
                                 avdisp_draw_model_culled_sort_none(model);
                                 if (r31 != 0)
@@ -2208,10 +2208,10 @@ void stage_draw(void)
             draw_blur_bridge_accordions();
 
         // draw starting position marker
-        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << (31 - 0x1E))))
+        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << 1)))
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
-            if (lbl_801EEC90.unk0 & (1 << (31 - 0x1C)))
+            if (lbl_801EEC90.unk0 & (1 << 3))
             {
                 mathutil_mtxA_from_identity();
                 mathutil_mtxA_scale_s(0.8f);

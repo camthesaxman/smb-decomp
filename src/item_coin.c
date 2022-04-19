@@ -9,12 +9,12 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "gma.h"
 #include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
-#include "gma.h"
 
 #include "../data/common.gma.h"
 
@@ -219,14 +219,14 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 1)
     {
         g_play_sound(0x39);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x2820);
         background_interact(1);
     }
     else
     {
         g_play_sound(3);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x281F);
         background_interact(0);
     }
