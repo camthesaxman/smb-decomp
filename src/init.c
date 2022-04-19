@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "tevutil.h"
 
 GXFifoObj lbl_801EEBA0;
 
@@ -105,8 +107,8 @@ void init_gx_2(void)
 
     C_MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
     GXSetProjection(mtx, GX_PERSPECTIVE);
-    func_8009E588(0);
-    func_8009E110(1, 4, 5, 0);
+    GXSetZCompLoc_cached(0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_GREATER, 0);
     GXSetCopyClear(clearColor, 0x00FFFFFF);
     GXSetDither(FALSE);
@@ -117,10 +119,10 @@ void init_dvd(void)
     DVDChangeDir("test");
 }
 
-#define HEAP1_SIZE 0x80020
-#define HEAP2_SIZE 0x300020
-#define HEAP3_SIZE 0x200020
-#define HEAP4_SIZE 0x300020
+#define SUB_HEAP_SIZE 0x80020
+#define STAGE_HEAP_SIZE 0x300020
+#define BACKGROUND_HEAP_SIZE 0x200020
+#define CHARA_HEAP_SIZE 0x300020
 
 #define ROUND_UP_16(x) (((u32)(x) + 0xF) & ~0xF)
 
@@ -170,24 +172,24 @@ void init_heap(void)
 
     OSSetArenaLo(arenaLoNew);
 
-    memHeap1 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP1_SIZE));
-    arenaLoNew += HEAP1_SIZE;
-    memHeap2 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP2_SIZE));
-    arenaLoNew += HEAP2_SIZE;
-    memHeap3 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP3_SIZE));
-    arenaLoNew += HEAP3_SIZE;
-    memHeap4 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP4_SIZE));
-    arenaLoNew += HEAP4_SIZE;
+    subHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + SUB_HEAP_SIZE));
+    arenaLoNew += SUB_HEAP_SIZE;
+    stageHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + STAGE_HEAP_SIZE));
+    arenaLoNew += STAGE_HEAP_SIZE;
+    backgroundHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + BACKGROUND_HEAP_SIZE));
+    arenaLoNew += BACKGROUND_HEAP_SIZE;
+    charaHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + CHARA_HEAP_SIZE));
+    arenaLoNew += CHARA_HEAP_SIZE;
 
-    memHeap5 = OSCreateHeap(arenaLoNew, arenaEnd);
-    OSSetCurrentHeap(memHeap5);
+    mainHeap = OSCreateHeap(arenaLoNew, arenaEnd);
+    OSSetCurrentHeap(mainHeap);
     OSSetArenaLo(arenaLoNew);
 
-    memHeap5Size = OSCheckHeap(memHeap5);
-    memHeap1Size = OSCheckHeap(memHeap1);
-    memHeap2Size = OSCheckHeap(memHeap2);
-    memHeap3Size = OSCheckHeap(memHeap3);
-    memHeap4Size = OSCheckHeap(memHeap4);
+    mainHeapSize = OSCheckHeap(mainHeap);
+    subHeapSize = OSCheckHeap(subHeap);
+    stageHeapSize = OSCheckHeap(stageHeap);
+    backgroundHeapSize = OSCheckHeap(backgroundHeap);
+    charaHeapSize = OSCheckHeap(charaHeap);
 
     init_cache_ptrs();
 

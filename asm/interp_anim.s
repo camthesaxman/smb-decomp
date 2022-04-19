@@ -2,8 +2,8 @@
 
 .section .text
 
-.global g_interpolate_anim
-g_interpolate_anim:
+.global interpolate_keyframes
+interpolate_keyframes:
 /* 80043918 0003F838  2C 03 00 02 */	cmpwi r3, 2
 /* 8004391C 0003F83C  41 80 00 14 */	blt lbl_80043930
 /* 80043920 0003F840  C0 04 00 04 */	lfs f0, 4(r4)

@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "ball.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "item.h"
@@ -125,7 +126,7 @@ void item_pilot_main(struct Item *item)
             sp24.x = r29->pos.x - item->unk20.x;
             sp24.y = r29->pos.y - item->unk20.y;
             sp24.z = r29->pos.z - item->unk20.z;
-            if (mathutil_vec_mag(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
+            if (mathutil_vec_len(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
             {
                 Vec sp18;
 
@@ -147,7 +148,7 @@ void item_pilot_main(struct Item *item)
                 item->unk2C.x += sp24.x;
                 item->unk2C.y += sp24.y;
                 item->unk2C.z += sp24.z;
-                if (mathutil_vec_mag(&item->unk2C) > 0.064814814814814811)
+                if (mathutil_vec_len(&item->unk2C) > 0.064814814814814811)
                 {
                     mathutil_vec_normalize_len(&item->unk2C);
                     item->unk2C.x = 0.064814814814814811 * item->unk2C.x;
@@ -206,7 +207,7 @@ void item_pilot_main(struct Item *item)
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
+        mathutil_mtxA_from_mtx(animGroups[item->attachedTo].transform);
         mathutil_mtxA_tf_point(&item->unk20, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
@@ -225,7 +226,7 @@ void item_pilot_draw(struct Item *item)
 {
     float scale;
     float f30;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     Vec spC;
 
     if (lbl_801EEC90.unk0 & (1 << 2))
@@ -244,8 +245,8 @@ void item_pilot_draw(struct Item *item)
     if (item->subtype == 3)
         scale = 1.0f;
     else
-        scale = (f30 / model->boundsRadius) * 1.5;
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, scale) == 0)
+        scale = (f30 / model->boundSphereRadius) * 1.5;
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
      && (item->subtype == 4 || item->subtype == 3))
@@ -260,7 +261,7 @@ void item_pilot_draw(struct Item *item)
     }
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);
-    mathutil_get_mtxA_translate_alt(&spC);
+    mathutil_mtxA_get_translate_alt(&spC);
     f30 = -((spC.z + f30 + 0.1f) / f30);
     if (f30 > 0.0f)
     {
@@ -287,7 +288,7 @@ void item_pilot_draw(struct Item *item)
             }
             g_avdisp_set_model_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_draw_model_1(minigameGma->modelEntries[r30_].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
@@ -297,11 +298,11 @@ void item_pilot_draw(struct Item *item)
             {
                 if (f30 < 0.5)
                     f30 = 0.5f;
-                g_avdisp_set_alpha(f30);
-                g_avdisp_draw_model_3(model);
+                avdisp_set_alpha(f30);
+                avdisp_draw_model_unculled_sort_all(model);
             }
             else
-                g_avdisp_draw_model_2(model);
+                avdisp_draw_model_unculled_sort_none(model);
         }
         if (item->subtype == 2)
         {
@@ -335,7 +336,7 @@ void item_pilot_draw(struct Item *item)
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_draw_model_1(minigameGma->modelEntries[0x77].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].modelOffset);
             g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
@@ -353,7 +354,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
     {
         if (item->unk5E < 0
-         && (!(infoWork.unk0 & (1 << 4)) || (infoWork.unk0 & (1 << 11))))
+         && (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11))))
         {
             struct Struct8003C550 sp178;
 
@@ -370,14 +371,14 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->unk2E;
-            mathutil_mtxA_from_mtx(movableStageParts[b->unk58].unk24);
+            mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
             mathutil_mtxA_tf_point(&item->unk20, &sp178.unk34);
             mathutil_mtxA_tf_vec(&item->unk2C, &sp178.unk40);
             sp178.unk4C = item->xrot;
             sp178.unk4E = item->yrot;
             sp178.unk50 = item->zrot;
             sp178.unk30 = find_item_model(item->unk1C);
-            sp178.unk24.x = (item->unk14 / sp178.unk30->boundsRadius) * 1.5;
+            sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
             g_spawn_effect_object(&sp178);
@@ -440,13 +441,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 2)
     {
         g_play_sound(0x39);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x2820);
     }
     else if (item->subtype == 0 || item->subtype == 1)
     {
         g_play_sound(3);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x281F);
     }
 }
@@ -457,7 +458,7 @@ void func_8006A564(struct Item *item)
 {
     if (item->state != 2)
     {
-        item->unk20 = item->unk60->unk0;
+        item->unk20 = item->unk60->pos;
         item->unk2C.x = 0.0f;
         item->unk2C.y = 0.0f;
         item->unk2C.z = 0.0f;

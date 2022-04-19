@@ -6,14 +6,15 @@
 
 enum
 {
-    INFO_FLAG_GOAL     = (1 << 0),
-    INFO_FLAG_TIMEOVER = (1 << 1),
-    INFO_FLAG_FALLOUT  = (1 << 2),
+    INFO_FLAG_GOAL        = (1 << 0),
+    INFO_FLAG_TIMEOVER    = (1 << 1),
+    INFO_FLAG_FALLOUT     = (1 << 2),
+    INFO_FLAG_BONUS_STAGE = (1 << 6),
 };
 
 struct Struct801F3A58
 {
-    u32 unk0;
+    u32 flags;
     s16 timerCurr;  // current clock time (in 60ths of a second)
     s16 timerMax;  // maximum clock time (in 60ths of a second)
     u32 unk8;
@@ -42,7 +43,7 @@ void ev_info_init(void);
 void ev_info_main(void);
 void ev_info_dest(void);
 void func_80023AF4(void);
-int check_ball_in_goal(struct Ball *, u32 *, s32 *);
+BOOL check_ball_entered_goal(struct Ball *, u32 *, s32 *);
 void g_time_over_all_competition_mode_balls(void);
 void func_80023DB8(struct Ball *);
 void create_rank_icon(struct Ball *);

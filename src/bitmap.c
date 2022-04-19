@@ -2,6 +2,7 @@
 
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "bitmap.h"
 #include "event.h"
@@ -9,6 +10,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "sprite.h"
+#include "tevutil.h"
 
 struct TPL *g_unkBitmapTPL;
 s32 lbl_802F1D04;
@@ -77,7 +79,7 @@ char **bitmapNames[] =
 
 u32 lbl_802F04A8 = 0xFFFFFFFF;
 
-static u8 lzssHeader[0x20];
+static u8 lzssHeader[0x20] __attribute__((aligned(32)));
 
 void bitmap_draw(struct Bitmap *a);
 
@@ -126,7 +128,7 @@ struct TPL *bitmap_load_tpl(char *filename)
             OSPanic("bitmap.c", 164, "cannot OSAlloc\n");
 
         // Read whole file
-        lzData = OSAllocFromHeap(memHeap5, compressedSize);
+        lzData = OSAllocFromHeap(mainHeap, compressedSize);
         if (lzData == NULL)
             OSPanic("bitmap.c", 165, "cannot OSAlloc\n");
         if (file_read(&file, lzData, compressedSize, 0) < 0)
@@ -138,7 +140,7 @@ struct TPL *bitmap_load_tpl(char *filename)
         fileData = (void *)OSRoundUp32B((u32)tpl + 0x10);
         lzs_decompress(lzData, fileData);
         DCFlushRange(fileData, size);
-        OSFreeToHeap(memHeap5, lzData);
+        OSFreeToHeap(mainHeap, lzData);
     }
     else
     {
@@ -259,7 +261,7 @@ void func_800263A4(void)
       | (1 << GX_VA_TEX0));
     GXSetNumChans(0);
     GXSetNumTexGens(1);
-    func_8009F2C8(1);
+    GXSetNumTevStages_cached(1);
     GXSetTevDirect(GX_TEVSTAGE0);
     func_8009EA30(0, 0);
     GXSetTexCoordGen(
@@ -267,12 +269,12 @@ void func_800263A4(void)
         GX_TG_MTX2x4,  // func
         GX_TG_TEX0,  // src_param
         GX_IDENTITY);  // mtx
-    func_8009EFF4(0, 0, 0, 0xFF);
-    func_8009E2C8(0, 0, 0);
-    func_8009E618(0, 15, 2, 8, 4);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 1, 4, 2);
-    func_8009E918(0, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
+    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_C0, GX_CC_TEXC, GX_CC_C1);
+    GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_A0, GX_CA_TEXA, GX_CA_A1);
+    GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -293,12 +295,12 @@ void func_800263A4(void)
         zMode->updateEnable = GX_ENABLE;
     }
 
-    func_8009E110(1, 4, 5, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     {
         GXColor color = {0, 0, 0, 0};
-        func_8009E398(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, color);
     }
-    func_8009E094(2);
+    GXSetCullMode_cached(GX_CULL_BACK);
 }
 
 void bitmap_main(void)
@@ -452,7 +454,7 @@ void bitmap_draw(struct Bitmap *bmp)
     mathutil_mtxA_tf_vec(&sp38, &sp38);
     mathutil_mtxA_tf_vec(&sp2C, &sp2C);
 
-    func_8009F430(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = bmp->r;
     tevColor.g = bmp->g;
@@ -497,7 +499,7 @@ void bitmap_draw_normal_char(unsigned char chr)
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    func_8009F430(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], GX_TEXMAP0);
 
     tevColor.r = 255;
     tevColor.g = 255;

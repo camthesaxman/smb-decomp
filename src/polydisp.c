@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
+#include <dolphin/GXEnum.h>
 
 #include "global.h"
 #include "adv.h"
@@ -9,6 +10,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "input.h"
@@ -21,6 +23,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
+#include "tevutil.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -289,7 +292,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_rotate_x(0x4000);
             g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
             g_avdisp_set_model_scale(f30);
-            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[polyshadow01].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].modelOffset);
         }
         func_8000E3BC();
     }
@@ -401,7 +404,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].modelOffset);
 
     // Draw the simulated analog stick
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
@@ -410,8 +413,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_z(CLAMP(advTutorialInfo.stickZRot * 8, -0x1000, 0x1000));
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(advTutorialInfo.transitionValue);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_set_alpha(advTutorialInfo.transitionValue);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
 
     // Draw the transparent stick based on the player's analog stick position
@@ -442,8 +445,8 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(0.99f);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
 
     // Draw the button base
     mathutil_mtxA_from_identity();
@@ -454,7 +457,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].modelOffset);
 
     // Draw the A button
     if (advTutorialInfo.state == 2)
@@ -464,8 +467,8 @@ void g_draw_tutorial_button_and_joystick(void)
     }
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
-    g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
+    avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
 }
 
@@ -490,7 +493,7 @@ void func_8000C144(struct Struct8000C144 *a)
     u8 filler[8];
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
-    func_8009E110(1, 0, 1, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ZERO, GX_BL_ONE, GX_LO_CLEAR);
     if (zMode->updateEnable  != GX_ENABLE
      || zMode->compareFunc   != 7
      || zMode->compareEnable != GX_ENABLE)
@@ -501,16 +504,16 @@ void func_8000C144(struct Struct8000C144 *a)
         zMode->updateEnable  = GX_ENABLE;
     }
 
-    func_8009E398(0, lbl_802F2978, 0.0f, 100.0f, 0.1f, 20000.0f);
-    func_8009E094(0);
-    GXSetTevDirect(0);
-    func_8009EFF4(0, 0xFF, 0xFF, 0xFF);
-    func_8009F224(0, 0);
-    func_8009E618(0, 15, 15, 15, 15);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 7, 7, 6);
-    func_8009E918(0, 0, 0, 3, 1, 0);
-    func_8009F2C8(1);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
+    GXSetCullMode_cached(GX_CULL_NONE);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR_NULL);
+    GXSetTevKAlphaSel_cached(GX_TEVSTAGE0, GX_TEV_KASEL_1);
+    GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+    GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+    GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_DIVIDE_2, GX_TRUE, GX_TEVPREV);
+    GXSetNumTevStages_cached(1);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -560,7 +563,7 @@ void func_8000C388(void)
         mathutil_mtxA_rotate_x(-worldInfo[0].xrot);
         mathutil_mtxA_tf_vec(&sp8, &sp8);
         r30 = -mathutil_atan2(sp8.z, sp8.y);
-        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq(sp8.z, sp8.y)));
+        v3 = mathutil_atan2(sp8.x, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.z, sp8.y)));
         r30 *= 0.2;
         v3 *= 0.2;
         advTutorialInfo.stickXRot = advTutorialInfo.stickXRot + 0.2 * ((float)r30 - (float)advTutorialInfo.stickXRot);
@@ -691,11 +694,11 @@ void func_8000C8D4(void)
         mathutil_mtxA_rotate_y(cameraInfo[i].rotY - 0x8000);
         mathutil_mtxA_rotate_x(-0x4000);
         mathutil_mtxA_translate_xyz(0.0f, ball->currRadius, 0.0f);
-        mathutil_get_mtxA_translate_alt(&sp8);
+        mathutil_mtxA_get_translate_alt(&sp8);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
+        avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
 
@@ -722,7 +725,7 @@ void func_8000CA9C(void)
             r30 = g_avdisp_set_some_func_1(r31);
         mathutil_mtxA_from_mtxB();
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1((void *)lbl_802F1F34);
+        avdisp_draw_model_unculled_sort_translucent((void *)lbl_802F1F34);
         if (r31 != NULL)
             g_avdisp_set_some_func_1(r30);
     }
@@ -828,7 +831,7 @@ void func_8000CA9C(void)
             sp8.y = sp14.y - sp20.y;
             sp8.z = sp14.z - sp20.z;
             mathutil_mtxA_rotate_y(mathutil_atan2(sp8.x, sp8.z) - 32768);
-            mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq(sp8.x, sp8.z))));
+            mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             g_nl2ngc_set_scale(0.25f);
             g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
@@ -976,10 +979,10 @@ void draw_test_camera_target(void)
             GX_DF_CLAMP,  // diff_fn
             GX_AF_NONE);  // attn_fn
         GXSetNumChans(1);
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         func_8009EA30(0, 4);
         GXSetNumTexGens(0);
-        func_8009F2C8(1);
+        GXSetNumTevStages_cached(1);
 
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         mathutil_mtxA_translate(&currentCameraStructPtr->lookAt);
@@ -999,7 +1002,7 @@ void func_8000D5B8(void)
     lbl_801EEC90.unk60 = 0.0f;
 }
 
-struct AnimKeyframe bombSparkXKeyframes[] =
+struct Keyframe bombSparkXKeyframes[] =
 {
     { 1,   0,  8.7540102,          0,          0 },
     { 1,  72, 1.83571005,  -0.090412,  -0.090412 },
@@ -1013,7 +1016,7 @@ struct AnimKeyframe bombSparkXKeyframes[] =
     { 1, 100,  0.0010883,          0,          0 },
 };
 
-struct AnimKeyframe bombSparkYKeyframes[] =
+struct Keyframe bombSparkYKeyframes[] =
 {
     { 1,   0,   -1.00663,            0,            0 },
     { 1,  49,   -1.00662, -0.000118196, -0.000118196 },
@@ -1187,7 +1190,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(infoWork.unk0 & (1 << 3)))
+        if (!(infoWork.flags & (1 << 3)))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1205,7 +1208,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (infoWork.unk0 & (1 << 3))
+        if (infoWork.flags & (1 << 3))
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1215,7 +1218,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (infoWork.unk0 & (1 << 3))
+    if (infoWork.flags & (1 << 3))
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;
@@ -1237,12 +1240,12 @@ void draw_timer_bomb_fuse(void)
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     g_avdisp_set_model_scale(scale);
     func_8008F6D4(1);
-    g_avdisp_draw_model_1(commonGma->modelEntries[BOMB_FUSE].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
     func_8008F6D4(0);
 
     // Draw spark
-    sparkPos.x = g_interpolate_anim(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
-    sparkPos.y = g_interpolate_anim(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
+    sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
+    sparkPos.y = interpolate_keyframes(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
     sparkPos.z = 0.141f;
     mathutil_mtxA_translate(&sparkPos);
     mathutil_mtxA_sq_from_identity();
@@ -1336,7 +1339,7 @@ void set_backdrop_color(void)
         break;
     }
 
-    if (r0 && fogInfo.unkF != 0)
+    if (r0 && fogInfo.enabled != 0)
     {
         color.r = fogInfo.r;
         color.g = fogInfo.g;

@@ -364,7 +364,7 @@ void func_8005507C(void)
 {
     if (backgroundInfo.bgId > 0)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
         if (backgroundInfo.unk9C != NULL)
         {
@@ -480,7 +480,7 @@ void load_bg_files(int bgId)
 
     if (backgroundInfo.bgId != bgId)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
         if (backgroundInfo.bgId > 0)
         {
@@ -565,8 +565,8 @@ void bg_e3_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_e3_finish(void) {}
@@ -594,13 +594,13 @@ void bg_e3_draw(void)
 
 void bg_e3_interact(int a) {}
 
-void g_animate_background_parts(struct StageBgModel *a, int b, float c)
+void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds)
 {
     int i;
     int r29;
-    Vec sp1C;
+    Vec boundSphereCenter;
 
-    if (a == NULL2)
+    if (bgModels == NULL2)
         return;
     if (lbl_801EEC90.unk0 & 0x11)
         r29 = 16;
@@ -608,65 +608,78 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
         r29 = 1 << (modeCtrl.unk30 - 1);
     else
         r29 = 1;
-    for (i = 0; i < b; i++, a++)
+    for (i = 0; i < bgModelCount; i++, bgModels++)
     {
-        float t;
-        float f2;
-        struct UnkStruct8005562C_child *anim;
+        float timeSecondsLooped;
+        float loopDurationSeconds;
+        struct StageBgAnim *anim;
 
-        a->unk0 &= ~(1 << 16);
-        if (!(a->unk0 & r29))
+        bgModels->flags &= ~(1 << 16);
+        if (!(bgModels->flags & r29))
             continue;
-        if (a->model == NULL2)
+        if (bgModels->model == NULL2)
             continue;
-        a->unk0 |= 0x10000;
-        anim = a->unk30;
+        bgModels->flags |= (1 << 16);
+        anim = bgModels->anim;
         if (anim == NULL2)
             continue;
-        t = c;
-        if (a->unk0 & (1 << 6))
-            t = lbl_80206DEC.unk4 / 60.0;
-        t += anim->unk0;
-        f2 = (float)(anim->unk4 - anim->unk0);
-        t -= f2 * mathutil_floor(t / f2);
-        t += (float)anim->unk0;
-        if (anim->unk54 != NULL2 && g_interpolate_anim(anim->unk50, anim->unk54, t) < 0.5)
+        timeSecondsLooped = timeSeconds;
+        if (bgModels->flags & (1 << 6))
+            timeSecondsLooped = lbl_80206DEC.g_stageTimer / 60.0;
+        timeSecondsLooped += anim->loopStartSeconds;
+        loopDurationSeconds = (float)(anim->loopEndSeconds - anim->loopStartSeconds);
+        timeSecondsLooped -=
+            loopDurationSeconds * mathutil_floor(timeSecondsLooped / loopDurationSeconds);
+        timeSecondsLooped += (float)anim->loopStartSeconds;
+        if (anim->visibleKeyframes != NULL2 &&
+            interpolate_keyframes(anim->visibleKeyframeCount, anim->visibleKeyframes,
+                                  timeSecondsLooped) < 0.5)
         {
-            a->unk0 &= ~(1 << 16);
+            bgModels->flags &= ~(1 << 16);
             continue;
         }
-        if (anim->unk5C != NULL2)
+        if (anim->translucencyKeyframes != NULL2)
         {
-            a->unk2C = g_interpolate_anim(anim->unk58, anim->unk5C, t);
-            if (a->unk2C >= 1.0)
+            bgModels->translucency = interpolate_keyframes(
+                anim->translucencyKeyframeCount, anim->translucencyKeyframes, timeSecondsLooped);
+            if (bgModels->translucency >= 1.0)
                 continue;
         }
-        if (anim->unkC != NULL2)
-            a->scale.x = g_interpolate_anim(anim->unk8, anim->unkC, t);
-        if (anim->unk14 != NULL2)
-            a->scale.y = g_interpolate_anim(anim->unk10, anim->unk14, t);
-        if (anim->unk1C != NULL2)
-            a->scale.z = g_interpolate_anim(anim->unk18, anim->unk1C, t);
-        if (anim->unk24 != NULL2)
-            a->xrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk20, anim->unk24, t));
-        if (anim->unk2C != NULL2)
-            a->yrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk28, anim->unk2C, t));
-        if (anim->unk34 != NULL2)
-            a->zrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk30, anim->unk34, t));
-        if (anim->unk3C != NULL2)
-            a->pos.x = g_interpolate_anim(anim->unk38, anim->unk3C, t);
-        if (anim->unk44 != NULL2)
-            a->pos.y = g_interpolate_anim(anim->unk40, anim->unk44, t);
-        if (anim->unk4C != NULL2)
-            a->pos.z = g_interpolate_anim(anim->unk48, anim->unk4C, t);
-        if ((a->unk0 & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
+        if (anim->scaleXKeyframes != NULL2)
+            bgModels->scale.x = interpolate_keyframes(anim->scaleXKeyframeCount,
+                                                      anim->scaleXKeyframes, timeSecondsLooped);
+        if (anim->scaleYKeyframes != NULL2)
+            bgModels->scale.y = interpolate_keyframes(anim->scaleYKeyframeCount,
+                                                      anim->scaleYKeyframes, timeSecondsLooped);
+        if (anim->scaleZKeyframes != NULL2)
+            bgModels->scale.z = interpolate_keyframes(anim->scaleZKeyframeCount,
+                                                      anim->scaleZKeyframes, timeSecondsLooped);
+        if (anim->rotXKeyframeCount != NULL2)
+            bgModels->rotX = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotXKeyframes, anim->rotXKeyframeCount, timeSecondsLooped));
+        if (anim->rotYKeyframeCount != NULL2)
+            bgModels->rotY = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotYKeyframes, anim->rotYKeyframeCount, timeSecondsLooped));
+        if (anim->rotZKeyframeCount != NULL2)
+            bgModels->rotZ = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotZKeyframes, anim->rotZKeyframeCount, timeSecondsLooped));
+        if (anim->posXKeyframeCount != NULL2)
+            bgModels->pos.x = interpolate_keyframes(anim->posXKeyframes, anim->posXKeyframeCount,
+                                                    timeSecondsLooped);
+        if (anim->posYKeyframeCount != NULL2)
+            bgModels->pos.y = interpolate_keyframes(anim->posYKeyframes, anim->posYKeyframeCount,
+                                                    timeSecondsLooped);
+        if (anim->posZKeyframeCount != NULL2)
+            bgModels->pos.z = interpolate_keyframes(anim->posZKeyframes, anim->posZKeyframeCount,
+                                                    timeSecondsLooped);
+        if ((bgModels->flags & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
-            mathutil_mtxA_from_translate(&a->pos);
-            mathutil_mtxA_rotate_z(a->zrot);
-            mathutil_mtxA_rotate_y(a->yrot);
-            mathutil_mtxA_rotate_x(a->xrot);
-            mathutil_mtxA_tf_point(&a->model->boundsCenter, &sp1C);
-            func_800390C8(5, &sp1C, 1.0f);
+            mathutil_mtxA_from_translate(&bgModels->pos);
+            mathutil_mtxA_rotate_z(bgModels->rotZ);
+            mathutil_mtxA_rotate_y(bgModels->rotY);
+            mathutil_mtxA_rotate_x(bgModels->rotX);
+            mathutil_mtxA_tf_point(&bgModels->model->boundSphereCenter, &boundSphereCenter);
+            func_800390C8(5, &boundSphereCenter, 1.0f);
         }
     }
 }
@@ -676,7 +689,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
     int i;
     int r30;
     float f29;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     int r23;
 
     if (b == NULL)
@@ -689,31 +702,31 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         r30 = 1;
     for (i = 0; i < c; i++, b++)
     {
-        if (!(b->unk0 & r30))
+        if (!(b->flags & r30))
             continue;
         if ((lbl_801EEC90.unk0 & (1 << 2))
-         && (b->unk0 & (1 << 7)))
+         && (b->flags & (1 << 7)))
             continue;
-        if (!(b->unk0 & (1 << 16)))
+        if (!(b->flags & (1 << 16)))
             continue;
-        if (b->unk2C >= 1.0)
+        if (b->translucency >= 1.0)
             continue;
         if ((model = b->model) == NULL)
             continue;
         mathutil_mtxA_from_mtx(a);
         mathutil_mtxA_translate(&b->pos);
-        mathutil_mtxA_rotate_z(b->zrot);
-        mathutil_mtxA_rotate_y(b->yrot);
-        mathutil_mtxA_rotate_x(b->xrot);
+        mathutil_mtxA_rotate_z(b->rotZ);
+        mathutil_mtxA_rotate_y(b->rotY);
+        mathutil_mtxA_rotate_x(b->rotX);
         mathutil_mtxA_scale(&b->scale);
         f29 = MAX(b->scale.x, b->scale.y);
         f29 = MAX(b->scale.z, f29);
         if ((lbl_801EEC90.unk0 & (1 << 2))
-         && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
+         && func_8000E444(&model->boundSphereCenter) < -(f29 * model->boundSphereRadius))
             continue;
-        if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
+        if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
-        r23 = b->unk0 >> 28;
+        r23 = b->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (r23 > 0)
@@ -721,15 +734,15 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
             func_800224CC();
             func_80022274(r23 + 6);
         }
-        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << 24)))
+        if (backgroundInfo.unk90 != 0 && (b->flags & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
         g_avdisp_set_model_scale(f29);
-        if (b->unk2C < FLT_EPSILON)
-            g_avdisp_draw_model_1(model);
+        if (b->translucency < FLT_EPSILON)
+            avdisp_draw_model_unculled_sort_translucent(model);
         else
         {
-            g_avdisp_set_alpha(1.0 - b->unk2C);
-            g_avdisp_draw_model_3(model);
+            avdisp_set_alpha(1.0 - b->translucency);
+            avdisp_draw_model_unculled_sort_all(model);
         }
         if (b->unk34 != 0)
             func_80055C6C(a, b->unk34);
@@ -914,7 +927,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
                 modelId = lbl_801B9AC8[(r4 % 15)];
                 break;
             }
-            g_avdisp_draw_model_2(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].modelOffset);
         }
     }
     if (b->unkC != NULL)
@@ -932,7 +945,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = (unpausedFrameCounter + r22->unkC * 4);
             modelId = lbl_801B9AE8[r4 % 32];
-            g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].modelOffset);
         }
     }
 }
@@ -943,8 +956,8 @@ void bg_night_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_night_finish(void) {}
@@ -978,8 +991,8 @@ void bg_ice2_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_ice2_finish(void) {}
@@ -1041,7 +1054,7 @@ void bg_billiards_init(void)
             }
             if (matched)
             {
-                r29->unk0 |= r27->unk4 << 28;
+                r29->flags |= r27->unk4 << 28;
                 break;
             }
             r27++;
@@ -1053,8 +1066,8 @@ void bg_billiards_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_billiards_finish(void) {}
@@ -1088,8 +1101,8 @@ void bg_golf_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_golf_finish(void) {}
@@ -1123,8 +1136,8 @@ void bg_bowling_main(void)
 {
     float var = backgroundInfo.unk4 / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_models(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
+    animate_bg_models(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
 }
 
 void bg_bowling_finish(void) {}
@@ -1285,13 +1298,13 @@ void func_80056934(void)
     for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, var1++)
     {
         if (var1->model != NULL)
-            var1->unk0 &= 0xFFFFFF;
+            var1->flags &= 0xFFFFFF;
     }
     var1 = decodedStageLzPtr->unk74;
     for (i = 0; i < decodedStageLzPtr->unk70; i++, var1++)
     {
         if (var1->model != NULL)
-            var1->unk0 &= 0xFFFFFF;
+            var1->flags &= 0xFFFFFF;
     }
 }
 

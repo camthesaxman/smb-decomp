@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <dolphin.h>
+#include <string.h>
 
 #include "global.h"
 #include "ball.h"
@@ -33,17 +34,17 @@ u32 globalFrameCounter;
 u32 unpausedFrameCounter;
 GXRenderModeObj *currRenderMode;
 
-OSHeapHandle memHeap5;
-OSHeapHandle memHeap1;
-OSHeapHandle memHeap2;
-OSHeapHandle memHeap3;
-OSHeapHandle memHeap4;
+OSHeapHandle mainHeap;
+OSHeapHandle subHeap;
+OSHeapHandle stageHeap;
+OSHeapHandle backgroundHeap;
+OSHeapHandle charaHeap;
 
-long memHeap5Size;
-long memHeap1Size;
-long memHeap2Size;
-long memHeap3Size;
-long memHeap4Size;
+long mainHeapSize;
+long subHeapSize;
+long stageHeapSize;
+long backgroundHeapSize;
+long charaHeapSize;
 
 struct NaomiObj *naomiCommonObj;
 struct NaomiObj *naomiStageObj;

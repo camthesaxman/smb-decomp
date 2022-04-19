@@ -2,6 +2,7 @@
 #include <string.h>
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "bitmap.h"
 #include "gxutil.h"
@@ -9,12 +10,13 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "tevutil.h"
 
-float lbl_802F1EFC;
-float lbl_802F1EF8;
-GXColor lbl_802F1EF4;
-u32 lbl_802F1EF0;
-s32 lbl_802F1EEC;
+float fogEndZ;
+float fogStartZ;
+GXColor fogColor;
+GXFogType fogType;
+s32 g_fogEnabled;
 u32 nlObjLightMask;
 
 struct Color3f g_someAmbColor;
@@ -32,7 +34,7 @@ struct
     u8 unkA;
     u8 fillerB[1];
     GXTexObj *unkC;
-    u32 unk10;
+    GXTexMapID g_texMapId;
     GXColor matColor;
     GXColor ambColor;
     float alpha;
@@ -44,7 +46,7 @@ struct
 } lbl_80205DAC;
 FORCE_BSS_ORDER(lbl_80205DAC)
 
-static u8 lzssHeader[32];
+static u8 lzssHeader[32] __attribute__((aligned(32)));
 
 struct
 {
@@ -142,7 +144,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
             return FALSE;
 
         // Read whole file
-        compressed = OSAllocFromHeap(memHeap5, size);
+        compressed = OSAllocFromHeap(mainHeap, size);
         if (compressed == NULL)
         {
             OSFree(uncompressed);
@@ -155,7 +157,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
 
         // Decompress data
         lzs_decompress(compressed, uncompressed);
-        OSFreeToHeap(memHeap5, compressed);
+        OSFreeToHeap(mainHeap, compressed);
         *pobj = uncompressed;
         if (*pobj == NULL)
             return FALSE;
@@ -389,12 +391,12 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -407,7 +409,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
         if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
-            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundsCenter);
+            struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
             r29 = ord_tbl_alloc_node(sizeof(*r29));
 
             r29->node.drawFunc = (OrdTblDrawFunc)lbl_80033C8C;
@@ -419,7 +421,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
             r29->unk4C.r = g_someAmbColor.r;
             r29->unk4C.g = g_someAmbColor.g;
             r29->unk4C.b = g_someAmbColor.b;
-            r29->unk58 = lbl_802F1EEC;
+            r29->unk58 = g_fogEnabled;
             mathutil_mtxA_to_mtx(r29->unkC);
             ord_tbl_insert_node(list, &r29->node);
         }
@@ -442,12 +444,12 @@ void g_draw_naomi_model_1(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -525,12 +527,12 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -538,7 +540,7 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
             lbl_801B7978.unk18 = 1.0f;
         }
 
-        entry = ord_tbl_get_entry_for_pos(&model->boundsCenter);
+        entry = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
         node = ord_tbl_alloc_node(sizeof(*node));
 
         node->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
@@ -551,7 +553,7 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
         node->ambColor.r = g_someAmbColor.r;
         node->ambColor.g = g_someAmbColor.g;
         node->ambColor.b = g_someAmbColor.b;
-        node->unk5C = lbl_802F1EEC;
+        node->unk5C = g_fogEnabled;
         mathutil_mtxA_to_mtx(node->unkC);
         ord_tbl_insert_node(entry, &node->node);
     }
@@ -566,12 +568,12 @@ void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float alpha)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk18) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -651,8 +653,8 @@ void *lbl_801B7AA4[] =
     lbl_801B7A64,
 };
 
-u32 lbl_801B7AB4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
-u32 lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+GXBlendFactor lbl_801B7AB4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+GXBlendFactor lbl_801B7AD4[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 GXCompare naomiToGCCompare[] =
 {
     GX_NEVER,
@@ -664,7 +666,7 @@ GXCompare naomiToGCCompare[] =
     GX_LEQUAL,
     GX_ALWAYS
 };
-u32 lbl_801B7B14[] = { 3, 0, 2, 1, 0 };
+GXCullMode g_naomiToGXCullModes[] = { GX_CULL_ALL, GX_CULL_NONE, GX_CULL_BACK, GX_CULL_FRONT, GX_CULL_NONE };
 
 static void prep_some_stuff_before_drawing(void)
 {
@@ -673,7 +675,7 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unk4 = 0;
     lbl_80205DAC.unk5 = 1;
     lbl_80205DAC.unk6 = 0;
-    func_8009E110(0, lbl_801B7AB4[1], lbl_801B7AD4[0], 0);
+    GXSetBlendMode_cached(GX_BM_NONE, lbl_801B7AB4[1], lbl_801B7AD4[0], GX_LO_CLEAR);
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk24 = zMode->compareFunc;
     lbl_80205DAC.unk28 = zMode->updateEnable;
@@ -690,15 +692,15 @@ static void prep_some_stuff_before_drawing(void)
         zMode->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
-    if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
-    func_8009E094(lbl_801B7B14[2]);
+    GXSetCullMode_cached(g_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
-    lbl_80205DAC.unk10 = 0;
+    lbl_80205DAC.g_texMapId = 0;
 
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
@@ -722,8 +724,8 @@ static void prep_some_stuff_before_drawing(void)
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009E2C8(0, 0, 0);
-    func_8009F2C8(1);
+    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(1);
     GXSetNumIndStages(0);
     GXSetNumChans(1);
@@ -744,7 +746,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     case 0:
         if (lbl_80205DAC.unk4 != 0)
         {
-            func_8009E110(0, 1, 0, 0);
+            GXSetBlendMode_cached(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 0;
             lbl_80205DAC.unk5 = 1;
             lbl_80205DAC.unk6 = 0;
@@ -755,7 +757,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
-            func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[r25], lbl_801B7AD4[r27], GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 2;
             lbl_80205DAC.unk5 = r25;
             lbl_80205DAC.unk6 = r27;
@@ -780,51 +782,51 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         lbl_80205DAC.unk8 = r26;
     }
 
-    if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     if (mesh.unk20 < 0)
     {
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         func_8009EA30(0, 4);
     }
     else
     {
-        int r25 = lbl_80205DAC.unk10;
+        GXTexMapID g_texMapId = lbl_80205DAC.g_texMapId;
 
         if (lbl_80205DAC.unkC != mesh.texObj)
         {
             lbl_80205DAC.unkC = mesh.texObj;
-            if (--r25 < 0)
-                r25 = 7;
-            lbl_80205DAC.unk10 = r25;
-            func_8009F430(mesh.texObj, r25);
+            if (--g_texMapId < 0)
+                g_texMapId = 7;
+            lbl_80205DAC.g_texMapId = g_texMapId;
+            GXLoadTexObj_cached(mesh.texObj, g_texMapId);
         }
-        func_8009EFF4(0, 0, r25, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, g_texMapId, GX_COLOR0A0);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
             func_8009EA30(0, 3);
             break;
         case 1:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 7, 7, 4);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         case 2:
-            func_8009E618(0, 10, 8, 9, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 7, 7, 5);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_RASA);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         case 3:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 5, 4, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_RASA, GX_CA_TEXA, GX_CA_ZERO);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         }
     }
@@ -917,7 +919,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            func_8009E094(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1027,7 +1029,7 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            func_8009E094(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1159,7 +1161,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.unk5 = 4;
     lbl_80205DAC.unk6 = 5;
 
-    func_8009E110(1, lbl_801B7AB4[4], lbl_801B7AD4[5], 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[4], lbl_801B7AD4[5], GX_LO_CLEAR);
 
     lbl_80205DAC.unk20 = zMode->compareEnable;
     lbl_80205DAC.unk20 = zMode->compareFunc;  //! mistake?
@@ -1177,15 +1179,15 @@ static void prep_some_stuff_before_drawing_2(void)
         zMode->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
-    if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
-    func_8009E094(lbl_801B7B14[2]);
+    GXSetCullMode_cached(g_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
-    lbl_80205DAC.unk10 = 0;
+    lbl_80205DAC.g_texMapId = 0;
 
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
@@ -1209,8 +1211,8 @@ static void prep_some_stuff_before_drawing_2(void)
         GX_DF_CLAMP,   // diff_fn
         GX_AF_SPOT);   // attn_fn
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009E2C8(0, 0, 0);
-    func_8009F2C8(1);
+    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(1);
     GXSetNumIndStages(0);
     GXSetNumChans(1);
@@ -1231,7 +1233,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     case 0:
         if (lbl_80205DAC.unk4 != 0)
         {
-            func_8009E110(1, 4, 5, 0);
+            GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 0;
             lbl_80205DAC.unk5 = 4;
             lbl_80205DAC.unk6 = 5;
@@ -1242,7 +1244,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         r27 = (mesh.unk8 >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
-            func_8009E110(1, lbl_801B7AB4[r25], lbl_801B7AD4[r27], 0);
+            GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[r25], lbl_801B7AD4[r27], GX_LO_CLEAR);
             lbl_80205DAC.unk4 = 2;
             lbl_80205DAC.unk5 = r25;
             lbl_80205DAC.unk6 = r27;
@@ -1267,54 +1269,54 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         lbl_80205DAC.unk8 = r26;
     }
 
-    if (lbl_802F1EEC != 0)
-        func_8009E398(lbl_802F1EF0, lbl_802F1EF4, lbl_802F1EF8, lbl_802F1EFC, 0.1f, 20000.0f);
+    if (g_fogEnabled != 0)
+        GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
-        func_8009E398(0, lbl_802F1EF4, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     if (mesh.unk20 < 0)
     {
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         func_8009EA30(0, 4);
     }
     else
     {
-        int r25 = lbl_80205DAC.unk10;
+        int r25 = lbl_80205DAC.g_texMapId;
 
         if (lbl_80205DAC.unkC != mesh.texObj)
         {
             lbl_80205DAC.unkC = mesh.texObj;
             if (--r25 < 0)
                 r25 = 7;
-            lbl_80205DAC.unk10 = r25;
-            func_8009F430(mesh.texObj, r25);
+            lbl_80205DAC.g_texMapId = r25;
+            GXLoadTexObj_cached(mesh.texObj, r25);
         }
-        func_8009EFF4(0, 0, r25, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
-            func_8009E618(0, 15, 15, 15, 8);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 4, 5, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA,GX_CA_ZERO);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         case 1:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 4, 5, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA, GX_CA_ZERO);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         case 2:
-            func_8009E618(0, 10, 8, 9, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 7, 7, 5);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_RASC, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_RASA);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         case 3:
-            func_8009E618(0, 15, 10, 8, 15);
-            func_8009E800(0, 0, 0, 0, 1, 0);
-            func_8009E70C(0, 7, 5, 4, 7);
-            func_8009E918(0, 0, 0, 0, 1, 0);
+            GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
+            GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_RASA, GX_CA_TEXA, GX_CA_ZERO);
+            GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
             break;
         }
     }
@@ -1420,7 +1422,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            func_8009E094(lbl_801B7B14[r4]);
+            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1525,21 +1527,21 @@ void g_nl2ngc_set_ambient_color(float r, float g, float b)
 
 void func_80033B50(int a)
 {
-    lbl_802F1EEC = a;
+    g_fogEnabled = a;
 }
 
 void func_80033B58(u32 a, float b, float c)
 {
-    lbl_802F1EF0 = a;
-    lbl_802F1EF8 = b;
-    lbl_802F1EFC = c;
+    fogType = a;
+    fogStartZ = b;
+    fogEndZ = c;
 }
 
 void g_nl2ngc_set_some_other_color(int r, int g, int b)
 {
-    lbl_802F1EF4.r = r;
-    lbl_802F1EF4.g = g;
-    lbl_802F1EF4.b = b;
+    fogColor.r = r;
+    fogColor.g = g;
+    fogColor.b = b;
 }
 
 void g_draw_naomi_model_3(struct NaomiModel *model)
@@ -1616,7 +1618,7 @@ static void lbl_80033C8C(struct UnkStruct18 *a)
         func_800223D8(a->unk48);
         g_nl2ngc_set_ambient_color(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
-    lbl_802F1EEC = a->unk58;
+    g_fogEnabled = a->unk58;
     g_draw_naomi_model_4(a->model);
 
     lbl_801B7978.unk0.r = f31;
@@ -1699,7 +1701,7 @@ void lbl_80033E6C(struct UnkStruct19 *a)
         func_800223D8(a->unk4C);
         g_nl2ngc_set_ambient_color(a->ambColor.r, a->ambColor.g, a->ambColor.b);
     }
-    lbl_802F1EEC = a->unk5C;
+    g_fogEnabled = a->unk5C;
     g_draw_naomi_model_5(a->model);
 
     lbl_801B7978.unk0.r = f31;
@@ -1770,12 +1772,12 @@ void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_frustum_test_maybe_1(&model->boundsCenter, model->boundsRadius) == 0)
+            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, lbl_801B7978.unk1C) == 0)
+            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;

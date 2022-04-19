@@ -8,6 +8,7 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
@@ -84,8 +85,8 @@ u32 lbl_802B47B0[4];  // DF0
 u32 lbl_802B47C0[4];  // E00
 struct TPL *lbl_802B47D0[4];  // E10
 GXTexObj *lbl_802B47E0[4];  // E20
-struct GMAMeshHeader *lbl_802B47F0[4];  // E30
-struct GMAMaterial *lbl_802B4800[8];  // E40
+struct GMAShape *lbl_802B47F0[4];  // E30
+struct GMATevLayer *lbl_802B4800[8];  // E40
 Mtx lbl_802B4820;  // E60
 Mtx lbl_802B4850[15];  // E90
 u8 lbl_802B4B20[0x2D0];
@@ -148,7 +149,7 @@ void load_character_resources(void)
 
     DVDChangeDir("ape");
     lbl_802F208C = 0;
-    oldHeap = OSSetCurrentHeap(memHeap4);
+    oldHeap = OSSetCurrentHeap(charaHeap);
     work = OSAlloc(0x280020);
     lbl_802F2090 = 1;
     if (work == NULL)
@@ -179,7 +180,7 @@ void load_character_resources(void)
                 OSPanic("mot_ape.c", 250, "Stopped...\n");
             }
             fileSize = OSRoundUp32B(file_size(&file));
-            compressed = OSAllocFromHeap(memHeap5, fileSize);
+            compressed = OSAllocFromHeap(mainHeap, fileSize);
             if (compressed == NULL)
                 OSPanic("mot_ape.c", 254, "cannot OSAlloc");
             file_read(&file, compressed, fileSize, 0);
@@ -189,7 +190,7 @@ void load_character_resources(void)
                 OSPanic("mot_ape.c", 260, "Not enough ARAM for CharacterModel.\n");
             charaTplAramAddrs[index] = aramTop;
             lzs_decompress(compressed, work);
-            OSFreeToHeap(memHeap5, compressed);
+            OSFreeToHeap(mainHeap, compressed);
             DCStoreRange(work, charaTplSizes[index]);
             transferInProgress = TRUE;
             ARQPostRequest(
@@ -212,7 +213,7 @@ void load_character_resources(void)
                 OSPanic("mot_ape.c", 277, "Stopped...\n");
             }
             fileSize = OSRoundUp32B(file_size(&file));
-            compressed = OSAllocFromHeap(memHeap5, fileSize);
+            compressed = OSAllocFromHeap(mainHeap, fileSize);
             if (compressed == NULL)
                 OSPanic("mot_ape.c", 281, "cannot OSAlloc");
             file_read(&file, compressed, fileSize, 0);
@@ -223,7 +224,7 @@ void load_character_resources(void)
             charaGmaAramAddrs[index] = aramTop;
             lzs_decompress(compressed, work);
             DCStoreRange(work, charaGmaSizes[index]);
-            OSFreeToHeap(memHeap5, compressed);
+            OSFreeToHeap(mainHeap, compressed);
             transferInProgress = TRUE;
             ARQPostRequest(
                 &arqReq,
@@ -253,7 +254,7 @@ void load_character_resources(void)
         {
             file_open(sp8[i], &file);
             fileSize = OSRoundUp32B(file_size(&file));
-            compressed = OSAllocFromHeap(memHeap5, fileSize);
+            compressed = OSAllocFromHeap(mainHeap, fileSize);
             if (compressed == NULL)
                 OSPanic("mot_ape.c", 311, "cannot OSAlloc");
             file_read(&file, compressed, fileSize, 0);
@@ -262,7 +263,7 @@ void load_character_resources(void)
             lbl_802B47C0[i] = aramTop;
             lzs_decompress(compressed, work);
             DCStoreRange(work, lbl_802B47B0[i]);
-            OSFreeToHeap(memHeap5, compressed);
+            OSFreeToHeap(mainHeap, compressed);
             transferInProgress = 1;
             ARQPostRequest(
                 &arqReq,
@@ -322,12 +323,12 @@ struct Struct8003699C_child *g_create_joints_probably(struct Struct80034B50_chil
     if (gameSubmode == SMD_MINI_BILLIARDS_INIT || gameSubmode == SMD_MINI_BILLIARDS_MAIN)
     {
         lbl_802F2074 = 2;
-        r30 = OSAllocFromHeap(memHeap3, sizeof(*r30));
+        r30 = OSAllocFromHeap(backgroundHeap, sizeof(*r30));
     }
     else
     {
         lbl_802F2074 = 0;
-        r30 = OSAllocFromHeap(memHeap1, sizeof(*r30));
+        r30 = OSAllocFromHeap(subHeap, sizeof(*r30));
     }
     if (r30 == NULL)
         OSPanic("mot_ape.c", 396, "rob init Heap Over.\n");
@@ -567,12 +568,12 @@ void func_8008A124(struct Struct80034F5C_1 *r29, float b)
             sp20.x = r29->unk1A4.x + (r29->unk208[0][3] - r29->unk1A4.x) * b;
             sp20.y = r29->unk1A4.y + (r29->unk208[1][3] - r29->unk1A4.y) * b;
             sp20.z = r29->unk1A4.z + (r29->unk208[2][3] - r29->unk1A4.z) * b;
-            mathutil_set_mtxA_translate(&sp20);
+            mathutil_mtxA_set_translate(&sp20);
         }
-        mathutil_get_mtxA_translate_alt(&sp20);
+        mathutil_mtxA_get_translate_alt(&sp20);
         mathutil_mtxA_from_quat(&sp10);
         mathutil_mtxA_normalize_basis();
-        mathutil_set_mtxA_translate(&sp20);
+        mathutil_mtxA_set_translate(&sp20);
         mathutil_mtxA_to_mtx(r29->unk208);
         r29++;
     }
@@ -663,12 +664,12 @@ void func_8008A3A4(struct Struct80034F5C_1 *r28, struct Struct80034F5C_1 *r29, f
             sp30.y = r28->unk208[1][3];
             sp30.z = r28->unk208[2][3];
             mathutil_scale_ray(&sp14, &sp30, &sp30, c);
-            mathutil_set_mtxA_translate(&sp30);
+            mathutil_mtxA_set_translate(&sp30);
         }
-        mathutil_get_mtxA_translate_alt(&sp30);
+        mathutil_mtxA_get_translate_alt(&sp30);
         mathutil_mtxA_from_quat(&sp20);
         mathutil_mtxA_normalize_basis();
-        mathutil_set_mtxA_translate(&sp30);
+        mathutil_mtxA_set_translate(&sp30);
         mathutil_mtxA_to_mtx(r28->unk208);
         r28++;
         r29++;
@@ -831,9 +832,9 @@ void g_free_character_graphics(int chara, int lod)
     if (lbl_802F208C != 0)
         lbl_802F208C--;
     if (lbl_802F2094[index] != 0)
-        oldHeap = OSSetCurrentHeap(memHeap4);
+        oldHeap = OSSetCurrentHeap(charaHeap);
     else
-        oldHeap = OSSetCurrentHeap(memHeap4);
+        oldHeap = OSSetCurrentHeap(charaHeap);
     if (charaTPLs[index] != NULL || charaGMAs[index] != NULL)
     {
         VISetNextFrameBuffer(gfxBufferInfo->currFrameBuf);
@@ -866,15 +867,15 @@ void g_free_character_graphics(int chara, int lod)
     OSSetCurrentHeap(oldHeap);
 }
 
-void *g_find_some_mesh_with_red(struct GMAModelHeader *model)
+void *g_find_some_mesh_with_red(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh;
+    struct GMAShape *mesh;
     int i;
 
     mesh = (void *)((u8 *)model + model->headerSize);
-    for (i = 0; i < model->numLayer1Meshes; i++)
+    for (i = 0; i < model->opaqueShapeCount; i++)
     {
-        if (mesh->unk4.r == 0xFF)
+        if (mesh->g_color1.r == 0xFF)
             return mesh;
         mesh = next_mesh(mesh);
     }
@@ -906,7 +907,7 @@ void g_load_character_graphics(int chara, int lod)
         if (inSelInit | inBilliards)
         {
             lbl_802F2094[index] = 1;
-            oldHeap = OSSetCurrentHeap(memHeap4);
+            oldHeap = OSSetCurrentHeap(charaHeap);
         }
         else
             OSPanic("mot_ape.c", 1314, "APE Allocate limit over!!\n");
@@ -914,7 +915,7 @@ void g_load_character_graphics(int chara, int lod)
     else
     {
         lbl_802F2094[index] = 0;
-        oldHeap = OSSetCurrentHeap(memHeap4);
+        oldHeap = OSSetCurrentHeap(charaHeap);
     }
 
     if (lbl_802B47C0[chara] != 0)
@@ -929,7 +930,7 @@ void g_load_character_graphics(int chara, int lod)
     OSSetCurrentHeap(oldHeap);
     if (chara == 1)
     {
-        struct GMAModelHeader *model;
+        struct GMAModel *model;
         int i;
 
         for (i = 0; i < 2; i++)
@@ -942,8 +943,8 @@ void g_load_character_graphics(int chara, int lod)
     }
     else
     {
-        struct GMAModelHeader *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].modelOffset;
-        struct GMAModelHeader *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].modelOffset;
+        struct GMAModel *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].modelOffset;
+        struct GMAModel *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].modelOffset;
 
         func_8008CBD0(chara, lod, model1, model2);
     }
@@ -956,17 +957,17 @@ struct Struct8008AE2C
     u32 unkC;
 };
 
-struct GMAMeshHeader *next_mesh(struct GMAMeshHeader *mesh)
+struct GMAShape *next_mesh(struct GMAShape *mesh)
 {
     int i;
     u8 *ret = (u8 *)mesh + 0x60;
 
     for (i = 0; i < 2; i++)
     {
-        if (mesh->unk13 & (1 << i))
+        if (mesh->dispListFlags & (1 << i))
             ret += mesh->dispListSizes[i];
     }
-    if (mesh->unk13 & ((1 << 2)|(1 << 3)))
+    if (mesh->dispListFlags & ((1 << 2)|(1 << 3)))
     {
         struct Struct8008AE2C *r6 = (void *)ret;
 
@@ -974,7 +975,7 @@ struct GMAMeshHeader *next_mesh(struct GMAMeshHeader *mesh)
         ret += r6->unk8;
         ret += r6->unkC;
     }
-    return (struct GMAMeshHeader *)ret;
+    return (struct GMAShape *)ret;
 }
 
 void mot_ape_init(void)
@@ -1039,20 +1040,20 @@ void g_ape_free(struct Ape *ape)
     func_8008D29C(ape->unk5C);
     if (lbl_802F2074 == 2)
     {
-        OSFreeToHeap(memHeap3, ape->unk0);
-        OSFreeToHeap(memHeap3, ape->unk4);
+        OSFreeToHeap(backgroundHeap, ape->unk0);
+        OSFreeToHeap(backgroundHeap, ape->unk4);
     }
     else if (lbl_802F2074 == 1)
     {
-        OSFreeToHeap(memHeap5, ape->unk0);
-        OSFreeToHeap(memHeap5, ape->unk4);
+        OSFreeToHeap(mainHeap, ape->unk0);
+        OSFreeToHeap(mainHeap, ape->unk4);
     }
     else
     {
-        OSFreeToHeap(memHeap1, ape->unk0);
-        OSFreeToHeap(memHeap1, ape->unk4);
+        OSFreeToHeap(subHeap, ape->unk0);
+        OSFreeToHeap(subHeap, ape->unk4);
     }
-    OSFreeToHeap(memHeap1, ape->unk98);
+    OSFreeToHeap(subHeap, ape->unk98);
     apeStructPtrs[--nextApeIndex] = ape;
     g_free_character_graphics(ape->charaId, (ape->unk90 >= 2));
 }
@@ -1151,7 +1152,7 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     r24 = g_create_joints_probably(r27);
     r31 = g_create_joints_probably(r27);
     r26->unk94 = 5;
-    r26->unk98 = OSAllocFromHeap(memHeap1, r26->unk94 * 0x24);
+    r26->unk98 = OSAllocFromHeap(subHeap, r26->unk94 * 0x24);
     if (r26->unk98 == NULL)
         OSPanic("mot_ape.c", 0x5D6, "cannot OSAlloc\n");
     //lbl_8008B4BC
@@ -1672,7 +1673,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
     u32 index = (ape->unk90 >> 1) + (ape->charaId * 2);
     struct ApeGfxFileInfo *r27 = &apeGfxFileInfo[index];
     struct Struct8008C674 *r29 = (void *)r27->facePartInfo[ape->unk90 & 1];
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     struct Struct802B39C0_B0_child *sp18[10];
     struct Struct802B39C0_B0_child *r6;
     struct Struct802B39C0_B0_child **ptr;
@@ -1693,7 +1694,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
         struct Struct80034F5C_1 *r22 = &b[r29->unk2];
-        struct GMAModelHeader *model = charaGMAs[index]->modelEntries[r29->unk0].modelOffset;
+        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].modelOffset;
 
         if (model != NULL)
         {
@@ -1704,7 +1705,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
             if (r29->unk10 != NULL)
                 r29->unk10(ape, r29, *ptr);
             else
-                g_avdisp_draw_model_2(model);
+                avdisp_draw_model_unculled_sort_none(model);
             mathutil_mtxA_pop();
         }
     }
@@ -1732,7 +1733,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
 
     model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].modelOffset;
     func_8008CCB8(ape, model);
-    g_avdisp_draw_model_2(model);
+    avdisp_draw_model_unculled_sort_none(model);
 }
 
 struct Struct8008C924
@@ -1807,7 +1808,7 @@ void func_8008CAAC(struct Ape *ape, float b)
     sp10.x = ape->unk0->unk81A8[0].unk208[0][3];
     sp10.y = ape->unk0->unk81A8[0].unk208[1][3];
     sp10.z = ape->unk0->unk81A8[0].unk208[2][3];
-    if (g_frustum_test_maybe_2(&sp10, ape->unk58 * 0.5f, ape->unk58) != 0)
+    if (g_test_scaled_sphere_in_frustum(&sp10, ape->unk58 * 0.5f, ape->unk58) != 0)
     {
         apeDummyFuncs[r30](ape);
         g_draw_ape_transformed(ape, r29);
@@ -1834,12 +1835,12 @@ u16 *lbl_801C7DB0[] =
     lbl_801C7D98,
 };
 
-struct GMAMaterial *find_material(struct GMAModelHeader *model, u32 id)
+struct GMATevLayer *find_material(struct GMAModel *model, u32 id)
 {
-    struct GMAMaterial *materials = model->materials;
+    struct GMATevLayer *materials = model->tevLayers;
     int i;
 
-    for (i = 0; i < model->numMaterials; i++)
+    for (i = 0; i < model->tevLayerCount; i++)
     {
         if (id == materials[i].unk4)
         {
@@ -1853,10 +1854,10 @@ struct GMAMaterial *find_material(struct GMAModelHeader *model, u32 id)
 
 FORCE_BSS_ORDER(lbl_802B4B20)
 
-void func_8008CBD0(int charaId, int lod, struct GMAModelHeader *model1, struct GMAModelHeader *model2)
+void func_8008CBD0(int charaId, int lod, struct GMAModel *model1, struct GMAModel *model2)
 {
     int i;
-    struct GMAModelHeader *models[2];
+    struct GMAModel *models[2];
     u8 dummy[4];
     u32 var = charaId * 2;
 
@@ -1864,20 +1865,20 @@ void func_8008CBD0(int charaId, int lod, struct GMAModelHeader *model1, struct G
     models[1] = model2;
     for (i = 0; i < 2; i++)
     {
-        struct GMAMaterial *mtrl = find_material(models[i], lbl_801C7DB0[var + lod][0]);
+        struct GMATevLayer *mtrl = find_material(models[i], lbl_801C7DB0[var + lod][0]);
 
         lbl_802B4DF0[var + i] = mtrl->texObj;
         lbl_802B4800[var + i] = mtrl;
     }
 }
 
-void func_8008CCB8(struct Ape *ape, struct GMAModelHeader *unused)
+void func_8008CCB8(struct Ape *ape, struct GMAModel *unused)
 {
     u32 index = (ape->charaId * 2) + (ape->unk90 & 1);
 
     if (lbl_802B4800[index] != NULL)
     {
-        struct GMAMaterial *mtrl = lbl_802B4800[index];
+        struct GMATevLayer *mtrl = lbl_802B4800[index];
         u16 *r7 = lbl_801C7DB0[(ape->charaId * 2) + (ape->unk90 >> 1)];
 
         if (ape->colorId != 0)
@@ -1896,7 +1897,7 @@ void func_8008CCB8(struct Ape *ape, struct GMAModelHeader *unused)
             {0x4C, 0xB2, 0x4C, 0xFF},  // green
         };
 
-        lbl_802B47F0[ape->unk90]->unk4 = colors[ape->colorId];
-        lbl_802B47F0[ape->unk90]->unk8 = colors[ape->colorId];
+        lbl_802B47F0[ape->unk90]->g_color1 = colors[ape->colorId];
+        lbl_802B47F0[ape->unk90]->g_color2 = colors[ape->colorId];
     }
 }

@@ -6,6 +6,7 @@
 #include <dolphin/GXStruct.h>
 
 #include "types.h"
+#include "gma.h"
 
 /*               id                    fname        oldfname song backdropColor (RGBA)*/
 #define BACKGROUND_LIST \
@@ -141,9 +142,9 @@ struct BGStormWork_child
 struct BGStormWork
 {
     s32 unk0;
-    struct GMAModelHeader *rain00Model;
-    struct GMAModelHeader *rain01Model;
-    struct GMAModelHeader *rain02Model;
+    struct GMAModel *rain00Model;
+    struct GMAModel *rain01Model;
+    struct GMAModel *rain02Model;
     Vec unk10;
     Vec unk1C;
     struct BGStormWork_child unk28[64];
@@ -165,8 +166,8 @@ struct BGBonusWork
 {
     s32 unk0;
     struct StageBgModel *unk4;
-    struct GMAModelHeader *shotstarModel;
-    struct GMAModelHeader *starlightModel;
+    struct GMAModel *shotstarModel;
+    struct GMAModel *starlightModel;
     s32 starpointsCount;
     struct BGBonusStarpoint starpoints[64];
     GXTexObj *lightmapTex;
@@ -199,7 +200,7 @@ void bg_e3_main(void);
 void bg_e3_finish(void);
 void bg_e3_draw(void);
 void bg_e3_interact(int);
-void g_animate_background_parts(struct StageBgModel *, int, float);
+void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds);
 void g_draw_bg_models();
 void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b);
 void bg_night_init(void);

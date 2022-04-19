@@ -1588,8 +1588,8 @@ lbl_800672BC:
 /* 800672C8 000631E8  7C 08 03 A6 */	mtlr r0
 /* 800672CC 000631EC  4E 80 00 20 */	blr
 
-.global func_800672D0
-func_800672D0:
+.global is_bonus_stage
+is_bonus_stage:
 /* 800672D0 000631F0  3C 80 80 11 */	lis r4, lbl_801179E8@ha
 /* 800672D4 000631F4  38 04 79 E8 */	addi r0, r4, lbl_801179E8@l
 /* 800672D8 000631F8  7C 05 03 78 */	mr r5, r0
@@ -1880,8 +1880,8 @@ func_80067664:
 /* 8006766C 0006358C  38 63 00 05 */	addi r3, r3, 5
 /* 80067670 00063590  4E 80 00 20 */	blr
 
-.global func_80067674
-func_80067674:
+.global get_num_continues
+get_num_continues:
 /* 80067674 00063594  7C 08 02 A6 */	mflr r0
 /* 80067678 00063598  90 01 00 04 */	stw r0, 4(r1)
 /* 8006767C 0006359C  94 21 FF F8 */	stwu r1, -8(r1)

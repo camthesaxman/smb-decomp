@@ -6,6 +6,7 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "tevutil.h"
 
 struct FogParams
 {
@@ -116,7 +117,7 @@ void g_init_bg_fog_params(void)
     {
         if (params->bgId == backgroundInfo.bgId)
         {
-            fogInfo.unkF = 1;
+            fogInfo.enabled = 1;
             fogInfo.unk0 = params->unk1;
             fogInfo.unk4 = params->unk4;
             fogInfo.unk8 = params->unk8;
@@ -128,7 +129,7 @@ void g_init_bg_fog_params(void)
         params++;
     }
 
-    fogInfo.unkF = 0;
+    fogInfo.enabled = 0;
     fogInfo.unk0 = 5;
     fogInfo.unk4 = 0.0f;
     fogInfo.unk8 = 100.0f;
@@ -139,12 +140,12 @@ void g_init_bg_fog_params(void)
 
 void func_8009AB5C(void)
 {
-    func_8008F878(fogInfo.unkF);
-    func_80033B50(fogInfo.unkF);
-    if (fogInfo.unkF != 0)
+    avdisp_enable_fog(fogInfo.enabled);
+    func_80033B50(fogInfo.enabled);
+    if (fogInfo.enabled != 0)
     {
-        func_8008F880(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
-        func_8008F890(fogInfo.r, fogInfo.g, fogInfo.b);
+        avdisp_set_fog_params(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
+        avdisp_set_fog_color(fogInfo.r, fogInfo.g, fogInfo.b);
         func_80033B58(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
         g_nl2ngc_set_some_other_color(fogInfo.r, fogInfo.g, fogInfo.b);
     }
@@ -152,14 +153,14 @@ void func_8009AB5C(void)
 
 void func_8009AC0C(s8 a)
 {
-    func_8008F878(a);
+    avdisp_enable_fog(a);
     func_80033B50(a);
 }
 
 void func_8009AC44(void)
 {
-    func_8008F878(fogInfo.unkF);
-    func_80033B50(fogInfo.unkF);
+    avdisp_enable_fog(fogInfo.enabled);
+    func_80033B50(fogInfo.enabled);
 }
 
 void func_8009AC8C(void)
@@ -169,19 +170,19 @@ void func_8009AC8C(void)
     sp10.r = fogInfo.r;
     sp10.g = fogInfo.g;
     sp10.b = fogInfo.b;
-    if (fogInfo.unkF != 0)
-        func_8009E398(fogInfo.unk0, sp10, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f);
+    if (fogInfo.enabled != 0)
+        GXSetFog_cached(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f, sp10);
     else
-        func_8009E398(0, sp10, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, sp10);
 }
 
 struct LineInfo
 {
     u8 lineWidth;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
+    GXBlendMode blendMode;
+    GXBlendFactor blendSrcFactor;
+    GXBlendFactor blendDstFactor;
+    GXLogicOp blendLogicOp;
     GXTexOffset texOffset;
     u8 filler18[4];
 };
@@ -195,10 +196,10 @@ void gxutil_set_line_width(int width)
 
 void g_gxutil_set_some_line_params(int a, int b, int c, int d)
 {
-    lineInfo.unk4 = a;
-    lineInfo.unk8 = b;
-    lineInfo.unkC = c;
-    lineInfo.unk10 = d;
+    lineInfo.blendMode = a;
+    lineInfo.blendSrcFactor = b;
+    lineInfo.blendDstFactor = c;
+    lineInfo.blendLogicOp = d;
 }
 
 void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)
@@ -359,7 +360,7 @@ void prepare_for_drawing_lines(void)
         zMode->texOffsets = lineInfo.texOffset;
     }
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
-    func_8009E110(lineInfo.unk4, lineInfo.unk8, lineInfo.unkC, lineInfo.unk10);
+    GXSetBlendMode_cached(lineInfo.blendMode, lineInfo.blendSrcFactor, lineInfo.blendDstFactor, lineInfo.blendLogicOp);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -368,10 +369,10 @@ void prepare_for_drawing_lines(void)
         GX_LIGHT_NULL,  // light_mask
         GX_DF_CLAMP,  // diff_fn
         GX_AF_SPOT);  // attn_fn
-    func_8009EFF4(0, 0xFF, 0xFF, 4);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
     func_8009EA30(0, 4);
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009F2C8(1);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(0);
     GXSetNumIndStages(0);
     GXSetNumChans(1);

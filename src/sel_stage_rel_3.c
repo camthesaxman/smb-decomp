@@ -15,7 +15,7 @@
 
 void sel_stage_draw(void)
 {
-    struct StageCollHdr *r27;
+    struct StageAnimGroup *r27;
     int i;
 
     func_80054FF0();
@@ -27,11 +27,11 @@ void sel_stage_draw(void)
     g_nl2ngc_set_scale(0.6f);
     g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
     
-    for (i = 0, r27 = decodedStageLzPtr->collHdrs; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
+    for (i = 0, r27 = decodedStageLzPtr->animGroups; i < decodedStageLzPtr->animGroupCount; i++, r27++)
     {
-        Vec *r25 = &r27->unk40->unk0;
+        Vec *r25 = &r27->goals->pos;
         int j;
-        for (j = 0; j < r27->unk3C; j++)
+        for (j = 0; j < r27->goalCount; j++)
         {
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate(r25);

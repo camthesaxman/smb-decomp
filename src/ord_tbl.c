@@ -55,19 +55,19 @@ void ord_tbl_add_depth_offset(float offset)
  * with a matrix that converts 'pos' to view space. */
 struct OrdTblNode *ord_tbl_get_entry_for_pos(Point3d *pos)
 {
-    Vec viewSpace;
+    Point3d pos_rt_view;
     float minDepth;
     float depth;
     int index;
     struct OrdTblNode *entry;
 
     // Convert the point into view space coordinates
-    mathutil_mtxA_tf_point(pos, &viewSpace);
+    mathutil_mtxA_tf_point(pos, &pos_rt_view);
     minDepth = lbl_802F1B3C->minDepth;
-    viewSpace.z = -viewSpace.z;
-    if (viewSpace.z < minDepth)
-        viewSpace.z = minDepth;
-    depth = mathutil_vec_mag(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
+    pos_rt_view.z = -pos_rt_view.z;
+    if (pos_rt_view.z < minDepth)
+        pos_rt_view.z = minDepth;
+    depth = mathutil_vec_len(&pos_rt_view) + lbl_802F1B3C->depthOffset - minDepth;
 
     // Convert the depth to an index into the table
     if (depth < 0.0f)
@@ -91,19 +91,19 @@ struct OrdTblNode *ord_tbl_get_entry_for_pos(Point3d *pos)
  * is added to the computed index. */
 struct OrdTblNode *ord_tbl_get_entry_for_pos_offset_index(Point3d *pos, int indexOffset)
 {
-    Vec viewSpace;
+    Point3d pos_rt_view;
     float minDepth;
     float depth;
     int index;
     struct OrdTblNode *entry;
 
     // Convert the point into view space coordinates
-    mathutil_mtxA_tf_point(pos, &viewSpace);
+    mathutil_mtxA_tf_point(pos, &pos_rt_view);
     minDepth = lbl_802F1B3C->minDepth;
-    viewSpace.z = -viewSpace.z;
-    if (viewSpace.z < minDepth)
-        viewSpace.z = minDepth;
-    depth = mathutil_vec_mag(&viewSpace) + lbl_802F1B3C->depthOffset - minDepth;
+    pos_rt_view.z = -pos_rt_view.z;
+    if (pos_rt_view.z < minDepth)
+        pos_rt_view.z = minDepth;
+    depth = mathutil_vec_len(&pos_rt_view) + lbl_802F1B3C->depthOffset - minDepth;
 
     // Convert the depth to an index into the table
     if (depth < 0.0f)
