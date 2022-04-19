@@ -1898,7 +1898,7 @@ lbl_8004E60C:
 /* 8004E6A0 0004A5C0  EC 42 07 B2 */	fmuls f2, f2, f30
 /* 8004E6A4 0004A5C4  C0 82 90 E8 */	lfs f4, lbl_802F38E8@sda21(r2)
 /* 8004E6A8 0004A5C8  EC 60 07 B2 */	fmuls f3, f0, f30
-/* 8004E6AC 0004A5CC  48 04 10 69 */	bl g_avdisp_set_some_color_1
+/* 8004E6AC 0004A5CC  48 04 10 69 */	bl avdisp_set_post_multiply_color
 /* 8004E6B0 0004A5D0  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 8004E6B4 0004A5D4  80 63 00 08 */	lwz r3, 8(r3)
 /* 8004E6B8 0004A5D8  80 63 02 D0 */	lwz r3, 0x2d0(r3)
@@ -5386,7 +5386,7 @@ lbl_800519F4:
 /* 80051A5C 0004D97C  C0 82 90 E8 */	lfs f4, lbl_802F38E8@sda21(r2)
 /* 80051A60 0004D980  FC 40 E8 90 */	fmr f2, f29
 /* 80051A64 0004D984  FC 60 E8 90 */	fmr f3, f29
-/* 80051A68 0004D988  48 03 DC AD */	bl g_avdisp_set_some_color_1
+/* 80051A68 0004D988  48 03 DC AD */	bl avdisp_set_post_multiply_color
 /* 80051A6C 0004D98C  7F C3 F3 78 */	mr r3, r30
 /* 80051A70 0004D990  48 03 C9 C9 */	bl avdisp_draw_model_culled_sort_translucent
 /* 80051A74 0004D994  4B FB C9 49 */	bl func_8000E3BC
@@ -5428,7 +5428,7 @@ lbl_80051A88:
 /* 80051B00 0004DA20  C0 22 94 04 */	lfs f1, lbl_802F3C04@sda21(r2)
 /* 80051B04 0004DA24  C0 42 94 08 */	lfs f2, lbl_802F3C08@sda21(r2)
 /* 80051B08 0004DA28  C0 62 94 0C */	lfs f3, lbl_802F3C0C@sda21(r2)
-/* 80051B0C 0004DA2C  48 03 DC 09 */	bl g_avdisp_set_some_color_1
+/* 80051B0C 0004DA2C  48 03 DC 09 */	bl avdisp_set_post_multiply_color
 /* 80051B10 0004DA30  48 00 00 20 */	b lbl_80051B30
 lbl_80051B14:
 /* 80051B14 0004DA34  C0 22 94 04 */	lfs f1, lbl_802F3C04@sda21(r2)
@@ -5437,7 +5437,7 @@ lbl_80051B14:
 /* 80051B20 0004DA40  EC 21 07 B2 */	fmuls f1, f1, f30
 /* 80051B24 0004DA44  EC 42 07 B2 */	fmuls f2, f2, f30
 /* 80051B28 0004DA48  EC 60 07 B2 */	fmuls f3, f0, f30
-/* 80051B2C 0004DA4C  48 03 DB E9 */	bl g_avdisp_set_some_color_1
+/* 80051B2C 0004DA4C  48 03 DB E9 */	bl avdisp_set_post_multiply_color
 lbl_80051B30:
 /* 80051B30 0004DA50  38 60 00 01 */	li r3, 1
 /* 80051B34 0004DA54  38 80 00 03 */	li r4, 3
@@ -6689,7 +6689,7 @@ lbl_80052D54:
 /* 80052D98 0004ECB8  FC 20 E8 90 */	fmr f1, f29
 /* 80052D9C 0004ECBC  FC 40 E8 90 */	fmr f2, f29
 /* 80052DA0 0004ECC0  FC 60 E8 90 */	fmr f3, f29
-/* 80052DA4 0004ECC4  48 03 C9 71 */	bl g_avdisp_set_some_color_1
+/* 80052DA4 0004ECC4  48 03 C9 71 */	bl avdisp_set_post_multiply_color
 lbl_80052DA8:
 /* 80052DA8 0004ECC8  C0 22 91 38 */	lfs f1, lbl_802F3938@sda21(r2)
 /* 80052DAC 0004ECCC  C0 1F 00 24 */	lfs f0, 0x24(r31)
@@ -6738,7 +6738,7 @@ lbl_80052DA8:
 /* 80052E58 0004ED78  FC 20 E8 90 */	fmr f1, f29
 /* 80052E5C 0004ED7C  FC 40 E8 90 */	fmr f2, f29
 /* 80052E60 0004ED80  FC 60 E8 90 */	fmr f3, f29
-/* 80052E64 0004ED84  48 03 C8 B1 */	bl g_avdisp_set_some_color_1
+/* 80052E64 0004ED84  48 03 C8 B1 */	bl avdisp_set_post_multiply_color
 lbl_80052E68:
 /* 80052E68 0004ED88  FC 20 F0 90 */	fmr f1, f30
 /* 80052E6C 0004ED8C  48 03 B5 B5 */	bl g_avdisp_set_model_scale
@@ -7092,7 +7092,7 @@ lbl_800532B4:
 /* 800533A8 0004F2C8  EC 21 00 32 */	fmuls f1, f1, f0
 /* 800533AC 0004F2CC  FC 40 08 90 */	fmr f2, f1
 /* 800533B0 0004F2D0  FC 60 08 90 */	fmr f3, f1
-/* 800533B4 0004F2D4  48 03 C3 61 */	bl g_avdisp_set_some_color_1
+/* 800533B4 0004F2D4  48 03 C3 61 */	bl avdisp_set_post_multiply_color
 /* 800533B8 0004F2D8  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800533BC 0004F2DC  38 80 00 00 */	li r4, 0
 /* 800533C0 0004F2E0  48 09 11 C1 */	bl GXLoadPosMtxImm
@@ -8754,7 +8754,7 @@ lbl_80054BB0:
 /* 80054C34 00050B54  FC 40 08 90 */	fmr f2, f1
 /* 80054C38 00050B58  FC 60 08 90 */	fmr f3, f1
 /* 80054C3C 00050B5C  FC 80 08 90 */	fmr f4, f1
-/* 80054C40 00050B60  48 03 AA D5 */	bl g_avdisp_set_some_color_1
+/* 80054C40 00050B60  48 03 AA D5 */	bl avdisp_set_post_multiply_color
 /* 80054C44 00050B64  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 80054C48 00050B68  4B FB 2A 95 */	bl mathutil_mtxA_from_mtxB_translate
 /* 80054C4C 00050B6C  80 1F 00 10 */	lwz r0, 0x10(r31)
@@ -8781,7 +8781,7 @@ lbl_80054BB0:
 /* 80054CA0 00050BC0  FC 40 08 90 */	fmr f2, f1
 /* 80054CA4 00050BC4  FC 60 08 90 */	fmr f3, f1
 /* 80054CA8 00050BC8  FC 80 08 90 */	fmr f4, f1
-/* 80054CAC 00050BCC  48 03 AA 69 */	bl g_avdisp_set_some_color_1
+/* 80054CAC 00050BCC  48 03 AA 69 */	bl avdisp_set_post_multiply_color
 /* 80054CB0 00050BD0  38 60 00 01 */	li r3, 1
 /* 80054CB4 00050BD4  38 80 00 03 */	li r4, 3
 /* 80054CB8 00050BD8  38 A0 00 01 */	li r5, 1

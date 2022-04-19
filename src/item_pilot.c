@@ -332,12 +332,12 @@ void item_pilot_draw(struct Item *item)
                 break;
             }
             f30 = 1.0 + (((unpausedFrameCounter + item->unk2 * 10) % 60) * 0.033333333333333333);
-            g_avdisp_set_some_color_1(f1, f2, f3, 1.0f);
+            avdisp_set_post_multiply_color(f1, f2, f3, 1.0f);
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].modelOffset);
-            g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
+            avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 }

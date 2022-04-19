@@ -411,7 +411,7 @@ lbl_80090B00:
 /* 80090B10 0008CA30  7E E4 BB 78 */	mr r4, r23
 /* 80090B14 0008CA34  7E C5 B3 78 */	mr r5, r22
 /* 80090B18 0008CA38  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090B1C 0008CA3C  48 00 09 E5 */	bl diffuse_layer_build_cached
+/* 80090B1C 0008CA3C  48 00 09 E5 */	bl build_diffuse_layer_cached
 /* 80090B20 0008CA40  3A A0 00 00 */	li r21, 0
 lbl_80090B24:
 /* 80090B24 0008CA44  38 61 00 7C */	addi r3, r1, 0x7c
@@ -426,7 +426,7 @@ lbl_80090B30:
 /* 80090B44 0008CA64  7E E4 BB 78 */	mr r4, r23
 /* 80090B48 0008CA68  7E C5 B3 78 */	mr r5, r22
 /* 80090B4C 0008CA6C  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090B50 0008CA70  48 00 0B 2D */	bl alpha_blend_layer_build_cached
+/* 80090B50 0008CA70  48 00 0B 2D */	bl build_alpha_blend_layer_cached
 /* 80090B54 0008CA74  3A A0 00 00 */	li r21, 0
 lbl_80090B58:
 /* 80090B58 0008CA78  38 61 00 7C */	addi r3, r1, 0x7c
@@ -441,7 +441,7 @@ lbl_80090B64:
 /* 80090B78 0008CA98  7E E4 BB 78 */	mr r4, r23
 /* 80090B7C 0008CA9C  7E C5 B3 78 */	mr r5, r22
 /* 80090B80 0008CAA0  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090B84 0008CAA4  48 00 11 25 */	bl unk3_layer_build_cached
+/* 80090B84 0008CAA4  48 00 11 25 */	bl build_unk3_layer_cached
 /* 80090B88 0008CAA8  3A A0 00 00 */	li r21, 0
 lbl_80090B8C:
 /* 80090B8C 0008CAAC  38 61 00 7C */	addi r3, r1, 0x7c
@@ -483,7 +483,7 @@ lbl_80090C08:
 /* 80090C10 0008CB30  7E E4 BB 78 */	mr r4, r23
 /* 80090C14 0008CB34  7E C5 B3 78 */	mr r5, r22
 /* 80090C18 0008CB38  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090C1C 0008CB3C  48 00 0C 5D */	bl view_specular_layer_build_cached
+/* 80090C1C 0008CB3C  48 00 0C 5D */	bl build_view_specular_layer_cached
 /* 80090C20 0008CB40  3A A0 00 00 */	li r21, 0
 lbl_80090C24:
 /* 80090C24 0008CB44  38 61 00 7C */	addi r3, r1, 0x7c
@@ -555,7 +555,7 @@ lbl_80090D18:
 /* 80090D20 0008CC40  7E E4 BB 78 */	mr r4, r23
 /* 80090D24 0008CC44  7E C5 B3 78 */	mr r5, r22
 /* 80090D28 0008CC48  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090D2C 0008CC4C  48 00 0D F1 */	bl world_specular_layer_build_cached
+/* 80090D2C 0008CC4C  48 00 0D F1 */	bl build_world_specular_layer_cached
 /* 80090D30 0008CC50  3A A0 00 00 */	li r21, 0
 lbl_80090D34:
 /* 80090D34 0008CC54  38 61 00 7C */	addi r3, r1, 0x7c
@@ -613,7 +613,7 @@ lbl_80090DDC:
 /* 80090DE8 0008CD08  7E C5 B3 78 */	mr r5, r22
 /* 80090DEC 0008CD0C  7E 66 9B 78 */	mr r6, r19
 /* 80090DF0 0008CD10  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090DF4 0008CD14  48 00 06 11 */	bl diffuse_layer_build_uncached
+/* 80090DF4 0008CD14  48 00 06 11 */	bl build_diffuse_layer_uncached
 /* 80090DF8 0008CD18  38 61 00 7C */	addi r3, r1, 0x7c
 /* 80090DFC 0008CD1C  48 00 07 69 */	bl diffuse_layer_next
 /* 80090E00 0008CD20  48 00 01 E8 */	b lbl_80090FE8
@@ -625,7 +625,7 @@ lbl_80090E04:
 /* 80090E14 0008CD34  7E C5 B3 78 */	mr r5, r22
 /* 80090E18 0008CD38  7E 66 9B 78 */	mr r6, r19
 /* 80090E1C 0008CD3C  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090E20 0008CD40  48 00 07 61 */	bl alpha_blend_layer_build_uncached
+/* 80090E20 0008CD40  48 00 07 61 */	bl build_alpha_blend_layer_uncached
 /* 80090E24 0008CD44  38 61 00 7C */	addi r3, r1, 0x7c
 /* 80090E28 0008CD48  48 00 08 B9 */	bl alpha_blend_layer_next
 /* 80090E2C 0008CD4C  48 00 01 BC */	b lbl_80090FE8
@@ -635,7 +635,7 @@ lbl_80090E30:
 /* 80090E38 0008CD58  7E C5 B3 78 */	mr r5, r22
 /* 80090E3C 0008CD5C  7E 66 9B 78 */	mr r6, r19
 /* 80090E40 0008CD60  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090E44 0008CD64  48 00 0D 61 */	bl unk3_layer_build_uncached
+/* 80090E44 0008CD64  48 00 0D 61 */	bl build_unk3_layer_uncached
 /* 80090E48 0008CD68  38 61 00 7C */	addi r3, r1, 0x7c
 /* 80090E4C 0008CD6C  48 00 0E C1 */	bl unk3_layer_next
 /* 80090E50 0008CD70  48 00 01 98 */	b lbl_80090FE8
@@ -674,7 +674,7 @@ lbl_80090EC4:
 /* 80090EC8 0008CDE8  7E C5 B3 78 */	mr r5, r22
 /* 80090ECC 0008CDEC  7E 66 9B 78 */	mr r6, r19
 /* 80090ED0 0008CDF0  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090ED4 0008CDF4  48 00 08 29 */	bl view_specular_layer_build_uncached
+/* 80090ED4 0008CDF4  48 00 08 29 */	bl build_view_specular_layer_uncached
 /* 80090ED8 0008CDF8  38 61 00 7C */	addi r3, r1, 0x7c
 /* 80090EDC 0008CDFC  48 00 0A 01 */	bl view_specular_layer_next
 /* 80090EE0 0008CE00  48 00 01 08 */	b lbl_80090FE8
@@ -743,7 +743,7 @@ lbl_80090FCC:
 /* 80090FD0 0008CEF0  7E C5 B3 78 */	mr r5, r22
 /* 80090FD4 0008CEF4  7E 66 9B 78 */	mr r6, r19
 /* 80090FD8 0008CEF8  38 61 00 7C */	addi r3, r1, 0x7c
-/* 80090FDC 0008CEFC  48 00 09 1D */	bl world_specular_layer_build_uncached
+/* 80090FDC 0008CEFC  48 00 09 1D */	bl build_world_specular_layer_uncached
 /* 80090FE0 0008CF00  38 61 00 7C */	addi r3, r1, 0x7c
 /* 80090FE4 0008CF04  48 00 0B A5 */	bl world_specular_layer_next
 lbl_80090FE8:
@@ -827,7 +827,7 @@ lbl_800910F8:
 /* 80091110 0008D030  7C 00 18 00 */	cmpw r0, r3
 /* 80091114 0008D034  41 82 00 0C */	beq lbl_80091120
 /* 80091118 0008D038  90 64 00 00 */	stw r3, 0(r4)
-/* 8009111C 0008D03C  48 00 01 61 */	bl post_multiply_tev_stage_build
+/* 8009111C 0008D03C  48 00 01 61 */	bl build_post_multiply_tev_stage
 lbl_80091120:
 /* 80091120 0008D040  80 61 00 7C */	lwz r3, 0x7c(r1)
 /* 80091124 0008D044  38 03 00 01 */	addi r0, r3, 1
@@ -841,7 +841,7 @@ lbl_8009112C:
 /* 80091140 0008D060  7C 00 18 00 */	cmpw r0, r3
 /* 80091144 0008D064  41 82 00 0C */	beq lbl_80091150
 /* 80091148 0008D068  90 7C 00 74 */	stw r3, 0x74(r28)
-/* 8009114C 0008D06C  48 00 01 F5 */	bl post_add_tev_stage_build
+/* 8009114C 0008D06C  48 00 01 F5 */	bl build_post_add_tev_stage
 lbl_80091150:
 /* 80091150 0008D070  80 61 00 7C */	lwz r3, 0x7c(r1)
 /* 80091154 0008D074  38 03 00 01 */	addi r0, r3, 1

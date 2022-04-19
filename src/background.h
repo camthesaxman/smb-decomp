@@ -95,7 +95,7 @@ struct BGModelSearch
 
 struct BGJungleCloud
 {
-    struct StageBgModel *unk0;
+    struct StageBgModel *bgModel;
     Vec unk4;
     Vec unk10;
     Vec unk1C;
@@ -105,8 +105,8 @@ struct BGJungleCloud
 struct BGJungleWork
 {
     u8 filler0[4];
-    s32 bgModelsCount;
-    struct BGJungleCloud bgModels[4];
+    s32 cloudModelCount;
+    struct BGJungleCloud cloudModels[4];
     s32 unk168;
 };
 

@@ -5759,7 +5759,7 @@ lbl_8009A724:
 /* 8009A770 00096690  FC 40 08 90 */	fmr f2, f1
 /* 8009A774 00096694  FC 60 08 90 */	fmr f3, f1
 /* 8009A778 00096698  FC 80 08 90 */	fmr f4, f1
-/* 8009A77C 0009669C  4B FF 4F 99 */	bl g_avdisp_set_some_color_1
+/* 8009A77C 0009669C  4B FF 4F 99 */	bl avdisp_set_post_multiply_color
 /* 8009A780 000966A0  80 7E 00 1C */	lwz r3, 0x1c(r30)
 /* 8009A784 000966A4  4B FF 3D 19 */	bl avdisp_draw_model_culled_sort_none
 /* 8009A788 000966A8  4B F6 D0 AD */	bl mathutil_mtxA_pop

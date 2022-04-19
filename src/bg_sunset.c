@@ -126,7 +126,7 @@ void bg_sunset_draw(void)
     // draw cloud layers
     if (work->bgModelsCount != 0)
     {
-        func_8008F6D4(1);
+        g_avdisp_set_some_int(1);
         r30_ = work->bgModels;
         for (i = work->bgModelsCount; i > 0; i--, r30_++)
         {
@@ -145,7 +145,7 @@ void bg_sunset_draw(void)
                 avdisp_draw_model_culled_sort_translucent(r31->model);
             }
         }
-        func_8008F6D4(0);
+        g_avdisp_set_some_int(0);
     }
     bg_e3_draw();
 }

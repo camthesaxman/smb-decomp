@@ -4943,7 +4943,7 @@ lbl_000048C0:
 /* 00004900 FC400890 */ fmr f2, f1
 /* 00004904 FC600890 */ fmr f3, f1
 /* 00004908 FC800890 */ fmr f4, f1
-/* 0000490C 4BFFB841 */ bl g_avdisp_set_some_color_1
+/* 0000490C 4BFFB841 */ bl avdisp_set_post_multiply_color
 /* 00004910 38600001 */ li r3, 1
 /* 00004914 38800003 */ li r4, 3
 /* 00004918 38A00000 */ li r5, 0
@@ -5001,7 +5001,7 @@ lbl_000049D8:
 /* 000049DC FC400890 */ fmr f2, f1
 /* 000049E0 FC600890 */ fmr f3, f1
 /* 000049E4 FC800890 */ fmr f4, f1
-/* 000049E8 4BFFB765 */ bl g_avdisp_set_some_color_1
+/* 000049E8 4BFFB765 */ bl avdisp_set_post_multiply_color
 /* 000049EC 38600001 */ li r3, 1
 /* 000049F0 38800003 */ li r4, 3
 /* 000049F4 38A00001 */ li r5, 1

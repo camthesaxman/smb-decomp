@@ -494,7 +494,7 @@ void func_800A6874(void)
     if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
-        g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3f, 0.3f);
+        avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3f, 0.3f);
         avdisp_set_z_mode(1, 3, 0);
 
         for (i = 0; i < animGroupCount; i++)
@@ -523,7 +523,7 @@ void func_800A6874(void)
                 }
             }
         }
-        g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
+        avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
         avdisp_set_z_mode(1, 3, 1);
     }
 }
