@@ -1049,7 +1049,7 @@ GXTexObj *init_model(struct GMAModel *model, struct TPL *tpl, GXTexObj *texObj)
     for (i = 0; i < model->tevLayerCount; i++)
     {
         modelSamplers[i].texObj = &model->texObjs[i];
-        init_tev_layer_texobj(&modelSamplers[i], &tpl->texHeaders[modelSamplers[i].unk4], tpl);
+        init_tev_layer_texobj(&modelSamplers[i], &tpl->texHeaders[modelSamplers[i].texIndex], tpl);
     }
 
     // Get pointer to shape
