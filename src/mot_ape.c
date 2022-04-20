@@ -1080,37 +1080,24 @@ void g_make_ape_inline(struct Ape *ape)
 }
 
 #pragma force_active on
-const Vec constvecs[4] =
-{
-    {1, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-};
-
-const Quaternion constquats[2] =
-{
-    {1, 0, 0, 0},
-    {0, 0, 0, 1},
-};
-
+const Vec unused_80171980 = {1, 0, 0};
 #pragma force_active reset
 
-void test(u8 foo, struct Struct8003699C_child *r24_)
+void func_8008B3B8_inline_3(u8 a, struct Struct8003699C_child *r24_)
 {
-    //r24_ = (u8 *)r26->unk0;
-    //int foo = r21;
-    void *r3 = r24_->filler4114;
-    func_80035F18(r3, r24_, 1, lbl_802F12D8[foo]);
+    void *r3;
+
+    r3 = r24_->filler4114;
+    func_80035F18(r3, r24_, 1, lbl_802F12D8[a]);
     r3 = r24_->filler84;
-    func_80035F18(r3, r24_, 2, lbl_802F12E0[foo]);
+    func_80035F18(r3, r24_, 2, lbl_802F12E0[a]);
 }
 
-u8 test3(char *a)
+u8 func_8008B3B8_inline_2(char *a)
 {
     u8 i;
-    u8 r23 ;
-    for (r23 = 0, i = 0; (u8)i < motSkeleton->unk4; i++)
+    u8 r23;
+    for (r23 = 0, i = 0; i < motSkeleton->unk4; i++)
     {
         if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
         {
@@ -1121,22 +1108,7 @@ u8 test3(char *a)
     return r23;
 }
 
-void* test5(char *a)
-{
-    struct Struct80034B50_child *r27 = &motSkeleton->unk0[0];
-    int i;
-    for (i = 0; i < motSkeleton->unk4; i++)
-    {
-        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
-        {
-            r27 = &motSkeleton->unk0[i];
-            break;
-        }
-    }
-    return r27;
-}
-
-void test6(char *a, struct Struct80034B50_child **r27)
+void func_8008B3B8_inline_1(char *a, struct Struct80034B50_child **r27)
 {
     int i;
     *r27 = &motSkeleton->unk0[0];
@@ -1152,40 +1124,32 @@ void test6(char *a, struct Struct80034B50_child **r27)
 
 struct Ape *func_8008B3B8(char *a, char *unused)
 {
-    struct Ape *r26;
+    struct Ape *ape;
     struct Struct8003699C_child *r24;
     struct Struct8003699C_child *r31;
-    //struct Struct801C7824 *r27_;
     struct Struct80034B50_child *r27;
-    //int i;  // r24
     int i;
-    //u8 *r24_;
-    //struct Struct8003699C_child *r24_;
-    //u8 *r23_;
     u8 r23;
-    //u8 r21;
-    //#define r20 i
     int r20;
-    //void *ptr;
 
-    r26 = apeStructPtrs[nextApeIndex];
-    r20 = r26->unk70;
+    ape = apeStructPtrs[nextApeIndex];
+    r20 = ape->unk70;
+    memset(ape, 0, sizeof (*ape));
+    ape->unk70 = r20;
 
-    memset(r26, 0, sizeof (*r26));
-    r26->unk70 = r20;
-
-    test6(a, &r27);
+    func_8008B3B8_inline_1(a, &r27);
 
     r24 = g_create_joints_probably(r27);
     r31 = g_create_joints_probably(r27);
-    r26->unk94 = 5;
-    r26->unk98 = OSAllocFromHeap(subHeap, r26->unk94 * 0x24);
-    if (r26->unk98 == NULL)
-        OSPanic("mot_ape.c", 0x5D6, "cannot OSAlloc\n");
-    //lbl_8008B4BC
-    for (i = 0; i < r26->unk94; i++)
+
+    ape->unk94 = 5;
+    ape->unk98 = OSAllocFromHeap(subHeap, ape->unk94 * 0x24);
+    if (ape->unk98 == NULL)
+        OSPanic("mot_ape.c", 1494, "cannot OSAlloc\n");
+
+    for (i = 0; i < ape->unk94; i++)
     {
-        struct Struct802B39C0_B0_child *var = &r26->unk98[i];
+        struct Struct802B39C0_B0_child *var = &ape->unk98[i];
 
         var->unk0 = 0x7FFFFFFF;
         var->unk4 = -1.0f;
@@ -1195,47 +1159,48 @@ struct Ape *func_8008B3B8(char *a, char *unused)
         var->unk20 = 0;
     }
 
-    r26->unk0 = r24;
-    r26->unk4 = r31;
-    r26->unk1C = &lbl_801C7A70;
-    r26->unk20 = 0;
-    r26->unk8 = 0.0f;
-    r26->charaId = 0;
-    r26->unkC = 0.0f;
-    r26->unk14 = 0;
-    r26->unk18 = 0;
-    r26->unk24 = 1;
-    r26->unk28 = 0;
-    r26->unk9C = 0;
-    r26->unkB0 = 0;
-    r26->unk2C = r27;
-    r26->unk54 = 0;
+    ape->unk0 = r24;
+    ape->unk4 = r31;
+    ape->unk1C = &lbl_801C7A70;
+    ape->unk20 = 0;
+    ape->unk8 = 0.0f;
+    ape->charaId = 0;
+    ape->unkC = 0.0f;
+    ape->unk14 = 0;
+    ape->unk18 = 0;
+    ape->unk24 = 1;
+    ape->unk28 = 0;
+    ape->unk9C = 0;
+    ape->unkB0 = 0;
+    ape->unk2C = r27;
+    ape->unk54 = 0;
 
-    {Vec v; r26->unk30 = v = constvecs[1]; } //0x3C
-    {Vec v; r26->unk3C = v = constvecs[2]; } //0x48
-    {Vec v; r26->unk48 = v = constvecs[3]; } //0x54
-    {Quaternion q; *(Quaternion *)&r26->unkA0 = q = constquats[0]; }//(Quaternion){ 0, 0, 0, 1 }; //0x60
-    r26->unk58 = 1.0f;
-    {Quaternion q; r26->unk60 = q = constquats[1]; }//(Quaternion){ 0, 0, 0, 0 };  //0x70
-    r26->colorId = 0;
-    r26->unk90 = lbl_802F207C;
-    
+    // These really should be assigned using compound literals, but that causes the stack usage to not match.
+    { static const Vec v = {0}; Vec v_; ape->unk30 = v_ = v; } //0x3C
+    { static const Vec v = {0}; Vec v_; ape->unk3C = v_ = v; } //0x48
+    { static const Vec v = {0}; Vec v_; ape->unk48 = v_ = v; } //0x54
+    { static const Quaternion q = {1, 0, 0, 0}; Quaternion q_; *(Quaternion *)&ape->unkA0 = q_ = q; } //0x60
+    ape->unk58 = 1.0f;
+    { static const Quaternion q = {0, 0, 0, 1}; Quaternion q_; ape->unk60 = q_ = q; } //0x70
+    ape->colorId = 0;
+    ape->unk90 = lbl_802F207C;
+
     {u8 stackpad[0x10];}
 
-    g_make_ape_inline(r26);
-    r23 = test3(a);
-    test(r23, r26->unk0);
+    g_make_ape_inline(ape);
+    r23 = func_8008B3B8_inline_2(a);
+    func_8008B3B8_inline_3(r23, ape->unk0);
     r23++;r23--;
-    test(r23, r26->unk4);
+    func_8008B3B8_inline_3(r23, ape->unk4);
 
-    r26->unkB8 = lbl_8008A10C;
-    r26->unkBC = lbl_8008A108;
-    r26->unk5C = func_8008D1DC(func_8008C924, r26, 7);
+    ape->unkB8 = lbl_8008A10C;
+    ape->unkBC = lbl_8008A108;
+    ape->unk5C = func_8008D1DC(func_8008C924, ape, 7);
     nextApeIndex++;
-    return r26;
+    return ape;
 }
 
-struct Dunno
+struct MotInfo2_child
 {
     u8 filler0[0x180];
     struct Ape_child unk180;
@@ -1244,7 +1209,7 @@ struct Dunno
 struct MotInfo2
 {
     u8 filler0[0x38];
-    struct Dunno *unk38;
+    struct MotInfo2_child *unk38;
     u8 filler3C[0xB4-0x3C];
 };
 
