@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global GXSetZCompLoc_cached
 GXSetZCompLoc_cached:
 /* 8009E588 0009A4A8  7C 08 02 A6 */	mflr r0
@@ -47,6 +48,7 @@ GXSetZCompLoc_cached_init:
 /* 8009E60C 0009A52C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8009E610 0009A530  7C 08 03 A6 */	mtlr r0
 /* 8009E614 0009A534  4E 80 00 20 */	blr
+.endif
 
 .global GXSetTevColorIn_cached
 GXSetTevColorIn_cached:

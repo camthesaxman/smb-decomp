@@ -173,5 +173,21 @@ void GXSetColorUpdate_cached_init(GXBool update_enable) {
 
 void GXSetAlphaUpdate_cached_init(GXBool update_enable) {
     GXSetAlphaUpdate();
-     zMode->unk0x84[0].unk0x79 = update_enable;
+    zMode->unk0x84[0].unk0x79 = update_enable;
+}
+
+void GXSetZCompLoc_cached(GXBool before_tex) {
+    if (zMode->unk0x84[0].unk0x7A != before_tex) {
+        GXSetZCompLoc_cached_init(before_tex);
+    }
+    return;
+}
+
+void GXSetZCompLoc_from_cache(void) {
+    GXSetZCompLoc(zMode->unk0x84[0].unk0x7A);
+}
+
+void GXSetZCompLoc_cached_init(GXBool before_tex) {
+    GXSetZCompLoc();
+    zMode->unk0x84[0].unk0x7A = before_tex;
 }
