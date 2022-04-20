@@ -34,7 +34,7 @@ u32 tevutil_init(void) {
     GXSetFog_cached_init(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, color);
 
     GXSetColorUpdate_cached_init(1);
-    GXSestAlphaUpdate_cached_init(1);
+    GXSetAlphaUpdate_cached_init(1);
     GXSetZCompLoc_cached_init(1);
 
     for (stage = GX_TEVSTAGE0; stage < 0x10; stage++) {
@@ -157,4 +157,21 @@ void GXSetFog_cached_init (GXFogType type, float startz, float endz, float nearz
     zMode->unk0x84[0].unk0x70 = farz;
     zMode->unk0x84[0].unk0x74 = color;
     return;
+}
+
+void GXSetColorUpdate_cached(GXBool update_enable) {
+    if (zMode->unk0x84[0].unk0x78 != update_enable) {
+        GXSetColorUpdate_cached_init(update_enable);
+    }
+    return;
+}
+
+void GXSetColorUpdate_cached_init(GXBool update_enable) {
+    GXSetColorUpdate();
+    zMode->unk0x84[0].unk0x78 = update_enable;
+}
+
+void GXSetAlphaUpdate_cached_init(GXBool update_enable) {
+    GXSetAlphaUpdate();
+     zMode->unk0x84[0].unk0x79 = update_enable;
 }

@@ -129,8 +129,9 @@ typedef struct
     float unk0x6C;
     float unk0x70;
     GXColor unk0x74;
-    u32 unk0x78;
-    u32 unk0x7C;
+    GXBool unk0x78;
+    GXBool unk0x79;
+    u8 filler0x7A[6];
 } ZMode_child_0x84;
 
 struct ZMode // GXCache
