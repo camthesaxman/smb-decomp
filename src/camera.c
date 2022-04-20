@@ -3300,7 +3300,7 @@ void camera_func_56(struct Camera *camera, struct Ball *ball)
     camera->unk70 = 0;
     camera->unk8C = ball->unk2A + 0x10000 - 0x8000;
 
-    if (ball->ape->unk10 == 2)
+    if (ball->ape->charaId == 2)
         camera->unk88 = -3265;
     else
         camera->unk88 = -1753;

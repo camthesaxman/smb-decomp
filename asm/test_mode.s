@@ -4216,7 +4216,7 @@ lbl_00003C34:
 lbl_00003CA8:
 /* 00003CA8 7CE70379 */ or. r7, r7, r0
 /* 00003CAC 41820018 */ beq lbl_00003CC4
-/* 00003CB0 4BFFC4AD */ bl func_8008B2D4
+/* 00003CB0 4BFFC4AD */ bl g_ape_free
 /* 00003CB4 2C1F0003 */ cmpwi r31, 3
 /* 00003CB8 418200C8 */ beq lbl_00003D80
 /* 00003CBC 4BFFC4A1 */ bl func_8008D240
@@ -4292,7 +4292,7 @@ lbl_00003D94:
 /* 00003DC0 408002DC */ bge lbl_0000409C
 /* 00003DC4 807F0158 */ lwz r3, 0x158(r31)
 /* 00003DC8 38800000 */ li r4, 0
-/* 00003DCC 4BFFC391 */ bl func_8008ABB4
+/* 00003DCC 4BFFC391 */ bl g_load_character_graphics
 /* 00003DD0 809F0154 */ lwz r4, 0x154(r31)
 /* 00003DD4 2C040000 */ cmpwi r4, 0
 /* 00003DD8 40800020 */ bge lbl_00003DF8
@@ -14992,7 +14992,7 @@ lbl_0000D9FC:
 /* 0000DA20 807F0004 */ lwz r3, 4(r31)
 /* 0000DA24 28030000 */ cmplwi r3, 0
 /* 0000DA28 41820008 */ beq lbl_0000DA30
-/* 0000DA2C 4BFF2731 */ bl func_8008B2D4
+/* 0000DA2C 4BFF2731 */ bl g_ape_free
 lbl_0000DA30:
 /* 0000DA30 807F006C */ lwz r3, 0x6c(r31)
 /* 0000DA34 4BFF2729 */ bl g_make_ape
@@ -15762,9 +15762,9 @@ lbl_0000E4B8:
 /* 0000E538 4CC63182 */ crclr 6
 /* 0000E53C 4BFF1C21 */ bl g_debug_printf
 /* 0000E540 80BE005C */ lwz r5, 0x5c(r30)
-/* 0000E544 3C600000 */ lis r3, lbl_802B46F0@ha
+/* 0000E544 3C600000 */ lis r3, charaGMAs@ha
 /* 0000E548 801E0060 */ lwz r0, 0x60(r30)
-/* 0000E54C 38830000 */ addi r4, r3, lbl_802B46F0@l
+/* 0000E54C 38830000 */ addi r4, r3, charaGMAs@l
 /* 0000E550 90A10008 */ stw r5, 8(r1)
 /* 0000E554 9001000C */ stw r0, 0xc(r1)
 /* 0000E558 807E0064 */ lwz r3, 0x64(r30)
@@ -17013,7 +17013,7 @@ lbl_0000F6F0:
 /* 0000F74C 3BA50000 */ addi r29, r5, lbl_10003BF8@l
 /* 0000F750 41820050 */ beq lbl_0000F7A0
 /* 0000F754 807D0004 */ lwz r3, 4(r29)
-/* 0000F758 4BFF0A05 */ bl func_8008B2D4
+/* 0000F758 4BFF0A05 */ bl g_ape_free
 /* 0000F75C 3C600000 */ lis r3, __OSCurrHeap@ha
 /* 0000F760 809D0084 */ lwz r4, 0x84(r29)
 /* 0000F764 3BC30000 */ addi r30, r3, __OSCurrHeap@l

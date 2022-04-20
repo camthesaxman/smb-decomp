@@ -218,10 +218,10 @@ void func_8008D788(void)
     avdisp_set_fog_color(0, 0, 0);
 }
 
-void g_avdisp_alloc_matrix_lists(int count)
+void *g_avdisp_alloc_matrix_lists(int count)
 {
     g_transformMtxList = OSAlloc(count * sizeof(Mtx));
-    avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
+    return avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
 #pragma force_active on
