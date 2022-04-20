@@ -1079,14 +1079,27 @@ void g_make_ape_inline(struct Ape *ape)
     }
 }
 
-#ifdef NONMATCHING
+#pragma force_active on
+const Vec constvecs[4] =
+{
+    {1, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0},
+};
 
-// https://decomp.me/scratch/SQSRv
+const Quaternion constquats[2] =
+{
+    {1, 0, 0, 0},
+    {0, 0, 0, 1},
+};
 
-void test(struct Struct8003699C_child *r24_, int r21)
+#pragma force_active reset
+
+void test(u8 foo, struct Struct8003699C_child *r24_)
 {
     //r24_ = (u8 *)r26->unk0;
-    int foo = r21;
+    //int foo = r21;
     void *r3 = r24_->filler4114;
     func_80035F18(r3, r24_, 1, lbl_802F12D8[foo]);
     r3 = r24_->filler84;
@@ -1096,8 +1109,8 @@ void test(struct Struct8003699C_child *r24_, int r21)
 u8 test3(char *a)
 {
     u8 i;
-    u8 r23 = 0;
-    for (i = 0; i < motSkeleton->unk4; i++)
+    u8 r23 ;
+    for (r23 = 0, i = 0; (u8)i < motSkeleton->unk4; i++)
     {
         if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
         {
@@ -1106,6 +1119,21 @@ u8 test3(char *a)
         }
     }
     return r23;
+}
+
+void* test5(char *a)
+{
+    struct Struct80034B50_child *r27 = &motSkeleton->unk0[0];
+    int i;
+    for (i = 0; i < motSkeleton->unk4; i++)
+    {
+        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
+        {
+            r27 = &motSkeleton->unk0[i];
+            break;
+        }
+    }
+    return r27;
 }
 
 void test6(char *a, struct Struct80034B50_child **r27)
@@ -1120,7 +1148,6 @@ void test6(char *a, struct Struct80034B50_child **r27)
             break;
         }
     }
-    //return r27;
 }
 
 struct Ape *func_8008B3B8(char *a, char *unused)
@@ -1128,7 +1155,7 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     struct Ape *r26;
     struct Struct8003699C_child *r24;
     struct Struct8003699C_child *r31;
-    //struct ApeGfxFileInfo *r27_;
+    //struct Struct801C7824 *r27_;
     struct Struct80034B50_child *r27;
     //int i;  // r24
     int i;
@@ -1144,7 +1171,7 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     r26 = apeStructPtrs[nextApeIndex];
     r20 = r26->unk70;
 
-    memset(r26, 0, sizeof(*r26));
+    memset(r26, 0, sizeof (*r26));
     r26->unk70 = r20;
 
     test6(a, &r27);
@@ -1156,8 +1183,6 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     if (r26->unk98 == NULL)
         OSPanic("mot_ape.c", 0x5D6, "cannot OSAlloc\n");
     //lbl_8008B4BC
-    // i = r8
-//#define i i2
     for (i = 0; i < r26->unk94; i++)
     {
         struct Struct802B39C0_B0_child *var = &r26->unk98[i];
@@ -1169,8 +1194,7 @@ struct Ape *func_8008B3B8(char *a, char *unused)
         var->unk10 = 0.0f;
         var->unk20 = 0;
     }
-#undef i
-    //test4(r26);
+
     r26->unk0 = r24;
     r26->unk4 = r31;
     r26->unk1C = &lbl_801C7A70;
@@ -1187,20 +1211,22 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     r26->unk2C = r27;
     r26->unk54 = 0;
 
-    r26->unk30 = (Vec){ 1, 0, 0 };  //0x3C
-    r26->unk3C = (Vec){ 0, 0, 0 };  //0x48
-    r26->unk48 = (Vec){ 0, 0, 0 };  //0x54
-    *(Quaternion *)&r26->unkA0 = (Quaternion){ 0, 0, 0, 1 }; //0x60
+    {Vec v; r26->unk30 = v = constvecs[1]; } //0x3C
+    {Vec v; r26->unk3C = v = constvecs[2]; } //0x48
+    {Vec v; r26->unk48 = v = constvecs[3]; } //0x54
+    {Quaternion q; *(Quaternion *)&r26->unkA0 = q = constquats[0]; }//(Quaternion){ 0, 0, 0, 1 }; //0x60
     r26->unk58 = 1.0f;
-    r26->unk60 = (Quaternion){ 0, 0, 0, 0 };  //0x70
+    {Quaternion q; r26->unk60 = q = constquats[1]; }//(Quaternion){ 0, 0, 0, 0 };  //0x70
     r26->colorId = 0;
     r26->unk90 = lbl_802F207C;
+    
+    {u8 stackpad[0x10];}
 
     g_make_ape_inline(r26);
-
     r23 = test3(a);
-    test(r26->unk0, r23);
-    test(r26->unk4, r23);
+    test(r23, r26->unk0);
+    r23++;r23--;
+    test(r23, r26->unk4);
 
     r26->unkB8 = lbl_8008A10C;
     r26->unkBC = lbl_8008A108;
@@ -1208,41 +1234,6 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     nextApeIndex++;
     return r26;
 }
-#else
-#pragma force_active on
-const u32 lbl_80171980[] =
-{
-    0x3F800000,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0x3F800000,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0x3F800000,
-};
-#pragma force_active reset
-extern u8 lbl_80171950[];
-const float lbl_802F56D0 = -1.0f;
-asm struct Ape *func_8008B3B8(char *a, void *unused)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_8008B3B8.s"
-}
-#pragma peephole on
-#endif
 
 struct Dunno
 {
