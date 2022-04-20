@@ -450,7 +450,7 @@ void lbl_8003781C(struct Ape *a, int b)
     switch (b)
     {
     case 3:
-        func_8008B2D4(a);
+        g_ape_free(a);
         return;
     }
 
@@ -617,17 +617,17 @@ void ev_ball_init(void)
             if (advDemoInfo.flags & (1 << 8))
             {
                 func_8008BF00(ape, 0);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2);
             }
             else if (modeCtrl.playerCount > 2)
             {
                 func_8008BF00(ape, 2);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2 + 1);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2 + 1);
             }
             else
             {
                 func_8008BF00(ape, 1);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2);
             }
             break;
         case GAMETYPE_MINI_RACE:
@@ -635,19 +635,19 @@ void ev_ball_init(void)
             {
             case 1:
                 func_8008BF00(ape, 1);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2);
                 break;
             case 3:  // useless; needed to match
             case 2:
             default:
                 func_8008BF00(ape, 2);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2 + 1);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2 + 1);
                 break;
             }
             break;
         default:
             func_8008BF00(ape, 0);
-            lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+            lbl_802F1F0C |= 1 << (ape->charaId * 2);
             break;
         }
     }
@@ -2091,13 +2091,13 @@ void ball_func_demo_init(struct Ball *ball)
     ball->pos.y = decodedStageLzPtr->startPos->pos.y;
     ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
-    if (currStageId == 13 && ball->ape->unk10 == 0)
+    if (currStageId == 13 && ball->ape->charaId == 0)
     {
         ball->pos.x = 0.0f;
         ball->pos.y = 0.5f;
         ball->pos.z = 20.0f;
     }
-    else if (currStageId == 9 && ball->ape->unk10 == 2)
+    else if (currStageId == 9 && ball->ape->charaId == 2)
     {
         ball->pos.x = -5.6f;
         ball->pos.y = -2.0f;
@@ -2109,31 +2109,31 @@ void ball_func_demo_init(struct Ball *ball)
         ball->pos.y = -2.0f;
         ball->pos.z = -3.1f;
     }
-    else if (currStageId == 21 && ball->ape->unk10 == 3)
+    else if (currStageId == 21 && ball->ape->charaId == 3)
     {
         ball->pos.x = 0.0f;
         ball->pos.y = 0.51f;
         ball->pos.z = 3.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 0)
+    else if (currStageId == 95 && ball->ape->charaId == 0)
     {
         ball->pos.x = -1.0f;
         ball->pos.y = -42.49f;
         ball->pos.z = 156.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 1)
+    else if (currStageId == 95 && ball->ape->charaId == 1)
     {
         ball->pos.x = 1.0f;
         ball->pos.y = -42.49f;
         ball->pos.z = 158.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 2)
+    else if (currStageId == 95 && ball->ape->charaId == 2)
     {
         ball->pos.x = -3.0f;
         ball->pos.y = -42.49f;
         ball->pos.z = 157.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 3)
+    else if (currStageId == 95 && ball->ape->charaId == 3)
     {
         ball->pos.x = 3.0f;
         ball->pos.y = -42.49f;
@@ -2158,20 +2158,20 @@ void ball_func_demo_init(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
 
-    if (currStageId == 9 && ball->ape->unk10 == 2)
+    if (currStageId == 9 && ball->ape->charaId == 2)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x10000 - 0x8000);
         mathutil_mtxA_to_quat(&ball->ape->unk60);
     }
-    else if (currStageId == 9 && ball->ape->unk10 == 1)
+    else if (currStageId == 9 && ball->ape->charaId == 1)
     {
         // same exact thing as the above
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x10000 - 0x8000);
         mathutil_mtxA_to_quat(&ball->ape->unk60);
     }
-    else if (currStageId == 28 && ball->ape->unk10 == 0)
+    else if (currStageId == 28 && ball->ape->charaId == 0)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot);
@@ -2937,12 +2937,12 @@ void func_8003CDC0(struct Ball *ball)
 
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
-        struct Ape *ape = ball->unk144;
+        struct Ball_child *unk = ball->unk144;
         s8 r31 = 0;
         s8 r28 = 0;
         float f2 = mathutil_vec_len(&ball->vel) * 216000.0 / 1000.0;
 
-        if (ape->unk1CE > 3 && f2 > 10.0)
+        if (unk->unk1CE > 3 && f2 > 10.0)
         {
             float f4 = (f2 - 10.0f) / 130.0f;
 

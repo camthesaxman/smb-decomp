@@ -4,45 +4,6 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
-struct Struct8003699C_child
-{
-    u8 filler0[0x38];
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-};
-
-struct Ape
-{
-    struct Struct8003699C_child *unk0;
-    u8 filler4[0x10-4];
-    s32 unk10;
-    u32 unk14;
-    u8 filler18[0x24-0x18];
-    s32 unk24;
-    u8 filler28[0x30-0x28];
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    s32 unk54;
-    float unk58;
-    u8 filler5C[0x60-0x5C];
-    Quaternion unk60;
-    u8 filler70[0x74-0x70];
-    u32 unk74;
-    u8 filler78[0xA0-0x78];
-    Vec unkA0;
-    float unkAC;
-    u8 fillerB0[4];
-    /*0x0B4*/ u32 colorId;
-    u8 fillerB8[0xC0-0xB8];
-    s8 unkC0;
-    u8 unkC1;
-    s16 unkC2;
-    u8 fillerC4[0x1CE - 0xC4];
-    s16 unk1CE;  // used in the Ball.unk144 one
-};
-
 enum
 {
     BALL_FLAG_00 = 1 << 0,
@@ -83,6 +44,14 @@ enum
 {
     BALL_STATE_GOAL_INIT = 5,  // ball slows to a stop after entering the goal
     BALL_STATE_GOAL_MAIN = 6,
+};
+
+struct Ball_child
+{
+    u8 filler0[0x14];
+    u32 unk14;
+    u8 filler18[0x1CE - 0x18];
+    s16 unk1CE;
 };
 
 struct Ball
@@ -137,7 +106,7 @@ struct Ball
     s32 unk138;
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
-    struct Ape *unk144;  // guessing this is the same type as unkFC?
+    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 unk148;
     u8 filler14A[0x14A - 0x149];
     /*0x14A*/ u8 colorId;

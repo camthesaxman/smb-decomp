@@ -145,7 +145,8 @@ SOURCES := \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	asm/code_3.s \
-	asm/mot_ape.s \
+	src/mot_ape.c \
+	asm/code_2.s \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
