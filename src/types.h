@@ -100,40 +100,67 @@ struct PerfInfo
 
 typedef struct
 {
-    s32 unk0x00;
-    s32 unk0x04;
-    s32 unk0x08;
-    s32 unk0x0C;
-} ZMode_child_0x14;
+    GXBlendMode type;
+    GXBlendFactor src_factor;
+    GXBlendFactor dst_factor;
+    GXLogicOp op;
+} GXTevBlendModeCache;
 
 typedef struct
 {
-    u32 unk0x00;
-    u32 unk0x04;
-    u32 unk0x08;
-    u32 unk0x0C;
-} ZMode_child_0x24;
+    GXTevColorChan r;
+    GXTevColorChan g;
+    GXTevColorChan b;
+    GXTevColorChan a;
+} GXTevSwapModeTableCache;
 
 typedef struct
 {
-    s32 unk0x00;
-    s32 unk0x04;
-} ZMode_child_0x64;
+    GXTevSwapSel ras_sel;
+    GXTevSwapSel tex_sel;
+} GXTevswapModeSelCache;
 
 typedef struct
 {
-    u8 filler0x00[0x60];
-    GXFogType unk0x60;
-    float unk0x64;
-    float unk0x68;
-    float unk0x6C;
-    float unk0x70;
-    GXColor unk0x74;
-    GXBool unk0x78;
-    GXBool unk0x79;
-    GXBool unk0x7A;
-    u8 filler0x7B[5];
-} ZMode_child_0x84;
+    GXFogType type;
+    float startz;
+    float endz;
+    float nearz;
+    float farz;
+    GXColor color;
+} GXFogCache;
+
+typedef struct
+{
+    GXTevColorArg a;
+    GXTevColorArg b;
+    GXTevColorArg c;
+    GXTevColorArg d;
+} GXTevColorInputCache;
+
+typedef struct
+{
+    GXTevAlphaArg a;
+    GXTevAlphaArg b;
+    GXTevAlphaArg c;
+    GXTevAlphaArg d;
+} GXTevAlphaInputCache;
+
+typedef struct {
+    GXTevOp op;
+    GXTevBias bias;
+    GXTevScale scale;
+    GXBool clamp;
+    GXTevRegID reg;
+} GXTevOpCache;
+
+typedef struct {
+    GXTexCoordID coord;
+    GXTexMapID map;
+    GXChannelID color;
+    u16 unk0xc;
+    u16 unk0xe;
+} GXTevOrderCached;
 
 struct ZMode // GXCache
 {
@@ -142,12 +169,23 @@ struct ZMode // GXCache
     /*0x008*/ GXBool updateEnable;
     /*0x009*/ u8 lineWidth;
     /*0x00C*/ s32 texOffsets;
-    /*0x010*/ s32 unk0x10;
-    /*0x014*/ ZMode_child_0x14 unk0x14;
-    /*0x024*/ ZMode_child_0x24 unk0x24[4];
-    /*0x064*/ ZMode_child_0x64 unk0x64[4];
-    /*0x084*/ ZMode_child_0x84 unk0x84[4];
-    /*0x284*/ u8 filler184[0x734-0x284];
+    /*0x010*/ s32 cullMode;
+    /*0x014*/ GXTevBlendModeCache blendMode;
+    /*0x024*/ GXTevSwapModeTableCache swapModeTable[4];
+    /*0x064*/ GXTevswapModeSelCache swapModeSel[16];
+    /*0x0E4*/ GXFogCache fog;
+    /*0x0FC*/ GXBool colorUpdate;
+    /*0x0FD*/ GXBool alphaUpdate;
+    /*0x0FE*/ GXBool zCompare;
+    /*0x0FF*/ u8 unk0xFF;
+    /*0x100*/ GXTevColorInputCache colorInputs[16];
+    /*0x200*/ GXTevAlphaInputCache alphaInputs[16];
+    /*0x300*/ GXTevOpCache colorOpCaches[16];
+    /*0x440*/ GXTevOpCache alphaOpCaches[16];
+    /*0x580*/ GXTevOrderCached tevOrders[16];
+    /*0x680*/ u32 kColorSels[16];
+    /*0x6C0*/ u32 kAlphaSels[16];
+    u8 filler700[0x734-0x700];
 };
 
 struct GFXBufferInfo
