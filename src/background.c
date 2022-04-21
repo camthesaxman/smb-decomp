@@ -736,7 +736,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         }
         if (backgroundInfo.unk90 != 0 && (bgModels->flags & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
-        avdisp_set_scale(f29);
+        avdisp_set_bound_sphere_scale(f29);
         if (bgModels->translucency < FLT_EPSILON)
             avdisp_draw_model_unculled_sort_translucent(model);
         else

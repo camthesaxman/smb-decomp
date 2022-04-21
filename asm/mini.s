@@ -1293,7 +1293,7 @@ lbl_80094B58:
 /* 80094BE0 00090B00  D0 01 00 10 */	stfs f0, 0x10(r1)
 /* 80094BE4 00090B04  4B F7 31 D5 */	bl mathutil_mtxA_scale
 /* 80094BE8 00090B08  C0 3C 00 30 */	lfs f1, 0x30(r28)
-/* 80094BEC 00090B0C  4B FF 98 35 */	bl avdisp_set_scale
+/* 80094BEC 00090B0C  4B FF 98 35 */	bl avdisp_set_bound_sphere_scale
 /* 80094BF0 00090B10  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80094BF4 00090B14  38 80 00 00 */	li r4, 0
 /* 80094BF8 00090B18  48 04 F9 89 */	bl GXLoadPosMtxImm

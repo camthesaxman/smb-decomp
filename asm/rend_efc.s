@@ -5753,7 +5753,7 @@ lbl_8009A724:
 /* 8009A758 00096678  38 80 00 00 */	li r4, 0
 /* 8009A75C 0009667C  48 04 9E 25 */	bl GXLoadPosMtxImm
 /* 8009A760 00096680  C0 3E 00 20 */	lfs f1, 0x20(r30)
-/* 8009A764 00096684  4B FF 3C BD */	bl avdisp_set_scale
+/* 8009A764 00096684  4B FF 3C BD */	bl avdisp_set_bound_sphere_scale
 /* 8009A768 00096688  C0 1E 00 2C */	lfs f0, 0x2c(r30)
 /* 8009A76C 0009668C  EC 3F 00 32 */	fmuls f1, f31, f0
 /* 8009A770 00096690  FC 40 08 90 */	fmr f2, f1

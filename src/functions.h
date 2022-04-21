@@ -700,7 +700,7 @@ struct TPL *load_tpl(char *fileName);
 // ? load_tpl_from_aram();
 // ? create_tpl_tex_objs();
 void free_tpl(struct TPL *tpl);
-void avdisp_set_scale(float);
+void avdisp_set_bound_sphere_scale(float);
 void g_avdisp_set_3_floats(float, float, float);
 void avdisp_draw_model_culled_sort_translucent(struct GMAModel *);
 void avdisp_draw_model_culled_sort_none(struct GMAModel *);

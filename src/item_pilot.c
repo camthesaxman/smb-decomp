@@ -286,13 +286,13 @@ void item_pilot_draw(struct Item *item)
                 mathutil_mtxA_scale_xyz(scale, scale, scale);
                 r30_ = 0x85;
             }
-            avdisp_set_scale(scale);
+            avdisp_set_bound_sphere_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
-            avdisp_set_scale(scale);
+            avdisp_set_bound_sphere_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             if (f30 < 1.0f)
             {

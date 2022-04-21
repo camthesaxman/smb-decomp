@@ -3080,15 +3080,15 @@ void draw_ball_hemispheres(struct Ball *ball, int unused)
     }
 
     // Draw inside of clear hemisphere
-    avdisp_set_scale(ball->modelScale);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
     avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].modelOffset);
 
     // Draw inside of colored hemisphere
-    avdisp_set_scale(ball->modelScale);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
     avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].modelOffset);
 
     // Draw edge ring between ball halves
-    avdisp_set_scale(ball->modelScale);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
     avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].modelOffset);
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
@@ -3097,7 +3097,7 @@ void draw_ball_hemispheres(struct Ball *ball, int unused)
     avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].modelOffset);
 
     // Draw outside of colored hemisphere
-    avdisp_set_scale(ball->modelScale);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
     avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].modelOffset);
 
     func_8000E3BC();

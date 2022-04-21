@@ -44,12 +44,12 @@ float g_someColorScaleR;
 Func802F20F0 g_customMaterialFunc;
 BallEnvFunc lbl_802F20EC;
 GXCullMode s_cullMode;
-float s_scale;
+float s_boundSphereScale;
 u32 s_lightMask;
-float s_alpha;
-float lbl_802F20D8;
-float lbl_802F20D4;
-float lbl_802F20D0;
+float s_someAlpha;
+float s_someBlue;
+float s_someGreen;
+float s_someRed;
 Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 Mtx **avdispMtxPtrList;
 
@@ -134,51 +134,51 @@ void func_8008D6BC(u32 arg)
 asm void func_8008D6D4(register void *arg)
 {
     nofralloc
-    lis r10, 0xE0000000@h
-    psq_l f5, 424(r10), 0, qr2
-    li r6, 0x10
+    lis r10, 0xE0000000@h          // r10 = gxCache
+    psq_l f5, 0x1a8(r10), 0, qr2   // f5 = u8 | u8 from 0x1a8(gxCache)
+    li r6, 0x10                    // r6 = 0x10
     lis r9, GXWGFifo@h
-    ori r9, r9, GXWGFifo@l
+    ori r9, r9, GXWGFifo@l         // r9 = GXWGFifo
     lwz r5, 0(arg)
     andi. r7, r5, 8
-    bne lbl_8008D710
-    ps_mr f0, f5
-    ps_mr f1, f5
+    bne lbl_8008D710_if_flag_unk3  // If GMA_SHAPE_FLAG_UNK3 is set
+    ps_mr f0, f5                   // f0 = u8 | u8 from 0x1a8(gxCache)
+    ps_mr f1, f5                   // f1 = u8 | u8 from 0x1a8(gxCache)
     andi. r7, r5, 0x80
-    bne lbl_8008D71C
-    li r4, -1
-    ps_mr f4, f5
+    bne lbl_8008D71C_simple_material
+    li r4, -1                      // r4 = 0xFFFFFFFF
+    ps_mr f4, f5                   // f4 = u8 | u8 from 0x1a8(gxCache)
     b lbl_8008D724
-lbl_8008D710:
-    psq_l f0, 8(arg), 0, qr2
-    psq_l f1, 10(arg), 1, qr2
-    ps_merge00 f1, f1, f5
-lbl_8008D71C:
-    lhz r4, 4(arg)
-    psq_l f4, 6(arg), 1, qr2
+lbl_8008D710_if_flag_unk3:
+    psq_l f0, 8(arg), 0, qr2       // f0 = g_color2.rg
+    psq_l f1, 10(arg), 1, qr2      // f1 = g_color2.b1
+    ps_merge00 f1, f1, f5          // f1 = g_color2.b | 1st u8 from gx cache
+lbl_8008D71C_simple_material:
+    lhz r4, 4(arg)                 // r4 = g_color1.rg
+    psq_l f4, 6(arg), 1, qr2       // f4 = g_color1.b | 1
 lbl_8008D724:
-    lis r7, lbl_802F20D0@h
-    ori r7, r7, lbl_802F20D0@l
-    psq_l f2, 0(r7), 0, qr0
-    psq_l f3, 8(r7), 0, qr0
-    ps_mul f0, f0, f2
-    ps_mul f1, f1, f3
-    psq_l f2, 17(arg), 1, qr2
-    ps_merge10 f2, f2, f2
-    psq_st f0, 152(r10), 0, qr2
-    psq_st f1, 154(r10), 0, qr2
-    lwz r7, 0x98(r10)
-    li r8, 0x100a
-    stb r6, 0(r9)
-    stw r8, 0(r9)
-    stw r7, 0(r9)
-    ps_merge01 f4, f4, f3
-    ps_mul f4, f4, f2
-    sth r4, 0x98(r10)
-    psq_st f4, 154(r10), 0, qr2
-    lwz r7, 0x98(r10)
-    li r8, 0x100c
-    stb r6, 0(r9)
+    lis r7, s_someRed@h
+    ori r7, r7, s_someRed@l        // r7 = &lbl_802F20D0
+    psq_l f2, 0(r7), 0, qr0        // f2 = lbl_802F20D0.rg
+    psq_l f3, 8(r7), 0, qr0        // f3 = lbl_802F20D0.ba
+    ps_mul f0, f0, f2              // f0 = shape.g_color2.rg * lbl_802F20D0.rg
+    ps_mul f1, f1, f3              // f1 = shape.g_color2.ba * lbl_802F20D0.ba
+    psq_l f2, 17(arg), 1, qr2      // f2 = shape.alpha | 1
+    ps_merge10 f2, f2, f2          // f2 = 1 | shape.alpha
+    psq_st f0, 0x98(r10), 0, qr2   // f0 -> 0x98(gxCache)
+    psq_st f1, 0x9a(r10), 0, qr2   // f1 -> 0x9a(gxCache)
+    lwz r7, 0x98(r10)              // r7 = 0x98(gxCache)
+    li r8, 0x100a                  // XF_AMBIENT0_ID
+    stb r6, 0(r9)                  // Write color in r7 to ambient0 register
+    stw r8, 0(r9)                  // 
+    stw r7, 0(r9)                  // 
+    ps_merge01 f4, f4, f3          // f4 = (shape.g_color1.b OR from 0x1a8(gxCache)) | lbl_802F20D0.a
+    ps_mul f4, f4, f2              // f4 = (shape.g_color1.b OR from 0x1a8(gxCache)) | shape.alpha * lbl_802F20D0.a
+    sth r4, 0x98(r10)              // shape.g_color1.rg -> 0x98(gxCache)
+    psq_st f4, 0x9a(r10), 0, qr2   // f4 -> 0x9a(gxCache) as u8s
+    lwz r7, 0x98(r10)              // r7 = shape.g_color1 * lbl_802F20D0
+    li r8, 0x100c                  // XF_MATERIAL0_ID -> fifo
+    stb r6, 0(r9)                  // Write color in r7 to material0 register
     stw r8, 0(r9)
     stw r7, 0(r9)
     blr
@@ -194,11 +194,11 @@ void avdisp_init(void)
 {
     Vec sp8;
     lbl_802F20EC = NULL;
-    lbl_802F20D8 = 1.0f;
-    lbl_802F20D4 = 1.0f;
-    lbl_802F20D0 = 1.0f;
-    s_scale = 1.0f;
-    s_alpha = 1.0f;
+    s_someBlue = 1.0f;
+    s_someGreen = 1.0f;
+    s_someRed = 1.0f;
+    s_boundSphereScale = 1.0f;
+    s_someAlpha = 1.0f;
     s_lightMask = 1;
     g_customMaterialFunc = NULL;
     init_some_texture();
@@ -559,26 +559,26 @@ void free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void avdisp_set_scale(float a)
+void avdisp_set_bound_sphere_scale(float a)
 {
-    s_scale = a;
+    s_boundSphereScale = a;
 }
 
 void g_avdisp_set_3_floats(float a, float b, float c)
 {
-    lbl_802F20D0 = a;
-    lbl_802F20D4 = b;
-    lbl_802F20D8 = c;
+    s_someRed = a;
+    s_someGreen = b;
+    s_someBlue = c;
 }
 
 // Draw opaque shapes immediately and depth-sort translucent shapes, a reasonable default
 void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 {
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_scale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
-        s_scale = 1.0f;
+        s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        s_alpha = 1.0f;
+        s_someAlpha = 1.0f;
     }
     else
         avdisp_draw_model_unculled_sort_translucent(model);
@@ -588,11 +588,11 @@ void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 // translucent shapes in a specific order instead of using the ord table?
 void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 {
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_scale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
-        s_scale = 1.0f;
+        s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        s_alpha = 1.0f;
+        s_someAlpha = 1.0f;
     }
     else
         avdisp_draw_model_unculled_sort_none(model);
@@ -602,11 +602,11 @@ void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 // e.g. by calling avdisp_set_alpha() ?
 void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
 {
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_scale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
-        s_scale = 1.0f;
+        s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        s_alpha = 1.0f;
+        s_someAlpha = 1.0f;
     }
     else
         avdisp_draw_model_unculled_sort_all(model);
@@ -614,7 +614,7 @@ void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
 
 void avdisp_set_alpha(float a)
 {
-    s_alpha = a;
+    s_someAlpha = a;
 }
 
 void avdisp_set_light_mask(u32 a)
@@ -778,7 +778,7 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->modelSamplers = modelSamplers;
     node->cullMode = cullMode;
     node->unk48 = func_800223D0();
-    node->alpha = s_alpha;
+    node->alpha = s_someAlpha;
     node->unk50 = lbl_802F20EC;
     node->unk54 = g_customMaterialFunc;
     node->zCompEnable = s_zModeCompareEnable;
@@ -826,9 +826,9 @@ void avdisp_draw_model_unculled_sort_translucent(struct GMAModel *model)
             shape = draw_shape_deferred(model, shape, modelSamplers);
     }
 
-    s_scale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_alpha = 1.0f;
+    s_someAlpha = 1.0f;
 }
 
 // Draw both opaque and translucent shapes immediately. Useful when you want to explicitly draw
@@ -856,9 +856,9 @@ void avdisp_draw_model_unculled_sort_none(struct GMAModel *model)
             shape = draw_shape(model, shape, modelSamplers);
     }
 
-    s_scale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_alpha = 1.0f;
+    s_someAlpha = 1.0f;
 }
 
 // Depth-sort both opaque and translucent shapes. Useful if your opaque shapes become translucent
@@ -881,9 +881,9 @@ void avdisp_draw_model_unculled_sort_all(struct GMAModel *model)
     for (i = 0; i < model->translucentShapeCount; i++)
         shape = (void *)draw_shape_deferred(model, shape, modelSamplers);
 
-    s_scale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_alpha = 1.0f;
+    s_someAlpha = 1.0f;
 }
 
 // Used by shadows
@@ -905,9 +905,9 @@ void g_avdisp_draw_model_4(struct GMAModel *model)
             shape = draw_shape(model, shape, modelSamplers);
     }
 
-    s_scale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_alpha = 1.0f;
+    s_someAlpha = 1.0f;
 }
 
 int get_texture_max_lod(int width, int height)
@@ -1122,7 +1122,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     zModeUpdateEnable = s_zModeUpdateEnable;
     zModeCompareFunc = s_zModeCompareFunc;
     r26 = lbl_802F2108;
-    s_alpha = node->alpha;
+    s_someAlpha = node->alpha;
     lbl_802F20EC = node->unk50;
     g_customMaterialFunc = node->unk54;
     s_zModeCompareEnable = node->zCompEnable;
@@ -1163,7 +1163,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     if (node->usePostAddTevStage != 0)
         s_postAddColor = spC;
     s_fogEnabled = fogEnabled;
-    s_alpha = 1.0f;
+    s_someAlpha = 1.0f;
 }
 
 u32 g_avdisp_set_some_tex_mtx_sel(u32 a)
@@ -1854,7 +1854,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
                 g_someTevColor1.b = 255;
             }
             //lbl_800907C0
-            g_someTevColor1.a = (float)shape->g_alpha * s_alpha;
+            g_someTevColor1.a = (float)shape->g_alpha * s_someAlpha;
             //sp38 = sp78;
             GXSetTevColor(GX_TEVREG0, g_someTevColor1);
             colorIn = GX_CC_C0;
