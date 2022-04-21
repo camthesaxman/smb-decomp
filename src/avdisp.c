@@ -264,10 +264,10 @@ void avdisp_init(void)
     avdisp_set_fog_color(0, 0, 0);
 }
 
-void g_avdisp_alloc_matrix_lists(int count)
+void *g_avdisp_alloc_matrix_lists(int count)
 {
     g_transformMtxList = OSAlloc(count * sizeof(Mtx));
-    avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
+    return avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
 #pragma force_active on
@@ -1095,7 +1095,7 @@ GXTexObj *init_model(struct GMAModel *model, struct TPL *tpl, GXTexObj *texObj)
     for (i = 0; i < model->tevLayerCount; i++)
     {
         modelSamplers[i].texObj = &model->texObjs[i];
-        init_tev_layer_texobj(&modelSamplers[i], &tpl->texHeaders[modelSamplers[i].unk4], tpl);
+        init_tev_layer_texobj(&modelSamplers[i], &tpl->texHeaders[modelSamplers[i].texIndex], tpl);
     }
 
     // Get pointer to shape

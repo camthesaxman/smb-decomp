@@ -65,7 +65,7 @@ static void sel_stage_init(void)
     spritePoolInfo.unkC[1] = 0;
     spritePoolInfo.unkC[2] = 0;
     spritePoolInfo.unkC[3] = 0;
-    modeCtrl.unk2C = 0;
+    modeCtrl.currPlayer = 0;
 
     func_8002FFEC();
     event_finish_all();

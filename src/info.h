@@ -6,14 +6,15 @@
 
 enum
 {
-    INFO_FLAG_GOAL     = (1 << 0),
-    INFO_FLAG_TIMEOVER = (1 << 1),
-    INFO_FLAG_FALLOUT  = (1 << 2),
+    INFO_FLAG_GOAL        = (1 << 0),
+    INFO_FLAG_TIMEOVER    = (1 << 1),
+    INFO_FLAG_FALLOUT     = (1 << 2),
+    INFO_FLAG_BONUS_STAGE = (1 << 6),
 };
 
 struct Struct801F3A58
 {
-    u32 unk0;
+    u32 flags;
     s16 timerCurr;  // current clock time (in 60ths of a second)
     s16 timerMax;  // maximum clock time (in 60ths of a second)
     u32 unk8;
@@ -21,21 +22,21 @@ struct Struct801F3A58
     s16 unkE;
     Vec unk10;
     s16 unk1C;
-    s16 unk1E;
+    s16 unk1E;  // number of tries on current stage?
     s16 unk20;
     s16 unk22;
     s32 unk24;
-    s16 unk28;  // lives lost?
-    s16 unk2A;  // continues used?
+    /*0x28*/ s16 livesLost;
+    /*0x2A*/ s16 continuesUsed;
     s16 unk2C;
-    s16 unk2E;
+    s16 unk2E;  // next stage?
     s16 unk30;
     s16 unk32;
 };
 
 extern struct Struct801F3A58 infoWork;
 extern u32 lbl_801F3A8C[4];
-extern struct Struct801F3A58 lbl_801F3A9C[4];
+extern struct Struct801F3A58 playerInfos[4];
 
 void func_80022F14(void);
 void ev_info_init(void);

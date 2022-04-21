@@ -1165,7 +1165,7 @@ lbl_0000112C:
 /* 00001130 2C00000A */ cmpwi r0, 0xa
 /* 00001134 40820014 */ bne lbl_00001148
 /* 00001138 3860003C */ li r3, 0x3c
-/* 0000113C 4BFFF041 */ bl func_8007C104
+/* 0000113C 4BFFF041 */ bl show_go_text
 /* 00001140 386001E7 */ li r3, 0x1e7
 /* 00001144 4BFFF039 */ bl g_play_sound
 lbl_00001148:
@@ -11589,7 +11589,7 @@ lbl_0000AA50:
 /* 0000AABC 40820140 */ bne lbl_0000ABFC
 lbl_0000AAC0:
 /* 0000AAC0 7EA3AB78 */ mr r3, r21
-/* 0000AAC4 4BFF56B9 */ bl func_80018648
+/* 0000AAC4 4BFF56B9 */ bl g_call_camera_apply_viewport
 /* 0000AAC8 4BFF56B5 */ bl g_draw_ball_shadow
 /* 0000AACC 4BFF56B1 */ bl func_80054FF0
 /* 0000AAD0 7EA3AB78 */ mr r3, r21
@@ -12436,7 +12436,7 @@ lbl_0000B6D0:
 /* 0000B704 418200FC */ beq lbl_0000B800
 /* 0000B708 935D0000 */ stw r26, 0(r29)
 /* 0000B70C 7F03C378 */ mr r3, r24
-/* 0000B710 4BFF4A6D */ bl func_80018648
+/* 0000B710 4BFF4A6D */ bl g_call_camera_apply_viewport
 /* 0000B714 4BFF4A69 */ bl g_draw_ball_shadow
 /* 0000B718 4BFF4A65 */ bl func_80054FF0
 /* 0000B71C 7F03C378 */ mr r3, r24
@@ -18186,7 +18186,7 @@ lbl_00010BC8:
 /* 00010C14 48000010 */ b lbl_00010C24
 lbl_00010C18:
 /* 00010C18 7FA3EB78 */ mr r3, r29
-/* 00010C1C 4BFEF561 */ bl func_8008B2D4
+/* 00010C1C 4BFEF561 */ bl g_ape_free
 /* 00010C20 48000188 */ b lbl_00010DA8
 lbl_00010C24:
 /* 00010C24 3C600000 */ lis r3, gamePauseStatus@ha

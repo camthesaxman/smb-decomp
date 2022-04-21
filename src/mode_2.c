@@ -61,7 +61,7 @@ void unkFunc8000A26C(struct Sprite *a)
                 lbl_801EEC68.unk15 = (lbl_801EEC68.unk14 == lbl_80206BD0[lbl_802F1C32]) ? lbl_802F1C32 : 1 - lbl_802F1C32;
         }
         else
-            lbl_801EEC68.unk15 = modeCtrl.unk2C;
+            lbl_801EEC68.unk15 = modeCtrl.currPlayer;
     }
 
     switch (modeCtrl.gameType)
@@ -410,8 +410,8 @@ void unkFunc8000B09C(void)
     struct Sprite *sprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-     && !(infoWork.unk0 & (1 << 8))
-     && ((infoWork.unk0 & (1 << 5)) || (infoWork.unk0 & (1 << 6)) || (infoWork.unk0 & (1 << 4)))
+     && !(infoWork.flags & (1 << 8))
+     && ((infoWork.flags & (1 << 5)) || (infoWork.flags & INFO_FLAG_BONUS_STAGE) || (infoWork.flags & (1 << 4)))
      && func_8004C70C() != 0)
         lbl_801EEC68.unk4 |= 4;
     else

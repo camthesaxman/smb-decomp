@@ -7,13 +7,13 @@
 
 #include "global.h"
 #include "ball.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
-#include "gma.h"
 
 #include "../data/common.gma.h"
 
@@ -80,7 +80,7 @@ void item_pilot_init(struct Item *item)
         item->unk1C = pilotBananaInfo[item->subtype].lodModelsPtr;
     else
         item->unk1C = minigameGma->modelEntries[pilotBananaInfo[item->subtype].unk4].modelOffset;
-    item->unk8 = 0x22;
+    item->flags = 0x22;
     item->unk14 = pilotBananaInfo[item->subtype].unk8;
     item->unk18 = 0.25f;
     item->xrotSpeed = pilotBananaInfo[item->subtype].xrotSpeed;
@@ -181,7 +181,7 @@ void item_pilot_main(struct Item *item)
         if (item->unk14 < 1.1920928955078125e-07f)
         {
             item->state = 0;
-            item->unk8 |= 1;
+            item->flags |= ITEM_FLAG_INVISIBLE;
             item->unk14 = 1.1920928955078125e-07f;
         }
         break;
@@ -344,7 +344,7 @@ void item_pilot_draw(struct Item *item)
 
 void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
 {
-    item->unk8 &= ~(1 << 1);
+    item->flags &= ~(1 << 1);
     item->state = 3;
     item->unk2C.y += item->unk14 * 0.1875;
     item->yrotSpeed <<= 2;
@@ -354,20 +354,20 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
     {
         if (item->unk5E < 0
-         && (!(infoWork.unk0 & (1 << 4)) || (infoWork.unk0 & (1 << 11))))
+         && (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11))))
         {
             struct Struct8003C550 sp178;
 
             item->unk5E = infoWork.timerCurr;
-            lbl_80285A58[modeCtrl.unk2C] += pilotBananaInfo[item->subtype].unkE;
+            lbl_80285A58[modeCtrl.currPlayer] += pilotBananaInfo[item->subtype].unkE;
             if (lbl_802F1FD0 & (1 << 3))
             {
-                if (++lbl_802F1FE4[modeCtrl.unk2C] >= 6)
-                    lbl_802F1FE4[modeCtrl.unk2C] = 1;
+                if (++lbl_802F1FE4[modeCtrl.currPlayer] >= 6)
+                    lbl_802F1FE4[modeCtrl.currPlayer] = 1;
             }
             item->state = 0;
-            item->unk8 |= 1;
-            item->unk8 &= ~(1 << 1);
+            item->flags |= ITEM_FLAG_INVISIBLE;
+            item->flags &= ~(1 << 1);
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->unk2E;
@@ -441,13 +441,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 2)
     {
         g_play_sound(0x39);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x2820);
     }
     else if (item->subtype == 0 || item->subtype == 1)
     {
         g_play_sound(3);
-        if ((infoWork.unk0 & (1 << 11)) || !(infoWork.unk0 & (1 << 4)))
+        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x281F);
     }
 }

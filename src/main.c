@@ -82,7 +82,7 @@ void main(void)
     func_800948F4();
     load_common_graphics();
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
-    func_8008AE98();
+    mot_ape_init();
     func_800AD38C();
     g_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;

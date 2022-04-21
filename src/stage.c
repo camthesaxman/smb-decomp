@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "event.h"
 #include "global.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "load.h"
@@ -18,7 +19,6 @@
 #include "preview.h"
 #include "stage.h"
 #include "stcoli.h"
-#include "gma.h"
 
 #include "../data/common.nlobj.h"
 
@@ -103,7 +103,7 @@ void ev_stage_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    if (infoWork.unk0 & (1 << (31 - 0x17)))
+    if (infoWork.flags & (1 << 8))
     {
         if (modeCtrl.unk0 > 0x78)
             lbl_80206DEC.g_stageTimer = 0.0f;
@@ -111,7 +111,7 @@ void ev_stage_main(void)
             lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.unk0;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (infoWork.unk0 & (1 << (31 - 0x1B)))
+    else if (infoWork.flags & (1 << 4))
     {
         lbl_80206DEC.g_stageTimer =
             func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -490,7 +490,7 @@ void load_stage(int stageId)
             decodedStageGmaPtr = NULL;
         }
         free_nlobj(&naomiStageObj, &naomiStageTpl);
-        func_800472E8();
+        free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
     }
@@ -505,7 +505,7 @@ void load_stage(int stageId)
     {
         animGroupCount =
             decodedStageLzPtr->animGroupCount < 0x48 ? decodedStageLzPtr->animGroupCount : 0x48;
-        if (gamePauseStatus & (1 << (31 - 0x1D)))
+        if (gamePauseStatus & (1 << 2))
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
         func_80045194();
@@ -545,7 +545,7 @@ void unload_stage(void)
             decodedStageGmaPtr = NULL;
         }
         free_nlobj(&naomiStageObj, &naomiStageTpl);
-        func_800472E8();
+        free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
 
@@ -1780,7 +1780,7 @@ void load_stagedef(int stageId)
         {
             u32 r3 = r28->flags;
 
-            if (r3 & (1 << (31 - 0x10)))
+            if (r3 & (1 << 15))
             {
                 r28->flags &= 0xF;
                 r28->flags |= (r3 >> 12) & 0xFFFF0;
@@ -1802,7 +1802,7 @@ void load_stagedef(int stageId)
         {
             u32 r3 = r28->flags;
 
-            if (r3 & (1 << (31 - 0x10)))
+            if (r3 & (1 << 15))
             {
                 r28->flags = r3 & 0xF;
                 r28->flags |= (r3 >> 12) & 0xFFFF0;
@@ -1875,7 +1875,7 @@ void load_stagedef(int stageId)
         decodedStageLzPtr->unk7C = 1;
 }
 
-void func_800472E8(void)
+void free_stagedef(void)
 {
     if (decodedStageLzPtr != NULL)
     {
@@ -1959,7 +1959,7 @@ struct Struct80092F90
 void stage_draw(void)
 {
     int r31;
-    struct AnimGroupInfo *r28;
+    struct AnimGroupInfo *animGrp;
     struct StageAnimGroup *r27;
     int i;
     int (*r25)();
@@ -1974,11 +1974,13 @@ void stage_draw(void)
     if (backgroundInfo.unk8C != 0)
         g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
     sp7C.unk0 = 32;
-    r28 = animGroups;
-    r27 = decodedStageLzPtr->animGroups;
-    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, r28++, r27++)
+
+    // draw goals
+    for (animGrp = animGroups, r27 = decodedStageLzPtr->animGroups, i = 0;
+     i < decodedStageLzPtr->animGroupCount;
+     i++, animGrp++, r27++)
     {
-        struct StageGoal *r24;
+        struct StageGoal *goal;
         int j;
         struct GMAModel *model;
 
@@ -1986,18 +1988,18 @@ void stage_draw(void)
         {
             mathutil_mtxA_from_mtxB();
             if (i > 0)
-                mathutil_mtxA_mult_right(r28->transform);
+                mathutil_mtxA_mult_right(animGrp->transform);
             mathutil_mtxA_to_mtx(sp4C);
-            r24 = r27->goals;
-            for (j = 0; j < r27->goalCount; j++, r24++)
+            goal = r27->goals;
+            for (j = 0; j < r27->goalCount; j++, goal++)
             {
                 mathutil_mtxA_from_mtx(sp4C);
-                mathutil_mtxA_translate(&r24->pos);
-                mathutil_mtxA_rotate_z(r24->rotZ);
-                mathutil_mtxA_rotate_y(r24->rotY);
-                mathutil_mtxA_rotate_x(r24->rotX);
-                func_8000E338(r24->type);
-                switch (r24->type)
+                mathutil_mtxA_translate(&goal->pos);
+                mathutil_mtxA_rotate_z(goal->rotZ);
+                mathutil_mtxA_rotate_y(goal->rotY);
+                mathutil_mtxA_rotate_x(goal->rotX);
+                func_8000E338(goal->type);
+                switch (goal->type)
                 {
                 default:
                     model = goalModels[0];
@@ -2029,10 +2031,13 @@ void stage_draw(void)
             }
         }
     }
+
     func_8000E3BC();
     sp7C.unk0 = 2;
+
     if (dipSwitches & DIP_TRIANGLE)
     {
+        // draw debug triangle
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
@@ -2041,7 +2046,10 @@ void stage_draw(void)
             NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
+    {
+        // draw collision mesh
         g_draw_stage_collision();
+    }
     else
     {
         if (decodedStageGmaPtr != NULL)
@@ -2070,8 +2078,8 @@ void stage_draw(void)
                         model = r27->unk4;
                         if (model != NULL && model != NULL) // WTF?
                         {
-                            if (!(lbl_801EEC90.unk0 & (1 << (31 - 0x1D))) ||
-                                (r27->unk0 & (1 << (31 - 0x1D))))
+                            if (!(lbl_801EEC90.unk0 & (1 << 2)) ||
+                                (r27->unk0 & (1 << 2)))
                             {
                                 avdisp_draw_model_culled_sort_none(model);
                                 if (r31 != 0)
@@ -2187,6 +2195,8 @@ void stage_draw(void)
                 }
             }
         }
+
+        // draw dynamic stage parts
         if (dynamicStageParts != NULL)
         {
             struct DynamicStagePart *dyn;
@@ -2204,14 +2214,15 @@ void stage_draw(void)
                 dyn++;
             }
         }
+
         if (currStageId == ST_101_BLUR_BRIDGE)
             draw_blur_bridge_accordions();
 
         // draw starting position marker
-        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << (31 - 0x1E))))
+        if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << 1)))
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
-            if (lbl_801EEC90.unk0 & (1 << (31 - 0x1C)))
+            if (lbl_801EEC90.unk0 & (1 << 3))
             {
                 mathutil_mtxA_from_identity();
                 mathutil_mtxA_scale_s(0.8f);
@@ -2294,7 +2305,8 @@ void stage_draw(void)
     }
 }
 
-void func_80047D70(void)
+/* Draws the preview of the next stage in the sky. */
+void draw_stage_preview(void)
 {
     if (previewLoaded)
     {

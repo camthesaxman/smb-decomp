@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
-
 #include <dolphin/GXEnum.h>
+
 #include "global.h"
 #include "adv.h"
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "info.h"
 #include "input.h"
@@ -23,7 +24,6 @@
 #include "stage.h"
 #include "world.h"
 #include "tevutil.h"
-#include "gma.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -135,7 +135,7 @@ void draw_3d_scene(void)
         case SMD_GAME_RESULT_INIT:
         case SMD_GAME_RESULT_MAIN:
         case SMD_GAME_RESULT_MENU:
-            func_8000D018();
+            draw_results_scene();
             break;
         case SMD_GAME_ENDING_INIT:
         case SMD_GAME_ENDING_MAIN:
@@ -148,12 +148,12 @@ void draw_3d_scene(void)
             break;
         case SMD_GAME_CONTINUE_INIT:
         case SMD_GAME_CONTINUE_MAIN:
-            func_8000CA9C();
+            draw_continue_scene();
             draw_test_camera_target();
             break;
         case SMD_GAME_EXTRA_INIT:
         case SMD_GAME_EXTRA_WAIT:
-            func_8000CF94();
+            draw_extra_scene();
             draw_test_camera_target();
             break;
         case SMD_GAME_OVER_INIT:
@@ -287,7 +287,7 @@ void draw_adv_demo_scene(void)
                 ballInfo[i].ape->unk30.x,
                 ballInfo[i].ape->unk30.y - 0.45,
                 ballInfo[i].ape->unk30.z);
-            f30 = lbl_80173FD0[ballInfo[i].ape->unk10];
+            f30 = lbl_80173FD0[ballInfo[i].ape->charaId];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
             avdisp_set_post_multiply_color(0.38f, 0.39f, 0.4f, 1.0f);
@@ -588,7 +588,7 @@ void draw_normal_game_scene(void)
                     continue;
             }
             currentBallStructPtr = &ballInfo[i];
-            func_80018648(i);
+            g_call_camera_apply_viewport(i);
             g_draw_ball_shadow();
             func_80054FF0();
             func_800225C0(i);
@@ -607,7 +607,7 @@ void draw_normal_game_scene(void)
             }
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                func_80047D70();
+                draw_stage_preview();
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(16);
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
@@ -644,7 +644,7 @@ void func_8000C7A4(void)
          && (cameraInfo[i].flags & (1 << 6)))
         {
             currentBallStructPtr = &ballInfo[i];
-            func_80018648(i);
+            g_call_camera_apply_viewport(i);
             func_800225C0(i);
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
@@ -702,7 +702,7 @@ void func_8000C8D4(void)
     }
 }
 
-void func_8000CA9C(void)
+void draw_continue_scene(void)
 {
     BallEnvFunc r31;
     BallEnvFunc r30;
@@ -712,10 +712,10 @@ void func_8000CA9C(void)
     Mtx sp2C;
 
     lbl_801EEC90.unk0 |= 1;
-    func_80018648(modeCtrl.unk2C);
+    g_call_camera_apply_viewport(modeCtrl.currPlayer);
     g_draw_ball_shadow();
     func_80054FF0();
-    func_800225C0(modeCtrl.unk2C);
+    func_800225C0(modeCtrl.currPlayer);
     draw_monkey();
 
     if (lbl_802F1F34 != 0)
@@ -841,9 +841,9 @@ void func_8000CA9C(void)
     func_8000E3BC();
 }
 
-void func_8000CF94(void)
+void draw_extra_scene(void)
 {
-    func_80018648(modeCtrl.unk2C);
+    g_call_camera_apply_viewport(modeCtrl.currPlayer);
     g_draw_ball_shadow();
     func_80054FF0();
     draw_monkey();
@@ -856,7 +856,7 @@ void func_8000CF94(void)
     ord_tbl_draw_nodes();
 }
 
-void func_8000D018(void)
+void draw_results_scene(void)
 {
     int i;
     struct Ball *r23 = currentBallStructPtr;
@@ -872,7 +872,7 @@ void func_8000D018(void)
             if (cameraInfo[i].flags & (1 << 6))
                 lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
-            func_80018648(i);
+            g_call_camera_apply_viewport(i);
             g_draw_ball_shadow();
             func_80054FF0();
             func_800225C0(i);
@@ -1190,7 +1190,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(infoWork.unk0 & (1 << 3)))
+        if (!(infoWork.flags & (1 << 3)))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1208,7 +1208,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (infoWork.unk0 & (1 << 3))
+        if (infoWork.flags & (1 << 3))
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1218,7 +1218,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (infoWork.unk0 & (1 << 3))
+    if (infoWork.flags & (1 << 3))
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;
@@ -1358,9 +1358,9 @@ void draw_monkey(void)
 void func_8000E134(void)
 {
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-        func_80038AB4();
+        g_ball_shadow_something_1();
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-        func_800685C4();
+        item_draw_shadows();
 }
 
 void func_8000E180(void)

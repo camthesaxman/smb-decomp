@@ -138,7 +138,7 @@ lbl_000001F8:
 /* 00000250 4BFFFEFD */ bl bitmap_load_group
 /* 00000254 7FC3F378 */ mr r3, r30
 /* 00000258 4BFFFEF5 */ bl OSSetCurrentHeap
-/* 0000025C 4BFFFEF1 */ bl func_800171E0
+/* 0000025C 4BFFFEF1 */ bl g_init_player_data_1
 /* 00000260 480003E9 */ bl lbl_00000648
 /* 00000264 3C800000 */ lis r4, lbl_00004024@ha
 /* 00000268 3C600000 */ lis r3, lbl_802F1FD4@ha
@@ -1110,7 +1110,7 @@ lbl_0000101C:
 /* 000010DC 38600064 */ li r3, 0x64
 /* 000010E0 38800008 */ li r4, 8
 /* 000010E4 4BFFF069 */ bl g_play_music
-/* 000010E8 4BFFF065 */ bl func_800174C8
+/* 000010E8 4BFFF065 */ bl g_init_player_data_2
 /* 000010EC 801E0000 */ lwz r0, 0(r30)
 /* 000010F0 2C000000 */ cmpwi r0, 0
 /* 000010F4 40820070 */ bne lbl_00001164
@@ -2411,7 +2411,7 @@ lbl_000023BC:
 /* 000023CC 9421FFF8 */ stwu r1, -8(r1)
 /* 000023D0 4BFFDD7D */ bl g_play_music
 /* 000023D4 38600078 */ li r3, 0x78
-/* 000023D8 4BFFDD75 */ bl func_800790BC
+/* 000023D8 4BFFDD75 */ bl show_ready_text
 /* 000023DC 3C600000 */ lis r3, lbl_802F1FF0@ha
 /* 000023E0 38830000 */ addi r4, r3, lbl_802F1FF0@l
 /* 000023E4 38000000 */ li r0, 0
@@ -2483,7 +2483,7 @@ lbl_000024D0:
 /* 000024DC 9421FFF8 */ stwu r1, -8(r1)
 /* 000024E0 4BFFDC6D */ bl event_resume
 /* 000024E4 3860003C */ li r3, 0x3c
-/* 000024E8 4BFFDC65 */ bl func_8007C104
+/* 000024E8 4BFFDC65 */ bl show_go_text
 /* 000024EC 3C600000 */ lis r3, lbl_802F1FF0@ha
 /* 000024F0 38830000 */ addi r4, r3, lbl_802F1FF0@l
 /* 000024F4 38000000 */ li r0, 0
@@ -4112,7 +4112,7 @@ lbl_00003C60:
 /* 00003C9C 7C188214 */ add r0, r24, r16
 /* 00003CA0 90150000 */ stw r0, 0(r21)
 /* 00003CA4 7E439378 */ mr r3, r18
-/* 00003CA8 4BFFC4A5 */ bl func_80018648
+/* 00003CA8 4BFFC4A5 */ bl g_call_camera_apply_viewport
 /* 00003CAC 4BFFC4A1 */ bl g_draw_ball_shadow
 /* 00003CB0 4BFFC49D */ bl func_80054FF0
 /* 00003CB4 7E439378 */ mr r3, r18
@@ -5137,7 +5137,7 @@ lbl_00004BB8:
 /* 00004BC4 386000B4 */ li r3, 0xb4
 /* 00004BC8 60000200 */ ori r0, r0, 0x200
 /* 00004BCC 90040000 */ stw r0, 0(r4)
-/* 00004BD0 4BFFB57D */ bl func_8007CE50
+/* 00004BD0 4BFFB57D */ bl show_fallout_text
 /* 00004BD4 3860016A */ li r3, 0x16a
 /* 00004BD8 3880016B */ li r4, 0x16b
 /* 00004BDC 4BFFB571 */ bl func_8002BFCC
@@ -5560,7 +5560,7 @@ lbl_000051A4:
 /* 000051F0 48000010 */ b lbl_00005200
 lbl_000051F4:
 /* 000051F4 7FA3EB78 */ mr r3, r29
-/* 000051F8 4BFFAF55 */ bl func_8008B2D4
+/* 000051F8 4BFFAF55 */ bl g_ape_free
 /* 000051FC 480001F4 */ b lbl_000053F0
 lbl_00005200:
 /* 00005200 3C600000 */ lis r3, gamePauseStatus@ha

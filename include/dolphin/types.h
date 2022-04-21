@@ -18,7 +18,6 @@ typedef int BOOL;
 #define FALSE 0
 #define TRUE 1
 
-
 #if defined(__MWERKS__)
 #define AT_ADDRESS(addr) : (addr)
 #elif defined(__GNUC__)
@@ -27,5 +26,7 @@ typedef int BOOL;
 #else
 #error unknown compiler
 #endif
+
+#define ATTRIBUTE_ALIGN(num) __attribute__((aligned(num)))
 
 #endif

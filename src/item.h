@@ -11,7 +11,7 @@ struct Item
     /*0x02*/ s16 unk2;
     /*0x04*/ s16 type;
     /*0x06*/ s16 subtype;
-    /*0x08*/ u32 unk8;
+    /*0x08*/ u32 flags;
     /*0x0C*/ s16 unkC;
     /*0x0E*/ s16 state;
     s16 unk10;
@@ -45,6 +45,11 @@ struct Item
     float unk88;
 };  // size = 0x8C
 
+enum
+{
+    ITEM_FLAG_INVISIBLE = (1 << 0),
+};
+
 struct ItemFuncs
 {
     void (*init)(struct Item *);
@@ -63,7 +68,7 @@ void ev_item_main(void);
 void ev_item_dest(void);
 void item_draw();
 // ? func_80068474();
-void func_800685C4(void);
+void item_draw_shadows(void);
 void func_800689B4(int);
 void make_stage_bananas(struct StageAnimGroup *, int);
 void item_dummy_init(struct Item *);

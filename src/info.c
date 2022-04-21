@@ -29,8 +29,8 @@ void func_80022F14(void)
     infoWork.unk8 = 0;
     infoWork.unk1E = 1;
     infoWork.unk20 = 1;
-    infoWork.unk28 = 0;
-    infoWork.unk2A = 0;
+    infoWork.livesLost = 0;
+    infoWork.continuesUsed = 0;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
     {
         lbl_802F1CAC = 0;
@@ -39,7 +39,7 @@ void func_80022F14(void)
 }
 
 u32 lbl_801F3A8C[4];                    FORCE_BSS_ORDER(lbl_801F3A8C)
-struct Struct801F3A58 lbl_801F3A9C[4];  FORCE_BSS_ORDER(lbl_801F3A9C)
+struct Struct801F3A58 playerInfos[4];  FORCE_BSS_ORDER(playerInfos)
 
 void ev_info_init(void)
 {
@@ -55,10 +55,10 @@ void ev_info_init(void)
         infoWork.timerCurr = 60 * 60;
     infoWork.timerMax = infoWork.timerCurr;
 
-    if (func_800672D0(currStageId) != 0)
-        infoWork.unk0 |= (1 << 6);
+    if (is_bonus_stage(currStageId))
+        infoWork.flags |= INFO_FLAG_BONUS_STAGE;
     if (func_80067264(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags) != 0)
-        infoWork.unk0 |= (1 << 12);
+        infoWork.flags |= (1 << 12);
 }
 
 void ev_info_main(void)
@@ -102,15 +102,15 @@ void ev_info_main(void)
             }
             if (ball->flags & (1 << 24))
             {
-                infoWork.unk0 &= -2065;
+                infoWork.flags &= -2065;
                 ball->flags |= BALL_FLAG_GOAL;
                 ball->state = 5;
                 ball->unk150 = ball->pos;
             }
-            if (!(ball->flags & BALL_FLAG_GOAL) && !(infoWork.unk0 & (1 << 5)))
+            if (!(ball->flags & BALL_FLAG_GOAL) && !(infoWork.flags & (1 << 5)))
             {
                 func_8004923C(0x5A);
-                infoWork.unk0 &= -2065;
+                infoWork.flags &= -2065;
                 r20++;
                 ball->flags |= BALL_FLAG_GOAL;
                 ball->state = 5;
@@ -118,7 +118,7 @@ void ev_info_main(void)
                 cameraInfo[i].state = 14;
                 if (r20 == 1)
                     infoWork.unk2C++;
-                if (!(infoWork.unk0 & (1 << 4)) && !(infoWork.unk0 & (1 << 6)))
+                if (!(infoWork.flags & (1 << 4)) && !(infoWork.flags & (1 << 6)))
                 {
                     ball->unk2F = infoWork.unk2C;
                     if (ball->unk2F == 1)
@@ -161,10 +161,10 @@ void ev_info_main(void)
                 if (!(spC8.flags & 1))
                     break;
             }
-            infoWork.unk0 &= -2065;
+            infoWork.flags &= -2065;
             ball->flags |= BALL_FLAG_GOAL;
             ball->state = BALL_STATE_GOAL_INIT;
-            if (!(infoWork.unk0 & (1 << 5)))
+            if (!(infoWork.flags & (1 << 5)))
             {
                 g_time_over_all_competition_mode_balls();
                 func_800245E4(ball, goalId, sp64);
@@ -173,7 +173,7 @@ void ev_info_main(void)
             }
             func_80049268(ball->unk2E);
             if (gameSubmode == SMD_ADV_GAME_PLAY_MAIN)
-                infoWork.unk0 |= INFO_FLAG_GOAL;
+                infoWork.flags |= INFO_FLAG_GOAL;
             init_physball_from_ball(ball, &sp6C);
             if (sp64 != sp6C.animGroupId)
                 tf_physball_to_anim_group_space(&sp6C, sp64);
@@ -192,45 +192,29 @@ void ev_info_main(void)
     infoWork.unk24 = 0;
 
     {
-        struct Item *r4 = itemInfo;
+        struct Item *item = itemInfo;
         s8 *r7 = spritePoolInfo.unk1C;
 
-        for (i = 0; i < spritePoolInfo.unk18; r4++, i++, r7++)
+        for (i = 0; i < spritePoolInfo.unk18; item++, i++, r7++)
         {
-            if (*r7 != 0 && *r7 != 3 && r4->type == 0 && (r4->unk8 & (1 << 1)))
+            if (*r7 != 0 && *r7 != 3 && item->type == 0 && (item->flags & (1 << 1)))
                 infoWork.unk24++;
         }
     }
 
-    if ((infoWork.unk0 & (1 << 6))
-     && !(infoWork.unk0 & (1 << 5))
+    if ((infoWork.flags & (1 << 6))
+     && !(infoWork.flags & (1 << 5))
      && infoWork.unk24 == 0)
     {
-        struct Ball *r3;
-        struct Ball *r4;
-        s8 *r5;
-        int i;
-
-        infoWork.unk0 |= 0x228;
+        infoWork.flags |= 0x228;
         func_800493C4(ball->unk2E);
-        r4 = currentBallStructPtr;
-        r5 = spritePoolInfo.unkC;
-        r3 = ballInfo;
-        for (i = 0; i < spritePoolInfo.unk8; i++, r3++, r5++)
-        {
-            if (*r5 == 2)
-            {
-                currentBallStructPtr = r3;
-                r3->flags |= 0x2000;
-            }
-        }
-        currentBallStructPtr = r4;
+        BALL_FOREACH( ball->flags |= 0x2000; )
     }
 
-    if (!(infoWork.unk0 & (1 << 5))
-     && !(infoWork.unk0 & (1 << 3))
+    if (!(infoWork.flags & (1 << 5))
+     && !(infoWork.flags & (1 << 3))
      && (dipSwitches & DIP_DEBUG)
-     && ((infoWork.unk0 & (1 << 6)) || decodedStageLzPtr->goals != NULL)
+     && ((infoWork.flags & (1 << 6)) || decodedStageLzPtr->goals != NULL)
      && (lbl_801F3D88[0] & (1 << 10))
      && (lbl_801F3D88[0] & (1 << 11)))
     {
@@ -238,7 +222,7 @@ void ev_info_main(void)
         int r9;
 
         if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
-            infoWork.unk30 = modeCtrl.unk2C;
+            infoWork.unk30 = modeCtrl.currPlayer;
         else
             infoWork.unk30 = 0;
 
@@ -281,40 +265,25 @@ void ev_info_main(void)
         infoWork.unkE = 0;
         infoWork.unk10 = ball->vel;
         infoWork.unk1C = infoWork.timerCurr;
-        if (!(infoWork.unk0 & (1 << 6)) && (lbl_801F3D88[0] & 1))
+        if (!(infoWork.flags & (1 << 6)) && (lbl_801F3D88[0] & 1))
             infoWork.unk22 = 10;
 
-        {
-            struct Ball *r4;
-            struct Ball *r5;
-            s8 *r6;
-            int i;
-
-            r5 = currentBallStructPtr;
-            r6 = spritePoolInfo.unkC;
-            r4 = ballInfo;
-            for (i = 0; i < spritePoolInfo.unk8; i++, r4++, r6++)
+        BALL_FOREACH(
+            if (!(infoWork.flags & (1 << 6)))
             {
-                if (*r6 != 2)
-                    continue;
-                currentBallStructPtr = r4;
-                if (!(infoWork.unk0 & (1 << 6)))
+                if (!(ball->flags & (1 << 12)))
                 {
-                    if (!(r4->flags & (1 << 12)))
-                    {
-                        r4->flags |= 0x1000;
-                        r4->state = 5;
-                        r4->unk150 = r4->pos;
-                    }
+                    ball->flags |= 0x1000;
+                    ball->state = 5;
+                    ball->unk150 = ball->pos;
                 }
-                else
-                    r4->flags |= 0x2000;
             }
-            currentBallStructPtr = r5;
-        }
+            else
+                ball->flags |= 0x2000;
+        )
 
         g_time_over_all_competition_mode_balls();
-        if (!(infoWork.unk0 & (1 << 6)))
+        if (!(infoWork.flags & (1 << 6)))
         {
             struct PhysicsBall sp8;
 
@@ -325,7 +294,7 @@ void ev_info_main(void)
         }
     }
 
-    if (!(infoWork.unk0 & (1 << 5)) && !(advDemoInfo.flags & (1 << 8)))
+    if (!(infoWork.flags & (1 << 5)) && !(advDemoInfo.flags & (1 << 8)))
     {
         r23 = spritePoolInfo.unkC;
         ball = ballInfo;
@@ -348,7 +317,7 @@ void ev_info_main(void)
                 ball->flags |= 0x800;
                 break;
             default:
-                infoWork.unk0 |= 0xC;
+                infoWork.flags |= 0xC;
                 ball->flags |= 0x800;
                 func_800492FC(ball->unk2E);
                 break;
@@ -356,10 +325,10 @@ void ev_info_main(void)
         }
     }
 
-    if (!(infoWork.unk0 & (1 << 3)) && !(dipSwitches & DIP_TIME_STOP))
+    if (!(infoWork.flags & (1 << 3)) && !(dipSwitches & DIP_TIME_STOP))
     {
         infoWork.unk8++;
-        if (!(infoWork.unk0 & (1 << 11)))
+        if (!(infoWork.flags & (1 << 11)))
             infoWork.timerCurr--;
         
         // handle time over
@@ -371,60 +340,24 @@ void ev_info_main(void)
                 if (infoWork.unk2C > 0)
                 {
                     g_time_over_all_competition_mode_balls();
-                    infoWork.unk0 |= 0x2000;
+                    infoWork.flags |= 0x2000;
                     break;
                 }
-                infoWork.unk0 |= 8 | INFO_FLAG_TIMEOVER;
+                infoWork.flags |= 8 | INFO_FLAG_TIMEOVER;
                 func_80049368(ball->unk2E);
-                if (!(infoWork.unk0 & (1 << 6)))
-                {
-                    struct Ball *ball = ballInfo;
-                    struct Ball *ballBackup = currentBallStructPtr;
-                    s8 *r7 = spritePoolInfo.unkC;
-                    int i;
-
-                    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r7++)
-                    {
-                        if (*r7 == 2)
-                        {
-                            currentBallStructPtr = ball;
-                            ball->unk126 = 0;
-                            ball->unk128++;
-                        }
-                    }
-                    currentBallStructPtr = ballBackup;
-                }
-
-                {
-                    struct Ball *ball;
-                    struct Ball *ballBackup;
-                    s8 *r5;
-                    int i;
-
-                    ballBackup = currentBallStructPtr;
-                    r5 = spritePoolInfo.unkC;
-                    ball = ballInfo;
-                    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r5++)
-                    {
-                        if (*r5 == 2)
-                        {
-                            currentBallStructPtr = ball;
-                            ball->flags |= BALL_FLAG_TIMEOVER;
-                        }
-                    }
-                    currentBallStructPtr = ballBackup;
-                }
-
+                if (!(infoWork.flags & (1 << 6)))
+                    BALL_FOREACH( ball->unk126 = 0; ball->unk128++; )
+                BALL_FOREACH( ball->flags |= BALL_FLAG_TIMEOVER; )
                 break;
             case 4:
-                infoWork.unk0 |= INFO_FLAG_TIMEOVER | (1 << 3);
+                infoWork.flags |= INFO_FLAG_TIMEOVER | (1 << 3);
                 break;
             default:
                 {
                     struct Ball *ball;
 
                     ball = currentBallStructPtr;
-                    infoWork.unk0 |= INFO_FLAG_TIMEOVER | (1 << 3);
+                    infoWork.flags |= INFO_FLAG_TIMEOVER | (1 << 3);
                     func_80049368(ball->unk2E);
                     ball->flags |= BALL_FLAG_TIMEOVER;
                 }
@@ -433,25 +366,7 @@ void ev_info_main(void)
         }
     }
 
-    {
-        struct Ball *ball;
-        struct Ball *ballBackup;
-        s8 *r22;
-        int i;
-
-        ballBackup = currentBallStructPtr;
-        ball = ballInfo;
-        r22 = spritePoolInfo.unkC;
-        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r22++)
-        {
-            if (*r22 == 2)
-            {
-                currentBallStructPtr = ball;
-                func_8003CB88(ball);
-            }
-        }
-        currentBallStructPtr = ballBackup;
-    }
+    BALL_FOREACH( func_8003CB88(ball); )
 }
 
 void ev_info_dest(void)
@@ -464,8 +379,8 @@ void func_80023AF4(void)
     int unk8 = infoWork.unk8;
     int unk1E = infoWork.unk1E;
     int unk20 = infoWork.unk20;
-    int unk28 = infoWork.unk28;
-    int unk2A = infoWork.unk2A;
+    int livesLost = infoWork.livesLost;
+    int continuesUsed = infoWork.continuesUsed;
     int unk2E = infoWork.unk2E;
 
     memset(&infoWork, 0, sizeof(infoWork));
@@ -473,8 +388,8 @@ void func_80023AF4(void)
     infoWork.unk8  = unk8;
     infoWork.unk1E = unk1E;
     infoWork.unk20 = unk20;
-    infoWork.unk28 = unk28;
-    infoWork.unk2A = unk2A;
+    infoWork.livesLost = livesLost;
+    infoWork.continuesUsed = continuesUsed;
     infoWork.unk2E = unk2E;
     infoWork.unk22 = 1;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
@@ -533,26 +448,14 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnim
 
 void g_time_over_all_competition_mode_balls(void)
 {
-    if (infoWork.unk0 & (1 << 6))
-        infoWork.unk0 |= 0x628;
+    if (infoWork.flags & (1 << 6))
+        infoWork.flags |= 0x628;
     else
-        infoWork.unk0 |= (1 << 5) | (1 << 3) | INFO_FLAG_GOAL;
+        infoWork.flags |= (1 << 5) | (1 << 3) | INFO_FLAG_GOAL;
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
-        struct Ball *ball;
-        struct Ball *ballBackup;
-        s8 *r8;
-        int i;
-
-        ballBackup = currentBallStructPtr;
-        r8 = spritePoolInfo.unkC;
-        ball = ballInfo;
-        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r8++)
-        {
-            if (*r8 != 2)
-                continue;
-            currentBallStructPtr = ball;
+        BALL_FOREACH(
             if (!(ball->flags & BALL_FLAG_GOAL))
             {
                 ball->flags |= 0x500;
@@ -560,8 +463,7 @@ void g_time_over_all_competition_mode_balls(void)
                 ball->unk128++;
                 ball->flags |= BALL_FLAG_TIMEOVER;
             }
-        }
-        currentBallStructPtr = ballBackup;
+        )
     }
 }
 
@@ -827,7 +729,7 @@ int func_800246F4(struct Ball *ball)
 // for time bonus?
 void func_80024860(struct Ball *ball)
 {
-    lbl_802F1DFC = ball->ape->unk10;
+    lbl_802F1DFC = ball->ape->charaId;
     lbl_802F1DF8 = ball->unk2E;
     if (infoWork.timerCurr > (infoWork.timerMax >> 1))
     {

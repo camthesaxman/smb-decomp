@@ -41,7 +41,7 @@ struct StageViewInfo
     s16 unk3C;
     s16 unk3E;
     float unk40;
-    struct AnimGroupInfo *unk44;
+    struct AnimGroupInfo *animGroupsBackup;
     float unk48;
 };
 
@@ -53,20 +53,25 @@ void ev_view_init(void)
     if (stageViewInfo == NULL)
         OSPanic("view.c", 114, "cannot OSAlloc\n");
     memset(stageViewInfo, 0, sizeof(*stageViewInfo));
+
     get_curr_stage_view_bounds(&stageViewInfo->stageBounds);
     stageViewInfo->unk20 = stageViewInfo->stageBounds.radius * 1.1313;
     stageViewInfo->unk24 = 0.75f;
     stageViewInfo->unk38 = -5632;
     stageViewInfo->unk3A = 0;
+
+    // back up anim groups since the stage view clobbers them
     if (animGroupCount > 0)
     {
-        stageViewInfo->unk44 = OSAlloc(72 * sizeof(*stageViewInfo->unk44));
-        if (stageViewInfo->unk44 == NULL)
+        stageViewInfo->animGroupsBackup = OSAlloc(72 * sizeof(*stageViewInfo->animGroupsBackup));
+        if (stageViewInfo->animGroupsBackup == NULL)
             OSPanic("view.c", 126, "cannot OSAlloc\n");
-        memcpy(stageViewInfo->unk44, animGroups, 72 * sizeof(*stageViewInfo->unk44));
+        memcpy(stageViewInfo->animGroupsBackup, animGroups, 72 * sizeof(*stageViewInfo->animGroupsBackup));
     }
+
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         camera_setup_singleplayer_viewport();
+
     view_init_stage_anim();
     func_800A66E4();
     view_create_text_sprites();
@@ -115,39 +120,43 @@ void ev_view_dest(void)
     func_800A66CC();
     func_800A671C();
     view_destroy_text_sprites();
+
     if (stageViewInfo != NULL)
     {
-        if (stageViewInfo->unk44 != NULL)
+        // restore backup of anim groups
+        if (stageViewInfo->animGroupsBackup != NULL)
         {
-            memcpy(animGroups, stageViewInfo->unk44, 72 * sizeof(*stageViewInfo->unk44));
-            OSFree(stageViewInfo->unk44);
+            memcpy(animGroups, stageViewInfo->animGroupsBackup, 72 * sizeof(*stageViewInfo->animGroupsBackup));
+            OSFree(stageViewInfo->animGroupsBackup);
         }
         OSFree(stageViewInfo);
         stageViewInfo = NULL;
     }
+
+    // restore cameras for competition mode
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount == 3)
         {
-            switch (modeCtrl.unk42)
+            switch (modeCtrl.splitscreenMode)
             {
             default:
-            case 0:
+            case SPLITSCREEN_1P_WIDE:
                 camera_setup_splitscreen_viewports(3);
                 break;
-            case 1:
+            case SPLITSCREEN_2P_WIDE:
                 setup_camera_viewport(0, 0.0f, 0.5f, 0.5f, 0.5f);
                 setup_camera_viewport(1, 0.0f, 0.0f, 1.0f, 0.5f);
                 setup_camera_viewport(2, 0.5f, 0.5f, 0.5f, 0.5f);
                 setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
                 break;
-            case 2:
+            case SPLITSCREEN_3P_WIDE:
                 setup_camera_viewport(0, 0.0f, 0.0f, 0.5f, 0.5f);
                 setup_camera_viewport(1, 0.5f, 0.0f, 0.5f, 0.5f);
                 setup_camera_viewport(2, 0.0f, 0.5f, 1.0f, 0.5f);
                 setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
                 break;
-            case 3:
+            case SPLITSCREEN_4_SPLIT:
                 camera_setup_splitscreen_viewports(4);
                 break;
             }
@@ -161,10 +170,10 @@ void view_draw(void)
 {
     struct Camera *camera;
     struct Ball *ballBackup;
-    struct Camera cameraBackup = cameraInfo[modeCtrl.unk2C];
+    struct Camera cameraBackup = cameraInfo[modeCtrl.currPlayer];
     u8 dummy[16];
     Mtx projMtx;
-    camera = &cameraInfo[modeCtrl.unk2C];
+    camera = &cameraInfo[modeCtrl.currPlayer];
 
     lbl_801EEC90.unk0 |= 2;
     view_apply_camera(camera);
@@ -192,9 +201,9 @@ void view_draw(void)
         func_80095398(4);
     view_apply_camera(camera);
     if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-        func_800A6A88();
+        draw_stage_geometry();
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-        func_800A6874();
+        draw_banana_shadows();
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
     {
         ord_tbl_set_depth_offset(400.0f);
@@ -205,9 +214,9 @@ void view_draw(void)
         func_80095398(16);
     view_apply_camera(camera);
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-        func_800A6734();
+        draw_items();
     if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-        func_800A6BF0();
+        draw_stage_objects();
     ord_tbl_draw_nodes();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(8);
@@ -215,13 +224,13 @@ void view_draw(void)
     currentBallStructPtr = ballBackup;
     func_80017FCC();
     lbl_801EEC90.unk0 &= ~(1 << 1);
-    cameraInfo[modeCtrl.unk2C] = cameraBackup;
+    cameraInfo[modeCtrl.currPlayer] = cameraBackup;
 }
 
 void func_800A5F28(void)
 {
     if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-        func_800A6A88();
+        draw_stage_geometry();
     if (eventInfo[EVENT_BACKGROUND].state == EV_STATE_RUNNING)
     {
         ord_tbl_set_depth_offset(400.0f);
@@ -229,9 +238,9 @@ void func_800A5F28(void)
         ord_tbl_set_depth_offset(0.0f);
     }
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-        func_800A6734();
+        draw_items();
     if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-        func_800A6BF0();
+        draw_stage_objects();
     ord_tbl_draw_nodes();
 }
 
@@ -352,45 +361,46 @@ void view_animate_stage(void)
     f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     t -= f3 * mathutil_floor(t / f3);
     t += decodedStageLzPtr->loopStartSeconds;
+
     r30 = decodedStageLzPtr->animGroups;
     animGroup = animGroups;
     for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, r30++)
     {
-        struct StageAnimGroupAnim *r28 = r30->anim;
+        struct StageAnimGroupAnim *anim = r30->anim;
 
-        if (r28 == NULL2)
+        if (anim == NULL2)
             continue;
 
-        if (r28->rotXKeyframes != NULL2)
+        if (anim->rotXKeyframes != NULL2)
         {
             animGroup->prevRot.x = animGroup->rot.x;
-            animGroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(r28->rotXKeyframeCount, r28->rotXKeyframes, t));
+            animGroup->rot.x = DEGREES_TO_S16(interpolate_keyframes(anim->rotXKeyframeCount, anim->rotXKeyframes, t));
         }
-        if (r28->rotYKeyframes != NULL2)
+        if (anim->rotYKeyframes != NULL2)
         {
             animGroup->prevRot.y = animGroup->rot.y;
-            animGroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(r28->rotYKeyframeCount, r28->rotYKeyframes, t));
+            animGroup->rot.y = DEGREES_TO_S16(interpolate_keyframes(anim->rotYKeyframeCount, anim->rotYKeyframes, t));
         }
-        if (r28->rotZKeyframes != NULL2)
+        if (anim->rotZKeyframes != NULL2)
         {
             animGroup->prevRot.z = animGroup->rot.z;
-            animGroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(r28->rotZKeyframeCount, r28->rotZKeyframes, t));
+            animGroup->rot.z = DEGREES_TO_S16(interpolate_keyframes(anim->rotZKeyframeCount, anim->rotZKeyframes, t));
         }
 
-        if (r28->posXKeyframes != NULL2)
+        if (anim->posXKeyframes != NULL2)
         {
             animGroup->prevPos.x = animGroup->pos.x - r30->unkB8.x;
-            animGroup->pos.x = interpolate_keyframes(r28->posXKeyframeCount, r28->posXKeyframes, t);
+            animGroup->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes, t);
         }
-        if (r28->posYKeyframes != NULL2)
+        if (anim->posYKeyframes != NULL2)
         {
             animGroup->prevPos.y = animGroup->pos.y - r30->unkB8.y;
-            animGroup->pos.y = interpolate_keyframes(r28->posYKeyframeCount, r28->posYKeyframes, t);
+            animGroup->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes, t);
         }
-        if (r28->posZKeyframes != NULL2)
+        if (anim->posZKeyframes != NULL2)
         {
             animGroup->prevPos.z = animGroup->pos.z - r30->unkB8.z;
-            animGroup->pos.z = interpolate_keyframes(r28->posZKeyframeCount, r28->posZKeyframes, t);
+            animGroup->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes, t);
         }
 
         mathutil_mtxA_from_translate(&animGroup->pos);
@@ -445,14 +455,14 @@ void func_800A671C(void)
     backgroundInfo.animTimer = stageViewInfo->unk48;
 }
 
-void func_800A6734(void)
+void draw_items(void)
 {
     int i;
 
     s32 sp10[2] = { 0x400, 0x300 };
 
     if (modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION
-     || func_800672D0(currStageId) != 0
+     || is_bonus_stage(currStageId)
      || (modeCtrl.levelSetFlags & (1 << 12)))
     {
         struct GMAModel *models[2];
@@ -479,9 +489,9 @@ void func_800A6734(void)
     }
 }
 
-void func_800A6874(void)
+void draw_banana_shadows(void)
 {
-    struct StageBanana *r26;
+    struct StageBanana *banana;
     int i;
     int r25;
     int j;
@@ -491,7 +501,7 @@ void func_800A6874(void)
     Vec sp14;
     Vec sp8 = { 0, 0, -1 };
 
-    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || func_800672D0(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
+    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
         avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3f, 0.3f);
@@ -499,13 +509,13 @@ void func_800A6874(void)
 
         for (i = 0; i < animGroupCount; i++)
         {
-            r26 = decodedStageLzPtr->animGroups[i].bananas;
+            banana = decodedStageLzPtr->animGroups[i].bananas;
             r25 = decodedStageLzPtr->animGroups[i].bananaCount;
 
-            for (j = 0; j < r25; j++, r26++)
+            for (j = 0; j < r25; j++, banana++)
             {
                 mathutil_mtxA_from_mtx(animGroups[i].transform);
-                mathutil_mtxA_tf_point(&r26->pos, &sp14);
+                mathutil_mtxA_tf_point(&banana->pos, &sp14);
                 if ((u32)raycast_stage_down(&sp14, &sp60, 0) != 0)
                 {
                     mathutil_mtxA_from_mtx(mathutilData->mtxB);
@@ -528,9 +538,9 @@ void func_800A6874(void)
     }
 }
 
-void func_800A6A88(void)
+void draw_stage_geometry(void)
 {
-    struct AnimGroupInfo *r30;
+    struct AnimGroupInfo *animGrp;
     struct Struct8020A348 *r29;
     int j;
     int i;
@@ -545,13 +555,13 @@ void func_800A6A88(void)
     func_8000E3BC();
     if (decodedStageGmaPtr != NULL)
     {
-        r30 = animGroups;
+        animGrp = animGroups;
         r29 = lbl_8020AB88;
-        for (i = 0; i < animGroupCount; i++, r29++, r30++)
+        for (i = 0; i < animGroupCount; i++, r29++, animGrp++)
         {
             mathutil_mtxA_from_mtxB();
             if (i > 0)
-                mathutil_mtxA_mult_right(r30->transform);
+                mathutil_mtxA_mult_right(animGrp->transform);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             r26 = r29->unk0;
             for (j = 0; j < r29->unk4; j++, r26++)
@@ -594,7 +604,7 @@ extern struct GMAModel *lbl_802F1FFC;
 
 #ifdef NONMATCHING
 // https://decomp.me/scratch/xQ4td
-void func_800A6BF0(void)
+void draw_stage_objects(void)
 {
     //struct StageCollHdr_child4 *r29;
 
@@ -746,10 +756,10 @@ const float lbl_802F5C30 = -0.44999998807907104f;
 const float lbl_802F5C34 = -0.66659998893737793f;
 const float lbl_802F5C38 = 60.0f;
 const double lbl_802F5C40 = 2.5;
-asm void func_800A6BF0(void)
+asm void draw_stage_objects(void)
 {
     nofralloc
-#include "../asm/nonmatchings/func_800A6BF0.s"
+#include "../asm/nonmatchings/draw_stage_objects.s"
 }
 #pragma peephole on
 #endif
