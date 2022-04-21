@@ -497,8 +497,8 @@ struct Stage
     void *unk64;
     /*0x68*/ s32 bgModelsCount;
     /*0x6C*/ struct StageBgModel *bgModels;
-    s32 unk70;
-    struct StageBgModel *unk74;
+    s32 fgModelCount;
+    struct StageBgModel *fgModels; // Like bg models but tilt with the stage
     struct DecodedStageLzPtr_child5 *unk78;
     s32 unk7C;
     /*0x80*/ s32 reflObjsCount;

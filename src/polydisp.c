@@ -290,8 +290,8 @@ void draw_adv_demo_scene(void)
             f30 = lbl_80173FD0[ballInfo[i].ape->charaId];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
-            g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
-            g_avdisp_set_model_scale(f30);
+            avdisp_set_post_multiply_color(0.38f, 0.39f, 0.4f, 1.0f);
+            avdisp_set_bound_sphere_scale(f30);
             avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].modelOffset);
         }
         func_8000E3BC();
@@ -494,14 +494,14 @@ void func_8000C144(struct Struct8000C144 *a)
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ZERO, GX_BL_ONE, GX_LO_CLEAR);
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != 7
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable  != GX_ENABLE
+     || gxCache->compareFunc   != GX_ALWAYS
+     || gxCache->compareEnable != GX_ENABLE)
     {
-        GXSetZMode(GX_ENABLE, 7, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = 7;
-        zMode->updateEnable  = GX_ENABLE;
+        GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_ENABLE);
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = GX_ALWAYS;
+        gxCache->updateEnable  = GX_ENABLE;
     }
 
     GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
@@ -526,14 +526,14 @@ void func_8000C144(struct Struct8000C144 *a)
         GXPosition3f32(x2, y2, z);
     GXEnd();
 
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != 3
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable  != GX_ENABLE
+     || gxCache->compareFunc   != 3
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, 3, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = 3;
-        zMode->updateEnable  = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = 3;
+        gxCache->updateEnable  = GX_ENABLE;
     }
 }
 
@@ -1228,7 +1228,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk54 += lbl_801EEC90.unk58;
 
     func_80030BB8(1.0f, 1.0f, 1.0f);
-    g_avdisp_set_some_color_1(1.0f, t, 0.0f, 1.0f);
+    avdisp_set_post_multiply_color(1.0f, t, 0.0f, 1.0f);
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
     g_avdisp_set_some_matrix(0, mathutilData->mtxA);
 
@@ -1238,10 +1238,10 @@ void draw_timer_bomb_fuse(void)
     scale = 0.0007f;
     mathutil_mtxA_scale_s(scale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-    g_avdisp_set_model_scale(scale);
-    func_8008F6D4(1);
+    avdisp_set_bound_sphere_scale(scale);
+    g_avdisp_set_some_tex_mtx_sel(1);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
-    func_8008F6D4(0);
+    g_avdisp_set_some_tex_mtx_sel(0);
 
     // Draw spark
     sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
@@ -1376,7 +1376,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_CONTINUE_INIT:
     case SMD_GAME_CONTINUE_MAIN:
         func_80030BB8(0.8f, 0.8f, 0.8f);
-        g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
+        avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
         break;
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
@@ -1384,24 +1384,24 @@ void func_8000E1A4(float a)
         if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
-            g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
+            avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
         }
         else
         {
             func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-            g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+            avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     default:
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
-            g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, a);
+            avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, a);
         }
         else
         {
             func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-            g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+            avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     }
@@ -1435,7 +1435,7 @@ void func_8000E338(int a)
 void func_8000E3BC(void)
 {
     func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-    g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
+    avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
 }
 
 void func_8000E428(float a, float b, float c)

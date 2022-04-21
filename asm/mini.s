@@ -1293,7 +1293,7 @@ lbl_80094B58:
 /* 80094BE0 00090B00  D0 01 00 10 */	stfs f0, 0x10(r1)
 /* 80094BE4 00090B04  4B F7 31 D5 */	bl mathutil_mtxA_scale
 /* 80094BE8 00090B08  C0 3C 00 30 */	lfs f1, 0x30(r28)
-/* 80094BEC 00090B0C  4B FF 98 35 */	bl g_avdisp_set_model_scale
+/* 80094BEC 00090B0C  4B FF 98 35 */	bl avdisp_set_bound_sphere_scale
 /* 80094BF0 00090B10  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80094BF4 00090B14  38 80 00 00 */	li r4, 0
 /* 80094BF8 00090B18  48 04 F9 89 */	bl GXLoadPosMtxImm
@@ -1320,14 +1320,14 @@ lbl_80094B58:
 /* 80094C4C 00090B6C  EC 23 07 32 */	fmuls f1, f3, f28
 /* 80094C50 00090B70  EC 42 07 32 */	fmuls f2, f2, f28
 /* 80094C54 00090B74  EC 60 07 32 */	fmuls f3, f0, f28
-/* 80094C58 00090B78  4B FF AA BD */	bl g_avdisp_set_some_color_1
+/* 80094C58 00090B78  4B FF AA BD */	bl avdisp_set_post_multiply_color
 /* 80094C5C 00090B7C  80 7C 00 28 */	lwz r3, 0x28(r28)
 /* 80094C60 00090B80  4B FF 98 3D */	bl avdisp_draw_model_culled_sort_none
 /* 80094C64 00090B84  C0 22 B0 34 */	lfs f1, lbl_802F5834@sda21(r2)
 /* 80094C68 00090B88  FC 40 08 90 */	fmr f2, f1
 /* 80094C6C 00090B8C  FC 60 08 90 */	fmr f3, f1
 /* 80094C70 00090B90  FC 80 08 90 */	fmr f4, f1
-/* 80094C74 00090B94  4B FF AA A1 */	bl g_avdisp_set_some_color_1
+/* 80094C74 00090B94  4B FF AA A1 */	bl avdisp_set_post_multiply_color
 lbl_80094C78:
 /* 80094C78 00090B98  3B BD FF FF */	addi r29, r29, -1
 /* 80094C7C 00090B9C  3B 9C 00 38 */	addi r28, r28, 0x38

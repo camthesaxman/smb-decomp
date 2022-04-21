@@ -3436,10 +3436,10 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
 
     if (params->flags & (1 << 21))
     {
-        GXCompare *r4 = &zMode->compareFunc;
-        r30 = zMode->compareEnable;
+        GXCompare *r4 = &gxCache->compareFunc;
+        r30 = gxCache->compareEnable;
         r29 = *r4;
-        r28 = zMode->updateEnable;
+        r28 = gxCache->updateEnable;
         r29 = *r4;
         CHANGE_Z_MODE(1, 7, 1);
     }

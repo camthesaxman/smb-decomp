@@ -283,14 +283,14 @@ static void draw_line_deferred_callback(struct DrawLineDeferredNode *node)
 
     lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
-    if (GX_ENABLE != zMode->updateEnable
-     || GX_LEQUAL != zMode->compareFunc
-     || GX_ENABLE != zMode->compareEnable)
+    if (GX_ENABLE != gxCache->updateEnable
+     || GX_LEQUAL != gxCache->compareFunc
+     || GX_ENABLE != gxCache->compareEnable)
     {
         GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = GX_LEQUAL;
+        gxCache->updateEnable  = GX_ENABLE;
     }
 
     c = node->color;
@@ -353,11 +353,11 @@ void gxutil_draw_line_multicolor_deferred(struct PointWithColor *start, struct P
 
 void prepare_for_drawing_lines(void)
 {
-    if (lineInfo.lineWidth != zMode->lineWidth || lineInfo.texOffset != zMode->texOffsets)
+    if (lineInfo.lineWidth != gxCache->lineWidth || lineInfo.texOffset != gxCache->texOffsets)
     {
         GXSetLineWidth(lineInfo.lineWidth, lineInfo.texOffset);
-        zMode->lineWidth = lineInfo.lineWidth;
-        zMode->texOffsets = lineInfo.texOffset;
+        gxCache->lineWidth = lineInfo.lineWidth;
+        gxCache->texOffsets = lineInfo.texOffset;
     }
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
     GXSetBlendMode_cached(lineInfo.blendMode, lineInfo.blendSrcFactor, lineInfo.blendDstFactor, lineInfo.blendLogicOp);
@@ -386,14 +386,14 @@ static void draw_line_multicolor_deferred_callback(struct DrawLineMulticolorDefe
 
     lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
-    if (GX_ENABLE != zMode->updateEnable
-     || GX_LEQUAL != zMode->compareFunc
-     || GX_ENABLE != zMode->compareEnable)
+    if (GX_ENABLE != gxCache->updateEnable
+     || GX_LEQUAL != gxCache->compareFunc
+     || GX_ENABLE != gxCache->compareEnable)
     {
         GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = GX_LEQUAL;
+        gxCache->updateEnable  = GX_ENABLE;
     }
 
     GXLoadPosMtxImm(node->mtx, GX_PNMTX0);

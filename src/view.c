@@ -442,17 +442,17 @@ void func_800A66CC(void)
 
 void func_800A66E4(void)
 {
-    stageViewInfo->unk48 = backgroundInfo.unk4;
+    stageViewInfo->unk48 = backgroundInfo.animTimer;
 }
 
 void func_800A66FC(void)
 {
-    backgroundInfo.unk4 += 1.0;
+    backgroundInfo.animTimer += 1.0;
 }
 
 void func_800A671C(void)
 {
-    backgroundInfo.unk4 = stageViewInfo->unk48;
+    backgroundInfo.animTimer = stageViewInfo->unk48;
 }
 
 void draw_items(void)
@@ -504,7 +504,7 @@ void draw_banana_shadows(void)
     if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
-        g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3f, 0.3f);
+        avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3f, 0.3f);
         avdisp_set_z_mode(1, 3, 0);
 
         for (i = 0; i < animGroupCount; i++)
@@ -533,7 +533,7 @@ void draw_banana_shadows(void)
                 }
             }
         }
-        g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
+        avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
         avdisp_set_z_mode(1, 3, 1);
     }
 }
