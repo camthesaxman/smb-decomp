@@ -3,6 +3,9 @@
 #include <dolphin.h>
 
 #include <dolphin/GXEnum.h>
+#include <dolphin/GXVert.h>
+#include <dolphin/GXCommandList.h>
+#include <dolphin/GDLight.h>
 #include "global.h"
 #include "gxutil.h"
 #include "load.h"
@@ -150,19 +153,19 @@ asm void set_tev_material_ambient_colors(register void *arg)
     ps_mr f4, f5                   // f4 = 1.0 | 1.0
     b lbl_8008D724
 lbl_8008D710_if_flag_unk3:
-    psq_l f0, 8(arg), 0, qr2       // f0 = g_color2.rg
-    psq_l f1, 10(arg), 1, qr2      // f1 = g_color2.b | 1.0
-    ps_merge00 f1, f1, f5          // f1 = g_color2.b | 1.0 (useless?)
+    psq_l f0, 8(arg), 0, qr2       // f0 = ambientColor.rg
+    psq_l f1, 10(arg), 1, qr2      // f1 = ambientColor.b | 1.0
+    ps_merge00 f1, f1, f5          // f1 = ambientColor.b | 1.0 (useless?)
 lbl_8008D71C_simple_material:
-    lhz r4, 4(arg)                 // r4 = g_color1.rg
-    psq_l f4, 6(arg), 1, qr2       // f4 = g_color1.b | 1.0
+    lhz r4, 4(arg)                 // r4 = materialColor.rg
+    psq_l f4, 6(arg), 1, qr2       // f4 = materialColor.b | 1.0
 lbl_8008D724:
     lis r7, s_ambientRed@h
     ori r7, r7, s_ambientRed@l        // r7 = &lbl_802F20D0
     psq_l f2, 0(r7), 0, qr0        // f2 = lbl_802F20D0.rg
     psq_l f3, 8(r7), 0, qr0        // f3 = lbl_802F20D0.ba
-    ps_mul f0, f0, f2              // f0 = (shape.g_color2.rg OR 1.0|1.0) * lbl_802F20D0.rg
-    ps_mul f1, f1, f3              // f1 = shape.g_color2.ba OR 1.0|1.0) * lbl_802F20D0.ba
+    ps_mul f0, f0, f2              // f0 = (shape.ambientColor.rg OR 1.0|1.0) * lbl_802F20D0.rg
+    ps_mul f1, f1, f3              // f1 = shape.ambientColor.ba OR 1.0|1.0) * lbl_802F20D0.ba
     psq_l f2, 17(arg), 1, qr2      // f2 = shape.alpha | 1
     ps_merge10 f2, f2, f2          // f2 = 1 | shape.alpha
     psq_st f0, 0x98(r10), 0, qr2   // 
@@ -172,11 +175,11 @@ lbl_8008D724:
     stb r6, 0(r9)                  // Write color in r7 to ambient0 register
     stw r8, 0(r9)                  // I don't think alpha matters here because alpha light channel is always disabled
     stw r7, 0(r9)                  // 
-    ps_merge01 f4, f4, f3          // f4 = (shape.g_color1.b OR 1.0) | lbl_802F20D0.a
-    ps_mul f4, f4, f2              // f4 = (shape.g_color1.b OR 1.0) | shape.alpha * lbl_802F20D0.a
-    sth r4, 0x98(r10)              // (shape.g_color1.rg OR 1.0 | 1.0) -> 0x98(gxCache)
+    ps_merge01 f4, f4, f3          // f4 = (shape.materialColor.b OR 1.0) | lbl_802F20D0.a
+    ps_mul f4, f4, f2              // f4 = (shape.materialColor.b OR 1.0) | shape.alpha * lbl_802F20D0.a
+    sth r4, 0x98(r10)              // (shape.materialColor.rg OR 1.0 | 1.0) -> 0x98(gxCache)
     psq_st f4, 0x9a(r10), 0, qr2   // f4 -> 0x9a(gxCache) as u8s
-    lwz r7, 0x98(r10)              // r7 = (original shape.g_color1 with alpha scaled by lbl_802F20D0.a)
+    lwz r7, 0x98(r10)              // r7 = (original shape.materialColor with alpha scaled by lbl_802F20D0.a)
     li r8, 0x100c                  // XF_MATERIAL0_ID -> fifo
     stb r6, 0(r9)                  // Write color in r7 to material0 register
     stw r8, 0(r9)
@@ -186,7 +189,50 @@ lbl_8008D724:
 #else
 void set_tev_material_ambient_colors(struct GMAShape *shape)
 {
-    // TODO
+    GXColor ambientColor;
+    GXColor materialColor;
+
+    // Lighting equation looks like this: out = MAT * (RAS + AMB)
+    // The MAT and AMB colors can be controlled by vertex colors or registers. Here we set the
+    // register colors for the register case.
+
+    // Set ambient color.
+    // Ambient alpha is unused because alpha light channel is always disabled
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
+    {
+        ambientColor.r = shape->ambientColor.r * s_ambientRed;
+        ambientColor.g = shape->ambientColor.g * s_ambientGreen;
+        ambientColor.b = shape->ambientColor.b * s_ambientBlue;
+        ambientColor.a = shape->ambientColor.a * s_materialAlpha;
+    }
+    else
+    {
+        ambientColor.r = 0xff * s_ambientRed;
+        ambientColor.g = 0xff * s_ambientGreen;
+        ambientColor.b = 0xff * s_ambientBlue;
+        ambientColor.a = 0xff * s_materialAlpha;
+    }
+    GXWGFifo.u8 = GX_LOAD_XF_REG;
+    GXWGFifo.u32 = XF_AMBIENT0_ID;
+    GXWGFifo.u32 = ambientColor.r << 24 | ambientColor.g << 16 | ambientColor.b << 8 | ambientColor.a << 0;
+
+    // Set material color.
+    materialColor.a = shape->alpha * s_materialAlpha;
+    if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
+    {
+        materialColor.r = shape->materialColor.r;
+        materialColor.g = shape->materialColor.g;
+        materialColor.b = shape->materialColor.b;
+    }
+    else
+    {
+        materialColor.r = 0xff;
+        materialColor.g = 0xff;
+        materialColor.b = 0xff;
+    }
+    GXWGFifo.u8 = GX_LOAD_XF_REG;
+    GXWGFifo.u32 = XF_MATERIAL0_ID;
+    GXWGFifo.u32 = materialColor.r << 24 | materialColor.g << 16 | materialColor.b << 8 | materialColor.a << 0;
 }
 #endif
 
