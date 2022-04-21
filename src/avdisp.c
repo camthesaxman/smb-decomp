@@ -3,9 +3,9 @@
 #include <dolphin.h>
 
 #include <dolphin/GXEnum.h>
-#include <dolphin/GXVert.h>
 #include <dolphin/GXCommandList.h>
 #include <dolphin/GDLight.h>
+#include "dolphin/GXLighting.h"
 #include "global.h"
 #include "gxutil.h"
 #include "load.h"
@@ -196,7 +196,7 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
     // The MAT and AMB colors can be controlled by vertex colors or registers. Here we set the
     // register colors for the register case.
 
-    // Set ambient color.
+    // Compute ambient color.
     // Ambient alpha is unused because alpha light channel is always disabled
     if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
     {
@@ -212,11 +212,12 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         ambientColor.b = 0xff * s_ambientBlue;
         ambientColor.a = 0xff * s_materialAlpha;
     }
+    // Equivalent to GXSetChanAmbColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_AMBIENT0_ID;
     GXWGFifo.u32 = ambientColor.r << 24 | ambientColor.g << 16 | ambientColor.b << 8 | ambientColor.a << 0;
 
-    // Set material color.
+    // Compute material color.
     materialColor.a = shape->alpha * s_materialAlpha;
     if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
     {
@@ -230,6 +231,7 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         materialColor.g = 0xff;
         materialColor.b = 0xff;
     }
+    // Equivalent to GXSetChanMatColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_MATERIAL0_ID;
     GXWGFifo.u32 = materialColor.r << 24 | materialColor.g << 16 | materialColor.b << 8 | materialColor.a << 0;
