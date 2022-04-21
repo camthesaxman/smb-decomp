@@ -110,10 +110,7 @@ void event_finish_all(void)
 
     for (i = 0; i < ARRAY_COUNT(eventInfo); i++, ev++)
     {
-        if (ev->state != EV_STATE_INACTIVE && eventInfo[i].state != EV_STATE_INACTIVE)
-        {
-            eventInfo[i].finish();
-            eventInfo[i].state = EV_STATE_INACTIVE;
-        }
+        if (ev->state != EV_STATE_INACTIVE)
+            event_finish(i);
     }
 }

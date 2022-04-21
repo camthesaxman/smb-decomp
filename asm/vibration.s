@@ -447,7 +447,7 @@ func_800B64B0:
 /* 800B64D4 000B23F4  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B64D8 000B23F8  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800B64DC 000B23FC  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 800B64E0 000B2400  4B F6 21 69 */	bl func_80018648
+/* 800B64E0 000B2400  4B F6 21 69 */	bl g_call_camera_apply_viewport
 /* 800B64E4 000B2404  4B FD C8 59 */	bl g_draw_ball_shadow
 /* 800B64E8 000B2408  4B F9 EB 09 */	bl func_80054FF0
 /* 800B64EC 000B240C  48 00 8D E9 */	bl func_800BF2D4
@@ -10947,7 +10947,7 @@ lbl_800BFF64:
 /* 800C0008 000BBF28  D3 C4 80 00 */	stfs f30, -0x8000(r4)
 /* 800C000C 000BBF2C  C0 02 BC E4 */	lfs f0, lbl_802F64E4@sda21(r2)
 /* 800C0010 000BBF30  D0 44 80 00 */	stfs f2, -0x8000(r4)
-/* 800C0014 000BBF34  80 6D 9A 60 */	lwz r3, lbl_802F1C40@sda21(r13)
+/* 800C0014 000BBF34  80 6D 9A 60 */	lwz r3, g_cameraId1@sda21(r13)
 /* 800C0018 000BBF38  D0 24 80 00 */	stfs f1, -0x8000(r4)
 /* 800C001C 000BBF3C  D0 04 80 00 */	stfs f0, -0x8000(r4)
 /* 800C0020 000BBF40  D3 A4 80 00 */	stfs f29, -0x8000(r4)

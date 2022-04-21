@@ -138,7 +138,7 @@ lbl_000001F8:
 /* 00000250 4BFFFEFD */ bl bitmap_load_group
 /* 00000254 7FC3F378 */ mr r3, r30
 /* 00000258 4BFFFEF5 */ bl OSSetCurrentHeap
-/* 0000025C 4BFFFEF1 */ bl func_800171E0
+/* 0000025C 4BFFFEF1 */ bl g_init_player_data_1
 /* 00000260 480003E9 */ bl lbl_00000648
 /* 00000264 3C800000 */ lis r4, lbl_00004024@ha
 /* 00000268 3C600000 */ lis r3, lbl_802F1FD4@ha
@@ -1110,7 +1110,7 @@ lbl_0000101C:
 /* 000010DC 38600064 */ li r3, 0x64
 /* 000010E0 38800008 */ li r4, 8
 /* 000010E4 4BFFF069 */ bl g_play_music
-/* 000010E8 4BFFF065 */ bl func_800174C8
+/* 000010E8 4BFFF065 */ bl g_init_player_data_2
 /* 000010EC 801E0000 */ lwz r0, 0(r30)
 /* 000010F0 2C000000 */ cmpwi r0, 0
 /* 000010F4 40820070 */ bne lbl_00001164
@@ -4112,7 +4112,7 @@ lbl_00003C60:
 /* 00003C9C 7C188214 */ add r0, r24, r16
 /* 00003CA0 90150000 */ stw r0, 0(r21)
 /* 00003CA4 7E439378 */ mr r3, r18
-/* 00003CA8 4BFFC4A5 */ bl func_80018648
+/* 00003CA8 4BFFC4A5 */ bl g_call_camera_apply_viewport
 /* 00003CAC 4BFFC4A1 */ bl g_draw_ball_shadow
 /* 00003CB0 4BFFC49D */ bl func_80054FF0
 /* 00003CB4 7E439378 */ mr r3, r18

@@ -178,7 +178,7 @@ lbl_0000020C:
 /* 000002F0 60630001 */ ori r3, r3, 1
 /* 000002F4 9064001C */ stw r3, 0x1c(r4)
 /* 000002F8 90040000 */ stw r0, 0(r4)
-/* 000002FC 4BFFFE65 */ bl func_800171E0
+/* 000002FC 4BFFFE65 */ bl g_init_player_data_1
 /* 00000300 3C600000 */ lis r3, spritePoolInfo@ha
 /* 00000304 38630000 */ addi r3, r3, spritePoolInfo@l
 /* 00000308 3C800000 */ lis r4, currentBallStructPtr@ha
@@ -800,7 +800,7 @@ lbl_00000AD0:
 /* 00000BC8 2C000004 */ cmpwi r0, 4
 /* 00000BCC 418200A8 */ beq lbl_00000C74
 /* 00000BD0 38600000 */ li r3, 0
-/* 00000BD4 4BFFF58D */ bl func_80018648
+/* 00000BD4 4BFFF58D */ bl g_call_camera_apply_viewport
 /* 00000BD8 4BFFF589 */ bl g_draw_ball_shadow
 /* 00000BDC 4BFFF585 */ bl func_80054FF0
 /* 00000BE0 38600000 */ li r3, 0
@@ -874,7 +874,7 @@ lbl_00000CB8:
 /* 00000CD0 7C800774 */ extsb r0, r4
 /* 00000CD4 2C000004 */ cmpwi r0, 4
 /* 00000CD8 418202AC */ beq lbl_00000F84
-/* 00000CDC 4BFFF485 */ bl func_80018648
+/* 00000CDC 4BFFF485 */ bl g_call_camera_apply_viewport
 /* 00000CE0 801F0004 */ lwz r0, 4(r31)
 /* 00000CE4 54000463 */ rlwinm. r0, r0, 0, 0x11, 0x11
 /* 00000CE8 41820108 */ beq lbl_00000DF0
@@ -3425,7 +3425,7 @@ lbl_00003268:
 /* 00003274 4BFFCEED */ bl destroy_sprite_with_tag
 /* 00003278 7F600775 */ extsb. r0, r27
 /* 0000327C 41820030 */ beq lbl_000032AC
-/* 00003280 4BFFCEE1 */ bl func_800174C8
+/* 00003280 4BFFCEE1 */ bl g_init_player_data_2
 /* 00003284 38000001 */ li r0, 1
 /* 00003288 981E0007 */ stb r0, 7(r30)
 /* 0000328C 887E0006 */ lbz r3, 6(r30)

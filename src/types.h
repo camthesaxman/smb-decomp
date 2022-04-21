@@ -344,7 +344,7 @@ struct Ape
     /*0x0B4*/ int colorId;
     void *unkB8;
     void *unkBC;
-    s8 unkC0;
+    /*0xC0*/ s8 ballId;
     u8 unkC1;
     s16 unkC2;
 };  // size = 0xC4

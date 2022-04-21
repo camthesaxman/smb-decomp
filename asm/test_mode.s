@@ -9579,7 +9579,7 @@ lbl_00008954:
 /* 0000897C 4BFF77E1 */ bl GXSetCopyClear
 lbl_00008980:
 /* 00008980 38600000 */ li r3, 0
-/* 00008984 4BFF77D9 */ bl func_80018648
+/* 00008984 4BFF77D9 */ bl g_call_camera_apply_viewport
 /* 00008988 4BFF77D5 */ bl g_draw_ball_shadow
 /* 0000898C 4BFF77D1 */ bl func_80054FF0
 /* 00008990 38600000 */ li r3, 0
@@ -12553,7 +12553,7 @@ lbl_0000B57C:
 /* 0000B5E0 4BFF4B7D */ bl g_debug_printf
 /* 0000B5E4 480008B5 */ bl lbl_0000BE98
 /* 0000B5E8 38600000 */ li r3, 0
-/* 0000B5EC 4BFF4B71 */ bl func_80018648
+/* 0000B5EC 4BFF4B71 */ bl g_call_camera_apply_viewport
 /* 0000B5F0 480000C1 */ bl lbl_0000B6B0
 /* 0000B5F4 4BFF4B69 */ bl func_80017FCC
 /* 0000B5F8 38600000 */ li r3, 0

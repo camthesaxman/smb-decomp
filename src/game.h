@@ -48,10 +48,10 @@ int g_get_next_stage_id(void);
 int func_80017004(void);
 u32 lose_life(void);
 void func_80017140(void);
-// ? func_80017160();
-void func_800171E0(void);
-void func_800174C8(void);
+// ? get_next_player();
+void g_init_player_data_1(void);
+void g_init_player_data_2(void);
 void func_80017708(int);
-int func_80017720(void);
+BOOL func_80017720(void);
 
 #endif

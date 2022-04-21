@@ -2262,8 +2262,8 @@ lbl_802F1C30:
 .global lbl_802F1C32
 lbl_802F1C32:
 	.skip 0x2
-.global lbl_802F1C34
-lbl_802F1C34:
+.global g_cameraId2
+g_cameraId2:
 	.skip 0x4
 .global minigameRelCameraCallback
 minigameRelCameraCallback:
@@ -2271,8 +2271,8 @@ minigameRelCameraCallback:
 .global currentCameraStructPtr
 currentCameraStructPtr:
 	.skip 0x4
-.global lbl_802F1C40
-lbl_802F1C40:
+.global g_cameraId1
+g_cameraId1:
 	.skip 0x8
 .global lbl_802F1C48
 lbl_802F1C48:

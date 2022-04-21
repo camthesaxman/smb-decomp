@@ -11589,7 +11589,7 @@ lbl_0000AA50:
 /* 0000AABC 40820140 */ bne lbl_0000ABFC
 lbl_0000AAC0:
 /* 0000AAC0 7EA3AB78 */ mr r3, r21
-/* 0000AAC4 4BFF56B9 */ bl func_80018648
+/* 0000AAC4 4BFF56B9 */ bl g_call_camera_apply_viewport
 /* 0000AAC8 4BFF56B5 */ bl g_draw_ball_shadow
 /* 0000AACC 4BFF56B1 */ bl func_80054FF0
 /* 0000AAD0 7EA3AB78 */ mr r3, r21
@@ -12436,7 +12436,7 @@ lbl_0000B6D0:
 /* 0000B704 418200FC */ beq lbl_0000B800
 /* 0000B708 935D0000 */ stw r26, 0(r29)
 /* 0000B70C 7F03C378 */ mr r3, r24
-/* 0000B710 4BFF4A6D */ bl func_80018648
+/* 0000B710 4BFF4A6D */ bl g_call_camera_apply_viewport
 /* 0000B714 4BFF4A69 */ bl g_draw_ball_shadow
 /* 0000B718 4BFF4A65 */ bl func_80054FF0
 /* 0000B71C 7F03C378 */ mr r3, r24

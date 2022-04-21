@@ -4013,7 +4013,7 @@ func_800B0B48:
 /* 800B0B74 000ACA94  93 81 00 E0 */	stw r28, 0xe0(r1)
 /* 800B0B78 000ACA98  3B 83 EC 20 */	addi r28, r3, modeCtrl@l
 /* 800B0B7C 000ACA9C  80 7C 00 2C */	lwz r3, 0x2c(r28)
-/* 800B0B80 000ACAA0  4B F6 7A C9 */	bl func_80018648
+/* 800B0B80 000ACAA0  4B F6 7A C9 */	bl g_call_camera_apply_viewport
 /* 800B0B84 000ACAA4  4B FE 21 B9 */	bl g_draw_ball_shadow
 /* 800B0B88 000ACAA8  4B FA 44 69 */	bl func_80054FF0
 /* 800B0B8C 000ACAAC  80 7C 00 2C */	lwz r3, 0x2c(r28)

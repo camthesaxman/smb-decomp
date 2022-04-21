@@ -40,7 +40,7 @@ enum
 struct GMATevLayer
 {
     u32 flags;
-    u16 unk4;
+    u16 texIndex;
     s8 lodBias;
     u8 maxAniso;
     GXTexObj *texObj;
