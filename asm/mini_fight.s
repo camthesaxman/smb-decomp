@@ -11418,7 +11418,7 @@ lbl_0000AC3C:
 /* 0000AC70 418200F8 */ beq lbl_0000AD68
 /* 0000AC74 935D0000 */ stw r26, 0(r29)
 /* 0000AC78 7F03C378 */ mr r3, r24
-/* 0000AC7C 4BFF54E9 */ bl func_80018648
+/* 0000AC7C 4BFF54E9 */ bl g_call_camera_apply_viewport
 /* 0000AC80 4BFF54E5 */ bl g_draw_ball_shadow
 /* 0000AC84 4BFF54E1 */ bl func_80054FF0
 /* 0000AC88 88190000 */ lbz r0, 0(r25)
@@ -14093,7 +14093,7 @@ lbl_0000D2F8:
 /* 0000D2FC 3C600000 */ lis r3, currentCameraStructPtr@ha
 /* 0000D300 90010004 */ stw r0, 4(r1)
 /* 0000D304 3C800000 */ lis r4, lbl_801B7CF8@ha
-/* 0000D308 3CC00000 */ lis r6, lbl_802F1C40@ha
+/* 0000D308 3CC00000 */ lis r6, g_cameraId1@ha
 /* 0000D30C 9421FF60 */ stwu r1, -0xa0(r1)
 /* 0000D310 DBE10098 */ stfd f31, 0x98(r1)
 /* 0000D314 DBC10090 */ stfd f30, 0x90(r1)
@@ -14101,7 +14101,7 @@ lbl_0000D2F8:
 /* 0000D31C BE21004C */ stmw r17, 0x4c(r1)
 /* 0000D320 3B210024 */ addi r25, r1, 0x24
 /* 0000D324 3BE40000 */ addi r31, r4, lbl_801B7CF8@l
-/* 0000D328 3B860000 */ addi r28, r6, lbl_802F1C40@l
+/* 0000D328 3B860000 */ addi r28, r6, g_cameraId1@l
 /* 0000D32C 3FC04330 */ lis r30, 0x4330
 /* 0000D330 80A30000 */ lwz r5, currentCameraStructPtr@l(r3)
 /* 0000D334 3C600000 */ lis r3, lbl_0001C238@ha

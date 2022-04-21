@@ -1246,14 +1246,14 @@ struct Ape *g_make_ape(int charaId)
 }
 
 #pragma force_active on
-void func_8008B9DC(struct Ape *a, int b)
+void func_8008B9DC(struct Ape *ape, int b)
 {
-    if (a->unk18 <= 0)
+    if (ape->unk18 <= 0)
     {
-        if (a->unk1C->unkC & (1 << 1))
-            a->unk0->unk34 = b;
+        if (ape->unk1C->unkC & (1 << 1))
+            ape->unk0->unk34 = b;
         else
-            func_80089CF4(a, b);
+            func_80089CF4(ape, b);
     }
 }
 #pragma force_active reset
@@ -1719,7 +1719,7 @@ void func_8008C924(struct Ape *ape, int b)
         struct Struct8008C924 *node;
         struct OrdTblNode *entry;
 
-        if (ballInfo[ape->unkC0].unk15C[currentCameraStructPtr->unk204] < 1.1920928955078125e-07f)
+        if (ballInfo[ape->ballId].unk15C[currentCameraStructPtr->unk204] < 1.1920928955078125e-07f)
             return;
         mathutil_mtxA_from_mtxB();
         entry = ord_tbl_get_entry_for_pos(&ape->unk30);
@@ -1727,7 +1727,7 @@ void func_8008C924(struct Ape *ape, int b)
         node->node.drawFunc = (OrdTblDrawFunc)lbl_8008CA80;
         node->unk8 = func_800223D0();
         node->ape = ape;
-        node->unk10 = ballInfo[ape->unkC0].unk15C[currentCameraStructPtr->unk204];
+        node->unk10 = ballInfo[ape->ballId].unk15C[currentCameraStructPtr->unk204];
         ord_tbl_insert_node(entry, &node->node);
     }
     else

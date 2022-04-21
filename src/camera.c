@@ -46,8 +46,8 @@ void camera_init(void)
     struct Camera *camera;
 
     currentCameraStructPtr = &cameraInfo[0];
-    lbl_802F1C40 = -1;
-    lbl_802F1C34 = -1;
+    g_cameraId1 = -1;
+    g_cameraId2 = -1;
 
     for (i = 0, camera = &cameraInfo[0]; i < 5; i++, camera++)
     {
@@ -370,8 +370,8 @@ void func_80017FCC(void)
     Mtx sp1C;
 
     currentCameraStructPtr = &cameraInfo[0];
-    lbl_802F1C40 = 4;
-    lbl_802F1C34 = 4;
+    g_cameraId1 = 4;
+    g_cameraId2 = 4;
     mathutil_mtx_copy(cameraInfo[0].unk144, mathutilData->mtxB);
     mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
     mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C->matrices[3]);
@@ -405,7 +405,7 @@ void setup_camera_viewport(int cameraId, float left, float top, float width, flo
             camera->sub28.fov = camera->sub28.unk32;
         }
     }
-    if (lbl_802F1C40 == cameraId)
+    if (g_cameraId1 == cameraId)
         camera_apply_viewport(cameraId);
 }
 
@@ -482,8 +482,8 @@ void camera_apply_viewport(int cameraId)
     struct Camera *camera = &cameraInfo[cameraId];
     Mtx projMtx;
 
-    lbl_802F1C40 = cameraId;
-    lbl_802F1C34 = cameraId;
+    g_cameraId1 = cameraId;
+    g_cameraId2 = cameraId;
     currentCameraStructPtr = camera;
     mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
     mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
@@ -535,9 +535,9 @@ void camera_apply_viewport(int cameraId)
         camera->sub28.unk2C);
 }
 
-void func_80018648(int cameraId)
+void g_call_camera_apply_viewport(int cameraId)
 {
-    if (lbl_802F1C40 != cameraId || lbl_802F1C34 != cameraId)
+    if (g_cameraId1 != cameraId || g_cameraId2 != cameraId)
         camera_apply_viewport(cameraId);
 }
 
@@ -548,7 +548,7 @@ void camera_apply_viewport_2(int cameraId)
     struct Camera *camera = &cameraInfo[cameraId];
     Mtx projMtx;
 
-    lbl_802F1C40 = cameraId;
+    g_cameraId1 = cameraId;
     currentCameraStructPtr = camera;
     mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
     mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
@@ -591,7 +591,7 @@ void camera_apply_viewport_2(int cameraId)
 
 void func_800188A8(int cameraId)
 {
-    if (lbl_802F1C40 != cameraId)
+    if (g_cameraId1 != cameraId)
         camera_apply_viewport_2(cameraId);
 }
 

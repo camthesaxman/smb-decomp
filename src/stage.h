@@ -533,7 +533,7 @@ void compute_stage_bounding_sphere(void);
 // ? func_800463E8();
 float func_80046884(struct NaomiModel *);
 void load_stagedef(int stageId);
-void func_800472E8(void);
+void free_stagedef(void);
 void adjust_stage_anim_ptrs(struct StageAnimGroupAnim **, struct Stage *);
 void func_800473C0(struct StageBgAnim **, struct Stage *);
 void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);

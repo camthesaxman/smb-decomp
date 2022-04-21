@@ -41,7 +41,7 @@ void submode_game_first_init_func(void)
     int i;
 
     modeCtrl.levelSetFlags &= ~(1 << 6);
-    modeCtrl.unk2C = 0;
+    modeCtrl.currPlayer = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
     func_800249D4();
@@ -73,25 +73,25 @@ void submode_game_first_init_func(void)
     default:
         if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount == 3)
         {
-            switch (modeCtrl.unk42)
+            switch (modeCtrl.splitscreenMode)
             {
-            case 0:
+            case SPLITSCREEN_1P_WIDE:
             default:
                 camera_setup_splitscreen_viewports(3);
                 break;
-            case 1:
+            case SPLITSCREEN_2P_WIDE:
                 setup_camera_viewport(0, 0.0f, 0.5f, 0.5f, 0.5f);
                 setup_camera_viewport(1, 0.0f, 0.0f, 1.0f, 0.5f);
                 setup_camera_viewport(2, 0.5f, 0.5f, 0.5f, 0.5f);
                 setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
                 break;
-            case 2:
+            case SPLITSCREEN_3P_WIDE:
                 setup_camera_viewport(0, 0.0f, 0.0f, 0.5f, 0.5f);
                 setup_camera_viewport(1, 0.5f, 0.0f, 0.5f, 0.5f);
                 setup_camera_viewport(2, 0.0f, 0.5f, 1.0f, 0.5f);
                 setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
                 break;
-            case 3:
+            case SPLITSCREEN_4_SPLIT:
                 camera_setup_splitscreen_viewports(4);
                 break;
             }
@@ -161,9 +161,9 @@ void submode_game_ready_init_func(void)
     {
     case GAMETYPE_MAIN_NORMAL:
         if (!(modeCtrl.levelSetFlags & (1 << 8)))
-            func_800171E0();
+            g_init_player_data_1();
         else
-            func_800174C8();
+            g_init_player_data_2();
         level_num_to_stage_id(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags);
         break;
     }
@@ -202,7 +202,7 @@ void submode_game_ready_init_func(void)
     camera_set_state(CAMERA_STATE_READY_INIT);
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION
      && modeCtrl.playerCount == 3
-     && modeCtrl.unk42 == 3)
+     && modeCtrl.splitscreenMode == SPLITSCREEN_4_SPLIT)
     {
         cameraInfo[3].flags |= 0x70;
         cameraInfo[3].state = 0x44;
@@ -253,7 +253,7 @@ void submode_game_ready_init_func(void)
             soundId = 0x184;
         g_play_sound(soundId);
     }
-    lbl_802F1F80 = ballInfo[modeCtrl.unk2C].unk7C;
+    lbl_802F1F80 = ballInfo[modeCtrl.currPlayer].unk7C;
     gameSubmodeRequest = SMD_GAME_READY_MAIN;
 }
 
@@ -305,7 +305,7 @@ void submode_game_play_init_func(void)
         }
         break;
     case GAMETYPE_MAIN_NORMAL:
-        lbl_80250A68.unk14 = modeCtrl.unk2C;
+        lbl_80250A68.unk14 = modeCtrl.currPlayer;
         // fall through
     default:
         lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80048E78();
@@ -545,20 +545,22 @@ void submode_game_goal_replay_main_func(void)
             }
         )
     }
+
+    // go to result screen if this is the end of competition mode
     if (nextStage < 0 && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         gameSubmodeRequest = SMD_GAME_RESULT_INIT;
         return;
     }
 
-    if (nextStage < 0)  // end of level set
+    if (nextStage < 0)  // reached end of level set
     {
         u32 gotoExtra;
 
         if (modeCtrl.levelSet == LVLSET_EXPERT)
-            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.unk2A == 0);
+            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.continuesUsed == 0);
         else
-            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.unk28 == 0);
+            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.livesLost == 0);
 
         if (gotoExtra && (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA) && modeCtrl.levelSet != LVLSET_EXPERT)
             gotoExtra = FALSE;
@@ -575,6 +577,7 @@ void submode_game_goal_replay_main_func(void)
     }
     else
     {
+        // advance to next stage
         if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         {
             infoWork.unk1E++;
@@ -667,7 +670,7 @@ void submode_game_continue_main_func(void)
                 currentBallStructPtr->ape->unk14 &= ~(1 << 8);
                 if (modeCtrl.unk10 == 1)
                 {
-                    infoWork.unk2A++;
+                    infoWork.continuesUsed++;
                     infoWork.unk1E = 1;
                     currentBallStructPtr->ape->unk14 |= 0x800;
                     g_create_textbox(0, 20, NULL);
@@ -696,7 +699,7 @@ void submode_game_continue_main_func(void)
         if (modeCtrl.unk10 == 0 && modeCtrl.unk0 == 60)
         {
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
-             && (func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.unk2C]) >= 0
+             && (func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]) >= 0
                  || (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) == (DIP_DEBUG|DIP_NAMEENTRY)))
                 g_start_screen_fade(0x101, 0xFFFFFF, modeCtrl.unk0);
             else
@@ -769,6 +772,7 @@ void submode_game_timeover_main_func(void)
         return;
     if (lose_life())
     {
+        // still has lives
         if ((infoWork.flags & INFO_FLAG_BONUS_STAGE) || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         {
             loadingStageId = g_get_next_stage_id();
@@ -783,6 +787,7 @@ void submode_game_timeover_main_func(void)
     }
     else
     {
+        // no more lives
         modeCtrl.unk14 = 1;
         switch (modeCtrl.gameType)
         {
@@ -870,9 +875,11 @@ void submode_game_ringout_main_func(void)
     if (--modeCtrl.unk0 > 0)
         return;
     infoWork.flags &= ~(1 << 4);
-    event_suspend(1);
+    event_suspend(EVENT_STAGE);
+
     if (lose_life())
     {
+        // still has lives
         if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
         {
             loadingStageId = g_get_next_stage_id();
@@ -884,6 +891,7 @@ void submode_game_ringout_main_func(void)
     }
     else
     {
+        // no more lives
         modeCtrl.unk14 = 0;
         switch (modeCtrl.gameType)
         {
@@ -1063,12 +1071,12 @@ void submode_game_over_dest_func(void)
         spritePoolInfo.unkC[1] = 0;
         spritePoolInfo.unkC[2] = 0;
         spritePoolInfo.unkC[3] = 0;
-        modeCtrl.unk2C = 0;
-        currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
+        modeCtrl.currPlayer = 0;
+        currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
         func_80029788();
         break;
     default:
-        func_80017708(modeCtrl.unk2C);
+        func_80017708(modeCtrl.currPlayer);
         break;
     }
     if (func_80017720() != 0)
@@ -1117,7 +1125,7 @@ void submode_game_nameentry_ready_init_func(void)
         return;
     }
     if (modeCtrl.gameType != GAMETYPE_MAIN_NORMAL
-     || (func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.unk2C]) < 0
+     || (func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]) < 0
          && (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) != (DIP_DEBUG|DIP_NAMEENTRY)))
     {
         gameSubmodeRequest = SMD_GAME_OVER_INIT;
@@ -1155,7 +1163,7 @@ void submode_game_nameentry_ready_init_func(void)
     sp8.unk15 = 1;
     sp8.unk1C = 0;
     g_create_textbox(1, 1, &sp8);
-    g_set_textbox_text(1, nameEntryText[playerCharacterSelection[modeCtrl.unk2C]]);
+    g_set_textbox_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
     g_start_screen_fade(0x100, 0xFFFFFF, 30);
     BALL_FOREACH( ball->state = 15; )
     camera_set_state(31);
@@ -1172,8 +1180,8 @@ void submode_game_nameentry_ready_main_func(void)
     {
         g_create_textbox(1, 20, NULL);
         func_8007E44C(
-            func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.unk2C]),
-            lbl_802C67D4[modeCtrl.unk2C].unk4);
+            func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]),
+            lbl_802C67D4[modeCtrl.currPlayer].unk4);
         show_nameentry_text(modeCtrl.unk0);
     }
     if (modeCtrl.unk0 == 180)
@@ -1574,25 +1582,25 @@ void submode_game_result_init_func(void)
     playerCountPtr = &modeCtrl.playerCount;  // fake match
     if (*playerCountPtr == 3)
     {
-        switch (modeCtrl.unk42)
+        switch (modeCtrl.splitscreenMode)
         {
         default:
-        case 0:
+        case SPLITSCREEN_1P_WIDE:
             camera_setup_splitscreen_viewports(3);
             break;
-        case 1:
+        case SPLITSCREEN_2P_WIDE:
             setup_camera_viewport(0, 0.0f, 0.5f, 0.5f, 0.5f);
             setup_camera_viewport(1, 0.0f, 0.0f, 1.0f, 0.5f);
             setup_camera_viewport(2, 0.5f, 0.5f, 0.5f, 0.5f);
             setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
             break;
-        case 2:
+        case SPLITSCREEN_3P_WIDE:
             setup_camera_viewport(0, 0.0f, 0.0f, 0.5f, 0.5f);
             setup_camera_viewport(1, 0.5f, 0.0f, 0.5f, 0.5f);
             setup_camera_viewport(2, 0.0f, 0.5f, 1.0f, 0.5f);
             setup_camera_viewport(3, 0.0f, 0.0f, 0.0f, 0.0f);
             break;
-        case 3:
+        case SPLITSCREEN_4_SPLIT:
             camera_setup_splitscreen_viewports(4);
             cameraInfo[3].flags |= 0x70;
             cameraInfo[3].state = 12;
@@ -1891,7 +1899,7 @@ u32 lose_life(void)
      || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         return TRUE;
 
-    infoWork.unk28++;
+    infoWork.livesLost++;
     BALL_FOREACH( ball->lives--; )
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
         func_800662D4();
@@ -1906,11 +1914,11 @@ void func_80017140(void)
 }
 
 #ifdef NONMATCHING
-int func_80017160(void)
+int get_next_player(void)
 {
     int i;
     int r3;
-    int r4 = modeCtrl.unk2C;
+    int r4 = modeCtrl.currPlayer;
 
     for (i = 0; i < 4; i++, r4++)
     {
@@ -1921,20 +1929,20 @@ int func_80017160(void)
     return r3;
 }
 #else
-asm int func_80017160(void)
+asm int get_next_player(void)
 {
     nofralloc
-#include "../asm/nonmatchings/func_80017160.s"
+#include "../asm/nonmatchings/get_next_player.s"
 }
 #pragma peephole on
 #endif
 
-// func_80017160 matches in inline contexts
-inline int func_80017160_inline(void)
+// get_next_player matches in inline contexts
+inline int get_next_player_inline(void)
 {
     int i;
     int r3;
-    int r4 = modeCtrl.unk2C;
+    int r4 = modeCtrl.currPlayer;
 
     for (i = 0; i < 4; i++, r4++)
     {
@@ -1945,7 +1953,7 @@ inline int func_80017160_inline(void)
     return r3;
 }
 
-void func_800171E0(void)
+void g_init_player_data_1(void)
 {
     int i;
 
@@ -1954,7 +1962,7 @@ void func_800171E0(void)
         if (spritePoolInfo.unkC[i] != 0)
             break;
     }
-    modeCtrl.unk2C = i;
+    modeCtrl.currPlayer = i;
     for (i = i + 1; i < 4; i++)
     {
         if (spritePoolInfo.unkC[i] == 2)
@@ -1963,26 +1971,26 @@ void func_800171E0(void)
     modeCtrl.levelSetFlags |= (1 << 8);
     for (i = 0; i < 4; i++)
     {
-        lbl_801F3A9C[i] = infoWork;
+        playerInfos[i] = infoWork;
         lbl_801F3A8C[i] = modeCtrl.levelSetFlags;
     }
 }
 
-void func_800174C8(void)
+void g_init_player_data_2(void)
 {
     u32 r0;
 
-    if (spritePoolInfo.unkC[modeCtrl.unk2C] == 2)
-        spritePoolInfo.unkC[modeCtrl.unk2C] = 4;
-    lbl_801F3A9C[modeCtrl.unk2C] = infoWork;
-    lbl_801F3A8C[modeCtrl.unk2C] = modeCtrl.levelSetFlags;
-    r0 = func_80017160_inline();
+    if (spritePoolInfo.unkC[modeCtrl.currPlayer] == 2)
+        spritePoolInfo.unkC[modeCtrl.currPlayer] = 4;
+    playerInfos[modeCtrl.currPlayer] = infoWork;
+    lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.levelSetFlags;
+    r0 = get_next_player_inline();
     spritePoolInfo.unkC[r0] = 2;
-    if (modeCtrl.unk2C != r0)
+    if (modeCtrl.currPlayer != r0)
     {
-        modeCtrl.unk2C = r0;
-        infoWork = lbl_801F3A9C[modeCtrl.unk2C];
-        modeCtrl.levelSetFlags = lbl_801F3A8C[modeCtrl.unk2C];
+        modeCtrl.currPlayer = r0;
+        infoWork = playerInfos[modeCtrl.currPlayer];
+        modeCtrl.levelSetFlags = lbl_801F3A8C[modeCtrl.currPlayer];
         loadingStageId = g_get_next_stage_id();
     }
 }
@@ -1992,18 +2000,18 @@ void func_80017708(int a)
     spritePoolInfo.unkC[a] = 0;
 }
 
-int func_80017720(void)
+BOOL func_80017720(void)
 {
-    int r3 = 1;
+    int ret = TRUE;
     int i;
 
     for (i = 0; i < 4; i++)
     {
         if (spritePoolInfo.unkC[i] != 0)
         {
-            r3 = 0;
+            ret = FALSE;
             break;
         }
     }
-    return r3;
+    return ret;
 }

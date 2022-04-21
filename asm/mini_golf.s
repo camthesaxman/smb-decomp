@@ -228,7 +228,7 @@ lbl_00000348:
 /* 00000390 3C600000 */ lis r3, currentCameraStructPtr@ha
 /* 00000394 7C002A14 */ add r0, r0, r5
 /* 00000398 90030000 */ stw r0, currentCameraStructPtr@l(r3)
-/* 0000039C 4BFFFE35 */ bl func_800171E0
+/* 0000039C 4BFFFE35 */ bl g_init_player_data_1
 /* 000003A0 4BFFFE31 */ bl func_80044920
 /* 000003A4 386000A7 */ li r3, 0xa7
 /* 000003A8 4BFFFE29 */ bl load_stage
@@ -5881,7 +5881,7 @@ lbl_000056C4:
 /* 000056F4 3BC50000 */ addi r30, r5, lbl_000260F0@l
 /* 000056F8 3BE40000 */ addi r31, r4, lbl_00026AB0@l
 /* 000056FC 8063002C */ lwz r3, 0x2c(r3)
-/* 00005700 4BFFAAD1 */ bl func_80018648
+/* 00005700 4BFFAAD1 */ bl g_call_camera_apply_viewport
 /* 00005704 881D00F2 */ lbz r0, 0xf2(r29)
 /* 00005708 28000000 */ cmplwi r0, 0
 /* 0000570C 4182001C */ beq lbl_00005728
@@ -6409,7 +6409,7 @@ lbl_00005E5C:
 /* 00005EF8 B00307B0 */ sth r0, 0x7b0(r3)
 lbl_00005EFC:
 /* 00005EFC 38600000 */ li r3, 0
-/* 00005F00 4BFFA2D1 */ bl func_80018648
+/* 00005F00 4BFFA2D1 */ bl g_call_camera_apply_viewport
 /* 00005F04 3C600000 */ lis r3, modeCtrl@ha
 /* 00005F08 C09E0000 */ lfs f4, 0(r30)
 /* 00005F0C 3AC30000 */ addi r22, r3, modeCtrl@l
@@ -6491,7 +6491,7 @@ lbl_00006034:
 /* 00006038 28000001 */ cmplwi r0, 1
 /* 0000603C 418203AC */ beq lbl_000063E8
 /* 00006040 38600001 */ li r3, 1
-/* 00006044 4BFFA18D */ bl func_80018648
+/* 00006044 4BFFA18D */ bl g_call_camera_apply_viewport
 /* 00006048 3C600000 */ lis r3, modeCtrl@ha
 /* 0000604C C09E0000 */ lfs f4, 0(r30)
 /* 00006050 3AC30000 */ addi r22, r3, modeCtrl@l
@@ -6570,7 +6570,7 @@ lbl_00006034:
 /* 00006174 4BFFA05D */ bl avdisp_draw_model_unculled_sort_none
 lbl_00006178:
 /* 00006178 38600002 */ li r3, 2
-/* 0000617C 4BFFA055 */ bl func_80018648
+/* 0000617C 4BFFA055 */ bl g_call_camera_apply_viewport
 /* 00006180 3C600000 */ lis r3, modeCtrl@ha
 /* 00006184 C09E0000 */ lfs f4, 0(r30)
 /* 00006188 3AC30000 */ addi r22, r3, modeCtrl@l
@@ -6649,7 +6649,7 @@ lbl_00006178:
 /* 000062AC 4BFF9F25 */ bl avdisp_draw_model_unculled_sort_none
 lbl_000062B0:
 /* 000062B0 38600003 */ li r3, 3
-/* 000062B4 4BFF9F1D */ bl func_80018648
+/* 000062B4 4BFF9F1D */ bl g_call_camera_apply_viewport
 /* 000062B8 3C600000 */ lis r3, modeCtrl@ha
 /* 000062BC C09E0000 */ lfs f4, 0(r30)
 /* 000062C0 3AC30000 */ addi r22, r3, modeCtrl@l
@@ -6729,7 +6729,7 @@ lbl_000062B0:
 lbl_000063E8:
 /* 000063E8 48003869 */ bl lbl_00009C50
 /* 000063EC 38600000 */ li r3, 0
-/* 000063F0 4BFF9DE1 */ bl func_80018648
+/* 000063F0 4BFF9DE1 */ bl g_call_camera_apply_viewport
 /* 000063F4 4BFF9DDD */ bl func_80017FCC
 /* 000063F8 4BFF9DD9 */ bl func_80071A8C
 /* 000063FC 38600009 */ li r3, 9
@@ -7840,7 +7840,7 @@ lbl_00007458:
 /* 0000745C 3C600000 */ lis r3, modeCtrl@ha
 /* 00007460 38630000 */ addi r3, r3, modeCtrl@l
 /* 00007464 8063002C */ lwz r3, 0x2c(r3)
-/* 00007468 4BFF8D69 */ bl func_80018648
+/* 00007468 4BFF8D69 */ bl g_call_camera_apply_viewport
 /* 0000746C 38600001 */ li r3, 1
 /* 00007470 38800003 */ li r4, 3
 /* 00007474 38A00001 */ li r5, 1
@@ -8606,8 +8606,8 @@ lbl_00007F90:
 /* 00007FA4 1CC00034 */ mulli r6, r0, 0x34
 /* 00007FA8 80050000 */ lwz r0, 0(r5)
 /* 00007FAC 80850004 */ lwz r4, 4(r5)
-/* 00007FB0 3C600000 */ lis r3, lbl_801F3A9C@ha
-/* 00007FB4 38630000 */ addi r3, r3, lbl_801F3A9C@l
+/* 00007FB0 3C600000 */ lis r3, playerInfos@ha
+/* 00007FB4 38630000 */ addi r3, r3, playerInfos@l
 /* 00007FB8 7CC33214 */ add r6, r3, r6
 /* 00007FBC 90060000 */ stw r0, 0(r6)
 /* 00007FC0 3C600000 */ lis r3, lbl_801F3A8C@ha
@@ -9064,10 +9064,10 @@ lbl_0000860C:
 /* 0000860C 3C600000 */ lis r3, modeCtrl@ha
 /* 00008610 3BE30000 */ addi r31, r3, modeCtrl@l
 /* 00008614 801F002C */ lwz r0, 0x2c(r31)
-/* 00008618 3C800000 */ lis r4, lbl_801F3A9C@ha
+/* 00008618 3C800000 */ lis r4, playerInfos@ha
 /* 0000861C 3C600000 */ lis r3, infoWork@ha
 /* 00008620 1CA00034 */ mulli r5, r0, 0x34
-/* 00008624 38040000 */ addi r0, r4, lbl_801F3A9C@l
+/* 00008624 38040000 */ addi r0, r4, playerInfos@l
 /* 00008628 7CE02A14 */ add r7, r0, r5
 /* 0000862C 80A70000 */ lwz r5, 0(r7)
 /* 00008630 38C30000 */ addi r6, r3, infoWork@l
@@ -10715,7 +10715,7 @@ lbl_00009DA4:
 /* 00009DBC 8081019C */ lwz r4, 0x19c(r1)
 /* 00009DC0 38760000 */ addi r3, r22, 0
 /* 00009DC4 90040000 */ stw r0, 0(r4)
-/* 00009DC8 4BFF6409 */ bl func_80018648
+/* 00009DC8 4BFF6409 */ bl g_call_camera_apply_viewport
 /* 00009DCC 4BFF6405 */ bl g_draw_ball_shadow
 /* 00009DD0 4BFF6401 */ bl func_80054FF0
 /* 00009DD4 7EC3B378 */ mr r3, r22
@@ -11888,7 +11888,7 @@ lbl_0000AEEC:
 /* 0000AEFC 2C000004 */ cmpwi r0, 4
 /* 0000AF00 40820008 */ bne lbl_0000AF08
 lbl_0000AF04:
-/* 0000AF04 4BFF52CD */ bl func_80047D70
+/* 0000AF04 4BFF52CD */ bl draw_stage_preview
 lbl_0000AF08:
 /* 0000AF08 880E01E0 */ lbz r0, 0x1e0(r14)
 /* 0000AF0C 2C000002 */ cmpwi r0, 2
@@ -12022,7 +12022,7 @@ lbl_0000B048:
 /* 0000B0D0 7C630194 */ addze r3, r3
 /* 0000B0D4 5463103A */ slwi r3, r3, 2
 /* 0000B0D8 7C630010 */ subfc r3, r3, r0
-/* 0000B0DC 4BFF50F5 */ bl func_80018648
+/* 0000B0DC 4BFF50F5 */ bl g_call_camera_apply_viewport
 /* 0000B0E0 4BFF50F1 */ bl func_800224CC
 /* 0000B0E4 807D002C */ lwz r3, 0x2c(r29)
 /* 0000B0E8 38630001 */ addi r3, r3, 1
@@ -12099,7 +12099,7 @@ lbl_0000B1E0:
 lbl_0000B1F0:
 /* 0000B1F0 4BFF4FE1 */ bl func_80022530
 /* 0000B1F4 807D002C */ lwz r3, 0x2c(r29)
-/* 0000B1F8 4BFF4FD9 */ bl func_80018648
+/* 0000B1F8 4BFF4FD9 */ bl g_call_camera_apply_viewport
 lbl_0000B1FC:
 /* 0000B1FC 4BFF4FD5 */ bl ord_tbl_draw_nodes
 /* 0000B200 806101B4 */ lwz r3, 0x1b4(r1)

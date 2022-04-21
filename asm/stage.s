@@ -1090,7 +1090,7 @@ lbl_800449DC:
 /* 800449DC 000408FC  38 6D 99 20 */	addi r3, r13, naomiStageObj@sda21
 /* 800449E0 00040900  38 8D 99 0C */	addi r4, r13, naomiStageTpl@sda21
 /* 800449E4 00040904  4B FE C4 3D */	bl free_nlobj
-/* 800449E8 00040908  48 00 29 01 */	bl func_800472E8
+/* 800449E8 00040908  48 00 29 01 */	bl free_stagedef
 /* 800449EC 0004090C  7F 63 DB 78 */	mr r3, r27
 /* 800449F0 00040910  48 07 DE 55 */	bl OSSetCurrentHeap
 lbl_800449F4:
@@ -1205,7 +1205,7 @@ lbl_80044B68:
 /* 80044B68 00040A88  38 6D 99 20 */	addi r3, r13, naomiStageObj@sda21
 /* 80044B6C 00040A8C  38 8D 99 0C */	addi r4, r13, naomiStageTpl@sda21
 /* 80044B70 00040A90  4B FE C2 B1 */	bl free_nlobj
-/* 80044B74 00040A94  48 00 27 75 */	bl func_800472E8
+/* 80044B74 00040A94  48 00 27 75 */	bl free_stagedef
 /* 80044B78 00040A98  7F E3 FB 78 */	mr r3, r31
 /* 80044B7C 00040A9C  48 07 DC C9 */	bl OSSetCurrentHeap
 /* 80044B80 00040AA0  38 00 FF FF */	li r0, -1
@@ -4076,8 +4076,8 @@ lbl_800472C8:
 /* 800472E0 00043200  38 21 00 98 */	addi r1, r1, 0x98
 /* 800472E4 00043204  4E 80 00 20 */	blr
 
-.global func_800472E8
-func_800472E8:
+.global free_stagedef
+free_stagedef:
 /* 800472E8 00043208  7C 08 02 A6 */	mflr r0
 /* 800472EC 0004320C  90 01 00 04 */	stw r0, 4(r1)
 /* 800472F0 00043210  94 21 FF F8 */	stwu r1, -8(r1)
@@ -4850,8 +4850,8 @@ lbl_80047D4C:
 /* 80047D68 00043C88  38 21 00 D8 */	addi r1, r1, 0xd8
 /* 80047D6C 00043C8C  4E 80 00 20 */	blr
 
-.global func_80047D70
-func_80047D70:
+.global draw_stage_preview
+draw_stage_preview:
 /* 80047D70 00043C90  7C 08 02 A6 */	mflr r0
 /* 80047D74 00043C94  90 01 00 04 */	stw r0, 4(r1)
 /* 80047D78 00043C98  94 21 FF F8 */	stwu r1, -8(r1)

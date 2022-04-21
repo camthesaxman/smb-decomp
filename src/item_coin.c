@@ -62,7 +62,7 @@ void item_coin_init(struct Item *item)
     item->unk12 = -1;
     item->state = 1;
     item->unk1C = bananaInfo[item->subtype].lodModelsPtr;
-    item->unk8 = 0x22;
+    item->flags = 0x22;
     item->unk14 = bananaInfo[item->subtype].unk4;
     item->unk18 = 0.25f;
     item->xrotSpeed = bananaInfo[item->subtype].xrotSpeed;
@@ -105,7 +105,7 @@ void item_coin_main(struct Item *item)
         if (item->unk14 < 1.1920928955078125e-07f)
         {
             item->state = 0;
-            item->unk8 |= 1;
+            item->flags |= ITEM_FLAG_INVISIBLE;
             item->unk14 = 1.1920928955078125e-07f;
         }
         break;
@@ -180,11 +180,9 @@ void item_coin_draw(struct Item *item)
 
 void item_coin_collect(struct Item *item, struct Struct800690DC *b)
 {
-    struct Struct8003C550 sp10;
-
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         return;
-    item->unk8 &= ~(1 << 1);
+    item->flags &= ~(1 << 1);
     item->state = 3;
     item->unk2C.y += item->unk14 * 0.1875;
     item->yrotSpeed <<= 2;
@@ -193,12 +191,16 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     item->unk2C.z += b->unk1C.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
+        struct Struct8003C550 sp10;
+
         item->unk5E = infoWork.timerCurr;
         give_bananas(bananaInfo[item->subtype].bananaValue);
         g_give_points(bananaInfo[item->subtype].unkA, bananaInfo[item->subtype].pointValue);
         item->state = 0;
-        item->unk8 |= 1;
-        item->unk8 &= ~(1 << 1);
+        item->flags |= ITEM_FLAG_INVISIBLE;
+        item->flags &= ~(1 << 1);
+
+        // spawn banana effect that travels towards counter in HUD
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 8;
         sp10.unk14 = currentBallStructPtr->unk2E;
