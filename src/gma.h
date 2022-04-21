@@ -115,14 +115,14 @@ struct GMAExtraDispLists
 struct GMAShape
 {
     /*0x00*/ u32 flags;
-    /*0x04*/ GXColor g_color1;
-    /*0x08*/ GXColor g_color2;
+    /*0x04*/ GXColor materialColor;
+    /*0x08*/ GXColor ambientColor;
     union {
         u32 asU32;
         GXColor asColor;
-    } g_color3;
+    } specularColor;
     /*0x10*/ u8 filler10[1];
-    u8 g_alpha;
+    u8 alpha;
     /*0x12*/ u8 tevLayerCount;
     /*0x13*/ u8 dispListFlags;
     /*0x14*/ u8 unk14;
