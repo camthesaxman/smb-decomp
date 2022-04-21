@@ -1798,7 +1798,7 @@ struct GMATevLayer *find_material(struct GMAModel *model, u32 id)
 
     for (i = 0; i < model->tevLayerCount; i++)
     {
-        if (id == materials[i].unk4)
+        if (id == materials[i].texIndex)
         {
             materials[i].texObj = &model->texObjs[i];
             materials[i].flags &= ~(1 << 16);
