@@ -576,7 +576,7 @@ void bg_e3_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -967,7 +967,7 @@ void bg_night_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -1002,7 +1002,7 @@ void bg_ice2_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -1077,7 +1077,7 @@ void bg_billiards_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -1112,7 +1112,7 @@ void bg_golf_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -1147,7 +1147,7 @@ void bg_bowling_draw(void)
     func_800224CC();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);

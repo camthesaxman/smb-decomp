@@ -84,7 +84,7 @@ enum
     GMA_SHAPE_FLAG_UNLIT = 1 << 0,
     GMA_SHAPE_FLAG_DOUBLE_SIDED = 1 << 1, // Draw front and back sides of tris/quads
     GMA_SHAPE_FLAG_NO_FOG = 1 << 2,
-    GMA_SHAPE_FLAG_UNK3 = 1 << 3,
+    GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR = 1 << 3, // Use material/ambient colors in shape in mat/amb color registers
     GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC = 1 << 5,
     GMA_SHAPE_FLAG_CUSTOM_BLEND_DST = 1 << 6,
     GMA_SHAPE_FLAG_SIMPLE_MATERIAL = 1 << 7, // Only 1 tev stage that spits out color/alpha input

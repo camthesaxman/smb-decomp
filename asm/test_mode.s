@@ -4549,7 +4549,7 @@ lbl_000040B8:
 /* 00004198 C03F012C */ lfs f1, 0x12c(r31)
 /* 0000419C FC400890 */ fmr f2, f1
 /* 000041A0 FC600890 */ fmr f3, f1
-/* 000041A4 4BFFBFB9 */ bl g_avdisp_set_3_floats
+/* 000041A4 4BFFBFB9 */ bl avdisp_set_ambient
 lbl_000041A8:
 /* 000041A8 8001001C */ lwz r0, 0x1c(r1)
 /* 000041AC 83E10014 */ lwz r31, 0x14(r1)
@@ -5664,7 +5664,7 @@ lbl_000050A4:
 /* 00005174 C03E012C */ lfs f1, 0x12c(r30)
 /* 00005178 FC400890 */ fmr f2, f1
 /* 0000517C FC600890 */ fmr f3, f1
-/* 00005180 4BFFAFDD */ bl g_avdisp_set_3_floats
+/* 00005180 4BFFAFDD */ bl avdisp_set_ambient
 /* 00005184 38000000 */ li r0, 0
 /* 00005188 901F0170 */ stw r0, 0x170(r31)
 /* 0000518C 7FA3EB78 */ mr r3, r29

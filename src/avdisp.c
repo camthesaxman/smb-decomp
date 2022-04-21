@@ -46,10 +46,10 @@ BallEnvFunc lbl_802F20EC;
 GXCullMode s_cullMode;
 float s_boundSphereScale;
 u32 s_lightMask;
-float s_someAlpha;
-float s_someBlue;
-float s_someGreen;
-float s_someRed;
+float s_materialAlpha; // Alpha of MAT in lighting equation: MAT * (RAS + AMB)
+float s_ambientBlue; // Blue of AMB in lighting equation: MAT * (RAS + AMB)
+float s_ambientGreen; // Green of AMB in lighting equation: MAT * (RAS + AMB)
+float s_ambientRed; // Red of AMB of lighting equation: MAT * (RAS + AMB)
 Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 Mtx **avdispMtxPtrList;
 
@@ -131,7 +131,7 @@ void func_8008D6BC(u32 arg)
 #endif
 
 #ifdef __MWERKS__
-asm void func_8008D6D4(register void *arg)
+asm void set_tev_material_ambient_colors(register void *arg)
 {
     nofralloc
     lis r10, 0xE0000000@h          // r10 = locked cache
@@ -141,7 +141,7 @@ asm void func_8008D6D4(register void *arg)
     ori r9, r9, GXWGFifo@l         // r9 = GXWGFifo
     lwz r5, 0(arg)
     andi. r7, r5, 8
-    bne lbl_8008D710_if_flag_unk3  // If GMA_SHAPE_FLAG_UNK3 is set
+    bne lbl_8008D710_if_flag_unk3  // If GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR is set
     ps_mr f0, f5                   // f0 = 1.0 | 1.0
     ps_mr f1, f5                   // f1 = 1.0 | 1.0
     andi. r7, r5, 0x80
@@ -157,12 +157,12 @@ lbl_8008D71C_simple_material:
     lhz r4, 4(arg)                 // r4 = g_color1.rg
     psq_l f4, 6(arg), 1, qr2       // f4 = g_color1.b | 1.0
 lbl_8008D724:
-    lis r7, s_someRed@h
-    ori r7, r7, s_someRed@l        // r7 = &lbl_802F20D0
+    lis r7, s_ambientRed@h
+    ori r7, r7, s_ambientRed@l        // r7 = &lbl_802F20D0
     psq_l f2, 0(r7), 0, qr0        // f2 = lbl_802F20D0.rg
     psq_l f3, 8(r7), 0, qr0        // f3 = lbl_802F20D0.ba
-    ps_mul f0, f0, f2              // f0 = shape.g_color2.rg * lbl_802F20D0.rg
-    ps_mul f1, f1, f3              // f1 = shape.g_color2.ba * lbl_802F20D0.ba
+    ps_mul f0, f0, f2              // f0 = (shape.g_color2.rg OR 1.0|1.0) * lbl_802F20D0.rg
+    ps_mul f1, f1, f3              // f1 = shape.g_color2.ba OR 1.0|1.0) * lbl_802F20D0.ba
     psq_l f2, 17(arg), 1, qr2      // f2 = shape.alpha | 1
     ps_merge10 f2, f2, f2          // f2 = 1 | shape.alpha
     psq_st f0, 0x98(r10), 0, qr2   // 
@@ -170,7 +170,7 @@ lbl_8008D724:
     lwz r7, 0x98(r10)              // r7 = f0.rg f1.ba
     li r8, 0x100a                  // XF_AMBIENT0_ID
     stb r6, 0(r9)                  // Write color in r7 to ambient0 register
-    stw r8, 0(r9)                  // 
+    stw r8, 0(r9)                  // I don't think alpha matters here because alpha light channel is always disabled
     stw r7, 0(r9)                  // 
     ps_merge01 f4, f4, f3          // f4 = (shape.g_color1.b OR 1.0) | lbl_802F20D0.a
     ps_mul f4, f4, f2              // f4 = (shape.g_color1.b OR 1.0) | shape.alpha * lbl_802F20D0.a
@@ -184,7 +184,7 @@ lbl_8008D724:
     blr
 }
 #else
-void func_8008D6D4(register void *arg)
+void set_tev_material_ambient_colors(struct GMAShape *shape)
 {
     // TODO
 }
@@ -194,11 +194,11 @@ void avdisp_init(void)
 {
     Vec sp8;
     lbl_802F20EC = NULL;
-    s_someBlue = 1.0f;
-    s_someGreen = 1.0f;
-    s_someRed = 1.0f;
+    s_ambientBlue = 1.0f;
+    s_ambientGreen = 1.0f;
+    s_ambientRed = 1.0f;
     s_boundSphereScale = 1.0f;
-    s_someAlpha = 1.0f;
+    s_materialAlpha = 1.0f;
     s_lightMask = 1;
     g_customMaterialFunc = NULL;
     init_some_texture();
@@ -564,11 +564,11 @@ void avdisp_set_bound_sphere_scale(float a)
     s_boundSphereScale = a;
 }
 
-void g_avdisp_set_3_floats(float a, float b, float c)
+void avdisp_set_ambient(float red, float green, float blue)
 {
-    s_someRed = a;
-    s_someGreen = b;
-    s_someBlue = c;
+    s_ambientRed = red;
+    s_ambientGreen = green;
+    s_ambientBlue = blue;
 }
 
 // Draw opaque shapes immediately and depth-sort translucent shapes, a reasonable default
@@ -578,7 +578,7 @@ void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
     {
         s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        s_someAlpha = 1.0f;
+        s_materialAlpha = 1.0f;
     }
     else
         avdisp_draw_model_unculled_sort_translucent(model);
@@ -592,7 +592,7 @@ void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
     {
         s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        s_someAlpha = 1.0f;
+        s_materialAlpha = 1.0f;
     }
     else
         avdisp_draw_model_unculled_sort_none(model);
@@ -606,7 +606,7 @@ void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
     {
         s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        s_someAlpha = 1.0f;
+        s_materialAlpha = 1.0f;
     }
     else
         avdisp_draw_model_unculled_sort_all(model);
@@ -614,7 +614,7 @@ void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
 
 void avdisp_set_alpha(float a)
 {
-    s_someAlpha = a;
+    s_materialAlpha = a;
 }
 
 void avdisp_set_light_mask(u32 a)
@@ -778,7 +778,7 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->modelSamplers = modelSamplers;
     node->cullMode = cullMode;
     node->unk48 = func_800223D0();
-    node->alpha = s_someAlpha;
+    node->alpha = s_materialAlpha;
     node->unk50 = lbl_802F20EC;
     node->unk54 = g_customMaterialFunc;
     node->zCompEnable = s_zModeCompareEnable;
@@ -828,7 +828,7 @@ void avdisp_draw_model_unculled_sort_translucent(struct GMAModel *model)
 
     s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_someAlpha = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
 // Draw both opaque and translucent shapes immediately. Useful when you want to explicitly draw
@@ -858,7 +858,7 @@ void avdisp_draw_model_unculled_sort_none(struct GMAModel *model)
 
     s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_someAlpha = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
 // Depth-sort both opaque and translucent shapes. Useful if your opaque shapes become translucent
@@ -883,7 +883,7 @@ void avdisp_draw_model_unculled_sort_all(struct GMAModel *model)
 
     s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_someAlpha = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
 // Used by shadows
@@ -907,7 +907,7 @@ void g_avdisp_draw_model_4(struct GMAModel *model)
 
     s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    s_someAlpha = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
 int get_texture_max_lod(int width, int height)
@@ -1122,7 +1122,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     zModeUpdateEnable = s_zModeUpdateEnable;
     zModeCompareFunc = s_zModeCompareFunc;
     r26 = lbl_802F2108;
-    s_someAlpha = node->alpha;
+    s_materialAlpha = node->alpha;
     lbl_802F20EC = node->unk50;
     g_customMaterialFunc = node->unk54;
     s_zModeCompareEnable = node->zCompEnable;
@@ -1163,7 +1163,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     if (node->usePostAddTevStage != 0)
         s_postAddColor = spC;
     s_fogEnabled = fogEnabled;
-    s_someAlpha = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
 u32 g_avdisp_set_some_tex_mtx_sel(u32 a)
@@ -1488,7 +1488,7 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
         GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, s_fogColor);
-    if (shape->flags & (GMA_SHAPE_FLAG_UNK3 | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
+    if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
         s_materialCache.materialColor = shape->materialColor;
     else
     {
@@ -1497,7 +1497,7 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
         s_materialCache.materialColor.b = 255;
     }
     s_materialCache.materialColor.a = shape->alpha;
-    if (shape->flags & GMA_SHAPE_FLAG_UNK3)
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
         s_materialCache.ambientColor = shape->ambientColor;
     else
     {
@@ -1506,7 +1506,7 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
         s_materialCache.ambientColor.b = 255;
     }
     s_materialCache.ambientColor.a = 255;
-    func_8008D6D4(shape);
+    set_tev_material_ambient_colors(shape);
     s_materialCache.specularColor.r = shape->specularColor.asColor.r;
     s_materialCache.specularColor.g = shape->specularColor.asColor.g;
     s_materialCache.specularColor.b = shape->specularColor.asColor.b;
@@ -1767,7 +1767,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
     {
         GXColor ambientColor;
         int g_someColorChanged = 0;
-        if (shape->flags & (GMA_SHAPE_FLAG_SIMPLE_MATERIAL | GMA_SHAPE_FLAG_UNK3))
+        if (shape->flags & (GMA_SHAPE_FLAG_SIMPLE_MATERIAL | GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR))
         {
             materialColor.r = shape->materialColor.r;
             materialColor.g = shape->materialColor.g;
@@ -1790,7 +1790,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
             s_materialCache.materialColor = materialColor;
         }
         //lbl_8009069C
-        if (shape->flags & GMA_SHAPE_FLAG_UNK3)
+        if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
         {
             ambientColor.r = shape->ambientColor.r;
             ambientColor.g = shape->ambientColor.g;
@@ -1814,7 +1814,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
         }
         //lbl_8009070C
         if (g_someColorChanged)
-            func_8008D6D4(shape);
+            set_tev_material_ambient_colors(shape);
     }
     //lbl_8009071C
     colorIn = GX_CC_RASC;
@@ -1841,7 +1841,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
         else
         {
             s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_UNLIT;
-            if (shape->flags & (GMA_SHAPE_FLAG_UNK3 | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
+            if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
             {
                 materialColor.r = shape->materialColor.r;
                 materialColor.g = shape->materialColor.g;
@@ -1854,7 +1854,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
                 materialColor.b = 255;
             }
             //lbl_800907C0
-            materialColor.a = (float)shape->alpha * s_someAlpha;
+            materialColor.a = (float)shape->alpha * s_materialAlpha;
             //sp38 = sp78;
             GXSetTevColor(GX_TEVREG0, materialColor);
             colorIn = GX_CC_C0;
