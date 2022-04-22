@@ -13,7 +13,7 @@ u32 tevutil_init(void)
     GXColor color = {0, 0, 0, 0};
 
     memset(gxCache, 0, 0x734);
-    GXSetZMode(1, GX_LEQUAL, 1);
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
     gxCache->compareEnable = GX_TRUE;
     gxCache->compareFunc = GX_LEQUAL;
     gxCache->updateEnable = GX_TRUE;
@@ -204,9 +204,9 @@ void GXSetZCompLoc_cached_init(u32 before_tex)
     return;
 }
 
-void GXSetTevColorIn_cached(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
+void GXSetTevColorIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
 {
-    GXTevColorInputCache *_colorInput;
+    GXTevInputCache *_colorInput;
 
     _colorInput = gxCache->colorInputs + stage;
     if ( _colorInput->a != a || _colorInput->b != b || _colorInput->c != c || _colorInput->d != d)
@@ -221,9 +221,9 @@ void GXSetTevColorIn_cached(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b
     return;
 }
 
-void GXSetTevColorIn_cached_init(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
+void GXSetTevColorIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
 {
-    GXTevColorInputCache *_colorInput;
+    GXTevInputCache *_colorInput;
 
     GXSetTevColorIn(stage, a, b, c, d);
     _colorInput = gxCache->colorInputs + stage;
@@ -234,9 +234,9 @@ void GXSetTevColorIn_cached_init(GXTevStageID stage, GXTevColorArg a, GXTevColor
     return;
 }
 
-void GXSetTevAlphaIn_cached(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
+void GXSetTevAlphaIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
 {
-    GXTevAlphaInputCache *_alphaInput;
+    GXTevInputCache *_alphaInput;
 
     _alphaInput = gxCache->alphaInputs + stage;
     if (_alphaInput->a != a || _alphaInput->b != b || _alphaInput->c != c || _alphaInput->d != d) 
@@ -251,9 +251,9 @@ void GXSetTevAlphaIn_cached(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b
     return;
 }
 
-void GXSetTevAlphaIn_cached_init(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
+void GXSetTevAlphaIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
 {
-    GXTevAlphaInputCache *_alphaInput;
+    GXTevInputCache *_alphaInput;
 
     GXSetTevAlphaIn(stage, a, b, c, d);
     _alphaInput = gxCache->alphaInputs + stage;
@@ -289,6 +289,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
     return;
 }
 
+// TODO: change GXBool to u32
 void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_colorOp;
@@ -304,3 +305,44 @@ void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
     _colorOp->reg = out_reg;
     return;
 }
+
+void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, u32 clamp, GXTevRegID out_reg)
+{
+    GXTevOpCache *_alphaOp;
+
+    _alphaOp = gxCache->alphaOperations + stage;
+    if (
+        _alphaOp->reg != out_reg ||
+        _alphaOp->scale != scale ||
+        _alphaOp->clamp != (GXBool)clamp ||
+        _alphaOp->op != op ||
+        _alphaOp->bias != bias
+        ) 
+    {
+        // if something has differnt
+        GXSetTevAlphaOp(stage, op, bias, scale, clamp, out_reg);
+        _alphaOp->op = op;
+        _alphaOp->bias = bias;
+        _alphaOp->scale = scale;
+        _alphaOp->clamp = clamp;
+        _alphaOp->reg = out_reg;
+    }
+    return;
+}
+
+// TODO: change GXBool to u32
+void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
+{
+    GXTevOpCache *_alphaOp;
+
+    // TODO: fix paremeters (these must "stage, op, bias, scale, clamp, out_reg")
+    GXSetTevAlphaOp (stage, op, bias, scale);
+    _alphaOp = gxCache->alphaOperations + stage;
+    _alphaOp->op = op;
+    _alphaOp->bias = bias;
+    _alphaOp->scale = scale;
+    _alphaOp->clamp = clamp;
+    _alphaOp->reg = out_reg;
+    return;
+}
+

@@ -132,19 +132,11 @@ typedef struct
 
 typedef struct
 {
-    GXTevColorArg a;
-    GXTevColorArg b;
-    GXTevColorArg c;
-    GXTevColorArg d;
-} GXTevColorInputCache;
-
-typedef struct
-{
-    GXTevAlphaArg a;
-    GXTevAlphaArg b;
-    GXTevAlphaArg c;
-    GXTevAlphaArg d;
-} GXTevAlphaInputCache;
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+} GXTevInputCache;
 
 typedef struct {
     GXTevOp op;
@@ -162,6 +154,17 @@ typedef struct {
     u16 unk0xe;
 } GXTevOrderCached;
 
+typedef struct {
+    u8 numTevStages;
+    GXColor colors[4];
+    u8 filler0x11[1];
+} GXTevKColorCached;
+
+typedef struct {
+    u16 unk0x0;
+    u16 unk0x2;
+} GXCache_child_0x712;
+
 struct GXCache
 {
     /*0x000*/ GXBool compareEnable;
@@ -178,14 +181,16 @@ struct GXCache
     /*0x0FD*/ GXBool alphaUpdate;
     /*0x0FE*/ GXBool zCompare;
     /*0x0FF*/ u8 unk0xFF;
-    /*0x100*/ GXTevColorInputCache colorInputs[16];
-    /*0x200*/ GXTevAlphaInputCache alphaInputs[16];
+    /*0x100*/ GXTevInputCache colorInputs[16];
+    /*0x200*/ GXTevInputCache alphaInputs[16];
     /*0x300*/ GXTevOpCache colorOperations[16];
     /*0x440*/ GXTevOpCache alphaOperations[16];
     /*0x580*/ GXTevOrderCached tevOrders[16];
     /*0x680*/ u32 kColorSels[16];
     /*0x6C0*/ u32 kAlphaSels[16];
-    u8 filler700[0x734-0x700];
+    /*0x700*/ GXTevKColorCached kColor;
+    /*0x712*/ GXCache_child_0x712 child0x712_s[8];
+    /*0x732*/ u8 filler732[0x734-0x732];
 };
 
 struct GFXBufferInfo
