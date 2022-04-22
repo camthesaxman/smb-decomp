@@ -1482,7 +1482,7 @@ extern void *lbl_802F2154;
 // extern ? lbl_802F2190;
 // extern ? lbl_802F2194;
 extern u32 vtxAttrs;
-extern struct ZMode *zMode;
+extern struct GXCache *gxCache;
 // extern ? lbl_802F21A8;
 // extern ? memcardGameData;
 // extern ? memcardMode;

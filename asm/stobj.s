@@ -2088,7 +2088,7 @@ lbl_8006C2E8:
 /* 8006C3B4 000682D4  48 02 21 B1 */	bl avdisp_set_alpha
 lbl_8006C3B8:
 /* 8006C3B8 000682D8  C0 22 A0 C0 */	lfs f1, lbl_802F48C0@sda21(r2)
-/* 8006C3BC 000682DC  48 02 20 65 */	bl g_avdisp_set_model_scale
+/* 8006C3BC 000682DC  48 02 20 65 */	bl avdisp_set_bound_sphere_scale
 /* 8006C3C0 000682E0  7F C3 F3 78 */	mr r3, r30
 /* 8006C3C4 000682E4  48 02 21 3D */	bl avdisp_draw_model_culled_sort_all
 lbl_8006C3C8:
@@ -2272,7 +2272,7 @@ func_8006C5F4:
 /* 8006C654 00068574  C0 41 00 10 */	lfs f2, 0x10(r1)
 /* 8006C658 00068578  4B F9 B7 81 */	bl mathutil_mtxA_scale_xyz
 /* 8006C65C 0006857C  FC 20 F8 90 */	fmr f1, f31
-/* 8006C660 00068580  48 02 1D C1 */	bl g_avdisp_set_model_scale
+/* 8006C660 00068580  48 02 1D C1 */	bl avdisp_set_bound_sphere_scale
 /* 8006C664 00068584  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 8006C668 00068588  38 80 00 00 */	li r4, 0
 /* 8006C66C 0006858C  48 07 7F 15 */	bl GXLoadPosMtxImm

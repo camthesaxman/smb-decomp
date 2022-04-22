@@ -64,9 +64,9 @@ void init_wait_vblank(void)
     GXDrawDone();
     init_vtx_attr_fmts();
     GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-    zMode->compareEnable = GX_ENABLE;
-    zMode->compareFunc   = GX_LEQUAL;
-    zMode->updateEnable  = GX_ENABLE;
+    gxCache->compareEnable = GX_ENABLE;
+    gxCache->compareFunc   = GX_LEQUAL;
+    gxCache->updateEnable  = GX_ENABLE;
     tevutil_init();
 }
 
@@ -115,9 +115,9 @@ void preproc_main(void)
     GXSetGPFifo(gfxBufferInfo->fifos[fifoNum]);
     GXSetColorUpdate_cached(1);
     GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-    zMode->compareEnable = GX_ENABLE;
-    zMode->compareFunc   = GX_LEQUAL;
-    zMode->updateEnable  = GX_ENABLE;
+    gxCache->compareEnable = GX_ENABLE;
+    gxCache->compareFunc   = GX_LEQUAL;
+    gxCache->updateEnable  = GX_ENABLE;
     GXSetZCompLoc_cached(0);
     GXCopyDisp(gfxBufferInfo->currFrameBuf, GX_TRUE);
     init_vtx_attr_fmts();

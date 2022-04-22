@@ -84,7 +84,7 @@ enum
     GMA_SHAPE_FLAG_UNLIT = 1 << 0,
     GMA_SHAPE_FLAG_DOUBLE_SIDED = 1 << 1, // Draw front and back sides of tris/quads
     GMA_SHAPE_FLAG_NO_FOG = 1 << 2,
-    GMA_SHAPE_FLAG_UNK3 = 1 << 3,
+    GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR = 1 << 3, // Use material/ambient colors in shape in mat/amb color registers
     GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC = 1 << 5,
     GMA_SHAPE_FLAG_CUSTOM_BLEND_DST = 1 << 6,
     GMA_SHAPE_FLAG_SIMPLE_MATERIAL = 1 << 7, // Only 1 tev stage that spits out color/alpha input
@@ -101,19 +101,29 @@ enum
     GMA_SHAPE_HAS_DLIST3 = 1 << 3, // Display list 3 present, cull back faces
 };
 
+// Two extra display lists which may be included in a shape. Follows directly after first two disp
+// lists if present.
+struct GMAExtraDispLists
+{
+    u8 mtxIndices[8];
+    u32 dispListSizes[2];
+    u8 filler10[0x20-0x10];
+    u8 dlists[];
+};
+
 // if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
 struct GMAShape
 {
     /*0x00*/ u32 flags;
-    /*0x04*/ GXColor g_color1;
-    /*0x08*/ GXColor g_color2;
+    /*0x04*/ GXColor materialColor;
+    /*0x08*/ GXColor ambientColor;
     union {
         u32 asU32;
         GXColor asColor;
-    } g_color3;
+    } specularColor;
     /*0x10*/ u8 filler10[1];
-    u8 g_alpha;
-    /*0x12*/ u8 tevStageCount;
+    u8 alpha;
+    /*0x12*/ u8 tevLayerCount;
     /*0x13*/ u8 dispListFlags;
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16 - 0x15];

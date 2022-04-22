@@ -27,14 +27,14 @@
 #define CHANGE_Z_MODE(updEnable, compFunc, compEnable) \
 do                                                     \
 {                                                      \
-    if (updEnable  != zMode->updateEnable              \
-     || compFunc   != zMode->compareFunc               \
-     || compEnable != zMode->compareEnable)            \
+    if (updEnable  != gxCache->updateEnable              \
+     || compFunc   != gxCache->compareFunc               \
+     || compEnable != gxCache->compareEnable)            \
     {                                                  \
         GXSetZMode(compEnable, compFunc, updEnable);   \
-        zMode->compareEnable = compEnable;             \
-        zMode->compareFunc   = compFunc;               \
-        zMode->updateEnable  = updEnable;              \
+        gxCache->compareEnable = compEnable;             \
+        gxCache->compareFunc   = compFunc;               \
+        gxCache->updateEnable  = updEnable;              \
     }                                                  \
 } while (0)
 

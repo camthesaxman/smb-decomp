@@ -11918,7 +11918,7 @@ lbl_0000AF54:
 /* 0000AF74 EC63002A */ fadds f3, f3, f0
 /* 0000AF78 4BFF5205 */ bl mathutil_mtxA_translate_xyz
 /* 0000AF7C FC20F890 */ fmr f1, f31
-/* 0000AF80 4BFF51FD */ bl g_avdisp_set_model_scale
+/* 0000AF80 4BFF51FD */ bl avdisp_set_bound_sphere_scale
 /* 0000AF84 807E0000 */ lwz r3, 0(r30)
 /* 0000AF88 38800000 */ li r4, 0
 /* 0000AF8C 4BFF51F1 */ bl g_gxutil_upload_some_mtx
@@ -12269,7 +12269,7 @@ lbl_0000B488:
 /* 0000B494 FC20E890 */ fmr f1, f29
 /* 0000B498 4BFF4CE5 */ bl mathutil_mtxA_scale_s
 /* 0000B49C FC20E890 */ fmr f1, f29
-/* 0000B4A0 4BFF4CDD */ bl g_avdisp_set_model_scale
+/* 0000B4A0 4BFF4CDD */ bl avdisp_set_bound_sphere_scale
 /* 0000B4A4 807D0000 */ lwz r3, 0(r29)
 /* 0000B4A8 38800000 */ li r4, 0
 /* 0000B4AC 4BFF4CD1 */ bl g_gxutil_upload_some_mtx
@@ -12284,7 +12284,7 @@ lbl_0000B488:
 /* 0000B4D0 C0230000 */ lfs f1, 0(r3)
 /* 0000B4D4 C0430004 */ lfs f2, 4(r3)
 /* 0000B4D8 C0630008 */ lfs f3, 8(r3)
-/* 0000B4DC 4BFF4CA1 */ bl g_avdisp_set_some_color_1
+/* 0000B4DC 4BFF4CA1 */ bl avdisp_set_post_multiply_color
 /* 0000B4E0 807F0000 */ lwz r3, 0(r31)
 /* 0000B4E4 80630008 */ lwz r3, 8(r3)
 /* 0000B4E8 806302C0 */ lwz r3, 0x2c0(r3)
@@ -12293,7 +12293,7 @@ lbl_0000B488:
 /* 0000B4F4 FC400890 */ fmr f2, f1
 /* 0000B4F8 FC600890 */ fmr f3, f1
 /* 0000B4FC FC800890 */ fmr f4, f1
-/* 0000B500 4BFF4C7D */ bl g_avdisp_set_some_color_1
+/* 0000B500 4BFF4C7D */ bl avdisp_set_post_multiply_color
 /* 0000B504 48000028 */ b lbl_0000B52C
 lbl_0000B508:
 /* 0000B508 881B002E */ lbz r0, 0x2e(r27)
@@ -14928,7 +14928,7 @@ lbl_0000DBCC:
 /* 0000DBE8 C03A0004 */ lfs f1, 4(r26)
 /* 0000DBEC 4BFF2591 */ bl mathutil_mtxA_scale_s
 /* 0000DBF0 C03A0004 */ lfs f1, 4(r26)
-/* 0000DBF4 4BFF2589 */ bl g_avdisp_set_model_scale
+/* 0000DBF4 4BFF2589 */ bl avdisp_set_bound_sphere_scale
 /* 0000DBF8 4BFF2585 */ bl mathutil_mtxA_push
 /* 0000DBFC C03A000C */ lfs f1, 0xc(r26)
 /* 0000DC00 4BFF257D */ bl avdisp_set_alpha
@@ -15063,7 +15063,7 @@ lbl_0000DDD8:
 /* 0000DDEC 4BFF2391 */ bl mathutil_mtxA_scale_s
 /* 0000DDF0 C01A0004 */ lfs f0, 4(r26)
 /* 0000DDF4 EC3F0032 */ fmuls f1, f31, f0
-/* 0000DDF8 4BFF2385 */ bl g_avdisp_set_model_scale
+/* 0000DDF8 4BFF2385 */ bl avdisp_set_bound_sphere_scale
 /* 0000DDFC C03A0010 */ lfs f1, 0x10(r26)
 /* 0000DE00 4BFF237D */ bl avdisp_set_alpha
 /* 0000DE04 80770000 */ lwz r3, 0(r23)
@@ -19022,7 +19022,7 @@ lbl_0001181C:
 /* 0001181C FC20E890 */ fmr f1, f29
 /* 00011820 4BFEE95D */ bl avdisp_set_alpha
 /* 00011824 FC20F090 */ fmr f1, f30
-/* 00011828 4BFEE955 */ bl g_avdisp_set_model_scale
+/* 00011828 4BFEE955 */ bl avdisp_set_bound_sphere_scale
 /* 0001182C 80790000 */ lwz r3, 0(r25)
 /* 00011830 38800000 */ li r4, 0
 /* 00011834 4BFEE949 */ bl g_gxutil_upload_some_mtx
@@ -20711,7 +20711,7 @@ lbl_000130D8:
 lbl_000130EC:
 /* 000130EC FC200090 */ fmr f1, f0
 lbl_000130F0:
-/* 000130F0 4BFED08D */ bl g_avdisp_set_model_scale
+/* 000130F0 4BFED08D */ bl avdisp_set_bound_sphere_scale
 /* 000130F4 807E0030 */ lwz r3, 0x30(r30)
 /* 000130F8 4BFED085 */ bl avdisp_draw_model_culled_sort_translucent
 /* 000130FC 8001004C */ lwz r0, 0x4c(r1)
@@ -20833,12 +20833,12 @@ lbl_00013268:
 /* 000132B0 C03E0024 */ lfs f1, 0x24(r30)
 /* 000132B4 4BFECEC9 */ bl mathutil_mtxA_scale_s
 /* 000132B8 C03E0024 */ lfs f1, 0x24(r30)
-/* 000132BC 4BFECEC1 */ bl g_avdisp_set_model_scale
+/* 000132BC 4BFECEC1 */ bl avdisp_set_bound_sphere_scale
 /* 000132C0 C03F004C */ lfs f1, 0x4c(r31)
 /* 000132C4 C07F0064 */ lfs f3, 0x64(r31)
 /* 000132C8 FC400890 */ fmr f2, f1
 /* 000132CC FC800890 */ fmr f4, f1
-/* 000132D0 4BFECEAD */ bl g_avdisp_set_some_color_1
+/* 000132D0 4BFECEAD */ bl avdisp_set_post_multiply_color
 /* 000132D4 3C600000 */ lis r3, commonGma@ha
 /* 000132D8 38630000 */ addi r3, r3, commonGma@l
 /* 000132DC 80630000 */ lwz r3, 0(r3)
@@ -21062,12 +21062,12 @@ lbl_0001360C:
 lbl_00013610:
 /* 00013610 FC201090 */ fmr f1, f2
 lbl_00013614:
-/* 00013614 4BFECB69 */ bl g_avdisp_set_model_scale
+/* 00013614 4BFECB69 */ bl avdisp_set_bound_sphere_scale
 /* 00013618 C03F004C */ lfs f1, 0x4c(r31)
 /* 0001361C C07F0064 */ lfs f3, 0x64(r31)
 /* 00013620 FC400890 */ fmr f2, f1
 /* 00013624 FC800890 */ fmr f4, f1
-/* 00013628 4BFECB55 */ bl g_avdisp_set_some_color_1
+/* 00013628 4BFECB55 */ bl avdisp_set_post_multiply_color
 /* 0001362C 3C600000 */ lis r3, commonGma@ha
 /* 00013630 38630000 */ addi r3, r3, commonGma@l
 /* 00013634 80630000 */ lwz r3, 0(r3)

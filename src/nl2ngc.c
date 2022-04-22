@@ -676,20 +676,20 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unk5 = 1;
     lbl_80205DAC.unk6 = 0;
     GXSetBlendMode_cached(GX_BM_NONE, lbl_801B7AB4[1], lbl_801B7AD4[0], GX_LO_CLEAR);
-    lbl_80205DAC.unk20 = zMode->compareEnable;
-    lbl_80205DAC.unk24 = zMode->compareFunc;
-    lbl_80205DAC.unk28 = zMode->updateEnable;
+    lbl_80205DAC.unk20 = gxCache->compareEnable;
+    lbl_80205DAC.unk24 = gxCache->compareFunc;
+    lbl_80205DAC.unk28 = gxCache->updateEnable;
     lbl_80205DAC.unk7 = 4;
     lbl_80205DAC.unk8 = 0;
 
-    if ((!lbl_80205DAC.unk8) != zMode->updateEnable
-     || zMode->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
-     || zMode->compareEnable != GX_ENABLE)
+    if ((!lbl_80205DAC.unk8) != gxCache->updateEnable
+     || gxCache->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
-        zMode->updateEnable  = (!lbl_80205DAC.unk8);
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
+        gxCache->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
     if (g_fogEnabled != 0)
@@ -769,14 +769,14 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
-        if ((!r26) != zMode->updateEnable
-         || zMode->compareFunc != naomiToGCCompare[r28]
-         || zMode->compareEnable != GX_ENABLE)
+        if ((!r26) != gxCache->updateEnable
+         || gxCache->compareFunc != naomiToGCCompare[r28]
+         || gxCache->compareEnable != GX_ENABLE)
         {
             GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
-            zMode->compareEnable = GX_ENABLE;
-            zMode->compareFunc   = naomiToGCCompare[r28];
-            zMode->updateEnable  = (!r26);
+            gxCache->compareEnable = GX_ENABLE;
+            gxCache->compareFunc   = naomiToGCCompare[r28];
+            gxCache->updateEnable  = (!r26);
         }
         lbl_80205DAC.unk7 = r28;
         lbl_80205DAC.unk8 = r26;
@@ -1163,20 +1163,20 @@ static void prep_some_stuff_before_drawing_2(void)
 
     GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[4], lbl_801B7AD4[5], GX_LO_CLEAR);
 
-    lbl_80205DAC.unk20 = zMode->compareEnable;
-    lbl_80205DAC.unk20 = zMode->compareFunc;  //! mistake?
-    lbl_80205DAC.unk28 = zMode->updateEnable;
+    lbl_80205DAC.unk20 = gxCache->compareEnable;
+    lbl_80205DAC.unk20 = gxCache->compareFunc;  //! mistake?
+    lbl_80205DAC.unk28 = gxCache->updateEnable;
     lbl_80205DAC.unk7 = 4;
     lbl_80205DAC.unk8 = 0;
 
-    if ((!lbl_80205DAC.unk8) != zMode->updateEnable
-     || zMode->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
-     || zMode->compareEnable != GX_ENABLE)
+    if ((!lbl_80205DAC.unk8) != gxCache->updateEnable
+     || gxCache->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
-        zMode->updateEnable  = (!lbl_80205DAC.unk8);
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
+        gxCache->updateEnable  = (!lbl_80205DAC.unk8);
     }
 
     if (g_fogEnabled != 0)
@@ -1256,14 +1256,14 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
-        if ((!r26) != zMode->updateEnable
-         || zMode->compareFunc != naomiToGCCompare[r28]
-         || zMode->compareEnable != GX_ENABLE)
+        if ((!r26) != gxCache->updateEnable
+         || gxCache->compareFunc != naomiToGCCompare[r28]
+         || gxCache->compareEnable != GX_ENABLE)
         {
             GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
-            zMode->compareEnable = GX_ENABLE;
-            zMode->compareFunc   = naomiToGCCompare[r28];
-            zMode->updateEnable  = (!r26);
+            gxCache->compareEnable = GX_ENABLE;
+            gxCache->compareFunc   = naomiToGCCompare[r28];
+            gxCache->updateEnable  = (!r26);
         }
         lbl_80205DAC.unk7 = r28;
         lbl_80205DAC.unk8 = r26;

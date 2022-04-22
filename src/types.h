@@ -162,7 +162,7 @@ typedef struct {
     u16 unk0xe;
 } GXTevOrderCached;
 
-struct ZMode // GXCache
+struct GXCache
 {
     /*0x000*/ GXBool compareEnable;
     /*0x004*/ GXCompare compareFunc;

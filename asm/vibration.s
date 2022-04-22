@@ -7289,7 +7289,7 @@ lbl_800BC974:
 /* 800BC9FC 000B891C  38 80 00 00 */	li r4, 0
 /* 800BCA00 000B8920  4B FD E0 25 */	bl g_gxutil_upload_some_mtx
 /* 800BCA04 000B8924  C0 3A 00 58 */	lfs f1, 0x58(r26)
-/* 800BCA08 000B8928  4B FD 1A 19 */	bl g_avdisp_set_model_scale
+/* 800BCA08 000B8928  4B FD 1A 19 */	bl avdisp_set_bound_sphere_scale
 /* 800BCA0C 000B892C  7E A3 AB 78 */	mr r3, r21
 /* 800BCA10 000B8930  4B FD 1A 29 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_800BCA14:
@@ -7429,7 +7429,7 @@ lbl_800BCB38:
 /* 800BCC1C 000B8B3C  C0 21 00 08 */	lfs f1, 8(r1)
 /* 800BCC20 000B8B40  C0 41 00 0C */	lfs f2, 0xc(r1)
 /* 800BCC24 000B8B44  C0 61 00 10 */	lfs f3, 0x10(r1)
-/* 800BCC28 000B8B48  4B FD 2A ED */	bl g_avdisp_set_some_color_1
+/* 800BCC28 000B8B48  4B FD 2A ED */	bl avdisp_set_post_multiply_color
 /* 800BCC2C 000B8B4C  C0 41 00 1C */	lfs f2, 0x1c(r1)
 /* 800BCC30 000B8B50  EC 7E 05 72 */	fmuls f3, f30, f21
 /* 800BCC34 000B8B54  C0 99 00 14 */	lfs f4, 0x14(r25)
@@ -7460,7 +7460,7 @@ lbl_800BCB38:
 /* 800BCC98 000B8BB8  38 80 00 00 */	li r4, 0
 /* 800BCC9C 000B8BBC  4B FD DD 89 */	bl g_gxutil_upload_some_mtx
 /* 800BCCA0 000B8BC0  FC 20 A8 90 */	fmr f1, f21
-/* 800BCCA4 000B8BC4  4B FD 17 7D */	bl g_avdisp_set_model_scale
+/* 800BCCA4 000B8BC4  4B FD 17 7D */	bl avdisp_set_bound_sphere_scale
 /* 800BCCA8 000B8BC8  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 800BCCAC 000B8BCC  80 63 00 08 */	lwz r3, 8(r3)
 /* 800BCCB0 000B8BD0  80 63 02 70 */	lwz r3, 0x270(r3)
@@ -10878,7 +10878,7 @@ func_800BFC2C:
 /* 800BFEFC 000BBE1C  39 00 00 02 */	li r8, 2
 /* 800BFF00 000BBE20  39 20 00 02 */	li r9, 2
 /* 800BFF04 000BBE24  48 02 0E 1D */	bl GXSetChanCtrl
-/* 800BFF08 000BBE28  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF08 000BBE28  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF0C 000BBE2C  88 03 00 08 */	lbz r0, 8(r3)
 /* 800BFF10 000BBE30  28 00 00 00 */	cmplwi r0, 0
 /* 800BFF14 000BBE34  40 82 00 1C */	bne lbl_800BFF30
@@ -10893,14 +10893,14 @@ lbl_800BFF30:
 /* 800BFF34 000BBE54  38 80 00 06 */	li r4, 6
 /* 800BFF38 000BBE58  38 A0 00 00 */	li r5, 0
 /* 800BFF3C 000BBE5C  48 02 30 99 */	bl GXSetZMode
-/* 800BFF40 000BBE60  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF40 000BBE60  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF44 000BBE64  38 00 00 01 */	li r0, 1
 /* 800BFF48 000BBE68  38 80 00 06 */	li r4, 6
 /* 800BFF4C 000BBE6C  98 03 00 00 */	stb r0, 0(r3)
 /* 800BFF50 000BBE70  38 00 00 00 */	li r0, 0
-/* 800BFF54 000BBE74  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF54 000BBE74  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF58 000BBE78  90 83 00 04 */	stw r4, 4(r3)
-/* 800BFF5C 000BBE7C  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF5C 000BBE7C  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF60 000BBE80  98 03 00 08 */	stb r0, 8(r3)
 lbl_800BFF64:
 /* 800BFF64 000BBE84  38 60 00 01 */	li r3, 1

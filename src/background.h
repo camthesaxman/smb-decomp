@@ -49,7 +49,7 @@ enum
 struct BackgroundInfo  // size = 0xA8
 {
     s16 bgId;
-    float unk4;
+    float animTimer; // Current animation time in frames
     u32 unk8;
     GXColor backdropColor;
     u8 filler10[0x14-0x10];
@@ -95,7 +95,7 @@ struct BGModelSearch
 
 struct BGJungleCloud
 {
-    struct StageBgModel *unk0;
+    struct StageBgModel *bgModel;
     Vec unk4;
     Vec unk10;
     Vec unk1C;
@@ -105,8 +105,8 @@ struct BGJungleCloud
 struct BGJungleWork
 {
     u8 filler0[4];
-    s32 bgModelsCount;
-    struct BGJungleCloud bgModels[4];
+    s32 cloudModelCount;
+    struct BGJungleCloud cloudModels[4];
     s32 unk168;
 };
 
@@ -201,7 +201,7 @@ void bg_e3_finish(void);
 void bg_e3_draw(void);
 void bg_e3_interact(int);
 void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds);
-void g_draw_bg_models();
+void draw_bg_models();
 void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b);
 void bg_night_init(void);
 void bg_night_main(void);

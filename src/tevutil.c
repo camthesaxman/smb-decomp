@@ -8,20 +8,20 @@ GXColor lbl_802F5A88;
 
 u32 tevutil_init(void)
 {
-    struct ZMode *_ZMode;
+    struct GXCache *_cache;
     GXTevStageID stage;
     GXColor color = {0, 0, 0, 0};
 
-    memset(zMode, 0, 0x734);
+    memset(gxCache, 0, 0x734);
     GXSetZMode(1, GX_LEQUAL, 1);
-    zMode->compareEnable = GX_TRUE;
-    zMode->compareFunc = GX_LEQUAL;
-    zMode->updateEnable = GX_TRUE;
+    gxCache->compareEnable = GX_TRUE;
+    gxCache->compareFunc = GX_LEQUAL;
+    gxCache->updateEnable = GX_TRUE;
     GXSetLineWidth(6, GX_TO_ZERO);
-    zMode->lineWidth = 6;
-    _ZMode = zMode;
-    zMode->texOffsets = GX_TO_ZERO;
-    GXSetCullMode_cached_init(GX_CULL_BACK, _ZMode);
+    gxCache->lineWidth = 6;
+    _cache = gxCache;
+    gxCache->texOffsets = GX_TO_ZERO;
+    GXSetCullMode_cached_init(GX_CULL_BACK, _cache);
     GXSetBlendMode_cached_init(GX_BM_NONE, GX_BL_ONE, GX_BL_ZERO, GX_LO_CLEAR);
     GXSetTevSwapModeTable_cached_init(GX_TEV_SWAP0, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_ALPHA);
     GXSetTevSwapModeTable_cached_init(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
@@ -53,37 +53,38 @@ u32 tevutil_init(void)
 
 void GXSetCullMode_cached(GXCullMode mode)
 {
-    if (mode != zMode->cullMode) {
+    if (mode != gxCache->cullMode) {
         GXSetCullMode(mode);
-        zMode->cullMode = mode;
+        gxCache->cullMode = mode;
     }
     return;
 }
 
-void GXSetCullMode_cached_init(GXCullMode mode, struct ZMode *_ZMode)
+void GXSetCullMode_cached_init(GXCullMode mode, struct GXCache *_cache)
 {   
-    GXSetCullMode(mode);
-    zMode->cullMode = mode;
+    GXSetCullMode(mode, _cache);
+    gxCache->cullMode = mode;
     return;
 }
 
 void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op)
 {
     if (type == GX_BM_LOGIC) {
-        if (((zMode->blendMode).type != GX_BM_LOGIC) || ((zMode->blendMode).op != op))
+        if (((gxCache->blendMode).type != GX_BM_LOGIC) || ((gxCache->blendMode).op != op))
         {
-            GXSetBlendMode(GX_BM_LOGIC, (zMode->blendMode).src_factor, (zMode->blendMode).dst_factor, op);
-            (zMode->blendMode).type = GX_BM_LOGIC;
-            (zMode->blendMode).op = op;
+            GXSetBlendMode(GX_BM_LOGIC, (gxCache->blendMode).src_factor, (gxCache->blendMode).dst_factor, op);
+            (gxCache->blendMode).type = GX_BM_LOGIC;
+            (gxCache->blendMode).op = op;
         }
-    }
-    else if ((((zMode->blendMode).type != type) ||
-           ((zMode->blendMode).src_factor != src_factor)) ||
-          ((zMode->blendMode).dst_factor != dst_factor)) {
-        GXSetBlendMode(type, src_factor, dst_factor, (zMode->blendMode).op);
-        (zMode->blendMode).type = type;
-        (zMode->blendMode).src_factor = src_factor;
-        (zMode->blendMode).dst_factor = dst_factor;
+    } else if (
+        ( (gxCache->blendMode).type != type || (gxCache->blendMode).src_factor != src_factor) ||
+        (gxCache->blendMode).dst_factor != dst_factor
+    )
+    {
+        GXSetBlendMode(type, src_factor, dst_factor, (gxCache->blendMode).op);
+        (gxCache->blendMode).type = type;
+        (gxCache->blendMode).src_factor = src_factor;
+        (gxCache->blendMode).dst_factor = dst_factor;
     }
     return;
 }
@@ -91,16 +92,16 @@ void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFa
 void GXSetBlendMode_cached_init(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op)
 {
     GXSetBlendMode(type, src_factor, dst_factor, op);
-    (zMode->blendMode).type = type;
-    (zMode->blendMode).src_factor = src_factor;
-    (zMode->blendMode).dst_factor = dst_factor;
-    (zMode->blendMode).op = op;
+    (gxCache->blendMode).type = type;
+    (gxCache->blendMode).src_factor = src_factor;
+    (gxCache->blendMode).dst_factor = dst_factor;
+    (gxCache->blendMode).op = op;
     return;
 }
 
 void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha)
 {
-    GXTevSwapModeTableCache *_swapModeTable = zMode->swapModeTable + id;
+    GXTevSwapModeTableCache *_swapModeTable = gxCache->swapModeTable + id;
     
     GXSetTevSwapModeTable(id);
     _swapModeTable->r = red;
@@ -112,7 +113,7 @@ void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTe
 
 void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
 {
-    GXTevswapModeSelCache *_swapModeSel = zMode->swapModeSel + stage;
+    GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
     
     if ((_swapModeSel->ras_sel != ras_sel) || (_swapModeSel->tex_sel != tex_sel)) {
         // if something has differnt
@@ -125,7 +126,7 @@ void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwap
 
 void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
 {
-    GXTevswapModeSelCache *_swapModeSel = zMode->swapModeSel + stage;
+    GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
     
     GXSetTevSwapMode(stage);
     _swapModeSel->ras_sel = ras_sel;
@@ -136,10 +137,10 @@ void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTe
 void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
 {    
     if (
-        zMode->fog.type != type ||
-        zMode->fog.color.r != color.r || zMode->fog.color.g != color.g || zMode->fog.color.b != color.b || zMode->fog.color.a != color.a ||
-        zMode->fog.startz != startz || zMode->fog.endz != endz || 
-        zMode->fog.nearz != nearz || zMode->fog.farz != farz
+        gxCache->fog.type != type ||
+        gxCache->fog.color.r != color.r || gxCache->fog.color.g != color.g || gxCache->fog.color.b != color.b || gxCache->fog.color.a != color.a ||
+        gxCache->fog.startz != startz || gxCache->fog.endz != endz || 
+        gxCache->fog.nearz != nearz || gxCache->fog.farz != farz
     )
     {
         // if something has differnt
@@ -151,18 +152,18 @@ void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, floa
 void GXSetFog_cached_init (GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
 {
     GXSetFog(type, startz, endz, nearz, farz, color);
-    zMode->fog.type = type;
-    zMode->fog.startz = startz;
-    zMode->fog.endz = endz;
-    zMode->fog.nearz = nearz;
-    zMode->fog.farz = farz;
-    zMode->fog.color = color;
+    gxCache->fog.type = type;
+    gxCache->fog.startz = startz;
+    gxCache->fog.endz = endz;
+    gxCache->fog.nearz = nearz;
+    gxCache->fog.farz = farz;
+    gxCache->fog.color = color;
     return;
 }
 
 void GXSetColorUpdate_cached(u32 update_enable)
 {
-    if (zMode->colorUpdate != (GXBool)update_enable) {
+    if (gxCache->colorUpdate != (GXBool)update_enable) {
         GXSetColorUpdate_cached_init(update_enable);
     }
     return;
@@ -171,20 +172,20 @@ void GXSetColorUpdate_cached(u32 update_enable)
 void GXSetColorUpdate_cached_init(u32 update_enable)
 {
     GXSetColorUpdate(update_enable);
-    zMode->colorUpdate = (GXBool)update_enable;
+    gxCache->colorUpdate = (GXBool)update_enable;
     return;
 }
 
 void GXSetAlphaUpdate_cached_init(u32 update_enable)
 {
     GXSetAlphaUpdate(update_enable);
-    zMode->alphaUpdate = (GXBool)update_enable;
+    gxCache->alphaUpdate = (GXBool)update_enable;
     return;
 }
 
 void GXSetZCompLoc_cached(u32 before_tex)
 {
-    if (zMode->zCompare != (GXBool)before_tex) {
+    if (gxCache->zCompare != (GXBool)before_tex) {
         GXSetZCompLoc_cached_init(before_tex);
     }
     return;
@@ -192,14 +193,14 @@ void GXSetZCompLoc_cached(u32 before_tex)
 
 void GXSetZCompLoc_from_cache(void)
 {
-    GXSetZCompLoc(zMode->zCompare);
+    GXSetZCompLoc(gxCache->zCompare);
     return;
 }
 
 void GXSetZCompLoc_cached_init(u32 before_tex)
 {
     GXSetZCompLoc(before_tex);
-    zMode->zCompare = before_tex;
+    gxCache->zCompare = before_tex;
     return;
 }
 
@@ -207,9 +208,10 @@ void GXSetTevColorIn_cached(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b
 {
     GXTevColorInputCache *_colorInput;
 
-    _colorInput = zMode->colorInputs + stage;
+    _colorInput = gxCache->colorInputs + stage;
     if ( _colorInput->a != a || _colorInput->b != b || _colorInput->c != c || _colorInput->d != d)
     {
+        // if something has differnt
         GXSetTevColorIn(stage, a, b, c, d);
         _colorInput->a = a;
         _colorInput->b = b;
@@ -224,7 +226,7 @@ void GXSetTevColorIn_cached_init(GXTevStageID stage, GXTevColorArg a, GXTevColor
     GXTevColorInputCache *_colorInput;
 
     GXSetTevColorIn(stage, a, b, c, d);
-    _colorInput = zMode->colorInputs + stage;
+    _colorInput = gxCache->colorInputs + stage;
     _colorInput->a = a;
     _colorInput->b = b;
     _colorInput->c = c;
@@ -236,9 +238,10 @@ void GXSetTevAlphaIn_cached(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b
 {
     GXTevAlphaInputCache *_alphaInput;
 
-    _alphaInput = zMode->alphaInputs + stage;
+    _alphaInput = gxCache->alphaInputs + stage;
     if (_alphaInput->a != a || _alphaInput->b != b || _alphaInput->c != c || _alphaInput->d != d) 
     {
+        // if something has differnt
         GXSetTevAlphaIn(stage, a, b, c, d);
         _alphaInput->a = a;
         _alphaInput->b = b;
@@ -253,7 +256,7 @@ void GXSetTevAlphaIn_cached_init(GXTevStageID stage, GXTevAlphaArg a, GXTevAlpha
     GXTevAlphaInputCache *_alphaInput;
 
     GXSetTevAlphaIn(stage, a, b, c, d);
-    _alphaInput = zMode->alphaInputs + stage;
+    _alphaInput = gxCache->alphaInputs + stage;
     _alphaInput->a = a;
     _alphaInput->b = b;
     _alphaInput->c = c;
@@ -266,7 +269,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
 {
     GXTevOpCache *_colorOp;
 
-    _colorOp = zMode->colorOperations + stage;
+    _colorOp = gxCache->colorOperations + stage;
     if (
         _colorOp->reg != out_reg ||
         _colorOp->scale != scale ||
@@ -275,6 +278,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
         _colorOp->bias != bias
         ) 
     {
+        // if something has differnt
         GXSetTevColorOp(stage, op, bias, scale, clamp, out_reg);
         _colorOp->op = op;
         _colorOp->bias = bias;
@@ -289,8 +293,9 @@ void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
 {
     GXTevOpCache *_colorOp;
 
+    // TODO: fix paremeters (these must "stage, op, bias, scale, clamp, out_reg")
     GXSetTevColorOp(stage, op, bias, scale);
-    _colorOp = zMode->colorOperations + stage;
+    _colorOp = gxCache->colorOperations + stage;
     
     _colorOp->op = op;
     _colorOp->bias = bias;
