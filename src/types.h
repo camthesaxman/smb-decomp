@@ -180,8 +180,8 @@ struct ZMode // GXCache
     /*0x0FF*/ u8 unk0xFF;
     /*0x100*/ GXTevColorInputCache colorInputs[16];
     /*0x200*/ GXTevAlphaInputCache alphaInputs[16];
-    /*0x300*/ GXTevOpCache colorOpCaches[16];
-    /*0x440*/ GXTevOpCache alphaOpCaches[16];
+    /*0x300*/ GXTevOpCache colorOperations[16];
+    /*0x440*/ GXTevOpCache alphaOperations[16];
     /*0x580*/ GXTevOrderCached tevOrders[16];
     /*0x680*/ u32 kColorSels[16];
     /*0x6C0*/ u32 kAlphaSels[16];

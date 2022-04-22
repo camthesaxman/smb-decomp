@@ -48,7 +48,6 @@ GXSetZCompLoc_cached_init:
 /* 8009E60C 0009A52C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8009E610 0009A530  7C 08 03 A6 */	mtlr r0
 /* 8009E614 0009A534  4E 80 00 20 */	blr
-.endif
 
 .global GXSetTevColorIn_cached
 GXSetTevColorIn_cached:
@@ -265,6 +264,7 @@ GXSetTevColorOp_cached_init:
 /* 8009E90C 0009A82C  38 21 00 38 */	addi r1, r1, 0x38
 /* 8009E910 0009A830  7C 08 03 A6 */	mtlr r0
 /* 8009E914 0009A834  4E 80 00 20 */	blr
+.endif
 
 .global GXSetTevAlphaOp_cached
 GXSetTevAlphaOp_cached:
