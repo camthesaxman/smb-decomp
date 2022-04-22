@@ -1,0 +1,330 @@
+#include <string.h>
+
+#include <dolphin.h>
+
+#include "global.h"
+#include "mathutil.h"
+
+u8 lbl_801EFC88[0xC] /*ATTRIBUTE_ALIGN(8)*/;
+FORCE_BSS_ORDER(lbl_801EFC88)
+
+s8 lbl_802F0310[8] = {0};
+
+char *lbl_801773B4[] =
+{
+    "INFINITE",
+    "POINT",
+    "SPOT",
+    "POINT_POW",
+    "SPOT_POW",
+    "POINT_DARKPOW",
+    "SPOT_DARKPOW",
+    "POINT_DARK",
+    "SPOT_DARK",
+};
+
+char *lbl_801773F0[] =
+{
+    "TEST",
+    "STAGE",
+    "BUMPER",
+    "AUTO",
+    "BG",
+    "BG_PILLAR",
+    "BG_WALL",
+    "BG_COUNTER",
+};
+
+char *lbl_80177434[] =
+{
+    "DEFAULT",
+    "SINGLE",
+    "SINGLE_UNIT",
+    "DEF_MINIMAP",
+    "DEF_GMAT",
+    "DEF_MIR",
+    "BG_0",
+    "BG_1",
+    "BG_2",
+    "BG_3",
+    "BG_4",
+    "BG_5",
+    "BG_6",
+    "BG_7",
+    "BG_8",
+    "BG_9",
+    "BG_a",
+    "BG_b",
+    "BG_c",
+    "BG_d",
+    "BG_e",
+    "BG_f",
+};
+
+struct Struct8017748C
+{
+    s8 unk0;
+    s8 unk1;
+    s16 unk2;
+    s8 unk4;
+    s16 unk6;
+    u8 unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    Vec unk18;
+    s16 unk24;
+    s16 unk26;
+    u32 filler28;
+    Vec unk2C;
+    float unk38;
+    float unk3C;
+    float unk40;
+    float unk44;
+    float unk48;
+};
+
+struct Struct8017748C lbl_8017748C[512] =  // lots of empty space at the end
+{
+    { 1, 3, 1, 1, 0, 150,   1,   1,   1, { 14.500019,       2.5, -21.000044},      0,      0, 0, {         0,          0,        -1},         2,         1,        0,        0,         0 },
+    { 1, 3, 1, 3, 0, 134, 0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
+    { 1, 3, 1, 3, 0,  92, 0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
+    { 1, 3, 1, 2, 4, 180,   1, 0.8, 0.6, {         0, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
+    { 1, 3, 2, 2, 4, 180,   1, 0.8, 0.6, { 15.000021, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
+    { 1, 3, 3, 2, 4, 180,   1, 0.8, 0.6, {-15.000021, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
+    { 1, 5, 1, 1, 1, 180,   1, 0.5,   0, {-42.699883, 31.400082, -24.599998},  -8576,   9344, 0, {-5313.7051,  -7326.543,   -4252.8}, 5.7001848, 12.300009, 1.959999, 1.709999,        20 },
+    { 1, 5, 2, 2, 1, 180,   1, 0.8, 0.6, {       -35,      37.5,         25},      0,      0, 0, {  -0.40147,         -1,   0.29441},        50,       1.5,    -0.02,        0,        20 },
+    { 1, 5, 3, 1, 0, 180,   1, 0.5,   0, { 50.599762,      37.5,        -25}, -25600,  28160, 0, {         0,          0,    -10000}, 20.100229, 12.900013,     0.09,        0, 15.599983 },
+    { 1, 5, 4, 2, 0, 180,   1, 0.8,   0, { 35.000038,      37.5,   25.00006},  -7680, -30080, 0, { 2290.4126, -4386.1626, 8689.9707}, 30.000267,       1.5,      0.6,     0.01, 25.000019 },
+    { 1, 6, 1, 1, 3, 180,   1, 0.5,   0, {        80,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 2, 1, 3, 180,   1, 0.5,   0, {        40,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 3, 1, 3, 180,   1, 0.5,   0, {         0,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 4, 1, 3, 180,   1, 0.5,   0, {       -40,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 5, 1, 3, 180,   1, 0.5,   0, {       -80,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 6, 1, 3, 180,   1, 0.5,   0, {     -97.5,        10,         40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 7, 1, 3, 180,   1, 0.5,   0, {     -97.5,         0,         40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 6, 8, 1, 3, 180,   1, 0.5,   0, {     -97.5,        10,        -40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, 7, 1, 2, 1, 180,   1, 0.7, 0.3, {     28.25,        35,        -64}, -19328,      0, 0, {         0,  -0.960431,   0.27852}, 15.000019,         1,        0,        0,        25 },
+    { 1, 7, 2, 2, 1, 180,   1, 0.7, 0.3, {    -26.75,        35,        -64}, -19328,      0, 0, {         0,  -0.960431,   0.27852}, 15.000019,         1,        0,        0,        25 },
+    { -1 },
+};
+
+struct Struct8017748C lbl_801EFC94[32];
+FORCE_BSS_ORDER(lbl_801EFC94)
+
+void func_800210FC(int a)
+{
+    u8 dummy[8];
+    struct Struct8017748C *r31 = lbl_8017748C;
+
+    while (r31->unk0 != -1)
+    {
+        if (r31->unk8 == a)
+            func_80022140(r31);
+        r31++;
+    }
+}
+
+extern s32 lbl_802F1C48;
+
+s8 func_80021164(int a, int b, int c)
+{
+    int i;
+    struct Struct8017748C *r7;
+
+    for (r7 = lbl_801EFC94, i = 0; i < lbl_802F1C48; i++, r7++)
+    {
+        if (r7->unk1 == b && r7->unk2 == c)
+            return i;
+    }
+    if (a == 1)
+        return -1;
+    for (r7 = lbl_801EFC94, i = 0; i < 32; i++, r7++)
+    {
+        if (r7->unk0 == 0)
+            return i;
+    }
+    return -1;
+}
+
+char string__t_d__tLID__s__t_d__n[] = "\t%d,\tLID_%s,\t%d,\n";
+char string__tLTP__s__t_d__t_d__n[] = "\tLTP_%s,\t%d,\t%d,\n";
+char string__t___f___f___f____n[] = "\t{ %f, %f, %f },\n";
+char string__t0x_x__t0x_x__t0x_x__t___f___f___f____n[] = "\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n";
+char string__t_f__t_f__t_f__n[] = "\t%f,\t%f,\t%f,\n";
+char string__t_f__t_f_n[] = "\t%f,\t%f\n";
+
+void func_800212A8(struct Struct8017748C *a)
+{
+    switch (a->unk4)
+    {
+    case 0:
+        a->unk2C.x = a->unk2C.y = 0.0f;
+        a->unk2C.z = -1.0f;
+        mathutil_mtxA_from_identity();
+        mathutil_mtxA_rotate_y(a->unk26);
+        mathutil_mtxA_rotate_x(a->unk24);
+        mathutil_mtxA_tf_vec(&a->unk2C, &a->unk2C);
+        a->unk2C.x *= 10000.0f;
+        a->unk2C.y *= 10000.0f;
+        a->unk2C.z *= 10000.0f;
+        break;
+    case 2:
+    case 4:
+    case 6:
+    case 8:
+		if (a->unk1 != 5)
+		{
+			a->unk2C.x = a->unk2C.y = 0.0f;
+			a->unk2C.z = -1.0f;
+			mathutil_mtxA_from_identity();
+			mathutil_mtxA_rotate_y(a->unk26);
+			mathutil_mtxA_rotate_x(a->unk24);
+			mathutil_mtxA_tf_vec(&a->unk2C, &a->unk2C);
+		}
+		break;
+    }
+}
+
+struct Struct801F065C
+{
+	u8 filler0[0x14];
+	GXLightObj unk14[1];
+	u8 filler54[0x258-0x54];
+};
+
+extern struct Struct801F065C lbl_801F065C[];
+
+extern s32 lbl_802F1C98;
+extern float lbl_802F1C54;
+
+void func_80021398(struct Struct801F065C *a, int b, struct Struct8017748C *c)
+{
+	Vec sp60;
+	float f3;
+	float f0;
+	GXColor sp58;
+	GXLightObj sp18;
+
+	sp58.r = c->unkC * 255.0f;
+	sp58.g = c->unk10 * 255.0f;
+	sp58.b = c->unk14 * 255.0f;
+	sp58.a = 255;
+
+	switch (c->unk4)
+	{
+	case 0:
+	case 1:
+	case 3:
+	case 5:
+	case 7:
+		GXInitLightSpot(&sp18, 0.0f, 0);
+		break;
+	case 2:
+	case 4:
+	case 6:
+	case 8:
+		GXInitLightSpot(&sp18, c->unk48, c->unk6);
+		break;
+	}
+
+	f3 = (lbl_802F1C98 != 3) ? c->unk38 : c->unk38 * lbl_802F1C54;
+	switch (c->unk4)
+	{
+	case 0:
+	case 1:
+	case 2:
+		GXInitLightDistAttn(
+			&sp18,
+			f3 * c->unk3C,
+			c->unk40 + 0.05f,
+			(c->unk4 == 0) ? 0 : (int)(c->unk44 * 100.0) + 3);
+		break;
+	case 3:
+	case 4:
+		f3 *= f3;
+		GXInitLightAttnK(
+			&sp18,
+			c->unk3C * (-85.0f * (1.0f / f3)),
+			c->unk40,
+			c->unk44 + (0.95f / (0.05f * f3)));
+		break;
+	case 5:
+	case 6:
+		GXInitLightAttnK(
+			&sp18,
+			c->unk3C,
+			c->unk40,
+			(-0.1f + c->unk44) * (0.95f / (0.05f * (f3 * f3))));
+		break;
+	case 7:
+	case 8:
+		GXInitLightAttnK(
+			&sp18,
+			-1.0f + c->unk3C,
+			c->unk40,
+			(-0.1f + c->unk44) * (0.95f / (0.05f * (f3 * f3))));
+		break;
+	}
+
+	GXInitLightColor(&sp18, sp58);
+
+	f0 = (lbl_802F1C98 != 3) ? 0.0 : 2.05f * ((1.0f / lbl_802F1C54) - 1.0f);
+	sp60.x = c->unk18.x;
+	sp60.y = c->unk18.y + f0;
+	sp60.z = c->unk18.z;
+	switch (c->unk4)
+	{
+	case 0:
+		mathutil_mtxA_tf_point(&c->unk2C, &sp60);
+		GXInitLightPos(&sp18, sp60.x, sp60.y, sp60.z);
+		break;
+	case 1:
+	case 3:
+	case 5:
+	case 7:
+		mathutil_mtxA_tf_point(&sp60, &sp60);
+		GXInitLightPos(&sp18, sp60.x, sp60.y, sp60.z);
+		break;
+	case 2:
+	case 4:
+	case 6:
+	case 8:
+		mathutil_mtxA_tf_point(&sp60, &sp60);
+		GXInitLightPos(&sp18, sp60.x, sp60.y, sp60.z);
+		mathutil_mtxA_tf_vec(&c->unk2C, &sp60);
+		GXInitLightDir(&sp18, sp60.x, sp60.y, sp60.z);
+		break;
+	}
+	GXLoadLightObjImm(&sp18, (1 << b));
+	memcpy(&a->unk14[b], &sp18, sizeof(sp18));
+}
+
+char lbl_802F03EC[4] = "\x7B\t\n";
+
+/*
+const float lbl_802F2F78 = 0f;
+const float lbl_802F2F7C = -1f;
+const float lbl_802F2F80 = 10000f;
+const float lbl_802F2F84 = 255f;
+const double lbl_802F2F88 = 100;
+const float lbl_802F2F90 = 0.05000000074505806f;
+const float lbl_802F2F94 = -85f;
+const float lbl_802F2F98 = 1f;
+const float lbl_802F2F9C = 0.94999998807907104f;
+const float lbl_802F2FA0 = -0.10000000149011612f;
+const double lbl_802F2FA8 = 0;
+const float lbl_802F2FB0 = 2.0499999523162842f;
+const float lbl_802F2FB4 = 0.40000000596046448f;
+const float lbl_802F2FB8 = 0.60000002384185791f;
+const float lbl_802F2FBC = 0.89999997615814209f;
+const float lbl_802F2FC0 = 0.34999999403953552f;
+const float lbl_802F2FC4 = 0.5f;
+const float lbl_802F2FC8 = 0.30000001192092896f;
+const float lbl_802F2FCC = 0.55000001192092896f;
+const float lbl_802F2FD0 = 176f;
+const float lbl_802F2FE0 = 2f;
+const float lbl_802F2FE4 = 45f;
+const double lbl_802F2FE8 = 2;
+*/
+
