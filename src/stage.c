@@ -490,7 +490,7 @@ void load_stage(int stageId)
             decodedStageGmaPtr = NULL;
         }
         free_nlobj(&naomiStageObj, &naomiStageTpl);
-        func_800472E8();
+        free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
     }
@@ -545,7 +545,7 @@ void unload_stage(void)
             decodedStageGmaPtr = NULL;
         }
         free_nlobj(&naomiStageObj, &naomiStageTpl);
-        func_800472E8();
+        free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
 
@@ -1793,12 +1793,12 @@ void load_stagedef(int stageId)
         }
     }
 
-    if (decodedStageLzPtr->unk74 != NULL)
+    if (decodedStageLzPtr->fgModels != NULL)
     {
         struct StageBgModel *r28;
 
-        decodedStageLzPtr->unk74 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk74);
-        for (i = 0, r28 = decodedStageLzPtr->unk74; i < decodedStageLzPtr->unk70; i++, r28++)
+        decodedStageLzPtr->fgModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->fgModels);
+        for (i = 0, r28 = decodedStageLzPtr->fgModels; i < decodedStageLzPtr->fgModelCount; i++, r28++)
         {
             u32 r3 = r28->flags;
 
@@ -1875,7 +1875,7 @@ void load_stagedef(int stageId)
         decodedStageLzPtr->unk7C = 1;
 }
 
-void func_800472E8(void)
+void free_stagedef(void)
 {
     if (decodedStageLzPtr != NULL)
     {
@@ -1959,7 +1959,7 @@ struct Struct80092F90
 void stage_draw(void)
 {
     int r31;
-    struct AnimGroupInfo *r28;
+    struct AnimGroupInfo *animGrp;
     struct StageAnimGroup *r27;
     int i;
     int (*r25)();
@@ -1974,11 +1974,13 @@ void stage_draw(void)
     if (backgroundInfo.unk8C != 0)
         g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
     sp7C.unk0 = 32;
-    r28 = animGroups;
-    r27 = decodedStageLzPtr->animGroups;
-    for (i = 0; i < decodedStageLzPtr->animGroupCount; i++, r28++, r27++)
+
+    // draw goals
+    for (animGrp = animGroups, r27 = decodedStageLzPtr->animGroups, i = 0;
+     i < decodedStageLzPtr->animGroupCount;
+     i++, animGrp++, r27++)
     {
-        struct StageGoal *r24;
+        struct StageGoal *goal;
         int j;
         struct GMAModel *model;
 
@@ -1986,18 +1988,18 @@ void stage_draw(void)
         {
             mathutil_mtxA_from_mtxB();
             if (i > 0)
-                mathutil_mtxA_mult_right(r28->transform);
+                mathutil_mtxA_mult_right(animGrp->transform);
             mathutil_mtxA_to_mtx(sp4C);
-            r24 = r27->goals;
-            for (j = 0; j < r27->goalCount; j++, r24++)
+            goal = r27->goals;
+            for (j = 0; j < r27->goalCount; j++, goal++)
             {
                 mathutil_mtxA_from_mtx(sp4C);
-                mathutil_mtxA_translate(&r24->pos);
-                mathutil_mtxA_rotate_z(r24->rotZ);
-                mathutil_mtxA_rotate_y(r24->rotY);
-                mathutil_mtxA_rotate_x(r24->rotX);
-                func_8000E338(r24->type);
-                switch (r24->type)
+                mathutil_mtxA_translate(&goal->pos);
+                mathutil_mtxA_rotate_z(goal->rotZ);
+                mathutil_mtxA_rotate_y(goal->rotY);
+                mathutil_mtxA_rotate_x(goal->rotX);
+                func_8000E338(goal->type);
+                switch (goal->type)
                 {
                 default:
                     model = goalModels[0];
@@ -2029,10 +2031,13 @@ void stage_draw(void)
             }
         }
     }
+
     func_8000E3BC();
     sp7C.unk0 = 2;
+
     if (dipSwitches & DIP_TRIANGLE)
     {
+        // draw debug triangle
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
@@ -2041,7 +2046,10 @@ void stage_draw(void)
             NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
+    {
+        // draw collision mesh
         g_draw_stage_collision();
+    }
     else
     {
         if (decodedStageGmaPtr != NULL)
@@ -2187,6 +2195,8 @@ void stage_draw(void)
                 }
             }
         }
+
+        // draw dynamic stage parts
         if (dynamicStageParts != NULL)
         {
             struct DynamicStagePart *dyn;
@@ -2204,6 +2214,7 @@ void stage_draw(void)
                 dyn++;
             }
         }
+
         if (currStageId == ST_101_BLUR_BRIDGE)
             draw_blur_bridge_accordions();
 
@@ -2294,7 +2305,8 @@ void stage_draw(void)
     }
 }
 
-void func_80047D70(void)
+/* Draws the preview of the next stage in the sky. */
+void draw_stage_preview(void)
 {
     if (previewLoaded)
     {

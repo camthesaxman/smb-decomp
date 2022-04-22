@@ -68,7 +68,7 @@ void main(void)
     event_init();
     perf_init();
     sound_init();
-    func_8008D788();
+    avdisp_init();
     currentBallStructPtr = &ballInfo[0];
     currentWorldStructPtr = &worldInfo[0];
     chkstatus_init();

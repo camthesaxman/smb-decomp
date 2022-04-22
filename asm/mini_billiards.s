@@ -17816,7 +17816,7 @@ lbl_000105BC:
 /* 000105C4 4BFEFB71 */ bl ord_tbl_draw_nodes
 /* 000105C8 4800102D */ bl lbl_000115F4
 /* 000105CC 38600001 */ li r3, 1
-/* 000105D0 4BFEFB65 */ bl func_80018648
+/* 000105D0 4BFEFB65 */ bl g_call_camera_apply_viewport
 /* 000105D4 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 000105D8 FC400890 */ fmr f2, f1
 /* 000105DC FC600890 */ fmr f3, f1
@@ -18783,7 +18783,7 @@ lbl_000112EC:
 /* 0001142C C09737A8 */ lfs f4, 0x37a8(r23)
 /* 00011430 FC40E890 */ fmr f2, f29
 /* 00011434 FC60E890 */ fmr f3, f29
-/* 00011438 4BFEECFD */ bl g_avdisp_set_some_color_1
+/* 00011438 4BFEECFD */ bl avdisp_set_post_multiply_color
 /* 0001143C 807B0000 */ lwz r3, 0(r27)
 /* 00011440 80630008 */ lwz r3, 8(r3)
 /* 00011444 80630270 */ lwz r3, 0x270(r3)
@@ -18818,7 +18818,7 @@ lbl_00011480:
 /* 000114AC FC400890 */ fmr f2, f1
 /* 000114B0 FC600890 */ fmr f3, f1
 /* 000114B4 FC800890 */ fmr f4, f1
-/* 000114B8 4BFEEC7D */ bl g_avdisp_set_some_color_1
+/* 000114B8 4BFEEC7D */ bl avdisp_set_post_multiply_color
 /* 000114BC C03737A8 */ lfs f1, 0x37a8(r23)
 /* 000114C0 4BFEEC75 */ bl mathutil_mtxA_scale_s
 /* 000114C4 C0373778 */ lfs f1, 0x3778(r23)
@@ -18886,7 +18886,7 @@ lbl_00011584:
 /* 000115A8 FC400890 */ fmr f2, f1
 /* 000115AC FC600890 */ fmr f3, f1
 /* 000115B0 FC800890 */ fmr f4, f1
-/* 000115B4 4BFEEB81 */ bl g_avdisp_set_some_color_1
+/* 000115B4 4BFEEB81 */ bl avdisp_set_post_multiply_color
 /* 000115B8 38600001 */ li r3, 1
 /* 000115BC 38800003 */ li r4, 3
 /* 000115C0 38A00001 */ li r5, 1
@@ -28032,7 +28032,7 @@ lbl_00019C6C:
 /* 00019C6C 3BE00001 */ li r31, 1
 lbl_00019C70:
 /* 00019C70 38600000 */ li r3, 0
-/* 00019C74 4BFE64C1 */ bl func_80018648
+/* 00019C74 4BFE64C1 */ bl g_call_camera_apply_viewport
 /* 00019C78 4BFE64BD */ bl mathutil_mtxA_from_mtxB
 /* 00019C7C C01E0010 */ lfs f0, 0x10(r30)
 /* 00019C80 3C600000 */ lis r3, cameraInfo@ha

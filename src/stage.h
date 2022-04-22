@@ -497,8 +497,8 @@ struct Stage
     void *unk64;
     /*0x68*/ s32 bgModelsCount;
     /*0x6C*/ struct StageBgModel *bgModels;
-    s32 unk70;
-    struct StageBgModel *unk74;
+    s32 fgModelCount;
+    struct StageBgModel *fgModels; // Like bg models but tilt with the stage
     struct DecodedStageLzPtr_child5 *unk78;
     s32 unk7C;
     /*0x80*/ s32 reflObjsCount;
@@ -533,7 +533,7 @@ void compute_stage_bounding_sphere(void);
 // ? func_800463E8();
 float func_80046884(struct NaomiModel *);
 void load_stagedef(int stageId);
-void func_800472E8(void);
+void free_stagedef(void);
 void adjust_stage_anim_ptrs(struct StageAnimGroupAnim **, struct Stage *);
 void func_800473C0(struct StageBgAnim **, struct Stage *);
 void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);

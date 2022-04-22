@@ -1984,7 +1984,7 @@ func_80022614:
 /* 8002263C 0001E55C  FC 20 E8 90 */	fmr f1, f29
 /* 80022640 0001E560  FC 40 F0 90 */	fmr f2, f30
 /* 80022644 0001E564  FC 60 F8 90 */	fmr f3, f31
-/* 80022648 0001E568  48 06 BD E1 */	bl g_avdisp_set_3_floats
+/* 80022648 0001E568  48 06 BD E1 */	bl avdisp_set_ambient
 /* 8002264C 0001E56C  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 80022650 0001E570  CB E1 00 28 */	lfd f31, 0x28(r1)
 /* 80022654 0001E574  CB C1 00 20 */	lfd f30, 0x20(r1)
@@ -2027,7 +2027,7 @@ func_80022698:
 /* 800226D0 0001E5F0  C0 3F 00 00 */	lfs f1, 0(r31)
 /* 800226D4 0001E5F4  C0 5F 00 04 */	lfs f2, 4(r31)
 /* 800226D8 0001E5F8  C0 7F 00 08 */	lfs f3, 8(r31)
-/* 800226DC 0001E5FC  48 06 BD 4D */	bl g_avdisp_set_3_floats
+/* 800226DC 0001E5FC  48 06 BD 4D */	bl avdisp_set_ambient
 /* 800226E0 0001E600  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 800226E4 0001E604  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800226E8 0001E608  38 21 00 10 */	addi r1, r1, 0x10
@@ -2262,8 +2262,8 @@ lbl_802F1C30:
 .global lbl_802F1C32
 lbl_802F1C32:
 	.skip 0x2
-.global lbl_802F1C34
-lbl_802F1C34:
+.global g_cameraId2
+g_cameraId2:
 	.skip 0x4
 .global minigameRelCameraCallback
 minigameRelCameraCallback:
@@ -2271,8 +2271,8 @@ minigameRelCameraCallback:
 .global currentCameraStructPtr
 currentCameraStructPtr:
 	.skip 0x4
-.global lbl_802F1C40
-lbl_802F1C40:
+.global g_cameraId1
+g_cameraId1:
 	.skip 0x8
 .global lbl_802F1C48
 lbl_802F1C48:

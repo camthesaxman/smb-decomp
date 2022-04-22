@@ -98,7 +98,7 @@ struct PerfInfo
     u32 unk34;
 };
 
-struct ZMode
+struct GXCache
 {
     /*0x00*/ GXBool compareEnable;
     /*0x04*/ GXCompare compareFunc;
@@ -302,7 +302,7 @@ struct Ape
     /*0x0B4*/ int colorId;
     void *unkB8;
     void *unkBC;
-    s8 unkC0;
+    /*0xC0*/ s8 ballId;
     u8 unkC1;
     s16 unkC2;
 };  // size = 0xC4

@@ -29,8 +29,8 @@ void func_80022F14(void)
     infoWork.unk8 = 0;
     infoWork.unk1E = 1;
     infoWork.unk20 = 1;
-    infoWork.unk28 = 0;
-    infoWork.unk2A = 0;
+    infoWork.livesLost = 0;
+    infoWork.continuesUsed = 0;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
     {
         lbl_802F1CAC = 0;
@@ -39,7 +39,7 @@ void func_80022F14(void)
 }
 
 u32 lbl_801F3A8C[4];                    FORCE_BSS_ORDER(lbl_801F3A8C)
-struct Struct801F3A58 lbl_801F3A9C[4];  FORCE_BSS_ORDER(lbl_801F3A9C)
+struct Struct801F3A58 playerInfos[4];  FORCE_BSS_ORDER(playerInfos)
 
 void ev_info_init(void)
 {
@@ -192,12 +192,12 @@ void ev_info_main(void)
     infoWork.unk24 = 0;
 
     {
-        struct Item *r4 = itemInfo;
+        struct Item *item = itemInfo;
         s8 *r7 = spritePoolInfo.unk1C;
 
-        for (i = 0; i < spritePoolInfo.unk18; r4++, i++, r7++)
+        for (i = 0; i < spritePoolInfo.unk18; item++, i++, r7++)
         {
-            if (*r7 != 0 && *r7 != 3 && r4->type == 0 && (r4->unk8 & (1 << 1)))
+            if (*r7 != 0 && *r7 != 3 && item->type == 0 && (item->flags & (1 << 1)))
                 infoWork.unk24++;
         }
     }
@@ -222,7 +222,7 @@ void ev_info_main(void)
         int r9;
 
         if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
-            infoWork.unk30 = modeCtrl.unk2C;
+            infoWork.unk30 = modeCtrl.currPlayer;
         else
             infoWork.unk30 = 0;
 
@@ -379,8 +379,8 @@ void func_80023AF4(void)
     int unk8 = infoWork.unk8;
     int unk1E = infoWork.unk1E;
     int unk20 = infoWork.unk20;
-    int unk28 = infoWork.unk28;
-    int unk2A = infoWork.unk2A;
+    int livesLost = infoWork.livesLost;
+    int continuesUsed = infoWork.continuesUsed;
     int unk2E = infoWork.unk2E;
 
     memset(&infoWork, 0, sizeof(infoWork));
@@ -388,8 +388,8 @@ void func_80023AF4(void)
     infoWork.unk8  = unk8;
     infoWork.unk1E = unk1E;
     infoWork.unk20 = unk20;
-    infoWork.unk28 = unk28;
-    infoWork.unk2A = unk2A;
+    infoWork.livesLost = livesLost;
+    infoWork.continuesUsed = continuesUsed;
     infoWork.unk2E = unk2E;
     infoWork.unk22 = 1;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)

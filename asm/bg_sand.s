@@ -1158,7 +1158,7 @@ func_8005C55C:
 /* 8005C9D4 000588F4  38 A0 00 05 */	li r5, 5
 /* 8005C9D8 000588F8  38 C0 00 00 */	li r6, 0
 /* 8005C9DC 000588FC  48 04 17 35 */	bl GXSetBlendMode_cached
-/* 8005C9E0 00058900  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005C9E0 00058900  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005C9E4 00058904  88 03 00 08 */	lbz r0, 8(r3)
 /* 8005C9E8 00058908  28 00 00 00 */	cmplwi r0, 0
 /* 8005C9EC 0005890C  40 82 00 1C */	bne lbl_8005CA08
@@ -1173,13 +1173,13 @@ lbl_8005CA08:
 /* 8005CA0C 0005892C  38 80 00 03 */	li r4, 3
 /* 8005CA10 00058930  38 A0 00 00 */	li r5, 0
 /* 8005CA14 00058934  48 08 65 C1 */	bl GXSetZMode
-/* 8005CA18 00058938  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005CA18 00058938  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005CA1C 0005893C  38 80 00 00 */	li r4, 0
 /* 8005CA20 00058940  38 00 00 03 */	li r0, 3
 /* 8005CA24 00058944  98 83 00 00 */	stb r4, 0(r3)
-/* 8005CA28 00058948  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005CA28 00058948  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005CA2C 0005894C  90 03 00 04 */	stw r0, 4(r3)
-/* 8005CA30 00058950  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005CA30 00058950  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005CA34 00058954  98 83 00 08 */	stb r4, 8(r3)
 lbl_8005CA38:
 /* 8005CA38 00058958  48 03 E2 55 */	bl func_8009AC8C
@@ -1214,7 +1214,7 @@ lbl_8005CA38:
 /* 8005CAAC 000589CC  C0 22 9A 40 */	lfs f1, lbl_802F4240@sda21(r2)
 /* 8005CAB0 000589D0  EC 00 E0 28 */	fsubs f0, f0, f28
 /* 8005CAB4 000589D4  D0 C3 80 00 */	stfs f6, 0xCC008000@l(r3)
-/* 8005CAB8 000589D8  80 8D 9F C0 */	lwz r4, zMode@sda21(r13)
+/* 8005CAB8 000589D8  80 8D 9F C0 */	lwz r4, gxCache@sda21(r13)
 /* 8005CABC 000589DC  D0 83 80 00 */	stfs f4, -0x8000(r3)
 /* 8005CAC0 000589E0  D0 63 80 00 */	stfs f3, -0x8000(r3)
 /* 8005CAC4 000589E4  D0 43 80 00 */	stfs f2, -0x8000(r3)
@@ -1248,13 +1248,13 @@ lbl_8005CB2C:
 /* 8005CB30 00058A50  38 80 00 03 */	li r4, 3
 /* 8005CB34 00058A54  38 A0 00 01 */	li r5, 1
 /* 8005CB38 00058A58  48 08 64 9D */	bl GXSetZMode
-/* 8005CB3C 00058A5C  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005CB3C 00058A5C  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005CB40 00058A60  38 80 00 01 */	li r4, 1
 /* 8005CB44 00058A64  38 00 00 03 */	li r0, 3
 /* 8005CB48 00058A68  98 83 00 00 */	stb r4, 0(r3)
-/* 8005CB4C 00058A6C  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005CB4C 00058A6C  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005CB50 00058A70  90 03 00 04 */	stw r0, 4(r3)
-/* 8005CB54 00058A74  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 8005CB54 00058A74  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8005CB58 00058A78  98 83 00 08 */	stb r4, 8(r3)
 lbl_8005CB5C:
 /* 8005CB5C 00058A7C  38 60 00 00 */	li r3, 0
@@ -1290,7 +1290,7 @@ lbl_8005CB90:
 /* 8005CBD0 00058AF0  80 8D 99 80 */	lwz r4, mathutilData@sda21(r13)
 /* 8005CBD4 00058AF4  48 03 2B 11 */	bl g_avdisp_set_some_matrix
 /* 8005CBD8 00058AF8  38 60 00 01 */	li r3, 1
-/* 8005CBDC 00058AFC  48 03 2A F9 */	bl func_8008F6D4
+/* 8005CBDC 00058AFC  48 03 2A F9 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CBE0 00058B00  38 60 00 01 */	li r3, 1
 /* 8005CBE4 00058B04  38 80 00 03 */	li r4, 3
 /* 8005CBE8 00058B08  38 A0 00 00 */	li r5, 0
@@ -1310,7 +1310,7 @@ lbl_8005CB90:
 /* 8005CC20 00058B40  38 A0 00 01 */	li r5, 1
 /* 8005CC24 00058B44  48 03 19 A5 */	bl avdisp_set_z_mode
 /* 8005CC28 00058B48  38 60 00 00 */	li r3, 0
-/* 8005CC2C 00058B4C  48 03 2A A9 */	bl func_8008F6D4
+/* 8005CC2C 00058B4C  48 03 2A A9 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CC30 00058B50  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 8005CC34 00058B54  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 8005CC38 00058B58  83 C1 00 18 */	lwz r30, 0x18(r1)
@@ -1379,7 +1379,7 @@ lbl_8005CCEC:
 /* 8005CD2C 00058C4C  C0 22 9A 40 */	lfs f1, lbl_802F4240@sda21(r2)
 /* 8005CD30 00058C50  FC 40 08 90 */	fmr f2, f1
 /* 8005CD34 00058C54  FC 60 08 90 */	fmr f3, f1
-/* 8005CD38 00058C58  48 03 29 DD */	bl g_avdisp_set_some_color_1
+/* 8005CD38 00058C58  48 03 29 DD */	bl avdisp_set_post_multiply_color
 /* 8005CD3C 00058C5C  80 7B 00 00 */	lwz r3, 0(r27)
 /* 8005CD40 00058C60  48 03 17 5D */	bl avdisp_draw_model_culled_sort_none
 /* 8005CD44 00058C64  4B FA AA F1 */	bl mathutil_mtxA_pop
@@ -1390,7 +1390,7 @@ lbl_8005CCEC:
 /* 8005CD58 00058C78  FC 40 08 90 */	fmr f2, f1
 /* 8005CD5C 00058C7C  FC 60 08 90 */	fmr f3, f1
 /* 8005CD60 00058C80  FC 80 08 90 */	fmr f4, f1
-/* 8005CD64 00058C84  48 03 29 B1 */	bl g_avdisp_set_some_color_1
+/* 8005CD64 00058C84  48 03 29 B1 */	bl avdisp_set_post_multiply_color
 /* 8005CD68 00058C88  4B FA AA 89 */	bl mathutil_mtxA_push
 /* 8005CD6C 00058C8C  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 8005CD70 00058C90  C0 22 9A A4 */	lfs f1, lbl_802F42A4@sda21(r2)
@@ -1420,7 +1420,7 @@ lbl_8005CCEC:
 /* 8005CDD0 00058CF0  48 03 29 15 */	bl g_avdisp_set_some_matrix
 /* 8005CDD4 00058CF4  4B FA AA 61 */	bl mathutil_mtxA_pop
 /* 8005CDD8 00058CF8  38 60 00 01 */	li r3, 1
-/* 8005CDDC 00058CFC  48 03 28 F9 */	bl func_8008F6D4
+/* 8005CDDC 00058CFC  48 03 28 F9 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CDE0 00058D00  80 1E 00 38 */	lwz r0, 0x38(r30)
 /* 8005CDE4 00058D04  28 00 00 00 */	cmplwi r0, 0
 /* 8005CDE8 00058D08  41 82 00 20 */	beq lbl_8005CE08
@@ -1462,7 +1462,7 @@ lbl_8005CE18:
 /* 8005CE70 00058D90  38 60 00 00 */	li r3, 0
 /* 8005CE74 00058D94  48 03 17 65 */	bl g_avdisp_set_some_func_1
 /* 8005CE78 00058D98  38 60 00 00 */	li r3, 0
-/* 8005CE7C 00058D9C  48 03 28 59 */	bl func_8008F6D4
+/* 8005CE7C 00058D9C  48 03 28 59 */	bl g_avdisp_set_some_tex_mtx_sel
 /* 8005CE80 00058DA0  38 60 00 01 */	li r3, 1
 /* 8005CE84 00058DA4  38 80 00 03 */	li r4, 3
 /* 8005CE88 00058DA8  38 A0 00 01 */	li r5, 1

@@ -296,7 +296,7 @@ void submode_adv_demo_init_func(void)
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
-    modeCtrl.unk2C = 0;
+    modeCtrl.currPlayer = 0;
     playerCharacterSelection[0] = 0;
     playerCharacterSelection[1] = 1;
     playerCharacterSelection[2] = 2;
@@ -1013,7 +1013,7 @@ void lbl_8000F790(struct Ape *ape, int b)
     }
     if (advDemoInfo.flags & (1 << 5))
     {
-        struct Ball *ball = &ballInfo[ape->unkC0];
+        struct Ball *ball = &ballInfo[ape->ballId];
 
         if (gamePauseStatus & 0xA)
             return;
@@ -2197,7 +2197,7 @@ void func_80011D90(void)
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.unk40 = 0;
-    modeCtrl.unk2C = 0;
-    currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
+    modeCtrl.currPlayer = 0;
+    currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
     camera_setup_singleplayer_viewport();
 }

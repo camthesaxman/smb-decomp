@@ -265,7 +265,7 @@ void ev_world_main(void)
         }
         break;
     default:
-        lbl_80206CF0 = worldInfo[modeCtrl.unk2C].unk10;
+        lbl_80206CF0 = worldInfo[modeCtrl.currPlayer].unk10;
         break;
     }
 }

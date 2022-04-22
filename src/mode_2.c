@@ -61,7 +61,7 @@ void unkFunc8000A26C(struct Sprite *a)
                 lbl_801EEC68.unk15 = (lbl_801EEC68.unk14 == lbl_80206BD0[lbl_802F1C32]) ? lbl_802F1C32 : 1 - lbl_802F1C32;
         }
         else
-            lbl_801EEC68.unk15 = modeCtrl.unk2C;
+            lbl_801EEC68.unk15 = modeCtrl.currPlayer;
     }
 
     switch (modeCtrl.gameType)

@@ -80,7 +80,7 @@ void item_pilot_init(struct Item *item)
         item->unk1C = pilotBananaInfo[item->subtype].lodModelsPtr;
     else
         item->unk1C = minigameGma->modelEntries[pilotBananaInfo[item->subtype].unk4].modelOffset;
-    item->unk8 = 0x22;
+    item->flags = 0x22;
     item->unk14 = pilotBananaInfo[item->subtype].unk8;
     item->unk18 = 0.25f;
     item->xrotSpeed = pilotBananaInfo[item->subtype].xrotSpeed;
@@ -181,7 +181,7 @@ void item_pilot_main(struct Item *item)
         if (item->unk14 < 1.1920928955078125e-07f)
         {
             item->state = 0;
-            item->unk8 |= 1;
+            item->flags |= ITEM_FLAG_INVISIBLE;
             item->unk14 = 1.1920928955078125e-07f;
         }
         break;
@@ -286,13 +286,13 @@ void item_pilot_draw(struct Item *item)
                 mathutil_mtxA_scale_xyz(scale, scale, scale);
                 r30_ = 0x85;
             }
-            g_avdisp_set_model_scale(scale);
+            avdisp_set_bound_sphere_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
-            g_avdisp_set_model_scale(scale);
+            avdisp_set_bound_sphere_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             if (f30 < 1.0f)
             {
@@ -332,19 +332,19 @@ void item_pilot_draw(struct Item *item)
                 break;
             }
             f30 = 1.0 + (((unpausedFrameCounter + item->unk2 * 10) % 60) * 0.033333333333333333);
-            g_avdisp_set_some_color_1(f1, f2, f3, 1.0f);
+            avdisp_set_post_multiply_color(f1, f2, f3, 1.0f);
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].modelOffset);
-            g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
+            avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 }
 
 void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
 {
-    item->unk8 &= ~(1 << 1);
+    item->flags &= ~(1 << 1);
     item->state = 3;
     item->unk2C.y += item->unk14 * 0.1875;
     item->yrotSpeed <<= 2;
@@ -359,15 +359,15 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             struct Struct8003C550 sp178;
 
             item->unk5E = infoWork.timerCurr;
-            lbl_80285A58[modeCtrl.unk2C] += pilotBananaInfo[item->subtype].unkE;
+            lbl_80285A58[modeCtrl.currPlayer] += pilotBananaInfo[item->subtype].unkE;
             if (lbl_802F1FD0 & (1 << 3))
             {
-                if (++lbl_802F1FE4[modeCtrl.unk2C] >= 6)
-                    lbl_802F1FE4[modeCtrl.unk2C] = 1;
+                if (++lbl_802F1FE4[modeCtrl.currPlayer] >= 6)
+                    lbl_802F1FE4[modeCtrl.currPlayer] = 1;
             }
             item->state = 0;
-            item->unk8 |= 1;
-            item->unk8 &= ~(1 << 1);
+            item->flags |= ITEM_FLAG_INVISIBLE;
+            item->flags &= ~(1 << 1);
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->unk2E;
