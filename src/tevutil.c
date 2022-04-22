@@ -34,16 +34,16 @@ u32 tevutil_init(void)
     GXSetTevKColor_cached_init(GX_KCOLOR3, color);
     GXSetFog_cached_init(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, color);
 
-    GXSetColorUpdate_cached_init(1);
-    GXSetAlphaUpdate_cached_init(1);
-    GXSetZCompLoc_cached_init(1);
+    GXSetColorUpdate_cached_init((u32)GX_TRUE);
+    GXSetAlphaUpdate_cached_init((u32)GX_TRUE);
+    GXSetZCompLoc_cached_init((u32)GX_TRUE);
 
     for (stage = GX_TEVSTAGE0; stage < 0x10; stage++) {
         GXSetTevSwapMode_cached_init(stage, GX_TEV_SWAP0, GX_TEV_SWAP0);
         GXSetTevColorIn_cached_init(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
         GXSetTevAlphaIn_cached_init(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
-        GXSetTevColorOp_cached_init(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
-        GXSetTevAlphaOp_cached_init(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1, GX_TEVPREV);
+        GXSetTevColorOp_cached_init(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        GXSetTevAlphaOp_cached_init(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
         GXSetTevOrder_cached_init(stage, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
         GXSetTevKColorSel_cached_init(stage, GX_TEV_KCSEL_1);
         GXSetTevKAlphaSel_cached_init(stage, GX_TEV_KASEL_1);
@@ -54,7 +54,7 @@ u32 tevutil_init(void)
 void GXSetCullMode_cached(GXCullMode mode)
 {
     if (mode != gxCache->cullMode) {
-        GXSetCullMode(mode);
+        GXSetCullMode(mode, gxCache);
         gxCache->cullMode = mode;
     }
     return;
@@ -128,7 +128,7 @@ void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTe
 {
     GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
     
-    GXSetTevSwapMode(stage);
+    GXSetTevSwapMode(stage, ras_sel, tex_sel);
     _swapModeSel->ras_sel = ras_sel;
     _swapModeSel->tex_sel = tex_sel;
     return;
