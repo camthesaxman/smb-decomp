@@ -72,8 +72,8 @@ void func_800125A4(void);
 
 void func_80020AB8(Vec *, S16Vec *, float, float, float, float);
 // ? func_80020DB4();
-int g_test_sphere_in_frustum(Vec *, float);
-int g_test_scaled_sphere_in_frustum(Vec *, float, float);
+BOOL g_test_sphere_in_frustum(Point3d *p, float radius);
+BOOL g_test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale);
 // ? func_800210FC();
 // ? func_80021164();
 // ? func_800212A8();

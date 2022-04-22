@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global func_80020AB8
 func_80020AB8:
 /* 80020AB8 0001C9D8  7C 08 02 A6 */	mflr r0
@@ -201,7 +202,9 @@ lbl_80020C7C:
 /* 80020DA8 0001CCC8  CB 61 00 58 */	lfd f27, 0x58(r1)
 /* 80020DAC 0001CCCC  38 21 00 80 */	addi r1, r1, 0x80
 /* 80020DB0 0001CCD0  4E 80 00 20 */	blr
+.endif
 
+.if 0
 .global func_80020DB4
 func_80020DB4:
 /* 80020DB4 0001CCD4  3C 80 80 1F */	lis r4, lbl_801EFC18@ha
@@ -217,10 +220,10 @@ func_80020DB4:
 /* 80020DDC 0001CCFC  C0 04 00 10 */	lfs f0, 0x10(r4)
 /* 80020DE0 0001CD00  C0 83 00 08 */	lfs f4, 8(r3)
 /* 80020DE4 0001CD04  C0 64 00 08 */	lfs f3, 8(r4)
-/* 80020DE8 0001CD08  EC 25 00 72 */	fmuls f1, f5, f1
+/* 80020DE8 0001CD08  EC 25 00 72 */	fmuls f1, f5, f1  ;# f5 * a->unkC
 /* 80020DEC 0001CD0C  C0 44 00 14 */	lfs f2, 0x14(r4)
-/* 80020DF0 0001CD10  EC 06 00 32 */	fmuls f0, f6, f0
-/* 80020DF4 0001CD14  EC 64 18 28 */	fsubs f3, f4, f3
+/* 80020DF0 0001CD10  EC 06 00 32 */	fmuls f0, f6, f0  ;# f6 * a->unk10
+/* 80020DF4 0001CD14  EC 64 18 28 */	fsubs f3, f4, f3  ;# a->z - z
 /* 80020DF8 0001CD18  EC 01 00 2A */	fadds f0, f1, f0
 /* 80020DFC 0001CD1C  EC 43 00 B2 */	fmuls f2, f3, f2
 /* 80020E00 0001CD20  EC 02 00 2A */	fadds f0, f2, f0
@@ -282,10 +285,10 @@ g_test_sphere_in_frustum:
 /* 80020EC4 0001CDE4  FF E0 08 90 */	fmr f31, f1
 /* 80020EC8 0001CDE8  38 81 00 10 */	addi r4, r1, 0x10
 /* 80020ECC 0001CDEC  4B FE 6F 61 */	bl mathutil_mtxA_tf_point
-/* 80020ED0 0001CDF0  C0 61 00 18 */	lfs f3, 0x18(r1)
-/* 80020ED4 0001CDF4  C0 81 00 10 */	lfs f4, 0x10(r1)
+/* 80020ED0 0001CDF0  C0 61 00 18 */	lfs f3, 0x18(r1)  ;# sp10.z
+/* 80020ED4 0001CDF4  C0 81 00 10 */	lfs f4, 0x10(r1)  ;# sp10.x
 /* 80020ED8 0001CDF8  FC 03 F8 40 */	fcmpo cr0, f3, f31
-/* 80020EDC 0001CDFC  C0 A1 00 14 */	lfs f5, 0x14(r1)
+/* 80020EDC 0001CDFC  C0 A1 00 14 */	lfs f5, 0x14(r1)  ;# sp10.y
 /* 80020EE0 0001CE00  40 81 00 0C */	ble lbl_80020EEC
 /* 80020EE4 0001CE04  38 60 00 00 */	li r3, 0
 /* 80020EE8 0001CE08  48 00 00 D4 */	b lbl_80020FBC
@@ -565,6 +568,7 @@ lbl_80021294:
 /* 8002129C 0001D1BC  42 00 FF 3C */	bdnz lbl_800211D8
 /* 800212A0 0001D1C0  38 60 FF FF */	li r3, -1
 /* 800212A4 0001D1C4  4E 80 00 20 */	blr
+.endif
 
 .global func_800212A8
 func_800212A8:
@@ -2354,6 +2358,7 @@ lbl_802F1C98:
 
 .section .sdata2
 
+.if 0
     .balign 8
 .global lbl_802F2F50
 lbl_802F2F50:
@@ -2386,6 +2391,7 @@ lbl_802F2F70:
 	# ROM: 0x1EC990
 	.4byte 0x3FF00000
 	.4byte 0
+.endif
 
 .global lbl_802F2F78
 lbl_802F2F78:
@@ -2575,6 +2581,7 @@ lbl_80110310:
 
 .section .data
 
+.if 0
 	.balign 8
 .global lbl_80177358
 lbl_80177358:
@@ -2655,6 +2662,7 @@ glabel lbl_80177434
 	.4byte string_BG_d  ;# ptr
 	.4byte string_BG_e  ;# ptr
 	.4byte string_BG_f  ;# ptr
+.endif
 
 .global lbl_8017748C
 lbl_8017748C:
@@ -13171,6 +13179,7 @@ glabel string__333_6
 
 .section .bss
 
+.if 0
     .balign 8
 .global lbl_801EFC18
 lbl_801EFC18:
@@ -13178,6 +13187,7 @@ lbl_801EFC18:
 .global lbl_801EFC54
 lbl_801EFC54:
 	.skip 0x34
+	.balign 8
 .global lbl_801EFC88
 lbl_801EFC88:
 	.skip 0xC
@@ -13186,6 +13196,7 @@ lbl_801EFC94:
 	.skip 0x36C
 	.skip 0x3C
 	.skip 0x5D8
+.endif
 .global lbl_801F0614
 lbl_801F0614:
 	.skip 0x48
@@ -13237,6 +13248,7 @@ glabel lbl_801F3A50
 
 .section .sdata
 
+.if 0
     .balign 8
 .global lbl_802F0310
 lbl_802F0310:
@@ -13325,6 +13337,7 @@ glabel string_BG_f
 lbl_802F03EC:
 	# ROM: 0x1EAB2C
 	.4byte 0x7B090A00
+.endif
 
 .global lbl_802F03F0
 lbl_802F03F0:
