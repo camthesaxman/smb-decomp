@@ -3,7 +3,10 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
+#include "background.h"
 #include "mathutil.h"
+#include "mode.h"
 
 u8 lbl_801EFC88[0xC] /*ATTRIBUTE_ALIGN(8)*/;
 FORCE_BSS_ORDER(lbl_801EFC88)
@@ -109,7 +112,7 @@ struct Struct8017748C lbl_8017748C[512] =  // lots of empty space at the end
     { -1 },
 };
 
-struct Struct8017748C lbl_801EFC94[32];
+struct Struct8017748C lbl_801EFC94[32];  // +0xC
 FORCE_BSS_ORDER(lbl_801EFC94)
 
 void func_800210FC(int a)
@@ -188,9 +191,14 @@ void func_800212A8(struct Struct8017748C *a)
 
 struct Struct801F065C
 {
-	u8 filler0[0x14];
+	s16 unk0[8];
+	u8 filler10[4];
 	GXLightObj unk14[1];
-	u8 filler54[0x258-0x54];
+	u8 filler54[0x218-0x54];
+	float unk218;
+	float unk21C;
+	float unk220;
+	u8 filler224[0x258-0x224];
 };
 
 extern struct Struct801F065C lbl_801F065C[];
@@ -298,6 +306,175 @@ void func_80021398(struct Struct801F065C *a, int b, struct Struct8017748C *c)
 	}
 	GXLoadLightObjImm(&sp18, (1 << b));
 	memcpy(&a->unk14[b], &sp18, sizeof(sp18));
+}
+
+struct Struct80180F64 lbl_801F0614;
+FORCE_BSS_ORDER(lbl_801F0614)
+
+extern struct Struct80180F64 lbl_80180F64[];
+
+void func_8002170C(int a)
+{
+	struct Struct8017748C spC;
+
+	lbl_801F0614 = lbl_80180F64[(backgroundInfo.bgId < 0 || a == 0) ? 0 : backgroundInfo.bgId];
+	if (lbl_801F0614.unk34 == 0.0
+	 && lbl_801F0614.unk38 == 0.0
+	 && lbl_801F0614.unk3C == 0.0)
+		return;
+
+	if (a != 0)
+	{
+		if (a == 0x63 && advDemoInfo.flags & (1 << 8))
+			lbl_801F0614.unk42 = 0x2000;
+		if (gameSubmode == 65 || gameSubmode == 66)
+		{
+			lbl_801F0614.unk40 = 0;
+			lbl_801F0614.unk42 = 0x4000;
+		}
+		if (backgroundInfo.bgId == 14 && modeCtrl.unk30 > 1)
+			func_800225FC(0.4f, 0.6f, 0.9f);
+		switch (a)
+		{
+		case 145:
+			func_800225FC(0.4f, 0.35f, 0.5f);
+			break;
+		case 131:
+			func_800225FC(0.4f, 0.35f, 0.5f);
+			break;
+		case 138:
+			func_800225FC(0.4f, 0.35f, 0.3f);
+			break;
+		case 135:
+			func_800225FC(0.55f, 0.55f, 0.7f);
+			break;
+		}
+		if (backgroundInfo.bgId == 27)
+		{
+			switch (modeCtrl.levelSet)
+			{
+			case 0:
+				lbl_801F0614.unk42 += 45056;
+				break;
+			}
+		}
+	}
+	memset(&spC, 0, sizeof(spC));
+	spC.unk1 = 1;
+	spC.unk2 = 0;
+	spC.unk4 = 0;
+	spC.unkC = lbl_801F0614.unk34;
+	spC.unk10 = lbl_801F0614.unk38;
+	spC.unk14 = lbl_801F0614.unk3C;
+	spC.unk24 = lbl_801F0614.unk40;
+	spC.unk26 = lbl_801F0614.unk42;
+	func_80022140(&spC);
+}
+
+struct Struct801F065C lbl_801F065C[22];
+FORCE_BSS_ORDER(lbl_801F065C)
+
+struct Struct80110260
+{
+	s32 unk0;
+	s32 unk4;
+};
+
+const struct Struct80110260 lbl_80110260[] =
+{
+	{0, 3},
+	{1, 3},
+	{1, 1},
+	{0, 1},
+	{0, 1},
+	{0, 1},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+	{0, 3},
+};
+
+void test(struct Struct801F065C *r27, int asdf)
+{
+	int r25;
+		for (r25 = 0; r25 < 8; r25++)
+		{
+			s8 r4 = lbl_801F0614.unk44[asdf][r25 * 2 + 0];
+			if (r4 == -1)
+				break;
+			r27->unk0[r25] = func_80021164(1, r4, lbl_801F0614.unk44[asdf][r25 * 2 + 1]);
+		}
+}
+
+void func_80021958(void)
+{
+	int i;
+	int j;
+	struct Struct8017748C *r7;
+	const struct Struct80110260 *r25;
+	struct Struct801F065C *r30;
+
+	r30 = lbl_801F065C;
+	for (i = 0; i < 22; i++, r30++)
+	{
+		for (j = 0; j < 8; j++)
+			r30->unk0[j] = -1;
+		r30->unk218 = lbl_801F0614.unk4;
+		r30->unk21C = lbl_801F0614.unk8;
+		r30->unk220 = lbl_801F0614.unkC;
+	}
+
+	r7 = lbl_801EFC94;
+	j = 0;
+    r30 = lbl_801F065C;
+	for (i = 0; i < 32; i++, r7++)
+	{
+		if (r7->unk0 != 0
+		 && (r7->unk1 == 1 || r7->unk1 == 0 || r7->unk1 == 3))
+		{
+			r30->unk0[j] = i;
+			if (++j == 8)
+				break;
+		}
+	}
+
+	if (lbl_801EFC94[0].unk0 != 0)
+		lbl_801F065C[1].unk0[0] = 0;
+
+    r25 = lbl_80110260 + 2;
+	for (i = 2; i < 6; i++, r25++)
+		memcpy(&lbl_801F065C[i], &lbl_801F065C[r25->unk0], 0x258);
+
+	if (lbl_801F0614.unk44 == NULL)
+		return;
+
+	r30 = lbl_801F065C + 7;
+	for (i = 7; i < 22; i++, r30++)
+	{
+		int var = i - 7;
+		if (lbl_801F0614.unk44[var] == NULL)
+			break;
+		for (j = 0; j < 8; j++)
+		{
+			s8 r4 = lbl_801F0614.unk44[var][j * 2 + 0];
+			if (r4 == -1)
+				break;
+			r30->unk0[j] = func_80021164(1, r4, lbl_801F0614.unk44[var][j * 2 + 1]);
+		}
+
+	}
 }
 
 char lbl_802F03EC[4] = "\x7B\t\n";

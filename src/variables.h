@@ -543,12 +543,7 @@ extern struct Struct801EED88 lbl_801EED88;
 // extern ? lbl_801EFC94;
 // extern ? lbl_801F0000;
 // extern ? lbl_801F003C;
-extern struct
-{
-    u8 filler0[0x40];
-    s16 unk40;
-    s16 unk42;
-} lbl_801F0614;
+extern struct Struct80180F64 lbl_801F0614;
 // extern ? lbl_801F065C;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;

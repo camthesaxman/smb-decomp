@@ -91,7 +91,7 @@ void func_800224CC(void);
 void func_80022530(void);
 void func_800225C0();
 // ? func_800225F4();
-// ? func_800225FC();
+void func_800225FC(float, float, float);
 // ? func_80022614();
 // ? func_80022668();
 // ? func_80022698();
