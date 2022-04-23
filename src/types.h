@@ -161,9 +161,9 @@ typedef struct {
 } GXTevKColorCached;
 
 typedef struct {
-    u16 unk0x0;
-    u16 unk0x2;
-} GXCache_child_0x712;
+    u16 width;
+    u16 height;
+} GXTexSize;
 
 struct GXCache
 {
@@ -186,10 +186,10 @@ struct GXCache
     /*0x300*/ GXTevOpCache colorOperations[16];
     /*0x440*/ GXTevOpCache alphaOperations[16];
     /*0x580*/ GXTevOrderCached tevOrders[16];
-    /*0x680*/ u32 kColorSels[16];
-    /*0x6C0*/ u32 kAlphaSels[16];
+    /*0x680*/ s32 kColorSels[16];
+    /*0x6C0*/ s32 kAlphaSels[16];
     /*0x700*/ GXTevKColorCached kColor;
-    /*0x712*/ GXCache_child_0x712 child0x712_s[8];
+    /*0x712*/ GXTexSize texSizes[8];
     /*0x732*/ u8 filler732[0x734-0x732];
 };
 
