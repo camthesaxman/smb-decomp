@@ -147,11 +147,15 @@ typedef struct {
 } GXTevOpCache;
 
 typedef struct {
+    u16 width;
+    u16 height;
+} GXTexSize;
+
+typedef struct {
     GXTexCoordID coord;
     GXTexMapID map;
     GXChannelID color;
-    u16 unk0xc;
-    u16 unk0xe;
+    GXTexSize texSize;
 } GXTevOrderCached;
 
 typedef struct {
@@ -159,11 +163,6 @@ typedef struct {
     GXColor colors[4];
     u8 filler0x11[1];
 } GXTevKColorCached;
-
-typedef struct {
-    u16 width;
-    u16 height;
-} GXTexSize;
 
 struct GXCache
 {

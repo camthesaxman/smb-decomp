@@ -54,15 +54,15 @@ u32 tevutil_init(void)
 void GXSetCullMode_cached(GXCullMode mode)
 {
     if (mode != gxCache->cullMode) {
-        GXSetCullMode(mode, gxCache);
+        GXSetCullMode(mode);
         gxCache->cullMode = mode;
     }
     return;
 }
 
-void GXSetCullMode_cached_init(GXCullMode mode, struct GXCache *_cache)
+void GXSetCullMode_cached_init(GXCullMode mode, struct GXCache *cache)
 {   
-    GXSetCullMode(mode, _cache);
+    GXSetCullMode(mode);
     gxCache->cullMode = mode;
     return;
 }
@@ -70,14 +70,15 @@ void GXSetCullMode_cached_init(GXCullMode mode, struct GXCache *_cache)
 void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op)
 {
     if (type == GX_BM_LOGIC) {
-        if (((gxCache->blendMode).type != GX_BM_LOGIC) || ((gxCache->blendMode).op != op))
-        {
+        if (
+            ( (gxCache->blendMode).type != GX_BM_LOGIC) || ((gxCache->blendMode).op != op )
+        ) {
             GXSetBlendMode(GX_BM_LOGIC, (gxCache->blendMode).src_factor, (gxCache->blendMode).dst_factor, op);
             (gxCache->blendMode).type = GX_BM_LOGIC;
             (gxCache->blendMode).op = op;
         }
     } else if (
-        ( (gxCache->blendMode).type != type || (gxCache->blendMode).src_factor != src_factor) ||
+        ( (gxCache->blendMode).type != type || (gxCache->blendMode).src_factor != src_factor ) ||
         (gxCache->blendMode).dst_factor != dst_factor
     )
     {
@@ -261,7 +262,6 @@ void GXSetTevAlphaIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     _alphaInput->b = b;
     _alphaInput->c = c;
     _alphaInput->d = d;
-
     return;
 }
 
@@ -346,3 +346,165 @@ void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
     return;
 }
 
+
+// TODO: Decomp this Function
+// I supose this function relates GMATevLayer.fillerC[4]
+// SMB2 st138.gma object name call it "TEV", "COMPOSEITE".
+#ifdef NONMATCHING
+void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
+{
+    // WIP
+}
+#else
+asm void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_8009EA30.s"
+}
+#pragma peephole on
+#endif
+
+// 99% match. only register is different.
+// https://decomp.me/scratch/7D9s2
+#ifdef NONMATCHING
+void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
+{
+    GXTexSize *_texSize;
+    GXTevOrderCached *_tevOrder;
+
+    _tevOrder = gxCache->tevOrders + stage;
+    if (map >= 8) {
+        if (
+            _tevOrder->coord != coord ||
+            _tevOrder->map != 0xFF ||
+            _tevOrder->color != color
+        ) {
+            GXSetTevOrder(stage, coord, map, color);
+            _tevOrder->coord = coord;
+            _tevOrder->map = 0xFF;
+            _tevOrder->color = color;
+            (_tevOrder->texSize).width = 0x0;
+            (_tevOrder->texSize).height = 0x0;
+        }
+    } else {
+        _texSize = gxCache->texSizes + stage;
+        if (
+            _tevOrder->coord != coord ||
+            _tevOrder->map != map ||
+            _tevOrder->color != color ||
+            (_tevOrder->texSize).width != _texSize->width ||
+            (_tevOrder->texSize).height != _texSize->height
+        ) {
+            GXSetTevOrder(stage, coord, map, color);
+            _tevOrder->coord = coord;
+            _tevOrder->map = map;
+            _tevOrder->color = color;
+            (_tevOrder->texSize).width = _texSize->width;
+            (_tevOrder->texSize).height = _texSize->height;
+        }
+    }
+    return;
+}
+#else
+asm void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
+{
+    nofralloc
+#include "../asm/nonmatchings/GXSetTevOrder_cached.s"
+}
+#pragma peephole on
+#endif
+
+void GXSetTevOrder_cached_init(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
+{
+    GXTevOrderCached *_tevOrder;
+
+    _tevOrder = gxCache->tevOrders + stage;
+    GXSetTevOrder(stage, coord, map, color);
+    _tevOrder->coord = coord;
+    _tevOrder->map = map;
+    _tevOrder->color = color;
+    (_tevOrder->texSize).width = 0;
+    (_tevOrder->texSize).height = 0;
+    return;
+}
+
+void GXSetTevKColorSel_cached(GXTevStageID stage, GXTevKColorSel sel)
+{
+    if (gxCache->kColorSels[stage] != sel) {
+        GXSetTevKColorSel(stage, sel);
+        gxCache->kColorSels[stage] = sel;
+    }
+    return;
+}
+
+void GXSetTevKColorSel_cached_init(GXTevStageID stage, GXTevKColorSel sel)
+{
+    GXSetTevKColorSel(stage, sel);
+    gxCache->kColorSels[stage] = sel;
+    return;
+}
+
+void GXSetTevKAlphaSel_cached(GXTevStageID stage, GXTevKAlphaSel sel)
+{
+    if (gxCache->kAlphaSels[stage] != sel) {
+        GXSetTevKAlphaSel(stage, sel);
+        gxCache->kAlphaSels[stage] = sel;
+    }
+    return;
+}
+
+void GXSetTevKAlphaSel_cached_init(GXTevStageID stage, GXTevKAlphaSel sel)
+{
+    GXSetTevKAlphaSel(stage, sel);
+    gxCache->kAlphaSels[stage] = sel;
+    return;
+}
+
+
+void GXSetNumTevStages_cached(u8 nStages)
+{
+    if (gxCache->kColor.numTevStages != nStages) {
+        GXSetNumTevStages(nStages);
+        (gxCache->kColor).numTevStages = nStages;
+    }
+    return;
+}
+
+
+void GXSetNumTevStages_from_cache(void) {
+    GXSetNumTevStages((gxCache->kColor).numTevStages);
+    return;
+}
+
+void GXSetTevKColor_cached(GXTevKColorID id, GXColor color)
+{
+    if (
+        ( (gxCache->kColor).colors[id] ).r != color.r ||
+        ( (gxCache->kColor).colors[id] ).g != color.g ||
+        ( (gxCache->kColor).colors[id] ).b != color.b ||
+        ( (gxCache->kColor).colors[id] ).a != color.a
+    ) {
+        // if something has differnt
+        GXSetTevKColor(id, color);
+        (gxCache->kColor).colors[id] = color;
+    }
+    return;
+}
+
+void GXSetTevKColor_cached_init(GXTevKColorID id, GXColor color)
+{
+    GXSetTevKColor(id, color);
+    (gxCache->kColor).colors[id] = color;
+    return;
+}
+
+void GXLoadTexObj_cached(GXTexObj *obj, GXTexMapID id)
+{
+    GXTexSize *_texSize;
+
+    _texSize = gxCache->texSizes + id;
+    _texSize->width = GXGetTexObjWidth(obj);
+    _texSize->height = GXGetTexObjHeight(obj);
+    GXLoadTexObj(obj, id);
+    return;
+}

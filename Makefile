@@ -160,7 +160,6 @@ SOURCES := \
 	src/gxutil.c \
 	asm/mini_commend.s \
 	src/tevutil.c \
-	asm/tevutil.s \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \
