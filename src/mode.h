@@ -247,7 +247,7 @@ enum
 
 struct ModeControl
 {
-    s32 unk0;
+    s32 submodeTimer;
     s32 levelSet;
     u32 levelSetFlags;
     u8 fillerC[0x10-0xC];

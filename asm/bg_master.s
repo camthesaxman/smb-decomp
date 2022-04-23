@@ -851,7 +851,7 @@ lbl_800638BC:
 /* 800638C0 0005F7E0  2C 00 00 00 */	cmpwi r0, 0
 /* 800638C4 0005F7E4  41 82 00 9C */	beq lbl_80063960
 /* 800638C8 0005F7E8  38 60 00 01 */	li r3, 1
-/* 800638CC 0005F7EC  48 02 BE 09 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 800638CC 0005F7EC  48 02 BE 09 */	bl avdisp_enable_custom_tex_mtx
 /* 800638D0 0005F7F0  83 7F 00 08 */	lwz r27, 8(r31)
 /* 800638D4 0005F7F4  3B 9F 00 0C */	addi r28, r31, 0xc
 /* 800638D8 0005F7F8  48 00 00 78 */	b lbl_80063950
@@ -862,7 +862,7 @@ lbl_800638DC:
 /* 800638E8 0005F808  41 82 00 60 */	beq lbl_80063948
 /* 800638EC 0005F80C  38 60 00 00 */	li r3, 0
 /* 800638F0 0005F810  38 9C 00 28 */	addi r4, r28, 0x28
-/* 800638F4 0005F814  48 02 BD F1 */	bl g_avdisp_set_some_matrix
+/* 800638F4 0005F814  48 02 BD F1 */	bl avdisp_set_custom_tex_mtx
 /* 800638F8 0005F818  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 800638FC 0005F81C  4B FA 3F B5 */	bl mathutil_mtxA_from_mtx
 /* 80063900 0005F820  38 7D 00 0C */	addi r3, r29, 0xc
@@ -890,7 +890,7 @@ lbl_80063950:
 /* 80063950 0005F870  2C 1B 00 00 */	cmpwi r27, 0
 /* 80063954 0005F874  41 81 FF 88 */	bgt lbl_800638DC
 /* 80063958 0005F878  38 60 00 00 */	li r3, 0
-/* 8006395C 0005F87C  48 02 BD 79 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 8006395C 0005F87C  48 02 BD 79 */	bl avdisp_enable_custom_tex_mtx
 lbl_80063960:
 /* 80063960 0005F880  4B FF 1B F9 */	bl bg_e3_draw
 /* 80063964 0005F884  3C 60 80 1F */	lis r3, lbl_801EEC90@ha
@@ -905,7 +905,7 @@ lbl_80063960:
 /* 80063988 0005F8A8  38 A0 00 00 */	li r5, 0
 /* 8006398C 0005F8AC  48 02 AC 3D */	bl avdisp_set_z_mode
 /* 80063990 0005F8B0  38 60 00 01 */	li r3, 1
-/* 80063994 0005F8B4  48 02 BD 41 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 80063994 0005F8B4  48 02 BD 41 */	bl avdisp_enable_custom_tex_mtx
 /* 80063998 0005F8B8  83 9F 01 70 */	lwz r28, 0x170(r31)
 /* 8006399C 0005F8BC  3B 7F 01 74 */	addi r27, r31, 0x174
 /* 800639A0 0005F8C0  48 00 01 00 */	b lbl_80063AA0
@@ -948,7 +948,7 @@ lbl_800639A4:
 /* 80063A30 0005F950  48 08 0B 51 */	bl GXLoadPosMtxImm
 /* 80063A34 0005F954  38 60 00 00 */	li r3, 0
 /* 80063A38 0005F958  38 9B 00 38 */	addi r4, r27, 0x38
-/* 80063A3C 0005F95C  48 02 BC A9 */	bl g_avdisp_set_some_matrix
+/* 80063A3C 0005F95C  48 02 BC A9 */	bl avdisp_set_custom_tex_mtx
 /* 80063A40 0005F960  80 7F 0B 08 */	lwz r3, 0xb08(r31)
 /* 80063A44 0005F964  48 02 A9 F5 */	bl avdisp_draw_model_culled_sort_translucent
 /* 80063A48 0005F968  4B FA 3D ED */	bl mathutil_mtxA_pop
@@ -968,7 +968,7 @@ lbl_800639A4:
 /* 80063A80 0005F9A0  48 08 0B 01 */	bl GXLoadPosMtxImm
 /* 80063A84 0005F9A4  38 60 00 00 */	li r3, 0
 /* 80063A88 0005F9A8  38 9B 00 68 */	addi r4, r27, 0x68
-/* 80063A8C 0005F9AC  48 02 BC 59 */	bl g_avdisp_set_some_matrix
+/* 80063A8C 0005F9AC  48 02 BC 59 */	bl avdisp_set_custom_tex_mtx
 /* 80063A90 0005F9B0  80 7F 0B 08 */	lwz r3, 0xb08(r31)
 /* 80063A94 0005F9B4  48 02 A9 A5 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_80063A98:
@@ -982,7 +982,7 @@ lbl_80063AA0:
 /* 80063AB0 0005F9D0  38 A0 00 01 */	li r5, 1
 /* 80063AB4 0005F9D4  48 02 AB 15 */	bl avdisp_set_z_mode
 /* 80063AB8 0005F9D8  38 60 00 00 */	li r3, 0
-/* 80063ABC 0005F9DC  48 02 BC 19 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 80063ABC 0005F9DC  48 02 BC 19 */	bl avdisp_enable_custom_tex_mtx
 lbl_80063AC0:
 /* 80063AC0 0005F9E0  BB 61 00 1C */	lmw r27, 0x1c(r1)
 /* 80063AC4 0005F9E4  80 01 00 34 */	lwz r0, 0x34(r1)

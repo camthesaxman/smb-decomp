@@ -22,7 +22,7 @@ static int jungle_model_find_proc(int, struct StageBgModel *);
 
 void bg_jungle_init(void)
 {
-    struct BGJungleWork *work = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
     int i;
     struct BGJungleCloud *r29;
     Vec sp8;
@@ -64,7 +64,7 @@ void bg_jungle_init(void)
 
 void bg_jungle_main(void)
 {
-    struct BGJungleWork *work = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
     int i;
     struct BGJungleCloud *r29;
     int r28;
@@ -117,7 +117,7 @@ void bg_jungle_finish(void) {}
 
 void bg_jungle_draw(void)
 {
-    struct BGJungleWork *work = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
     struct StageBgModel *bgModel;
     u32 r28;
     int i;
@@ -145,7 +145,7 @@ void bg_jungle_draw(void)
     bg_e3_draw();
     if (work->cloudModelCount != 0)
     {
-        g_avdisp_set_some_tex_mtx_sel(1);
+        avdisp_enable_custom_tex_mtx(1);
         avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
         cloudModel = work->cloudModels;
         for (i = work->cloudModelCount; i > 0; i--, cloudModel++)
@@ -153,7 +153,7 @@ void bg_jungle_draw(void)
             bgModel = cloudModel->bgModel;
             if (bgModel->flags & r28)
             {
-                g_avdisp_set_some_matrix(0, cloudModel->unk28);
+                avdisp_set_custom_tex_mtx(0, cloudModel->unk28);
                 mathutil_mtxA_translate(&bgModel->pos);
                 mathutil_mtxA_rotate_z(bgModel->rotZ);
                 mathutil_mtxA_rotate_y(bgModel->rotY);
@@ -165,7 +165,7 @@ void bg_jungle_draw(void)
             }
         }
         avdisp_set_z_mode(1, 3, 1);
-        g_avdisp_set_some_tex_mtx_sel(0);
+        avdisp_enable_custom_tex_mtx(0);
     }
 
     if (gameSubmode == SMD_GAME_CONTINUE_INIT
@@ -180,7 +180,7 @@ void bg_jungle_interact(int a) {}
 
 static int jungle_model_find_proc(int index, struct StageBgModel *bgModel)
 {
-    struct BGJungleWork *work = backgroundInfo.unk9C;
+    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
 
     switch (index)
     {

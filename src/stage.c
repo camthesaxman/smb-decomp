@@ -105,10 +105,10 @@ void ev_stage_main(void)
         return;
     if (infoWork.flags & (1 << 8))
     {
-        if (modeCtrl.unk0 > 0x78)
+        if (modeCtrl.submodeTimer > 0x78)
             lbl_80206DEC.g_stageTimer = 0.0f;
         else
-            lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.unk0;
+            lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.submodeTimer;
         lbl_80206DEC.unk0 = 0x77;
     }
     else if (infoWork.flags & (1 << 4))
@@ -2241,26 +2241,26 @@ void stage_draw(void)
             }
             if (infoWork.unk1E == 1)
             {
-                if (modeCtrl.unk0 > 120)
+                if (modeCtrl.submodeTimer > 120)
                     g_call_draw_naomi_model_and_do_other_stuff(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
-                else if (modeCtrl.unk0 > 60)
+                else if (modeCtrl.submodeTimer > 60)
                 {
                     g_call_draw_model_with_alpha_deferred(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
-                        (modeCtrl.unk0 - 60) / 60.0f);
+                        (modeCtrl.submodeTimer - 60) / 60.0f);
                 }
             }
             else
             {
-                if (modeCtrl.unk0 > 75)
+                if (modeCtrl.submodeTimer > 75)
                     g_call_draw_naomi_model_and_do_other_stuff(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
-                else if (modeCtrl.unk0 > 45)
+                else if (modeCtrl.submodeTimer > 45)
                 {
                     g_call_draw_model_with_alpha_deferred(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
-                        (modeCtrl.unk0 - 45) / 30.0f);
+                        (modeCtrl.submodeTimer - 45) / 30.0f);
                 }
             }
             func_8000E3BC();

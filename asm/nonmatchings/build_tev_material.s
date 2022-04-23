@@ -818,7 +818,7 @@ lbl_80091020:
 /* 800910F0 0008D010  80 01 00 70 */	lwz r0, 0x70(r1)
 /* 800910F4 0008D014  90 01 00 A4 */	stw r0, 0xa4(r1)
 lbl_800910F8:
-/* 800910F8 0008D018  80 0D 9F 2C */	lwz r0, usePostMultiplyTevStage
+/* 800910F8 0008D018  80 0D 9F 2C */	lwz r0, s_usePostMultiplyTevStage
 /* 800910FC 0008D01C  2C 00 00 00 */	cmpwi r0, 0
 /* 80091100 0008D020  41 82 00 2C */	beq lbl_8009112C
 /* 80091104 0008D024  38 9C 00 74 */	addi r4, r28, 0x74
@@ -833,7 +833,7 @@ lbl_80091120:
 /* 80091124 0008D044  38 03 00 01 */	addi r0, r3, 1
 /* 80091128 0008D048  90 01 00 7C */	stw r0, 0x7c(r1)
 lbl_8009112C:
-/* 8009112C 0008D04C  80 0D 9F 34 */	lwz r0, usePostAddTevStage
+/* 8009112C 0008D04C  80 0D 9F 34 */	lwz r0, s_usePostAddTevStage
 /* 80091130 0008D050  2C 00 00 00 */	cmpwi r0, 0
 /* 80091134 0008D054  41 82 00 28 */	beq lbl_8009115C
 /* 80091138 0008D058  80 1C 00 78 */	lwz r0, 0x78(r28)

@@ -387,7 +387,7 @@ void func_8003721C(struct Ape *ape, float b)
             f31 = ape->unk54++;
             if (gameSubmode == SMD_ADV_INFO_MAIN)
             {
-                int r3 = (modeCtrl.unk0 < 0x9D8 && modeCtrl.unk0 > 0x8AC);
+                int r3 = (modeCtrl.submodeTimer < 0x9D8 && modeCtrl.submodeTimer > 0x8AC);
                 r27 = (r3 != 0) ? 2 : 1;
             }
         }
@@ -1643,7 +1643,7 @@ void ball_func_3(struct Ball *ball)
     ball->prevPos.y = ball->pos.y;
     ball->prevPos.z = ball->pos.z;
 
-    f4 = modeCtrl.unk0;
+    f4 = modeCtrl.submodeTimer;
     f2 = (decodedStageLzPtr->startPos->pos.y - ball->pos.y) / f4;
 
     ball->vel.x = (zero = 0.0f);  // fake match
@@ -1953,7 +1953,7 @@ void ball_func_16(struct Ball *ball)
 {
     g_ball_init_2(ball);
 
-    if (modeCtrl.unk0 == 0x111C)
+    if (modeCtrl.submodeTimer == 0x111C)
     {
         ball->pos.x = decodedStageLzPtr->startPos->pos.x;
         ball->pos.y = decodedStageLzPtr->startPos->pos.y;
@@ -1984,7 +1984,7 @@ void ball_func_16(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
 
-    if (modeCtrl.unk0 != 0x111C)
+    if (modeCtrl.submodeTimer != 0x111C)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x4000);

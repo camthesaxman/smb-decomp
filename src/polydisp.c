@@ -742,7 +742,7 @@ void draw_continue_scene(void)
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
         effect_draw();
     ord_tbl_draw_nodes();
-    r4 = modeCtrl.unk0;
+    r4 = modeCtrl.submodeTimer;
     if (r4 > 60)
         r4 = 60;
 
@@ -1230,7 +1230,7 @@ void draw_timer_bomb_fuse(void)
     func_80030BB8(1.0f, 1.0f, 1.0f);
     avdisp_set_post_multiply_color(1.0f, t, 0.0f, 1.0f);
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
-    g_avdisp_set_some_matrix(0, mathutilData->mtxA);
+    avdisp_set_custom_tex_mtx(0, mathutilData->mtxA);
 
     // Draw new bomb fuse
     mathutil_mtxA_from_identity();
@@ -1239,9 +1239,9 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_scale_s(scale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     avdisp_set_bound_sphere_scale(scale);
-    g_avdisp_set_some_tex_mtx_sel(1);
+    avdisp_enable_custom_tex_mtx(1);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
-    g_avdisp_set_some_tex_mtx_sel(0);
+    avdisp_enable_custom_tex_mtx(0);
 
     // Draw spark
     sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);

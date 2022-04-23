@@ -72,7 +72,7 @@ struct BackgroundInfo  // size = 0xA8
     void (*unk90)();
     /*0x94*/ BallEnvFunc ballEnvFunc;
     void (*unk98)();
-    void *unk9C;
+    void *bgSunsetWork;
     u32 unkA0;
     u32 unkA4;
 };
@@ -114,11 +114,11 @@ struct BGJungleWork
 
 struct BGSunsetModel
 {
-    struct StageBgModel *unk0;
-    Vec unk4;
-    Vec unk10;
-    Vec unk1C;
-    Mtx unk28;
+    struct StageBgModel *bgModel;
+    Vec texTranslation;
+    Vec currTexVel;
+    Vec desiredTexVel;
+    Mtx texMtx;
 };
 
 struct BGSunsetWork
@@ -126,7 +126,7 @@ struct BGSunsetWork
     u8 filler0[4];
     s32 bgModelsCount;
     struct BGSunsetModel bgModels[4];
-    s32 unk168;
+    s32 mode; // 0 for most of stage duration, 1 during last 11s "hurry up" phase
 };
 
 /* Storm background */

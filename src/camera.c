@@ -1237,7 +1237,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (infoWork.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.unk0 > 0x78)
+            if (infoWork.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 0x78)
                 camera->timerCurr--;
         }
 
@@ -2398,7 +2398,7 @@ void camera_func_33(struct Camera *camera, struct Ball *ball)
     camera->lookAt.y = ball->pos.y + 0.5;
     camera->lookAt.z = ball->pos.z;
 
-    r31 = ((modeCtrl.unk0 - 30) << 9);
+    r31 = ((modeCtrl.submodeTimer - 30) << 9);
     if (r31 < 0)
         r31 = 0;
     if (r31 < 0x2000)
@@ -2447,7 +2447,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     camera->lookAt.y += (ball->pos.y + 0.5 - camera->lookAt.y) * 0.5;
     camera->lookAt.z += (ball->pos.z - camera->lookAt.z) * 0.5;
 
-    r28 = ((modeCtrl.unk0 - 30) << 9);
+    r28 = ((modeCtrl.submodeTimer - 30) << 9);
     if (r28 < 0)
         r28 = 0;
     if (r28 < 0x2000)
@@ -2469,7 +2469,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     sp28.y = ball->pos.y + 2.0 * (f31 / 10.0) + (float)r28 * -3.0517578125e-05;
     sp28.z = sp34.z + ball->pos.z;
 
-    if (modeCtrl.unk0 > 15)
+    if (modeCtrl.submodeTimer > 15)
     {
         camera->eyeVel.x += ((sp28.x - camera->eye.x) * 0.15 - camera->eyeVel.x) * 0.4;
         camera->eyeVel.y += ((sp28.y - camera->eye.y) * 0.15 - camera->eyeVel.y) * 0.4;
