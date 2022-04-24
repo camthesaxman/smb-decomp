@@ -683,7 +683,7 @@ struct Struct80209D48 lbl_80209D48[0x80];
 struct Struct8020A348 lbl_8020A348[0x108]; // 0x3648
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
 struct GMAModel *goalModels[3];
-struct Sphere stageBounds;
+struct Sphere stageBoundSphere;
 
 FORCE_BSS_ORDER(lbl_80209368)
 FORCE_BSS_ORDER(lbl_80209488)
@@ -693,7 +693,7 @@ FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
 FORCE_BSS_ORDER(lbl_8020AB88)
 FORCE_BSS_ORDER(goalModels)
-FORCE_BSS_ORDER(stageBounds)
+FORCE_BSS_ORDER(stageBoundSphere)
 
 struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj,
                                     (struct NaomiObj **)&naomiCommonObj, NULL};
@@ -1337,21 +1337,21 @@ void compute_stage_bounding_sphere(void)
     {
         Vec sp8;
 
-        stageBounds.pos.x = (max.x + min.x) * 0.5;
-        stageBounds.pos.y = (max.y + min.y) * 0.5;
-        stageBounds.pos.z = (max.z + min.z) * 0.5;
+        stageBoundSphere.pos.x = (max.x + min.x) * 0.5;
+        stageBoundSphere.pos.y = (max.y + min.y) * 0.5;
+        stageBoundSphere.pos.z = (max.z + min.z) * 0.5;
 
         sp8.x = (max.x - min.x) * 0.5;
         sp8.y = (max.y - min.y) * 0.5;
         sp8.z = (max.z - min.z) * 0.5;
-        stageBounds.radius = mathutil_sqrt(mathutil_sum_of_sq_3(sp8.x, sp8.y, sp8.z));
+        stageBoundSphere.radius = mathutil_sqrt(mathutil_sum_of_sq_3(sp8.x, sp8.y, sp8.z));
     }
     else
     {
-        stageBounds.pos.x = 0.0f;
-        stageBounds.pos.y = 0.0f;
-        stageBounds.pos.z = 0.0f;
-        stageBounds.radius = 50.0f;
+        stageBoundSphere.pos.x = 0.0f;
+        stageBoundSphere.pos.y = 0.0f;
+        stageBoundSphere.pos.z = 0.0f;
+        stageBoundSphere.radius = 50.0f;
     }
 }
 

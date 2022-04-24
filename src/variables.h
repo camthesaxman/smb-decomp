@@ -581,7 +581,7 @@ extern void *lbl_80209368[];
 // extern ? lbl_8020A348;
 extern struct Struct8020A348 lbl_8020AB88[0x48];
 extern struct GMAModel *goalModels[3];
-extern struct Sphere stageBounds;
+extern struct Sphere stageBoundSphere;
 // extern ? lbl_8020AE20;
 // extern ? lbl_8020AE40;
 extern struct

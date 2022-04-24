@@ -35,7 +35,7 @@ struct StageViewInfo
     s16 frameCounter;
     float unk20;
     float unk24;
-    struct Sphere stageBounds;
+    struct Sphere stageBoundSphere;
     s16 unk38;
     s16 unk3A;
     s16 unk3C;
@@ -54,8 +54,8 @@ void ev_view_init(void)
         OSPanic("view.c", 114, "cannot OSAlloc\n");
     memset(stageViewInfo, 0, sizeof(*stageViewInfo));
 
-    get_curr_stage_view_bounds(&stageViewInfo->stageBounds);
-    stageViewInfo->unk20 = stageViewInfo->stageBounds.radius * 1.1313;
+    get_curr_stage_view_bounds(&stageViewInfo->stageBoundSphere);
+    stageViewInfo->unk20 = stageViewInfo->stageBoundSphere.radius * 1.1313;
     stageViewInfo->unk24 = 0.75f;
     stageViewInfo->unk38 = -5632;
     stageViewInfo->unk3A = 0;
@@ -94,7 +94,7 @@ void ev_view_main(void)
     cstickX = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickX;
     stageViewInfo->unk3C += (cstickY * 64 - stageViewInfo->unk3C) >> 5;
     stageViewInfo->unk3E += (-cstickX * 0xC0 - stageViewInfo->unk3E) >> 5;
-    mathutil_mtxA_from_translate(&stageViewInfo->stageBounds.pos);
+    mathutil_mtxA_from_translate(&stageViewInfo->stageBoundSphere.pos);
     mathutil_mtxA_rotate_y(stageViewInfo->unk3A);
     mathutil_mtxA_rotate_x(stageViewInfo->unk38);
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, stageViewInfo->unk20 * stageViewInfo->unk24);

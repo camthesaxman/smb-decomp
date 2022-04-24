@@ -7945,8 +7945,8 @@ lbl_8020AB88:
 .global goalModels
 goalModels:
 	.skip 0xC
-.global stageBounds
-stageBounds:
+.global stageBoundSphere
+stageBoundSphere:
     .skip 0x10
     .skip 0x3C
 .endif

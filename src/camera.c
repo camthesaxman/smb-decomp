@@ -1312,7 +1312,7 @@ void get_curr_stage_fly_in_position(struct Sphere *sphere)
         }
         ptr++;
     }
-    *sphere = stageBounds;
+    *sphere = stageBoundSphere;
     if (sphere->radius < 31.25)
         sphere->radius = 31.25f;
 }
