@@ -12,24 +12,26 @@ lbl_8009EA54:
 /* 8009EA54 0009A974  3B E0 00 00 */	li r31, 0
 /* 8009EA58 0009A978  3B C0 00 00 */	li r30, 0
 
+/* state for gmaTevOp */
 
 lbl_8009EA5C:
-/* 8009EA5C 0009A97C  2C 04 00 02 */	cmpwi r4, 2
-/* 8009EA60 0009A980  41 82 03 A0 */	beq lbl_8009EE00
-/* 8009EA64 0009A984  40 80 00 14 */	bge lbl_8009EA78
-/* 8009EA68 0009A988  2C 04 00 00 */	cmpwi r4, 0
-/* 8009EA6C 0009A98C  41 82 00 FC */	beq lbl_8009EB68
-/* 8009EA70 0009A990  40 80 00 18 */	bge lbl_8009EA88
-/* 8009EA74 0009A994  48 00 04 68 */	b lbl_8009EEDC
+/* 8009EA5C 0009A97C  2C 04 00 02 */	cmpwi r4, 2      /* CoMPar Word Immediately  checking value about "2" */
+/* 8009EA60 0009A980  41 82 03 A0 */	beq lbl_8009EE00 /* Branch EQual gmaTevOp == 2          "gmaTevOp != 2"    */
+/* 8009EA64 0009A984  40 80 00 14 */	bge lbl_8009EA78 /* BiGeer than or Equal gmaTevOp >= 2      "gmaTevOp < 2"   */
+/* 8009EA68 0009A988  2C 04 00 00 */	cmpwi r4, 0      /* CoMPar Word Immediately  checking value about "0" */
+/* 8009EA6C 0009A98C  41 82 00 FC */	beq lbl_8009EB68 /* Branch EQual gmaTevOp == 0   (gmaTevOp is "1")   "gmaTevOp != 0"*/
+/* 8009EA70 0009A990  40 80 00 18 */	bge lbl_8009EA88 /* BiGeer than or Equal gmaTevOp >= 0  (gmaTevOp is "1")  "gmaTevOp < 0"*/
+/* 8009EA74 0009A994  48 00 04 68 */	b lbl_8009EEDC   /* gmaTevOp is less than 0 (-1 and lower) */
 
+/* gmaTevOp >= 2 */
 lbl_8009EA78:
-/* 8009EA78 0009A998  2C 04 00 04 */	cmpwi r4, 4
-/* 8009EA7C 0009A99C  41 82 02 AC */	beq lbl_8009ED28
-/* 8009EA80 0009A9A0  40 80 04 5C */	bge lbl_8009EEDC
-/* 8009EA84 0009A9A4  48 00 01 C4 */	b lbl_8009EC48
+/* 8009EA78 0009A998  2C 04 00 04 */	cmpwi r4, 4      /* CoMPar Word Immediately  checking value about "4" */
+/* 8009EA7C 0009A99C  41 82 02 AC */	beq lbl_8009ED28 /* gmaTevOp == 4 */
+/* 8009EA80 0009A9A0  40 80 04 5C */	bge lbl_8009EEDC /* gmaTevOp >= 4 (5 and high value is nothing)*/
+/* 8009EA84 0009A9A4  48 00 01 C4 */	b lbl_8009EC48   /* not match (gmaTevOp is "3")*/
 
 
-
+/* gmaTevOp == 1  start*/
 lbl_8009EA88:
 /* 8009EA88 0009A9A8  57 BB 20 36 */	slwi r27, r29, 4
 /* 8009EA8C 0009A9AC  80 0D 9F C0 */	lwz r0, gxCache     //@sda21(r13)
@@ -90,8 +92,10 @@ lbl_8009EB38:
 /* 8009EB5C 0009AA7C  90 1B 00 08 */	stw r0, 8(r27)
 /* 8009EB60 0009AA80  93 DB 00 0C */	stw r30, 0xc(r27)
 /* 8009EB64 0009AA84  48 00 03 78 */	b lbl_8009EEDC
+/* gmaTevOp == 1 end */
 
 
+/* gmaTevOp == 0 start */
 lbl_8009EB68:
 /* 8009EB68 0009AA88  57 BC 20 36 */	slwi r28, r29, 4
 /* 8009EB6C 0009AA8C  80 0D 9F C0 */	lwz r0, gxCache     //@sda21(r13)
@@ -152,8 +156,10 @@ lbl_8009EC14:
 /* 8009EC3C 0009AB5C  93 DB 00 08 */	stw r30, 8(r27)
 /* 8009EC40 0009AB60  90 7B 00 0C */	stw r3, 0xc(r27)
 /* 8009EC44 0009AB64  48 00 02 98 */	b lbl_8009EEDC
+/* gmaTevOp == 0 end */
 
 
+/* gmaTevOp == 3 start */
 lbl_8009EC48:
 /* 8009EC48 0009AB68  57 BC 20 36 */	slwi r28, r29, 4
 /* 8009EC4C 0009AB6C  80 0D 9F C0 */	lwz r0, gxCache     //@sda21(r13)
@@ -214,8 +220,10 @@ lbl_8009ECF4:
 /* 8009ED1C 0009AC3C  90 7B 00 08 */	stw r3, 8(r27)
 /* 8009ED20 0009AC40  90 1B 00 0C */	stw r0, 0xc(r27)
 /* 8009ED24 0009AC44  48 00 01 B8 */	b lbl_8009EEDC
+/* gmaTevOp == 3 end */
 
 
+/* gmaTevOp == 4 end */
 lbl_8009ED28:
 /* 8009ED28 0009AC48  57 BC 20 36 */	slwi r28, r29, 4
 /* 8009ED2C 0009AC4C  80 0D 9F C0 */	lwz r0, gxCache     //@sda21(r13)
@@ -274,8 +282,10 @@ lbl_8009EDD0:
 /* 8009EDF4 0009AD14  90 1B 00 08 */	stw r0, 8(r27)
 /* 8009EDF8 0009AD18  93 DB 00 0C */	stw r30, 0xc(r27)
 /* 8009EDFC 0009AD1C  48 00 00 E0 */	b lbl_8009EEDC
+/* gmaTevOp == 4 end */
 
 
+/* gmaTevOp == 2 start */
 lbl_8009EE00:
 /* 8009EE00 0009AD20  57 BC 20 36 */	slwi r28, r29, 4
 /* 8009EE04 0009AD24  80 0D 9F C0 */	lwz r0, gxCache     //@sda21(r13)
@@ -335,6 +345,7 @@ lbl_8009EEAC:
 /* 8009EED0 0009ADF0  90 1B 00 04 */	stw r0, 4(r27)
 /* 8009EED4 0009ADF4  93 DB 00 08 */	stw r30, 8(r27)
 /* 8009EED8 0009ADF8  90 7B 00 0C */	stw r3, 0xc(r27)
+/* gmaTevOp == 2 end */
 
 
 /* GXTevOpCache  */

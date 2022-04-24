@@ -290,6 +290,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
 }
 
 // TODO: change GXBool to u32
+// https://decomp.me/scratch/3HJhF
 void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_colorOp;
