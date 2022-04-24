@@ -262,7 +262,7 @@ asm float mathutil_sin(register s16 angle)
 #endif
 
 #ifdef __MWERKS__
-asm void mathutil_sin_cos_v(int a, float b[2])
+asm void mathutil_sin_cos_v(s16 a, float *b, float *c)
 {
     nofralloc
 
@@ -456,9 +456,9 @@ lbl_8000741C:
 }
 #endif  //__MWERKS__
 
-s16 func_80007424(float a)
+u32 func_80007424(float a)
 {
-    s16 r3;
+    u32 r3;
 
     if (__fabs(a) > 1.0)
     {
