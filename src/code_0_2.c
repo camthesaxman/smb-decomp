@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 
 #include <dolphin.h>
@@ -5,10 +6,17 @@
 #include "global.h"
 #include "adv.h"
 #include "background.h"
+#include "camera.h"
 #include "mathutil.h"
 #include "mode.h"
 
-u8 lbl_801EFC88[0xC] /*ATTRIBUTE_ALIGN(8)*/;
+struct
+{
+	u32 unk0;
+	u32 unk4;
+	u32 unk8;
+} lbl_801EFC88;
+//u8 lbl_801EFC88[0xC] /*ATTRIBUTE_ALIGN(8)*/;
 FORCE_BSS_ORDER(lbl_801EFC88)
 
 s8 lbl_802F0310[8] = {0};
@@ -78,7 +86,7 @@ struct Struct8017748C
     Vec unk18;
     s16 unk24;
     s16 unk26;
-    u32 filler28;
+    s16 unk28;
     Vec unk2C;
     float unk38;
     float unk3C;
@@ -115,6 +123,20 @@ struct Struct8017748C lbl_8017748C[512] =  // lots of empty space at the end
 struct Struct8017748C lbl_801EFC94[32];  // +0xC
 FORCE_BSS_ORDER(lbl_801EFC94)
 
+void func_80021ECC_inline(struct Struct8017748C *r29)
+{
+		printf("\x7B\t\n");
+		printf("\t%d,\tLID_%s,\t%d,\n", r29->unk0, lbl_801773F0[r29->unk1], lbl_802F1C94);
+		printf("\tLTP_%s,\t%d,\t%d,\n", lbl_801773B4[r29->unk4], r29->unk6, currStageId);
+		printf("\t{ %f, %f, %f },\n", r29->unkC, r29->unk10, r29->unk14);
+		printf("\t{ %f, %f, %f },\n", r29->unk18.x, r29->unk18.y, r29->unk18.z);
+		printf("\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n", r29->unk24, r29->unk26, r29->unk28, r29->unk2C.x, r29->unk2C.y, r29->unk2C.z);
+		printf("\t%f,\t%f,\t%f,\n", r29->unk38, r29->unk3C, r29->unk40);
+		printf("\t%f,\t%f\n", r29->unk44, r29->unk48);
+		printf("},\n\n");
+}
+
+#pragma dont_inline on
 void func_800210FC(int a)
 {
     u8 dummy[8];
@@ -127,6 +149,7 @@ void func_800210FC(int a)
         r31++;
     }
 }
+#pragma dont_inline reset
 
 extern s32 lbl_802F1C48;
 
@@ -149,13 +172,6 @@ s8 func_80021164(int a, int b, int c)
     }
     return -1;
 }
-
-char string__t_d__tLID__s__t_d__n[] = "\t%d,\tLID_%s,\t%d,\n";
-char string__tLTP__s__t_d__t_d__n[] = "\tLTP_%s,\t%d,\t%d,\n";
-char string__t___f___f___f____n[] = "\t{ %f, %f, %f },\n";
-char string__t0x_x__t0x_x__t0x_x__t___f___f___f____n[] = "\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n";
-char string__t_f__t_f__t_f__n[] = "\t%f,\t%f,\t%f,\n";
-char string__t_f__t_f_n[] = "\t%f,\t%f\n";
 
 void func_800212A8(struct Struct8017748C *a)
 {
@@ -477,7 +493,147 @@ void func_80021958(void)
 	}
 }
 
-char lbl_802F03EC[4] = "\x7B\t\n";
+void func_80021C44(struct Struct801F065C *a)
+{
+	Vec sp1C;
+	GXColor sp18;
+	int r5 = TRUE;
+
+	if (a->unk0[0] == -1)
+		r5 = FALSE;
+	else
+	{
+		if (lbl_801EFC94[a->unk0[0]].unk0 == 0
+		 || lbl_801EFC94[a->unk0[0]].unk4 != 0)
+			r5 = FALSE;
+	}
+
+	if (r5)
+	{
+		GXGetLightPos(&a->unk14[0], &sp1C.x, &sp1C.y, &sp1C.z);
+		GXGetLightColor(&a->unk14[0], &sp18);
+		g_avdisp_set_and_normalize_some_vec(&sp1C);
+		g_avdisp_set_some_color_scale(sp18.r / 255.0f, sp18.g / 255.0f, sp18.b / 255.0f);
+	}
+	else if (func_8009D5D8() != 0)
+	{
+		Vec spC = {0.0f, 1.0f, -0.5f};
+
+		mathutil_mtxA_push();
+		mathutil_mtxA_from_rotate_y(currentCameraStructPtr->rotY);
+		mathutil_mtxA_tf_vec(&spC, &spC);
+		mathutil_mtxA_pop();
+		g_avdisp_set_and_normalize_some_vec(&spC);
+		g_avdisp_set_some_color_scale(1.0f, 1.0f, 1.0f);
+	}
+	else
+		g_avdisp_set_some_color_scale(0.0f, 0.0f, 0.0f);
+}
+
+extern s32 lbl_802F1C7C;
+
+void func_80021DB4(int stageId)
+{
+	u8 dummy[8];
+	int i;  // r28
+	struct Struct8017748C *r27;
+
+	r27 = lbl_801EFC94;
+	for (i = 0; i < 32; i++, r27++)
+	{
+		memset(r27, 0, sizeof(*r27));
+		r27->unk0 = 0;
+		r27->unk1 = 0;
+		r27->unk2 = 0;
+		r27->unk4 = 1;
+		r27->unk38 = 2.0f;
+		r27->unk3C = 1.0f;
+		r27->unk40 = 0.0f;
+		r27->unk44 = 0.0f;
+		r27->unk6 = 3;
+		r27->unk48 = 45.0f;
+	}
+	lbl_802F1C48 = 0;
+	func_8002170C(stageId);
+#define r29 r27
+	r29 = lbl_8017748C;
+	while (r29->unk0 != -1)
+	{
+		if (r29->unk8 == stageId)
+			func_80022140(r29);
+		r29++;
+	}
+	lbl_802F1C7C = (stageId == 0) ? currStageId : stageId;
+#undef r29
+}
+
+void func_80021ECC(void)
+{
+	u8 dummy[8];
+	int i;
+	struct Struct8017748C *r28;
+
+	lbl_802F1C58 = 0;
+	func_8000E428(lbl_801F0614.unk14, lbl_801F0614.unk18, lbl_801F0614.unk1C);
+	func_8000E3BC();
+	lbl_802F1C48 = 0;
+
+	r28 = lbl_801EFC94;
+	for (i = 0; i < 32; i++, r28++)
+	{
+		if (r28->unk0 != 0)
+		{
+			func_800212A8(r28);
+			lbl_802F1C48 = i + 1;
+		}
+	}
+	lbl_802F1C98 = -1;
+	lbl_802F1C4C = -1;
+	lbl_801EFC88.unk0 = -1;
+	lbl_801EFC88.unk4 = -1;
+	lbl_801EFC88.unk8 = -1;
+	lbl_802F1C50 = 0;
+	lbl_802F1C54 = 1.0f;
+	lbl_802F1C68 = 0;
+	lbl_802F1C64 = 0;
+	lbl_802F1C60 = 0;
+	lbl_802F1C5C = 0;
+	if (lbl_802F1C78 == 0)
+		func_80021958();
+	mathutil_mtxA_from_mtxB();
+	func_80022274(0);
+	if (lbl_802F1C88 != 0)
+	{
+		func_80021ECC_inline(&lbl_801EFC94[lbl_802F1C94]);
+		lbl_802F1C88 = 0;
+	}
+	//lbl_800220CC
+	if (lbl_802F1C84 != 0)
+	{
+		if (lbl_802F1C7C == currStageId)
+			memcpy(&lbl_801EFC94[lbl_802F1C94], &lbl_801EFC94[lbl_802F1C80], 0x4C);
+		else
+			func_800210FC(lbl_802F1C7C);
+		lbl_802F1C84 = 0;
+	}
+}
+
+int func_80022140(struct Struct8017748C *a)
+{
+	int r31 = func_80021164(0, a->unk1, a->unk2);
+	struct Struct8017748C *r30;
+
+	if (r31 == -1)
+		return 0;
+	r30 = &lbl_801EFC94[r31];
+	memcpy(r30, a, sizeof(*r30));
+	r30->unk0 = 1;
+	r30->unk3C = (a->unk3C == 0.0f) ? 1.0f : a->unk3C;
+	r30->unk40 = (a->unk40 == 0.0f) ? 0.0f : a->unk40;
+	r30->unk44 = (a->unk44 == 0.0f) ? 0.0f : a->unk44;
+	lbl_802F1C48 = r31 + 1;
+	return 1;
+}
 
 /*
 const float lbl_802F2F78 = 0f;
@@ -500,6 +656,7 @@ const float lbl_802F2FC4 = 0.5f;
 const float lbl_802F2FC8 = 0.30000001192092896f;
 const float lbl_802F2FCC = 0.55000001192092896f;
 const float lbl_802F2FD0 = 176f;
+const double lbl_802F2FD8 = 4503599627370496;
 const float lbl_802F2FE0 = 2f;
 const float lbl_802F2FE4 = 45f;
 const double lbl_802F2FE8 = 2;

@@ -1267,7 +1267,6 @@ lbl_80021C30:
 /* 80021C38 0001DB58  38 21 00 30 */	addi r1, r1, 0x30
 /* 80021C3C 0001DB5C  7C 08 03 A6 */	mtlr r0
 /* 80021C40 0001DB60  4E 80 00 20 */	blr
-.endif
 
 .global func_80021C44
 func_80021C44:
@@ -1326,7 +1325,7 @@ lbl_80021C9C:
 /* 80021D08 0001DC28  C8 01 00 28 */	lfd f0, 0x28(r1)
 /* 80021D0C 0001DC2C  EC 41 28 28 */	fsubs f2, f1, f5
 /* 80021D10 0001DC30  EC 00 28 28 */	fsubs f0, f0, f5
-/* 80021D14 0001DC34  EC 24 18 24 */	fdivs f1, f4, f3
+/* 80021D14 0001DC34  EC 24 18 24 */	fdivs f1, f4, f3  ;# / 255
 /* 80021D18 0001DC38  EC 42 18 24 */	fdivs f2, f2, f3
 /* 80021D1C 0001DC3C  EC 60 18 24 */	fdivs f3, f0, f3
 /* 80021D20 0001DC40  48 06 C8 99 */	bl g_avdisp_set_some_color_scale
@@ -1527,7 +1526,7 @@ lbl_80021F94:
 /* 80021FE4 0001DF04  7C BF 02 14 */	add r5, r31, r0
 /* 80021FE8 0001DF08  80 A5 00 98 */	lwz r5, 0x98(r5)
 /* 80021FEC 0001DF0C  7C 84 07 74 */	extsb r4, r4
-/* 80021FF0 0001DF10  38 63 99 34 */	addi r3, r3, -26316
+/* 80021FF0 0001DF10  38 63 99 34 */	addi r3, r3, -26316  ;# 0x9934
 /* 80021FF4 0001DF14  48 0E 2D F9 */	bl printf
 /* 80021FF8 0001DF18  88 1D 00 04 */	lbz r0, 4(r29)
 /* 80021FFC 0001DF1C  3C 7F 00 01 */	addis r3, r31, 1
@@ -1682,6 +1681,7 @@ lbl_80022208:
 /* 80022218 0001E138  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 8002221C 0001E13C  38 21 00 20 */	addi r1, r1, 0x20
 /* 80022220 0001E140  4E 80 00 20 */	blr
+.endif
 
 glabel func_80022224
 /* 80022224 0001E144  7C 08 02 A6 */	mflr r0
@@ -2501,7 +2501,6 @@ lbl_802F2FD0:
 glabel string__333_4
 	.ascii "?333"
 	.balign 4
-.endif
 .global asdfasdf
 asdfasdf:
 	.4byte 0
@@ -2521,6 +2520,7 @@ lbl_802F2FE0:
 lbl_802F2FE4:
 	# ROM: 0x1ECA04
 	.4byte 0x42340000
+.endif
 
 .global lbl_802F2FE8
 lbl_802F2FE8:
@@ -2579,7 +2579,6 @@ lbl_80110260:
 	.4byte 0x00000003
 	.4byte 0
 	.4byte 0x00000003
-.endif
 
 .global lbl_80110310
 lbl_80110310:
@@ -2588,6 +2587,7 @@ lbl_80110310:
 	.4byte 0x3F800000
 	.4byte 0xBF000000
 	.4byte 0
+.endif
 
 .section .data
 
@@ -13360,12 +13360,13 @@ lbl_802F03EC:
 	# ROM: 0x1EAB2C
 	.4byte 0x7B090A00
 .endif
-
+.if 0
 .global lbl_802F03F0
 lbl_802F03F0:
 	# ROM: 0x1EAB30
 glabel string____n_n
 	.asciz "},\n\n"
+.endif
 	.balign 4
 glabel lbl_802F03F8
 	.4byte 0x06020603
