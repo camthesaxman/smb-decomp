@@ -997,4 +997,25 @@ struct Stobj
     Vec g_local_vel;
 };
 
+struct Struct80180F64
+{
+	u8 filler0[4];
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+    u8 filler20[0x34-0x20];
+	float unk34;
+	float unk38;
+	float unk3C;
+	s16 unk40;
+	s16 unk42;
+    s8 **unk44;
+};
+
+struct Struct8017748C;
+
 #endif

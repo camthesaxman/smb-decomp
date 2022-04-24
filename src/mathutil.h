@@ -56,13 +56,13 @@ float mathutil_sin(int angle);
 float mathutil_sin(s16 angle);
 #endif
 #define mathutil_cos(angle) mathutil_sin((angle) + 0x4000)
-void mathutil_sin_cos_v(s16 a, float *b, float *c);
+void mathutil_sin_cos_v(int a, float b[2]);
 void func_80007214();
 void mathutil_sin_cos(s16 angle);
 float mathutil_tan(u32 angle);
 s16 mathutil_atan2(double a, float b);
-u32 mathutil_atan(double angle);
-u32 func_80007424(float a);
+s16 mathutil_atan(float angle);
+s16 func_80007424(float a);
 float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB);
 void mathutil_mtx_from_identity(Mtx mtx);
 void mathutil_mtxA_from_identity(void);

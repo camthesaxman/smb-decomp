@@ -17672,7 +17672,7 @@ lbl_000103BC:
 /* 000103C4 C07F3778 */ lfs f3, 0x3778(r31)
 /* 000103C8 4BFEFD6D */ bl mathutil_mtxA_translate_xyz
 lbl_000103CC:
-/* 000103CC 4BFEFD69 */ bl func_80022698
+/* 000103CC 4BFEFD69 */ bl apply_curr_light_group_ambient_color
 /* 000103D0 80720000 */ lwz r3, 0(r18)
 /* 000103D4 38800000 */ li r4, 0
 /* 000103D8 4BFEFD5D */ bl GXLoadPosMtxImm
@@ -18475,7 +18475,7 @@ lbl_00010F48:
 /* 00010F94 80630180 */ lwz r3, 0x180(r3)
 /* 00010F98 4BFEF19D */ bl avdisp_draw_model_unculled_sort_none
 lbl_00010F9C:
-/* 00010F9C 4BFEF199 */ bl func_80022698
+/* 00010F9C 4BFEF199 */ bl apply_curr_light_group_ambient_color
 /* 00010FA0 4BFEF195 */ bl ord_tbl_draw_nodes
 /* 00010FA4 38600001 */ li r3, 1
 /* 00010FA8 38800003 */ li r4, 3
