@@ -4,86 +4,6 @@
 
 .section .data
 
-glabel lbl_80180E30
-	.4byte 0x05010502
-	.4byte 0x05030504
-	.4byte 0xFFFF0000
-glabel lbl_80180E3C
-	.4byte 0x06010602
-	.4byte 0x06030604
-	.4byte 0x06050606
-	.4byte 0x06070608
-	.4byte 0xFFFF0000
-glabel lbl_80180E50
-	.4byte 0x07010702
-	.4byte 0x05010503
-	.4byte 0xFFFF0000
-glabel lbl_80180E5C
-	.4byte 0x05040601
-	.4byte 0x06020603
-	.4byte 0xFFFF0000
-glabel lbl_80180E68
-	.4byte lbl_80180E30  ;# ptr
-	.4byte lbl_80180E3C  ;# ptr
-	.4byte lbl_802F03F8  ;# ptr
-	.4byte lbl_802F0400  ;# ptr
-	.4byte lbl_80180E50  ;# ptr
-	.4byte lbl_802F0408  ;# ptr
-	.4byte lbl_802F0410  ;# ptr
-	.4byte lbl_80180E5C  ;# ptr
-	.4byte 0
-glabel string_BILL_FLOOR
-	.asciz "BILL_FLOOR"
-	.balign 4
-glabel string_BILL_WALL
-	.asciz "BILL_WALL"
-	.balign 4
-glabel string_BILL_PILLAR00
-	.asciz "BILL_PILLAR00"
-	.balign 4
-glabel string_BILL_BOX
-	.asciz "BILL_BOX"
-	.balign 4
-glabel string_BILL_BAR_COUNTER
-	.asciz "BILL_BAR_COUNTER"
-	.balign 4
-glabel string_BILL_CHAIR00
-	.asciz "BILL_CHAIR00"
-	.balign 4
-glabel string_BILL_PLANT00
-	.asciz "BILL_PLANT00"
-	.balign 4
-glabel string_BILL_PLANT01
-	.asciz "BILL_PLANT01"
-	.balign 4
-glabel string_BILL_PLANT02
-	.asciz "BILL_PLANT02"
-	.balign 4
-
-.global lbl_80180F14
-lbl_80180F14:
-	# ROM: 0x17DF14
-	.4byte string_BILL_FLOOR  ;# ptr
-	.4byte 0x01000000
-	.4byte string_BILL_WALL  ;# ptr
-	.4byte 0x02000000
-	.4byte string_BILL_PILLAR00  ;# ptr
-	.4byte 0x01000000
-	.4byte string_BILL_BOX  ;# ptr
-	.4byte 0x03000000
-	.4byte string_BILL_BAR_COUNTER  ;# ptr
-	.4byte 0x04000000
-	.4byte string_BILL_CHAIR00  ;# ptr
-	.4byte 0x05000000
-	.4byte string_BILL_PLANT00  ;# ptr
-	.4byte 0x06000000
-	.4byte string_BILL_PLANT01  ;# ptr
-	.4byte 0x07000000
-	.4byte string_BILL_PLANT02  ;# ptr
-	.4byte 0x08000000
-	.4byte 0
-	.4byte 0xFF000000
-
 .global lbl_80180F64
 lbl_80180F64:
 	# ROM: 0x17DF64
@@ -729,19 +649,3 @@ glabel lbl_801F3A4C
 	.skip 0x4
 glabel lbl_801F3A50
 	.skip 0x8
-
-.section .sdata
-
-	.balign 4
-glabel lbl_802F03F8
-	.4byte 0x06020603
-	.4byte 0x0604FFFF
-glabel lbl_802F0400
-	.4byte 0x07010702
-	.4byte 0xFFFF0000
-glabel lbl_802F0408
-	.4byte 0x05010608
-	.4byte 0xFFFF0000
-glabel lbl_802F0410
-	.4byte 0x0503FFFF
-	.4byte 0

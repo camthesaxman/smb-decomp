@@ -1020,12 +1020,6 @@ void bg_ice2_draw(void)
 
 void bg_ice2_interact(int a) {}
 
-extern struct Struct80180F14
-{
-    char *unk0;
-    s8 unk4;
-} lbl_80180F14[];
-
 void bg_billiards_init(void)
 {
     int i;
