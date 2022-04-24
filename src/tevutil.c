@@ -104,7 +104,7 @@ void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTe
 {
     GXTevSwapModeTableCache *_swapModeTable = gxCache->swapModeTable + id;
     
-    GXSetTevSwapModeTable(id);
+    GXSetTevSwapModeTable(id, red, green, blue, alpha);
     _swapModeTable->r = red;
     _swapModeTable->g = green;
     _swapModeTable->b = blue;
