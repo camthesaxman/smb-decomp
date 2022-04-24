@@ -3,43 +3,13 @@
 #include "global.h"
 #include "mathutil.h"
 
-/*
-struct
-{
-    Vec unk0;
-    Vec unkC;
-    Vec unk18;
-    Vec unk24;
-    Vec unk30;
-} lbl_801EFC18;
-FORCE_BSS_ORDER(lbl_801EFC18)
-*/
-Vec lbl_801EFC18[5];
-FORCE_BSS_ORDER(lbl_801EFC18)
-
-/*
-struct
-{
-    Vec unk0;  // + 0x3C
-    Vec unkC;  // + 0x48
-    Vec unk18;  // + 0x54
-    Vec unk24;  // + 0x60
-    u8 filler30[0x34-0x30];
-} lbl_801EFC54;  // +0x3C
-*/
+Vec lbl_801EFC18;
+Vec lbl_801EFC24[4];
 Vec lbl_801EFC54[4];
-FORCE_BSS_ORDER(lbl_801EFC54)
 
-#define lbl_801EFC18_unk0  lbl_801EFC18[0]
-#define lbl_801EFC18_unkC  lbl_801EFC18[1]
-#define lbl_801EFC18_unk18 lbl_801EFC18[2]
-#define lbl_801EFC18_unk24 lbl_801EFC18[3]
-#define lbl_801EFC18_unk30 lbl_801EFC18[4]
-#define lbl_801EFC54_unk0  lbl_801EFC54[0]
-#define lbl_801EFC54_unkC  lbl_801EFC54[1]
-#define lbl_801EFC54_unk18 lbl_801EFC54[2]
-#define lbl_801EFC54_unk24 lbl_801EFC54[3]
-#define lbl_801EFC54_unk30 lbl_801EFC54[4]
+FORCE_BSS_ORDER(lbl_801EFC18)
+FORCE_BSS_ORDER(lbl_801EFC24)
+FORCE_BSS_ORDER(lbl_801EFC54)
 
 double force_sdata2_802F2F50() { return 182.04444885253906; }
 double force_sdata2_802F2F58() { return 0.5; }
@@ -57,7 +27,7 @@ void func_80020AB8(Vec *a, S16Vec *b, float c, float d, float e, float f)
     float f27;
     float sincos[2];
 
-    lbl_801EFC18_unk0 = *a;
+    lbl_801EFC18 = *a;
     if (f == 0.0f)
     {
         temp = (s16)(c * 182.04444885253906f);
@@ -92,28 +62,28 @@ void func_80020AB8(Vec *a, S16Vec *b, float c, float d, float e, float f)
     mathutil_mtxA_rotate_z(b->z);
 
     mathutil_sin_cos_v(r26 - 0x4000, sincos);
-    lbl_801EFC54_unk0.x = -sincos[0];
-    lbl_801EFC54_unk0.y = 0.0f;
-    lbl_801EFC54_unk0.z = -sincos[1];
-    mathutil_mtxA_tf_vec(&lbl_801EFC54_unk0, &lbl_801EFC18_unkC);
+    lbl_801EFC54[0].x = -sincos[0];
+    lbl_801EFC54[0].y = 0.0f;
+    lbl_801EFC54[0].z = -sincos[1];
+    mathutil_mtxA_tf_vec(&lbl_801EFC54[0], &lbl_801EFC24[0]);
 
     mathutil_sin_cos_v(r25 + 0x4000, sincos);
-    lbl_801EFC54_unkC.x = -sincos[0];
-    lbl_801EFC54_unkC.y = 0.0f;
-    lbl_801EFC54_unkC.z = -sincos[1];
-    mathutil_mtxA_tf_vec(&lbl_801EFC54_unkC, &lbl_801EFC18_unk18);
+    lbl_801EFC54[1].x = -sincos[0];
+    lbl_801EFC54[1].y = 0.0f;
+    lbl_801EFC54[1].z = -sincos[1];
+    mathutil_mtxA_tf_vec(&lbl_801EFC54[1], &lbl_801EFC24[1]);
 
     mathutil_sin_cos_v(r30 + 0x4000, sincos);
-    lbl_801EFC54_unk18.x = 0.0f;
-    lbl_801EFC54_unk18.y = -sincos[0];
-    lbl_801EFC54_unk18.z = -sincos[1];
-    mathutil_mtxA_tf_vec(&lbl_801EFC54_unk18, &lbl_801EFC18_unk24);
+    lbl_801EFC54[2].x = 0.0f;
+    lbl_801EFC54[2].y = -sincos[0];
+    lbl_801EFC54[2].z = -sincos[1];
+    mathutil_mtxA_tf_vec(&lbl_801EFC54[2], &lbl_801EFC24[2]);
 
     mathutil_sin_cos_v(r29 - 0x4000, sincos);
-    lbl_801EFC54_unk24.x = 0.0f;
-    lbl_801EFC54_unk24.y = -sincos[0];
-    lbl_801EFC54_unk24.z = -sincos[1];
-    mathutil_mtxA_tf_vec(&lbl_801EFC54_unk24, &lbl_801EFC18_unk30);
+    lbl_801EFC54[3].x = 0.0f;
+    lbl_801EFC54[3].y = -sincos[0];
+    lbl_801EFC54[3].z = -sincos[1];
+    mathutil_mtxA_tf_vec(&lbl_801EFC54[3], &lbl_801EFC24[3]);
 }
 
 BOOL func_80020DB4(Vec *a, float b)
@@ -121,13 +91,13 @@ BOOL func_80020DB4(Vec *a, float b)
     Vec v;
     int i;
 
-    v.x = a->x - lbl_801EFC18[0].x;
-    v.y = a->y - lbl_801EFC18[0].y;
-    v.z = a->z - lbl_801EFC18[0].z;
+    v.x = a->x - lbl_801EFC18.x;
+    v.y = a->y - lbl_801EFC18.y;
+    v.z = a->z - lbl_801EFC18.z;
 
-    for (i = 1; i < 5; i++)
+    for (i = 0; i < 4; i++)
     {
-        if (v.x * lbl_801EFC18[i].x + v.y * lbl_801EFC18[i].y + v.z * lbl_801EFC18[i].z < -b)
+        if (v.x * lbl_801EFC24[i].x + v.y * lbl_801EFC24[i].y + v.z * lbl_801EFC24[i].z < -b)
             return FALSE;
     }
     return TRUE;

@@ -1008,12 +1008,14 @@ struct Struct80180F64
     float unk18;
     float unk1C;
     u8 filler20[0x34-0x20];
-	float unk34;  // 9c0
+	float unk34;
 	float unk38;
-	float unk3C;  // 9c8
-	s16 unk40;  // 9cc
-	s16 unk42;  // 9ce
-    s8 **unk44;  // 9d0
+	float unk3C;
+	s16 unk40;
+	s16 unk42;
+    s8 **unk44;
 };
+
+struct Struct8017748C;
 
 #endif

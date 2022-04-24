@@ -71,8 +71,8 @@ lbl_802F1C48:
 .global lbl_802F1C4C
 lbl_802F1C4C:
 	.skip 0x4
-.global lbl_802F1C50
-lbl_802F1C50:
+.global lightGroupStackPos
+lightGroupStackPos:
 	.skip 0x4
 .global lbl_802F1C54
 lbl_802F1C54:

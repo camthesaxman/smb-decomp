@@ -573,7 +573,7 @@ void bg_e3_finish(void) {}
 
 void bg_e3_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
@@ -589,7 +589,7 @@ void bg_e3_draw(void)
         func_80022274(0);
     }
     g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_e3_interact(int a) {}
@@ -731,7 +731,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (r23 > 0)
         {
-            func_800224CC();
+            push_light_group();
             func_80022274(r23 + 6);
         }
         if (backgroundInfo.unk90 != 0 && (b->flags & (1 << 24)))
@@ -748,7 +748,7 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
             func_80055C6C(a, b->unk34);
         g_avdisp_set_some_func_1(0);
         if (r23 > 0)
-            func_80022530();
+            pop_light_group();
     }
 }
 
@@ -964,7 +964,7 @@ void bg_night_finish(void) {}
 
 void bg_night_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
@@ -980,7 +980,7 @@ void bg_night_draw(void)
         func_80022274(0);
     }
     g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_night_interact(int a) {}
@@ -999,7 +999,7 @@ void bg_ice2_finish(void) {}
 
 void bg_ice2_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
@@ -1015,7 +1015,7 @@ void bg_ice2_draw(void)
         func_80022274(0);
     }
     g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_ice2_interact(int a) {}
@@ -1074,7 +1074,7 @@ void bg_billiards_finish(void) {}
 
 void bg_billiards_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
@@ -1090,7 +1090,7 @@ void bg_billiards_draw(void)
         func_80022274(0);
     }
     g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_billiards_interact(int a) {}
@@ -1109,7 +1109,7 @@ void bg_golf_finish(void) {}
 
 void bg_golf_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
@@ -1125,7 +1125,7 @@ void bg_golf_draw(void)
         func_80022274(0);
     }
     g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_golf_interact(int a) {}
@@ -1144,7 +1144,7 @@ void bg_bowling_finish(void) {}
 
 void bg_bowling_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
      && (lbl_801EEC90.unk0 & 1))
         g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
@@ -1160,7 +1160,7 @@ void bg_bowling_draw(void)
         func_80022274(0);
     }
     g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_bowling_interact(int a) {}

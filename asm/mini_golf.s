@@ -12023,7 +12023,7 @@ lbl_0000B048:
 /* 0000B0D4 5463103A */ slwi r3, r3, 2
 /* 0000B0D8 7C630010 */ subfc r3, r3, r0
 /* 0000B0DC 4BFF50F5 */ bl g_call_camera_apply_viewport
-/* 0000B0E0 4BFF50F1 */ bl func_800224CC
+/* 0000B0E0 4BFF50F1 */ bl push_light_group
 /* 0000B0E4 807D002C */ lwz r3, 0x2c(r29)
 /* 0000B0E8 38630001 */ addi r3, r3, 1
 /* 0000B0EC 7C601670 */ srawi r0, r3, 2
@@ -12097,7 +12097,7 @@ lbl_0000B1E0:
 /* 0000B1E8 4180FFC4 */ blt lbl_0000B1AC
 /* 0000B1EC 48018A7D */ bl lbl_00023C68
 lbl_0000B1F0:
-/* 0000B1F0 4BFF4FE1 */ bl func_80022530
+/* 0000B1F0 4BFF4FE1 */ bl pop_light_group
 /* 0000B1F4 807D002C */ lwz r3, 0x2c(r29)
 /* 0000B1F8 4BFF4FD9 */ bl g_call_camera_apply_viewport
 lbl_0000B1FC:
