@@ -194,7 +194,7 @@ void submode_game_ready_init_func(void)
     event_start(EVENT_VIBRATION);
     func_800972CC();
     event_suspend(EVENT_WORLD);
-    func_80021DB4(currStageId);
+    g_init_light_stuff_for_stage(currStageId);
     r30 = func_80017004();
     if (r30 != -1 && r30 != lbl_802F1C18)
     {
