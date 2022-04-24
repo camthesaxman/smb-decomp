@@ -1642,9 +1642,9 @@ lbl_8002F89C:
 /* 8002F8B8 0002B7D8  38 63 3A 08 */	addi r3, r3, lbl_801F3A08@l
 /* 8002F8BC 0002B7DC  90 05 00 08 */	stw r0, 8(r5)
 /* 8002F8C0 0002B7E0  3B 03 00 06 */	addi r24, r3, 6
-/* 8002F8C4 0002B7E4  3C 60 80 1F */	lis r3, lbl_801F065C@ha
+/* 8002F8C4 0002B7E4  3C 60 80 1F */	lis r3, lightGroups@ha
 /* 8002F8C8 0002B7E8  88 AD 9A 95 */	lbz r5, lbl_802F1C75@sda21(r13)
-/* 8002F8CC 0002B7EC  38 63 06 5C */	addi r3, r3, lbl_801F065C@l
+/* 8002F8CC 0002B7EC  38 63 06 5C */	addi r3, r3, lightGroups@l
 /* 8002F8D0 0002B7F0  A8 98 00 00 */	lha r4, 0(r24)
 /* 8002F8D4 0002B7F4  3C C0 80 20 */	lis r6, lbl_80201500@ha
 /* 8002F8D8 0002B7F8  7C A0 07 74 */	extsb r0, r5
@@ -1741,8 +1741,8 @@ lbl_8002FA30:
 /* 8002FA3C 0002B95C  90 03 00 04 */	stw r0, 4(r3)
 /* 8002FA40 0002B960  42 00 FF F0 */	bdnz lbl_8002FA30
 /* 8002FA44 0002B964  80 04 00 08 */	lwz r0, 8(r4)
-/* 8002FA48 0002B968  3C 80 80 1F */	lis r4, lbl_801F065C@ha
-/* 8002FA4C 0002B96C  38 84 06 5C */	addi r4, r4, lbl_801F065C@l
+/* 8002FA48 0002B968  3C 80 80 1F */	lis r4, lightGroups@ha
+/* 8002FA4C 0002B96C  38 84 06 5C */	addi r4, r4, lightGroups@l
 /* 8002FA50 0002B970  90 03 00 08 */	stw r0, 8(r3)
 /* 8002FA54 0002B974  3C 60 80 20 */	lis r3, lbl_80201500@ha
 /* 8002FA58 0002B978  38 E3 15 00 */	addi r7, r3, lbl_80201500@l
@@ -4779,7 +4779,7 @@ glabel lbl_801B5538
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_____RegSet__d  ;# ptr
-	.4byte lbl_802F1C5C  ;# ptr
+	.4byte numLightObjsLoaded  ;# ptr
 	.4byte 0
 	.4byte 0x0000001F
 	.4byte 0

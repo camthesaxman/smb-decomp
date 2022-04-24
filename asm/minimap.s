@@ -739,7 +739,7 @@ lbl_80084B1C:
 /* 80084CF4 00080C14  4B F9 D7 D9 */	bl push_light_group
 /* 80084CF8 00080C18  4B F8 2C B5 */	bl mathutil_mtxA_from_mtxB
 /* 80084CFC 00080C1C  38 60 00 01 */	li r3, 1
-/* 80084D00 00080C20  4B F9 D5 75 */	bl func_80022274
+/* 80084D00 00080C20  4B F9 D5 75 */	bl load_light_group
 /* 80084D04 00080C24  C0 22 AB 88 */	lfs f1, lbl_802F5388@sda21(r2)
 /* 80084D08 00080C28  FC 40 08 90 */	fmr f2, f1
 /* 80084D0C 00080C2C  FC 60 08 90 */	fmr f3, f1
@@ -1158,7 +1158,7 @@ lbl_800852B0:
 /* 80085370 00081290  4B F9 D2 85 */	bl func_800225F4
 /* 80085374 00081294  4B F8 26 39 */	bl mathutil_mtxA_from_mtxB
 /* 80085378 00081298  38 60 00 03 */	li r3, 3
-/* 8008537C 0008129C  4B F9 CE F9 */	bl func_80022274
+/* 8008537C 0008129C  4B F9 CE F9 */	bl load_light_group
 /* 80085380 000812A0  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 80085384 000812A4  38 63 3C C8 */	addi r3, r3, eventInfo@l
 /* 80085388 000812A8  88 03 00 18 */	lbz r0, 0x18(r3)

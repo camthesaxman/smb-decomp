@@ -12035,7 +12035,7 @@ lbl_0000B048:
 /* 0000B104 38630144 */ addi r3, r3, 0x144
 /* 0000B108 4BFF50C9 */ bl mathutil_mtxA_from_mtx
 /* 0000B10C 38600003 */ li r3, 3
-/* 0000B110 4BFF50C1 */ bl func_80022274
+/* 0000B110 4BFF50C1 */ bl load_light_group
 /* 0000B114 801E00D0 */ lwz r0, 0xd0(r30)
 /* 0000B118 2C000000 */ cmpwi r0, 0
 /* 0000B11C 41810078 */ bgt lbl_0000B194

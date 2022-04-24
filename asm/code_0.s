@@ -77,11 +77,11 @@ lightGroupStackPos:
 .global lbl_802F1C54
 lbl_802F1C54:
 	.skip 0x4
-.global lbl_802F1C58
-lbl_802F1C58:
+.global g_lightPerfTimer
+g_lightPerfTimer:
 	.skip 0x4
-.global lbl_802F1C5C
-lbl_802F1C5C:
+.global numLightObjsLoaded
+numLightObjsLoaded:
 	.skip 0x4
 .global lbl_802F1C60
 lbl_802F1C60:
@@ -139,8 +139,8 @@ lbl_802F1C90:
 .global lbl_802F1C94
 lbl_802F1C94:
 	.skip 0x4
-.global lbl_802F1C98
-lbl_802F1C98:
+.global currLightGroup
+currLightGroup:
 	.skip 0x8
 
 .section .data

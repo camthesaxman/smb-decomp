@@ -12,6 +12,8 @@
 #include "nl2ngc.h"
 #include "perf.h"
 
+#include "../data/common.nlobj.h"
+
 u32 lightGroupStack[3];
 FORCE_BSS_ORDER(lightGroupStack)
 
@@ -198,23 +200,22 @@ void func_800212A8(struct Struct8017748C *a)
     }
 }
 
-struct Struct801F065C
+struct LightGroup
 {
     s16 unk0[8];
     u8 filler10[4];
-    GXLightObj lightObjs[1];
-    u8 filler54[0x214-0x54];
+    GXLightObj lightObjs[8];
     u32 lightMask;
-    struct Color3f unk218;
+    struct Color3f ambient;
     Mtx unk224;
     u8 filler254[4];
 };
 
 struct Struct80180F64 lbl_801F0614;
 
-struct Struct801F065C lbl_801F065C[22];
+struct LightGroup lightGroups[22];
 
-void func_80021398(struct Struct801F065C *a, int b, struct Struct8017748C *c)
+void g_init_light_params(struct LightGroup *a, int index, struct Struct8017748C *c)
 {
     Vec sp60;
     float f3;
@@ -244,7 +245,7 @@ void func_80021398(struct Struct801F065C *a, int b, struct Struct8017748C *c)
         break;
     }
 
-    f3 = (lbl_802F1C98 != 3) ? c->unk38 : c->unk38 * lbl_802F1C54;
+    f3 = (currLightGroup != 3) ? c->unk38 : c->unk38 * lbl_802F1C54;
     switch (c->unk4)
     {
     case 0:
@@ -285,7 +286,7 @@ void func_80021398(struct Struct801F065C *a, int b, struct Struct8017748C *c)
 
     GXInitLightColor(&lightObj, lightColor);
 
-    f0 = (lbl_802F1C98 != 3) ? 0.0 : 2.05f * ((1.0f / lbl_802F1C54) - 1.0f);
+    f0 = (currLightGroup != 3) ? 0.0 : 2.05f * ((1.0f / lbl_802F1C54) - 1.0f);
     sp60.x = c->unk18.x;
     sp60.y = c->unk18.y + f0;
     sp60.z = c->unk18.z;
@@ -312,8 +313,8 @@ void func_80021398(struct Struct801F065C *a, int b, struct Struct8017748C *c)
         GXInitLightDir(&lightObj, sp60.x, sp60.y, sp60.z);
         break;
     }
-    GXLoadLightObjImm(&lightObj, (1 << b));
-    memcpy(&a->lightObjs[b], &lightObj, sizeof(a->lightObjs[b]));
+    GXLoadLightObjImm(&lightObj, (1 << index));
+    memcpy(&a->lightObjs[index], &lightObj, sizeof(a->lightObjs[index]));
 }
 
 void func_8002170C(int a)
@@ -412,21 +413,21 @@ void func_80021958(void)
     int j;
     struct Struct8017748C *r7;
     const struct Struct80110260 *r25;
-    struct Struct801F065C *r30;
+    struct LightGroup *r30;
 
-    r30 = lbl_801F065C;
+    r30 = lightGroups;
     for (i = 0; i < 22; i++, r30++)
     {
         for (j = 0; j < 8; j++)
             r30->unk0[j] = -1;
-        r30->unk218.r = lbl_801F0614.unk4;
-        r30->unk218.g = lbl_801F0614.unk8;
-        r30->unk218.b = lbl_801F0614.unkC;
+        r30->ambient.r = lbl_801F0614.unk4;
+        r30->ambient.g = lbl_801F0614.unk8;
+        r30->ambient.b = lbl_801F0614.unkC;
     }
 
     r7 = lbl_801EFC94;
     j = 0;
-    r30 = lbl_801F065C;
+    r30 = lightGroups;
     for (i = 0; i < 32; i++, r7++)
     {
         if (r7->unk0 != 0
@@ -439,16 +440,16 @@ void func_80021958(void)
     }
 
     if (lbl_801EFC94[0].unk0 != 0)
-        lbl_801F065C[1].unk0[0] = 0;
+        lightGroups[1].unk0[0] = 0;
 
     r25 = lbl_80110260 + 2;
     for (i = 2; i < 6; i++, r25++)
-        memcpy(&lbl_801F065C[i], &lbl_801F065C[r25->unk0], sizeof(lbl_801F065C[i]));
+        memcpy(&lightGroups[i], &lightGroups[r25->unk0], sizeof(lightGroups[i]));
 
     if (lbl_801F0614.unk44 == NULL)
         return;
 
-    r30 = lbl_801F065C + 7;
+    r30 = lightGroups + 7;
     for (i = 7; i < 22; i++, r30++)
     {
         int var = i - 7;
@@ -465,10 +466,10 @@ void func_80021958(void)
     }
 }
 
-void func_80021C44(struct Struct801F065C *a)
+void func_80021C44(struct LightGroup *a)
 {
-    Vec sp1C;
-    GXColor sp18;
+    Vec lightPos;
+    GXColor lightColor;
     int r5 = TRUE;
 
     if (a->unk0[0] == -1)
@@ -482,10 +483,13 @@ void func_80021C44(struct Struct801F065C *a)
 
     if (r5)
     {
-        GXGetLightPos(&a->lightObjs[0], &sp1C.x, &sp1C.y, &sp1C.z);
-        GXGetLightColor(&a->lightObjs[0], &sp18);
-        g_avdisp_set_and_normalize_some_vec(&sp1C);
-        g_avdisp_set_some_color_scale(sp18.r / 255.0f, sp18.g / 255.0f, sp18.b / 255.0f);
+        GXGetLightPos(&a->lightObjs[0], &lightPos.x, &lightPos.y, &lightPos.z);
+        GXGetLightColor(&a->lightObjs[0], &lightColor);
+        g_avdisp_set_and_normalize_some_vec(&lightPos);
+        g_avdisp_set_some_color_scale(
+            lightColor.r / 255.0f,
+            lightColor.g / 255.0f,
+            lightColor.b / 255.0f);
     }
     else if (func_8009D5D8() != 0)
     {
@@ -542,7 +546,7 @@ void func_80021ECC(void)
     int i;
     struct Struct8017748C *r28;
 
-    lbl_802F1C58 = 0;
+    g_lightPerfTimer = 0;
     func_8000E428(lbl_801F0614.unk14, lbl_801F0614.unk18, lbl_801F0614.unk1C);
     func_8000E3BC();
     lbl_802F1C48 = 0;
@@ -556,7 +560,7 @@ void func_80021ECC(void)
             lbl_802F1C48 = i + 1;
         }
     }
-    lbl_802F1C98 = -1;
+    currLightGroup = -1;
     lbl_802F1C4C = -1;
     lightGroupStack[0] = -1;
     lightGroupStack[1] = -1;
@@ -566,11 +570,11 @@ void func_80021ECC(void)
     lbl_802F1C68 = 0;
     lbl_802F1C64 = 0;
     lbl_802F1C60 = 0;
-    lbl_802F1C5C = 0;
+    numLightObjsLoaded = 0;
     if (lbl_802F1C78 == 0)
         func_80021958();
     mathutil_mtxA_from_mtxB();
-    func_80022274(0);
+    load_light_group(0);
     if (lbl_802F1C88 != 0)
     {
         func_80021ECC_inline(&lbl_801EFC94[lbl_802F1C94]);
@@ -611,16 +615,16 @@ struct Struct8017748C *func_80022224(int a, int b)
 }
 #pragma force_active reset
 
-void func_80022274(int a)
+void load_light_group(int a)
 {
     const struct Struct80110260 *r31;
-    struct Struct801F065C *r30;
+    struct LightGroup *r30;
     int i;
 
     perf_init_timer(0);
-    lbl_802F1C98 = a;
+    currLightGroup = a;
     lbl_802F1C68++;
-    r30 = &lbl_801F065C[a];
+    r30 = &lightGroups[a];
     r31 = &lbl_80110260[a];
     mathutil_mtxA_to_mtx(r30->unk224);
     if (r31->unk0 != lbl_802F1C4C || (r31->unk4 & 1) != 0)
@@ -634,7 +638,7 @@ void func_80022274(int a)
 
                 if (r3->unk0 != 0)
                 {
-                    func_80021398(r30, i, r3);
+                    g_init_light_params(r30, i, r3);
                     r30->lightMask |= 1 << i;
                     lbl_802F1C64++;
                 }
@@ -644,28 +648,28 @@ void func_80022274(int a)
         avdisp_set_light_mask(r30->lightMask);
     }
     if (r31->unk0 != lbl_802F1C4C || (r31->unk4 & 2) != 0)
-        func_80022614(r30->unk218.r, r30->unk218.g, r30->unk218.b);
+        func_80022614(r30->ambient.r, r30->ambient.g, r30->ambient.b);
     func_80021C44(r30);
     lbl_802F1C4C = r31->unk0;
-    lbl_802F1C58 += perf_stop_timer(0);
+    g_lightPerfTimer += perf_stop_timer(0);
 }
 
 int func_800223D0(void)
 {
-    return lbl_802F1C98;
+    return currLightGroup;
 }
 
-void func_800223D8(int a)
+void func_800223D8(int lightGroup)
 {
     const struct Struct80110260 *r29;
     int i;
-    struct Struct801F065C *r27;
+    struct LightGroup *r27;
 
     perf_init_timer(0);
-    lbl_802F1C98 = a;
+    currLightGroup = lightGroup;
     lbl_802F1C60++;
-    r27 = &lbl_801F065C[a];
-    r29 = &lbl_80110260[a];
+    r27 = &lightGroups[lightGroup];
+    r29 = &lbl_80110260[lightGroup];
     if (r29->unk0 != lbl_802F1C4C || (r29->unk4 & 1) != 0)
     {
         for (i = 0; i < 8; i++)
@@ -673,7 +677,7 @@ void func_800223D8(int a)
             if (r27->lightMask & (1 << i))
             {
                 GXLoadLightObjImm(&r27->lightObjs[i], (1 << i));
-                lbl_802F1C5C++;
+                numLightObjsLoaded++;
             }
         }
         g_nl2ngc_set_light_mask(r27->lightMask);
@@ -681,7 +685,7 @@ void func_800223D8(int a)
     }
     func_80021C44(r27);
     lbl_802F1C4C = r29->unk0;
-    lbl_802F1C58 += perf_stop_timer(0);
+    g_lightPerfTimer += perf_stop_timer(0);
 }
 
 void push_light_group(void)
@@ -690,7 +694,7 @@ void push_light_group(void)
         printf("LIGHT ERROR!!! PushLightGroup() stack over.\n");
     else
     {
-        lightGroupStack[lightGroupStackPos] = lbl_802F1C98;
+        lightGroupStack[lightGroupStackPos] = currLightGroup;
         lightGroupStackPos++;
     }
 }
@@ -703,18 +707,18 @@ void pop_light_group(void)
     {
         lightGroupStackPos--;
         mathutil_mtxA_push();
-        mathutil_mtxA_from_mtx(lbl_801F065C[lightGroupStack[lightGroupStackPos]].unk224);
-        func_80022274(lightGroupStack[lightGroupStackPos]);
+        mathutil_mtxA_from_mtx(lightGroups[lightGroupStack[lightGroupStackPos]].unk224);
+        load_light_group(lightGroupStack[lightGroupStackPos]);
         mathutil_mtxA_pop();
     }
 }
 
 void func_800225C0(void)
 {
-    lbl_802F1C98 = -1;
+    currLightGroup = -1;
     lbl_802F1C4C = -1;
     mathutil_mtxA_from_mtxB();
-    func_80022274(0);
+    load_light_group(0);
 }
 
 void func_800225F4(float a)
@@ -735,17 +739,17 @@ void func_80022614(float r, float g, float b)
     avdisp_set_ambient(r, g, b);
 }
 
-void func_80022668(struct Color3f *a)
+void get_curr_light_group_ambient_color(struct Color3f *color)
 {
-    *a = lbl_801F065C[lbl_802F1C98].unk218;
+    *color = lightGroups[currLightGroup].ambient;
 }
 
-void func_80022698(void)
+void apply_curr_light_group_ambient_color(void)
 {
-    struct Color3f *r31 = &lbl_801F065C[lbl_802F1C98].unk218;
+    struct Color3f *ambient = &lightGroups[currLightGroup].ambient;
 
-    g_nl2ngc_set_ambient_color(r31->r, r31->g, r31->b);
-    avdisp_set_ambient(r31->r, r31->g, r31->b);
+    g_nl2ngc_set_ambient_color(ambient->r, ambient->g, ambient->b);
+    avdisp_set_ambient(ambient->r, ambient->g, ambient->b);
 }
 
 void func_800226F4(void)
@@ -763,7 +767,7 @@ void func_800226F4(void)
     case 3:
     case 5:
     case 7:
-        mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, 1)->meshStart;
+        mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B)->meshStart;
         mesh->unk30 = 1.0f;
         mesh->unk34 = 0.0f;
         mesh->unk38 = 0.0f;
@@ -771,10 +775,10 @@ void func_800226F4(void)
         mathutil_mtxA_translate(&r31->unk18);
         mathutil_mtxA_scale_s(r31->unk38 * 2.0);
         g_nl2ngc_set_scale(r31->unk38 * 2.0);
-        g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, 1), 0.5f);
+        g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->unk18);
-        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 1));
+        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B));
         break;
     case 0:
         mathutil_mtxA_from_mtxB();
@@ -782,13 +786,13 @@ void func_800226F4(void)
         mathutil_mtxA_rotate_y(r31->unk26);
         mathutil_mtxA_rotate_x(r31->unk24);
         mathutil_mtxA_rotate_x(0x8000);
-        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 59));
+        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         break;
     case 2:
     case 4:
     case 6:
     case 8:
-        mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, 1)->meshStart;
+        mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B)->meshStart;
         mesh->unk30 = 1.0f;
         mesh->unk34 = 0.0f;
         mesh->unk38 = 0.0f;
@@ -796,12 +800,12 @@ void func_800226F4(void)
         mathutil_mtxA_translate(&r31->unk18);
         mathutil_mtxA_scale_s(r31->unk38 * 2.0);
         g_nl2ngc_set_scale(r31->unk38 * 2.0);
-        g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, 1), 0.5f);
+        g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->unk18);
         mathutil_mtxA_rotate_y(r31->unk26);
         mathutil_mtxA_rotate_x(r31->unk24);
-        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 59));
+        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         break;
     }
 }

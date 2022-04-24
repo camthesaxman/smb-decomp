@@ -580,13 +580,13 @@ void bg_e3_draw(void)
     if (decodedStageLzPtr->bgModels != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -732,7 +732,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         if (r23 > 0)
         {
             push_light_group();
-            func_80022274(r23 + 6);
+            load_light_group(r23 + 6);
         }
         if (backgroundInfo.unk90 != 0 && (bgModels->flags & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
@@ -971,13 +971,13 @@ void bg_night_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1006,13 +1006,13 @@ void bg_ice2_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1081,13 +1081,13 @@ void bg_billiards_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1116,13 +1116,13 @@ void bg_golf_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1151,13 +1151,13 @@ void bg_bowling_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
