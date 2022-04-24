@@ -6,6 +6,7 @@
 #include <dolphin/GXCommandList.h>
 #include <dolphin/GDLight.h>
 #include "dolphin/GXLighting.h"
+#include <dolphin/GXVert.h>
 #include "global.h"
 #include "gxutil.h"
 #include "load.h"
