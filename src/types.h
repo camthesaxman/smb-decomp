@@ -999,7 +999,7 @@ struct Stobj
 
 struct Struct80180F64
 {
-	u8 filler0[4];
+	float unk0;
     float unk4;
     float unk8;
     float unkC;
@@ -1007,7 +1007,11 @@ struct Struct80180F64
     float unk14;
     float unk18;
     float unk1C;
-    u8 filler20[0x34-0x20];
+    float unk20;
+    float unk24;
+    float unk28;
+    float unk2C;
+    float unk30;
 	float unk34;
 	float unk38;
 	float unk3C;
