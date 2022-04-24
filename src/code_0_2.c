@@ -9,13 +9,10 @@
 #include "camera.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "nl2ngc.h"
+#include "perf.h"
 
-struct
-{
-	u32 unk0;
-	u32 unk4;
-	u32 unk8;
-} lbl_801EFC88;
+u32 lbl_801EFC88[3];
 //u8 lbl_801EFC88[0xC] /*ATTRIBUTE_ALIGN(8)*/;
 FORCE_BSS_ORDER(lbl_801EFC88)
 
@@ -210,11 +207,11 @@ struct Struct801F065C
 	s16 unk0[8];
 	u8 filler10[4];
 	GXLightObj unk14[1];
-	u8 filler54[0x218-0x54];
-	float unk218;
-	float unk21C;
-	float unk220;
-	u8 filler224[0x258-0x224];
+	u8 filler54[0x214-0x54];
+	u32 unk214;
+	struct Color3f unk218;
+	Mtx unk224;
+	u8 filler254[4];
 };
 
 extern struct Struct801F065C lbl_801F065C[];
@@ -447,9 +444,9 @@ void func_80021958(void)
 	{
 		for (j = 0; j < 8; j++)
 			r30->unk0[j] = -1;
-		r30->unk218 = lbl_801F0614.unk4;
-		r30->unk21C = lbl_801F0614.unk8;
-		r30->unk220 = lbl_801F0614.unkC;
+		r30->unk218.r = lbl_801F0614.unk4;
+		r30->unk218.g = lbl_801F0614.unk8;
+		r30->unk218.b = lbl_801F0614.unkC;
 	}
 
 	r7 = lbl_801EFC94;
@@ -589,9 +586,9 @@ void func_80021ECC(void)
 	}
 	lbl_802F1C98 = -1;
 	lbl_802F1C4C = -1;
-	lbl_801EFC88.unk0 = -1;
-	lbl_801EFC88.unk4 = -1;
-	lbl_801EFC88.unk8 = -1;
+	lbl_801EFC88[0] = -1;
+	lbl_801EFC88[1] = -1;
+	lbl_801EFC88[2] = -1;
 	lbl_802F1C50 = 0;
 	lbl_802F1C54 = 1.0f;
 	lbl_802F1C68 = 0;
@@ -618,13 +615,13 @@ void func_80021ECC(void)
 	}
 }
 
-int func_80022140(struct Struct8017748C *a)
+BOOL func_80022140(struct Struct8017748C *a)
 {
 	int r31 = func_80021164(0, a->unk1, a->unk2);
 	struct Struct8017748C *r30;
 
 	if (r31 == -1)
-		return 0;
+		return FALSE;
 	r30 = &lbl_801EFC94[r31];
 	memcpy(r30, a, sizeof(*r30));
 	r30->unk0 = 1;
@@ -632,33 +629,242 @@ int func_80022140(struct Struct8017748C *a)
 	r30->unk40 = (a->unk40 == 0.0f) ? 0.0f : a->unk40;
 	r30->unk44 = (a->unk44 == 0.0f) ? 0.0f : a->unk44;
 	lbl_802F1C48 = r31 + 1;
-	return 1;
+	return TRUE;
 }
 
-/*
-const float lbl_802F2F78 = 0f;
-const float lbl_802F2F7C = -1f;
-const float lbl_802F2F80 = 10000f;
-const float lbl_802F2F84 = 255f;
-const double lbl_802F2F88 = 100;
-const float lbl_802F2F90 = 0.05000000074505806f;
-const float lbl_802F2F94 = -85f;
-const float lbl_802F2F98 = 1f;
-const float lbl_802F2F9C = 0.94999998807907104f;
-const float lbl_802F2FA0 = -0.10000000149011612f;
-const double lbl_802F2FA8 = 0;
-const float lbl_802F2FB0 = 2.0499999523162842f;
-const float lbl_802F2FB4 = 0.40000000596046448f;
-const float lbl_802F2FB8 = 0.60000002384185791f;
-const float lbl_802F2FBC = 0.89999997615814209f;
-const float lbl_802F2FC0 = 0.34999999403953552f;
-const float lbl_802F2FC4 = 0.5f;
-const float lbl_802F2FC8 = 0.30000001192092896f;
-const float lbl_802F2FCC = 0.55000001192092896f;
-const float lbl_802F2FD0 = 176f;
-const double lbl_802F2FD8 = 4503599627370496;
-const float lbl_802F2FE0 = 2f;
-const float lbl_802F2FE4 = 45f;
-const double lbl_802F2FE8 = 2;
-*/
+#pragma force_active on
+struct Struct8017748C *func_80022224(int a, int b)
+{
+	a = func_80021164(1, a, b);
+	return (a == -1) ? NULL : &lbl_801EFC94[a];
+}
+#pragma force_active reset
 
+void func_80022274(int a)
+{
+	const struct Struct80110260 *r31;
+	struct Struct801F065C *r30;
+	int i;
+
+	perf_init_timer(0);
+	lbl_802F1C98 = a;
+	lbl_802F1C68++;
+	r30 = &lbl_801F065C[a];
+	r31 = &lbl_80110260[a];
+	mathutil_mtxA_to_mtx(r30->unk224);
+	if (r31->unk0 != lbl_802F1C4C || (r31->unk4 & 1) != 0)
+	{
+		r30->unk214 = 0;
+		for (i = 0; i < 8; i++)
+		{
+			if (r30->unk0[i] != -1)
+			{
+				struct Struct8017748C *r3 = &lbl_801EFC94[r30->unk0[i]];
+
+				if (r3->unk0 != 0)
+				{
+					func_80021398(r30, i, r3);
+					r30->unk214 |= 1 << i;
+					lbl_802F1C64++;
+				}
+			}
+		}
+		g_nl2ngc_set_light_mask(r30->unk214);
+		avdisp_set_light_mask(r30->unk214);
+	}
+	if (r31->unk0 != lbl_802F1C4C || (r31->unk4 & 2) != 0)
+		func_80022614(r30->unk218.r, r30->unk218.g, r30->unk218.b);
+	func_80021C44(r30);
+	lbl_802F1C4C = r31->unk0;
+	lbl_802F1C58 += perf_stop_timer(0);
+}
+
+int func_800223D0(void)
+{
+	return lbl_802F1C98;
+}
+
+void func_800223D8(int a)
+{
+	const struct Struct80110260 *r29;
+	int i;
+	struct Struct801F065C *r27;
+
+	perf_init_timer(0);
+	lbl_802F1C98 = a;
+	lbl_802F1C60++;
+	r27 = &lbl_801F065C[a];
+	r29 = &lbl_80110260[a];
+	if (r29->unk0 != lbl_802F1C4C || (r29->unk4 & 1) != 0)
+	{
+		for (i = 0; i < 8; i++)
+		{
+			if (r27->unk214 & (1 << i))
+			{
+				GXLoadLightObjImm(&r27->unk14[i], (1 << i));
+				lbl_802F1C5C++;
+			}
+		}
+		g_nl2ngc_set_light_mask(r27->unk214);
+		avdisp_set_light_mask(r27->unk214);
+	}
+	func_80021C44(r27);
+	lbl_802F1C4C = r29->unk0;
+	lbl_802F1C58 += perf_stop_timer(0);
+}
+
+void func_800224CC(void)
+{
+	if (lbl_802F1C50 == 3)
+		printf("LIGHT ERROR!!! PushLightGroup() stack over.\n");
+	else
+	{
+		lbl_801EFC88[lbl_802F1C50] = lbl_802F1C98;
+		lbl_802F1C50++;
+	}
+}
+
+void func_80022530(void)
+{
+	if (lbl_802F1C50 == 0)
+		printf("LIGHT ERROR!!! PopLightGroup() stack null.\n");
+	else
+	{
+		lbl_802F1C50--;
+		mathutil_mtxA_push();
+		mathutil_mtxA_from_mtx(lbl_801F065C[lbl_801EFC88[lbl_802F1C50]].unk224);
+		func_80022274(lbl_801EFC88[lbl_802F1C50]);
+		mathutil_mtxA_pop();
+	}
+}
+
+void func_800225C0(void)
+{
+	lbl_802F1C98 = -1;
+	lbl_802F1C4C = -1;
+	mathutil_mtxA_from_mtxB();
+	func_80022274(0);
+}
+
+void func_800225F4(float a)
+{
+	lbl_802F1C54 = a;
+}
+
+void func_800225FC(float a, float b, float c)
+{
+	lbl_801F0614.unk4 = a;
+	lbl_801F0614.unk8 = b;
+	lbl_801F0614.unkC = c;
+}
+
+void func_80022614(float r, float g, float b)
+{
+	g_nl2ngc_set_ambient_color(r, g, b);
+	g_avdisp_set_3_floats(r, g, b);
+}
+
+void func_80022668(struct Color3f *a)
+{
+	*a = lbl_801F065C[lbl_802F1C98].unk218;
+}
+
+void func_80022698(void)
+{
+	struct Color3f *r31 = &lbl_801F065C[lbl_802F1C98].unk218;
+
+	g_nl2ngc_set_ambient_color(r31->r, r31->g, r31->b);
+	g_avdisp_set_3_floats(r31->r, r31->g, r31->b);
+}
+
+void func_800226F4(void)
+{
+	u8 dummy[24];
+	struct Struct8017748C *r31;
+	struct NaomiMesh *mesh;
+
+	if (lbl_802F1C8C == 0)
+		return;
+	r31 = &lbl_801EFC94[lbl_802F1C94];
+	switch (r31->unk4)
+	{
+	case 1:
+	case 3:
+	case 5:
+	case 7:
+		mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, 1)->meshStart;
+		mesh->unk30 = 1.0f;
+		mesh->unk34 = 0.0f;
+		mesh->unk38 = 0.0f;
+		mathutil_mtxA_from_mtxB();
+		mathutil_mtxA_translate(&r31->unk18);
+		mathutil_mtxA_scale_s(r31->unk38 * 2.0);
+		g_nl2ngc_set_scale(r31->unk38 * 2.0);
+		g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, 1), 0.5f);
+		mathutil_mtxA_from_mtxB();
+		mathutil_mtxA_translate(&r31->unk18);
+		g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 1));
+		break;
+	case 0:
+		mathutil_mtxA_from_mtxB();
+		mathutil_mtxA_translate(&currentCameraStructPtr->lookAt);
+		mathutil_mtxA_rotate_y(r31->unk26);
+		mathutil_mtxA_rotate_x(r31->unk24);
+		mathutil_mtxA_rotate_x(0x8000);
+		g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 59));
+		break;
+	case 2:
+	case 4:
+	case 6:
+	case 8:
+		mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, 1)->meshStart;
+		mesh->unk30 = 1.0f;
+		mesh->unk34 = 0.0f;
+		mesh->unk38 = 0.0f;
+		mathutil_mtxA_from_mtxB();
+		mathutil_mtxA_translate(&r31->unk18);
+		mathutil_mtxA_scale_s(r31->unk38 * 2.0);
+		g_nl2ngc_set_scale(r31->unk38 * 2.0);
+		g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, 1), 0.5f);
+		mathutil_mtxA_from_mtxB();
+		mathutil_mtxA_translate(&r31->unk18);
+		mathutil_mtxA_rotate_y(r31->unk26);
+		mathutil_mtxA_rotate_x(r31->unk24);
+		g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 59));
+		break;
+	}
+}
+
+struct
+{
+	float unk0;
+	float unk4;
+	float unk8;
+	float unkC;
+} lbl_801F39EC;
+
+void func_800228A8(int stageId)
+{
+	func_8002170C(stageId);
+	lbl_801F39EC.unk0 = lbl_801F0614.unk10;
+	lbl_801F39EC.unk4 = lbl_801F0614.unk14;
+	lbl_801F39EC.unk8 = lbl_801F0614.unk18;
+	lbl_801F39EC.unkC = lbl_801F0614.unk1C;
+	lbl_801F0614.unk10 = 0.0f;
+	lbl_801F0614.unk14 = 0.7f;
+	lbl_801F0614.unk18 = 0.7f;
+	lbl_801F0614.unk1C = 0.7f;
+}
+
+void func_80022910(int stageId)
+{
+	func_8002170C(stageId);
+	lbl_801F39EC.unk0 = lbl_801F0614.unk10;
+	lbl_801F39EC.unk4 = lbl_801F0614.unk14;
+	lbl_801F39EC.unk8 = lbl_801F0614.unk18;
+	lbl_801F39EC.unkC = lbl_801F0614.unk1C;
+	lbl_801F0614.unk10 = 0.0f;
+	lbl_801F0614.unk14 = 0.5f;
+	lbl_801F0614.unk18 = 0.5f;
+	lbl_801F0614.unk1C = 0.5f;
+}
