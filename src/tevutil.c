@@ -117,7 +117,7 @@ void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwap
     GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
     
     if ((_swapModeSel->ras_sel != ras_sel) || (_swapModeSel->tex_sel != tex_sel)) {
-        // if something has differnt
+        // if something has different
         GXSetTevSwapMode(stage, ras_sel, tex_sel);
         _swapModeSel->ras_sel = ras_sel;
         _swapModeSel->tex_sel = tex_sel;
@@ -144,7 +144,7 @@ void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, floa
         gxCache->fog.nearz != nearz || gxCache->fog.farz != farz
     )
     {
-        // if something has differnt
+        // if something has different
         GXSetFog_cached_init(type, startz, endz, nearz, farz, color);
     }
     return;
@@ -212,7 +212,7 @@ void GXSetTevColorIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     _colorInput = gxCache->colorInputs + stage;
     if ( _colorInput->a != a || _colorInput->b != b || _colorInput->c != c || _colorInput->d != d)
     {
-        // if something has differnt
+        // if something has different
         GXSetTevColorIn(stage, a, b, c, d);
         _colorInput->a = a;
         _colorInput->b = b;
@@ -242,7 +242,7 @@ void GXSetTevAlphaIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     _alphaInput = gxCache->alphaInputs + stage;
     if (_alphaInput->a != a || _alphaInput->b != b || _alphaInput->c != c || _alphaInput->d != d) 
     {
-        // if something has differnt
+        // if something has different
         GXSetTevAlphaIn(stage, a, b, c, d);
         _alphaInput->a = a;
         _alphaInput->b = b;
@@ -278,7 +278,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
         _colorOp->bias != bias
         ) 
     {
-        // if something has differnt
+        // if something has different
         GXSetTevColorOp(stage, op, bias, scale, clamp, out_reg);
         _colorOp->op = op;
         _colorOp->bias = bias;
@@ -320,7 +320,7 @@ void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
         _alphaOp->bias != bias
         ) 
     {
-        // if something has differnt
+        // if something has different
         GXSetTevAlphaOp(stage, op, bias, scale, clamp, out_reg);
         _alphaOp->op = op;
         _alphaOp->bias = bias;
@@ -347,23 +347,218 @@ void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
     return;
 }
 
-
-// TODO: Decomp this Function
 // I supose this function relates GMATevLayer.fillerC[4]
 // SMB2 st138.gma object name call it "TEV", "COMPOSEITE".
-#ifdef NONMATCHING
 void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
 {
-    // WIP
+    s32 _inoutColor;
+    s32 _inputAlpha;
+    GXTevInputCache *_input;
+    GXTevOpCache *_operation;
+
+
+    if (stage == 0) {
+        _inoutColor = GX_CC_RASC;
+        _inputAlpha = GX_CA_RASA;
+    } else {
+        _inoutColor = GX_CC_CPREV;
+        _inputAlpha = GX_CA_APREV;
+    }
+
+    switch (gmaTevOp) {
+        case 1:
+            _input = gxCache->colorInputs + stage;
+            if (
+                _input->a != _inoutColor ||
+                _input->b != GX_CC_TEXC ||
+                _input->c != GX_CC_TEXA ||
+                _input->d != GX_CC_ZERO
+            ) {
+                // if ColorInputCache has different
+                GXSetTevColorIn(stage, _inoutColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+                _input->a = _inoutColor;
+                _input->b = GX_CC_TEXC;
+                _input->c = GX_CC_TEXA;
+                _input->d = GX_CC_ZERO;
+            }
+    
+            _input = gxCache->alphaInputs + stage;
+            if (
+                _input->a != GX_CA_ZERO ||
+                _input->b != GX_CA_ZERO ||
+                _input->c != GX_CA_ZERO ||
+                _input->d != _inputAlpha
+            ) {
+                // if AlphaInputCache has different
+                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
+                _input->a = GX_CA_ZERO;
+                _input->b = GX_CA_ZERO;
+                _input->c = GX_CA_ZERO;
+                _input->d = _inputAlpha;
+            }
+            break;
+        case 0:
+            _input = gxCache->colorInputs + stage;
+            if (
+                _input->a != GX_CC_ZERO ||
+                _input->b != GX_CC_TEXC ||
+                _input->c != _inoutColor ||
+                _input->d != GX_CC_ZERO
+            ) {
+                // if ColorInputCache has different
+                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_TEXC, _inoutColor, GX_CC_ZERO);
+                _input->a = GX_CC_ZERO;
+                _input->b = GX_CC_TEXC;
+                _input->c = _inoutColor;
+                _input->d = GX_CC_ZERO;
+            }
+    
+            _input = gxCache->alphaInputs + stage;
+            if (
+                _input->a != GX_CA_ZERO ||
+                _input->b != GX_CA_TEXA ||
+                _input->c != _inputAlpha ||
+                _input->d != GX_CA_ZERO
+            ) {
+                // if AlphaInputCache has different
+                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
+                _input->a = GX_CA_ZERO;
+                _input->b = GX_CA_TEXA;
+                _input->c = _inputAlpha;
+                _input->d = GX_CA_ZERO;
+            }
+            break;
+        case 3:
+            _input = gxCache->colorInputs + stage;
+            if (
+                _input->a != GX_CC_ZERO ||
+                _input->b != GX_CC_ZERO ||
+                _input->c != GX_CC_ZERO ||
+                _input->d != GX_CC_TEXC
+            ) {
+                // if ColorInputCache has different
+                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+                _input->a = GX_CC_ZERO;
+                _input->b = GX_CC_ZERO;
+                _input->c = GX_CC_ZERO;
+                _input->d = GX_CC_TEXC;
+            }
+            
+            _input = gxCache->alphaInputs + stage;
+            if (
+                // if AlphaInputCache has different
+                _input->a != GX_CA_ZERO ||
+                _input->b != GX_CA_ZERO ||
+                _input->c != GX_CA_ZERO ||
+                _input->d != GX_CA_TEXA
+            ) {
+                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
+                _input->a = GX_CA_ZERO;
+                _input->b = GX_CA_ZERO;
+                _input->c = GX_CA_ZERO;
+                _input->d = GX_CA_TEXA;
+            }
+            break;
+        case 4:
+            _input = gxCache->colorInputs + stage;
+            if (
+                // if ColorInputCache has different
+                _input->a != GX_CC_ZERO ||
+                _input->b!= GX_CC_ZERO ||
+                _input->c != GX_CC_ZERO ||
+                _input->d != _inoutColor
+            ) {
+                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, _inoutColor);
+                _input->a = GX_CC_ZERO;
+                _input->b = GX_CC_ZERO;
+                _input->c = GX_CC_ZERO;
+                _input->d = _inoutColor;
+            }
+            
+            _input = gxCache->alphaInputs + stage;
+            if (
+                // if AlphaInputCache has different
+                _input->a != GX_CA_ZERO ||
+                _input->b != GX_CA_ZERO ||
+                _input->c != GX_CA_ZERO ||
+                _input->d != _inputAlpha
+            ) {
+                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
+                _input->a = GX_CA_ZERO;
+                _input->b = GX_CA_ZERO;
+                _input->c = GX_CA_ZERO;
+                _input->d = _inputAlpha;
+            }
+            break;
+        case 2:
+            _input = gxCache->colorInputs + stage;
+            if (
+                // if ColorInputCache has different
+                _input->a != _inoutColor ||
+                _input->b != GX_CC_ZERO ||
+                _input->c != GX_CC_TEXC ||
+                _input->d != GX_CC_TEXC
+            ) {
+                GXSetTevColorIn(stage, _inoutColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
+                _input->a = _inoutColor;
+                _input->b = GX_CC_ZERO;
+                _input->c = GX_CC_TEXC;
+                _input->d = GX_CC_TEXC;
+            }
+            
+            _input = gxCache->alphaInputs + stage;
+            if (
+                // if AlphaInputCache has different
+                _input->a != GX_CA_ZERO ||
+                _input->b != GX_CA_TEXA ||
+                _input->c != _inputAlpha ||
+                _input->d != GX_CA_ZERO
+            ) {
+                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
+                _input->a = GX_CA_ZERO;
+                _input->b = GX_CA_TEXA;
+                _input->c = _inputAlpha;
+                _input->d = GX_CA_ZERO;
+            }
+            break;
+        deafult:
+            break;
+    }
+
+    _operation = gxCache->colorOperations + stage;
+    if (
+        _operation->reg != GX_TEVPREV ||
+        _operation->scale != GX_CS_SCALE_1 ||
+        _operation->clamp != GX_TRUE ||
+        _operation->op != GX_TEV_ADD ||
+        _operation->bias != GX_TB_ZERO
+    ) {
+        // if ColorOperationsCache has different
+        GXSetTevColorOp(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        _operation->op = GX_TEV_ADD;
+        _operation->bias = GX_TB_ZERO;
+        _operation->scale = GX_CS_SCALE_1;
+        _operation->clamp = GX_TRUE;
+        _operation->reg = GX_TEVPREV;
+    }
+
+    _operation = gxCache->alphaOperations + stage;
+    if (
+        _operation->reg != GX_TEVPREV ||
+        _operation->scale != GX_CS_SCALE_1 ||
+        _operation->clamp != GX_TRUE ||
+        _operation->op != GX_TEV_ADD ||
+        _operation->bias != GX_TB_ZERO
+    ) {
+        // if AlphaOperationCache has different
+        GXSetTevAlphaOp(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        _operation->op = GX_TEV_ADD;
+        _operation->bias = GX_TB_ZERO;
+        _operation->scale = GX_CS_SCALE_1;
+        _operation->clamp = GX_TRUE;
+        _operation->reg = GX_TEVPREV;
+    }
 }
-#else
-asm void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_8009EA30.s"
-}
-#pragma peephole on
-#endif
 
 // 99% match. only register is different.
 // https://decomp.me/scratch/7D9s2
@@ -485,7 +680,7 @@ void GXSetTevKColor_cached(GXTevKColorID id, GXColor color)
         ( (gxCache->kColor).colors[id] ).b != color.b ||
         ( (gxCache->kColor).colors[id] ).a != color.a
     ) {
-        // if something has differnt
+        // if something has different
         GXSetTevKColor(id, color);
         (gxCache->kColor).colors[id] = color;
     }
