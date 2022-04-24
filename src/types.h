@@ -1055,4 +1055,10 @@ struct Struct802F1C10
     u8 unk4[4];
 };
 
+struct Struct80180F14
+{
+    char *unk0;
+    s8 unk4;
+};
+
 #endif
