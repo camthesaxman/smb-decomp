@@ -732,7 +732,7 @@ void func_800225FC(float a, float b, float c)
 void func_80022614(float r, float g, float b)
 {
     g_nl2ngc_set_ambient_color(r, g, b);
-    g_avdisp_set_3_floats(r, g, b);
+    avdisp_set_ambient(r, g, b);
 }
 
 void func_80022668(struct Color3f *a)
@@ -745,7 +745,7 @@ void func_80022698(void)
     struct Color3f *r31 = &lbl_801F065C[lbl_802F1C98].unk218;
 
     g_nl2ngc_set_ambient_color(r31->r, r31->g, r31->b);
-    g_avdisp_set_3_floats(r31->r, r31->g, r31->b);
+    avdisp_set_ambient(r31->r, r31->g, r31->b);
 }
 
 void func_800226F4(void)

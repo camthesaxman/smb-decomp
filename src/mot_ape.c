@@ -875,7 +875,7 @@ void *g_find_some_mesh_with_red(struct GMAModel *model)
     mesh = (void *)((u8 *)model + model->headerSize);
     for (i = 0; i < model->opaqueShapeCount; i++)
     {
-        if (mesh->g_color1.r == 0xFF)
+        if (mesh->materialColor.r == 0xFF)
             return mesh;
         mesh = next_mesh(mesh);
     }
@@ -1798,7 +1798,7 @@ struct GMATevLayer *find_material(struct GMAModel *model, u32 id)
 
     for (i = 0; i < model->tevLayerCount; i++)
     {
-        if (id == materials[i].unk4)
+        if (id == materials[i].texIndex)
         {
             materials[i].texObj = &model->texObjs[i];
             materials[i].flags &= ~(1 << 16);
@@ -1853,7 +1853,7 @@ void func_8008CCB8(struct Ape *ape, struct GMAModel *unused)
             {0x4C, 0xB2, 0x4C, 0xFF},  // green
         };
 
-        lbl_802B47F0[ape->unk90]->g_color1 = colors[ape->colorId];
-        lbl_802B47F0[ape->unk90]->g_color2 = colors[ape->colorId];
+        lbl_802B47F0[ape->unk90]->materialColor = colors[ape->colorId];
+        lbl_802B47F0[ape->unk90]->ambientColor = colors[ape->colorId];
     }
 }

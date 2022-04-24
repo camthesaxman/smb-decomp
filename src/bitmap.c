@@ -285,14 +285,14 @@ void func_800263A4(void)
         GX_AF_NONE);  // attn_fn
     GXSetTevColor(GX_TEVREG0, green);
 
-    if (zMode->updateEnable != GX_ENABLE
-     || zMode->compareFunc != GX_LESS
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable != GX_ENABLE
+     || gxCache->compareFunc != GX_LESS
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, GX_LESS, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc = GX_LESS;
-        zMode->updateEnable = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc = GX_LESS;
+        gxCache->updateEnable = GX_ENABLE;
     }
 
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
@@ -345,27 +345,27 @@ void bitmap_main(void)
     lbl_802F1D04 = 2;
     func_8002704C();
 
-    if (zMode->updateEnable != GX_DISABLE
-     || zMode->compareFunc != GX_ALWAYS
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable != GX_DISABLE
+     || gxCache->compareFunc != GX_ALWAYS
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc = GX_ALWAYS;
-        zMode->updateEnable = GX_DISABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc = GX_ALWAYS;
+        gxCache->updateEnable = GX_DISABLE;
     }
 
     if (eventInfo[EVENT_MEMCARD].state == EV_STATE_RUNNING)
         memcard_draw_ui();
 
-    if (zMode->updateEnable != GX_ENABLE
-     || zMode->compareFunc != GX_LEQUAL
-     || zMode->compareEnable != GX_ENABLE)
+    if (gxCache->updateEnable != GX_ENABLE
+     || gxCache->compareFunc != GX_LEQUAL
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc = GX_LEQUAL;
-        zMode->updateEnable = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc = GX_LEQUAL;
+        gxCache->updateEnable = GX_ENABLE;
     }
 
     g_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
