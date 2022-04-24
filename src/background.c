@@ -294,13 +294,13 @@ char *oldBgFileNames[] =
 void ev_background_init(void)
 {
     s16 r29 = backgroundInfo.bgId;
-    void *r27 = backgroundInfo.bgSunsetWork;
+    void *r27 = backgroundInfo.work;
     u32 r26 = backgroundInfo.unkA0;
 
     memset(&backgroundInfo, 0, sizeof(backgroundInfo));
 
     backgroundInfo.bgId = r29;
-    backgroundInfo.bgSunsetWork = r27;
+    backgroundInfo.work = r27;
     backgroundInfo.unkA0 = r26;
 
     backgroundInfo.animTimer = 0.0f;
@@ -366,10 +366,10 @@ void func_8005507C(void)
     {
         OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
-        if (backgroundInfo.bgSunsetWork != NULL)
+        if (backgroundInfo.work != NULL)
         {
-            OSFree(backgroundInfo.bgSunsetWork);
-            backgroundInfo.bgSunsetWork = NULL;
+            OSFree(backgroundInfo.work);
+            backgroundInfo.work = NULL;
         }
         if (decodedBgTpl != NULL || decodedBgGma != NULL)
         {
@@ -485,10 +485,10 @@ void load_bg_files(int bgId)
         if (backgroundInfo.bgId > 0)
         {
             // free working memory
-            if (backgroundInfo.bgSunsetWork != NULL)
+            if (backgroundInfo.work != NULL)
             {
-                OSFree(backgroundInfo.bgSunsetWork);
-                backgroundInfo.bgSunsetWork = NULL;
+                OSFree(backgroundInfo.work);
+                backgroundInfo.work = NULL;
             }
 
             // free GMA/TPL
@@ -541,10 +541,10 @@ void load_bg_files(int bgId)
             // allocate working memory for background
             if (bgWorkSizes[bgId] != 0)
             {
-                backgroundInfo.bgSunsetWork = OSAlloc(bgWorkSizes[bgId]);
-                if (backgroundInfo.bgSunsetWork == NULL)
+                backgroundInfo.work = OSAlloc(bgWorkSizes[bgId]);
+                if (backgroundInfo.work == NULL)
                     OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
-                memset(backgroundInfo.bgSunsetWork, 0, bgWorkSizes[bgId]);
+                memset(backgroundInfo.work, 0, bgWorkSizes[bgId]);
             }
         }
         OSSetCurrentHeap(oldHeap);

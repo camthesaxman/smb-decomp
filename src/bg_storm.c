@@ -22,7 +22,7 @@ static int storm_model_find_proc(int, struct GMAModelEntry *);
 
 void bg_storm_init(void)
 {
-    struct BGStormWork *work = backgroundInfo.bgSunsetWork;
+    struct BGStormWork *work = backgroundInfo.work;
     int i;
     struct BGStormWork_child *r28;
 
@@ -58,7 +58,7 @@ void bg_storm_main(void)
     if ((gamePauseStatus & 0xA) && eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
         return;
 
-    work = backgroundInfo.bgSunsetWork;
+    work = backgroundInfo.work;
     bg_e3_main();
 
     spDC = work->unk10;
@@ -141,7 +141,7 @@ Vec lbl_801BA0A4[] =
 // https://decomp.me/scratch/7I9K0
 void bg_storm_draw(void)
 {
-    struct BGStormWork *work = backgroundInfo.bgSunsetWork;
+    struct BGStormWork *work = backgroundInfo.work;
     Vec sp7C;
     Vec sp70;
     Vec sp64;
@@ -254,7 +254,7 @@ void bg_storm_interact(int a) {}
 
 static int storm_model_find_proc(int index, struct GMAModelEntry *entry)
 {
-    struct BGStormWork *work = backgroundInfo.bgSunsetWork;
+    struct BGStormWork *work = backgroundInfo.work;
 
     switch (index)
     {

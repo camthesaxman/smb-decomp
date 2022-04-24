@@ -23,7 +23,7 @@ static int sunset_model_find_proc(int, struct StageBgModel *);
 void bg_sunset_init(void)
 {
     struct BGSunsetModel *sunsetModel;
-    struct BGSunsetWork *work = backgroundInfo.bgSunsetWork;
+    struct BGSunsetWork *work = backgroundInfo.work;
     int i;
     Vec sp8;
 
@@ -63,7 +63,7 @@ void bg_sunset_init(void)
 
 void bg_sunset_main(void)
 {
-    struct BGSunsetWork *work = backgroundInfo.bgSunsetWork;
+    struct BGSunsetWork *work = backgroundInfo.work;
     int i;
     struct BGSunsetModel *sunsetModel;
     int speedUpTexVel;
@@ -108,7 +108,7 @@ void bg_sunset_finish(void) {}
 
 void bg_sunset_draw(void)
 {
-    struct BGSunsetWork *work = backgroundInfo.bgSunsetWork;
+    struct BGSunsetWork *work = backgroundInfo.work;
     struct StageBgModel *bgModel;
     u32 r28;
     int i;
@@ -157,7 +157,7 @@ void bg_sunset_interact(int a) {}
 
 static int sunset_model_find_proc(int index, struct StageBgModel *bgModel)
 {
-    struct BGSunsetWork *work = backgroundInfo.bgSunsetWork;
+    struct BGSunsetWork *work = backgroundInfo.work;
 
     switch (index)
     {

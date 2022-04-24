@@ -72,7 +72,7 @@ struct BackgroundInfo  // size = 0xA8
     void (*unk90)();
     /*0x94*/ BallEnvFunc ballEnvFunc;
     void (*unk98)();
-    void *bgSunsetWork;
+    void *work;
     u32 unkA0;
     u32 unkA4;
 };

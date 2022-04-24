@@ -22,7 +22,7 @@ static int jungle_model_find_proc(int, struct StageBgModel *);
 
 void bg_jungle_init(void)
 {
-    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
+    struct BGJungleWork *work = backgroundInfo.work;
     int i;
     struct BGJungleCloud *r29;
     Vec sp8;
@@ -64,7 +64,7 @@ void bg_jungle_init(void)
 
 void bg_jungle_main(void)
 {
-    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
+    struct BGJungleWork *work = backgroundInfo.work;
     int i;
     struct BGJungleCloud *r29;
     int r28;
@@ -117,7 +117,7 @@ void bg_jungle_finish(void) {}
 
 void bg_jungle_draw(void)
 {
-    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
+    struct BGJungleWork *work = backgroundInfo.work;
     struct StageBgModel *bgModel;
     u32 r28;
     int i;
@@ -180,7 +180,7 @@ void bg_jungle_interact(int a) {}
 
 static int jungle_model_find_proc(int index, struct StageBgModel *bgModel)
 {
-    struct BGJungleWork *work = backgroundInfo.bgSunsetWork;
+    struct BGJungleWork *work = backgroundInfo.work;
 
     switch (index)
     {
