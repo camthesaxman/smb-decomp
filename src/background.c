@@ -549,7 +549,7 @@ void load_bg_files(int bgId)
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        func_80021DB4(currStageId);
+        g_init_light_stuff_for_stage(currStageId);
     }
 }
 

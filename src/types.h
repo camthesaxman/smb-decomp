@@ -1020,7 +1020,7 @@ struct Struct80180F64
     s8 **unk44;
 };
 
-struct Struct8017748C;
+struct MaybeStageLight;
 
 struct Struct802F1BE8
 {
