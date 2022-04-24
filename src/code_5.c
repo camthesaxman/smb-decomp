@@ -2,6 +2,25 @@
 
 #include "global.h"
 
+#include "relocation.h"
+
+// code_5.c
+struct Struct802F1C10 lbl_802F1C10;
+u8 lbl_802F1C0D;
+u8 lbl_802F1C0C;
+struct Struct802F1C04 lbl_802F1C04;
+struct Struct802F1BFC lbl_802F1BFC;
+struct Struct802F1BF4 lbl_802F1BF4;
+u32 lbl_802F1BF0;
+struct Struct802F1BE8 lbl_802F1BE8;
+
+// I think these variables should belong in sel.c. However, they appear before
+// this file's variables, while sel.c is linked after this file.
+struct StageSelection stageSelection;
+struct RelModule lbl_802F1BD8;
+void (*lbl_802F1BD4)(void);
+void (*menuCallback)(void);
+
 u8 lbl_802F02F8[6] = { 5, 5, 4, 3, 4, 2 };
 
 struct
