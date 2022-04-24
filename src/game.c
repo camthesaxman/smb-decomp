@@ -24,6 +24,12 @@
 #include "stage.h"
 #include "world.h"
 
+s8 lbl_802F1C25;
+s8 lbl_802F1C24;
+s32 lbl_802F1C20;
+s32 lbl_802F1C1C;
+s32 lbl_802F1C18;
+
 void mode_game_func(void)
 {
     if (!(gameSubmode > SMD_GAME_TOP && gameSubmode < SMD_GAME_BOTTOM))

@@ -1018,4 +1018,41 @@ struct Struct80180F64
 
 struct Struct8017748C;
 
+struct Struct802F1BE8
+{
+    u32 unk0;
+    u8 unk4;
+};
+
+struct Struct802F1BF4
+{
+    u8 unk0;
+    u8 unk1;
+    u8 filler2[2];
+    u32 unk4;
+};
+
+struct Struct802F1BFC
+{
+    u8 unk0;
+    u8 filler1[3];
+    u32 unk4;
+};
+
+struct Struct802F1C04
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
+};
+
+struct Struct802F1C10
+{
+    u8 unk0;
+    u8 unk1;
+    s8 unk2;
+    u8 unk3;
+    u8 unk4[4];
+};
+
 #endif

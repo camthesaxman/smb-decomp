@@ -14,6 +14,37 @@
 
 #include "../data/common.nlobj.h"
 
+s32 currLightGroup;
+s32 lbl_802F1C94;
+u32 lbl_802F1C90;
+s32 lbl_802F1C8C;
+s32 lbl_802F1C88;
+s32 lbl_802F1C84;
+s32 lbl_802F1C80;
+s32 lbl_802F1C7C;
+s32 lbl_802F1C78;
+
+u8 lbl_802F1C75;
+u8 lbl_802F1C74;
+u8 lbl_802F1C73;
+u8 lbl_802F1C72;
+u8 lbl_802F1C71;
+u8 lbl_802F1C70;
+u8 lbl_802F1C6F;
+u8 lbl_802F1C6E;
+u8 lbl_802F1C6D;
+u8 lbl_802F1C6C;
+
+s32 lbl_802F1C68;
+s32 lbl_802F1C64;
+s32 lbl_802F1C60;
+s32 numLightObjsLoaded;
+s32 g_lightPerfTimer;
+float lbl_802F1C54;
+s8 lightGroupStackPos;
+s32 lbl_802F1C4C;
+s32 lbl_802F1C48;
+
 u32 lightGroupStack[3];
 FORCE_BSS_ORDER(lightGroupStack)
 

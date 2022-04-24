@@ -1153,41 +1153,14 @@ extern s8 lbl_802F1BA0;
 extern s8 lbl_802F1BA1;
 
 extern struct StageSelection stageSelection;
-extern struct
-{
-    u32 unk0;
-    u8 unk4;
-} lbl_802F1BE8;  // size = 0x8
+extern struct Struct802F1BE8 lbl_802F1BE8;
 extern u32 lbl_802F1BF0;
-extern struct
-{
-    u8 unk0;
-    u8 unk1;
-    u8 filler2[2];
-    u32 unk4;
-} lbl_802F1BF4;  // size = 0x8
-extern struct
-{
-    u8 unk0;
-    u8 filler1[3];
-    u32 unk4;
-} lbl_802F1BFC;  // size = 0x8
-extern struct
-{
-    s16 unk0;
-    s16 unk2;
-    u32 unk4;
-} lbl_802F1C04;  // size = 0x8
+extern struct Struct802F1BF4 lbl_802F1BF4;
+extern struct Struct802F1BFC lbl_802F1BFC;
+extern struct Struct802F1C04 lbl_802F1C04;
 extern u8 lbl_802F1C0C;
 extern u8 lbl_802F1C0D;
-extern struct
-{
-    u8 unk0;
-    u8 unk1;
-    s8 unk2;
-    u8 unk3;
-    u8 unk4[4];
-} lbl_802F1C10;  // size = 0x8
+extern struct Struct802F1C10 lbl_802F1C10;
 extern s32 lbl_802F1C18;
 extern s32 lbl_802F1C1C;
 extern s32 lbl_802F1C20;
