@@ -549,7 +549,7 @@ void load_bg_files(int bgId)
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        func_80021DB4(currStageId);
+        g_init_light_stuff_for_stage(currStageId);
     }
 }
 
@@ -573,23 +573,23 @@ void bg_e3_finish(void) {}
 
 void bg_e3_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
         avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_e3_interact(int a) {}
@@ -731,8 +731,8 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
         if (r23 > 0)
         {
-            func_800224CC();
-            func_80022274(r23 + 6);
+            push_light_group();
+            load_light_group(r23 + 6);
         }
         if (backgroundInfo.unk90 != 0 && (bgModels->flags & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
@@ -748,7 +748,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
             func_80055C6C(viewFromWorld, bgModels->unk34);
         g_avdisp_set_some_func_1(0);
         if (r23 > 0)
-            func_80022530();
+            pop_light_group();
     }
 }
 
@@ -964,23 +964,23 @@ void bg_night_finish(void) {}
 
 void bg_night_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
         avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_night_interact(int a) {}
@@ -999,32 +999,26 @@ void bg_ice2_finish(void) {}
 
 void bg_ice2_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
         avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_ice2_interact(int a) {}
-
-extern struct Struct80180F14
-{
-    char *unk0;
-    s8 unk4;
-} lbl_80180F14[];
 
 void bg_billiards_init(void)
 {
@@ -1074,23 +1068,23 @@ void bg_billiards_finish(void) {}
 
 void bg_billiards_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
         avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_billiards_interact(int a) {}
@@ -1109,23 +1103,23 @@ void bg_golf_finish(void) {}
 
 void bg_golf_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
         avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_golf_interact(int a) {}
@@ -1144,23 +1138,23 @@ void bg_bowling_finish(void) {}
 
 void bg_bowling_draw(void)
 {
-    func_800224CC();
+    push_light_group();
     if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->fgModels != NULL)
      && (lbl_801EEC90.unk0 & 1))
         avdisp_set_ambient(0.5f, 0.5f, 0.5f);
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group(4);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group(0);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
-    func_80022530();
+    pop_light_group();
 }
 
 void bg_bowling_interact(int a) {}

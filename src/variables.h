@@ -140,7 +140,7 @@ extern char *nameEntryText[];
 // extern ? stageFlyInPositions;
 // extern ? lbl_801772AC;
 // extern ? lbl_80177358;
-// extern ? lbl_8017748C;
+// extern ? g_stageLightsMaybe;
 // extern ? lbl_80180D08;
 // extern ? lbl_80180D2C;
 // extern ? lbl_80180D50;
@@ -148,8 +148,8 @@ extern char *nameEntryText[];
 // extern ? lbl_80180DB0;
 // extern ? lbl_80180DE0;
 // extern ? lbl_80180E0C;
-// extern ? lbl_80180F14;
-// extern ? lbl_80180F64;
+extern struct Struct80180F14 lbl_80180F14[];
+extern struct Struct80180F64 lbl_80180F64[];
 // extern ? lbl_801818B0;
 // extern ? rankTexOffsets;
 // extern ? lbl_80181970;
@@ -428,7 +428,7 @@ extern struct ApeGfxFileInfo apeGfxFileInfo[4];
 // extern ? lbl_801E5CA0;
 // extern ? lbl_801E5CF0;
 // extern ? lbl_801E5EB0;
-// extern ? lbl_801E6248;
+// extern ? DSPInitCode;
 // extern ? lbl_801E62C8;
 // extern ? lbl_801E64F8;
 // extern ? lbl_801E66AC;
@@ -539,17 +539,12 @@ extern struct Struct801EED88 lbl_801EED88;
 
 // extern ? lbl_801EFC18;
 // extern ? lbl_801EFC54;
-// extern ? lbl_801EFC88;
-// extern ? lbl_801EFC94;
+// extern ? lightGroupStack;
+// extern ? g_loadedStageLights;
 // extern ? lbl_801F0000;
 // extern ? lbl_801F003C;
-extern struct
-{
-    u8 filler0[0x40];
-    s16 unk40;
-    s16 unk42;
-} lbl_801F0614;
-// extern ? lbl_801F065C;
+extern struct Struct80180F64 lbl_801F0614;
+// extern ? lightGroups;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
 
@@ -1158,41 +1153,14 @@ extern s8 lbl_802F1BA0;
 extern s8 lbl_802F1BA1;
 
 extern struct StageSelection stageSelection;
-extern struct
-{
-    u32 unk0;
-    u8 unk4;
-} lbl_802F1BE8;  // size = 0x8
+extern struct Struct802F1BE8 lbl_802F1BE8;
 extern u32 lbl_802F1BF0;
-extern struct
-{
-    u8 unk0;
-    u8 unk1;
-    u8 filler2[2];
-    u32 unk4;
-} lbl_802F1BF4;  // size = 0x8
-extern struct
-{
-    u8 unk0;
-    u8 filler1[3];
-    u32 unk4;
-} lbl_802F1BFC;  // size = 0x8
-extern struct
-{
-    s16 unk0;
-    s16 unk2;
-    u32 unk4;
-} lbl_802F1C04;  // size = 0x8
+extern struct Struct802F1BF4 lbl_802F1BF4;
+extern struct Struct802F1BFC lbl_802F1BFC;
+extern struct Struct802F1C04 lbl_802F1C04;
 extern u8 lbl_802F1C0C;
 extern u8 lbl_802F1C0D;
-extern struct
-{
-    u8 unk0;
-    u8 unk1;
-    s8 unk2;
-    u8 unk3;
-    u8 unk4[4];
-} lbl_802F1C10;  // size = 0x8
+extern struct Struct802F1C10 lbl_802F1C10;
 extern s32 lbl_802F1C18;
 extern s32 lbl_802F1C1C;
 extern s32 lbl_802F1C20;
@@ -1205,27 +1173,27 @@ extern s32 g_cameraId2;
 extern void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
 extern struct Camera *currentCameraStructPtr;
 extern s32 g_cameraId1;
-// extern ? lbl_802F1C48;
-// extern ? lbl_802F1C4C;
-// extern ? lbl_802F1C50;
-// extern ? lbl_802F1C54;
-// extern ? lbl_802F1C58;
-// extern ? lbl_802F1C5C;
-// extern ? lbl_802F1C60;
-// extern ? lbl_802F1C64;
-// extern ? lbl_802F1C68;
+extern s32 lbl_802F1C48;
+extern s32 lbl_802F1C4C;
+extern s8 lightGroupStackPos;
+extern float lbl_802F1C54;
+extern s32 g_lightPerfTimer;
+extern s32 numLightObjsLoaded;
+extern s32 lbl_802F1C60;
+extern s32 lbl_802F1C64;
+extern s32 lbl_802F1C68;
 // extern ? lbl_802F1C6C;
 // extern ? lbl_802F1C74;
 // extern ? lbl_802F1C75;
-// extern ? lbl_802F1C78;
-// extern ? lbl_802F1C7C;
-// extern ? lbl_802F1C80;
-// extern ? lbl_802F1C84;
-// extern ? lbl_802F1C88;
-// extern ? lbl_802F1C8C;
+extern s32 lbl_802F1C78;
+extern s32 lbl_802F1C7C;
+extern s32 lbl_802F1C80;
+extern s32 lbl_802F1C84;
+extern s32 lbl_802F1C88;
+extern s32 lbl_802F1C8C;
 // extern ? lbl_802F1C90;
-// extern ? lbl_802F1C94;
-// extern ? lbl_802F1C98;
+extern s32 lbl_802F1C94;
+extern s32 currLightGroup;
 // extern ? drawingFinished;
 extern struct GFXBufferInfo *gfxBufferInfo;
 // extern ? lbl_802F1CA8;

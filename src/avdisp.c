@@ -658,14 +658,14 @@ void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
         avdisp_draw_model_unculled_sort_all(model);
 }
 
-void avdisp_set_alpha(float a)
+void avdisp_set_alpha(float alpha)
 {
-    s_materialAlpha = a;
+    s_materialAlpha = alpha;
 }
 
-void avdisp_set_light_mask(u32 a)
+void avdisp_set_light_mask(u32 lightMask)
 {
-    s_lightMask = a;
+    s_lightMask = lightMask;
 }
 
 void g_avdisp_set_and_normalize_some_vec(Vec *a)

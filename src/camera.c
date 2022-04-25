@@ -22,6 +22,22 @@
 // transforms a value x in the range 0.0 to 1.0 such that dy/dx approaches 0 when x approaches 1 or 0.
 #define SMOOTHSTEP(x) ((3.0 + -2.0 * (x)) * ((x) * (x)))
 
+struct Struct802F1C28
+{
+    u8 filler0[0x30];
+    float unk30;
+    float unk34;
+    float unk38;
+};
+
+s32 g_cameraId1;
+struct Camera *currentCameraStructPtr;
+void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
+s32 g_cameraId2;
+s8 lbl_802F1C32;
+s16 lbl_802F1C30 ATTRIBUTE_ALIGN(8);  // there is padding before this variable for some reason
+struct Struct802F1C28 *lbl_802F1C28;
+
 struct Camera cameraInfo[5];
 
 // belongs in mathutil.h?
@@ -2669,16 +2685,6 @@ Vec lbl_80177264[] =
     {0,    4,  -2},
     {0, -150, 580},
 };
-
-struct Struct802F1C28
-{
-    u8 filler0[0x30];
-    float unk30;
-    float unk34;
-    float unk38;
-};
-
-extern struct Struct802F1C28 *lbl_802F1C28;
 
 void camera_func_42(struct Camera *camera, struct Ball *ball)
 {

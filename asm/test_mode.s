@@ -175,7 +175,7 @@ lbl_00000270:
 /* 000002CC 4BFFFE91 */ bl unload_stage
 /* 000002D0 4BFFFE8D */ bl event_finish_all
 /* 000002D4 38600000 */ li r3, 0
-/* 000002D8 4BFFFE85 */ bl func_80021DB4
+/* 000002D8 4BFFFE85 */ bl g_init_light_stuff_for_stage
 /* 000002DC 3C600000 */ lis r3, lbl_10000000@ha
 /* 000002E0 38830000 */ addi r4, r3, lbl_10000000@l
 /* 000002E4 93E40000 */ stw r31, 0(r4)
@@ -9420,8 +9420,8 @@ lbl_00008704:
 /* 0000872C 4BFF7A31 */ bl is_bonus_stage
 /* 00008730 28030000 */ cmplwi r3, 0
 /* 00008734 4182000C */ beq lbl_00008740
-/* 00008738 3C600000 */ lis r3, lbl_801EFC94@ha
-/* 0000873C 9BE30000 */ stb r31, lbl_801EFC94@l(r3)
+/* 00008738 3C600000 */ lis r3, g_loadedStageLights@ha
+/* 0000873C 9BE30000 */ stb r31, g_loadedStageLights@l(r3)
 lbl_00008740:
 /* 00008740 4BFF7A1D */ bl GXInvalidateTexAll
 lbl_00008744:
