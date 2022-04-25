@@ -612,8 +612,8 @@ struct CoordsS8
 
 struct Struct8020A348_child
 {
-    u32 unk0;
-    struct GMAModel *unk4;  // GMAModel
+    u32 flags;
+    struct GMAModel *model;  // GMAModel
     float unk8;
 };  // size = 0xC
 

@@ -566,13 +566,13 @@ void draw_stage_geometry(void)
             r26 = r29->unk0;
             for (j = 0; j < r29->unk4; j++, r26++)
             {
-                if ((r26->unk0 & 3) == 1)
+                if ((r26->flags & 3) == 1)
                 {
-                    struct GMAModel *model = r26->unk4;
+                    struct GMAModel *model = r26->model;
                     if (model != NULL)
                     {
 
-                        if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D))) || (r26->unk0 & (1<<(31-0x1D))))
+                        if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D))) || (r26->flags & (1<<(31-0x1D))))
                             avdisp_draw_model_culled_sort_none(model);
                     }
                 }
