@@ -350,34 +350,34 @@ void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
 
 // I suppose this function relates GMATevLayer.fillerC[4].
 // SMB2 st138.gma object name call it "TEV", "COMPOSEITE".
-void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
+void func_8009EA30(GXTevStageID stage, GXTevMode mode)
 {
-    s32 _inoutColor;
+    s32 _inputColor;
     s32 _inputAlpha;
     GXTevInputCache *_input;
     GXTevOpCache *_operation;
 
 
     if (stage == 0) {
-        _inoutColor = GX_CC_RASC;
+        _inputColor = GX_CC_RASC;
         _inputAlpha = GX_CA_RASA;
     } else {
-        _inoutColor = GX_CC_CPREV;
+        _inputColor = GX_CC_CPREV;
         _inputAlpha = GX_CA_APREV;
     }
 
-    switch (gmaTevOp) {
-        case 1:
+    switch (mode) {
+        case GX_DECAL:
             _input = gxCache->colorInputs + stage;
             if (
-                _input->a != _inoutColor ||
+                _input->a != _inputColor ||
                 _input->b != GX_CC_TEXC ||
                 _input->c != GX_CC_TEXA ||
                 _input->d != GX_CC_ZERO
             ) {
                 // if ColorInputCache has different
-                GXSetTevColorIn(stage, _inoutColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
-                _input->a = _inoutColor;
+                GXSetTevColorIn(stage, _inputColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+                _input->a = _inputColor;
                 _input->b = GX_CC_TEXC;
                 _input->c = GX_CC_TEXA;
                 _input->d = GX_CC_ZERO;
@@ -398,19 +398,19 @@ void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
                 _input->d = _inputAlpha;
             }
             break;
-        case 0:
+        case GX_MODULATE:
             _input = gxCache->colorInputs + stage;
             if (
                 _input->a != GX_CC_ZERO ||
                 _input->b != GX_CC_TEXC ||
-                _input->c != _inoutColor ||
+                _input->c != _inputColor ||
                 _input->d != GX_CC_ZERO
             ) {
                 // if ColorInputCache has different
-                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_TEXC, _inoutColor, GX_CC_ZERO);
+                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_TEXC, _inputColor, GX_CC_ZERO);
                 _input->a = GX_CC_ZERO;
                 _input->b = GX_CC_TEXC;
-                _input->c = _inoutColor;
+                _input->c = _inputColor;
                 _input->d = GX_CC_ZERO;
             }
     
@@ -429,7 +429,7 @@ void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
                 _input->d = GX_CA_ZERO;
             }
             break;
-        case 3:
+        case GX_REPLACE:
             _input = gxCache->colorInputs + stage;
             if (
                 _input->a != GX_CC_ZERO ||
@@ -460,20 +460,20 @@ void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
                 _input->d = GX_CA_TEXA;
             }
             break;
-        case 4:
+        case GX_PASSCLR:
             _input = gxCache->colorInputs + stage;
             if (
                 // if ColorInputCache has different
                 _input->a != GX_CC_ZERO ||
                 _input->b!= GX_CC_ZERO ||
                 _input->c != GX_CC_ZERO ||
-                _input->d != _inoutColor
+                _input->d != _inputColor
             ) {
-                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, _inoutColor);
+                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, _inputColor);
                 _input->a = GX_CC_ZERO;
                 _input->b = GX_CC_ZERO;
                 _input->c = GX_CC_ZERO;
-                _input->d = _inoutColor;
+                _input->d = _inputColor;
             }
             
             _input = gxCache->alphaInputs + stage;
@@ -491,17 +491,17 @@ void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
                 _input->d = _inputAlpha;
             }
             break;
-        case 2:
+        case GX_BLEND:
             _input = gxCache->colorInputs + stage;
             if (
                 // if ColorInputCache has different
-                _input->a != _inoutColor ||
+                _input->a != _inputColor ||
                 _input->b != GX_CC_ZERO ||
                 _input->c != GX_CC_TEXC ||
                 _input->d != GX_CC_TEXC
             ) {
-                GXSetTevColorIn(stage, _inoutColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
-                _input->a = _inoutColor;
+                GXSetTevColorIn(stage, _inputColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
+                _input->a = _inputColor;
                 _input->b = GX_CC_ZERO;
                 _input->c = GX_CC_TEXC;
                 _input->d = GX_CC_TEXC;
