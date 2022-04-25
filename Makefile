@@ -182,7 +182,7 @@ SOURCES := \
 	libraries/os/asm/OSFont.s \
 	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
-	libraries/os/asm/OSMemory.s \
+	libraries/os/OSMemory.c \
 	libraries/os/OSMutex.c \
 	libraries/os/asm/OSReboot.s \
 	libraries/os/asm/OSReset.s \
