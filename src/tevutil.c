@@ -289,13 +289,13 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
     return;
 }
 
-// TODO: change GXBool to u32
+// TODO: complete GXSetTevColorOp parameters
 // https://decomp.me/scratch/3HJhF
 void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_colorOp;
 
-    // TODO: fix paremeters (these must "stage, op, bias, scale, clamp, out_reg")
+    // TODO: fix parameters (these must "stage, op, bias, scale, clamp, out_reg")
     GXSetTevColorOp(stage, op, bias, scale);
     _colorOp = gxCache->colorOperations + stage;
     
@@ -331,12 +331,13 @@ void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
     return;
 }
 
-// TODO: change GXBool to u32
+// TODO: complete GXSetTevAlphaOp parameters
+// https://decomp.me/scratch/AKAEu
 void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_alphaOp;
 
-    // TODO: fix paremeters (these must "stage, op, bias, scale, clamp, out_reg")
+    // TODO: fix parameters (these must "stage, op, bias, scale, clamp, out_reg")
     GXSetTevAlphaOp (stage, op, bias, scale);
     _alphaOp = gxCache->alphaOperations + stage;
     _alphaOp->op = op;
@@ -347,7 +348,7 @@ void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
     return;
 }
 
-// I supose this function relates GMATevLayer.fillerC[4]
+// I suppose this function relates GMATevLayer.fillerC[4].
 // SMB2 st138.gma object name call it "TEV", "COMPOSEITE".
 void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
 {
@@ -560,9 +561,6 @@ void func_8009EA30(GXTevStageID stage, s32 gmaTevOp)
     }
 }
 
-// 99% match. only register is different.
-// https://decomp.me/scratch/7D9s2
-#ifdef NONMATCHING
 void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
 {
     GXTexSize *_texSize;
@@ -583,7 +581,7 @@ void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map
             (_tevOrder->texSize).height = 0x0;
         }
     } else {
-        _texSize = gxCache->texSizes + stage;
+        _texSize = gxCache->texSizes + map;
         if (
             _tevOrder->coord != coord ||
             _tevOrder->map != map ||
@@ -601,14 +599,6 @@ void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map
     }
     return;
 }
-#else
-asm void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
-{
-    nofralloc
-#include "../asm/nonmatchings/GXSetTevOrder_cached.s"
-}
-#pragma peephole on
-#endif
 
 void GXSetTevOrder_cached_init(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
 {
