@@ -173,7 +173,7 @@ lbl_00000260:
 /* 000002D4 3C600000 */ lis r3, currStageId@ha
 /* 000002D8 38630000 */ addi r3, r3, currStageId@l
 /* 000002DC A8630000 */ lha r3, 0(r3)
-/* 000002E0 4BFFFE55 */ bl func_80021DB4
+/* 000002E0 4BFFFE55 */ bl g_init_light_stuff_for_stage
 /* 000002E4 3C600000 */ lis r3, spritePoolInfo@ha
 /* 000002E8 38830000 */ addi r4, r3, spritePoolInfo@l
 /* 000002EC 3C600000 */ lis r3, worldInfo@ha
@@ -202,7 +202,7 @@ lbl_00000324:
 /* 0000033C 3C600000 */ lis r3, currStageId@ha
 /* 00000340 38630000 */ addi r3, r3, currStageId@l
 /* 00000344 A8630000 */ lha r3, 0(r3)
-/* 00000348 4BFFFDED */ bl func_80021DB4
+/* 00000348 4BFFFDED */ bl g_init_light_stuff_for_stage
 /* 0000034C 3B800000 */ li r28, 0
 lbl_00000350:
 /* 00000350 C03D08B4 */ lfs f1, 0x8b4(r29)
@@ -10872,7 +10872,7 @@ lbl_00009EC4:
 /* 00009ED8 9421FFF0 */ stwu r1, -0x10(r1)
 /* 00009EDC 93E1000C */ stw r31, 0xc(r1)
 /* 00009EE0 3BE40000 */ addi r31, r4, lbl_0001C2B8@l
-/* 00009EE4 4BFF6251 */ bl func_80022140
+/* 00009EE4 4BFF6251 */ bl g_load_stage_light
 /* 00009EE8 C03F09A4 */ lfs f1, 0x9a4(r31)
 /* 00009EEC C07F0B58 */ lfs f3, 0xb58(r31)
 /* 00009EF0 FC400890 */ fmr f2, f1
@@ -17527,7 +17527,7 @@ lbl_00010188:
 /* 00010198 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 0001019C FC400890 */ fmr f2, f1
 /* 000101A0 FC600890 */ fmr f3, f1
-/* 000101A4 4BFEFF91 */ bl func_80022614
+/* 000101A4 4BFEFF91 */ bl g_set_ambient_color
 /* 000101A8 4BFEFF8D */ bl mathutil_mtxA_from_mtxB
 /* 000101AC C0360000 */ lfs f1, 0(r22)
 /* 000101B0 386100F0 */ addi r3, r1, 0xf0
@@ -17637,13 +17637,13 @@ lbl_00010328:
 /* 00010344 C05F3778 */ lfs f2, 0x3778(r31)
 /* 00010348 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 0001034C FC601090 */ fmr f3, f2
-/* 00010350 4BFEFDE5 */ bl func_80022614
+/* 00010350 4BFEFDE5 */ bl g_set_ambient_color
 /* 00010354 48000014 */ b lbl_00010368
 lbl_00010358:
 /* 00010358 C03F3778 */ lfs f1, 0x3778(r31)
 /* 0001035C C07F37A8 */ lfs f3, 0x37a8(r31)
 /* 00010360 FC400890 */ fmr f2, f1
-/* 00010364 4BFEFDD1 */ bl func_80022614
+/* 00010364 4BFEFDD1 */ bl g_set_ambient_color
 lbl_00010368:
 /* 00010368 807A0000 */ lwz r3, 0(r26)
 /* 0001036C 80630008 */ lwz r3, 8(r3)
@@ -17672,7 +17672,7 @@ lbl_000103BC:
 /* 000103C4 C07F3778 */ lfs f3, 0x3778(r31)
 /* 000103C8 4BFEFD6D */ bl mathutil_mtxA_translate_xyz
 lbl_000103CC:
-/* 000103CC 4BFEFD69 */ bl func_80022698
+/* 000103CC 4BFEFD69 */ bl apply_curr_light_group_ambient_color
 /* 000103D0 80720000 */ lwz r3, 0(r18)
 /* 000103D4 38800000 */ li r4, 0
 /* 000103D8 4BFEFD5D */ bl GXLoadPosMtxImm
@@ -17820,7 +17820,7 @@ lbl_000105BC:
 /* 000105D4 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 000105D8 FC400890 */ fmr f2, f1
 /* 000105DC FC600890 */ fmr f3, f1
-/* 000105E0 4BFEFB55 */ bl func_80022614
+/* 000105E0 4BFEFB55 */ bl g_set_ambient_color
 /* 000105E4 38600000 */ li r3, 0
 /* 000105E8 38800007 */ li r4, 7
 /* 000105EC 38A00000 */ li r5, 0
@@ -18160,7 +18160,7 @@ lbl_00010A68:
 /* 00010ADC C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 00010AE0 FC400890 */ fmr f2, f1
 /* 00010AE4 FC600890 */ fmr f3, f1
-/* 00010AE8 4BFEF64D */ bl func_80022614
+/* 00010AE8 4BFEF64D */ bl g_set_ambient_color
 /* 00010AEC 80B50064 */ lwz r5, 0x64(r21)
 /* 00010AF0 38610078 */ addi r3, r1, 0x78
 /* 00010AF4 808100A8 */ lwz r4, 0xa8(r1)
@@ -18189,7 +18189,7 @@ lbl_00010B18:
 /* 00010B4C C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 00010B50 FC400890 */ fmr f2, f1
 /* 00010B54 FC600890 */ fmr f3, f1
-/* 00010B58 4BFEF5DD */ bl func_80022614
+/* 00010B58 4BFEF5DD */ bl g_set_ambient_color
 /* 00010B5C 807B0000 */ lwz r3, 0(r27)
 /* 00010B60 80630008 */ lwz r3, 8(r3)
 /* 00010B64 80630058 */ lwz r3, 0x58(r3)
@@ -18366,7 +18366,7 @@ lbl_00010D34:
 /* 00010DF4 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 00010DF8 FC400890 */ fmr f2, f1
 /* 00010DFC FC600890 */ fmr f3, f1
-/* 00010E00 4BFEF335 */ bl func_80022614
+/* 00010E00 4BFEF335 */ bl g_set_ambient_color
 /* 00010E04 80B20064 */ lwz r5, 0x64(r18)
 /* 00010E08 3861000C */ addi r3, r1, 0xc
 /* 00010E0C 8081003C */ lwz r4, 0x3c(r1)
@@ -18475,7 +18475,7 @@ lbl_00010F48:
 /* 00010F94 80630180 */ lwz r3, 0x180(r3)
 /* 00010F98 4BFEF19D */ bl avdisp_draw_model_unculled_sort_none
 lbl_00010F9C:
-/* 00010F9C 4BFEF199 */ bl func_80022698
+/* 00010F9C 4BFEF199 */ bl apply_curr_light_group_ambient_color
 /* 00010FA0 4BFEF195 */ bl ord_tbl_draw_nodes
 /* 00010FA4 38600001 */ li r3, 1
 /* 00010FA8 38800003 */ li r4, 3

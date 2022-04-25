@@ -997,4 +997,72 @@ struct Stobj
     Vec g_local_vel;
 };
 
+struct Struct80180F64
+{
+	float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+    float unk20;
+    float unk24;
+    float unk28;
+    float unk2C;
+    float unk30;
+	float unk34;
+	float unk38;
+	float unk3C;
+	s16 unk40;
+	s16 unk42;
+    s8 **unk44;
+};
+
+struct MaybeStageLight;
+
+struct Struct802F1BE8
+{
+    u32 unk0;
+    u8 unk4;
+};
+
+struct Struct802F1BF4
+{
+    u8 unk0;
+    u8 unk1;
+    u8 filler2[2];
+    u32 unk4;
+};
+
+struct Struct802F1BFC
+{
+    u8 unk0;
+    u8 filler1[3];
+    u32 unk4;
+};
+
+struct Struct802F1C04
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
+};
+
+struct Struct802F1C10
+{
+    u8 unk0;
+    u8 unk1;
+    s8 unk2;
+    u8 unk3;
+    u8 unk4[4];
+};
+
+struct Struct80180F14
+{
+    char *unk0;
+    s8 unk4;
+};
+
 #endif

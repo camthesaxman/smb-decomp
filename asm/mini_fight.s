@@ -11752,7 +11752,7 @@ lbl_0000B03C:
 /* 0000B12C 3C600000 */ lis r3, currStageId@ha
 /* 0000B130 38630000 */ addi r3, r3, currStageId@l
 /* 0000B134 A8630000 */ lha r3, 0(r3)
-/* 0000B138 4BFF502D */ bl func_80021DB4
+/* 0000B138 4BFF502D */ bl g_init_light_stuff_for_stage
 /* 0000B13C 38600100 */ li r3, 0x100
 /* 0000B140 38800000 */ li r4, 0
 /* 0000B144 38A0001E */ li r5, 0x1e
@@ -13458,7 +13458,7 @@ lbl_0000C928:
 /* 0000C9E0 3860000B */ li r3, 0xb
 /* 0000C9E4 4BFF3781 */ bl event_start
 /* 0000C9E8 A87D0000 */ lha r3, 0(r29)
-/* 0000C9EC 4BFF3779 */ bl func_80021DB4
+/* 0000C9EC 4BFF3779 */ bl g_init_light_stuff_for_stage
 /* 0000C9F0 4BFF3775 */ bl func_800972CC
 /* 0000C9F4 3C600000 */ lis r3, spritePoolInfo@ha
 /* 0000C9F8 38630000 */ addi r3, r3, spritePoolInfo@l
