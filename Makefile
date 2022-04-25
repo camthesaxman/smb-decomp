@@ -201,7 +201,7 @@ SOURCES := \
 	libraries/dvd/asm/dvdlow.s \
 	libraries/dvd/asm/dvdfs.s \
 	libraries/dvd/asm/dvd.s \
-	libraries/dvd/asm/dvdqueue.s \
+	libraries/dvd/dvdqueue.c \
 	libraries/dvd/asm/dvderror.s \
 	libraries/dvd/fstload.c \
 	libraries/vi/asm/vi.s \
