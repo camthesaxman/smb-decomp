@@ -174,7 +174,7 @@ SOURCES := \
 	libraries/os/asm/OSAlarm.s \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
-	libraries/os/asm/OSAudioSystem.s \
+	libraries/os/OSAudioSystem.c \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
 	libraries/os/OSError.c \
