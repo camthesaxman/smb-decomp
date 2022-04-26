@@ -1313,7 +1313,7 @@ void submode_adv_title_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (lbl_80292B60.unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1 << 2)))
+    if (lbl_80292B60[0].unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1 << 2)))
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)

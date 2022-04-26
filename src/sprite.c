@@ -2695,9 +2695,6 @@ asm void func_80071B78(s8 a)
 #pragma peephole on
 #endif
 
-extern float lbl_802F2008;
-extern float lbl_802F200C;
-
 static inline int func_80071E58_inline(int a, int b, struct FontParams *r24)
 {
     switch (b)

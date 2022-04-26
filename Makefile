@@ -143,6 +143,7 @@ SOURCES := \
 	src/item_pilot.c \
 	asm/stobj.s \
 	src/sprite.c \
+	src/code_8.c \
 	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \

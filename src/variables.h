@@ -616,11 +616,7 @@ extern struct
 extern struct Struct80290170 screenFadeInfo;
 // extern ? lbl_80290180;
 // extern ? lbl_80292AC0;
-extern struct
-{
-    s32 unk0;
-    u8 filler4[5];
-} lbl_80292B60;
+extern struct Struct80292B60 lbl_80292B60[];
 // extern ? lbl_80292C00;
 // extern ? lbl_80292C60;
 // extern ? lbl_80292C90;
@@ -1355,8 +1351,8 @@ extern s16 lbl_802F1FF6;
 // extern ? lbl_802F1FF8;
 // extern ? lbl_802F1FFC;
 extern u32 lbl_802F2000;
-// extern ? lbl_802F2008;
-// extern ? lbl_802F200C;
+extern float lbl_802F2008;
+extern float lbl_802F200C;
 // extern ? lbl_802F2010;
 // extern ? lbl_802F2014;
 // extern ? lbl_802F2018;
