@@ -8,10 +8,10 @@
 #include "relocation.h"
 #include "sprite.h"
 
-struct StageSelection stageSelection;
-struct RelModule lbl_802F1BD8;
-void (*lbl_802F1BD4)(void);
-void (*menuCallback)(void);
+extern struct StageSelection stageSelection;
+extern struct RelModule lbl_802F1BD8;
+extern void (*lbl_802F1BD4)(void);
+extern void (*menuCallback)(void);
 
 void unload_sel_submode_rel(void);
 

@@ -29,7 +29,7 @@ double scalbn(double x, int n);
 
 double copysign(double x, double y);
 
-double floor (double x);
+double floor(double x);
 
 double fabs(double x);
 

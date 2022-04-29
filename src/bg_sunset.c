@@ -37,8 +37,8 @@ void bg_sunset_init(void)
         sunsetModelFind,
         sunset_model_find_proc);
     g_search_bg_models_from_list(
-        decodedStageLzPtr->unk74,
-        decodedStageLzPtr->unk70,
+        decodedStageLzPtr->fgModels,
+        decodedStageLzPtr->fgModelCount,
         sunsetModelFind,
         sunset_model_find_proc);
     if (work->bgModelsCount == 0)
@@ -122,30 +122,30 @@ void bg_sunset_draw(void)
     }
     r30_ = work->bgModels;
     for (i = work->bgModelsCount; i > 0; i--, r30_++)
-        r30_->unk0->unk0 &= ~0x10000;
+        r30_->unk0->flags &= ~0x10000;
     // draw cloud layers
     if (work->bgModelsCount != 0)
     {
-        func_8008F6D4(1);
+        g_avdisp_set_some_tex_mtx_sel(1);
         r30_ = work->bgModels;
         for (i = work->bgModelsCount; i > 0; i--, r30_++)
         {
             r31 = r30_->unk0;
-            if (r31->unk0 & r28)
+            if (r31->flags & r28)
             {
                 g_avdisp_set_some_matrix(0, r30_->unk28);
                 mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
                 mathutil_mtxA_translate(&r31->pos);
-                mathutil_mtxA_rotate_z(r31->zrot);
-                mathutil_mtxA_rotate_y(r31->yrot);
-                mathutil_mtxA_rotate_x(r31->xrot);
+                mathutil_mtxA_rotate_z(r31->rotZ);
+                mathutil_mtxA_rotate_y(r31->rotY);
+                mathutil_mtxA_rotate_x(r31->rotX);
                 mathutil_mtxA_scale(&r31->scale);
                 GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-                g_avdisp_maybe_draw_model_1(r31->model);
+                avdisp_draw_model_culled_sort_translucent(r31->model);
             }
         }
-        func_8008F6D4(0);
+        g_avdisp_set_some_tex_mtx_sel(0);
     }
     bg_e3_draw();
 }

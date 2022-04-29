@@ -1,9 +1,11 @@
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "gxutil.h"
 #include "input.h"
 #include "perf.h"
+#include "tevutil.h"
 
 OSTick perfTimers[8];
 u32 perfEnabled;
@@ -27,12 +29,12 @@ u32 perf_stop_timer(volatile /* why ?*/ int timerId2)
 
 void perf_free(void *ptr)
 {
-    OSFreeToHeap(memHeap1, ptr);
+    OSFreeToHeap(subHeap, ptr);
 }
 
 void *perf_alloc(u32 size)
 {
-    return OSAllocFromHeap(memHeap1, size);
+    return OSAllocFromHeap(subHeap, size);
 }
 
 void perf_init_draw(void)
@@ -50,21 +52,21 @@ void perf_init_draw(void)
         GX_AF_NONE);  // attn_fn
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
     GXSetChanMatColor(GX_COLOR0A0, matColor);
-    func_8009E110(1, 4, 5, 0);
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != GX_LEQUAL
-     || zMode->compareEnable != GX_ENABLE)
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+    if (gxCache->updateEnable  != GX_ENABLE
+     || gxCache->compareFunc   != GX_LEQUAL
+     || gxCache->compareEnable != GX_ENABLE)
     {
         GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
+        gxCache->compareEnable = GX_ENABLE;
+        gxCache->compareFunc   = GX_LEQUAL;
+        gxCache->updateEnable  = GX_ENABLE;
     }
-    func_8009E398(0, ambColor, 0.0f, 100.0f, 0.1f, 20000.0f);
-    func_8009E588(1);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
+    GXSetZCompLoc_cached(1);
     GXSetNumTexGens(1);
     GXSetNumChans(1);
-    func_8009EFF4(0, 0, 0, 4);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
     func_8009EA30(0, 1);
     perfEnabled = FALSE;
 }
@@ -104,9 +106,9 @@ void func_80027388(void)
             perfDispLists[lbl_802F1D20 & 1],
             perfDispListSizes[lbl_802F1D20 & 1]);
         PERFPostDraw();
-        GXSetLineWidth(zMode->lineWidth, zMode->texOffsets);
-        func_8009E5BC();
-        func_8009F314();
+        GXSetLineWidth(gxCache->lineWidth, gxCache->texOffsets);
+        GXSetZCompLoc_from_cache();
+        GXSetNumTevStages_from_cache();
     }
     lbl_802F1D20++;
 }

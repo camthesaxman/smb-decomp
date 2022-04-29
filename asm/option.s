@@ -41,7 +41,7 @@ _prolog:
 /* 000000E8 480000C5 */ bl func_800249D4
 /* 000000EC 480000C1 */ bl unload_stage
 /* 000000F0 38600000 */ li r3, 0
-/* 000000F4 480000B9 */ bl func_80021DB4
+/* 000000F4 480000B9 */ bl g_init_light_stuff_for_stage
 /* 000000F8 480000B5 */ bl event_finish_all
 /* 000000FC 38600010 */ li r3, 0x10
 /* 00000100 480000AD */ bl event_start
@@ -1506,8 +1506,8 @@ lbl_000015F8:
 /* 00001624 C03901C0 */ lfs f1, 0x1c0(r25)
 /* 00001628 FC400890 */ fmr f2, f1
 /* 0000162C 4BFFEB81 */ bl func_80071B2C
-/* 00001630 3C600000 */ lis r3, zMode@ha
-/* 00001634 38630000 */ addi r3, r3, zMode@l
+/* 00001630 3C600000 */ lis r3, gxCache@ha
+/* 00001634 38630000 */ addi r3, r3, gxCache@l
 /* 00001638 80630000 */ lwz r3, 0(r3)
 /* 0000163C 88030008 */ lbz r0, 8(r3)
 /* 00001640 28000001 */ cmplwi r0, 1
@@ -1523,8 +1523,8 @@ lbl_00001660:
 /* 00001664 38800003 */ li r4, 3
 /* 00001668 38A00001 */ li r5, 1
 /* 0000166C 4BFFEB41 */ bl GXSetZMode
-/* 00001670 3C600000 */ lis r3, zMode@ha
-/* 00001674 38830000 */ addi r4, r3, zMode@l
+/* 00001670 3C600000 */ lis r3, gxCache@ha
+/* 00001674 38830000 */ addi r4, r3, gxCache@l
 /* 00001678 80640000 */ lwz r3, 0(r4)
 /* 0000167C 38A00001 */ li r5, 1
 /* 00001680 38000003 */ li r0, 3
@@ -2375,9 +2375,9 @@ lbl_00002318:
 /* 00002344 3800001E */ li r0, 0x1e
 /* 00002348 901C001C */ stw r0, 0x1c(r28)
 /* 0000234C 38000000 */ li r0, 0
-/* 00002350 3C600000 */ lis r3, memHeap2@ha
+/* 00002350 3C600000 */ lis r3, stageHeap@ha
 /* 00002354 901C0018 */ stw r0, 0x18(r28)
-/* 00002358 38630000 */ addi r3, r3, memHeap2@l
+/* 00002358 38630000 */ addi r3, r3, stageHeap@l
 /* 0000235C 80630000 */ lwz r3, 0(r3)
 /* 00002360 4BFFDE4D */ bl OSSetCurrentHeap
 /* 00002364 3BA30000 */ addi r29, r3, 0
@@ -2477,9 +2477,9 @@ lbl_00002490:
 /* 000024AC 41810138 */ bgt lbl_000025E4
 /* 000024B0 80BC0014 */ lwz r5, 0x14(r28)
 /* 000024B4 38000000 */ li r0, 0
-/* 000024B8 3C600000 */ lis r3, memHeap2@ha
+/* 000024B8 3C600000 */ lis r3, stageHeap@ha
 /* 000024BC 901C0018 */ stw r0, 0x18(r28)
-/* 000024C0 38630000 */ addi r3, r3, memHeap2@l
+/* 000024C0 38630000 */ addi r3, r3, stageHeap@l
 /* 000024C4 3C800000 */ lis r4, lbl_0000C850@ha
 /* 000024C8 54A51838 */ slwi r5, r5, 3
 /* 000024CC 80630000 */ lwz r3, 0(r3)
@@ -3394,7 +3394,7 @@ lbl_0000315C:
 /* 000031C0 7C7E0214 */ add r3, r30, r0
 /* 000031C4 80630000 */ lwz r3, 0(r3)
 /* 000031C8 4BFFCFE5 */ bl func_80049F90
-/* 000031CC 4BFFCFE1 */ bl g_animate_stage
+/* 000031CC 4BFFCFE1 */ bl animate_anim_groups
 /* 000031D0 38600005 */ li r3, 5
 /* 000031D4 4BFFCFD9 */ bl call_bitmap_load_group
 /* 000031D8 38600100 */ li r3, 0x100
@@ -3507,7 +3507,7 @@ lbl_00003344:
 /* 00003364 38600000 */ li r3, 0
 /* 00003368 54000776 */ rlwinm r0, r0, 0, 0x1d, 0x1b
 /* 0000336C 90040000 */ stw r0, 0(r4)
-/* 00003370 4BFFCE3D */ bl func_80021DB4
+/* 00003370 4BFFCE3D */ bl g_init_light_stuff_for_stage
 /* 00003374 4BFFCE39 */ bl event_finish_all
 /* 00003378 38600010 */ li r3, 0x10
 /* 0000337C 4BFFCE31 */ bl event_start
@@ -3803,7 +3803,7 @@ lbl_000036A4:
 /* 000037C8 38800003 */ li r4, 3
 /* 000037CC 4BFFC9E1 */ bl func_8009544C
 /* 000037D0 A8790000 */ lha r3, 0(r25)
-/* 000037D4 4BFFC9D9 */ bl func_80021DB4
+/* 000037D4 4BFFC9D9 */ bl g_init_light_stuff_for_stage
 /* 000037D8 38000009 */ li r0, 9
 /* 000037DC 981A0003 */ stb r0, 3(r26)
 /* 000037E0 38000000 */ li r0, 0
@@ -3820,7 +3820,7 @@ lbl_000036A4:
 /* 0000380C 7C7F0214 */ add r3, r31, r0
 /* 00003810 80630000 */ lwz r3, 0(r3)
 /* 00003814 4BFFC999 */ bl func_80049F90
-/* 00003818 4BFFC995 */ bl g_animate_stage
+/* 00003818 4BFFC995 */ bl animate_anim_groups
 /* 0000381C A87E6EB4 */ lha r3, 0x6eb4(r30)
 /* 00003820 48000371 */ bl lbl_00003B90
 /* 00003824 A01E6E9C */ lhz r0, 0x6e9c(r30)

@@ -34,7 +34,7 @@ void bg_old_bonus_init(void)
     {
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
         {
-            sp8.unk34 = (*r29)->boundsCenter;
+            sp8.unk34 = (*r29)->boundSphereCenter;
             g_spawn_effect_object(&sp8);
             sp8.unk10 += 30.0;
         }

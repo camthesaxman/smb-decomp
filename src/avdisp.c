@@ -2,11 +2,18 @@
 #include <string.h>
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
+#include <dolphin/GXVert.h>
+#include <dolphin/GXCommandList.h>
+#include <dolphin/GDLight.h>
 #include "global.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "ord_tbl.h"
+#include "types.h"
+#include "tevutil.h"
+#include "gma.h"
 
 struct UnkStruct4
 {
@@ -21,68 +28,78 @@ struct UnkStruct4
 char *invalidModelName = "Invalid Model";
 
 // .sbss
-float lbl_802F212C;
-float lbl_802F2128;
-GXColor lbl_802F2124;
-u32 lbl_802F2120;
-s32 lbl_802F211C;
-GXColor lbl_802F2118;
-s32 lbl_802F2114;
-GXColor lbl_802F2110;
-s32 lbl_802F210C;
+float s_fogEndZ;
+float s_fogStartZ;
+GXColor s_fogColor;
+u32 s_fogType;
+s32 s_fogEnabled;
+GXColor s_postAddColor;
+s32 usePostAddTevStage;
+GXColor s_postMultiplyColor;
+s32 usePostMultiplyTevStage;
 s32 lbl_802F2108;
-GXCompare zModeCompareFunc;
-GXBool zModeUpdateEnable;
-GXBool zModeCompareEnable;
-float lbl_802F20FC;
-float lbl_802F20F8;
-float lbl_802F20F4;
-Func802F20F0 lbl_802F20F0;
+GXCompare s_zModeCompareFunc;
+GXBool s_zModeUpdateEnable;
+GXBool s_zModeCompareEnable;
+float g_someColorScaleB;
+float g_someColorScaleG;
+float g_someColorScaleR;
+Func802F20F0 g_customMaterialFunc;
 BallEnvFunc lbl_802F20EC;
-s32 lbl_802F20E8;
-float modelScale;
-u32 lbl_802F20E0;
-float lbl_802F20DC;
-float lbl_802F20D8;
-float lbl_802F20D4;
-float lbl_802F20D0;
+GXCullMode s_cullMode;
+float s_boundSphereScale;
+u32 s_lightMask;
+float s_materialAlpha; // Alpha of MAT in lighting equation: MAT * (RAS + AMB)
+float s_ambientBlue; // Blue of AMB in lighting equation: MAT * (RAS + AMB)
+float s_ambientGreen; // Green of AMB in lighting equation: MAT * (RAS + AMB)
+float s_ambientRed; // Red of AMB of lighting equation: MAT * (RAS + AMB)
 Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 Mtx **avdispMtxPtrList;
 
-struct Struct802B4ECC
+// How lighting channel (lighting, vert colors, ambient) is configured
+enum
+{
+    TEVMATCACHE_CHAN_CONFIG_NULL,
+    TEVMATCACHE_CHAN_CONFIG_UNLIT,
+    TEVMATCACHE_CHAN_CONFIG_UNLIT_VERTCOLORS,
+    TEVMATCACHE_CHAN_CONFIG_LIGHTS,
+    TEVMATCACHE_CHAN_CONFIG_LIGHTS_VERTCOLORS,
+};
+
+struct TevMaterialCache
 {
     u8 unk0;  // 0x6c
-    s8 unk1;
-    u8 unk2;
-    s8 unk3;
-    s8 unk4;
-    s8 unk5;
+    s8 tevStageCount;
+    u8 chanConfig; // How lighting channel is configured (I think only COLOR0A0 is used)
+    s8 num_tev_stages;
+    s8 num_tex_gens;
+    s8 num_ind_stages;
     u8 filler6[2];
-    s32 unk8;
-    s32 unkC;
-    GXColor unk10;  // 0x7C
-    GXColor unk14;
-    GXColor unk18;
-    s32 unk1C;
-    s32 unk20;
-    s32 unk24;
-    s32 unk28;
-    u32 unk2C[3];  // 0x98  array?
+    s32 postMultiplyTevStageIdx;
+    s32 postAddTevStageIdx;
+    GXColor materialColor;  // 0x7C
+    GXColor ambientColor;
+    GXColor specularColor;
+    s32 colorIn;
+    s32 alphaIn;
+    GXBlendFactor blendSrcFactor;
+    GXBlendFactor blendDstFactor;
+    u32 tevLayerFlags[3]; // 0x98  array?
     u32 unk38;  // 0xA4
-    u16 unk3C[3];  // 0xA8
+    u16 tevLayerIdxs[3];  // 0xA8
     s32 unk44;  // 0xB0
     s32 unk48;  // 0xB4
     s32 unk4C;  // 0xB8
-    s32 unk50;  // 0xBC
-    s32 unk54;  // 0xC0
-    Point3d unk58;
+    s32 viewSpecularColorValid;  // 0xBC
+    s32 worldSpecularColorValid;  // 0xC0
+    Vec modelDir_rt_view; // Direction towards front of model (on bounding sphere) in view space
 };
 
 // .bss
 static Vec lbl_802B4E60;
 static Mtx lbl_802B4E6C;
 static Mtx lbl_802B4E9C;
-static struct Struct802B4ECC lbl_802B4ECC;
+static struct TevMaterialCache s_materialCache;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
 static u8 lzssHeader[32] __attribute__((aligned(32)));
@@ -91,7 +108,7 @@ static u8 unknownTexImg[64];
 FORCE_BSS_ORDER(lbl_802B4E60)
 FORCE_BSS_ORDER(lbl_802B4E6C)
 FORCE_BSS_ORDER(lbl_802B4E9C)
-FORCE_BSS_ORDER(lbl_802B4ECC)
+FORCE_BSS_ORDER(s_materialCache)
 FORCE_BSS_ORDER(unknownTexObj)
 FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lzssHeader)
@@ -117,112 +134,155 @@ void func_8008D6BC(u32 arg)
 #endif
 
 #ifdef __MWERKS__
-asm void func_8008D6D4(register void *arg)
+asm void set_tev_material_ambient_colors(register void *arg)
 {
     nofralloc
-    lis r10, 0xE0000000@h
-    psq_l f5, 424(r10), 0, qr2
-    li r6, 0x10
+    lis r10, 0xE0000000@h          // r10 = locked cache
+    psq_l f5, 0x1a8(r10), 0, qr2   // f5 = 1.0 | 1.0 (constants stored in locked cache)
+    li r6, 0x10                    // r6 = 0x10
     lis r9, GXWGFifo@h
-    ori r9, r9, GXWGFifo@l
+    ori r9, r9, GXWGFifo@l         // r9 = GXWGFifo
     lwz r5, 0(arg)
     andi. r7, r5, 8
-    bne lbl_8008D710
-    ps_mr f0, f5
-    ps_mr f1, f5
+    bne lbl_8008D710_if_flag_unk3  // If GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR is set
+    ps_mr f0, f5                   // f0 = 1.0 | 1.0
+    ps_mr f1, f5                   // f1 = 1.0 | 1.0
     andi. r7, r5, 0x80
-    bne lbl_8008D71C
-    li r4, -1
-    ps_mr f4, f5
+    bne lbl_8008D71C_simple_material
+    li r4, -1                      // r4 = 0xFFFFFFFF
+    ps_mr f4, f5                   // f4 = 1.0 | 1.0
     b lbl_8008D724
-lbl_8008D710:
-    psq_l f0, 8(arg), 0, qr2
-    psq_l f1, 10(arg), 1, qr2
-    ps_merge00 f1, f1, f5
-lbl_8008D71C:
-    lhz r4, 4(arg)
-    psq_l f4, 6(arg), 1, qr2
+lbl_8008D710_if_flag_unk3:
+    psq_l f0, 8(arg), 0, qr2       // f0 = ambientColor.rg
+    psq_l f1, 10(arg), 1, qr2      // f1 = ambientColor.b | 1.0
+    ps_merge00 f1, f1, f5          // f1 = ambientColor.b | 1.0 (useless?)
+lbl_8008D71C_simple_material:
+    lhz r4, 4(arg)                 // r4 = materialColor.rg
+    psq_l f4, 6(arg), 1, qr2       // f4 = materialColor.b | 1.0
 lbl_8008D724:
-    lis r7, lbl_802F20D0@h
-    ori r7, r7, lbl_802F20D0@l
-    psq_l f2, 0(r7), 0, qr0
-    psq_l f3, 8(r7), 0, qr0
-    ps_mul f0, f0, f2
-    ps_mul f1, f1, f3
-    psq_l f2, 17(arg), 1, qr2
-    ps_merge10 f2, f2, f2
-    psq_st f0, 152(r10), 0, qr2
-    psq_st f1, 154(r10), 0, qr2
-    lwz r7, 0x98(r10)
-    li r8, 0x100a
-    stb r6, 0(r9)
-    stw r8, 0(r9)
-    stw r7, 0(r9)
-    ps_merge01 f4, f4, f3
-    ps_mul f4, f4, f2
-    sth r4, 0x98(r10)
-    psq_st f4, 154(r10), 0, qr2
-    lwz r7, 0x98(r10)
-    li r8, 0x100c
-    stb r6, 0(r9)
+    lis r7, s_ambientRed@h
+    ori r7, r7, s_ambientRed@l        // r7 = &lbl_802F20D0
+    psq_l f2, 0(r7), 0, qr0        // f2 = lbl_802F20D0.rg
+    psq_l f3, 8(r7), 0, qr0        // f3 = lbl_802F20D0.ba
+    ps_mul f0, f0, f2              // f0 = (shape.ambientColor.rg OR 1.0|1.0) * lbl_802F20D0.rg
+    ps_mul f1, f1, f3              // f1 = shape.ambientColor.ba OR 1.0|1.0) * lbl_802F20D0.ba
+    psq_l f2, 17(arg), 1, qr2      // f2 = shape.alpha | 1
+    ps_merge10 f2, f2, f2          // f2 = 1 | shape.alpha
+    psq_st f0, 0x98(r10), 0, qr2   // 
+    psq_st f1, 0x9a(r10), 0, qr2   // 
+    lwz r7, 0x98(r10)              // r7 = f0.rg f1.ba
+    li r8, 0x100a                  // XF_AMBIENT0_ID
+    stb r6, 0(r9)                  // Write color in r7 to ambient0 register
+    stw r8, 0(r9)                  // I don't think alpha matters here because alpha light channel is always disabled
+    stw r7, 0(r9)                  // 
+    ps_merge01 f4, f4, f3          // f4 = (shape.materialColor.b OR 1.0) | lbl_802F20D0.a
+    ps_mul f4, f4, f2              // f4 = (shape.materialColor.b OR 1.0) | shape.alpha * lbl_802F20D0.a
+    sth r4, 0x98(r10)              // (shape.materialColor.rg OR 1.0 | 1.0) -> 0x98(gxCache)
+    psq_st f4, 0x9a(r10), 0, qr2   // f4 -> 0x9a(gxCache) as u8s
+    lwz r7, 0x98(r10)              // r7 = (original shape.materialColor with alpha scaled by lbl_802F20D0.a)
+    li r8, 0x100c                  // XF_MATERIAL0_ID -> fifo
+    stb r6, 0(r9)                  // Write color in r7 to material0 register
     stw r8, 0(r9)
     stw r7, 0(r9)
     blr
 }
 #else
-void func_8008D6D4(register void *arg)
+void set_tev_material_ambient_colors(struct GMAShape *shape)
 {
-    // TODO
+    GXColor ambientColor;
+    GXColor materialColor;
+
+    // Lighting equation looks like this: out = MAT * (RAS + AMB)
+    // The MAT and AMB colors can be controlled by vertex colors or registers. Here we set the
+    // register colors for the register case.
+
+    // Set ambient color.
+    // Ambient alpha is unused because alpha light channel is always disabled
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
+    {
+        ambientColor.r = shape->ambientColor.r * s_ambientRed;
+        ambientColor.g = shape->ambientColor.g * s_ambientGreen;
+        ambientColor.b = shape->ambientColor.b * s_ambientBlue;
+        ambientColor.a = shape->ambientColor.a * s_materialAlpha;
+    }
+    else
+    {
+        ambientColor.r = 0xff * s_ambientRed;
+        ambientColor.g = 0xff * s_ambientGreen;
+        ambientColor.b = 0xff * s_ambientBlue;
+        ambientColor.a = 0xff * s_materialAlpha;
+    }
+    GXWGFifo.u8 = GX_LOAD_XF_REG;
+    GXWGFifo.u32 = XF_AMBIENT0_ID;
+    GXWGFifo.u32 = ambientColor.r << 24 | ambientColor.g << 16 | ambientColor.b << 8 | ambientColor.a << 0;
+
+    // Set material color.
+    materialColor.a = shape->alpha * s_materialAlpha;
+    if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
+    {
+        materialColor.r = shape->materialColor.r;
+        materialColor.g = shape->materialColor.g;
+        materialColor.b = shape->materialColor.b;
+    }
+    else
+    {
+        materialColor.r = 0xff;
+        materialColor.g = 0xff;
+        materialColor.b = 0xff;
+    }
+    GXWGFifo.u8 = GX_LOAD_XF_REG;
+    GXWGFifo.u32 = XF_MATERIAL0_ID;
+    GXWGFifo.u32 = materialColor.r << 24 | materialColor.g << 16 | materialColor.b << 8 | materialColor.a << 0;
 }
 #endif
 
-void func_8008D788(void)
+void avdisp_init(void)
 {
     Vec sp8;
     lbl_802F20EC = NULL;
-    lbl_802F20D8 = 1.0f;
-    lbl_802F20D4 = 1.0f;
-    lbl_802F20D0 = 1.0f;
-    modelScale = 1.0f;
-    lbl_802F20DC = 1.0f;
-    lbl_802F20E0 = 1;
-    lbl_802F20F0 = NULL;
+    s_ambientBlue = 1.0f;
+    s_ambientGreen = 1.0f;
+    s_ambientRed = 1.0f;
+    s_boundSphereScale = 1.0f;
+    s_materialAlpha = 1.0f;
+    s_lightMask = 1;
+    g_customMaterialFunc = NULL;
     init_some_texture();
     sp8.x = 0.0f;
     sp8.y = 1.0f;
     sp8.z = 0.0f;
     g_avdisp_set_and_normalize_some_vec(&sp8);
-    g_avdisp_set_3_other_floats(1.0f, 1.0f, 1.0f);
+    g_avdisp_set_some_color_scale(1.0f, 1.0f, 1.0f);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     lbl_802F2108 = 0;
     mathutil_mtxA_from_translate_xyz(0.0f, 0.0f, 1.0f);
     mathutil_mtxA_to_mtx(lbl_802B4E9C);
-    g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, 1.0f);
-    g_avdisp_set_some_color_2(0.0f, 0.0f, 0.0f, 0.0f);
-    func_8008F878(0);
-    func_8008F880(2, 0.0f, 100.0f);
-    func_8008F890(0, 0, 0);
+    avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
+    avdisp_set_post_add_color(0.0f, 0.0f, 0.0f, 0.0f);
+    avdisp_enable_fog(0);
+    avdisp_set_fog_params(2, 0.0f, 100.0f);
+    avdisp_set_fog_color(0, 0, 0);
 }
 
-void g_avdisp_alloc_matrix_lists(int count)
+void *g_avdisp_alloc_matrix_lists(int count)
 {
     g_transformMtxList = OSAlloc(count * sizeof(Mtx));
-    avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
+    return avdispMtxPtrList = OSAlloc(count * sizeof(Mtx *));
 }
 
 #pragma force_active on
-void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
+void g_get_stitching_model_mtx(struct GMAModel *model, Mtx **dest)
 {
     u8 i;
     int unused1;
     int unused2;
-    // matrices are stored immediately after materials
-    Mtx *pMtx = (void *)((u8 *)a->materials + a->numMaterials * sizeof(struct GMAMaterial));
+    // matrices are stored immediately after tev layers
+    Mtx *pMtx = (void *)((u8 *)model->tevLayers + model->tevLayerCount * sizeof(struct GMATevLayer));
 
     if (dest == NULL)
     {
         dest = avdispMtxPtrList;
-        for (i = 0; i < a->mtxCount; i++)
+        for (i = 0; i < model->mtxCount; i++)
         {
             *dest = pMtx;
             mathutil_mtx_copy(*pMtx, **dest);  // useless copy source and dest are the same
@@ -232,7 +292,7 @@ void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
     }
     else
     {
-        for (i = 0; i < a->mtxCount; i++)
+        for (i = 0; i < model->mtxCount; i++)
         {
             mathutil_mtx_copy(*pMtx, **dest);
             pMtx++;
@@ -241,9 +301,9 @@ void g_get_stitching_model_mtx(struct GMAModelHeader *a, Mtx **dest)
     }
 }
 
-struct GMAModelHeader *load_model(char *fileName, struct TPL *tpl)
+struct GMAModel *load_model(char *fileName, struct TPL *tpl)
 {
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     u32 size;
     struct File file;
 
@@ -265,7 +325,7 @@ struct GMAModelHeader *load_model(char *fileName, struct TPL *tpl)
     return model;
 }
 
-void free_model(struct GMAModelHeader *model)
+void free_model(struct GMAModel *model)
 {
     if (model->texObjs != NULL)
         OSFree(model->texObjs);
@@ -412,7 +472,7 @@ void free_gma(struct GMA *gma)
 
     for (i = 0; i < (s32)gma->numModels; i++)
     {
-        struct GMAModelHeader *model = gma->modelEntries[i].modelOffset;
+        struct GMAModel *model = gma->modelEntries[i].modelOffset;
 
         if (model != NULL && model->texObjs != NULL)
             OSFree(model->texObjs);
@@ -545,62 +605,67 @@ void free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void g_avdisp_set_model_scale(float a)
+void avdisp_set_bound_sphere_scale(float a)
 {
-    modelScale = a;
+    s_boundSphereScale = a;
 }
 
-void g_avdisp_set_3_floats(float a, float b, float c)
+void avdisp_set_ambient(float red, float green, float blue)
 {
-    lbl_802F20D0 = a;
-    lbl_802F20D4 = b;
-    lbl_802F20D8 = c;
+    s_ambientRed = red;
+    s_ambientGreen = green;
+    s_ambientBlue = blue;
 }
 
-void g_avdisp_maybe_draw_model_1(struct GMAModelHeader *model)
+// Draw opaque shapes immediately and depth-sort translucent shapes, a reasonable default
+void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 {
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
-        modelScale = 1.0f;
+        s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        lbl_802F20DC = 1.0f;
+        s_materialAlpha = 1.0f;
     }
     else
-        g_avdisp_draw_model_1(model);
+        avdisp_draw_model_unculled_sort_translucent(model);
 }
 
-void g_avdisp_maybe_draw_model_2(struct GMAModelHeader *model)
+// Draw both opaque and translucent shapes immediately. Useful when you want to explicitly draw
+// translucent shapes in a specific order instead of using the ord table?
+void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 {
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
-        modelScale = 1.0f;
+        s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        lbl_802F20DC = 1.0f;
+        s_materialAlpha = 1.0f;
     }
     else
-        g_avdisp_draw_model_2(model);
+        avdisp_draw_model_unculled_sort_none(model);
 }
 
-void g_avdisp_maybe_draw_model_3(struct GMAModelHeader *model)
+// Depth-sort both opaque and translucent shapes. Useful if your opaque shapes become translucent
+// e.g. by calling avdisp_set_alpha() ?
+void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
 {
-    if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, modelScale) == 0)
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
-        modelScale = 1.0f;
+        s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
-        lbl_802F20DC = 1.0f;
+        s_materialAlpha = 1.0f;
     }
     else
-        g_avdisp_draw_model_3(model);
+        avdisp_draw_model_unculled_sort_all(model);
 }
 
-void g_avdisp_set_alpha(float a)
+void avdisp_set_alpha(float alpha)
 {
-    lbl_802F20DC = a;
+    s_materialAlpha = alpha;
 }
 
-void func_8008E56C(u32 a)
+void avdisp_set_light_mask(u32 lightMask)
 {
-    lbl_802F20E0 = a;
+    s_lightMask = lightMask;
 }
 
 void g_avdisp_set_and_normalize_some_vec(Vec *a)
@@ -609,18 +674,18 @@ void g_avdisp_set_and_normalize_some_vec(Vec *a)
     mathutil_vec_normalize_len(&lbl_802B4E60);
 }
 
-void g_avdisp_set_3_other_floats(float a, float b, float c)
+void g_avdisp_set_some_color_scale(float a, float b, float c)
 {
-    lbl_802F20F4 = a;
-    lbl_802F20F8 = b;
-    lbl_802F20FC = c;
+    g_someColorScaleR = a;
+    g_someColorScaleG = b;
+    g_someColorScaleB = c;
 }
 
 void avdisp_set_z_mode(GXBool compareEnable, GXCompare compareFunc, GXBool updateEnable)
 {
-    zModeCompareEnable = compareEnable;
-    zModeCompareFunc   = compareFunc;
-    zModeUpdateEnable  = updateEnable;
+    s_zModeCompareEnable = compareEnable;
+    s_zModeCompareFunc   = compareFunc;
+    s_zModeUpdateEnable  = updateEnable;
 }
 
 BallEnvFunc g_avdisp_set_some_func_1(BallEnvFunc func)
@@ -632,8 +697,8 @@ BallEnvFunc g_avdisp_set_some_func_1(BallEnvFunc func)
 
 Func802F20F0 g_avdisp_set_some_func_2(Func802F20F0 func)
 {
-    Func802F20F0 old = lbl_802F20F0;
-    lbl_802F20F0 = func;
+    Func802F20F0 old = g_customMaterialFunc;
+    g_customMaterialFunc = func;
     return old;
 }
 
@@ -644,7 +709,7 @@ struct UnkStruct12
 };
 
 #pragma force_active on
-void *func_8008E5F8(struct GMAModelHeader *model)
+void *func_8008E5F8(struct GMAModel *model)
 {
     struct UnkStruct12 *r3 = (struct UnkStruct12 *)((u8 *)model + model->headerSize);
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
@@ -656,9 +721,9 @@ void *func_8008E5F8(struct GMAModelHeader *model)
     }
 }
 
-void *func_8008E64C(struct GMAModelHeader *model)
+void *func_8008E64C(struct GMAModel *model)
 {
-    // hmm... with these flags, this shouldn't point to the mesh?
+    // hmm... with these flags, this shouldn't point to the shape?
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         return (u8 *)model + model->headerSize;
     else
@@ -669,20 +734,21 @@ void *func_8008E64C(struct GMAModelHeader *model)
 }
 #pragma force_active reset
 
-static inline void *skip_mesh(struct GMAMeshHeader *mesh)
+// Returns the shape that follows after the given shape and all of its display lists
+static inline struct GMAShape *next_shape(struct GMAShape *shape)
 {
-    u8 *ptr = mesh->dispListData;
+    u8 *ptr = shape->dispLists;
     int i;
 
-    // skip over display lists
+    // Skip over first two display lists
     for (i = 0; i < 2; i++)
     {
-        if (mesh->unk13 & (1 << i))
-            ptr += mesh->dispListSizes[i];
+        if (shape->dispListFlags & (1 << i))
+            ptr += shape->dispListSizes[i];
     }
 
-    // TODO: what is this?
-    if (mesh->unk13 & 0xC)
+    // Skip over extra display lists
+    if (shape->dispListFlags & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
     {
         u32 *r4 = (u32 *)ptr;
         ptr += 32;
@@ -694,195 +760,200 @@ static inline void *skip_mesh(struct GMAMeshHeader *mesh)
 }
 
 #pragma force_active on
-void set_mesh_render_flags_in_model(struct GMAModelHeader *model, u32 flags)
+void set_shape_flags_in_model(struct GMAModel *model, u32 flags)
 {
-    struct GMAMeshHeader *meshPtr = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMAShape *shapePtr = OFFSET_TO_PTR(model, model->headerSize);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
     {
         u32 i;
-        struct GMAMeshHeader *meshes = OFFSET_TO_PTR(meshPtr, 32);
-        for (i = 0; i < model->numLayer1Meshes + model->numLayer2Meshes; i++)
-            meshes[i].renderFlags |= flags;
+        struct GMAShape *shapes = OFFSET_TO_PTR(shapePtr, 32);
+        for (i = 0; i < model->opaqueShapeCount + model->translucentShapeCount; i++)
+            shapes[i].flags |= flags;
     }
     else
     {
         u32 i;
-        struct GMAMeshHeader *mesh = meshPtr;
-        for (i = 0; i < model->numLayer1Meshes + model->numLayer2Meshes; i++)
+        struct GMAShape *shape = shapePtr;
+        for (i = 0; i < model->opaqueShapeCount + model->translucentShapeCount; i++)
         {
-            mesh->renderFlags |= flags;
-            mesh = skip_mesh(mesh);
+            shape->flags |= flags;
+            shape = next_shape(shape);
         }
     }
 }
 #pragma force_active reset
 
-struct DrawMeshDeferredNode
+struct DrawShapeDeferredNode
 {
     struct OrdTblNode node;
-    struct GMAModelHeader *model;
+    struct GMAModel *model;
     Mtx mtx;
-    struct GMAMaterial *mtrl;
-    struct GMAMeshHeader *mesh;
-    u32 unk44;
+    struct GMATevLayer *modelSamplers;
+    struct GMAShape *shape;
+    GXCullMode cullMode;
     u32 unk48;
-    float unk4C;
+    float alpha;
     BallEnvFunc unk50;
     Func802F20F0 unk54;
     u8 zCompEnable;
     u8 zUpdEnable;
     u32 zCompFunc;
     u8 unk60;
-    u8 unk61;
-    u8 unk62;
+    u8 usePostMultiplyTevStage;
+    u8 usePostAddTevStage;
     Mtx *unk64;
     GXColor unk68;
     GXColor unk6C;
-    u32 unk70;
+    u32 fogEnabled;
 };
 
-static inline struct GMAMeshHeader *draw_mesh_deferred(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
+static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struct GMAShape *shape, struct GMATevLayer *modelSamplers)
 {
     struct OrdTblNode *entry;
-    u32 r23 = lbl_802F20E8;
-    struct DrawMeshDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
+    GXCullMode cullMode = s_cullMode;
+    struct DrawShapeDeferredNode *node = ord_tbl_alloc_node(sizeof(*node));
 
-    if (mesh->unk14 != 0xFF)
-        entry = ord_tbl_get_entry_for_pos_offset_index(&mesh->unk30, -1);
+    if (shape->unk14 != 0xFF)
+        entry = ord_tbl_get_entry_for_pos_offset_index(&shape->origin, -1);
     else
-        entry = ord_tbl_get_entry_for_pos(&mesh->unk30);
-    node->node.drawFunc = (OrdTblDrawFunc)draw_mesh_deferred_callback;
+        entry = ord_tbl_get_entry_for_pos(&shape->origin);
+    node->node.drawFunc = (OrdTblDrawFunc)draw_shape_deferred_callback;
     node->model = model;
-    node->mesh = mesh;
-    node->mtrl = mtrl;
-    node->unk44 = r23;
+    node->shape = shape;
+    node->modelSamplers = modelSamplers;
+    node->cullMode = cullMode;
     node->unk48 = func_800223D0();
-    node->unk4C = lbl_802F20DC;
+    node->alpha = s_materialAlpha;
     node->unk50 = lbl_802F20EC;
-    node->unk54 = lbl_802F20F0;
-    node->zCompEnable = zModeCompareEnable;
-    node->zUpdEnable = zModeUpdateEnable;
-    node->zCompFunc = zModeCompareFunc;
+    node->unk54 = g_customMaterialFunc;
+    node->zCompEnable = s_zModeCompareEnable;
+    node->zUpdEnable = s_zModeUpdateEnable;
+    node->zCompFunc = s_zModeCompareFunc;
     node->unk60 = lbl_802F2108;
-    node->unk61 = lbl_802F210C;
-    node->unk62 = lbl_802F2114;
+    node->usePostMultiplyTevStage = usePostMultiplyTevStage;
+    node->usePostAddTevStage = usePostAddTevStage;
     if (node->unk60 != 0)
     {
         node->unk64 = ord_tbl_alloc_node(sizeof(*node->unk64));
         mathutil_mtx_copy(lbl_802B4E6C, *node->unk64);
     }
-    if (node->unk61 != 0)
-        node->unk68 = lbl_802F2110;
-    if (node->unk62 != 0)
-        node->unk6C = lbl_802F2118;
-    node->unk70 = lbl_802F211C;
+    if (node->usePostMultiplyTevStage)
+        node->unk68 = s_postMultiplyColor;
+    if (node->usePostAddTevStage)
+        node->unk6C = s_postAddColor;
+    node->fogEnabled = s_fogEnabled;
     mathutil_mtxA_to_mtx(node->mtx);
     ord_tbl_insert_node(entry, &node->node);
-    return skip_mesh(mesh);
+    return next_shape(shape);
 }
 
-void g_avdisp_draw_model_1(struct GMAModelHeader *model)
+// Draw opaque shapes immediately and depth-sort translucent shapes, a reasonable default
+void avdisp_draw_model_unculled_sort_translucent(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *shape = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMATevLayer *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    func_8009E094(lbl_802F20E8);
+    s_cullMode = GX_CULL_BACK;
+    GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
-    if (lbl_802F20F0 == NULL)
-        func_8008FE44(model, mesh);
+    if (g_customMaterialFunc == NULL)
+        init_tev_material_cache(model, shape);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        draw_model_0x18(model, mesh, mtrl);
+        draw_indexed_model(model, shape, modelSamplers);
     else
     {
-        for (i = 0; i < model->numLayer1Meshes; i++)
-            mesh = draw_model_8008F914(model, mesh, mtrl);
-        for (i = 0; i < model->numLayer2Meshes; i++)
-            mesh = draw_mesh_deferred(model, mesh, mtrl);
+        for (i = 0; i < model->opaqueShapeCount; i++)
+            shape = draw_shape(model, shape, modelSamplers);
+        for (i = 0; i < model->translucentShapeCount; i++)
+            shape = draw_shape_deferred(model, shape, modelSamplers);
     }
 
-    modelScale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
-// for transparent objects?
-void g_avdisp_draw_model_2(struct GMAModelHeader *model)
+// Draw both opaque and translucent shapes immediately. Useful when you want to explicitly draw
+// translucent shapes in a specific order instead of using the ord table?
+void avdisp_draw_model_unculled_sort_none(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *shape = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMATevLayer *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    func_8009E094(lbl_802F20E8);
+    s_cullMode = 2;
+    GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
-    if (lbl_802F20F0 == NULL)
-        func_8008FE44(model, mesh);
+    if (g_customMaterialFunc == NULL)
+        init_tev_material_cache(model, shape);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        draw_model_0x18(model, mesh, mtrl);
+        draw_indexed_model(model, shape, modelSamplers);
     else
     {
-        for (i = 0; i < model->numLayer1Meshes; i++)
-            mesh = draw_model_8008F914(model, mesh, mtrl);
-        for (i = 0; i < model->numLayer2Meshes; i++)
-            mesh = draw_model_8008F914(model, mesh, mtrl);
+        for (i = 0; i < model->opaqueShapeCount; i++)
+            shape = draw_shape(model, shape, modelSamplers);
+        for (i = 0; i < model->translucentShapeCount; i++)
+            shape = draw_shape(model, shape, modelSamplers);
     }
 
-    modelScale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
-void g_avdisp_draw_model_3(struct GMAModelHeader *model)
+// Depth-sort both opaque and translucent shapes. Useful if your opaque shapes become translucent
+// e.g. by calling avdisp_set_alpha() ?
+void avdisp_draw_model_unculled_sort_all(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *shape = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMATevLayer *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
-    func_8009E094(lbl_802F20E8);
+    s_cullMode = 2;
+    GXSetCullMode_cached(s_cullMode);
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
-    if (lbl_802F20F0 == NULL)
-        func_8008FE44(model, mesh);
+    if (g_customMaterialFunc == NULL)
+        init_tev_material_cache(model, shape);
 
-    for (i = 0; i < model->numLayer1Meshes; i++)
-        mesh = (void *)draw_mesh_deferred(model, mesh, mtrl);
-    for (i = 0; i < model->numLayer2Meshes; i++)
-        mesh = (void *)draw_mesh_deferred(model, mesh, mtrl);
+    for (i = 0; i < model->opaqueShapeCount; i++)
+        shape = (void *)draw_shape_deferred(model, shape, modelSamplers);
+    for (i = 0; i < model->translucentShapeCount; i++)
+        shape = (void *)draw_shape_deferred(model, shape, modelSamplers);
 
-    modelScale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
-void g_avdisp_draw_model_4(struct GMAModelHeader *model)
+// Used by shadows
+void g_avdisp_draw_model_4(struct GMAModel *model)
 {
-    struct GMAMeshHeader *mesh = OFFSET_TO_PTR(model, model->headerSize);
-    struct GMAMaterial *mtrl = OFFSET_TO_PTR(model, 0x40);
+    struct GMAShape *shape = OFFSET_TO_PTR(model, model->headerSize);
+    struct GMATevLayer *modelSamplers = OFFSET_TO_PTR(model, 0x40);
     int i;
 
-    lbl_802F20E8 = 2;
+    s_cullMode = 2;
     if (model->flags & GCMF_STITCHING)
         g_iteratively_multiply_model_matrices(model);
 
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        draw_model_0x18(model, mesh, mtrl);
+        draw_indexed_model(model, shape, modelSamplers);
     else
     {
-        for (i = 0; i < model->numLayer1Meshes; i++)
-            mesh = draw_model_8008F914(model, mesh, mtrl);
+        for (i = 0; i < model->opaqueShapeCount; i++)
+            shape = draw_shape(model, shape, modelSamplers);
     }
 
-    modelScale = 1.0f;
+    s_boundSphereScale = 1.0f;
     GXSetCurrentMtx(GX_PNMTX0);
-    lbl_802F20DC = 1.0f;
+    s_materialAlpha = 1.0f;
 }
 
 int get_texture_max_lod(int width, int height)
@@ -899,7 +970,7 @@ int get_texture_max_lod(int width, int height)
     return lod;
 }
 
-void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, struct TPL *tpl)
+void init_tev_layer_texobj(struct GMATevLayer *tevLayer, struct TPLTextureHeader *texHdr, struct TPL *tpl)
 {
     u8 maxLOD;
     int wrapS;
@@ -911,11 +982,11 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
     if (texHdr->format & 0x40)
     {
         OSPanic("avdisp.c", 1340, "invalid texture!!\n...stopped\n");
-        mtrl->texObj = NULL;
+        tevLayer->texObj = NULL;
         return;
     }
 
-    switch ((mtrl->flags >> 2) & 3)
+    switch ((tevLayer->flags >> 2) & 3)
     {
     case 2:
         wrapS = GX_MIRROR;
@@ -927,7 +998,7 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
         wrapS = GX_CLAMP;
         break;
     }
-    switch ((mtrl->flags >> 4) & 3)
+    switch ((tevLayer->flags >> 4) & 3)
     {
     case 2:
         wrapT = GX_MIRROR;
@@ -943,12 +1014,12 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
         maxLOD = 0;
     else
     {
-        maxLOD = (mtrl->flags >> 7) & 0xF;
+        maxLOD = (tevLayer->flags >> 7) & 0xF;
         if (maxLOD == 15)
             maxLOD = get_texture_max_lod(texHdr->width, texHdr->height);  // inlined
     }
     GXInitTexObj(
-        mtrl->texObj,  // obj
+        tevLayer->texObj,  // obj
         imagePtr,  // image_ptr
         texHdr->width,  // width
         texHdr->height,  // height
@@ -957,7 +1028,7 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
         wrapT,  // wrap_t
         maxLOD != 0);  // mipmap
 
-    if (mtrl->flags & 0x800)
+    if (tevLayer->flags & GMA_TEV_LAYER_FLAG_MAGFILT_NEAR)
     {
         magFilt = GX_NEAR;
         if (maxLOD != 0)
@@ -974,95 +1045,95 @@ void init_material(struct GMAMaterial *mtrl, struct TPLTextureHeader *texHdr, st
             minFilt = GX_LIN_MIP_NEAR;
     }
     GXInitTexObjLOD(
-        mtrl->texObj,  // obj
+        tevLayer->texObj,  // obj
         minFilt,  // min_filt
         magFilt,  // mag_filt
         0.0f,  // min_lod
         maxLOD,  // max_lod
-        mtrl->unk6 / 10.0f,  // lod_bias
+        tevLayer->lodBias / 10.0f,  // lod_bias
         FALSE,  // bias_clamp
-        (mtrl->flags & 0x40) != 0,  // do_edge_lod
-        mtrl->unk7);  // max_aniso
+        (tevLayer->flags & GMA_TEV_LAYER_FLAG_DO_EDGE_LOD) != 0,  // do_edge_lod
+        tevLayer->maxAniso);  // max_aniso
 }
 
-static inline struct GMAMeshHeader *init_mesh_render_flags(struct GMAMeshHeader *mesh)
+static inline struct GMAShape *init_shape_render_flags(struct GMAShape *shape)
 {
-    if (mesh->vtxFlags & (1 << GX_VA_CLR0))
-        mesh->renderFlags |= 0x100;
-    if (mesh->unk12 == 0)
-        mesh->renderFlags |= 0x80;
-    return skip_mesh(mesh);
+    if (shape->vtxAttrs & (1 << GX_VA_CLR0))
+        shape->flags |= GMA_SHAPE_FLAG_VERT_COLORS;
+    if (shape->tevLayerCount == 0)
+        shape->flags |= GMA_SHAPE_FLAG_SIMPLE_MATERIAL;
+    return next_shape(shape);
 }
 
-GXTexObj *init_model(struct GMAModelHeader *model, struct TPL *tpl, GXTexObj *texObj)
+GXTexObj *init_model(struct GMAModel *model, struct TPL *tpl, GXTexObj *texObj)
 {
-    struct GMAMaterial *materials;
-    struct GMAMeshHeader *mesh;
+    struct GMATevLayer *modelSamplers;
+    struct GMAShape *shape;
     int i;
 
     if (tpl == NULL)
-        model->numMaterials = 0;
-    materials = (void *)model->materials;
+        model->tevLayerCount = 0;
+    modelSamplers = (void *)model->tevLayers;
 
-    // Allocate GX texture objects for materials
-    if (model->numMaterials != 0)
+    // Allocate GX texture objects for tev layers
+    if (model->tevLayerCount != 0)
     {
         if (texObj != NULL)
         {
             model->texObjs = texObj;
-            texObj += model->numMaterials;
+            texObj += model->tevLayerCount;
         }
         else
-            model->texObjs = OSAlloc(model->numMaterials * sizeof(GXTexObj));
+            model->texObjs = OSAlloc(model->tevLayerCount * sizeof(GXTexObj));
         if (model->texObjs == NULL)
             OSPanic("avdisp.c", 0x58B, "cannot OSAlloc");
     }
     else
         model->texObjs = NULL;
 
-    // Initialize materials
-    for (i = 0; i < model->numMaterials; i++)
+    // Initialize tev layers
+    for (i = 0; i < model->tevLayerCount; i++)
     {
-        materials[i].texObj = &model->texObjs[i];
-        init_material(&materials[i], &tpl->texHeaders[materials[i].unk4], tpl);
+        modelSamplers[i].texObj = &model->texObjs[i];
+        init_tev_layer_texobj(&modelSamplers[i], &tpl->texHeaders[modelSamplers[i].texIndex], tpl);
     }
 
-    // Get pointer to mesh
-    // If model is GCMF_SKIN or GCMF_EFFECTIVE, then the mesh offset is 32 bytes more
-    mesh = OFFSET_TO_PTR(model, model->headerSize);
+    // Get pointer to shape
+    // If model is GCMF_SKIN or GCMF_EFFECTIVE, then the shape offset is 32 bytes more
+    shape = OFFSET_TO_PTR(model, model->headerSize);
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        mesh = OFFSET_TO_PTR((u32)mesh, 32);
+        shape = OFFSET_TO_PTR((u32)shape, 32);
 
-    for (i = 0; i < model->numLayer1Meshes; i++)
+    for (i = 0; i < model->opaqueShapeCount; i++)
     {
         if (tpl == NULL)
-            mesh->unk12 = 0;
+            shape->tevLayerCount = 0;
         if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
-            struct GMAMeshHeader *r3 = mesh;
-            mesh++;
-            init_mesh_render_flags(r3);
+            struct GMAShape *r3 = shape;
+            shape++;
+            init_shape_render_flags(r3);
         }
         else
-            mesh = init_mesh_render_flags(mesh);
+            shape = init_shape_render_flags(shape);
     }
-    for (i = 0; i < model->numLayer2Meshes; i++)
+    for (i = 0; i < model->translucentShapeCount; i++)
     {
         if (tpl == NULL)
-            mesh->unk12 = 0;
+            shape->tevLayerCount = 0;
         if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         {
-            struct GMAMeshHeader *r3 = mesh;
-            mesh++;
-            init_mesh_render_flags(r3);
+            struct GMAShape *r3 = shape;
+            shape++;
+            init_shape_render_flags(r3);
         }
         else
-            mesh = init_mesh_render_flags(mesh);
+            shape = init_shape_render_flags(shape);
     }
     return texObj;
 }
 
-void g_iteratively_multiply_model_matrices(struct GMAModelHeader *model)
+void g_iteratively_multiply_model_matrices(struct GMAModel *model)
 {
     unsigned int i;
 
@@ -1071,77 +1142,77 @@ void g_iteratively_multiply_model_matrices(struct GMAModelHeader *model)
     func_8008F8A4(model->mtxIndexes);
 }
 
-void draw_mesh_deferred_callback(struct DrawMeshDeferredNode *node)
+void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
 {
     BallEnvFunc r31;
     Func802F20F0 r30;
-    u8 r29;
-    u8 r28;
-    u32 r27;
+    GXBool zModeCompareEnable;
+    GXBool zModeUpdateEnable;
+    GXCompare zModeCompareFunc;
     u32 r26;
     u32 r25;
     u32 r23;
-    u32 r22;
+    u32 fogEnabled;
     GXColor sp10;
     GXColor spC;
 
-    if ((node->mesh->renderFlags & 0x1) == 0)
+    if ((node->shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
         func_800223D8(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
-    func_8009E094(node->unk44);
-    lbl_802F20E8 = node->unk44;
+    GXSetCullMode_cached(node->cullMode);
+    s_cullMode = node->cullMode;
     r31 = lbl_802F20EC;
-    r30 = lbl_802F20F0;
-    r29 = zModeCompareEnable;
-    r28 = zModeUpdateEnable;
-    r27 = zModeCompareFunc;
+    r30 = g_customMaterialFunc;
+    zModeCompareEnable = s_zModeCompareEnable;
+    zModeUpdateEnable = s_zModeUpdateEnable;
+    zModeCompareFunc = s_zModeCompareFunc;
     r26 = lbl_802F2108;
-    lbl_802F20DC = node->unk4C;
+    s_materialAlpha = node->alpha;
     lbl_802F20EC = node->unk50;
-    lbl_802F20F0 = node->unk54;
-    zModeCompareEnable = node->zCompEnable;
-    zModeUpdateEnable = node->zUpdEnable;
-    zModeCompareFunc = node->zCompFunc;
+    g_customMaterialFunc = node->unk54;
+    s_zModeCompareEnable = node->zCompEnable;
+    s_zModeUpdateEnable = node->zUpdEnable;
+    s_zModeCompareFunc = node->zCompFunc;
     lbl_802F2108 = node->unk60;
     if (node->unk60 != 0)
         mathutil_mtx_copy(*node->unk64, lbl_802B4E6C);
-    r25 = lbl_802F210C;
-    lbl_802F210C = node->unk61;
-    if (node->unk61 != 0)
+    r25 = usePostMultiplyTevStage;
+    usePostMultiplyTevStage = node->usePostMultiplyTevStage;
+    if (node->usePostMultiplyTevStage != 0)
     {
-        sp10 = lbl_802F2110;
-        lbl_802F2110 = node->unk68;
+        sp10 = s_postMultiplyColor;
+        s_postMultiplyColor = node->unk68;
     }
-    r23 = lbl_802F2114;
-    lbl_802F2114 = node->unk62;
-    if (node->unk62 != 0)
+    r23 = usePostAddTevStage;
+    usePostAddTevStage = node->usePostAddTevStage;
+    if (node->usePostAddTevStage != 0)
     {
-        spC = lbl_802F2118;
-        lbl_802F2118 = node->unk6C;
+        spC = s_postAddColor;
+        s_postAddColor = node->unk6C;
     }
-    r22 = lbl_802F211C;
-    lbl_802F211C = node->unk70;
-    if (lbl_802F20F0 == NULL)
-        func_8008FE44(node->model, node->mesh);
-    draw_model_8008F914(node->model, node->mesh, node->mtrl);
+    fogEnabled = s_fogEnabled;
+    s_fogEnabled = node->fogEnabled;
+    if (g_customMaterialFunc == NULL)
+        init_tev_material_cache(node->model, node->shape);
+    draw_shape(node->model, node->shape, node->modelSamplers);
     lbl_802F20EC = r31;
-    lbl_802F20F0 = r30;
-    zModeCompareEnable = r29;
-    zModeUpdateEnable = r28;
-    zModeCompareFunc = r27;
+    g_customMaterialFunc = r30;
+    s_zModeCompareEnable = zModeCompareEnable;
+    s_zModeUpdateEnable = zModeUpdateEnable;
+    s_zModeCompareFunc = zModeCompareFunc;
     lbl_802F2108 = r26;
-    lbl_802F210C = r25;
-    if (node->unk61 != 0)
-        lbl_802F2110 = sp10;
-    lbl_802F2114 = r23;
-    if (node->unk62 != 0)
-        lbl_802F2118 = spC;
-    lbl_802F211C = r22;
-    lbl_802F20DC = 1.0f;
+    usePostMultiplyTevStage = r25;
+    if (node->usePostMultiplyTevStage != 0)
+        s_postMultiplyColor = sp10;
+    usePostAddTevStage = r23;
+    if (node->usePostAddTevStage != 0)
+        s_postAddColor = spC;
+    s_fogEnabled = fogEnabled;
+    s_materialAlpha = 1.0f;
 }
 
-u32 func_8008F6D4(u32 a)
+u32 g_avdisp_set_some_tex_mtx_sel(u32 a)
 {
     u32 old = lbl_802F2108;
     lbl_802F2108 = a;
@@ -1153,63 +1224,63 @@ void g_avdisp_set_some_matrix(int unused, Mtx mtx)
     mathutil_mtx_copy(mtx, lbl_802B4E6C);
 }
 
-void g_avdisp_set_some_color_1(float a, float b, float c, float d)
+void avdisp_set_post_multiply_color(float r, float g, float b, float a)
 {
-    if (a != 1.0f || b != 1.0f || c != 1.0f || d != 1.0f)
+    if (r != 1.0f || g != 1.0f || b != 1.0f || a != 1.0f)
     {
-        lbl_802F210C = 1;
-        lbl_802F2110.r = a * 255.0f;
-        lbl_802F2110.g = b * 255.0f;
-        lbl_802F2110.b = c * 255.0f;
-        lbl_802F2110.a = d * 255.0f;
+        usePostMultiplyTevStage = 1;
+        s_postMultiplyColor.r = r * 255.0f;
+        s_postMultiplyColor.g = g * 255.0f;
+        s_postMultiplyColor.b = b * 255.0f;
+        s_postMultiplyColor.a = a * 255.0f;
     }
     else
     {
-        lbl_802F210C = 0;
-        lbl_802F2110.r = 255;
-        lbl_802F2110.g = 255;
-        lbl_802F2110.b = 255;
-        lbl_802F2110.a = 255;
+        usePostMultiplyTevStage = 0;
+        s_postMultiplyColor.r = 255;
+        s_postMultiplyColor.g = 255;
+        s_postMultiplyColor.b = 255;
+        s_postMultiplyColor.a = 255;
     }
 }
 
-void g_avdisp_set_some_color_2(float a, float b, float c, float d)
+void avdisp_set_post_add_color(float r, float g, float b, float a)
 {
-    if (a != 0.0f || b != 0.0f || c != 0.0f || d != 0.0f)
+    if (r != 0.0f || g != 0.0f || b != 0.0f || a != 0.0f)
     {
-        lbl_802F2114 = 1;
-        lbl_802F2118.r = a * 255.0f;
-        lbl_802F2118.g = b * 255.0f;
-        lbl_802F2118.b = c * 255.0f;
-        lbl_802F2118.a = d * 255.0f;
+        usePostAddTevStage = 1;
+        s_postAddColor.r = r * 255.0f;
+        s_postAddColor.g = g * 255.0f;
+        s_postAddColor.b = b * 255.0f;
+        s_postAddColor.a = a * 255.0f;
     }
     else
     {
-        lbl_802F2114 = 0;
-        lbl_802F2118.r = 0;
-        lbl_802F2118.g = 0;
-        lbl_802F2118.b = 0;
-        lbl_802F2118.a = 0;
+        usePostAddTevStage = 0;
+        s_postAddColor.r = 0;
+        s_postAddColor.g = 0;
+        s_postAddColor.b = 0;
+        s_postAddColor.a = 0;
     }
 }
 
-void func_8008F878(int a)
+void avdisp_enable_fog(int a)
 {
-    lbl_802F211C = a;
+    s_fogEnabled = a;
 }
 
-void func_8008F880(int a, float b, float c)
+void avdisp_set_fog_params(int a, float b, float c)
 {
-    lbl_802F2120 = a;
-    lbl_802F2128 = b;
-    lbl_802F212C = c;
+    s_fogType = a;
+    s_fogStartZ = b;
+    s_fogEndZ = c;
 }
 
-void func_8008F890(u8 a, u8 b, u8 c)
+void avdisp_set_fog_color(u8 a, u8 b, u8 c)
 {
-    lbl_802F2124.r = a;
-    lbl_802F2124.g = b;
-    lbl_802F2124.b = c;
+    s_fogColor.r = a;
+    s_fogColor.g = b;
+    s_fogColor.b = c;
 }
 
 void func_8008F8A4(u8 *mtxIndexes)
@@ -1222,98 +1293,84 @@ void func_8008F8A4(u8 *mtxIndexes)
     }
 }
 
-struct UnkStruct25
-{
-    u8 filler0[8];
-    u32 unk8[2];
-    u8 filler10[0x20-0x10];
-    u8 unk20[1];
-};
 
 struct UnkStruct27
 {
     u8 filler0[4];
-    struct GMAMeshHeader *mesh;
-    struct GMAMaterial *mtrl;
+    struct GMAShape *shape;
+    struct GMATevLayer *modelTevs;
     u8 fillerC[0x38-0xC];
 };
 
-struct UnkStruct31
-{
-    u32 unk0;
-    u8 filler4[4];
-    GXTexObj *unk8;
-    u8 fillerC[0x20-0xC];
-};
-
-struct GMAMeshHeader *draw_model_8008F914(struct GMAModelHeader *model, struct GMAMeshHeader *mesh, struct GMAMaterial *mtrl)
+// Returns pointer to shape that follows this one
+struct GMAShape *draw_shape(struct GMAModel *model, struct GMAShape *shape, struct GMATevLayer *modelTevs)
 {
     int i;
     u8 *dlist;
-    s32 r30;
-    u8 bvar;
+    GXCullMode cullMode;
+    u8 doDraw;
     struct UnkStruct27 sp20;
     u8 unused[12];
 
-    if (mesh->renderFlags & 2)
-        r30 = 0;
+    if (shape->flags & GMA_SHAPE_FLAG_DOUBLE_SIDED)
+        cullMode = GX_CULL_NONE;
     else
-        r30 = 1;
+        cullMode = GX_CULL_FRONT;
     if (model->flags & GCMF_STITCHING)
-        func_8008F8A4(mesh->unk20);  // inlined
-    gxutil_set_vtx_attrs(mesh->vtxFlags);
-    dlist = mesh->dispListData;
+        func_8008F8A4(shape->mtxIndices);  // inlined
+    gxutil_set_vtx_attrs(shape->vtxAttrs);
+    dlist = shape->dispLists;
 
-    if (lbl_802F20F0 != NULL)
+    if (g_customMaterialFunc != NULL)
     {
-        sp20.mesh = (void *)mesh;
-        sp20.mtrl = mtrl;
-        bvar = lbl_802F20F0(&sp20);
+        sp20.shape = (void *)shape;
+        sp20.modelTevs = modelTevs;
+        doDraw = g_customMaterialFunc(&sp20);
     }
     else
     {
-        func_80090524((void *)mesh, (void *)mtrl);
-        bvar = 1;
+        build_tev_material(shape, modelTevs);
+        doDraw = 1;
     }
 
-    if (bvar)
+    if (doDraw)
     {
         for (i = 0; i < 2; i++)
         {
-            if (mesh->unk13 & (1 << i))
+            if (shape->dispListFlags & (1 << i))
             {
-                if (lbl_802F20E8 != r30)
+                if (s_cullMode != cullMode)
                 {
-                    lbl_802F20E8 = r30;
-                    func_8009E094(r30);
+                    s_cullMode = cullMode;
+                    GXSetCullMode_cached(cullMode);
                 }
-                GXCallDisplayList(dlist, mesh->dispListSizes[i]);
-                dlist += mesh->dispListSizes[i];
+                GXCallDisplayList(dlist, shape->dispListSizes[i]);
+                dlist += shape->dispListSizes[i];
             }
-            if (r30 != 0)
-                r30 = 2;
+            if (cullMode != GX_CULL_NONE)
+                cullMode = GX_CULL_BACK;
         }
-        if ((mesh->unk13 & 0xC) != 0)
+        if (shape->dispListFlags & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
         {
-            struct UnkStruct25 *r26 = (void *)dlist;
-            func_8008F8A4(r26->filler0);  // inlined
-            dlist = r26->unk20;
+            struct GMAExtraDispLists *extraDispLists = (void *)dlist;
+            func_8008F8A4(extraDispLists->mtxIndices);  // inlined
+            dlist = extraDispLists->dlists;
             for (i = 0; i < 2; i++)
             {
                 if (i == 0)
-                    func_8009E094(1);
+                    GXSetCullMode_cached(GX_CULL_FRONT);
                 else
-                    func_8009E094(2);
-                GXCallDisplayList(dlist, r26->unk8[i]);
-                dlist += r26->unk8[i];
+                    GXSetCullMode_cached(GX_CULL_BACK);
+                GXCallDisplayList(dlist, extraDispLists->dispListSizes[i]);
+                dlist += extraDispLists->dispListSizes[i];
             }
         }
     }
     else
     {
-        return skip_mesh(mesh);
+        return next_shape(shape);
     }
-    return (struct GMAMeshHeader *)dlist;
+    return (struct GMAShape *)dlist;
 }
 
 #ifdef __MWERKS__
@@ -1385,29 +1442,29 @@ struct UnkStruct29
     u32 unk8;
 };
 
-void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct UnkStruct29 *c, u8 *d)
+void *draw_shape_reflection_maybe(struct GMAShape *shape, void *modelSamplers, struct UnkStruct29 *c, u8 *d)
 {
     int i;
-    int r30;
+    GXCullMode cullMode;
     u8 *r29 = (u8 *)c + c->unk8;
     u8 bvar;
     struct UnkStruct27 sp20;
 
-    if (mesh->renderFlags & 2)
-        r30 = 0;
+    if (shape->flags & GMA_SHAPE_FLAG_DOUBLE_SIDED)
+        cullMode = GX_CULL_NONE;
     else
-        r30 = 2;
-    gxutil_set_vtx_attrs(mesh->vtxFlags);
+        cullMode = GX_CULL_BACK;
+    gxutil_set_vtx_attrs(shape->vtxAttrs);
 
-    if (lbl_802F20F0 != NULL)
+    if (g_customMaterialFunc != NULL)
     {
-        sp20.mesh = (void *)mesh;
-        sp20.mtrl = mtrl;
-        bvar = lbl_802F20F0(&sp20);
+        sp20.shape = shape;
+        sp20.modelTevs = modelSamplers;
+        bvar = g_customMaterialFunc(&sp20);
     }
     else
     {
-        func_80090524((void *)mesh, (void *)mtrl);
+        build_tev_material((void *)shape, (void *)modelSamplers);
         bvar = 1;
     }
 
@@ -1416,124 +1473,124 @@ void *draw_mesh_reflection_maybe(struct GMAMeshHeader *mesh, void *mtrl, struct 
         __GXSetDirtyState();
         for (i = 0; i < 2; i++)
         {
-            if (mesh->unk13 & (1 << i))
+            if (shape->dispListFlags & (1 << i))
             {
-                if (lbl_802F20E8 != r30)
+                if (s_cullMode != cullMode)
                 {
                     u32 r3;
-                    lbl_802F20E8 = r30;
-                    r3 = (gx->unk204 & ~0xC000) | r30 << 14;
+                    s_cullMode = cullMode;
+                    r3 = (gx->unk204 & ~0xC000) | cullMode << 14;
                     gx->unk204 = r3;
                     func_8008D6BC(r3);
                 }
-                func_8008FBB0(mesh->vtxFlags, r29, d, mesh->dispListSizes[i]);
-                d += mesh->dispListSizes[i] * 4;
+                func_8008FBB0(shape->vtxAttrs, r29, d, shape->dispListSizes[i]);
+                d += shape->dispListSizes[i] * 4;
             }
-            if (r30 != 0)
-                r30 = 1;
+            if (cullMode != 0)
+                cullMode = 1;
         }
     }
     return d;
 }
 
-void draw_model_0x18(struct GMAModelHeader *model, struct GMAMeshHeader *b, struct GMAMaterial *mtrl)
+void draw_indexed_model(struct GMAModel *model, struct GMAShape *b, struct GMATevLayer *modelTevLayers)
 {
     int i;  // r31
-    u8 *r30 = b->unk20;
-    struct GMAMeshHeader *r6 = (void *)((u8 *)b + b->unkC.asU32);
+    u8 *r30 = b->mtxIndices;
+    struct GMAShape *r6 = (void *)((u8 *)b + b->specularColor.asU32);
 
-    lbl_802F20E8 = 1;
-    for (i = 0; i < model->numLayer1Meshes; i++)
+    s_cullMode = GX_CULL_FRONT;
+    for (i = 0; i < model->opaqueShapeCount; i++)
     {
-        r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
+        r6 = draw_shape_reflection_maybe((void *)r30, modelTevLayers, (void *)b, (void *)r6);
         r30 += 0x60;
     }
-    for (i = 0; i < model->numLayer2Meshes; i++)
+    for (i = 0; i < model->translucentShapeCount; i++)
     {
-        r6 = draw_mesh_reflection_maybe((void *)r30, mtrl, (void *)b, (void *)r6);
+        r6 = draw_shape_reflection_maybe((void *)r30, modelTevLayers, (void *)b, (void *)r6);
         r30 += 0x60;
     }
 }
 
-void func_8008FE44(struct GMAModelHeader *model, struct GMAMeshHeader *mesh)
+void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
 {
-    lbl_802B4ECC.unk0 = 1;
+    s_materialCache.unk0 = 1;
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        mesh = (struct GMAMeshHeader *)((u8 *)mesh + 0x20);
+        shape = (struct GMAShape *)((u8 *)shape + 0x20);
     if (lbl_802F2108 != 0)
         GXLoadTexMtxImm(lbl_802B4E6C, GX_TEXMTX1, GX_MTX3x4);
     else
         GXLoadTexMtxImm(lbl_802B4E9C, GX_TEXMTX1, GX_MTX3x4);
-    if (zModeUpdateEnable  != zMode->updateEnable
-     || zModeCompareFunc   != zMode->compareFunc
-     || zModeCompareEnable != zMode->compareEnable)
+    if (s_zModeUpdateEnable  != gxCache->updateEnable
+     || s_zModeCompareFunc   != gxCache->compareFunc
+     || s_zModeCompareEnable != gxCache->compareEnable)
     {
-        GXSetZMode(zModeCompareEnable, zModeCompareFunc, zModeUpdateEnable);
-        zMode->compareEnable = zModeCompareEnable;
-        zMode->compareFunc   = zModeCompareFunc;
-        zMode->updateEnable  = zModeUpdateEnable;
+        GXSetZMode(s_zModeCompareEnable, s_zModeCompareFunc, s_zModeUpdateEnable);
+        gxCache->compareEnable = s_zModeCompareEnable;
+        gxCache->compareFunc   = s_zModeCompareFunc;
+        gxCache->updateEnable  = s_zModeUpdateEnable;
     }
-    if (lbl_802F211C != 0)
-        func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+    if (s_fogEnabled != 0)
+        GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     else
-        func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
-    if (mesh->renderFlags & 0x88)
-        lbl_802B4ECC.unk10 = mesh->unk4;
-    else
-    {
-        lbl_802B4ECC.unk10.r = 255;
-        lbl_802B4ECC.unk10.g = 255;
-        lbl_802B4ECC.unk10.b = 255;
-    }
-    lbl_802B4ECC.unk10.a = mesh->unk11;
-    if (mesh->renderFlags & 0x8)
-        lbl_802B4ECC.unk14 = mesh->unk8;
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, s_fogColor);
+    if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
+        s_materialCache.materialColor = shape->materialColor;
     else
     {
-        lbl_802B4ECC.unk14.r = 255;
-        lbl_802B4ECC.unk14.g = 255;
-        lbl_802B4ECC.unk14.b = 255;
+        s_materialCache.materialColor.r = 255;
+        s_materialCache.materialColor.g = 255;
+        s_materialCache.materialColor.b = 255;
     }
-    lbl_802B4ECC.unk14.a = 255;
-    func_8008D6D4(mesh);
-    lbl_802B4ECC.unk18.r = mesh->unkC.asColor.r;
-    lbl_802B4ECC.unk18.g = mesh->unkC.asColor.g;
-    lbl_802B4ECC.unk18.b = mesh->unkC.asColor.b;
-    lbl_802B4ECC.unk2 = 0;
-    lbl_802B4ECC.unk1C = 15;
-    lbl_802B4ECC.unk20 = 7;
-    lbl_802B4ECC.unk3 = -1;
-    lbl_802B4ECC.unk4 = -1;
-    lbl_802B4ECC.unk5 = -1;
-    lbl_802B4ECC.unk8 = 16;
-    lbl_802B4ECC.unkC = 16;
-    if (lbl_802F210C != 0)
-        func_8009F33C(2, lbl_802F2110);
-    if (lbl_802F2114 != 0)
-        func_8009F33C(3, lbl_802F2118);
-    lbl_802B4ECC.unk24 = 4;
-    lbl_802B4ECC.unk28 = 5;
-    if (mesh->renderFlags & 0x20)
-        lbl_802B4ECC.unk24 = mesh->unk40 & 0xF;
-    if (mesh->renderFlags & 0x40)
-        lbl_802B4ECC.unk28 = (mesh->unk40 >> 4) & 0xF;
-    func_8009E110(1, lbl_802B4ECC.unk24, lbl_802B4ECC.unk28, 0);
-    lbl_802B4ECC.unk1 = -1;
-    lbl_802B4ECC.unk2C[0] = -1;
-    lbl_802B4ECC.unk2C[1] = -1;
-    lbl_802B4ECC.unk2C[2] = -1;
-    lbl_802B4ECC.unk38 = -1;
-    lbl_802B4ECC.unk3C[0] = 0xFFFF;
-    lbl_802B4ECC.unk3C[1] = 0xFFFF;
-    lbl_802B4ECC.unk3C[2] = 0xFFFF;
-    lbl_802B4ECC.unk44 = 0;
-    lbl_802B4ECC.unk48 = 0;
-    lbl_802B4ECC.unk4C = 0;
-    lbl_802B4ECC.unk50 = 0;
-    lbl_802B4ECC.unk54 = 0;
-    mathutil_mtxA_tf_point(&model->boundsCenter, &lbl_802B4ECC.unk58);
-    lbl_802B4ECC.unk58.z -= model->boundsRadius;
-    mathutil_vec_normalize_len(&lbl_802B4ECC.unk58);
+    s_materialCache.materialColor.a = shape->alpha;
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
+        s_materialCache.ambientColor = shape->ambientColor;
+    else
+    {
+        s_materialCache.ambientColor.r = 255;
+        s_materialCache.ambientColor.g = 255;
+        s_materialCache.ambientColor.b = 255;
+    }
+    s_materialCache.ambientColor.a = 255;
+    set_tev_material_ambient_colors(shape);
+    s_materialCache.specularColor.r = shape->specularColor.asColor.r;
+    s_materialCache.specularColor.g = shape->specularColor.asColor.g;
+    s_materialCache.specularColor.b = shape->specularColor.asColor.b;
+    s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_NULL;
+    s_materialCache.colorIn = GX_CC_ZERO;
+    s_materialCache.alphaIn = GX_CA_ZERO;
+    s_materialCache.num_tev_stages = -1;
+    s_materialCache.num_tex_gens = -1;
+    s_materialCache.num_ind_stages = -1;
+    s_materialCache.postMultiplyTevStageIdx = 16;
+    s_materialCache.postAddTevStageIdx = 16;
+    if (usePostMultiplyTevStage)
+        GXSetTevKColor_cached(GX_KCOLOR2, s_postMultiplyColor);
+    if (usePostAddTevStage)
+        GXSetTevKColor_cached(GX_KCOLOR3, s_postAddColor);
+    s_materialCache.blendSrcFactor = 4;
+    s_materialCache.blendDstFactor = 5;
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC)
+        s_materialCache.blendSrcFactor = shape->blendFactors & 0xF;
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_DST)
+        s_materialCache.blendDstFactor = (shape->blendFactors >> 4) & 0xF;
+    GXSetBlendMode_cached(GX_BM_BLEND, s_materialCache.blendSrcFactor, s_materialCache.blendDstFactor, GX_LO_CLEAR);
+    s_materialCache.tevStageCount = -1;
+    s_materialCache.tevLayerFlags[0] = -1;
+    s_materialCache.tevLayerFlags[1] = -1;
+    s_materialCache.tevLayerFlags[2] = -1;
+    s_materialCache.unk38 = -1;
+    s_materialCache.tevLayerIdxs[0] = 0xFFFF;
+    s_materialCache.tevLayerIdxs[1] = 0xFFFF;
+    s_materialCache.tevLayerIdxs[2] = 0xFFFF;
+    s_materialCache.unk44 = 0;
+    s_materialCache.unk48 = 0;
+    s_materialCache.unk4C = 0;
+    s_materialCache.viewSpecularColorValid = 0;
+    s_materialCache.worldSpecularColorValid = 0;
+    mathutil_mtxA_tf_point(&model->boundSphereCenter, &s_materialCache.modelDir_rt_view);
+    s_materialCache.modelDir_rt_view.z -= model->boundSphereRadius;
+    mathutil_vec_normalize_len(&s_materialCache.modelDir_rt_view);
 }
 
 void g_compute_texmtx0(void)
@@ -1543,7 +1600,7 @@ void g_compute_texmtx0(void)
     Mtx mtx;
 
     mathutil_mtxA_push();
-    MTXLookAt(mtx, &cameraPos, &cameraUp, &lbl_802B4ECC.unk58);
+    MTXLookAt(mtx, &cameraPos, &cameraUp, &s_materialCache.modelDir_rt_view);
     mathutil_mtxA_from_mtx(mtx);
     mathutilData->mtxA[0][3] = 0.5f;
     mathutilData->mtxA[1][0] *= -1.0f;
@@ -1569,7 +1626,7 @@ void g_compute_texmtx1and2(void)
 
     mathutil_mtxA_push();
     target = lbl_802B4E60;
-    sp44 = lbl_802B4ECC.unk58;
+    sp44 = s_materialCache.modelDir_rt_view;
     sp44.x *= -0.9f;
     sp44.y *= -0.9f;
     sp44.z *= -0.9f;
@@ -1631,21 +1688,21 @@ void init_some_texture(void)
         GX_ANISO_1);  // max_aniso
 }
 
-struct UnkStruct32
+struct TevStageInfo
 {
     s32 tevStage;  // 7C
-    u32 texCoordID;  // 80
+    GXTexCoordID texCoordId;  // 80
     u32 unk8;  // 84
-    u32 unkC;  // 88
+    GXTexMapID texMapId;  // 88
 
-    u32 unk10;  // 8C
+    u32 tevIndStage;  // 8C
     u32 unk14;  // 90
 
     u32 unk18;  // 94
     u32 unk1C;  // 98
     u32 unk20;  // 9C
-    u32 unk24;  // A0
-    u32 unk28;
+    GXTexCoordID g_texCoordId2;  // A0
+    GXTexMapID g_someTexmapId2;
 };
 
 struct UnkStruct33
@@ -1653,58 +1710,58 @@ struct UnkStruct33
     u32 unk0; // 3C
     void *unk4; // 40
     void *unk8; // 44
-    struct UnkStruct32 unkC;  // 48
+    struct TevStageInfo unkC;  // 48
 };
 
-static inline void inline_test1(GXColor sp28)
+static inline void material_set_tev_kcolor0(GXColor color)
 {
-                    if (sp28.r == 0 && sp28.g == 0 && sp28.b == 0)
+                    if (color.r == 0 && color.g == 0 && color.b == 0)
                     {
-                        sp28.r = 255;
-                        sp28.g = 255;
-                        sp28.b = 255;
+                        color.r = 255;
+                        color.g = 255;
+                        color.b = 255;
                     }
                     //lbl_80090BEC
-                    func_8009F33C(0, sp28);
+                    GXSetTevKColor_cached(GX_KCOLOR0, color);
 }
 
-static inline void inline_test2(GXColor sp20)
+static inline void material_set_tev_kcolor1(GXColor color)
 {
-                    if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
+                    if (color.r == 0 && color.g == 0 && color.b == 0)
                     {
-                        sp20.r = 255;
-                        sp20.g = 255;
-                        sp20.b = 255;
+                        color.r = 255;
+                        color.g = 255;
+                        color.b = 255;
                     }
-                    sp20.r = (float)sp20.r * lbl_802F20F4;
-                    sp20.g = (float)sp20.g * lbl_802F20F8;
-                    sp20.b = (float)sp20.b * lbl_802F20FC;
-                    func_8009F33C(1, sp20);
+                    color.r = (float)color.r * g_someColorScaleR;
+                    color.g = (float)color.g * g_someColorScaleG;
+                    color.b = (float)color.b * g_someColorScaleB;
+                    GXSetTevKColor_cached(GX_KCOLOR1, color);
 }
 
-static inline void inline_test3(s8 a)
+static inline void material_set_num_tev_stages(s8 a)
 {
-    if (lbl_802B4ECC.unk3 != a)
+    if (s_materialCache.num_tev_stages != a)
     {
-        lbl_802B4ECC.unk3 = a;
-        func_8009F2C8(a);
+        s_materialCache.num_tev_stages = a;
+        GXSetNumTevStages_cached(a);
     }
 }
 
-static inline void inline_test4(s8 b)
+static inline void material_set_num_tex_gens(s8 b)
 {
-    if (lbl_802B4ECC.unk4 != b)
+    if (s_materialCache.num_tex_gens != b)
     {
-        lbl_802B4ECC.unk4 = b;
+        s_materialCache.num_tex_gens = b;
         GXSetNumTexGens(b);
     }
 }
 
-static inline void inline_test5(s8 c)
+static inline void material_set_num_ind_stages(s8 c)
 {
-    if (lbl_802B4ECC.unk5 != c)
+    if (s_materialCache.num_ind_stages != c)
     {
-        lbl_802B4ECC.unk5 = c;
+        s_materialCache.num_ind_stages = c;
         GXSetNumIndStages(c);
     }
 }
@@ -1713,108 +1770,108 @@ static inline void inline_test5(s8 c)
 //#if 1
 // stack differences
 // DOL: 0x8C444
-void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
+void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLayers)
 {
-    struct UnkStruct32 sp7C;  // correct
-    GXColor sp78;  // correct
-    s32 r23;
-    s32 r22;
-    s32 r21;
-    s32 r14;
-    s32 r15_;
-    s32 r16_;
+    struct TevStageInfo tevStageInfo;  // correct
+    GXColor materialColor;  // correct
+    GXTevColorArg colorIn;
+    GXTevAlphaArg alphaIn;
+    s32 haveNewColorIn;
+    s32 haveNewAlphaIn;
+    s32 blendSrcFactor;
+    s32 blendDstFactor;
 
-    sp7C.tevStage = GX_TEVSTAGE0;  // 7C
-    sp7C.texCoordID = 0;  // 80
-    sp7C.unk8 = 0x1E;  // 84
-    sp7C.unkC = 0;  // 88
-    sp7C.unk10 = 0;  // 8C
-    r21 = 0;
-    sp7C.unk14 = 0x40;  // 0x90
-    r14 = 0;
-    sp7C.unk18 = 0;  // 94
-    sp7C.unk1C = 1;  // 98
-    sp7C.unk20 = 0;  // 9C
+    tevStageInfo.tevStage = GX_TEVSTAGE0;  // 7C
+    tevStageInfo.texCoordId = GX_TEXCOORD0;  // 80
+    tevStageInfo.unk8 = 0x1E;  // 84
+    tevStageInfo.texMapId = GX_TEXMAP0;  // 88
+    tevStageInfo.tevIndStage = 0;  // 8C
+    haveNewColorIn = 0;
+    tevStageInfo.unk14 = 0x40;  // 0x90
+    haveNewAlphaIn = 0;
+    tevStageInfo.unk18 = 0;  // 94
+    tevStageInfo.unk1C = 1;  // 98
+    tevStageInfo.unk20 = 0;  // 9C
 
-    sp7C.unkC = 1;  // 88
-    sp7C.unk8 = 0x24;  // 84
-    sp7C.unk14 = 0x49;  // 90
-    sp7C.unk18 = 4;  // 94
+    tevStageInfo.texMapId = GX_TEXMAP1;  // 88
+    tevStageInfo.unk8 = 0x24;  // 84
+    tevStageInfo.unk14 = 0x49;  // 90
+    tevStageInfo.unk18 = 4;  // 94
 
-    if (lbl_802B4ECC.unk18.r != a->unkC.asColor.r
-     || lbl_802B4ECC.unk18.g != a->unkC.asColor.g
-     || lbl_802B4ECC.unk18.b != a->unkC.asColor.b)
+    if (s_materialCache.specularColor.r != shape->specularColor.asColor.r
+     || s_materialCache.specularColor.g != shape->specularColor.asColor.g
+     || s_materialCache.specularColor.b != shape->specularColor.asColor.b)
     {
-        lbl_802B4ECC.unk50 = 0;
-        lbl_802B4ECC.unk54 = 0;
-        lbl_802B4ECC.unk18.r = a->unkC.asColor.r;
-        lbl_802B4ECC.unk18.g = a->unkC.asColor.g;
-        lbl_802B4ECC.unk18.b = a->unkC.asColor.b;
+        s_materialCache.viewSpecularColorValid = 0;
+        s_materialCache.worldSpecularColorValid = 0;
+        s_materialCache.specularColor.r = shape->specularColor.asColor.r;
+        s_materialCache.specularColor.g = shape->specularColor.asColor.g;
+        s_materialCache.specularColor.b = shape->specularColor.asColor.b;
     }
-    //lbl_800905F8
-    if ((a->renderFlags & 1) == 0)
+    // lbl_800905F8
+    if ((shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
     {
-        GXColor color_r5;
-        int r0 = 0;
-        if (a->renderFlags & 0x88)
+        GXColor ambientColor;
+        int g_someColorChanged = 0;
+        if (shape->flags & (GMA_SHAPE_FLAG_SIMPLE_MATERIAL | GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR))
         {
-            sp78.r = a->unk4.r;
-            sp78.g = a->unk4.g;
-            sp78.b = a->unk4.b;
+            materialColor.r = shape->materialColor.r;
+            materialColor.g = shape->materialColor.g;
+            materialColor.b = shape->materialColor.b;
         }
         else
         {
-            sp78.r = 255;
-            sp78.g = 255;
-            sp78.b = 255;
+            materialColor.r = 255;
+            materialColor.g = 255;
+            materialColor.b = 255;
         }
         //lbl_80090644
-        sp78.a = a->unk11;
-        if (lbl_802B4ECC.unk10.r != sp78.r
-         || lbl_802B4ECC.unk10.g != sp78.g
-         || lbl_802B4ECC.unk10.b != sp78.b
-         || lbl_802B4ECC.unk10.a != sp78.a)
+        materialColor.a = shape->alpha;
+        if (s_materialCache.materialColor.r != materialColor.r
+         || s_materialCache.materialColor.g != materialColor.g
+         || s_materialCache.materialColor.b != materialColor.b
+         || s_materialCache.materialColor.a != materialColor.a)
         {
-            r0 = 1;
-            lbl_802B4ECC.unk10 = sp78;
+            g_someColorChanged = 1;
+            s_materialCache.materialColor = materialColor;
         }
         //lbl_8009069C
-        if (a->renderFlags & 8)
+        if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
         {
-            color_r5.r = a->unk8.r;
-            color_r5.g = a->unk8.g;
-            color_r5.b = a->unk8.b;
+            ambientColor.r = shape->ambientColor.r;
+            ambientColor.g = shape->ambientColor.g;
+            ambientColor.b = shape->ambientColor.b;
         }
         else
         {
-            color_r5.r = 255;
-            color_r5.g = 255;
-            color_r5.b = 255;
+            ambientColor.r = 255;
+            ambientColor.g = 255;
+            ambientColor.b = 255;
         }
         //lbl_800906C8
-        if (lbl_802B4ECC.unk14.r != color_r5.r
-         || lbl_802B4ECC.unk14.g != color_r5.g
-         || lbl_802B4ECC.unk14.b != color_r5.b)
+        if (s_materialCache.ambientColor.r != ambientColor.r
+         || s_materialCache.ambientColor.g != ambientColor.g
+         || s_materialCache.ambientColor.b != ambientColor.b)
         {
-            r0 = 1;
-            lbl_802B4ECC.unk14.r = color_r5.r;
-            lbl_802B4ECC.unk14.g = color_r5.g;
-            lbl_802B4ECC.unk14.b = color_r5.b;
+            g_someColorChanged = 1;
+            s_materialCache.ambientColor.r = ambientColor.r;
+            s_materialCache.ambientColor.g = ambientColor.g;
+            s_materialCache.ambientColor.b = ambientColor.b;
         }
         //lbl_8009070C
-        if (r0)
-            func_8008D6D4(a);
+        if (g_someColorChanged)
+            set_tev_material_ambient_colors(shape);
     }
     //lbl_8009071C
-    r23 = 10;
-    r22 = 5;
-    if (a->renderFlags & 1)
+    colorIn = GX_CC_RASC;
+    alphaIn = GX_CA_RASA;
+    if (shape->flags & GMA_SHAPE_FLAG_UNLIT)
     {
-        if (a->renderFlags & 0x100)
+        if (shape->flags & GMA_SHAPE_FLAG_VERT_COLORS)
         {
-            if (lbl_802B4ECC.unk2 != 2)
+            if (s_materialCache.chanConfig != TEVMATCACHE_CHAN_CONFIG_UNLIT_VERTCOLORS)
             {
-                lbl_802B4ECC.unk2 = 2;
+                s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_UNLIT_VERTCOLORS;
                 GXSetChanCtrl(
                     GX_COLOR0A0,  // chan
                     GX_DISABLE,  // enable
@@ -1829,36 +1886,36 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
         //lbl_8009077C
         else
         {
-            lbl_802B4ECC.unk2 = 1;
-            if (a->renderFlags & 0x88)
+            s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_UNLIT;
+            if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
             {
-                sp78.r = a->unk4.r;
-                sp78.g = a->unk4.g;
-                sp78.b = a->unk4.b;
+                materialColor.r = shape->materialColor.r;
+                materialColor.g = shape->materialColor.g;
+                materialColor.b = shape->materialColor.b;
             }
             else
             {
-                sp78.r = 255;
-                sp78.g = 255;
-                sp78.b = 255;
+                materialColor.r = 255;
+                materialColor.g = 255;
+                materialColor.b = 255;
             }
             //lbl_800907C0
-            sp78.a = (float)a->unk11 * lbl_802F20DC;
+            materialColor.a = (float)shape->alpha * s_materialAlpha;
             //sp38 = sp78;
-            GXSetTevColor(1, sp78);
-            r23 = 2;
-            r22 = 1;
+            GXSetTevColor(GX_TEVREG0, materialColor);
+            colorIn = GX_CC_C0;
+            alphaIn = GX_CA_A0;
             //to lbl_800908D4
         }
     }
     //lbl_80090814
     else
     {
-        if (a->renderFlags & 0x100)
+        if (shape->flags & GMA_SHAPE_FLAG_VERT_COLORS)
         {
-            if (lbl_802B4ECC.unk2 != 4)
+            if (s_materialCache.chanConfig != TEVMATCACHE_CHAN_CONFIG_LIGHTS_VERTCOLORS)
             {
-                lbl_802B4ECC.unk2 = 4;
+                s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_LIGHTS_VERTCOLORS;
                 GXSetChanCtrl(
                     GX_ALPHA0,  // chan
                     GX_DISABLE,  // enable
@@ -1872,7 +1929,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                     GX_ENABLE,  // enable
                     GX_SRC_REG,  // amb_src
                     GX_SRC_VTX,  // mat_src
-                    lbl_802F20E0,  // light_mask
+                    s_lightMask,  // light_mask
                     GX_DF_CLAMP,  // diff_fn
                     GX_AF_SPOT);  // attn_fn
             }
@@ -1881,9 +1938,9 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
         //lbl_8009087C
         else
         {
-            if (lbl_802B4ECC.unk2 != 3)
+            if (s_materialCache.chanConfig != TEVMATCACHE_CHAN_CONFIG_LIGHTS)
             {
-                lbl_802B4ECC.unk2 = 3;
+                s_materialCache.chanConfig = TEVMATCACHE_CHAN_CONFIG_LIGHTS;
                 GXSetChanCtrl(
                     GX_ALPHA0,  // chan
                     GX_DISABLE,  // enable
@@ -1897,7 +1954,7 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                     GX_ENABLE,  // enable
                     GX_SRC_REG,  // amb_src
                     GX_SRC_REG,  // mat_src
-                    lbl_802F20E0,  // light_mask
+                    s_lightMask,  // light_mask
                     GX_DF_CLAMP,  // diff_fn
                     GX_AF_SPOT);  // attn_fn
             }
@@ -1905,119 +1962,121 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
     }
     //lbl_800908D4
 
-    if (lbl_802F211C != 0)
+    if (s_fogEnabled != 0)
     {
-        if (a->renderFlags & 4)
-            func_8009E398(0, lbl_802F2124, 0.0f, 100.0f, 0.1f, 20000.0f);
+        if (shape->flags & GMA_SHAPE_FLAG_NO_FOG)
+            GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, s_fogColor);
         else
-            func_8009E398(lbl_802F2120, lbl_802F2124, lbl_802F2128, lbl_802F212C, 0.1f, 20000.0f);
+            GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     }
     //lbl_8009093C
-    if (lbl_802B4ECC.unk1C != r23)
+    if (s_materialCache.colorIn != colorIn)
     {
-        lbl_802B4ECC.unk1C = r23;
-        r21 = 1;
+        s_materialCache.colorIn = colorIn;
+        haveNewColorIn = 1;
     }
-    if (lbl_802B4ECC.unk20 != r22)
+    if (s_materialCache.alphaIn != alphaIn)
     {
-        lbl_802B4ECC.unk20 = r22;
-        r14 = 1;
+        s_materialCache.alphaIn = alphaIn;
+        haveNewAlphaIn = 1;
     }
-    if (a->renderFlags & 0x80)
+    if (shape->flags & GMA_SHAPE_FLAG_SIMPLE_MATERIAL) // Simple single TEV stage, zero texture material?
     {
-        if (lbl_802B4ECC.unk1 != 0 || r21 != 0 || r14 != 0)
+        if (s_materialCache.tevStageCount != 0 || haveNewColorIn != 0 || haveNewAlphaIn != 0)
         {
-            func_8009EFF4(sp7C.tevStage, 0xFF, 0xFF, 4);
-            func_8009E618(sp7C.tevStage, 15, 15, 15, r23);
-            func_8009E800(sp7C.tevStage, 0, 0, 0, 1, 0);
-            func_8009E70C(sp7C.tevStage, 7, 7, 7, r22);
-            func_8009E918(sp7C.tevStage, 0, 0, 0, 1, 0);
+            // Use color/alpha directly from D input with no modifications for this tev stage
+            GXSetTevOrder_cached(tevStageInfo.tevStage, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+            GXSetTevColorIn_cached(tevStageInfo.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorIn);
+            GXSetTevColorOp_cached(tevStageInfo.tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+            GXSetTevAlphaIn_cached(tevStageInfo.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
+            GXSetTevAlphaOp_cached(tevStageInfo.tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
         }
         //lbl_80090A1C
         else
         {
-            if (r21 != 0)
+            if (haveNewColorIn != 0) // Impossible
             {
-                if (r21 != 0)
-                    func_8009E618(sp7C.tevStage, 15, 15, 15, r23);
+                if (haveNewColorIn != 0)
+                    GXSetTevColorIn_cached(tevStageInfo.tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorIn);
                 //lbl_80090A40
-                if (r14 != 0)
-                    func_8009E70C(sp7C.tevStage, 7, 7, 7, r22);
+                if (haveNewAlphaIn != 0)
+                    GXSetTevAlphaIn_cached(tevStageInfo.tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
             }
         }
         //lbl_80090A60
-        lbl_802B4ECC.unk2C[0] = -1;
-        sp7C.tevStage++;
+        s_materialCache.tevLayerFlags[0] = -1;
+        tevStageInfo.tevStage++;
         //to lbl_80091020
     }
     //lbl_80090A78
     else
     {
-        s32 r20 = a->unk12;
-        s32 r19 = 4;
+        s32 tevStageCounter = shape->tevLayerCount;
+        GXTexGenSrc g_texGenSrc = GX_TG_TEX0;
         // loop:
         // r18 = &a->unk16
-        // r17 = &lbl_802B4ECC.unk2C
-        // r15 = &lbl_802B4ECC.unk3C
-        // r24 = &lbl_802B4ECC.unk54 doesn't change
+        // r17 = &g_tevCache.translucency
+        // r15 = &g_tevCache.posXKeyframeCount
+        // r24 = &g_tevCache.visibleKeyframes doesn't change
         // r14 = &sp2C doesn't change
-        // r25 = &lbl_802B4ECC.unk50  doesn't change
+        // r25 = &g_tevCache.visibleKeyframeCount  doesn't change
         // maybe indexed instead?
-        u16 *r18 = &a->unk16;
-        u32 *r17 = lbl_802B4ECC.unk2C;
-        u32 r16;
-        u16 *r15 = lbl_802B4ECC.unk3C;
-        while (r20 > 0)
+        u16 *tevLayerIdx = shape->tevLayerIdxs;
+        u32 *cachedTevLayerFlags = s_materialCache.tevLayerFlags;
+        u32 tevLayerFlags;
+        u16 *cachedTevLayerIdx = s_materialCache.tevLayerIdxs;
+        while (tevStageCounter > 0)
         {
-            struct UnkStruct31 *r3 = &b[*r18];
-            r16 = r3->unk0;
-            r16 &= 0xA003;
-            if (*r17 != r16)
+            struct GMATevLayer *tevLayer = &modelTevLayers[*tevLayerIdx];
+            tevLayerFlags = tevLayer->flags;
+            tevLayerFlags &= (GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND | GMA_TEV_LAYER_FLAG_TYPE3 | GMA_TEV_LAYER_FLAG_TYPE_VIEW_SPECULAR |
+                      GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR);
+            if (*cachedTevLayerFlags != tevLayerFlags)
                 break;
-            if (*r15 != *r18 || (r3->unk0 & 0x10000))
+            if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_LAYER_FLAG_UNK16))
             {
-                func_8009F430(r3->unk8, sp7C.unkC);
-                *r15 = *r18;
+                GXLoadTexObj_cached(tevLayer->texObj, tevStageInfo.texMapId);
+                *cachedTevLayerIdx = *tevLayerIdx;
             }
             //lbl_80090B00
-            if (r16 == 0)
+            if (tevLayerFlags == 0)
             {
-                if (r21 != 0)
+                if (haveNewColorIn != 0)
                 {
-                    func_80091500(&sp7C, r23, r22);
-                    r21 = 0;
+                    build_diffuse_layer_cached(&tevStageInfo, colorIn, alphaIn);
+                    haveNewColorIn = 0;
                 }
-                func_80091564(&sp7C);
+                diffuse_layer_next(&tevStageInfo);
                 //to lbl_80090D3C
             }
             //lbl_80090B30
-            else if (r16 & 0x2000)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND)
             {
-                if (r21 != 0)
+                if (haveNewColorIn != 0)
                 {
-                    func_8009167C(&sp7C, r23, r22);
-                    r21 = 0;
+                    build_alpha_blend_layer_cached(&tevStageInfo, colorIn, alphaIn);
+                    haveNewColorIn = 0;
                 }
-                func_800916E0(&sp7C);
+                alpha_blend_layer_next(&tevStageInfo);
                 //to lbl_80090D3C
             }
-            else if (r16 & 0x2)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE3)
             {
-                if (r21 != 0)
+                if (haveNewColorIn != 0)
                 {
-                    func_80091CA8(&sp7C, r23, r22);
-                    r21 = 0;
+                    build_unk3_layer_cached(&tevStageInfo, colorIn, alphaIn);
+                    haveNewColorIn = 0;
                 }
-                func_80091D0C(&sp7C);
+                unk3_layer_next(&tevStageInfo);
                 //to lbl_80090D3C
             }
             //lbl_80090B98
-            else if (r16 & 1)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_VIEW_SPECULAR)
             {
-                if (lbl_802B4ECC.unk50 == 0)
+                if (s_materialCache.viewSpecularColorValid == 0)
                 {
                     /*
-                    GXColor sp28 = lbl_802B4ECC.unk18;
+                    GXColor sp28 = g_tevCache.unk18;
                     if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
                     {
                         sp28.r = 255;
@@ -2025,297 +2084,302 @@ void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
                         sp28.b = 255;
                     }
                     //lbl_80090BEC
-                    func_8009F33C(0, sp28);
-                    lbl_802B4ECC.unk50 = 1;
+                    GXSetTevKColor_cached(0, sp28);
+                    g_tevCache.unk50 = 1;
                     */
-                    // 40 -> 44 (lbl_802B4ECC.unk18 temp)
-                    // r14 44 -> 28 (arg to func_8009F33C)
-                    inline_test1(lbl_802B4ECC.unk18);
-                    lbl_802B4ECC.unk50 = 1;
+                    // 40 -> 44 (g_tevCache.unk18 temp)
+                    // r14 44 -> 28 (arg to GXSetTevKColor_cached)
+                    material_set_tev_kcolor0(s_materialCache.specularColor);
+                    s_materialCache.viewSpecularColorValid = 1;
                 }
                 //lbl_80090C08
-                if (r21 != 0)
+                if (haveNewColorIn != 0)
                 {
-                    func_80091878(&sp7C, r23, r22);
-                    r21 = 0;
+                    build_view_specular_layer_cached(&tevStageInfo, colorIn, alphaIn);
+                    haveNewColorIn = 0;
                 }
-                func_800918DC(&sp7C);
+                view_specular_layer_next(&tevStageInfo);
                 //to lbl_80090D3C
             }
             //lbl_80090C30
-            else
+            else // (flags & GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR)
             {
-                if (lbl_802B4ECC.unk54 == 0)
+                if (s_materialCache.worldSpecularColorValid == 0)
                 {
                     /*
-                    GXColor sp20 = lbl_802B4ECC.unk18;
+                    GXColor sp20 = g_tevCache.unk18;
                     if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
                     {
                         sp20.r = 255;
                         sp20.g = 255;
                         sp20.b = 255;
                     }
-                    sp20.r = (float)sp20.r * lbl_802F20F4;
-                    sp20.g = (float)sp20.g * lbl_802F20F8;
-                    sp20.b = (float)sp20.b * lbl_802F20FC;
-                    func_8009F33C(1, sp20);
-                    lbl_802B4ECC.unk54 = 1;
+                    sp20.r = (float)sp20.r * g_someColorScaleR;
+                    sp20.g = (float)sp20.g * g_someColorScaleG;
+                    sp20.b = (float)sp20.b * g_someColorScaleB;
+                    GXSetTevKColor_cached(1, sp20);
+                    g_tevCache.unk54 = 1;
                     */
-                    // 32 -> 40 (lbl_802B4ECC.unk18 temp)
-                    // r27 36 -> 24 (arg to func_8009F33C)
-                    inline_test2(lbl_802B4ECC.unk18);
-                    lbl_802B4ECC.unk54 = 1;
+                    // 32 -> 40 (g_tevCache.unk18 temp)
+                    // r27 36 -> 24 (arg to GXSetTevKColor_cached)
+                    material_set_tev_kcolor1(s_materialCache.specularColor);
+                    s_materialCache.worldSpecularColorValid = 1;
                 }
                 //lbl_80090D18
-                if (r21 != 0)
+                if (haveNewColorIn != 0)
                 {
-                    func_80091B1C(&sp7C, r23, r22);
-                    r21 = 0;
+                    build_world_specular_layer_cached(&tevStageInfo, colorIn, alphaIn);
+                    haveNewColorIn = 0;
                 }
-                func_80091B88(&sp7C);
+                world_specular_layer_next(&tevStageInfo);
             }
             //lbl_80090D3C
-            sp7C.unkC++;
-            r19++;
-            r20--;
-            r18++;
-            r17++;
-            r15++;
-            r23 = 0;
-            r22 = 0;
+            tevStageInfo.texMapId++;
+            g_texGenSrc++;
+            tevStageCounter--;
+            tevLayerIdx++;
+            cachedTevLayerFlags++;
+            cachedTevLayerIdx++;
+            colorIn = GX_CC_CPREV;
+            alphaIn = GX_CA_APREV;
         }
         //lbl_80090D70
-        while (r20 > 0)
+        while (tevStageCounter > 0)
         {
-            struct UnkStruct31 *r3 = &b[*r18];  // r4
-            u32 r16 = r3->unk0;  // actually, r27
-            r16 &= 0xA003;
-            *r17 = r16;
-            if (*r15 != *r18 || (r3->unk0 & 0x10000))
+            struct GMATevLayer *tevLayer = &modelTevLayers[*tevLayerIdx];  // r4
+            u32 tevLayerFlags = tevLayer->flags; // actually, r27
+            tevLayerFlags &= (GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND | GMA_TEV_LAYER_FLAG_TYPE3 | GMA_TEV_LAYER_FLAG_TYPE_VIEW_SPECULAR |
+                      GMA_TEV_LAYER_FLAG_TYPE_WORLD_SPECULAR);
+            *cachedTevLayerFlags = tevLayerFlags;
+            if (*cachedTevLayerIdx != *tevLayerIdx || (tevLayer->flags & GMA_TEV_LAYER_FLAG_UNK16))
             {
-                func_8009F430(r3->unk8, sp7C.unkC);
-                *r15 = *r18;
+                GXLoadTexObj_cached(tevLayer->texObj, tevStageInfo.texMapId);
+                *cachedTevLayerIdx = *tevLayerIdx;
             }
-            if (r16 == 0)
+            if (tevLayerFlags == 0)
             {
-                func_80091404(&sp7C, r23, r22, r19);
-                func_80091564(&sp7C);
+                build_diffuse_layer_uncached(&tevStageInfo, colorIn, alphaIn, g_texGenSrc);
+                diffuse_layer_next(&tevStageInfo);
             }
-            else if (r16 & 0x2000)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND)
             {
-                func_80091580(&sp7C, r23, r22, r19);
-                func_800916E0(&sp7C);
+                build_alpha_blend_layer_uncached(&tevStageInfo, colorIn, alphaIn, g_texGenSrc);
+                alpha_blend_layer_next(&tevStageInfo);
             }
-            else if (r16 & 0x2000)  // same thing
+            // Likely bug, meant to test for next layer type. In the cached version (previous while
+            // loop) it does.
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_ALPHA_BLEND)
             {
-                func_80091BA4(&sp7C, r23, r22, r19);
-                func_80091D0C(&sp7C);
+                build_unk3_layer_uncached(&tevStageInfo, colorIn, alphaIn, g_texGenSrc);
+                unk3_layer_next(&tevStageInfo);
             }
             //lbl_80090E54
-            else if (r16 & 1)
+            else if (tevLayerFlags & GMA_TEV_LAYER_FLAG_TYPE_VIEW_SPECULAR)
             {
-                if (lbl_802B4ECC.unk50 == 0)
+                if (s_materialCache.viewSpecularColorValid == 0)
                 {
                     /*
-                    GXColor sp28 = lbl_802B4ECC.unk18;
+                    GXColor sp28 = g_tevCache.unk18;
                     if (sp28.r != 0 || sp28.g != 0 || sp28.b != 0)
                     {
                         sp28.r = 255;
                         sp28.g = 255;
                         sp28.b = 255;
                     }
-                    func_8009F33C(0, sp28);
-                    lbl_802B4ECC.unk50 = 1;
+                    GXSetTevKColor_cached(0, sp28);
+                    g_tevCache.unk50 = 1;
                     */
-                    // 24 -> 36 (lbl_802B4ECC.unk18 temp)
-                    // 28 -> 20 (arg to func_8009F33C)
-                    inline_test1(lbl_802B4ECC.unk18);
-                    lbl_802B4ECC.unk50 = 1;
+                    // 24 -> 36 (g_tevCache.unk18 temp)
+                    // 28 -> 20 (arg to GXSetTevKColor_cached)
+                    material_set_tev_kcolor0(s_materialCache.specularColor);
+                    s_materialCache.viewSpecularColorValid = 1;
                 }
-                func_800916FC(&sp7C, r23, r22, r19);
-                func_800918DC(&sp7C);
+                build_view_specular_layer_uncached(&tevStageInfo, colorIn, alphaIn, g_texGenSrc);
+                view_specular_layer_next(&tevStageInfo);
             }
             else
             {
-                if (lbl_802B4ECC.unk54 == 0)
+                if (s_materialCache.worldSpecularColorValid == 0)
                 {
                     /*
-                    GXColor sp20 = lbl_802B4ECC.unk18;
+                    GXColor sp20 = g_tevCache.unk18;
                     if (sp20.r == 0 && sp20.g == 0 && sp20.b == 0)
                     {
                         sp20.r = 255;
                         sp20.g = 255;
                         sp20.b = 255;
                     }
-                    sp20.r = (float)sp20.r * lbl_802F20F4;
-                    sp20.g = (float)sp20.g * lbl_802F20F8;
-                    sp20.b = (float)sp20.b * lbl_802F20FC;
-                    func_8009F33C(1, sp20);
-                    lbl_802B4ECC.unk54 = 1;
+                    sp20.r = (float)sp20.r * g_someColorScaleR;
+                    sp20.g = (float)sp20.g * g_someColorScaleG;
+                    sp20.b = (float)sp20.b * g_someColorScaleB;
+                    GXSetTevKColor_cached(1, sp20);
+                    g_tevCache.unk54 = 1;
                     */
-                    // 16 -> 32 (lbl_802B4ECC.unk18 temp)
-                    // r21 20 -> 16 (arg to func_8009F33C)
-                    inline_test2(lbl_802B4ECC.unk18);
-                    lbl_802B4ECC.unk54 = 1;
+                    // 16 -> 32 (g_tevCache.unk18 temp)
+                    // r21 20 -> 16 (arg to GXSetTevKColor_cached)
+                    material_set_tev_kcolor1(s_materialCache.specularColor);
+                    s_materialCache.worldSpecularColorValid = 1;
                 }
-                func_800918F8(&sp7C, r23, r22, r19);
-                func_80091B88(&sp7C);
+                build_world_specular_layer_uncached(&tevStageInfo, colorIn, alphaIn, g_texGenSrc);
+                world_specular_layer_next(&tevStageInfo);
             }
-            sp7C.unkC++;
-            r19++;
-            r20--;
-            r18++;
-            r17++;
-            r15++;
-            r23 = 0;
-            r22 = 0;
+            tevStageInfo.texMapId++;
+            g_texGenSrc++;
+            tevStageCounter--;
+            tevLayerIdx++;
+            cachedTevLayerFlags++;
+            cachedTevLayerIdx++;
+            colorIn = GX_CC_CPREV;
+            alphaIn = GX_CA_APREV;
         }
-        *r17 = -1;
+        *cachedTevLayerFlags = -1;
     }
     //lbl_80091020
     if (lbl_802F20EC != NULL)
     {
         struct UnkStruct33 sp3C;
-        sp3C.unk0 = lbl_802B4ECC.unk0;
-        sp3C.unk4 = a;
-        sp3C.unk8 = b;
-        sp3C.unkC = sp7C;
+        sp3C.unk0 = s_materialCache.unk0;
+        sp3C.unk4 = shape;
+        sp3C.unk8 = modelTevLayers;
+        sp3C.unkC = tevStageInfo;
         lbl_802F20EC((void *)&sp3C);
-        sp7C = sp3C.unkC;
+        tevStageInfo = sp3C.unkC;
     }
     //lbl_800910F8
-    if (lbl_802F210C != 0)
+    if (usePostMultiplyTevStage)
     {
-        if (lbl_802B4ECC.unk8 != sp7C.tevStage)
+        if (s_materialCache.postMultiplyTevStageIdx != tevStageInfo.tevStage)
         {
-            lbl_802B4ECC.unk8 = sp7C.tevStage;
-            func_8009127C(sp7C.tevStage);
+            s_materialCache.postMultiplyTevStageIdx = tevStageInfo.tevStage;
+            build_post_multiply_tev_stage(tevStageInfo.tevStage);
         }
-        sp7C.tevStage++;
+        tevStageInfo.tevStage++;
     }
     //lbl_8009112C
-    if (lbl_802F2114 != 0)
+    if (usePostAddTevStage)
     {
-        if (lbl_802B4ECC.unkC != sp7C.tevStage)
+        if (s_materialCache.postAddTevStageIdx != tevStageInfo.tevStage)
         {
-            lbl_802B4ECC.unk8 = sp7C.tevStage;
-            func_80091340(sp7C.tevStage);
+            // Bug?
+            s_materialCache.postMultiplyTevStageIdx = tevStageInfo.tevStage;
+            build_post_add_tev_stage(tevStageInfo.tevStage);
         }
-        sp7C.tevStage++;
+        tevStageInfo.tevStage++;
     }
     //lbl_8009115C
     GXSetNumChans(1);
-    inline_test3(sp7C.tevStage);
-    inline_test4(sp7C.texCoordID);
-    inline_test5(sp7C.unk10);
+    material_set_num_tev_stages(tevStageInfo.tevStage);
+    material_set_num_tex_gens(tevStageInfo.texCoordId);
+    material_set_num_ind_stages(tevStageInfo.tevIndStage);
     //lbl_800911D0
-    r15_ = 4;
-    r16_ = 5;
-    if (a->renderFlags & 0x20)
-        r15_ = a->unk40 & 0xF;
-    if (a->renderFlags & 0x40)
-        r16_ = (a->unk40 >> 4) & 0xF;
-    if (lbl_802B4ECC.unk24 != r15_ || lbl_802B4ECC.unk28 != r16_)
+    blendSrcFactor = GX_BL_SRCALPHA;
+    blendDstFactor = GX_BL_INVSRCALPHA;
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_SRC)
+        blendSrcFactor = shape->blendFactors & 0xF;
+    if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_BLEND_DST)
+        blendDstFactor = (shape->blendFactors >> 4) & 0xF;
+    if (s_materialCache.blendSrcFactor != blendSrcFactor || s_materialCache.blendDstFactor != blendDstFactor)
     {
-        func_8009E110(1, r15_, r16_, 0);
-        lbl_802B4ECC.unk24 = r15_;
-        lbl_802B4ECC.unk28 = r16_;
+        GXSetBlendMode_cached(GX_BM_BLEND, blendSrcFactor, blendDstFactor, GX_LO_CLEAR);
+        s_materialCache.blendSrcFactor = blendSrcFactor;
+        s_materialCache.blendDstFactor = blendDstFactor;
     }
     //lbl_8009123C
-    lbl_802B4ECC.unk0 = 0;
-    if (a->renderFlags & 0x80)
-        lbl_802B4ECC.unk1 = 0;
+    s_materialCache.unk0 = 0;
+    if (shape->flags & GMA_SHAPE_FLAG_SIMPLE_MATERIAL)
+        s_materialCache.tevStageCount = 0;
     else
-        lbl_802B4ECC.unk1 = a->unk12;
+        s_materialCache.tevStageCount = shape->tevLayerCount;
 }
 #else
-asm void func_80090524(struct GMAMeshHeader *a, struct UnkStruct31 *b)
+asm void build_tev_material(struct GMAShape *a, struct GMATevLayer *b)
 {
 #define _SDA_BASE_ 0
 #define _SDA2_BASE_ 0
     nofralloc
-#include "../asm/nonmatchings/func_80090524.s"
+#include "../asm/nonmatchings/build_tev_material.s"
 }
 #endif
 
-void func_8009127C(GXTevStageID tevStage)
+// Optionally multiply a color/alpha with tev end result
+void build_post_multiply_tev_stage(GXTevStageID tevStage)
 {
-    func_8009F180(tevStage, 14);
-    func_8009F224(tevStage, 30);
+    GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K2);
+    GXSetTevKAlphaSel_cached(tevStage, GX_TEV_KASEL_K2_A);
     GXSetTevDirect(tevStage);
-    func_8009EFF4(tevStage, 0xFF, 0xFF, 4);
-    func_8009E618(tevStage, 15, 0, 14, 15);
-    func_8009E800(tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(tevStage, 7, 0, 6, 7);
-    func_8009E918(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(tevStage, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_CPREV, GX_CC_KONST, GX_CC_ZERO);
+    GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(tevStage, GX_CA_ZERO, GX_CA_APREV, GX_CA_KONST, GX_CA_ZERO);
+    GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void func_80091340(GXTevStageID tevStage)
+// Optionally add a color/alpha to tev end result
+void build_post_add_tev_stage(GXTevStageID tevStage)
 {
-    func_8009F180(tevStage, 15);
-    func_8009F224(tevStage, 31);
+    GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K3);
+    GXSetTevKAlphaSel_cached(tevStage, GX_TEV_KASEL_K3_A);
     GXSetTevDirect(tevStage);
-    func_8009EFF4(tevStage, 0xFF, 0xFF, 4);
-    func_8009E618(tevStage, 0, 15, 15, 14);
-    func_8009E800(tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(tevStage, 0, 7, 7, 6);
-    func_8009E918(tevStage, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(tevStage, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevColorIn_cached(tevStage, GX_CC_CPREV, GX_CC_ZERO, GX_CC_ZERO, GX_CC_KONST);
+    GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(tevStage, GX_CA_APREV, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+    GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void func_80091404(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
+void build_diffuse_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, GXTexGenSrc texGenSrc)
 {
-    GXSetTevDirect(a->tevStage);
-    func_8009E2C8(a->tevStage, 0, 0);
-    GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E618(a->tevStage, 15, 8, b, 15);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevDirect(info->tevStage);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTexCoordGen(info->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorIn, GX_CC_ZERO);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaIn, GX_CA_ZERO);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void func_80091500(struct UnkStruct32 *a, u32 b, u32 c)
+void build_diffuse_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)
 {
-    func_8009E618(a->tevStage, 15, 8, b, 15);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, colorIn, GX_CC_ZERO);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaIn, GX_CA_ZERO);
 }
 
-void func_80091564(struct UnkStruct32 *a)
+void diffuse_layer_next(struct TevStageInfo *a)
 {
     a->tevStage++;
-    a->texCoordID++;
+    a->texCoordId++;
 }
 
-void func_80091580(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
+void build_alpha_blend_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, GXTexGenSrc texGenSrc)
 {
-    GXSetTevDirect(a->tevStage);
-    GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E2C8(a->tevStage, 0, 1);
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevDirect(info->tevStage);
+    GXSetTexCoordGen(info->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP1);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorIn);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaIn, GX_CA_ZERO);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void func_8009167C(struct UnkStruct32 *a, u32 b, u32 c)
+void build_alpha_blend_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)
 {
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E70C(a->tevStage, 7, 4, c, 7);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorIn);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_TEXA, alphaIn, GX_CA_ZERO);
 }
 
-// duplicate of func_80091564
-void func_800916E0(struct UnkStruct32 *a)
+void alpha_blend_layer_next(struct TevStageInfo *a)
 {
     a->tevStage++;
-    a->texCoordID++;
+    a->texCoordId++;
 }
 
-void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+void build_view_specular_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, u32 d)
 {
-    GXSetTevDirect(a->tevStage);
-    func_8009E2C8(a->tevStage, 0, 0);
-    if (lbl_802B4ECC.unk44 == 0)
+    GXSetTevDirect(info->tevStage);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    if (s_materialCache.unk44 == 0)
     {
         mathutil_mtxA_push();
         mathutilData->mtxA[0][3] = 0.0f;
@@ -2323,40 +2387,39 @@ void func_800916FC(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
         mathutilData->mtxA[2][3] = 0.0f;
         GXLoadTexMtxImm(mathutilData->mtxA, GX_TEXMTX0, GX_MTX3x4);
         mathutil_mtxA_pop();
-        lbl_802B4ECC.unk44 = 1;
+        s_materialCache.unk44 = 1;
     }
-    if (lbl_802B4ECC.unk48 == 0)
+    if (s_materialCache.unk48 == 0)
     {
         g_compute_texmtx0();
-        lbl_802B4ECC.unk48 = 1;
+        s_materialCache.unk48 = 1;
     }
-    func_8009F180(a->tevStage, 12);
-    GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E618(a->tevStage, 15, 8, 14, b);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
+    GXSetTevKColorSel_cached(info->tevStage, GX_TEV_KCSEL_K0);
+    GXSetTexCoordGen2(info->texCoordId, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX0);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorIn);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void func_80091878(struct UnkStruct32 *a, u32 b, u32 c)
+void build_view_specular_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)
 {
-    func_8009E618(a->tevStage, 15, 8, 14, b);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, colorIn);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
 }
 
-// duplicate of func_80091564
-void func_800918DC(struct UnkStruct32 *a)
+void view_specular_layer_next(struct TevStageInfo *a)
 {
     a->tevStage++;
-    a->texCoordID++;
+    a->texCoordId++;
 }
 
-void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
+void build_world_specular_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, u32 d)
 {
     u32 tevStage;
 
-    if (lbl_802B4ECC.unk44 == 0)
+    if (s_materialCache.unk44 == 0)
     {
         mathutil_mtxA_push();
         mathutilData->mtxA[0][3] = 0.0f;
@@ -2364,72 +2427,73 @@ void func_800918F8(struct UnkStruct32 *a, u32 b, u32 c, u32 d)
         mathutilData->mtxA[2][3] = 0.0f;
         GXLoadTexMtxImm(mathutilData->mtxA, GX_TEXMTX0, GX_MTX3x4);
         mathutil_mtxA_pop();
-        lbl_802B4ECC.unk44 = 1;
+        s_materialCache.unk44 = 1;
     }
-    if (lbl_802B4ECC.unk4C == 0)
+    if (s_materialCache.unk4C == 0)
     {
-        func_8009F430(&unknownTexObj, 0);
+        GXLoadTexObj_cached(&unknownTexObj, GX_TEXMAP0);
         g_compute_texmtx1and2();
-        lbl_802B4ECC.unk4C = 1;
+        s_materialCache.unk4C = 1;
     }
     // unrolled loop?
-    tevStage = a->tevStage;
+    tevStage = info->tevStage;
 
     GXSetTevDirect(tevStage);
-    func_8009E2C8(a->tevStage, 0, 0);
-    func_8009F180(tevStage, 13);
-    GXSetTexCoordGen2(a->texCoordID, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
-    func_8009EFF4(tevStage, a->texCoordID, 0, 4);
-    func_8009E618(tevStage, 15, 8, 14, 15);
-    func_8009E800(tevStage, 0, 0, 0, 1, 3);
-    func_8009E70C(tevStage, 7, 7, 7, c);
-    func_8009E918(tevStage, 0, 0, 0, 1, 3);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevKColorSel_cached(tevStage, GX_TEV_KCSEL_K1);
+    GXSetTexCoordGen2(info->texCoordId, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX2);
+    GXSetTevOrder_cached(tevStage, info->texCoordId, GX_TEXMAP0, GX_COLOR0A0);
+    GXSetTevColorIn_cached(tevStage, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
+    GXSetTevColorOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG2);
+    GXSetTevAlphaIn_cached(tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
+    GXSetTevAlphaOp_cached(tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG2);
 
     GXSetTevDirect(tevStage + 1);
-    func_8009E2C8(a->tevStage, 0, 0);
-    GXSetTexCoordGen2(a->texCoordID + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
-    func_8009EFF4(tevStage + 1, a->texCoordID + 1, a->unkC, 4);
-    func_8009E618(tevStage + 1, 15, 8, 6, b);
-    func_8009E800(tevStage + 1, 0, 0, 0, 1, 0);
-    func_8009E70C(tevStage + 1, 7, 7, 7, c);
-    func_8009E918(tevStage + 1, 0, 0, 0, 1, 0);
+    GXSetTevSwapMode_cached(info->tevStage, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTexCoordGen2(info->texCoordId + 1, GX_TG_MTX3x4, GX_TG_NRM, GX_TEXMTX0, GX_TRUE, GX_PTTEXMTX1);
+    GXSetTevOrder_cached(tevStage + 1, info->texCoordId + 1, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorIn);
+    GXSetTevColorOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
+    GXSetTevAlphaOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
-void func_80091B1C(struct UnkStruct32 *a, u32 b, u32 c)
+void build_world_specular_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)
 {
-    func_8009E618(a->tevStage + 1, 15, 8, 6, b);
-    func_8009E70C(a->tevStage + 1, 7, 7, 7, c);
+    GXSetTevColorIn_cached(info->tevStage + 1, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C2, colorIn);
+    GXSetTevAlphaIn_cached(info->tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
 }
 
-void func_80091B88(struct UnkStruct32 *a)
+void world_specular_layer_next(struct TevStageInfo *info)
 {
-    a->tevStage += 2;
-    a->texCoordID += 2;
+    info->tevStage += 2;
+    info->texCoordId += 2;
 }
 
-void func_80091BA4(struct UnkStruct32 *a, u32 b, u32 c, u32 texGenSrc)
+// Type 3 seems unused/unreachable
+
+void build_unk3_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, GXTexGenSrc texGenSrc)
 {
-    GXSetTevDirect(a->tevStage);
-    GXSetTexCoordGen(a->texCoordID, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
-    func_8009EFF4(a->tevStage, a->texCoordID, a->unkC, 4);
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E800(a->tevStage, 0, 0, 0, 1, 0);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
-    func_8009E918(a->tevStage, 0, 0, 0, 1, 0);
-    a->unk20 = 1;
-    a->unk24 = a->texCoordID;
-    a->unk28 = a->unkC;
+    GXSetTevDirect(info->tevStage);
+    GXSetTexCoordGen(info->texCoordId, GX_TG_MTX2x4, texGenSrc, GX_TEXMTX1);
+    GXSetTevOrder_cached(info->tevStage, info->texCoordId, info->texMapId, GX_COLOR0A0);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorIn);
+    GXSetTevColorOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
+    GXSetTevAlphaOp_cached(info->tevStage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    info->unk20 = 1;
+    info->g_texCoordId2 = info->texCoordId;
+    info->g_someTexmapId2 = info->texMapId;
 }
 
-void func_80091CA8(struct UnkStruct32 *a, u32 b, u32 c)
+void build_unk3_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)
 {
-    func_8009E618(a->tevStage, 15, 15, 15, b);
-    func_8009E70C(a->tevStage, 7, 7, 7, c);
+    GXSetTevColorIn_cached(info->tevStage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, colorIn);
+    GXSetTevAlphaIn_cached(info->tevStage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
 }
 
-// duplicate of func_80091564
-void func_80091D0C(struct UnkStruct32 *a)
+void unk3_layer_next(struct TevStageInfo *info)
 {
-    a->tevStage++;
-    a->texCoordID++;
+    info->tevStage++;
+    info->texCoordId++;
 }

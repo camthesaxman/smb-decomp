@@ -5,6 +5,7 @@
 #include <string.h>
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "background.h"
 #include "ball.h"
@@ -12,6 +13,8 @@
 #include "gxutil.h"
 #include "mathutil.h"
 #include "stage.h"
+#include "tevutil.h"
+#include "gma.h"
 
 static struct BGModelSearch bonusMiscFind[] =
 {
@@ -57,8 +60,8 @@ void bg_bonus_init(void)
         bonusMainFind,
         bonus_main_find_proc);
     g_search_bg_models_from_list(
-        decodedStageLzPtr->unk74,
-        decodedStageLzPtr->unk70,
+        decodedStageLzPtr->fgModels,
+        decodedStageLzPtr->fgModelCount,
         bonusMainFind,
         bonus_main_find_proc);
 
@@ -129,7 +132,7 @@ void bg_bonus_draw(void)
     Vec sp14;
     Vec sp8;
     struct BGBonusStarpoint *starpoint;
-    struct GMAModelHeader *starlightModel;
+    struct GMAModel *starlightModel;
     struct StageBgModel *r27;
 
     bg_e3_draw();
@@ -137,9 +140,9 @@ void bg_bonus_draw(void)
     sp8 = r27->scale;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
     mathutil_mtxA_translate(&r27->pos);
-    mathutil_mtxA_rotate_z(r27->zrot);
-    mathutil_mtxA_rotate_y(r27->yrot);
-    mathutil_mtxA_rotate_x(r27->xrot);
+    mathutil_mtxA_rotate_z(r27->rotZ);
+    mathutil_mtxA_rotate_y(r27->rotY);
+    mathutil_mtxA_rotate_x(r27->rotX);
     mathutil_mtxA_scale(&sp8);
     avdisp_set_z_mode(1, 3, 0);
     starlightModel = work->starlightModel;
@@ -153,13 +156,13 @@ void bg_bonus_draw(void)
             sp14.x = starpoint->unk0.x * sp8.x;
             sp14.y = starpoint->unk0.y * sp8.y;
             sp14.z = starpoint->unk0.z * sp8.z;
-            if (func_8000E53C(&sp14) < -(starlightModel->boundsRadius * f30))
+            if (func_8000E53C(&sp14) < -(starlightModel->boundSphereRadius * f30))
                 continue;
         }
         mathutil_mtxA_push();
         mathutil_mtxA_translate(&starpoint->unk0);
         mathutil_mtxA_sq_from_identity();
-        mathutil_get_mtxA_translate_alt(&sp14);
+        mathutil_mtxA_get_translate_alt(&sp14);
         if (sp14.z < -30.0f)
         {
             float f3 = (26.0f + sp14.z) / sp14.z;
@@ -167,11 +170,11 @@ void bg_bonus_draw(void)
             sp14.x *= f3;
             sp14.y *= f3;
             sp14.z *= f3;
-            mathutil_set_mtxA_translate(&sp14);
+            mathutil_mtxA_set_translate(&sp14);
             f30 *= f3;
             mathutil_mtxA_scale_s(f30);
-            g_avdisp_set_some_color_1(starpoint->unk10, starpoint->unk14, starpoint->unk18, 1.0f);
-            g_avdisp_maybe_draw_model_1(starlightModel);
+            avdisp_set_post_multiply_color(starpoint->unk10, starpoint->unk14, starpoint->unk18, 1.0f);
+            avdisp_draw_model_culled_sort_translucent(starlightModel);
             func_8000E3BC();
         }
         mathutil_mtxA_pop();
@@ -233,43 +236,43 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
     struct Struct80061BC4_sub spC = a->unkC;
 
-    func_8009E110(1, 1, 1, 0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
     func_8009AC8C();
-    func_8009F430(work->lightmapTex, spC.unkC);
+    GXLoadTexObj_cached(work->lightmapTex, spC.g_texMapId);
     mathutil_mtxA_push();
     mathutil_mtxA_mult_left(work->unk7AC);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXSetTexCoordGen(spC.unk4, GX_TG_MTX2x4, GX_TG_POS, spC.unk8);
     GXSetTevDirect(spC.unk0);
-    func_8009EFF4(spC.unk0, spC.unk4, spC.unkC, 0xFF);
-    func_8009E618(spC.unk0, 15, 15, 15, 8);
-    func_8009E800(spC.unk0, 0, 0, 0, 1, 2);
-    func_8009E70C(spC.unk0, 7, 7, 7, 6);
-    func_8009E918(spC.unk0, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.g_texMapId, GX_COLOR_NULL);
+    GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+    GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG1);
+    GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+    GXSetTevAlphaOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     spC.unk0++;
     spC.unk4++;
     spC.unk8 += 3;
-    spC.unkC++;
+    spC.g_texMapId++;
     mathutil_mtxA_push();
     mathutil_mtxA_mult_left(work->unk7DC);
-    mathutil_set_mtxA_translate_xyz(0.0f, 0.0f, 0.0f);
+    mathutil_mtxA_set_translate_xyz(0.0f, 0.0f, 0.0f);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXLoadTexMtxImm(work->unk77C, spC.unk14, GX_MTX3x4);
-    func_8009F430(work->lightmapATex, spC.unkC);
+    GXLoadTexObj_cached(work->lightmapATex, spC.g_texMapId);
     GXSetTexCoordGen2(spC.unk4, GX_TG_MTX3x4, GX_TG_NRM, spC.unk8, GX_TRUE, spC.unk14);
     GXSetTevDirect(spC.unk0);
-    func_8009EFF4(spC.unk0, spC.unk4, spC.unkC, 0xFF);
-    func_8009E618(spC.unk0, 15, 8, 4, 15);
-    func_8009E800(spC.unk0, 0, 0, 0, 1, 0);
-    func_8009E70C(spC.unk0, 7, 7, 7, 0);
-    func_8009E918(spC.unk0, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.g_texMapId, GX_COLOR_NULL);
+    GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C1, GX_CC_ZERO);
+    GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
+    GXSetTevAlphaOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     spC.unk0++;
     spC.unk4++;
     spC.unk8 += 3;
     spC.unk14 += 3;
-    spC.unkC++;
+    spC.g_texMapId++;
     a->unkC = spC;
 }
 
@@ -296,7 +299,7 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
         {
             struct BGBonusStarpoint *starpoint = &work->starpoints[work->starpointsCount];
 
-            starpoint->unk0 = entry->modelOffset->boundsCenter;
+            starpoint->unk0 = entry->modelOffset->boundSphereCenter;
             work->starpointsCount++;
         }
         break;

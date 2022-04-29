@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <dolphin.h>
 
+#include "dolphin/GXEnum.h"
 #include "global.h"
 #include "background.h"
 #include "info.h"
@@ -32,22 +33,22 @@ void bg_jungle_init(void)
     backgroundInfo.unk8 |= 1;
 
     // find models
-    work->bgModelsCount = 0;
+    work->cloudModelCount = 0;
     g_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         jungleModelFind,
         jungle_model_find_proc);
     g_search_bg_models_from_list(
-        decodedStageLzPtr->unk74,
-        decodedStageLzPtr->unk70,
+        decodedStageLzPtr->fgModels,
+        decodedStageLzPtr->fgModelCount,
         jungleModelFind,
         jungle_model_find_proc);
-    if (work->bgModelsCount == 0)
+    if (work->cloudModelCount == 0)
         return;
 
     work->unk168 = 0;
-    for (i = work->bgModelsCount, r29 = work->bgModels; i > 0; i--, r29++)
+    for (i = work->cloudModelCount, r29 = work->cloudModels; i > 0; i--, r29++)
     {
         r29->unk4.x = rand() / 32767.0f;
         r29->unk4.y = rand() / 32767.0f;
@@ -83,7 +84,7 @@ void bg_jungle_main(void)
     }
     if (gamePauseStatus & 0xA)
         return;
-    if (work->bgModelsCount == 0)
+    if (work->cloudModelCount == 0)
         return;
     if (work->unk168 == 0 && infoWork.timerCurr < (infoWork.timerMax >> 1))
     {
@@ -92,8 +93,8 @@ void bg_jungle_main(void)
     }
     else
         r28 = 0;
-    r29 = work->bgModels;
-    for (i = work->bgModelsCount; i > 0; i--, r29++)
+    r29 = work->cloudModels;
+    for (i = work->cloudModelCount; i > 0; i--, r29++)
     {
         if (r28)
         {
@@ -117,17 +118,17 @@ void bg_jungle_finish(void) {}
 void bg_jungle_draw(void)
 {
     struct BGJungleWork *work = backgroundInfo.unk9C;
-    struct StageBgModel *r31;
+    struct StageBgModel *bgModel;
     u32 r28;
     int i;
-    struct BGJungleCloud *r30_;
+    struct BGJungleCloud *cloudModel;
 
     if (gameSubmode == SMD_GAME_CONTINUE_INIT
      || gameSubmode == SMD_GAME_CONTINUE_MAIN
      || gameSubmode == SMD_GAME_NAMEENTRY_READY_INIT
      || gameSubmode == SMD_GAME_OVER_INIT
      || gameSubmode == SMD_GAME_OVER_MAIN)
-        g_avdisp_set_some_color_1(0.3f, 0.3f, 0.3, 1.0f);
+        avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3, 1.0f);
 
     if (lbl_801EEC90.unk0 & 1)
         r28 = 1 << 4;
@@ -138,33 +139,33 @@ void bg_jungle_draw(void)
         else
             r28 = 1 << 0;
     }
-    r30_ = work->bgModels;
-    for (i = work->bgModelsCount; i > 0; i--, r30_++)
-        r30_->unk0->unk0 &= ~0x10000;
+    cloudModel = work->cloudModels;
+    for (i = work->cloudModelCount; i > 0; i--, cloudModel++)
+        cloudModel->bgModel->flags &= ~0x10000;
     bg_e3_draw();
-    if (work->bgModelsCount != 0)
+    if (work->cloudModelCount != 0)
     {
-        func_8008F6D4(1);
-        avdisp_set_z_mode(1, 3, 0);
-        r30_ = work->bgModels;
-        for (i = work->bgModelsCount; i > 0; i--, r30_++)
+        g_avdisp_set_some_tex_mtx_sel(1);
+        avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
+        cloudModel = work->cloudModels;
+        for (i = work->cloudModelCount; i > 0; i--, cloudModel++)
         {
-            r31 = r30_->unk0;
-            if (r31->unk0 & r28)
+            bgModel = cloudModel->bgModel;
+            if (bgModel->flags & r28)
             {
-                g_avdisp_set_some_matrix(0, r30_->unk28);
-                mathutil_mtxA_translate(&r31->pos);
-                mathutil_mtxA_rotate_z(r31->zrot);
-                mathutil_mtxA_rotate_y(r31->yrot);
-                mathutil_mtxA_rotate_x(r31->xrot);
-                mathutil_mtxA_scale(&r31->scale);
+                g_avdisp_set_some_matrix(0, cloudModel->unk28);
+                mathutil_mtxA_translate(&bgModel->pos);
+                mathutil_mtxA_rotate_z(bgModel->rotZ);
+                mathutil_mtxA_rotate_y(bgModel->rotY);
+                mathutil_mtxA_rotate_x(bgModel->rotX);
+                mathutil_mtxA_scale(&bgModel->scale);
                 GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-                g_avdisp_maybe_draw_model_1(r31->model);
+                avdisp_draw_model_culled_sort_translucent(bgModel->model);
             }
         }
         avdisp_set_z_mode(1, 3, 1);
-        func_8008F6D4(0);
+        g_avdisp_set_some_tex_mtx_sel(0);
     }
 
     if (gameSubmode == SMD_GAME_CONTINUE_INIT
@@ -184,10 +185,10 @@ static int jungle_model_find_proc(int index, struct StageBgModel *bgModel)
     switch (index)
     {
     case 0:  // JUN_FIG_CLOUD_
-        if (bgModel->model != NULL && work->bgModelsCount < 2)
+        if (bgModel->model != NULL && work->cloudModelCount < 2)
         {
-            work->bgModels[work->bgModelsCount].unk0 = bgModel;
-            work->bgModelsCount++;
+            work->cloudModels[work->cloudModelCount].bgModel = bgModel;
+            work->cloudModelCount++;
         }
         break;
     }

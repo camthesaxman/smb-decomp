@@ -265,7 +265,7 @@ void ev_world_main(void)
         }
         break;
     default:
-        lbl_80206CF0 = worldInfo[modeCtrl.unk2C].unk10;
+        lbl_80206CF0 = worldInfo[modeCtrl.currPlayer].unk10;
         break;
     }
 }
@@ -334,7 +334,7 @@ void world_sub_input_main(struct World *world)
         spC.z = 0.0f;
         mathutil_mtxA_tf_vec(&spC, &spC);
         inpXRot = (s16)mathutil_atan2(spC.z, spC.y);
-        inpYRot = -(s16)mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq(spC.z, spC.y)));
+        inpYRot = -(s16)mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq_2(spC.z, spC.y)));
     }
     else
     {
@@ -386,7 +386,7 @@ void world_sub_input_main(struct World *world)
             spC.z = 0.0f;
             mathutil_mtxA_tf_vec(&spC, &spC);
             inpXRot = mathutil_atan2(spC.z, spC.y);
-            inpYRot = -mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq(spC.z, spC.y)));
+            inpYRot = -mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq_2(spC.z, spC.y)));
         }
     }
 
@@ -438,7 +438,7 @@ void world_sub_7(struct World *world)
     sp10.x = 0.0f;
     sp10.y = -1.0f;
     sp10.z = 0.0f;
-    if (infoWork.unk0 & (1 << 4))
+    if (infoWork.flags & (1 << 4))
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_x(spC[0]);

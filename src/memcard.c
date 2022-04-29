@@ -729,7 +729,7 @@ void init_gamedata_file(void)
     // These loops match except for stack
     /*
     for (i = 0; i < 8; i++)
-        cardStat.unk34 = (cardStat.unk34 & ~(3 << (2*i))) | (2 << (2*i));
+        cardStat.rotZKeyframeCount = (cardStat.rotZKeyframeCount & ~(3 << (2*i))) | (2 << (2*i));
     for (i = 0; i < 8; i++)
         cardStat.unk36 = (cardStat.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
     */
@@ -3576,7 +3576,7 @@ void func_800A4E70(void)
     func_80011F74(memcardGameData);
     func_8002DB10(memcardGameData);
     func_80067FD0(memcardGameData);
-    memcardGameData->unk5844.unkAC = modeCtrl.unk42;
+    memcardGameData->unk5844.unkAC = modeCtrl.splitscreenMode;
     memcpy(memcardGameData->unk5844.unkB0, lbl_801D5A20, sizeof(memcardGameData->unk5844.unkB0));
     memcardGameData->unk5844.unkAD = func_800B622C();
     func_800AFC1C(memcardGameData);
@@ -3590,7 +3590,7 @@ void func_800A4F04(void)
     func_80012170(memcardGameData);
     func_8002DB24(memcardGameData);
     func_8006800C(memcardGameData);
-    modeCtrl.unk42 = memcardGameData->unk5844.unkAC;
+    modeCtrl.splitscreenMode = memcardGameData->unk5844.unkAC;
     memcpy(lbl_801D5A20, memcardGameData->unk5844.unkB0, sizeof(memcardGameData->unk5844.unkB0));
     func_800B6224(memcardGameData->unk5844.unkAD);
     func_800AFC4C(memcardGameData);

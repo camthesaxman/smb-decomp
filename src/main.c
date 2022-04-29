@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <dolphin.h>
+#include <string.h>
 
 #include "global.h"
 #include "ball.h"
@@ -33,17 +34,17 @@ u32 globalFrameCounter;
 u32 unpausedFrameCounter;
 GXRenderModeObj *currRenderMode;
 
-OSHeapHandle memHeap5;
-OSHeapHandle memHeap1;
-OSHeapHandle memHeap2;
-OSHeapHandle memHeap3;
-OSHeapHandle memHeap4;
+OSHeapHandle mainHeap;
+OSHeapHandle subHeap;
+OSHeapHandle stageHeap;
+OSHeapHandle backgroundHeap;
+OSHeapHandle charaHeap;
 
-long memHeap5Size;
-long memHeap1Size;
-long memHeap2Size;
-long memHeap3Size;
-long memHeap4Size;
+long mainHeapSize;
+long subHeapSize;
+long stageHeapSize;
+long backgroundHeapSize;
+long charaHeapSize;
 
 struct NaomiObj *naomiCommonObj;
 struct NaomiObj *naomiStageObj;
@@ -67,7 +68,7 @@ void main(void)
     event_init();
     perf_init();
     sound_init();
-    func_8008D788();
+    avdisp_init();
     currentBallStructPtr = &ballInfo[0];
     currentWorldStructPtr = &worldInfo[0];
     chkstatus_init();
@@ -81,7 +82,7 @@ void main(void)
     func_800948F4();
     load_common_graphics();
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
-    func_8008AE98();
+    mot_ape_init();
     func_800AD38C();
     g_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;

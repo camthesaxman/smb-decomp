@@ -4,45 +4,6 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
-struct Struct8003699C_child
-{
-    u8 filler0[0x38];
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-};
-
-struct Ape
-{
-    struct Struct8003699C_child *unk0;
-    u8 filler4[0x10-4];
-    s32 unk10;
-    u32 unk14;
-    u8 filler18[0x24-0x18];
-    s32 unk24;
-    u8 filler28[0x30-0x28];
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    s32 unk54;
-    float unk58;
-    u8 filler5C[0x60-0x5C];
-    Quaternion unk60;
-    u8 filler70[0x74-0x70];
-    u32 unk74;
-    u8 filler78[0xA0-0x78];
-    Vec unkA0;
-    float unkAC;
-    u8 fillerB0[4];
-    /*0x0B4*/ u32 colorId;
-    u8 fillerB8[0xC0-0xB8];
-    s8 unkC0;
-    u8 unkC1;
-    s16 unkC2;
-    u8 fillerC4[0x1CE - 0xC4];
-    s16 unk1CE;  // used in the Ball.unk144 one
-};
-
 enum
 {
     BALL_FLAG_00 = 1 << 0,
@@ -85,6 +46,14 @@ enum
     BALL_STATE_GOAL_MAIN = 6,
 };
 
+struct Ball_child
+{
+    u8 filler0[0x14];
+    u32 unk14;
+    u8 filler18[0x1CE - 0x18];
+    s16 unk1CE;
+};
+
 struct Ball
 {
     u8 unk0;
@@ -105,7 +74,7 @@ struct Ball
     s16 unk64;
     s16 oldModelId;  // id of Naomi model
     /*0x68*/ float currRadius;
-    float unk6C;
+    float accel;
     /*0x70*/ float restitution;
     /*0x74*/ float modelScale;
     /*0x78*/ s32 bananas;
@@ -137,7 +106,7 @@ struct Ball
     s32 unk138;
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
-    struct Ape *unk144;  // guessing this is the same type as unkFC?
+    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 unk148;
     u8 filler14A[0x14A - 0x149];
     /*0x14A*/ u8 colorId;
@@ -192,8 +161,8 @@ void ev_ball_main(void);
 void func_80038528(struct Ball *);
 void ev_ball_dest(void);
 void ball_draw(void);
-void func_80038AB4(void);
-void func_80038DF4(void);
+void g_ball_shadow_something_1(void);
+void g_ball_shadow_something_2(void);
 void give_bananas(int bananas);
 void func_800390C8(int, Vec *, float);
 // ? g_ball_init_1();
@@ -221,17 +190,17 @@ void ball_func_demo_init(struct Ball *);
 void ball_func_mini(struct Ball *);
 void ball_func_27(struct Ball *);
 void ball_func_28(struct Ball *);
-void handle_ball_linear_kinematics(struct Ball *, struct Struct80039974 *, int);
-void handle_ball_linear_kinematics_ignore_collision(struct Ball *, struct Struct80039974 *, int);
-void update_ball_ape_transform(struct Ball *, struct Struct80039974 *, int);
+void handle_ball_linear_kinematics(struct Ball *, struct PhysicsBall *, int);
+void handle_ball_linear_kinematics_ignore_collision(struct Ball *, struct PhysicsBall *, int);
+void update_ball_ape_transform(struct Ball *, struct PhysicsBall *, int);
 // ? func_8003BBF4();
 // ? func_8003BD68();
-void handle_ball_rotational_kinematics(struct Ball *, struct Struct80039974 *, int);
+void handle_ball_rotational_kinematics(struct Ball *, struct PhysicsBall *, int);
 void func_8003C38C(struct Ball *);
 void func_8003C4A0(struct Ball *, int);
 void func_8003C550(struct Ball *);
-void func_8003CA98(struct Ball *, struct Struct80039974 *b);
-void func_8003CB3C(struct Ball *, struct Struct80039974 *b);
+void init_physball_from_ball(struct Ball *, struct PhysicsBall *b);
+void func_8003CB3C(struct Ball *, struct PhysicsBall *b);
 void func_8003CB88(struct Ball *);
 void func_8003CCB0(void);
 void func_8003CDB0(struct Ball *);
