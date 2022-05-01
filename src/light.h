@@ -1,0 +1,32 @@
+#ifndef _SRC_LIGHT_H_
+#define _SRC_LIGHT_H_
+
+enum
+{
+    LIGHT_GROUP_DEFAULT,
+    LIGHT_GROUP_SINGLE,
+    LIGHT_GROUP_SINGLE_UNIT,
+    LIGHT_GROUP_DEF_MINIMAP,
+    LIGHT_GROUP_DEF_GMAT,
+    LIGHT_GROUP_DEF_MIR,
+
+    // Bg models can specify a custom light group in this list
+    LIGHT_GROUP_BG_0,
+    LIGHT_GROUP_BG_1,
+    LIGHT_GROUP_BG_2,
+    LIGHT_GROUP_BG_3,
+    LIGHT_GROUP_BG_4,
+    LIGHT_GROUP_BG_5,
+    LIGHT_GROUP_BG_6,
+    LIGHT_GROUP_BG_7,
+    LIGHT_GROUP_BG_8,
+    LIGHT_GROUP_BG_9,
+    LIGHT_GROUP_BG_a,
+    LIGHT_GROUP_BG_b,
+    LIGHT_GROUP_BG_c,
+    LIGHT_GROUP_BG_d,
+    LIGHT_GROUP_BG_e,
+    LIGHT_GROUP_BG_f,
+};
+
+#endif

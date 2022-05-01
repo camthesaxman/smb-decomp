@@ -13625,7 +13625,7 @@ lbl_0000CC28:
 /* 0000CC40 C03F0044 */ lfs f1, 0x44(r31)
 /* 0000CC44 C05F0048 */ lfs f2, 0x48(r31)
 /* 0000CC48 C07F001C */ lfs f3, 0x1c(r31)
-/* 0000CC4C 4BFF3519 */ bl func_800225FC
+/* 0000CC4C 4BFF3519 */ bl g_set_bg_ambient
 lbl_0000CC50:
 /* 0000CC50 3C600000 */ lis r3, backgroundInfo@ha
 /* 0000CC54 A8030000 */ lha r0, backgroundInfo@l(r3)
@@ -13653,8 +13653,8 @@ lbl_0000CC8C:
 /* 0000CCA4 4BFF34C1 */ bl mathutil_mtxA_rotate_y
 /* 0000CCA8 48000058 */ b lbl_0000CD00
 lbl_0000CCAC:
-/* 0000CCAC 3C600000 */ lis r3, lbl_801F0614@ha
-/* 0000CCB0 3BA30000 */ addi r29, r3, lbl_801F0614@l
+/* 0000CCAC 3C600000 */ lis r3, s_g_currBgSomething@ha
+/* 0000CCB0 3BA30000 */ addi r29, r3, s_g_currBgSomething@l
 /* 0000CCB4 A87D0042 */ lha r3, 0x42(r29)
 /* 0000CCB8 4BFF34AD */ bl mathutil_mtxA_from_rotate_y
 /* 0000CCBC A87D0040 */ lha r3, 0x40(r29)

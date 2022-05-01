@@ -7205,7 +7205,7 @@ lbl_800BC898:
 .global func_800BC8B8
 func_800BC8B8:
 /* 800BC8B8 000B87D8  7C 08 02 A6 */	mflr r0
-/* 800BC8BC 000B87DC  3C 60 80 1F */	lis r3, lbl_801F0614@ha
+/* 800BC8BC 000B87DC  3C 60 80 1F */	lis r3, s_g_currBgSomething@ha
 /* 800BC8C0 000B87E0  90 01 00 04 */	stw r0, 4(r1)
 /* 800BC8C4 000B87E4  94 21 FE F8 */	stwu r1, -0x108(r1)
 /* 800BC8C8 000B87E8  DB E1 01 00 */	stfd f31, 0x100(r1)
@@ -7220,7 +7220,7 @@ func_800BC8B8:
 /* 800BC8EC 000B880C  DA C1 00 B8 */	stfd f22, 0xb8(r1)
 /* 800BC8F0 000B8810  DA A1 00 B0 */	stfd f21, 0xb0(r1)
 /* 800BC8F4 000B8814  BE A1 00 84 */	stmw r21, 0x84(r1)
-/* 800BC8F8 000B8818  3B 03 06 14 */	addi r24, r3, lbl_801F0614@l
+/* 800BC8F8 000B8818  3B 03 06 14 */	addi r24, r3, s_g_currBgSomething@l
 /* 800BC8FC 000B881C  A8 78 00 42 */	lha r3, 0x42(r24)
 /* 800BC900 000B8820  4B F4 AD 59 */	bl mathutil_mtxA_from_rotate_y
 /* 800BC904 000B8824  A8 78 00 40 */	lha r3, 0x40(r24)

@@ -13,6 +13,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "stage.h"
+#include "light.h"
 
 #pragma force_active on
 
@@ -580,13 +581,13 @@ void bg_e3_draw(void)
     if (decodedStageLzPtr->bgModels != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -690,7 +691,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
     int r30;
     float f29;
     struct GMAModel *model;
-    int r23;
+    int customLightGroup;
 
     if (bgModels == NULL)
         return;
@@ -726,13 +727,13 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
             continue;
         if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
-        r23 = bgModels->flags >> 28;
+        customLightGroup = bgModels->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-        if (r23 > 0)
+        if (customLightGroup > 0)
         {
             push_light_group();
-            load_light_group(r23 + 6);
+            load_light_group(customLightGroup + LIGHT_GROUP_BG_0);
         }
         if (backgroundInfo.unk90 != 0 && (bgModels->flags & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
@@ -747,7 +748,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         if (bgModels->unk34 != 0)
             func_80055C6C(viewFromWorld, bgModels->unk34);
         g_avdisp_set_some_func_1(0);
-        if (r23 > 0)
+        if (customLightGroup > 0)
             pop_light_group();
     }
 }

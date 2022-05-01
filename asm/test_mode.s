@@ -9420,8 +9420,8 @@ lbl_00008704:
 /* 0000872C 4BFF7A31 */ bl is_bonus_stage
 /* 00008730 28030000 */ cmplwi r3, 0
 /* 00008734 4182000C */ beq lbl_00008740
-/* 00008738 3C600000 */ lis r3, g_loadedStageLights@ha
-/* 0000873C 9BE30000 */ stb r31, g_loadedStageLights@l(r3)
+/* 00008738 3C600000 */ lis r3, s_g_lightPool@ha
+/* 0000873C 9BE30000 */ stb r31, s_g_lightPool@l(r3)
 lbl_00008740:
 /* 00008740 4BFF7A1D */ bl GXInvalidateTexAll
 lbl_00008744:

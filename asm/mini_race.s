@@ -1941,7 +1941,7 @@ lbl_00001BDC:
 /* 00001C50 D0010048 */ stfs f0, 0x48(r1)
 /* 00001C54 C01F0078 */ lfs f0, 0x78(r31)
 /* 00001C58 D001004C */ stfs f0, 0x4c(r1)
-/* 00001C5C 4BFFE521 */ bl g_load_stage_light
+/* 00001C5C 4BFFE521 */ bl alloc_light
 /* 00001C60 4800001C */ b lbl_00001C7C
 lbl_00001C64:
 /* 00001C64 2C00008A */ cmpwi r0, 0x8a

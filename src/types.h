@@ -997,12 +997,10 @@ struct Stobj
     Vec g_local_vel;
 };
 
-struct Struct80180F64
+struct BgLightSomething
 {
 	float unk0;
-    float unk4;
-    float unk8;
-    float unkC;
+    struct Color3f ambient;
     float unk10;
     float unk14;
     float unk18;
@@ -1012,15 +1010,15 @@ struct Struct80180F64
     float unk28;
     float unk2C;
     float unk30;
-	float unk34;
-	float unk38;
-	float unk3C;
-	s16 unk40;
-	s16 unk42;
+	float lightRed;
+	float lightGreen;
+	float lightBlue;
+	s16 lightRotX;
+	s16 lightRotY;
     s8 **unk44;
 };
 
-struct MaybeStageLight;
+struct Light;
 
 struct Struct802F1BE8
 {

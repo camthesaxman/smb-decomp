@@ -29,7 +29,7 @@ void bg_jungle_init(void)
 
     bg_e3_init();
     func_800940B8();
-    func_800946DC(lbl_801F0614.unk42, 0xC00);
+    func_800946DC(s_g_currBgSomething.lightRotY, 0xC00);
     backgroundInfo.unk8 |= 1;
 
     // find models

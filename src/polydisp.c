@@ -24,6 +24,7 @@
 #include "stage.h"
 #include "world.h"
 #include "tevutil.h"
+#include "light.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -382,7 +383,7 @@ void g_draw_tutorial_button_and_joystick(void)
     C_MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
     GXSetProjection(projMtx, 0);
     mathutil_mtxA_from_identity();
-    load_light_group(2);
+    load_light_group(LIGHT_GROUP_SINGLE_UNIT);
     sp48.x = -0.0055f;
     sp48.y = -0.003f;
     sp48.z = -0.718f;
