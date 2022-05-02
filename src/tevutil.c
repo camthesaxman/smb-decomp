@@ -265,7 +265,7 @@ void GXSetTevAlphaIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     return;
 }
 
-void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, u32 clamp, GXTevRegID out_reg)
+void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_colorOp;
 
@@ -289,14 +289,11 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
     return;
 }
 
-// TODO: complete GXSetTevColorOp parameters
-// https://decomp.me/scratch/3HJhF
 void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_colorOp;
 
-    // TODO: fix parameters (these must "stage, op, bias, scale, clamp, out_reg")
-    GXSetTevColorOp(stage, op, bias, scale);
+    GXSetTevColorOp(stage, op, bias, scale, clamp, out_reg);
     _colorOp = gxCache->colorOperations + stage;
     
     _colorOp->op = op;
@@ -307,7 +304,7 @@ void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
     return;
 }
 
-void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, u32 clamp, GXTevRegID out_reg)
+void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_alphaOp;
 
@@ -331,14 +328,11 @@ void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
     return;
 }
 
-// TODO: complete GXSetTevAlphaOp parameters
-// https://decomp.me/scratch/AKAEu
 void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg)
 {
     GXTevOpCache *_alphaOp;
 
-    // TODO: fix parameters (these must "stage, op, bias, scale, clamp, out_reg")
-    GXSetTevAlphaOp (stage, op, bias, scale);
+    GXSetTevAlphaOp (stage, op, bias, scale, clamp, out_reg);
     _alphaOp = gxCache->alphaOperations + stage;
     _alphaOp->op = op;
     _alphaOp->bias = bias;
