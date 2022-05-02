@@ -350,7 +350,7 @@ void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
 
 // I suppose this function relates GMATevLayer.fillerC[4].
 // SMB2 st138.gma object name call it "TEV", "COMPOSEITE".
-void func_8009EA30(GXTevStageID stage, GXTevMode mode)
+void func_8009EA30(GXTevStageID stage, s32 mode)
 {
     s32 _inputColor;
     s32 _inputAlpha;
@@ -367,7 +367,7 @@ void func_8009EA30(GXTevStageID stage, GXTevMode mode)
     }
 
     switch (mode) {
-        case GX_DECAL:
+        case 1:
             _input = gxCache->colorInputs + stage;
             if (
                 _input->a != _inputColor ||
@@ -398,7 +398,7 @@ void func_8009EA30(GXTevStageID stage, GXTevMode mode)
                 _input->d = _inputAlpha;
             }
             break;
-        case GX_MODULATE:
+        case 0:
             _input = gxCache->colorInputs + stage;
             if (
                 _input->a != GX_CC_ZERO ||
@@ -429,7 +429,7 @@ void func_8009EA30(GXTevStageID stage, GXTevMode mode)
                 _input->d = GX_CA_ZERO;
             }
             break;
-        case GX_REPLACE:
+        case 3:
             _input = gxCache->colorInputs + stage;
             if (
                 _input->a != GX_CC_ZERO ||
@@ -460,7 +460,7 @@ void func_8009EA30(GXTevStageID stage, GXTevMode mode)
                 _input->d = GX_CA_TEXA;
             }
             break;
-        case GX_PASSCLR:
+        case 4:
             _input = gxCache->colorInputs + stage;
             if (
                 // if ColorInputCache has different
@@ -491,7 +491,7 @@ void func_8009EA30(GXTevStageID stage, GXTevMode mode)
                 _input->d = _inputAlpha;
             }
             break;
-        case GX_BLEND:
+        case 2:
             _input = gxCache->colorInputs + stage;
             if (
                 // if ColorInputCache has different
