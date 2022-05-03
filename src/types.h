@@ -161,7 +161,7 @@ typedef struct {
 typedef struct {
     u8 numTevStages;
     GXColor colors[4];
-    u8 filler0x11[1];
+    u8 filler11[1];
 } GXTevKColorCached;
 
 struct GXCache
@@ -179,7 +179,7 @@ struct GXCache
     /*0x0FC*/ GXBool colorUpdate;
     /*0x0FD*/ GXBool alphaUpdate;
     /*0x0FE*/ GXBool zCompare;
-    /*0x0FF*/ u8 unk0xFF;
+    /*0x0FF*/ u8 unkFF;
     /*0x100*/ GXTevInputCache colorInputs[16];
     /*0x200*/ GXTevInputCache alphaInputs[16];
     /*0x300*/ GXTevOpCache colorOperations[16];
