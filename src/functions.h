@@ -1726,21 +1726,7 @@ void __GXSetDirtyState(void);
 // ? GXSetTevDirect();
 // ? __GXUpdateBPMask();
 // ? __GXFlushTextureState();
-// ? GXSetTevOp();
-// ? GXSetTevColorIn();
-// ? GXSetTevAlphaIn();
-// ? GXSetTevColorOp();
-// ? GXSetTevAlphaOp();
-// ? GXSetTevColor();
-// ? GXSetTevKColor();
-// ? GXSetTevKColorSel();
-// ? GXSetTevKAlphaSel();
-// ? GXSetTevSwapMode();
-// ? GXSetTevSwapModeTable();
-// ? GXSetAlphaCompare();
-// ? GXSetZTexture();
-// ? GXSetTevOrder();
-// ? GXSetNumTevStages();
+
 
 // ? GXDrawCylinder();
 // ? GXDrawSphere();

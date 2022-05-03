@@ -6,11 +6,10 @@
 
 // 0x800E2214
 void GXSetTevOp(GXTevStageID id, GXTevMode mode);
-
 // 0x800E23B8
-void GXSetTevColorIn(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d);
+void GXSetTevColorIn(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d);
 // 0x800E2438
-void GXSetTevAlphaIn(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d);
+void GXSetTevAlphaIn(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d);
 // 0x800E24BC
 void GXSetTevColorOp(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg);
 // 0x800E257C
