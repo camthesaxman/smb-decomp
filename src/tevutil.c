@@ -34,9 +34,9 @@ u32 tevutil_init(void)
     GXSetTevKColor_cached_init(GX_KCOLOR3, color);
     GXSetFog_cached_init(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, color);
 
-    GXSetColorUpdate_cached_init((u32)GX_TRUE);
-    GXSetAlphaUpdate_cached_init((u32)GX_TRUE);
-    GXSetZCompLoc_cached_init((u32)GX_TRUE);
+    GXSetColorUpdate_cached_init(GX_TRUE);
+    GXSetAlphaUpdate_cached_init(GX_TRUE);
+    GXSetZCompLoc_cached_init(GX_TRUE);
 
     for (stage = GX_TEVSTAGE0; stage < 0x10; stage++) {
         GXSetTevSwapMode_cached_init(stage, GX_TEV_SWAP0, GX_TEV_SWAP0);
@@ -162,31 +162,31 @@ void GXSetFog_cached_init (GXFogType type, float startz, float endz, float nearz
     return;
 }
 
-void GXSetColorUpdate_cached(u32 update_enable)
+void GXSetColorUpdate_cached(GXBool update_enable)
 {
-    if (gxCache->colorUpdate != (GXBool)update_enable) {
+    if (gxCache->colorUpdate != update_enable) {
         GXSetColorUpdate_cached_init(update_enable);
     }
     return;
 }
 
-void GXSetColorUpdate_cached_init(u32 update_enable)
+void GXSetColorUpdate_cached_init(GXBool update_enable)
 {
     GXSetColorUpdate(update_enable);
-    gxCache->colorUpdate = (GXBool)update_enable;
+    gxCache->colorUpdate = update_enable;
     return;
 }
 
-void GXSetAlphaUpdate_cached_init(u32 update_enable)
+void GXSetAlphaUpdate_cached_init(GXBool update_enable)
 {
     GXSetAlphaUpdate(update_enable);
-    gxCache->alphaUpdate = (GXBool)update_enable;
+    gxCache->alphaUpdate = update_enable;
     return;
 }
 
-void GXSetZCompLoc_cached(u32 before_tex)
+void GXSetZCompLoc_cached(GXBool before_tex)
 {
-    if (gxCache->zCompare != (GXBool)before_tex) {
+    if (gxCache->zCompare != before_tex) {
         GXSetZCompLoc_cached_init(before_tex);
     }
     return;
@@ -198,14 +198,14 @@ void GXSetZCompLoc_from_cache(void)
     return;
 }
 
-void GXSetZCompLoc_cached_init(u32 before_tex)
+void GXSetZCompLoc_cached_init(GXBool before_tex)
 {
     GXSetZCompLoc(before_tex);
     gxCache->zCompare = before_tex;
     return;
 }
 
-void GXSetTevColorIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
+void GXSetTevColorIn_cached(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
 {
     GXTevInputCache *_colorInput;
 
@@ -222,7 +222,7 @@ void GXSetTevColorIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     return;
 }
 
-void GXSetTevColorIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
+void GXSetTevColorIn_cached_init(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
 {
     GXTevInputCache *_colorInput;
 
@@ -235,7 +235,7 @@ void GXSetTevColorIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     return;
 }
 
-void GXSetTevAlphaIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
+void GXSetTevAlphaIn_cached(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
 {
     GXTevInputCache *_alphaInput;
 
@@ -252,7 +252,7 @@ void GXSetTevAlphaIn_cached(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
     return;
 }
 
-void GXSetTevAlphaIn_cached_init(GXTevStageID stage, s32 a, s32 b, s32 c, s32 d)
+void GXSetTevAlphaIn_cached_init(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
 {
     GXTevInputCache *_alphaInput;
 
