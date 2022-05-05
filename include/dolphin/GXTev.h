@@ -17,19 +17,19 @@ void GXSetTevAlphaOp(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale 
 // // 0x800E263C
 void GXSetTevColor(GXTevRegID id, GXColor color);
 // // 0x800E26B0
-// void GXSetTevKColor(s32 arg0, void *arg1)
+void GXSetTevKColor(GXTevKColorID id, GXColor color);
 // // 0x800E2724
-// // void GXSetTevKColorSel(GXTevStageID stage, GXTevKColorSel sel);
+void GXSetTevKColorSel(GXTevStageID stage, GXTevKColorSel sel);
 // // 0x800E2790
-// void GXSetTevKAlphaSel(GXTevStageID stage, GXTevKAlphaSel sel);
+void GXSetTevKAlphaSel(GXTevStageID stage, GXTevKAlphaSel sel);
 // // 0x800E27FC
-// void GXSetTevSwapMode(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel);
+void GXSetTevSwapMode(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel);
 // // 0x800E2854
-// void GXSetTevSwapModeTable(GXTevSwapSel id, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha);
+void GXSetTevSwapModeTable(GXTevSwapSel table, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha);
 // // 0x800E28F4
 void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, u8 ref1);
 // // 0x800E2944
-// void GXSetZTexture(s32 arg0, s32 arg1, s32 arg2);
+void GXSetZTexture(GXZTexOp op,GXTexFmt fmt, u32 bias);
 // 0x800E29C8
 void GXSetTevOrder(GXTevStageID stage,  GXTexCoordID coord, GXTexMapID map, GXChannelID color);
 // 0x800E2B68

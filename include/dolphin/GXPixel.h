@@ -4,7 +4,7 @@
 #include <dolphin/GXEnum.h>
 
 // 0x800E2B9C
-// ? GXSetFog();
+void GXSetFog(GXFogType type, f32 startz, f32 endz, f32 nearz, f32 farz, GXColor color);
 // 0x800E2D50
 // ? GXSetFogRangeAdj();
 // 0x800E2E50
