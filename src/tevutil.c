@@ -441,12 +441,12 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             
             _input = gxCache->alphaInputs + stage;
             if (
-                // if AlphaInputCache has different
                 _input->a != GX_CA_ZERO
                 || _input->b != GX_CA_ZERO
                 || _input->c != GX_CA_ZERO
                 || _input->d != GX_CA_TEXA
             ) {
+                // if AlphaInputCache has different
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
                 _input->a = GX_CA_ZERO;
                 _input->b = GX_CA_ZERO;
@@ -472,12 +472,12 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             
             _input = gxCache->alphaInputs + stage;
             if (
-                // if AlphaInputCache has different
                 _input->a != GX_CA_ZERO
                 || _input->b != GX_CA_ZERO
                 || _input->c != GX_CA_ZERO
                 || _input->d != _inputAlpha
             ) {
+                // if AlphaInputCache has different
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
                 _input->a = GX_CA_ZERO;
                 _input->b = GX_CA_ZERO;
@@ -488,12 +488,12 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
         case 2:
             _input = gxCache->colorInputs + stage;
             if (
-                // if ColorInputCache has different
                 _input->a != _inputColor
                 || _input->b != GX_CC_ZERO
                 || _input->c != GX_CC_TEXC
                 || _input->d != GX_CC_TEXC
             ) {
+                // if ColorInputCache has different
                 GXSetTevColorIn(stage, _inputColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
                 _input->a = _inputColor;
                 _input->b = GX_CC_ZERO;
@@ -503,12 +503,12 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             
             _input = gxCache->alphaInputs + stage;
             if (
-                // if AlphaInputCache has different
                 _input->a != GX_CA_ZERO
                 || _input->b != GX_CA_TEXA
                 || _input->c != _inputAlpha
                 || _input->d != GX_CA_ZERO
             ) {
+                // if AlphaInputCache has different
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
                 _input->a = GX_CA_ZERO;
                 _input->b = GX_CA_TEXA;
