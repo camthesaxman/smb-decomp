@@ -159,7 +159,7 @@ SOURCES := \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
-	asm/tevutil.s \
+	src/tevutil.c \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \
