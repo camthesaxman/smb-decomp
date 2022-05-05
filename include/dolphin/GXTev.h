@@ -15,11 +15,11 @@ void GXSetTevColorOp(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale 
 // 0x800E257C
 void GXSetTevAlphaOp(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg);
 // // 0x800E263C
-// void GXSetTevColor(s32 arg0, GXColor color);
-// 0x800E26B0
 void GXSetTevColor(GXTevRegID id, GXColor color);
-// 0x800E2724
-// void GXSetTevKColorSel(GXTevStageID stage, GXTevKColorSel sel);
+// // 0x800E26B0
+// void GXSetTevKColor(s32 arg0, void *arg1)
+// // 0x800E2724
+// // void GXSetTevKColorSel(GXTevStageID stage, GXTevKColorSel sel);
 // // 0x800E2790
 // void GXSetTevKAlphaSel(GXTevStageID stage, GXTevKAlphaSel sel);
 // // 0x800E27FC

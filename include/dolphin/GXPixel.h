@@ -3,7 +3,7 @@
 
 #include <dolphin/GXEnum.h>
 
-// 01x
+// 0x800E2B9C
 // ? GXSetFog();
 // 0x800E2D50
 // ? GXSetFogRangeAdj();

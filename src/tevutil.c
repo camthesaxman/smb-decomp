@@ -71,21 +71,22 @@ void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFa
 {
     if (type == GX_BM_LOGIC) {
         if (
-            ( (gxCache->blendMode).type != GX_BM_LOGIC) || ((gxCache->blendMode).op != op )
+            gxCache->blendMode.type != GX_BM_LOGIC
+            || gxCache->blendMode.op != op
         ) {
-            GXSetBlendMode(GX_BM_LOGIC, (gxCache->blendMode).src_factor, (gxCache->blendMode).dst_factor, op);
-            (gxCache->blendMode).type = GX_BM_LOGIC;
-            (gxCache->blendMode).op = op;
+            GXSetBlendMode(GX_BM_LOGIC, gxCache->blendMode.src_factor, gxCache->blendMode.dst_factor, op);
+            gxCache->blendMode.type = GX_BM_LOGIC;
+            gxCache->blendMode.op = op;
         }
     } else if (
-        ( (gxCache->blendMode).type != type || (gxCache->blendMode).src_factor != src_factor ) ||
-        (gxCache->blendMode).dst_factor != dst_factor
-    )
-    {
-        GXSetBlendMode(type, src_factor, dst_factor, (gxCache->blendMode).op);
-        (gxCache->blendMode).type = type;
-        (gxCache->blendMode).src_factor = src_factor;
-        (gxCache->blendMode).dst_factor = dst_factor;
+        gxCache->blendMode.type != type
+        || gxCache->blendMode.src_factor != src_factor
+        || gxCache->blendMode.dst_factor != dst_factor
+    ) {
+        GXSetBlendMode(type, src_factor, dst_factor, gxCache->blendMode.op);
+        gxCache->blendMode.type = type;
+        gxCache->blendMode.src_factor = src_factor;
+        gxCache->blendMode.dst_factor = dst_factor;
     }
     return;
 }
@@ -93,10 +94,10 @@ void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFa
 void GXSetBlendMode_cached_init(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op)
 {
     GXSetBlendMode(type, src_factor, dst_factor, op);
-    (gxCache->blendMode).type = type;
-    (gxCache->blendMode).src_factor = src_factor;
-    (gxCache->blendMode).dst_factor = dst_factor;
-    (gxCache->blendMode).op = op;
+    gxCache->blendMode.type = type;
+    gxCache->blendMode.src_factor = src_factor;
+    gxCache->blendMode.dst_factor = dst_factor;
+    gxCache->blendMode.op = op;
     return;
 }
 
@@ -116,7 +117,10 @@ void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwap
 {
     GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
     
-    if ((_swapModeSel->ras_sel != ras_sel) || (_swapModeSel->tex_sel != tex_sel)) {
+    if (
+        _swapModeSel->ras_sel != ras_sel
+        || _swapModeSel->tex_sel != tex_sel
+    ) {
         // if something has different
         GXSetTevSwapMode(stage, ras_sel, tex_sel);
         _swapModeSel->ras_sel = ras_sel;
@@ -138,10 +142,10 @@ void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTe
 void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
 {    
     if (
-        gxCache->fog.type != type ||
-        gxCache->fog.color.r != color.r || gxCache->fog.color.g != color.g || gxCache->fog.color.b != color.b || gxCache->fog.color.a != color.a ||
-        gxCache->fog.startz != startz || gxCache->fog.endz != endz || 
-        gxCache->fog.nearz != nearz || gxCache->fog.farz != farz
+        gxCache->fog.type != type
+        || gxCache->fog.color.r != color.r || gxCache->fog.color.g != color.g || gxCache->fog.color.b != color.b || gxCache->fog.color.a != color.a
+        || gxCache->fog.startz != startz || gxCache->fog.endz != endz
+        || gxCache->fog.nearz != nearz || gxCache->fog.farz != farz
     )
     {
         // if something has different
@@ -210,8 +214,7 @@ void GXSetTevColorIn_cached(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b
     GXTevInputCache *_colorInput;
 
     _colorInput = gxCache->colorInputs + stage;
-    if ( _colorInput->a != a || _colorInput->b != b || _colorInput->c != c || _colorInput->d != d)
-    {
+    if ( _colorInput->a != a || _colorInput->b != b || _colorInput->c != c || _colorInput->d != d ) {
         // if something has different
         GXSetTevColorIn(stage, a, b, c, d);
         _colorInput->a = a;
@@ -240,8 +243,7 @@ void GXSetTevAlphaIn_cached(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b
     GXTevInputCache *_alphaInput;
 
     _alphaInput = gxCache->alphaInputs + stage;
-    if (_alphaInput->a != a || _alphaInput->b != b || _alphaInput->c != c || _alphaInput->d != d) 
-    {
+    if ( _alphaInput->a != a || _alphaInput->b != b || _alphaInput->c != c || _alphaInput->d != d ) {
         // if something has different
         GXSetTevAlphaIn(stage, a, b, c, d);
         _alphaInput->a = a;
@@ -271,13 +273,12 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
 
     _colorOp = gxCache->colorOperations + stage;
     if (
-        _colorOp->reg != out_reg ||
-        _colorOp->scale != scale ||
-        _colorOp->clamp != (GXBool)clamp ||
-        _colorOp->op != op ||
-        _colorOp->bias != bias
-        ) 
-    {
+        _colorOp->reg != out_reg
+        || _colorOp->scale != scale
+        || _colorOp->clamp != clamp
+        || _colorOp->op != op 
+        || _colorOp->bias != bias
+    ) {
         // if something has different
         GXSetTevColorOp(stage, op, bias, scale, clamp, out_reg);
         _colorOp->op = op;
@@ -310,13 +311,12 @@ void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
 
     _alphaOp = gxCache->alphaOperations + stage;
     if (
-        _alphaOp->reg != out_reg ||
-        _alphaOp->scale != scale ||
-        _alphaOp->clamp != (GXBool)clamp ||
-        _alphaOp->op != op ||
-        _alphaOp->bias != bias
-        ) 
-    {
+        _alphaOp->reg != out_reg
+        || _alphaOp->scale != scale
+        || _alphaOp->clamp != clamp
+        || _alphaOp->op != op
+        || _alphaOp->bias != bias
+    ) {
         // if something has different
         GXSetTevAlphaOp(stage, op, bias, scale, clamp, out_reg);
         _alphaOp->op = op;
@@ -364,10 +364,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
         case 1:
             _input = gxCache->colorInputs + stage;
             if (
-                _input->a != _inputColor ||
-                _input->b != GX_CC_TEXC ||
-                _input->c != GX_CC_TEXA ||
-                _input->d != GX_CC_ZERO
+                _input->a != _inputColor
+                || _input->b != GX_CC_TEXC
+                || _input->c != GX_CC_TEXA
+                || _input->d != GX_CC_ZERO
             ) {
                 // if ColorInputCache has different
                 GXSetTevColorIn(stage, _inputColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
@@ -379,10 +379,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
     
             _input = gxCache->alphaInputs + stage;
             if (
-                _input->a != GX_CA_ZERO ||
-                _input->b != GX_CA_ZERO ||
-                _input->c != GX_CA_ZERO ||
-                _input->d != _inputAlpha
+                _input->a != GX_CA_ZERO
+                || _input->b != GX_CA_ZERO
+                || _input->c != GX_CA_ZERO
+                || _input->d != _inputAlpha
             ) {
                 // if AlphaInputCache has different
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
@@ -395,10 +395,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
         case 0:
             _input = gxCache->colorInputs + stage;
             if (
-                _input->a != GX_CC_ZERO ||
-                _input->b != GX_CC_TEXC ||
-                _input->c != _inputColor ||
-                _input->d != GX_CC_ZERO
+                _input->a != GX_CC_ZERO
+                || _input->b != GX_CC_TEXC
+                || _input->c != _inputColor
+                || _input->d != GX_CC_ZERO
             ) {
                 // if ColorInputCache has different
                 GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_TEXC, _inputColor, GX_CC_ZERO);
@@ -410,10 +410,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
     
             _input = gxCache->alphaInputs + stage;
             if (
-                _input->a != GX_CA_ZERO ||
-                _input->b != GX_CA_TEXA ||
-                _input->c != _inputAlpha ||
-                _input->d != GX_CA_ZERO
+                _input->a != GX_CA_ZERO
+                || _input->b != GX_CA_TEXA
+                || _input->c != _inputAlpha
+                || _input->d != GX_CA_ZERO
             ) {
                 // if AlphaInputCache has different
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
@@ -426,10 +426,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
         case 3:
             _input = gxCache->colorInputs + stage;
             if (
-                _input->a != GX_CC_ZERO ||
-                _input->b != GX_CC_ZERO ||
-                _input->c != GX_CC_ZERO ||
-                _input->d != GX_CC_TEXC
+                _input->a != GX_CC_ZERO 
+                || _input->b != GX_CC_ZERO
+                || _input->c != GX_CC_ZERO
+                || _input->d != GX_CC_TEXC
             ) {
                 // if ColorInputCache has different
                 GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
@@ -442,10 +442,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             _input = gxCache->alphaInputs + stage;
             if (
                 // if AlphaInputCache has different
-                _input->a != GX_CA_ZERO ||
-                _input->b != GX_CA_ZERO ||
-                _input->c != GX_CA_ZERO ||
-                _input->d != GX_CA_TEXA
+                _input->a != GX_CA_ZERO
+                || _input->b != GX_CA_ZERO
+                || _input->c != GX_CA_ZERO
+                || _input->d != GX_CA_TEXA
             ) {
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
                 _input->a = GX_CA_ZERO;
@@ -457,12 +457,12 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
         case 4:
             _input = gxCache->colorInputs + stage;
             if (
-                // if ColorInputCache has different
-                _input->a != GX_CC_ZERO ||
-                _input->b!= GX_CC_ZERO ||
-                _input->c != GX_CC_ZERO ||
-                _input->d != _inputColor
+                _input->a != GX_CC_ZERO
+                || _input->b!= GX_CC_ZERO
+                || _input->c != GX_CC_ZERO
+                || _input->d != _inputColor
             ) {
+                // if ColorInputCache has different
                 GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, _inputColor);
                 _input->a = GX_CC_ZERO;
                 _input->b = GX_CC_ZERO;
@@ -473,10 +473,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             _input = gxCache->alphaInputs + stage;
             if (
                 // if AlphaInputCache has different
-                _input->a != GX_CA_ZERO ||
-                _input->b != GX_CA_ZERO ||
-                _input->c != GX_CA_ZERO ||
-                _input->d != _inputAlpha
+                _input->a != GX_CA_ZERO
+                || _input->b != GX_CA_ZERO
+                || _input->c != GX_CA_ZERO
+                || _input->d != _inputAlpha
             ) {
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
                 _input->a = GX_CA_ZERO;
@@ -489,10 +489,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             _input = gxCache->colorInputs + stage;
             if (
                 // if ColorInputCache has different
-                _input->a != _inputColor ||
-                _input->b != GX_CC_ZERO ||
-                _input->c != GX_CC_TEXC ||
-                _input->d != GX_CC_TEXC
+                _input->a != _inputColor
+                || _input->b != GX_CC_ZERO
+                || _input->c != GX_CC_TEXC
+                || _input->d != GX_CC_TEXC
             ) {
                 GXSetTevColorIn(stage, _inputColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
                 _input->a = _inputColor;
@@ -504,10 +504,10 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
             _input = gxCache->alphaInputs + stage;
             if (
                 // if AlphaInputCache has different
-                _input->a != GX_CA_ZERO ||
-                _input->b != GX_CA_TEXA ||
-                _input->c != _inputAlpha ||
-                _input->d != GX_CA_ZERO
+                _input->a != GX_CA_ZERO
+                || _input->b != GX_CA_TEXA
+                || _input->c != _inputAlpha
+                || _input->d != GX_CA_ZERO
             ) {
                 GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
                 _input->a = GX_CA_ZERO;
@@ -522,11 +522,11 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
 
     _operation = gxCache->colorOperations + stage;
     if (
-        _operation->reg != GX_TEVPREV ||
-        _operation->scale != GX_CS_SCALE_1 ||
-        _operation->clamp != GX_TRUE ||
-        _operation->op != GX_TEV_ADD ||
-        _operation->bias != GX_TB_ZERO
+        _operation->reg != GX_TEVPREV
+        || _operation->scale != GX_CS_SCALE_1
+        || _operation->clamp != GX_TRUE
+        || _operation->op != GX_TEV_ADD
+        || _operation->bias != GX_TB_ZERO
     ) {
         // if ColorOperationsCache has different
         GXSetTevColorOp(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
@@ -539,11 +539,11 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
 
     _operation = gxCache->alphaOperations + stage;
     if (
-        _operation->reg != GX_TEVPREV ||
-        _operation->scale != GX_CS_SCALE_1 ||
-        _operation->clamp != GX_TRUE ||
-        _operation->op != GX_TEV_ADD ||
-        _operation->bias != GX_TB_ZERO
+        _operation->reg != GX_TEVPREV
+        || _operation->scale != GX_CS_SCALE_1
+        || _operation->clamp != GX_TRUE
+        || _operation->op != GX_TEV_ADD
+        || _operation->bias != GX_TB_ZERO
     ) {
         // if AlphaOperationCache has different
         GXSetTevAlphaOp(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
@@ -563,32 +563,32 @@ void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map
     _tevOrder = gxCache->tevOrders + stage;
     if (map >= 8) {
         if (
-            _tevOrder->coord != coord ||
-            _tevOrder->map != 0xFF ||
-            _tevOrder->color != color
+            _tevOrder->coord != coord
+            || _tevOrder->map != 0xFF
+            || _tevOrder->color != color
         ) {
             GXSetTevOrder(stage, coord, map, color);
             _tevOrder->coord = coord;
             _tevOrder->map = 0xFF;
             _tevOrder->color = color;
-            (_tevOrder->texSize).width = 0x0;
-            (_tevOrder->texSize).height = 0x0;
+            _tevOrder->texSize.width = 0x0;
+            _tevOrder->texSize.height = 0x0;
         }
     } else {
         _texSize = gxCache->texSizes + map;
         if (
-            _tevOrder->coord != coord ||
-            _tevOrder->map != map ||
-            _tevOrder->color != color ||
-            (_tevOrder->texSize).width != _texSize->width ||
-            (_tevOrder->texSize).height != _texSize->height
+            _tevOrder->coord != coord
+            || _tevOrder->map != map
+            || _tevOrder->color != color
+            || _tevOrder->texSize.width != _texSize->width
+            || _tevOrder->texSize.height != _texSize->height
         ) {
             GXSetTevOrder(stage, coord, map, color);
             _tevOrder->coord = coord;
             _tevOrder->map = map;
             _tevOrder->color = color;
-            (_tevOrder->texSize).width = _texSize->width;
-            (_tevOrder->texSize).height = _texSize->height;
+            _tevOrder->texSize.width = _texSize->width;
+            _tevOrder->texSize.height = _texSize->height;
         }
     }
     return;
@@ -603,8 +603,8 @@ void GXSetTevOrder_cached_init(GXTevStageID stage, GXTexCoordID coord, GXTexMapI
     _tevOrder->coord = coord;
     _tevOrder->map = map;
     _tevOrder->color = color;
-    (_tevOrder->texSize).width = 0;
-    (_tevOrder->texSize).height = 0;
+    _tevOrder->texSize.width = 0;
+    _tevOrder->texSize.height = 0;
     return;
 }
 
@@ -645,28 +645,28 @@ void GXSetNumTevStages_cached(u8 nStages)
 {
     if (gxCache->kColor.numTevStages != nStages) {
         GXSetNumTevStages(nStages);
-        (gxCache->kColor).numTevStages = nStages;
+        gxCache->kColor.numTevStages = nStages;
     }
     return;
 }
 
 
 void GXSetNumTevStages_from_cache(void) {
-    GXSetNumTevStages((gxCache->kColor).numTevStages);
+    GXSetNumTevStages(gxCache->kColor.numTevStages);
     return;
 }
 
 void GXSetTevKColor_cached(GXTevKColorID id, GXColor color)
 {
     if (
-        ( (gxCache->kColor).colors[id] ).r != color.r ||
-        ( (gxCache->kColor).colors[id] ).g != color.g ||
-        ( (gxCache->kColor).colors[id] ).b != color.b ||
-        ( (gxCache->kColor).colors[id] ).a != color.a
+        gxCache->kColor.colors[id].r != color.r
+        || gxCache->kColor.colors[id].g != color.g
+        || gxCache->kColor.colors[id].b != color.b
+        || gxCache->kColor.colors[id].a != color.a
     ) {
         // if something has different
         GXSetTevKColor(id, color);
-        (gxCache->kColor).colors[id] = color;
+        gxCache->kColor.colors[id] = color;
     }
     return;
 }
@@ -674,7 +674,7 @@ void GXSetTevKColor_cached(GXTevKColorID id, GXColor color)
 void GXSetTevKColor_cached_init(GXTevKColorID id, GXColor color)
 {
     GXSetTevKColor(id, color);
-    (gxCache->kColor).colors[id] = color;
+    gxCache->kColor.colors[id] = color;
     return;
 }
 
