@@ -61,7 +61,7 @@ void GXSetCullMode_cached(GXCullMode mode)
 }
 
 void GXSetCullMode_cached_init(GXCullMode mode, struct GXCache *cache)
-{   
+{
     GXSetCullMode(mode);
     gxCache->cullMode = mode;
     return;
@@ -104,7 +104,7 @@ void GXSetBlendMode_cached_init(GXBlendMode type, GXBlendFactor src_factor, GXBl
 void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha)
 {
     GXTevSwapModeTableCache *_swapModeTable = gxCache->swapModeTable + id;
-    
+
     GXSetTevSwapModeTable(id, red, green, blue, alpha);
     _swapModeTable->r = red;
     _swapModeTable->g = green;
@@ -116,7 +116,7 @@ void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTe
 void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
 {
     GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
-    
+
     if (
         _swapModeSel->ras_sel != ras_sel
         || _swapModeSel->tex_sel != tex_sel
@@ -132,7 +132,7 @@ void GXSetTevSwapMode_cached(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwap
 void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)
 {
     GXTevswapModeSelCache *_swapModeSel = gxCache->swapModeSel + stage;
-    
+
     GXSetTevSwapMode(stage, ras_sel, tex_sel);
     _swapModeSel->ras_sel = ras_sel;
     _swapModeSel->tex_sel = tex_sel;
@@ -140,7 +140,7 @@ void GXSetTevSwapMode_cached_init(GXTevStageID stage, GXTevSwapSel ras_sel, GXTe
 }
 
 void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
-{    
+{
     if (
         gxCache->fog.type != type
         || gxCache->fog.color.r != color.r || gxCache->fog.color.g != color.g || gxCache->fog.color.b != color.b || gxCache->fog.color.a != color.a
@@ -154,7 +154,7 @@ void GXSetFog_cached(GXFogType type, float startz, float endz, float nearz, floa
     return;
 }
 
-void GXSetFog_cached_init (GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
+void GXSetFog_cached_init(GXFogType type, float startz, float endz, float nearz, float farz, GXColor color)
 {
     GXSetFog(type, startz, endz, nearz, farz, color);
     gxCache->fog.type = type;
@@ -276,7 +276,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
         _colorOp->reg != out_reg
         || _colorOp->scale != scale
         || _colorOp->clamp != clamp
-        || _colorOp->op != op 
+        || _colorOp->op != op
         || _colorOp->bias != bias
     ) {
         // if something has different
@@ -296,7 +296,7 @@ void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias,
 
     GXSetTevColorOp(stage, op, bias, scale, clamp, out_reg);
     _colorOp = gxCache->colorOperations + stage;
-    
+
     _colorOp->op = op;
     _colorOp->bias = bias;
     _colorOp->scale = scale;
@@ -348,9 +348,6 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
 {
     s32 _inputColor;
     s32 _inputAlpha;
-    GXTevInputCache *_input;
-    GXTevOpCache *_operation;
-
 
     if (stage == 0) {
         _inputColor = GX_CC_RASC;
@@ -360,199 +357,32 @@ void func_8009EA30(GXTevStageID stage, s32 mode)
         _inputAlpha = GX_CA_APREV;
     }
 
-    switch (mode) {
-        case 1:
-            _input = gxCache->colorInputs + stage;
-            if (
-                _input->a != _inputColor
-                || _input->b != GX_CC_TEXC
-                || _input->c != GX_CC_TEXA
-                || _input->d != GX_CC_ZERO
-            ) {
-                // if ColorInputCache has different
-                GXSetTevColorIn(stage, _inputColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
-                _input->a = _inputColor;
-                _input->b = GX_CC_TEXC;
-                _input->c = GX_CC_TEXA;
-                _input->d = GX_CC_ZERO;
-            }
-    
-            _input = gxCache->alphaInputs + stage;
-            if (
-                _input->a != GX_CA_ZERO
-                || _input->b != GX_CA_ZERO
-                || _input->c != GX_CA_ZERO
-                || _input->d != _inputAlpha
-            ) {
-                // if AlphaInputCache has different
-                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
-                _input->a = GX_CA_ZERO;
-                _input->b = GX_CA_ZERO;
-                _input->c = GX_CA_ZERO;
-                _input->d = _inputAlpha;
-            }
-            break;
-        case 0:
-            _input = gxCache->colorInputs + stage;
-            if (
-                _input->a != GX_CC_ZERO
-                || _input->b != GX_CC_TEXC
-                || _input->c != _inputColor
-                || _input->d != GX_CC_ZERO
-            ) {
-                // if ColorInputCache has different
-                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_TEXC, _inputColor, GX_CC_ZERO);
-                _input->a = GX_CC_ZERO;
-                _input->b = GX_CC_TEXC;
-                _input->c = _inputColor;
-                _input->d = GX_CC_ZERO;
-            }
-    
-            _input = gxCache->alphaInputs + stage;
-            if (
-                _input->a != GX_CA_ZERO
-                || _input->b != GX_CA_TEXA
-                || _input->c != _inputAlpha
-                || _input->d != GX_CA_ZERO
-            ) {
-                // if AlphaInputCache has different
-                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
-                _input->a = GX_CA_ZERO;
-                _input->b = GX_CA_TEXA;
-                _input->c = _inputAlpha;
-                _input->d = GX_CA_ZERO;
-            }
-            break;
-        case 3:
-            _input = gxCache->colorInputs + stage;
-            if (
-                _input->a != GX_CC_ZERO 
-                || _input->b != GX_CC_ZERO
-                || _input->c != GX_CC_ZERO
-                || _input->d != GX_CC_TEXC
-            ) {
-                // if ColorInputCache has different
-                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
-                _input->a = GX_CC_ZERO;
-                _input->b = GX_CC_ZERO;
-                _input->c = GX_CC_ZERO;
-                _input->d = GX_CC_TEXC;
-            }
-            
-            _input = gxCache->alphaInputs + stage;
-            if (
-                _input->a != GX_CA_ZERO
-                || _input->b != GX_CA_ZERO
-                || _input->c != GX_CA_ZERO
-                || _input->d != GX_CA_TEXA
-            ) {
-                // if AlphaInputCache has different
-                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
-                _input->a = GX_CA_ZERO;
-                _input->b = GX_CA_ZERO;
-                _input->c = GX_CA_ZERO;
-                _input->d = GX_CA_TEXA;
-            }
-            break;
-        case 4:
-            _input = gxCache->colorInputs + stage;
-            if (
-                _input->a != GX_CC_ZERO
-                || _input->b!= GX_CC_ZERO
-                || _input->c != GX_CC_ZERO
-                || _input->d != _inputColor
-            ) {
-                // if ColorInputCache has different
-                GXSetTevColorIn(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, _inputColor);
-                _input->a = GX_CC_ZERO;
-                _input->b = GX_CC_ZERO;
-                _input->c = GX_CC_ZERO;
-                _input->d = _inputColor;
-            }
-            
-            _input = gxCache->alphaInputs + stage;
-            if (
-                _input->a != GX_CA_ZERO
-                || _input->b != GX_CA_ZERO
-                || _input->c != GX_CA_ZERO
-                || _input->d != _inputAlpha
-            ) {
-                // if AlphaInputCache has different
-                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
-                _input->a = GX_CA_ZERO;
-                _input->b = GX_CA_ZERO;
-                _input->c = GX_CA_ZERO;
-                _input->d = _inputAlpha;
-            }
-            break;
-        case 2:
-            _input = gxCache->colorInputs + stage;
-            if (
-                _input->a != _inputColor
-                || _input->b != GX_CC_ZERO
-                || _input->c != GX_CC_TEXC
-                || _input->d != GX_CC_TEXC
-            ) {
-                // if ColorInputCache has different
-                GXSetTevColorIn(stage, _inputColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
-                _input->a = _inputColor;
-                _input->b = GX_CC_ZERO;
-                _input->c = GX_CC_TEXC;
-                _input->d = GX_CC_TEXC;
-            }
-            
-            _input = gxCache->alphaInputs + stage;
-            if (
-                _input->a != GX_CA_ZERO
-                || _input->b != GX_CA_TEXA
-                || _input->c != _inputAlpha
-                || _input->d != GX_CA_ZERO
-            ) {
-                // if AlphaInputCache has different
-                GXSetTevAlphaIn(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
-                _input->a = GX_CA_ZERO;
-                _input->b = GX_CA_TEXA;
-                _input->c = _inputAlpha;
-                _input->d = GX_CA_ZERO;
-            }
-            break;
-        deafult:
-            break;
+    switch (mode)
+    {
+    case 1:
+        GXSetTevColorIn_cached(stage, _inputColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+        GXSetTevAlphaIn_cached(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
+        break;
+    case 0:
+        GXSetTevColorIn_cached(stage, GX_CC_ZERO, GX_CC_TEXC, _inputColor, GX_CC_ZERO);
+        GXSetTevAlphaIn_cached(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
+        break;
+    case 3:
+        GXSetTevColorIn_cached(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+        GXSetTevAlphaIn_cached(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
+        break;
+    case 4:
+        GXSetTevColorIn_cached(stage, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, _inputColor);
+        GXSetTevAlphaIn_cached(stage, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, _inputAlpha);
+        break;
+    case 2:
+        GXSetTevColorIn_cached(stage, _inputColor, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXC);
+        GXSetTevAlphaIn_cached(stage, GX_CA_ZERO, GX_CA_TEXA, _inputAlpha, GX_CA_ZERO);
+        break;
     }
 
-    _operation = gxCache->colorOperations + stage;
-    if (
-        _operation->reg != GX_TEVPREV
-        || _operation->scale != GX_CS_SCALE_1
-        || _operation->clamp != GX_TRUE
-        || _operation->op != GX_TEV_ADD
-        || _operation->bias != GX_TB_ZERO
-    ) {
-        // if ColorOperationsCache has different
-        GXSetTevColorOp(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-        _operation->op = GX_TEV_ADD;
-        _operation->bias = GX_TB_ZERO;
-        _operation->scale = GX_CS_SCALE_1;
-        _operation->clamp = GX_TRUE;
-        _operation->reg = GX_TEVPREV;
-    }
-
-    _operation = gxCache->alphaOperations + stage;
-    if (
-        _operation->reg != GX_TEVPREV
-        || _operation->scale != GX_CS_SCALE_1
-        || _operation->clamp != GX_TRUE
-        || _operation->op != GX_TEV_ADD
-        || _operation->bias != GX_TB_ZERO
-    ) {
-        // if AlphaOperationCache has different
-        GXSetTevAlphaOp(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-        _operation->op = GX_TEV_ADD;
-        _operation->bias = GX_TB_ZERO;
-        _operation->scale = GX_CS_SCALE_1;
-        _operation->clamp = GX_TRUE;
-        _operation->reg = GX_TEVPREV;
-    }
+    GXSetTevColorOp_cached(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp_cached(stage, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
