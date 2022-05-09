@@ -534,7 +534,7 @@ void func_80073EF8(void);
 // ? func_80073F74();
 void func_80074480(void);
 void func_8007449C(void);
-// ? func_80074500();
+void func_80074500(int a, struct Struct80292B60 *b);
 // ? func_80075428();
 // ? func_80075498();
 void g_create_textbox(int, int, struct Struct80075900 *);

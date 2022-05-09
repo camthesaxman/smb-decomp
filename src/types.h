@@ -1068,15 +1068,17 @@ struct Struct80180F14
 struct Struct80292B60
 {
     s32 unk0;
-    u32 unk4;
+    s32 unk4;
     u32 unk8;
     u8 fillerC[4];
     float unk10;
     s8 unk14;
     s8 unk15;
-    u8 filler16[0x1C-0x16];
+    s8 unk16;
+    u8 filler17[0x1C-0x17];
     void (*unk1C)(struct Struct80292B60 *);
-    u8 filler20[0x28-0x20];
+    u8 filler20[4];
+    u32 unk24;
 };  // size = 0x28
 
 #endif
