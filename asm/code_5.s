@@ -1559,7 +1559,6 @@ lbl_800753F0:
 /* 8007541C 0007133C  CA E1 00 68 */	lfd f23, 0x68(r1)
 /* 80075420 00071340  38 21 00 B0 */	addi r1, r1, 0xb0
 /* 80075424 00071344  4E 80 00 20 */	blr
-.endif
 
 .global func_80075428
 func_80075428:
@@ -1592,7 +1591,8 @@ lbl_80075458:
 /* 8007548C 000713AC  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 80075490 000713B0  38 21 00 20 */	addi r1, r1, 0x20
 /* 80075494 000713B4  4E 80 00 20 */	blr
-
+.endif
+.if 0
 .global func_80075498
 func_80075498:
 /* 80075498 000713B8  94 21 FF C0 */	stwu r1, -0x40(r1)
@@ -2223,6 +2223,7 @@ lbl_80075D08:
 /* 80075D6C 00071C8C  4E 80 00 20 */	blr
 lbl_80075D70:
 /* 80075D70 00071C90  4E 80 00 20 */	blr
+.endif
 
 .global func_80075D74
 func_80075D74:
@@ -18157,7 +18158,6 @@ lbl_802F4BC8:
 	# ROM: 0x1EE5E8
 	.4byte 0x43300000
 	.4byte 0
-.endif
 
 .global lbl_802F4BD0
 lbl_802F4BD0:
@@ -18168,6 +18168,7 @@ lbl_802F4BD0:
 lbl_802F4BD4:
 	# ROM: 0x1EE5F4
 	.4byte 0x41900000
+.endif
 
 .global lbl_802F4BD8
 lbl_802F4BD8:
@@ -20349,7 +20350,6 @@ lbl_801C147C:
 	.4byte lbl_80075030  ;# ptr
 	.4byte lbl_800750A0  ;# ptr
 	.4byte lbl_80075030  ;# ptr
-.endif
 
 .global lbl_801C14B4
 lbl_801C14B4:
@@ -20368,6 +20368,8 @@ lbl_801C14B4:
 	.4byte lbl_80075828  ;# ptr
 	.4byte lbl_80075898  ;# ptr
 	.4byte lbl_80075828  ;# ptr
+.endif
+
 	.4byte 0
 
 .global lbl_801C14F0
@@ -22850,7 +22852,6 @@ lbl_801C5758:
 
 .section .sdata
 
-    .balign 8
 .if 0
 .global lbl_802F0FB0
 lbl_802F0FB0:
@@ -22923,11 +22924,14 @@ lbl_802F0FE4:
 	.4byte 0x15000000
 .endif
 
+.if 0
 .global lbl_802F0FE8
 lbl_802F0FE8:
 	# ROM: 0x1EB728
 	.4byte 0
 	.4byte 0
+.endif
+	.balign 8
 glabel string_a_Retry
 	.asciz "a/Retry"
 glabel string_a_Guide

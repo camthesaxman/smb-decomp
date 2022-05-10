@@ -743,35 +743,12 @@ struct Sphere
 struct Preview;
 struct NaomiDispList;
 
-struct Struct80075900
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[4];
-    s8 unk14;
-    s8 unk15;
-    s8 unk16;
-    u8 filler17[0x1C-0x17];
-    void (*unk1C)();
-    u8 filler20[0x28-0x20];
-};
-
 struct Struct8009544C
 {
     u8 filler0[0x6];
     u16 unk6;
     u8 filler8[0x18-0x8];
 };  // size = 0x18
-
-struct Struct8000F030
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[0x20-0x10];
-    s32 unk20;
-};
 
 struct Struct801EED88
 {
@@ -1070,15 +1047,19 @@ struct Struct80292B60
     s32 unk0;
     s32 unk4;
     u32 unk8;
-    u8 fillerC[4];
+    s16 unkC;
+    s16 unkE;
     float unk10;
     s8 unk14;
     s8 unk15;
     s8 unk16;
-    u8 filler17[0x1C-0x17];
+    u8 unk17;
+    u8 unk18;
+    u8 unk19;
+    u8 filler1A[2];
     void (*unk1C)(struct Struct80292B60 *);
-    u8 filler20[4];
-    u32 unk24;
+    s32 unk20;
+    s32 unk24;
 };  // size = 0x28
 
 #endif

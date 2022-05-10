@@ -336,7 +336,7 @@ void submode_adv_demo_init_func(void)
 
 float lbl_801741CC[] = { -125, -70, -10 };
 
-void lbl_8000F030(struct Struct8000F030 *a)
+void lbl_8000F030(struct Struct80292B60 *a)
 {
     Vec spC;
 
@@ -513,7 +513,7 @@ void run_cutscene_script(void)
     float f28;
     const struct IntroCutsceneCommand *cmd;
     Vec sp3C;
-    struct Struct80075900 sp14;
+    struct Struct80292B60 sp14;
     Vec sp8;
     int i;
     struct Sprite *sprite;
@@ -1252,7 +1252,7 @@ void submode_adv_title_init_func(void)
 
 void submode_adv_title_reinit_func(void)
 {
-    struct Struct80075900 sp8;
+    struct Struct80292B60 sp8;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1320,7 +1320,7 @@ void submode_adv_title_main_func(void)
          || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
         {
-            struct Struct80075900 sp8;
+            struct Struct80292B60 sp8;
 
             func_8002B5C8(0x162);
             modeCtrl.levelSetFlags |= 4;
@@ -1410,7 +1410,7 @@ void submode_adv_info_init_func(void)
     show_adv_copyright_text(0);
     if (!(modeCtrl.levelSetFlags & (1 << 13)))
     {
-        struct Struct80075900 sp8;
+        struct Struct80292B60 sp8;
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unkC = 0x140;
@@ -1590,7 +1590,7 @@ void submode_adv_info_main_func(void)
             continue;
         if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1 << 13)))
         {
-            struct Struct80075900 sp8;
+            struct Struct80292B60 sp8;
 
             memset(&sp8, 0, sizeof(sp8));
             if (cmd->cmdId == 16)

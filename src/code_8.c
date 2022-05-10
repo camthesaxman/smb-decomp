@@ -1,3 +1,5 @@
+#include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 
 #include <dolphin.h>
@@ -15,18 +17,13 @@ struct Struct80290180_sub
     s16 unk82;
 };  // size = 0x84
 
-struct Struct80290180
-{
-    struct Struct80290180_sub unk0[20];
-};
-
-struct Struct80290180 lbl_80290180[4];
+struct Struct80290180_sub lbl_80290180[4][20];
 FORCE_BSS_ORDER(lbl_80290180)
 
 struct Struct80292B60 lbl_80292AC0[4];  // +0x2940
 FORCE_BSS_ORDER(lbl_80292AC0)
 
-struct Struct80292B60 lbl_80292B60[4];
+struct Struct80292B60 lbl_80292B60[4];  // +0x29E0
 FORCE_BSS_ORDER(lbl_80292B60)
 
 void func_80073F74(int a, struct Struct80292B60 *b);
@@ -95,7 +92,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
         {
             f30 = 0.0f;
             r27 = 0;
-            r26 = &lbl_80290180[a].unk0[0];
+            r26 = lbl_80290180[a];
             for (i = 0; i < 20; i++, r26++)
             {
                 if (r26->unk0 == 0)
@@ -125,7 +122,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
         break;
     case 10:
         b->unk8++;
-        r26 = &lbl_80290180[a].unk0[0];
+        r26 = lbl_80290180[a];
         j = 0;
         for (i = 0; i < 20; i++, r26++)
         {
@@ -144,7 +141,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
         {
             s32 i;
             b->unk0 = 10;
-            r26 = &lbl_80290180[a].unk0[0];
+            r26 = lbl_80290180[a];
             for (i = 0; i < 19; i++, r26++)
                 memcpy(r26, r26 + 1, sizeof(*r26));
             r26->unk0 = 0;
@@ -169,7 +166,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
 
             for (i = 0; i < b->unk15; i++)
             {
-                r26 = &lbl_80290180[a].unk0[0];
+                r26 = lbl_80290180[a];
                 for (j = 0; j < 19; j++, r26++)
                     memcpy(r26, r26 + 1, sizeof(*r26));
                 r26->unk0 = 0;
@@ -192,7 +189,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
         break;
     }
 
-    r26 = &lbl_80290180[a].unk0[0];
+    r26 = lbl_80290180[a];
     for (i = 0; i < 20; i++, r26++)
     {
         if (b->unk0 >= 10
@@ -201,7 +198,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
          && (b->unk0 == 10 || b->unk0 == 11))
         {
             if (i < b->unk15
-             && (i == 0 || lbl_80290180[a].unk0[i - 1].unk0 != 2))
+             && (i == 0 || lbl_80290180[a][i - 1].unk0 != 2))
                 r26->unk82 += 2;
             if (r26->unk82 >= get_ascii_text_width(r26->unk1))
                 r26->unk0 = 1;
@@ -439,7 +436,7 @@ void func_80074500(int a, struct Struct80292B60 *b)
     }
     else
         f25 = 1.0f;
-    r31 = lbl_80290180[a].unk0;
+    r31 = lbl_80290180[a];
     for (r30 = 0; r30 < 20; r30++, r31++)
     {
         if (r31->unk0 == 0)
@@ -468,32 +465,218 @@ void func_80074500(int a, struct Struct80292B60 *b)
     lbl_802F200C = -1.0f;
     func_80071A8C();
 }
-/*
-const float lbl_802F4B28 = -1f;
-const float lbl_802F4B2C = 0f;
-const double lbl_802F4B30 = 4503601774854144;
-const double lbl_802F4B38 = 0.059999999776482585;
-const float lbl_802F4B40 = 0.0099999997764825821f;
-const double lbl_802F4B48 = 0.5;
-const float lbl_802F4B50 = 2f;
-const double lbl_802F4B58 = 1;
-const double lbl_802F4B60 = 0.10000000000000001;
-const double lbl_802F4B68 = 1.8;
-const double lbl_802F4B70 = 2;
-const float lbl_802F4B78 = 1f;
-const float lbl_802F4B7C = 48f;
-const double lbl_802F4B80 = 24;
-const float lbl_802F4B88 = 24f;
-const double lbl_802F4B90 = 0.050000000000000003;
-const float lbl_802F4B98 = 15f;
-const float lbl_802F4B9C = 0.5f;
-const float lbl_802F4BA0 = 14f;
-const float lbl_802F4BA4 = 10f;
-const float lbl_802F4BA8 = 34f;
-const double lbl_802F4BB0 = -1.5;
-const double lbl_802F4BB8 = 0;
-const double lbl_802F4BC0 = 0.14000000000000001;
-const double lbl_802F4BC8 = 4503599627370496;
-const float lbl_802F4BD0 = 12f;
-const float lbl_802F4BD4 = 18f;
-*/
+
+char lbl_802F0FE8[8] = {0};
+
+void func_80075428(int a)
+{
+    int i;
+    struct Struct80290180_sub *r29 = lbl_80290180[a];
+
+    for (i = 0; i < 20; i++, r29++)
+    {
+        r29->unk0 = 0;
+        r29->unk82 = 0;
+        strcpy(r29->unk1, lbl_802F0FE8);
+    }
+}
+
+void func_80075498(struct Struct80292B60 *a, int *b, int *c)
+{
+    float f4 = a->unk10;
+    float f1 = (a->unk15 - 1) * 24.0f;
+
+    switch (a->unk16)
+    {
+    default:
+        *b = a->unkC - f4 * 0.5f;
+        *c = a->unkE - a->unk15 * 12.0f;
+        break;
+    case 1:
+        *b = a->unkC + 18;
+        *c = a->unkE - 12;
+        break;
+    case 2:
+        *b = a->unkC + 18;
+        *c = a->unkE - 12 - f1 * 0.5;
+        break;
+    case 3:
+        *b = a->unkC + 18;
+        *c = a->unkE - 12 - f1;
+        break;
+    case 4:
+        *b = a->unkC - f4 - 18.0f;
+        *c = a->unkE - 12;
+        break;
+    case 5:
+        *b = a->unkC - f4 - 18.0f;
+        *c = a->unkE - 12 - f1 * 0.5f;
+        break;
+    case 6:
+        *b = a->unkC - f4 - 18.0f;
+        *c = a->unkE - 12 - f1;
+        break;
+    case 7:
+        *b = a->unkC - 24;
+        *c = a->unkE + 18;
+        break;
+    case 8:
+        *b = a->unkC - f4 * 0.5;
+        *c = a->unkE + 18;
+        break;
+    case 9:
+        *b = a->unkC - f4 + 24.0f;
+        *c = a->unkE + 18;
+        break;
+    case 10:
+        *b = a->unkC - 24;
+        *c = a->unkE - 42 - f1;
+        break;
+    case 11:
+    case 13:
+        *b = a->unkC - f4 * 0.5;
+        *c = a->unkE - 42 - f1;
+        break;
+    case 12:
+        *b = a->unkC - f4 + 24.0f;
+        *c = a->unkE - 42 - f1;
+        break;
+    }
+}
+
+void g_create_textbox(int a, int b, struct Struct80292B60 *c)
+{
+    int r30;
+    int r28;
+    int r27;
+    int r26;
+    struct Struct80292B60 *r25 = &lbl_80292B60[a];
+
+    if (b == 20 && r25->unk0 >= 20)
+    {
+        r25->unk0 = 20;
+        return;
+    }
+    if (b == 20 && r25->unk0 != 1 && r25->unk0 < 10)
+        return;
+    if (c == NULL)
+        c = r25;
+
+    r25->unk4 = 30;
+    r25->unk8 = 0;
+    r28 = (c->unk16 == 0) ? r25->unk16 : c->unk16;
+    r27 = (c->unkC == 0) ? r25->unkC : c->unkC;
+    r26 = (c->unkE == 0) ? r25->unkE : c->unkE;
+    r30 = (c->unk24 == 0) ? 0xFFFFFF : c->unk24;
+    if (b == 1 || b == 2)
+    {
+        func_80075428(a);
+        r25->unk20 = a;
+        r25->unk0 = b;
+        r25->unkC = r27;
+        r25->unkE = r26;
+        r25->unk14 = c->unk14;
+        r25->unk10 = r25->unk14 * 24;
+        r25->unk15 = c->unk15;
+        r25->unk16 = c->unk16;
+        r25->unk24 = r30;
+        r25->unk17 = c->unk17;
+        r25->unk18 = c->unk18;
+        r25->unk19 = c->unk19;
+        r25->unk1C = c->unk1C;
+        return;
+    }
+
+    if (b == 21)
+    {
+        if (r25->unk0 < 10)
+        {
+            r25->unk0 = 3;
+            r25->unkC = r27;
+            r25->unkE = r26;
+            r25->unk14 = c->unk14;
+            r25->unk10 = r25->unk14 * 24;
+            r25->unk15 = c->unk15;
+            r25->unk16 = r28;
+            r25->unk24 = r30;
+            return;
+        }
+        r25->unk0 = b;
+        memcpy(&lbl_80292AC0[a], r25, sizeof(lbl_80292AC0[a]));
+        lbl_80292AC0[a].unkC = r27;
+        lbl_80292AC0[a].unkE = r26;
+        lbl_80292AC0[a].unk14 = c->unk14;
+        lbl_80292AC0[a].unk15 = c->unk15;
+        lbl_80292AC0[a].unk16 = r28;
+        lbl_80292AC0[a].unk24 = r30;
+        return;
+    }
+
+    r25->unk0 = b;
+}
+
+void func_80075B5C(int a, const char *b)
+{
+    int i;
+    struct Struct80290180_sub *r30;
+    struct Struct80292B60 *r29;
+
+    r29 = &lbl_80292B60[a];
+    r30 = lbl_80290180[a];
+    for (i = 0; i < 20; i++, r30++)
+    {
+        if (r30->unk0 == 0)
+        {
+            r30->unk0 = 2;
+            strcpy(r30->unk1, b);
+            r30->unk82 = 0;
+            if (i == r29->unk15 && r29->unk0 == 10)
+            {
+                r29->unk0 = 11;
+                r29->unk8 = 0;
+            }
+            break;
+        }
+    }
+}
+
+void g_set_textbox_text(int a, const char *b)
+{
+    char buffer[0x200];
+    int length = 0;
+    int lines = 0;
+    
+    while (*b != 0)
+    {
+        if (*b == '\n')
+        {
+            buffer[length] = 0;
+            func_80075B5C(a, buffer);
+            length = 0;
+            lines++;
+        }
+        else
+        {
+            buffer[length] = *b;
+            length++;
+        }
+        b++;
+    }
+    buffer[length] = 0;
+    func_80075B5C(a, buffer);
+    if (lines + 1 > lbl_80292AC0[a].unk15)
+        lbl_80292AC0[a].unk15 = lines + 1;
+}
+
+void func_80075CD4(int a, const char *fmt, ...)
+{
+    va_list args;
+    char buffer[0x200];
+
+    va_start(args, fmt);
+    vsprintf(buffer, fmt, args);
+    va_end(args);
+    g_set_textbox_text(a, buffer);
+}
+
+void lbl_80075D70(void) {}

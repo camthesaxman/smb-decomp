@@ -1119,7 +1119,7 @@ char *nameEntryText[] =
 
 void submode_game_nameentry_ready_init_func(void)
 {
-    struct Struct80075900 sp8;
+    struct Struct80292B60 sp8;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1494,7 +1494,7 @@ void submode_game_extra_wait_func(void)
         modeCtrl.unk0 = 60;
     if (modeCtrl.unk0 == 540)
     {
-        struct Struct80075900 sp30;
+        struct Struct80292B60 sp30;
 
         memset(&sp30, 0, sizeof(sp30));
         sp30.unk16 = 11;
@@ -1521,7 +1521,7 @@ void submode_game_extra_wait_func(void)
     }
     if (modeCtrl.unk0 == 300)
     {
-        struct Struct80075900 sp8;
+        struct Struct80292B60 sp8;
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unk16 = 11;
