@@ -466,8 +466,6 @@ void func_80074500(int a, struct Struct80292B60 *b)
     func_80071A8C();
 }
 
-char lbl_802F0FE8[8] = {0};
-
 void func_80075428(int a)
 {
     int i;
@@ -477,7 +475,7 @@ void func_80075428(int a)
     {
         r29->unk0 = 0;
         r29->unk82 = 0;
-        strcpy(r29->unk1, lbl_802F0FE8);
+        strcpy(r29->unk1, "");
     }
 }
 

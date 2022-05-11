@@ -2224,7 +2224,7 @@ lbl_80075D08:
 lbl_80075D70:
 /* 80075D70 00071C90  4E 80 00 20 */	blr
 .endif
-
+.if 0
 .global func_80075D74
 func_80075D74:
 /* 80075D74 00071C94  7C 08 02 A6 */	mflr r0
@@ -2388,7 +2388,9 @@ lbl_80075FBC:
 /* 80075FC4 00071EE4  38 21 00 20 */	addi r1, r1, 0x20
 /* 80075FC8 00071EE8  7C 08 03 A6 */	mtlr r0
 /* 80075FCC 00071EEC  4E 80 00 20 */	blr
-
+.endif
+.if 0
+.global g_draw_pause_menu
 g_draw_pause_menu:
 /* 80075FD0 00071EF0  7C 08 02 A6 */	mflr r0
 /* 80075FD4 00071EF4  3C 80 80 1F */	lis r4, lbl_801EEC68@ha
@@ -2544,7 +2546,7 @@ lbl_800761B0:
 /* 8007621C 0007213C  90 01 00 7C */	stw r0, 0x7c(r1)
 /* 80076220 00072140  7E 10 2B 78 */	or r16, r16, r5
 /* 80076224 00072144  57 F7 10 3A */	slwi r23, r31, 2
-/* 80076228 00072148  3B A6 00 08 */	addi r29, r6, 8
+/* 80076228 00072148  3B A6 00 08 */	addi r29, r6, 8  ;# lbl_801EEC68.unk8
 /* 8007622C 0007214C  3A 60 FF A6 */	li r19, -90
 /* 80076230 00072150  3A 80 FF B8 */	li r20, -72
 /* 80076234 00072154  3A A0 FF BE */	li r21, -66
@@ -2823,6 +2825,7 @@ lbl_8007657C:
 /* 80076614 00072534  CA 81 00 D8 */	lfd f20, 0xd8(r1)
 /* 80076618 00072538  38 21 01 38 */	addi r1, r1, 0x138
 /* 8007661C 0007253C  4E 80 00 20 */	blr
+.endif
 
 .global show_press_start_textbox
 show_press_start_textbox:
@@ -11041,6 +11044,8 @@ lbl_8007DE3C:
 /* 8007DE48 00079D68  7C 08 03 A6 */	mtlr r0
 /* 8007DE4C 00079D6C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007DE50 00079D70  4E 80 00 20 */	blr
+
+.global lbl_8007DE54
 lbl_8007DE54:
 /* 8007DE54 00079D74  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8007DE58 00079D78  A8 A4 00 10 */	lha r5, 0x10(r4)
@@ -18169,7 +18174,7 @@ lbl_802F4BD4:
 	# ROM: 0x1EE5F4
 	.4byte 0x41900000
 .endif
-
+.if 0
 .global lbl_802F4BD8
 lbl_802F4BD8:
 	# ROM: 0x1EE5F8
@@ -18331,6 +18336,7 @@ lbl_802F4C78:
 	# ROM: 0x1EE698
 	.4byte 0x43300000
 	.4byte 0x80000000
+.endif
 
 .global lbl_802F4C80
 lbl_802F4C80:
@@ -20370,6 +20376,7 @@ lbl_801C14B4:
 	.4byte lbl_80075828  ;# ptr
 .endif
 
+.if 0
 	.4byte 0
 
 .global lbl_801C14F0
@@ -20471,6 +20478,7 @@ lbl_801C1608:
 	.4byte lbl_801C15D0  ;# ptr
 	.4byte lbl_801C15E8  ;# ptr
 	.4byte lbl_801C15F8  ;# ptr
+.endif
 
 .global lbl_801C1630
 lbl_801C1630:
@@ -22930,7 +22938,6 @@ lbl_802F0FE8:
 	# ROM: 0x1EB728
 	.4byte 0
 	.4byte 0
-.endif
 	.balign 8
 glabel string_a_Retry
 	.asciz "a/Retry"
@@ -22947,6 +22954,7 @@ lbl_802F1000:
 lbl_802F1004:
 	# ROM: 0x1EB744
 	.asciz "OFF"
+.endif
 
 .global lbl_802F1008
 lbl_802F1008:
