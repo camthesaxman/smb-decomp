@@ -3601,8 +3601,8 @@ lbl_00003398:
 /* 00003398 2C160000 */ cmpwi r22, 0
 /* 0000339C 41820140 */ beq lbl_000034DC
 /* 000033A0 C01B006C */ lfs f0, 0x6c(r27)
-/* 000033A4 3C600000 */ lis r3, lbl_801BE470@ha
-/* 000033A8 3BC30000 */ addi r30, r3, lbl_801BE470@l
+/* 000033A4 3C600000 */ lis r3, spriteTileOffsets@ha
+/* 000033A8 3BC30000 */ addi r30, r3, spriteTileOffsets@l
 /* 000033AC D0010014 */ stfs f0, 0x14(r1)
 /* 000033B0 3C800002 */ lis r4, 2
 /* 000033B4 3B400000 */ li r26, 0

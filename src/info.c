@@ -496,7 +496,7 @@ struct Struct801818D0 rankTexOffsets[4] =
     { 160,  0,  88, 48 },
 };
 
-void lbl_80023E0C(int dummy, struct Sprite *sprite)
+void lbl_80023E0C(s8 *dummy, struct Sprite *sprite)
 {
     struct Ball *ball = &ballInfo[sprite->unk48];
 
@@ -509,12 +509,12 @@ void lbl_80023E0C(int dummy, struct Sprite *sprite)
         sprintf(sprite->text, "BONUS  +%1d", ball->unk138);
 }
 
-void lbl_80023EBC(int dummy, struct Sprite *sprite)
+void lbl_80023EBC(s8 *dummy, struct Sprite *sprite)
 {
     sprite->unk6C += (1.0f - sprite->unk6C) * 0.1;
 }
 
-void lbl_80023EE0(int dummy, struct Sprite *sprite)
+void lbl_80023EE0(s8 *dummy, struct Sprite *sprite)
 {
     if (sprite->unk10 > 0)
         sprite->unk10--;
@@ -529,7 +529,7 @@ void lbl_80023EE0(int dummy, struct Sprite *sprite)
     sprite->unk72 = sprite->unk70;
 }
 
-void rank_icon_main(int dummy, struct Sprite *sprite)
+void rank_icon_main(s8 *dummy, struct Sprite *sprite)
 {
     sprite->unk10++;
     if (sprite->unk10 <= 15)
@@ -615,13 +615,8 @@ void lbl_80024324(struct Sprite *sprite)
     params.alpha = sprite->unk6C;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & ~0xF) | 0xA;
-    params.unk38 = ((int)(sprite->unk6C * 255.0f) << 24)
-                 | (sprite->unkC << 16)
-                 | (sprite->unkD << 8)
-                 | (sprite->unkE << 0);
-    params.unk3C = (sprite->unk70 << 16)
-                 | (sprite->unk71 << 8)
-                 | (sprite->unk72 << 0);
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    params.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
     r6 = &rankTexOffsets[sprite->unk48];
     tex = &bitmapGroups[(params.bmpId >> 8) & 0xFF].tpl->texHeaders[params.bmpId & 0xFF];
     params.x = sprite->centerX;
@@ -655,7 +650,7 @@ void create_rank_icon(struct Ball *ball)
     rankIcon->bmpId = ball->unk2E;
     rankIcon->unk10 = 0;
     rankIcon->mainFunc = rank_icon_main;
-    rankIcon->unk38 = lbl_80024324;
+    rankIcon->drawFunc = lbl_80024324;
     strcpy(rankIcon->text, "ranking");
 }
 

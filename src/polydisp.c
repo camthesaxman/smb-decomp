@@ -1313,7 +1313,7 @@ void set_backdrop_color(void)
             break;
         default:
             color = backgroundInfo.backdropColor;
-            introBackdropColor = (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
+            introBackdropColor = RGBA(color.r, color.g, color.b, color.a);
             break;
         }
         break;

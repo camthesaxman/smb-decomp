@@ -271,7 +271,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BE420;
 // extern ? lbl_801BE434;
 // extern ? lbl_801BE448;
-// extern ? lbl_801BE470;
+// extern ? spriteTileOffsets;
 
 // extern ? lbl_801C1264;
 // extern ? lbl_801C1294;
@@ -611,12 +611,12 @@ extern struct
 // extern ? lbl_8028CD98;
 // extern ? lbl_8028CED8;
 // extern ? lbl_8028CF00;
-// extern ? lbl_8028CF28;
+// extern ? textDrawInfo;
 // extern ? spriteInfo;
 extern struct Struct80290170 screenFadeInfo;
-// extern ? lbl_80290180;
+// extern ? textBoxLines;
 // extern ? lbl_80292AC0;
-extern struct Struct80292B60 lbl_80292B60[];
+extern struct TextBox textBoxes[];
 // extern ? lbl_80292C00;
 // extern ? lbl_80292C60;
 // extern ? lbl_80292C90;

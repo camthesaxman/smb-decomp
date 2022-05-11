@@ -158,20 +158,6 @@ enum
 
 #define BITMAP_ID(group, bmp) (((group) << 8) | (bmp))
 
-enum Alignment
-{
-    ALIGN_LT,
-    ALIGN_LC,
-    ALIGN_LB,
-    ALIGN_CT,
-    ALIGN_CC,
-    ALIGN_CB,
-    ALIGN_RT,
-    ALIGN_RC,
-    ALIGN_RB,
-    ALIGN_PIC,
-};
-
 struct Bitmap
 {
     /*0x00*/ float x;
@@ -220,6 +206,6 @@ void bitmap_main(void);
 // ? bitmap_draw_normal_char();
 // ? bitmap_draw_char();
 void bitmap_draw_string(void);
-void func_8002704C(void);
+void g_draw_all_naomi_sprites(void);
 
 #endif

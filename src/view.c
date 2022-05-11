@@ -272,10 +272,10 @@ void view_create_text_sprites(void)
         sprite->tag = 100;
         sprite->centerX = 24.0f;
         sprite->centerY = 24.0f;
-        sprite->textAlign = 0;
-        sprite->fontId = 0xB3;
+        sprite->textAlign = ALIGN_LT;
+        sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = view_sprite_func;
+        sprite->drawFunc = view_sprite_func;
         strcpy(sprite->text, "a/Stage Overview");
     }
 
@@ -285,10 +285,10 @@ void view_create_text_sprites(void)
         sprite->tag = 100;
         sprite->centerX = 170.0f;
         sprite->centerY = 435.0f;
-        sprite->textAlign = 8;
-        sprite->fontId = 0xB3;
+        sprite->textAlign = ALIGN_RB;
+        sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = view_sprite_func;
+        sprite->drawFunc = view_sprite_func;
         strcpy(sprite->text, "p/LEVER/a/Rotate/Zoom");
     }
 
@@ -298,10 +298,10 @@ void view_create_text_sprites(void)
         sprite->tag = 100;
         sprite->centerX = 415.0f;
         sprite->centerY = 435.0f;
-        sprite->textAlign = 8;
-        sprite->fontId = 0xB3;
+        sprite->textAlign = ALIGN_RB;
+        sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = view_sprite_func;
+        sprite->drawFunc = view_sprite_func;
         strcpy(sprite->text, "p/BUTTON_C/a/Pan camera");
     }
 }

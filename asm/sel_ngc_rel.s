@@ -12402,7 +12402,7 @@ lbl_0000AFB0:
 /* 0000B014 38BF005C */ addi r5, r31, 0x5c
 /* 0000B018 38DF0060 */ addi r6, r31, 0x60
 /* 0000B01C 38FF0064 */ addi r7, r31, 0x64
-/* 0000B020 4BFF5169 */ bl g_get_dimensions_for_sprite
+/* 0000B020 4BFF5169 */ bl calc_sprite_bounds
 /* 0000B024 3C600020 */ lis r3, 0x20
 /* 0000B028 93DF0038 */ stw r30, 0x38(r31)
 /* 0000B02C 38632000 */ addi r3, r3, 0x2000
@@ -12785,7 +12785,7 @@ lbl_0000B5A0:
 /* 0000B5B4 38BF005C */ addi r5, r31, 0x5c
 /* 0000B5B8 38DF0060 */ addi r6, r31, 0x60
 /* 0000B5BC 38FF0064 */ addi r7, r31, 0x64
-/* 0000B5C0 4BFF4BC9 */ bl g_get_dimensions_for_sprite
+/* 0000B5C0 4BFF4BC9 */ bl calc_sprite_bounds
 /* 0000B5C4 92FF0038 */ stw r23, 0x38(r31)
 /* 0000B5C8 7C108A14 */ add r0, r16, r17
 /* 0000B5CC 7C609214 */ add r3, r0, r18
@@ -14383,7 +14383,7 @@ lbl_0000CC78:
 /* 0000CC94 38DF0060 */ addi r6, r31, 0x60
 /* 0000CC98 38FF0064 */ addi r7, r31, 0x64
 /* 0000CC9C 901F0038 */ stw r0, 0x38(r31)
-/* 0000CCA0 4BFF34E9 */ bl g_get_dimensions_for_sprite
+/* 0000CCA0 4BFF34E9 */ bl calc_sprite_bounds
 /* 0000CCA4 931F0038 */ stw r24, 0x38(r31)
 /* 0000CCA8 38600004 */ li r3, 4
 /* 0000CCAC 80010118 */ lwz r0, 0x118(r1)
@@ -14439,7 +14439,7 @@ lbl_0000CD20:
 /* 0000CD70 90A10124 */ stw r5, 0x124(r1)
 /* 0000CD74 38BF005C */ addi r5, r31, 0x5c
 /* 0000CD78 901F0038 */ stw r0, 0x38(r31)
-/* 0000CD7C 4BFF340D */ bl g_get_dimensions_for_sprite
+/* 0000CD7C 4BFF340D */ bl calc_sprite_bounds
 /* 0000CD80 80010124 */ lwz r0, 0x124(r1)
 /* 0000CD84 901F0038 */ stw r0, 0x38(r31)
 /* 0000CD88 9B3F0003 */ stb r25, 3(r31)
@@ -14548,7 +14548,7 @@ lbl_0000CE7C:
 /* 0000CF18 38DF0060 */ addi r6, r31, 0x60
 /* 0000CF1C 38FF0064 */ addi r7, r31, 0x64
 /* 0000CF20 933F0038 */ stw r25, 0x38(r31)
-/* 0000CF24 4BFF3265 */ bl g_get_dimensions_for_sprite
+/* 0000CF24 4BFF3265 */ bl calc_sprite_bounds
 /* 0000CF28 80010120 */ lwz r0, 0x120(r1)
 /* 0000CF2C 3C800000 */ lis r4, lbl_00011D00@ha
 /* 0000CF30 38702000 */ addi r3, r16, 0x2000
@@ -16259,7 +16259,7 @@ lbl_0000E854:
 /* 0000E868 38BB005C */ addi r5, r27, 0x5c
 /* 0000E86C 38DB0060 */ addi r6, r27, 0x60
 /* 0000E870 38FB0064 */ addi r7, r27, 0x64
-/* 0000E874 4BFF1915 */ bl g_get_dimensions_for_sprite
+/* 0000E874 4BFF1915 */ bl calc_sprite_bounds
 /* 0000E878 935B0038 */ stw r26, 0x38(r27)
 /* 0000E87C 3CA00000 */ lis r5, lbl_00011D00@ha
 /* 0000E880 3C600000 */ lis r3, lbl_00011D00@ha
@@ -16359,7 +16359,7 @@ lbl_0000E9D8:
 /* 0000E9EC 38BB005C */ addi r5, r27, 0x5c
 /* 0000E9F0 38DB0060 */ addi r6, r27, 0x60
 /* 0000E9F4 38FB0064 */ addi r7, r27, 0x64
-/* 0000E9F8 4BFF1791 */ bl g_get_dimensions_for_sprite
+/* 0000E9F8 4BFF1791 */ bl calc_sprite_bounds
 /* 0000E9FC 935B0038 */ stw r26, 0x38(r27)
 /* 0000EA00 3CA00000 */ lis r5, lbl_00011D00@ha
 /* 0000EA04 3C600000 */ lis r3, lbl_00011D00@ha

@@ -200,15 +200,17 @@ static void update_av_logo(void)
     // Fade background to yellow after frame 210
     if (advLogoInfo.unk14 < 240 && advLogoInfo.unk14 >= 210)
     {
-        int var1 = 240 - advLogoInfo.unk14;
+        int t = 240 - advLogoInfo.unk14;
         u32 color;
 
-        if (var1 >= 30)
-            color = 0x00FFC000;
+        if (t >= 30)
+            color = RGBA(255, 192, 0, 0);
         else
-            color = 0x00FF0000
-               | ((int)(255.0 - var1 * 2.1) << 8)
-               | (int)(255.0 - var1 * 8.5);
+            color = RGBA(
+                255,
+                (int)(255.0 - t * 2.1),
+                (int)(255.0 - t * 8.5),
+                0);
         introBackdropColor = color;
     }
     if (advLogoInfo.unk14 > 0)
@@ -336,7 +338,7 @@ void submode_adv_demo_init_func(void)
 
 float lbl_801741CC[] = { -125, -70, -10 };
 
-void lbl_8000F030(struct Struct80292B60 *a)
+void lbl_8000F030(struct TextBox *a)
 {
     Vec spC;
 
@@ -513,7 +515,7 @@ void run_cutscene_script(void)
     float f28;
     const struct IntroCutsceneCommand *cmd;
     Vec sp3C;
-    struct Struct80292B60 sp14;
+    struct TextBox sp14;
     Vec sp8;
     int i;
     struct Sprite *sprite;
@@ -536,7 +538,7 @@ void run_cutscene_script(void)
                 memset(&sp14, 0, sizeof(sp14));
                 sp14.unkC = sp3C.x;
                 sp14.unkE = sp3C.y;
-                sp14.unk15 = (cmd->param == CHARACTER_BABY) ? 3 : 4;
+                sp14.numLines = (cmd->param == CHARACTER_BABY) ? 3 : 4;
                 sp14.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
                 sp14.unk16 = 11;
                 sp14.unk1C = lbl_8000F030;
@@ -1252,7 +1254,7 @@ void submode_adv_title_init_func(void)
 
 void submode_adv_title_reinit_func(void)
 {
-    struct Struct80292B60 sp8;
+    struct TextBox sp8;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1281,7 +1283,7 @@ void submode_adv_title_reinit_func(void)
         memset(&sp8, 0, sizeof(sp8));
         sp8.unkC = 0x140;
         sp8.unkE = 0x182;
-        sp8.unk15 = 2;
+        sp8.numLines = 2;
         sp8.unk14 = 12;
         sp8.unk16 = 14;
         sp8.unk1C = NULL;
@@ -1313,21 +1315,21 @@ void submode_adv_title_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (lbl_80292B60[0].unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1 << 2)))
+    if (textBoxes[0].unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1 << 2)))
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
         {
-            struct Struct80292B60 sp8;
+            struct TextBox sp8;
 
             func_8002B5C8(0x162);
             modeCtrl.levelSetFlags |= 4;
             memset(&sp8, 0, sizeof(sp8));
             sp8.unkC = 0x140;
             sp8.unkE = 0x182;
-            sp8.unk15 = 2;
+            sp8.numLines = 2;
             sp8.unk14 = 12;
             sp8.unk16 = 14;
             sp8.unk1C = NULL;
@@ -1410,19 +1412,19 @@ void submode_adv_info_init_func(void)
     show_adv_copyright_text(0);
     if (!(modeCtrl.levelSetFlags & (1 << 13)))
     {
-        struct Struct80292B60 sp8;
+        struct TextBox sp8;
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unkC = 0x140;
         sp8.unkE = 0xD2;
-        sp8.unk15 = 1;
+        sp8.numLines = 1;
         sp8.unk14 = 1;
         sp8.unk16 = 11;
         sp8.unk1C = NULL;
         g_create_textbox(1, 2, &sp8);
         sp8.unkC = 0x140;
         sp8.unkE = 60;
-        sp8.unk15 = 1;
+        sp8.numLines = 1;
         sp8.unk14 = 0;
         sp8.unk16 = 14;
         sp8.unk1C = NULL;
@@ -1590,14 +1592,14 @@ void submode_adv_info_main_func(void)
             continue;
         if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1 << 13)))
         {
-            struct Struct80292B60 sp8;
+            struct TextBox sp8;
 
             memset(&sp8, 0, sizeof(sp8));
             if (cmd->cmdId == 16)
                 sp8.unkE = 0xC8;
             if (cmd->cmdId == 17)
                 sp8.unkE = 0xB4;
-            sp8.unk15 = 1;
+            sp8.numLines = 1;
             sp8.unk16 = (cmd->param != 0) ? 13 : 11;
             g_create_textbox(1, 21, &sp8);
             g_set_textbox_text(1, infoEnglishText[cmd->cmdId]);

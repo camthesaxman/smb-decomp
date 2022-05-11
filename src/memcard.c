@@ -3325,8 +3325,8 @@ struct StringEntry lbl_802F1698 = { lbl_802C4900, 0 };
 
 void memcard_draw_ui(void)
 {
-    u32 r29;
-    u32 wtf;
+    u32 color;
+    u32 intensity;
 
     func_80071A8C();
     g_set_font(0xB3);
@@ -3391,8 +3391,8 @@ void memcard_draw_ui(void)
     {
         draw_memcard_msg(&msgFormatPrompt, 320.0f, 240.0f);
 
-        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
+        intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        color = RGBA(intensity, intensity, intensity, 0);
 
         func_80071B2C(1.5f, 1.5f);
         g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
@@ -3404,13 +3404,13 @@ void memcard_draw_ui(void)
         else
         {
             func_80071AE4(0);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
@@ -3427,13 +3427,13 @@ void memcard_draw_ui(void)
         else
         {
             func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
@@ -3448,9 +3448,9 @@ void memcard_draw_ui(void)
     {
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
-        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        color = RGBA(intensity, intensity, intensity, 0);
 
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
         func_80071B2C(1.5f, 1.5f);
         g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
@@ -3461,13 +3461,13 @@ void memcard_draw_ui(void)
         else
         {
             func_80071AE4(0);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
@@ -3484,13 +3484,13 @@ void memcard_draw_ui(void)
         else
         {
             func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {

@@ -28,9 +28,11 @@ float lbl_801C14FC[] =
     608,
 };
 
-extern void g_draw_pause_menu(struct Sprite *);
+extern void pause_menu_sprite_draw(struct Sprite *);
 
-void func_80075D74(void)
+void lbl_80075D70(struct TextBox *a) {}
+
+void g_open_pause_menu(void)
 {
     struct Sprite *sprite = create_sprite();
 
@@ -39,9 +41,9 @@ void func_80075D74(void)
         sprite->tag = 4;
         sprite->centerX = 315.0f;
         sprite->centerY = lbl_801C14FC[0];
-        sprite->type = 1;
-        sprite->fontId = 0xB1;
-        sprite->textAlign = 4;
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->fontId = FONT_JAP_24x24_2P;
+        sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 0.005f;
         sprite->unk48 = 1;
         sprite->unk6C = 0.5f;
@@ -51,7 +53,7 @@ void func_80075D74(void)
         sprite->unk40 = 0.0f;
         sprite->unk44 = 0.0f;
         sprite->unk10 = 1;
-        sprite->unk38 = g_draw_pause_menu;
+        sprite->drawFunc = pause_menu_sprite_draw;
         strcpy(sprite->text, "pause menu");
     }
 }
@@ -60,7 +62,7 @@ void lbl_8007DE54();
 
 void func_80075E1C(int unused, struct Sprite *b)
 {
-    struct Sprite *temp_r3_2;
+    struct Sprite *gameOver;
 
     b->centerY += 0.075 * (lbl_801C14FC[b->unk48] - b->centerY);
     if (b->unk10 > 0)
@@ -87,21 +89,21 @@ void func_80075E1C(int unused, struct Sprite *b)
     if (b->unk48 == 4)
     {
         b->unk48 = 5;
-        temp_r3_2 = create_sprite();
-        if (temp_r3_2 != NULL)
+        gameOver = create_sprite();
+        if (gameOver != NULL)
         {
-            temp_r3_2->centerX = 320.0f;
-            temp_r3_2->centerY = 240.0f;
-            temp_r3_2->unkC = 0xFF;
-            temp_r3_2->unkD = 0;
-            temp_r3_2->unkE = 0x20;
-            temp_r3_2->fontId = 9;
-            temp_r3_2->textAlign = 4;
-            temp_r3_2->unk10 = 60;
-            temp_r3_2->unk48 = 60;
-            temp_r3_2->unk4C = b->unk4C - 0.001;
-            temp_r3_2->mainFunc = lbl_8007DE54;
-            strcpy(temp_r3_2->text, "GAME OVER");
+            gameOver->centerX = 320.0f;
+            gameOver->centerY = 240.0f;
+            gameOver->unkC = 0xFF;
+            gameOver->unkD = 0;
+            gameOver->unkE = 0x20;
+            gameOver->fontId = FONT_ASC_72x64;
+            gameOver->textAlign = ALIGN_CC;
+            gameOver->unk10 = 60;
+            gameOver->unk48 = 60;
+            gameOver->unk4C = b->unk4C - 0.001;
+            gameOver->mainFunc = lbl_8007DE54;
+            strcpy(gameOver->text, "GAME OVER");
         }
     }
 }
@@ -172,6 +174,7 @@ char **pauseMenus[] =
     menuContRetryViewHowSelectExit,
     menuContRetryHowExit,
     menuContGuideHowExit,
+
     menuContHowExit,
     menuContSaveHowExit,
     menuContRetrySaveHowSelectExit,
@@ -179,12 +182,11 @@ char **pauseMenus[] =
     menuContGuideHowExit,
 };
 
-void g_draw_pause_menu(struct Sprite *sprite)
+void pause_menu_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
-    int phi_r0;
+    int bmpId;
     int menuType;
-    u32 temp_r0_2;
     int temp_r16;
     int i;
 
@@ -193,27 +195,27 @@ void g_draw_pause_menu(struct Sprite *sprite)
     params.u2 = 1.0f;
     params.v2 = 1.0f;
     params.rotation = 0;
-    params.unk3C = 0;
+    params.color2 = 0;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
 
     if (lbl_801EEC68.unkC >= 4)
     {
         if (lbl_801EEC68.unkC == 6)
-            phi_r0 = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l2);
+            bmpId = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l2);
         else
-            phi_r0 = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l);
+            bmpId = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l);
     }
     else
-        phi_r0 = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku);
-    params.bmpId = phi_r0;
+        bmpId = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku);
+    params.bmpId = bmpId;
     params.x = sprite->centerX;
     params.y = sprite->centerY;
     params.z = sprite->unk4C + 0.001;
     params.zoomX = 1.0f;
     params.zoomY = 1.0f;
     params.alpha = 1.0f;
-    params.unk38 = ((int)(sprite->unk6C * 255.0f) << 24) | 0xFF0000 | 0xFFFF;
+    params.color1 = RGBA(255, 255, 255, (int)(sprite->unk6C * 255.0f));
     draw_naomi_sprite(&params);
 
     params.bmpId = func_80081CFC(0, 0, playerCharacterSelection[lbl_801EEC68.unk15]);
@@ -223,26 +225,24 @@ void g_draw_pause_menu(struct Sprite *sprite)
     params.zoomX = 0.5f;
     params.zoomY = 0.325f;
     params.alpha = 1.0f;
-    params.unk38 = ((int)(sprite->unk6C * 255.0f) << 24) | 0xFF0000 | 0xFFFF;
+    params.color1 = RGBA(255, 255, 255, (int)(sprite->unk6C * 255.0f));
     draw_naomi_sprite(&params);
 
     menuType = lbl_801EEC68.unk10;
-    if ((lbl_801EEC68.unk4 & 4) != 0)
+    if (lbl_801EEC68.unk4 & 4)
         menuType += 5;
     func_80071A8C();
     g_set_font(sprite->fontId);
     func_80071B50(0x220000);
-    temp_r0_2 = (globalFrameCounter >> 2) & 1;
-    temp_r16 = temp_r0_2 * 0xFF;
-    temp_r16 = (temp_r16 << 16) | (temp_r16 << 8) | temp_r16;
+    temp_r16 = (u32)((globalFrameCounter >> 2) & 1) * 255;
+    temp_r16 = RGBA(temp_r16, temp_r16, temp_r16, 0);
 
     for (i = 0; i < lbl_801EEC68.unkC; i++)
     {
         float phi_f22;
         float x;
         float y;
-        int phi_r0_2;
-        char text[24];
+        char text[32];
 
         func_80071B1C((i == lbl_801EEC68.unk8) ? sprite->unk4C - 0.001 : sprite->unk4C);
 
@@ -264,14 +264,13 @@ void g_draw_pause_menu(struct Sprite *sprite)
         g_draw_text(text);
         g_set_text_pos(x, y);
         func_80071AE4((i == lbl_801EEC68.unk8) ? 0xFFFF00 : 0x808000);
-        phi_r0_2 = ((lbl_801EEC68.unk4) & 1) != 0 && i == lbl_801EEC68.unk8;
-        g_set_some_sprite_color(phi_r0_2 ? temp_r16 : 0);
+        g_set_some_sprite_color((((lbl_801EEC68.unk4) & 1) && i == lbl_801EEC68.unk8) ? temp_r16 : 0);
         g_draw_text(text);
 
         if (menuType == 4 && i == 1)
         {
             u32 temp_r3 = (1.0 - __fabs(mathutil_sin(globalFrameCounter << 9))) * 255.0;
-            int temp_r24 = temp_r3 | ((temp_r3 << 0x10) | (temp_r3 << 8));
+            u32 temp_r24 = RGBA(temp_r3, temp_r3, temp_r3, 0);
 
             strcpy(text, "ON");
             x += 96.0f;
@@ -311,14 +310,164 @@ void g_draw_pause_menu(struct Sprite *sprite)
             sprite->unk40 = phi_f22;
     }
 
-    params.bmpId = 0x4B;
+    params.bmpId = BITMAP_ID(BMP_COM, BMP_COM_white_mask8x8);
     params.x = 320.1f;
     params.y = 240.1f;
     params.z = (sprite->unk48 == 2) ? 0.001 : sprite->unk4C + 0.002;
     params.zoomX = 80.0f;
     params.zoomY = 60.0f;
     params.alpha = sprite->unk6C;
-    params.unk38 = sprite->unkE | (((u8)sprite->unkD << 8) | ((((u8)(sprite->unk6C * 255.0f) << 24) | ((u8)sprite->unkC << 16))));
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    draw_naomi_sprite(&params);
+}
+
+void show_press_start_textbox(int a)
+{
+    struct TextBox spC;
+
+    memset(&spC, 0, sizeof(spC));
+    spC.unk16 = (a == 2 || a == 3) ? 8 : 15;
+    spC.unkC = 0x140;
+    spC.unkE = (a == 2 || a == 3) ? 0x169 : 0x19A;
+    spC.numLines = 1;
+    spC.unk1C = lbl_80075D70;
+    g_create_textbox(0, 21, &spC);
+    if (a == 3)
+        g_set_textbox_text(0, "b/Select using the c/0xffffff/p/BUTTON_A/c/0x000000/ Button!");
+    else
+        g_set_textbox_text(0, "b/Press Start");
+}
+
+float force_lbl_802F4C80() { return 10.0f; }
+
+void lbl_80076710(struct Sprite *sprite)
+{
+    int temp_r3;
+
+    sprite->drawFunc = NULL;
+    temp_r3 = func_80088C18();
+    if (temp_r3 > 0)
+    {
+        sprite->centerX = 0x3E5 - temp_r3;
+        sprite->centerY = 446.0f;
+        func_800702C8(sprite);
+    }
+    if (temp_r3 < 0x280)
+    {
+        sprite->centerX = temp_r3 + 0x165;
+        sprite->centerY = 463.0f;
+        func_800702C8(sprite);
+    }
+    sprite->drawFunc = lbl_80076710;
+}
+
+extern void lbl_800768A8();
+
+void g_logo_plus_sprite_something(void)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->tag = 3;
+        sprite->centerX = 320.0f;
+        sprite->centerY = 115.0f;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk4C = 300.0f;
+        sprite->bmpId = 0x101;
+        strcpy(sprite->text, "logo plus");
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->centerX = 320.0f;
+        sprite->centerY = 240.0f;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk4C = 301.0f;
+        sprite->bmpId = 0x102;
+        sprite->unk10 = 0;
+        sprite->mainFunc = lbl_800768A8;
+        sprite->unk74 |= 0x40000;
+        strcpy(sprite->text, "logo");
+    }
+}
+
+void lbl_80076AC0(struct Sprite *);
+
+void lbl_800768A8(s8 *a, struct Sprite *sprite)
+{
+    struct Sprite *logoPlus = find_sprite_with_tag(3);
+
+    if (sprite->unk10 <= 0x189)
+        sprite->centerX -= 0.0f;  // does nothing
+    else if (sprite->unk10 <= 0x198)
+        sprite->centerX -= 10.0f + (6.0f * mathutil_sin((sprite->unk10 - 0x189) * 0x444));
+    else if (sprite->unk10 <= 0x1E0)
+        sprite->centerX -= 16.0f;
+
+    if (sprite->unk10 >= 0x17A && sprite->unk10 <= 0x198)
+    {
+        sprite->unk40 = 1.0 - (0.7 * mathutil_sin((sprite->unk10 - 0x17A) * 0x444));
+        sprite->unk44 = 1.0 + (0.7 * mathutil_sin((sprite->unk10 - 0x17A) * 0x444));
+        if (logoPlus != NULL)
+            logoPlus->unk6C = 0.0333 * (0x198 - sprite->unk10);
+    }
+
+    if (sprite->unk10 == 0x1E0)
+    {
+        sprite->centerX = 320.0f;
+        sprite->bmpId = 0x100;
+        sprite->unk40 = 1.0f;
+        sprite->unk44 = 1.0f;
+        sprite->unk4C = 100.0f;
+        if (logoPlus != NULL)
+        {
+            logoPlus->bmpId = 0x107;
+            logoPlus->unk48 = 5;
+            logoPlus->drawFunc = lbl_80076AC0;
+            logoPlus->centerX = 194.0f;
+            logoPlus->centerY = 74.0f;
+        }
+    }
+
+    if (sprite->unk10 < 0x1E0)
+        sprite->unk6C = 1.0f;
+    else if (sprite->unk10 <= 0x258)
+        sprite->unk6C = 0.0f;
+    else if (sprite->unk10 <= 0x276)
+    {
+        sprite->unk6C = 0.0333 * (sprite->unk10 - 0x258);
+        if (logoPlus != NULL)
+            logoPlus->unk6C = sprite->unk6C;
+    }
+
+    sprite->unk10++;
+}
+
+void lbl_80076AC0(struct Sprite *sprite)
+{
+    struct NaomiSpriteParams params;
+    int r5 = sprite->unk48;
+
+    params.bmpId = sprite->bmpId;
+    params.x = sprite->centerX + (r5 % 2 == 1 ? 128 : -128);
+    params.y = sprite->centerY + (sprite->unk48 == 0 ? 50 : 0);
+    params.z = sprite->unk4C;
+    params.u1 = 0.0f;
+    params.v1 = 0.15625 * r5;
+    params.u2 = 1.0f;
+    params.v2 = 0.15625 + 0.15625 * r5;
+    params.zoomX = sprite->unk40 * (params.u2 - params.u1);
+    params.zoomY = 0.15625 * sprite->unk44;
+    params.rotation = sprite->unk68;
+    params.alpha = sprite->unk6C;
+    params.unk30 = -1;
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    params.color2 = 0;
     draw_naomi_sprite(&params);
 }
 

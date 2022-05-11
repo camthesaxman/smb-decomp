@@ -50,14 +50,26 @@ enum
 
 struct Color3f { float r, g, b; };
 
+enum Alignment
+{
+    ALIGN_LT,
+    ALIGN_LC,
+    ALIGN_LB,
+    ALIGN_CT,
+    ALIGN_CC,
+    ALIGN_CB,
+    ALIGN_RT,
+    ALIGN_RC,
+    ALIGN_RB,
+    ALIGN_PIC,
+};
+
 // avdisp.c
 struct GMAShape;
 struct GMATevLayer;
 struct DrawShapeDeferredNode;
 struct GMATevLayer;
 struct TevStageInfo;
-
-
 
 struct TPLTextureHeader
 {
@@ -645,8 +657,8 @@ struct NaomiSpriteParams
     /*0x2C*/ float alpha;
     s32 unk30;
     /*0x34*/ u32 flags;
-    u32 unk38;
-    u32 unk3C;
+    /*0x38*/ u32 color1;
+    /*0x3C*/ u32 color2;
     u8 filler40[0x50-0x40];
 };
 
@@ -1042,7 +1054,7 @@ struct Struct80180F14
     s8 unk4;
 };
 
-struct Struct80292B60
+struct TextBox
 {
     s32 unk0;
     s32 unk4;
@@ -1051,13 +1063,13 @@ struct Struct80292B60
     s16 unkE;
     float unk10;
     s8 unk14;
-    s8 unk15;
+    s8 numLines;
     s8 unk16;
     u8 unk17;
     u8 unk18;
     u8 unk19;
     u8 filler1A[2];
-    void (*unk1C)(struct Struct80292B60 *);
+    void (*unk1C)(struct TextBox *);
     s32 unk20;
     s32 unk24;
 };  // size = 0x28
