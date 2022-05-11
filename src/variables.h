@@ -285,7 +285,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801C14FC;
 // extern ? lbl_801C1518;
 // extern ? lbl_801C1524;
-// extern ? lbl_801C1608;
+// extern ? pauseMenus;
 // extern ? lbl_801C1630;
 // extern ? lbl_801C1670;
 // extern ? lbl_801C1680;

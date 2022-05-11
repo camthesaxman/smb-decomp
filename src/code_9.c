@@ -5,6 +5,7 @@
 
 #include "global.h"
 #include "ball.h"
+#include "bitmap.h"
 #define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "sprite.h"
@@ -105,14 +106,14 @@ void func_80075E1C(int unused, struct Sprite *b)
     }
 }
 
-char *lbl_801C155C[] =
+char *menuContHowExit[] =
 {
     "a/Continue game",
     "a/How to play",
     "a/Exit game",
 };
 
-char *lbl_801C1578[] =
+char *menuContViewHowExit[] =
 {
     "a/Continue game",
     "a/View stage",
@@ -120,7 +121,7 @@ char *lbl_801C1578[] =
     "a/Exit game",
 };
 
-char *lbl_801C1598[] =
+char *menuContSaveHowExit[] =
 {
     "a/Continue game",
     "a/Save replay",
@@ -128,7 +129,7 @@ char *lbl_801C1598[] =
     "a/Exit game",
 };
 
-char *lbl_801C15B8[] =
+char *menuContRetryViewHowSelectExit[] =
 {
     "a/Continue game",
     "a/Retry",
@@ -138,7 +139,7 @@ char *lbl_801C15B8[] =
     "a/Exit game",
 };
 
-char *lbl_801C15D0[] =
+char *menuContRetrySaveHowSelectExit[] =
 {
     "a/Continue game",
     "a/Retry",
@@ -148,7 +149,7 @@ char *lbl_801C15D0[] =
     "a/Exit game",
 };
 
-char *lbl_801C15E8[] =
+char *menuContRetryHowExit[] =
 {
     "a/Continue game",
     "a/Retry",
@@ -156,7 +157,7 @@ char *lbl_801C15E8[] =
     "a/Exit game",
 };
 
-char *lbl_801C15F8[] =
+char *menuContGuideHowExit[] =
 {
     "a/Continue game",
     "a/Guide",
@@ -164,25 +165,25 @@ char *lbl_801C15F8[] =
     "a/Exit game",
 };
 
-char **lbl_801C1608[] =
+char **pauseMenus[] =
 {
-    lbl_801C155C,
-    lbl_801C1578,
-    lbl_801C15B8,
-    lbl_801C15E8,
-    lbl_801C15F8,
-    lbl_801C155C,
-    lbl_801C1598,
-    lbl_801C15D0,
-    lbl_801C15E8,
-    lbl_801C15F8,
+    menuContHowExit,
+    menuContViewHowExit,
+    menuContRetryViewHowSelectExit,
+    menuContRetryHowExit,
+    menuContGuideHowExit,
+    menuContHowExit,
+    menuContSaveHowExit,
+    menuContRetrySaveHowSelectExit,
+    menuContRetryHowExit,
+    menuContGuideHowExit,
 };
 
 void g_draw_pause_menu(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     int phi_r0;
-    int phi_r15;
+    int menuType;
     u32 temp_r0_2;
     int temp_r16;
     int i;
@@ -199,12 +200,12 @@ void g_draw_pause_menu(struct Sprite *sprite)
     if (lbl_801EEC68.unkC >= 4)
     {
         if (lbl_801EEC68.unkC == 6)
-            phi_r0 = 0x5F;
+            phi_r0 = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l2);
         else
-            phi_r0 = 0x59;
+            phi_r0 = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l);
     }
     else
-        phi_r0 = 0x44;
+        phi_r0 = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku);
     params.bmpId = phi_r0;
     params.x = sprite->centerX;
     params.y = sprite->centerY;
@@ -224,11 +225,12 @@ void g_draw_pause_menu(struct Sprite *sprite)
     params.alpha = 1.0f;
     params.unk38 = ((int)(sprite->unk6C * 255.0f) << 24) | 0xFF0000 | 0xFFFF;
     draw_naomi_sprite(&params);
-    phi_r15 = lbl_801EEC68.unk10;
+
+    menuType = lbl_801EEC68.unk10;
     if ((lbl_801EEC68.unk4 & 4) != 0)
-        phi_r15 += 5;
+        menuType += 5;
     func_80071A8C();
-    func_80071AD4(sprite->fontId);
+    g_set_font(sprite->fontId);
     func_80071B50(0x220000);
     temp_r0_2 = (globalFrameCounter >> 2) & 1;
     temp_r16 = temp_r0_2 * 0xFF;
@@ -237,8 +239,8 @@ void g_draw_pause_menu(struct Sprite *sprite)
     for (i = 0; i < lbl_801EEC68.unkC; i++)
     {
         float phi_f22;
-        float temp_f21;
-        float temp_f20;
+        float x;
+        float y;
         int phi_r0_2;
         char text[24];
 
@@ -253,57 +255,57 @@ void g_draw_pause_menu(struct Sprite *sprite)
         else
             phi_f22 = i * 36 - 48 + (3 - lbl_801EEC68.unkC) * 18;
 
-        strcpy(text, lbl_801C1608[phi_r15][i]);
-        temp_f21 = sprite->centerX - 48.0f;
-        temp_f20 = sprite->centerY + phi_f22;
-        func_80071B60(3.0f + temp_f21, 3.0f + temp_f20);
+        strcpy(text, pauseMenus[menuType][i]);
+        x = sprite->centerX - 48.0f;
+        y = sprite->centerY + phi_f22;
+        g_set_text_pos(3.0f + x, 3.0f + y);
         func_80071AE4(0x202000);
-        func_80071AF8(0);
-        func_80071E58(text);
-        func_80071B60(temp_f21, temp_f20);
+        g_set_some_sprite_color(0);
+        g_draw_text(text);
+        g_set_text_pos(x, y);
         func_80071AE4((i == lbl_801EEC68.unk8) ? 0xFFFF00 : 0x808000);
         phi_r0_2 = ((lbl_801EEC68.unk4) & 1) != 0 && i == lbl_801EEC68.unk8;
-        func_80071AF8(phi_r0_2 ? temp_r16 : 0);
-        func_80071E58(text);
+        g_set_some_sprite_color(phi_r0_2 ? temp_r16 : 0);
+        g_draw_text(text);
 
-        if (phi_r15 == 4 && i == 1)
+        if (menuType == 4 && i == 1)
         {
             u32 temp_r3 = (1.0 - __fabs(mathutil_sin(globalFrameCounter << 9))) * 255.0;
             int temp_r24 = temp_r3 | ((temp_r3 << 0x10) | (temp_r3 << 8));
 
             strcpy(text, "ON");
-            temp_f21 += 96.0f;
-            func_80071B60(3.0f + temp_f21, 3.0f + temp_f20);
+            x += 96.0f;
+            g_set_text_pos(3.0f + x, 3.0f + y);
             func_80071AE4(0x202000);
-            func_80071AF8(0);
-            func_80071E58(text);
-            func_80071B60(temp_f21, temp_f20);
+            g_set_some_sprite_color(0);
+            g_draw_text(text);
+            g_set_text_pos(x, y);
             if (lbl_801EEC68.unk4 & 8)
                 func_80071AE4(0xC0C000);
             else
                 func_80071AE4(0x808000);
             if (i == lbl_801EEC68.unk8 && (lbl_801EEC68.unk4 & 8))
-                func_80071AF8(temp_r24);
+                g_set_some_sprite_color(temp_r24);
             else
-                func_80071AF8(0);
-            func_80071E58(text);
+                g_set_some_sprite_color(0);
+            g_draw_text(text);
 
             strcpy(text, "OFF");
-            temp_f21 += 50.0f;
-            func_80071B60(3.0f + temp_f21, 3.0f + temp_f20);
+            x += 50.0f;
+            g_set_text_pos(3.0f + x, 3.0f + y);
             func_80071AE4(0x202000);
-            func_80071AF8(0);
-            func_80071E58(text);
-            func_80071B60(temp_f21, temp_f20);
+            g_set_some_sprite_color(0);
+            g_draw_text(text);
+            g_set_text_pos(x, y);
             if (!(lbl_801EEC68.unk4 & 8))
                 func_80071AE4(0xC0C000);
             else
                 func_80071AE4(0x808000);
             if (i == lbl_801EEC68.unk8 && !(lbl_801EEC68.unk4 & 8))
-                func_80071AF8(temp_r24);
+                g_set_some_sprite_color(temp_r24);
             else
-                func_80071AF8(0);
-            func_80071E58(text);
+                g_set_some_sprite_color(0);
+            g_draw_text(text);
         }
         if (i == lbl_801EEC68.unk8)
             sprite->unk40 = phi_f22;

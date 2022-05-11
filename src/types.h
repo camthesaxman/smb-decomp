@@ -700,8 +700,8 @@ struct Struct801EEC68
     s32 unk0;
     u32 unk4;
     s32 unk8;
-    s32 unkC;
-    s32 unk10;
+    s32 unkC;  // menu item count
+    s32 unk10;  // menu type
     s8 unk14;
     s8 unk15;
     s16 unk16;

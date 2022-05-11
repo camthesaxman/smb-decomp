@@ -2147,10 +2147,10 @@ void submode_adv_start_init_func(void)
     lbl_802F1BA8 = 0;
     func_8002B5C8(2);
     g_start_screen_fade(0x101, 0, 32);
-    g_create_textbox(0, 20, 0);
-    g_create_textbox(1, 20, 0);
-    g_create_textbox(2, 20, 0);
-    g_create_textbox(3, 20, 0);
+    g_create_textbox(0, 20, NULL);
+    g_create_textbox(1, 20, NULL);
+    g_create_textbox(2, 20, NULL);
+    g_create_textbox(3, 20, NULL);
     g_play_music(modeCtrl.unk0, 2);
     if (find_sprite_with_tag(17) != NULL
      && find_sprite_with_tag(17)->unk48 == 0)

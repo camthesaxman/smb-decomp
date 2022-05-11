@@ -11,7 +11,7 @@
 struct Struct80290180_sub
 {
     s8 unk0;
-    char unk1[0x15-0x1];
+    char text[20];
     s8 unk15;
     u8 filler16[0x82-0x16];
     s16 unk82;
@@ -99,15 +99,15 @@ void func_80073F74(int a, struct Struct80292B60 *b)
                     break;
                 if (b->unk15 == 1)
                 {
-                    r27 = get_ascii_text_width(r26->unk1);
-                    f30 = get_jpn_text_width(0xB1, r26->unk1);
+                    r27 = get_ascii_text_width(r26->text);
+                    f30 = get_jpn_text_width(FONT_JAP_24x24_2P, r26->text);
                 }
                 else
                 {
                     float f0;
-                    if (r27 < get_ascii_text_width(r26->unk1))
-                        r27 = get_ascii_text_width(r26->unk1);
-                    f0 = get_jpn_text_width(0xB1, r26->unk1);
+                    if (r27 < get_ascii_text_width(r26->text))
+                        r27 = get_ascii_text_width(r26->text);
+                    f0 = get_jpn_text_width(FONT_JAP_24x24_2P, r26->text);
                     if (f30 < f0)
                         f30 = f0;
                 }
@@ -200,7 +200,7 @@ void func_80073F74(int a, struct Struct80292B60 *b)
             if (i < b->unk15
              && (i == 0 || lbl_80290180[a][i - 1].unk0 != 2))
                 r26->unk82 += 2;
-            if (r26->unk82 >= get_ascii_text_width(r26->unk1))
+            if (r26->unk82 >= get_ascii_text_width(r26->text))
                 r26->unk0 = 1;
         }
     }
@@ -256,7 +256,7 @@ void func_80074500(int a, struct Struct80292B60 *b)
         return;
 
     func_80071A8C();
-    func_80071AD4(b->unk16 == 13 ? 22 : 21);
+    g_set_font(b->unk16 == 13 ? FONT_ICON_SD2 : FONT_ICON_SD);
     func_80071B1C(a * 0.01f + 0.059999999776482585);
     func_80071AE4(b->unk24);
     f3 = (float)b->unk8 / (float)b->unk4;
@@ -291,7 +291,7 @@ void func_80074500(int a, struct Struct80292B60 *b)
     }
     f31 = b->unk15;
     f27 = b->unk14;
-    func_80071B60(sp24 - 24, sp20 - 24);
+    g_set_text_pos(sp24 - 24, sp20 - 24);
     for (r30 = -1; r30 <= f31; r30++)
     {
         for (r29 = -1; r29 <= f27; r29++)
@@ -306,20 +306,20 @@ void func_80074500(int a, struct Struct80292B60 *b)
             if (r29 == -1)
             {
                 if (r30 == -1)
-                    func_80071E58("\x01");
+                    g_draw_text("\x01");
                 else if ((float)r30 == f31)
-                    func_80071E58("\x0B");
+                    g_draw_text("\x0B");
                 else
-                    func_80071E58("\x06");
+                    g_draw_text("\x06");
             }
             else if ((float)r29 == f27)
             {
                 if (r30 == -1)
-                    func_80071E58("\x03");
+                    g_draw_text("\x03");
                 else if ((float)r30 == f31)
-                    func_80071E58("\x0D");
+                    g_draw_text("\x0D");
                 else
-                    func_80071E58("\x08");
+                    g_draw_text("\x08");
 
             }
             else if (b->unk16 == 13 && (r30 == -1 || (float)r30 == f31))
@@ -329,11 +329,11 @@ void func_80074500(int a, struct Struct80292B60 *b)
                 {
                     func_80071B2C((b->unk10 / f1 / 24.0f) * f26, f25);
                     if (r30 == -1)
-                        func_80071E58("\x02");
+                        g_draw_text("\x02");
                     else if ((float)r30 == f31)
-                        func_80071E58("\x0C");
+                        g_draw_text("\x0C");
                     else
-                        func_80071E58("\x07");
+                        g_draw_text("\x07");
                     func_80071B2C(f26, f25);
                 }
             }
@@ -341,15 +341,15 @@ void func_80074500(int a, struct Struct80292B60 *b)
             {
                 func_80071B2C(f26 * b->unk10 / 24.0f, f25);
                 if (r30 == -1)
-                    func_80071E58("\x02");
+                    g_draw_text("\x02");
                 else if ((float)r30 == f31)
-                    func_80071E58("\x0C");
+                    g_draw_text("\x0C");
                 else
-                    func_80071E58("\x07");
+                    g_draw_text("\x07");
                 func_80071B2C(f26, f25);
             }
         }
-        func_80071E58("\n");
+        g_draw_text("\n");
     }
     func_80071B1C(a * 0.01f + 0.05);
     if (b->unk0 >= 20)
@@ -364,55 +364,55 @@ void func_80074500(int a, struct Struct80292B60 *b)
     {
         float zero;
     case 1:
-        func_80071B60(sp24 - 24, sp20);
-        func_80071E58("\x04");
+        g_set_text_pos(sp24 - 24, sp20);
+        g_draw_text("\x04");
         break;
     case 2:
-        func_80071B60(sp24 - 24, sp20 + 0.5f * ((b->unk15 - 1) * 24));
-        func_80071E58("\x04");
+        g_set_text_pos(sp24 - 24, sp20 + 0.5f * ((b->unk15 - 1) * 24));
+        g_draw_text("\x04");
         break;
     case 3:
-        func_80071B60(sp24 - 24, sp20 + (b->unk15 - 1) * 24);
-        func_80071E58("\x04");
+        g_set_text_pos(sp24 - 24, sp20 + (b->unk15 - 1) * 24);
+        g_draw_text("\x04");
         break;
     case 4:
-        func_80071B60(sp24 + b->unk10, sp20);
-        func_80071E58("\x05");
+        g_set_text_pos(sp24 + b->unk10, sp20);
+        g_draw_text("\x05");
         break;
     case 5:
-        func_80071B60(sp24 + b->unk10, sp20 + 0.5f * ((b->unk15 - 1) * 24));
-        func_80071E58("\x05");
+        g_set_text_pos(sp24 + b->unk10, sp20 + 0.5f * ((b->unk15 - 1) * 24));
+        g_draw_text("\x05");
         break;
     case 6:
-        func_80071B60(sp24 + b->unk10, sp20 + (b->unk15 - 1) * 24);
-        func_80071E58("\x05");
+        g_set_text_pos(sp24 + b->unk10, sp20 + (b->unk15 - 1) * 24);
+        g_draw_text("\x05");
         break;
     case 7:
         zero = 0.0f;
-        func_80071B60((sp24 + zero) + 14.0f, sp20 - 24);
-        func_80071E58("\x10");
+        g_set_text_pos((sp24 + zero) + 14.0f, sp20 - 24);
+        g_draw_text("\x10");
         break;
     case 8:
-        func_80071B60(sp24 + b->unk10 * 0.5f - 10.0f, sp20 - 24);
-        func_80071E58("\x10");
+        g_set_text_pos(sp24 + b->unk10 * 0.5f - 10.0f, sp20 - 24);
+        g_draw_text("\x10");
         break;
     case 9:
-        func_80071B60(sp24 + b->unk10 - 34.0f, sp20 - 24);
-        func_80071E58("\x10");
+        g_set_text_pos(sp24 + b->unk10 - 34.0f, sp20 - 24);
+        g_draw_text("\x10");
         break;
     case 10:
         zero = 0.0f;
-        func_80071B60((sp24 + zero) + 14.0f, sp20 + (b->unk15 * 24));
-        func_80071E58("\x15");
+        g_set_text_pos((sp24 + zero) + 14.0f, sp20 + (b->unk15 * 24));
+        g_draw_text("\x15");
         break;
     case 11:
     case 13:
-        func_80071B60(sp24 + b->unk10 * 0.5f - 10.0f, sp20 + (b->unk15 * 24));
-        func_80071E58("\x15");
+        g_set_text_pos(sp24 + b->unk10 * 0.5f - 10.0f, sp20 + (b->unk15 * 24));
+        g_draw_text("\x15");
         break;
     case 12:
-        func_80071B60(sp24 + b->unk10 - 34.0f, sp20 + (b->unk15 * 24));
-        func_80071E58("\x15");
+        g_set_text_pos(sp24 + b->unk10 - 34.0f, sp20 + (b->unk15 * 24));
+        g_draw_text("\x15");
         break;
     }
     func_80071B2C(f29, f30);
@@ -422,7 +422,7 @@ void func_80074500(int a, struct Struct80292B60 *b)
         return;
     }
     func_80071B50(0x220000);
-    func_80071AD4(0xB1);
+    g_set_font(FONT_JAP_24x24_2P);
     func_80071B1C(a * 0.01f + 0.05);
     func_80071AE4(0);
     if (b->unk0 == 11)
@@ -442,7 +442,7 @@ void func_80074500(int a, struct Struct80292B60 *b)
         if (r31->unk0 == 0)
             break;
         lbl_802F200C = r31->unk82;
-        lbl_802F2008 = get_ascii_text_width(r31->unk1);
+        lbl_802F2008 = get_ascii_text_width(r31->text);
         if (b->unk0 == 11)
         {
             if (r30 == 0)
@@ -453,14 +453,14 @@ void func_80074500(int a, struct Struct80292B60 *b)
         func_80071B40(f25);
         if (b->unk10 > 0.0)
         {
-            float f0 = MIN(b->unk10 / get_jpn_text_width(0xB1, r31->unk1), 1.0);
+            float f0 = MIN(b->unk10 / get_jpn_text_width(FONT_JAP_24x24_2P, r31->text), 1.0);
             func_80071B2C(f0, 1.0f);
         }
         else
             func_80071B2C(1.0f, 1.0f);
         func_80075498(b, &sp1C, &sp18);
-        func_80071B60(sp1C, sp18 + r30 * 24 + r29);
-        func_80071E58(r31->unk1);
+        g_set_text_pos(sp1C, sp18 + r30 * 24 + r29);
+        g_draw_text(r31->text);
     }
     lbl_802F200C = -1.0f;
     func_80071A8C();
@@ -475,7 +475,7 @@ void func_80075428(int a)
     {
         r29->unk0 = 0;
         r29->unk82 = 0;
-        strcpy(r29->unk1, "");
+        strcpy(r29->text, "");
     }
 }
 
@@ -626,7 +626,7 @@ void func_80075B5C(int a, const char *b)
         if (r30->unk0 == 0)
         {
             r30->unk0 = 2;
-            strcpy(r30->unk1, b);
+            strcpy(r30->text, b);
             r30->unk82 = 0;
             if (i == r29->unk15 && r29->unk0 == 10)
             {

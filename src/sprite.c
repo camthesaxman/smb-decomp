@@ -18,7 +18,7 @@ struct Struct8028CF28
     float unk0;
     float unk4;
     float unk8;
-    s32 unkC;
+    s32 fontId;
     u32 unk10;
     u32 unk14;
     s16 unk18;
@@ -59,7 +59,7 @@ void ev_sprite_init(void)
     lbl_8028CF28.unk0 = 0.0f;
     lbl_8028CF28.unk4 = 0.0f;
     lbl_8028CF28.unk8 = 0.0f;
-    lbl_8028CF28.unkC = 0;
+    lbl_8028CF28.fontId = 0;
     lbl_8028CF28.unk10 = -1;
     lbl_8028CF28.unk14 = 0;
     lbl_8028CF28.unk18 = 0;
@@ -2591,7 +2591,7 @@ int func_80071A74(int fontId)
 
 void func_80071A8C(void)
 {
-    lbl_8028CF28.unkC = 0;
+    lbl_8028CF28.fontId = 0;
     lbl_8028CF28.unk10 = 0xFFFFFF;
     lbl_8028CF28.unk14 = 0;
     lbl_8028CF28.unk18 = 0;
@@ -2602,9 +2602,9 @@ void func_80071A8C(void)
     lbl_8028CF28.unk2C = 0x20000;
 }
 
-void func_80071AD4(int a)
+void g_set_font(int fontId)
 {
-    lbl_8028CF28.unkC = a;
+    lbl_8028CF28.fontId = fontId;
 }
 
 void func_80071AE4(int a)
@@ -2612,7 +2612,7 @@ void func_80071AE4(int a)
     lbl_8028CF28.unk10 = a & 0xFFFFFF;
 }
 
-void func_80071AF8(int a)
+void g_set_some_sprite_color(int a)
 {
     lbl_8028CF28.unk14 = a;
 }
@@ -2645,18 +2645,18 @@ void func_80071B50(int a)
     lbl_8028CF28.unk2C = a;
 }
 
-void func_80071B60(float a, float b)
+void g_set_text_pos(float x, float y)
 {
-    lbl_8028CF28.unk4 = a;
-    lbl_8028CF28.unk0 = a;
-    lbl_8028CF28.unk8 = b;
+    lbl_8028CF28.unk4 = x;
+    lbl_8028CF28.unk0 = x;
+    lbl_8028CF28.unk8 = y;
 }
 
 #ifdef NONMATCHING
 void func_80071B78(s8 a)
 {
     struct NaomiSpriteParams params;  // sp + 0x10
-    struct FontParams *font = &fontInfo[lbl_8028CF28.unkC];  // r5
+    struct FontParams *font = &fontInfo[lbl_8028CF28.fontId];  // r5
     int r6 = a - font->unk4;
     int div = r6 / font->unkC;
     int mod = r6 % font->unkC;
@@ -2713,10 +2713,10 @@ static inline int func_80071E58_inline(int a, int b, struct FontParams *r24)
     }
 }
 
-void func_80071E58(char *str)
+void g_draw_text(char *str)
 {
     struct Struct8028CF28 *r28 = &lbl_8028CF28;
-    int r25;
+    int fontIdBackup;
     struct FontParams *font;
     int r23;
     int r22;
@@ -2730,9 +2730,9 @@ void func_80071E58(char *str)
     s32 sp18;
     s32 color;
 
-    font = &fontInfo[r28->unkC];
+    font = &fontInfo[r28->fontId];
     r22 = 0;
-    r25 = r28->unkC;
+    fontIdBackup = r28->fontId;
 
     params.bmpId = font->unk0;
     params.z = r28->unk1C;
@@ -2757,12 +2757,12 @@ void func_80071E58(char *str)
             if (lbl_802F200C <= (float)r22)
                 break;
         }
-        if (r28->unkC > 0xAE)
-            r23 = func_80071E58_inline(*str, r28->unkC, font);
+        if (r28->fontId > 0xAE)
+            r23 = func_80071E58_inline(*str, r28->fontId, font);
         else
-            r23 = get_char_width(str, r28->unkC, font);
+            r23 = get_char_width(str, r28->fontId, font);
         f17 = font->unk10 * (0.5 * (font->spaceWidth - r23) / (font->spaceWidth));
-        f16 = g_get_char_ratio(str, r28->unkC);
+        f16 = g_get_char_ratio(str, r28->fontId);
         if (*str == '\n')
         {
             r28->unk4 = r28->unk0;
@@ -2777,7 +2777,7 @@ void func_80071E58(char *str)
             continue;
         }
         glyphIndex = *str;
-        if (r28->unkC > 0xAE)
+        if (r28->fontId > 0xAE)
         {
             skip = 0;
             sp18 = 0;
@@ -2787,13 +2787,13 @@ void func_80071E58(char *str)
             params.unk38 = color;
             if (sp18 == 1)
             {
-                r28->unkC = FONT_JAP_24x24_2;
-                font = &fontInfo[r28->unkC];
+                r28->fontId = FONT_JAP_24x24_2;
+                font = &fontInfo[r28->fontId];
             }
             else if (sp18 == 2)
             {
-                r28->unkC = FONT_JAP_24x24_2P;
-                font = &fontInfo[r28->unkC];
+                r28->fontId = FONT_JAP_24x24_2P;
+                font = &fontInfo[r28->fontId];
             }
             else if (sp18 == 0x46)
                 r28->unk20 = 0.7f;
@@ -2814,7 +2814,7 @@ void func_80071E58(char *str)
             {
                 float f0;
 
-                switch (r28->unkC)
+                switch (r28->fontId)
                 {
                 case FONT_JAP_24x24_2P:
                 case FONT_JAP_24x24_2Pg:
@@ -2830,7 +2830,7 @@ void func_80071E58(char *str)
                                 r6 = r4 + 1;
                             else
                                 r6 = r6 = 24;
-                            f0 = (float)r6 / (float)fontInfo[r28->unkC].spaceWidth;
+                            f0 = (float)r6 / (float)fontInfo[r28->fontId].spaceWidth;
                             break;
                         }
                     }
@@ -2843,11 +2843,11 @@ void func_80071E58(char *str)
                 if (parseState.mode & (1 << 17))
                     font = &fontInfo[FONT_JAP_24x24_I];
                 else
-                    font = &fontInfo[r28->unkC];
+                    font = &fontInfo[r28->fontId];
                 params.bmpId = font->unk0;
             }
         }
-        if (r28->unkC < 0xAE
+        if (r28->fontId < 0xAE
          || lbl_802F200C < lbl_802F2008
          || !(parseState.mode & (1 << 16))
          || (unpausedFrameCounter % 60) < 45)
@@ -2869,7 +2869,7 @@ void func_80071E58(char *str)
             params.v2 = font->unk14 + (f1 - font->unk1C * font->unk23);
             params.zoomX = r28->unk20 * ((font->unk10 - (font->unk18 * font->unk20)) - (font->unk18 * font->unk21) - f17 * 2.0);
             params.zoomY = r28->unk24 * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
-            if (r28->unkC == FONT_JAP_24x24_2Pg && *str == 'g')
+            if (r28->fontId == FONT_JAP_24x24_2Pg && *str == 'g')
                 params.y += params.zoomY * 80.0;
             draw_naomi_sprite(&params);
         }
@@ -2879,14 +2879,14 @@ void func_80071E58(char *str)
         parseState.unkC += r23;
     }
 
-    r28->unkC = r25;
+    r28->fontId = fontIdBackup;
     r28->unk20 = f31;
 }
 
 float g_get_text_width(char *str)
 {
     struct Struct8028CF28 *r29 = &lbl_8028CF28;
-    int r25;
+    int fontIdBackup;
     struct FontParams *font;
     int r23;
     int r22;
@@ -2900,9 +2900,9 @@ float g_get_text_width(char *str)
     s32 color;
     u8 dummy[8];
 
-    font = &fontInfo[r29->unkC];
+    font = &fontInfo[r29->fontId];
     r22 = 0;
-    r25 = r29->unkC;
+    fontIdBackup = r29->fontId;
     f23 = r29->unk20;
     parseState.mode = TEXT_MODE_ASCII;
     parseState.unk4 = -1;
@@ -2920,11 +2920,11 @@ float g_get_text_width(char *str)
             if (lbl_802F200C <= (float)r22)
                 break;
         }
-        if (r29->unkC > 0xAE)
-            r23 = func_80071E58_inline(*str, r29->unkC, font);
+        if (r29->fontId > 0xAE)
+            r23 = func_80071E58_inline(*str, r29->fontId, font);
         else
-            r23 = get_char_width(str, r29->unkC, font);
-        f1 = g_get_char_ratio(str, r29->unkC);
+            r23 = get_char_width(str, r29->fontId, font);
+        f1 = g_get_char_ratio(str, r29->fontId);
         if (*str == '\n')
             continue;
         if (*str == ' ' || *str < font->unk4 || *str > font->unk8)
@@ -2935,7 +2935,7 @@ float g_get_text_width(char *str)
             continue;
         }
         glyphIndex = *str;
-        if (r29->unkC > 0xAE)
+        if (r29->fontId > 0xAE)
         {
             color = params.unk38;
             skip = 0;
@@ -2945,13 +2945,13 @@ float g_get_text_width(char *str)
             str += skip;
             if (sp1C == 1)
             {
-                r29->unkC = FONT_JAP_24x24_2;
-                font = &fontInfo[r29->unkC];
+                r29->fontId = FONT_JAP_24x24_2;
+                font = &fontInfo[r29->fontId];
             }
             else if (sp1C == 2)
             {
-                r29->unkC = FONT_JAP_24x24_2P;
-                font = &fontInfo[r29->unkC];
+                r29->fontId = FONT_JAP_24x24_2P;
+                font = &fontInfo[r29->fontId];
             }
             else if (sp1C == 0x46)
                 r29->unk20 = 0.7f;
@@ -2968,7 +2968,7 @@ float g_get_text_width(char *str)
             }
             if (glyphIndex == -2)
                 continue;
-            switch (r29->unkC)
+            switch (r29->fontId)
             {
             case FONT_JAP_24x24_2P:
             case FONT_JAP_24x24_2Pg:
@@ -2984,7 +2984,7 @@ float g_get_text_width(char *str)
                             r6 = foo + 1;
                         else
                             r6 = r6 = 24;
-                        f1 = (float)r6 / (float)fontInfo[r29->unkC].spaceWidth;
+                        f1 = (float)r6 / (float)fontInfo[r29->fontId].spaceWidth;
                         break;
                     }
                 }
@@ -2996,14 +2996,14 @@ float g_get_text_width(char *str)
             if (parseState.mode & (1 << 17))
                 font = &fontInfo[FONT_JAP_24x24_I];
             else
-                font = &fontInfo[r29->unkC];
+                font = &fontInfo[r29->fontId];
         }
         r22++;
         width += r23 * r29->unk20 * f1;
         str += parseState.unk8;
         parseState.unkC += r23;
     }
-    r29->unkC = r25;
+    r29->fontId = fontIdBackup;
     r29->unk20 = f23;
     return width;
 }
@@ -3016,7 +3016,7 @@ void func_80072AC0(char *str, ...)
     va_start(args, str);
     vsprintf(buf, str, args);
     va_end(args);
-    func_80071E58(buf);
+    g_draw_text(buf);
 }
 
 void func_80072B50(struct Sprite *sprite)
@@ -3024,7 +3024,7 @@ void func_80072B50(struct Sprite *sprite)
     lbl_8028CF28.unk0 = sprite->left;
     lbl_8028CF28.unk4 = sprite->left;
     lbl_8028CF28.unk8 = sprite->top;
-    lbl_8028CF28.unkC = sprite->fontId;
+    lbl_8028CF28.fontId = sprite->fontId;
     lbl_8028CF28.unk10 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
                        | ((sprite->unkC & 0xFF) << 16)
                        | ((sprite->unkD & 0xFF) <<  8)
@@ -3038,7 +3038,7 @@ void func_80072B50(struct Sprite *sprite)
     lbl_8028CF28.unk24 = sprite->unk44;
     lbl_8028CF28.unk28 = sprite->unk6C;
     lbl_8028CF28.unk2C = sprite->unk74;
-    func_80071E58(sprite->text);
+    g_draw_text(sprite->text);
 }
 
 void func_80072C68(struct Sprite *sprite)
