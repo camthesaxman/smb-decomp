@@ -538,6 +538,7 @@ struct Struct80292C00
     u8 filler18[0x60-0x18];
 } lbl_80292C00;
 FORCE_BSS_ORDER(lbl_80292C00)
+extern struct Struct80292C00 lbl_80292C00_alias;
 
 u8 lbl_80292C60[0x30];
 FORCE_BSS_ORDER(lbl_80292C60)
@@ -974,133 +975,130 @@ void lbl_8007AA38(s8 *, struct Sprite *);
 void lbl_8007AAFC(struct Sprite *);
 void lbl_8007B608(s8 *, struct Sprite *);
 
-#if 0
+char lbl_802F102C[4] = "000";
+char lbl_802F1030[4] = ":00";
+char lbl_802F1034[2] = "/";
+char lbl_802F1038[8] = "000 100";
+
+const float lbl_802F4D9C = 0.10000000149011612f;
+const float lbl_802F4DA0 = 40.0f;
+
 void func_80077E34(void)
 {
-    struct Sprite *temp_r3;
-    struct Sprite *temp_r3_2;
-    struct Sprite *temp_r3_3;
-    struct Sprite *temp_r3_4;
-    struct Sprite *temp_r3_5;
-    struct Sprite *temp_r3_6;
-    struct Sprite *temp_r3_7;
-    struct Ball *temp_r29;
-    struct Struct80292C00 *r8;
+    struct Sprite *sprite;
+    struct Ball *ball;
+    u8 filler[16];
 
-    temp_r29 = currentBallStructPtr;
-    func_8000D5B8(lbl_801C14F0);
+    ball = currentBallStructPtr;
+    func_8000D5B8();
     func_8008083C(320.0f, 68.0f);
-    temp_r3 = create_sprite();
-    if (temp_r3 != NULL)
+
+    sprite = create_sprite();
+    if (sprite != NULL)
     {
-        temp_r3->centerX = 320.0f;
-        temp_r3->centerY = 85.0f;
-        temp_r3->fontId = 0x66;
-        temp_r3->textAlign = 5;
-        temp_r3->unk4C = 0.19f;
-        temp_r3->mainFunc = lbl_8007A9B4;
-        sprintf(temp_r3->text, "000");
-        temp_r3_2 = create_linked_sprite(temp_r3);
-        if (temp_r3_2 != NULL)
+        sprite->centerX = 320.0f;
+        sprite->centerY = 85.0f;
+        sprite->fontId = FONT_NUM_24x37;
+        sprite->textAlign = ALIGN_CB;
+        sprite->unk4C = 0.19f;
+        sprite->mainFunc = lbl_8007A9B4;
+        sprintf(sprite->text, lbl_802F102C);
+        sprite = create_linked_sprite(sprite);
+        if (sprite != NULL)
         {
-            temp_r3_2->centerX = -4.0f;
-            temp_r3_2->fontId = 0x65;
-            temp_r3_2->textAlign = 5;
-            temp_r3_2->unk4C = 0.19f;
-            temp_r3_2->mainFunc = lbl_8007AA38;
-            sprintf(temp_r3_2->text, ":00");
+            sprite->centerX = -4.0f;
+            sprite->fontId = FONT_NUM_12x19;
+            sprite->textAlign = ALIGN_CB;
+            sprite->unk4C = 0.19f;
+            sprite->mainFunc = lbl_8007AA38;
+            sprintf(sprite->text, lbl_802F1030);
         }
     }
-    temp_r3_3 = create_sprite();
-    if (temp_r3_3 != NULL)
+
+    sprite = create_sprite();
+    if (sprite != NULL)
     {
-        temp_r3_3->type = 1;
-        temp_r3_3->centerX = 428.0f;
-        temp_r3_3->centerY = 22.0f;
-        temp_r3_3->bmpId = 0xC;
-        temp_r3_3->textAlign = 4;
-        temp_r3_3->unk40 = 0.2f;
-        temp_r3_3->unk44 = 0.2f;
-        sprintf(temp_r3_3->text, "banana.pic");
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->centerX = 428.0f;
+        sprite->centerY = 22.0f;
+        sprite->bmpId = 0xC;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk40 = 0.2f;
+        sprite->unk44 = 0.2f;
+        sprintf(sprite->text, "banana.pic");
     }
-    temp_r3_4 = create_sprite();
-    if (temp_r3_4 != NULL)
+
+    sprite = create_sprite();
+    if (sprite != NULL)
     {
-        temp_r3_4->centerX = 536.0f;
-        temp_r3_4->centerY = 24.0f;
-        temp_r3_4->fontId = 0x62;
-        temp_r3_4->textAlign = 4;
-        temp_r3_4->unkC = 0xAA;
-        temp_r3_4->unkD = 0xA8;
-        temp_r3_4->unkE = 0;
-        temp_r3_4->unk70 = 0x38;
-        temp_r3_4->unk71 = 0x38;
-        temp_r3_4->unk72 = 0;
-        sprintf(temp_r3_4->text, "BANANA(S)");
+        sprite->centerX = 536.0f;
+        sprite->centerY = 24.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unkC = 0xAA;
+        sprite->unkD = 0xA8;
+        sprite->unkE = 0;
+        sprite->unk70 = 0x38;
+        sprite->unk71 = 0x38;
+        sprite->unk72 = 0;
+        sprintf(sprite->text, "BANANA(S)");
     }
-    temp_r3_5 = create_sprite();
-    if (temp_r3_5 != NULL)
+    sprite = create_sprite();
+    if (sprite != NULL)
     {
-        temp_r3_5->centerX = 518.0f;
-        temp_r3_5->centerY = 47.0f;
-        temp_r3_5->fontId = 0x5E;
-        temp_r3_5->textAlign = 4;
-        temp_r3_5->unkC = 0xAA;
-        temp_r3_5->unkD = 0xA8;
-        temp_r3_5->unkE = 0;
-        temp_r3_5->unk70 = 0x38;
-        temp_r3_5->unk71 = 0x38;
-        temp_r3_5->unk72 = 0;
-        sprintf(temp_r3_5->text, "/");
+        sprite->centerX = 518.0f;
+        sprite->centerY = 47.0f;
+        sprite->fontId = FONT_NUM_22x22;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unkC = 0xAA;
+        sprite->unkD = 0xA8;
+        sprite->unkE = 0;
+        sprite->unk70 = 0x38;
+        sprite->unk71 = 0x38;
+        sprite->unk72 = 0;
+        sprintf(sprite->text, lbl_802F1034);
     }
-    temp_r3_6 = create_sprite();
-    if (temp_r3_6 != NULL)
+
+    sprite = create_sprite();
+    if (sprite != NULL)
     {
-        temp_r3_6->tag = 0x12;
-        temp_r3_6->centerX = 518.0f;
-        temp_r3_6->centerY = 48.0f;
-        temp_r3_6->fontId = 0x62;
-        temp_r3_6->textAlign = 4;
-        temp_r3_6->drawFunc = lbl_8007AAFC;
-        temp_r3_6->unkC = 0xAA;
-        temp_r3_6->unkD = 0xA8;
-        temp_r3_6->unkE = 0;
-        temp_r3_6->unk70 = 0x38;
-        temp_r3_6->unk71 = 0x38;
-        temp_r3_6->unk72 = 0;
-        sprintf(temp_r3_6->text, "000 100");
+        sprite->tag = 0x12;
+        sprite->centerX = 518.0f;
+        sprite->centerY = 48.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_CC;
+        sprite->drawFunc = lbl_8007AAFC;
+        sprite->unkC = 0xAA;
+        sprite->unkD = 0xA8;
+        sprite->unkE = 0;
+        sprite->unk70 = 0x38;
+        sprite->unk71 = 0x38;
+        sprite->unk72 = 0;
+        sprintf(sprite->text, lbl_802F1038);
     }
-    /*
-    lbl_80292C00.unk4 = 0;
-    lbl_80292C00.unkC = 0;
-    lbl_80292C00.unk14 = 0;
-    lbl_80292C00.unk0 = (s32) (temp_r29->bananas % 10);
-    lbl_80292C00.unk8 = (u32) (temp_r29->bananas / 10);
-    lbl_80292C00.unk10 = (u32) (temp_r29->bananas / 100);
-    */
-    r8 = &lbl_80292C00;
-    r8->unk4 = 0;
-    r8->unkC = 0;
-    r8->unk14 = 0;
-    r8->unk0 = (s32) (temp_r29->bananas % 10);
-    r8->unk8 = (u32) (temp_r29->bananas / 10);
-    r8->unk10 = (u32) (temp_r29->bananas / 100);
+
+    lbl_80292C00_alias.unk4 = 0;
+    lbl_80292C00_alias.unkC = 0;
+    lbl_80292C00_alias.unk14 = 0;
+    lbl_80292C00_alias.unk0 = ball->bananas % 10;
+    lbl_80292C00_alias.unk8 = ball->bananas / 10;
+    lbl_80292C00_alias.unk10 = ball->bananas / 100;
+
     if (infoWork.flags & 0x40)
     {
-        temp_r3_7 = create_sprite();
-        if (temp_r3_7 != NULL)
+        sprite = create_sprite();
+        if (sprite != NULL)
         {
-            temp_r3_7->centerX = 320.0f;
-            temp_r3_7->centerY = 380.0f;
-            temp_r3_7->fontId = 0x64;
-            temp_r3_7->textAlign = 4;
-            temp_r3_7->unk10 = (s16) 0;
-            temp_r3_7->mainFunc = lbl_8007B608;
-            strcpy(temp_r3_7->text, "%2d BANANAS LEFT");
+            sprite->centerX = 320.0f;
+            sprite->centerY = 380.0f;
+            sprite->fontId = FONT_ASC_32x32;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unk10 = 0;
+            sprite->mainFunc = lbl_8007B608;
+            strcpy(sprite->text, "%2d BANANAS LEFT");
         }
     }
 }
-#endif
 
 /*
 const float lbl_802F4BD8 = 315f;

@@ -284,7 +284,7 @@ void func_80071AE4();
 void g_set_some_sprite_color();
 void func_80071B1C(float);
 void func_80071B2C(float, float);
-// ? func_80071B40();
+void func_80071B40(float a);
 void func_80071B50();
 void g_set_text_pos(float, float);
 // ? func_80071B78();

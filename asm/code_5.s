@@ -4459,7 +4459,7 @@ lbl_80077E04:
 /* 80077E2C 00073D4C  7C 08 03 A6 */	mtlr r0
 /* 80077E30 00073D50  4E 80 00 20 */	blr
 .endif
-.if 1
+.if 0
 .global func_80077E34
 func_80077E34:
 /* 80077E34 00073D54  7C 08 02 A6 */	mflr r0
@@ -18619,7 +18619,6 @@ lbl_802F4D94:
 lbl_802F4D98:
 	# ROM: 0x1EE7B8
 	.4byte 0x3D23D70A
-.endif
 
 .global lbl_802F4D9C
 lbl_802F4D9C:
@@ -18690,6 +18689,7 @@ lbl_802F4DCC:
 lbl_802F4DD0:
 	# ROM: 0x1EE7F0
 	.4byte 0x43BE0000
+.endif
 	.4byte 0
 
 .global lbl_802F4DD8
@@ -20323,6 +20323,7 @@ lbl_80292D30:
 
 .section .data
 
+foo:
 .if 0
 .global lbl_801C1420
 lbl_801C1420:
@@ -20600,7 +20601,6 @@ lbl_801C17C4:
 glabel string_a_Options
 	.asciz "a/Options"
 	.balign 4
-.endif
 
 .global lbl_801C17D0
 lbl_801C17D0:
@@ -20614,6 +20614,7 @@ glabel string_BANANA_S_
 glabel string__2d_BANANAS_LEFT
 	.asciz "%2d BANANAS LEFT"
 	.balign 4
+.endif
 	.4byte 0x42C80000
 	.4byte 0x42480000
 	.4byte 0x43960000
@@ -23000,7 +23001,6 @@ lbl_802F1024:
 glabel string_saru
 	.asciz "saru"
 	.balign 4
-.endif
 
 .global lbl_802F102C
 lbl_802F102C:
@@ -23022,6 +23022,7 @@ lbl_802F1038:
 	# ROM: 0x1EB778
 glabel string_000_100
 	.asciz "000 100"
+.endif
 
 .global lbl_802F1040
 lbl_802F1040:
