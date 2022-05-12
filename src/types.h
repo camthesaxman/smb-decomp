@@ -50,14 +50,26 @@ enum
 
 struct Color3f { float r, g, b; };
 
+enum Alignment
+{
+    ALIGN_LT,
+    ALIGN_LC,
+    ALIGN_LB,
+    ALIGN_CT,
+    ALIGN_CC,
+    ALIGN_CB,
+    ALIGN_RT,
+    ALIGN_RC,
+    ALIGN_RB,
+    ALIGN_PIC,
+};
+
 // avdisp.c
 struct GMAShape;
 struct GMATevLayer;
 struct DrawShapeDeferredNode;
 struct GMATevLayer;
 struct TevStageInfo;
-
-
 
 struct TPLTextureHeader
 {
@@ -161,7 +173,7 @@ typedef struct {
 typedef struct {
     u8 numTevStages;
     GXColor colors[4];
-    u8 filler0x11[1];
+    u8 filler11[1];
 } GXTevKColorCached;
 
 struct GXCache
@@ -179,7 +191,7 @@ struct GXCache
     /*0x0FC*/ GXBool colorUpdate;
     /*0x0FD*/ GXBool alphaUpdate;
     /*0x0FE*/ GXBool zCompare;
-    /*0x0FF*/ u8 unk0xFF;
+    /*0x0FF*/ u8 unkFF;
     /*0x100*/ GXTevInputCache colorInputs[16];
     /*0x200*/ GXTevInputCache alphaInputs[16];
     /*0x300*/ GXTevOpCache colorOperations[16];
@@ -725,12 +737,12 @@ struct NaomiSpriteParams
     /*0x1C*/ float v1;
     /*0x20*/ float u2;
     /*0x24*/ float v2;
-    /*0x28*/ u32 rotation;
+    /*0x28*/ s32 rotation;
     /*0x2C*/ float alpha;
     s32 unk30;
     /*0x34*/ u32 flags;
-    u32 unk38;
-    u32 unk3C;
+    /*0x38*/ u32 color1;
+    /*0x3C*/ u32 color2;
     u8 filler40[0x50-0x40];
 };
 
@@ -784,8 +796,8 @@ struct Struct801EEC68
     s32 unk0;
     u32 unk4;
     s32 unk8;
-    s32 unkC;
-    s32 unk10;
+    s32 unkC;  // menu item count
+    s32 unk10;  // menu type
     s8 unk14;
     s8 unk15;
     s16 unk16;
@@ -827,35 +839,12 @@ struct Sphere
 struct Preview;
 struct NaomiDispList;
 
-struct Struct80075900
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[4];
-    s8 unk14;
-    s8 unk15;
-    s8 unk16;
-    u8 filler17[0x1C-0x17];
-    void (*unk1C)();
-    u8 filler20[0x28-0x20];
-};
-
 struct Struct8009544C
 {
     u8 filler0[0x6];
     u16 unk6;
     u8 filler8[0x18-0x8];
 };  // size = 0x18
-
-struct Struct8000F030
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[0x20-0x10];
-    s32 unk20;
-};
 
 struct Struct801EED88
 {
@@ -1148,5 +1137,25 @@ struct Struct80180F14
     char *unk0;
     s8 unk4;
 };
+
+struct TextBox
+{
+    s32 unk0;
+    s32 unk4;
+    u32 unk8;
+    s16 unkC;
+    s16 unkE;
+    float unk10;
+    s8 unk14;
+    s8 numLines;
+    s8 unk16;
+    u8 unk17;
+    u8 unk18;
+    u8 unk19;
+    u8 filler1A[2];
+    void (*unk1C)(struct TextBox *);
+    s32 unk20;
+    s32 unk24;
+};  // size = 0x28
 
 #endif

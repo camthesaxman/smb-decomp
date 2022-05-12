@@ -247,19 +247,19 @@ void func_800A5F28(void)
 void view_sprite_func(struct Sprite *sprite)
 {
     func_80071A8C();
-    func_80071AD4(sprite->fontId);
+    g_set_font(sprite->fontId);
     func_80071B2C(sprite->unk40, sprite->unk44);
     func_80071B50(sprite->unk74);
     func_80071B1C(sprite->unk4C + 0.1);
     func_80071AE4(0);
-    func_80071AF8(0);
-    func_80071B60(sprite->centerX + 2.0, sprite->centerY + 2.0);
-    func_80071E58(sprite->text);
+    g_set_some_sprite_color(0);
+    g_set_text_pos(sprite->centerX + 2.0, sprite->centerY + 2.0);
+    g_draw_text(sprite->text);
     func_80071B1C(sprite->unk4C);
     func_80071AE4((sprite->unkC << 16) | (sprite->unkD << 8) | sprite->unkE);
-    func_80071AF8((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
-    func_80071B60(sprite->centerX, sprite->centerY);
-    func_80071E58(sprite->text);
+    g_set_some_sprite_color((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
+    g_set_text_pos(sprite->centerX, sprite->centerY);
+    g_draw_text(sprite->text);
 }
 
 void view_create_text_sprites(void)
@@ -272,10 +272,10 @@ void view_create_text_sprites(void)
         sprite->tag = 100;
         sprite->centerX = 24.0f;
         sprite->centerY = 24.0f;
-        sprite->textAlign = 0;
-        sprite->fontId = 0xB3;
+        sprite->textAlign = ALIGN_LT;
+        sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = view_sprite_func;
+        sprite->drawFunc = view_sprite_func;
         strcpy(sprite->text, "a/Stage Overview");
     }
 
@@ -285,10 +285,10 @@ void view_create_text_sprites(void)
         sprite->tag = 100;
         sprite->centerX = 170.0f;
         sprite->centerY = 435.0f;
-        sprite->textAlign = 8;
-        sprite->fontId = 0xB3;
+        sprite->textAlign = ALIGN_RB;
+        sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = view_sprite_func;
+        sprite->drawFunc = view_sprite_func;
         strcpy(sprite->text, "p/LEVER/a/Rotate/Zoom");
     }
 
@@ -298,10 +298,10 @@ void view_create_text_sprites(void)
         sprite->tag = 100;
         sprite->centerX = 415.0f;
         sprite->centerY = 435.0f;
-        sprite->textAlign = 8;
-        sprite->fontId = 0xB3;
+        sprite->textAlign = ALIGN_RB;
+        sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->unk38 = view_sprite_func;
+        sprite->drawFunc = view_sprite_func;
         strcpy(sprite->text, "p/BUTTON_C/a/Pan camera");
     }
 }

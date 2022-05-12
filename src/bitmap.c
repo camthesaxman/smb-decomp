@@ -333,7 +333,7 @@ void bitmap_main(void)
 
     bitmap_draw_string();
     lbl_802F1D04 = 2;
-    func_8002704C();
+    g_draw_all_naomi_sprites();
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
@@ -341,9 +341,9 @@ void bitmap_main(void)
     if (eventInfo[EVENT_MOUSE].state == EV_STATE_RUNNING)
         func_80095024();
     lbl_802F1D04 = 3;
-    func_800730B4();
+    g_draw_screen_fade_mask();
     lbl_802F1D04 = 2;
-    func_8002704C();
+    g_draw_all_naomi_sprites();  // again?
 
     if (gxCache->updateEnable != GX_DISABLE
      || gxCache->compareFunc != GX_ALWAYS
@@ -616,7 +616,7 @@ void bitmap_draw_string(void)
     prevString = currString;
 }
 
-void func_8002704C(void)
+void g_draw_all_naomi_sprites(void)
 {
     int i;
     struct NaomiSpriteParams *params = &spriteParamsBuf[0];

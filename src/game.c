@@ -1119,7 +1119,7 @@ char *nameEntryText[] =
 
 void submode_game_nameentry_ready_init_func(void)
 {
-    struct Struct80075900 sp8;
+    struct TextBox sp8;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1166,7 +1166,7 @@ void submode_game_nameentry_ready_init_func(void)
     sp8.unkC = 0x140;
     sp8.unkE = 0x90;
     sp8.unk14 = 0;
-    sp8.unk15 = 1;
+    sp8.numLines = 1;
     sp8.unk1C = 0;
     g_create_textbox(1, 1, &sp8);
     g_set_textbox_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
@@ -1494,13 +1494,13 @@ void submode_game_extra_wait_func(void)
         modeCtrl.unk0 = 60;
     if (modeCtrl.unk0 == 540)
     {
-        struct Struct80075900 sp30;
+        struct TextBox sp30;
 
         memset(&sp30, 0, sizeof(sp30));
         sp30.unk16 = 11;
         sp30.unkC = 0x140;
         sp30.unkE = 0xC8;
-        sp30.unk15 = 2;
+        sp30.numLines = 2;
         sp30.unk1C = 0;
         g_create_textbox(1, 1, &sp30);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
@@ -1521,13 +1521,13 @@ void submode_game_extra_wait_func(void)
     }
     if (modeCtrl.unk0 == 300)
     {
-        struct Struct80075900 sp8;
+        struct TextBox sp8;
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unk16 = 11;
         sp8.unkC = 0x140;
         sp8.unkE = 0xC8;
-        sp8.unk15 = 2;
+        sp8.numLines = 2;
         sp8.unk1C = 0;
         g_create_textbox(1, 21, &sp8);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
