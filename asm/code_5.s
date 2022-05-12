@@ -2896,7 +2896,7 @@ lbl_800766FC:
 /* 80076704 00072624  38 21 00 40 */	addi r1, r1, 0x40
 /* 80076708 00072628  7C 08 03 A6 */	mtlr r0
 /* 8007670C 0007262C  4E 80 00 20 */	blr
-lbl_80076710:
+glabel lbl_80076710
 /* 80076710 00072630  7C 08 02 A6 */	mflr r0
 /* 80076714 00072634  90 01 00 04 */	stw r0, 4(r1)
 /* 80076718 00072638  38 00 00 00 */	li r0, 0
@@ -3256,7 +3256,7 @@ lbl_80076B3C:
 /* 80076C48 00072B68  38 21 00 78 */	addi r1, r1, 0x78
 /* 80076C4C 00072B6C  7C 08 03 A6 */	mtlr r0
 /* 80076C50 00072B70  4E 80 00 20 */	blr
-.endif
+
 .global show_adv_copyright_text
 show_adv_copyright_text:
 /* 80076C54 00072B74  7C 08 02 A6 */	mflr r0
@@ -3344,7 +3344,7 @@ lbl_80076D84:
 /* 80076D90 00072CB0  7C 08 03 A6 */	mtlr r0
 /* 80076D94 00072CB4  38 21 00 18 */	addi r1, r1, 0x18
 /* 80076D98 00072CB8  4E 80 00 20 */	blr
-lbl_80076D9C:
+glabel lbl_80076D9C
 /* 80076D9C 00072CBC  80 04 00 48 */	lwz r0, 0x48(r4)
 /* 80076DA0 00072CC0  2C 00 FF FF */	cmpwi r0, -1
 /* 80076DA4 00072CC4  4C 82 00 20 */	bnelr
@@ -3486,7 +3486,8 @@ lbl_80076F74:
 /* 80076F94 00072EB4  CB 41 00 30 */	lfd f26, 0x30(r1)
 /* 80076F98 00072EB8  38 21 00 60 */	addi r1, r1, 0x60
 /* 80076F9C 00072EBC  4E 80 00 20 */	blr
-lbl_80076FA0:
+
+glabel lbl_80076FA0
 /* 80076FA0 00072EC0  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 80076FA4 00072EC4  3C 60 80 29 */	lis r3, lbl_80292C00@ha
 /* 80076FA8 00072EC8  38 63 2C 00 */	addi r3, r3, lbl_80292C00@l
@@ -3544,10 +3545,10 @@ lbl_80077060:
 /* 8007706C 00072F8C  C0 67 00 04 */	lfs f3, 4(r7)
 /* 80077070 00072F90  FC 60 18 1E */	fctiwz f3, f3
 /* 80077074 00072F94  D8 61 00 10 */	stfd f3, 0x10(r1)
-/* 80077078 00072F98  80 01 00 14 */	lwz r0, 0x14(r1)
+/* 80077078 00072F98  80 01 00 14 */	lwz r0, 0x14(r1)  ;# (int)r7->unk4
 /* 8007707C 00072F9C  7C 05 FE 70 */	srawi r5, r0, 0x1f
 /* 80077080 00072FA0  7C A0 02 78 */	xor r0, r5, r0
-/* 80077084 00072FA4  7C 05 00 50 */	subf r0, r5, r0
+/* 80077084 00072FA4  7C 05 00 50 */	subf r0, r5, r0   ;# abs?
 /* 80077088 00072FA8  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 8007708C 00072FAC  90 01 00 1C */	stw r0, 0x1c(r1)
 /* 80077090 00072FB0  90 C1 00 18 */	stw r6, 0x18(r1)
@@ -3682,7 +3683,9 @@ lbl_80077260:
 lbl_80077278:
 /* 80077278 00073198  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007727C 0007319C  4E 80 00 20 */	blr
-lbl_80077280:
+.endif
+.if 0
+glabel lbl_80077280
 /* 80077280 000731A0  7C 08 02 A6 */	mflr r0
 /* 80077284 000731A4  38 C0 00 00 */	li r6, 0
 /* 80077288 000731A8  90 01 00 04 */	stw r0, 4(r1)
@@ -4048,7 +4051,8 @@ lbl_80077808:
 /* 8007780C 0007372C  38 21 00 08 */	addi r1, r1, 8
 /* 80077810 00073730  7C 08 03 A6 */	mtlr r0
 /* 80077814 00073734  4E 80 00 20 */	blr
-lbl_80077818:
+
+glabel lbl_80077818
 /* 80077818 00073738  7C 08 02 A6 */	mflr r0
 /* 8007781C 0007373C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80077820 00073740  90 01 00 04 */	stw r0, 4(r1)
@@ -4230,7 +4234,8 @@ lbl_80077ACC:
 /* 80077AD0 000739F0  38 21 00 58 */	addi r1, r1, 0x58
 /* 80077AD4 000739F4  7C 08 03 A6 */	mtlr r0
 /* 80077AD8 000739F8  4E 80 00 20 */	blr
-lbl_80077ADC:
+
+glabel lbl_80077ADC
 /* 80077ADC 000739FC  7C 08 02 A6 */	mflr r0
 /* 80077AE0 00073A00  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 80077AE4 00073A04  90 01 00 04 */	stw r0, 4(r1)
@@ -4453,7 +4458,8 @@ lbl_80077E04:
 /* 80077E28 00073D48  38 21 00 08 */	addi r1, r1, 8
 /* 80077E2C 00073D4C  7C 08 03 A6 */	mtlr r0
 /* 80077E30 00073D50  4E 80 00 20 */	blr
-
+.endif
+.if 1
 .global func_80077E34
 func_80077E34:
 /* 80077E34 00073D54  7C 08 02 A6 */	mflr r0
@@ -4674,6 +4680,7 @@ lbl_80078164:
 /* 80078178 00074098  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 8007817C 0007409C  38 21 00 28 */	addi r1, r1, 0x28
 /* 80078180 000740A0  4E 80 00 20 */	blr
+.endif
 
 .global g_banana_sprite_something
 g_banana_sprite_something:
@@ -7450,7 +7457,8 @@ lbl_8007A998:
 /* 8007A9A8 000768C8  83 A1 00 24 */	lwz r29, 0x24(r1)
 /* 8007A9AC 000768CC  38 21 00 30 */	addi r1, r1, 0x30
 /* 8007A9B0 000768D0  4E 80 00 20 */	blr
-lbl_8007A9B4:
+
+glabel lbl_8007A9B4
 /* 8007A9B4 000768D4  7C 08 02 A6 */	mflr r0
 /* 8007A9B8 000768D8  3C 60 80 25 */	lis r3, lbl_80250A68@ha
 /* 8007A9BC 000768DC  90 01 00 04 */	stw r0, 4(r1)
@@ -7484,7 +7492,8 @@ lbl_8007A9B4:
 /* 8007AA2C 0007694C  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007AA30 00076950  7C 08 03 A6 */	mtlr r0
 /* 8007AA34 00076954  4E 80 00 20 */	blr
-lbl_8007AA38:
+
+glabel lbl_8007AA38
 /* 8007AA38 00076958  7C 08 02 A6 */	mflr r0
 /* 8007AA3C 0007695C  3C 60 80 25 */	lis r3, lbl_80250A68@ha
 /* 8007AA40 00076960  90 01 00 04 */	stw r0, 4(r1)
@@ -7534,7 +7543,8 @@ lbl_8007AA38:
 /* 8007AAF0 00076A10  38 21 00 30 */	addi r1, r1, 0x30
 /* 8007AAF4 00076A14  7C 08 03 A6 */	mtlr r0
 /* 8007AAF8 00076A18  4E 80 00 20 */	blr
-lbl_8007AAFC:
+
+glabel lbl_8007AAFC
 /* 8007AAFC 00076A1C  7C 08 02 A6 */	mflr r0
 /* 8007AB00 00076A20  90 01 00 04 */	stw r0, 4(r1)
 /* 8007AB04 00076A24  94 21 FF 60 */	stwu r1, -0xa0(r1)
@@ -8273,7 +8283,8 @@ lbl_8007B5E4:
 /* 8007B5FC 0007751C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007B600 00077520  7C 08 03 A6 */	mtlr r0
 /* 8007B604 00077524  4E 80 00 20 */	blr
-lbl_8007B608:
+
+glabel lbl_8007B608
 /* 8007B608 00077528  7C 08 02 A6 */	mflr r0
 /* 8007B60C 0007752C  3C 60 80 1F */	lis r3, infoWork@ha
 /* 8007B610 00077530  90 01 00 04 */	stw r0, 4(r1)
@@ -13983,7 +13994,8 @@ lbl_80080924:
 /* 80080934 0007C854  7C 08 03 A6 */	mtlr r0
 /* 80080938 0007C858  38 21 00 38 */	addi r1, r1, 0x38
 /* 8008093C 0007C85C  4E 80 00 20 */	blr
-lbl_80080940:
+
+glabel lbl_80080940
 /* 80080940 0007C860  7C 08 02 A6 */	mflr r0
 /* 80080944 0007C864  3C A0 80 12 */	lis r5, lbl_80118938@ha
 /* 80080948 0007C868  90 01 00 04 */	stw r0, 4(r1)
@@ -18410,7 +18422,6 @@ lbl_802F4CC0:
 	# ROM: 0x1EE6E0
 	.4byte 0x3FC40000
 	.4byte 0
-.endif
 
 .global lbl_802F4CC8
 lbl_802F4CC8:
@@ -18608,6 +18619,7 @@ lbl_802F4D94:
 lbl_802F4D98:
 	# ROM: 0x1EE7B8
 	.4byte 0x3D23D70A
+.endif
 
 .global lbl_802F4D9C
 lbl_802F4D9C:
@@ -20288,6 +20300,7 @@ lbl_80292AC0:
 textBoxes:
 	.skip 0xA0
 .endif
+.if 0
 .global lbl_80292C00
 lbl_80292C00:
 	.skip 0x60
@@ -20300,6 +20313,7 @@ lbl_80292C90:
 .global lbl_80292CB8
 lbl_80292CB8:
 	.skip 0x60
+.endif
 .global lbl_80292D18
 lbl_80292D18:
 	.skip 0x18
@@ -20499,7 +20513,6 @@ lbl_801C1680:
 glabel string_logo_plus
 	.asciz "logo plus"
 	.balign 4
-.endif
 
 .global lbl_801C168C
 lbl_801C168C:
@@ -20587,6 +20600,7 @@ lbl_801C17C4:
 glabel string_a_Options
 	.asciz "a/Options"
 	.balign 4
+.endif
 
 .global lbl_801C17D0
 lbl_801C17D0:
@@ -22961,7 +22975,6 @@ lbl_802F1008:
 glabel string_logo
 	.asciz "logo"
 	.balign 4
-.endif
 
 .global lbl_802F1010
 lbl_802F1010:
@@ -22987,6 +23000,7 @@ lbl_802F1024:
 glabel string_saru
 	.asciz "saru"
 	.balign 4
+.endif
 
 .global lbl_802F102C
 lbl_802F102C:

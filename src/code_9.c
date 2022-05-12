@@ -1,4 +1,6 @@
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <dolphin.h>
@@ -6,8 +8,10 @@
 #include "global.h"
 #include "ball.h"
 #include "bitmap.h"
+#include "info.h"
 #define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
+#include "mode.h"
 #include "sprite.h"
 
 u32 lbl_801C14F0[] =
@@ -471,6 +475,633 @@ void lbl_80076AC0(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
+void lbl_80076D9C(s8 *, struct Sprite *);
+
+void show_adv_copyright_text(int a)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 0x25;
+        sprite->type = 1;
+        sprite->centerX = 357.0f;
+        sprite->centerY = 463.0f;
+        sprite->textAlign = 2;
+        sprite->unk4C = 0.03f;
+        sprite->bmpId = 0xD;
+        sprite->mainFunc = lbl_80076D9C;
+        strcpy(sprite->text, "(C)");
+        if (a == 1)
+            sprite->drawFunc = lbl_80076710;
+        sprite = create_linked_sprite(sprite);
+        if (sprite != NULL)
+        {
+            sprite->tag = 0x26;
+            sprite->centerX = 6.0f;
+            sprite->fontId = 1;
+            sprite->textAlign = 2;
+            sprite->mainFunc = lbl_80076D9C;
+            strcpy(sprite->text, "AMUSEMENT VISION,LTD./SEGA,2001");
+        }
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 0x27;
+        sprite->type = 1;
+        sprite->centerX = 16.0f;
+        sprite->centerY = 462.0f;
+        sprite->unk4C = 0.03f;
+        sprite->bmpId = 0x52;
+        sprite->textAlign = 2;
+        sprite->mainFunc = lbl_80076D9C;
+        strcpy(sprite->text, "SEGA AV");
+    }
+}
+
+void lbl_80076D9C(s8 *unused, struct Sprite *sprite)
+{
+    if (sprite->unk48 == -1 && sprite->unk6C > 0.0f)
+        sprite->unk6C -= 0.05;
+}
+
+struct Struct80292C00
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+    u32 unk10;
+    u32 unk14;
+    u8 filler18[0x60-0x18];
+} lbl_80292C00;
+FORCE_BSS_ORDER(lbl_80292C00)
+
+u8 lbl_80292C60[0x30];
+FORCE_BSS_ORDER(lbl_80292C60)
+
+struct Struct80292C90
+{
+    float unk0;
+    float unk4;
+};
+
+struct Struct80292C90 lbl_80292C90[5];
+FORCE_BSS_ORDER(lbl_80292C90)
+
+struct Struct80292CB8
+{
+    float unk0;
+    float unk4;
+};
+
+struct Struct80292C90 lbl_80292CB8[10];
+FORCE_BSS_ORDER(lbl_80292CB8)
+
+s8 lbl_80292D08[0x10];
+FORCE_BSS_ORDER(lbl_80292D08)
+
+extern struct
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u8 fillerC[0x14-0xC];
+    u32 unk14;
+} lbl_80292D18;
+//FORCE_BSS_ORDER(lbl_80292D18)
+
+void lbl_80076FA0(s8 *, struct Sprite *);
+void lbl_80077280(struct Sprite *);
+
+extern float lbl_802F2010;
+extern float lbl_802F2014;
+
+void func_80076DCC(int arg0)
+{
+    struct Sprite *sprite;
+    int i;
+    struct Struct80292C90 *r27;
+    s8 *r27_;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = 1;
+        sprite->unk4C = 0.095f;
+        sprite->unk6C = 0.0f;
+        sprite->unk10 = arg0;
+        sprite->unk48 = arg0;
+        sprite->mainFunc = lbl_80076FA0;
+        sprite->drawFunc = lbl_80077280;
+        strcpy(sprite->text, "title");
+
+        r27 = lbl_80292C90;
+        for (i = 0; i < 5; i++, r27++)
+        {
+            r27->unk0 = (arg0 == 1) ? 0.0 : -200.0 + 40.0 * ((rand() / 32767.0f) - 0.5);
+            r27->unk4 = 0.0f;
+        }
+
+        r27 = lbl_80292CB8;
+        r27_ = lbl_80292D08;
+        for (i = 0; i < 10; i++, r27++, r27_++)
+        {
+            r27->unk0 = (arg0 == 1) ? 0.0 : 640.0 + 20.0 * ((rand() / 32767.0f) - 0.5);
+            r27->unk4 = (arg0 == 1) ? 0.0 : -10.0;
+            *r27_ = 0;
+        }
+        lbl_802F2010 = 0.0f;
+        lbl_802F2014 = 0.0f;
+    }
+}
+
+#ifdef NONMATCHING
+void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
+{
+    struct Struct80292C90 *phi_r7;
+    s8 *phi_r8;
+    struct Struct80292C90 *phi_r5;
+    int i;
+
+    if (arg1->unk10 > 0)
+        arg1->unk10--;
+
+    (void)arg1->unk10;
+    arg1->unk6C = 1.0 - ((float)arg1->unk10 / (float)arg1->unk48);
+
+    phi_r7 = lbl_80292CB8;
+    phi_r8 = lbl_80292D08;
+    for (i = 0; i < 10; i++, phi_r7++, phi_r8++)
+    {
+        phi_r7->unk0 += phi_r7->unk4;
+        if (*phi_r8 == 0 && phi_r7->unk0 <= 0.0f)
+            *phi_r8 = 1;
+        if (*phi_r8 != 0)
+        {
+            if (__abs(phi_r7->unk4) <= 2.0 && __abs(phi_r7->unk0) <= 2.0)
+            {
+                phi_r7->unk4 = 0.0f;
+                phi_r7->unk0 = 0.0f;
+            }
+            else if (phi_r7->unk0 < 0.0f)
+                phi_r7->unk4 = 4.0f;
+            else
+                phi_r7->unk4 = -1.0f;
+        }
+    }
+
+    if (arg1->unk10 > (0.25 * (float)arg1->unk48))
+        return;
+
+    phi_r5 = lbl_80292C90;
+    for (i = 0; i < 5; i++, phi_r5++)
+    {
+        phi_r5->unk4 += 0.5;
+        phi_r5->unk0 += phi_r5->unk4;
+        if (phi_r5->unk0 >= 0.0f)
+        {
+            if (phi_r5->unk4 <= 0.5)
+            {
+                phi_r5->unk4 = 0.0f;
+                phi_r5->unk0 = 0.0f;
+            }
+            else
+            {
+                phi_r5->unk4 = 0.5 * -phi_r5->unk4;
+                phi_r5->unk0 = 0.0f;
+            }
+        }
+    }
+
+    if (arg1->unk10 > 0.0)
+        return;
+    if (lbl_80292CB8[0].unk4 != 0.0)
+        return;
+
+    lbl_802F2014 += 0.25 * (1.0 - lbl_802F2014);
+    if (modeCtrl.levelSetFlags & 4)
+        lbl_802F2010 += 0.25 * -lbl_802F2010;
+    else
+        lbl_802F2010 += 0.25 * (1.0 - lbl_802F2010);
+}
+#else
+const double lbl_802F4D28 = 2.0;
+const float lbl_802F4D30 = 4.0f;
+const float lbl_802F4D34 = -1.0f;
+const double lbl_802F4D38 = 0.25;
+asm void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
+{
+    nofralloc
+#include "../asm/nonmatchings/lbl_80076FA0.s"
+}
+#pragma peephole on
+#endif
+
+
+struct Struct801C16AC
+{
+    u32 unk0;
+    float unk4;
+    float unk8;
+};  //size = 0xC
+
+struct Struct801C16AC lbl_801C16AC[] =
+{
+    { 275, 132,  46 },
+    { 276, 203,  22 },
+    { 277, 278,  10 },
+    { 278, 351,  22 },
+    { 279, 422,  46 },
+};
+
+struct Struct801C16AC lbl_801C16E8[] =
+{
+    { 268,  64, 195 },
+    { 269, 133, 133 },
+    { 270, 225, 105 },
+    { 271, 321, 105 },
+    { 272, 412, 133 },
+    { 273, 480, 195 },
+    { 267, 141, 256 },
+    { 265, 228, 216 },
+    { 266, 320, 216 },
+    { 266, 407, 256 },
+};
+
+extern u32 lbl_80118AC8[];
+
+void lbl_80077280(struct Sprite *sprite)
+{
+    int i;
+    struct Struct801C16AC *phi_r28;
+    struct Struct80292C90 *phi_r29;
+    struct NaomiSpriteParams params;
+
+    params.u1 = 0.0f;
+    params.v1 = 0.0f;
+    params.u2 = 1.0f;
+    params.v2 = 1.0f;
+    params.zoomX = 1.0f;
+    params.zoomY = 1.0f;
+    params.alpha = 1.0f;
+    params.rotation = 0;
+    params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->unk6C));
+    params.color2 = 0;
+    params.unk30 = -1;
+    params.bmpId = 0x103;
+    params.x = 320.1f;
+    params.y = 240.1f;
+    params.z = 0.004 + sprite->unk4C;
+    params.alpha = sprite->unk6C;
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
+    draw_naomi_sprite(&params);
+
+    phi_r28 = lbl_801C16AC;
+    phi_r29 = lbl_80292C90;
+    for (i = 0; i < 5; i++, phi_r28++, phi_r29++)
+    {
+        params.bmpId = 0x118;
+        params.x = phi_r28->unk4 - 8.0f;
+        params.y = phi_r28->unk8 + phi_r29->unk0 - 5.0f;
+        params.z = 0.002 + sprite->unk4C;
+        params.alpha = sprite->unk6C;
+        params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
+        draw_naomi_sprite(&params);
+
+        params.bmpId = phi_r28->unk0;
+        params.x = phi_r28->unk4;
+        params.y = phi_r28->unk8 + phi_r29->unk0;
+        params.z = sprite->unk4C;
+        params.alpha = 1.0f;
+        params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
+        draw_naomi_sprite(&params);
+
+        params.bmpId = 0x108;
+        params.z = sprite->unk4C - 0.002;
+        params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * phi_r29->unk0));
+        draw_naomi_sprite(&params);
+    }
+
+    phi_r28 = lbl_801C16E8;
+    phi_r29 = lbl_80292CB8;
+    for (i = 0; i < 10; i++, phi_r28++, phi_r29++)
+    {
+        params.bmpId = 0x112;
+        params.x = 56.0f + (phi_r28->unk4 + phi_r29->unk0 - 12.0f);
+        params.y = 56.0f + (phi_r28->unk8 - 5.0f);
+        params.z = 0.002 + sprite->unk4C;
+        params.alpha = sprite->unk6C;
+        params.rotation = 0;
+        params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
+        draw_naomi_sprite(&params);
+
+        params.bmpId = phi_r28->unk0;
+        params.x = 44.0f + (phi_r28->unk4 + phi_r29->unk0);
+        params.y = 44.0f + phi_r28->unk8;
+        params.z = sprite->unk4C;
+        params.alpha = 1.0f;
+        params.rotation = -256.0f * phi_r29->unk0;
+        params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 0xA;
+        draw_naomi_sprite(&params);
+
+        params.bmpId = 0x104;
+        params.z = sprite->unk4C - 0.002;
+        params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * phi_r29->unk0));
+        params.rotation = 0;
+        draw_naomi_sprite(&params);
+    }
+
+    params.bmpId = 0x119;
+    params.x = 482.0f;
+    params.y = 338.0f;
+    params.z = sprite->unk4C;
+    params.alpha = lbl_802F2014;
+    params.rotation = 0;
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
+    draw_naomi_sprite(&params);
+
+    params.bmpId = lbl_80118AC8[0];
+    params.x = 320.0f;
+    params.y = 331.0f;
+    params.z = sprite->unk4C - 0.004;
+    params.zoomX = lbl_802F2010 * 0.7;
+    params.zoomY = lbl_802F2010 * 0.7 * 0.65;
+    params.alpha = 1.0f;
+    params.rotation = 1024.0f * mathutil_sin(unpausedFrameCounter << 8);
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 0xA;
+    draw_naomi_sprite(&params);
+}
+
+void lbl_80077818(s8 *, struct Sprite *);
+void lbl_80077ADC(s8 *, struct Sprite *);
+
+void func_80077734(void)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 0xC;
+        sprite->unk4C = 0.049f;
+        sprite->fontId = 0xB1;
+        sprite->centerX = 320.0f;
+        sprite->centerY = 374.0f;
+        sprite->unk6C = 0.0f;
+        sprite->unk10 = 0x1E;
+        sprite->textAlign = 4;
+        sprite->unk74 |= 0x200000;
+        sprite->mainFunc = lbl_80077818;
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 0xD;
+        sprite->unk4C = 0.049f;
+        sprite->fontId = 0xB1;
+        sprite->centerX = 320.0f;
+        sprite->centerY = 398.0f;
+        sprite->unk6C = 0.0f;
+        sprite->unk10 = 0x1E;
+        sprite->textAlign = 4;
+        sprite->unk74 |= 0x200000;
+        sprite->mainFunc = lbl_80077ADC;
+    }
+}
+
+void lbl_80077818(s8 *arg0, struct Sprite *sprite)
+{
+    if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
+    {
+        sprite->unk6C += 0.1 * (1.0 - sprite->unk6C);
+        if (sprite->unk10 > 0)
+            sprite->unk10--;
+    }
+    else
+        sprite->unk6C += 0.1 * -sprite->unk6C;
+
+    if (sprite->unk10 <= 15)
+    {
+        if (modeCtrl.unk10 == 0)
+        {
+            sprite->unkC += 0.1 * (255 - sprite->unkC);
+            sprite->unkD += 0.1 * (128 - sprite->unkD);
+            sprite->unkE += 0.1 * -sprite->unkE;
+            sprite->unk40 = 1.0f;
+            sprite->unk44 = 1.0f;
+            strcpy(sprite->text, "p/SANNKAKU_R/ a/Game Start p/SANNKAKU_L/");
+        }
+        else
+        {
+            sprite->unkC += 0.1 * -sprite->unkC;
+            sprite->unkD += 0.1 * -sprite->unkD;
+            sprite->unkE += 0.1 * -sprite->unkE;
+            sprite->unk6C *= 0.5;
+            sprite->unk40 = 0.8f;
+            sprite->unk44 = 0.8f;
+            strcpy(sprite->text, "a/Game Start");
+        }
+    }
+}
+
+void lbl_80077ADC(s8 *arg0, struct Sprite *sprite)
+{
+    if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
+    {
+        sprite->unk6C += 0.1 * (1.0 - sprite->unk6C);
+        if (sprite->unk10 > 0)
+            sprite->unk10--;
+    }
+    else
+        sprite->unk6C += 0.1 * -sprite->unk6C;
+
+    if (sprite->unk10 <= 15)
+    {
+        if (modeCtrl.unk10 == 1)
+        {
+            sprite->unkC += 0.1 * (255 - sprite->unkC);
+            sprite->unkD += 0.1 * (128 - sprite->unkD);
+            sprite->unkE += 0.1 * -sprite->unkE;
+            sprite->unk40 = 1.0f;
+            sprite->unk44 = 1.0f;
+            strcpy(sprite->text, "p/SANNKAKU_R/ a/Options p/SANNKAKU_L/");
+        }
+        else
+        {
+            sprite->unkC += 0.1 * -sprite->unkC;
+            sprite->unkD += 0.1 * -sprite->unkD;
+            sprite->unkE += 0.1 * -sprite->unkE;
+            sprite->unk6C *= 0.5;
+            sprite->unk40 = 0.8f;
+            sprite->unk44 = 0.8f;
+            strcpy(sprite->text, "a/Options");
+        }
+    }
+}
+
+void lbl_80080940(struct Sprite *);
+
+char lbl_802F1024[5] = "saru";
+
+void func_80077DA0(void)
+{
+    struct Sprite *temp_r3;
+
+    temp_r3 = create_sprite();
+    if (temp_r3 != NULL)
+    {
+        temp_r3->tag = 0x11;
+        temp_r3->centerX = 142.0f;
+        temp_r3->centerY = 60.0f;
+        temp_r3->fontId = 0;
+        temp_r3->textAlign = 9;
+        temp_r3->unk4C = 0.04f;
+        temp_r3->drawFunc = lbl_80080940;
+        sprintf(temp_r3->text, lbl_802F1024);
+    }
+    lbl_80292D18.unk4 = 0;
+    lbl_80292D18.unk0 = 0;
+    lbl_80292D18.unk8 = 0;
+    lbl_80292D18.unk14 = 0xE;
+}
+
+void lbl_8007A9B4(s8 *, struct Sprite *);
+void lbl_8007AA38(s8 *, struct Sprite *);
+void lbl_8007AAFC(struct Sprite *);
+void lbl_8007B608(s8 *, struct Sprite *);
+
+#if 0
+void func_80077E34(void)
+{
+    struct Sprite *temp_r3;
+    struct Sprite *temp_r3_2;
+    struct Sprite *temp_r3_3;
+    struct Sprite *temp_r3_4;
+    struct Sprite *temp_r3_5;
+    struct Sprite *temp_r3_6;
+    struct Sprite *temp_r3_7;
+    struct Ball *temp_r29;
+    struct Struct80292C00 *r8;
+
+    temp_r29 = currentBallStructPtr;
+    func_8000D5B8(lbl_801C14F0);
+    func_8008083C(320.0f, 68.0f);
+    temp_r3 = create_sprite();
+    if (temp_r3 != NULL)
+    {
+        temp_r3->centerX = 320.0f;
+        temp_r3->centerY = 85.0f;
+        temp_r3->fontId = 0x66;
+        temp_r3->textAlign = 5;
+        temp_r3->unk4C = 0.19f;
+        temp_r3->mainFunc = lbl_8007A9B4;
+        sprintf(temp_r3->text, "000");
+        temp_r3_2 = create_linked_sprite(temp_r3);
+        if (temp_r3_2 != NULL)
+        {
+            temp_r3_2->centerX = -4.0f;
+            temp_r3_2->fontId = 0x65;
+            temp_r3_2->textAlign = 5;
+            temp_r3_2->unk4C = 0.19f;
+            temp_r3_2->mainFunc = lbl_8007AA38;
+            sprintf(temp_r3_2->text, ":00");
+        }
+    }
+    temp_r3_3 = create_sprite();
+    if (temp_r3_3 != NULL)
+    {
+        temp_r3_3->type = 1;
+        temp_r3_3->centerX = 428.0f;
+        temp_r3_3->centerY = 22.0f;
+        temp_r3_3->bmpId = 0xC;
+        temp_r3_3->textAlign = 4;
+        temp_r3_3->unk40 = 0.2f;
+        temp_r3_3->unk44 = 0.2f;
+        sprintf(temp_r3_3->text, "banana.pic");
+    }
+    temp_r3_4 = create_sprite();
+    if (temp_r3_4 != NULL)
+    {
+        temp_r3_4->centerX = 536.0f;
+        temp_r3_4->centerY = 24.0f;
+        temp_r3_4->fontId = 0x62;
+        temp_r3_4->textAlign = 4;
+        temp_r3_4->unkC = 0xAA;
+        temp_r3_4->unkD = 0xA8;
+        temp_r3_4->unkE = 0;
+        temp_r3_4->unk70 = 0x38;
+        temp_r3_4->unk71 = 0x38;
+        temp_r3_4->unk72 = 0;
+        sprintf(temp_r3_4->text, "BANANA(S)");
+    }
+    temp_r3_5 = create_sprite();
+    if (temp_r3_5 != NULL)
+    {
+        temp_r3_5->centerX = 518.0f;
+        temp_r3_5->centerY = 47.0f;
+        temp_r3_5->fontId = 0x5E;
+        temp_r3_5->textAlign = 4;
+        temp_r3_5->unkC = 0xAA;
+        temp_r3_5->unkD = 0xA8;
+        temp_r3_5->unkE = 0;
+        temp_r3_5->unk70 = 0x38;
+        temp_r3_5->unk71 = 0x38;
+        temp_r3_5->unk72 = 0;
+        sprintf(temp_r3_5->text, "/");
+    }
+    temp_r3_6 = create_sprite();
+    if (temp_r3_6 != NULL)
+    {
+        temp_r3_6->tag = 0x12;
+        temp_r3_6->centerX = 518.0f;
+        temp_r3_6->centerY = 48.0f;
+        temp_r3_6->fontId = 0x62;
+        temp_r3_6->textAlign = 4;
+        temp_r3_6->drawFunc = lbl_8007AAFC;
+        temp_r3_6->unkC = 0xAA;
+        temp_r3_6->unkD = 0xA8;
+        temp_r3_6->unkE = 0;
+        temp_r3_6->unk70 = 0x38;
+        temp_r3_6->unk71 = 0x38;
+        temp_r3_6->unk72 = 0;
+        sprintf(temp_r3_6->text, "000 100");
+    }
+    /*
+    lbl_80292C00.unk4 = 0;
+    lbl_80292C00.unkC = 0;
+    lbl_80292C00.unk14 = 0;
+    lbl_80292C00.unk0 = (s32) (temp_r29->bananas % 10);
+    lbl_80292C00.unk8 = (u32) (temp_r29->bananas / 10);
+    lbl_80292C00.unk10 = (u32) (temp_r29->bananas / 100);
+    */
+    r8 = &lbl_80292C00;
+    r8->unk4 = 0;
+    r8->unkC = 0;
+    r8->unk14 = 0;
+    r8->unk0 = (s32) (temp_r29->bananas % 10);
+    r8->unk8 = (u32) (temp_r29->bananas / 10);
+    r8->unk10 = (u32) (temp_r29->bananas / 100);
+    if (infoWork.flags & 0x40)
+    {
+        temp_r3_7 = create_sprite();
+        if (temp_r3_7 != NULL)
+        {
+            temp_r3_7->centerX = 320.0f;
+            temp_r3_7->centerY = 380.0f;
+            temp_r3_7->fontId = 0x64;
+            temp_r3_7->textAlign = 4;
+            temp_r3_7->unk10 = (s16) 0;
+            temp_r3_7->mainFunc = lbl_8007B608;
+            strcpy(temp_r3_7->text, "%2d BANANAS LEFT");
+        }
+    }
+}
+#endif
+
 /*
 const float lbl_802F4BD8 = 315f;
 const float lbl_802F4BDC = 0.004999999888241291f;
@@ -514,4 +1145,49 @@ const double lbl_802F4CA0 = 0.69999999999999996;
 const double lbl_802F4CA8 = 0.033300000000000003;
 const float lbl_802F4CB0 = 100f;
 const float lbl_802F4CB4 = 194f;
+const float lbl_802F4CB8 = 74f;
+const double lbl_802F4CC0 = 0.15625;
+const float lbl_802F4CC8 = 357f;
+const float lbl_802F4CCC = 0.029999999329447746f;
+const float lbl_802F4CD0 = 462f;
+const double lbl_802F4CD8 = 0.050000000000000003;
+const float lbl_802F4CE0 = 0.094999998807907104f;
+const double lbl_802F4CE8 = 0;
+const double lbl_802F4CF0 = -200;
+const double lbl_802F4CF8 = 40;
+const float lbl_802F4D00 = 32767f;
+const double lbl_802F4D08 = 0.5;
+const double lbl_802F4D10 = 640;
+const double lbl_802F4D18 = 20;
+const double lbl_802F4D20 = -10;
+const double lbl_802F4D28 = 2;
+const float lbl_802F4D30 = 4f;
+const float lbl_802F4D34 = -1f;
+const double lbl_802F4D38 = 0.25;
+const double lbl_802F4D40 = 0.0040000000000000001;
+const float lbl_802F4D48 = 8f;
+const float lbl_802F4D4C = 5f;
+const double lbl_802F4D50 = 0.20000000000000001;
+const float lbl_802F4D58 = 512f;
+const float lbl_802F4D5C = 56f;
+const float lbl_802F4D60 = 44f;
+const float lbl_802F4D64 = -256f;
+const float lbl_802F4D68 = 482f;
+const float lbl_802F4D6C = 338f;
+const float lbl_802F4D70 = 331f;
+const double lbl_802F4D78 = 0.65000000000000002;
+const float lbl_802F4D80 = 1024f;
+const float lbl_802F4D84 = 0.048999998718500137f;
+const float lbl_802F4D88 = 374f;
+const float lbl_802F4D8C = 398f;
+const float lbl_802F4D90 = 0.80000001192092896f;
+const float lbl_802F4D94 = 142f;
+const float lbl_802F4D98 = 0.039999999105930328f;
+const float lbl_802F4D9C = 0.10000000149011612f;
+const float lbl_802F4DA0 = 40f;
+const float lbl_802F4DA4 = 68f;
+const float lbl_802F4DA8 = 85f;
+const float lbl_802F4DAC = 0.18999999761581421f;
+const float lbl_802F4DB0 = -4f;
+
 */

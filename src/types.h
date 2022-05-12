@@ -653,7 +653,7 @@ struct NaomiSpriteParams
     /*0x1C*/ float v1;
     /*0x20*/ float u2;
     /*0x24*/ float v2;
-    /*0x28*/ u32 rotation;
+    /*0x28*/ s32 rotation;
     /*0x2C*/ float alpha;
     s32 unk30;
     /*0x34*/ u32 flags;
