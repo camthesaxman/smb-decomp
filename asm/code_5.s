@@ -3744,11 +3744,11 @@ glabel lbl_80077280
 /* 8007735C 0007327C  60 00 00 0A */	ori r0, r0, 0xa
 /* 80077360 00073280  90 01 00 40 */	stw r0, 0x40(r1)
 /* 80077364 00073284  4B FF C4 C5 */	bl draw_naomi_sprite
-/* 80077368 00073288  3C 80 80 1C */	lis r4, lbl_801C16AC@ha
+/* 80077368 00073288  3C 80 80 1C */	lis r4, titleLettersSuper@ha
 /* 8007736C 0007328C  C3 62 A5 48 */	lfs f27, lbl_802F4D48-_SDA2_BASE_(r2)
 /* 80077370 00073290  3C 60 80 29 */	lis r3, lbl_80292C90@ha
 /* 80077374 00073294  C3 42 A5 4C */	lfs f26, lbl_802F4D4C-_SDA2_BASE_(r2)
-/* 80077378 00073298  38 84 16 AC */	addi r4, r4, lbl_801C16AC@l
+/* 80077378 00073298  38 84 16 AC */	addi r4, r4, titleLettersSuper@l
 /* 8007737C 0007329C  CB 22 A4 68 */	lfd f25, lbl_802F4C68-_SDA2_BASE_(r2)
 /* 80077380 000732A0  38 03 2C 90 */	addi r0, r3, lbl_80292C90@l
 /* 80077384 000732A4  C3 82 A4 28 */	lfs f28, lbl_802F4C28-_SDA2_BASE_(r2)
@@ -3824,12 +3824,12 @@ lbl_800773A0:
 /* 80077498 000733B8  3B 9C 00 0C */	addi r28, r28, 0xc
 /* 8007749C 000733BC  3B BD 00 08 */	addi r29, r29, 8
 /* 800774A0 000733C0  41 80 FF 00 */	blt lbl_800773A0
-/* 800774A4 000733C4  3C 80 80 1C */	lis r4, lbl_801C16E8@ha
+/* 800774A4 000733C4  3C 80 80 1C */	lis r4, titleLettersMonkeyBall@ha
 /* 800774A8 000733C8  C3 22 A5 5C */	lfs f25, lbl_802F4D5C-_SDA2_BASE_(r2)
 /* 800774AC 000733CC  3C 60 80 29 */	lis r3, lbl_80292CB8@ha
 /* 800774B0 000733D0  C3 42 A4 34 */	lfs f26, lbl_802F4C34-_SDA2_BASE_(r2)
 /* 800774B4 000733D4  C3 62 A5 4C */	lfs f27, lbl_802F4D4C-_SDA2_BASE_(r2)
-/* 800774B8 000733D8  3B A4 16 E8 */	addi r29, r4, lbl_801C16E8@l
+/* 800774B8 000733D8  3B A4 16 E8 */	addi r29, r4, titleLettersMonkeyBall@l
 /* 800774BC 000733DC  CB 82 A4 68 */	lfd f28, lbl_802F4C68-_SDA2_BASE_(r2)
 /* 800774C0 000733E0  3B 83 2C B8 */	addi r28, r3, lbl_80292CB8@l
 /* 800774C4 000733E4  C3 A2 A5 60 */	lfs f29, lbl_802F4D60-_SDA2_BASE_(r2)
@@ -4680,7 +4680,6 @@ lbl_80078164:
 /* 80078178 00074098  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 8007817C 0007409C  38 21 00 28 */	addi r1, r1, 0x28
 /* 80078180 000740A0  4E 80 00 20 */	blr
-.endif
 
 .global g_banana_sprite_something
 g_banana_sprite_something:
@@ -4773,7 +4772,8 @@ lbl_800782B8:
 /* 800782C0 000741E0  38 21 00 30 */	addi r1, r1, 0x30
 /* 800782C4 000741E4  7C 08 03 A6 */	mtlr r0
 /* 800782C8 000741E8  4E 80 00 20 */	blr
-lbl_800782CC:
+
+glabel lbl_800782CC
 /* 800782CC 000741EC  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800782D0 000741F0  A8 A4 00 10 */	lha r5, 0x10(r4)
 /* 800782D4 000741F4  2C 05 FF FF */	cmpwi r5, -1
@@ -4880,12 +4880,14 @@ lbl_8007843C:
 /* 80078444 00074364  38 21 00 18 */	addi r1, r1, 0x18
 /* 80078448 00074368  7C 08 03 A6 */	mtlr r0
 /* 8007844C 0007436C  4E 80 00 20 */	blr
-lbl_80078450:
+
+glabel lbl_80078450
 /* 80078450 00074370  A8 64 00 10 */	lha r3, 0x10(r4)
 /* 80078454 00074374  38 03 00 01 */	addi r0, r3, 1
 /* 80078458 00074378  B0 04 00 10 */	sth r0, 0x10(r4)
 /* 8007845C 0007437C  4E 80 00 20 */	blr
-lbl_80078460:
+
+glabel lbl_80078460
 /* 80078460 00074380  7C 08 02 A6 */	mflr r0
 /* 80078464 00074384  90 01 00 04 */	stw r0, 4(r1)
 /* 80078468 00074388  38 00 FF FF */	li r0, -1
@@ -5161,6 +5163,7 @@ lbl_8007882C:
 /* 80078840 00074760  CB A1 00 80 */	lfd f29, 0x80(r1)
 /* 80078844 00074764  38 21 00 98 */	addi r1, r1, 0x98
 /* 80078848 00074768  4E 80 00 20 */	blr
+.endif
 
 .global show_stage_intro_text
 show_stage_intro_text:
@@ -18689,7 +18692,6 @@ lbl_802F4DCC:
 lbl_802F4DD0:
 	# ROM: 0x1EE7F0
 	.4byte 0x43BE0000
-.endif
 	.4byte 0
 
 .global lbl_802F4DD8
@@ -18718,6 +18720,7 @@ lbl_802F4DEC:
 lbl_802F4DF0:
 	# ROM: 0x1EE810
 	.4byte 0x3F266666
+.endif
 
 .global lbl_802F4DF4
 lbl_802F4DF4:
@@ -20521,8 +20524,8 @@ lbl_801C168C:
 glabel string_AMUSEMENT_VISION_LTD__SEGA_2001
 	.asciz "AMUSEMENT VISION,LTD./SEGA,2001"
 
-.global lbl_801C16AC
-lbl_801C16AC:
+.global titleLettersSuper
+titleLettersSuper:
 	# ROM: 0x1BE6AC
 	.4byte 0x00000113
 	.4byte 0x43040000
@@ -20540,8 +20543,8 @@ lbl_801C16AC:
 	.4byte 0x43D30000
 	.4byte 0x42380000
 
-.global lbl_801C16E8
-lbl_801C16E8:
+.global titleLettersMonkeyBall
+titleLettersMonkeyBall:
 	# ROM: 0x1BE6E8
 	.4byte 0x0000010C
 	.4byte 0x42800000
@@ -20614,7 +20617,7 @@ glabel string_BANANA_S_
 glabel string__2d_BANANAS_LEFT
 	.asciz "%2d BANANAS LEFT"
 	.balign 4
-.endif
+glabel lbl_801C17FC
 	.4byte 0x42C80000
 	.4byte 0x42480000
 	.4byte 0x43960000
@@ -20641,6 +20644,7 @@ glabel string__2d_BANANAS_LEFT
 	.4byte 0x43E10000
 	.4byte 0x442F0000
 	.4byte 0x43E10000
+glabel lbl_801C1864
 	.4byte 0x43480000
 	.4byte 0xC3160000
 	.4byte 0x43C80000
@@ -20683,6 +20687,7 @@ glabel string__2d_BANANAS_LEFT
 	.4byte 0x44228000
 	.4byte 0x44160000
 	.4byte 0x44228000
+glabel lbl_801C190C
 	.4byte 0xC2C80000
 	.4byte 0x42480000
 	.4byte 0x42C80000
@@ -20713,12 +20718,14 @@ glabel string__2d_BANANAS_LEFT
 	.4byte 0x43E10000
 	.4byte 0x442F0000
 	.4byte 0x43E10000
+glabel lbl_801C1984
 	.4byte 0x00000048
 	.4byte 0x00000031
 	.4byte 0x00000041
 	.4byte 0x00FFFF00
 	.4byte 0x00FF00FF
 	.4byte 0x0000FFFF
+.endif
 glabel string_ROUND__d
 	.asciz "ROUND %d"
 	.balign 4
@@ -23022,7 +23029,6 @@ lbl_802F1038:
 	# ROM: 0x1EB778
 glabel string_000_100
 	.asciz "000 100"
-.endif
 
 .global lbl_802F1040
 lbl_802F1040:
@@ -23037,6 +23043,7 @@ lbl_802F1048:
 glabel string_eieipu
 	.asciz "eieipu"
 	.balign 4
+.endif
 
 .global lbl_802F1050
 lbl_802F1050:

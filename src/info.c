@@ -571,7 +571,7 @@ void rank_icon_main(s8 *dummy, struct Sprite *sprite)
                 else if (ball->unk138 < 100)
                     r5->centerX += 24.0f;
                 r5->centerY = -2.0f;
-                r5->bmpId = BITMAP_ID(BMP_COM, BMP_COM_banana_01);
+                r5->bmpId = BMP_COM_banana_01;
                 r5->textAlign = ALIGN_CC;
                 r5->unk40 = 0.3f;
                 r5->unk44 = 0.3f;
@@ -610,7 +610,7 @@ void lbl_80024324(struct Sprite *sprite)
     struct Struct801818D0 *r6;
     struct TPLTextureHeader *tex;
 
-    params.bmpId = BITMAP_ID(BMP_NML, BMP_NML_game_rank);
+    params.bmpId = BMP_NML_game_rank;
     params.rotation = sprite->unk68;
     params.alpha = sprite->unk6C;
     params.unk30 = -1;

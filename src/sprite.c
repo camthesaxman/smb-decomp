@@ -3170,7 +3170,7 @@ void g_draw_screen_fade_mask(void)
         params.alpha = 1.0f;
         break;
     }
-    params.bmpId = BITMAP_ID(BMP_COM, BMP_COM_white_mask8x8);
+    params.bmpId = BMP_COM_white_mask8x8;
     params.x = 320.0f;
     params.y = 240.1f;
     params.z = (screenFadeInfo.unk0 & (1 << 8)) ? 0.009 : 0.25;
@@ -3271,7 +3271,7 @@ int add_naomi_sprite(struct NaomiSpriteParams *params)
          && append_to_sprite_params_buf(params))
             return 1;
         if ((advDemoInfo.flags & (1 << 7))
-         && (params->bmpId == BITMAP_ID(BMP_COM, BMP_COM_banana_01) || params->bmpId == BITMAP_ID(BMP_COM, BMP_COM_banana_10))
+         && (params->bmpId == BMP_COM_banana_01 || params->bmpId == BMP_COM_banana_10)
          && append_to_sprite_params_buf(params))
             return 1;
         break;

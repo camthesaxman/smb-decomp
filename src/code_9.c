@@ -206,12 +206,12 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
     if (lbl_801EEC68.unkC >= 4)
     {
         if (lbl_801EEC68.unkC == 6)
-            bmpId = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l2);
+            bmpId = BMP_COM_menu_kiwaku_l2;
         else
-            bmpId = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku_l);
+            bmpId = BMP_COM_menu_kiwaku_l;
     }
     else
-        bmpId = BITMAP_ID(BMP_COM, BMP_COM_menu_kiwaku);
+        bmpId = BMP_COM_menu_kiwaku;
     params.bmpId = bmpId;
     params.x = sprite->centerX;
     params.y = sprite->centerY;
@@ -314,7 +314,7 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
             sprite->unk40 = phi_f22;
     }
 
-    params.bmpId = BITMAP_ID(BMP_COM, BMP_COM_white_mask8x8);
+    params.bmpId = BMP_COM_white_mask8x8;
     params.x = 320.1f;
     params.y = 240.1f;
     params.z = (sprite->unk48 == 2) ? 0.001 : sprite->unk4C + 0.002;
@@ -380,7 +380,7 @@ void g_logo_plus_sprite_something(void)
         sprite->centerY = 115.0f;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 300.0f;
-        sprite->bmpId = 0x101;
+        sprite->bmpId = BMP_ADV_adv_logo_plus;
         strcpy(sprite->text, "logo plus");
     }
     sprite = create_sprite();
@@ -391,7 +391,7 @@ void g_logo_plus_sprite_something(void)
         sprite->centerY = 240.0f;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 301.0f;
-        sprite->bmpId = 0x102;
+        sprite->bmpId = BMP_ADV_logo_sega512;
         sprite->unk10 = 0;
         sprite->mainFunc = lbl_800768A8;
         sprite->unk74 |= 0x40000;
@@ -423,13 +423,13 @@ void lbl_800768A8(s8 *a, struct Sprite *sprite)
     if (sprite->unk10 == 0x1E0)
     {
         sprite->centerX = 320.0f;
-        sprite->bmpId = 0x100;
+        sprite->bmpId = BMP_ADV_logo_av256;
         sprite->unk40 = 1.0f;
         sprite->unk44 = 1.0f;
         sprite->unk4C = 100.0f;
         if (logoPlus != NULL)
         {
-            logoPlus->bmpId = 0x107;
+            logoPlus->bmpId = BMP_ADV_logo_plus256x40;
             logoPlus->unk48 = 5;
             logoPlus->drawFunc = lbl_80076AC0;
             logoPlus->centerX = 194.0f;
@@ -485,37 +485,39 @@ void show_adv_copyright_text(int a)
     if (sprite != NULL)
     {
         sprite->tag = 0x25;
-        sprite->type = 1;
+        sprite->type = SPRITE_TYPE_BITMAP;
         sprite->centerX = 357.0f;
         sprite->centerY = 463.0f;
-        sprite->textAlign = 2;
+        sprite->textAlign = ALIGN_LB;
         sprite->unk4C = 0.03f;
-        sprite->bmpId = 0xD;
+        sprite->bmpId = BMP_COM_copyright_02;
         sprite->mainFunc = lbl_80076D9C;
         strcpy(sprite->text, "(C)");
         if (a == 1)
             sprite->drawFunc = lbl_80076710;
+
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
-            sprite->tag = 0x26;
+            sprite->tag = 38;
             sprite->centerX = 6.0f;
-            sprite->fontId = 1;
-            sprite->textAlign = 2;
+            sprite->fontId = FONT_ASC_8x16;
+            sprite->textAlign = ALIGN_LB;
             sprite->mainFunc = lbl_80076D9C;
             strcpy(sprite->text, "AMUSEMENT VISION,LTD./SEGA,2001");
         }
     }
+
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->tag = 0x27;
-        sprite->type = 1;
+        sprite->tag = 39;
+        sprite->type = SPRITE_TYPE_BITMAP;
         sprite->centerX = 16.0f;
         sprite->centerY = 462.0f;
         sprite->unk4C = 0.03f;
-        sprite->bmpId = 0x52;
-        sprite->textAlign = 2;
+        sprite->bmpId = BMP_COM_str_sega;
+        sprite->textAlign = ALIGN_LB;
         sprite->mainFunc = lbl_80076D9C;
         strcpy(sprite->text, "SEGA AV");
     }
@@ -590,7 +592,7 @@ void func_80076DCC(int arg0)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->type = 1;
+        sprite->type = SPRITE_TYPE_BITMAP;
         sprite->unk4C = 0.095f;
         sprite->unk6C = 0.0f;
         sprite->unk10 = arg0;
@@ -704,32 +706,32 @@ asm void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
 
 struct Struct801C16AC
 {
-    u32 unk0;
-    float unk4;
-    float unk8;
+    u32 bmpId;
+    float x;
+    float y;
 };  //size = 0xC
 
-struct Struct801C16AC lbl_801C16AC[] =
+struct Struct801C16AC titleLettersSuper[] =
 {
-    { 275, 132,  46 },
-    { 276, 203,  22 },
-    { 277, 278,  10 },
-    { 278, 351,  22 },
-    { 279, 422,  46 },
+    { BMP_ADV_adv_title_spr_s, 132,  46 },
+    { BMP_ADV_adv_title_spr_u, 203,  22 },
+    { BMP_ADV_adv_title_spr_p, 278,  10 },
+    { BMP_ADV_adv_title_spr_e, 351,  22 },
+    { BMP_ADV_adv_title_spr_r, 422,  46 },
 };
 
-struct Struct801C16AC lbl_801C16E8[] =
+struct Struct801C16AC titleLettersMonkeyBall[] =
 {
-    { 268,  64, 195 },
-    { 269, 133, 133 },
-    { 270, 225, 105 },
-    { 271, 321, 105 },
-    { 272, 412, 133 },
-    { 273, 480, 195 },
-    { 267, 141, 256 },
-    { 265, 228, 216 },
-    { 266, 320, 216 },
-    { 266, 407, 256 },
+    { BMP_ADV_adv_title_mnk_m,  64, 195 },
+    { BMP_ADV_adv_title_mnk_o, 133, 133 },
+    { BMP_ADV_adv_title_mnk_n, 225, 105 },
+    { BMP_ADV_adv_title_mnk_k, 321, 105 },
+    { BMP_ADV_adv_title_mnk_e, 412, 133 },
+    { BMP_ADV_adv_title_mnk_y, 480, 195 },
+    { BMP_ADV_adv_title_mnk_b, 141, 256 },
+    { BMP_ADV_adv_title_mnk_a, 228, 216 },
+    { BMP_ADV_adv_title_mnk_l, 320, 216 },
+    { BMP_ADV_adv_title_mnk_l, 407, 256 },
 };
 
 extern u32 lbl_80118AC8[];
@@ -752,7 +754,8 @@ void lbl_80077280(struct Sprite *sprite)
     params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->unk6C));
     params.color2 = 0;
     params.unk30 = -1;
-    params.bmpId = 0x103;
+
+    params.bmpId = BMP_ADV_adv_title_bg;
     params.x = 320.1f;
     params.y = 240.1f;
     params.z = 0.004 + sprite->unk4C;
@@ -760,62 +763,62 @@ void lbl_80077280(struct Sprite *sprite)
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
     draw_naomi_sprite(&params);
 
-    phi_r28 = lbl_801C16AC;
+    phi_r28 = titleLettersSuper;
     phi_r29 = lbl_80292C90;
     for (i = 0; i < 5; i++, phi_r28++, phi_r29++)
     {
-        params.bmpId = 0x118;
-        params.x = phi_r28->unk4 - 8.0f;
-        params.y = phi_r28->unk8 + phi_r29->unk0 - 5.0f;
+        params.bmpId = BMP_ADV_adv_title_spr_kage;
+        params.x = phi_r28->x - 8.0f;
+        params.y = phi_r28->y + phi_r29->unk0 - 5.0f;
         params.z = 0.002 + sprite->unk4C;
         params.alpha = sprite->unk6C;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
         draw_naomi_sprite(&params);
 
-        params.bmpId = phi_r28->unk0;
-        params.x = phi_r28->unk4;
-        params.y = phi_r28->unk8 + phi_r29->unk0;
+        params.bmpId = phi_r28->bmpId;
+        params.x = phi_r28->x;
+        params.y = phi_r28->y + phi_r29->unk0;
         params.z = sprite->unk4C;
         params.alpha = 1.0f;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
         draw_naomi_sprite(&params);
 
-        params.bmpId = 0x108;
+        params.bmpId = BMP_ADV_adv_title_spr_gawa;
         params.z = sprite->unk4C - 0.002;
         params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * phi_r29->unk0));
         draw_naomi_sprite(&params);
     }
 
-    phi_r28 = lbl_801C16E8;
+    phi_r28 = titleLettersMonkeyBall;
     phi_r29 = lbl_80292CB8;
     for (i = 0; i < 10; i++, phi_r28++, phi_r29++)
     {
-        params.bmpId = 0x112;
-        params.x = 56.0f + (phi_r28->unk4 + phi_r29->unk0 - 12.0f);
-        params.y = 56.0f + (phi_r28->unk8 - 5.0f);
+        params.bmpId = BMP_ADV_adv_title_mnk_kage;
+        params.x = 56.0f + (phi_r28->x + phi_r29->unk0 - 12.0f);
+        params.y = 56.0f + (phi_r28->y - 5.0f);
         params.z = 0.002 + sprite->unk4C;
         params.alpha = sprite->unk6C;
         params.rotation = 0;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
         draw_naomi_sprite(&params);
 
-        params.bmpId = phi_r28->unk0;
-        params.x = 44.0f + (phi_r28->unk4 + phi_r29->unk0);
-        params.y = 44.0f + phi_r28->unk8;
+        params.bmpId = phi_r28->bmpId;
+        params.x = 44.0f + (phi_r28->x + phi_r29->unk0);
+        params.y = 44.0f + phi_r28->y;
         params.z = sprite->unk4C;
         params.alpha = 1.0f;
         params.rotation = -256.0f * phi_r29->unk0;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 0xA;
         draw_naomi_sprite(&params);
 
-        params.bmpId = 0x104;
+        params.bmpId = BMP_ADV_adv_title_mnk_gawa;
         params.z = sprite->unk4C - 0.002;
         params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * phi_r29->unk0));
         params.rotation = 0;
         draw_naomi_sprite(&params);
     }
 
-    params.bmpId = 0x119;
+    params.bmpId = BMP_ADV_adv_title_tm;
     params.x = 482.0f;
     params.y = 338.0f;
     params.z = sprite->unk4C;
@@ -846,14 +849,14 @@ void func_80077734(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->tag = 0xC;
+        sprite->tag = 12;
         sprite->unk4C = 0.049f;
-        sprite->fontId = 0xB1;
+        sprite->fontId = FONT_JAP_24x24_2P;
         sprite->centerX = 320.0f;
         sprite->centerY = 374.0f;
         sprite->unk6C = 0.0f;
         sprite->unk10 = 0x1E;
-        sprite->textAlign = 4;
+        sprite->textAlign = ALIGN_CC;
         sprite->unk74 |= 0x200000;
         sprite->mainFunc = lbl_80077818;
     }
@@ -861,14 +864,14 @@ void func_80077734(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->tag = 0xD;
+        sprite->tag = 13;
         sprite->unk4C = 0.049f;
-        sprite->fontId = 0xB1;
+        sprite->fontId = FONT_JAP_24x24_2P;
         sprite->centerX = 320.0f;
         sprite->centerY = 398.0f;
         sprite->unk6C = 0.0f;
         sprite->unk10 = 0x1E;
-        sprite->textAlign = 4;
+        sprite->textAlign = ALIGN_CC;
         sprite->unk74 |= 0x200000;
         sprite->mainFunc = lbl_80077ADC;
     }
@@ -955,11 +958,11 @@ void func_80077DA0(void)
     temp_r3 = create_sprite();
     if (temp_r3 != NULL)
     {
-        temp_r3->tag = 0x11;
+        temp_r3->tag = 17;
         temp_r3->centerX = 142.0f;
         temp_r3->centerY = 60.0f;
-        temp_r3->fontId = 0;
-        temp_r3->textAlign = 9;
+        temp_r3->fontId = FONT_ASCII;
+        temp_r3->textAlign = ALIGN_PIC;
         temp_r3->unk4C = 0.04f;
         temp_r3->drawFunc = lbl_80080940;
         sprintf(temp_r3->text, lbl_802F1024);
@@ -1021,7 +1024,7 @@ void func_80077E34(void)
         sprite->type = SPRITE_TYPE_BITMAP;
         sprite->centerX = 428.0f;
         sprite->centerY = 22.0f;
-        sprite->bmpId = 0xC;
+        sprite->bmpId = BMP_COM_banana_01;
         sprite->textAlign = ALIGN_CC;
         sprite->unk40 = 0.2f;
         sprite->unk44 = 0.2f;
@@ -1043,6 +1046,7 @@ void func_80077E34(void)
         sprite->unk72 = 0;
         sprintf(sprite->text, "BANANA(S)");
     }
+
     sprite = create_sprite();
     if (sprite != NULL)
     {
@@ -1097,6 +1101,235 @@ void func_80077E34(void)
             sprite->mainFunc = lbl_8007B608;
             strcpy(sprite->text, "%2d BANANAS LEFT");
         }
+    }
+}
+
+void lbl_800782CC(s8 *, struct Sprite *);
+
+void g_banana_sprite_something(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = arg0 + 30;
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->centerX = textBoxes[arg0 + 1].unkC;
+        sprite->centerY = textBoxes[arg0 + 1].unkE;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk4C = (f32) (0.05 + (0.01 * (f64) (arg0 + 1)));
+        sprite->bmpId = (arg0 == 2) ? BMP_COM_banana_01 : BMP_COM_banana_10;
+        sprite->unk6C = 0.0f;
+        sprite->unk40 = (arg0 == 2) ? 0.7 : 0.8;
+        sprite->unk44 = (arg0 == 2) ? 0.5 : 0.6;
+        sprite->unk10 = 60;
+        sprite->unk48 = arg0;
+        sprite->mainFunc = lbl_800782CC;
+        strcpy(sprite->text, "banana");
+    }
+}
+
+void lbl_800782CC(s8 *arg0, struct Sprite *arg1)
+{
+    if (arg1->unk10 == -1)
+    {
+        *arg0 = 0;
+        return;
+    }
+    if (arg1->unk10 > 0)
+        arg1->unk10--;
+    arg1->centerX = textBoxes[arg1->unk48 + 1].unkC;
+    arg1->centerY = textBoxes[arg1->unk48 + 1].unkE - ((arg1->unk48 == 2) ? 0x36 : 0x42);
+    if (arg1->unk10 < 15)
+        arg1->unk6C = 1.0f - arg1->unk10 / 15.0f;
+}
+
+void lbl_80078450(s8 *, struct Sprite *);
+void lbl_80078460(struct Sprite *);
+
+void g_text_box_icon(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 11;
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk4C = 10.0f;
+        sprite->unk48 = arg0;
+        sprite->unk10 = 0;
+        sprite->unk74 |= 0x40000;
+        sprite->mainFunc = lbl_80078450;
+        sprite->drawFunc = lbl_80078460;
+        strcpy(sprite->text, "eieipu");
+    }
+}
+
+void lbl_80078450(s8 *a, struct Sprite *sprite)
+{
+    sprite->unk10++;
+}
+
+struct Struct801C17FC
+{
+    float unk0;
+    float unk4;
+};
+
+struct Struct801C17FC lbl_801C17FC[] =
+{
+    { 100,  50 },
+    { 300,  50 },
+    { 500,  50 },
+    { 700,  50 },
+    {   0, 250 },
+    { 200, 250 },
+    { 400, 250 },
+    { 600, 250 },
+    { 800, 250 },
+    { 100, 450 },
+    { 300, 450 },
+    { 500, 450 },
+    { 700, 450 },
+};
+
+struct Struct801C17FC lbl_801C1864[] =
+{
+    { 200, -150 },
+    { 400, -150 },
+    { 600, -150 },
+    { 800, -150 },
+    { 100,   50 },
+    { 300,   50 },
+    { 500,   50 },
+    { 700,   50 },
+    {   0,  250 },
+    { 200,  250 },
+    { 400,  250 },
+    { 600,  250 },
+    { 800,  250 },
+    { 100,  450 },
+    { 300,  450 },
+    { 500,  450 },
+    { 700,  450 },
+    {   0,  650 },
+    { 200,  650 },
+    { 400,  650 },
+    { 600,  650 },
+};
+
+struct Struct801C17FC lbl_801C190C[] =
+{
+    { -100,  50 },
+    {  100,  50 },
+    {  300,  50 },
+    {  500,  50 },
+    {  700,  50 },
+    {    0, 250 },
+    {  200, 250 },
+    {  400, 250 },
+    {  600, 250 },
+    {  800, 250 },
+    { -100, 450 },
+    {  100, 450 },
+    {  300, 450 },
+    {  500, 450 },
+    {  700, 450 },
+};
+
+u32 lbl_801C1984[] =
+{
+    BMP_COM_icon_smile04,
+    BMP_COM_icon_gal_smile04,
+    BMP_COM_icon_kid_smile02,
+    0x00FFFF00,
+    0x00FF00FF,
+    0x0000FFFF,
+};
+
+void lbl_80078460(struct Sprite *sprite)
+{
+    f32 temp_f29;
+    int i;
+    struct NaomiSpriteParams params;
+
+    params.z = sprite->unk4C;
+    params.u1 = 0.0f;
+    params.v1 = 0.0f;
+    params.u2 = 1.0f;
+    params.v2 = 1.0f;
+    params.alpha = 1.0f;
+    params.rotation = 0;
+    params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->unk6C));
+    params.color2 = 0;
+    params.unk30 = -1;
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
+
+    temp_f29 = 0.5 * mathutil_sin((sprite->unk10 << 9) + 0x4000);
+
+    switch (sprite->unk48)
+    {
+    case 0:
+        for (i = 0; i < 13; i++)
+        {
+            params.bmpId = BMP_COM_banana_10;
+            params.x = lbl_801C17FC[i].unk0;
+            params.y = lbl_801C17FC[i].unk4;
+            params.zoomX = 1.0 + ((i % 2 == 0) ? temp_f29 : -temp_f29);
+            params.zoomY = 1.0 + ((i % 2 == 0) ? temp_f29 : -temp_f29);
+            draw_naomi_sprite(&params);
+        }
+        break;
+    case 1:
+        for (i = 0; i < 21; i++)
+        {
+            params.bmpId = BMP_COM_banana_01;
+            params.x = lbl_801C1864[i].unk0;
+            params.y = lbl_801C1864[i].unk4;
+            params.x += (i % 2 == 0) ? -sprite->unk10 : sprite->unk10;
+            params.y += (i % 2 == 0) ? sprite->unk10 * 2 : -sprite->unk10 * 2;
+            params.zoomX = 1.0f;
+            params.zoomY = 1.0f;
+            draw_naomi_sprite(&params);
+        }
+        break;
+    case 2:
+        for (i = 0; i < 13; i++)
+        {
+            params.bmpId = lbl_801C1984[i % 3];
+            params.x = lbl_801C17FC[i].unk0;
+            params.y = lbl_801C17FC[i].unk4;
+            params.zoomX = 1.0f;
+            params.zoomY = 0.65f;
+            params.rotation = 4096.0f * temp_f29;
+            draw_naomi_sprite(&params);
+        }
+        break;
+    case 3:
+        for (i = 0; i < 13; i++)
+        {
+            params.bmpId = BMP_COM_icon_gol_angry03;
+            params.x = lbl_801C17FC[i].unk0;
+            params.y = lbl_801C17FC[i].unk4;
+            params.zoomX = 1.0 + temp_f29;
+            params.zoomY = 0.65 * (1.0 + temp_f29);
+            draw_naomi_sprite(&params);
+        }
+        break;
+    case 4:
+        for (i = 0; i < 15; i++)
+        {
+            params.bmpId = (i % 2 == 0) ? BMP_COM_banana_10 : BMP_COM_banana_01;
+            params.x = lbl_801C190C[i].unk0 + ((i / 5 == 1) ? -sprite->unk10 : sprite->unk10);
+            params.y = lbl_801C190C[i].unk4;
+            params.zoomX = 0.8f;
+            params.zoomY = 0.8f;
+            draw_naomi_sprite(&params);
+        }
+        break;
     }
 }
 

@@ -27,7 +27,7 @@ enum BitmapGroupID
 
 enum
 {
-    BMP_COM_ASCII,
+    BMP_COM_ASCII = (BMP_COM << 8),
     BMP_COM_arrow,
     BMP_COM_icon_button,
     BMP_COM_icon_gol_00,
@@ -127,7 +127,37 @@ enum
 
 enum
 {
-    BMP_NML_icon_bombtimer,
+    BMP_ADV_logo_av256 = (BMP_ADV << 8),  // 0x100
+    BMP_ADV_adv_logo_plus,
+    BMP_ADV_logo_sega512,
+    BMP_ADV_adv_title_bg,
+    BMP_ADV_adv_title_mnk_gawa,
+    BMP_ADV_adv_fukidashi_h,
+    BMP_ADV_adv_fukidashi_h_mini,
+    BMP_ADV_logo_plus256x40,
+    BMP_ADV_adv_title_spr_gawa,
+    BMP_ADV_adv_title_mnk_a,
+    BMP_ADV_adv_title_mnk_l,
+    BMP_ADV_adv_title_mnk_b,
+    BMP_ADV_adv_title_mnk_m,
+    BMP_ADV_adv_title_mnk_o,
+    BMP_ADV_adv_title_mnk_n,
+    BMP_ADV_adv_title_mnk_k,
+    BMP_ADV_adv_title_mnk_e,  // 0x110
+    BMP_ADV_adv_title_mnk_y,
+    BMP_ADV_adv_title_mnk_kage,
+    BMP_ADV_adv_title_spr_s,
+    BMP_ADV_adv_title_spr_u,
+    BMP_ADV_adv_title_spr_p,
+    BMP_ADV_adv_title_spr_e,
+    BMP_ADV_adv_title_spr_r,
+    BMP_ADV_adv_title_spr_kage,
+    BMP_ADV_adv_title_tm,
+};
+
+enum
+{
+    BMP_NML_icon_bombtimer = (BMP_NML << 8),
     BMP_NML_icon_lv1234_j,
     BMP_NML_game_rank,
     BMP_NML_game_result_e3,
@@ -155,8 +185,6 @@ enum
     BMP_NML_icon_bomb_part_i,
     BMP_NML_icon_bomb_part_j,
 };
-
-#define BITMAP_ID(group, bmp) (((group) << 8) | (bmp))
 
 struct Bitmap
 {
