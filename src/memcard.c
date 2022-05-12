@@ -3275,7 +3275,7 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     float f1;
 
     func_80071A8C();
-    func_80071AD4(0xB3);
+    g_set_font(0xB3);
     func_80071B50(0x200000);
     func_80071B2C(0.65f, 0.8f);
 
@@ -3310,8 +3310,8 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
         float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);
         float param2 = 0.800000011920929 * (32.0 * i)
             + ((y - 9.600000143051147) - 0.800000011920929 * (16.0 * (msg->numLines - 1)));
-        func_80071B60(param1, param2);
-        func_80071E58(msg->lines[i].str);
+        g_set_text_pos(param1, param2);
+        g_draw_text(msg->lines[i].str);
     }
 }
 
@@ -3325,11 +3325,11 @@ struct StringEntry lbl_802F1698 = { lbl_802C4900, 0 };
 
 void memcard_draw_ui(void)
 {
-    u32 r29;
-    u32 wtf;
+    u32 color;
+    u32 intensity;
 
     func_80071A8C();
-    func_80071AD4(0xB3);
+    g_set_font(0xB3);
     func_80071B1C(0.008f);
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
@@ -3377,7 +3377,7 @@ void memcard_draw_ui(void)
     {
         if (memcardInfo.statusFlags & (1 << 15))
         {
-            func_80071B60(100.0f, 340.0f);
+            g_set_text_pos(100.0f, 340.0f);
             draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
         }
         func_80071A8C();
@@ -3391,56 +3391,56 @@ void memcard_draw_ui(void)
     {
         draw_memcard_msg(&msgFormatPrompt, 320.0f, 240.0f);
 
-        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
+        intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        color = RGBA(intensity, intensity, intensity, 0);
 
         func_80071B2C(1.5f, 1.5f);
-        func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
+        g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
         else
         {
             func_80071AE4(0);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
             func_80071AE4(0);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
-        func_80071E58("No");
-        func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
+        g_draw_text("No");
+        g_set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
         else
         {
             func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
             func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
-        func_80071E58("No");
+        g_draw_text("No");
     }
     if (memcardInfo.state == 10)
         draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
@@ -3448,56 +3448,56 @@ void memcard_draw_ui(void)
     {
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
-        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        color = RGBA(intensity, intensity, intensity, 0);
 
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
         func_80071B2C(1.5f, 1.5f);
-        func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
+        g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
         else
         {
             func_80071AE4(0);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
             func_80071AE4(0);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
-        func_80071E58("No");
-        func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
+        g_draw_text("No");
+        g_set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
         else
         {
             func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            g_set_some_sprite_color(color);
         }
         else
         {
             func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            g_set_some_sprite_color(0);
         }
-        func_80071E58("No");
+        g_draw_text("No");
     }
     if (memcardInfo.statusFlags & (1 << 15))
     {

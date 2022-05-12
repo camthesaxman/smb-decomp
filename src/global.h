@@ -11,6 +11,8 @@
 #define CLAMP(val, min, max) \
     ((val) < (min) ? (min) : (val) > (max) ? (max) : (val))
 
+#define RGBA(r, g, b, a)  (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
+
 // .bss variables seem to be ordered in the file based on their usage.
 // This macro generates a dummy function that forces the order and will be
 // stripped by the linker.

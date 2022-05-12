@@ -206,6 +206,13 @@ struct FontParams
     /*0x23*/ s8 unk23;
 };
 
+enum
+{
+    SPRITE_TYPE_TEXT, 
+    SPRITE_TYPE_BITMAP,
+    SPRITE_TYPE_TILED_BITMAP,
+};
+
 struct Sprite
 {
     /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???
@@ -221,8 +228,8 @@ struct Sprite
              s16 unk10;
              u8 filler12[0x30-0x12];
     /*0x30*/ void (*destFunc)();
-    /*0x34*/ void (*mainFunc)();
-             void (*unk38)(struct Sprite *);
+    /*0x34*/ void (*mainFunc)(s8 *, struct Sprite *);
+             void (*drawFunc)(struct Sprite *);
     /*0x3C*/ u16 bmpId;
              u8 filler3E[0x40-0x3E];
              float unk40;
@@ -267,29 +274,29 @@ struct Sprite *create_linked_sprite(struct Sprite *a);
 void destroy_sprite_with_tag(int a);
 void destroy_all_sprites(void);
 struct Sprite *find_sprite_with_tag(int a);
-void g_get_dimensions_for_sprite(struct Sprite *, s32 *, s32 *, s32 *, s32 *);
+void calc_sprite_bounds(struct Sprite *, s32 *, s32 *, s32 *, s32 *);
 int get_char_width(char *a, int b, struct FontParams *c);
 float g_get_char_ratio(char *a, int b);
 // ? parse_char_sequence();
 void func_80071A8C(void);
-void func_80071AD4();
+void g_set_font();
 void func_80071AE4();
-void func_80071AF8();
+void g_set_some_sprite_color();
 void func_80071B1C(float);
 void func_80071B2C(float, float);
-// ? func_80071B40();
+void func_80071B40(float a);
 void func_80071B50();
-void func_80071B60(float, float);
+void g_set_text_pos(float, float);
 // ? func_80071B78();
-void func_80071E58(char *str);
+void g_draw_text(char *str);
 float g_get_text_width(char *str);
 // ? func_80072AC0();
-void func_80072B50(struct Sprite *a);
-void func_80072C68(struct Sprite *a);
+void g_draw_text_sprite(struct Sprite *a);
+void draw_bitmap_sprite(struct Sprite *a);
 // ? func_80072DA8();
-// ? get_ascii_text_width();
-int get_jpn_text_width();
-void func_800730B4(void);
+float get_ascii_text_width(char *str);
+int get_jpn_text_width(int fontId, char *str);
+void g_draw_screen_fade_mask(void);
 void g_start_screen_fade(s32, int, int);
 // ? add_naomi_sprite();
 int draw_naomi_sprite(struct NaomiSpriteParams *);

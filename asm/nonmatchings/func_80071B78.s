@@ -1,8 +1,8 @@
 /* 80071B78 0006DA98  7C 08 02 A6 */	mflr r0
-/* 80071B7C 0006DA9C  3C 80 80 29 */	lis r4, lbl_8028CF28@ha
+/* 80071B7C 0006DA9C  3C 80 80 29 */	lis r4, textDrawInfo@ha
 /* 80071B80 0006DAA0  90 01 00 04 */	stw r0, 4(r1)
 /* 80071B84 0006DAA4  3C A0 80 1C */	lis r5, fontInfo@ha
-/* 80071B88 0006DAA8  38 84 CF 28 */	addi r4, r4, lbl_8028CF28@l
+/* 80071B88 0006DAA8  38 84 CF 28 */	addi r4, r4, textDrawInfo@l
 /* 80071B8C 0006DAAC  94 21 FF 38 */	stwu r1, -0xc8(r1)
 /* 80071B90 0006DAB0  38 05 E4 B0 */	addi r0, r5, fontInfo@l
 /* 80071B94 0006DAB4  80 C4 00 0C */	lwz r6, 0xc(r4)
