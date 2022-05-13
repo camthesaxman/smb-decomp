@@ -50,6 +50,9 @@ enum
 
 struct Color3f { float r, g, b; };
 
+// sprite alignment
+// When setting the position of a sprite (x and y fields), this determines which corner or edge
+// of the sprite lies at that point.
 enum Alignment
 {
     ALIGN_LT,

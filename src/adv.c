@@ -551,13 +551,13 @@ void run_cutscene_script(void)
                 g_create_textbox(i + 1, 20, NULL);
             sprite = find_sprite_with_tag(30);
             if (sprite != NULL)
-                sprite->unk10 = -1;
+                sprite->counter = -1;
             sprite = find_sprite_with_tag(31);
             if (sprite != NULL)
-                sprite->unk10 = -1;
+                sprite->counter = -1;
             sprite = find_sprite_with_tag(32);
             if (sprite != NULL)
-                sprite->unk10 = -1;
+                sprite->counter = -1;
             break;
         case CMD_FADE_FROM_WHITE:
             g_start_screen_fade(0x100, 0xFFFFFF, cmd->param);
@@ -679,7 +679,7 @@ void run_cutscene_script(void)
             if (sprite != NULL)
             {
                 sprite->unk48 = cmd->param;
-                sprite->unk10 = 0;
+                sprite->counter = 0;
             }
             break;
         case 30:
@@ -1196,15 +1196,15 @@ static void func_8000FEC8(int a)
 
     sprite = find_sprite_with_tag(30);
     if (sprite != NULL)
-        sprite->unk10 = -1;
+        sprite->counter = -1;
 
     sprite = find_sprite_with_tag(31);
     if (sprite != NULL)
-        sprite->unk10 = -1;
+        sprite->counter = -1;
 
     sprite = find_sprite_with_tag(32);
     if (sprite != NULL)
-        sprite->unk10 = -1;
+        sprite->counter = -1;
 
     g_create_textbox(0, 20, NULL);
 
@@ -1212,7 +1212,7 @@ static void func_8000FEC8(int a)
     if (sprite != NULL)
         sprite->unk48 = 1;
 
-    func_80076DCC(a);
+    create_title_letter_sprites(a);
     g_play_sound(0xA022);
     if (lbl_802014E0.unk0 != 2)
         g_play_music(3, 0);
@@ -1274,7 +1274,7 @@ void submode_adv_title_reinit_func(void)
     camera_set_state(27);
     unload_stage();
     call_bitmap_load_group(BMP_ADV);
-    func_80076DCC(1);
+    create_title_letter_sprites(1);
     if (dipSwitches & DIP_DEBUG)
         show_press_start_textbox(2);
     else
@@ -1289,7 +1289,7 @@ void submode_adv_title_reinit_func(void)
         sp8.unk1C = NULL;
         g_create_textbox(0, 1, &sp8);
         g_set_textbox_text(0, " \n ");
-        func_80077734();
+        create_title_menu_items();
     }
     load_stage(ST_150_TUTORIAL);
     g_init_light_stuff_for_stage(0);
@@ -1335,7 +1335,7 @@ void submode_adv_title_main_func(void)
             sp8.unk1C = NULL;
             g_create_textbox(0, 1, &sp8);
             g_set_textbox_text(0, " \n ");
-            func_80077734();
+            create_title_menu_items();
         }
     }
     if (modeCtrl.levelSetFlags & (1 << 2))

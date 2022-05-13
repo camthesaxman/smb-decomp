@@ -253,12 +253,12 @@ void view_sprite_func(struct Sprite *sprite)
     func_80071B1C(sprite->unk4C + 0.1);
     func_80071AE4(0);
     g_set_some_sprite_color(0);
-    g_set_text_pos(sprite->centerX + 2.0, sprite->centerY + 2.0);
+    g_set_text_pos(sprite->x + 2.0, sprite->y + 2.0);
     g_draw_text(sprite->text);
     func_80071B1C(sprite->unk4C);
     func_80071AE4((sprite->unkC << 16) | (sprite->unkD << 8) | sprite->unkE);
     g_set_some_sprite_color((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
-    g_set_text_pos(sprite->centerX, sprite->centerY);
+    g_set_text_pos(sprite->x, sprite->y);
     g_draw_text(sprite->text);
 }
 
@@ -270,8 +270,8 @@ void view_create_text_sprites(void)
     if (sprite != NULL)
     {
         sprite->tag = 100;
-        sprite->centerX = 24.0f;
-        sprite->centerY = 24.0f;
+        sprite->x = 24.0f;
+        sprite->y = 24.0f;
         sprite->textAlign = ALIGN_LT;
         sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
@@ -283,8 +283,8 @@ void view_create_text_sprites(void)
     if (sprite != NULL)
     {
         sprite->tag = 100;
-        sprite->centerX = 170.0f;
-        sprite->centerY = 435.0f;
+        sprite->x = 170.0f;
+        sprite->y = 435.0f;
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
@@ -296,8 +296,8 @@ void view_create_text_sprites(void)
     if (sprite != NULL)
     {
         sprite->tag = 100;
-        sprite->centerX = 415.0f;
-        sprite->centerY = 435.0f;
+        sprite->x = 415.0f;
+        sprite->y = 435.0f;
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;

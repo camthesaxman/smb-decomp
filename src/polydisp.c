@@ -1069,8 +1069,8 @@ void draw_timer_bomb_fuse(void)
     }
     else
     {
-        x = (sprite->centerX - 320.0f) / 320.0f;
-        y = (56.0f - sprite->centerY) / 240.0f;
+        x = (sprite->x - 320.0f) / 320.0f;
+        y = (56.0f - sprite->y) / 240.0f;
     }
 
     C_MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);

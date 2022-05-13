@@ -215,21 +215,21 @@ enum
 
 struct Sprite
 {
-    /*0x00*/ s8 type;  // type 0 = text, 1 = ???, 2 = ???
-    /*0x01*/ u8 fontId;  // fontId
+    /*0x00*/ s8 type;
+    /*0x01*/ u8 fontId;
              s8 unk2;
     /*0x03*/ s8 textAlign;
-    /*0x04*/ float centerX;
-    /*0x08*/ float centerY;
+    /*0x04*/ float x;  // position of sprite (0-640) from left edge of screen
+    /*0x08*/ float y;  // position of sprite (0-480) from top edge of screen
              u8 unkC;
              u8 unkD;
              u8 unkE;
     /*0x0F*/ s8 tag;
-             s16 unk10;
+    /*0x10*/ s16 counter;  // general purpose frame counter
              u8 filler12[0x30-0x12];
-    /*0x30*/ void (*destFunc)();
-    /*0x34*/ void (*mainFunc)(s8 *, struct Sprite *);
-             void (*drawFunc)(struct Sprite *);
+    /*0x30*/ void (*destFunc)(struct Sprite *);  // callback which runs when the sprite is destroyed
+    /*0x34*/ void (*mainFunc)(s8 *, struct Sprite *);  // callback which runs once per frame
+             void (*drawFunc)(struct Sprite *);  // callback to override the default drawing of a sprite
     /*0x3C*/ u16 bmpId;
              u8 filler3E[0x40-0x3E];
              float unk40;
@@ -237,14 +237,15 @@ struct Sprite
              s32 unk48;
              float unk4C;
              struct Sprite *unk50;
-             struct Sprite *unk54;
+    /*0x54*/ struct Sprite *next;
+             // actual bounds of the sprite (computed from alignment and other info)
     /*0x58*/ s32 left;
     /*0x5C*/ s32 top;
     /*0x60*/ s32 right;
     /*0x64*/ s32 bottom;
              s16 unk68;
              u8 filler6A[2];
-             float unk6C;
+    /*0x6C*/ float opacity;
              u8 unk70;
              u8 unk71;
              u8 unk72;

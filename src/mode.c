@@ -766,7 +766,7 @@ void g_menu_input_notdebug(void)
          && (modeCtrl.levelSetFlags & (1 << 2)))
         {
             struct Sprite *sprite = find_sprite_with_tag(modeCtrl.unk10 + 12);
-            if (sprite != NULL && sprite->unk10 > 0)
+            if (sprite != NULL && sprite->counter > 0)
                 break;
             if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
              || (controllerInfo[1].unk0[2].button & PAD_BUTTON_A)

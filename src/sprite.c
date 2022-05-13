@@ -180,10 +180,10 @@ void func_800700D8(int a)
     while ((r31_ = r30->unk0) != NULL)
     {
         g_something_with_sprites(r31_);
-        while (r31_->unk54 != 0)
+        while (r31_->next != 0)
         {
-            g_something_with_sprites(r31_->unk54);
-            r31_ = r31_->unk54;
+            g_something_with_sprites(r31_->next);
+            r31_ = r31_->next;
         }
         r30 = r30->unk8;
     }
@@ -222,10 +222,10 @@ void func_800702C8(struct Sprite *sprite)
     if (spritePoolInfo.statusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
         g_something_with_sprites(sprite);
-        while (sprite->unk54 != NULL)
+        while (sprite->next != NULL)
         {
-            g_something_with_sprites(sprite->unk54);
-            sprite = sprite->unk54;
+            g_something_with_sprites(sprite->next);
+            sprite = sprite->next;
         }
     }
 }
@@ -887,20 +887,20 @@ void g_something_with_sprites(struct Sprite *sprite)
         }
         r26 = sprite->bmpId & 0xFF;
         r29 = sprite->bmpId;
-        x = sprite->centerX;
-        y = sprite->centerY;
+        x = sprite->x;
+        y = sprite->y;
         for (i = 0; i < 8; i++)
         {
             sprite->bmpId = (r29 & 0xFF00) | r26;
-            sprite->centerX = (float)(x + spriteTileOffsets[i].x);
-            sprite->centerY = (float)(y + spriteTileOffsets[i].y);
+            sprite->x = (float)(x + spriteTileOffsets[i].x);
+            sprite->y = (float)(y + spriteTileOffsets[i].y);
             calc_sprite_bounds(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
             draw_bitmap_sprite(sprite);
             r26++;
         }
         sprite->bmpId = r29;
-        sprite->centerX = x;
-        sprite->centerY = y;
+        sprite->x = x;
+        sprite->y = y;
     }
 }
 
@@ -942,7 +942,7 @@ struct Sprite *create_sprite(void)
         sprite->unkE = 0xFF;
         sprite->unk40 = 1.0f;
         sprite->unk44 = 1.0f;
-        sprite->unk6C = 1.0f;
+        sprite->opacity = 1.0f;
         sprite->left = 0;
         sprite->top = 0;
         sprite->right = 1;
@@ -961,7 +961,7 @@ struct Sprite *create_linked_sprite(struct Sprite *sprite)
     struct Sprite *newSprite = create_sprite();
     if (newSprite != NULL)
     {
-        sprite->unk54 = newSprite;
+        sprite->next = newSprite;
         newSprite->unk50 = sprite;
         newSprite->unk74 |= sprite->unk74 & (1 << 18);
     }
@@ -1031,12 +1031,12 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
     int y;
     int len;
 
-    if (sprite->drawFunc != 0)
+    if (sprite->drawFunc != NULL)
     {
-        *left   = sprite->centerX - 50.0f;
-        *top    = sprite->centerY - 50.0f;
-        *right  = sprite->centerX + 50.0f;
-        *bottom = sprite->centerY + 50.0f;
+        *left   = sprite->x - 50.0f;
+        *top    = sprite->y - 50.0f;
+        *right  = sprite->x + 50.0f;
+        *bottom = sprite->y + 50.0f;
         return;
     }
     else
@@ -1073,10 +1073,10 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
                 printf("SPRITE WARNING!! %s's category %s is not load\n",
                     bitmapNames[sprite->bmpId >> 8][sprite->bmpId & 0xFF],
                     bitmapGroups[sprite->bmpId >> 8].name);
-                *left = sprite->centerX - 50.0f;
-                *top = sprite->centerY - 50.0f;
-                *right = sprite->centerX + 50.0f;
-                *bottom = sprite->centerY + 50.0f;
+                *left   = sprite->x - 50.0f;
+                *top    = sprite->y - 50.0f;
+                *right  = sprite->x + 50.0f;
+                *bottom = sprite->y + 50.0f;
                 return;
             }
             width = bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].tpl->texHeaders[sprite->bmpId & 0xFF].width;
@@ -1089,8 +1089,8 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
     height *= sprite->unk44;
     if (sprite->unk50 == NULL)
     {
-        x = sprite->centerX;
-        y = sprite->centerY;
+        x = sprite->x;
+        y = sprite->y;
         switch (sprite->textAlign)
         {
         // centered horizontally
@@ -1148,8 +1148,8 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
             y = sprite->unk50->bottom - height;
             break;
         }
-        x += sprite->centerX;
-        y += sprite->centerY;
+        x += sprite->x;
+        y += sprite->y;
         *left   = x;
         *top    = y;
         *right  = x + width;
@@ -3008,13 +3008,13 @@ void g_draw_text_sprite(struct Sprite *sprite)
     textDrawInfo.unk4 = sprite->left;
     textDrawInfo.unk8 = sprite->top;
     textDrawInfo.fontId = sprite->fontId;
-    textDrawInfo.unk10 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    textDrawInfo.unk10 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
     textDrawInfo.unk14 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
     textDrawInfo.unk18 = sprite->unk68;
     textDrawInfo.unk1C = sprite->unk4C;
     textDrawInfo.unk20 = sprite->unk40;
     textDrawInfo.unk24 = sprite->unk44;
-    textDrawInfo.unk28 = sprite->unk6C;
+    textDrawInfo.unk28 = sprite->opacity;
     textDrawInfo.unk2C = sprite->unk74;
     g_draw_text(sprite->text);
 }
@@ -3034,10 +3034,10 @@ void draw_bitmap_sprite(struct Sprite *sprite)
     params.u2 = sprite->unk84;
     params.v2 = sprite->unk88;
     params.rotation = sprite->unk68;
-    params.alpha = sprite->unk6C;
+    params.alpha = sprite->opacity;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & ~0xF) | 10;
-    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
     params.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
     draw_naomi_sprite(&params);
 }

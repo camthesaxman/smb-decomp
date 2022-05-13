@@ -44,20 +44,20 @@ void g_open_pause_menu(void)
     if (sprite != NULL)
     {
         sprite->tag = 4;
-        sprite->centerX = 315.0f;
-        sprite->centerY = lbl_801C14FC[0];
+        sprite->x = 315.0f;
+        sprite->y = lbl_801C14FC[0];
         sprite->type = SPRITE_TYPE_BITMAP;
         sprite->fontId = FONT_JAP_24x24_2P;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 0.005f;
         sprite->unk48 = 1;
-        sprite->unk6C = 0.5f;
+        sprite->opacity = 0.5f;
         sprite->unkC = 0;
         sprite->unkD = 0;
         sprite->unkE = 0;
         sprite->unk40 = 0.0f;
         sprite->unk44 = 0.0f;
-        sprite->unk10 = 1;
+        sprite->counter = 1;
         sprite->drawFunc = pause_menu_sprite_draw;
         strcpy(sprite->text, "pause menu");
     }
@@ -69,11 +69,11 @@ void func_80075E1C(int unused, struct Sprite *b)
 {
     struct Sprite *gameOver;
 
-    b->centerY += 0.075 * (lbl_801C14FC[b->unk48] - b->centerY);
-    if (b->unk10 > 0)
+    b->y += 0.075 * (lbl_801C14FC[b->unk48] - b->y);
+    if (b->counter > 0)
     {
         b->unk44 = b->unk40;
-        b->unk10--;
+        b->counter--;
     }
     else
     {
@@ -81,8 +81,8 @@ void func_80075E1C(int unused, struct Sprite *b)
     }
     if (b->unk48 >= 2 && b->unk48 != 6)
     {
-        if (b->unk6C < 0.99)
-            b->unk6C += 0.01;
+        if (b->opacity < 0.99)
+            b->opacity += 0.01;
     }
     if (b->unk48 == 2)
     {
@@ -97,14 +97,14 @@ void func_80075E1C(int unused, struct Sprite *b)
         gameOver = create_sprite();
         if (gameOver != NULL)
         {
-            gameOver->centerX = 320.0f;
-            gameOver->centerY = 240.0f;
+            gameOver->x = 320.0f;
+            gameOver->y = 240.0f;
             gameOver->unkC = 0xFF;
             gameOver->unkD = 0;
             gameOver->unkE = 0x20;
             gameOver->fontId = FONT_ASC_72x64;
             gameOver->textAlign = ALIGN_CC;
-            gameOver->unk10 = 60;
+            gameOver->counter = 60;
             gameOver->unk48 = 60;
             gameOver->unk4C = b->unk4C - 0.001;
             gameOver->mainFunc = lbl_8007DE54;
@@ -214,23 +214,23 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
     else
         bmpId = BMP_COM_menu_kiwaku;
     params.bmpId = bmpId;
-    params.x = sprite->centerX;
-    params.y = sprite->centerY;
+    params.x = sprite->x;
+    params.y = sprite->y;
     params.z = sprite->unk4C + 0.001;
     params.zoomX = 1.0f;
     params.zoomY = 1.0f;
     params.alpha = 1.0f;
-    params.color1 = RGBA(255, 255, 255, (int)(sprite->unk6C * 255.0f));
+    params.color1 = RGBA(255, 255, 255, (int)(sprite->opacity * 255.0f));
     draw_naomi_sprite(&params);
 
     params.bmpId = func_80081CFC(0, 0, playerCharacterSelection[lbl_801EEC68.unk15]);
-    params.x = sprite->centerX - 110.0f;
-    params.y = sprite->centerY + sprite->unk44 + 12.0f;
+    params.x = sprite->x - 110.0f;
+    params.y = sprite->y + sprite->unk44 + 12.0f;
     params.z = sprite->unk4C;
     params.zoomX = 0.5f;
     params.zoomY = 0.325f;
     params.alpha = 1.0f;
-    params.color1 = RGBA(255, 255, 255, (int)(sprite->unk6C * 255.0f));
+    params.color1 = RGBA(255, 255, 255, (int)(sprite->opacity * 255.0f));
     draw_naomi_sprite(&params);
 
     menuType = lbl_801EEC68.unk10;
@@ -261,8 +261,8 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
             phi_f22 = i * 36 - 48 + (3 - lbl_801EEC68.unkC) * 18;
 
         strcpy(text, pauseMenus[menuType][i]);
-        x = sprite->centerX - 48.0f;
-        y = sprite->centerY + phi_f22;
+        x = sprite->x - 48.0f;
+        y = sprite->y + phi_f22;
         g_set_text_pos(3.0f + x, 3.0f + y);
         func_80071AE4(0x202000);
         g_set_some_sprite_color(0);
@@ -321,8 +321,8 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
     params.z = (sprite->unk48 == 2) ? 0.001 : sprite->unk4C + 0.002;
     params.zoomX = 80.0f;
     params.zoomY = 60.0f;
-    params.alpha = sprite->unk6C;
-    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    params.alpha = sprite->opacity;
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
     draw_naomi_sprite(&params);
 }
 
@@ -353,20 +353,20 @@ void lbl_80076710(struct Sprite *sprite)
     temp_r3 = func_80088C18();
     if (temp_r3 > 0)
     {
-        sprite->centerX = 0x3E5 - temp_r3;
-        sprite->centerY = 446.0f;
+        sprite->x = 0x3E5 - temp_r3;
+        sprite->y = 446.0f;
         func_800702C8(sprite);
     }
     if (temp_r3 < 0x280)
     {
-        sprite->centerX = temp_r3 + 0x165;
-        sprite->centerY = 463.0f;
+        sprite->x = temp_r3 + 0x165;
+        sprite->y = 463.0f;
         func_800702C8(sprite);
     }
     sprite->drawFunc = lbl_80076710;
 }
 
-extern void lbl_800768A8();
+void lbl_800768A8(s8 *a, struct Sprite *sprite);
 
 void g_logo_plus_sprite_something(void)
 {
@@ -377,8 +377,8 @@ void g_logo_plus_sprite_something(void)
     {
         sprite->type = SPRITE_TYPE_BITMAP;
         sprite->tag = 3;
-        sprite->centerX = 320.0f;
-        sprite->centerY = 115.0f;
+        sprite->x = 320.0f;
+        sprite->y = 115.0f;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 300.0f;
         sprite->bmpId = BMP_ADV_adv_logo_plus;
@@ -388,12 +388,12 @@ void g_logo_plus_sprite_something(void)
     if (sprite != NULL)
     {
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->centerX = 320.0f;
-        sprite->centerY = 240.0f;
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 301.0f;
         sprite->bmpId = BMP_ADV_logo_sega512;
-        sprite->unk10 = 0;
+        sprite->counter = 0;
         sprite->mainFunc = lbl_800768A8;
         sprite->unk74 |= 0x40000;
         strcpy(sprite->text, "logo");
@@ -406,24 +406,24 @@ void lbl_800768A8(s8 *a, struct Sprite *sprite)
 {
     struct Sprite *logoPlus = find_sprite_with_tag(3);
 
-    if (sprite->unk10 <= 0x189)
-        sprite->centerX -= 0.0f;  // does nothing
-    else if (sprite->unk10 <= 0x198)
-        sprite->centerX -= 10.0f + (6.0f * mathutil_sin((sprite->unk10 - 0x189) * 0x444));
-    else if (sprite->unk10 <= 0x1E0)
-        sprite->centerX -= 16.0f;
+    if (sprite->counter <= 0x189)
+        sprite->x -= 0.0f;  // does nothing
+    else if (sprite->counter <= 0x198)
+        sprite->x -= 10.0f + (6.0f * mathutil_sin((sprite->counter - 0x189) * 0x444));
+    else if (sprite->counter <= 0x1E0)
+        sprite->x -= 16.0f;
 
-    if (sprite->unk10 >= 0x17A && sprite->unk10 <= 0x198)
+    if (sprite->counter >= 0x17A && sprite->counter <= 0x198)
     {
-        sprite->unk40 = 1.0 - (0.7 * mathutil_sin((sprite->unk10 - 0x17A) * 0x444));
-        sprite->unk44 = 1.0 + (0.7 * mathutil_sin((sprite->unk10 - 0x17A) * 0x444));
+        sprite->unk40 = 1.0 - (0.7 * mathutil_sin((sprite->counter - 0x17A) * 0x444));
+        sprite->unk44 = 1.0 + (0.7 * mathutil_sin((sprite->counter - 0x17A) * 0x444));
         if (logoPlus != NULL)
-            logoPlus->unk6C = 0.0333 * (0x198 - sprite->unk10);
+            logoPlus->opacity = 0.0333 * (0x198 - sprite->counter);
     }
 
-    if (sprite->unk10 == 0x1E0)
+    if (sprite->counter == 0x1E0)
     {
-        sprite->centerX = 320.0f;
+        sprite->x = 320.0f;
         sprite->bmpId = BMP_ADV_logo_av256;
         sprite->unk40 = 1.0f;
         sprite->unk44 = 1.0f;
@@ -433,23 +433,23 @@ void lbl_800768A8(s8 *a, struct Sprite *sprite)
             logoPlus->bmpId = BMP_ADV_logo_plus256x40;
             logoPlus->unk48 = 5;
             logoPlus->drawFunc = lbl_80076AC0;
-            logoPlus->centerX = 194.0f;
-            logoPlus->centerY = 74.0f;
+            logoPlus->x = 194.0f;
+            logoPlus->y = 74.0f;
         }
     }
 
-    if (sprite->unk10 < 0x1E0)
-        sprite->unk6C = 1.0f;
-    else if (sprite->unk10 <= 0x258)
-        sprite->unk6C = 0.0f;
-    else if (sprite->unk10 <= 0x276)
+    if (sprite->counter < 0x1E0)
+        sprite->opacity = 1.0f;
+    else if (sprite->counter <= 0x258)
+        sprite->opacity = 0.0f;
+    else if (sprite->counter <= 0x276)
     {
-        sprite->unk6C = 0.0333 * (sprite->unk10 - 0x258);
+        sprite->opacity = 0.0333 * (sprite->counter - 0x258);
         if (logoPlus != NULL)
-            logoPlus->unk6C = sprite->unk6C;
+            logoPlus->opacity = sprite->opacity;
     }
 
-    sprite->unk10++;
+    sprite->counter++;
 }
 
 void lbl_80076AC0(struct Sprite *sprite)
@@ -458,8 +458,8 @@ void lbl_80076AC0(struct Sprite *sprite)
     int r5 = sprite->unk48;
 
     params.bmpId = sprite->bmpId;
-    params.x = sprite->centerX + (r5 % 2 == 1 ? 128 : -128);
-    params.y = sprite->centerY + (sprite->unk48 == 0 ? 50 : 0);
+    params.x = sprite->x + (r5 % 2 == 1 ? 128 : -128);
+    params.y = sprite->y + (sprite->unk48 == 0 ? 50 : 0);
     params.z = sprite->unk4C;
     params.u1 = 0.0f;
     params.v1 = 0.15625 * r5;
@@ -468,15 +468,15 @@ void lbl_80076AC0(struct Sprite *sprite)
     params.zoomX = sprite->unk40 * (params.u2 - params.u1);
     params.zoomY = 0.15625 * sprite->unk44;
     params.rotation = sprite->unk68;
-    params.alpha = sprite->unk6C;
+    params.alpha = sprite->opacity;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
-    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->unk6C * 255.0f));
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
     params.color2 = 0;
     draw_naomi_sprite(&params);
 }
 
-void lbl_80076D9C(s8 *, struct Sprite *);
+void copyright_sprite_main(s8 *, struct Sprite *);
 
 void show_adv_copyright_text(int a)
 {
@@ -487,12 +487,12 @@ void show_adv_copyright_text(int a)
     {
         sprite->tag = 0x25;
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->centerX = 357.0f;
-        sprite->centerY = 463.0f;
+        sprite->x = 357.0f;
+        sprite->y = 463.0f;
         sprite->textAlign = ALIGN_LB;
         sprite->unk4C = 0.03f;
         sprite->bmpId = BMP_COM_copyright_02;
-        sprite->mainFunc = lbl_80076D9C;
+        sprite->mainFunc = copyright_sprite_main;
         strcpy(sprite->text, "(C)");
         if (a == 1)
             sprite->drawFunc = lbl_80076710;
@@ -501,10 +501,10 @@ void show_adv_copyright_text(int a)
         if (sprite != NULL)
         {
             sprite->tag = 38;
-            sprite->centerX = 6.0f;
+            sprite->x = 6.0f;
             sprite->fontId = FONT_ASC_8x16;
             sprite->textAlign = ALIGN_LB;
-            sprite->mainFunc = lbl_80076D9C;
+            sprite->mainFunc = copyright_sprite_main;
             strcpy(sprite->text, "AMUSEMENT VISION,LTD./SEGA,2001");
         }
     }
@@ -514,20 +514,20 @@ void show_adv_copyright_text(int a)
     {
         sprite->tag = 39;
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->centerX = 16.0f;
-        sprite->centerY = 462.0f;
+        sprite->x = 16.0f;
+        sprite->y = 462.0f;
         sprite->unk4C = 0.03f;
         sprite->bmpId = BMP_COM_str_sega;
         sprite->textAlign = ALIGN_LB;
-        sprite->mainFunc = lbl_80076D9C;
+        sprite->mainFunc = copyright_sprite_main;
         strcpy(sprite->text, "SEGA AV");
     }
 }
 
-void lbl_80076D9C(s8 *unused, struct Sprite *sprite)
+void copyright_sprite_main(s8 *unused, struct Sprite *sprite)
 {
-    if (sprite->unk48 == -1 && sprite->unk6C > 0.0f)
-        sprite->unk6C -= 0.05;
+    if (sprite->unk48 == -1 && sprite->opacity > 0.0f)
+        sprite->opacity -= 0.05;
 }
 
 struct Struct80292C00
@@ -546,23 +546,19 @@ extern struct Struct80292C00 lbl_80292C00_alias;
 u8 lbl_80292C60[0x30];
 FORCE_BSS_ORDER(lbl_80292C60)
 
-struct Struct80292C90
+struct TitleLetterOffset
 {
-    float unk0;
-    float unk4;
+    float pos;
+    float vel;
 };
 
-struct Struct80292C90 lbl_80292C90[5];
-FORCE_BSS_ORDER(lbl_80292C90)
+// y offsets applied to position of "SUPER" letters
+struct TitleLetterOffset titleSuperOffsets[5];
+FORCE_BSS_ORDER(titleSuperOffsets)
 
-struct Struct80292CB8
-{
-    float unk0;
-    float unk4;
-};
-
-struct Struct80292C90 lbl_80292CB8[10];
-FORCE_BSS_ORDER(lbl_80292CB8)
+// x offsets applied to position of "MONKEY BALL" letters
+struct TitleLetterOffset titleMonkeyBallOffsets[10];
+FORCE_BSS_ORDER(titleMonkeyBallOffsets)
 
 s8 lbl_80292D08[0x10];
 FORCE_BSS_ORDER(lbl_80292D08)
@@ -577,123 +573,16 @@ extern struct
 } lbl_80292D18;
 //FORCE_BSS_ORDER(lbl_80292D18)
 
-void lbl_80076FA0(s8 *, struct Sprite *);
-void lbl_80077280(struct Sprite *);
-
-extern float lbl_802F2010;
-extern float lbl_802F2014;
-
-void func_80076DCC(int arg0)
-{
-    struct Sprite *sprite;
-    int i;
-    struct Struct80292C90 *r27;
-    s8 *r27_;
-
-    sprite = create_sprite();
-    if (sprite != NULL)
-    {
-        sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->unk4C = 0.095f;
-        sprite->unk6C = 0.0f;
-        sprite->unk10 = arg0;
-        sprite->unk48 = arg0;
-        sprite->mainFunc = lbl_80076FA0;
-        sprite->drawFunc = lbl_80077280;
-        strcpy(sprite->text, "title");
-
-        r27 = lbl_80292C90;
-        for (i = 0; i < 5; i++, r27++)
-        {
-            r27->unk0 = (arg0 == 1) ? 0.0 : -200.0 + 40.0 * ((rand() / 32767.0f) - 0.5);
-            r27->unk4 = 0.0f;
-        }
-
-        r27 = lbl_80292CB8;
-        r27_ = lbl_80292D08;
-        for (i = 0; i < 10; i++, r27++, r27_++)
-        {
-            r27->unk0 = (arg0 == 1) ? 0.0 : 640.0 + 20.0 * ((rand() / 32767.0f) - 0.5);
-            r27->unk4 = (arg0 == 1) ? 0.0 : -10.0;
-            *r27_ = 0;
-        }
-        lbl_802F2010 = 0.0f;
-        lbl_802F2014 = 0.0f;
-    }
-}
-
-void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
-{
-    int i;
-
-    if (arg1->unk10 > 0)
-        arg1->unk10--;
-
-    !arg1;  // needed to match
-
-    arg1->unk6C = 1.0 - (float)(arg1->unk10) / (float)(arg1->unk48);
-
-    for (i=0; i < 10; i++)
-    {
-        lbl_80292CB8[i].unk0 += lbl_80292CB8[i].unk4;
-        if (lbl_80292D08[i] == 0 && lbl_80292CB8[i].unk0 <= 0.0f)
-            lbl_80292D08[i] = 1;
-        if (lbl_80292D08[i] != 0)
-        {
-            if (__abs(lbl_80292CB8[i].unk4) <= 2.0 && __abs(lbl_80292CB8[i].unk0) <= 2.0)
-            {
-                lbl_80292CB8[i].unk4 = 0.0f;
-                lbl_80292CB8[i].unk0 = 0.0f;
-            }
-            else if (lbl_80292CB8[i].unk0 < 0.0f)
-                lbl_80292CB8[i].unk4 = 4.0f;
-            else
-                lbl_80292CB8[i].unk4 = -1.0f;
-        }
-    }
-
-    if (arg1->unk10 > (0.25 * (float)arg1->unk48))
-        return;
-
-    for (i = 0; i < 5; i++)
-    {
-        lbl_80292C90[i].unk4 += 0.5;
-        lbl_80292C90[i].unk0 += lbl_80292C90[i].unk4;
-        if (lbl_80292C90[i].unk0 >= 0.0f)
-        {
-            if (lbl_80292C90[i].unk4 <= 0.5)
-            {
-                lbl_80292C90[i].unk4 = 0.0f;
-                lbl_80292C90[i].unk0 = 0.0f;
-            }
-            else
-            {
-                lbl_80292C90[i].unk4 = 0.5 * -lbl_80292C90[i].unk4;
-                lbl_80292C90[i].unk0 = 0.0f;
-            }
-        }
-    }
-
-    if (arg1->unk10 > 0.0)
-        return;
-    if (lbl_80292CB8[0].unk4 != 0.0)
-        return;
-
-    lbl_802F2014 += 0.25 * (1.0 - lbl_802F2014);
-    if (modeCtrl.levelSetFlags & 4)
-        lbl_802F2010 += 0.25 * -lbl_802F2010;
-    else
-        lbl_802F2010 += 0.25 * (1.0 - lbl_802F2010);
-}
-
-struct Struct801C16AC
+struct TitleLetter
 {
     u32 bmpId;
     float x;
     float y;
-};  //size = 0xC
+};
 
-struct Struct801C16AC titleLettersSuper[] =
+// final positions for the title letters
+
+struct TitleLetter titleLettersSuper[] =
 {
     { BMP_ADV_adv_title_spr_s, 132,  46 },
     { BMP_ADV_adv_title_spr_u, 203,  22 },
@@ -702,7 +591,7 @@ struct Struct801C16AC titleLettersSuper[] =
     { BMP_ADV_adv_title_spr_r, 422,  46 },
 };
 
-struct Struct801C16AC titleLettersMonkeyBall[] =
+struct TitleLetter titleLettersMonkeyBall[] =
 {
     { BMP_ADV_adv_title_mnk_m,  64, 195 },
     { BMP_ADV_adv_title_mnk_o, 133, 133 },
@@ -716,13 +605,126 @@ struct Struct801C16AC titleLettersMonkeyBall[] =
     { BMP_ADV_adv_title_mnk_l, 407, 256 },
 };
 
-extern u32 lbl_80118AC8[];
+void title_sprite_main(s8 *, struct Sprite *);
+void title_sprite_draw(struct Sprite *);
 
-void lbl_80077280(struct Sprite *sprite)
+extern float lbl_802F2010;
+extern float lbl_802F2014;
+
+void create_title_letter_sprites(int arg0)
+{
+    struct Sprite *sprite;
+    int i;
+    struct TitleLetterOffset *offset;
+    s8 *r27_;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->unk4C = 0.095f;
+        sprite->opacity = 0.0f;
+        sprite->counter = arg0;
+        sprite->unk48 = arg0;
+        sprite->mainFunc = title_sprite_main;
+        sprite->drawFunc = title_sprite_draw;
+        strcpy(sprite->text, "title");
+
+        offset = titleSuperOffsets;
+        for (i = 0; i < 5; i++, offset++)
+        {
+            offset->pos = (arg0 == 1) ? 0.0 : -200.0 + 40.0 * ((rand() / 32767.0f) - 0.5);
+            offset->vel = 0.0f;
+        }
+
+        offset = titleMonkeyBallOffsets;
+        r27_ = lbl_80292D08;
+        for (i = 0; i < 10; i++, offset++, r27_++)
+        {
+            offset->pos = (arg0 == 1) ? 0.0 : 640.0 + 20.0 * ((rand() / 32767.0f) - 0.5);
+            offset->vel = (arg0 == 1) ? 0.0 : -10.0;
+            *r27_ = 0;
+        }
+        lbl_802F2010 = 0.0f;
+        lbl_802F2014 = 0.0f;
+    }
+}
+
+void title_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int i;
-    struct Struct801C16AC *phi_r28;
-    struct Struct80292C90 *phi_r29;
+
+    if (sprite->counter > 0)
+        sprite->counter--;
+
+    !sprite;  // needed to match
+
+    sprite->opacity = 1.0 - (float)sprite->counter / (float)sprite->unk48;
+
+    // adjust offsets of "MONKEY BALL" letters
+    for (i = 0; i < 10; i++)
+    {
+        titleMonkeyBallOffsets[i].pos += titleMonkeyBallOffsets[i].vel;
+        if (!lbl_80292D08[i] && titleMonkeyBallOffsets[i].pos <= 0.0f)
+            lbl_80292D08[i] = TRUE;
+        if (lbl_80292D08[i])
+        {
+            if (__abs(titleMonkeyBallOffsets[i].vel) <= 2.0 && __abs(titleMonkeyBallOffsets[i].pos) <= 2.0)
+            {
+                titleMonkeyBallOffsets[i].vel = 0.0f;
+                titleMonkeyBallOffsets[i].pos = 0.0f;
+            }
+            else if (titleMonkeyBallOffsets[i].pos < 0.0f)
+                titleMonkeyBallOffsets[i].vel = 4.0f;
+            else
+                titleMonkeyBallOffsets[i].vel = -1.0f;
+        }
+    }
+
+    if (sprite->counter > 0.25 * (float)sprite->unk48)
+        return;
+
+    // adjust offsets of "SUPER" letters
+    for (i = 0; i < 5; i++)
+    {
+        titleSuperOffsets[i].vel += 0.5;  // increase vel each frame to simulate gravity
+        titleSuperOffsets[i].pos += titleSuperOffsets[i].vel;
+        if (titleSuperOffsets[i].pos >= 0.0f)  // when letter has reached its final position 
+        {
+            if (titleSuperOffsets[i].vel <= 0.5)
+            {
+                // settle down once velocity is low enough
+                titleSuperOffsets[i].vel = 0.0f;
+                titleSuperOffsets[i].pos = 0.0f;
+            }
+            else
+            {
+                // add a small bounce
+                titleSuperOffsets[i].vel = 0.5 * -titleSuperOffsets[i].vel;
+                titleSuperOffsets[i].pos = 0.0f;
+            }
+        }
+    }
+
+    if (sprite->counter > 0.0)
+        return;
+    if (titleMonkeyBallOffsets[0].vel != 0.0)
+        return;
+
+    lbl_802F2014 += 0.25 * (1.0 - lbl_802F2014);
+    if (modeCtrl.levelSetFlags & 4)
+        lbl_802F2010 += 0.25 * -lbl_802F2010;
+    else
+        lbl_802F2010 += 0.25 * (1.0 - lbl_802F2010);
+}
+
+extern u32 lbl_80118AC8[];
+
+void title_sprite_draw(struct Sprite *sprite)
+{
+    int i;
+    struct TitleLetter *letter;
+    struct TitleLetterOffset *offset;
     struct NaomiSpriteParams params;
 
     params.u1 = 0.0f;
@@ -733,7 +735,7 @@ void lbl_80077280(struct Sprite *sprite)
     params.zoomY = 1.0f;
     params.alpha = 1.0f;
     params.rotation = 0;
-    params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->unk6C));
+    params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->opacity));
     params.color2 = 0;
     params.unk30 = -1;
 
@@ -741,25 +743,26 @@ void lbl_80077280(struct Sprite *sprite)
     params.x = 320.1f;
     params.y = 240.1f;
     params.z = 0.004 + sprite->unk4C;
-    params.alpha = sprite->unk6C;
+    params.alpha = sprite->opacity;
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
     draw_naomi_sprite(&params);
 
-    phi_r28 = titleLettersSuper;
-    phi_r29 = lbl_80292C90;
-    for (i = 0; i < 5; i++, phi_r28++, phi_r29++)
+    // draw "SUPER" letters
+    letter = titleLettersSuper;
+    offset = titleSuperOffsets;
+    for (i = 0; i < 5; i++, letter++, offset++)
     {
         params.bmpId = BMP_ADV_adv_title_spr_kage;
-        params.x = phi_r28->x - 8.0f;
-        params.y = phi_r28->y + phi_r29->unk0 - 5.0f;
+        params.x = letter->x - 8.0f;
+        params.y = letter->y + offset->pos - 5.0f;
         params.z = 0.002 + sprite->unk4C;
-        params.alpha = sprite->unk6C;
+        params.alpha = sprite->opacity;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
         draw_naomi_sprite(&params);
 
-        params.bmpId = phi_r28->bmpId;
-        params.x = phi_r28->x;
-        params.y = phi_r28->y + phi_r29->unk0;
+        params.bmpId = letter->bmpId;
+        params.x = letter->x;
+        params.y = letter->y + offset->pos;
         params.z = sprite->unk4C;
         params.alpha = 1.0f;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 5;
@@ -767,35 +770,36 @@ void lbl_80077280(struct Sprite *sprite)
 
         params.bmpId = BMP_ADV_adv_title_spr_gawa;
         params.z = sprite->unk4C - 0.002;
-        params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * phi_r29->unk0));
+        params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * offset->pos));
         draw_naomi_sprite(&params);
     }
 
-    phi_r28 = titleLettersMonkeyBall;
-    phi_r29 = lbl_80292CB8;
-    for (i = 0; i < 10; i++, phi_r28++, phi_r29++)
+    // draw "MONKEY BALL" letters
+    letter = titleLettersMonkeyBall;
+    offset = titleMonkeyBallOffsets;
+    for (i = 0; i < 10; i++, letter++, offset++)
     {
         params.bmpId = BMP_ADV_adv_title_mnk_kage;
-        params.x = 56.0f + (phi_r28->x + phi_r29->unk0 - 12.0f);
-        params.y = 56.0f + (phi_r28->y - 5.0f);
+        params.x = 56.0f + (letter->x + offset->pos - 12.0f);
+        params.y = 56.0f + (letter->y - 5.0f);
         params.z = 0.002 + sprite->unk4C;
-        params.alpha = sprite->unk6C;
+        params.alpha = sprite->opacity;
         params.rotation = 0;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
         draw_naomi_sprite(&params);
 
-        params.bmpId = phi_r28->bmpId;
-        params.x = 44.0f + (phi_r28->x + phi_r29->unk0);
-        params.y = 44.0f + phi_r28->y;
+        params.bmpId = letter->bmpId;
+        params.x = 44.0f + (letter->x + offset->pos);
+        params.y = 44.0f + letter->y;
         params.z = sprite->unk4C;
         params.alpha = 1.0f;
-        params.rotation = -256.0f * phi_r29->unk0;
+        params.rotation = -256.0f * offset->pos;
         params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0x200000 | 0xA;
         draw_naomi_sprite(&params);
 
         params.bmpId = BMP_ADV_adv_title_mnk_gawa;
         params.z = sprite->unk4C - 0.002;
-        params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * phi_r29->unk0));
+        params.alpha = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * offset->pos));
         params.rotation = 0;
         draw_naomi_sprite(&params);
     }
@@ -821,10 +825,10 @@ void lbl_80077280(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-void lbl_80077818(s8 *, struct Sprite *);
-void lbl_80077ADC(s8 *, struct Sprite *);
+void gamestart_sprite_main(s8 *, struct Sprite *);
+void options_sprite_main(s8 *, struct Sprite *);
 
-void func_80077734(void)
+void create_title_menu_items(void)
 {
     struct Sprite *sprite;
 
@@ -834,13 +838,13 @@ void func_80077734(void)
         sprite->tag = 12;
         sprite->unk4C = 0.049f;
         sprite->fontId = FONT_JAP_24x24_2P;
-        sprite->centerX = 320.0f;
-        sprite->centerY = 374.0f;
-        sprite->unk6C = 0.0f;
-        sprite->unk10 = 0x1E;
+        sprite->x = 320.0f;
+        sprite->y = 374.0f;
+        sprite->opacity = 0.0f;
+        sprite->counter = 30;
         sprite->textAlign = ALIGN_CC;
         sprite->unk74 |= 0x200000;
-        sprite->mainFunc = lbl_80077818;
+        sprite->mainFunc = gamestart_sprite_main;
     }
 
     sprite = create_sprite();
@@ -849,28 +853,28 @@ void func_80077734(void)
         sprite->tag = 13;
         sprite->unk4C = 0.049f;
         sprite->fontId = FONT_JAP_24x24_2P;
-        sprite->centerX = 320.0f;
-        sprite->centerY = 398.0f;
-        sprite->unk6C = 0.0f;
-        sprite->unk10 = 0x1E;
+        sprite->x = 320.0f;
+        sprite->y = 398.0f;
+        sprite->opacity = 0.0f;
+        sprite->counter = 30;
         sprite->textAlign = ALIGN_CC;
         sprite->unk74 |= 0x200000;
-        sprite->mainFunc = lbl_80077ADC;
+        sprite->mainFunc = options_sprite_main;
     }
 }
 
-void lbl_80077818(s8 *arg0, struct Sprite *sprite)
+void gamestart_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
     {
-        sprite->unk6C += 0.1 * (1.0 - sprite->unk6C);
-        if (sprite->unk10 > 0)
-            sprite->unk10--;
+        sprite->opacity += 0.1 * (1.0 - sprite->opacity);
+        if (sprite->counter > 0)
+            sprite->counter--;
     }
     else
-        sprite->unk6C += 0.1 * -sprite->unk6C;
+        sprite->opacity += 0.1 * -sprite->opacity;
 
-    if (sprite->unk10 <= 15)
+    if (sprite->counter <= 15)
     {
         if (modeCtrl.unk10 == 0)
         {
@@ -886,7 +890,7 @@ void lbl_80077818(s8 *arg0, struct Sprite *sprite)
             sprite->unkC += 0.1 * -sprite->unkC;
             sprite->unkD += 0.1 * -sprite->unkD;
             sprite->unkE += 0.1 * -sprite->unkE;
-            sprite->unk6C *= 0.5;
+            sprite->opacity *= 0.5;
             sprite->unk40 = 0.8f;
             sprite->unk44 = 0.8f;
             strcpy(sprite->text, "a/Game Start");
@@ -894,18 +898,18 @@ void lbl_80077818(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void lbl_80077ADC(s8 *arg0, struct Sprite *sprite)
+void options_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
     {
-        sprite->unk6C += 0.1 * (1.0 - sprite->unk6C);
-        if (sprite->unk10 > 0)
-            sprite->unk10--;
+        sprite->opacity += 0.1 * (1.0 - sprite->opacity);
+        if (sprite->counter > 0)
+            sprite->counter--;
     }
     else
-        sprite->unk6C += 0.1 * -sprite->unk6C;
+        sprite->opacity += 0.1 * -sprite->opacity;
 
-    if (sprite->unk10 <= 15)
+    if (sprite->counter <= 15)
     {
         if (modeCtrl.unk10 == 1)
         {
@@ -921,7 +925,7 @@ void lbl_80077ADC(s8 *arg0, struct Sprite *sprite)
             sprite->unkC += 0.1 * -sprite->unkC;
             sprite->unkD += 0.1 * -sprite->unkD;
             sprite->unkE += 0.1 * -sprite->unkE;
-            sprite->unk6C *= 0.5;
+            sprite->opacity *= 0.5;
             sprite->unk40 = 0.8f;
             sprite->unk44 = 0.8f;
             strcpy(sprite->text, "a/Options");
@@ -941,8 +945,8 @@ void func_80077DA0(void)
     if (temp_r3 != NULL)
     {
         temp_r3->tag = 17;
-        temp_r3->centerX = 142.0f;
-        temp_r3->centerY = 60.0f;
+        temp_r3->x = 142.0f;
+        temp_r3->y = 60.0f;
         temp_r3->fontId = FONT_ASCII;
         temp_r3->textAlign = ALIGN_PIC;
         temp_r3->unk4C = 0.04f;
@@ -981,8 +985,8 @@ void func_80077E34(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->centerX = 320.0f;
-        sprite->centerY = 85.0f;
+        sprite->x = 320.0f;
+        sprite->y = 85.0f;
         sprite->fontId = FONT_NUM_24x37;
         sprite->textAlign = ALIGN_CB;
         sprite->unk4C = 0.19f;
@@ -991,7 +995,7 @@ void func_80077E34(void)
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
-            sprite->centerX = -4.0f;
+            sprite->x = -4.0f;
             sprite->fontId = FONT_NUM_12x19;
             sprite->textAlign = ALIGN_CB;
             sprite->unk4C = 0.19f;
@@ -1004,8 +1008,8 @@ void func_80077E34(void)
     if (sprite != NULL)
     {
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->centerX = 428.0f;
-        sprite->centerY = 22.0f;
+        sprite->x = 428.0f;
+        sprite->y = 22.0f;
         sprite->bmpId = BMP_COM_banana_01;
         sprite->textAlign = ALIGN_CC;
         sprite->unk40 = 0.2f;
@@ -1016,8 +1020,8 @@ void func_80077E34(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->centerX = 536.0f;
-        sprite->centerY = 24.0f;
+        sprite->x = 536.0f;
+        sprite->y = 24.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
         sprite->unkC = 0xAA;
@@ -1032,8 +1036,8 @@ void func_80077E34(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->centerX = 518.0f;
-        sprite->centerY = 47.0f;
+        sprite->x = 518.0f;
+        sprite->y = 47.0f;
         sprite->fontId = FONT_NUM_22x22;
         sprite->textAlign = ALIGN_CC;
         sprite->unkC = 0xAA;
@@ -1048,9 +1052,9 @@ void func_80077E34(void)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->tag = 0x12;
-        sprite->centerX = 518.0f;
-        sprite->centerY = 48.0f;
+        sprite->tag = 18;
+        sprite->x = 518.0f;
+        sprite->y = 48.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
         sprite->drawFunc = lbl_8007AAFC;
@@ -1075,11 +1079,11 @@ void func_80077E34(void)
         sprite = create_sprite();
         if (sprite != NULL)
         {
-            sprite->centerX = 320.0f;
-            sprite->centerY = 380.0f;
+            sprite->x = 320.0f;
+            sprite->y = 380.0f;
             sprite->fontId = FONT_ASC_32x32;
             sprite->textAlign = ALIGN_CC;
-            sprite->unk10 = 0;
+            sprite->counter = 0;
             sprite->mainFunc = lbl_8007B608;
             strcpy(sprite->text, "%2d BANANAS LEFT");
         }
@@ -1097,34 +1101,34 @@ void g_banana_sprite_something(int arg0)
     {
         sprite->tag = arg0 + 30;
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->centerX = textBoxes[arg0 + 1].unkC;
-        sprite->centerY = textBoxes[arg0 + 1].unkE;
+        sprite->x = textBoxes[arg0 + 1].unkC;
+        sprite->y = textBoxes[arg0 + 1].unkE;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = (f32) (0.05 + (0.01 * (f64) (arg0 + 1)));
         sprite->bmpId = (arg0 == 2) ? BMP_COM_banana_01 : BMP_COM_banana_10;
-        sprite->unk6C = 0.0f;
+        sprite->opacity = 0.0f;
         sprite->unk40 = (arg0 == 2) ? 0.7 : 0.8;
         sprite->unk44 = (arg0 == 2) ? 0.5 : 0.6;
-        sprite->unk10 = 60;
+        sprite->counter = 60;
         sprite->unk48 = arg0;
         sprite->mainFunc = lbl_800782CC;
         strcpy(sprite->text, "banana");
     }
 }
 
-void lbl_800782CC(s8 *arg0, struct Sprite *arg1)
+void lbl_800782CC(s8 *arg0, struct Sprite *sprite)
 {
-    if (arg1->unk10 == -1)
+    if (sprite->counter == -1)
     {
         *arg0 = 0;
         return;
     }
-    if (arg1->unk10 > 0)
-        arg1->unk10--;
-    arg1->centerX = textBoxes[arg1->unk48 + 1].unkC;
-    arg1->centerY = textBoxes[arg1->unk48 + 1].unkE - ((arg1->unk48 == 2) ? 0x36 : 0x42);
-    if (arg1->unk10 < 15)
-        arg1->unk6C = 1.0f - arg1->unk10 / 15.0f;
+    if (sprite->counter > 0)
+        sprite->counter--;
+    sprite->x = textBoxes[sprite->unk48 + 1].unkC;
+    sprite->y = textBoxes[sprite->unk48 + 1].unkE - ((sprite->unk48 == 2) ? 0x36 : 0x42);
+    if (sprite->counter < 15)
+        sprite->opacity = 1.0f - sprite->counter / 15.0f;
 }
 
 void lbl_80078450(s8 *, struct Sprite *);
@@ -1142,7 +1146,7 @@ void g_text_box_icon(int arg0)
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 10.0f;
         sprite->unk48 = arg0;
-        sprite->unk10 = 0;
+        sprite->counter = 0;
         sprite->unk74 |= 0x40000;
         sprite->mainFunc = lbl_80078450;
         sprite->drawFunc = lbl_80078460;
@@ -1152,7 +1156,7 @@ void g_text_box_icon(int arg0)
 
 void lbl_80078450(s8 *a, struct Sprite *sprite)
 {
-    sprite->unk10++;
+    sprite->counter++;
 }
 
 struct Struct801C17FC
@@ -1245,12 +1249,12 @@ void lbl_80078460(struct Sprite *sprite)
     params.v2 = 1.0f;
     params.alpha = 1.0f;
     params.rotation = 0;
-    params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->unk6C));
+    params.color1 = RGBA(255, 255, 255, (u8)(255.0f * sprite->opacity));
     params.color2 = 0;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
 
-    temp_f29 = 0.5 * mathutil_sin((sprite->unk10 << 9) + 0x4000);
+    temp_f29 = 0.5 * mathutil_sin((sprite->counter << 9) + 0x4000);
 
     switch (sprite->unk48)
     {
@@ -1271,8 +1275,8 @@ void lbl_80078460(struct Sprite *sprite)
             params.bmpId = BMP_COM_banana_01;
             params.x = lbl_801C1864[i].unk0;
             params.y = lbl_801C1864[i].unk4;
-            params.x += (i % 2 == 0) ? -sprite->unk10 : sprite->unk10;
-            params.y += (i % 2 == 0) ? sprite->unk10 * 2 : -sprite->unk10 * 2;
+            params.x += (i % 2 == 0) ? -sprite->counter : sprite->counter;
+            params.y += (i % 2 == 0) ? sprite->counter * 2 : -sprite->counter * 2;
             params.zoomX = 1.0f;
             params.zoomY = 1.0f;
             draw_naomi_sprite(&params);
@@ -1305,7 +1309,7 @@ void lbl_80078460(struct Sprite *sprite)
         for (i = 0; i < 15; i++)
         {
             params.bmpId = (i % 2 == 0) ? BMP_COM_banana_10 : BMP_COM_banana_01;
-            params.x = lbl_801C190C[i].unk0 + ((i / 5 == 1) ? -sprite->unk10 : sprite->unk10);
+            params.x = lbl_801C190C[i].unk0 + ((i / 5 == 1) ? -sprite->counter : sprite->counter);
             params.y = lbl_801C190C[i].unk4;
             params.zoomX = 0.8f;
             params.zoomY = 0.8f;
@@ -1323,23 +1327,23 @@ extern struct
     u8 filler8[1];
 } lbl_8027CE24;
 
-void lbl_80078B8C(s8 *, struct Sprite *);
-void lbl_80078C2C(struct Sprite *);
-void lbl_8007B788(s8 *, struct Sprite *);
-void lbl_8007B928(s8 *, struct Sprite *);
-void lbl_8007BCB4(struct Sprite *);
+void floor_intro_sprite_main(s8 *, struct Sprite *);
+void floor_intro_sprite_draw(struct Sprite *);
+void bonus_floor_sprite_main(s8 *, struct Sprite *);
+void final_floor_sprite_main(s8 *, struct Sprite *);
+void final_floor_sprite_draw(struct Sprite *);
 
 void show_stage_intro_text(void)
 {
     struct Sprite *sprite;
-    int r5;
+    int floorNum;
 
     sprite = create_sprite();
     if (sprite != NULL)
     {
         sprite->tag = 15;
-        sprite->centerX = 320.0f;
-        sprite->centerY = 240.0f;
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
         sprite->unk4C = 0.15f;
         if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
          || (modeCtrl.levelSetFlags & 8))
@@ -1362,20 +1366,20 @@ void show_stage_intro_text(void)
         sprite->unk40 = 0.8f;
         sprite->unk44 = 0.8f;
         sprite->unk74 |= 0x1000;
-        sprite->mainFunc = lbl_80078B8C;
-        sprite->drawFunc = lbl_80078C2C;
+        sprite->mainFunc = floor_intro_sprite_main;
+        sprite->drawFunc = floor_intro_sprite_draw;
 
-        r5 = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.unk20;
+        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.unk20;
         if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
-            sprintf(sprite->text, "ROUND %d", r5);
+            sprintf(sprite->text, "ROUND %d", floorNum);
         else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 0x10))
          || (modeCtrl.levelSetFlags & 0x10))
-            sprintf(sprite->text, "MASTER %d", r5);
+            sprintf(sprite->text, "MASTER %d", floorNum);
         else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
          || (modeCtrl.levelSetFlags & 8))
-            sprintf(sprite->text, "EXTRA %d", r5);
+            sprintf(sprite->text, "EXTRA %d", floorNum);
         else
-            sprintf(sprite->text, "FLOOR %d", r5);
+            sprintf(sprite->text, "FLOOR %d", floorNum);
     }
 
     if ((infoWork.flags & 0x40) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
@@ -1384,8 +1388,8 @@ void show_stage_intro_text(void)
         if (sprite != NULL)
         {
             sprite->tag = 14;
-            sprite->centerX = 320.0f;
-            sprite->centerY = 300.0f;
+            sprite->x = 320.0f;
+            sprite->y = 300.0f;
             sprite->fontId = FONT_ASC_72x64;
             sprite->textAlign = ALIGN_CC;
             sprite->unkC = 0xFF;
@@ -1394,7 +1398,7 @@ void show_stage_intro_text(void)
             sprite->unk40 = 0.5f;
             sprite->unk44 = 0.5f;
             sprite->unk74 |= 0x1000;
-            sprite->mainFunc = lbl_8007B788;
+            sprite->mainFunc = bonus_floor_sprite_main;
             strcpy(sprite->text, "BONUS FLOOR");
         }
     }
@@ -1405,15 +1409,15 @@ void show_stage_intro_text(void)
         if (sprite != NULL)
         {
             sprite->tag = 14;
-            sprite->centerX = 320.0f;
-            sprite->centerY = 300.0f;
+            sprite->x = 320.0f;
+            sprite->y = 300.0f;
             sprite->fontId = FONT_ASC_72x64;
             sprite->textAlign = ALIGN_CC;
             sprite->unk40 = 0.5f;
             sprite->unk44 = 0.5f;
             sprite->unk74 |= 0x1000;
-            sprite->mainFunc = lbl_8007B928;
-            sprite->drawFunc = lbl_8007BCB4;
+            sprite->mainFunc = final_floor_sprite_main;
+            sprite->drawFunc = final_floor_sprite_draw;
             if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
                 strcpy(sprite->text, "FINAL ROUND");
             else
@@ -1422,15 +1426,15 @@ void show_stage_intro_text(void)
     }
 }
 
-void lbl_80078B8C(s8 *arg0, struct Sprite *sprite)
+void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->unk48 > 0)
-        sprite->unk6C = 0.06666 * sprite->unk48;
+        sprite->opacity = 0.06666 * sprite->unk48;
     else
-        sprite->unk6C = 1.0f;
-    sprite->unk10++;
+        sprite->opacity = 1.0f;
+    sprite->counter++;
     if (lbl_801F3D88[0] & 0x100)
-        sprite->unk10++;
+        sprite->counter++;
     if (sprite->unk48 != 0)
     {
         sprite->unk48--;
