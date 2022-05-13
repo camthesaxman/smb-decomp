@@ -622,60 +622,54 @@ void func_80076DCC(int arg0)
     }
 }
 
-#ifdef NONMATCHING
 void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
 {
-    struct Struct80292C90 *phi_r7;
-    s8 *phi_r8;
-    struct Struct80292C90 *phi_r5;
     int i;
 
     if (arg1->unk10 > 0)
         arg1->unk10--;
 
-    (void)arg1->unk10;
-    arg1->unk6C = 1.0 - ((float)arg1->unk10 / (float)arg1->unk48);
+    !arg1;  // needed to match
 
-    phi_r7 = lbl_80292CB8;
-    phi_r8 = lbl_80292D08;
-    for (i = 0; i < 10; i++, phi_r7++, phi_r8++)
+    arg1->unk6C = 1.0 - (float)(arg1->unk10) / (float)(arg1->unk48);
+
+    for (i=0; i < 10; i++)
     {
-        phi_r7->unk0 += phi_r7->unk4;
-        if (*phi_r8 == 0 && phi_r7->unk0 <= 0.0f)
-            *phi_r8 = 1;
-        if (*phi_r8 != 0)
+        lbl_80292CB8[i].unk0 += lbl_80292CB8[i].unk4;
+        if (lbl_80292D08[i] == 0 && lbl_80292CB8[i].unk0 <= 0.0f)
+            lbl_80292D08[i] = 1;
+        if (lbl_80292D08[i] != 0)
         {
-            if (__abs(phi_r7->unk4) <= 2.0 && __abs(phi_r7->unk0) <= 2.0)
+            if (__abs(lbl_80292CB8[i].unk4) <= 2.0 && __abs(lbl_80292CB8[i].unk0) <= 2.0)
             {
-                phi_r7->unk4 = 0.0f;
-                phi_r7->unk0 = 0.0f;
+                lbl_80292CB8[i].unk4 = 0.0f;
+                lbl_80292CB8[i].unk0 = 0.0f;
             }
-            else if (phi_r7->unk0 < 0.0f)
-                phi_r7->unk4 = 4.0f;
+            else if (lbl_80292CB8[i].unk0 < 0.0f)
+                lbl_80292CB8[i].unk4 = 4.0f;
             else
-                phi_r7->unk4 = -1.0f;
+                lbl_80292CB8[i].unk4 = -1.0f;
         }
     }
 
     if (arg1->unk10 > (0.25 * (float)arg1->unk48))
         return;
 
-    phi_r5 = lbl_80292C90;
-    for (i = 0; i < 5; i++, phi_r5++)
+    for (i = 0; i < 5; i++)
     {
-        phi_r5->unk4 += 0.5;
-        phi_r5->unk0 += phi_r5->unk4;
-        if (phi_r5->unk0 >= 0.0f)
+        lbl_80292C90[i].unk4 += 0.5;
+        lbl_80292C90[i].unk0 += lbl_80292C90[i].unk4;
+        if (lbl_80292C90[i].unk0 >= 0.0f)
         {
-            if (phi_r5->unk4 <= 0.5)
+            if (lbl_80292C90[i].unk4 <= 0.5)
             {
-                phi_r5->unk4 = 0.0f;
-                phi_r5->unk0 = 0.0f;
+                lbl_80292C90[i].unk4 = 0.0f;
+                lbl_80292C90[i].unk0 = 0.0f;
             }
             else
             {
-                phi_r5->unk4 = 0.5 * -phi_r5->unk4;
-                phi_r5->unk0 = 0.0f;
+                lbl_80292C90[i].unk4 = 0.5 * -lbl_80292C90[i].unk4;
+                lbl_80292C90[i].unk0 = 0.0f;
             }
         }
     }
@@ -691,19 +685,6 @@ void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
     else
         lbl_802F2010 += 0.25 * (1.0 - lbl_802F2010);
 }
-#else
-const double lbl_802F4D28 = 2.0;
-const float lbl_802F4D30 = 4.0f;
-const float lbl_802F4D34 = -1.0f;
-const double lbl_802F4D38 = 0.25;
-asm void lbl_80076FA0(s8 *arg0, struct Sprite *arg1)
-{
-    nofralloc
-#include "../asm/nonmatchings/lbl_80076FA0.s"
-}
-#pragma peephole on
-#endif
-
 
 struct Struct801C16AC
 {
