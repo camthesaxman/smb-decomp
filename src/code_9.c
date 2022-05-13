@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "info.h"
+#include "input.h"
 #define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
@@ -1330,6 +1331,130 @@ void lbl_80078460(struct Sprite *sprite)
             draw_naomi_sprite(&params);
         }
         break;
+    }
+}
+
+extern struct
+{
+    s16 unk0;
+    u8 filler2[2];
+    u32 unk4;
+    u8 filler8[1];
+} lbl_8027CE24;
+
+void lbl_80078B8C(s8 *, struct Sprite *);
+void lbl_80078C2C(struct Sprite *);
+void lbl_8007B788(s8 *, struct Sprite *);
+void lbl_8007B928(s8 *, struct Sprite *);
+void lbl_8007BCB4(struct Sprite *);
+
+void show_stage_intro_text(void)
+{
+    struct Sprite *sprite;
+    int r5;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 15;
+        sprite->centerX = 320.0f;
+        sprite->centerY = 240.0f;
+        sprite->unk4C = 0.15f;
+        if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
+         || (modeCtrl.levelSetFlags & 8))
+        {
+            sprite->unkC = 0xFF;
+            sprite->unkD = 0xFF;
+            sprite->unkE = 0;
+            sprite->unk70 = 0x20;
+            sprite->unk71 = 0x20;
+            sprite->unk72 = 0x20;
+        }
+        else
+        {
+            sprite->unkC = 0xFF;
+            sprite->unkD = 0xFF;
+            sprite->unkE = 0;
+        }
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk40 = 0.8f;
+        sprite->unk44 = 0.8f;
+        sprite->unk74 |= 0x1000;
+        sprite->mainFunc = lbl_80078B8C;
+        sprite->drawFunc = lbl_80078C2C;
+
+        r5 = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.unk20;
+        if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+            sprintf(sprite->text, "ROUND %d", r5);
+        else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 0x10))
+         || (modeCtrl.levelSetFlags & 0x10))
+            sprintf(sprite->text, "MASTER %d", r5);
+        else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
+         || (modeCtrl.levelSetFlags & 8))
+            sprintf(sprite->text, "EXTRA %d", r5);
+        else
+            sprintf(sprite->text, "FLOOR %d", r5);
+    }
+
+    if ((infoWork.flags & 0x40) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->tag = 14;
+            sprite->centerX = 320.0f;
+            sprite->centerY = 300.0f;
+            sprite->fontId = FONT_ASC_72x64;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unkC = 0xFF;
+            sprite->unkD = 0x80;
+            sprite->unkE = 0;
+            sprite->unk40 = 0.5f;
+            sprite->unk44 = 0.5f;
+            sprite->unk74 |= 0x1000;
+            sprite->mainFunc = lbl_8007B788;
+            strcpy(sprite->text, "BONUS FLOOR");
+        }
+    }
+
+    if ((infoWork.flags & 0x1000) && modeCtrl.gameType != GAMETYPE_MAIN_PRACTICE)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->tag = 14;
+            sprite->centerX = 320.0f;
+            sprite->centerY = 300.0f;
+            sprite->fontId = FONT_ASC_72x64;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unk40 = 0.5f;
+            sprite->unk44 = 0.5f;
+            sprite->unk74 |= 0x1000;
+            sprite->mainFunc = lbl_8007B928;
+            sprite->drawFunc = lbl_8007BCB4;
+            if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+                strcpy(sprite->text, "FINAL ROUND");
+            else
+                strcpy(sprite->text, "FINAL FLOOR");
+        }
+    }
+}
+
+void lbl_80078B8C(s8 *arg0, struct Sprite *sprite)
+{
+    if (sprite->unk48 > 0)
+        sprite->unk6C = 0.06666 * sprite->unk48;
+    else
+        sprite->unk6C = 1.0f;
+    sprite->unk10++;
+    if (lbl_801F3D88[0] & 0x100)
+        sprite->unk10++;
+    if (sprite->unk48 != 0)
+    {
+        sprite->unk48--;
+        if (sprite->unk48 == 0)
+            *arg0 = 0;
     }
 }
 

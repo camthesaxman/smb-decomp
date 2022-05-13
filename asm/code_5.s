@@ -5163,7 +5163,6 @@ lbl_8007882C:
 /* 80078840 00074760  CB A1 00 80 */	lfd f29, 0x80(r1)
 /* 80078844 00074764  38 21 00 98 */	addi r1, r1, 0x98
 /* 80078848 00074768  4E 80 00 20 */	blr
-.endif
 
 .global show_stage_intro_text
 show_stage_intro_text:
@@ -5392,7 +5391,8 @@ lbl_80078B74:
 /* 80078B80 00074AA0  7C 08 03 A6 */	mtlr r0
 /* 80078B84 00074AA4  38 21 00 10 */	addi r1, r1, 0x10
 /* 80078B88 00074AA8  4E 80 00 20 */	blr
-lbl_80078B8C:
+
+glabel lbl_80078B8C
 /* 80078B8C 00074AAC  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80078B90 00074AB0  80 04 00 48 */	lwz r0, 0x48(r4)
 /* 80078B94 00074AB4  2C 00 00 00 */	cmpwi r0, 0
@@ -5437,7 +5437,9 @@ lbl_80078BFC:
 lbl_80078C24:
 /* 80078C24 00074B44  38 21 00 18 */	addi r1, r1, 0x18
 /* 80078C28 00074B48  4E 80 00 20 */	blr
-lbl_80078C2C:
+.endif
+
+glabel lbl_80078C2C
 /* 80078C2C 00074B4C  7C 08 02 A6 */	mflr r0
 /* 80078C30 00074B50  90 01 00 04 */	stw r0, 4(r1)
 /* 80078C34 00074B54  94 21 FF 60 */	stwu r1, -0xa0(r1)
@@ -8391,7 +8393,8 @@ lbl_8007B750:
 /* 8007B77C 0007769C  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007B780 000776A0  7C 08 03 A6 */	mtlr r0
 /* 8007B784 000776A4  4E 80 00 20 */	blr
-lbl_8007B788:
+
+glabel lbl_8007B788
 /* 8007B788 000776A8  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 8007B78C 000776AC  80 04 00 48 */	lwz r0, 0x48(r4)
 /* 8007B790 000776B0  2C 00 00 00 */	cmpwi r0, 0
@@ -8502,7 +8505,8 @@ lbl_8007B8EC:
 lbl_8007B920:
 /* 8007B920 00077840  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007B924 00077844  4E 80 00 20 */	blr
-lbl_8007B928:
+
+glabel lbl_8007B928
 /* 8007B928 00077848  7C 08 02 A6 */	mflr r0
 /* 8007B92C 0007784C  3C A0 80 1F */	lis r5, modeCtrl@ha
 /* 8007B930 00077850  90 01 00 04 */	stw r0, 4(r1)
@@ -8752,7 +8756,8 @@ lbl_8007BC9C:
 /* 8007BCA8 00077BC8  7C 08 03 A6 */	mtlr r0
 /* 8007BCAC 00077BCC  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007BCB0 00077BD0  4E 80 00 20 */	blr
-lbl_8007BCB4:
+
+glabel lbl_8007BCB4
 /* 8007BCB4 00077BD4  7C 08 02 A6 */	mflr r0
 /* 8007BCB8 00077BD8  90 01 00 04 */	stw r0, 4(r1)
 /* 8007BCBC 00077BDC  94 21 FF 38 */	stwu r1, -0xc8(r1)
@@ -18720,7 +18725,6 @@ lbl_802F4DEC:
 lbl_802F4DF0:
 	# ROM: 0x1EE810
 	.4byte 0x3F266666
-.endif
 
 .global lbl_802F4DF4
 lbl_802F4DF4:
@@ -18732,6 +18736,7 @@ lbl_802F4DF8:
 	# ROM: 0x1EE818
 	.4byte 0x3FB110A1
 	.4byte 0x37F38C54
+.endif
 
 .global lbl_802F4E00
 lbl_802F4E00:
@@ -20725,7 +20730,6 @@ glabel lbl_801C1984
 	.4byte 0x00FFFF00
 	.4byte 0x00FF00FF
 	.4byte 0x0000FFFF
-.endif
 glabel string_ROUND__d
 	.asciz "ROUND %d"
 	.balign 4
@@ -20744,6 +20748,7 @@ glabel string_FINAL_ROUND
 	.asciz "FINAL ROUND"
 glabel string_FINAL_FLOOR
 	.asciz "FINAL FLOOR"
+.endif
 glabel string__Lib_No__d_
 	.asciz "[Lib No.%d]"
 
