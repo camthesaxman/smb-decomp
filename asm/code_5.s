@@ -6610,7 +6610,6 @@ lbl_80079D18:
 /* 80079D20 00075C40  38 21 00 40 */	addi r1, r1, 0x40
 /* 80079D24 00075C44  7C 08 03 A6 */	mtlr r0
 /* 80079D28 00075C48  4E 80 00 20 */	blr
-.endif
 
 .global func_80079D2C
 func_80079D2C:
@@ -7143,7 +7142,8 @@ lbl_8007A4EC:
 /* 8007A500 00076420  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 8007A504 00076424  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007A508 00076428  4E 80 00 20 */	blr
-lbl_8007A50C:
+
+glabel lbl_8007A50C
 /* 8007A50C 0007642C  7C 08 02 A6 */	mflr r0
 /* 8007A510 00076430  90 01 00 04 */	stw r0, 4(r1)
 /* 8007A514 00076434  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -7191,7 +7191,8 @@ lbl_8007A5AC:
 /* 8007A5B4 000764D4  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007A5B8 000764D8  7C 08 03 A6 */	mtlr r0
 /* 8007A5BC 000764DC  4E 80 00 20 */	blr
-lbl_8007A5C0:
+
+glabel lbl_8007A5C0
 /* 8007A5C0 000764E0  7C 08 02 A6 */	mflr r0
 /* 8007A5C4 000764E4  3C 80 80 1F */	lis r4, modeCtrl@ha
 /* 8007A5C8 000764E8  90 01 00 04 */	stw r0, 4(r1)
@@ -7310,6 +7311,7 @@ lbl_8007A760:
 /* 8007A768 00076688  38 21 00 68 */	addi r1, r1, 0x68
 /* 8007A76C 0007668C  7C 08 03 A6 */	mtlr r0
 /* 8007A770 00076690  4E 80 00 20 */	blr
+
 glabel lbl_8007A774
 /* 8007A774 00076694  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8007A778 00076698  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -7343,6 +7345,7 @@ lbl_8007A7D4:
 /* 8007A7D8 000766F8  60 00 00 01 */	ori r0, r0, 1
 /* 8007A7DC 000766FC  90 04 00 78 */	stw r0, 0x78(r4)
 /* 8007A7E0 00076700  4E 80 00 20 */	blr
+
 glabel lbl_8007A7E4
 /* 8007A7E4 00076704  7C 08 02 A6 */	mflr r0
 /* 8007A7E8 00076708  3C A0 80 1F */	lis r5, infoWork@ha
@@ -7549,6 +7552,7 @@ glabel lbl_8007AA38
 /* 8007AAF0 00076A10  38 21 00 30 */	addi r1, r1, 0x30
 /* 8007AAF4 00076A14  7C 08 03 A6 */	mtlr r0
 /* 8007AAF8 00076A18  4E 80 00 20 */	blr
+.endif
 
 glabel lbl_8007AAFC
 /* 8007AAFC 00076A1C  7C 08 02 A6 */	mflr r0
@@ -7748,7 +7752,7 @@ lbl_8007ACD4:
 /* 8007ADE8 00076D08  CB 41 00 70 */	lfd f26, 0x70(r1)
 /* 8007ADEC 00076D0C  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 8007ADF0 00076D10  4E 80 00 20 */	blr
-lbl_8007ADF4:
+glabel lbl_8007ADF4
 /* 8007ADF4 00076D14  7C 08 02 A6 */	mflr r0
 /* 8007ADF8 00076D18  90 01 00 04 */	stw r0, 4(r1)
 /* 8007ADFC 00076D1C  94 21 FF 60 */	stwu r1, -0xa0(r1)
@@ -8190,7 +8194,7 @@ lbl_8007B464:
 /* 8007B484 000773A4  7C 08 03 A6 */	mtlr r0
 /* 8007B488 000773A8  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007B48C 000773AC  4E 80 00 20 */	blr
-lbl_8007B490:
+glabel lbl_8007B490
 /* 8007B490 000773B0  7C 08 02 A6 */	mflr r0
 /* 8007B494 000773B4  3C A0 80 29 */	lis r5, lbl_80292D18@ha
 /* 8007B498 000773B8  90 01 00 04 */	stw r0, 4(r1)
@@ -8249,7 +8253,7 @@ lbl_8007B54C:
 /* 8007B564 00077484  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007B568 00077488  7C 08 03 A6 */	mtlr r0
 /* 8007B56C 0007748C  4E 80 00 20 */	blr
-lbl_8007B570:
+glabel lbl_8007B570
 /* 8007B570 00077490  7C 08 02 A6 */	mflr r0
 /* 8007B574 00077494  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 8007B578 00077498  90 01 00 04 */	stw r0, 4(r1)
@@ -18843,7 +18847,6 @@ lbl_802F4E60:
 lbl_802F4E64:
 	# ROM: 0x1EE884
 	.4byte 0x43CE0000
-.endif
 
 .global lbl_802F4E68
 lbl_802F4E68:
@@ -18962,6 +18965,7 @@ lbl_802F4EC8:
 	# ROM: 0x1EE8E8
 	.4byte 0x404E0000
 	.4byte 0
+.endif
 
 .global lbl_802F4ED0
 lbl_802F4ED0:
@@ -20751,7 +20755,6 @@ glabel string_FINAL_FLOOR
 	.asciz "FINAL FLOOR"
 glabel string__Lib_No__d_
 	.asciz "[Lib No.%d]"
-.endif
 
 .global lbl_801C19FC
 lbl_801C19FC:
@@ -20759,6 +20762,7 @@ lbl_801C19FC:
 glabel string_saru_mark_pic
 	.asciz "saru mark.pic"
 	.balign 4
+
 	.4byte string_FINAL  ;# ptr
 	.4byte lbl_802F1090  ;# ptr
 	.4byte lbl_802F1094  ;# ptr
@@ -20769,6 +20773,7 @@ lbl_801C1A18:
 glabel string_separate
 	.asciz "separate"
 	.balign 4
+.endif
 
 .global lbl_801C1A24
 lbl_801C1A24:
@@ -23105,7 +23110,6 @@ lbl_802F1080:
 lbl_802F1084:
 	# ROM: 0x1EB7C4
 	.4byte 0x6D706800
-.endif
 glabel string_FINAL
 	.asciz "FINAL"
 	.balign 4
@@ -23127,6 +23131,7 @@ lbl_802F10A0:
 glabel string___02d
 	.asciz ":%02d"
 	.balign 4
+.endif
 
 .global lbl_802F10A8
 lbl_802F10A8:
