@@ -541,14 +541,15 @@ struct Struct80292C00 lbl_80292C00[12];
 FORCE_BSS_ORDER(lbl_80292C00)
 extern struct Struct80292C00 lbl_80292C00_alias[];
 
-struct
+struct Struct80292C60
 {
-    u32 unk0;
-    u32 unk4;
+    s32 unk0;
+    s32 unk4;
     u32 unk8;
     u8 fillerC[0x30-0xC];
 } lbl_80292C60;
 FORCE_BSS_ORDER(lbl_80292C60)
+extern struct Struct80292C60 lbl_80292C60_alias;
 
 struct TitleLetterOffset
 {
@@ -2346,8 +2347,8 @@ void lbl_8007AAFC(struct Sprite *sprite)
 {
     struct Ball *ball;
     s32 phi_r3;
-    f32 temp_f28;
-    f32 temp_f4;
+    float temp_f28;
+    float temp_f4;
     int phi_r27;
     int i;
     int x, y;
@@ -2390,9 +2391,502 @@ void lbl_8007AAFC(struct Sprite *sprite)
         func_80071AE4(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
         func_80071B2C(temp_f28, temp_f28);
         func_80072AC0(lbl_802F105C, phi_r3);
-
     }
     func_80071A8C();
+}
+
+void lbl_8007ADF4(struct Sprite *sprite)
+{
+    struct Ball *ball;
+    s32 phi_r3;
+    float temp_f28;
+    float temp_f4;
+    int phi_r27;
+    int i;
+    int x, y;
+    int temp_r23;
+    struct Struct80292C00 *r22;
+
+    ball = &ballInfo[sprite->unk48];
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+
+    r22 = lbl_80292C00_alias + sprite->unk48 * 3;
+    for (i = 0; i < 3; i++, r22++)
+    {
+        if ((infoWork.flags & 0x1000) != 0)
+        {
+            x = sprite->x - 20.0f - i * 20 - 10.0f;
+            y = sprite->y - 10.0f;
+            g_set_text_pos(x, y);
+            func_80071AE4(RGBA(sprite->unkC, sprite->unkD, 0, 0));
+            g_draw_text("?");
+            continue;
+        }
+
+        phi_r3 = (i == 0) ? ball->bananas % 10
+               : (i == 1) ? (ball->bananas / 10) % 10
+               : (ball->bananas / 100) % 10;
+        if (r22->unk0 != phi_r3)
+        {
+            r22->unk4 = 30;
+            r22->unk0 = phi_r3;
+        }
+        if (!(gamePauseStatus & 0xA) && r22->unk4 > 0)
+            r22->unk4--;
+
+        temp_f28 = lbl_80118870[29 - r22->unk4];
+        temp_f4 = temp_f28 - 1.0;
+        x = sprite->x - 20.0f - i * 20 - 10.0f - (10.0f * temp_f4);
+        y = sprite->y - 10.0f - (10.0f * temp_f4);
+        temp_r23 = 510.0f * temp_f4;
+
+        g_set_text_pos(x, y);
+        func_80071AE4(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
+        func_80071B2C(temp_f28, temp_f28);
+        func_80072AC0(lbl_802F105C, phi_r3);
+    }
+    func_80071A8C();
+}
+
+void lbl_8007B134(struct Sprite *sprite)
+{
+    struct NaomiSpriteParams params;
+    struct TPLTextureHeader *texHdr;
+    int phi_r5;
+
+    phi_r5 = (modeCtrl.playerCount > 1) ? ballInfo[sprite->unk48].unk2E : 3;
+    params.bmpId = BMP_NML_game_player;
+    params.rotation = sprite->unk68;
+    params.alpha = sprite->opacity;
+    params.unk30 = -1;
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (int)(sprite->opacity * 255.0f));
+    params.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
+    texHdr = &bitmapGroups[(params.bmpId >> 8) & 0xFF].tpl->texHeaders[params.bmpId & 0xFF];
+    params.x = sprite->x;
+    params.y = sprite->y;
+    params.z = sprite->unk4C;
+    params.u1 = (16.0f * sprite->unk48) / texHdr->width;
+    params.v1 = (16.0f * phi_r5) / texHdr->height;
+    params.u2 = params.u1 + (16.0f / texHdr->width);
+    params.v2 = params.v1 + (10.0f / texHdr->height);
+    params.zoomX = sprite->unk40 * (params.u2 - params.u1);
+    params.zoomY = sprite->unk44 * (params.v2 - params.v1);
+    draw_naomi_sprite(&params);
+}
+
+extern s32 lbl_802F1CA8;
+
+void lbl_8007B34C(s8 *arg0, struct Sprite *sprite)
+{
+    struct Struct80292C60 *r31 = &lbl_80292C60;
+    struct Ball *ball = currentBallStructPtr;
+
+    if (r31->unk4 == 0)
+    {
+        if (ball->unk7C > r31->unk0)
+        {
+            int temp_r3_2 = ball->unk7C - r31->unk0;
+
+            if (temp_r3_2 >= 1000)
+                r31->unk4 = 120;
+            else
+                r31->unk4 = 30;
+            r31->unk8 = temp_r3_2 / r31->unk4;
+        }
+    }
+    if (r31->unk4 > 0)
+        r31->unk4--;
+    if (r31->unk4 == 0)
+    {
+        r31->unk0 = ball->unk7C;
+        if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && lbl_802F1CA8 != 0)
+        {
+            struct Sprite *temp_r3_4 = find_sprite_with_tag(8);
+
+            if (temp_r3_4 != NULL && temp_r3_4->unk48 == 0)
+                temp_r3_4->unk48 = 1;
+        }
+    }
+    else
+    {
+        r31->unk0 += r31->unk8;
+        if (gameSubmode == SMD_GAME_GOAL_REPLAY_MAIN && r31->unk4 % 4 == 0)
+            g_play_sound(0x2E);
+    }
+    sprintf(sprite->text, lbl_802F105C, r31->unk0);
+}
+
+void lbl_8007B490(s8 *arg0, struct Sprite *sprite)
+{
+    sprite->bmpId = func_80081CFC(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[sprite->unk48]);
+}
+
+void lbl_8007B4E8(s8 *arg0, struct Sprite *sprite)
+{
+    float len = mathutil_vec_len(&currentBallStructPtr->vel);
+    float var2 = ((216000.0 * len) / 1000.0) / 1.6093;
+
+    if (var2 > 999.0)
+        var2 = 999.0f;
+    sprintf(sprite->text, "%3.0f", var2);
+}
+
+void lbl_8007B570(s8 *arg0, struct Sprite *sprite)
+{
+    float len = mathutil_vec_len(&ballInfo[sprite->unk48].vel);
+    float var2 = ((216000.0 * len) / 1000.0) / 1.6093;
+
+    if (var2 > 999.0)
+        var2 = 999.0f;
+    sprintf(sprite->text, "%3.0f", var2);
+}
+
+void lbl_8007B608(s8 *arg0, struct Sprite *sprite)
+{
+    float phi_f1;
+
+    sprintf(sprite->text, "%2d BANANA%s LEFT", infoWork.unk24, (infoWork.unk24 > 1) ? "S" : " ");
+    if (gameSubmode != 0x33)
+    {
+        if (--sprite->counter < 0)
+            sprite->counter = 0;
+    }
+    else
+    {
+        if (++sprite->counter > 60)
+            sprite->counter = 60;
+    }
+    if (sprite->counter <= 0)
+        sprite->unk78 |= 1;
+    else
+        sprite->unk78 &= ~1;
+    sprite->opacity = sprite->counter / 60.0f;
+    phi_f1 = 2.0 * ((unpausedFrameCounter % 60) / 59.0);
+    if (phi_f1 > 1.0)
+        phi_f1 = 2.0 - phi_f1;
+    sprite->unkC = 0xFF;
+    sprite->unkD = 0xFF;
+    sprite->unkE = 255.0f * phi_f1;
+}
+
+void bonus_floor_sprite_main(s8 *arg0, struct Sprite *arg1)
+{
+    if (arg1->unk48 > 0)
+    {
+        arg1->opacity = 0.06666 * arg1->unk48;
+        arg1->unk68 = 0;
+    }
+    else if (arg1->counter < 60)
+    {
+        arg1->opacity = 0.01666 * arg1->counter;
+        arg1->unk68 = (60 - arg1->counter) * 0x111;
+    }
+    else
+    {
+        arg1->opacity = 1.0f;
+        arg1->unk68 = 0;
+    }
+
+    if (arg1->counter >= 150)
+    {
+        arg1->x = 500.0f;
+        arg1->y = 452.0f;
+        arg1->unk40 = 0.3f;
+        arg1->unk44 = arg1->unk40;
+    }
+    else if (arg1->counter >= 120)
+    {
+        int temp_r6 = arg1->counter - 120;
+
+        arg1->x = 320 + temp_r6 * 6;
+        arg1->y = 300.0 + temp_r6 * 5.066666;
+        arg1->unk40 = 0.5 - temp_r6 * 0.006666;
+        arg1->unk44 = arg1->unk40;
+    }
+    arg1->counter++;
+    if (arg1->unk48 != 0)
+    {
+        arg1->unk48--;
+        if (arg1->unk48 == 0)
+            *arg0 = 0;
+    }
+}
+
+void final_floor_sprite_main(s8 *arg0, struct Sprite *sprite)
+{
+    if (modeCtrl.levelSet == 0)
+    {
+        sprite->unkC = 0;
+        sprite->unkD = 0xD0;
+        sprite->unkE = 0;
+    }
+    else if (modeCtrl.levelSet == 1)
+    {
+        sprite->unkC = 0;
+        sprite->unkD = 0;
+        sprite->unkE = 0xE0;
+    }
+    else
+    {
+        sprite->unkC = 0xFF;
+        sprite->unkD = 0xC0;
+        sprite->unkE = 0;
+    }
+
+    if (sprite->counter >= 0x96)
+    {
+        float temp_f3 = 64.0f * mathutil_sin((sprite->counter - 0x96) << 9);
+
+        sprite->unkC = CLAMP(sprite->unkC + temp_f3, 0.0f, 255.0f);
+        sprite->unkD = CLAMP(sprite->unkD + temp_f3, 0.0f, 255.0f);
+        sprite->unkE = CLAMP(sprite->unkE + temp_f3, 0.0f, 255.0f);
+    }
+
+    if (sprite->unk48 > 0)
+        sprite->opacity = 0.06666 * sprite->unk48;
+    else
+        sprite->opacity = 1.0f;
+
+    if (sprite->counter >= 150)
+    {
+        if (modeCtrl.unk30 == 1)
+        {
+            sprite->x = 500.0f;
+            sprite->y = 452.0f;
+        }
+        else
+        {
+            sprite->x = 140.0f;
+            sprite->y = 242.0f;
+        }
+        sprite->unk40 = 0.3f;
+        sprite->unk44 = sprite->unk40;
+    }
+    else if (sprite->counter >= 120)
+    {
+        int temp_r4_2 = sprite->counter - 120;
+
+        if (modeCtrl.unk30 == 1)
+        {
+            sprite->x = 320 + temp_r4_2 * 6;
+            sprite->y = 300.0 + temp_r4_2 * 5.066666;
+        }
+        else
+        {
+            sprite->x = 320 - temp_r4_2 * 6;
+            sprite->y = 300.0 - temp_r4_2 * 1.933333;
+        }
+        sprite->unk40 = 0.5 - temp_r4_2 * 0.006666;
+        sprite->unk44 = sprite->unk40;
+    }
+    sprite->counter++;
+    if (sprite->unk48 != 0)
+    {
+        sprite->unk48--;
+        if (sprite->unk48 == 0)
+            *arg0 = 0;
+    }
+}
+
+void final_floor_sprite_draw(struct Sprite *sprite)
+{
+    char text[12];
+    float temp_f20;
+    float temp_f19;
+    float temp_f18;
+    int w;
+    int h;
+    int i;
+
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    func_80071B50(sprite->unk74);
+    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+
+    w = sprite->unk40 * ((strlen(sprite->text) - 2) * 72 + 48);
+    h = sprite->unk44 * 64.0f;
+
+    if (sprite->counter > 120)
+    {
+        g_set_text_pos(sprite->x - 0.5 * w, sprite->y - 0.5 * h);
+        func_80071B2C(sprite->unk40, sprite->unk44);
+        func_80071B40(sprite->opacity);
+        g_draw_text(sprite->text);
+    }
+    else
+    {
+        int phi_r26;
+        int phi_r24;
+        float phi_f0_4;
+        int var;
+
+        strcpy(text, sprite->text);
+        phi_r26 = 0;
+        for (i = 0; i < strlen(sprite->text); i++, phi_r26 += phi_r24)
+        {
+            if (i > sprite->counter / 10)
+                break;
+
+            phi_f0_4 = sprite->counter - 10.0 * i;
+            temp_f18 = MIN(phi_f0_4 / 10.0, 1.0);
+
+            if (text[i] == 'I')
+                phi_r24 = 30.0f * sprite->unk40;
+            else if (text[i] == ' ')
+                phi_r24 = 18.0f * sprite->unk40;
+            else
+                phi_r24 = 72.0f * sprite->unk40;
+
+            var = (text[i] == 'I') ? sprite->unk40 * -42.0f * 0.5 : 0.0;
+
+            temp_f20 = 1.0 + ((i % 2 == 0) ? 5.0 * (1.0 - temp_f18) : 0.0);
+            temp_f19 = 1.0 + ((i % 2 == 0) ? 0.0 : 5.0 * (1.0 - temp_f18));
+
+            g_set_text_pos(
+                sprite->x - w * 0.5 + phi_r26 + var - phi_r24 * (temp_f20 - 1.0) * 0.5,
+                sprite->y - h * 0.5 - h * (temp_f19 - 1.0) * 0.5);
+            func_80071B2C(sprite->unk40 * temp_f20, sprite->unk44 * temp_f19);
+            func_80071B40(sprite->opacity * temp_f18);
+            if (text[i] != ' ')
+                func_80071B78(text[i]);
+        }
+    }
+    func_80071A8C();
+}
+
+void go_sprite_main(s8 *, struct Sprite *);
+void go_sprite_draw(struct Sprite *);
+
+void show_go_text(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
+        sprite->unk4C = (modeCtrl.unk30 == 1) ? 0.1 : 0.05;
+        sprite->unkC = 0;
+        sprite->unkD = 0x80;
+        sprite->unkE = 0xFF;
+        sprite->fontId = 9;
+        sprite->textAlign = 4;
+        sprite->counter = arg0;
+        sprite->unk48 = arg0;
+        sprite->unk74 |= 0x1000;
+        sprite->mainFunc = go_sprite_main;
+        sprite->drawFunc = go_sprite_draw;
+        strcpy(sprite->text, "GO");
+    }
+}
+
+void go_sprite_main(s8 *arg0, struct Sprite *sprite)
+{
+    int temp_r3 = sprite->unk48 - sprite->counter;
+
+    if (temp_r3 < 15)
+    {
+        int temp_r0 = 15 - temp_r3;
+
+        sprite->opacity = temp_r3 * 0.06666;
+        sprite->unk70 = 0;
+        sprite->unk71 = sprite->unk70;
+        sprite->unk72 = sprite->unk70;
+        sprite->unk40 = 1.0 + temp_r0 * 0.1;
+        sprite->unk44 = 1.0 + temp_r0 * -0.04;
+    }
+    else if (temp_r3 < 30)
+    {
+        int temp_r29 = (temp_r3 - 15) * 0x888;
+
+        sprite->opacity = 1.0f;
+        sprite->unk70 = ((unpausedFrameCounter >> 1) & 1) * 0xC0;
+        sprite->unk71 = sprite->unk70;
+        sprite->unk72 = sprite->unk70;
+        sprite->unk40 = 1.0 - mathutil_sin(temp_r29) * 0.5;
+        sprite->unk44 = 1.0 + mathutil_sin(temp_r29);
+    }
+    else if (temp_r3 < 45)
+    {
+        int temp_r29_2 = (temp_r3 - 30) * 0x888;
+
+        sprite->opacity = 1.0f;
+        sprite->unk70 = ((unpausedFrameCounter >> 1) & 1) * 0xC0;
+        sprite->unk71 = sprite->unk70;
+        sprite->unk72 = sprite->unk70;
+        sprite->unk40 = 1.0 + mathutil_sin(temp_r29_2) * 0.75;
+        sprite->unk44 = 1.0 - mathutil_sin(temp_r29_2) * 0.375;
+    }
+    else
+    {
+        sprite->opacity = sprite->counter * 0.06666;
+        sprite->unk70 = 0;
+        sprite->unk71 = sprite->unk70;
+        sprite->unk72 = sprite->unk70;
+        sprite->unk40 = 1.0 + (15 - sprite->counter) * -0.04;
+        sprite->unk44 = 1.0 + (15 - sprite->counter) * 0.1;
+    }
+
+    if (--sprite->counter <= 0)
+        *arg0 = 0;
+}
+
+void go_sprite_draw(struct Sprite *sprite)
+{
+    int i;
+    int temp_r31;
+    int temp_r23;
+    int temp_r3;
+    float phi_f29;
+    float phi_f2;
+    float phi_f30_2;
+
+    temp_r31 = sprite->unk48 - sprite->counter;
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    func_80071B1C(sprite->unk4C);
+    func_80071B50(sprite->unk74);
+    func_80071B40(sprite->opacity);
+    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    func_80071B2C(1.5f * sprite->unk40, 1.5f * sprite->unk44);
+    temp_r23 = 1.5f * (36.0f * sprite->unk40);
+    temp_r3 = 1.5f * (32.0f * sprite->unk44);
+
+    for (i = 0; i < 2; i++)
+    {
+        if (temp_r31 < 15)
+        {
+            phi_f30_2 = (i == 0) ? -320.0f : 320.0f;
+            phi_f29 = phi_f30_2 * mathutil_sin((0xF - temp_r31) * 0x444);
+            phi_f2 = 0.0f;
+        }
+        else if (temp_r31 < 30)
+        {
+            phi_f29 = 0.0f;
+            phi_f2 = 0.0f;
+        }
+        else if (temp_r31 < 45)
+        {
+            phi_f29 = 0.0f;
+            phi_f2 = 0.0f;
+        }
+        else
+        {
+            phi_f29 = 0.0f;
+            phi_f30_2 = (i == 0) ? -240.0f : 240.0f;
+            phi_f2 = phi_f30_2 * mathutil_sin((0xF - sprite->counter) * 0x444);
+        }
+        g_set_text_pos(
+            (sprite->x + phi_f29) - temp_r23 + ((i == 0) ? -temp_r23 : temp_r23),
+            (sprite->y + phi_f2) - temp_r3);
+        func_80071B78((i == 0) ? 0x47 : 0x4F);
+    }
 }
 
 /*
@@ -2567,5 +3061,47 @@ const double lbl_802F4F68 = -0.040000000000000001;
 const double lbl_802F4F70 = 0.75;
 const double lbl_802F4F78 = 0.375;
 const float lbl_802F4F80 = 36f;
+const float lbl_802F4F84 = -320f;
+const float lbl_802F4F88 = -240f;
+const float lbl_802F4F8C = 0.60000002384185791f;
+const double lbl_802F4F90 = 0.016666;
+const float lbl_802F4F98 = 561f;
+const float lbl_802F4F9C = 420f;
+const double lbl_802F4FA0 = 320;
+const double lbl_802F4FA8 = 8.0333299999999994;
+const double lbl_802F4FB0 = 240;
+const double lbl_802F4FB8 = 6;
+const double lbl_802F4FC0 = 3.3333300000000001;
+const float lbl_802F4FC8 = 216f;
+const float lbl_802F4FCC = 192f;
+const double lbl_802F4FD0 = 0.0080000000000000002;
+const double lbl_802F4FD8 = 0.03125;
+const float lbl_802F4FE0 = 496f;
+const double lbl_802F4FE8 = 5.8666600000000004;
+const float lbl_802F4FF0 = 0.85000002384185791f;
+const float lbl_802F4FF4 = 493f;
+const float lbl_802F4FF8 = 93f;
+const float lbl_802F4FFC = 0.10999999940395355f;
+const float lbl_802F5000 = 490f;
+const float lbl_802F5004 = 90f;
+const float lbl_802F5008 = 160f;
+const float lbl_802F500C = 260f;
+const double lbl_802F5010 = 200;
+const float lbl_802F5018 = 0.0080000003799796104f;
+const double lbl_802F5020 = 4;
+const float lbl_802F5028 = 760f;
+const float lbl_802F502C = 460f;
+const float lbl_802F5030 = 624f;
+const float lbl_802F5034 = 450f;
+const float lbl_802F5038 = 448f;
+const float lbl_802F503C = 456f;
+const double lbl_802F5040 = 10.666666666666666;
+const double lbl_802F5048 = 480;
+const double lbl_802F5050 = 69;
+const double lbl_802F5058 = 65;
+const double lbl_802F5060 = 25;
+const double lbl_802F5068 = 0.066666000000000003;
+const double lbl_802F5070 = 0.029999999999999999;
+const float lbl_802F5078 = 214f;
 
 */

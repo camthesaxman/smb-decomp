@@ -78,7 +78,7 @@ struct Ball
     /*0x70*/ float restitution;
     /*0x74*/ float modelScale;
     /*0x78*/ s32 bananas;
-    u32 unk7C;
+    s32 unk7C;
     s32 unk80;
     Vec unk84;
     s16 unk90;
@@ -90,7 +90,7 @@ struct Ball
     float unkC4;
     Mtx unkC8;
     float unkF8;
-    struct Ape *ape;
+    /*0xFC*/ struct Ape *ape;
     u32 unk100;
     Vec unk104;
     float unk110;
