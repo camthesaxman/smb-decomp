@@ -291,7 +291,7 @@ void g_set_text_pos(float, float);
 void func_80071B78(s8);
 void g_draw_text(char *str);
 float g_get_text_width(char *str);
-// ? func_80072AC0();
+void func_80072AC0(char *str, ...);
 void g_draw_text_sprite(struct Sprite *a);
 void draw_bitmap_sprite(struct Sprite *a);
 // ? func_80072DA8();

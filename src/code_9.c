@@ -533,14 +533,11 @@ void copyright_sprite_main(s8 *unused, struct Sprite *sprite)
 
 struct Struct80292C00
 {
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
-    //u8 filler18[0x60-0x18];
-} lbl_80292C00[4];
+    s32 unk0;
+    s32 unk4;
+};
+
+struct Struct80292C00 lbl_80292C00[12];
 FORCE_BSS_ORDER(lbl_80292C00)
 extern struct Struct80292C00 lbl_80292C00_alias[];
 
@@ -1077,11 +1074,11 @@ void func_80077E34(void)
     }
 
     lbl_80292C00_alias[0].unk4 = 0;
-    lbl_80292C00_alias[0].unkC = 0;
-    lbl_80292C00_alias[0].unk14 = 0;
+    lbl_80292C00_alias[1].unk4 = 0;
+    lbl_80292C00_alias[2].unk4 = 0;
     lbl_80292C00_alias[0].unk0 = ball->bananas % 10;
-    lbl_80292C00_alias[0].unk8 = ball->bananas / 10;
-    lbl_80292C00_alias[0].unk10 = ball->bananas / 100;
+    lbl_80292C00_alias[1].unk0 = ball->bananas / 10;
+    lbl_80292C00_alias[2].unk0 = ball->bananas / 100;
 
     if (infoWork.flags & 0x40)
     {
@@ -1834,11 +1831,11 @@ void g_init_main_normal_hud(void)
     }
 
     lbl_80292C00[0].unk4 = 0;
-    lbl_80292C00[0].unkC = 0;
-    lbl_80292C00[0].unk14 = 0;
+    lbl_80292C00[1].unk4 = 0;
+    lbl_80292C00[2].unk4 = 0;
     lbl_80292C00[0].unk0 = ball->bananas % 10;
-    lbl_80292C00[0].unk8 = ball->bananas / 10;
-    lbl_80292C00[0].unk10 = ball->bananas / 100;
+    lbl_80292C00[1].unk0 = ball->bananas / 10;
+    lbl_80292C00[2].unk0 = ball->bananas / 100;
 
     sprite = create_sprite();
     if (sprite != NULL)
@@ -2004,12 +2001,12 @@ void func_80079D2C(s32 arg0)
         sprintf(sprite->text, lbl_802F102C);
     }
 
-    lbl_80292C00_alias[arg0].unk4 = 0;
-    lbl_80292C00_alias[arg0].unkC = 0;
-    lbl_80292C00_alias[arg0].unk14 = 0;
-    lbl_80292C00_alias[arg0].unk0 = ball->bananas % 10;
-    lbl_80292C00_alias[arg0].unk8 = (ball->bananas / 10) % 10;
-    lbl_80292C00_alias[arg0].unk10 = (ball->bananas / 100) % 10;
+    lbl_80292C00_alias[arg0 * 3 + 0].unk4 = 0;
+    lbl_80292C00_alias[arg0 * 3 + 1].unk4 = 0;
+    lbl_80292C00_alias[arg0 * 3 + 2].unk4 = 0;
+    lbl_80292C00_alias[arg0 * 3 + 0].unk0 = ball->bananas % 10;
+    lbl_80292C00_alias[arg0 * 3 + 1].unk0 = (ball->bananas / 10) % 10;
+    lbl_80292C00_alias[arg0 * 3 + 2].unk0 = (ball->bananas / 100) % 10;
 
     sprite = create_sprite();
     if (sprite != NULL)
@@ -2108,7 +2105,7 @@ void g_init_main_competition_hud(void)
             sprite->fontId = FONT_ASC_20x20;
             sprite->textAlign = ALIGN_LB;
             sprite->mainFunc = lbl_8007A50C;
-            if ((gamePauseStatus & 4) != 0)
+            if (gamePauseStatus & 4)
             {
                 sprite = create_linked_sprite(sprite);
                 if (sprite != NULL)
@@ -2215,31 +2212,31 @@ void lbl_8007A50C(s8 *arg0, struct Sprite *sprite)
 
 void lbl_8007A5C0(struct Sprite *sprite)
 {
-    struct NaomiSpriteParams sp10;
+    struct NaomiSpriteParams params;
     u8 dummy[4];
 
-    sp10.bmpId = sprite->bmpId;
-    sp10.x = 320.0f;
-    sp10.y = 240.0f;
-    sp10.z = sprite->unk4C;
-    sp10.zoomX = sprite->unk40;
-    sp10.zoomY = sprite->unk44;
-    sp10.u1 = sprite->unk7C;
-    sp10.v1 = sprite->unk80;
-    sp10.u2 = sprite->unk84;
-    sp10.v2 = sprite->unk88;
-    sp10.rotation = 0;
-    sp10.alpha = 1.0f;
-    sp10.unk30 = -1;
-    sp10.flags = 0xA;
-    sp10.color1 = RGBA(255, 255, 255, 255);
-    sp10.color2 = 0;
+    params.bmpId = sprite->bmpId;
+    params.x = 320.0f;
+    params.y = 240.0f;
+    params.z = sprite->unk4C;
+    params.zoomX = sprite->unk40;
+    params.zoomY = sprite->unk44;
+    params.u1 = sprite->unk7C;
+    params.v1 = sprite->unk80;
+    params.u2 = sprite->unk84;
+    params.v2 = sprite->unk88;
+    params.rotation = 0;
+    params.alpha = 1.0f;
+    params.unk30 = -1;
+    params.flags = 0xA;
+    params.color1 = RGBA(255, 255, 255, 255);
+    params.color2 = 0;
 
     switch (modeCtrl.playerCount)
     {
     case 2:
-        sp10.rotation = 0xC000;
-        draw_naomi_sprite(&sp10);
+        params.rotation = 0xC000;
+        draw_naomi_sprite(&params);
         break;
     case 3:
         switch (modeCtrl.splitscreenMode)
@@ -2247,32 +2244,32 @@ void lbl_8007A5C0(struct Sprite *sprite)
         default:
         case SPLITSCREEN_1P_WIDE:
         case SPLITSCREEN_2P_WIDE:
-            sp10.rotation = 0xC000;
-            draw_naomi_sprite(&sp10);
-            sp10.y += 320.0f;
-            sp10.rotation = 0;
-            draw_naomi_sprite(&sp10);
+            params.rotation = 0xC000;
+            draw_naomi_sprite(&params);
+            params.y += 320.0f;
+            params.rotation = 0;
+            draw_naomi_sprite(&params);
             break;
         case SPLITSCREEN_3P_WIDE:
-            sp10.rotation = 0xC000;
-            draw_naomi_sprite(&sp10);
-            sp10.y -= 320.0f;
-            sp10.rotation = 0;
-            draw_naomi_sprite(&sp10);
+            params.rotation = 0xC000;
+            draw_naomi_sprite(&params);
+            params.y -= 320.0f;
+            params.rotation = 0;
+            draw_naomi_sprite(&params);
             break;
         case SPLITSCREEN_4_SPLIT:
-            sp10.rotation = 0xC000;
-            draw_naomi_sprite(&sp10);
-            sp10.rotation = 0;
-            draw_naomi_sprite(&sp10);
+            params.rotation = 0xC000;
+            draw_naomi_sprite(&params);
+            params.rotation = 0;
+            draw_naomi_sprite(&params);
             break;
         }
         break;
     case 4:
-        sp10.rotation = 0xC000;
-        draw_naomi_sprite(&sp10);
-        sp10.rotation = 0;
-        draw_naomi_sprite(&sp10);
+        params.rotation = 0xC000;
+        draw_naomi_sprite(&params);
+        params.rotation = 0;
+        draw_naomi_sprite(&params);
         break;
     }
 }
@@ -2341,6 +2338,61 @@ void lbl_8007AA38(s8 *arg0, struct Sprite *sprite)
     int temp_r5 = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
     int val = 100.0 * ((float)(temp_r5 % 60) / 60.0);
     sprintf(sprite->text, lbl_802F10A0, val);
+}
+
+extern const float lbl_80118870[];
+
+void lbl_8007AAFC(struct Sprite *sprite)
+{
+    struct Ball *ball;
+    s32 phi_r3;
+    f32 temp_f28;
+    f32 temp_f4;
+    int phi_r27;
+    int i;
+    int x, y;
+    int temp_r23;
+    struct Struct80292C00 *r22;
+
+    ball = currentBallStructPtr;
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    g_set_text_pos(sprite->x - 70.0f, sprite->y - 10.0f);
+    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    g_draw_text("    100");
+
+    r22 = lbl_80292C00_alias;
+    for (i = 0; i < 3; i++, r22++)
+    {
+        phi_r3 = (i == 0) ? ball->bananas % 10
+               : (i == 1) ? (ball->bananas / 10) % 10
+               : (ball->bananas / 100) % 10;
+        if (r22->unk0 != phi_r3)
+        {
+            r22->unk4 = 30;
+            r22->unk0 = phi_r3;
+            if (ball->bananas >= 90 && (sprite->unk48 == 0))
+                sprite->unk48 = 1;
+            if (ball->bananas < 90)
+                sprite->unk48 = 0;
+        }
+        if (!(gamePauseStatus & 0xA) && r22->unk4 > 0)
+            r22->unk4--;
+
+        temp_f28 = lbl_80118870[0x1D - r22->unk4];
+        temp_f4 = temp_f28 - 1.0;
+        x = sprite->x - 20.0f - i * 20 - 10.0f - (10.0f * temp_f4);
+        y = sprite->y - 10.0f - (10.0f * temp_f4);
+        temp_r23 = 510.0f * temp_f4;
+
+        g_set_text_pos(x, y);
+        func_80071AE4(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
+        func_80071B2C(temp_f28, temp_f28);
+        func_80072AC0(lbl_802F105C, phi_r3);
+
+    }
+    func_80071A8C();
 }
 
 /*
