@@ -5437,7 +5437,6 @@ lbl_80078BFC:
 lbl_80078C24:
 /* 80078C24 00074B44  38 21 00 18 */	addi r1, r1, 0x18
 /* 80078C28 00074B48  4E 80 00 20 */	blr
-.endif
 
 glabel floor_intro_sprite_draw
 /* 80078C2C 00074B4C  7C 08 02 A6 */	mflr r0
@@ -5507,7 +5506,7 @@ lbl_80078CEC:
 /* 80078D20 00074C40  CB E2 A6 18 */	lfd f31, lbl_802F4E18-_SDA2_BASE_(r2)
 /* 80078D24 00074C44  3B 40 00 00 */	li r26, 0
 /* 80078D28 00074C48  CB 22 A4 00 */	lfd f25, lbl_802F4C00-_SDA2_BASE_(r2)
-/* 80078D2C 00074C4C  3B C0 00 1E */	li r30, 0x1e
+/* 80078D2C 00074C4C  3B C0 00 1E */	li r30, 0x1e  ;# iter 0x10
 /* 80078D30 00074C50  3E E0 43 30 */	lis r23, 0x4330
 /* 80078D34 00074C54  48 00 02 90 */	b lbl_80078FC4
 lbl_80078D38:
@@ -5627,7 +5626,7 @@ lbl_80078E48:
 /* 80078ED0 00074DF0  FC 20 C8 28 */	fsub f1, f0, f25
 /* 80078ED4 00074DF4  C0 58 00 44 */	lfs f2, 0x44(r24)
 /* 80078ED8 00074DF8  C8 01 00 18 */	lfd f0, 0x18(r1)
-/* 80078EDC 00074DFC  EC 00 D8 28 */	fsubs f0, f0, f27
+/* 80078EDC 00074DFC  EC 00 D8 28 */	fsubs f0, f0, f27  ;# phi_r5
 /* 80078EE0 00074E00  FC 20 08 18 */	frsp f1, f1
 /* 80078EE4 00074E04  FC 00 02 10 */	fabs f0, f0
 /* 80078EE8 00074E08  FC 19 00 32 */	fmul f0, f25, f0
@@ -5711,6 +5710,7 @@ lbl_80078FC4:
 /* 80078FFC 00074F1C  CB 21 00 68 */	lfd f25, 0x68(r1)
 /* 80079000 00074F20  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 80079004 00074F24  4E 80 00 20 */	blr
+
 lbl_80079008:
 /* 80079008 00074F28  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8007900C 00074F2C  A8 04 00 10 */	lha r0, 0x10(r4)
@@ -5877,7 +5877,7 @@ lbl_80079248:
 /* 80079260 00075180  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 80079264 00075184  38 21 00 20 */	addi r1, r1, 0x20
 /* 80079268 00075188  4E 80 00 20 */	blr
-lbl_8007926C:
+glabel lbl_8007926C
 /* 8007926C 0007518C  7C 08 02 A6 */	mflr r0
 /* 80079270 00075190  90 01 00 04 */	stw r0, 4(r1)
 /* 80079274 00075194  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -5971,7 +5971,7 @@ lbl_800793B4:
 /* 800793C0 000752E0  7C 08 03 A6 */	mtlr r0
 /* 800793C4 000752E4  38 21 00 28 */	addi r1, r1, 0x28
 /* 800793C8 000752E8  4E 80 00 20 */	blr
-
+blr
 .global g_init_main_normal_hud
 g_init_main_normal_hud:
 /* 800793CC 000752EC  7C 08 02 A6 */	mflr r0
@@ -6610,6 +6610,7 @@ lbl_80079D18:
 /* 80079D20 00075C40  38 21 00 40 */	addi r1, r1, 0x40
 /* 80079D24 00075C44  7C 08 03 A6 */	mtlr r0
 /* 80079D28 00075C48  4E 80 00 20 */	blr
+.endif
 
 .global func_80079D2C
 func_80079D2C:
@@ -7309,7 +7310,7 @@ lbl_8007A760:
 /* 8007A768 00076688  38 21 00 68 */	addi r1, r1, 0x68
 /* 8007A76C 0007668C  7C 08 03 A6 */	mtlr r0
 /* 8007A770 00076690  4E 80 00 20 */	blr
-lbl_8007A774:
+glabel lbl_8007A774
 /* 8007A774 00076694  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8007A778 00076698  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 8007A77C 0007669C  80 03 00 08 */	lwz r0, 8(r3)
@@ -7329,7 +7330,7 @@ lbl_8007A7AC:
 /* 8007A7AC 000766CC  C0 02 A6 AC */	lfs f0, lbl_802F4EAC-_SDA2_BASE_(r2)
 /* 8007A7B0 000766D0  D0 04 00 08 */	stfs f0, 8(r4)
 /* 8007A7B4 000766D4  4E 80 00 20 */	blr
-lbl_8007A7B8:
+glabel lbl_8007A7B8
 /* 8007A7B8 000766D8  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8007A7BC 000766DC  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 8007A7C0 000766E0  41 82 00 14 */	beq lbl_8007A7D4
@@ -7342,7 +7343,7 @@ lbl_8007A7D4:
 /* 8007A7D8 000766F8  60 00 00 01 */	ori r0, r0, 1
 /* 8007A7DC 000766FC  90 04 00 78 */	stw r0, 0x78(r4)
 /* 8007A7E0 00076700  4E 80 00 20 */	blr
-lbl_8007A7E4:
+glabel lbl_8007A7E4
 /* 8007A7E4 00076704  7C 08 02 A6 */	mflr r0
 /* 8007A7E8 00076708  3C A0 80 1F */	lis r5, infoWork@ha
 /* 8007A7EC 0007670C  90 01 00 04 */	stw r0, 4(r1)
@@ -7394,7 +7395,7 @@ lbl_8007A890:
 /* 8007A8A0 000767C0  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 8007A8A4 000767C4  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007A8A8 000767C8  4E 80 00 20 */	blr
-lbl_8007A8AC:
+glabel lbl_8007A8AC
 /* 8007A8AC 000767CC  7C 08 02 A6 */	mflr r0
 /* 8007A8B0 000767D0  3C A0 80 1F */	lis r5, infoWork@ha
 /* 8007A8B4 000767D4  90 01 00 04 */	stw r0, 4(r1)
@@ -7964,7 +7965,7 @@ lbl_8007B0F0:
 /* 8007B128 00077048  CB 41 00 70 */	lfd f26, 0x70(r1)
 /* 8007B12C 0007704C  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 8007B130 00077050  4E 80 00 20 */	blr
-lbl_8007B134:
+glabel lbl_8007B134
 /* 8007B134 00077054  7C 08 02 A6 */	mflr r0
 /* 8007B138 00077058  3C 80 80 1F */	lis r4, modeCtrl@ha
 /* 8007B13C 0007705C  90 01 00 04 */	stw r0, 4(r1)
@@ -8101,7 +8102,7 @@ lbl_8007B178:
 /* 8007B340 00077260  38 21 00 98 */	addi r1, r1, 0x98
 /* 8007B344 00077264  7C 08 03 A6 */	mtlr r0
 /* 8007B348 00077268  4E 80 00 20 */	blr
-lbl_8007B34C:
+glabel lbl_8007B34C
 /* 8007B34C 0007726C  7C 08 02 A6 */	mflr r0
 /* 8007B350 00077270  3C 60 80 29 */	lis r3, lbl_80292C60@ha
 /* 8007B354 00077274  90 01 00 04 */	stw r0, 4(r1)
@@ -8212,7 +8213,7 @@ lbl_8007B490:
 /* 8007B4DC 000773FC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007B4E0 00077400  7C 08 03 A6 */	mtlr r0
 /* 8007B4E4 00077404  4E 80 00 20 */	blr
-lbl_8007B4E8:
+glabel lbl_8007B4E8
 /* 8007B4E8 00077408  7C 08 02 A6 */	mflr r0
 /* 8007B4EC 0007740C  90 01 00 04 */	stw r0, 4(r1)
 /* 8007B4F0 00077410  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -18736,7 +18737,6 @@ lbl_802F4DF8:
 	# ROM: 0x1EE818
 	.4byte 0x3FB110A1
 	.4byte 0x37F38C54
-.endif
 
 .global lbl_802F4E00
 lbl_802F4E00:
@@ -18843,6 +18843,7 @@ lbl_802F4E60:
 lbl_802F4E64:
 	# ROM: 0x1EE884
 	.4byte 0x43CE0000
+.endif
 
 .global lbl_802F4E68
 lbl_802F4E68:
@@ -20613,7 +20614,7 @@ glabel string_a_Options
 .global lbl_801C17D0
 lbl_801C17D0:
 	# ROM: 0x1BE7D0
-glabel string_banana_pic
+glabel string_banana_pic  ;# 2E0
 	.asciz "banana.pic"
 	.balign 4
 glabel string_BANANA_S_
@@ -20733,7 +20734,7 @@ glabel lbl_801C1984
 glabel string_ROUND__d
 	.asciz "ROUND %d"
 	.balign 4
-glabel string_MASTER__d
+glabel string_MASTER__d  ;# 4B8
 	.asciz "MASTER %d"
 	.balign 4
 glabel string_EXTRA__d
@@ -20748,9 +20749,9 @@ glabel string_FINAL_ROUND
 	.asciz "FINAL ROUND"
 glabel string_FINAL_FLOOR
 	.asciz "FINAL FLOOR"
-.endif
 glabel string__Lib_No__d_
 	.asciz "[Lib No.%d]"
+.endif
 
 .global lbl_801C19FC
 lbl_801C19FC:
@@ -23048,7 +23049,6 @@ lbl_802F1048:
 glabel string_eieipu
 	.asciz "eieipu"
 	.balign 4
-.endif
 
 .global lbl_802F1050
 lbl_802F1050:
@@ -23105,6 +23105,7 @@ lbl_802F1080:
 lbl_802F1084:
 	# ROM: 0x1EB7C4
 	.4byte 0x6D706800
+.endif
 glabel string_FINAL
 	.asciz "FINAL"
 	.balign 4

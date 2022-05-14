@@ -15,11 +15,11 @@
 #include "mode.h"
 #include "sprite.h"
 
-u32 lbl_801C14F0[] =
+u8 lbl_801C14F0[] =
 {
-    0xFF00002C,
-    0x65FFFBFF,
-    0x2C2CFF57,
+    0xFF, 0x00, 0x00, 0x2C,
+    0x65, 0xFF, 0xFB, 0xFF,
+    0x2C, 0x2C, 0xFF, 0x57,
 };
 
 float lbl_801C14FC[] =
@@ -543,7 +543,13 @@ struct Struct80292C00
 FORCE_BSS_ORDER(lbl_80292C00)
 extern struct Struct80292C00 lbl_80292C00_alias;
 
-u8 lbl_80292C60[0x30];
+struct
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u8 fillerC[0x30-0xC];
+} lbl_80292C60;
 FORCE_BSS_ORDER(lbl_80292C60)
 
 struct TitleLetterOffset
@@ -689,7 +695,7 @@ void title_sprite_main(s8 *arg0, struct Sprite *sprite)
     {
         titleSuperOffsets[i].vel += 0.5;  // increase vel each frame to simulate gravity
         titleSuperOffsets[i].pos += titleSuperOffsets[i].vel;
-        if (titleSuperOffsets[i].pos >= 0.0f)  // when letter has reached its final position 
+        if (titleSuperOffsets[i].pos >= 0.0f)  // when letter has reached its final position
         {
             if (titleSuperOffsets[i].vel <= 0.5)
             {
@@ -969,7 +975,9 @@ char lbl_802F1030[4] = ":00";
 char lbl_802F1034[2] = "/";
 char lbl_802F1038[8] = "000 100";
 
-const float lbl_802F4D9C = 0.10000000149011612f;
+//const float lbl_802F4D9C = 0.10000000149011612f;
+float force_lbl_802F4D9C() { return 0.1f; }
+
 const float lbl_802F4DA0 = 40.0f;
 
 void func_80077E34(void)
@@ -1322,7 +1330,7 @@ void lbl_80078460(struct Sprite *sprite)
 extern struct
 {
     s16 unk0;
-    u8 filler2[2];
+    s16 unk2;
     u32 unk4;
     u8 filler8[1];
 } lbl_8027CE24;
@@ -1443,6 +1451,498 @@ void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
+void floor_intro_sprite_draw(struct Sprite *sprite)
+{
+    int centerX;
+    int i;
+    int spacePos = 0;
+    char text[12];
+
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    func_80071B50(sprite->unk74);
+    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    centerX = (strlen(sprite->text) * 57) >> 1;
+    strcpy(text, sprite->text);
+
+    for (i = 0; i < strlen(sprite->text); i++)
+    {
+        if (text[i] == ' ')
+            spacePos = i;
+    }
+
+    for (i = 0; i < strlen(sprite->text); i++)
+    {
+        int phi_r4;
+        int phi_r5;
+
+        if (i == spacePos)
+            continue;
+        else if (i > spacePos)
+        {
+            if (sprite->counter < 30 + spacePos * 16)
+                continue;
+        }
+        else if (i > 0)
+        {
+            if (sprite->counter < 30 + (i - 1) * 16)
+                continue;
+        }
+
+        phi_r4 = 0;
+        phi_r5 = 0;
+
+        if (i == 0 && sprite->counter < 30)
+            phi_r4 = (30 - sprite->counter) * -5;
+        else if (i > 0 && i < spacePos && sprite->counter < 30 + i * 16)
+            phi_r4 = -3.6 * (30 + i * 16 - sprite->counter);
+        else if (i > spacePos)
+            phi_r4 = -28;
+
+        if (sprite->unk48 > 0)
+        {
+            if (i < spacePos)
+                phi_r5 = (15 - sprite->unk48) * ((i & 1) ? 8 : -8);
+            else
+                phi_r5 = (15 - sprite->unk48) * ((i & 1) ? -8 : 8);
+        }
+
+        g_set_text_pos(sprite->x - centerX + 14.4 + 57.6 * i + phi_r4, sprite->y - 25.6 + phi_r5);
+        func_80071B2C(sprite->unk40 - 0.01, sprite->unk44 + (0.01 * __fabs((float)phi_r5)));
+        if (i > spacePos)
+            func_80071B40(MIN(0.0625 * (sprite->counter - 30 - spacePos * 16), sprite->opacity));
+        else if (i > 0)
+            func_80071B40(MIN(0.0625 * (sprite->counter - 30 - ((i - 1) * 16)), sprite->opacity));
+        else if (i == 0 && sprite->unk48 > 0)
+            func_80071B40(sprite->opacity);
+        func_80071B78(text[i]);
+    }
+    func_80071A8C();
+}
+
+void lbl_80079008(s8 *arg0, struct Sprite *sprite)
+{
+    if (sprite->counter > 90)
+    {
+        sprite->x += sprite->unk48;
+        sprite->unk48++;
+    }
+    else if (sprite->counter <= 30)
+    {
+        sprite->x += sprite->unk48;
+        sprite->unk48--;
+    }
+    sprite->counter--;
+    if (sprite->counter <= 0)
+        *arg0 = 0;
+}
+
+void lbl_8007926C(s8 *, struct Sprite *);
+
+char lbl_802F1050[4] = "%dP";
+
+void show_ready_text(int arg0)
+{
+    struct Sprite *sprite;
+
+    if (modeCtrl.gameType == 0 && modeCtrl.playerCount > 1)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            int phi_r0 = (modeCtrl.playerCount > 1) ? currentBallStructPtr->unk2E : 3;
+
+            sprite->x = 785.0f;
+            sprite->y = 310.0f;
+            sprite->fontId = 9;
+            sprite->textAlign = 4;
+            sprite->unkC = lbl_801C14F0[phi_r0 * 3 + 0];
+            sprite->unkD = lbl_801C14F0[phi_r0 * 3 + 1];
+            sprite->unkE = lbl_801C14F0[phi_r0 * 3 + 2];
+            sprite->unk48 = -30;
+            sprite->counter = 0x78;
+            sprite->mainFunc = lbl_80079008;
+            sprintf(sprite->text, lbl_802F1050, currentBallStructPtr->unk2E + 1);
+        }
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
+        sprite->unk4C = (modeCtrl.unk30 == 1) ? 0.1 : 0.05;
+        sprite->fontId = 9;
+        sprite->textAlign = 4;
+        sprite->unkC = 0xFF;
+        sprite->unkD = 0xC8;
+        sprite->unkE = 0;
+        sprite->counter = arg0;
+        sprite->unk48 = arg0;
+        sprite->unk74 |= 0x1000;
+        sprite->mainFunc = lbl_8007926C;
+        strcpy(sprite->text, "READY");
+    }
+    g_play_sound(4);
+}
+
+void lbl_8007926C(s8 *arg0, struct Sprite *sprite)
+{
+    int temp_r3 = sprite->unk48 - sprite->counter;
+
+    if (temp_r3 < 30)
+    {
+        sprite->opacity = 0.03333 * temp_r3;
+        sprite->unk40 = 1.0f;
+        sprite->unk44 = mathutil_sin(temp_r3 * 0x222);
+    }
+    else if (temp_r3 < 60)
+    {
+        sprite->opacity = 1.0f;
+        sprite->unk40 = 1.0f;
+        sprite->unk44 = 1.0 - mathutil_sin((temp_r3 - 30) * 0x444) * 0.2;
+    }
+    else if (sprite->counter <= 15)
+    {
+        sprite->opacity = 0.06666 * sprite->counter;
+        sprite->unk40 = 0.06666 * sprite->counter;
+        sprite->unk44 = 1.0f;
+    }
+    else
+    {
+        sprite->opacity = 1.0f;
+        sprite->unk40 = 1.0f;
+        sprite->unk44 = 1.0f;
+    }
+    if (--sprite->counter <= 0)
+    {
+        g_play_sound(5);
+        *arg0 = 0;
+    }
+}
+
+void lbl_80067C20(struct Sprite *);
+
+extern s32 lbl_802F1CAC;
+
+void lbl_8007A774(s8 *, struct Sprite *);
+void lbl_8007A7B8(s8 *, struct Sprite *);
+void lbl_8007A7E4(s8 *, struct Sprite *);
+void lbl_8007A8AC(s8 *, struct Sprite *);
+void lbl_8007B134(struct Sprite *);
+void lbl_8007B34C(s8 *, struct Sprite *);
+void lbl_8007B4E8(s8 *, struct Sprite *);
+
+char lbl_802F105C[3] = "%d";
+char lbl_802F1060[7] = "course";
+char lbl_802F1068[6] = "SCORE";
+char lbl_802F1070[6] = "NULL\n";
+char lbl_802F1078[6] = "score";
+char lbl_802F1080[3] = "00";
+char lbl_802F1084[4] = "mph";
+
+void g_init_main_normal_hud(void)
+{
+    struct Sprite *sprite;
+    struct Ball *ball;
+    u32 flags;
+    int floorNum;
+    u8 dummy[16];
+
+    ball = currentBallStructPtr;
+    if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+        flags = lbl_8027CE24.unk4;
+    else
+        flags = modeCtrl.levelSetFlags;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = (modeCtrl.levelSetFlags & 1) ? 72 : 32;
+        sprite->y = (modeCtrl.levelSetFlags & 1) ? 436 : 458;
+        sprite->fontId = FONT_ASC_20x20;
+        if (flags & 0x10)
+            sprite->x = 32.0f;
+        if (flags & 8)
+        {
+            sprite->unkC = 0xFF;
+            sprite->unkD = 0xFF;
+            sprite->unkE = 0;
+            sprite->unk70 = 0x40;
+            sprite->unk71 = 0x40;
+            sprite->unk72 = 0x40;
+        }
+        sprite->textAlign = ALIGN_LB;
+        sprite->mainFunc = lbl_8007A774;
+
+        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.unk20;
+        if (flags & 0x10)
+            sprintf(sprite->text, "MASTER %d", floorNum);
+        else if (flags & 8)
+            sprintf(sprite->text, "EXTRA %d", floorNum);
+        else
+            sprintf(sprite->text, "FLOOR %d", floorNum);
+        if (gamePauseStatus & 4)
+        {
+            sprite = create_linked_sprite(sprite);
+            if (sprite != NULL)
+            {
+                sprite->x = 20.0f;
+                sprite->y = 2.0f;
+                sprite->fontId = FONT_ASC_8x16;
+                sprite->mainFunc = lbl_8007A7B8;
+                sprintf(sprite->text, "[Lib No.%d]", currStageId);
+            }
+        }
+    }
+
+    if ((modeCtrl.levelSetFlags & 1) && !(flags & 0x10))
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->x = 48.0f;
+            sprite->y = 443.0f;
+            sprite->fontId = FONT_ICON_LV;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unk40 = 0.5f;
+            sprite->unk44 = 0.5f;
+            if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+                sprintf(sprite->text, lbl_802F105C, lbl_8027CE24.unk2 + 4);
+            else
+                sprintf(sprite->text, lbl_802F105C, modeCtrl.levelSet + 4);
+        }
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->x = 72.0f;
+            sprite->y = 436.0f;
+            sprite->fontId = FONT_ASCII;
+            sprite->textAlign = ALIGN_LB;
+            sprite->unk40 = 1.5f;
+            sprite->unk44 = 1.5f;
+            sprite->mainFunc = lbl_8007A7B8;
+            sprite->drawFunc = lbl_80067C20;
+            sprintf(sprite->text, lbl_802F1060);
+        }
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 52.0f;
+        sprite->y = 86.0f;
+        sprite->fontId = FONT_ASCII;
+        sprite->textAlign = ALIGN_PIC;
+        sprite->unk4C = 0.1f;
+        sprite->drawFunc = lbl_80080940;
+        sprintf(sprite->text, lbl_802F1024);
+    }
+
+    lbl_80292D18.unk4 = 0;
+    lbl_80292D18.unk0 = 0;
+    lbl_80292D18.unk8 = 0;
+    lbl_80292D18.unk14 = 0x33;
+    func_8000D5B8();
+    func_8008083C(320.0f, 68.0f);
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 320.0f;
+        sprite->y = 85.0f;
+        sprite->fontId = FONT_NUM_24x37;
+        sprite->textAlign = ALIGN_CB;
+        sprite->unk4C = 0.19f;
+        sprite->mainFunc = lbl_8007A7E4;
+        sprintf(sprite->text, lbl_802F102C);
+        sprite = create_linked_sprite(sprite);
+        if (sprite != NULL)
+        {
+            sprite->x = -4.0f;
+            sprite->fontId = FONT_NUM_12x19;
+            sprite->textAlign = ALIGN_CB;
+            sprite->unk4C = 0.19f;
+            sprite->mainFunc = lbl_8007A8AC;
+            sprintf(sprite->text, lbl_802F1030);
+        }
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->x = 428.0f;
+        sprite->y = 22.0f;
+        sprite->bmpId = BMP_COM_banana_01;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk40 = 0.2f;
+        sprite->unk44 = 0.2f;
+        sprintf(sprite->text, "banana.pic");
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 536.0f;
+        sprite->y = 24.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unkC = 0xAA;
+        sprite->unkD = 0xA8;
+        sprite->unkE = 0;
+        sprite->unk70 = 0x38;
+        sprite->unk71 = 0x38;
+        sprite->unk72 = 0;
+        sprintf(sprite->text, "BANANA(S)");
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 518.0f;
+        sprite->y = 47.0f;
+        sprite->fontId = FONT_NUM_22x22;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unkC = 0xAA;
+        sprite->unkD = 0xA8;
+        sprite->unkE = 0;
+        sprite->unk70 = 0x38;
+        sprite->unk71 = 0x38;
+        sprite->unk72 = 0;
+        sprintf(sprite->text, lbl_802F1034);
+    }
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 18;
+        sprite->x = 518.0f;
+        sprite->y = 48.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_CC;
+        sprite->drawFunc = lbl_8007AAFC;
+        sprite->unkC = 0xAA;
+        sprite->unkD = 0xA8;
+        sprite->unkE = 0;
+        sprite->unk70 = 0x38;
+        sprite->unk71 = 0x38;
+        sprite->unk72 = 0;
+        sprintf(sprite->text, lbl_802F1038);
+    }
+
+    lbl_80292C00.unk4 = 0;
+    lbl_80292C00.unkC = 0;
+    lbl_80292C00.unk14 = 0;
+    lbl_80292C00.unk0 = ball->bananas % 10;
+    lbl_80292C00.unk8 = ball->bananas / 10;
+    lbl_80292C00.unk10 = ball->bananas / 100;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 108.0f;
+        sprite->y = 24.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_CC;
+        sprintf(sprite->text, lbl_802F1068);
+    }
+    else
+        printf(lbl_802F1070);
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 196.0f;
+        sprite->y = 48.0f;
+        sprite->fontId = FONT_NUM_22x22;
+        sprite->textAlign = ALIGN_RC;
+        sprite->mainFunc = lbl_8007B34C;
+        sprintf(sprite->text, lbl_802F1078);
+    }
+    else
+        printf(lbl_802F1070);
+
+    lbl_80292C60.unk0 = ball->unk7C;
+    lbl_80292C60.unk4 = 0;
+    lbl_80292C60.unk8 = 0;
+
+    if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && lbl_802F1CAC > 0)
+        func_8007FD74(0);
+
+    if (modeCtrl.playerCount > 1)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->type = SPRITE_TYPE_BITMAP;
+            sprite->x = 48.0f;
+            sprite->y = 412.0f;
+            sprite->unk40 = 2.0f;
+            sprite->unk44 = 2.0f;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unk48 = modeCtrl.currPlayer;
+            sprite->drawFunc = lbl_8007B134;
+            sprintf(sprite->text, lbl_802F1050, modeCtrl.currPlayer + 1);
+        }
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = (modeCtrl.playerCount > 1) ? 74 : 32;
+        sprite->y = (modeCtrl.levelSetFlags & 1) ? 420 : 428;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_LB;
+        sprite->unk4C = 0.2f;
+        sprite->mainFunc = lbl_8007B4E8;
+        strcpy(sprite->text, lbl_802F1080);
+        sprite = create_linked_sprite(sprite);
+        if (sprite != NULL)
+        {
+            sprite->x = 4.0f;
+            sprite->type = SPRITE_TYPE_BITMAP;
+            sprite->textAlign = ALIGN_CT;
+            sprite->unk4C = 0.2f;
+            sprite->bmpId = BMP_COM_game_icon_mph;
+            strcpy(sprite->text, lbl_802F1084);
+        }
+    }
+    if (infoWork.flags & 0x40)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->x = 320.0f;
+            sprite->y = 380.0f;
+            sprite->fontId = FONT_ASC_32x32;
+            sprite->textAlign = ALIGN_CC;
+            sprite->counter = 0;
+            sprite->mainFunc = lbl_8007B608;
+            strcpy(sprite->text, "%2d BANANAS LEFT");
+        }
+    }
+    if ((find_sprite_with_tag(0xE) == NULL) && ((infoWork.flags & 0x1000) != 0) && (modeCtrl.gameType != 2))
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->tag = 14;
+            sprite->x = 320.0f;
+            sprite->y = 300.0f;
+            sprite->fontId = FONT_ASC_72x64;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unk40 = 0.5f;
+            sprite->unk44 = 0.5f;
+            sprite->counter = 150;
+            sprite->unk74 |= 0x1000;
+            sprite->mainFunc = final_floor_sprite_main;
+            sprite->drawFunc = final_floor_sprite_draw;
+            strcpy(sprite->text, "FINAL FLOOR");
+        }
+    }
+}
+
 /*
 const float lbl_802F4BD8 = 315f;
 const float lbl_802F4BDC = 0.004999999888241291f;
@@ -1530,5 +2030,47 @@ const float lbl_802F4DA4 = 68f;
 const float lbl_802F4DA8 = 85f;
 const float lbl_802F4DAC = 0.18999999761581421f;
 const float lbl_802F4DB0 = -4f;
+const float lbl_802F4DB4 = 428f;
+const float lbl_802F4DB8 = 22f;
+const float lbl_802F4DBC = 0.20000000298023224f;
+const float lbl_802F4DC0 = 536f;
+const float lbl_802F4DC4 = 24f;
+const float lbl_802F4DC8 = 518f;
+const float lbl_802F4DCC = 47f;
+const float lbl_802F4DD0 = 380f;
+const double lbl_802F4DD8 = 0.80000000000000004;
+const double lbl_802F4DE0 = 0.59999999999999998;
+const float lbl_802F4DE8 = 15f;
+const float lbl_802F4DEC = 4096f;
+const float lbl_802F4DF0 = 0.64999997615814209f;
+const float lbl_802F4DF4 = 0.15000000596046448f;
+const double lbl_802F4DF8 = 0.066659999999999997;
+const double lbl_802F4E00 = -3.6000000000000001;
+const double lbl_802F4E08 = 57.600000000000001;
+const double lbl_802F4E10 = 14.4;
+const double lbl_802F4E18 = 25.600000000000001;
+const double lbl_802F4E20 = 0.0625;
+const float lbl_802F4E28 = 785f;
+const float lbl_802F4E2C = 310f;
+const double lbl_802F4E30 = 0.033329999999999999;
+const float lbl_802F4E38 = 32f;
+const float lbl_802F4E3C = 20f;
+const float lbl_802F4E40 = 2f;
+const float lbl_802F4E44 = 443f;
+const float lbl_802F4E48 = 72f;
+const float lbl_802F4E4C = 436f;
+const float lbl_802F4E50 = 1.5f;
+const float lbl_802F4E54 = 52f;
+const float lbl_802F4E58 = 86f;
+const float lbl_802F4E5C = 108f;
+const float lbl_802F4E60 = 196f;
+const float lbl_802F4E64 = 412f;
+const float lbl_802F4E68 = 640f;
+const float lbl_802F4E6C = 480f;
+const float lbl_802F4E70 = 51f;
+const float lbl_802F4E74 = 120f;
+const float lbl_802F4E78 = 41f;
+const float lbl_802F4E7C = 28f;
+const float lbl_802F4E80 = 0.375f;
 
 */

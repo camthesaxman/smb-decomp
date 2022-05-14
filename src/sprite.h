@@ -5,7 +5,7 @@
 
 enum FontID
 {
-    FONT_ASCII,  // 0
+    FONT_ASCII,  // 0x00
     FONT_ASC_8x16,
     FONT_ASC_12x12,
     FONT_DMY00,
@@ -15,17 +15,17 @@ enum FontID
     FONT_DMY04,
     FONT_DMY05,
     FONT_ASC_72x64,
-    FONT_DMY06,  // 10
+    FONT_DMY06,
     FONT_DMY07,
     FONT_DMY08,
     FONT_DMY09,
     FONT_DMY10,
     FONT_DMY11,
-    FONT_DMY12,
+    FONT_DMY12,  // 0x10
     FONT_DMY13,
     FONT_DMY14,
     FONT_DMY15,
-    FONT_DMY16,  // 20
+    FONT_DMY16,
     FONT_ICON_SD,
     FONT_ICON_SD2,
     FONT_DMY20,
@@ -35,9 +35,9 @@ enum FontID
     FONT_NUM_26x31,
     FONT_ASC_30x31,
     FONT_ICON_TPL,
-    FONT_ICON_MDE,  // 30
+    FONT_ICON_MDE,
     FONT_ICON_RNK,
-    FONT_RNK_32x32,
+    FONT_RNK_32x32,  // 0x20
     FONT_RNK_NUM,
     FONT_MINI_RNK,
     FONT_SCORE_NUM,
@@ -45,7 +45,7 @@ enum FontID
     FONT_DMY_RNK1,
     FONT_DMY_RNK2,
     FONT_DMY_RNK3,
-    FONT_DMY_RNK4,  // 40
+    FONT_DMY_RNK4,
     FONT_DMY_RNK5,
     FONT_DMY_RNK6,
     FONT_DMY_RNK7,
@@ -53,9 +53,9 @@ enum FontID
     FONT_DMY_RNK9,
     FONT_DMY_RNKa,
     FONT_DMY_RNKb,
-    FONT_DMY_RNKc,
+    FONT_DMY_RNKc,  // 0x30
     FONT_DMY_RNKd,
-    FONT_DMY_RNKe,  // 50
+    FONT_DMY_RNKe,
     FONT_DMY_RNKf,
     FONT_NUM_7x10,
     FONT_NUM_8x10,
@@ -65,17 +65,17 @@ enum FontID
     FONT_DMY41,
     FONT_DMY42,
     FONT_DMY43,
-    FONT_BWL_SCORE,  // 60
+    FONT_BWL_SCORE,
     FONT_DMY50,
     FONT_DMY51,
     FONT_DMY52,
-    FONT_DMY53,
+    FONT_DMY53,  // 0x40
     FONT_DMY54,
     FONT_DMY55,
     FONT_DMY56,
     FONT_DMY57,
     FONT_RAC_ASC16x16,
-    FONT_RAC_PLAYER,  // 70
+    FONT_RAC_PLAYER,
     FONT_RAC_RANK,
     FONT_RAC_RAP_MARK_NUM,
     FONT_RAC_RAP_NUM,
@@ -85,7 +85,7 @@ enum FontID
     FONT_DMY60,
     FONT_DMY61,
     FONT_DMY62,
-    FONT_DMY63,  // 80
+    FONT_DMY63,  // 0x50
     FONT_DMY64,
     FONT_TGT_PLAYER,
     FONT_TGT_MSCORE,
@@ -95,17 +95,17 @@ enum FontID
     FONT_TGT_ALT,
     FONT_TGT_WIND,
     FONT_TGT_RESULT,
-    FONT_DMY72,  // 90
+    FONT_DMY72,
     FONT_DMY73,
     FONT_DMY74,
     FONT_ICON_LV,
     FONT_NUM_22x22,
     FONT_ASC_16x16,
-    FONT_ASC_16x16P,
+    FONT_ASC_16x16P,  // 0x60
     FONT_ASC_18x16,
     FONT_ASC_20x20,
     FONT_ASC_20x20P,
-    FONT_ASC_32x32,  // 100
+    FONT_ASC_32x32,
     FONT_NUM_12x19,
     FONT_NUM_24x37,
     FONT_DMY79,
@@ -115,9 +115,9 @@ enum FontID
     FONT_DMY7d,
     FONT_DMY7e,
     FONT_DMY7f,
-    FONT_DMY80,  // 110
+    FONT_DMY80,
     FONT_DMY81,
-    FONT_DMY82,
+    FONT_DMY82,  // 0x70
     FONT_DMY83,
     FONT_DMY84,
     FONT_DMY85,
@@ -125,7 +125,7 @@ enum FontID
     FONT_DMY87,
     FONT_DMY88,
     FONT_DMY89,
-    FONT_DMY8a,  // 120
+    FONT_DMY8a,
     FONT_DMY8b,
     FONT_DMY8c,
     FONT_DMY8d,
@@ -133,9 +133,9 @@ enum FontID
     FONT_DMY8f,
     FONT_DMY90,
     FONT_DMY91,
-    FONT_DMY92,
+    FONT_DMY92,  // 0x80
     FONT_DMY93,
-    FONT_DMY94,  // 130
+    FONT_DMY94,
     FONT_DMY95,
     FONT_DMY96,
     FONT_DMY97,
@@ -145,17 +145,17 @@ enum FontID
     FONT_DMY9b,
     FONT_DMY9c,
     FONT_DMY9d,
-    FONT_DMY9e,  // 140
+    FONT_DMY9e,
     FONT_DMY9f,
     FONT_DMYa0,
     FONT_DMYa1,
-    FONT_DMYa2,
+    FONT_DMYa2,  // 0x90
     FONT_DMYa3,
     FONT_DMYa4,
     FONT_DMYa5,
     FONT_DMYa6,
     FONT_DMYa7,
-    FONT_DMYa8,  // 150
+    FONT_DMYa8,
     FONT_DMYa9,
     FONT_DMYaa,
     FONT_DMYab,
@@ -165,7 +165,7 @@ enum FontID
     FONT_DMYaf,
     FONT_DMYb0,
     FONT_DMYb1,
-    FONT_DMYb2,  // 160
+    FONT_DMYb2,  // 0xA0
     FONT_DMYb3,
     FONT_DMYb4,
     FONT_DMYb5,
@@ -175,13 +175,13 @@ enum FontID
     FONT_DMYb9,
     FONT_DMYba,
     FONT_DMYbb,
-    FONT_DMYbc,  // 170
+    FONT_DMYbc,
     FONT_DMYbd,
     FONT_DMYbe,
     FONT_DMYbf,
     FONT_JAP_TAG,
     FONT_JAP_DMY,
-    FONT_JAP_24x24_2,
+    FONT_JAP_24x24_2,  // 0xB0
     FONT_JAP_24x24_2P,
     FONT_JAP_24x24_I,
     FONT_JAP_24x24_2Pg,
@@ -288,7 +288,7 @@ void func_80071B2C(float, float);
 void func_80071B40(float a);
 void func_80071B50();
 void g_set_text_pos(float, float);
-// ? func_80071B78();
+void func_80071B78(s8);
 void g_draw_text(char *str);
 float g_get_text_width(char *str);
 // ? func_80072AC0();

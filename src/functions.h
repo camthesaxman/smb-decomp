@@ -575,7 +575,7 @@ void func_8007ECB8(void);
 void func_8007EF50(struct Ball *);
 // ? func_8007F368();
 // ? func_8007F61C();
-// ? func_8007FD74();
+void func_8007FD74(int);
 // ? func_800802E0();
 void func_8008083C(float, float);
 int func_80081CFC(int, int, int);
