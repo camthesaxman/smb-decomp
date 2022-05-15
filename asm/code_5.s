@@ -11149,7 +11149,6 @@ lbl_8007DF3C:
 /* 8007DF44 00079E64  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007DF48 00079E68  7C 08 03 A6 */	mtlr r0
 /* 8007DF4C 00079E6C  4E 80 00 20 */	blr
-.endif
 glabel lbl_8007DF50
 /* 8007DF50 00079E70  7C 08 02 A6 */	mflr r0
 /* 8007DF54 00079E74  90 01 00 04 */	stw r0, 4(r1)
@@ -11326,7 +11325,7 @@ lbl_8007E1D4:
 /* 8007E1D8 0007A0F8  38 21 00 08 */	addi r1, r1, 8
 /* 8007E1DC 0007A0FC  7C 08 03 A6 */	mtlr r0
 /* 8007E1E0 0007A100  4E 80 00 20 */	blr
-lbl_8007E1E4:
+glabel lbl_8007E1E4
 /* 8007E1E4 0007A104  7C 08 02 A6 */	mflr r0
 /* 8007E1E8 0007A108  90 01 00 04 */	stw r0, 4(r1)
 /* 8007E1EC 0007A10C  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -11458,7 +11457,7 @@ lbl_8007E3B4:
 /* 8007E3BC 0007A2DC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007E3C0 0007A2E0  7C 08 03 A6 */	mtlr r0
 /* 8007E3C4 0007A2E4  4E 80 00 20 */	blr
-lbl_8007E3C8:
+glabel lbl_8007E3C8
 /* 8007E3C8 0007A2E8  A8 A4 00 10 */	lha r5, 0x10(r4)
 /* 8007E3CC 0007A2EC  38 05 FF FF */	addi r0, r5, -1
 /* 8007E3D0 0007A2F0  B0 04 00 10 */	sth r0, 0x10(r4)
@@ -11683,7 +11682,7 @@ lbl_8007E6FC:
 /* 8007E70C 0007A62C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 8007E710 0007A630  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007E714 0007A634  4E 80 00 20 */	blr
-lbl_8007E718:
+glabel lbl_8007E718
 /* 8007E718 0007A638  7C 08 02 A6 */	mflr r0
 /* 8007E71C 0007A63C  3C 60 80 1C */	lis r3, lbl_801C1B20@ha
 /* 8007E720 0007A640  90 01 00 04 */	stw r0, 4(r1)
@@ -11696,7 +11695,7 @@ lbl_8007E718:
 /* 8007E73C 0007A65C  7C 60 1A 14 */	add r3, r0, r3
 /* 8007E740 0007A660  D8 01 00 48 */	stfd f0, 0x48(r1)
 /* 8007E744 0007A664  A8 63 00 00 */	lha r3, 0(r3)
-/* 8007E748 0007A668  80 01 00 4C */	lwz r0, 0x4c(r1)
+/* 8007E748 0007A668  80 01 00 4C */	lwz r0, 0x4c(r1)  ;# (int)x
 /* 8007E74C 0007A66C  D8 01 00 50 */	stfd f0, 0x50(r1)
 /* 8007E750 0007A670  7C 00 18 00 */	cmpw r0, r3
 /* 8007E754 0007A674  80 01 00 54 */	lwz r0, 0x54(r1)
@@ -12046,7 +12045,7 @@ lbl_8007EC68:
 /* 8007EC74 0007AB94  7C 08 03 A6 */	mtlr r0
 /* 8007EC78 0007AB98  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007EC7C 0007AB9C  4E 80 00 20 */	blr
-lbl_8007EC80:
+glabel lbl_8007EC80
 /* 8007EC80 0007ABA0  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8007EC84 0007ABA4  3C 00 43 30 */	lis r0, 0x4330
 /* 8007EC88 0007ABA8  80 64 00 48 */	lwz r3, 0x48(r4)
@@ -12061,7 +12060,7 @@ lbl_8007EC80:
 /* 8007ECAC 0007ABCC  EC 02 00 28 */	fsubs f0, f2, f0
 /* 8007ECB0 0007ABD0  D0 04 00 04 */	stfs f0, 4(r4)
 /* 8007ECB4 0007ABD4  4E 80 00 20 */	blr
-
+.endif
 .global func_8007ECB8
 func_8007ECB8:
 /* 8007ECB8 0007ABD8  7C 08 02 A6 */	mflr r0
@@ -19274,7 +19273,6 @@ lbl_802F5010:
 lbl_802F5018:
 	# ROM: 0x1EEA38
 	.4byte 0x3C03126F
-.endif
 	.4byte 0
 
 .global lbl_802F5020
@@ -19318,7 +19316,7 @@ lbl_802F5040:
 	# ROM: 0x1EEA60
 	.4byte 0x40255555
 	.4byte 0x55555555
-
+.endif
 .global lbl_802F5048
 lbl_802F5048:
 	# ROM: 0x1EEA68
@@ -20842,7 +20840,7 @@ lbl_801C1AA0:
 	.4byte lbl_8007DA4C  ;# ptr
 	.4byte lbl_8007DA44  ;# ptr
 	.4byte lbl_8007DA3C  ;# ptr
-.endif
+
 .global lbl_801C1AC0
 lbl_801C1AC0:
 	# ROM: 0x1BEAC0
@@ -20867,13 +20865,13 @@ glabel string_FIFTH_BEST
 	.4byte string_THIRD_BEST  ;# ptr
 	.4byte string_FOURTH_BEST  ;# ptr
 	.4byte string_FIFTH_BEST  ;# ptr
-
 .global lbl_801C1B20
 lbl_801C1B20:
 	# ROM: 0x1BEB20
 	.4byte 0x00480048
 	.4byte 0x00300258
 	.4byte 0x02100000
+
 glabel string_NAME_ENTRY
 	.asciz "NAME ENTRY"
 	.balign 4
@@ -20999,6 +20997,7 @@ glabel string_Producer___Director
 glabel string_Toshihiro_Nagoshi
 	.asciz "Toshihiro Nagoshi"
 	.balign 4
+glabel lbl_801C1E0C
 	.4byte 0
 	.4byte string_Staff  ;# ptr
 	.4byte 0
@@ -21131,6 +21130,8 @@ glabel string_Toshihiro_Nagoshi
 	.4byte 0x03740000
 	.4byte string_Toshihiro_Nagoshi  ;# ptr
 	.4byte 0x01000000
+
+glabel lbl_801C201C
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -21150,6 +21151,7 @@ glabel string_Toshihiro_Nagoshi
 glabel string_ENDING_PICTURE
 	.asciz "ENDING PICTURE"
 	.balign 4
+glabel lbl_801C206C
 	.4byte 0x00C80000
 	.4byte 0x40C00000
 	.4byte 0x3D4CCCCD
@@ -21175,6 +21177,7 @@ glabel string_MASTER_STAGE
 	.balign 4
 glabel string_EXTRA_STAGE
 	.asciz "EXTRA STAGE"
+.endif
 
 .global lbl_801C20D8
 lbl_801C20D8:
@@ -23202,7 +23205,7 @@ string_1UP:
 	# ROM: 0x1EB820
 	.asciz "1UP"
     .balign 4
-.endif
+
 .global lbl_802F10E4
 lbl_802F10E4:
 	# ROM: 0x1EB824
@@ -23230,6 +23233,7 @@ glabel string_Chamy
 glabel string_HAIKYO
 	.asciz "HAIKYO"
 	.balign 4
+.endif
 
 .global lbl_802F1114
 lbl_802F1114:
@@ -23519,7 +23523,6 @@ lbl_801188E8:
 	.4byte 0xBF800000
 	.4byte 0xBF800000
 	.4byte 0xBF800000
-.endif
 
 .global lbl_80118908
 lbl_80118908:
@@ -23640,7 +23643,7 @@ lbl_80118938:
 	.4byte 0x00000003
 	.4byte 0x0000004E
 	.4byte 0x0000004F
-
+.endif
 .global lbl_80118AC8
 lbl_80118AC8:
 	# ROM: 0x115AC8

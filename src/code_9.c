@@ -3647,6 +3647,537 @@ void show_1up_text(int arg0)
     }
 }
 
+void lbl_8007DF50(s8 *arg0, struct Sprite *sprite)
+{
+    s32 temp_r29 = sprite->unk48 - sprite->counter;
+    float x;
+
+    if (temp_r29 >= 0)
+    {
+        if (temp_r29 == 0)
+        {
+            func_8002B5C8(0xA00E);
+            SoundRevID(0xE, 0x64);
+            SoundChoID(0xE, 0x64);
+        }
+        if (temp_r29 < 30)
+        {
+            sprite->opacity = temp_r29 * 0.03333;
+            x = 320.0f * mathutil_sin((temp_r29 * 0x222) + 0x4000);
+        }
+        else
+        {
+            if (sprite->counter < 30)
+            {
+                sprite->opacity = sprite->counter * 0.03333;
+                x = -320.0f * mathutil_sin((sprite->counter * 0x222) + 0x4000);
+            }
+            else
+            {
+                sprite->opacity = 1.0f;
+                x = 0.0f;
+            }
+        }
+        sprite->x = 320.0f + x;
+
+        {
+            int sp14[] =
+            {
+                0x00, 0x00, 0x00,
+                0xFF, 0x00, 0x00,
+                0xFF, 0xFF, 0xFF,
+                0xFF, 0xFF, 0x00,
+            };
+            int temp_r8 = ((temp_r29 >> 1) % 4) * 3;
+
+            sprite->unkC = sp14[temp_r8 + 0];
+            sprite->unkD = sp14[temp_r8 + 1];
+            sprite->unkE = sp14[temp_r8 + 2];
+        }
+
+    }
+
+    if (--sprite->counter <= 0)
+        *arg0 = 0;
+}
+
+void lbl_8007E1E4(s8 *, struct Sprite *);
+
+void show_hurry_up_text(void)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 20;
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
+        sprite->unk4C = 0.05f;
+        sprite->fontId = FONT_ASC_32x32;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unkC = 0xFF;
+        sprite->unkD = 0x80;
+        sprite->unkE = 0;
+        sprite->counter = 30;
+        sprite->unk74 |= 0x1000;
+        sprite->mainFunc = lbl_8007E1E4;
+        strcpy(sprite->text, "HURRY UP!");
+    }
+}
+
+void lbl_8007E1E4(s8 *arg0, struct Sprite *sprite)
+{
+    if (--sprite->counter == 0)
+    {
+        *arg0 = 0;
+        return;
+    }
+    sprite->opacity = (sprite->counter & 1) ? 1.0 : 0.0;
+    if (sprite->unk48 == 0)
+    {
+        sprite->x += 4.0 * ((rand() / 32767.0f) - 0.5);
+        sprite->y += 2.0 * ((rand() / 32767.0f) - 0.5);
+        return;
+    }
+    sprite->x = find_sprite_with_tag(20)->x + sprite->unk48;
+    sprite->y = find_sprite_with_tag(20)->y;
+}
+
+void lbl_8007E3C8(s8 *, struct Sprite *);
+
+void show_replay_text(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = 0;
+        sprite->x = 760.0f;
+        sprite->y = 460.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_RB;
+        sprite->counter = arg0 - 17;
+        sprite->mainFunc = lbl_8007E3C8;
+        strcpy(sprite->text, "REPLAY");
+    }
+    sprite = find_sprite_with_tag(14);
+    if (sprite != NULL)
+        sprite->unk48 = 0xF;
+}
+
+void lbl_8007E3C8(s8 *arg0, struct Sprite *sprite)
+{
+    sprite->counter--;
+    if (sprite->counter < 0 || !(infoWork.flags & 0x10))
+    {
+        sprite->x += 8.0f;
+        if (sprite->x > 760.0f)
+            *arg0 = 0;
+    }
+    else
+    {
+        if (sprite->x > 624.0f)
+        {
+            sprite->x -= 12.0f;
+            if (sprite->x < 624.0f)
+                sprite->x = 624.0f;
+        }
+    }
+}
+
+char *lbl_801C1B0C[] =
+{
+    "THE GREATEST!",
+    "SECOND BEST",
+    "THIRD BEST",
+    "FOURTH BEST",
+    "FIFTH BEST",
+};
+
+s16 lbl_801C1B20[6] = { 0x0048, 0x0048, 0x0030, 0x0258, 0x0210, 0x0000 };
+
+void lbl_8007E718(s8 *, struct Sprite *);
+
+void func_8007E44C(int rank, int unused)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = lbl_801C1B20[0] - 320;
+        sprite->y = 450.0f;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_LB;
+        sprite->unk48 = 0;
+        sprite->mainFunc = lbl_8007E718;
+        sprintf(sprite->text, "NAME ENTRY");
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = lbl_801C1B20[1] - 320;
+        sprite->y = 450.0f;
+        sprite->fontId = FONT_ASC_8x16;
+        sprite->textAlign = ALIGN_LT;
+        if (rank < 0)
+            sprintf(sprite->text, "OUT OF RANK");
+        else
+            sprintf(sprite->text, "YOU ARE %s", lbl_801C1B0C[rank]);
+        sprite->unk48 = 1;
+        sprite->mainFunc = lbl_8007E718;
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = lbl_801C1B20[2] - 320;
+        sprite->y = 448.0f;
+        sprite->fontId = FONT_ICON_LV;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk40 = 0.5f;
+        sprite->unk44 = 0.5f;
+        sprite->unk48 = 2;
+        sprite->mainFunc = lbl_8007E718;
+        sprintf(sprite->text, lbl_802F105C, modeCtrl.levelSet + 4);
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = lbl_801C1B20[3] + 320;
+        sprite->y = 456.0f;
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_RB;
+        sprite->unk48 = 3;
+        sprite->mainFunc = lbl_8007E718;
+        sprintf(sprite->text, lbl_802F1080);
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = lbl_801C1B20[4] + 320;
+        sprite->y = 450.0f;
+        sprite->unkC = 0xFF;
+        sprite->unkD = 0xC8;
+        sprite->unkE = 0;
+        sprite->fontId = FONT_ASC_20x20;
+        sprite->textAlign = ALIGN_CT;
+        sprite->unk48 = 4;
+        sprite->mainFunc = lbl_8007E718;
+        sprintf(sprite->text, "TIME LIMIT");
+    }
+}
+
+void lbl_8007E718(s8 *arg0, struct Sprite *sprite)
+{
+    int temp_r5 = sprite->unk48;
+    int x = sprite->x;
+    int temp_r3 = lbl_801C1B20[temp_r5];
+
+    if (x < temp_r3)
+    {
+        x += 10.666666666666666;
+        if (x > temp_r3)
+            x = temp_r3;
+    }
+    else if (x > temp_r3)
+    {
+        x -= 10.666666666666666;
+        if (x < temp_r3)
+            x = temp_r3;
+    }
+    sprite->x = x;
+    if (temp_r5 == 3)
+    {
+        if (infoWork.timerCurr > 600)
+        {
+            sprite->unkC = 0;
+            sprite->unkD = 0x80;
+            sprite->unkE = 0xFF;
+        }
+        else if (infoWork.timerCurr > 180)
+        {
+            sprite->unkC += 0.05 * (0xFF - sprite->unkC);
+            sprite->unkD += 0.05 * (0xC8 - sprite->unkD);
+            sprite->unkE += 0.05 * -sprite->unkE;
+        }
+        else
+        {
+            sprite->unkC += 0.05 * (0xFF - sprite->unkC);
+            sprite->unkD += 0.05 * -sprite->unkD;
+            sprite->unkE += 0.05 * (0x20 - sprite->unkE);
+        }
+        sprintf(sprite->text, lbl_802F105C, infoWork.timerCurr / 60);
+    }
+}
+
+void show_nameentry_text(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
+        sprite->unkC = 0;
+        sprite->unkD = 0xFF;
+        sprite->unkE = 0xA0;
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_CB;
+        sprite->counter = arg0;
+        sprite->unk48 = arg0;
+        sprite->mainFunc = lbl_8007926C;
+        strcpy(sprite->text, "NAME");
+    }
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 320.0f;
+        sprite->y = 240.0f;
+        sprite->unkC = 0;
+        sprite->unkD = 0xFF;
+        sprite->unkE = 0xA0;
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_CT;
+        sprite->counter = arg0;
+        sprite->unk48 = arg0;
+        sprite->mainFunc = lbl_8007926C;
+        strcpy(sprite->text, "ENTRY");
+    }
+    g_play_sound(4);
+}
+
+char string_CONGRATULATIONS[] = "CONGRATULATIONS";
+char string_THANK__YOU__FOR__PLAYING[] = "THANK  YOU  FOR  PLAYING";
+
+struct {u32 unk0; char *name; u32 unk8;} lbl_801C1E0C[] =
+{
+    { 0x00000000, "Staff",                 0x00000000,},
+    { 0x00230000, "Chief Programmer",      0x00000000 },
+    { 0x00370000, "Hisashi Endo",          0x01000000 },
+    { 0x00500000, "Programmers",           0x00000000 },
+    { 0x00640000, "Jun Tokuhara",          0x01000000 },
+    { 0x00730000, "Yoshinori Suzuki",      0x01000000 },
+    { 0x00820000, "Eiji Takaki",           0x01000000 },
+    { 0x009B0000, "Chief Designer",        0x00000000 },
+    { 0x00AF0000, "Junichi Yamada",        0x01000000 },
+    { 0x00C80000, "Designers",             0x00000000 },
+    { 0x00DC0000, "Mika Kojima",           0x01000000 },
+    { 0x00EB0000, "Yukinobu Arikawa",      0x01000000 },
+    { 0x00FA0000, "Yukio Oda",             0x01000000 },
+    { 0x01090000, "Mari Sasaki",           0x01000000 },
+    { 0x01220000, "Sound Design",          0x00000000 },
+    { 0x01360000, "Yoshiyuki Kadooka",     0x01000000 },
+    { 0x01450000, "Chamy",                 0x01000000 },
+    { 0x01540000, "Hiroyuki Hamada",       0x01000000 },
+    { 0x01630000, "Hidenori Shoji",        0x01000000 },
+    { 0x01720000, "Sakae Osumi",           0x01000000 },
+    { 0x018B0000, "Monkey Voice",          0x00000000 },
+    { 0x019F0000, "Kaoru Morota",          0x01000000 },
+    { 0x01AE0000, "Konami Yoshida",        0x01000000 },
+    { 0x01BD0000, "Rio Natsuki",           0x01000000 },
+    { 0x01D60000, "Mechatronics",          0x00000000 },
+    { 0x01EA0000, "Masao Yoshimoto",       0x01000000 },
+    { 0x01F90000, "Akihiko Kohno",         0x01000000 },
+    { 0x02080000, "Kazuhiro Nojo",         0x01000000 },
+    { 0x02170000, "Hiroki Koyama",         0x01000000 },
+    { 0x02260000, "Masahito Yanase",       0x01000000 },
+    { 0x02350000, "Seiji Ishii",           0x01000000 },
+    { 0x02440000, "Yutaka Yokoyama",       0x01000000 },
+    { 0x02530000, "Eiji Inoue",            0x01000000 },
+    { 0x026C0000, "Publicity",             0x00000000 },
+    { 0x02800000, "Masae Otoshi",          0x01000000 },
+    { 0x02990000, "Cooperation",           0x00000000 },
+    { 0x02AD0000, "Dole Food Company,Inc", 0x01000000 },
+    { 0x02BC0000, "Dole Japan,Ltd.",       0x01000000 },
+    { 0x02F50000, "Special Thanks",        0x00000000 },
+    { 0x03090000, "HAIKYO",                0x01000000 },
+    { 0x03180000, "STURM Co.,Ltd.",        0x01000000 },
+    { 0x03270000, "T's music Co.,Ltd.",    0x01000000 },
+    { 0x03600000, "Producer & Director",   0x00000000 },
+    { 0x03740000, "Toshihiro Nagoshi",     0x01000000 },
+};
+
+u32 lbl_801C201C[] =
+{
+    0x00000000,
+    0x00000000,
+    0x00000000,
+    0x02D00205,
+    0x023201E0,
+    0x0200033B,
+    0x02050256,
+    0x01E00300,
+    0x03C00202,
+    0x014001E0,
+    0x00000474,
+    0x02000140,
+    0x01E00100,
+    0xFFFFFFFF,
+    0xFFFFFFFF,
+    0xFF000000,
+};
+
+char string_ENDING_PICTURE[] = "ENDING PICTURE";
+
+struct
+{
+    s16 unk0;
+    float unk4;
+    float unk8;
+    s8 unkC;
+} lbl_801C206C[] =
+{
+    { 200,  6, 0.05,  6 },
+    { 450, 15, 0.04,  4 },
+    {  50,  3, 0.06, 10 },
+    { 450,  9, 0.04,  8 },
+    {  50,  6, 0.05,  6 },
+};
+
+void lbl_8007EC80(s8 *, struct Sprite *);
+
+void func_8007EB2C(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        int var = arg0 % 5;
+
+        sprite->x = 640.0f;
+        sprite->y = lbl_801C206C[var].unk0;
+        sprite->unkC = 0xFF;
+        sprite->unkD = 0xFF;
+        sprite->unkE = 0xFF;
+        sprite->fontId = FONT_ASC_32x32;
+        sprite->textAlign = ALIGN_LC;
+        sprite->unk40 = lbl_801C206C[var].unk4;
+        sprite->unk44 = 0.75 * sprite->unk40;
+        sprite->opacity = lbl_801C206C[var].unk8;
+        sprite->unk48 = lbl_801C206C[var].unkC;
+        sprite->unk4C = 0.1 - 0.001 * sprite->unk40;
+        sprite->unk74 |= 0x1000;
+        sprite->mainFunc = lbl_8007EC80;
+        if (modeCtrl.levelSetFlags & 0x10)
+            sprintf(sprite->text, "MASTER STAGE");
+        else
+            sprintf(sprite->text, "EXTRA STAGE");
+    }
+}
+
+void lbl_8007EC80(s8 *arg0, struct Sprite *sprite)
+{
+    sprite->x -= sprite->unk48;
+}
+
+const u32 lbl_80118938[] =
+{
+    0x0000000F,
+    0x00000020,
+    0x00000033,
+    0x00000003,
+    0x00000015,
+    0x00000016,
+    0x00000017,
+    0x00000017,
+    0x00000016,
+    0x00000016,
+    0x00000016,
+    0x00000017,
+    0x00000016,
+    0x00000016,
+    0x00000016,
+    0x00000017,
+    0x00000025,
+    0x00000026,
+    0x00000027,
+    0x00000027,
+    0x00000026,
+    0x00000026,
+    0x00000026,
+    0x00000027,
+    0x00000026,
+    0x00000026,
+    0x00000026,
+    0x00000027,
+    0x00000037,
+    0x00000038,
+    0x00000039,
+    0x00000039,
+    0x00000038,
+    0x00000038,
+    0x00000038,
+    0x00000039,
+    0x00000038,
+    0x00000038,
+    0x00000038,
+    0x00000039,
+    0x0000000B,
+    0x0000000E,
+    0x0000004D,
+    0x0000004D,
+    0x0000000E,
+    0x0000000E,
+    0x0000000E,
+    0x0000004D,
+    0x0000000E,
+    0x0000000E,
+    0x0000000E,
+    0x0000004D,
+    0x00000018,
+    0x00000019,
+    0x00000018,
+    0x0000000F,
+    0x00000018,
+    0x00000018,
+    0x00000018,
+    0x00000018,
+    0x00000018,
+    0x0000000F,
+    0x00000018,
+    0x00000019,
+    0x00000028,
+    0x00000029,
+    0x00000028,
+    0x00000020,
+    0x00000028,
+    0x00000028,
+    0x00000028,
+    0x00000028,
+    0x00000028,
+    0x00000020,
+    0x00000028,
+    0x00000029,
+    0x0000003A,
+    0x0000003B,
+    0x0000003A,
+    0x00000033,
+    0x0000003A,
+    0x0000003A,
+    0x0000003A,
+    0x0000003A,
+    0x0000003A,
+    0x00000033,
+    0x0000003A,
+    0x0000003B,
+    0x0000004E,
+    0x0000004F,
+    0x0000004E,
+    0x00000003,
+    0x0000004E,
+    0x0000004E,
+    0x0000004E,
+    0x0000004E,
+    0x0000004E,
+    0x00000003,
+    0x0000004E,
+    0x0000004F,
+};
+
 /*
 const float lbl_802F4BD8 = 315f;
 const float lbl_802F4BDC = 0.004999999888241291f;
