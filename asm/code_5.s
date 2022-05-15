@@ -9447,7 +9447,6 @@ lbl_8007C678:
 /* 8007C6A0 000785C0  CB A1 00 50 */	lfd f29, 0x50(r1)
 /* 8007C6A4 000785C4  38 21 00 68 */	addi r1, r1, 0x68
 /* 8007C6A8 000785C8  4E 80 00 20 */	blr
-.endif
 
 .global g_show_goal_text
 g_show_goal_text:
@@ -9543,7 +9542,8 @@ lbl_8007C7F4:
 /* 8007C800 00078720  7C 08 03 A6 */	mtlr r0
 /* 8007C804 00078724  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007C808 00078728  4E 80 00 20 */	blr
-lbl_8007C80C:
+
+glabel lbl_8007C80C
 /* 8007C80C 0007872C  7C 08 02 A6 */	mflr r0
 /* 8007C810 00078730  90 01 00 04 */	stw r0, 4(r1)
 /* 8007C814 00078734  38 00 05 04 */	li r0, 0x504
@@ -9797,7 +9797,8 @@ lbl_8007CBA8:
 /* 8007CBC8 00078AE8  83 A1 00 8C */	lwz r29, 0x8c(r1)
 /* 8007CBCC 00078AEC  38 21 00 B0 */	addi r1, r1, 0xb0
 /* 8007CBD0 00078AF0  4E 80 00 20 */	blr
-lbl_8007CBD4:
+
+glabel lbl_8007CBD4
 /* 8007CBD4 00078AF4  7C 08 02 A6 */	mflr r0
 /* 8007CBD8 00078AF8  90 01 00 04 */	stw r0, 4(r1)
 /* 8007CBDC 00078AFC  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -9929,7 +9930,7 @@ lbl_8007CDB0:
 /* 8007CDC0 00078CE0  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 8007CDC4 00078CE4  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007CDC8 00078CE8  4E 80 00 20 */	blr
-lbl_8007CDCC:
+glabel lbl_8007CDCC
 /* 8007CDCC 00078CEC  88 A4 00 71 */	lbz r5, 0x71(r4)
 /* 8007CDD0 00078CF0  38 05 00 06 */	addi r0, r5, 6
 /* 8007CDD4 00078CF4  98 04 00 71 */	stb r0, 0x71(r4)
@@ -10016,7 +10017,8 @@ lbl_8007CEFC:
 /* 8007CF04 00078E24  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007CF08 00078E28  7C 08 03 A6 */	mtlr r0
 /* 8007CF0C 00078E2C  4E 80 00 20 */	blr
-lbl_8007CF10:
+
+glabel lbl_8007CF10
 /* 8007CF10 00078E30  7C 08 02 A6 */	mflr r0
 /* 8007CF14 00078E34  3C A0 80 1F */	lis r5, modeCtrl@ha
 /* 8007CF18 00078E38  90 01 00 04 */	stw r0, 4(r1)
@@ -10187,6 +10189,7 @@ lbl_8007D170:
 /* 8007D184 000790A4  83 81 00 28 */	lwz r28, 0x28(r1)
 /* 8007D188 000790A8  38 21 00 38 */	addi r1, r1, 0x38
 /* 8007D18C 000790AC  4E 80 00 20 */	blr
+.endif
 
 .global show_timeover_text
 show_timeover_text:
@@ -13200,7 +13203,8 @@ lbl_8007FD24:
 /* 8007FD3C 0007BC5C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 8007FD40 0007BC60  38 21 00 30 */	addi r1, r1, 0x30
 /* 8007FD44 0007BC64  4E 80 00 20 */	blr
-lbl_8007FD48:
+
+glabel lbl_8007FD48
 /* 8007FD48 0007BC68  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8007FD4C 0007BC6C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8007FD50 0007BC70  4C 82 00 20 */	bnelr
@@ -19133,7 +19137,6 @@ lbl_802F4F84:
 lbl_802F4F88:
 	# ROM: 0x1EE9A8
 	.4byte 0xC3700000
-.endif
 
 .global lbl_802F4F8C
 lbl_802F4F8C:
@@ -19224,6 +19227,7 @@ lbl_802F4FE8:
 lbl_802F4FF0:
 	# ROM: 0x1EEA10
 	.4byte 0x3F59999A
+.endif
 
 .global lbl_802F4FF4
 lbl_802F4FF4:
@@ -20785,7 +20789,6 @@ lbl_801C1A24:
 glabel string__2d_BANANA_s_LEFT
 	.asciz "%2d BANANA%s LEFT"
 	.balign 4
-.endif
 
 .global lbl_801C1A38
 lbl_801C1A38:
@@ -20800,6 +20803,7 @@ lbl_801C1A4C:
 glabel string_FALL_OUT
 	.asciz "FALL OUT"
 	.balign 4
+.endif
 
 .global lbl_801C1A58
 lbl_801C1A58:
@@ -23170,12 +23174,12 @@ lbl_802F10C4:
 	# ROM: 0x1EB804
 	.asciz "GO"
 	.balign 4
-.endif
 
 	# ROM: 0x1EB808
 glabel string_GOAL
 	.asciz "GOAL"
 	.balign 4
+.endif
 
 	# ROM: 0x1EB810
 glabel string_PERFECT
@@ -23469,6 +23473,7 @@ glabel string_GOR_L
 
 .section .rodata
 
+.if 0
 .global lbl_80118870
 lbl_80118870:
 	# ROM: 0x115870
@@ -23514,6 +23519,7 @@ lbl_801188E8:
 	.4byte 0xBF800000
 	.4byte 0xBF800000
 	.4byte 0xBF800000
+.endif
 
 .global lbl_80118908
 lbl_80118908:

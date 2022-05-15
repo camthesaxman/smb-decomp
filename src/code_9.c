@@ -2341,7 +2341,39 @@ void lbl_8007AA38(s8 *arg0, struct Sprite *sprite)
     sprintf(sprite->text, lbl_802F10A0, val);
 }
 
-extern const float lbl_80118870[];
+const float lbl_80118870[] =
+{
+    1.0,
+    1.1,
+    1.2,
+    1.3,
+    1.4,
+    1.5,
+    1.5,
+    1.4,
+    1.3,
+    1.2,
+    1.1,
+    1.0,
+    0.9,
+    0.8,
+    0.7,
+    0.8,
+    0.9,
+    1.0,
+    1.1,
+    1.2,
+    1.3,
+    1.4,
+    1.5,
+    1.5,
+    1.4,
+    1.3,
+    1.2,
+    1.1,
+    1.0,
+    1.0,
+};
 
 void lbl_8007AAFC(struct Sprite *sprite)
 {
@@ -2887,6 +2919,309 @@ void go_sprite_draw(struct Sprite *sprite)
             (sprite->y + phi_f2) - temp_r3);
         func_80071B78((i == 0) ? 0x47 : 0x4F);
     }
+}
+
+char lbl_801C1A38[] = "JUMP TO FLOOR %d";
+
+void lbl_8007C80C(struct Sprite *);
+void lbl_8007CBD4(s8 *, struct Sprite *);
+void lbl_8007FD48(s8 *, struct Sprite *);
+
+void g_show_goal_text(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 320.0f;
+        if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+            sprite->y = 240.0f;
+        else
+            sprite->y = 320.0f;
+        sprite->unk4C = 0.05f;
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_CC;
+        sprite->counter = arg0;
+        sprite->unk48 = arg0;
+        sprite->unk74 |= 0x1000;
+        sprite->mainFunc = lbl_8007FD48;
+        sprite->drawFunc = lbl_8007C80C;
+        strcpy(sprite->text, "GOAL");
+    }
+    if (infoWork.unk22 != 1)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->x = 320.0f;
+            sprite->y = 240.0f;
+            sprite->unkC = 0;
+            sprite->unkD = 0xC0;
+            sprite->unkE = 0xFF;
+            sprite->unk40 = 1.0f;
+            sprite->unk44 = 0.6f;
+            sprite->fontId = FONT_ASC_32x32;
+            sprite->textAlign = ALIGN_CC;
+            sprite->counter = arg0;
+            sprite->unk48 = arg0;
+            sprite->unk74 |= 0x1000;
+            sprite->mainFunc = lbl_8007CBD4;
+            sprintf(sprite->text, lbl_801C1A38, infoWork.unk20);
+        }
+    }
+}
+
+extern float lbl_802F2018;
+extern float lbl_802F201C;
+
+void lbl_8007C80C(struct Sprite *sprite)
+{
+    struct NaomiSpriteParams params;
+    float phi_f30;
+    int temp_r29;
+    int temp_r31;
+    int temp_r6;
+    int phi_r7;
+    int i;
+
+    params.bmpId = BMP_NML_game_goal;
+    params.z = sprite->unk4C;
+    params.rotation = sprite->unk68;
+    params.unk30 = -1;
+    params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
+
+    temp_r31 = sprite->unk48 - sprite->counter;
+    if (temp_r31 < 30)
+    {
+        phi_f30 = temp_r31 * 0.016666;
+        phi_r7 = 0;
+    }
+    else if (temp_r31 < 45)
+    {
+        phi_f30 = 1.0f;
+        phi_r7 = mathutil_sin((temp_r31 - 30) * 0x888) * 255.0f;
+    }
+    else if (sprite->counter <= 15)
+    {
+        phi_f30 = sprite->counter * 0.06666;
+        phi_r7 = 0;
+    }
+    else
+    {
+        phi_f30 = 1.0f;
+        phi_r7 = 0;
+    }
+    params.alpha = phi_f30;
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(phi_f30 * 255.0f));
+    params.color2 = RGBA(phi_r7, phi_r7, phi_r7, 0);
+
+    if (temp_r31 >= 210)
+    {
+        sprite->x = 561.0f;
+        sprite->y = 420.0f;
+        sprite->unk40 = 0.5f;
+        sprite->unk44 = sprite->unk40;
+    }
+    else if (temp_r31 >= 180)
+    {
+        temp_r6 = temp_r31 - 180;
+        sprite->x = 320.0 + temp_r6 * 8.03333;
+        if (modeCtrl.gameType == 1)
+            sprite->y = 240.0 + temp_r6 * 6.0;
+        else
+            sprite->y = 320.0 + temp_r6 * 3.33333;
+        sprite->unk40 = 1.0 - temp_r6 * 0.01666;
+        sprite->unk44 = sprite->unk40;
+    }
+
+    params.u1 = 0.0f;
+    params.v1 = 0.0f;
+    params.u2 = 1.0f;
+    params.v2 = 1.0f;
+    params.zoomX = sprite->unk40;
+    params.zoomY = sprite->unk44;
+
+    if (temp_r31 < 30)
+    {
+        struct {float x; float y;} spC[4] =
+        {
+            { -1,  1 },
+            {  1,  1 },
+            {  1, -1 },
+            { -1, -1 },
+        };
+        float temp_f29 = (30 - temp_r31) * 0.03333;
+
+        for (i = 0; i < 4; i++)
+        {
+            lbl_802F2018 = sprite->x;
+            lbl_802F201C = sprite->y;
+            lbl_802F2018 += temp_f29 * (216.0f * spC[i].x);
+            lbl_802F201C += temp_f29 * (192.0f * spC[i].y);
+            params.x = lbl_802F2018;
+            params.y = lbl_802F201C;
+            draw_naomi_sprite(&params);
+        }
+    }
+    else
+    {
+        params.x = sprite->x;
+        params.y = sprite->y;
+        draw_naomi_sprite(&params);
+    }
+    func_80071A8C();
+}
+
+void lbl_8007CDCC(s8 *, struct Sprite *);
+
+void lbl_8007CBD4(s8 *arg0, struct Sprite *sprite)
+{
+    s32 temp_r29;
+    struct Sprite *temp_r3;
+
+    temp_r29 = sprite->unk48 - sprite->counter;
+    if (temp_r29 < 30)
+        sprite->opacity = 0.03333 * temp_r29;
+    else if (sprite->counter <= 15)
+        sprite->opacity = 0.06666 * sprite->counter;
+    else
+        sprite->opacity = 1.0f;
+    sprite->x = 320.0f + 20.0f * mathutil_sin(temp_r29 << 9);
+    sprite->y = 240.0f + 10.0f * mathutil_sin((temp_r29 << 8) + 0x4000);
+
+    if (temp_r29 % 2 == 1)
+    {
+        temp_r3 = create_sprite();
+        if (temp_r3 != NULL)
+        {
+            temp_r3->x = sprite->x;
+            temp_r3->y = sprite->y;
+            temp_r3->unk4C = sprite->unk4C + 0.1;
+            temp_r3->unkC = sprite->unkC;
+            temp_r3->unkD = sprite->unkD;
+            temp_r3->unkE = sprite->unkE;
+            temp_r3->unk70 = 0;
+            temp_r3->unk71 = 0x60;
+            temp_r3->unk72 = 0x7F;
+            temp_r3->unk40 = sprite->unk40;
+            temp_r3->unk44 = sprite->unk44;
+            temp_r3->fontId = FONT_ASC_32x32;
+            temp_r3->textAlign = ALIGN_CC;
+            temp_r3->counter = 0x10;
+            temp_r3->opacity = 0.5f;
+            temp_r3->unk74 |= 0x1000;
+            temp_r3->mainFunc = lbl_8007CDCC;
+            sprintf(temp_r3->text, lbl_801C1A38, infoWork.unk20);
+        }
+    }
+
+    if (--sprite->counter <= 0)
+        *arg0 = 0;
+}
+
+void lbl_8007CDCC(s8 *arg0, struct Sprite *sprite)
+{
+    sprite->unk71 += 6;
+    sprite->unk72 += 7;
+    sprite->unk4C += 0.001;
+    sprite->unk40 += 0.008;
+    sprite->unk44 += 0.008;
+    sprite->opacity -= 0.03125;
+
+    if (--sprite->counter <= 0)
+        *arg0 = 0;
+}
+
+void lbl_8007CF10(s8 *, struct Sprite *);
+
+void show_fallout_text(int arg0)
+{
+    struct Sprite *temp_r3;
+
+    if (!(infoWork.flags & 0x40))
+    {
+        temp_r3 = create_sprite();
+        if (temp_r3 != NULL)
+        {
+            temp_r3->x = 320.0f;
+            temp_r3->y = 240.0f;
+            temp_r3->unk4C = 0.05f;
+            temp_r3->unkC = 0xFF;
+            temp_r3->unkD = 0x8C;
+            temp_r3->unkE = 0;
+            temp_r3->fontId = 9;
+            temp_r3->textAlign = 4;
+            temp_r3->counter = arg0;
+            temp_r3->unk48 = arg0;
+            temp_r3->unk74 |= 0x1000;
+            temp_r3->mainFunc = lbl_8007CF10;
+            strcpy(temp_r3->text, "FALL OUT");
+        }
+    }
+    else
+        func_8007D428();
+}
+
+void lbl_8007CF10(s8 *arg0, struct Sprite *sprite)
+{
+    s32 temp_r0_3;
+    s32 temp_r28;
+
+    temp_r28 = sprite->unk48 - sprite->counter;
+
+    if (modeCtrl.gameType != GAMETYPE_MINI_TARGET && temp_r28 == 90)
+        g_play_sound(0xC);
+
+    if (temp_r28 < 30)
+    {
+        sprite->opacity = 0.03333 * temp_r28;
+        sprite->y = 240 - (30 - temp_r28) * 6;
+    }
+    else if (temp_r28 < 60)
+    {
+        sprite->opacity = 1.0f;
+        sprite->y = 240.0f - 32.0f * mathutil_sin((temp_r28 - 30) * 0x444);
+    }
+    else if (temp_r28 < 90)
+    {
+        sprite->opacity = 1.0f;
+        sprite->y = 240.0f - 8.0f * mathutil_sin((temp_r28 - 0x3C) * 0x444);
+    }
+    else
+    {
+        if (sprite->counter <= 15)
+            sprite->opacity = 0.06666 * sprite->counter;
+        else
+            sprite->opacity = 1.0f;
+    }
+    if (modeCtrl.gameType != GAMETYPE_MINI_TARGET
+     && modeCtrl.gameType != GAMETYPE_MINI_BOWLING)
+    {
+        if (temp_r28 >= 120)
+        {
+            sprite->x = 496.0f;
+            sprite->y = 420.0f;
+            sprite->unk40 = 0.5f;
+            sprite->unk44 = sprite->unk40;
+        }
+        else if (temp_r28 >= 90)
+        {
+            temp_r0_3 = temp_r28 - 90;
+            sprite->x = 320.0 + temp_r0_3 * 5.86666;
+            sprite->y = 240 + temp_r0_3 * 6;
+            sprite->unk40 = 1.0 - temp_r0_3 * 0.01666;
+            sprite->unk44 = sprite->unk40;
+        }
+    }
+    else
+    {
+        sprite->unk40 = 0.85f;
+        sprite->unk44 = sprite->unk40;
+    }
+
+    if (--sprite->counter <= 0)
+        *arg0 = 0;
 }
 
 /*
