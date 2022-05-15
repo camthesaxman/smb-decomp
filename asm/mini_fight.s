@@ -13653,8 +13653,8 @@ lbl_0000CC8C:
 /* 0000CCA4 4BFF34C1 */ bl mathutil_mtxA_rotate_y
 /* 0000CCA8 48000058 */ b lbl_0000CD00
 lbl_0000CCAC:
-/* 0000CCAC 3C600000 */ lis r3, s_g_currBgSomething@ha
-/* 0000CCB0 3BA30000 */ addi r29, r3, s_g_currBgSomething@l
+/* 0000CCAC 3C600000 */ lis r3, s_bgLightInfo@ha
+/* 0000CCB0 3BA30000 */ addi r29, r3, s_bgLightInfo@l
 /* 0000CCB4 A87D0042 */ lha r3, 0x42(r29)
 /* 0000CCB8 4BFF34AD */ bl mathutil_mtxA_from_rotate_y
 /* 0000CCBC A87D0040 */ lha r3, 0x40(r29)

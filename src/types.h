@@ -997,7 +997,7 @@ struct Stobj
     Vec g_local_vel;
 };
 
-struct BgLightSomething
+struct BgLightInfo
 {
 	float unk0;
     struct Color3f ambient;
@@ -1010,11 +1010,12 @@ struct BgLightSomething
     float unk28;
     float unk2C;
     float unk30;
-	float lightRed;
-	float lightGreen;
-	float lightBlue;
-	s16 lightRotX;
-	s16 lightRotY;
+
+    // Global directional light ("infinite" light)
+    struct Color3f infLightColor;
+	s16 infLightRotX;
+	s16 infLightRotY;
+
     s8 **unk44;
 };
 

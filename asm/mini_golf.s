@@ -12292,8 +12292,8 @@ lbl_0000B498:
 /* 0000B4AC 48000288 */ b lbl_0000B734
 lbl_0000B4B0:
 /* 0000B4B0 C01E0000 */ lfs f0, 0(r30)
-/* 0000B4B4 3C600000 */ lis r3, s_g_currBgSomething@ha
-/* 0000B4B8 38630000 */ addi r3, r3, s_g_currBgSomething@l
+/* 0000B4B4 3C600000 */ lis r3, s_bgLightInfo@ha
+/* 0000B4B8 38630000 */ addi r3, r3, s_bgLightInfo@l
 /* 0000B4BC D01F0020 */ stfs f0, 0x20(r31)
 /* 0000B4C0 38800C00 */ li r4, 0xc00
 /* 0000B4C4 A8630042 */ lha r3, 0x42(r3)
@@ -12423,8 +12423,8 @@ lbl_0000B680:
 lbl_0000B690:
 /* 0000B690 3C600000 */ lis r3, unpausedFrameCounter@ha
 /* 0000B694 80830000 */ lwz r4, unpausedFrameCounter@l(r3)
-/* 0000B698 3C600000 */ lis r3, s_g_currBgSomething@ha
-/* 0000B69C 38630000 */ addi r3, r3, s_g_currBgSomething@l
+/* 0000B698 3C600000 */ lis r3, s_bgLightInfo@ha
+/* 0000B69C 38630000 */ addi r3, r3, s_bgLightInfo@l
 /* 0000B6A0 3804FFFF */ addi r0, r4, -1  ;# fixed addi
 /* 0000B6A4 901F0034 */ stw r0, 0x34(r31)
 /* 0000B6A8 38800C00 */ li r4, 0xc00

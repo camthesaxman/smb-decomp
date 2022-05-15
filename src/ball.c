@@ -1232,8 +1232,8 @@ void g_ball_shadow_something_1(void)
         break;
     }
 
-    mathutil_mtxA_from_rotate_y(s_g_currBgSomething.lightRotY);
-    mathutil_mtxA_rotate_x(s_g_currBgSomething.lightRotX);
+    mathutil_mtxA_from_rotate_y(s_bgLightInfo.infLightRotY);
+    mathutil_mtxA_rotate_x(s_bgLightInfo.infLightRotX);
     spC.x = 0.0f;
     spC.y = 0.0f;
     spC.z = -15.0f;
@@ -1830,7 +1830,7 @@ void ball_func_11(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
     ball->ape->unk60 = ball->unk98;
-    ball->unk2A = s_g_currBgSomething.lightRotY + 0x2000;
+    ball->unk2A = s_bgLightInfo.infLightRotY + 0x2000;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_y(ball->unk2A - 16384);

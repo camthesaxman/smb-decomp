@@ -4067,8 +4067,8 @@ lbl_80050668:
 /* 8005069C 0004C5BC  4B FB 77 3D */	bl mathutil_mtxA_scale_xyz
 /* 800506A0 0004C5C0  C0 3F 00 24 */	lfs f1, 0x24(r31)
 /* 800506A4 0004C5C4  4B FE 05 05 */	bl g_nl2ngc_set_scale
-/* 800506A8 0004C5C8  3C 60 80 1F */	lis r3, s_g_currBgSomething@ha
-/* 800506AC 0004C5CC  38 63 06 14 */	addi r3, r3, s_g_currBgSomething@l
+/* 800506A8 0004C5C8  3C 60 80 1F */	lis r3, s_bgLightInfo@ha
+/* 800506AC 0004C5CC  38 63 06 14 */	addi r3, r3, s_bgLightInfo@l
 /* 800506B0 0004C5D0  C0 23 00 14 */	lfs f1, 0x14(r3)
 /* 800506B4 0004C5D4  C0 43 00 18 */	lfs f2, 0x18(r3)
 /* 800506B8 0004C5D8  C0 03 00 1C */	lfs f0, 0x1c(r3)

@@ -148,8 +148,8 @@ void func_80021ECC_inline(struct Light *r29)
     printf("\tLTP_%s,\t%d,\t%d,\n", lightTypeNames[r29->type], r29->spotFn, currStageId);
     printf("\t{ %f, %f, %f },\n", r29->red, r29->green, r29->blue);
     printf("\t{ %f, %f, %f },\n", r29->pos.x, r29->pos.y, r29->pos.z);
-    printf("\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n", r29->rotX, r29->rotY, r29->rotZ,
-           r29->dir.x, r29->dir.y, r29->dir.z);
+    printf("\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n", r29->rotX, r29->rotY, r29->rotZ, r29->dir.x,
+           r29->dir.y, r29->dir.z);
     printf("\t%f,\t%f,\t%f,\n", r29->refDist, r29->k0, r29->k1);
     printf("\t%f,\t%f\n", r29->k2, r29->spotCutoff);
     printf("},\n\n");
@@ -233,7 +233,8 @@ struct LightGroup
     u8 filler254[4];
 };
 
-struct BgLightSomething s_g_currBgSomething;
+// Lighting information for current background
+struct BgLightInfo s_bgLightInfo;
 
 struct LightGroup s_lightGroups[22];
 
@@ -267,7 +268,9 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
         break;
     }
 
-    f3 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP) ? light->refDist : light->refDist * g_minimap_light_ref_dist_scale;
+    f3 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP)
+             ? light->refDist
+             : light->refDist * g_minimap_light_ref_dist_scale;
     switch (light->type)
     {
     case LIGHT_TYPE_INFINITE:
@@ -297,7 +300,9 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
 
     GXInitLightColor(&lightObj, lightColor);
 
-    f0 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP) ? 0.0 : 2.05f * ((1.0f / g_minimap_light_ref_dist_scale) - 1.0f);
+    f0 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP)
+             ? 0.0
+             : 2.05f * ((1.0f / g_minimap_light_ref_dist_scale) - 1.0f);
     sp60.x = light->pos.x;
     sp60.y = light->pos.y + f0;
     sp60.z = light->pos.z;
@@ -325,26 +330,28 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
         break;
     }
     GXLoadLightObjImm(&lightObj, (1 << lightIdxInGroup));
-    memcpy(&group->lightObjs[lightIdxInGroup], &lightObj, sizeof(group->lightObjs[lightIdxInGroup]));
+    memcpy(&group->lightObjs[lightIdxInGroup], &lightObj,
+           sizeof(group->lightObjs[lightIdxInGroup]));
 }
 
 void func_8002170C(int stageId)
 {
     struct Light light;
 
-    s_g_currBgSomething =
-        s_g_perBgSomethings[(backgroundInfo.bgId < 0 || stageId == 0) ? 0 : backgroundInfo.bgId];
-    if (s_g_currBgSomething.lightRed == 0.0 && s_g_currBgSomething.lightGreen == 0.0 && s_g_currBgSomething.lightBlue == 0.0)
+    s_bgLightInfo =
+        s_bgLightInfos[(backgroundInfo.bgId < 0 || stageId == 0) ? 0 : backgroundInfo.bgId];
+    if (s_bgLightInfo.infLightColor.r == 0.0 && s_bgLightInfo.infLightColor.g == 0.0 &&
+        s_bgLightInfo.infLightColor.b == 0.0)
         return;
 
     if (stageId != 0)
     {
         if (stageId == ST_099_JUNGLE_BG && advDemoInfo.flags & (1 << 8))
-            s_g_currBgSomething.lightRotY = DEGREES_TO_S16(45);
+            s_bgLightInfo.infLightRotY = DEGREES_TO_S16(45);
         if (gameSubmode == SMD_GAME_CONTINUE_INIT || gameSubmode == SMD_GAME_CONTINUE_MAIN)
         {
-            s_g_currBgSomething.lightRotX = 0;
-            s_g_currBgSomething.lightRotY = DEGREES_TO_S16(90);
+            s_bgLightInfo.infLightRotX = 0;
+            s_bgLightInfo.infLightRotY = DEGREES_TO_S16(90);
         }
         if (backgroundInfo.bgId == BG_TYPE_WAT && modeCtrl.unk30 > 1)
             g_set_bg_ambient(0.4f, 0.6f, 0.9f);
@@ -368,7 +375,7 @@ void func_8002170C(int stageId)
             switch (modeCtrl.levelSet)
             {
             case LVLSET_BEGINNER:
-                s_g_currBgSomething.lightRotY += 45056;
+                s_bgLightInfo.infLightRotY += 45056;
                 break;
             }
         }
@@ -377,11 +384,11 @@ void func_8002170C(int stageId)
     light.unk1 = 1;
     light.unk2 = 0;
     light.type = LIGHT_TYPE_INFINITE;
-    light.red = s_g_currBgSomething.lightRed;
-    light.green = s_g_currBgSomething.lightGreen;
-    light.blue = s_g_currBgSomething.lightBlue;
-    light.rotX = s_g_currBgSomething.lightRotX;
-    light.rotY = s_g_currBgSomething.lightRotY;
+    light.red = s_bgLightInfo.infLightColor.r;
+    light.green = s_bgLightInfo.infLightColor.g;
+    light.blue = s_bgLightInfo.infLightColor.b;
+    light.rotX = s_bgLightInfo.infLightRotX;
+    light.rotY = s_bgLightInfo.infLightRotY;
     alloc_light(&light);
 }
 
@@ -432,9 +439,9 @@ void func_80021958(void)
     {
         for (j = 0; j < 8; j++)
             lightGrp->lightPoolIdxs[j] = -1;
-        lightGrp->ambient.r = s_g_currBgSomething.ambient.r;
-        lightGrp->ambient.g = s_g_currBgSomething.ambient.g;
-        lightGrp->ambient.b = s_g_currBgSomething.ambient.b;
+        lightGrp->ambient.r = s_bgLightInfo.ambient.r;
+        lightGrp->ambient.g = s_bgLightInfo.ambient.g;
+        lightGrp->ambient.b = s_bgLightInfo.ambient.b;
     }
 
     light = s_g_lightPool;
@@ -457,21 +464,22 @@ void func_80021958(void)
     for (i = 2; i < 6; i++, r25++)
         memcpy(&s_lightGroups[i], &s_lightGroups[r25->g_someLGIdxToCopy], sizeof(s_lightGroups[i]));
 
-    if (s_g_currBgSomething.unk44 == NULL)
+    if (s_bgLightInfo.unk44 == NULL)
         return;
 
     lightGrp = s_lightGroups + 7;
     for (i = 7; i < ARRAY_COUNT(s_lightGroups); i++, lightGrp++)
     {
         int var = i - 7;
-        if (s_g_currBgSomething.unk44[var] == NULL)
+        if (s_bgLightInfo.unk44[var] == NULL)
             break;
         for (j = 0; j < 8; j++)
         {
-            s8 r4 = s_g_currBgSomething.unk44[var][j * 2 + 0];
+            s8 r4 = s_bgLightInfo.unk44[var][j * 2 + 0];
             if (r4 == -1)
                 break;
-            lightGrp->lightPoolIdxs[j] = light_pool_alloc(1, r4, s_g_currBgSomething.unk44[var][j * 2 + 1]);
+            lightGrp->lightPoolIdxs[j] =
+                light_pool_alloc(1, r4, s_bgLightInfo.unk44[var][j * 2 + 1]);
         }
     }
 }
@@ -555,7 +563,7 @@ void func_80021ECC(void)
     struct Light *r28;
 
     s_g_lightPerfTimer = 0;
-    func_8000E428(s_g_currBgSomething.unk14, s_g_currBgSomething.unk18, s_g_currBgSomething.unk1C);
+    func_8000E428(s_bgLightInfo.unk14, s_bgLightInfo.unk18, s_bgLightInfo.unk1C);
     func_8000E3BC();
     lbl_802F1C48 = 0;
 
@@ -739,9 +747,9 @@ void func_800225F4(float a)
 
 void g_set_bg_ambient(float r, float g, float b)
 {
-    s_g_currBgSomething.ambient.r = r;
-    s_g_currBgSomething.ambient.g = g;
-    s_g_currBgSomething.ambient.b = b;
+    s_bgLightInfo.ambient.r = r;
+    s_bgLightInfo.ambient.g = g;
+    s_bgLightInfo.ambient.b = b;
 }
 
 void g_set_ambient_color(float r, float g, float b)
@@ -834,27 +842,27 @@ struct
 void func_800228A8(int stageId)
 {
     func_8002170C(stageId);
-    lbl_801F39EC.unk0 = s_g_currBgSomething.unk10;
-    lbl_801F39EC.unk4 = s_g_currBgSomething.unk14;
-    lbl_801F39EC.unk8 = s_g_currBgSomething.unk18;
-    lbl_801F39EC.unkC = s_g_currBgSomething.unk1C;
-    s_g_currBgSomething.unk10 = 0.0f;
-    s_g_currBgSomething.unk14 = 0.7f;
-    s_g_currBgSomething.unk18 = 0.7f;
-    s_g_currBgSomething.unk1C = 0.7f;
+    lbl_801F39EC.unk0 = s_bgLightInfo.unk10;
+    lbl_801F39EC.unk4 = s_bgLightInfo.unk14;
+    lbl_801F39EC.unk8 = s_bgLightInfo.unk18;
+    lbl_801F39EC.unkC = s_bgLightInfo.unk1C;
+    s_bgLightInfo.unk10 = 0.0f;
+    s_bgLightInfo.unk14 = 0.7f;
+    s_bgLightInfo.unk18 = 0.7f;
+    s_bgLightInfo.unk1C = 0.7f;
 }
 
 void func_80022910(int stageId)
 {
     func_8002170C(stageId);
-    lbl_801F39EC.unk0 = s_g_currBgSomething.unk10;
-    lbl_801F39EC.unk4 = s_g_currBgSomething.unk14;
-    lbl_801F39EC.unk8 = s_g_currBgSomething.unk18;
-    lbl_801F39EC.unkC = s_g_currBgSomething.unk1C;
-    s_g_currBgSomething.unk10 = 0.0f;
-    s_g_currBgSomething.unk14 = 0.5f;
-    s_g_currBgSomething.unk18 = 0.5f;
-    s_g_currBgSomething.unk1C = 0.5f;
+    lbl_801F39EC.unk0 = s_bgLightInfo.unk10;
+    lbl_801F39EC.unk4 = s_bgLightInfo.unk14;
+    lbl_801F39EC.unk8 = s_bgLightInfo.unk18;
+    lbl_801F39EC.unkC = s_bgLightInfo.unk1C;
+    s_bgLightInfo.unk10 = 0.0f;
+    s_bgLightInfo.unk14 = 0.5f;
+    s_bgLightInfo.unk18 = 0.5f;
+    s_bgLightInfo.unk1C = 0.5f;
 }
 
 s8 lbl_80180E30[10] = {5, 1, 5, 2, 5, 3, 5, 4, -1, -1};
@@ -887,40 +895,41 @@ struct Struct80180F14 lbl_80180F14[] =
 };
 // clang-format on
 
+// Per-bg lighting information
 // clang-format off
-struct BgLightSomething s_g_perBgSomethings[] = {
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.1, 0.11, 0.1, 4096, 0, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0, 0, 0, 16384, 0, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0, 0.05, 0.05, 8192, 24576, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.1, 0.1, 0.5, 12288, 8192, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.3, 0.3, 0.3, 8192, 24576, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.25, 0.2, 0, 8192, 24576, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.1, 0.05, 0.05, 8192, 24576, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.8, {0.3, 0.4, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, -6272, 26752, NULL},
-    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.05, 0.05, 0.1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.28, 0.48, 0.63}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.6, 0.85, 1, 8192, 24576, NULL},
-    {0.6, {0.4, 0.4, 0.7}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.4, 0.4, 0.7}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.3, {0.5, 0.45, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 29184, 17664, NULL},
-    {0.6, {0.45, 0.4, 0.25}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 24576, 24576, NULL},
-    {0.6, {0.55, 0.6, 0.85}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.3, 0.3, 0.45}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.7, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0.8, 0.8, 0.8, -11776, 21888, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.4, 0.4, 0.55}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 0, 0, 0, 8192, 24576, lbl_80180E68},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
-    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, 1, 1, 1, 8192, 24576, NULL},
+struct BgLightInfo s_bgLightInfos[] = {
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0, 0, 0, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.1, 0.11, 0.1}, 4096, 0, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0, 0}, 16384, 0, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0.05, 0.05}, 8192, 24576, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.1, 0.1, 0.5}, 12288, 8192, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.3, 0.3, 0.3}, 8192, 24576, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.25, 0.2, 0}, 8192, 24576, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.1, 0.05, 0.05}, 8192, 24576, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.8, {0.3, 0.4, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, -6272, 26752, NULL},
+    {0.8, {0.8, 0.8, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.05, 0.05, 0.1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.28, 0.48, 0.63}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.6, 0.85, 1}, 8192, 24576, NULL},
+    {0.6, {0.4, 0.4, 0.7}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.4, 0.4, 0.7}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.3, {0.5, 0.45, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 29184, 17664, NULL},
+    {0.6, {0.45, 0.4, 0.25}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 24576, 24576, NULL},
+    {0.6, {0.55, 0.6, 0.85}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.3, 0.3, 0.45}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.7, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.8, 0.8, 0.8}, -11776, 21888, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.4, 0.4, 0.55}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0, 0}, 8192, 24576, lbl_80180E68},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
+    {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
 };
 // clang-format on
