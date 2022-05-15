@@ -10189,7 +10189,6 @@ lbl_8007D170:
 /* 8007D184 000790A4  83 81 00 28 */	lwz r28, 0x28(r1)
 /* 8007D188 000790A8  38 21 00 38 */	addi r1, r1, 0x38
 /* 8007D18C 000790AC  4E 80 00 20 */	blr
-.endif
 
 .global show_timeover_text
 show_timeover_text:
@@ -10240,7 +10239,7 @@ lbl_8007D230:
 /* 8007D238 00079158  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007D23C 0007915C  7C 08 03 A6 */	mtlr r0
 /* 8007D240 00079160  4E 80 00 20 */	blr
-lbl_8007D244:
+glabel lbl_8007D244
 /* 8007D244 00079164  7C 08 02 A6 */	mflr r0
 /* 8007D248 00079168  90 01 00 04 */	stw r0, 4(r1)
 /* 8007D24C 0007916C  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -10417,7 +10416,8 @@ lbl_8007D4BC:
 /* 8007D4C0 000793E0  38 21 00 08 */	addi r1, r1, 8
 /* 8007D4C4 000793E4  7C 08 03 A6 */	mtlr r0
 /* 8007D4C8 000793E8  4E 80 00 20 */	blr
-lbl_8007D4CC:
+
+glabel lbl_8007D4CC
 /* 8007D4CC 000793EC  7C 08 02 A6 */	mflr r0
 /* 8007D4D0 000793F0  90 01 00 04 */	stw r0, 4(r1)
 /* 8007D4D4 000793F4  3C 00 43 30 */	lis r0, 0x4330
@@ -10629,7 +10629,8 @@ lbl_8007D7D4:
 /* 8007D7DC 000796FC  38 21 00 10 */	addi r1, r1, 0x10
 /* 8007D7E0 00079700  7C 08 03 A6 */	mtlr r0
 /* 8007D7E4 00079704  4E 80 00 20 */	blr
-lbl_8007D7E8:
+
+glabel lbl_8007D7E8
 /* 8007D7E8 00079708  7C 08 02 A6 */	mflr r0
 /* 8007D7EC 0007970C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8007D7F0 00079710  90 01 00 04 */	stw r0, 4(r1)
@@ -10677,7 +10678,7 @@ lbl_8007D884:
 /* 8007D88C 000797AC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007D890 000797B0  7C 08 03 A6 */	mtlr r0
 /* 8007D894 000797B4  4E 80 00 20 */	blr
-lbl_8007D898:
+glabel lbl_8007D898
 /* 8007D898 000797B8  7C 08 02 A6 */	mflr r0
 /* 8007D89C 000797BC  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8007D8A0 000797C0  90 01 00 04 */	stw r0, 4(r1)
@@ -10724,7 +10725,7 @@ lbl_8007D918:
 /* 8007D93C 0007985C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007D940 00079860  7C 08 03 A6 */	mtlr r0
 /* 8007D944 00079864  4E 80 00 20 */	blr
-lbl_8007D948:
+glabel lbl_8007D948
 /* 8007D948 00079868  7C 08 02 A6 */	mflr r0
 /* 8007D94C 0007986C  90 01 00 04 */	stw r0, 4(r1)
 /* 8007D950 00079870  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -10974,7 +10975,6 @@ lbl_8007DCB0:
 lbl_8007DCD0:
 /* 8007DCD0 00079BF0  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007DCD4 00079BF4  4E 80 00 20 */	blr
-
 .global show_gameover_text
 show_gameover_text:
 /* 8007DCD8 00079BF8  7C 08 02 A6 */	mflr r0
@@ -11149,7 +11149,8 @@ lbl_8007DF3C:
 /* 8007DF44 00079E64  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007DF48 00079E68  7C 08 03 A6 */	mtlr r0
 /* 8007DF4C 00079E6C  4E 80 00 20 */	blr
-lbl_8007DF50:
+.endif
+glabel lbl_8007DF50
 /* 8007DF50 00079E70  7C 08 02 A6 */	mflr r0
 /* 8007DF54 00079E74  90 01 00 04 */	stw r0, 4(r1)
 /* 8007DF58 00079E78  94 21 FF A0 */	stwu r1, -0x60(r1)
@@ -19227,7 +19228,6 @@ lbl_802F4FE8:
 lbl_802F4FF0:
 	# ROM: 0x1EEA10
 	.4byte 0x3F59999A
-.endif
 
 .global lbl_802F4FF4
 lbl_802F4FF4:
@@ -19274,6 +19274,7 @@ lbl_802F5010:
 lbl_802F5018:
 	# ROM: 0x1EEA38
 	.4byte 0x3C03126F
+.endif
 	.4byte 0
 
 .global lbl_802F5020
@@ -20803,7 +20804,6 @@ lbl_801C1A4C:
 glabel string_FALL_OUT
 	.asciz "FALL OUT"
 	.balign 4
-.endif
 
 .global lbl_801C1A58
 lbl_801C1A58:
@@ -20818,7 +20818,8 @@ lbl_801C1A64:
 glabel string_BONUS_FINISH
 	.asciz "BONUS FINISH"
 	.balign 4
-glabel string_CONTINUE_
+
+glabel string_CONTINUE_  ;# 0x584
 	.asciz "CONTINUE?"
 	.balign 4
 glabel string_h_NOKORI
@@ -20841,7 +20842,7 @@ lbl_801C1AA0:
 	.4byte lbl_8007DA4C  ;# ptr
 	.4byte lbl_8007DA44  ;# ptr
 	.4byte lbl_8007DA3C  ;# ptr
-
+.endif
 .global lbl_801C1AC0
 lbl_801C1AC0:
 	# ROM: 0x1BEAC0
@@ -23179,7 +23180,6 @@ lbl_802F10C4:
 glabel string_GOAL
 	.asciz "GOAL"
 	.balign 4
-.endif
 
 	# ROM: 0x1EB810
 glabel string_PERFECT
@@ -23202,7 +23202,7 @@ string_1UP:
 	# ROM: 0x1EB820
 	.asciz "1UP"
     .balign 4
-
+.endif
 .global lbl_802F10E4
 lbl_802F10E4:
 	# ROM: 0x1EB824
