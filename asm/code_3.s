@@ -34,7 +34,7 @@ lbl_80085C60:
 /* 80085C70 00081B90  EC 23 00 72 */	fmuls f1, f3, f1
 /* 80085C74 00081B94  EC 43 00 B2 */	fmuls f2, f3, f2
 /* 80085C78 00081B98  EC 63 00 32 */	fmuls f3, f3, f0
-/* 80085C7C 00081B9C  4B FA DE C1 */	bl g_nl2ngc_set_ambient
+/* 80085C7C 00081B9C  4B FA DE C1 */	bl nl2ngc_set_ambient
 lbl_80085C80:
 /* 80085C80 00081BA0  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 80085C84 00081BA4  83 E1 00 1C */	lwz r31, 0x1c(r1)
@@ -1047,7 +1047,7 @@ lbl_80086A54:
 /* 80086AA0 000829C0  EC 23 00 72 */	fmuls f1, f3, f1
 /* 80086AA4 000829C4  EC 43 00 B2 */	fmuls f2, f3, f2
 /* 80086AA8 000829C8  EC 63 00 32 */	fmuls f3, f3, f0
-/* 80086AAC 000829CC  4B FA D0 91 */	bl g_nl2ngc_set_ambient
+/* 80086AAC 000829CC  4B FA D0 91 */	bl nl2ngc_set_ambient
 lbl_80086AB0:
 /* 80086AB0 000829D0  2C 1D 00 02 */	cmpwi r29, 2
 /* 80086AB4 000829D4  40 82 00 C4 */	bne lbl_80086B78

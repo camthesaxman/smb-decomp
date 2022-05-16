@@ -174,14 +174,14 @@ void g_alloc_stage_lights(int stageId)
     while (light->valid != -1)
     {
         if (light->stageId == stageId)
-            alloc_light(light);
+            add_light_to_pool(light);
         light++;
     }
 }
 #pragma dont_inline reset
 
 // Allocate a light in the light pool to use, or return a light that already exists (preferred)
-s8 get_pool_light(int findExisting, int g_id, int g_inst)
+s8 alloc_pool_light(BOOL findExisting, int g_id, int g_inst)
 {
     int i;
     struct Light *light;
@@ -251,7 +251,7 @@ struct LightGroup s_lightGroups[22];
 
 void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *light)
 {
-    Vec sp60;
+    Vec tempVec;
     float f3;
     float f0;
     GXColor lightColor;
@@ -314,30 +314,30 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
     f0 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP)
              ? 0.0
              : 2.05f * ((1.0f / g_minimap_light_ref_dist_scale) - 1.0f);
-    sp60.x = light->pos.x;
-    sp60.y = light->pos.y + f0;
-    sp60.z = light->pos.z;
+    tempVec.x = light->pos.x;
+    tempVec.y = light->pos.y + f0;
+    tempVec.z = light->pos.z;
     switch (light->type)
     {
     case LIGHT_TYPE_INFINITE:
-        mathutil_mtxA_tf_point(&light->dir, &sp60);
-        GXInitLightPos(&lightObj, sp60.x, sp60.y, sp60.z);
+        mathutil_mtxA_tf_point(&light->dir, &tempVec);
+        GXInitLightPos(&lightObj, tempVec.x, tempVec.y, tempVec.z);
         break;
     case LIGHT_TYPE_POINT:
     case LIGHT_TYPE_POINT_POW:
     case LIGHT_TYPE_POINT_DARKPOW:
     case LIGHT_TYPE_POINT_DARK:
-        mathutil_mtxA_tf_point(&sp60, &sp60);
-        GXInitLightPos(&lightObj, sp60.x, sp60.y, sp60.z);
+        mathutil_mtxA_tf_point(&tempVec, &tempVec);
+        GXInitLightPos(&lightObj, tempVec.x, tempVec.y, tempVec.z);
         break;
     case LIGHT_TYPE_SPOT:
     case LIGHT_TYPE_SPOT_POW:
     case LIGHT_TYPE_SPOT_DARKPOW:
     case LIGHT_TYPE_SPOT_DARK:
-        mathutil_mtxA_tf_point(&sp60, &sp60);
-        GXInitLightPos(&lightObj, sp60.x, sp60.y, sp60.z);
-        mathutil_mtxA_tf_vec(&light->dir, &sp60);
-        GXInitLightDir(&lightObj, sp60.x, sp60.y, sp60.z);
+        mathutil_mtxA_tf_point(&tempVec, &tempVec);
+        GXInitLightPos(&lightObj, tempVec.x, tempVec.y, tempVec.z);
+        mathutil_mtxA_tf_vec(&light->dir, &tempVec);
+        GXInitLightDir(&lightObj, tempVec.x, tempVec.y, tempVec.z);
         break;
     }
     GXLoadLightObjImm(&lightObj, (1 << lightIdxInGroup));
@@ -400,7 +400,7 @@ void init_bg_lighting(int stageId)
     light.blue = s_bgLightInfo.infLightColor.b;
     light.rotX = s_bgLightInfo.infLightRotX;
     light.rotY = s_bgLightInfo.infLightRotY;
-    alloc_light(&light);
+    add_light_to_pool(&light);
 }
 
 struct LightGroupInfo
@@ -494,7 +494,7 @@ void init_light_groups(void)
             if (lightId == -1)
                 break;
             lightGrp->lightPoolIdxs[lightInGroupIdx] =
-                get_pool_light(1, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
+                alloc_pool_light(TRUE, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
         }
     }
 }
@@ -568,7 +568,7 @@ void g_init_stage_lighting(int stageId)
     while (light->valid != -1)
     {
         if (light->stageId == stageId)
-            alloc_light(light);
+            add_light_to_pool(light);
         light++;
     }
     lightingStageId = (stageId == 0) ? currStageId : stageId;
@@ -627,9 +627,9 @@ void g_light_main(void)
 
 // Copy light into a free slot in the light pool.
 // Returns false if no free light slot exists
-BOOL alloc_light(struct Light *light)
+BOOL add_light_to_pool(struct Light *light)
 {
-    int idx = get_pool_light(0, light->g_id, light->g_inst);
+    int idx = alloc_pool_light(FALSE, light->g_id, light->g_inst);
     struct Light *poolLight;
 
     if (idx == -1)
@@ -647,7 +647,7 @@ BOOL alloc_light(struct Light *light)
 #pragma force_active on
 struct Light *func_80022224(int a, int b)
 {
-    a = get_pool_light(1, a, b);
+    a = alloc_pool_light(TRUE, a, b);
     return (a == -1) ? NULL : &s_g_lightPool[a];
 }
 #pragma force_active reset
@@ -683,7 +683,7 @@ void load_light_group_uncached(int lightGrpId)
                 }
             }
         }
-        g_nl2ngc_set_light_mask(lightGrp->lightMask);
+        nl2ngc_set_light_mask(lightGrp->lightMask);
         avdisp_set_light_mask(lightGrp->lightMask);
     }
     if (r31->g_someLGIdxToCopy != g_someLGIdx || (r31->flags & 2) != 0)
@@ -720,7 +720,7 @@ void load_light_group_cached(int lightGrpId)
                 s_numLightObjsLoaded++;
             }
         }
-        g_nl2ngc_set_light_mask(lightGrp->lightMask);
+        nl2ngc_set_light_mask(lightGrp->lightMask);
         avdisp_set_light_mask(lightGrp->lightMask);
     }
     set_avdisp_inf_light(lightGrp);
@@ -775,7 +775,7 @@ void set_bg_ambient(float r, float g, float b)
 
 void set_ambient(float r, float g, float b)
 {
-    g_nl2ngc_set_ambient(r, g, b);
+    nl2ngc_set_ambient(r, g, b);
     avdisp_set_ambient(r, g, b);
 }
 
@@ -788,7 +788,7 @@ void apply_curr_light_group_ambient(void)
 {
     struct Color3f *ambient = &s_lightGroups[s_currLightGroup].ambient;
 
-    g_nl2ngc_set_ambient(ambient->r, ambient->g, ambient->b);
+    nl2ngc_set_ambient(ambient->r, ambient->g, ambient->b);
     avdisp_set_ambient(ambient->r, ambient->g, ambient->b);
 }
 

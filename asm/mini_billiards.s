@@ -10872,7 +10872,7 @@ lbl_00009EC4:
 /* 00009ED8 9421FFF0 */ stwu r1, -0x10(r1)
 /* 00009EDC 93E1000C */ stw r31, 0xc(r1)
 /* 00009EE0 3BE40000 */ addi r31, r4, lbl_0001C2B8@l
-/* 00009EE4 4BFF6251 */ bl alloc_light
+/* 00009EE4 4BFF6251 */ bl add_light_to_pool
 /* 00009EE8 C03F09A4 */ lfs f1, 0x9a4(r31)
 /* 00009EEC C07F0B58 */ lfs f3, 0xb58(r31)
 /* 00009EF0 FC400890 */ fmr f2, f1

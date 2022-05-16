@@ -1515,12 +1515,12 @@ void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b)
     nl2ngc_draw_model_alpha_sorted(model, b);
 }
 
-void g_nl2ngc_set_light_mask(u32 lightMask)
+void nl2ngc_set_light_mask(u32 lightMask)
 {
     nlObjLightMask = lightMask;
 }
 
-void g_nl2ngc_set_ambient(float r, float g, float b)
+void nl2ngc_set_ambient(float r, float g, float b)
 {
     g_someAmbColor.r = r;
     g_someAmbColor.g = g;
@@ -1618,7 +1618,7 @@ static void lbl_80033C8C(struct UnkStruct18 *a)
     if (!(a->model->flags & (1 << 10)))
     {
         load_light_group_cached(a->unk48);
-        g_nl2ngc_set_ambient(a->unk4C.r, a->unk4C.g, a->unk4C.b);
+        nl2ngc_set_ambient(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
     g_fogEnabled = a->unk58;
     g_draw_naomi_model_4(a->model);
@@ -1701,7 +1701,7 @@ void lbl_80033E6C(struct UnkStruct19 *a)
     if (!(a->model->flags & (1 << 10)))
     {
         load_light_group_cached(a->unk4C);
-        g_nl2ngc_set_ambient(a->ambColor.r, a->ambColor.g, a->ambColor.b);
+        nl2ngc_set_ambient(a->ambColor.r, a->ambColor.g, a->ambColor.b);
     }
     g_fogEnabled = a->unk5C;
     g_draw_naomi_model_5(a->model);

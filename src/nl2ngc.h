@@ -113,8 +113,8 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 void g_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model);
 void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model);
 void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b);
-void g_nl2ngc_set_light_mask(u32 lightMask);
-void g_nl2ngc_set_ambient(float r, float g, float b);
+void nl2ngc_set_light_mask(u32 lightMask);
+void nl2ngc_set_ambient(float r, float g, float b);
 void func_80033B50(int);
 void func_80033B58(u32 a, float b, float c);
 void g_nl2ngc_set_some_other_color(int r, int g, int b);
