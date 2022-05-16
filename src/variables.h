@@ -148,7 +148,7 @@ extern char *nameEntryText[];
 // extern ? lbl_80180DB0;
 // extern ? lbl_80180DE0;
 // extern ? lbl_80180E0C;
-extern struct Struct80180F14 lbl_80180F14[];
+extern struct GBilLightGroup s_bilLightGroupNames[];
 extern struct BgLightInfo s_bgLightInfos[];
 // extern ? lbl_801818B0;
 // extern ? rankTexOffsets;

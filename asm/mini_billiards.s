@@ -173,7 +173,7 @@ lbl_00000260:
 /* 000002D4 3C600000 */ lis r3, currStageId@ha
 /* 000002D8 38630000 */ addi r3, r3, currStageId@l
 /* 000002DC A8630000 */ lha r3, 0(r3)
-/* 000002E0 4BFFFE55 */ bl g_init_stage_lighting
+/* 000002E0 4BFFFE55 */ bl g_light_init
 /* 000002E4 3C600000 */ lis r3, spritePoolInfo@ha
 /* 000002E8 38830000 */ addi r4, r3, spritePoolInfo@l
 /* 000002EC 3C600000 */ lis r3, worldInfo@ha
@@ -202,7 +202,7 @@ lbl_00000324:
 /* 0000033C 3C600000 */ lis r3, currStageId@ha
 /* 00000340 38630000 */ addi r3, r3, currStageId@l
 /* 00000344 A8630000 */ lha r3, 0(r3)
-/* 00000348 4BFFFDED */ bl g_init_stage_lighting
+/* 00000348 4BFFFDED */ bl g_light_init
 /* 0000034C 3B800000 */ li r28, 0
 lbl_00000350:
 /* 00000350 C03D08B4 */ lfs f1, 0x8b4(r29)
@@ -17527,7 +17527,7 @@ lbl_00010188:
 /* 00010198 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 0001019C FC400890 */ fmr f2, f1
 /* 000101A0 FC600890 */ fmr f3, f1
-/* 000101A4 4BFEFF91 */ bl set_ambient
+/* 000101A4 4BFEFF91 */ bl set_render_ambient
 /* 000101A8 4BFEFF8D */ bl mathutil_mtxA_from_mtxB
 /* 000101AC C0360000 */ lfs f1, 0(r22)
 /* 000101B0 386100F0 */ addi r3, r1, 0xf0
@@ -17637,13 +17637,13 @@ lbl_00010328:
 /* 00010344 C05F3778 */ lfs f2, 0x3778(r31)
 /* 00010348 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 0001034C FC601090 */ fmr f3, f2
-/* 00010350 4BFEFDE5 */ bl set_ambient
+/* 00010350 4BFEFDE5 */ bl set_render_ambient
 /* 00010354 48000014 */ b lbl_00010368
 lbl_00010358:
 /* 00010358 C03F3778 */ lfs f1, 0x3778(r31)
 /* 0001035C C07F37A8 */ lfs f3, 0x37a8(r31)
 /* 00010360 FC400890 */ fmr f2, f1
-/* 00010364 4BFEFDD1 */ bl set_ambient
+/* 00010364 4BFEFDD1 */ bl set_render_ambient
 lbl_00010368:
 /* 00010368 807A0000 */ lwz r3, 0(r26)
 /* 0001036C 80630008 */ lwz r3, 8(r3)
@@ -17820,7 +17820,7 @@ lbl_000105BC:
 /* 000105D4 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 000105D8 FC400890 */ fmr f2, f1
 /* 000105DC FC600890 */ fmr f3, f1
-/* 000105E0 4BFEFB55 */ bl set_ambient
+/* 000105E0 4BFEFB55 */ bl set_render_ambient
 /* 000105E4 38600000 */ li r3, 0
 /* 000105E8 38800007 */ li r4, 7
 /* 000105EC 38A00000 */ li r5, 0
@@ -18160,7 +18160,7 @@ lbl_00010A68:
 /* 00010ADC C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 00010AE0 FC400890 */ fmr f2, f1
 /* 00010AE4 FC600890 */ fmr f3, f1
-/* 00010AE8 4BFEF64D */ bl set_ambient
+/* 00010AE8 4BFEF64D */ bl set_render_ambient
 /* 00010AEC 80B50064 */ lwz r5, 0x64(r21)
 /* 00010AF0 38610078 */ addi r3, r1, 0x78
 /* 00010AF4 808100A8 */ lwz r4, 0xa8(r1)
@@ -18189,7 +18189,7 @@ lbl_00010B18:
 /* 00010B4C C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 00010B50 FC400890 */ fmr f2, f1
 /* 00010B54 FC600890 */ fmr f3, f1
-/* 00010B58 4BFEF5DD */ bl set_ambient
+/* 00010B58 4BFEF5DD */ bl set_render_ambient
 /* 00010B5C 807B0000 */ lwz r3, 0(r27)
 /* 00010B60 80630008 */ lwz r3, 8(r3)
 /* 00010B64 80630058 */ lwz r3, 0x58(r3)
@@ -18366,7 +18366,7 @@ lbl_00010D34:
 /* 00010DF4 C03F37A8 */ lfs f1, 0x37a8(r31)
 /* 00010DF8 FC400890 */ fmr f2, f1
 /* 00010DFC FC600890 */ fmr f3, f1
-/* 00010E00 4BFEF335 */ bl set_ambient
+/* 00010E00 4BFEF335 */ bl set_render_ambient
 /* 00010E04 80B20064 */ lwz r5, 0x64(r18)
 /* 00010E08 3861000C */ addi r3, r1, 0xc
 /* 00010E0C 8081003C */ lwz r4, 0x3c(r1)

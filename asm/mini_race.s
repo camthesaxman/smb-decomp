@@ -1896,7 +1896,7 @@ lbl_00001B04:
 lbl_00001BA4:
 /* 00001BA4 38600001 */ li r3, 1
 /* 00001BA8 38800000 */ li r4, 0
-/* 00001BAC 4BFFE5D1 */ bl func_80022224
+/* 00001BAC 4BFFE5D1 */ bl alloc_pool_light
 /* 00001BB0 28030000 */ cmplwi r3, 0
 /* 00001BB4 418200C8 */ beq lbl_00001C7C
 /* 00001BB8 3C800000 */ lis r4, currStageId@ha

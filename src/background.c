@@ -550,7 +550,7 @@ void load_bg_files(int bgId)
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        g_init_stage_lighting(currStageId);
+        g_light_init(currStageId);
     }
 }
 
@@ -1029,17 +1029,17 @@ void bg_billiards_init(void)
 
     for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, r29++)
     {
-        struct Struct80180F14 *r27 = lbl_80180F14;
+        struct GBilLightGroup *r27 = s_bilLightGroupNames;
 
-        while (r27->unk4 != -1)
+        while (r27->g_bgLightGroupId != -1)
         {
-            int len1 = strlen(r27->unk0);
+            int len1 = strlen(r27->name);
             int len2 = strlen(r29->name) - 1;
             int matched = 0;
 
             for (j = 0; j < len1; j++)
             {
-                if (r29->name[j] != r27->unk0[j])
+                if (r29->name[j] != r27->name[j])
                     break;
                 if (len2 == j)
                 {
@@ -1049,7 +1049,7 @@ void bg_billiards_init(void)
             }
             if (matched)
             {
-                r29->flags |= r27->unk4 << 28;
+                r29->flags |= r27->g_bgLightGroupId << 28;
                 break;
             }
             r27++;

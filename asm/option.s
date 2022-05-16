@@ -41,7 +41,7 @@ _prolog:
 /* 000000E8 480000C5 */ bl func_800249D4
 /* 000000EC 480000C1 */ bl unload_stage
 /* 000000F0 38600000 */ li r3, 0
-/* 000000F4 480000B9 */ bl g_init_stage_lighting
+/* 000000F4 480000B9 */ bl g_light_init
 /* 000000F8 480000B5 */ bl event_finish_all
 /* 000000FC 38600010 */ li r3, 0x10
 /* 00000100 480000AD */ bl event_start
@@ -3507,7 +3507,7 @@ lbl_00003344:
 /* 00003364 38600000 */ li r3, 0
 /* 00003368 54000776 */ rlwinm r0, r0, 0, 0x1d, 0x1b
 /* 0000336C 90040000 */ stw r0, 0(r4)
-/* 00003370 4BFFCE3D */ bl g_init_stage_lighting
+/* 00003370 4BFFCE3D */ bl g_light_init
 /* 00003374 4BFFCE39 */ bl event_finish_all
 /* 00003378 38600010 */ li r3, 0x10
 /* 0000337C 4BFFCE31 */ bl event_start
@@ -3803,7 +3803,7 @@ lbl_000036A4:
 /* 000037C8 38800003 */ li r4, 3
 /* 000037CC 4BFFC9E1 */ bl func_8009544C
 /* 000037D0 A8790000 */ lha r3, 0(r25)
-/* 000037D4 4BFFC9D9 */ bl g_init_stage_lighting
+/* 000037D4 4BFFC9D9 */ bl g_light_init
 /* 000037D8 38000009 */ li r0, 9
 /* 000037DC 981A0003 */ stb r0, 3(r26)
 /* 000037E0 38000000 */ li r0, 0

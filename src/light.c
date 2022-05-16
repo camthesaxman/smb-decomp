@@ -181,7 +181,7 @@ void g_alloc_stage_lights(int stageId)
 #pragma dont_inline reset
 
 // Allocate a light in the light pool to use, or return a light that already exists (preferred)
-s8 alloc_pool_light(BOOL findExisting, int g_id, int g_inst)
+s8 alloc_pool_light_idx(BOOL findExisting, int g_id, int g_inst)
 {
     int i;
     struct Light *light;
@@ -494,7 +494,7 @@ void init_light_groups(void)
             if (lightId == -1)
                 break;
             lightGrp->lightPoolIdxs[lightInGroupIdx] =
-                alloc_pool_light(TRUE, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
+                alloc_pool_light_idx(TRUE, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
         }
     }
 }
@@ -538,7 +538,7 @@ void set_avdisp_inf_light(struct LightGroup *lightGrp)
         avdisp_set_inf_light_color(0.0f, 0.0f, 0.0f);
 }
 
-void g_init_stage_lighting(int stageId)
+void g_light_init(int stageId)
 {
     u8 dummy[8];
     int i;
@@ -629,7 +629,7 @@ void g_light_main(void)
 // Returns false if no free light slot exists
 BOOL add_light_to_pool(struct Light *light)
 {
-    int idx = alloc_pool_light(FALSE, light->g_id, light->g_inst);
+    int idx = alloc_pool_light_idx(FALSE, light->g_id, light->g_inst);
     struct Light *poolLight;
 
     if (idx == -1)
@@ -645,9 +645,9 @@ BOOL add_light_to_pool(struct Light *light)
 }
 
 #pragma force_active on
-struct Light *func_80022224(int a, int b)
+struct Light *alloc_pool_light(int a, int b)
 {
-    a = alloc_pool_light(TRUE, a, b);
+    a = alloc_pool_light_idx(TRUE, a, b);
     return (a == -1) ? NULL : &s_g_lightPool[a];
 }
 #pragma force_active reset
@@ -687,7 +687,7 @@ void load_light_group_uncached(int lightGrpId)
         avdisp_set_light_mask(lightGrp->lightMask);
     }
     if (r31->g_someLGIdxToCopy != g_someLGIdx || (r31->flags & 2) != 0)
-        set_ambient(lightGrp->ambient.r, lightGrp->ambient.g, lightGrp->ambient.b);
+        set_render_ambient(lightGrp->ambient.r, lightGrp->ambient.g, lightGrp->ambient.b);
     set_avdisp_inf_light(lightGrp);
     g_someLGIdx = r31->g_someLGIdxToCopy;
     s_g_lightPerfTimer += perf_stop_timer(0);
@@ -773,7 +773,7 @@ void set_bg_ambient(float r, float g, float b)
     s_bgLightInfo.ambient.b = b;
 }
 
-void set_ambient(float r, float g, float b)
+void set_render_ambient(float r, float g, float b)
 {
     nl2ngc_set_ambient(r, g, b);
     avdisp_set_ambient(r, g, b);
@@ -886,22 +886,23 @@ void g_smth_with_lights_smd_extra(int stageId)
     s_bgLightInfo.unk1C = 0.5f;
 }
 
-s8 lbl_80180E30[10] = {5, 1, 5, 2, 5, 3, 5, 4, -1, -1};
-s8 lbl_80180E3C[18] = {6, 1, 6, 2, 6, 3, 6, 4, 6, 5, 6, 6, 6, 7, 6, 8, -1, -1};
-s8 lbl_802F03F8[8] = {6, 2, 6, 3, 6, 4, -1, -1};
-s8 lbl_802F0400[6] = {7, 1, 7, 2, -1, -1};
-s8 lbl_80180E50[10] = {7, 1, 7, 2, 5, 1, 5, 3, -1, -1};
-s8 lbl_802F0408[6] = {5, 1, 6, 8, -1, -1};
-s8 lbl_802F0410[4] = {5, 3, -1, -1};
-s8 lbl_80180E5C[10] = {5, 4, 6, 1, 6, 2, 6, 3, -1, -1};
+s8 s_bilLightGroup_BG_1[10] = {5, 1, 5, 2, 5, 3, 5, 4, -1, -1};
+s8 s_bilLightGroup_BG_2[18] = {6, 1, 6, 2, 6, 3, 6, 4, 6, 5, 6, 6, 6, 7, 6, 8, -1, -1};
+s8 s_bilLightGroup_BG_3[8] = {6, 2, 6, 3, 6, 4, -1, -1};
+s8 s_bilLightGroup_BG_4[6] = {7, 1, 7, 2, -1, -1};
+s8 s_bilLightGroup_BG_5[10] = {7, 1, 7, 2, 5, 1, 5, 3, -1, -1};
+s8 s_bilLightGroup_BG_6[6] = {5, 1, 6, 8, -1, -1};
+s8 s_bilLightGroup_BG_7[4] = {5, 3, -1, -1};
+s8 s_bilLightGroup_BG_8[10] = {5, 4, 6, 1, 6, 2, 6, 3, -1, -1};
 
-s8 *g_bil_light_groups[] = {
-    lbl_80180E30, lbl_80180E3C, lbl_802F03F8, lbl_802F0400, lbl_80180E50,
-    lbl_802F0408, lbl_802F0410, lbl_80180E5C, NULL,
+s8 *s_bilLightGroups[] = {
+    s_bilLightGroup_BG_1, s_bilLightGroup_BG_2, s_bilLightGroup_BG_3, s_bilLightGroup_BG_4, s_bilLightGroup_BG_5,
+    s_bilLightGroup_BG_6, s_bilLightGroup_BG_7, s_bilLightGroup_BG_8, NULL,
 };
 
+// Names/IDs of monkey billiards light groups above?
 // clang-format off
-struct Struct80180F14 lbl_80180F14[] =
+struct GBilLightGroup s_bilLightGroupNames[] =
 {
     {"BILL_FLOOR",       1},
     {"BILL_WALL",        2},
@@ -942,7 +943,7 @@ struct BgLightInfo s_bgLightInfos[] = {
     {0.6, {0.3, 0.3, 0.45}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
     {0.6, {0.6, 0.7, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.8, 0.8, 0.8}, -11776, 21888, NULL},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
-    {0.6, {0.4, 0.4, 0.55}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0, 0}, 8192, 24576, g_bil_light_groups},
+    {0.6, {0.4, 0.4, 0.55}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0, 0}, 8192, 24576, s_bilLightGroups},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},

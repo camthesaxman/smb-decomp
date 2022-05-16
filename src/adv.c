@@ -113,7 +113,7 @@ void submode_adv_logo_init_func(void)
     prevLogoPos.y = 0.0f;
     prevLogoPos.z = 0.0f;
     func_8002FFEC();
-    g_init_stage_lighting(0);
+    g_light_init(0);
     playerCharacterSelection[0] = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
@@ -126,7 +126,7 @@ void submode_adv_logo_init_func(void)
     g_logo_plus_sprite_something();
     g_play_sound(0x21);
     preload_stage_files(ST_001_PLAIN);
-    g_init_stage_lighting(0);
+    g_light_init(0);
     g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = SMD_ADV_LOGO_MAIN;
 }
@@ -318,7 +318,7 @@ void submode_adv_demo_init_func(void)
     event_start(EVENT_REND_EFC);
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_SOUND);
-    g_init_stage_lighting(currStageId);
+    g_light_init(currStageId);
     func_800972CC();
     for (i = 0; i < 4; i++)
     {
@@ -614,13 +614,13 @@ void run_cutscene_script(void)
             func_800972CC();
             break;
         case 12:
-            g_init_stage_lighting(0);
+            g_light_init(0);
             break;
         case CMD_UNK13:  // level camera?
             event_start(EVENT_WORLD);
             event_start(EVENT_INFO);
             camera_set_state(54);
-            g_init_stage_lighting(currStageId);
+            g_light_init(currStageId);
             break;
         case CMD_INIT_CHARACTER_POS:
             ball_func_demo_init(&ballInfo[cmd->param]);
@@ -1263,7 +1263,7 @@ void submode_adv_title_reinit_func(void)
     modeCtrl.levelSetFlags = 0x2000;
     lbl_802F1BA8 = 0;
     func_8002FFEC();
-    g_init_stage_lighting(0);
+    g_light_init(0);
     playerCharacterSelection[0] = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
@@ -1290,7 +1290,7 @@ void submode_adv_title_reinit_func(void)
         func_80077734();
     }
     load_stage(ST_150_TUTORIAL);
-    g_init_stage_lighting(0);
+    g_light_init(0);
     g_play_sound(0xA022);
     g_play_music(3, 0);
     g_start_screen_fade(0x100, 0, 30);
@@ -1401,7 +1401,7 @@ void submode_adv_info_init_func(void)
     event_start(EVENT_SOUND);
     event_start(EVENT_EFFECT);
     event_start(EVENT_BACKGROUND);
-    g_init_stage_lighting(currStageId);
+    g_light_init(currStageId);
     ballInfo[0].state = 16;
     ballInfo[0].bananas = 0;
     camera_set_state(43);
@@ -1729,7 +1729,7 @@ void submode_adv_game_ready_init_func(void)
     event_start(EVENT_BACKGROUND);
     func_800972CC();
     event_suspend(EVENT_WORLD);
-    g_init_stage_lighting(currStageId);
+    g_light_init(currStageId);
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
     infoWork.flags |= 0x108;
@@ -1968,7 +1968,7 @@ void submode_adv_ranking_main_func(void)
             memset(&sp20, 0, sizeof(sp20));
             sp20.unk6 = 0xFFFF;
             func_8009544C(2, 3, &sp20);
-            g_init_stage_lighting(currStageId);
+            g_light_init(currStageId);
             ballInfo[0].state = 9;
             ballInfo[0].bananas = 0;
             if (modeCtrl.submodeTimer > 2520)
