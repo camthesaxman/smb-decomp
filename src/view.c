@@ -188,7 +188,7 @@ void view_draw(void)
         func_80020AB8(&stageViewInfo->eye, &rotation, 59.99633789f, 1.33333333f, 0.0f, 0.0f);
     }
 
-    g_light_main();
+    light_main();
     ballBackup = currentBallStructPtr;
     currentBallStructPtr = &ballInfo[0];
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)

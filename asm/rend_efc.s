@@ -3443,7 +3443,7 @@ func_80098484:
 /* 800984B0 000943D0  3B 84 00 00 */	addi r28, r4, 0
 /* 800984B4 000943D4  80 63 00 2C */	lwz r3, 0x2c(r3)
 /* 800984B8 000943D8  4B F7 FE 79 */	bl camera_apply_viewport
-/* 800984BC 000943DC  4B F8 9A 11 */	bl g_light_main
+/* 800984BC 000943DC  4B F8 9A 11 */	bl light_main
 /* 800984C0 000943E0  83 AD 9A 5C */	lwz r29, currentCameraStructPtr@sda21(r13)
 /* 800984C4 000943E4  38 00 00 50 */	li r0, 0x50
 /* 800984C8 000943E8  7C 09 03 A6 */	mtctr r0

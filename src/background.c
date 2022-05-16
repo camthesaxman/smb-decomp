@@ -550,7 +550,7 @@ void load_bg_files(int bgId)
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        g_light_init(currStageId);
+        light_init(currStageId);
     }
 }
 

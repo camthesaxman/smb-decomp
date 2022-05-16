@@ -140,7 +140,7 @@ extern char *nameEntryText[];
 // extern ? stageFlyInPositions;
 // extern ? lbl_801772AC;
 // extern ? lbl_80177358;
-// extern ? s_g_stageLightsMaybe;
+// extern ? s_perStageLights;
 // extern ? lbl_80180D08;
 // extern ? lbl_80180D2C;
 // extern ? lbl_80180D50;

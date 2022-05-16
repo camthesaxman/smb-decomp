@@ -175,7 +175,7 @@ lbl_00000270:
 /* 000002CC 4BFFFE91 */ bl unload_stage
 /* 000002D0 4BFFFE8D */ bl event_finish_all
 /* 000002D4 38600000 */ li r3, 0
-/* 000002D8 4BFFFE85 */ bl g_light_init
+/* 000002D8 4BFFFE85 */ bl light_init
 /* 000002DC 3C600000 */ lis r3, lbl_10000000@ha
 /* 000002E0 38830000 */ addi r4, r3, lbl_10000000@l
 /* 000002E4 93E40000 */ stw r31, 0(r4)

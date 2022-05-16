@@ -592,7 +592,7 @@ lbl_800B667C:
 /* 800B66D0 000B25F0  38 60 00 0B */	li r3, 0xb
 /* 800B66D4 000B25F4  4B F5 4C 55 */	bl event_start
 /* 800B66D8 000B25F8  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B66DC 000B25FC  4B F6 B6 D9 */	bl g_light_init
+/* 800B66DC 000B25FC  4B F6 B6 D9 */	bl light_init
 /* 800B66E0 000B2600  4B FE 0B ED */	bl func_800972CC
 /* 800B66E4 000B2604  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B66E8 000B2608  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -1309,7 +1309,7 @@ lbl_800B70EC:
 /* 800B7140 000B3060  38 60 00 0B */	li r3, 0xb
 /* 800B7144 000B3064  4B F5 41 E5 */	bl event_start
 /* 800B7148 000B3068  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B714C 000B306C  4B F6 AC 69 */	bl g_light_init
+/* 800B714C 000B306C  4B F6 AC 69 */	bl light_init
 /* 800B7150 000B3070  4B FE 01 7D */	bl func_800972CC
 /* 800B7154 000B3074  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B7158 000B3078  3B E3 EC 20 */	addi r31, r3, modeCtrl@l
@@ -2625,7 +2625,7 @@ lbl_800B8460:
 /* 800B84B4 000B43D4  38 60 00 0B */	li r3, 0xb
 /* 800B84B8 000B43D8  4B F5 2E 71 */	bl event_start
 /* 800B84BC 000B43DC  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B84C0 000B43E0  4B F6 98 F5 */	bl g_light_init
+/* 800B84C0 000B43E0  4B F6 98 F5 */	bl light_init
 /* 800B84C4 000B43E4  4B FD EE 09 */	bl func_800972CC
 /* 800B84C8 000B43E8  38 60 00 00 */	li r3, 0
 /* 800B84CC 000B43EC  38 80 00 00 */	li r4, 0

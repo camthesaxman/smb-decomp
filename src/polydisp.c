@@ -74,7 +74,7 @@ void polydisp_main(void)
     if (func_8009D5D8() != 0)
         lbl_801EEC90.unk0 |= 0x10;
 
-    g_light_main();
+    light_main();
     func_8009AB5C();
 
     if (eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)

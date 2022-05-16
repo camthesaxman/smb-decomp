@@ -173,7 +173,7 @@ lbl_00000260:
 /* 000002D4 3C600000 */ lis r3, currStageId@ha
 /* 000002D8 38630000 */ addi r3, r3, currStageId@l
 /* 000002DC A8630000 */ lha r3, 0(r3)
-/* 000002E0 4BFFFE55 */ bl g_light_init
+/* 000002E0 4BFFFE55 */ bl light_init
 /* 000002E4 3C600000 */ lis r3, spritePoolInfo@ha
 /* 000002E8 38830000 */ addi r4, r3, spritePoolInfo@l
 /* 000002EC 3C600000 */ lis r3, worldInfo@ha
@@ -202,7 +202,7 @@ lbl_00000324:
 /* 0000033C 3C600000 */ lis r3, currStageId@ha
 /* 00000340 38630000 */ addi r3, r3, currStageId@l
 /* 00000344 A8630000 */ lha r3, 0(r3)
-/* 00000348 4BFFFDED */ bl g_light_init
+/* 00000348 4BFFFDED */ bl light_init
 /* 0000034C 3B800000 */ li r28, 0
 lbl_00000350:
 /* 00000350 C03D08B4 */ lfs f1, 0x8b4(r29)

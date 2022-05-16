@@ -169,7 +169,7 @@ lbl_0000020C:
 /* 000002CC 3860000B */ li r3, 0xb
 /* 000002D0 4BFFFE91 */ bl event_start
 /* 000002D4 386000B3 */ li r3, 0xb3
-/* 000002D8 4BFFFE89 */ bl g_light_init
+/* 000002D8 4BFFFE89 */ bl light_init
 /* 000002DC 4BFFFE85 */ bl func_800972CC
 /* 000002E0 3C600000 */ lis r3, lbl_80206DEC@ha
 /* 000002E4 38830000 */ addi r4, r3, lbl_80206DEC@l
@@ -3823,7 +3823,7 @@ lbl_00003804:
 /* 00003830 38600014 */ li r3, 0x14
 /* 00003834 4BFFC92D */ bl event_start
 /* 00003838 386000B3 */ li r3, 0xb3
-/* 0000383C 4BFFC925 */ bl g_light_init
+/* 0000383C 4BFFC925 */ bl light_init
 /* 00003840 4BFFC921 */ bl func_800972CC
 /* 00003844 38000002 */ li r0, 2
 /* 00003848 981E000A */ stb r0, 0xa(r30)

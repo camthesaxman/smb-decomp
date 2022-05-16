@@ -1,3 +1,17 @@
+// Lights system
+
+// Most stage lighting is really simple: an ambient color and a single directional ("infinite")
+// light, both defined by the background type. A "light group" abstraction is used to allow
+// different models to be lit with different sets of lights (up to 8, the maximum supported by the
+// hardware), but it's rarely taken advantage of.   
+//
+// During initialization, the BG's infinite light and matching per-stage lights are allocated in the
+// "light pool". Then, light groups are initialized by searching the light pool for light IDs they
+// want. The default light group looks for the BG's directional light (the one with ID
+// LIGHT_ID_STAGE) and per-stage LIGHT_ID_AUTO lights. If the BG specifies how to build the specific
+// LIGHT_GROUP_BG_ light groups (read: monkey billiards), these lights are also picked from the
+// light pool.
+
 #include <stdio.h>
 #include <string.h>
 
@@ -76,7 +90,8 @@ enum
     LIGHT_ID_TEST,
     LIGHT_ID_STAGE, // Infinite light defined for background
     LIGHT_ID_BUMPER,
-    LIGHT_ID_AUTO, // Per-stage light put in light pool iff stage ID matches
+    LIGHT_ID_AUTO, // Per-stage light put in light pool iff stage ID matches, and placed in default
+                   // light group
     LIGHT_ID_BG,
     LIGHT_ID_BG_PILLAR,
     LIGHT_ID_BG_WALL,
@@ -121,8 +136,12 @@ struct Light
     float spotCutoff; // Angle cutoff for spot light
 };
 
+// Extra lights to use if the stage ID matches. "auto" lights are added to the default light group,
+// while other light IDs can be manually assorted into light groups by the BG (only monkey billiards
+// does this however)
+
 // clang-format off
-struct Light s_g_stageLightsMaybe[512] =  // lots of empty space at the end
+struct Light s_perStageLights[512] =  // lots of empty space at the end
 {
     { 1, LIGHT_ID_AUTO, 1, LIGHT_TYPE_POINT,     GX_SP_OFF,   ST_150_TUTORIAL,     1,   1,   1, { 14.500019,       2.5, -21.000044},      0,      0, 0, {         0,          0,        -1},         2,         1,        0,        0,         0 },
     { 1, LIGHT_ID_AUTO, 1, LIGHT_TYPE_POINT_POW, GX_SP_OFF,   ST_134_RACE_ICE,   0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
@@ -169,7 +188,7 @@ void print_light(struct Light *light)
 void g_alloc_stage_lights(int stageId)
 {
     u8 dummy[8];
-    struct Light *light = s_g_stageLightsMaybe;
+    struct Light *light = s_perStageLights;
 
     while (light->valid != -1)
     {
@@ -448,7 +467,8 @@ void init_light_groups(void)
     lightGrp = s_lightGroups;
     for (i = 0; i < ARRAY_COUNT(s_lightGroups); i++, lightGrp++)
     {
-        for (lightInGroupIdx = 0; lightInGroupIdx < ARRAY_COUNT(lightGrp->lightPoolIdxs); lightInGroupIdx++)
+        for (lightInGroupIdx = 0; lightInGroupIdx < ARRAY_COUNT(lightGrp->lightPoolIdxs);
+             lightInGroupIdx++)
             lightGrp->lightPoolIdxs[lightInGroupIdx] = -1;
         lightGrp->ambient.r = s_bgLightInfo.ambient.r;
         lightGrp->ambient.g = s_bgLightInfo.ambient.g;
@@ -477,7 +497,8 @@ void init_light_groups(void)
     // Init the other non-BG light groups by copying from an existing light group
     lgInfo = &(s_g_lightGroupSomethings[LIGHT_GROUP_SINGLE_UNIT]);
     for (i = 2; i < 6; i++, lgInfo++)
-        memcpy(&s_lightGroups[i], &s_lightGroups[lgInfo->g_someLGIdxToCopy], sizeof(s_lightGroups[i]));
+        memcpy(&s_lightGroups[i], &s_lightGroups[lgInfo->g_someLGIdxToCopy],
+               sizeof(s_lightGroups[i]));
 
     if (s_bgLightInfo.bgLightGroups == NULL)
         return;
@@ -488,13 +509,14 @@ void init_light_groups(void)
         int bgLgIdx = i - 7;
         if (s_bgLightInfo.bgLightGroups[bgLgIdx] == NULL)
             break;
-        for (lightInGroupIdx = 0; lightInGroupIdx < ARRAY_COUNT(lightGrp->lightPoolIdxs); lightInGroupIdx++)
+        for (lightInGroupIdx = 0; lightInGroupIdx < ARRAY_COUNT(lightGrp->lightPoolIdxs);
+             lightInGroupIdx++)
         {
             s8 lightId = s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 0];
             if (lightId == -1)
                 break;
-            lightGrp->lightPoolIdxs[lightInGroupIdx] =
-                alloc_pool_light_idx(TRUE, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
+            lightGrp->lightPoolIdxs[lightInGroupIdx] = alloc_pool_light_idx(
+                TRUE, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
         }
     }
 }
@@ -521,7 +543,7 @@ void set_avdisp_inf_light(struct LightGroup *lightGrp)
         GXGetLightColor(&lightGrp->lightObjs[0], &infLightColor);
         avdisp_set_inf_light_dir(&infLightDir);
         avdisp_set_inf_light_color(infLightColor.r / 255.0f, infLightColor.g / 255.0f,
-                                      infLightColor.b / 255.0f);
+                                   infLightColor.b / 255.0f);
     }
     else if (func_8009D5D8() != 0)
     {
@@ -538,7 +560,8 @@ void set_avdisp_inf_light(struct LightGroup *lightGrp)
         avdisp_set_inf_light_color(0.0f, 0.0f, 0.0f);
 }
 
-void g_light_init(int stageId)
+// Light system init
+void light_init(int stageId)
 {
     u8 dummy[8];
     int i;
@@ -564,7 +587,7 @@ void g_light_init(int stageId)
 
     init_bg_lighting(stageId);
 
-    light = s_g_stageLightsMaybe;
+    light = s_perStageLights;
     while (light->valid != -1)
     {
         if (light->stageId == stageId)
@@ -574,7 +597,8 @@ void g_light_init(int stageId)
     lightingStageId = (stageId == 0) ? currStageId : stageId;
 }
 
-void g_light_main(void)
+// Light system per-frame update
+void light_main(void)
 {
     u8 dummy[8];
     int i;
@@ -815,8 +839,7 @@ void g_draw_naomi_ball(void)
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
         g_nl2ngc_set_scale(r31->refDist * 2.0);
-        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B),
-                                               0.5f);
+        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B));
@@ -841,8 +864,7 @@ void g_draw_naomi_ball(void)
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
         g_nl2ngc_set_scale(r31->refDist * 2.0);
-        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B),
-                                               0.5f);
+        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_rotate_y(r31->rotY);
@@ -896,8 +918,9 @@ s8 s_bilLightGroup_BG_7[4] = {5, 3, -1, -1};
 s8 s_bilLightGroup_BG_8[10] = {5, 4, 6, 1, 6, 2, 6, 3, -1, -1};
 
 s8 *s_bilLightGroups[] = {
-    s_bilLightGroup_BG_1, s_bilLightGroup_BG_2, s_bilLightGroup_BG_3, s_bilLightGroup_BG_4, s_bilLightGroup_BG_5,
-    s_bilLightGroup_BG_6, s_bilLightGroup_BG_7, s_bilLightGroup_BG_8, NULL,
+    s_bilLightGroup_BG_1, s_bilLightGroup_BG_2, s_bilLightGroup_BG_3,
+    s_bilLightGroup_BG_4, s_bilLightGroup_BG_5, s_bilLightGroup_BG_6,
+    s_bilLightGroup_BG_7, s_bilLightGroup_BG_8, NULL,
 };
 
 // Names/IDs of monkey billiards light groups above?
