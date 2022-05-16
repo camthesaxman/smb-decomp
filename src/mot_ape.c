@@ -15,6 +15,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "light.h"
 
 struct Struct80089A04
 {

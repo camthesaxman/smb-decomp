@@ -108,34 +108,6 @@ char *s_lightGroupNames[] = {
     "BG_a",    "BG_b",   "BG_c",        "BG_d",        "BG_e",     "BG_f",
 };
 
-// Definition of a single light. Referred to by light groups
-struct Light
-{
-    s8 valid;   // 1 if valid, -1 for end of list
-    s8 g_id;    // ID (a sort of category)?
-    s16 g_inst; // Instance of ID?
-    s8 type;
-    s16 spotFn;
-    u8 stageId;
-    float red;
-    float green;
-    float blue;
-
-    // Pose in world space
-    Point3d pos;
-    s16 rotX;
-    s16 rotY;
-    s16 rotZ; // Doesn't appear to be used
-    Vec dir;
-
-    // Attentuation params (may be used differently depending on light type)
-    float refDist;
-    float k0;
-    float k1;
-    float k2;
-    float spotCutoff; // Angle cutoff for spot light
-};
-
 // Extra lights to use if the stage ID matches. "auto" lights are added to the default light group,
 // while other light IDs can be manually assorted into light groups by the BG (only monkey billiards
 // does this however)

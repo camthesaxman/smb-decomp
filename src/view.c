@@ -20,6 +20,7 @@
 #include "stage.h"
 #include "stcoli.h"
 #include "gma.h"
+#include "light.h"
 
 #include "../data/common.gma.h"
 

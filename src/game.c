@@ -23,6 +23,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
+#include "light.h"
 
 s8 lbl_802F1C25;
 s8 lbl_802F1C24;

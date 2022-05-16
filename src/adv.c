@@ -24,6 +24,7 @@
 #include "stage.h"
 #include "world.h"
 #include "stcoli.h"
+#include "light.h"
 
 u32 introBackdropColor;
 u32 advSubmode;

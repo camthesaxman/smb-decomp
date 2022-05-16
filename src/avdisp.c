@@ -5,7 +5,7 @@
 #include <dolphin/GXEnum.h>
 #include <dolphin/GXCommandList.h>
 #include <dolphin/GDLight.h>
-#include "dolphin/GXLighting.h"
+#include <dolphin/GXLighting.h>
 #include <dolphin/GXVert.h>
 #include "global.h"
 #include "gxutil.h"
@@ -15,6 +15,7 @@
 #include "types.h"
 #include "tevutil.h"
 #include "gma.h"
+#include "light.h"
 
 struct UnkStruct4
 {

@@ -11,6 +11,7 @@
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "tevutil.h"
+#include "light.h"
 
 float fogEndZ;
 float fogStartZ;
