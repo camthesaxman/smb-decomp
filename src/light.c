@@ -1,5 +1,5 @@
 // Lights system
-
+//
 // Most stage lighting is really simple: an ambient color and a single directional ("infinite")
 // light, both defined by the background type. A "light group" abstraction is used to allow
 // different models to be lit with different sets of lights (up to 8, the maximum supported by the
