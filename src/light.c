@@ -53,8 +53,6 @@ FORCE_BSS_ORDER(lightGroupStack)
 
 s8 lbl_802F0310[8] = {0};
 
-// light types?
-
 enum
 {
     LIGHT_TYPE_INFINITE,
@@ -76,9 +74,9 @@ char *lightTypeNames[] = {
 enum
 {
     LIGHT_ID_TEST,
-    LIGHT_ID_STAGE,
+    LIGHT_ID_STAGE, // Infinite light defined for background
     LIGHT_ID_BUMPER,
-    LIGHT_ID_AUTO,
+    LIGHT_ID_AUTO, // Per-stage light put in light pool iff stage ID matches
     LIGHT_ID_BG,
     LIGHT_ID_BG_PILLAR,
     LIGHT_ID_BG_WALL,
@@ -405,7 +403,7 @@ void init_bg_lighting(int stageId)
     alloc_light(&light);
 }
 
-struct LightGroupSomething
+struct LightGroupInfo
 {
     s32 g_someLGIdxToCopy; // Copy this light group to groups 2-5 inclusive
     u32 flags;
@@ -413,87 +411,90 @@ struct LightGroupSomething
 
 // Oner per light group
 // clang-format off
-const struct LightGroupSomething s_g_lightGroupSomethings[] = {
-    {0, 3},
-    {1, 3},        
-    {1, 1},        
-    {0, 1},        
-    {0, 1},        
-    {0, 1},        
-    {0, 3},        
-    {0, 3},        
-    {0, 3},        
-    {0, 3},        
-    {0, 3},        
-    {0, 3},        
-    {0, 3},        
-    {0, 3},
-    {0, 3},
-    {0, 3},
-    {0, 3},
-    {0, 3},
-    {0, 3},
-    {0, 3},
-    {0, 3},
-    {0, 3},
+const struct LightGroupInfo s_g_lightGroupSomethings[] = {
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_SINGLE, 3},        
+    {LIGHT_GROUP_SINGLE, 1},        
+    {LIGHT_GROUP_DEFAULT, 1},        
+    {LIGHT_GROUP_DEFAULT, 1},        
+    {LIGHT_GROUP_DEFAULT, 1},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
 };
 // clang-format on
 
-void g_init_light_groups(void)
+void init_light_groups(void)
 {
     int i;
-    int j;
+    int lightInGroupIdx;
     struct Light *light;
-    const struct LightGroupSomething *r25;
+    const struct LightGroupInfo *lgInfo;
     struct LightGroup *lightGrp;
 
     lightGrp = s_lightGroups;
     for (i = 0; i < ARRAY_COUNT(s_lightGroups); i++, lightGrp++)
     {
-        for (j = 0; j < ARRAY_COUNT(lightGrp->lightPoolIdxs); j++)
-            lightGrp->lightPoolIdxs[j] = -1;
+        for (lightInGroupIdx = 0; lightInGroupIdx < ARRAY_COUNT(lightGrp->lightPoolIdxs); lightInGroupIdx++)
+            lightGrp->lightPoolIdxs[lightInGroupIdx] = -1;
         lightGrp->ambient.r = s_bgLightInfo.ambient.r;
         lightGrp->ambient.g = s_bgLightInfo.ambient.g;
         lightGrp->ambient.b = s_bgLightInfo.ambient.b;
     }
 
+    // Associate some lights in the pool with this light group. This includes the infinite light
+    // defined by the current bg's BgLightInfo (it's a LIGHT_ID_STAGE)
     light = s_g_lightPool;
-    j = 0;
-    lightGrp = s_lightGroups;
+    lightInGroupIdx = 0;
+    lightGrp = &s_lightGroups[LIGHT_GROUP_DEFAULT];
     for (i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
     {
         if (light->valid != 0 && (light->g_id == LIGHT_ID_STAGE || light->g_id == LIGHT_ID_TEST ||
                                   light->g_id == LIGHT_ID_AUTO))
         {
-            lightGrp->lightPoolIdxs[j] = i;
-            if (++j == 8)
+            lightGrp->lightPoolIdxs[lightInGroupIdx] = i;
+            if (++lightInGroupIdx == 8)
                 break;
         }
     }
 
     if (s_g_lightPool[0].valid != 0)
-        s_lightGroups[1].lightPoolIdxs[0] = 0;
+        s_lightGroups[LIGHT_GROUP_SINGLE].lightPoolIdxs[0] = 0;
 
-    r25 = &(s_g_lightGroupSomethings[LIGHT_GROUP_SINGLE_UNIT]);
-    for (i = 2; i < 6; i++, r25++)
-        memcpy(&s_lightGroups[i], &s_lightGroups[r25->g_someLGIdxToCopy], sizeof(s_lightGroups[i]));
+    // Init the other non-BG light groups by copying from an existing light group
+    lgInfo = &(s_g_lightGroupSomethings[LIGHT_GROUP_SINGLE_UNIT]);
+    for (i = 2; i < 6; i++, lgInfo++)
+        memcpy(&s_lightGroups[i], &s_lightGroups[lgInfo->g_someLGIdxToCopy], sizeof(s_lightGroups[i]));
 
-    if (s_bgLightInfo.unk44 == NULL)
+    if (s_bgLightInfo.bgLightGroups == NULL)
         return;
 
-    lightGrp = s_lightGroups + 7;
-    for (i = 7; i < ARRAY_COUNT(s_lightGroups); i++, lightGrp++)
+    lightGrp = &s_lightGroups[LIGHT_GROUP_BG_1];
+    for (i = LIGHT_GROUP_BG_1; i < ARRAY_COUNT(s_lightGroups); i++, lightGrp++)
     {
-        int var = i - 7;
-        if (s_bgLightInfo.unk44[var] == NULL)
+        int bgLgIdx = i - 7;
+        if (s_bgLightInfo.bgLightGroups[bgLgIdx] == NULL)
             break;
-        for (j = 0; j < 8; j++)
+        for (lightInGroupIdx = 0; lightInGroupIdx < ARRAY_COUNT(lightGrp->lightPoolIdxs); lightInGroupIdx++)
         {
-            s8 r4 = s_bgLightInfo.unk44[var][j * 2 + 0];
-            if (r4 == -1)
+            s8 lightId = s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 0];
+            if (lightId == -1)
                 break;
-            lightGrp->lightPoolIdxs[j] =
-                get_pool_light(1, r4, s_bgLightInfo.unk44[var][j * 2 + 1]);
+            lightGrp->lightPoolIdxs[lightInGroupIdx] =
+                get_pool_light(1, lightId, s_bgLightInfo.bgLightGroups[bgLgIdx][lightInGroupIdx * 2 + 1]);
         }
     }
 }
@@ -605,7 +606,7 @@ void g_light_main(void)
     lbl_802F1C60 = 0;
     s_numLightObjsLoaded = 0;
     if (s_g_lightGroupsInitialized == 0)
-        g_init_light_groups();
+        init_light_groups();
     mathutil_mtxA_from_mtxB();
     load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     if (g_printLight != 0)
@@ -655,7 +656,7 @@ struct Light *func_80022224(int a, int b)
 // GXLightObj's are computed and stored in the group ("cached")
 void load_light_group_uncached(int lightGrpId)
 {
-    const struct LightGroupSomething *r31;
+    const struct LightGroupInfo *r31;
     struct LightGroup *lightGrp;
     int i;
 
@@ -700,7 +701,7 @@ int peek_light_group(void)
 // Load lights in group from cached GXLightObj's
 void load_light_group_cached(int lightGrpId)
 {
-    const struct LightGroupSomething *r29;
+    const struct LightGroupInfo *r29;
     int i;
     struct LightGroup *lightGrp;
 
@@ -894,7 +895,7 @@ s8 lbl_802F0408[6] = {5, 1, 6, 8, -1, -1};
 s8 lbl_802F0410[4] = {5, 3, -1, -1};
 s8 lbl_80180E5C[10] = {5, 4, 6, 1, 6, 2, 6, 3, -1, -1};
 
-s8 *lbl_80180E68[] = {
+s8 *g_bil_light_groups[] = {
     lbl_80180E30, lbl_80180E3C, lbl_802F03F8, lbl_802F0400, lbl_80180E50,
     lbl_802F0408, lbl_802F0410, lbl_80180E5C, NULL,
 };
@@ -941,7 +942,7 @@ struct BgLightInfo s_bgLightInfos[] = {
     {0.6, {0.3, 0.3, 0.45}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
     {0.6, {0.6, 0.7, 0.8}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0.8, 0.8, 0.8}, -11776, 21888, NULL},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
-    {0.6, {0.4, 0.4, 0.55}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0, 0}, 8192, 24576, lbl_80180E68},
+    {0.6, {0.4, 0.4, 0.55}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {0, 0, 0}, 8192, 24576, g_bil_light_groups},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},
     {0.6, {0.6, 0.6, 0.6}, 0, 1, 1, 1, 0, 0.5, 0.5, 0.5, 0, {1, 1, 1}, 8192, 24576, NULL},

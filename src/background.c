@@ -972,13 +972,13 @@ void bg_night_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group_uncached(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group_uncached(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1007,13 +1007,13 @@ void bg_ice2_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group_uncached(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group_uncached(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1076,13 +1076,13 @@ void bg_billiards_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group_uncached(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group_uncached(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1111,13 +1111,13 @@ void bg_golf_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group_uncached(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group_uncached(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1146,13 +1146,13 @@ void bg_bowling_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group_uncached(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group_uncached(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();

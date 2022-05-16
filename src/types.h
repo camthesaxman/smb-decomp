@@ -1016,7 +1016,7 @@ struct BgLightInfo
 	s16 infLightRotX;
 	s16 infLightRotY;
 
-    s8 **unk44;
+    s8 **bgLightGroups;
 };
 
 struct Light;

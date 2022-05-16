@@ -79,7 +79,7 @@ BOOL g_test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale);
 // ? init_light_dir();
 // ? load_light();
 // ? init_bg_lighting();
-// ? g_init_light_groups();
+// ? init_light_groups();
 // ? set_avdisp_inf_light();
 void g_init_stage_lighting();
 void g_light_main();
