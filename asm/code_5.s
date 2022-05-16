@@ -12060,7 +12060,7 @@ glabel lbl_8007EC80
 /* 8007ECAC 0007ABCC  EC 02 00 28 */	fsubs f0, f2, f0
 /* 8007ECB0 0007ABD0  D0 04 00 04 */	stfs f0, 4(r4)
 /* 8007ECB4 0007ABD4  4E 80 00 20 */	blr
-.endif
+
 .global func_8007ECB8
 func_8007ECB8:
 /* 8007ECB8 0007ABD8  7C 08 02 A6 */	mflr r0
@@ -12218,7 +12218,7 @@ lbl_8007EECC:
 /* 8007EF00 0007AE20  CB 01 00 20 */	lfd f24, 0x20(r1)
 /* 8007EF04 0007AE24  38 21 00 60 */	addi r1, r1, 0x60
 /* 8007EF08 0007AE28  4E 80 00 20 */	blr
-lbl_8007EF0C:
+glabel lbl_8007EF0C
 /* 8007EF0C 0007AE2C  7C 08 02 A6 */	mflr r0
 /* 8007EF10 0007AE30  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 8007EF14 0007AE34  90 01 00 04 */	stw r0, 4(r1)
@@ -12309,7 +12309,7 @@ lbl_8007F048:
 /* 8007F054 0007AF74  7C 08 03 A6 */	mtlr r0
 /* 8007F058 0007AF78  38 21 00 18 */	addi r1, r1, 0x18
 /* 8007F05C 0007AF7C  4E 80 00 20 */	blr
-lbl_8007F060:
+glabel lbl_8007F060
 /* 8007F060 0007AF80  7C 08 02 A6 */	mflr r0
 /* 8007F064 0007AF84  90 01 00 04 */	stw r0, 4(r1)
 /* 8007F068 0007AF88  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -12395,7 +12395,7 @@ lbl_8007F190:
 /* 8007F198 0007B0B8  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007F19C 0007B0BC  7C 08 03 A6 */	mtlr r0
 /* 8007F1A0 0007B0C0  4E 80 00 20 */	blr
-lbl_8007F1A4:
+glabel lbl_8007F1A4
 /* 8007F1A4 0007B0C4  7C 08 02 A6 */	mflr r0
 /* 8007F1A8 0007B0C8  3C C0 80 1C */	lis r6, lbl_801C20EC@ha
 /* 8007F1AC 0007B0CC  90 01 00 04 */	stw r0, 4(r1)
@@ -12781,7 +12781,9 @@ lbl_8007F73C:
 /* 8007F748 0007B668  7C 08 03 A6 */	mtlr r0
 /* 8007F74C 0007B66C  38 21 00 28 */	addi r1, r1, 0x28
 /* 8007F750 0007B670  4E 80 00 20 */	blr
-lbl_8007F754:
+.endif
+.if 0
+glabel lbl_8007F754
 /* 8007F754 0007B674  7C 08 02 A6 */	mflr r0
 /* 8007F758 0007B678  90 01 00 04 */	stw r0, 4(r1)
 /* 8007F75C 0007B67C  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -12884,7 +12886,7 @@ lbl_8007F8AC:
 /* 8007F8BC 0007B7DC  7C 08 03 A6 */	mtlr r0
 /* 8007F8C0 0007B7E0  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007F8C4 0007B7E4  4E 80 00 20 */	blr
-lbl_8007F8C8:
+glabel lbl_8007F8C8
 /* 8007F8C8 0007B7E8  7C 08 02 A6 */	mflr r0
 /* 8007F8CC 0007B7EC  90 01 00 04 */	stw r0, 4(r1)
 /* 8007F8D0 0007B7F0  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -12980,7 +12982,7 @@ lbl_8007FA04:
 /* 8007FA14 0007B934  7C 08 03 A6 */	mtlr r0
 /* 8007FA18 0007B938  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007FA1C 0007B93C  4E 80 00 20 */	blr
-lbl_8007FA20:
+glabel lbl_8007FA20
 /* 8007FA20 0007B940  7C 08 02 A6 */	mflr r0
 /* 8007FA24 0007B944  90 01 00 04 */	stw r0, 4(r1)
 /* 8007FA28 0007B948  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -13076,7 +13078,7 @@ lbl_8007FB5C:
 /* 8007FB6C 0007BA8C  7C 08 03 A6 */	mtlr r0
 /* 8007FB70 0007BA90  38 21 00 20 */	addi r1, r1, 0x20
 /* 8007FB74 0007BA94  4E 80 00 20 */	blr
-lbl_8007FB78:
+glabel lbl_8007FB78
 /* 8007FB78 0007BA98  7C 08 02 A6 */	mflr r0
 /* 8007FB7C 0007BA9C  90 01 00 04 */	stw r0, 4(r1)
 /* 8007FB80 0007BAA0  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -13203,7 +13205,6 @@ lbl_8007FD24:
 /* 8007FD3C 0007BC5C  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 8007FD40 0007BC60  38 21 00 30 */	addi r1, r1, 0x30
 /* 8007FD44 0007BC64  4E 80 00 20 */	blr
-
 glabel lbl_8007FD48
 /* 8007FD48 0007BC68  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8007FD4C 0007BC6C  70 00 00 0A */	andi. r0, r0, 0xa
@@ -13216,7 +13217,7 @@ glabel lbl_8007FD48
 /* 8007FD68 0007BC88  38 00 00 00 */	li r0, 0
 /* 8007FD6C 0007BC8C  98 03 00 00 */	stb r0, 0(r3)
 /* 8007FD70 0007BC90  4E 80 00 20 */	blr
-
+.endif
 .global func_8007FD74
 func_8007FD74:
 /* 8007FD74 0007BC94  7C 08 02 A6 */	mflr r0
@@ -19316,7 +19317,7 @@ lbl_802F5040:
 	# ROM: 0x1EEA60
 	.4byte 0x40255555
 	.4byte 0x55555555
-.endif
+
 .global lbl_802F5048
 lbl_802F5048:
 	# ROM: 0x1EEA68
@@ -19367,7 +19368,7 @@ lbl_802F507C:
 lbl_802F5080:
 	# ROM: 0x1EEAA0
 	.4byte 0x433E0000
-
+.endif
 .global lbl_802F5084
 lbl_802F5084:
 	# ROM: 0x1EEAA4
@@ -21177,7 +21178,6 @@ glabel string_MASTER_STAGE
 	.balign 4
 glabel string_EXTRA_STAGE
 	.asciz "EXTRA STAGE"
-.endif
 
 .global lbl_801C20D8
 lbl_801C20D8:
@@ -21208,6 +21208,7 @@ lbl_801C20EC:
 	.4byte 0xC2100000
 	.4byte 0
 	.4byte 0x42100000
+
 glabel string_result_menu
 	.asciz "result menu"
 glabel string_result_mask
@@ -21251,6 +21252,7 @@ lbl_801C21B4:
 glabel string_FLOOR_SCORE___
 	.asciz "FLOOR SCORE : "
 	.balign 4
+.endif
 
 .global lbl_801C21C4
 lbl_801C21C4:
@@ -23233,7 +23235,6 @@ glabel string_Chamy
 glabel string_HAIKYO
 	.asciz "HAIKYO"
 	.balign 4
-.endif
 
 .global lbl_802F1114
 lbl_802F1114:
@@ -23279,6 +23280,7 @@ glabel string____X_2
 lbl_802F1144:
 	# ROM: 0x1EB884
 	.asciz "%6d"
+.endif
 
 .global lbl_802F1148
 lbl_802F1148:
