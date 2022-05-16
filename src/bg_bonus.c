@@ -195,7 +195,7 @@ void bg_bonus_interact(int a)
         // spawn shooting star
         memset(&star, 0, sizeof(star));
         star.unk8 = 32;
-        star.unk14 = currentBallStructPtr->unk2E;
+        star.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(cameraInfo[star.unk14].unk1A4);
         spC.z = -120.0f + (rand() / 32767.0f) * -225.0f;
         spC.x = spC.z * -(8.0f / 3.0f) * currentCameraStructPtr->sub28.unk38 * ((rand() / 32767.0f) - 0.5f);

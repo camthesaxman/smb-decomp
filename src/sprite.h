@@ -189,7 +189,7 @@ enum FontID
 
 struct FontParams
 {
-    /*0x00*/ s16 unk0;
+    /*0x00*/ s16 bmpId;
     /*0x02*/ u8 spaceWidth;
     /*0x03*/ u8 lineHeight;
     /*0x04*/ s32 unk4;
@@ -234,7 +234,7 @@ struct Sprite
              u8 filler3E[0x40-0x3E];
              float unk40;
              float unk44;
-             s32 unk48;
+             s32 unk48;  // variable for use by callbacks
              float unk4C;
              struct Sprite *unk50;
     /*0x54*/ struct Sprite *next;
@@ -281,14 +281,14 @@ float g_get_char_ratio(char *a, int b);
 // ? parse_char_sequence();
 void func_80071A8C(void);
 void g_set_font();
-void func_80071AE4();
-void g_set_some_sprite_color();
+void g_set_text_fill_color();
+void g_set_text_other_color();
 void func_80071B1C(float);
 void func_80071B2C(float, float);
 void func_80071B40(float a);
 void func_80071B50();
 void g_set_text_pos(float, float);
-void func_80071B78(s8);
+void g_draw_char(s8);
 void g_draw_text(char *str);
 float g_get_text_width(char *str);
 void func_80072AC0(char *str, ...);

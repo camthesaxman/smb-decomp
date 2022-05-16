@@ -494,12 +494,12 @@ void bitmap_draw_normal_char(unsigned char chr)
     float f26;
     GXColor tevColor;
 
-    f27 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].width;
-    f26 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].height;
+    f27 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].width;
+    f26 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].height;
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], GX_TEXMAP0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texObjs[font->bmpId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = 255;
     tevColor.g = 255;

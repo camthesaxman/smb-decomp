@@ -251,13 +251,13 @@ void view_sprite_func(struct Sprite *sprite)
     func_80071B2C(sprite->unk40, sprite->unk44);
     func_80071B50(sprite->unk74);
     func_80071B1C(sprite->unk4C + 0.1);
-    func_80071AE4(0);
-    g_set_some_sprite_color(0);
+    g_set_text_fill_color(0);
+    g_set_text_other_color(0);
     g_set_text_pos(sprite->x + 2.0, sprite->y + 2.0);
     g_draw_text(sprite->text);
     func_80071B1C(sprite->unk4C);
-    func_80071AE4((sprite->unkC << 16) | (sprite->unkD << 8) | sprite->unkE);
-    g_set_some_sprite_color((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
+    g_set_text_fill_color((sprite->unkC << 16) | (sprite->unkD << 8) | sprite->unkE);
+    g_set_text_other_color((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
     g_set_text_pos(sprite->x, sprite->y);
     g_draw_text(sprite->text);
 }

@@ -330,8 +330,8 @@ void submode_adv_demo_init_func(void)
     }
     camera_set_state(29);
     call_bitmap_load_group(BMP_ADV);
-    show_press_start_textbox(0);
-    show_adv_copyright_text(0);
+    hud_show_press_start_textbox(0);
+    hud_show_adv_copyright_info(0);
     g_play_music(2, 0);
     gameSubmodeRequest = SMD_ADV_DEMO_MAIN;
 }
@@ -672,7 +672,7 @@ void run_cutscene_script(void)
             func_8001898C(0, cmd->param, &sp8);
             break;
         case 28:
-            g_text_box_icon(cmd->param);
+            g_show_eieipu_sprite(cmd->param);
             break;
         case 29:
             sprite = find_sprite_with_tag(11);
@@ -1212,7 +1212,7 @@ static void func_8000FEC8(int a)
     if (sprite != NULL)
         sprite->unk48 = 1;
 
-    create_title_letter_sprites(a);
+    hud_show_title_banner(a);
     g_play_sound(0xA022);
     if (lbl_802014E0.unk0 != 2)
         g_play_music(3, 0);
@@ -1245,7 +1245,7 @@ void submode_adv_title_init_func(void)
     event_finish(EVENT_SOUND);
     event_finish(EVENT_REND_EFC);
     event_finish(EVENT_BACKGROUND);
-    show_press_start_textbox(2);
+    hud_show_press_start_textbox(2);
     if (screenFadeInfo.unk8 != 0)
         g_start_screen_fade(0x100, 0, 30);
     file_preload("bmp/bmp_sel.tpl");
@@ -1274,9 +1274,9 @@ void submode_adv_title_reinit_func(void)
     camera_set_state(27);
     unload_stage();
     call_bitmap_load_group(BMP_ADV);
-    create_title_letter_sprites(1);
+    hud_show_title_banner(1);
     if (dipSwitches & DIP_DEBUG)
-        show_press_start_textbox(2);
+        hud_show_press_start_textbox(2);
     else
     {
         modeCtrl.levelSetFlags |= (1 << 2);
@@ -1289,7 +1289,7 @@ void submode_adv_title_reinit_func(void)
         sp8.unk1C = NULL;
         g_create_textbox(0, 1, &sp8);
         g_set_textbox_text(0, " \n ");
-        create_title_menu_items();
+        hud_show_title_menu();
     }
     load_stage(ST_150_TUTORIAL);
     g_init_light_stuff_for_stage(0);
@@ -1335,7 +1335,7 @@ void submode_adv_title_main_func(void)
             sp8.unk1C = NULL;
             g_create_textbox(0, 1, &sp8);
             g_set_textbox_text(0, " \n ");
-            create_title_menu_items();
+            hud_show_title_menu();
         }
     }
     if (modeCtrl.levelSetFlags & (1 << 2))
@@ -1408,8 +1408,8 @@ void submode_adv_info_init_func(void)
     ballInfo[0].bananas = 0;
     camera_set_state(43);
     call_bitmap_load_group(BMP_NML);
-    show_press_start_textbox(0);
-    show_adv_copyright_text(0);
+    hud_show_press_start_textbox(0);
+    hud_show_adv_copyright_info(0);
     if (!(modeCtrl.levelSetFlags & (1 << 13)))
     {
         struct TextBox sp8;
@@ -1739,11 +1739,11 @@ void submode_adv_game_ready_init_func(void)
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
     camera_set_state(10);
-    func_80077E34();
+    g_show_adv_ready_hud();
     func_800885EC();
     func_80088E90();
-    show_press_start_textbox(0);
-    show_adv_copyright_text(0);
+    hud_show_press_start_textbox(0);
+    hud_show_adv_copyright_info(0);
     func_80088C28();
     advTutorialInfo.state = 0;
     lbl_802F1BAC = 0;
@@ -1764,7 +1764,7 @@ void submode_adv_game_ready_main_func(void)
 
         if (sprite != NULL)
             sprite->unk48 = 15;
-        show_ready_text(0x78);
+        hud_show_ready_banner(0x78);
         func_800846B0(3);
     }
     if (modeCtrl.unk0 == 24.0)
@@ -1797,7 +1797,7 @@ void submode_adv_game_play_init_func(void)
         return;
     modeCtrl.unk0 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
     event_resume(2);
-    show_go_text(60);
+    hud_show_go_banner(60);
     infoWork.flags &= -265;
     ballInfo[0].state = 9;
     worldInfo[0].state = 9;
@@ -1870,7 +1870,7 @@ void submode_adv_ranking_main_func(void)
         destroy_sprite_with_tag(0);
         destroy_sprite_with_tag(37);
         destroy_sprite_with_tag(39);
-        show_adv_copyright_text(1);
+        hud_show_adv_copyright_info(1);
         func_800886E0(0);
         if (find_sprite_with_tag(17) != NULL)
             find_sprite_with_tag(17)->unk48 = 1;

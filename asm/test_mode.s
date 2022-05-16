@@ -4145,7 +4145,7 @@ lbl_00003B30:
 /* 00003B94 80632C68 */ lwz r3, 0x2c68(r3)
 /* 00003B98 54001838 */ slwi r0, r0, 3
 /* 00003B9C 7C63002E */ lwzx r3, r3, r0
-/* 00003BA0 4BFFC5BD */ bl func_80071A74
+/* 00003BA0 4BFFC5BD */ bl get_font_bitmap_id
 /* 00003BA4 90610008 */ stw r3, 8(r1)
 /* 00003BA8 38A00000 */ li r5, 0
 /* 00003BAC 3880FFFF */ li r4, -1

@@ -256,7 +256,7 @@ void draw_textbox(int a, struct TextBox *tbox)
     func_80071A8C();
     g_set_font(tbox->unk16 == 13 ? FONT_ICON_SD2 : FONT_ICON_SD);
     func_80071B1C(a * 0.01f + 0.059999999776482585);
-    func_80071AE4(tbox->unk24);
+    g_set_text_fill_color(tbox->unk24);
     f3 = (float)tbox->unk8 / (float)tbox->unk4;
     if (tbox->unk0 == 1)
     {
@@ -422,7 +422,7 @@ void draw_textbox(int a, struct TextBox *tbox)
     func_80071B50(0x220000);
     g_set_font(FONT_JAP_24x24_2P);
     func_80071B1C(a * 0.01f + 0.05);
-    func_80071AE4(0);
+    g_set_text_fill_color(0);
     if (tbox->unk0 == 11)
         r29 = tbox->unk8 * -1.5;
     else

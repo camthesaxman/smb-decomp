@@ -66,13 +66,13 @@ struct Ball
     s16 unk28;
     s16 unk2A;
     s16 unk2C;
-    s8 unk2E;  // playerId?
-    s8 unk2F;  // rank?
+    /*0x2E*/ s8 playerId;
+    /*0x2F*/ s8 rank;  // rank in competition mode
     Mtx unk30;
     s16 unk60;
     s16 unk62;
     s16 unk64;
-    s16 oldModelId;  // id of Naomi model
+    /*0x66*/ s16 oldModelId;  // id of Naomi model
     /*0x68*/ float currRadius;
     float accel;
     /*0x70*/ float restitution;

@@ -18,9 +18,10 @@
 
 u8 lbl_801C14F0[] =
 {
-    0xFF, 0x00, 0x00, 0x2C,
-    0x65, 0xFF, 0xFB, 0xFF,
-    0x2C, 0x2C, 0xFF, 0x57,
+    0xFF, 0x00, 0x00,
+    0x2C, 0x65, 0xFF,
+    0xFB, 0xFF, 0x2C,
+    0x2C, 0xFF, 0x57,
 };
 
 float lbl_801C14FC[] =
@@ -38,7 +39,7 @@ extern void pause_menu_sprite_draw(struct Sprite *);
 
 void lbl_80075D70(struct TextBox *a) {}
 
-void g_open_pause_menu(void)
+void hud_show_pause_menu(void)
 {
     struct Sprite *sprite = create_sprite();
 
@@ -64,51 +65,51 @@ void g_open_pause_menu(void)
     }
 }
 
-void lbl_8007DE54();
+void game_over_sprite_main();
 
-void func_80075E1C(int unused, struct Sprite *b)
+void func_80075E1C(int unused, struct Sprite *sprite)
 {
     struct Sprite *gameOver;
 
-    b->y += 0.075 * (lbl_801C14FC[b->unk48] - b->y);
-    if (b->counter > 0)
+    sprite->y += 0.075 * (lbl_801C14FC[sprite->unk48] - sprite->y);
+    if (sprite->counter > 0)
     {
-        b->unk44 = b->unk40;
-        b->counter--;
+        sprite->unk44 = sprite->unk40;
+        sprite->counter--;
     }
     else
     {
-        b->unk44 += 0.1 * (b->unk40 - b->unk44);
+        sprite->unk44 += 0.1 * (sprite->unk40 - sprite->unk44);
     }
-    if (b->unk48 >= 2 && b->unk48 != 6)
+    if (sprite->unk48 >= 2 && sprite->unk48 != 6)
     {
-        if (b->opacity < 0.99)
-            b->opacity += 0.01;
+        if (sprite->opacity < 0.99)
+            sprite->opacity += 0.01;
     }
-    if (b->unk48 == 2)
+    if (sprite->unk48 == 2)
     {
-        if (b->unkC < 250.0)
-            b->unkC += 5;
-        b->unkD = b->unkC;
-        b->unkE = b->unkC;
+        if (sprite->unkC < 250.0)
+            sprite->unkC += 5;
+        sprite->unkD = sprite->unkC;
+        sprite->unkE = sprite->unkC;
     }
-    if (b->unk48 == 4)
+    if (sprite->unk48 == 4)
     {
-        b->unk48 = 5;
+        sprite->unk48 = 5;
         gameOver = create_sprite();
         if (gameOver != NULL)
         {
             gameOver->x = 320.0f;
             gameOver->y = 240.0f;
-            gameOver->unkC = 0xFF;
+            gameOver->unkC = 255;
             gameOver->unkD = 0;
-            gameOver->unkE = 0x20;
+            gameOver->unkE = 32;
             gameOver->fontId = FONT_ASC_72x64;
             gameOver->textAlign = ALIGN_CC;
             gameOver->counter = 60;
             gameOver->unk48 = 60;
-            gameOver->unk4C = b->unk4C - 0.001;
-            gameOver->mainFunc = lbl_8007DE54;
+            gameOver->unk4C = sprite->unk4C - 0.001;
+            gameOver->mainFunc = game_over_sprite_main;
             strcpy(gameOver->text, "GAME OVER");
         }
     }
@@ -265,12 +266,12 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
         x = sprite->x - 48.0f;
         y = sprite->y + phi_f22;
         g_set_text_pos(3.0f + x, 3.0f + y);
-        func_80071AE4(0x202000);
-        g_set_some_sprite_color(0);
+        g_set_text_fill_color(0x202000);
+        g_set_text_other_color(0);
         g_draw_text(text);
         g_set_text_pos(x, y);
-        func_80071AE4((i == lbl_801EEC68.unk8) ? 0xFFFF00 : 0x808000);
-        g_set_some_sprite_color((((lbl_801EEC68.unk4) & 1) && i == lbl_801EEC68.unk8) ? temp_r16 : 0);
+        g_set_text_fill_color((i == lbl_801EEC68.unk8) ? 0xFFFF00 : 0x808000);
+        g_set_text_other_color((((lbl_801EEC68.unk4) & 1) && i == lbl_801EEC68.unk8) ? temp_r16 : 0);
         g_draw_text(text);
 
         if (menuType == 4 && i == 1)
@@ -281,35 +282,35 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
             strcpy(text, "ON");
             x += 96.0f;
             g_set_text_pos(3.0f + x, 3.0f + y);
-            func_80071AE4(0x202000);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0x202000);
+            g_set_text_other_color(0);
             g_draw_text(text);
             g_set_text_pos(x, y);
             if (lbl_801EEC68.unk4 & 8)
-                func_80071AE4(0xC0C000);
+                g_set_text_fill_color(0xC0C000);
             else
-                func_80071AE4(0x808000);
+                g_set_text_fill_color(0x808000);
             if (i == lbl_801EEC68.unk8 && (lbl_801EEC68.unk4 & 8))
-                g_set_some_sprite_color(temp_r24);
+                g_set_text_other_color(temp_r24);
             else
-                g_set_some_sprite_color(0);
+                g_set_text_other_color(0);
             g_draw_text(text);
 
             strcpy(text, "OFF");
             x += 50.0f;
             g_set_text_pos(3.0f + x, 3.0f + y);
-            func_80071AE4(0x202000);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0x202000);
+            g_set_text_other_color(0);
             g_draw_text(text);
             g_set_text_pos(x, y);
             if (!(lbl_801EEC68.unk4 & 8))
-                func_80071AE4(0xC0C000);
+                g_set_text_fill_color(0xC0C000);
             else
-                func_80071AE4(0x808000);
+                g_set_text_fill_color(0x808000);
             if (i == lbl_801EEC68.unk8 && !(lbl_801EEC68.unk4 & 8))
-                g_set_some_sprite_color(temp_r24);
+                g_set_text_other_color(temp_r24);
             else
-                g_set_some_sprite_color(0);
+                g_set_text_other_color(0);
             g_draw_text(text);
         }
         if (i == lbl_801EEC68.unk8)
@@ -327,7 +328,7 @@ void pause_menu_sprite_draw(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-void show_press_start_textbox(int a)
+void hud_show_press_start_textbox(int a)
 {
     struct TextBox spC;
 
@@ -407,22 +408,22 @@ void lbl_800768A8(s8 *a, struct Sprite *sprite)
 {
     struct Sprite *logoPlus = find_sprite_with_tag(3);
 
-    if (sprite->counter <= 0x189)
+    if (sprite->counter <= 393)
         sprite->x -= 0.0f;  // does nothing
-    else if (sprite->counter <= 0x198)
-        sprite->x -= 10.0f + (6.0f * mathutil_sin((sprite->counter - 0x189) * 0x444));
-    else if (sprite->counter <= 0x1E0)
+    else if (sprite->counter <= 408)
+        sprite->x -= 10.0f + (6.0f * mathutil_sin((sprite->counter - 393) * 0x444));
+    else if (sprite->counter <= 480)
         sprite->x -= 16.0f;
 
-    if (sprite->counter >= 0x17A && sprite->counter <= 0x198)
+    if (sprite->counter >= 378 && sprite->counter <= 408)
     {
-        sprite->unk40 = 1.0 - (0.7 * mathutil_sin((sprite->counter - 0x17A) * 0x444));
-        sprite->unk44 = 1.0 + (0.7 * mathutil_sin((sprite->counter - 0x17A) * 0x444));
+        sprite->unk40 = 1.0 - (0.7 * mathutil_sin((sprite->counter - 378) * 0x444));
+        sprite->unk44 = 1.0 + (0.7 * mathutil_sin((sprite->counter - 378) * 0x444));
         if (logoPlus != NULL)
-            logoPlus->opacity = 0.0333 * (0x198 - sprite->counter);
+            logoPlus->opacity = 0.0333 * (408 - sprite->counter);
     }
 
-    if (sprite->counter == 0x1E0)
+    if (sprite->counter == 480)
     {
         sprite->x = 320.0f;
         sprite->bmpId = BMP_ADV_logo_av256;
@@ -439,13 +440,13 @@ void lbl_800768A8(s8 *a, struct Sprite *sprite)
         }
     }
 
-    if (sprite->counter < 0x1E0)
+    if (sprite->counter < 480)
         sprite->opacity = 1.0f;
-    else if (sprite->counter <= 0x258)
+    else if (sprite->counter <= 600)
         sprite->opacity = 0.0f;
-    else if (sprite->counter <= 0x276)
+    else if (sprite->counter <= 630)
     {
-        sprite->opacity = 0.0333 * (sprite->counter - 0x258);
+        sprite->opacity = 0.0333 * (sprite->counter - 600);
         if (logoPlus != NULL)
             logoPlus->opacity = sprite->opacity;
     }
@@ -467,7 +468,7 @@ void lbl_80076AC0(struct Sprite *sprite)
     params.u2 = 1.0f;
     params.v2 = 0.15625 + 0.15625 * r5;
     params.zoomX = sprite->unk40 * (params.u2 - params.u1);
-    params.zoomY = 0.15625 * sprite->unk44;
+    params.zoomY = sprite->unk44 * 0.15625;
     params.rotation = sprite->unk68;
     params.alpha = sprite->opacity;
     params.unk30 = -1;
@@ -479,7 +480,7 @@ void lbl_80076AC0(struct Sprite *sprite)
 
 void copyright_sprite_main(s8 *, struct Sprite *);
 
-void show_adv_copyright_text(int a)
+void hud_show_adv_copyright_info(int a)
 {
     struct Sprite *sprite;
 
@@ -616,7 +617,7 @@ void title_sprite_draw(struct Sprite *);
 extern float lbl_802F2010;
 extern float lbl_802F2014;
 
-void create_title_letter_sprites(int arg0)
+void hud_show_title_banner(int arg0)
 {
     struct Sprite *sprite;
     int i;
@@ -833,7 +834,7 @@ void title_sprite_draw(struct Sprite *sprite)
 void gamestart_sprite_main(s8 *, struct Sprite *);
 void options_sprite_main(s8 *, struct Sprite *);
 
-void create_title_menu_items(void)
+void hud_show_title_menu(void)
 {
     struct Sprite *sprite;
 
@@ -940,23 +941,21 @@ void options_sprite_main(s8 *arg0, struct Sprite *sprite)
 
 void lbl_80080940(struct Sprite *);
 
-char lbl_802F1024[5] = "saru";
-
 void func_80077DA0(void)
 {
-    struct Sprite *temp_r3;
+    struct Sprite *sprite;
 
-    temp_r3 = create_sprite();
-    if (temp_r3 != NULL)
+    sprite = create_sprite();
+    if (sprite != NULL)
     {
-        temp_r3->tag = 17;
-        temp_r3->x = 142.0f;
-        temp_r3->y = 60.0f;
-        temp_r3->fontId = FONT_ASCII;
-        temp_r3->textAlign = ALIGN_PIC;
-        temp_r3->unk4C = 0.04f;
-        temp_r3->drawFunc = lbl_80080940;
-        sprintf(temp_r3->text, lbl_802F1024);
+        sprite->tag = 17;
+        sprite->x = 142.0f;
+        sprite->y = 60.0f;
+        sprite->fontId = FONT_ASCII;
+        sprite->textAlign = ALIGN_PIC;
+        sprite->unk4C = 0.04f;
+        sprite->drawFunc = lbl_80080940;
+        sprintf(sprite->text, "saru");
     }
     lbl_80292D18.unk4 = 0;
     lbl_80292D18.unk0 = 0;
@@ -964,22 +963,16 @@ void func_80077DA0(void)
     lbl_80292D18.unk14 = 0xE;
 }
 
-void lbl_8007A9B4(s8 *, struct Sprite *);
-void lbl_8007AA38(s8 *, struct Sprite *);
-void lbl_8007AAFC(struct Sprite *);
-void lbl_8007B608(s8 *, struct Sprite *);
+void normal_timer_seconds_sprite_main(s8 *, struct Sprite *);
+void normal_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
+void banana_count_sprite_draw(struct Sprite *);
+void bananas_left_sprite_main(s8 *, struct Sprite *);
 
-char lbl_802F102C[4] = "000";
-char lbl_802F1030[4] = ":00";
-char lbl_802F1034[2] = "/";
-char lbl_802F1038[8] = "000 100";
-
-//const float lbl_802F4D9C = 0.10000000149011612f;
 float force_lbl_802F4D9C() { return 0.1f; }
 
-const float lbl_802F4DA0 = 40.0f;
+float force_lbl_802F4DA0() { return 40.0f; }
 
-void func_80077E34(void)
+void g_show_adv_ready_hud(void)
 {
     struct Sprite *sprite;
     struct Ball *ball;
@@ -989,6 +982,7 @@ void func_80077E34(void)
     func_8000D5B8();
     func_8008083C(320.0f, 68.0f);
 
+    // timer
     sprite = create_sprite();
     if (sprite != NULL)
     {
@@ -997,8 +991,8 @@ void func_80077E34(void)
         sprite->fontId = FONT_NUM_24x37;
         sprite->textAlign = ALIGN_CB;
         sprite->unk4C = 0.19f;
-        sprite->mainFunc = lbl_8007A9B4;
-        sprintf(sprite->text, lbl_802F102C);
+        sprite->mainFunc = normal_timer_seconds_sprite_main;
+        sprintf(sprite->text, "000");
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
@@ -1006,11 +1000,12 @@ void func_80077E34(void)
             sprite->fontId = FONT_NUM_12x19;
             sprite->textAlign = ALIGN_CB;
             sprite->unk4C = 0.19f;
-            sprite->mainFunc = lbl_8007AA38;
-            sprintf(sprite->text, lbl_802F1030);
+            sprite->mainFunc = normal_timer_100th_seconds_sprite_main;
+            sprintf(sprite->text, ":00");
         }
     }
 
+    // banana icon
     sprite = create_sprite();
     if (sprite != NULL)
     {
@@ -1031,11 +1026,11 @@ void func_80077E34(void)
         sprite->y = 24.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
         sprintf(sprite->text, "BANANA(S)");
     }
@@ -1047,13 +1042,13 @@ void func_80077E34(void)
         sprite->y = 47.0f;
         sprite->fontId = FONT_NUM_22x22;
         sprite->textAlign = ALIGN_CC;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
-        sprintf(sprite->text, lbl_802F1034);
+        sprintf(sprite->text, "/");
     }
 
     sprite = create_sprite();
@@ -1064,14 +1059,14 @@ void func_80077E34(void)
         sprite->y = 48.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
-        sprite->drawFunc = lbl_8007AAFC;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->drawFunc = banana_count_sprite_draw;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
-        sprintf(sprite->text, lbl_802F1038);
+        sprintf(sprite->text, "000 100");
     }
 
     lbl_80292C00_alias[0].unk4 = 0;
@@ -1091,7 +1086,7 @@ void func_80077E34(void)
             sprite->fontId = FONT_ASC_32x32;
             sprite->textAlign = ALIGN_CC;
             sprite->counter = 0;
-            sprite->mainFunc = lbl_8007B608;
+            sprite->mainFunc = bananas_left_sprite_main;
             strcpy(sprite->text, "%2d BANANAS LEFT");
         }
     }
@@ -1133,15 +1128,15 @@ void lbl_800782CC(s8 *arg0, struct Sprite *sprite)
     if (sprite->counter > 0)
         sprite->counter--;
     sprite->x = textBoxes[sprite->unk48 + 1].unkC;
-    sprite->y = textBoxes[sprite->unk48 + 1].unkE - ((sprite->unk48 == 2) ? 0x36 : 0x42);
+    sprite->y = textBoxes[sprite->unk48 + 1].unkE - ((sprite->unk48 == 2) ? 54 : 66);
     if (sprite->counter < 15)
         sprite->opacity = 1.0f - sprite->counter / 15.0f;
 }
 
-void lbl_80078450(s8 *, struct Sprite *);
-void lbl_80078460(struct Sprite *);
+void eieipu_sprite_main(s8 *, struct Sprite *);
+void eieipu_sprite_draw(struct Sprite *);
 
-void g_text_box_icon(int arg0)
+void g_show_eieipu_sprite(int arg0)
 {
     struct Sprite *sprite;
 
@@ -1155,13 +1150,13 @@ void g_text_box_icon(int arg0)
         sprite->unk48 = arg0;
         sprite->counter = 0;
         sprite->unk74 |= 0x40000;
-        sprite->mainFunc = lbl_80078450;
-        sprite->drawFunc = lbl_80078460;
+        sprite->mainFunc = eieipu_sprite_main;
+        sprite->drawFunc = eieipu_sprite_draw;
         strcpy(sprite->text, "eieipu");
     }
 }
 
-void lbl_80078450(s8 *a, struct Sprite *sprite)
+void eieipu_sprite_main(s8 *a, struct Sprite *sprite)
 {
     sprite->counter++;
 }
@@ -1243,7 +1238,7 @@ u32 lbl_801C1984[] =
     0x0000FFFF,
 };
 
-void lbl_80078460(struct Sprite *sprite)
+void eieipu_sprite_draw(struct Sprite *sprite)
 {
     f32 temp_f29;
     int i;
@@ -1340,7 +1335,7 @@ void bonus_floor_sprite_main(s8 *, struct Sprite *);
 void final_floor_sprite_main(s8 *, struct Sprite *);
 void final_floor_sprite_draw(struct Sprite *);
 
-void show_stage_intro_text(void)
+void hud_show_stage_name_banner(void)
 {
     struct Sprite *sprite;
     int floorNum;
@@ -1355,17 +1350,17 @@ void show_stage_intro_text(void)
         if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
          || (modeCtrl.levelSetFlags & 8))
         {
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0xFF;
+            sprite->unkC = 255;
+            sprite->unkD = 255;
             sprite->unkE = 0;
-            sprite->unk70 = 0x20;
-            sprite->unk71 = 0x20;
-            sprite->unk72 = 0x20;
+            sprite->unk70 = 32;
+            sprite->unk71 = 32;
+            sprite->unk72 = 32;
         }
         else
         {
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0xFF;
+            sprite->unkC = 255;
+            sprite->unkD = 255;
             sprite->unkE = 0;
         }
         sprite->fontId = FONT_ASC_72x64;
@@ -1399,8 +1394,8 @@ void show_stage_intro_text(void)
             sprite->y = 300.0f;
             sprite->fontId = FONT_ASC_72x64;
             sprite->textAlign = ALIGN_CC;
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0x80;
+            sprite->unkC = 255;
+            sprite->unkD = 128;
             sprite->unkE = 0;
             sprite->unk40 = 0.5f;
             sprite->unk44 = 0.5f;
@@ -1460,8 +1455,8 @@ void floor_intro_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
     g_set_font(sprite->fontId);
     func_80071B50(sprite->unk74);
-    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
-    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_text_other_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
     centerX = (strlen(sprite->text) * 57) >> 1;
     strcpy(text, sprite->text);
 
@@ -1473,8 +1468,8 @@ void floor_intro_sprite_draw(struct Sprite *sprite)
 
     for (i = 0; i < strlen(sprite->text); i++)
     {
-        int phi_r4;
-        int phi_r5;
+        int xOffset;
+        int yOffset;
 
         if (i == spacePos)
             continue;
@@ -1489,38 +1484,38 @@ void floor_intro_sprite_draw(struct Sprite *sprite)
                 continue;
         }
 
-        phi_r4 = 0;
-        phi_r5 = 0;
+        xOffset = 0;
+        yOffset = 0;
 
         if (i == 0 && sprite->counter < 30)
-            phi_r4 = (30 - sprite->counter) * -5;
+            xOffset = (30 - sprite->counter) * -5;
         else if (i > 0 && i < spacePos && sprite->counter < 30 + i * 16)
-            phi_r4 = -3.6 * (30 + i * 16 - sprite->counter);
+            xOffset = -3.6 * (30 + i * 16 - sprite->counter);
         else if (i > spacePos)
-            phi_r4 = -28;
+            xOffset = -28;
 
         if (sprite->unk48 > 0)
         {
             if (i < spacePos)
-                phi_r5 = (15 - sprite->unk48) * ((i & 1) ? 8 : -8);
+                yOffset = (15 - sprite->unk48) * ((i & 1) ? 8 : -8);
             else
-                phi_r5 = (15 - sprite->unk48) * ((i & 1) ? -8 : 8);
+                yOffset = (15 - sprite->unk48) * ((i & 1) ? -8 : 8);
         }
 
-        g_set_text_pos(sprite->x - centerX + 14.4 + 57.6 * i + phi_r4, sprite->y - 25.6 + phi_r5);
-        func_80071B2C(sprite->unk40 - 0.01, sprite->unk44 + (0.01 * __fabs((float)phi_r5)));
+        g_set_text_pos(sprite->x - centerX + 14.4 + 57.6 * i + xOffset, sprite->y - 25.6 + yOffset);
+        func_80071B2C(sprite->unk40 - 0.01, sprite->unk44 + (0.01 * __fabs((float)yOffset)));
         if (i > spacePos)
             func_80071B40(MIN(0.0625 * (sprite->counter - 30 - spacePos * 16), sprite->opacity));
         else if (i > 0)
             func_80071B40(MIN(0.0625 * (sprite->counter - 30 - ((i - 1) * 16)), sprite->opacity));
         else if (i == 0 && sprite->unk48 > 0)
             func_80071B40(sprite->opacity);
-        func_80071B78(text[i]);
+        g_draw_char(text[i]);
     }
     func_80071A8C();
 }
 
-void lbl_80079008(s8 *arg0, struct Sprite *sprite)
+void player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->counter > 90)
     {
@@ -1537,11 +1532,9 @@ void lbl_80079008(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007926C(s8 *, struct Sprite *);
+void ready_sprite_main(s8 *, struct Sprite *);
 
-char lbl_802F1050[4] = "%dP";
-
-void show_ready_text(int arg0)
+void hud_show_ready_banner(int duration)
 {
     struct Sprite *sprite;
 
@@ -1550,7 +1543,7 @@ void show_ready_text(int arg0)
         sprite = create_sprite();
         if (sprite != NULL)
         {
-            int phi_r0 = (modeCtrl.playerCount > 1) ? currentBallStructPtr->unk2E : 3;
+            int phi_r0 = (modeCtrl.playerCount > 1) ? currentBallStructPtr->playerId : 3;
 
             sprite->x = 785.0f;
             sprite->y = 310.0f;
@@ -1560,9 +1553,9 @@ void show_ready_text(int arg0)
             sprite->unkD = lbl_801C14F0[phi_r0 * 3 + 1];
             sprite->unkE = lbl_801C14F0[phi_r0 * 3 + 2];
             sprite->unk48 = -30;
-            sprite->counter = 0x78;
-            sprite->mainFunc = lbl_80079008;
-            sprintf(sprite->text, lbl_802F1050, currentBallStructPtr->unk2E + 1);
+            sprite->counter = 120;
+            sprite->mainFunc = player_num_sprite_main;
+            sprintf(sprite->text, "%dP", currentBallStructPtr->playerId + 1);
         }
     }
 
@@ -1574,33 +1567,33 @@ void show_ready_text(int arg0)
         sprite->unk4C = (modeCtrl.unk30 == 1) ? 0.1 : 0.05;
         sprite->fontId = 9;
         sprite->textAlign = 4;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xC8;
+        sprite->unkC = 255;
+        sprite->unkD = 200;
         sprite->unkE = 0;
-        sprite->counter = arg0;
-        sprite->unk48 = arg0;
+        sprite->counter = duration;
+        sprite->unk48 = duration;
         sprite->unk74 |= 0x1000;
-        sprite->mainFunc = lbl_8007926C;
+        sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "READY");
     }
     g_play_sound(4);
 }
 
-void lbl_8007926C(s8 *arg0, struct Sprite *sprite)
+void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    int temp_r3 = sprite->unk48 - sprite->counter;
+    int t = sprite->unk48 - sprite->counter;
 
-    if (temp_r3 < 30)
+    if (t < 30)
     {
-        sprite->opacity = 0.03333 * temp_r3;
+        sprite->opacity = 0.03333 * t;
         sprite->unk40 = 1.0f;
-        sprite->unk44 = mathutil_sin(temp_r3 * 0x222);
+        sprite->unk44 = mathutil_sin(t * 0x222);
     }
-    else if (temp_r3 < 60)
+    else if (t < 60)
     {
         sprite->opacity = 1.0f;
         sprite->unk40 = 1.0f;
-        sprite->unk44 = 1.0 - mathutil_sin((temp_r3 - 30) * 0x444) * 0.2;
+        sprite->unk44 = 1.0 - mathutil_sin((t - 30) * 0x444) * 0.2;
     }
     else if (sprite->counter <= 15)
     {
@@ -1627,21 +1620,13 @@ extern s32 lbl_802F1CAC;
 
 void lbl_8007A774(s8 *, struct Sprite *);
 void lbl_8007A7B8(s8 *, struct Sprite *);
-void lbl_8007A7E4(s8 *, struct Sprite *);
-void lbl_8007A8AC(s8 *, struct Sprite *);
+void competition_timer_seconds_sprite_main(s8 *, struct Sprite *);
+void competition_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
 void lbl_8007B134(struct Sprite *);
-void lbl_8007B34C(s8 *, struct Sprite *);
-void lbl_8007B4E8(s8 *, struct Sprite *);
+void score_value_sprite_main(s8 *, struct Sprite *);
+void normal_ball_speed_sprite_main(s8 *, struct Sprite *);
 
-char lbl_802F105C[3] = "%d";
-char lbl_802F1060[7] = "course";
-char lbl_802F1068[6] = "SCORE";
-char lbl_802F1070[6] = "NULL\n";
-char lbl_802F1078[6] = "score";
-char lbl_802F1080[3] = "00";
-char lbl_802F1084[4] = "mph";
-
-void g_init_main_normal_hud(void)
+void hud_show_normal_mode_info(void)
 {
     struct Sprite *sprite;
     struct Ball *ball;
@@ -1665,12 +1650,12 @@ void g_init_main_normal_hud(void)
             sprite->x = 32.0f;
         if (flags & 8)
         {
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0xFF;
+            sprite->unkC = 255;
+            sprite->unkD = 255;
             sprite->unkE = 0;
-            sprite->unk70 = 0x40;
-            sprite->unk71 = 0x40;
-            sprite->unk72 = 0x40;
+            sprite->unk70 = 64;
+            sprite->unk71 = 64;
+            sprite->unk72 = 64;
         }
         sprite->textAlign = ALIGN_LB;
         sprite->mainFunc = lbl_8007A774;
@@ -1708,9 +1693,9 @@ void g_init_main_normal_hud(void)
             sprite->unk40 = 0.5f;
             sprite->unk44 = 0.5f;
             if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-                sprintf(sprite->text, lbl_802F105C, lbl_8027CE24.unk2 + 4);
+                sprintf(sprite->text, "%d", lbl_8027CE24.unk2 + 4);
             else
-                sprintf(sprite->text, lbl_802F105C, modeCtrl.levelSet + 4);
+                sprintf(sprite->text, "%d", modeCtrl.levelSet + 4);
         }
         sprite = create_sprite();
         if (sprite != NULL)
@@ -1723,7 +1708,7 @@ void g_init_main_normal_hud(void)
             sprite->unk44 = 1.5f;
             sprite->mainFunc = lbl_8007A7B8;
             sprite->drawFunc = lbl_80067C20;
-            sprintf(sprite->text, lbl_802F1060);
+            sprintf(sprite->text, "course");
         }
     }
 
@@ -1736,7 +1721,7 @@ void g_init_main_normal_hud(void)
         sprite->textAlign = ALIGN_PIC;
         sprite->unk4C = 0.1f;
         sprite->drawFunc = lbl_80080940;
-        sprintf(sprite->text, lbl_802F1024);
+        sprintf(sprite->text, "saru");
     }
 
     lbl_80292D18.unk4 = 0;
@@ -1746,6 +1731,7 @@ void g_init_main_normal_hud(void)
     func_8000D5B8();
     func_8008083C(320.0f, 68.0f);
 
+    // timer
     sprite = create_sprite();
     if (sprite != NULL)
     {
@@ -1754,8 +1740,8 @@ void g_init_main_normal_hud(void)
         sprite->fontId = FONT_NUM_24x37;
         sprite->textAlign = ALIGN_CB;
         sprite->unk4C = 0.19f;
-        sprite->mainFunc = lbl_8007A7E4;
-        sprintf(sprite->text, lbl_802F102C);
+        sprite->mainFunc = competition_timer_seconds_sprite_main;
+        sprintf(sprite->text, "000");
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
@@ -1763,11 +1749,12 @@ void g_init_main_normal_hud(void)
             sprite->fontId = FONT_NUM_12x19;
             sprite->textAlign = ALIGN_CB;
             sprite->unk4C = 0.19f;
-            sprite->mainFunc = lbl_8007A8AC;
-            sprintf(sprite->text, lbl_802F1030);
+            sprite->mainFunc = competition_timer_100th_seconds_sprite_main;
+            sprintf(sprite->text, ":00");
         }
     }
 
+    // banana icon
     sprite = create_sprite();
     if (sprite != NULL)
     {
@@ -1788,11 +1775,11 @@ void g_init_main_normal_hud(void)
         sprite->y = 24.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
         sprintf(sprite->text, "BANANA(S)");
     }
@@ -1804,13 +1791,13 @@ void g_init_main_normal_hud(void)
         sprite->y = 47.0f;
         sprite->fontId = FONT_NUM_22x22;
         sprite->textAlign = ALIGN_CC;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
-        sprintf(sprite->text, lbl_802F1034);
+        sprintf(sprite->text, "/");
     }
 
     sprite = create_sprite();
@@ -1821,14 +1808,14 @@ void g_init_main_normal_hud(void)
         sprite->y = 48.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
-        sprite->drawFunc = lbl_8007AAFC;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->drawFunc = banana_count_sprite_draw;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
-        sprintf(sprite->text, lbl_802F1038);
+        sprintf(sprite->text, "000 100");
     }
 
     lbl_80292C00[0].unk4 = 0;
@@ -1845,10 +1832,10 @@ void g_init_main_normal_hud(void)
         sprite->y = 24.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CC;
-        sprintf(sprite->text, lbl_802F1068);
+        sprintf(sprite->text, "SCORE");
     }
     else
-        printf(lbl_802F1070);
+        printf("NULL\n");
 
     sprite = create_sprite();
     if (sprite != NULL)
@@ -1857,18 +1844,18 @@ void g_init_main_normal_hud(void)
         sprite->y = 48.0f;
         sprite->fontId = FONT_NUM_22x22;
         sprite->textAlign = ALIGN_RC;
-        sprite->mainFunc = lbl_8007B34C;
-        sprintf(sprite->text, lbl_802F1078);
+        sprite->mainFunc = score_value_sprite_main;
+        sprintf(sprite->text, "score");
     }
     else
-        printf(lbl_802F1070);
+        printf("NULL\n");
 
     lbl_80292C60.unk0 = ball->unk7C;
     lbl_80292C60.unk4 = 0;
     lbl_80292C60.unk8 = 0;
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && lbl_802F1CAC > 0)
-        func_8007FD74(0);
+        g_show_practice_mode_score_info(0);
 
     if (modeCtrl.playerCount > 1)
     {
@@ -1883,7 +1870,7 @@ void g_init_main_normal_hud(void)
             sprite->textAlign = ALIGN_CC;
             sprite->unk48 = modeCtrl.currPlayer;
             sprite->drawFunc = lbl_8007B134;
-            sprintf(sprite->text, lbl_802F1050, modeCtrl.currPlayer + 1);
+            sprintf(sprite->text, "%dP", modeCtrl.currPlayer + 1);
         }
     }
     sprite = create_sprite();
@@ -1894,8 +1881,8 @@ void g_init_main_normal_hud(void)
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_LB;
         sprite->unk4C = 0.2f;
-        sprite->mainFunc = lbl_8007B4E8;
-        strcpy(sprite->text, lbl_802F1080);
+        sprite->mainFunc = normal_ball_speed_sprite_main;
+        strcpy(sprite->text, "00");
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
@@ -1904,7 +1891,7 @@ void g_init_main_normal_hud(void)
             sprite->textAlign = ALIGN_CT;
             sprite->unk4C = 0.2f;
             sprite->bmpId = BMP_COM_game_icon_mph;
-            strcpy(sprite->text, lbl_802F1084);
+            strcpy(sprite->text, "mph");
         }
     }
     if (infoWork.flags & 0x40)
@@ -1917,7 +1904,7 @@ void g_init_main_normal_hud(void)
             sprite->fontId = FONT_ASC_32x32;
             sprite->textAlign = ALIGN_CC;
             sprite->counter = 0;
-            sprite->mainFunc = lbl_8007B608;
+            sprite->mainFunc = bananas_left_sprite_main;
             strcpy(sprite->text, "%2d BANANAS LEFT");
         }
     }
@@ -1944,18 +1931,18 @@ void g_init_main_normal_hud(void)
 
 void lbl_8007ADF4(struct Sprite *);
 void lbl_8007B490(s8 *, struct Sprite *);
-void lbl_8007B570(s8 *, struct Sprite *);
+void competition_ball_speed_sprite_main(s8 *, struct Sprite *);
 
-void func_80079D2C(s32 arg0)
+static void show_competition_player_hud(int playerId)
 {
     struct Sprite *sprite;
-    struct Ball *ball = &ballInfo[arg0];
-    struct Viewport vp = cameraInfo[arg0].sub28.vp;
+    struct Ball *ball = &ballInfo[playerId];
+    struct Viewport vp = cameraInfo[playerId].sub28.vp;
     u8 dummy[12];
-    float x1 = 640.0f * vp.left;
-    float y1 = 480.0f * vp.top;
-    float x2 = x1 + (640.0f * vp.width);
-    float y2 = y1 + 480.0f * vp.height;
+    float left = 640.0f * vp.left;
+    float top = 480.0f * vp.top;
+    float right = left + (640.0f * vp.width);
+    float bottom = top + 480.0f * vp.height;
 
     lbl_80292D18.unk4 = 0;
     lbl_80292D18.unk0 = 0;
@@ -1966,12 +1953,12 @@ void func_80079D2C(s32 arg0)
     if (sprite != NULL)
     {
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->x = x1 + 0.5f * (x2 - x1) - 51.0f;
-        if (x1 < 320.0f)
-            sprite->x = (x1 + 120.0f) - 51.0f;
+        sprite->x = left + 0.5f * (right - left) - 51.0f;
+        if (left < 320.0f)
+            sprite->x = (left + 120.0f) - 51.0f;
         else
-            sprite->x = (x2 - 85.0f) - 51.0f;
-        sprite->y = y1 + 22.0f;
+            sprite->x = (right - 85.0f) - 51.0f;
+        sprite->y = top + 22.0f;
         sprite->bmpId = BMP_COM_banana_01;
         sprite->textAlign = ALIGN_CC;
         sprite->unk40 = 0.2f;
@@ -1983,46 +1970,46 @@ void func_80079D2C(s32 arg0)
     if (sprite != NULL)
     {
         sprite->tag = 18;
-        sprite->x = x1 + 0.5f * (x2 - x1) + 41.0f;
-        if (x1 < 320.0f)
-            sprite->x = (x1 + 120.0f) + 41.0f;
+        sprite->x = left + 0.5f * (right - left) + 41.0f;
+        if (left < 320.0f)
+            sprite->x = (left + 120.0f) + 41.0f;
         else
-            sprite->x = (x2 - 85.0f) + 41.0f;
-        sprite->y = y1 + 24.0f;
+            sprite->x = (right - 85.0f) + 41.0f;
+        sprite->y = top + 24.0f;
         sprite->fontId = FONT_ASC_18x16;
         sprite->textAlign = ALIGN_CC;
         sprite->drawFunc = lbl_8007ADF4;
-        sprite->unkC = 0xAA;
-        sprite->unkD = 0xA8;
+        sprite->unkC = 170;
+        sprite->unkD = 168;
         sprite->unkE = 0;
-        sprite->unk70 = 0x38;
-        sprite->unk71 = 0x38;
+        sprite->unk70 = 56;
+        sprite->unk71 = 56;
         sprite->unk72 = 0;
-        sprite->unk48 = arg0;
-        sprintf(sprite->text, lbl_802F102C);
+        sprite->unk48 = playerId;
+        sprintf(sprite->text, "000");
     }
 
-    lbl_80292C00_alias[arg0 * 3 + 0].unk4 = 0;
-    lbl_80292C00_alias[arg0 * 3 + 1].unk4 = 0;
-    lbl_80292C00_alias[arg0 * 3 + 2].unk4 = 0;
-    lbl_80292C00_alias[arg0 * 3 + 0].unk0 = ball->bananas % 10;
-    lbl_80292C00_alias[arg0 * 3 + 1].unk0 = (ball->bananas / 10) % 10;
-    lbl_80292C00_alias[arg0 * 3 + 2].unk0 = (ball->bananas / 100) % 10;
+    lbl_80292C00_alias[playerId * 3 + 0].unk4 = 0;
+    lbl_80292C00_alias[playerId * 3 + 1].unk4 = 0;
+    lbl_80292C00_alias[playerId * 3 + 2].unk4 = 0;
+    lbl_80292C00_alias[playerId * 3 + 0].unk0 = ball->bananas % 10;
+    lbl_80292C00_alias[playerId * 3 + 1].unk0 = (ball->bananas / 10) % 10;
+    lbl_80292C00_alias[playerId * 3 + 2].unk0 = (ball->bananas / 100) % 10;
 
     sprite = create_sprite();
     if (sprite != NULL)
     {
         sprite->type = SPRITE_TYPE_BITMAP;
-        if (x1 < 320.0f)
-            sprite->x = x1 + 28.0f;
+        if (left < 320.0f)
+            sprite->x = left + 28.0f;
         else
-            sprite->x = x2 - 28.0f;
-        sprite->y = y1 + 22.0f;
-        sprite->bmpId = func_80081CFC(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[arg0]);
+            sprite->x = right - 28.0f;
+        sprite->y = top + 22.0f;
+        sprite->bmpId = func_80081CFC(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[playerId]);
         sprite->textAlign = ALIGN_CC;
         sprite->unk40 = 0.375f;
         sprite->unk44 = 0.24374999f;
-        sprite->unk48 = arg0;
+        sprite->unk48 = playerId;
         sprite->mainFunc = lbl_8007B490;
         sprintf(sprite->text, "saru mark.pic");
     }
@@ -2031,38 +2018,38 @@ void func_80079D2C(s32 arg0)
     if (sprite != NULL)
     {
         sprite->type = 1;
-        if (x1 < 320.0f)
-            sprite->x = x1 + 28.0f;
+        if (left < 320.0f)
+            sprite->x = left + 28.0f;
         else
-            sprite->x = x2 - 28.0f;
-        sprite->y = y1 + 48.0f;
+            sprite->x = right - 28.0f;
+        sprite->y = top + 48.0f;
         sprite->unk40 = 2.0f;
         sprite->unk44 = 2.0f;
         sprite->textAlign = ALIGN_CC;
-        sprite->unk48 = arg0;
+        sprite->unk48 = playerId;
         sprite->drawFunc = lbl_8007B134;
-        sprintf(sprite->text, lbl_802F1050, arg0 + 1);
+        sprintf(sprite->text, "%dP", playerId + 1);
     }
 
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        if (x1 < 320.0f)
+        if (left < 320.0f)
         {
-            sprite->x = x1 + 64.0f;
+            sprite->x = left + 64.0f;
             sprite->textAlign = ALIGN_RB;
         }
         else
         {
-            sprite->x = (x2 - 32.0f) - 24.0f;
+            sprite->x = (right - 32.0f) - 24.0f;
             sprite->textAlign = ALIGN_RB;
         }
-        sprite->y = y2 - 16.0f;
+        sprite->y = bottom - 16.0f;
         sprite->fontId = FONT_ASC_18x16;
-        sprite->unk48 = arg0;
+        sprite->unk48 = playerId;
         sprite->unk4C = 0.2f;
-        sprite->mainFunc = lbl_8007B570;
-        strcpy(sprite->text, lbl_802F1080);
+        sprite->mainFunc = competition_ball_speed_sprite_main;
+        strcpy(sprite->text, "00");
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
@@ -2072,7 +2059,7 @@ void func_80079D2C(s32 arg0)
             sprite->textAlign = ALIGN_CT;
             sprite->unk4C = 0.2f;
             sprite->bmpId = 0x58;
-            strcpy(sprite->text, lbl_802F1084);
+            strcpy(sprite->text, "mph");
         }
     }
 }
@@ -2084,12 +2071,10 @@ char *lbl_801C1A0C[] =
     "1ST",
 };
 
-char lbl_801C1A18[] = "separate";
+void competition_round_sprite_main(s8 *, struct Sprite *);
+void competition_separator_sprite_draw(struct Sprite *);
 
-void lbl_8007A50C(s8 *, struct Sprite *);
-void lbl_8007A5C0(struct Sprite *);
-
-void g_init_main_competition_hud(void)
+void hud_show_competition_mode_info(void)
 {
     struct Sprite *sprite;
     int i;
@@ -2105,7 +2090,7 @@ void g_init_main_competition_hud(void)
             sprite->y = 250.0f;
             sprite->fontId = FONT_ASC_20x20;
             sprite->textAlign = ALIGN_LB;
-            sprite->mainFunc = lbl_8007A50C;
+            sprite->mainFunc = competition_round_sprite_main;
             if (gamePauseStatus & 4)
             {
                 sprite = create_linked_sprite(sprite);
@@ -2132,8 +2117,8 @@ void g_init_main_competition_hud(void)
         sprite->fontId = FONT_NUM_24x37;
         sprite->textAlign = ALIGN_CB;
         sprite->unk4C = 0.19f;
-        sprite->mainFunc = lbl_8007A7E4;
-        sprintf(sprite->text, lbl_802F102C);
+        sprite->mainFunc = competition_timer_seconds_sprite_main;
+        sprintf(sprite->text, "000");
         sprite = create_linked_sprite(sprite);
         if (sprite != NULL)
         {
@@ -2141,8 +2126,8 @@ void g_init_main_competition_hud(void)
             sprite->fontId = FONT_NUM_12x19;
             sprite->textAlign = ALIGN_CB;
             sprite->unk4C = 0.19f;
-            sprite->mainFunc = lbl_8007A8AC;
-            sprintf(sprite->text, lbl_802F1030);
+            sprite->mainFunc = competition_timer_100th_seconds_sprite_main;
+            sprintf(sprite->text, ":00");
         }
     }
 
@@ -2170,7 +2155,7 @@ void g_init_main_competition_hud(void)
     for (i = 0; i < spritePoolInfo.unk8; i++, phi_r28++)
     {
         if (*phi_r28 != 0)
-            func_80079D2C(i);
+            show_competition_player_hud(i);
     }
 
     sprite = create_sprite();
@@ -2180,14 +2165,14 @@ void g_init_main_competition_hud(void)
         sprite->unk4C = 400.0f;
         sprite->unk40 = 1.0f;
         sprite->unk44 = 80.0f;
-        sprite->drawFunc = lbl_8007A5C0;
-        strcpy(sprite->text, lbl_801C1A18);
+        sprite->drawFunc = competition_separator_sprite_draw;
+        strcpy(sprite->text, "separate");
     }
 }
 
 float force_lbl_802F4EA0() { return 10.666667f; }
 
-void lbl_8007A50C(s8 *arg0, struct Sprite *sprite)
+void competition_round_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (gameSubmode == 0x33)
     {
@@ -2211,7 +2196,7 @@ void lbl_8007A50C(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void lbl_8007A5C0(struct Sprite *sprite)
+void competition_separator_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     u8 dummy[4];
@@ -2296,11 +2281,9 @@ void lbl_8007A7B8(s8 *arg0, struct Sprite *sprite)
         sprite->unk78 |= 1;
 }
 
-char lbl_802F1098[5] = "%03d";
-
-void lbl_8007A7E4(s8 *arg0, struct Sprite *sprite)
+void competition_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    sprintf(sprite->text, lbl_802F1098, infoWork.timerCurr / 60);
+    sprintf(sprite->text, "%03d", infoWork.timerCurr / 60);
     if (infoWork.timerCurr <= 0)
     {
         sprite->unk40 *= 1.01f;
@@ -2311,13 +2294,11 @@ void lbl_8007A7E4(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-char lbl_802F10A0[6] = ":%02d";
-
-void lbl_8007A8AC(s8 *arg0, struct Sprite *sprite)
+void competition_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int val = 100.0 * ((float)(infoWork.timerCurr % 60) / 60.0);
 
-    sprintf(sprite->text, lbl_802F10A0, val);
+    sprintf(sprite->text, ":%02d", val);
     if (infoWork.timerCurr <= 0)
     {
         sprite->unk40 *= 1.01f;
@@ -2328,17 +2309,17 @@ void lbl_8007A8AC(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void lbl_8007A9B4(s8 *arg0, struct Sprite *sprite)
+void normal_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    int temp_r5 = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
-    sprintf(sprite->text, lbl_802F1098, temp_r5 / 60);
+    int time = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
+    sprintf(sprite->text, "%03d", time / 60);
 }
 
-void lbl_8007AA38(s8 *arg0, struct Sprite *sprite)
+void normal_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    int temp_r5 = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
-    int val = 100.0 * ((float)(temp_r5 % 60) / 60.0);
-    sprintf(sprite->text, lbl_802F10A0, val);
+    int time = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
+    int val = 100.0 * ((float)(time % 60) / 60.0);
+    sprintf(sprite->text, ":%02d", val);
 }
 
 const float lbl_80118870[] =
@@ -2375,7 +2356,7 @@ const float lbl_80118870[] =
     1.0,
 };
 
-void lbl_8007AAFC(struct Sprite *sprite)
+void banana_count_sprite_draw(struct Sprite *sprite)
 {
     struct Ball *ball;
     s32 phi_r3;
@@ -2391,8 +2372,8 @@ void lbl_8007AAFC(struct Sprite *sprite)
     func_80071A8C();
     g_set_font(sprite->fontId);
     g_set_text_pos(sprite->x - 70.0f, sprite->y - 10.0f);
-    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
-    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_text_other_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
     g_draw_text("    100");
 
     r22 = lbl_80292C00_alias;
@@ -2413,16 +2394,16 @@ void lbl_8007AAFC(struct Sprite *sprite)
         if (!(gamePauseStatus & 0xA) && r22->unk4 > 0)
             r22->unk4--;
 
-        temp_f28 = lbl_80118870[0x1D - r22->unk4];
+        temp_f28 = lbl_80118870[29 - r22->unk4];
         temp_f4 = temp_f28 - 1.0;
         x = sprite->x - 20.0f - i * 20 - 10.0f - (10.0f * temp_f4);
         y = sprite->y - 10.0f - (10.0f * temp_f4);
         temp_r23 = 510.0f * temp_f4;
 
         g_set_text_pos(x, y);
-        func_80071AE4(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
+        g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
         func_80071B2C(temp_f28, temp_f28);
-        func_80072AC0(lbl_802F105C, phi_r3);
+        func_80072AC0("%d", phi_r3);
     }
     func_80071A8C();
 }
@@ -2442,7 +2423,7 @@ void lbl_8007ADF4(struct Sprite *sprite)
     ball = &ballInfo[sprite->unk48];
     func_80071A8C();
     g_set_font(sprite->fontId);
-    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    g_set_text_other_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
 
     r22 = lbl_80292C00_alias + sprite->unk48 * 3;
     for (i = 0; i < 3; i++, r22++)
@@ -2452,7 +2433,7 @@ void lbl_8007ADF4(struct Sprite *sprite)
             x = sprite->x - 20.0f - i * 20 - 10.0f;
             y = sprite->y - 10.0f;
             g_set_text_pos(x, y);
-            func_80071AE4(RGBA(sprite->unkC, sprite->unkD, 0, 0));
+            g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, 0, 0));
             g_draw_text("?");
             continue;
         }
@@ -2475,9 +2456,9 @@ void lbl_8007ADF4(struct Sprite *sprite)
         temp_r23 = 510.0f * temp_f4;
 
         g_set_text_pos(x, y);
-        func_80071AE4(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
+        g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, temp_r23, 0));
         func_80071B2C(temp_f28, temp_f28);
-        func_80072AC0(lbl_802F105C, phi_r3);
+        func_80072AC0("%d", phi_r3);
     }
     func_80071A8C();
 }
@@ -2488,7 +2469,7 @@ void lbl_8007B134(struct Sprite *sprite)
     struct TPLTextureHeader *texHdr;
     int phi_r5;
 
-    phi_r5 = (modeCtrl.playerCount > 1) ? ballInfo[sprite->unk48].unk2E : 3;
+    phi_r5 = (modeCtrl.playerCount > 1) ? ballInfo[sprite->unk48].playerId : 3;
     params.bmpId = BMP_NML_game_player;
     params.rotation = sprite->unk68;
     params.alpha = sprite->opacity;
@@ -2511,7 +2492,7 @@ void lbl_8007B134(struct Sprite *sprite)
 
 extern s32 lbl_802F1CA8;
 
-void lbl_8007B34C(s8 *arg0, struct Sprite *sprite)
+void score_value_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     struct Struct80292C60 *r31 = &lbl_80292C60;
     struct Ball *ball = currentBallStructPtr;
@@ -2548,7 +2529,7 @@ void lbl_8007B34C(s8 *arg0, struct Sprite *sprite)
         if (gameSubmode == SMD_GAME_GOAL_REPLAY_MAIN && r31->unk4 % 4 == 0)
             g_play_sound(0x2E);
     }
-    sprintf(sprite->text, lbl_802F105C, r31->unk0);
+    sprintf(sprite->text, "%d", r31->unk0);
 }
 
 void lbl_8007B490(s8 *arg0, struct Sprite *sprite)
@@ -2556,27 +2537,27 @@ void lbl_8007B490(s8 *arg0, struct Sprite *sprite)
     sprite->bmpId = func_80081CFC(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[sprite->unk48]);
 }
 
-void lbl_8007B4E8(s8 *arg0, struct Sprite *sprite)
+void normal_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float len = mathutil_vec_len(&currentBallStructPtr->vel);
-    float var2 = ((216000.0 * len) / 1000.0) / 1.6093;
+    float mph = ((216000.0 * len) / 1000.0) / 1.6093;
 
-    if (var2 > 999.0)
-        var2 = 999.0f;
-    sprintf(sprite->text, "%3.0f", var2);
+    if (mph > 999.0)
+        mph = 999.0f;
+    sprintf(sprite->text, "%3.0f", mph);
 }
 
-void lbl_8007B570(s8 *arg0, struct Sprite *sprite)
+void competition_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float len = mathutil_vec_len(&ballInfo[sprite->unk48].vel);
-    float var2 = ((216000.0 * len) / 1000.0) / 1.6093;
+    float mph = ((216000.0 * len) / 1000.0) / 1.6093;
 
-    if (var2 > 999.0)
-        var2 = 999.0f;
-    sprintf(sprite->text, "%3.0f", var2);
+    if (mph > 999.0)
+        mph = 999.0f;
+    sprintf(sprite->text, "%3.0f", mph);
 }
 
-void lbl_8007B608(s8 *arg0, struct Sprite *sprite)
+void bananas_left_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float phi_f1;
 
@@ -2599,8 +2580,8 @@ void lbl_8007B608(s8 *arg0, struct Sprite *sprite)
     phi_f1 = 2.0 * ((unpausedFrameCounter % 60) / 59.0);
     if (phi_f1 > 1.0)
         phi_f1 = 2.0 - phi_f1;
-    sprite->unkC = 0xFF;
-    sprite->unkD = 0xFF;
+    sprite->unkC = 255;
+    sprite->unkD = 255;
     sprite->unkE = 255.0f * phi_f1;
 }
 
@@ -2652,25 +2633,25 @@ void final_floor_sprite_main(s8 *arg0, struct Sprite *sprite)
     if (modeCtrl.levelSet == 0)
     {
         sprite->unkC = 0;
-        sprite->unkD = 0xD0;
+        sprite->unkD = 208;
         sprite->unkE = 0;
     }
     else if (modeCtrl.levelSet == 1)
     {
         sprite->unkC = 0;
         sprite->unkD = 0;
-        sprite->unkE = 0xE0;
+        sprite->unkE = 224;
     }
     else
     {
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xC0;
+        sprite->unkC = 255;
+        sprite->unkD = 192;
         sprite->unkE = 0;
     }
 
-    if (sprite->counter >= 0x96)
+    if (sprite->counter >= 150)
     {
-        float temp_f3 = 64.0f * mathutil_sin((sprite->counter - 0x96) << 9);
+        float temp_f3 = 64.0f * mathutil_sin((sprite->counter - 150) << 9);
 
         sprite->unkC = CLAMP(sprite->unkC + temp_f3, 0.0f, 255.0f);
         sprite->unkD = CLAMP(sprite->unkD + temp_f3, 0.0f, 255.0f);
@@ -2736,8 +2717,8 @@ void final_floor_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
     g_set_font(sprite->fontId);
     func_80071B50(sprite->unk74);
-    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
-    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_text_other_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
 
     w = sprite->unk40 * ((strlen(sprite->text) - 2) * 72 + 48);
     h = sprite->unk44 * 64.0f;
@@ -2784,7 +2765,7 @@ void final_floor_sprite_draw(struct Sprite *sprite)
             func_80071B2C(sprite->unk40 * temp_f20, sprite->unk44 * temp_f19);
             func_80071B40(sprite->opacity * temp_f18);
             if (text[i] != ' ')
-                func_80071B78(text[i]);
+                g_draw_char(text[i]);
         }
     }
     func_80071A8C();
@@ -2793,7 +2774,7 @@ void final_floor_sprite_draw(struct Sprite *sprite)
 void go_sprite_main(s8 *, struct Sprite *);
 void go_sprite_draw(struct Sprite *);
 
-void show_go_text(int arg0)
+void hud_show_go_banner(int arg0)
 {
     struct Sprite *sprite;
 
@@ -2804,8 +2785,8 @@ void show_go_text(int arg0)
         sprite->y = 240.0f;
         sprite->unk4C = (modeCtrl.unk30 == 1) ? 0.1 : 0.05;
         sprite->unkC = 0;
-        sprite->unkD = 0x80;
-        sprite->unkE = 0xFF;
+        sprite->unkD = 128;
+        sprite->unkE = 255;
         sprite->fontId = 9;
         sprite->textAlign = 4;
         sprite->counter = arg0;
@@ -2819,36 +2800,36 @@ void show_go_text(int arg0)
 
 void go_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    int temp_r3 = sprite->unk48 - sprite->counter;
+    int t = sprite->unk48 - sprite->counter;
 
-    if (temp_r3 < 15)
+    if (t < 15)
     {
-        int temp_r0 = 15 - temp_r3;
+        int temp_r0 = 15 - t;
 
-        sprite->opacity = temp_r3 * 0.06666;
+        sprite->opacity = t * 0.06666;
         sprite->unk70 = 0;
         sprite->unk71 = sprite->unk70;
         sprite->unk72 = sprite->unk70;
         sprite->unk40 = 1.0 + temp_r0 * 0.1;
         sprite->unk44 = 1.0 + temp_r0 * -0.04;
     }
-    else if (temp_r3 < 30)
+    else if (t < 30)
     {
-        int temp_r29 = (temp_r3 - 15) * 0x888;
+        int temp_r29 = (t - 15) * 0x888;
 
         sprite->opacity = 1.0f;
-        sprite->unk70 = ((unpausedFrameCounter >> 1) & 1) * 0xC0;
+        sprite->unk70 = ((unpausedFrameCounter >> 1) & 1) * 192;
         sprite->unk71 = sprite->unk70;
         sprite->unk72 = sprite->unk70;
         sprite->unk40 = 1.0 - mathutil_sin(temp_r29) * 0.5;
         sprite->unk44 = 1.0 + mathutil_sin(temp_r29);
     }
-    else if (temp_r3 < 45)
+    else if (t < 45)
     {
-        int temp_r29_2 = (temp_r3 - 30) * 0x888;
+        int temp_r29_2 = (t - 30) * 0x888;
 
         sprite->opacity = 1.0f;
-        sprite->unk70 = ((unpausedFrameCounter >> 1) & 1) * 0xC0;
+        sprite->unk70 = ((unpausedFrameCounter >> 1) & 1) * 192;
         sprite->unk71 = sprite->unk70;
         sprite->unk72 = sprite->unk70;
         sprite->unk40 = 1.0 + mathutil_sin(temp_r29_2) * 0.75;
@@ -2871,39 +2852,39 @@ void go_sprite_main(s8 *arg0, struct Sprite *sprite)
 void go_sprite_draw(struct Sprite *sprite)
 {
     int i;
-    int temp_r31;
+    int t;
     int temp_r23;
     int temp_r3;
     float phi_f29;
     float phi_f2;
     float phi_f30_2;
 
-    temp_r31 = sprite->unk48 - sprite->counter;
+    t = sprite->unk48 - sprite->counter;
     func_80071A8C();
     g_set_font(sprite->fontId);
     func_80071B1C(sprite->unk4C);
     func_80071B50(sprite->unk74);
     func_80071B40(sprite->opacity);
-    func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
-    g_set_some_sprite_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
+    g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+    g_set_text_other_color(RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0));
     func_80071B2C(1.5f * sprite->unk40, 1.5f * sprite->unk44);
     temp_r23 = 1.5f * (36.0f * sprite->unk40);
     temp_r3 = 1.5f * (32.0f * sprite->unk44);
 
     for (i = 0; i < 2; i++)
     {
-        if (temp_r31 < 15)
+        if (t < 15)
         {
             phi_f30_2 = (i == 0) ? -320.0f : 320.0f;
-            phi_f29 = phi_f30_2 * mathutil_sin((0xF - temp_r31) * 0x444);
+            phi_f29 = phi_f30_2 * mathutil_sin((0xF - t) * 0x444);
             phi_f2 = 0.0f;
         }
-        else if (temp_r31 < 30)
+        else if (t < 30)
         {
             phi_f29 = 0.0f;
             phi_f2 = 0.0f;
         }
-        else if (temp_r31 < 45)
+        else if (t < 45)
         {
             phi_f29 = 0.0f;
             phi_f2 = 0.0f;
@@ -2917,17 +2898,15 @@ void go_sprite_draw(struct Sprite *sprite)
         g_set_text_pos(
             (sprite->x + phi_f29) - temp_r23 + ((i == 0) ? -temp_r23 : temp_r23),
             (sprite->y + phi_f2) - temp_r3);
-        func_80071B78((i == 0) ? 0x47 : 0x4F);
+        g_draw_char((i == 0) ? 0x47 : 0x4F);
     }
 }
 
-char lbl_801C1A38[] = "JUMP TO FLOOR %d";
+void goal_sprite_draw(struct Sprite *);
+void warp_sprite_main(s8 *, struct Sprite *);
+void goal_sprite_main(s8 *, struct Sprite *);
 
-void lbl_8007C80C(struct Sprite *);
-void lbl_8007CBD4(s8 *, struct Sprite *);
-void lbl_8007FD48(s8 *, struct Sprite *);
-
-void g_show_goal_text(int arg0)
+void hud_show_goal_banner(int duration)
 {
     struct Sprite *sprite;
 
@@ -2942,11 +2921,11 @@ void g_show_goal_text(int arg0)
         sprite->unk4C = 0.05f;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CC;
-        sprite->counter = arg0;
-        sprite->unk48 = arg0;
+        sprite->counter = duration;
+        sprite->unk48 = duration;
         sprite->unk74 |= 0x1000;
-        sprite->mainFunc = lbl_8007FD48;
-        sprite->drawFunc = lbl_8007C80C;
+        sprite->mainFunc = goal_sprite_main;
+        sprite->drawFunc = goal_sprite_draw;
         strcpy(sprite->text, "GOAL");
     }
     if (infoWork.unk22 != 1)
@@ -2957,17 +2936,17 @@ void g_show_goal_text(int arg0)
             sprite->x = 320.0f;
             sprite->y = 240.0f;
             sprite->unkC = 0;
-            sprite->unkD = 0xC0;
-            sprite->unkE = 0xFF;
+            sprite->unkD = 192;
+            sprite->unkE = 255;
             sprite->unk40 = 1.0f;
             sprite->unk44 = 0.6f;
             sprite->fontId = FONT_ASC_32x32;
             sprite->textAlign = ALIGN_CC;
-            sprite->counter = arg0;
-            sprite->unk48 = arg0;
+            sprite->counter = duration;
+            sprite->unk48 = duration;
             sprite->unk74 |= 0x1000;
-            sprite->mainFunc = lbl_8007CBD4;
-            sprintf(sprite->text, lbl_801C1A38, infoWork.unk20);
+            sprite->mainFunc = warp_sprite_main;
+            sprintf(sprite->text, "JUMP TO FLOOR %d", infoWork.unk20);
         }
     }
 }
@@ -2975,12 +2954,12 @@ void g_show_goal_text(int arg0)
 extern float lbl_802F2018;
 extern float lbl_802F201C;
 
-void lbl_8007C80C(struct Sprite *sprite)
+void goal_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     float phi_f30;
     int temp_r29;
-    int temp_r31;
+    int t;
     int temp_r6;
     int phi_r7;
     int i;
@@ -2991,16 +2970,16 @@ void lbl_8007C80C(struct Sprite *sprite)
     params.unk30 = -1;
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
 
-    temp_r31 = sprite->unk48 - sprite->counter;
-    if (temp_r31 < 30)
+    t = sprite->unk48 - sprite->counter;
+    if (t < 30)
     {
-        phi_f30 = temp_r31 * 0.016666;
+        phi_f30 = t * 0.016666;
         phi_r7 = 0;
     }
-    else if (temp_r31 < 45)
+    else if (t < 45)
     {
         phi_f30 = 1.0f;
-        phi_r7 = mathutil_sin((temp_r31 - 30) * 0x888) * 255.0f;
+        phi_r7 = mathutil_sin((t - 30) * 0x888) * 255.0f;
     }
     else if (sprite->counter <= 15)
     {
@@ -3016,16 +2995,16 @@ void lbl_8007C80C(struct Sprite *sprite)
     params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(phi_f30 * 255.0f));
     params.color2 = RGBA(phi_r7, phi_r7, phi_r7, 0);
 
-    if (temp_r31 >= 210)
+    if (t >= 210)
     {
         sprite->x = 561.0f;
         sprite->y = 420.0f;
         sprite->unk40 = 0.5f;
         sprite->unk44 = sprite->unk40;
     }
-    else if (temp_r31 >= 180)
+    else if (t >= 180)
     {
-        temp_r6 = temp_r31 - 180;
+        temp_r6 = t - 180;
         sprite->x = 320.0 + temp_r6 * 8.03333;
         if (modeCtrl.gameType == 1)
             sprite->y = 240.0 + temp_r6 * 6.0;
@@ -3042,7 +3021,7 @@ void lbl_8007C80C(struct Sprite *sprite)
     params.zoomX = sprite->unk40;
     params.zoomY = sprite->unk44;
 
-    if (temp_r31 < 30)
+    if (t < 30)
     {
         struct {float x; float y;} spC[4] =
         {
@@ -3051,7 +3030,7 @@ void lbl_8007C80C(struct Sprite *sprite)
             {  1, -1 },
             { -1, -1 },
         };
-        float temp_f29 = (30 - temp_r31) * 0.03333;
+        float temp_f29 = (30 - t) * 0.03333;
 
         for (i = 0; i < 4; i++)
         {
@@ -3075,44 +3054,44 @@ void lbl_8007C80C(struct Sprite *sprite)
 
 void lbl_8007CDCC(s8 *, struct Sprite *);
 
-void lbl_8007CBD4(s8 *arg0, struct Sprite *sprite)
+void warp_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    s32 temp_r29;
-    struct Sprite *temp_r3;
+    s32 t;
+    struct Sprite *warpSprite;
 
-    temp_r29 = sprite->unk48 - sprite->counter;
-    if (temp_r29 < 30)
-        sprite->opacity = 0.03333 * temp_r29;
+    t = sprite->unk48 - sprite->counter;
+    if (t < 30)
+        sprite->opacity = 0.03333 * t;
     else if (sprite->counter <= 15)
         sprite->opacity = 0.06666 * sprite->counter;
     else
         sprite->opacity = 1.0f;
-    sprite->x = 320.0f + 20.0f * mathutil_sin(temp_r29 << 9);
-    sprite->y = 240.0f + 10.0f * mathutil_sin((temp_r29 << 8) + 0x4000);
+    sprite->x = 320.0f + 20.0f * mathutil_sin(t << 9);
+    sprite->y = 240.0f + 10.0f * mathutil_sin((t << 8) + 0x4000);
 
-    if (temp_r29 % 2 == 1)
+    if (t % 2 == 1)
     {
-        temp_r3 = create_sprite();
-        if (temp_r3 != NULL)
+        warpSprite = create_sprite();
+        if (warpSprite != NULL)
         {
-            temp_r3->x = sprite->x;
-            temp_r3->y = sprite->y;
-            temp_r3->unk4C = sprite->unk4C + 0.1;
-            temp_r3->unkC = sprite->unkC;
-            temp_r3->unkD = sprite->unkD;
-            temp_r3->unkE = sprite->unkE;
-            temp_r3->unk70 = 0;
-            temp_r3->unk71 = 0x60;
-            temp_r3->unk72 = 0x7F;
-            temp_r3->unk40 = sprite->unk40;
-            temp_r3->unk44 = sprite->unk44;
-            temp_r3->fontId = FONT_ASC_32x32;
-            temp_r3->textAlign = ALIGN_CC;
-            temp_r3->counter = 0x10;
-            temp_r3->opacity = 0.5f;
-            temp_r3->unk74 |= 0x1000;
-            temp_r3->mainFunc = lbl_8007CDCC;
-            sprintf(temp_r3->text, lbl_801C1A38, infoWork.unk20);
+            warpSprite->x = sprite->x;
+            warpSprite->y = sprite->y;
+            warpSprite->unk4C = sprite->unk4C + 0.1;
+            warpSprite->unkC = sprite->unkC;
+            warpSprite->unkD = sprite->unkD;
+            warpSprite->unkE = sprite->unkE;
+            warpSprite->unk70 = 0;
+            warpSprite->unk71 = 96;
+            warpSprite->unk72 = 127;
+            warpSprite->unk40 = sprite->unk40;
+            warpSprite->unk44 = sprite->unk44;
+            warpSprite->fontId = FONT_ASC_32x32;
+            warpSprite->textAlign = ALIGN_CC;
+            warpSprite->counter = 16;
+            warpSprite->opacity = 0.5f;
+            warpSprite->unk74 |= 0x1000;
+            warpSprite->mainFunc = lbl_8007CDCC;
+            sprintf(warpSprite->text, "JUMP TO FLOOR %d", infoWork.unk20);
         }
     }
 
@@ -3133,61 +3112,61 @@ void lbl_8007CDCC(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007CF10(s8 *, struct Sprite *);
-void func_8007D428(void);
+void fall_out_sprite_main(s8 *, struct Sprite *);
+static void show_bonus_finish_banner(void);
 
-void show_fallout_text(int arg0)
+void hud_show_fallout_banner(int duration)
 {
-    struct Sprite *temp_r3;
+    struct Sprite *sprite;
 
     if (!(infoWork.flags & 0x40))
     {
-        temp_r3 = create_sprite();
-        if (temp_r3 != NULL)
+        sprite = create_sprite();
+        if (sprite != NULL)
         {
-            temp_r3->x = 320.0f;
-            temp_r3->y = 240.0f;
-            temp_r3->unk4C = 0.05f;
-            temp_r3->unkC = 0xFF;
-            temp_r3->unkD = 0x8C;
-            temp_r3->unkE = 0;
-            temp_r3->fontId = FONT_ASC_72x64;
-            temp_r3->textAlign = ALIGN_CC;
-            temp_r3->counter = arg0;
-            temp_r3->unk48 = arg0;
-            temp_r3->unk74 |= 0x1000;
-            temp_r3->mainFunc = lbl_8007CF10;
-            strcpy(temp_r3->text, "FALL OUT");
+            sprite->x = 320.0f;
+            sprite->y = 240.0f;
+            sprite->unk4C = 0.05f;
+            sprite->unkC = 255;
+            sprite->unkD = 140;
+            sprite->unkE = 0;
+            sprite->fontId = FONT_ASC_72x64;
+            sprite->textAlign = ALIGN_CC;
+            sprite->counter = duration;
+            sprite->unk48 = duration;
+            sprite->unk74 |= 0x1000;
+            sprite->mainFunc = fall_out_sprite_main;
+            strcpy(sprite->text, "FALL OUT");
         }
     }
     else
-        func_8007D428();
+        show_bonus_finish_banner();
 }
 
-void lbl_8007CF10(s8 *arg0, struct Sprite *sprite)
+void fall_out_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     s32 temp_r0_3;
-    s32 temp_r28;
+    s32 t;
 
-    temp_r28 = sprite->unk48 - sprite->counter;
+    t = sprite->unk48 - sprite->counter;
 
-    if (modeCtrl.gameType != GAMETYPE_MINI_TARGET && temp_r28 == 90)
+    if (modeCtrl.gameType != GAMETYPE_MINI_TARGET && t == 90)
         g_play_sound(0xC);
 
-    if (temp_r28 < 30)
+    if (t < 30)
     {
-        sprite->opacity = 0.03333 * temp_r28;
-        sprite->y = 240 - (30 - temp_r28) * 6;
+        sprite->opacity = 0.03333 * t;
+        sprite->y = 240 - (30 - t) * 6;
     }
-    else if (temp_r28 < 60)
+    else if (t < 60)
     {
         sprite->opacity = 1.0f;
-        sprite->y = 240.0f - 32.0f * mathutil_sin((temp_r28 - 30) * 0x444);
+        sprite->y = 240.0f - 32.0f * mathutil_sin((t - 30) * 0x444);
     }
-    else if (temp_r28 < 90)
+    else if (t < 90)
     {
         sprite->opacity = 1.0f;
-        sprite->y = 240.0f - 8.0f * mathutil_sin((temp_r28 - 0x3C) * 0x444);
+        sprite->y = 240.0f - 8.0f * mathutil_sin((t - 60) * 0x444);
     }
     else
     {
@@ -3199,16 +3178,16 @@ void lbl_8007CF10(s8 *arg0, struct Sprite *sprite)
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET
      && modeCtrl.gameType != GAMETYPE_MINI_BOWLING)
     {
-        if (temp_r28 >= 120)
+        if (t >= 120)
         {
             sprite->x = 496.0f;
             sprite->y = 420.0f;
             sprite->unk40 = 0.5f;
             sprite->unk44 = sprite->unk40;
         }
-        else if (temp_r28 >= 90)
+        else if (t >= 90)
         {
-            temp_r0_3 = temp_r28 - 90;
+            temp_r0_3 = t - 90;
             sprite->x = 320.0 + temp_r0_3 * 5.86666;
             sprite->y = 240 + temp_r0_3 * 6;
             sprite->unk40 = 1.0 - temp_r0_3 * 0.01666;
@@ -3225,9 +3204,9 @@ void lbl_8007CF10(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007D244(s8 *, struct Sprite *);
+void time_over_sprite_main(s8 *, struct Sprite *);
 
-void show_timeover_text(int arg0)
+void hud_show_time_over_banner(int duration)
 {
     struct Sprite *sprite;
 
@@ -3239,39 +3218,39 @@ void show_timeover_text(int arg0)
             sprite->x = 320.0f;
             sprite->y = 240.0f;
             sprite->unk4C = 0.05f;
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0x8C;
+            sprite->unkC = 255;
+            sprite->unkD = 140;
             sprite->unkE = 0;
             sprite->fontId = FONT_ASC_72x64;
             sprite->textAlign = ALIGN_CC;
-            sprite->counter = arg0;
-            sprite->unk48 = arg0;
-            sprite->mainFunc = lbl_8007D244;
+            sprite->counter = duration;
+            sprite->unk48 = duration;
+            sprite->mainFunc = time_over_sprite_main;
             strcpy(sprite->text, "TIME OVER");
         }
     }
     else
-        func_8007D428();
+        show_bonus_finish_banner();
 }
 
-void lbl_8007D244(s8 *arg0, struct Sprite *sprite)
+void time_over_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    s32 temp_r5 = sprite->unk48 - sprite->counter;
+    s32 t = sprite->unk48 - sprite->counter;
 
-    if (temp_r5 < 30)
+    if (t < 30)
     {
-        sprite->opacity = temp_r5 * 0.03333;
-        sprite->y = 240 - (30 - temp_r5) * 6;
+        sprite->opacity = t * 0.03333;
+        sprite->y = 240 - (30 - t) * 6;
     }
-    else if (temp_r5 < 60)
+    else if (t < 60)
     {
         sprite->opacity = 1.0f;
-        sprite->y = 240.0f - 32.0f * mathutil_sin((temp_r5 - 30) * 0x444);
+        sprite->y = 240.0f - 32.0f * mathutil_sin((t - 30) * 0x444);
     }
-    else if (temp_r5 < 90)
+    else if (t < 90)
     {
         sprite->opacity = 1.0f;
-        sprite->y = 240.0f - 8.0f * mathutil_sin((temp_r5 - 60) * 0x444);
+        sprite->y = 240.0f - 8.0f * mathutil_sin((t - 60) * 0x444);
     }
     else if (sprite->counter <= 15)
         sprite->opacity = sprite->counter * 0.06666;
@@ -3282,9 +3261,9 @@ void lbl_8007D244(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007D4CC(s8 *, struct Sprite *);
+void bonus_finish_sprite_main(s8 *, struct Sprite *);
 
-void show_perfect_text(int unused)
+void hud_show_perfect_banner(int unused)
 {
     struct Sprite *sprite;
 
@@ -3299,12 +3278,12 @@ void show_perfect_text(int unused)
         sprite->counter = 0;
         sprite->unk48 = 1;
         sprite->unk74 |= 0x1000;
-        sprite->mainFunc = lbl_8007D4CC;
+        sprite->mainFunc = bonus_finish_sprite_main;
         strcpy(sprite->text, "PERFECT");
     }
 }
 
-void func_8007D428(void)
+static void show_bonus_finish_banner(void)
 {
     struct Sprite *sprite;
 
@@ -3318,18 +3297,18 @@ void func_8007D428(void)
         sprite->textAlign = ALIGN_CC;
         sprite->counter = 0;
         sprite->unk48 = 0;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0x80;
+        sprite->unkC = 255;
+        sprite->unkD = 128;
         sprite->unkE = 0;
         sprite->unk40 = 0.8f;
         sprite->unk44 = 0.8f;
         sprite->unk74 |= 0x1000;
-        sprite->mainFunc = lbl_8007D4CC;
+        sprite->mainFunc = bonus_finish_sprite_main;
         strcpy(sprite->text, "BONUS FINISH");
     }
 }
 
-void lbl_8007D4CC(s8 *arg0, struct Sprite *sprite)
+void bonus_finish_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float temp_f3 = sprite->counter / 30.0f;
 
@@ -3340,11 +3319,11 @@ void lbl_8007D4CC(s8 *arg0, struct Sprite *sprite)
         sprite->counter++;
 }
 
-void lbl_8007D7E8(s8 *, struct Sprite *);
-void lbl_8007D898(s8 *, struct Sprite *);
-void lbl_8007D948(s8 *, struct Sprite *);
+void continue_sprite_main(s8 *, struct Sprite *);
+void num_continues_sprite_main(s8 *, struct Sprite *);
+void continue_yes_no_sprite_main(s8 *, struct Sprite *);
 
-void g_show_continue_hud(void)
+void hud_show_continue_interface(void)
 {
     struct Sprite *sprite;
 
@@ -3353,14 +3332,14 @@ void g_show_continue_hud(void)
     {
         sprite->x = 320.0f;
         sprite->y = 50.0f;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xC8;
+        sprite->unkC = 255;
+        sprite->unkD = 200;
         sprite->unkE = 0;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CC;
         sprite->unk48 = 0;
         sprite->opacity = 0.0f;
-        sprite->mainFunc = lbl_8007D7E8;
+        sprite->mainFunc = continue_sprite_main;
         strcpy(sprite->text, "CONTINUE?");
     }
     if (func_800676C0() == 0)
@@ -3377,7 +3356,7 @@ void g_show_continue_hud(void)
             sprite->textAlign = ALIGN_CC;
             sprite->unk4C = 0.11f;
             sprite->opacity = 0.0f;
-            sprite->mainFunc = lbl_8007D898;
+            sprite->mainFunc = num_continues_sprite_main;
             sprite->unk74 |= 0x200000;
             strcpy(sprite->text, "h/NOKORI");
         }
@@ -3386,14 +3365,14 @@ void g_show_continue_hud(void)
         {
             sprite->x = 490.0f;
             sprite->y = 90.0f;
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0xC8;
+            sprite->unkC = 255;
+            sprite->unkD = 200;
             sprite->unkE = 0;
             sprite->fontId = FONT_JAP_24x24_2P;
             sprite->textAlign = ALIGN_CC;
             sprite->unk4C = 0.1f;
             sprite->opacity = 0.0f;
-            sprite->mainFunc = lbl_8007D898;
+            sprite->mainFunc = num_continues_sprite_main;
             sprite->unk74 |= 0x200000;
             strcpy(sprite->text, "h/NOKORI");
         }
@@ -3403,15 +3382,15 @@ void g_show_continue_hud(void)
     {
         sprite->x = 160.0f;
         sprite->y = 260.0f;
-        sprite->unkC = 0x8C;
-        sprite->unkD = 0xFF;
-        sprite->unkE = 0xFF;
+        sprite->unkC = 140;
+        sprite->unkD = 255;
+        sprite->unkE = 255;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CC;
         sprite->unk48 = 1;
         sprite->counter = 0;
         sprite->opacity = 0.0f;
-        sprite->mainFunc = lbl_8007D948;
+        sprite->mainFunc = continue_yes_no_sprite_main;
         strcpy(sprite->text, "YES");
     }
     sprite = create_sprite();
@@ -3419,20 +3398,20 @@ void g_show_continue_hud(void)
     {
         sprite->x = 480.0f;
         sprite->y = 260.0f;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xA0;
-        sprite->unkE = 0xBE;
+        sprite->unkC = 255;
+        sprite->unkD = 160;
+        sprite->unkE = 190;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CC;
         sprite->unk48 = 0;
         sprite->counter = 0;
         sprite->opacity = 0.0f;
-        sprite->mainFunc = lbl_8007D948;
+        sprite->mainFunc = continue_yes_no_sprite_main;
         strcpy(sprite->text, "NO");
     }
 }
 
-void lbl_8007D7E8(s8 *arg0, struct Sprite *sprite)
+void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
@@ -3449,7 +3428,7 @@ void lbl_8007D7E8(s8 *arg0, struct Sprite *sprite)
     sprite->opacity += 0.1 * (1.0 - sprite->opacity);
 }
 
-void lbl_8007D898(s8 *arg0, struct Sprite *sprite)
+void num_continues_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
@@ -3460,19 +3439,19 @@ void lbl_8007D898(s8 *arg0, struct Sprite *sprite)
     sprintf(sprite->text, "a/Continue(s):%d", get_num_continues());
 }
 
-void lbl_8007D948(s8 *arg0, struct Sprite *sprite)
+void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->unk48 == 1)
     {
-        sprite->unkC = 0x8C;
-        sprite->unkD = 0xFF;
-        sprite->unkE = 0xFF;
+        sprite->unkC = 140;
+        sprite->unkD = 255;
+        sprite->unkE = 255;
     }
     else
     {
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xA0;
-        sprite->unkE = 0xBE;
+        sprite->unkC = 255;
+        sprite->unkD = 160;
+        sprite->unkE = 190;
     }
 
     if (modeCtrl.levelSetFlags & 4)
@@ -3552,7 +3531,7 @@ void lbl_8007D948(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void lbl_8007DC24(s8 *arg0, struct Sprite *sprite)
+void game_over_player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->counter > 90)
     {
@@ -3569,7 +3548,7 @@ void lbl_8007DC24(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void show_gameover_text(int arg0)
+void hud_show_game_over_banner(int duration)
 {
     struct Sprite *sprite;
 
@@ -3578,15 +3557,15 @@ void show_gameover_text(int arg0)
     {
         sprite->x = 320.0f;
         sprite->y = 240.0f;
-        sprite->unkC = 0xFF;
+        sprite->unkC = 255;
         sprite->unkD = 0;
-        sprite->unkE = 0x20;
+        sprite->unkE = 32;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CC;
-        sprite->counter = arg0;
-        sprite->unk48 = arg0;
+        sprite->counter = duration;
+        sprite->unk48 = duration;
         sprite->unk4C = 0.008f;
-        sprite->mainFunc = lbl_8007DE54;
+        sprite->mainFunc = game_over_sprite_main;
         strcpy(sprite->text, "GAME OVER");
     }
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount > 1)
@@ -3594,7 +3573,7 @@ void show_gameover_text(int arg0)
         sprite = create_sprite();
         if (sprite != NULL)
         {
-            int phi_r0 = (modeCtrl.playerCount > 1) ? currentBallStructPtr->unk2E : 3;
+            int phi_r0 = (modeCtrl.playerCount > 1) ? currentBallStructPtr->playerId : 3;
 
             sprite->x = 785.0f;
             sprite->y = 310.0f;
@@ -3604,20 +3583,20 @@ void show_gameover_text(int arg0)
             sprite->unkD = lbl_801C14F0[phi_r0 * 3 + 1];
             sprite->unkE = lbl_801C14F0[phi_r0 * 3 + 2];
             sprite->unk48 = -0x1E;
-            sprite->counter = 0x78;
+            sprite->counter = 120;
             sprite->unk4C = 0.008f;
-            sprite->mainFunc = lbl_8007DC24;
-            sprintf(sprite->text, lbl_802F1050, currentBallStructPtr->unk2E + 1);
+            sprite->mainFunc = game_over_player_num_sprite_main;
+            sprintf(sprite->text, "%dP", currentBallStructPtr->playerId + 1);
         }
     }
 }
 
-void lbl_8007DE54(s8 *arg0, struct Sprite *sprite)
+void game_over_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    int temp_r0 = sprite->unk48 - sprite->counter;
+    int t = sprite->unk48 - sprite->counter;
 
-    if (temp_r0 < 30)
-        sprite->opacity = temp_r0 * 0.03333;
+    if (t < 30)
+        sprite->opacity = t * 0.03333;
     else
         sprite->opacity = 1.0f;
 
@@ -3625,9 +3604,9 @@ void lbl_8007DE54(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007DF50(s8 *, struct Sprite *);
+void oneup_sprite_main(s8 *, struct Sprite *);
 
-void show_1up_text(int arg0)
+void hud_show_1up_banner(int arg0)
 {
     struct Sprite *sprite;
 
@@ -3642,28 +3621,28 @@ void show_1up_text(int arg0)
         sprite->opacity = 0.0f;
         sprite->counter = arg0 + 30;
         sprite->unk48 = arg0;
-        sprite->mainFunc = lbl_8007DF50;
+        sprite->mainFunc = oneup_sprite_main;
         strcpy(sprite->text, "1UP");
     }
 }
 
-void lbl_8007DF50(s8 *arg0, struct Sprite *sprite)
+void oneup_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    s32 temp_r29 = sprite->unk48 - sprite->counter;
+    s32 t = sprite->unk48 - sprite->counter;
     float x;
 
-    if (temp_r29 >= 0)
+    if (t >= 0)
     {
-        if (temp_r29 == 0)
+        if (t == 0)
         {
             func_8002B5C8(0xA00E);
             SoundRevID(0xE, 0x64);
             SoundChoID(0xE, 0x64);
         }
-        if (temp_r29 < 30)
+        if (t < 30)
         {
-            sprite->opacity = temp_r29 * 0.03333;
-            x = 320.0f * mathutil_sin((temp_r29 * 0x222) + 0x4000);
+            sprite->opacity = t * 0.03333;
+            x = 320.0f * mathutil_sin((t * 0x222) + 0x4000);
         }
         else
         {
@@ -3683,12 +3662,12 @@ void lbl_8007DF50(s8 *arg0, struct Sprite *sprite)
         {
             int sp14[] =
             {
-                0x00, 0x00, 0x00,
-                0xFF, 0x00, 0x00,
-                0xFF, 0xFF, 0xFF,
-                0xFF, 0xFF, 0x00,
+                  0,   0,   0,
+                255,   0,   0,
+                255, 255, 255,
+                255, 255,   0,
             };
-            int temp_r8 = ((temp_r29 >> 1) % 4) * 3;
+            int temp_r8 = ((t >> 1) % 4) * 3;
 
             sprite->unkC = sp14[temp_r8 + 0];
             sprite->unkD = sp14[temp_r8 + 1];
@@ -3701,9 +3680,9 @@ void lbl_8007DF50(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007E1E4(s8 *, struct Sprite *);
+void hurry_up_sprite_main(s8 *, struct Sprite *);
 
-void show_hurry_up_text(void)
+void hud_show_hurry_up_banner(void)
 {
     struct Sprite *sprite;
 
@@ -3716,17 +3695,17 @@ void show_hurry_up_text(void)
         sprite->unk4C = 0.05f;
         sprite->fontId = FONT_ASC_32x32;
         sprite->textAlign = ALIGN_CC;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0x80;
+        sprite->unkC = 255;
+        sprite->unkD = 128;
         sprite->unkE = 0;
         sprite->counter = 30;
         sprite->unk74 |= 0x1000;
-        sprite->mainFunc = lbl_8007E1E4;
+        sprite->mainFunc = hurry_up_sprite_main;
         strcpy(sprite->text, "HURRY UP!");
     }
 }
 
-void lbl_8007E1E4(s8 *arg0, struct Sprite *sprite)
+void hurry_up_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (--sprite->counter == 0)
     {
@@ -3744,7 +3723,7 @@ void lbl_8007E1E4(s8 *arg0, struct Sprite *sprite)
     sprite->y = find_sprite_with_tag(20)->y;
 }
 
-void lbl_8007E3C8(s8 *, struct Sprite *);
+void replay_sprite_main(s8 *, struct Sprite *);
 
 void show_replay_text(int arg0)
 {
@@ -3759,7 +3738,7 @@ void show_replay_text(int arg0)
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_RB;
         sprite->counter = arg0 - 17;
-        sprite->mainFunc = lbl_8007E3C8;
+        sprite->mainFunc = replay_sprite_main;
         strcpy(sprite->text, "REPLAY");
     }
     sprite = find_sprite_with_tag(14);
@@ -3767,7 +3746,7 @@ void show_replay_text(int arg0)
         sprite->unk48 = 0xF;
 }
 
-void lbl_8007E3C8(s8 *arg0, struct Sprite *sprite)
+void replay_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     sprite->counter--;
     if (sprite->counter < 0 || !(infoWork.flags & 0x10))
@@ -3787,7 +3766,7 @@ void lbl_8007E3C8(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-char *lbl_801C1B0C[] =
+char *rankTitles[] =
 {
     "THE GREATEST!",
     "SECOND BEST",
@@ -3798,9 +3777,9 @@ char *lbl_801C1B0C[] =
 
 s16 lbl_801C1B20[6] = { 0x0048, 0x0048, 0x0030, 0x0258, 0x0210, 0x0000 };
 
-void lbl_8007E718(s8 *, struct Sprite *);
+void name_entry_info_sprite_main(s8 *, struct Sprite *);
 
-void func_8007E44C(int rank, int unused)
+void hud_show_name_entry_info(int rank, int unused)
 {
     struct Sprite *sprite;
 
@@ -3812,7 +3791,7 @@ void func_8007E44C(int rank, int unused)
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_LB;
         sprite->unk48 = 0;
-        sprite->mainFunc = lbl_8007E718;
+        sprite->mainFunc = name_entry_info_sprite_main;
         sprintf(sprite->text, "NAME ENTRY");
     }
     sprite = create_sprite();
@@ -3825,9 +3804,9 @@ void func_8007E44C(int rank, int unused)
         if (rank < 0)
             sprintf(sprite->text, "OUT OF RANK");
         else
-            sprintf(sprite->text, "YOU ARE %s", lbl_801C1B0C[rank]);
+            sprintf(sprite->text, "YOU ARE %s", rankTitles[rank]);
         sprite->unk48 = 1;
-        sprite->mainFunc = lbl_8007E718;
+        sprite->mainFunc = name_entry_info_sprite_main;
     }
     sprite = create_sprite();
     if (sprite != NULL)
@@ -3839,8 +3818,8 @@ void func_8007E44C(int rank, int unused)
         sprite->unk40 = 0.5f;
         sprite->unk44 = 0.5f;
         sprite->unk48 = 2;
-        sprite->mainFunc = lbl_8007E718;
-        sprintf(sprite->text, lbl_802F105C, modeCtrl.levelSet + 4);
+        sprite->mainFunc = name_entry_info_sprite_main;
+        sprintf(sprite->text, "%d", modeCtrl.levelSet + 4);
     }
     sprite = create_sprite();
     if (sprite != NULL)
@@ -3850,26 +3829,26 @@ void func_8007E44C(int rank, int unused)
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_RB;
         sprite->unk48 = 3;
-        sprite->mainFunc = lbl_8007E718;
-        sprintf(sprite->text, lbl_802F1080);
+        sprite->mainFunc = name_entry_info_sprite_main;
+        sprintf(sprite->text, "00");
     }
     sprite = create_sprite();
     if (sprite != NULL)
     {
         sprite->x = lbl_801C1B20[4] + 320;
         sprite->y = 450.0f;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xC8;
+        sprite->unkC = 255;
+        sprite->unkD = 200;
         sprite->unkE = 0;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_CT;
         sprite->unk48 = 4;
-        sprite->mainFunc = lbl_8007E718;
+        sprite->mainFunc = name_entry_info_sprite_main;
         sprintf(sprite->text, "TIME LIMIT");
     }
 }
 
-void lbl_8007E718(s8 *arg0, struct Sprite *sprite)
+void name_entry_info_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int temp_r5 = sprite->unk48;
     int x = sprite->x;
@@ -3893,26 +3872,26 @@ void lbl_8007E718(s8 *arg0, struct Sprite *sprite)
         if (infoWork.timerCurr > 600)
         {
             sprite->unkC = 0;
-            sprite->unkD = 0x80;
-            sprite->unkE = 0xFF;
+            sprite->unkD = 128;
+            sprite->unkE = 255;
         }
         else if (infoWork.timerCurr > 180)
         {
-            sprite->unkC += 0.05 * (0xFF - sprite->unkC);
-            sprite->unkD += 0.05 * (0xC8 - sprite->unkD);
+            sprite->unkC += 0.05 * (255 - sprite->unkC);
+            sprite->unkD += 0.05 * (200 - sprite->unkD);
             sprite->unkE += 0.05 * -sprite->unkE;
         }
         else
         {
-            sprite->unkC += 0.05 * (0xFF - sprite->unkC);
+            sprite->unkC += 0.05 * (255 - sprite->unkC);
             sprite->unkD += 0.05 * -sprite->unkD;
-            sprite->unkE += 0.05 * (0x20 - sprite->unkE);
+            sprite->unkE += 0.05 * (32 - sprite->unkE);
         }
-        sprintf(sprite->text, lbl_802F105C, infoWork.timerCurr / 60);
+        sprintf(sprite->text, "%d", infoWork.timerCurr / 60);
     }
 }
 
-void show_nameentry_text(int arg0)
+void hud_show_name_entry_banner(int arg0)
 {
     struct Sprite *sprite;
 
@@ -3922,13 +3901,13 @@ void show_nameentry_text(int arg0)
         sprite->x = 320.0f;
         sprite->y = 240.0f;
         sprite->unkC = 0;
-        sprite->unkD = 0xFF;
-        sprite->unkE = 0xA0;
+        sprite->unkD = 255;
+        sprite->unkE = 160;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CB;
         sprite->counter = arg0;
         sprite->unk48 = arg0;
-        sprite->mainFunc = lbl_8007926C;
+        sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "NAME");
     }
     sprite = create_sprite();
@@ -3937,13 +3916,13 @@ void show_nameentry_text(int arg0)
         sprite->x = 320.0f;
         sprite->y = 240.0f;
         sprite->unkC = 0;
-        sprite->unkD = 0xFF;
-        sprite->unkE = 0xA0;
+        sprite->unkD = 255;
+        sprite->unkE = 160;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_CT;
         sprite->counter = arg0;
         sprite->unk48 = arg0;
-        sprite->mainFunc = lbl_8007926C;
+        sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "ENTRY");
     }
     g_play_sound(4);
@@ -4050,9 +4029,9 @@ void func_8007EB2C(int arg0)
 
         sprite->x = 640.0f;
         sprite->y = lbl_801C206C[var].unk0;
-        sprite->unkC = 0xFF;
-        sprite->unkD = 0xFF;
-        sprite->unkE = 0xFF;
+        sprite->unkC = 255;
+        sprite->unkD = 255;
+        sprite->unkE = 255;
         sprite->fontId = FONT_ASC_32x32;
         sprite->textAlign = ALIGN_LC;
         sprite->unk40 = lbl_801C206C[var].unk4;
@@ -4089,8 +4068,8 @@ void func_8007ECB8(void)
         sprite->unk4C = 400.0f;
         sprite->unk40 = 1.0f;
         sprite->unk44 = 80.0f;
-        sprite->drawFunc = lbl_8007A5C0;
-        strcpy(sprite->text, lbl_801C1A18);
+        sprite->drawFunc = competition_separator_sprite_draw;
+        strcpy(sprite->text, "separate");
     }
     sprite = create_sprite();
     if (sprite != NULL)
@@ -4125,19 +4104,19 @@ void func_8007ECB8(void)
             sprite->y = 480.0 * (vp->top + 0.5 * vp->height) - 65.0;
             sprite->fontId = FONT_JAP_24x24_2;
             sprite->textAlign = ALIGN_CC;
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0xFF;
+            sprite->unkC = 255;
+            sprite->unkD = 255;
             sprite->unkE = 0;
             sprite->unk48 = i;
             sprite->mainFunc = lbl_8007EF0C;
-            sprintf(sprite->text, lbl_802F102C);
+            sprintf(sprite->text, "000");
         }
     }
 }
 
 void lbl_8007EF0C(s8 *arg0, struct Sprite *sprite)
 {
-    sprintf(sprite->text, lbl_802F1098, ballInfo[sprite->unk48].unk138);
+    sprintf(sprite->text, "%03d", ballInfo[sprite->unk48].unk138);
 }
 
 void lbl_8007F060(s8 *, struct Sprite *);
@@ -4148,10 +4127,10 @@ void func_8007EF50(struct Ball *ball)
     struct Sprite *sprite;
     struct Viewport *vp;
 
-    if (ball->unk2F == 0 || ball->unk2F >= 4)
+    if (ball->rank == 0 || ball->rank >= 4)
         return;
 
-    vp = &cameraInfo[ball->unk2E].sub28.vp;
+    vp = &cameraInfo[ball->playerId].sub28.vp;
     sprite = create_sprite();
     if (sprite != NULL)
     {
@@ -4159,7 +4138,7 @@ void func_8007EF50(struct Ball *ball)
         sprite->y = 480.0 * (vp->top + 0.5 * vp->height) - 25.0;
         sprite->type = SPRITE_TYPE_BITMAP;
         sprite->textAlign = ALIGN_CC;
-        sprite->unk48 = ball->unk2F;
+        sprite->unk48 = ball->rank;
         sprite->counter = 15;
         sprite->bmpId = BMP_COM_ASCII;
         sprite->mainFunc = lbl_8007F060;
@@ -4246,12 +4225,12 @@ void lbl_8007F1A4(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-void lbl_8007F754(struct Sprite *);
-void lbl_8007F8C8(struct Sprite *);
-void lbl_8007FA20(struct Sprite *);
-void lbl_8007FB78(struct Sprite *);
+void clear_score_sprite_draw(struct Sprite *);
+void warp_bonus_sprite_draw(struct Sprite *);
+void time_bonus_sprite_draw(struct Sprite *);
+void floor_score_sprite_draw(struct Sprite *);
 
-void func_8007F368(void (*arg0)(s8 *, struct Sprite *), void (*arg1)(s8 *, struct Sprite *), u32 arg2)
+void hud_show_goal_score_info(int clearScore, int floorScore, u32 arg2)
 {
     struct Sprite *sprite;
     int y = 128;
@@ -4263,29 +4242,29 @@ void func_8007F368(void (*arg0)(s8 *, struct Sprite *), void (*arg1)(s8 *, struc
         sprite->y = 128.0f;
         if (arg2 & 8)
         {
-            sprite->unkC = 0xFF;
-            sprite->unkD = 0x60;
-            sprite->unkE = 0x60;
+            sprite->unkC = 255;
+            sprite->unkD = 96;
+            sprite->unkE = 96;
         }
         else if (arg2 & 4)
         {
-            sprite->unkC = 0x60;
-            sprite->unkD = 0xFF;
-            sprite->unkE = 0x60;
+            sprite->unkC = 96;
+            sprite->unkD = 255;
+            sprite->unkE = 96;
         }
         else
         {
-            sprite->unkC = 0x60;
-            sprite->unkD = 0x60;
-            sprite->unkE = 0xFF;
+            sprite->unkC = 96;
+            sprite->unkD = 96;
+            sprite->unkE = 255;
         }
         sprite->fontId = FONT_ASC_16x16;
         sprite->textAlign = ALIGN_CC;
         sprite->counter = 360;
         sprite->unk48 = 360;
-        sprite->mainFunc = lbl_8007FD48;
-        sprite->drawFunc = lbl_8007F754;
-        sprintf(sprite->text, " %5d", arg0);
+        sprite->mainFunc = goal_sprite_main;
+        sprite->drawFunc = clear_score_sprite_draw;
+        sprintf(sprite->text, " %5d", clearScore);
     }
     if (arg2 & 2)
     {
@@ -4299,8 +4278,8 @@ void func_8007F368(void (*arg0)(s8 *, struct Sprite *), void (*arg1)(s8 *, struc
             sprite->textAlign = ALIGN_CC;
             sprite->counter = 360;
             sprite->unk48 = 360;
-            sprite->mainFunc = lbl_8007FD48;
-            sprite->drawFunc = lbl_8007F8C8;
+            sprite->mainFunc = goal_sprite_main;
+            sprite->drawFunc = warp_bonus_sprite_draw;
             if (infoWork.unk22 < 10)
                 sprintf(sprite->text, "   X %d", infoWork.unk22);
             else
@@ -4319,8 +4298,8 @@ void func_8007F368(void (*arg0)(s8 *, struct Sprite *), void (*arg1)(s8 *, struc
             sprite->textAlign = ALIGN_CC;
             sprite->counter = 360;
             sprite->unk48 = 360;
-            sprite->mainFunc = lbl_8007FD48;
-            sprite->drawFunc = lbl_8007FA20;
+            sprite->mainFunc = goal_sprite_main;
+            sprite->drawFunc = time_bonus_sprite_draw;
             sprintf(sprite->text, "   X 2");
         }
     }
@@ -4333,23 +4312,23 @@ void func_8007F368(void (*arg0)(s8 *, struct Sprite *), void (*arg1)(s8 *, struc
         sprite->textAlign = ALIGN_CC;
         sprite->counter = 360;
         sprite->unk48 = 360;
-        sprite->mainFunc = lbl_8007FD48;
-        sprite->drawFunc = lbl_8007FB78;
-        sprintf(sprite->text, "%6d", arg1);
+        sprite->mainFunc = goal_sprite_main;
+        sprite->drawFunc = floor_score_sprite_draw;
+        sprintf(sprite->text, "%6d", floorScore);
     }
 }
 
-int func_8007F61C(struct Sprite *sprite, int arg1, float arg2)
+int func_8007F61C(struct Sprite *sprite, int t, float arg2)
 {
     float phi_f1;
     int phi_r31;
 
-    if (arg1 < 60)
+    if (t < 60)
         return 0;
-    if (arg1 < 90)
+    if (t < 90)
     {
-        phi_f1 = 0.03333 * (arg1 - 60) * arg2;
-        phi_r31 = (arg1 - 90) * 5;
+        phi_f1 = 0.03333 * (t - 60) * arg2;
+        phi_r31 = (t - 90) * 5;
     }
     else if (sprite->counter <= 15)
     {
@@ -4367,15 +4346,14 @@ int func_8007F61C(struct Sprite *sprite, int arg1, float arg2)
     return 1;
 }
 
-int lbl_8007F754_inline2(struct Sprite *sprite, int temp_r30, float arg2)
+int lbl_8007F754_inline2(struct Sprite *sprite, int t, float arg2)
 {
     float phi_f1;
-    //float arg2 = 1.0f;
 
-    if (temp_r30 < 120)
+    if (t < 120)
         return 0;
-    if (temp_r30 < 150)
-        phi_f1 = 0.03333 * (temp_r30 - 120) * arg2;
+    if (t < 150)
+        phi_f1 = 0.03333 * (t - 120) * arg2;
     else if (sprite->counter <= 15)
         phi_f1 = 0.06666 * sprite->counter * MIN(0.2 + arg2, 1.0);
     else
@@ -4394,102 +4372,431 @@ char *asdfasdf[] =
     "h/SHUURYOU",
 };
 
-void lbl_8007F754(struct Sprite *sprite)
+void clear_score_sprite_draw(struct Sprite *sprite)
 {
-    int temp_r30;
+    int t;
     float f31;
 
     func_80071A8C();
     g_set_font(sprite->fontId);
-    temp_r30 = sprite->unk48 - sprite->counter;
+    t = sprite->unk48 - sprite->counter;
     f31 = 1.0f;
-    if (func_8007F61C(sprite, temp_r30, f31))
+    if (func_8007F61C(sprite, t, f31))
     {
-        func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+        g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
         g_draw_text("CLEAR SCORE : ");
     }
-    if (lbl_8007F754_inline2(sprite, temp_r30, f31))
+    if (lbl_8007F754_inline2(sprite, t, f31))
     {
-        func_80071AE4(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+        g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
         g_draw_text(sprite->text);
     }
     func_80071A8C();
 }
 
-void lbl_8007F8C8(struct Sprite *sprite)
+void warp_bonus_sprite_draw(struct Sprite *sprite)
 {
-    int temp_r30;
+    int t;
     float f31;
 
     func_80071A8C();
     g_set_font(sprite->fontId);
-    temp_r30 = sprite->unk48 - sprite->counter - 10;
+    t = sprite->unk48 - sprite->counter - 10;
     f31 = 1.0f;
-    if (func_8007F61C(sprite, temp_r30, f31))
+    if (func_8007F61C(sprite, t, f31))
     {
-        func_80071AE4(RGBA(0x00, 0xC0, 0xFF, 0));
+        g_set_text_fill_color(RGBA(0, 192, 255, 0));
         g_draw_text(" WARP BONUS   ");
     }
-    if (lbl_8007F754_inline2(sprite, temp_r30, f31))
+    if (lbl_8007F754_inline2(sprite, t, f31))
     {
-        func_80071AE4(RGBA(0x00, 0xC0, 0xFF, 0));
+        g_set_text_fill_color(RGBA(0, 192, 255, 0));
         g_draw_text(sprite->text);
     }
     func_80071A8C();
 }
 
-void lbl_8007FA20(struct Sprite *sprite)
+void time_bonus_sprite_draw(struct Sprite *sprite)
 {
-    int temp_r30;
+    int t;
     float f31;
 
     func_80071A8C();
     g_set_font(sprite->fontId);
-    temp_r30 = sprite->unk48 - sprite->counter - 20;
+    t = sprite->unk48 - sprite->counter - 20;
     f31 = 1.0f;
-    if (func_8007F61C(sprite, temp_r30, f31))
+    if (func_8007F61C(sprite, t, f31))
     {
-        func_80071AE4(RGBA(0xFF, 0xFF, 0x00, 0));
+        g_set_text_fill_color(RGBA(255, 255, 0, 0));
         g_draw_text(" TIME BONUS   ");
     }
-    if (lbl_8007F754_inline2(sprite, temp_r30, f31))
+    if (lbl_8007F754_inline2(sprite, t, f31))
     {
-        func_80071AE4(RGBA(0xFF, 0xFF, 0x00, 0));
+        g_set_text_fill_color(RGBA(255, 255, 0, 0));
         g_draw_text(sprite->text);
     }
     func_80071A8C();
 }
 
-void lbl_8007FB78(struct Sprite *sprite)
+void floor_score_sprite_draw(struct Sprite *sprite)
 {
-    int temp_r30;
+    int t;
     int r31;
     float f31;
 
     func_80071A8C();
     g_set_font(sprite->fontId);
-    temp_r30 = sprite->unk48 - sprite->counter - 60;
+    t = sprite->unk48 - sprite->counter - 60;
     f31 = 1.0f;
-    r31 = MAX(mathutil_sin(temp_r30 * 0x280) * 255.0f, 0.0f);
-    if (func_8007F61C(sprite, temp_r30, f31))
+    r31 = MAX(mathutil_sin(t * 0x280) * 255.0f, 0.0f);
+    if (func_8007F61C(sprite, t, f31))
     {
-        func_80071AE4(0xFF8000);
-        g_set_some_sprite_color(RGBA(r31, r31, r31, 0));
+        g_set_text_fill_color(RGBA(255, 128, 0, 0));
+        g_set_text_other_color(RGBA(r31, r31, r31, 0));
         g_draw_text("FLOOR SCORE : ");
     }
-    if (lbl_8007F754_inline2(sprite, temp_r30, f31))
+    if (lbl_8007F754_inline2(sprite, t, f31))
     {
-        func_80071AE4(0xFF8000);
-        g_set_some_sprite_color(RGBA(r31, r31, r31, 0));
+        g_set_text_fill_color(RGBA(255, 128, 0, 0));
+        g_set_text_other_color(RGBA(r31, r31, r31, 0));
         g_draw_text(sprite->text);
     }
     func_80071A8C();
 }
 
-void lbl_8007FD48(s8 *arg0, struct Sprite *sprite)
+void goal_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (!(gamePauseStatus & 0xA) && --sprite->counter <= 0)
         *arg0 = 0;
+}
+
+void best_score_sprite_main(s8 *, struct Sprite *);
+void best_score_sprite_draw(struct Sprite *);
+void lbl_800800D4(struct Sprite *);
+
+void g_show_practice_mode_score_info(int arg0)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->tag = 8;
+        sprite->x = 98.0f;
+        sprite->y = 66.0f;
+        sprite->fontId = FONT_ASC_20x20P;
+        sprite->textAlign = ALIGN_LC;
+        sprite->unk40 = 0.8f;
+        sprite->unk44 = 0.8f;
+        sprite->unkC = 255;
+        sprite->unkD = 192;
+        sprite->unkE = 0;
+        sprite->unk48 = arg0;
+        sprite->counter = 0;
+        sprite->mainFunc = best_score_sprite_main;
+        sprite->drawFunc = best_score_sprite_draw;
+        sprintf(sprite->text, "BEST SCORE");
+    }
+    else
+        printf("NULL\n");
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->x = 96.0f;
+        sprite->y = 92.0f;
+        sprite->fontId = FONT_NUM_22x22;
+        sprite->textAlign = ALIGN_LC;
+        sprite->unk40 = 0.8f;
+        sprite->unk44 = 0.8f;
+        sprite->unkC = 255;
+        sprite->unkD = 192;
+        sprite->unkE = 0;
+        sprite->unk48 = lbl_802F1CAC;
+        sprite->drawFunc = lbl_800800D4;
+        sprintf(sprite->text, "%d", sprite->unk48);
+    }
+    else
+        printf("NULL\n");
+}
+
+void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
+{
+    switch (sprite->unk48)
+    {
+    case 1:
+        SoundPitch(func_8002B610(0xA11D), 0);
+        g_play_music(0x1E, 8);
+        sprite->unk48 = 2;
+        sprite->counter = 120;
+        break;
+    case 2:
+        if (--sprite->counter == 0)
+        {
+            sprite->unk48 = 3;
+            g_play_music(0x64, 8);
+        }
+        break;
+    }
+}
+
+void best_score_sprite_draw(struct Sprite *sprite)
+{
+    int i;
+    u32 r28;
+
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    func_80071B40(sprite->opacity);
+    func_80071B2C(sprite->unk40, sprite->unk44);
+    r28 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0);
+    for (i = 0; i < 10; i++)
+    {
+        int phi_r4 = sprite->unk48 > 0 && (unpausedFrameCounter >> 4) % 2 == ((i > 4) ? i + 1 : i) % 2;
+
+        g_set_text_fill_color(phi_r4 ? RGBA(255, 0, 0, 0) : r28);
+        g_set_text_pos(sprite->x + 20.0 * i * sprite->unk40 + ((i > 4) ? -8 : 0), sprite->y);
+        g_draw_char(sprite->text[i]);
+    }
+}
+
+void lbl_800800D4(struct Sprite *sprite)
+{
+    struct Sprite *temp_r3;
+    void (*drawFunc)(struct Sprite *);
+
+    func_80071A8C();
+    g_set_font(sprite->fontId);
+    func_80071B40(sprite->opacity);
+    func_80071B2C(sprite->unk40, sprite->unk44);
+    g_set_text_fill_color(RGBA(sprite->unkC, sprite->unkD, sprite->unkE, 0));
+
+    drawFunc = sprite->drawFunc;
+    sprite->drawFunc = NULL;
+    calc_sprite_bounds(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
+    sprite->drawFunc = drawFunc;
+
+    g_set_text_pos(sprite->left, sprite->top);
+    g_draw_text(sprite->text);
+
+    temp_r3 = find_sprite_with_tag(8);
+    if (temp_r3 != NULL && temp_r3->unk48 > 0)
+    {
+        float temp_f31 = 1.0 - __fabs(mathutil_sin(temp_r3->counter << 9));
+        u32 temp_r30 = (1.0 - __fabs(mathutil_sin((temp_r3->counter << 9) + 0x4000))) * 255.0;
+
+        func_80071B1C(0.09f);
+        g_set_text_other_color(RGBA(temp_r30, temp_r30, temp_r30, 0));
+        g_set_text_pos(sprite->left + (17.6 * strlen(sprite->text)), sprite->top);
+        func_80071B2C(0.8 + (0.3 * temp_f31), 0.8 + (0.4 * temp_f31));
+        func_80072AC0("+%d", lbl_802F1CAC - sprite->unk48);
+    }
+}
+
+#pragma dont_inline on
+float func_800802E0(u16 arg0)
+{
+    float temp_f2;
+
+    if (arg0 > 60)
+    {
+        float f4 = __fabs(mathutil_sin(((60 - ((u32)arg0 % 60)) & 0x3F) << 8));
+        return 0.20000000298023224 * (1.0 - __fabs(1.0f - f4 * 2.0f));
+    }
+    if (arg0 < 15)
+    {
+        temp_f2 = (u32)(15 - arg0) / 15.0f;
+        if (temp_f2 < 0.5f)
+            return 0.2f - temp_f2;
+        else
+            return (-0.3f + temp_f2) - 0.5f;
+    }
+    else
+    {
+        temp_f2 = 1.0f - (u32)(arg0 - 15) / 45.0f;
+        temp_f2 *= 0.2f;
+        return temp_f2;
+    }
+}
+#pragma dont_inline reset
+
+void lbl_800803E8(s8 *arg0, struct Sprite *sprite)
+{
+    float temp_f0;
+    u8 dummy[8];
+
+    if (infoWork.timerCurr <= 480)
+    {
+        if (infoWork.timerCurr > 420)
+            sprite->opacity = 1.0f - ((infoWork.timerCurr - 420) / 60.0f);
+        else
+            sprite->opacity = 1.0f;
+        temp_f0 = func_800802E0(infoWork.timerCurr) + 1.0f;
+        sprite->unk40 = temp_f0;
+        sprite->unk44 = temp_f0;
+        if (infoWork.timerCurr < 240)
+        {
+            sprite->unk48 += 40.0f - (infoWork.timerCurr * 40.0f) / 240.0f;
+            sprite->unkD = __abs(255 - (sprite->unk48 % 510));
+            sprite->unkE = sprite->unkD;
+            if (sprite->unkE < 128)
+                sprite->unkE = 128;
+            sprite->unkE = (sprite->unkE - 128) * 2.0f;
+        }
+        if (infoWork.timerCurr <= 0)
+            *arg0 = 0;
+    }
+}
+
+void test(struct Sprite *sprite, int temp_r7, int temp_r8, float temp_f6)
+{
+    sprite->x += 0.9f * (f32) temp_r7 * temp_f6;
+    sprite->y += (0.97f * (f32) temp_r8 * temp_f6) + (1.0f - temp_f6);
+}
+
+float force_lbl_802F50C0() { return 0.19699999690055847f; }
+
+const float lbl_802F50C4 = 0.94999998807907104f;
+const float lbl_802F50C8 = 0.97000002861022949f;
+const float lbl_802F50CC = 0.89999997615814209f;
+
+
+#ifdef NONMATCHING
+void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
+{
+    s16 *asdf = (s16 *)&sprite->unk48;
+    float temp_f0;
+    float temp_f6;
+    s16 temp_r7;
+    s16 temp_r8;
+
+    sprite->opacity *= 0.95f;
+    sprite->unk40 *= 1.01f;
+    sprite->unk44 *= 1.01f;
+    temp_r7 = asdf[0];
+    temp_r8 = asdf[1];
+    temp_f0 = sprite->opacity;
+    temp_f6 = temp_f0 * temp_f0;
+    sprite->x += 0.9f * temp_r7 * temp_f6;
+    sprite->y += (0.97f * temp_r8 * temp_f6) + (1.0f - temp_f6);
+    asdf[0] = temp_r7;
+    asdf[1] = temp_r8;
+    if (sprite->opacity < 0.005f)
+        *arg0 = 0;
+}
+#else
+asm void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
+{
+    nofralloc
+#include "../asm/nonmatchings/lbl_800805AC.s"
+}
+#pragma peephole on
+#endif
+
+s16 bombPartBitmapIDs[] =
+{
+    BMP_NML_icon_bomb_part_a,
+    BMP_NML_icon_bomb_part_b,
+    BMP_NML_icon_bomb_part_c,
+    BMP_NML_icon_bomb_part_d,
+    BMP_NML_icon_bomb_part_e,
+    BMP_NML_icon_bomb_part_f,
+    BMP_NML_icon_bomb_part_g,
+    BMP_NML_icon_bomb_part_h,
+    BMP_NML_icon_bomb_part_i,
+    BMP_NML_icon_bomb_part_j
+};
+
+float lbl_801C21E4[] = { 7.0f, 16.0f, 26.0f, 48.0f,  0.0f,  9.0f, 55.0f, 12.0f, 33.0f, 71.0f };
+float lbl_801C220C[] = { 9.0f,  0.0f,  0.0f, 4.0f,  24.0f, 16.0f, 23.0f, 63.0f, 56.0f, 69.0f };
+
+void lbl_80080680(s8 *arg0, struct Sprite *sprite)
+{
+    u8 dummy[8];
+    float temp_f0;
+    float temp_f24;
+    float temp_f26;
+    float temp_f30;
+    float temp_f29;
+    struct Sprite *temp_r3;
+    u32 i;
+
+    if (infoWork.timerCurr <= 600)
+    {
+        if (infoWork.timerCurr > 0)
+        {
+            temp_f0 = 1.0f + func_800802E0(infoWork.timerCurr);
+            sprite->unk40 = temp_f0;
+            sprite->unk44 = temp_f0;
+            return;
+        }
+        temp_f24 = sprite->x;
+        temp_f26 = sprite->y;
+        temp_f30 = sprite->unk40;
+        temp_f29 = sprite->unk44;
+        *arg0 = 0;
+        g_debug_set_cursor_pos(5, 5);
+        for (i = 0; i < 10; i++)
+        {
+            temp_r3 = create_sprite();
+            if (temp_r3 == NULL)
+                return;
+            temp_r3->type = SPRITE_TYPE_BITMAP;
+            temp_r3->tag = 2;
+            temp_r3->x = temp_f24 - 44.0f + lbl_801C21E4[i];
+            temp_r3->y = temp_f26 - 44.0f + lbl_801C220C[i];
+            temp_r3->fontId = FONT_ASCII;
+            temp_r3->bmpId = bombPartBitmapIDs[i];
+            temp_r3->textAlign = ALIGN_LT;
+            temp_r3->unk4C = 0.2f;
+            temp_r3->mainFunc = lbl_800805AC;
+            temp_r3->unk40 = temp_f30;
+            temp_r3->unk44 = temp_f29;
+            ((s16 *)&temp_r3->unk48)[0] = 1.2f * (lbl_801C21E4[i] - 30.0f);
+            ((s16 *)&temp_r3->unk48)[1] = 1.2f * (lbl_801C220C[i] - 20.0f);
+            sprintf(temp_r3->text, "bomb_scat%d.pic", i);
+        }
+    }
+}
+
+void func_8008083C(float arg8, float arg9)
+{
+    struct Sprite *sprite;
+    float x;
+    float y;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = SPRITE_TYPE_BITMAP;
+        sprite->tag = 2;
+        sprite->x = arg8;
+        sprite->y = arg9;
+        sprite->fontId = FONT_ASCII;
+        sprite->bmpId = BMP_NML_icon_bombtimer;
+        sprite->textAlign = ALIGN_CC;
+        sprite->unk4C = 0.2f;
+        sprite->mainFunc = lbl_80080680;
+        sprintf(sprite->text, "timer.pic");
+        y = sprite->y;
+        x = sprite->x;
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->type = SPRITE_TYPE_BITMAP;
+            sprite->tag = 2;
+            sprite->x = x;
+            sprite->y = y;
+            sprite->fontId = FONT_ASCII;
+            sprite->bmpId = BMP_NML_icon_bomb_hibi;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unk4C = 0.197f;
+            sprite->opacity = 0.0f;
+            sprite->mainFunc = lbl_800803E8;
+            sprite->unk48 = 0;
+            sprintf(sprite->text, "hibi");
+        }
+    }
 }
 
 const u32 lbl_80118938[] =
@@ -4810,5 +5117,48 @@ const double lbl_802F5060 = 25;
 const double lbl_802F5068 = 0.066666000000000003;
 const double lbl_802F5070 = 0.029999999999999999;
 const float lbl_802F5078 = 214f;
-
+const float lbl_802F507C = 128f;
+const float lbl_802F5080 = 190f;
+const float lbl_802F5084 = 98f;
+const float lbl_802F5088 = 66f;
+const float lbl_802F508C = 92f;
+const float lbl_802F5090 = 0.090000003576278687f;
+const double lbl_802F5098 = 17.600000000000001;
+const double lbl_802F50A0 = 0.29999999999999999;
+const double lbl_802F50A8 = 0.40000000000000002;
+const double lbl_802F50B0 = 0.20000000298023224;
+const float lbl_802F50B8 = -0.30000001192092896f;
+const float lbl_802F50BC = 45f;
+const float lbl_802F50C0 = 0.19699999690055847f;
+const float lbl_802F50C4 = 0.94999998807907104f;
+const float lbl_802F50C8 = 0.97000002861022949f;
+const float lbl_802F50CC = 0.89999997615814209f;
+const float lbl_802F50D0 = 1.2000000476837158f;
+const float lbl_802F50D8 = 1800f;
+const float lbl_802F50DC = 0.26666000485420227f;
+const double lbl_802F50E0 = 0.10000000000000001;
+const double lbl_802F50E8 = 0.29999999999999999;
+const double lbl_802F50F0 = 1;
+const double lbl_802F50F8 = 0.5;
+const float lbl_802F5100 = 10f;
+const double lbl_802F5108 = 0.03125;
+const float lbl_802F5110 = 4f;
+const double lbl_802F5118 = 3;
+const float lbl_802F5120 = 12f;
+const double lbl_802F5128 = 0.25;
+const double lbl_802F5130 = 30;
+const float lbl_802F5138 = 0.25f;
+const float lbl_802F513C = 0f;
+const double lbl_802F5140 = -0.032258000000000002;
+const double lbl_802F5148 = 0;
+const float lbl_802F5150 = 1f;
+const double lbl_802F5158 = 0.59999999999999998;
+const double lbl_802F5160 = 0.65000000000000002;
+const double lbl_802F5168 = 0.01;
+const double lbl_802F5170 = 0.02;
+const float lbl_802F5178 = 0.5f;
+const float lbl_802F517C = 0.32499998807907104f;
+const float lbl_802F5180 = 36f;
+const float lbl_802F5184 = 8f;
+const double lbl_802F5188 = 4503601774854144;
 */

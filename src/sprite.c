@@ -13,14 +13,14 @@
 #include "sprite.h"
 #include "tevutil.h"
 
-struct Struct8028CF28
+struct TextDrawInfo
 {
     float unk0;
     float unk4;
     float unk8;
     s32 fontId;
-    u32 unk10;
-    u32 unk14;
+    u32 color1;
+    u32 color2;
     s16 unk18;
     float unk1C;
     float unk20;
@@ -37,7 +37,7 @@ struct Struct8028FE58
 };
 
 // .bss
-struct Struct8028CF28 textDrawInfo;
+struct TextDrawInfo textDrawInfo;
 FORCE_BSS_ORDER(textDrawInfo)
 struct Sprite spriteInfo[64];
 FORCE_BSS_ORDER(spriteInfo)
@@ -60,8 +60,8 @@ void ev_sprite_init(void)
     textDrawInfo.unk4 = 0.0f;
     textDrawInfo.unk8 = 0.0f;
     textDrawInfo.fontId = 0;
-    textDrawInfo.unk10 = -1;
-    textDrawInfo.unk14 = 0;
+    textDrawInfo.color1 = -1;
+    textDrawInfo.color2 = 0;
     textDrawInfo.unk18 = 0;
     textDrawInfo.unk1C = 0.1f;
     textDrawInfo.unk20 = 1.0f;
@@ -2566,17 +2566,17 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
 }
 
 #pragma force_active on
-int func_80071A74(int fontId)
+int get_font_bitmap_id(int fontId)
 {
-    return fontInfo[fontId].unk0;
+    return fontInfo[fontId].bmpId;
 }
 #pragma force_active reset
 
 void func_80071A8C(void)
 {
     textDrawInfo.fontId = 0;
-    textDrawInfo.unk10 = 0xFFFFFF;
-    textDrawInfo.unk14 = 0;
+    textDrawInfo.color1 = 0xFFFFFF;
+    textDrawInfo.color2 = 0;
     textDrawInfo.unk18 = 0;
     textDrawInfo.unk1C = 0.1f;
     textDrawInfo.unk20 = 1.0f;
@@ -2590,14 +2590,14 @@ void g_set_font(int fontId)
     textDrawInfo.fontId = fontId;
 }
 
-void func_80071AE4(int a)
+void g_set_text_fill_color(int a)
 {
-    textDrawInfo.unk10 = a & 0xFFFFFF;
+    textDrawInfo.color1 = a & 0xFFFFFF;
 }
 
-void g_set_some_sprite_color(int a)
+void g_set_text_other_color(int a)
 {
-    textDrawInfo.unk14 = a;
+    textDrawInfo.color2 = a;
 }
 
 #pragma force_active on
@@ -2636,7 +2636,7 @@ void g_set_text_pos(float x, float y)
 }
 
 #ifdef NONMATCHING
-void func_80071B78(s8 a)
+void g_draw_char(s8 a)
 {
     struct NaomiSpriteParams params;  // sp + 0x10
     struct FontParams *font = &fontInfo[textDrawInfo.fontId];  // r5
@@ -2647,7 +2647,7 @@ void func_80071B78(s8 a)
     float f5;
     //float f0;
 
-    params.bmpId = font->unk0;
+    params.bmpId = font->bmpId;
     params.x = textDrawInfo.unk4 + font->unk18 * font->unk20 /*0xC4*/;
     params.y = textDrawInfo.unk8 + font->unk1C * font->unk22 /*0xBC*/;
     params.z = textDrawInfo.unk1C;
@@ -2665,15 +2665,15 @@ void func_80071B78(s8 a)
     params.alpha = textDrawInfo.unk28;
     params.unk30 = -1;
     params.flags = (textDrawInfo.unk2C & ~0xF) | 5;
-    params.color1 = ((int)(255.0f * textDrawInfo.unk28) << 24) | textDrawInfo.unk10;
-    params.color2 = textDrawInfo.unk14;
+    params.color1 = ((int)(255.0f * textDrawInfo.unk28) << 24) | textDrawInfo.color1;
+    params.color2 = textDrawInfo.color2;
     draw_naomi_sprite(&params);
 }
 #else
-asm void func_80071B78(s8 a)
+asm void g_draw_char(s8 a)
 {
     nofralloc
-#include "../asm/nonmatchings/func_80071B78.s"
+#include "../asm/nonmatchings/g_draw_char.s"
 }
 #pragma peephole on
 #endif
@@ -2698,7 +2698,7 @@ static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *f
 
 void g_draw_text(char *str)
 {
-    struct Struct8028CF28 *r28 = &textDrawInfo;
+    struct TextDrawInfo *r28 = &textDrawInfo;
     int fontIdBackup;
     struct FontParams *font;
     int r23;
@@ -2717,12 +2717,12 @@ void g_draw_text(char *str)
     r22 = 0;
     fontIdBackup = r28->fontId;
 
-    params.bmpId = font->unk0;
+    params.bmpId = font->bmpId;
     params.z = r28->unk1C;
     params.alpha = r28->unk28;
     params.rotation = r28->unk18;
-    params.color1 = ((int)(r28->unk28 * 255.0f) << 24) | r28->unk10;
-    params.color2 = r28->unk14;
+    params.color1 = ((int)(r28->unk28 * 255.0f) << 24) | r28->color1;
+    params.color2 = r28->color2;
     params.unk30 = -1;
     params.flags = (r28->unk2C & ~0xF) | 5;
     f31 = r28->unk20;
@@ -2827,7 +2827,7 @@ void g_draw_text(char *str)
                     font = &fontInfo[FONT_JAP_24x24_I];
                 else
                     font = &fontInfo[r28->fontId];
-                params.bmpId = font->unk0;
+                params.bmpId = font->bmpId;
             }
         }
         if (r28->fontId < FONT_JAP_TAG
@@ -2868,7 +2868,7 @@ void g_draw_text(char *str)
 
 float g_get_text_width(char *str)
 {
-    struct Struct8028CF28 *r29 = &textDrawInfo;
+    struct TextDrawInfo *r29 = &textDrawInfo;
     int fontIdBackup;
     struct FontParams *font;
     int r23;
@@ -3008,8 +3008,8 @@ void g_draw_text_sprite(struct Sprite *sprite)
     textDrawInfo.unk4 = sprite->left;
     textDrawInfo.unk8 = sprite->top;
     textDrawInfo.fontId = sprite->fontId;
-    textDrawInfo.unk10 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
-    textDrawInfo.unk14 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
+    textDrawInfo.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
+    textDrawInfo.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
     textDrawInfo.unk18 = sprite->unk68;
     textDrawInfo.unk1C = sprite->unk4C;
     textDrawInfo.unk20 = sprite->unk40;
