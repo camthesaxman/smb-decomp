@@ -159,7 +159,7 @@ SOURCES := \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
-	asm/tevutil.s \
+	src/tevutil.c \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \
@@ -174,7 +174,7 @@ SOURCES := \
 	libraries/os/asm/OSAlarm.s \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
-	libraries/os/asm/OSAudioSystem.s \
+	libraries/os/OSAudioSystem.c \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
 	libraries/os/OSError.c \
@@ -182,7 +182,7 @@ SOURCES := \
 	libraries/os/asm/OSFont.s \
 	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
-	libraries/os/asm/OSMemory.s \
+	libraries/os/OSMemory.c \
 	libraries/os/OSMutex.c \
 	libraries/os/asm/OSReboot.s \
 	libraries/os/asm/OSReset.s \
@@ -201,7 +201,7 @@ SOURCES := \
 	libraries/dvd/asm/dvdlow.s \
 	libraries/dvd/asm/dvdfs.s \
 	libraries/dvd/asm/dvd.s \
-	libraries/dvd/asm/dvdqueue.s \
+	libraries/dvd/dvdqueue.c \
 	libraries/dvd/asm/dvderror.s \
 	libraries/dvd/fstload.c \
 	libraries/vi/asm/vi.s \

@@ -3,9 +3,9 @@
 
 #include <dolphin/gx.h>
 
-void tevutil_init(void);
+u32 tevutil_init(void);
 void GXSetCullMode_cached(GXCullMode mode);
-void GXSetCullMode_cached_init(GXCullMode mode);
+void GXSetCullMode_cached_init(GXCullMode mode, struct GXCache *_cache);
 void GXSetBlendMode_cached(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op);
 void GXSetBlendMode_cached_init(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op);
 void GXSetTevSwapModeTable_cached_init(GXTevSwapSel id, GXTevColorChan red, GXTevColorChan green, GXTevColorChan blue, GXTevColorChan alpha);
@@ -27,7 +27,7 @@ void GXSetTevColorOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTe
 void GXSetTevColorOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg);
 void GXSetTevAlphaOp_cached(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg);
 void GXSetTevAlphaOp_cached_init(GXTevStageID stage, GXTevOp op, GXTevBias bias, GXTevScale scale, GXBool clamp, GXTevRegID out_reg);
-void func_8009EA30(GXTevStageID stage, int param_2);
+void func_8009EA30(GXTevStageID stage, s32 mode);
 void GXSetTevOrder_cached(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color);
 void GXSetTevOrder_cached_init(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color);
 void GXSetTevKColorSel_cached(GXTevStageID stage, GXTevKColorSel sel);

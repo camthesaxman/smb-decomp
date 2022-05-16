@@ -98,14 +98,98 @@ struct PerfInfo
     u32 unk34;
 };
 
+typedef struct
+{
+    GXBlendMode type;
+    GXBlendFactor src_factor;
+    GXBlendFactor dst_factor;
+    GXLogicOp op;
+} GXTevBlendModeCache;
+
+typedef struct
+{
+    GXTevColorChan r;
+    GXTevColorChan g;
+    GXTevColorChan b;
+    GXTevColorChan a;
+} GXTevSwapModeTableCache;
+
+typedef struct
+{
+    GXTevSwapSel ras_sel;
+    GXTevSwapSel tex_sel;
+} GXTevswapModeSelCache;
+
+typedef struct
+{
+    GXFogType type;
+    float startz;
+    float endz;
+    float nearz;
+    float farz;
+    GXColor color;
+} GXFogCache;
+
+typedef struct
+{
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+} GXTevInputCache;
+
+typedef struct {
+    GXTevOp op;
+    GXTevBias bias;
+    GXTevScale scale;
+    GXBool clamp;
+    GXTevRegID reg;
+} GXTevOpCache;
+
+typedef struct {
+    u16 width;
+    u16 height;
+} GXTexSize;
+
+typedef struct {
+    GXTexCoordID coord;
+    GXTexMapID map;
+    GXChannelID color;
+    GXTexSize texSize;
+} GXTevOrderCached;
+
+typedef struct {
+    u8 numTevStages;
+    GXColor colors[4];
+    u8 filler11[1];
+} GXTevKColorCached;
+
 struct GXCache
 {
-    /*0x00*/ GXBool compareEnable;
-    /*0x04*/ GXCompare compareFunc;
-    /*0x08*/ GXBool updateEnable;
-    /*0x09*/ u8 lineWidth;
-    /*0x0C*/ s32 texOffsets;
-             u8 filler10[0x734-0x10];
+    /*0x000*/ GXBool compareEnable;
+    /*0x004*/ GXCompare compareFunc;
+    /*0x008*/ GXBool updateEnable;
+    /*0x009*/ u8 lineWidth;
+    /*0x00C*/ s32 texOffsets;
+    /*0x010*/ s32 cullMode;
+    /*0x014*/ GXTevBlendModeCache blendMode;
+    /*0x024*/ GXTevSwapModeTableCache swapModeTable[4];
+    /*0x064*/ GXTevswapModeSelCache swapModeSel[16];
+    /*0x0E4*/ GXFogCache fog;
+    /*0x0FC*/ GXBool colorUpdate;
+    /*0x0FD*/ GXBool alphaUpdate;
+    /*0x0FE*/ GXBool zCompare;
+    /*0x0FF*/ u8 unkFF;
+    /*0x100*/ GXTevInputCache colorInputs[16];
+    /*0x200*/ GXTevInputCache alphaInputs[16];
+    /*0x300*/ GXTevOpCache colorOperations[16];
+    /*0x440*/ GXTevOpCache alphaOperations[16];
+    /*0x580*/ GXTevOrderCached tevOrders[16];
+    /*0x680*/ s32 kColorSels[16];
+    /*0x6C0*/ s32 kAlphaSels[16];
+    /*0x700*/ GXTevKColorCached kColor;
+    /*0x712*/ GXTexSize texSizes[8];
+    /*0x732*/ u8 filler732[0x734-0x732];
 };
 
 struct GFXBufferInfo

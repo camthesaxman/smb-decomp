@@ -679,4 +679,12 @@ typedef enum
     GX_MAX_KCOLOR
 } GXTevKColorID;
 
+typedef enum
+{
+    GX_ZT_DISABLE,
+    GX_ZT_ADD,
+    GX_ZT_REPLACE,
+    GX_MAX_ZTEXOP,
+} GXZTexOp;
+
 #endif
