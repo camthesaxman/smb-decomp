@@ -175,7 +175,7 @@ lbl_00000270:
 /* 000002CC 4BFFFE91 */ bl unload_stage
 /* 000002D0 4BFFFE8D */ bl event_finish_all
 /* 000002D4 38600000 */ li r3, 0
-/* 000002D8 4BFFFE85 */ bl g_init_light_stuff_for_stage
+/* 000002D8 4BFFFE85 */ bl g_init_stage_lighting
 /* 000002DC 3C600000 */ lis r3, lbl_10000000@ha
 /* 000002E0 38830000 */ addi r4, r3, lbl_10000000@l
 /* 000002E4 93E40000 */ stw r31, 0(r4)
@@ -9583,7 +9583,7 @@ lbl_00008980:
 /* 00008988 4BFF77D5 */ bl g_draw_ball_shadow
 /* 0000898C 4BFF77D1 */ bl func_80054FF0
 /* 00008990 38600000 */ li r3, 0
-/* 00008994 4BFF77C9 */ bl func_800225C0
+/* 00008994 4BFF77C9 */ bl g_reset_light_group_stack
 /* 00008998 3C600000 */ lis r3, eventInfo@ha
 /* 0000899C 38630000 */ addi r3, r3, eventInfo@l
 /* 000089A0 88030018 */ lbz r0, 0x18(r3)
@@ -10214,7 +10214,7 @@ lbl_00009254:
 /* 000092A8 5400103A */ slwi r0, r0, 2
 /* 000092AC 7C630214 */ add r3, r3, r0
 /* 000092B0 80630004 */ lwz r3, 4(r3)
-/* 000092B4 4BFF6EA9 */ bl g_draw_naomi_model_and_do_other_stuff
+/* 000092B4 4BFF6EA9 */ bl nl2ngc_draw_model_sorted
 /* 000092B8 4BFF6EA5 */ bl draw_test_camera_target
 /* 000092BC 48000068 */ b lbl_00009324
 lbl_000092C0:

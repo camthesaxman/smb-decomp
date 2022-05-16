@@ -234,7 +234,7 @@ lbl_0000033C:
 /* 000003AC 38600013 */ li r3, 0x13
 /* 000003B0 4BFFFDD9 */ bl event_start
 /* 000003B4 38600000 */ li r3, 0
-/* 000003B8 4BFFFDD1 */ bl g_init_light_stuff_for_stage
+/* 000003B8 4BFFFDD1 */ bl g_init_stage_lighting
 /* 000003BC 38600034 */ li r3, 0x34
 /* 000003C0 4BFFFDC9 */ bl camera_set_state
 /* 000003C4 3C600000 */ lis r3, spritePoolInfo@ha
@@ -3017,11 +3017,11 @@ lbl_00002A6C:
 /* 00002A74 3C600000 */ lis r3, currStageId@ha
 /* 00002A78 38630000 */ addi r3, r3, currStageId@l
 /* 00002A7C A8630000 */ lha r3, 0(r3)
-/* 00002A80 4BFFD709 */ bl g_init_light_stuff_for_stage
+/* 00002A80 4BFFD709 */ bl g_init_stage_lighting
 /* 00002A84 4800000C */ b lbl_00002A90
 lbl_00002A88:
 /* 00002A88 38600000 */ li r3, 0
-/* 00002A8C 4BFFD6FD */ bl g_init_light_stuff_for_stage
+/* 00002A8C 4BFFD6FD */ bl g_init_stage_lighting
 lbl_00002A90:
 /* 00002A90 80010014 */ lwz r0, 0x14(r1)
 /* 00002A94 83E1000C */ lwz r31, 0xc(r1)
@@ -5106,7 +5106,7 @@ lbl_000047EC:
 lbl_00004820:
 /* 00004820 4800B5ED */ bl lbl_0000FE0C
 /* 00004824 38600000 */ li r3, 0
-/* 00004828 4BFFB961 */ bl g_init_light_stuff_for_stage
+/* 00004828 4BFFB961 */ bl g_init_stage_lighting
 /* 0000482C 38600034 */ li r3, 0x34
 /* 00004830 4BFFB959 */ bl camera_set_state
 /* 00004834 3C600000 */ lis r3, lbl_801EEDA8@ha
@@ -5596,7 +5596,7 @@ lbl_00004EA4:
 lbl_00004EE4:
 /* 00004EE4 4800AF29 */ bl lbl_0000FE0C
 /* 00004EE8 38600000 */ li r3, 0
-/* 00004EEC 4BFFB29D */ bl g_init_light_stuff_for_stage
+/* 00004EEC 4BFFB29D */ bl g_init_stage_lighting
 /* 00004EF0 38600034 */ li r3, 0x34
 /* 00004EF4 4BFFB295 */ bl camera_set_state
 /* 00004EF8 3C600000 */ lis r3, lbl_801EEDA8@ha

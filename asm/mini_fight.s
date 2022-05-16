@@ -444,7 +444,7 @@ lbl_000006B4:
 /* 000006D8 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 000006DC 80630000 */ lwz r3, 0(r3)
 /* 000006E0 806300B0 */ lwz r3, 0xb0(r3)
-/* 000006E4 4BFFFA81 */ bl g_draw_naomi_model_1
+/* 000006E4 4BFFFA81 */ bl nl2ngc_draw_model_unsorted
 /* 000006E8 4BFFFA7D */ bl func_8000E3BC
 lbl_000006EC:
 /* 000006EC 8001004C */ lwz r0, 0x4c(r1)
@@ -903,7 +903,7 @@ lbl_00000D04:
 /* 00000DC0 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00000DC4 80630000 */ lwz r3, 0(r3)
 /* 00000DC8 806300B0 */ lwz r3, 0xb0(r3)
-/* 00000DCC 4BFFF399 */ bl g_draw_naomi_model_1
+/* 00000DCC 4BFFF399 */ bl nl2ngc_draw_model_unsorted
 lbl_00000DD0:
 /* 00000DD0 4BFFF395 */ bl mathutil_mtxA_pop
 /* 00000DD4 C03D000C */ lfs f1, 0xc(r29)
@@ -969,7 +969,7 @@ lbl_00000DD0:
 /* 00000EC4 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00000EC8 80630000 */ lwz r3, 0(r3)
 /* 00000ECC 806300B0 */ lwz r3, 0xb0(r3)
-/* 00000ED0 4BFFF295 */ bl g_draw_naomi_model_1
+/* 00000ED0 4BFFF295 */ bl nl2ngc_draw_model_unsorted
 lbl_00000ED4:
 /* 00000ED4 4BFFF291 */ bl mathutil_mtxA_pop
 /* 00000ED8 4BFFF28D */ bl mathutil_mtxA_push
@@ -1031,7 +1031,7 @@ lbl_00000ED4:
 /* 00000FB8 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00000FBC 80630000 */ lwz r3, 0(r3)
 /* 00000FC0 806300B0 */ lwz r3, 0xb0(r3)
-/* 00000FC4 4BFFF1A1 */ bl g_draw_naomi_model_1
+/* 00000FC4 4BFFF1A1 */ bl nl2ngc_draw_model_unsorted
 lbl_00000FC8:
 /* 00000FC8 4BFFF19D */ bl mathutil_mtxA_pop
 /* 00000FCC 4BFFF199 */ bl func_8000E3BC
@@ -10537,7 +10537,7 @@ lbl_00009ED0:
 /* 00009F3C 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00009F40 80630000 */ lwz r3, 0(r3)
 /* 00009F44 806300D8 */ lwz r3, 0xd8(r3)
-/* 00009F48 4BFF621D */ bl g_draw_naomi_model_and_do_other_stuff
+/* 00009F48 4BFF621D */ bl nl2ngc_draw_model_sorted
 /* 00009F4C 4BFF6219 */ bl func_8000E3BC
 lbl_00009F50:
 /* 00009F50 80010024 */ lwz r0, 0x24(r1)
@@ -11752,7 +11752,7 @@ lbl_0000B03C:
 /* 0000B12C 3C600000 */ lis r3, currStageId@ha
 /* 0000B130 38630000 */ addi r3, r3, currStageId@l
 /* 0000B134 A8630000 */ lha r3, 0(r3)
-/* 0000B138 4BFF502D */ bl g_init_light_stuff_for_stage
+/* 0000B138 4BFF502D */ bl g_init_stage_lighting
 /* 0000B13C 38600100 */ li r3, 0x100
 /* 0000B140 38800000 */ li r4, 0
 /* 0000B144 38A0001E */ li r5, 0x1e
@@ -13458,7 +13458,7 @@ lbl_0000C928:
 /* 0000C9E0 3860000B */ li r3, 0xb
 /* 0000C9E4 4BFF3781 */ bl event_start
 /* 0000C9E8 A87D0000 */ lha r3, 0(r29)
-/* 0000C9EC 4BFF3779 */ bl g_init_light_stuff_for_stage
+/* 0000C9EC 4BFF3779 */ bl g_init_stage_lighting
 /* 0000C9F0 4BFF3775 */ bl func_800972CC
 /* 0000C9F4 3C600000 */ lis r3, spritePoolInfo@ha
 /* 0000C9F8 38630000 */ addi r3, r3, spritePoolInfo@l
@@ -13625,7 +13625,7 @@ lbl_0000CC28:
 /* 0000CC40 C03F0044 */ lfs f1, 0x44(r31)
 /* 0000CC44 C05F0048 */ lfs f2, 0x48(r31)
 /* 0000CC48 C07F001C */ lfs f3, 0x1c(r31)
-/* 0000CC4C 4BFF3519 */ bl g_set_bg_ambient
+/* 0000CC4C 4BFF3519 */ bl set_bg_ambient
 lbl_0000CC50:
 /* 0000CC50 3C600000 */ lis r3, backgroundInfo@ha
 /* 0000CC54 A8030000 */ lha r0, backgroundInfo@l(r3)
@@ -15774,7 +15774,7 @@ lbl_0000EA74:
 /* 0000EBB0 4BFF15B5 */ bl g_nl2ngc_set_scale
 /* 0000EBB4 7F43D378 */ mr r3, r26
 /* 0000EBB8 C03F009C */ lfs f1, 0x9c(r31)
-/* 0000EBBC 4BFF15A9 */ bl g_draw_naomi_model_with_alpha
+/* 0000EBBC 4BFF15A9 */ bl nl2ngc_draw_model_alpha_unsorted
 lbl_0000EBC0:
 /* 0000EBC0 3BBDFFFF */ addi r29, r29, -1  ;# fixed addi
 /* 0000EBC4 3B18F000 */ addi r24, r24, -4096  ;# fixed addi

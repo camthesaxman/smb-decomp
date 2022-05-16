@@ -1619,7 +1619,7 @@ lbl_8002F854:
 /* 8002F864 0002B784  41 82 00 08 */	beq lbl_8002F86C
 /* 8002F868 0002B788  4B FF E4 F5 */	bl func_8002DD5C
 lbl_8002F86C:
-/* 8002F86C 0002B78C  80 0D 9A B4 */	lwz r0, lbl_802F1C94@sda21(r13)
+/* 8002F86C 0002B78C  80 0D 9A B4 */	lwz r0, g_lightToPrint@sda21(r13)
 /* 8002F870 0002B790  3C 80 80 1F */	lis r4, s_g_lightPool@ha
 /* 8002F874 0002B794  3C 60 80 1F */	lis r3, lbl_801F3A08@ha
 /* 8002F878 0002B798  1C A0 00 4C */	mulli r5, r0, 0x4c
@@ -4433,7 +4433,7 @@ glabel lbl_801B5170
 	.4byte 0x00000002
 	.4byte 0x00000003
 	.4byte string_data_ID____d  ;# ptr
-	.4byte lbl_802F1C94  ;# ptr
+	.4byte g_lightToPrint  ;# ptr
 	.4byte lbl_801B5058  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000002
@@ -4458,7 +4458,7 @@ glabel lbl_801B5170
 	.4byte 0
 	.4byte lbl_802F0858  ;# ptr
 	.4byte lbl_801F3A09  ;# ptr
-	.4byte g_lightSomethingNames  ;# ptr
+	.4byte s_lightIdNames  ;# ptr
 	.4byte 0x00000004
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
@@ -4589,7 +4589,7 @@ glabel lbl_801B5170
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string__  ;# ptr
-	.4byte lbl_802F1C88  ;# ptr
+	.4byte g_printLight  ;# ptr
 	.4byte lbl_801B3B78  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000002
@@ -4607,7 +4607,7 @@ glabel lbl_801B5170
 	.4byte 0x0000000E
 	.4byte 0
 	.4byte string_st_03d  ;# ptr
-	.4byte lbl_802F1C7C  ;# ptr
+	.4byte lightingStageId  ;# ptr
 	.4byte lbl_801B50F8  ;# ptr
 	.4byte 0x0000001F
 	.4byte 0
@@ -4683,13 +4683,13 @@ glabel lbl_801B5538
 	.4byte 0x00000003
 	.4byte 0xFFFFFFFE
 	.4byte string_edit___  ;# ptr
-	.4byte lbl_802F1C78  ;# ptr
+	.4byte s_g_lightGroupsInitialized  ;# ptr
 	.4byte lbl_801B3B78  ;# ptr
 	.4byte 0x00000019
 	.4byte 0x0000000A
 	.4byte 0
 	.4byte lbl_802F0858  ;# ptr
-	.4byte lbl_802F1C78  ;# ptr
+	.4byte s_g_lightGroupsInitialized  ;# ptr
 	.4byte lbl_802F0828  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000003

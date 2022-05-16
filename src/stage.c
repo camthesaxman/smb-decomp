@@ -514,7 +514,7 @@ void load_stage(int stageId)
         compute_stage_bounding_sphere();
         loadedStageId = stageId;
     }
-    g_init_light_stuff_for_stage(stageId);
+    g_init_stage_lighting(stageId);
     g_init_bg_fog_params();
     currStageId = stageId;
     if (stageEvState != EV_STATE_INACTIVE)

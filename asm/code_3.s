@@ -13,7 +13,7 @@ func_80085C0C:
 /* 80085C24 00081B44  7C 00 07 75 */	extsb. r0, r0
 /* 80085C28 00081B48  40 82 00 58 */	bne lbl_80085C80
 /* 80085C2C 00081B4C  38 61 00 0C */	addi r3, r1, 0xc
-/* 80085C30 00081B50  4B F9 CA 39 */	bl get_curr_light_group_ambient_color
+/* 80085C30 00081B50  4B F9 CA 39 */	bl get_curr_light_group_ambient
 /* 80085C34 00081B54  2C 1F 00 01 */	cmpwi r31, 1
 /* 80085C38 00081B58  41 82 00 28 */	beq lbl_80085C60
 /* 80085C3C 00081B5C  40 80 00 44 */	bge lbl_80085C80
@@ -34,7 +34,7 @@ lbl_80085C60:
 /* 80085C70 00081B90  EC 23 00 72 */	fmuls f1, f3, f1
 /* 80085C74 00081B94  EC 43 00 B2 */	fmuls f2, f3, f2
 /* 80085C78 00081B98  EC 63 00 32 */	fmuls f3, f3, f0
-/* 80085C7C 00081B9C  4B FA DE C1 */	bl g_nl2ngc_set_ambient_color
+/* 80085C7C 00081B9C  4B FA DE C1 */	bl g_nl2ngc_set_ambient
 lbl_80085C80:
 /* 80085C80 00081BA0  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 80085C84 00081BA4  83 E1 00 1C */	lwz r31, 0x1c(r1)
@@ -279,7 +279,7 @@ func_80085F94:
 /* 80085FE8 00081F08  7F E4 18 2E */	lwzx r31, r4, r3
 /* 80085FEC 00081F0C  40 82 00 1C */	bne lbl_80086008
 /* 80085FF0 00081F10  38 61 00 18 */	addi r3, r1, 0x18
-/* 80085FF4 00081F14  4B F9 C6 75 */	bl get_curr_light_group_ambient_color
+/* 80085FF4 00081F14  4B F9 C6 75 */	bl get_curr_light_group_ambient
 /* 80085FF8 00081F18  C0 21 00 18 */	lfs f1, 0x18(r1)
 /* 80085FFC 00081F1C  C0 41 00 1C */	lfs f2, 0x1c(r1)
 /* 80086000 00081F20  C0 61 00 20 */	lfs f3, 0x20(r1)
@@ -338,7 +338,7 @@ lbl_800860A8:
 /* 800860BC 00081FDC  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 800860C0 00081FE0  7C 00 07 75 */	extsb. r0, r0
 /* 800860C4 00081FE4  40 82 00 08 */	bne lbl_800860CC
-/* 800860C8 00081FE8  4B F9 C5 D1 */	bl apply_curr_light_group_ambient_color
+/* 800860C8 00081FE8  4B F9 C5 D1 */	bl apply_curr_light_group_ambient
 lbl_800860CC:
 /* 800860CC 00081FEC  80 01 00 3C */	lwz r0, 0x3c(r1)
 /* 800860D0 00081FF0  83 E1 00 34 */	lwz r31, 0x34(r1)
@@ -724,7 +724,7 @@ func_800865A4:
 /* 800865F8 00082518  7F C4 18 2E */	lwzx r30, r4, r3
 /* 800865FC 0008251C  40 82 00 1C */	bne lbl_80086618
 /* 80086600 00082520  38 61 00 14 */	addi r3, r1, 0x14
-/* 80086604 00082524  4B F9 C0 65 */	bl get_curr_light_group_ambient_color
+/* 80086604 00082524  4B F9 C0 65 */	bl get_curr_light_group_ambient
 /* 80086608 00082528  C0 21 00 14 */	lfs f1, 0x14(r1)
 /* 8008660C 0008252C  C0 41 00 18 */	lfs f2, 0x18(r1)
 /* 80086610 00082530  C0 61 00 1C */	lfs f3, 0x1c(r1)
@@ -757,7 +757,7 @@ lbl_8008666C:
 /* 80086674 00082594  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086678 00082598  7C 00 07 75 */	extsb. r0, r0
 /* 8008667C 0008259C  40 82 00 08 */	bne lbl_80086684
-/* 80086680 000825A0  4B F9 C0 19 */	bl apply_curr_light_group_ambient_color
+/* 80086680 000825A0  4B F9 C0 19 */	bl apply_curr_light_group_ambient
 lbl_80086684:
 /* 80086684 000825A4  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 80086688 000825A8  83 E1 00 2C */	lwz r31, 0x2c(r1)
@@ -901,7 +901,7 @@ lbl_80086838:
 /* 80086878 00082798  7F A4 18 2E */	lwzx r29, r4, r3
 /* 8008687C 0008279C  40 82 00 1C */	bne lbl_80086898
 /* 80086880 000827A0  38 61 00 30 */	addi r3, r1, 0x30
-/* 80086884 000827A4  4B F9 BD E5 */	bl get_curr_light_group_ambient_color
+/* 80086884 000827A4  4B F9 BD E5 */	bl get_curr_light_group_ambient
 /* 80086888 000827A8  C0 21 00 30 */	lfs f1, 0x30(r1)
 /* 8008688C 000827AC  C0 41 00 34 */	lfs f2, 0x34(r1)
 /* 80086890 000827B0  C0 61 00 38 */	lfs f3, 0x38(r1)
@@ -966,12 +966,12 @@ lbl_800868E4:
 /* 80086974 00082894  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086978 00082898  7C 00 07 75 */	extsb. r0, r0
 /* 8008697C 0008289C  40 82 00 08 */	bne lbl_80086984
-/* 80086980 000828A0  4B F9 BD 19 */	bl apply_curr_light_group_ambient_color
+/* 80086980 000828A0  4B F9 BD 19 */	bl apply_curr_light_group_ambient
 lbl_80086984:
 /* 80086984 000828A4  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086988 000828A8  7C 00 07 75 */	extsb. r0, r0
 /* 8008698C 000828AC  40 82 03 80 */	bne lbl_80086D0C
-/* 80086990 000828B0  4B F9 BD 09 */	bl apply_curr_light_group_ambient_color
+/* 80086990 000828B0  4B F9 BD 09 */	bl apply_curr_light_group_ambient
 /* 80086994 000828B4  48 00 03 78 */	b lbl_80086D0C
 lbl_80086998:
 /* 80086998 000828B8  57 A0 10 3A */	slwi r0, r29, 2
@@ -1039,7 +1039,7 @@ lbl_80086A54:
 /* 80086A80 000829A0  7C 00 07 75 */	extsb. r0, r0
 /* 80086A84 000829A4  40 82 00 2C */	bne lbl_80086AB0
 /* 80086A88 000829A8  38 61 00 24 */	addi r3, r1, 0x24
-/* 80086A8C 000829AC  4B F9 BB DD */	bl get_curr_light_group_ambient_color
+/* 80086A8C 000829AC  4B F9 BB DD */	bl get_curr_light_group_ambient
 /* 80086A90 000829B0  C0 62 AC A0 */	lfs f3, lbl_802F54A0@sda21(r2)
 /* 80086A94 000829B4  C0 21 00 24 */	lfs f1, 0x24(r1)
 /* 80086A98 000829B8  C0 41 00 28 */	lfs f2, 0x28(r1)
@@ -1047,7 +1047,7 @@ lbl_80086A54:
 /* 80086AA0 000829C0  EC 23 00 72 */	fmuls f1, f3, f1
 /* 80086AA4 000829C4  EC 43 00 B2 */	fmuls f2, f3, f2
 /* 80086AA8 000829C8  EC 63 00 32 */	fmuls f3, f3, f0
-/* 80086AAC 000829CC  4B FA D0 91 */	bl g_nl2ngc_set_ambient_color
+/* 80086AAC 000829CC  4B FA D0 91 */	bl g_nl2ngc_set_ambient
 lbl_80086AB0:
 /* 80086AB0 000829D0  2C 1D 00 02 */	cmpwi r29, 2
 /* 80086AB4 000829D4  40 82 00 C4 */	bne lbl_80086B78
@@ -1104,7 +1104,7 @@ lbl_80086B6C:
 /* 80086B74 00082A94  40 82 FF 78 */	bne lbl_80086AEC
 lbl_80086B78:
 /* 80086B78 00082A98  7F C3 F3 78 */	mr r3, r30
-/* 80086B7C 00082A9C  4B FA A6 95 */	bl g_draw_naomi_model_and_do_other_stuff
+/* 80086B7C 00082A9C  4B FA A6 95 */	bl nl2ngc_draw_model_sorted
 /* 80086B80 00082AA0  4B F8 0C B5 */	bl mathutil_mtxA_pop
 /* 80086B84 00082AA4  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80086B88 00082AA8  38 80 00 00 */	li r4, 0
@@ -1148,12 +1148,12 @@ lbl_80086B78:
 /* 80086C20 00082B40  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086C24 00082B44  7C 00 07 75 */	extsb. r0, r0
 /* 80086C28 00082B48  40 82 00 08 */	bne lbl_80086C30
-/* 80086C2C 00082B4C  4B F9 BA 6D */	bl apply_curr_light_group_ambient_color
+/* 80086C2C 00082B4C  4B F9 BA 6D */	bl apply_curr_light_group_ambient
 lbl_80086C30:
 /* 80086C30 00082B50  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086C34 00082B54  7C 00 07 75 */	extsb. r0, r0
 /* 80086C38 00082B58  40 82 00 D4 */	bne lbl_80086D0C
-/* 80086C3C 00082B5C  4B F9 BA 5D */	bl apply_curr_light_group_ambient_color
+/* 80086C3C 00082B5C  4B F9 BA 5D */	bl apply_curr_light_group_ambient
 /* 80086C40 00082B60  48 00 00 CC */	b lbl_80086D0C
 lbl_80086C44:
 /* 80086C44 00082B64  80 DA 00 90 */	lwz r6, 0x90(r26)
@@ -1174,7 +1174,7 @@ lbl_80086C44:
 /* 80086C80 00082BA0  7F 84 18 2E */	lwzx r28, r4, r3
 /* 80086C84 00082BA4  40 82 00 1C */	bne lbl_80086CA0
 /* 80086C88 00082BA8  38 61 00 14 */	addi r3, r1, 0x14
-/* 80086C8C 00082BAC  4B F9 B9 DD */	bl get_curr_light_group_ambient_color
+/* 80086C8C 00082BAC  4B F9 B9 DD */	bl get_curr_light_group_ambient
 /* 80086C90 00082BB0  C0 21 00 14 */	lfs f1, 0x14(r1)
 /* 80086C94 00082BB4  C0 41 00 18 */	lfs f2, 0x18(r1)
 /* 80086C98 00082BB8  C0 61 00 1C */	lfs f3, 0x1c(r1)
@@ -1207,7 +1207,7 @@ lbl_80086CF4:
 /* 80086CFC 00082C1C  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086D00 00082C20  7C 00 07 75 */	extsb. r0, r0
 /* 80086D04 00082C24  40 82 00 08 */	bne lbl_80086D0C
-/* 80086D08 00082C28  4B F9 B9 91 */	bl apply_curr_light_group_ambient_color
+/* 80086D08 00082C28  4B F9 B9 91 */	bl apply_curr_light_group_ambient
 lbl_80086D0C:
 /* 80086D0C 00082C2C  BB 41 00 58 */	lmw r26, 0x58(r1)
 /* 80086D10 00082C30  80 01 00 74 */	lwz r0, 0x74(r1)
@@ -1279,7 +1279,7 @@ lbl_80086D70:
 /* 80086E08 00082D28  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 80086E0C 00082D2C  7C 00 07 75 */	extsb. r0, r0
 /* 80086E10 00082D30  40 82 00 08 */	bne lbl_80086E18
-/* 80086E14 00082D34  4B F9 B8 85 */	bl apply_curr_light_group_ambient_color
+/* 80086E14 00082D34  4B F9 B8 85 */	bl apply_curr_light_group_ambient
 lbl_80086E18:
 /* 80086E18 00082D38  57 A0 10 3A */	slwi r0, r29, 2
 /* 80086E1C 00082D3C  7C 9E 02 14 */	add r4, r30, r0
@@ -1348,7 +1348,7 @@ lbl_80086ED4:
 /* 80086F08 00082E28  C0 22 AC C8 */	lfs f1, lbl_802F54C8@sda21(r2)
 /* 80086F0C 00082E2C  4B F8 0E BD */	bl mathutil_mtxA_scale_s
 /* 80086F10 00082E30  7F 43 D3 78 */	mr r3, r26
-/* 80086F14 00082E34  4B FA A2 FD */	bl g_draw_naomi_model_and_do_other_stuff
+/* 80086F14 00082E34  4B FA A2 FD */	bl nl2ngc_draw_model_sorted
 lbl_80086F18:
 /* 80086F18 00082E38  BB 41 00 20 */	lmw r26, 0x20(r1)
 /* 80086F1C 00082E3C  80 01 00 3C */	lwz r0, 0x3c(r1)
@@ -1385,7 +1385,7 @@ func_80086F2C:
 /* 80086F90 00082EB0  7F E4 18 2E */	lwzx r31, r4, r3
 /* 80086F94 00082EB4  40 82 00 1C */	bne lbl_80086FB0
 /* 80086F98 00082EB8  38 61 00 14 */	addi r3, r1, 0x14
-/* 80086F9C 00082EBC  4B F9 B6 CD */	bl get_curr_light_group_ambient_color
+/* 80086F9C 00082EBC  4B F9 B6 CD */	bl get_curr_light_group_ambient
 /* 80086FA0 00082EC0  C0 21 00 14 */	lfs f1, 0x14(r1)
 /* 80086FA4 00082EC4  C0 41 00 18 */	lfs f2, 0x18(r1)
 /* 80086FA8 00082EC8  C0 61 00 1C */	lfs f3, 0x1c(r1)
@@ -1467,7 +1467,7 @@ lbl_800870B4:
 /* 800870BC 00082FDC  88 0D 9E 80 */	lbz r0, lbl_802F2060@sda21(r13)
 /* 800870C0 00082FE0  7C 00 07 75 */	extsb. r0, r0
 /* 800870C4 00082FE4  40 82 00 08 */	bne lbl_800870CC
-/* 800870C8 00082FE8  4B F9 B5 D1 */	bl apply_curr_light_group_ambient_color
+/* 800870C8 00082FE8  4B F9 B5 D1 */	bl apply_curr_light_group_ambient
 lbl_800870CC:
 /* 800870CC 00082FEC  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 800870D0 00082FF0  83 E1 00 3C */	lwz r31, 0x3c(r1)

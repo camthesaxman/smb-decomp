@@ -194,7 +194,7 @@ void submode_game_ready_init_func(void)
     event_start(EVENT_VIBRATION);
     func_800972CC();
     event_suspend(EVENT_WORLD);
-    g_init_light_stuff_for_stage(currStageId);
+    g_init_stage_lighting(currStageId);
     r30 = func_80017004();
     if (r30 != -1 && r30 != lbl_802F1C18)
     {
@@ -627,7 +627,7 @@ void submode_game_continue_init_func(void)
     }
     else
         g_show_continue_hud();
-    func_800228A8(currStageId);
+    g_smth_with_lights_smd_continue(currStageId);
 
     BALL_FOREACH( ball->state = 18; )
     BALL_FOREACH(
@@ -1471,7 +1471,7 @@ void submode_game_extra_init_func(void)
     if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
         modeCtrl.levelSetFlags |= LVLSET_FLAG_MASTER;
     modeCtrl.levelSetFlags |= LVLSET_FLAG_EXTRA;
-    func_80022910(currStageId);
+    g_smth_with_lights_smd_extra(currStageId);
     event_finish(EVENT_CAMERA);
     event_finish(EVENT_SPRITE);
     event_start(EVENT_CAMERA);

@@ -592,7 +592,7 @@ lbl_800B667C:
 /* 800B66D0 000B25F0  38 60 00 0B */	li r3, 0xb
 /* 800B66D4 000B25F4  4B F5 4C 55 */	bl event_start
 /* 800B66D8 000B25F8  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B66DC 000B25FC  4B F6 B6 D9 */	bl g_init_light_stuff_for_stage
+/* 800B66DC 000B25FC  4B F6 B6 D9 */	bl g_init_stage_lighting
 /* 800B66E0 000B2600  4B FE 0B ED */	bl func_800972CC
 /* 800B66E4 000B2604  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B66E8 000B2608  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -1309,7 +1309,7 @@ lbl_800B70EC:
 /* 800B7140 000B3060  38 60 00 0B */	li r3, 0xb
 /* 800B7144 000B3064  4B F5 41 E5 */	bl event_start
 /* 800B7148 000B3068  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B714C 000B306C  4B F6 AC 69 */	bl g_init_light_stuff_for_stage
+/* 800B714C 000B306C  4B F6 AC 69 */	bl g_init_stage_lighting
 /* 800B7150 000B3070  4B FE 01 7D */	bl func_800972CC
 /* 800B7154 000B3074  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B7158 000B3078  3B E3 EC 20 */	addi r31, r3, modeCtrl@l
@@ -2625,7 +2625,7 @@ lbl_800B8460:
 /* 800B84B4 000B43D4  38 60 00 0B */	li r3, 0xb
 /* 800B84B8 000B43D8  4B F5 2E 71 */	bl event_start
 /* 800B84BC 000B43DC  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B84C0 000B43E0  4B F6 98 F5 */	bl g_init_light_stuff_for_stage
+/* 800B84C0 000B43E0  4B F6 98 F5 */	bl g_init_stage_lighting
 /* 800B84C4 000B43E4  4B FD EE 09 */	bl func_800972CC
 /* 800B84C8 000B43E8  38 60 00 00 */	li r3, 0
 /* 800B84CC 000B43EC  38 80 00 00 */	li r4, 0
@@ -7516,7 +7516,7 @@ lbl_800BCD30:
 /* 800BCD64 000B8C84  7F A0 1A 14 */	add r29, r0, r3
 /* 800BCD68 000B8C88  4B F4 AC 45 */	bl mathutil_mtxA_from_mtxB
 /* 800BCD6C 000B8C8C  38 60 00 00 */	li r3, 0
-/* 800BCD70 000B8C90  4B F6 55 05 */	bl load_light_group
+/* 800BCD70 000B8C90  4B F6 55 05 */	bl load_light_group_uncached
 /* 800BCD74 000B8C94  C0 42 BD 2C */	lfs f2, lbl_802F652C@sda21(r2)
 /* 800BCD78 000B8C98  C0 1E 00 10 */	lfs f0, 0x10(r30)
 /* 800BCD7C 000B8C9C  C0 3E 00 0C */	lfs f1, 0xc(r30)
@@ -10146,11 +10146,11 @@ lbl_800BF490:
 /* 800BF49C 000BB3BC  40 80 00 14 */	bge lbl_800BF4B0
 /* 800BF4A0 000BB3C0  7F 83 E3 78 */	mr r3, r28
 /* 800BF4A4 000BB3C4  FC 20 E0 90 */	fmr f1, f28
-/* 800BF4A8 000BB3C8  4B F7 20 11 */	bl g_draw_naomi_model_with_alpha_deferred
+/* 800BF4A8 000BB3C8  4B F7 20 11 */	bl nl2ngc_draw_model_alpha_sorted
 /* 800BF4AC 000BB3CC  48 00 00 0C */	b lbl_800BF4B8
 lbl_800BF4B0:
 /* 800BF4B0 000BB3D0  7F 83 E3 78 */	mr r3, r28
-/* 800BF4B4 000BB3D4  4B F7 1D 5D */	bl g_draw_naomi_model_and_do_other_stuff
+/* 800BF4B4 000BB3D4  4B F7 1D 5D */	bl nl2ngc_draw_model_sorted
 lbl_800BF4B8:
 /* 800BF4B8 000BB3D8  37 FF FF FF */	addic. r31, r31, -1
 /* 800BF4BC 000BB3DC  3B DE 00 54 */	addi r30, r30, 0x54
@@ -11781,7 +11781,7 @@ func_800C0C1C:
 /* 800C0C54 000BCB74  38 04 0C 94 */	addi r0, r4, lbl_800C0C94@l
 /* 800C0C58 000BCB78  90 03 00 04 */	stw r0, 4(r3)
 /* 800C0C5C 000BCB7C  3B E3 00 00 */	addi r31, r3, 0
-/* 800C0C60 000BCB80  4B F6 17 71 */	bl func_800223D0
+/* 800C0C60 000BCB80  4B F6 17 71 */	bl peek_light_group
 /* 800C0C64 000BCB84  90 7F 00 08 */	stw r3, 8(r31)
 /* 800C0C68 000BCB88  38 7E 00 00 */	addi r3, r30, 0
 /* 800C0C6C 000BCB8C  38 9F 00 00 */	addi r4, r31, 0
@@ -11802,7 +11802,7 @@ lbl_800C0C94:
 /* 800C0CA4 000BCBC4  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800C0CA8 000BCBC8  7C 7E 1B 78 */	mr r30, r3
 /* 800C0CAC 000BCBCC  80 63 00 08 */	lwz r3, 8(r3)
-/* 800C0CB0 000BCBD0  4B F6 17 29 */	bl func_800223D8
+/* 800C0CB0 000BCBD0  4B F6 17 29 */	bl load_light_group_cached
 /* 800C0CB4 000BCBD4  83 FE 00 0C */	lwz r31, 0xc(r30)
 /* 800C0CB8 000BCBD8  38 7F 00 34 */	addi r3, r31, 0x34
 /* 800C0CBC 000BCBDC  4B F4 6A 21 */	bl mathutil_mtxA_from_mtxB_translate

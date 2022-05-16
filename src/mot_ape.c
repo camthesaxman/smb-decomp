@@ -1725,7 +1725,7 @@ void func_8008C924(struct Ape *ape, int b)
         entry = ord_tbl_get_entry_for_pos(&ape->unk30);
         node = ord_tbl_alloc_node(sizeof(*node));
         node->node.drawFunc = (OrdTblDrawFunc)lbl_8008CA80;
-        node->unk8 = func_800223D0();
+        node->unk8 = peek_light_group();
         node->ape = ape;
         node->unk10 = ballInfo[ape->ballId].unk15C[currentCameraStructPtr->unk204];
         ord_tbl_insert_node(entry, &node->node);

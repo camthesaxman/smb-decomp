@@ -188,7 +188,7 @@ void view_draw(void)
         func_80020AB8(&stageViewInfo->eye, &rotation, 59.99633789f, 1.33333333f, 0.0f, 0.0f);
     }
 
-    func_80021ECC();
+    g_light_main();
     ballBackup = currentBallStructPtr;
     currentBallStructPtr = &ballInfo[0];
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -196,7 +196,7 @@ void view_draw(void)
     view_apply_camera(camera);
     g_draw_ball_shadow();
     func_80054FF0();
-    func_800225C0(0);
+    g_reset_light_group_stack(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
     view_apply_camera(camera);
@@ -653,7 +653,7 @@ void draw_stage_objects(void)
                 avdisp_draw_model_culled_sort_translucent(r28);
             }
             //lbl_800A6CE4
-            g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 14));
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);

@@ -1144,7 +1144,7 @@ lbl_80044A7C:
 /* 80044A9C 000409BC  93 8D 87 B8 */	stw r28, loadedStageId@sda21(r13)
 lbl_80044AA0:
 /* 80044AA0 000409C0  7F 83 E3 78 */	mr r3, r28
-/* 80044AA4 000409C4  4B FD D3 11 */	bl g_init_light_stuff_for_stage
+/* 80044AA4 000409C4  4B FD D3 11 */	bl g_init_stage_lighting
 /* 80044AA8 000409C8  48 05 60 09 */	bl g_init_bg_fog_params
 /* 80044AAC 000409CC  7F 83 07 34 */	extsh r3, r28
 /* 80044AB0 000409D0  7F E0 07 75 */	extsb. r0, r31

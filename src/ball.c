@@ -1131,7 +1131,7 @@ void ball_draw(void)
             entry = ord_tbl_get_entry_for_pos(&ball->pos);
             node = ord_tbl_alloc_node(sizeof(*node));
             node->node.drawFunc = (OrdTblDrawFunc)ball_draw_callback;
-            node->unk8 = func_800223D0();
+            node->unk8 = peek_light_group();
             node->ballId = i;
             ord_tbl_insert_node(entry, &node->node);
             continue;
@@ -3113,7 +3113,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount > 3)
         r30 = NULL;
 
-    func_800223D8(node->unk8);
+    load_light_group_cached(node->unk8);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
     mathutil_mtxA_scale_s(ball->modelScale);

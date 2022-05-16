@@ -254,8 +254,8 @@ void avdisp_init(void)
     sp8.x = 0.0f;
     sp8.y = 1.0f;
     sp8.z = 0.0f;
-    g_avdisp_set_and_normalize_some_vec(&sp8);
-    g_avdisp_set_some_color_scale(1.0f, 1.0f, 1.0f);
+    avdisp_set_inf_light_dir(&sp8);
+    avdisp_set_inf_light_color(1.0f, 1.0f, 1.0f);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     s_useCustomTexMtx = 0;
     mathutil_mtxA_from_translate_xyz(0.0f, 0.0f, 1.0f);
@@ -671,13 +671,13 @@ void avdisp_set_light_mask(u32 lightMask)
     s_lightMask = lightMask;
 }
 
-void g_avdisp_set_and_normalize_some_vec(Vec *a)
+void avdisp_set_inf_light_dir(Vec *a)
 {
     lbl_802B4E60 = *a;
     mathutil_vec_normalize_len(&lbl_802B4E60);
 }
 
-void g_avdisp_set_some_color_scale(float a, float b, float c)
+void avdisp_set_inf_light_color(float a, float b, float c)
 {
     g_someColorScaleR = a;
     g_someColorScaleG = b;
@@ -826,7 +826,7 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->shape = shape;
     node->modelSamplers = modelSamplers;
     node->cullMode = cullMode;
-    node->unk48 = func_800223D0();
+    node->unk48 = peek_light_group();
     node->alpha = s_materialAlpha;
     node->unk50 = lbl_802F20EC;
     node->unk54 = g_customMaterialFunc;
@@ -1160,7 +1160,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     GXColor spC;
 
     if ((node->shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
-        func_800223D8(node->unk48);
+        load_light_group_cached(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
     GXSetCullMode_cached(node->cullMode);

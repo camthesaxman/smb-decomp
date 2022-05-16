@@ -17,14 +17,14 @@
 #include "../data/common.nlobj.h"
 
 s32 s_currLightGroup;
-s32 lbl_802F1C94;
+s32 g_lightToPrint;
 u32 lbl_802F1C90;
 s32 lbl_802F1C8C;
-s32 lbl_802F1C88;
+s32 g_printLight;
 s32 lbl_802F1C84;
 s32 lbl_802F1C80;
-s32 lbl_802F1C7C;
-s32 lbl_802F1C78;
+s32 lightingStageId;
+s32 s_g_lightGroupsInitialized;
 
 u8 lbl_802F1C75;
 u8 lbl_802F1C74;
@@ -44,8 +44,8 @@ s32 s_numLightObjsLoaded;
 s32 s_g_lightPerfTimer;
 float g_minimap_light_ref_dist_scale;
 s8 s_lightGroupStackPos;
-s32 lbl_802F1C4C;
-s32 lbl_802F1C48;
+s32 g_someLGIdx;
+s32 s_lightPoolSize;
 
 #define LIGHTGROUP_STACK_MAX 3
 u32 lightGroupStack[LIGHTGROUP_STACK_MAX];
@@ -73,7 +73,19 @@ char *lightTypeNames[] = {
     "POINT_DARKPOW", "SPOT_DARKPOW", "POINT_DARK", "SPOT_DARK",
 };
 
-char *g_lightSomethingNames[] = {
+enum
+{
+    LIGHT_ID_TEST,
+    LIGHT_ID_STAGE,
+    LIGHT_ID_BUMPER,
+    LIGHT_ID_AUTO,
+    LIGHT_ID_BG,
+    LIGHT_ID_BG_PILLAR,
+    LIGHT_ID_BG_WALL,
+    LIGHT_ID_BG_COUNTER,
+};
+
+char *s_lightIdNames[] = {
     "TEST", "STAGE", "BUMPER", "AUTO", "BG", "BG_PILLAR", "BG_WALL", "BG_COUNTER",
 };
 
@@ -86,9 +98,9 @@ char *s_lightGroupNames[] = {
 // Definition of a single light. Referred to by light groups
 struct Light
 {
-    s8 valid; // 1 if valid, -1 for end of list
-    s8 unk1;
-    s16 unk2;
+    s8 valid;   // 1 if valid, -1 for end of list
+    s8 g_id;    // ID (a sort of category)?
+    s16 g_inst; // Instance of ID?
     s8 type;
     s16 spotFn;
     u8 stageId;
@@ -114,26 +126,26 @@ struct Light
 // clang-format off
 struct Light s_g_stageLightsMaybe[512] =  // lots of empty space at the end
 {
-    { 1, 3, 1, LIGHT_TYPE_POINT,     GX_SP_OFF,   ST_150_TUTORIAL,     1,   1,   1, { 14.500019,       2.5, -21.000044},      0,      0, 0, {         0,          0,        -1},         2,         1,        0,        0,         0 },
-    { 1, 3, 1, LIGHT_TYPE_POINT_POW, GX_SP_OFF,   ST_134_RACE_ICE,   0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
-    { 1, 3, 1, LIGHT_TYPE_POINT_POW, GX_SP_OFF,   ST_092_BONUS_WAVE, 0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
-    { 1, 3, 1, LIGHT_TYPE_SPOT,      GX_SP_SHARP, ST_180_BILLIARDS,    1, 0.8, 0.6, {         0, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
-    { 1, 3, 2, LIGHT_TYPE_SPOT,      GX_SP_SHARP, ST_180_BILLIARDS,    1, 0.8, 0.6, { 15.000021, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
-    { 1, 3, 3, LIGHT_TYPE_SPOT,      GX_SP_SHARP, ST_180_BILLIARDS,    1, 0.8, 0.6, {-15.000021, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
-    { 1, 5, 1, LIGHT_TYPE_POINT,     GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.5,   0, {-42.699883, 31.400082, -24.599998},  -8576,   9344, 0, {-5313.7051,  -7326.543,   -4252.8}, 5.7001848, 12.300009, 1.959999, 1.709999,        20 },
-    { 1, 5, 2, LIGHT_TYPE_SPOT,      GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.8, 0.6, {       -35,      37.5,         25},      0,      0, 0, {  -0.40147,         -1,   0.29441},        50,       1.5,    -0.02,        0,        20 },
-    { 1, 5, 3, LIGHT_TYPE_POINT,     GX_SP_OFF,   ST_180_BILLIARDS,    1, 0.5,   0, { 50.599762,      37.5,        -25}, -25600,  28160, 0, {         0,          0,    -10000}, 20.100229, 12.900013,     0.09,        0, 15.599983 },
-    { 1, 5, 4, LIGHT_TYPE_SPOT,      GX_SP_OFF,   ST_180_BILLIARDS,    1, 0.8,   0, { 35.000038,      37.5,   25.00006},  -7680, -30080, 0, { 2290.4126, -4386.1626, 8689.9707}, 30.000267,       1.5,      0.6,     0.01, 25.000019 },
-    { 1, 6, 1, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {        80,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 2, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {        40,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 3, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {         0,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 4, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {       -40,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 5, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {       -80,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 6, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {     -97.5,        10,         40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 7, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {     -97.5,         0,         40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 6, 8, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {     -97.5,        10,        -40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
-    { 1, 7, 1, LIGHT_TYPE_SPOT,      GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.7, 0.3, {     28.25,        35,        -64}, -19328,      0, 0, {         0,  -0.960431,   0.27852}, 15.000019,         1,        0,        0,        25 },
-    { 1, 7, 2, LIGHT_TYPE_SPOT,      GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.7, 0.3, {    -26.75,        35,        -64}, -19328,      0, 0, {         0,  -0.960431,   0.27852}, 15.000019,         1,        0,        0,        25 },
+    { 1, LIGHT_ID_AUTO, 1, LIGHT_TYPE_POINT,     GX_SP_OFF,   ST_150_TUTORIAL,     1,   1,   1, { 14.500019,       2.5, -21.000044},      0,      0, 0, {         0,          0,        -1},         2,         1,        0,        0,         0 },
+    { 1, LIGHT_ID_AUTO, 1, LIGHT_TYPE_POINT_POW, GX_SP_OFF,   ST_134_RACE_ICE,   0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
+    { 1, LIGHT_ID_AUTO, 1, LIGHT_TYPE_POINT_POW, GX_SP_OFF,   ST_092_BONUS_WAVE, 0.8,   1, 0.8, {   0.09996,   3.22824,    0.19996},      0,      0, 0, {         0,          0,        -1},        10,         1,        0,        0,         0 },
+    { 1, LIGHT_ID_AUTO, 1, LIGHT_TYPE_SPOT,      GX_SP_SHARP, ST_180_BILLIARDS,    1, 0.8, 0.6, {         0, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
+    { 1, LIGHT_ID_AUTO, 2, LIGHT_TYPE_SPOT,      GX_SP_SHARP, ST_180_BILLIARDS,    1, 0.8, 0.6, { 15.000021, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
+    { 1, LIGHT_ID_AUTO, 3, LIGHT_TYPE_SPOT,      GX_SP_SHARP, ST_180_BILLIARDS,    1, 0.8, 0.6, {-15.000021, 23.000051,          0}, -16768,  24576, 0, {  0.026027,  -0.999322, -0.026027},       0.1,       0.1,      0.4,      0.1, 40.000076 },
+    { 1, LIGHT_ID_BG_PILLAR, 1, LIGHT_TYPE_POINT,     GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.5,   0, {-42.699883, 31.400082, -24.599998},  -8576,   9344, 0, {-5313.7051,  -7326.543,   -4252.8}, 5.7001848, 12.300009, 1.959999, 1.709999,        20 },
+    { 1, LIGHT_ID_BG_PILLAR, 2, LIGHT_TYPE_SPOT,      GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.8, 0.6, {       -35,      37.5,         25},      0,      0, 0, {  -0.40147,         -1,   0.29441},        50,       1.5,    -0.02,        0,        20 },
+    { 1, LIGHT_ID_BG_PILLAR, 3, LIGHT_TYPE_POINT,     GX_SP_OFF,   ST_180_BILLIARDS,    1, 0.5,   0, { 50.599762,      37.5,        -25}, -25600,  28160, 0, {         0,          0,    -10000}, 20.100229, 12.900013,     0.09,        0, 15.599983 },
+    { 1, LIGHT_ID_BG_PILLAR, 4, LIGHT_TYPE_SPOT,      GX_SP_OFF,   ST_180_BILLIARDS,    1, 0.8,   0, { 35.000038,      37.5,   25.00006},  -7680, -30080, 0, { 2290.4126, -4386.1626, 8689.9707}, 30.000267,       1.5,      0.6,     0.01, 25.000019 },
+    { 1, LIGHT_ID_BG_WALL, 1, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {        80,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 2, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {        40,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 3, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {         0,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 4, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {       -40,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 5, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {       -80,        10,       71.5},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 6, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {     -97.5,        10,         40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 7, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {     -97.5,         0,         40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_WALL, 8, LIGHT_TYPE_POINT,     GX_SP_COS2,  ST_180_BILLIARDS,    1, 0.5,   0, {     -97.5,        10,        -40},      0,      0, 0, {         0,          0,         0}, 30.000078,       0.5,      0.5,        0,         0 },
+    { 1, LIGHT_ID_BG_COUNTER, 1, LIGHT_TYPE_SPOT,      GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.7, 0.3, {     28.25,        35,        -64}, -19328,      0, 0, {         0,  -0.960431,   0.27852}, 15.000019,         1,        0,        0,        25 },
+    { 1, LIGHT_ID_BG_COUNTER, 2, LIGHT_TYPE_SPOT,      GX_SP_FLAT,  ST_180_BILLIARDS,    1, 0.7, 0.3, {    -26.75,        35,        -64}, -19328,      0, 0, {         0,  -0.960431,   0.27852}, 15.000019,         1,        0,        0,        25 },
     { -1 },
 };
 // clang-format on
@@ -141,22 +153,22 @@ struct Light s_g_stageLightsMaybe[512] =  // lots of empty space at the end
 // Light groups refer to lights by index in here
 struct Light s_g_lightPool[32];
 
-void func_80021ECC_inline(struct Light *r29)
+void print_light(struct Light *light)
 {
     printf("\x7B\t\n");
-    printf("\t%d,\tLID_%s,\t%d,\n", r29->valid, g_lightSomethingNames[r29->unk1], lbl_802F1C94);
-    printf("\tLTP_%s,\t%d,\t%d,\n", lightTypeNames[r29->type], r29->spotFn, currStageId);
-    printf("\t{ %f, %f, %f },\n", r29->red, r29->green, r29->blue);
-    printf("\t{ %f, %f, %f },\n", r29->pos.x, r29->pos.y, r29->pos.z);
-    printf("\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n", r29->rotX, r29->rotY, r29->rotZ, r29->dir.x,
-           r29->dir.y, r29->dir.z);
-    printf("\t%f,\t%f,\t%f,\n", r29->refDist, r29->k0, r29->k1);
-    printf("\t%f,\t%f\n", r29->k2, r29->spotCutoff);
+    printf("\t%d,\tLID_%s,\t%d,\n", light->valid, s_lightIdNames[light->g_id], g_lightToPrint);
+    printf("\tLTP_%s,\t%d,\t%d,\n", lightTypeNames[light->type], light->spotFn, currStageId);
+    printf("\t{ %f, %f, %f },\n", light->red, light->green, light->blue);
+    printf("\t{ %f, %f, %f },\n", light->pos.x, light->pos.y, light->pos.z);
+    printf("\t0x%x,\t0x%x,\t0x%x,\t{ %f, %f, %f },\n", light->rotX, light->rotY, light->rotZ,
+           light->dir.x, light->dir.y, light->dir.z);
+    printf("\t%f,\t%f,\t%f,\n", light->refDist, light->k0, light->k1);
+    printf("\t%f,\t%f\n", light->k2, light->spotCutoff);
     printf("},\n\n");
 }
 
 #pragma dont_inline on
-void func_800210FC(int stageId)
+void g_alloc_stage_lights(int stageId)
 {
     u8 dummy[8];
     struct Light *light = s_g_stageLightsMaybe;
@@ -170,19 +182,20 @@ void func_800210FC(int stageId)
 }
 #pragma dont_inline reset
 
-s8 light_pool_alloc(int a, int b, int c)
+// Allocate a light in the light pool to use, or return a light that already exists (preferred)
+s8 get_pool_light(int findExisting, int g_id, int g_inst)
 {
     int i;
     struct Light *light;
 
-    for (light = s_g_lightPool, i = 0; i < lbl_802F1C48; i++, light++)
+    for (light = s_g_lightPool, i = 0; i < s_lightPoolSize; i++, light++)
     {
-        if (light->unk1 == b && light->unk2 == c)
+        if (light->g_id == g_id && light->g_inst == g_inst)
             return i;
     }
-    if (a == 1)
+    if (findExisting == 1)
         return -1;
-    for (light = s_g_lightPool, i = 0; i < 32; i++, light++)
+    for (light = s_g_lightPool, i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
     {
         if (light->valid == 0)
             return i;
@@ -190,33 +203,33 @@ s8 light_pool_alloc(int a, int b, int c)
     return -1;
 }
 
-void func_800212A8(struct Light *a)
+void init_light_dir(struct Light *light)
 {
-    switch (a->type)
+    switch (light->type)
     {
     case LIGHT_TYPE_INFINITE:
-        a->dir.x = a->dir.y = 0.0f;
-        a->dir.z = -1.0f;
+        light->dir.x = light->dir.y = 0.0f;
+        light->dir.z = -1.0f;
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_y(a->rotY);
-        mathutil_mtxA_rotate_x(a->rotX);
-        mathutil_mtxA_tf_vec(&a->dir, &a->dir);
-        a->dir.x *= 10000.0f;
-        a->dir.y *= 10000.0f;
-        a->dir.z *= 10000.0f;
+        mathutil_mtxA_rotate_y(light->rotY);
+        mathutil_mtxA_rotate_x(light->rotX);
+        mathutil_mtxA_tf_vec(&light->dir, &light->dir);
+        light->dir.x *= 10000.0f;
+        light->dir.y *= 10000.0f;
+        light->dir.z *= 10000.0f;
         break;
     case LIGHT_TYPE_SPOT:
     case LIGHT_TYPE_SPOT_POW:
     case LIGHT_TYPE_SPOT_DARKPOW:
     case LIGHT_TYPE_SPOT_DARK:
-        if (a->unk1 != 5)
+        if (light->g_id != LIGHT_ID_BG_PILLAR)
         {
-            a->dir.x = a->dir.y = 0.0f;
-            a->dir.z = -1.0f;
+            light->dir.x = light->dir.y = 0.0f;
+            light->dir.z = -1.0f;
             mathutil_mtxA_from_identity();
-            mathutil_mtxA_rotate_y(a->rotY);
-            mathutil_mtxA_rotate_x(a->rotX);
-            mathutil_mtxA_tf_vec(&a->dir, &a->dir);
+            mathutil_mtxA_rotate_y(light->rotY);
+            mathutil_mtxA_rotate_x(light->rotX);
+            mathutil_mtxA_tf_vec(&light->dir, &light->dir);
         }
         break;
     }
@@ -334,7 +347,7 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
            sizeof(group->lightObjs[lightIdxInGroup]));
 }
 
-void func_8002170C(int stageId)
+void init_bg_lighting(int stageId)
 {
     struct Light light;
 
@@ -354,20 +367,20 @@ void func_8002170C(int stageId)
             s_bgLightInfo.infLightRotY = DEGREES_TO_S16(90);
         }
         if (backgroundInfo.bgId == BG_TYPE_WAT && modeCtrl.unk30 > 1)
-            g_set_bg_ambient(0.4f, 0.6f, 0.9f);
+            set_bg_ambient(0.4f, 0.6f, 0.9f);
         switch (stageId)
         {
         case ST_145_FIGHT_SPACE:
-            g_set_bg_ambient(0.4f, 0.35f, 0.5f);
+            set_bg_ambient(0.4f, 0.35f, 0.5f);
             break;
         case ST_131_RACE_SPACE:
-            g_set_bg_ambient(0.4f, 0.35f, 0.5f);
+            set_bg_ambient(0.4f, 0.35f, 0.5f);
             break;
         case ST_138_RACE_DESERT:
-            g_set_bg_ambient(0.4f, 0.35f, 0.3f);
+            set_bg_ambient(0.4f, 0.35f, 0.3f);
             break;
         case ST_135_RACE_DOWNTOWN:
-            g_set_bg_ambient(0.55f, 0.55f, 0.7f);
+            set_bg_ambient(0.55f, 0.55f, 0.7f);
             break;
         }
         if (backgroundInfo.bgId == BG_TYPE_END)
@@ -381,8 +394,8 @@ void func_8002170C(int stageId)
         }
     }
     memset(&light, 0, sizeof(light));
-    light.unk1 = 1;
-    light.unk2 = 0;
+    light.g_id = LIGHT_ID_STAGE;
+    light.g_inst = 0;
     light.type = LIGHT_TYPE_INFINITE;
     light.red = s_bgLightInfo.infLightColor.r;
     light.green = s_bgLightInfo.infLightColor.g;
@@ -426,7 +439,7 @@ const struct LightGroupSomething s_g_lightGroupSomethings[] = {
 };
 // clang-format on
 
-void func_80021958(void)
+void g_init_light_groups(void)
 {
     int i;
     int j;
@@ -435,9 +448,9 @@ void func_80021958(void)
     struct LightGroup *lightGrp;
 
     lightGrp = s_lightGroups;
-    for (i = 0; i < 22; i++, lightGrp++)
+    for (i = 0; i < ARRAY_COUNT(s_lightGroups); i++, lightGrp++)
     {
-        for (j = 0; j < 8; j++)
+        for (j = 0; j < ARRAY_COUNT(lightGrp->lightPoolIdxs); j++)
             lightGrp->lightPoolIdxs[j] = -1;
         lightGrp->ambient.r = s_bgLightInfo.ambient.r;
         lightGrp->ambient.g = s_bgLightInfo.ambient.g;
@@ -447,9 +460,10 @@ void func_80021958(void)
     light = s_g_lightPool;
     j = 0;
     lightGrp = s_lightGroups;
-    for (i = 0; i < 32; i++, light++)
+    for (i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
     {
-        if (light->valid != 0 && (light->unk1 == 1 || light->unk1 == 0 || light->unk1 == 3))
+        if (light->valid != 0 && (light->g_id == LIGHT_ID_STAGE || light->g_id == LIGHT_ID_TEST ||
+                                  light->g_id == LIGHT_ID_AUTO))
         {
             lightGrp->lightPoolIdxs[j] = i;
             if (++j == 8)
@@ -479,33 +493,34 @@ void func_80021958(void)
             if (r4 == -1)
                 break;
             lightGrp->lightPoolIdxs[j] =
-                light_pool_alloc(1, r4, s_bgLightInfo.unk44[var][j * 2 + 1]);
+                get_pool_light(1, r4, s_bgLightInfo.unk44[var][j * 2 + 1]);
         }
     }
 }
 
-void func_80021C44(struct LightGroup *lightGrp)
+void set_avdisp_inf_light(struct LightGroup *lightGrp)
 {
-    Vec lightPos;
-    GXColor lightColor;
-    int r5 = TRUE;
+    Vec infLightDir;
+    GXColor infLightColor;
+    int hasInfLight = TRUE;
 
     if (lightGrp->lightPoolIdxs[0] == -1)
-        r5 = FALSE;
+        hasInfLight = FALSE;
     else
     {
         if (s_g_lightPool[lightGrp->lightPoolIdxs[0]].valid == 0 ||
             s_g_lightPool[lightGrp->lightPoolIdxs[0]].type != LIGHT_TYPE_INFINITE)
-            r5 = FALSE;
+            hasInfLight = FALSE;
     }
 
-    if (r5)
+    if (hasInfLight)
     {
-        GXGetLightPos(&lightGrp->lightObjs[0], &lightPos.x, &lightPos.y, &lightPos.z);
-        GXGetLightColor(&lightGrp->lightObjs[0], &lightColor);
-        g_avdisp_set_and_normalize_some_vec(&lightPos);
-        g_avdisp_set_some_color_scale(lightColor.r / 255.0f, lightColor.g / 255.0f,
-                                      lightColor.b / 255.0f);
+        // Light position is treated as light dir for directional ("infinite") lights
+        GXGetLightPos(&lightGrp->lightObjs[0], &infLightDir.x, &infLightDir.y, &infLightDir.z);
+        GXGetLightColor(&lightGrp->lightObjs[0], &infLightColor);
+        avdisp_set_inf_light_dir(&infLightDir);
+        avdisp_set_inf_light_color(infLightColor.r / 255.0f, infLightColor.g / 255.0f,
+                                      infLightColor.b / 255.0f);
     }
     else if (func_8009D5D8() != 0)
     {
@@ -515,26 +530,27 @@ void func_80021C44(struct LightGroup *lightGrp)
         mathutil_mtxA_from_rotate_y(currentCameraStructPtr->rotY);
         mathutil_mtxA_tf_vec(&spC, &spC);
         mathutil_mtxA_pop();
-        g_avdisp_set_and_normalize_some_vec(&spC);
-        g_avdisp_set_some_color_scale(1.0f, 1.0f, 1.0f);
+        avdisp_set_inf_light_dir(&spC);
+        avdisp_set_inf_light_color(1.0f, 1.0f, 1.0f);
     }
     else
-        g_avdisp_set_some_color_scale(0.0f, 0.0f, 0.0f);
+        avdisp_set_inf_light_color(0.0f, 0.0f, 0.0f);
 }
 
-void g_init_light_stuff_for_stage(int stageId)
+void g_init_stage_lighting(int stageId)
 {
     u8 dummy[8];
     int i;
     struct Light *light;
 
+    // Reset light pool
     light = s_g_lightPool;
-    for (i = 0; i < 32; i++, light++)
+    for (i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
     {
         memset(light, 0, sizeof(*light));
         light->valid = 0;
-        light->unk1 = 0;
-        light->unk2 = 0;
+        light->g_id = LIGHT_ID_TEST;
+        light->g_inst = 0;
         light->type = LIGHT_TYPE_POINT;
         light->refDist = 2.0f;
         light->k0 = 1.0f;
@@ -543,8 +559,9 @@ void g_init_light_stuff_for_stage(int stageId)
         light->spotFn = GX_SP_COS2;
         light->spotCutoff = 45.0f;
     }
-    lbl_802F1C48 = 0;
-    func_8002170C(stageId);
+    s_lightPoolSize = 0;
+
+    init_bg_lighting(stageId);
 
     light = s_g_stageLightsMaybe;
     while (light->valid != -1)
@@ -553,31 +570,31 @@ void g_init_light_stuff_for_stage(int stageId)
             alloc_light(light);
         light++;
     }
-    lbl_802F1C7C = (stageId == 0) ? currStageId : stageId;
+    lightingStageId = (stageId == 0) ? currStageId : stageId;
 }
 
-void func_80021ECC(void)
+void g_light_main(void)
 {
     u8 dummy[8];
     int i;
-    struct Light *r28;
+    struct Light *light;
 
     s_g_lightPerfTimer = 0;
     func_8000E428(s_bgLightInfo.unk14, s_bgLightInfo.unk18, s_bgLightInfo.unk1C);
     func_8000E3BC();
-    lbl_802F1C48 = 0;
+    s_lightPoolSize = 0;
 
-    r28 = s_g_lightPool;
-    for (i = 0; i < 32; i++, r28++)
+    light = s_g_lightPool;
+    for (i = 0; i < 32; i++, light++)
     {
-        if (r28->valid != 0)
+        if (light->valid != 0)
         {
-            func_800212A8(r28);
-            lbl_802F1C48 = i + 1;
+            init_light_dir(light);
+            s_lightPoolSize = i + 1;
         }
     }
     s_currLightGroup = -1;
-    lbl_802F1C4C = -1;
+    g_someLGIdx = -1;
     lightGroupStack[0] = -1;
     lightGroupStack[1] = -1;
     lightGroupStack[2] = -1;
@@ -587,22 +604,22 @@ void func_80021ECC(void)
     lbl_802F1C64 = 0;
     lbl_802F1C60 = 0;
     s_numLightObjsLoaded = 0;
-    if (lbl_802F1C78 == 0)
-        func_80021958();
+    if (s_g_lightGroupsInitialized == 0)
+        g_init_light_groups();
     mathutil_mtxA_from_mtxB();
-    load_light_group(LIGHT_GROUP_DEFAULT);
-    if (lbl_802F1C88 != 0)
+    load_light_group_uncached(LIGHT_GROUP_DEFAULT);
+    if (g_printLight != 0)
     {
-        func_80021ECC_inline(&s_g_lightPool[lbl_802F1C94]);
-        lbl_802F1C88 = 0;
+        print_light(&s_g_lightPool[g_lightToPrint]);
+        g_printLight = 0;
     }
     if (lbl_802F1C84 != 0)
     {
-        if (lbl_802F1C7C == currStageId)
-            memcpy(&s_g_lightPool[lbl_802F1C94], &s_g_lightPool[lbl_802F1C80],
-                   sizeof(s_g_lightPool[lbl_802F1C94]));
+        if (lightingStageId == currStageId)
+            memcpy(&s_g_lightPool[g_lightToPrint], &s_g_lightPool[lbl_802F1C80],
+                   sizeof(s_g_lightPool[g_lightToPrint]));
         else
-            func_800210FC(lbl_802F1C7C);
+            g_alloc_stage_lights(lightingStageId);
         lbl_802F1C84 = 0;
     }
 }
@@ -611,7 +628,7 @@ void func_80021ECC(void)
 // Returns false if no free light slot exists
 BOOL alloc_light(struct Light *light)
 {
-    int idx = light_pool_alloc(0, light->unk1, light->unk2);
+    int idx = get_pool_light(0, light->g_id, light->g_inst);
     struct Light *poolLight;
 
     if (idx == -1)
@@ -622,19 +639,21 @@ BOOL alloc_light(struct Light *light)
     poolLight->k0 = (light->k0 == 0.0f) ? 1.0f : light->k0;
     poolLight->k1 = (light->k1 == 0.0f) ? 0.0f : light->k1;
     poolLight->k2 = (light->k2 == 0.0f) ? 0.0f : light->k2;
-    lbl_802F1C48 = idx + 1;
+    s_lightPoolSize = idx + 1;
     return TRUE;
 }
 
 #pragma force_active on
 struct Light *func_80022224(int a, int b)
 {
-    a = light_pool_alloc(1, a, b);
+    a = get_pool_light(1, a, b);
     return (a == -1) ? NULL : &s_g_lightPool[a];
 }
 #pragma force_active reset
 
-void load_light_group(int lightGrpId)
+// Load lights in light group as defined by Light's referenced in light pool. Corresponding
+// GXLightObj's are computed and stored in the group ("cached")
+void load_light_group_uncached(int lightGrpId)
 {
     const struct LightGroupSomething *r31;
     struct LightGroup *lightGrp;
@@ -646,7 +665,7 @@ void load_light_group(int lightGrpId)
     lightGrp = &s_lightGroups[lightGrpId];
     r31 = &s_g_lightGroupSomethings[lightGrpId];
     mathutil_mtxA_to_mtx(lightGrp->viewFromWorld);
-    if (r31->g_someLGIdxToCopy != lbl_802F1C4C || (r31->flags & 1) != 0)
+    if (r31->g_someLGIdxToCopy != g_someLGIdx || (r31->flags & 1) != 0)
     {
         lightGrp->lightMask = 0;
         for (i = 0; i < 8; i++)
@@ -666,19 +685,20 @@ void load_light_group(int lightGrpId)
         g_nl2ngc_set_light_mask(lightGrp->lightMask);
         avdisp_set_light_mask(lightGrp->lightMask);
     }
-    if (r31->g_someLGIdxToCopy != lbl_802F1C4C || (r31->flags & 2) != 0)
-        g_set_ambient_color(lightGrp->ambient.r, lightGrp->ambient.g, lightGrp->ambient.b);
-    func_80021C44(lightGrp);
-    lbl_802F1C4C = r31->g_someLGIdxToCopy;
+    if (r31->g_someLGIdxToCopy != g_someLGIdx || (r31->flags & 2) != 0)
+        set_ambient(lightGrp->ambient.r, lightGrp->ambient.g, lightGrp->ambient.b);
+    set_avdisp_inf_light(lightGrp);
+    g_someLGIdx = r31->g_someLGIdxToCopy;
     s_g_lightPerfTimer += perf_stop_timer(0);
 }
 
-int func_800223D0(void)
+int peek_light_group(void)
 {
     return s_currLightGroup;
 }
 
-void func_800223D8(int lightGrpId)
+// Load lights in group from cached GXLightObj's
+void load_light_group_cached(int lightGrpId)
 {
     const struct LightGroupSomething *r29;
     int i;
@@ -689,9 +709,9 @@ void func_800223D8(int lightGrpId)
     lbl_802F1C60++;
     lightGrp = &s_lightGroups[lightGrpId];
     r29 = &s_g_lightGroupSomethings[lightGrpId];
-    if (r29->g_someLGIdxToCopy != lbl_802F1C4C || (r29->flags & 1) != 0)
+    if (r29->g_someLGIdxToCopy != g_someLGIdx || (r29->flags & 1) != 0)
     {
-        for (i = 0; i < 8; i++)
+        for (i = 0; i < ARRAY_COUNT(lightGrp->lightObjs); i++)
         {
             if (lightGrp->lightMask & (1 << i))
             {
@@ -702,8 +722,8 @@ void func_800223D8(int lightGrpId)
         g_nl2ngc_set_light_mask(lightGrp->lightMask);
         avdisp_set_light_mask(lightGrp->lightMask);
     }
-    func_80021C44(lightGrp);
-    lbl_802F1C4C = r29->g_someLGIdxToCopy;
+    set_avdisp_inf_light(lightGrp);
+    g_someLGIdx = r29->g_someLGIdxToCopy;
     s_g_lightPerfTimer += perf_stop_timer(0);
 }
 
@@ -727,51 +747,51 @@ void pop_light_group(void)
         s_lightGroupStackPos--;
         mathutil_mtxA_push();
         mathutil_mtxA_from_mtx(s_lightGroups[lightGroupStack[s_lightGroupStackPos]].viewFromWorld);
-        load_light_group(lightGroupStack[s_lightGroupStackPos]);
+        load_light_group_uncached(lightGroupStack[s_lightGroupStackPos]);
         mathutil_mtxA_pop();
     }
 }
 
-void func_800225C0(void)
+void g_reset_light_group_stack(int a)
 {
     s_currLightGroup = -1;
-    lbl_802F1C4C = -1;
+    g_someLGIdx = -1;
     mathutil_mtxA_from_mtxB();
-    load_light_group(LIGHT_GROUP_DEFAULT);
+    load_light_group_uncached(LIGHT_GROUP_DEFAULT);
 }
 
-void func_800225F4(float a)
+void g_set_some_minimap_light_param(float a)
 {
     g_minimap_light_ref_dist_scale = a;
 }
 
-void g_set_bg_ambient(float r, float g, float b)
+void set_bg_ambient(float r, float g, float b)
 {
     s_bgLightInfo.ambient.r = r;
     s_bgLightInfo.ambient.g = g;
     s_bgLightInfo.ambient.b = b;
 }
 
-void g_set_ambient_color(float r, float g, float b)
+void set_ambient(float r, float g, float b)
 {
-    g_nl2ngc_set_ambient_color(r, g, b);
+    g_nl2ngc_set_ambient(r, g, b);
     avdisp_set_ambient(r, g, b);
 }
 
-void get_curr_light_group_ambient_color(struct Color3f *color)
+void get_curr_light_group_ambient(struct Color3f *color)
 {
     *color = s_lightGroups[s_currLightGroup].ambient;
 }
 
-void apply_curr_light_group_ambient_color(void)
+void apply_curr_light_group_ambient(void)
 {
     struct Color3f *ambient = &s_lightGroups[s_currLightGroup].ambient;
 
-    g_nl2ngc_set_ambient_color(ambient->r, ambient->g, ambient->b);
+    g_nl2ngc_set_ambient(ambient->r, ambient->g, ambient->b);
     avdisp_set_ambient(ambient->r, ambient->g, ambient->b);
 }
 
-void func_800226F4(void)
+void g_draw_naomi_ball(void)
 {
     u8 dummy[24];
     struct Light *r31;
@@ -779,7 +799,7 @@ void func_800226F4(void)
 
     if (lbl_802F1C8C == 0)
         return;
-    r31 = &s_g_lightPool[lbl_802F1C94];
+    r31 = &s_g_lightPool[g_lightToPrint];
     switch (r31->type)
     {
     case LIGHT_TYPE_POINT:
@@ -794,11 +814,11 @@ void func_800226F4(void)
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
         g_nl2ngc_set_scale(r31->refDist * 2.0);
-        g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B),
+        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B),
                                                0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
-        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B));
+        nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B));
         break;
     case LIGHT_TYPE_INFINITE:
         mathutil_mtxA_from_mtxB();
@@ -806,7 +826,7 @@ void func_800226F4(void)
         mathutil_mtxA_rotate_y(r31->rotY);
         mathutil_mtxA_rotate_x(r31->rotX);
         mathutil_mtxA_rotate_x(0x8000);
-        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         break;
     case LIGHT_TYPE_SPOT:
     case LIGHT_TYPE_SPOT_POW:
@@ -820,13 +840,13 @@ void func_800226F4(void)
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
         g_nl2ngc_set_scale(r31->refDist * 2.0);
-        g_draw_naomi_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B),
+        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B),
                                                0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_rotate_y(r31->rotY);
         mathutil_mtxA_rotate_x(r31->rotX);
-        g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         break;
     }
 }
@@ -839,9 +859,9 @@ struct
     float unkC;
 } lbl_801F39EC;
 
-void func_800228A8(int stageId)
+void g_smth_with_lights_smd_continue(int stageId)
 {
-    func_8002170C(stageId);
+    init_bg_lighting(stageId);
     lbl_801F39EC.unk0 = s_bgLightInfo.unk10;
     lbl_801F39EC.unk4 = s_bgLightInfo.unk14;
     lbl_801F39EC.unk8 = s_bgLightInfo.unk18;
@@ -852,9 +872,9 @@ void func_800228A8(int stageId)
     s_bgLightInfo.unk1C = 0.7f;
 }
 
-void func_80022910(int stageId)
+void g_smth_with_lights_smd_extra(int stageId)
 {
-    func_8002170C(stageId);
+    init_bg_lighting(stageId);
     lbl_801F39EC.unk0 = s_bgLightInfo.unk10;
     lbl_801F39EC.unk4 = s_bgLightInfo.unk14;
     lbl_801F39EC.unk8 = s_bgLightInfo.unk18;
