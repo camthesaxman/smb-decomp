@@ -4017,7 +4017,7 @@ func_800B0B48:
 /* 800B0B84 000ACAA4  4B FE 21 B9 */	bl g_draw_ball_shadow
 /* 800B0B88 000ACAA8  4B FA 44 69 */	bl func_80054FF0
 /* 800B0B8C 000ACAAC  80 7C 00 2C */	lwz r3, 0x2c(r28)
-/* 800B0B90 000ACAB0  4B F7 1A 31 */	bl func_800225C0
+/* 800B0B90 000ACAB0  4B F7 1A 31 */	bl g_reset_light_group_stack
 /* 800B0B94 000ACAB4  80 6D A0 74 */	lwz r3, lbl_802F2254@sda21(r13)
 /* 800B0B98 000ACAB8  38 00 00 00 */	li r0, 0
 /* 800B0B9C 000ACABC  7C 03 00 40 */	cmplw r3, r0
@@ -7237,7 +7237,7 @@ lbl_800B3B30:
 /* 800B3B50 000AFA70  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800B3B54 000AFA74  C0 22 BB 14 */	lfs f1, lbl_802F6314@sda21(r2)
 /* 800B3B58 000AFA78  80 63 00 10 */	lwz r3, 0x10(r3)
-/* 800B3B5C 000AFA7C  4B F7 DA 89 */	bl g_draw_naomi_model_with_alpha
+/* 800B3B5C 000AFA7C  4B F7 DA 89 */	bl nl2ngc_draw_model_alpha_unsorted
 /* 800B3B60 000AFA80  48 00 01 08 */	b lbl_800B3C68
 lbl_800B3B64:
 /* 800B3B64 000AFA84  D8 01 00 08 */	stfd f0, 8(r1)

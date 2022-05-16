@@ -696,8 +696,8 @@ struct CoordsS8
 
 struct Struct8020A348_child
 {
-    u32 unk0;
-    struct GMAModel *unk4;  // GMAModel
+    u32 flags;
+    struct GMAModel *model;  // GMAModel
     float unk8;
 };  // size = 0xC
 
@@ -1081,12 +1081,10 @@ struct Stobj
     Vec g_local_vel;
 };
 
-struct Struct80180F64
+struct BgLightInfo
 {
 	float unk0;
-    float unk4;
-    float unk8;
-    float unkC;
+    struct Color3f ambient;
     float unk10;
     float unk14;
     float unk18;
@@ -1096,15 +1094,16 @@ struct Struct80180F64
     float unk28;
     float unk2C;
     float unk30;
-	float unk34;
-	float unk38;
-	float unk3C;
-	s16 unk40;
-	s16 unk42;
-    s8 **unk44;
+
+    // Global directional light ("infinite" light)
+    struct Color3f infLightColor;
+	s16 infLightRotX;
+	s16 infLightRotY;
+
+    s8 **bgLightGroups;
 };
 
-struct MaybeStageLight;
+struct Light;
 
 struct Struct802F1BE8
 {
@@ -1143,10 +1142,10 @@ struct Struct802F1C10
     u8 unk4[4];
 };
 
-struct Struct80180F14
+struct GBilLightGroup
 {
-    char *unk0;
-    s8 unk4;
+    char *name;
+    s8 g_bgLightGroupId;
 };
 
 #endif

@@ -653,8 +653,8 @@ lbl_800647B0:
 /* 8006496C 0006088C  4B FA 35 01 */	bl mathutil_mtxA_tf_vec_xyz
 /* 80064970 00060890  38 60 68 00 */	li r3, 0x6800
 /* 80064974 00060894  4B FA 2C E5 */	bl mathutil_mtxA_from_rotate_y
-/* 80064978 00060898  3C 60 80 1F */	lis r3, lbl_801F0614@ha
-/* 8006497C 0006089C  38 63 06 14 */	addi r3, r3, lbl_801F0614@l
+/* 80064978 00060898  3C 60 80 1F */	lis r3, s_bgLightInfo@ha
+/* 8006497C 0006089C  38 63 06 14 */	addi r3, r3, s_bgLightInfo@l
 /* 80064980 000608A0  A8 63 00 40 */	lha r3, 0x40(r3)
 /* 80064984 000608A4  4B FA 36 05 */	bl mathutil_mtxA_rotate_x
 /* 80064988 000608A8  C0 22 9D 8C */	lfs f1, lbl_802F458C@sda21(r2)

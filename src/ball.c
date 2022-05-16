@@ -19,6 +19,7 @@
 #include "stage.h"
 #include "world.h"
 #include "stcoli.h"
+#include "light.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
@@ -387,7 +388,7 @@ void func_8003721C(struct Ape *ape, float b)
             f31 = ape->unk54++;
             if (gameSubmode == SMD_ADV_INFO_MAIN)
             {
-                int r3 = (modeCtrl.unk0 < 0x9D8 && modeCtrl.unk0 > 0x8AC);
+                int r3 = (modeCtrl.submodeTimer < 0x9D8 && modeCtrl.submodeTimer > 0x8AC);
                 r27 = (r3 != 0) ? 2 : 1;
             }
         }
@@ -1131,7 +1132,7 @@ void ball_draw(void)
             entry = ord_tbl_get_entry_for_pos(&ball->pos);
             node = ord_tbl_alloc_node(sizeof(*node));
             node->node.drawFunc = (OrdTblDrawFunc)ball_draw_callback;
-            node->unk8 = func_800223D0();
+            node->unk8 = peek_light_group();
             node->ballId = i;
             ord_tbl_insert_node(entry, &node->node);
             continue;
@@ -1232,8 +1233,8 @@ void g_ball_shadow_something_1(void)
         break;
     }
 
-    mathutil_mtxA_from_rotate_y(lbl_801F0614.unk42);
-    mathutil_mtxA_rotate_x(lbl_801F0614.unk40);
+    mathutil_mtxA_from_rotate_y(s_bgLightInfo.infLightRotY);
+    mathutil_mtxA_rotate_x(s_bgLightInfo.infLightRotX);
     spC.x = 0.0f;
     spC.y = 0.0f;
     spC.z = -15.0f;
@@ -1643,7 +1644,7 @@ void ball_func_3(struct Ball *ball)
     ball->prevPos.y = ball->pos.y;
     ball->prevPos.z = ball->pos.z;
 
-    f4 = modeCtrl.unk0;
+    f4 = modeCtrl.submodeTimer;
     f2 = (decodedStageLzPtr->startPos->pos.y - ball->pos.y) / f4;
 
     ball->vel.x = (zero = 0.0f);  // fake match
@@ -1830,7 +1831,7 @@ void ball_func_11(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
     ball->ape->unk60 = ball->unk98;
-    ball->unk2A = lbl_801F0614.unk42 + 0x2000;
+    ball->unk2A = s_bgLightInfo.infLightRotY + 0x2000;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_y(ball->unk2A - 16384);
@@ -1953,7 +1954,7 @@ void ball_func_16(struct Ball *ball)
 {
     g_ball_init_2(ball);
 
-    if (modeCtrl.unk0 == 0x111C)
+    if (modeCtrl.submodeTimer == 0x111C)
     {
         ball->pos.x = decodedStageLzPtr->startPos->pos.x;
         ball->pos.y = decodedStageLzPtr->startPos->pos.y;
@@ -1984,7 +1985,7 @@ void ball_func_16(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
 
-    if (modeCtrl.unk0 != 0x111C)
+    if (modeCtrl.submodeTimer != 0x111C)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x4000);
@@ -3113,7 +3114,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount > 3)
         r30 = NULL;
 
-    func_800223D8(node->unk8);
+    load_light_group_cached(node->unk8);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
     mathutil_mtxA_scale_s(ball->modelScale);

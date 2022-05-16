@@ -169,7 +169,7 @@ lbl_0000020C:
 /* 000002CC 3860000B */ li r3, 0xb
 /* 000002D0 4BFFFE91 */ bl event_start
 /* 000002D4 386000B3 */ li r3, 0xb3
-/* 000002D8 4BFFFE89 */ bl g_init_light_stuff_for_stage
+/* 000002D8 4BFFFE89 */ bl light_init
 /* 000002DC 4BFFFE85 */ bl func_800972CC
 /* 000002E0 3C600000 */ lis r3, lbl_80206DEC@ha
 /* 000002E4 38830000 */ addi r4, r3, lbl_80206DEC@l
@@ -804,7 +804,7 @@ lbl_00000AD0:
 /* 00000BD8 4BFFF589 */ bl g_draw_ball_shadow
 /* 00000BDC 4BFFF585 */ bl func_80054FF0
 /* 00000BE0 38600000 */ li r3, 0
-/* 00000BE4 4BFFF57D */ bl func_800225C0
+/* 00000BE4 4BFFF57D */ bl g_reset_light_group_stack
 /* 00000BE8 4BFFF579 */ bl func_8009CD5C
 /* 00000BEC 3C600000 */ lis r3, eventInfo@ha
 /* 00000BF0 38630000 */ addi r3, r3, eventInfo@l
@@ -3823,7 +3823,7 @@ lbl_00003804:
 /* 00003830 38600014 */ li r3, 0x14
 /* 00003834 4BFFC92D */ bl event_start
 /* 00003838 386000B3 */ li r3, 0xb3
-/* 0000383C 4BFFC925 */ bl g_init_light_stuff_for_stage
+/* 0000383C 4BFFC925 */ bl light_init
 /* 00003840 4BFFC921 */ bl func_800972CC
 /* 00003844 38000002 */ li r0, 2
 /* 00003848 981E000A */ stb r0, 0xa(r30)

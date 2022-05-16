@@ -69,7 +69,7 @@ lbl_800A6CC8:
 lbl_800A6CE4:
 /* 800A6CE4 000A2C04  80 6D 99 24 */	lwz r3, naomiCommonObj  // @sda21(r13)
 /* 800A6CE8 000A2C08  80 63 00 3C */	lwz r3, 0x3c(r3)
-/* 800A6CEC 000A2C0C  4B F8 A5 25 */	bl g_draw_naomi_model_and_do_other_stuff
+/* 800A6CEC 000A2C0C  4B F8 A5 25 */	bl nl2ngc_draw_model_sorted
 /* 800A6CF0 000A2C10  4B F6 0B 01 */	bl mathutil_mtxA_push
 /* 800A6CF4 000A2C14  C0 22 B3 B4 */	lfs f1, lbl_802F5BB4  // @sda21(r2)
 /* 800A6CF8 000A2C18  C0 42 B4 2C */	lfs f2, lbl_802F5C2C  // @sda21(r2)

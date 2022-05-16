@@ -477,7 +477,7 @@ void gm_init(void)
     lbl_802F1B80 = NULL;
     lbl_802F1B7C = NULL;
     modeCtrl.levelSetFlags = 0;
-    modeCtrl.unk0 = 0;
+    modeCtrl.submodeTimer = 0;
     modeCtrl.splitscreenMode = 0;
     modeCtrl.unk1C = 0;
     modeCtrl.menuSel = 0;
