@@ -1304,7 +1304,7 @@ lbl_00001380:
 /* 000013D8 540005EF */ rlwinm. r0, r0, 0, 0x17, 0x17
 /* 000013DC 41820074 */ beq lbl_00001450
 /* 000013E0 889C0A65 */ lbz r4, 0xa65(r28)
-/* 000013E4 3C600000 */ lis r3, lbl_801EEC68@ha
+/* 000013E4 3C600000 */ lis r3, pauseMenuState@ha
 /* 000013E8 38000040 */ li r0, 0x40
 /* 000013EC 98810020 */ stb r4, 0x20(r1)
 /* 000013F0 38C00003 */ li r6, 3
@@ -1313,7 +1313,7 @@ lbl_00001380:
 /* 000013FC 39200042 */ li r9, 0x42
 /* 00001400 39000043 */ li r8, 0x43
 /* 00001404 9801001C */ stb r0, 0x1c(r1)
-/* 00001408 38E30000 */ addi r7, r3, lbl_801EEC68@l
+/* 00001408 38E30000 */ addi r7, r3, pauseMenuState@l
 /* 0000140C 38000005 */ li r0, 5
 /* 00001410 98C10014 */ stb r6, 0x14(r1)
 /* 00001414 3861001C */ addi r3, r1, 0x1c
@@ -1368,8 +1368,8 @@ lbl_000014C0:
 /* 000014C8 38000000 */ li r0, 0
 /* 000014CC 98010015 */ stb r0, 0x15(r1)
 lbl_000014D0:
-/* 000014D0 3C600000 */ lis r3, lbl_801EEC68@ha
-/* 000014D4 38A30000 */ addi r5, r3, lbl_801EEC68@l
+/* 000014D0 3C600000 */ lis r3, pauseMenuState@ha
+/* 000014D4 38A30000 */ addi r5, r3, pauseMenuState@l
 /* 000014D8 80050004 */ lwz r0, 4(r5)
 /* 000014DC 3861001C */ addi r3, r1, 0x1c
 /* 000014E0 38810014 */ addi r4, r1, 0x14
@@ -7915,7 +7915,7 @@ lbl_00007334:
 /* 000073D8 7C040000 */ cmpw r4, r0
 /* 000073DC 41800074 */ blt lbl_00007450
 /* 000073E0 889E0A65 */ lbz r4, 0xa65(r30)
-/* 000073E4 3C600000 */ lis r3, lbl_801EEC68@ha
+/* 000073E4 3C600000 */ lis r3, pauseMenuState@ha
 /* 000073E8 38000040 */ li r0, 0x40
 /* 000073EC 98810014 */ stb r4, 0x14(r1)
 /* 000073F0 38C00003 */ li r6, 3
@@ -7924,7 +7924,7 @@ lbl_00007334:
 /* 000073FC 39200042 */ li r9, 0x42
 /* 00007400 39000043 */ li r8, 0x43
 /* 00007404 98010010 */ stb r0, 0x10(r1)
-/* 00007408 38E30000 */ addi r7, r3, lbl_801EEC68@l
+/* 00007408 38E30000 */ addi r7, r3, pauseMenuState@l
 /* 0000740C 38000005 */ li r0, 5
 /* 00007410 98C10008 */ stb r6, 8(r1)
 /* 00007414 38610010 */ addi r3, r1, 0x10
@@ -7983,8 +7983,8 @@ lbl_000074C8:
 /* 000074D8 98010009 */ stb r0, 9(r1)
 /* 000074DC 98830000 */ stb r4, lbl_802F1C32@l(r3)
 lbl_000074E0:
-/* 000074E0 3C600000 */ lis r3, lbl_801EEC68@ha
-/* 000074E4 38A30000 */ addi r5, r3, lbl_801EEC68@l
+/* 000074E0 3C600000 */ lis r3, pauseMenuState@ha
+/* 000074E4 38A30000 */ addi r5, r3, pauseMenuState@l
 /* 000074E8 80050004 */ lwz r0, 4(r5)
 /* 000074EC 38610010 */ addi r3, r1, 0x10
 /* 000074F0 38810008 */ addi r4, r1, 8
@@ -10883,8 +10883,8 @@ lbl_00009EC4:
 /* 00009F04 7C0803A6 */ mtlr r0
 /* 00009F08 4E800020 */ blr 
 lbl_00009F0C:
-/* 00009F0C 3C600000 */ lis r3, lbl_801EEC68@ha
-/* 00009F10 38630000 */ addi r3, r3, lbl_801EEC68@l
+/* 00009F0C 3C600000 */ lis r3, pauseMenuState@ha
+/* 00009F10 38630000 */ addi r3, r3, pauseMenuState@l
 /* 00009F14 38830004 */ addi r4, r3, 4
 /* 00009F18 80630004 */ lwz r3, 4(r3)
 /* 00009F1C 546006B5 */ rlwinm. r0, r3, 0, 0x1a, 0x1a
@@ -10916,8 +10916,8 @@ lbl_00009F3C:
 /* 00009F80 28040001 */ cmplwi r4, 1
 /* 00009F84 41810028 */ bgt lbl_00009FAC
 lbl_00009F88:
-/* 00009F88 3C800000 */ lis r4, lbl_801EEC68@ha
-/* 00009F8C 38A40000 */ addi r5, r4, lbl_801EEC68@l
+/* 00009F88 3C800000 */ lis r4, pauseMenuState@ha
+/* 00009F8C 38A40000 */ addi r5, r4, pauseMenuState@l
 /* 00009F90 38C0FFFF */ li r6, -1
 /* 00009F94 B0C50016 */ sth r6, 0x16(r5)
 /* 00009F98 38A00001 */ li r5, 1
@@ -10931,11 +10931,11 @@ lbl_00009FAC:
 /* 00009FB4 38840000 */ addi r4, r4, lbl_80206BD0@l
 /* 00009FB8 7C842A14 */ add r4, r4, r5
 /* 00009FBC 80E40000 */ lwz r7, 0(r4)
-/* 00009FC0 3CA00000 */ lis r5, lbl_801EEC68@ha
+/* 00009FC0 3CA00000 */ lis r5, pauseMenuState@ha
 /* 00009FC4 3C800000 */ lis r4, lbl_802F0310@ha
 /* 00009FC8 38C40000 */ addi r6, r4, lbl_802F0310@l
 /* 00009FCC 7CE70734 */ extsh r7, r7
-/* 00009FD0 38A50000 */ addi r5, r5, lbl_801EEC68@l
+/* 00009FD0 38A50000 */ addi r5, r5, pauseMenuState@l
 /* 00009FD4 20880001 */ subfic r4, r8, 1
 /* 00009FD8 B0E50016 */ sth r7, 0x16(r5)
 /* 00009FDC 7CA64214 */ add r5, r6, r8
@@ -10945,8 +10945,8 @@ lbl_00009FAC:
 /* 00009FEC 38A00000 */ li r5, 0
 /* 00009FF0 98A40000 */ stb r5, 0(r4)
 lbl_00009FF4:
-/* 00009FF4 3C800000 */ lis r4, lbl_801EEC68@ha
-/* 00009FF8 38840000 */ addi r4, r4, lbl_801EEC68@l
+/* 00009FF4 3C800000 */ lis r4, pauseMenuState@ha
+/* 00009FF8 38840000 */ addi r4, r4, pauseMenuState@l
 /* 00009FFC 80A40004 */ lwz r5, 4(r4)
 /* 0000A000 38C40004 */ addi r6, r4, 4
 /* 0000A004 54A406F7 */ rlwinm. r4, r5, 0, 0x1b, 0x1b

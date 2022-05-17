@@ -1170,7 +1170,7 @@ void submode_game_nameentry_ready_init_func(void)
     tbox.y = 144;
     tbox.unk14 = 0;
     tbox.numLines = 1;
-    tbox.unk1C = 0;
+    tbox.callback = NULL;
     g_create_textbox(1, 1, &tbox);
     g_set_textbox_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
     g_start_screen_fade(0x100, 0xFFFFFF, 30);
@@ -1501,10 +1501,10 @@ void submode_game_extra_wait_func(void)
 
         memset(&tbox, 0, sizeof(tbox));
         tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
-        tbox.x = 0x140;
-        tbox.y = 0xC8;
+        tbox.x = 320;
+        tbox.y = 200;
         tbox.numLines = 2;
-        tbox.unk1C = 0;
+        tbox.callback = NULL;
         g_create_textbox(1, 1, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
@@ -1531,7 +1531,7 @@ void submode_game_extra_wait_func(void)
         tbox.x = 320;
         tbox.y = 200;
         tbox.numLines = 2;
-        tbox.unk1C = 0;
+        tbox.callback = 0;
         g_create_textbox(1, 21, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {

@@ -18,26 +18,17 @@
 #include "sprite.h"
 #include "textbox.h"
 
-u8 lbl_801C14F0[] =
+u8 playerNumColors[] =
 {
-    0xFF, 0x00, 0x00,
-    0x2C, 0x65, 0xFF,
-    0xFB, 0xFF, 0x2C,
-    0x2C, 0xFF, 0x57,
+    255,   0,   0,  // 1P
+     44, 101, 255,  // 2P
+    251, 255,  44,  // 3P
+     44, 255,  87,  // 4P
 };
 
-float lbl_801C14FC[] =
-{
-    -128,
-    240,
-    240,
-    240,
-    240,
-    608,
-    608,
-};
+float lbl_801C14FC[] = { -128, 240, 240, 240, 240, 608, 608 };
 
-static void lbl_80075D70(struct TextBox *a) {}
+static void press_start_texbox_callback(struct TextBox *a) {}
 
 static void pause_menu_sprite_draw(struct Sprite *);
 
@@ -184,6 +175,7 @@ static char **pauseMenus[] =
     menuContRetryHowExit,
     menuContGuideHowExit,
 
+    // same as above, but with "View stage" replaced with "Save replay"
     menuContHowExit,
     menuContSaveHowExit,
     menuContRetrySaveHowSelectExit,
@@ -208,9 +200,9 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
     params.unk30 = -1;
     params.flags = (sprite->unk74 & 0xFFFFFFF0) | 0xA;
 
-    if (lbl_801EEC68.unkC >= 4)
+    if (pauseMenuState.itemCount >= 4)
     {
-        if (lbl_801EEC68.unkC == 6)
+        if (pauseMenuState.itemCount == 6)
             bmpId = BMP_COM_menu_kiwaku_l2;
         else
             bmpId = BMP_COM_menu_kiwaku_l;
@@ -227,7 +219,7 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
     params.color1 = RGBA(255, 255, 255, (int)(sprite->opacity * 255.0f));
     draw_naomi_sprite(&params);
 
-    params.bmpId = func_80081CFC(0, 0, playerCharacterSelection[lbl_801EEC68.unk15]);
+    params.bmpId = func_80081CFC(0, 0, playerCharacterSelection[pauseMenuState.unk15]);
     params.x = sprite->x - 110.0f;
     params.y = sprite->y + sprite->unk44 + 12.0f;
     params.z = sprite->unk4C;
@@ -237,85 +229,86 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
     params.color1 = RGBA(255, 255, 255, (int)(sprite->opacity * 255.0f));
     draw_naomi_sprite(&params);
 
-    menuType = lbl_801EEC68.unk10;
-    if (lbl_801EEC68.unk4 & 4)
-        menuType += 5;
+    menuType = pauseMenuState.menuType;
+    if (pauseMenuState.unk4 & 4)
+        menuType += 5;  // make it so that "View stage" is replaced with "Save replay"
     func_80071A8C();
     g_set_font(sprite->fontId);
     func_80071B50(0x220000);
     temp_r16 = (u32)((globalFrameCounter >> 2) & 1) * 255;
     temp_r16 = RGBA(temp_r16, temp_r16, temp_r16, 0);
 
-    for (i = 0; i < lbl_801EEC68.unkC; i++)
+    for (i = 0; i < pauseMenuState.itemCount; i++)
     {
         float phi_f22;
         float x;
         float y;
         char text[32];
 
-        func_80071B1C((i == lbl_801EEC68.unk8) ? sprite->unk4C - 0.001 : sprite->unk4C);
+        func_80071B1C((i == pauseMenuState.selection) ? sprite->unk4C - 0.001 : sprite->unk4C);
 
-        if (lbl_801EEC68.unkC == 6)
+        if (pauseMenuState.itemCount == 6)
             phi_f22 = i * 30 - 90;
-        else if (lbl_801EEC68.unkC == 5)
+        else if (pauseMenuState.itemCount == 5)
             phi_f22 = i * 30 - 72;
-        else if (lbl_801EEC68.unkC == 4)
+        else if (pauseMenuState.itemCount == 4)
             phi_f22 = i * 36 - 66;
         else
-            phi_f22 = i * 36 - 48 + (3 - lbl_801EEC68.unkC) * 18;
+            phi_f22 = i * 36 - 48 + (3 - pauseMenuState.itemCount) * 18;
 
         strcpy(text, pauseMenus[menuType][i]);
         x = sprite->x - 48.0f;
         y = sprite->y + phi_f22;
         g_set_text_pos(3.0f + x, 3.0f + y);
-        g_set_text_fill_color(0x202000);
-        g_set_text_other_color(0);
+        g_set_text_fill_color(RGBA(32, 32, 0, 0));
+        g_set_text_other_color(RGBA(0, 0, 0, 0));
         g_draw_text(text);
         g_set_text_pos(x, y);
-        g_set_text_fill_color((i == lbl_801EEC68.unk8) ? 0xFFFF00 : 0x808000);
-        g_set_text_other_color((((lbl_801EEC68.unk4) & 1) && i == lbl_801EEC68.unk8) ? temp_r16 : 0);
+        g_set_text_fill_color((i == pauseMenuState.selection) ? RGBA(255, 255, 0, 0) : RGBA(128, 128, 0, 0));
+        g_set_text_other_color((((pauseMenuState.unk4) & 1) && i == pauseMenuState.selection) ? temp_r16 : 0);
         g_draw_text(text);
 
-        if (menuType == 4 && i == 1)
+        // Display billiards guide toggle
+        if (menuType == PAUSEMENU_CONT_GUIDE_HOW_EXIT && i == 1)
         {
             u32 temp_r3 = (1.0 - __fabs(mathutil_sin(globalFrameCounter << 9))) * 255.0;
-            u32 temp_r24 = RGBA(temp_r3, temp_r3, temp_r3, 0);
+            u32 flashColor = RGBA(temp_r3, temp_r3, temp_r3, 0);
 
             strcpy(text, "ON");
             x += 96.0f;
             g_set_text_pos(3.0f + x, 3.0f + y);
-            g_set_text_fill_color(0x202000);
-            g_set_text_other_color(0);
+            g_set_text_fill_color(RGBA(32, 32, 0,0));
+            g_set_text_other_color(RGBA(0, 0, 0, 0));
             g_draw_text(text);
             g_set_text_pos(x, y);
-            if (lbl_801EEC68.unk4 & 8)
-                g_set_text_fill_color(0xC0C000);
+            if (pauseMenuState.unk4 & 8)
+                g_set_text_fill_color(RGBA(192, 192, 0, 0));
             else
-                g_set_text_fill_color(0x808000);
-            if (i == lbl_801EEC68.unk8 && (lbl_801EEC68.unk4 & 8))
-                g_set_text_other_color(temp_r24);
+                g_set_text_fill_color(RGBA(128, 128, 0, 0));
+            if (i == pauseMenuState.selection && (pauseMenuState.unk4 & 8))
+                g_set_text_other_color(flashColor);
             else
-                g_set_text_other_color(0);
+                g_set_text_other_color(RGBA(0, 0, 0, 0));
             g_draw_text(text);
 
             strcpy(text, "OFF");
             x += 50.0f;
             g_set_text_pos(3.0f + x, 3.0f + y);
-            g_set_text_fill_color(0x202000);
-            g_set_text_other_color(0);
+            g_set_text_fill_color(RGBA(32, 32, 0,0));
+            g_set_text_other_color(RGBA(0, 0, 0, 0));
             g_draw_text(text);
             g_set_text_pos(x, y);
-            if (!(lbl_801EEC68.unk4 & 8))
-                g_set_text_fill_color(0xC0C000);
+            if (!(pauseMenuState.unk4 & 8))
+                g_set_text_fill_color(RGBA(192, 192, 0, 0));
             else
-                g_set_text_fill_color(0x808000);
-            if (i == lbl_801EEC68.unk8 && !(lbl_801EEC68.unk4 & 8))
-                g_set_text_other_color(temp_r24);
+                g_set_text_fill_color(RGBA(128, 128, 0, 0));
+            if (i == pauseMenuState.selection && !(pauseMenuState.unk4 & 8))
+                g_set_text_other_color(flashColor);
             else
-                g_set_text_other_color(0);
+                g_set_text_other_color(RGBA(0, 0, 0, 0));
             g_draw_text(text);
         }
-        if (i == lbl_801EEC68.unk8)
+        if (i == pauseMenuState.selection)
             sprite->unk40 = phi_f22;
     }
 
@@ -338,8 +331,8 @@ void hud_show_press_start_textbox(int a)
     tbox.style = (a == 2 || a == 3) ? TEXTBOX_STYLE_CENTER_UP : 15;
     tbox.x = 320;
     tbox.y = (a == 2 || a == 3) ? 361 : 410;
-    tbox.numLines = 1;
-    tbox.unk1C = lbl_80075D70;
+    tbox.numLines = 1;;
+    tbox.callback = press_start_texbox_callback;
     g_create_textbox(0, 21, &tbox);
     if (a == 3)
         g_set_textbox_text(0, "b/Select using the c/0xffffff/p/BUTTON_A/c/0x000000/ Button!");
@@ -870,7 +863,7 @@ void hud_show_title_menu(void)
 
 static void gamestart_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
+    if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].state == 10)
     {
         sprite->opacity += 0.1 * (1.0 - sprite->opacity);
         if (sprite->counter > 0)
@@ -905,7 +898,7 @@ static void gamestart_sprite_main(s8 *arg0, struct Sprite *sprite)
 
 static void options_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
+    if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].state == 10)
     {
         sprite->opacity += 0.1 * (1.0 - sprite->opacity);
         if (sprite->counter > 0)
@@ -976,7 +969,7 @@ void g_show_adv_ready_hud(void)
 
     ball = currentBallStructPtr;
     func_8000D5B8();
-    func_8008083C(320.0f, 68.0f);
+    hud_show_bomb(320.0f, 68.0f);
 
     // timer
     sprite = create_sprite();
@@ -1543,11 +1536,11 @@ void hud_show_ready_banner(int duration)
 
             sprite->x = 785.0f;
             sprite->y = 310.0f;
-            sprite->fontId = 9;
-            sprite->textAlign = 4;
-            sprite->unkC = lbl_801C14F0[phi_r0 * 3 + 0];
-            sprite->unkD = lbl_801C14F0[phi_r0 * 3 + 1];
-            sprite->unkE = lbl_801C14F0[phi_r0 * 3 + 2];
+            sprite->fontId = FONT_ASC_72x64;
+            sprite->textAlign = ALIGN_CC;
+            sprite->unkC = playerNumColors[phi_r0 * 3 + 0];
+            sprite->unkD = playerNumColors[phi_r0 * 3 + 1];
+            sprite->unkE = playerNumColors[phi_r0 * 3 + 2];
             sprite->unk48 = -30;
             sprite->counter = 120;
             sprite->mainFunc = player_num_sprite_main;
@@ -1561,8 +1554,8 @@ void hud_show_ready_banner(int duration)
         sprite->x = 320.0f;
         sprite->y = 240.0f;
         sprite->unk4C = (modeCtrl.unk30 == 1) ? 0.1 : 0.05;
-        sprite->fontId = 9;
-        sprite->textAlign = 4;
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_CC;
         sprite->unkC = 255;
         sprite->unkD = 200;
         sprite->unkE = 0;
@@ -1725,7 +1718,7 @@ void hud_show_normal_mode_info(void)
     lbl_80292D18.unk8 = 0;
     lbl_80292D18.unk14 = 0x33;
     func_8000D5B8();
-    func_8008083C(320.0f, 68.0f);
+    hud_show_bomb(320.0f, 68.0f);
 
     // timer
     sprite = create_sprite();
@@ -2103,7 +2096,7 @@ void hud_show_competition_mode_info(void)
     }
 
     func_8000D5B8();
-    func_8008083C(320.0f, 240.0f);
+    hud_show_bomb(320.0f, 240.0f);
 
     sprite = create_sprite();
     if (sprite != NULL)
@@ -2781,8 +2774,8 @@ void hud_show_go_banner(int arg0)
         sprite->unkC = 0;
         sprite->unkD = 128;
         sprite->unkE = 255;
-        sprite->fontId = 9;
-        sprite->textAlign = 4;
+        sprite->fontId = FONT_ASC_72x64;
+        sprite->textAlign = ALIGN_CC;
         sprite->counter = arg0;
         sprite->unk48 = arg0;
         sprite->unk74 |= 0x1000;
@@ -3570,9 +3563,9 @@ void hud_show_game_over_banner(int duration)
             sprite->y = 310.0f;
             sprite->fontId = FONT_ASC_72x64;
             sprite->textAlign = ALIGN_CC;
-            sprite->unkC = lbl_801C14F0[phi_r0 * 3 + 0];
-            sprite->unkD = lbl_801C14F0[phi_r0 * 3 + 1];
-            sprite->unkE = lbl_801C14F0[phi_r0 * 3 + 2];
+            sprite->unkC = playerNumColors[phi_r0 * 3 + 0];
+            sprite->unkD = playerNumColors[phi_r0 * 3 + 1];
+            sprite->unkE = playerNumColors[phi_r0 * 3 + 2];
             sprite->unk48 = -0x1E;
             sprite->counter = 120;
             sprite->unk4C = 0.008f;
@@ -4602,7 +4595,7 @@ static float func_800802E0(u16 arg0)
 }
 #pragma dont_inline reset
 
-static void lbl_800803E8(s8 *arg0, struct Sprite *sprite)
+static void bomb_crack_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float temp_f0;
     u8 dummy[8];
@@ -4633,7 +4626,7 @@ static void lbl_800803E8(s8 *arg0, struct Sprite *sprite)
 float force_lbl_802F50C0() { return 0.19699999690055847f; }
 
 #ifdef NONMATCHING
-static void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
+static void bomb_frag_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     s16 *asdf = (s16 *)&sprite->unk48;
     float temp_f0;
@@ -4659,15 +4652,15 @@ static void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
 const float lbl_802F50C4 = 0.94999998807907104f;
 const float lbl_802F50C8 = 0.97000002861022949f;
 const float lbl_802F50CC = 0.89999997615814209f;
-static asm void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
+static asm void bomb_frag_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     nofralloc
-#include "../asm/nonmatchings/lbl_800805AC.s"
+#include "../asm/nonmatchings/bomb_frag_sprite_main.s"
 }
 #pragma peephole on
 #endif
 
-static s16 bombPartBitmapIDs[] =
+static s16 bombFragBitmapIds[] =
 {
     BMP_NML_icon_bomb_part_a,
     BMP_NML_icon_bomb_part_b,
@@ -4681,18 +4674,18 @@ static s16 bombPartBitmapIDs[] =
     BMP_NML_icon_bomb_part_j
 };
 
-static float lbl_801C21E4[] = { 7.0f, 16.0f, 26.0f, 48.0f,  0.0f,  9.0f, 55.0f, 12.0f, 33.0f, 71.0f };
-static float lbl_801C220C[] = { 9.0f,  0.0f,  0.0f, 4.0f,  24.0f, 16.0f, 23.0f, 63.0f, 56.0f, 69.0f };
+static float bombFragX[] = { 7.0f, 16.0f, 26.0f, 48.0f,  0.0f,  9.0f, 55.0f, 12.0f, 33.0f, 71.0f };
+static float bombFragY[] = { 9.0f,  0.0f,  0.0f, 4.0f,  24.0f, 16.0f, 23.0f, 63.0f, 56.0f, 69.0f };
 
-static void lbl_80080680(s8 *arg0, struct Sprite *sprite)
+static void bomb_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     u8 dummy[8];
     float temp_f0;
-    float temp_f24;
-    float temp_f26;
+    float x;
+    float y;
     float temp_f30;
     float temp_f29;
-    struct Sprite *temp_r3;
+    struct Sprite *fragSprite;
     u32 i;
 
     if (infoWork.timerCurr <= 600)
@@ -4704,36 +4697,38 @@ static void lbl_80080680(s8 *arg0, struct Sprite *sprite)
             sprite->unk44 = temp_f0;
             return;
         }
-        temp_f24 = sprite->x;
-        temp_f26 = sprite->y;
+
+        // with no time left on clock, destroy this sprite and spawn fragments
+        x = sprite->x;
+        y = sprite->y;
         temp_f30 = sprite->unk40;
         temp_f29 = sprite->unk44;
         *arg0 = 0;
         g_debug_set_cursor_pos(5, 5);
         for (i = 0; i < 10; i++)
         {
-            temp_r3 = create_sprite();
-            if (temp_r3 == NULL)
+            fragSprite = create_sprite();
+            if (fragSprite == NULL)
                 return;
-            temp_r3->type = SPRITE_TYPE_BITMAP;
-            temp_r3->tag = 2;
-            temp_r3->x = temp_f24 - 44.0f + lbl_801C21E4[i];
-            temp_r3->y = temp_f26 - 44.0f + lbl_801C220C[i];
-            temp_r3->fontId = FONT_ASCII;
-            temp_r3->bmpId = bombPartBitmapIDs[i];
-            temp_r3->textAlign = ALIGN_LT;
-            temp_r3->unk4C = 0.2f;
-            temp_r3->mainFunc = lbl_800805AC;
-            temp_r3->unk40 = temp_f30;
-            temp_r3->unk44 = temp_f29;
-            ((s16 *)&temp_r3->unk48)[0] = 1.2f * (lbl_801C21E4[i] - 30.0f);
-            ((s16 *)&temp_r3->unk48)[1] = 1.2f * (lbl_801C220C[i] - 20.0f);
-            sprintf(temp_r3->text, "bomb_scat%d.pic", i);
+            fragSprite->type = SPRITE_TYPE_BITMAP;
+            fragSprite->tag = 2;
+            fragSprite->x = x - 44.0f + bombFragX[i];
+            fragSprite->y = y - 44.0f + bombFragY[i];
+            fragSprite->fontId = FONT_ASCII;
+            fragSprite->bmpId = bombFragBitmapIds[i];
+            fragSprite->textAlign = ALIGN_LT;
+            fragSprite->unk4C = 0.2f;
+            fragSprite->mainFunc = bomb_frag_sprite_main;
+            fragSprite->unk40 = temp_f30;
+            fragSprite->unk44 = temp_f29;
+            ((s16 *)&fragSprite->unk48)[0] = 1.2f * (bombFragX[i] - 30.0f);
+            ((s16 *)&fragSprite->unk48)[1] = 1.2f * (bombFragY[i] - 20.0f);
+            sprintf(fragSprite->text, "bomb_scat%d.pic", i);
         }
     }
 }
 
-void func_8008083C(float arg8, float arg9)
+void hud_show_bomb(float arg8, float arg9)
 {
     struct Sprite *sprite;
     float x;
@@ -4750,10 +4745,12 @@ void func_8008083C(float arg8, float arg9)
         sprite->bmpId = BMP_NML_icon_bombtimer;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = 0.2f;
-        sprite->mainFunc = lbl_80080680;
+        sprite->mainFunc = bomb_sprite_main;
         sprintf(sprite->text, "timer.pic");
         y = sprite->y;
         x = sprite->x;
+
+        // spawn a second sprite to show cracks
         sprite = create_sprite();
         if (sprite != NULL)
         {
@@ -4766,7 +4763,7 @@ void func_8008083C(float arg8, float arg9)
             sprite->textAlign = ALIGN_CC;
             sprite->unk4C = 0.197f;
             sprite->opacity = 0.0f;
-            sprite->mainFunc = lbl_800803E8;
+            sprite->mainFunc = bomb_crack_sprite_main;
             sprite->unk48 = 0;
             sprintf(sprite->text, "hibi");
         }

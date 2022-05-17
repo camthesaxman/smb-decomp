@@ -798,9 +798,9 @@ struct Struct801EEC68
 {
     s32 unk0;
     u32 unk4;
-    s32 unk8;
-    s32 unkC;  // menu item count
-    s32 unk10;  // menu type
+    /*0x08*/ s32 selection;
+    /*0x0C*/ s32 itemCount;
+    /*0x10*/ s32 menuType;
     s8 unk14;
     s8 unk15;
     s16 unk16;
@@ -1138,6 +1138,15 @@ struct GBilLightGroup
 {
     char *name;
     s8 g_bgLightGroupId;
+};
+
+enum
+{
+    PAUSEMENU_CONT_HOW_EXIT,
+    PAUSEMENU_CONT_VIEW_HOW_EXIT,
+    PAUSEMENU_CONT_RETRY_VIEW_HOW_SELECT_EXIT,
+    PAUSEMENU_CONT_RETRY_HOW_EXIT,
+    PAUSEMENU_CONT_GUIDE_HOW_EXIT,
 };
 
 #endif

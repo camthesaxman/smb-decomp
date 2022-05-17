@@ -437,11 +437,11 @@ lbl_00000698:
 /* 000006C0 3C600000 */ lis r3, lbl_802F1FD0@ha
 /* 000006C4 38A30000 */ addi r5, r3, lbl_802F1FD0@l
 /* 000006C8 80050000 */ lwz r0, 0(r5)
-/* 000006CC 3C800000 */ lis r4, lbl_801EEC68@ha
+/* 000006CC 3C800000 */ lis r4, pauseMenuState@ha
 /* 000006D0 3C600000 */ lis r3, fogInfo@ha
 /* 000006D4 540006F8 */ rlwinm r0, r0, 0, 0x1b, 0x1c
 /* 000006D8 90050000 */ stw r0, 0(r5)
-/* 000006DC 38A40000 */ addi r5, r4, lbl_801EEC68@l
+/* 000006DC 38A40000 */ addi r5, r4, pauseMenuState@l
 /* 000006E0 38630000 */ addi r3, r3, fogInfo@l
 /* 000006E4 80850004 */ lwz r4, 4(r5)
 /* 000006E8 38000000 */ li r0, 0
@@ -1378,8 +1378,8 @@ lbl_000014C4:
 /* 000014CC A863000E */ lha r3, 0xe(r3)
 /* 000014D0 4BFFEC7D */ bl g_play_sound
 lbl_000014D4:
-/* 000014D4 3C600000 */ lis r3, lbl_801EEC68@ha
-/* 000014D8 38630000 */ addi r3, r3, lbl_801EEC68@l
+/* 000014D4 3C600000 */ lis r3, pauseMenuState@ha
+/* 000014D8 38630000 */ addi r3, r3, pauseMenuState@l
 /* 000014DC 80030004 */ lwz r0, 4(r3)
 /* 000014E0 3CA00000 */ lis r5, lbl_802F1FF0@ha
 /* 000014E4 3C800000 */ lis r4, lbl_802F1FF6@ha
@@ -3620,8 +3620,8 @@ lbl_0000353C:
 /* 00003578 B0030000 */ sth r0, lbl_802F1FF4@l(r3)
 /* 0000357C 48000024 */ b lbl_000035A0
 lbl_00003580:
-/* 00003580 3C600000 */ lis r3, lbl_801EEC68@ha
-/* 00003584 38830000 */ addi r4, r3, lbl_801EEC68@l
+/* 00003580 3C600000 */ lis r3, pauseMenuState@ha
+/* 00003584 38830000 */ addi r4, r3, pauseMenuState@l
 /* 00003588 80040004 */ lwz r0, 4(r4)
 /* 0000358C 3C600000 */ lis r3, lbl_802F1FF4@ha
 /* 00003590 60000002 */ ori r0, r0, 2

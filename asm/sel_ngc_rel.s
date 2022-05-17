@@ -10583,9 +10583,9 @@ lbl_00009590:
 /* 000095A4 7D8803A6 */ mtlr r12
 /* 000095A8 4E800021 */ blrl 
 /* 000095AC 38000000 */ li r0, 0
-/* 000095B0 3C600000 */ lis r3, lbl_801EEC68@ha
+/* 000095B0 3C600000 */ lis r3, pauseMenuState@ha
 /* 000095B4 900F0000 */ stw r0, 0(r15)
-/* 000095B8 38830000 */ addi r4, r3, lbl_801EEC68@l
+/* 000095B8 38830000 */ addi r4, r3, pauseMenuState@l
 /* 000095BC 80040004 */ lwz r0, 4(r4)
 /* 000095C0 3C600000 */ lis r3, modeCtrl@ha
 /* 000095C4 38630000 */ addi r3, r3, modeCtrl@l

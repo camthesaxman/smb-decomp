@@ -281,7 +281,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801C1420;
 // extern ? lbl_801C147C;
 // extern ? lbl_801C14B4;
-// extern ? lbl_801C14F0;
+// extern ? playerNumColors;
 // extern ? lbl_801C14FC;
 // extern ? lbl_801C1518;
 // extern ? lbl_801C1524;
@@ -528,7 +528,7 @@ extern GXRenderModeObj GXPal528IntDf;
 extern u8 lbl_801ED920[];
 extern GXRenderModeObj lbl_801EEB60;
 
-extern struct Struct801EEC68 lbl_801EEC68;
+extern struct Struct801EEC68 pauseMenuState;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
 
@@ -1847,7 +1847,7 @@ extern u32 lbl_802F22C8;
 // extern ? lbl_802F28A0;
 // extern ? lbl_802F28A4;
 // extern ? lbl_802F28A8;
-extern const s8 lbl_802F28B0[8];
+extern const s8 pauseMenuItemCounts[8];
 // extern ? lbl_802F28C0;
 // extern ? lbl_802F28C8;
 // extern ? lbl_802F28CC;

@@ -236,29 +236,19 @@ void submode_adv_logo_main_func(void)
     if ((dipSwitches & DIP_DEBUG)
      && !(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.submodeTimer > 60
-     && lbl_802F1BA8 == 0)
+     && lbl_802F1BA8 == 0
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
     {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-        {
-            func_8000FEC8(30);
-            g_play_music(2, 0);
-        }
+        func_8000FEC8(30);
+        g_play_music(2, 0);
     }
 
     if (modeCtrl.levelSetFlags & (1 << 13))
         return;
 
-    if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 690)
-    {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-            modeCtrl.submodeTimer = 30;
-    }
+    if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 690
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
+        modeCtrl.submodeTimer = 30;
 
     if (modeCtrl.submodeTimer == 30)
     {
@@ -346,9 +336,9 @@ void lbl_8000F030(struct TextBox *tbox)
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    g_math_unk15(&ballInfo[tbox->unk20 - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
+    g_math_unk15(&ballInfo[tbox->id - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
     tbox->x = spC.x;
-    tbox->y = spC.y + lbl_801741CC[tbox->unk20 - 1];
+    tbox->y = spC.y + lbl_801741CC[tbox->id - 1];
 }
 
 enum
@@ -544,7 +534,7 @@ void run_cutscene_script(void)
                 tbox.numLines = (cmd->param == CHARACTER_BABY) ? 3 : 4;
                 tbox.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
                 tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
-                tbox.unk1C = lbl_8000F030;
+                tbox.callback = lbl_8000F030;
                 g_create_textbox(cmd->param + 1, 1, &tbox);
                 g_banana_sprite_something(cmd->param);
             }
@@ -707,14 +697,9 @@ void submode_adv_demo_main_func(void)
     if (advDemoInfo.unk8 == 0xA2A)
         func_8000FEC8(100);
     if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.submodeTimer > 60
-     && lbl_802F1BA8 == 0)
-    {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-            func_8000FEC8(30);
-    }
+     && lbl_802F1BA8 == 0
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
+        func_8000FEC8(30);
     modeCtrl.submodeTimer--;
 }
 
@@ -1289,7 +1274,7 @@ void submode_adv_title_reinit_func(void)
         tbox.numLines = 2;
         tbox.unk14 = 12;
         tbox.style = 14;
-        tbox.unk1C = NULL;
+        tbox.callback = NULL;
         g_create_textbox(0, 1, &tbox);
         g_set_textbox_text(0, " \n ");
         hud_show_title_menu();
@@ -1318,28 +1303,25 @@ void submode_adv_title_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (textBoxes[0].unk0 < 20 && !(dipSwitches & DIP_DEBUG) && !(modeCtrl.levelSetFlags & (1 << 2)))
+    if (textBoxes[0].state < 20
+     && !(dipSwitches & DIP_DEBUG)
+     && !(modeCtrl.levelSetFlags & (1 << 2))
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
     {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-        {
-            struct TextBox tbox;
+        struct TextBox tbox;
 
-            func_8002B5C8(0x162);
-            modeCtrl.levelSetFlags |= 4;
-            memset(&tbox, 0, sizeof(tbox));
-            tbox.x = 320;
-            tbox.y = 386;
-            tbox.numLines = 2;
-            tbox.unk14 = 12;
-            tbox.style = 14;
-            tbox.unk1C = NULL;
-            g_create_textbox(0, 1, &tbox);
-            g_set_textbox_text(0, " \n ");
-            hud_show_title_menu();
-        }
+        func_8002B5C8(0x162);
+        modeCtrl.levelSetFlags |= 4;
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.x = 320;
+        tbox.y = 386;
+        tbox.numLines = 2;
+        tbox.unk14 = 12;
+        tbox.style = 14;
+        tbox.callback = NULL;
+        g_create_textbox(0, 1, &tbox);
+        g_set_textbox_text(0, " \n ");
+        hud_show_title_menu();
     }
     if (modeCtrl.levelSetFlags & (1 << 2))
     {
@@ -1423,14 +1405,14 @@ void submode_adv_info_init_func(void)
         tbox.numLines = 1;
         tbox.unk14 = 1;
         tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
-        tbox.unk1C = NULL;
+        tbox.callback = NULL;
         g_create_textbox(1, 2, &tbox);
         tbox.x = 320;
         tbox.y = 60;
         tbox.numLines = 1;
         tbox.unk14 = 0;
         tbox.style = 14;
-        tbox.unk1C = NULL;
+        tbox.callback = NULL;
         g_create_textbox(2, 1, &tbox);
         g_set_textbox_text(2, "c/0xff5000/    Control description!    ");
     }
@@ -1652,14 +1634,9 @@ void submode_adv_info_main_func(void)
     }
     if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.submodeTimer > 60
-     && lbl_802F1BA8 == 0)
-    {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-            func_8000FEC8(30);
-    }
+     && lbl_802F1BA8 == 0
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
+        func_8000FEC8(30);
     if (modeCtrl.submodeTimer == 30)
     {
         struct Sprite *sprite;
@@ -1774,14 +1751,9 @@ void submode_adv_game_ready_main_func(void)
         ballInfo[0].state = 3;
     if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.submodeTimer > 30
-     && lbl_802F1BA8 == 0)
-    {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-            func_8000FEC8(30);
-    }
+     && lbl_802F1BA8 == 0
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
+        func_8000FEC8(30);
     if (--modeCtrl.submodeTimer <= 0)
     {
         struct ReplayInfo sp8;
@@ -1826,14 +1798,9 @@ void submode_adv_game_play_main_func(void)
     }
     if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.submodeTimer > 30
-     && lbl_802F1BA8 == 0)
-    {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-            func_8000FEC8(30);
-    }
+     && lbl_802F1BA8 == 0
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
+        func_8000FEC8(30);
     modeCtrl.submodeTimer--;
     if (modeCtrl.submodeTimer < 0)
     {
@@ -2006,17 +1973,12 @@ void submode_adv_ranking_main_func(void)
 
     if (!(modeCtrl.levelSetFlags & (1 << 13))
      && modeCtrl.submodeTimer > 60
-     && lbl_802F1BA8 == 0)
+     && lbl_802F1BA8 == 0
+     && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
     {
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-        {
-            func_8000FEC8(30);
-            func_8008897C(0);
-            func_80088FD4(0);
-        }
+        func_8000FEC8(30);
+        func_8008897C(0);
+        func_80088FD4(0);
     }
 
     if (modeCtrl.submodeTimer == 180)

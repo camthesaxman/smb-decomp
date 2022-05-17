@@ -13391,8 +13391,8 @@ lbl_0000C8A8:
 /* 0000C8E4 4BFF3881 */ bl g_play_music
 /* 0000C8E8 48000020 */ b lbl_0000C908
 lbl_0000C8EC:
-/* 0000C8EC 3C600000 */ lis r3, lbl_801EEC68@ha
-/* 0000C8F0 38830000 */ addi r4, r3, lbl_801EEC68@l
+/* 0000C8EC 3C600000 */ lis r3, pauseMenuState@ha
+/* 0000C8F0 38830000 */ addi r4, r3, pauseMenuState@l
 /* 0000C8F4 80640004 */ lwz r3, 4(r4)
 /* 0000C8F8 3800000E */ li r0, 0xe
 /* 0000C8FC 60630002 */ ori r3, r3, 2

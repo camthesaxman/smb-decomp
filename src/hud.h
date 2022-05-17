@@ -33,6 +33,6 @@ void func_8007ECB8(void);
 void func_8007EF50(struct Ball *);
 void hud_show_goal_score_info(int clearScore, int floorScore, u32 arg2);
 void g_show_practice_mode_score_info(int);
-void func_8008083C(float, float);
+void hud_show_bomb(float, float);
 
 #endif

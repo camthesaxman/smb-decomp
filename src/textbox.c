@@ -40,9 +40,9 @@ void func_80073E44(void)
     {
         memset(r29, 0, sizeof(*r29));
         memset(r28, 0, sizeof(*r28));
-        r29->unk0 = 0;
+        r29->state = 0;
         r29->unk8 = 0;
-        r29->unk1C = NULL;
+        r29->callback = NULL;
         clear_lines(i);
     }
     lbl_802F200C = -1.0f;
@@ -57,10 +57,10 @@ void textbox_main(void)
     tbox = textBoxes;
     for (i = 0; i < 4; i++, tbox++)
     {
-        if (tbox->unk0 != 0)
+        if (tbox->state != 0)
         {
-            if (tbox->unk1C != NULL)
-                tbox->unk1C(tbox);
+            if (tbox->callback != NULL)
+                tbox->callback(tbox);
             func_80073F74(i, tbox);
         }
     }
@@ -74,18 +74,18 @@ static void func_80073F74(int id, struct TextBox *tbox)
     int j;
     float f30;
 
-    switch (tbox->unk0)
+    switch (tbox->state)
     {
     case 1:
         tbox->unk8++;
         if (tbox->unk8 == tbox->unk4)
         {
-            tbox->unk0 = 10;
+            tbox->state = 10;
             tbox->unk8 = 0;
-            if (lbl_80292AC0[id].unk0 == 20)
+            if (lbl_80292AC0[id].state == 20)
             {
-                tbox->unk0 = 20;
-                lbl_80292AC0[id].unk0 = 0;
+                tbox->state = 20;
+                lbl_80292AC0[id].state = 0;
             }
         }
         if (tbox->unk14 == 0)
@@ -117,7 +117,7 @@ static void func_80073F74(int id, struct TextBox *tbox)
         }
         break;
     case 3:
-        tbox->unk0 = 1;
+        tbox->state = 1;
         tbox->unk8 = 0;
         break;
     case 10:
@@ -131,7 +131,7 @@ static void func_80073F74(int id, struct TextBox *tbox)
         }
         if (j > tbox->numLines)
         {
-            tbox->unk0 = 11;
+            tbox->state = 11;
             tbox->unk8 = 0;
         }
         break;
@@ -140,7 +140,7 @@ static void func_80073F74(int id, struct TextBox *tbox)
         if (tbox->unk8 == 16)
         {
             s32 i;
-            tbox->unk0 = 10;
+            tbox->state = 10;
             line = textBoxLines[id];
             for (i = 0; i < 19; i++, line++)
                 memcpy(line, line + 1, sizeof(*line));
@@ -152,9 +152,9 @@ static void func_80073F74(int id, struct TextBox *tbox)
         tbox->unk8++;
         if (tbox->unk8 == tbox->unk4)
         {
-            tbox->unk0 = 0;
+            tbox->state = 0;
             tbox->unk8 = 0;
-            tbox->unk1C = 0;
+            tbox->callback = NULL;
             clear_lines(id);
         }
         break;
@@ -173,16 +173,16 @@ static void func_80073F74(int id, struct TextBox *tbox)
                 line->unk82 = 0;
             }
             memcpy(tbox, &lbl_80292AC0[id], sizeof(*tbox));
-            tbox->unk0 = 1;
+            tbox->state = 1;
             tbox->unk8 = 0;
-            lbl_80292AC0[id].unk0 = 0;
+            lbl_80292AC0[id].state = 0;
         }
         break;
     case 22:
         tbox->unk8++;
         if (tbox->unk8 == tbox->unk4)
         {
-            tbox->unk0 = 2;
+            tbox->state = 2;
             tbox->unk8 = 0;
             clear_lines(id);
         }
@@ -192,10 +192,10 @@ static void func_80073F74(int id, struct TextBox *tbox)
     line = textBoxLines[id];
     for (i = 0; i < 20; i++, line++)
     {
-        if (tbox->unk0 >= 10
+        if (tbox->state >= 10
          && line->unk0 != 0
          && line->unk0 == 2
-         && (tbox->unk0 == 10 || tbox->unk0 == 11))
+         && (tbox->state == 10 || tbox->state == 11))
         {
             if (i < tbox->numLines
              && (i == 0 || textBoxLines[id][i - 1].unk0 != 2))
@@ -212,7 +212,7 @@ void func_80074480(void)
     struct TextBox *tbox;
 
     for (tbox = textBoxes, i = 0; i < 4; i++, tbox++)
-        tbox->unk0 = 0;
+        tbox->state = 0;
 }
 
 static void draw_textbox(int a, struct TextBox *b);
@@ -224,7 +224,7 @@ void textbox_draw_all(void)
 
     for (tbox = textBoxes, i = 0; i < 4; i++, tbox++)
     {
-        if (tbox->unk0 != 0)
+        if (tbox->state != 0)
             draw_textbox(i, tbox);
     }
 }
@@ -244,8 +244,8 @@ static void draw_textbox(int a, struct TextBox *tbox)
     float f27;
 
     struct TextBoxLine *line;
-    int r30;
-    int r29;
+    int i;
+    int j;
 
     float f26;
     float f25;
@@ -254,7 +254,7 @@ static void draw_textbox(int a, struct TextBox *tbox)
     float f1;
     float f0;
 
-    if (tbox->unk0 == 0 || tbox->unk0 == 2 || tbox->unk0 == 3)
+    if (tbox->state == 0 || tbox->state == 2 || tbox->state == 3)
         return;
     if (tbox->unk14 == 0)
         return;
@@ -262,15 +262,15 @@ static void draw_textbox(int a, struct TextBox *tbox)
     func_80071A8C();
     g_set_font(tbox->style == TEXTBOX_STYLE_SPIKY ? FONT_ICON_SD2 : FONT_ICON_SD);
     func_80071B1C(a * 0.01f + 0.059999999776482585);
-    g_set_text_fill_color(tbox->unk24);
+    g_set_text_fill_color(tbox->bgColor);
     f3 = (float)tbox->unk8 / (float)tbox->unk4;
-    if (tbox->unk0 == 1)
+    if (tbox->state == 1)
     {
         f29 = (f3 < 0.5) ? f3 * 2.0f : 1.0;
         f30 = (f3 < 0.5) ? 0.1 : (f3 - 0.5) * 1.8 + 0.1;
         f23 = (f3 < 0.5) ? f3 * 2.0f : 1.0;
     }
-    else if (tbox->unk0 >= 20 && f3 > 0.5)
+    else if (tbox->state >= 20 && f3 > 0.5)
     {
         f3 = (f3 - 0.5) * 2.0;
         f29 = (f3 < 0.5) ? 1.0 : f3 * 2.0f;
@@ -293,60 +293,62 @@ static void draw_textbox(int a, struct TextBox *tbox)
         sp24 += 12;
         sp20 += 12;
     }
+    
+    // draw frame
     numLines = tbox->numLines;
     f27 = tbox->unk14;
     g_set_text_pos(sp24 - 24, sp20 - 24);
-    for (r30 = -1; r30 <= numLines; r30++)
+    for (i = -1; i <= numLines; i++)
     {
-        for (r29 = -1; r29 <= f27; r29++)
+        for (j = -1; j <= f27; j++)
         {
             f26 = f29;
             f25 = f30;
-            if (tbox->style == 15 && (r30 == -1 || (float)r30 == numLines))
+            if (tbox->style == 15 && (i == -1 || (float)i == numLines))
                 f25 *= 0.5;
-            if (tbox->style == 15 && (r29 == -1 || (float)r29 == f27))
+            if (tbox->style == 15 && (j == -1 || (float)j == f27))
                 f26 *= 0.5;
             func_80071B2C(f26, f25);
-            if (r29 == -1)
+            if (j == -1)
             {
-                if (r30 == -1)
+                if (i == -1)
                     g_draw_text("\x01");
-                else if ((float)r30 == numLines)
+                else if ((float)i == numLines)
                     g_draw_text("\x0B");
                 else
                     g_draw_text("\x06");
             }
-            else if ((float)r29 == f27)
+            else if ((float)j == f27)
             {
-                if (r30 == -1)
+                if (i == -1)
                     g_draw_text("\x03");
-                else if ((float)r30 == numLines)
+                else if ((float)i == numLines)
                     g_draw_text("\x0D");
                 else
                     g_draw_text("\x08");
 
             }
-            else if (tbox->style == TEXTBOX_STYLE_SPIKY && (r30 == -1 || (float)r30 == numLines))
+            else if (tbox->style == TEXTBOX_STYLE_SPIKY && (i == -1 || (float)i == numLines))
             {
                 float f1 = mathutil_floor(tbox->unk10 / 24.0f);
-                if (r29 < f1)
+                if (j < f1)
                 {
                     func_80071B2C((tbox->unk10 / f1 / 24.0f) * f26, f25);
-                    if (r30 == -1)
+                    if (i == -1)
                         g_draw_text("\x02");
-                    else if ((float)r30 == numLines)
+                    else if ((float)i == numLines)
                         g_draw_text("\x0C");
                     else
                         g_draw_text("\x07");
                     func_80071B2C(f26, f25);
                 }
             }
-            else if (r29 == 0)
+            else if (j == 0)
             {
                 func_80071B2C(f26 * tbox->unk10 / 24.0f, f25);
-                if (r30 == -1)
+                if (i == -1)
                     g_draw_text("\x02");
-                else if ((float)r30 == numLines)
+                else if ((float)i == numLines)
                     g_draw_text("\x0C");
                 else
                     g_draw_text("\x07");
@@ -355,15 +357,18 @@ static void draw_textbox(int a, struct TextBox *tbox)
         }
         g_draw_text("\n");
     }
+
     func_80071B1C(a * 0.01f + 0.05);
-    if (tbox->unk0 >= 20)
+    if (tbox->state >= 20)
         f1 = 1.0f - tbox->unk8 / 15.0f;
-    else if (tbox->unk0 == 10)
+    else if (tbox->state == 10)
         f1 = tbox->unk8 / 15.0f;
     else
         f1 = 0.0f;
     f0 = CLAMP(f1, 0.0f, 1.0f);
     func_80071B40(f0);
+    
+    // draw arrow
     switch (tbox->style)
     {
         float zero;
@@ -420,7 +425,7 @@ static void draw_textbox(int a, struct TextBox *tbox)
         break;
     }
     func_80071B2C(f29, f30);
-    if (tbox->unk0 < 10)
+    if (tbox->state < 10)
     {
         func_80071A8C();
         return;
@@ -429,27 +434,29 @@ static void draw_textbox(int a, struct TextBox *tbox)
     g_set_font(FONT_JAP_24x24_2P);
     func_80071B1C(a * 0.01f + 0.05);
     g_set_text_fill_color(0);
-    if (tbox->unk0 == 11)
-        r29 = tbox->unk8 * -1.5;
+    if (tbox->state == 11)
+        j = tbox->unk8 * -1.5;
     else
-        r29 = 0;
-    if (tbox->unk0 >= 20)
+        j = 0;
+    if (tbox->state >= 20)
     {
         float temp_f1_2 = tbox->unk4 * 0.5;
         f25 = (tbox->unk8 < temp_f1_2) ? 1.0f - tbox->unk8 * (1.0f / temp_f1_2) : 0.0;
     }
     else
         f25 = 1.0f;
+    
+    // draw text
     line = textBoxLines[a];
-    for (r30 = 0; r30 < 20; r30++, line++)
+    for (i = 0; i < 20; i++, line++)
     {
         if (line->unk0 == 0)
             break;
         lbl_802F200C = line->unk82;
         lbl_802F2008 = get_ascii_text_width(line->text);
-        if (tbox->unk0 == 11)
+        if (tbox->state == 11)
         {
-            if (r30 == 0)
+            if (i == 0)
                 f25 = tbox->unk8 < 8 ? 1.0 - tbox->unk8 * 0.14 : 0.0;
             else
                 f25 = 1.0f;
@@ -463,7 +470,7 @@ static void draw_textbox(int a, struct TextBox *tbox)
         else
             func_80071B2C(1.0f, 1.0f);
         func_80075498(tbox, &sp1C, &sp18);
-        g_set_text_pos(sp1C, sp18 + r30 * 24 + r29);
+        g_set_text_pos(sp1C, sp18 + i * 24 + j);
         g_draw_text(line->text);
     }
     lbl_802F200C = -1.0f;
@@ -546,75 +553,75 @@ static void func_80075498(struct TextBox *tbox, int *x, int *y)
     }
 }
 
-void g_create_textbox(int id, int b, struct TextBox *c)
+void g_create_textbox(int id, int b, struct TextBox *template)
 {
-    int r30;
+    int bgColor;
     int style;
     int x;
     int y;
     struct TextBox *tbox = &textBoxes[id];
 
-    if (b == 20 && tbox->unk0 >= 20)
+    if (b == 20 && tbox->state >= 20)
     {
-        tbox->unk0 = 20;
+        tbox->state = 20;
         return;
     }
-    if (b == 20 && tbox->unk0 != 1 && tbox->unk0 < 10)
+    if (b == 20 && tbox->state != 1 && tbox->state < 10)
         return;
-    if (c == NULL)
-        c = tbox;
+    if (template == NULL)
+        template = tbox;
 
     tbox->unk4 = 30;
     tbox->unk8 = 0;
-    style = (c->style == 0) ? tbox->style : c->style;
-    x = (c->x == 0) ? tbox->x : c->x;
-    y = (c->y == 0) ? tbox->y : c->y;
-    r30 = (c->unk24 == 0) ? 0xFFFFFF : c->unk24;
+    style = (template->style == 0) ? tbox->style : template->style;
+    x = (template->x == 0) ? tbox->x : template->x;
+    y = (template->y == 0) ? tbox->y : template->y;
+    bgColor = (template->bgColor == 0) ? RGBA(255, 255, 255, 0) : template->bgColor;
     if (b == 1 || b == 2)
     {
         clear_lines(id);
-        tbox->unk20 = id;
-        tbox->unk0 = b;
+        tbox->id = id;
+        tbox->state = b;
         tbox->x = x;
         tbox->y = y;
-        tbox->unk14 = c->unk14;
+        tbox->unk14 = template->unk14;
         tbox->unk10 = tbox->unk14 * 24;
-        tbox->numLines = c->numLines;
-        tbox->style = c->style;
-        tbox->unk24 = r30;
-        tbox->unk17 = c->unk17;
-        tbox->unk18 = c->unk18;
-        tbox->unk19 = c->unk19;
-        tbox->unk1C = c->unk1C;
+        tbox->numLines = template->numLines;
+        tbox->style = template->style;
+        tbox->bgColor = bgColor;
+        tbox->unk17 = template->unk17;
+        tbox->unk18 = template->unk18;
+        tbox->unk19 = template->unk19;
+        tbox->callback = template->callback;
         return;
     }
 
     if (b == 21)
     {
-        if (tbox->unk0 < 10)
+        if (tbox->state < 10)
         {
-            tbox->unk0 = 3;
+            tbox->state = 3;
             tbox->x = x;
             tbox->y = y;
-            tbox->unk14 = c->unk14;
+            tbox->unk14 = template->unk14;
             tbox->unk10 = tbox->unk14 * 24;
-            tbox->numLines = c->numLines;
+            tbox->numLines = template->numLines;
             tbox->style = style;
-            tbox->unk24 = r30;
+            tbox->bgColor = bgColor;
             return;
         }
-        tbox->unk0 = b;
+        tbox->state = b;
         memcpy(&lbl_80292AC0[id], tbox, sizeof(lbl_80292AC0[id]));
         lbl_80292AC0[id].x = x;
         lbl_80292AC0[id].y = y;
-        lbl_80292AC0[id].unk14 = c->unk14;
-        lbl_80292AC0[id].numLines = c->numLines;
+        lbl_80292AC0[id].unk14 = template->unk14;
+        lbl_80292AC0[id].numLines = template->numLines;
         lbl_80292AC0[id].style = style;
-        lbl_80292AC0[id].unk24 = r30;
+        lbl_80292AC0[id].bgColor = bgColor;
         return;
     }
 
-    tbox->unk0 = b;
+    tbox->state = b;
 }
 
 void add_textbox_line(int id, const char *str)
@@ -632,9 +639,9 @@ void add_textbox_line(int id, const char *str)
             line->unk0 = 2;
             strcpy(line->text, str);
             line->unk82 = 0;
-            if (i == tbox->numLines && tbox->unk0 == 10)
+            if (i == tbox->numLines && tbox->state == 10)
             {
-                tbox->unk0 = 11;
+                tbox->state = 11;
                 tbox->unk8 = 0;
             }
             break;

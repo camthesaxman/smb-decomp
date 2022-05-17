@@ -1,4 +1,4 @@
-lbl_800805AC:
+bomb_frag_sprite_main:
 /* 800805AC 0007C4CC  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 800805B0 0007C4D0  3C A0 43 30 */	lis r5, 0x4330
 /* 800805B4 0007C4D4  C0 24 00 6C */	lfs f1, 0x6c(r4)
