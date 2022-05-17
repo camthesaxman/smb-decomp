@@ -333,7 +333,7 @@ void bitmap_main(void)
 
     bitmap_draw_string();
     lbl_802F1D04 = 2;
-    func_8002704C();
+    g_draw_all_naomi_sprites();
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
@@ -341,9 +341,9 @@ void bitmap_main(void)
     if (eventInfo[EVENT_MOUSE].state == EV_STATE_RUNNING)
         func_80095024();
     lbl_802F1D04 = 3;
-    func_800730B4();
+    g_draw_screen_fade_mask();
     lbl_802F1D04 = 2;
-    func_8002704C();
+    g_draw_all_naomi_sprites();  // again?
 
     if (gxCache->updateEnable != GX_DISABLE
      || gxCache->compareFunc != GX_ALWAYS
@@ -494,12 +494,12 @@ void bitmap_draw_normal_char(unsigned char chr)
     float f26;
     GXColor tevColor;
 
-    f27 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].width;
-    f26 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].height;
+    f27 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].width;
+    f26 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].height;
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], GX_TEXMAP0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texObjs[font->bmpId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = 255;
     tevColor.g = 255;
@@ -616,7 +616,7 @@ void bitmap_draw_string(void)
     prevString = currString;
 }
 
-void func_8002704C(void)
+void g_draw_all_naomi_sprites(void)
 {
     int i;
     struct NaomiSpriteParams *params = &spriteParamsBuf[0];

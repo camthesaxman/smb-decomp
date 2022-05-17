@@ -1,5 +1,5 @@
 /**
- * game.c - Implements the "game" mode, which handles gameplay control flow
+ * game.c - Implements the "game" mode, which handles gameplay control flow for the main game
  */
 #include <stddef.h>
 #include <stdio.h>
@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "event.h"
 #include "game.h"
+#include "hud.h"
 #include "info.h"
 #include "input.h"
 #include "item.h"
@@ -22,6 +23,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "textbox.h"
 #include "world.h"
 #include "light.h"
 
@@ -218,15 +220,15 @@ void submode_game_ready_init_func(void)
     {
         modeCtrl.submodeTimer = 360;
         camera_set_state(0x26);
-        show_stage_intro_text();
+        hud_show_stage_name_banner();
     }
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_COMPETITION:
-        g_init_main_competition_hud();
+        hud_show_competition_mode_info();
         break;
     default:
-        g_init_main_normal_hud();
+        hud_show_normal_mode_info();
         break;
     }
     r30 = backgroundSongs[backgroundInfo.bgId];
@@ -276,7 +278,7 @@ void submode_game_ready_main_func(void)
         struct Sprite *sprite = find_sprite_with_tag(15);
         if (sprite != NULL)
             sprite->unk48 = 15;
-        show_ready_text(120);
+        hud_show_ready_banner(120);
         func_800846B0(3);
     }
     if (modeCtrl.submodeTimer == 24.0)
@@ -298,7 +300,7 @@ void submode_game_play_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
     event_resume(EVENT_WORLD);
-    show_go_text(60);
+    hud_show_go_banner(60);
     infoWork.flags &= -265;
     func_80048F20();
     lbl_80250A68.unk14 = 0;
@@ -343,7 +345,7 @@ void submode_game_play_main_func(void)
         if (infoWork.timerCurr / 60 == 10)
         {
             g_play_sound(7);  // hurry up?
-            show_hurry_up_text();
+            hud_show_hurry_up_banner();
         }
     }
     if (infoWork.timerCurr <= 5 * 60 && infoWork.timerCurr % 60 == 43)
@@ -407,9 +409,9 @@ void submode_game_goal_init_func(void)
     func_800846B0(1);
     camera_set_state(14);
     if (!(infoWork.flags & (1 << 13)))
-        g_show_goal_text(0x168);
+        hud_show_goal_banner(0x168);
     else
-        show_timeover_text(120);
+        hud_show_time_over_banner(120);
     if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         g_give_points(3, 0);
     if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
@@ -472,7 +474,7 @@ void submode_game_goal_replay_init_func(void)
     func_80037B20();
     func_8004CFF0(0);
     func_8004CFF0(10);
-    lbl_80250A68.unk14 = infoWork.unk30;
+    lbl_80250A68.unk14 = infoWork.playerId;
     infoWork.flags |= (1 << 4);
     lbl_80250A68.unk10 = MIN(modeCtrl.submodeTimer - 60, func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]));
     animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
@@ -624,10 +626,10 @@ void submode_game_continue_init_func(void)
             modeCtrl.levelSetFlags |= (1 << 2);
         }
         else
-            g_show_continue_hud();
+            hud_show_continue_interface();
     }
     else
-        g_show_continue_hud();
+        hud_show_continue_interface();
     g_smth_with_lights_smd_continue(currStageId);
 
     BALL_FOREACH( ball->state = 18; )
@@ -756,7 +758,7 @@ void submode_game_timeover_init_func(void)
         func_8001898C(i, modeCtrl.submodeTimer, &sp8);
     }
     func_80049158();
-    show_timeover_text(modeCtrl.submodeTimer);
+    hud_show_time_over_banner(modeCtrl.submodeTimer);
     BALL_FOREACH( g_play_sound(28); )
     gameSubmodeRequest = SMD_GAME_TIMEOVER_MAIN;
 }
@@ -819,7 +821,7 @@ void submode_game_ringout_init_func(void)
     g_play_sound((currentBallStructPtr->lives == 1) ? 81 : 29);
     g_play_sound(21);
     lbl_802F1C1C = -1;
-    show_fallout_text(modeCtrl.submodeTimer);
+    hud_show_fallout_banner(modeCtrl.submodeTimer);
     gameSubmodeRequest = SMD_GAME_RINGOUT_MAIN;
 }
 
@@ -926,10 +928,10 @@ void submode_game_bonus_clear_init_func(void)
     BALL_FOREACH( ball->flags |= 0x500; )
     camera_set_state(14);
     if (infoWork.flags & (1 << 10))
-        show_timeover_text(modeCtrl.submodeTimer);
+        hud_show_time_over_banner(modeCtrl.submodeTimer);
     else
     {
-        show_perfect_text(modeCtrl.submodeTimer);
+        hud_show_perfect_banner(modeCtrl.submodeTimer);
         func_80049158();
     }
     gameSubmodeRequest = SMD_GAME_BONUS_CLEAR_MAIN;
@@ -985,7 +987,7 @@ void submode_game_over_init_func(void)
     modeCtrl.submodeTimer = 120;
     if (!(modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))))
         BALL_FOREACH( g_play_sound(0x22C); )
-    show_gameover_text(120);
+    hud_show_game_over_banner(120);
     if (screenFadeInfo.unk8 == 0)
     {
         if (!(modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))))
@@ -1120,7 +1122,7 @@ char *nameEntryText[] =
 
 void submode_game_nameentry_ready_init_func(void)
 {
-    struct Struct80075900 sp8;
+    struct TextBox tbox;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1162,14 +1164,14 @@ void submode_game_nameentry_ready_init_func(void)
             ball->ape->unk14 &= ~(1 << 3);
     );
     infoWork.flags |= (1 << 3);
-    memset(&sp8, 0, sizeof(sp8));
-    sp8.unk16 = 11;
-    sp8.unkC = 0x140;
-    sp8.unkE = 0x90;
-    sp8.unk14 = 0;
-    sp8.unk15 = 1;
-    sp8.unk1C = 0;
-    g_create_textbox(1, 1, &sp8);
+    memset(&tbox, 0, sizeof(tbox));
+    tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+    tbox.x = 320;
+    tbox.y = 144;
+    tbox.unk14 = 0;
+    tbox.numLines = 1;
+    tbox.unk1C = 0;
+    g_create_textbox(1, 1, &tbox);
     g_set_textbox_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
     g_start_screen_fade(0x100, 0xFFFFFF, 30);
     BALL_FOREACH( ball->state = 15; )
@@ -1186,10 +1188,10 @@ void submode_game_nameentry_ready_main_func(void)
     if (modeCtrl.submodeTimer == 120.0)
     {
         g_create_textbox(1, 20, NULL);
-        func_8007E44C(
+        hud_show_name_entry_info(
             func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]),
             lbl_802C67D4[modeCtrl.currPlayer].unk4);
-        show_nameentry_text(modeCtrl.submodeTimer);
+        hud_show_name_entry_banner(modeCtrl.submodeTimer);
     }
     if (modeCtrl.submodeTimer == 180)
         camera_set_state(33);
@@ -1203,7 +1205,7 @@ void submode_game_nameentry_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    show_go_text(60);
+    hud_show_go_banner(60);
     infoWork.flags &= ~(1 << 3);
     WORLD_FOREACH( world->state = WORLD_STATE_INPUT_INIT; )
     BALL_FOREACH( ball->state = 4; )
@@ -1495,56 +1497,56 @@ void submode_game_extra_wait_func(void)
         modeCtrl.submodeTimer = 60;
     if (modeCtrl.submodeTimer == 540)
     {
-        struct Struct80075900 sp30;
+        struct TextBox tbox;
 
-        memset(&sp30, 0, sizeof(sp30));
-        sp30.unk16 = 11;
-        sp30.unkC = 0x140;
-        sp30.unkE = 0xC8;
-        sp30.unk15 = 2;
-        sp30.unk1C = 0;
-        g_create_textbox(1, 1, &sp30);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+        tbox.x = 0x140;
+        tbox.y = 0xC8;
+        tbox.numLines = 2;
+        tbox.unk1C = 0;
+        g_create_textbox(1, 1, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
-            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][0]);
-            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][1]);
+            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
+            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
         else if (modeCtrl.levelSet == LVLSET_EXPERT)
         {
-            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][0]);
-            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][1]);
+            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
+            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
         else
         {
-            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][0]);
-            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][1]);
+            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
+            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
     }
     if (modeCtrl.submodeTimer == 300)
     {
-        struct Struct80075900 sp8;
+        struct TextBox tbox;
 
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unk16 = 11;
-        sp8.unkC = 0x140;
-        sp8.unkE = 0xC8;
-        sp8.unk15 = 2;
-        sp8.unk1C = 0;
-        g_create_textbox(1, 21, &sp8);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+        tbox.x = 320;
+        tbox.y = 200;
+        tbox.numLines = 2;
+        tbox.unk1C = 0;
+        g_create_textbox(1, 21, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
-            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][2]);
-            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][3]);
+            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
+            g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
         else if (modeCtrl.levelSet == LVLSET_EXPERT)
         {
-            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][2]);
-            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][3]);
+            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
+            g_set_textbox_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
         else
         {
-            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][2]);
-            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->unk2E]][3]);
+            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
+            g_set_textbox_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
     }
     if (modeCtrl.submodeTimer == 60)
@@ -1632,7 +1634,7 @@ void func_800165C0(struct Ball *ball)
     int i;
     struct Struct8003C550 sp1C;
     Vec sp10;
-    u16 r28 = 1 << ball->unk2E;
+    u16 r28 = 1 << ball->playerId;
 
     memset(&sp1C, 0, sizeof(sp1C));
     sp1C.unk8 = 0;
@@ -1697,7 +1699,7 @@ inline void g_something_with_rankings(struct Ball *ball)
                 r9[1] = r9[0];
                 r9--; k--;
             }
-            lbl_801EEECC[j].playerId = ball->unk2E;
+            lbl_801EEECC[j].playerId = ball->playerId;
             lbl_801EEECC[j].bananas = ball->bananas;
             break;
         }
@@ -1774,27 +1776,27 @@ void submode_game_result_main_func(void)
                 if (ball->bananas == 0)
                     r4 = 1;
             }
-            if (ball->unk2F == 0 && ball->bananas == 0)
+            if (ball->rank == 0 && ball->bananas == 0)
                 r4 = 1;
             if (!r4)
                 continue;
             for (j = 0; j < modeCtrl.playerCount; j++)
             {
-                if (ball->unk2E == lbl_801EEECC[j].playerId)
+                if (ball->playerId == lbl_801EEECC[j].playerId)
                 {
-                    ball->unk2F = lbl_801EEECC[j].unk8;
+                    ball->rank = lbl_801EEECC[j].unk8;
                     break;
                 }
             }
             func_8007EF50(ball);
             g_play_sound(0x68);
-            if (ball->unk2F == 1)
+            if (ball->rank == 1)
                 g_play_sound(0x1B);
-            else if (ball->unk2F == 4)
+            else if (ball->rank == 4)
                 g_play_sound(0x3E);
-            if (ball->unk2F == 1)
+            if (ball->rank == 1)
             {
-                lbl_802F1C25 = lbl_801761F0[ball->unk2E];
+                lbl_802F1C25 = lbl_801761F0[ball->playerId];
                 lbl_802F1C24++;
             }
         )
@@ -1828,7 +1830,7 @@ void submode_game_result_menu_func(void)
     if (lbl_802F1C24 == 1)
     {
         BALL_FOREACH(
-            if (ball->unk2F == 1)
+            if (ball->rank == 1)
                 func_800165C0(ball);
         )
     }

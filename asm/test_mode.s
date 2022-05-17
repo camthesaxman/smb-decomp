@@ -3601,8 +3601,8 @@ lbl_00003398:
 /* 00003398 2C160000 */ cmpwi r22, 0
 /* 0000339C 41820140 */ beq lbl_000034DC
 /* 000033A0 C01B006C */ lfs f0, 0x6c(r27)
-/* 000033A4 3C600000 */ lis r3, lbl_801BE470@ha
-/* 000033A8 3BC30000 */ addi r30, r3, lbl_801BE470@l
+/* 000033A4 3C600000 */ lis r3, spriteTileOffsets@ha
+/* 000033A8 3BC30000 */ addi r30, r3, spriteTileOffsets@l
 /* 000033AC D0010014 */ stfs f0, 0x14(r1)
 /* 000033B0 3C800002 */ lis r4, 2
 /* 000033B4 3B400000 */ li r26, 0
@@ -3779,9 +3779,9 @@ lbl_000035DC:
 /* 00003654 EC020028 */ fsubs f0, f2, f0
 /* 00003658 EC211828 */ fsubs f1, f1, f3
 /* 0000365C EC401828 */ fsubs f2, f0, f3
-/* 00003660 4BFFCAFD */ bl func_80071B60
+/* 00003660 4BFFCAFD */ bl g_set_text_pos
 /* 00003664 387D298C */ addi r3, r29, 0x298c
-/* 00003668 4BFFCAF5 */ bl func_80071E58
+/* 00003668 4BFFCAF5 */ bl g_draw_text
 /* 0000366C 92C1007C */ stw r22, 0x7c(r1)
 /* 00003670 3C600000 */ lis r3, lbl_0000FED0@ha
 /* 00003674 3C800000 */ lis r4, lbl_0000FED0@ha
@@ -3800,9 +3800,9 @@ lbl_000035DC:
 /* 000036A8 C01B00EC */ lfs f0, 0xec(r27)
 /* 000036AC EC24082A */ fadds f1, f4, f1
 /* 000036B0 EC420028 */ fsubs f2, f2, f0
-/* 000036B4 4BFFCAA9 */ bl func_80071B60
+/* 000036B4 4BFFCAA9 */ bl g_set_text_pos
 /* 000036B8 387D298C */ addi r3, r29, 0x298c
-/* 000036BC 4BFFCAA1 */ bl func_80071E58
+/* 000036BC 4BFFCAA1 */ bl g_draw_text
 /* 000036C0 93010074 */ stw r24, 0x74(r1)
 /* 000036C4 3C800000 */ lis r4, lbl_0000FED0@ha
 /* 000036C8 C8240000 */ lfd f1, lbl_0000FED0@l(r4)
@@ -3821,9 +3821,9 @@ lbl_000035DC:
 /* 000036FC C0410010 */ lfs f2, 0x10(r1)
 /* 00003700 EC241828 */ fsubs f1, f4, f3
 /* 00003704 EC42002A */ fadds f2, f2, f0
-/* 00003708 4BFFCA55 */ bl func_80071B60
+/* 00003708 4BFFCA55 */ bl g_set_text_pos
 /* 0000370C 387D298C */ addi r3, r29, 0x298c
-/* 00003710 4BFFCA4D */ bl func_80071E58
+/* 00003710 4BFFCA4D */ bl g_draw_text
 /* 00003714 93010064 */ stw r24, 0x64(r1)
 /* 00003718 3C800000 */ lis r4, lbl_0000FED0@ha
 /* 0000371C 3C600000 */ lis r3, lbl_0000FED0@ha
@@ -3840,9 +3840,9 @@ lbl_000035DC:
 /* 00003748 EC000828 */ fsubs f0, f0, f1
 /* 0000374C EC25182A */ fadds f1, f5, f3
 /* 00003750 EC42002A */ fadds f2, f2, f0
-/* 00003754 4BFFCA09 */ bl func_80071B60
+/* 00003754 4BFFCA09 */ bl g_set_text_pos
 /* 00003758 387D298C */ addi r3, r29, 0x298c
-/* 0000375C 4BFFCA01 */ bl func_80071E58
+/* 0000375C 4BFFCA01 */ bl g_draw_text
 lbl_00003760:
 /* 00003760 BAC10098 */ lmw r22, 0x98(r1)
 /* 00003764 800100C4 */ lwz r0, 0xc4(r1)
@@ -4128,12 +4128,12 @@ lbl_00003B30:
 /* 00003B50 54001838 */ slwi r0, r0, 3
 /* 00003B54 7F830214 */ add r28, r3, r0
 /* 00003B58 807C0000 */ lwz r3, 0(r28)
-/* 00003B5C 4BFFC601 */ bl func_80071AD4
+/* 00003B5C 4BFFC601 */ bl g_set_font
 /* 00003B60 C03D00F0 */ lfs f1, 0xf0(r29)
 /* 00003B64 C05D00F4 */ lfs f2, 0xf4(r29)
-/* 00003B68 4BFFC5F5 */ bl func_80071B60
+/* 00003B68 4BFFC5F5 */ bl g_set_text_pos
 /* 00003B6C 807C0004 */ lwz r3, 4(r28)
-/* 00003B70 4BFFC5ED */ bl func_80071E58
+/* 00003B70 4BFFC5ED */ bl g_draw_text
 /* 00003B74 3C600000 */ lis r3, controllerInfo@ha
 /* 00003B78 A0030000 */ lhz r0, controllerInfo@l(r3)
 /* 00003B7C 540005AD */ rlwinm. r0, r0, 0, 0x16, 0x16
@@ -4145,7 +4145,7 @@ lbl_00003B30:
 /* 00003B94 80632C68 */ lwz r3, 0x2c68(r3)
 /* 00003B98 54001838 */ slwi r0, r0, 3
 /* 00003B9C 7C63002E */ lwzx r3, r3, r0
-/* 00003BA0 4BFFC5BD */ bl func_80071A74
+/* 00003BA0 4BFFC5BD */ bl get_font_bitmap_id
 /* 00003BA4 90610008 */ stw r3, 8(r1)
 /* 00003BA8 38A00000 */ li r5, 0
 /* 00003BAC 3880FFFF */ li r4, -1

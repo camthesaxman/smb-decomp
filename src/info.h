@@ -23,14 +23,14 @@ struct Struct801F3A58
     Vec unk10;
     s16 unk1C;
     s16 unk1E;  // number of tries on current stage?
-    s16 unk20;
+    s16 unk20;  // warp stage num?
     s16 unk22;
     s32 unk24;
     /*0x28*/ s16 livesLost;
     /*0x2A*/ s16 continuesUsed;
     s16 unk2C;
     s16 unk2E;  // next stage?
-    s16 unk30;
+    s16 playerId;
     s16 unk32;
 };
 

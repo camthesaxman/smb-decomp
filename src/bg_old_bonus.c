@@ -68,7 +68,7 @@ void bg_old_bonus_interact(int a)
     case 1:
         memset(&sp18, 0, sizeof(sp18));
         sp18.unk8 = 12;
-        sp18.unk14 = currentBallStructPtr->unk2E;
+        sp18.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
         spC.z = -180.0 + (rand() / 32767.0f) * -300.0;
         spC.x = spC.z * -2.6666666666666665 * currentCameraStructPtr->sub28.unk38 * (rand() / 32767.0f - 0.5);

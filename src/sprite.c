@@ -12,15 +12,16 @@
 #include "mode.h"
 #include "sprite.h"
 #include "tevutil.h"
+#include "textbox.h"
 
-struct Struct8028CF28
+struct TextDrawInfo
 {
     float unk0;
     float unk4;
     float unk8;
-    s32 unkC;
-    u32 unk10;
-    u32 unk14;
+    s32 fontId;
+    u32 color1;
+    u32 color2;
     s16 unk18;
     float unk1C;
     float unk20;
@@ -37,8 +38,8 @@ struct Struct8028FE58
 };
 
 // .bss
-struct Struct8028CF28 lbl_8028CF28;
-FORCE_BSS_ORDER(lbl_8028CF28)
+struct TextDrawInfo textDrawInfo;
+FORCE_BSS_ORDER(textDrawInfo)
 struct Sprite spriteInfo[64];
 FORCE_BSS_ORDER(spriteInfo)
 struct Struct8028FE58 lbl_8028FE58[0x42];
@@ -56,17 +57,17 @@ void ev_sprite_init(void)
     for (i = 0; i < spritePoolInfo.unk38; i++, status++)
         *status = 0;
 
-    lbl_8028CF28.unk0 = 0.0f;
-    lbl_8028CF28.unk4 = 0.0f;
-    lbl_8028CF28.unk8 = 0.0f;
-    lbl_8028CF28.unkC = 0;
-    lbl_8028CF28.unk10 = -1;
-    lbl_8028CF28.unk14 = 0;
-    lbl_8028CF28.unk18 = 0;
-    lbl_8028CF28.unk1C = 0.1f;
-    lbl_8028CF28.unk20 = 1.0f;
-    lbl_8028CF28.unk24 = 1.0f;
-    lbl_8028CF28.unk28 = 1.0f;
+    textDrawInfo.unk0 = 0.0f;
+    textDrawInfo.unk4 = 0.0f;
+    textDrawInfo.unk8 = 0.0f;
+    textDrawInfo.fontId = 0;
+    textDrawInfo.color1 = -1;
+    textDrawInfo.color2 = 0;
+    textDrawInfo.unk18 = 0;
+    textDrawInfo.unk1C = 0.1f;
+    textDrawInfo.unk20 = 1.0f;
+    textDrawInfo.unk24 = 1.0f;
+    textDrawInfo.unk28 = 1.0f;
     func_80073E44();
 }
 
@@ -90,7 +91,7 @@ void ev_sprite_main(void)
                 sprite->mainFunc(status, sprite);
         }
     }
-    func_80073EF8();
+    textbox_main();
 }
 
 void ev_sprite_dest(void)
@@ -180,10 +181,10 @@ void func_800700D8(int a)
     while ((r31_ = r30->unk0) != NULL)
     {
         g_something_with_sprites(r31_);
-        while (r31_->unk54 != 0)
+        while (r31_->next != 0)
         {
-            g_something_with_sprites(r31_->unk54);
-            r31_ = r31_->unk54;
+            g_something_with_sprites(r31_->next);
+            r31_ = r31_->next;
         }
         r30 = r30->unk8;
     }
@@ -205,7 +206,7 @@ void func_800700D8(int a)
             break;
         }
     }
-    func_8007449C();
+    textbox_draw_all();
 }
 #else
 asm void func_800700D8(int a)
@@ -222,22 +223,15 @@ void func_800702C8(struct Sprite *sprite)
     if (spritePoolInfo.statusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
         g_something_with_sprites(sprite);
-        while (sprite->unk54 != NULL)
+        while (sprite->next != NULL)
         {
-            g_something_with_sprites(sprite->unk54);
-            sprite = sprite->unk54;
+            g_something_with_sprites(sprite->next);
+            sprite = sprite->next;
         }
     }
 }
 
-struct Struct801BE470
-{
-    s32 unk0;
-    s32 unk4;
-};
-
-// tile coordinates?
-struct Struct801BE470 lbl_801BE470[] =
+struct {s32 x; s32 y;} spriteTileOffsets[] =
 {
     {-64, -112},
     {-64,   80},
@@ -697,7 +691,7 @@ struct GlyphDesc buttonGlyphs[] =
     {"DMY",     -1},
 };
 
-// kanji? capitalized part seems to be the actual kanji
+// single kanji
 struct GlyphDesc singleKanjiGlyphs[] =
 {
     {"SHOkyuu",  0x168},
@@ -863,18 +857,18 @@ void g_something_with_sprites(struct Sprite *sprite)
 
     if (sprite->unk78 & 1)
         return;
-    g_get_dimensions_for_sprite(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
-    if (sprite->unk38 != NULL)
+    calc_sprite_bounds(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
+    if (sprite->drawFunc != NULL)
     {
-        sprite->unk38(sprite);
+        sprite->drawFunc(sprite);
         return;
     }
     switch (sprite->type)
     {
-    case 0:
-        func_80072B50(sprite);
+    case SPRITE_TYPE_TEXT:
+        g_draw_text_sprite(sprite);
         break;
-    case 1:
+    case SPRITE_TYPE_BITMAP:
         if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
         {
             printf("SPRITE WARNING!! %s's category %s is not load\n",
@@ -882,9 +876,9 @@ void g_something_with_sprites(struct Sprite *sprite)
                 bitmapGroups[sprite->bmpId >> 8].name);
             break;
         }
-        func_80072C68(sprite);
+        draw_bitmap_sprite(sprite);
         break;
-    case 2:
+    case SPRITE_TYPE_TILED_BITMAP:
         if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
         {
             printf("SPRITE WARNING!! %s's category %s is not load\n",
@@ -894,20 +888,20 @@ void g_something_with_sprites(struct Sprite *sprite)
         }
         r26 = sprite->bmpId & 0xFF;
         r29 = sprite->bmpId;
-        x = sprite->centerX;
-        y = sprite->centerY;
+        x = sprite->x;
+        y = sprite->y;
         for (i = 0; i < 8; i++)
         {
             sprite->bmpId = (r29 & 0xFF00) | r26;
-            sprite->centerX = (float)(x + lbl_801BE470[i].unk0);
-            sprite->centerY = (float)(y + lbl_801BE470[i].unk4);
-            g_get_dimensions_for_sprite(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
-            func_80072C68(sprite);
+            sprite->x = (float)(x + spriteTileOffsets[i].x);
+            sprite->y = (float)(y + spriteTileOffsets[i].y);
+            calc_sprite_bounds(sprite, &sprite->left, &sprite->top, &sprite->right, &sprite->bottom);
+            draw_bitmap_sprite(sprite);
             r26++;
         }
         sprite->bmpId = r29;
-        sprite->centerX = x;
-        sprite->centerY = y;
+        sprite->x = x;
+        sprite->y = y;
     }
 }
 
@@ -949,7 +943,7 @@ struct Sprite *create_sprite(void)
         sprite->unkE = 0xFF;
         sprite->unk40 = 1.0f;
         sprite->unk44 = 1.0f;
-        sprite->unk6C = 1.0f;
+        sprite->opacity = 1.0f;
         sprite->left = 0;
         sprite->top = 0;
         sprite->right = 1;
@@ -968,7 +962,7 @@ struct Sprite *create_linked_sprite(struct Sprite *sprite)
     struct Sprite *newSprite = create_sprite();
     if (newSprite != NULL)
     {
-        sprite->unk54 = newSprite;
+        sprite->next = newSprite;
         newSprite->unk50 = sprite;
         newSprite->unk74 |= sprite->unk74 & (1 << 18);
     }
@@ -1029,7 +1023,7 @@ struct Sprite *find_sprite_with_tag(int tag)
     return NULL;
 }
 
-void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, s32 *bottom)
+void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, s32 *bottom)
 {
     int width = 0;
     int height = 0;
@@ -1038,12 +1032,12 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32
     int y;
     int len;
 
-    if (sprite->unk38 != 0)
+    if (sprite->drawFunc != NULL)
     {
-        *left   = sprite->centerX - 50.0f;
-        *top    = sprite->centerY - 50.0f;
-        *right  = sprite->centerX + 50.0f;
-        *bottom = sprite->centerY + 50.0f;
+        *left   = sprite->x - 50.0f;
+        *top    = sprite->y - 50.0f;
+        *right  = sprite->x + 50.0f;
+        *bottom = sprite->y + 50.0f;
         return;
     }
     else
@@ -1051,7 +1045,7 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32
         fontParams = &fontInfo[sprite->fontId];
         switch (sprite->type)
         {
-        case 0:
+        case SPRITE_TYPE_TEXT:
             len = strlen(sprite->text);
             width = len * fontParams->spaceWidth;
             height = fontParams->lineHeight;
@@ -1073,17 +1067,17 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32
                 }
             }
             break;
-        case 1:
-        case 2:
+        case SPRITE_TYPE_BITMAP:
+        case SPRITE_TYPE_TILED_BITMAP:
             if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
             {
                 printf("SPRITE WARNING!! %s's category %s is not load\n",
                     bitmapNames[sprite->bmpId >> 8][sprite->bmpId & 0xFF],
                     bitmapGroups[sprite->bmpId >> 8].name);
-                *left = sprite->centerX - 50.0f;
-                *top = sprite->centerY - 50.0f;
-                *right = sprite->centerX + 50.0f;
-                *bottom = sprite->centerY + 50.0f;
+                *left   = sprite->x - 50.0f;
+                *top    = sprite->y - 50.0f;
+                *right  = sprite->x + 50.0f;
+                *bottom = sprite->y + 50.0f;
                 return;
             }
             width = bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].tpl->texHeaders[sprite->bmpId & 0xFF].width;
@@ -1096,8 +1090,8 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32
     height *= sprite->unk44;
     if (sprite->unk50 == NULL)
     {
-        x = sprite->centerX;
-        y = sprite->centerY;
+        x = sprite->x;
+        y = sprite->y;
         switch (sprite->textAlign)
         {
         // centered horizontally
@@ -1155,8 +1149,8 @@ void g_get_dimensions_for_sprite(struct Sprite *sprite, s32 *left, s32 *top, s32
             y = sprite->unk50->bottom - height;
             break;
         }
-        x += sprite->centerX;
-        y += sprite->centerY;
+        x += sprite->x;
+        y += sprite->y;
         *left   = x;
         *top    = y;
         *right  = x + width;
@@ -2191,11 +2185,16 @@ const s32 lbl_80118640[] =
 enum
 {
     TEXT_MODE_ASCII,
-    TEXT_MODE_HIRAGANA,  // also attempts to use kanji when possible
+    TEXT_MODE_HIRAGANA,
     TEXT_MODE_KATAKANA,
     TEXT_MODE_PICTURE,
+    
+    // flags
+    TEXT_MODE_BLINK = 0x10000,
 };
 
+/* Returns the next glyph index or a negative number if a control code was
+ * encountered */
 int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *color, s32 *skip, s32 *e)
 {
     s32 glyphIndex;
@@ -2203,7 +2202,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
 
     parseState->unk8 = 0;
 
-    // hiragana
+    // "h/" - switch to hiragana mode
     if (str[0] == 'h' && str[1] == '/')
     {
         parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_HIRAGANA;
@@ -2211,7 +2210,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         return -2;
     }
 
-    // katakana
+    // "k/" - switch to katakana mode
     if (str[0] == 'k' && str[1] == '/')
     {
         parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_KATAKANA;
@@ -2219,82 +2218,54 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         return -2;
     }
 
-    // ascii
-    if (str[0] == 'a' && *(str + 1) == '/')
+    // "a/" - switch to ASCII mode
+    if (str[0] == 'a' && str[1] == '/')
     {
         parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_ASCII;
         *skip = 1;
         return -2;
     }
 
-    // picture
-    if (str[0] == 'p' && *(str + 1) == '/')
+    // "p/" - switch to picture mode for displaying icons or kanji
+    if (str[0] == 'p' && str[1] == '/')
     {
         parseState->mode = (parseState->mode & 0xFFFF0000) | TEXT_MODE_PICTURE;
         *skip = 1;
         return -2;
     }
 
-    // text color
-    if (str[0] == 'c' && *(str + 1) == '/')
+    // "c/0xrrggbb/" - change text color (where rrggbb is the hex value of the color)
+    // the "0x" prefix is mandatory and the hex must be lowercase
+    if (str[0] == 'c' && str[1] == '/')
     {
         int shift = 20;
+
+        // skip over the "c/0x" part
         *skip += 4;
-        *color = 0;
         str += 4;
+
+        *color = 0;
         while (*str != '/')
         {
             int digit;
             switch (*str)
             {
-            case '0':
-                digit = 0;
-                break;
-            case '1':
-                digit = 1;
-                break;
-            case '2':
-                digit = 2;
-                break;
-            case '3':
-                digit = 3;
-                break;
-            case '4':
-                digit = 4;
-                break;
-            case '5':
-                digit = 5;
-                break;
-            case '6':
-                digit = 6;
-                break;
-            case '7':
-                digit = 7;
-                break;
-            case '8':
-                digit = 8;
-                break;
-            case '9':
-                digit = 9;
-                break;
-            case 'a':
-                digit = 10;
-                break;
-            case 'b':
-                digit = 11;
-                break;
-            case 'c':
-                digit = 12;
-                break;
-            case 'd':
-                digit = 13;
-                break;
-            case 'e':
-                digit = 14;
-                break;
-            case 'f':
-                digit = 15;
-                break;
+            case '0': digit = 0; break;
+            case '1': digit = 1; break;
+            case '2': digit = 2; break;
+            case '3': digit = 3; break;
+            case '4': digit = 4; break;
+            case '5': digit = 5; break;
+            case '6': digit = 6; break;
+            case '7': digit = 7; break;
+            case '8': digit = 8; break;
+            case '9': digit = 9; break;
+            case 'a': digit = 10; break;
+            case 'b': digit = 11; break;
+            case 'c': digit = 12; break;
+            case 'd': digit = 13; break;
+            case 'e': digit = 14; break;
+            case 'f': digit = 15; break;
             default:
                 digit = 0;
                 break;
@@ -2306,30 +2277,38 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         }
         return -2;
     }
+
+    // "b/" "/b" - blinking text
     if (str[0] == 'b' && str[1] == '/')
     {
-        parseState->mode |= 0x10000;
+        parseState->mode |= TEXT_MODE_BLINK;
         *skip = 1;
         return -2;
     }
     if (str[0] == '/' && str[1] == 'b')
     {
-        parseState->mode &= ~0x10000;
+        parseState->mode &= ~TEXT_MODE_BLINK;
         *skip = 1;
         return -2;
     }
+
+    // "ft/" - unknown
     if (str[0] == 'f' && str[1] == 't' && str[2] == '/')
     {
         *e = 1;
         *skip = 2;
         return -2;
     }
+
+    // "fp/" - unknown
     if (str[0] == 'f' && str[1] == 'p' && str[2] == '/')
     {
         *e = 2;
         *skip = 2;
         return -2;
     }
+
+    // "z/" - unknown
     if (str[0] == 'z' && str[2] == '/')
     {
         switch (str[1])
@@ -2350,6 +2329,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         *skip = 2;
         return -2;
     }
+
     glyphIndex = -1;
     parseState->mode &= ~0x20000;
 
@@ -2370,7 +2350,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         else
             glyphIndex = lbl_80117E40[str[0]];
     }
-    // japanese character
+    // hiragana/katakana character
     else if (mode == TEXT_MODE_HIRAGANA || mode == TEXT_MODE_KATAKANA)
     {
         glyphIndex = lbl_80117E40[str[0]];
@@ -2471,6 +2451,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
                 glyphIndex += 100;
         }
     }
+    // icon or kanji
     else if ((u32)mode == TEXT_MODE_PICTURE)
     {
         if (parseState->unk4 != -1)
@@ -2482,12 +2463,15 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         else
         {
             char *r5;
-            int i;
+            int len;
             struct GlyphDesc *glyph;
 
             glyphIndex = -2;
-            for (i = 0; str[i] != '/'; i++)
+
+            for (len = 0; str[len] != '/'; len++)
                 ;
+
+            // check symbol glyphs
             glyph = symbolGlyphs;
             while (glyph->unk4 != -1)
             {
@@ -2499,7 +2483,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
                     if (*r5 != glyph->text[j])
                         break;
                 }
-                if (i == j && i == (u32)strlen(glyph->text))
+                if (len == j && len == (u32)strlen(glyph->text))
                 {
                     glyphIndex = glyph->unk4;
                     parseState->unk8 = j;
@@ -2509,6 +2493,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
             }
             if (glyphIndex == -2)
             {
+                // check button glyphs
                 glyph = buttonGlyphs;
                 while (glyph->unk4 != -1)
                 {
@@ -2520,7 +2505,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
                         if (*r5 != glyph->text[j])
                             break;
                     }
-                    if (i == j && i == (u32)strlen(glyph->text))
+                    if (len == j && len == (u32)strlen(glyph->text))
                     {
                         glyphIndex = glyph->unk4;
                         parseState->unk8 = j;
@@ -2532,6 +2517,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
             }
             if (glyphIndex == -2)
             {
+                // check single kanji
                 glyph = singleKanjiGlyphs;
                 while (glyph->unk4 != -1)
                 {
@@ -2543,7 +2529,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
                         if (*r5 != glyph->text[j])
                             break;
                     }
-                    if (i == j && i == (u32)strlen(glyph->text))
+                    if (len == j && len == (u32)strlen(glyph->text))
                     {
                         glyphIndex = glyph->unk4;
                         parseState->unk8 = j;
@@ -2554,6 +2540,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
             }
             if (glyphIndex == -2)
             {
+                // check double kanji
                 struct DoubleKanjiGlyph *glyph = doubleKanjiGlyphs;
 
                 while (glyph->unk4 != -1)
@@ -2566,7 +2553,7 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
                         if (*r5 != glyph->text[j])
                             break;
                     }
-                    if (i == j && i == (u32)strlen(glyph->text))
+                    if (len == j && len == (u32)strlen(glyph->text))
                     {
                         glyphIndex = glyph->unk4;
                         parseState->unk8 = j - 1;
@@ -2583,80 +2570,80 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
 }
 
 #pragma force_active on
-int func_80071A74(int fontId)
+int get_font_bitmap_id(int fontId)
 {
-    return fontInfo[fontId].unk0;
+    return fontInfo[fontId].bmpId;
 }
 #pragma force_active reset
 
 void func_80071A8C(void)
 {
-    lbl_8028CF28.unkC = 0;
-    lbl_8028CF28.unk10 = 0xFFFFFF;
-    lbl_8028CF28.unk14 = 0;
-    lbl_8028CF28.unk18 = 0;
-    lbl_8028CF28.unk1C = 0.1f;
-    lbl_8028CF28.unk20 = 1.0f;
-    lbl_8028CF28.unk24 = 1.0f;
-    lbl_8028CF28.unk28 = 1.0f;
-    lbl_8028CF28.unk2C = 0x20000;
+    textDrawInfo.fontId = 0;
+    textDrawInfo.color1 = 0xFFFFFF;
+    textDrawInfo.color2 = 0;
+    textDrawInfo.unk18 = 0;
+    textDrawInfo.unk1C = 0.1f;
+    textDrawInfo.unk20 = 1.0f;
+    textDrawInfo.unk24 = 1.0f;
+    textDrawInfo.unk28 = 1.0f;
+    textDrawInfo.unk2C = 0x20000;
 }
 
-void func_80071AD4(int a)
+void g_set_font(int fontId)
 {
-    lbl_8028CF28.unkC = a;
+    textDrawInfo.fontId = fontId;
 }
 
-void func_80071AE4(int a)
+void g_set_text_fill_color(int a)
 {
-    lbl_8028CF28.unk10 = a & 0xFFFFFF;
+    textDrawInfo.color1 = a & 0xFFFFFF;
 }
 
-void func_80071AF8(int a)
+void g_set_text_other_color(int a)
 {
-    lbl_8028CF28.unk14 = a;
+    textDrawInfo.color2 = a;
 }
 
 #pragma force_active on
 void func_80071B08(int a)
 {
-    lbl_8028CF28.unk18 = a;
+    textDrawInfo.unk18 = a;
 }
 #pragma force_active reset
 
 void func_80071B1C(float a)
 {
-    lbl_8028CF28.unk1C = a;
+    textDrawInfo.unk1C = a;
 }
 
 void func_80071B2C(float a, float b)
 {
-    lbl_8028CF28.unk20 = a;
-    lbl_8028CF28.unk24 = b;
+    textDrawInfo.unk20 = a;
+    textDrawInfo.unk24 = b;
 }
 
 void func_80071B40(float a)
 {
-    lbl_8028CF28.unk28 = a;
+    textDrawInfo.unk28 = a;
 }
 
 void func_80071B50(int a)
 {
-    lbl_8028CF28.unk2C = a;
+    textDrawInfo.unk2C = a;
 }
 
-void func_80071B60(float a, float b)
+void g_set_text_pos(float x, float y)
 {
-    lbl_8028CF28.unk4 = a;
-    lbl_8028CF28.unk0 = a;
-    lbl_8028CF28.unk8 = b;
+    textDrawInfo.unk4 = x;
+    textDrawInfo.unk0 = x;
+    textDrawInfo.unk8 = y;
 }
 
 #ifdef NONMATCHING
-void func_80071B78(s8 a)
+void g_draw_char(s8 a)
 {
     struct NaomiSpriteParams params;  // sp + 0x10
-    struct FontParams *font = &fontInfo[lbl_8028CF28.unkC];  // r5
+    struct FontParams *font = &fontInfo[textDrawInfo.fontId];  // r5
     int r6 = a - font->unk4;
     int div = r6 / font->unkC;
     int mod = r6 % font->unkC;
@@ -2664,62 +2651,59 @@ void func_80071B78(s8 a)
     float f5;
     //float f0;
 
-    params.bmpId = font->unk0;
-    params.x = lbl_8028CF28.unk4 + font->unk18 * font->unk20 /*0xC4*/;
-    params.y = lbl_8028CF28.unk8 + font->unk1C * font->unk22 /*0xBC*/;
-    params.z = lbl_8028CF28.unk1C;
+    params.bmpId = font->bmpId;
+    params.x = textDrawInfo.unk4 + font->unk18 * font->unk20 /*0xC4*/;
+    params.y = textDrawInfo.unk8 + font->unk1C * font->unk22 /*0xBC*/;
+    params.z = textDrawInfo.unk1C;
     f4 = font->unk10 * mod;
     f5 = font->unk14 * div;  /*0xAC*/
     params.u1 = f4 + font->unk18 * font->unk20;
     params.v1 = f5 + font->unk1C * font->unk22;
     params.u2 = font->unk10 + (f4 - font->unk18 * font->unk21);
     params.v2 = font->unk14 + (f5 - font->unk1C * font->unk23);
-    params.zoomX = lbl_8028CF28.unk20 * ((font->unk10 - font->unk18 * font->unk20) - font->unk18 * font->unk21);
+    params.zoomX = textDrawInfo.unk20 * ((font->unk10 - font->unk18 * font->unk20) - font->unk18 * font->unk21);
     //f0 = font->unk18 * font->unk23;
-    params.zoomY = lbl_8028CF28.unk24 * ((font->unk14 - font->unk1C * font->unk22) - font->unk18 * font->unk23);
+    params.zoomY = textDrawInfo.unk24 * ((font->unk14 - font->unk1C * font->unk22) - font->unk18 * font->unk23);
 
-    params.rotation = lbl_8028CF28.unk18;
-    params.alpha = lbl_8028CF28.unk28;
+    params.rotation = textDrawInfo.unk18;
+    params.alpha = textDrawInfo.unk28;
     params.unk30 = -1;
-    params.flags = (lbl_8028CF28.unk2C & ~0xF) | 5;
-    params.unk38 = ((int)(255.0f * lbl_8028CF28.unk28) << 24) | lbl_8028CF28.unk10;
-    params.unk3C = lbl_8028CF28.unk14;
+    params.flags = (textDrawInfo.unk2C & ~0xF) | 5;
+    params.color1 = ((int)(255.0f * textDrawInfo.unk28) << 24) | textDrawInfo.color1;
+    params.color2 = textDrawInfo.color2;
     draw_naomi_sprite(&params);
 }
 #else
-asm void func_80071B78(s8 a)
+asm void g_draw_char(s8 a)
 {
     nofralloc
-#include "../asm/nonmatchings/func_80071B78.s"
+#include "../asm/nonmatchings/g_draw_char.s"
 }
 #pragma peephole on
 #endif
 
-extern float lbl_802F2008;
-extern float lbl_802F200C;
-
-static inline int func_80071E58_inline(int a, int b, struct FontParams *r24)
+static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *font)
 {
-    switch (b)
+    switch (fontId)
     {
-    case 0xB1:
-    case 0xB3:
-        switch (a)
+    case FONT_JAP_24x24_2P:
+    case FONT_JAP_24x24_2Pg:
+        switch (chr)
         {
-        case 0x20:
+        case ' ':
             return 12;
         }
     default:
-    case 0xB2:
-        return r24->spaceWidth;
+    case FONT_JAP_24x24_I:
+        return font->spaceWidth;
         break;
     }
 }
 
-void func_80071E58(char *str)
+void g_draw_text(char *str)
 {
-    struct Struct8028CF28 *r28 = &lbl_8028CF28;
-    int r25;
+    struct TextDrawInfo *r28 = &textDrawInfo;
+    int fontIdBackup;
     struct FontParams *font;
     int r23;
     int r22;
@@ -2733,16 +2717,16 @@ void func_80071E58(char *str)
     s32 sp18;
     s32 color;
 
-    font = &fontInfo[r28->unkC];
+    font = &fontInfo[r28->fontId];
     r22 = 0;
-    r25 = r28->unkC;
+    fontIdBackup = r28->fontId;
 
-    params.bmpId = font->unk0;
+    params.bmpId = font->bmpId;
     params.z = r28->unk1C;
     params.alpha = r28->unk28;
     params.rotation = r28->unk18;
-    params.unk38 = ((int)(r28->unk28 * 255.0f) << 24) | r28->unk10;
-    params.unk3C = r28->unk14;
+    params.color1 = ((int)(r28->unk28 * 255.0f) << 24) | r28->color1;
+    params.color2 = r28->color2;
     params.unk30 = -1;
     params.flags = (r28->unk2C & ~0xF) | 5;
     f31 = r28->unk20;
@@ -2760,12 +2744,12 @@ void func_80071E58(char *str)
             if (lbl_802F200C <= (float)r22)
                 break;
         }
-        if (r28->unkC > 0xAE)
-            r23 = func_80071E58_inline(*str, r28->unkC, font);
+        if (r28->fontId > FONT_JAP_TAG)
+            r23 = func_80071E58_inline(*str, r28->fontId, font);
         else
-            r23 = get_char_width(str, r28->unkC, font);
+            r23 = get_char_width(str, r28->fontId, font);
         f17 = font->unk10 * (0.5 * (font->spaceWidth - r23) / (font->spaceWidth));
-        f16 = g_get_char_ratio(str, r28->unkC);
+        f16 = g_get_char_ratio(str, r28->fontId);
         if (*str == '\n')
         {
             r28->unk4 = r28->unk0;
@@ -2780,23 +2764,23 @@ void func_80071E58(char *str)
             continue;
         }
         glyphIndex = *str;
-        if (r28->unkC > 0xAE)
+        if (r28->fontId > FONT_JAP_TAG)
         {
             skip = 0;
             sp18 = 0;
-            color = params.unk38;
+            color = params.color1;
             glyphIndex = parse_char_sequence(&parseState, str, &color, &skip, &sp18);
             str += skip;
-            params.unk38 = color;
+            params.color1 = color;
             if (sp18 == 1)
             {
-                r28->unkC = FONT_JAP_24x24_2;
-                font = &fontInfo[r28->unkC];
+                r28->fontId = FONT_JAP_24x24_2;
+                font = &fontInfo[r28->fontId];
             }
             else if (sp18 == 2)
             {
-                r28->unkC = FONT_JAP_24x24_2P;
-                font = &fontInfo[r28->unkC];
+                r28->fontId = FONT_JAP_24x24_2P;
+                font = &fontInfo[r28->fontId];
             }
             else if (sp18 == 0x46)
                 r28->unk20 = 0.7f;
@@ -2817,7 +2801,7 @@ void func_80071E58(char *str)
             {
                 float f0;
 
-                switch (r28->unkC)
+                switch (r28->fontId)
                 {
                 case FONT_JAP_24x24_2P:
                 case FONT_JAP_24x24_2Pg:
@@ -2833,7 +2817,7 @@ void func_80071E58(char *str)
                                 r6 = r4 + 1;
                             else
                                 r6 = r6 = 24;
-                            f0 = (float)r6 / (float)fontInfo[r28->unkC].spaceWidth;
+                            f0 = (float)r6 / (float)fontInfo[r28->fontId].spaceWidth;
                             break;
                         }
                     }
@@ -2846,13 +2830,13 @@ void func_80071E58(char *str)
                 if (parseState.mode & (1 << 17))
                     font = &fontInfo[FONT_JAP_24x24_I];
                 else
-                    font = &fontInfo[r28->unkC];
-                params.bmpId = font->unk0;
+                    font = &fontInfo[r28->fontId];
+                params.bmpId = font->bmpId;
             }
         }
-        if (r28->unkC < 0xAE
+        if (r28->fontId < FONT_JAP_TAG
          || lbl_802F200C < lbl_802F2008
-         || !(parseState.mode & (1 << 16))
+         || !(parseState.mode & TEXT_MODE_BLINK)
          || (unpausedFrameCounter % 60) < 45)
         {
             int div;
@@ -2872,7 +2856,7 @@ void func_80071E58(char *str)
             params.v2 = font->unk14 + (f1 - font->unk1C * font->unk23);
             params.zoomX = r28->unk20 * ((font->unk10 - (font->unk18 * font->unk20)) - (font->unk18 * font->unk21) - f17 * 2.0);
             params.zoomY = r28->unk24 * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
-            if (r28->unkC == FONT_JAP_24x24_2Pg && *str == 'g')
+            if (r28->fontId == FONT_JAP_24x24_2Pg && *str == 'g')
                 params.y += params.zoomY * 80.0;
             draw_naomi_sprite(&params);
         }
@@ -2882,14 +2866,14 @@ void func_80071E58(char *str)
         parseState.unkC += r23;
     }
 
-    r28->unkC = r25;
+    r28->fontId = fontIdBackup;
     r28->unk20 = f31;
 }
 
 float g_get_text_width(char *str)
 {
-    struct Struct8028CF28 *r29 = &lbl_8028CF28;
-    int r25;
+    struct TextDrawInfo *r29 = &textDrawInfo;
+    int fontIdBackup;
     struct FontParams *font;
     int r23;
     int r22;
@@ -2903,9 +2887,9 @@ float g_get_text_width(char *str)
     s32 color;
     u8 dummy[8];
 
-    font = &fontInfo[r29->unkC];
+    font = &fontInfo[r29->fontId];
     r22 = 0;
-    r25 = r29->unkC;
+    fontIdBackup = r29->fontId;
     f23 = r29->unk20;
     parseState.mode = TEXT_MODE_ASCII;
     parseState.unk4 = -1;
@@ -2923,11 +2907,11 @@ float g_get_text_width(char *str)
             if (lbl_802F200C <= (float)r22)
                 break;
         }
-        if (r29->unkC > 0xAE)
-            r23 = func_80071E58_inline(*str, r29->unkC, font);
+        if (r29->fontId > FONT_JAP_TAG)
+            r23 = func_80071E58_inline(*str, r29->fontId, font);
         else
-            r23 = get_char_width(str, r29->unkC, font);
-        f1 = g_get_char_ratio(str, r29->unkC);
+            r23 = get_char_width(str, r29->fontId, font);
+        f1 = g_get_char_ratio(str, r29->fontId);
         if (*str == '\n')
             continue;
         if (*str == ' ' || *str < font->unk4 || *str > font->unk8)
@@ -2938,23 +2922,23 @@ float g_get_text_width(char *str)
             continue;
         }
         glyphIndex = *str;
-        if (r29->unkC > 0xAE)
+        if (r29->fontId > FONT_JAP_TAG)
         {
-            color = params.unk38;
+            color = params.color1;
             skip = 0;
             sp1C = 0;
             glyphIndex = parse_char_sequence(&parseState, str, &color, &skip, &sp1C);
-            params.unk38 = color;
+            params.color1 = color;
             str += skip;
             if (sp1C == 1)
             {
-                r29->unkC = FONT_JAP_24x24_2;
-                font = &fontInfo[r29->unkC];
+                r29->fontId = FONT_JAP_24x24_2;
+                font = &fontInfo[r29->fontId];
             }
             else if (sp1C == 2)
             {
-                r29->unkC = FONT_JAP_24x24_2P;
-                font = &fontInfo[r29->unkC];
+                r29->fontId = FONT_JAP_24x24_2P;
+                font = &fontInfo[r29->fontId];
             }
             else if (sp1C == 0x46)
                 r29->unk20 = 0.7f;
@@ -2971,7 +2955,7 @@ float g_get_text_width(char *str)
             }
             if (glyphIndex == -2)
                 continue;
-            switch (r29->unkC)
+            switch (r29->fontId)
             {
             case FONT_JAP_24x24_2P:
             case FONT_JAP_24x24_2Pg:
@@ -2987,7 +2971,7 @@ float g_get_text_width(char *str)
                             r6 = foo + 1;
                         else
                             r6 = r6 = 24;
-                        f1 = (float)r6 / (float)fontInfo[r29->unkC].spaceWidth;
+                        f1 = (float)r6 / (float)fontInfo[r29->fontId].spaceWidth;
                         break;
                     }
                 }
@@ -2999,14 +2983,14 @@ float g_get_text_width(char *str)
             if (parseState.mode & (1 << 17))
                 font = &fontInfo[FONT_JAP_24x24_I];
             else
-                font = &fontInfo[r29->unkC];
+                font = &fontInfo[r29->fontId];
         }
         r22++;
         width += r23 * r29->unk20 * f1;
         str += parseState.unk8;
         parseState.unkC += r23;
     }
-    r29->unkC = r25;
+    r29->fontId = fontIdBackup;
     r29->unk20 = f23;
     return width;
 }
@@ -3019,32 +3003,27 @@ void func_80072AC0(char *str, ...)
     va_start(args, str);
     vsprintf(buf, str, args);
     va_end(args);
-    func_80071E58(buf);
+    g_draw_text(buf);
 }
 
-void func_80072B50(struct Sprite *sprite)
+void g_draw_text_sprite(struct Sprite *sprite)
 {
-    lbl_8028CF28.unk0 = sprite->left;
-    lbl_8028CF28.unk4 = sprite->left;
-    lbl_8028CF28.unk8 = sprite->top;
-    lbl_8028CF28.unkC = sprite->fontId;
-    lbl_8028CF28.unk10 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
-                       | ((sprite->unkC & 0xFF) << 16)
-                       | ((sprite->unkD & 0xFF) <<  8)
-                       | ((sprite->unkE & 0xFF) <<  0);
-    lbl_8028CF28.unk14 = (sprite->unk70 << 16)
-                       | (sprite->unk71 << 8)
-                       | (sprite->unk72 << 0);
-    lbl_8028CF28.unk18 = sprite->unk68;
-    lbl_8028CF28.unk1C = sprite->unk4C;
-    lbl_8028CF28.unk20 = sprite->unk40;
-    lbl_8028CF28.unk24 = sprite->unk44;
-    lbl_8028CF28.unk28 = sprite->unk6C;
-    lbl_8028CF28.unk2C = sprite->unk74;
-    func_80071E58(sprite->text);
+    textDrawInfo.unk0 = sprite->left;
+    textDrawInfo.unk4 = sprite->left;
+    textDrawInfo.unk8 = sprite->top;
+    textDrawInfo.fontId = sprite->fontId;
+    textDrawInfo.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
+    textDrawInfo.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
+    textDrawInfo.unk18 = sprite->unk68;
+    textDrawInfo.unk1C = sprite->unk4C;
+    textDrawInfo.unk20 = sprite->unk40;
+    textDrawInfo.unk24 = sprite->unk44;
+    textDrawInfo.unk28 = sprite->opacity;
+    textDrawInfo.unk2C = sprite->unk74;
+    g_draw_text(sprite->text);
 }
 
-void func_80072C68(struct Sprite *sprite)
+void draw_bitmap_sprite(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
 
@@ -3059,16 +3038,11 @@ void func_80072C68(struct Sprite *sprite)
     params.u2 = sprite->unk84;
     params.v2 = sprite->unk88;
     params.rotation = sprite->unk68;
-    params.alpha = sprite->unk6C;
+    params.alpha = sprite->opacity;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & ~0xF) | 10;
-    params.unk38 = (((int)(sprite->unk6C * 255.0f) & 0xFF) << 24)
-              | ((sprite->unkC & 0xFF) << 16)
-              | ((sprite->unkD & 0xFF) <<  8)
-              | ((sprite->unkE & 0xFF) <<  0);
-    params.unk3C = (sprite->unk70 << 16)
-              | (sprite->unk71 << 8)
-              | (sprite->unk72 << 0);
+    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
+    params.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
     draw_naomi_sprite(&params);
 }
 
@@ -3102,6 +3076,7 @@ float func_80072DA8(int fontId, char *str, int c)
             r27++;
             continue;
         }
+
         skip = 0;
         color = 0;
         sp20 = 0;
@@ -3171,7 +3146,7 @@ int get_jpn_text_width(int fontId, char *str)
     return func_80072DA8(fontId, str, 1);
 }
 
-void func_800730B4(void)
+void g_draw_screen_fade_mask(void)
 {
     struct NaomiSpriteParams params;
 
@@ -3199,7 +3174,7 @@ void func_800730B4(void)
         params.alpha = 1.0f;
         break;
     }
-    params.bmpId = BITMAP_ID(BMP_COM, BMP_COM_white_mask8x8);
+    params.bmpId = BMP_COM_white_mask8x8;
     params.x = 320.0f;
     params.y = 240.1f;
     params.z = (screenFadeInfo.unk0 & (1 << 8)) ? 0.009 : 0.25;
@@ -3212,8 +3187,8 @@ void func_800730B4(void)
     params.rotation = 0;
     params.unk30 = -1;
     params.flags = 0x2000A;
-    params.unk38 = screenFadeInfo.unk4;
-    params.unk3C = 0;
+    params.color1 = screenFadeInfo.unk4;
+    params.color2 = 0;
     draw_naomi_sprite(&params);
     if ((screenFadeInfo.unk0 & 0xFF) == 1 && screenFadeInfo.unk8 == 0)
     {
@@ -3300,7 +3275,7 @@ int add_naomi_sprite(struct NaomiSpriteParams *params)
          && append_to_sprite_params_buf(params))
             return 1;
         if ((advDemoInfo.flags & (1 << 7))
-         && (params->bmpId == BITMAP_ID(BMP_COM, BMP_COM_banana_01) || params->bmpId == BITMAP_ID(BMP_COM, BMP_COM_banana_10))
+         && (params->bmpId == BMP_COM_banana_01 || params->bmpId == BMP_COM_banana_10)
          && append_to_sprite_params_buf(params))
             return 1;
         break;
@@ -3310,19 +3285,19 @@ int add_naomi_sprite(struct NaomiSpriteParams *params)
 
 int draw_naomi_sprite(struct NaomiSpriteParams *params)
 {
-    Vec sp54 = {0};
-    Vec sp48 = {0};
-    Vec sp3C = {0};
-    Vec sp30 = {0};
-    GXColor sp2C;
+    Vec topLeft = {0};
+    Vec topRight = {0};
+    Vec bottomLeft = {0};
+    Vec bottomRight = {0};
+    GXColor color;
     u32 dummy;
     float z;
-    float f30;
-    float f29;
-    float f28;
-    float f27;
-    float f1;
-    float f2;
+    float u1;
+    float u2;
+    float v1;
+    float v2;
+    float x;
+    float y;
     float texWidth;
     float texHeight;
     float zero;
@@ -3343,30 +3318,30 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
     }
 
     z = -params->z;
-    f1 = params->x;
-    f2 = params->y;
+    x = params->x;
+    y = params->y;
     texWidth  = bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texHeaders[params->bmpId & 0xFF].width;
     texHeight = bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texHeaders[params->bmpId & 0xFF].height;
-    f30 = params->u1;
-    f29 = params->u2;
-    f28 = params->v1;
-    f27 = params->v2;
+    u1 = params->u1;
+    u2 = params->u2;
+    v1 = params->v1;
+    v2 = params->v2;
 
     switch (params->flags & 3)
     {
     default:
     case 0:
     case 1:
-        sp54.x = sp3C.x = 0.0f;
-        sp48.x = sp30.x = texWidth;
+        topLeft.x = bottomLeft.x = 0.0f;
+        topRight.x = bottomRight.x = texWidth;
         break;
     case 2:
-        sp54.x = sp3C.x = -texWidth / 2.0;
-        sp48.x = sp30.x = texWidth / 2.0;
+        topLeft.x = bottomLeft.x = -texWidth / 2.0;
+        topRight.x = bottomRight.x = texWidth / 2.0;
         break;
     case 3:
-        sp54.x = sp3C.x = -texWidth;
-        sp48.x = sp30.x = 0.0f;
+        topLeft.x = bottomLeft.x = -texWidth;
+        topRight.x = bottomRight.x = 0.0f;
         break;
     }
 
@@ -3375,64 +3350,64 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
     default:
     case 0:
     case 1:
-        sp54.y = sp48.y = 0.0f;
-        sp3C.y = sp30.y = texHeight;
+        topLeft.y = topRight.y = 0.0f;
+        bottomLeft.y = bottomRight.y = texHeight;
         break;
     case 2:
-        sp54.y = sp48.y = -texHeight / 2.0;
-        sp3C.y = sp30.y = texHeight  / 2.0;
+        topLeft.y = topRight.y = -texHeight / 2.0;
+        bottomLeft.y = bottomRight.y = texHeight  / 2.0;
         break;
     case 3:
-        sp54.y = sp48.y = -texHeight;
-        sp3C.y = sp30.y = 0.0f;
+        topLeft.y = topRight.y = -texHeight;
+        bottomLeft.y = bottomRight.y = 0.0f;
         break;
     }
 
     // Transform all vertices
-    mathutil_mtxA_from_translate_xyz(f1, f2, 0.0f);
+    mathutil_mtxA_from_translate_xyz(x, y, 0.0f);
     mathutil_mtxA_rotate_z((s16)-params->rotation);
     mathutil_mtxA_scale_xyz(params->zoomX, params->zoomY, 1.0f);
-    mathutil_mtxA_tf_point(&sp54, &sp54);
-    mathutil_mtxA_tf_point(&sp48, &sp48);
-    mathutil_mtxA_tf_point(&sp3C, &sp3C);
-    mathutil_mtxA_tf_point(&sp30, &sp30);
+    mathutil_mtxA_tf_point(&topLeft, &topLeft);
+    mathutil_mtxA_tf_point(&topRight, &topRight);
+    mathutil_mtxA_tf_point(&bottomLeft, &bottomLeft);
+    mathutil_mtxA_tf_point(&bottomRight, &bottomRight);
 
     if (params->flags & (1 << 18))
     {
         float f0 = params->z * 0.002405626;
 
-        sp54.x = (sp54.x - 320.0f) * f0;
-        sp54.y = -((sp54.y - 240.0f) * f0);
-        sp48.x = (sp48.x - 320.0f) * f0;
-        sp48.y = -((sp48.y - 240.0f) * f0);
-        sp3C.x = (sp3C.x - 320.0f) * f0;
-        sp3C.y = -((sp3C.y - 240.0f) * f0);
-        sp30.x = (sp30.x - 320.0f) * f0;
-        sp30.y = -((sp30.y - 240.0f) * f0);
+        topLeft.x = (topLeft.x - 320.0f) * f0;
+        topLeft.y = -((topLeft.y - 240.0f) * f0);
+        topRight.x = (topRight.x - 320.0f) * f0;
+        topRight.y = -((topRight.y - 240.0f) * f0);
+        bottomLeft.x = (bottomLeft.x - 320.0f) * f0;
+        bottomLeft.y = -((bottomLeft.y - 240.0f) * f0);
+        bottomRight.x = (bottomRight.x - 320.0f) * f0;
+        bottomRight.y = -((bottomRight.y - 240.0f) * f0);
     }
 
     if (params->flags & (1 << 19))
     {
-        f30 = params->u2;
-        f29 = params->u1;
+        u1 = params->u2;
+        u2 = params->u1;
     }
     if (params->flags & (1 << 20))
     {
-        f28 = params->v2;
-        f27 = params->v1;
+        v1 = params->v2;
+        v2 = params->v1;
     }
 
     GXLoadTexObj_cached(&bitmapGroups[(params->bmpId >> 8) & 0xFF].tpl->texObjs[params->bmpId & 0xFF], GX_TEXMAP0);
-    sp2C.r = (params->unk38 >> 16);
-    sp2C.g = (params->unk38 >> 8);
-    sp2C.b = (params->unk38 >> 0);
-    sp2C.a = params->alpha * 255.0f;
-    GXSetTevColor(1, sp2C);
-    sp2C.r = (params->unk3C >> 16);
-    sp2C.g = (params->unk3C >> 8);
-    sp2C.b = (params->unk3C >> 0);
-    sp2C.a = (params->unk3C >> 24);
-    GXSetTevColor(2, sp2C);
+    color.r = (params->color1 >> 16);
+    color.g = (params->color1 >> 8);
+    color.b = (params->color1 >> 0);
+    color.a = params->alpha * 255.0f;
+    GXSetTevColor(1, color);
+    color.r = (params->color2 >> 16);
+    color.g = (params->color2 >> 8);
+    color.b = (params->color2 >> 0);
+    color.a = (params->color2 >> 24);
+    GXSetTevColor(2, color);
 
     if (params->flags & (1 << 21))
     {
@@ -3446,14 +3421,14 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
 
     zero = 0.0f;
     GXBegin(GX_QUADS, GX_VTXFMT7, 4);
-        GXPosition3f32(sp54.x, sp54.y, z);
-        GXTexCoord2f32(f30 + zero, f28 + zero);
-        GXPosition3f32(sp48.x, sp48.y, z);
-        GXTexCoord2f32(f29 - zero, f28 + zero);
-        GXPosition3f32(sp30.x, sp30.y, z);
-        GXTexCoord2f32(f29 - zero, f27 - zero);
-        GXPosition3f32(sp3C.x, sp3C.y, z);
-        GXTexCoord2f32(f30 + zero, f27 - zero);
+        GXPosition3f32(topLeft.x, topLeft.y, z);
+        GXTexCoord2f32(u1 + zero, v1 + zero);
+        GXPosition3f32(topRight.x, topRight.y, z);
+        GXTexCoord2f32(u2 - zero, v1 + zero);
+        GXPosition3f32(bottomRight.x, bottomRight.y, z);
+        GXTexCoord2f32(u2 - zero, v2 - zero);
+        GXPosition3f32(bottomLeft.x, bottomLeft.y, z);
+        GXTexCoord2f32(u1 + zero, v2 - zero);
     GXEnd();
 
     if (params->flags & (1 << 21))
