@@ -2188,6 +2188,9 @@ enum
     TEXT_MODE_HIRAGANA,
     TEXT_MODE_KATAKANA,
     TEXT_MODE_PICTURE,
+    
+    // flags
+    TEXT_MODE_BLINK = 0x10000,
 };
 
 /* Returns the next glyph index or a negative number if a control code was
@@ -2275,16 +2278,16 @@ int parse_char_sequence(struct StringParseState *parseState, char *str, s32 *col
         return -2;
     }
 
-    // "b/" "/b" - unknown
+    // "b/" "/b" - blinking text
     if (str[0] == 'b' && str[1] == '/')
     {
-        parseState->mode |= 0x10000;
+        parseState->mode |= TEXT_MODE_BLINK;
         *skip = 1;
         return -2;
     }
     if (str[0] == '/' && str[1] == 'b')
     {
-        parseState->mode &= ~0x10000;
+        parseState->mode &= ~TEXT_MODE_BLINK;
         *skip = 1;
         return -2;
     }
@@ -2833,7 +2836,7 @@ void g_draw_text(char *str)
         }
         if (r28->fontId < FONT_JAP_TAG
          || lbl_802F200C < lbl_802F2008
-         || !(parseState.mode & (1 << 16))
+         || !(parseState.mode & TEXT_MODE_BLINK)
          || (unpausedFrameCounter % 60) < 45)
         {
             int div;

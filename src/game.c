@@ -1122,7 +1122,7 @@ char *nameEntryText[] =
 
 void submode_game_nameentry_ready_init_func(void)
 {
-    struct TextBox sp8;
+    struct TextBox tbox;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1164,14 +1164,14 @@ void submode_game_nameentry_ready_init_func(void)
             ball->ape->unk14 &= ~(1 << 3);
     );
     infoWork.flags |= (1 << 3);
-    memset(&sp8, 0, sizeof(sp8));
-    sp8.unk16 = 11;
-    sp8.unkC = 0x140;
-    sp8.unkE = 0x90;
-    sp8.unk14 = 0;
-    sp8.numLines = 1;
-    sp8.unk1C = 0;
-    g_create_textbox(1, 1, &sp8);
+    memset(&tbox, 0, sizeof(tbox));
+    tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+    tbox.x = 320;
+    tbox.y = 144;
+    tbox.unk14 = 0;
+    tbox.numLines = 1;
+    tbox.unk1C = 0;
+    g_create_textbox(1, 1, &tbox);
     g_set_textbox_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
     g_start_screen_fade(0x100, 0xFFFFFF, 30);
     BALL_FOREACH( ball->state = 15; )
@@ -1497,15 +1497,15 @@ void submode_game_extra_wait_func(void)
         modeCtrl.submodeTimer = 60;
     if (modeCtrl.submodeTimer == 540)
     {
-        struct TextBox sp30;
+        struct TextBox tbox;
 
-        memset(&sp30, 0, sizeof(sp30));
-        sp30.unk16 = 11;
-        sp30.unkC = 0x140;
-        sp30.unkE = 0xC8;
-        sp30.numLines = 2;
-        sp30.unk1C = 0;
-        g_create_textbox(1, 1, &sp30);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+        tbox.x = 0x140;
+        tbox.y = 0xC8;
+        tbox.numLines = 2;
+        tbox.unk1C = 0;
+        g_create_textbox(1, 1, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
             g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
@@ -1524,15 +1524,15 @@ void submode_game_extra_wait_func(void)
     }
     if (modeCtrl.submodeTimer == 300)
     {
-        struct TextBox sp8;
+        struct TextBox tbox;
 
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unk16 = 11;
-        sp8.unkC = 0x140;
-        sp8.unkE = 0xC8;
-        sp8.numLines = 2;
-        sp8.unk1C = 0;
-        g_create_textbox(1, 21, &sp8);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+        tbox.x = 320;
+        tbox.y = 200;
+        tbox.numLines = 2;
+        tbox.unk1C = 0;
+        g_create_textbox(1, 21, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
             g_set_textbox_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);

@@ -341,14 +341,14 @@ void submode_adv_demo_init_func(void)
 
 float lbl_801741CC[] = { -125, -70, -10 };
 
-void lbl_8000F030(struct TextBox *a)
+void lbl_8000F030(struct TextBox *tbox)
 {
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    g_math_unk15(&ballInfo[a->unk20 - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
-    a->unkC = spC.x;
-    a->unkE = spC.y + lbl_801741CC[a->unk20 - 1];
+    g_math_unk15(&ballInfo[tbox->unk20 - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
+    tbox->x = spC.x;
+    tbox->y = spC.y + lbl_801741CC[tbox->unk20 - 1];
 }
 
 enum
@@ -518,7 +518,7 @@ void run_cutscene_script(void)
     float f28;
     const struct IntroCutsceneCommand *cmd;
     Vec sp3C;
-    struct TextBox sp14;
+    struct TextBox tbox;
     Vec sp8;
     int i;
     struct Sprite *sprite;
@@ -538,14 +538,14 @@ void run_cutscene_script(void)
             {
                 mathutil_mtxA_from_mtxB();
                 g_math_unk15(&ballInfo[cmd->param].ape->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
-                memset(&sp14, 0, sizeof(sp14));
-                sp14.unkC = sp3C.x;
-                sp14.unkE = sp3C.y;
-                sp14.numLines = (cmd->param == CHARACTER_BABY) ? 3 : 4;
-                sp14.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
-                sp14.unk16 = 11;
-                sp14.unk1C = lbl_8000F030;
-                g_create_textbox(cmd->param + 1, 1, &sp14);
+                memset(&tbox, 0, sizeof(tbox));
+                tbox.x = sp3C.x;
+                tbox.y = sp3C.y;
+                tbox.numLines = (cmd->param == CHARACTER_BABY) ? 3 : 4;
+                tbox.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
+                tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+                tbox.unk1C = lbl_8000F030;
+                g_create_textbox(cmd->param + 1, 1, &tbox);
                 g_banana_sprite_something(cmd->param);
             }
             break;
@@ -1257,7 +1257,7 @@ void submode_adv_title_init_func(void)
 
 void submode_adv_title_reinit_func(void)
 {
-    struct TextBox sp8;
+    struct TextBox tbox;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1283,14 +1283,14 @@ void submode_adv_title_reinit_func(void)
     else
     {
         modeCtrl.levelSetFlags |= (1 << 2);
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unkC = 0x140;
-        sp8.unkE = 0x182;
-        sp8.numLines = 2;
-        sp8.unk14 = 12;
-        sp8.unk16 = 14;
-        sp8.unk1C = NULL;
-        g_create_textbox(0, 1, &sp8);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.x = 320;
+        tbox.y = 386;
+        tbox.numLines = 2;
+        tbox.unk14 = 12;
+        tbox.style = 14;
+        tbox.unk1C = NULL;
+        g_create_textbox(0, 1, &tbox);
         g_set_textbox_text(0, " \n ");
         hud_show_title_menu();
     }
@@ -1325,18 +1325,18 @@ void submode_adv_title_main_func(void)
          || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
         {
-            struct TextBox sp8;
+            struct TextBox tbox;
 
             func_8002B5C8(0x162);
             modeCtrl.levelSetFlags |= 4;
-            memset(&sp8, 0, sizeof(sp8));
-            sp8.unkC = 0x140;
-            sp8.unkE = 0x182;
-            sp8.numLines = 2;
-            sp8.unk14 = 12;
-            sp8.unk16 = 14;
-            sp8.unk1C = NULL;
-            g_create_textbox(0, 1, &sp8);
+            memset(&tbox, 0, sizeof(tbox));
+            tbox.x = 320;
+            tbox.y = 386;
+            tbox.numLines = 2;
+            tbox.unk14 = 12;
+            tbox.style = 14;
+            tbox.unk1C = NULL;
+            g_create_textbox(0, 1, &tbox);
             g_set_textbox_text(0, " \n ");
             hud_show_title_menu();
         }
@@ -1415,23 +1415,23 @@ void submode_adv_info_init_func(void)
     hud_show_adv_copyright_info(0);
     if (!(modeCtrl.levelSetFlags & (1 << 13)))
     {
-        struct TextBox sp8;
+        struct TextBox tbox;
 
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unkC = 0x140;
-        sp8.unkE = 0xD2;
-        sp8.numLines = 1;
-        sp8.unk14 = 1;
-        sp8.unk16 = 11;
-        sp8.unk1C = NULL;
-        g_create_textbox(1, 2, &sp8);
-        sp8.unkC = 0x140;
-        sp8.unkE = 60;
-        sp8.numLines = 1;
-        sp8.unk14 = 0;
-        sp8.unk16 = 14;
-        sp8.unk1C = NULL;
-        g_create_textbox(2, 1, &sp8);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.x = 320;
+        tbox.y = 210;
+        tbox.numLines = 1;
+        tbox.unk14 = 1;
+        tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+        tbox.unk1C = NULL;
+        g_create_textbox(1, 2, &tbox);
+        tbox.x = 320;
+        tbox.y = 60;
+        tbox.numLines = 1;
+        tbox.unk14 = 0;
+        tbox.style = 14;
+        tbox.unk1C = NULL;
+        g_create_textbox(2, 1, &tbox);
         g_set_textbox_text(2, "c/0xff5000/    Control description!    ");
     }
     func_800846B0(4);
@@ -1588,23 +1588,23 @@ void submode_adv_info_main_func(void)
         func_800390C8(5, &sp30, 1.0f);
     }
     if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.submodeTimer == 4320)
-        func_80077DA0();
+        g_create_saru_sprite();
     for (cmd = infoScript; cmd->time != 0; cmd++)
     {
         if (modeCtrl.submodeTimer > cmd->time || modeCtrl.submodeTimer < cmd->time)
             continue;
         if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1 << 13)))
         {
-            struct TextBox sp8;
+            struct TextBox tbox;
 
-            memset(&sp8, 0, sizeof(sp8));
+            memset(&tbox, 0, sizeof(tbox));
             if (cmd->cmdId == 16)
-                sp8.unkE = 0xC8;
+                tbox.y = 0xC8;
             if (cmd->cmdId == 17)
-                sp8.unkE = 0xB4;
-            sp8.numLines = 1;
-            sp8.unk16 = (cmd->param != 0) ? 13 : 11;
-            g_create_textbox(1, 21, &sp8);
+                tbox.y = 0xB4;
+            tbox.numLines = 1;
+            tbox.style = cmd->param ? TEXTBOX_STYLE_SPIKY : TEXTBOX_STYLE_CENTER_DOWN;
+            g_create_textbox(1, 21, &tbox);
             g_set_textbox_text(1, infoEnglishText[cmd->cmdId]);
         }
         switch (cmd->cmdId)

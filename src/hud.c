@@ -332,15 +332,15 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
 
 void hud_show_press_start_textbox(int a)
 {
-    struct TextBox spC;
+    struct TextBox tbox;
 
-    memset(&spC, 0, sizeof(spC));
-    spC.unk16 = (a == 2 || a == 3) ? 8 : 15;
-    spC.unkC = 0x140;
-    spC.unkE = (a == 2 || a == 3) ? 0x169 : 0x19A;
-    spC.numLines = 1;
-    spC.unk1C = lbl_80075D70;
-    g_create_textbox(0, 21, &spC);
+    memset(&tbox, 0, sizeof(tbox));
+    tbox.style = (a == 2 || a == 3) ? TEXTBOX_STYLE_CENTER_UP : 15;
+    tbox.x = 320;
+    tbox.y = (a == 2 || a == 3) ? 361 : 410;
+    tbox.numLines = 1;
+    tbox.unk1C = lbl_80075D70;
+    g_create_textbox(0, 21, &tbox);
     if (a == 3)
         g_set_textbox_text(0, "b/Select using the c/0xffffff/p/BUTTON_A/c/0x000000/ Button!");
     else
@@ -938,7 +938,7 @@ static void options_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void func_80077DA0(void)
+void g_create_saru_sprite(void)
 {
     struct Sprite *sprite;
 
@@ -1099,8 +1099,8 @@ void g_banana_sprite_something(int arg0)
     {
         sprite->tag = arg0 + 30;
         sprite->type = SPRITE_TYPE_BITMAP;
-        sprite->x = textBoxes[arg0 + 1].unkC;
-        sprite->y = textBoxes[arg0 + 1].unkE;
+        sprite->x = textBoxes[arg0 + 1].x;
+        sprite->y = textBoxes[arg0 + 1].y;
         sprite->textAlign = ALIGN_CC;
         sprite->unk4C = (f32) (0.05 + (0.01 * (f64) (arg0 + 1)));
         sprite->bmpId = (arg0 == 2) ? BMP_COM_banana_01 : BMP_COM_banana_10;
@@ -1123,8 +1123,8 @@ static void lbl_800782CC(s8 *arg0, struct Sprite *sprite)
     }
     if (sprite->counter > 0)
         sprite->counter--;
-    sprite->x = textBoxes[sprite->unk48 + 1].unkC;
-    sprite->y = textBoxes[sprite->unk48 + 1].unkE - ((sprite->unk48 == 2) ? 54 : 66);
+    sprite->x = textBoxes[sprite->unk48 + 1].x;
+    sprite->y = textBoxes[sprite->unk48 + 1].y - ((sprite->unk48 == 2) ? 54 : 66);
     if (sprite->counter < 15)
         sprite->opacity = 1.0f - sprite->counter / 15.0f;
 }

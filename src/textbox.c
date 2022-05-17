@@ -26,6 +26,7 @@ struct TextBox textBoxes[4];
 FORCE_BSS_ORDER(textBoxes)
 
 static void func_80073F74(int id, struct TextBox *b);
+static void clear_lines(int a);
 
 void func_80073E44(void)
 {
@@ -214,6 +215,8 @@ void func_80074480(void)
         tbox->unk0 = 0;
 }
 
+static void draw_textbox(int a, struct TextBox *b);
+
 void textbox_draw_all(void)
 {
     int i;
@@ -226,7 +229,9 @@ void textbox_draw_all(void)
     }
 }
 
-void draw_textbox(int a, struct TextBox *tbox)
+static void func_80075498(struct TextBox *a, int *b, int *c);
+
+static void draw_textbox(int a, struct TextBox *tbox)
 {
     int sp24;
     int sp20;
@@ -255,7 +260,7 @@ void draw_textbox(int a, struct TextBox *tbox)
         return;
 
     func_80071A8C();
-    g_set_font(tbox->unk16 == 13 ? FONT_ICON_SD2 : FONT_ICON_SD);
+    g_set_font(tbox->style == TEXTBOX_STYLE_SPIKY ? FONT_ICON_SD2 : FONT_ICON_SD);
     func_80071B1C(a * 0.01f + 0.059999999776482585);
     g_set_text_fill_color(tbox->unk24);
     f3 = (float)tbox->unk8 / (float)tbox->unk4;
@@ -283,7 +288,7 @@ void draw_textbox(int a, struct TextBox *tbox)
     func_80075498(tbox, &sp24, &sp20);
     sp24 += 0.5 * ((1.0 - f29) * (48.0f + tbox->unk10));
     sp20 += 0.5 * (24.0 * ((1.0 - f30) * tbox->numLines));
-    if (tbox->unk16 == 15)
+    if (tbox->style == 15)
     {
         sp24 += 12;
         sp20 += 12;
@@ -297,9 +302,9 @@ void draw_textbox(int a, struct TextBox *tbox)
         {
             f26 = f29;
             f25 = f30;
-            if (tbox->unk16 == 15 && (r30 == -1 || (float)r30 == numLines))
+            if (tbox->style == 15 && (r30 == -1 || (float)r30 == numLines))
                 f25 *= 0.5;
-            if (tbox->unk16 == 15 && (r29 == -1 || (float)r29 == f27))
+            if (tbox->style == 15 && (r29 == -1 || (float)r29 == f27))
                 f26 *= 0.5;
             func_80071B2C(f26, f25);
             if (r29 == -1)
@@ -321,7 +326,7 @@ void draw_textbox(int a, struct TextBox *tbox)
                     g_draw_text("\x08");
 
             }
-            else if (tbox->unk16 == 13 && (r30 == -1 || (float)r30 == numLines))
+            else if (tbox->style == TEXTBOX_STYLE_SPIKY && (r30 == -1 || (float)r30 == numLines))
             {
                 float f1 = mathutil_floor(tbox->unk10 / 24.0f);
                 if (r29 < f1)
@@ -359,59 +364,59 @@ void draw_textbox(int a, struct TextBox *tbox)
         f1 = 0.0f;
     f0 = CLAMP(f1, 0.0f, 1.0f);
     func_80071B40(f0);
-    switch (tbox->unk16)
+    switch (tbox->style)
     {
         float zero;
-    case 1:
+    case TEXTBOX_STYLE_TOP_LEFT:
         g_set_text_pos(sp24 - 24, sp20);
-        g_draw_text("\x04");
+        g_draw_text("\x04");  // left arrow
         break;
-    case 2:
-        g_set_text_pos(sp24 - 24, sp20 + 0.5f * ((tbox->numLines - 1) * 24));
-        g_draw_text("\x04");
+    case TEXTBOX_STYLE_CENTER_LEFT:
+        g_set_text_pos(sp24 - 24, sp20 + ((tbox->numLines - 1) * 24) * 0.5f);
+        g_draw_text("\x04");  // left arrow
         break;
-    case 3:
+    case TEXTBOX_STYLE_BOTTOM_LEFT:
         g_set_text_pos(sp24 - 24, sp20 + (tbox->numLines - 1) * 24);
-        g_draw_text("\x04");
+        g_draw_text("\x04");  // left arrow
         break;
-    case 4:
+    case TEXTBOX_STYLE_TOP_RIGHT:
         g_set_text_pos(sp24 + tbox->unk10, sp20);
-        g_draw_text("\x05");
+        g_draw_text("\x05");  // right arrow
         break;
-    case 5:
-        g_set_text_pos(sp24 + tbox->unk10, sp20 + 0.5f * ((tbox->numLines - 1) * 24));
-        g_draw_text("\x05");
+    case TEXTBOX_STYLE_CENTER_RIGHT:
+        g_set_text_pos(sp24 + tbox->unk10, sp20 + ((tbox->numLines - 1) * 24) * 0.5f);
+        g_draw_text("\x05");  // right arrow
         break;
-    case 6:
+    case TEXTBOX_STYLE_BOTTOM_RIGHT:
         g_set_text_pos(sp24 + tbox->unk10, sp20 + (tbox->numLines - 1) * 24);
-        g_draw_text("\x05");
+        g_draw_text("\x05");  // right arrow
         break;
-    case 7:
+    case TEXTBOX_STYLE_LEFT_UP:
         zero = 0.0f;
         g_set_text_pos((sp24 + zero) + 14.0f, sp20 - 24);
-        g_draw_text("\x10");
+        g_draw_text("\x10");  // up arrow
         break;
-    case 8:
+    case TEXTBOX_STYLE_CENTER_UP:
         g_set_text_pos(sp24 + tbox->unk10 * 0.5f - 10.0f, sp20 - 24);
-        g_draw_text("\x10");
+        g_draw_text("\x10");  // up arrow
         break;
-    case 9:
+    case TEXTBOX_STYLE_RIGHT_UP:
         g_set_text_pos(sp24 + tbox->unk10 - 34.0f, sp20 - 24);
-        g_draw_text("\x10");
+        g_draw_text("\x10");  // up arrow
         break;
-    case 10:
+    case TEXTBOX_STYLE_LEFT_DOWN:
         zero = 0.0f;
         g_set_text_pos((sp24 + zero) + 14.0f, sp20 + (tbox->numLines * 24));
-        g_draw_text("\x15");
+        g_draw_text("\x15");  // down arrow
         break;
-    case 11:
-    case 13:
+    case TEXTBOX_STYLE_CENTER_DOWN:
+    case TEXTBOX_STYLE_SPIKY:
         g_set_text_pos(sp24 + tbox->unk10 * 0.5f - 10.0f, sp20 + (tbox->numLines * 24));
-        g_draw_text("\x15");
+        g_draw_text("\x15");  // down arrow
         break;
-    case 12:
+    case TEXTBOX_STYLE_RIGHT_DOWN:
         g_set_text_pos(sp24 + tbox->unk10 - 34.0f, sp20 + (tbox->numLines * 24));
-        g_draw_text("\x15");
+        g_draw_text("\x15");  // down arrow
         break;
     }
     func_80071B2C(f29, f30);
@@ -478,65 +483,65 @@ void clear_lines(int id)
     }
 }
 
-void func_80075498(struct TextBox *tbox, int *b, int *c)
+static void func_80075498(struct TextBox *tbox, int *x, int *y)
 {
     float f4 = tbox->unk10;
     float f1 = (tbox->numLines - 1) * 24.0f;
 
-    switch (tbox->unk16)
+    switch (tbox->style)
     {
     default:
-        *b = tbox->unkC - f4 * 0.5f;
-        *c = tbox->unkE - tbox->numLines * 12.0f;
+        *x = tbox->x - f4 * 0.5f;
+        *y = tbox->y - tbox->numLines * 12.0f;
         break;
-    case 1:
-        *b = tbox->unkC + 18;
-        *c = tbox->unkE - 12;
+    case TEXTBOX_STYLE_TOP_LEFT:
+        *x = tbox->x + 18;
+        *y = tbox->y - 12;
         break;
-    case 2:
-        *b = tbox->unkC + 18;
-        *c = tbox->unkE - 12 - f1 * 0.5;
+    case TEXTBOX_STYLE_CENTER_LEFT:
+        *x = tbox->x + 18;
+        *y = tbox->y - 12 - f1 * 0.5;
         break;
-    case 3:
-        *b = tbox->unkC + 18;
-        *c = tbox->unkE - 12 - f1;
+    case TEXTBOX_STYLE_BOTTOM_LEFT:
+        *x = tbox->x + 18;
+        *y = tbox->y - 12 - f1;
         break;
-    case 4:
-        *b = tbox->unkC - f4 - 18.0f;
-        *c = tbox->unkE - 12;
+    case TEXTBOX_STYLE_TOP_RIGHT:
+        *x = tbox->x - f4 - 18.0f;
+        *y = tbox->y - 12;
         break;
-    case 5:
-        *b = tbox->unkC - f4 - 18.0f;
-        *c = tbox->unkE - 12 - f1 * 0.5f;
+    case TEXTBOX_STYLE_CENTER_RIGHT:
+        *x = tbox->x - f4 - 18.0f;
+        *y = tbox->y - 12 - f1 * 0.5f;
         break;
-    case 6:
-        *b = tbox->unkC - f4 - 18.0f;
-        *c = tbox->unkE - 12 - f1;
+    case TEXTBOX_STYLE_BOTTOM_RIGHT:
+        *x = tbox->x - f4 - 18.0f;
+        *y = tbox->y - 12 - f1;
         break;
-    case 7:
-        *b = tbox->unkC - 24;
-        *c = tbox->unkE + 18;
+    case TEXTBOX_STYLE_LEFT_UP:
+        *x = tbox->x - 24;
+        *y = tbox->y + 18;
         break;
-    case 8:
-        *b = tbox->unkC - f4 * 0.5;
-        *c = tbox->unkE + 18;
+    case TEXTBOX_STYLE_CENTER_UP:
+        *x = tbox->x - f4 * 0.5;
+        *y = tbox->y + 18;
         break;
-    case 9:
-        *b = tbox->unkC - f4 + 24.0f;
-        *c = tbox->unkE + 18;
+    case TEXTBOX_STYLE_RIGHT_UP:
+        *x = tbox->x - f4 + 24.0f;
+        *y = tbox->y + 18;
         break;
-    case 10:
-        *b = tbox->unkC - 24;
-        *c = tbox->unkE - 42 - f1;
+    case TEXTBOX_STYLE_LEFT_DOWN:
+        *x = tbox->x - 24;
+        *y = tbox->y - 42 - f1;
         break;
-    case 11:
-    case 13:
-        *b = tbox->unkC - f4 * 0.5;
-        *c = tbox->unkE - 42 - f1;
+    case TEXTBOX_STYLE_CENTER_DOWN:
+    case TEXTBOX_STYLE_SPIKY:
+        *x = tbox->x - f4 * 0.5;
+        *y = tbox->y - 42 - f1;
         break;
-    case 12:
-        *b = tbox->unkC - f4 + 24.0f;
-        *c = tbox->unkE - 42 - f1;
+    case TEXTBOX_STYLE_RIGHT_DOWN:
+        *x = tbox->x - f4 + 24.0f;
+        *y = tbox->y - 42 - f1;
         break;
     }
 }
@@ -544,9 +549,9 @@ void func_80075498(struct TextBox *tbox, int *b, int *c)
 void g_create_textbox(int id, int b, struct TextBox *c)
 {
     int r30;
-    int r28;
-    int r27;
-    int r26;
+    int style;
+    int x;
+    int y;
     struct TextBox *tbox = &textBoxes[id];
 
     if (b == 20 && tbox->unk0 >= 20)
@@ -561,21 +566,21 @@ void g_create_textbox(int id, int b, struct TextBox *c)
 
     tbox->unk4 = 30;
     tbox->unk8 = 0;
-    r28 = (c->unk16 == 0) ? tbox->unk16 : c->unk16;
-    r27 = (c->unkC == 0) ? tbox->unkC : c->unkC;
-    r26 = (c->unkE == 0) ? tbox->unkE : c->unkE;
+    style = (c->style == 0) ? tbox->style : c->style;
+    x = (c->x == 0) ? tbox->x : c->x;
+    y = (c->y == 0) ? tbox->y : c->y;
     r30 = (c->unk24 == 0) ? 0xFFFFFF : c->unk24;
     if (b == 1 || b == 2)
     {
         clear_lines(id);
         tbox->unk20 = id;
         tbox->unk0 = b;
-        tbox->unkC = r27;
-        tbox->unkE = r26;
+        tbox->x = x;
+        tbox->y = y;
         tbox->unk14 = c->unk14;
         tbox->unk10 = tbox->unk14 * 24;
         tbox->numLines = c->numLines;
-        tbox->unk16 = c->unk16;
+        tbox->style = c->style;
         tbox->unk24 = r30;
         tbox->unk17 = c->unk17;
         tbox->unk18 = c->unk18;
@@ -589,22 +594,22 @@ void g_create_textbox(int id, int b, struct TextBox *c)
         if (tbox->unk0 < 10)
         {
             tbox->unk0 = 3;
-            tbox->unkC = r27;
-            tbox->unkE = r26;
+            tbox->x = x;
+            tbox->y = y;
             tbox->unk14 = c->unk14;
             tbox->unk10 = tbox->unk14 * 24;
             tbox->numLines = c->numLines;
-            tbox->unk16 = r28;
+            tbox->style = style;
             tbox->unk24 = r30;
             return;
         }
         tbox->unk0 = b;
         memcpy(&lbl_80292AC0[id], tbox, sizeof(lbl_80292AC0[id]));
-        lbl_80292AC0[id].unkC = r27;
-        lbl_80292AC0[id].unkE = r26;
+        lbl_80292AC0[id].x = x;
+        lbl_80292AC0[id].y = y;
         lbl_80292AC0[id].unk14 = c->unk14;
         lbl_80292AC0[id].numLines = c->numLines;
-        lbl_80292AC0[id].unk16 = r28;
+        lbl_80292AC0[id].style = style;
         lbl_80292AC0[id].unk24 = r30;
         return;
     }
@@ -665,7 +670,7 @@ void g_set_textbox_text(int id, const char *str)
         lbl_80292AC0[id].numLines = newLines + 1;
 }
 
-void func_80075CD4(int id, const char *fmt, ...)
+void g_set_textbox_textf(int id, const char *fmt, ...)
 {
     va_list args;
     char buffer[0x200];
