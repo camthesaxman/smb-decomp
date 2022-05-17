@@ -5,6 +5,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "event.h"
+#include "hud.h"
 #include "info.h"
 #include "input.h"
 #include "mode.h"

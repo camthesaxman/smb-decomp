@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "event.h"
 #include "game.h"
+#include "hud.h"
 #include "info.h"
 #include "input.h"
 #include "item.h"
@@ -22,6 +23,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "textbox.h"
 #include "world.h"
 #include "light.h"
 

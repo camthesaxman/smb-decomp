@@ -20,7 +20,7 @@
 
 s8 lbl_802F1CB0[8];
 u32 lbl_802F1CAC;
-u32 lbl_802F1CA8;
+s32 lbl_802F1CA8;
 
 struct Struct801F3A58 infoWork;
 

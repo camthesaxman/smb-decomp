@@ -1140,24 +1140,4 @@ struct GBilLightGroup
     s8 g_bgLightGroupId;
 };
 
-struct TextBox
-{
-    s32 unk0;
-    s32 unk4;
-    u32 unk8;
-    s16 unkC;
-    s16 unkE;
-    float unk10;
-    s8 unk14;
-    s8 numLines;
-    s8 unk16;
-    u8 unk17;
-    u8 unk18;
-    u8 unk19;
-    u8 filler1A[2];
-    void (*unk1C)(struct TextBox *);
-    s32 unk20;
-    s32 unk24;
-};  // size = 0x28
-
 #endif

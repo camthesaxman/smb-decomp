@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "gma.h"
 #include "gxutil.h"
+#include "hud.h"
 #include "info.h"
 #include "mathutil.h"
 #include "mode.h"

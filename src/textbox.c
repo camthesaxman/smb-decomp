@@ -7,6 +7,7 @@
 #include "global.h"
 #include "mathutil.h"
 #include "sprite.h"
+#include "textbox.h"
 
 struct TextBoxLine
 {
@@ -24,7 +25,7 @@ FORCE_BSS_ORDER(lbl_80292AC0)
 struct TextBox textBoxes[4];
 FORCE_BSS_ORDER(textBoxes)
 
-void func_80073F74(int id, struct TextBox *b);
+static void func_80073F74(int id, struct TextBox *b);
 
 void func_80073E44(void)
 {
@@ -64,7 +65,7 @@ void textbox_main(void)
     }
 }
 
-void func_80073F74(int id, struct TextBox *tbox)
+static void func_80073F74(int id, struct TextBox *tbox)
 {
     s32 i;
     struct TextBoxLine *line;

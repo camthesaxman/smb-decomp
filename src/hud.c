@@ -9,12 +9,14 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "hud.h"
 #include "info.h"
 #include "input.h"
 #define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
 #include "sprite.h"
+#include "textbox.h"
 
 u8 lbl_801C14F0[] =
 {
@@ -35,9 +37,9 @@ float lbl_801C14FC[] =
     608,
 };
 
-extern void pause_menu_sprite_draw(struct Sprite *);
+static void lbl_80075D70(struct TextBox *a) {}
 
-void lbl_80075D70(struct TextBox *a) {}
+static void pause_menu_sprite_draw(struct Sprite *);
 
 void hud_show_pause_menu(void)
 {
@@ -65,7 +67,7 @@ void hud_show_pause_menu(void)
     }
 }
 
-void game_over_sprite_main();
+static void game_over_sprite_main(s8 *, struct Sprite *);
 
 void func_80075E1C(int unused, struct Sprite *sprite)
 {
@@ -115,14 +117,14 @@ void func_80075E1C(int unused, struct Sprite *sprite)
     }
 }
 
-char *menuContHowExit[] =
+static char *menuContHowExit[] =
 {
     "a/Continue game",
     "a/How to play",
     "a/Exit game",
 };
 
-char *menuContViewHowExit[] =
+static char *menuContViewHowExit[] =
 {
     "a/Continue game",
     "a/View stage",
@@ -130,7 +132,7 @@ char *menuContViewHowExit[] =
     "a/Exit game",
 };
 
-char *menuContSaveHowExit[] =
+static char *menuContSaveHowExit[] =
 {
     "a/Continue game",
     "a/Save replay",
@@ -138,7 +140,7 @@ char *menuContSaveHowExit[] =
     "a/Exit game",
 };
 
-char *menuContRetryViewHowSelectExit[] =
+static char *menuContRetryViewHowSelectExit[] =
 {
     "a/Continue game",
     "a/Retry",
@@ -148,7 +150,7 @@ char *menuContRetryViewHowSelectExit[] =
     "a/Exit game",
 };
 
-char *menuContRetrySaveHowSelectExit[] =
+static char *menuContRetrySaveHowSelectExit[] =
 {
     "a/Continue game",
     "a/Retry",
@@ -158,7 +160,7 @@ char *menuContRetrySaveHowSelectExit[] =
     "a/Exit game",
 };
 
-char *menuContRetryHowExit[] =
+static char *menuContRetryHowExit[] =
 {
     "a/Continue game",
     "a/Retry",
@@ -166,7 +168,7 @@ char *menuContRetryHowExit[] =
     "a/Exit game",
 };
 
-char *menuContGuideHowExit[] =
+static char *menuContGuideHowExit[] =
 {
     "a/Continue game",
     "a/Guide",
@@ -174,7 +176,7 @@ char *menuContGuideHowExit[] =
     "a/Exit game",
 };
 
-char **pauseMenus[] =
+static char **pauseMenus[] =
 {
     menuContHowExit,
     menuContViewHowExit,
@@ -189,7 +191,7 @@ char **pauseMenus[] =
     menuContGuideHowExit,
 };
 
-void pause_menu_sprite_draw(struct Sprite *sprite)
+static void pause_menu_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     int bmpId;
@@ -347,7 +349,7 @@ void hud_show_press_start_textbox(int a)
 
 float force_lbl_802F4C80() { return 10.0f; }
 
-void lbl_80076710(struct Sprite *sprite)
+static void lbl_80076710(struct Sprite *sprite)
 {
     int temp_r3;
 
@@ -368,7 +370,7 @@ void lbl_80076710(struct Sprite *sprite)
     sprite->drawFunc = lbl_80076710;
 }
 
-void lbl_800768A8(s8 *a, struct Sprite *sprite);
+static void lbl_800768A8(s8 *a, struct Sprite *sprite);
 
 void g_logo_plus_sprite_something(void)
 {
@@ -402,9 +404,9 @@ void g_logo_plus_sprite_something(void)
     }
 }
 
-void lbl_80076AC0(struct Sprite *);
+static void lbl_80076AC0(struct Sprite *);
 
-void lbl_800768A8(s8 *a, struct Sprite *sprite)
+static void lbl_800768A8(s8 *a, struct Sprite *sprite)
 {
     struct Sprite *logoPlus = find_sprite_with_tag(3);
 
@@ -454,7 +456,7 @@ void lbl_800768A8(s8 *a, struct Sprite *sprite)
     sprite->counter++;
 }
 
-void lbl_80076AC0(struct Sprite *sprite)
+static void lbl_80076AC0(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     int r5 = sprite->unk48;
@@ -478,7 +480,7 @@ void lbl_80076AC0(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-void copyright_sprite_main(s8 *, struct Sprite *);
+static void copyright_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_adv_copyright_info(int a)
 {
@@ -526,7 +528,7 @@ void hud_show_adv_copyright_info(int a)
     }
 }
 
-void copyright_sprite_main(s8 *unused, struct Sprite *sprite)
+static void copyright_sprite_main(s8 *unused, struct Sprite *sprite)
 {
     if (sprite->unk48 == -1 && sprite->opacity > 0.0f)
         sprite->opacity -= 0.05;
@@ -611,11 +613,8 @@ struct TitleLetter titleLettersMonkeyBall[] =
     { BMP_ADV_adv_title_mnk_l, 407, 256 },
 };
 
-void title_sprite_main(s8 *, struct Sprite *);
-void title_sprite_draw(struct Sprite *);
-
-extern float lbl_802F2010;
-extern float lbl_802F2014;
+static void title_sprite_main(s8 *, struct Sprite *);
+static void title_sprite_draw(struct Sprite *);
 
 void hud_show_title_banner(int arg0)
 {
@@ -656,7 +655,7 @@ void hud_show_title_banner(int arg0)
     }
 }
 
-void title_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void title_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int i;
 
@@ -726,7 +725,7 @@ void title_sprite_main(s8 *arg0, struct Sprite *sprite)
 
 extern u32 lbl_80118AC8[];
 
-void title_sprite_draw(struct Sprite *sprite)
+static void title_sprite_draw(struct Sprite *sprite)
 {
     int i;
     struct TitleLetter *letter;
@@ -831,8 +830,8 @@ void title_sprite_draw(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-void gamestart_sprite_main(s8 *, struct Sprite *);
-void options_sprite_main(s8 *, struct Sprite *);
+static void gamestart_sprite_main(s8 *, struct Sprite *);
+static void options_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_title_menu(void)
 {
@@ -869,7 +868,7 @@ void hud_show_title_menu(void)
     }
 }
 
-void gamestart_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void gamestart_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
     {
@@ -904,7 +903,7 @@ void gamestart_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void options_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void options_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if ((modeCtrl.levelSetFlags & 4) && textBoxes[0].unk0 == 10)
     {
@@ -939,8 +938,6 @@ void options_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void lbl_80080940(struct Sprite *);
-
 void func_80077DA0(void)
 {
     struct Sprite *sprite;
@@ -963,14 +960,13 @@ void func_80077DA0(void)
     lbl_80292D18.unk14 = 0xE;
 }
 
-void normal_timer_seconds_sprite_main(s8 *, struct Sprite *);
-void normal_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
-void banana_count_sprite_draw(struct Sprite *);
-void bananas_left_sprite_main(s8 *, struct Sprite *);
-
 float force_lbl_802F4D9C() { return 0.1f; }
-
 float force_lbl_802F4DA0() { return 40.0f; }
+
+static void normal_timer_seconds_sprite_main(s8 *, struct Sprite *);
+static void normal_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
+static void banana_count_sprite_draw(struct Sprite *);
+static void bananas_left_sprite_main(s8 *, struct Sprite *);
 
 void g_show_adv_ready_hud(void)
 {
@@ -1092,7 +1088,7 @@ void g_show_adv_ready_hud(void)
     }
 }
 
-void lbl_800782CC(s8 *, struct Sprite *);
+static void lbl_800782CC(s8 *, struct Sprite *);
 
 void g_banana_sprite_something(int arg0)
 {
@@ -1118,7 +1114,7 @@ void g_banana_sprite_something(int arg0)
     }
 }
 
-void lbl_800782CC(s8 *arg0, struct Sprite *sprite)
+static void lbl_800782CC(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->counter == -1)
     {
@@ -1133,8 +1129,8 @@ void lbl_800782CC(s8 *arg0, struct Sprite *sprite)
         sprite->opacity = 1.0f - sprite->counter / 15.0f;
 }
 
-void eieipu_sprite_main(s8 *, struct Sprite *);
-void eieipu_sprite_draw(struct Sprite *);
+static void eieipu_sprite_main(s8 *, struct Sprite *);
+static void eieipu_sprite_draw(struct Sprite *);
 
 void g_show_eieipu_sprite(int arg0)
 {
@@ -1156,7 +1152,7 @@ void g_show_eieipu_sprite(int arg0)
     }
 }
 
-void eieipu_sprite_main(s8 *a, struct Sprite *sprite)
+static void eieipu_sprite_main(s8 *a, struct Sprite *sprite)
 {
     sprite->counter++;
 }
@@ -1238,7 +1234,7 @@ u32 lbl_801C1984[] =
     0x0000FFFF,
 };
 
-void eieipu_sprite_draw(struct Sprite *sprite)
+static void eieipu_sprite_draw(struct Sprite *sprite)
 {
     f32 temp_f29;
     int i;
@@ -1329,11 +1325,11 @@ extern struct
     u8 filler8[1];
 } lbl_8027CE24;
 
-void floor_intro_sprite_main(s8 *, struct Sprite *);
-void floor_intro_sprite_draw(struct Sprite *);
-void bonus_floor_sprite_main(s8 *, struct Sprite *);
-void final_floor_sprite_main(s8 *, struct Sprite *);
-void final_floor_sprite_draw(struct Sprite *);
+static void floor_intro_sprite_main(s8 *, struct Sprite *);
+static void floor_intro_sprite_draw(struct Sprite *);
+static void bonus_floor_sprite_main(s8 *, struct Sprite *);
+static void final_floor_sprite_main(s8 *, struct Sprite *);
+static void final_floor_sprite_draw(struct Sprite *);
 
 void hud_show_stage_name_banner(void)
 {
@@ -1428,7 +1424,7 @@ void hud_show_stage_name_banner(void)
     }
 }
 
-void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->unk48 > 0)
         sprite->opacity = 0.06666 * sprite->unk48;
@@ -1445,7 +1441,7 @@ void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void floor_intro_sprite_draw(struct Sprite *sprite)
+static void floor_intro_sprite_draw(struct Sprite *sprite)
 {
     int centerX;
     int i;
@@ -1515,7 +1511,7 @@ void floor_intro_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->counter > 90)
     {
@@ -1532,7 +1528,7 @@ void player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void ready_sprite_main(s8 *, struct Sprite *);
+static void ready_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_ready_banner(int duration)
 {
@@ -1579,7 +1575,7 @@ void hud_show_ready_banner(int duration)
     g_play_sound(4);
 }
 
-void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int t = sprite->unk48 - sprite->counter;
 
@@ -1618,13 +1614,13 @@ void lbl_80067C20(struct Sprite *);
 
 extern s32 lbl_802F1CAC;
 
-void lbl_8007A774(s8 *, struct Sprite *);
-void lbl_8007A7B8(s8 *, struct Sprite *);
-void competition_timer_seconds_sprite_main(s8 *, struct Sprite *);
-void competition_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
-void lbl_8007B134(struct Sprite *);
-void score_value_sprite_main(s8 *, struct Sprite *);
-void normal_ball_speed_sprite_main(s8 *, struct Sprite *);
+static void lbl_8007A774(s8 *, struct Sprite *);
+static void lbl_8007A7B8(s8 *, struct Sprite *);
+static void competition_timer_seconds_sprite_main(s8 *, struct Sprite *);
+static void competition_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
+static void lbl_8007B134(struct Sprite *);
+static void score_value_sprite_main(s8 *, struct Sprite *);
+static void normal_ball_speed_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_normal_mode_info(void)
 {
@@ -1929,9 +1925,9 @@ void hud_show_normal_mode_info(void)
     }
 }
 
-void lbl_8007ADF4(struct Sprite *);
-void lbl_8007B490(s8 *, struct Sprite *);
-void competition_ball_speed_sprite_main(s8 *, struct Sprite *);
+static void lbl_8007ADF4(struct Sprite *);
+static void lbl_8007B490(s8 *, struct Sprite *);
+static void competition_ball_speed_sprite_main(s8 *, struct Sprite *);
 
 static void show_competition_player_hud(int playerId)
 {
@@ -2064,15 +2060,15 @@ static void show_competition_player_hud(int playerId)
     }
 }
 
-char *lbl_801C1A0C[] =
+static char *lbl_801C1A0C[] =
 {
     "FINAL",
     "2ND",
     "1ST",
 };
 
-void competition_round_sprite_main(s8 *, struct Sprite *);
-void competition_separator_sprite_draw(struct Sprite *);
+static void competition_round_sprite_main(s8 *, struct Sprite *);
+static void competition_separator_sprite_draw(struct Sprite *);
 
 void hud_show_competition_mode_info(void)
 {
@@ -2172,7 +2168,7 @@ void hud_show_competition_mode_info(void)
 
 float force_lbl_802F4EA0() { return 10.666667f; }
 
-void competition_round_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void competition_round_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (gameSubmode == 0x33)
     {
@@ -2196,7 +2192,7 @@ void competition_round_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void competition_separator_sprite_draw(struct Sprite *sprite)
+static void competition_separator_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     u8 dummy[4];
@@ -2260,7 +2256,7 @@ void competition_separator_sprite_draw(struct Sprite *sprite)
     }
 }
 
-void lbl_8007A774(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007A774(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.levelSetFlags & 1)
     {
@@ -2273,7 +2269,7 @@ void lbl_8007A774(s8 *arg0, struct Sprite *sprite)
         sprite->y = 458.0f;
 }
 
-void lbl_8007A7B8(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007A7B8(s8 *arg0, struct Sprite *sprite)
 {
     if (gamePauseStatus & 4)
         sprite->unk78 &= ~1;
@@ -2281,7 +2277,7 @@ void lbl_8007A7B8(s8 *arg0, struct Sprite *sprite)
         sprite->unk78 |= 1;
 }
 
-void competition_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void competition_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     sprintf(sprite->text, "%03d", infoWork.timerCurr / 60);
     if (infoWork.timerCurr <= 0)
@@ -2294,7 +2290,7 @@ void competition_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void competition_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void competition_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int val = 100.0 * ((float)(infoWork.timerCurr % 60) / 60.0);
 
@@ -2309,20 +2305,20 @@ void competition_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite
     }
 }
 
-void normal_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void normal_timer_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int time = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
     sprintf(sprite->text, "%03d", time / 60);
 }
 
-void normal_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void normal_timer_100th_seconds_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int time = (int)func_80049E7C(lbl_80250A68.unk0[lbl_80250A68.unk14], lbl_80250A68.unk10) + 1;
     int val = 100.0 * ((float)(time % 60) / 60.0);
     sprintf(sprite->text, ":%02d", val);
 }
 
-const float lbl_80118870[] =
+static const float lbl_80118870[] =
 {
     1.0,
     1.1,
@@ -2356,7 +2352,7 @@ const float lbl_80118870[] =
     1.0,
 };
 
-void banana_count_sprite_draw(struct Sprite *sprite)
+static void banana_count_sprite_draw(struct Sprite *sprite)
 {
     struct Ball *ball;
     s32 phi_r3;
@@ -2408,7 +2404,7 @@ void banana_count_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void lbl_8007ADF4(struct Sprite *sprite)
+static void lbl_8007ADF4(struct Sprite *sprite)
 {
     struct Ball *ball;
     s32 phi_r3;
@@ -2463,7 +2459,7 @@ void lbl_8007ADF4(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void lbl_8007B134(struct Sprite *sprite)
+static void lbl_8007B134(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     struct TPLTextureHeader *texHdr;
@@ -2490,9 +2486,7 @@ void lbl_8007B134(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-extern s32 lbl_802F1CA8;
-
-void score_value_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void score_value_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     struct Struct80292C60 *r31 = &lbl_80292C60;
     struct Ball *ball = currentBallStructPtr;
@@ -2532,12 +2526,12 @@ void score_value_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprintf(sprite->text, "%d", r31->unk0);
 }
 
-void lbl_8007B490(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007B490(s8 *arg0, struct Sprite *sprite)
 {
     sprite->bmpId = func_80081CFC(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[sprite->unk48]);
 }
 
-void normal_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void normal_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float len = mathutil_vec_len(&currentBallStructPtr->vel);
     float mph = ((216000.0 * len) / 1000.0) / 1.6093;
@@ -2547,7 +2541,7 @@ void normal_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprintf(sprite->text, "%3.0f", mph);
 }
 
-void competition_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void competition_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float len = mathutil_vec_len(&ballInfo[sprite->unk48].vel);
     float mph = ((216000.0 * len) / 1000.0) / 1.6093;
@@ -2557,7 +2551,7 @@ void competition_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprintf(sprite->text, "%3.0f", mph);
 }
 
-void bananas_left_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void bananas_left_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float phi_f1;
 
@@ -2585,7 +2579,7 @@ void bananas_left_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprite->unkE = 255.0f * phi_f1;
 }
 
-void bonus_floor_sprite_main(s8 *arg0, struct Sprite *arg1)
+static void bonus_floor_sprite_main(s8 *arg0, struct Sprite *arg1)
 {
     if (arg1->unk48 > 0)
     {
@@ -2628,7 +2622,7 @@ void bonus_floor_sprite_main(s8 *arg0, struct Sprite *arg1)
     }
 }
 
-void final_floor_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void final_floor_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.levelSet == 0)
     {
@@ -2704,7 +2698,7 @@ void final_floor_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void final_floor_sprite_draw(struct Sprite *sprite)
+static void final_floor_sprite_draw(struct Sprite *sprite)
 {
     char text[12];
     float temp_f20;
@@ -2771,8 +2765,8 @@ void final_floor_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void go_sprite_main(s8 *, struct Sprite *);
-void go_sprite_draw(struct Sprite *);
+static void go_sprite_main(s8 *, struct Sprite *);
+static void go_sprite_draw(struct Sprite *);
 
 void hud_show_go_banner(int arg0)
 {
@@ -2798,7 +2792,7 @@ void hud_show_go_banner(int arg0)
     }
 }
 
-void go_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void go_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int t = sprite->unk48 - sprite->counter;
 
@@ -2849,7 +2843,7 @@ void go_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void go_sprite_draw(struct Sprite *sprite)
+static void go_sprite_draw(struct Sprite *sprite)
 {
     int i;
     int t;
@@ -2902,9 +2896,9 @@ void go_sprite_draw(struct Sprite *sprite)
     }
 }
 
-void goal_sprite_draw(struct Sprite *);
-void warp_sprite_main(s8 *, struct Sprite *);
-void goal_sprite_main(s8 *, struct Sprite *);
+static void goal_sprite_draw(struct Sprite *);
+static void warp_sprite_main(s8 *, struct Sprite *);
+static void goal_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_goal_banner(int duration)
 {
@@ -2951,10 +2945,7 @@ void hud_show_goal_banner(int duration)
     }
 }
 
-extern float lbl_802F2018;
-extern float lbl_802F201C;
-
-void goal_sprite_draw(struct Sprite *sprite)
+static void goal_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     float phi_f30;
@@ -3052,9 +3043,9 @@ void goal_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void lbl_8007CDCC(s8 *, struct Sprite *);
+static void lbl_8007CDCC(s8 *, struct Sprite *);
 
-void warp_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void warp_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     s32 t;
     struct Sprite *warpSprite;
@@ -3099,7 +3090,7 @@ void warp_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void lbl_8007CDCC(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007CDCC(s8 *arg0, struct Sprite *sprite)
 {
     sprite->unk71 += 6;
     sprite->unk72 += 7;
@@ -3112,7 +3103,7 @@ void lbl_8007CDCC(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void fall_out_sprite_main(s8 *, struct Sprite *);
+static void fall_out_sprite_main(s8 *, struct Sprite *);
 static void show_bonus_finish_banner(void);
 
 void hud_show_fallout_banner(int duration)
@@ -3143,7 +3134,7 @@ void hud_show_fallout_banner(int duration)
         show_bonus_finish_banner();
 }
 
-void fall_out_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void fall_out_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     s32 temp_r0_3;
     s32 t;
@@ -3204,7 +3195,7 @@ void fall_out_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void time_over_sprite_main(s8 *, struct Sprite *);
+static void time_over_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_time_over_banner(int duration)
 {
@@ -3233,7 +3224,7 @@ void hud_show_time_over_banner(int duration)
         show_bonus_finish_banner();
 }
 
-void time_over_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void time_over_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     s32 t = sprite->unk48 - sprite->counter;
 
@@ -3261,7 +3252,7 @@ void time_over_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void bonus_finish_sprite_main(s8 *, struct Sprite *);
+static void bonus_finish_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_perfect_banner(int unused)
 {
@@ -3308,7 +3299,7 @@ static void show_bonus_finish_banner(void)
     }
 }
 
-void bonus_finish_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void bonus_finish_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float temp_f3 = sprite->counter / 30.0f;
 
@@ -3319,9 +3310,9 @@ void bonus_finish_sprite_main(s8 *arg0, struct Sprite *sprite)
         sprite->counter++;
 }
 
-void continue_sprite_main(s8 *, struct Sprite *);
-void num_continues_sprite_main(s8 *, struct Sprite *);
-void continue_yes_no_sprite_main(s8 *, struct Sprite *);
+static void continue_sprite_main(s8 *, struct Sprite *);
+static void num_continues_sprite_main(s8 *, struct Sprite *);
+static void continue_yes_no_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_continue_interface(void)
 {
@@ -3411,7 +3402,7 @@ void hud_show_continue_interface(void)
     }
 }
 
-void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
@@ -3428,7 +3419,7 @@ void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprite->opacity += 0.1 * (1.0 - sprite->opacity);
 }
 
-void num_continues_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void num_continues_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
@@ -3439,7 +3430,7 @@ void num_continues_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprintf(sprite->text, "a/Continue(s):%d", get_num_continues());
 }
 
-void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->unk48 == 1)
     {
@@ -3471,14 +3462,14 @@ void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
                 break;
             case 1:
             case 6:
-                phi_r0 = 0x4F;
+                phi_r0 = 79;
                 break;
             case 2:
             case 5:
-                phi_r0 = 0x8F;
+                phi_r0 = 143;
                 break;
             default:
-                phi_r0 = 0xCF;
+                phi_r0 = 207;
                 break;
             }
             sprite->unk70 = phi_r0;
@@ -3531,7 +3522,7 @@ void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void game_over_player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void game_over_player_num_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->counter > 90)
     {
@@ -3591,7 +3582,7 @@ void hud_show_game_over_banner(int duration)
     }
 }
 
-void game_over_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void game_over_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int t = sprite->unk48 - sprite->counter;
 
@@ -3604,7 +3595,7 @@ void game_over_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void oneup_sprite_main(s8 *, struct Sprite *);
+static void oneup_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_1up_banner(int arg0)
 {
@@ -3626,7 +3617,7 @@ void hud_show_1up_banner(int arg0)
     }
 }
 
-void oneup_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void oneup_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     s32 t = sprite->unk48 - sprite->counter;
     float x;
@@ -3680,7 +3671,7 @@ void oneup_sprite_main(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void hurry_up_sprite_main(s8 *, struct Sprite *);
+static void hurry_up_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_hurry_up_banner(void)
 {
@@ -3705,7 +3696,7 @@ void hud_show_hurry_up_banner(void)
     }
 }
 
-void hurry_up_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void hurry_up_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (--sprite->counter == 0)
     {
@@ -3723,7 +3714,7 @@ void hurry_up_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprite->y = find_sprite_with_tag(20)->y;
 }
 
-void replay_sprite_main(s8 *, struct Sprite *);
+static void replay_sprite_main(s8 *, struct Sprite *);
 
 void show_replay_text(int arg0)
 {
@@ -3746,7 +3737,7 @@ void show_replay_text(int arg0)
         sprite->unk48 = 0xF;
 }
 
-void replay_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void replay_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     sprite->counter--;
     if (sprite->counter < 0 || !(infoWork.flags & 0x10))
@@ -3766,7 +3757,7 @@ void replay_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-char *rankTitles[] =
+static char *rankTitles[] =
 {
     "THE GREATEST!",
     "SECOND BEST",
@@ -3775,9 +3766,9 @@ char *rankTitles[] =
     "FIFTH BEST",
 };
 
-s16 lbl_801C1B20[6] = { 0x0048, 0x0048, 0x0030, 0x0258, 0x0210, 0x0000 };
+static s16 nameEntryElemsX[] = { 72, 72, 48, 600, 528 };
 
-void name_entry_info_sprite_main(s8 *, struct Sprite *);
+static void name_entry_info_sprite_main(s8 *, struct Sprite *);
 
 void hud_show_name_entry_info(int rank, int unused)
 {
@@ -3786,7 +3777,7 @@ void hud_show_name_entry_info(int rank, int unused)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->x = lbl_801C1B20[0] - 320;
+        sprite->x = nameEntryElemsX[0] - 320;
         sprite->y = 450.0f;
         sprite->fontId = FONT_ASC_20x20;
         sprite->textAlign = ALIGN_LB;
@@ -3797,7 +3788,7 @@ void hud_show_name_entry_info(int rank, int unused)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->x = lbl_801C1B20[1] - 320;
+        sprite->x = nameEntryElemsX[1] - 320;
         sprite->y = 450.0f;
         sprite->fontId = FONT_ASC_8x16;
         sprite->textAlign = ALIGN_LT;
@@ -3811,7 +3802,7 @@ void hud_show_name_entry_info(int rank, int unused)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->x = lbl_801C1B20[2] - 320;
+        sprite->x = nameEntryElemsX[2] - 320;
         sprite->y = 448.0f;
         sprite->fontId = FONT_ICON_LV;
         sprite->textAlign = ALIGN_CC;
@@ -3824,7 +3815,7 @@ void hud_show_name_entry_info(int rank, int unused)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->x = lbl_801C1B20[3] + 320;
+        sprite->x = nameEntryElemsX[3] + 320;
         sprite->y = 456.0f;
         sprite->fontId = FONT_ASC_72x64;
         sprite->textAlign = ALIGN_RB;
@@ -3835,7 +3826,7 @@ void hud_show_name_entry_info(int rank, int unused)
     sprite = create_sprite();
     if (sprite != NULL)
     {
-        sprite->x = lbl_801C1B20[4] + 320;
+        sprite->x = nameEntryElemsX[4] + 320;
         sprite->y = 450.0f;
         sprite->unkC = 255;
         sprite->unkD = 200;
@@ -3848,11 +3839,11 @@ void hud_show_name_entry_info(int rank, int unused)
     }
 }
 
-void name_entry_info_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void name_entry_info_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     int temp_r5 = sprite->unk48;
     int x = sprite->x;
-    int temp_r3 = lbl_801C1B20[temp_r5];
+    int temp_r3 = nameEntryElemsX[temp_r5];
 
     if (x < temp_r3)
     {
@@ -3927,6 +3918,8 @@ void hud_show_name_entry_banner(int arg0)
     }
     g_play_sound(4);
 }
+
+// Unused credits-related data. Possibly left over from arcade version?
 
 char string_CONGRATULATIONS[] = "CONGRATULATIONS";
 char string_THANK__YOU__FOR__PLAYING[] = "THANK  YOU  FOR  PLAYING";
@@ -4016,7 +4009,7 @@ struct
     {  50,  6, 0.05,  6 },
 };
 
-void lbl_8007EC80(s8 *, struct Sprite *);
+static void lbl_8007EC80(s8 *, struct Sprite *);
 
 void func_8007EB2C(int arg0)
 {
@@ -4048,12 +4041,12 @@ void func_8007EB2C(int arg0)
     }
 }
 
-void lbl_8007EC80(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007EC80(s8 *arg0, struct Sprite *sprite)
 {
     sprite->x -= sprite->unk48;
 }
 
-void lbl_8007EF0C(s8 *, struct Sprite *);
+static void lbl_8007EF0C(s8 *, struct Sprite *);
 
 void func_8007ECB8(void)
 {
@@ -4114,13 +4107,13 @@ void func_8007ECB8(void)
     }
 }
 
-void lbl_8007EF0C(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007EF0C(s8 *arg0, struct Sprite *sprite)
 {
     sprintf(sprite->text, "%03d", ballInfo[sprite->unk48].unk138);
 }
 
-void lbl_8007F060(s8 *, struct Sprite *);
-void lbl_8007F1A4(struct Sprite *);
+static void lbl_8007F060(s8 *, struct Sprite *);
+static void lbl_8007F1A4(struct Sprite *);
 
 void func_8007EF50(struct Ball *ball)
 {
@@ -4147,7 +4140,7 @@ void func_8007EF50(struct Ball *ball)
     }
 }
 
-void lbl_8007F060(s8 *arg0, struct Sprite *sprite)
+static void lbl_8007F060(s8 *arg0, struct Sprite *sprite)
 {
     if (sprite->counter > 0)
         sprite->counter--;
@@ -4183,7 +4176,7 @@ struct Struct801C20EC
     float unkC;
 };
 
-struct Struct801C20EC lbl_801C20EC[] =
+static struct Struct801C20EC lbl_801C20EC[] =
 {
     {   0,   0, 160,  48 },
     {   0,   0, 160,  48 },
@@ -4191,14 +4184,9 @@ struct Struct801C20EC lbl_801C20EC[] =
     { 160,   0,  88,  48 },
 };
 
-u32 lbl_801C212C[] =
-{
-    0xC2100000,
-    0,
-    0x42100000,
-};
+float lbl_801C212C[] = { -36.0f, 0.0f, 36.0f };  // unused
 
-void lbl_8007F1A4(struct Sprite *sprite)
+static void lbl_8007F1A4(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     struct TPLTextureHeader *texHdr;
@@ -4225,10 +4213,10 @@ void lbl_8007F1A4(struct Sprite *sprite)
     draw_naomi_sprite(&params);
 }
 
-void clear_score_sprite_draw(struct Sprite *);
-void warp_bonus_sprite_draw(struct Sprite *);
-void time_bonus_sprite_draw(struct Sprite *);
-void floor_score_sprite_draw(struct Sprite *);
+static void clear_score_sprite_draw(struct Sprite *);
+static void warp_bonus_sprite_draw(struct Sprite *);
+static void time_bonus_sprite_draw(struct Sprite *);
+static void floor_score_sprite_draw(struct Sprite *);
 
 void hud_show_goal_score_info(int clearScore, int floorScore, u32 arg2)
 {
@@ -4318,7 +4306,7 @@ void hud_show_goal_score_info(int clearScore, int floorScore, u32 arg2)
     }
 }
 
-int func_8007F61C(struct Sprite *sprite, int t, float arg2)
+static int func_8007F61C(struct Sprite *sprite, int t, float arg2)
 {
     float phi_f1;
     int phi_r31;
@@ -4346,7 +4334,7 @@ int func_8007F61C(struct Sprite *sprite, int t, float arg2)
     return 1;
 }
 
-int lbl_8007F754_inline2(struct Sprite *sprite, int t, float arg2)
+static int lbl_8007F754_inline2(struct Sprite *sprite, int t, float arg2)
 {
     float phi_f1;
 
@@ -4362,17 +4350,11 @@ int lbl_8007F754_inline2(struct Sprite *sprite, int t, float arg2)
     return 1;
 }
 
-char string_result_menu[] = "result menu";
-char string_result_mask[] = "result mask";
+char string_result_menu[] = "result menu";  // unused
+char string_result_mask[] = "result mask";  // unused
+char *lbl_801C2178[] = { "k/RITORAI", "h/SETTEIHENNKOU", "h/SHUURYOU" };  // unused
 
-char *asdfasdf[] =
-{
-    "k/RITORAI",
-    "h/SETTEIHENNKOU",
-    "h/SHUURYOU",
-};
-
-void clear_score_sprite_draw(struct Sprite *sprite)
+static void clear_score_sprite_draw(struct Sprite *sprite)
 {
     int t;
     float f31;
@@ -4394,7 +4376,7 @@ void clear_score_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void warp_bonus_sprite_draw(struct Sprite *sprite)
+static void warp_bonus_sprite_draw(struct Sprite *sprite)
 {
     int t;
     float f31;
@@ -4416,7 +4398,7 @@ void warp_bonus_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void time_bonus_sprite_draw(struct Sprite *sprite)
+static void time_bonus_sprite_draw(struct Sprite *sprite)
 {
     int t;
     float f31;
@@ -4438,7 +4420,7 @@ void time_bonus_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void floor_score_sprite_draw(struct Sprite *sprite)
+static void floor_score_sprite_draw(struct Sprite *sprite)
 {
     int t;
     int r31;
@@ -4464,15 +4446,15 @@ void floor_score_sprite_draw(struct Sprite *sprite)
     func_80071A8C();
 }
 
-void goal_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void goal_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (!(gamePauseStatus & 0xA) && --sprite->counter <= 0)
         *arg0 = 0;
 }
 
-void best_score_sprite_main(s8 *, struct Sprite *);
-void best_score_sprite_draw(struct Sprite *);
-void lbl_800800D4(struct Sprite *);
+static void best_score_sprite_main(s8 *, struct Sprite *);
+static void best_score_sprite_draw(struct Sprite *);
+static void lbl_800800D4(struct Sprite *);
 
 void g_show_practice_mode_score_info(int arg0)
 {
@@ -4520,7 +4502,7 @@ void g_show_practice_mode_score_info(int arg0)
         printf("NULL\n");
 }
 
-void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
+static void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     switch (sprite->unk48)
     {
@@ -4540,7 +4522,7 @@ void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void best_score_sprite_draw(struct Sprite *sprite)
+static void best_score_sprite_draw(struct Sprite *sprite)
 {
     int i;
     u32 r28;
@@ -4560,7 +4542,7 @@ void best_score_sprite_draw(struct Sprite *sprite)
     }
 }
 
-void lbl_800800D4(struct Sprite *sprite)
+static void lbl_800800D4(struct Sprite *sprite)
 {
     struct Sprite *temp_r3;
     void (*drawFunc)(struct Sprite *);
@@ -4594,7 +4576,7 @@ void lbl_800800D4(struct Sprite *sprite)
 }
 
 #pragma dont_inline on
-float func_800802E0(u16 arg0)
+static float func_800802E0(u16 arg0)
 {
     float temp_f2;
 
@@ -4620,7 +4602,7 @@ float func_800802E0(u16 arg0)
 }
 #pragma dont_inline reset
 
-void lbl_800803E8(s8 *arg0, struct Sprite *sprite)
+static void lbl_800803E8(s8 *arg0, struct Sprite *sprite)
 {
     float temp_f0;
     u8 dummy[8];
@@ -4648,21 +4630,10 @@ void lbl_800803E8(s8 *arg0, struct Sprite *sprite)
     }
 }
 
-void test(struct Sprite *sprite, int temp_r7, int temp_r8, float temp_f6)
-{
-    sprite->x += 0.9f * (f32) temp_r7 * temp_f6;
-    sprite->y += (0.97f * (f32) temp_r8 * temp_f6) + (1.0f - temp_f6);
-}
-
 float force_lbl_802F50C0() { return 0.19699999690055847f; }
 
-const float lbl_802F50C4 = 0.94999998807907104f;
-const float lbl_802F50C8 = 0.97000002861022949f;
-const float lbl_802F50CC = 0.89999997615814209f;
-
-
 #ifdef NONMATCHING
-void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
+static void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
 {
     s16 *asdf = (s16 *)&sprite->unk48;
     float temp_f0;
@@ -4685,7 +4656,10 @@ void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 #else
-asm void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
+const float lbl_802F50C4 = 0.94999998807907104f;
+const float lbl_802F50C8 = 0.97000002861022949f;
+const float lbl_802F50CC = 0.89999997615814209f;
+static asm void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
 {
     nofralloc
 #include "../asm/nonmatchings/lbl_800805AC.s"
@@ -4693,7 +4667,7 @@ asm void lbl_800805AC(s8 *arg0, struct Sprite *sprite)
 #pragma peephole on
 #endif
 
-s16 bombPartBitmapIDs[] =
+static s16 bombPartBitmapIDs[] =
 {
     BMP_NML_icon_bomb_part_a,
     BMP_NML_icon_bomb_part_b,
@@ -4707,10 +4681,10 @@ s16 bombPartBitmapIDs[] =
     BMP_NML_icon_bomb_part_j
 };
 
-float lbl_801C21E4[] = { 7.0f, 16.0f, 26.0f, 48.0f,  0.0f,  9.0f, 55.0f, 12.0f, 33.0f, 71.0f };
-float lbl_801C220C[] = { 9.0f,  0.0f,  0.0f, 4.0f,  24.0f, 16.0f, 23.0f, 63.0f, 56.0f, 69.0f };
+static float lbl_801C21E4[] = { 7.0f, 16.0f, 26.0f, 48.0f,  0.0f,  9.0f, 55.0f, 12.0f, 33.0f, 71.0f };
+static float lbl_801C220C[] = { 9.0f,  0.0f,  0.0f, 4.0f,  24.0f, 16.0f, 23.0f, 63.0f, 56.0f, 69.0f };
 
-void lbl_80080680(s8 *arg0, struct Sprite *sprite)
+static void lbl_80080680(s8 *arg0, struct Sprite *sprite)
 {
     u8 dummy[8];
     float temp_f0;

@@ -12,6 +12,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "tevutil.h"
+#include "textbox.h"
 
 struct TextDrawInfo
 {
