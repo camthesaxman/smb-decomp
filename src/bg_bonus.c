@@ -39,7 +39,7 @@ static int bonus_main_find_proc(int, struct StageBgModel *);
 
 void bg_bonus_init(void)
 {
-    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.work;
     int i;
     struct BGBonusStarpoint *starpoint;
 
@@ -75,7 +75,7 @@ void bg_bonus_init(void)
 
 void bg_bonus_main(void)
 {
-    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.work;
     int i;
     struct BGBonusStarpoint *starpoint;
     Vec sp8;
@@ -127,7 +127,7 @@ void bg_bonus_finish(void) {}
 
 void bg_bonus_draw(void)
 {
-    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.work;
     int i;
     Vec sp14;
     Vec sp8;
@@ -195,7 +195,7 @@ void bg_bonus_interact(int a)
         // spawn shooting star
         memset(&star, 0, sizeof(star));
         star.unk8 = 32;
-        star.unk14 = currentBallStructPtr->unk2E;
+        star.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(cameraInfo[star.unk14].unk1A4);
         spC.z = -120.0f + (rand() / 32767.0f) * -225.0f;
         spC.x = spC.z * -(8.0f / 3.0f) * currentCameraStructPtr->sub28.unk38 * ((rand() / 32767.0f) - 0.5f);
@@ -218,7 +218,7 @@ void bg_bonus_interact(int a)
 
 void lbl_80061B58(void)
 {
-    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.work;
     Mtx sp8;
 
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -233,7 +233,7 @@ void lbl_80061B58(void)
 
 void lbl_80061BC4(struct Struct80061BC4 *a)
 {
-    struct BGBonusWork *work = (void *)backgroundInfo.unk9C;
+    struct BGBonusWork *work = (void *)backgroundInfo.work;
     struct Struct80061BC4_sub spC = a->unkC;
 
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
@@ -278,7 +278,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
 
 static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
 {
-    struct BGBonusWork *work = backgroundInfo.unk9C;
+    struct BGBonusWork *work = backgroundInfo.work;
 
     switch (index)
     {
@@ -309,7 +309,7 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
 
 static int bonus_main_find_proc(int index, struct StageBgModel *b)
 {
-    struct BGBonusWork *work = backgroundInfo.unk9C;
+    struct BGBonusWork *work = backgroundInfo.work;
 
     switch (index)
     {

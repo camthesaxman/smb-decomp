@@ -3398,47 +3398,47 @@ void memcard_draw_ui(void)
         g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(0);
         }
         else
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(color);
         }
         else
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(0);
         }
         g_draw_text("No");
         g_set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0x7F7F7F);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0x7F7F7F);
+            g_set_text_other_color(0);
         }
         else
         {
-            func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0xFFFFFF);
+            g_set_text_other_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0xFFFFFF);
+            g_set_text_other_color(color);
         }
         else
         {
-            func_80071AE4(0x7F7F7F);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0x7F7F7F);
+            g_set_text_other_color(0);
         }
         g_draw_text("No");
     }
@@ -3455,47 +3455,47 @@ void memcard_draw_ui(void)
         g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(0);
         }
         else
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(color);
         }
         else
         {
-            func_80071AE4(0);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0);
+            g_set_text_other_color(0);
         }
         g_draw_text("No");
         g_set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0x7F7F7F);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0x7F7F7F);
+            g_set_text_other_color(0);
         }
         else
         {
-            func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0xFFFFFF);
+            g_set_text_other_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0xFFFFFF);
-            g_set_some_sprite_color(color);
+            g_set_text_fill_color(0xFFFFFF);
+            g_set_text_other_color(color);
         }
         else
         {
-            func_80071AE4(0x7F7F7F);
-            g_set_some_sprite_color(0);
+            g_set_text_fill_color(0x7F7F7F);
+            g_set_text_other_color(0);
         }
         g_draw_text("No");
     }

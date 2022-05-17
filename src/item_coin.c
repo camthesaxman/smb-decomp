@@ -203,7 +203,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         // spawn banana effect that travels towards counter in HUD
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 8;
-        sp10.unk14 = currentBallStructPtr->unk2E;
+        sp10.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
         mathutil_mtxA_tf_point(&item->unk20, &sp10.unk34);
         mathutil_mtxA_tf_vec(&item->unk2C, &sp10.unk40);

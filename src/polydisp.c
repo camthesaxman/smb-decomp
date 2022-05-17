@@ -24,6 +24,7 @@
 #include "stage.h"
 #include "world.h"
 #include "tevutil.h"
+#include "light.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 
@@ -73,7 +74,7 @@ void polydisp_main(void)
     if (func_8009D5D8() != 0)
         lbl_801EEC90.unk0 |= 0x10;
 
-    func_80021ECC();
+    light_main();
     func_8009AB5C();
 
     if (eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
@@ -104,7 +105,7 @@ void polydisp_main(void)
 void draw_3d_scene(void)
 {
     ord_tbl_reset();
-    func_800226F4();
+    g_draw_naomi_ball();
     switch (gameMode)
     {
     default:
@@ -382,7 +383,7 @@ void g_draw_tutorial_button_and_joystick(void)
     C_MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
     GXSetProjection(projMtx, 0);
     mathutil_mtxA_from_identity();
-    load_light_group(2);
+    load_light_group_uncached(LIGHT_GROUP_SINGLE_UNIT);
     sp48.x = -0.0055f;
     sp48.y = -0.003f;
     sp48.z = -0.718f;
@@ -591,7 +592,7 @@ void draw_normal_game_scene(void)
             g_call_camera_apply_viewport(i);
             g_draw_ball_shadow();
             func_80054FF0();
-            func_800225C0(i);
+            g_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
             draw_monkey();
@@ -645,7 +646,7 @@ void func_8000C7A4(void)
         {
             currentBallStructPtr = &ballInfo[i];
             g_call_camera_apply_viewport(i);
-            func_800225C0(i);
+            g_reset_light_group_stack(i);
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
                 stage_draw();
@@ -715,7 +716,7 @@ void draw_continue_scene(void)
     g_call_camera_apply_viewport(modeCtrl.currPlayer);
     g_draw_ball_shadow();
     func_80054FF0();
-    func_800225C0(modeCtrl.currPlayer);
+    g_reset_light_group_stack(modeCtrl.currPlayer);
     draw_monkey();
 
     if (lbl_802F1F34 != 0)
@@ -742,7 +743,7 @@ void draw_continue_scene(void)
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
         effect_draw();
     ord_tbl_draw_nodes();
-    r4 = modeCtrl.unk0;
+    r4 = modeCtrl.submodeTimer;
     if (r4 > 60)
         r4 = 60;
 
@@ -875,7 +876,7 @@ void draw_results_scene(void)
             g_call_camera_apply_viewport(i);
             g_draw_ball_shadow();
             func_80054FF0();
-            func_800225C0(i);
+            g_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
             draw_monkey();
@@ -1069,8 +1070,8 @@ void draw_timer_bomb_fuse(void)
     }
     else
     {
-        x = (sprite->centerX - 320.0f) / 320.0f;
-        y = (56.0f - sprite->centerY) / 240.0f;
+        x = (sprite->x - 320.0f) / 320.0f;
+        y = (56.0f - sprite->y) / 240.0f;
     }
 
     C_MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
@@ -1230,7 +1231,7 @@ void draw_timer_bomb_fuse(void)
     func_80030BB8(1.0f, 1.0f, 1.0f);
     avdisp_set_post_multiply_color(1.0f, t, 0.0f, 1.0f);
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
-    g_avdisp_set_some_matrix(0, mathutilData->mtxA);
+    avdisp_set_custom_tex_mtx(0, mathutilData->mtxA);
 
     // Draw new bomb fuse
     mathutil_mtxA_from_identity();
@@ -1239,9 +1240,9 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_scale_s(scale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     avdisp_set_bound_sphere_scale(scale);
-    g_avdisp_set_some_tex_mtx_sel(1);
+    avdisp_enable_custom_tex_mtx(1);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
-    g_avdisp_set_some_tex_mtx_sel(0);
+    avdisp_enable_custom_tex_mtx(0);
 
     // Draw spark
     sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
@@ -1252,7 +1253,7 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
     mathutil_mtxA_scale_s(0.0149f);
     mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
-    g_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
+    nl2ngc_draw_model_unsorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
     func_8000E3BC();
 }
 

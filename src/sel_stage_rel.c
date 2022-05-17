@@ -56,7 +56,7 @@ static void sel_stage_init(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    modeCtrl.unk0 = 0;
+    modeCtrl.submodeTimer = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;

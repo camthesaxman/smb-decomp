@@ -5,6 +5,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "event.h"
+#include "hud.h"
 #include "info.h"
 #include "input.h"
 #include "mode.h"
@@ -102,7 +103,7 @@ void unkFunc8000A26C(struct Sprite *a)
     lbl_802F1B98 = -1;
     if (a == NULL)
     {
-        g_open_pause_menu();
+        hud_show_pause_menu();
         find_sprite_with_tag(4);
     }
     else

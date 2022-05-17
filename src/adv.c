@@ -15,6 +15,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "hud.h"
 #include "info.h"
 #include "input.h"
 #include "load.h"
@@ -22,8 +23,10 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "textbox.h"
 #include "world.h"
 #include "stcoli.h"
+#include "light.h"
 
 u32 introBackdropColor;
 u32 advSubmode;
@@ -87,7 +90,7 @@ void submode_adv_rating_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
         gameSubmodeRequest = (lbl_802F1B78 != 0) ? SMD_ADV_LOGO_INIT : SMD_ADV_INFO_INIT;
 }
 
@@ -105,15 +108,15 @@ void submode_adv_logo_init_func(void)
 
     func_80011D90();
     introBackdropColor = 0x00FFFFFF;
-    modeCtrl.unk0 = 840;
+    modeCtrl.submodeTimer = 840;
     modeCtrl.levelSetFlags = 0;
-    advLogoInfo.unk14 = modeCtrl.unk0;
+    advLogoInfo.unk14 = modeCtrl.submodeTimer;
     advLogoInfo.unk10 = 0;
     prevLogoPos.x = 0.0f;
     prevLogoPos.y = 0.0f;
     prevLogoPos.z = 0.0f;
     func_8002FFEC();
-    g_init_light_stuff_for_stage(0);
+    light_init(0);
     playerCharacterSelection[0] = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
@@ -126,7 +129,7 @@ void submode_adv_logo_init_func(void)
     g_logo_plus_sprite_something();
     g_play_sound(0x21);
     preload_stage_files(ST_001_PLAIN);
-    g_init_light_stuff_for_stage(0);
+    light_init(0);
     g_start_screen_fade(0x100, 0, 30);
     gameSubmodeRequest = SMD_ADV_LOGO_MAIN;
 }
@@ -223,16 +226,16 @@ void submode_adv_logo_main_func(void)
         return;
 
     if ((dipSwitches & DIP_DEBUG)
-     && modeCtrl.unk0 > 30
+     && modeCtrl.submodeTimer > 30
      && (controllerInfo[0].unk0[0].button & PAD_BUTTON_X)
      && (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y))
-        modeCtrl.unk0 = 30;
+        modeCtrl.submodeTimer = 30;
 
     update_av_logo();
 
     if ((dipSwitches & DIP_DEBUG)
      && !(modeCtrl.levelSetFlags & (1 << 13))
-     && modeCtrl.unk0 > 60
+     && modeCtrl.submodeTimer > 60
      && lbl_802F1BA8 == 0)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
@@ -248,21 +251,21 @@ void submode_adv_logo_main_func(void)
     if (modeCtrl.levelSetFlags & (1 << 13))
         return;
 
-    if (modeCtrl.unk0 > 30 && modeCtrl.unk0 < 690)
+    if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 690)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[1].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
-            modeCtrl.unk0 = 30;
+            modeCtrl.submodeTimer = 30;
     }
 
-    if (modeCtrl.unk0 == 30)
+    if (modeCtrl.submodeTimer == 30)
     {
         g_start_screen_fade(0x101, 0, 30);
         g_create_textbox(0, 20, NULL);
     }
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
     {
         destroy_sprite_with_tag(3);
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
@@ -283,7 +286,7 @@ void submode_adv_demo_init_func(void)
         return;
     func_80011D90();
     introBackdropColor = 0x00FFFFFF;
-    modeCtrl.unk0 = 2902;
+    modeCtrl.submodeTimer = 2902;
     modeCtrl.levelSetFlags = 0;
     lbl_802F1BB0 = 0;
     advDemoInfo.unk8 = 0;
@@ -320,7 +323,7 @@ void submode_adv_demo_init_func(void)
     event_start(EVENT_REND_EFC);
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_SOUND);
-    g_init_light_stuff_for_stage(currStageId);
+    light_init(currStageId);
     func_800972CC();
     for (i = 0; i < 4; i++)
     {
@@ -330,22 +333,22 @@ void submode_adv_demo_init_func(void)
     }
     camera_set_state(29);
     call_bitmap_load_group(BMP_ADV);
-    show_press_start_textbox(0);
-    show_adv_copyright_text(0);
+    hud_show_press_start_textbox(0);
+    hud_show_adv_copyright_info(0);
     g_play_music(2, 0);
     gameSubmodeRequest = SMD_ADV_DEMO_MAIN;
 }
 
 float lbl_801741CC[] = { -125, -70, -10 };
 
-void lbl_8000F030(struct TextBox *a)
+void lbl_8000F030(struct TextBox *tbox)
 {
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    g_math_unk15(&ballInfo[a->unk20 - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
-    a->unkC = spC.x;
-    a->unkE = spC.y + lbl_801741CC[a->unk20 - 1];
+    g_math_unk15(&ballInfo[tbox->unk20 - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
+    tbox->x = spC.x;
+    tbox->y = spC.y + lbl_801741CC[tbox->unk20 - 1];
 }
 
 enum
@@ -515,7 +518,7 @@ void run_cutscene_script(void)
     float f28;
     const struct IntroCutsceneCommand *cmd;
     Vec sp3C;
-    struct TextBox sp14;
+    struct TextBox tbox;
     Vec sp8;
     int i;
     struct Sprite *sprite;
@@ -535,14 +538,14 @@ void run_cutscene_script(void)
             {
                 mathutil_mtxA_from_mtxB();
                 g_math_unk15(&ballInfo[cmd->param].ape->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
-                memset(&sp14, 0, sizeof(sp14));
-                sp14.unkC = sp3C.x;
-                sp14.unkE = sp3C.y;
-                sp14.numLines = (cmd->param == CHARACTER_BABY) ? 3 : 4;
-                sp14.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
-                sp14.unk16 = 11;
-                sp14.unk1C = lbl_8000F030;
-                g_create_textbox(cmd->param + 1, 1, &sp14);
+                memset(&tbox, 0, sizeof(tbox));
+                tbox.x = sp3C.x;
+                tbox.y = sp3C.y;
+                tbox.numLines = (cmd->param == CHARACTER_BABY) ? 3 : 4;
+                tbox.unk14 = (cmd->param == CHARACTER_BABY) ? 4 : 5;
+                tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+                tbox.unk1C = lbl_8000F030;
+                g_create_textbox(cmd->param + 1, 1, &tbox);
                 g_banana_sprite_something(cmd->param);
             }
             break;
@@ -551,13 +554,13 @@ void run_cutscene_script(void)
                 g_create_textbox(i + 1, 20, NULL);
             sprite = find_sprite_with_tag(30);
             if (sprite != NULL)
-                sprite->unk10 = -1;
+                sprite->counter = -1;
             sprite = find_sprite_with_tag(31);
             if (sprite != NULL)
-                sprite->unk10 = -1;
+                sprite->counter = -1;
             sprite = find_sprite_with_tag(32);
             if (sprite != NULL)
-                sprite->unk10 = -1;
+                sprite->counter = -1;
             break;
         case CMD_FADE_FROM_WHITE:
             g_start_screen_fade(0x100, 0xFFFFFF, cmd->param);
@@ -616,13 +619,13 @@ void run_cutscene_script(void)
             func_800972CC();
             break;
         case 12:
-            g_init_light_stuff_for_stage(0);
+            light_init(0);
             break;
         case CMD_UNK13:  // level camera?
             event_start(EVENT_WORLD);
             event_start(EVENT_INFO);
             camera_set_state(54);
-            g_init_light_stuff_for_stage(currStageId);
+            light_init(currStageId);
             break;
         case CMD_INIT_CHARACTER_POS:
             ball_func_demo_init(&ballInfo[cmd->param]);
@@ -672,14 +675,14 @@ void run_cutscene_script(void)
             func_8001898C(0, cmd->param, &sp8);
             break;
         case 28:
-            g_text_box_icon(cmd->param);
+            g_show_eieipu_sprite(cmd->param);
             break;
         case 29:
             sprite = find_sprite_with_tag(11);
             if (sprite != NULL)
             {
                 sprite->unk48 = cmd->param;
-                sprite->unk10 = 0;
+                sprite->counter = 0;
             }
             break;
         case 30:
@@ -703,7 +706,7 @@ void submode_adv_demo_main_func(void)
     run_cutscene_script();
     if (advDemoInfo.unk8 == 0xA2A)
         func_8000FEC8(100);
-    if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.unk0 > 60
+    if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.submodeTimer > 60
      && lbl_802F1BA8 == 0)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
@@ -712,7 +715,7 @@ void submode_adv_demo_main_func(void)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
             func_8000FEC8(30);
     }
-    modeCtrl.unk0--;
+    modeCtrl.submodeTimer--;
 }
 
 struct Struct80176434 lbl_80174254[] =
@@ -1196,15 +1199,15 @@ static void func_8000FEC8(int a)
 
     sprite = find_sprite_with_tag(30);
     if (sprite != NULL)
-        sprite->unk10 = -1;
+        sprite->counter = -1;
 
     sprite = find_sprite_with_tag(31);
     if (sprite != NULL)
-        sprite->unk10 = -1;
+        sprite->counter = -1;
 
     sprite = find_sprite_with_tag(32);
     if (sprite != NULL)
-        sprite->unk10 = -1;
+        sprite->counter = -1;
 
     g_create_textbox(0, 20, NULL);
 
@@ -1212,7 +1215,7 @@ static void func_8000FEC8(int a)
     if (sprite != NULL)
         sprite->unk48 = 1;
 
-    func_80076DCC(a);
+    hud_show_title_banner(a);
     g_play_sound(0xA022);
     if (lbl_802014E0.unk0 != 2)
         g_play_music(3, 0);
@@ -1229,7 +1232,7 @@ void submode_adv_title_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    modeCtrl.unk0 = 1200;
+    modeCtrl.submodeTimer = 1200;
     modeCtrl.unk10 = 0;
     modeCtrl.levelSetFlags &= ~(1 << 2);
     lbl_802F1BA8 = 0;
@@ -1245,7 +1248,7 @@ void submode_adv_title_init_func(void)
     event_finish(EVENT_SOUND);
     event_finish(EVENT_REND_EFC);
     event_finish(EVENT_BACKGROUND);
-    show_press_start_textbox(2);
+    hud_show_press_start_textbox(2);
     if (screenFadeInfo.unk8 != 0)
         g_start_screen_fade(0x100, 0, 30);
     file_preload("bmp/bmp_sel.tpl");
@@ -1254,18 +1257,18 @@ void submode_adv_title_init_func(void)
 
 void submode_adv_title_reinit_func(void)
 {
-    struct TextBox sp8;
+    struct TextBox tbox;
 
     if (gamePauseStatus & 0xA)
         return;
 
     func_80011D90();
     introBackdropColor = 0x00FFFFFF;
-    modeCtrl.unk0 = 1200;
+    modeCtrl.submodeTimer = 1200;
     modeCtrl.levelSetFlags = 0x2000;
     lbl_802F1BA8 = 0;
     func_8002FFEC();
-    g_init_light_stuff_for_stage(0);
+    light_init(0);
     playerCharacterSelection[0] = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
@@ -1274,25 +1277,25 @@ void submode_adv_title_reinit_func(void)
     camera_set_state(27);
     unload_stage();
     call_bitmap_load_group(BMP_ADV);
-    func_80076DCC(1);
+    hud_show_title_banner(1);
     if (dipSwitches & DIP_DEBUG)
-        show_press_start_textbox(2);
+        hud_show_press_start_textbox(2);
     else
     {
         modeCtrl.levelSetFlags |= (1 << 2);
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unkC = 0x140;
-        sp8.unkE = 0x182;
-        sp8.numLines = 2;
-        sp8.unk14 = 12;
-        sp8.unk16 = 14;
-        sp8.unk1C = NULL;
-        g_create_textbox(0, 1, &sp8);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.x = 320;
+        tbox.y = 386;
+        tbox.numLines = 2;
+        tbox.unk14 = 12;
+        tbox.style = 14;
+        tbox.unk1C = NULL;
+        g_create_textbox(0, 1, &tbox);
         g_set_textbox_text(0, " \n ");
-        func_80077734();
+        hud_show_title_menu();
     }
     load_stage(ST_150_TUTORIAL);
-    g_init_light_stuff_for_stage(0);
+    light_init(0);
     g_play_sound(0xA022);
     g_play_music(3, 0);
     g_start_screen_fade(0x100, 0, 30);
@@ -1309,8 +1312,8 @@ void submode_adv_title_main_func(void)
     if ((dipSwitches & DIP_DEBUG)
      && (controllerInfo[0].unk0[0].button & (1 << 10))
      && (controllerInfo[0].unk0[2].button & (1 << 11))
-     && modeCtrl.unk0 > 30)
-        modeCtrl.unk0 = 30;
+     && modeCtrl.submodeTimer > 30)
+        modeCtrl.submodeTimer = 30;
 
     if (gamePauseStatus & 0xA)
         return;
@@ -1322,20 +1325,20 @@ void submode_adv_title_main_func(void)
          || (controllerInfo[2].unk0[2].button & PAD_BUTTON_START)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
         {
-            struct TextBox sp8;
+            struct TextBox tbox;
 
             func_8002B5C8(0x162);
             modeCtrl.levelSetFlags |= 4;
-            memset(&sp8, 0, sizeof(sp8));
-            sp8.unkC = 0x140;
-            sp8.unkE = 0x182;
-            sp8.numLines = 2;
-            sp8.unk14 = 12;
-            sp8.unk16 = 14;
-            sp8.unk1C = NULL;
-            g_create_textbox(0, 1, &sp8);
+            memset(&tbox, 0, sizeof(tbox));
+            tbox.x = 320;
+            tbox.y = 386;
+            tbox.numLines = 2;
+            tbox.unk14 = 12;
+            tbox.style = 14;
+            tbox.unk1C = NULL;
+            g_create_textbox(0, 1, &tbox);
             g_set_textbox_text(0, " \n ");
-            func_80077734();
+            hud_show_title_menu();
         }
     }
     if (modeCtrl.levelSetFlags & (1 << 2))
@@ -1346,25 +1349,25 @@ void submode_adv_title_main_func(void)
             {
                 modeCtrl.unk10 = 0;
                 func_8002B5C8(0x6F);
-                if (modeCtrl.unk0 > 30 && modeCtrl.unk0 < 300)
-                    modeCtrl.unk0 = 300;
+                if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 300)
+                    modeCtrl.submodeTimer = 300;
             }
             else if (modeCtrl.unk10 != 1 && CONTROLLER_SOMETHING(i, PAD_BUTTON_DOWN))
             {
                 modeCtrl.unk10 = 1;
                 func_8002B5C8(0x6F);
-                if (modeCtrl.unk0 > 30 && modeCtrl.unk0 < 300)
-                    modeCtrl.unk0 = 300;
+                if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 300)
+                    modeCtrl.submodeTimer = 300;
             }
         }
     }
-    if (modeCtrl.unk0 == 30)
+    if (modeCtrl.submodeTimer == 30)
     {
         g_start_screen_fade(0x101, 0, 30);
         g_create_textbox(0, 20, NULL);
-        g_play_music(modeCtrl.unk0, 2);
+        g_play_music(modeCtrl.submodeTimer, 2);
     }
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
     {
         lbl_802F1B78 = 0;
         gameSubmodeRequest = SMD_ADV_INFO_INIT;
@@ -1383,7 +1386,7 @@ void submode_adv_info_init_func(void)
         return;
 
     func_80011D90();
-    modeCtrl.unk0 = 4380;
+    modeCtrl.submodeTimer = 4380;
     modeCtrl.levelSetFlags &= -8197;
     modeCtrl.playerCount = 1;
     playerCharacterSelection[0] = 0;
@@ -1403,32 +1406,32 @@ void submode_adv_info_init_func(void)
     event_start(EVENT_SOUND);
     event_start(EVENT_EFFECT);
     event_start(EVENT_BACKGROUND);
-    g_init_light_stuff_for_stage(currStageId);
+    light_init(currStageId);
     ballInfo[0].state = 16;
     ballInfo[0].bananas = 0;
     camera_set_state(43);
     call_bitmap_load_group(BMP_NML);
-    show_press_start_textbox(0);
-    show_adv_copyright_text(0);
+    hud_show_press_start_textbox(0);
+    hud_show_adv_copyright_info(0);
     if (!(modeCtrl.levelSetFlags & (1 << 13)))
     {
-        struct TextBox sp8;
+        struct TextBox tbox;
 
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unkC = 0x140;
-        sp8.unkE = 0xD2;
-        sp8.numLines = 1;
-        sp8.unk14 = 1;
-        sp8.unk16 = 11;
-        sp8.unk1C = NULL;
-        g_create_textbox(1, 2, &sp8);
-        sp8.unkC = 0x140;
-        sp8.unkE = 60;
-        sp8.numLines = 1;
-        sp8.unk14 = 0;
-        sp8.unk16 = 14;
-        sp8.unk1C = NULL;
-        g_create_textbox(2, 1, &sp8);
+        memset(&tbox, 0, sizeof(tbox));
+        tbox.x = 320;
+        tbox.y = 210;
+        tbox.numLines = 1;
+        tbox.unk14 = 1;
+        tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
+        tbox.unk1C = NULL;
+        g_create_textbox(1, 2, &tbox);
+        tbox.x = 320;
+        tbox.y = 60;
+        tbox.numLines = 1;
+        tbox.unk14 = 0;
+        tbox.style = 14;
+        tbox.unk1C = NULL;
+        g_create_textbox(2, 1, &tbox);
         g_set_textbox_text(2, "c/0xff5000/    Control description!    ");
     }
     func_800846B0(4);
@@ -1552,11 +1555,11 @@ void submode_adv_info_main_func(void)
     if ((dipSwitches & DIP_DEBUG)
      && (controllerInfo[0].unk0[0].button & PAD_BUTTON_X)
      && (controllerInfo[0].unk0[2].button & PAD_BUTTON_Y)
-     && modeCtrl.unk0 > 30)
-        modeCtrl.unk0 = 30;
+     && modeCtrl.submodeTimer > 30)
+        modeCtrl.submodeTimer = 30;
 
-    if (modeCtrl.unk0 == 820)
-        modeCtrl.unk0 = 600;
+    if (modeCtrl.submodeTimer == 820)
+        modeCtrl.submodeTimer = 600;
 
     if (infoWork.flags & (1 << 2))
     {
@@ -1564,7 +1567,7 @@ void submode_adv_info_main_func(void)
         camera_set_state(4);
         g_play_sound(29);
     }
-    if (modeCtrl.unk0 == 583)
+    if (modeCtrl.submodeTimer == 583)
     {
         ballInfo[0].flags &= ~(1 << 11);
         infoWork.flags &= ~(1 << 3);
@@ -1576,7 +1579,7 @@ void submode_adv_info_main_func(void)
         ballInfo[0].flags |= 0x500;
         camera_set_state(14);
     }
-    if (modeCtrl.unk0 < 3360 && modeCtrl.unk0 > 2760)
+    if (modeCtrl.submodeTimer < 3360 && modeCtrl.submodeTimer > 2760)
     {
         Vec sp30;
         sp30.x = 1.15f;
@@ -1584,24 +1587,24 @@ void submode_adv_info_main_func(void)
         sp30.z = 3.8f;
         func_800390C8(5, &sp30, 1.0f);
     }
-    if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.unk0 == 4320)
-        func_80077DA0();
+    if (!(modeCtrl.levelSetFlags & (1 << 13)) && modeCtrl.submodeTimer == 4320)
+        g_create_saru_sprite();
     for (cmd = infoScript; cmd->time != 0; cmd++)
     {
-        if (modeCtrl.unk0 > cmd->time || modeCtrl.unk0 < cmd->time)
+        if (modeCtrl.submodeTimer > cmd->time || modeCtrl.submodeTimer < cmd->time)
             continue;
         if (cmd->cmdId >= 0 && !(modeCtrl.levelSetFlags & (1 << 13)))
         {
-            struct TextBox sp8;
+            struct TextBox tbox;
 
-            memset(&sp8, 0, sizeof(sp8));
+            memset(&tbox, 0, sizeof(tbox));
             if (cmd->cmdId == 16)
-                sp8.unkE = 0xC8;
+                tbox.y = 0xC8;
             if (cmd->cmdId == 17)
-                sp8.unkE = 0xB4;
-            sp8.numLines = 1;
-            sp8.unk16 = (cmd->param != 0) ? 13 : 11;
-            g_create_textbox(1, 21, &sp8);
+                tbox.y = 0xB4;
+            tbox.numLines = 1;
+            tbox.style = cmd->param ? TEXTBOX_STYLE_SPIKY : TEXTBOX_STYLE_CENTER_DOWN;
+            g_create_textbox(1, 21, &tbox);
             g_set_textbox_text(1, infoEnglishText[cmd->cmdId]);
         }
         switch (cmd->cmdId)
@@ -1648,7 +1651,7 @@ void submode_adv_info_main_func(void)
         }
     }
     if (!(modeCtrl.levelSetFlags & (1 << 13))
-     && modeCtrl.unk0 > 60
+     && modeCtrl.submodeTimer > 60
      && lbl_802F1BA8 == 0)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
@@ -1657,7 +1660,7 @@ void submode_adv_info_main_func(void)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
             func_8000FEC8(30);
     }
-    if (modeCtrl.unk0 == 30)
+    if (modeCtrl.submodeTimer == 30)
     {
         struct Sprite *sprite;
 
@@ -1665,12 +1668,12 @@ void submode_adv_info_main_func(void)
         g_create_textbox(0, 20, NULL);
         g_create_textbox(1, 20, NULL);
         g_create_textbox(2, 20, NULL);
-        g_play_music(modeCtrl.unk0, 2);
+        g_play_music(modeCtrl.submodeTimer, 2);
         sprite = find_sprite_with_tag(17);
         if (sprite != NULL)
             sprite->unk48 = 1;
     }
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
         gameSubmodeRequest = SMD_ADV_GAME_READY_INIT;
 }
 
@@ -1731,19 +1734,19 @@ void submode_adv_game_ready_init_func(void)
     event_start(EVENT_BACKGROUND);
     func_800972CC();
     event_suspend(EVENT_WORLD);
-    g_init_light_stuff_for_stage(currStageId);
+    light_init(currStageId);
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
     infoWork.flags |= 0x108;
-    modeCtrl.unk0 = 120;
+    modeCtrl.submodeTimer = 120;
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
     camera_set_state(10);
-    func_80077E34();
+    g_show_adv_ready_hud();
     func_800885EC();
     func_80088E90();
-    show_press_start_textbox(0);
-    show_adv_copyright_text(0);
+    hud_show_press_start_textbox(0);
+    hud_show_adv_copyright_info(0);
     func_80088C28();
     advTutorialInfo.state = 0;
     lbl_802F1BAC = 0;
@@ -1758,19 +1761,19 @@ void submode_adv_game_ready_main_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    if (modeCtrl.unk0 == 120)
+    if (modeCtrl.submodeTimer == 120)
     {
         struct Sprite *sprite = find_sprite_with_tag(15);
 
         if (sprite != NULL)
             sprite->unk48 = 15;
-        show_ready_text(0x78);
+        hud_show_ready_banner(0x78);
         func_800846B0(3);
     }
-    if (modeCtrl.unk0 == 24.0)
+    if (modeCtrl.submodeTimer == 24.0)
         ballInfo[0].state = 3;
     if (!(modeCtrl.levelSetFlags & (1 << 13))
-     && modeCtrl.unk0 > 30
+     && modeCtrl.submodeTimer > 30
      && lbl_802F1BA8 == 0)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
@@ -1779,7 +1782,7 @@ void submode_adv_game_ready_main_func(void)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
             func_8000FEC8(30);
     }
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
     {
         struct ReplayInfo sp8;
 
@@ -1795,9 +1798,9 @@ void submode_adv_game_play_init_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    modeCtrl.unk0 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
+    modeCtrl.submodeTimer = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
     event_resume(2);
-    show_go_text(60);
+    hud_show_go_banner(60);
     infoWork.flags &= -265;
     ballInfo[0].state = 9;
     worldInfo[0].state = 9;
@@ -1822,7 +1825,7 @@ void submode_adv_game_play_main_func(void)
         func_800846B0(1);
     }
     if (!(modeCtrl.levelSetFlags & (1 << 13))
-     && modeCtrl.unk0 > 30
+     && modeCtrl.submodeTimer > 30
      && lbl_802F1BA8 == 0)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
@@ -1831,8 +1834,8 @@ void submode_adv_game_play_main_func(void)
          || (controllerInfo[3].unk0[2].button & PAD_BUTTON_START))
             func_8000FEC8(30);
     }
-    modeCtrl.unk0--;
-    if (modeCtrl.unk0 < 0)
+    modeCtrl.submodeTimer--;
+    if (modeCtrl.submodeTimer < 0)
     {
         gameSubmodeRequest = SMD_ADV_RANKING_INIT;
         func_800846B0(1);
@@ -1847,7 +1850,7 @@ static int func_80011BE0(void);
 
 void submode_adv_ranking_init_func(void)
 {
-    modeCtrl.unk0 = 2520;
+    modeCtrl.submodeTimer = 2520;
     destroy_sprite_with_tag(2);
     destroy_sprite_with_tag(18);
     gameSubmodeRequest = SMD_ADV_RANKING_MAIN;
@@ -1864,13 +1867,13 @@ void submode_adv_ranking_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
     r31 = &ballInfo[0];
-    switch (modeCtrl.unk0)
+    switch (modeCtrl.submodeTimer)
     {
     case 2520:
         destroy_sprite_with_tag(0);
         destroy_sprite_with_tag(37);
         destroy_sprite_with_tag(39);
-        show_adv_copyright_text(1);
+        hud_show_adv_copyright_info(1);
         func_800886E0(0);
         if (find_sprite_with_tag(17) != NULL)
             find_sprite_with_tag(17)->unk48 = 1;
@@ -1934,9 +1937,9 @@ void submode_adv_ranking_main_func(void)
         modeCtrl.unk18--;
     if (modeCtrl.unk18 < 0
      && (r31->state == 6 || r31->state == 4)
-     && ((modeCtrl.unk0 & 0x1F) == 0 || !(infoWork.flags & (1 << 5))))
+     && ((modeCtrl.submodeTimer & 0x1F) == 0 || !(infoWork.flags & (1 << 5))))
     {
-        if (modeCtrl.unk0 > 180.0)
+        if (modeCtrl.submodeTimer > 180.0)
         {
             struct ReplayInfo sp38;
             struct Struct8009544C sp20;
@@ -1970,10 +1973,10 @@ void submode_adv_ranking_main_func(void)
             memset(&sp20, 0, sizeof(sp20));
             sp20.unk6 = 0xFFFF;
             func_8009544C(2, 3, &sp20);
-            g_init_light_stuff_for_stage(currStageId);
+            light_init(currStageId);
             ballInfo[0].state = 9;
             ballInfo[0].bananas = 0;
-            if (modeCtrl.unk0 > 2520)
+            if (modeCtrl.submodeTimer > 2520)
             {
                 worldInfo[0].state = 9;
                 camera_set_state(0);
@@ -1988,10 +1991,10 @@ void submode_adv_ranking_main_func(void)
             f1 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
             if (sp38.flags & (1 << 4))
                 f1 -= 30.0f;
-            if (f1 > (float)modeCtrl.unk0 - 120.0)
-                f1 = (int)((float)modeCtrl.unk0 - 120.0);
-            else if (f1 > (float)modeCtrl.unk0 * 0.5)
-                f1 = (int)((float)modeCtrl.unk0 * 0.5);
+            if (f1 > (float)modeCtrl.submodeTimer - 120.0)
+                f1 = (int)((float)modeCtrl.submodeTimer - 120.0);
+            else if (f1 > (float)modeCtrl.submodeTimer * 0.5)
+                f1 = (int)((float)modeCtrl.submodeTimer * 0.5);
             lbl_80250A68.unk10 = f1;
             animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
             g_get_replay_info(func_80011A84(), &sp8);
@@ -2002,7 +2005,7 @@ void submode_adv_ranking_main_func(void)
     }
 
     if (!(modeCtrl.levelSetFlags & (1 << 13))
-     && modeCtrl.unk0 > 60
+     && modeCtrl.submodeTimer > 60
      && lbl_802F1BA8 == 0)
     {
         if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_START)
@@ -2016,16 +2019,16 @@ void submode_adv_ranking_main_func(void)
         }
     }
 
-    if (modeCtrl.unk0 == 180)
+    if (modeCtrl.submodeTimer == 180)
     {
         preload_bg_files(BG_TYPE_JUN);
         preload_stage_files(ST_001_PLAIN);
     }
-    if (modeCtrl.unk0 == 30)
+    if (modeCtrl.submodeTimer == 30)
     {
         g_start_screen_fade(0x101, 0x00FFFFFF, 30);
         g_create_textbox(0, 20, 0);
-        g_play_music(modeCtrl.unk0, 2);
+        g_play_music(modeCtrl.submodeTimer, 2);
     }
 
     r30 = currentBallStructPtr;
@@ -2046,7 +2049,7 @@ void submode_adv_ranking_main_func(void)
     }
     currentBallStructPtr = r30;
 
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
     {
         infoWork.flags &= ~(1 << 11);
         func_8008897C(1);
@@ -2145,7 +2148,7 @@ void submode_adv_start_init_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    modeCtrl.unk0 = 30;
+    modeCtrl.submodeTimer = 30;
     lbl_802F1BA8 = 0;
     func_8002B5C8(2);
     g_start_screen_fade(0x101, 0, 32);
@@ -2153,7 +2156,7 @@ void submode_adv_start_init_func(void)
     g_create_textbox(1, 20, NULL);
     g_create_textbox(2, 20, NULL);
     g_create_textbox(3, 20, NULL);
-    g_play_music(modeCtrl.unk0, 2);
+    g_play_music(modeCtrl.submodeTimer, 2);
     if (find_sprite_with_tag(17) != NULL
      && find_sprite_with_tag(17)->unk48 == 0)
         find_sprite_with_tag(17)->unk48 = 1;
@@ -2164,7 +2167,7 @@ void submode_adv_start_main_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    if (--modeCtrl.unk0 <= 0)
+    if (--modeCtrl.submodeTimer <= 0)
     {
         func_80011D90();
         advLogoInfo.unk14 = 0;
