@@ -13,6 +13,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "stage.h"
+#include "light.h"
 
 #pragma force_active on
 
@@ -294,13 +295,13 @@ char *oldBgFileNames[] =
 void ev_background_init(void)
 {
     s16 r29 = backgroundInfo.bgId;
-    void *r27 = backgroundInfo.unk9C;
+    void *r27 = backgroundInfo.work;
     u32 r26 = backgroundInfo.unkA0;
 
     memset(&backgroundInfo, 0, sizeof(backgroundInfo));
 
     backgroundInfo.bgId = r29;
-    backgroundInfo.unk9C = r27;
+    backgroundInfo.work = r27;
     backgroundInfo.unkA0 = r26;
 
     backgroundInfo.animTimer = 0.0f;
@@ -366,10 +367,10 @@ void func_8005507C(void)
     {
         OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
-        if (backgroundInfo.unk9C != NULL)
+        if (backgroundInfo.work != NULL)
         {
-            OSFree(backgroundInfo.unk9C);
-            backgroundInfo.unk9C = NULL;
+            OSFree(backgroundInfo.work);
+            backgroundInfo.work = NULL;
         }
         if (decodedBgTpl != NULL || decodedBgGma != NULL)
         {
@@ -485,10 +486,10 @@ void load_bg_files(int bgId)
         if (backgroundInfo.bgId > 0)
         {
             // free working memory
-            if (backgroundInfo.unk9C != NULL)
+            if (backgroundInfo.work != NULL)
             {
-                OSFree(backgroundInfo.unk9C);
-                backgroundInfo.unk9C = NULL;
+                OSFree(backgroundInfo.work);
+                backgroundInfo.work = NULL;
             }
 
             // free GMA/TPL
@@ -541,15 +542,15 @@ void load_bg_files(int bgId)
             // allocate working memory for background
             if (bgWorkSizes[bgId] != 0)
             {
-                backgroundInfo.unk9C = OSAlloc(bgWorkSizes[bgId]);
-                if (backgroundInfo.unk9C == NULL)
+                backgroundInfo.work = OSAlloc(bgWorkSizes[bgId]);
+                if (backgroundInfo.work == NULL)
                     OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
-                memset(backgroundInfo.unk9C, 0, bgWorkSizes[bgId]);
+                memset(backgroundInfo.work, 0, bgWorkSizes[bgId]);
             }
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        g_init_light_stuff_for_stage(currStageId);
+        light_init(currStageId);
     }
 }
 
@@ -580,13 +581,13 @@ void bg_e3_draw(void)
     if (decodedStageLzPtr->bgModels != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -690,7 +691,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
     int r30;
     float f29;
     struct GMAModel *model;
-    int r23;
+    int customLightGroup;
 
     if (bgModels == NULL)
         return;
@@ -726,13 +727,13 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
             continue;
         if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
-        r23 = bgModels->flags >> 28;
+        customLightGroup = bgModels->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-        if (r23 > 0)
+        if (customLightGroup > 0)
         {
             push_light_group();
-            load_light_group(r23 + 6);
+            load_light_group_uncached(customLightGroup + LIGHT_GROUP_BG_0);
         }
         if (backgroundInfo.unk90 != 0 && (bgModels->flags & (1 << 24)))
             g_avdisp_set_some_func_1(backgroundInfo.unk90);
@@ -747,7 +748,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         if (bgModels->unk34 != 0)
             func_80055C6C(viewFromWorld, bgModels->unk34);
         g_avdisp_set_some_func_1(0);
-        if (r23 > 0)
+        if (customLightGroup > 0)
             pop_light_group();
     }
 }
@@ -971,13 +972,13 @@ void bg_night_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1006,13 +1007,13 @@ void bg_ice2_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1028,17 +1029,17 @@ void bg_billiards_init(void)
 
     for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, r29++)
     {
-        struct Struct80180F14 *r27 = lbl_80180F14;
+        struct GBilLightGroup *r27 = s_bilLightGroupNames;
 
-        while (r27->unk4 != -1)
+        while (r27->g_bgLightGroupId != -1)
         {
-            int len1 = strlen(r27->unk0);
+            int len1 = strlen(r27->name);
             int len2 = strlen(r29->name) - 1;
             int matched = 0;
 
             for (j = 0; j < len1; j++)
             {
-                if (r29->name[j] != r27->unk0[j])
+                if (r29->name[j] != r27->name[j])
                     break;
                 if (len2 == j)
                 {
@@ -1048,7 +1049,7 @@ void bg_billiards_init(void)
             }
             if (matched)
             {
-                r29->flags |= r27->unk4 << 28;
+                r29->flags |= r27->g_bgLightGroupId << 28;
                 break;
             }
             r27++;
@@ -1075,13 +1076,13 @@ void bg_billiards_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1110,13 +1111,13 @@ void bg_golf_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();
@@ -1145,13 +1146,13 @@ void bg_bowling_draw(void)
     if (decodedStageLzPtr->bgModels != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        load_light_group(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
     draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
     if (decodedStageLzPtr->fgModels != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        load_light_group(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
     draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->fgModels, decodedStageLzPtr->fgModelCount);
     pop_light_group();

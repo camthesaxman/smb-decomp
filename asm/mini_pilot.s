@@ -4116,7 +4116,7 @@ lbl_00003C60:
 /* 00003CAC 4BFFC4A1 */ bl g_draw_ball_shadow
 /* 00003CB0 4BFFC49D */ bl func_80054FF0
 /* 00003CB4 7E439378 */ mr r3, r18
-/* 00003CB8 4BFFC495 */ bl func_800225C0
+/* 00003CB8 4BFFC495 */ bl g_reset_light_group_stack
 /* 00003CBC 881901E0 */ lbz r0, 0x1e0(r25)
 /* 00003CC0 2C000002 */ cmpwi r0, 2
 /* 00003CC4 4082000C */ bne lbl_00003CD0
@@ -4388,7 +4388,7 @@ lbl_00004088:
 /* 0000409C 4BFFC0B1 */ bl ord_tbl_alloc_node
 /* 000040A0 7C7A1B78 */ mr r26, r3
 /* 000040A4 93E30004 */ stw r31, 4(r3)
-/* 000040A8 4BFFC0A5 */ bl func_800223D0
+/* 000040A8 4BFFC0A5 */ bl peek_light_group
 /* 000040AC 907A0008 */ stw r3, 8(r26)
 /* 000040B0 38790000 */ addi r3, r25, 0
 /* 000040B4 389A0000 */ addi r4, r26, 0
@@ -4454,7 +4454,7 @@ lbl_000040EC:
 /* 00004198 1C8401A4 */ mulli r4, r4, 0x1a4
 /* 0000419C 80630008 */ lwz r3, 8(r3)
 /* 000041A0 7FA02214 */ add r29, r0, r4
-/* 000041A4 4BFFBFA9 */ bl func_800223D8
+/* 000041A4 4BFFBFA9 */ bl load_light_group_cached
 /* 000041A8 3C600000 */ lis r3, lbl_10000000@ha
 /* 000041AC C83E0220 */ lfd f1, 0x220(r30)
 /* 000041B0 C0030000 */ lfs f0, lbl_10000000@l(r3)

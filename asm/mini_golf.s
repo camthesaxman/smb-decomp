@@ -1427,7 +1427,7 @@ lbl_000014BC:
 /* 000014D4 38600001 */ li r3, 1
 /* 000014D8 933A0000 */ stw r25, 0(r26)
 /* 000014DC 38800000 */ li r4, 0
-/* 000014E0 4BFFECF1 */ bl func_80022224
+/* 000014E0 4BFFECF1 */ bl alloc_pool_light
 /* 000014E4 7C03C840 */ cmplw r3, r25
 /* 000014E8 41820058 */ beq lbl_00001540
 /* 000014EC 38006580 */ li r0, 0x6580
@@ -1445,7 +1445,7 @@ lbl_00001500:
 /* 00001518 38600001 */ li r3, 1
 /* 0000151C 933A0000 */ stw r25, 0(r26)
 /* 00001520 38800000 */ li r4, 0
-/* 00001524 4BFFECAD */ bl func_80022224
+/* 00001524 4BFFECAD */ bl alloc_pool_light
 /* 00001528 7C03C840 */ cmplw r3, r25
 /* 0000152C 41820014 */ beq lbl_00001540
 /* 00001530 38006580 */ li r0, 0x6580
@@ -7568,7 +7568,7 @@ lbl_00006FF0:
 /* 00007030 801D0000 */ lwz r0, 0(r29)
 /* 00007034 28000008 */ cmplwi r0, 8
 /* 00007038 40820420 */ bne lbl_00007458
-/* 0000703C 4BFF9195 */ bl func_800225C0
+/* 0000703C 4BFF9195 */ bl g_reset_light_group_stack
 /* 00007040 4BFF9191 */ bl mathutil_mtxA_from_mtxB
 /* 00007044 8014002C */ lwz r0, 0x2c(r20)
 /* 00007048 3C600000 */ lis r3, ballInfo@ha
@@ -10642,7 +10642,7 @@ lbl_00009C50:
 /* 00009CA4 3DE08889 */ lis r15, 0x8889
 /* 00009CA8 3DC00000 */ lis r14, unpausedFrameCounter@ha
 /* 00009CAC 3E800000 */ lis r20, commonGma@ha
-/* 00009CB0 3EC00000 */ lis r22, stageBounds@ha
+/* 00009CB0 3EC00000 */ lis r22, stageBoundSphere@ha
 /* 00009CB4 3EE00000 */ lis r23, currentCameraStructPtr@ha
 /* 00009CB8 3F400000 */ lis r26, backgroundInfo@ha
 /* 00009CBC 3F600000 */ lis r27, spritePoolInfo@ha
@@ -10666,7 +10666,7 @@ lbl_00009C50:
 /* 00009D04 38140000 */ addi r0, r20, commonGma@l
 /* 00009D08 3A2C0000 */ addi r17, r12, decodedStageLzPtr@l
 /* 00009D0C 900101B0 */ stw r0, 0x1b0(r1)
-/* 00009D10 38160000 */ addi r0, r22, stageBounds@l
+/* 00009D10 38160000 */ addi r0, r22, stageBoundSphere@l
 /* 00009D14 39EF8889 */ addi r15, r15, -30583  ;# fixed addi
 /* 00009D18 900101A4 */ stw r0, 0x1a4(r1)
 /* 00009D1C 38170000 */ addi r0, r23, currentCameraStructPtr@l
@@ -10719,7 +10719,7 @@ lbl_00009DA4:
 /* 00009DCC 4BFF6405 */ bl g_draw_ball_shadow
 /* 00009DD0 4BFF6401 */ bl func_80054FF0
 /* 00009DD4 7EC3B378 */ mr r3, r22
-/* 00009DD8 4BFF63F9 */ bl func_800225C0
+/* 00009DD8 4BFF63F9 */ bl g_reset_light_group_stack
 /* 00009DDC 880E01E0 */ lbz r0, 0x1e0(r14)
 /* 00009DE0 2C000002 */ cmpwi r0, 2
 /* 00009DE4 4082000C */ bne lbl_00009DF0
@@ -12035,7 +12035,7 @@ lbl_0000B048:
 /* 0000B104 38630144 */ addi r3, r3, 0x144
 /* 0000B108 4BFF50C9 */ bl mathutil_mtxA_from_mtx
 /* 0000B10C 38600003 */ li r3, 3
-/* 0000B110 4BFF50C1 */ bl load_light_group
+/* 0000B110 4BFF50C1 */ bl load_light_group_uncached
 /* 0000B114 801E00D0 */ lwz r0, 0xd0(r30)
 /* 0000B118 2C000000 */ cmpwi r0, 0
 /* 0000B11C 41810078 */ bgt lbl_0000B194
@@ -12292,8 +12292,8 @@ lbl_0000B498:
 /* 0000B4AC 48000288 */ b lbl_0000B734
 lbl_0000B4B0:
 /* 0000B4B0 C01E0000 */ lfs f0, 0(r30)
-/* 0000B4B4 3C600000 */ lis r3, lbl_801F0614@ha
-/* 0000B4B8 38630000 */ addi r3, r3, lbl_801F0614@l
+/* 0000B4B4 3C600000 */ lis r3, s_bgLightInfo@ha
+/* 0000B4B8 38630000 */ addi r3, r3, s_bgLightInfo@l
 /* 0000B4BC D01F0020 */ stfs f0, 0x20(r31)
 /* 0000B4C0 38800C00 */ li r4, 0xc00
 /* 0000B4C4 A8630042 */ lha r3, 0x42(r3)
@@ -12423,8 +12423,8 @@ lbl_0000B680:
 lbl_0000B690:
 /* 0000B690 3C600000 */ lis r3, unpausedFrameCounter@ha
 /* 0000B694 80830000 */ lwz r4, unpausedFrameCounter@l(r3)
-/* 0000B698 3C600000 */ lis r3, lbl_801F0614@ha
-/* 0000B69C 38630000 */ addi r3, r3, lbl_801F0614@l
+/* 0000B698 3C600000 */ lis r3, s_bgLightInfo@ha
+/* 0000B69C 38630000 */ addi r3, r3, s_bgLightInfo@l
 /* 0000B6A0 3804FFFF */ addi r0, r4, -1  ;# fixed addi
 /* 0000B6A4 901F0034 */ stw r0, 0x34(r31)
 /* 0000B6A8 38800C00 */ li r4, 0xc00
@@ -13141,11 +13141,11 @@ lbl_0000C090:
 /* 0000C124 4E800020 */ blr 
 lbl_0000C128:
 /* 0000C128 7C0802A6 */ mflr r0
-/* 0000C12C 3C800000 */ lis r4, stageBounds@ha
+/* 0000C12C 3C800000 */ lis r4, stageBoundSphere@ha
 /* 0000C130 90010004 */ stw r0, 4(r1)
 /* 0000C134 9421FFE8 */ stwu r1, -0x18(r1)
 /* 0000C138 93E10014 */ stw r31, 0x14(r1)
-/* 0000C13C 3BE40000 */ addi r31, r4, stageBounds@l
+/* 0000C13C 3BE40000 */ addi r31, r4, stageBoundSphere@l
 /* 0000C140 3C800000 */ lis r4, lbl_00026390@ha
 /* 0000C144 93C10010 */ stw r30, 0x10(r1)
 /* 0000C148 3BC30000 */ addi r30, r3, 0
@@ -13208,11 +13208,11 @@ lbl_0000C128:
 /* 0000C22C 4E800020 */ blr 
 lbl_0000C230:
 /* 0000C230 7C0802A6 */ mflr r0
-/* 0000C234 3C800000 */ lis r4, stageBounds@ha
+/* 0000C234 3C800000 */ lis r4, stageBoundSphere@ha
 /* 0000C238 90010004 */ stw r0, 4(r1)
 /* 0000C23C 9421FFE8 */ stwu r1, -0x18(r1)
 /* 0000C240 93E10014 */ stw r31, 0x14(r1)
-/* 0000C244 3BE40000 */ addi r31, r4, stageBounds@l
+/* 0000C244 3BE40000 */ addi r31, r4, stageBoundSphere@l
 /* 0000C248 3C800000 */ lis r4, lbl_00026390@ha
 /* 0000C24C 93C10010 */ stw r30, 0x10(r1)
 /* 0000C250 3BC30000 */ addi r30, r3, 0
@@ -14252,9 +14252,9 @@ lbl_0000D144:
 /* 0000D230 901F0024 */ stw r0, 0x24(r31)
 lbl_0000D234:
 /* 0000D234 C03D0000 */ lfs f1, 0(r29)
-/* 0000D238 3C600000 */ lis r3, stageBounds@ha
+/* 0000D238 3C600000 */ lis r3, stageBoundSphere@ha
 /* 0000D23C C01D000C */ lfs f0, 0xc(r29)
-/* 0000D240 3B230000 */ addi r25, r3, stageBounds@l
+/* 0000D240 3B230000 */ addi r25, r3, stageBoundSphere@l
 /* 0000D244 EC010028 */ fsubs f0, f1, f0
 /* 0000D248 D0010050 */ stfs f0, 0x50(r1)
 /* 0000D24C C03D0004 */ lfs f1, 4(r29)
@@ -14362,9 +14362,9 @@ lbl_0000D234:
 /* 0000D3E4 D01D0008 */ stfs f0, 8(r29)
 lbl_0000D3E8:
 /* 0000D3E8 C03D0000 */ lfs f1, 0(r29)
-/* 0000D3EC 3C600000 */ lis r3, stageBounds@ha
+/* 0000D3EC 3C600000 */ lis r3, stageBoundSphere@ha
 /* 0000D3F0 C01D000C */ lfs f0, 0xc(r29)
-/* 0000D3F4 3B230000 */ addi r25, r3, stageBounds@l
+/* 0000D3F4 3B230000 */ addi r25, r3, stageBoundSphere@l
 /* 0000D3F8 EC010028 */ fsubs f0, f1, f0
 /* 0000D3FC D0010050 */ stfs f0, 0x50(r1)
 /* 0000D400 C03D0004 */ lfs f1, 4(r29)
@@ -15760,8 +15760,8 @@ lbl_0000E8AC:
 /* 0000E8CC 4BFF1905 */ bl camera_clear
 /* 0000E8D0 3800000A */ li r0, 0xa
 /* 0000E8D4 981E001F */ stb r0, 0x1f(r30)
-/* 0000E8D8 3C600000 */ lis r3, stageBounds@ha
-/* 0000E8DC 38830000 */ addi r4, r3, stageBounds@l
+/* 0000E8D8 3C600000 */ lis r3, stageBoundSphere@ha
+/* 0000E8DC 38830000 */ addi r4, r3, stageBoundSphere@l
 /* 0000E8E0 C03F00E4 */ lfs f1, 0xe4(r31)
 /* 0000E8E4 3860C000 */ li r3, -16384
 /* 0000E8E8 C0040000 */ lfs f0, 0(r4)
@@ -38514,8 +38514,8 @@ lbl_00023AB4:
 /* 00023AB4 7C0802A6 */ mflr r0
 /* 00023AB8 3C800000 */ lis r4, lbl_00026550@ha
 /* 00023ABC 90010004 */ stw r0, 4(r1)
-/* 00023AC0 3CA00000 */ lis r5, stageBounds@ha
-/* 00023AC4 39050000 */ addi r8, r5, stageBounds@l
+/* 00023AC0 3CA00000 */ lis r5, stageBoundSphere@ha
+/* 00023AC4 39050000 */ addi r8, r5, stageBoundSphere@l
 /* 00023AC8 9421FF80 */ stwu r1, -0x80(r1)
 /* 00023ACC 38840000 */ addi r4, r4, lbl_00026550@l
 /* 00023AD0 546A063E */ clrlwi r10, r3, 0x18
@@ -38639,8 +38639,8 @@ lbl_00023C68:
 /* 00023C8C DB410078 */ stfd f26, 0x78(r1)
 /* 00023C90 93E10074 */ stw r31, 0x74(r1)
 /* 00023C94 3BE30000 */ addi r31, r3, lbl_00026550@l
-/* 00023C98 3C600000 */ lis r3, stageBounds@ha
-/* 00023C9C 38830000 */ addi r4, r3, stageBounds@l
+/* 00023C98 3C600000 */ lis r3, stageBoundSphere@ha
+/* 00023C9C 38830000 */ addi r4, r3, stageBoundSphere@l
 /* 00023CA0 C85F02D8 */ lfd f2, 0x2d8(r31)
 /* 00023CA4 C01F045C */ lfs f0, 0x45c(r31)
 /* 00023CA8 C024000C */ lfs f1, 0xc(r4)

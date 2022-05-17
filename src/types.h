@@ -113,14 +113,98 @@ struct PerfInfo
     u32 unk34;
 };
 
+typedef struct
+{
+    GXBlendMode type;
+    GXBlendFactor src_factor;
+    GXBlendFactor dst_factor;
+    GXLogicOp op;
+} GXTevBlendModeCache;
+
+typedef struct
+{
+    GXTevColorChan r;
+    GXTevColorChan g;
+    GXTevColorChan b;
+    GXTevColorChan a;
+} GXTevSwapModeTableCache;
+
+typedef struct
+{
+    GXTevSwapSel ras_sel;
+    GXTevSwapSel tex_sel;
+} GXTevswapModeSelCache;
+
+typedef struct
+{
+    GXFogType type;
+    float startz;
+    float endz;
+    float nearz;
+    float farz;
+    GXColor color;
+} GXFogCache;
+
+typedef struct
+{
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+} GXTevInputCache;
+
+typedef struct {
+    GXTevOp op;
+    GXTevBias bias;
+    GXTevScale scale;
+    GXBool clamp;
+    GXTevRegID reg;
+} GXTevOpCache;
+
+typedef struct {
+    u16 width;
+    u16 height;
+} GXTexSize;
+
+typedef struct {
+    GXTexCoordID coord;
+    GXTexMapID map;
+    GXChannelID color;
+    GXTexSize texSize;
+} GXTevOrderCached;
+
+typedef struct {
+    u8 numTevStages;
+    GXColor colors[4];
+    u8 filler11[1];
+} GXTevKColorCached;
+
 struct GXCache
 {
-    /*0x00*/ GXBool compareEnable;
-    /*0x04*/ GXCompare compareFunc;
-    /*0x08*/ GXBool updateEnable;
-    /*0x09*/ u8 lineWidth;
-    /*0x0C*/ s32 texOffsets;
-             u8 filler10[0x734-0x10];
+    /*0x000*/ GXBool compareEnable;
+    /*0x004*/ GXCompare compareFunc;
+    /*0x008*/ GXBool updateEnable;
+    /*0x009*/ u8 lineWidth;
+    /*0x00C*/ s32 texOffsets;
+    /*0x010*/ s32 cullMode;
+    /*0x014*/ GXTevBlendModeCache blendMode;
+    /*0x024*/ GXTevSwapModeTableCache swapModeTable[4];
+    /*0x064*/ GXTevswapModeSelCache swapModeSel[16];
+    /*0x0E4*/ GXFogCache fog;
+    /*0x0FC*/ GXBool colorUpdate;
+    /*0x0FD*/ GXBool alphaUpdate;
+    /*0x0FE*/ GXBool zCompare;
+    /*0x0FF*/ u8 unkFF;
+    /*0x100*/ GXTevInputCache colorInputs[16];
+    /*0x200*/ GXTevInputCache alphaInputs[16];
+    /*0x300*/ GXTevOpCache colorOperations[16];
+    /*0x440*/ GXTevOpCache alphaOperations[16];
+    /*0x580*/ GXTevOrderCached tevOrders[16];
+    /*0x680*/ s32 kColorSels[16];
+    /*0x6C0*/ s32 kAlphaSels[16];
+    /*0x700*/ GXTevKColorCached kColor;
+    /*0x712*/ GXTexSize texSizes[8];
+    /*0x732*/ u8 filler732[0x734-0x732];
 };
 
 struct GFXBufferInfo
@@ -627,8 +711,8 @@ struct CoordsS8
 
 struct Struct8020A348_child
 {
-    u32 unk0;
-    struct GMAModel *unk4;  // GMAModel
+    u32 flags;
+    struct GMAModel *model;  // GMAModel
     float unk8;
 };  // size = 0xC
 
@@ -989,12 +1073,10 @@ struct Stobj
     Vec g_local_vel;
 };
 
-struct Struct80180F64
+struct BgLightInfo
 {
 	float unk0;
-    float unk4;
-    float unk8;
-    float unkC;
+    struct Color3f ambient;
     float unk10;
     float unk14;
     float unk18;
@@ -1004,15 +1086,16 @@ struct Struct80180F64
     float unk28;
     float unk2C;
     float unk30;
-	float unk34;
-	float unk38;
-	float unk3C;
-	s16 unk40;
-	s16 unk42;
-    s8 **unk44;
+
+    // Global directional light ("infinite" light)
+    struct Color3f infLightColor;
+	s16 infLightRotX;
+	s16 infLightRotY;
+
+    s8 **bgLightGroups;
 };
 
-struct MaybeStageLight;
+struct Light;
 
 struct Struct802F1BE8
 {
@@ -1051,10 +1134,10 @@ struct Struct802F1C10
     u8 unk4[4];
 };
 
-struct Struct80180F14
+struct GBilLightGroup
 {
-    char *unk0;
-    s8 unk4;
+    char *name;
+    s8 g_bgLightGroupId;
 };
 
 struct TextBox

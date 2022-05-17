@@ -2902,7 +2902,7 @@ lbl_8004F51C:
 /* 8004F544 0004B464  EC 21 10 28 */	fsubs f1, f1, f2
 /* 8004F548 0004B468  FC 21 00 32 */	fmul f1, f1, f0
 /* 8004F54C 0004B46C  FC 20 08 18 */	frsp f1, f1
-/* 8004F550 0004B470  4B FE 1F 69 */	bl g_draw_naomi_model_with_alpha_deferred
+/* 8004F550 0004B470  4B FE 1F 69 */	bl nl2ngc_draw_model_alpha_sorted
 lbl_8004F554:
 /* 8004F554 0004B474  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 8004F558 0004B478  CB E1 00 28 */	lfd f31, 0x28(r1)
@@ -4067,8 +4067,8 @@ lbl_80050668:
 /* 8005069C 0004C5BC  4B FB 77 3D */	bl mathutil_mtxA_scale_xyz
 /* 800506A0 0004C5C0  C0 3F 00 24 */	lfs f1, 0x24(r31)
 /* 800506A4 0004C5C4  4B FE 05 05 */	bl g_nl2ngc_set_scale
-/* 800506A8 0004C5C8  3C 60 80 1F */	lis r3, lbl_801F0614@ha
-/* 800506AC 0004C5CC  38 63 06 14 */	addi r3, r3, lbl_801F0614@l
+/* 800506A8 0004C5C8  3C 60 80 1F */	lis r3, s_bgLightInfo@ha
+/* 800506AC 0004C5CC  38 63 06 14 */	addi r3, r3, s_bgLightInfo@l
 /* 800506B0 0004C5D0  C0 23 00 14 */	lfs f1, 0x14(r3)
 /* 800506B4 0004C5D4  C0 43 00 18 */	lfs f2, 0x18(r3)
 /* 800506B8 0004C5D8  C0 03 00 1C */	lfs f0, 0x1c(r3)
@@ -7259,7 +7259,7 @@ lbl_8005359C:
 /* 80053618 0004F538  7C 03 07 34 */	extsh r3, r0
 /* 8005361C 0004F53C  4B FB 4A 6D */	bl mathutil_mtxA_rotate_z
 /* 80053620 0004F540  7F E3 FB 78 */	mr r3, r31
-/* 80053624 0004F544  4B FD DB ED */	bl g_draw_naomi_model_and_do_other_stuff
+/* 80053624 0004F544  4B FD DB ED */	bl nl2ngc_draw_model_sorted
 lbl_80053628:
 /* 80053628 0004F548  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 8005362C 0004F54C  CB E1 00 28 */	lfd f31, 0x28(r1)
