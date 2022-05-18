@@ -7,15 +7,16 @@
 #include <dolphin/GDLight.h>
 #include <dolphin/GXLighting.h>
 #include <dolphin/GXVert.h>
+
 #include "global.h"
+#include "gma.h"
+#include "gxcache.h"
 #include "gxutil.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "ord_tbl.h"
 #include "types.h"
-#include "tevutil.h"
-#include "gma.h"
-#include "light.h"
 
 struct UnkStruct4
 {

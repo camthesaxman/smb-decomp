@@ -1,5 +1,5 @@
-#ifndef _SRC_TEVUTIL_H_
-#define _SRC_TEVUTIL_H_
+#ifndef _SRC_GXCACHE_H_
+#define _SRC_GXCACHE_H_
 
 #include <dolphin/gx.h>
 

@@ -10,11 +10,11 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "gma.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "mathutil.h"
 #include "stage.h"
-#include "tevutil.h"
-#include "gma.h"
 
 static struct BGModelSearch bonusMiscFind[] =
 {

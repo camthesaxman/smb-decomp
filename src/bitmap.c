@@ -6,11 +6,11 @@
 #include "global.h"
 #include "bitmap.h"
 #include "event.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "sprite.h"
-#include "tevutil.h"
 
 struct TPL *g_unkBitmapTPL;
 s32 lbl_802F1D04;

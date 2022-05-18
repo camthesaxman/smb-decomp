@@ -8,10 +8,10 @@
 #include "adv.h"
 #include "bitmap.h"
 #include "event.h"
+#include "gxcache.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "sprite.h"
-#include "tevutil.h"
 #include "textbox.h"
 
 struct TextDrawInfo

@@ -1,8 +1,16 @@
+/**
+ * gxcache.c
+ * 
+ * To avoid expensive hardware state changes, a few of the frequently called GX
+ * functions are reimplemented here to cache their parameters and only call the
+ * real GX functions if the state actually changed.
+ */
+
 #include <string.h>
 #include <dolphin.h>
 
 #include "global.h"
-#include "tevutil.h"
+#include "gxcache.h"
 
 GXColor lbl_802F5A88;
 

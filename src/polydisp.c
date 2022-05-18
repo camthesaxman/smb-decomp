@@ -11,10 +11,12 @@
 #include "camera.h"
 #include "event.h"
 #include "gma.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "info.h"
 #include "input.h"
 #include "item.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -23,8 +25,6 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
-#include "tevutil.h"
-#include "light.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)
 

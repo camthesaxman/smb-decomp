@@ -2,11 +2,11 @@
 
 #include "global.h"
 #include "background.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
-#include "tevutil.h"
 
 struct FogParams
 {

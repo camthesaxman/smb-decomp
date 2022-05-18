@@ -2,9 +2,9 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "perf.h"
-#include "tevutil.h"
 
 struct GFXBufferInfo *gfxBufferInfo;
 static GXBool drawingFinished;

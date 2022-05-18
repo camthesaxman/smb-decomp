@@ -5,13 +5,13 @@
 #include <dolphin/GXEnum.h>
 #include "global.h"
 #include "bitmap.h"
+#include "gxcache.h"
 #include "gxutil.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
-#include "tevutil.h"
-#include "light.h"
 
 float fogEndZ;
 float fogStartZ;
