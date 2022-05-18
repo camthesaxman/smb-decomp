@@ -2188,7 +2188,7 @@ enum
     TEXT_MODE_HIRAGANA,
     TEXT_MODE_KATAKANA,
     TEXT_MODE_PICTURE,
-    
+
     // flags
     TEXT_MODE_BLINK = 0x10000,
 };
@@ -3417,7 +3417,7 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
         r29 = *r4;
         r28 = gxCache->updateEnable;
         r29 = *r4;
-        CHANGE_Z_MODE(1, 7, 1);
+        GXSetZMode_cached(GX_TRUE, GX_ALWAYS, GX_TRUE);
     }
 
     zero = 0.0f;
@@ -3433,9 +3433,7 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
     GXEnd();
 
     if (params->flags & (1 << 21))
-    {
-        CHANGE_Z_MODE(r28, r29, r30);
-    }
+        GXSetZMode_cached(r30, r29, r28);
     return 0;
 }
 

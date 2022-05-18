@@ -263,7 +263,7 @@ void bitmap_init_tev(void)
     GXSetNumTexGens(1);
     GXSetNumTevStages_cached(1);
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009EA30(0, 0);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_MODULATE);
     GXSetTexCoordGen(
         GX_TEXCOORD0,  // dst_coord
         GX_TG_MTX2x4,  // func
@@ -321,7 +321,7 @@ void bitmap_init_tev(void)
         GX_AF_NONE);  // attn_fn
 
     GXSetTevColor(GX_TEVREG0, green);
-    CHANGE_Z_MODE(GX_ENABLE, GX_LESS, GX_ENABLE);
+    GXSetZMode_cached(GX_ENABLE, GX_LESS, GX_ENABLE);
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     {
         GXColor color = {0, 0, 0, 0};
@@ -372,28 +372,10 @@ void bitmap_main(void)
     lbl_802F1D04 = 2;
     g_draw_all_naomi_sprites();  // again?
 
-    if (gxCache->updateEnable != GX_DISABLE
-     || gxCache->compareFunc != GX_ALWAYS
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc = GX_ALWAYS;
-        gxCache->updateEnable = GX_DISABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
     if (eventInfo[EVENT_MEMCARD].state == EV_STATE_RUNNING)
         memcard_draw_ui();
-
-    if (gxCache->updateEnable != GX_ENABLE
-     || gxCache->compareFunc != GX_LEQUAL
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc = GX_LEQUAL;
-        gxCache->updateEnable = GX_ENABLE;
-    }
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
     g_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
     func_8002F0E4();

@@ -53,21 +53,13 @@ void perf_init_draw(void)
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
     GXSetChanMatColor(GX_COLOR0A0, matColor);
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
-    if (gxCache->updateEnable  != GX_ENABLE
-     || gxCache->compareFunc   != GX_LEQUAL
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = GX_LEQUAL;
-        gxCache->updateEnable  = GX_ENABLE;
-    }
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
     GXSetZCompLoc_cached(1);
     GXSetNumTexGens(1);
     GXSetNumChans(1);
     GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
-    func_8009EA30(0, 1);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_DECAL);
     perfEnabled = FALSE;
 }
 

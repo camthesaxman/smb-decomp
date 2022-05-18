@@ -26,20 +26,6 @@
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 
-#define CHANGE_Z_MODE(updEnable, compFunc, compEnable) \
-do                                                     \
-{                                                      \
-    if (updEnable  != gxCache->updateEnable              \
-     || compFunc   != gxCache->compareFunc               \
-     || compEnable != gxCache->compareEnable)            \
-    {                                                  \
-        GXSetZMode(compEnable, compFunc, updEnable);   \
-        gxCache->compareEnable = compEnable;             \
-        gxCache->compareFunc   = compFunc;               \
-        gxCache->updateEnable  = updEnable;              \
-    }                                                  \
-} while (0)
-
 // intrinsics
 #ifndef __MWERKS__
 extern u32 __cntlzw(u32);

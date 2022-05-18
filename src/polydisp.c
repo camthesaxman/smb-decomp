@@ -495,16 +495,7 @@ void func_8000C144(struct Struct8000C144 *a)
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ZERO, GX_BL_ONE, GX_LO_CLEAR);
-    if (gxCache->updateEnable  != GX_ENABLE
-     || gxCache->compareFunc   != GX_ALWAYS
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = GX_ALWAYS;
-        gxCache->updateEnable  = GX_ENABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_ALWAYS, GX_ENABLE);
     GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
     GXSetCullMode_cached(GX_CULL_NONE);
     GXSetTevDirect(GX_TEVSTAGE0);
@@ -527,15 +518,7 @@ void func_8000C144(struct Struct8000C144 *a)
         GXPosition3f32(x2, y2, z);
     GXEnd();
 
-    if (gxCache->updateEnable  != GX_ENABLE
-     || gxCache->compareFunc   != 3
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, 3, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = 3;
-        gxCache->updateEnable  = GX_ENABLE;
-    }
+    GXSetZMode_cached(GX_ENABLE, 3, GX_ENABLE);
 }
 
 void func_8000C388(void)
@@ -981,7 +964,7 @@ void draw_test_camera_target(void)
             GX_AF_NONE);  // attn_fn
         GXSetNumChans(1);
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-        func_8009EA30(0, 4);
+        GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
         GXSetNumTexGens(0);
         GXSetNumTevStages_cached(1);
 

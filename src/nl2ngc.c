@@ -685,15 +685,7 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unk7 = 4;
     lbl_80205DAC.unk8 = 0;
 
-    if ((!lbl_80205DAC.unk8) != gxCache->updateEnable
-     || gxCache->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
-        gxCache->updateEnable  = (!lbl_80205DAC.unk8);
-    }
+    GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
 
     if (g_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
@@ -772,15 +764,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
-        if ((!r26) != gxCache->updateEnable
-         || gxCache->compareFunc != naomiToGCCompare[r28]
-         || gxCache->compareEnable != GX_ENABLE)
-        {
-            GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
-            gxCache->compareEnable = GX_ENABLE;
-            gxCache->compareFunc   = naomiToGCCompare[r28];
-            gxCache->updateEnable  = (!r26);
-        }
+        GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[r28], (!r26));
         lbl_80205DAC.unk7 = r28;
         lbl_80205DAC.unk8 = r26;
     }
@@ -793,7 +777,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     if (mesh.unk20 < 0)
     {
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-        func_8009EA30(0, 4);
+        GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
     }
     else
     {
@@ -811,7 +795,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
-            func_8009EA30(0, 3);
+            GXSetTevOp_cached(GX_TEVSTAGE0, GX_REPLACE);
             break;
         case 1:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
@@ -1172,15 +1156,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.unk7 = 4;
     lbl_80205DAC.unk8 = 0;
 
-    if ((!lbl_80205DAC.unk8) != gxCache->updateEnable
-     || gxCache->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
-        gxCache->updateEnable  = (!lbl_80205DAC.unk8);
-    }
+    GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
 
     if (g_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
@@ -1259,15 +1235,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
-        if ((!r26) != gxCache->updateEnable
-         || gxCache->compareFunc != naomiToGCCompare[r28]
-         || gxCache->compareEnable != GX_ENABLE)
-        {
-            GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
-            gxCache->compareEnable = GX_ENABLE;
-            gxCache->compareFunc   = naomiToGCCompare[r28];
-            gxCache->updateEnable  = (!r26);
-        }
+        GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[r28], (!r26));
         lbl_80205DAC.unk7 = r28;
         lbl_80205DAC.unk8 = r26;
     }
@@ -1280,7 +1248,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     if (mesh.unk20 < 0)
     {
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-        func_8009EA30(0, 4);
+        GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
     }
     else
     {
