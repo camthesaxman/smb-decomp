@@ -1922,44 +1922,21 @@ void func_80017140(void)
     func_800AEDE0();
 }
 
-#ifdef NONMATCHING
+// Returns the player whose turn it is next in normal mode
 int get_next_player(void)
 {
     int i;
-    int r3;
-    int r4 = modeCtrl.currPlayer;
+    int nextPlayer;
 
-    for (i = 0; i < 4; i++, r4++)
+    (void)modeCtrl.currPlayer;  // needed to match
+
+    for (i = 0; i < 4; i++)
     {
-        r3 = (r4 + 1) & 3;
-        if (spritePoolInfo.unkC[r3] == 4)
+        nextPlayer = (modeCtrl.currPlayer + i + 1) & 3;
+        if (spritePoolInfo.unkC[nextPlayer] == 4)
             break;
     }
-    return r3;
-}
-#else
-asm int get_next_player(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/get_next_player.s"
-}
-#pragma peephole on
-#endif
-
-// get_next_player matches in inline contexts
-inline int get_next_player_inline(void)
-{
-    int i;
-    int r3;
-    int r4 = modeCtrl.currPlayer;
-
-    for (i = 0; i < 4; i++, r4++)
-    {
-        r3 = (r4 + 1) & 3;
-        if (spritePoolInfo.unkC[r3] == 4)
-            break;
-    }
-    return r3;
+    return nextPlayer;
 }
 
 void g_init_player_data_1(void)
@@ -1993,7 +1970,7 @@ void g_init_player_data_2(void)
         spritePoolInfo.unkC[modeCtrl.currPlayer] = 4;
     playerInfos[modeCtrl.currPlayer] = infoWork;
     lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.levelSetFlags;
-    r0 = get_next_player_inline();
+    r0 = get_next_player();
     spritePoolInfo.unkC[r0] = 2;
     if (modeCtrl.currPlayer != r0)
     {
