@@ -110,7 +110,7 @@ SOURCES := \
 	src/mathutil_vec_cross_prod.c \
 	asm/stcoli.s \
 	src/world.c \
-	asm/interp_anim.s \
+	src/interpolate_keyframes.c \
 	src/stage.c \
 	asm/stage.s \
 	asm/recplay.s \

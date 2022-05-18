@@ -195,7 +195,7 @@ void func_80036064(struct Struct8003699C_child *);
 // ? func_80036720();
 // ? func_800367E4();
 
-float interpolate_keyframes(u32, struct Keyframe *, float);
+float interpolate_keyframes(int count, struct Keyframe *frames, float time);
 
 void draw_stage_preview(void);
 void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NaomiVtxWithNormal *), void (*c)(struct NaomiVtxWithColor *));
