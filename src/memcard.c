@@ -3274,10 +3274,10 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     float f30;
     float f1;
 
-    func_80071A8C();
-    g_set_font(0xB3);
+    reset_text_draw_settings();
+    set_text_font(0xB3);
     func_80071B50(0x200000);
-    func_80071B2C(0.65f, 0.8f);
+    set_text_scale(0.65f, 0.8f);
 
     for (i = 0, f30 = 0.0f, r27 = msg->numLines; i < msg->numLines; i++)
     {
@@ -3300,9 +3300,9 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
         float var2 = f2;
         var1 *= 0.125;
         var2 *= 0.125;
-        lbl_801D5724.zoomX = var1;
-        lbl_801D5724.zoomY = var2;
-        lbl_801D5724.alpha = 0.65 + 0.1 * lbl_802F1ECC;
+        lbl_801D5724.scaleX = var1;
+        lbl_801D5724.scaleY = var2;
+        lbl_801D5724.opacity = 0.65 + 0.1 * lbl_802F1ECC;
     }
     draw_naomi_sprite(&lbl_801D5724);
     for (i = 0; i < msg->numLines; i++)
@@ -3310,7 +3310,7 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
         float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);
         float param2 = 0.800000011920929 * (32.0 * i)
             + ((y - 9.600000143051147) - 0.800000011920929 * (16.0 * (msg->numLines - 1)));
-        g_set_text_pos(param1, param2);
+        set_text_pos(param1, param2);
         g_draw_text(msg->lines[i].str);
     }
 }
@@ -3328,8 +3328,8 @@ void memcard_draw_ui(void)
     u32 color;
     u32 intensity;
 
-    func_80071A8C();
-    g_set_font(0xB3);
+    reset_text_draw_settings();
+    set_text_font(0xB3);
     func_80071B1C(0.008f);
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
@@ -3365,7 +3365,7 @@ void memcard_draw_ui(void)
                 draw_memcard_msg(&sp8, 320.0f, 100.0f);
             }
         }
-        func_80071A8C();
+        reset_text_draw_settings();
         return;
     }
     else if (memcardInfo.statusFlags & (1 << 2))
@@ -3377,10 +3377,10 @@ void memcard_draw_ui(void)
     {
         if (memcardInfo.statusFlags & (1 << 15))
         {
-            g_set_text_pos(100.0f, 340.0f);
+            set_text_pos(100.0f, 340.0f);
             draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
         }
-        func_80071A8C();
+        reset_text_draw_settings();
         return;
     }
     else if (memcardInfo.statusFlags & (1 << 10))
@@ -3394,51 +3394,51 @@ void memcard_draw_ui(void)
         intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
         color = RGBA(intensity, intensity, intensity, 0);
 
-        func_80071B2C(1.5f, 1.5f);
-        g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
+        set_text_scale(1.5f, 1.5f);
+        set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
         else
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         g_draw_text("No");
-        g_set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
+        set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0x7F7F7F);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            g_set_text_fill_color(0xFFFFFF);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0xFFFFFF);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
         else
         {
-            g_set_text_fill_color(0x7F7F7F);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         g_draw_text("No");
     }
@@ -3451,51 +3451,51 @@ void memcard_draw_ui(void)
         intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
         color = RGBA(intensity, intensity, intensity, 0);
 
-        func_80071B2C(1.5f, 1.5f);
-        g_set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
+        set_text_scale(1.5f, 1.5f);
+        set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
         else
         {
-            g_set_text_fill_color(0);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         g_draw_text("No");
-        g_set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
+        set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0x7F7F7F);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            g_set_text_fill_color(0xFFFFFF);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
         g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            g_set_text_fill_color(0xFFFFFF);
-            g_set_text_other_color(color);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
         else
         {
-            g_set_text_fill_color(0x7F7F7F);
-            g_set_text_other_color(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         g_draw_text("No");
     }
@@ -3508,7 +3508,7 @@ void memcard_draw_ui(void)
     }
     if (memcardInfo.statusFlags & (1 << 17))
         draw_memcard_msg(&msgLoadingGame, 320.0f, 240.0f);
-    func_80071A8C();
+    reset_text_draw_settings();
 }
 
 void func_800A4CEC(void)

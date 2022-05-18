@@ -23,7 +23,7 @@ s32 lbl_802F1B98;
 
 static int is_pausing_allowed(void)
 {
-    if (screenFadeInfo.unk8 != 0)
+    if (screenFadeInfo.timer != 0)
         return FALSE;
     if (pauseMenuState.unk4 & (1 << 1))
         return FALSE;
@@ -200,7 +200,7 @@ void g_open_pause_menu(struct Sprite *menuSprite)
         find_sprite_with_tag(4);
     }
     else
-        menuSprite->unk48 = 1;
+        menuSprite->userVar = 1;
     func_8002B5C8(0x70);
     g_play_music(50, 10);
 }
@@ -252,8 +252,8 @@ void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
             {
                 pauseMenuState.unk0 = 60;
                 if (menuSprite != NULL)
-                    menuSprite->unk48 = 2;
-                screenFadeInfo.unk4 = 0xFFFFFF;
+                    menuSprite->userVar = 2;
+                screenFadeInfo.color = RGBA(255, 255, 255, 0);
                 g_play_music(59, 2);
             }
             break;
@@ -262,7 +262,7 @@ void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
         {
             pauseMenuState.unk0 = 60;
             if (menuSprite != NULL)
-                menuSprite->unk48 = 3;
+                menuSprite->userVar = 3;
             g_play_music(60, 2);
         }
     }
@@ -272,7 +272,7 @@ void g_pause_menu_load_how_to_play(struct Sprite *menuSprite)
 {
     lbl_802F1B98 = 4;
     if (menuSprite != NULL)
-        menuSprite->unk48 = 6;
+        menuSprite->userVar = 6;
     if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
         lbl_802F1B9C = OSSetCurrentHeap(charaHeap);
     if (gameMode == MD_MINI && modeCtrl.gameType == GAMETYPE_MINI_GOLF)
@@ -493,7 +493,7 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
             if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)
                 OSSetCurrentHeap(lbl_802F1B9C);
             if (menuSprite != NULL)
-                menuSprite->unk48 = 1;
+                menuSprite->userVar = 1;
             lbl_802F1B98 = -1;
         }
         break;
@@ -526,7 +526,7 @@ void g_menu_input_game_notdebug(void)
              && pauseMenuState.selection == pauseMenuState.itemCount - 1
              && pauseMenuState.unk0 == 0x28
              && menuSprite != NULL)
-                menuSprite->unk48 = 5;
+                menuSprite->userVar = 5;
             if (pauseMenuState.unk0 > 0)
             {
                 if (--pauseMenuState.unk0 == 0)

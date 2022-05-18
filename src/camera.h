@@ -112,6 +112,13 @@ struct Camera
     u8 filler20C[0x284-0x20C];
 };  // size=0x284
 
+extern s16 lbl_802F1C30;
+//extern s8 lbl_802F1C32;
+extern s32 g_cameraId2;
+extern void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
+extern struct Camera *currentCameraStructPtr;
+extern s32 g_cameraId1;
+
 extern struct Camera cameraInfo[5];
 // extern ? lbl_801EFB94;
 

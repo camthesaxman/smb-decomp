@@ -19,7 +19,7 @@
 #include "stcoli.h"
 
 s8 lbl_802F1CB0[8];
-u32 lbl_802F1CAC;
+s32 lbl_802F1CAC;
 s32 lbl_802F1CA8;
 
 struct Struct801F3A58 infoWork;
@@ -498,7 +498,7 @@ struct Struct801818D0 rankTexOffsets[4] =
 
 void lbl_80023E0C(s8 *dummy, struct Sprite *sprite)
 {
-    struct Ball *ball = &ballInfo[sprite->unk48];
+    struct Ball *ball = &ballInfo[sprite->userVar];
 
     sprite->opacity += (1.0f - sprite->opacity) * 0.1;
     if (sprite->bmpId >= 100)
@@ -524,23 +524,23 @@ void lbl_80023EE0(s8 *dummy, struct Sprite *sprite)
             sprite->counter = 45;
     }
     sprite->opacity += (1.0f - sprite->opacity) * 0.1;
-    sprite->unk70 = mathutil_sin(sprite->counter * 0x2B8) * 255.0f;
-    sprite->unk71 = sprite->unk70;
-    sprite->unk72 = sprite->unk70;
+    sprite->addR = mathutil_sin(sprite->counter * 0x2B8) * 255.0f;
+    sprite->addG = sprite->addR;
+    sprite->addB = sprite->addR;
 }
 
-void rank_icon_main(s8 *dummy, struct Sprite *sprite)
+void rank_icon_sprite_main(s8 *dummy, struct Sprite *sprite)
 {
     sprite->counter++;
     if (sprite->counter <= 15)
     {
-        sprite->unk40 = 1.0 + 0.2f * (15.0f - sprite->counter);
-        sprite->unk44 = sprite->unk40;
+        sprite->scaleX = 1.0 + 0.2f * (15.0f - sprite->counter);
+        sprite->scaleY = sprite->scaleX;
         sprite->opacity = sprite->counter * 0.066666;
     }
     if (sprite->counter > 60 && sprite->counter < 0x69)
         sprite->y -= 1.0f;
-    if (sprite->unk48 != 0 && sprite->counter == 0x78)
+    if (sprite->userVar != 0 && sprite->counter == 0x78)
     {
         struct Ball *ball = &ballInfo[sprite->bmpId];
         struct Viewport *vp = &cameraInfo[ball->playerId].sub28.vp;
@@ -551,12 +551,12 @@ void rank_icon_main(s8 *dummy, struct Sprite *sprite)
         {
             r28->x = (vp->left + vp->width * 0.5) * 640.0;
             r28->y = (vp->top + vp->height * 0.5) * 480.0;
-            r28->fontId = 0xB0;
+            r28->fontId = FONT_JAP_24x24_2;
             r28->textAlign = ALIGN_CC;
-            r28->unk48 = ball->playerId;
-            r28->unkC = 0xFF;
-            r28->unkD = 0xFF;
-            r28->unkE = 0;
+            r28->userVar = ball->playerId;
+            r28->mulR = 255;
+            r28->mulG = 255;
+            r28->mulB = 0;
             r28->opacity = 0.0f;
             r28->bmpId = ball->unk138;
             r28->mainFunc = lbl_80023E0C;
@@ -573,8 +573,8 @@ void rank_icon_main(s8 *dummy, struct Sprite *sprite)
                 r5->y = -2.0f;
                 r5->bmpId = BMP_COM_banana_01;
                 r5->textAlign = ALIGN_CC;
-                r5->unk40 = 0.3f;
-                r5->unk44 = 0.3f;
+                r5->scaleX = 0.3f;
+                r5->scaleY = 0.3f;
                 r5->opacity = 0.0f;
                 r5->mainFunc = lbl_80023EBC;
                 sprintf(r5->text, "bonus banana.pic");
@@ -588,15 +588,15 @@ void rank_icon_main(s8 *dummy, struct Sprite *sprite)
             {
                 r11->x = (vp->left + vp->width * 0.5) * 640.0 + 130.0;
                 r11->y = (vp->top + vp->height * 0.5) * 480.0 + 21.0;
-                r11->fontId = 0x63;
+                r11->fontId = FONT_ASC_20x20P;
                 r11->textAlign = ALIGN_CC;
-                r11->unkC = 0xFF;
-                r11->unkD = 0xC0;
-                r11->unkE = 0;
+                r11->mulR = 255;
+                r11->mulG = 192;
+                r11->mulB = 0;
                 r11->opacity = 0.0f;
-                r11->unk40 = 0.45f;
-                r11->unk44 = 0.7f;
-                r11->counter = 0x2D;
+                r11->scaleX = 0.45f;
+                r11->scaleY = 0.7f;
+                r11->counter = 45;
                 r11->mainFunc = lbl_80023EE0;
                 sprintf(r11->text, "STRAIGHT\n VICTORIES X %d", ball->unk126);
             }
@@ -604,20 +604,20 @@ void rank_icon_main(s8 *dummy, struct Sprite *sprite)
     }
 }
 
-void lbl_80024324(struct Sprite *sprite)
+void rank_icon_sprite_draw(struct Sprite *sprite)
 {
     struct NaomiSpriteParams params;
     struct Struct801818D0 *r6;
     struct TPLTextureHeader *tex;
 
     params.bmpId = BMP_NML_game_rank;
-    params.rotation = sprite->unk68;
-    params.alpha = sprite->opacity;
+    params.rotation = sprite->rotation;
+    params.opacity = sprite->opacity;
     params.unk30 = -1;
     params.flags = (sprite->unk74 & ~0xF) | 0xA;
-    params.color1 = RGBA(sprite->unkC, sprite->unkD, sprite->unkE, (u8)(sprite->opacity * 255.0f));
-    params.color2 = RGBA(sprite->unk70, sprite->unk71, sprite->unk72, 0);
-    r6 = &rankTexOffsets[sprite->unk48];
+    params.mulColor = RGBA(sprite->mulR, sprite->mulG, sprite->mulB, (u8)(sprite->opacity * 255.0f));
+    params.addColor = RGBA(sprite->addR, sprite->addG, sprite->addB, 0);
+    r6 = &rankTexOffsets[sprite->userVar];
     tex = &bitmapGroups[(params.bmpId >> 8) & 0xFF].tpl->texHeaders[params.bmpId & 0xFF];
     params.x = sprite->x;
     params.y = sprite->y;
@@ -626,8 +626,8 @@ void lbl_80024324(struct Sprite *sprite)
     params.v1 = r6->v1 / tex->height;
     params.u2 = params.u1 + r6->u2 / tex->width;
     params.v2 = params.v1 + r6->v2 / tex->height;
-    params.zoomX = (params.u2 - params.u1) * sprite->unk40;
-    params.zoomY = (params.v2 - params.v1) * sprite->unk44;
+    params.scaleX = (params.u2 - params.u1) * sprite->scaleX;
+    params.scaleY = (params.v2 - params.v1) * sprite->scaleY;
     draw_naomi_sprite(&params);
 }
 
@@ -646,11 +646,11 @@ void create_rank_icon(struct Ball *ball)
     rankIcon->y = (vp->top + vp->height * 0.5) * 480.0;
     rankIcon->type = 1;
     rankIcon->textAlign = ALIGN_CC;
-    rankIcon->unk48 = ball->rank;
+    rankIcon->userVar = ball->rank;
     rankIcon->bmpId = ball->playerId;
     rankIcon->counter = 0;
-    rankIcon->mainFunc = rank_icon_main;
-    rankIcon->drawFunc = lbl_80024324;
+    rankIcon->mainFunc = rank_icon_sprite_main;
+    rankIcon->drawFunc = rank_icon_sprite_draw;
     strcpy(rankIcon->text, "ranking");
 }
 

@@ -505,7 +505,7 @@ void func_8006F5F0(int);
 // ? func_8006FCD0();
 // ? func_8006FD44();
 
-void lbl_80080940(struct Sprite *);
+void monkey_sprite_draw(struct Sprite *);
 int func_80081CFC(int, int, int);
 // ? func_80081D34();
 // ? func_80081D64();

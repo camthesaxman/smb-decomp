@@ -510,13 +510,13 @@ struct PhysicsBall
     u32 flags;
 
     // Current center position in animGroupId's local space
-    Point3d pos;     
+    Point3d pos;
 
     // Center position at end of previous frame in animGroupId's previous frame local space
-    Point3d prevPos; 
+    Point3d prevPos;
 
     // Current velocity in animGroupId's local space
-    Vec vel;         
+    Vec vel;
 
     float radius;
     float gravityAccel;
@@ -728,24 +728,36 @@ struct StageSelection
     s32 levelNum;
 };
 
+// Parameters for drawing a sprite to the screen
 struct NaomiSpriteParams
 {
-    /*0x00*/ s32 bmpId;
-    /*0x04*/ float x;
-    /*0x08*/ float y;
+    /*0x00*/ s32 bmpId;  // ID of bitmap image to use as texture
+
+    // Position
+    /*0x04*/ float x;  // position of sprite (0-640) from left edge of screen
+    /*0x08*/ float y;  // position of sprite (0-480) from top edge of screen
     /*0x0C*/ float z;
-    /*0x10*/ float zoomX;
-    /*0x14*/ float zoomY;
-    /*0x18*/ float u1;
-    /*0x1C*/ float v1;
-    /*0x20*/ float u2;
-    /*0x24*/ float v2;
-    /*0x28*/ s32 rotation;
-    /*0x2C*/ float alpha;
+
+    // Scale. The size of the sprite is this scale multiplied by the dimensions of the sprite's texture.
+    /*0x10*/ float scaleX;
+    /*0x14*/ float scaleY;
+
+    // Texture coordinates
+    /*0x18*/ float u1;  // x texture coordinate of left edge
+    /*0x1C*/ float v1;  // y texture coordinate of top edge
+    /*0x20*/ float u2;  // x texture coordinate of right edge
+    /*0x24*/ float v2;  // y texture coordinate of bottom edge
+
+    /*0x28*/ s32 rotation;  // counterclockwise rotation in units of 1/65536 turn
+    /*0x2C*/ float opacity;
     s32 unk30;
     /*0x34*/ u32 flags;
-    /*0x38*/ u32 color1;
-    /*0x3C*/ u32 color2;
+
+    // Color of sprite. The final color is computed by texColor * mulColor + addColor
+    /*0x38*/ u32 mulColor;  // RGBA color. Note: The alpha component of this color is ignored.
+                            // The above "opacity" field is used instead.
+    /*0x3C*/ u32 addColor;  // RGBA color
+
     u8 filler40[0x50-0x40];
 };
 
@@ -966,14 +978,6 @@ struct ModelLOD
     float distance;
 };
 
-struct Struct80290170
-{
-    s32 unk0;
-    u32 unk4;
-    s32 unk8;
-    s32 unkC;
-};
-
 struct Struct802C67D4
 {
     u8 filler0[4];
@@ -1037,7 +1041,7 @@ enum
     SOT_NAMEENT_BTN,
 };
 
-struct Stobj 
+struct Stobj
 { /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
     s32 id;
     s16 g_some_id;

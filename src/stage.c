@@ -2316,7 +2316,7 @@ void draw_stage_preview(void)
         mathutil_mtxA_rotate_x(0x4000);
         mathutil_mtxA_scale_s(lbl_802F1EC4 + 15.0);
         GXLoadPosMtxImm(mathutilData->mtxA, 0);
-        func_800263A4();
+        bitmap_init_tev();
         func_800AD180(&stagePreview, -1, 0, -1.0f, lbl_802F3768, 0.0f, 2.0f, -2.0f);
     }
 }

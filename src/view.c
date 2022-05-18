@@ -245,21 +245,21 @@ void func_800A5F28(void)
     ord_tbl_draw_nodes();
 }
 
-void view_sprite_func(struct Sprite *sprite)
+void view_info_sprite_draw(struct Sprite *sprite)
 {
-    func_80071A8C();
-    g_set_font(sprite->fontId);
-    func_80071B2C(sprite->unk40, sprite->unk44);
+    reset_text_draw_settings();
+    set_text_font(sprite->fontId);
+    set_text_scale(sprite->scaleX, sprite->scaleY);
     func_80071B50(sprite->unk74);
     func_80071B1C(sprite->unk4C + 0.1);
-    g_set_text_fill_color(0);
-    g_set_text_other_color(0);
-    g_set_text_pos(sprite->x + 2.0, sprite->y + 2.0);
+    set_text_mul_color(RGBA(0, 0, 0, 0));
+    set_text_add_color(RGBA(0, 0, 0, 0));
+    set_text_pos(sprite->x + 2.0, sprite->y + 2.0);
     g_draw_text(sprite->text);
     func_80071B1C(sprite->unk4C);
-    g_set_text_fill_color((sprite->unkC << 16) | (sprite->unkD << 8) | sprite->unkE);
-    g_set_text_other_color((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
-    g_set_text_pos(sprite->x, sprite->y);
+    set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, sprite->mulB, 0));
+    set_text_add_color(RGBA(sprite->addR, sprite->addG, sprite->addB, 0));
+    set_text_pos(sprite->x, sprite->y);
     g_draw_text(sprite->text);
 }
 
@@ -276,7 +276,7 @@ void view_create_text_sprites(void)
         sprite->textAlign = ALIGN_LT;
         sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->drawFunc = view_sprite_func;
+        sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "a/Stage Overview");
     }
 
@@ -289,7 +289,7 @@ void view_create_text_sprites(void)
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->drawFunc = view_sprite_func;
+        sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "p/LEVER/a/Rotate/Zoom");
     }
 
@@ -302,7 +302,7 @@ void view_create_text_sprites(void)
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
         sprite->unk74 |= 0x200000;
-        sprite->drawFunc = view_sprite_func;
+        sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "p/BUTTON_C/a/Pan camera");
     }
 }

@@ -59,6 +59,23 @@ enum
     LIGHT_GROUP_BG_f,
 };
 
+extern s32 s_lightPoolSize;
+extern s32 g_someLGIdx;
+extern s8 s_lightGroupStackPos;
+extern float g_minimap_light_ref_dist_scale;
+extern s32 s_g_lightPerfTimer;
+extern s32 s_numLightObjsLoaded;
+extern s32 lbl_802F1C60;
+extern s32 lbl_802F1C64;
+extern s32 lbl_802F1C68;
+extern s32 s_g_lightGroupsInitialized;
+extern s32 lightingStageId;
+extern s32 lbl_802F1C80;
+extern s32 lbl_802F1C84;
+extern s32 g_printLight;
+extern s32 lbl_802F1C8C;
+extern s32 g_lightToPrint;
+
 void light_init();
 void light_main();
 BOOL add_light_to_pool(struct Light *a);

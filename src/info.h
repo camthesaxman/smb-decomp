@@ -34,6 +34,10 @@ struct Struct801F3A58
     s16 unk32;
 };
 
+extern s8 lbl_802F1CB0[8];
+extern s32 lbl_802F1CAC;
+extern s32 lbl_802F1CA8;
+
 extern struct Struct801F3A58 infoWork;
 extern u32 lbl_801F3A8C[4];
 extern struct Struct801F3A58 playerInfos[4];

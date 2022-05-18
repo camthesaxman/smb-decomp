@@ -8,7 +8,7 @@ void g_logo_plus_sprite_something(void);
 void hud_show_adv_copyright_info(int);
 void hud_show_title_banner(int);
 void hud_show_title_menu(void);
-void g_create_saru_sprite(void);
+void hud_show_title_screen_monkey_sprite(void);
 void g_show_adv_ready_hud(void);
 void g_banana_sprite_something(int);
 void g_show_eieipu_sprite(int);
