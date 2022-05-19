@@ -614,10 +614,7 @@ int title_screen_debug_menu(void)
             return 1;
         }
 
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_B))
+        if (ANY_CONTROLLER_PRESSED(PAD_BUTTON_B))
             modeCtrl.unk1C = 0;
     }
 
@@ -749,7 +746,7 @@ void g_menu_input_debug(void)
         break;
     case MD_GAME:
     case MD_MINI:
-        unkFunc8000B09C();
+        g_menu_input_game_notdebug();
         if (modeCtrl.unk1C != 0)
             modeCtrl.unk1C = 0;
         break;
@@ -768,10 +765,7 @@ void g_menu_input_notdebug(void)
             struct Sprite *sprite = find_sprite_with_tag(modeCtrl.unk10 + 12);
             if (sprite != NULL && sprite->counter > 0)
                 break;
-            if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
-             || (controllerInfo[1].unk0[2].button & PAD_BUTTON_A)
-             || (controllerInfo[2].unk0[2].button & PAD_BUTTON_A)
-             || (controllerInfo[3].unk0[2].button & PAD_BUTTON_A))
+            if (ANY_CONTROLLER_PRESSED(PAD_BUTTON_A))
             {
                 empty_load_queue();
                 if (modeCtrl.unk10 == 0)
@@ -791,7 +785,7 @@ void g_menu_input_notdebug(void)
         break;
     case MD_GAME:
     case MD_MINI:
-        unkFunc8000B09C();
+        g_menu_input_game_notdebug();
         break;
     case MD_SEL:
     case MD_TEST:
@@ -803,96 +797,4 @@ void g_menu_input_notdebug(void)
 void submode_dummy_func(void)
 {
     printf("sub_mode: error %s.\n", gameSubmodeNames[gameSubmode]);
-}
-
-static int unkFunc8000A0F4_inline(void)
-{
-    if (screenFadeInfo.unk8 != 0)
-        return FALSE;
-    if (lbl_801EEC68.unk4 & (1 << 1))
-        return FALSE;
-    switch (gameSubmode)
-    {
-    case SMD_GAME_FIRST_INIT:
-    case SMD_GAME_OVER_INIT:
-    case SMD_GAME_OVER_MAIN:
-    case SMD_GAME_NAMEENTRY_INIT:
-    case SMD_GAME_NAMEENTRY_MAIN:
-    case SMD_GAME_CONTINUE_INIT:
-    case SMD_GAME_CONTINUE_MAIN:
-    case SMD_GAME_RESTART_INIT:
-    case SMD_GAME_NAMEENTRY_READY_INIT:
-    case SMD_GAME_NAMEENTRY_READY_MAIN:
-    case SMD_GAME_ENDING_INIT:
-    case SMD_GAME_ENDING_MAIN:
-    case SMD_GAME_EXTRA_INIT:
-    case SMD_GAME_EXTRA_WAIT:
-    case SMD_GAME_RESULT_INIT:
-    case SMD_GAME_RESULT_MAIN:
-    case SMD_GAME_RESULT_MENU:
-    case SMD_GAME_INTR_SEL_INIT:
-    case SMD_GAME_INTR_SEL_MAIN:
-    case SMD_GAME_OVER_SAVE:
-    case SMD_GAME_OVER_DEST:
-    case SMD_GAME_ROLL_INIT:
-    case SMD_GAME_ROLL_MAIN:
-    case SMD_GAME_OVER_POINT_INIT:
-    case SMD_GAME_OVER_POINT_MAIN:
-        return FALSE;
-    }
-    switch (gameSubmodeRequest)
-    {
-    case SMD_GAME_FIRST_INIT:
-    case SMD_GAME_OVER_INIT:
-    case SMD_GAME_OVER_MAIN:
-    case SMD_GAME_NAMEENTRY_INIT:
-    case SMD_GAME_NAMEENTRY_MAIN:
-    case SMD_GAME_CONTINUE_INIT:
-    case SMD_GAME_CONTINUE_MAIN:
-    case SMD_GAME_RESTART_INIT:
-    case SMD_GAME_NAMEENTRY_READY_INIT:
-    case SMD_GAME_NAMEENTRY_READY_MAIN:
-    case SMD_GAME_ENDING_INIT:
-    case SMD_GAME_ENDING_MAIN:
-    case SMD_GAME_EXTRA_INIT:
-    case SMD_GAME_EXTRA_WAIT:
-    case SMD_GAME_RESULT_INIT:
-    case SMD_GAME_RESULT_MAIN:
-    case SMD_GAME_RESULT_MENU:
-    case SMD_GAME_INTR_SEL_INIT:
-    case SMD_GAME_INTR_SEL_MAIN:
-    case SMD_GAME_OVER_SAVE:
-    case SMD_GAME_OVER_DEST:
-    case SMD_GAME_ROLL_INIT:
-    case SMD_GAME_ROLL_MAIN:
-    case SMD_GAME_OVER_POINT_INIT:
-    case SMD_GAME_OVER_POINT_MAIN:
-        return FALSE;
-    }
-    if (func_8009D5D8() != 0)
-        return FALSE;
-    return TRUE;
-}
-
-int unkFunc8000A0F4(void)
-{
-    if (!unkFunc8000A0F4_inline())
-        return FALSE;
-    if (lbl_802F1BA1 > 0)
-        return FALSE;
-    if (dipSwitches & DIP_DEBUG)
-    {
-        if (!(analogButtonInfo[0][0] & PAD_BUTTON_A)
-         && !(analogButtonInfo[0][0] & PAD_BUTTON_B)
-         && lbl_802F1ED8 == 0
-         && !(gamePauseStatus & (1<<(31-0x1C)))
-         && (lbl_801F3D88[2] & (1<<(31-0x13))))
-            return TRUE;
-    }
-    else
-    {
-        if (!(gamePauseStatus & (1<<(31-0x1C))) && (lbl_801F3D88[2] & (1<<(31-0x13))))
-            return TRUE;
-    }
-    return FALSE;
 }

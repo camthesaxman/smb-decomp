@@ -24,22 +24,22 @@ enum
 
 struct TextBox
 {
-    s32 unk0;
+    /*0x00*/ s32 state;
     s32 unk4;
     u32 unk8;
     /*0x0C*/ s16 x;
     /*0x0E*/ s16 y;
     float unk10;
     s8 unk14;
-    s8 numLines;
+    /*0x15*/ s8 numLines;
     /*0x16*/ s8 style;
     u8 unk17;
     u8 unk18;
     u8 unk19;
     u8 filler1A[2];
-    void (*unk1C)(struct TextBox *);
-    s32 unk20;
-    s32 unk24;
+    /*0x1C*/ void (*callback)(struct TextBox *);
+    /*0x20*/ s32 id;
+    /*0x24*/ s32 bgColor;
 };  // size = 0x28
 
 extern struct TextBox textBoxes[4];

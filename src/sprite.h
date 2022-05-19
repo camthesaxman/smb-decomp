@@ -26,8 +26,8 @@ enum FontID
     FONT_DMY14,
     FONT_DMY15,
     FONT_DMY16,
-    FONT_ICON_SD,
-    FONT_ICON_SD2,
+    FONT_ICON_SD,  // for drawing rounded text boxes
+    FONT_ICON_SD2,  // for drawing spiky text boxes
     FONT_DMY20,
     FONT_DMY21,
     FONT_DMY22,
@@ -179,7 +179,7 @@ enum FontID
     FONT_DMYbd,
     FONT_DMYbe,
     FONT_DMYbf,
-    FONT_JAP_TAG,
+    FONT_JAP_TAG,  // These "Japanese" fonts contain both ASCII and Japanese characters
     FONT_JAP_DMY,
     FONT_JAP_24x24_2,  // 0xB0
     FONT_JAP_24x24_2P,

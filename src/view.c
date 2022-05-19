@@ -85,14 +85,14 @@ void ev_view_main(void)
 
     view_animate_stage();
     func_800A66FC();
-    stageViewInfo->unk3A += controllerInfo[lbl_801EEC68.unk14].unk0[0].stickX * 5;
-    stageViewInfo->unk24 -= controllerInfo[lbl_801EEC68.unk14].unk0[0].stickY * 0.0003;
+    stageViewInfo->unk3A += controllerInfo[pauseMenuState.unk14].unk0[0].stickX * 5;
+    stageViewInfo->unk24 -= controllerInfo[pauseMenuState.unk14].unk0[0].stickY * 0.0003;
     if (stageViewInfo->unk24 > 1.0)
         stageViewInfo->unk24 = 1.0f;
     else if (stageViewInfo->unk24 < 0.5)
         stageViewInfo->unk24 = 0.5f;
-    cstickY = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickY;
-    cstickX = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickX;
+    cstickY = controllerInfo[pauseMenuState.unk14].unk0[0].substickY;
+    cstickX = controllerInfo[pauseMenuState.unk14].unk0[0].substickX;
     stageViewInfo->unk3C += (cstickY * 64 - stageViewInfo->unk3C) >> 5;
     stageViewInfo->unk3E += (-cstickX * 0xC0 - stageViewInfo->unk3E) >> 5;
     mathutil_mtxA_from_translate(&stageViewInfo->stageBoundSphere.pos);

@@ -1912,8 +1912,8 @@ lbl_80082390:
 /* 800823A0 0007E2C0  38 80 00 01 */	li r4, 1
 /* 800823A4 0007E2C4  48 00 01 80 */	b lbl_80082524
 lbl_800823A8:
-/* 800823A8 0007E2C8  3C A0 80 1F */	lis r5, lbl_801EEC68@ha
-/* 800823AC 0007E2CC  38 A5 EC 68 */	addi r5, r5, lbl_801EEC68@l
+/* 800823A8 0007E2C8  3C A0 80 1F */	lis r5, pauseMenuState@ha
+/* 800823AC 0007E2CC  38 A5 EC 68 */	addi r5, r5, pauseMenuState@l
 /* 800823B0 0007E2D0  89 05 00 14 */	lbz r8, 0x14(r5)
 /* 800823B4 0007E2D4  3C A0 80 1F */	lis r5, controllerInfo@ha
 /* 800823B8 0007E2D8  38 A5 3B 70 */	addi r5, r5, controllerInfo@l

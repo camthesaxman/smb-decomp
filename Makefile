@@ -68,7 +68,7 @@ SOURCES := \
 	src/init_2.c \
 	src/mathutil.c \
 	src/mode.c \
-	src/mode_2.c \
+	src/pause_menu.c \
 	src/event.c \
 	src/polydisp.c \
 	src/adv.c \
