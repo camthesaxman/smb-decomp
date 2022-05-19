@@ -10,20 +10,19 @@
 OSTick perfTimers[8];
 u32 perfEnabled;
 s8 zTrigTimer;
-u32 lbl_802F1D20;
+u32 currDispList;
 u32 perfDispListSizes[2];
 void *perfDispLists[2];
+struct PerfInfo perfInfo;
 
-#define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
-
-void perf_init_timer(int timerId)
+void perf_start_timer(int timerId)
 {
     perfTimers[timerId] = OSGetTick();
 }
 
-u32 perf_stop_timer(volatile /* why ?*/ int timerId2)
+u32 perf_stop_timer(volatile /* why ?*/ int timerId)
 {
-    return ((OSGetTick() - perfTimers[timerId2]) * 8)
+    return ((OSGetTick() - perfTimers[timerId]) * 8)
          / ((OS_BUS_CLOCK_SPEED / 4) / 125000);
 }
 
@@ -78,35 +77,36 @@ void perf_init(void)
     PERFSetDrawBWBarKey(TRUE);
     perfDispLists[0] = OSAlloc(0x3000);
     perfDispLists[1] = OSAlloc(0x3000);
-    lbl_802F1D20 = 0;
+    currDispList = 0;
 }
 
-void func_80027388(void)
+void perf_frameend(void)
 {
     if (perfEnabled)
     {
         PERFEndFrame();
         PERFStopAutoSampling();
-        gxutil_begin_display_list(perfDispLists[lbl_802F1D20 & 1], 0x3000);
+        gxutil_begin_display_list(perfDispLists[currDispList & 1], 0x3000);
         PERFDumpScreen();
-        perfDispListSizes[lbl_802F1D20 & 1] = gxutil_end_display_list();
+        perfDispListSizes[currDispList & 1] = gxutil_end_display_list();
     }
-    if (lbl_802F1D20 != 0 && perfEnabled)
+    if (currDispList != 0 && perfEnabled)
     {
         PERFPreDraw();
         GXCallDisplayList(
-            perfDispLists[lbl_802F1D20 & 1],
-            perfDispListSizes[lbl_802F1D20 & 1]);
+            perfDispLists[currDispList & 1],
+            perfDispListSizes[currDispList & 1]);
         PERFPostDraw();
         GXSetLineWidth(gxCache->lineWidth, gxCache->texOffsets);
         GXSetZCompLoc_from_cache();
         GXSetNumTevStages_from_cache();
     }
-    lbl_802F1D20++;
+    currDispList++;
 }
 
-void func_80027448(void)
+void perf_framestart(void)
 {
+    // Show perf info if the Z button is held for 30 frames
     if (dipSwitches & DIP_DEBUG)
     {
         if (controllerInfo[0].unk0[0].button & PAD_TRIGGER_Z)

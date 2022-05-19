@@ -2030,8 +2030,8 @@ lbl_00001D94:
 /* 00001D94 4BFFE3E9 */ bl func_8009D794
 /* 00001D98 2C030000 */ cmpwi r3, 0
 /* 00001D9C 41820060 */ beq lbl_00001DFC
-/* 00001DA0 3C600000 */ lis r3, lbl_801F3D88@ha
-/* 00001DA4 38630000 */ addi r3, r3, lbl_801F3D88@l
+/* 00001DA0 3C600000 */ lis r3, g_unkInputArr1@ha
+/* 00001DA4 38630000 */ addi r3, r3, g_unkInputArr1@l
 /* 00001DA8 A0630004 */ lhz r3, 4(r3)
 /* 00001DAC 546005EF */ rlwinm. r0, r3, 0, 0x17, 0x17
 /* 00001DB0 4082000C */ bne lbl_00001DBC

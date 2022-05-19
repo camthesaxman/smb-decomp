@@ -11,7 +11,7 @@
 #include "mode.h"
 #include "sprite.h"
 
-struct Struct801EEC68 pauseMenuState;
+struct PauseMenuState pauseMenuState;
 
 // number of items in each pause menu type (see pauseMenus in hud.c)
 const s8 pauseMenuItemCounts[8] = { 3, 4, 6, 4, 4, 0, 0 };
@@ -102,12 +102,12 @@ int should_open_pause_menu(void)
          && !(analogButtonInfo[0][0] & PAD_BUTTON_B)
          && lbl_802F1ED8 == 0
          && !(gamePauseStatus & 8)
-         && (lbl_801F3D88[2] & PAD_BUTTON_START))
+         && (g_unkInputArr1[2] & PAD_BUTTON_START))
             return TRUE;
     }
     else
     {
-        if (!(gamePauseStatus & 8) && (lbl_801F3D88[2] & PAD_BUTTON_START))
+        if (!(gamePauseStatus & 8) && (g_unkInputArr1[2] & PAD_BUTTON_START))
             return TRUE;
     }
     return FALSE;
@@ -118,27 +118,27 @@ void g_open_pause_menu(struct Sprite *menuSprite)
     int i;
 
     gamePauseStatus |= 8;
-    pauseMenuState.unk14 = 0;
+    pauseMenuState.padId = 0;
     for (i = 0; i < 4; i++)
     {
         if (controllerInfo[i].unk0[0].err == 0
          && (controllerInfo[i].unk0[2].button & PAD_BUTTON_START))
         {
-            pauseMenuState.unk14 = i;
+            pauseMenuState.padId = i;
             break;
         }
     }
 
     lbl_802F1BA0 = 0;
     lbl_802F1BA1 = 30;
-    pauseMenuState.unk15 = 0;
+    pauseMenuState.playerId = 0;
     if (modeCtrl.unk40 == 1)
     {
         for (i = 0; i < modeCtrl.playerCount; i++)
         {
-            if (pauseMenuState.unk14 == lbl_80206BD0[i])
+            if (pauseMenuState.padId == lbl_80206BD0[i])
             {
-                pauseMenuState.unk15 = i;
+                pauseMenuState.playerId = i;
                 break;
             }
         }
@@ -148,14 +148,14 @@ void g_open_pause_menu(struct Sprite *menuSprite)
         if (modeCtrl.gameType == GAMETYPE_MINI_BILLIARDS)
         {
             if (modeCtrl.playerCount == 1)
-                pauseMenuState.unk15 = 0;
+                pauseMenuState.playerId = 0;
             else if (pauseMenuState.unk16 == -1)
-                pauseMenuState.unk15 = 0;
+                pauseMenuState.playerId = 0;
             else
-                pauseMenuState.unk15 = (pauseMenuState.unk14 == lbl_80206BD0[lbl_802F1C32]) ? lbl_802F1C32 : 1 - lbl_802F1C32;
+                pauseMenuState.playerId = (pauseMenuState.padId == lbl_80206BD0[lbl_802F1C32]) ? lbl_802F1C32 : 1 - lbl_802F1C32;
         }
         else
-            pauseMenuState.unk15 = modeCtrl.currPlayer;
+            pauseMenuState.playerId = modeCtrl.currPlayer;
     }
 
     switch (modeCtrl.gameType)
@@ -179,7 +179,7 @@ void g_open_pause_menu(struct Sprite *menuSprite)
             pauseMenuState.menuType = PAUSEMENU_CONT_HOW_EXIT;
         break;
     case GAMETYPE_MINI_BILLIARDS:
-        if (pauseMenuState.unk16 == pauseMenuState.unk14)
+        if (pauseMenuState.unk16 == pauseMenuState.padId)
             pauseMenuState.menuType = PAUSEMENU_CONT_GUIDE_HOW_EXIT;
         else
             pauseMenuState.menuType = PAUSEMENU_CONT_HOW_EXIT;
@@ -211,13 +211,13 @@ void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
 
     if (lbl_802F1BA0 > 0)
         lbl_802F1BA0--;
-    if (CONTROLLER_SOMETHING(pauseMenuState.unk14, PAD_BUTTON_UP) && lbl_802F1BA0 == 0)
+    if (CONTROLLER_SOMETHING(pauseMenuState.padId, PAD_BUTTON_UP) && lbl_802F1BA0 == 0)
     {
         if (--pauseMenuState.selection < 0)
             pauseMenuState.selection = pauseMenuState.itemCount - 1;
         lbl_802F1BA0 = 10;
     }
-    else if (CONTROLLER_SOMETHING(pauseMenuState.unk14, PAD_BUTTON_DOWN) && lbl_802F1BA0 == 0)
+    else if (CONTROLLER_SOMETHING(pauseMenuState.padId, PAD_BUTTON_DOWN) && lbl_802F1BA0 == 0)
     {
         if (++pauseMenuState.selection > pauseMenuState.itemCount - 1)
             pauseMenuState.selection = 0;
@@ -228,22 +228,22 @@ void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
     if (pauseMenuState.menuType == PAUSEMENU_CONT_GUIDE_HOW_EXIT
      && pauseMenuState.selection == 1)  // "Guide"
     {
-        if (CONTROLLER_SOMETHING(pauseMenuState.unk14, PAD_BUTTON_LEFT)
-         || CONTROLLER_SOMETHING(pauseMenuState.unk14, PAD_BUTTON_RIGHT))
+        if (CONTROLLER_SOMETHING(pauseMenuState.padId, PAD_BUTTON_LEFT)
+         || CONTROLLER_SOMETHING(pauseMenuState.padId, PAD_BUTTON_RIGHT))
         {
             pauseMenuState.unk4 |= 0x10;
             func_8002B5C8(0x169);
         }
     }
-    if ((controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_A)
-     || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_B)
-     || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_START))
+    if ((controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_A)
+     || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_B)
+     || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
     {
         pauseMenuState.unk4 |= 1;
         func_8002B5C8(0x6E);
         pauseMenuState.unk0 = 2;
-        if ((controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_START))
+        if ((controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_B)
+         || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
             pauseMenuState.selection = 0;
         switch (pauseMenuState.menuType)
         {
@@ -456,9 +456,9 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
     switch (lbl_802F1B98)
     {
     case 2:
-        if ((controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_A)
-         || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_START))
+        if ((controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_A)
+         || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_B)
+         || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
         {
             event_finish(EVENT_VIEW);
             func_8002B5C8(0x70);
@@ -480,9 +480,9 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
         sprite = find_sprite_with_tag(10);
         if (sprite != NULL)
             func_80082024(0, sprite);
-        if ((controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_A)
-         || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[pauseMenuState.unk14].unk0[2].button & PAD_BUTTON_START))
+        if ((controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_A)
+         || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_B)
+         || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
         {
             func_8002B5C8(0x70);
             pauseMenuState.unk4 &= ~1;
@@ -505,8 +505,8 @@ void g_menu_input_game_notdebug(void)
     struct Sprite *menuSprite = find_sprite_with_tag(4);
 
     if ((modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-     && !(infoWork.flags & (1 << 8))
-     && ((infoWork.flags & (1 << 5)) || (infoWork.flags & INFO_FLAG_BONUS_STAGE) || (infoWork.flags & (1 << 4)))
+     && !(infoWork.flags & INFO_FLAG_08)
+     && ((infoWork.flags & INFO_FLAG_05) || (infoWork.flags & INFO_FLAG_BONUS_STAGE) || (infoWork.flags & (1 << 4)))
      && func_8004C70C() != 0)
         pauseMenuState.unk4 |= 4;
     else

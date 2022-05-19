@@ -213,6 +213,24 @@ enum
     SPRITE_TYPE_TILED_BITMAP,
 };
 
+enum
+{
+    SPRITE_FLAG_HFLIP = (1 << 19),  // 0x80000
+    SPRITE_FLAG_VFLIP = (1 << 20),  // 0x100000
+};
+
+enum
+{
+    SPRITE_TAG_LOGO_PLUS = 3,
+    SPRITE_TAG_PAUSE_MENU = 4,
+    SPRITE_TAG_EIEIPU = 11,
+    SPRITE_TAG_FINAL_FLOOR_BANNER = 14,  // also used for bonus stage banner?
+    SPRITE_TAG_FLOOR_NAME_BANNER = 15,
+    SPRITE_TAG_ADV_DEMO_BANANA_1 = 30,
+    SPRITE_TAG_ADV_DEMO_BANANA_2 = 31,
+    SPRITE_TAG_ADV_DEMO_BANANA_3 = 32,
+};
+
 struct Sprite
 {
     /*0x00*/ s8 type;
@@ -250,7 +268,7 @@ struct Sprite
     /*0x71*/ u8 addG;
     /*0x72*/ u8 addB;
              u8 filler73[1];
-             u32 unk74;
+    /*0x74*/ u32 flags;
              u32 unk78;
              float unk7C;
              float unk80;

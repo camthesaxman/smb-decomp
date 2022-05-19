@@ -9,7 +9,17 @@ enum
     INFO_FLAG_GOAL        = (1 << 0),
     INFO_FLAG_TIMEOVER    = (1 << 1),
     INFO_FLAG_FALLOUT     = (1 << 2),
+    INFO_FLAG_03          = (1 << 3),
+    INFO_FLAG_04          = (1 << 4),
+    INFO_FLAG_05          = (1 << 5),
     INFO_FLAG_BONUS_STAGE = (1 << 6),
+    INFO_FLAG_07          = (1 << 7),
+    INFO_FLAG_08          = (1 << 8),  // 0x100
+    INFO_FLAG_09          = (1 << 9),  // 0x200  bonus clear (all bananas)?
+    INFO_FLAG_10          = (1 << 10),  // 0x400
+    INFO_FLAG_11          = (1 << 11),  // 0x800
+    INFO_FLAG_FINAL_FLOOR = (1 << 12),  // 0x1000
+    INFO_FLAG_13          = (1 << 13),  // 0x2000
 };
 
 struct Struct801F3A58
@@ -18,14 +28,14 @@ struct Struct801F3A58
     s16 timerCurr;  // current clock time (in 60ths of a second)
     s16 timerMax;  // maximum clock time (in 60ths of a second)
     u32 unk8;
-    s16 unkC;
+    s16 goalEntered;
     s16 unkE;
     Vec unk10;
     s16 unk1C;
     s16 unk1E;  // number of tries on current stage?
     s16 unk20;  // warp stage num?
     s16 unk22;
-    s32 unk24;
+    /*0x24*/ s32 bananasLeft;
     /*0x28*/ s16 livesLost;
     /*0x2A*/ s16 continuesUsed;
     s16 unk2C;

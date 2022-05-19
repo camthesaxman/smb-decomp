@@ -8015,35 +8015,6 @@ gamePauseStatus:
 .section .bss
 
     .balign 8
-.global perfInfo
-perfInfo:
-	.skip 0x4
-glabel lbl_801F8DE4
-	.skip 0x4
-glabel lbl_801F8DE8
-	.skip 0x4
-glabel lbl_801F8DEC
-	.skip 0x4
-glabel lbl_801F8DF0
-	.skip 0x4
-glabel lbl_801F8DF4
-	.skip 0x4
-glabel lbl_801F8DF8
-	.skip 0x4
-glabel lbl_801F8DFC
-	.skip 0x4
-glabel lbl_801F8E00
-	.skip 0x4
-glabel lbl_801F8E04
-	.skip 0x4
-glabel lbl_801F8E08
-	.skip 0x4
-glabel lbl_801F8E0C
-	.skip 0x4
-glabel lbl_801F8E10
-	.skip 0x4
-glabel lbl_801F8E14
-	.skip 0x4
 .global lbl_801F8E18
 lbl_801F8E18:
 	.skip 0x39C

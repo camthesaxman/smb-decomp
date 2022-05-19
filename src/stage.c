@@ -104,15 +104,15 @@ void ev_stage_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    if (infoWork.flags & (1 << 8))
+    if (infoWork.flags & INFO_FLAG_08)
     {
-        if (modeCtrl.submodeTimer > 0x78)
+        if (modeCtrl.submodeTimer > 120)
             lbl_80206DEC.g_stageTimer = 0.0f;
         else
-            lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.submodeTimer;
+            lbl_80206DEC.g_stageTimer = 120 - modeCtrl.submodeTimer;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (infoWork.flags & (1 << 4))
+    else if (infoWork.flags & INFO_FLAG_04)
     {
         lbl_80206DEC.g_stageTimer =
             func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);

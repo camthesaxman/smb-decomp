@@ -85,14 +85,14 @@ void ev_view_main(void)
 
     view_animate_stage();
     func_800A66FC();
-    stageViewInfo->unk3A += controllerInfo[pauseMenuState.unk14].unk0[0].stickX * 5;
-    stageViewInfo->unk24 -= controllerInfo[pauseMenuState.unk14].unk0[0].stickY * 0.0003;
+    stageViewInfo->unk3A += controllerInfo[pauseMenuState.padId].unk0[0].stickX * 5;
+    stageViewInfo->unk24 -= controllerInfo[pauseMenuState.padId].unk0[0].stickY * 0.0003;
     if (stageViewInfo->unk24 > 1.0)
         stageViewInfo->unk24 = 1.0f;
     else if (stageViewInfo->unk24 < 0.5)
         stageViewInfo->unk24 = 0.5f;
-    cstickY = controllerInfo[pauseMenuState.unk14].unk0[0].substickY;
-    cstickX = controllerInfo[pauseMenuState.unk14].unk0[0].substickX;
+    cstickY = controllerInfo[pauseMenuState.padId].unk0[0].substickY;
+    cstickX = controllerInfo[pauseMenuState.padId].unk0[0].substickX;
     stageViewInfo->unk3C += (cstickY * 64 - stageViewInfo->unk3C) >> 5;
     stageViewInfo->unk3E += (-cstickX * 0xC0 - stageViewInfo->unk3E) >> 5;
     mathutil_mtxA_from_translate(&stageViewInfo->stageBoundSphere.pos);
@@ -178,7 +178,7 @@ void view_draw(void)
 
     lbl_801EEC90.unk0 |= 2;
     view_apply_camera(camera);
-    C_MTXPerspective(projMtx, 59.99633789f, 1.33333333f, 0.1f, 20000.0f);
+    MTXPerspective(projMtx, 59.99633789f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(projMtx, 0);
 
     {
@@ -250,7 +250,7 @@ void view_info_sprite_draw(struct Sprite *sprite)
     reset_text_draw_settings();
     set_text_font(sprite->fontId);
     set_text_scale(sprite->scaleX, sprite->scaleY);
-    func_80071B50(sprite->unk74);
+    func_80071B50(sprite->flags);
     func_80071B1C(sprite->unk4C + 0.1);
     set_text_mul_color(RGBA(0, 0, 0, 0));
     set_text_add_color(RGBA(0, 0, 0, 0));
@@ -275,7 +275,7 @@ void view_create_text_sprites(void)
         sprite->y = 24.0f;
         sprite->textAlign = ALIGN_LT;
         sprite->fontId = FONT_JAP_24x24_2Pg;
-        sprite->unk74 |= 0x200000;
+        sprite->flags |= 0x200000;
         sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "a/Stage Overview");
     }
@@ -288,7 +288,7 @@ void view_create_text_sprites(void)
         sprite->y = 435.0f;
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
-        sprite->unk74 |= 0x200000;
+        sprite->flags |= 0x200000;
         sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "p/LEVER/a/Rotate/Zoom");
     }
@@ -301,7 +301,7 @@ void view_create_text_sprites(void)
         sprite->y = 435.0f;
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
-        sprite->unk74 |= 0x200000;
+        sprite->flags |= 0x200000;
         sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "p/BUTTON_C/a/Pan camera");
     }

@@ -10,7 +10,7 @@ void init_tv(void);
 void init_vi(void);
 void init_gx_2(void);
 void init_dvd(void);
-void init_heap(void);
+void init_heaps(void);
 void init_rel(void);
 void init_cache(void);
 void init_cache_ptrs(void);
@@ -57,9 +57,9 @@ float func_8000E444(Vec *);
 float func_8000E4D0(Vec *);
 float func_8000E53C(Vec *pos);
 
-void func_80011E1C(void);
-void func_80011F74();
-void func_80012170();
+void g_reset_gamedata(void);
+void g_store_gamedata();
+void g_load_gamedata();
 
 void mode_sel_func(void);
 void func_800123DC(void);
@@ -74,10 +74,10 @@ void func_80020AB8(Vec *, S16Vec *, float, float, float, float);
 // ? func_80020DB4();
 BOOL g_test_sphere_in_frustum(Point3d *p, float radius);
 BOOL g_test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale);
-void init_vtx_attr_fmts(void);
+
 void init_wait_vblank(void);
-void preproc_main(void);
-void epiproc_main(void);
+void beginframe_main(void);
+void gpwait_main(void);
 void syncwait_main(void);
 
 int load_common_graphics(void);
@@ -506,7 +506,7 @@ void func_8006F5F0(int);
 // ? func_8006FD44();
 
 void monkey_sprite_draw(struct Sprite *);
-int func_80081CFC(int, int, int);
+int g_get_monkey_bitmap_id(int, int, int);
 // ? func_80081D34();
 // ? func_80081D64();
 // ? func_80081D90();

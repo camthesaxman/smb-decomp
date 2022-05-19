@@ -444,7 +444,7 @@ lbl_80080F40:
 /* 80080F5C 0007CE7C  54 00 10 3A */	slwi r0, r0, 2
 /* 80080F60 0007CE80  7C AE 02 14 */	add r5, r14, r0
 /* 80080F64 0007CE84  80 A5 00 00 */	lwz r5, 0(r5)
-/* 80080F68 0007CE88  48 00 0D 95 */	bl func_80081CFC
+/* 80080F68 0007CE88  48 00 0D 95 */	bl g_get_monkey_bitmap_id
 /* 80080F6C 0007CE8C  28 1E 00 00 */	cmplwi r30, 0
 /* 80080F70 0007CE90  3B 83 00 00 */	addi r28, r3, 0
 /* 80080F74 0007CE94  40 82 01 CC */	bne lbl_80081140
@@ -790,7 +790,7 @@ lbl_80081410:
 /* 8008141C 0007D33C  80 7F 00 00 */	lwz r3, 0(r31)
 /* 80081420 0007D340  7F A5 EB 78 */	mr r5, r29
 /* 80081424 0007D344  80 9F 00 08 */	lwz r4, 8(r31)
-/* 80081428 0007D348  48 00 08 D5 */	bl func_80081CFC
+/* 80081428 0007D348  48 00 08 D5 */	bl g_get_monkey_bitmap_id
 /* 8008142C 0007D34C  90 61 00 1C */	stw r3, 0x1c(r1)
 /* 80081430 0007D350  48 00 00 08 */	b lbl_80081438
 lbl_80081434:
@@ -1259,7 +1259,7 @@ lbl_80081A80:
 /* 80081AC8 0007D9E8  54 00 10 3A */	slwi r0, r0, 2
 /* 80081ACC 0007D9EC  7C B6 02 14 */	add r5, r22, r0
 /* 80081AD0 0007D9F0  80 A5 00 00 */	lwz r5, 0(r5)
-/* 80081AD4 0007D9F4  48 00 02 29 */	bl func_80081CFC
+/* 80081AD4 0007D9F4  48 00 02 29 */	bl g_get_monkey_bitmap_id
 /* 80081AD8 0007D9F8  90 61 00 1C */	stw r3, 0x1c(r1)
 /* 80081ADC 0007D9FC  38 61 00 1C */	addi r3, r1, 0x1c
 /* 80081AE0 0007DA00  C0 1A 00 4C */	lfs f0, 0x4c(r26)
@@ -1406,8 +1406,8 @@ lbl_80081CA0:
 /* 80081CF4 0007DC14  38 21 01 70 */	addi r1, r1, 0x170
 /* 80081CF8 0007DC18  4E 80 00 20 */	blr
 
-.global func_80081CFC
-func_80081CFC:
+.global g_get_monkey_bitmap_id
+g_get_monkey_bitmap_id:
 /* 80081CFC 0007DC1C  38 03 00 01 */	addi r0, r3, 1
 /* 80081D00 0007DC20  28 00 00 12 */	cmplwi r0, 0x12
 /* 80081D04 0007DC24  3C 60 80 12 */	lis r3, lbl_80118938@ha
