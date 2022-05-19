@@ -79,7 +79,7 @@ SOURCES := \
 	src/frustum.c \
 	src/light.c \
 	asm/code_0.s \
-	src/code_1.c \
+	src/gxsync.c \
 	src/info.c \
 	src/code_7.c \
 	src/input.c \
