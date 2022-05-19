@@ -1324,10 +1324,85 @@ u32 raycast_tri(Point3d *rayOrigin, Point3d *rayDir, struct StageColiTri *tri)
     return 1U;
 }
 
-// TODO: raycast_cone()
-// https://decomp.me/scratch/ASf06
+u32 raycast_cone(Point3d* rayOrigin, Point3d* rayDir, struct StageColiCone* cone, Point3d* outHitPos, Point3d* outHitNormal)
+{
+    Point3d rayOrigin_rt_cone_sp34;
+    Vec sp28;
+    Point3d rayDir_rt_cone_sp1c;
+    float yRadiusRatio;
+    float temp_f1_7;
+    float temp_f31;
+    float temp_f30;
+    float temp_f29;
+    float temp_f7;
 
-// OK on decomp.me: https://decomp.me/scratch/Lj0vK
+    mathutil_mtxA_from_translate(&cone->pos);
+    mathutil_mtxA_rotate_z(cone->rot.z);
+    mathutil_mtxA_rotate_y(cone->rot.y);
+    mathutil_mtxA_rotate_x(cone->rot.x);
+    mathutil_mtxA_translate_xyz(0.0f, cone->scale.y, 0.0f);
+    mathutil_mtxA_rigid_inv_tf_point(rayOrigin, &rayOrigin_rt_cone_sp34);
+    mathutil_mtxA_rigid_inv_tf_vec(rayDir, &rayDir_rt_cone_sp1c);
+
+    yRadiusRatio = cone->scale.x / cone->scale.y;
+
+    temp_f31 = rayDir_rt_cone_sp1c.x * rayDir_rt_cone_sp1c.x
+             + rayDir_rt_cone_sp1c.z * rayDir_rt_cone_sp1c.z
+             - (yRadiusRatio * yRadiusRatio * (rayDir_rt_cone_sp1c.y * rayDir_rt_cone_sp1c.y));
+
+    if (__fabs(temp_f31) < FLT_EPSILON)
+        return FALSE;
+
+    temp_f30 = ((rayDir_rt_cone_sp1c.x * rayOrigin_rt_cone_sp34.x)
+            + (rayDir_rt_cone_sp1c.z * rayOrigin_rt_cone_sp34.z))
+            - (rayOrigin_rt_cone_sp34.y * (rayDir_rt_cone_sp1c.y * (yRadiusRatio * yRadiusRatio)));
+    temp_f29 = (temp_f30 * temp_f30) -
+        (temp_f31 * (((rayOrigin_rt_cone_sp34.x * rayOrigin_rt_cone_sp34.x)
+        + (rayOrigin_rt_cone_sp34.z * rayOrigin_rt_cone_sp34.z))
+        - ((yRadiusRatio * yRadiusRatio)
+         * (rayOrigin_rt_cone_sp34.y * rayOrigin_rt_cone_sp34.y))));
+    if (temp_f29 < FLT_EPSILON)
+        return FALSE;
+
+    temp_f7 = -(temp_f30 + mathutil_sqrt((f64) temp_f29)) / temp_f31;
+    sp28.x = rayDir_rt_cone_sp1c.x * temp_f7 + rayOrigin_rt_cone_sp34.x;
+    sp28.y = rayDir_rt_cone_sp1c.y * temp_f7 + rayOrigin_rt_cone_sp34.y;
+    sp28.z = rayDir_rt_cone_sp1c.z * temp_f7 + rayOrigin_rt_cone_sp34.z;
+
+    if (((sp28.y > 0.0) || (sp28.y < -cone->scale.y)))
+    {
+        temp_f7 = -(temp_f30 - mathutil_sqrt((f64) temp_f29)) / temp_f31;
+        sp28.x = rayDir_rt_cone_sp1c.x * temp_f7 + rayOrigin_rt_cone_sp34.x;
+        sp28.y = rayDir_rt_cone_sp1c.y * temp_f7 + rayOrigin_rt_cone_sp34.y;
+        sp28.z = rayDir_rt_cone_sp1c.z * temp_f7 + rayOrigin_rt_cone_sp34.z;
+        if (sp28.y > 0.0 || sp28.y < -cone->scale.y)
+            return FALSE;
+    }
+
+    mathutil_mtxA_tf_point((Point3d* ) &sp28, outHitPos);
+    rayDir_rt_cone_sp1c.x = sp28.x;
+    rayDir_rt_cone_sp1c.z = sp28.z;
+    temp_f29 = mathutil_sum_of_sq_2(rayDir_rt_cone_sp1c.x, rayDir_rt_cone_sp1c.z);
+    if (temp_f29 > FLT_EPSILON)
+    {
+        rayDir_rt_cone_sp1c.y = (cone->scale.x * mathutil_sqrt(temp_f29)) / cone->scale.y;
+        temp_f29 += (rayDir_rt_cone_sp1c.y * rayDir_rt_cone_sp1c.y);
+        temp_f1_7 = mathutil_rsqrt(temp_f29);
+        rayDir_rt_cone_sp1c.x *= temp_f1_7;
+        rayDir_rt_cone_sp1c.y *= temp_f1_7;
+        rayDir_rt_cone_sp1c.z *= temp_f1_7;
+        mathutil_mtxA_tf_vec(&rayDir_rt_cone_sp1c, outHitNormal);
+    }
+    else
+    {
+        rayDir_rt_cone_sp1c.x = 0.0f;
+        rayDir_rt_cone_sp1c.y = 1.0f;
+        rayDir_rt_cone_sp1c.z = 0.0f;
+        mathutil_mtxA_tf_vec(&rayDir_rt_cone_sp1c, outHitNormal);
+    }
+    return TRUE;
+}
+
 u32 raycast_sphere(Point3d *rayOrigin, Vec *rayDir, struct StageColiSphere *sphere,
                    Point3d *outHitPos, Vec *outHitNormal)
 {

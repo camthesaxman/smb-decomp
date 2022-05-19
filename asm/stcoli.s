@@ -2801,7 +2801,6 @@ lbl_8004031C:
 /* 8004032C 0003C24C  83 A1 00 5C */	lwz r29, 0x5c(r1)
 /* 80040330 0003C250  38 21 00 68 */	addi r1, r1, 0x68
 /* 80040334 0003C254  4E 80 00 20 */	blr
-.endif
 
 .global raycast_cone
 raycast_cone:
@@ -3000,6 +2999,7 @@ lbl_80040604:
 /* 80040618 0003C538  CB A1 00 58 */	lfd f29, 0x58(r1)
 /* 8004061C 0003C53C  38 21 00 70 */	addi r1, r1, 0x70
 /* 80040620 0003C540  4E 80 00 20 */	blr
+.endif
 
 .if 0
 .global raycast_sphere
