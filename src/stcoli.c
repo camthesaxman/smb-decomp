@@ -1,13 +1,15 @@
-
 #include <math.h>
 #include <stddef.h>
 
 #include "global.h"
 #include "mathutil.h"
+#include "nl2ngc.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "types.h"
 #include "variables.h"
+
+#include "../data/common.nlobj.h"
 
 void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
 {
@@ -1576,4 +1578,205 @@ u32 raycast_cylinder(Point3d *rayOrigin, Point3d *rayDir, struct StageColiCylind
         return 1U;
     }
     return 0U;
+}
+
+struct ColiSub24
+{
+    Point3d unk0;
+    float unkC;
+    float unk10;
+    s16 unk14;
+    s16 unk16;
+    s16 unk18;
+};
+
+void stcoli_sub23(struct PhysicsBall *, struct ColiSub24 *);
+void stcoli_sub24(struct PhysicsBall *, struct ColiSub24 *);
+
+void collide_ball_with_goal(struct PhysicsBall *ball, struct StageGoal *goal)
+{
+    struct StageColiCylinder cylinder;
+    Point3d objPos;
+    struct ColiSub24 sp2C;
+    struct ColiSub24 sp10;
+    float radius;
+    struct NaomiModel *temp_r3;
+
+    mathutil_mtxA_from_translate(&goal->pos);
+    mathutil_mtxA_rotate_z(goal->rotZ);
+    mathutil_mtxA_rotate_y(goal->rotY);
+    mathutil_mtxA_rotate_x(goal->rotX);
+    temp_r3 = NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01);
+    radius = temp_r3->boundsRadius;
+    mathutil_mtxA_tf_point(&temp_r3->boundsCenter, &objPos);
+
+    if (mathutil_vec_distance(&objPos, &ball->pos) > radius)
+        return;
+
+    mathutil_mtxA_push();
+    objPos.x = 0.0f;
+    objPos.y = 3.2f;
+    objPos.z = 0.0f;
+    mathutil_mtxA_tf_point(&objPos, &sp2C.unk0);
+    sp2C.unkC = 2.25f;
+    sp2C.unk10 = 0.1f;
+    sp2C.unk14 = goal->rotX;
+    sp2C.unk16 = goal->rotY;
+    sp2C.unk18 = goal->rotZ;
+    stcoli_sub23(ball, &sp2C);
+    mathutil_mtxA_pop();
+
+    mathutil_mtxA_push();
+    objPos.x = 0.0f;
+    objPos.y = 3.2f;
+    objPos.z = 0.0f;
+    mathutil_mtxA_tf_point(&objPos, &sp10.unk0);
+    sp10.unkC = 2.25f;
+    sp10.unk10 = 0.1f;
+    sp10.unk14 = goal->rotX;
+    sp10.unk16 = goal->rotY;
+    sp10.unk18 = goal->rotZ;
+    stcoli_sub24(ball, &sp10);
+    mathutil_mtxA_pop();
+
+    mathutil_mtxA_push();
+    objPos.x = 1.1f;
+    objPos.y = 0.75f;
+    objPos.z = 0.0f;
+    mathutil_mtxA_tf_point(&objPos, &cylinder.pos);
+    cylinder.rot.x = goal->rotX;
+    cylinder.rot.y = goal->rotY;
+    cylinder.rot.z = goal->rotZ;
+    cylinder.radius = 0.2f;
+    cylinder.height = 1.5f;
+    collide_ball_with_cylinder(ball, &cylinder);
+    mathutil_mtxA_pop();
+
+    mathutil_mtxA_push();
+    objPos.x = -1.1f;
+    objPos.y = 0.75f;
+    objPos.z = 0.0f;
+    mathutil_mtxA_tf_point(&objPos, &cylinder.pos);
+    cylinder.rot.x = goal->rotX;
+    cylinder.rot.y = goal->rotY;
+    cylinder.rot.z = goal->rotZ;
+    cylinder.radius = 0.2f;
+    cylinder.height = 1.5f;
+    collide_ball_with_cylinder(ball, &cylinder);
+    mathutil_mtxA_pop();
+}
+
+void stcoli_sub22(struct PhysicsBall *arg0, struct ColiSub24 *arg1)
+{
+    Vec sp4C;
+    Vec sp40;
+    Point3d sp34;
+    Point3d sp28;
+    struct ColiPlane sp10;
+    float temp_f31 = arg1->unkC + arg1->unk10 + arg0->radius;
+    float temp_f30 = arg1->unkC - arg1->unk10 - arg0->radius;
+    float temp_f1 = mathutil_vec_distance(&arg0->pos, &arg1->unk0);
+
+    if (temp_f1 > temp_f31 || temp_f1 < temp_f30)
+        return;
+
+    mathutil_mtxA_from_translate(&arg1->unk0);
+    mathutil_mtxA_rotate_z(arg1->unk18);
+    mathutil_mtxA_rotate_y(arg1->unk16);
+    mathutil_mtxA_rotate_x(arg1->unk14);
+    mathutil_mtxA_rigid_inv_tf_point(&arg0->pos, &sp34);
+    mathutil_mtxA_rigid_inv_tf_point(&arg0->prevPos, &sp28);
+
+    sp40.x = sp34.x + sp28.x;
+    sp40.y = sp34.y + sp28.y;
+    sp40.z = 0.0f;
+    mathutil_vec_set_len(&sp40, &sp40, arg1->unkC);
+    if (func_8006A9B8(&sp28, &sp34, &sp40, &sp40, arg0->radius, arg1->unk10) != 0U)
+    {
+        sp4C.x = sp28.x - sp40.x;
+        sp4C.y = sp28.y - sp40.y;
+        sp4C.z = sp28.z - sp40.z;
+        mathutil_vec_normalize_len(&sp4C);
+        mathutil_mtxA_tf_vec(&sp4C, &sp10.normal);
+
+        temp_f31 = arg1->unk10;
+        sp40.x += sp4C.x * temp_f31;
+        sp40.y += sp4C.y * temp_f31;
+        sp40.z += sp4C.z * temp_f31;
+        mathutil_mtxA_tf_point(&sp40, &sp10.point);
+
+        collide_ball_with_plane(arg0, &sp10);
+    }
+}
+
+void stcoli_sub23(struct PhysicsBall *arg0, struct ColiSub24 *arg1)
+{
+    Vec sp1C;
+    Vec sp10;
+
+    sp1C.x = 0.0f;
+    sp1C.y = -1.0f;
+    sp1C.z = 0.0f;
+    mathutil_mtxA_tf_vec(&sp1C, &sp1C);
+
+    sp10.x = arg0->pos.x - arg1->unk0.x;
+    sp10.y = arg0->pos.y - arg1->unk0.y;
+    sp10.z = arg0->pos.z - arg1->unk0.z;
+    mathutil_vec_normalize_len(&sp10);
+
+    if (!(mathutil_vec_dot_prod(&sp1C, &sp10) > 0.7732404444))
+        stcoli_sub22(arg0, arg1);
+}
+
+void stcoli_sub24(struct PhysicsBall *arg0, struct ColiSub24 *arg1)
+{
+    Vec sp4C;
+    Vec sp40;
+    Point3d sp34;
+    Point3d sp28;
+    struct ColiPlane sp10;
+    float temp_f0;
+    float temp_f1;
+    float temp_f1_2;
+    float temp_f31 = arg1->unkC + arg1->unk10 + arg0->radius;
+
+    if (mathutil_vec_distance(&arg0->pos, &arg1->unk0) > temp_f31)
+        return;
+
+    mathutil_mtxA_from_translate(&arg1->unk0);
+    mathutil_mtxA_rotate_z(arg1->unk18);
+    mathutil_mtxA_rotate_y(arg1->unk16);
+    mathutil_mtxA_rotate_x(arg1->unk14);
+    mathutil_mtxA_rigid_inv_tf_point(&arg0->pos, &sp34);
+    mathutil_mtxA_rigid_inv_tf_point(&arg0->prevPos, &sp28);
+    sp40.x = (sp34.x + sp28.x) * 0.5;
+    sp40.y = (sp34.y + sp28.y) * 0.5;
+    sp40.z = 0.0f;
+    if (sp40.y < -0.5f)
+        sp40.y = -0.5f;
+    temp_f1 = mathutil_sqrt(mathutil_sum_of_sq_2(sp40.x, sp40.y));
+    temp_f0 = arg1->unkC;
+    if (temp_f1 > temp_f0)
+    {
+        temp_f1_2 = temp_f0 / temp_f1;
+        sp40.x *= temp_f1_2;
+        sp40.y *= temp_f1_2;
+        sp40.z *= temp_f1_2;
+    }
+    if (func_8006A9B8(&sp28, &sp34, &sp40, &sp40, arg0->radius, arg1->unk10) != 0U)
+    {
+        sp4C.x = sp28.x - sp40.x;
+        sp4C.y = sp28.y - sp40.y;
+        sp4C.z = sp28.z - sp40.z;
+        mathutil_vec_normalize_len(&sp4C);
+        mathutil_mtxA_tf_vec(&sp4C, &sp10.normal);
+
+        temp_f31 = arg1->unk10;
+        sp40.x += sp4C.x * temp_f31;
+        sp40.y += sp4C.y * temp_f31;
+        sp40.z += sp4C.z * temp_f31;
+        mathutil_mtxA_tf_point(&sp40, &sp10.point);
+
+        collide_ball_with_plane(arg0, &sp10);
+    }
 }
