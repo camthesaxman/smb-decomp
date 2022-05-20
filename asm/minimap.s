@@ -739,7 +739,7 @@ lbl_80084B1C:
 /* 80084CF4 00080C14  4B F9 D7 D9 */	bl push_light_group
 /* 80084CF8 00080C18  4B F8 2C B5 */	bl mathutil_mtxA_from_mtxB
 /* 80084CFC 00080C1C  38 60 00 01 */	li r3, 1
-/* 80084D00 00080C20  4B F9 D5 75 */	bl load_light_group
+/* 80084D00 00080C20  4B F9 D5 75 */	bl load_light_group_uncached
 /* 80084D04 00080C24  C0 22 AB 88 */	lfs f1, lbl_802F5388@sda21(r2)
 /* 80084D08 00080C28  FC 40 08 90 */	fmr f2, f1
 /* 80084D0C 00080C2C  FC 60 08 90 */	fmr f3, f1
@@ -1105,7 +1105,7 @@ lbl_8008514C:
 /* 800852A0 000811C0  4B FA B9 09 */	bl g_nl2ngc_set_scale
 /* 800852A4 000811C4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800852A8 000811C8  80 63 00 1C */	lwz r3, 0x1c(r3)
-/* 800852AC 000811CC  4B FA BF 65 */	bl g_draw_naomi_model_and_do_other_stuff
+/* 800852AC 000811CC  4B FA BF 65 */	bl nl2ngc_draw_model_sorted
 lbl_800852B0:
 /* 800852B0 000811D0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800852B4 000811D4  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -1117,7 +1117,7 @@ lbl_800852B0:
 /* 800852CC 000811EC  80 A3 00 00 */	lwz r5, 0(r3)
 /* 800852D0 000811F0  38 60 00 00 */	li r3, 0
 /* 800852D4 000811F4  38 80 00 00 */	li r4, 0
-/* 800852D8 000811F8  4B FF CA 25 */	bl func_80081CFC
+/* 800852D8 000811F8  4B FF CA 25 */	bl g_get_monkey_bitmap_id
 /* 800852DC 000811FC  C0 21 00 28 */	lfs f1, 0x28(r1)
 /* 800852E0 00081200  FC A0 F0 18 */	frsp f5, f30
 /* 800852E4 00081204  C0 01 00 2C */	lfs f0, 0x2c(r1)
@@ -1155,10 +1155,10 @@ lbl_800852B0:
 /* 80085364 00081284  90 01 00 68 */	stw r0, 0x68(r1)
 /* 80085368 00081288  4B FE E4 C1 */	bl draw_naomi_sprite
 /* 8008536C 0008128C  C0 3E 00 20 */	lfs f1, 0x20(r30)
-/* 80085370 00081290  4B F9 D2 85 */	bl func_800225F4
+/* 80085370 00081290  4B F9 D2 85 */	bl g_set_some_minimap_light_param
 /* 80085374 00081294  4B F8 26 39 */	bl mathutil_mtxA_from_mtxB
 /* 80085378 00081298  38 60 00 03 */	li r3, 3
-/* 8008537C 0008129C  4B F9 CE F9 */	bl load_light_group
+/* 8008537C 0008129C  4B F9 CE F9 */	bl load_light_group_uncached
 /* 80085380 000812A0  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 80085384 000812A4  38 63 3C C8 */	addi r3, r3, eventInfo@l
 /* 80085388 000812A8  88 03 00 18 */	lbz r0, 0x18(r3)
@@ -1298,7 +1298,7 @@ lbl_80085480:
 /* 8008558C 000814AC  4B FF F2 71 */	bl func_800847FC
 /* 80085590 000814B0  4B F9 2A 3D */	bl func_80017FCC
 /* 80085594 000814B4  C0 22 AB 88 */	lfs f1, lbl_802F5388@sda21(r2)
-/* 80085598 000814B8  4B F9 D0 5D */	bl func_800225F4
+/* 80085598 000814B8  4B F9 D0 5D */	bl g_set_some_minimap_light_param
 /* 8008559C 000814BC  4B F9 CF 95 */	bl pop_light_group
 /* 800855A0 000814C0  48 01 56 A5 */	bl func_8009AC44
 lbl_800855A4:

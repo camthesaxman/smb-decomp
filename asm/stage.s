@@ -1144,7 +1144,7 @@ lbl_80044A7C:
 /* 80044A9C 000409BC  93 8D 87 B8 */	stw r28, loadedStageId@sda21(r13)
 lbl_80044AA0:
 /* 80044AA0 000409C0  7F 83 E3 78 */	mr r3, r28
-/* 80044AA4 000409C4  4B FD D3 11 */	bl g_init_light_stuff_for_stage
+/* 80044AA4 000409C4  4B FD D3 11 */	bl light_init
 /* 80044AA8 000409C8  48 05 60 09 */	bl g_init_bg_fog_params
 /* 80044AAC 000409CC  7F 83 07 34 */	extsh r3, r28
 /* 80044AB0 000409D0  7F E0 07 75 */	extsb. r0, r31
@@ -4879,7 +4879,7 @@ draw_stage_preview:
 /* 80047DD0 00043CF0  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80047DD4 00043CF4  38 80 00 00 */	li r4, 0
 /* 80047DD8 00043CF8  48 09 C7 A9 */	bl GXLoadPosMtxImm
-/* 80047DDC 00043CFC  4B FD E5 C9 */	bl func_800263A4
+/* 80047DDC 00043CFC  4B FD E5 C9 */	bl bitmap_init_tev
 /* 80047DE0 00043D00  3C 60 80 20 */	lis r3, stagePreview@ha
 /* 80047DE4 00043D04  C0 22 8F E0 */	lfs f1, lbl_802F37E0@sda21(r2)
 /* 80047DE8 00043D08  C0 42 8F 68 */	lfs f2, lbl_802F3768@sda21(r2)
@@ -7945,8 +7945,8 @@ lbl_8020AB88:
 .global goalModels
 goalModels:
 	.skip 0xC
-.global stageBounds
-stageBounds:
+.global stageBoundSphere
+stageBoundSphere:
     .skip 0x10
     .skip 0x3C
 .endif

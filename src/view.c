@@ -20,6 +20,7 @@
 #include "stage.h"
 #include "stcoli.h"
 #include "gma.h"
+#include "light.h"
 
 #include "../data/common.gma.h"
 
@@ -35,7 +36,7 @@ struct StageViewInfo
     s16 frameCounter;
     float unk20;
     float unk24;
-    struct Sphere stageBounds;
+    struct Sphere stageBoundSphere;
     s16 unk38;
     s16 unk3A;
     s16 unk3C;
@@ -54,8 +55,8 @@ void ev_view_init(void)
         OSPanic("view.c", 114, "cannot OSAlloc\n");
     memset(stageViewInfo, 0, sizeof(*stageViewInfo));
 
-    get_curr_stage_view_bounds(&stageViewInfo->stageBounds);
-    stageViewInfo->unk20 = stageViewInfo->stageBounds.radius * 1.1313;
+    get_curr_stage_view_bounds(&stageViewInfo->stageBoundSphere);
+    stageViewInfo->unk20 = stageViewInfo->stageBoundSphere.radius * 1.1313;
     stageViewInfo->unk24 = 0.75f;
     stageViewInfo->unk38 = -5632;
     stageViewInfo->unk3A = 0;
@@ -84,17 +85,17 @@ void ev_view_main(void)
 
     view_animate_stage();
     func_800A66FC();
-    stageViewInfo->unk3A += controllerInfo[lbl_801EEC68.unk14].unk0[0].stickX * 5;
-    stageViewInfo->unk24 -= controllerInfo[lbl_801EEC68.unk14].unk0[0].stickY * 0.0003;
+    stageViewInfo->unk3A += controllerInfo[pauseMenuState.padId].unk0[0].stickX * 5;
+    stageViewInfo->unk24 -= controllerInfo[pauseMenuState.padId].unk0[0].stickY * 0.0003;
     if (stageViewInfo->unk24 > 1.0)
         stageViewInfo->unk24 = 1.0f;
     else if (stageViewInfo->unk24 < 0.5)
         stageViewInfo->unk24 = 0.5f;
-    cstickY = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickY;
-    cstickX = controllerInfo[lbl_801EEC68.unk14].unk0[0].substickX;
+    cstickY = controllerInfo[pauseMenuState.padId].unk0[0].substickY;
+    cstickX = controllerInfo[pauseMenuState.padId].unk0[0].substickX;
     stageViewInfo->unk3C += (cstickY * 64 - stageViewInfo->unk3C) >> 5;
     stageViewInfo->unk3E += (-cstickX * 0xC0 - stageViewInfo->unk3E) >> 5;
-    mathutil_mtxA_from_translate(&stageViewInfo->stageBounds.pos);
+    mathutil_mtxA_from_translate(&stageViewInfo->stageBoundSphere.pos);
     mathutil_mtxA_rotate_y(stageViewInfo->unk3A);
     mathutil_mtxA_rotate_x(stageViewInfo->unk38);
     mathutil_mtxA_translate_xyz(0.0f, 0.0f, stageViewInfo->unk20 * stageViewInfo->unk24);
@@ -177,7 +178,7 @@ void view_draw(void)
 
     lbl_801EEC90.unk0 |= 2;
     view_apply_camera(camera);
-    C_MTXPerspective(projMtx, 59.99633789f, 1.33333333f, 0.1f, 20000.0f);
+    MTXPerspective(projMtx, 59.99633789f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(projMtx, 0);
 
     {
@@ -188,7 +189,7 @@ void view_draw(void)
         func_80020AB8(&stageViewInfo->eye, &rotation, 59.99633789f, 1.33333333f, 0.0f, 0.0f);
     }
 
-    func_80021ECC();
+    light_main();
     ballBackup = currentBallStructPtr;
     currentBallStructPtr = &ballInfo[0];
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
@@ -196,7 +197,7 @@ void view_draw(void)
     view_apply_camera(camera);
     g_draw_ball_shadow();
     func_80054FF0();
-    func_800225C0(0);
+    g_reset_light_group_stack(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
     view_apply_camera(camera);
@@ -244,21 +245,21 @@ void func_800A5F28(void)
     ord_tbl_draw_nodes();
 }
 
-void view_sprite_func(struct Sprite *sprite)
+void view_info_sprite_draw(struct Sprite *sprite)
 {
-    func_80071A8C();
-    g_set_font(sprite->fontId);
-    func_80071B2C(sprite->unk40, sprite->unk44);
-    func_80071B50(sprite->unk74);
+    reset_text_draw_settings();
+    set_text_font(sprite->fontId);
+    set_text_scale(sprite->scaleX, sprite->scaleY);
+    func_80071B50(sprite->flags);
     func_80071B1C(sprite->unk4C + 0.1);
-    func_80071AE4(0);
-    g_set_some_sprite_color(0);
-    g_set_text_pos(sprite->centerX + 2.0, sprite->centerY + 2.0);
+    set_text_mul_color(RGBA(0, 0, 0, 0));
+    set_text_add_color(RGBA(0, 0, 0, 0));
+    set_text_pos(sprite->x + 2.0, sprite->y + 2.0);
     g_draw_text(sprite->text);
     func_80071B1C(sprite->unk4C);
-    func_80071AE4((sprite->unkC << 16) | (sprite->unkD << 8) | sprite->unkE);
-    g_set_some_sprite_color((sprite->unk70 << 16) | (sprite->unk71 << 8) | sprite->unk72);
-    g_set_text_pos(sprite->centerX, sprite->centerY);
+    set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, sprite->mulB, 0));
+    set_text_add_color(RGBA(sprite->addR, sprite->addG, sprite->addB, 0));
+    set_text_pos(sprite->x, sprite->y);
     g_draw_text(sprite->text);
 }
 
@@ -270,12 +271,12 @@ void view_create_text_sprites(void)
     if (sprite != NULL)
     {
         sprite->tag = 100;
-        sprite->centerX = 24.0f;
-        sprite->centerY = 24.0f;
+        sprite->x = 24.0f;
+        sprite->y = 24.0f;
         sprite->textAlign = ALIGN_LT;
         sprite->fontId = FONT_JAP_24x24_2Pg;
-        sprite->unk74 |= 0x200000;
-        sprite->drawFunc = view_sprite_func;
+        sprite->flags |= 0x200000;
+        sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "a/Stage Overview");
     }
 
@@ -283,12 +284,12 @@ void view_create_text_sprites(void)
     if (sprite != NULL)
     {
         sprite->tag = 100;
-        sprite->centerX = 170.0f;
-        sprite->centerY = 435.0f;
+        sprite->x = 170.0f;
+        sprite->y = 435.0f;
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
-        sprite->unk74 |= 0x200000;
-        sprite->drawFunc = view_sprite_func;
+        sprite->flags |= 0x200000;
+        sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "p/LEVER/a/Rotate/Zoom");
     }
 
@@ -296,12 +297,12 @@ void view_create_text_sprites(void)
     if (sprite != NULL)
     {
         sprite->tag = 100;
-        sprite->centerX = 415.0f;
-        sprite->centerY = 435.0f;
+        sprite->x = 415.0f;
+        sprite->y = 435.0f;
         sprite->textAlign = ALIGN_RB;
         sprite->fontId = FONT_JAP_24x24_2Pg;
-        sprite->unk74 |= 0x200000;
-        sprite->drawFunc = view_sprite_func;
+        sprite->flags |= 0x200000;
+        sprite->drawFunc = view_info_sprite_draw;
         strcpy(sprite->text, "p/BUTTON_C/a/Pan camera");
     }
 }
@@ -566,13 +567,13 @@ void draw_stage_geometry(void)
             r26 = r29->unk0;
             for (j = 0; j < r29->unk4; j++, r26++)
             {
-                if ((r26->unk0 & 3) == 1)
+                if ((r26->flags & 3) == 1)
                 {
-                    struct GMAModel *model = r26->unk4;
+                    struct GMAModel *model = r26->model;
                     if (model != NULL)
                     {
 
-                        if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D))) || (r26->unk0 & (1<<(31-0x1D))))
+                        if (!(lbl_801EEC90.unk0 & (1<<(31-0x1D))) || (r26->flags & (1<<(31-0x1D))))
                             avdisp_draw_model_culled_sort_none(model);
                     }
                 }
@@ -653,7 +654,7 @@ void draw_stage_objects(void)
                 avdisp_draw_model_culled_sort_translucent(r28);
             }
             //lbl_800A6CE4
-            g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 14));
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);

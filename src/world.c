@@ -318,7 +318,7 @@ void world_sub_input_main(struct World *world)
 
     if (gameSubmode == SMD_ADV_INFO_MAIN)
     {
-        float f31 = 4380 - modeCtrl.unk0;
+        float f31 = 4380 - modeCtrl.submodeTimer;
 
         world->xrotPrev = world->xrot;
         world->zrotPrev = world->zrot;
@@ -438,7 +438,7 @@ void world_sub_7(struct World *world)
     sp10.x = 0.0f;
     sp10.y = -1.0f;
     sp10.z = 0.0f;
-    if (infoWork.flags & (1 << 4))
+    if (infoWork.flags & INFO_FLAG_04)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_x(spC[0]);

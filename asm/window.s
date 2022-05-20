@@ -1619,12 +1619,12 @@ lbl_8002F854:
 /* 8002F864 0002B784  41 82 00 08 */	beq lbl_8002F86C
 /* 8002F868 0002B788  4B FF E4 F5 */	bl func_8002DD5C
 lbl_8002F86C:
-/* 8002F86C 0002B78C  80 0D 9A B4 */	lwz r0, lbl_802F1C94@sda21(r13)
-/* 8002F870 0002B790  3C 80 80 1F */	lis r4, g_loadedStageLights@ha
+/* 8002F86C 0002B78C  80 0D 9A B4 */	lwz r0, g_lightToPrint@sda21(r13)
+/* 8002F870 0002B790  3C 80 80 1F */	lis r4, s_g_lightPool@ha
 /* 8002F874 0002B794  3C 60 80 1F */	lis r3, lbl_801F3A08@ha
 /* 8002F878 0002B798  1C A0 00 4C */	mulli r5, r0, 0x4c
 /* 8002F87C 0002B79C  90 0D 9A B0 */	stw r0, lbl_802F1C90@sda21(r13)
-/* 8002F880 0002B7A0  38 84 FC 94 */	addi r4, r4, g_loadedStageLights@l
+/* 8002F880 0002B7A0  38 84 FC 94 */	addi r4, r4, s_g_lightPool@l
 /* 8002F884 0002B7A4  38 00 00 09 */	li r0, 9
 /* 8002F888 0002B7A8  7C 84 2A 14 */	add r4, r4, r5
 /* 8002F88C 0002B7AC  7C 09 03 A6 */	mtctr r0
@@ -1642,9 +1642,9 @@ lbl_8002F89C:
 /* 8002F8B8 0002B7D8  38 63 3A 08 */	addi r3, r3, lbl_801F3A08@l
 /* 8002F8BC 0002B7DC  90 05 00 08 */	stw r0, 8(r5)
 /* 8002F8C0 0002B7E0  3B 03 00 06 */	addi r24, r3, 6
-/* 8002F8C4 0002B7E4  3C 60 80 1F */	lis r3, lightGroups@ha
+/* 8002F8C4 0002B7E4  3C 60 80 1F */	lis r3, s_lightGroups@ha
 /* 8002F8C8 0002B7E8  88 AD 9A 95 */	lbz r5, lbl_802F1C75@sda21(r13)
-/* 8002F8CC 0002B7EC  38 63 06 5C */	addi r3, r3, lightGroups@l
+/* 8002F8CC 0002B7EC  38 63 06 5C */	addi r3, r3, s_lightGroups@l
 /* 8002F8D0 0002B7F0  A8 98 00 00 */	lha r4, 0(r24)
 /* 8002F8D4 0002B7F4  3C C0 80 20 */	lis r6, lbl_80201500@ha
 /* 8002F8D8 0002B7F8  7C A0 07 74 */	extsb r0, r5
@@ -1721,7 +1721,7 @@ lbl_8002F89C:
 /* 8002F9F4 0002B914  4B FF E8 91 */	bl func_8002E284
 lbl_8002F9F8:
 /* 8002F9F8 0002B918  88 0D 9C 70 */	lbz r0, lbl_802F1E50@sda21(r13)
-/* 8002F9FC 0002B91C  3C 60 80 1F */	lis r3, g_loadedStageLights@ha
+/* 8002F9FC 0002B91C  3C 60 80 1F */	lis r3, s_g_lightPool@ha
 /* 8002FA00 0002B920  3C 80 80 1F */	lis r4, lbl_801F3A08@ha
 /* 8002FA04 0002B924  7C 00 07 74 */	extsb r0, r0
 /* 8002FA08 0002B928  B0 18 00 00 */	sth r0, 0(r24)
@@ -1729,7 +1729,7 @@ lbl_8002F9F8:
 /* 8002FA10 0002B930  38 84 3A 08 */	addi r4, r4, lbl_801F3A08@l
 /* 8002FA14 0002B934  7C 09 03 A6 */	mtctr r0
 /* 8002FA18 0002B938  80 0D 9A B0 */	lwz r0, lbl_802F1C90@sda21(r13)
-/* 8002FA1C 0002B93C  38 63 FC 94 */	addi r3, r3, g_loadedStageLights@l
+/* 8002FA1C 0002B93C  38 63 FC 94 */	addi r3, r3, s_g_lightPool@l
 /* 8002FA20 0002B940  1C 00 00 4C */	mulli r0, r0, 0x4c
 /* 8002FA24 0002B944  7C 63 02 14 */	add r3, r3, r0
 /* 8002FA28 0002B948  38 63 FF F8 */	addi r3, r3, -8
@@ -1741,8 +1741,8 @@ lbl_8002FA30:
 /* 8002FA3C 0002B95C  90 03 00 04 */	stw r0, 4(r3)
 /* 8002FA40 0002B960  42 00 FF F0 */	bdnz lbl_8002FA30
 /* 8002FA44 0002B964  80 04 00 08 */	lwz r0, 8(r4)
-/* 8002FA48 0002B968  3C 80 80 1F */	lis r4, lightGroups@ha
-/* 8002FA4C 0002B96C  38 84 06 5C */	addi r4, r4, lightGroups@l
+/* 8002FA48 0002B968  3C 80 80 1F */	lis r4, s_lightGroups@ha
+/* 8002FA4C 0002B96C  38 84 06 5C */	addi r4, r4, s_lightGroups@l
 /* 8002FA50 0002B970  90 03 00 08 */	stw r0, 8(r3)
 /* 8002FA54 0002B974  3C 60 80 20 */	lis r3, lbl_80201500@ha
 /* 8002FA58 0002B978  38 E3 15 00 */	addi r7, r3, lbl_80201500@l
@@ -4433,7 +4433,7 @@ glabel lbl_801B5170
 	.4byte 0x00000002
 	.4byte 0x00000003
 	.4byte string_data_ID____d  ;# ptr
-	.4byte lbl_802F1C94  ;# ptr
+	.4byte g_lightToPrint  ;# ptr
 	.4byte lbl_801B5058  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000002
@@ -4458,7 +4458,7 @@ glabel lbl_801B5170
 	.4byte 0
 	.4byte lbl_802F0858  ;# ptr
 	.4byte lbl_801F3A09  ;# ptr
-	.4byte g_lightSomethingNames  ;# ptr
+	.4byte s_lightIdNames  ;# ptr
 	.4byte 0x00000004
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
@@ -4589,7 +4589,7 @@ glabel lbl_801B5170
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string__  ;# ptr
-	.4byte lbl_802F1C88  ;# ptr
+	.4byte g_printLight  ;# ptr
 	.4byte lbl_801B3B78  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000002
@@ -4607,7 +4607,7 @@ glabel lbl_801B5170
 	.4byte 0x0000000E
 	.4byte 0
 	.4byte string_st_03d  ;# ptr
-	.4byte lbl_802F1C7C  ;# ptr
+	.4byte lightingStageId  ;# ptr
 	.4byte lbl_801B50F8  ;# ptr
 	.4byte 0x0000001F
 	.4byte 0
@@ -4678,18 +4678,18 @@ glabel lbl_801B5538
 	.4byte 0xFFFFFFFF
 	.4byte lbl_802F0858  ;# ptr
 	.4byte lbl_802F1C75  ;# ptr
-	.4byte lbl_80177434  ;# ptr
+	.4byte s_lightGroupNames  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000003
 	.4byte 0xFFFFFFFE
 	.4byte string_edit___  ;# ptr
-	.4byte lbl_802F1C78  ;# ptr
+	.4byte s_g_lightGroupsInitialized  ;# ptr
 	.4byte lbl_801B3B78  ;# ptr
 	.4byte 0x00000019
 	.4byte 0x0000000A
 	.4byte 0
 	.4byte lbl_802F0858  ;# ptr
-	.4byte lbl_802F1C78  ;# ptr
+	.4byte s_g_lightGroupsInitialized  ;# ptr
 	.4byte lbl_802F0828  ;# ptr
 	.4byte 0x00000006
 	.4byte 0x00000003
@@ -4779,7 +4779,7 @@ glabel lbl_801B5538
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_____RegSet__d  ;# ptr
-	.4byte numLightObjsLoaded  ;# ptr
+	.4byte s_numLightObjsLoaded  ;# ptr
 	.4byte 0
 	.4byte 0x0000001F
 	.4byte 0
@@ -5512,79 +5512,79 @@ glabel lbl_801B61E4
 	.4byte 0x00000011
 	.4byte 0x00000006
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DE4  ;# ptr
+	.4byte perfInfo+4  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000007
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DE8  ;# ptr
+	.4byte perfInfo+8  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000008
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DEC  ;# ptr
+	.4byte perfInfo+0xC  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000009
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DF0  ;# ptr
+	.4byte perfInfo+0x10  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000A
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DF4  ;# ptr
+	.4byte perfInfo+0x14  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000B
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DF8  ;# ptr
+	.4byte perfInfo+0x18  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000C
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DFC  ;# ptr
+	.4byte perfInfo+0x1C  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000D
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E00  ;# ptr
+	.4byte perfInfo+0x20  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000E
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E04  ;# ptr
+	.4byte perfInfo+0x24  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000F
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E08  ;# ptr
+	.4byte perfInfo+0x28  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000010
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E0C  ;# ptr
+	.4byte perfInfo+0x2C  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000011
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E10  ;# ptr
+	.4byte perfInfo+0x30  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000012
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E14  ;# ptr
+	.4byte perfInfo+0x34  ;# ptr
 	.4byte 0
 	.4byte 0x0000000D
 	.4byte 0x00000018

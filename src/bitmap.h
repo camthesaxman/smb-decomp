@@ -25,6 +25,7 @@ enum BitmapGroupID
     BMP_ALL,
 };
 
+// COM group (0)
 enum
 {
     BMP_COM_ASCII = (BMP_COM << 8),
@@ -125,6 +126,7 @@ enum
     BMP_COM_menu_kiwaku_l2,
 };
 
+// ADV group (1)
 enum
 {
     BMP_ADV_logo_av256 = (BMP_ADV << 8),  // 0x100
@@ -155,9 +157,10 @@ enum
     BMP_ADV_adv_title_tm,
 };
 
+// NML group (5)
 enum
 {
-    BMP_NML_icon_bombtimer = (BMP_NML << 8),
+    BMP_NML_icon_bombtimer = (BMP_NML << 8),  // 0x500
     BMP_NML_icon_lv1234_j,
     BMP_NML_game_rank,
     BMP_NML_game_result_e3,
@@ -173,7 +176,7 @@ enum
     BMP_NML_asc_ball16x22,
     BMP_NML_DUMMY14,
     BMP_NML_DUMMY15,
-    BMP_NML_icon_bomb_hibi,
+    BMP_NML_icon_bomb_hibi,  // 0x510
     BMP_NML_icon_bomb_part_a,
     BMP_NML_icon_bomb_part_b,
     BMP_NML_icon_bomb_part_c,
@@ -225,9 +228,9 @@ void bitmap_load_group(enum BitmapGroupID grpId);
 void bitmap_free_group(enum BitmapGroupID grpId);
 int bitmap_is_group_loaded(enum BitmapGroupID grpId);
 void bitmap_free_tpl(struct TPL *tpl);
-void func_80026378(int a);
-void func_80026394(void);
-void func_800263A4(void);
+void g_bitmap_set_some_tpl(enum BitmapGroupID grpId);
+void g_bitmap_frame_reset(void);
+void bitmap_init_tev(void);
 void bitmap_main(void);
 // ? func_8002687C();
 // ? bitmap_draw();

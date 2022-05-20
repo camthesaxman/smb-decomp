@@ -3,17 +3,20 @@
 #include <dolphin.h>
 
 #include <dolphin/GXEnum.h>
-#include <dolphin/GXVert.h>
 #include <dolphin/GXCommandList.h>
 #include <dolphin/GDLight.h>
+#include <dolphin/GXLighting.h>
+#include <dolphin/GXVert.h>
+
 #include "global.h"
+#include "gma.h"
+#include "gxcache.h"
 #include "gxutil.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "ord_tbl.h"
 #include "types.h"
-#include "tevutil.h"
-#include "gma.h"
 
 struct UnkStruct4
 {
@@ -34,10 +37,10 @@ GXColor s_fogColor;
 u32 s_fogType;
 s32 s_fogEnabled;
 GXColor s_postAddColor;
-s32 usePostAddTevStage;
+s32 s_usePostAddTevStage;
 GXColor s_postMultiplyColor;
-s32 usePostMultiplyTevStage;
-s32 lbl_802F2108;
+s32 s_usePostMultiplyTevStage;
+s32 s_useCustomTexMtx;
 GXCompare s_zModeCompareFunc;
 GXBool s_zModeUpdateEnable;
 GXBool s_zModeCompareEnable;
@@ -97,8 +100,8 @@ struct TevMaterialCache
 
 // .bss
 static Vec lbl_802B4E60;
-static Mtx lbl_802B4E6C;
-static Mtx lbl_802B4E9C;
+static Mtx s_customTexMtx;
+static Mtx s_identityTexMtx;
 static struct TevMaterialCache s_materialCache;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
@@ -106,8 +109,8 @@ static u8 lzssHeader[32] __attribute__((aligned(32)));
 static u8 unknownTexImg[64];
 
 FORCE_BSS_ORDER(lbl_802B4E60)
-FORCE_BSS_ORDER(lbl_802B4E6C)
-FORCE_BSS_ORDER(lbl_802B4E9C)
+FORCE_BSS_ORDER(s_customTexMtx)
+FORCE_BSS_ORDER(s_identityTexMtx)
 FORCE_BSS_ORDER(s_materialCache)
 FORCE_BSS_ORDER(unknownTexObj)
 FORCE_BSS_ORDER(filler_802B4F50)
@@ -196,7 +199,7 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
     // The MAT and AMB colors can be controlled by vertex colors or registers. Here we set the
     // register colors for the register case.
 
-    // Set ambient color.
+    // Compute ambient color.
     // Ambient alpha is unused because alpha light channel is always disabled
     if (shape->flags & GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR)
     {
@@ -212,11 +215,12 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         ambientColor.b = 0xff * s_ambientBlue;
         ambientColor.a = 0xff * s_materialAlpha;
     }
+    // Equivalent to GXSetChanAmbColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_AMBIENT0_ID;
     GXWGFifo.u32 = ambientColor.r << 24 | ambientColor.g << 16 | ambientColor.b << 8 | ambientColor.a << 0;
 
-    // Set material color.
+    // Compute material color.
     materialColor.a = shape->alpha * s_materialAlpha;
     if (shape->flags & (GMA_SHAPE_FLAG_CUSTOM_MAT_AMB_COLOR | GMA_SHAPE_FLAG_SIMPLE_MATERIAL))
     {
@@ -230,6 +234,7 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         materialColor.g = 0xff;
         materialColor.b = 0xff;
     }
+    // Equivalent to GXSetChanMatColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_MATERIAL0_ID;
     GXWGFifo.u32 = materialColor.r << 24 | materialColor.g << 16 | materialColor.b << 8 | materialColor.a << 0;
@@ -251,12 +256,12 @@ void avdisp_init(void)
     sp8.x = 0.0f;
     sp8.y = 1.0f;
     sp8.z = 0.0f;
-    g_avdisp_set_and_normalize_some_vec(&sp8);
-    g_avdisp_set_some_color_scale(1.0f, 1.0f, 1.0f);
+    avdisp_set_inf_light_dir(&sp8);
+    avdisp_set_inf_light_color(1.0f, 1.0f, 1.0f);
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-    lbl_802F2108 = 0;
+    s_useCustomTexMtx = 0;
     mathutil_mtxA_from_translate_xyz(0.0f, 0.0f, 1.0f);
-    mathutil_mtxA_to_mtx(lbl_802B4E9C);
+    mathutil_mtxA_to_mtx(s_identityTexMtx);
     avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
     avdisp_set_post_add_color(0.0f, 0.0f, 0.0f, 0.0f);
     avdisp_enable_fog(0);
@@ -668,13 +673,13 @@ void avdisp_set_light_mask(u32 lightMask)
     s_lightMask = lightMask;
 }
 
-void g_avdisp_set_and_normalize_some_vec(Vec *a)
+void avdisp_set_inf_light_dir(Vec *a)
 {
     lbl_802B4E60 = *a;
     mathutil_vec_normalize_len(&lbl_802B4E60);
 }
 
-void g_avdisp_set_some_color_scale(float a, float b, float c)
+void avdisp_set_inf_light_color(float a, float b, float c)
 {
     g_someColorScaleR = a;
     g_someColorScaleG = b;
@@ -799,10 +804,10 @@ struct DrawShapeDeferredNode
     u8 zCompEnable;
     u8 zUpdEnable;
     u32 zCompFunc;
-    u8 unk60;
-    u8 usePostMultiplyTevStage;
-    u8 usePostAddTevStage;
-    Mtx *unk64;
+    u8 useCustomTexMtx;
+    u8 s_usePostMultiplyTevStage;
+    u8 s_usePostAddTevStage;
+    Mtx *texMtx;
     GXColor unk68;
     GXColor unk6C;
     u32 fogEnabled;
@@ -823,24 +828,24 @@ static inline struct GMAShape *draw_shape_deferred(struct GMAModel *model, struc
     node->shape = shape;
     node->modelSamplers = modelSamplers;
     node->cullMode = cullMode;
-    node->unk48 = func_800223D0();
+    node->unk48 = peek_light_group();
     node->alpha = s_materialAlpha;
     node->unk50 = lbl_802F20EC;
     node->unk54 = g_customMaterialFunc;
     node->zCompEnable = s_zModeCompareEnable;
     node->zUpdEnable = s_zModeUpdateEnable;
     node->zCompFunc = s_zModeCompareFunc;
-    node->unk60 = lbl_802F2108;
-    node->usePostMultiplyTevStage = usePostMultiplyTevStage;
-    node->usePostAddTevStage = usePostAddTevStage;
-    if (node->unk60 != 0)
+    node->useCustomTexMtx = s_useCustomTexMtx;
+    node->s_usePostMultiplyTevStage = s_usePostMultiplyTevStage;
+    node->s_usePostAddTevStage = s_usePostAddTevStage;
+    if (node->useCustomTexMtx != 0)
     {
-        node->unk64 = ord_tbl_alloc_node(sizeof(*node->unk64));
-        mathutil_mtx_copy(lbl_802B4E6C, *node->unk64);
+        node->texMtx = ord_tbl_alloc_node(sizeof(*node->texMtx));
+        mathutil_mtx_copy(s_customTexMtx, *node->texMtx);
     }
-    if (node->usePostMultiplyTevStage)
+    if (node->s_usePostMultiplyTevStage)
         node->unk68 = s_postMultiplyColor;
-    if (node->usePostAddTevStage)
+    if (node->s_usePostAddTevStage)
         node->unk6C = s_postAddColor;
     node->fogEnabled = s_fogEnabled;
     mathutil_mtxA_to_mtx(node->mtx);
@@ -1149,7 +1154,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     GXBool zModeCompareEnable;
     GXBool zModeUpdateEnable;
     GXCompare zModeCompareFunc;
-    u32 r26;
+    u32 useCustomTexMtx;
     u32 r25;
     u32 r23;
     u32 fogEnabled;
@@ -1157,7 +1162,7 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     GXColor spC;
 
     if ((node->shape->flags & GMA_SHAPE_FLAG_UNLIT) == 0)
-        func_800223D8(node->unk48);
+        load_light_group_cached(node->unk48);
     g_gxutil_upload_some_mtx(node->mtx, 0);
     mathutil_mtxA_from_mtx(node->mtx);
     GXSetCullMode_cached(node->cullMode);
@@ -1167,26 +1172,26 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     zModeCompareEnable = s_zModeCompareEnable;
     zModeUpdateEnable = s_zModeUpdateEnable;
     zModeCompareFunc = s_zModeCompareFunc;
-    r26 = lbl_802F2108;
+    useCustomTexMtx = s_useCustomTexMtx;
     s_materialAlpha = node->alpha;
     lbl_802F20EC = node->unk50;
     g_customMaterialFunc = node->unk54;
     s_zModeCompareEnable = node->zCompEnable;
     s_zModeUpdateEnable = node->zUpdEnable;
     s_zModeCompareFunc = node->zCompFunc;
-    lbl_802F2108 = node->unk60;
-    if (node->unk60 != 0)
-        mathutil_mtx_copy(*node->unk64, lbl_802B4E6C);
-    r25 = usePostMultiplyTevStage;
-    usePostMultiplyTevStage = node->usePostMultiplyTevStage;
-    if (node->usePostMultiplyTevStage != 0)
+    s_useCustomTexMtx = node->useCustomTexMtx;
+    if (node->useCustomTexMtx != 0)
+        mathutil_mtx_copy(*node->texMtx, s_customTexMtx);
+    r25 = s_usePostMultiplyTevStage;
+    s_usePostMultiplyTevStage = node->s_usePostMultiplyTevStage;
+    if (node->s_usePostMultiplyTevStage != 0)
     {
         sp10 = s_postMultiplyColor;
         s_postMultiplyColor = node->unk68;
     }
-    r23 = usePostAddTevStage;
-    usePostAddTevStage = node->usePostAddTevStage;
-    if (node->usePostAddTevStage != 0)
+    r23 = s_usePostAddTevStage;
+    s_usePostAddTevStage = node->s_usePostAddTevStage;
+    if (node->s_usePostAddTevStage != 0)
     {
         spC = s_postAddColor;
         s_postAddColor = node->unk6C;
@@ -1201,34 +1206,34 @@ void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
     s_zModeCompareEnable = zModeCompareEnable;
     s_zModeUpdateEnable = zModeUpdateEnable;
     s_zModeCompareFunc = zModeCompareFunc;
-    lbl_802F2108 = r26;
-    usePostMultiplyTevStage = r25;
-    if (node->usePostMultiplyTevStage != 0)
+    s_useCustomTexMtx = useCustomTexMtx;
+    s_usePostMultiplyTevStage = r25;
+    if (node->s_usePostMultiplyTevStage != 0)
         s_postMultiplyColor = sp10;
-    usePostAddTevStage = r23;
-    if (node->usePostAddTevStage != 0)
+    s_usePostAddTevStage = r23;
+    if (node->s_usePostAddTevStage != 0)
         s_postAddColor = spC;
     s_fogEnabled = fogEnabled;
     s_materialAlpha = 1.0f;
 }
 
-u32 g_avdisp_set_some_tex_mtx_sel(u32 a)
+u32 avdisp_enable_custom_tex_mtx(u32 a)
 {
-    u32 old = lbl_802F2108;
-    lbl_802F2108 = a;
+    u32 old = s_useCustomTexMtx;
+    s_useCustomTexMtx = a;
     return old;
 }
 
-void g_avdisp_set_some_matrix(int unused, Mtx mtx)
+void avdisp_set_custom_tex_mtx(int unused, Mtx mtx)
 {
-    mathutil_mtx_copy(mtx, lbl_802B4E6C);
+    mathutil_mtx_copy(mtx, s_customTexMtx);
 }
 
 void avdisp_set_post_multiply_color(float r, float g, float b, float a)
 {
     if (r != 1.0f || g != 1.0f || b != 1.0f || a != 1.0f)
     {
-        usePostMultiplyTevStage = 1;
+        s_usePostMultiplyTevStage = 1;
         s_postMultiplyColor.r = r * 255.0f;
         s_postMultiplyColor.g = g * 255.0f;
         s_postMultiplyColor.b = b * 255.0f;
@@ -1236,7 +1241,7 @@ void avdisp_set_post_multiply_color(float r, float g, float b, float a)
     }
     else
     {
-        usePostMultiplyTevStage = 0;
+        s_usePostMultiplyTevStage = 0;
         s_postMultiplyColor.r = 255;
         s_postMultiplyColor.g = 255;
         s_postMultiplyColor.b = 255;
@@ -1248,7 +1253,7 @@ void avdisp_set_post_add_color(float r, float g, float b, float a)
 {
     if (r != 0.0f || g != 0.0f || b != 0.0f || a != 0.0f)
     {
-        usePostAddTevStage = 1;
+        s_usePostAddTevStage = 1;
         s_postAddColor.r = r * 255.0f;
         s_postAddColor.g = g * 255.0f;
         s_postAddColor.b = b * 255.0f;
@@ -1256,7 +1261,7 @@ void avdisp_set_post_add_color(float r, float g, float b, float a)
     }
     else
     {
-        usePostAddTevStage = 0;
+        s_usePostAddTevStage = 0;
         s_postAddColor.r = 0;
         s_postAddColor.g = 0;
         s_postAddColor.b = 0;
@@ -1517,19 +1522,11 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
     s_materialCache.unk0 = 1;
     if (model->flags & (GCMF_SKIN|GCMF_EFFECTIVE))
         shape = (struct GMAShape *)((u8 *)shape + 0x20);
-    if (lbl_802F2108 != 0)
-        GXLoadTexMtxImm(lbl_802B4E6C, GX_TEXMTX1, GX_MTX3x4);
+    if (s_useCustomTexMtx != 0)
+        GXLoadTexMtxImm(s_customTexMtx, GX_TEXMTX1, GX_MTX3x4);
     else
-        GXLoadTexMtxImm(lbl_802B4E9C, GX_TEXMTX1, GX_MTX3x4);
-    if (s_zModeUpdateEnable  != gxCache->updateEnable
-     || s_zModeCompareFunc   != gxCache->compareFunc
-     || s_zModeCompareEnable != gxCache->compareEnable)
-    {
-        GXSetZMode(s_zModeCompareEnable, s_zModeCompareFunc, s_zModeUpdateEnable);
-        gxCache->compareEnable = s_zModeCompareEnable;
-        gxCache->compareFunc   = s_zModeCompareFunc;
-        gxCache->updateEnable  = s_zModeUpdateEnable;
-    }
+        GXLoadTexMtxImm(s_identityTexMtx, GX_TEXMTX1, GX_MTX3x4);
+    GXSetZMode_cached(s_zModeCompareEnable, s_zModeCompareFunc, s_zModeUpdateEnable);
     if (s_fogEnabled != 0)
         GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     else
@@ -1564,9 +1561,9 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
     s_materialCache.num_ind_stages = -1;
     s_materialCache.postMultiplyTevStageIdx = 16;
     s_materialCache.postAddTevStageIdx = 16;
-    if (usePostMultiplyTevStage)
+    if (s_usePostMultiplyTevStage)
         GXSetTevKColor_cached(GX_KCOLOR2, s_postMultiplyColor);
-    if (usePostAddTevStage)
+    if (s_usePostAddTevStage)
         GXSetTevKColor_cached(GX_KCOLOR3, s_postAddColor);
     s_materialCache.blendSrcFactor = 4;
     s_materialCache.blendDstFactor = 5;
@@ -2246,7 +2243,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
         tevStageInfo = sp3C.unkC;
     }
     //lbl_800910F8
-    if (usePostMultiplyTevStage)
+    if (s_usePostMultiplyTevStage)
     {
         if (s_materialCache.postMultiplyTevStageIdx != tevStageInfo.tevStage)
         {
@@ -2256,7 +2253,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
         tevStageInfo.tevStage++;
     }
     //lbl_8009112C
-    if (usePostAddTevStage)
+    if (s_usePostAddTevStage)
     {
         if (s_materialCache.postAddTevStageIdx != tevStageInfo.tevStage)
         {

@@ -18,13 +18,8 @@
 
 // bss
 u8 lbl_801ED920[0x1240];  // unknown type
-GXRenderModeObj lbl_801EEB60;
 
 // .sbss
-
-BOOL lbl_802F1B58;
-void *lbl_802F1B54;
-void *lbl_802F1B50;
 struct NaomiModel *lbl_802F1B4C;
 void *dvdReadBuffer;
 void *lbl_802F1B44;
@@ -87,7 +82,7 @@ void main(void)
     g_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;
     lbl_802F1F40 = 1;
-    func_80011E1C();
+    g_reset_gamedata();
     func_80065C58();
     globalFrameCounter++;
     srand(OSGetTime());
@@ -97,30 +92,30 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(0);
 
-        perf_init_timer(4);
-        func_80026394();
-        preproc_main();
+        perf_start_timer(4);
+        g_bitmap_frame_reset();
+        beginframe_main();
         perfInfo.unk0 = perf_stop_timer(4);
 
         func_800ACA40();
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         sound_main();
-        perfInfo.unk4 = perf_stop_timer(4);
+        perfInfo.soundTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         input_main();
-        perfInfo.unk8 = perf_stop_timer(4);
+        perfInfo.inputTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         debug_main();
-        perfInfo.unkC = perf_stop_timer(4);
+        perfInfo.debugTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         load_main();
-        perfInfo.unk10 = perf_stop_timer(4);
+        perfInfo.loadTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         gm_main();
         perfInfo.unk14 = perf_stop_timer(4);
 
@@ -130,13 +125,13 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(1);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         chkstatus_main();
         perfInfo.unk18 = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         event_main();
-        perfInfo.unk1C = perf_stop_timer(4);
+        perfInfo.eventTime = perf_stop_timer(4);
 
         if (perfEnabled)
             PERFEventEnd(1);
@@ -144,30 +139,30 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(2);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         polydisp_main();
-        perfInfo.unk20 = perf_stop_timer(4);
+        perfInfo.polydispTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         bitmap_main();
-        perfInfo.unk24 = perf_stop_timer(4);
+        perfInfo.bitmapTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         window_main();
-        perfInfo.unk28 = perf_stop_timer(4);
+        perfInfo.windowTime = perf_stop_timer(4);
 
         if (perfEnabled)
             PERFEventEnd(2);
 
-        perf_init_timer(4);
-        epiproc_main();
-        perfInfo.unk2C = perf_stop_timer(4);
+        perf_start_timer(4);
+        gpwait_main();
+        perfInfo.gpwaitTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         syncwait_main();
         perfInfo.unk30 = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         shadowerase_main();
         perfInfo.unk34 = perf_stop_timer(4);
 

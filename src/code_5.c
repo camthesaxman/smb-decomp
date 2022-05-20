@@ -66,7 +66,7 @@ struct
 
 u8 lbl_801EEDA8[0x118];
 
-void func_80011E1C(void)
+void g_reset_gamedata(void)
 {
     u8 filler[8];
     int i;
@@ -135,7 +135,7 @@ void func_80011E1C(void)
     lbl_802F1BE8.unk4 = 0;
 }
 
-void func_80011F74(struct MemcardGameData *data)
+void g_store_gamedata(struct MemcardGameData *data)
 {
     int i;
 
@@ -202,7 +202,7 @@ void func_80011F74(struct MemcardGameData *data)
     data->unk5844.unk2BD = lbl_802F1BE8.unk4;
 }
 
-void func_80012170(struct MemcardGameData *data)
+void g_load_gamedata(struct MemcardGameData *data)
 {
     int i;
 

@@ -56,7 +56,7 @@ void event_main(void)
     func_8008D158(0x00FFFFEF);
     for (i = 0, event = eventInfo; i < ARRAY_COUNT(eventInfo); i++, event++)
     {
-        perf_init_timer(5);
+        perf_start_timer(5);
         switch (event->state)
         {
         case 1:

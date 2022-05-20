@@ -691,7 +691,7 @@ lbl_8005C290:
 /* 8005C2E4 00058204  48 02 98 A5 */	bl ord_tbl_alloc_node
 /* 8005C2E8 00058208  7C 78 1B 78 */	mr r24, r3
 /* 8005C2EC 0005820C  93 A3 00 04 */	stw r29, 4(r3)
-/* 8005C2F0 00058210  4B FC 60 E1 */	bl func_800223D0
+/* 8005C2F0 00058210  4B FC 60 E1 */	bl peek_light_group
 /* 8005C2F4 00058214  90 78 00 08 */	stw r3, 8(r24)
 /* 8005C2F8 00058218  38 78 00 10 */	addi r3, r24, 0x10
 /* 8005C2FC 0005821C  93 98 00 0C */	stw r28, 0xc(r24)
@@ -728,7 +728,7 @@ lbl_8005C348:
 /* 8005C368 00058288  48 02 98 21 */	bl ord_tbl_alloc_node
 /* 8005C36C 0005828C  7C 78 1B 78 */	mr r24, r3
 /* 8005C370 00058290  93 A3 00 04 */	stw r29, 4(r3)
-/* 8005C374 00058294  4B FC 60 5D */	bl func_800223D0
+/* 8005C374 00058294  4B FC 60 5D */	bl peek_light_group
 /* 8005C378 00058298  90 78 00 08 */	stw r3, 8(r24)
 /* 8005C37C 0005829C  38 7A 00 00 */	addi r3, r26, 0
 /* 8005C380 000582A0  38 98 00 00 */	addi r4, r24, 0
@@ -1283,14 +1283,14 @@ lbl_8005CB90:
 /* 8005CBB4 00058AD4  83 E3 00 9C */	lwz r31, 0x9c(r3)
 /* 8005CBB8 00058AD8  83 DD 00 0C */	lwz r30, 0xc(r29)
 /* 8005CBBC 00058ADC  80 7D 00 08 */	lwz r3, 8(r29)
-/* 8005CBC0 00058AE0  4B FC 58 19 */	bl func_800223D8
+/* 8005CBC0 00058AE0  4B FC 58 19 */	bl load_light_group_cached
 /* 8005CBC4 00058AE4  38 7F 00 64 */	addi r3, r31, 0x64
 /* 8005CBC8 00058AE8  4B FA A9 F5 */	bl mathutil_mtxA_from_translate
 /* 8005CBCC 00058AEC  38 60 00 00 */	li r3, 0
 /* 8005CBD0 00058AF0  80 8D 99 80 */	lwz r4, mathutilData@sda21(r13)
-/* 8005CBD4 00058AF4  48 03 2B 11 */	bl g_avdisp_set_some_matrix
+/* 8005CBD4 00058AF4  48 03 2B 11 */	bl avdisp_set_custom_tex_mtx
 /* 8005CBD8 00058AF8  38 60 00 01 */	li r3, 1
-/* 8005CBDC 00058AFC  48 03 2A F9 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 8005CBDC 00058AFC  48 03 2A F9 */	bl avdisp_enable_custom_tex_mtx
 /* 8005CBE0 00058B00  38 60 00 01 */	li r3, 1
 /* 8005CBE4 00058B04  38 80 00 03 */	li r4, 3
 /* 8005CBE8 00058B08  38 A0 00 00 */	li r5, 0
@@ -1310,7 +1310,7 @@ lbl_8005CB90:
 /* 8005CC20 00058B40  38 A0 00 01 */	li r5, 1
 /* 8005CC24 00058B44  48 03 19 A5 */	bl avdisp_set_z_mode
 /* 8005CC28 00058B48  38 60 00 00 */	li r3, 0
-/* 8005CC2C 00058B4C  48 03 2A A9 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 8005CC2C 00058B4C  48 03 2A A9 */	bl avdisp_enable_custom_tex_mtx
 /* 8005CC30 00058B50  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 8005CC34 00058B54  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 8005CC38 00058B58  83 C1 00 18 */	lwz r30, 0x18(r1)
@@ -1330,7 +1330,7 @@ lbl_8005CC4C:
 /* 8005CC6C 00058B8C  3B 63 00 00 */	addi r27, r3, 0
 /* 8005CC70 00058B90  80 63 00 08 */	lwz r3, 8(r3)
 /* 8005CC74 00058B94  83 C4 00 9C */	lwz r30, 0x9c(r4)
-/* 8005CC78 00058B98  4B FC 57 61 */	bl func_800223D8
+/* 8005CC78 00058B98  4B FC 57 61 */	bl load_light_group_cached
 /* 8005CC7C 00058B9C  80 1B 00 0C */	lwz r0, 0xc(r27)
 /* 8005CC80 00058BA0  1C 60 00 94 */	mulli r3, r0, 0x94
 /* 8005CC84 00058BA4  54 00 10 3A */	slwi r0, r0, 2
@@ -1417,10 +1417,10 @@ lbl_8005CCEC:
 /* 8005CDC4 00058CE4  4B FA A7 F9 */	bl mathutil_mtxA_from_translate
 /* 8005CDC8 00058CE8  38 60 00 00 */	li r3, 0
 /* 8005CDCC 00058CEC  80 8D 99 80 */	lwz r4, mathutilData@sda21(r13)
-/* 8005CDD0 00058CF0  48 03 29 15 */	bl g_avdisp_set_some_matrix
+/* 8005CDD0 00058CF0  48 03 29 15 */	bl avdisp_set_custom_tex_mtx
 /* 8005CDD4 00058CF4  4B FA AA 61 */	bl mathutil_mtxA_pop
 /* 8005CDD8 00058CF8  38 60 00 01 */	li r3, 1
-/* 8005CDDC 00058CFC  48 03 28 F9 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 8005CDDC 00058CFC  48 03 28 F9 */	bl avdisp_enable_custom_tex_mtx
 /* 8005CDE0 00058D00  80 1E 00 38 */	lwz r0, 0x38(r30)
 /* 8005CDE4 00058D04  28 00 00 00 */	cmplwi r0, 0
 /* 8005CDE8 00058D08  41 82 00 20 */	beq lbl_8005CE08
@@ -1462,7 +1462,7 @@ lbl_8005CE18:
 /* 8005CE70 00058D90  38 60 00 00 */	li r3, 0
 /* 8005CE74 00058D94  48 03 17 65 */	bl g_avdisp_set_some_func_1
 /* 8005CE78 00058D98  38 60 00 00 */	li r3, 0
-/* 8005CE7C 00058D9C  48 03 28 59 */	bl g_avdisp_set_some_tex_mtx_sel
+/* 8005CE7C 00058D9C  48 03 28 59 */	bl avdisp_enable_custom_tex_mtx
 /* 8005CE80 00058DA0  38 60 00 01 */	li r3, 1
 /* 8005CE84 00058DA4  38 80 00 03 */	li r4, 3
 /* 8005CE88 00058DA8  38 A0 00 01 */	li r5, 1

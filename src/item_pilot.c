@@ -354,7 +354,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
     {
         if (item->unk5E < 0
-         && (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11))))
+         && (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11)))
         {
             struct Struct8003C550 sp178;
 
@@ -370,7 +370,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             item->flags &= ~(1 << 1);
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
-            sp178.unk14 = currentBallStructPtr->unk2E;
+            sp178.unk14 = currentBallStructPtr->playerId;
             mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
             mathutil_mtxA_tf_point(&item->unk20, &sp178.unk34);
             mathutil_mtxA_tf_vec(&item->unk2C, &sp178.unk40);
@@ -394,13 +394,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             lbl_802F1FF4 = 15;
         g_play_sound(0x10B);
         g_play_sound(0x1C);
-        func_800B60F4(lbl_80206BD0[r31->unk2E], 1, 0x1C);
+        func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         b->unk1C.y += 0.92592592592592582;
         lbl_802F1FE0 = 0x78;
         lbl_802F1FD8 = 0.6f;
         memset(&spCC, 0, sizeof(spCC));
         spCC.unk8 = 0x27;
-        spCC.unk14 = r31->unk2E;
+        spCC.unk14 = r31->playerId;
         spCC.unk34.x = r31->pos.x;
         spCC.unk34.y = r31->pos.y - 1.0;
         spCC.unk34.z = r31->pos.z;
@@ -418,7 +418,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         g_play_sound(0x1C);
         if (lbl_802F1FF6 == 14)
             g_play_sound(0x16C);
-        func_800B60F4(lbl_80206BD0[r31->unk2E], 1, 0x1C);
+        func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         b->unk1C.y += 0.1388888888888889;
         b->unk1C.x += (rand() / 32767.0f) * 0.64814814814814814;
         b->unk1C.z += (rand() / 32767.0f) * 0.64814814814814814;
@@ -426,7 +426,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         lbl_802F1FDC = 1.0f;
         memset(&sp20, 0, sizeof(sp20));
         sp20.unk8 = 0x13;
-        sp20.unk14 = r31->unk2E;
+        sp20.unk14 = r31->playerId;
         sp20.unk34 = r31->pos;
         for (i = 0; i < 30; i++)
         {
@@ -441,13 +441,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subtype == 2)
     {
         g_play_sound(0x39);
-        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
+        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
             g_play_sound(0x2820);
     }
     else if (item->subtype == 0 || item->subtype == 1)
     {
         g_play_sound(3);
-        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
+        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
             g_play_sound(0x281F);
     }
 }

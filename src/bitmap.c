@@ -6,11 +6,11 @@
 #include "global.h"
 #include "bitmap.h"
 #include "event.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "sprite.h"
-#include "tevutil.h"
 
 struct TPL *g_unkBitmapTPL;
 s32 lbl_802F1D04;
@@ -85,8 +85,8 @@ void bitmap_draw(struct Bitmap *a);
 
 void bitmap_init(void)
 {
-    bitmap_load_group(0);
-    func_80026378(0);
+    bitmap_load_group(BMP_COM);
+    g_bitmap_set_some_tpl(0);
     currString = prevString = OSAlloc(0x800);
     if (prevString == NULL)
         OSPanic("bitmap.c", 120, "cannot OSAlloc");
@@ -240,18 +240,18 @@ void bitmap_free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void func_80026378(int grpId)
+void g_bitmap_set_some_tpl(enum BitmapGroupID grpId)
 {
     g_unkBitmapTPL = bitmapGroups[grpId].tpl;
 }
 
-void func_80026394(void)
+void g_bitmap_frame_reset(void)
 {
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 0;
 }
 
-void func_800263A4(void)
+void bitmap_init_tev(void)
 {
     GXColor green = { 0, 255, 0, 255 };
 
@@ -263,18 +263,54 @@ void func_800263A4(void)
     GXSetNumTexGens(1);
     GXSetNumTevStages_cached(1);
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009EA30(0, 0);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_MODULATE);
     GXSetTexCoordGen(
         GX_TEXCOORD0,  // dst_coord
         GX_TG_MTX2x4,  // func
         GX_TG_TEX0,  // src_param
         GX_IDENTITY);  // mtx
-    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
-    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
-    GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_C0, GX_CC_TEXC, GX_CC_C1);
-    GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_A0, GX_CA_TEXA, GX_CA_A1);
-    GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevOrder_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_TEXCOORD0,  // coord
+        GX_TEXMAP0,  // map
+        GX_COLOR_NULL);  // color
+    GXSetTevSwapMode_cached(
+        GX_TEVSTAGE0, // stage
+        GX_TEV_SWAP0,  // ras_sel
+        GX_TEV_SWAP0);  // tex_sel
+
+    // Set the TEV color and alpha calculations.
+    // The final color/alpha is computed from: a * (1 - c) + b * c op d
+    // final color (GX_TEVPREV) = tex color (GX_CC_TEXC) * reg 0 color (GX_CC_C0) + reg 1 color (GX_CC_C1)
+    GXSetTevColorIn_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_CC_ZERO,    // a - zero
+        GX_CC_C0,      // b - reg 0 color
+        GX_CC_TEXC,    // c - texture color
+        GX_CC_C1);     // d - reg 1 color
+    GXSetTevColorOp_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_TEV_ADD,  // op
+        GX_TB_ZERO,  // bias
+        GX_CS_SCALE_1,  // scale
+        GX_TRUE,  // clamp
+        GX_TEVPREV);  // out_reg
+    // final alpha (GX_TEVPREV) = tex alpha (GX_CA_TEXA) * reg 0 alpha (GX_CA_A0) + reg 1 alpha (GX_CA_A1)
+    GXSetTevAlphaIn_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_CA_ZERO,    // a - zero
+        GX_CA_A0,      // b - reg 0 alpha
+        GX_CA_TEXA,    // c - texture alpha
+        GX_CA_A1);     // d - reg 1 alpha
+    GXSetTevAlphaOp_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_TEV_ADD,  // op
+        GX_TB_ZERO,  // bias
+        GX_CS_SCALE_1,  // scale
+        GX_TRUE,  // clamp
+        GX_TEVPREV);  // out_reg
+
+    // Disable lighting
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -283,18 +319,9 @@ void func_800263A4(void)
         GX_LIGHT_NULL,  // light_mask
         GX_DF_CLAMP,  // diff_fn
         GX_AF_NONE);  // attn_fn
+
     GXSetTevColor(GX_TEVREG0, green);
-
-    if (gxCache->updateEnable != GX_ENABLE
-     || gxCache->compareFunc != GX_LESS
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LESS, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc = GX_LESS;
-        gxCache->updateEnable = GX_ENABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_LESS, GX_ENABLE);
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     {
         GXColor color = {0, 0, 0, 0};
@@ -310,16 +337,16 @@ void bitmap_main(void)
     Mtx m;
     struct Bitmap *bmp;
 
-    func_800263A4();
+    bitmap_init_tev();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    C_MTXPerspective(m, 60.0f, 1.33333333f, 0.1f, 20000.0f);
+    MTXPerspective(m, 60.0f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(m, GX_PERSPECTIVE);
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
         func_800700D8(0);
     GXGetProjectionv(projParams);
-    C_MTXOrtho(m, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
+    MTXOrtho(m, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
     GXSetProjection(m, GX_ORTHOGRAPHIC);
 
     bmp = bitmapList;
@@ -345,28 +372,10 @@ void bitmap_main(void)
     lbl_802F1D04 = 2;
     g_draw_all_naomi_sprites();  // again?
 
-    if (gxCache->updateEnable != GX_DISABLE
-     || gxCache->compareFunc != GX_ALWAYS
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc = GX_ALWAYS;
-        gxCache->updateEnable = GX_DISABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
     if (eventInfo[EVENT_MEMCARD].state == EV_STATE_RUNNING)
         memcard_draw_ui();
-
-    if (gxCache->updateEnable != GX_ENABLE
-     || gxCache->compareFunc != GX_LEQUAL
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc = GX_LEQUAL;
-        gxCache->updateEnable = GX_ENABLE;
-    }
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
     g_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
     func_8002F0E4();
@@ -485,7 +494,7 @@ void bitmap_draw_normal_char(unsigned char chr)
     struct FontParams *font = &fontInfo[currFont];
     float x = textX;
     float y = textY;
-    int var1 = chr - font->unk4;
+    int var1 = chr - font->firstChar;
     int var2 = var1 % font->unkC;
     int var3 = var1 / font->unkC;
     float f29;
@@ -494,12 +503,12 @@ void bitmap_draw_normal_char(unsigned char chr)
     float f26;
     GXColor tevColor;
 
-    f27 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].width;
-    f26 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].height;
+    f27 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].width;
+    f26 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].height;
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    GXLoadTexObj_cached(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], GX_TEXMAP0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texObjs[font->bmpId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = 255;
     tevColor.g = 255;

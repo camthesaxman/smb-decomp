@@ -68,7 +68,7 @@ SOURCES := \
 	src/init_2.c \
 	src/mathutil.c \
 	src/mode.c \
-	src/mode_2.c \
+	src/pause_menu.c \
 	src/event.c \
 	src/polydisp.c \
 	src/adv.c \
@@ -79,7 +79,7 @@ SOURCES := \
 	src/frustum.c \
 	src/light.c \
 	asm/code_0.s \
-	src/code_1.c \
+	src/gxsync.c \
 	src/info.c \
 	src/code_7.c \
 	src/input.c \
@@ -110,7 +110,7 @@ SOURCES := \
 	src/mathutil_vec_cross_prod.c \
 	asm/stcoli.s \
 	src/world.c \
-	asm/interp_anim.s \
+	src/interpolate_keyframes.c \
 	src/stage.c \
 	asm/stage.s \
 	asm/recplay.s \
@@ -143,8 +143,8 @@ SOURCES := \
 	src/item_pilot.c \
 	asm/stobj.s \
 	src/sprite.c \
-	src/code_8.c \
-	src/code_9.c \
+	src/textbox.c \
+	src/hud.c \
 	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \
@@ -161,7 +161,7 @@ SOURCES := \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
-	src/tevutil.c \
+	src/gxcache.c \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \

@@ -12,15 +12,15 @@ struct ControllerInfo controllerInfo[4];
 struct ControllerInfo lbl_801F3C60[4];
 u16 analogButtonInfo[4][5];
 s32 controllerRepeatCounts[4];
-u16 lbl_801F3D88[6];
-u16 lbl_801F3D94[6];
+u16 g_unkInputArr1[6];
+u16 g_unkInputArr2[6];
 
 FORCE_BSS_ORDER(controllerInfo);
 FORCE_BSS_ORDER(lbl_801F3C60);
 FORCE_BSS_ORDER(analogButtonInfo);
 FORCE_BSS_ORDER(controllerRepeatCounts);
-FORCE_BSS_ORDER(lbl_801F3D88);
-FORCE_BSS_ORDER(lbl_801F3D94);
+FORCE_BSS_ORDER(g_unkInputArr1);
+FORCE_BSS_ORDER(g_unkInputArr2);
 
 u32 lbl_802F1CD8;
 u32 lbl_802F1CD4;
@@ -473,8 +473,8 @@ void func_80025640(void)
 
     for (i = 0; i < 5; i++)
     {
-        lbl_801F3D88[i] = 0;
-        lbl_801F3D94[i] = 0;
+        g_unkInputArr1[i] = 0;
+        g_unkInputArr2[i] = 0;
     }
 
     switch (gameMode)
@@ -488,8 +488,8 @@ void func_80025640(void)
                 continue;
             for (j = 0; j < 5; j++)
             {
-                lbl_801F3D88[j] |= controllerInfo[i].unk0[j].button;
-                lbl_801F3D94[j] |= analogButtonInfo[i][j];
+                g_unkInputArr1[j] |= controllerInfo[i].unk0[j].button;
+                g_unkInputArr2[j] |= analogButtonInfo[i][j];
             }
         }
         break;
@@ -512,8 +512,8 @@ void func_80025640(void)
 
             for (j = 0; j < 5; j++)
             {
-                lbl_801F3D88[j] |= controllerInfo[lbl_80206BD0[i]].unk0[j].button;
-                lbl_801F3D94[j] |= analogButtonInfo[lbl_80206BD0[i]][j];
+                g_unkInputArr1[j] |= controllerInfo[lbl_80206BD0[i]].unk0[j].button;
+                g_unkInputArr2[j] |= analogButtonInfo[lbl_80206BD0[i]][j];
             }
         }
         break;
@@ -542,7 +542,7 @@ void handle_reset_input(PADStatus *pads)
         if (memcard_is_write_in_progress() != 0)
             return;
         func_800A4CEC();
-        epiproc_main();
+        gpwait_main();
         OSResetSystem(OS_RESET_HOTRESET, resetCode, FALSE);
         OSPanic("input.c", 472, "NANDEYANEN!?\n");
     }

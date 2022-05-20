@@ -5,12 +5,13 @@
 #include <dolphin/GXEnum.h>
 #include "global.h"
 #include "bitmap.h"
+#include "gxcache.h"
 #include "gxutil.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
-#include "tevutil.h"
 
 float fogEndZ;
 float fogStartZ;
@@ -382,7 +383,7 @@ struct UnkStruct18
 
 static void lbl_80033C8C(struct UnkStruct18 *);
 
-void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
+void nl2ngc_draw_model_sorted(struct NaomiModel *model)
 {
     u32 *temp;
 
@@ -417,7 +418,7 @@ void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
             r29->unk3C.r = lbl_801B7978.unk0.r;
             r29->unk3C.g = lbl_801B7978.unk0.g;
             r29->unk3C.b = lbl_801B7978.unk0.b;
-            r29->unk48 = func_800223D0();
+            r29->unk48 = peek_light_group();
             r29->unk4C.r = g_someAmbColor.r;
             r29->unk4C.g = g_someAmbColor.g;
             r29->unk4C.b = g_someAmbColor.b;
@@ -435,7 +436,7 @@ Mtx textureMatrix =
     {0,  0,  1,  0},
 };
 
-void g_draw_naomi_model_1(struct NaomiModel *model)
+void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
 {
     struct NaomiMesh *mesh;
 
@@ -517,7 +518,9 @@ struct UnkStruct19
 
 void lbl_80033E6C(struct UnkStruct19 *);
 
-void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alpha)
+// TODO: Can Naomi models have transparency besides a global parameter here? If not, consider naming
+// `nl2ngc_draw_model_translucent_sorted`
+void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
 {
     struct UnkStruct19 *node;
     struct OrdTblNode *entry;
@@ -549,7 +552,7 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
         node->unk3C.r = lbl_801B7978.unk0.r;
         node->unk3C.g = lbl_801B7978.unk0.g;
         node->unk3C.b = lbl_801B7978.unk0.b;
-        node->unk4C = func_800223D0();
+        node->unk4C = peek_light_group();
         node->ambColor.r = g_someAmbColor.r;
         node->ambColor.g = g_someAmbColor.g;
         node->ambColor.b = g_someAmbColor.b;
@@ -559,7 +562,7 @@ void g_draw_naomi_model_with_alpha_deferred(struct NaomiModel *model, float alph
     }
 }
 
-void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float alpha)
+void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
 {
     struct NaomiMesh *mesh;
 
@@ -630,12 +633,12 @@ void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float alpha)
 
 void func_80031764(struct NaomiModel *model)
 {
-    g_draw_naomi_model_and_do_other_stuff(model);
+    nl2ngc_draw_model_sorted(model);
 }
 
 void g_call_draw_naomi_model_1(struct NaomiModel *model)
 {
-    g_draw_naomi_model_1(model);
+    nl2ngc_draw_model_unsorted(model);
 }
 
 // unused stuff?
@@ -682,15 +685,7 @@ static void prep_some_stuff_before_drawing(void)
     lbl_80205DAC.unk7 = 4;
     lbl_80205DAC.unk8 = 0;
 
-    if ((!lbl_80205DAC.unk8) != gxCache->updateEnable
-     || gxCache->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
-        gxCache->updateEnable  = (!lbl_80205DAC.unk8);
-    }
+    GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
 
     if (g_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
@@ -769,15 +764,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
-        if ((!r26) != gxCache->updateEnable
-         || gxCache->compareFunc != naomiToGCCompare[r28]
-         || gxCache->compareEnable != GX_ENABLE)
-        {
-            GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
-            gxCache->compareEnable = GX_ENABLE;
-            gxCache->compareFunc   = naomiToGCCompare[r28];
-            gxCache->updateEnable  = (!r26);
-        }
+        GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[r28], (!r26));
         lbl_80205DAC.unk7 = r28;
         lbl_80205DAC.unk8 = r26;
     }
@@ -790,7 +777,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     if (mesh.unk20 < 0)
     {
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-        func_8009EA30(0, 4);
+        GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
     }
     else
     {
@@ -808,7 +795,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
-            func_8009EA30(0, 3);
+            GXSetTevOp_cached(GX_TEVSTAGE0, GX_REPLACE);
             break;
         case 1:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_ZERO);
@@ -1169,15 +1156,7 @@ static void prep_some_stuff_before_drawing_2(void)
     lbl_80205DAC.unk7 = 4;
     lbl_80205DAC.unk8 = 0;
 
-    if ((!lbl_80205DAC.unk8) != gxCache->updateEnable
-     || gxCache->compareFunc   != naomiToGCCompare[lbl_80205DAC.unk7]
-     || gxCache->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = naomiToGCCompare[lbl_80205DAC.unk7];
-        gxCache->updateEnable  = (!lbl_80205DAC.unk8);
-    }
+    GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
 
     if (g_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
@@ -1256,15 +1235,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     r26 = mesh.unk4 & 0x4000000;
     if (lbl_80205DAC.unk7 != r28 || lbl_80205DAC.unk8 != r26)
     {
-        if ((!r26) != gxCache->updateEnable
-         || gxCache->compareFunc != naomiToGCCompare[r28]
-         || gxCache->compareEnable != GX_ENABLE)
-        {
-            GXSetZMode(GX_ENABLE, naomiToGCCompare[r28], (!r26));
-            gxCache->compareEnable = GX_ENABLE;
-            gxCache->compareFunc   = naomiToGCCompare[r28];
-            gxCache->updateEnable  = (!r26);
-        }
+        GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[r28], (!r26));
         lbl_80205DAC.unk7 = r28;
         lbl_80205DAC.unk8 = r26;
     }
@@ -1277,7 +1248,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     if (mesh.unk20 < 0)
     {
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-        func_8009EA30(0, 4);
+        GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
     }
     else
     {
@@ -1500,25 +1471,25 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 
 void g_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
 {
-    g_draw_naomi_model_and_do_other_stuff(model);
+    nl2ngc_draw_model_sorted(model);
 }
 
 void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
 {
-    g_draw_naomi_model_1(model);
+    nl2ngc_draw_model_unsorted(model);
 }
 
 void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b)
 {
-    g_draw_naomi_model_with_alpha_deferred(model, b);
+    nl2ngc_draw_model_alpha_sorted(model, b);
 }
 
-void g_nl2ngc_set_light_mask(u32 lightMask)
+void nl2ngc_set_light_mask(u32 lightMask)
 {
     nlObjLightMask = lightMask;
 }
 
-void g_nl2ngc_set_ambient_color(float r, float g, float b)
+void nl2ngc_set_ambient(float r, float g, float b)
 {
     g_someAmbColor.r = r;
     g_someAmbColor.g = g;
@@ -1615,8 +1586,8 @@ static void lbl_80033C8C(struct UnkStruct18 *a)
     lbl_801B7978.unk0.b = a->unk3C.b;
     if (!(a->model->flags & (1 << 10)))
     {
-        func_800223D8(a->unk48);
-        g_nl2ngc_set_ambient_color(a->unk4C.r, a->unk4C.g, a->unk4C.b);
+        load_light_group_cached(a->unk48);
+        nl2ngc_set_ambient(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
     g_fogEnabled = a->unk58;
     g_draw_naomi_model_4(a->model);
@@ -1698,8 +1669,8 @@ void lbl_80033E6C(struct UnkStruct19 *a)
     lbl_80205DAC.alpha = a->alpha;
     if (!(a->model->flags & (1 << 10)))
     {
-        func_800223D8(a->unk4C);
-        g_nl2ngc_set_ambient_color(a->ambColor.r, a->ambColor.g, a->ambColor.b);
+        load_light_group_cached(a->unk4C);
+        nl2ngc_set_ambient(a->ambColor.r, a->ambColor.g, a->ambColor.b);
     }
     g_fogEnabled = a->unk5C;
     g_draw_naomi_model_5(a->model);

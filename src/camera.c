@@ -393,7 +393,7 @@ void func_80017FCC(void)
     mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C->matrices[3]);
     mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C->matrices[0]);
     mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C->matrices[4]);
-    C_MTXPerspective(sp1C, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
+    MTXPerspective(sp1C, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
     GXSetProjection(sp1C, 0);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
@@ -512,7 +512,7 @@ void camera_apply_viewport(int cameraId)
     lbl_802F1B3C->matrices[1][2][3] = 0.0f;
     if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && cameraId == 0)
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -521,7 +521,7 @@ void camera_apply_viewport(int cameraId)
     }
     else
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -577,7 +577,7 @@ void camera_apply_viewport_2(int cameraId)
     lbl_802F1B3C->matrices[1][2][3] = 0.0f;
     if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && cameraId == 0)
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -586,7 +586,7 @@ void camera_apply_viewport_2(int cameraId)
     }
     else
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -617,7 +617,7 @@ void func_800188D4(void)
     struct Camera *camera = &cameraInfo[0];
     Mtx projMtx;
 
-    C_MTXPerspective(
+    MTXPerspective(
         projMtx,
         S16_TO_DEGREES(camera->sub28.fov),
         camera->sub28.aspect,
@@ -1253,7 +1253,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (infoWork.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.unk0 > 0x78)
+            if (infoWork.unk1E == 1 && (g_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
                 camera->timerCurr--;
         }
 
@@ -1312,7 +1312,7 @@ void get_curr_stage_fly_in_position(struct Sphere *sphere)
         }
         ptr++;
     }
-    *sphere = stageBounds;
+    *sphere = stageBoundSphere;
     if (sphere->radius < 31.25)
         sphere->radius = 31.25f;
 }
@@ -1622,14 +1622,14 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_y(rand() & 0x7FFF);
     mathutil_mtxA_tf_vec(&sp30, &sp30);
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10,
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10,
         (0.75 + 0.25 * (rand() / 32767.0f)) * lbl_80250A68.unk10);
 
     camera->eye.x = sp10.unk0.x + sp30.x;
     camera->eye.y = sp10.unk0.y + sp30.y;
     camera->eye.z = sp10.unk0.z + sp30.z;
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, 0.0f);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, 0.0f);
 
     r29 = &sp30;
 
@@ -1653,7 +1653,7 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
 
     f31 = (lbl_80250A68.unk10 < 60.0f) ? lbl_80250A68.unk10 : 60.0f;
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10 - f31);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, lbl_80250A68.unk10 - f31);
 
     f3 = 1.0 / f31;
 
@@ -1701,13 +1701,13 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
 
     f31 = (0.25 * (rand() / 32767.0f)) * lbl_80250A68.unk10;
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, f31);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp30, f31);
 
     camera->eye.x = sp30.unk0.x + sp50.x;
     camera->eye.y = sp30.unk0.y + sp50.y;
     camera->eye.z = sp30.unk0.z + sp50.z;
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, 0.0f);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp30, 0.0f);
 
     r29 = &sp50;
 
@@ -1729,8 +1729,8 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     camera->eyeVel.y *= 0.1;
     camera->eyeVel.z *= 0.1;
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, f31);
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, 1.0 + f31);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp30, f31);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, 1.0 + f31);
 
     camera->eyeVel.x -= 0.6 * (sp30.unk0.x - sp10.unk0.x);
     camera->eyeVel.y -= 0.6 * (sp30.unk0.y - sp10.unk0.y);
@@ -1914,16 +1914,16 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     camera->unk26 = 4;
     camera->flags |= 4;
 
-    if ((controllerInfo[lbl_80206BD0[ball->unk2E]].unk0[0].button & PAD_BUTTON_A)
-     && (lbl_801F3D88[0] & PAD_BUTTON_A))
+    if ((controllerInfo[lbl_80206BD0[ball->playerId]].unk0[0].button & PAD_BUTTON_A)
+     && (g_unkInputArr1[0] & PAD_BUTTON_A))
     {
         camera->state = 48;
         cameraFuncs[camera->state](camera, ball);
         return;
     }
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp34, 0.0f);
-    goal = decodedStageLzPtr->goals[infoWork.unkC];
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp34, 0.0f);
+    goal = decodedStageLzPtr->goals[infoWork.goalEntered];
     if (infoWork.unkE > 0)
     {
         mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
@@ -1989,7 +1989,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 if (rand() & 1)
                     camera->unk54.x = -camera->unk54.x;
                 camera->unk60 = camera->unk54.y + 0.5 * (0.5 + (rand() / 32767.0f));
-                goalp = &decodedStageLzPtr->goals[infoWork.unkC];
+                goalp = &decodedStageLzPtr->goals[infoWork.goalEntered];
                 mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
                 mathutil_mtxA_translate(&goalp->pos);
                 mathutil_mtxA_rotate_z(goalp->rotZ);
@@ -2084,7 +2084,7 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.goalEntered];
     sp1C = goal->pos;
 
     if (infoWork.unkE > 0)
@@ -2140,7 +2140,7 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.goalEntered];
     sp10 = goal->pos;
 
     if (infoWork.unkE > 0)
@@ -2196,7 +2196,7 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.goalEntered];
     mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
     mathutil_mtxA_translate(&goal->pos);
     mathutil_mtxA_rotate_z(goal->rotZ);
@@ -2414,7 +2414,7 @@ void camera_func_33(struct Camera *camera, struct Ball *ball)
     camera->lookAt.y = ball->pos.y + 0.5;
     camera->lookAt.z = ball->pos.z;
 
-    r31 = ((modeCtrl.unk0 - 30) << 9);
+    r31 = ((modeCtrl.submodeTimer - 30) << 9);
     if (r31 < 0)
         r31 = 0;
     if (r31 < 0x2000)
@@ -2463,7 +2463,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     camera->lookAt.y += (ball->pos.y + 0.5 - camera->lookAt.y) * 0.5;
     camera->lookAt.z += (ball->pos.z - camera->lookAt.z) * 0.5;
 
-    r28 = ((modeCtrl.unk0 - 30) << 9);
+    r28 = ((modeCtrl.submodeTimer - 30) << 9);
     if (r28 < 0)
         r28 = 0;
     if (r28 < 0x2000)
@@ -2485,7 +2485,7 @@ void camera_func_34(struct Camera *camera, struct Ball *ball)
     sp28.y = ball->pos.y + 2.0 * (f31 / 10.0) + (float)r28 * -3.0517578125e-05;
     sp28.z = sp34.z + ball->pos.z;
 
-    if (modeCtrl.unk0 > 15)
+    if (modeCtrl.submodeTimer > 15)
     {
         camera->eyeVel.x += ((sp28.x - camera->eye.x) * 0.15 - camera->eyeVel.x) * 0.4;
         camera->eyeVel.y += ((sp28.y - camera->eye.y) * 0.15 - camera->eyeVel.y) * 0.4;
@@ -2779,7 +2779,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp10);
 
-    if (lbl_801F3D88[0] & PAD_BUTTON_A)
+    if (g_unkInputArr1[0] & PAD_BUTTON_A)
         camera->timerCurr += 2;
     else
         camera->timerCurr += 1;
@@ -2812,8 +2812,8 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
 
     camera->timerCurr = 0;
     r30 = &lbl_801EFB94[camera->unk204];
-    f31 = func_8004964C(lbl_80250A68.unk0[ball->unk2E]);
-    g_get_replay_info(lbl_80250A68.unk0[ball->unk2E], &r30->unk8);
+    f31 = func_8004964C(lbl_80250A68.unk0[ball->playerId]);
+    g_get_replay_info(lbl_80250A68.unk0[ball->playerId], &r30->unk8);
 
     statesLen = 0;
     states[statesLen] = 5;
@@ -2825,15 +2825,15 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
         statesLen++;
     }
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10);
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, 0.0f);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, lbl_80250A68.unk10);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp30, 0.0f);
     if (mathutil_vec_distance(&sp10.unk0, &sp30.unk0) < 16.0)
     {
         states[statesLen] = 7;
         statesLen++;
     }
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp30, lbl_80250A68.unk10 - 60.0);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp30, lbl_80250A68.unk10 - 60.0);
     if (mathutil_vec_distance(&sp10.unk0, &sp30.unk0) > 1.0 && lbl_80250A68.unk10 > 240.0)
     {
         states[statesLen] = 46;
@@ -2884,7 +2884,7 @@ void camera_func_demo(struct Camera *camera, struct Ball *ball)
     case 47:
         if (!(camera->timerCurr & 0x1F))
         {
-            func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, lbl_80250A68.unk10 - 60.0);
+            func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, lbl_80250A68.unk10 - 60.0);
             if (mathutil_vec_distance(&ball->pos, &sp10.unk0) < 0.5)
                 bvar = 1;
         }
@@ -2931,7 +2931,7 @@ void camera_func_46(struct Camera *camera, struct Ball *ball)
     camera->unk64 = (rand() / 32767.0f) * 2.0 + 0.3;
     camera->unk80 = camera->unk60 * ((rand() / 32767.0f) * 0.5 + 0.2);
     camera->unk80 = (camera->unk80 - camera->unk60) / lbl_80250A68.unk10;
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, camera->unk60);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, camera->unk60);
     camera->unk54 = sp10.unk0;
     camera->eye = sp10.unk0;
     camera->unk74.x = 0.0f;
@@ -2954,7 +2954,7 @@ void camera_func_47(struct Camera *camera, struct Ball *ball)
         return;
 
     camera->unk60 += camera->unk80;
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp10, camera->unk60);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, camera->unk60);
     f1 = mathutil_vec_distance(&ball->pos, &camera->eye);
     f31 = 2.0 - f1 * 0.125;
     if (f31 < 0.0)
@@ -3032,10 +3032,10 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
     camera->flags |= 4;
-    g_get_replay_info(lbl_80250A68.unk0[ball->unk2E], &sp34);
+    g_get_replay_info(lbl_80250A68.unk0[ball->playerId], &sp34);
 
     if (!(sp34.flags & 1)
-     || infoWork.unkC >= decodedStageLzPtr->goalsCount
+     || infoWork.goalEntered >= decodedStageLzPtr->goalsCount
      || infoWork.unkE >= decodedStageLzPtr->animGroupCount)
     {
         camera->unk10E = 0;
@@ -3049,7 +3049,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     else
     {
         camera->unk10E = infoWork.unkE;
-        camera->unk110 = infoWork.unkC;
+        camera->unk110 = infoWork.goalEntered;
 
         sp58 = decodedStageLzPtr->goals[camera->unk110].pos;
         mathutil_mtxA_from_mtx(animGroups[camera->unk10E].transform);
