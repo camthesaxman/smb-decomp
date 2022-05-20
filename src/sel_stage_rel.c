@@ -94,7 +94,7 @@ static void sel_stage_init(void)
     dummy_func_C90();
     func_800668A0();
     loadingStageId = infoWork.unk2E;
-    g_start_screen_fade(0, 0, 30);
+    start_screen_fade(FADE_IN, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
 

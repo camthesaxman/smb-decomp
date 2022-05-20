@@ -276,7 +276,7 @@ int file_preload(char *filename)
     if (entryNum < 0)
         return FALSE;
     if (loadQueueTail == loadQueueHead)
-        perf_init_timer(2);
+        perf_start_timer(2);
     return add_entrynum_to_load_queue(entryNum);
 }
 

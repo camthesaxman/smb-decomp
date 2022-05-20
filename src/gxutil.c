@@ -2,11 +2,11 @@
 
 #include "global.h"
 #include "background.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
-#include "tevutil.h"
 
 struct FogParams
 {
@@ -283,16 +283,7 @@ static void draw_line_deferred_callback(struct DrawLineDeferredNode *node)
 
     lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
-    if (GX_ENABLE != gxCache->updateEnable
-     || GX_LEQUAL != gxCache->compareFunc
-     || GX_ENABLE != gxCache->compareEnable)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = GX_LEQUAL;
-        gxCache->updateEnable  = GX_ENABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     c = node->color;
     GXLoadPosMtxImm(node->mtx, GX_PNMTX0);
     GXBegin(node->primType, GX_VTXFMT0, node->vtxCount);
@@ -370,7 +361,7 @@ void prepare_for_drawing_lines(void)
         GX_DF_CLAMP,  // diff_fn
         GX_AF_SPOT);  // attn_fn
     GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-    func_8009EA30(0, 4);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
     GXSetTevDirect(GX_TEVSTAGE0);
     GXSetNumTevStages_cached(1);
     GXSetNumTexGens(0);
@@ -386,16 +377,7 @@ static void draw_line_multicolor_deferred_callback(struct DrawLineMulticolorDefe
 
     lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
-    if (GX_ENABLE != gxCache->updateEnable
-     || GX_LEQUAL != gxCache->compareFunc
-     || GX_ENABLE != gxCache->compareEnable)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        gxCache->compareEnable = GX_ENABLE;
-        gxCache->compareFunc   = GX_LEQUAL;
-        gxCache->updateEnable  = GX_ENABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     GXLoadPosMtxImm(node->mtx, GX_PNMTX0);
     GXBegin(node->primType, GX_VTXFMT0, node->vtxCount);
     p = node->points;

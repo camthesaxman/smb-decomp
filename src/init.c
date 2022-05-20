@@ -4,12 +4,16 @@
 
 #include <dolphin/GXEnum.h>
 #include "global.h"
+#include "gxcache.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
-#include "tevutil.h"
 
-GXFifoObj lbl_801EEBA0;
+static void *lbl_802F1B50;
+static void *lbl_802F1B54;
+static BOOL extraMemPresent;
+static GXRenderModeObj adjustedRenderMode;
+static GXFifoObj secondFifoObj ATTRIBUTE_ALIGN(8);
 
 #pragma force_active on
 
@@ -24,7 +28,7 @@ void initialize(void)
     mathutil_init();
     init_dvd();
     init_tv();
-    init_heap();
+    init_heaps();
     init_vi();
     init_gx();
     init_gx_2();
@@ -34,23 +38,33 @@ void initialize(void)
     init_rel();
 }
 
+#define FIFO_SIZE 0x100000
+
 void init_gx(void)
 {
-    void *r31;
+    void *fifoBase;
 
-    gfxBufferInfo->fifos[0] = GXInit(OSAllocFromHeap(__OSCurrHeap, 0x100000), 0x100000);
-    gfxBufferInfo->fifos[1] = &lbl_801EEBA0;
-    r31 = OSAllocFromHeap(__OSCurrHeap, 0x100000);
-    GXInitFifoBase(gfxBufferInfo->fifos[1], r31, 0x100000);
-    GXInitFifoPtrs(gfxBufferInfo->fifos[1], r31, r31);
+    // Initialize a command FIFO
+    fifoBase = OSAllocFromHeap(__OSCurrHeap, FIFO_SIZE);
+    gfxBufferInfo->fifos[0] = GXInit(fifoBase, FIFO_SIZE);
+
+    // Set up another command FIFO for multi-buffering
+    gfxBufferInfo->fifos[1] = &secondFifoObj;
+    fifoBase = OSAllocFromHeap(__OSCurrHeap, FIFO_SIZE);
+    GXInitFifoBase(gfxBufferInfo->fifos[1], fifoBase, FIFO_SIZE);
+    GXInitFifoPtrs(gfxBufferInfo->fifos[1], fifoBase, fifoBase);
+
+    // Set viewport and scissor box to full screen size
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
+
+    // Set the EFB to XFB copy operation
     GXSetDispCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
     GXSetDispCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight);
     GXSetDispCopyYScale((float)currRenderMode->xfbHeight / (float)currRenderMode->efbHeight);
     GXSetCopyFilter(currRenderMode->aa, currRenderMode->sample_pattern, 1, currRenderMode->vfilter);
     GXSetPixelFmt(GX_PF_RGB8_Z24, GX_ZC_LINEAR);
-    GXCopyDisp(gfxBufferInfo->currFrameBuf, 1);
+    GXCopyDisp(gfxBufferInfo->currFrameBuf, GX_TRUE);
     GXSetDispCopyGamma(GX_GM_1_0);
 }
 
@@ -82,11 +96,11 @@ void init_tv(void)
         currRenderMode = &GXMpal480IntDf;
         break;
     default:
-        OSPanic("init.c", 0x8E, "init_system: invalid TV format\n");
+        OSPanic("init.c", 142, "init_system: invalid TV format\n");
         break;
     }
-    GXAdjustForOverscan(currRenderMode, &lbl_801EEB60, 0, 16);
-    currRenderMode = &lbl_801EEB60;
+    GXAdjustForOverscan(currRenderMode, &adjustedRenderMode, 0, 16);
+    currRenderMode = &adjustedRenderMode;
 }
 
 void init_vi(void)
@@ -96,7 +110,7 @@ void init_vi(void)
     gfxBufferInfo->currFrameBuf = gfxBufferInfo->frameBufs[1];
     VIFlush();
     VIWaitForRetrace();
-    if (currRenderMode->viTVmode & 1)
+    if ((currRenderMode->viTVmode & 1) != VI_INTERLACE)
         VIWaitForRetrace();
 }
 
@@ -105,7 +119,7 @@ void init_gx_2(void)
     Mtx44 mtx;
     GXColor clearColor = {0x00, 0x0A, 0x20, 0x00};
 
-    C_MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
+    MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
     GXSetProjection(mtx, GX_PERSPECTIVE);
     GXSetZCompLoc_cached(0);
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
@@ -126,7 +140,7 @@ void init_dvd(void)
 
 #define ROUND_UP_16(x) (((u32)(x) + 0xF) & ~0xF)
 
-void init_heap(void)
+void init_heaps(void)
 {
     u8 *arenaLo;
     u8 *arenaHi;
@@ -144,8 +158,8 @@ void init_heap(void)
 
     lbl_802F1B50 = arenaHi;
     lbl_802F1B54 = arenaHi;
-    lbl_802F1B58 = (memSize > 0x01800000);
-    if (lbl_802F1B58)
+    extraMemPresent = (memSize > 0x01800000);
+    if (extraMemPresent)
     {
         OSReport("\n===================================================\n\n");
         OSReport("  System memory exists more than 24MB. Clamp 24MB.\n");

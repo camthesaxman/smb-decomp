@@ -7,15 +7,16 @@
 #include <dolphin/GDLight.h>
 #include <dolphin/GXLighting.h>
 #include <dolphin/GXVert.h>
+
 #include "global.h"
+#include "gma.h"
+#include "gxcache.h"
 #include "gxutil.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "ord_tbl.h"
 #include "types.h"
-#include "tevutil.h"
-#include "gma.h"
-#include "light.h"
 
 struct UnkStruct4
 {
@@ -1525,15 +1526,7 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *shape)
         GXLoadTexMtxImm(s_customTexMtx, GX_TEXMTX1, GX_MTX3x4);
     else
         GXLoadTexMtxImm(s_identityTexMtx, GX_TEXMTX1, GX_MTX3x4);
-    if (s_zModeUpdateEnable  != gxCache->updateEnable
-     || s_zModeCompareFunc   != gxCache->compareFunc
-     || s_zModeCompareEnable != gxCache->compareEnable)
-    {
-        GXSetZMode(s_zModeCompareEnable, s_zModeCompareFunc, s_zModeUpdateEnable);
-        gxCache->compareEnable = s_zModeCompareEnable;
-        gxCache->compareFunc   = s_zModeCompareFunc;
-        gxCache->updateEnable  = s_zModeUpdateEnable;
-    }
+    GXSetZMode_cached(s_zModeCompareEnable, s_zModeCompareFunc, s_zModeUpdateEnable);
     if (s_fogEnabled != 0)
         GXSetFog_cached(s_fogType, s_fogStartZ, s_fogEndZ, 0.1f, 20000.0f, s_fogColor);
     else

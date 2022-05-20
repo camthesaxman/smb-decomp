@@ -4879,7 +4879,7 @@ draw_stage_preview:
 /* 80047DD0 00043CF0  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80047DD4 00043CF4  38 80 00 00 */	li r4, 0
 /* 80047DD8 00043CF8  48 09 C7 A9 */	bl GXLoadPosMtxImm
-/* 80047DDC 00043CFC  4B FD E5 C9 */	bl func_800263A4
+/* 80047DDC 00043CFC  4B FD E5 C9 */	bl bitmap_init_tev
 /* 80047DE0 00043D00  3C 60 80 20 */	lis r3, stagePreview@ha
 /* 80047DE4 00043D04  C0 22 8F E0 */	lfs f1, lbl_802F37E0@sda21(r2)
 /* 80047DE8 00043D08  C0 42 8F 68 */	lfs f2, lbl_802F3768@sda21(r2)

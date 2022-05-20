@@ -26,19 +26,11 @@
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 
-#define CHANGE_Z_MODE(updEnable, compFunc, compEnable) \
-do                                                     \
-{                                                      \
-    if (updEnable  != gxCache->updateEnable              \
-     || compFunc   != gxCache->compareFunc               \
-     || compEnable != gxCache->compareEnable)            \
-    {                                                  \
-        GXSetZMode(compEnable, compFunc, updEnable);   \
-        gxCache->compareEnable = compEnable;             \
-        gxCache->compareFunc   = compFunc;               \
-        gxCache->updateEnable  = updEnable;              \
-    }                                                  \
-} while (0)
+#ifdef __MWERKS__
+u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
+#else
+#define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
+#endif
 
 // intrinsics
 #ifndef __MWERKS__

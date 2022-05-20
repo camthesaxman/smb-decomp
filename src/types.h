@@ -92,121 +92,6 @@ struct TPL
 };
 // maybe bitmap.c has a different struct that "contains" TPL?
 
-// load.c
-struct ARAMBlock;
-
-struct PerfInfo
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
-    u32 unk18;
-    u32 unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    u32 unk2C;
-    u32 unk30;
-    u32 unk34;
-};
-
-typedef struct
-{
-    GXBlendMode type;
-    GXBlendFactor src_factor;
-    GXBlendFactor dst_factor;
-    GXLogicOp op;
-} GXTevBlendModeCache;
-
-typedef struct
-{
-    GXTevColorChan r;
-    GXTevColorChan g;
-    GXTevColorChan b;
-    GXTevColorChan a;
-} GXTevSwapModeTableCache;
-
-typedef struct
-{
-    GXTevSwapSel ras_sel;
-    GXTevSwapSel tex_sel;
-} GXTevswapModeSelCache;
-
-typedef struct
-{
-    GXFogType type;
-    float startz;
-    float endz;
-    float nearz;
-    float farz;
-    GXColor color;
-} GXFogCache;
-
-typedef struct
-{
-    s32 a;
-    s32 b;
-    s32 c;
-    s32 d;
-} GXTevInputCache;
-
-typedef struct {
-    GXTevOp op;
-    GXTevBias bias;
-    GXTevScale scale;
-    GXBool clamp;
-    GXTevRegID reg;
-} GXTevOpCache;
-
-typedef struct {
-    u16 width;
-    u16 height;
-} GXTexSize;
-
-typedef struct {
-    GXTexCoordID coord;
-    GXTexMapID map;
-    GXChannelID color;
-    GXTexSize texSize;
-} GXTevOrderCached;
-
-typedef struct {
-    u8 numTevStages;
-    GXColor colors[4];
-    u8 filler11[1];
-} GXTevKColorCached;
-
-struct GXCache
-{
-    /*0x000*/ GXBool compareEnable;
-    /*0x004*/ GXCompare compareFunc;
-    /*0x008*/ GXBool updateEnable;
-    /*0x009*/ u8 lineWidth;
-    /*0x00C*/ s32 texOffsets;
-    /*0x010*/ s32 cullMode;
-    /*0x014*/ GXTevBlendModeCache blendMode;
-    /*0x024*/ GXTevSwapModeTableCache swapModeTable[4];
-    /*0x064*/ GXTevswapModeSelCache swapModeSel[16];
-    /*0x0E4*/ GXFogCache fog;
-    /*0x0FC*/ GXBool colorUpdate;
-    /*0x0FD*/ GXBool alphaUpdate;
-    /*0x0FE*/ GXBool zCompare;
-    /*0x0FF*/ u8 unkFF;
-    /*0x100*/ GXTevInputCache colorInputs[16];
-    /*0x200*/ GXTevInputCache alphaInputs[16];
-    /*0x300*/ GXTevOpCache colorOperations[16];
-    /*0x440*/ GXTevOpCache alphaOperations[16];
-    /*0x580*/ GXTevOrderCached tevOrders[16];
-    /*0x680*/ s32 kColorSels[16];
-    /*0x6C0*/ s32 kAlphaSels[16];
-    /*0x700*/ GXTevKColorCached kColor;
-    /*0x712*/ GXTexSize texSizes[8];
-    /*0x732*/ u8 filler732[0x734-0x732];
-};
-
 struct GFXBufferInfo
 {
     /*0x00*/ void *currFrameBuf;
@@ -510,13 +395,13 @@ struct PhysicsBall
     u32 flags;
 
     // Current center position in animGroupId's local space
-    Point3d pos;     
+    Point3d pos;
 
     // Center position at end of previous frame in animGroupId's previous frame local space
-    Point3d prevPos; 
+    Point3d prevPos;
 
     // Current velocity in animGroupId's local space
-    Vec vel;         
+    Vec vel;
 
     float radius;
     float gravityAccel;
@@ -728,24 +613,36 @@ struct StageSelection
     s32 levelNum;
 };
 
+// Parameters for drawing a sprite to the screen
 struct NaomiSpriteParams
 {
-    /*0x00*/ s32 bmpId;
-    /*0x04*/ float x;
-    /*0x08*/ float y;
+    /*0x00*/ s32 bmpId;  // ID of bitmap image to use as texture
+
+    // Position
+    /*0x04*/ float x;  // position of sprite (0-640) from left edge of screen
+    /*0x08*/ float y;  // position of sprite (0-480) from top edge of screen
     /*0x0C*/ float z;
-    /*0x10*/ float zoomX;
-    /*0x14*/ float zoomY;
-    /*0x18*/ float u1;
-    /*0x1C*/ float v1;
-    /*0x20*/ float u2;
-    /*0x24*/ float v2;
-    /*0x28*/ s32 rotation;
-    /*0x2C*/ float alpha;
+
+    // Scale. The size of the sprite is this scale multiplied by the dimensions of the sprite's texture.
+    /*0x10*/ float scaleX;
+    /*0x14*/ float scaleY;
+
+    // Texture coordinates
+    /*0x18*/ float u1;  // x texture coordinate of left edge
+    /*0x1C*/ float v1;  // y texture coordinate of top edge
+    /*0x20*/ float u2;  // x texture coordinate of right edge
+    /*0x24*/ float v2;  // y texture coordinate of bottom edge
+
+    /*0x28*/ s32 rotation;  // counterclockwise rotation in units of 1/65536 turn
+    /*0x2C*/ float opacity;
     s32 unk30;
     /*0x34*/ u32 flags;
-    /*0x38*/ u32 color1;
-    /*0x3C*/ u32 color2;
+
+    // Color of sprite. The final color is computed by texColor * mulColor + addColor
+    /*0x38*/ u32 mulColor;  // RGBA color. Note: The alpha component of this color is ignored.
+                            // The above "opacity" field is used instead.
+    /*0x3C*/ u32 addColor;  // RGBA color
+
     u8 filler40[0x50-0x40];
 };
 
@@ -794,15 +691,15 @@ struct Struct802F1B4C
     u32 unk6C;
 };
 
-struct Struct801EEC68
+struct PauseMenuState
 {
     s32 unk0;
     u32 unk4;
     /*0x08*/ s32 selection;
     /*0x0C*/ s32 itemCount;
     /*0x10*/ s32 menuType;
-    s8 unk14;
-    s8 unk15;
+    /*0x14*/ s8 padId;  // controller that pressed start
+    /*0x15*/ s8 playerId;  // player who paused the game?
     s16 unk16;
 };
 
@@ -966,14 +863,6 @@ struct ModelLOD
     float distance;
 };
 
-struct Struct80290170
-{
-    s32 unk0;
-    u32 unk4;
-    s32 unk8;
-    s32 unkC;
-};
-
 struct Struct802C67D4
 {
     u8 filler0[4];
@@ -1037,7 +926,7 @@ enum
     SOT_NAMEENT_BTN,
 };
 
-struct Stobj 
+struct Stobj
 { /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
     s32 id;
     s16 g_some_id;

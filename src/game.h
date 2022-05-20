@@ -51,7 +51,7 @@ void func_80017140(void);
 // ? get_next_player();
 void g_init_player_data_1(void);
 void g_init_player_data_2(void);
-void func_80017708(int);
-BOOL func_80017720(void);
+void mark_player_finished(int);
+BOOL are_all_players_finished(void);
 
 #endif

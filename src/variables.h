@@ -526,9 +526,8 @@ extern GXRenderModeObj GXPal528IntDf;
 
 // .bss section
 extern u8 lbl_801ED920[];
-extern GXRenderModeObj lbl_801EEB60;
 
-extern struct Struct801EEC68 pauseMenuState;
+extern struct PauseMenuState pauseMenuState;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
 
@@ -548,7 +547,6 @@ extern struct BgLightInfo s_bgLightInfo;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
 
-extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
 // extern ? lbl_801F91B4;
 // extern ? lbl_801FD404;
@@ -613,7 +611,7 @@ extern struct
 // extern ? lbl_8028CF00;
 // extern ? textDrawInfo;
 // extern ? spriteInfo;
-extern struct Struct80290170 screenFadeInfo;
+extern struct ScreenFadeInfo screenFadeInfo;
 
 // extern ? lbl_80292C00;
 // extern ? lbl_80292C60;
@@ -1134,9 +1132,6 @@ extern void *lbl_802F1B40;
 extern void *lbl_802F1B44;
 extern void *dvdReadBuffer;
 extern struct NaomiModel *lbl_802F1B4C;
-extern void *lbl_802F1B50;
-extern void *lbl_802F1B54;
-extern BOOL lbl_802F1B58;
 extern struct MathutilData *mathutilData;
 // extern ? lbl_802F1B68;
 // extern ? lbl_802F1B6C;
@@ -1160,39 +1155,10 @@ extern s32 lbl_802F1C1C;
 extern s32 lbl_802F1C20;
 extern s8 lbl_802F1C24;
 extern s8 lbl_802F1C25;
-// extern ? lbl_802F1C28;
-extern s16 lbl_802F1C30;
-extern s8 lbl_802F1C32;
-extern s32 g_cameraId2;
-extern void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
-extern struct Camera *currentCameraStructPtr;
-extern s32 g_cameraId1;
-extern s32 s_lightPoolSize;
-extern s32 g_someLGIdx;
-extern s8 s_lightGroupStackPos;
-extern float g_minimap_light_ref_dist_scale;
-extern s32 s_g_lightPerfTimer;
-extern s32 s_numLightObjsLoaded;
-extern s32 lbl_802F1C60;
-extern s32 lbl_802F1C64;
-extern s32 lbl_802F1C68;
-// extern ? lbl_802F1C6C;
-// extern ? lbl_802F1C74;
-// extern ? lbl_802F1C75;
-extern s32 s_g_lightGroupsInitialized;
-extern s32 lightingStageId;
-extern s32 lbl_802F1C80;
-extern s32 lbl_802F1C84;
-extern s32 g_printLight;
-extern s32 lbl_802F1C8C;
-// extern ? lbl_802F1C90;
-extern s32 g_lightToPrint;
-extern s32 s_currLightGroup;
+
 // extern ? drawingFinished;
 extern struct GFXBufferInfo *gfxBufferInfo;
-extern s32 lbl_802F1CA8;
-// extern ? lbl_802F1CAC;
-// extern ? lbl_802F1CB0;
+
 extern struct GMA *minigameGma;
 // extern ? minigameTpl;
 extern struct GMA *decodedBgGma;
@@ -1204,6 +1170,8 @@ extern u8 lbl_802F1CD1;
 extern u8 lbl_802F1CD2;
 extern u32 lbl_802F1CD4;
 extern u32 lbl_802F1CD8;
+
+extern s8 lbl_802F1C32;
 
 // extern ? lbl_802F1D30;
 // extern ? lbl_802F1D38;
@@ -1284,7 +1252,7 @@ extern s32 lbl_802F1DFC;
 // extern ? lbl_802F1E51;
 // extern ? lbl_802F1E54;
 // extern ? lbl_802F1E58;
-extern s32 lbl_802F1EA8;
+// extern ? lbl_802F1EA8;
 extern s32 lbl_802F1EB0;
 extern s32 lbl_802F1EB4;
 extern float lbl_802F1EC4;
