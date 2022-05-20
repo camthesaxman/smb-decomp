@@ -58,7 +58,7 @@ lbl_8003DB74:
 /* 8003DB7C 00039A9C  41 82 00 10 */	beq lbl_8003DB8C
 /* 8003DB80 00039AA0  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DB84 00039AA4  38 9E 00 00 */	addi r4, r30, 0
-/* 8003DB88 00039AA8  48 00 44 79 */	bl tf_physball_to_itemgroup_space
+/* 8003DB88 00039AA8  48 00 44 79 */	bl tf_physball_to_anim_group_space
 lbl_8003DB8C:
 /* 8003DB8C 00039AAC  C0 3C 00 04 */	lfs f1, 4(r28)
 /* 8003DB90 00039AB0  7F E3 FB 78 */	mr r3, r31
@@ -165,7 +165,7 @@ lbl_8003DCD0:
 /* 8003DCE4 00039C04  41 82 00 10 */	beq lbl_8003DCF4
 /* 8003DCE8 00039C08  38 7C 00 00 */	addi r3, r28, 0
 /* 8003DCEC 00039C0C  38 80 00 00 */	li r4, 0
-/* 8003DCF0 00039C10  48 00 43 11 */	bl tf_physball_to_itemgroup_space
+/* 8003DCF0 00039C10  48 00 43 11 */	bl tf_physball_to_anim_group_space
 lbl_8003DCF4:
 /* 8003DCF4 00039C14  80 8D 9D 64 */	lwz r4, dynamicStageParts@sda21(r13)
 /* 8003DCF8 00039C18  28 04 00 00 */	cmplwi r4, 0
@@ -2266,8 +2266,8 @@ raycast_stage_down:
 /* 8003FB78 0003BA98  3B 60 00 00 */	li r27, 0
 /* 8003FB7C 0003BA9C  3F E0 43 30 */	lis r31, 0x4330
 /* 8003FB80 0003BAA0  90 04 00 00 */	stw r0, 0(r4)
-/* 8003FB84 0003BAA4  3C 80 80 20 */	lis r4, itemgroups@ha
-/* 8003FB88 0003BAA8  38 04 6E 48 */	addi r0, r4, itemgroups@l
+/* 8003FB84 0003BAA4  3C 80 80 20 */	lis r4, animGroups@ha
+/* 8003FB88 0003BAA8  38 04 6E 48 */	addi r0, r4, animGroups@l
 /* 8003FB8C 0003BAAC  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8003FB90 0003BAB0  7C 1E 03 78 */	mr r30, r0
 /* 8003FB94 0003BAB4  CB E2 8E 18 */	lfd f31, lbl_802F3618-_SDA2_BASE_(r2)
@@ -2610,11 +2610,11 @@ lbl_80040054:
 /* 80040068 0003BF88  2C 1A 00 00 */	cmpwi r26, 0
 /* 8004006C 0003BF8C  40 81 00 88 */	ble lbl_800400F4
 /* 80040070 0003BF90  C0 18 00 04 */	lfs f0, 4(r24)
-/* 80040074 0003BF94  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 80040074 0003BF94  3C 60 80 20 */	lis r3, animGroups@ha
 /* 80040078 0003BF98  1C 9A 00 84 */	mulli r4, r26, 0x84
 /* 8004007C 0003BF9C  D0 01 00 30 */	stfs f0, 0x30(r1)
 /* 80040080 0003BFA0  C0 18 00 08 */	lfs f0, 8(r24)
-/* 80040084 0003BFA4  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 80040084 0003BFA4  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 80040088 0003BFA8  7F C0 22 14 */	add r30, r0, r4
 /* 8004008C 0003BFAC  D0 01 00 34 */	stfs f0, 0x34(r1)
 /* 80040090 0003BFB0  38 7E 00 24 */	addi r3, r30, 0x24
@@ -4073,8 +4073,8 @@ g_draw_stage_collision:
 /* 800415CC 0003D4EC  38 63 00 30 */	addi r3, r3, 0x30
 /* 800415D0 0003D4F0  4B FC 64 4D */	bl mathutil_mtx_copy
 /* 800415D4 0003D4F4  80 6D 9D 50 */	lwz r3, decodedStageLzPtr@sda21(r13)
-/* 800415D8 0003D4F8  3C 80 80 20 */	lis r4, itemgroups@ha
-/* 800415DC 0003D4FC  38 04 6E 48 */	addi r0, r4, itemgroups@l
+/* 800415D8 0003D4F8  3C 80 80 20 */	lis r4, animGroups@ha
+/* 800415DC 0003D4FC  38 04 6E 48 */	addi r0, r4, animGroups@l
 /* 800415E0 0003D500  CB E2 8E 18 */	lfd f31, lbl_802F3618-_SDA2_BASE_(r2)
 /* 800415E4 0003D504  83 83 00 0C */	lwz r28, 0xc(r3)
 /* 800415E8 0003D508  7C 1D 03 78 */	mr r29, r0
@@ -4227,7 +4227,7 @@ lbl_800417F0:
 /* 800417F4 0003D714  4B FE F3 B5 */	bl g_nl2ngc_set_scale
 /* 800417F8 0003D718  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800417FC 0003D71C  80 63 00 B8 */	lwz r3, 0xb8(r3)
-/* 80041800 0003D720  4B FE FA 11 */	bl g_draw_naomi_model_and_do_other_stuff
+/* 80041800 0003D720  4B FE FA 11 */	bl nl2ngc_draw_model_sorted
 /* 80041804 0003D724  3B 39 FF FF */	addi r25, r25, -1
 /* 80041808 0003D728  3B 5A 00 20 */	addi r26, r26, 0x20
 lbl_8004180C:
@@ -4250,7 +4250,7 @@ lbl_80041820:
 /* 80041848 0003D768  4B FE F3 61 */	bl g_nl2ngc_set_scale
 /* 8004184C 0003D76C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80041850 0003D770  80 63 00 C0 */	lwz r3, 0xc0(r3)
-/* 80041854 0003D774  4B FE F9 BD */	bl g_draw_naomi_model_and_do_other_stuff
+/* 80041854 0003D774  4B FE F9 BD */	bl nl2ngc_draw_model_sorted
 /* 80041858 0003D778  3B 5A FF FF */	addi r26, r26, -1
 /* 8004185C 0003D77C  3B 39 00 14 */	addi r25, r25, 0x14
 lbl_80041860:
@@ -4286,7 +4286,7 @@ lbl_800418C8:
 /* 800418C8 0003D7E8  4B FE F2 E1 */	bl g_nl2ngc_set_scale
 /* 800418CC 0003D7EC  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800418D0 0003D7F0  80 63 00 BC */	lwz r3, 0xbc(r3)
-/* 800418D4 0003D7F4  4B FE F9 3D */	bl g_draw_naomi_model_and_do_other_stuff
+/* 800418D4 0003D7F4  4B FE F9 3D */	bl nl2ngc_draw_model_sorted
 /* 800418D8 0003D7F8  3B 5A FF FF */	addi r26, r26, -1
 /* 800418DC 0003D7FC  3B 39 00 1C */	addi r25, r25, 0x1c
 lbl_800418E0:
@@ -4545,7 +4545,7 @@ lbl_80041C94:
 /* 80041C94 0003DBB4  4B FE EF 15 */	bl g_nl2ngc_set_scale
 /* 80041C98 0003DBB8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80041C9C 0003DBBC  80 63 00 28 */	lwz r3, 0x28(r3)
-/* 80041CA0 0003DBC0  4B FE F5 71 */	bl g_draw_naomi_model_and_do_other_stuff
+/* 80041CA0 0003DBC0  4B FE F5 71 */	bl nl2ngc_draw_model_sorted
 /* 80041CA4 0003DBC4  80 01 00 54 */	lwz r0, 0x54(r1)
 /* 80041CA8 0003DBC8  83 E1 00 4C */	lwz r31, 0x4c(r1)
 /* 80041CAC 0003DBCC  38 21 00 50 */	addi r1, r1, 0x50
@@ -4774,8 +4774,8 @@ stcoli_sub31:
 /* 80041FF8 0003DF18  38 21 00 18 */	addi r1, r1, 0x18
 /* 80041FFC 0003DF1C  4E 80 00 20 */	blr
 
-.global tf_physball_to_itemgroup_space
-tf_physball_to_itemgroup_space:
+.global tf_physball_to_anim_group_space
+tf_physball_to_anim_group_space:
 /* 80042000 0003DF20  7C 08 02 A6 */	mflr r0
 /* 80042004 0003DF24  90 01 00 04 */	stw r0, 4(r1)
 /* 80042008 0003DF28  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -4791,8 +4791,8 @@ tf_physball_to_itemgroup_space:
 /* 80042030 0003DF50  1C 80 00 84 */	mulli r4, r0, 0x84
 /* 80042034 0003DF54  C0 1D 00 10 */	lfs f0, 0x10(r29)
 /* 80042038 0003DF58  EC 01 00 28 */	fsubs f0, f1, f0
-/* 8004203C 0003DF5C  3C 60 80 20 */	lis r3, itemgroups@ha
-/* 80042040 0003DF60  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 8004203C 0003DF5C  3C 60 80 20 */	lis r3, animGroups@ha
+/* 80042040 0003DF60  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 80042044 0003DF64  7F E0 22 14 */	add r31, r0, r4
 /* 80042048 0003DF68  D0 01 00 10 */	stfs f0, 0x10(r1)
 /* 8004204C 0003DF6C  38 7F 00 24 */	addi r3, r31, 0x24
@@ -4847,11 +4847,11 @@ lbl_8004210C:
 /* 8004210C 0003E02C  2C 1E 00 00 */	cmpwi r30, 0
 /* 80042110 0003E030  40 81 00 E4 */	ble lbl_800421F4
 /* 80042114 0003E034  C0 3D 00 04 */	lfs f1, 4(r29)
-/* 80042118 0003E038  3C 60 80 20 */	lis r3, itemgroups@ha
+/* 80042118 0003E038  3C 60 80 20 */	lis r3, animGroups@ha
 /* 8004211C 0003E03C  C0 1D 00 10 */	lfs f0, 0x10(r29)
 /* 80042120 0003E040  1C 9E 00 84 */	mulli r4, r30, 0x84
 /* 80042124 0003E044  EC 01 00 28 */	fsubs f0, f1, f0
-/* 80042128 0003E048  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 80042128 0003E048  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 8004212C 0003E04C  7F E0 22 14 */	add r31, r0, r4
 /* 80042130 0003E050  D0 01 00 10 */	stfs f0, 0x10(r1)
 /* 80042134 0003E054  38 7F 00 24 */	addi r3, r31, 0x24
@@ -4941,7 +4941,7 @@ lbl_80042260:
 /* 80042268 0003E188  41 82 00 10 */	beq lbl_80042278
 /* 8004226C 0003E18C  38 7B 00 00 */	addi r3, r27, 0
 /* 80042270 0003E190  38 9D 00 00 */	addi r4, r29, 0
-/* 80042274 0003E194  4B FF FD 8D */	bl tf_physball_to_itemgroup_space
+/* 80042274 0003E194  4B FF FD 8D */	bl tf_physball_to_anim_group_space
 lbl_80042278:
 /* 80042278 0003E198  80 1E 00 20 */	lwz r0, 0x20(r30)
 /* 8004227C 0003E19C  38 60 00 00 */	li r3, 0
@@ -5099,7 +5099,7 @@ lbl_80042488:
 /* 80042490 0003E3B0  41 82 00 10 */	beq lbl_800424A0
 /* 80042494 0003E3B4  38 7B 00 00 */	addi r3, r27, 0
 /* 80042498 0003E3B8  38 9D 00 00 */	addi r4, r29, 0
-/* 8004249C 0003E3BC  4B FF FB 65 */	bl tf_physball_to_itemgroup_space
+/* 8004249C 0003E3BC  4B FF FB 65 */	bl tf_physball_to_anim_group_space
 lbl_800424A0:
 /* 800424A0 0003E3C0  80 1E 00 20 */	lwz r0, 0x20(r30)
 /* 800424A4 0003E3C4  38 60 00 00 */	li r3, 0
@@ -5206,7 +5206,7 @@ lbl_80042604:
 /* 8004260C 0003E52C  41 82 00 10 */	beq lbl_8004261C
 /* 80042610 0003E530  38 7B 00 00 */	addi r3, r27, 0
 /* 80042614 0003E534  38 9D 00 00 */	addi r4, r29, 0
-/* 80042618 0003E538  4B FF F9 E9 */	bl tf_physball_to_itemgroup_space
+/* 80042618 0003E538  4B FF F9 E9 */	bl tf_physball_to_anim_group_space
 lbl_8004261C:
 /* 8004261C 0003E53C  80 1E 00 20 */	lwz r0, 0x20(r30)
 /* 80042620 0003E540  38 60 00 00 */	li r3, 0
@@ -5308,7 +5308,7 @@ lbl_80042760:
 /* 80042778 0003E698  41 82 00 10 */	beq lbl_80042788
 /* 8004277C 0003E69C  38 7B 00 00 */	addi r3, r27, 0
 /* 80042780 0003E6A0  38 80 00 00 */	li r4, 0
-/* 80042784 0003E6A4  4B FF F8 7D */	bl tf_physball_to_itemgroup_space
+/* 80042784 0003E6A4  4B FF F8 7D */	bl tf_physball_to_anim_group_space
 lbl_80042788:
 /* 80042788 0003E6A8  BB 21 00 64 */	lmw r25, 0x64(r1)
 /* 8004278C 0003E6AC  80 01 00 94 */	lwz r0, 0x94(r1)
@@ -5335,8 +5335,8 @@ stcoli_sub34:
 /* 800427D4 0003E6F4  2C 00 00 00 */	cmpwi r0, 0
 /* 800427D8 0003E6F8  40 81 00 28 */	ble lbl_80042800
 /* 800427DC 0003E6FC  1C 80 00 84 */	mulli r4, r0, 0x84
-/* 800427E0 0003E700  3C 60 80 20 */	lis r3, itemgroups@ha
-/* 800427E4 0003E704  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 800427E0 0003E700  3C 60 80 20 */	lis r3, animGroups@ha
+/* 800427E4 0003E704  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 800427E8 0003E708  7C 60 22 14 */	add r3, r0, r4
 /* 800427EC 0003E70C  38 63 00 24 */	addi r3, r3, 0x24
 /* 800427F0 0003E710  4B FC 50 C1 */	bl mathutil_mtxA_from_mtx
@@ -5347,8 +5347,8 @@ lbl_80042800:
 /* 80042800 0003E720  2C 1F 00 00 */	cmpwi r31, 0
 /* 80042804 0003E724  40 81 00 28 */	ble lbl_8004282C
 /* 80042808 0003E728  1C 9F 00 84 */	mulli r4, r31, 0x84
-/* 8004280C 0003E72C  3C 60 80 20 */	lis r3, itemgroups@ha
-/* 80042810 0003E730  38 03 6E 48 */	addi r0, r3, itemgroups@l
+/* 8004280C 0003E72C  3C 60 80 20 */	lis r3, animGroups@ha
+/* 80042810 0003E730  38 03 6E 48 */	addi r0, r3, animGroups@l
 /* 80042814 0003E734  7C 60 22 14 */	add r3, r0, r4
 /* 80042818 0003E738  38 63 00 24 */	addi r3, r3, 0x24
 /* 8004281C 0003E73C  4B FC 50 95 */	bl mathutil_mtxA_from_mtx
@@ -5436,7 +5436,7 @@ lbl_80042924:
 /* 80042940 0003E860  41 82 00 10 */	beq lbl_80042950
 /* 80042944 0003E864  38 7A 00 00 */	addi r3, r26, 0
 /* 80042948 0003E868  38 9D 00 00 */	addi r4, r29, 0
-/* 8004294C 0003E86C  4B FF F6 B5 */	bl tf_physball_to_itemgroup_space
+/* 8004294C 0003E86C  4B FF F6 B5 */	bl tf_physball_to_anim_group_space
 lbl_80042950:
 /* 80042950 0003E870  80 1E 00 20 */	lwz r0, 0x20(r30)
 /* 80042954 0003E874  38 60 00 00 */	li r3, 0
@@ -5615,7 +5615,7 @@ lbl_80042B98:
 /* 80042BAC 0003EACC  41 82 00 10 */	beq lbl_80042BBC
 /* 80042BB0 0003EAD0  38 7A 00 00 */	addi r3, r26, 0
 /* 80042BB4 0003EAD4  38 80 00 00 */	li r4, 0
-/* 80042BB8 0003EAD8  4B FF F4 49 */	bl tf_physball_to_itemgroup_space
+/* 80042BB8 0003EAD8  4B FF F4 49 */	bl tf_physball_to_anim_group_space
 lbl_80042BBC:
 /* 80042BBC 0003EADC  BB 21 00 44 */	lmw r25, 0x44(r1)
 /* 80042BC0 0003EAE0  80 01 00 6C */	lwz r0, 0x6c(r1)
@@ -5865,8 +5865,8 @@ lbl_802F1F40:
 .global dynamicStageParts
 dynamicStageParts:
 	.skip 0x4
-.global itemgroupCount
-itemgroupCount:
+.global animGroupCount
+animGroupCount:
 	.skip 0x4
 .global lbl_802F1F4C
 lbl_802F1F4C:

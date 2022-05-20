@@ -147,18 +147,18 @@ void ev_item_init(void)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MINI_FIGHT:
-        if (func_800672D0(currStageId) != 0)
-            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
+        if (is_bonus_stage(currStageId) != 0)
+            make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     case GAMETYPE_MAIN_COMPETITION:
-        if (func_800672D0(currStageId) != 0
+        if (is_bonus_stage(currStageId) != 0
          || gameMode == MD_SEL
          || (modeCtrl.levelSetFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
-            make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
+            make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     default:
-        make_stage_bananas(decodedStageLzPtr->itemgroups, decodedStageLzPtr->itemgroupCount);
+        make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     }
 }
@@ -215,21 +215,21 @@ void item_draw(void)
     int r31;
     struct Item *item;
     s8 *r29;
-    int r28 = -1;
+    int animGrpId = -1;
 
     mathutil_mtx_copy(mathutilData->mtxB, sp8);
     r29 = spritePoolInfo.unk1C;
     item = itemInfo;
     for (r31 = spritePoolInfo.unk18; r31 > 0; r31--, r29++, item++)
     {
-        if (*r29 != 0 && !(item->unk8 & 1))
+        if (*r29 != 0 && !(item->flags & ITEM_FLAG_INVISIBLE))
         {
-            if (r28 != item->attachedTo)
+            if (animGrpId != item->attachedTo)
             {
                 mathutil_mtxA_from_mtx(sp8);
-                mathutil_mtxA_mult_right(itemgroups[item->attachedTo].transform);
+                mathutil_mtxA_mult_right(animGroups[item->attachedTo].transform);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
-                r28 = item->attachedTo;
+                animGrpId = item->attachedTo;
             }
             itemDrawFuncs[item->type](item);
         }
@@ -258,7 +258,7 @@ int func_80068474(struct Item *a)
     lbl_802F1FC8++;
     if (lbl_802F1FC8 < 0)
         lbl_802F1FC8 = 0;
-    if (r31->unk8 & (1 << 5))
+    if (r31->flags & (1 << 5))
     {
         r31->unk64 = 0;
         r31->unk88 = 0.0f;
@@ -266,18 +266,18 @@ int func_80068474(struct Item *a)
     return r31->unk2;
 }
 
-void func_800685C4(void)
+void item_draw_shadows(void)
 {
     int r28;
     struct Item *item;
     s8 *r26;
-    int r25 = 0;
-    int r23;
+    int animGrpId = 0;
+    int onStage;
     float f2;
     float f1;
-    struct RaycastHit sp58;
+    struct RaycastHit hit;
     Vec sp4C;
-    Vec sp40;
+    Vec pos;
     struct Struct8009492C sp8;
 
     r26 = spritePoolInfo.unk1C;
@@ -285,27 +285,27 @@ void func_800685C4(void)
     for (r28 = spritePoolInfo.unk18; r28 > 0; r28--, r26++, item++)
     {
         if (*r26 == 0
-         || !(item->unk8 & (1 << 5))
-         || (item->unk8 & 1))
+         || !(item->flags & (1 << 5))
+         || (item->flags & ITEM_FLAG_INVISIBLE))
             continue;
 
         if (item->attachedTo == 0)
-            sp40 = item->unk20;
+            pos = item->unk20;
         else
         {
-            if (r25 != item->attachedTo)
+            if (animGrpId != item->attachedTo)
             {
-                mathutil_mtxA_from_mtx(itemgroups[item->attachedTo].transform);
-                r25 = item->attachedTo;
+                mathutil_mtxA_from_mtx(animGroups[item->attachedTo].transform);
+                animGrpId = item->attachedTo;
             }
-            mathutil_mtxA_tf_point(&item->unk20, &sp40);
+            mathutil_mtxA_tf_point(&item->unk20, &pos);
         }
 
         mathutil_mtxA_push();
-        r23 = raycast_stage_down(&sp40, &sp58, &sp4C);
+        onStage = raycast_stage_down(&pos, &hit, &sp4C);
         mathutil_mtxA_pop();
 
-        if (r23 != 0)
+        if (onStage)
         {
             item->unk64 = 1;
             item->unk88 += (1.0f - item->unk88) * 0.15f;
@@ -323,21 +323,21 @@ void func_800685C4(void)
             }
         }
 
-        if (r23 == 0)
+        if (!onStage)
         {
             sp8.unkC = item->unk6C;
-            sp8.unk0.x = sp40.x;
-            sp8.unk0.y = sp40.y + item->unk74;
-            sp8.unk0.z = sp40.z;
+            sp8.unk0.x = pos.x;
+            sp8.unk0.y = pos.y + item->unk74;
+            sp8.unk0.z = pos.z;
         }
         else
         {
-            mathutil_vec_to_euler(&sp58.normal, &sp8.unkC);
+            mathutil_vec_to_euler(&hit.normal, &sp8.unkC);
             item->unk6C.x = sp8.unkC.x;
             item->unk6C.y = sp8.unkC.y;
             sp8.unkC.z = item->unk6C.z;
-            sp8.unk0 = sp58.pos;
-            item->unk74 = sp8.unk0.y - sp40.y;
+            sp8.unk0 = hit.pos;
+            item->unk74 = sp8.unk0.y - pos.y;
         }
         sp8.unk14 = item->unk7C;
         sp8.unk2C = item->shadowColor;
@@ -389,7 +389,7 @@ void func_800689B4(int a)
     }
 }
 
-void make_stage_bananas(struct StageItemgroup *coll, int count)
+void make_stage_bananas(struct StageAnimGroup *coll, int count)
 {
     struct Item item;
     int i;
@@ -399,12 +399,12 @@ void make_stage_bananas(struct StageItemgroup *coll, int count)
     item.type = 0;
     for (i = 0; i < count; i++, coll++)
     {
-        struct StageCollHdr_child3 *r28 = coll->unk60;
+        struct StageBanana *r28 = coll->bananas;
 
-        for (j = 0; j < coll->unk5C; j++, r28++)
+        for (j = 0; j < coll->bananaCount; j++, r28++)
         {
-            item.unk20 = r28->unk0;
-            item.subtype = r28->unkC;
+            item.unk20 = r28->pos;
+            item.subtype = r28->type;
             item.attachedTo = i;
             item.unk60 = r28;
             func_80068474(&item);

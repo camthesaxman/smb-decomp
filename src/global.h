@@ -11,6 +11,8 @@
 #define CLAMP(val, min, max) \
     ((val) < (min) ? (min) : (val) > (max) ? (max) : (val))
 
+#define RGBA(r, g, b, a)  (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
+
 // .bss variables seem to be ordered in the file based on their usage.
 // This macro generates a dummy function that forces the order and will be
 // stripped by the linker.
@@ -24,19 +26,11 @@
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 
-#define CHANGE_Z_MODE(updEnable, compFunc, compEnable) \
-do                                                     \
-{                                                      \
-    if (updEnable  != zMode->updateEnable              \
-     || compFunc   != zMode->compareFunc               \
-     || compEnable != zMode->compareEnable)            \
-    {                                                  \
-        GXSetZMode(compEnable, compFunc, updEnable);   \
-        zMode->compareEnable = compEnable;             \
-        zMode->compareFunc   = compFunc;               \
-        zMode->updateEnable  = updEnable;              \
-    }                                                  \
-} while (0)
+#ifdef __MWERKS__
+u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
+#else
+#define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
+#endif
 
 // intrinsics
 #ifndef __MWERKS__

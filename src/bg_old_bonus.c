@@ -34,7 +34,7 @@ void bg_old_bonus_init(void)
     {
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
         {
-            sp8.unk34 = (*r29)->boundsCenter;
+            sp8.unk34 = (*r29)->boundSphereCenter;
             g_spawn_effect_object(&sp8);
             sp8.unk10 += 30.0;
         }
@@ -68,7 +68,7 @@ void bg_old_bonus_interact(int a)
     case 1:
         memset(&sp18, 0, sizeof(sp18));
         sp18.unk8 = 12;
-        sp18.unk14 = currentBallStructPtr->unk2E;
+        sp18.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
         spC.z = -180.0 + (rand() / 32767.0f) * -300.0;
         spC.x = spC.z * -2.6666666666666665 * currentCameraStructPtr->sub28.unk38 * (rand() / 32767.0f - 0.5);

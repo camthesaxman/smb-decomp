@@ -56,7 +56,7 @@ static void sel_stage_init(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    modeCtrl.unk0 = 0;
+    modeCtrl.submodeTimer = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
@@ -65,7 +65,7 @@ static void sel_stage_init(void)
     spritePoolInfo.unkC[1] = 0;
     spritePoolInfo.unkC[2] = 0;
     spritePoolInfo.unkC[3] = 0;
-    modeCtrl.unk2C = 0;
+    modeCtrl.currPlayer = 0;
 
     func_8002FFEC();
     event_finish_all();
@@ -94,7 +94,7 @@ static void sel_stage_init(void)
     dummy_func_C90();
     func_800668A0();
     loadingStageId = infoWork.unk2E;
-    g_start_screen_fade(0, 0, 30);
+    start_screen_fade(FADE_IN, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
 

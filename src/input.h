@@ -27,13 +27,21 @@ struct ControllerInfo
     ) \
 )
 
+#define ANY_CONTROLLER_PRESSED(btn) \
+( \
+    (controllerInfo[0].unk0[2].button & btn) \
+ || (controllerInfo[1].unk0[2].button & btn) \
+ || (controllerInfo[2].unk0[2].button & btn) \
+ || (controllerInfo[3].unk0[2].button & btn) \
+)
+
 extern struct ControllerInfo controllerInfo[4];
 extern struct ControllerInfo lbl_801F3C60[4];
 extern u16 analogButtonInfo[][5];
-//extern struct Struct801F3D88 lbl_801F3D88;
-extern u16 lbl_801F3D88[6];
-//extern struct Struct801F3D94 lbl_801F3D94;
-extern u16 lbl_801F3D94[6];
+//extern struct Struct801F3D88 g_unkInputArr1;
+extern u16 g_unkInputArr1[6];
+//extern struct Struct801F3D94 g_unkInputArr2;
+extern u16 g_unkInputArr2[6];
 
 void input_init(void);
 void input_main(void);

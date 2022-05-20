@@ -4,45 +4,6 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
-struct Struct8003699C_child
-{
-    u8 filler0[0x38];
-    u16 unk38;
-    u8 filler3A[2];
-    float unk3C;
-};
-
-struct Ape
-{
-    struct Struct8003699C_child *unk0;
-    u8 filler4[0x10-4];
-    s32 unk10;
-    u32 unk14;
-    u8 filler18[0x24-0x18];
-    s32 unk24;
-    u8 filler28[0x30-0x28];
-    Vec unk30;
-    Vec unk3C;
-    Vec unk48;
-    s32 unk54;
-    float unk58;
-    u8 filler5C[0x60-0x5C];
-    Quaternion unk60;
-    u8 filler70[0x74-0x70];
-    u32 unk74;
-    u8 filler78[0xA0-0x78];
-    Vec unkA0;
-    float unkAC;
-    u8 fillerB0[4];
-    /*0x0B4*/ u32 colorId;
-    u8 fillerB8[0xC0-0xB8];
-    s8 unkC0;
-    u8 unkC1;
-    s16 unkC2;
-    u8 fillerC4[0x1CE - 0xC4];
-    s16 unk1CE;  // used in the Ball.unk144 one
-};
-
 enum
 {
     BALL_FLAG_00 = 1 << 0,
@@ -85,6 +46,14 @@ enum
     BALL_STATE_GOAL_MAIN = 6,
 };
 
+struct Ball_child
+{
+    u8 filler0[0x14];
+    u32 unk14;
+    u8 filler18[0x1CE - 0x18];
+    s16 unk1CE;
+};
+
 struct Ball
 {
     u8 unk0;
@@ -97,19 +66,19 @@ struct Ball
     s16 unk28;
     s16 unk2A;
     s16 unk2C;
-    s8 unk2E;  // playerId?
-    s8 unk2F;  // rank?
+    /*0x2E*/ s8 playerId;
+    /*0x2F*/ s8 rank;  // rank in competition mode
     Mtx unk30;
     s16 unk60;
     s16 unk62;
     s16 unk64;
-    s16 oldModelId;  // id of Naomi model
+    /*0x66*/ s16 oldModelId;  // id of Naomi model
     /*0x68*/ float currRadius;
     float accel;
     /*0x70*/ float restitution;
     /*0x74*/ float modelScale;
     /*0x78*/ s32 bananas;
-    u32 unk7C;
+    s32 unk7C;
     s32 unk80;
     Vec unk84;
     s16 unk90;
@@ -121,14 +90,14 @@ struct Ball
     float unkC4;
     Mtx unkC8;
     float unkF8;
-    struct Ape *ape;
+    /*0xFC*/ struct Ape *ape;
     u32 unk100;
     Vec unk104;
     float unk110;
     Vec unk114;
     u32 unk120;
     s16 unk124;
-    s16 unk126;  // challenge mode win streak?
+    /*0x126*/ s16 winStreak;  // number of consecutive competition mode wins
     s16 unk128;
     s16 unk12A;
     u8 filler12C[0x130-0x12C];
@@ -137,14 +106,14 @@ struct Ball
     s32 unk138;
     s32 unk13C;
     /*0x140*/ float targetRadius;  // radius that the ball grows/shrinks to?
-    struct Ape *unk144;  // guessing this is the same type as unkFC?
+    struct Ball_child *unk144;  // guessing this is the same type as unkFC?
     u8 unk148;
     u8 filler14A[0x14A - 0x149];
     /*0x14A*/ u8 colorId;
     u8 unk14B;
     u8 filler14C[2];
     s16 unk14E;
-    Vec unk150;
+    Vec unk150;  // positiom ball entered goal?
     float unk15C[4];
     u8 filler16C[0x1A4-0x16C];
 };
@@ -192,8 +161,8 @@ void ev_ball_main(void);
 void func_80038528(struct Ball *);
 void ev_ball_dest(void);
 void ball_draw(void);
-void func_80038AB4(void);
-void func_80038DF4(void);
+void g_ball_shadow_something_1(void);
+void g_ball_shadow_something_2(void);
 void give_bananas(int bananas);
 void func_800390C8(int, Vec *, float);
 // ? g_ball_init_1();

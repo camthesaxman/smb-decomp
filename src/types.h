@@ -50,95 +50,29 @@ enum
 
 struct Color3f { float r, g, b; };
 
+// sprite alignment
+// When setting the position of a sprite (x and y fields), this determines which corner or edge
+// of the sprite lies at that point.
+enum Alignment
+{
+    ALIGN_LT,
+    ALIGN_LC,
+    ALIGN_LB,
+    ALIGN_CT,
+    ALIGN_CC,
+    ALIGN_CB,
+    ALIGN_RT,
+    ALIGN_RC,
+    ALIGN_RB,
+    ALIGN_PIC,
+};
+
 // avdisp.c
-struct GMAMeshHeader;
-struct GMAMaterial;
-struct DrawMeshDeferredNode;
-struct UnkStruct31;
-struct UnkStruct32;
-
-// GMAModelHeader.flags
-enum
-{
-    GCMF_16BIT = 0x01,
-    GCMF_STITCHING = 0x04,
-    GCMF_SKIN = 0x08,
-    GCMF_EFFECTIVE = 0x10,
-};
-
-// at GMAModelHeader + 0x40
-struct GMAMaterial
-{
-    u32 flags;
-    u16 unk4;
-    s8 unk6;
-    u8 unk7;
-    GXTexObj *texObj;
-    u8 fillerC[0x20-0xC];
-};
-
-struct GMAModelHeader
-{
-    /*0x00*/ u32 magic;  // "GCMF"
-    /*0x04*/ u32 flags;
-    /*0x08*/ Vec boundsCenter;
-    /*0x14*/ float boundsRadius;
-    /*0x18*/ u16 numMaterials;
-    /*0x1A*/ u16 numLayer1Meshes;  // opaque count?
-    /*0x1C*/ u16 numLayer2Meshes;  // transparent count?
-    /*0x1E*/ u8 mtxCount;
-    u8 filler1F[1];
-    /*0x20*/ u32 headerSize;
-    /*0x24*/ GXTexObj *texObjs;
-    /*0x28*/ u8 mtxIndexes[8];
-             u8 filler30[0x10];
-    /*0x40*/ struct GMAMaterial materials[0];
-};
-
-// if GCMF_SKIN or GCMF_EFFECTIVE, then at headerSize + 0x20?
-struct GMAMeshHeader
-{
-    /*0x00*/ u32 renderFlags;
-    /*0x04*/ GXColor unk4;
-    /*0x08*/ GXColor unk8;
-             union
-             {
-                 u32 asU32;
-                 GXColor asColor;
-             } unkC;
-    /*0x10*/ u8 filler10[1];
-             u8 unk11;
-    /*0x12*/ u8 unk12;
-    /*0x13*/ u8 unk13;  // flags: bit 0 and 1 whether display lists are enabled, 0xC to skip something?
-    /*0x14*/ u8 unk14;
-    /*0x15*/ u8 filler15[0x16-0x15];
-             u16 unk16;
-             u8 filler18[0x1C-0x18];
-    /*0x1C*/ u32 vtxFlags;  // vtxFlags
-    /*0x20*/ u8 unk20[8];
-    /*0x28*/ u32 dispListSizes[2];
-    /*0x30*/ Vec unk30;
-    u8 filler3C[4];
-    u32 unk40;
-    u8 filler44[0x60-0x44];
-    u8 dispListData[0];
-};  // size = 0x60
-
-struct GMAModelEntry
-{
-    struct GMAModelHeader *modelOffset;
-    char *name;
-};
-
-struct GMA
-{
-    /*0x00*/ u32 numModels;
-    /*0x04*/ u8 *modelsBase;
-    /*0x08*/ struct GMAModelEntry *modelEntries;
-    /*0x0C*/ char *namesBase;
-    /*0x10*/ u8 filler10[0x20-0x10];
-    /*0x20*/ u8 fileData[0];  // raw file data
-};  // size = 0x20
+struct GMAShape;
+struct GMATevLayer;
+struct DrawShapeDeferredNode;
+struct GMATevLayer;
+struct TevStageInfo;
 
 struct TPLTextureHeader
 {
@@ -158,37 +92,6 @@ struct TPL
 };
 // maybe bitmap.c has a different struct that "contains" TPL?
 
-// load.c
-struct ARAMBlock;
-
-struct PerfInfo
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
-    u32 unk18;
-    u32 unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    u32 unk2C;
-    u32 unk30;
-    u32 unk34;
-};
-
-struct ZMode
-{
-    /*0x00*/ GXBool compareEnable;
-    /*0x04*/ GXCompare compareFunc;
-    /*0x08*/ GXBool updateEnable;
-    /*0x09*/ u8 lineWidth;
-    /*0x0C*/ s32 texOffsets;
-             u8 filler10[0x734-0x10];
-};
-
 struct GFXBufferInfo
 {
     /*0x00*/ void *currFrameBuf;
@@ -197,32 +100,32 @@ struct GFXBufferInfo
     /*0x10*/ GXFifoObj *fifos[2];
 };
 
-struct UnkStruct8005562C_child
+struct StageBgAnim
 {
-    s32 unk0;
-    s32 unk4;
-    u32 unk8;
-    void *unkC;
-    u32 unk10;
-    void *unk14;
-    u32 unk18;
-    void *unk1C;
-    u32 unk20;
-    void *unk24;
-    u32 unk28;
-    void *unk2C;
-    u32 unk30;
-    void *unk34;
-    u32 unk38;
-    void *unk3C;
-    u32 unk40;
-    void *unk44;
-    u32 unk48;
-    void *unk4C;
-    u32 unk50;
-    void *unk54;
-    u32 unk58;
-    void *unk5C;
+    s32 loopStartSeconds;
+    s32 loopEndSeconds;
+    u32 scaleXKeyframeCount;
+    struct Keyframe *scaleXKeyframes;
+    u32 scaleYKeyframeCount;
+    struct Keyframe *scaleYKeyframes;
+    u32 scaleZKeyframeCount;
+    struct Keyframe *scaleZKeyframes;
+    u32 rotXKeyframes;
+    struct Keyframe *rotXKeyframeCount;
+    u32 rotYKeyframes;
+    struct Keyframe *rotYKeyframeCount;
+    u32 rotZKeyframes;
+    struct Keyframe *rotZKeyframeCount;
+    u32 posXKeyframes;
+    struct Keyframe *posXKeyframeCount;
+    u32 posYKeyframes;
+    struct Keyframe *posYKeyframeCount;
+    u32 posZKeyframes;
+    struct Keyframe *posZKeyframeCount;
+    u32 visibleKeyframeCount;
+    struct Keyframe *visibleKeyframes;  // Model visible if value >= 0.5?
+    u32 translucencyKeyframeCount;
+    struct Keyframe *translucencyKeyframes;
 };
 
 struct UnkStruct8005562C_child2_child
@@ -257,6 +160,137 @@ struct TPL;
 struct Ape;
 struct Ball;
 
+struct Struct80089CBC
+{
+    s32 unk0;
+    s32 unk4;
+    u32 unk8;
+    u32 unkC;
+    s32 unk10;
+    s32 unk14;
+    u8 filler18[0x20-0x18];
+};  // size = 0x20
+
+struct Struct802B39C0_B0_child
+{
+    u32 unk0;
+    float unk4;
+    s32 unk8;
+    struct Struct80089CBC *unkC;
+    float unk10;
+    s32 unk14[3];
+    s32 unk20;
+};  // size = 0x24
+
+struct Struct80034F5C_1_sub
+{
+    u8 unk0;
+    u8 unk1;
+    u16 *unk4;
+    u8 *unk8;
+    float *unkC;
+};  // size = 0x10
+
+struct Struct800341BC_5
+{
+    u8 filler0[0xC];
+};
+
+struct Struct80034F5C_1  // Joint object?
+{
+    u32 unk0;
+    struct Struct800341BC_5 unk4;
+    struct Struct800341BC_5 unk10;
+    Mtx unk1C;
+    u32 unk4C;
+    u8 *unk50;
+    struct Struct80034F5C_1_sub unk54[6];
+    u8 fillerB4[0x168-0xB4];
+    Mtx unk168;
+    u8 filler198[0x1A0-0x198];
+    s32 unk1A0;
+    Vec unk1A4;
+    Quaternion unk1B0;
+    Point3d unk1C0;
+    Point3d unk1CC;
+    Mtx unk1D8;
+    Mtx unk208;
+};  // size = 0x238
+
+struct Struct8003699C_child
+{
+    u32 unk0;
+    u8 filler4[0x28-0x4];
+    u16 unk28;
+    u16 unk2A;
+    u16 unk2C;
+    s16 unk2E;
+    u8 filler30[2];
+    u16 unk32;
+    u16 unk34;
+    u16 unk36;
+    u16 unk38;
+    u16 unk3A;
+    float unk3C;
+    float unk40;
+    u8 filler44[0x54-0x44];
+    Mtx unk54;
+    u8 filler84[0x4114-0x84];
+    u8 filler4114[0x81A8-0x4114];
+    struct Struct80034F5C_1 unk81A8[29];
+};
+
+struct Ape_child
+{
+    float unk0;
+    s32 unk4;
+    u32 unk8;
+    u32 unkC;
+    s32 unk10;
+    s32 unk14;
+    float unk18;
+    u32 unk1C;
+};  // size = 0x20
+
+struct Ape
+{
+    struct Struct8003699C_child *unk0;
+    struct Struct8003699C_child *unk4;
+    float unk8;
+    float unkC;
+    /*0x010*/ s32 charaId;
+    u32 unk14;
+    s32 unk18;
+    struct Ape_child *unk1C;
+    struct Ape_child *unk20;
+    s32 unk24;
+    s32 unk28;
+    void *unk2C;
+    Vec unk30;  // position?
+    Vec unk3C;
+    Vec unk48;
+    s32 unk54;
+    float unk58;  // model scale?
+    u32 unk5C;
+    Quaternion unk60;  // orientation?
+    u32 unk70;
+    u32 unk74;
+    u8 filler78[0x90-0x78];
+    s32 unk90;
+    u32 unk94;
+    struct Struct802B39C0_B0_child *unk98;
+    u32 unk9C;
+    Vec unkA0;
+    float unkAC;
+    u32 unkB0;
+    /*0x0B4*/ int colorId;
+    void *unkB8;
+    void *unkBC;
+    /*0xC0*/ s8 ballId;
+    u8 unkC1;
+    s16 unkC2;
+};  // size = 0xC4
+
 struct SpritePoolInfo
 {
              u8 filler0[8];
@@ -280,14 +314,14 @@ struct Struct80176434
     float unkC;
 };  // size=0x10
 
-struct ItemgroupInfo
+struct AnimGroupInfo
 {
     Point3d pos;
     Point3d prevPos;
     S16Vec rot;
     S16Vec prevRot;
-    Mtx transform;     // Transform from itemgroup space to world space
-    Mtx prevTransform; // Previous frame transform from itemgroup space to world space
+    Mtx transform;     // Transform from anim group space to world space
+    Mtx prevTransform; // Previous frame transform from animGroup space to world space
 };
 
 struct ReplayInfo
@@ -340,7 +374,7 @@ struct Struct8009492C
     Vec unk14;
     float unk20;
     float unk24;
-    struct GMAModelHeader *unk28;
+    struct GMAModel *unk28;
     GXColor unk2C;
     u8 filler30[0x38-0x30];
 };
@@ -360,14 +394,14 @@ struct PhysicsBall
 {
     u32 flags;
 
-    // Current center position in itemgroupId's local space
-    Point3d pos;     
+    // Current center position in animGroupId's local space
+    Point3d pos;
 
-    // Center position at end of previous frame in itemgroupId's previous frame local space
-    Point3d prevPos; 
+    // Center position at end of previous frame in animGroupId's previous frame local space
+    Point3d prevPos;
 
-    // Current velocity in itemgroupId's local space
-    Vec vel;         
+    // Current velocity in animGroupId's local space
+    Vec vel;
 
     float radius;
     float gravityAccel;
@@ -376,16 +410,16 @@ struct PhysicsBall
     // The ball may collide with more than one surface during a frame. The "hardest" collision is
     // recorded, which is used to draw visual collision effects for example.
 
-    // Largest (in magnitude) itemgroup-relative ball velocity along the collision normal. It's
-    // always negative because when a collision occurs, the ball's itemgroup-relative velocity is
+    // Largest (in magnitude) animGroup-relative ball velocity along the collision normal. It's
+    // always negative because when a collision occurs, the ball's animGroup-relative velocity is
     // pointing away from the normal.
     float hardestColiSpeed;
 
-    // Collision plane of the hardest collision, in hardestColiItemgroupId's local space
+    // Collision plane of the hardest collision, in hardestColiAnimGroupId's local space
     struct ColiPlane hardestColiPlane;
 
-    // Itemgroup ID of the hardest collision
-    s32 hardestColiItemgroupId;
+    // animGroup ID of the hardest collision
+    s32 hardestColiAnimGroupId;
 
     // Friction applied to the ball's velocity on each contact with a surface.
     //
@@ -395,9 +429,9 @@ struct PhysicsBall
     // with velocity (1, 0, 0) would be (-1, 0, 0).
     float friction;
 
-    // Itemgroup whose local space we are in.
+    // animGroup whose local space we are in.
     // As a reminder, ID 0 is world space.
-    s32 itemgroupId;
+    s32 animGroupId;
 };
 
 struct ColiEdge
@@ -428,7 +462,7 @@ typedef void (*Struct80206DEC_Func)(void);
 struct Struct80206DEC
 {
     s32 unk0;
-    float unk4;
+    float g_stageTimer;
     Struct80206DEC_Func unk8;
     u32 unkC;
     float unk10[3];
@@ -448,7 +482,7 @@ struct Struct8003C550
     u16 unk16;
     u8 filler18[0x24-0x18];
     Vec unk24;
-    struct GMAModelHeader *unk30;
+    struct GMAModel *unk30;
     Vec unk34;
     Vec unk40;
     s16 unk4C;
@@ -467,47 +501,6 @@ struct Struct8003C550
 };
 
 // motload
-
-struct Struct80034F5C_1_sub
-{
-    u8 unk0;
-    u8 unk1;
-    u16 *unk4;
-    u8 *unk8;
-    float *unkC;
-};  // size = 0x10
-
-struct Struct80034F5C_1_sub_child3
-{
-    float unk0;
-    float unk4;
-    float unk8;
-};
-
-struct Struct800341BC_5
-{
-    u8 filler0[0xC];
-};
-
-struct Struct80034F5C_1  // Joint object?
-{
-    u32 unk0;
-    struct Struct800341BC_5 unk4;
-    struct Struct800341BC_5 unk10;
-    Mtx unk1C;
-    u32 unk4C;
-    u8 *unk50;
-    struct Struct80034F5C_1_sub unk54[6];
-    u8 fillerB4[0x168-0xB4];
-    Mtx unk168;
-    u8 filler198[0x1A0-0x198];
-    s32 unk1A0;
-    u8 filler1A4[0x1C0-0x1A4];
-    Point3d unk1C0;
-    Point3d unk1CC;
-    Mtx unk1D8;
-    Mtx unk208;
-};  // size = 0x238
 
 struct MotDat_child
 {
@@ -537,15 +530,15 @@ struct Struct80034B50_child_child
     void *unk4;
 };
 
-struct Struct80034B50_child
+struct Struct80034B50_child  // Struct80034B50_child
 {
     void *unk0;
     struct Struct80034B50_child_child *unk4;
     void *unk8;
-    void *unkC;
-    void *unk10;
+    struct Struct800341BC_5 *unkC;
+    struct Struct800341BC_5 *unk10;
     void *unk14;
-};
+};  // size = 0x18
 
 struct Struct80034B50_child2_child
 {
@@ -570,11 +563,12 @@ struct MotSkeleton
 
 struct MotInfo
 {
-    u8 filler0[0x30];
-    void *unk30[16];
-    u8 filler70[0xB0-0x70];
-    void *unkB0;
-};
+    char unk0[0x18];
+    char unk18[0x30-0x18];
+    u8 * unk30[16];
+    u32 unk70[16];
+    u8 *unkB0;
+};  // size = 0xB4
 
 struct Struct80034F5C_2
 {
@@ -594,23 +588,6 @@ struct Struct80034F5C_3
     float unk18;
 };  // size = 0x1C
 
-struct Struct800355B8  // maybe the same as Struct80034F5C_1?
-{
-    u32 unk0;
-    u8 filler4[0x2E - 0x4];
-    s16 unk2E;
-    u8 filler30[2];
-    u16 unk32;
-    u8 filler34[2];
-    u16 unk36;
-    u16 unk38;
-    u16 unk3A;
-    u8 filler3C[0x40-0x3C];
-    float unk40;
-    u8 filler44[0x54-0x44];
-    Mtx unk54;
-};
-
 struct CoordsS8
 {
     s8 x;
@@ -619,8 +596,8 @@ struct CoordsS8
 
 struct Struct8020A348_child
 {
-    u32 unk0;
-    struct GMAModelHeader *unk4;  // GMAModelHeader
+    u32 flags;
+    struct GMAModel *model;  // GMAModel
     float unk8;
 };  // size = 0xC
 
@@ -636,24 +613,36 @@ struct StageSelection
     s32 levelNum;
 };
 
+// Parameters for drawing a sprite to the screen
 struct NaomiSpriteParams
 {
-    /*0x00*/ s32 bmpId;
-    /*0x04*/ float x;
-    /*0x08*/ float y;
+    /*0x00*/ s32 bmpId;  // ID of bitmap image to use as texture
+
+    // Position
+    /*0x04*/ float x;  // position of sprite (0-640) from left edge of screen
+    /*0x08*/ float y;  // position of sprite (0-480) from top edge of screen
     /*0x0C*/ float z;
-    /*0x10*/ float zoomX;
-    /*0x14*/ float zoomY;
-    /*0x18*/ float u1;
-    /*0x1C*/ float v1;
-    /*0x20*/ float u2;
-    /*0x24*/ float v2;
-    /*0x28*/ u32 rotation;
-    /*0x2C*/ float alpha;
+
+    // Scale. The size of the sprite is this scale multiplied by the dimensions of the sprite's texture.
+    /*0x10*/ float scaleX;
+    /*0x14*/ float scaleY;
+
+    // Texture coordinates
+    /*0x18*/ float u1;  // x texture coordinate of left edge
+    /*0x1C*/ float v1;  // y texture coordinate of top edge
+    /*0x20*/ float u2;  // x texture coordinate of right edge
+    /*0x24*/ float v2;  // y texture coordinate of bottom edge
+
+    /*0x28*/ s32 rotation;  // counterclockwise rotation in units of 1/65536 turn
+    /*0x2C*/ float opacity;
     s32 unk30;
     /*0x34*/ u32 flags;
-    u32 unk38;
-    u32 unk3C;
+
+    // Color of sprite. The final color is computed by texColor * mulColor + addColor
+    /*0x38*/ u32 mulColor;  // RGBA color. Note: The alpha component of this color is ignored.
+                            // The above "opacity" field is used instead.
+    /*0x3C*/ u32 addColor;  // RGBA color
+
     u8 filler40[0x50-0x40];
 };
 
@@ -702,15 +691,15 @@ struct Struct802F1B4C
     u32 unk6C;
 };
 
-struct Struct801EEC68
+struct PauseMenuState
 {
     s32 unk0;
     u32 unk4;
-    s32 unk8;
-    s32 unkC;
-    s32 unk10;
-    s8 unk14;
-    s8 unk15;
+    /*0x08*/ s32 selection;
+    /*0x0C*/ s32 itemCount;
+    /*0x10*/ s32 menuType;
+    /*0x14*/ s8 padId;  // controller that pressed start
+    /*0x15*/ s8 playerId;  // player who paused the game?
     s16 unk16;
 };
 
@@ -721,7 +710,7 @@ struct FogInfo
     float unk4;
     float unk8;
     u8 r, g, b;
-    s8 unkF;
+    s8 enabled;
 };
 
 struct Struct80209488;
@@ -750,35 +739,12 @@ struct Sphere
 struct Preview;
 struct NaomiDispList;
 
-struct Struct80075900
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[4];
-    s8 unk14;
-    s8 unk15;
-    s8 unk16;
-    u8 filler17[0x1C-0x17];
-    void (*unk1C)();
-    u8 filler20[0x28-0x20];
-};
-
 struct Struct8009544C
 {
     u8 filler0[0x6];
     u16 unk6;
     u8 filler8[0x18-0x8];
 };  // size = 0x18
-
-struct Struct8000F030
-{
-    u8 filler0[0xC];
-    u16 unkC;
-    u16 unkE;
-    u8 filler10[0x20-0x10];
-    s32 unk20;
-};
 
 struct Struct801EED88
 {
@@ -867,17 +833,17 @@ struct MemcardGameData
     /*0x5844*/ struct MemcardGameData_sub unk5844;
 };
 
-struct AnimKeyframe
+struct Keyframe
 {
-    s32 unk0;
-    float unk4;
-    float unk8;
-    float unkC;
-    float unk10;
+    s32 easeType;
+    float timeSeconds;
+    float value;
+    float tangentIn;
+    float tangentOut;
 };
 
-struct StageItemgroup;
-struct StageCollHdr_child3;
+struct StageAnimGroup;
+struct StageBanana;
 
 struct Struct800690DC
 {
@@ -897,14 +863,6 @@ struct ModelLOD
     float distance;
 };
 
-struct Struct80290170
-{
-    s32 unk0;
-    u32 unk4;
-    s32 unk8;
-    s32 unkC;
-};
-
 struct Struct802C67D4
 {
     u8 filler0[4];
@@ -912,12 +870,33 @@ struct Struct802C67D4
     u8 filler8[0x50-0x8];
 };
 
+struct Struct80089A04_1_child_sub
+{
+    char *unk0;
+    u8 filler4[0x20-0x4];
+};  // size = 0x20
+
+struct ApeFacePart
+{
+    u8 filler0[0x14];
+    struct Struct80089A04_1_child_sub unk14[2];
+};
+
+struct ApeGfxFileInfo
+{
+    char *basename;  // base name of the file (without suffix)
+    struct ApeFacePart *facePartInfo[4];  // face part info per LOD?
+    /*0x14*/ s16 partCounts[4];  // counts?
+    s16 unk1C[2];
+    u8 filler20[4];
+};  // size = 0x24
+
 struct Struct80061BC4_sub
 {
     u32 unk0;
     u32 unk4;
     u32 unk8;
-    u32 unkC;
+    GXTexMapID g_texMapId;
     u8 filler10[4];
     u32 unk14;
     u8 filler18[0x2C-0x18];
@@ -947,7 +926,7 @@ enum
     SOT_NAMEENT_BTN,
 };
 
-struct Stobj 
+struct Stobj
 { /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
     s32 id;
     s16 g_some_id;
@@ -976,11 +955,87 @@ struct Stobj
     float unk94;
     float unk98;
     float unk9c;
-    s8 itemgroup_id;
+    s8 animGroupId;
     void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
     Point3d g_some_pos2;
     Point3d g_local_pos;
     Vec g_local_vel;
+};
+
+struct BgLightInfo
+{
+	float unk0;
+    struct Color3f ambient;
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+    float unk20;
+    float unk24;
+    float unk28;
+    float unk2C;
+    float unk30;
+
+    // Global directional light ("infinite" light)
+    struct Color3f infLightColor;
+	s16 infLightRotX;
+	s16 infLightRotY;
+
+    s8 **bgLightGroups;
+};
+
+struct Light;
+
+struct Struct802F1BE8
+{
+    u32 unk0;
+    u8 unk4;
+};
+
+struct Struct802F1BF4
+{
+    u8 unk0;
+    u8 unk1;
+    u8 filler2[2];
+    u32 unk4;
+};
+
+struct Struct802F1BFC
+{
+    u8 unk0;
+    u8 filler1[3];
+    u32 unk4;
+};
+
+struct Struct802F1C04
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
+};
+
+struct Struct802F1C10
+{
+    u8 unk0;
+    u8 unk1;
+    s8 unk2;
+    u8 unk3;
+    u8 unk4[4];
+};
+
+struct GBilLightGroup
+{
+    char *name;
+    s8 g_bgLightGroupId;
+};
+
+enum
+{
+    PAUSEMENU_CONT_HOW_EXIT,
+    PAUSEMENU_CONT_VIEW_HOW_EXIT,
+    PAUSEMENU_CONT_RETRY_VIEW_HOW_SELECT_EXIT,
+    PAUSEMENU_CONT_RETRY_HOW_EXIT,
+    PAUSEMENU_CONT_GUIDE_HOW_EXIT,
 };
 
 #endif

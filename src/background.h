@@ -6,6 +6,7 @@
 #include <dolphin/GXStruct.h>
 
 #include "types.h"
+#include "gma.h"
 
 /*               id                    fname        oldfname song backdropColor (RGBA)*/
 #define BACKGROUND_LIST \
@@ -48,7 +49,7 @@ enum
 struct BackgroundInfo  // size = 0xA8
 {
     s16 bgId;
-    float unk4;
+    float animTimer; // Current animation time in frames
     u32 unk8;
     GXColor backdropColor;
     u8 filler10[0x14-0x10];
@@ -71,7 +72,7 @@ struct BackgroundInfo  // size = 0xA8
     void (*unk90)();
     /*0x94*/ BallEnvFunc ballEnvFunc;
     void (*unk98)();
-    void *unk9C;
+    void *work;
     u32 unkA0;
     u32 unkA4;
 };
@@ -94,7 +95,7 @@ struct BGModelSearch
 
 struct BGJungleCloud
 {
-    struct StageBgModel *unk0;
+    struct StageBgModel *bgModel;
     Vec unk4;
     Vec unk10;
     Vec unk1C;
@@ -104,8 +105,8 @@ struct BGJungleCloud
 struct BGJungleWork
 {
     u8 filler0[4];
-    s32 bgModelsCount;
-    struct BGJungleCloud bgModels[4];
+    s32 cloudModelCount;
+    struct BGJungleCloud cloudModels[4];
     s32 unk168;
 };
 
@@ -113,11 +114,11 @@ struct BGJungleWork
 
 struct BGSunsetModel
 {
-    struct StageBgModel *unk0;
-    Vec unk4;
-    Vec unk10;
-    Vec unk1C;
-    Mtx unk28;
+    struct StageBgModel *bgModel;
+    Vec texTranslation;
+    Vec currTexVel;
+    Vec desiredTexVel;
+    Mtx texMtx;
 };
 
 struct BGSunsetWork
@@ -125,7 +126,7 @@ struct BGSunsetWork
     u8 filler0[4];
     s32 bgModelsCount;
     struct BGSunsetModel bgModels[4];
-    s32 unk168;
+    s32 mode; // 0 for most of stage duration, 1 during last 11s "hurry up" phase
 };
 
 /* Storm background */
@@ -141,9 +142,9 @@ struct BGStormWork_child
 struct BGStormWork
 {
     s32 unk0;
-    struct GMAModelHeader *rain00Model;
-    struct GMAModelHeader *rain01Model;
-    struct GMAModelHeader *rain02Model;
+    struct GMAModel *rain00Model;
+    struct GMAModel *rain01Model;
+    struct GMAModel *rain02Model;
     Vec unk10;
     Vec unk1C;
     struct BGStormWork_child unk28[64];
@@ -165,8 +166,8 @@ struct BGBonusWork
 {
     s32 unk0;
     struct StageBgModel *unk4;
-    struct GMAModelHeader *shotstarModel;
-    struct GMAModelHeader *starlightModel;
+    struct GMAModel *shotstarModel;
+    struct GMAModel *starlightModel;
     s32 starpointsCount;
     struct BGBonusStarpoint starpoints[64];
     GXTexObj *lightmapTex;
@@ -199,8 +200,8 @@ void bg_e3_main(void);
 void bg_e3_finish(void);
 void bg_e3_draw(void);
 void bg_e3_interact(int);
-void g_animate_background_parts(struct StageBgModel *, int, float);
-void g_draw_bg_models();
+void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds);
+void draw_bg_models();
 void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b);
 void bg_night_init(void);
 void bg_night_main(void);

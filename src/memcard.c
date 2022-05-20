@@ -729,7 +729,7 @@ void init_gamedata_file(void)
     // These loops match except for stack
     /*
     for (i = 0; i < 8; i++)
-        cardStat.unk34 = (cardStat.unk34 & ~(3 << (2*i))) | (2 << (2*i));
+        cardStat.rotZKeyframeCount = (cardStat.rotZKeyframeCount & ~(3 << (2*i))) | (2 << (2*i));
     for (i = 0; i < 8; i++)
         cardStat.unk36 = (cardStat.unk36 & ~(3 << (2*i))) | ((1 << (2*i)) & 0x1FFF);
     */
@@ -853,7 +853,7 @@ void init_replay_file_data(void)
     memcardReplayData->unk7 = sp88.unk5;
     memcardReplayData->unk8 = sp88.unk10;
 
-    memcardReplayData->unkC = (u64)memcardInfo.time / (*(u32 *)0x800000F8 / 4); // WTF??
+    memcardReplayData->unkC = (u64)memcardInfo.time / (OS_BUS_CLOCK_SPEED / 4);
 }
 
 void probe_memcard(void)
@@ -2575,7 +2575,7 @@ void load_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_A)
+        if ((g_unkInputArr1[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2648,7 +2648,7 @@ void save_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_A)
+        if ((g_unkInputArr1[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2701,21 +2701,21 @@ void save_sequence(void)
         open_memcard_file();
         break;
     case 9:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2744,21 +2744,21 @@ void save_sequence(void)
     case 0xD:
         if (memcardInfo.statusFlags & (1 << 10))
         {
-            if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
-             || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
+            if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
+             || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
             {
                 if (lbl_802F21B1 == 0)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 1;
             }
-            if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
-             || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
+            if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+             || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
             {
                 if (lbl_802F21B1 == 1)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 0;
             }
-            if (!(lbl_801F3D88[2] & PAD_BUTTON_A))
+            if (!(g_unkInputArr1[2] & PAD_BUTTON_A))
                 break;
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2834,7 +2834,7 @@ void replay_save_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -2860,21 +2860,21 @@ void replay_save_sequence(void)
         check_verify_filesystem_result();
         break;
     case 9:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2950,7 +2950,7 @@ void replay_list_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -3124,14 +3124,14 @@ void ev_memcard_init(void)
         memcardGameData = NULL;
     }
     if (!(memcardInfo.statusFlags & (1 << 6)))
-        lbl_801F3D88[2] = 0;
+        g_unkInputArr1[2] = 0;
 }
 
 void ev_memcard_main(void)
 {
     if ((memcardInfo.statusFlags & (1 << 7))
      && memcardInfo.state == 1
-     && (lbl_801F3D88[2] & PAD_BUTTON_B))
+     && (g_unkInputArr1[2] & PAD_BUTTON_B))
     {
         func_8002B5C8(0x6B);
         memcardInfo.state = MC_STATE_ERROR;
@@ -3146,12 +3146,12 @@ void ev_memcard_main(void)
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
         memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | MC_STATUS_WRITE_IN_PROGRESS);
-        if (lbl_801F3D88[2] & PAD_BUTTON_B)
+        if (g_unkInputArr1[2] & PAD_BUTTON_B)
         {
             func_8002B5C8(0x6B);
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-            lbl_801F3D88[2] = 0;
+            g_unkInputArr1[2] = 0;
         }
         else
         {
@@ -3274,10 +3274,10 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     float f30;
     float f1;
 
-    func_80071A8C();
-    func_80071AD4(0xB3);
+    reset_text_draw_settings();
+    set_text_font(0xB3);
     func_80071B50(0x200000);
-    func_80071B2C(0.65f, 0.8f);
+    set_text_scale(0.65f, 0.8f);
 
     for (i = 0, f30 = 0.0f, r27 = msg->numLines; i < msg->numLines; i++)
     {
@@ -3300,9 +3300,9 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
         float var2 = f2;
         var1 *= 0.125;
         var2 *= 0.125;
-        lbl_801D5724.zoomX = var1;
-        lbl_801D5724.zoomY = var2;
-        lbl_801D5724.alpha = 0.65 + 0.1 * lbl_802F1ECC;
+        lbl_801D5724.scaleX = var1;
+        lbl_801D5724.scaleY = var2;
+        lbl_801D5724.opacity = 0.65 + 0.1 * lbl_802F1ECC;
     }
     draw_naomi_sprite(&lbl_801D5724);
     for (i = 0; i < msg->numLines; i++)
@@ -3310,8 +3310,8 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
         float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);
         float param2 = 0.800000011920929 * (32.0 * i)
             + ((y - 9.600000143051147) - 0.800000011920929 * (16.0 * (msg->numLines - 1)));
-        func_80071B60(param1, param2);
-        func_80071E58(msg->lines[i].str);
+        set_text_pos(param1, param2);
+        g_draw_text(msg->lines[i].str);
     }
 }
 
@@ -3325,11 +3325,11 @@ struct StringEntry lbl_802F1698 = { lbl_802C4900, 0 };
 
 void memcard_draw_ui(void)
 {
-    u32 r29;
-    u32 wtf;
+    u32 color;
+    u32 intensity;
 
-    func_80071A8C();
-    func_80071AD4(0xB3);
+    reset_text_draw_settings();
+    set_text_font(0xB3);
     func_80071B1C(0.008f);
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
@@ -3365,7 +3365,7 @@ void memcard_draw_ui(void)
                 draw_memcard_msg(&sp8, 320.0f, 100.0f);
             }
         }
-        func_80071A8C();
+        reset_text_draw_settings();
         return;
     }
     else if (memcardInfo.statusFlags & (1 << 2))
@@ -3377,10 +3377,10 @@ void memcard_draw_ui(void)
     {
         if (memcardInfo.statusFlags & (1 << 15))
         {
-            func_80071B60(100.0f, 340.0f);
+            set_text_pos(100.0f, 340.0f);
             draw_memcard_msg(&msgSavingGame, 320.0f, 240.0f);
         }
-        func_80071A8C();
+        reset_text_draw_settings();
         return;
     }
     else if (memcardInfo.statusFlags & (1 << 10))
@@ -3391,56 +3391,56 @@ void memcard_draw_ui(void)
     {
         draw_memcard_msg(&msgFormatPrompt, 320.0f, 240.0f);
 
-        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
+        intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        color = RGBA(intensity, intensity, intensity, 0);
 
-        func_80071B2C(1.5f, 1.5f);
-        func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
+        set_text_scale(1.5f, 1.5f);
+        set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            func_80071AE4(0);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
         else
         {
-            func_80071AE4(0);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        func_80071E58("No");
-        func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
+        g_draw_text("No");
+        set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
         else
         {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        func_80071E58("No");
+        g_draw_text("No");
     }
     if (memcardInfo.state == 10)
         draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
@@ -3448,56 +3448,56 @@ void memcard_draw_ui(void)
     {
         draw_memcard_msg(&msgOverwritePrompt, 320.0f, 240.0f);
 
-        wtf = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        intensity = ((float)__abs((int)(float)(unpausedFrameCounter % 60) - 30.0) / 30.0) * 255.0;
+        color = RGBA(intensity, intensity, intensity, 0);
 
-        r29 = (wtf << 16) | (wtf << 8) | wtf;
-        func_80071B2C(1.5f, 1.5f);
-        func_80071B60(242.0f, lbl_802F1EB0 + 0x101);
+        set_text_scale(1.5f, 1.5f);
+        set_text_pos(242.0f, lbl_802F1EB0 + 0x101);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            func_80071AE4(0);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(color);
         }
         else
         {
-            func_80071AE4(0);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(0, 0, 0, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        func_80071E58("No");
-        func_80071B60(240.0f, lbl_802F1EB0 + 0xFF);
+        g_draw_text("No");
+        set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
         else
         {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
-        func_80071E58("Yes ");
+        g_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
-            func_80071AE4(0xFFFFFF);
-            func_80071AF8(r29);
+            set_text_mul_color(RGBA(255, 255, 255, 0));
+            set_text_add_color(color);
         }
         else
         {
-            func_80071AE4(0x7F7F7F);
-            func_80071AF8(0);
+            set_text_mul_color(RGBA(127, 127, 127, 0));
+            set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        func_80071E58("No");
+        g_draw_text("No");
     }
     if (memcardInfo.statusFlags & (1 << 15))
     {
@@ -3508,7 +3508,7 @@ void memcard_draw_ui(void)
     }
     if (memcardInfo.statusFlags & (1 << 17))
         draw_memcard_msg(&msgLoadingGame, 320.0f, 240.0f);
-    func_80071A8C();
+    reset_text_draw_settings();
 }
 
 void func_800A4CEC(void)
@@ -3573,10 +3573,10 @@ void func_800A4E70(void)
 {
     memcardGameData->unk5844.unk4E = lbl_802F21A8;
     func_80025E5C(memcardGameData);
-    func_80011F74(memcardGameData);
+    g_store_gamedata(memcardGameData);
     func_8002DB10(memcardGameData);
     func_80067FD0(memcardGameData);
-    memcardGameData->unk5844.unkAC = modeCtrl.unk42;
+    memcardGameData->unk5844.unkAC = modeCtrl.splitscreenMode;
     memcpy(memcardGameData->unk5844.unkB0, lbl_801D5A20, sizeof(memcardGameData->unk5844.unkB0));
     memcardGameData->unk5844.unkAD = func_800B622C();
     func_800AFC1C(memcardGameData);
@@ -3587,10 +3587,10 @@ void func_800A4F04(void)
 {
     lbl_802F21A8 = memcardGameData->unk5844.unk4E;
     func_80025E8C(memcardGameData);
-    func_80012170(memcardGameData);
+    g_load_gamedata(memcardGameData);
     func_8002DB24(memcardGameData);
     func_8006800C(memcardGameData);
-    modeCtrl.unk42 = memcardGameData->unk5844.unkAC;
+    modeCtrl.splitscreenMode = memcardGameData->unk5844.unkAC;
     memcpy(lbl_801D5A20, memcardGameData->unk5844.unkB0, sizeof(memcardGameData->unk5844.unkB0));
     func_800B6224(memcardGameData->unk5844.unkAD);
     func_800AFC4C(memcardGameData);

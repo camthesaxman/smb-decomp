@@ -11,7 +11,7 @@ struct Item
     /*0x02*/ s16 unk2;
     /*0x04*/ s16 type;
     /*0x06*/ s16 subtype;
-    /*0x08*/ u32 unk8;
+    /*0x08*/ u32 flags;
     /*0x0C*/ s16 unkC;
     /*0x0E*/ s16 state;
     s16 unk10;
@@ -35,15 +35,20 @@ struct Item
     void (*unk58)(struct Item *, struct Struct800690DC *);
     s8 attachedTo;  // index of moving stage part that this item is attached to
     s16 unk5E;
-    struct StageCollHdr_child3 *unk60;
+    struct StageBanana *unk60;
     s32 unk64;
-    struct GMAModelHeader *shadowModel;
+    struct GMAModel *shadowModel;
     S16Vec unk6C;
     float unk74;
     GXColor shadowColor;
     Vec unk7C;
     float unk88;
 };  // size = 0x8C
+
+enum
+{
+    ITEM_FLAG_INVISIBLE = (1 << 0),
+};
 
 struct ItemFuncs
 {
@@ -63,9 +68,9 @@ void ev_item_main(void);
 void ev_item_dest(void);
 void item_draw();
 // ? func_80068474();
-void func_800685C4(void);
+void item_draw_shadows(void);
 void func_800689B4(int);
-void make_stage_bananas(struct StageItemgroup *, int);
+void make_stage_bananas(struct StageAnimGroup *, int);
 void item_dummy_init(struct Item *);
 void item_dummy_main(struct Item *);
 void item_dummy_draw(struct Item *);
@@ -80,7 +85,7 @@ void item_coin_collect(struct Item *, struct Struct800690DC *);
 void item_coin_destroy(struct Item *);
 void func_80069394(struct Item *);
 void item_coin_debug(struct Item *);
-struct GMAModelHeader *find_item_model(struct ModelLOD **a);
+struct GMAModel *find_item_model(struct ModelLOD **a);
 void item_pilot_init(struct Item *);
 void item_pilot_main(struct Item *);
 void item_pilot_draw(struct Item *);

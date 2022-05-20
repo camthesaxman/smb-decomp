@@ -10,6 +10,8 @@ mwcc_compiler/
 *.dep
 *.map
 
+*.dmw
+
 # Tool binaries
 tools/elf2dol
 tools/elf2rel
@@ -27,7 +29,9 @@ __pycache__
 # Disc files
 GMBE8P/
 
+# IDE files
 /.vscode/**
 /compile_commands.json
 /.cache/**
 /.clangd/**
+/.idea/**

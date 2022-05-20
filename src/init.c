@@ -2,12 +2,18 @@
 #include <stdio.h>
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
+#include "gxcache.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
 
-GXFifoObj lbl_801EEBA0;
+static void *lbl_802F1B50;
+static void *lbl_802F1B54;
+static BOOL extraMemPresent;
+static GXRenderModeObj adjustedRenderMode;
+static GXFifoObj secondFifoObj ATTRIBUTE_ALIGN(8);
 
 #pragma force_active on
 
@@ -22,7 +28,7 @@ void initialize(void)
     mathutil_init();
     init_dvd();
     init_tv();
-    init_heap();
+    init_heaps();
     init_vi();
     init_gx();
     init_gx_2();
@@ -32,23 +38,33 @@ void initialize(void)
     init_rel();
 }
 
+#define FIFO_SIZE 0x100000
+
 void init_gx(void)
 {
-    void *r31;
+    void *fifoBase;
 
-    gfxBufferInfo->fifos[0] = GXInit(OSAllocFromHeap(__OSCurrHeap, 0x100000), 0x100000);
-    gfxBufferInfo->fifos[1] = &lbl_801EEBA0;
-    r31 = OSAllocFromHeap(__OSCurrHeap, 0x100000);
-    GXInitFifoBase(gfxBufferInfo->fifos[1], r31, 0x100000);
-    GXInitFifoPtrs(gfxBufferInfo->fifos[1], r31, r31);
+    // Initialize a command FIFO
+    fifoBase = OSAllocFromHeap(__OSCurrHeap, FIFO_SIZE);
+    gfxBufferInfo->fifos[0] = GXInit(fifoBase, FIFO_SIZE);
+
+    // Set up another command FIFO for multi-buffering
+    gfxBufferInfo->fifos[1] = &secondFifoObj;
+    fifoBase = OSAllocFromHeap(__OSCurrHeap, FIFO_SIZE);
+    GXInitFifoBase(gfxBufferInfo->fifos[1], fifoBase, FIFO_SIZE);
+    GXInitFifoPtrs(gfxBufferInfo->fifos[1], fifoBase, fifoBase);
+
+    // Set viewport and scissor box to full screen size
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
+
+    // Set the EFB to XFB copy operation
     GXSetDispCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->efbHeight);
     GXSetDispCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight);
     GXSetDispCopyYScale((float)currRenderMode->xfbHeight / (float)currRenderMode->efbHeight);
     GXSetCopyFilter(currRenderMode->aa, currRenderMode->sample_pattern, 1, currRenderMode->vfilter);
     GXSetPixelFmt(GX_PF_RGB8_Z24, GX_ZC_LINEAR);
-    GXCopyDisp(gfxBufferInfo->currFrameBuf, 1);
+    GXCopyDisp(gfxBufferInfo->currFrameBuf, GX_TRUE);
     GXSetDispCopyGamma(GX_GM_1_0);
 }
 
@@ -80,11 +96,11 @@ void init_tv(void)
         currRenderMode = &GXMpal480IntDf;
         break;
     default:
-        OSPanic("init.c", 0x8E, "init_system: invalid TV format\n");
+        OSPanic("init.c", 142, "init_system: invalid TV format\n");
         break;
     }
-    GXAdjustForOverscan(currRenderMode, &lbl_801EEB60, 0, 16);
-    currRenderMode = &lbl_801EEB60;
+    GXAdjustForOverscan(currRenderMode, &adjustedRenderMode, 0, 16);
+    currRenderMode = &adjustedRenderMode;
 }
 
 void init_vi(void)
@@ -94,7 +110,7 @@ void init_vi(void)
     gfxBufferInfo->currFrameBuf = gfxBufferInfo->frameBufs[1];
     VIFlush();
     VIWaitForRetrace();
-    if (currRenderMode->viTVmode & 1)
+    if ((currRenderMode->viTVmode & 1) != VI_INTERLACE)
         VIWaitForRetrace();
 }
 
@@ -103,10 +119,10 @@ void init_gx_2(void)
     Mtx44 mtx;
     GXColor clearColor = {0x00, 0x0A, 0x20, 0x00};
 
-    C_MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
+    MTXPerspective(mtx, 60.0f, 1.3333333f, 0.1f, 1000000.0f);
     GXSetProjection(mtx, GX_PERSPECTIVE);
-    func_8009E588(0);
-    func_8009E110(1, 4, 5, 0);
+    GXSetZCompLoc_cached(0);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_GREATER, 0);
     GXSetCopyClear(clearColor, 0x00FFFFFF);
     GXSetDither(FALSE);
@@ -117,14 +133,14 @@ void init_dvd(void)
     DVDChangeDir("test");
 }
 
-#define HEAP1_SIZE 0x80020
-#define HEAP2_SIZE 0x300020
-#define HEAP3_SIZE 0x200020
-#define HEAP4_SIZE 0x300020
+#define SUB_HEAP_SIZE 0x80020
+#define STAGE_HEAP_SIZE 0x300020
+#define BACKGROUND_HEAP_SIZE 0x200020
+#define CHARA_HEAP_SIZE 0x300020
 
 #define ROUND_UP_16(x) (((u32)(x) + 0xF) & ~0xF)
 
-void init_heap(void)
+void init_heaps(void)
 {
     u8 *arenaLo;
     u8 *arenaHi;
@@ -142,8 +158,8 @@ void init_heap(void)
 
     lbl_802F1B50 = arenaHi;
     lbl_802F1B54 = arenaHi;
-    lbl_802F1B58 = (memSize > 0x01800000);
-    if (lbl_802F1B58)
+    extraMemPresent = (memSize > 0x01800000);
+    if (extraMemPresent)
     {
         OSReport("\n===================================================\n\n");
         OSReport("  System memory exists more than 24MB. Clamp 24MB.\n");
@@ -170,24 +186,24 @@ void init_heap(void)
 
     OSSetArenaLo(arenaLoNew);
 
-    memHeap1 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP1_SIZE));
-    arenaLoNew += HEAP1_SIZE;
-    memHeap2 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP2_SIZE));
-    arenaLoNew += HEAP2_SIZE;
-    memHeap3 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP3_SIZE));
-    arenaLoNew += HEAP3_SIZE;
-    memHeap4 = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + HEAP4_SIZE));
-    arenaLoNew += HEAP4_SIZE;
+    subHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + SUB_HEAP_SIZE));
+    arenaLoNew += SUB_HEAP_SIZE;
+    stageHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + STAGE_HEAP_SIZE));
+    arenaLoNew += STAGE_HEAP_SIZE;
+    backgroundHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + BACKGROUND_HEAP_SIZE));
+    arenaLoNew += BACKGROUND_HEAP_SIZE;
+    charaHeap = OSCreateHeap(arenaLoNew, (void *)((u32)arenaLoNew + CHARA_HEAP_SIZE));
+    arenaLoNew += CHARA_HEAP_SIZE;
 
-    memHeap5 = OSCreateHeap(arenaLoNew, arenaEnd);
-    OSSetCurrentHeap(memHeap5);
+    mainHeap = OSCreateHeap(arenaLoNew, arenaEnd);
+    OSSetCurrentHeap(mainHeap);
     OSSetArenaLo(arenaLoNew);
 
-    memHeap5Size = OSCheckHeap(memHeap5);
-    memHeap1Size = OSCheckHeap(memHeap1);
-    memHeap2Size = OSCheckHeap(memHeap2);
-    memHeap3Size = OSCheckHeap(memHeap3);
-    memHeap4Size = OSCheckHeap(memHeap4);
+    mainHeapSize = OSCheckHeap(mainHeap);
+    subHeapSize = OSCheckHeap(subHeap);
+    stageHeapSize = OSCheckHeap(stageHeap);
+    backgroundHeapSize = OSCheckHeap(backgroundHeap);
+    charaHeapSize = OSCheckHeap(charaHeap);
 
     init_cache_ptrs();
 
@@ -226,8 +242,8 @@ void init_cache(void)
     lbl_802F1B3C = (void *)(LC_CACHE_BASE + size);
     size += sizeof(*lbl_802F1B3C);
 
-    zMode = (void *)(LC_CACHE_BASE + size);
-    size += sizeof(*zMode);
+    gxCache = (void *)(LC_CACHE_BASE + size);
+    size += sizeof(*gxCache);
 
     printf("locked cache size: %d\n", size);
 }

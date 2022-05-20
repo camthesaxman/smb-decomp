@@ -14,8 +14,8 @@
 void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
 {
     struct StageColiTri tri;
-    struct StageItemgroup *stageIg;
-    int itemgroupId;
+    struct StageAnimGroup *stageAg;
+    int animGroupId;
     s16 *cellTris;
     s16 *cellTriIdx;
 
@@ -44,68 +44,68 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
         tri.edge2Normal.y = -0.7071f;
         tri.edge3Normal.x = 1.0f;
         tri.edge3Normal.y = 0.0f;
-        ball->itemgroupId = 0;
+        ball->animGroupId = 0;
         collide_ball_with_tri_face(ball, &tri);
         collide_ball_with_tri_edges(ball, &tri);
         collide_ball_with_tri_verts(ball, &tri);
         return;
     }
 
-    stageIg = stage->itemgroups;
-    for (itemgroupId = 0; itemgroupId < stage->itemgroupCount; itemgroupId++, stageIg++)
+    stageAg = stage->animGroups;
+    for (animGroupId = 0; animGroupId < stage->animGroupCount; animGroupId++, stageAg++)
     {
-        if (itemgroupId != ball->itemgroupId)
-            tf_physball_to_itemgroup_space(ball, itemgroupId);
-        cellTris = coligrid_lookup(stageIg, ball->pos.x, ball->pos.z);
+        if (animGroupId != ball->animGroupId)
+            tf_physball_to_anim_group_space(ball, animGroupId);
+        cellTris = coligrid_lookup(stageAg, ball->pos.x, ball->pos.z);
         if (cellTris != NULL)
         {
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
-                collide_ball_with_tri_face(ball, &stageIg->triangles[*cellTriIdx]);
+                collide_ball_with_tri_face(ball, &stageAg->triangles[*cellTriIdx]);
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
-                collide_ball_with_tri_edges(ball, &stageIg->triangles[*cellTriIdx]);
+                collide_ball_with_tri_edges(ball, &stageAg->triangles[*cellTriIdx]);
             for (cellTriIdx = cellTris; *cellTriIdx >= 0; cellTriIdx++)
-                collide_ball_with_tri_verts(ball, &stageIg->triangles[*cellTriIdx]);
+                collide_ball_with_tri_verts(ball, &stageAg->triangles[*cellTriIdx]);
         }
 
-        cone = stageIg->coliCones;
-        for (i = stageIg->coliConeCount; i > 0; i--, cone++)
+        cone = stageAg->coliCones;
+        for (i = stageAg->coliConeCount; i > 0; i--, cone++)
             collide_ball_with_cone(ball, cone);
 
-        sphere = stageIg->coliSpheres;
-        for (i = stageIg->coliSphereCount; i > 0; i--, sphere++)
+        sphere = stageAg->coliSpheres;
+        for (i = stageAg->coliSphereCount; i > 0; i--, sphere++)
             collide_ball_with_sphere(ball, sphere);
 
-        cylinder = stageIg->coliCylinders;
-        for (i = stageIg->coliCylinderCount; i > 0; i--, cylinder++)
+        cylinder = stageAg->coliCylinders;
+        for (i = stageAg->coliCylinderCount; i > 0; i--, cylinder++)
             collide_ball_with_cylinder(ball, cylinder);
 
-        goal = stageIg->goals;
-        for (i = stageIg->goalCount; i > 0; i--, goal++)
+        goal = stageAg->goals;
+        for (i = stageAg->goalCount; i > 0; i--, goal++)
             collide_ball_with_goal(ball, goal);
     }
 
-    if (ball->itemgroupId != 0)
-        tf_physball_to_itemgroup_space(ball, 0);
+    if (ball->animGroupId != 0)
+        tf_physball_to_anim_group_space(ball, 0);
     if (dynamicStageParts != NULL)
         g_collide_ball_with_dynstageparts(ball, dynamicStageParts);
 }
 
-s16 *coligrid_lookup(struct StageItemgroup *stageIg, f32 x, f32 z)
+s16 *coligrid_lookup(struct StageAnimGroup *stageAg, f32 x, f32 z)
 {
     int cellX;
     int cellZ;
 
-    if (stageIg->gridCellTris == NULL2)
+    if (stageAg->gridCellTris == NULL2)
         return NULL;
 
-    cellX = mathutil_floor((x - stageIg->gridOriginX) / stageIg->gridStepX);
-    cellZ = mathutil_floor((z - stageIg->gridOriginZ) / stageIg->gridStepZ);
+    cellX = mathutil_floor((x - stageAg->gridOriginX) / stageAg->gridStepX);
+    cellZ = mathutil_floor((z - stageAg->gridOriginZ) / stageAg->gridStepZ);
 
-    if (cellX < 0 || cellX >= stageIg->gridCellCountX)
+    if (cellX < 0 || cellX >= stageAg->gridCellCountX)
         return NULL;
-    if (cellZ < 0 || cellZ >= stageIg->gridCellCountZ)
+    if (cellZ < 0 || cellZ >= stageAg->gridCellCountZ)
         return NULL;
-    return stageIg->gridCellTris[cellZ * stageIg->gridCellCountX + cellX];
+    return stageAg->gridCellTris[cellZ * stageAg->gridCellCountX + cellX];
 }
 
 static inline float dumb_dot(float x1, float y1, float x2, float y2)
@@ -892,7 +892,7 @@ void collide_ball_with_plane(struct PhysicsBall *ball, struct ColiPlane *coliPla
         if (normalSpeed < ball->hardestColiSpeed)
         {
             ball->hardestColiSpeed = normalSpeed;
-            ball->hardestColiItemgroupId = ball->itemgroupId;
+            ball->hardestColiAnimGroupId = ball->animGroupId;
             isHardestColi = 0; // true
         }
 
@@ -1056,7 +1056,7 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
     Point3d ballPos;
     float temp_f1;
     float temp_f2;
-    float hitItemgroupInfo;
+    u8 dummy[4];
     struct ColiRect *coliRect;
     s32 i;
 
@@ -1099,9 +1099,9 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
     Point3d currHitPos;
     Point3d prevHitPos;
 
-    struct ItemgroupInfo *itemgroupInfo;
+    struct AnimGroupInfo *animGroupInfo;
     struct StageColiTri *tri;
-    struct StageItemgroup *stageIg;
+    struct StageAnimGroup *stageAg;
     s16 *cellTris;
     s16 *cellTriIdx;
 
@@ -1112,17 +1112,17 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
     struct StageColiCylinder *cylinder;
     s32 cylinderCtr;
 
-    s32 itemgroupId;
-    s32 hitItemgroupId;
+    s32 animGroupId;
+    s32 hitAnimGroupId;
 
     outHit->flags = 0;
-    itemgroupId = 0;
-    itemgroupInfo = itemgroups;
-    stageIg = decodedStageLzPtr->itemgroups;
-    hitItemgroupId = 0;
+    animGroupId = 0;
+    animGroupInfo = animGroups;
+    stageAg = decodedStageLzPtr->animGroups;
+    hitAnimGroupId = 0;
 
-    for (itemgroupId = 0; itemgroupId < decodedStageLzPtr->itemgroupCount;
-         itemgroupId++, itemgroupInfo++, stageIg++)
+    for (animGroupId = 0; animGroupId < decodedStageLzPtr->animGroupCount;
+         animGroupId++, animGroupInfo++, stageAg++)
     {
         rayOrigin_rt_ig.x = rayOrigin->x;
         rayOrigin_rt_ig.y = rayOrigin->y;
@@ -1130,14 +1130,14 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
         rayDir_rt_ig.x = 0.0f;
         rayDir_rt_ig.y = -1.0f;
         rayDir_rt_ig.z = 0.0f;
-        if (itemgroupId > 0)
+        if (animGroupId > 0)
         {
-            mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+            mathutil_mtxA_from_mtx(animGroupInfo->transform);
             mathutil_mtxA_rigid_inv_tf_point(&rayOrigin_rt_ig, &rayOrigin_rt_ig);
             mathutil_mtxA_rigid_inv_tf_vec(&rayDir_rt_ig, &rayDir_rt_ig);
         }
 
-        cellTris = coligrid_lookup(stageIg, rayOrigin_rt_ig.x, rayOrigin_rt_ig.z);
+        cellTris = coligrid_lookup(stageAg, rayOrigin_rt_ig.x, rayOrigin_rt_ig.z);
         if (cellTris != NULL2)
         {
             cellTriIdx = cellTris;
@@ -1146,10 +1146,10 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
                 hitPos.x = rayOrigin_rt_ig.x;
                 hitPos.y = rayOrigin_rt_ig.y;
                 hitPos.z = rayOrigin_rt_ig.z;
-                tri = &stageIg->triangles[*cellTriIdx];
+                tri = &stageAg->triangles[*cellTriIdx];
                 if (raycast_tri(&hitPos, &rayDir_rt_ig, tri))
                 {
-                    mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                    mathutil_mtxA_from_mtx(animGroupInfo->transform);
                     mathutil_mtxA_tf_point(&hitPos, &hitPos);
                     if (((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y))
                     {
@@ -1158,17 +1158,17 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
                         outHit->pos.y = hitPos.y;
                         outHit->pos.z = hitPos.z;
                         mathutil_mtxA_tf_vec(&tri->normal, &outHit->normal);
-                        hitItemgroupId = itemgroupId;
+                        hitAnimGroupId = animGroupId;
                     }
                 }
             }
         }
-        cone = stageIg->coliCones;
-        for (coneCtr = stageIg->coliConeCount; coneCtr > 0; coneCtr--, cone++)
+        cone = stageAg->coliCones;
+        for (coneCtr = stageAg->coliConeCount; coneCtr > 0; coneCtr--, cone++)
         {
             if (raycast_cone(&rayOrigin_rt_ig, &rayDir_rt_ig, cone, &hitPos, &coneHitNormal))
             {
-                mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                mathutil_mtxA_from_mtx(animGroupInfo->transform);
                 mathutil_mtxA_tf_point(&hitPos, &hitPos);
                 if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
                 {
@@ -1177,17 +1177,17 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
                     outHit->pos.y = hitPos.y;
                     outHit->pos.z = hitPos.z;
                     mathutil_mtxA_tf_vec(&coneHitNormal, &outHit->normal);
-                    hitItemgroupId = itemgroupId;
+                    hitAnimGroupId = animGroupId;
                 }
             }
         }
-        sphere = stageIg->coliSpheres;
-        for (sphereCtr = stageIg->coliSphereCount; sphereCtr > 0; sphereCtr--, sphere++)
+        sphere = stageAg->coliSpheres;
+        for (sphereCtr = stageAg->coliSphereCount; sphereCtr > 0; sphereCtr--, sphere++)
         {
             if ((raycast_sphere(&rayOrigin_rt_ig, &rayDir_rt_ig, sphere, &hitPos,
                                 &sphereHitNormal)))
             {
-                mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                mathutil_mtxA_from_mtx(animGroupInfo->transform);
                 mathutil_mtxA_tf_point(&hitPos, &hitPos);
                 if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
                 {
@@ -1196,17 +1196,17 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
                     outHit->pos.y = hitPos.y;
                     outHit->pos.z = hitPos.z;
                     mathutil_mtxA_tf_vec(&sphereHitNormal, &outHit->normal);
-                    hitItemgroupId = itemgroupId;
+                    hitAnimGroupId = animGroupId;
                 }
             }
         }
-        cylinder = stageIg->coliCylinders;
-        for (cylinderCtr = stageIg->coliCylinderCount; cylinderCtr > 0; cylinderCtr--, cylinder++)
+        cylinder = stageAg->coliCylinders;
+        for (cylinderCtr = stageAg->coliCylinderCount; cylinderCtr > 0; cylinderCtr--, cylinder++)
         {
             if (raycast_cylinder(&rayOrigin_rt_ig, &rayDir_rt_ig, cylinder, &hitPos,
                                  &cylinderHitNormal))
             {
-                mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+                mathutil_mtxA_from_mtx(animGroupInfo->transform);
                 mathutil_mtxA_tf_point(&hitPos, &hitPos);
                 if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
                 {
@@ -1215,7 +1215,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
                     outHit->pos.y = hitPos.y;
                     outHit->pos.z = hitPos.z;
                     mathutil_mtxA_tf_vec(&cylinderHitNormal, &outHit->normal);
-                    hitItemgroupId = itemgroupId;
+                    hitAnimGroupId = animGroupId;
                 }
             }
         }
@@ -1230,7 +1230,7 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
         {
             if ((outHit->flags & COLI_FLAG_OCCURRED) == 0 || hitPos.y > outHit->pos.y)
             {
-                hitItemgroupId = 0;
+                hitAnimGroupId = 0;
                 outHit->flags = COLI_FLAG_OCCURRED;
                 outHit->pos.x = hitPos.x;
                 outHit->pos.y = hitPos.y;
@@ -1244,15 +1244,15 @@ int raycast_stage_down(Point3d *rayOrigin, struct RaycastHit *outHit, Vec *outVe
 
     if (outVelAtPoint)
     {
-        if ((outHit->flags & COLI_FLAG_OCCURRED) && (hitItemgroupId > 0))
+        if ((outHit->flags & COLI_FLAG_OCCURRED) && (hitAnimGroupId > 0))
         {
             currHitPos.x = outHit->pos.x;
             currHitPos.y = outHit->pos.y;
             currHitPos.z = outHit->pos.z;
-            itemgroupInfo = &itemgroups[hitItemgroupId];
-            mathutil_mtxA_from_mtx(itemgroupInfo->transform);
+            animGroupInfo = &animGroups[hitAnimGroupId];
+            mathutil_mtxA_from_mtx(animGroupInfo->transform);
             mathutil_mtxA_rigid_inv_tf_point(&currHitPos, &hitPos);
-            mathutil_mtxA_from_mtx(itemgroupInfo->prevTransform);
+            mathutil_mtxA_from_mtx(animGroupInfo->prevTransform);
             mathutil_mtxA_tf_point(&hitPos, &prevHitPos);
             outVelAtPoint->x = currHitPos.x - prevHitPos.x;
             outVelAtPoint->y = currHitPos.y - prevHitPos.y;
@@ -1607,8 +1607,8 @@ void collide_ball_with_goal(struct PhysicsBall *ball, struct StageGoal *goal)
     mathutil_mtxA_rotate_y(goal->rotY);
     mathutil_mtxA_rotate_x(goal->rotX);
     temp_r3 = NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01);
-    radius = temp_r3->boundsRadius;
-    mathutil_mtxA_tf_point(&temp_r3->boundsCenter, &objPos);
+    radius = temp_r3->boundSphereRadius;
+    mathutil_mtxA_tf_point(&temp_r3->boundSphereCenter, &objPos);
 
     if (mathutil_vec_distance(&objPos, &ball->pos) > radius)
         return;

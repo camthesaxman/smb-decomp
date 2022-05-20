@@ -247,7 +247,7 @@ enum
 
 struct ModeControl
 {
-    s32 unk0;
+    s32 submodeTimer;
     s32 levelSet;
     u32 levelSetFlags;
     u8 fillerC[0x10-0xC];
@@ -258,13 +258,21 @@ struct ModeControl
     /*0x20*/ s32 menuSel;
     /*0x24*/ int playerCount;
     /*0x28*/ s32 gameType;
-    s32 unk2C;
+    /*0x2C*/ s32 currPlayer;  // in turn based modes, this is the current player (0-3) whose turn it is
     s32 unk30;
     u8 filler34[0x3C-0x34];
     s32 unk3C;
     s16 unk40;
-    u8 unk42;
+    /*0x42*/ u8 splitscreenMode;  // split screen setting for 3 players
     u8 filler43[0x48-0x43];
+};
+
+enum
+{
+    SPLITSCREEN_1P_WIDE,
+    SPLITSCREEN_2P_WIDE,
+    SPLITSCREEN_3P_WIDE,
+    SPLITSCREEN_4_SPLIT,
 };
 
 extern struct ModeControl modeCtrl;
@@ -278,7 +286,7 @@ extern void (*lbl_802F1B70)(void);
 extern void (*lbl_802F1B74)(void);
 extern s32 lbl_802F1B78;
 extern void (*lbl_802F1B7C)(void);
-extern void (*lbl_802F1B80)(void);
+extern void (*unusedCallback)(void);
 
 void gm_init(void);
 void gm_main(void);

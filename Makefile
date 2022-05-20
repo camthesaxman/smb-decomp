@@ -68,7 +68,7 @@ SOURCES := \
 	src/init_2.c \
 	src/mathutil.c \
 	src/mode.c \
-	src/mode_2.c \
+	src/pause_menu.c \
 	src/event.c \
 	src/polydisp.c \
 	src/adv.c \
@@ -76,8 +76,10 @@ SOURCES := \
 	src/sel.c \
 	src/game.c \
 	src/camera.c \
+	src/frustum.c \
+	src/light.c \
 	asm/code_0.s \
-	src/code_1.c \
+	src/gxsync.c \
 	src/info.c \
 	src/code_7.c \
 	src/input.c \
@@ -109,7 +111,7 @@ SOURCES := \
 	src/stcoli.c \
 	asm/stcoli.s \
 	src/world.c \
-	asm/interp_anim.s \
+	src/interpolate_keyframes.c \
 	src/stage.c \
 	asm/stage.s \
 	asm/recplay.s \
@@ -142,11 +144,14 @@ SOURCES := \
 	src/item_pilot.c \
 	asm/stobj.s \
 	src/sprite.c \
+	src/textbox.c \
+	src/hud.c \
 	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	asm/code_3.s \
-	asm/mot_ape.s \
+	src/mot_ape.c \
+	asm/code_2.s \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
@@ -157,7 +162,7 @@ SOURCES := \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
-	asm/tevutil.s \
+	src/gxcache.c \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \
@@ -172,7 +177,7 @@ SOURCES := \
 	libraries/os/asm/OSAlarm.s \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
-	libraries/os/asm/OSAudioSystem.s \
+	libraries/os/OSAudioSystem.c \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
 	libraries/os/OSError.c \
@@ -180,7 +185,7 @@ SOURCES := \
 	libraries/os/asm/OSFont.s \
 	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
-	libraries/os/asm/OSMemory.s \
+	libraries/os/OSMemory.c \
 	libraries/os/OSMutex.c \
 	libraries/os/asm/OSReboot.s \
 	libraries/os/asm/OSReset.s \
@@ -199,7 +204,7 @@ SOURCES := \
 	libraries/dvd/asm/dvdlow.s \
 	libraries/dvd/asm/dvdfs.s \
 	libraries/dvd/asm/dvd.s \
-	libraries/dvd/asm/dvdqueue.s \
+	libraries/dvd/dvdqueue.c \
 	libraries/dvd/asm/dvderror.s \
 	libraries/dvd/fstload.c \
 	libraries/vi/asm/vi.s \

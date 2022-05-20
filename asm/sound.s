@@ -2062,7 +2062,7 @@ func_80029228:
 /* 80029370 00025290  80 03 00 6C */	lwz r0, 0x6c(r3)
 /* 80029374 00025294  28 00 00 00 */	cmplwi r0, 0
 /* 80029378 00025298  40 82 01 54 */	bne lbl_800294CC
-/* 8002937C 0002529C  80 6D 99 4C */	lwz r3, memHeap5@sda21(r13)
+/* 8002937C 0002529C  80 6D 99 4C */	lwz r3, mainHeap@sda21(r13)
 /* 80029380 000252A0  48 09 95 B1 */	bl OSCheckHeap
 /* 80029384 000252A4  38 E3 00 00 */	addi r7, r3, 0
 /* 80029388 000252A8  3C 07 00 01 */	addis r0, r7, 1
@@ -2095,7 +2095,7 @@ lbl_800293D4:
 /* 800293EC 0002530C  4B FF E0 FD */	bl func_800274E8
 lbl_800293F0:
 /* 800293F0 00025310  38 00 00 01 */	li r0, 1
-/* 800293F4 00025314  80 6D 99 3C */	lwz r3, memHeap4@sda21(r13)
+/* 800293F4 00025314  80 6D 99 3C */	lwz r3, charaHeap@sda21(r13)
 /* 800293F8 00025318  90 0D 9B E0 */	stw r0, lbl_802F1DC0@sda21(r13)
 /* 800293FC 0002531C  48 09 94 49 */	bl OSSetCurrentHeap
 /* 80029400 00025320  3B 83 00 00 */	addi r28, r3, 0
@@ -2114,7 +2114,7 @@ lbl_800293F0:
 /* 80029434 00025354  80 03 00 6C */	lwz r0, 0x6c(r3)
 /* 80029438 00025358  28 00 00 00 */	cmplwi r0, 0
 /* 8002943C 0002535C  40 82 00 84 */	bne lbl_800294C0
-/* 80029440 00025360  80 6D 99 3C */	lwz r3, memHeap4@sda21(r13)
+/* 80029440 00025360  80 6D 99 3C */	lwz r3, charaHeap@sda21(r13)
 /* 80029444 00025364  48 09 94 ED */	bl OSCheckHeap
 /* 80029448 00025368  38 E3 00 00 */	addi r7, r3, 0
 /* 8002944C 0002536C  3C 07 00 01 */	addis r0, r7, 1
@@ -2184,7 +2184,7 @@ lbl_800294CC:
 /* 80029538 00025458  80 0D 9B E0 */	lwz r0, lbl_802F1DC0@sda21(r13)
 /* 8002953C 0002545C  2C 00 00 00 */	cmpwi r0, 0
 /* 80029540 00025460  41 82 00 10 */	beq lbl_80029550
-/* 80029544 00025464  80 6D 99 3C */	lwz r3, memHeap4@sda21(r13)
+/* 80029544 00025464  80 6D 99 3C */	lwz r3, charaHeap@sda21(r13)
 /* 80029548 00025468  48 09 92 FD */	bl OSSetCurrentHeap
 /* 8002954C 0002546C  7C 7C 1B 78 */	mr r28, r3
 lbl_80029550:
@@ -2293,7 +2293,7 @@ lbl_800296DC:
 /* 800296DC 000255FC  80 0D 9B E0 */	lwz r0, lbl_802F1DC0@sda21(r13)
 /* 800296E0 00025600  2C 00 00 00 */	cmpwi r0, 0
 /* 800296E4 00025604  41 82 00 10 */	beq lbl_800296F4
-/* 800296E8 00025608  80 6D 99 3C */	lwz r3, memHeap4@sda21(r13)
+/* 800296E8 00025608  80 6D 99 3C */	lwz r3, charaHeap@sda21(r13)
 /* 800296EC 0002560C  48 09 91 59 */	bl OSSetCurrentHeap
 /* 800296F0 00025610  7C 7C 1B 78 */	mr r28, r3
 lbl_800296F4:
@@ -8015,35 +8015,6 @@ gamePauseStatus:
 .section .bss
 
     .balign 8
-.global perfInfo
-perfInfo:
-	.skip 0x4
-glabel lbl_801F8DE4
-	.skip 0x4
-glabel lbl_801F8DE8
-	.skip 0x4
-glabel lbl_801F8DEC
-	.skip 0x4
-glabel lbl_801F8DF0
-	.skip 0x4
-glabel lbl_801F8DF4
-	.skip 0x4
-glabel lbl_801F8DF8
-	.skip 0x4
-glabel lbl_801F8DFC
-	.skip 0x4
-glabel lbl_801F8E00
-	.skip 0x4
-glabel lbl_801F8E04
-	.skip 0x4
-glabel lbl_801F8E08
-	.skip 0x4
-glabel lbl_801F8E0C
-	.skip 0x4
-glabel lbl_801F8E10
-	.skip 0x4
-glabel lbl_801F8E14
-	.skip 0x4
 .global lbl_801F8E18
 lbl_801F8E18:
 	.skip 0x39C

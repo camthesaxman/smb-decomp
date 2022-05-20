@@ -9,7 +9,9 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "gma.h"
 #include "gxutil.h"
+#include "hud.h"
 #include "info.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -18,6 +20,7 @@
 #include "stage.h"
 #include "world.h"
 #include "stcoli.h"
+#include "light.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
@@ -44,9 +47,9 @@ FORCE_BSS_ORDER(playerCharacterSelection)
 FORCE_BSS_ORDER(lbl_80206BD0)
 FORCE_BSS_ORDER(lbl_80206BE0)
 
-void func_8003699C(struct Ape *a)
+void func_8003699C(struct Ape *ape)
 {
-    struct Ball *ball = &ballInfo[a->unkC0];
+    struct Ball *ball = &ballInfo[ape->ballId];
     Quaternion quat;
     Vec sp48;
     Vec sp3C = {0.0f, 1.0f, 0.0f};
@@ -60,7 +63,7 @@ void func_8003699C(struct Ape *a)
     mathutil_quat_normalize(&ball->unkA8);
     mathutil_mtxA_from_quat(&ball->unkA8);
     mathutil_mtxA_to_mtx(lbl_80205E30);
-    mathutil_mtxA_from_quat(&a->unk60);
+    mathutil_mtxA_from_quat(&ape->unk60);
     mathutil_mtxA_normalize_basis();
     mathutil_mtxA_mult_left(lbl_80205E30);
     mathutil_mtxA_normalize_basis();
@@ -79,7 +82,7 @@ void func_8003699C(struct Ape *a)
         }
     }
 
-    if (!(a->unk14 & (1 << 17)) && ball->unkA8.w < 0.9941f)
+    if (!(ape->unk14 & (1 << 17)) && ball->unkA8.w < 0.9941f)
         return;
 
     mathutil_mtxA_to_mtx(lbl_80205E30);
@@ -88,7 +91,7 @@ void func_8003699C(struct Ape *a)
     mathutil_mtxA_rigid_inv_tf_vec(&sp48, &sp48);
 
     f1 = 1.0f - mathutil_vec_dot_normalized(&sp48, &sp3C);
-    if (!(a->unk14 & (1 << 17)) && f1 > 0.01f)
+    if (!(ape->unk14 & (1 << 17)) && f1 > 0.01f)
     {
         Vec sp30 = {0.0f, 1.0f, 0.0f};
         if (f1 > 1.999f)
@@ -108,9 +111,9 @@ void func_8003699C(struct Ape *a)
     mathutil_mtxA_mult_left(lbl_80205E30);
 }
 
-float func_80036CAC(struct Ape *a)
+float func_80036CAC(struct Ape *ape)
 {
-    struct Ball *ball = &ballInfo[a->unkC0];
+    struct Ball *ball = &ballInfo[ape->ballId];
     Vec sp4C;
     Vec sp40;
     Quaternion sp30;
@@ -158,9 +161,9 @@ float func_80036CAC(struct Ape *a)
     return mathutil_vec_len(&ball->unkB8) * 1.5f;
 }
 
-void func_80036EB8(struct Ape *a)
+void func_80036EB8(struct Ape *ape)
 {
-    struct Ball *ball = &ballInfo[a->unkC0];
+    struct Ball *ball = &ballInfo[ape->ballId];
     struct RaycastHit sp70;
     struct RaycastHit sp54;
     Vec sp48;
@@ -198,7 +201,7 @@ void func_80036EB8(struct Ape *a)
             sp3C.x = sp48.x;
             sp3C.y = ball->pos.y - 1.0;
             sp3C.z = sp48.z;
-            a->unk54 = i;
+            ape->unk54 = i;
             func_800390C8(3, &sp3C, 0.5f);
             break;
         }
@@ -206,7 +209,7 @@ void func_80036EB8(struct Ape *a)
     mathutil_mtxA_pop();
 }
 
-int func_80037098(struct Ape *a, struct Ball *ball)
+int func_80037098(struct Ape *ape, struct Ball *ball)
 {
     int ret;
     int var1;
@@ -218,13 +221,13 @@ int func_80037098(struct Ape *a, struct Ball *ball)
         ret = infoWork.timerCurr * 5 / infoWork.timerMax;
 
     ret *= 2;
-    if (a->unk24 != 5)
+    if (ape->unk24 != 5)
         return ret;
 
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_COMPETITION:
-        var1 = ball->unk126;
+        var1 = ball->winStreak;
         var2 = var1 * 0.2f;
         if (var2 > 3.0f)
             var2 = 3.0f;
@@ -235,24 +238,24 @@ int func_80037098(struct Ape *a, struct Ball *ball)
         break;
     }
 
-    if (!(a->unk14 & (1 << 13)))
+    if (!(ape->unk14 & (1 << 13)))
     {
-        if (a->unkC2 > var1 || (a->unk14 & (1 << 14)))
+        if (ape->unkC2 > var1 || (ape->unk14 & (1 << 14)))
         {
             ret++;
-            a->unk0->unk3C = 1.0f;
-            a->unk14 |= 0x5000;
+            ape->unk0->unk3C = 1.0f;
+            ape->unk14 |= 0x5000;
         }
         else
-            a->unk0->unk3C = var2 + 1.0f;
+            ape->unk0->unk3C = var2 + 1.0f;
     }
     else
     {
-        a->unk14 |= 0x1000;
+        ape->unk14 |= 0x1000;
         mathutil_mtxA_push();
-        mathutil_mtxA_from_quat(&a->unk60);
+        mathutil_mtxA_from_quat(&ape->unk60);
         mathutil_mtxA_rotate_y(DEGREES_TO_S16(12.0f * var2 + 20.0f));
-        mathutil_mtxA_to_quat(&a->unk60);
+        mathutil_mtxA_to_quat(&ape->unk60);
         mathutil_mtxA_pop();
         ret++;
     }
@@ -268,7 +271,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
 
     for (i = 0; i < spritePoolInfo.unk8; i++)
     {
-        if (ball->unk2F - 1 == ballInfo[i].unk2F
+        if (ball->rank - 1 == ballInfo[i].rank
          && (u16)__abs(ball->unk12A - ballInfo[i].unk12A) < 30)
             return 3;
     }
@@ -276,9 +279,9 @@ static inline int func_8003721C_inline(struct Ball *ball)
     return 2;
 }
 
-void func_8003721C(struct Ape *a, float b)
+void func_8003721C(struct Ape *ape, float b)
 {
-    struct Ball *ball = &ballInfo[a->unkC0];
+    struct Ball *ball = &ballInfo[ape->ballId];
     float f31 = b;
     int r29;
     int r28 = 0;
@@ -289,37 +292,37 @@ void func_8003721C(struct Ape *a, float b)
 
     if (gameSubmode == SMD_GAME_RESULT_MAIN || gameSubmode == SMD_GAME_RESULT_MENU)
     {
-        f31 = a->unk54++;
-        if (ball->unk2F == 0)
+        f31 = ape->unk54++;
+        if (ball->rank == 0)
         {
             r29 = 1;
             r27 = 3;
         }
-        else if (ball->unk2F == 4)
+        else if (ball->rank == 4)
         {
             r29 = 9;
             r28 = 1;
         }
         else
         {
-            r28 = (ball->unk2F - 1) * 2;
+            r28 = (ball->rank - 1) * 2;
             r29 = 5;
         }
     }
     else
     {
-        if (a->unk14 & (1 << 8))
+        if (ape->unk14 & (1 << 8))
         {
             r29 = 1;
             r27 = 6;
-            func_8008BF00(a, 0);
+            func_8008BF00(ape, 0);
         }
-        else if (a->unk14 & (1 << 11))
+        else if (ape->unk14 & (1 << 11))
         {
             r29 = 2;
             r28 = 13;
         }
-        else if (a->unk14 & (1 << 18))
+        else if (ape->unk14 & (1 << 18))
         {
             r29 = 2;
             r28 = 16;
@@ -329,9 +332,9 @@ void func_8003721C(struct Ape *a, float b)
             r29 = 5;
             r28 = 12;
         }
-        else if (a->unk14 & (1 << 1))
+        else if (ape->unk14 & (1 << 1))
             r29 = 3;
-        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.unk0 & (1 << 4)))
+        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.flags & INFO_FLAG_04))
         {
             r29 = 5;
             if (gameMode == MD_ADV && gameSubmode == SMD_ADV_INFO_MAIN)
@@ -341,22 +344,22 @@ void func_8003721C(struct Ape *a, float b)
                 r29 = 2;
                 r28 = 14;
             }
-            else if (infoWork.unk0 & (1 << 6))
+            else if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
             {
                 r29 = 2;
                 r28 = 15;
-                if ((float)a->unk0->unk38 > a->unk0->unk3C * 90.0f)
-                    a->unk14 |= 0x4000;
+                if ((float)ape->unk0->unk38 > ape->unk0->unk3C * 90.0f)
+                    ape->unk14 |= 0x4000;
             }
             else
-                r28 = func_80037098(a, ball);
+                r28 = func_80037098(ape, ball);
         }
         else if (ball->flags & BALL_FLAG_14)
         {
             r29 = 2;
             r28 = 12;
-            a->unk14 |= 0x1000;
-            if (a->unk14 & (1 << 13))
+            ape->unk14 |= 0x1000;
+            if (ape->unk14 & (1 << 13))
                 ball->flags &= ~BALL_FLAG_14;
         }
         else if (ball->flags & BALL_FLAG_TIMEOVER)
@@ -364,7 +367,7 @@ void func_8003721C(struct Ape *a, float b)
             r29 = 9;
             if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
                 r28 = func_8003721C_inline(ball);
-            else if (!(infoWork.unk0 & (1 << 6)))
+            else if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE))
                 r28 = (infoWork.unk20 & 1) + 2;
             else
                 r28 = 0;
@@ -373,20 +376,20 @@ void func_8003721C(struct Ape *a, float b)
         {
             r29 = 4;
             f31 = mathutil_vec_len(&ball->vel);
-            lbl_80205E20[ball->unk2E] = f31;
+            lbl_80205E20[ball->playerId] = f31;
         }
         else if (ball->flags & BALL_FLAG_01)
         {
-            r28 = a->unk54;
+            r28 = ape->unk54;
             r29 = 2;
         }
-        else if (a->unk14 & 1)
+        else if (ape->unk14 & 1)
         {
             r29 = 1;
-            f31 = a->unk54++;
+            f31 = ape->unk54++;
             if (gameSubmode == SMD_ADV_INFO_MAIN)
             {
-                int r3 = (modeCtrl.unk0 < 0x9D8 && modeCtrl.unk0 > 0x8AC);
+                int r3 = (modeCtrl.submodeTimer < 0x9D8 && modeCtrl.submodeTimer > 0x8AC);
                 r27 = (r3 != 0) ? 2 : 1;
             }
         }
@@ -394,21 +397,21 @@ void func_8003721C(struct Ape *a, float b)
             r29 = 0;
     }
     if (r29 != 1 || gameSubmode == SMD_GAME_READY_MAIN)
-        a->unk54 = 0;
-    func_8008BBD4(a, r29, r28, r27, f31);
+        ape->unk54 = 0;
+    func_8008BBD4(ape, r29, r28, r27, f31);
 }
 
-void func_8003765C(struct Ape *a)
+void func_8003765C(struct Ape *ape)
 {
-    struct Ball *ball = &ballInfo[a->unkC0];
+    struct Ball *ball = &ballInfo[ape->ballId];
 
     mathutil_mtxA_push();
-    mathutil_mtxA_from_quat(&a->unk60);
-    mathutil_mtxA_tf_vec_xyz(&a->unk3C, 0.0f, -0.12f, 0.0f);
+    mathutil_mtxA_from_quat(&ape->unk60);
+    mathutil_mtxA_tf_vec_xyz(&ape->unk3C, 0.0f, -0.12f, 0.0f);
     mathutil_mtxA_pop();
 
-    a->unk30 = ball->pos;
-    a->unk48 = (Vec){0.0f, 0.0f, 0.0f};
+    ape->unk30 = ball->pos;
+    ape->unk48 = (Vec){0.0f, 0.0f, 0.0f};
 }
 
 // needed here due to float constant ordering
@@ -438,10 +441,10 @@ void func_80037718(/* struct Ape *unused */)
     mathutil_mtxA_mult_right(lbl_80205E30);
 }
 
-void lbl_8003781C(struct Ape *a, int b)
+void lbl_8003781C(struct Ape *ape, int b)
 {
     struct Ball *r31;
-    struct Ball *r29 = &ballInfo[a->unkC0];
+    struct Ball *r29 = &ballInfo[ape->ballId];
     struct RaycastHit sp50;
     int r27;
     float f31;
@@ -449,7 +452,7 @@ void lbl_8003781C(struct Ape *a, int b)
     switch (b)
     {
     case 3:
-        func_8008B2D4(a);
+        g_ape_free(ape);
         return;
     }
 
@@ -457,38 +460,38 @@ void lbl_8003781C(struct Ape *a, int b)
         return;
 
     raycast_stage_down(&r29->pos, &sp50, NULL);
-    a->unk14 &= -20;
+    ape->unk14 &= -20;
     if (!(sp50.flags & 1) && r29->vel.y < -0.16203702986240387f)
-        a->unk14 |= 2;
+        ape->unk14 |= 2;
     else if (mathutil_vec_len(&r29->unkB8) < 0.00027777777f)
-        a->unk14 |= 1;
+        ape->unk14 |= 1;
 
     r27 = (r29->flags & BALL_FLAG_GOAL) != 0;
-    r27 |= !(a->unk14 & 3);
-    func_8003699C(a);
+    r27 |= !(ape->unk14 & 3);
+    func_8003699C(ape);
     if (r27)
     {
-        f31 = func_80036CAC(a);
+        f31 = func_80036CAC(ape);
     }
     else
     {
         f31 = 0.0f;
-        mathutil_mtxA_from_quat(&a->unk60);
+        mathutil_mtxA_from_quat(&ape->unk60);
         mathutil_mtxA_normalize_basis();
-        if (a->unk14 & (1 << 1))
-            func_80037718(a);
+        if (ape->unk14 & (1 << 1))
+            func_80037718(ape);
     }
 
     if (r29->flags & BALL_FLAG_05)
         f31 = mathutil_vec_len(&r29->vel);
 
-    func_80036EB8(a);
-    mathutil_mtxA_to_quat(&a->unk60);
-    func_8003721C(a, f31);
-    func_8008C4A8(a);
-    if (!(a->unk14 & (1 << 3)))
-        func_8003765C(a);
-    func_8008C090(a, &r29->unk104);
+    func_80036EB8(ape);
+    mathutil_mtxA_to_quat(&ape->unk60);
+    func_8003721C(ape, f31);
+    func_8008C4A8(ape);
+    if (!(ape->unk14 & (1 << 3)))
+        func_8003765C(ape);
+    func_8008C090(ape, &r29->unk104);
     r29->unk100 = 0;
     r29->unk110 = 0.0f;
 }
@@ -559,7 +562,7 @@ void ev_ball_init(void)
         }
 
         currentBallStructPtr = ball;
-        ball->unk2E = i;
+        ball->playerId = i;
         g_ball_init_2(ball);
         ball->unk0 = 2;
         ball->state = 0;
@@ -573,7 +576,7 @@ void ev_ball_init(void)
         ball->unk14B = 0;
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot - 16384);
-        ape->unkC0 = i;
+        ape->ballId = i;
         if (dipSwitches & DIP_APE_COLOR)
             ape->colorId = sp18[playerCharacterSelection[i]];
         else
@@ -616,17 +619,17 @@ void ev_ball_init(void)
             if (advDemoInfo.flags & (1 << 8))
             {
                 func_8008BF00(ape, 0);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2);
             }
             else if (modeCtrl.playerCount > 2)
             {
                 func_8008BF00(ape, 2);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2 + 1);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2 + 1);
             }
             else
             {
                 func_8008BF00(ape, 1);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2);
             }
             break;
         case GAMETYPE_MINI_RACE:
@@ -634,19 +637,19 @@ void ev_ball_init(void)
             {
             case 1:
                 func_8008BF00(ape, 1);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2);
                 break;
             case 3:  // useless; needed to match
             case 2:
             default:
                 func_8008BF00(ape, 2);
-                lbl_802F1F0C |= 1 << (ape->unk10 * 2 + 1);
+                lbl_802F1F0C |= 1 << (ape->charaId * 2 + 1);
                 break;
             }
             break;
         default:
             func_8008BF00(ape, 0);
-            lbl_802F1F0C |= 1 << (ape->unk10 * 2);
+            lbl_802F1F0C |= 1 << (ape->charaId * 2);
             break;
         }
     }
@@ -655,7 +658,7 @@ void ev_ball_init(void)
     case GAMETYPE_MAIN_NORMAL:
     case GAMETYPE_MINI_TARGET:
     case GAMETYPE_MINI_BOWLING:
-        currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
+        currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
         break;
     default:
         currentBallStructPtr = &ballInfo[0];
@@ -987,7 +990,7 @@ void ev_ball_main(void)
     case GAMETYPE_MAIN_NORMAL:
     case GAMETYPE_MINI_TARGET:
     case GAMETYPE_MINI_BOWLING:
-        currentBallStructPtr = &ballInfo[modeCtrl.unk2C];
+        currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
         break;
     default:
         currentBallStructPtr = &ballInfo[0];
@@ -1130,7 +1133,7 @@ void ball_draw(void)
             entry = ord_tbl_get_entry_for_pos(&ball->pos);
             node = ord_tbl_alloc_node(sizeof(*node));
             node->node.drawFunc = (OrdTblDrawFunc)ball_draw_callback;
-            node->unk8 = func_800223D0();
+            node->unk8 = peek_light_group();
             node->ballId = i;
             ord_tbl_insert_node(entry, &node->node);
             continue;
@@ -1171,7 +1174,7 @@ void ball_draw(void)
         {
             g_avdisp_set_some_func_1(envFunc);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
             g_avdisp_set_some_func_1(NULL);
         }
 
@@ -1189,7 +1192,7 @@ void ball_draw(void)
 u8 lbl_801B7EC0[] = {1, 0, 0, 0};  // + 0x348
 GXTexObj lbl_801B7EC4 = {0};  // + 0x34C
 
-void func_80038AB4(void)
+void g_ball_shadow_something_1(void)
 {
     struct Struct80092B98 sp18;
     Vec spC;
@@ -1204,7 +1207,7 @@ void func_80038AB4(void)
     r29 = advDemoInfo.flags & (1 << 8);
     if (r29 != 0 && (advDemoInfo.flags & (1 << 11)))
     {
-        func_80038DF4();
+        g_ball_shadow_something_2();
         return;
     }
 
@@ -1215,7 +1218,7 @@ void func_80038AB4(void)
         {
             if (modeCtrl.playerCount > 3)
             {
-                func_80038DF4();
+                g_ball_shadow_something_2();
                 return;
             }
         }
@@ -1225,14 +1228,14 @@ void func_80038AB4(void)
     default:
         if (modeCtrl.unk30 > 2)
         {
-            func_80038DF4();
+            g_ball_shadow_something_2();
             return;
         }
         break;
     }
 
-    mathutil_mtxA_from_rotate_y(lbl_801F0614.unk42);
-    mathutil_mtxA_rotate_x(lbl_801F0614.unk40);
+    mathutil_mtxA_from_rotate_y(s_bgLightInfo.infLightRotY);
+    mathutil_mtxA_rotate_x(s_bgLightInfo.infLightRotX);
     spC.x = 0.0f;
     spC.y = 0.0f;
     spC.z = -15.0f;
@@ -1296,7 +1299,7 @@ void func_80038AB4(void)
                 sp18.unk2E = 0xFFFF;
                 break;
             default:
-                sp18.unk2E = 1 << ball->unk2E;
+                sp18.unk2E = 1 << ball->playerId;
                 break;
             }
         }
@@ -1304,10 +1307,10 @@ void func_80038AB4(void)
     }
 }
 
-void func_80038DF4(void)
+void g_ball_shadow_something_2(void)
 {
     struct Struct8009492C sp30;
-    struct RaycastHit sp14;
+    struct RaycastHit hit;
     Vec sp8;
     struct Ball *ball;
     s8 *r25;
@@ -1327,9 +1330,9 @@ void func_80038DF4(void)
             continue;
         if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
-        if (raycast_stage_down(&ball->pos, &sp14, &sp8) == 0)
+        if (raycast_stage_down(&ball->pos, &hit, &sp8) == 0)
             continue;
-        f2 = 1.0 - (ball->pos.y - sp14.pos.y) * 0.2;
+        f2 = 1.0 - (ball->pos.y - hit.pos.y) * 0.2;
         if (f2 < 0.0f)
             continue;
 
@@ -1342,9 +1345,9 @@ void func_80038DF4(void)
         sp30.unk14.y = sp30.unk14.x;
         sp30.unk14.z = sp30.unk14.x;
 
-        mathutil_vec_to_euler(&sp14.normal, &sp30.unkC);
+        mathutil_vec_to_euler(&hit.normal, &sp30.unkC);
         sp30.unkC.z = ball->unk2C;
-        sp30.unk0 = sp14.pos;
+        sp30.unk0 = hit.pos;
         func_8009492C(&sp30);
     }
 }
@@ -1361,7 +1364,7 @@ void give_bananas(int bananas)
         {
             ball->lives++;
             ball->bananas -= 100;
-            func_8007DEC8(0x78);
+            hud_show_1up_banner(0x78);
             g_play_sound(0x2852);  // play 1-up sound?
         }
         break;
@@ -1377,7 +1380,7 @@ void give_bananas(int bananas)
     }
 }
 
-void func_800390C8(int a, Vec *b, float c)
+void func_800390C8(int a, Vec *sphereCenter, float c)
 {
     Vec sp50;
     Vec sp44;
@@ -1388,7 +1391,7 @@ void func_800390C8(int a, Vec *b, float c)
     int r28;
 
     ball = &ballInfo[0];
-    r28 = currentBallStructPtr->unk2E;
+    r28 = currentBallStructPtr->playerId;
     r29 = spritePoolInfo.unkC;
     lbl_802F1F0C = 0;
 
@@ -1401,9 +1404,9 @@ void func_800390C8(int a, Vec *b, float c)
         if (a == 4 && r28 == i)
             continue;
 
-        sp50.x = b->x - ball->pos.x;
-        sp50.y = b->y - ball->pos.y;
-        sp50.z = b->z - ball->pos.z;
+        sp50.x = sphereCenter->x - ball->pos.x;
+        sp50.y = sphereCenter->y - ball->pos.y;
+        sp50.z = sphereCenter->z - ball->pos.z;
         f1 = mathutil_vec_normalize_len(&sp50);
         if (f1 > FLT_EPSILON)
             c /= f1;
@@ -1443,7 +1446,7 @@ void func_800390C8(int a, Vec *b, float c)
         if (ball->unk110 < c)
         {
             ball->unk100 = a;
-            ball->unk104 = *b;
+            ball->unk104 = *sphereCenter;
             ball->unk110 = c;
         }
     }
@@ -1515,7 +1518,7 @@ void g_ball_init_1(struct Ball *ball)
     struct Ball backup;
 
     backup.ape = ball->ape;
-    backup.unk2E = ball->unk2E;
+    backup.playerId = ball->playerId;
 
     memset(ball, 0, sizeof(*ball));
 
@@ -1537,8 +1540,8 @@ void g_ball_init_1(struct Ball *ball)
     ball->unk134 = 0;
     ball->unk7C = 0;
     ball->ape = backup.ape;
-    ball->unk2E = backup.unk2E;
-    ball->unk126 = 0;
+    ball->playerId = backup.playerId;
+    ball->winStreak = 0;
     ball->unk128 = 0;
 }
 
@@ -1562,24 +1565,24 @@ void g_ball_init_2(struct Ball *ball)
         break;
     }
 
-    backup.unk2E = ball->unk2E;
+    backup.playerId = ball->playerId;
     backup.lives = ball->lives;
     backup.bananas = ball->bananas;
     backup.unk134 = ball->unk134;
     backup.unk7C = ball->unk7C;
     backup.ape = ball->ape;
-    backup.unk126 = ball->unk126;
+    backup.winStreak = ball->winStreak;
     backup.unk128 = ball->unk128;
 
     memset(ball, 0, sizeof(*ball));
 
-    ball->unk2E = backup.unk2E;
+    ball->playerId = backup.playerId;
     ball->lives = backup.lives;
     ball->bananas = backup.bananas;
     ball->unk134 = backup.unk134;
     ball->unk7C = backup.unk7C;
     ball->ape = backup.ape;
-    ball->unk126 = backup.unk126;
+    ball->winStreak = backup.winStreak;
     ball->unk128 = backup.unk128;
 
     func_8003C4A0(ball, 0);
@@ -1642,7 +1645,7 @@ void ball_func_3(struct Ball *ball)
     ball->prevPos.y = ball->pos.y;
     ball->prevPos.z = ball->pos.z;
 
-    f4 = modeCtrl.unk0;
+    f4 = modeCtrl.submodeTimer;
     f2 = (decodedStageLzPtr->startPos->pos.y - ball->pos.y) / f4;
 
     ball->vel.x = (zero = 0.0f);  // fake match
@@ -1676,11 +1679,11 @@ void ball_func_3(struct Ball *ball)
 
 void ball_func_4(struct Ball *ball)
 {
-    struct PhysicsBall spC;
+    struct PhysicsBall physBall;
 
-    handle_ball_linear_kinematics(ball, &spC, 0);
-    handle_ball_rotational_kinematics(ball, &spC, 0);
-    update_ball_ape_transform(ball, &spC, 0);
+    handle_ball_linear_kinematics(ball, &physBall, 0);
+    handle_ball_rotational_kinematics(ball, &physBall, 0);
+    update_ball_ape_transform(ball, &physBall, 0);
     ball->unk80++;
 }
 
@@ -1700,7 +1703,7 @@ void ball_func_goal_init(struct Ball *ball)
 
 void ball_func_goal_main(struct Ball *ball)
 {
-    struct PhysicsBall spC;
+    struct PhysicsBall physBall;
 
     if (!(ball->flags & BALL_FLAG_09)
      && (ball->ape->unk14 & (1 << 14)))
@@ -1710,9 +1713,9 @@ void ball_func_goal_main(struct Ball *ball)
         g_play_sound(0x126);
     }
 
-    handle_ball_linear_kinematics(ball, &spC, 1);
-    handle_ball_rotational_kinematics(ball, &spC, 1);
-    update_ball_ape_transform(ball, &spC, 1);
+    handle_ball_linear_kinematics(ball, &physBall, 1);
+    handle_ball_rotational_kinematics(ball, &physBall, 1);
+    update_ball_ape_transform(ball, &physBall, 1);
     ball->unk80++;
 }
 
@@ -1727,7 +1730,7 @@ void ball_func_7(struct Ball *ball)
     ball->flags &= ~BALL_FLAG_INVISIBLE;
     if (ball->ape != NULL)
         ball->ape->unk14 &= ~(1 << 5);
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &sp3C, lbl_80250A68.unk10);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp3C, lbl_80250A68.unk10);
     ball->pos.x = sp3C.unk0.x;
     ball->pos.y = sp3C.unk0.y;
     ball->pos.z = sp3C.unk0.z;
@@ -1764,10 +1767,10 @@ void ball_func_replay_main(struct Ball *ball)
     ball->prevPos.y = ball->pos.y;
     ball->prevPos.z = ball->pos.z;
 
-    if (ball->unk2E == lbl_80250A68.unk14)
+    if (ball->playerId == lbl_80250A68.unk14)
         lbl_80250A68.unk10 -= 1.0f;
 
-    func_800496BC(lbl_80250A68.unk0[ball->unk2E], &spC, lbl_80250A68.unk10);
+    func_800496BC(lbl_80250A68.unk0[ball->playerId], &spC, lbl_80250A68.unk10);
 
     ball->pos.x = spC.unk0.x;
     ball->pos.y = spC.unk0.y;
@@ -1792,7 +1795,7 @@ void ball_func_replay_main(struct Ball *ball)
     ball->flags = spC.unk18 | BALL_FLAG_24;
     ball->unk130 = spC.unk1C;
 
-    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.unk0 & (1 << 4)))
+    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.flags & INFO_FLAG_04))
         ball->state = 4;
 
     mathutil_mtxA_from_translate(&ball->pos);
@@ -1829,7 +1832,7 @@ void ball_func_11(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
     ball->ape->unk60 = ball->unk98;
-    ball->unk2A = lbl_801F0614.unk42 + 0x2000;
+    ball->unk2A = s_bgLightInfo.infLightRotY + 0x2000;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_y(ball->unk2A - 16384);
@@ -1929,7 +1932,7 @@ void ball_func_15(struct Ball *ball)
 void ball_func_17(struct Ball *ball)
 {
     Vec sp68;
-    struct PhysicsBall spC;
+    struct PhysicsBall physBall;
 
     mathutil_mtxA_from_mtx(mathutilData->mtxB);
     mathutil_mtxA_rigid_inv_tf_tl(&sp68);
@@ -1942,9 +1945,9 @@ void ball_func_17(struct Ball *ball)
     ball->vel.y += sp68.y;
     ball->vel.z += sp68.z;
 
-    handle_ball_linear_kinematics(ball, &spC, 0);
-    handle_ball_rotational_kinematics(ball, &spC, 0);
-    update_ball_ape_transform(ball, &spC, 0);
+    handle_ball_linear_kinematics(ball, &physBall, 0);
+    handle_ball_rotational_kinematics(ball, &physBall, 0);
+    update_ball_ape_transform(ball, &physBall, 0);
     ball->unk80++;
 }
 
@@ -1952,7 +1955,7 @@ void ball_func_16(struct Ball *ball)
 {
     g_ball_init_2(ball);
 
-    if (modeCtrl.unk0 == 0x111C)
+    if (modeCtrl.submodeTimer == 0x111C)
     {
         ball->pos.x = decodedStageLzPtr->startPos->pos.x;
         ball->pos.y = decodedStageLzPtr->startPos->pos.y;
@@ -1983,7 +1986,7 @@ void ball_func_16(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
 
-    if (modeCtrl.unk0 != 0x111C)
+    if (modeCtrl.submodeTimer != 0x111C)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x4000);
@@ -2026,8 +2029,8 @@ void ball_func_18(struct Ball *ball)
 void ball_func_19(struct Ball *ball)
 {
     ball->unk124 = 60;
-    worldInfo[ball->unk2E].unk20 = 0x5A;
-    cameraInfo[ball->unk2E].state = 4;
+    worldInfo[ball->playerId].unk20 = 0x5A;
+    cameraInfo[ball->playerId].state = 4;
     g_play_sound(ball->lives == 1 ? 0x51 : 0x1D);
     g_play_sound(0x15);
     ball->state = 20;
@@ -2035,12 +2038,12 @@ void ball_func_19(struct Ball *ball)
 
 void ball_func_20(struct Ball *ball)
 {
-    struct PhysicsBall sp18;
+    struct PhysicsBall physBall;
     Vec spC;
 
-    handle_ball_linear_kinematics(ball, &sp18, 0);
-    handle_ball_rotational_kinematics(ball, &sp18, 0);
-    update_ball_ape_transform(ball, &sp18, 0);
+    handle_ball_linear_kinematics(ball, &physBall, 0);
+    handle_ball_rotational_kinematics(ball, &physBall, 0);
+    update_ball_ape_transform(ball, &physBall, 0);
     ball->unk80++;
 
     if (--ball->unk124 > 0)
@@ -2062,14 +2065,14 @@ void ball_func_20(struct Ball *ball)
     ball->unk98.z = 0.0f;
 
     ball->unk14E = 30;
-    worldInfo[ball->unk2E].unk20 = 30;
+    worldInfo[ball->playerId].unk20 = 30;
 
     spC.x = -mathutil_sin(decodedStageLzPtr->startPos->yrot);
     spC.y = 0.0f;
     spC.z = -mathutil_cos(decodedStageLzPtr->startPos->yrot);
     func_8008C408(ball->ape, &spC);
 
-    cameraInfo[ball->unk2E].state = 0;
+    cameraInfo[ball->playerId].state = 0;
 
     ball->flags &= ~BALL_FLAG_11;
     ball->state = 4;
@@ -2084,55 +2087,55 @@ void ball_func_demo_init(struct Ball *ball)
     ball->colorId = 3;
 
     if (!(advDemoInfo.flags & (1 << 6)))
-        lbl_80206B80[ball->unk2E] = func_8008D1DC(lbl_8000F790, ball->ape, 5);
+        lbl_80206B80[ball->playerId] = func_8008D1DC(lbl_8000F790, ball->ape, 5);
 
     ball->pos.x = decodedStageLzPtr->startPos->pos.x;
     ball->pos.y = decodedStageLzPtr->startPos->pos.y;
     ball->pos.z = decodedStageLzPtr->startPos->pos.z;
 
-    if (currStageId == 13 && ball->ape->unk10 == 0)
+    if (currStageId == ST_013_REPULSE && ball->ape->charaId == 0)
     {
         ball->pos.x = 0.0f;
         ball->pos.y = 0.5f;
         ball->pos.z = 20.0f;
     }
-    else if (currStageId == 9 && ball->ape->unk10 == 2)
+    else if (currStageId == ST_009_EXAM_A && ball->ape->charaId == 2)
     {
         ball->pos.x = -5.6f;
         ball->pos.y = -2.0f;
         ball->pos.z = -1.6f;
     }
-    else if (currStageId == 9)
+    else if (currStageId == ST_009_EXAM_A)
     {
         ball->pos.x = -5.4f;
         ball->pos.y = -2.0f;
         ball->pos.z = -3.1f;
     }
-    else if (currStageId == 21 && ball->ape->unk10 == 3)
+    else if (currStageId == ST_021_CHOICE && ball->ape->charaId == 3)
     {
         ball->pos.x = 0.0f;
         ball->pos.y = 0.51f;
         ball->pos.z = 3.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 0)
+    else if (currStageId == ST_095_BONUS_HUNTING && ball->ape->charaId == 0)
     {
         ball->pos.x = -1.0f;
         ball->pos.y = -42.49f;
         ball->pos.z = 156.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 1)
+    else if (currStageId == ST_095_BONUS_HUNTING && ball->ape->charaId == 1)
     {
         ball->pos.x = 1.0f;
         ball->pos.y = -42.49f;
         ball->pos.z = 158.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 2)
+    else if (currStageId == ST_095_BONUS_HUNTING && ball->ape->charaId == 2)
     {
         ball->pos.x = -3.0f;
         ball->pos.y = -42.49f;
         ball->pos.z = 157.0f;
     }
-    else if (currStageId == 95 && ball->ape->unk10 == 3)
+    else if (currStageId == ST_095_BONUS_HUNTING && ball->ape->charaId == 3)
     {
         ball->pos.x = 3.0f;
         ball->pos.y = -42.49f;
@@ -2157,20 +2160,20 @@ void ball_func_demo_init(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
 
-    if (currStageId == 9 && ball->ape->unk10 == 2)
+    if (currStageId == ST_009_EXAM_A && ball->ape->charaId == 2)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x10000 - 0x8000);
         mathutil_mtxA_to_quat(&ball->ape->unk60);
     }
-    else if (currStageId == 9 && ball->ape->unk10 == 1)
+    else if (currStageId == ST_009_EXAM_A && ball->ape->charaId == 1)
     {
         // same exact thing as the above
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot + 0x10000 - 0x8000);
         mathutil_mtxA_to_quat(&ball->ape->unk60);
     }
-    else if (currStageId == 28 && ball->ape->unk10 == 0)
+    else if (currStageId == ST_028_CHASER && ball->ape->charaId == 0)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_y(decodedStageLzPtr->startPos->yrot);
@@ -2188,11 +2191,11 @@ void ball_func_mini(struct Ball *ball)
 
 static void func_8003B0F4_inline(struct Ball *ball)
 {
-    struct PhysicsBall sp14;
+    struct PhysicsBall physBall;
 
-    handle_ball_linear_kinematics(ball, &sp14, 1);
-    handle_ball_rotational_kinematics(ball, &sp14, 1);
-    update_ball_ape_transform(ball, &sp14, 1);
+    handle_ball_linear_kinematics(ball, &physBall, 1);
+    handle_ball_rotational_kinematics(ball, &physBall, 1);
+    update_ball_ape_transform(ball, &physBall, 1);
     ball->unk80++;
 }
 
@@ -2220,7 +2223,7 @@ void ball_func_27(struct Ball *ball)
 
 void ball_func_28(struct Ball *ball)
 {
-    struct PhysicsBall spC;
+    struct PhysicsBall physBall;
 
     if (!(ball->flags & BALL_FLAG_09) && (ball->ape->unk14 & (1 << 14)))
     {
@@ -2229,13 +2232,13 @@ void ball_func_28(struct Ball *ball)
         g_play_sound(0x126);
     }
 
-    handle_ball_linear_kinematics_ignore_collision(ball, &spC, 1);
-    handle_ball_rotational_kinematics(ball, &spC, 1);
-    update_ball_ape_transform(ball, &spC, 1);
+    handle_ball_linear_kinematics_ignore_collision(ball, &physBall, 1);
+    handle_ball_rotational_kinematics(ball, &physBall, 1);
+    update_ball_ape_transform(ball, &physBall, 1);
     ball->unk80++;
 }
 
-void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int c)
+void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *physBall, int c)
 {
     Vec stageUp;  // up vector with stage tilt. doesn't seem to be used for anything
     Vec accel;  // acceleration due to gravity
@@ -2248,8 +2251,8 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     ball->flags &= ~BALL_FLAG_05;
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
-    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
+    mathutil_mtxA_rotate_x(worldInfo[ball->playerId].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->playerId].zrot);
     stageUp.x = 0.0f;
     stageUp.y = 1.0f;
     stageUp.z = 0.0f;
@@ -2276,8 +2279,8 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
             f1 = 1.0 / mathutil_sqrt(f1);
             vel.x *= f1;
             vel.z *= f1;
-            f1 = -mathutil_sin(cameraInfo[ball->unk2E].rotY) * vel.x
-               + -mathutil_cos(cameraInfo[ball->unk2E].rotY) * vel.z;
+            f1 = -mathutil_sin(cameraInfo[ball->playerId].rotY) * vel.x
+               + -mathutil_cos(cameraInfo[ball->playerId].rotY) * vel.z;
             if (f1 < 0.0)
             {
                 f1 = -f1 * -0.65 + 1.0;
@@ -2289,8 +2292,8 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     }
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
-    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
+    mathutil_mtxA_rotate_x(worldInfo[ball->playerId].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->playerId].zrot);
     mathutil_mtxA_rigid_inv_tf_vec(&accel, &accel);
 
     ball->vel.x += accel.x;
@@ -2301,22 +2304,22 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     ball->pos.y += ball->vel.y;
     ball->pos.z += ball->vel.z;
 
-    init_physball_from_ball(ball, b);
-    collide_ball_with_stage(b, decodedStageLzPtr);
-    func_8003CB3C(ball, b);
+    init_physball_from_ball(ball, physBall);
+    collide_ball_with_stage(physBall, decodedStageLzPtr);
+    func_8003CB3C(ball, physBall);
 
-    if (b->flags & 1)
+    if (physBall->flags & 1)
     {
-        if (b->hardestColiItemgroupId == 0)
+        if (physBall->hardestColiAnimGroupId == 0)
         {
-            ball->unk114.x = -b->hardestColiPlane.normal.x;
-            ball->unk114.y = -b->hardestColiPlane.normal.y;
-            ball->unk114.z = -b->hardestColiPlane.normal.z;
+            ball->unk114.x = -physBall->hardestColiPlane.normal.x;
+            ball->unk114.y = -physBall->hardestColiPlane.normal.y;
+            ball->unk114.z = -physBall->hardestColiPlane.normal.z;
         }
         else
         {
-            mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].transform);
-            mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &ball->unk114);
+            mathutil_mtxA_from_mtx(animGroups[physBall->hardestColiAnimGroupId].transform);
+            mathutil_mtxA_tf_vec(&physBall->hardestColiPlane.normal, &ball->unk114);
             ball->unk114.x = -ball->unk114.x;
             ball->unk114.y = -ball->unk114.y;
             ball->unk114.z = -ball->unk114.z;
@@ -2324,7 +2327,7 @@ void handle_ball_linear_kinematics(struct Ball *ball, struct PhysicsBall *b, int
     }
 }
 
-void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct PhysicsBall *b, int c)
+void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct PhysicsBall *physBall, int c)
 {
     Vec stageUp;  // up vector with stage tilt. doesn't seem to be used for anything
     Vec accel;  // acceleration due to gravity
@@ -2337,8 +2340,8 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
     ball->flags &= ~BALL_FLAG_05;
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
-    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
+    mathutil_mtxA_rotate_x(worldInfo[ball->playerId].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->playerId].zrot);
     stageUp.x = 0.0f;
     stageUp.y = 1.0f;
     stageUp.z = 0.0f;
@@ -2365,8 +2368,8 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
             f1 = 1.0 / mathutil_sqrt(f1);
             vel.x *= f1;
             vel.z *= f1;
-            f1 = -mathutil_sin(cameraInfo[ball->unk2E].rotY) * vel.x
-               + -mathutil_cos(cameraInfo[ball->unk2E].rotY) * vel.z;
+            f1 = -mathutil_sin(cameraInfo[ball->playerId].rotY) * vel.x
+               + -mathutil_cos(cameraInfo[ball->playerId].rotY) * vel.z;
             if (f1 < 0.0)
             {
                 f1 = -f1 * -0.65 + 1.0;
@@ -2378,8 +2381,8 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
     }
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_x(worldInfo[ball->unk2E].xrot);
-    mathutil_mtxA_rotate_z(worldInfo[ball->unk2E].zrot);
+    mathutil_mtxA_rotate_x(worldInfo[ball->playerId].xrot);
+    mathutil_mtxA_rotate_z(worldInfo[ball->playerId].zrot);
     mathutil_mtxA_rigid_inv_tf_vec(&accel, &accel);
 
     ball->vel.x += accel.x;
@@ -2391,7 +2394,7 @@ void handle_ball_linear_kinematics_ignore_collision(struct Ball *ball, struct Ph
     ball->pos.z += ball->vel.z;
 }
 
-void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
+void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *physBall, int c)
 {
     mathutil_mtxA_from_quat(&ball->unk98);
     mathutil_mtxA_normalize_basis();
@@ -2403,23 +2406,23 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
     if (c == 0)
         func_8003C38C(ball);
 
-    ball->unk130 = b->hardestColiSpeed;
-    if ((ball->flags & BALL_FLAG_00) && b->hardestColiSpeed < -0.11f)
+    ball->unk130 = physBall->hardestColiSpeed;
+    if ((ball->flags & BALL_FLAG_00) && physBall->hardestColiSpeed < -0.11f)
         ball->flags |= BALL_FLAG_02;
-    if (b->hardestColiSpeed < -0.15f)
+    if (physBall->hardestColiSpeed < -0.15f)
         ball->flags |= BALL_FLAG_05;
 
-    if ((ball->flags & BALL_FLAG_00) && b->hardestColiSpeed < -0.054999999701976776)
+    if ((ball->flags & BALL_FLAG_00) && physBall->hardestColiSpeed < -0.054999999701976776)
     {
         int r4 = (modeCtrl.gameType != GAMETYPE_MINI_FIGHT && lbl_80206DEC.unk0 < 0xF0);
 
         if (r4)
             ball->flags |= BALL_FLAG_27;
-        else if (b->hardestColiSpeed < -0.18699999898672104)
+        else if (physBall->hardestColiSpeed < -0.18699999898672104)
             ball->flags |= BALL_FLAG_28;
-        else if (b->hardestColiSpeed < -0.14299999922513962)
+        else if (physBall->hardestColiSpeed < -0.14299999922513962)
             ball->flags |= BALL_FLAG_29;
-        else if (b->hardestColiSpeed < -0.098999999463558197)
+        else if (physBall->hardestColiSpeed < -0.098999999463558197)
             ball->flags |= BALL_FLAG_30;
         else
             ball->flags |= BALL_FLAG_31;
@@ -2433,14 +2436,14 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *b, int c)
             r4 = 0;
 
         if (r4)
-            func_800B60F4(lbl_80206BD0[ball->unk2E], 1, (0.2f - ball->unk130) * 60.0f);
+            func_800B60F4(lbl_80206BD0[ball->playerId], 1, (0.2f - ball->unk130) * 60.0f);
     }
 }
 
-void func_8003BBF4(struct PhysicsBall *a, Vec *b)
+void func_8003BBF4(struct PhysicsBall *physBall, Vec *b)
 {
     struct Ball *ball = currentBallStructPtr;
-    struct ItemgroupInfo *movpart = &itemgroups[a->hardestColiItemgroupId];
+    struct AnimGroupInfo *animGroup = &animGroups[physBall->hardestColiAnimGroupId];
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2449,10 +2452,10 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
     Vec *ptr;
     int unused;
 
-    mathutil_mtxA_from_mtx(movpart->transform);
-    mathutil_mtxA_tf_point(&a->hardestColiPlane.point, &sp38);
+    mathutil_mtxA_from_mtx(animGroup->transform);
+    mathutil_mtxA_tf_point(&physBall->hardestColiPlane.point, &sp38);
     ptr = &sp44;
-    mathutil_mtxA_tf_vec(&a->hardestColiPlane.normal, ptr);
+    mathutil_mtxA_tf_vec(&physBall->hardestColiPlane.normal, ptr);
 
     sp14.x = sp38.x - ball->pos.x;
     sp14.y = sp38.y - ball->pos.y;
@@ -2464,7 +2467,7 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
 
     mathutil_mtxA_rigid_inv_tf_point(&sp2C, &sp14);
 
-    mathutil_mtxA_from_mtx(movpart->prevTransform);
+    mathutil_mtxA_from_mtx(animGroup->prevTransform);
     mathutil_mtxA_tf_point(&sp14, &sp20);
 
     sp14.x = sp2C.x - sp20.x;
@@ -2476,10 +2479,10 @@ void func_8003BBF4(struct PhysicsBall *a, Vec *b)
     b->z -= sp14.z;
 }
 
-void func_8003BD68(struct PhysicsBall *a, Vec *b, Vec *c)
+void func_8003BD68(struct PhysicsBall *physBall, Vec *b, Vec *c)
 {
     struct Ball *ball = currentBallStructPtr;
-    float f2 = mathutil_vec_dot_prod(b, &a->hardestColiPlane.normal);
+    float f2 = mathutil_vec_dot_prod(b, &physBall->hardestColiPlane.normal);
     Vec sp44;
     Vec sp38;
     Vec sp2C;
@@ -2487,9 +2490,9 @@ void func_8003BD68(struct PhysicsBall *a, Vec *b, Vec *c)
     Vec sp14;
     float f4;
 
-    sp2C.x = f2 * a->hardestColiPlane.normal.x;
-    sp2C.y = f2 * a->hardestColiPlane.normal.y;
-    sp2C.z = f2 * a->hardestColiPlane.normal.z;
+    sp2C.x = f2 * physBall->hardestColiPlane.normal.x;
+    sp2C.y = f2 * physBall->hardestColiPlane.normal.y;
+    sp2C.z = f2 * physBall->hardestColiPlane.normal.z;
 
     sp38.x = sp2C.x + (b->x - sp2C.x) * 0.92;
     sp38.y = sp2C.y + (b->y - sp2C.y) * 0.92;
@@ -2519,7 +2522,7 @@ void func_8003BD68(struct PhysicsBall *a, Vec *b, Vec *c)
     ball->unk64 = (sp20.z * f4 - ball->unk64) * 0.15 + (float)ball->unk64;
 }
 
-void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b, int c)
+void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *physBall, int c)
 {
     int r3 = 0;
     Vec sp44;
@@ -2532,12 +2535,12 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
 
     if (c != 0)
     {
-        if (b->hardestColiSpeed < 0.0)
+        if (physBall->hardestColiSpeed < 0.0)
             r3 = 1;
     }
     else
     {
-        if (b->flags & 1)
+        if (physBall->flags & 1)
             r3 = 1;
     }
 
@@ -2546,11 +2549,11 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         sp20.x = ball->pos.x - ball->prevPos.x;
         sp20.y = ball->pos.y - ball->prevPos.y;
         sp20.z = ball->pos.z - ball->prevPos.z;
-        if (c == 0 && b->hardestColiItemgroupId > 0)
-            func_8003BBF4(b, &sp20);
+        if (c == 0 && physBall->hardestColiAnimGroupId > 0)
+            func_8003BBF4(physBall, &sp20);
 
-        mathutil_mtxA_from_mtx(itemgroups[b->hardestColiItemgroupId].transform);
-        mathutil_mtxA_tf_vec(&b->hardestColiPlane.normal, &sp14);
+        mathutil_mtxA_from_mtx(animGroups[physBall->hardestColiAnimGroupId].transform);
+        mathutil_mtxA_tf_vec(&physBall->hardestColiPlane.normal, &sp14);
         sp38.x = -sp14.x * ball->currRadius;
         sp38.y = -sp14.y * ball->currRadius;
         sp38.z = -sp14.z * ball->currRadius;
@@ -2574,7 +2577,7 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *b,
         ball->unk64 = sp2C.z * f2;
 
         if (ball->flags & BALL_FLAG_10)
-            func_8003BD68(b, &sp20, &sp38);
+            func_8003BD68(physBall, &sp20, &sp38);
 
         if (ball->currRadius > FLT_EPSILON)
         {
@@ -2648,12 +2651,12 @@ void func_8003C4A0(struct Ball *ball, int b)
     ball->currRadius = physParams->ballRadius;
     ball->targetRadius = physParams->ballRadius;
     ball->modelScale = 1.0f;
-    ball->accel = physParams->unk8 * worldInfo[ball->unk2E].unk1C;
+    ball->accel = physParams->unk8 * worldInfo[ball->playerId].unk1C;
     ball->restitution = physParams->restitution;
     ball->unk1 = b;
 
     if (modeCtrl.playerCount > 1)
-        ball->colorId = ball->unk2E;
+        ball->colorId = ball->playerId;
     else
         ball->colorId = 3;
 
@@ -2697,7 +2700,7 @@ void func_8003C550(struct Ball *ball)
 
     memset(&sp30, 0, sizeof(sp30));
 
-    sp30.unk14 = ball->unk2E;
+    sp30.unk14 = ball->playerId;
     sp30.unk8 = 0x1B;
     sp30.unk34 = spC;
     sp30.unk88 = sp24;
@@ -2706,7 +2709,7 @@ void func_8003C550(struct Ball *ball)
 
     memset(&sp30, 0, sizeof(sp30));
 
-    sp30.unk14 = ball->unk2E;
+    sp30.unk14 = ball->playerId;
     sp30.unk8 = 0x13;
     sp30.unk34 = spC;
 
@@ -2727,7 +2730,7 @@ void func_8003C550(struct Ball *ball)
 
     memset(&sp30, 0, sizeof(sp30));
 
-    sp30.unk14 = ball->unk2E;
+    sp30.unk14 = ball->playerId;
     sp18.x *= 0.5f;
     sp18.y *= 0.5f;
     sp18.z *= 0.5f;
@@ -2769,8 +2772,8 @@ void init_physball_from_ball(struct Ball *ball, struct PhysicsBall *physBall)
     physBall->gravityAccel = ball->accel;
     physBall->restitution = ball->restitution;
     physBall->hardestColiSpeed = 0.0f;
-    physBall->itemgroupId = 0;
-    physBall->hardestColiItemgroupId = 0;
+    physBall->animGroupId = 0;
+    physBall->hardestColiAnimGroupId = 0;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET)
         physBall->friction = 0.01f;
@@ -2778,18 +2781,18 @@ void init_physball_from_ball(struct Ball *ball, struct PhysicsBall *physBall)
         physBall->friction = 0.005f;
 }
 
-void func_8003CB3C(struct Ball *ball, struct PhysicsBall *b)
+void func_8003CB3C(struct Ball *ball, struct PhysicsBall *physBall)
 {
-    if (b->flags & 1)
+    if (physBall->flags & 1)
         ball->flags |= BALL_FLAG_00;
 
-    ball->pos.x = b->pos.x;
-    ball->pos.y = b->pos.y;
-    ball->pos.z = b->pos.z;
+    ball->pos.x = physBall->pos.x;
+    ball->pos.y = physBall->pos.y;
+    ball->pos.z = physBall->pos.z;
 
-    ball->vel.x = b->vel.x;
-    ball->vel.y = b->vel.y;
-    ball->vel.z = b->vel.z;
+    ball->vel.x = physBall->vel.x;
+    ball->vel.y = physBall->vel.y;
+    ball->vel.z = physBall->vel.z;
 }
 
 void func_8003CB88(struct Ball *ball)
@@ -2848,7 +2851,7 @@ void func_8003CCB0(void)
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unk8 = 10;
-        sp8.unk14 = ball->unk2E;
+        sp8.unk14 = ball->playerId;
         sp8.unk34 = ball->pos;
         g_spawn_effect_object(&sp8);
     }
@@ -2864,11 +2867,11 @@ static const s16 lbl_801179D4[] = { 0x3A, 0x3B, 0x3F, 0x53, 0x54, 0x55, 0x56, 0x
 static inline void func_8003CDC0_sub(struct Ball *ball)
 {
     if (ball->ape->unk24 == 2)
-        lbl_80206BE0[ball->unk2E]++;
+        lbl_80206BE0[ball->playerId]++;
     else
-        lbl_80206BE0[ball->unk2E] = 0;
+        lbl_80206BE0[ball->playerId] = 0;
 
-    if ((lbl_80206BE0[ball->unk2E] % 30) == 1)
+    if ((lbl_80206BE0[ball->playerId] % 30) == 1)
         g_play_sound(lbl_801179D4[(rand() >> 12) & 7]);
 }
 
@@ -2897,8 +2900,8 @@ void func_8003CDC0(struct Ball *ball)
          && gameSubmode != SMD_GAME_OVER_SAVE
          && gameSubmode != SMD_GAME_OVER_DEST)
         {
-            if ((!(infoWork.unk0 & (1 << 5)) && !(infoWork.unk0 & (1 << 3)))
-             || (infoWork.unk0 & (1 << 4)))
+            if ((!(infoWork.flags & INFO_FLAG_05) && !(infoWork.flags & INFO_FLAG_03))
+             || (infoWork.flags & INFO_FLAG_04))
             {
                 if (!(ball->flags & BALL_FLAG_08) && !(ball->flags & BALL_FLAG_09))
                     func_8003CDC0_sub(ball);
@@ -2912,7 +2915,7 @@ void func_8003CDC0(struct Ball *ball)
      && ball->ape->unk24 == 4
      && ball->ape->unk0->unk38 == 2)
     {
-        float f1 = (lbl_80205E20[ball->unk2E] * 216000.0) / 1000.0;
+        float f1 = (lbl_80205E20[ball->playerId] * 216000.0) / 1000.0;
         if (f1 >= 35.0f)
             g_play_sound(0x1A);
         else if (f1 >= 20.0f)
@@ -2936,12 +2939,12 @@ void func_8003CDC0(struct Ball *ball)
 
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
-        struct Ape *ape = ball->unk144;
+        struct Ball_child *unk = ball->unk144;
         s8 r31 = 0;
         s8 r28 = 0;
         float f2 = mathutil_vec_len(&ball->vel) * 216000.0 / 1000.0;
 
-        if (ape->unk1CE > 3 && f2 > 10.0)
+        if (unk->unk1CE > 3 && f2 > 10.0)
         {
             float f4 = (f2 - 10.0f) / 130.0f;
 
@@ -2949,7 +2952,7 @@ void func_8003CDC0(struct Ball *ball)
             r28 = MIN(f4 * 127.0f * 10.0f, 80.0f) * 0.85f;
         }
         if ((unpausedFrameCounter & 7) == 0 || r31 == 0)
-            func_8002CA5C(ball->unk2E, r31, r28);
+            func_8002CA5C(ball->playerId, r31, r28);
     }
     else if (modeCtrl.gameType != GAMETYPE_MINI_BOWLING)
     {
@@ -2968,7 +2971,7 @@ void func_8003CDC0(struct Ball *ball)
             r5 = 0;
         }
         if ((unpausedFrameCounter & 7) == 0 || r4 == 0)
-            func_8002CA5C(ball->unk2E, r4, r5);
+            func_8002CA5C(ball->playerId, r4, r5);
     }
 }
 
@@ -2998,13 +3001,13 @@ void func_8003D3C4(struct Ball *ball)
         memset(&sp18, 0, sizeof(sp18));
 
         sp18.unk8 = 2;
-        sp18.unk14 = ball->unk2E;
+        sp18.unk14 = ball->playerId;
 
         sp18.unk34.x = ball->pos.x + ball->unk114.x * ball->currRadius;
         sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
         sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
-        if (!(infoWork.unk0 & (1 << 4)) || (infoWork.unk0 & (1 << 11)))
+        if (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11))
             f2 = 0.85f;
         else
             f2 = 0.1f;
@@ -3079,25 +3082,25 @@ void draw_ball_hemispheres(struct Ball *ball, int unused)
     }
 
     // Draw inside of clear hemisphere
-    g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[clearHemisphereInsideParts[lod]].modelOffset);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].modelOffset);
 
     // Draw inside of colored hemisphere
-    g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[coloredParts[0 + lod]].modelOffset);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].modelOffset);
 
     // Draw edge ring between ball halves
-    g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[coloredParts[6 + lod]].modelOffset);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].modelOffset);
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
     // Draw outside of clear hemisphere
-    g_avdisp_draw_model_2(entries[clearHemisphereOutsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].modelOffset);
 
     // Draw outside of colored hemisphere
-    g_avdisp_set_model_scale(ball->modelScale);
-    g_avdisp_draw_model_2(entries[coloredParts[3 + lod]].modelOffset);
+    avdisp_set_bound_sphere_scale(ball->modelScale);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].modelOffset);
 
     func_8000E3BC();
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
@@ -3112,7 +3115,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && modeCtrl.playerCount > 3)
         r30 = NULL;
 
-    func_800223D8(node->unk8);
+    load_light_group_cached(node->unk8);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
     mathutil_mtxA_scale_s(ball->modelScale);
@@ -3141,7 +3144,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     {
         g_avdisp_set_some_func_1(envFunc);
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_maybe_draw_model_2(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+        avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
         g_avdisp_set_some_func_1(NULL);
     }
 }

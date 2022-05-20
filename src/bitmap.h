@@ -25,9 +25,10 @@ enum BitmapGroupID
     BMP_ALL,
 };
 
+// COM group (0)
 enum
 {
-    BMP_COM_ASCII,
+    BMP_COM_ASCII = (BMP_COM << 8),
     BMP_COM_arrow,
     BMP_COM_icon_button,
     BMP_COM_icon_gol_00,
@@ -125,9 +126,41 @@ enum
     BMP_COM_menu_kiwaku_l2,
 };
 
+// ADV group (1)
 enum
 {
-    BMP_NML_icon_bombtimer,
+    BMP_ADV_logo_av256 = (BMP_ADV << 8),  // 0x100
+    BMP_ADV_adv_logo_plus,
+    BMP_ADV_logo_sega512,
+    BMP_ADV_adv_title_bg,
+    BMP_ADV_adv_title_mnk_gawa,
+    BMP_ADV_adv_fukidashi_h,
+    BMP_ADV_adv_fukidashi_h_mini,
+    BMP_ADV_logo_plus256x40,
+    BMP_ADV_adv_title_spr_gawa,
+    BMP_ADV_adv_title_mnk_a,
+    BMP_ADV_adv_title_mnk_l,
+    BMP_ADV_adv_title_mnk_b,
+    BMP_ADV_adv_title_mnk_m,
+    BMP_ADV_adv_title_mnk_o,
+    BMP_ADV_adv_title_mnk_n,
+    BMP_ADV_adv_title_mnk_k,
+    BMP_ADV_adv_title_mnk_e,  // 0x110
+    BMP_ADV_adv_title_mnk_y,
+    BMP_ADV_adv_title_mnk_kage,
+    BMP_ADV_adv_title_spr_s,
+    BMP_ADV_adv_title_spr_u,
+    BMP_ADV_adv_title_spr_p,
+    BMP_ADV_adv_title_spr_e,
+    BMP_ADV_adv_title_spr_r,
+    BMP_ADV_adv_title_spr_kage,
+    BMP_ADV_adv_title_tm,
+};
+
+// NML group (5)
+enum
+{
+    BMP_NML_icon_bombtimer = (BMP_NML << 8),  // 0x500
     BMP_NML_icon_lv1234_j,
     BMP_NML_game_rank,
     BMP_NML_game_result_e3,
@@ -143,7 +176,7 @@ enum
     BMP_NML_asc_ball16x22,
     BMP_NML_DUMMY14,
     BMP_NML_DUMMY15,
-    BMP_NML_icon_bomb_hibi,
+    BMP_NML_icon_bomb_hibi,  // 0x510
     BMP_NML_icon_bomb_part_a,
     BMP_NML_icon_bomb_part_b,
     BMP_NML_icon_bomb_part_c,
@@ -154,22 +187,6 @@ enum
     BMP_NML_icon_bomb_part_h,
     BMP_NML_icon_bomb_part_i,
     BMP_NML_icon_bomb_part_j,
-};
-
-#define BITMAP_ID(group, bmp) (((group) << 8) | (bmp))
-
-enum Alignment
-{
-    ALIGN_LT,
-    ALIGN_LC,
-    ALIGN_LB,
-    ALIGN_CT,
-    ALIGN_CC,
-    ALIGN_CB,
-    ALIGN_RT,
-    ALIGN_RC,
-    ALIGN_RB,
-    ALIGN_PIC,
 };
 
 struct Bitmap
@@ -211,15 +228,15 @@ void bitmap_load_group(enum BitmapGroupID grpId);
 void bitmap_free_group(enum BitmapGroupID grpId);
 int bitmap_is_group_loaded(enum BitmapGroupID grpId);
 void bitmap_free_tpl(struct TPL *tpl);
-void func_80026378(int a);
-void func_80026394(void);
-void func_800263A4(void);
+void g_bitmap_set_some_tpl(enum BitmapGroupID grpId);
+void g_bitmap_frame_reset(void);
+void bitmap_init_tev(void);
 void bitmap_main(void);
 // ? func_8002687C();
 // ? bitmap_draw();
 // ? bitmap_draw_normal_char();
 // ? bitmap_draw_char();
 void bitmap_draw_string(void);
-void func_8002704C(void);
+void g_draw_all_naomi_sprites(void);
 
 #endif

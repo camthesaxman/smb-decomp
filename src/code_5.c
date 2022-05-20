@@ -2,6 +2,25 @@
 
 #include "global.h"
 
+#include "relocation.h"
+
+// code_5.c
+struct Struct802F1C10 lbl_802F1C10;
+u8 lbl_802F1C0D;
+u8 lbl_802F1C0C;
+struct Struct802F1C04 lbl_802F1C04;
+struct Struct802F1BFC lbl_802F1BFC;
+struct Struct802F1BF4 lbl_802F1BF4;
+u32 lbl_802F1BF0;
+struct Struct802F1BE8 lbl_802F1BE8;
+
+// I think these variables should belong in sel.c. However, they appear before
+// this file's variables, while sel.c is linked after this file.
+struct StageSelection stageSelection;
+struct RelModule lbl_802F1BD8;
+void (*lbl_802F1BD4)(void);
+void (*menuCallback)(void);
+
 u8 lbl_802F02F8[6] = { 5, 5, 4, 3, 4, 2 };
 
 struct
@@ -47,7 +66,7 @@ struct
 
 u8 lbl_801EEDA8[0x118];
 
-void func_80011E1C(void)
+void g_reset_gamedata(void)
 {
     u8 filler[8];
     int i;
@@ -116,7 +135,7 @@ void func_80011E1C(void)
     lbl_802F1BE8.unk4 = 0;
 }
 
-void func_80011F74(struct MemcardGameData *data)
+void g_store_gamedata(struct MemcardGameData *data)
 {
     int i;
 
@@ -183,7 +202,7 @@ void func_80011F74(struct MemcardGameData *data)
     data->unk5844.unk2BD = lbl_802F1BE8.unk4;
 }
 
-void func_80012170(struct MemcardGameData *data)
+void g_load_gamedata(struct MemcardGameData *data)
 {
     int i;
 

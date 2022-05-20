@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
+#include <dolphin/GXEnum.h>
 
 #include "global.h"
 #include "adv.h"
@@ -9,10 +10,13 @@
 #include "ball.h"
 #include "camera.h"
 #include "event.h"
+#include "gma.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "info.h"
 #include "input.h"
 #include "item.h"
+#include "light.h"
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -70,7 +74,7 @@ void polydisp_main(void)
     if (func_8009D5D8() != 0)
         lbl_801EEC90.unk0 |= 0x10;
 
-    func_80021ECC();
+    light_main();
     func_8009AB5C();
 
     if (eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
@@ -101,7 +105,7 @@ void polydisp_main(void)
 void draw_3d_scene(void)
 {
     ord_tbl_reset();
-    func_800226F4();
+    g_draw_naomi_ball();
     switch (gameMode)
     {
     default:
@@ -132,7 +136,7 @@ void draw_3d_scene(void)
         case SMD_GAME_RESULT_INIT:
         case SMD_GAME_RESULT_MAIN:
         case SMD_GAME_RESULT_MENU:
-            func_8000D018();
+            draw_results_scene();
             break;
         case SMD_GAME_ENDING_INIT:
         case SMD_GAME_ENDING_MAIN:
@@ -145,12 +149,12 @@ void draw_3d_scene(void)
             break;
         case SMD_GAME_CONTINUE_INIT:
         case SMD_GAME_CONTINUE_MAIN:
-            func_8000CA9C();
+            draw_continue_scene();
             draw_test_camera_target();
             break;
         case SMD_GAME_EXTRA_INIT:
         case SMD_GAME_EXTRA_WAIT:
-            func_8000CF94();
+            draw_extra_scene();
             draw_test_camera_target();
             break;
         case SMD_GAME_OVER_INIT:
@@ -284,12 +288,12 @@ void draw_adv_demo_scene(void)
                 ballInfo[i].ape->unk30.x,
                 ballInfo[i].ape->unk30.y - 0.45,
                 ballInfo[i].ape->unk30.z);
-            f30 = lbl_80173FD0[ballInfo[i].ape->unk10];
+            f30 = lbl_80173FD0[ballInfo[i].ape->charaId];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
-            g_avdisp_set_some_color_1(0.38f, 0.39f, 0.4f, 1.0f);
-            g_avdisp_set_model_scale(f30);
-            g_avdisp_maybe_draw_model_3(commonGma->modelEntries[polyshadow01].modelOffset);
+            avdisp_set_post_multiply_color(0.38f, 0.39f, 0.4f, 1.0f);
+            avdisp_set_bound_sphere_scale(f30);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].modelOffset);
         }
         func_8000E3BC();
     }
@@ -376,10 +380,10 @@ void g_draw_tutorial_button_and_joystick(void)
     int stickZRot;
     Mtx projMtx;
 
-    C_MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
+    MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
     GXSetProjection(projMtx, 0);
     mathutil_mtxA_from_identity();
-    func_80022274(2);
+    load_light_group_uncached(LIGHT_GROUP_SINGLE_UNIT);
     sp48.x = -0.0055f;
     sp48.y = -0.003f;
     sp48.z = -0.718f;
@@ -401,7 +405,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].modelOffset);
 
     // Draw the simulated analog stick
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
@@ -410,8 +414,8 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_z(CLAMP(advTutorialInfo.stickZRot * 8, -0x1000, 0x1000));
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(advTutorialInfo.transitionValue);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_set_alpha(advTutorialInfo.transitionValue);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
     mathutil_mtxA_pop();
 
     // Draw the transparent stick based on the player's analog stick position
@@ -442,8 +446,8 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(0.99f);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
-    g_avdisp_draw_model_1(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
 
     // Draw the button base
     mathutil_mtxA_from_identity();
@@ -454,7 +458,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_draw_model_1(commonGma->modelEntries[button_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].modelOffset);
 
     // Draw the A button
     if (advTutorialInfo.state == 2)
@@ -464,8 +468,8 @@ void g_draw_tutorial_button_and_joystick(void)
     }
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    g_avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
-    g_avdisp_draw_model_1(commonGma->modelEntries[button].modelOffset);
+    avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button].modelOffset);
     ord_tbl_draw_nodes();
 }
 
@@ -490,27 +494,18 @@ void func_8000C144(struct Struct8000C144 *a)
     u8 filler[8];
 
     gxutil_set_vtx_attrs((1 << GX_VA_POS));
-    func_8009E110(1, 0, 1, 0);
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != 7
-     || zMode->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, 7, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = 7;
-        zMode->updateEnable  = GX_ENABLE;
-    }
-
-    func_8009E398(0, lbl_802F2978, 0.0f, 100.0f, 0.1f, 20000.0f);
-    func_8009E094(0);
-    GXSetTevDirect(0);
-    func_8009EFF4(0, 0xFF, 0xFF, 0xFF);
-    func_8009F224(0, 0);
-    func_8009E618(0, 15, 15, 15, 15);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 7, 7, 6);
-    func_8009E918(0, 0, 0, 3, 1, 0);
-    func_8009F2C8(1);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ZERO, GX_BL_ONE, GX_LO_CLEAR);
+    GXSetZMode_cached(GX_ENABLE, GX_ALWAYS, GX_ENABLE);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, lbl_802F2978);
+    GXSetCullMode_cached(GX_CULL_NONE);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR_NULL);
+    GXSetTevKAlphaSel_cached(GX_TEVSTAGE0, GX_TEV_KASEL_1);
+    GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+    GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+    GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_DIVIDE_2, GX_TRUE, GX_TEVPREV);
+    GXSetNumTevStages_cached(1);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -523,15 +518,7 @@ void func_8000C144(struct Struct8000C144 *a)
         GXPosition3f32(x2, y2, z);
     GXEnd();
 
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != 3
-     || zMode->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, 3, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = 3;
-        zMode->updateEnable  = GX_ENABLE;
-    }
+    GXSetZMode_cached(GX_ENABLE, 3, GX_ENABLE);
 }
 
 void func_8000C388(void)
@@ -585,10 +572,10 @@ void draw_normal_game_scene(void)
                     continue;
             }
             currentBallStructPtr = &ballInfo[i];
-            func_80018648(i);
+            g_call_camera_apply_viewport(i);
             g_draw_ball_shadow();
             func_80054FF0();
-            func_800225C0(i);
+            g_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
             draw_monkey();
@@ -604,7 +591,7 @@ void draw_normal_game_scene(void)
             }
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
-                func_80047D70();
+                draw_stage_preview();
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(16);
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
@@ -641,8 +628,8 @@ void func_8000C7A4(void)
          && (cameraInfo[i].flags & (1 << 6)))
         {
             currentBallStructPtr = &ballInfo[i];
-            func_80018648(i);
-            func_800225C0(i);
+            g_call_camera_apply_viewport(i);
+            g_reset_light_group_stack(i);
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
                 stage_draw();
@@ -681,7 +668,7 @@ void func_8000C8D4(void)
     {
         if (*r25 == 0 || *r25 == 4)
             continue;
-        if ((ball->flags & (1 << 4)))
+        if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
         mathutil_mtxA_from_identity();
         f27 = 0.8 - 0.1 * (((unpausedFrameCounter / 16) + i) % 3);
@@ -695,11 +682,11 @@ void func_8000C8D4(void)
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
+        avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
 
-void func_8000CA9C(void)
+void draw_continue_scene(void)
 {
     BallEnvFunc r31;
     BallEnvFunc r30;
@@ -709,10 +696,10 @@ void func_8000CA9C(void)
     Mtx sp2C;
 
     lbl_801EEC90.unk0 |= 1;
-    func_80018648(modeCtrl.unk2C);
+    g_call_camera_apply_viewport(modeCtrl.currPlayer);
     g_draw_ball_shadow();
     func_80054FF0();
-    func_800225C0(modeCtrl.unk2C);
+    g_reset_light_group_stack(modeCtrl.currPlayer);
     draw_monkey();
 
     if (lbl_802F1F34 != 0)
@@ -722,7 +709,7 @@ void func_8000CA9C(void)
             r30 = g_avdisp_set_some_func_1(r31);
         mathutil_mtxA_from_mtxB();
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        g_avdisp_draw_model_1((void *)lbl_802F1F34);
+        avdisp_draw_model_unculled_sort_translucent((void *)lbl_802F1F34);
         if (r31 != NULL)
             g_avdisp_set_some_func_1(r30);
     }
@@ -739,7 +726,7 @@ void func_8000CA9C(void)
     if (eventInfo[EVENT_EFFECT].state == EV_STATE_RUNNING)
         effect_draw();
     ord_tbl_draw_nodes();
-    r4 = modeCtrl.unk0;
+    r4 = modeCtrl.submodeTimer;
     if (r4 > 60)
         r4 = 60;
 
@@ -838,9 +825,9 @@ void func_8000CA9C(void)
     func_8000E3BC();
 }
 
-void func_8000CF94(void)
+void draw_extra_scene(void)
 {
-    func_80018648(modeCtrl.unk2C);
+    g_call_camera_apply_viewport(modeCtrl.currPlayer);
     g_draw_ball_shadow();
     func_80054FF0();
     draw_monkey();
@@ -853,7 +840,7 @@ void func_8000CF94(void)
     ord_tbl_draw_nodes();
 }
 
-void func_8000D018(void)
+void draw_results_scene(void)
 {
     int i;
     struct Ball *r23 = currentBallStructPtr;
@@ -869,10 +856,10 @@ void func_8000D018(void)
             if (cameraInfo[i].flags & (1 << 6))
                 lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
-            func_80018648(i);
+            g_call_camera_apply_viewport(i);
             g_draw_ball_shadow();
             func_80054FF0();
-            func_800225C0(i);
+            g_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
             draw_monkey();
@@ -976,10 +963,10 @@ void draw_test_camera_target(void)
             GX_DF_CLAMP,  // diff_fn
             GX_AF_NONE);  // attn_fn
         GXSetNumChans(1);
-        func_8009EFF4(0, 0xFF, 0xFF, 4);
-        func_8009EA30(0, 4);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+        GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
         GXSetNumTexGens(0);
-        func_8009F2C8(1);
+        GXSetNumTevStages_cached(1);
 
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
         mathutil_mtxA_translate(&currentCameraStructPtr->lookAt);
@@ -999,7 +986,7 @@ void func_8000D5B8(void)
     lbl_801EEC90.unk60 = 0.0f;
 }
 
-struct AnimKeyframe bombSparkXKeyframes[] =
+struct Keyframe bombSparkXKeyframes[] =
 {
     { 1,   0,  8.7540102,          0,          0 },
     { 1,  72, 1.83571005,  -0.090412,  -0.090412 },
@@ -1013,7 +1000,7 @@ struct AnimKeyframe bombSparkXKeyframes[] =
     { 1, 100,  0.0010883,          0,          0 },
 };
 
-struct AnimKeyframe bombSparkYKeyframes[] =
+struct Keyframe bombSparkYKeyframes[] =
 {
     { 1,   0,   -1.00663,            0,            0 },
     { 1,  49,   -1.00662, -0.000118196, -0.000118196 },
@@ -1066,11 +1053,11 @@ void draw_timer_bomb_fuse(void)
     }
     else
     {
-        x = (sprite->centerX - 320.0f) / 320.0f;
-        y = (56.0f - sprite->centerY) / 240.0f;
+        x = (sprite->x - 320.0f) / 320.0f;
+        y = (56.0f - sprite->y) / 240.0f;
     }
 
-    C_MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
+    MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
     mtx[0][2] -= mtx[0][0] * x * 1.3333332538604736f * 0.5773502588272095f;
     mtx[1][2] -= mtx[1][1] * y * 0.5773502588272095f;
     GXSetProjection(mtx, 0);
@@ -1187,7 +1174,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(infoWork.unk0 & (1 << 3)))
+        if (!(infoWork.flags & INFO_FLAG_03))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1205,7 +1192,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (infoWork.unk0 & (1 << 3))
+        if (infoWork.flags & INFO_FLAG_03)
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1215,7 +1202,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (infoWork.unk0 & (1 << 3))
+    if (infoWork.flags & INFO_FLAG_03)
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;
@@ -1225,9 +1212,9 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk54 += lbl_801EEC90.unk58;
 
     func_80030BB8(1.0f, 1.0f, 1.0f);
-    g_avdisp_set_some_color_1(1.0f, t, 0.0f, 1.0f);
+    avdisp_set_post_multiply_color(1.0f, t, 0.0f, 1.0f);
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
-    g_avdisp_set_some_matrix(0, mathutilData->mtxA);
+    avdisp_set_custom_tex_mtx(0, mathutilData->mtxA);
 
     // Draw new bomb fuse
     mathutil_mtxA_from_identity();
@@ -1235,21 +1222,21 @@ void draw_timer_bomb_fuse(void)
     scale = 0.0007f;
     mathutil_mtxA_scale_s(scale);
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-    g_avdisp_set_model_scale(scale);
-    func_8008F6D4(1);
-    g_avdisp_draw_model_1(commonGma->modelEntries[BOMB_FUSE].modelOffset);
-    func_8008F6D4(0);
+    avdisp_set_bound_sphere_scale(scale);
+    avdisp_enable_custom_tex_mtx(1);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
+    avdisp_enable_custom_tex_mtx(0);
 
     // Draw spark
-    sparkPos.x = g_interpolate_anim(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
-    sparkPos.y = g_interpolate_anim(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
+    sparkPos.x = interpolate_keyframes(ARRAY_COUNT(bombSparkXKeyframes), bombSparkXKeyframes, (1.0 - t) * 100.0);
+    sparkPos.y = interpolate_keyframes(ARRAY_COUNT(bombSparkYKeyframes), bombSparkYKeyframes, (1.0 - t) * 100.0);
     sparkPos.z = 0.141f;
     mathutil_mtxA_translate(&sparkPos);
     mathutil_mtxA_sq_from_identity();
     mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
     mathutil_mtxA_scale_s(0.0149f);
     mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
-    g_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
+    nl2ngc_draw_model_unsorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
     func_8000E3BC();
 }
 
@@ -1310,7 +1297,7 @@ void set_backdrop_color(void)
             break;
         default:
             color = backgroundInfo.backdropColor;
-            introBackdropColor = (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
+            introBackdropColor = RGBA(color.r, color.g, color.b, color.a);
             break;
         }
         break;
@@ -1336,7 +1323,7 @@ void set_backdrop_color(void)
         break;
     }
 
-    if (r0 && fogInfo.unkF != 0)
+    if (r0 && fogInfo.enabled != 0)
     {
         color.r = fogInfo.r;
         color.g = fogInfo.g;
@@ -1355,9 +1342,9 @@ void draw_monkey(void)
 void func_8000E134(void)
 {
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-        func_80038AB4();
+        g_ball_shadow_something_1();
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-        func_800685C4();
+        item_draw_shadows();
 }
 
 void func_8000E180(void)
@@ -1373,7 +1360,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_CONTINUE_INIT:
     case SMD_GAME_CONTINUE_MAIN:
         func_80030BB8(0.8f, 0.8f, 0.8f);
-        g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
+        avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
         break;
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
@@ -1381,24 +1368,24 @@ void func_8000E1A4(float a)
         if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
-            g_avdisp_set_some_color_1(0.8f, 0.8f, 0.8f, a);
+            avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
         }
         else
         {
             func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-            g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+            avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     default:
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
-            g_avdisp_set_some_color_1(1.0f, 1.0f, 1.0f, a);
+            avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, a);
         }
         else
         {
             func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-            g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+            avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     }
@@ -1432,7 +1419,7 @@ void func_8000E338(int a)
 void func_8000E3BC(void)
 {
     func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-    g_avdisp_set_some_color_1(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
+    avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
 }
 
 void func_8000E428(float a, float b, float c)

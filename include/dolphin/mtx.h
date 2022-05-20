@@ -28,6 +28,9 @@ void C_MTXLookAt(Mtx m, Point3dPtr camPos, VecPtr camUp, Point3dPtr target);
 
 void PSMTXIdentity(Mtx m);
 
+#define MTXOrtho C_MTXOrtho
+#define MTXPerspective C_MTXPerspective 
+#define MTXScale C_MTXScale
 #define MTXLookAt C_MTXLookAt
 
 #endif

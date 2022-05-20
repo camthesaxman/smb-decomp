@@ -8,6 +8,7 @@
 #include "event.h"
 #include "mathutil.h"
 #include "stcoli.h"
+#include "gma.h"
 
 static struct BGModelSearch stormModelFind[] =
 {
@@ -21,7 +22,7 @@ static int storm_model_find_proc(int, struct GMAModelEntry *);
 
 void bg_storm_init(void)
 {
-    struct BGStormWork *work = backgroundInfo.unk9C;
+    struct BGStormWork *work = backgroundInfo.work;
     int i;
     struct BGStormWork_child *r28;
 
@@ -57,7 +58,7 @@ void bg_storm_main(void)
     if ((gamePauseStatus & 0xA) && eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
         return;
 
-    work = backgroundInfo.unk9C;
+    work = backgroundInfo.work;
     bg_e3_main();
 
     spDC = work->unk10;
@@ -140,7 +141,7 @@ Vec lbl_801BA0A4[] =
 // https://decomp.me/scratch/7I9K0
 void bg_storm_draw(void)
 {
-    struct BGStormWork *work = backgroundInfo.unk9C;
+    struct BGStormWork *work = backgroundInfo.work;
     Vec sp7C;
     Vec sp70;
     Vec sp64;
@@ -148,7 +149,7 @@ void bg_storm_draw(void)
     int j;  // r27
     struct BGStormWork_child *r30;
     Vec *r26;
-    struct GMAModelHeader *r25;
+    struct GMAModel *r25;
     float f25;
     float f24;
 
@@ -231,8 +232,8 @@ void bg_storm_draw(void)
                 alpha = f25;
             else
                 alpha = 1.0f - 0.2f * (f25 - 1.0f);
-            g_avdisp_set_alpha(alpha);
-            g_avdisp_maybe_draw_model_1(r25);
+            avdisp_set_alpha(alpha);
+            avdisp_draw_model_culled_sort_translucent(r25);
         }
     }
 }
@@ -253,7 +254,7 @@ void bg_storm_interact(int a) {}
 
 static int storm_model_find_proc(int index, struct GMAModelEntry *entry)
 {
-    struct BGStormWork *work = backgroundInfo.unk9C;
+    struct BGStormWork *work = backgroundInfo.work;
 
     switch (index)
     {
