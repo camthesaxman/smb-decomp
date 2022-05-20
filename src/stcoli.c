@@ -2,6 +2,7 @@
 #include <stddef.h>
 
 #include "global.h"
+#include "ball.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "stage.h"
@@ -1877,4 +1878,96 @@ void g_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicS
             tri++;
         }
     }
+}
+
+void g_draw_stage_collision(void)
+{
+    Mtx sp24;
+    Vec sp18;
+    struct Ball *ball;
+    struct AnimGroupInfo *phi_r29;
+    struct StageAnimGroup *stageAg;
+    int animGroupId;
+    s16 *cellTris;
+    struct StageColiCone *cone;
+    int phi_r25;
+    struct StageColiSphere *sphere;
+    int phi_r26_3;
+    struct StageColiCylinder *cylinder;
+    int phi_r26_4;
+
+    ball = currentBallStructPtr;
+    mathutil_mtx_copy(mathutilData->mtxB, sp24);
+
+    phi_r29 = animGroups;
+    stageAg = decodedStageLzPtr->animGroups;
+    for (animGroupId = 0; animGroupId < decodedStageLzPtr->animGroupCount; animGroupId++, phi_r29++, stageAg++)
+    {
+        if (animGroupId > 0)
+        {
+            mathutil_mtxA_from_mtx(sp24);
+            mathutil_mtxA_mult_right(phi_r29->transform);
+            mathutil_mtxA_to_mtx(mathutilData->mtxB);
+        }
+        sp18.x = ball->pos.x;
+        sp18.y = ball->pos.y;
+        sp18.z = ball->pos.z;
+        if (animGroupId > 0)
+        {
+            mathutil_mtxA_from_mtx(phi_r29->transform);
+            mathutil_mtxA_rigid_inv_tf_point(&sp18, &sp18);
+        }
+        cellTris = coligrid_lookup(stageAg, sp18.x, sp18.z);
+        if (cellTris != NULL2)
+        {
+            while (*cellTris >= 0)
+            {
+                stcoli_sub28(&stageAg->triangles[*cellTris]);
+                cellTris++;
+            }
+        }
+
+        cone = stageAg->coliCones;
+        for (phi_r25 = stageAg->coliConeCount; phi_r25 > 0; phi_r25--, cone++)
+        {
+            float scale;
+
+            mathutil_mtxA_from_mtx(mathutilData->mtxB);
+            mathutil_mtxA_translate(&cone->pos);
+            mathutil_mtxA_rotate_z(cone->rot.z);
+            mathutil_mtxA_rotate_y(cone->rot.y);
+            mathutil_mtxA_rotate_x(cone->rot.x);
+            mathutil_mtxA_scale(&cone->scale);
+            scale = MAX(cone->scale.x, cone->scale.y);
+            scale = MAX(scale, cone->scale.z);
+            g_nl2ngc_set_scale(scale);
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 0x2D));
+        }
+
+        sphere = stageAg->coliSpheres;
+        for (phi_r26_3 = stageAg->coliSphereCount; phi_r26_3 > 0; phi_r26_3--, sphere++)
+        {
+            mathutil_mtxA_from_mtx(mathutilData->mtxB);
+            mathutil_mtxA_translate(&sphere->pos);
+            mathutil_mtxA_scale_xyz(sphere->radius, sphere->radius, sphere->radius);
+            g_nl2ngc_set_scale(sphere->radius);
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 0x2F));
+        }
+
+        cylinder = stageAg->coliCylinders;
+        for (phi_r26_4 = stageAg->coliCylinderCount; phi_r26_4 > 0; phi_r26_4--, cylinder++)
+        {
+            mathutil_mtxA_from_mtx(mathutilData->mtxB);
+            mathutil_mtxA_translate(&cylinder->pos);
+            mathutil_mtxA_rotate_z(cylinder->rot.z);
+            mathutil_mtxA_rotate_y(cylinder->rot.y);
+            mathutil_mtxA_rotate_x(cylinder->rot.x);
+            mathutil_mtxA_scale_xyz(cylinder->radius, cylinder->height, cylinder->radius);
+            g_nl2ngc_set_scale(MAX(cylinder->radius, cylinder->height));
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 0x2E));
+        }
+    }
+    mathutil_mtx_copy(sp24, mathutilData->mtxB);
+    if (dynamicStageParts != NULL)
+        stcoli_sub27(dynamicStageParts);
 }

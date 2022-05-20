@@ -219,17 +219,17 @@ STAGE_LIST
 
 struct StageColiTri
 {
-    Point3d pos; // Position of vertex 1 in itemgroup space
-    Vec normal;  // Triangle normal in itemgroup space
-    S16Vec rot;  // Rotation to bring from triangle -> itemgroup space
-    u16 flags;
+    /*0x00*/ Point3d pos; // Position of vertex 1 in itemgroup space
+    /*0x0C*/ Vec normal;  // Triangle normal in itemgroup space
+    /*0x18*/ S16Vec rot;  // Rotation to bring from triangle -> itemgroup space
+    /*0x1E*/ u16 flags;
 
     // Vertex 1 in triangle space is (0, 0)
-    Point2d vert2;       // Vertex 2 in triangle space
-    Point2d vert3;       // Vertex 3 in triangle space
+    /*0x20*/ Point2d vert2;       // Vertex 2 in triangle space
+    /*0x28*/ Point2d vert3;       // Vertex 3 in triangle space
     // Edge 1 normal in triangle space is (0, 1)
-    Vec2d edge2Normal; // Normal of edge from vertex 2 -> vertex 3, in triangle space
-    Vec2d edge3Normal; // Normal of edge from vertex 3 -> vertex 1, in triangle space
+    /*0x30*/ Vec2d edge2Normal; // Normal of edge from vertex 2 -> vertex 3, in triangle space
+    /*0x38*/ Vec2d edge3Normal; // Normal of edge from vertex 3 -> vertex 1, in triangle space
 };
 
 struct StageColiCone

@@ -4058,7 +4058,6 @@ lbl_8004156C:
 /* 800415A0 0003D4C0  CB 81 09 60 */	lfd f28, 0x960(r1)
 /* 800415A4 0003D4C4  38 21 09 80 */	addi r1, r1, 0x980
 /* 800415A8 0003D4C8  4E 80 00 20 */	blr
-.endif
 
 .global g_draw_stage_collision
 g_draw_stage_collision:
@@ -4315,6 +4314,7 @@ lbl_80041924:
 /* 80041930 0003D850  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 80041934 0003D854  7C 08 03 A6 */	mtlr r0
 /* 80041938 0003D858  4E 80 00 20 */	blr
+.endif
 
 .global stcoli_sub27
 stcoli_sub27:
