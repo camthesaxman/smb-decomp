@@ -1284,7 +1284,7 @@ extern s32 lbl_802F1DFC;
 // extern ? lbl_802F1E51;
 // extern ? lbl_802F1E54;
 // extern ? lbl_802F1E58;
-// extern ? lbl_802F1EA8;
+extern s32 lbl_802F1EA8;
 extern s32 lbl_802F1EB0;
 extern s32 lbl_802F1EB4;
 extern float lbl_802F1EC4;
