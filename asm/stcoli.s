@@ -4314,7 +4314,6 @@ lbl_80041924:
 /* 80041930 0003D850  38 21 00 A0 */	addi r1, r1, 0xa0
 /* 80041934 0003D854  7C 08 03 A6 */	mtlr r0
 /* 80041938 0003D858  4E 80 00 20 */	blr
-.endif
 
 .global stcoli_sub27
 stcoli_sub27:
@@ -4773,6 +4772,7 @@ stcoli_sub31:
 /* 80041FF4 0003DF14  7C 08 03 A6 */	mtlr r0
 /* 80041FF8 0003DF18  38 21 00 18 */	addi r1, r1, 0x18
 /* 80041FFC 0003DF1C  4E 80 00 20 */	blr
+.endif
 
 .global tf_physball_to_anim_group_space
 tf_physball_to_anim_group_space:
@@ -5825,7 +5825,6 @@ lbl_801B7EE8:
 	.4byte 0
 	.4byte 0x40600000
 	.4byte 0x3F800000
-.endif
 
 .global lbl_801B7F88
 lbl_801B7F88:
@@ -5833,7 +5832,7 @@ lbl_801B7F88:
 glabel string_edge_length_is_too_short_n
 	.asciz "edge length is too short\n"
 	.balign 4
-	.4byte 0
+.endif
 
 .section .sbss
 

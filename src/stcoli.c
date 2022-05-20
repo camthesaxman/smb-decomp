@@ -1782,26 +1782,30 @@ void stcoli_sub24(struct PhysicsBall *arg0, struct ColiSub24 *arg1)
     }
 }
 
-struct UunkStruct
+struct UnkStruct
 {
     Point3d unk0;
     s32 unkC;
 };
 
+void stcoli_sub27(struct DynamicStagePart *dynStageParts);
+void stcoli_sub28(struct StageColiTri *tri);
+void stcoli_sub29(struct StageColiTri *tri, Point3d *arg1, Point3d *arg2, Point3d *arg3);
+
 void g_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicStagePart *dynStageParts)
 {
     u32 (*raycastDown)(Point3d *, Point3d *, Vec *) = dynStageParts[0].raycastDownFunc;
     struct StageColiTri *tri;
-    struct UunkStruct *r27;
-    struct UunkStruct *r5;
-    struct UunkStruct *r26;
-    struct UunkStruct *r25;
+    struct UnkStruct *r27;
+    struct UnkStruct *r5;
+    struct UnkStruct *r26;
+    struct UnkStruct *r25;
     float f29 = (double)mathutil_floor(ball->pos.x - 1.0);
     float f28 = (double)mathutil_floor(ball->pos.z - 1.0);
     int j;
     int i;
     struct StageColiTri triangles[32];
-    struct UunkStruct sp20[16];
+    struct UnkStruct sp20[16];
 
     for (i = 0; i < 4; i++)
     {
@@ -1941,7 +1945,7 @@ void g_draw_stage_collision(void)
             scale = MAX(cone->scale.x, cone->scale.y);
             scale = MAX(scale, cone->scale.z);
             g_nl2ngc_set_scale(scale);
-            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 0x2D));
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_CONE));
         }
 
         sphere = stageAg->coliSpheres;
@@ -1951,7 +1955,7 @@ void g_draw_stage_collision(void)
             mathutil_mtxA_translate(&sphere->pos);
             mathutil_mtxA_scale_xyz(sphere->radius, sphere->radius, sphere->radius);
             g_nl2ngc_set_scale(sphere->radius);
-            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 0x2F));
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_SPHERE));
         }
 
         cylinder = stageAg->coliCylinders;
@@ -1964,10 +1968,169 @@ void g_draw_stage_collision(void)
             mathutil_mtxA_rotate_x(cylinder->rot.x);
             mathutil_mtxA_scale_xyz(cylinder->radius, cylinder->height, cylinder->radius);
             g_nl2ngc_set_scale(MAX(cylinder->radius, cylinder->height));
-            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 0x2E));
+            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_CYLIN));
         }
     }
     mathutil_mtx_copy(sp24, mathutilData->mtxB);
     if (dynamicStageParts != NULL)
         stcoli_sub27(dynamicStageParts);
+}
+
+void stcoli_sub27(struct DynamicStagePart *dynStageParts)
+{
+    u32 (*raycastDown)(Point3d *, Point3d *, Vec *) = dynStageParts[0].raycastDownFunc;
+    struct UnkStruct *r27;
+    struct UnkStruct *r5;
+    struct UnkStruct *r26;
+    struct UnkStruct *r25;
+    float f29 = (double)mathutil_floor(currentBallStructPtr->pos.x - 1.0);
+    float f28 = (double)mathutil_floor(currentBallStructPtr->pos.z - 1.0);
+    int j;
+    int i;
+    struct StageColiTri triangle;
+    struct UnkStruct sp20[16];
+
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            r27 = &sp20[i * 4 + j];
+            r27->unk0.x = f29 + (double)j;
+            r27->unk0.y = 0.0f;
+            r27->unk0.z = f28 + (double)i;
+            r27->unkC = raycastDown(&r27->unk0, &r27->unk0, NULL);
+        }
+    }
+
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            r27 = &sp20[(i+0) * 4 + j+0];
+            r5  = &sp20[(i+1) * 4 + j+0];
+            r26 = &sp20[(i+1) * 4 + j+1];
+            r25 = &sp20[(i+0) * 4 + j+1];
+            if (r27->unkC != 0 && r5->unkC != 0 && r26->unkC != 0)
+            {
+                stcoli_sub29(&triangle, &r27->unk0, &r5->unk0, &r26->unk0);
+                stcoli_sub28(&triangle);
+            }
+            if (r27->unkC != 0 && r26->unkC != 0 && r25->unkC != 0)
+            {
+                stcoli_sub29(&triangle, &r27->unk0, &r26->unk0, &r25->unk0);
+                stcoli_sub28(&triangle);
+            }
+        }
+    }
+}
+
+void stcoli_sub28(struct StageColiTri *tri)
+{
+    Point3d sp3C;
+    Mtx mtx;
+    float f0, f1;
+
+    mathutil_mtxA_from_translate(&tri->pos);
+    mathutil_mtxA_rotate_y(tri->rot.y);
+    mathutil_mtxA_rotate_x(tri->rot.x);
+    mathutil_mtxA_rotate_z(tri->rot.z);
+    mathutil_mtxA_to_mtx(mtx);
+    sp3C.x = tri->vert2.x;
+    sp3C.y = tri->vert2.y;
+    sp3C.z = 0.0f;
+    mathutil_mtxA_tf_vec(&sp3C, &sp3C);
+    mtx[0][0] = sp3C.x;
+    mtx[1][0] = sp3C.y;
+    mtx[2][0] = sp3C.z;
+    sp3C.x = tri->vert3.x;
+    sp3C.y = tri->vert3.y;
+    sp3C.z = 0.0f;
+    mathutil_mtxA_tf_vec(&sp3C, &sp3C);
+    mtx[0][1] = sp3C.x;
+    mtx[1][1] = sp3C.y;
+    mtx[2][1] = sp3C.z;
+    mathutil_mtxA_from_mtx(mathutilData->mtxB);
+    mathutil_mtxA_mult_right(mtx);
+    f0 = mathutil_sum_of_sq_2(tri->vert2.x, tri->vert2.y);
+    f1 = mathutil_sum_of_sq_2(tri->vert3.x, tri->vert3.y);
+    if (f0 > f1)
+        f1 = f0;
+    g_nl2ngc_set_scale(f1);
+    nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
+}
+
+void stcoli_sub29(struct StageColiTri *tri, Point3d *arg1, Point3d *arg2, Point3d *arg3)
+{
+    float temp_f1;
+    float temp_f31;
+    float temp_f30;
+    Point3d sp3C;
+    Point3d sp30;
+    Point3d sp24;
+    Point3d sp18;
+
+    sp24.x = arg2->x - arg1->x;
+    sp24.y = arg2->y - arg1->y;
+    sp24.z = arg2->z - arg1->z;
+    sp18.x = arg3->x - arg1->x;
+    sp18.y = arg3->y - arg1->y;
+    sp18.z = arg3->z - arg1->z;
+
+    mathutil_vec_cross_prod(&sp24, &sp18, &sp3C);
+    tri->pos = *arg1;
+    tri->rot.y = mathutil_atan2(sp3C.x, sp3C.z);
+    tri->rot.x = -mathutil_atan2(sp3C.y, mathutil_sqrt(sp3C.x * sp3C.x + sp3C.z * sp3C.z));
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_y(tri->rot.y);
+    mathutil_mtxA_rotate_x(tri->rot.x);
+    mathutil_mtxA_rigid_inv_tf_vec(&sp24, &sp30);
+    tri->rot.z = mathutil_atan2(sp30.y, sp30.x);
+    mathutil_mtxA_rotate_z(tri->rot.z);
+    mathutil_mtxA_rigid_inv_tf_point(&sp24, &sp24);
+    mathutil_mtxA_rigid_inv_tf_point(&sp18, &sp18);
+    tri->normal.x = 0.0f;
+    tri->normal.y = 0.0f;
+    tri->normal.z = 1.0f;
+    mathutil_mtxA_tf_vec(&tri->normal, &tri->normal);
+    tri->vert2.x = sp24.x;
+    tri->vert2.y = sp24.y;
+    tri->vert3.x = sp18.x;
+    tri->vert3.y = sp18.y;
+    temp_f31 = -(sp18.y - sp24.y);
+    temp_f30 = sp18.x - sp24.x;
+    temp_f1 = (temp_f31 * temp_f31) + (temp_f30 * temp_f30);
+    if (temp_f1 <= 1.1920929e-7f)
+    {
+        func_8003026C(2, "edge length is too short\n");
+        return;
+    }
+    temp_f1 = mathutil_rsqrt(temp_f1);
+    tri->edge2Normal.x = temp_f31 * temp_f1;
+    tri->edge2Normal.y = temp_f30 * temp_f1;
+    temp_f31 = (double)sp18.y;
+    temp_f30 = (double)-sp18.x;
+    temp_f1 = (temp_f31 * temp_f31) + (temp_f30 * temp_f30);
+    if (temp_f1 <= 1.1920929e-7f)
+    {
+        func_8003026C(2, "edge length is too short\n");
+        return;
+    }
+    temp_f1 = mathutil_rsqrt(temp_f1);
+    tri->edge3Normal.x = temp_f31 * temp_f1;
+    tri->edge3Normal.y = temp_f30 * temp_f1;
+    tri->flags = 0;
+}
+
+void stcoli_sub30(struct PhysicsBall *src, struct PhysicsBall *dest)
+{
+    mathutil_mtxA_tf_point(&src->pos, &dest->pos);
+    mathutil_mtxA_tf_point(&src->prevPos, &dest->prevPos);
+    mathutil_mtxA_tf_vec(&src->vel, &dest->vel);
+}
+
+void stcoli_sub31(struct PhysicsBall *src, struct PhysicsBall *dest)
+{
+    mathutil_mtxA_rigid_inv_tf_point(&src->pos, &dest->pos);
+    mathutil_mtxA_rigid_inv_tf_point(&src->prevPos, &dest->prevPos);
+    mathutil_mtxA_rigid_inv_tf_vec(&src->vel, &dest->vel);
 }
