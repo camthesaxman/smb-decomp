@@ -79,14 +79,14 @@ void func_80095024(void)
         draw_naomi_sprite(&_naomiSprite);
         if ((s16) _lbl_802BA190->spriteIdx >= 0) {
             _spriteInfo = &spriteInfo[_lbl_802BA190->spriteIdx];
-            func_80071A8C();
-            g_set_text_pos( (f32) (_spriteInfo->left - 8), (f32)(_spriteInfo->top - 8) );
+            reset_text_draw_settings();
+            set_text_pos( (f32) (_spriteInfo->left - 8), (f32)(_spriteInfo->top - 8) );
             g_draw_text( "+" );
-            g_set_text_pos( (f32) (_spriteInfo->left - 8), (f32)(_spriteInfo->bottom) );
+            set_text_pos( (f32) (_spriteInfo->left - 8), (f32)(_spriteInfo->bottom) );
             g_draw_text( "+" );
-            g_set_text_pos( (f32) _spriteInfo->right, (f32)(_spriteInfo->top - 8) );
+            set_text_pos( (f32) _spriteInfo->right, (f32)(_spriteInfo->top - 8) );
             g_draw_text( "+" );
-            g_set_text_pos( (f32) _spriteInfo->right, (f32)(_spriteInfo->bottom) );
+            set_text_pos( (f32) _spriteInfo->right, (f32)(_spriteInfo->bottom) );
             g_draw_text( "+" );
         }
     }
