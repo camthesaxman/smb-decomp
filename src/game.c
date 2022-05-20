@@ -1076,10 +1076,10 @@ void submode_game_over_dest_func(void)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_COMPETITION:
-        spritePoolInfo.unkC[0] = 0;
-        spritePoolInfo.unkC[1] = 0;
-        spritePoolInfo.unkC[2] = 0;
-        spritePoolInfo.unkC[3] = 0;
+        poolInfo.unkC[0] = 0;
+        poolInfo.unkC[1] = 0;
+        poolInfo.unkC[2] = 0;
+        poolInfo.unkC[3] = 0;
         modeCtrl.currPlayer = 0;
         currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
         func_80029788();
@@ -1933,7 +1933,7 @@ int get_next_player(void)
     for (i = 0; i < 4; i++)
     {
         nextPlayer = (modeCtrl.currPlayer + i + 1) & 3;
-        if (spritePoolInfo.unkC[nextPlayer] == 4)
+        if (poolInfo.unkC[nextPlayer] == 4)
             break;
     }
     return nextPlayer;
@@ -1945,14 +1945,14 @@ void g_init_player_data_1(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (spritePoolInfo.unkC[i] != 0)
+        if (poolInfo.unkC[i] != 0)
             break;
     }
     modeCtrl.currPlayer = i;
     for (i = i + 1; i < 4; i++)
     {
-        if (spritePoolInfo.unkC[i] == 2)
-            spritePoolInfo.unkC[i] = 4;
+        if (poolInfo.unkC[i] == 2)
+            poolInfo.unkC[i] = 4;
     }
     modeCtrl.levelSetFlags |= (1 << 8);
     for (i = 0; i < 4; i++)
@@ -1966,12 +1966,12 @@ void g_init_player_data_2(void)
 {
     u32 r0;
 
-    if (spritePoolInfo.unkC[modeCtrl.currPlayer] == 2)
-        spritePoolInfo.unkC[modeCtrl.currPlayer] = 4;
+    if (poolInfo.unkC[modeCtrl.currPlayer] == 2)
+        poolInfo.unkC[modeCtrl.currPlayer] = 4;
     playerInfos[modeCtrl.currPlayer] = infoWork;
     lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.levelSetFlags;
     r0 = get_next_player();
-    spritePoolInfo.unkC[r0] = 2;
+    poolInfo.unkC[r0] = 2;
     if (modeCtrl.currPlayer != r0)
     {
         modeCtrl.currPlayer = r0;
@@ -1983,7 +1983,7 @@ void g_init_player_data_2(void)
 
 void func_80017708(int a)
 {
-    spritePoolInfo.unkC[a] = 0;
+    poolInfo.unkC[a] = 0;
 }
 
 BOOL func_80017720(void)
@@ -1993,7 +1993,7 @@ BOOL func_80017720(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (spritePoolInfo.unkC[i] != 0)
+        if (poolInfo.unkC[i] != 0)
         {
             ret = FALSE;
             break;

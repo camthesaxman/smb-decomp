@@ -77,9 +77,9 @@ void ev_info_main(void)
     // handle goal
     ballBackup = currentBallStructPtr;
     ball = ballInfo;
-    r23 = spritePoolInfo.unkC;
+    r23 = poolInfo.unkC;
     r20 = 0;
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r23++)
+    for (i = 0; i < poolInfo.unk8; i++, ball++, r23++)
     {
         u32 goalId;
         s32 sp64;
@@ -192,10 +192,10 @@ void ev_info_main(void)
     infoWork.unk24 = 0;
 
     {
-        struct Item *item = itemInfo;
-        s8 *r7 = spritePoolInfo.unk1C;
+        struct Item *item = itemPool;
+        s8 *r7 = poolInfo.itemStatusList;
 
-        for (i = 0; i < spritePoolInfo.unk18; item++, i++, r7++)
+        for (i = 0; i < poolInfo.itemPoolUpperBound; item++, i++, r7++)
         {
             if (*r7 != 0 && *r7 != 3 && item->type == 0 && (item->flags & (1 << 1)))
                 infoWork.unk24++;
@@ -296,9 +296,9 @@ void ev_info_main(void)
 
     if (!(infoWork.flags & (1 << 5)) && !(advDemoInfo.flags & (1 << 8)))
     {
-        r23 = spritePoolInfo.unkC;
+        r23 = poolInfo.unkC;
         ball = ballInfo;
-        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r23++)
+        for (i = 0; i < poolInfo.unk8; i++, ball++, r23++)
         {
             if (*r23 == 0 || *r23 == 4)
                 continue;

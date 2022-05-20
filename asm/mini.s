@@ -332,8 +332,8 @@ submode_mini_ending_init_func:
 /* 80093E6C 0008FD8C  4B F8 44 61 */	bl camera_setup_singleplayer_viewport
 /* 80093E70 0008FD90  3C 60 80 20 */	lis r3, playerCharacterSelection@ha
 /* 80093E74 0008FD94  3B A3 6B C0 */	addi r29, r3, playerCharacterSelection@l
-/* 80093E78 0008FD98  3C 60 80 20 */	lis r3, spritePoolInfo@ha
-/* 80093E7C 0008FD9C  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
+/* 80093E78 0008FD98  3C 60 80 20 */	lis r3, poolInfo@ha
+/* 80093E7C 0008FD9C  3B E3 59 88 */	addi r31, r3, poolInfo@l
 /* 80093E80 0008FDA0  3B 80 00 00 */	li r28, 0
 /* 80093E84 0008FDA4  3B C0 00 02 */	li r30, 2
 lbl_80093E88:
@@ -512,7 +512,7 @@ func_800940E0:
 /* 800940F0 00090010  3C E0 80 17 */	lis r7, lbl_80171A08@ha
 /* 800940F4 00090014  94 21 FF 18 */	stwu r1, -0xe8(r1)
 /* 800940F8 00090018  3C A0 80 20 */	lis r5, ballInfo@ha
-/* 800940FC 0009001C  3C 80 80 20 */	lis r4, spritePoolInfo@ha
+/* 800940FC 0009001C  3C 80 80 20 */	lis r4, poolInfo@ha
 /* 80094100 00090020  DB E1 00 E0 */	stfd f31, 0xe0(r1)
 /* 80094104 00090024  3C C0 80 17 */	lis r6, lbl_80171AA4@ha
 /* 80094108 00090028  DB C1 00 D8 */	stfd f30, 0xd8(r1)
@@ -531,7 +531,7 @@ func_800940E0:
 /* 8009413C 0009005C  3A 88 90 F0 */	addi r20, r8, lbl_802B90F0@l
 /* 80094140 00090060  3A C7 1A 08 */	addi r22, r7, lbl_80171A08@l
 /* 80094144 00090064  3B 45 5E 60 */	addi r26, r5, ballInfo@l
-/* 80094148 00090068  3B 64 59 88 */	addi r27, r4, spritePoolInfo@l
+/* 80094148 00090068  3B 64 59 88 */	addi r27, r4, poolInfo@l
 /* 8009414C 0009006C  3B 06 1A A4 */	addi r24, r6, lbl_80171AA4@l
 /* 80094150 00090070  39 C3 EC 20 */	addi r14, r3, modeCtrl@l
 /* 80094154 00090074  3A 40 00 00 */	li r18, 0

@@ -2703,7 +2703,7 @@ lbl_800307B4:
 .global chkstatus_init
 chkstatus_init:
 /* 800307C4 0002C6E4  7C 08 02 A6 */	mflr r0
-/* 800307C8 0002C6E8  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800307C8 0002C6E8  3C 60 80 20 */	lis r3, poolInfo@ha
 /* 800307CC 0002C6EC  90 01 00 04 */	stw r0, 4(r1)
 /* 800307D0 0002C6F0  38 00 00 04 */	li r0, 4
 /* 800307D4 0002C6F4  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -2711,7 +2711,7 @@ chkstatus_init:
 /* 800307DC 0002C6FC  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800307E0 0002C700  93 A1 00 0C */	stw r29, 0xc(r1)
 /* 800307E4 0002C704  93 81 00 08 */	stw r28, 8(r1)
-/* 800307E8 0002C708  94 03 59 88 */	stwu r0, spritePoolInfo@l(r3)
+/* 800307E8 0002C708  94 03 59 88 */	stwu r0, poolInfo@l(r3)
 /* 800307EC 0002C70C  38 03 00 50 */	addi r0, r3, 0x50
 /* 800307F0 0002C710  90 03 00 0C */	stw r0, 0xc(r3)
 /* 800307F4 0002C714  38 00 01 00 */	li r0, 0x100
@@ -2767,12 +2767,12 @@ chkstatus_main:
 .global func_800308AC
 func_800308AC:
 /* 800308AC 0002C7CC  7C 08 02 A6 */	mflr r0
-/* 800308B0 0002C7D0  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800308B0 0002C7D0  3C 60 80 20 */	lis r3, poolInfo@ha
 /* 800308B4 0002C7D4  90 01 00 04 */	stw r0, 4(r1)
 /* 800308B8 0002C7D8  38 80 FF FF */	li r4, -1
 /* 800308BC 0002C7DC  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 800308C0 0002C7E0  93 E1 00 0C */	stw r31, 0xc(r1)
-/* 800308C4 0002C7E4  3B E3 59 88 */	addi r31, r3, spritePoolInfo@l
+/* 800308C4 0002C7E4  3B E3 59 88 */	addi r31, r3, poolInfo@l
 /* 800308C8 0002C7E8  38 7F 00 00 */	addi r3, r31, 0
 /* 800308CC 0002C7EC  48 00 00 49 */	bl func_80030914
 /* 800308D0 0002C7F0  38 7F 00 10 */	addi r3, r31, 0x10

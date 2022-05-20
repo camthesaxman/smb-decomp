@@ -127,8 +127,8 @@ struct Ball
         int i_; \
         ballBackup_ = currentBallStructPtr; \
         ball = ballInfo; \
-        unk_ = spritePoolInfo.unkC; \
-        for (i_ = 0; i_ < spritePoolInfo.unk8; i_++, ball++, unk_++) \
+        unk_ = poolInfo.unkC; \
+        for (i_ = 0; i_ < poolInfo.unk8; i_++, ball++, unk_++) \
         { \
             if (*unk_ == 2) \
             { \

@@ -237,8 +237,8 @@ lbl_0000033C:
 /* 000003B8 4BFFFDD1 */ bl light_init
 /* 000003BC 38600034 */ li r3, 0x34
 /* 000003C0 4BFFFDC9 */ bl camera_set_state
-/* 000003C4 3C600000 */ lis r3, spritePoolInfo@ha
-/* 000003C8 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 000003C4 3C600000 */ lis r3, poolInfo@ha
+/* 000003C8 38630000 */ addi r3, r3, poolInfo@l
 /* 000003CC 38A3000C */ addi r5, r3, 0xc
 /* 000003D0 8063000C */ lwz r3, 0xc(r3)
 /* 000003D4 38800002 */ li r4, 2
@@ -10430,9 +10430,9 @@ lbl_00009380:
 /* 00009380 3C600000 */ lis r3, modeCtrl@ha
 /* 00009384 38A30000 */ addi r5, r3, modeCtrl@l
 /* 00009388 3800003C */ li r0, 0x3c
-/* 0000938C 3C600000 */ lis r3, spritePoolInfo@ha
+/* 0000938C 3C600000 */ lis r3, poolInfo@ha
 /* 00009390 90050000 */ stw r0, 0(r5)
-/* 00009394 38830000 */ addi r4, r3, spritePoolInfo@l
+/* 00009394 38830000 */ addi r4, r3, poolInfo@l
 /* 00009398 38E50024 */ addi r7, r5, 0x24
 /* 0000939C 39000000 */ li r8, 0
 /* 000093A0 38A00002 */ li r5, 2
@@ -10446,8 +10446,8 @@ lbl_000093B4:
 /* 000093B8 7C080000 */ cmpw r8, r0
 /* 000093BC 4180FFEC */ blt lbl_000093A8
 /* 000093C0 2C080004 */ cmpwi r8, 4
-/* 000093C4 3C600000 */ lis r3, spritePoolInfo@ha
-/* 000093C8 38A30000 */ addi r5, r3, spritePoolInfo@l
+/* 000093C4 3C600000 */ lis r3, poolInfo@ha
+/* 000093C8 38A30000 */ addi r5, r3, poolInfo@l
 /* 000093CC 20680004 */ subfic r3, r8, 4
 /* 000093D0 38C00000 */ li r6, 0
 /* 000093D4 40800090 */ bge lbl_00009464

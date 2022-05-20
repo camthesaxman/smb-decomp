@@ -18,7 +18,7 @@
 
 #include "../data/common.gma.h"
 
-struct ModelLOD singleBananaModels[] =
+struct ModelLOD s_singleBananaLODs[] =
 {
     { OBJ_BANANA_01_LOD150, 150 },
     { OBJ_BANANA_01_LOD100, 100 },
@@ -27,47 +27,48 @@ struct ModelLOD singleBananaModels[] =
     { -1, 0 },
 };
 
-struct ModelLOD bananaBunchModels[] =
+struct ModelLOD s_bananaBunchLODs[] =
 {
     { OBJ_BANANA_02_LOD100, 100 },
     { OBJ_BANANA_02_LOD0,     0 },
     { -1, 0 },
 };
 
-struct Struct801BDEA0
+// Per banana type immutable info
+struct BananaInfo
 {
-    struct ModelLOD **lodModelsPtr;
+    struct ModelLOD **modelLODs;
     float unk4;
     s16 bananaValue;  // number of bananas given when collected
     s16 unkA;
     s16 pointValue;  // number of points given when collected
-    s16 xrotSpeed;
-    s16 yrotSpeed;
-    s16 zrotSpeed;
+    s16 rotVelX;
+    s16 rotVelY;
+    s16 rotVelZ;
 };
 
-struct ModelLOD *singleBananaModelsPtr = singleBananaModels;
-struct ModelLOD *bananaBunchModelsPtr  = bananaBunchModels;
+struct ModelLOD *s_singleBananaLODsPtr = s_singleBananaLODs;
+struct ModelLOD *s_bananaBunchLODsPtr  = s_bananaBunchLODs;
 
-struct Struct801BDEA0 bananaInfo[] =
+struct BananaInfo s_bananaInfos[] =
 {
-    { &singleBananaModelsPtr,  0.5,  1, 0,  100, 0, 1024,    0 },
-    { &bananaBunchModelsPtr,  0.75, 10, 1, 1000, 0,  768,    0 },
-    { &singleBananaModelsPtr,  0.5,  1, 0,  100, 0, 1024, -128 },
-    { &bananaBunchModelsPtr,  0.75, 10, 1, 1000, 0, 1024, -128 },
+    { &s_singleBananaLODsPtr,  0.5,  1, 0,  100, 0, 1024,    0 },
+    { &s_bananaBunchLODsPtr,  0.75, 10, 1, 1000, 0,  768,    0 },
+    { &s_singleBananaLODsPtr,  0.5,  1, 0,  100, 0, 1024, -128 },
+    { &s_bananaBunchLODsPtr,  0.75, 10, 1, 1000, 0, 1024, -128 },
 };
 
 void item_coin_init(struct Item *item)
 {
     item->unk12 = -1;
     item->state = 1;
-    item->unk1C = bananaInfo[item->subtype].lodModelsPtr;
+    item->unk1C = s_bananaInfos[item->subType].modelLODs;
     item->flags = 0x22;
-    item->unk14 = bananaInfo[item->subtype].unk4;
+    item->unk14 = s_bananaInfos[item->subType].unk4;
     item->unk18 = 0.25f;
-    item->xrotSpeed = bananaInfo[item->subtype].xrotSpeed;
-    item->yrotSpeed = bananaInfo[item->subtype].yrotSpeed;
-    item->zrotSpeed = bananaInfo[item->subtype].zrotSpeed;
+    item->rotVelX = s_bananaInfos[item->subType].rotVelX;
+    item->rotVelY = s_bananaInfos[item->subType].rotVelY;
+    item->rotVelZ = s_bananaInfos[item->subType].rotVelZ;
     item->shadowModel = commonGma->modelEntries[polyshadow01].modelOffset;
     item->shadowColor.r = 0x46;
     item->shadowColor.g = 0x47;
@@ -111,31 +112,31 @@ void item_coin_main(struct Item *item)
         break;
     }
 
-    item->unk44 = item->unk20;
+    item->prevPos = item->pos;
 
-    item->unk50 = item->xrot;
-    item->unk52 = item->yrot;
-    item->unk54 = item->zrot;
+    item->prevRotX = item->rotX;
+    item->prevRotY = item->rotY;
+    item->prevRotZ = item->rotZ;
 
-    item->unk20.x += item->unk2C.x;
-    item->unk20.y += item->unk2C.y;
-    item->unk20.z += item->unk2C.z;
+    item->pos.x += item->vel.x;
+    item->pos.y += item->vel.y;
+    item->pos.z += item->vel.z;
 
-    item->xrot += item->xrotSpeed;
-    item->yrot += item->yrotSpeed;
-    item->zrot += item->zrotSpeed;
+    item->rotX += item->rotVelX;
+    item->rotY += item->rotVelY;
+    item->rotZ += item->rotVelZ;
 
-    if (item->attachedTo == 0)
-        func_800390C8(2, &item->unk20, 1.0f);
+    if (item->animGroupId == 0)
+        func_800390C8(2, &item->pos, 1.0f);
     else
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(animGroups[item->attachedTo].transform);
-        mathutil_mtxA_tf_point(&item->unk20, &spC);
+        mathutil_mtxA_from_mtx(animGroups[item->animGroupId].transform);
+        mathutil_mtxA_tf_point(&item->pos, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
-    item->unk6C.z = -item->yrot;
+    item->unk6C.z = -item->rotY;
     item->unk7C.x = item->unk14;
     item->unk7C.y = item->unk14 * 0.7f;
 }
@@ -148,12 +149,12 @@ void item_coin_draw(struct Item *item)
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&item->unk20);
+    mathutil_mtxA_translate(&item->pos);
     mathutil_mtxA_sq_from_mtx(lbl_802F1B3C->matrices[2]);
-    mathutil_mtxA_rotate_y(item->yrot);
-    mathutil_mtxA_rotate_x(item->xrot);
-    mathutil_mtxA_rotate_z(item->zrot);
-    model = find_item_model(item->unk1C);
+    mathutil_mtxA_rotate_y(item->rotY);
+    mathutil_mtxA_rotate_x(item->rotX);
+    mathutil_mtxA_rotate_z(item->rotZ);
+    model = get_lod(item->unk1C);
     scale = (f30 / model->boundSphereRadius) * 1.5;
     if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
@@ -184,18 +185,18 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         return;
     item->flags &= ~(1 << 1);
     item->state = 3;
-    item->unk2C.y += item->unk14 * 0.1875;
-    item->yrotSpeed <<= 2;
-    item->unk2C.x += b->unk1C.x * 0.25;
-    item->unk2C.y += b->unk1C.y * 0.25;
-    item->unk2C.z += b->unk1C.z * 0.25;
+    item->vel.y += item->unk14 * 0.1875;
+    item->rotVelY <<= 2;
+    item->vel.x += b->unk1C.x * 0.25;
+    item->vel.y += b->unk1C.y * 0.25;
+    item->vel.z += b->unk1C.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
         struct Struct8003C550 sp10;
 
         item->unk5E = infoWork.timerCurr;
-        give_bananas(bananaInfo[item->subtype].bananaValue);
-        g_give_points(bananaInfo[item->subtype].unkA, bananaInfo[item->subtype].pointValue);
+        give_bananas(s_bananaInfos[item->subType].bananaValue);
+        g_give_points(s_bananaInfos[item->subType].unkA, s_bananaInfos[item->subType].pointValue);
         item->state = 0;
         item->flags |= ITEM_FLAG_INVISIBLE;
         item->flags &= ~(1 << 1);
@@ -205,12 +206,12 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk8 = 8;
         sp10.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
-        mathutil_mtxA_tf_point(&item->unk20, &sp10.unk34);
-        mathutil_mtxA_tf_vec(&item->unk2C, &sp10.unk40);
-        sp10.unk4C = item->xrot;
-        sp10.unk4E = item->yrot;
-        sp10.unk50 = item->zrot;
-        sp10.unk30 = find_item_model((void *)item->unk1C);
+        mathutil_mtxA_tf_point(&item->pos, &sp10.unk34);
+        mathutil_mtxA_tf_vec(&item->vel, &sp10.unk40);
+        sp10.unk4C = item->rotX;
+        sp10.unk4E = item->rotY;
+        sp10.unk50 = item->rotZ;
+        sp10.unk30 = get_lod((void *)item->unk1C);
         sp10.unk24.x = (item->unk14 / sp10.unk30->boundSphereRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
@@ -218,7 +219,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     }
     if (advDemoInfo.flags & (1 << 8))
         return;
-    if (item->subtype == 1)
+    if (item->subType == 1)
     {
         g_play_sound(0x39);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
@@ -240,10 +241,10 @@ void func_80069394(struct Item *item)
 {
     if (item->state != 2)
     {
-        item->unk20 = item->unk60->pos;
-        item->unk2C.x = 0.0f;
-        item->unk2C.y = 0.0f;
-        item->unk2C.z = 0.0f;
+        item->pos = item->unk60->pos;
+        item->vel.x = 0.0f;
+        item->vel.y = 0.0f;
+        item->vel.z = 0.0f;
         item_coin_init(item);
     }
 }
@@ -262,13 +263,13 @@ char wtfisthis[] =
 void item_coin_debug(struct Item *item)
 {
     func_8002FCC0(2, wtfisthis);
-    func_8002FCC0(2, "Coin Value: %d\n", bananaInfo[item->subtype].bananaValue);
+    func_8002FCC0(2, "Coin Value: %d\n", s_bananaInfos[item->subType].bananaValue);
 }
 
 // needed to force float constant ordering
 float item_coin_dummy(void) { return -480.0f; }
 
-struct GMAModel *find_item_model(struct ModelLOD **a)
+struct GMAModel *get_lod(struct ModelLOD **a)
 {
     struct ModelLOD *r31 = *a;
     struct GMAModel *model;

@@ -76,16 +76,16 @@ void item_pilot_init(struct Item *item)
 
     item->unk12 = -1;
     item->state = 1;
-    if (item->subtype < 3)
-        item->unk1C = pilotBananaInfo[item->subtype].lodModelsPtr;
+    if (item->subType < 3)
+        item->unk1C = pilotBananaInfo[item->subType].lodModelsPtr;
     else
-        item->unk1C = minigameGma->modelEntries[pilotBananaInfo[item->subtype].unk4].modelOffset;
+        item->unk1C = minigameGma->modelEntries[pilotBananaInfo[item->subType].unk4].modelOffset;
     item->flags = 0x22;
-    item->unk14 = pilotBananaInfo[item->subtype].unk8;
+    item->unk14 = pilotBananaInfo[item->subType].unk8;
     item->unk18 = 0.25f;
-    item->xrotSpeed = pilotBananaInfo[item->subtype].xrotSpeed;
-    item->yrotSpeed = pilotBananaInfo[item->subtype].yrotSpeed;
-    item->zrotSpeed = pilotBananaInfo[item->subtype].zrotSpeed;
+    item->rotVelX = pilotBananaInfo[item->subType].xrotSpeed;
+    item->rotVelY = pilotBananaInfo[item->subType].yrotSpeed;
+    item->rotVelZ = pilotBananaInfo[item->subType].zrotSpeed;
     item->shadowModel = commonGma->modelEntries[polyshadow01].modelOffset;
     item->shadowColor.r = 0x46;
     item->shadowColor.g = 0x47;
@@ -102,7 +102,7 @@ void item_pilot_main(struct Item *item)
 
     r29 = currentBallStructPtr;
     if (item->unk64 != 0)
-        f31 = item->unk20.y + item->unk74;
+        f31 = item->pos.y + item->unk74;
     else
         f31 = -100.0f;
     if (item->state == 0)
@@ -113,19 +113,19 @@ void item_pilot_main(struct Item *item)
         item->state = 2;
         // fall through
     case 2:
-        if (item->subtype == 3 || item->subtype == 1)
+        if (item->subType == 3 || item->subType == 1)
         {
-            item->unk2C.y -= 0.008;
-            if (item->unk20.y < -1.0)
+            item->vel.y -= 0.008;
+            if (item->pos.y < -1.0)
                 item->state = 6;
         }
-        else if (item->subtype == 4)
+        else if (item->subType == 4)
         {
             Vec sp24;
 
-            sp24.x = r29->pos.x - item->unk20.x;
-            sp24.y = r29->pos.y - item->unk20.y;
-            sp24.z = r29->pos.z - item->unk20.z;
+            sp24.x = r29->pos.x - item->pos.x;
+            sp24.y = r29->pos.y - item->pos.y;
+            sp24.z = r29->pos.z - item->pos.z;
             if (mathutil_vec_len(&sp24) < 60.0 && mathutil_vec_dot_prod(&r29->vel, &sp24) < 0.0)
             {
                 Vec sp18;
@@ -140,27 +140,27 @@ void item_pilot_main(struct Item *item)
                 sp24.x = 0.005 * sp24.x;
                 sp24.y = 0.005 * sp24.y;
                 sp24.z = 0.005 * sp24.z;
-                if (item->unk20.y < 30.0 && item->unk2C.y < 0.0)
+                if (item->pos.y < 30.0 && item->vel.y < 0.0)
                 {
                     sp24.y = 0.0f;
-                    item->unk2C.y *= 0.9;
+                    item->vel.y *= 0.9;
                 }
-                item->unk2C.x += sp24.x;
-                item->unk2C.y += sp24.y;
-                item->unk2C.z += sp24.z;
-                if (mathutil_vec_len(&item->unk2C) > 0.064814814814814811)
+                item->vel.x += sp24.x;
+                item->vel.y += sp24.y;
+                item->vel.z += sp24.z;
+                if (mathutil_vec_len(&item->vel) > 0.064814814814814811)
                 {
-                    mathutil_vec_normalize_len(&item->unk2C);
-                    item->unk2C.x = 0.064814814814814811 * item->unk2C.x;
-                    item->unk2C.y = 0.064814814814814811 * item->unk2C.y;
-                    item->unk2C.z = 0.064814814814814811 * item->unk2C.z;
+                    mathutil_vec_normalize_len(&item->vel);
+                    item->vel.x = 0.064814814814814811 * item->vel.x;
+                    item->vel.y = 0.064814814814814811 * item->vel.y;
+                    item->vel.z = 0.064814814814814811 * item->vel.z;
                 }
             }
             else
             {
-                item->unk2C.x = 0.9 * item->unk2C.x;
-                item->unk2C.y = 0.9 * item->unk2C.y;
-                item->unk2C.z = 0.9 * item->unk2C.z;
+                item->vel.x = 0.9 * item->vel.x;
+                item->vel.y = 0.9 * item->vel.y;
+                item->vel.z = 0.9 * item->vel.z;
             }
         }
         break;
@@ -187,37 +187,37 @@ void item_pilot_main(struct Item *item)
         break;
     }
 
-    item->unk44 = item->unk20;
+    item->prevPos = item->pos;
 
-    item->unk50 = item->xrot;
-    item->unk52 = item->yrot;
-    item->unk54 = item->zrot;
+    item->prevRotX = item->rotX;
+    item->prevRotY = item->rotY;
+    item->prevRotZ = item->rotZ;
 
-    item->unk20.x += item->unk2C.x;
-    item->unk20.y += item->unk2C.y;
-    item->unk20.z += item->unk2C.z;
+    item->pos.x += item->vel.x;
+    item->pos.y += item->vel.y;
+    item->pos.z += item->vel.z;
 
-    item->xrot += item->xrotSpeed;
-    item->yrot += item->yrotSpeed;
-    item->zrot += item->zrotSpeed;
+    item->rotX += item->rotVelX;
+    item->rotY += item->rotVelY;
+    item->rotZ += item->rotVelZ;
 
-    if (item->attachedTo == 0)
-        func_800390C8(2, &item->unk20, 1.0f);
+    if (item->animGroupId == 0)
+        func_800390C8(2, &item->pos, 1.0f);
     else
     {
         Vec spC;
 
-        mathutil_mtxA_from_mtx(animGroups[item->attachedTo].transform);
-        mathutil_mtxA_tf_point(&item->unk20, &spC);
+        mathutil_mtxA_from_mtx(animGroups[item->animGroupId].transform);
+        mathutil_mtxA_tf_point(&item->pos, &spC);
         func_800390C8(2, &spC, 1.0f);
     }
-    if (item->unk20.y - f31 < item->unk14)
+    if (item->pos.y - f31 < item->unk14)
     {
-        item->unk20.y = f31 + item->unk14;
-        if (item->unk2C.y < 0.0f)
-            item->unk2C.y *= -0.4f;
+        item->pos.y = f31 + item->unk14;
+        if (item->vel.y < 0.0f)
+            item->vel.y *= -0.4f;
     }
-    item->unk6C.z = -item->yrot;
+    item->unk6C.z = -item->rotY;
     item->unk7C.x = item->unk14;
     item->unk7C.y = item->unk14 * 0.7f;
 }
@@ -233,23 +233,23 @@ void item_pilot_draw(struct Item *item)
         return;
     f30 = item->unk14;
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&item->unk20);
+    mathutil_mtxA_translate(&item->pos);
     mathutil_mtxA_sq_from_mtx(lbl_802F1B3C->matrices[2]);
-    mathutil_mtxA_rotate_y(item->yrot);
-    mathutil_mtxA_rotate_x(item->xrot);
-    mathutil_mtxA_rotate_z(item->zrot);
-    if (item->subtype < 3)
-        model = find_item_model(item->unk1C);
+    mathutil_mtxA_rotate_y(item->rotY);
+    mathutil_mtxA_rotate_x(item->rotX);
+    mathutil_mtxA_rotate_z(item->rotZ);
+    if (item->subType < 3)
+        model = get_lod(item->unk1C);
     else
         model = item->unk1C;
-    if (item->subtype == 3)
+    if (item->subType == 3)
         scale = 1.0f;
     else
         scale = (f30 / model->boundSphereRadius) * 1.5;
     if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
-     && (item->subtype == 4 || item->subtype == 3))
+     && (item->subType == 4 || item->subType == 3))
     {
         float f1 = (lbl_802F1FF0 - 20.0) / 40.0;
 
@@ -265,11 +265,11 @@ void item_pilot_draw(struct Item *item)
     f30 = -((spC.z + f30 + 0.1f) / f30);
     if (f30 > 0.0f)
     {
-        if ((item->subtype == 4 && -spC.z > 270.0) || (item->subtype == 3 && -spC.z > 200.0))
+        if ((item->subType == 4 && -spC.z > 270.0) || (item->subType == 3 && -spC.z > 200.0))
         {
             int r30_;
 
-            if (item->subtype == 4)
+            if (item->subType == 4)
             {
                 if (-spC.z < 450.0)
                     r30_ = 0x86;
@@ -304,7 +304,7 @@ void item_pilot_draw(struct Item *item)
             else
                 avdisp_draw_model_unculled_sort_none(model);
         }
-        if (item->subtype == 2)
+        if (item->subType == 2)
         {
             float f1, f2, f3;
 
@@ -346,12 +346,12 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
 {
     item->flags &= ~(1 << 1);
     item->state = 3;
-    item->unk2C.y += item->unk14 * 0.1875;
-    item->yrotSpeed <<= 2;
-    item->unk2C.x += b->unk1C.x * 0.25;
-    item->unk2C.y += b->unk1C.y * 0.25;
-    item->unk2C.z += b->unk1C.z * 0.25;
-    if (item->subtype == 0 || item->subtype == 1 || item->subtype == 2)
+    item->vel.y += item->unk14 * 0.1875;
+    item->rotVelY <<= 2;
+    item->vel.x += b->unk1C.x * 0.25;
+    item->vel.y += b->unk1C.y * 0.25;
+    item->vel.z += b->unk1C.z * 0.25;
+    if (item->subType == 0 || item->subType == 1 || item->subType == 2)
     {
         if (item->unk5E < 0
          && (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11))))
@@ -359,7 +359,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             struct Struct8003C550 sp178;
 
             item->unk5E = infoWork.timerCurr;
-            lbl_80285A58[modeCtrl.currPlayer] += pilotBananaInfo[item->subtype].unkE;
+            lbl_80285A58[modeCtrl.currPlayer] += pilotBananaInfo[item->subType].unkE;
             if (lbl_802F1FD0 & (1 << 3))
             {
                 if (++lbl_802F1FE4[modeCtrl.currPlayer] >= 6)
@@ -372,19 +372,19 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->playerId;
             mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
-            mathutil_mtxA_tf_point(&item->unk20, &sp178.unk34);
-            mathutil_mtxA_tf_vec(&item->unk2C, &sp178.unk40);
-            sp178.unk4C = item->xrot;
-            sp178.unk4E = item->yrot;
-            sp178.unk50 = item->zrot;
-            sp178.unk30 = find_item_model(item->unk1C);
+            mathutil_mtxA_tf_point(&item->pos, &sp178.unk34);
+            mathutil_mtxA_tf_vec(&item->vel, &sp178.unk40);
+            sp178.unk4C = item->rotX;
+            sp178.unk4E = item->rotY;
+            sp178.unk50 = item->rotZ;
+            sp178.unk30 = get_lod(item->unk1C);
             sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
             g_spawn_effect_object(&sp178);
         }
     }
-    else if (item->subtype == 3)
+    else if (item->subType == 3)
     {
         struct Ball *r31 = currentBallStructPtr;
         struct Struct8003C550 spCC;
@@ -407,7 +407,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         spCC.unk24 = (Vec){3.5, 4.5, 3.5};
         g_spawn_effect_object(&spCC);
     }
-    else if (item->subtype == 4)
+    else if (item->subType == 4)
     {
         struct Ball *r31 = currentBallStructPtr;
         struct Struct8003C550 sp20;
@@ -438,13 +438,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     }
     if (gameSubmode == 2)
         return;
-    if (item->subtype == 2)
+    if (item->subType == 2)
     {
         g_play_sound(0x39);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
             g_play_sound(0x2820);
     }
-    else if (item->subtype == 0 || item->subtype == 1)
+    else if (item->subType == 0 || item->subType == 1)
     {
         g_play_sound(3);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
@@ -458,10 +458,10 @@ void func_8006A564(struct Item *item)
 {
     if (item->state != 2)
     {
-        item->unk20 = item->unk60->pos;
-        item->unk2C.x = 0.0f;
-        item->unk2C.y = 0.0f;
-        item->unk2C.z = 0.0f;
+        item->pos = item->unk60->pos;
+        item->vel.x = 0.0f;
+        item->vel.y = 0.0f;
+        item->vel.z = 0.0f;
         item_pilot_init(item);
     }
 }
@@ -480,5 +480,5 @@ char lbl_801BE018[] =
 void item_pilot_debug(struct Item *item)
 {
     func_8002FCC0(2, lbl_801BE018);
-    func_8002FCC0(2, "Coin Value: %d\n", pilotBananaInfo[item->subtype].unkC);
+    func_8002FCC0(2, "Coin Value: %d\n", pilotBananaInfo[item->subType].unkC);
 }

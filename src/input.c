@@ -494,7 +494,7 @@ void func_80025640(void)
         }
         break;
     default:
-        r27 = spritePoolInfo.unkC;
+        r27 = poolInfo.unkC;
         if (r27 == NULL)
             break;
         for (i = 0; i < 4; i++, r27++)

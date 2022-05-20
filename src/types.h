@@ -312,19 +312,19 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
-struct SpritePoolInfo
+struct PoolInfo
 {
              u8 filler0[8];
              s32 unk8;
              s8 *unkC;
              u8 unk10[0x18-0x10];
-             s32 unk18;
-             s8 *unk1C;
+             s32 itemPoolUpperBound; // Max index (+1) of items in item pool
+             s8 *itemStatusList;
              u8 filler20[0x30-0x20];
              u8 unk30[4];
              u32 unk34;
              s32 unk38;
-    /*0x3C*/ s8 *statusList;
+    /*0x3C*/ s8 *spriteStatusList;
 };
 
 struct Struct80176434

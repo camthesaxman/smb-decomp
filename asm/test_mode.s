@@ -9087,8 +9087,8 @@ lbl_000081BC:
 /* 00008248 4BFF7F15 */ bl event_start
 /* 0000824C 3860000C */ li r3, 0xc
 /* 00008250 4BFF7F0D */ bl camera_set_state
-/* 00008254 3C600000 */ lis r3, spritePoolInfo@ha
-/* 00008258 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00008254 3C600000 */ lis r3, poolInfo@ha
+/* 00008258 38630000 */ addi r3, r3, poolInfo@l
 /* 0000825C 3883000C */ addi r4, r3, 0xc
 /* 00008260 8063000C */ lwz r3, 0xc(r3)
 /* 00008264 38000002 */ li r0, 2

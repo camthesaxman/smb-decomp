@@ -2303,9 +2303,9 @@ lbl_800AF268:
 /* 800AF2A0 000AB1C0  C8 02 B8 68 */	lfd f0, lbl_802F6068@sda21(r2)
 /* 800AF2A4 000AB1C4  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800AF2A8 000AB1C8  4C 80 00 20 */	bgelr
-/* 800AF2AC 000AB1CC  3C 80 80 20 */	lis r4, spritePoolInfo@ha
+/* 800AF2AC 000AB1CC  3C 80 80 20 */	lis r4, poolInfo@ha
 /* 800AF2B0 000AB1D0  A8 03 00 00 */	lha r0, 0(r3)
-/* 800AF2B4 000AB1D4  38 64 59 88 */	addi r3, r4, spritePoolInfo@l
+/* 800AF2B4 000AB1D4  38 64 59 88 */	addi r3, r4, poolInfo@l
 /* 800AF2B8 000AB1D8  80 63 00 4C */	lwz r3, 0x4c(r3)
 /* 800AF2BC 000AB1DC  38 80 00 03 */	li r4, 3
 /* 800AF2C0 000AB1E0  7C 83 01 AE */	stbx r4, r3, r0
@@ -2481,9 +2481,9 @@ lbl_800AF51C:
 /* 800AF524 000AB444  C0 82 B7 D4 */	lfs f4, lbl_802F5FD4@sda21(r2)
 /* 800AF528 000AB448  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800AF52C 000AB44C  40 80 00 1C */	bge lbl_800AF548
-/* 800AF530 000AB450  3C 80 80 20 */	lis r4, spritePoolInfo@ha
+/* 800AF530 000AB450  3C 80 80 20 */	lis r4, poolInfo@ha
 /* 800AF534 000AB454  A8 03 00 00 */	lha r0, 0(r3)
-/* 800AF538 000AB458  38 84 59 88 */	addi r4, r4, spritePoolInfo@l
+/* 800AF538 000AB458  38 84 59 88 */	addi r4, r4, poolInfo@l
 /* 800AF53C 000AB45C  80 84 00 4C */	lwz r4, 0x4c(r4)
 /* 800AF540 000AB460  38 A0 00 03 */	li r5, 3
 /* 800AF544 000AB464  7C A4 01 AE */	stbx r5, r4, r0
@@ -3072,9 +3072,9 @@ credits_init:
 /* 800AFDB0 000ABCD0  4B F6 8C 55 */	bl camera_set_state
 /* 800AFDB4 000ABCD4  38 60 00 03 */	li r3, 3
 /* 800AFDB8 000ABCD8  4B F5 B5 71 */	bl event_start
-/* 800AFDBC 000ABCDC  3C 60 80 20 */	lis r3, spritePoolInfo@ha
+/* 800AFDBC 000ABCDC  3C 60 80 20 */	lis r3, poolInfo@ha
 /* 800AFDC0 000ABCE0  80 CD 9D 38 */	lwz r6, currentBallStructPtr@sda21(r13)
-/* 800AFDC4 000ABCE4  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
+/* 800AFDC4 000ABCE4  38 83 59 88 */	addi r4, r3, poolInfo@l
 /* 800AFDC8 000ABCE8  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 800AFDCC 000ABCEC  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 800AFDD0 000ABCF0  38 03 5E 60 */	addi r0, r3, ballInfo@l
@@ -3208,8 +3208,8 @@ credits_main:
 /* 800AFFB8 000ABED8  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800AFFBC 000ABEDC  4C 41 13 82 */	cror 2, 1, 2
 /* 800AFFC0 000ABEE0  40 82 00 58 */	bne lbl_800B0018
-/* 800AFFC4 000ABEE4  3C 60 80 20 */	lis r3, spritePoolInfo@ha
-/* 800AFFC8 000ABEE8  38 83 59 88 */	addi r4, r3, spritePoolInfo@l
+/* 800AFFC4 000ABEE4  3C 60 80 20 */	lis r3, poolInfo@ha
+/* 800AFFC8 000ABEE8  38 83 59 88 */	addi r4, r3, poolInfo@l
 /* 800AFFCC 000ABEEC  3C 60 80 20 */	lis r3, worldInfo@ha
 /* 800AFFD0 000ABEF0  80 C4 00 0C */	lwz r6, 0xc(r4)
 /* 800AFFD4 000ABEF4  38 03 6B F0 */	addi r0, r3, worldInfo@l
@@ -3582,14 +3582,14 @@ lbl_800B0500:
 /* 800B0530 000AC450  90 0D A0 40 */	stw r0, lbl_802F2220@sda21(r13)
 /* 800B0534 000AC454  3C A0 66 66 */	lis r5, 0x66666667@ha
 /* 800B0538 000AC458  C3 A2 B8 B8 */	lfs f29, lbl_802F60B8@sda21(r2)
-/* 800B053C 000AC45C  3C 80 80 20 */	lis r4, spritePoolInfo@ha
+/* 800B053C 000AC45C  3C 80 80 20 */	lis r4, poolInfo@ha
 /* 800B0540 000AC460  CB C2 B8 F8 */	lfd f30, lbl_802F60F8@sda21(r2)
 /* 800B0544 000AC464  3C 60 80 26 */	lis r3, lbl_802673C8@ha
 /* 800B0548 000AC468  CB E2 B9 80 */	lfd f31, lbl_802F6180@sda21(r2)
 /* 800B054C 000AC46C  CB 62 B9 88 */	lfd f27, lbl_802F6188@sda21(r2)
 /* 800B0550 000AC470  3B C6 75 24 */	addi r30, r6, lbl_801D7524@l
 /* 800B0554 000AC474  3B E5 66 67 */	addi r31, r5, 0x66666667@l
-/* 800B0558 000AC478  3B 04 59 88 */	addi r24, r4, spritePoolInfo@l
+/* 800B0558 000AC478  3B 04 59 88 */	addi r24, r4, poolInfo@l
 /* 800B055C 000AC47C  3B 23 73 C8 */	addi r25, r3, lbl_802673C8@l
 /* 800B0560 000AC480  3F A0 00 04 */	lis r29, 4
 /* 800B0564 000AC484  48 00 01 90 */	b lbl_800B06F4

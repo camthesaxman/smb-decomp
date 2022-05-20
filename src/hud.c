@@ -2138,8 +2138,8 @@ void hud_show_competition_mode_info(void)
         }
     }
 
-    phi_r28 = spritePoolInfo.unkC;
-    for (i = 0; i < spritePoolInfo.unk8; i++, phi_r28++)
+    phi_r28 = poolInfo.unkC;
+    for (i = 0; i < poolInfo.unk8; i++, phi_r28++)
     {
         if (*phi_r28 != 0)
             show_competition_player_hud(i);

@@ -258,7 +258,7 @@ extern float unknownTrigTable[];
 // extern ? itemCollectFuncs;
 // extern ? itemDestroyFuncs;
 // extern ? lbl_801BDD30;
-// extern ? singleBananaModels;
+// extern ? s_singleBananaLODs;
 // extern ? lbl_801BDF60;
 // extern ? pilotBananaInfo;
 // extern ? lbl_801BE048;
@@ -570,7 +570,7 @@ extern struct
 // extern ? lbl_802037D8;
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
-extern struct SpritePoolInfo spritePoolInfo;
+extern struct PoolInfo poolInfo;
 
 // extern ? lbl_80206D00;
 // extern ? stagePreview;

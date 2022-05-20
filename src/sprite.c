@@ -47,14 +47,14 @@ FORCE_BSS_ORDER(lbl_8028FE58)
 struct ScreenFadeInfo screenFadeInfo;
 FORCE_BSS_ORDER(screenFadeInfo)
 
-extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
+extern struct PoolInfo poolInfo;  // 0x80205988
 
 void ev_sprite_init(void)
 {
-    s8 *status = spritePoolInfo.statusList;
+    s8 *status = poolInfo.spriteStatusList;
     int i;
 
-    for (i = 0; i < spritePoolInfo.unk38; i++, status++)
+    for (i = 0; i < poolInfo.unk38; i++, status++)
         *status = 0;
 
     textDrawInfo.startX = 0.0f;
@@ -80,9 +80,9 @@ void ev_sprite_main(void)
     if (gamePauseStatus & 0xA)
         return;
     lbl_802F2000 = 0;
-    status = spritePoolInfo.statusList;
+    status = poolInfo.spriteStatusList;
     sprite = spriteInfo;
-    for (i = 0; i < spritePoolInfo.unk38; i++, sprite++, status++)
+    for (i = 0; i < poolInfo.unk38; i++, sprite++, status++)
     {
         if (*status != 0)
         {
@@ -101,7 +101,7 @@ void ev_sprite_dest(void)
     int i = 0;
 
     sprite = spriteInfo;
-    status = spritePoolInfo.statusList;
+    status = poolInfo.spriteStatusList;
     for (; i < 64; i++, sprite++, status++)
     {
         if (*status != 0)
@@ -112,7 +112,7 @@ void ev_sprite_dest(void)
         }
     }
 
-    spritePoolInfo.unk34 = 0;
+    poolInfo.unk34 = 0;
     lbl_802F2000 = 0;
     textbox_destroy_all();
 }
@@ -144,8 +144,8 @@ void func_800700D8(int a)
     r9->unk4 = r5;
     r9->unk8 = NULL;
 
-    r11 = spritePoolInfo.statusList;
-    for (i = 0; i < spritePoolInfo.unk38; r8++, i++, r11++)
+    r11 = poolInfo.spriteStatusList;
+    for (i = 0; i < poolInfo.unk38; r8++, i++, r11++)
     {
         if (*r11 != 0 && (!r31 || r8->tag == 100))
         {
@@ -220,7 +220,7 @@ asm void func_800700D8(int a)
 //arcade: FUN_0c048ea0
 void func_800702C8(struct Sprite *sprite)
 {
-    if (spritePoolInfo.statusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
+    if (poolInfo.spriteStatusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
         g_something_with_sprites(sprite);
         while (sprite->next != NULL)
@@ -927,7 +927,7 @@ void free_all_bitmap_groups_except_com(void)
 
 struct Sprite *create_sprite(void)
 {
-    int index = pool_alloc(spritePoolInfo.unk30, 2);
+    int index = pool_alloc(poolInfo.unk30, 2);
 
     if (index < 0)
         return NULL;
@@ -972,7 +972,7 @@ struct Sprite *create_linked_sprite(struct Sprite *sprite)
 void destroy_sprite_with_tag(int tag)
 {
     struct Sprite *sprite = spriteInfo;
-    s8 *status = spritePoolInfo.statusList;
+    s8 *status = poolInfo.spriteStatusList;
     int i;
 
     for (i = 0; i < 64; i++)
@@ -992,7 +992,7 @@ void destroy_sprite_with_tag(int tag)
 void destroy_all_sprites(void)
 {
     struct Sprite *sprite = spriteInfo;
-    s8 *status = spritePoolInfo.statusList;
+    s8 *status = poolInfo.spriteStatusList;
     int i;
 
     for (i = 0; i < 64; i++)
@@ -1012,7 +1012,7 @@ void destroy_all_sprites(void)
 struct Sprite *find_sprite_with_tag(int tag)
 {
     struct Sprite *sprite = spriteInfo;
-    s8 *status = spritePoolInfo.statusList;
+    s8 *status = poolInfo.spriteStatusList;
     int i;
 
     for (i = 0; i < 64; i++, sprite++, status++)
