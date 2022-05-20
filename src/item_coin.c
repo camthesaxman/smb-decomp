@@ -62,7 +62,7 @@ void item_coin_init(struct Item *item)
 {
     item->unk12 = -1;
     item->state = 1;
-    item->unk1C = s_bananaInfos[item->subType].modelLODs;
+    item->modelLODs = s_bananaInfos[item->subType].modelLODs;
     item->flags = 0x22;
     item->unk14 = s_bananaInfos[item->subType].unk4;
     item->unk18 = 0.25f;
@@ -154,7 +154,7 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_y(item->rotY);
     mathutil_mtxA_rotate_x(item->rotX);
     mathutil_mtxA_rotate_z(item->rotZ);
-    model = get_lod(item->unk1C);
+    model = get_lod(item->modelLODs);
     scale = (f30 / model->boundSphereRadius) * 1.5;
     if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
@@ -211,7 +211,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk4C = item->rotX;
         sp10.unk4E = item->rotY;
         sp10.unk50 = item->rotZ;
-        sp10.unk30 = get_lod((void *)item->unk1C);
+        sp10.unk30 = get_lod((void *)item->modelLODs);
         sp10.unk24.x = (item->unk14 / sp10.unk30->boundSphereRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
@@ -241,7 +241,7 @@ void func_80069394(struct Item *item)
 {
     if (item->state != 2)
     {
-        item->pos = item->unk60->pos;
+        item->pos = item->stageBanana->pos;
         item->vel.x = 0.0f;
         item->vel.y = 0.0f;
         item->vel.z = 0.0f;

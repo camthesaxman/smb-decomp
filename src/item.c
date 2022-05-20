@@ -221,13 +221,13 @@ void ev_item_dest(void)
 
 void item_draw(void)
 {
-    Mtx sp8;
+    Mtx viewFromWorld;
     int itemCtr;
     struct Item *item;
     s8 *status;
     int animGrpId = -1;
 
-    mathutil_mtx_copy(mathutilData->mtxB, sp8);
+    mathutil_mtx_copy(mathutilData->mtxB, viewFromWorld);
     status = poolInfo.itemStatusList;
     item = itemPool;
     for (itemCtr = poolInfo.itemPoolUpperBound; itemCtr > 0; itemCtr--, status++, item++)
@@ -236,7 +236,7 @@ void item_draw(void)
         {
             if (animGrpId != item->animGroupId)
             {
-                mathutil_mtxA_from_mtx(sp8);
+                mathutil_mtxA_from_mtx(viewFromWorld);
                 mathutil_mtxA_mult_right(animGroups[item->animGroupId].transform);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
                 animGrpId = item->animGroupId;
@@ -244,7 +244,7 @@ void item_draw(void)
             itemDrawFuncs[item->type](item);
         }
     }
-    mathutil_mtx_copy(sp8, mathutilData->mtxB);
+    mathutil_mtx_copy(viewFromWorld, mathutilData->mtxB);
 }
 
 int func_80068474(struct Item *a)
@@ -399,7 +399,7 @@ void func_800689B4(int a)
     }
 }
 
-void spawn_stage_banana_items(struct StageAnimGroup *coll, int count)
+void spawn_stage_banana_items(struct StageAnimGroup *stageAg, int agCount)
 {
     struct Item item;
     int i;
@@ -407,16 +407,16 @@ void spawn_stage_banana_items(struct StageAnimGroup *coll, int count)
 
     memset(&item, 0, sizeof(item));
     item.type = 0;
-    for (i = 0; i < count; i++, coll++)
+    for (i = 0; i < agCount; i++, stageAg++)
     {
-        struct StageBanana *r28 = coll->bananas;
+        struct StageBanana *stageBanana = stageAg->bananas;
 
-        for (j = 0; j < coll->bananaCount; j++, r28++)
+        for (j = 0; j < stageAg->bananaCount; j++, stageBanana++)
         {
-            item.pos = r28->pos;
-            item.subType = r28->type;
+            item.pos = stageBanana->pos;
+            item.subType = stageBanana->type;
             item.animGroupId = i;
-            item.unk60 = r28;
+            item.stageBanana = stageBanana;
             func_80068474(&item);
         }
     }

@@ -7,7 +7,7 @@
 
 struct Item
 {
-    /*0x00*/ s16 id;
+    /*0x00*/ s16 id; // Index in item pool
     /*0x02*/ s16 unk2;
     /*0x04*/ s16 type;
     /*0x06*/ s16 subType; // Single vs. bunch for bananas
@@ -18,7 +18,7 @@ struct Item
     s16 unk12;
     float unk14;
     float unk18;
-    void *unk1C;
+    void *modelLODs;
     Point3d pos;
     Vec vel;
     s16 rotX;
@@ -33,9 +33,9 @@ struct Item
     s16 prevRotZ;
     u8 filler56[2];
     void (*unk58)(struct Item *, struct Struct800690DC *);
-    s8 animGroupId;  // index of moving stage part that this item is attached to
+    s8 animGroupId; // Index of anim group that this item is attached to
     s16 unk5E;
-    struct StageBanana *unk60;
+    struct StageBanana *stageBanana; // Also used in pilot, maybe not specifically a banana
     s32 unk64;
     struct GMAModel *shadowModel;
     S16Vec unk6C;

@@ -77,9 +77,9 @@ void item_pilot_init(struct Item *item)
     item->unk12 = -1;
     item->state = 1;
     if (item->subType < 3)
-        item->unk1C = pilotBananaInfo[item->subType].lodModelsPtr;
+        item->modelLODs = pilotBananaInfo[item->subType].lodModelsPtr;
     else
-        item->unk1C = minigameGma->modelEntries[pilotBananaInfo[item->subType].unk4].modelOffset;
+        item->modelLODs = minigameGma->modelEntries[pilotBananaInfo[item->subType].unk4].modelOffset;
     item->flags = 0x22;
     item->unk14 = pilotBananaInfo[item->subType].unk8;
     item->unk18 = 0.25f;
@@ -239,9 +239,9 @@ void item_pilot_draw(struct Item *item)
     mathutil_mtxA_rotate_x(item->rotX);
     mathutil_mtxA_rotate_z(item->rotZ);
     if (item->subType < 3)
-        model = get_lod(item->unk1C);
+        model = get_lod(item->modelLODs);
     else
-        model = item->unk1C;
+        model = item->modelLODs;
     if (item->subType == 3)
         scale = 1.0f;
     else
@@ -377,7 +377,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk4C = item->rotX;
             sp178.unk4E = item->rotY;
             sp178.unk50 = item->rotZ;
-            sp178.unk30 = get_lod(item->unk1C);
+            sp178.unk30 = get_lod(item->modelLODs);
             sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
@@ -458,7 +458,7 @@ void func_8006A564(struct Item *item)
 {
     if (item->state != 2)
     {
-        item->pos = item->unk60->pos;
+        item->pos = item->stageBanana->pos;
         item->vel.x = 0.0f;
         item->vel.y = 0.0f;
         item->vel.z = 0.0f;
