@@ -1780,3 +1780,101 @@ void stcoli_sub24(struct PhysicsBall *arg0, struct ColiSub24 *arg1)
         collide_ball_with_plane(arg0, &sp10);
     }
 }
+
+struct UunkStruct
+{
+    Point3d unk0;
+    s32 unkC;
+};
+
+void g_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicStagePart *dynStageParts)
+{
+    u32 (*raycastDown)(Point3d *, Point3d *, Vec *) = dynStageParts[0].raycastDownFunc;
+    struct StageColiTri *tri;
+    struct UunkStruct *r27;
+    struct UunkStruct *r5;
+    struct UunkStruct *r26;
+    struct UunkStruct *r25;
+    float f29 = (double)mathutil_floor(ball->pos.x - 1.0);
+    float f28 = (double)mathutil_floor(ball->pos.z - 1.0);
+    int j;
+    int i;
+    struct StageColiTri triangles[32];
+    struct UunkStruct sp20[16];
+
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            r27 = &sp20[i * 4 + j];
+            r27->unk0.x = f29 + (double)j;
+            r27->unk0.y = 0.0f;
+            r27->unk0.z = f28 + (double)i;
+            r27->unkC = raycastDown(&r27->unk0, &r27->unk0, NULL);
+        }
+    }
+
+    tri = triangles;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            r27 = &sp20[(i+0) * 4 + j+0];
+            r5  = &sp20[(i+1) * 4 + j+0];
+            r26 = &sp20[(i+1) * 4 + j+1];
+            r25 = &sp20[(i+0) * 4 + j+1];
+            if (r27->unkC != 0 && r5->unkC != 0 && r26->unkC != 0)
+                stcoli_sub29(tri, &r27->unk0, &r5->unk0, &r26->unk0);
+            else
+                tri->flags = 0xFFFF;
+            tri++;
+            if (r27->unkC != 0 && r26->unkC != 0 && r25->unkC != 0)
+                stcoli_sub29(tri, &r27->unk0, &r26->unk0, &r25->unk0);
+            else
+                tri->flags = 0xFFFF;
+            tri++;
+        }
+    }
+
+    tri = triangles;
+    for (i = 3; i > 0; i--)
+    {
+        for (j = 3; j > 0; j--)
+        {
+            if (tri->flags == 0)
+                collide_ball_with_tri_face(ball, tri);
+            tri++;
+            if (tri->flags == 0)
+                collide_ball_with_tri_face(ball, tri);
+            tri++;
+        }
+    }
+
+    tri = triangles;
+    for (i = 3; i > 0; i--)
+    {
+        for (j = 3; j > 0; j--)
+        {
+            if (tri->flags == 0)
+                collide_ball_with_tri_edges(ball, tri);
+            tri++;
+            if (tri->flags == 0)
+                collide_ball_with_tri_edges(ball, tri);
+            tri++;
+        }
+    }
+
+    tri = triangles;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            if (tri->flags == 0)
+                collide_ball_with_tri_verts(ball, tri);
+            tri++;
+            if (tri->flags == 0)
+                collide_ball_with_tri_verts(ball, tri);
+            tri++;
+        }
+    }
+}
