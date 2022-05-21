@@ -14,6 +14,7 @@
 #include "mode.h"
 #include "world.h"
 
+struct World *currentWorldStructPtr;
 struct World worldInfo[4];
 Vec lbl_80206CF0;
 

@@ -7998,3 +7998,67 @@ lbl_8027CE18:
 .global lbl_8027CE24
 lbl_8027CE24:
 	.skip 0x34
+
+.section .sbss
+
+	.balign 8
+.if 0
+.global previewLoaded
+previewLoaded:
+	.skip 0x4
+.global blurBridgeAccordion
+blurBridgeAccordion:
+	.skip 0x4
+.global decodedStageLzPtr
+decodedStageLzPtr:
+	.skip 0x4
+.global lbl_802F1F34
+lbl_802F1F34:
+	.skip 0x4
+.global decodedStageGmaPtr
+decodedStageGmaPtr:
+	.skip 0x4
+.global decodedStageTplPtr
+decodedStageTplPtr:
+	.skip 0x4
+.global lbl_802F1F40
+lbl_802F1F40:
+	.skip 0x4
+.global dynamicStageParts
+dynamicStageParts:
+	.skip 0x4
+.global animGroupCount
+animGroupCount:
+	.skip 0x4
+.global lbl_802F1F4C
+lbl_802F1F4C:
+	.skip 0x4
+.global lbl_802F1F50
+lbl_802F1F50:
+	.skip 0x4
+.global loadingStageIdRequest
+loadingStageIdRequest:
+	.skip 0x2
+.global loadingStageId
+loadingStageId:
+	.skip 0x2
+.global currStageId
+currStageId:
+	.skip 0x8
+.endif
+
+.global lbl_802F1F60
+lbl_802F1F60:
+	.skip 0x8
+.global lbl_802F1F68
+lbl_802F1F68:
+	.skip 0x4
+.global lbl_802F1F6C
+lbl_802F1F6C:
+	.skip 0x4
+.global lbl_802F1F70
+lbl_802F1F70:
+	.skip 0x4
+.global lbl_802F1F74
+lbl_802F1F74:
+	.skip 0x4
