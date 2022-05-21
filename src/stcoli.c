@@ -2134,3 +2134,251 @@ void stcoli_sub31(struct PhysicsBall *src, struct PhysicsBall *dest)
     mathutil_mtxA_rigid_inv_tf_point(&src->prevPos, &dest->prevPos);
     mathutil_mtxA_rigid_inv_tf_vec(&src->vel, &dest->vel);
 }
+
+void tf_physball_to_anim_group_space(struct PhysicsBall *physBall, int animGroupId)
+{
+    Vec sp10;
+    struct AnimGroupInfo *temp_r31;
+
+    if (physBall->animGroupId > 0)
+    {
+        temp_r31 = &animGroups[physBall->animGroupId];
+        sp10.x = physBall->pos.x - physBall->prevPos.x;
+        sp10.y = physBall->pos.y - physBall->prevPos.y;
+        sp10.z = physBall->pos.z - physBall->prevPos.z;
+        mathutil_mtxA_from_mtx(temp_r31->transform);
+        mathutil_mtxA_tf_point(&physBall->pos, &physBall->pos);
+        mathutil_mtxA_tf_vec(&physBall->vel, &physBall->vel);
+        mathutil_mtxA_tf_vec(&sp10, &sp10);
+        mathutil_mtxA_from_mtx(temp_r31->prevTransform);
+        mathutil_mtxA_tf_point(&physBall->prevPos, &physBall->prevPos);
+        physBall->vel.x += physBall->pos.x - physBall->prevPos.x - sp10.x;
+        physBall->vel.y += physBall->pos.y - physBall->prevPos.y - sp10.y;
+        physBall->vel.z += physBall->pos.z - physBall->prevPos.z - sp10.z;
+    }
+    if (animGroupId > 0)
+    {
+        temp_r31 = &animGroups[animGroupId];
+        sp10.x = physBall->pos.x - physBall->prevPos.x;
+        sp10.y = physBall->pos.y - physBall->prevPos.y;
+        sp10.z = physBall->pos.z - physBall->prevPos.z;
+        mathutil_mtxA_from_mtx(temp_r31->transform);
+        mathutil_mtxA_rigid_inv_tf_point(&physBall->pos, &physBall->pos);
+        mathutil_mtxA_rigid_inv_tf_vec(&physBall->vel, &physBall->vel);
+        mathutil_mtxA_rigid_inv_tf_vec(&sp10, &sp10);
+        mathutil_mtxA_from_mtx(temp_r31->prevTransform);
+        mathutil_mtxA_rigid_inv_tf_point(&physBall->prevPos, &physBall->prevPos);
+        physBall->vel.x += physBall->pos.x - physBall->prevPos.x - sp10.x;
+        physBall->vel.y += physBall->pos.y - physBall->prevPos.y - sp10.y;
+        physBall->vel.z += physBall->pos.z - physBall->prevPos.z - sp10.z;
+    }
+    physBall->animGroupId = animGroupId;
+}
+
+#pragma force_active on
+int func_80042214(u32 a)
+{
+    if (!(a & 0x8000))
+        return 0;
+    else
+        return (a >> 1) & 0x3FFF;
+}
+
+struct Unk33
+{
+    s32 unk8;
+    s32 unkC;
+};
+
+void stcoli_sub33(struct PhysicsBall *ball, struct Stage *stage)
+{
+    struct StageAnimGroup *stageAg;
+    int i;
+    s16 *phi_r3;
+    s16 *phi_r26;
+    struct StageColiCone *cone;
+    int phi_r25;
+    struct StageColiSphere *sphere;
+    int phi_r26_3;
+    struct StageColiCylinder *cylinder;
+    int phi_r26_4;
+    struct StageGoal *goal;
+    int phi_r26_5;
+    float restitution;
+
+    stageAg = stage->animGroups;
+    for (i = 0; i < stage->animGroupCount; i++, stageAg++)
+    {
+        if (i != ball->animGroupId)
+            tf_physball_to_anim_group_space(ball, i);
+
+        phi_r3 = coligrid_lookup(stageAg, ball->prevPos.x, ball->prevPos.z);
+        if (phi_r3 != NULL2)
+        {
+            phi_r26 = phi_r3;
+            while (*phi_r26 >= 0)
+            {
+                collide_ball_with_tri_face(ball, &stageAg->triangles[*phi_r26]);
+                phi_r26++;
+            }
+        }
+
+        cone = stageAg->coliCones;
+        for (phi_r25 = stageAg->coliConeCount; phi_r25 > 0; phi_r25--, cone++)
+            collide_ball_with_cone(ball, cone);
+
+        sphere = stageAg->coliSpheres;
+        for (phi_r26_3 = stageAg->coliSphereCount; phi_r26_3 > 0; phi_r26_3--, sphere++)
+            collide_ball_with_sphere(ball, sphere);
+
+        cylinder = stageAg->coliCylinders;
+        for (phi_r26_4 = stageAg->coliCylinderCount; phi_r26_4 > 0; phi_r26_4--, cylinder++)
+            collide_ball_with_cylinder(ball, cylinder);
+
+        goal = stageAg->goals;
+        for (phi_r26_5 = stageAg->goalCount; phi_r26_5 > 0; phi_r26_5--, goal++)
+            collide_ball_with_goal(ball, goal);
+    }
+
+    restitution = ball->restitution;
+    ball->restitution = 0.0f;
+
+    stageAg = stage->animGroups;
+    for (i = 0; i < stage->animGroupCount; i++, stageAg++)
+    {
+        if (i != ball->animGroupId)
+            tf_physball_to_anim_group_space(ball, i);
+
+        phi_r3 = coligrid_lookup(stageAg, ball->prevPos.x, ball->prevPos.z);
+        if (phi_r3 != NULL2)
+        {
+            s16 *phi_r25_5 = phi_r3;
+            while (*phi_r25_5 >= 0)
+            {
+                collide_ball_with_tri_edges(ball, &stageAg->triangles[*phi_r25_5]);
+                phi_r25_5++;
+            }
+        }
+    }
+
+    stageAg = stage->animGroups;
+    for (i = 0; i < stage->animGroupCount; i++, stageAg++)
+    {
+        if (i != ball->animGroupId)
+            tf_physball_to_anim_group_space(ball, i);
+
+        phi_r3 = coligrid_lookup(stageAg, ball->prevPos.x, ball->prevPos.z);
+        if (phi_r3 != NULL2)
+        {
+            s16 *phi_r25_6 = phi_r3;
+            while (*phi_r25_6 >= 0)
+            {
+                collide_ball_with_tri_verts(ball, &stageAg->triangles[*phi_r25_6]);
+                phi_r25_6++;
+            }
+        }
+    }
+
+    ball->restitution = restitution;
+    if (ball->animGroupId != 0)
+        tf_physball_to_anim_group_space(ball, 0);
+}
+#pragma force_active reset
+
+int stcoli_sub34(struct PhysicsBall *ball, int arg1)
+{
+    Point3d ballPos = ball->pos;
+    struct StageAnimGroup *stageAg;
+
+    if (ball->animGroupId > 0)
+    {
+        mathutil_mtxA_from_mtx(animGroups[ball->animGroupId].transform);
+        mathutil_mtxA_tf_point(&ballPos, &ballPos);
+    }
+    if (arg1 > 0)
+    {
+        mathutil_mtxA_from_mtx(animGroups[arg1].transform);
+        mathutil_mtxA_rigid_inv_tf_point(&ballPos, &ballPos);
+    }
+
+    stageAg = &decodedStageLzPtr->animGroups[arg1];
+    if (ballPos.x < stageAg->gridOriginX)
+        return 0;
+    if (ballPos.z < stageAg->gridOriginZ)
+        return 0;
+    if (ballPos.x > stageAg->gridOriginX + stageAg->gridStepX * stageAg->gridCellCountX)
+        return 0;
+    if (ballPos.z > stageAg->gridOriginZ + stageAg->gridStepZ * stageAg->gridCellCountZ)
+        return 0;
+    return 1;
+}
+
+#pragma force_active on
+void stcoli_sub35(struct PhysicsBall *ball, struct Stage *stage)
+{
+    struct StageAnimGroup *stageAg;
+    s32 i;
+    s16 *phi_r3;
+    s16 *phi_r28;
+    struct StageColiCone *cone;
+    s32 phi_r28_4;
+    struct StageColiSphere *sphere;
+    s32 phi_r28_5;
+    struct StageColiCylinder *cylinder;
+    s32 phi_r28_6;
+    struct StageGoal *goal;
+    s32 phi_r28_7;
+
+    stageAg = stage->animGroups;
+    for (i = 0; i < stage->animGroupCount; i++, stageAg++)
+    {
+        if (stcoli_sub34(ball, i) != 0)
+        {
+            if (i != ball->animGroupId)
+                tf_physball_to_anim_group_space(ball, i);
+
+            phi_r3 = coligrid_lookup(stageAg, ball->pos.x, ball->pos.z);
+            if (phi_r3 != NULL2)
+            {
+                phi_r28 = phi_r3;
+                while (*phi_r28 >= 0)
+                {
+                    collide_ball_with_tri_face(ball, &stageAg->triangles[*phi_r28]);
+                    phi_r28++;
+                }
+                phi_r28 = phi_r3;
+                while (*phi_r28 >= 0)
+                {
+                    collide_ball_with_tri_edges(ball, &stageAg->triangles[*phi_r28]);
+                    phi_r28++;
+                }
+                phi_r28 = phi_r3;
+                while (*phi_r28 >= 0)
+                {
+                    collide_ball_with_tri_verts(ball, &stageAg->triangles[*phi_r28]);
+                    phi_r28++;
+                }
+            }
+
+            cone = stageAg->coliCones;
+            for (phi_r28_4 = stageAg->coliConeCount; phi_r28_4 > 0; phi_r28_4--, cone++)
+                collide_ball_with_cone(ball, cone);
+
+            sphere = stageAg->coliSpheres;
+            for (phi_r28_5 = stageAg->coliSphereCount; phi_r28_5 > 0; phi_r28_5--, sphere++)
+                collide_ball_with_sphere(ball, sphere);
+
+            cylinder = stageAg->coliCylinders;
+            for (phi_r28_6 = stageAg->coliCylinderCount; phi_r28_6 > 0; phi_r28_6--, cylinder++)
+                collide_ball_with_cylinder(ball, cylinder);
+
+            goal = stageAg->goals;
+            for (phi_r28_7 = stageAg->goalCount; phi_r28_7 > 0; phi_r28_7--, goal++)
+                collide_ball_with_goal(ball, goal);
+        }
+    }
+
+    if (ball->animGroupId != 0)
+        tf_physball_to_anim_group_space(ball, 0);
+}
+#pragma force_active reset
