@@ -2,7 +2,6 @@
 
 .section .text
 
-.if 0
 .global ev_mouse_init
 ev_mouse_init:
 /* 80094CD4 00090BF4  3C 60 80 2C */	lis r3, lbl_802BA190@ha
@@ -14,7 +13,6 @@ ev_mouse_init:
 /* 80094CEC 00090C0C  B0 64 00 02 */	sth r3, 2(r4)
 /* 80094CF0 00090C10  B0 04 00 0C */	sth r0, 0xc(r4)
 /* 80094CF4 00090C14  4E 80 00 20 */	blr
-.endif
 
 .global ev_mouse_main
 ev_mouse_main:

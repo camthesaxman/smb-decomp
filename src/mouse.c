@@ -4,6 +4,7 @@
 #include "global.h"
 #include "bitmap.h"
 #include "sprite.h"
+#include "input.h"
 #include "mouse.h"
 
 // sizeis all "short"
@@ -64,18 +65,18 @@ void func_80095024(void)
         _naomiSprite.x = _lbl_802BA190->posHorizontal;
         _naomiSprite.y = _lbl_802BA190->posVertical;
         _naomiSprite.z = 0.01;
-        _naomiSprite.zoomX = 1.0;
-        _naomiSprite.zoomY = 1.0;
+        _naomiSprite.scaleX = 1.0;
+        _naomiSprite.scaleY = 1.0;
         _naomiSprite.u1 = 0.0;
         _naomiSprite.v1 = 0.0;
         _naomiSprite.u2 = 1.0;
         _naomiSprite.v2 = 1.0;
         _naomiSprite.rotation = 0x0;
-        _naomiSprite.alpha = 1.0;
+        _naomiSprite.opacity = 1.0;
         _naomiSprite.unk30 = -1;
         _naomiSprite.flags = 5;
-        _naomiSprite.color1 = -1;
-        _naomiSprite.color2 = 0x0;
+        _naomiSprite.mulColor = -1;
+        _naomiSprite.addColor = 0x0;
         draw_naomi_sprite(&_naomiSprite);
         if ((s16) _lbl_802BA190->spriteIdx >= 0) {
             _spriteInfo = &spriteInfo[_lbl_802BA190->spriteIdx];
