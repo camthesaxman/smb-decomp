@@ -1271,7 +1271,7 @@ extern u32 lbl_802F1F0C;
 extern void (*lbl_802F1F10)(void);
 extern void (*minigameRelBallCallback)(struct Ball *);
 extern struct Ball *currentBallStructPtr;
-extern void *currentWorldStructPtr;
+
 // extern ? previewLoaded;
 extern struct GMAModel *blurBridgeAccordion;
 extern struct Stage *decodedStageLzPtr;
