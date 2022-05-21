@@ -2184,12 +2184,6 @@ int func_80042214(u32 a)
         return (a >> 1) & 0x3FFF;
 }
 
-struct Unk33
-{
-    s32 unk8;
-    s32 unkC;
-};
-
 void stcoli_sub33(struct PhysicsBall *ball, struct Stage *stage)
 {
     struct StageAnimGroup *stageAg;

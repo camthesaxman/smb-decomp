@@ -442,7 +442,7 @@ void ev_obj_collision_init(void);
 void ev_obj_collision_main(void);
 void ev_obj_collision_dest(void);
 // ? do_object_collision();
-// ? func_8006A9B8();
+u32 func_8006A9B8(Point3d *, Point3d *, Point3d *, Point3d *, float, float);
 // ? func_8006AAEC();
 // ? func_8006AD3C();
 void ev_stobj_init(void);
