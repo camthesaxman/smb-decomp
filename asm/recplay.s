@@ -4463,3 +4463,16 @@ lbl_8004CACC:
 /* 8004CAD0 000489F0  38 21 00 08 */	addi r1, r1, 8
 /* 8004CAD4 000489F4  7C 08 03 A6 */	mtlr r0
 /* 8004CAD8 000489F8  4E 80 00 20 */	blr
+
+.section .sbss
+
+	.balign 8
+.global lbl_802F1F78
+lbl_802F1F78:
+	.skip 0x8
+.global lbl_802F1F80
+lbl_802F1F80:
+	.skip 0x8
+.global lbl_802F1F88
+lbl_802F1F88:
+	.skip 0x8

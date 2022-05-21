@@ -108,7 +108,7 @@ SOURCES := \
 	asm/motload.s \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
-	asm/stcoli.s \
+	src/stcoli.c \
 	src/world.c \
 	src/interpolate_keyframes.c \
 	src/stage.c \
