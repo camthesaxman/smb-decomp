@@ -354,7 +354,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subType == 0 || item->subType == 1 || item->subType == 2)
     {
         if (item->unk5E < 0
-         && (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11))))
+         && (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11)))
         {
             struct Struct8003C550 sp178;
 
@@ -441,13 +441,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
     if (item->subType == 2)
     {
         g_play_sound(0x39);
-        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
+        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
             g_play_sound(0x2820);
     }
     else if (item->subType == 0 || item->subType == 1)
     {
         g_play_sound(3);
-        if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
+        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
             g_play_sound(0x281F);
     }
 }

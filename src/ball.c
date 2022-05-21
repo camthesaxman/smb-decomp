@@ -227,7 +227,7 @@ int func_80037098(struct Ape *ape, struct Ball *ball)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_COMPETITION:
-        var1 = ball->unk126;
+        var1 = ball->winStreak;
         var2 = var1 * 0.2f;
         if (var2 > 3.0f)
             var2 = 3.0f;
@@ -334,7 +334,7 @@ void func_8003721C(struct Ape *ape, float b)
         }
         else if (ape->unk14 & (1 << 1))
             r29 = 3;
-        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.flags & (1 << 4)))
+        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.flags & INFO_FLAG_04))
         {
             r29 = 5;
             if (gameMode == MD_ADV && gameSubmode == SMD_ADV_INFO_MAIN)
@@ -1541,7 +1541,7 @@ void g_ball_init_1(struct Ball *ball)
     ball->unk7C = 0;
     ball->ape = backup.ape;
     ball->playerId = backup.playerId;
-    ball->unk126 = 0;
+    ball->winStreak = 0;
     ball->unk128 = 0;
 }
 
@@ -1571,7 +1571,7 @@ void g_ball_init_2(struct Ball *ball)
     backup.unk134 = ball->unk134;
     backup.unk7C = ball->unk7C;
     backup.ape = ball->ape;
-    backup.unk126 = ball->unk126;
+    backup.winStreak = ball->winStreak;
     backup.unk128 = ball->unk128;
 
     memset(ball, 0, sizeof(*ball));
@@ -1582,7 +1582,7 @@ void g_ball_init_2(struct Ball *ball)
     ball->unk134 = backup.unk134;
     ball->unk7C = backup.unk7C;
     ball->ape = backup.ape;
-    ball->unk126 = backup.unk126;
+    ball->winStreak = backup.winStreak;
     ball->unk128 = backup.unk128;
 
     func_8003C4A0(ball, 0);
@@ -1795,7 +1795,7 @@ void ball_func_replay_main(struct Ball *ball)
     ball->flags = spC.unk18 | BALL_FLAG_24;
     ball->unk130 = spC.unk1C;
 
-    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.flags & (1 << 4)))
+    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.flags & INFO_FLAG_04))
         ball->state = 4;
 
     mathutil_mtxA_from_translate(&ball->pos);
@@ -2900,8 +2900,8 @@ void func_8003CDC0(struct Ball *ball)
          && gameSubmode != SMD_GAME_OVER_SAVE
          && gameSubmode != SMD_GAME_OVER_DEST)
         {
-            if ((!(infoWork.flags & (1 << 5)) && !(infoWork.flags & (1 << 3)))
-             || (infoWork.flags & (1 << 4)))
+            if ((!(infoWork.flags & INFO_FLAG_05) && !(infoWork.flags & INFO_FLAG_03))
+             || (infoWork.flags & INFO_FLAG_04))
             {
                 if (!(ball->flags & BALL_FLAG_08) && !(ball->flags & BALL_FLAG_09))
                     func_8003CDC0_sub(ball);
@@ -3007,7 +3007,7 @@ void func_8003D3C4(struct Ball *ball)
         sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
         sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
-        if (!(infoWork.flags & (1 << 4)) || (infoWork.flags & (1 << 11)))
+        if (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11))
             f2 = 0.85f;
         else
             f2 = 0.1f;

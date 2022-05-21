@@ -107,11 +107,11 @@ void submode_adv_logo_init_func(void)
         return;
 
     func_80011D90();
-    introBackdropColor = 0x00FFFFFF;
+    introBackdropColor = RGBA(255, 255, 255, 0);
     modeCtrl.submodeTimer = 840;
     modeCtrl.levelSetFlags = 0;
-    advLogoInfo.unk14 = modeCtrl.submodeTimer;
-    advLogoInfo.unk10 = 0;
+    advLogoInfo.timer = modeCtrl.submodeTimer;
+    advLogoInfo.rollTimer = 0;
     prevLogoPos.x = 0.0f;
     prevLogoPos.y = 0.0f;
     prevLogoPos.z = 0.0f;
@@ -136,34 +136,34 @@ void submode_adv_logo_init_func(void)
 
 void update_av_logo_pos_and_sound(void)
 {
-    if (advLogoInfo.unk10 <= 120)
+    if (advLogoInfo.rollTimer <= 120)
         advLogoInfo.pos.x = 0.0f;
-    else if (advLogoInfo.unk10 <= 240)
-        advLogoInfo.pos.x = 4.5f * (1.0 - __fabs(mathutil_cos((advLogoInfo.unk10 - 120) * 273)));
+    else if (advLogoInfo.rollTimer <= 240)
+        advLogoInfo.pos.x = 4.5f * (1.0 - __fabs(mathutil_cos((advLogoInfo.rollTimer - 120) * 273)));
 
-    if (advLogoInfo.unk10 <= 180)
-        advLogoInfo.pos.y = (180 - advLogoInfo.unk10) * -0.004;
+    if (advLogoInfo.rollTimer <= 180)
+        advLogoInfo.pos.y = (180 - advLogoInfo.rollTimer) * -0.004;
 
-    if (advLogoInfo.unk10 <= 180)
-        advLogoInfo.pos.z = (1.0 - mathutil_sin(advLogoInfo.unk10 * 91)) * 280.0;
-    else if (advLogoInfo.unk10 > 300 && advLogoInfo.unk10 <= 420)
-        advLogoInfo.pos.z = (advLogoInfo.unk10 - 300) * 1.35;
+    if (advLogoInfo.rollTimer <= 180)
+        advLogoInfo.pos.z = (1.0 - mathutil_sin(advLogoInfo.rollTimer * 91)) * 280.0;
+    else if (advLogoInfo.rollTimer > 300 && advLogoInfo.rollTimer <= 420)
+        advLogoInfo.pos.z = (advLogoInfo.rollTimer - 300) * 1.35;
 
-    if (advLogoInfo.unk10 <= 120)
+    if (advLogoInfo.rollTimer <= 120)
         advLogoInfo.zrot = 0;
-    else if (advLogoInfo.unk10 <= 180)
-        advLogoInfo.zrot = (advLogoInfo.unk10 - 120) * -546;
-    else if (advLogoInfo.unk10 <= 240)
-        advLogoInfo.zrot = (240 - advLogoInfo.unk10) * -546;
+    else if (advLogoInfo.rollTimer <= 180)
+        advLogoInfo.zrot = (advLogoInfo.rollTimer - 120) * -546;
+    else if (advLogoInfo.rollTimer <= 240)
+        advLogoInfo.zrot = (240 - advLogoInfo.rollTimer) * -546;
 
-    if (advLogoInfo.unk10 <= 180)
-        advLogoInfo.xrot = advLogoInfo.unk10 * -546;
-    else if (advLogoInfo.unk10 <= 300)
+    if (advLogoInfo.rollTimer <= 180)
+        advLogoInfo.xrot = advLogoInfo.rollTimer * -546;
+    else if (advLogoInfo.rollTimer <= 300)
         advLogoInfo.xrot = 0;
-    else if (advLogoInfo.unk10 <= 420)
-        advLogoInfo.xrot = (advLogoInfo.unk10 - 300) * 546;
+    else if (advLogoInfo.rollTimer <= 420)
+        advLogoInfo.xrot = (advLogoInfo.rollTimer - 300) * 546;
 
-    if (advLogoInfo.unk10 > 0)
+    if (advLogoInfo.rollTimer > 0)
     {
         s8 r4, r5;
         int r29, r28;
@@ -190,20 +190,20 @@ void update_av_logo_pos_and_sound(void)
 
 static void update_av_logo(void)
 {
-    if (advLogoInfo.unk14 == 0)
+    if (advLogoInfo.timer == 0)
         return;
-    if (advLogoInfo.unk14 <= 660)
-        advLogoInfo.unk10++;
+    if (advLogoInfo.timer <= 660)
+        advLogoInfo.rollTimer++;
     update_av_logo_pos_and_sound();
-    if (advLogoInfo.unk14 == 460)
+    if (advLogoInfo.timer == 460)
         g_play_sound(0x3B1F4);
-    if (advLogoInfo.unk14 == 240)
+    if (advLogoInfo.timer == 240)
         func_8002BFCC(0x51F2, 0x51F3);
 
     // Fade background to yellow after frame 210
-    if (advLogoInfo.unk14 < 240 && advLogoInfo.unk14 >= 210)
+    if (advLogoInfo.timer < 240 && advLogoInfo.timer >= 210)
     {
-        int t = 240 - advLogoInfo.unk14;
+        int t = 240 - advLogoInfo.timer;
         u32 color;
 
         if (t >= 30)
@@ -211,13 +211,13 @@ static void update_av_logo(void)
         else
             color = RGBA(
                 255,
-                (int)(255.0 - t * 2.1),
-                (int)(255.0 - t * 8.5),
+                (int)(255 - (255 - 192) / 30.0 * t),
+                (int)(255 - (255 - 0) / 30.0 * t),
                 0);
         introBackdropColor = color;
     }
-    if (advLogoInfo.unk14 > 0)
-        advLogoInfo.unk14--;
+    if (advLogoInfo.timer > 0)
+        advLogoInfo.timer--;
 }
 
 void submode_adv_logo_main_func(void)
@@ -257,7 +257,7 @@ void submode_adv_logo_main_func(void)
     }
     if (--modeCtrl.submodeTimer <= 0)
     {
-        destroy_sprite_with_tag(3);
+        destroy_sprite_with_tag(SPRITE_TAG_LOGO_PLUS);
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
     }
 }
@@ -275,7 +275,7 @@ void submode_adv_demo_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
     func_80011D90();
-    introBackdropColor = 0x00FFFFFF;
+    introBackdropColor = RGBA(255, 255, 255, 0);
     modeCtrl.submodeTimer = 2902;
     modeCtrl.levelSetFlags = 0;
     lbl_802F1BB0 = 0;
@@ -329,22 +329,10 @@ void submode_adv_demo_init_func(void)
     gameSubmodeRequest = SMD_ADV_DEMO_MAIN;
 }
 
-float lbl_801741CC[] = { -125, -70, -10 };
-
-void lbl_8000F030(struct TextBox *tbox)
-{
-    Vec spC;
-
-    mathutil_mtxA_from_mtxB();
-    g_math_unk15(&ballInfo[tbox->id - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
-    tbox->x = spC.x;
-    tbox->y = spC.y + lbl_801741CC[tbox->id - 1];
-}
-
 enum
 {
-    CMD_SPEECH_BUBBLE       = 0,  // banana speech bubble
-    CMD_HIDE_SPEECH_BUBBLES = 1,
+    CMD_BANANA_BOX          = 0,  // banana speech bubble
+    CMD_HIDE_BANANA_BOXES   = 1,
     CMD_FADE_FROM_WHITE     = 2,
     CMD_FADE_TO_WHITE       = 3,
     CMD_PRELOAD_BG          = 4,  // unused
@@ -357,7 +345,7 @@ enum
     CMD_LOAD_STAGE          = 11,
 
     CMD_UNK13               = 13,
-    CMD_INIT_CHARACTER_POS               = 14,
+    CMD_INIT_CHARACTER_POS  = 14,
     CMD_UNK15               = 15,
 
     CMD_AIAI_ANIM           = 16,
@@ -388,11 +376,11 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     {    0, CMD_BABY_ANIM,           9                    },
     {    3, CMD_SET_DEMO_FLAG,       (1 << 6)             },
     {    0, CMD_SET_DEMO_FLAG,       (1 << 7)             },
-    {  165, CMD_SPEECH_BUBBLE,       CHARACTER_AIAI       },
-    {  220, CMD_SPEECH_BUBBLE,       CHARACTER_MEEMEE     },
-    {  275, CMD_SPEECH_BUBBLE,       CHARACTER_BABY       },
+    {  165, CMD_BANANA_BOX,          CHARACTER_AIAI       },
+    {  220, CMD_BANANA_BOX,          CHARACTER_MEEMEE     },
+    {  275, CMD_BANANA_BOX,          CHARACTER_BABY       },
     {  404, CMD_FADE_TO_WHITE,       30                   },
-    {  404, CMD_HIDE_SPEECH_BUBBLES, -1                   },
+    {  404, CMD_HIDE_BANANA_BOXES,   -1                   },
     {  404, CMD_CLEAR_DEMO_FLAG,     (1 << 7)             },
     {  434, CMD_FADE_FROM_WHITE,     30                   },
     {  434, CMD_HIDE_CHARACTER,      CHARACTER_MEEMEE     },
@@ -503,6 +491,17 @@ const struct IntroCutsceneCommand introCutsceneScript[] =
     { -1, 0, 0 },
 };
 
+static void banana_textbox_callback(struct TextBox *tbox)
+{
+    Vec spC;
+    static float lbl_801741CC[] = { -125, -70, -10 };
+
+    mathutil_mtxA_from_mtxB();
+    g_math_unk15(&ballInfo[tbox->id - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
+    tbox->x = spC.x;
+    tbox->y = spC.y + lbl_801741CC[tbox->id - 1];
+}
+
 void run_cutscene_script(void)
 {
     float f28;
@@ -523,7 +522,7 @@ void run_cutscene_script(void)
 
         switch (cmd->cmdId)
         {
-        case CMD_SPEECH_BUBBLE:
+        case CMD_BANANA_BOX:
             if (!(modeCtrl.levelSetFlags & (1 << 13)))
             {
                 mathutil_mtxA_from_mtxB();
@@ -534,21 +533,21 @@ void run_cutscene_script(void)
                 tbox.numRows = (cmd->param == CHARACTER_BABY) ? 3 : 4;
                 tbox.numColumns = (cmd->param == CHARACTER_BABY) ? 4 : 5;
                 tbox.style = TEXTBOX_STYLE_CENTER_DOWN;
-                tbox.callback = lbl_8000F030;
+                tbox.callback = banana_textbox_callback;
                 textbox_set_properties(cmd->param + 1, 1, &tbox);
-                g_banana_sprite_something(cmd->param);
+                hud_create_adv_demo_banana_sprite(cmd->param);
             }
             break;
-        case CMD_HIDE_SPEECH_BUBBLES:
+        case CMD_HIDE_BANANA_BOXES:
             for (i = 0; i < 3; i++)
                 textbox_set_properties(i + 1, 20, NULL);
-            sprite = find_sprite_with_tag(30);
+            sprite = find_sprite_with_tag(SPRITE_TAG_ADV_DEMO_BANANA_1);
             if (sprite != NULL)
                 sprite->counter = -1;
-            sprite = find_sprite_with_tag(31);
+            sprite = find_sprite_with_tag(SPRITE_TAG_ADV_DEMO_BANANA_2);
             if (sprite != NULL)
                 sprite->counter = -1;
-            sprite = find_sprite_with_tag(32);
+            sprite = find_sprite_with_tag(SPRITE_TAG_ADV_DEMO_BANANA_3);
             if (sprite != NULL)
                 sprite->counter = -1;
             break;
@@ -668,7 +667,7 @@ void run_cutscene_script(void)
             g_show_eieipu_sprite(cmd->param);
             break;
         case 29:
-            sprite = find_sprite_with_tag(11);
+            sprite = find_sprite_with_tag(SPRITE_TAG_EIEIPU);
             if (sprite != NULL)
             {
                 sprite->userVar = cmd->param;
@@ -676,7 +675,7 @@ void run_cutscene_script(void)
             }
             break;
         case 30:
-            destroy_sprite_with_tag(11);
+            destroy_sprite_with_tag(SPRITE_TAG_EIEIPU);
             break;
         }
     }
@@ -1008,7 +1007,7 @@ void lbl_8000F790(struct Ape *ape, int b)
         if (gamePauseStatus & 0xA)
             return;
         raycast_stage_down(&ball->pos, &sp38, NULL);
-        ape->unk14 &= -20;
+        ape->unk14 &= ~0x13;
         if (!(sp38.flags & 1) && ball->vel.y < -(35.0f / 216.0f))
             ape->unk14 |= 2;
         else if (mathutil_vec_len(&ball->unkB8) < (1.0f / 3600.0f))
@@ -1017,7 +1016,7 @@ void lbl_8000F790(struct Ape *ape, int b)
             ball->flags |= BALL_FLAG_INVISIBLE;
         else
             ball->flags &= ~BALL_FLAG_INVISIBLE;
-        r28 = (ball->flags & (1 << 12)) != 0;
+        r28 = (ball->flags & BALL_FLAG_GOAL) != 0;
         r28 |= !(ape->unk14 & 3);
         func_8003699C(ape);
         if (r28)
@@ -1030,7 +1029,7 @@ void lbl_8000F790(struct Ape *ape, int b)
             if (ape->unk14 & (1 << 1))
                 func_80037718(ape);
         }
-        if (ball->flags & (1 << 5))
+        if (ball->flags & BALL_FLAG_05)
             f31 = mathutil_vec_len(&ball->vel);
         func_80036EB8(ape);
         mathutil_mtxA_to_quat(&ape->unk60);
@@ -1056,7 +1055,7 @@ void lbl_8000F790(struct Ape *ape, int b)
     }
     else
     {
-        ape->unk14 &= -20;
+        ape->unk14 &= ~0x13;
         ape->unk14 |= 1;
         ape->unk30.x = func_8008CDC0(f31, lbl_80174DD4[ape->charaId]);
         ape->unk30.y = func_8008CDC0(f31, lbl_80174DE4[ape->charaId]);
@@ -1248,7 +1247,7 @@ void submode_adv_title_reinit_func(void)
         return;
 
     func_80011D90();
-    introBackdropColor = 0x00FFFFFF;
+    introBackdropColor = RGBA(255, 255, 255, 0);
     modeCtrl.submodeTimer = 1200;
     modeCtrl.levelSetFlags = 0x2000;
     lbl_802F1BA8 = 0;
@@ -1369,7 +1368,7 @@ void submode_adv_info_init_func(void)
 
     func_80011D90();
     modeCtrl.submodeTimer = 4380;
-    modeCtrl.levelSetFlags &= -8197;
+    modeCtrl.levelSetFlags &= ~0x2004;
     modeCtrl.playerCount = 1;
     playerCharacterSelection[0] = 0;
     func_8002FFEC();
@@ -1438,7 +1437,7 @@ enum
     INFOCMD_CAMERA_STATE       = -8,
     INFOCMD_BALL_SET_FLAGS     = -9,
     INFOCMD_BALL_CLEAR_FLAGS   = -10,
-    INFOCMD_UNK11              = -11,
+    INFOCMD_HIDE_TEXTBOX       = -11,
     INFOCMD_UNK12              = -12,
     INFOCMD_PLAY_SOUND         = -13,
 };
@@ -1497,7 +1496,7 @@ const struct InfoCommand infoScript[] =
     {   90, INFOCMD_BALL_CLEAR_FLAGS, NULL, 256  },
     {   90, INFOCMD_BALL_CLEAR_FLAGS, NULL, 1024 },
     {   90, INFOCMD_BALL_SET_FLAGS,   NULL, 512  },
-    {   90, INFOCMD_UNK11,            NULL, 0    },
+    {   90, INFOCMD_HIDE_TEXTBOX,     NULL, 0    },
     {   90, INFOCMD_PLAY_SOUND,       NULL, 294  },
 
     /* End */
@@ -1543,20 +1542,20 @@ void submode_adv_info_main_func(void)
     if (modeCtrl.submodeTimer == 820)
         modeCtrl.submodeTimer = 600;
 
-    if (infoWork.flags & (1 << 2))
+    if (infoWork.flags & INFO_FLAG_FALLOUT)
     {
-        infoWork.flags &= ~(1 << 2);
+        infoWork.flags &= ~INFO_FLAG_FALLOUT;
         camera_set_state(4);
         g_play_sound(29);
     }
     if (modeCtrl.submodeTimer == 583)
     {
-        ballInfo[0].flags &= ~(1 << 11);
-        infoWork.flags &= ~(1 << 3);
+        ballInfo[0].flags &= ~BALL_FLAG_11;
+        infoWork.flags &= ~INFO_FLAG_03;
     }
-    if (infoWork.flags & 1)
+    if (infoWork.flags & INFO_FLAG_GOAL)
     {
-        infoWork.flags &= ~1;
+        infoWork.flags &= ~INFO_FLAG_GOAL;
         ballInfo[0].state = 5;
         ballInfo[0].flags |= 0x500;
         camera_set_state(14);
@@ -1621,7 +1620,7 @@ void submode_adv_info_main_func(void)
         case INFOCMD_BALL_CLEAR_FLAGS:
             ballInfo[0].flags &= ~cmd->param;
             break;
-        case INFOCMD_UNK11:
+        case INFOCMD_HIDE_TEXTBOX:
             textbox_set_properties(1, 20, 0);
             break;
         case INFOCMD_UNK12:
@@ -1694,7 +1693,7 @@ void submode_adv_game_ready_init_func(void)
     func_8002FFEC();
     event_start(EVENT_INFO);
     func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    infoWork.flags |= 0x810;
+    infoWork.flags |= INFO_FLAG_04|INFO_FLAG_11;
     load_stage(currStageId);
     event_start(EVENT_STAGE);
     event_start(EVENT_WORLD);
@@ -1714,7 +1713,7 @@ void submode_adv_game_ready_init_func(void)
     light_init(currStageId);
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
-    infoWork.flags |= 0x108;
+    infoWork.flags |= INFO_FLAG_03|INFO_FLAG_08;
     modeCtrl.submodeTimer = 120;
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
@@ -1773,11 +1772,11 @@ void submode_adv_game_play_init_func(void)
     modeCtrl.submodeTimer = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
     event_resume(2);
     hud_show_go_banner(60);
-    infoWork.flags &= -265;
+    infoWork.flags &= ~(INFO_FLAG_03|INFO_FLAG_08);
     ballInfo[0].state = 9;
     worldInfo[0].state = 9;
     camera_set_state(0);
-    infoWork.flags |= 0x810;
+    infoWork.flags |= INFO_FLAG_04|INFO_FLAG_11;
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
     gameSubmodeRequest = SMD_ADV_GAME_PLAY_MAIN;
@@ -1787,9 +1786,9 @@ void submode_adv_game_play_main_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    if (infoWork.flags & 1)
+    if (infoWork.flags & INFO_FLAG_GOAL)
     {
-        infoWork.flags &= ~1;
+        infoWork.flags &= ~INFO_FLAG_GOAL;
         modeCtrl.unk18 = 0xB4;
         gameSubmodeRequest = SMD_ADV_RANKING_INIT;
         worldInfo[0].state = 6;
@@ -1899,12 +1898,12 @@ void submode_adv_ranking_main_func(void)
         }
     }
     if (r31->state == 4 || r31->state == 6)
-        infoWork.flags &= -2065;
+        infoWork.flags &= ~(INFO_FLAG_04|INFO_FLAG_11);
     if (r31->state != 10)
         modeCtrl.unk18--;
     if (modeCtrl.unk18 < 0
      && (r31->state == 6 || r31->state == 4)
-     && ((modeCtrl.submodeTimer & 0x1F) == 0 || !(infoWork.flags & (1 << 5))))
+     && ((modeCtrl.submodeTimer & 0x1F) == 0 || !(infoWork.flags & INFO_FLAG_05)))
     {
         if (modeCtrl.submodeTimer > 180.0)
         {
@@ -1926,7 +1925,7 @@ void submode_adv_ranking_main_func(void)
             g_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-            infoWork.flags |= 0x10;
+            infoWork.flags |= INFO_FLAG_04;
             load_stage(currStageId);
             event_start(EVENT_STAGE);
             event_start(EVENT_STOBJ);
@@ -1952,7 +1951,7 @@ void submode_adv_ranking_main_func(void)
             {
                 worldInfo[0].state = 6;
                 camera_set_state(func_80011BE0());
-                infoWork.flags &= ~(1 << 11);
+                infoWork.flags &= ~INFO_FLAG_11;
             }
 
             f1 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -2003,7 +2002,7 @@ void submode_adv_ranking_main_func(void)
             currentBallStructPtr = r29;
             if (!(r29->flags & (1 << 9)) && (r29->ape->unk14 & (1 << 14)))
             {
-                r29->flags &= -1281;
+                r29->flags &= ~0x500;
                 r29->flags |= 0x200;
                 g_play_sound(0x126);
             }
@@ -2013,10 +2012,10 @@ void submode_adv_ranking_main_func(void)
 
     if (--modeCtrl.submodeTimer <= 0)
     {
-        infoWork.flags &= ~(1 << 11);
+        infoWork.flags &= ~INFO_FLAG_11;
         func_8008897C(1);
         func_80088FD4(1);
-        destroy_sprite_with_tag(3);
+        destroy_sprite_with_tag(SPRITE_TAG_LOGO_PLUS);
         call_bitmap_free_group(BMP_RNK);
         camera_setup_singleplayer_viewport();
         gameSubmodeRequest = SMD_ADV_DEMO_INIT;
@@ -2132,7 +2131,7 @@ void submode_adv_start_main_func(void)
     if (--modeCtrl.submodeTimer <= 0)
     {
         func_80011D90();
-        advLogoInfo.unk14 = 0;
+        advLogoInfo.timer = 0;
         advDemoInfo.unk8 = 0xB56;
         advDemoInfo.flags = 0;
         camera_setup_singleplayer_viewport();

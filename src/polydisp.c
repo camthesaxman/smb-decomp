@@ -380,7 +380,7 @@ void g_draw_tutorial_button_and_joystick(void)
     int stickZRot;
     Mtx projMtx;
 
-    C_MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
+    MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
     GXSetProjection(projMtx, 0);
     mathutil_mtxA_from_identity();
     load_light_group_uncached(LIGHT_GROUP_SINGLE_UNIT);
@@ -668,7 +668,7 @@ void func_8000C8D4(void)
     {
         if (*r25 == 0 || *r25 == 4)
             continue;
-        if ((ball->flags & (1 << 4)))
+        if (ball->flags & BALL_FLAG_INVISIBLE)
             continue;
         mathutil_mtxA_from_identity();
         f27 = 0.8 - 0.1 * (((unpausedFrameCounter / 16) + i) % 3);
@@ -1057,7 +1057,7 @@ void draw_timer_bomb_fuse(void)
         y = (56.0f - sprite->y) / 240.0f;
     }
 
-    C_MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
+    MTXPerspective(mtx, 60.0f, 1.3333332538604736f, 0.00989999994635582f, 20000.0f);
     mtx[0][2] -= mtx[0][0] * x * 1.3333332538604736f * 0.5773502588272095f;
     mtx[1][2] -= mtx[1][1] * y * 0.5773502588272095f;
     GXSetProjection(mtx, 0);
@@ -1174,7 +1174,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(infoWork.flags & (1 << 3)))
+        if (!(infoWork.flags & INFO_FLAG_03))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1192,7 +1192,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (infoWork.flags & (1 << 3))
+        if (infoWork.flags & INFO_FLAG_03)
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1202,7 +1202,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (infoWork.flags & (1 << 3))
+    if (infoWork.flags & INFO_FLAG_03)
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;

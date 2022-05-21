@@ -86,7 +86,7 @@ void bitmap_draw(struct Bitmap *a);
 void bitmap_init(void)
 {
     bitmap_load_group(BMP_COM);
-    func_80026378(0);
+    g_bitmap_set_some_tpl(0);
     currString = prevString = OSAlloc(0x800);
     if (prevString == NULL)
         OSPanic("bitmap.c", 120, "cannot OSAlloc");
@@ -240,12 +240,12 @@ void bitmap_free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void func_80026378(enum BitmapGroupID grpId)
+void g_bitmap_set_some_tpl(enum BitmapGroupID grpId)
 {
     g_unkBitmapTPL = bitmapGroups[grpId].tpl;
 }
 
-void func_80026394(void)
+void g_bitmap_frame_reset(void)
 {
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 0;
@@ -340,13 +340,13 @@ void bitmap_main(void)
     bitmap_init_tev();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    C_MTXPerspective(m, 60.0f, 1.33333333f, 0.1f, 20000.0f);
+    MTXPerspective(m, 60.0f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(m, GX_PERSPECTIVE);
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
         func_800700D8(0);
     GXGetProjectionv(projParams);
-    C_MTXOrtho(m, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
+    MTXOrtho(m, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
     GXSetProjection(m, GX_ORTHOGRAPHIC);
 
     bmp = bitmapList;

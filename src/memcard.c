@@ -853,7 +853,7 @@ void init_replay_file_data(void)
     memcardReplayData->unk7 = sp88.unk5;
     memcardReplayData->unk8 = sp88.unk10;
 
-    memcardReplayData->unkC = (u64)memcardInfo.time / (*(u32 *)0x800000F8 / 4); // WTF??
+    memcardReplayData->unkC = (u64)memcardInfo.time / (OS_BUS_CLOCK_SPEED / 4);
 }
 
 void probe_memcard(void)
@@ -2575,7 +2575,7 @@ void load_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_A)
+        if ((g_unkInputArr1[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2648,7 +2648,7 @@ void save_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_A)
+        if ((g_unkInputArr1[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2701,21 +2701,21 @@ void save_sequence(void)
         open_memcard_file();
         break;
     case 9:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2744,21 +2744,21 @@ void save_sequence(void)
     case 0xD:
         if (memcardInfo.statusFlags & (1 << 10))
         {
-            if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
-             || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
+            if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
+             || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
             {
                 if (lbl_802F21B1 == 0)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 1;
             }
-            if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
-             || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
+            if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+             || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
             {
                 if (lbl_802F21B1 == 1)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 0;
             }
-            if (!(lbl_801F3D88[2] & PAD_BUTTON_A))
+            if (!(g_unkInputArr1[2] & PAD_BUTTON_A))
                 break;
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2834,7 +2834,7 @@ void replay_save_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -2860,21 +2860,21 @@ void replay_save_sequence(void)
         check_verify_filesystem_result();
         break;
     case 9:
-        if ((lbl_801F3D88[2] & PAD_BUTTON_LEFT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_LEFT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((lbl_801F3D88[2] & PAD_BUTTON_RIGHT)
-         || (lbl_801F3D94[2] & PAD_BUTTON_RIGHT))
+        if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+         || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2950,7 +2950,7 @@ void replay_list_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (lbl_801F3D88[2] & PAD_BUTTON_A)
+        if (g_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -3124,14 +3124,14 @@ void ev_memcard_init(void)
         memcardGameData = NULL;
     }
     if (!(memcardInfo.statusFlags & (1 << 6)))
-        lbl_801F3D88[2] = 0;
+        g_unkInputArr1[2] = 0;
 }
 
 void ev_memcard_main(void)
 {
     if ((memcardInfo.statusFlags & (1 << 7))
      && memcardInfo.state == 1
-     && (lbl_801F3D88[2] & PAD_BUTTON_B))
+     && (g_unkInputArr1[2] & PAD_BUTTON_B))
     {
         func_8002B5C8(0x6B);
         memcardInfo.state = MC_STATE_ERROR;
@@ -3146,12 +3146,12 @@ void ev_memcard_main(void)
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
         memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | MC_STATUS_WRITE_IN_PROGRESS);
-        if (lbl_801F3D88[2] & PAD_BUTTON_B)
+        if (g_unkInputArr1[2] & PAD_BUTTON_B)
         {
             func_8002B5C8(0x6B);
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-            lbl_801F3D88[2] = 0;
+            g_unkInputArr1[2] = 0;
         }
         else
         {
@@ -3573,7 +3573,7 @@ void func_800A4E70(void)
 {
     memcardGameData->unk5844.unk4E = lbl_802F21A8;
     func_80025E5C(memcardGameData);
-    func_80011F74(memcardGameData);
+    g_store_gamedata(memcardGameData);
     func_8002DB10(memcardGameData);
     func_80067FD0(memcardGameData);
     memcardGameData->unk5844.unkAC = modeCtrl.splitscreenMode;
@@ -3587,7 +3587,7 @@ void func_800A4F04(void)
 {
     lbl_802F21A8 = memcardGameData->unk5844.unk4E;
     func_80025E8C(memcardGameData);
-    func_80012170(memcardGameData);
+    g_load_gamedata(memcardGameData);
     func_8002DB24(memcardGameData);
     func_8006800C(memcardGameData);
     modeCtrl.splitscreenMode = memcardGameData->unk5844.unkAC;

@@ -526,9 +526,8 @@ extern GXRenderModeObj GXPal528IntDf;
 
 // .bss section
 extern u8 lbl_801ED920[];
-extern GXRenderModeObj lbl_801EEB60;
 
-extern struct Struct801EEC68 pauseMenuState;
+extern struct PauseMenuState pauseMenuState;
 extern struct Struct801EEC80 lbl_801EEC80;
 extern struct Struct801EEC90 lbl_801EEC90;
 
@@ -548,7 +547,6 @@ extern struct BgLightInfo s_bgLightInfo;
 // extern ? lbl_801F39FC;
 // extern ? lbl_801F3A08;
 
-extern struct PerfInfo perfInfo;
 // extern ? lbl_801F8E18;
 // extern ? lbl_801F91B4;
 // extern ? lbl_801FD404;
@@ -1134,9 +1132,6 @@ extern void *lbl_802F1B40;
 extern void *lbl_802F1B44;
 extern void *dvdReadBuffer;
 extern struct NaomiModel *lbl_802F1B4C;
-extern void *lbl_802F1B50;
-extern void *lbl_802F1B54;
-extern BOOL lbl_802F1B58;
 extern struct MathutilData *mathutilData;
 // extern ? lbl_802F1B68;
 // extern ? lbl_802F1B6C;
@@ -1276,7 +1271,7 @@ extern u32 lbl_802F1F0C;
 extern void (*lbl_802F1F10)(void);
 extern void (*minigameRelBallCallback)(struct Ball *);
 extern struct Ball *currentBallStructPtr;
-extern void *currentWorldStructPtr;
+
 // extern ? previewLoaded;
 extern struct GMAModel *blurBridgeAccordion;
 extern struct Stage *decodedStageLzPtr;

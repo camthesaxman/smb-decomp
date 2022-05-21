@@ -656,7 +656,7 @@ void load_light_group_uncached(int lightGrpId)
     struct LightGroup *lightGrp;
     int i;
 
-    perf_init_timer(0);
+    perf_start_timer(0);
     s_currLightGroup = lightGrpId;
     lbl_802F1C68++;
     lightGrp = &s_lightGroups[lightGrpId];
@@ -701,7 +701,7 @@ void load_light_group_cached(int lightGrpId)
     int i;
     struct LightGroup *lightGrp;
 
-    perf_init_timer(0);
+    perf_start_timer(0);
     s_currLightGroup = lightGrpId;
     lbl_802F1C60++;
     lightGrp = &s_lightGroups[lightGrpId];

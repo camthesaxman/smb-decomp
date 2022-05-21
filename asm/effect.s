@@ -8883,4 +8883,9 @@ lbl_80054DE8:
 func_80054E00:
 /* 80054E00 00050D20  4E 80 00 20 */	blr
 
+.section .sbss
 
+	.balign 8
+.global lbl_802F1F90
+lbl_802F1F90:
+	.skip 0x8

@@ -462,7 +462,7 @@ s16 gameSubmode;
 s16 gameSubmodeRequest;
 void *modeStringPtr;
 void *submodeStringPtr;
-void (*lbl_802F1B80)(void);
+void (*unusedCallback)(void);  // always NULL
 void (*lbl_802F1B7C)(void);
 s32 lbl_802F1B78;
 void (*lbl_802F1B74)(void);
@@ -474,7 +474,7 @@ void gm_init(void)
     gameSubmode = SMD_ADV_WARNING_INIT;
     gameModeRequest = -1;
     gameSubmodeRequest = -1;
-    lbl_802F1B80 = NULL;
+    unusedCallback = NULL;
     lbl_802F1B7C = NULL;
     modeCtrl.levelSetFlags = 0;
     modeCtrl.submodeTimer = 0;
@@ -485,8 +485,6 @@ void gm_init(void)
 
 void gm_main(void)
 {
-    s16 r4;
-
     if (dipSwitches & DIP_DEBUG)
         g_menu_input_debug();
     else
@@ -501,16 +499,15 @@ void gm_main(void)
 
     if (gameModeRequest != -1)
     {
-        if (lbl_802F1B80 != NULL)
+        if (unusedCallback != NULL)
         {
-            lbl_802F1B80();
-            lbl_802F1B80 = NULL;
+            unusedCallback();
+            unusedCallback = NULL;
         }
         gameMode = gameModeRequest;
-        r4 = gameMode;
         modeStringPtr = gameModeNames[gameMode];
         gameModeRequest = -1;
-        if (r4 == MD_TEST || r4 == MD_OPTION)
+        if (gameMode == MD_TEST || gameMode == MD_OPTION)
             modeCtrl.levelSetFlags |= 0x200;
     }
 
@@ -666,7 +663,7 @@ void g_menu_input_debug(void)
         if ((gameMode == MD_GAME && (modeCtrl.levelSetFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
-            if (!(lbl_801F3D88[0] & (1 << 4)))
+            if (!(g_unkInputArr1[0] & PAD_TRIGGER_Z))
                 bvar = FALSE;
         }
 

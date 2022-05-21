@@ -23,8 +23,23 @@
 
 #include "../data/common.nlobj.h"
 
+// sbss
+s16 currStageId;
+s16 loadingStageId;
+s16 loadingStageIdRequest;
+u32 lbl_802F1F50;
+u32 lbl_802F1F4C;
+s32 animGroupCount;
+struct DynamicStagePart *dynamicStageParts;
+u16 lbl_802F1F40;
+struct TPL *decodedStageTplPtr;
+struct GMA *decodedStageGmaPtr;
+u32 lbl_802F1F34;
+struct Stage *decodedStageLzPtr;
+struct GMAModel *blurBridgeAccordion;
+int previewLoaded;
+
 extern u8 lbl_801B86E4[];
-extern int previewLoaded;
 
 struct DynamicStagePart lbl_80206D00[5];
 
@@ -104,15 +119,15 @@ void ev_stage_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    if (infoWork.flags & (1 << 8))
+    if (infoWork.flags & INFO_FLAG_08)
     {
-        if (modeCtrl.submodeTimer > 0x78)
+        if (modeCtrl.submodeTimer > 120)
             lbl_80206DEC.g_stageTimer = 0.0f;
         else
-            lbl_80206DEC.g_stageTimer = 0x78 - modeCtrl.submodeTimer;
+            lbl_80206DEC.g_stageTimer = 120 - modeCtrl.submodeTimer;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (infoWork.flags & (1 << 4))
+    else if (infoWork.flags & INFO_FLAG_04)
     {
         lbl_80206DEC.g_stageTimer =
             func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -711,9 +726,6 @@ struct Struct80044E18_2 // r17_
     u32 unk4;
     float unk8;
 };
-
-extern u32 lbl_802F1F4C;
-extern u32 lbl_802F1F50;
 
 #ifdef NONMATCHING
 // https://decomp.me/scratch/Aoh83

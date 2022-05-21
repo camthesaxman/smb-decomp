@@ -92,27 +92,6 @@ struct TPL
 };
 // maybe bitmap.c has a different struct that "contains" TPL?
 
-// load.c
-struct ARAMBlock;
-
-struct PerfInfo
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
-    u32 unk14;
-    u32 unk18;
-    u32 unk1C;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
-    u32 unk2C;
-    u32 unk30;
-    u32 unk34;
-};
-
 struct GFXBufferInfo
 {
     /*0x00*/ void *currFrameBuf;
@@ -712,15 +691,15 @@ struct Struct802F1B4C
     u32 unk6C;
 };
 
-struct Struct801EEC68
+struct PauseMenuState
 {
     s32 unk0;
     u32 unk4;
     /*0x08*/ s32 selection;
     /*0x0C*/ s32 itemCount;
     /*0x10*/ s32 menuType;
-    s8 unk14;
-    s8 unk15;
+    /*0x14*/ s8 padId;  // controller that pressed start
+    /*0x15*/ s8 playerId;  // player who paused the game?
     s16 unk16;
 };
 

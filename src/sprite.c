@@ -151,12 +151,12 @@ void func_800700D8(int a)
         {
             if (a == 0)
             {
-                if ((r8->unk74 & (1<<18)) == 0)
+                if ((r8->flags & (1<<18)) == 0)
                     continue;
             }
             else
             {
-                if ((r8->unk74 & (1<<18)) != 0)
+                if ((r8->flags & (1<<18)) != 0)
                     continue;
             }
             if (r8->unk50 != NULL)
@@ -952,7 +952,7 @@ struct Sprite *create_sprite(void)
         sprite->unk80 = 0.0f;
         sprite->unk84 = 1.0f;
         sprite->unk88 = 1.0f;
-        sprite->unk74 = 0x20000;
+        sprite->flags = 0x20000;
         return sprite;
     }
 }
@@ -964,7 +964,7 @@ struct Sprite *create_linked_sprite(struct Sprite *sprite)
     {
         sprite->next = newSprite;
         newSprite->unk50 = sprite;
-        newSprite->unk74 |= sprite->unk74 & (1 << 18);
+        newSprite->flags |= sprite->flags & (1 << 18);
     }
     return newSprite;
 }
@@ -2703,7 +2703,7 @@ static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *f
 
 void g_draw_text(char *str)
 {
-    struct TextDrawInfo *r28 = &textDrawInfo;
+    struct TextDrawInfo *drawInfo = &textDrawInfo;
     int fontIdBackup;
     struct FontParams *font;
     int r23;
@@ -2718,19 +2718,19 @@ void g_draw_text(char *str)
     s32 special;
     s32 color;
 
-    font = &fontInfo[r28->fontId];
+    font = &fontInfo[drawInfo->fontId];
     r22 = 0;
-    fontIdBackup = r28->fontId;
+    fontIdBackup = drawInfo->fontId;
 
     params.bmpId = font->bmpId;
-    params.z = r28->unk1C;
-    params.opacity = r28->opacity;
-    params.rotation = r28->unk18;
-    params.mulColor = ((int)(r28->opacity * 255.0f) << 24) | r28->mulColor;
-    params.addColor = r28->addColor;
+    params.z = drawInfo->unk1C;
+    params.opacity = drawInfo->opacity;
+    params.rotation = drawInfo->unk18;
+    params.mulColor = ((int)(drawInfo->opacity * 255.0f) << 24) | drawInfo->mulColor;
+    params.addColor = drawInfo->addColor;
     params.unk30 = -1;
-    params.flags = (r28->unk2C & ~0xF) | 5;
-    f31 = r28->scaleX;
+    params.flags = (drawInfo->unk2C & ~0xF) | 5;
+    f31 = drawInfo->scaleX;
     parseState.mode = TEXT_MODE_ASCII;
     parseState.unk4 = -1;
     parseState.unk8 = 0;
@@ -2745,27 +2745,27 @@ void g_draw_text(char *str)
             if (lbl_802F200C <= (float)r22)
                 break;
         }
-        if (r28->fontId > FONT_JAP_TAG)
-            r23 = func_80071E58_inline(*str, r28->fontId, font);
+        if (drawInfo->fontId > FONT_JAP_TAG)
+            r23 = func_80071E58_inline(*str, drawInfo->fontId, font);
         else
-            r23 = get_char_width(str, r28->fontId, font);
+            r23 = get_char_width(str, drawInfo->fontId, font);
         f17 = font->unk10 * (0.5 * (font->spaceWidth - r23) / (font->spaceWidth));
-        f16 = g_get_char_ratio(str, r28->fontId);
+        f16 = g_get_char_ratio(str, drawInfo->fontId);
         if (*str == '\n')
         {
-            r28->x = r28->startX;
-            r28->y += font->lineHeight * r28->scaleY;
+            drawInfo->x = drawInfo->startX;
+            drawInfo->y += font->lineHeight * drawInfo->scaleY;
             continue;
         }
         else if (*str == ' ' || *str < font->firstChar || *str > font->lastChar)
         {
             r22++;
-            r28->x += f16 * (r23 * r28->scaleX);
+            drawInfo->x += f16 * (r23 * drawInfo->scaleX);
             parseState.unkC += r23;
             continue;
         }
         glyphIndex = *str;
-        if (r28->fontId > FONT_JAP_TAG)
+        if (drawInfo->fontId > FONT_JAP_TAG)
         {
             skip = 0;
             special = 0;
@@ -2775,25 +2775,25 @@ void g_draw_text(char *str)
             params.mulColor = color;
             if (special == 1)
             {
-                r28->fontId = FONT_JAP_24x24_2;
-                font = &fontInfo[r28->fontId];
+                drawInfo->fontId = FONT_JAP_24x24_2;
+                font = &fontInfo[drawInfo->fontId];
             }
             else if (special == 2)
             {
-                r28->fontId = FONT_JAP_24x24_2P;
-                font = &fontInfo[r28->fontId];
+                drawInfo->fontId = FONT_JAP_24x24_2P;
+                font = &fontInfo[drawInfo->fontId];
             }
             else if (special == 70)
-                r28->scaleX = 0.7f;
+                drawInfo->scaleX = 0.7f;
             else if (special == 80)
-                r28->scaleX = 0.8f;
+                drawInfo->scaleX = 0.8f;
             else if (special == 90)
-                r28->scaleX = 0.9f;
+                drawInfo->scaleX = 0.9f;
             else if (special == 100)
-                r28->scaleX = 1.0f;
+                drawInfo->scaleX = 1.0f;
             if (glyphIndex == -1)
             {
-                r28->x += (float)r23 * r28->scaleX;
+                drawInfo->x += (float)r23 * drawInfo->scaleX;
                 continue;
             }
             else if (glyphIndex == -2)
@@ -2802,7 +2802,7 @@ void g_draw_text(char *str)
             {
                 float f0;
 
-                switch (r28->fontId)
+                switch (drawInfo->fontId)
                 {
                 case FONT_JAP_24x24_2P:
                 case FONT_JAP_24x24_2Pg:
@@ -2818,7 +2818,7 @@ void g_draw_text(char *str)
                                 r6 = r4 + 1;
                             else
                                 r6 = r6 = 24;
-                            f0 = (float)r6 / (float)fontInfo[r28->fontId].spaceWidth;
+                            f0 = (float)r6 / (float)fontInfo[drawInfo->fontId].spaceWidth;
                             break;
                         }
                     }
@@ -2831,11 +2831,11 @@ void g_draw_text(char *str)
                 if (parseState.mode & (1 << 17))
                     font = &fontInfo[FONT_JAP_24x24_I];
                 else
-                    font = &fontInfo[r28->fontId];
+                    font = &fontInfo[drawInfo->fontId];
                 params.bmpId = font->bmpId;
             }
         }
-        if (r28->fontId < FONT_JAP_TAG
+        if (drawInfo->fontId < FONT_JAP_TAG
          || lbl_802F200C < lbl_802F2008
          || !(parseState.mode & TEXT_MODE_BLINK)
          || (unpausedFrameCounter % 60) < 45)
@@ -2847,33 +2847,33 @@ void g_draw_text(char *str)
 
             div = (glyphIndex - font->firstChar) / font->unkC;
             mod = (glyphIndex - font->firstChar) % font->unkC;
-            params.x = r28->x + font->unk20;
-            params.y = r28->y + font->unk22;
+            params.x = drawInfo->x + font->unk20;
+            params.y = drawInfo->y + font->unk22;
             f0 = font->unk10 * mod;
             f1 = font->unk14 * div;
-            params.u1 = f17 + (f0 + font->unk18 * font->unk20);
+            params.u1 = f0 + font->unk18 * font->unk20 + f17;
             params.v1 = f1 + font->unk1C * font->unk22;
-            params.u2 = font->unk10 + (f0 - font->unk18 * font->unk21) - f17 - font->unk10 * CLAMP(1.0 - r28->scaleX, 0.0, 1.0) * 0.1;
+            params.u2 = font->unk10 + (f0 - font->unk18 * font->unk21) - f17 - font->unk10 * CLAMP(1.0 - drawInfo->scaleX, 0.0, 1.0) * 0.1;
             params.v2 = font->unk14 + (f1 - font->unk1C * font->unk23);
-            params.scaleX = r28->scaleX * ((font->unk10 - (font->unk18 * font->unk20)) - (font->unk18 * font->unk21) - f17 * 2.0);
-            params.scaleY = r28->scaleY * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
-            if (r28->fontId == FONT_JAP_24x24_2Pg && *str == 'g')
+            params.scaleX = drawInfo->scaleX * ((font->unk10 - (font->unk18 * font->unk20)) - (font->unk18 * font->unk21) - f17 * 2.0);
+            params.scaleY = drawInfo->scaleY * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
+            if (drawInfo->fontId == FONT_JAP_24x24_2Pg && *str == 'g')
                 params.y += params.scaleY * 80.0;
             draw_naomi_sprite(&params);
         }
         r22++;
-        r28->x += f16 * (r23 * r28->scaleX);
+        drawInfo->x += f16 * (r23 * drawInfo->scaleX);
         str += parseState.unk8;
         parseState.unkC += r23;
     }
 
-    r28->fontId = fontIdBackup;
-    r28->scaleX = f31;
+    drawInfo->fontId = fontIdBackup;
+    drawInfo->scaleX = f31;
 }
 
 float g_get_text_width(char *str)
 {
-    struct TextDrawInfo *r29 = &textDrawInfo;
+    struct TextDrawInfo *drawInfo = &textDrawInfo;
     int fontIdBackup;
     struct FontParams *font;
     int r23;
@@ -2888,10 +2888,10 @@ float g_get_text_width(char *str)
     s32 color;
     u8 dummy[8];
 
-    font = &fontInfo[r29->fontId];
+    font = &fontInfo[drawInfo->fontId];
     r22 = 0;
-    fontIdBackup = r29->fontId;
-    f23 = r29->scaleX;
+    fontIdBackup = drawInfo->fontId;
+    f23 = drawInfo->scaleX;
     parseState.mode = TEXT_MODE_ASCII;
     parseState.unk4 = -1;
     parseState.unk8 = 0;
@@ -2908,22 +2908,22 @@ float g_get_text_width(char *str)
             if (lbl_802F200C <= (float)r22)
                 break;
         }
-        if (r29->fontId > FONT_JAP_TAG)
-            r23 = func_80071E58_inline(*str, r29->fontId, font);
+        if (drawInfo->fontId > FONT_JAP_TAG)
+            r23 = func_80071E58_inline(*str, drawInfo->fontId, font);
         else
-            r23 = get_char_width(str, r29->fontId, font);
-        f1 = g_get_char_ratio(str, r29->fontId);
+            r23 = get_char_width(str, drawInfo->fontId, font);
+        f1 = g_get_char_ratio(str, drawInfo->fontId);
         if (*str == '\n')
             continue;
         if (*str == ' ' || *str < font->firstChar || *str > font->lastChar)
         {
             r22++;
-            width += r23 * r29->scaleX * f1;
+            width += r23 * drawInfo->scaleX * f1;
             parseState.unkC += r23;
             continue;
         }
         glyphIndex = *str;
-        if (r29->fontId > FONT_JAP_TAG)
+        if (drawInfo->fontId > FONT_JAP_TAG)
         {
             color = params.mulColor;
             skip = 0;
@@ -2933,30 +2933,30 @@ float g_get_text_width(char *str)
             str += skip;
             if (special == 1)
             {
-                r29->fontId = FONT_JAP_24x24_2;
-                font = &fontInfo[r29->fontId];
+                drawInfo->fontId = FONT_JAP_24x24_2;
+                font = &fontInfo[drawInfo->fontId];
             }
             else if (special == 2)
             {
-                r29->fontId = FONT_JAP_24x24_2P;
-                font = &fontInfo[r29->fontId];
+                drawInfo->fontId = FONT_JAP_24x24_2P;
+                font = &fontInfo[drawInfo->fontId];
             }
             else if (special == 70)
-                r29->scaleX = 0.7f;
+                drawInfo->scaleX = 0.7f;
             else if (special == 80)
-                r29->scaleX = 0.8f;
+                drawInfo->scaleX = 0.8f;
             else if (special == 90)
-                r29->scaleX = 0.9f;
+                drawInfo->scaleX = 0.9f;
             else if (special == 100)
-                r29->scaleX = 1.0f;
+                drawInfo->scaleX = 1.0f;
             if (glyphIndex == -1)
             {
-                width += r23 * r29->scaleX;
+                width += r23 * drawInfo->scaleX;
                 continue;
             }
             if (glyphIndex == -2)
                 continue;
-            switch (r29->fontId)
+            switch (drawInfo->fontId)
             {
             case FONT_JAP_24x24_2P:
             case FONT_JAP_24x24_2Pg:
@@ -2972,7 +2972,7 @@ float g_get_text_width(char *str)
                             r6 = foo + 1;
                         else
                             r6 = r6 = 24;
-                        f1 = (float)r6 / (float)fontInfo[r29->fontId].spaceWidth;
+                        f1 = (float)r6 / (float)fontInfo[drawInfo->fontId].spaceWidth;
                         break;
                     }
                 }
@@ -2984,15 +2984,15 @@ float g_get_text_width(char *str)
             if (parseState.mode & (1 << 17))
                 font = &fontInfo[FONT_JAP_24x24_I];
             else
-                font = &fontInfo[r29->fontId];
+                font = &fontInfo[drawInfo->fontId];
         }
         r22++;
-        width += r23 * r29->scaleX * f1;
+        width += r23 * drawInfo->scaleX * f1;
         str += parseState.unk8;
         parseState.unkC += r23;
     }
-    r29->fontId = fontIdBackup;
-    r29->scaleX = f23;
+    drawInfo->fontId = fontIdBackup;
+    drawInfo->scaleX = f23;
     return width;
 }
 
@@ -3020,7 +3020,7 @@ void g_draw_text_sprite(struct Sprite *sprite)
     textDrawInfo.scaleX = sprite->scaleX;
     textDrawInfo.scaleY = sprite->scaleY;
     textDrawInfo.opacity = sprite->opacity;
-    textDrawInfo.unk2C = sprite->unk74;
+    textDrawInfo.unk2C = sprite->flags;
     g_draw_text(sprite->text);
 }
 
@@ -3041,7 +3041,7 @@ void draw_bitmap_sprite(struct Sprite *sprite)
     params.rotation = sprite->rotation;
     params.opacity = sprite->opacity;
     params.unk30 = -1;
-    params.flags = (sprite->unk74 & ~0xF) | 10;
+    params.flags = (sprite->flags & ~0xF) | 10;
     params.mulColor = RGBA(sprite->mulR, sprite->mulG, sprite->mulB, (u8)(sprite->opacity * 255.0f));
     params.addColor = RGBA(sprite->addR, sprite->addG, sprite->addB, 0);
     draw_naomi_sprite(&params);

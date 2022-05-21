@@ -8199,7 +8199,7 @@ lbl_0000752C:
 /* 00007570 38800000 */ li r4, 0
 /* 00007574 4BFF8BE9 */ bl GXLoadNrmMtxImm
 /* 00007578 38600000 */ li r3, 0
-/* 0000757C 4BFF8BE1 */ bl perf_init_timer
+/* 0000757C 4BFF8BE1 */ bl perf_start_timer
 /* 00007580 801F05AC */ lwz r0, 0x5ac(r31)
 /* 00007584 2C000000 */ cmpwi r0, 0
 /* 00007588 41820060 */ beq lbl_000075E8

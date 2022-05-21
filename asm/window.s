@@ -5512,79 +5512,79 @@ glabel lbl_801B61E4
 	.4byte 0x00000011
 	.4byte 0x00000006
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DE4  ;# ptr
+	.4byte perfInfo+4  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000007
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DE8  ;# ptr
+	.4byte perfInfo+8  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000008
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DEC  ;# ptr
+	.4byte perfInfo+0xC  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000009
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DF0  ;# ptr
+	.4byte perfInfo+0x10  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000A
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DF4  ;# ptr
+	.4byte perfInfo+0x14  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000B
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DF8  ;# ptr
+	.4byte perfInfo+0x18  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000C
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8DFC  ;# ptr
+	.4byte perfInfo+0x1C  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000D
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E00  ;# ptr
+	.4byte perfInfo+0x20  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000E
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E04  ;# ptr
+	.4byte perfInfo+0x24  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x0000000F
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E08  ;# ptr
+	.4byte perfInfo+0x28  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000010
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E0C  ;# ptr
+	.4byte perfInfo+0x2C  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000011
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E10  ;# ptr
+	.4byte perfInfo+0x30  ;# ptr
 	.4byte 0
 	.4byte 0x0000000F
 	.4byte 0x00000011
 	.4byte 0x00000012
 	.4byte lbl_802F095C  ;# ptr
-	.4byte lbl_801F8E14  ;# ptr
+	.4byte perfInfo+0x34  ;# ptr
 	.4byte 0
 	.4byte 0x0000000D
 	.4byte 0x00000018

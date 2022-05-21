@@ -26,6 +26,7 @@ struct World
     u8 filler22[0x40-0x22];
 };  // size = 0x40
 
+extern struct World *currentWorldStructPtr;
 extern struct World worldInfo[];
 extern Vec lbl_80206CF0;
 

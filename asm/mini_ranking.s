@@ -5918,12 +5918,12 @@ lbl_800AC9E0:
 /* 800AC9E4 000A8904  7C 1D 00 00 */	cmpw r29, r0
 /* 800AC9E8 000A8908  41 80 FF 58 */	blt lbl_800AC940
 lbl_800AC9EC:
-/* 800AC9EC 000A890C  4B F7 64 25 */	bl epiproc_main
+/* 800AC9EC 000A890C  4B F7 64 25 */	bl gpwait_main
 /* 800AC9F0 000A8910  4B F7 64 C5 */	bl syncwait_main
 /* 800AC9F4 000A8914  80 6D 99 58 */	lwz r3, globalFrameCounter@sda21(r13)
 /* 800AC9F8 000A8918  38 03 00 01 */	addi r0, r3, 1
 /* 800AC9FC 000A891C  90 0D 99 58 */	stw r0, globalFrameCounter@sda21(r13)
-/* 800ACA00 000A8920  4B F7 62 B5 */	bl preproc_main
+/* 800ACA00 000A8920  4B F7 62 B5 */	bl beginframe_main
 /* 800ACA04 000A8924  4B F8 11 35 */	bl func_8002DB38
 /* 800ACA08 000A8928  80 01 00 C4 */	lwz r0, 0xc4(r1)
 /* 800ACA0C 000A892C  CB E1 00 B8 */	lfd f31, 0xb8(r1)
@@ -6177,7 +6177,7 @@ init_loading_gct:
 /* 800ACD20 000A8C40  48 00 03 51 */	bl g_preview_wait_then_do_something
 /* 800ACD24 000A8C44  3B E0 00 00 */	li r31, 0
 lbl_800ACD28:
-/* 800ACD28 000A8C48  4B F7 5F 8D */	bl preproc_main
+/* 800ACD28 000A8C48  4B F7 5F 8D */	bl beginframe_main
 /* 800ACD2C 000A8C4C  4B F5 A8 39 */	bl mathutil_mtxA_from_identity
 /* 800ACD30 000A8C50  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800ACD34 000A8C54  38 80 00 00 */	li r4, 0
@@ -6203,15 +6203,15 @@ lbl_800ACD28:
 /* 800ACD84 000A8CA4  38 A0 00 00 */	li r5, 0
 /* 800ACD88 000A8CA8  C0 A2 B6 7C */	lfs f5, lbl_802F5E7C@sda21(r2)
 /* 800ACD8C 000A8CAC  48 00 03 F5 */	bl func_800AD180
-/* 800ACD90 000A8CB0  4B F7 60 81 */	bl epiproc_main
+/* 800ACD90 000A8CB0  4B F7 60 81 */	bl gpwait_main
 /* 800ACD94 000A8CB4  4B F7 61 21 */	bl syncwait_main
 /* 800ACD98 000A8CB8  3B FF 00 01 */	addi r31, r31, 1
 /* 800ACD9C 000A8CBC  2C 1F 00 05 */	cmpwi r31, 5
 /* 800ACDA0 000A8CC0  41 80 FF 88 */	blt lbl_800ACD28
 /* 800ACDA4 000A8CC4  38 61 00 48 */	addi r3, r1, 0x48
 /* 800ACDA8 000A8CC8  48 00 03 51 */	bl preview_free
-/* 800ACDAC 000A8CCC  4B F7 5F 09 */	bl preproc_main
-/* 800ACDB0 000A8CD0  4B F7 60 61 */	bl epiproc_main
+/* 800ACDAC 000A8CCC  4B F7 5F 09 */	bl beginframe_main
+/* 800ACDB0 000A8CD0  4B F7 60 61 */	bl gpwait_main
 /* 800ACDB4 000A8CD4  4B F7 61 01 */	bl syncwait_main
 /* 800ACDB8 000A8CD8  80 01 00 CC */	lwz r0, 0xcc(r1)
 /* 800ACDBC 000A8CDC  83 E1 00 C4 */	lwz r31, 0xc4(r1)

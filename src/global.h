@@ -26,6 +26,12 @@
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 
+#ifdef __MWERKS__
+u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
+#else
+#define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
+#endif
+
 // intrinsics
 #ifndef __MWERKS__
 extern u32 __cntlzw(u32);

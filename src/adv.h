@@ -9,8 +9,8 @@ struct AdvLogoInfo
     Vec pos;
     s16 xrot;
     s16 zrot;
-    s32 unk10;
-    s32 unk14;
+    s32 rollTimer;
+    s32 timer;
     s32 unk18[4];
 };
 

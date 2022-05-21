@@ -40,22 +40,6 @@ struct Struct802F1C28 *lbl_802F1C28;
 
 struct Camera cameraInfo[5];
 
-// belongs in mathutil.h?
-static inline float sum_of_3_sq(register float a, register float b, register float c)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
-#else
-    return a * a + b * b + c * c;
-#endif
-}
-
 void camera_init(void)
 {
     int i;
@@ -393,7 +377,7 @@ void func_80017FCC(void)
     mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C->matrices[3]);
     mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C->matrices[0]);
     mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C->matrices[4]);
-    C_MTXPerspective(sp1C, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
+    MTXPerspective(sp1C, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
     GXSetProjection(sp1C, 0);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
@@ -512,7 +496,7 @@ void camera_apply_viewport(int cameraId)
     lbl_802F1B3C->matrices[1][2][3] = 0.0f;
     if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && cameraId == 0)
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -521,7 +505,7 @@ void camera_apply_viewport(int cameraId)
     }
     else
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -577,7 +561,7 @@ void camera_apply_viewport_2(int cameraId)
     lbl_802F1B3C->matrices[1][2][3] = 0.0f;
     if (gameMode == MD_MINI && gameSubmode == SMD_MINI_BILLIARDS_MAIN && cameraId == 0)
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -586,7 +570,7 @@ void camera_apply_viewport_2(int cameraId)
     }
     else
     {
-        C_MTXPerspective(
+        MTXPerspective(
             projMtx,
             S16_TO_DEGREES(camera->sub28.fov),
             camera->sub28.aspect,
@@ -617,7 +601,7 @@ void func_800188D4(void)
     struct Camera *camera = &cameraInfo[0];
     Mtx projMtx;
 
-    C_MTXPerspective(
+    MTXPerspective(
         projMtx,
         S16_TO_DEGREES(camera->sub28.fov),
         camera->sub28.aspect,
@@ -1253,7 +1237,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (infoWork.unk1E == 1 && (lbl_801F3D88[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 0x78)
+            if (infoWork.unk1E == 1 && (g_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
                 camera->timerCurr--;
         }
 
@@ -1915,7 +1899,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     camera->flags |= 4;
 
     if ((controllerInfo[lbl_80206BD0[ball->playerId]].unk0[0].button & PAD_BUTTON_A)
-     && (lbl_801F3D88[0] & PAD_BUTTON_A))
+     && (g_unkInputArr1[0] & PAD_BUTTON_A))
     {
         camera->state = 48;
         cameraFuncs[camera->state](camera, ball);
@@ -1923,7 +1907,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     }
 
     func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp34, 0.0f);
-    goal = decodedStageLzPtr->goals[infoWork.unkC];
+    goal = decodedStageLzPtr->goals[infoWork.goalEntered];
     if (infoWork.unkE > 0)
     {
         mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
@@ -1989,7 +1973,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 if (rand() & 1)
                     camera->unk54.x = -camera->unk54.x;
                 camera->unk60 = camera->unk54.y + 0.5 * (0.5 + (rand() / 32767.0f));
-                goalp = &decodedStageLzPtr->goals[infoWork.unkC];
+                goalp = &decodedStageLzPtr->goals[infoWork.goalEntered];
                 mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
                 mathutil_mtxA_translate(&goalp->pos);
                 mathutil_mtxA_rotate_z(goalp->rotZ);
@@ -2084,7 +2068,7 @@ void camera_func_18(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.goalEntered];
     sp1C = goal->pos;
 
     if (infoWork.unkE > 0)
@@ -2140,7 +2124,7 @@ void camera_func_19(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.goalEntered];
     sp10 = goal->pos;
 
     if (infoWork.unkE > 0)
@@ -2196,7 +2180,7 @@ void camera_func_20(struct Camera *camera, struct Ball *ball)
     if (gamePauseStatus & 0xA)
         return;
 
-    goal = &decodedStageLzPtr->goals[infoWork.unkC];
+    goal = &decodedStageLzPtr->goals[infoWork.goalEntered];
     mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
     mathutil_mtxA_translate(&goal->pos);
     mathutil_mtxA_rotate_z(goal->rotZ);
@@ -2779,7 +2763,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp10);
 
-    if (lbl_801F3D88[0] & PAD_BUTTON_A)
+    if (g_unkInputArr1[0] & PAD_BUTTON_A)
         camera->timerCurr += 2;
     else
         camera->timerCurr += 1;
@@ -3035,7 +3019,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     g_get_replay_info(lbl_80250A68.unk0[ball->playerId], &sp34);
 
     if (!(sp34.flags & 1)
-     || infoWork.unkC >= decodedStageLzPtr->goalsCount
+     || infoWork.goalEntered >= decodedStageLzPtr->goalsCount
      || infoWork.unkE >= decodedStageLzPtr->animGroupCount)
     {
         camera->unk10E = 0;
@@ -3049,7 +3033,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     else
     {
         camera->unk10E = infoWork.unkE;
-        camera->unk110 = infoWork.unkC;
+        camera->unk110 = infoWork.goalEntered;
 
         sp58 = decodedStageLzPtr->goals[camera->unk110].pos;
         mathutil_mtxA_from_mtx(animGroups[camera->unk10E].transform);

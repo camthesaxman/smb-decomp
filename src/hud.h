@@ -10,7 +10,7 @@ void hud_show_title_banner(int);
 void hud_show_title_menu(void);
 void hud_show_title_screen_monkey_sprite(void);
 void g_show_adv_ready_hud(void);
-void g_banana_sprite_something(int);
+void hud_create_adv_demo_banana_sprite(int);
 void g_show_eieipu_sprite(int);
 void hud_show_stage_name_banner(void);
 void hud_show_ready_banner(int);

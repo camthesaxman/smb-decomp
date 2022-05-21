@@ -14,6 +14,7 @@
 #include "mode.h"
 #include "world.h"
 
+struct World *currentWorldStructPtr;
 struct World worldInfo[4];
 Vec lbl_80206CF0;
 
@@ -438,7 +439,7 @@ void world_sub_7(struct World *world)
     sp10.x = 0.0f;
     sp10.y = -1.0f;
     sp10.z = 0.0f;
-    if (infoWork.flags & (1 << 4))
+    if (infoWork.flags & INFO_FLAG_04)
     {
         mathutil_mtxA_from_identity();
         mathutil_mtxA_rotate_x(spC[0]);
