@@ -40,22 +40,6 @@ struct Struct802F1C28 *lbl_802F1C28;
 
 struct Camera cameraInfo[5];
 
-// belongs in mathutil.h?
-static inline float sum_of_3_sq(register float a, register float b, register float c)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
-#else
-    return a * a + b * b + c * c;
-#endif
-}
-
 void camera_init(void)
 {
     int i;

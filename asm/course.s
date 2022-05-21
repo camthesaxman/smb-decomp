@@ -6194,3 +6194,46 @@ lbl_802F0B20:
 	# ROM: 0x1EB260
 	.4byte 0x454E4400
 	.4byte 0
+
+.section .sbss
+
+	.balign 8
+.global lbl_802F1F98
+lbl_802F1F98:
+	.skip 0x4
+.global lbl_802F1F9C
+lbl_802F1F9C:
+	.skip 0x4
+.global lbl_802F1FA0
+lbl_802F1FA0:
+	.skip 0x4
+.global lbl_802F1FA4
+lbl_802F1FA4:
+	.skip 0x4
+.global lbl_802F1FA8
+lbl_802F1FA8:
+    .skip 0x4
+.global lbl_802F1FAC
+lbl_802F1FAC:
+    .skip 0x4
+.global lbl_802F1FB0
+lbl_802F1FB0:
+	.skip 0x4
+.global lbl_802F1FB4
+lbl_802F1FB4:
+    .skip 0x4
+.global lbl_802F1FB8
+lbl_802F1FB8:
+	.skip 0x4
+.global lbl_802F1FBC
+lbl_802F1FBC:
+	.skip 0x4
+.global lbl_802F1FC0
+lbl_802F1FC0:
+	.skip 0x4
+.global lbl_802F1FC4
+lbl_802F1FC4:
+	.skip 0x4
+.global lbl_802F1FC8
+lbl_802F1FC8:
+	.skip 0x8
