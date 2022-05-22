@@ -291,11 +291,11 @@ void draw_adv_demo_scene(void)
             f30 = lbl_80173FD0[ballInfo[i].ape->charaId];
             mathutil_mtxA_scale_s(f30);
             mathutil_mtxA_rotate_x(0x4000);
-            avdisp_set_post_multiply_color(0.38f, 0.39f, 0.4f, 1.0f);
+            avdisp_set_post_mult_color(0.38f, 0.39f, 0.4f, 1.0f);
             avdisp_set_bound_sphere_scale(f30);
-            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[polyshadow01].model);
         }
-        func_8000E3BC();
+        g_reset_post_mult_color();
     }
 
     // Draw blimp
@@ -405,7 +405,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].model);
 
     // Draw the simulated analog stick
     mathutil_mtxA_translate_xyz(0.0f, -2.7f, 0.0f);
@@ -415,7 +415,7 @@ void g_draw_tutorial_button_and_joystick(void)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_set_alpha(advTutorialInfo.transitionValue);
-    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].model);
     mathutil_mtxA_pop();
 
     // Draw the transparent stick based on the player's analog stick position
@@ -447,7 +447,7 @@ void g_draw_tutorial_button_and_joystick(void)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
-    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue].model);
 
     // Draw the button base
     mathutil_mtxA_from_identity();
@@ -458,7 +458,7 @@ void g_draw_tutorial_button_and_joystick(void)
     g_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].model);
 
     // Draw the A button
     if (advTutorialInfo.state == 2)
@@ -469,7 +469,7 @@ void g_draw_tutorial_button_and_joystick(void)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_set_alpha(1.0 - advTutorialInfo.transitionValue);
-    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button].model);
     ord_tbl_draw_nodes();
 }
 
@@ -682,7 +682,7 @@ void func_8000C8D4(void)
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
+        avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lbl_802F02E0[i]].model);
     }
 }
 
@@ -748,7 +748,7 @@ void draw_continue_scene(void)
         else
             f1 = 1.0f;
 
-        func_80030BB8(f1, f1, f1);
+        g_nl2ngc_set_post_mult_color(f1, f1, f1);
         mathutil_mtxA_from_mtxB();
         sp5C.x = currentBallStructPtr->pos.x;
         sp5C.y = currentBallStructPtr->pos.y - currentBallStructPtr->currRadius + 0.01;
@@ -759,7 +759,7 @@ void draw_continue_scene(void)
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         g_nl2ngc_set_scale(MAX(f26, f27));
         g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
-        func_80030BB8(1.0f, 1.0f, 1.0f);
+        g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
@@ -794,7 +794,7 @@ void draw_continue_scene(void)
             f26 = mathutil_sin(r30);
             f27 = mathutil_cos(r30);
 
-            func_80030BB8(1.0f, 1.0f, 1.0f);
+            g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
             sp20.x = 3.5 * f26;
             sp20.y = 4.6f;
             sp20.z = 3.5 * f27;
@@ -809,7 +809,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             g_nl2ngc_set_scale(4.6f);
             g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
-            func_80030BB8(1.0f, 1.0f, 1.0f);
+            g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
             sp8.y = sp14.y - sp20.y;
@@ -822,7 +822,7 @@ void draw_continue_scene(void)
         }
     }
 
-    func_8000E3BC();
+    g_reset_post_mult_color();
 }
 
 void draw_extra_scene(void)
@@ -1211,8 +1211,8 @@ void draw_timer_bomb_fuse(void)
     if (!(gamePauseStatus & 0xA))
         lbl_801EEC90.unk54 += lbl_801EEC90.unk58;
 
-    func_80030BB8(1.0f, 1.0f, 1.0f);
-    avdisp_set_post_multiply_color(1.0f, t, 0.0f, 1.0f);
+    g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+    avdisp_set_post_mult_color(1.0f, t, 0.0f, 1.0f);
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
     avdisp_set_custom_tex_mtx(0, mathutilData->mtxA);
 
@@ -1224,7 +1224,7 @@ void draw_timer_bomb_fuse(void)
     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     avdisp_set_bound_sphere_scale(scale);
     avdisp_enable_custom_tex_mtx(1);
-    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
+    avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].model);
     avdisp_enable_custom_tex_mtx(0);
 
     // Draw spark
@@ -1237,7 +1237,7 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_scale_s(0.0149f);
     mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
     nl2ngc_draw_model_unsorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
-    func_8000E3BC();
+    g_reset_post_mult_color();
 }
 
 void set_backdrop_color(void)
@@ -1359,33 +1359,33 @@ void func_8000E1A4(float a)
     {
     case SMD_GAME_CONTINUE_INIT:
     case SMD_GAME_CONTINUE_MAIN:
-        func_80030BB8(0.8f, 0.8f, 0.8f);
-        avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
+        g_nl2ngc_set_post_mult_color(0.8f, 0.8f, 0.8f);
+        avdisp_set_post_mult_color(0.8f, 0.8f, 0.8f, a);
         break;
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
     case SMD_GAME_NAMEENTRY_READY_INIT:
         if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
-            func_80030BB8(0.8f, 0.8f, 0.8f);
-            avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
+            g_nl2ngc_set_post_mult_color(0.8f, 0.8f, 0.8f);
+            avdisp_set_post_mult_color(0.8f, 0.8f, 0.8f, a);
         }
         else
         {
-            func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-            avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+            g_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+            avdisp_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     default:
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
-            func_80030BB8(1.0f, 1.0f, 1.0f);
-            avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, a);
+            g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+            avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, a);
         }
         else
         {
-            func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-            avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
+            g_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+            avdisp_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     }
@@ -1413,13 +1413,13 @@ void func_8000E338(int a)
         f5 = 1.0f;
         break;
     }
-    func_80030BB8(lbl_801EEC80.unk4 * f3, lbl_801EEC80.unk8 * f4, lbl_801EEC80.unkC * f5);
+    g_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4 * f3, lbl_801EEC80.unk8 * f4, lbl_801EEC80.unkC * f5);
 }
 
-void func_8000E3BC(void)
+void g_reset_post_mult_color(void)
 {
-    func_80030BB8(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
-    avdisp_set_post_multiply_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
+    g_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+    avdisp_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
 }
 
 void func_8000E428(float a, float b, float c)

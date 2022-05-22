@@ -578,7 +578,7 @@ void light_main(void)
 
     s_g_lightPerfTimer = 0;
     func_8000E428(s_bgLightInfo.unk14, s_bgLightInfo.unk18, s_bgLightInfo.unk1C);
-    func_8000E3BC();
+    g_reset_post_mult_color();
     s_lightPoolSize = 0;
 
     light = s_g_lightPool;

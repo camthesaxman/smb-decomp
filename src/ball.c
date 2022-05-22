@@ -1174,7 +1174,7 @@ void ball_draw(void)
         {
             g_avdisp_set_some_func_1(envFunc);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].model);
             g_avdisp_set_some_func_1(NULL);
         }
 
@@ -1185,7 +1185,7 @@ void ball_draw(void)
         g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 
-        func_8000E3BC();
+        g_reset_post_mult_color();
     }
 }
 
@@ -1260,7 +1260,7 @@ void g_ball_shadow_something_1(void)
     sp18.unk20.z = 0.0f;
     mathutil_mtxA_tf_vec(&sp18.unk20, &sp18.unk20);
 
-    tex1 = &commonGma->modelEntries[circle_white].modelOffset->texObjs[0];
+    tex1 = &commonGma->modelEntries[circle_white].model->texObjs[0];
     GXInitTexObj((tex2 = &lbl_801B7EC4),
         GXGetTexObjData(tex1),
         GXGetTexObjWidth(tex1),
@@ -1318,7 +1318,7 @@ void g_ball_shadow_something_2(void)
 
     sp30.unk20 = 0.025f;
     sp30.unk24 = 0.05f;
-    sp30.unk28 = commonGma->modelEntries[polyshadow01].modelOffset;
+    sp30.unk28 = commonGma->modelEntries[polyshadow01].model;
 
     ball = &ballInfo[0];
     r25 = poolInfo.unkC;
@@ -3083,26 +3083,26 @@ void draw_ball_hemispheres(struct Ball *ball, int unused)
 
     // Draw inside of clear hemisphere
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].model);
 
     // Draw inside of colored hemisphere
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].model);
 
     // Draw edge ring between ball halves
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].model);
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
     // Draw outside of clear hemisphere
-    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].model);
 
     // Draw outside of colored hemisphere
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].model);
 
-    func_8000E3BC();
+    g_reset_post_mult_color();
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 }
 
@@ -3144,7 +3144,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     {
         g_avdisp_set_some_func_1(envFunc);
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+        avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].model);
         g_avdisp_set_some_func_1(NULL);
     }
 }

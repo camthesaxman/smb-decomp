@@ -5759,7 +5759,7 @@ lbl_8009A724:
 /* 8009A770 00096690  FC 40 08 90 */	fmr f2, f1
 /* 8009A774 00096694  FC 60 08 90 */	fmr f3, f1
 /* 8009A778 00096698  FC 80 08 90 */	fmr f4, f1
-/* 8009A77C 0009669C  4B FF 4F 99 */	bl avdisp_set_post_multiply_color
+/* 8009A77C 0009669C  4B FF 4F 99 */	bl avdisp_set_post_mult_color
 /* 8009A780 000966A0  80 7E 00 1C */	lwz r3, 0x1c(r30)
 /* 8009A784 000966A4  4B FF 3D 19 */	bl avdisp_draw_model_culled_sort_none
 /* 8009A788 000966A8  4B F6 D0 AD */	bl mathutil_mtxA_pop
@@ -5767,7 +5767,7 @@ lbl_8009A78C:
 /* 8009A78C 000966AC  37 FF FF FF */	addic. r31, r31, -1
 /* 8009A790 000966B0  3B DE 00 30 */	addi r30, r30, 0x30
 /* 8009A794 000966B4  41 81 FF 90 */	bgt lbl_8009A724
-/* 8009A798 000966B8  4B F7 3C 25 */	bl func_8000E3BC
+/* 8009A798 000966B8  4B F7 3C 25 */	bl g_reset_post_mult_color
 /* 8009A79C 000966BC  38 60 00 01 */	li r3, 1
 /* 8009A7A0 000966C0  38 80 00 03 */	li r4, 3
 /* 8009A7A4 000966C4  38 A0 00 01 */	li r5, 1

@@ -276,7 +276,7 @@ struct GMAModel *stage_find_model(struct GMA *gma, char *name)
     while (numModels > 0)
     {
         if (strcmp(entry->name, name) == 0)
-            return entry->modelOffset;
+            return entry->model;
         numModels--;
         entry++;
     }
@@ -940,7 +940,7 @@ inline struct GMAModel *find_model_in_gma_list(struct GMA ***list, char *name)
             for (i = 0; i < (int)(**list)->numModels; i++)
             {
                 if (strcmp(name, (**list)->modelEntries[i].name) == 0)
-                    model = (**list)->modelEntries[i].modelOffset;
+                    model = (**list)->modelEntries[i].model;
             }
         }
         list++;
@@ -2049,7 +2049,7 @@ void stage_draw(void)
         }
     }
 
-    func_8000E3BC();
+    g_reset_post_mult_color();
     sp7C.unk0 = 2;
 
     if (dipSwitches & DIP_TRIANGLE)
@@ -2238,7 +2238,7 @@ void stage_draw(void)
         // draw starting position marker
         if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << 1)))
         {
-            func_80030BB8(1.0f, 1.0f, 1.0f);
+            g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
             if (lbl_801EEC90.unk0 & (1 << 3))
             {
                 mathutil_mtxA_from_identity();
@@ -2280,7 +2280,7 @@ void stage_draw(void)
                         (modeCtrl.submodeTimer - 45) / 30.0f);
                 }
             }
-            func_8000E3BC();
+            g_reset_post_mult_color();
         }
     }
     if (backgroundInfo.unk8C != 0)

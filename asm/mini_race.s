@@ -12284,7 +12284,7 @@ lbl_0000B488:
 /* 0000B4D0 C0230000 */ lfs f1, 0(r3)
 /* 0000B4D4 C0430004 */ lfs f2, 4(r3)
 /* 0000B4D8 C0630008 */ lfs f3, 8(r3)
-/* 0000B4DC 4BFF4CA1 */ bl avdisp_set_post_multiply_color
+/* 0000B4DC 4BFF4CA1 */ bl avdisp_set_post_mult_color
 /* 0000B4E0 807F0000 */ lwz r3, 0(r31)
 /* 0000B4E4 80630008 */ lwz r3, 8(r3)
 /* 0000B4E8 806302C0 */ lwz r3, 0x2c0(r3)
@@ -12293,7 +12293,7 @@ lbl_0000B488:
 /* 0000B4F4 FC400890 */ fmr f2, f1
 /* 0000B4F8 FC600890 */ fmr f3, f1
 /* 0000B4FC FC800890 */ fmr f4, f1
-/* 0000B500 4BFF4C7D */ bl avdisp_set_post_multiply_color
+/* 0000B500 4BFF4C7D */ bl avdisp_set_post_mult_color
 /* 0000B504 48000028 */ b lbl_0000B52C
 lbl_0000B508:
 /* 0000B508 881B002E */ lbz r0, 0x2e(r27)
@@ -20838,14 +20838,14 @@ lbl_00013268:
 /* 000132C4 C07F0064 */ lfs f3, 0x64(r31)
 /* 000132C8 FC400890 */ fmr f2, f1
 /* 000132CC FC800890 */ fmr f4, f1
-/* 000132D0 4BFECEAD */ bl avdisp_set_post_multiply_color
+/* 000132D0 4BFECEAD */ bl avdisp_set_post_mult_color
 /* 000132D4 3C600000 */ lis r3, commonGma@ha
 /* 000132D8 38630000 */ addi r3, r3, commonGma@l
 /* 000132DC 80630000 */ lwz r3, 0(r3)
 /* 000132E0 80630008 */ lwz r3, 8(r3)
 /* 000132E4 806302D0 */ lwz r3, 0x2d0(r3)
 /* 000132E8 4BFECE95 */ bl avdisp_draw_model_unculled_sort_translucent
-/* 000132EC 4BFECE91 */ bl func_8000E3BC
+/* 000132EC 4BFECE91 */ bl g_reset_post_mult_color
 /* 000132F0 38600001 */ li r3, 1
 /* 000132F4 38800003 */ li r4, 3
 /* 000132F8 38A00001 */ li r5, 1
@@ -21067,14 +21067,14 @@ lbl_00013614:
 /* 0001361C C07F0064 */ lfs f3, 0x64(r31)
 /* 00013620 FC400890 */ fmr f2, f1
 /* 00013624 FC800890 */ fmr f4, f1
-/* 00013628 4BFECB55 */ bl avdisp_set_post_multiply_color
+/* 00013628 4BFECB55 */ bl avdisp_set_post_mult_color
 /* 0001362C 3C600000 */ lis r3, commonGma@ha
 /* 00013630 38630000 */ addi r3, r3, commonGma@l
 /* 00013634 80630000 */ lwz r3, 0(r3)
 /* 00013638 80630008 */ lwz r3, 8(r3)
 /* 0001363C 806302D0 */ lwz r3, 0x2d0(r3)
 /* 00013640 4BFECB3D */ bl avdisp_draw_model_unculled_sort_translucent
-/* 00013644 4BFECB39 */ bl func_8000E3BC
+/* 00013644 4BFECB39 */ bl g_reset_post_mult_color
 /* 00013648 38600001 */ li r3, 1
 /* 0001364C 38800003 */ li r4, 3
 /* 00013650 38A00001 */ li r5, 1

@@ -50,7 +50,7 @@ void bg_bonus_init(void)
     // find models
     if (work->unk0 == 0)
     {
-        work->starpointsCount = 0;
+        work->startpointCount = 0;
         g_search_bg_models(bonusMiscFind, bonus_misc_find_proc);
         work->unk0 = 1;
     }
@@ -66,7 +66,7 @@ void bg_bonus_init(void)
         bonus_main_find_proc);
 
     starpoint = work->starpoints;
-    for (i = work->starpointsCount; i > 0; i--, starpoint++)
+    for (i = work->startpointCount; i > 0; i--, starpoint++)
     {
         starpoint->unkC = rand() & 0x7FFF;
         starpoint->unkE = (((rand() / 32767.0f) * 0.5f + 1.0f) * 65536.0f) / 180.0f;
@@ -85,18 +85,18 @@ void bg_bonus_main(void)
         return;
 
     starpoint = work->starpoints;
-    for (i = work->starpointsCount; i > 0; i--, starpoint++)
+    for (i = work->startpointCount; i > 0; i--, starpoint++)
     {
         float f2;
         starpoint->unkC += starpoint->unkE;
         f2 = (mathutil_sin(starpoint->unkC) + 1.0f) * 0.25f + 0.5f;
-        starpoint->unk10 = f2 * 1.1f;
-        starpoint->unk14 = f2 * 1.05f;
-        starpoint->unk18 = f2;
-        if (starpoint->unk10 > 1.0f)
-            starpoint->unk10 = 1.0f;
-        if (starpoint->unk14 > 1.0f)
-            starpoint->unk14 = 1.0f;
+        starpoint->red = f2 * 1.1f;
+        starpoint->green = f2 * 1.05f;
+        starpoint->blue = f2;
+        if (starpoint->red > 1.0f)
+            starpoint->red = 1.0f;
+        if (starpoint->green > 1.0f)
+            starpoint->green = 1.0f;
     }
 
     mathutil_mtxA_from_identity();
@@ -130,37 +130,37 @@ void bg_bonus_draw(void)
     struct BGBonusWork *work = (void *)backgroundInfo.work;
     int i;
     Vec sp14;
-    Vec sp8;
+    Vec mainModelScale;
     struct BGBonusStarpoint *starpoint;
     struct GMAModel *starlightModel;
-    struct StageBgModel *r27;
+    struct StageBgModel *mainModel;
 
     bg_e3_draw();
-    r27 = work->unk4;
-    sp8 = r27->scale;
+    mainModel = work->mainModel;
+    mainModelScale = mainModel->scale;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-    mathutil_mtxA_translate(&r27->pos);
-    mathutil_mtxA_rotate_z(r27->rotZ);
-    mathutil_mtxA_rotate_y(r27->rotY);
-    mathutil_mtxA_rotate_x(r27->rotX);
-    mathutil_mtxA_scale(&sp8);
-    avdisp_set_z_mode(1, 3, 0);
-    starlightModel = work->starlightModel;
+    mathutil_mtxA_translate(&mainModel->pos);
+    mathutil_mtxA_rotate_z(mainModel->rotZ);
+    mathutil_mtxA_rotate_y(mainModel->rotY);
+    mathutil_mtxA_rotate_x(mainModel->rotX);
+    mathutil_mtxA_scale(&mainModelScale);
 
-    for (i = work->starpointsCount, starpoint = work->starpoints; i > 0; i--, starpoint++)
+    avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
+    starlightModel = work->starlightModel;
+    for (i = work->startpointCount, starpoint = work->starpoints; i > 0; i--, starpoint++)
     {
-        float f30 = (starpoint->unk10 + starpoint->unk14 + starpoint->unk18) * 0.75f;
+        float f30 = (starpoint->red + starpoint->green + starpoint->blue) * 0.75f;
 
         if (lbl_801EEC90.unk0 & (1 << 2))
         {
-            sp14.x = starpoint->unk0.x * sp8.x;
-            sp14.y = starpoint->unk0.y * sp8.y;
-            sp14.z = starpoint->unk0.z * sp8.z;
+            sp14.x = starpoint->g_pos.x * mainModelScale.x;
+            sp14.y = starpoint->g_pos.y * mainModelScale.y;
+            sp14.z = starpoint->g_pos.z * mainModelScale.z;
             if (func_8000E53C(&sp14) < -(starlightModel->boundSphereRadius * f30))
                 continue;
         }
         mathutil_mtxA_push();
-        mathutil_mtxA_translate(&starpoint->unk0);
+        mathutil_mtxA_translate(&starpoint->g_pos);
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_get_translate_alt(&sp14);
         if (sp14.z < -30.0f)
@@ -173,13 +173,13 @@ void bg_bonus_draw(void)
             mathutil_mtxA_set_translate(&sp14);
             f30 *= f3;
             mathutil_mtxA_scale_s(f30);
-            avdisp_set_post_multiply_color(starpoint->unk10, starpoint->unk14, starpoint->unk18, 1.0f);
+            avdisp_set_post_mult_color(starpoint->red, starpoint->green, starpoint->blue, 1.0f);
             avdisp_draw_model_culled_sort_translucent(starlightModel);
-            func_8000E3BC();
+            g_reset_post_mult_color();
         }
         mathutil_mtxA_pop();
     }
-    avdisp_set_z_mode(1, 3, 1);
+    avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 }
 
 void bg_bonus_interact(int a)
@@ -238,7 +238,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
 
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
     func_8009AC8C();
-    GXLoadTexObj_cached(work->lightmapTex, spC.g_texMapId);
+    GXLoadTexObj_cached(work->lightmapTexObjs, spC.g_texMapId);
     mathutil_mtxA_push();
     mathutil_mtxA_mult_left(work->unk7AC);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
@@ -260,7 +260,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXLoadTexMtxImm(work->unk77C, spC.unk14, GX_MTX3x4);
-    GXLoadTexObj_cached(work->lightmapATex, spC.g_texMapId);
+    GXLoadTexObj_cached(work->lightmapATexObjs, spC.g_texMapId);
     GXSetTexCoordGen2(spC.unk4, GX_TG_MTX3x4, GX_TG_NRM, spC.unk8, GX_TRUE, spC.unk14);
     GXSetTevDirect(spC.unk0);
     GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.g_texMapId, GX_COLOR_NULL);
@@ -283,24 +283,24 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
     switch (index)
     {
     case 0:  // BNS_SHOTSTAR
-        work->shotstarModel = entry->modelOffset;
+        work->shotstarModel = entry->model;
         break;
     case 1:  // STARLIGHT_
-        work->starlightModel = entry->modelOffset;
+        work->starlightModel = entry->model;
         break;
     case 2:  // BNS_LIGHTMAP
-        work->lightmapTex = entry->modelOffset->texObjs;
+        work->lightmapTexObjs = entry->model->texObjs;
         break;
     case 3:  // BNS_LIGHTMAP_A
-        work->lightmapATex = entry->modelOffset->texObjs;
+        work->lightmapATexObjs = entry->model->texObjs;
         break;
     case 4:  // STARPOINT
-        if (work->starpointsCount < 64)
+        if (work->startpointCount < 64)
         {
-            struct BGBonusStarpoint *starpoint = &work->starpoints[work->starpointsCount];
+            struct BGBonusStarpoint *starpoint = &work->starpoints[work->startpointCount];
 
-            starpoint->unk0 = entry->modelOffset->boundSphereCenter;
-            work->starpointsCount++;
+            starpoint->g_pos = entry->model->boundSphereCenter;
+            work->startpointCount++;
         }
         break;
     }
@@ -314,7 +314,7 @@ static int bonus_main_find_proc(int index, struct StageBgModel *b)
     switch (index)
     {
     case 0:  // BNS_MAIN
-        work->unk4 = b;
+        work->mainModel = b;
         break;
     }
     return 1;

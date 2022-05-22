@@ -154,24 +154,24 @@ struct BGStormWork
 
 struct BGBonusStarpoint
 {
-    Vec unk0;
+    Vec g_pos;
     s16 unkC;
     s16 unkE;
-    float unk10;
-    float unk14;
-    float unk18;
+    float red;
+    float green;
+    float blue;
 };
 
 struct BGBonusWork
 {
     s32 unk0;
-    struct StageBgModel *unk4;
+    struct StageBgModel *mainModel;
     struct GMAModel *shotstarModel;
     struct GMAModel *starlightModel;
-    s32 starpointsCount;
+    s32 startpointCount;
     struct BGBonusStarpoint starpoints[64];
-    GXTexObj *lightmapTex;
-    GXTexObj *lightmapATex;
+    GXTexObj *lightmapTexObjs;
+    GXTexObj *lightmapATexObjs;
     Mtx unk71C;
     Mtx unk74C;
     Mtx unk77C;

@@ -69,7 +69,7 @@ void item_coin_init(struct Item *item)
     item->rotVelX = s_bananaInfos[item->subType].rotVelX;
     item->rotVelY = s_bananaInfos[item->subType].rotVelY;
     item->rotVelZ = s_bananaInfos[item->subType].rotVelZ;
-    item->shadowModel = commonGma->modelEntries[polyshadow01].modelOffset;
+    item->shadowModel = commonGma->modelEntries[polyshadow01].model;
     item->shadowColor.r = 0x46;
     item->shadowColor.g = 0x47;
     item->shadowColor.b = 0x5F;
@@ -279,7 +279,7 @@ struct GMAModel *get_lod(struct ModelLOD **a)
     float f1;
 
     modelId = r31->modelId;
-    model = commonGma->modelEntries[modelId].modelOffset;
+    model = commonGma->modelEntries[modelId].model;
     f31 = model->boundSphereRadius;
     mathutil_mtxA_tf_point(&model->boundSphereCenter, &spC);
     if (spC.z > f31)
@@ -289,7 +289,7 @@ struct GMAModel *get_lod(struct ModelLOD **a)
             modelId = r31->modelId;
             r31++;
         }
-        return commonGma->modelEntries[modelId].modelOffset;
+        return commonGma->modelEntries[modelId].model;
     }
     if (spC.z > -0.1f)
         return model;
@@ -301,5 +301,5 @@ struct GMAModel *get_lod(struct ModelLOD **a)
             break;
         r31++;
     }
-    return commonGma->modelEntries[modelId].modelOffset;
+    return commonGma->modelEntries[modelId].model;
 }

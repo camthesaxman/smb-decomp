@@ -105,7 +105,7 @@ void g_nl2ngc_set_scale(float x)
     lbl_801B7978.unk18 = x;
 }
 
-void func_80030BB8(float r, float g, float b)
+void g_nl2ngc_set_post_mult_color(float r, float g, float b)
 {
     lbl_801B7978.unk0.r = r;
     lbl_801B7978.unk0.g = g;

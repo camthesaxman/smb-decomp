@@ -760,10 +760,10 @@ lbl_80059728:
 /* 80059734 00055654  C0 3F 00 A8 */	lfs f1, 0xa8(r31)
 /* 80059738 00055658  FC 40 08 90 */	fmr f2, f1
 /* 8005973C 0005565C  FC 60 08 90 */	fmr f3, f1
-/* 80059740 00055660  4B FD 74 79 */	bl func_80030BB8
+/* 80059740 00055660  4B FD 74 79 */	bl g_nl2ngc_set_post_mult_color
 /* 80059744 00055664  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 80059748 00055668  4B FD A3 8D */	bl g_call_draw_naomi_model_and_do_other_stuff
-/* 8005974C 0005566C  4B FB 4C 71 */	bl func_8000E3BC
+/* 8005974C 0005566C  4B FB 4C 71 */	bl g_reset_post_mult_color
 /* 80059750 00055670  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80059754 00055674  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 80059758 00055678  38 21 00 18 */	addi r1, r1, 0x18

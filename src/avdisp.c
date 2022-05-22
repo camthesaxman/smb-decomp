@@ -262,7 +262,7 @@ void avdisp_init(void)
     s_useCustomTexMtx = 0;
     mathutil_mtxA_from_translate_xyz(0.0f, 0.0f, 1.0f);
     mathutil_mtxA_to_mtx(s_identityTexMtx);
-    avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
+    avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, 1.0f);
     avdisp_set_post_add_color(0.0f, 0.0f, 0.0f, 0.0f);
     avdisp_enable_fog(0);
     avdisp_set_fog_params(2, 0.0f, 100.0f);
@@ -404,18 +404,18 @@ struct GMA *load_gma(char *fileName, struct TPL *tpl)
     for (i = 0; i < gma->numModels; i++)
     {
         struct GMAModelEntry *entry = &gma->modelEntries[i];
-        void *offset = entry->modelOffset;
+        void *offset = entry->model;
 
-        if ((u32)entry->modelOffset == 0xFFFFFFFF)
+        if ((u32)entry->model == 0xFFFFFFFF)
         {
-            entry->modelOffset = NULL;
+            entry->model = NULL;
             entry->name = invalidModelName;
         }
         else
         {
             // Convert name and model offsets to pointers
             offset = OFFSET_TO_PTR(gma->modelsBase, (u32)offset);
-            entry->modelOffset = offset;
+            entry->model = offset;
             entry->name = OFFSET_TO_PTR(gma->namesBase, (u32)entry->name);
             // Load the model
             init_model(offset, tpl, NULL);
@@ -451,18 +451,18 @@ struct GMA *load_gma_from_aram(u32 aramSrc, u32 size, struct TPL *tpl)
     for (i = 0; i < gma->numModels; i++)
     {
         struct GMAModelEntry *entry = &gma->modelEntries[i];
-        void *offset = entry->modelOffset;
+        void *offset = entry->model;
 
-        if ((u32)entry->modelOffset == 0xFFFFFFFF)
+        if ((u32)entry->model == 0xFFFFFFFF)
         {
-            entry->modelOffset = NULL;
+            entry->model = NULL;
             entry->name = invalidModelName;
         }
         else
         {
             // Convert name and model offsets to pointers
             offset = OFFSET_TO_PTR(gma->modelsBase, (u32)offset);
-            entry->modelOffset = offset;
+            entry->model = offset;
             entry->name = OFFSET_TO_PTR(gma->namesBase, (u32)entry->name);
             // Load the model
             init_model(offset, tpl, NULL);
@@ -477,7 +477,7 @@ void free_gma(struct GMA *gma)
 
     for (i = 0; i < (s32)gma->numModels; i++)
     {
-        struct GMAModel *model = gma->modelEntries[i].modelOffset;
+        struct GMAModel *model = gma->modelEntries[i].model;
 
         if (model != NULL && model->texObjs != NULL)
             OSFree(model->texObjs);
@@ -1229,7 +1229,7 @@ void avdisp_set_custom_tex_mtx(int unused, Mtx mtx)
     mathutil_mtx_copy(mtx, s_customTexMtx);
 }
 
-void avdisp_set_post_multiply_color(float r, float g, float b, float a)
+void avdisp_set_post_mult_color(float r, float g, float b, float a)
 {
     if (r != 1.0f || g != 1.0f || b != 1.0f || a != 1.0f)
     {

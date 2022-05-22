@@ -10884,7 +10884,7 @@ lbl_00009E58:
 /* 00009EE4 EC27082A */ fadds f1, f7, f1
 /* 00009EE8 EC45102A */ fadds f2, f5, f2
 /* 00009EEC EC63002A */ fadds f3, f3, f0
-/* 00009EF0 4BFF6271 */ bl avdisp_set_post_multiply_color
+/* 00009EF0 4BFF6271 */ bl avdisp_set_post_mult_color
 lbl_00009EF4:
 /* 00009EF4 7F83E378 */ mr r3, r28
 /* 00009EF8 4BFF6269 */ bl mathutil_mtxA_from_mtxB_translate

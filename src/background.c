@@ -928,7 +928,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
                 modelId = lbl_801B9AC8[(r4 % 15)];
                 break;
             }
-            avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].model);
         }
     }
     if (b->unkC != NULL)
@@ -946,7 +946,7 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = (unpausedFrameCounter + r22->unkC * 4);
             modelId = lbl_801B9AE8[r4 % 32];
-            avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].model);
         }
     }
 }

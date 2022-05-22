@@ -1717,11 +1717,11 @@ lbl_8006BE28:
 /* 8006BE38 00067D58  FC 20 F0 90 */	fmr f1, f30
 /* 8006BE3C 00067D5C  FC 40 F0 90 */	fmr f2, f30
 /* 8006BE40 00067D60  FC 60 F0 90 */	fmr f3, f30
-/* 8006BE44 00067D64  4B FC 4D 75 */	bl func_80030BB8
+/* 8006BE44 00067D64  4B FC 4D 75 */	bl g_nl2ngc_set_post_mult_color
 /* 8006BE48 00067D68  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8006BE4C 00067D6C  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 8006BE50 00067D70  4B FC 55 01 */	bl nl2ngc_draw_model_unsorted
-/* 8006BE54 00067D74  4B FA 25 69 */	bl func_8000E3BC
+/* 8006BE54 00067D74  4B FA 25 69 */	bl g_reset_post_mult_color
 lbl_8006BE58:
 /* 8006BE58 00067D78  80 01 00 4C */	lwz r0, 0x4c(r1)
 /* 8006BE5C 00067D7C  CB E1 00 40 */	lfd f31, 0x40(r1)
@@ -3472,7 +3472,7 @@ lbl_8006D7E4:
 /* 8006D7F0 00069710  C0 22 A1 18 */	lfs f1, lbl_802F4918@sda21(r2)
 /* 8006D7F4 00069714  FC 40 08 90 */	fmr f2, f1
 /* 8006D7F8 00069718  FC 60 08 90 */	fmr f3, f1
-/* 8006D7FC 0006971C  4B FC 33 BD */	bl func_80030BB8
+/* 8006D7FC 0006971C  4B FC 33 BD */	bl g_nl2ngc_set_post_mult_color
 /* 8006D800 00069720  3C 80 80 25 */	lis r4, lbl_80250A68@ha
 /* 8006D804 00069724  3C 60 80 20 */	lis r3, poolInfo@ha
 /* 8006D808 00069728  38 84 0A 68 */	addi r4, r4, lbl_80250A68@l
@@ -3599,7 +3599,7 @@ lbl_8006D8B0:
 /* 8006D9E0 00069900  7C 7E 02 14 */	add r3, r30, r0
 /* 8006D9E4 00069904  80 63 0E 28 */	lwz r3, 0xe28(r3)
 /* 8006D9E8 00069908  4B FC 60 ED */	bl g_call_draw_naomi_model_and_do_other_stuff
-/* 8006D9EC 0006990C  4B FA 09 D1 */	bl func_8000E3BC
+/* 8006D9EC 0006990C  4B FA 09 D1 */	bl g_reset_post_mult_color
 /* 8006D9F0 00069910  BB 41 00 28 */	lmw r26, 0x28(r1)
 /* 8006D9F4 00069914  80 01 00 44 */	lwz r0, 0x44(r1)
 /* 8006D9F8 00069918  38 21 00 40 */	addi r1, r1, 0x40

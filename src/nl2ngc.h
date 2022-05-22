@@ -96,7 +96,7 @@ struct NaomiObj
 // ? func_80030AF8();
 // ? nl2ngc_draw_line_deferred();
 void g_nl2ngc_set_scale(float);
-void func_80030BB8(float r, float g, float b);
+void g_nl2ngc_set_post_mult_color(float r, float g, float b);
 BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
 BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl);
 void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);

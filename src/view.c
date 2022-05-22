@@ -468,8 +468,8 @@ void draw_items(void)
     {
         struct GMAModel *models[2];
 
-        models[0] = commonGma->modelEntries[OBJ_BANANA_01_LOD150].modelOffset;
-        models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
+        models[0] = commonGma->modelEntries[OBJ_BANANA_01_LOD150].model;
+        models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].model;
         for (i = 0; i < animGroupCount; i++)
         {
             struct StageBanana *r24 = decodedStageLzPtr->animGroups[i].bananas;
@@ -505,7 +505,7 @@ void draw_banana_shadows(void)
     if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
-        avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3f, 0.3f);
+        avdisp_set_post_mult_color(0.3f, 0.3f, 0.3f, 0.3f);
         avdisp_set_z_mode(1, 3, 0);
 
         for (i = 0; i < animGroupCount; i++)
@@ -530,11 +530,11 @@ void draw_banana_shadows(void)
                     mathutil_mtxA_mult_left(sp20);
                     mathutil_mtxA_scale_s(0.45f);
                     g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                    avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x4E].modelOffset);
+                    avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x4E].model);
                 }
             }
         }
-        avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
+        avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, 1.0f);
         avdisp_set_z_mode(1, 3, 1);
     }
 }
@@ -548,12 +548,12 @@ void draw_stage_geometry(void)
     struct Struct8020A348_child *r26;
     u32 dummy;
 
-    func_80030BB8(1.0f, 1.0f, 1.0f);
+    g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 9);
     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
-    func_8000E3BC();
+    g_reset_post_mult_color();
     if (decodedStageGmaPtr != NULL)
     {
         animGrp = animGroups;
@@ -659,7 +659,7 @@ void draw_stage_objects(void)
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x40].modelOffset);
+            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x40].model);
             mathutil_mtxA_pop();
 
             mathutil_mtxA_push();

@@ -936,7 +936,7 @@ void g_load_character_graphics(int chara, int lod)
 
         for (i = 0; i < 2; i++)
         {
-            model = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[i]].modelOffset;
+            model = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[i]].model;
             lbl_802B47F0[lod * 2 + i] = g_find_some_mesh_with_red(model);
         }
         lbl_802B4800[index + 0] = NULL;
@@ -944,8 +944,8 @@ void g_load_character_graphics(int chara, int lod)
     }
     else
     {
-        struct GMAModel *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].modelOffset;
-        struct GMAModel *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].modelOffset;
+        struct GMAModel *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].model;
+        struct GMAModel *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].model;
 
         func_8008CBD0(chara, lod, model1, model2);
     }
@@ -1651,7 +1651,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
         struct Struct80034F5C_1 *r22 = &b[r29->unk2];
-        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].modelOffset;
+        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].model;
 
         if (model != NULL)
         {
@@ -1688,7 +1688,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
             lbl_802F2088[i] = r4->unk208;
     }
 
-    model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].modelOffset;
+    model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].model;
     func_8008CCB8(ape, model);
     avdisp_draw_model_unculled_sort_none(model);
 }
@@ -1770,7 +1770,7 @@ void func_8008CAAC(struct Ape *ape, float b)
         apeDummyFuncs[r30](ape);
         g_draw_ape_transformed(ape, r29);
     }
-    func_8000E3BC();
+    g_reset_post_mult_color();
 }
 
 u16 lbl_801C7D80[] = { 9, 1, 3, 2 };

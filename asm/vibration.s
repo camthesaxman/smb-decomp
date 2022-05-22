@@ -7429,7 +7429,7 @@ lbl_800BCB38:
 /* 800BCC1C 000B8B3C  C0 21 00 08 */	lfs f1, 8(r1)
 /* 800BCC20 000B8B40  C0 41 00 0C */	lfs f2, 0xc(r1)
 /* 800BCC24 000B8B44  C0 61 00 10 */	lfs f3, 0x10(r1)
-/* 800BCC28 000B8B48  4B FD 2A ED */	bl avdisp_set_post_multiply_color
+/* 800BCC28 000B8B48  4B FD 2A ED */	bl avdisp_set_post_mult_color
 /* 800BCC2C 000B8B4C  C0 41 00 1C */	lfs f2, 0x1c(r1)
 /* 800BCC30 000B8B50  EC 7E 05 72 */	fmuls f3, f30, f21
 /* 800BCC34 000B8B54  C0 99 00 14 */	lfs f4, 0x14(r25)
@@ -7474,7 +7474,7 @@ lbl_800BCCC0:
 /* 800BCCC4 000B8BE4  7C 00 07 74 */	extsb r0, r0
 /* 800BCCC8 000B8BE8  2C 00 FF FF */	cmpwi r0, -1
 /* 800BCCCC 000B8BEC  40 82 FD F8 */	bne lbl_800BCAC4
-/* 800BCCD0 000B8BF0  4B F5 16 ED */	bl func_8000E3BC
+/* 800BCCD0 000B8BF0  4B F5 16 ED */	bl g_reset_post_mult_color
 /* 800BCCD4 000B8BF4  38 60 00 01 */	li r3, 1
 /* 800BCCD8 000B8BF8  38 80 00 03 */	li r4, 3
 /* 800BCCDC 000B8BFC  38 A0 00 01 */	li r5, 1

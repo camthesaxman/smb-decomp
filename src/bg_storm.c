@@ -259,13 +259,13 @@ static int storm_model_find_proc(int index, struct GMAModelEntry *entry)
     switch (index)
     {
     case 0:  // STM_RAIN00
-        work->rain00Model = entry->modelOffset;
+        work->rain00Model = entry->model;
         break;
     case 1:  // STM_RAIN01
-        work->rain01Model = entry->modelOffset;
+        work->rain01Model = entry->model;
         break;
     case 2:  // STM_RAIN02
-        work->rain02Model = entry->modelOffset;
+        work->rain02Model = entry->model;
         break;
     }
     return 1;

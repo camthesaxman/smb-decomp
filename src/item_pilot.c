@@ -79,14 +79,14 @@ void item_pilot_init(struct Item *item)
     if (item->subType < 3)
         item->modelLODs = pilotBananaInfo[item->subType].lodModelsPtr;
     else
-        item->modelLODs = minigameGma->modelEntries[pilotBananaInfo[item->subType].unk4].modelOffset;
+        item->modelLODs = minigameGma->modelEntries[pilotBananaInfo[item->subType].unk4].model;
     item->flags = 0x22;
     item->unk14 = pilotBananaInfo[item->subType].unk8;
     item->unk18 = 0.25f;
     item->rotVelX = pilotBananaInfo[item->subType].xrotSpeed;
     item->rotVelY = pilotBananaInfo[item->subType].yrotSpeed;
     item->rotVelZ = pilotBananaInfo[item->subType].zrotSpeed;
-    item->shadowModel = commonGma->modelEntries[polyshadow01].modelOffset;
+    item->shadowModel = commonGma->modelEntries[polyshadow01].model;
     item->shadowColor.r = 0x46;
     item->shadowColor.g = 0x47;
     item->shadowColor.b = 0x5F;
@@ -288,7 +288,7 @@ void item_pilot_draw(struct Item *item)
             }
             avdisp_set_bound_sphere_scale(scale);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].modelOffset);
+            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].model);
         }
         else
         {
@@ -332,12 +332,12 @@ void item_pilot_draw(struct Item *item)
                 break;
             }
             f30 = 1.0 + (((unpausedFrameCounter + item->unk2 * 10) % 60) * 0.033333333333333333);
-            avdisp_set_post_multiply_color(f1, f2, f3, 1.0f);
+            avdisp_set_post_mult_color(f1, f2, f3, 1.0f);
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].modelOffset);
-            avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
+            avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].model);
+            avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 }
