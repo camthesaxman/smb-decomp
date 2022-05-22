@@ -12,6 +12,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "world.h"
+#include "mouse.h"
 
 struct Event eventInfo[] =
 {

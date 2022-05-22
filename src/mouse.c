@@ -2,14 +2,13 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "mouse.h"
 #include "bitmap.h"
 #include "sprite.h"
 #include "input.h"
-#include "mouse.h"
 
 // sizeis all "short"
-struct Struct802BA190
-{
+struct Mouse {
     s16 posHorizontal;
     s16 posVertical;
     s16 unk04;
@@ -19,16 +18,16 @@ struct Struct802BA190
     s16 spriteIdx;
 };
 
-extern struct Struct802BA190 lbl_802BA190[1];
+extern struct Mouse lbl_802BA190[1];
 extern struct Sprite spriteInfo[];
 
 void ev_mouse_init(void)
 {
-    struct Struct802BA190 *_lbl_802BA190;
-    _lbl_802BA190 = &lbl_802BA190[0];
-    _lbl_802BA190->posHorizontal = 0x140;
-    _lbl_802BA190->posVertical = 0xf0;
-    _lbl_802BA190->spriteIdx = -1;
+    struct Mouse *_mouse;
+    _mouse = &lbl_802BA190[0];
+    _mouse->posHorizontal = 0x140;
+    _mouse->posVertical = 0xf0;
+    _mouse->spriteIdx = -1;
     return;
 }
 
@@ -50,44 +49,44 @@ void ev_mouse_dest(void){
     return;
 }
 
-void func_80095024(void)
+void ev_mouse_update(void)
 {
     struct NaomiSpriteParams _naomiSprite;
     struct Sprite *_spriteInfo;
-    struct Struct802BA190 *_lbl_802BA190;
+    struct Mouse *_mouse;
 
-    _lbl_802BA190 = &lbl_802BA190[0];
+    _mouse = &lbl_802BA190[0];
     if (
         (lbl_802F1EA8 == 0U)
     && ((dipSwitches & DIP_TEST_CAM) == 0)
     ) {
         _naomiSprite.bmpId = 0x1;
-        _naomiSprite.x = _lbl_802BA190->posHorizontal;
-        _naomiSprite.y = _lbl_802BA190->posVertical;
-        _naomiSprite.z = 0.01;
-        _naomiSprite.scaleX = 1.0;
-        _naomiSprite.scaleY = 1.0;
-        _naomiSprite.u1 = 0.0;
-        _naomiSprite.v1 = 0.0;
-        _naomiSprite.u2 = 1.0;
-        _naomiSprite.v2 = 1.0;
+        _naomiSprite.x = _mouse->posHorizontal;
+        _naomiSprite.y = _mouse->posVertical;
+        _naomiSprite.z = 0.01f;
+        _naomiSprite.scaleX = 1.0f;
+        _naomiSprite.scaleY = 1.0f;
+        _naomiSprite.u1 = 0.0f;
+        _naomiSprite.v1 = 0.0f;
+        _naomiSprite.u2 = 1.0f;
+        _naomiSprite.v2 = 1.0f;
         _naomiSprite.rotation = 0x0;
-        _naomiSprite.opacity = 1.0;
+        _naomiSprite.opacity = 1.0f;
         _naomiSprite.unk30 = -1;
         _naomiSprite.flags = 5;
         _naomiSprite.mulColor = -1;
         _naomiSprite.addColor = 0x0;
         draw_naomi_sprite(&_naomiSprite);
-        if ((s16) _lbl_802BA190->spriteIdx >= 0) {
-            _spriteInfo = &spriteInfo[_lbl_802BA190->spriteIdx];
+        if (_mouse->spriteIdx >= 0) {
+            _spriteInfo = &spriteInfo[_mouse->spriteIdx];
             reset_text_draw_settings();
-            set_text_pos( (f32) (_spriteInfo->left - 8), (f32)(_spriteInfo->top - 8) );
+            set_text_pos( (_spriteInfo->left - 8), (_spriteInfo->top - 8) );
             g_draw_text( "+" );
-            set_text_pos( (f32) (_spriteInfo->left - 8), (f32)(_spriteInfo->bottom) );
+            set_text_pos( (_spriteInfo->left - 8), _spriteInfo->bottom );
             g_draw_text( "+" );
-            set_text_pos( (f32) _spriteInfo->right, (f32)(_spriteInfo->top - 8) );
+            set_text_pos( _spriteInfo->right, (_spriteInfo->top - 8) );
             g_draw_text( "+" );
-            set_text_pos( (f32) _spriteInfo->right, (f32)(_spriteInfo->bottom) );
+            set_text_pos( _spriteInfo->right, _spriteInfo->bottom );
             g_draw_text( "+" );
         }
     }
