@@ -307,7 +307,7 @@ void draw_blur_bridge_accordions(void)
     stageAg = &decodedStageLzPtr->animGroups[1];
     for (i = 1; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageAg++)
     {
-        if (stageAg->unk7C > 0 && stageAg->anim != NULL2)
+        if (stageAg->stageModelCount > 0 && stageAg->anim != NULL2)
         {
             u32 flip;
             Vec accordionPos;
@@ -847,10 +847,10 @@ void func_80044E18(void)
     *r30 = NULL;
 
     r17_ = lbl_80209D48;
-    r30_ = decodedStageLzPtr->lvlModelsCount < 0x80 ? decodedStageLzPtr->lvlModelsCount : 0x80;
+    r30_ = decodedStageLzPtr->stageModelCount < 0x80 ? decodedStageLzPtr->stageModelCount : 0x80;
     // i = r26
     lbl_802F1F4C = 0;
-    r18 = decodedStageLzPtr->lvlModels;
+    r18 = decodedStageLzPtr->stageModels;
     for (i = 0; i < r30_; i++, r17_++, r18++)
     {
         struct NaomiObj ***r20 = lbl_801B8794;
@@ -866,7 +866,7 @@ void func_80044E18(void)
                 for (j = 0; r3[j] != NULL; j++)
                 {
                     int len =
-                        string_match_len(NLMODEL_HEADER(r3[j])->unk0 + 4, (void *)r18->nameOffset);
+                        string_match_len(NLMODEL_HEADER(r3[j])->unk0 + 4, r18->name);
                     if (len > r19)
                     {
                         r19 = len;
@@ -899,10 +899,10 @@ void func_80044E18(void)
     for (r6 = 0; r6 < animGroupCount; r6++, r7++, r5++)
     {
         r7->unk0 = (void *)&lbl_80209D48[r4];
-        r7->unk4 = r5->unk7C;
+        r7->unk4 = r5->stageModelCount;
         // r7++;
         // r5++;
-        r4 += r5->unk7C;
+        r4 += r5->stageModelCount;
     }
     *r29 = NULL;
 }
@@ -1215,7 +1215,7 @@ void compute_stage_bounding_sphere(void)
     Vec max;
     unsigned int r4 = FALSE;
 
-    if (decodedStageLzPtr->lvlModels == NULL2)
+    if (decodedStageLzPtr->stageModels == NULL2)
     {
         struct NaomiModel **r3 = (void *)lbl_80209488;
 
@@ -1472,7 +1472,7 @@ void func_800463E8(Vec *a, float *b)
         *a = aabbCenter;
         *b = result;
     }
-    else if (decodedStageLzPtr != NULL && decodedStageLzPtr->lvlModels != NULL)
+    else if (decodedStageLzPtr != NULL && decodedStageLzPtr->stageModels != NULL)
     {
         struct AnimGroupInfo *animGroup = animGroups;
         struct Struct8020A348 *iter2 = lbl_8020A348;
@@ -1736,14 +1736,14 @@ void load_stagedef(int stageId)
             coll->coliSpheres = OFFSET_TO_PTR(decodedStageLzPtr, coll->coliSpheres);
         if (coll->coliCylinders != NULL)
             coll->coliCylinders = OFFSET_TO_PTR(decodedStageLzPtr, coll->coliCylinders);
-        if (coll->unk80 != NULL)
+        if (coll->stageModels != NULL)
         {
-            struct DecodedStageLzPtr_child_child3 *r4;
+            struct StageModel *stageModel;
             int j;
 
-            coll->unk80 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk80);
-            for (j = 0, r4 = coll->unk80; j < coll->unk7C; j++, r4++)
-                r4->unk4 = OFFSET_TO_PTR(decodedStageLzPtr, r4->unk4);
+            coll->stageModels = OFFSET_TO_PTR(decodedStageLzPtr, coll->stageModels);
+            for (j = 0, stageModel = coll->stageModels; j < coll->stageModelCount; j++, stageModel++)
+                stageModel->name = OFFSET_TO_PTR(decodedStageLzPtr, stageModel->name);
         }
         if (coll->unk88 != NULL)
             coll->unk88 = OFFSET_TO_PTR(decodedStageLzPtr, coll->unk88);
@@ -1779,9 +1779,9 @@ void load_stagedef(int stageId)
     if (decodedStageLzPtr->coliCylinders != NULL)
         decodedStageLzPtr->coliCylinders =
             OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->coliCylinders);
-    if (decodedStageLzPtr->lvlModels != NULL)
-        decodedStageLzPtr->lvlModels =
-            OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->lvlModels);
+    if (decodedStageLzPtr->stageModels != NULL)
+        decodedStageLzPtr->stageModels =
+            OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->stageModels);
     if (decodedStageLzPtr->unk64 != NULL)
         decodedStageLzPtr->unk64 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk64);
     if (decodedStageLzPtr->reflObjs != NULL)
@@ -2110,7 +2110,7 @@ void stage_draw(void)
                 }
             }
         }
-        else if (decodedStageLzPtr->lvlModels == NULL)
+        else if (decodedStageLzPtr->stageModels == NULL)
         {
             struct AnimGroupInfo *animGroup;
             struct Struct802099E8 *r23;

@@ -306,13 +306,6 @@ struct StageAnimGroupAnim
     /*0x2C*/ struct Keyframe *posZKeyframes;
 };
 
-struct DecodedStageLzPtr_child_child3
-{
-    u8 filler0[4];
-    void *unk4;
-    u8 filler8[4];
-}; // size = 0xC
-
 struct DecodedStageLzPtr_child_child4
 {
     void *unk0;
@@ -385,8 +378,8 @@ struct StageAnimGroup
     struct StageColiSphere *coliSpheres;
     s32 coliCylinderCount;
     struct StageColiCylinder *coliCylinders;
-    s32 unk7C;
-    struct DecodedStageLzPtr_child_child3 *unk80;
+    s32 stageModelCount;
+    struct StageModel *stageModels;
     s32 unk84;
     struct StageCollHdr_child2 *unk88;
     s32 unk8C;
@@ -398,7 +391,7 @@ struct StageAnimGroup
 struct StageModel
 {
     u32 unk0;
-    u32 nameOffset;
+    char *name;
     float unk8;
 };
 
@@ -491,8 +484,8 @@ struct Stage
     struct ColiSphere *coliSpheres;
     s32 coliCylinderCount;
     struct ColiCylinder *coliCylinders;
-    /*0x58*/ s32 lvlModelsCount;
-    /*0x5C*/ struct StageModel *lvlModels;
+    /*0x58*/ s32 stageModelCount;
+    /*0x5C*/ struct StageModel *stageModels;
     u8 filler60[4];
     void *unk64;
     /*0x68*/ s32 bgModelsCount;
