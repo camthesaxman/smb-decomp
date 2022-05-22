@@ -378,8 +378,8 @@ struct StageAnimGroup
     struct StageColiSphere *coliSpheres;
     s32 coliCylinderCount;
     struct StageColiCylinder *coliCylinders;
-    s32 stageModelCount;
-    struct StageModel *stageModels;
+    s32 animGroupModelCount;
+    struct AnimGroupModel *animGroupModels;
     s32 unk84;
     struct StageCollHdr_child2 *unk88;
     s32 unk8C;
@@ -388,7 +388,7 @@ struct StageAnimGroup
     Vec unkB8;
 };  // size = 0xC4
 
-struct StageModel
+struct AnimGroupModel
 {
     u32 unk0;
     char *name;
@@ -484,8 +484,8 @@ struct Stage
     struct ColiSphere *coliSpheres;
     s32 coliCylinderCount;
     struct ColiCylinder *coliCylinders;
-    /*0x58*/ s32 stageModelCount;
-    /*0x5C*/ struct StageModel *stageModels;
+    /*0x58*/ s32 animGroupModelCount;
+    /*0x5C*/ struct AnimGroupModel *animGroupModels;
     u8 filler60[4];
     void *unk64;
     /*0x68*/ s32 bgModelsCount;
