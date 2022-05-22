@@ -290,53 +290,57 @@ void find_blur_bridge_accordion(void)
 
 void draw_blur_bridge_accordions(void)
 {
-    float t;
-    float f30;
+    float loopedTime;
+    float temp;
     struct AnimGroupInfo *animGroup;
     struct StageAnimGroup *stageAg;
     int i;
 
     if (blurBridgeAccordion == NULL2)
         return;
-    t = lbl_80206DEC.g_stageTimer / 60.0;
-    t += (float)decodedStageLzPtr->loopStartSeconds;
-    f30 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
-    t -= f30 * mathutil_floor(t / f30);
-    t += (float)decodedStageLzPtr->loopStartSeconds;
+    loopedTime = lbl_80206DEC.g_stageTimer / 60.0;
+    loopedTime += (float)decodedStageLzPtr->loopStartSeconds;
+    temp = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
+    loopedTime -= temp * mathutil_floor(loopedTime / temp);
+    loopedTime += (float)decodedStageLzPtr->loopStartSeconds;
     animGroup = &animGroups[1];
-    stageAg = decodedStageLzPtr->animGroups + 1;
+    stageAg = &decodedStageLzPtr->animGroups[1];
     for (i = 1; i < decodedStageLzPtr->animGroupCount; i++, animGroup++, stageAg++)
     {
         if (stageAg->unk7C > 0 && stageAg->anim != NULL2)
         {
-            u32 r28;
-            Vec sp10;
-            float f27 = animGroup->pos.x;
+            u32 flip;
+            Vec accordionPos;
+            float x = animGroup->pos.x;
 
-            f30 = f27;
+            // Compute X position of platform 0.5 second prior
+            temp = x;
             if (stageAg->anim->posXKeyframes != NULL2)
-                f30 = interpolate_keyframes(stageAg->anim->posXKeyframeCount,
+                temp = interpolate_keyframes(stageAg->anim->posXKeyframeCount,
                                             stageAg->anim->posXKeyframes,
-                                            t - 0.5);
+                                            loopedTime - 0.5);
+
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
-            if (f30 < f27)
+
+            // Position accordion 
+            if (temp < x)
             {
-                sp10.x = 0.5 * (f30 + f27) - 1.0;
-                f30 = f27 - f30;
-                r28 = 0;
+                accordionPos.x = 0.5 * (temp + x) - 1.0;
+                temp = x - temp;
+                flip = 0;
             }
             else
             {
-                sp10.x = 1.0 + 0.5 * (f30 + f27);
-                f30 = f30 - f27;
-                r28 = 1;
+                accordionPos.x = 1.0 + 0.5 * (temp + x);
+                temp = temp - x;
+                flip = 1;
             }
-            sp10.y = animGroup->pos.y;
-            sp10.z = animGroup->pos.z;
-            mathutil_mtxA_translate(&sp10);
-            if (r28)
+            accordionPos.y = animGroup->pos.y;
+            accordionPos.z = animGroup->pos.z;
+            mathutil_mtxA_translate(&accordionPos);
+            if (flip)
                 mathutil_mtxA_rotate_y(-0x8000);
-            mathutil_mtxA_scale_xyz(0.5 * f30, 1.0f, 1.0f);
+            mathutil_mtxA_scale_xyz(0.5 * temp, 1.0f, 1.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_translucent(blurBridgeAccordion);
