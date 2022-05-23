@@ -128,27 +128,27 @@ struct StageBgAnim
     struct Keyframe *translucencyKeyframes;
 };
 
-struct UnkStruct8005562C_child2_child
+struct StageBgWorldFlipbook
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s8 unk12;
+    Point3d pos;
+    s16 rotX;
+    s16 rotY;
+    s16 rotZ;
+    s8 id; // Which list of flipbook models to animate
 };
 
-struct UnkStruct8005562C_child2_child2
+struct StageBgBillboardFlipbook
 {
-    Vec unk0;
-    s8 unkC;
+    Point3d pos;
+    s8 id;
 };
 
-struct UnkStruct8005562C_child2
+struct StageBgFlipbook
 {
-    s32 unk0;
-    struct UnkStruct8005562C_child2_child *unk4;
-    s32 unk8;
-    struct UnkStruct8005562C_child2_child2 *unkC;
+    s32 worldFlipbookCount;
+    struct StageBgWorldFlipbook *worldFlipbooks;
+    s32 billboardFlipbookCount;
+    struct StageBgBillboardFlipbook *billboardFlipbooks;
 };
 
 struct StageBgModel;

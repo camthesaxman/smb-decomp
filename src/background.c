@@ -746,7 +746,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
             avdisp_draw_model_unculled_sort_all(model);
         }
         if (bgModels->unk34 != 0)
-            func_80055C6C(viewFromWorld, bgModels->unk34);
+            draw_flipbook_anims(viewFromWorld, bgModels->unk34);
         g_avdisp_set_some_func_1(0);
         if (customLightGroup > 0)
             pop_light_group();
@@ -881,29 +881,29 @@ s16 lbl_801B9AE8[] =
     0x26, 0x27,
 };
 
-void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
+void draw_flipbook_anims(Mtx viewFromWorld, struct StageBgFlipbook *b)
 {
     u8 unused[8];
     u32 r4;
 
-    if (b->unk4 != NULL)
+    if (b->worldFlipbooks != NULL)
     {
-        struct UnkStruct8005562C_child2_child *r26 = b->unk4;
+        struct StageBgWorldFlipbook *r26 = b->worldFlipbooks;
         int i;
 
-        for (i = 0; i < b->unk0; i++, r26++)
+        for (i = 0; i < b->worldFlipbookCount; i++, r26++)
         {
             int modelId;
 
-            mathutil_mtxA_from_mtx(mtx);
-            mathutil_mtxA_translate(&r26->unk0);
-            mathutil_mtxA_rotate_z(r26->unk10);
-            mathutil_mtxA_rotate_y(r26->unkE);
-            mathutil_mtxA_rotate_x(r26->unkC);
+            mathutil_mtxA_from_mtx(viewFromWorld);
+            mathutil_mtxA_translate(&r26->pos);
+            mathutil_mtxA_rotate_z(r26->rotZ);
+            mathutil_mtxA_rotate_y(r26->rotY);
+            mathutil_mtxA_rotate_x(r26->rotX);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             r4 = unpausedFrameCounter / 2;
-            switch (r26->unk12)
+            switch (r26->id)
             {
             default:
             case 65:
@@ -931,20 +931,20 @@ void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
             avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].model);
         }
     }
-    if (b->unkC != NULL)
+    if (b->billboardFlipbooks != NULL)
     {
-        struct UnkStruct8005562C_child2_child2 *r22 = b->unkC;
+        struct StageBgBillboardFlipbook *r22 = b->billboardFlipbooks;
         int i;
 
-        for (i = 0; i < b->unk8; i++, r22++)
+        for (i = 0; i < b->billboardFlipbookCount; i++, r22++)
         {
             int modelId;
-            mathutil_mtxA_from_mtx(mtx);
-            mathutil_mtxA_translate(&r22->unk0);
+            mathutil_mtxA_from_mtx(viewFromWorld);
+            mathutil_mtxA_translate(&r22->pos);
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-            r4 = (unpausedFrameCounter + r22->unkC * 4);
+            r4 = (unpausedFrameCounter + r22->id * 4);
             modelId = lbl_801B9AE8[r4 % 32];
             avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].model);
         }

@@ -1945,13 +1945,13 @@ void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
         (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }
 
-void func_800474D8(struct UnkStruct8005562C_child2 **unkp, struct Stage *baseptr)
+void func_800474D8(struct StageBgFlipbook **unkp, struct Stage *baseptr)
 {
     *unkp = OFFSET_TO_PTR(baseptr, *unkp);
-    if ((*unkp)->unk4 != NULL)
-        (*unkp)->unk4 = OFFSET_TO_PTR(baseptr, (*unkp)->unk4);
-    if ((*unkp)->unkC != NULL)
-        (*unkp)->unkC = OFFSET_TO_PTR(baseptr, (*unkp)->unkC);
+    if ((*unkp)->worldFlipbooks != NULL)
+        (*unkp)->worldFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->worldFlipbooks);
+    if ((*unkp)->billboardFlipbooks != NULL)
+        (*unkp)->billboardFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->billboardFlipbooks);
 }
 
 #pragma force_active on

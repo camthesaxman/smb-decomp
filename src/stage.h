@@ -287,7 +287,7 @@ struct StageBgModel
     /*0x2C*/ float translucency;
 
     /*0x30*/ struct StageBgAnim *anim;
-    /*0x34*/ struct UnkStruct8005562C_child2 *unk34;
+    /*0x34*/ struct StageBgFlipbook *unk34;
 };
 
 struct StageAnimGroupAnim
@@ -529,7 +529,7 @@ void load_stagedef(int stageId);
 void free_stagedef(void);
 void adjust_stage_anim_ptrs(struct StageAnimGroupAnim **, struct Stage *);
 void func_800473C0(struct StageBgAnim **, struct Stage *);
-void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
+void func_800474D8(struct StageBgFlipbook **, struct Stage *);
 void stage_draw(void);
 
 #endif
