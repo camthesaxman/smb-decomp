@@ -34,7 +34,7 @@ struct DynamicStagePart *dynamicStageParts;
 u16 lbl_802F1F40;
 struct TPL *decodedStageTplPtr;
 struct GMA *decodedStageGmaPtr;
-u32 lbl_802F1F34;
+struct GMAModel *g_stageBoxModel;
 struct Stage *decodedStageLzPtr;
 struct GMAModel *blurBridgeAccordion;
 int previewLoaded;
@@ -68,7 +68,8 @@ FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
 FORCE_BSS_ORDER(lbl_80206DEC)
 
-char *lbl_801B86D8[] = {
+char *goalModelNames[] =
+{
     "GOAL",
     "GOAL_G",
     "GOAL_R",
@@ -695,8 +696,8 @@ struct GMAModel *lbl_80209488[0x48];
 void *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct80209D48 lbl_80209D48[0x80];
-
-struct Struct8020A348 lbl_8020A348[0x108]; // 0x3648
+struct Struct8020A348 lbl_8020A348[0x48];  // 0x3648
+struct Struct80209D48 lbl_8020A588[0x80];  // 0x3888
 struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
 struct GMAModel *goalModels[3];
 struct Sphere stageBoundSphere;
@@ -707,12 +708,12 @@ FORCE_BSS_ORDER(lbl_802095A8)
 FORCE_BSS_ORDER(lbl_802099E8)
 FORCE_BSS_ORDER(lbl_80209D48)
 FORCE_BSS_ORDER(lbl_8020A348)
+FORCE_BSS_ORDER(lbl_8020A588)
 FORCE_BSS_ORDER(lbl_8020AB88)
 FORCE_BSS_ORDER(goalModels)
 FORCE_BSS_ORDER(stageBoundSphere)
 
-struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj,
-                                    (struct NaomiObj **)&naomiCommonObj, NULL};
+struct NaomiObj **lbl_801B8794[] = {&naomiStageObj, &naomiCommonObj, NULL};
 
 struct Struct80044E18
 {
@@ -912,23 +913,15 @@ asm void func_80044E18(void)
 #pragma peephole on
 #endif
 
-extern u32 lbl_802F1F34;
-char lbl_802F09D0[4] = "BOX";
+static struct GMA **gmaList[] = {&decodedStageGmaPtr, &decodedBgGma, NULL};
 
-#ifndef NONMATCHING
-asm void func_80045194(void)
+struct GMAModel *find_model_in_gma_list(char *name)
 {
-    nofralloc
-#include "../asm/nonmatchings/func_80045194.s"
-}
-#pragma peephole on
-#endif
-
-inline struct GMAModel *find_model_in_gma_list(struct GMA ***list, char *name)
-{
+    struct GMA ***list;
     struct GMAModel *model = NULL;
     int i;
 
+    list = gmaList;
     while (*list != NULL)
     {
         if (**list != NULL)
@@ -944,14 +937,101 @@ inline struct GMAModel *find_model_in_gma_list(struct GMA ***list, char *name)
     return model;
 }
 
-struct GMAModel *find_stage_or_bg_model(char *name)
+struct GMAModel *find_model_in_gma_list_2(char *name, int start, int len)
 {
-    static struct GMA **gmaList[] = {&decodedStageGmaPtr, &decodedBgGma, NULL};
+    struct GMA ***list;
+    struct GMAModel *model = NULL;
+    int i;
 
-    return find_model_in_gma_list(gmaList, name);
+    list = gmaList;
+    while (*list != NULL)
+    {
+        if (**list != NULL)
+        {
+            for (i = 0; i < (int)(**list)->numModels; i++)
+            {
+                int match = string_match_len(name, (**list)->modelEntries[i].name + start);
+                if (match > len)
+                {
+                    len = match;
+                    model = (**list)->modelEntries[i].modelOffset;
+                }
+            }
+        }
+        list++;
+    }
+    return model;
 }
 
-int string_match_len(s8 *, s8 *);
+void func_80045194(void)
+{
+    struct GMAModel *model;
+    int phi_r27;
+    int i;
+    struct Struct80209D48 *phi_r24;
+    struct StageModel *phi_r25;
+    struct StageBgModel *phi_r24_2;
+    struct StageAnimGroup *phi_r5;
+    int phi_r6;
+    struct Struct8020A348 *phi_r7;
+    int len;
+
+    phi_r24 = lbl_8020A588;
+    phi_r27 = MIN(decodedStageLzPtr->lvlModelsCount, 0x80);
+    phi_r25 = decodedStageLzPtr->lvlModels;
+    for (i = 0; i < phi_r27; i++, phi_r25++, phi_r24++)
+    {
+        model = find_model_in_gma_list(phi_r25->nameOffset);
+        if (model == NULL && (gamePauseStatus & 4))
+            printf("warning %s : no match\n", phi_r25->nameOffset);
+        phi_r24->unk4 = model;
+        phi_r24->unk0 = phi_r25->unk0;
+        phi_r24->unk8 = phi_r25->unk8;
+    }
+
+    phi_r7 = lbl_8020AB88;
+    phi_r6 = 0;
+    phi_r5 = decodedStageLzPtr->animGroups;
+    for (i = 0; i < animGroupCount; i++, phi_r7++)
+    {
+        phi_r7->unk0 = (void *)&lbl_8020A588[phi_r6];
+        phi_r7->unk4 = phi_r5->unk7C;
+        phi_r6 += phi_r5->unk7C;
+        phi_r5++;
+    }
+
+    phi_r24_2 = decodedStageLzPtr->bgModels;
+    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, phi_r24_2++)
+    {
+        model = find_model_in_gma_list(phi_r24_2->name);
+        if (model == NULL && (gamePauseStatus & 4))
+            printf("warning BG %s : no match\n", phi_r24_2->name);
+        phi_r24_2->model = model;
+    }
+
+    phi_r24_2 = decodedStageLzPtr->fgModels;
+    for (i = 0; i < decodedStageLzPtr->fgModelCount; i++, phi_r24_2++)
+    {
+        model = find_model_in_gma_list(phi_r24_2->name);
+        if (model == NULL && (gamePauseStatus & 4))
+            printf("warning MV %s : no match\n", phi_r24_2->name);
+        phi_r24_2->model = model;
+    }
+
+    for (i = 0; i < 3; i++)
+    {
+        len = strlen(goalModelNames[i]) - 1;
+        goalModels[i] = find_model_in_gma_list_2(goalModelNames[i], 4, len);
+    }
+
+    len = strlen("BOX") - 1;
+    g_stageBoxModel = find_model_in_gma_list_2("BOX", 4, len);
+}
+
+struct GMAModel *find_stage_or_bg_model(char *name)
+{
+    return find_model_in_gma_list(name);
+}
 
 void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
 {
@@ -1089,12 +1169,6 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
     vtx.y += mathutil_sin(angle) * amplitude;
     *vtxp = vtx;
 }
-
-#define lbl_802F3760 0.5
-#define lbl_802F3770 -0.030833333333333333
-#define lbl_802F3778 -1092.0f
-#define lbl_802F377C 30.0f
-#define lbl_802F3780 16384.0
 
 u32 bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal)
 {
@@ -1627,9 +1701,6 @@ void g_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of g_some_stage_vtx_
     lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
 }
 
-char string_warning__s___no_match_n[] = "warning %s : no match\n";
-char string_warning_BG__s___no_match_n[] = "warning BG %s : no match\n";
-char string_warning_MV__s___no_match_n[] = "warning MV %s : no match\n";
 u8 lbl_801B87FC[] = {1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0};
 
 u8 lbl_8020AE00[0x20] __attribute__((aligned(32)));

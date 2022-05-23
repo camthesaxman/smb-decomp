@@ -398,7 +398,7 @@ struct StageAnimGroup
 struct StageModel
 {
     u32 unk0;
-    u32 nameOffset;
+    char *nameOffset;
     float unk8;
 };
 

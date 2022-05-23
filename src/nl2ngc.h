@@ -15,9 +15,9 @@ struct NaomiVtxWithNormal
 struct NaomiVtxWithColor
 {
     /*0x00*/ float x, y, z;
-    /*0x0C*/ u8 fillerC[4];
+    /*0x0C*/ u32 unkC;
     /*0x10*/ u32 color;
-    /*0x14*/ u8 filler14[4];
+    /*0x14*/ u32 unk14;
     /*0x18*/ float s, t;
 };
 

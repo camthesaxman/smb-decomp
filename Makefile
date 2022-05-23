@@ -112,7 +112,7 @@ SOURCES := \
 	src/world.c \
 	src/interpolate_keyframes.c \
 	src/stage.c \
-	asm/stage.s \
+	src/code_8.c \
 	asm/recplay.s \
 	asm/effect.s \
 	src/background.c \
