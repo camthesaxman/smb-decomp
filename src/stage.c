@@ -1620,25 +1620,6 @@ float func_80046884(struct NaomiModel *model)
     return lbl_8020ADE4.unk10;
 }
 
-static inline float vec_sq_mag(register Vec *v)
-{
-    register float x, y, z;
-#ifdef __MWERKS__
-    asm
-    {
-        lfs x, v->x
-        lfs y, v->y
-        lfs z, v->z
-        fmuls x, x, x
-        fmadds x, y, y, x
-        fmadds x, z, z, x
-    }
-    return x;
-#else
-    return v->x * v->x + v->y * v->y + v->z * v->z;
-#endif
-}
-
 void g_some_stage_vtx_callback_1(Point3d *vtx)
 {
     Vec spC;
@@ -1647,7 +1628,7 @@ void g_some_stage_vtx_callback_1(Point3d *vtx)
     spC.x = vtx->x - lbl_8020ADE4.unk0.x;
     spC.z = vtx->z - lbl_8020ADE4.unk0.z;
     spC.y = 0.0f;
-    f1 = vec_sq_mag(&spC);
+    f1 = mathutil_vec_sq_len(&spC);
     if (f1 < lbl_8020ADE4.unkC)
         return;
     lbl_8020ADE4.unkC = f1;
@@ -1662,7 +1643,7 @@ void g_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of g_some_stage_vtx_
     spC.x = vtx->x - lbl_8020ADE4.unk0.x;
     spC.z = vtx->z - lbl_8020ADE4.unk0.z;
     spC.y = 0.0f;
-    f1 = vec_sq_mag(&spC);
+    f1 = mathutil_vec_sq_len(&spC);
     if (f1 < lbl_8020ADE4.unkC)
         return;
     lbl_8020ADE4.unkC = f1;
