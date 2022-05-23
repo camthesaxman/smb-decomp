@@ -746,7 +746,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
             avdisp_draw_model_unculled_sort_all(model);
         }
         if (bgModels->unk34 != 0)
-            draw_flipbook_anims(viewFromWorld, bgModels->unk34);
+            draw_bg_flipbooks(viewFromWorld, bgModels->unk34);
         g_avdisp_set_some_func_1(0);
         if (customLightGroup > 0)
             pop_light_group();
@@ -881,7 +881,7 @@ s16 lbl_801B9AE8[] =
     0x26, 0x27,
 };
 
-void draw_flipbook_anims(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
+void draw_bg_flipbooks(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
 {
     u8 unused[8];
     u32 t;
