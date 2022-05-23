@@ -1170,12 +1170,6 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
     *vtxp = vtx;
 }
 
-#define lbl_802F3760 0.5
-#define lbl_802F3770 -0.030833333333333333
-#define lbl_802F3778 -1092.0f
-#define lbl_802F377C 30.0f
-#define lbl_802F3780 16384.0
-
 u32 bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal)
 {
     float f1;
