@@ -2,6 +2,333 @@
 
 .section .text
 
+.global func_800487B4
+func_800487B4:
+/* 800487B4 000446D4  7C 08 02 A6 */	mflr r0
+/* 800487B8 000446D8  3C 60 80 21 */	lis r3, lbl_8020AE20@ha
+/* 800487BC 000446DC  90 01 00 04 */	stw r0, 4(r1)
+/* 800487C0 000446E0  94 21 FF 90 */	stwu r1, -0x70(r1)
+/* 800487C4 000446E4  93 E1 00 6C */	stw r31, 0x6c(r1)
+/* 800487C8 000446E8  3B E3 AE 20 */	addi r31, r3, lbl_8020AE20@l
+/* 800487CC 000446EC  93 C1 00 68 */	stw r30, 0x68(r1)
+/* 800487D0 000446F0  93 A1 00 64 */	stw r29, 0x64(r1)
+/* 800487D4 000446F4  80 0D 88 00 */	lwz r0, lbl_802F09E0@sda21(r13)
+/* 800487D8 000446F8  28 00 00 00 */	cmplwi r0, 0
+/* 800487DC 000446FC  41 82 02 00 */	beq lbl_800489DC
+/* 800487E0 00044700  38 6D 88 04 */	addi r3, r13, lbl_802F09E4@sda21
+/* 800487E4 00044704  48 08 35 E9 */	bl DVDChangeDir
+/* 800487E8 00044708  3C 60 80 1C */	lis r3, lbl_801B8858@ha
+/* 800487EC 0004470C  38 63 88 58 */	addi r3, r3, lbl_801B8858@l
+/* 800487F0 00044710  38 81 00 20 */	addi r4, r1, 0x20
+/* 800487F4 00044714  48 08 32 C9 */	bl DVDOpen
+/* 800487F8 00044718  2C 03 00 00 */	cmpwi r3, 0
+/* 800487FC 0004471C  41 82 00 40 */	beq lbl_8004883C
+/* 80048800 00044720  3C 60 00 04 */	lis r3, 0x00045C28@ha
+/* 80048804 00044724  80 81 00 54 */	lwz r4, 0x54(r1)
+/* 80048808 00044728  38 03 5C 28 */	addi r0, r3, 0x00045C28@l
+/* 8004880C 0004472C  7C 04 00 40 */	cmplw r4, r0
+/* 80048810 00044730  40 80 00 08 */	bge lbl_80048818
+/* 80048814 00044734  48 00 00 08 */	b lbl_8004881C
+lbl_80048818:
+/* 80048818 00044738  7C 04 03 78 */	mr r4, r0
+lbl_8004881C:
+/* 8004881C 0004473C  38 04 00 1F */	addi r0, r4, 0x1f
+/* 80048820 00044740  38 61 00 20 */	addi r3, r1, 0x20
+/* 80048824 00044744  38 9F 00 20 */	addi r4, r31, 0x20
+/* 80048828 00044748  54 05 00 34 */	rlwinm r5, r0, 0, 0, 0x1a
+/* 8004882C 0004474C  38 C0 00 00 */	li r6, 0
+/* 80048830 00044750  48 06 43 8D */	bl g_read_dvd_file
+/* 80048834 00044754  38 61 00 20 */	addi r3, r1, 0x20
+/* 80048838 00044758  48 08 33 4D */	bl DVDClose
+lbl_8004883C:
+/* 8004883C 0004475C  38 6D 88 0C */	addi r3, r13, lbl_802F09EC@sda21
+/* 80048840 00044760  48 08 35 8D */	bl DVDChangeDir
+/* 80048844 00044764  80 0D 9C FC */	lwz r0, dipSwitches@sda21(r13)
+/* 80048848 00044768  38 60 65 78 */	li r3, 0x6578
+/* 8004884C 0004476C  90 6D 9D 88 */	stw r3, lbl_802F1F68@sda21(r13)
+/* 80048850 00044770  54 00 07 FF */	clrlwi. r0, r0, 0x1f
+/* 80048854 00044774  40 82 00 38 */	bne lbl_8004888C
+/* 80048858 00044778  3B BF 00 20 */	addi r29, r31, 0x20
+/* 8004885C 0004477C  3B C0 00 0B */	li r30, 0xb
+lbl_80048860:
+/* 80048860 00044780  7F A3 EB 78 */	mr r3, r29
+/* 80048864 00044784  48 00 27 55 */	bl func_8004AFB8
+/* 80048868 00044788  2C 03 00 00 */	cmpwi r3, 0
+/* 8004886C 0004478C  40 82 00 14 */	bne lbl_80048880
+/* 80048870 00044790  38 7D 00 00 */	addi r3, r29, 0
+/* 80048874 00044794  38 80 00 00 */	li r4, 0
+/* 80048878 00044798  38 A0 65 78 */	li r5, 0x6578
+/* 8004887C 0004479C  4B FB AA A5 */	bl memset
+lbl_80048880:
+/* 80048880 000447A0  37 DE FF FF */	addic. r30, r30, -1
+/* 80048884 000447A4  3B BD 65 78 */	addi r29, r29, 0x6578
+/* 80048888 000447A8  41 81 FF D8 */	bgt lbl_80048860
+lbl_8004888C:
+/* 8004888C 000447AC  48 00 26 15 */	bl func_8004AEA0
+/* 80048890 000447B0  2C 03 00 00 */	cmpwi r3, 0
+/* 80048894 000447B4  41 80 00 34 */	blt lbl_800488C8
+/* 80048898 000447B8  1C 03 65 78 */	mulli r0, r3, 0x6578
+/* 8004889C 000447BC  7F DF 02 14 */	add r30, r31, r0
+/* 800488A0 000447C0  3C 7F 00 02 */	addis r3, r31, 2
+/* 800488A4 000447C4  3B DE 00 20 */	addi r30, r30, 0x20
+/* 800488A8 000447C8  38 9E 00 00 */	addi r4, r30, 0
+/* 800488AC 000447CC  38 A0 65 78 */	li r5, 0x6578
+/* 800488B0 000447D0  38 63 60 F0 */	addi r3, r3, 0x60f0
+/* 800488B4 000447D4  4B FB AB 61 */	bl memcpy
+/* 800488B8 000447D8  38 7E 00 00 */	addi r3, r30, 0
+/* 800488BC 000447DC  38 80 00 00 */	li r4, 0
+/* 800488C0 000447E0  38 A0 65 78 */	li r5, 0x6578
+/* 800488C4 000447E4  4B FB AA 5D */	bl memset
+lbl_800488C8:
+/* 800488C8 000447E8  48 00 23 1D */	bl func_8004ABE4
+/* 800488CC 000447EC  38 00 00 00 */	li r0, 0
+/* 800488D0 000447F0  B0 1F 00 00 */	sth r0, 0(r31)
+/* 800488D4 000447F4  38 81 00 14 */	addi r4, r1, 0x14
+/* 800488D8 000447F8  38 6D 88 04 */	addi r3, r13, lbl_802F09E4@sda21
+/* 800488DC 000447FC  B0 1F 00 02 */	sth r0, 2(r31)
+/* 800488E0 00044800  B0 1F 00 04 */	sth r0, 4(r31)
+/* 800488E4 00044804  B0 1F 00 06 */	sth r0, 6(r31)
+/* 800488E8 00044808  B0 1F 00 08 */	sth r0, 8(r31)
+/* 800488EC 0004480C  B0 1F 00 0A */	sth r0, 0xa(r31)
+/* 800488F0 00044810  B0 1F 00 0C */	sth r0, 0xc(r31)
+/* 800488F4 00044814  B0 1F 00 0E */	sth r0, 0xe(r31)
+/* 800488F8 00044818  48 08 36 25 */	bl DVDOpenDir
+/* 800488FC 0004481C  2C 03 00 00 */	cmpwi r3, 0
+/* 80048900 00044820  41 82 00 D8 */	beq lbl_800489D8
+/* 80048904 00044824  3B A0 00 00 */	li r29, 0
+/* 80048908 00044828  3B C0 00 00 */	li r30, 0
+/* 8004890C 0004482C  48 00 00 24 */	b lbl_80048930
+lbl_80048910:
+/* 80048910 00044830  80 01 00 0C */	lwz r0, 0xc(r1)
+/* 80048914 00044834  2C 00 00 00 */	cmpwi r0, 0
+/* 80048918 00044838  40 82 00 18 */	bne lbl_80048930
+/* 8004891C 0004483C  80 61 00 10 */	lwz r3, 0x10(r1)
+/* 80048920 00044840  3B BD 00 01 */	addi r29, r29, 1
+/* 80048924 00044844  48 0B E2 3D */	bl strlen
+/* 80048928 00044848  7F C3 F2 14 */	add r30, r3, r30
+/* 8004892C 0004484C  3B DE 00 01 */	addi r30, r30, 1
+lbl_80048930:
+/* 80048930 00044850  38 61 00 14 */	addi r3, r1, 0x14
+/* 80048934 00044854  38 81 00 08 */	addi r4, r1, 8
+/* 80048938 00044858  48 08 36 69 */	bl DVDReadDir
+/* 8004893C 0004485C  2C 03 00 00 */	cmpwi r3, 0
+/* 80048940 00044860  40 82 FF D0 */	bne lbl_80048910
+/* 80048944 00044864  38 1E 00 1F */	addi r0, r30, 0x1f
+/* 80048948 00044868  93 AD 9D 8C */	stw r29, lbl_802F1F6C@sda21(r13)
+/* 8004894C 0004486C  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
+/* 80048950 00044870  54 04 00 34 */	rlwinm r4, r0, 0, 0, 0x1a
+/* 80048954 00044874  48 07 9D 79 */	bl OSAllocFromHeap
+/* 80048958 00044878  57 A4 10 3A */	slwi r4, r29, 2
+/* 8004895C 0004487C  38 A3 00 00 */	addi r5, r3, 0
+/* 80048960 00044880  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
+/* 80048964 00044884  38 04 00 1F */	addi r0, r4, 0x1f
+/* 80048968 00044888  3B A5 00 00 */	addi r29, r5, 0
+/* 8004896C 0004488C  54 04 00 34 */	rlwinm r4, r0, 0, 0, 0x1a
+/* 80048970 00044890  48 07 9D 5D */	bl OSAllocFromHeap
+/* 80048974 00044894  80 81 00 14 */	lwz r4, 0x14(r1)
+/* 80048978 00044898  90 6D 9D 90 */	stw r3, lbl_802F1F70@sda21(r13)
+/* 8004897C 0004489C  38 04 00 01 */	addi r0, r4, 1
+/* 80048980 000448A0  90 01 00 18 */	stw r0, 0x18(r1)
+/* 80048984 000448A4  83 CD 9D 90 */	lwz r30, lbl_802F1F70@sda21(r13)
+/* 80048988 000448A8  48 00 00 34 */	b lbl_800489BC
+lbl_8004898C:
+/* 8004898C 000448AC  80 01 00 0C */	lwz r0, 0xc(r1)
+/* 80048990 000448B0  2C 00 00 00 */	cmpwi r0, 0
+/* 80048994 000448B4  40 82 00 28 */	bne lbl_800489BC
+/* 80048998 000448B8  7F A3 EB 78 */	mr r3, r29
+/* 8004899C 000448BC  80 81 00 10 */	lwz r4, 0x10(r1)
+/* 800489A0 000448C0  48 0B E1 0D */	bl strcpy
+/* 800489A4 000448C4  93 BE 00 00 */	stw r29, 0(r30)
+/* 800489A8 000448C8  3B DE 00 04 */	addi r30, r30, 4
+/* 800489AC 000448CC  80 61 00 10 */	lwz r3, 0x10(r1)
+/* 800489B0 000448D0  48 0B E1 B1 */	bl strlen
+/* 800489B4 000448D4  7F A3 EA 14 */	add r29, r3, r29
+/* 800489B8 000448D8  3B BD 00 01 */	addi r29, r29, 1
+lbl_800489BC:
+/* 800489BC 000448DC  38 61 00 14 */	addi r3, r1, 0x14
+/* 800489C0 000448E0  38 81 00 08 */	addi r4, r1, 8
+/* 800489C4 000448E4  48 08 35 DD */	bl DVDReadDir
+/* 800489C8 000448E8  2C 03 00 00 */	cmpwi r3, 0
+/* 800489CC 000448EC  40 82 FF C0 */	bne lbl_8004898C
+/* 800489D0 000448F0  38 61 00 14 */	addi r3, r1, 0x14
+/* 800489D4 000448F4  48 08 36 71 */	bl DVDCloseDir
+lbl_800489D8:
+/* 800489D8 000448F8  48 00 25 E9 */	bl func_8004AFC0
+lbl_800489DC:
+/* 800489DC 000448FC  80 01 00 74 */	lwz r0, 0x74(r1)
+/* 800489E0 00044900  83 E1 00 6C */	lwz r31, 0x6c(r1)
+/* 800489E4 00044904  83 C1 00 68 */	lwz r30, 0x68(r1)
+/* 800489E8 00044908  7C 08 03 A6 */	mtlr r0
+/* 800489EC 0004490C  83 A1 00 64 */	lwz r29, 0x64(r1)
+/* 800489F0 00044910  38 21 00 70 */	addi r1, r1, 0x70
+/* 800489F4 00044914  4E 80 00 20 */	blr
+
+.global func_800489F8
+func_800489F8:
+/* 800489F8 00044918  7C 08 02 A6 */	mflr r0
+/* 800489FC 0004491C  3C 60 80 21 */	lis r3, lbl_8020AE20@ha
+/* 80048A00 00044920  90 01 00 04 */	stw r0, 4(r1)
+/* 80048A04 00044924  94 21 FF 98 */	stwu r1, -0x68(r1)
+/* 80048A08 00044928  DB E1 00 60 */	stfd f31, 0x60(r1)
+/* 80048A0C 0004492C  BF 61 00 4C */	stmw r27, 0x4c(r1)
+/* 80048A10 00044930  3B E3 AE 20 */	addi r31, r3, lbl_8020AE20@l
+/* 80048A14 00044934  80 0D 9D 90 */	lwz r0, lbl_802F1F70@sda21(r13)
+/* 80048A18 00044938  28 00 00 00 */	cmplwi r0, 0
+/* 80048A1C 0004493C  41 82 01 A0 */	beq lbl_80048BBC
+/* 80048A20 00044940  80 0D 9D 8C */	lwz r0, lbl_802F1F6C@sda21(r13)
+/* 80048A24 00044944  2C 00 00 00 */	cmpwi r0, 0
+/* 80048A28 00044948  40 82 00 08 */	bne lbl_80048A30
+/* 80048A2C 0004494C  48 00 01 90 */	b lbl_80048BBC
+lbl_80048A30:
+/* 80048A30 00044950  48 0B DE 35 */	bl rand
+/* 80048A34 00044954  3C 80 2A AB */	lis r4, 0x2AAAAAAB@ha
+/* 80048A38 00044958  54 65 04 7E */	clrlwi r5, r3, 0x11
+/* 80048A3C 0004495C  38 04 AA AB */	addi r0, r4, 0x2AAAAAAB@l
+/* 80048A40 00044960  7C 60 28 96 */	mulhw r3, r0, r5
+/* 80048A44 00044964  54 60 0F FE */	srwi r0, r3, 0x1f
+/* 80048A48 00044968  7C 03 02 14 */	add r0, r3, r0
+/* 80048A4C 0004496C  1C 00 00 06 */	mulli r0, r0, 6
+/* 80048A50 00044970  7C 60 28 50 */	subf r3, r0, r5
+/* 80048A54 00044974  3B A3 00 01 */	addi r29, r3, 1
+/* 80048A58 00044978  38 6D 88 04 */	addi r3, r13, lbl_802F09E4@sda21
+/* 80048A5C 0004497C  48 08 33 71 */	bl DVDChangeDir
+/* 80048A60 00044980  48 0B DE 05 */	bl rand
+/* 80048A64 00044984  80 AD 9D 8C */	lwz r5, lbl_802F1F6C@sda21(r13)
+/* 80048A68 00044988  54 66 04 7E */	clrlwi r6, r3, 0x11
+/* 80048A6C 0004498C  80 6D 9D 90 */	lwz r3, lbl_802F1F70@sda21(r13)
+/* 80048A70 00044990  38 81 00 08 */	addi r4, r1, 8
+/* 80048A74 00044994  7C 06 2B D6 */	divw r0, r6, r5
+/* 80048A78 00044998  7C 00 29 D6 */	mullw r0, r0, r5
+/* 80048A7C 0004499C  7C 00 30 50 */	subf r0, r0, r6
+/* 80048A80 000449A0  54 00 10 3A */	slwi r0, r0, 2
+/* 80048A84 000449A4  7C 63 00 2E */	lwzx r3, r3, r0
+/* 80048A88 000449A8  48 08 30 35 */	bl DVDOpen
+/* 80048A8C 000449AC  2C 03 00 00 */	cmpwi r3, 0
+/* 80048A90 000449B0  41 82 01 00 */	beq lbl_80048B90
+/* 80048A94 000449B4  1C 1D 65 78 */	mulli r0, r29, 0x6578
+/* 80048A98 000449B8  80 61 00 3C */	lwz r3, 0x3c(r1)
+/* 80048A9C 000449BC  7C 03 00 40 */	cmplw r3, r0
+/* 80048AA0 000449C0  40 80 00 08 */	bge lbl_80048AA8
+/* 80048AA4 000449C4  48 00 00 08 */	b lbl_80048AAC
+lbl_80048AA8:
+/* 80048AA8 000449C8  7C 03 03 78 */	mr r3, r0
+lbl_80048AAC:
+/* 80048AAC 000449CC  38 03 00 1F */	addi r0, r3, 0x1f
+/* 80048AB0 000449D0  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
+/* 80048AB4 000449D4  54 1C 00 34 */	rlwinm r28, r0, 0, 0, 0x1a
+/* 80048AB8 000449D8  38 9C 00 00 */	addi r4, r28, 0
+/* 80048ABC 000449DC  48 07 9C 11 */	bl OSAllocFromHeap
+/* 80048AC0 000449E0  7C 7B 1B 79 */	or. r27, r3, r3
+/* 80048AC4 000449E4  41 82 00 C4 */	beq lbl_80048B88
+/* 80048AC8 000449E8  38 9B 00 00 */	addi r4, r27, 0
+/* 80048ACC 000449EC  38 BC 00 00 */	addi r5, r28, 0
+/* 80048AD0 000449F0  38 61 00 08 */	addi r3, r1, 8
+/* 80048AD4 000449F4  38 C0 00 00 */	li r6, 0
+/* 80048AD8 000449F8  48 06 40 E5 */	bl g_read_dvd_file
+/* 80048ADC 000449FC  CB E2 90 08 */	lfd f31, lbl_802F3808@sda21(r2)
+/* 80048AE0 00044A00  7F 7C DB 78 */	mr r28, r27
+/* 80048AE4 00044A04  48 00 00 54 */	b lbl_80048B38
+lbl_80048AE8:
+/* 80048AE8 00044A08  C0 1C 00 0C */	lfs f0, 0xc(r28)
+/* 80048AEC 00044A0C  FC 1F 00 00 */	fcmpu cr0, f31, f0
+/* 80048AF0 00044A10  41 82 00 40 */	beq lbl_80048B30
+/* 80048AF4 00044A14  88 1C 00 02 */	lbz r0, 2(r28)
+/* 80048AF8 00044A18  28 00 00 00 */	cmplwi r0, 0
+/* 80048AFC 00044A1C  41 82 00 34 */	beq lbl_80048B30
+/* 80048B00 00044A20  48 00 03 79 */	bl func_80048E78
+/* 80048B04 00044A24  1C 03 65 78 */	mulli r0, r3, 0x6578
+/* 80048B08 00044A28  7F DF 02 14 */	add r30, r31, r0
+/* 80048B0C 00044A2C  3B DE 00 20 */	addi r30, r30, 0x20
+/* 80048B10 00044A30  38 7E 00 00 */	addi r3, r30, 0
+/* 80048B14 00044A34  48 00 21 DD */	bl func_8004ACF0
+/* 80048B18 00044A38  38 7E 00 00 */	addi r3, r30, 0
+/* 80048B1C 00044A3C  38 9C 00 00 */	addi r4, r28, 0
+/* 80048B20 00044A40  38 A0 65 78 */	li r5, 0x6578
+/* 80048B24 00044A44  4B FB A8 F1 */	bl memcpy
+/* 80048B28 00044A48  7F C3 F3 78 */	mr r3, r30
+/* 80048B2C 00044A4C  48 00 21 3D */	bl func_8004AC68
+lbl_80048B30:
+/* 80048B30 00044A50  3B BD FF FF */	addi r29, r29, -1
+/* 80048B34 00044A54  3B 9C 65 78 */	addi r28, r28, 0x6578
+lbl_80048B38:
+/* 80048B38 00044A58  2C 1D 00 00 */	cmpwi r29, 0
+/* 80048B3C 00044A5C  41 81 FF AC */	bgt lbl_80048AE8
+/* 80048B40 00044A60  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
+/* 80048B44 00044A64  7F 64 DB 78 */	mr r4, r27
+/* 80048B48 00044A68  48 07 9C 81 */	bl OSFreeToHeap
+/* 80048B4C 00044A6C  48 00 23 55 */	bl func_8004AEA0
+/* 80048B50 00044A70  2C 03 00 00 */	cmpwi r3, 0
+/* 80048B54 00044A74  41 80 00 34 */	blt lbl_80048B88
+/* 80048B58 00044A78  1C 03 65 78 */	mulli r0, r3, 0x6578
+/* 80048B5C 00044A7C  7F DF 02 14 */	add r30, r31, r0
+/* 80048B60 00044A80  3C 7F 00 02 */	addis r3, r31, 2
+/* 80048B64 00044A84  3B DE 00 20 */	addi r30, r30, 0x20
+/* 80048B68 00044A88  38 9E 00 00 */	addi r4, r30, 0
+/* 80048B6C 00044A8C  38 A0 65 78 */	li r5, 0x6578
+/* 80048B70 00044A90  38 63 60 F0 */	addi r3, r3, 0x60f0
+/* 80048B74 00044A94  4B FB A8 A1 */	bl memcpy
+/* 80048B78 00044A98  38 7E 00 00 */	addi r3, r30, 0
+/* 80048B7C 00044A9C  38 80 00 00 */	li r4, 0
+/* 80048B80 00044AA0  38 A0 65 78 */	li r5, 0x6578
+/* 80048B84 00044AA4  4B FB A7 9D */	bl memset
+lbl_80048B88:
+/* 80048B88 00044AA8  38 61 00 08 */	addi r3, r1, 8
+/* 80048B8C 00044AAC  48 08 2F F9 */	bl DVDClose
+lbl_80048B90:
+/* 80048B90 00044AB0  38 6D 88 0C */	addi r3, r13, lbl_802F09EC@sda21
+/* 80048B94 00044AB4  48 08 32 39 */	bl DVDChangeDir
+/* 80048B98 00044AB8  38 00 00 0B */	li r0, 0xb
+/* 80048B9C 00044ABC  C0 22 90 10 */	lfs f1, lbl_802F3810@sda21(r2)
+/* 80048BA0 00044AC0  7C 09 03 A6 */	mtctr r0
+/* 80048BA4 00044AC4  38 7F 00 20 */	addi r3, r31, 0x20
+lbl_80048BA8:
+/* 80048BA8 00044AC8  C0 03 00 0C */	lfs f0, 0xc(r3)
+/* 80048BAC 00044ACC  EC 00 00 72 */	fmuls f0, f0, f1
+/* 80048BB0 00044AD0  D0 03 00 0C */	stfs f0, 0xc(r3)
+/* 80048BB4 00044AD4  38 63 65 78 */	addi r3, r3, 0x6578
+/* 80048BB8 00044AD8  42 00 FF F0 */	bdnz lbl_80048BA8
+lbl_80048BBC:
+/* 80048BBC 00044ADC  BB 61 00 4C */	lmw r27, 0x4c(r1)
+/* 80048BC0 00044AE0  80 01 00 6C */	lwz r0, 0x6c(r1)
+/* 80048BC4 00044AE4  CB E1 00 60 */	lfd f31, 0x60(r1)
+/* 80048BC8 00044AE8  38 21 00 68 */	addi r1, r1, 0x68
+/* 80048BCC 00044AEC  7C 08 03 A6 */	mtlr r0
+/* 80048BD0 00044AF0  4E 80 00 20 */	blr
+
+.global func_80048BD4
+func_80048BD4:
+/* 80048BD4 00044AF4  7C 08 02 A6 */	mflr r0
+/* 80048BD8 00044AF8  3C 80 80 21 */	lis r4, lbl_8020AE40@ha
+/* 80048BDC 00044AFC  90 01 00 04 */	stw r0, 4(r1)
+/* 80048BE0 00044B00  38 00 00 0B */	li r0, 0xb
+/* 80048BE4 00044B04  38 84 AE 40 */	addi r4, r4, lbl_8020AE40@l
+/* 80048BE8 00044B08  7C 09 03 A6 */	mtctr r0
+/* 80048BEC 00044B0C  94 21 FF F8 */	stwu r1, -8(r1)
+/* 80048BF0 00044B10  38 A4 00 00 */	addi r5, r4, 0
+/* 80048BF4 00044B14  80 6D 9C FC */	lwz r3, dipSwitches@sda21(r13)
+/* 80048BF8 00044B18  C0 22 90 10 */	lfs f1, lbl_802F3810@sda21(r2)
+/* 80048BFC 00044B1C  54 60 07 FE */	clrlwi r0, r3, 0x1f
+lbl_80048C00:
+/* 80048C00 00044B20  A0 85 00 00 */	lhz r4, 0(r5)
+/* 80048C04 00044B24  54 83 04 21 */	rlwinm. r3, r4, 0, 0x10, 0x10
+/* 80048C08 00044B28  41 82 00 0C */	beq lbl_80048C14
+/* 80048C0C 00044B2C  54 83 04 5E */	rlwinm r3, r4, 0, 0x11, 0xf
+/* 80048C10 00044B30  B0 65 00 00 */	sth r3, 0(r5)
+lbl_80048C14:
+/* 80048C14 00044B34  28 00 00 00 */	cmplwi r0, 0
+/* 80048C18 00044B38  40 82 00 10 */	bne lbl_80048C28
+/* 80048C1C 00044B3C  C0 05 00 0C */	lfs f0, 0xc(r5)
+/* 80048C20 00044B40  EC 00 00 72 */	fmuls f0, f0, f1
+/* 80048C24 00044B44  D0 05 00 0C */	stfs f0, 0xc(r5)
+lbl_80048C28:
+/* 80048C28 00044B48  38 A5 65 78 */	addi r5, r5, 0x6578
+/* 80048C2C 00044B4C  42 00 FF D4 */	bdnz lbl_80048C00
+/* 80048C30 00044B50  48 00 23 A1 */	bl func_8004AFD0
+/* 80048C34 00044B54  80 01 00 0C */	lwz r0, 0xc(r1)
+/* 80048C38 00044B58  38 21 00 08 */	addi r1, r1, 8
+/* 80048C3C 00044B5C  7C 08 03 A6 */	mtlr r0
+/* 80048C40 00044B60  4E 80 00 20 */	blr
+
 .global ev_recplay_init
 ev_recplay_init:
 /* 80048C44 00044B64  7C 08 02 A6 */	mflr r0
@@ -4467,6 +4794,18 @@ lbl_8004CACC:
 .section .sbss
 
 	.balign 8
+.global lbl_802F1F68
+lbl_802F1F68:
+	.skip 0x4
+.global lbl_802F1F6C
+lbl_802F1F6C:
+	.skip 0x4
+.global lbl_802F1F70
+lbl_802F1F70:
+	.skip 0x4
+.global lbl_802F1F74
+lbl_802F1F74:
+	.skip 0x4
 .global lbl_802F1F78
 lbl_802F1F78:
 	.skip 0x8
@@ -4476,3 +4815,1706 @@ lbl_802F1F80:
 .global lbl_802F1F88
 lbl_802F1F88:
 	.skip 0x8
+
+.section .sdata
+
+.section .sdata
+
+	.balign 8
+.global lbl_802F09E0
+lbl_802F09E0:
+	# ROM: 0x1EB120
+	.4byte 0x00045C28
+
+.global lbl_802F09E4
+lbl_802F09E4:
+	# ROM: 0x1EB124
+glabel string_recdata
+	.asciz "recdata"
+
+.global lbl_802F09EC
+lbl_802F09EC:
+	# ROM: 0x1EB12C
+glabel string__test_4
+	.asciz "/test"
+	.balign 4
+
+.global lbl_802F09F4
+lbl_802F09F4:
+	# ROM: 0x1EB134
+glabel string______
+	.asciz "#$%@^"
+	.balign 4
+
+.global lbl_802F09FC
+lbl_802F09FC:
+	# ROM: 0x1EB13C
+	.4byte 0
+
+.global lbl_802F0A00
+lbl_802F0A00:
+	# ROM: 0x1EB140
+	.4byte 0x0A000000
+glabel lbl_802F0A04
+	.4byte 0
+
+.section .sdata2
+
+.global lbl_802F3808
+lbl_802F3808:
+	# ROM: 0x1ED228
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F3810
+lbl_802F3810:
+	# ROM: 0x1ED230
+	.4byte 0x3F6B851F
+
+.global lbl_802F3814
+lbl_802F3814:
+	# ROM: 0x1ED234
+	.4byte 0x46FFFE00
+
+.global lbl_802F3818
+lbl_802F3818:
+	# ROM: 0x1ED238
+	.4byte 0x43300000
+	.4byte 0x80000000
+
+.global lbl_802F3820
+lbl_802F3820:
+	# ROM: 0x1ED240
+	.4byte 0x3FF00000
+	.4byte 0
+
+.global lbl_802F3828
+lbl_802F3828:
+	# ROM: 0x1ED248
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F3830
+lbl_802F3830:
+	# ROM: 0x1ED250
+	.4byte 0x40000000
+	.4byte 0
+
+.global lbl_802F3838
+lbl_802F3838:
+	# ROM: 0x1ED258
+	.4byte 0x40768000
+	.4byte 0
+
+.global lbl_802F3840
+lbl_802F3840:
+	# ROM: 0x1ED260
+	.4byte 0x40868000
+	.4byte 0
+
+.global lbl_802F3848
+lbl_802F3848:
+	# ROM: 0x1ED268
+	.4byte 0x3FE00000
+	.4byte 0
+
+.global lbl_802F3850
+lbl_802F3850:
+	# ROM: 0x1ED270
+	.4byte 0x3FD00000
+	.4byte 0
+
+.global lbl_802F3858
+lbl_802F3858:
+	# ROM: 0x1ED278
+	.4byte 0x3F947AE1
+	.4byte 0x47AE147B
+
+.global lbl_802F3860
+lbl_802F3860:
+	# ROM: 0x1ED280
+	.4byte 0x3FB99999
+	.4byte 0x9999999A
+
+.global lbl_802F3868
+lbl_802F3868:
+	# ROM: 0x1ED288
+	.4byte 0x43300000
+	.4byte 0
+
+.global lbl_802F3870
+lbl_802F3870:
+	# ROM: 0x1ED290
+	.4byte 0x34000000
+	.4byte 0
+
+.global lbl_802F3878
+lbl_802F3878:
+	# ROM: 0x1ED298
+	.4byte 0x3FC99999
+	.4byte 0x9999999A
+
+.global lbl_802F3880
+lbl_802F3880:
+	# ROM: 0x1ED2A0
+	.4byte 0x3F800000
+
+.global lbl_802F3884
+lbl_802F3884:
+	# ROM: 0x1ED2A4
+	.4byte 0xBF800000
+
+.global lbl_802F3888
+lbl_802F3888:
+	# ROM: 0x1ED2A8
+	.4byte 0x467FFE00
+
+.global lbl_802F388C
+lbl_802F388C:
+	# ROM: 0x1ED2AC
+	.4byte 0x42FE0000
+
+.global lbl_802F3890
+lbl_802F3890:
+	# ROM: 0x1ED2B0
+	.4byte 0x38800100
+	.4byte 0
+
+.global lbl_802F3898
+lbl_802F3898:
+	# ROM: 0x1ED2B8
+	.4byte 0x43300000
+	.4byte 0x80000000
+
+.global lbl_802F38A0
+lbl_802F38A0:
+	# ROM: 0x1ED2C0
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F38A8
+lbl_802F38A8:
+	# ROM: 0x1ED2C8
+	.4byte 0x3FF00000
+	.4byte 0
+
+.global lbl_802F38B0
+lbl_802F38B0:
+	# ROM: 0x1ED2D0
+	.4byte 0x46FFFE00
+
+.global lbl_802F38B4
+lbl_802F38B4:
+	# ROM: 0x1ED2D4
+	.4byte 0x3C010204
+
+.global lbl_802F38B8
+lbl_802F38B8:
+	# ROM: 0x1ED2D8
+	.4byte 0x406A4000
+	.4byte 0
+
+.global lbl_802F38C0
+lbl_802F38C0:
+	# ROM: 0x1ED2E0
+	.4byte 0x42700000
+
+.global lbl_802F38C4
+lbl_802F38C4:
+	# ROM: 0x1ED2E4
+	.4byte 0x46FFFE00
+
+.global lbl_802F38C8
+lbl_802F38C8:
+	# ROM: 0x1ED2E8
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F38D0
+lbl_802F38D0:
+	# ROM: 0x1ED2F0
+	.4byte 0x3FE00000
+	.4byte 0
+
+.global lbl_802F38D8
+lbl_802F38D8:
+	# ROM: 0x1ED2F8
+	.4byte 0x43300000
+	.4byte 0x80000000
+
+.global lbl_802F38E0
+lbl_802F38E0:
+	# ROM: 0x1ED300
+	.4byte 0x3F70624D
+	.4byte 0xD2F1A9FC
+
+.global lbl_802F38E8
+lbl_802F38E8:
+	# ROM: 0x1ED308
+	.4byte 0x3F800000
+	.4byte 0
+
+.global lbl_802F38F0
+lbl_802F38F0:
+	# ROM: 0x1ED310
+	.4byte 0xBFE66666
+	.4byte 0x66666666
+
+.global lbl_802F38F8
+lbl_802F38F8:
+	# ROM: 0x1ED318
+	.4byte 0x3FEE6666
+	.4byte 0x66666666
+
+.global lbl_802F3900
+lbl_802F3900:
+	# ROM: 0x1ED320
+	.4byte 0x45200000
+	.4byte 0
+
+.global lbl_802F3908
+lbl_802F3908:
+	# ROM: 0x1ED328
+	.4byte 0x3FF00000
+	.4byte 0
+
+.global lbl_802F3910
+lbl_802F3910:
+	# ROM: 0x1ED330
+	.4byte 0x34000000
+	.4byte 0
+
+.global lbl_802F3918
+lbl_802F3918:
+	# ROM: 0x1ED338
+	.4byte 0x3FB99999
+	.4byte 0x9999999A
+
+.global lbl_802F3920
+lbl_802F3920:
+	# ROM: 0x1ED340
+	.4byte 0x3FA99999
+	.4byte 0x9999999A
+
+.global lbl_802F3928
+lbl_802F3928:
+	# ROM: 0x1ED348
+	.4byte 0
+	.4byte 0
+
+.global lbl_802F3930
+lbl_802F3930:
+	# ROM: 0x1ED350
+	.4byte 0x3FC00000
+	.4byte 0
+
+.global lbl_802F3938
+lbl_802F3938:
+	# ROM: 0x1ED358
+	.4byte 0x40000000
+
+.global lbl_802F393C
+lbl_802F393C:
+	# ROM: 0x1ED35C
+	.4byte 0x42F00000
+
+.global lbl_802F3940
+lbl_802F3940:
+	# ROM: 0x1ED360
+	.4byte 0x3DE147AE
+
+.global lbl_802F3944
+lbl_802F3944:
+	# ROM: 0x1ED364
+	.4byte 0x3DAAAAAB
+
+.global lbl_802F3948
+lbl_802F3948:
+	# ROM: 0x1ED368
+	.4byte 0x404E0000
+	.4byte 0
+
+.global lbl_802F3950
+lbl_802F3950:
+	# ROM: 0x1ED370
+	.4byte 0x3FD00000
+	.4byte 0
+
+.global lbl_802F3958
+lbl_802F3958:
+	# ROM: 0x1ED378
+	.4byte 0x3FE77777
+	.4byte 0x77777777
+
+.global lbl_802F3960
+lbl_802F3960:
+	# ROM: 0x1ED380
+	.4byte 0x3FECCCCC
+	.4byte 0xCCCCCCCD
+
+.global lbl_802F3968
+lbl_802F3968:
+	# ROM: 0x1ED388
+	.4byte 0x3FAB4E81
+	.4byte 0xB4E81B4F
+
+.global lbl_802F3970
+lbl_802F3970:
+	# ROM: 0x1ED390
+	.4byte 0xC0000000
+	.4byte 0
+
+.global lbl_802F3978
+lbl_802F3978:
+	# ROM: 0x1ED398
+	.4byte 0x402E0000
+	.4byte 0
+
+.global lbl_802F3980
+lbl_802F3980:
+	# ROM: 0x1ED3A0
+	.4byte 0x40468000
+	.4byte 0
+
+.global lbl_802F3988
+lbl_802F3988:
+	# ROM: 0x1ED3A8
+	.4byte 0x3F666666
+
+.global lbl_802F398C
+lbl_802F398C:
+	# ROM: 0x1ED3AC
+	.4byte 0x3F4CCCCD
+
+.global lbl_802F3990
+lbl_802F3990:
+	# ROM: 0x1ED3B0
+	.4byte 0x3ECCCCCD
+
+.global lbl_802F3994
+lbl_802F3994:
+	# ROM: 0x1ED3B4
+	.4byte 0x3C03126F
+
+.global lbl_802F3998
+lbl_802F3998:
+	# ROM: 0x1ED3B8
+	.4byte 0x3F7DF3B6
+	.4byte 0
+
+.global lbl_802F39A0
+lbl_802F39A0:
+	# ROM: 0x1ED3C0
+	.4byte 0x3FEEB851
+	.4byte 0xEB851EB8
+
+.global lbl_802F39A8
+lbl_802F39A8:
+	# ROM: 0x1ED3C8
+	.4byte 0x3FEBD70A
+	.4byte 0x3D70A3D7
+
+.global lbl_802F39B0
+lbl_802F39B0:
+	# ROM: 0x1ED3D0
+	.4byte 0x3FEB851E
+	.4byte 0xB851EB85
+
+.global lbl_802F39B8
+lbl_802F39B8:
+	# ROM: 0x1ED3D8
+	.4byte 0x40380000
+	.4byte 0
+
+.global lbl_802F39C0
+lbl_802F39C0:
+	# ROM: 0x1ED3E0
+	.4byte 0x3F947AE1
+	.4byte 0x47AE147B
+
+.global lbl_802F39C8
+lbl_802F39C8:
+	# ROM: 0x1ED3E8
+	.4byte 0x3F999999
+	.4byte 0x9999999A
+
+.global lbl_802F39D0
+lbl_802F39D0:
+	# ROM: 0x1ED3F0
+	.4byte 0xBFF00000
+	.4byte 0
+
+.global lbl_802F39D8
+lbl_802F39D8:
+	# ROM: 0x1ED3F8
+	.4byte 0x3F9EB851
+	.4byte 0xEB851EB8
+
+.global lbl_802F39E0
+lbl_802F39E0:
+	# ROM: 0x1ED400
+	.4byte 0x3FF80000
+	.4byte 0
+
+.global lbl_802F39E8
+lbl_802F39E8:
+	# ROM: 0x1ED408
+	.4byte 0x3F000000
+
+.global lbl_802F39EC
+lbl_802F39EC:
+	# ROM: 0x1ED40C
+	.4byte 0x437F0000
+
+.global lbl_802F39F0
+lbl_802F39F0:
+	# ROM: 0x1ED410
+	.4byte 0x42C00000
+
+.global lbl_802F39F4
+lbl_802F39F4:
+	# ROM: 0x1ED414
+	.4byte 0x42B00000
+
+.global lbl_802F39F8
+lbl_802F39F8:
+	# ROM: 0x1ED418
+	.4byte 0x41000000
+	.4byte 0
+
+.global lbl_802F3A00
+lbl_802F3A00:
+	# ROM: 0x1ED420
+	.4byte 0xC0080000
+	.4byte 0
+
+.global lbl_802F3A08
+lbl_802F3A08:
+	# ROM: 0x1ED428
+	.4byte 0x3FC00000
+
+.global lbl_802F3A0C
+lbl_802F3A0C:
+	# ROM: 0x1ED42C
+	.4byte 0x40900000
+
+.global lbl_802F3A10
+lbl_802F3A10:
+	# ROM: 0x1ED430
+	.4byte 0x40080000
+	.4byte 0
+
+.global lbl_802F3A18
+lbl_802F3A18:
+	# ROM: 0x1ED438
+	.4byte 0x40C00000
+	.4byte 0
+
+.global lbl_802F3A20
+lbl_802F3A20:
+	# ROM: 0x1ED440
+	.4byte 0x40000000
+	.4byte 0
+
+.global lbl_802F3A28
+lbl_802F3A28:
+	# ROM: 0x1ED448
+	.4byte 0x3FC99999
+	.4byte 0x9999999A
+
+.global lbl_802F3A30
+lbl_802F3A30:
+	# ROM: 0x1ED450
+	.4byte 0xBDCCCCCD
+	.4byte 0
+
+.global lbl_802F3A38
+lbl_802F3A38:
+	# ROM: 0x1ED458
+	.4byte 0x3FC11111
+	.4byte 0x11111111
+
+.global lbl_802F3A40
+lbl_802F3A40:
+	# ROM: 0x1ED460
+	.4byte 0x3F90624D
+	.4byte 0xD2F1A9FC
+
+.global lbl_802F3A48
+lbl_802F3A48:
+	# ROM: 0x1ED468
+	.4byte 0x3FEFBE76
+	.4byte 0xC8B43958
+
+.global lbl_802F3A50
+lbl_802F3A50:
+	# ROM: 0x1ED470
+	.4byte 0x406FE000
+	.4byte 0
+
+.global lbl_802F3A58
+lbl_802F3A58:
+	# ROM: 0x1ED478
+	.4byte 0x40680000
+	.4byte 0
+
+.global lbl_802F3A60
+lbl_802F3A60:
+	# ROM: 0x1ED480
+	.4byte 0x3FE99999
+	.4byte 0x9999999A
+
+.global lbl_802F3A68
+lbl_802F3A68:
+	# ROM: 0x1ED488
+	.4byte 0x3FE80000
+	.4byte 0
+
+.global lbl_802F3A70
+lbl_802F3A70:
+	# ROM: 0x1ED490
+	.4byte 0x403E0000
+	.4byte 0
+
+.global lbl_802F3A78
+lbl_802F3A78:
+	# ROM: 0x1ED498
+	.4byte 0x41F00000
+	.4byte 0
+
+.global lbl_802F3A80
+lbl_802F3A80:
+	# ROM: 0x1ED4A0
+	.4byte 0x3F889374
+	.4byte 0xBC6A7EFA
+
+.global lbl_802F3A88
+lbl_802F3A88:
+	# ROM: 0x1ED4A8
+	.4byte 0xBFC33333
+	.4byte 0x33333333
+
+.global lbl_802F3A90
+lbl_802F3A90:
+	# ROM: 0x1ED4B0
+	.4byte 0x3FEF5C28
+	.4byte 0xF5C28F5C
+
+.global lbl_802F3A98
+lbl_802F3A98:
+	# ROM: 0x1ED4B8
+	.4byte 0x46800000
+
+.global lbl_802F3A9C
+lbl_802F3A9C:
+	# ROM: 0x1ED4BC
+	.4byte 0x44800000
+
+.global lbl_802F3AA0
+lbl_802F3AA0:
+	# ROM: 0x1ED4C0
+	.4byte 0x3FC33333
+	.4byte 0x33333333
+
+.global lbl_802F3AA8
+lbl_802F3AA8:
+	# ROM: 0x1ED4C8
+	.4byte 0x40590000
+	.4byte 0
+
+.global lbl_802F3AB0
+lbl_802F3AB0:
+	# ROM: 0x1ED4D0
+	.4byte 0x3B85CD7C
+
+.global lbl_802F3AB4
+lbl_802F3AB4:
+	# ROM: 0x1ED4D4
+	.4byte 0x3EE66666
+
+.global lbl_802F3AB8
+lbl_802F3AB8:
+	# ROM: 0x1ED4D8
+	.4byte 0x3E800000
+	.4byte 0
+
+.global lbl_802F3AC0
+lbl_802F3AC0:
+	# ROM: 0x1ED4E0
+	.4byte 0x3F4AC2B2
+	.4byte 0x50022F3D
+
+.global lbl_802F3AC8
+lbl_802F3AC8:
+	# ROM: 0x1ED4E8
+	.4byte 0xB4000000
+	.4byte 0
+
+.global lbl_802F3AD0
+lbl_802F3AD0:
+	# ROM: 0x1ED4F0
+	.4byte 0x40240000
+	.4byte 0
+
+.global lbl_802F3AD8
+lbl_802F3AD8:
+	# ROM: 0x1ED4F8
+	.4byte 0xBFF71811
+	.4byte 0x16F60827
+
+.global lbl_802F3AE0
+lbl_802F3AE0:
+	# ROM: 0x1ED500
+	.4byte 0xC0171811
+	.4byte 0x16F60827
+
+.global lbl_802F3AE8
+lbl_802F3AE8:
+	# ROM: 0x1ED508
+	.4byte 0x3FF19999
+	.4byte 0x9999999A
+
+.global lbl_802F3AF0
+lbl_802F3AF0:
+	# ROM: 0x1ED510
+	.4byte 0x3FF0CCCC
+	.4byte 0xCCCCCCCD
+
+.global lbl_802F3AF8
+lbl_802F3AF8:
+	# ROM: 0x1ED518
+	.4byte 0x403A0000
+	.4byte 0
+
+.global lbl_802F3B00
+lbl_802F3B00:
+	# ROM: 0x1ED520
+	.4byte 0xBF90624D
+	.4byte 0xD2F1A9FC
+
+.global lbl_802F3B08
+lbl_802F3B08:
+	# ROM: 0x1ED528
+	.4byte 0x3FEFAE14
+	.4byte 0x7AE147AE
+
+.global lbl_802F3B10
+lbl_802F3B10:
+	# ROM: 0x1ED530
+	.4byte 0x404A570A
+	.4byte 0x3D70A3D7
+
+.global lbl_802F3B18
+lbl_802F3B18:
+	# ROM: 0x1ED538
+	.4byte 0x40745000
+	.4byte 0
+
+.global lbl_802F3B20
+lbl_802F3B20:
+	# ROM: 0x1ED540
+	.4byte 0x40847800
+	.4byte 0
+
+.global lbl_802F3B28
+lbl_802F3B28:
+	# ROM: 0x1ED548
+	.4byte 0x3FCAE147
+	.4byte 0xAE147AE1
+
+.global lbl_802F3B30
+lbl_802F3B30:
+	# ROM: 0x1ED550
+	.4byte 0x3FCC28F5
+	.4byte 0xC28F5C29
+
+.global lbl_802F3B38
+lbl_802F3B38:
+	# ROM: 0x1ED558
+	.4byte 0xBF800000
+	.4byte 0
+
+.global lbl_802F3B40
+lbl_802F3B40:
+	# ROM: 0x1ED560
+	.4byte 0x3F911111
+	.4byte 0x11111111
+
+.global lbl_802F3B48
+lbl_802F3B48:
+	# ROM: 0x1ED568
+	.4byte 0xBF80624D
+	.4byte 0xD2F1A9FC
+
+.global lbl_802F3B50
+lbl_802F3B50:
+	# ROM: 0x1ED570
+	.4byte 0x40140000
+	.4byte 0
+
+.global lbl_802F3B58
+lbl_802F3B58:
+	# ROM: 0x1ED578
+	.4byte 0x40180000
+	.4byte 0
+
+.global lbl_802F3B60
+lbl_802F3B60:
+	# ROM: 0x1ED580
+	.4byte 0x3FBEB851
+	.4byte 0xEB851EB8
+
+.global lbl_802F3B68
+lbl_802F3B68:
+	# ROM: 0x1ED588
+	.4byte 0xBFC33333
+	.4byte 0x36666666
+
+.global lbl_802F3B70
+lbl_802F3B70:
+	# ROM: 0x1ED590
+	.4byte 0xBE19999A
+	.4byte 0
+
+.global lbl_802F3B78
+lbl_802F3B78:
+	# ROM: 0x1ED598
+	.4byte 0x40100000
+	.4byte 0
+
+.global lbl_802F3B80
+lbl_802F3B80:
+	# ROM: 0x1ED5A0
+	.4byte 0x3F811111
+	.4byte 0x11111111
+
+.global lbl_802F3B88
+lbl_802F3B88:
+	# ROM: 0x1ED5A8
+	.4byte 0x3F847AE1
+	.4byte 0x47AE147B
+
+.global lbl_802F3B90
+lbl_802F3B90:
+	# ROM: 0x1ED5B0
+	.4byte 0x3FA3B13B
+	.4byte 0x13B13B14
+
+.global lbl_802F3B98
+lbl_802F3B98:
+	# ROM: 0x1ED5B8
+	.4byte 0x3FD66666
+	.4byte 0x66666666
+
+.global lbl_802F3BA0
+lbl_802F3BA0:
+	# ROM: 0x1ED5C0
+	.4byte 0x3FC80000
+	.4byte 0
+
+.global lbl_802F3BA8
+lbl_802F3BA8:
+	# ROM: 0x1ED5C8
+	.4byte 0x3FE20000
+	.4byte 0
+
+.global lbl_802F3BB0
+lbl_802F3BB0:
+	# ROM: 0x1ED5D0
+	.4byte 0x40DFBD00
+	.4byte 0
+
+.global lbl_802F3BB8
+lbl_802F3BB8:
+	# ROM: 0x1ED5D8
+	.4byte 0x40EFFB80
+	.4byte 0
+
+.global lbl_802F3BC0
+lbl_802F3BC0:
+	# ROM: 0x1ED5E0
+	.4byte 0x3C75C28F
+
+.global lbl_802F3BC4
+lbl_802F3BC4:
+	# ROM: 0x1ED5E4
+	.4byte 0x3B83126F
+
+.global lbl_802F3BC8
+lbl_802F3BC8:
+	# ROM: 0x1ED5E8
+	.4byte 0x3F7C28F6
+	.4byte 0
+
+.global lbl_802F3BD0
+lbl_802F3BD0:
+	# ROM: 0x1ED5F0
+	.4byte 0x3FE33333
+	.4byte 0x33333333
+
+.global lbl_802F3BD8
+lbl_802F3BD8:
+	# ROM: 0x1ED5F8
+	.4byte 0x3EA9930C
+	.4byte 0
+
+.global lbl_802F3BE0
+lbl_802F3BE0:
+	# ROM: 0x1ED600
+	.4byte 0x3FB00000
+	.4byte 0
+
+.global lbl_802F3BE8
+lbl_802F3BE8:
+	# ROM: 0x1ED608
+	.4byte 0x41017223
+
+.global lbl_802F3BEC
+lbl_802F3BEC:
+	# ROM: 0x1ED60C
+	.4byte 0x3CF5C280
+
+.global lbl_802F3BF0
+lbl_802F3BF0:
+	# ROM: 0x1ED610
+	.4byte 0x48000000
+
+.global lbl_802F3BF4
+lbl_802F3BF4:
+	# ROM: 0x1ED614
+	.4byte 0x49000000
+
+.global lbl_802F3BF8
+lbl_802F3BF8:
+	# ROM: 0x1ED618
+	.4byte 0x3DCCCCCD
+
+.global lbl_802F3BFC
+lbl_802F3BFC:
+	# ROM: 0x1ED61C
+	.4byte 0x46C00000
+
+.global lbl_802F3C00
+lbl_802F3C00:
+	# ROM: 0x1ED620
+	.4byte 0x3F19999A
+
+.global lbl_802F3C04
+lbl_802F3C04:
+	# ROM: 0x1ED624
+	.4byte 0x3F3851EB
+
+.global lbl_802F3C08
+lbl_802F3C08:
+	# ROM: 0x1ED628
+	.4byte 0x3F2147AE
+
+.global lbl_802F3C0C
+lbl_802F3C0C:
+	# ROM: 0x1ED62C
+	.4byte 0x3F0A3D71
+
+.global lbl_802F3C10
+lbl_802F3C10:
+	# ROM: 0x1ED630
+	.4byte 0xC0200000
+
+.global lbl_802F3C14
+lbl_802F3C14:
+	# ROM: 0x1ED634
+	.4byte 0x3F7D70A4
+
+.global lbl_802F3C18
+lbl_802F3C18:
+	# ROM: 0x1ED638
+	.4byte 0x45000000
+
+.global lbl_802F3C1C
+lbl_802F3C1C:
+	# ROM: 0x1ED63C
+	.4byte 0x41180000
+
+.global lbl_802F3C20
+lbl_802F3C20:
+	# ROM: 0x1ED640
+	.4byte 0x47AFC800
+
+.global lbl_802F3C24
+lbl_802F3C24:
+	# ROM: 0x1ED644
+	.4byte 0x3C360B61
+
+.global lbl_802F3C28
+lbl_802F3C28:
+	# ROM: 0x1ED648
+	.4byte 0x3BA3D70A
+
+.global lbl_802F3C2C
+lbl_802F3C2C:
+	# ROM: 0x1ED64C
+	.4byte 0x41200000
+
+.global lbl_802F3C30
+lbl_802F3C30:
+	# ROM: 0x1ED650
+	.4byte 0x41A00000
+
+.global lbl_802F3C34
+lbl_802F3C34:
+	# ROM: 0x1ED654
+	.4byte 0xC1200000
+
+.global lbl_802F3C38
+lbl_802F3C38:
+	# ROM: 0x1ED658
+	.4byte 0x45800000
+
+.global lbl_802F3C3C
+lbl_802F3C3C:
+	# ROM: 0x1ED65C
+	.4byte 0x40F00000
+
+.global lbl_802F3C40
+lbl_802F3C40:
+	# ROM: 0x1ED660
+	.4byte 0x41800000
+
+.global lbl_802F3C44
+lbl_802F3C44:
+	# ROM: 0x1ED664
+	.4byte 0x41C00000
+
+.global lbl_802F3C48
+lbl_802F3C48:
+	# ROM: 0x1ED668
+	.4byte 0x3E000000
+
+.global lbl_802F3C4C
+lbl_802F3C4C:
+	# ROM: 0x1ED66C
+	.4byte 0x3B808081
+
+.global lbl_802F3C50
+lbl_802F3C50:
+	# ROM: 0x1ED670
+	.4byte 0xBE4CCCCD
+
+.global lbl_802F3C54
+lbl_802F3C54:
+	# ROM: 0x1ED674
+	.4byte 0xC0A00000
+
+.global lbl_802F3C58
+lbl_802F3C58:
+	# ROM: 0x1ED678
+	.4byte 0xC1F00000
+
+.global lbl_802F3C5C
+lbl_802F3C5C:
+	# ROM: 0x1ED67C
+	.4byte 0x3F400000
+
+.global lbl_802F3C60
+lbl_802F3C60:
+	# ROM: 0x1ED680
+	.4byte 0x3F7EF9DB
+	.4byte 0
+
+.global lbl_802F3C68
+lbl_802F3C68:
+	# ROM: 0x1ED688
+	.4byte 0x3FF0147A
+	.4byte 0xE147AE14
+
+.global lbl_802F3C70
+lbl_802F3C70:
+	# ROM: 0x1ED690
+	.4byte 0x3F7AE148
+
+.global lbl_802F3C74
+lbl_802F3C74:
+	# ROM: 0x1ED694
+	.4byte 0xBDA3D70A
+
+.global lbl_802F3C78
+lbl_802F3C78:
+	# ROM: 0x1ED698
+	.4byte 0xBF000000
+
+.global lbl_802F3C7C
+lbl_802F3C7C:
+	# ROM: 0x1ED69C
+	.4byte 0x43C00000
+
+.global lbl_802F3C80
+lbl_802F3C80:
+	# ROM: 0x1ED6A0
+	.4byte 0x44400000
+
+.global lbl_802F3C84
+lbl_802F3C84:
+	# ROM: 0x1ED6A4
+	.4byte 0x3F83D70A
+
+.global lbl_802F3C88
+lbl_802F3C88:
+	# ROM: 0x1ED6A8
+	.4byte 0x3E19999A
+
+.global lbl_802F3C8C
+lbl_802F3C8C:
+	# ROM: 0x1ED6AC
+	.4byte 0x41700000
+
+.global lbl_802F3C90
+lbl_802F3C90:
+	# ROM: 0x1ED6B0
+	.4byte 0x3C888889
+
+.global lbl_802F3C94
+lbl_802F3C94:
+	# ROM: 0x1ED6B4
+	.4byte 0x40A00000
+
+.global lbl_802F3C98
+lbl_802F3C98:
+	# ROM: 0x1ED6B8
+	.4byte 0x40400000
+
+.global lbl_802F3C9C
+lbl_802F3C9C:
+	# ROM: 0x1ED6BC
+	.4byte 0x3F75C28F
+
+.global lbl_802F3CA0
+lbl_802F3CA0:
+	# ROM: 0x1ED6C0
+	.4byte 0xC1A00000
+	.4byte 0
+
+.global lbl_802F3CA8
+lbl_802F3CA8:
+	# ROM: 0x1ED6C8
+	.4byte 0x3FD33333
+	.4byte 0x33333333
+
+.global lbl_802F3CB0
+lbl_802F3CB0:
+	# ROM: 0x1ED6D0
+	.4byte 0xBF70624D
+	.4byte 0xD2F1A9FC
+
+.global lbl_802F3CB8
+lbl_802F3CB8:
+	# ROM: 0x1ED6D8
+	.4byte 0xBD4CCCCD
+	.4byte 0
+
+.global lbl_802F3CC0
+lbl_802F3CC0:
+	# ROM: 0x1ED6E0
+	.4byte 0x3F841205
+	.4byte 0xBC01A36E
+
+.global lbl_802F3CC8
+lbl_802F3CC8:
+	# ROM: 0x1ED6E8
+	.4byte 0xC0240000
+	.4byte 0
+
+.global lbl_802F3CD0
+lbl_802F3CD0:
+	# ROM: 0x1ED6F0
+	.4byte 0xBFD00000
+	.4byte 0
+
+.global lbl_802F3CD8
+lbl_802F3CD8:
+	# ROM: 0x1ED6F8
+	.4byte 0xBE800000
+	.4byte 0
+
+.global lbl_802F3CE0
+lbl_802F3CE0:
+	# ROM: 0x1ED700
+	.4byte 0xBFE33333
+	.4byte 0x33333333
+
+.global lbl_802F3CE8
+lbl_802F3CE8:
+	# ROM: 0x1ED708
+	.4byte 0x3F266666
+
+.global lbl_802F3CEC
+lbl_802F3CEC:
+	# ROM: 0x1ED70C
+	.4byte 0x3E99999A
+
+.global lbl_802F3CF0
+lbl_802F3CF0:
+	# ROM: 0x1ED710
+	.4byte 0xBEE66666
+	.4byte 0
+
+.section .rodata
+
+    .balign 8
+.global lbl_801179E8
+lbl_801179E8:
+	# ROM: 0x1149E8
+	.4byte 0x0000005B
+	.4byte 0x0000005C
+	.4byte 0x0000005D
+	.4byte 0x0000005E
+	.4byte 0x0000005F
+	.4byte 0x00000086
+	.4byte 0
+
+.global lbl_80117A04
+lbl_80117A04:
+	# ROM: 0x114A04
+	.4byte 0x0000000A
+	.4byte 0x0000001E
+	.4byte 0x00000032
+	.4byte 0x00000003
+	.4byte 0x00000005
+	.4byte 0x0000000A
+	.4byte 0x0000000A
+	.4byte 0x0000000A
+	.4byte 0x0000000A
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+
+.section .data
+
+.global lbl_801B8858
+lbl_801B8858:
+	# ROM: 0x1B5858
+glabel string_recdata_bin
+	.asciz "recdata.bin"
+glabel string__REPLAY_TEST_n_n
+	.asciz " REPLAY TEST\n\n"
+	.balign 4
+glabel string______ID___03d_n
+	.asciz "     ID: %03d\n"
+	.balign 4
+glabel string______Record_for_Save_n
+	.asciz "     Record for Save\n"
+	.balign 4
+glabel string_________NO_DATA_n
+	.asciz "       :NO DATA\n"
+	.balign 4
+glabel string___STAGE___03d_Lib_No__03d__n
+	.asciz "  STAGE: %03d(Lib No.%03d)\n"
+glabel string__COURSE___3d_n
+	.asciz " COURSE: %3d\n"
+	.balign 4
+glabel string___MONKY___3d_n
+	.asciz "  MONKY: %3d\n"
+	.balign 4
+glabel string____NAME___s_n
+	.asciz "   NAME: %s\n"
+	.balign 4
+glabel string___GRADE___f_n
+	.asciz "  GRADE: %f\n"
+	.balign 4
+glabel string_Same_Kind_Data_Count____d_n
+	.asciz "Same Kind Data Count : %d\n"
+	.balign 4
+glabel string_Adjust_Coeff____f_n
+	.asciz "Adjust Coeff : %f\n"
+	.balign 4
+glabel string_Converting_to_C_Source_format_
+	.asciz "Converting to C Source format."
+	.balign 4
+glabel string_Please_Type__save_recplay__in_DDD_n
+	.asciz "Please Type [save_recplay] in DDD\n"
+	.balign 4
+glabel string__to_Make_File_recplay_data_h__n
+	.asciz " to Make File recplay_data.h.\n"
+	.balign 4
+glabel lbl_801B89A0
+	.4byte 0x0002136E
+	.4byte 0x00076675
+	.4byte 0x00096776
+	.4byte 0
+glabel lbl_801B89B0
+	.4byte 0x00086877
+	.4byte 0x00094E78
+	.4byte 0x000B1B79
+	.4byte 0x000C697A
+	.4byte 0x000E6B7B
+	.4byte 0x00136D7C
+	.4byte 0x0017707D
+	.4byte 0x0018717E
+	.4byte 0x001A5F7F
+	.4byte 0
+	.4byte lbl_801B89A0  ;# ptr
+	.4byte lbl_801B89B0  ;# ptr
+	.4byte lbl_802F0A04  ;# ptr
+	.4byte 0
+
+.global lbl_801B89E8
+lbl_801B89E8:
+	# ROM: 0x1B59E8
+glabel string_ET_PAPERFRAG
+	.asciz "ET_PAPERFRAG"
+	.balign 4
+glabel string_ET_GET_BANANA
+	.asciz "ET_GET_BANANA"
+	.balign 4
+glabel string_ET_COLI_PARTICLE
+	.asciz "ET_COLI_PARTICLE"
+	.balign 4
+glabel string_ET_BIRD_KITE
+	.asciz "ET_BIRD_KITE"
+	.balign 4
+glabel string_ET_ROTATE_BG
+	.asciz "ET_ROTATE_BG"
+	.balign 4
+glabel string_ET_ICEWATER_REFLECT
+	.asciz "ET_ICEWATER_REFLECT"
+glabel string_ET_ICEWATER_PARTICLE
+	.asciz "ET_ICEWATER_PARTICLE"
+	.balign 4
+glabel string_ET_RAINDROP
+	.asciz "ET_RAINDROP"
+glabel string_ET_HOLDING_BANANA
+	.asciz "ET_HOLDING_BANANA"
+	.balign 4
+glabel string_ET_BUBBLE
+	.asciz "ET_BUBBLE"
+	.balign 4
+glabel string_ET_LEVITATE
+	.asciz "ET_LEVITATE"
+glabel string_ET_TWINKLE_STAR
+	.asciz "ET_TWINKLE_STAR"
+glabel string_ET_BONUS_STG_STAR
+	.asciz "ET_BONUS_STG_STAR"
+	.balign 4
+glabel string_ET_BONUS_STG_STAR_TAIL
+	.asciz "ET_BONUS_STG_STAR_TAIL"
+	.balign 4
+glabel string_ET_WATER_LIGHT
+	.asciz "ET_WATER_LIGHT"
+	.balign 4
+glabel string_ET_RAINDROP_RIPPLE
+	.asciz "ET_RAINDROP_RIPPLE"
+	.balign 4
+glabel string_ET_BALL_GLOW
+	.asciz "ET_BALL_GLOW"
+	.balign 4
+glabel string_ET_EXM_GUIDE_LIGHT
+	.asciz "ET_EXM_GUIDE_LIGHT"
+	.balign 4
+glabel string_ET_EXM_GUIDE_LIGHT_TAIL
+	.asciz "ET_EXM_GUIDE_LIGHT_TAIL"
+glabel string_ET_COLISTAR_PARTICLE
+	.asciz "ET_COLISTAR_PARTICLE"
+	.balign 4
+glabel string_ET_BGWAT_BUBBLE_BASE
+	.asciz "ET_BGWAT_BUBBLE_BASE"
+	.balign 4
+glabel string_ET_BGWAT_BUBBLE
+	.asciz "ET_BGWAT_BUBBLE"
+glabel string_ET_METEO
+	.asciz "ET_METEO"
+	.balign 4
+glabel string_ET_METEO_FIX
+	.asciz "ET_METEO_FIX"
+	.balign 4
+glabel string_ET_FIGHT_REVIVAL
+	.asciz "ET_FIGHT_REVIVAL"
+	.balign 4
+glabel string_ET_FIGHT_PANNEL
+	.asciz "ET_FIGHT_PANNEL"
+glabel string_ET_FIGHT_GET_BANANA
+	.asciz "ET_FIGHT_GET_BANANA"
+glabel string_ET_COLIFLASH
+	.asciz "ET_COLIFLASH"
+	.balign 4
+glabel string_ET_FIGHT_BOX_FRAG
+	.asciz "ET_FIGHT_BOX_FRAG"
+	.balign 4
+glabel string_ET_FIGHT_HOLDING_PITEM
+	.asciz "ET_FIGHT_HOLDING_PITEM"
+	.balign 4
+glabel string_ET_FIGHT_BALL_EFC
+	.asciz "ET_FIGHT_BALL_EFC"
+	.balign 4
+glabel string_ET_FIGHT_REVIVAL_PTC
+	.asciz "ET_FIGHT_REVIVAL_PTC"
+	.balign 4
+glabel string_ET_BNS_STG_STAR
+	.asciz "ET_BNS_STG_STAR"
+glabel string_ET_BNS_STG_STAR_TAIL
+	.asciz "ET_BNS_STG_STAR_TAIL"
+	.balign 4
+glabel string_ET_BGMST_GEN_CLOUD
+	.asciz "ET_BGMST_GEN_CLOUD"
+	.balign 4
+glabel string_ET_BGSTM_RAINRIPPLE
+	.asciz "ET_BGSTM_RAINRIPPLE"
+glabel string_ET_NAMEENT_CODE
+	.asciz "ET_NAMEENT_CODE"
+glabel string_ET_GET_NAMEENT_CODE
+	.asciz "ET_GET_NAMEENT_CODE"
+glabel string_ET_MR_BOMB
+	.asciz "ET_MR_BOMB"
+	.balign 4
+glabel string_ET_PILOT_BOMB
+	.asciz "ET_PILOT_BOMB"
+	.balign 4
+glabel string_ET_BGMST_WATER
+	.asciz "ET_BGMST_WATER"
+	.balign 4
+glabel string_ET_MR_BOMB_LIGHT
+	.asciz "ET_MR_BOMB_LIGHT"
+	.balign 4
+glabel string_ET_FIGHT_COLIFLASH
+	.asciz "ET_FIGHT_COLIFLASH"
+	.balign 4
+glabel string_ET_FIGHT_COLIFLASH_PTC
+	.asciz "ET_FIGHT_COLIFLASH_PTC"
+	.balign 4
+glabel string_ET_MR_SPEED_STAR_LIGHT
+	.asciz "ET_MR_SPEED_STAR_LIGHT"
+	.balign 4
+glabel string_ET_COMMENDFRAG
+	.asciz "ET_COMMENDFRAG"
+	.balign 4
+glabel string_ET_ENDING_BALLFRAG
+	.asciz "ET_ENDING_BALLFRAG"
+	.balign 4
+glabel string_ET_BANANA_DROP
+	.asciz "ET_BANANA_DROP"
+	.balign 4
+glabel string_ET_BGEND_WATER
+	.asciz "ET_BGEND_WATER"
+	.balign 4
+	.4byte string_ET_PAPERFRAG  ;# ptr
+	.4byte string_ET_GET_BANANA  ;# ptr
+	.4byte string_ET_COLI_PARTICLE  ;# ptr
+	.4byte string_ET_BIRD_KITE  ;# ptr
+	.4byte string_ET_ROTATE_BG  ;# ptr
+	.4byte string_ET_ICEWATER_REFLECT  ;# ptr
+	.4byte string_ET_ICEWATER_PARTICLE  ;# ptr
+	.4byte string_ET_RAINDROP  ;# ptr
+	.4byte string_ET_HOLDING_BANANA  ;# ptr
+	.4byte string_ET_BUBBLE  ;# ptr
+	.4byte string_ET_LEVITATE  ;# ptr
+	.4byte string_ET_TWINKLE_STAR  ;# ptr
+	.4byte string_ET_BONUS_STG_STAR  ;# ptr
+	.4byte string_ET_BONUS_STG_STAR_TAIL  ;# ptr
+	.4byte string_ET_WATER_LIGHT  ;# ptr
+	.4byte string_ET_RAINDROP_RIPPLE  ;# ptr
+	.4byte string_ET_BALL_GLOW  ;# ptr
+	.4byte string_ET_EXM_GUIDE_LIGHT  ;# ptr
+	.4byte string_ET_EXM_GUIDE_LIGHT_TAIL  ;# ptr
+	.4byte string_ET_COLISTAR_PARTICLE  ;# ptr
+	.4byte string_ET_BGWAT_BUBBLE_BASE  ;# ptr
+	.4byte string_ET_BGWAT_BUBBLE  ;# ptr
+	.4byte string_ET_METEO  ;# ptr
+	.4byte string_ET_METEO_FIX  ;# ptr
+	.4byte string_ET_FIGHT_REVIVAL  ;# ptr
+	.4byte string_ET_FIGHT_PANNEL  ;# ptr
+	.4byte string_ET_FIGHT_GET_BANANA  ;# ptr
+	.4byte string_ET_COLIFLASH  ;# ptr
+	.4byte string_ET_FIGHT_BOX_FRAG  ;# ptr
+	.4byte string_ET_FIGHT_HOLDING_PITEM  ;# ptr
+	.4byte string_ET_FIGHT_BALL_EFC  ;# ptr
+	.4byte string_ET_FIGHT_REVIVAL_PTC  ;# ptr
+	.4byte string_ET_BNS_STG_STAR  ;# ptr
+	.4byte string_ET_BNS_STG_STAR_TAIL  ;# ptr
+	.4byte string_ET_BGMST_GEN_CLOUD  ;# ptr
+	.4byte string_ET_BGSTM_RAINRIPPLE  ;# ptr
+	.4byte string_ET_NAMEENT_CODE  ;# ptr
+	.4byte string_ET_GET_NAMEENT_CODE  ;# ptr
+	.4byte string_ET_MR_BOMB  ;# ptr
+	.4byte string_ET_PILOT_BOMB  ;# ptr
+	.4byte string_ET_BGMST_WATER  ;# ptr
+	.4byte string_ET_MR_BOMB_LIGHT  ;# ptr
+	.4byte string_ET_FIGHT_COLIFLASH  ;# ptr
+	.4byte string_ET_FIGHT_COLIFLASH_PTC  ;# ptr
+	.4byte string_ET_MR_SPEED_STAR_LIGHT  ;# ptr
+	.4byte string_ET_COMMENDFRAG  ;# ptr
+	.4byte string_ET_ENDING_BALLFRAG  ;# ptr
+	.4byte string_ET_BANANA_DROP  ;# ptr
+	.4byte string_ET_BGEND_WATER  ;# ptr
+
+.global lbl_801B8E38
+lbl_801B8E38:
+	# ROM: 0x1B5E38
+	.4byte func_8004D1A4  ;# ptr
+	.4byte func_8004DB44  ;# ptr
+	.4byte func_8004DE1C  ;# ptr
+	.4byte func_800573A4  ;# ptr
+	.4byte func_8004E6F4  ;# ptr
+	.4byte func_80058CE0  ;# ptr
+	.4byte func_80059560  ;# ptr
+	.4byte func_8004E7D4  ;# ptr
+	.4byte func_8004EABC  ;# ptr
+	.4byte func_8004EE58  ;# ptr
+	.4byte func_8004F1EC  ;# ptr
+	.4byte func_8004F570  ;# ptr
+	.4byte func_8004F790  ;# ptr
+	.4byte func_8004FC84  ;# ptr
+	.4byte func_8004FEC0  ;# ptr
+	.4byte func_80050284  ;# ptr
+	.4byte func_800506F4  ;# ptr
+	.4byte func_80050884  ;# ptr
+	.4byte func_80050D9C  ;# ptr
+	.4byte func_80050FB4  ;# ptr
+	.4byte func_80051B9C  ;# ptr
+	.4byte func_8005201C  ;# ptr
+	.4byte func_800523F4  ;# ptr
+	.4byte func_80052A10  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_80052B38  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_80052EC0  ;# ptr
+	.4byte func_800533F8  ;# ptr
+	.4byte func_80053648  ;# ptr
+	.4byte func_80053A50  ;# ptr
+	.4byte func_800AF1DC  ;# ptr
+	.4byte func_800AF3DC  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_80053F08  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D194  ;# ptr
+	.4byte func_80054030  ;# ptr
+	.4byte func_800C09B8  ;# ptr
+	.4byte func_800549AC  ;# ptr
+	.4byte func_80054CD8  ;# ptr
+	.4byte 0
+
+.global lbl_801B8F00
+lbl_801B8F00:
+	# ROM: 0x1B5F00
+	.4byte func_8004D2C8  ;# ptr
+	.4byte func_8004DC28  ;# ptr
+	.4byte func_8004DF0C  ;# ptr
+	.4byte func_8005748C  ;# ptr
+	.4byte func_8004E6F8  ;# ptr
+	.4byte func_80058D44  ;# ptr
+	.4byte func_800595DC  ;# ptr
+	.4byte func_8004E804  ;# ptr
+	.4byte func_8004EB38  ;# ptr
+	.4byte func_8004EF10  ;# ptr
+	.4byte func_8004F36C  ;# ptr
+	.4byte func_8004F584  ;# ptr
+	.4byte func_8004F820  ;# ptr
+	.4byte func_8004FD14  ;# ptr
+	.4byte func_8004FFD0  ;# ptr
+	.4byte func_800504B0  ;# ptr
+	.4byte func_80050708  ;# ptr
+	.4byte func_80050890  ;# ptr
+	.4byte func_80050E1C  ;# ptr
+	.4byte func_800510EC  ;# ptr
+	.4byte func_80051C1C  ;# ptr
+	.4byte func_80052034  ;# ptr
+	.4byte func_80052414  ;# ptr
+	.4byte func_80052A14  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_80052BE0  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_80052F50  ;# ptr
+	.4byte func_80053488  ;# ptr
+	.4byte func_800536D0  ;# ptr
+	.4byte func_80053C70  ;# ptr
+	.4byte func_800AF1F8  ;# ptr
+	.4byte func_800AF478  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_80053F0C  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_80054158  ;# ptr
+	.4byte func_800C09D0  ;# ptr
+	.4byte func_80054A1C  ;# ptr
+	.4byte func_80054CDC  ;# ptr
+	.4byte 0
+	.4byte func_8004D9AC  ;# ptr
+	.4byte func_8004DD88  ;# ptr
+	.4byte func_8004E384  ;# ptr
+	.4byte func_800578D0  ;# ptr
+	.4byte func_8004E748  ;# ptr
+	.4byte func_80059058  ;# ptr
+	.4byte func_800596C0  ;# ptr
+	.4byte func_8004E96C  ;# ptr
+	.4byte func_8004EDD0  ;# ptr
+	.4byte func_8004F17C  ;# ptr
+	.4byte func_8004F3F4  ;# ptr
+	.4byte func_8004F648  ;# ptr
+	.4byte func_8004FB24  ;# ptr
+	.4byte func_8004FDCC  ;# ptr
+	.4byte func_80050138  ;# ptr
+	.4byte func_800505E8  ;# ptr
+	.4byte func_80050788  ;# ptr
+	.4byte func_80050C38  ;# ptr
+	.4byte func_80050ED4  ;# ptr
+	.4byte func_800516DC  ;# ptr
+	.4byte func_80052014  ;# ptr
+	.4byte func_800522EC  ;# ptr
+	.4byte func_80052918  ;# ptr
+	.4byte func_80052A90  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_80052C98  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_80053254  ;# ptr
+	.4byte func_80053534  ;# ptr
+	.4byte func_80053968  ;# ptr
+	.4byte func_80053D98  ;# ptr
+	.4byte func_800AF2C8  ;# ptr
+	.4byte func_800AF62C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_80053F10  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_80054800  ;# ptr
+	.4byte func_800C0C1C  ;# ptr
+	.4byte func_80054B84  ;# ptr
+	.4byte func_80054CE0  ;# ptr
+	.4byte 0
+
+.global lbl_801B9090
+lbl_801B9090:
+	# ROM: 0x1B6090
+	.4byte func_8004DB40  ;# ptr
+	.4byte func_8004DE18  ;# ptr
+	.4byte func_8004E6F0  ;# ptr
+	.4byte func_80057934  ;# ptr
+	.4byte func_8004E7C8  ;# ptr
+	.4byte func_80059554  ;# ptr
+	.4byte func_80059764  ;# ptr
+	.4byte func_8004EAB8  ;# ptr
+	.4byte func_8004EE54  ;# ptr
+	.4byte func_8004F1E8  ;# ptr
+	.4byte func_8004F56C  ;# ptr
+	.4byte func_8004F78C  ;# ptr
+	.4byte func_8004FC80  ;# ptr
+	.4byte func_8004FEBC  ;# ptr
+	.4byte func_80050280  ;# ptr
+	.4byte func_800506F0  ;# ptr
+	.4byte func_80050880  ;# ptr
+	.4byte func_80050D98  ;# ptr
+	.4byte func_80050FB0  ;# ptr
+	.4byte func_80051B98  ;# ptr
+	.4byte func_80052018  ;# ptr
+	.4byte func_800523F0  ;# ptr
+	.4byte func_80052A0C  ;# ptr
+	.4byte func_80052B34  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_80052EBC  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_800533F4  ;# ptr
+	.4byte func_80053644  ;# ptr
+	.4byte func_80053A4C  ;# ptr
+	.4byte func_80053F04  ;# ptr
+	.4byte func_800AF3A4  ;# ptr
+	.4byte func_800AF6D4  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8005402C  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+	.4byte func_800549A8  ;# ptr
+	.4byte func_800C0DBC  ;# ptr
+	.4byte func_80054CD4  ;# ptr
+	.4byte func_80054E00  ;# ptr
+	.4byte 0
+	.4byte func_8004D194  ;# ptr
+	.4byte func_8004D198  ;# ptr
+	.4byte func_8004D19C  ;# ptr
+	.4byte func_8004D1A0  ;# ptr
+
+.global lbl_801B9168
+lbl_801B9168:
+	# ROM: 0x1B6168
+	.4byte 0x0029002A
+	.4byte 0x002B002C
+	.4byte 0x002D0000
+	.4byte 0
+
+.section .bss
+
+.global lbl_8020AE20
+lbl_8020AE20:
+	.skip 0x20
+.global lbl_8020AE40
+lbl_8020AE40:
+	.skip 0x45C28
+.global lbl_80250A68
+lbl_80250A68:
+	.skip 0x18
+.global lbl_80250A80
+lbl_80250A80:
+	.skip 0x20
+.global lbl_80250AA0
+lbl_80250AA0:
+	.skip 0xB8
+.global lbl_80250B58
+lbl_80250B58:
+	.skip 0x18
+.global lbl_80250B70
+lbl_80250B70:
+	.skip 0x10
+.global lbl_80250B80
+lbl_80250B80:
+	.skip 0x16848
+.global lbl_802673C8
+lbl_802673C8:
+	.skip 0x15800
+.global lbl_8027CBC8
+lbl_8027CBC8:
+	.skip 0x30
+.global lbl_8027CBF8
+lbl_8027CBF8:
+	.skip 0x30
+.global lbl_8027CC28
+lbl_8027CC28:
+	.skip 0x30
+.global lbl_8027CC58
+lbl_8027CC58:
+	.skip 0x1B0
+.global lbl_8027CE08
+lbl_8027CE08:
+	.skip 0x10
+.global lbl_8027CE18
+lbl_8027CE18:
+	.skip 0xC
+.global lbl_8027CE24
+lbl_8027CE24:
+	.skip 0x34

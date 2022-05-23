@@ -702,14 +702,14 @@ void draw_continue_scene(void)
     g_reset_light_group_stack(modeCtrl.currPlayer);
     draw_monkey();
 
-    if (lbl_802F1F34 != 0)
+    if (g_stageBoxModel != NULL)
     {
         r31 = (void *)backgroundInfo.unk8C;
         if (r31 != NULL)
             r30 = g_avdisp_set_some_func_1(r31);
         mathutil_mtxA_from_mtxB();
         g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        avdisp_draw_model_unculled_sort_translucent((void *)lbl_802F1F34);
+        avdisp_draw_model_unculled_sort_translucent(g_stageBoxModel);
         if (r31 != NULL)
             g_avdisp_set_some_func_1(r30);
     }
