@@ -881,62 +881,62 @@ s16 lbl_801B9AE8[] =
     0x26, 0x27,
 };
 
-void draw_flipbook_anims(Mtx viewFromWorld, struct StageBgFlipbook *b)
+void draw_flipbook_anims(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
 {
     u8 unused[8];
-    u32 r4;
+    u32 t;
 
-    if (b->worldFlipbooks != NULL)
+    if (flipbooks->worldFlipbooks != NULL)
     {
-        struct StageBgWorldFlipbook *r26 = b->worldFlipbooks;
+        struct StageBgWorldFlipbook *worldFlipbook = flipbooks->worldFlipbooks;
         int i;
 
-        for (i = 0; i < b->worldFlipbookCount; i++, r26++)
+        for (i = 0; i < flipbooks->worldFlipbookCount; i++, worldFlipbook++)
         {
             int modelId;
 
             mathutil_mtxA_from_mtx(viewFromWorld);
-            mathutil_mtxA_translate(&r26->pos);
-            mathutil_mtxA_rotate_z(r26->rotZ);
-            mathutil_mtxA_rotate_y(r26->rotY);
-            mathutil_mtxA_rotate_x(r26->rotX);
+            mathutil_mtxA_translate(&worldFlipbook->pos);
+            mathutil_mtxA_rotate_z(worldFlipbook->rotZ);
+            mathutil_mtxA_rotate_y(worldFlipbook->rotY);
+            mathutil_mtxA_rotate_x(worldFlipbook->rotX);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-            r4 = unpausedFrameCounter / 2;
-            switch (r26->id)
+            t = unpausedFrameCounter / 2;
+            switch (worldFlipbook->id)
             {
             default:
             case 65:
-                modelId = lbl_801B9A08[r4 % 14];
+                modelId = lbl_801B9A08[t % 14];
                 break;
             case 66:
-                modelId = lbl_801B9A24[r4 % 11];
+                modelId = lbl_801B9A24[t % 11];
                 break;
             case 67:
-                modelId = lbl_801B9A3C[r4 % 18];
+                modelId = lbl_801B9A3C[t % 18];
                 break;
             case 68:
-                modelId = lbl_801B9A60[r4 % 18];
+                modelId = lbl_801B9A60[t % 18];
                 break;
             case 69:
-                modelId = lbl_801B9A84[r4 % 18];
+                modelId = lbl_801B9A84[t % 18];
                 break;
             case 70:
-                modelId = lbl_801B9AA8[r4 % 16];
+                modelId = lbl_801B9AA8[t % 16];
                 break;
             case 71:
-                modelId = lbl_801B9AC8[(r4 % 15)];
+                modelId = lbl_801B9AC8[(t % 15)];
                 break;
             }
             avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].model);
         }
     }
-    if (b->billboardFlipbooks != NULL)
+    if (flipbooks->billboardFlipbooks != NULL)
     {
-        struct StageBgBillboardFlipbook *r22 = b->billboardFlipbooks;
+        struct StageBgBillboardFlipbook *r22 = flipbooks->billboardFlipbooks;
         int i;
 
-        for (i = 0; i < b->billboardFlipbookCount; i++, r22++)
+        for (i = 0; i < flipbooks->billboardFlipbookCount; i++, r22++)
         {
             int modelId;
             mathutil_mtxA_from_mtx(viewFromWorld);
@@ -944,8 +944,8 @@ void draw_flipbook_anims(Mtx viewFromWorld, struct StageBgFlipbook *b)
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-            r4 = (unpausedFrameCounter + r22->id * 4);
-            modelId = lbl_801B9AE8[r4 % 32];
+            t = (unpausedFrameCounter + r22->id * 4);
+            modelId = lbl_801B9AE8[t % 32];
             avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].model);
         }
     }

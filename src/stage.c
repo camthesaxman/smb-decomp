@@ -1945,7 +1945,7 @@ void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
         (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }
 
-void func_800474D8(struct StageBgFlipbook **unkp, struct Stage *baseptr)
+void func_800474D8(struct StageBgFlipbooks **unkp, struct Stage *baseptr)
 {
     *unkp = OFFSET_TO_PTR(baseptr, *unkp);
     if ((*unkp)->worldFlipbooks != NULL)

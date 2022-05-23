@@ -202,7 +202,7 @@ void bg_e3_draw(void);
 void bg_e3_interact(int);
 void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds);
 void draw_bg_models();
-void draw_flipbook_anims(Mtx a, struct StageBgFlipbook *b);
+void draw_flipbook_anims(Mtx a, struct StageBgFlipbooks *b);
 void bg_night_init(void);
 void bg_night_main(void);
 void bg_night_finish(void);

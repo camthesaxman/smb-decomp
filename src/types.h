@@ -143,7 +143,7 @@ struct StageBgBillboardFlipbook
     s8 id;
 };
 
-struct StageBgFlipbook
+struct StageBgFlipbooks
 {
     s32 worldFlipbookCount;
     struct StageBgWorldFlipbook *worldFlipbooks;
