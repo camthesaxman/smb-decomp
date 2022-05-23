@@ -20,6 +20,11 @@ struct Mouse {
 
 extern struct Mouse lbl_802BA190[1];
 extern struct Sprite spriteInfo[];
+extern char lbl_802F1360[8];
+
+extern float lbl_802F5858;// = 0.01f; 
+extern float lbl_802F585C;// = 1.0f;
+extern float lbl_802F5860;// = 0.0f;
 
 void ev_mouse_init(void)
 {
@@ -63,15 +68,15 @@ void ev_mouse_update(void)
         _naomiSprite.bmpId = 0x1;
         _naomiSprite.x = _mouse->posHorizontal;
         _naomiSprite.y = _mouse->posVertical;
-        _naomiSprite.z = 0.01f;
-        _naomiSprite.scaleX = 1.0f;
-        _naomiSprite.scaleY = 1.0f;
-        _naomiSprite.u1 = 0.0f;
-        _naomiSprite.v1 = 0.0f;
-        _naomiSprite.u2 = 1.0f;
-        _naomiSprite.v2 = 1.0f;
+        _naomiSprite.z = lbl_802F5858;
+        _naomiSprite.scaleX = lbl_802F585C;
+        _naomiSprite.scaleY = lbl_802F585C;
+        _naomiSprite.u1 = lbl_802F5860;
+        _naomiSprite.v1 = lbl_802F5860;
+        _naomiSprite.u2 = lbl_802F585C;
+        _naomiSprite.v2 = lbl_802F585C;
         _naomiSprite.rotation = 0x0;
-        _naomiSprite.opacity = 1.0f;
+        _naomiSprite.opacity = lbl_802F585C;
         _naomiSprite.unk30 = -1;
         _naomiSprite.flags = 5;
         _naomiSprite.mulColor = -1;
@@ -81,13 +86,13 @@ void ev_mouse_update(void)
             _spriteInfo = &spriteInfo[_mouse->spriteIdx];
             reset_text_draw_settings();
             set_text_pos( (_spriteInfo->left - 8), (_spriteInfo->top - 8) );
-            g_draw_text( "+" );
+            g_draw_text( &lbl_802F1360[0] );
             set_text_pos( (_spriteInfo->left - 8), _spriteInfo->bottom );
-            g_draw_text( "+" );
+            g_draw_text( &lbl_802F1360[0] );
             set_text_pos( _spriteInfo->right, (_spriteInfo->top - 8) );
-            g_draw_text( "+" );
+            g_draw_text( &lbl_802F1360[0] );
             set_text_pos( _spriteInfo->right, _spriteInfo->bottom );
-            g_draw_text( "+" );
+            g_draw_text( &lbl_802F1360[0] );
         }
     }
     return;

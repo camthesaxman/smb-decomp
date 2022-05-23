@@ -3843,9 +3843,7 @@ extern const s8 pauseMenuItemCounts[8];
 // extern ? lbl_802F5840;
 // extern ? lbl_802F5848;
 // extern ? lbl_802F5850;
-// extern ? lbl_802F5858;
-// extern ? lbl_802F585C;
-// extern ? lbl_802F5860;
+
 // extern ? lbl_802F5868;
 // extern ? lbl_802F586C;
 // extern ? lbl_802F5870;

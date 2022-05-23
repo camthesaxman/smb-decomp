@@ -732,10 +732,7 @@ void func_800948F4(void);
 void func_80094914(void);
 void func_8009492C(struct Struct8009492C *);
 void func_80094A34(void);
-// void ev_mouse_init(void);
-// void ev_mouse_main(void);
-// void ev_mouse_dest(void);
-// void ev_mouse_update(void);
+
 void ev_rend_efc_init(void);
 void ev_rend_efc_main(void);
 void ev_rend_efc_dest(void);
