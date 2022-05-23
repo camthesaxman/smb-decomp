@@ -1948,10 +1948,10 @@ void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
 void func_800474D8(struct StageBgFlipbooks **unkp, struct Stage *baseptr)
 {
     *unkp = OFFSET_TO_PTR(baseptr, *unkp);
-    if ((*unkp)->worldFlipbooks != NULL)
-        (*unkp)->worldFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->worldFlipbooks);
-    if ((*unkp)->billboardFlipbooks != NULL)
-        (*unkp)->billboardFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->billboardFlipbooks);
+    if ((*unkp)->nightSilhouetteFlipbooks != NULL)
+        (*unkp)->nightSilhouetteFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->nightSilhouetteFlipbooks);
+    if ((*unkp)->stormFlameFlipbooks != NULL)
+        (*unkp)->stormFlameFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->stormFlameFlipbooks);
 }
 
 #pragma force_active on

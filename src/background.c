@@ -754,7 +754,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
 }
 
 // 890
-s16 lbl_801B9A08[] =
+s16 s_nightFlipbookModels65[] =
 {
     0x09,
     0x0A,
@@ -773,7 +773,7 @@ s16 lbl_801B9A08[] =
 };
 
 // 8AC
-s16 lbl_801B9A24[] =
+s16 s_nightFlipbookModels66[] =
 {
     0x17, 0x18,
     0x19, 0x1A,
@@ -784,7 +784,7 @@ s16 lbl_801B9A24[] =
 };
 
 // 8C4
-s16 lbl_801B9A3C[] =
+s16 s_nightFlipbookModels67[] =
 {
     0x22, 0x23,
     0x24, 0x25,
@@ -798,7 +798,7 @@ s16 lbl_801B9A3C[] =
 };
 
 // 8E8
-s16 lbl_801B9A60[] =
+s16 s_nightFlipbookModels68[] =
 {
     0x34, 0x35,
     0x36, 0x37,
@@ -812,7 +812,7 @@ s16 lbl_801B9A60[] =
 };
 
 // 90C
-s16 lbl_801B9A84[] =
+s16 s_nightFlipbookModels69[] =
 {
     0x46,
     0x47,
@@ -827,7 +827,7 @@ s16 lbl_801B9A84[] =
 };
 
 // 930
-s16 lbl_801B9AA8[] =
+s16 s_nightFlipbookModels70[] =
 {
     0x5C,
     0x5D,
@@ -848,7 +848,7 @@ s16 lbl_801B9AA8[] =
 };
 
 // 950
-s16 lbl_801B9AC8[] =
+s16 s_nightFlipbookModels71[] =
 {
     0x6C, 0x6D,
     0x6E, 0x6F,
@@ -857,11 +857,11 @@ s16 lbl_801B9AC8[] =
     0x74, 0x75,
     0x76, 0x77,
     0x78, 0x79,
-    0x7A, 0x00,
+    0x7A,
 };
 
-// 970
-s16 lbl_801B9AE8[] =
+// Models to flipbook animate for flames in Storm
+s16 s_stormFlipbookModels[] =
 {
     0x08, 0x09,
     0x0A, 0x0B,
@@ -886,66 +886,69 @@ void draw_bg_flipbooks(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
     u8 unused[8];
     u32 t;
 
-    if (flipbooks->worldFlipbooks != NULL)
+    if (flipbooks->nightSilhouetteFlipbooks != NULL)
     {
-        struct StageBgWorldFlipbook *worldFlipbook = flipbooks->worldFlipbooks;
+        struct NightSilhouetteFlipbook *nightFlipbook = flipbooks->nightSilhouetteFlipbooks;
         int i;
 
-        for (i = 0; i < flipbooks->worldFlipbookCount; i++, worldFlipbook++)
+        for (i = 0; i < flipbooks->nightSilhouetteFlipbookCount; i++, nightFlipbook++)
         {
             int modelId;
 
+            // Pose in world space
             mathutil_mtxA_from_mtx(viewFromWorld);
-            mathutil_mtxA_translate(&worldFlipbook->pos);
-            mathutil_mtxA_rotate_z(worldFlipbook->rotZ);
-            mathutil_mtxA_rotate_y(worldFlipbook->rotY);
-            mathutil_mtxA_rotate_x(worldFlipbook->rotX);
+            mathutil_mtxA_translate(&nightFlipbook->pos);
+            mathutil_mtxA_rotate_z(nightFlipbook->rotZ);
+            mathutil_mtxA_rotate_y(nightFlipbook->rotY);
+            mathutil_mtxA_rotate_x(nightFlipbook->rotX);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             t = unpausedFrameCounter / 2;
-            switch (worldFlipbook->id)
+            switch (nightFlipbook->id)
             {
             default:
             case 65:
-                modelId = lbl_801B9A08[t % 14];
+                modelId = s_nightFlipbookModels65[t % ARRAY_COUNT(s_nightFlipbookModels65)];
                 break;
             case 66:
-                modelId = lbl_801B9A24[t % 11];
+                modelId = s_nightFlipbookModels66[t % ARRAY_COUNT(s_nightFlipbookModels66)];
                 break;
             case 67:
-                modelId = lbl_801B9A3C[t % 18];
+                modelId = s_nightFlipbookModels67[t % ARRAY_COUNT(s_nightFlipbookModels67)];
                 break;
             case 68:
-                modelId = lbl_801B9A60[t % 18];
+                modelId = s_nightFlipbookModels68[t % ARRAY_COUNT(s_nightFlipbookModels68)];
                 break;
             case 69:
-                modelId = lbl_801B9A84[t % 18];
+                modelId = s_nightFlipbookModels69[t % ARRAY_COUNT(s_nightFlipbookModels69)];
                 break;
             case 70:
-                modelId = lbl_801B9AA8[t % 16];
+                modelId = s_nightFlipbookModels70[t % ARRAY_COUNT(s_nightFlipbookModels70)];
                 break;
             case 71:
-                modelId = lbl_801B9AC8[(t % 15)];
+                modelId = s_nightFlipbookModels71[(t % ARRAY_COUNT(s_nightFlipbookModels71))];
                 break;
             }
             avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].model);
         }
     }
-    if (flipbooks->billboardFlipbooks != NULL)
+    if (flipbooks->stormFlameFlipbooks != NULL)
     {
-        struct StageBgBillboardFlipbook *r22 = flipbooks->billboardFlipbooks;
+        struct StormFlameFlipbook *stormFlipbook = flipbooks->stormFlameFlipbooks;
         int i;
 
-        for (i = 0; i < flipbooks->billboardFlipbookCount; i++, r22++)
+        for (i = 0; i < flipbooks->stormFlameFlipbookCount; i++, stormFlipbook++)
         {
             int modelId;
+
+            // Position is in world space, Y rotation is billboarded
             mathutil_mtxA_from_mtx(viewFromWorld);
-            mathutil_mtxA_translate(&r22->pos);
+            mathutil_mtxA_translate(&stormFlipbook->pos);
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-            t = (unpausedFrameCounter + r22->id * 4);
-            modelId = lbl_801B9AE8[t % 32];
+            t = (unpausedFrameCounter + stormFlipbook->frameOffset * 4);
+            modelId = s_stormFlipbookModels[t % ARRAY_COUNT(s_stormFlipbookModels)];
             avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].model);
         }
     }
