@@ -207,6 +207,21 @@ static inline float mathutil_sum_of_sq_2(register float a, register float b)
 #endif
 }
 
+static inline float mathutil_sum_of_sq_3(register float a, register float b, register float c)
+{
+#ifdef MATHUTIL_C_ONLY
+    return a * a + b * b + c * c;
+#else
+    asm
+    {
+        fmuls a, a, a
+        fmadds a, b, b, a
+        fmadds a, c, c, a
+    }
+    return a;
+#endif
+}
+
 static inline float mathutil_vec_len(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
@@ -223,6 +238,25 @@ static inline float mathutil_vec_len(register Vec *v)
         fmadds x, z, z, x
     }
     return mathutil_sqrt(x);
+#endif
+}
+
+static inline float mathutil_vec_sq_len(register Vec *v)
+{
+#ifdef MATHUTIL_C_ONLY
+    return v->x * v->x + v->y * v->y + v->z * v->z;
+#else
+    register float x, y, z;
+    asm
+    {
+        lfs x, v->x
+        lfs y, v->y
+        lfs z, v->z
+        fmuls x, x, x
+        fmadds x, y, y, x
+        fmadds x, z, z, x
+    }
+    return x;
 #endif
 }
 
@@ -275,6 +309,31 @@ static inline float mathutil_vec_dot_prod(register Vec *a, register Vec *b)
         fmadds x2, z1, z2, x2
     }
     return x2;
+#endif
+}
+
+// same as mathutil_vec_dot_prod, but with some registers swapped
+static inline float mathutil_vec_dot_prod_alt(register Vec *a, register Vec *b)
+{
+#ifdef MATHUTIL_C_ONLY
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+#else
+    register float x1, y1, z1, x2, y2, z2;
+    register float result;
+
+    asm
+    {
+        lfs x1, a->x
+        lfs x2, b->x
+        lfs y1, a->y
+        lfs y2, b->y
+        lfs z1, a->z
+        lfs z2, b->z
+        fmuls result, x1, x2
+        fmadds result, y1, y2, result
+        fmadds result, z1, z2, result
+    }
+    return result;
 #endif
 }
 
@@ -442,21 +501,6 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
         fmadds var5, var5, a, var6
         stfs var5, v->z
     };
-#endif
-}
-
-static inline float mathutil_sum_of_sq_3(register float a, register float b, register float c)
-{
-#ifdef MATHUTIL_C_ONLY
-    return a * a + b * b + c * c;
-#else
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-        fmadds a, c, c, a
-    }
-    return a;
 #endif
 }
 

@@ -857,27 +857,6 @@ struct Color3f lbl_801B7CF8[] =  // + 0x180
     {0.15f, 0, 0},
 };
 
-static inline float sq_mag(register Vec *vec)
-{
-#ifdef __MWERKS__
-    register float x, z, y;
-
-    z = vec->z;
-    y = vec->y;
-    x = vec->x;
-
-    asm
-    {
-        fmuls x, x, x
-        fmadds x, y, y, x
-        fmadds x, z, z, x
-    }
-    return x;
-#else
-    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
-#endif
-}
-
 void ev_ball_main(void)
 {
     Vec sp8;
@@ -939,7 +918,7 @@ void ev_ball_main(void)
                 sp8.y = ball->pos.y - nextBall->pos.y;
                 sp8.z = ball->pos.z - nextBall->pos.z;
 
-                f2 = sq_mag(&sp8);
+                f2 = mathutil_sum_of_sq_3(sp8.x, sp8.y, sp8.z);
                 f29 = ball->currRadius + nextBall->currRadius;
                 if (f2 < (0.5 * f29) * (0.5 * f29))
                 {

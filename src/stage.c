@@ -34,7 +34,7 @@ struct DynamicStagePart *dynamicStageParts;
 u16 lbl_802F1F40;
 struct TPL *decodedStageTplPtr;
 struct GMA *decodedStageGmaPtr;
-u32 lbl_802F1F34;
+struct GMAModel *g_stageBoxModel;
 struct Stage *decodedStageLzPtr;
 struct GMAModel *blurBridgeAccordion;
 int previewLoaded;
@@ -68,7 +68,8 @@ FORCE_BSS_ORDER(lbl_80206D00)
 FORCE_BSS_ORDER(stagePreview)
 FORCE_BSS_ORDER(lbl_80206DEC)
 
-char *lbl_801B86D8[] = {
+char *goalModelNames[] =
+{
     "GOAL",
     "GOAL_G",
     "GOAL_R",
@@ -480,6 +481,8 @@ void func_80044920(void)
 {
 }
 
+struct NaomiModel *g_mapModels[0x48];
+
 void load_stage(int stageId)
 {
     s8 stageEvState = eventInfo[EVENT_STAGE].state;
@@ -529,7 +532,7 @@ void load_stage(int stageId)
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
         func_80045194();
-        func_80084794(lbl_80209368);
+        func_80084794(g_mapModels);
         g_initialize_stuff_for_dynamic_stage_parts(stageId);
         compute_stage_bounding_sphere();
         loadedStageId = stageId;
@@ -574,7 +577,9 @@ void unload_stage(void)
     func_8005507C();
 }
 
-u8 naomiStages[] = {
+// Stages that have Naomi models
+u8 naomiStages[] =
+{
     ST_010_ARCADE_SPIRAL_HARD,
     ST_019_ARCADE_DIAMOND,
     ST_020_ARCADE_TRACKS,
@@ -694,154 +699,138 @@ struct Struct80209D48 // maybe AnimGroupModel?
     float unk8;
 };
 
-void *lbl_80209368[0x48];
-struct GMAModel *lbl_80209488[0x48];
-void *lbl_802095A8[0x110];
+struct NaomiModel *lbl_80209488[0x48];
+struct NaomiModel *lbl_802095A8[0x110];
 struct Struct802099E8 lbl_802099E8[0x48];
 struct Struct80209D48 lbl_80209D48[0x80];
+struct Struct8020A348 lbl_8020A348[0x48];
+struct Struct80209D48 lbl_8020A588[0x80];
+struct Struct8020A348 lbl_8020AB88[0x48];
 
-struct Struct8020A348 lbl_8020A348[0x108]; // 0x3648
-struct Struct8020A348 lbl_8020AB88[0x48];  // 0x3E88
-struct GMAModel *goalModels[3];
-struct Sphere stageBoundSphere;
-
-FORCE_BSS_ORDER(lbl_80209368)
 FORCE_BSS_ORDER(lbl_80209488)
 FORCE_BSS_ORDER(lbl_802095A8)
 FORCE_BSS_ORDER(lbl_802099E8)
-FORCE_BSS_ORDER(lbl_80209D48)
-FORCE_BSS_ORDER(lbl_8020A348)
-FORCE_BSS_ORDER(lbl_8020AB88)
-FORCE_BSS_ORDER(goalModels)
-FORCE_BSS_ORDER(stageBoundSphere)
 
-struct NaomiObj **lbl_801B8794[] = {(struct NaomiObj **)&naomiStageObj,
-                                    (struct NaomiObj **)&naomiCommonObj, NULL};
+static struct NaomiObj **naomiObjList[] = {&naomiStageObj, &naomiCommonObj, NULL};
 
-struct Struct80044E18
+void func_80044E18_inline(struct Struct8020A348 *r7)
 {
-    u8 filler0[4];
-    char **unk4[];
-};
-
-struct Struct80044E18_2 // r17_
-{
-    u32 unk0;
-    u32 unk4;
-    float unk8;
-};
-
-#ifdef NONMATCHING
-// https://decomp.me/scratch/Aoh83
-void func_80044E18(void)
-{
-    struct NaomiModel *r31;
-    struct GMAModel **r17;
-    void **r30;
-    void **r29;
-    struct Struct802099E8 *r26;
-    struct StageAnimGroup *r22;
-    char **r21;
-    struct NaomiObj ***r25;
-    struct NaomiObj ***r24;
-    int i; // r20
-    struct Struct80209D48 *r17_;
-    struct AnimGroupModel *r18;
-    int r30_;
-    int r19;
-
-    char sp10[0xFC];
-
-    struct StageAnimGroup *r5;
-    struct Struct8020A348 *r7;
-    int r6;
+    //struct Struct8020A348 *r7;
+    int i;
+    struct StageAnimGroup *ag;
     int r4;
 
+    r4 = 0;
+    ag = decodedStageLzPtr->animGroups;
+    //r7 = lbl_8020A348;
+    for (i = 0; i < animGroupCount; i++, r7++, ag++)
+    {
+        r7->unk0 = (void *)&lbl_80209D48[r4];
+        r7->unk4 = ag->animGroupModelCount;
+        r4 += ag->animGroupModelCount;
+    }
+}
+
+static int string_match_len(char *a, char *b);
+
+void func_80044E18(void)
+{
+    int j;
+    struct StageAnimGroup *ag;
+    char **nameIter;
+    int i;
+    int r19;
+    struct NaomiModel *model1;
+    struct NaomiModel **r17;
+    struct NaomiObj ***objIter;
+    struct Struct80209D48 *r17_;
+    int r30_;
+    struct AnimGroupModel *r18_;
+    struct NaomiModel **modelPtrs;
+    struct NaomiModel *model2;
+    struct NaomiModel **r30;
+    struct NaomiModel **r29;
+    u8 dummy2[4];
+    char mapObjName[0x100];
+    u8 dummy[8];
+
     r17 = lbl_80209488;
-    r30 = lbl_80209368;
+    r30 = g_mapModels;
     r29 = lbl_802095A8;
     r19 = 0;
     lbl_802F1F50 = 0;
 
-    r26 = lbl_802099E8;
-    r22 = decodedStageLzPtr->animGroups;
-    for (i = 0; i < animGroupCount; r26++, i++, r22++)
+    ag = decodedStageLzPtr->animGroups;
+    for (i = 0; i < animGroupCount; i++, ag++)
     {
-        r26->unk0 = (void *)r17;
-        r26->unk4 = r30;
-        r26->unk8 = 0;
-        r21 = r22->modelNames;
-        while (*r21 != NULL)
+        lbl_802099E8[i].unk0 = (void *)r17;
+        lbl_802099E8[i].unk4 = r30;
+        lbl_802099E8[i].unk8 = 0;
+
+        nameIter = ag->modelNames;
+        while (*nameIter != NULL)
         {
-            struct NaomiModel *r18 = NULL;
-            strncpy(sp10, *r21, 0xFC);
-            strncat(sp10, "_MAP", 0x100);
-            r31 = NULL;
-            r24 = lbl_801B8794;
-            while (*r24 != NULL)
+            model1 = NULL;
+            strncpy(mapObjName, *nameIter, sizeof(mapObjName) - 4);
+            strncat(mapObjName, "_MAP", sizeof(mapObjName));  //! BUG: n is the number of chars to copy, not the total size of the buffer
+            model2 = NULL;
+
+            objIter = naomiObjList;
+            while (*objIter != NULL)
             {
-                if (**r24 != NULL)
+                if (**objIter != NULL)
                 {
-                    struct NaomiModel **modelPtrs = (**r24)->modelPtrs;
-                    int j; // r23
+                    modelPtrs = (**objIter)->modelPtrs;
                     for (j = 0; modelPtrs[j] != NULL; j++)
                     {
-                        if (strcmp(*r21, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
+                        if (strcmp(*nameIter, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0->name)) == 0)
                         {
-                            r18 = modelPtrs[j];
+                            model1 = modelPtrs[j];
                             break;
                         }
                     }
                 }
-                // lbl_80044F00
-                r24++;
-                // lbl_80044F04
-            }
-            r25 = lbl_801B8794;
-            while (*r25 != NULL)
-            {
-                if (**r25 != NULL)
-                {
-                    struct NaomiModel **modelPtrs = (**r25)->modelPtrs;
-                    int j; // r23
-                    for (j = 0; modelPtrs[j] != NULL; j++)
-                    {
-                        if (strcmp(sp10, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0 + 4)) == 0)
-                        {
-                            r31 = modelPtrs[j];
-                            break;
-                        }
-                    }
-                }
-                // lbl_80044F70
-                r25++;
+                objIter++;
             }
 
-            if (r31 == NULL)
-                r31 = r18;
-            if (r31 != NULL)
+            objIter = naomiObjList;
+            while (*objIter != NULL)
             {
-                *r30++ = r31;
-                if (r31 != r18)
-                    *r29++ = r31;
+                if (**objIter != NULL)
+                {
+                    modelPtrs = (**objIter)->modelPtrs;
+                    for (j = 0; modelPtrs[j] != NULL; j++)
+                    {
+                        if (strcmp(mapObjName, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0->name)) == 0)
+                        {
+                            model2 = modelPtrs[j];
+                            break;
+                        }
+                    }
+                }
+                objIter++;
             }
-            // lbl_80044FAC
-            if (r18 != NULL)
+
+            if (model2 == NULL)
+                model2 = model1;
+            if (model2 != NULL)
             {
-                *r17++ = (void *)r18;
+                *r30++ = model2;
+                if (model2 != model1)
+                    *r29++ = model2;
+            }
+            if (model1 != NULL)
+            {
+                *r17++ = model1;
+                *r29++ = model1;
                 r19++;
-                *r29++ = (void *)r18;
-
-                lbl_802F1F50 += NLMODEL_HEADER(r18)->unk4->modelSize;
-                r26->unk8++;
+                lbl_802F1F50 += NLMODEL_HEADER(model1)->unk4->modelSize;
+                lbl_802099E8[i].unk8++;
                 if (r19 >= 0x47)
                     break;
             }
-            // lbl_80044FF0
-
-            r21++;
+            nameIter++;
         }
-        // lbl_8004500C
     }
     *r17 = NULL;
     *r30 = NULL;
@@ -850,89 +839,57 @@ void func_80044E18(void)
     r30_ = decodedStageLzPtr->animGroupModelCount < 0x80 ? decodedStageLzPtr->animGroupModelCount : 0x80;
     // i = r26
     lbl_802F1F4C = 0;
-    r18 = decodedStageLzPtr->animGroupModels;
-    for (i = 0; i < r30_; i++, r17_++, r18++)
+    r18_ = decodedStageLzPtr->animGroupModels;
+    for (i = 0; i < r30_; i++, r17_++, r18_++)
     {
-        struct NaomiObj ***r20 = lbl_801B8794;
-        struct NaomiModel *r31 = NULL;
-        int r19 = 0;
+        int r19_;
 
-        while (*r20 != NULL)
+        objIter = naomiObjList;
+        model2 = NULL;
+        r19_ = 0;
+
+        while (*objIter != NULL)
         {
-            if (**r20 != NULL)
+            if (**objIter != NULL)
             {
-                struct NaomiModel **r3 = (**r20)->modelPtrs;
-                int j;
-                for (j = 0; r3[j] != NULL; j++)
+                modelPtrs = (**objIter)->modelPtrs;
+                for (j = 0; modelPtrs[j] != NULL; j++)
                 {
-                    int len =
-                        string_match_len(NLMODEL_HEADER(r3[j])->unk0 + 4, r18->name);
-                    if (len > r19)
+                    int len = string_match_len((void *)r18_->name, NLMODEL_HEADER(modelPtrs[j])->unk0->name);
+                    if (len > r19_)
                     {
-                        r19 = len;
-                        r31 = r3[j];
+                        r19_ = len;
+                        model2 = modelPtrs[j];
                     }
                 }
             }
-            // lbl_800450B0
-            r20++;
+            objIter++;
         }
-        r17_->unk0 = r18->unk0;
-        r17_->unk8 = r18->unk8;
-        if (r31 != NULL)
+        r17_->unk0 = r18_->unk0;
+        r17_->unk8 = r18_->unk8;
+        if (model2 != NULL)
         {
-            r17_->unk4 = r31;
-            *r29++ = r31;
+            r17_->unk4 = model2;
+            *r29++ = model2;
             if ((r17_->unk0 & 3) == 1)
-                lbl_802F1F4C += NLMODEL_HEADER(r31)->unk4->modelSize;
+                lbl_802F1F4C += NLMODEL_HEADER(model2)->unk4->modelSize;
         }
-        // lbl_8004510C
         else
             r17_->unk4 = NULL;
     }
-
-    // i = r6
-    // r4 = 0;
-    r4 = 0;
-    r5 = decodedStageLzPtr->animGroups;
-    r7 = lbl_8020A348;
-    for (r6 = 0; r6 < animGroupCount; r6++, r7++, r5++)
-    {
-        r7->unk0 = (void *)&lbl_80209D48[r4];
-        r7->unk4 = r5->animGroupModelCount;
-        // r7++;
-        // r5++;
-        r4 += r5->animGroupModelCount;
-    }
+    func_80044E18_inline(lbl_8020A348);
     *r29 = NULL;
 }
-#else
-char lbl_802F09C8[5] = "_MAP";
-asm void func_80044E18(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_80044E18.s"
-}
-#pragma peephole on
-#endif
 
-extern u32 lbl_802F1F34;
-char lbl_802F09D0[4] = "BOX";
+static struct GMA **gmaList[] = {&decodedStageGmaPtr, &decodedBgGma, NULL};
 
-#ifndef NONMATCHING
-asm void func_80045194(void)
+static struct GMAModel *find_model_in_gma_list(char *name)
 {
-    nofralloc
-#include "../asm/nonmatchings/func_80045194.s"
-}
-#pragma peephole on
-#endif
-
-inline struct GMAModel *find_model_in_gma_list(struct GMA ***list, char *name)
-{
+    struct GMA ***list;
     struct GMAModel *model = NULL;
     int i;
 
+    list = gmaList;
     while (*list != NULL)
     {
         if (**list != NULL)
@@ -948,14 +905,103 @@ inline struct GMAModel *find_model_in_gma_list(struct GMA ***list, char *name)
     return model;
 }
 
-struct GMAModel *find_stage_or_bg_model(char *name)
+static struct GMAModel *find_model_in_gma_list_2(char *name, int start, int len)
 {
-    static struct GMA **gmaList[] = {&decodedStageGmaPtr, &decodedBgGma, NULL};
+    struct GMA ***list;
+    struct GMAModel *model = NULL;
+    int i;
 
-    return find_model_in_gma_list(gmaList, name);
+    list = gmaList;
+    while (*list != NULL)
+    {
+        if (**list != NULL)
+        {
+            for (i = 0; i < (int)(**list)->numModels; i++)
+            {
+                int match = string_match_len(name, (**list)->modelEntries[i].name + start);
+                if (match > len)
+                {
+                    len = match;
+                    model = (**list)->modelEntries[i].model;
+                }
+            }
+        }
+        list++;
+    }
+    return model;
 }
 
-int string_match_len(s8 *, s8 *);
+struct GMAModel *goalModels[3];
+
+void func_80045194(void)
+{
+    struct GMAModel *model;
+    int phi_r27;
+    int i;
+    struct Struct80209D48 *phi_r24;
+    struct AnimGroupModel *phi_r25;
+    struct StageBgModel *phi_r24_2;
+    struct StageAnimGroup *ag;
+    int phi_r6;
+    struct Struct8020A348 *phi_r7;
+    int len;
+
+    phi_r24 = lbl_8020A588;
+    phi_r27 = MIN(decodedStageLzPtr->animGroupModelCount, 0x80);
+    phi_r25 = decodedStageLzPtr->animGroupModels;
+    for (i = 0; i < phi_r27; i++, phi_r25++, phi_r24++)
+    {
+        model = find_model_in_gma_list(phi_r25->name);
+        if (model == NULL && (gamePauseStatus & 4))
+            printf("warning %s : no match\n", phi_r25->name);
+        phi_r24->unk4 = model;
+        phi_r24->unk0 = phi_r25->unk0;
+        phi_r24->unk8 = phi_r25->unk8;
+    }
+
+    phi_r7 = lbl_8020AB88;
+    phi_r6 = 0;
+    ag = decodedStageLzPtr->animGroups;
+    for (i = 0; i < animGroupCount; i++, phi_r7++)
+    {
+        phi_r7->unk0 = (void *)&lbl_8020A588[phi_r6];
+        phi_r7->unk4 = ag->animGroupModelCount;
+        phi_r6 += ag->animGroupModelCount;
+        ag++;
+    }
+
+    phi_r24_2 = decodedStageLzPtr->bgModels;
+    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, phi_r24_2++)
+    {
+        model = find_model_in_gma_list(phi_r24_2->name);
+        if (model == NULL && (gamePauseStatus & 4))
+            printf("warning BG %s : no match\n", phi_r24_2->name);
+        phi_r24_2->model = model;
+    }
+
+    phi_r24_2 = decodedStageLzPtr->fgModels;
+    for (i = 0; i < decodedStageLzPtr->fgModelCount; i++, phi_r24_2++)
+    {
+        model = find_model_in_gma_list(phi_r24_2->name);
+        if (model == NULL && (gamePauseStatus & 4))
+            printf("warning MV %s : no match\n", phi_r24_2->name);
+        phi_r24_2->model = model;
+    }
+
+    for (i = 0; i < 3; i++)
+    {
+        len = strlen(goalModelNames[i]) - 1;
+        goalModels[i] = find_model_in_gma_list_2(goalModelNames[i], 4, len);
+    }
+
+    len = strlen("BOX") - 1;
+    g_stageBoxModel = find_model_in_gma_list_2("BOX", 4, len);
+}
+
+struct GMAModel *find_stage_or_bg_model(char *name)
+{
+    return find_model_in_gma_list(name);
+}
 
 void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
 {
@@ -989,7 +1035,7 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
 
         model = NULL;
         r27 = 0;
-        objIter = &lbl_801B8794[0];
+        objIter = &naomiObjList[0];
         while (*objIter != NULL)
         {
             struct NaomiObj *nobj = **objIter;
@@ -999,7 +1045,7 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
                 for (i = 0; modelPtrs[i] != NULL; i++)
                 {
                     int var =
-                        string_match_len(dyn->modelName, NLMODEL_HEADER(modelPtrs[i])->unk0 + 4);
+                        string_match_len(dyn->modelName, NLMODEL_HEADER(modelPtrs[i])->unk0->name);
                     if (var > r27)
                     {
                         r27 = var;
@@ -1019,7 +1065,7 @@ void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
     }
 }
 
-int string_match_len(s8 *a, s8 *b)
+static int string_match_len(char *a, char *b)
 {
     int len = 0;
     while (*a == *b)
@@ -1093,12 +1139,6 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
     vtx.y += mathutil_sin(angle) * amplitude;
     *vtxp = vtx;
 }
-
-#define lbl_802F3760 0.5
-#define lbl_802F3770 -0.030833333333333333
-#define lbl_802F3778 -1092.0f
-#define lbl_802F377C 30.0f
-#define lbl_802F3780 16384.0
 
 u32 bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal)
 {
@@ -1208,6 +1248,8 @@ int get_stage_background_2(int stageId)
     infoWork.unk20 = backup;
     return bg;
 }
+
+struct Sphere stageBoundSphere;
 
 void compute_stage_bounding_sphere(void)
 {
@@ -1582,25 +1624,6 @@ float func_80046884(struct NaomiModel *model)
     return lbl_8020ADE4.unk10;
 }
 
-static inline float vec_sq_mag(register Vec *v)
-{
-    register float x, y, z;
-#ifdef __MWERKS__
-    asm
-    {
-        lfs x, v->x
-        lfs y, v->y
-        lfs z, v->z
-        fmuls x, x, x
-        fmadds x, y, y, x
-        fmadds x, z, z, x
-    }
-    return x;
-#else
-    return v->x * v->x + v->y * v->y + v->z * v->z;
-#endif
-}
-
 void g_some_stage_vtx_callback_1(Point3d *vtx)
 {
     Vec spC;
@@ -1609,7 +1632,7 @@ void g_some_stage_vtx_callback_1(Point3d *vtx)
     spC.x = vtx->x - lbl_8020ADE4.unk0.x;
     spC.z = vtx->z - lbl_8020ADE4.unk0.z;
     spC.y = 0.0f;
-    f1 = vec_sq_mag(&spC);
+    f1 = mathutil_vec_sq_len(&spC);
     if (f1 < lbl_8020ADE4.unkC)
         return;
     lbl_8020ADE4.unkC = f1;
@@ -1624,16 +1647,13 @@ void g_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of g_some_stage_vtx_
     spC.x = vtx->x - lbl_8020ADE4.unk0.x;
     spC.z = vtx->z - lbl_8020ADE4.unk0.z;
     spC.y = 0.0f;
-    f1 = vec_sq_mag(&spC);
+    f1 = mathutil_vec_sq_len(&spC);
     if (f1 < lbl_8020ADE4.unkC)
         return;
     lbl_8020ADE4.unkC = f1;
     lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
 }
 
-char string_warning__s___no_match_n[] = "warning %s : no match\n";
-char string_warning_BG__s___no_match_n[] = "warning BG %s : no match\n";
-char string_warning_MV__s___no_match_n[] = "warning MV %s : no match\n";
 u8 lbl_801B87FC[] = {1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0};
 
 u8 lbl_8020AE00[0x20] __attribute__((aligned(32)));
