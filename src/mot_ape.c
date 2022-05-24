@@ -1088,9 +1088,9 @@ void func_8008B3B8_inline_3(u8 a, struct Struct8003699C_child *r24_)
 {
     void *r3;
 
-    r3 = r24_->filler4114;
+    r3 = &r24_->unk4114;
     func_80035F18(r3, r24_, 1, lbl_802F12D8[a]);
-    r3 = r24_->filler84;
+    r3 = &r24_->unk84;
     func_80035F18(r3, r24_, 2, lbl_802F12E0[a]);
 }
 

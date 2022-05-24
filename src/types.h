@@ -213,6 +213,30 @@ struct Struct80034F5C_1  // Joint object?
     Mtx unk208;
 };  // size = 0x238
 
+struct Struct8003699C_child_sub
+{
+	u8 filler0[8];
+	u16 unk8;
+	u16 unkA;
+	u16 unkC;
+	float unk10;
+	float unk14;
+    u32 unk18;
+    float unk1C;
+    float unk20;
+    u32 unk24;
+	u16 unk28;
+    u8 filler2A[0x4090-0x2A];
+};  // size = 0x4090
+
+struct Struct8003699C_child_child
+{
+	u16 unk0;
+	u16 unk2;
+	u32 unk4;
+	u32 unk8;
+};  // size = 0xC
+
 struct Struct8003699C_child
 {
     u32 unk0;
@@ -231,9 +255,9 @@ struct Struct8003699C_child
     float unk40;
     u8 filler44[0x54-0x44];
     Mtx unk54;
-    u8 filler84[0x4114-0x84];
-    u8 filler4114[0x81A4-0x4114];
-    void *unk81A4;
+    struct Struct8003699C_child_sub unk84;
+    struct Struct8003699C_child_sub unk4114;
+    struct Struct8003699C_child_child *unk81A4;
     struct Struct80034F5C_1 unk81A8[29];
 };
 
