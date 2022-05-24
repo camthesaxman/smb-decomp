@@ -215,7 +215,9 @@ struct Struct80034F5C_1  // Joint object?
 
 struct Struct8003699C_child_sub
 {
-	u8 filler0[8];
+    u32 unk0;
+	u8 filler4[2];
+    u16 unk6;
 	u16 unk8;
 	u16 unkA;
 	u16 unkC;
@@ -224,9 +226,14 @@ struct Struct8003699C_child_sub
     u32 unk18;
     float unk1C;
     float unk20;
-    u32 unk24;
+    s32 unk24;
 	u16 unk28;
-    u8 filler2A[0x4090-0x2A];
+    u16 unk2A;
+    float unk2C;
+    //u8 filler30[0x4090-0x30];
+    u8 filler30[0x38-0x30];
+    struct Struct80034F5C_1 unk38;
+    u8 filler270[0x4090-0x270];
 };  // size = 0x4090
 
 struct Struct8003699C_child_child

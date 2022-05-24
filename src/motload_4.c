@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "mathutil.h"
 
 const u32 lbl_802F3340[2] = {0x0104070A, 0x0D000000};
 const u32 lbl_802F3348 = 0x02000000;
@@ -15,6 +16,8 @@ const u32 lbl_802F3364 = 0x0C000000;
 const u32 lbl_802F3368 = 0x0E000000;
 const u32 lbl_802F336C = 0x0F000000;
 const u32 lbl_802F3370 = 0x10000000;
+
+void func_800366F8(struct Struct8003699C_child_sub *arg0);
 
 #pragma force_active on
 void func_80036000(struct Struct8003699C_child_sub *arg0, u16 arg1, u16 arg2)
@@ -62,7 +65,7 @@ void func_80036064(struct Struct8003699C_child *arg0)
         {
             if (arg0->unk38 < phi_r31->unk2)
 				break;
-			
+
 			switch (phi_r31->unk0)
 			{
 			case 1:
@@ -214,4 +217,62 @@ void func_80036064(struct Struct8003699C_child *arg0)
         }
         arg0->unk81A4 = phi_r31;
     }
+}
+
+void func_80036544(struct Struct8003699C_child_sub *arg0);
+void func_80036720(struct Struct8003699C_child_sub *arg0);
+
+void func_80036510(struct Struct8003699C_child_sub *arg0)
+{
+	func_80036544(arg0);
+	func_80036720(arg0);
+}
+
+void func_80036544(struct Struct8003699C_child_sub *arg0)
+{
+    float phi_f3;
+
+    arg0->unk2A = arg0->unkA;
+    arg0->unk2C = arg0->unk14;
+    if (arg0->unk18 & 1)
+        phi_f3 = arg0->unk10 + (arg0->unkA + arg0->unk14);
+    else
+    {
+        arg0->unk1C += arg0->unk20;
+        if (arg0->unk24 == 0)
+            arg0->unk20 = 0.0f;
+        else
+            arg0->unk24 = arg0->unk24 - 1;
+        phi_f3 = 1.0f + (arg0->unkC - 1) * arg0->unk1C * 0.01f;
+    }
+    arg0->unkA = mathutil_floor(phi_f3);
+    arg0->unk14 = phi_f3 - mathutil_trunc(phi_f3);
+    if (arg0->unk14 < 0.001f)
+        arg0->unk14 = 0.0f;
+    if (arg0->unk2A + arg0->unk2C > arg0->unkA + arg0->unk14)
+        func_800366F8(arg0);
+}
+
+void func_800366F8(struct Struct8003699C_child_sub *arg0)
+{
+	func_80034360(&arg0->unk38, arg0->unk8);
+}
+
+extern const struct Struct80034F5C_3 *const lbl_80114DD0[];
+extern const struct Struct80034F5C_2 *const lbl_80114DE0[];
+
+void func_80036720(struct Struct8003699C_child_sub *arg0)
+{
+    struct Struct80034F5C_1 *temp_r31 = &arg0->unk38;
+	//! BUG: casting away const qualifier
+    struct Struct80034F5C_3 *r4 = (void *)lbl_80114DD0[arg0->unk6];
+    struct Struct80034F5C_2 *r5 = (void *)lbl_80114DE0[arg0->unk6];
+    float f1 = arg0->unkA + arg0->unk14;
+    u32 r6 = arg0->unk0 & (1 << 2);
+
+    func_80034F5C(temp_r31, r4, r5, f1, r6);
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_to_mtx(temp_r31->unk168);
+    mathutil_mtxA_get_translate_alt2(&temp_r31->unk1CC);
+    func_80035748(temp_r31, temp_r31);
 }

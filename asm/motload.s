@@ -2256,7 +2256,6 @@ lbl_800364E4:
 /* 80036504 00032424  CB 41 00 38 */	lfd f26, 0x38(r1)
 /* 80036508 00032428  38 21 00 68 */	addi r1, r1, 0x68
 /* 8003650C 0003242C  4E 80 00 20 */	blr
-.endif
 
 .global func_80036510
 func_80036510:
@@ -2456,6 +2455,7 @@ func_80036720:
 /* 800367D8 000326F8  38 21 00 20 */	addi r1, r1, 0x20
 /* 800367DC 000326FC  7C 08 03 A6 */	mtlr r0
 /* 800367E0 00032700  4E 80 00 20 */	blr
+.endif
 
 .global func_800367E4
 func_800367E4:
@@ -2683,12 +2683,12 @@ lbl_802F3388:
 	# ROM: 0x1ECDA8
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
 
 .global lbl_802F3390
 lbl_802F3390:
 	# ROM: 0x1ECDB0
 	.4byte 0x3C23D70A
+.endif
 
 .global lbl_802F3394
 lbl_802F3394:
