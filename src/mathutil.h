@@ -8,6 +8,8 @@
 #define MATHUTIL_C_ONLY
 #endif
 
+#define PI 3.14159265358979323846f
+
 struct MathutilData
 {
     /*0x00*/ Mtx mtxA;

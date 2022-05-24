@@ -1856,6 +1856,7 @@ void ball_func_13(struct Ball *ball)
 
 void ball_func_14(struct Ball *ball) {}
 
+#undef PI
 #define PI 3.14159265
 
 void ball_func_15(struct Ball *ball)

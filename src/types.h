@@ -600,7 +600,7 @@ struct MotInfo
 
 struct Struct80034F5C_2
 {
-    u16 filler0;
+    u16 unk0;
     u16 unk2;
 };  // size = 4
 

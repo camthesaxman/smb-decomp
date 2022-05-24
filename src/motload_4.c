@@ -4,18 +4,1606 @@
 #include "global.h"
 #include "mathutil.h"
 
-const u32 lbl_802F3340[2] = {0x0104070A, 0x0D000000};
-const u32 lbl_802F3348 = 0x02000000;
-const u32 lbl_802F334C = 0x03000000;
-const u32 lbl_802F3350 = 0x05000000;
-const u32 lbl_802F3354 = 0x06000000;
-const u32 lbl_802F3358 = 0x08000000;
-const u32 lbl_802F335C = 0x09000000;
-const u32 lbl_802F3360 = 0x0B000000;
-const u32 lbl_802F3364 = 0x0C000000;
-const u32 lbl_802F3368 = 0x0E000000;
-const u32 lbl_802F336C = 0x0F000000;
-const u32 lbl_802F3370 = 0x10000000;
+struct Struct80116F18 { u32 length; const u8 *unk4; };
+
+const struct Struct8003699C_child_child lbl_80114F78[] =
+{
+    {  3,   1, 245,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80114F90[] =
+{
+    {  3,   1, 244,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80114FA8[] =
+{
+    {  3,   1, 246,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80114FC0[] =
+{
+    {  3,   1, 341,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80114FD8[] =
+{
+    {  3,   1, 262,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80114FF0[] =
+{
+    {  3,   1, 266,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115008[] =
+{
+    {  3,   1, 264,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115020[] =
+{
+    {  3,   1, 344,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115038[] =
+{
+    {  3,   1, 387,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115050[] =
+{
+    {  3,   1, 249,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115068[] =
+{
+    {  3,   1, 248,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115080[] =
+{
+    {  3,   1, 247,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115098[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801150BC[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801150E0[] =
+{
+    {  3,   1, 264,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115104[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115128[] =
+{
+    {  3,   1, 261,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011514C[] =
+{
+    {  3,   1, 265,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115170[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115194[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801151B8[] =
+{
+    {  3,   1, 264,   0},
+    {  6,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801151DC[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1,  75},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115200[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1,  70},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115224[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1,  60},
+    {  0,   0,   0,   0},
+    {  3,   1, 344,   0},
+    {  6,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011526C[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1,  90},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115290[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1,  70},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801152B4[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1,  50},
+    {  0,   0,   0,   0},
+    {  3,   1, 266,   0},
+    {  6,   1,   1,  50},
+    {  0,   0,   0,   0},
+    {  3,   1, 264,   0},
+    {  6,   1,   1,  50},
+    {  0,   0,   0,   0},
+    {  3,   1, 344,   0},
+    {  6,   1,   1,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115344[] =
+{
+    {  1,   1, 261,   0},
+    {  2,   1, 276,   1},
+    {  4,   1,   1,  24},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115374[] =
+{
+    {  1,   1, 265,   0},
+    {  2,   1, 444,   1},
+    {  4,   1,   1,  24},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801153A4[] =
+{
+    {  3,   1, 263,   0},
+    {  6,   1,   1,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801153C8[] =
+{
+    {  1,   1, 342,   0},
+    {  2,   1, 452,   1},
+    {  4,   1,   1,  24},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801153F8[] =
+{
+    {  1,   1, 283,   0},
+    {  2,   1, 261,   0},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115428[] =
+{
+    {  1,   1, 283,   1},
+    {  2,   1, 261,   0},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115458[] =
+{
+    {  1,   1, 300,   0},
+    {  2,   1, 265,   0},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115488[] =
+{
+    {  1,   1, 300,   1},
+    {  2,   1, 265,   0},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801154B8[] =
+{
+    {  3,   1, 246,   0},
+    {  0,   0,   0,   0},
+    {  1,   1, 246,   1},
+    {  2,   1, 246,   0},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115500[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1,  60},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115524[] =
+{
+    {  1,   1, 262,   0},
+    {  2,   1, 245,   0},
+    {  4,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115554[] =
+{
+    {  1,   1, 262,   0},
+    {  2,   1, 245,   0},
+    {  4,   1,  15, 100},
+    {  4,  15,  33,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115590[] =
+{
+    {  3,   1, 266,   0},
+    {  4,   1,   1,  50},
+    {  4,   1,  13, 100},
+    {  4,  21,  33,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801155CC[] =
+{
+    {  3,   1, 264,   0},
+    {  4,   1,  13, 100},
+    {  5,   1,  36,  50},
+    {  4,  25,  36,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115608[] =
+{
+    {  3,   1, 262,   0},
+    {  4,   1,  17, 100},
+    {  5,   1,  17,  80},
+    {  5,  17,  38,  50},
+    {  4,  25,  38,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115650[] =
+{
+    {  3,   1, 266,   0},
+    {  5,   1,   1,  50},
+    {  4,   1,  17, 100},
+    {  4,  25,  38,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011568C[] =
+{
+    {  3,   1, 264,   0},
+    {  5,   1,   1,  50},
+    {  4,   1,  13, 100},
+    {  4,  13,  38,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801156C8[] =
+{
+    {  3,   1, 344,   0},
+    {  4,   1,  17,  90},
+    {  5,   1,  39,  50},
+    {  4,  25,  39,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115704[] =
+{
+    {  1,   1, 245,   0},
+    {  2,   1, 262,   0},
+    {  5,   1,   1,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115734[] =
+{
+    {  1,   1, 244,   0},
+    {  2,   1, 266,   0},
+    {  5,   1,   1,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115764[] =
+{
+    {  1,   1, 246,   0},
+    {  2,   1, 264,   0},
+    {  5,   1,   1,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115794[] =
+{
+    {  1,   1, 341,   0},
+    {  2,   1, 344,   0},
+    {  5,   1,   1,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801157C4[] =
+{
+    {  1,   1, 261,   0},
+    {  2,   1, 245,   0},
+    {  4,   1,   1,  10},
+    {  4,   1,  21,  90},
+    {  4,  91, 101,  60},
+    {  4, 141, 181,  10},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115818[] =
+{
+    {  1,   1, 265,   0},
+    {  2,   1, 481,   1},
+    {  4,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115848[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,  31,  60},
+    {  6,  31,  61, 100},
+    {  6,  61,  91,  60},
+    {  6,  91, 121, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011589C[] =
+{
+    {  3,   1, 422,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801158B4[] =
+{
+    {  3,   1, 423,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801158CC[] =
+{
+    {  3,   1, 424,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801158E4[] =
+{
+    {  3,   1, 344,   0},
+    {  4,   1,   1,  70},
+    {  5,   1,   1,   0},
+    {  4,   1,   7,   0},
+    {  5,   1,   7,  70},
+    {  4,   7,  13,  70},
+    {  5,   7,  13,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115944[] =
+{
+    {  3,   1, 261,   0},
+    {  6,   4,  14,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115968[] =
+{
+    {  3,   1, 265,   0},
+    {  6,   4,  14,  65},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011598C[] =
+{
+    {  3,   1, 243,   0},
+    {  4,   1,  10,  80},
+    {  4,  34,  44,   0},
+    {  5,  40,  50,  80},
+    {  5,  72,  80,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801159D4[] =
+{
+    {  3,   1, 243,   0},
+    {  6,  18,  28,  80},
+    {  6,  72,  80,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115A04[] =
+{
+    {  3,   1, 262,   0},
+    {  4,   1,  50,  80},
+    {  5,   1,  65,  80},
+    {  4,  50,  90,  50},
+    {  5,  65,  90,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115A4C[] =
+{
+    {  3,   1, 262,   0},
+    {  4,   1,   1, 100},
+    {  5,   1,   1,  50},
+    {  4,   1,   7,  50},
+    {  5,   1,   7, 100},
+    {  4,   7,  12, 100},
+    {  5,   7,  12,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115AAC[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1,  50},
+    {  6,   1,  20,  80},
+    {  6, 100, 118,  90},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115AE8[] =
+{
+    {  1,   1, 482,   1},
+    {  2,   1, 264,   0},
+    {  5, 140, 150, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115B18[] =
+{
+    {  3,   1, 344,   0},
+    {  4, 103, 113,  70},
+    {  4, 113, 126,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115B48[] =
+{
+    {  3,   1, 262,   0},
+    {  4,  21,  45,  80},
+    {  4,  56,  71,  60},
+    {  5,  56,  84,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115B84[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,  12, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115BA8[] =
+{
+    {  3,   1, 262,   0},
+    {  5,   1,  17, 100},
+    {  5,  35,  40,   0},
+    {  4,  40,  57, 100},
+    {  4,  75,  80,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115BF0[] =
+{
+    {  3,   1, 261,   0},
+    {  6,   1,  13,  50},
+    {  6,  13,  25, 100},
+    {  6,  25,  40,  50},
+    {  6,  40,  55, 100},
+    {  6,  55,  70,  50},
+    {  6,  70,  80,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115C50[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,  17,  80},
+    {  6,  17,  43, 100},
+    {  6,  43,  57,  80},
+    {  6,  57,  80, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115CA4[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,  12,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115CD4[] =
+{
+    {  3,   1, 265,   0},
+    {  4,   1,   1,  50},
+    {  5,   1,   1,  60},
+    {  6,   1,  12, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115D10[] =
+{
+    {  3,   1, 265,   0},
+    {  4,   1,   1,  50},
+    {  5,   1,   1,  60},
+    {  4,   1,  15, 100},
+    {  5,   1,  40,  50},
+    {  4,  15,  25,  60},
+    {  4,  25,  80,  50},
+    {  5,  40,  54, 100},
+    {  5,  54,  80,  85},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115D88[] =
+{
+    {  3,   1, 266,   0},
+    {  6,  68,  81,  70},
+    {  6,  81, 101,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115DB8[] =
+{
+    {  3,   1, 266,   0},
+    {  4,   1,   1,  90},
+    {  5,   1,   1,  50},
+    {  4,   1,   7,  50},
+    {  5,   1,   7,  90},
+    {  4,   7,  12,  90},
+    {  5,   7,  12,  50},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115E18[] =
+{
+    {  3,   1, 265,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,  24,  80},
+    {  6,  24,  48, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115E54[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,  90, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115E78[] =
+{
+    {  1,   1, 265,   0},
+    {  2,   1, 248,   0},
+    {  4,   1,   1,  85},
+    {  4,  21,  41,  60},
+    {  4,  71,  91,  85},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115EC0[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1,   0},
+    {  6,   1,   6, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115EF0[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1,   0},
+    {  6,   1,   6, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115F20[] =
+{
+    {  3,   1, 264,   0},
+    {  6,   1,   1,   0},
+    {  6,   1,   6, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115F50[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1,   1},
+    {  6,   1,   8, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115F80[] =
+{
+    {  3,   1, 262,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,   6,  80},
+    {  6,   6,  10, 100},
+    {  6,  10,  15,  80},
+    {  6,  15,  19, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80115FD4[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,   6,  80},
+    {  6,   6,  10, 100},
+    {  6,  10,  15,  80},
+    {  6,  15,  19, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116028[] =
+{
+    {  3,   1, 264,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,   5,  80},
+    {  6,   5,   7, 100},
+    {  6,   7,  10,  80},
+    {  6,  10,  15, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011607C[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1, 100},
+    {  6,   3,   8,  80},
+    {  6,   8,  12, 100},
+    {  6,  12,  16,  80},
+    {  6,  16,  20, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801160D0[] =
+{
+    {  1,   1, 407,   1},
+    {  2,   1, 408,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801160F4[] =
+{
+    {  1,   1, 409,   1},
+    {  2,   1, 341,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116118[] =
+{
+    {  1,   1, 242,   0},
+    {  2,   1, 263,   0},
+    {  4,   1,  90,  75},
+    {  5,   1,  38, 100},
+    {  5,  50,  90,  40},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116160[] =
+{
+    {  1,   1, 242,   0},
+    {  2,   1, 263,   0},
+    {  4,   1,   1,  75},
+    {  5,   1,   1,  40},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011619C[] =
+{
+    {  3,   1, 264,   0},
+    {  4,   1,   1, 100},
+    {  4,   1,   7,   0},
+    {  5,   1,   7, 100},
+    {  4,   7,  12, 100},
+    {  5,   7,  12,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801161F0[] =
+{
+    {  3,   1, 264,   0},
+    {  6,   1,  31,  85},
+    {  6, 100, 110, 100},
+    {  6, 110, 116,  80},
+    {  6, 116, 118,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116238[] =
+{
+    {  3,   1, 263,   0},
+    {  6,   1,  45, 100},
+    {  6,  45,  80,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116268[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,  20,  75},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116298[] =
+{
+    {  3,   1, 448,   0},
+    {  6,   1,   1, 100},
+    {  6,  14,  30,   1},
+    {  6,  80,  90, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801162D4[] =
+{
+    {  3,   1, 242,   0},
+    {  6,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801162F8[] =
+{
+    {  3,   1, 262,   0},
+    {  6,  55,  69, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011631C[] =
+{
+    {  3,   1, 266,   0},
+    {  6,  55,  69, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116340[] =
+{
+    {  3,   1, 264,   0},
+    {  6,  55,  69, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116364[] =
+{
+    {  3,   1, 344,   0},
+    {  6,  60,  69, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116388[] =
+{
+    {  3,   1, 501,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801163A0[] =
+{
+    {  3,   1, 264,   0},
+    {  6,  41,  56, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801163C4[] =
+{
+    {  3,   1, 500,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801163DC[] =
+{
+    {  1,   1, 341,   0},
+    {  2,   1, 344,   0},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011640C[] =
+{
+    {  3,   1, 344,   0},
+    {  6,   1,   1, 100},
+    {  4,   1,  13,   1},
+    {  5,  81, 109,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116448[] =
+{
+    {  3,   1, 344,   0},
+    {  6,  29,  43, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011646C[] =
+{
+    {  3,   1, 266,   0},
+    {  6,   1,   1,  70},
+    {  6, 136, 141,  65},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011649C[] =
+{
+    {  1,   1, 266,   0},
+    {  2,   1, 519,   1},
+    {  4,   1,   1,  65},
+    {  4,  11,  21,  70},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801164D8[] =
+{
+    {  3,   1, 344,   0},
+    {  6, 201, 215, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801164FC[] =
+{
+    {  3,   1, 263,   0},
+    {  4,   1,   1,  70},
+    {  5,   1,   1,  80},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_8011652C[] =
+{
+    {  1,   1, 536,   1},
+    {  2,   1, 538,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116550[] =
+{
+    {  1,   1, 537,   1},
+    {  2,   1, 539,   1},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116574[] =
+{
+    {  1,   1, 536,   0},
+    {  2,   1, 538,   0},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_80116598[] =
+{
+    {  1,   1, 544,   1},
+    {  2,   1, 344,   0},
+    {  5,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801165C8[] =
+{
+    {  1,   1, 545,   1},
+    {  2,   1, 344,   0},
+    {  5,   1,   1, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child lbl_801165F8[] =
+{
+    {  3,   1, 265,   0},
+    {  6,   1,   1, 100},
+    {  6,   1,  24,  80},
+    {  6,  24,  48, 100},
+    {  0,   0,   0,   0},
+};
+
+const struct Struct8003699C_child_child *const lbl_80116634[] =
+{
+    NULL,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80115A4C,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80115A04,
+    lbl_801152B4,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80115E18,
+    lbl_8011514C,
+    lbl_80114F90,
+    lbl_801150BC,
+    lbl_80115E54,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80115050,
+    lbl_80114F90,
+    lbl_80115DB8,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80116160,
+    lbl_80116118,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_8011619C,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80115068,
+    lbl_80115080,
+    lbl_80114FA8,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80115BA8,
+    lbl_80114F78,
+    lbl_80115128,
+    lbl_80115B84,
+    lbl_80115128,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80115D10,
+    lbl_80115CD4,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FF0,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80115068,
+    lbl_80115068,
+    lbl_8011598C,
+    lbl_80114F90,
+    lbl_801161F0,
+    lbl_80115968,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_801159D4,
+    lbl_80114FF0,
+    lbl_80114F78,
+    lbl_80115BF0,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80115B48,
+    lbl_80114F90,
+    lbl_80115D88,
+    lbl_80115944,
+    lbl_80114F90,
+    lbl_80114F78,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80116238,
+    lbl_80114FA8,
+    lbl_801158B4,
+    lbl_8011589C,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    lbl_80114F78,
+    lbl_80115068,
+    lbl_80114FA8,
+    lbl_80114F78,
+    lbl_80115554,
+    lbl_80114F78,
+    lbl_80115608,
+    lbl_80115704,
+    lbl_80115704,
+    lbl_80115704,
+    lbl_80115704,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    lbl_80115524,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80115170,
+    lbl_80115194,
+    lbl_801151B8,
+    lbl_80115344,
+    lbl_80115344,
+    lbl_80115344,
+    NULL,
+    lbl_801153F8,
+    lbl_801153F8,
+    lbl_801153F8,
+    lbl_80115428,
+    lbl_80115428,
+    lbl_80115428,
+    NULL,
+    lbl_80115EC0,
+    lbl_80115F80,
+    lbl_80115EF0,
+    lbl_80115FD4,
+    lbl_80115F20,
+    lbl_80116028,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80115AAC,
+    lbl_80115458,
+    lbl_80115458,
+    lbl_80115458,
+    NULL,
+    lbl_80115170,
+    lbl_80115170,
+    lbl_801154B8,
+    lbl_801154B8,
+    lbl_801154B8,
+    lbl_80115488,
+    lbl_80115488,
+    lbl_80115488,
+    lbl_80115098,
+    lbl_801150BC,
+    lbl_801150E0,
+    lbl_80115848,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_801150BC,
+    lbl_8011526C,
+    lbl_801151B8,
+    lbl_801151B8,
+    lbl_80115734,
+    lbl_80115590,
+    lbl_80115734,
+    lbl_80115650,
+    lbl_80115734,
+    lbl_80115734,
+    lbl_80115734,
+    lbl_80115734,
+    lbl_80114FA8,
+    lbl_801155CC,
+    lbl_80115764,
+    lbl_8011568C,
+    lbl_80115764,
+    lbl_80115764,
+    lbl_80115764,
+    lbl_80115764,
+    lbl_80114F78,
+    lbl_80115050,
+    lbl_801150BC,
+    lbl_80115068,
+    lbl_801150E0,
+    lbl_801150E0,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    lbl_80114F78,
+    lbl_801160D0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80115200,
+    lbl_801158E4,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_801151DC,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80115C50,
+    lbl_80115CA4,
+    lbl_80114F78,
+    lbl_80115E78,
+    lbl_80114FA8,
+    lbl_80114FC0,
+    lbl_80115104,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_8011589C,
+    lbl_801160F4,
+    lbl_80114FC0,
+    lbl_80115104,
+    lbl_80114FC0,
+    lbl_80115038,
+    NULL,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80115F50,
+    lbl_8011607C,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    NULL,
+    NULL,
+    NULL,
+    lbl_80114FC0,
+    lbl_80115200,
+    lbl_80115200,
+    lbl_801158CC,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114FC0,
+    lbl_80114FA8,
+    lbl_80114FC0,
+    lbl_801158CC,
+    lbl_801158B4,
+    lbl_80114FA8,
+    NULL,
+    NULL,
+    NULL,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80115AE8,
+    lbl_80116268,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80115224,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_801156C8,
+    lbl_80115794,
+    lbl_80115794,
+    lbl_80115794,
+    lbl_80115794,
+    lbl_80115B18,
+    lbl_80115374,
+    lbl_80115374,
+    lbl_80115374,
+    NULL,
+    lbl_80116298,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    NULL,
+    lbl_801153C8,
+    lbl_801153C8,
+    lbl_801153C8,
+    NULL,
+    lbl_80114FA8,
+    lbl_80115458,
+    lbl_80115170,
+    lbl_80115170,
+    lbl_80115170,
+    lbl_80115194,
+    lbl_80115194,
+    lbl_80115194,
+    lbl_80115500,
+    lbl_80115500,
+    lbl_80115500,
+    lbl_80115500,
+    lbl_80115500,
+    lbl_801153F8,
+    lbl_801153A4,
+    lbl_801153A4,
+    lbl_801153A4,
+    lbl_801151B8,
+    lbl_801151B8,
+    lbl_801151B8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80115224,
+    lbl_801157C4,
+    lbl_80115818,
+    lbl_80114FA8,
+    lbl_80114FC0,
+    NULL,
+    NULL,
+    lbl_801162D4,
+    lbl_801162F8,
+    lbl_8011631C,
+    lbl_80116364,
+    lbl_80116340,
+    lbl_80116388,
+    lbl_801150BC,
+    lbl_80115104,
+    lbl_801163A0,
+    lbl_801163C4,
+    lbl_801150BC,
+    lbl_80115104,
+    lbl_80115008,
+    lbl_80115008,
+    lbl_80114FF0,
+    lbl_80115020,
+    lbl_80114FD8,
+    NULL,
+    NULL,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114F90,
+    lbl_80114F90,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_801163DC,
+    lbl_801163DC,
+    lbl_801163DC,
+    lbl_80114F78,
+    lbl_80114F78,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_8011640C,
+    lbl_80116448,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    NULL,
+    lbl_8011646C,
+    lbl_8011649C,
+    lbl_80115290,
+    lbl_80115068,
+    lbl_80115068,
+    lbl_80114FA8,
+    lbl_80114FA8,
+    lbl_80114FC0,
+    lbl_80114FC0,
+    lbl_801164D8,
+    lbl_80115104,
+    lbl_80114FA8,
+    lbl_8011652C,
+    lbl_80116550,
+    lbl_801164FC,
+    lbl_801164FC,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    lbl_80116574,
+    lbl_801164FC,
+    lbl_80116598,
+    lbl_801165C8,
+    NULL,
+    NULL,
+    lbl_80114FA8,
+    lbl_801165F8,
+    lbl_80114F78,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+};
+
+const u8 lbl_802F3340[5] = { 0x01, 0x04, 0x07, 0x0A, 0x0D };
+const u8 lbl_802F3348[1] = { 0x02 };
+const u8 lbl_802F334C[1] = { 0x03 };
+const u8 lbl_802F3350[1] = { 0x05 };
+const u8 lbl_802F3354[1] = { 0x06 };
+const u8 lbl_802F3358[1] = { 0x08 };
+const u8 lbl_802F335C[1] = { 0x09 };
+const u8 lbl_802F3360[1] = { 0x0B };
+const u8 lbl_802F3364[1] = { 0x0C };
+const u8 lbl_802F3368[1] = { 0x0E };
+const u8 lbl_802F336C[1] = { 0x0F };
+const u8 lbl_802F3370[1] = { 0x10 };
+
+const struct Struct80116F18 lbl_80116F18[] =
+{
+    { ARRAY_COUNT(lbl_802F3340), lbl_802F3340 },
+    { ARRAY_COUNT(lbl_802F3348), lbl_802F3348 },
+    { ARRAY_COUNT(lbl_802F334C), lbl_802F334C },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_802F3350), lbl_802F3350 },
+    { ARRAY_COUNT(lbl_802F3354), lbl_802F3354 },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_802F3358), lbl_802F3358 },
+    { ARRAY_COUNT(lbl_802F335C), lbl_802F335C },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_802F3360), lbl_802F3360 },
+    { ARRAY_COUNT(lbl_802F3364), lbl_802F3364 },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_802F3368), lbl_802F3368 },
+    { ARRAY_COUNT(lbl_802F336C), lbl_802F336C },
+    { ARRAY_COUNT(lbl_802F3370), lbl_802F3370 },
+    { 0,                         NULL         },
+};
+
+const float lbl_80116FA0[] = { 0.555503f, -0.259482f, 0.868703f };
+
+const u8 lbl_80116FAC[] = { 0x01, 0x04, 0x07, 0x0A, 0x0D };
+const u8 lbl_80116FB4[] = { 0x02 };
+const u8 lbl_80116FB8[] = { 0x03 };
+const u8 lbl_80116FBC[] = { 0x05 };
+const u8 lbl_80116FC0[] = { 0x06 };
+const u8 lbl_80116FC4[] = { 0x08 };
+const u8 lbl_80116FC8[] = { 0x09 };
+const u8 lbl_80116FCC[] = { 0x0B };
+const u8 lbl_80116FD0[] = { 0x0C };
+const u8 lbl_80116FD4[] = { 0x0E };
+const u8 lbl_80116FD8[] = { 0x0F };
+const u8 lbl_80116FDC[] = { 0x10 };
+
+const struct Struct80116F18 lbl_80116FE0[] =
+{
+    { ARRAY_COUNT(lbl_80116FAC), lbl_80116FAC },
+    { ARRAY_COUNT(lbl_80116FB4), lbl_80116FB4 },
+    { ARRAY_COUNT(lbl_80116FB8), lbl_80116FB8 },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_80116FBC), lbl_80116FBC },
+    { ARRAY_COUNT(lbl_80116FC0), lbl_80116FC0 },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_80116FC4), lbl_80116FC4 },
+    { ARRAY_COUNT(lbl_80116FC8), lbl_80116FC8 },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_80116FCC), lbl_80116FCC },
+    { ARRAY_COUNT(lbl_80116FD0), lbl_80116FD0 },
+    { 0,                         NULL         },
+    { ARRAY_COUNT(lbl_80116FD4), lbl_80116FD4 },
+    { ARRAY_COUNT(lbl_80116FD8), lbl_80116FD8 },
+    { ARRAY_COUNT(lbl_80116FDC), lbl_80116FDC },
+    { 0,                         NULL         },
+};
+
+const float lbl_80117068[] = { -0.555491f, 0.259482f, 0.868701f };
+
+const struct Struct80116F18 *const lbl_80117074[] = { NULL, NULL, lbl_80116F18, lbl_80116FE0 };
+
+const float *const lbl_80117084[] = { NULL, NULL, lbl_80116FA0, lbl_80117068 };
+
 
 void func_800366F8(struct Struct8003699C_child_sub *arg0);
 

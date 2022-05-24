@@ -164,7 +164,7 @@ void func_8003453C(struct MotDat *dat, struct Struct80034F5C_1_sub *b)
     dat->unk14 += (u16)r6;
 }
 
-u8 lbl_80205E00[32] __attribute__((aligned(32)));
+static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
 
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {
@@ -190,10 +190,10 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // dat file
     if (!DVDOpen(datname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 90, "cannot dvd_read");
-    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
     if ((motDat = OSAlloc(uncompSize)) == NULL)
         OSPanic("motload.c", 94, "cannot OSAlloc\n");
 
@@ -222,10 +222,10 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // info file
     if (!DVDOpen(infoname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 151, "cannot dvd_read");
-    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
     if ((motInfo = OSAlloc(uncompSize)) == NULL)
         OSPanic("motload.c", 155, "cannot OSAlloc\n");
 
