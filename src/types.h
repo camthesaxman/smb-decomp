@@ -191,23 +191,19 @@ struct Struct80034F5C_1_sub
     float *unkC;
 };  // size = 0x10
 
-struct Struct800341BC_5
-{
-    u8 filler0[0xC];
-};
-
 struct Struct80034F5C_1  // Joint object?
 {
     u32 unk0;
-    struct Struct800341BC_5 unk4;
-    struct Struct800341BC_5 unk10;
+    Vec unk4;
+    Vec unk10;
     Mtx unk1C;
     u32 unk4C;
     u8 *unk50;
     struct Struct80034F5C_1_sub unk54[6];
     u8 fillerB4[0x168-0xB4];
     Mtx unk168;
-    u8 filler198[0x1A0-0x198];
+    float unk198;
+    float unk19C;
     s32 unk1A0;
     Vec unk1A4;
     Quaternion unk1B0;
@@ -236,7 +232,8 @@ struct Struct8003699C_child
     u8 filler44[0x54-0x44];
     Mtx unk54;
     u8 filler84[0x4114-0x84];
-    u8 filler4114[0x81A8-0x4114];
+    u8 filler4114[0x81A4-0x4114];
+    void *unk81A4;
     struct Struct80034F5C_1 unk81A8[29];
 };
 
@@ -535,8 +532,8 @@ struct Struct80034B50_child  // Struct80034B50_child
     void *unk0;
     struct Struct80034B50_child_child *unk4;
     void *unk8;
-    struct Struct800341BC_5 *unkC;
-    struct Struct800341BC_5 *unk10;
+    Vec *unkC;
+    Vec *unk10;
     void *unk14;
 };  // size = 0x18
 

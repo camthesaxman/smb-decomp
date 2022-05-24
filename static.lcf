@@ -47,3 +47,5 @@ FORCEACTIVE
 }
 
 lbl_80292C00_alias = lbl_80292C00;
+
+func_80034F5C_ = func_80034F5C;

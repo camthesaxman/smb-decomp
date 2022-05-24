@@ -1186,8 +1186,6 @@ func_800355FC:
 /* 80035640 00031560  7C 08 03 A6 */	mtlr r0
 /* 80035644 00031564  4E 80 00 20 */	blr
 
-.endif
-
 .global func_80035648
 func_80035648:
 /* 80035648 00031568  7C 08 02 A6 */	mflr r0
@@ -1897,6 +1895,7 @@ func_80035FDC:
 /* 80035FF4 00031F14  3C 63 00 01 */	addis r3, r3, 1
 /* 80035FF8 00031F18  90 03 81 A4 */	stw r0, -0x7e5c(r3)
 /* 80035FFC 00031F1C  4E 80 00 20 */	blr
+.endif
 
 glabel func_80036000
 /* 80036000 00031F20  7C 08 02 A6 */	mflr r0
@@ -2613,6 +2612,7 @@ lbl_802F3328:
 	.4byte 0x11111111
 .endif
 
+.if 0
 .global lbl_802F3330
 lbl_802F3330:
 	# ROM: 0x1ECD50
@@ -2628,6 +2628,8 @@ lbl_802F3338:
 lbl_802F333C:
 	# ROM: 0x1ECD5C
 	.4byte 0xBF800000
+.endif
+
 glabel lbl_802F3340
 	.4byte 0x0104070A
 	.4byte 0x0D000000

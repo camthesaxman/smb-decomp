@@ -22,8 +22,8 @@ void func_800341BC(struct Struct80034F5C_1 *a, struct Struct80034B50_child *b, u
 {
     struct Struct80034F5C_1 *r31 = a;
     u32 *r30;
-    struct Struct800341BC_5 *r29;
-    struct Struct800341BC_5 *r28;
+    Vec *r29;
+    Vec *r28;
     struct Struct800341BC_4 *r27;
     Vec *r26;  // I guess?
     int r25;
