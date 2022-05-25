@@ -4,15 +4,6 @@
 #include "global.h"
 #include "mathutil.h"
 
-struct Struct80116F18 { u32 length; const u8 *unk4; };
-
-struct Struct80117084
-{
-    float rotX;
-    float rotY;
-    float rotZ;
-};
-
 const struct Struct8003699C_child_child lbl_80114F78[] =
 {
     {  3,   1, 245,   0},
@@ -1842,7 +1833,7 @@ void func_80036064(struct Struct8003699C_child *arg0)
     float temp_f4;
     u16 temp_r3;
     int temp_r0;
-    struct Struct8003699C_child_child *phi_r31;
+    const struct Struct8003699C_child_child *phi_r31;
     struct Struct8003699C_child_sub *phi_r30;
     struct Struct8003699C_child_sub *phi_r29;
 
@@ -2054,7 +2045,7 @@ void func_80036544(struct Struct8003699C_child_sub *arg0)
 
 void func_800366F8(struct Struct8003699C_child_sub *arg0)
 {
-	func_80034360(&arg0->unk38, arg0->unk8);
+	func_80034360(arg0->unk38, arg0->unk8);
 }
 
 extern const struct Struct80034F5C_3 *const lbl_80114DD0[];
@@ -2062,7 +2053,7 @@ extern const struct Struct80034F5C_2 *const lbl_80114DE0[];
 
 void func_80036720(struct Struct8003699C_child_sub *arg0)
 {
-    struct Struct80034F5C_1 *temp_r31 = &arg0->unk38;
+    struct Struct80034F5C_1 *temp_r31 = arg0->unk38;
 	//! BUG: casting away const qualifier
     struct Struct80034F5C_3 *r4 = (void *)lbl_80114DD0[arg0->unk6];
     struct Struct80034F5C_2 *r5 = (void *)lbl_80114DE0[arg0->unk6];
@@ -2075,8 +2066,6 @@ void func_80036720(struct Struct8003699C_child_sub *arg0)
     mathutil_mtxA_get_translate_alt2(&temp_r31->unk1CC);
     func_80035748(temp_r31, temp_r31);
 }
-
-extern const u32 *const lbl_80114F68[];
 
 void func_800367E4(struct Struct80034F5C_1 *arg0, u16 arg1, u16 arg2)
 {

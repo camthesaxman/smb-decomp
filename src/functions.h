@@ -186,14 +186,14 @@ void func_80035748();
 // ? func_80035B14();
 // ? func_80035DEC();
 // ? func_80035E7C();
-void func_80035F18();
+void func_80035F18(struct Struct8003699C_child_sub *arg0, struct Struct8003699C_child *arg1, s32 arg2, u16 arg3);
 void func_80035FDC(struct Struct8003699C_child *);
 void func_80036064(struct Struct8003699C_child *);
 // ? func_80036510();
 // ? func_80036544();
 // ? func_800366F8();
 // ? func_80036720();
-// ? func_800367E4();
+void func_800367E4(struct Struct80034F5C_1 *arg0, u16 arg1, u16 arg2);
 
 float interpolate_keyframes(int count, struct Keyframe *frames, float time);
 

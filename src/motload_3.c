@@ -413,24 +413,14 @@ void func_80035E7C(float *arg0, float *arg1, float arg2, float arg3, float arg4)
     *arg1 = phi_f31;
 }
 
-struct Struct80035F18
-{
-    u32 unk0;
-    u16 unk4;
-    u16 unk6;
-    u8 filler8[0x34-0x8];
-    struct Struct80034F5C_1 *unk34;
-    u8 unk38[0x4090-0x38];
-};  // size = 0x4090
-
-void func_80035F18(struct Struct80035F18 *arg0, struct Struct8003699C_child *arg1, s32 arg2, s32 arg3)
+void func_80035F18(struct Struct8003699C_child_sub *arg0, struct Struct8003699C_child *arg1, s32 arg2, u16 arg3)
 {
     memset(arg0, 0, sizeof(*arg0));
     arg0->unk0 = arg2;
     arg0->unk4 = arg3;
     if (arg2 & 1)
     {
-        arg0->unk6 = 2U;
+        arg0->unk6 = 2;
         arg0->unk0 |= 4;
         arg0->unk34 = &arg1->unk81A8[10];
     }
@@ -443,11 +433,9 @@ void func_80035F18(struct Struct80035F18 *arg0, struct Struct8003699C_child *arg
     func_800367E4(arg0->unk38, arg0->unk6, arg3);
 }
 
-extern const struct Struct8003699C_child_child *const lbl_80116634[];
-
 void func_80035FDC(struct Struct8003699C_child *arg0)
 {
-    arg0->unk81A4 = (void *)lbl_80116634[arg0->unk32];
+    arg0->unk81A4 = lbl_80116634[arg0->unk32];
 }
 
 const u32 lbl_80114DF0[] =
