@@ -6,11 +6,13 @@ import re
 import sys
 import struct
 
-#startLabel = sys.argv[2]
-startLabel = 'lbl_80117068'  # starting label
+startLabel = sys.argv[2]
+#startLabel = 'lbl_80117068'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>fff'
-cFmt = '{%3.8g, %3.8g, %3.8g},'
+#structFmt = '>fff'
+#cFmt = '{%3.8g, %3.8g, %3.8g},'
+structFmt = sys.argv[3]
+cFmt = sys.argv[4]
 dumping = False
 
 def print_struct(data):
@@ -69,9 +71,9 @@ with open(sys.argv[1], 'r') as f:
             #if read_label(line) == endLabel:
             label = read_label(line)
             if label:
-                #write_c()
-                #startLabel = label
-                break
+                write_c()
+                startLabel = label
+                #break
             data += read_data(line)
         else:
             if read_label(line) == startLabel:
