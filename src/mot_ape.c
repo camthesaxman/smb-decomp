@@ -66,42 +66,37 @@ void (*apeDummyFuncs[])(struct Ape *) =
 };
 
 // bss
-Mtx lbl_802B39C0;
-u32 lbl_802B39C0_30[0x20];
-struct Ape apeStructs[16];  // B0
-struct Ape *apeStructPtrs[16];  // CF0
+static Mtx lbl_802B39C0;
+static u32 uselessArray[0x20];
+static struct Ape apeStructs[16];
+static struct Ape *apeStructPtrs[16];
 
-FORCE_BSS_ORDER(lbl_802B39C0)
-FORCE_BSS_ORDER(lbl_802B39C0_30)
-FORCE_BSS_ORDER(apeStructs)
-FORCE_BSS_ORDER(apeStructPtrs)
-
-struct GMA *charaGMAs[8];  // D30
-struct TPL *charaTPLs[8];  // D50
-u32 charaTplSizes[8];  // D70
-u32 charaTplAramAddrs[8];  // D90
-u32 charaGmaSizes[8];  // DB0
-u32 charaGmaAramAddrs[8];  // DD0
-u32 lbl_802B47B0[4];  // DF0
-u32 lbl_802B47C0[4];  // E00
-struct TPL *lbl_802B47D0[4];  // E10
-GXTexObj *lbl_802B47E0[4];  // E20
-struct GMAShape *lbl_802B47F0[4];  // E30
-struct GMATevLayer *lbl_802B4800[8];  // E40
-Mtx lbl_802B4820;  // E60
-Mtx lbl_802B4850[15];  // E90
-u8 lbl_802B4B20[0x2D0];
+struct GMA *charaGMAs[8];
+struct TPL *charaTPLs[8];
+u32 charaTplSizes[8];
+u32 charaTplAramAddrs[8];
+u32 charaGmaSizes[8];
+u32 charaGmaAramAddrs[8];
+u32 lbl_802B47B0[4];
+u32 lbl_802B47C0[4];
+struct TPL *lbl_802B47D0[4];
+GXTexObj *lbl_802B47E0[4];
+struct GMAShape *lbl_802B47F0[4];
+struct GMATevLayer *lbl_802B4800[8];
+Mtx lbl_802B4820;
+Mtx lbl_802B4850[15];
+u8 unused802B4B20[0x2D0];
 GXTexObj *lbl_802B4DF0[8];
 
 u32 *motLabel;
-s32 lbl_802F20AC;
+s32 g_motAnimCount;
 struct MotSkeleton *motSkeleton;
 struct MotInfo *motInfo;
 u8 lbl_802F209C[8];
 u8 lbl_802F2094[8];
 int lbl_802F2090;
 u8 lbl_802F208C;
-void **lbl_802F2088;
+Mtx **g_animTransformMatrices;
 struct NaomiObj *apeFaceObj;
 struct TPL *apeFaceTpl;
 s32 lbl_802F207C;
@@ -305,9 +300,9 @@ void func_80089A04(struct ApeGfxFileInfo *a, int b, struct Struct80089A04 *c)
 
     for (i = 0; i < dunno->partCounts[b & 1]; i++)
     {
-        struct ApeFacePart *facePart = dunno->facePartInfo[b & 1];
+        struct ApeFacePart *faceParts = dunno->facePartInfo[b & 1];
 
-        if (strcmp(facePart->unk14[i].unk0, c->unk4[b]) == 0)
+        if (strcmp(faceParts[i].name, c->unk4[b]) == 0)
         {
             c->unk30[b] = i;
             return;
@@ -317,7 +312,7 @@ void func_80089A04(struct ApeGfxFileInfo *a, int b, struct Struct80089A04 *c)
     c->unk30[b] = -1;
 }
 
-struct Struct8003699C_child *g_create_joints_probably(struct Struct80034B50_child *a)
+struct Struct8003699C_child *g_create_joints_probably(struct MotSkeletonEntry1 *skel)
 {
     struct Struct8003699C_child *r30;
 
@@ -344,45 +339,45 @@ struct Struct8003699C_child *g_create_joints_probably(struct Struct80034B50_chil
     r30->unk2E = 0x4000;
     r30->unk2A = 0;
     r30->unk28 = 0;
-    func_800341BC(r30->unk81A8, a, r30->unk36);
+    func_800341BC(r30->unk81A8, skel, r30->unk36);
     func_80035FDC(r30);
     func_800355B8(r30);
     func_800355FC(r30);
     return r30;
 }
 
-void func_80089BD4(struct Struct80034F5C_1 *a)
+void func_80089BD4(struct JointBoneThing *a)
 {
     int i;
-    struct Struct80034F5C_1 *r4;
+    struct JointBoneThing *r4;
     Vec spC;
-    struct Struct80034F5C_1 *var = a;
+    struct JointBoneThing *var = a;
 
     for (i = 0; i < 0x1D; i++)
     {
-        if (!(a->unk0 & 1))
+        if (!(a->flags & 1))
         {
             a++;
             continue;
         }
-        mathutil_mtxA_from_mtx(a->unk208);
+        mathutil_mtxA_from_mtx(a->transformMtx);
         mathutil_mtxA_to_quat(&a->unk1B0);
         if (a->unk1A0 != 0xFFFFFFFF)
         {
             r4 = var + a->unk1A0;
             while (r4->unk1A0 != 0xFFFFFFFF)
             {
-                if (r4->unk0 & 1)
+                if (r4->flags & 1)
                     break;
                 r4 = var + r4->unk1A0;
             }
-            mathutil_mtxA_from_mtx(r4->unk208);
+            mathutil_mtxA_from_mtx(r4->transformMtx);
         }
         else
             mathutil_mtxA_from_identity();
-        spC.x = a->unk208[0][3];
-        spC.y = a->unk208[1][3];
-        spC.z = a->unk208[2][3];
+        spC.x = a->transformMtx[0][3];
+        spC.y = a->transformMtx[1][3];
+        spC.z = a->transformMtx[2][3];
         mathutil_mtxA_rigid_inv_tf_point(&spC, &a->unk1A4);
         a++;
     }
@@ -429,16 +424,16 @@ void func_80089CF4(struct Ape *ape, int r29)
     u8 dummy[0x10];
 
     if (ape->unk1C->unkC & (1 << 2))
-        ape->unk14 |= (1 << 9);
+        ape->flags |= (1 << 9);
     else
-        ape->unk14 &= ~(1 << 9);
+        ape->flags &= ~(1 << 9);
     if (ape->unk20 != NULL)
     {
         ape->unk1C = ape->unk20;
         ape->unk20 = NULL;
         r29 = ape->unk1C->unk10;
     }
-    if (ape->unk14 & (1 << 9))
+    if (ape->flags & (1 << 9))
     {
         // swap
         struct Struct8003699C_child *temp = ape->unk0;
@@ -453,7 +448,7 @@ void func_80089CF4(struct Ape *ape, int r29)
     r28 = ape->unk4;
     ape->unk8 = 0.0f;
     ape->unkC2 = 0;
-    ape->unk14 &= ~((1 << 12)|(1 << 13));
+    ape->flags &= ~((1 << 12)|(1 << 13));
     if (lbl_802F206C != 0)
         ape->unkC = ape->unk1C->unk14;
     else
@@ -468,7 +463,7 @@ void func_80089CF4(struct Ape *ape, int r29)
     if (r27->unk32 == 0)
         r27->unk32 = 1;
     func_800355B8(r27);
-    if (ape->unkC > 9.9999999392252903e-09f && (ape->unk14 & (1 << 9)))
+    if (ape->unkC > 9.9999999392252903e-09f && (ape->flags & (1 << 9)))
     {
         float f4 = ((float)r28->unk3A / r28->unk3C);
 
@@ -531,98 +526,98 @@ void ape_dummy_3(struct Ape *ape) {}
 
 void ape_dummy_4(struct Ape *ape) {}
 
-void func_8008A124(struct Struct80034F5C_1 *r29, float b)
+void func_8008A124(struct JointBoneThing *r29, float b)
 {
     int i;
-    struct Struct80034F5C_1 *a = r29;
+    struct JointBoneThing *a = r29;
 
     for (i = 0; i < 29; i++)
     {
         Vec sp20;
         Quaternion sp10;
 
-        if (!(r29->unk0 & 1))
+        if (!(r29->flags & 1))
         {
             r29++;
             continue;
         }
-        mathutil_mtxA_from_mtx(r29->unk208);
+        mathutil_mtxA_from_mtx(r29->transformMtx);
         mathutil_mtxA_to_quat(&sp10);
         mathutil_quat_slerp(&sp10, &r29->unk1B0, &sp10, b);
         mathutil_quat_normalize(&sp10);
         if (r29->unk1A0 != 0xFFFFFFFF)
         {
-            struct Struct80034F5C_1 *r4 = &a[r29->unk1A0];
+            struct JointBoneThing *r4 = &a[r29->unk1A0];
 
             while (r4->unk1A0 != 0xFFFFFFFF)
             {
-                if (r4->unk0 & 1)
+                if (r4->flags & 1)
                     break;
                 r4 = a + r4->unk1A0;
             }
-            mathutil_mtxA_from_mtx(r4->unk208);
+            mathutil_mtxA_from_mtx(r4->transformMtx);
             mathutil_mtxA_translate(&r29->unk1A4);
         }
         else
         {
             mathutil_mtxA_from_identity();
-            sp20.x = r29->unk1A4.x + (r29->unk208[0][3] - r29->unk1A4.x) * b;
-            sp20.y = r29->unk1A4.y + (r29->unk208[1][3] - r29->unk1A4.y) * b;
-            sp20.z = r29->unk1A4.z + (r29->unk208[2][3] - r29->unk1A4.z) * b;
+            sp20.x = r29->unk1A4.x + (r29->transformMtx[0][3] - r29->unk1A4.x) * b;
+            sp20.y = r29->unk1A4.y + (r29->transformMtx[1][3] - r29->unk1A4.y) * b;
+            sp20.z = r29->unk1A4.z + (r29->transformMtx[2][3] - r29->unk1A4.z) * b;
             mathutil_mtxA_set_translate(&sp20);
         }
         mathutil_mtxA_get_translate_alt(&sp20);
         mathutil_mtxA_from_quat(&sp10);
         mathutil_mtxA_normalize_basis();
         mathutil_mtxA_set_translate(&sp20);
-        mathutil_mtxA_to_mtx(r29->unk208);
+        mathutil_mtxA_to_mtx(r29->transformMtx);
         r29++;
     }
 }
 
-void func_8008A2C4(struct Struct80034F5C_1 *r29)
+void func_8008A2C4(struct JointBoneThing *r29)
 {
     int i;
-    struct Struct80034F5C_1 *a = r29;
+    struct JointBoneThing *a = r29;
 
     for (i = 0; i < 29; i++)
     {
         Vec spC;
 
-        if (!(r29->unk0 & 1))
+        if (!(r29->flags & 1))
         {
             r29++;
             continue;
         }
-        mathutil_mtxA_from_mtx(r29->unk208);
+        mathutil_mtxA_from_mtx(r29->transformMtx);
         if (r29->unk1A0 != 0xFFFFFFFF)
         {
-            struct Struct80034F5C_1 *r4 = &a[r29->unk1A0];
+            struct JointBoneThing *r4 = &a[r29->unk1A0];
 
             while (r4->unk1A0 != 0xFFFFFFFF)
             {
-                if (r4->unk0 & 1)
+                if (r4->flags & 1)
                     break;
                 r4 = a + r4->unk1A0;
             }
-            mathutil_mtxA_from_mtx(r4->unk208);
+            mathutil_mtxA_from_mtx(r4->transformMtx);
         }
         else
         {
             mathutil_mtxA_from_identity();
         }
-        spC.x = r29->unk208[0][3];
-        spC.y = r29->unk208[1][3];
-        spC.z = r29->unk208[2][3];
+        spC.x = r29->transformMtx[0][3];
+        spC.y = r29->transformMtx[1][3];
+        spC.z = r29->transformMtx[2][3];
         mathutil_mtxA_rigid_inv_tf_point(&spC, &r29->unk1A4);
         r29++;
     }
 }
 
-void func_8008A3A4(struct Struct80034F5C_1 *r28, struct Struct80034F5C_1 *r29, float c)
+void func_8008A3A4(struct JointBoneThing *r28, struct JointBoneThing *r29, float c)
 {
     int i;
-    struct Struct80034F5C_1 *a = r28;
+    struct JointBoneThing *a = r28;
 
     for (i = 0; i < 29; i++)
     {
@@ -630,40 +625,40 @@ void func_8008A3A4(struct Struct80034F5C_1 *r28, struct Struct80034F5C_1 *r29, f
         Quaternion sp20;
         Vec sp14;
 
-        if (!(r28->unk0 & 1))
+        if (!(r28->flags & 1))
         {
             r28++;
             r29++;
             continue;
         }
-        mathutil_mtxA_from_mtx(r29->unk208);
+        mathutil_mtxA_from_mtx(r29->transformMtx);
         mathutil_mtxA_to_quat(&r29->unk1B0);
-        mathutil_mtxA_from_mtx(r28->unk208);
+        mathutil_mtxA_from_mtx(r28->transformMtx);
         mathutil_mtxA_to_quat(&sp20);
         mathutil_quat_slerp(&sp20, &r29->unk1B0, &sp20, c);
         mathutil_quat_normalize(&sp20);
         if (r28->unk1A0 != 0xFFFFFFFF)
         {
-            struct Struct80034F5C_1 *r4 = &a[r28->unk1A0];
+            struct JointBoneThing *r4 = &a[r28->unk1A0];
 
             while (r4->unk1A0 != 0xFFFFFFFF)
             {
-                if (r4->unk0 & 1)
+                if (r4->flags & 1)
                     break;
                 r4 = a + r4->unk1A0;
             }
-            mathutil_mtxA_from_mtx(r4->unk208);
+            mathutil_mtxA_from_mtx(r4->transformMtx);
             mathutil_mtxA_translate(&r28->unk1A4);
         }
         else
         {
             mathutil_mtxA_from_identity();
-            sp14.x = r29->unk208[0][3];
-            sp14.y = r29->unk208[1][3];
-            sp14.z = r29->unk208[2][3];
-            sp30.x = r28->unk208[0][3];
-            sp30.y = r28->unk208[1][3];
-            sp30.z = r28->unk208[2][3];
+            sp14.x = r29->transformMtx[0][3];
+            sp14.y = r29->transformMtx[1][3];
+            sp14.z = r29->transformMtx[2][3];
+            sp30.x = r28->transformMtx[0][3];
+            sp30.y = r28->transformMtx[1][3];
+            sp30.z = r28->transformMtx[2][3];
             mathutil_scale_ray(&sp14, &sp30, &sp30, c);
             mathutil_mtxA_set_translate(&sp30);
         }
@@ -671,7 +666,7 @@ void func_8008A3A4(struct Struct80034F5C_1 *r28, struct Struct80034F5C_1 *r29, f
         mathutil_mtxA_from_quat(&sp20);
         mathutil_mtxA_normalize_basis();
         mathutil_mtxA_set_translate(&sp30);
-        mathutil_mtxA_to_mtx(r28->unk208);
+        mathutil_mtxA_to_mtx(r28->transformMtx);
         r28++;
         r29++;
     }
@@ -765,7 +760,7 @@ void func_8008A7F0(struct Ape *ape, struct Struct8003699C_child *b)
 
     if (b->unk40 >= 1.0f)
     {
-        if (!(ape->unk14 & (1 << 13)))
+        if (!(ape->flags & (1 << 13)))
         {
             do
             {
@@ -779,7 +774,7 @@ void func_8008A7F0(struct Ape *ape, struct Struct8003699C_child *b)
     }
     if (b->unk38 >= b->unk3A)
     {
-        if (!(ape->unk14 & (1 << 12)))
+        if (!(ape->flags & (1 << 12)))
         {
             if (ape->unk1C->unkC & (1 << 4))
                 b->unk38 = ape->unk1C->unk8;
@@ -802,7 +797,7 @@ void func_8008A7F0(struct Ape *ape, struct Struct8003699C_child *b)
         }
         else
         {
-            ape->unk14 |= 0x2000;
+            ape->flags |= 0x2000;
             if (b->unk34 != 0xFFFF)
             {
                 b->unk32 = b->unk34;
@@ -868,6 +863,8 @@ void g_free_character_graphics(int chara, int lod)
     OSSetCurrentHeap(oldHeap);
 }
 
+struct GMAShape *next_shape(struct GMAShape *mesh);
+
 void *g_find_some_mesh_with_red(struct GMAModel *model)
 {
     struct GMAShape *mesh;
@@ -878,7 +875,7 @@ void *g_find_some_mesh_with_red(struct GMAModel *model)
     {
         if (mesh->materialColor.r == 0xFF)
             return mesh;
-        mesh = next_mesh(mesh);
+        mesh = next_shape(mesh);
     }
     return NULL;
 }
@@ -958,7 +955,7 @@ struct Struct8008AE2C
     u32 unkC;
 };
 
-struct GMAShape *next_mesh(struct GMAShape *mesh)
+struct GMAShape *next_shape(struct GMAShape *mesh)
 {
     int i;
     u8 *ret = (u8 *)mesh + 0x60;
@@ -991,11 +988,11 @@ void mot_ape_init(void)
         apeStructs[i].unk70 = i;
     }
     for (i = 0; i < 32; i++)
-        lbl_802B39C0_30[i] = 0;
+        uselessArray[i] = 0;
     lbl_802F206C = 1;
     lbl_802F2078 = 1.0f;
     load_character_resources();
-    lbl_802F2088 = g_avdisp_alloc_matrix_lists(30);
+    g_animTransformMatrices = g_avdisp_alloc_matrix_lists(30);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_z(0x2FA4);
@@ -1030,8 +1027,8 @@ void func_8008B0AC(void)
         }
         if (i >= 4)
         {
-            strcpy(motInfo[i].unk0, motInfo[0].unk0);
-            strcpy(motInfo[i].unk18, motInfo[0].unk18);
+            strcpy(motInfo[i].skelName, motInfo[0].skelName);
+            strcpy(motInfo[i].modelName, motInfo[0].modelName);
         }
     }
 }
@@ -1094,13 +1091,13 @@ void func_8008B3B8_inline_3(u8 a, struct Struct8003699C_child *r24_)
     func_80035F18(r3, r24_, 2, lbl_802F12E0[a]);
 }
 
-u8 func_8008B3B8_inline_2(char *a)
+static u8 find_motskl_entry_idx(char *skelName)
 {
     u8 i;
     u8 r23;
     for (r23 = 0, i = 0; i < motSkeleton->unk4; i++)
     {
-        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
+        if (strcmp(skelName, motSkeleton->unk0[i].name) == 0)
         {
             r23 = i;
             break;
@@ -1109,13 +1106,13 @@ u8 func_8008B3B8_inline_2(char *a)
     return r23;
 }
 
-void func_8008B3B8_inline_1(char *a, struct Struct80034B50_child **r27)
+static void find_motskl_entry(char *skelName, struct MotSkeletonEntry1 **r27)
 {
     int i;
     *r27 = &motSkeleton->unk0[0];
     for (i = 0; i < motSkeleton->unk4; i++)
     {
-        if (strcmp(a, motSkeleton->unk0[i].unk14) == 0)
+        if (strcmp(skelName, motSkeleton->unk0[i].name) == 0)
         {
             *r27 = &motSkeleton->unk0[i];
             break;
@@ -1123,12 +1120,12 @@ void func_8008B3B8_inline_1(char *a, struct Struct80034B50_child **r27)
     }
 }
 
-struct Ape *func_8008B3B8(char *a, char *unused)
+struct Ape *g_make_ape_sub(char *skelName, char *modelName /*unused*/)
 {
     struct Ape *ape;
     struct Struct8003699C_child *r24;
     struct Struct8003699C_child *r31;
-    struct Struct80034B50_child *r27;
+    struct MotSkeletonEntry1 *skel;
     int i;
     u8 r23;
     int r20;
@@ -1138,13 +1135,13 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     memset(ape, 0, sizeof (*ape));
     ape->unk70 = r20;
 
-    func_8008B3B8_inline_1(a, &r27);
+    find_motskl_entry(skelName, &skel);
 
-    r24 = g_create_joints_probably(r27);
-    r31 = g_create_joints_probably(r27);
+    r24 = g_create_joints_probably(skel);
+    r31 = g_create_joints_probably(skel);
 
     ape->unk94 = 5;
-    ape->unk98 = OSAllocFromHeap(subHeap, ape->unk94 * 0x24);
+    ape->unk98 = OSAllocFromHeap(subHeap, ape->unk94 * sizeof(*ape->unk98));
     if (ape->unk98 == NULL)
         OSPanic("mot_ape.c", 1494, "cannot OSAlloc\n");
 
@@ -1167,13 +1164,13 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     ape->unk8 = 0.0f;
     ape->charaId = 0;
     ape->unkC = 0.0f;
-    ape->unk14 = 0;
+    ape->flags = 0;
     ape->unk18 = 0;
     ape->unk24 = 1;
     ape->unk28 = 0;
     ape->unk9C = 0;
     ape->unkB0 = 0;
-    ape->unk2C = r27;
+    ape->skel = skel;
     ape->unk54 = 0;
 
     // These really should be assigned using compound literals, but that causes the stack usage to not match.
@@ -1181,7 +1178,7 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     { static const Vec v = {0}; Vec v_; ape->unk3C = v_ = v; } //0x48
     { static const Vec v = {0}; Vec v_; ape->unk48 = v_ = v; } //0x54
     { static const Quaternion q = {1, 0, 0, 0}; Quaternion q_; *(Quaternion *)&ape->unkA0 = q_ = q; } //0x60
-    ape->unk58 = 1.0f;
+    ape->modelScale = 1.0f;
     { static const Quaternion q = {0, 0, 0, 1}; Quaternion q_; ape->unk60 = q_ = q; } //0x70
     ape->colorId = 0;
     ape->unk90 = lbl_802F207C;
@@ -1189,7 +1186,7 @@ struct Ape *func_8008B3B8(char *a, char *unused)
     {u8 stackpad[0x10];}
 
     g_make_ape_inline(ape);
-    r23 = func_8008B3B8_inline_2(a);
+    r23 = find_motskl_entry_idx(skelName);
     func_8008B3B8_inline_3(r23, ape->unk0);
     r23++;r23--;
     func_8008B3B8_inline_3(r23, ape->unk4);
@@ -1220,9 +1217,9 @@ const double lbl_802F56D8 = 0.0000000099999999392252903;
 struct Ape *g_make_ape(int charaId)
 {
     struct Ape *ape;
-    struct Struct80034F5C_1 *r5;
+    struct JointBoneThing *r5;
 
-    ape = func_8008B3B8(motInfo[charaId].unk0, motInfo[charaId].unk18);
+    ape = g_make_ape_sub(motInfo[charaId].skelName, motInfo[charaId].modelName);
     ape->charaId = charaId & 3;
     ape->unk20 = &((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180;
     ape->unk28 = 1;
@@ -1235,13 +1232,13 @@ struct Ape *g_make_ape(int charaId)
     func_800355FC(ape->unk0);
 
     r5 = &ape->unk0->unk81A8[0];
-    r5->unk1A4.x = r5->unk208[0][3];
-    r5->unk1A4.y = r5->unk208[1][3];
-    r5->unk1A4.z = r5->unk208[2][3];
+    r5->unk1A4.x = r5->transformMtx[0][3];
+    r5->unk1A4.y = r5->transformMtx[1][3];
+    r5->unk1A4.z = r5->transformMtx[2][3];
 
-    ape->unk4->unk81A8[0].unk208[0][3] = r5->unk1A4.x;
-    ape->unk4->unk81A8[0].unk208[1][3] = r5->unk1A4.y;
-    ape->unk4->unk81A8[0].unk208[2][3] = r5->unk1A4.z;
+    ape->unk4->unk81A8[0].transformMtx[0][3] = r5->unk1A4.x;
+    ape->unk4->unk81A8[0].transformMtx[1][3] = r5->unk1A4.y;
+    ape->unk4->unk81A8[0].transformMtx[2][3] = r5->unk1A4.z;
 
     return ape;
 }
@@ -1297,7 +1294,7 @@ void func_8008BAA8(int *a, int *b)
 }
 #pragma force_active reset
 
-void func_8008BBD4(struct Ape *ape, int b, int c, int d, float e)
+void g_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
 {
     struct MotInfo *r30;
     struct Struct8003699C_child *r7;
@@ -1405,7 +1402,7 @@ void func_8008BEF8(int a)
     lbl_802F207C = a;
 }
 
-void func_8008BF00(struct Ape *ape, int b)
+void g_switch_ape_character_lod_maybe(struct Ape *ape, int b)
 {
     int unk;
 
@@ -1439,45 +1436,45 @@ void func_8008BFD8(void) {}
 
 void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 {
-    struct Struct80034F5C_1 *r31;
-    struct Struct80034F5C_1 *r30 = ape->unk0->unk81A8;
+    struct JointBoneThing *r31;
+    struct JointBoneThing *r30 = ape->unk0->unk81A8;
     Mtx sp10;
 
-    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
+    if ((gamePauseStatus & 0xA) || (ape->flags & (1 << 3)))
         return;
     r31 = &r30[5];
-    mathutil_mtxA_from_mtx(r30[1].unk208);
+    mathutil_mtxA_from_mtx(r30[1].transformMtx);
     mathutil_mtxA_invert();
-    mathutil_mtxA_mult_right(r31->unk208);
+    mathutil_mtxA_mult_right(r31->transformMtx);
     mathutil_mtxA_to_mtx(sp10);
-    mathutil_mtxA_from_mtx(r30[1].unk208);
+    mathutil_mtxA_from_mtx(r30[1].transformMtx);
     mathutil_mtxA_rotate_x(b);
     mathutil_mtxA_rotate_y(c);
     mathutil_mtxA_mult_right(sp10);
-    mathutil_mtxA_to_mtx(r31->unk208);
+    mathutil_mtxA_to_mtx(r31->transformMtx);
 }
 
 void func_8008C090(struct Ape *ape, Vec *b)
 {
-    struct Struct80034F5C_1 *r27 = ape->unk0->unk81A8;
+    struct JointBoneThing *r27 = ape->unk0->unk81A8;
     Vec sp2C;
     int r3;
     int r27_;
-    struct Struct80034F5C_1 *r30;
+    struct JointBoneThing *r30;
     float f1;
     Vec sp20;
     Quaternion sp10;
 
-    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
+    if ((gamePauseStatus & 0xA) || (ape->flags & (1 << 3)))
         return;
-    if (!(ape->unk1C->unkC & 1) && (ape->unk14 & (1 << 6)))
+    if (!(ape->unk1C->unkC & 1) && (ape->flags & (1 << 6)))
         return;
 
     r27++;
     mathutil_mtxA_from_quat(&ape->unk60);
     mathutil_mtxA_to_mtx(lbl_802B39C0);
-    mathutil_mtxA_mult_right(r27->unk208);
-    if (ape->charaId == 2 && (ape->unk14 & (1 << 22)))
+    mathutil_mtxA_mult_right(r27->transformMtx);
+    if (ape->charaId == 2 && (ape->flags & (1 << 22)))
         mathutil_mtxA_rotate_z(-5461);
     else
         mathutil_mtxA_rotate_z(-16384);
@@ -1490,12 +1487,12 @@ void func_8008C090(struct Ape *ape, Vec *b)
     r30 = r27 + 4;
     r3 = sp2C.x < -0.8f;
     if (!r27_)
-        ape->unk14 &= ~(1 << 6);
+        ape->flags &= ~(1 << 6);
     if (r3 || r27_)
     {
         mathutil_mtxA_push();
         mathutil_mtxA_from_mtx(lbl_802B39C0);
-        mathutil_mtxA_mult_right(r30->unk208);
+        mathutil_mtxA_mult_right(r30->transformMtx);
         mathutil_mtxA_tf_vec_xyz(&sp2C, 1.0f, 0.0f, 0.0f);
         mathutil_mtxA_pop();
         mathutil_mtxA_rigid_inv_tf_vec(&sp2C, &sp2C);
@@ -1507,11 +1504,11 @@ void func_8008C090(struct Ape *ape, Vec *b)
     else if (sp2C.y < -0.3f)
         sp2C.y = -0.3f;
     f1 = mathutil_vec_dot_normalized(&sp2C, &ape->unkA0);
-    if (f1 > 0.996f || (ape->unk14 & (1 << 6)))
+    if (f1 > 0.996f || (ape->flags & (1 << 6)))
     {
         ape->unkA0 = sp2C;
         if (r27_)
-            ape->unk14 |= (1 << 6);
+            ape->flags |= (1 << 6);
     }
     else
     {
@@ -1533,15 +1530,15 @@ void func_8008C090(struct Ape *ape, Vec *b)
     mathutil_vec_normalize_len(&ape->unkA0);
     mathutil_mtxA_tf_vec(&ape->unkA0, &sp2C);
     mathutil_mtxA_from_mtx(lbl_802B39C0);
-    mathutil_mtxA_mult_right(r30->unk208);
+    mathutil_mtxA_mult_right(r30->transformMtx);
     mathutil_mtxA_rigid_inv_tf_vec(&sp2C, &sp2C);
     sp20.x = 1.0f;
     sp20.y = 0.0f;
     sp20.z = 0.0f;
     mathutil_quat_from_dirs(&sp10, &sp20, &sp2C);
     mathutil_mtxA_from_quat(&sp10);
-    mathutil_mtxA_mult_left(r30->unk208);
-    mathutil_mtxA_to_mtx(r30->unk208);
+    mathutil_mtxA_mult_left(r30->transformMtx);
+    mathutil_mtxA_to_mtx(r30->transformMtx);
 }
 
 void func_8008C408(struct Ape *ape, Vec *b)
@@ -1565,16 +1562,16 @@ void func_8008C4A0(float a)
     lbl_802F2078 = a;
 }
 
-void func_8008C4A8(struct Ape *ape)
+void g_do_ape_anim(struct Ape *ape)
 {
     struct Struct8003699C_child *r31 = ape->unk0;
     struct Struct8003699C_child *r29;
 
-    if ((gamePauseStatus & 0xA) || (ape->unk14 & (1 << 3)))
+    if ((gamePauseStatus & 0xA) || (ape->flags & (1 << 3)))
         return;
 
     ape->unk18--;
-    ape->unk14 &= ~(1 << 16);
+    ape->flags &= ~(1 << 16);
     func_80085DB0(ape);
     r31->unk40 += r31->unk3C * lbl_802F2078;
     func_8008A7F0(ape, r31);
@@ -1582,7 +1579,7 @@ void func_8008C4A8(struct Ape *ape)
     {
         r29 = ape->unk4;
         r31 = ape->unk0;
-        if (ape->unk14 & (1 << 9))
+        if (ape->flags & (1 << 9))
         {
             r29->unk40 += r29->unk3C;
             if (r29->unk40 >= 1.0f)
@@ -1615,21 +1612,12 @@ void func_8008C4A8(struct Ape *ape)
     func_80036064(r31);
 }
 
-struct Struct8008C674
-{
-    s16 unk0;
-    s16 unk2;
-    Vec unk4;
-    void (*unk10)();
-    u8 filler14[0x20-0x14];
-};  // size = 0x20
-
-void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
+void g_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
 {
     int i;
     u32 index = (ape->unk90 >> 1) + (ape->charaId * 2);
     struct ApeGfxFileInfo *r27 = &apeGfxFileInfo[index];
-    struct Struct8008C674 *r29 = (void *)r27->facePartInfo[ape->unk90 & 1];
+    struct ApeFacePart *r29 = r27->facePartInfo[ape->unk90 & 1];
     struct GMAModel *model;
     struct Struct802B39C0_B0_child *sp18[10];
     struct Struct802B39C0_B0_child *r6;
@@ -1647,16 +1635,17 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
            sp18[r6->unk14[ape->unk90]] = r6;
     }
 
+    // Draw head and hands?
     ptr = sp18;
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
-        struct Struct80034F5C_1 *r22 = &b[r29->unk2];
+        struct JointBoneThing *r22 = &b[r29->unk2];
         struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].modelOffset;
 
         if (model != NULL)
         {
             mathutil_mtxA_push();
-            mathutil_mtxA_mult_right(r22->unk208);
+            mathutil_mtxA_mult_right(r22->transformMtx);
             mathutil_mtxA_translate(&r29->unk4);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             if (r29->unk10 != NULL)
@@ -1667,13 +1656,14 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
         }
     }
 
+    // Compute anim transform matrices
     for (i = 0; (u32)i < 15; i++)
     {
-        struct Struct80034F5C_1 *r4 = &b[lbl_801C7A90[i]];
+        struct JointBoneThing *r4 = &b[lbl_801C7A90[i]];
 
         if (i == 9 || i == 10 || i == 13 || i == 14)
         {
-            mathutil_mtx_mult(r4->unk208, lbl_802B4820, lbl_802B4850[i]);
+            mathutil_mtx_mult(r4->transformMtx, lbl_802B4820, lbl_802B4850[i]);
             if (i == 10 || i == 14)
             {
                 mathutil_mtxA_push();
@@ -1682,15 +1672,15 @@ void g_draw_ape_transformed(struct Ape *ape, struct Struct80034F5C_1 *b)
                 mathutil_mtxA_to_mtx(lbl_802B4850[i]);
                 mathutil_mtxA_pop();
             }
-            lbl_802F2088[i] = lbl_802B4850[i];
+            g_animTransformMatrices[i] = &lbl_802B4850[i];
         }
         else
-            lbl_802F2088[i] = r4->unk208;
+            g_animTransformMatrices[i] = &r4->transformMtx;
     }
 
     model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].modelOffset;
     func_8008CCB8(ape, model);
-    avdisp_draw_model_unculled_sort_none(model);
+    avdisp_draw_model_unculled_sort_none(model);  // Draws torso and limbs?
 }
 
 struct Struct8008C924
@@ -1705,7 +1695,7 @@ void lbl_8008CA80(struct Struct8008C924 *);
 
 void func_8008C924(struct Ape *ape, int b)
 {
-    int r3 = (b == 3 || (ape->unk14 & (1 << 5)));
+    int r3 = (b == 3 || (ape->flags & (1 << 5)));
     u8 dummy[16];
 
     if (r3)
@@ -1715,7 +1705,7 @@ void func_8008C924(struct Ape *ape, int b)
     if ((lbl_801EEC90.unk0 & (1 << 2)) && func_8000E4D0(&ape->unk30) < 0.0f)
         return;
 
-    if (ape->unk14 & (1 << 20))
+    if (ape->flags & (1 << 20))
     {
         struct Struct8008C924 *node;
         struct OrdTblNode *entry;
@@ -1745,7 +1735,7 @@ void lbl_8008CA80(struct Struct8008C924 *node)
 void func_8008CAAC(struct Ape *ape, float b)
 {
     int r30 = ape->charaId;
-    struct Struct80034F5C_1 *r29 = ape->unk0->unk81A8;
+    struct JointBoneThing *r29 = ape->unk0->unk81A8;
     u8 dummy[8];
     Vec sp10;
 
@@ -1758,14 +1748,14 @@ void func_8008CAAC(struct Ape *ape, float b)
 
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&ape->unk30);
-    mathutil_mtxA_scale_xyz(ape->unk58, ape->unk58, ape->unk58);
-    g_nl2ngc_set_scale(ape->unk58);
+    mathutil_mtxA_scale_xyz(ape->modelScale, ape->modelScale, ape->modelScale);
+    g_nl2ngc_set_scale(ape->modelScale);
     mathutil_mtxA_translate(&ape->unk3C);
     mathutil_mtxA_mult_right(lbl_802B39C0);
-    sp10.x = ape->unk0->unk81A8[0].unk208[0][3];
-    sp10.y = ape->unk0->unk81A8[0].unk208[1][3];
-    sp10.z = ape->unk0->unk81A8[0].unk208[2][3];
-    if (g_test_scaled_sphere_in_frustum(&sp10, ape->unk58 * 0.5f, ape->unk58) != 0)
+    sp10.x = ape->unk0->unk81A8[0].transformMtx[0][3];
+    sp10.y = ape->unk0->unk81A8[0].transformMtx[1][3];
+    sp10.z = ape->unk0->unk81A8[0].transformMtx[2][3];
+    if (g_test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
     {
         apeDummyFuncs[r30](ape);
         g_draw_ape_transformed(ape, r29);
@@ -1809,7 +1799,7 @@ struct GMATevLayer *find_material(struct GMAModel *model, u32 id)
     return NULL;
 }
 
-FORCE_BSS_ORDER(lbl_802B4B20)
+FORCE_BSS_ORDER(unused802B4B20)
 
 void func_8008CBD0(int charaId, int lod, struct GMAModel *model1, struct GMAModel *model2)
 {

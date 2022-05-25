@@ -182,24 +182,24 @@ struct Struct802B39C0_B0_child
     s32 unk20;
 };  // size = 0x24
 
-struct Struct80034F5C_1_sub
+struct MotionTransform
 {
     u8 unk0;
     u8 unk1;
-    u16 *unk4;
-    u8 *unk8;
-    float *unkC;
+    u16 *unk4;  // delta times?
+    u8 *numComponents;  // list of value counts
+    float *values;
 };  // size = 0x10
 
-struct Struct80034F5C_1  // Joint object?
+struct JointBoneThing  // Joint object?
 {
-    u32 unk0;
+    u32 flags;
     Vec unk4;
     Vec unk10;
     Mtx unk1C;
     u32 unk4C;
     const u8 *unk50;
-    struct Struct80034F5C_1_sub unk54[6];
+    /*0x54*/ struct MotionTransform transforms[6];  // x, y, z, rotX, rotY, rotZ
     u8 fillerB4[0x168-0xB4];
     Mtx unk168;
     float unk198;
@@ -209,8 +209,8 @@ struct Struct80034F5C_1  // Joint object?
     Quaternion unk1B0;
     Point3d unk1C0;
     Point3d unk1CC;
-    Mtx unk1D8;
-    Mtx unk208;
+    /*0x1D8*/ Mtx rotateMtx;
+    /*0x208*/ Mtx transformMtx;  // final transform matrix?
 };  // size = 0x238
 
 struct Struct8003699C_child_sub
@@ -230,10 +230,9 @@ struct Struct8003699C_child_sub
 	u16 unk28;
     u16 unk2A;
     float unk2C;
-    //u8 filler30[0x4090-0x30];
     u8 filler30[4];
-    struct Struct80034F5C_1 *unk34;
-    struct Struct80034F5C_1 unk38[29];
+    struct JointBoneThing *unk34;
+    struct JointBoneThing unk38[29];
 };  // size = 0x4090
 
 struct Struct8003699C_child_child
@@ -265,10 +264,10 @@ struct Struct8003699C_child
     struct Struct8003699C_child_sub unk84;
     struct Struct8003699C_child_sub unk4114;
     const struct Struct8003699C_child_child *unk81A4;
-    struct Struct80034F5C_1 unk81A8[29];
+    struct JointBoneThing unk81A8[29];
 };
 
-struct Struct80117084
+struct MotRotation
 {
     float rotX;
     float rotY;
@@ -300,24 +299,24 @@ struct Ape
     float unk8;
     float unkC;
     /*0x010*/ s32 charaId;
-    u32 unk14;
+    /*0x014*/ u32 flags;
     s32 unk18;
     struct Ape_child *unk1C;
     struct Ape_child *unk20;
     s32 unk24;
     s32 unk28;
-    void *unk2C;
+    struct MotSkeletonEntry1 *skel;  // skeleton?
     Vec unk30;  // position?
     Vec unk3C;
     Vec unk48;
     s32 unk54;
-    float unk58;  // model scale?
+    /*0x58*/ float modelScale;  // model scale?
     u32 unk5C;
     Quaternion unk60;  // orientation?
     u32 unk70;
     u32 unk74;
     u8 filler78[0x90-0x78];
-    s32 unk90;
+    s32 unk90;  // some model ID?
     u32 unk94;
     struct Struct802B39C0_B0_child *unk98;
     u32 unk9C;
@@ -530,10 +529,6 @@ struct Struct8003C550
     s16 unk4E;
     s16 unk50;
     u8 filler52[0x70-0x52];
-    /*
-    float unk74;
-    u8 filler78[4];
-    */
     Vec unk70;
     Vec unk7C;
     Vec unk88;
@@ -565,14 +560,14 @@ struct MotDat
     float *unk14;
 };  // size = 0x18
 
-struct Struct80034B50_child
+struct MotSkeletonEntry1
 {
     void *unk0;
     struct Struct80116F18 *unk4;
-    void *unk8;
+    struct MotRotation *rotations;
     Vec *unkC;
     Vec *unk10;
-    void *unk14;
+    /*0x14*/ char *name;  // skeleton name?
 };  // size = 0x18
 
 struct Struct80034B50_child2_child
@@ -581,7 +576,7 @@ struct Struct80034B50_child2_child
     u8 filler4[0x18-0x4];
 };
 
-struct Struct80034B50_child2
+struct MotSkeletonEntry2
 {
     void *unk0;
     struct Struct80034B50_child2_child *unk4[3];
@@ -590,17 +585,17 @@ struct Struct80034B50_child2
 
 struct MotSkeleton
 {
-    struct Struct80034B50_child *unk0;
+    struct MotSkeletonEntry1 *unk0;
     u32 unk4;
-    struct Struct80034B50_child2 *unk8;
-    u32 unkC;
+    struct MotSkeletonEntry2 *unk8;  // not used?
+    u32 unkC;  // not used?
 };
 
 struct MotInfo
 {
-    char unk0[0x18];
-    char unk18[0x30-0x18];
-    u8 * unk30[16];
+    /*0x00*/ char skelName[24];
+    /*0x10*/ char modelName[24];
+    u8 *unk30[16];
     u32 unk70[16];
     u8 *unkB0;
 };  // size = 0xB4
@@ -905,16 +900,14 @@ struct Struct802C67D4
     u8 filler8[0x50-0x8];
 };
 
-struct Struct80089A04_1_child_sub
-{
-    char *unk0;
-    u8 filler4[0x20-0x4];
-};  // size = 0x20
-
 struct ApeFacePart
 {
-    u8 filler0[0x14];
-    struct Struct80089A04_1_child_sub unk14[2];
+    s16 unk0;
+    s16 unk2;
+    Vec unk4;
+    void (*unk10)();
+    char *name;
+    u8 filler18[0x20-0x18];
 };
 
 struct ApeGfxFileInfo

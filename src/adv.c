@@ -582,10 +582,10 @@ void run_cutscene_script(void)
             advDemoInfo.flags &= ~cmd->param;
             break;
         case CMD_SHOW_CHARACTER:
-            ballInfo[cmd->param].ape->unk14 &= ~(1 << 5);
+            ballInfo[cmd->param].ape->flags &= ~(1 << 5);
             break;
         case CMD_HIDE_CHARACTER:
-            ballInfo[cmd->param].ape->unk14 |= (1 << 5);
+            ballInfo[cmd->param].ape->flags |= (1 << 5);
             break;
         case CMD_PRELOAD_STAGE:
             preload_stage_files(cmd->param);
@@ -640,22 +640,22 @@ void run_cutscene_script(void)
             advLogoInfo.unk18[3] = cmd->param;
             break;
         case 21:
-            ballInfo[0].ape->unk14 |= cmd->param;
+            ballInfo[0].ape->flags |= cmd->param;
             break;
         case 22:
-            ballInfo[0].ape->unk14 &= ~cmd->param;
+            ballInfo[0].ape->flags &= ~cmd->param;
             break;
         case 23:
-            ballInfo[1].ape->unk14 |= cmd->param;
+            ballInfo[1].ape->flags |= cmd->param;
             break;
         case 24:
-            ballInfo[1].ape->unk14 &= ~cmd->param;
+            ballInfo[1].ape->flags &= ~cmd->param;
             break;
         case 25:
-            ballInfo[2].ape->unk14 |= cmd->param;
+            ballInfo[2].ape->flags |= cmd->param;
             break;
         case 26:
-            ballInfo[2].ape->unk14 &= ~cmd->param;
+            ballInfo[2].ape->flags &= ~cmd->param;
             break;
         case 27:
             sp8.x = 0.0f;
@@ -1007,17 +1007,17 @@ void lbl_8000F790(struct Ape *ape, int b)
         if (gamePauseStatus & 0xA)
             return;
         raycast_stage_down(&ball->pos, &sp38, NULL);
-        ape->unk14 &= ~0x13;
+        ape->flags &= ~0x13;
         if (!(sp38.flags & 1) && ball->vel.y < -(35.0f / 216.0f))
-            ape->unk14 |= 2;
+            ape->flags |= 2;
         else if (mathutil_vec_len(&ball->unkB8) < (1.0f / 3600.0f))
-            ape->unk14 |= 1;
-        if (ape->unk14 & (1 << 5))
+            ape->flags |= 1;
+        if (ape->flags & (1 << 5))
             ball->flags |= BALL_FLAG_INVISIBLE;
         else
             ball->flags &= ~BALL_FLAG_INVISIBLE;
         r28 = (ball->flags & BALL_FLAG_GOAL) != 0;
-        r28 |= !(ape->unk14 & 3);
+        r28 |= !(ape->flags & 3);
         func_8003699C(ape);
         if (r28)
             f31 = func_80036CAC(ape);
@@ -1026,16 +1026,16 @@ void lbl_8000F790(struct Ape *ape, int b)
             f31 = 0.0f;
             mathutil_mtxA_from_quat(&ape->unk60);
             mathutil_mtxA_normalize_basis();
-            if (ape->unk14 & (1 << 1))
+            if (ape->flags & (1 << 1))
                 func_80037718(ape);
         }
         if (ball->flags & BALL_FLAG_05)
             f31 = mathutil_vec_len(&ball->vel);
         func_80036EB8(ape);
         mathutil_mtxA_to_quat(&ape->unk60);
-        func_8003721C(ape, f31);
-        func_8008C4A8(ape);
-        if (!(ape->unk14 & (1 << 3)))
+        g_choose_ape_anim(ape, f31);
+        g_do_ape_anim(ape);
+        if (!(ape->flags & (1 << 3)))
             func_8003765C(ape);
         if (advDemoInfo.unk8 >= 0x682 && advDemoInfo.unk8 < 0x6CC)
             ball->unk104 = currentCameraStructPtr->eye;
@@ -1055,8 +1055,8 @@ void lbl_8000F790(struct Ape *ape, int b)
     }
     else
     {
-        ape->unk14 &= ~0x13;
-        ape->unk14 |= 1;
+        ape->flags &= ~0x13;
+        ape->flags |= 1;
         ape->unk30.x = func_8008CDC0(f31, lbl_80174DD4[ape->charaId]);
         ape->unk30.y = func_8008CDC0(f31, lbl_80174DE4[ape->charaId]);
         ape->unk30.z = func_8008CDC0(f31, lbl_80174DF4[ape->charaId]);
@@ -1118,9 +1118,9 @@ void lbl_8000F790(struct Ape *ape, int b)
                 break;
             }
         }
-        func_8008BBD4(ape, r4, r5, r6, 0.0f);
+        g_set_ape_anim(ape, r4, r5, r6, 0.0f);
         ape->unk3C = (Vec){ 0.0f, -0.12f, 0.0f };
-        func_8008C4A8(ape);
+        g_do_ape_anim(ape);
         if (advDemoInfo.flags & (1 << 9))
         {
             s16 sp30[] = { 0x2E00, 0xE100, 0x1500, 0x0000 };
@@ -1130,7 +1130,7 @@ void lbl_8000F790(struct Ape *ape, int b)
             lbl_802F1BBC[ape->charaId] += (sp28[ape->charaId] - lbl_802F1BBC[ape->charaId]) * 0.1;
             func_8008BFDC(ape, lbl_802F1ED2 + lbl_802F1BB4[ape->charaId], lbl_802F1ED0 + lbl_802F1BBC[ape->charaId]);
         }
-        else if (ape->unk14 & (1<<(31-9)))
+        else if (ape->flags & (1<<(31-9)))
         {
             Vec sp1C;
             mathutil_mtxA_push();
@@ -2000,7 +2000,7 @@ void submode_adv_ranking_main_func(void)
         if (*r28 == 2)
         {
             currentBallStructPtr = r29;
-            if (!(r29->flags & (1 << 9)) && (r29->ape->unk14 & (1 << 14)))
+            if (!(r29->flags & (1 << 9)) && (r29->ape->flags & (1 << 14)))
             {
                 r29->flags &= ~0x500;
                 r29->flags |= 0x200;

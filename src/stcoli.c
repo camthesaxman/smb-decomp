@@ -1788,8 +1788,8 @@ struct UnkStruct
     s32 unkC;
 };
 
-void stcoli_sub27(struct DynamicStagePart *dynStageParts);
-void stcoli_sub28(struct StageColiTri *tri);
+void draw_dynamic_stage_collision(struct DynamicStagePart *dynStageParts);
+void draw_collision_triangle(struct StageColiTri *tri);
 void stcoli_sub29(struct StageColiTri *tri, Point3d *arg1, Point3d *arg2, Point3d *arg3);
 
 void g_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicStagePart *dynStageParts)
@@ -1926,7 +1926,7 @@ void g_draw_stage_collision(void)
         {
             while (*cellTris >= 0)
             {
-                stcoli_sub28(&stageAg->triangles[*cellTris]);
+                draw_collision_triangle(&stageAg->triangles[*cellTris]);
                 cellTris++;
             }
         }
@@ -1973,10 +1973,10 @@ void g_draw_stage_collision(void)
     }
     mathutil_mtx_copy(sp24, mathutilData->mtxB);
     if (dynamicStageParts != NULL)
-        stcoli_sub27(dynamicStageParts);
+        draw_dynamic_stage_collision(dynamicStageParts);
 }
 
-void stcoli_sub27(struct DynamicStagePart *dynStageParts)
+void draw_dynamic_stage_collision(struct DynamicStagePart *dynStageParts)
 {
     u32 (*raycastDown)(Point3d *, Point3d *, Vec *) = dynStageParts[0].raycastDownFunc;
     struct UnkStruct *r27;
@@ -2013,18 +2013,18 @@ void stcoli_sub27(struct DynamicStagePart *dynStageParts)
             if (r27->unkC != 0 && r5->unkC != 0 && r26->unkC != 0)
             {
                 stcoli_sub29(&triangle, &r27->unk0, &r5->unk0, &r26->unk0);
-                stcoli_sub28(&triangle);
+                draw_collision_triangle(&triangle);
             }
             if (r27->unkC != 0 && r26->unkC != 0 && r25->unkC != 0)
             {
                 stcoli_sub29(&triangle, &r27->unk0, &r26->unk0, &r25->unk0);
-                stcoli_sub28(&triangle);
+                draw_collision_triangle(&triangle);
             }
         }
     }
 }
 
-void stcoli_sub28(struct StageColiTri *tri)
+void draw_collision_triangle(struct StageColiTri *tri)
 {
     Point3d sp3C;
     Mtx mtx;

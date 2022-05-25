@@ -125,22 +125,20 @@ const struct Struct80034F5C_2 *const lbl_80114DE0[] =
 void func_80035648(struct Struct8003699C_child *a)
 {
     u32 flags;
-    struct Struct80034F5C_1 *r31 = a->unk81A8;
-    struct Struct80034F5C_1 *r30;
-
-    //! BUG: casting away const qualifier
-    struct Struct80034F5C_3 *r4 = (void *)lbl_80114DD0[a->unk36];
-    struct Struct80034F5C_2 *r5 = (void *)lbl_80114DE0[a->unk36];
+    struct JointBoneThing *r31 = a->unk81A8;
+    struct JointBoneThing *r30;
+    const struct Struct80034F5C_3 *r4 = lbl_80114DD0[a->unk36];
+    const struct Struct80034F5C_2 *r5 = lbl_80114DE0[a->unk36];
     float f1 = a->unk38 + a->unk40;
     u32 r6 = a->unk0 & (1 << 2);
 
-    func_80034F5C(r31, r4, r5, f1, r6);
+    g_interpolate_joint_motion(r31, r4, r5, f1, r6);
 
     r30 = r31;
     mathutil_mtxA_from_mtx(a->unk54);
     mathutil_mtxA_rotate_y(a->unk2E);
     mathutil_mtxA_to_mtx(r31->unk168);
-    flags = r30->unk0;
+    flags = r30->flags;
     while (flags != 0)
     {
         if (flags & (1 << 2))
@@ -150,28 +148,28 @@ void func_80035648(struct Struct8003699C_child *a)
             mathutil_mtxA_tf_point(&r30->unk1CC, &r30->unk1CC);
         }
         r30++;
-        flags = r30->unk0;
+        flags = r30->flags;
     }
 }
 
-void func_80035B14(struct Struct80034F5C_1 *, struct Struct80034F5C_1 *);
+void func_80035B14(struct JointBoneThing *, struct JointBoneThing *);
 void func_80035DEC(Vec *);
 
-void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
+void func_80035748(struct JointBoneThing *arg0, struct JointBoneThing *arg1)
 {
     u32 temp_r28;
     u32 temp_r31;
     u32 i;
 
-    temp_r31 = arg1->unk0;
+    temp_r31 = arg1->flags;
     switch (temp_r31 & 0x3F00)
     {
     default:
         mathutil_mtxA_set_translate(&arg1->unk1CC);
         mathutil_mtxA_sq_from_mtx(arg0->unk168);
         if (temp_r31 & 8)
-            mathutil_mtxA_mult_right(arg1->unk1D8);
-        mathutil_mtxA_to_mtx(arg1->unk208);
+            mathutil_mtxA_mult_right(arg1->rotateMtx);
+        mathutil_mtxA_to_mtx(arg1->transformMtx);
         break;
     case 0x100:
         if ((temp_r31 & 0x80) && !(temp_r31 & 0x4000))
@@ -184,16 +182,16 @@ void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
             mathutil_mtxA_translate(&arg1->unk10);
         if (temp_r31 & 0x4000)
         {
-            mathutil_mtxA_sq_from_mtx(arg1->unk208);
-            mathutil_mtxA_copy_translate(arg1->unk208);
+            mathutil_mtxA_sq_from_mtx(arg1->transformMtx);
+            mathutil_mtxA_copy_translate(arg1->transformMtx);
         }
         else
         {
             if (temp_r31 & 8)
-                mathutil_mtxA_mult_right(arg1->unk1D8);
+                mathutil_mtxA_mult_right(arg1->rotateMtx);
             mathutil_mtxA_rigid_inv_tf_point(&arg1[1].unk1CC, &arg1->unk1CC);
             func_80035DEC(&arg1->unk1CC);
-            mathutil_mtxA_to_mtx(arg1->unk208);
+            mathutil_mtxA_to_mtx(arg1->transformMtx);
         }
         break;
     case 0x200:
@@ -205,20 +203,20 @@ void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
         }
         if (temp_r31 & 2)
             mathutil_mtxA_translate(&arg1->unk10);
-        mathutil_mtxA_sq_from_mtx(arg1->unk208);
-        mathutil_mtxA_copy_translate(arg1->unk208);
+        mathutil_mtxA_sq_from_mtx(arg1->transformMtx);
+        mathutil_mtxA_copy_translate(arg1->transformMtx);
         break;
     case 0x400:
         mathutil_mtxA_translate(&arg1->unk10);
         if (temp_r31 & 0x4000)
         {
-            mathutil_mtxA_sq_from_mtx(arg1->unk208);
-            mathutil_mtxA_copy_translate(arg1->unk208);
+            mathutil_mtxA_sq_from_mtx(arg1->transformMtx);
+            mathutil_mtxA_copy_translate(arg1->transformMtx);
         }
         else
         {
             mathutil_mtxA_rotate_z_sin_cos(arg1->unk198, arg1->unk19C);
-            mathutil_mtxA_to_mtx(arg1->unk208);
+            mathutil_mtxA_to_mtx(arg1->transformMtx);
         }
         break;
     case 0x800:
@@ -232,7 +230,7 @@ void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
         if (temp_r31 & 0x10)
             mathutil_mtxA_sq_from_mtx(arg0->unk168);
         if (temp_r31 & 1)
-            mathutil_mtxA_to_mtx(arg1->unk208);
+            mathutil_mtxA_to_mtx(arg1->transformMtx);
         mathutil_mtxA_get_translate_alt2(&arg1->unk1CC);
         break;
     case 0x1000:
@@ -247,11 +245,11 @@ void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
             mathutil_mtxA_translate(&arg1->unk10);
         }
         if (temp_r31 & 8)
-            mathutil_mtxA_mult_right(arg1->unk1D8);
+            mathutil_mtxA_mult_right(arg1->rotateMtx);
         else if (temp_r31 & 0x40)
             mathutil_mtxA_mult_right(arg1->unk1C);
         if (temp_r31 & 1)
-            mathutil_mtxA_to_mtx(arg1->unk208);
+            mathutil_mtxA_to_mtx(arg1->transformMtx);
         break;
     case 0x2000:
         if (temp_r31 & 2)
@@ -265,11 +263,11 @@ void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
             mathutil_mtxA_translate((Point3d *) &arg1->unk10);
         }
         if (temp_r31 & 8)
-            mathutil_mtxA_mult_right(arg1->unk1D8);
+            mathutil_mtxA_mult_right(arg1->rotateMtx);
         if (temp_r31 & 0x40)
             mathutil_mtxA_mult_right(arg1->unk1C);
         if (temp_r31 & 1)
-            mathutil_mtxA_to_mtx(arg1->unk208);
+            mathutil_mtxA_to_mtx(arg1->transformMtx);
         break;
     }
     temp_r28 = arg1->unk4C;
@@ -292,39 +290,39 @@ void func_80035748(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
 
 void func_80035E7C(float *, float *, float, float, float);
 
-void func_80035B14(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
+void func_80035B14(struct JointBoneThing *arg0, struct JointBoneThing *arg1)
 {
     f32 temp_f31;
     u32 temp_r29;
-    struct Struct80034F5C_1 *temp_r28;
-    struct Struct80034F5C_1 *temp_r27;
+    struct JointBoneThing *temp_r28;
+    struct JointBoneThing *temp_r27;
     u32 temp_r27_2;
     u32 i;
 
-    temp_r29 = arg1->unk0;
+    temp_r29 = arg1->flags;
     temp_r29 |= 0x4000;
-    arg1->unk0 = temp_r29;
+    arg1->flags = temp_r29;
     switch (temp_r29 & 0x3F00)
     {
     case 0x100:
         if (temp_r29 & 2)
             mathutil_mtxA_translate(&arg1->unk4);
-        mathutil_mtxA_mult_right(arg1->unk1D8);
+        mathutil_mtxA_mult_right(arg1->rotateMtx);
         mathutil_mtxA_rigid_inv_tf_point(&arg1[1].unk1CC, &arg1->unk1CC);
         func_80035DEC(&arg1->unk1CC);
-        mathutil_mtxA_sq_to_mtx(arg1->unk208);
+        mathutil_mtxA_sq_to_mtx(arg1->transformMtx);
         break;
     case 0x200:
         if (temp_r29 & 2)
             mathutil_mtxA_translate(&arg1->unk4);
-        mathutil_mtxA_mult_right(arg1->unk1D8);
+        mathutil_mtxA_mult_right(arg1->rotateMtx);
         temp_r27 = arg1 + 2;
         temp_r28 = arg1 + 1;
         mathutil_mtxA_rigid_inv_tf_point(&temp_r27->unk1CC, &arg1->unk1CC);
         temp_f31 = mathutil_vec_len(&arg1->unk1CC);
         func_80035E7C(&arg1->unk198, &arg1->unk19C, temp_r28->unk4.x, temp_f31, temp_r27->unk4.x);
         func_80035E7C(&temp_r28->unk198, &temp_r28->unk19C, temp_r28->unk4.x, temp_r27->unk4.x, temp_f31);
-        if (temp_r28->unk0 & 0x20)
+        if (temp_r28->flags & 0x20)
         {
             temp_r28->unk198 = -temp_r28->unk198;
             temp_r28->unk19C = -temp_r28->unk19C;
@@ -336,12 +334,12 @@ void func_80035B14(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
         }
         func_80035DEC(&arg1->unk1CC);
         mathutil_mtxA_rotate_z_sin_cos(arg1->unk198, arg1->unk19C);
-        mathutil_mtxA_sq_to_mtx(arg1->unk208);
+        mathutil_mtxA_sq_to_mtx(arg1->transformMtx);
         break;
     case 0x400:
         mathutil_mtxA_translate(&arg1->unk4);
         mathutil_mtxA_rotate_z_sin_cos(arg1->unk198, arg1->unk19C);
-        mathutil_mtxA_sq_to_mtx(arg1->unk208);
+        mathutil_mtxA_sq_to_mtx(arg1->transformMtx);
         break;
     case 0x800:
         mathutil_mtxA_translate(&arg1->unk4);
@@ -352,7 +350,7 @@ void func_80035B14(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
         if (temp_r29 & 2)
             mathutil_mtxA_translate(&arg1->unk4);
         if (temp_r29 & 8)
-            mathutil_mtxA_mult_right(arg1->unk1D8);
+            mathutil_mtxA_mult_right(arg1->rotateMtx);
         else if (temp_r29 & 0x40)
             mathutil_mtxA_mult_right(arg1->unk1C);
         break;
@@ -360,7 +358,7 @@ void func_80035B14(struct Struct80034F5C_1 *arg0, struct Struct80034F5C_1 *arg1)
         if (temp_r29 & 2)
             mathutil_mtxA_translate(&arg1->unk4);
         if (temp_r29 & 8)
-            mathutil_mtxA_mult_right(arg1->unk1D8);
+            mathutil_mtxA_mult_right(arg1->rotateMtx);
         if (temp_r29 & 0x40)
             mathutil_mtxA_mult_right(arg1->unk1C);
         break;

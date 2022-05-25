@@ -1560,7 +1560,7 @@ const struct Struct80116F18 lbl_80116F18[] =
     { 0,                         NULL         },
 };
 
-const struct Struct80117084 lbl_80116FA0 = { 0.555503f, -0.259482f, 0.868703f };
+const struct MotRotation lbl_80116FA0 = { 0.555503f, -0.259482f, 0.868703f };
 
 const u8 lbl_80116FAC[] = { 0x01, 0x04, 0x07, 0x0A, 0x0D };
 const u8 lbl_80116FB4[] = { 0x02 };
@@ -1596,11 +1596,11 @@ const struct Struct80116F18 lbl_80116FE0[] =
     { 0,                         NULL         },
 };
 
-const struct Struct80117084 lbl_80117068 = { -0.555491f, 0.259482f, 0.868701f };
+const struct MotRotation lbl_80117068 = { -0.555491f, 0.259482f, 0.868701f };
 
 const struct Struct80116F18 *const lbl_80117074[] = { NULL, NULL, lbl_80116F18, lbl_80116FE0 };
 
-const struct Struct80117084 *const lbl_80117084[] = { NULL, NULL, &lbl_80116FA0, &lbl_80117068 };
+const struct MotRotation *const lbl_80117084[] = { NULL, NULL, &lbl_80116FA0, &lbl_80117068 };
 
 const Vec lbl_80117094[] =
 {
@@ -1822,7 +1822,7 @@ void func_80036000(struct Struct8003699C_child_sub *arg0, u16 arg1, u16 arg2)
         func_800366F8(arg0);
     }
     else
-		arg0->unk8 = arg1;
+        arg0->unk8 = arg1;
 }
 #pragma force_active reset
 
@@ -1854,155 +1854,155 @@ void func_80036064(struct Struct8003699C_child *arg0)
         while (phi_r31->unk0 != 0)
         {
             if (arg0->unk38 < phi_r31->unk2)
-				break;
+                break;
 
-			switch (phi_r31->unk0)
-			{
-			case 1:
-				phi_r30->unk18 = phi_r31->unk8;
-				temp_r3 = phi_r31->unk4;
-				phi_r30->unkA = 0;
-				phi_r30->unk14 = 0.0f;
-				phi_r30->unk28 = phi_r30->unk8;
-				if (temp_r3 != 0)
-				{
-					phi_r30->unk8 = temp_r3;
-					phi_r30->unkC = func_80034F44(temp_r3);
-					func_800366F8(phi_r30);
-				}
-				else
-					phi_r30->unk8 = temp_r3;
-				if ((phi_r30->unk18 & 1) && temp_f26 > 0.001f)
-					phi_r30->unk10 = 1.0f;
-				else
-				{
-					phi_r30->unk1C = 0.0f;
-					phi_r30->unk20 = 0.0f;
-					phi_r30->unk10 = 0.0f;
-				}
-				break;
-			case 2:
-				phi_r29->unk18 = phi_r31->unk8;
-				temp_r3 = phi_r31->unk4;
-				phi_r29->unkA = 0;
-				phi_r29->unk14 = 0.0f;
-				phi_r29->unk28 = phi_r29->unk8;
-				if (temp_r3 != 0)
-				{
-					phi_r29->unk8 = temp_r3;
-					phi_r29->unkC = func_80034F44(temp_r3);
-					func_800366F8(phi_r29);
-				}
-				else
-					phi_r29->unk8 = temp_r3;
-				if ((phi_r29->unk18 & 1) && temp_f26 > 0.001f)
-					phi_r29->unk10 = 1.0f;
-				else
-				{
-					phi_r29->unk1C = 0.0f;
-					phi_r29->unk20 = 0.0f;
-					phi_r29->unk10 = 0.0f;
-				}
-				break;
-			case 3:
-				phi_r30->unk18 = phi_r31->unk8;
-				temp_r3 = phi_r31->unk4;
-				phi_r30->unkA = 0;
-				phi_r30->unk14 = 0.0f;
-				phi_r30->unk28 = phi_r30->unk8;
-				if (temp_r3 != 0)
-				{
-					phi_r30->unk8 = temp_r3;
-					phi_r30->unkC = func_80034F44(temp_r3);
-					func_800366F8(phi_r30);
-				}
-				else
-					phi_r30->unk8 = temp_r3;
-				if ((phi_r30->unk18 & 1) && temp_f26 > 0.001f)
-					phi_r30->unk10 = 1.0f;
-				else
-				{
-					phi_r30->unk1C = 0.0f;
-					phi_r30->unk20 = 0.0f;
-					phi_r30->unk10 = 0.0f;
-				}
-				phi_r29->unk18 = phi_r31->unk8;
-				temp_r3 = phi_r31->unk4;
-				phi_r29->unkA = 0;
-				phi_r29->unk14 = 0.0f;
-				phi_r29->unk28 = phi_r29->unk8;
-				if (temp_r3 != 0)
-				{
-					phi_r29->unk8 = temp_r3;
-					phi_r29->unkC = func_80034F44(temp_r3);
-					func_800366F8(phi_r29);
-				}
-				else
-					phi_r29->unk8 = temp_r3;
-				if ((phi_r29->unk18 & 1) && temp_f26 > 0.001f)
-					phi_r29->unk10 = 1.0f;
-				else
-				{
-					phi_r29->unk1C = 0.0f;
-					phi_r29->unk20 = 0.0f;
-					phi_r29->unk10 = 0.0f;
-				}
-				break;
-			case 4:
-				temp_r0 = phi_r31->unk4 - phi_r31->unk2;
-				temp_f2 = phi_r31->unk8;
-				phi_r30->unk24 = temp_r0;
-				if (temp_r0 > 0)
-				{
-					phi_r30->unk1C += phi_r30->unk20;
-					phi_r30->unk20 = (temp_f2 - phi_r30->unk1C) / (float)temp_r0;
-					phi_r30->unk1C -= phi_r30->unk20;
-				}
-				else
-				{
-					phi_r30->unk1C = temp_f2;
-					phi_r30->unk20 = 0.0f;
-				}
-				break;
-			case 5:
-				temp_r0 = phi_r31->unk4 - phi_r31->unk2;
-				temp_f2 = phi_r31->unk8;
-				phi_r29->unk24 = temp_r0;
-				if (temp_r0 > 0)
-				{
-					phi_r29->unk1C += phi_r29->unk20;
-					phi_r29->unk20 = (temp_f2 - phi_r29->unk1C) / (float)temp_r0;
-					phi_r29->unk1C -= phi_r29->unk20;
-				}
-				else
-				{
-					phi_r29->unk1C = temp_f2;
-					phi_r29->unk20 = 0.0f;
-				}
-				break;
-			case 6:
-				temp_r0 = phi_r31->unk4 - phi_r31->unk2;
-				temp_f4 = phi_r31->unk8;
-				phi_r29->unk24 = temp_r0;
-				phi_r30->unk24 = temp_r0;
-				if (temp_r0 > 0)
-				{
-					phi_r30->unk1C += phi_r30->unk20;
-					phi_r29->unk1C += phi_r29->unk20;
-					phi_r30->unk20 = (temp_f4 - phi_r30->unk1C) / (float)temp_r0;
-					phi_r29->unk20 = (temp_f4 - phi_r29->unk1C) / (float)temp_r0;
-					phi_r30->unk1C -= phi_r30->unk20;
-					phi_r29->unk1C -= phi_r29->unk20;
-				}
-				else
-				{
-					phi_r29->unk1C = temp_f4;
-					phi_r30->unk1C = temp_f4;
-					phi_r29->unk20 = 0.0f;
-					phi_r30->unk20 = 0.0f;
-				}
-				break;
-			}
+            switch (phi_r31->unk0)
+            {
+            case 1:
+                phi_r30->unk18 = phi_r31->unk8;
+                temp_r3 = phi_r31->unk4;
+                phi_r30->unkA = 0;
+                phi_r30->unk14 = 0.0f;
+                phi_r30->unk28 = phi_r30->unk8;
+                if (temp_r3 != 0)
+                {
+                    phi_r30->unk8 = temp_r3;
+                    phi_r30->unkC = func_80034F44(temp_r3);
+                    func_800366F8(phi_r30);
+                }
+                else
+                    phi_r30->unk8 = temp_r3;
+                if ((phi_r30->unk18 & 1) && temp_f26 > 0.001f)
+                    phi_r30->unk10 = 1.0f;
+                else
+                {
+                    phi_r30->unk1C = 0.0f;
+                    phi_r30->unk20 = 0.0f;
+                    phi_r30->unk10 = 0.0f;
+                }
+                break;
+            case 2:
+                phi_r29->unk18 = phi_r31->unk8;
+                temp_r3 = phi_r31->unk4;
+                phi_r29->unkA = 0;
+                phi_r29->unk14 = 0.0f;
+                phi_r29->unk28 = phi_r29->unk8;
+                if (temp_r3 != 0)
+                {
+                    phi_r29->unk8 = temp_r3;
+                    phi_r29->unkC = func_80034F44(temp_r3);
+                    func_800366F8(phi_r29);
+                }
+                else
+                    phi_r29->unk8 = temp_r3;
+                if ((phi_r29->unk18 & 1) && temp_f26 > 0.001f)
+                    phi_r29->unk10 = 1.0f;
+                else
+                {
+                    phi_r29->unk1C = 0.0f;
+                    phi_r29->unk20 = 0.0f;
+                    phi_r29->unk10 = 0.0f;
+                }
+                break;
+            case 3:
+                phi_r30->unk18 = phi_r31->unk8;
+                temp_r3 = phi_r31->unk4;
+                phi_r30->unkA = 0;
+                phi_r30->unk14 = 0.0f;
+                phi_r30->unk28 = phi_r30->unk8;
+                if (temp_r3 != 0)
+                {
+                    phi_r30->unk8 = temp_r3;
+                    phi_r30->unkC = func_80034F44(temp_r3);
+                    func_800366F8(phi_r30);
+                }
+                else
+                    phi_r30->unk8 = temp_r3;
+                if ((phi_r30->unk18 & 1) && temp_f26 > 0.001f)
+                    phi_r30->unk10 = 1.0f;
+                else
+                {
+                    phi_r30->unk1C = 0.0f;
+                    phi_r30->unk20 = 0.0f;
+                    phi_r30->unk10 = 0.0f;
+                }
+                phi_r29->unk18 = phi_r31->unk8;
+                temp_r3 = phi_r31->unk4;
+                phi_r29->unkA = 0;
+                phi_r29->unk14 = 0.0f;
+                phi_r29->unk28 = phi_r29->unk8;
+                if (temp_r3 != 0)
+                {
+                    phi_r29->unk8 = temp_r3;
+                    phi_r29->unkC = func_80034F44(temp_r3);
+                    func_800366F8(phi_r29);
+                }
+                else
+                    phi_r29->unk8 = temp_r3;
+                if ((phi_r29->unk18 & 1) && temp_f26 > 0.001f)
+                    phi_r29->unk10 = 1.0f;
+                else
+                {
+                    phi_r29->unk1C = 0.0f;
+                    phi_r29->unk20 = 0.0f;
+                    phi_r29->unk10 = 0.0f;
+                }
+                break;
+            case 4:
+                temp_r0 = phi_r31->unk4 - phi_r31->unk2;
+                temp_f2 = phi_r31->unk8;
+                phi_r30->unk24 = temp_r0;
+                if (temp_r0 > 0)
+                {
+                    phi_r30->unk1C += phi_r30->unk20;
+                    phi_r30->unk20 = (temp_f2 - phi_r30->unk1C) / (float)temp_r0;
+                    phi_r30->unk1C -= phi_r30->unk20;
+                }
+                else
+                {
+                    phi_r30->unk1C = temp_f2;
+                    phi_r30->unk20 = 0.0f;
+                }
+                break;
+            case 5:
+                temp_r0 = phi_r31->unk4 - phi_r31->unk2;
+                temp_f2 = phi_r31->unk8;
+                phi_r29->unk24 = temp_r0;
+                if (temp_r0 > 0)
+                {
+                    phi_r29->unk1C += phi_r29->unk20;
+                    phi_r29->unk20 = (temp_f2 - phi_r29->unk1C) / (float)temp_r0;
+                    phi_r29->unk1C -= phi_r29->unk20;
+                }
+                else
+                {
+                    phi_r29->unk1C = temp_f2;
+                    phi_r29->unk20 = 0.0f;
+                }
+                break;
+            case 6:
+                temp_r0 = phi_r31->unk4 - phi_r31->unk2;
+                temp_f4 = phi_r31->unk8;
+                phi_r29->unk24 = temp_r0;
+                phi_r30->unk24 = temp_r0;
+                if (temp_r0 > 0)
+                {
+                    phi_r30->unk1C += phi_r30->unk20;
+                    phi_r29->unk1C += phi_r29->unk20;
+                    phi_r30->unk20 = (temp_f4 - phi_r30->unk1C) / (float)temp_r0;
+                    phi_r29->unk20 = (temp_f4 - phi_r29->unk1C) / (float)temp_r0;
+                    phi_r30->unk1C -= phi_r30->unk20;
+                    phi_r29->unk1C -= phi_r29->unk20;
+                }
+                else
+                {
+                    phi_r29->unk1C = temp_f4;
+                    phi_r30->unk1C = temp_f4;
+                    phi_r29->unk20 = 0.0f;
+                    phi_r30->unk20 = 0.0f;
+                }
+                break;
+            }
             phi_r31++;
         }
         arg0->unk81A4 = phi_r31;
@@ -2014,8 +2014,8 @@ void func_80036720(struct Struct8003699C_child_sub *arg0);
 
 void func_80036510(struct Struct8003699C_child_sub *arg0)
 {
-	func_80036544(arg0);
-	func_80036720(arg0);
+    func_80036544(arg0);
+    func_80036720(arg0);
 }
 
 void func_80036544(struct Struct8003699C_child_sub *arg0)
@@ -2045,7 +2045,7 @@ void func_80036544(struct Struct8003699C_child_sub *arg0)
 
 void func_800366F8(struct Struct8003699C_child_sub *arg0)
 {
-	func_80034360(arg0->unk38, arg0->unk8);
+    func_80034360(arg0->unk38, arg0->unk8);
 }
 
 extern const struct Struct80034F5C_3 *const lbl_80114DD0[];
@@ -2053,28 +2053,27 @@ extern const struct Struct80034F5C_2 *const lbl_80114DE0[];
 
 void func_80036720(struct Struct8003699C_child_sub *arg0)
 {
-    struct Struct80034F5C_1 *temp_r31 = arg0->unk38;
-	//! BUG: casting away const qualifier
-    struct Struct80034F5C_3 *r4 = (void *)lbl_80114DD0[arg0->unk6];
-    struct Struct80034F5C_2 *r5 = (void *)lbl_80114DE0[arg0->unk6];
+    struct JointBoneThing *temp_r31 = arg0->unk38;
+    const struct Struct80034F5C_3 *r4 = lbl_80114DD0[arg0->unk6];
+    const struct Struct80034F5C_2 *r5 = lbl_80114DE0[arg0->unk6];
     float f1 = arg0->unkA + arg0->unk14;
     u32 r6 = arg0->unk0 & (1 << 2);
 
-    func_80034F5C(temp_r31, r4, r5, f1, r6);
+    g_interpolate_joint_motion(temp_r31, r4, r5, f1, r6);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(temp_r31->unk168);
     mathutil_mtxA_get_translate_alt2(&temp_r31->unk1CC);
     func_80035748(temp_r31, temp_r31);
 }
 
-void func_800367E4(struct Struct80034F5C_1 *arg0, u16 arg1, u16 arg2)
+void func_800367E4(struct JointBoneThing *arg0, u16 arg1, u16 arg2)
 {
-    struct Struct80034F5C_1 *r31 = arg0;
+    struct JointBoneThing *r31 = arg0;
     const u32 *r30 = lbl_80114F68[arg1];
     const Vec *r29 = lbl_801171FC[arg1];
     const Vec *r28 = lbl_801177AC[arg2];
     const struct Struct80116F18 *r27 = lbl_80117074[arg1];
-    const struct Struct80117084 *r26 = lbl_80117084[arg1];
+    const struct MotRotation *rotation = lbl_80117084[arg1];
     int r25;
     u8 r5;
 
@@ -2084,24 +2083,24 @@ void func_800367E4(struct Struct80034F5C_1 *arg0, u16 arg1, u16 arg2)
     r25 = 0;
     while (1)
     {
-        arg0->unk0 = *r30;
-        mathutil_mtxA_to_mtx(arg0->unk1D8);
-        mathutil_mtxA_to_mtx(arg0->unk208);
-        if (arg0->unk0 & 0x40)
+        arg0->flags = *r30;
+        mathutil_mtxA_to_mtx(arg0->rotateMtx);
+        mathutil_mtxA_to_mtx(arg0->transformMtx);
+        if (arg0->flags & 0x40)
         {
             mathutil_mtxA_push();
-            mathutil_mtxA_rotate_z(RADIANS_TO_S16(r26->rotZ));
-            mathutil_mtxA_rotate_y(RADIANS_TO_S16(r26->rotY));
-            mathutil_mtxA_rotate_x(RADIANS_TO_S16(r26->rotX));
+            mathutil_mtxA_rotate_z(RADIANS_TO_S16(rotation->rotZ));
+            mathutil_mtxA_rotate_y(RADIANS_TO_S16(rotation->rotY));
+            mathutil_mtxA_rotate_x(RADIANS_TO_S16(rotation->rotX));
             mathutil_mtxA_to_mtx(arg0->unk1C);
-            r26++;
+            rotation++;
             mathutil_mtxA_pop();
         }
         arg0->unk4C = r27->length;
         arg0->unk50 = (void *)r27->unk4;
         for (r5 = 0; r5 < arg0->unk4C; r5++)
             r31[arg0->unk50[r5]].unk1A0 = (u8)r25;
-        if (arg0->unk0 & 2)
+        if (arg0->flags & 2)
         {
             arg0->unk4 = *r29++;
             arg0->unk10 = *r28++;
@@ -2115,5 +2114,5 @@ void func_800367E4(struct Struct80034F5C_1 *arg0, u16 arg1, u16 arg2)
         r25++;
     }
     arg0++;
-    arg0->unk0 = *r30;
+    arg0->flags = *r30;
 }

@@ -6,43 +6,43 @@
 #include "global.h"
 #include "mathutil.h"
 
-void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struct Struct80034F5C_2 *c, float e, u32 d)
+void g_interpolate_joint_motion(struct JointBoneThing *a, const struct Struct80034F5C_3 *b, const struct Struct80034F5C_2 *c, float e, u32 d)
 {
     u32 flags;
-    struct Struct80034F5C_1 *r30 = a;
+    struct JointBoneThing *r30 = a;
 
     if (b == NULL || c == NULL)
         d = 0;
 
-    flags = r30->unk0;
+    flags = r30->flags;
     while (flags != 0)
     {
         flags &= ~(3<<(31-0x11));
-        r30->unk0 = flags;
-        if (flags & (1<<(31-0x1D)))
+        r30->flags = flags;
+        if (flags & (1 << 2))
         {
             if (d != 0)
-                func_80035064(r30, &a[c->unk2], d, e);
+                g_interp_pos_motion(r30, &a[c->unk2], d, e);
             else
-                func_80035064(r30, r30, d, e);
+                g_interp_pos_motion(r30, r30, d, e);
             c++;
         }
-        if (flags & (1<<(31-0x1C)))
+        if (flags & (1 << 3))
         {
             if (d != 0)
-                func_8003513C(r30, &a[b->unk2], b, d, e);
+                g_interp_rot_motion(r30, &a[b->unk2], b, d, e);
             else
-                func_8003513C(r30, r30, b, d, e);
+                g_interp_rot_motion(r30, r30, b, d, e);
             b++;
         }
         r30++;
-        flags = r30->unk0;
+        flags = r30->flags;
     }
 }
 
-void func_80035064(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, u32 c, float d)
+void g_interp_pos_motion(struct JointBoneThing *a, struct JointBoneThing *b, u32 c, float d)
 {
-    struct Struct80034F5C_1_sub *r3 = &a->unk54[0];
+    struct MotionTransform *r3 = &a->transforms[0];
     int unused;
 
     if (r3->unk0 != 0)
@@ -68,15 +68,15 @@ void func_80035064(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, u32 c
 
 }
 
-void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struct Struct80034F5C_3 *c, u32 d, float e)
+void g_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, const struct Struct80034F5C_3 *c, u32 d, float e)
 {
     float f31;
-    struct Struct80034F5C_1_sub *sub;
+    struct MotionTransform *sub;
 
     mathutil_mtxA_from_identity();
     f31 = 10430.3779296875f;
 
-    sub = &a->unk54[5];
+    sub = &a->transforms[5];
     if (sub->unk0 != 0)
     {
         float f1 = g_interp_skelanim_value_maybe(sub, e);
@@ -103,31 +103,31 @@ void func_8003513C(struct Struct80034F5C_1 *a, struct Struct80034F5C_1 *b, struc
         mathutil_mtxA_rotate_x((s16)(f31 * f1));
     }
 
-    mathutil_mtxA_sq_to_mtx(b->unk1D8);
+    mathutil_mtxA_sq_to_mtx(b->rotateMtx);
 }
 
-float g_interp_skelanim_value_maybe(struct Struct80034F5C_1_sub *a, float b)
+float g_interp_skelanim_value_maybe(struct MotionTransform *transform, float t)
 {
-    float sp40;
-    float sp3C;
-    float sp38;
+    float ret;
+    float dummy1;
+    float dummy2;
     Vec sp2C;
     Vec sp20;
-    struct Struct80034F5C_1_sub sp10;
-    u8 r28 = a->unk0;
-    u8 r31 = a->unk1;
+    struct MotionTransform sp10;
+    u8 endSomething = transform->unk0;
+    u8 r31 = transform->unk1;
     u8 type = 0;
 
-    while (r31 < r28)
+    while (r31 < endSomething)
     {
-        float f1 = *a->unk4;
+        float f1 = *transform->unk4;
 
-        if (__fabs(f1 - b) < FLT_EPSILON)
+        if (__fabs(f1 - t) < FLT_EPSILON)
         {
             type = 1;
             break;
         }
-        else if (f1 > b)
+        else if (f1 > t)
         {
             if (r31 != 0)
                 type = 3;
@@ -136,36 +136,36 @@ float g_interp_skelanim_value_maybe(struct Struct80034F5C_1_sub *a, float b)
             break;
         }
         r31++;
-        g_skelanim_seek_next(a);
+        g_skelanim_seek_next(transform);
     }
 
     switch (type)
     {
     default:
-        if (a->unk1 < r28)
-            g_skelanim_seek_prev(a);
+        if (transform->unk1 < endSomething)
+            g_skelanim_seek_prev(transform);
         // fall through
     case 1:
     case 2:
-        func_800354A8(a, &sp3C, &sp38, &sp40);
+        read_transform_values(transform, &dummy1, &dummy2, &ret);
         break;
     case 3:
-        sp20.x = *a->unk4;
-        func_800354A8(a, &sp20.z, &sp38, &sp20.y);
-        sp10.unk4 = a->unk4;
-        sp10.unk8 = a->unk8;
-        sp10.unkC = a->unkC;
+        sp20.x = *transform->unk4;
+        read_transform_values(transform, &sp20.z, &dummy2, &sp20.y);
+        sp10.unk4 = transform->unk4;
+        sp10.numComponents = transform->numComponents;
+        sp10.values = transform->values;
         g_skelanim_seek_prev(&sp10);
         sp2C.x = *sp10.unk4;
-        func_800354A8(&sp10, &sp3C, &sp2C.z, &sp2C.y);
-        sp40 = func_80035438(&sp2C, &sp20, b);
+        read_transform_values(&sp10, &dummy1, &sp2C.z, &sp2C.y);
+        ret = g_crazy_interpolation_stuff(&sp2C, &sp20, t);
         break;
     }
-    a->unk1 = r31;
-    return sp40;
+    transform->unk1 = r31;
+    return ret;
 }
 
-float func_80035438(Vec *a, Vec *b, float c)
+float g_crazy_interpolation_stuff(Vec *a, Vec *b, float c)
 {
     float unkx, unkx2, dx, z1, f5, f0;
 
@@ -181,9 +181,9 @@ float func_80035438(Vec *a, Vec *b, float c)
          + dx * (f5 * (z1 + b->z) - z1 * f0);
 }
 
-void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
+void read_transform_values(struct MotionTransform *transform, float *b, float *c, float *d)
 {
-    switch (*a->unk8)
+    switch (*transform->numComponents)
     {
     default:
     case 0:
@@ -191,32 +191,32 @@ void func_800354A8(struct Struct80034F5C_1_sub *a, float *b, float *c, float *d)
         break;
     case 1:
         *b = *c = 0.0f;
-        *d = a->unkC[0];
+        *d = transform->values[0];
         break;
     case 2:
-        *b = *c = a->unkC[0];
-        *d = a->unkC[1];
+        *b = *c = transform->values[0];
+        *d = transform->values[1];
         break;
     case 3:
-        *b = a->unkC[0];
-        *c = a->unkC[1];
-        *d = a->unkC[2];
+        *b = transform->values[0];
+        *c = transform->values[1];
+        *d = transform->values[2];
         break;
     }
 }
 
-void g_skelanim_seek_next(struct Struct80034F5C_1_sub *a)
+void g_skelanim_seek_next(struct MotionTransform *transform)
 {
-    a->unk4++;
-    a->unkC += *a->unk8;
-    a->unk8++;
+    transform->unk4++;
+    transform->values += *transform->numComponents;
+    transform->numComponents++;
 }
 
-void g_skelanim_seek_prev(struct Struct80034F5C_1_sub *a)
+void g_skelanim_seek_prev(struct MotionTransform *transform)
 {
-    a->unk4--;
-    a->unk8--;
-    a->unkC -= *a->unk8;
+    transform->unk4--;
+    transform->numComponents--;
+    transform->values -= *transform->numComponents;
 }
 
 void func_800355B8(struct Struct8003699C_child *a)
@@ -227,7 +227,7 @@ void func_800355B8(struct Struct8003699C_child *a)
 
 void func_800355FC(struct Struct8003699C_child *a)
 {
-    struct Struct80034F5C_1 *unk;
+    struct JointBoneThing *unk;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(a->unk54);
