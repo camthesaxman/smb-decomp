@@ -12,7 +12,7 @@ ev_mouse_main:
 /* 80094D20 00090C40  3C E0 80 1F */	lis r7, analogButtonInfo@ha
 /* 80094D24 00090C44  38 A3 00 04 */	addi r5, r3, 4
 /* 80094D28 00090C48  B0 03 00 04 */	sth r0, 4(r3)
-/* 80094D2C 00090C4C  38 83 00 02 */	addi r4, r3, 2
+/* 80094D2C 00090C4C  38 83 00 02 */	addi r4, r3, 2  /* r4 = lbl_802BA190 + 0x2 */
 /* 80094D30 00090C50  38 C3 00 06 */	addi r6, r3, 6
 /* 80094D34 00090C54  A8 03 00 02 */	lha r0, 2(r3)
 /* 80094D38 00090C58  39 00 00 01 */	li r8, 1
@@ -23,43 +23,43 @@ ev_mouse_main:
 /* 80094D4C 00090C6C  39 00 00 08 */	li r8, 8
 lbl_80094D50:
 /* 80094D50 00090C70  3C E0 80 1F */	lis r7, controllerInfo@ha
-/* 80094D54 00090C74  38 E7 3B 70 */	addi r7, r7, controllerInfo@l
-/* 80094D58 00090C78  A0 E7 00 30 */	lhz r7, 0x30(r7)
+/* 80094D54 00090C74  38 E7 3B 70 */	addi r7, r7, controllerInfo@l   /* r7 = controllerInfo */
+/* 80094D58 00090C78  A0 E7 00 30 */	lhz r7, 0x30(r7)    /* r7 = controllerInfo[0].unk0[4].button */
 /* 80094D5C 00090C7C  54 E0 07 39 */	rlwinm. r0, r7, 0, 0x1c, 0x1c
 /* 80094D60 00090C80  41 82 00 10 */	beq lbl_80094D70
 /* 80094D64 00090C84  A8 04 00 00 */	lha r0, 0(r4)
 /* 80094D68 00090C88  7C 08 00 50 */	subf r0, r8, r0
-/* 80094D6C 00090C8C  B0 04 00 00 */	sth r0, 0(r4)
+/* 80094D6C 00090C8C  B0 04 00 00 */	sth r0, 0(r4)   /* r4 = r0 - 8 */
 lbl_80094D70:
 /* 80094D70 00090C90  54 E0 07 7B */	rlwinm. r0, r7, 0, 0x1d, 0x1d
 /* 80094D74 00090C94  41 82 00 10 */	beq lbl_80094D84
 /* 80094D78 00090C98  A8 04 00 00 */	lha r0, 0(r4)
 /* 80094D7C 00090C9C  7C 00 42 14 */	add r0, r0, r8
-/* 80094D80 00090CA0  B0 04 00 00 */	sth r0, 0(r4)
+/* 80094D80 00090CA0  B0 04 00 00 */	sth r0, 0(r4)   /* r4 = r0 + 8 */
 lbl_80094D84:
 /* 80094D84 00090CA4  54 E0 07 FF */	clrlwi. r0, r7, 0x1f
 /* 80094D88 00090CA8  41 82 00 10 */	beq lbl_80094D98
 /* 80094D8C 00090CAC  A8 03 00 00 */	lha r0, 0(r3)
 /* 80094D90 00090CB0  7C 08 00 50 */	subf r0, r8, r0
-/* 80094D94 00090CB4  B0 03 00 00 */	sth r0, 0(r3)
+/* 80094D94 00090CB4  B0 03 00 00 */	sth r0, 0(r3)   /* M[r3 + 0] = r3 - 8 */
 lbl_80094D98:
 /* 80094D98 00090CB8  54 E0 07 BD */	rlwinm. r0, r7, 0, 0x1e, 0x1e
 /* 80094D9C 00090CBC  41 82 00 10 */	beq lbl_80094DAC
 /* 80094DA0 00090CC0  A8 03 00 00 */	lha r0, 0(r3)
 /* 80094DA4 00090CC4  7C 00 42 14 */	add r0, r0, r8
-/* 80094DA8 00090CC8  B0 03 00 00 */	sth r0, 0(r3)
+/* 80094DA8 00090CC8  B0 03 00 00 */	sth r0, 0(r3)   /* M[r3 + 0] = r3 + 8 */
 lbl_80094DAC:
 /* 80094DAC 00090CCC  3C E0 80 1F */	lis r7, controllerInfo@ha
-/* 80094DB0 00090CD0  A9 03 00 00 */	lha r8, 0(r3)
-/* 80094DB4 00090CD4  38 E7 3B 70 */	addi r7, r7, controllerInfo@l
+/* 80094DB0 00090CD0  A9 03 00 00 */	lha r8, 0(r3)   /* r8 = r3 */
+/* 80094DB4 00090CD4  38 E7 3B 70 */	addi r7, r7, controllerInfo@l   /* r7 = controllerInfo */
 /* 80094DB8 00090CD8  C8 62 B0 50 */	lfd f3, 0xB050 //4.50360177485414e+15 //lbl_802F5850    //@sda21(r2)
-/* 80094DBC 00090CDC  88 07 00 02 */	lbz r0, 2(r7)
+/* 80094DBC 00090CDC  88 07 00 02 */	lbz r0, 2(r7)   /* r0 = controllerInfo[0].unk0[0].stickX */  /* r0 = r7 + 2 */
 /* 80094DC0 00090CE0  6D 09 80 00 */	xoris r9, r8, 0x8000
 /* 80094DC4 00090CE4  3D 00 43 30 */	lis r8, 0x4330
 /* 80094DC8 00090CE8  91 21 00 34 */	stw r9, 0x34(r1)
 /* 80094DCC 00090CEC  7C 00 07 74 */	extsb r0, r0
 /* 80094DD0 00090CF0  6C 00 80 00 */	xoris r0, r0, 0x8000
-/* 80094DD4 00090CF4  91 01 00 30 */	stw r8, 0x30(r1)
+/* 80094DD4 00090CF4  91 01 00 30 */	stw r8, 0x30(r1)    /* r1 + 0x30 = r3 */
 /* 80094DD8 00090CF8  C8 42 B0 48 */	lfd f2, 0xB048 //0.1 //lbl_802F5848    //@sda21(r2)
 /* 80094DDC 00090CFC  90 01 00 2C */	stw r0, 0x2c(r1)
 /* 80094DE0 00090D00  C8 01 00 30 */	lfd f0, 0x30(r1)
@@ -117,19 +117,20 @@ lbl_80094E98:
 /* 80094EA4 00090DC4  38 00 01 D0 */	li r0, 0x1d0
 /* 80094EA8 00090DC8  B0 04 00 00 */	sth r0, 0(r4)
 lbl_80094EAC:
-/* 80094EAC 00090DCC  A9 25 00 00 */	lha r9, 0(r5)
+/* 80094EAC 00090DCC  A9 25 00 00 */	lha r9, 0(r5)       /* r9 = M[r5 + 0] */
 /* 80094EB0 00090DD0  3D 00 80 1F */	lis r8, controllerInfo@ha
-/* 80094EB4 00090DD4  A8 03 00 00 */	lha r0, 0(r3)
-/* 80094EB8 00090DD8  39 08 3B 70 */	addi r8, r8, controllerInfo@l
-/* 80094EBC 00090DDC  38 A3 00 08 */	addi r5, r3, 8
-/* 80094EC0 00090DE0  7C 09 00 50 */	subf r0, r9, r0
-/* 80094EC4 00090DE4  B0 03 00 08 */	sth r0, 8(r3)
-/* 80094EC8 00090DE8  38 E3 00 0A */	addi r7, r3, 0xa
-/* 80094ECC 00090DEC  A8 C6 00 00 */	lha r6, 0(r6)
-/* 80094ED0 00090DF0  A8 04 00 00 */	lha r0, 0(r4)
-/* 80094ED4 00090DF4  7C 06 00 50 */	subf r0, r6, r0
-/* 80094ED8 00090DF8  B0 03 00 0A */	sth r0, 0xa(r3)
-/* 80094EDC 00090DFC  A0 08 00 18 */	lhz r0, 0x18(r8)
+/* 80094EB4 00090DD4  A8 03 00 00 */	lha r0, 0(r3)       /* r0 = M[lbl_802BA190 + 0] */
+/* 80094EB8 00090DD8  39 08 3B 70 */	addi r8, r8, controllerInfo@l   /* r8 = controllerInfo */
+/* 80094EBC 00090DDC  38 A3 00 08 */	addi r5, r3, 8      /* r5 = lbl_802BA190 + 8 */
+/* 80094EC0 00090DE0  7C 09 00 50 */	subf r0, r9, r0     /* r0 = r9 - r0 */
+/* 80094EC4 00090DE4  B0 03 00 08 */	sth r0, 8(r3)           /* M[lbl_802BA190 + 8] = r0 */
+/* 80094EC8 00090DE8  38 E3 00 0A */	addi r7, r3, 0xa        /* r7 = lbl_802BA190 + 0xa */
+/* 80094ECC 00090DEC  A8 C6 00 00 */	lha r6, 0(r6)           /* r6 = M[(lbl_802BA190 + 0x6) + 0] */
+/* 80094ED0 00090DF0  A8 04 00 00 */	lha r0, 0(r4)           /* r0 = M[(lbl_802BA190 + 0x2) + 0] */
+/* 80094ED4 00090DF4  7C 06 00 50 */	subf r0, r6, r0         /* r0 = (lbl_802BA190 + 0x6) - (lbl_802BA190 + 0x2) */
+/* 80094ED8 00090DF8  B0 03 00 0A */	sth r0, 0xa(r3)     /* M[ lbl_802BA190 + 0xa] = (lbl_802BA190 + 0x6) - (lbl_802BA190 + 0x2) */
+
+/* 80094EDC 00090DFC  A0 08 00 18 */	lhz r0, 0x18(r8)    /* r0 = M[controllerInfo + 0x18] */
 /* 80094EE0 00090E00  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 80094EE4 00090E04  41 82 00 B4 */	beq lbl_80094F98
 /* 80094EE8 00090E08  39 43 00 0C */	addi r10, r3, 0xc
@@ -147,7 +148,7 @@ lbl_80094F04:
 /* 80094F14 00090E34  81 26 00 38 */	lwz r9, 0x38(r6)
 /* 80094F18 00090E38  3D 00 80 29 */	lis r8, spriteInfo@ha
 /* 80094F1C 00090E3C  38 08 CF 58 */	addi r0, r8, spriteInfo@l
-/* 80094F20 00090E40  81 66 00 3C */	lwz r11, 0x3c(r6)
+/* 80094F20 00090E40  81 66 00 3C */	lwz r11, 0x3c(r6)   /* r11 = spritePoolInfo.statusList */
 /* 80094F24 00090E44  2C 09 00 00 */	cmpwi r9, 0
 /* 80094F28 00090E48  7D 29 03 A6 */	mtctr r9
 /* 80094F2C 00090E4C  A8 C3 00 00 */	lha r6, 0(r3)
@@ -156,8 +157,8 @@ lbl_80094F04:
 /* 80094F38 00090E58  39 20 00 00 */	li r9, 0
 /* 80094F3C 00090E5C  40 81 00 5C */	ble lbl_80094F98
 lbl_80094F40:
-/* 80094F40 00090E60  88 0B 00 00 */	lbz r0, 0(r11)
-/* 80094F44 00090E64  7C 00 07 75 */	extsb. r0, r0
+/* 80094F40 00090E60  88 0B 00 00 */	lbz r0, 0(r11)  /* r0 = r11 */
+/* 80094F44 00090E64  7C 00 07 75 */	extsb. r0, r0   /*  */
 /* 80094F48 00090E68  41 82 00 40 */	beq lbl_80094F88
 /* 80094F4C 00090E6C  80 08 00 58 */	lwz r0, 0x58(r8)
 /* 80094F50 00090E70  7C 06 00 00 */	cmpw r6, r0
