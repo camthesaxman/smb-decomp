@@ -4,8 +4,6 @@
 #include "global.h"
 #include "mathutil.h"
 
-#define PI 3.14159265358979323846f
-
 // GQR registers used for conversion
 #define GQR_F32 0
 #define GQR_U8  2

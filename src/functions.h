@@ -171,7 +171,7 @@ void adjust_motlabel_pointers(u32 *);
 void adjust_motskl_pointers(struct MotSkeleton *);
 void adjust_motinfo_pointers(struct MotInfo *);
 u16 func_80034F44(u16 index);
-// ? func_80034F5C();
+void func_80034F5C(struct Struct80034F5C_1 *a, struct Struct80034F5C_3 *b, struct Struct80034F5C_2 *c, float e, u32 d);
 void func_80035064(struct Struct80034F5C_1 *, struct Struct80034F5C_1 *, u32, float);
 void func_8003513C(struct Struct80034F5C_1 *, struct Struct80034F5C_1 *, struct Struct80034F5C_3 *, u32, float);
 float g_interp_skelanim_value_maybe(struct Struct80034F5C_1_sub *, float);
@@ -186,14 +186,14 @@ void func_80035748();
 // ? func_80035B14();
 // ? func_80035DEC();
 // ? func_80035E7C();
-void func_80035F18();
+void func_80035F18(struct Struct8003699C_child_sub *arg0, struct Struct8003699C_child *arg1, s32 arg2, u16 arg3);
 void func_80035FDC(struct Struct8003699C_child *);
 void func_80036064(struct Struct8003699C_child *);
 // ? func_80036510();
 // ? func_80036544();
 // ? func_800366F8();
 // ? func_80036720();
-// ? func_800367E4();
+void func_800367E4(struct Struct80034F5C_1 *arg0, u16 arg1, u16 arg2);
 
 float interpolate_keyframes(int count, struct Keyframe *frames, float time);
 

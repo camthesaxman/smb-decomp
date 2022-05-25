@@ -191,23 +191,19 @@ struct Struct80034F5C_1_sub
     float *unkC;
 };  // size = 0x10
 
-struct Struct800341BC_5
-{
-    u8 filler0[0xC];
-};
-
 struct Struct80034F5C_1  // Joint object?
 {
     u32 unk0;
-    struct Struct800341BC_5 unk4;
-    struct Struct800341BC_5 unk10;
+    Vec unk4;
+    Vec unk10;
     Mtx unk1C;
     u32 unk4C;
-    u8 *unk50;
+    const u8 *unk50;
     struct Struct80034F5C_1_sub unk54[6];
     u8 fillerB4[0x168-0xB4];
     Mtx unk168;
-    u8 filler198[0x1A0-0x198];
+    float unk198;
+    float unk19C;
     s32 unk1A0;
     Vec unk1A4;
     Quaternion unk1B0;
@@ -216,6 +212,37 @@ struct Struct80034F5C_1  // Joint object?
     Mtx unk1D8;
     Mtx unk208;
 };  // size = 0x238
+
+struct Struct8003699C_child_sub
+{
+    u32 unk0;
+	u16 unk4;
+    u16 unk6;
+	u16 unk8;
+	u16 unkA;
+	u16 unkC;
+	float unk10;
+	float unk14;
+    u32 unk18;
+    float unk1C;
+    float unk20;
+    s32 unk24;
+	u16 unk28;
+    u16 unk2A;
+    float unk2C;
+    //u8 filler30[0x4090-0x30];
+    u8 filler30[4];
+    struct Struct80034F5C_1 *unk34;
+    struct Struct80034F5C_1 unk38[29];
+};  // size = 0x4090
+
+struct Struct8003699C_child_child
+{
+	u16 unk0;
+	u16 unk2;
+	u32 unk4;
+	u32 unk8;
+};  // size = 0xC
 
 struct Struct8003699C_child
 {
@@ -235,9 +262,23 @@ struct Struct8003699C_child
     float unk40;
     u8 filler44[0x54-0x44];
     Mtx unk54;
-    u8 filler84[0x4114-0x84];
-    u8 filler4114[0x81A8-0x4114];
+    struct Struct8003699C_child_sub unk84;
+    struct Struct8003699C_child_sub unk4114;
+    const struct Struct8003699C_child_child *unk81A4;
     struct Struct80034F5C_1 unk81A8[29];
+};
+
+struct Struct80117084
+{
+    float rotX;
+    float rotY;
+    float rotZ;
+};
+
+struct Struct80116F18
+{
+    u32 length;
+    const u8 *unk4;
 };
 
 struct Ape_child
@@ -524,19 +565,13 @@ struct MotDat
     float *unk14;
 };  // size = 0x18
 
-struct Struct80034B50_child_child
-{
-    u32 unk0;
-    void *unk4;
-};
-
-struct Struct80034B50_child  // Struct80034B50_child
+struct Struct80034B50_child
 {
     void *unk0;
-    struct Struct80034B50_child_child *unk4;
+    struct Struct80116F18 *unk4;
     void *unk8;
-    struct Struct800341BC_5 *unkC;
-    struct Struct800341BC_5 *unk10;
+    Vec *unkC;
+    Vec *unk10;
     void *unk14;
 };  // size = 0x18
 
@@ -572,7 +607,7 @@ struct MotInfo
 
 struct Struct80034F5C_2
 {
-    u16 filler0;
+    u16 unk0;
     u16 unk2;
 };  // size = 4
 

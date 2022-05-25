@@ -6,8 +6,6 @@
 
 struct MotDat *motDat;
 
-extern void *lbl_80114F68[];
-
 struct Struct800341BC_4
 {
     u32 unk0;
@@ -21,16 +19,16 @@ void func_8003453C(struct MotDat *a, struct Struct80034F5C_1_sub *b);
 void func_800341BC(struct Struct80034F5C_1 *a, struct Struct80034B50_child *b, u16 c)
 {
     struct Struct80034F5C_1 *r31 = a;
-    u32 *r30;
-    struct Struct800341BC_5 *r29;
-    struct Struct800341BC_5 *r28;
-    struct Struct800341BC_4 *r27;
-    Vec *r26;  // I guess?
+    const u32 *r30;
+    Vec *r29;
+    Vec *r28;
+    struct Struct80116F18 *r27;
+    struct Struct80117084 *r26;
     int r25;
 
     r29 = b->unkC;
     r28 = b->unk10;
-    r27 = (void *)b->unk4;
+    r27 = b->unk4;
     r26 = b->unk8;
     r30 = lbl_80114F68[c];
     mathutil_mtxA_from_identity();
@@ -47,27 +45,23 @@ void func_800341BC(struct Struct80034F5C_1 *a, struct Struct80034B50_child *b, u
         if (a->unk0 & (1 << 6))
         {
             mathutil_mtxA_push();
-            mathutil_mtxA_rotate_z((s16)(r26->z * 10430.3779296875f));
-            mathutil_mtxA_rotate_y((s16)(r26->y * 10430.3779296875f));
-            mathutil_mtxA_rotate_x((s16)(r26->x * 10430.3779296875f));
+            mathutil_mtxA_rotate_z(RADIANS_TO_S16(r26->rotZ));
+            mathutil_mtxA_rotate_y(RADIANS_TO_S16(r26->rotY));
+            mathutil_mtxA_rotate_x(RADIANS_TO_S16(r26->rotX));
             mathutil_mtxA_to_mtx(a->unk1C);
             r26++;
             mathutil_mtxA_pop();
         }
-        a->unk4C = r27->unk0;
+        a->unk4C = r27->length;
         a->unk50 = r27->unk4;
-
         for (i = 0; i < a->unk4C; i++)
-        {
             r31[a->unk50[i]].unk1A0 = (u8)r25;
-        }
         if (a->unk0 & (1 << 1))
         {
-            a->unk4 = *r29;
-            r29++;
-            a->unk10 = *r28;
-            r28++;
+            a->unk4 = *r29++;
+            a->unk10 = *r28++;
         }
+
         r30++;
         if (*r30 == 0)
             break;
@@ -164,7 +158,7 @@ void func_8003453C(struct MotDat *dat, struct Struct80034F5C_1_sub *b)
     dat->unk14 += (u16)r6;
 }
 
-u8 lbl_80205E00[32] __attribute__((aligned(32)));
+static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
 
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {
@@ -190,10 +184,10 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // dat file
     if (!DVDOpen(datname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 90, "cannot dvd_read");
-    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
     if ((motDat = OSAlloc(uncompSize)) == NULL)
         OSPanic("motload.c", 94, "cannot OSAlloc\n");
 
@@ -222,10 +216,10 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // info file
     if (!DVDOpen(infoname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 151, "cannot dvd_read");
-    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
     if ((motInfo = OSAlloc(uncompSize)) == NULL)
         OSPanic("motload.c", 155, "cannot OSAlloc\n");
 
@@ -278,7 +272,7 @@ void adjust_motskl_pointers(struct MotSkeleton *a)
     int j;
     int k;
     struct Struct80034B50_child *r4;
-    struct Struct80034B50_child_child *r4_;
+    struct Struct80116F18 *r4_;
     int i;
 
     a->unk0 = OFFSET_TO_PTR(a->unk0, a);

@@ -105,7 +105,8 @@ SOURCES := \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
-	asm/motload.s \
+	src/motload_3.c \
+	src/motload_4.c \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
 	src/stcoli.c \
