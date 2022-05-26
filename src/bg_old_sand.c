@@ -21,17 +21,17 @@ void bg_old_sand_init(void)
 
 void bg_old_sand_main(void)
 {
-    backgroundInfo.unk2C += backgroundInfo.unk38;
-    if (backgroundInfo.unk2C > 65536.0f)
-        backgroundInfo.unk2C -= 65536.0f;
+    backgroundInfo.unk2C.x += backgroundInfo.unk38;
+    if (backgroundInfo.unk2C.x > 65536.0f)
+        backgroundInfo.unk2C.x -= 65536.0f;
 
-    backgroundInfo.unk30 += backgroundInfo.unk3C;
-    if (backgroundInfo.unk30 > 1.0)
-        backgroundInfo.unk30 -= 1.0;
+    backgroundInfo.unk2C.y += backgroundInfo.unk3C;
+    if (backgroundInfo.unk2C.y > 1.0)
+        backgroundInfo.unk2C.y -= 1.0;
 
-    backgroundInfo.unk34 += backgroundInfo.unk40;
-    if (backgroundInfo.unk34 > 1.0)
-        backgroundInfo.unk34 -= 1.0;
+    backgroundInfo.unk2C.z += backgroundInfo.unk40;
+    if (backgroundInfo.unk2C.z > 1.0)
+        backgroundInfo.unk2C.z -= 1.0;
 }
 
 void bg_old_sand_finish(void) {}
@@ -54,7 +54,7 @@ void bg_old_sand_draw(void)
     g_apply_func_to_naomi_model_vertices(lbl_802F1B4C, lbl_80059A4C, lbl_80059A74);
     g_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
 
-    mathutil_mtxA_rotate_y((s16)-backgroundInfo.unk2C);
+    mathutil_mtxA_rotate_y((s16)-backgroundInfo.unk2C.x);
     g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBackgroundObj, 4));
 }
 
@@ -62,24 +62,24 @@ void bg_old_sand_interact(int a) {}
 
 static void lbl_800599FC(struct NaomiVtxWithNormal *vtx)
 {
-    vtx->t += backgroundInfo.unk30;
+    vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
 static void lbl_80059A24(struct NaomiVtxWithColor *vtx)
 {
-    vtx->t += backgroundInfo.unk30;
+    vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
 static void lbl_80059A4C(struct NaomiVtxWithNormal *vtx)
 {
-    vtx->t += backgroundInfo.unk34;
+    vtx->t += backgroundInfo.unk2C.z;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
 static void lbl_80059A74(struct NaomiVtxWithColor *vtx)
 {
-    vtx->t += backgroundInfo.unk34;
+    vtx->t += backgroundInfo.unk2C.z;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }

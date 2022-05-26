@@ -20,17 +20,17 @@ void bg_old_space_init(void)
 
 void bg_old_space_main(void)
 {
-    backgroundInfo.unk2C += backgroundInfo.unk38;
-    while (backgroundInfo.unk2C > 1.0)
-        backgroundInfo.unk2C -= 1.0;
-    while (backgroundInfo.unk2C < 0.0)
-        backgroundInfo.unk2C += 1.0;
+    backgroundInfo.unk2C.x += backgroundInfo.unk38;
+    while (backgroundInfo.unk2C.x > 1.0)
+        backgroundInfo.unk2C.x -= 1.0;
+    while (backgroundInfo.unk2C.x < 0.0)
+        backgroundInfo.unk2C.x += 1.0;
 
-    backgroundInfo.unk30 += backgroundInfo.unk3C;
-    while (backgroundInfo.unk30 > 1.0)
-        backgroundInfo.unk30 -= 1.0;
-    while (backgroundInfo.unk30 < 0.0)
-        backgroundInfo.unk30 += 1.0;
+    backgroundInfo.unk2C.y += backgroundInfo.unk3C;
+    while (backgroundInfo.unk2C.y > 1.0)
+        backgroundInfo.unk2C.y -= 1.0;
+    while (backgroundInfo.unk2C.y < 0.0)
+        backgroundInfo.unk2C.y += 1.0;
 }
 
 void bg_old_space_finish(void) {}
@@ -51,14 +51,14 @@ void bg_old_space_interact(int a) {}
 
 static void lbl_8005872C(struct NaomiVtxWithNormal *vtx)
 {
-    vtx->s += backgroundInfo.unk2C;
-    vtx->t += backgroundInfo.unk30;
+    vtx->s += backgroundInfo.unk2C.x;
+    vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
 static void lbl_80058764(struct NaomiVtxWithColor *vtx)
 {
-    vtx->s += backgroundInfo.unk2C;
-    vtx->t += backgroundInfo.unk30;
+    vtx->s += backgroundInfo.unk2C.x;
+    vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }

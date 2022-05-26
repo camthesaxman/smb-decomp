@@ -520,7 +520,9 @@ struct Struct8003C550
     s32 unk10;
     s16 unk14;
     u16 unk16;
-    u8 filler18[0x24-0x18];
+    float unk18;
+    float unk1C;
+    float unk20;
     Vec unk24;
     struct GMAModel *unk30;
     Vec unk34;
@@ -528,11 +530,16 @@ struct Struct8003C550
     s16 unk4C;
     s16 unk4E;
     s16 unk50;
-    u8 filler52[0x70-0x52];
+    u8 filler52[2];
+    s16 unk54;
+    u8 filler56[0x70-0x56];
     Vec unk70;
     Vec unk7C;
     Vec unk88;
-    u8 filler94[0xA8-0x94];
+    u8 filler94[0xA0-0x94];
+    s16 unkA0;
+    s16 unkA2;
+    s16 unkA4;
     float unkA8;
 };
 
