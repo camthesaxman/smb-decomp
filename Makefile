@@ -137,7 +137,7 @@ SOURCES := \
 	src/bg_storm.c \
 	asm/bg_master.s \
 	asm/bg_pilot.s \
-	asm/bg_end.s \
+	src/bg_end.c \
 	asm/course.s \
 	src/item.c \
 	src/item_coin.c \
