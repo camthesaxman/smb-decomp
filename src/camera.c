@@ -1772,29 +1772,6 @@ void camera_func_14(struct Camera *camera, struct Ball *ball)
     camera_func_goal_main(camera, ball);
 }
 
-static inline float vec_dot_prod(register Vec *a, register Vec *b)
-{
-    register float x1, y1, z1, x2, y2, z2;
-    register float result;
-#ifdef __MWERKS__
-    asm
-    {
-        lfs x1, a->x
-        lfs x2, b->x
-        lfs y1, a->y
-        lfs y2, b->y
-        lfs z1, a->z
-        lfs z2, b->z
-        fmuls result, x1, x2
-        fmadds result, y1, y2, result
-        fmadds result, z1, z2, result
-    }
-    return result;
-#else
-    return a->x * b->x + a->y * b->y + a->z * b->z;
-#endif
-}
-
 void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
 {
     Vec sp10;
@@ -1809,7 +1786,7 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.y = 0.0f;
     sp10.z = ball->pos.z - camera->eye.z;
 
-    f31 = vec_dot_prod(&sp10, &camera->eyeVel);
+    f31 = mathutil_vec_dot_prod_alt(&sp10, &camera->eyeVel);
     mathutil_vec_normalize_len(&sp10);
 
     camera->eyeVel.y *= 0.97;
@@ -1858,25 +1835,6 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.z = camera->lookAt.z - camera->eye.z;
 
     camera_face_direction(camera, &sp10);
-}
-
-static inline float vec_sq_mag(register Vec *v)
-{
-    register float x, y, z;
-#ifdef __MWERKS__
-    asm
-    {
-        lfs x, v->x
-        lfs y, v->y
-        lfs z, v->z
-        fmuls x, x, x
-        fmadds x, y, y, x
-        fmadds x, z, z, x
-    }
-    return x;
-#else
-    return v->x * v->x + v->y * v->y + v->z * v->z;
-#endif
 }
 
 void camera_func_16(struct Camera *camera, struct Ball *ball)
@@ -1947,7 +1905,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 sp60.x *= f1;
                 sp60.y *= f1;
                 sp60.z *= f1;
-                f2 = vec_sq_mag(&sp60);
+                f2 = mathutil_vec_sq_len(&sp60);
                 if (f2 < 1.0)
                     mathutil_vec_set_len(r3, r3, 1.0f);
                 else if (f2 > 4.0)

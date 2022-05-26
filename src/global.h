@@ -23,6 +23,7 @@
 
 #define DEGREES_TO_S16(angle) ((s16)((angle) * (65536.0f / 360.0f)))
 #define S16_TO_DEGREES(angle) ((angle) * (360.0f / 65536.0f))
+#define RADIANS_TO_S16(angle) ((s16)((angle) * (65536.0f / (2.0f * (float)PI))))
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 

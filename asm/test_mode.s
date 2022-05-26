@@ -4270,7 +4270,7 @@ lbl_00003D70:
 /* 00003D70 C0050140 */ lfs f0, 0x140(r5)
 /* 00003D74 80830000 */ lwz r4, 0(r3)
 /* 00003D78 D004003C */ stfs f0, 0x3c(r4)
-/* 00003D7C 4BFFC3E1 */ bl func_8008C4A8
+/* 00003D7C 4BFFC3E1 */ bl g_do_ape_anim
 lbl_00003D80:
 /* 00003D80 80010024 */ lwz r0, 0x24(r1)
 /* 00003D84 83E1001C */ lwz r31, 0x1c(r1)
@@ -4338,7 +4338,7 @@ lbl_00003E64:
 /* 00003E68 80850008 */ lwz r4, 8(r5)
 /* 00003E6C 1C00001C */ mulli r0, r0, 0x1c
 /* 00003E70 7C84002E */ lwzx r4, r4, r0
-/* 00003E74 4BFFC2E9 */ bl func_8008B3B8
+/* 00003E74 4BFFC2E9 */ bl g_make_ape_sub
 /* 00003E78 80BF013C */ lwz r5, 0x13c(r31)
 /* 00003E7C 3C800000 */ lis r4, lbl_00003C34@ha
 /* 00003E80 38040000 */ addi r0, r4, lbl_00003C34@l
@@ -4653,12 +4653,12 @@ lbl_0000431C:
 /* 0000431C 38600002 */ li r3, 2
 /* 00004320 38800001 */ li r4, 1
 /* 00004324 4BFFBE39 */ bl g_debug_set_cursor_pos
-/* 00004328 3C800000 */ lis r4, lbl_802F20AC@ha
+/* 00004328 3C800000 */ lis r4, g_motAnimCount@ha
 /* 0000432C 3C600000 */ lis r3, motLabel@ha
 /* 00004330 3CA00000 */ lis r5, motSkeleton@ha
 /* 00004334 3CE00000 */ lis r7, modeCtrl@ha
 /* 00004338 3CC00000 */ lis r6, lbl_00013178@ha
-/* 0000433C 3B440000 */ addi r26, r4, lbl_802F20AC@l
+/* 0000433C 3B440000 */ addi r26, r4, g_motAnimCount@l
 /* 00004340 3B630000 */ addi r27, r3, motLabel@l
 /* 00004344 3A410038 */ addi r18, r1, 0x38
 /* 00004348 3B250000 */ addi r25, r5, motSkeleton@l
@@ -4934,9 +4934,9 @@ lbl_00004714:
 /* 00004748 546305AD */ rlwinm. r3, r3, 0, 0x16, 0x16
 /* 0000474C 41820058 */ beq lbl_000047A4
 lbl_00004750:
-/* 00004750 3C800000 */ lis r4, lbl_802F20AC@ha
+/* 00004750 3C800000 */ lis r4, g_motAnimCount@ha
 /* 00004754 3C600000 */ lis r3, motDat@ha
-/* 00004758 38840000 */ addi r4, r4, lbl_802F20AC@l
+/* 00004758 38840000 */ addi r4, r4, g_motAnimCount@l
 /* 0000475C 80A30000 */ lwz r5, motDat@l(r3)
 /* 00004760 80840000 */ lwz r4, 0(r4)
 lbl_00004764:
@@ -4969,9 +4969,9 @@ lbl_000047A4:
 /* 000047C0 546305AD */ rlwinm. r3, r3, 0, 0x16, 0x16
 /* 000047C4 41820054 */ beq lbl_00004818
 lbl_000047C8:
-/* 000047C8 3C800000 */ lis r4, lbl_802F20AC@ha
+/* 000047C8 3C800000 */ lis r4, g_motAnimCount@ha
 /* 000047CC 3C600000 */ lis r3, motDat@ha
-/* 000047D0 38840000 */ addi r4, r4, lbl_802F20AC@l
+/* 000047D0 38840000 */ addi r4, r4, g_motAnimCount@l
 /* 000047D4 80A30000 */ lwz r5, motDat@l(r3)
 /* 000047D8 80840000 */ lwz r4, 0(r4)
 lbl_000047DC:
@@ -5298,7 +5298,7 @@ lbl_00004C4C:
 /* 00004C4C 809E0090 */ lwz r4, 0x90(r30)
 /* 00004C50 387E0000 */ addi r3, r30, 0
 /* 00004C54 3884FFFF */ addi r4, r4, -1  ;# fixed addi
-/* 00004C58 4BFFB505 */ bl func_8008BF00
+/* 00004C58 4BFFB505 */ bl g_switch_ape_character_lod_maybe
 /* 00004C5C 4800037C */ b lbl_00004FD8
 lbl_00004C60:
 /* 00004C60 548007BD */ rlwinm. r0, r4, 0, 0x1e, 0x1e
@@ -5317,7 +5317,7 @@ lbl_00004C80:
 /* 00004C90 38800000 */ li r4, 0
 lbl_00004C94:
 /* 00004C94 7FC3F378 */ mr r3, r30
-/* 00004C98 4BFFB4C5 */ bl func_8008BF00
+/* 00004C98 4BFFB4C5 */ bl g_switch_ape_character_lod_maybe
 /* 00004C9C 4800033C */ b lbl_00004FD8
 lbl_00004CA0:
 /* 00004CA0 A0750000 */ lhz r3, 0(r21)
@@ -5405,9 +5405,9 @@ lbl_00004D9C:
 /* 00004DD0 54A505AD */ rlwinm. r5, r5, 0, 0x16, 0x16
 /* 00004DD4 41820058 */ beq lbl_00004E2C
 lbl_00004DD8:
-/* 00004DD8 3CC00000 */ lis r6, lbl_802F20AC@ha
+/* 00004DD8 3CC00000 */ lis r6, g_motAnimCount@ha
 /* 00004DDC 3CA00000 */ lis r5, motDat@ha
-/* 00004DE0 38C60000 */ addi r6, r6, lbl_802F20AC@l
+/* 00004DE0 38C60000 */ addi r6, r6, g_motAnimCount@l
 /* 00004DE4 80E50000 */ lwz r7, motDat@l(r5)
 /* 00004DE8 80C60000 */ lwz r6, 0(r6)
 lbl_00004DEC:
@@ -5440,9 +5440,9 @@ lbl_00004E2C:
 /* 00004E48 54A505AD */ rlwinm. r5, r5, 0, 0x16, 0x16
 /* 00004E4C 41820054 */ beq lbl_00004EA0
 lbl_00004E50:
-/* 00004E50 3CC00000 */ lis r6, lbl_802F20AC@ha
+/* 00004E50 3CC00000 */ lis r6, g_motAnimCount@ha
 /* 00004E54 3CA00000 */ lis r5, motDat@ha
-/* 00004E58 38C60000 */ addi r6, r6, lbl_802F20AC@l
+/* 00004E58 38C60000 */ addi r6, r6, g_motAnimCount@l
 /* 00004E5C 80E50000 */ lwz r7, motDat@l(r5)
 /* 00004E60 80C60000 */ lwz r6, 0(r6)
 lbl_00004E64:
@@ -5488,9 +5488,9 @@ lbl_00004EBC:
 /* 00004EF0 54A505AD */ rlwinm. r5, r5, 0, 0x16, 0x16
 /* 00004EF4 41820058 */ beq lbl_00004F4C
 lbl_00004EF8:
-/* 00004EF8 3CC00000 */ lis r6, lbl_802F20AC@ha
+/* 00004EF8 3CC00000 */ lis r6, g_motAnimCount@ha
 /* 00004EFC 3CA00000 */ lis r5, motDat@ha
-/* 00004F00 38C60000 */ addi r6, r6, lbl_802F20AC@l
+/* 00004F00 38C60000 */ addi r6, r6, g_motAnimCount@l
 /* 00004F04 80E50000 */ lwz r7, motDat@l(r5)
 /* 00004F08 80C60000 */ lwz r6, 0(r6)
 lbl_00004F0C:
@@ -5523,9 +5523,9 @@ lbl_00004F4C:
 /* 00004F68 54A505AD */ rlwinm. r5, r5, 0, 0x16, 0x16
 /* 00004F6C 41820054 */ beq lbl_00004FC0
 lbl_00004F70:
-/* 00004F70 3CC00000 */ lis r6, lbl_802F20AC@ha
+/* 00004F70 3CC00000 */ lis r6, g_motAnimCount@ha
 /* 00004F74 3CA00000 */ lis r5, motDat@ha
-/* 00004F78 38C60000 */ addi r6, r6, lbl_802F20AC@l
+/* 00004F78 38C60000 */ addi r6, r6, g_motAnimCount@l
 /* 00004F7C 80E50000 */ lwz r7, motDat@l(r5)
 /* 00004F80 80C60000 */ lwz r6, 0(r6)
 lbl_00004F84:
@@ -15062,12 +15062,12 @@ lbl_0000DAC0:
 /* 0000DB28 4E800020 */ blr 
 lbl_0000DB2C:
 /* 0000DB2C 7C0802A6 */ mflr r0
-/* 0000DB30 3C600000 */ lis r3, lbl_802F20AC@ha
+/* 0000DB30 3C600000 */ lis r3, g_motAnimCount@ha
 /* 0000DB34 90010004 */ stw r0, 4(r1)
 /* 0000DB38 3C800000 */ lis r4, lbl_10003BF8@ha
 /* 0000DB3C 9421FFD8 */ stwu r1, -0x28(r1)
 /* 0000DB40 BF21000C */ stmw r25, 0xc(r1)
-/* 0000DB44 3BC30000 */ addi r30, r3, lbl_802F20AC@l
+/* 0000DB44 3BC30000 */ addi r30, r3, g_motAnimCount@l
 /* 0000DB48 3C600000 */ lis r3, __OSCurrHeap@ha
 /* 0000DB4C 3B230000 */ addi r25, r3, __OSCurrHeap@l
 /* 0000DB50 3BA40000 */ addi r29, r4, lbl_10003BF8@l
@@ -17110,9 +17110,9 @@ lbl_0000F898:
 /* 0000F8C0 41820068 */ beq lbl_0000F928
 lbl_0000F8C4:
 /* 0000F8C4 90A60000 */ stw r5, 0(r6)
-/* 0000F8C8 3C600000 */ lis r3, lbl_802F20AC@ha
+/* 0000F8C8 3C600000 */ lis r3, g_motAnimCount@ha
 /* 0000F8CC 809F00AC */ lwz r4, 0xac(r31)
-/* 0000F8D0 80030000 */ lwz r0, lbl_802F20AC@l(r3)
+/* 0000F8D0 80030000 */ lwz r0, g_motAnimCount@l(r3)
 /* 0000F8D4 84640010 */ lwzu r3, 0x10(r4)
 /* 0000F8D8 7C030000 */ cmpw r3, r0
 /* 0000F8DC 4081000C */ ble lbl_0000F8E8
@@ -17395,7 +17395,7 @@ lbl_0000FCD4:
 /* 0000FCFC 900300B4 */ stw r0, 0xb4(r3)
 lbl_0000FD00:
 /* 0000FD00 807F0004 */ lwz r3, 4(r31)
-/* 0000FD04 4BFF0459 */ bl func_8008C4A8
+/* 0000FD04 4BFF0459 */ bl g_do_ape_anim
 /* 0000FD08 801F0064 */ lwz r0, 0x64(r31)
 /* 0000FD0C 3C800000 */ lis r4, lbl_000156F0@ha
 /* 0000FD10 38600000 */ li r3, 0
