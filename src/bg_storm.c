@@ -137,21 +137,18 @@ Vec lbl_801BA0A4[] =
     {  0,  0, -6 },
 };
 
-#ifdef NONMATCHING
-// https://decomp.me/scratch/7I9K0
 void bg_storm_draw(void)
 {
     struct BGStormWork *work = backgroundInfo.work;
     Vec sp7C;
     Vec sp70;
     Vec sp64;
-    int i;  // r28
-    int j;  // r27
+    int i;
+    int j;
     struct BGStormWork_child *r30;
     Vec *r26;
-    struct GMAModel *r25;
+    struct GMAModel *raindropModel;
     float f25;
-    float f24;
 
     bg_e3_draw();
     if (lbl_801EEC90.unk0 & (1 << 2))
@@ -163,9 +160,10 @@ void bg_storm_draw(void)
     sp70.y += (mathutil_ceil((sp7C.y - sp70.y) * 0.1111111119389534f) - 0.5f) * 9.0f;
     sp70.z += (mathutil_ceil((sp7C.z - sp70.z) * 0.1666666716337204f) - 0.5f) * 6.0f;
     sp64 = work->unk1C;
-    r25 = work->rain00Model;
+    raindropModel = work->rain00Model;
+
     r30 = work->unk28;
-    for (i = ARRAY_COUNT(work->unk28); i > 0; i--, r30++)
+    for (i = 64; i > 0; i--, r30++)
     {
         Vec sp58;
         Vec sp4C;
@@ -173,11 +171,12 @@ void bg_storm_draw(void)
         Vec sp34;
         Vec sp28;
         S16Vec sp20;
+        float f24 = r30->unkC;
 
-        f24 = r30->unkC;
         sp58.x = sp70.x + r30->unk0;
         sp58.y = sp70.y + r30->unk4;
         sp58.z = sp70.z + r30->unk8;
+
         r26 = lbl_801BA0A4;
         for (j = 7; j > 0; j--, r26++)
         {
@@ -199,7 +198,7 @@ void bg_storm_draw(void)
             mathutil_mtxA_tf_point(&sp4C, &sp40);
             if (sp40.z > 0.0f && sp34.z > 0.0f)
                 continue;
-            //lbl_800629B4
+
             sp28.x = sp40.x - sp34.x;
             sp28.y = sp40.y - sp34.y;
             sp28.z = sp40.z - sp34.z;
@@ -207,12 +206,15 @@ void bg_storm_draw(void)
             sp34.x += sp28.x * -0.5f;
             sp34.y += sp28.y * -0.5f;
             sp34.z += sp28.z * -0.5f;
+
             sp28.z = 0.0f;
+
+            {float dumb = 0; dumb += 1.0f; dumb += 0.2f;}  // needed to match
+
             if (sp28.x != 0.0f || sp28.y != 0.0f)
                 mathutil_vec_set_len(&sp28, &sp28, f24);
             else
                 sp28.y = f24;
-            //lbl_80062A50
             sp40.x += sp28.x;
             sp34.x -= sp28.x;
             sp40.y += sp28.y;
@@ -233,22 +235,10 @@ void bg_storm_draw(void)
             else
                 alpha = 1.0f - 0.2f * (f25 - 1.0f);
             avdisp_set_alpha(alpha);
-            avdisp_draw_model_culled_sort_translucent(r25);
+            avdisp_draw_model_culled_sort_translucent(raindropModel);
         }
     }
 }
-#else
-const float lbl_802F44D4 = 0.1666666716337204f;
-const float lbl_802F44D8 = 0.1111111119389534f;
-const float lbl_802F44DC = -0.5f;
-const float lbl_802F44E0 = 0.20000000298023224f;
-asm void bg_storm_draw(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/bg_storm_draw.s"
-}
-#pragma peephole on
-#endif
 
 void bg_storm_interact(int a) {}
 
