@@ -52,7 +52,7 @@ lbl_80094DAC:
 /* 80094DAC 00090CCC  3C E0 80 1F */	lis r7, controllerInfo@ha
 /* 80094DB0 00090CD0  A9 03 00 00 */	lha r8, 0(r3)   /* r8 = r3 */
 /* 80094DB4 00090CD4  38 E7 3B 70 */	addi r7, r7, controllerInfo@l   /* r7 = controllerInfo */
-/* 80094DB8 00090CD8  C8 62 B0 50 */	lfd f3, 0xB050 //4.50360177485414e+15 //lbl_802F5850    //@sda21(r2)
+/* 80094DB8 00090CD8  C8 62 B0 50 */	lfd f3, lbl_802F5850    //@sda21(r2)
 /* 80094DBC 00090CDC  88 07 00 02 */	lbz r0, 2(r7)   /* r0 = controllerInfo[0].unk0[0].stickX */  /* r0 = r7 + 2 */
 /* 80094DC0 00090CE0  6D 09 80 00 */	xoris r9, r8, 0x8000
 /* 80094DC4 00090CE4  3D 00 43 30 */	lis r8, 0x4330
@@ -60,7 +60,7 @@ lbl_80094DAC:
 /* 80094DCC 00090CEC  7C 00 07 74 */	extsb r0, r0
 /* 80094DD0 00090CF0  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 80094DD4 00090CF4  91 01 00 30 */	stw r8, 0x30(r1)    /* r1 + 0x30 = r3 */
-/* 80094DD8 00090CF8  C8 42 B0 48 */	lfd f2, 0xB048 //0.1 //lbl_802F5848    //@sda21(r2)
+/* 80094DD8 00090CF8  C8 42 B0 48 */	lfd f2, lbl_802F5848    //@sda21(r2)
 /* 80094DDC 00090CFC  90 01 00 2C */	stw r0, 0x2c(r1)
 /* 80094DE0 00090D00  C8 01 00 30 */	lfd f0, 0x30(r1)
 /* 80094DE4 00090D04  91 01 00 28 */	stw r8, 0x28(r1)
@@ -129,7 +129,6 @@ lbl_80094EAC:
 /* 80094ED0 00090DF0  A8 04 00 00 */	lha r0, 0(r4)           /* r0 = M[(lbl_802BA190 + 0x2) + 0] */
 /* 80094ED4 00090DF4  7C 06 00 50 */	subf r0, r6, r0         /* r0 = (lbl_802BA190 + 0x6) - (lbl_802BA190 + 0x2) */
 /* 80094ED8 00090DF8  B0 03 00 0A */	sth r0, 0xa(r3)     /* M[ lbl_802BA190 + 0xa] = (lbl_802BA190 + 0x6) - (lbl_802BA190 + 0x2) */
-
 /* 80094EDC 00090DFC  A0 08 00 18 */	lhz r0, 0x18(r8)    /* r0 = M[controllerInfo + 0x18] */
 /* 80094EE0 00090E00  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 80094EE4 00090E04  41 82 00 B4 */	beq lbl_80094F98
@@ -197,7 +196,7 @@ lbl_80094FBC:
 /* 80094FC4 00090EE4  40 82 FF F4 */	bne lbl_80094FB8
 /* 80094FC8 00090EE8  A8 05 00 00 */	lha r0, 0(r5)
 /* 80094FCC 00090EEC  3C 60 43 30 */	lis r3, 0x4330
-/* 80094FD0 00090EF0  C8 42 B0 50 */	lfd f2, 0xB050 //4.50360177485414e+15   //lbl_802F5850    //@sda21(r2)
+/* 80094FD0 00090EF0  C8 42 B0 50 */	lfd f2, lbl_802F5850    //@sda21(r2)
 /* 80094FD4 00090EF4  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 80094FD8 00090EF8  C0 24 00 04 */	lfs f1, 4(r4)
 /* 80094FDC 00090EFC  90 01 00 0C */	stw r0, 0xc(r1)
