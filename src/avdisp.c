@@ -18,46 +18,35 @@
 #include "ord_tbl.h"
 #include "types.h"
 
-struct UnkStruct4
-{
-    u8 filler0[0x18];
-    u16 unk18;
-    u8 unk1A[4];
-    u8 unk1E;
-    u8 filler1F[0x40-0x1F];
-    u8 unk40[100];  // What type is this?
-};
+static Mtx **avdispMtxPtrList;  // pointers to all of the animation natrixes?
+static Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
+static float s_ambientRed; // Red of AMB of lighting equation: MAT * (RAS + AMB)
+static float s_ambientGreen; // Green of AMB in lighting equation: MAT * (RAS + AMB)
+static float s_ambientBlue; // Blue of AMB in lighting equation: MAT * (RAS + AMB)
+static float s_materialAlpha; // Alpha of MAT in lighting equation: MAT * (RAS + AMB)
+static u32 s_lightMask;
+static float s_boundSphereScale;
+static GXCullMode s_cullMode;
+static BallEnvFunc lbl_802F20EC;
+static Func802F20F0 g_customMaterialFunc;
+static float g_someColorScaleR;
+static float g_someColorScaleG;
+static float g_someColorScaleB;
+static GXBool s_zModeCompareEnable;
+static GXBool s_zModeUpdateEnable;
+static GXCompare s_zModeCompareFunc;
+static s32 s_useCustomTexMtx;
+static s32 s_usePostMultiplyTevStage;
+static GXColor s_postMultiplyColor;
+static s32 s_usePostAddTevStage;
+static GXColor s_postAddColor;
+static s32 s_fogEnabled;
+static u32 s_fogType;
+static GXColor s_fogColor;
+static float s_fogStartZ;
+static float s_fogEndZ;
 
 char *invalidModelName = "Invalid Model";
-
-// .sbss
-float s_fogEndZ;
-float s_fogStartZ;
-GXColor s_fogColor;
-u32 s_fogType;
-s32 s_fogEnabled;
-GXColor s_postAddColor;
-s32 s_usePostAddTevStage;
-GXColor s_postMultiplyColor;
-s32 s_usePostMultiplyTevStage;
-s32 s_useCustomTexMtx;
-GXCompare s_zModeCompareFunc;
-GXBool s_zModeUpdateEnable;
-GXBool s_zModeCompareEnable;
-float g_someColorScaleB;
-float g_someColorScaleG;
-float g_someColorScaleR;
-Func802F20F0 g_customMaterialFunc;
-BallEnvFunc lbl_802F20EC;
-GXCullMode s_cullMode;
-float s_boundSphereScale;
-u32 s_lightMask;
-float s_materialAlpha; // Alpha of MAT in lighting equation: MAT * (RAS + AMB)
-float s_ambientBlue; // Blue of AMB in lighting equation: MAT * (RAS + AMB)
-float s_ambientGreen; // Green of AMB in lighting equation: MAT * (RAS + AMB)
-float s_ambientRed; // Red of AMB of lighting equation: MAT * (RAS + AMB)
-Mtx *g_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
-Mtx **avdispMtxPtrList;
 
 // How lighting channel (lighting, vert colors, ambient) is configured
 enum
@@ -1142,9 +1131,10 @@ void g_iteratively_multiply_model_matrices(struct GMAModel *model)
 {
     unsigned int i;
 
+    // Compute final transform matrices by multiplying them with mtxA
     for (i = 0; i < model->mtxCount; i++)
         mathutil_mtx_mult(mathutilData->mtxA, *avdispMtxPtrList[i], g_transformMtxList[i]);
-    func_8008F8A4(model->mtxIndexes);
+    g_set_transform_matrices(model->mtxIndexes);
 }
 
 void draw_shape_deferred_callback(struct DrawShapeDeferredNode *node)
@@ -1288,7 +1278,8 @@ void avdisp_set_fog_color(u8 a, u8 b, u8 c)
     s_fogColor.b = c;
 }
 
-void func_8008F8A4(u8 *mtxIndexes)
+// sets the transform matrices used with the GX_VA_PNMTXIDX vertex attribute
+void g_set_transform_matrices(u8 *mtxIndexes)
 {
     int i;
     for (i = 0; i < 8; i++)
@@ -1322,13 +1313,13 @@ struct GMAShape *draw_shape(struct GMAModel *model, struct GMAShape *shape, stru
     else
         cullMode = GX_CULL_FRONT;
     if (model->flags & GCMF_STITCHING)
-        func_8008F8A4(shape->mtxIndices);  // inlined
+        g_set_transform_matrices(shape->mtxIndices);  // inlined
     gxutil_set_vtx_attrs(shape->vtxAttrs);
     dlist = shape->dispLists;
 
     if (g_customMaterialFunc != NULL)
     {
-        sp20.shape = (void *)shape;
+        sp20.shape = shape;
         sp20.modelTevs = modelTevs;
         doDraw = g_customMaterialFunc(&sp20);
     }
@@ -1358,7 +1349,7 @@ struct GMAShape *draw_shape(struct GMAModel *model, struct GMAShape *shape, stru
         if (shape->dispListFlags & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
         {
             struct GMAExtraDispLists *extraDispLists = (void *)dlist;
-            func_8008F8A4(extraDispLists->mtxIndices);  // inlined
+            g_set_transform_matrices(extraDispLists->mtxIndices);  // inlined
             dlist = extraDispLists->dlists;
             for (i = 0; i < 2; i++)
             {

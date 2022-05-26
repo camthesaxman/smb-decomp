@@ -55,9 +55,7 @@ struct BackgroundInfo  // size = 0xA8
     u8 filler10[0x14-0x10];
     Vec unk14;
     Vec unk20;
-    float unk2C;
-    float unk30;
-    float unk34;
+    Vec unk2C;
     float unk38;
     float unk3C;
     float unk40;
@@ -177,6 +175,30 @@ struct BGBonusWork
     Mtx unk77C;
     Mtx unk7AC;
     Mtx unk7DC;
+};
+
+struct BGEndWork
+{
+    s32 unk0;
+    struct GMAModel *unk4;
+    struct GMAModel *unk8;
+    GXTexObj *unkC;
+    GXTexObj *unk10;
+    void (*unk14)();
+    void (*unk18)();
+    Vec unk1C;
+    float unk28;
+    float unk2C;
+    u8 filler30[4];
+    float unk34;
+    float unk38;
+    float unk3C;
+    Vec unk40;
+    Vec unk4C;
+    float unk58;
+    float unk5C;
+    u8 filler60[4];
+    Mtx unk64;
 };
 
 typedef int (*Func800567DC)(int, struct StageBgModel *);

@@ -1336,6 +1336,12 @@ lbl_802F45E4:
 	# ROM: 0x1EE004
 	.4byte 0xBF4CCCCD
 
+.global lbl_802F45E8
+lbl_802F45E8:
+	# ROM: 0x1EE008
+	.4byte 0x3F666666
+	.4byte 0
+
 .section .data
 
 .global lbl_801BA210

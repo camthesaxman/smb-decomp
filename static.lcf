@@ -43,7 +43,7 @@ FORCEACTIVE
 {
     lbl_802C4960
     lbl_802F1FEC
-    lbl_802B4B20
+    unused802B4B20
 }
 
 lbl_80292C00_alias = lbl_80292C00;

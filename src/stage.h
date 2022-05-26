@@ -526,7 +526,6 @@ void func_80044E18(void);
 void func_80045194(void);
 // ? find_stage_or_bg_model();
 void g_initialize_stuff_for_dynamic_stage_parts(int stageId);
-int string_match_len();
 int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);
 void compute_stage_bounding_sphere(void);

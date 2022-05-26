@@ -38,8 +38,8 @@ void collide_ball_with_goal(struct PhysicsBall *ball, struct StageGoal *goal);
 void g_collide_ball_with_dynstageparts(struct PhysicsBall *,
                                        struct DynamicStagePart *dynStageParts);
 void g_draw_stage_collision(void);
-// ? stcoli_sub27();
-// ? stcoli_sub28();
+// ? draw_dynamic_stage_collision();
+// ? draw_collision_triangle();
 // ? stcoli_sub29();
 void stcoli_sub30(struct PhysicsBall *src, struct PhysicsBall *dest);
 void stcoli_sub31(struct PhysicsBall *src, struct PhysicsBall *dest);

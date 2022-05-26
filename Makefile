@@ -105,7 +105,8 @@ SOURCES := \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
-	asm/motload.s \
+	src/motload_3.c \
+	src/motload_4.c \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
 	src/stcoli.c \
@@ -125,7 +126,7 @@ SOURCES := \
 	src/bg_old_bonus.c \
 	asm/bg_old_ice.s \
 	src/bg_old_sand.c \
-	asm/bg_old_storm.s \
+	src/bg_old_storm.c \
 	asm/bg_old_water.s \
 	src/bg_jungle.c \
 	asm/bg_sand.s \
@@ -136,7 +137,7 @@ SOURCES := \
 	src/bg_storm.c \
 	asm/bg_master.s \
 	asm/bg_pilot.s \
-	asm/bg_end.s \
+	src/bg_end.c \
 	asm/course.s \
 	src/item.c \
 	src/item_coin.c \
@@ -150,7 +151,7 @@ SOURCES := \
 	src/ord_tbl.c \
 	asm/code_3.s \
 	src/mot_ape.c \
-	asm/code_2.s \
+	src/code_2.c \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
@@ -191,7 +192,7 @@ SOURCES := \
 	libraries/os/asm/OSResetSW.s \
 	libraries/os/asm/OSRtc.s \
 	libraries/si/asm/SIBios.s \
-	libraries/os/asm/OSSync.s \
+	libraries/os/OSSync.c \
 	libraries/os/asm/OSThread.s \
 	libraries/os/asm/OSTime.s \
 	libraries/exi/asm/EXIUart.s \
