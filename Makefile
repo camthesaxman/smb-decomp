@@ -157,7 +157,7 @@ SOURCES := \
 	asm/shadow.s \
 	asm/mini.s \
 	src/mouse.c \
-	src/mouse.c \
+	asm/mouse.s \
 	asm/rend_efc.s \
 	src/relocation.c \
 	src/gxutil.c \
