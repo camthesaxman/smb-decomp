@@ -150,7 +150,7 @@ void func_8003699C(struct Ape *a);
 float func_80036CAC(struct Ape *a);
 void func_80036EB8(struct Ape *a);
 // ? func_80037098();
-void func_8003721C(struct Ape *a, float b);
+void g_choose_ape_anim(struct Ape *a, float b);
 void func_8003765C(struct Ape *a);
 void func_80037718();
 // ? func_80037B1C();

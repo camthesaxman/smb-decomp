@@ -460,7 +460,7 @@ u32 bgWorkSizes[] =
     0,
     0,
     0xB90,
-    0x94,
+    sizeof(struct BGEndWork),
     0,
 };
 

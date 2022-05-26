@@ -8,6 +8,8 @@
 #define MATHUTIL_C_ONLY
 #endif
 
+#define PI 3.14159265358979323846f
+
 struct MathutilData
 {
     /*0x00*/ Mtx mtxA;
@@ -183,6 +185,31 @@ static inline float mathutil_ceil(register float n)
         // set rounding mode to -inf (FPSCR bits 30-31 are 10)
         mtfsb1 30
         mtfsb0 31
+        // convert to integer
+        fctiw n, n
+        stfd n, buf[0]
+        // restore old FPCSR flags
+        mtfsf 0xFF, savedFlags
+    }
+    return buf[1];
+#endif
+}
+
+static inline float mathutil_trunc(register float n)
+{
+#ifdef MATHUTIL_C_ONLY
+    // TODO
+    return (s32)n;
+#else
+    s32 buf[2];
+    register float savedFlags;
+    asm
+    {
+        // save FPSCR flags
+        mffs savedFlags
+        // set rounding mode to round toward zero (FPSCR bits 30-31 are 01)
+        mtfsb0 30
+        mtfsb1 31
         // convert to integer
         fctiw n, n
         stfd n, buf[0]
@@ -428,6 +455,32 @@ static inline void mathutil_mtxA_get_translate_alt(register Vec *v)
 #endif
 }
 
+static inline void mathutil_mtxA_get_translate_alt2(register Vec *v)
+{
+#ifdef MATHUTIL_C_ONLY
+    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+#else
+    register float *mtxA;
+    register float *_x = &v->x;
+    register float *_y = _x + 1;
+    register float *_z = _x + 2;
+    register float x, y, z;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x0C(mtxA)  // mtxA[0][3]
+        lfs y, 0x1C(mtxA)  // mtxA[1][3]
+        lfs z, 0x2C(mtxA)  // mtxA[2][3]
+        stfs x, 0(_x)
+        stfs y, 0(_y)
+        stfs z, 0(_z)
+    }
+#endif
+}
+
 static inline void mathutil_mtxA_set_translate(register Vec *v)
 {
 #ifdef MATHUTIL_C_ONLY
@@ -466,6 +519,29 @@ static inline void mathutil_mtxA_set_translate_xyz(register float x, register fl
         stfs x, 0x0C(mtxA)  // mtxA[0][3]
         stfs y, 0x1C(mtxA)  // mtxA[1][3]
         stfs z, 0x2C(mtxA)  // mtxA[2][3]
+    }
+#endif
+}
+
+static inline void mathutil_mtxA_copy_translate(register Mtx mtx)
+{
+#ifdef MATHUTIL_C_ONLY
+    mtx[0][3] = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
+    mtx[1][3] = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
+    mtx[2][3] = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
+#else
+    register float *mtxA;
+    register float x, y, z;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x0C(mtxA)  // mtxA[0][3]
+        lfs y, 0x1C(mtxA)  // mtxA[1][3]
+        lfs z, 0x2C(mtxA)  // mtxA[2][3]
+        stfs x, 0x0C(mtx)
+        stfs y, 0x1C(mtx)
+        stfs z, 0x2C(mtx)
     }
 #endif
 }

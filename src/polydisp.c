@@ -281,7 +281,7 @@ void draw_adv_demo_scene(void)
         for (i = 0; i < 3; i++)
         {
             float f30;
-            if (ballInfo[i].ape->unk14 & (1 << 5))
+            if (ballInfo[i].ape->flags & (1 << 5))
                 continue;
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate_xyz(

@@ -6,33 +6,31 @@
 
 struct MotDat *motDat;
 
-extern void *lbl_80114F68[];
-
 struct Struct800341BC_4
 {
     u32 unk0;
     u8 *unk4;
 };
 
-void func_800343E4(struct Struct80034F5C_1 *b);
-void func_80034424(struct MotDat *dat, struct Struct80034F5C_1 *b);
-void func_8003453C(struct MotDat *a, struct Struct80034F5C_1_sub *b);
+void g_clear_mot_transforms(struct JointBoneThing *b);
+void g_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b);
+void g_read_transform_list_from_dat(struct MotDat *a, struct MotionTransform *b);
 
-void func_800341BC(struct Struct80034F5C_1 *a, struct Struct80034B50_child *b, u16 c)
+void func_800341BC(struct JointBoneThing *a, struct MotSkeletonEntry1 *skel, u16 c)
 {
-    struct Struct80034F5C_1 *r31 = a;
-    u32 *r30;
-    struct Struct800341BC_5 *r29;
-    struct Struct800341BC_5 *r28;
-    struct Struct800341BC_4 *r27;
-    Vec *r26;  // I guess?
+    struct JointBoneThing *r31 = a;
+    const u32 *flags;
+    Vec *r29;
+    Vec *r28;
+    struct Struct80116F18 *r27;
+    struct MotRotation *rotation;
     int r25;
 
-    r29 = b->unkC;
-    r28 = b->unk10;
-    r27 = (void *)b->unk4;
-    r26 = b->unk8;
-    r30 = lbl_80114F68[c];
+    r29 = skel->unkC;
+    r28 = skel->unk10;
+    r27 = skel->unk4;
+    rotation = skel->rotations;
+    flags = lbl_80114F68[c];
     mathutil_mtxA_from_identity();
     a->unk1A0 = -1;
 
@@ -41,58 +39,54 @@ void func_800341BC(struct Struct80034F5C_1 *a, struct Struct80034B50_child *b, u
     {
         u8 i;
 
-        a->unk0 = *r30;
-        mathutil_mtxA_to_mtx(a->unk1D8);
-        mathutil_mtxA_to_mtx(a->unk208);
-        if (a->unk0 & (1 << 6))
+        a->flags = *flags;
+        mathutil_mtxA_to_mtx(a->rotateMtx);
+        mathutil_mtxA_to_mtx(a->transformMtx);
+        if (a->flags & (1 << 6))
         {
             mathutil_mtxA_push();
-            mathutil_mtxA_rotate_z((s16)(r26->z * 10430.3779296875f));
-            mathutil_mtxA_rotate_y((s16)(r26->y * 10430.3779296875f));
-            mathutil_mtxA_rotate_x((s16)(r26->x * 10430.3779296875f));
+            mathutil_mtxA_rotate_z(RADIANS_TO_S16(rotation->rotZ));
+            mathutil_mtxA_rotate_y(RADIANS_TO_S16(rotation->rotY));
+            mathutil_mtxA_rotate_x(RADIANS_TO_S16(rotation->rotX));
             mathutil_mtxA_to_mtx(a->unk1C);
-            r26++;
+            rotation++;
             mathutil_mtxA_pop();
         }
-        a->unk4C = r27->unk0;
+        a->unk4C = r27->length;
         a->unk50 = r27->unk4;
-
         for (i = 0; i < a->unk4C; i++)
-        {
             r31[a->unk50[i]].unk1A0 = (u8)r25;
-        }
-        if (a->unk0 & (1 << 1))
+        if (a->flags & (1 << 1))
         {
-            a->unk4 = *r29;
-            r29++;
-            a->unk10 = *r28;
-            r28++;
+            a->unk4 = *r29++;
+            a->unk10 = *r28++;
         }
-        r30++;
-        if (*r30 == 0)
+
+        flags++;
+        if (*flags == 0)
             break;
         a++;
         r27++;
         r25++;
     }
     a++;
-    a->unk0 = *r30;
+    a->flags = *flags;
 }
 
-void func_80034360(struct Struct80034F5C_1 *a, u16 b)
+void func_80034360(struct JointBoneThing *a, u16 b)
 {
-    struct MotDat sp10;
+    struct MotDat dat;
 
-    func_800343E4(a);
-    sp10 = motDat[b - 1];
-    func_80034424(&sp10, a);
+    g_clear_mot_transforms(a);
+    dat = motDat[b - 1];
+    g_load_mot_transforms(&dat, a);
 }
 
-void func_800343E4(struct Struct80034F5C_1 *b)
+void g_clear_mot_transforms(struct JointBoneThing *b)
 {
-    while (b->unk0 != 0)
+    while (b->flags != 0)
     {
-        struct Struct80034F5C_1_sub *r5 = b->unk54;
+        struct MotionTransform *r5 = b->transforms;
         u8 i;
 
         for (i = 6; i != 0; i--, r5++)
@@ -104,52 +98,52 @@ void func_800343E4(struct Struct80034F5C_1 *b)
     }
 }
 
-void func_80034424(struct MotDat *dat, struct Struct80034F5C_1 *b)
+void g_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b)
 {
     struct MotDat_child2 *r30 = dat->unk4;
     int i;
 
-    for (i = 0; b->unk0 != 0; i++, b++)
+    for (i = 0; b->flags != 0; i++, b++)
     {
         if (r30->unk0 == (u8)i)
         {
             u32 r31 = r30->unk2;
 
             if (r31 & (1 << 8))
-                func_8003453C(dat, &b->unk54[0]);
+                g_read_transform_list_from_dat(dat, &b->transforms[0]);
             if (r31 & (1 << 7))
-                func_8003453C(dat, &b->unk54[1]);
+                g_read_transform_list_from_dat(dat, &b->transforms[1]);
             if (r31 & (1 << 6))
-                func_8003453C(dat, &b->unk54[2]);
+                g_read_transform_list_from_dat(dat, &b->transforms[2]);
             if (r31 & (1 << 5))
-                func_8003453C(dat, &b->unk54[3]);
+                g_read_transform_list_from_dat(dat, &b->transforms[3]);
             if (r31 & (1 << 4))
-                func_8003453C(dat, &b->unk54[4]);
+                g_read_transform_list_from_dat(dat, &b->transforms[4]);
             if (r31 & (1 << 3))
-                func_8003453C(dat, &b->unk54[5]);
+                g_read_transform_list_from_dat(dat, &b->transforms[5]);
             if (r31 & (1 << 2))
-                func_8003453C(dat, NULL);
+                g_read_transform_list_from_dat(dat, NULL);
             if (r31 & (1 << 1))
-                func_8003453C(dat, NULL);
+                g_read_transform_list_from_dat(dat, NULL);
             if (r31 & (1 << 0))
-                func_8003453C(dat, NULL);
+                g_read_transform_list_from_dat(dat, NULL);
             r30++;
         }
     }
 }
 
-void func_8003453C(struct MotDat *dat, struct Struct80034F5C_1_sub *b)
+void g_read_transform_list_from_dat(struct MotDat *dat, struct MotionTransform *transform)
 {
     u8 r5 = dat->unk8->unk0;
     int r6;
     u8 *r4;
 
-    if (b != NULL)
+    if (transform != NULL)
     {
-        b->unk0 = r5;
-        b->unk4 = dat->unkC;
-        b->unk8 = dat->unk10;
-        b->unkC = dat->unk14;
+        transform->unk0 = r5;
+        transform->unk4 = dat->unkC;
+        transform->numComponents = dat->unk10;
+        transform->values = dat->unk14;
     }
     dat->unk8++;
     dat->unkC += r5;
@@ -164,7 +158,7 @@ void func_8003453C(struct MotDat *dat, struct Struct80034F5C_1_sub *b)
     dat->unk14 += (u16)r6;
 }
 
-u8 lbl_80205E00[32] __attribute__((aligned(32)));
+static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
 
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {
@@ -182,7 +176,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     motLabel = OSAlloc(size);
     g_read_dvd_file(&file, motLabel, size, 0);
     DVDClose(&file);
-    lbl_802F20AC = *motLabel;
+    g_motAnimCount = *motLabel;
     motLabel++;
     adjust_motlabel_pointers(motLabel);
     totalSize = size;
@@ -190,10 +184,10 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // dat file
     if (!DVDOpen(datname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 90, "cannot dvd_read");
-    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
     if ((motDat = OSAlloc(uncompSize)) == NULL)
         OSPanic("motload.c", 94, "cannot OSAlloc\n");
 
@@ -222,10 +216,10 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // info file
     if (!DVDOpen(infoname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lbl_80205E00, 32, 0) < 0)
+    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 151, "cannot dvd_read");
-    compSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 0));
-    uncompSize = OSRoundUp32B(__lwbrx(lbl_80205E00, 4));
+    compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
+    uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
     if ((motInfo = OSAlloc(uncompSize)) == NULL)
         OSPanic("motload.c", 155, "cannot OSAlloc\n");
 
@@ -249,7 +243,7 @@ void adjust_motdat_pointers(struct MotDat *a)
     int i;
     struct MotDat *temp = a;
 
-    for (i = lbl_802F20AC; i >= 0; i--)
+    for (i = g_motAnimCount; i >= 0; i--)
     {
         temp->unk4 = OFFSET_TO_PTR(temp->unk4, a);
         temp->unk8 = OFFSET_TO_PTR(temp->unk8, a);
@@ -265,50 +259,50 @@ void adjust_motlabel_pointers(u32 *a)
     int i;
     u32 *temp = a;
 
-    for (i = lbl_802F20AC; i >= 0; i--)
+    for (i = g_motAnimCount; i >= 0; i--)
     {
         *temp += (u32)a - 4;
         temp++;
     }
 }
 
-void adjust_motskl_pointers(struct MotSkeleton *a)
+void adjust_motskl_pointers(struct MotSkeleton *skel)
 {
-    struct Struct80034B50_child2 *r6;
+    struct MotSkeletonEntry2 *r6;
     int j;
     int k;
-    struct Struct80034B50_child *r4;
-    struct Struct80034B50_child_child *r4_;
+    struct MotSkeletonEntry1 *r4;
+    struct Struct80116F18 *r4_;
     int i;
 
-    a->unk0 = OFFSET_TO_PTR(a->unk0, a);
-    a->unk8 = OFFSET_TO_PTR(a->unk8, a);
-    for (i = 0, r4 = a->unk0; i < a->unk4; i++, r4++)
+    skel->unk0 = OFFSET_TO_PTR(skel->unk0, skel);
+    skel->unk8 = OFFSET_TO_PTR(skel->unk8, skel);
+    for (i = 0, r4 = skel->unk0; i < skel->unk4; i++, r4++)
     {
-        r4->unk0 = OFFSET_TO_PTR(r4->unk0, a);
-        r4->unk4 = OFFSET_TO_PTR(r4->unk4, a);
-        r4->unk8 = OFFSET_TO_PTR(r4->unk8, a);
-        r4->unkC = OFFSET_TO_PTR(r4->unkC, a);
-        r4->unk10 = OFFSET_TO_PTR(r4->unk10, a);
-        r4->unk14 = OFFSET_TO_PTR(r4->unk14, a);
+        r4->unk0 = OFFSET_TO_PTR(r4->unk0, skel);
+        r4->unk4 = OFFSET_TO_PTR(r4->unk4, skel);
+        r4->rotations = OFFSET_TO_PTR(r4->rotations, skel);
+        r4->unkC = OFFSET_TO_PTR(r4->unkC, skel);
+        r4->unk10 = OFFSET_TO_PTR(r4->unk10, skel);
+        r4->name = OFFSET_TO_PTR(r4->name, skel);
     }
 
-    for (i = 0, r4_ = a->unk0->unk4; i < 4*7; i++, r4_++)
+    for (i = 0, r4_ = skel->unk0->unk4; i < 4*7; i++, r4_++)
     {
         if (r4_->unk4 != NULL)
-            r4_->unk4 = OFFSET_TO_PTR(r4_->unk4, a);
+            r4_->unk4 = OFFSET_TO_PTR(r4_->unk4, skel);
     }
 
-    for (i = 0, r6 = a->unk8; i < a->unkC; i++, r6++)
+    for (i = 0, r6 = skel->unk8; i < skel->unkC; i++, r6++)
     {
-        r6->unk0 = OFFSET_TO_PTR(r6->unk0, a);
+        r6->unk0 = OFFSET_TO_PTR(r6->unk0, skel);
         for (j = 0; j < 3; j++)
         {
             struct Struct80034B50_child2_child *r8;
 
-            r6->unk4[j] = OFFSET_TO_PTR(r6->unk4[j], a);
+            r6->unk4[j] = OFFSET_TO_PTR(r6->unk4[j], skel);
             for (k = 0, r8 = r6->unk4[j]; k < r6->unk10[j]; k++, r8++)
-                r8->unk0 = OFFSET_TO_PTR(r8->unk0, a);
+                r8->unk0 = OFFSET_TO_PTR(r8->unk0, skel);
         }
     }
 }

@@ -59,7 +59,7 @@ void submode_game_first_init_func(void)
     event_start(EVENT_SOUND);
     call_bitmap_load_group(BMP_NML);
     BALL_FOREACH( ball->state = 1; )
-    BALL_FOREACH( ball->ape->unk14 |= (1 << 5); )
+    BALL_FOREACH( ball->ape->flags |= (1 << 5); )
     func_800846B0(4);
     func_80022F14();
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
@@ -434,7 +434,7 @@ void submode_game_goal_main_func(void)
     if (!r31)
     {
         BALL_FOREACH(
-            if (!(ball->flags & BALL_FLAG_09) && (ball->ape->unk14 & (1 << 14)))
+            if (!(ball->flags & BALL_FLAG_09) && (ball->ape->flags & (1 << 14)))
             {
                 modeCtrl.levelSetFlags |= 0x400;
                 g_play_sound(0x126);
@@ -499,7 +499,7 @@ void submode_game_goal_replay_main_func(void)
         infoWork.flags &= ~INFO_FLAG_04;
 
     BALL_FOREACH(
-        if (!(ball->flags & BALL_FLAG_09) && (ball->ape->unk14 & (1 << 14)))
+        if (!(ball->flags & BALL_FLAG_09) && (ball->ape->flags & (1 << 14)))
         {
             ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
             ball->flags |= BALL_FLAG_09;
@@ -635,7 +635,7 @@ void submode_game_continue_init_func(void)
     BALL_FOREACH( ball->state = 18; )
     BALL_FOREACH(
         if (ball->ape != NULL)
-            ball->ape->unk14 |= 0x100;
+            ball->ape->flags |= 0x100;
     )
 
     camera_set_state(0x19);
@@ -676,12 +676,12 @@ void submode_game_continue_main_func(void)
         {
             if (g_unkInputArr1[2] & PAD_BUTTON_A)
             {
-                currentBallStructPtr->ape->unk14 &= ~(1 << 8);
+                currentBallStructPtr->ape->flags &= ~(1 << 8);
                 if (modeCtrl.unk10 == 1)
                 {
                     infoWork.continuesUsed++;
                     infoWork.unk1E = 1;
-                    currentBallStructPtr->ape->unk14 |= 0x800;
+                    currentBallStructPtr->ape->flags |= 0x800;
                     textbox_set_properties(0, 20, NULL);
                     g_play_sound(10);
                     g_play_sound(80);
@@ -693,7 +693,7 @@ void submode_game_continue_main_func(void)
                 {
                     textbox_set_properties(0, 20, NULL);
                     g_play_sound(48);
-                    currentBallStructPtr->ape->unk14 |= 0x40000;
+                    currentBallStructPtr->ape->flags |= 0x40000;
                     modeCtrl.submodeTimer = 60;
                     modeCtrl.levelSetFlags |= (1 << 2);
                 }
@@ -946,7 +946,7 @@ void submode_game_bonus_clear_main_func(void)
         func_80049158();
 
     BALL_FOREACH(
-        if (!(ball->flags & BALL_FLAG_09) && (ball->ape->unk14 & BALL_FLAG_14))
+        if (!(ball->flags & BALL_FLAG_09) && (ball->ape->flags & BALL_FLAG_14))
         {
             ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
             ball->flags |= BALL_FLAG_09;
@@ -1161,7 +1161,7 @@ void submode_game_nameentry_ready_init_func(void)
     event_start(EVENT_VIBRATION);
     BALL_FOREACH(
         if (ball->ape != NULL)
-            ball->ape->unk14 &= ~(1 << 3);
+            ball->ape->flags &= ~(1 << 3);
     );
     infoWork.flags |= INFO_FLAG_03;
     memset(&tbox, 0, sizeof(tbox));
