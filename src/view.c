@@ -603,63 +603,63 @@ extern struct
 
 extern struct GMAModel *lbl_802F1FFC;
 
-#ifdef NONMATCHING
-// https://decomp.me/scratch/xQ4td
 void draw_stage_objects(void)
 {
-    //struct StageCollHdr_child4 *r29;
-
-        struct GMAModel *r28;
-    //struct StageGoal *r27;
-    int i;  // r26 -> r29
-    //int i2;
-    //int j;  // r25
-    //int r24;
-    Mtx sp8;
+    Mtx mtx;
+    int goalCount;
+    int bumperCount;
+    int jamabarCount;
+    int j_r25;
+    int j_r28;
+    int j_r27;
+    int totalJamas;
+    int i;
+    struct StageGoal *goal;
+    struct StageBumper *bumper;
+    struct StageJamabar *jamabar;
 
     for (i = 0; i < animGroupCount; i++)
     {
-        int r24;
-        struct StageGoal *r27;
-        int j;  // r25
-        //#define r27 r29
-        r27 = decodedStageLzPtr->animGroups[i].goals;
-        r24 = decodedStageLzPtr->animGroups[i].goalCount;
+        goal = decodedStageLzPtr->animGroups[i].goals;
+        goalCount = decodedStageLzPtr->animGroups[i].goalCount;
+
         mathutil_mtxA_from_mtxB();
         if (i > 0)
             mathutil_mtxA_mult_right(animGroups[i].transform);
-        mathutil_mtxA_to_mtx(sp8);
-        for (j = 0; j < r24; j++, r27++)
+        mathutil_mtxA_to_mtx(mtx);
+
+        for (j_r25 = 0; j_r25 < goalCount; j_r25++, goal++)
         {
-            mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_translate(&r27->pos);
-            mathutil_mtxA_rotate_z(r27->rotZ);
-            mathutil_mtxA_rotate_y(r27->rotY);
-            mathutil_mtxA_rotate_x(r27->rotX);
-            switch (r27->type)
+            struct GMAModel *goalModel;
+
+            mathutil_mtxA_from_mtx(mtx);
+            mathutil_mtxA_translate(&goal->pos);
+            mathutil_mtxA_rotate_z(goal->rotZ);
+            mathutil_mtxA_rotate_y(goal->rotY);
+            mathutil_mtxA_rotate_x(goal->rotX);
+            switch (goal->type)
             {
             default:
-                r28 = goalModels[0];
+                goalModel = goalModels[0];
                 break;
             case 'G':
-                r28 = goalModels[1];
+                goalModel = goalModels[1];
                 break;
             case 'R':
-                r28 = goalModels[2];
+                goalModel = goalModels[2];
                 break;
             }
-            if (r28 != NULL)
+            if (goalModel != NULL)
             {
                 g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                avdisp_draw_model_culled_sort_translucent(r28);
+                avdisp_draw_model_culled_sort_translucent(goalModel);
             }
-            //lbl_800A6CE4
             nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x40].modelOffset);
+            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[32].modelOffset);
             mathutil_mtxA_pop();
 
             mathutil_mtxA_push();
@@ -674,96 +674,63 @@ void draw_stage_objects(void)
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
             g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
         }
-        //#undef r27
     }
 
     for (i = 0; i < animGroupCount; i++)
     {
-        s32 r27;
-        int j;
-        struct StageBumper *r29;
-        r29 = decodedStageLzPtr->animGroups[i].bumpers;
-        r27 = decodedStageLzPtr->animGroups[i].bumperCount;
+        bumper = decodedStageLzPtr->animGroups[i].bumpers;
+        bumperCount = decodedStageLzPtr->animGroups[i].bumperCount;
 
         mathutil_mtxA_from_mtxB();
         if (i > 0)
             mathutil_mtxA_mult_right(animGroups[i].transform);
-        mathutil_mtxA_to_mtx(sp8);
-        for (j = 0; j < r27; j++, r29++)
+        mathutil_mtxA_to_mtx(mtx);
+
+        for (j_r28 = 0; j_r28 < bumperCount; j_r28++, bumper++)
         {
-            mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_translate(&r29->pos);
-            mathutil_mtxA_rotate_z(r29->rotZ);
-            mathutil_mtxA_rotate_y(r29->rotY);
-            mathutil_mtxA_rotate_z(r29->rotX);
+            mathutil_mtxA_from_mtx(mtx);
+            mathutil_mtxA_translate(&bumper->pos);
+            mathutil_mtxA_rotate_z(bumper->rotZ);
+            mathutil_mtxA_rotate_y(bumper->rotY);
+            mathutil_mtxA_rotate_x(bumper->rotX);
             mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14);
         }
     }
-    //800A6E90
-    // i = r29
+
+    totalJamas = 0;
     for (i = 0; i < animGroupCount; i++)
     {
-        s32 r26;
-        int j;
-        s32 r28_;
-        struct StageBumper *r29;
-        r29 = (void *)decodedStageLzPtr->animGroups[i].jamabars;
-        r26 = 0;
-        r28_ = decodedStageLzPtr->animGroups[i].jamabarCount;
-        //int r26;
-        //#define r26 j
-        #define r25 r29
-        //r26 = 0;
+        jamabar = decodedStageLzPtr->animGroups[i].jamabars;
+        jamabarCount = decodedStageLzPtr->animGroups[i].jamabarCount;
 
         mathutil_mtxA_from_mtxB();
         if (i > 0)
             mathutil_mtxA_mult_right(animGroups[i].transform);
-        mathutil_mtxA_to_mtx(sp8);
-        // j = r27
-        for (j = 0; j < r28_; r26++, j++, r25++)
+        mathutil_mtxA_to_mtx(mtx);
+
+        for (j_r27 = 0; j_r27 < jamabarCount; j_r27++, jamabar++)
         {
-            int r4;
-            int r0;
             float f0;
 
-            mathutil_mtxA_from_mtx(sp8);
-            mathutil_mtxA_translate(&r25->pos);
-            mathutil_mtxA_rotate_z(r25->rotZ);
-            mathutil_mtxA_rotate_y(r25->rotY);
-            mathutil_mtxA_rotate_z(r25->rotX);
+            mathutil_mtxA_from_mtx(mtx);
+            mathutil_mtxA_translate(&jamabar->pos);
+            mathutil_mtxA_rotate_z(jamabar->rotZ);
+            mathutil_mtxA_rotate_y(jamabar->rotY);
+            mathutil_mtxA_rotate_x(jamabar->rotX);
 
-            r4 = stageViewInfo->frameCounter - (r26 * (60 / decodedStageLzPtr->jamabarCount));
-            r0 = r4 % 60;
-            f0 = r0 / 60.0f * 2.0;
+            f0 = ((stageViewInfo->frameCounter - totalJamas * (60 / decodedStageLzPtr->jamabarCount)) % 60) / 60.0f;
+            f0 = 2.0 * f0;
             if (f0 >= 1.0)
                 f0 = 2.0 - f0;
-            f0 = -f0;
-            mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * f0);
+            mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * -f0);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_translucent(lbl_802F1FFC);
+            totalJamas++;
         }
-        #undef r25
     }
 }
-#else
-#define lbl_802F5BC0 4503601774854144.0
-#define lbl_802F5B98 1.0
-#define lbl_802F5BB4 0.0f
-#define lbl_802F5BF0 2.0
-const float lbl_802F5C2C = 2.7999999523162842f;
-const float lbl_802F5C30 = -0.44999998807907104f;
-const float lbl_802F5C34 = -0.66659998893737793f;
-const float lbl_802F5C38 = 60.0f;
-const double lbl_802F5C40 = 2.5;
-asm void draw_stage_objects(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/draw_stage_objects.s"
-}
-#pragma peephole on
-#endif
 
 struct Struct801D5854
 {

@@ -53,7 +53,6 @@ struct TPL *minigameNaomiTpl;
 
 void main(void)
 {
-    dipSwitches = 1;
     globalFrameCounter = 0;
     initialize();
     gm_init();
