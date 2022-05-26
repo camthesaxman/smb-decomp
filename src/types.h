@@ -348,7 +348,7 @@ struct SpritePoolInfo
 
 struct Struct80176434
 {
-    u32 unk0;
+    s32 unk0;
     float unk4;
     float unk8;
     float unkC;
@@ -1064,6 +1064,18 @@ enum
     PAUSEMENU_CONT_RETRY_VIEW_HOW_SELECT_EXIT,
     PAUSEMENU_CONT_RETRY_HOW_EXIT,
     PAUSEMENU_CONT_GUIDE_HOW_EXIT,
+};
+
+struct Struct8008CF00
+{
+	void (*unk0)(struct Ape *, int);
+	struct Ape *unk4;
+	struct Struct8008CF00 *prev;
+	struct Struct8008CF00 *next;
+	u32 unk10;
+	u32 unk14;
+	u32 unk18;
+	u32 unk1C;
 };
 
 #endif

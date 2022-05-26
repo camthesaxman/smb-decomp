@@ -151,7 +151,7 @@ SOURCES := \
 	src/ord_tbl.c \
 	asm/code_3.s \
 	src/mot_ape.c \
-	asm/code_2.s \
+	src/code_2.c \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \

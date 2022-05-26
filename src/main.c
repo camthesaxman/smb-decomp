@@ -16,10 +16,8 @@
 #include "stage.h"
 #include "world.h"
 
-// bss
-u8 lbl_801ED920[0x1240];  // unknown type
+struct Struct8008CF00 lbl_801ED920[146];
 
-// .sbss
 struct NaomiModel *lbl_802F1B4C;
 void *dvdReadBuffer;
 void *lbl_802F1B44;

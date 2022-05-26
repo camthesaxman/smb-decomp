@@ -604,15 +604,18 @@ void func_8008C924(struct Ape *ape, int b);
 void func_8008CAAC(struct Ape *, float);
 void func_8008CBD0(int, int, struct GMAModel *, struct GMAModel *);
 void func_8008CCB8(struct Ape *ape, struct GMAModel *unused);
+
+// code_2.c
 float func_8008CDC0(float, struct Struct80176434 *);
-void func_8008CF00();
-void func_8008D158();
+void func_8008CF00(struct Struct8008CF00 *arg0, int arg1);
+void func_8008D158(u32 arg0);
 int func_8008D1DC(void (*)(struct Ape *, int), struct Ape *, int);
-// ? func_8008D240();
+void func_8008D240(void);
 void func_8008D29C(int);
-// ? func_8008D330();
-void func_8008D36C(struct NaomiModel *, u32, u32);
-// ? func_8008D3A8();
+void func_8008D330(struct NaomiModel *arg0, u32 arg1, u32 arg2);
+void func_8008D36C(struct NaomiModel *arg0, u32 arg1, u32 arg2);
+void func_8008D3A8(struct NaomiModel *arg0, u32 arg1, u32 arg2);
+
 int lzs_decompress(u8 *, void *);
 // ? func_8008D6BC();
 // ? set_tev_material_ambient_colors();
