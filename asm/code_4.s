@@ -548,7 +548,7 @@ lbl_800AD918:
 /* 800AD970 000A9890  38 00 00 0F */	li r0, 0xf
 /* 800AD974 000A9894  90 01 00 3C */	stw r0, 0x3c(r1)
 /* 800AD978 000A9898  38 61 00 2C */	addi r3, r1, 0x2c
-/* 800AD97C 000A989C  4B F9 F5 8D */	bl g_spawn_effect_object
+/* 800AD97C 000A989C  4B F9 F5 8D */	bl spawn_effect
 /* 800AD980 000A98A0  80 8D A0 28 */	lwz r4, lbl_802F2208@sda21(r13)
 /* 800AD984 000A98A4  90 64 00 04 */	stw r3, 4(r4)
 lbl_800AD988:
@@ -576,7 +576,7 @@ lbl_800AD988:
 /* 800AD9DC 000A98FC  D0 01 00 50 */	stfs f0, 0x50(r1)
 /* 800AD9E0 000A9900  D0 01 00 54 */	stfs f0, 0x54(r1)
 /* 800AD9E4 000A9904  D0 01 00 58 */	stfs f0, 0x58(r1)
-/* 800AD9E8 000A9908  4B F9 F5 21 */	bl g_spawn_effect_object
+/* 800AD9E8 000A9908  4B F9 F5 21 */	bl spawn_effect
 lbl_800AD9EC:
 /* 800AD9EC 000A990C  88 01 00 DC */	lbz r0, 0xdc(r1)
 /* 800AD9F0 000A9910  2C 00 00 08 */	cmpwi r0, 8
@@ -1713,7 +1713,7 @@ lbl_800AEA0C:
 /* 800AEA6C 000AA98C  38 03 00 10 */	addi r0, r3, 0x10
 /* 800AEA70 000AA990  90 01 00 1C */	stw r0, 0x1c(r1)
 /* 800AEA74 000AA994  38 61 00 0C */	addi r3, r1, 0xc
-/* 800AEA78 000AA998  4B F9 E4 91 */	bl g_spawn_effect_object
+/* 800AEA78 000AA998  4B F9 E4 91 */	bl spawn_effect
 /* 800AEA7C 000AA99C  90 7B 00 04 */	stw r3, 4(r27)
 /* 800AEA80 000AA9A0  88 1C 00 00 */	lbz r0, 0(r28)
 /* 800AEA84 000AA9A4  98 1B 00 00 */	stb r0, 0(r27)
@@ -6064,7 +6064,7 @@ lbl_800B281C:
 /* 800B29E0 000AE900  90 01 00 40 */	stw r0, 0x40(r1)
 /* 800B29E4 000AE904  80 1F 00 14 */	lwz r0, 0x14(r31)
 /* 800B29E8 000AE908  90 01 00 44 */	stw r0, 0x44(r1)
-/* 800B29EC 000AE90C  4B F9 A5 1D */	bl g_spawn_effect_object
+/* 800B29EC 000AE90C  4B F9 A5 1D */	bl spawn_effect
 lbl_800B29F0:
 /* 800B29F0 000AE910  80 6D A0 74 */	lwz r3, lbl_802F2254@sda21(r13)
 /* 800B29F4 000AE914  38 80 00 02 */	li r4, 2
@@ -8615,7 +8615,7 @@ lbl_800B4E98:
 /* 800B4F30 000B0E50  FC 00 08 2A */	fadd f0, f0, f1
 /* 800B4F34 000B0E54  FC 00 00 18 */	frsp f0, f0
 /* 800B4F38 000B0E58  D0 1C 01 30 */	stfs f0, 0x130(r28)
-/* 800B4F3C 000B0E5C  4B F9 7F CD */	bl g_spawn_effect_object
+/* 800B4F3C 000B0E5C  4B F9 7F CD */	bl spawn_effect
 /* 800B4F40 000B0E60  80 6D A0 40 */	lwz r3, lbl_802F2220@sda21(r13)
 /* 800B4F44 000B0E64  38 03 00 01 */	addi r0, r3, 1
 /* 800B4F48 000B0E68  90 0D A0 40 */	stw r0, lbl_802F2220@sda21(r13)
@@ -8640,7 +8640,7 @@ lbl_800B4F4C:
 lbl_800B4F90:
 /* 800B4F90 000B0EB0  93 3C 01 A4 */	stw r25, 0x1a4(r28)
 /* 800B4F94 000B0EB4  38 7C 01 94 */	addi r3, r28, 0x194
-/* 800B4F98 000B0EB8  4B F9 7F 71 */	bl g_spawn_effect_object
+/* 800B4F98 000B0EB8  4B F9 7F 71 */	bl spawn_effect
 /* 800B4F9C 000B0EBC  3B 39 00 01 */	addi r25, r25, 1
 /* 800B4FA0 000B0EC0  2C 19 00 0A */	cmpwi r25, 0xa
 /* 800B4FA4 000B0EC4  41 80 FF EC */	blt lbl_800B4F90
@@ -8986,7 +8986,7 @@ lbl_800B5440:
 /* 800B54D8 000B13F8  FC 00 08 2A */	fadd f0, f0, f1
 /* 800B54DC 000B13FC  FC 00 00 18 */	frsp f0, f0
 /* 800B54E0 000B1400  D0 1C 01 30 */	stfs f0, 0x130(r28)
-/* 800B54E4 000B1404  4B F9 7A 25 */	bl g_spawn_effect_object
+/* 800B54E4 000B1404  4B F9 7A 25 */	bl spawn_effect
 /* 800B54E8 000B1408  80 6D A0 40 */	lwz r3, lbl_802F2220@sda21(r13)
 /* 800B54EC 000B140C  38 03 00 01 */	addi r0, r3, 1
 /* 800B54F0 000B1410  90 0D A0 40 */	stw r0, lbl_802F2220@sda21(r13)
@@ -9011,7 +9011,7 @@ lbl_800B54F4:
 lbl_800B5538:
 /* 800B5538 000B1458  93 3C 01 A4 */	stw r25, 0x1a4(r28)
 /* 800B553C 000B145C  38 7C 01 94 */	addi r3, r28, 0x194
-/* 800B5540 000B1460  4B F9 79 C9 */	bl g_spawn_effect_object
+/* 800B5540 000B1460  4B F9 79 C9 */	bl spawn_effect
 /* 800B5544 000B1464  3B 39 00 01 */	addi r25, r25, 1
 /* 800B5548 000B1468  2C 19 00 0A */	cmpwi r25, 0xa
 /* 800B554C 000B146C  41 80 FF EC */	blt lbl_800B5538

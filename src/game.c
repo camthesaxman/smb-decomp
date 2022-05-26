@@ -1632,7 +1632,7 @@ double force_float_order_802F2C00(void) { return 0.5; }
 void func_800165C0(struct Ball *ball)
 {
     int i;
-    struct Struct8003C550 sp1C;
+    struct Effect sp1C;
     Vec sp10;
     u16 r28 = 1 << ball->playerId;
 
@@ -1654,7 +1654,7 @@ void func_800165C0(struct Ball *ball)
         sp1C.unk4E = rand() & 0x7FFF;
         sp1C.unk50 = rand() & 0x7FFF;
         sp1C.unk16 = r28;
-        g_spawn_effect_object(&sp1C);
+        spawn_effect(&sp1C);
     }
 }
 

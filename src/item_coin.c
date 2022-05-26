@@ -192,7 +192,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     item->vel.z += b->unk1C.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
-        struct Struct8003C550 sp10;
+        struct Effect sp10;
 
         item->unk5E = infoWork.timerCurr;
         give_bananas(s_bananaInfos[item->subType].bananaValue);
@@ -215,7 +215,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         sp10.unk24.x = (item->unk14 / sp10.unk30->boundSphereRadius) * 1.5;
         sp10.unk24.y = sp10.unk24.x;
         sp10.unk24.z = sp10.unk24.y;
-        g_spawn_effect_object(&sp10);
+        spawn_effect(&sp10);
     }
     if (advDemoInfo.flags & (1 << 8))
         return;

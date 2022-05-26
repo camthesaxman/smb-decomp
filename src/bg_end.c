@@ -218,7 +218,7 @@ static int lbl_80065B8C(int arg0, struct GMAModelEntry *arg1)
 
 static int lbl_80065BFC(int arg0, struct StageBgModel *arg1)
 {
-    struct Struct8003C550 sp10;
+    struct Effect sp10;
 
     switch (arg0)
     {
@@ -226,7 +226,7 @@ static int lbl_80065BFC(int arg0, struct StageBgModel *arg1)
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 48;
         sp10.unk30 = (void *)arg1;
-        g_spawn_effect_object(&sp10);
+        spawn_effect(&sp10);
         break;
     }
     return 1;

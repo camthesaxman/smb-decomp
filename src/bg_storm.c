@@ -51,7 +51,7 @@ void bg_storm_main(void)
     Vec spDC;
     Vec spD0;
     struct RaycastHit spB4;
-    struct Struct8003C550 sp8;
+    struct Effect sp8;
     int i;
     struct Camera *camera;
 
@@ -96,7 +96,7 @@ void bg_storm_main(void)
         mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
         sp8.unk50 = rand() & 0x7FFF;
         sp8.unk30 = work->rain02Model;
-        g_spawn_effect_object(&sp8);
+        spawn_effect(&sp8);
         return;
     }
     camera = cameraInfo;
@@ -118,7 +118,7 @@ void bg_storm_main(void)
                 mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
                 sp8.unk50 = rand() & 0x7FFF;
                 sp8.unk30 = work->rain02Model;
-                g_spawn_effect_object(&sp8);
+                spawn_effect(&sp8);
             }
         }
     }

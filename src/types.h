@@ -512,7 +512,7 @@ struct Struct80206DEC
 
 struct Stage;
 
-struct Struct8003C550
+struct Effect
 {
     u8 filler0[8];
     s16 unk8;

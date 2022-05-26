@@ -830,7 +830,7 @@ lbl_8009C59C:
 /* 8009C5A0 000984C0  B0 01 00 56 */	sth r0, 0x56(r1)
 lbl_8009C5A4:
 /* 8009C5A4 000984C4  38 61 00 40 */	addi r3, r1, 0x40
-/* 8009C5A8 000984C8  4B FB 09 61 */	bl g_spawn_effect_object
+/* 8009C5A8 000984C8  4B FB 09 61 */	bl spawn_effect
 /* 8009C5AC 000984CC  3B BD FF FF */	addi r29, r29, -1
 lbl_8009C5B0:
 /* 8009C5B0 000984D0  2C 1D 00 00 */	cmpwi r29, 0

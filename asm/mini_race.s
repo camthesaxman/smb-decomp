@@ -6569,7 +6569,7 @@ lbl_00006034:
 /* 00006060 881E002E */ lbz r0, 0x2e(r30)
 /* 00006064 7C000774 */ extsb r0, r0
 /* 00006068 B0010028 */ sth r0, 0x28(r1)
-/* 0000606C 4BFFA111 */ bl g_spawn_effect_object
+/* 0000606C 4BFFA111 */ bl spawn_effect
 /* 00006070 38000005 */ li r0, 5
 /* 00006074 B01F026A */ sth r0, 0x26a(r31)
 /* 00006078 A87F026E */ lha r3, 0x26e(r31)
@@ -6832,7 +6832,7 @@ lbl_000063B0:
 /* 00006414 80010028 */ lwz r0, 0x28(r1)
 /* 00006418 90810054 */ stw r4, 0x54(r1)
 /* 0000641C 90010058 */ stw r0, 0x58(r1)
-/* 00006420 4BFF9D5D */ bl g_spawn_effect_object
+/* 00006420 4BFF9D5D */ bl spawn_effect
 /* 00006424 3860290B */ li r3, 0x290b
 /* 00006428 4BFF9D55 */ bl g_play_sound
 /* 0000642C 809F01E8 */ lwz r4, 0x1e8(r31)
@@ -20557,7 +20557,7 @@ lbl_00012E00:
 /* 00012EAC 8001001C */ lwz r0, 0x1c(r1)
 /* 00012EB0 908100B8 */ stw r4, 0xb8(r1)
 /* 00012EB4 900100BC */ stw r0, 0xbc(r1)
-/* 00012EB8 4BFED2C5 */ bl g_spawn_effect_object
+/* 00012EB8 4BFED2C5 */ bl spawn_effect
 /* 00012EBC 800100E4 */ lwz r0, 0xe4(r1)
 /* 00012EC0 83E100DC */ lwz r31, 0xdc(r1)
 /* 00012EC4 382100E0 */ addi r1, r1, 0xe0

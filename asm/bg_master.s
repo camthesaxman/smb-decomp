@@ -670,7 +670,7 @@ lbl_80063530:
 /* 8006362C 0005F54C  C0 04 00 20 */	lfs f0, 0x20(r4)
 /* 80063630 0005F550  EC 1E 00 32 */	fmuls f0, f30, f0
 /* 80063634 0005F554  D0 01 00 90 */	stfs f0, 0x90(r1)
-/* 80063638 0005F558  4B FE 98 D1 */	bl g_spawn_effect_object
+/* 80063638 0005F558  4B FE 98 D1 */	bl spawn_effect
 /* 8006363C 0005F55C  C0 1B 00 04 */	lfs f0, 4(r27)
 /* 80063640 0005F560  EC 00 D0 28 */	fsubs f0, f0, f26
 /* 80063644 0005F564  D0 1B 00 04 */	stfs f0, 4(r27)
@@ -1303,7 +1303,7 @@ lbl_80063F5C:
 /* 80063F70 0005FE90  B0 01 00 18 */	sth r0, 0x18(r1)
 /* 80063F74 0005FE94  38 61 00 10 */	addi r3, r1, 0x10
 /* 80063F78 0005FE98  93 E1 00 40 */	stw r31, 0x40(r1)
-/* 80063F7C 0005FE9C  4B FE 8F 8D */	bl g_spawn_effect_object
+/* 80063F7C 0005FE9C  4B FE 8F 8D */	bl spawn_effect
 lbl_80063F80:
 /* 80063F80 0005FEA0  80 01 00 CC */	lwz r0, 0xcc(r1)
 /* 80063F84 0005FEA4  38 60 00 01 */	li r3, 1

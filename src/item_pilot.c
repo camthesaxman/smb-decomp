@@ -356,7 +356,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         if (item->unk5E < 0
          && (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11)))
         {
-            struct Struct8003C550 sp178;
+            struct Effect sp178;
 
             item->unk5E = infoWork.timerCurr;
             lbl_80285A58[modeCtrl.currPlayer] += pilotBananaInfo[item->subType].unkE;
@@ -381,13 +381,13 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
-            g_spawn_effect_object(&sp178);
+            spawn_effect(&sp178);
         }
     }
     else if (item->subType == 3)
     {
         struct Ball *r31 = currentBallStructPtr;
-        struct Struct8003C550 spCC;
+        struct Effect spCC;
 
         lbl_802F1FD0 |= 0x42;
         if (lbl_802F1FF6 == 14)
@@ -405,12 +405,12 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         spCC.unk34.y = r31->pos.y - 1.0;
         spCC.unk34.z = r31->pos.z;
         spCC.unk24 = (Vec){3.5, 4.5, 3.5};
-        g_spawn_effect_object(&spCC);
+        spawn_effect(&spCC);
     }
     else if (item->subType == 4)
     {
         struct Ball *r31 = currentBallStructPtr;
-        struct Struct8003C550 sp20;
+        struct Effect sp20;
         int i;
 
         lbl_802F1FD0 |= 0x82;
@@ -433,7 +433,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp20.unk40.x = b->unk1C.x + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.y = b->unk1C.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.z = b->unk1C.z + ((rand() / 32767.0f) * 0.2 - 0.1);
-            g_spawn_effect_object(&sp20);
+            spawn_effect(&sp20);
         }
     }
     if (gameSubmode == 2)

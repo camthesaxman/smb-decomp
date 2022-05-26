@@ -2647,7 +2647,7 @@ void func_8003C4A0(struct Ball *ball, int b)
 
 void func_8003C550(struct Ball *ball)
 {
-    struct Struct8003C550 sp30;
+    struct Effect sp30;
     Vec sp24;
     Vec sp18;
     Vec spC;
@@ -2686,7 +2686,7 @@ void func_8003C550(struct Ball *ball)
     sp30.unk34 = spC;
     sp30.unk88 = sp24;
     sp30.unkA8 = ball->unk130;
-    g_spawn_effect_object(&sp30);
+    spawn_effect(&sp30);
 
     memset(&sp30, 0, sizeof(sp30));
 
@@ -2705,7 +2705,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        g_spawn_effect_object(&sp30);
+        spawn_effect(&sp30);
     }
     r30 -= r30 >> 1;
 
@@ -2729,7 +2729,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        g_spawn_effect_object(&sp30);
+        spawn_effect(&sp30);
     }
 }
 
@@ -2828,13 +2828,13 @@ void func_8003CCB0(void)
 
     if (bvar)
     {
-        struct Struct8003C550 sp8;
+        struct Effect sp8;
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unk8 = 10;
         sp8.unk14 = ball->playerId;
         sp8.unk34 = ball->pos;
-        g_spawn_effect_object(&sp8);
+        spawn_effect(&sp8);
     }
 }
 
@@ -2970,7 +2970,7 @@ void func_8003D3C4(struct Ball *ball)
     if (f26 > 1.5f)
     {
         Vec spC4;
-        struct Struct8003C550 sp18;
+        struct Effect sp18;
         Vec spC;
         float f2;
         int r29;
@@ -3005,7 +3005,7 @@ void func_8003D3C4(struct Ball *ball)
             sp18.unk40.y = (spC.y + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.y;
             sp18.unk40.z = (spC.z + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.z;
 
-            g_spawn_effect_object(&sp18);
+            spawn_effect(&sp18);
         }
     }
 }

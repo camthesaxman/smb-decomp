@@ -14,7 +14,7 @@
 
 void bg_old_bonus_init(void)
 {
-    struct Struct8003C550 sp8;
+    struct Effect sp8;
     struct NaomiModel **r29;
     int r28;
 
@@ -35,7 +35,7 @@ void bg_old_bonus_init(void)
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
         {
             sp8.unk34 = (*r29)->boundSphereCenter;
-            g_spawn_effect_object(&sp8);
+            spawn_effect(&sp8);
             sp8.unk10 += 30.0;
         }
         r29++;
@@ -58,7 +58,7 @@ void bg_old_bonus_draw(void)
 
 void bg_old_bonus_interact(int a)
 {
-    struct Struct8003C550 sp18;
+    struct Effect sp18;
     Vec spC;
     float f31;
 
@@ -84,7 +84,7 @@ void bg_old_bonus_interact(int a)
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
         mathutil_ray_to_euler_xy(&spC, &sp18.unk34, &sp18.unk4C, &sp18.unk4E);
         sp18.unk50 = rand() & 0x7FFF;
-        g_spawn_effect_object(&sp18);
+        spawn_effect(&sp18);
         break;
     }
 }

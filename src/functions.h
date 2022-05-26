@@ -274,7 +274,7 @@ void ev_effect_init(void);
 void ev_effect_main(void);
 void ev_effect_dest(void);
 void effect_draw(void);
-void g_spawn_effect_object(struct Struct8003C550 *);
+void spawn_effect(struct Effect *);
 void func_8004CFF0(int);
 // ? func_8004D054();
 // ? func_8004D194();

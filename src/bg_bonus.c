@@ -184,7 +184,7 @@ void bg_bonus_draw(void)
 
 void bg_bonus_interact(int a)
 {
-    struct Struct8003C550 star;
+    struct Effect star;
     Vec spC;
     float f31;
 
@@ -211,7 +211,7 @@ void bg_bonus_interact(int a)
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
         mathutil_ray_to_euler_xy(&spC, &star.unk34, &star.unk4C, &star.unk4E);
         star.unk50 = rand() & 0x7FFF;
-        g_spawn_effect_object(&star);
+        spawn_effect(&star);
         break;
     }
 }

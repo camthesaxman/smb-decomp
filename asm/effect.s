@@ -302,8 +302,8 @@ lbl_8004CEF4:
 /* 8004CF00 00048E20  7C 08 03 A6 */	mtlr r0
 /* 8004CF04 00048E24  4E 80 00 20 */	blr
 
-.global g_spawn_effect_object
-g_spawn_effect_object:
+.global spawn_effect
+spawn_effect:
 /* 8004CF08 00048E28  7C 08 02 A6 */	mflr r0
 /* 8004CF0C 00048E2C  3C 80 80 20 */	lis r4, poolInfo@ha
 /* 8004CF10 00048E30  90 01 00 04 */	stw r0, 4(r1)
