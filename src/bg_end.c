@@ -201,16 +201,16 @@ static int lbl_80065B8C(int arg0, struct GMAModelEntry *arg1)
     switch (arg0)
     {
     case 0:
-        work->unk10 = arg1->modelOffset->texObjs;
+        work->unk10 = arg1->model->texObjs;
         break;
     case 1:
-        work->unk8 = arg1->modelOffset;
+        work->unk8 = arg1->model;
         break;
     case 2:
-        work->unkC = arg1->modelOffset->texObjs;
+        work->unkC = arg1->model->texObjs;
         break;
     case 3:
-        work->unk4 = arg1->modelOffset;
+        work->unk4 = arg1->model;
         break;
     }
     return 1;
