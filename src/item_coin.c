@@ -178,7 +178,7 @@ void item_coin_draw(struct Item *item)
     }
 }
 
-void item_coin_collect(struct Item *item, struct Struct800690DC *b)
+void item_coin_collect(struct Item *item, struct PhysicsBall *ball)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION && (currentBallStructPtr->flags & (1 << 12)))
         return;
@@ -186,9 +186,9 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
     item->state = 3;
     item->unk2C.y += item->unk14 * 0.1875;
     item->yrotSpeed <<= 2;
-    item->unk2C.x += b->unk1C.x * 0.25;
-    item->unk2C.y += b->unk1C.y * 0.25;
-    item->unk2C.z += b->unk1C.z * 0.25;
+    item->unk2C.x += ball->vel.x * 0.25;
+    item->unk2C.y += ball->vel.y * 0.25;
+    item->unk2C.z += ball->vel.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
         struct Struct8003C550 sp10;
@@ -204,7 +204,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 8;
         sp10.unk14 = currentBallStructPtr->playerId;
-        mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
+        mathutil_mtxA_from_mtx(animGroups[ball->animGroupId].transform);
         mathutil_mtxA_tf_point(&item->unk20, &sp10.unk34);
         mathutil_mtxA_tf_vec(&item->unk2C, &sp10.unk40);
         sp10.unk4C = item->xrot;

@@ -45,6 +45,6 @@ void stcoli_sub30(struct PhysicsBall *src, struct PhysicsBall *dest);
 void stcoli_sub31(struct PhysicsBall *src, struct PhysicsBall *dest);
 void tf_physball_to_anim_group_space(struct PhysicsBall *physBall, int animGroupId);
 // ? stcoli_sub33();
-// ? stcoli_sub34();
+int stcoli_sub34(struct PhysicsBall *ball, int arg1);
 
 #endif

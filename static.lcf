@@ -44,6 +44,10 @@ FORCEACTIVE
     lbl_802C4960
     lbl_802F1FEC
     unused802B4B20
+    lbl_80285A68
+    lbl_80285A80
 }
 
 lbl_80292C00_alias = lbl_80292C00;
+
+lbl_802F480C = 0x802F480C;

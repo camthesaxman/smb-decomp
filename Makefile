@@ -142,6 +142,7 @@ SOURCES := \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
+	src/stobj.c \
 	asm/stobj.s \
 	src/sprite.c \
 	src/textbox.c \
