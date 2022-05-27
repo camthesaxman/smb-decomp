@@ -640,7 +640,6 @@ lbl_8006AE64:
 /* 8006AF38 00066E58  38 21 00 10 */	addi r1, r1, 0x10
 /* 8006AF3C 00066E5C  7C 08 03 A6 */	mtlr r0
 /* 8006AF40 00066E60  4E 80 00 20 */	blr
-.endif
 
 .global ev_stobj_main
 ev_stobj_main:
@@ -766,6 +765,7 @@ lbl_8006B0F4:
 /* 8006B0FC 0006701C  38 21 00 30 */	addi r1, r1, 0x30
 /* 8006B100 00067020  7C 08 03 A6 */	mtlr r0
 /* 8006B104 00067024  4E 80 00 20 */	blr
+
 .global ev_stobj_dest
 ev_stobj_dest:
 /* 8006B108 00067028  7C 08 02 A6 */	mflr r0
@@ -890,7 +890,7 @@ lbl_8006B2AC:
 /* 8006B2B4 000671D4  38 21 00 58 */	addi r1, r1, 0x58
 /* 8006B2B8 000671D8  7C 08 03 A6 */	mtlr r0
 /* 8006B2BC 000671DC  4E 80 00 20 */	blr
-
+.endif
 .global func_8006B2C0
 func_8006B2C0:
 /* 8006B2C0 000671E0  7C 08 02 A6 */	mflr r0
@@ -6129,6 +6129,7 @@ lbl_8028CF00:
 
 .section .data
 
+.if 0
     .balign 8
 .global lbl_801BE048
 lbl_801BE048:
@@ -6221,6 +6222,7 @@ lbl_801BE190:
 	.4byte func_8006C1EC  ;# ptr
 	.4byte func_800AF85C  ;# ptr
 	.4byte 0
+.endif
 
 .global lbl_801BE1C0
 lbl_801BE1C0:
