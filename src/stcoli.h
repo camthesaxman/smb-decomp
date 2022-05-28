@@ -1,11 +1,18 @@
 #ifndef _SRC_STCOLI_H_
 #define _SRC_STCOLI_H_
 
-#include <dolphin/mtx.h>
-#include <dolphin/types.h>
-
-#include "stage.h"
-#include "types.h"
+struct ColiCircle;
+struct ColiEdge;
+struct ColiRect;
+struct DynamicStagePart;
+struct PhysicsBall;
+struct RaycastHit;
+struct Stage;
+struct StageColiCone;
+struct StageColiCylinder;
+struct StageColiSphere;
+struct StageColiTri;
+struct StageGoal;
 
 void collide_ball_with_stage(struct PhysicsBall *b, struct Stage *);
 s16 *coligrid_lookup(struct StageAnimGroup *coliHeader, f32 x, f32 z);

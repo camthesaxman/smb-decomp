@@ -1077,6 +1077,51 @@ struct Struct8008CF00
 	u32 unk1C;
 };
 
-struct StageObject;
+struct StageObject
+{
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    u8 filler6[2];
+    u32 unk8;
+    s16 unkC;
+    s16 unkE;
+    Vec unk10;
+    Vec unk1C;
+    Vec unk28;
+    float unk34;
+    void (*unk38)(struct StageObject *, struct PhysicsBall *);
+    Vec unk3C;  // unknown type
+    float unk48;
+    float unk4C;
+    float unk50;
+    struct GMAModel *unk54;
+    Vec unk58;
+    u8 filler64[0x70-0x64];
+    s16 unk70;
+    s16 unk72;
+    s16 unk74;
+    s16 unk76;
+    s16 unk78;
+    u8 filler7A[0x7C-0x7A];
+    Vec unk7C;
+    s16 unk88;
+    s16 unk8A;
+    s16 unk8C;
+    u8 filler8E[2];
+    Vec unk90;
+    float unk9C;
+    s8 unkA0;
+    u8 fillerA1[0xA8-0xA1];
+    Vec unkA8;
+    u8 fillerB4[0xCC-0xB4];
+};  // size = 0xCC
+
+struct Struct8028C0B0
+{
+    float unk0[4];
+    u32 unk10;
+    struct GMAModel *unk14[4];
+};
 
 #endif

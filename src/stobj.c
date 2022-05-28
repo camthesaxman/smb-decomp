@@ -4,298 +4,14 @@
 
 #include "global.h"
 #include "background.h"
-#include "ball.h"
-#include "event.h"
-#include "info.h"
-#include "item.h"
+#include "camera.h"
 #include "mathutil.h"
-#include "mode.h"
-#include "stcoli.h"
+#include "nl2ngc.h"
+#include "stage.h"
 
-void func_8006AD3C(Vec *, Vec *, Vec *, float, float);
-extern u32 func_8006AAEC(Point3d *, Point3d *, Point3d *, Point3d *, float,  float);
-void do_object_collision(void);
-
-struct StageObject
-{
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    u8 filler6[2];
-    u32 unk8;
-    u8 fillerC[4];
-    Vec unk10;
-    Vec unk1C;
-    Vec unk28;
-    float unk34;
-    void (*unk38)(struct StageObject *, struct PhysicsBall *);
-    u8 filler3C[0x58-0x3C];
-    Vec unk58;
-    u8 filler64[0x70-0x64];
-    s16 unk70;
-    s16 unk72;
-    s16 unk74;
-    u8 filler76[0x7C-0x76];
-    Vec unk7C;
-    s16 unk88;
-    s16 unk8A;
-    s16 unk8C;
-    u8 filler8E[2];
-    Vec unk90;
-    float unk9C;
-    s8 unkA0;
-    u8 fillerA1[0xCC-0xA1];
-};  // size = 0xCC
+#include "../data/common.gma.h"
 
 struct StageObject lbl_80285AB0[128];
-
-void ev_obj_collision_init(void) {}
-
-void ev_obj_collision_main(void)
-{
-    if (!(gamePauseStatus & 0xA))
-        do_object_collision();
-}
-
-void ev_obj_collision_dest(void) {}
-
-void do_object_collision(void)
-{
-    Vec sp70;
-    struct Ball *ballBackup = currentBallStructPtr;
-    int i;
-    struct Ball *ball;
-    s8 *phi_r19;
-
-    ball = ballInfo;
-    phi_r19 = spritePoolInfo.unkC;
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, phi_r19++)
-    {
-        currentBallStructPtr = ball;
-        if (*phi_r19 != 0 && *phi_r19 != 4)
-        {
-            struct PhysicsBall physBall;
-
-            init_physball_from_ball(ball, &physBall);
-            if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
-            {
-                int j;
-                s8 *phi_r30 = spritePoolInfo.unk2C;
-                struct StageObject *phi_r31 = lbl_80285AB0;
-
-                for (j = spritePoolInfo.unk28; j > 0; j--, phi_r31++, phi_r30++)
-                {
-                    if (*phi_r30 && (phi_r31->unk8 & 2))
-                    {
-                        s8 temp_r4 = phi_r31->unkA0;
-                        if (physBall.animGroupId != temp_r4)
-                            tf_physball_to_anim_group_space(&physBall, temp_r4);
-                        if (func_8006A9B8(&physBall.prevPos, &physBall.pos, &phi_r31->unk28, &phi_r31->unk1C, physBall.radius, phi_r31->unk34) != 0U)
-                            phi_r31->unk38(phi_r31, &physBall);
-                    }
-                }
-            }
-            if (!(ball->flags & 0x100000) && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
-            {
-                s8 *phi_r29_2 = spritePoolInfo.unk1C;
-                int j;
-                struct Item *item = itemInfo;
-
-                for (j = spritePoolInfo.unk18; j > 0; j--, item++, phi_r29_2++)
-                {
-                    if (*phi_r29_2 != 0
-                     && (item->flags & 2)
-                     && item->unkC == 0
-                     && (modeCtrl.gameType != GAMETYPE_MINI_TARGET
-                      || currStageId != ST_151_TARGET_CIRCLES
-                      || item->attachedTo == 0
-                      || stcoli_sub34(&physBall, item->attachedTo) != 0)
-                    )
-                    {
-                        u32 (*phi_r12)(Point3d *, Point3d *, Point3d *, Point3d *, float,  float);
-
-                        s8 temp_r4_2 = item->attachedTo;
-                        if (physBall.animGroupId != temp_r4_2)
-                            tf_physball_to_anim_group_space(&physBall, (s32) temp_r4_2);
-                        if (item->flags & 8)
-                            phi_r12 = func_8006AAEC;
-                        else
-                            phi_r12 = func_8006A9B8;
-
-                        sp70 = item->unk20;
-                        if (phi_r12(&physBall.prevPos, &physBall.pos, &item->unk44, (void *)&sp70, physBall.radius, item->unk14) != 0U)
-                        {
-                            item->unkC = 8;
-                            item->unk58(item, &physBall);
-                            if (item->flags & 0x10)
-                            {
-                                Point3d sp8 = sp70;
-                                sp8.x -= physBall.pos.x;
-                                sp8.y -= physBall.pos.y;
-                                sp8.z -= physBall.pos.z;
-                                mathutil_vec_normalize_len(&sp8);
-                                func_8006AD3C(&sp8, &physBall.vel, &item->unk2C, 1.0f, item->unk18);
-                            }
-                            item->unk20 = sp70;
-                        }
-                    }
-                }
-            }
-            if (!(infoWork.flags & 0x10))
-            {
-                if (physBall.animGroupId != 0)
-                    tf_physball_to_anim_group_space(&physBall, 0);
-                func_8003CB3C(ball, &physBall);
-            }
-        }
-    }
-    currentBallStructPtr = ballBackup;
-}
-
-u32 func_8006A9B8(Point3d *arg0, Point3d *arg1, Point3d *arg2, Point3d *arg3, float arg4, float arg5)
-{
-    float temp_f6 = arg0->x - arg2->x;
-    float temp_f7 = arg0->y - arg2->y;
-    float temp_f8 = arg0->z - arg2->z;
-    float temp_f10;
-    float temp_f11 = (arg1->x - arg3->x) - temp_f6;
-    float temp_f12 = (arg1->y - arg3->y) - temp_f7;
-    float temp_f13 = (arg1->z - arg3->z) - temp_f8;
-    float temp_f9 = (temp_f11 * temp_f11) + (temp_f12 * temp_f12) + (temp_f13 * temp_f13);
-    float temp_f3;
-    float temp_f2;
-
-    if (temp_f9 == 0.0f)
-        return 0;
-    temp_f10 = arg4 + arg5;
-    temp_f3 = (temp_f6 * temp_f11) + (temp_f7 * temp_f12) + (temp_f8 * temp_f13);
-    temp_f2 = (temp_f6 * temp_f6) + (temp_f7 * temp_f7) + (temp_f8 * temp_f8) - (temp_f10 * temp_f10);
-    if (0.0f > (temp_f3 * temp_f3) - (temp_f9 * temp_f2))
-        return 0;
-    if (0.0f >= temp_f2)
-        return 1;
-    if (0.0f >= temp_f9 + temp_f3 + temp_f3 + temp_f2)
-        return 1;
-    if (0.0f <= temp_f3)
-        return 0;
-    if (-temp_f3 >= temp_f9)
-        return 0;
-    return 1;
-}
-
-u32 func_8006AAEC(Point3d *arg0, Point3d *arg1, Point3d *arg2, Point3d *arg3, float arg4, float arg5)
-{
-    float temp_f10 = arg0->x - arg2->x;
-    float temp_f11 = arg0->y - arg2->y;
-    float temp_f8 = arg0->z - arg2->z;
-    float temp_f9;
-    float temp_f6 = (arg1->x - arg3->x) - temp_f10;
-    float temp_f12 = (arg1->y - arg3->y) - temp_f11;
-    float temp_f13 = (arg1->z - arg3->z) - temp_f8;
-    float temp_f31 = (temp_f6 * temp_f6) + (temp_f12 * temp_f12) + (temp_f13 * temp_f13);
-
-
-    f32 temp_f30;
-    f32 temp_f3;
-    f32 temp_f1;
-    f32 temp_f3_2;
-
-    if (temp_f31 == 0.0f)
-        return 0;
-    temp_f9 = arg4 + arg5;
-    temp_f30 = (temp_f10 * temp_f6) + (temp_f11 * temp_f12) + (temp_f8 * temp_f13);
-    temp_f3 = (temp_f10 * temp_f10) + (temp_f11 * temp_f11) + (temp_f8 * temp_f8) - (temp_f9 * temp_f9);
-    temp_f1 = (temp_f30 * temp_f30) - (temp_f31 * temp_f3);
-    if (0.0f > temp_f1)
-        return 0;
-    if (0.0f >= temp_f3)
-    {
-        arg1->x = arg0->x;
-        arg1->y = arg0->y;
-        arg1->z = arg0->z;
-        arg3->x = arg2->x;
-        arg3->y = arg2->y;
-        arg3->z = arg2->z;
-        return 1;
-    }
-    if (!(0.0f >= temp_f31 + temp_f30 + temp_f30 + temp_f3))
-    {
-        if (0.0f <= temp_f30)
-            return 0;
-        if (-temp_f30 >= temp_f31)
-            return 0;
-    }
-    temp_f3_2 = -(temp_f30 + mathutil_sqrt(temp_f1)) / temp_f31;
-    arg1->x = arg0->x + temp_f3_2 * (arg1->x - arg0->x);
-    arg1->y = arg0->y + temp_f3_2 * (arg1->y - arg0->y);
-    arg1->z = arg0->z + temp_f3_2 * (arg1->z - arg0->z);
-    arg3->x = arg2->x + temp_f3_2 * (arg3->x - arg2->x);
-    arg3->y = arg2->y + temp_f3_2 * (arg3->y - arg2->y);
-    arg3->z = arg2->z + temp_f3_2 * (arg3->z - arg2->z);
-    return 1;
-}
-
-#ifdef NONMATCHING
-void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
-{
-    float temp_f4 = arg3 * arg4;
-
-    float temp_f9 = arg0->x;
-    float temp_f10 = arg0->y;
-    float temp_f11 = arg0->z;
-
-    float temp_f12 = arg1->x;
-    float temp_f13 = arg1->y;
-    float temp_f31 = arg1->z;
-
-    float temp_f0 = arg2->x;
-    float temp_f30 = arg2->y;
-    float temp_f29 = arg2->z;
-
-    #define x1 (arg0->x * arg1->x)
-    #define y1 (arg0->y * arg1->y)
-    #define z1 (arg0->z * arg1->z)
-    #define x2 (arg0->x * arg2->x)
-    #define y2 (arg0->y * arg2->y)
-    #define z2 (arg0->z * arg2->z)
-
-    float temp_f2;
-    float temp_f6;
-
-    temp_f2 = 2.0 * (((x2 + y1 + z2) - (x1 + y1 + z1)) * (temp_f4 / (temp_f4 + (arg3 * arg3))));
-    temp_f6 = temp_f2 * -(arg3 / arg4);
-
-    temp_f12 += (temp_f2 * temp_f9);
-    temp_f13 += (temp_f2 * temp_f10);
-    temp_f31 += (temp_f2 * temp_f11);
-
-    arg1->x = temp_f12;
-    arg1->y = temp_f13;
-    arg1->z = temp_f31;
-
-    temp_f0 += (temp_f6 * temp_f9);
-    temp_f30 += temp_f6 * temp_f10;
-    temp_f29 += (temp_f6 * temp_f11);
-
-    arg2->x = temp_f0;
-    arg2->y = temp_f30;
-    arg2->z = temp_f29;
-
-    #undef x1
-    #undef y1
-    #undef z1
-    #undef x2
-    #undef y2
-    #undef z2
-}
-#else
-asm void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_8006AD3C.s"
-}
-#pragma peephole on
-#endif
 
 extern s16 lbl_802F1FF8;
 
@@ -673,12 +389,7 @@ void func_8006B518(struct StageObject *arg0)
 
 char lbl_802F0B40[2] = "\n";
 
-struct
-{
-    float unk0[4];
-    u32 unk10;
-    struct GMAModel *unk14[4];
-} lbl_8028C0B0;
+struct Struct8028C0B0 lbl_8028C0B0;
 
 struct GMA **lbl_801BE37C[] = { &decodedStageGmaPtr, &decodedBgGma, NULL };
 
@@ -786,8 +497,8 @@ void func_8006B594(void)
     }
     else
     {
-        lbl_8028C0B0.unk14[0] = commonGma->modelEntries[0x51].modelOffset;
-        lbl_8028C0B0.unk14[1] = commonGma->modelEntries[0x52].modelOffset;
+        lbl_8028C0B0.unk14[0] = commonGma->modelEntries[mb_bumper].modelOffset;
+        lbl_8028C0B0.unk14[1] = commonGma->modelEntries[mb_bumper_low].modelOffset;
         lbl_8028C0B0.unk10 = 2;
     }
 
@@ -817,5 +528,182 @@ void func_8006B594(void)
         }
     }
     if (!found)
-        lbl_802F1FFC = commonGma->modelEntries[0x53].modelOffset;
+        lbl_802F1FFC = commonGma->modelEntries[mb_jamabar].modelOffset;
+}
+
+void func_8006B8E4(struct StageAnimGroup *arg0, int arg1)
+{
+    struct StageObject sp10;
+    int i, j;
+
+    memset(&sp10, 0, sizeof(sp10));
+    switch (backgroundInfo.bgId)
+    {
+    case BG_TYPE_JUN:
+    case BG_TYPE_STM:
+        sp10.unk4 = 9;
+        break;
+    default:
+        sp10.unk4 = 0;
+        break;
+    }
+
+    for (i = 0; i < arg1; i++, arg0++)
+    {
+        struct StageBumper *bumper = arg0->bumpers;
+
+        for (j = 0; j < arg0->bumperCount; j++, bumper++)
+        {
+            sp10.unk58 = bumper->pos;
+            sp10.unk70 = bumper->rotX;
+            sp10.unk72 = bumper->rotY;
+            sp10.unk74 = bumper->rotZ;
+            sp10.unk3C = bumper->unk14;
+            sp10.unkA0 = i;
+            func_8006B2C0(&sp10);
+        }
+    }
+}
+
+void func_8006B9E4(struct StageAnimGroup *arg0, int arg1)
+{
+    struct StageObject sp10;
+    int i, j;
+
+    memset(&sp10, 0, sizeof(sp10));
+    sp10.unk4 = 1;
+
+    for (i = 0; i < arg1; i++, arg0++)
+    {
+        struct StageJamabar *jamabar = arg0->jamabars;
+
+        for (j = 0; j < arg0->jamabarCount; j++, jamabar++)
+        {
+            sp10.unkA8 = jamabar->pos;
+            sp10.unk70 = jamabar->rotX;
+            sp10.unk72 = jamabar->rotY;
+            sp10.unk74 = jamabar->rotZ;
+            sp10.unk3C = jamabar->unk14;
+            sp10.unkA0 = i;
+            func_8006B2C0(&sp10);
+        }
+    }
+}
+
+void func_8006BAB8(struct StageObject *arg0)
+{
+    arg0->unkC = 0;
+    arg0->unk8 |= 0xA;
+    arg0->unk54 = lbl_8028C0B0.unk14[0];
+    arg0->unk34 = 0.75f * arg0->unk54->boundSphereRadius;
+    arg0->unk10 = arg0->unk54->boundSphereCenter;
+    arg0->unk48 = 1.0f;
+    arg0->unk4C = 1.0f;
+    arg0->unk50 = 1.0f;
+    arg0->unk76 = 0;
+    arg0->unk9C = 0.75f;
+    arg0->unk90 = arg0->unk10;
+}
+
+void sot_main_bumper(struct StageObject *arg0)
+{
+    switch (arg0->unkC)
+    {
+    case 0:
+        arg0->unk78 += (0x100 - arg0->unk78) >> 6;
+        if (arg0->unk48 > 1.0)
+        {
+            arg0->unk48 -= 0.06666666666666667;
+            if (arg0->unk48 < 1.0)
+                arg0->unk48 = 1.0f;
+            arg0->unk50 = arg0->unk48;
+        }
+        break;
+    case 1:
+        arg0->unkC = 2;
+        arg0->unkE = 7;
+        // fall through
+    case 2:
+        arg0->unkE--;
+        if (arg0->unkE < 0)
+            arg0->unkC = 0;
+        arg0->unk78 += 0x100;
+        arg0->unk48 += 0.5 * (2.0 - arg0->unk48);
+        arg0->unk50 = arg0->unk48;
+        break;
+    }
+    arg0->unk76 += arg0->unk78;
+}
+
+void sot_disp_bumper(struct StageObject *arg0)
+{
+    Vec sp18;
+    Vec spC;
+    struct GMAModel *model;
+    float radius;
+
+    mathutil_mtxA_from_mtxB();
+    mathutil_mtxA_translate(&arg0->unk58);
+    mathutil_mtxA_rotate_z(arg0->unk74);
+    mathutil_mtxA_rotate_y(arg0->unk72);
+    mathutil_mtxA_rotate_x(arg0->unk70);
+    mathutil_mtxA_rotate_y(arg0->unk76);
+    spC.x = arg0->unk48 * arg0->unk3C.x;
+    spC.y = arg0->unk3C.y;
+    spC.z = arg0->unk50 * arg0->unk3C.z;
+    mathutil_mtxA_scale_xyz(spC.x, spC.y, spC.z);
+    mathutil_mtxA_get_translate_alt(&sp18);
+    if (sp18.z > 0.0)
+        return;
+
+    model = arg0->unk54;
+    radius = model->boundSphereRadius;
+    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, radius, spC.x) != 0)
+    {
+        float temp_f1;
+        int temp_r0;
+        struct GMAModel **phi_r5;
+        float *phi_r6;
+
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+        temp_f1 = -((radius * currentCameraStructPtr->sub28.unk3C * currentCameraStructPtr->sub28.vp.height) / sp18.z);
+        phi_r6 = lbl_8028C0B0.unk0;
+        phi_r5 = lbl_8028C0B0.unk14;
+        for (temp_r0 = lbl_8028C0B0.unk10 - 1; temp_r0 > 0; temp_r0--, phi_r5++, phi_r6++)
+        {
+            if (temp_f1 > *phi_r6)
+                break;
+        }
+        model = *phi_r5;
+        if (temp_f1 > 0.03f)
+            avdisp_draw_model_unculled_sort_translucent(model);
+        else
+        {
+            BallEnvFunc temp_r31 = g_avdisp_set_some_func_1(NULL);
+            avdisp_draw_model_unculled_sort_translucent(model);
+            g_avdisp_set_some_func_1(temp_r31);
+        }
+    }
+    if (arg0->unk48 > 1.0f)
+    {
+        float temp_f31_2;
+        float phi_f30;
+
+        mathutil_mtxA_from_mtxB();
+        mathutil_mtxA_translate_xyz(arg0->unk58.x, 0.05f + arg0->unk58.y, arg0->unk58.z);
+        mathutil_mtxA_rotate_z(arg0->unk74);
+        mathutil_mtxA_rotate_y(arg0->unk72);
+        mathutil_mtxA_rotate_x(arg0->unk70 - 0x4000);
+        temp_f31_2 = 2.0f * spC.x;
+        phi_f30 = 2.0f * (spC.x - 1.0f);
+        if (phi_f30 > 1.0f)
+            phi_f30 = 1.0f;
+        mathutil_mtxA_scale_s(temp_f31_2);
+        g_nl2ngc_set_scale(temp_f31_2);
+        func_80030BB8(phi_f30, phi_f30, phi_f30);
+        nl2ngc_draw_model_unsorted(naomiCommonObj->modelPtrs[0x2B]);
+        func_8000E3BC();
+    }
 }

@@ -595,12 +595,6 @@ void draw_stage_geometry(void)
         draw_blur_bridge_accordions();
 }
 
-extern struct
-{
-    u8 filler0[0x14];
-    struct GMAModel *unk14;
-} lbl_8028C0B0;
-
 void draw_stage_objects(void)
 {
     Mtx mtx;
@@ -693,7 +687,7 @@ void draw_stage_objects(void)
             mathutil_mtxA_rotate_x(bumper->rotX);
             mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14);
+            avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14[0]);
         }
     }
 

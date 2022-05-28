@@ -601,8 +601,8 @@ extern struct
 // extern ? lbl_8027CE24;
 
 // extern ? lbl_80285A58;
-// extern ? lbl_80285AB0;
-// extern ? lbl_8028C0B0;
+extern struct StageObject lbl_80285AB0[128];
+extern struct Struct8028C0B0 lbl_8028C0B0;
 // extern ? lbl_8028C0D8;
 // extern ? lbl_8028CD98;
 // extern ? lbl_8028CED8;

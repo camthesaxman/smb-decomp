@@ -1340,7 +1340,7 @@ lbl_8006B8D0:
 /* 8006B8D8 000677F8  38 21 00 50 */	addi r1, r1, 0x50
 /* 8006B8DC 000677FC  7C 08 03 A6 */	mtlr r0
 /* 8006B8E0 00067800  4E 80 00 20 */	blr
-.endif
+
 .global func_8006B8E4
 func_8006B8E4:
 /* 8006B8E4 00067804  7C 08 02 A6 */	mflr r0
@@ -1474,6 +1474,7 @@ lbl_8006BA9C:
 /* 8006BAAC 000679CC  38 21 00 F8 */	addi r1, r1, 0xf8
 /* 8006BAB0 000679D0  7C 08 03 A6 */	mtlr r0
 /* 8006BAB4 000679D4  4E 80 00 20 */	blr
+
 .global func_8006BAB8
 func_8006BAB8:
 /* 8006BAB8 000679D8  38 C0 00 00 */	li r6, 0
@@ -1581,7 +1582,6 @@ lbl_8006BC20:
 /* 8006BC28 00067B48  7C 04 02 14 */	add r0, r4, r0
 /* 8006BC2C 00067B4C  B0 03 00 76 */	sth r0, 0x76(r3)
 /* 8006BC30 00067B50  4E 80 00 20 */	blr
-
 .global sot_disp_bumper
 sot_disp_bumper:
 /* 8006BC34 00067B54  7C 08 02 A6 */	mflr r0
@@ -1736,7 +1736,7 @@ lbl_8006BE58:
 /* 8006BE70 00067D90  83 A1 00 2C */	lwz r29, 0x2c(r1)
 /* 8006BE74 00067D94  38 21 00 48 */	addi r1, r1, 0x48
 /* 8006BE78 00067D98  4E 80 00 20 */	blr
-
+.endif
 .global sot_coli_bumper
 sot_coli_bumper:
 /* 8006BE7C 00067D9C  7C 08 02 A6 */	mflr r0
@@ -6397,6 +6397,7 @@ glabel string_Warning____Goal_Tape_Max__d__Over____n
 
 .section .sdata2
 
+asdf:
 .if 0
 .global lbl_802F4808
 lbl_802F4808:
@@ -6478,7 +6479,6 @@ lbl_802F4844:
 lbl_802F4848:
 	# ROM: 0x1EE268
 	.4byte 0x3D99999A
-.endif
 
 .global lbl_802F484C
 lbl_802F484C:
@@ -6535,6 +6535,7 @@ lbl_802F4884:
 lbl_802F4888:
 	# ROM: 0x1EE2A8
 	.4byte 0x40000000
+.endif
 	.4byte 0
 
 .global lbl_802F4890
