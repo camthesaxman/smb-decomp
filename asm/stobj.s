@@ -2552,7 +2552,6 @@ lbl_8006CA00:
 /* 8006CA10 00068930  38 21 01 18 */	addi r1, r1, 0x118
 /* 8006CA14 00068934  7C 08 03 A6 */	mtlr r0
 /* 8006CA18 00068938  4E 80 00 20 */	blr
-.endif
 .global stobj_goaltape_init
 stobj_goaltape_init:
 /* 8006CA1C 0006893C  7C 08 02 A6 */	mflr r0
@@ -2868,6 +2867,7 @@ lbl_8006CB38:
 /* 8006CEE8 00068E08  7C 08 03 A6 */	mtlr r0
 /* 8006CEEC 00068E0C  38 21 00 48 */	addi r1, r1, 0x48
 /* 8006CEF0 00068E10  4E 80 00 20 */	blr
+.endif
 .global stobj_goaltape_main
 stobj_goaltape_main:
 /* 8006CEF4 00068E14  7C 08 02 A6 */	mflr r0
@@ -6374,7 +6374,6 @@ glabel string__________Y__7_3f_n
 glabel string__________Z__7_3f_n
 	.asciz "         Z,%7.3f\n"
 	.balign 4
-.endif
 
 .global lbl_801BE420
 lbl_801BE420:
@@ -6400,6 +6399,7 @@ lbl_801BE448:
 glabel string_Warning____Goal_Tape_Max__d__Over____n
 	.asciz "Warning!!! Goal Tape Max(%d) Over!!!\n"
 	.balign 4
+.endif
 
 .section .sdata2
 
@@ -6634,7 +6634,7 @@ lbl_802F48E8:
 lbl_802F48EC:
 	# ROM: 0x1EE30C
 	.4byte 0x40333333
-.endif
+
 .global lbl_802F48F0
 lbl_802F48F0:
 	# ROM: 0x1EE310
@@ -6684,7 +6684,7 @@ lbl_802F4920:
 	# ROM: 0x1EE340
 	.4byte 0x43300000
 	.4byte 0x80000000
-
+.endif
 .global lbl_802F4928
 lbl_802F4928:
 	# ROM: 0x1EE348
