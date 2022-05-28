@@ -46,7 +46,7 @@ void do_object_collision(void)
             {
                 int j;
                 s8 *phi_r30 = spritePoolInfo.unk2C;
-                struct StageObject *phi_r31 = lbl_80285AB0;
+                struct Stobj_ *phi_r31 = lbl_80285AB0;
 
                 for (j = spritePoolInfo.unk28; j > 0; j--, phi_r31++, phi_r30++)
                 {
@@ -55,7 +55,7 @@ void do_object_collision(void)
                         s8 temp_r4 = phi_r31->unkA0;
                         if (physBall.animGroupId != temp_r4)
                             tf_physball_to_anim_group_space(&physBall, temp_r4);
-                        if (func_8006A9B8(&physBall.prevPos, &physBall.pos, &phi_r31->unk28, &phi_r31->unk1C, physBall.radius, phi_r31->unk34) != 0U)
+                        if (func_8006A9B8(&physBall.prevPos, &physBall.pos, &phi_r31->position_2, &phi_r31->position, physBall.radius, phi_r31->unk34) != 0U)
                             phi_r31->unk38(phi_r31, &physBall);
                     }
                 }

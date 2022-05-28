@@ -421,7 +421,7 @@ struct StageGoal
     /*0x0C*/ s16 rotX;
     /*0x0E*/ s16 rotY;
     /*0x10*/ s16 rotZ;
-    char type;  // 'B', 'G', or 'R' for blue, green, or red goal
+    /*0x14*/ char type;  // 'B', 'G', or 'R' for blue, green, or red goal
 };
 
 struct DecodedStageLzPtr_child5_child

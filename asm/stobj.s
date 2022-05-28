@@ -657,11 +657,11 @@ ev_stobj_main:
 /* 8006AF70 00066E90  38 03 5A B0 */	addi r0, r3, lbl_80285AB0@l
 /* 8006AF74 00066E94  83 A4 00 28 */	lwz r29, 0x28(r4)
 /* 8006AF78 00066E98  3C 60 80 20 */	lis r3, animGroups@ha
-/* 8006AF7C 00066E9C  3C 80 80 1C */	lis r4, lbl_801BE160@ha
+/* 8006AF7C 00066E9C  3C 80 80 1C */	lis r4, stobjMainFuncs@ha
 /* 8006AF80 00066EA0  3C A0 80 1C */	lis r5, lbl_801BE1F0@ha
 /* 8006AF84 00066EA4  7C 1C 03 78 */	mr r28, r0
 /* 8006AF88 00066EA8  3B 43 6E 48 */	addi r26, r3, animGroups@l
-/* 8006AF8C 00066EAC  3B E4 E1 60 */	addi r31, r4, lbl_801BE160@l
+/* 8006AF8C 00066EAC  3B E4 E1 60 */	addi r31, r4, stobjMainFuncs@l
 /* 8006AF90 00066EB0  3B C5 E1 F0 */	addi r30, r5, lbl_801BE1F0@l
 /* 8006AF94 00066EB4  48 00 01 58 */	b lbl_8006B0EC
 lbl_8006AF98:
@@ -834,10 +834,10 @@ lbl_8006B1C8:
 /* 8006B1E8 00067108  38 03 5A B0 */	addi r0, r3, lbl_80285AB0@l
 /* 8006B1EC 0006710C  83 E4 00 28 */	lwz r31, 0x28(r4)
 /* 8006B1F0 00067110  3C 80 80 20 */	lis r4, animGroups@ha
-/* 8006B1F4 00067114  3C 60 80 1C */	lis r3, lbl_801BE190@ha
+/* 8006B1F4 00067114  3C 60 80 1C */	lis r3, stobjDrawFuncs@ha
 /* 8006B1F8 00067118  7C 1E 03 78 */	mr r30, r0
 /* 8006B1FC 0006711C  3B 44 6E 48 */	addi r26, r4, animGroups@l
-/* 8006B200 00067120  3B 63 E1 90 */	addi r27, r3, lbl_801BE190@l
+/* 8006B200 00067120  3B 63 E1 90 */	addi r27, r3, stobjDrawFuncs@l
 /* 8006B204 00067124  3B 20 00 00 */	li r25, 0
 /* 8006B208 00067128  48 00 00 7C */	b lbl_8006B284
 lbl_8006B20C:
@@ -920,8 +920,8 @@ lbl_8006B300:
 /* 8006B31C 0006723C  4B F9 80 F9 */	bl memcpy
 /* 8006B320 00067240  7F C0 07 34 */	extsh r0, r30
 /* 8006B324 00067244  B0 1F 00 00 */	sth r0, 0(r31)
-/* 8006B328 00067248  3C 60 80 1C */	lis r3, lbl_801BE130@ha
-/* 8006B32C 0006724C  38 03 E1 30 */	addi r0, r3, lbl_801BE130@l
+/* 8006B328 00067248  3C 60 80 1C */	lis r3, stobjInitFuncs@ha
+/* 8006B32C 0006724C  38 03 E1 30 */	addi r0, r3, stobjInitFuncs@l
 /* 8006B330 00067250  A8 9F 00 04 */	lha r4, 4(r31)
 /* 8006B334 00067254  38 7F 00 00 */	addi r3, r31, 0
 /* 8006B338 00067258  54 84 10 3A */	slwi r4, r4, 2
@@ -938,9 +938,9 @@ lbl_8006B300:
 /* 8006B364 00067284  90 1F 00 84 */	stw r0, 0x84(r31)
 /* 8006B368 00067288  48 00 01 B1 */	bl func_8006B518
 /* 8006B36C 0006728C  80 BF 00 1C */	lwz r5, 0x1c(r31)
-/* 8006B370 00067290  3C 60 80 1C */	lis r3, lbl_801BE1C0@ha
+/* 8006B370 00067290  3C 60 80 1C */	lis r3, stobjCollisionFuncs@ha
 /* 8006B374 00067294  80 9F 00 20 */	lwz r4, 0x20(r31)
-/* 8006B378 00067298  38 03 E1 C0 */	addi r0, r3, lbl_801BE1C0@l
+/* 8006B378 00067298  38 03 E1 C0 */	addi r0, r3, stobjCollisionFuncs@l
 /* 8006B37C 0006729C  90 BF 00 28 */	stw r5, 0x28(r31)
 /* 8006B380 000672A0  90 9F 00 2C */	stw r4, 0x2c(r31)
 /* 8006B384 000672A4  80 7F 00 24 */	lwz r3, 0x24(r31)
@@ -1475,8 +1475,8 @@ lbl_8006BA9C:
 /* 8006BAB0 000679D0  7C 08 03 A6 */	mtlr r0
 /* 8006BAB4 000679D4  4E 80 00 20 */	blr
 
-.global func_8006BAB8
-func_8006BAB8:
+.global stobj_bumper_init
+stobj_bumper_init:
 /* 8006BAB8 000679D8  38 C0 00 00 */	li r6, 0
 /* 8006BABC 000679DC  B0 C3 00 0C */	sth r6, 0xc(r3)
 /* 8006BAC0 000679E0  3C 80 80 29 */	lis r4, lbl_8028C0B0@ha
@@ -1512,8 +1512,8 @@ func_8006BAB8:
 /* 8006BB38 00067A58  90 03 00 98 */	stw r0, 0x98(r3)
 /* 8006BB3C 00067A5C  4E 80 00 20 */	blr
 
-.global sot_main_bumper
-sot_main_bumper:
+.global stobj_bumper_main
+stobj_bumper_main:
 /* 8006BB40 00067A60  A8 03 00 0C */	lha r0, 0xc(r3)
 /* 8006BB44 00067A64  2C 00 00 01 */	cmpwi r0, 1
 /* 8006BB48 00067A68  41 82 00 74 */	beq lbl_8006BBBC
@@ -1582,8 +1582,8 @@ lbl_8006BC20:
 /* 8006BC28 00067B48  7C 04 02 14 */	add r0, r4, r0
 /* 8006BC2C 00067B4C  B0 03 00 76 */	sth r0, 0x76(r3)
 /* 8006BC30 00067B50  4E 80 00 20 */	blr
-.global sot_disp_bumper
-sot_disp_bumper:
+.global stobj_bumper_draw
+stobj_bumper_draw:
 /* 8006BC34 00067B54  7C 08 02 A6 */	mflr r0
 /* 8006BC38 00067B58  3C 80 80 28 */	lis r4, lbl_80285AB0@ha
 /* 8006BC3C 00067B5C  90 01 00 04 */	stw r0, 4(r1)
@@ -1736,9 +1736,9 @@ lbl_8006BE58:
 /* 8006BE70 00067D90  83 A1 00 2C */	lwz r29, 0x2c(r1)
 /* 8006BE74 00067D94  38 21 00 48 */	addi r1, r1, 0x48
 /* 8006BE78 00067D98  4E 80 00 20 */	blr
-.endif
-.global sot_coli_bumper
-sot_coli_bumper:
+
+.global stobj_bumper_coli
+stobj_bumper_coli:
 /* 8006BE7C 00067D9C  7C 08 02 A6 */	mflr r0
 /* 8006BE80 00067DA0  90 01 00 04 */	stw r0, 4(r1)
 /* 8006BE84 00067DA4  38 00 00 01 */	li r0, 1
@@ -1924,8 +1924,8 @@ func_8006C13C:
 .global func_8006C140
 func_8006C140:
 /* 8006C140 00068060  4E 80 00 20 */	blr
-.global func_8006C144
-func_8006C144:
+.global stobj_bumper_bgspecial_init
+stobj_bumper_bgspecial_init:
 /* 8006C144 00068064  38 C0 00 00 */	li r6, 0
 /* 8006C148 00068068  B0 C3 00 0C */	sth r6, 0xc(r3)
 /* 8006C14C 0006806C  3C 80 80 29 */	lis r4, lbl_8028C0B0@ha
@@ -1960,18 +1960,18 @@ func_8006C144:
 /* 8006C1C0 000680E0  80 03 00 18 */	lwz r0, 0x18(r3)
 /* 8006C1C4 000680E4  90 03 00 98 */	stw r0, 0x98(r3)
 /* 8006C1C8 000680E8  4E 80 00 20 */	blr
-.global func_8006C1CC
-func_8006C1CC:
+.global stobj_bumper_bgspecial_main
+stobj_bumper_bgspecial_main:
 /* 8006C1CC 000680EC  7C 08 02 A6 */	mflr r0
 /* 8006C1D0 000680F0  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C1D4 000680F4  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8006C1D8 000680F8  4B FF F9 69 */	bl sot_main_bumper
+/* 8006C1D8 000680F8  4B FF F9 69 */	bl stobj_bumper_main
 /* 8006C1DC 000680FC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006C1E0 00068100  38 21 00 08 */	addi r1, r1, 8
 /* 8006C1E4 00068104  7C 08 03 A6 */	mtlr r0
 /* 8006C1E8 00068108  4E 80 00 20 */	blr
-.global func_8006C1EC
-func_8006C1EC:
+.global stobj_bumper_bgspecial_draw
+stobj_bumper_bgspecial_draw:
 /* 8006C1EC 0006810C  7C 08 02 A6 */	mflr r0
 /* 8006C1F0 00068110  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C1F4 00068114  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -1979,7 +1979,7 @@ func_8006C1EC:
 /* 8006C1FC 0006811C  93 E1 00 24 */	stw r31, 0x24(r1)
 /* 8006C200 00068120  7C 7F 1B 78 */	mr r31, r3
 /* 8006C204 00068124  93 C1 00 20 */	stw r30, 0x20(r1)
-/* 8006C208 00068128  4B FF FA 2D */	bl sot_disp_bumper
+/* 8006C208 00068128  4B FF FA 2D */	bl stobj_bumper_draw
 /* 8006C20C 0006812C  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 8006C210 00068130  A8 03 91 78 */	lha r0, backgroundInfo@l(r3)
 /* 8006C214 00068134  2C 00 00 14 */	cmpwi r0, 0x14
@@ -2103,12 +2103,13 @@ lbl_8006C3C8:
 /* 8006C3D8 000682F8  83 C1 00 20 */	lwz r30, 0x20(r1)
 /* 8006C3DC 000682FC  38 21 00 30 */	addi r1, r1, 0x30
 /* 8006C3E0 00068300  4E 80 00 20 */	blr
-.global func_8006C3E4
-func_8006C3E4:
+
+.global stobj_bumper_bgspecial_coli
+stobj_bumper_bgspecial_coli:
 /* 8006C3E4 00068304  7C 08 02 A6 */	mflr r0
 /* 8006C3E8 00068308  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C3EC 0006830C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8006C3F0 00068310  4B FF FA 8D */	bl sot_coli_bumper
+/* 8006C3F0 00068310  4B FF FA 8D */	bl stobj_bumper_coli
 /* 8006C3F4 00068314  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006C3F8 00068318  38 21 00 08 */	addi r1, r1, 8
 /* 8006C3FC 0006831C  7C 08 03 A6 */	mtlr r0
@@ -2119,8 +2120,8 @@ func_8006C404:
 .global func_8006C408
 func_8006C408:
 /* 8006C408 00068328  4E 80 00 20 */	blr
-.global func_8006C40C
-func_8006C40C:
+.global stobj_jamabar_init
+stobj_jamabar_init:
 /* 8006C40C 0006832C  38 00 00 00 */	li r0, 0
 /* 8006C410 00068330  B0 03 00 0C */	sth r0, 0xc(r3)
 /* 8006C414 00068334  80 03 00 08 */	lwz r0, 8(r3)
@@ -2155,8 +2156,9 @@ func_8006C40C:
 /* 8006C488 000683A8  C0 02 A0 50 */	lfs f0, lbl_802F4850-_SDA2_BASE_(r2)
 /* 8006C48C 000683AC  D0 03 00 9C */	stfs f0, 0x9c(r3)
 /* 8006C490 000683B0  4E 80 00 20 */	blr
-.global func_8006C494
-func_8006C494:
+
+.global stobj_jamabar_main
+stobj_jamabar_main:
 /* 8006C494 000683B4  7C 08 02 A6 */	mflr r0
 /* 8006C498 000683B8  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C49C 000683BC  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -2247,8 +2249,9 @@ lbl_8006C5A4:
 /* 8006C5E8 00068508  38 21 00 20 */	addi r1, r1, 0x20
 /* 8006C5EC 0006850C  7C 08 03 A6 */	mtlr r0
 /* 8006C5F0 00068510  4E 80 00 20 */	blr
-.global func_8006C5F4
-func_8006C5F4:
+
+.global stobj_jamabar_draw
+stobj_jamabar_draw:
 /* 8006C5F4 00068514  7C 08 02 A6 */	mflr r0
 /* 8006C5F8 00068518  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C5FC 0006851C  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -2291,8 +2294,8 @@ func_8006C5F4:
 /* 8006C690 000685B0  7C 08 03 A6 */	mtlr r0
 /* 8006C694 000685B4  38 21 00 28 */	addi r1, r1, 0x28
 /* 8006C698 000685B8  4E 80 00 20 */	blr
-.global func_8006C69C
-func_8006C69C:
+.global stobj_jamabar_coli
+stobj_jamabar_coli:
 /* 8006C69C 000685BC  7C 08 02 A6 */	mflr r0
 /* 8006C6A0 000685C0  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C6A4 000685C4  38 03 00 00 */	addi r0, r3, 0
@@ -2363,17 +2366,17 @@ func_8006C6CC:
 /* 8006C798 000686B8  7C 08 03 A6 */	mtlr r0
 /* 8006C79C 000686BC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8006C7A0 000686C0  4E 80 00 20 */	blr
-.global func_8006C7A4
-func_8006C7A4:
+.global stobj_dummy_init
+stobj_dummy_init:
 /* 8006C7A4 000686C4  4E 80 00 20 */	blr
-.global func_8006C7A8
-func_8006C7A8:
+.global stobj_dummy_main
+stobj_dummy_main:
 /* 8006C7A8 000686C8  4E 80 00 20 */	blr
-.global func_8006C7AC
-func_8006C7AC:
+.global stobj_dummy_draw
+stobj_dummy_draw:
 /* 8006C7AC 000686CC  4E 80 00 20 */	blr
-.global func_8006C7B0
-func_8006C7B0:
+.global stobj_dummy_coli
+stobj_dummy_coli:
 /* 8006C7B0 000686D0  4E 80 00 20 */	blr
 .global func_8006C7B4
 func_8006C7B4:
@@ -2549,8 +2552,9 @@ lbl_8006CA00:
 /* 8006CA10 00068930  38 21 01 18 */	addi r1, r1, 0x118
 /* 8006CA14 00068934  7C 08 03 A6 */	mtlr r0
 /* 8006CA18 00068938  4E 80 00 20 */	blr
-.global func_8006CA1C
-func_8006CA1C:
+.endif
+.global stobj_goaltape_init
+stobj_goaltape_init:
 /* 8006CA1C 0006893C  7C 08 02 A6 */	mflr r0
 /* 8006CA20 00068940  90 01 00 04 */	stw r0, 4(r1)
 /* 8006CA24 00068944  38 00 00 00 */	li r0, 0
@@ -2864,8 +2868,8 @@ lbl_8006CB38:
 /* 8006CEE8 00068E08  7C 08 03 A6 */	mtlr r0
 /* 8006CEEC 00068E0C  38 21 00 48 */	addi r1, r1, 0x48
 /* 8006CEF0 00068E10  4E 80 00 20 */	blr
-.global func_8006CEF4
-func_8006CEF4:
+.global stobj_goaltape_main
+stobj_goaltape_main:
 /* 8006CEF4 00068E14  7C 08 02 A6 */	mflr r0
 /* 8006CEF8 00068E18  90 01 00 04 */	stw r0, 4(r1)
 /* 8006CEFC 00068E1C  94 21 FF 68 */	stwu r1, -0x98(r1)
@@ -3414,8 +3418,8 @@ lbl_8006D6EC:
 /* 8006D718 00069638  CB 41 00 68 */	lfd f26, 0x68(r1)
 /* 8006D71C 0006963C  38 21 00 98 */	addi r1, r1, 0x98
 /* 8006D720 00069640  4E 80 00 20 */	blr
-.global func_8006D724
-func_8006D724:
+.global stobj_goaltape_draw
+stobj_goaltape_draw:
 /* 8006D724 00069644  7C 08 02 A6 */	mflr r0
 /* 8006D728 00069648  3C 80 80 29 */	lis r4, lbl_8028C0D8@ha
 /* 8006D72C 0006964C  90 01 00 04 */	stw r0, 4(r1)
@@ -3609,8 +3613,8 @@ lbl_8006D8B0:
 /* 8006D9F8 00069918  38 21 00 40 */	addi r1, r1, 0x40
 /* 8006D9FC 0006991C  7C 08 03 A6 */	mtlr r0
 /* 8006DA00 00069920  4E 80 00 20 */	blr
-.global func_8006DA04
-func_8006DA04:
+.global stobj_goaltape_coli
+stobj_goaltape_coli:
 /* 8006DA04 00069924  7C 08 02 A6 */	mflr r0
 /* 8006DA08 00069928  90 01 00 04 */	stw r0, 4(r1)
 /* 8006DA0C 0006992C  94 21 FF 58 */	stwu r1, -0xa8(r1)
@@ -3991,8 +3995,8 @@ lbl_8006DF8C:
 /* 8006DFB4 00069ED4  38 21 00 60 */	addi r1, r1, 0x60
 /* 8006DFB8 00069ED8  4E 80 00 20 */	blr
 
-.global sot_init_goalbag
-sot_init_goalbag:
+.global stobj_goalbag_init
+stobj_goalbag_init:
 /* 8006DFBC 00069EDC  7C 08 02 A6 */	mflr r0
 /* 8006DFC0 00069EE0  90 01 00 04 */	stw r0, 4(r1)
 /* 8006DFC4 00069EE4  38 00 00 01 */	li r0, 1
@@ -4046,8 +4050,8 @@ sot_init_goalbag:
 /* 8006E084 00069FA4  7C 08 03 A6 */	mtlr r0
 /* 8006E088 00069FA8  4E 80 00 20 */	blr
 
-.global sot_main_goalbag
-sot_main_goalbag:
+.global stobj_goalbag_main
+stobj_goalbag_main:
 /* 8006E08C 00069FAC  7C 08 02 A6 */	mflr r0
 /* 8006E090 00069FB0  90 01 00 04 */	stw r0, 4(r1)
 /* 8006E094 00069FB4  94 21 FF 88 */	stwu r1, -0x78(r1)
@@ -4624,8 +4628,8 @@ lbl_8006E908:
 /* 8006E930 0006A850  38 21 00 78 */	addi r1, r1, 0x78
 /* 8006E934 0006A854  4E 80 00 20 */	blr
 
-.global sot_disp_goalbag
-sot_disp_goalbag:
+.global stobj_goalbag_draw
+stobj_goalbag_draw:
 /* 8006E938 0006A858  7C 08 02 A6 */	mflr r0
 /* 8006E93C 0006A85C  90 01 00 04 */	stw r0, 4(r1)
 /* 8006E940 0006A860  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4758,8 +4762,8 @@ lbl_8006EB14:
 /* 8006EB24 0006AA44  38 21 00 28 */	addi r1, r1, 0x28
 /* 8006EB28 0006AA48  4E 80 00 20 */	blr
 
-.global sot_coli_goalbag
-sot_coli_goalbag:
+.global stobj_goalbag_coli
+stobj_goalbag_coli:
 /* 8006EB2C 0006AA4C  7C 08 02 A6 */	mflr r0
 /* 8006EB30 0006AA50  90 01 00 04 */	stw r0, 4(r1)
 /* 8006EB34 0006AA54  94 21 FE 70 */	stwu r1, -0x190(r1)
@@ -5319,42 +5323,42 @@ func_8006F3A0:
 .global func_8006F3A4
 func_8006F3A4:
 /* 8006F3A4 0006B2C4  4E 80 00 20 */	blr
-.global func_8006F3A8
-func_8006F3A8:
+.global stobj_goalbag_exmaster_init
+stobj_goalbag_exmaster_init:
 /* 8006F3A8 0006B2C8  7C 08 02 A6 */	mflr r0
 /* 8006F3AC 0006B2CC  90 01 00 04 */	stw r0, 4(r1)
 /* 8006F3B0 0006B2D0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8006F3B4 0006B2D4  4B FF EC 09 */	bl sot_init_goalbag
+/* 8006F3B4 0006B2D4  4B FF EC 09 */	bl stobj_goalbag_init
 /* 8006F3B8 0006B2D8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006F3BC 0006B2DC  38 21 00 08 */	addi r1, r1, 8
 /* 8006F3C0 0006B2E0  7C 08 03 A6 */	mtlr r0
 /* 8006F3C4 0006B2E4  4E 80 00 20 */	blr
-.global func_8006F3C8
-func_8006F3C8:
+.global stobj_goalbag_exmaster_main
+stobj_goalbag_exmaster_main:
 /* 8006F3C8 0006B2E8  7C 08 02 A6 */	mflr r0
 /* 8006F3CC 0006B2EC  90 01 00 04 */	stw r0, 4(r1)
 /* 8006F3D0 0006B2F0  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8006F3D4 0006B2F4  4B FF EC B9 */	bl sot_main_goalbag
+/* 8006F3D4 0006B2F4  4B FF EC B9 */	bl stobj_goalbag_main
 /* 8006F3D8 0006B2F8  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006F3DC 0006B2FC  38 21 00 08 */	addi r1, r1, 8
 /* 8006F3E0 0006B300  7C 08 03 A6 */	mtlr r0
 /* 8006F3E4 0006B304  4E 80 00 20 */	blr
-.global func_8006F3E8
-func_8006F3E8:
+.global stobj_goalbag_exmaster_draw
+stobj_goalbag_exmaster_draw:
 /* 8006F3E8 0006B308  7C 08 02 A6 */	mflr r0
 /* 8006F3EC 0006B30C  90 01 00 04 */	stw r0, 4(r1)
 /* 8006F3F0 0006B310  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8006F3F4 0006B314  4B FF F5 45 */	bl sot_disp_goalbag
+/* 8006F3F4 0006B314  4B FF F5 45 */	bl stobj_goalbag_draw
 /* 8006F3F8 0006B318  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006F3FC 0006B31C  38 21 00 08 */	addi r1, r1, 8
 /* 8006F400 0006B320  7C 08 03 A6 */	mtlr r0
 /* 8006F404 0006B324  4E 80 00 20 */	blr
-.global func_8006F408
-func_8006F408:
+.global stobj_goalbag_exmaster_coli
+stobj_goalbag_exmaster_coli:
 /* 8006F408 0006B328  7C 08 02 A6 */	mflr r0
 /* 8006F40C 0006B32C  90 01 00 04 */	stw r0, 4(r1)
 /* 8006F410 0006B330  94 21 FF F8 */	stwu r1, -8(r1)
-/* 8006F414 0006B334  4B FF F7 19 */	bl sot_coli_goalbag
+/* 8006F414 0006B334  4B FF F7 19 */	bl stobj_goalbag_coli
 /* 8006F418 0006B338  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8006F41C 0006B33C  38 21 00 08 */	addi r1, r1, 8
 /* 8006F420 0006B340  7C 08 03 A6 */	mtlr r0
@@ -6114,7 +6118,7 @@ glabel lbl_8028C0B8
 	.skip 0x4
 glabel lbl_8028C0BC
 	.skip 0x1C
-.endif
+
 	.balign 8
 .global lbl_8028C0D8
 lbl_8028C0D8:
@@ -6122,6 +6126,7 @@ lbl_8028C0D8:
 .global lbl_8028CD98
 lbl_8028CD98:
 	.skip 0x140
+.endif
 .global lbl_8028CED8
 lbl_8028CED8:
 	.skip 0x28
@@ -6177,68 +6182,68 @@ glabel string_SOT_NAMEENT_BTN
 	.4byte string_SOT_BUMPER_BGSPECIAL  ;# ptr
 	.4byte string_SOT_NAMEENT_BTN  ;# ptr
 
-.global lbl_801BE130
-lbl_801BE130:
+.global stobjInitFuncs
+stobjInitFuncs:
 	# ROM: 0x1BB130
-	.4byte func_8006BAB8  ;# ptr
-	.4byte func_8006C40C  ;# ptr
-	.4byte func_8006CA1C  ;# ptr
-	.4byte sot_init_goalbag  ;# ptr
-	.4byte func_8006F3A8  ;# ptr
-	.4byte func_8006C7A4  ;# ptr
-	.4byte func_8006C7A4  ;# ptr
-	.4byte func_8006C7A4  ;# ptr
-	.4byte func_8006C7A4  ;# ptr
-	.4byte func_8006C144  ;# ptr
-	.4byte func_800AF6D8  ;# ptr
+	.4byte stobj_bumper_init  ;# ptr
+	.4byte stobj_jamabar_init  ;# ptr
+	.4byte stobj_goaltape_init  ;# ptr
+	.4byte stobj_goalbag_init  ;# ptr
+	.4byte stobj_goalbag_exmaster_init  ;# ptr
+	.4byte stobj_dummy_init  ;# ptr
+	.4byte stobj_dummy_init  ;# ptr
+	.4byte stobj_dummy_init  ;# ptr
+	.4byte stobj_dummy_init  ;# ptr
+	.4byte stobj_bumper_bgspecial_init  ;# ptr
+	.4byte stobj_nameent_btn_init  ;# ptr
 	.4byte 0
 
-.global lbl_801BE160
-lbl_801BE160:
+.global stobjMainFuncs
+stobjMainFuncs:
 	# ROM: 0x1BB160
-	.4byte sot_main_bumper  ;# ptr
-	.4byte func_8006C494  ;# ptr
-	.4byte func_8006CEF4  ;# ptr
-	.4byte sot_main_goalbag  ;# ptr
-	.4byte func_8006F3C8  ;# ptr
-	.4byte func_8006C7A8  ;# ptr
-	.4byte func_8006C7A8  ;# ptr
-	.4byte func_8006C7A8  ;# ptr
-	.4byte func_8006C7A8  ;# ptr
-	.4byte func_8006C1CC  ;# ptr
-	.4byte func_800AF73C  ;# ptr
+	.4byte stobj_bumper_main  ;# ptr
+	.4byte stobj_jamabar_main  ;# ptr
+	.4byte stobj_goaltape_main  ;# ptr
+	.4byte stobj_goalbag_main  ;# ptr
+	.4byte stobj_goalbag_exmaster_main  ;# ptr
+	.4byte stobj_dummy_main  ;# ptr
+	.4byte stobj_dummy_main  ;# ptr
+	.4byte stobj_dummy_main  ;# ptr
+	.4byte stobj_dummy_main  ;# ptr
+	.4byte stobj_bumper_bgspecial_main  ;# ptr
+	.4byte stobj_nameent_btn_main  ;# ptr
 	.4byte 0
 
-.global lbl_801BE190
-lbl_801BE190:
+.global stobjDrawFuncs
+stobjDrawFuncs:
 	# ROM: 0x1BB190
-	.4byte sot_disp_bumper  ;# ptr
-	.4byte func_8006C5F4  ;# ptr
-	.4byte func_8006D724  ;# ptr
-	.4byte sot_disp_goalbag  ;# ptr
-	.4byte func_8006F3E8  ;# ptr
-	.4byte func_8006C7AC  ;# ptr
-	.4byte func_8006C7AC  ;# ptr
-	.4byte func_8006C7AC  ;# ptr
-	.4byte func_8006C7AC  ;# ptr
-	.4byte func_8006C1EC  ;# ptr
-	.4byte func_800AF85C  ;# ptr
+	.4byte stobj_bumper_draw  ;# ptr
+	.4byte stobj_jamabar_draw  ;# ptr
+	.4byte stobj_goaltape_draw  ;# ptr
+	.4byte stobj_goalbag_draw  ;# ptr
+	.4byte stobj_goalbag_exmaster_draw  ;# ptr
+	.4byte stobj_dummy_draw  ;# ptr
+	.4byte stobj_dummy_draw  ;# ptr
+	.4byte stobj_dummy_draw  ;# ptr
+	.4byte stobj_dummy_draw  ;# ptr
+	.4byte stobj_bumper_bgspecial_draw  ;# ptr
+	.4byte stobj_nameent_btn_draw  ;# ptr
 	.4byte 0
 
-.global lbl_801BE1C0
-lbl_801BE1C0:
+.global stobjCollisionFuncs
+stobjCollisionFuncs:
 	# ROM: 0x1BB1C0
-	.4byte sot_coli_bumper  ;# ptr
-	.4byte func_8006C69C  ;# ptr
-	.4byte func_8006DA04  ;# ptr
-	.4byte sot_coli_goalbag  ;# ptr
-	.4byte func_8006F408  ;# ptr
-	.4byte func_8006C7B0  ;# ptr
-	.4byte func_8006C7B0  ;# ptr
-	.4byte func_8006C7B0  ;# ptr
-	.4byte func_8006C7B0  ;# ptr
-	.4byte func_8006C3E4  ;# ptr
-	.4byte func_800AFA1C  ;# ptr
+	.4byte stobj_bumper_coli  ;# ptr
+	.4byte stobj_jamabar_coli  ;# ptr
+	.4byte stobj_goaltape_coli  ;# ptr
+	.4byte stobj_goalbag_coli  ;# ptr
+	.4byte stobj_goalbag_exmaster_coli  ;# ptr
+	.4byte stobj_dummy_coli  ;# ptr
+	.4byte stobj_dummy_coli  ;# ptr
+	.4byte stobj_dummy_coli  ;# ptr
+	.4byte stobj_dummy_coli  ;# ptr
+	.4byte stobj_bumper_bgspecial_coli  ;# ptr
+	.4byte stobj_nameent_btn_coli  ;# ptr
 	.4byte 0
 
 .global lbl_801BE1F0
@@ -6322,10 +6327,10 @@ glabel string_Flag__0x_08X_n_2
 
 	.balign 4
 glabel lbl_801BE364
-	.4byte func_8006C7A4  ;# ptr
-	.4byte func_8006C7A8  ;# ptr
-	.4byte func_8006C7AC  ;# ptr
-	.4byte func_8006C7B0  ;# ptr
+	.4byte stobj_dummy_init  ;# ptr
+	.4byte stobj_dummy_main  ;# ptr
+	.4byte stobj_dummy_draw  ;# ptr
+	.4byte stobj_dummy_coli  ;# ptr
 	.4byte func_8006C7B4  ;# ptr
 	.4byte func_8006C7B8  ;# ptr
 
@@ -6336,7 +6341,6 @@ glabel lbl_801BE37C
 glabel string_BUMPER_L_d
 	.asciz "BUMPER_L%d"
 	.balign 4
-.endif
 
 .global lbl_801BE394
 lbl_801BE394:
@@ -6357,6 +6361,7 @@ lbl_801BE394:
 	.4byte 0x00220023
 	.4byte 0x00240025
 	.4byte 0x00260027
+
 glabel string_OFS__X__7_3f_n
 	.asciz "OFS: X,%7.3f\n"
 	.balign 4
@@ -6369,6 +6374,7 @@ glabel string__________Y__7_3f_n
 glabel string__________Z__7_3f_n
 	.asciz "         Z,%7.3f\n"
 	.balign 4
+.endif
 
 .global lbl_801BE420
 lbl_801BE420:
@@ -6535,7 +6541,6 @@ lbl_802F4884:
 lbl_802F4888:
 	# ROM: 0x1EE2A8
 	.4byte 0x40000000
-.endif
 	.4byte 0
 
 .global lbl_802F4890
@@ -6629,7 +6634,7 @@ lbl_802F48E8:
 lbl_802F48EC:
 	# ROM: 0x1EE30C
 	.4byte 0x40333333
-
+.endif
 .global lbl_802F48F0
 lbl_802F48F0:
 	# ROM: 0x1EE310
@@ -6971,6 +6976,7 @@ glabel string_JAMABAR
 
 .section .rodata
 
+.if 0
     .balign 8
 .global lbl_80117A48
 lbl_80117A48:
@@ -6979,6 +6985,7 @@ lbl_80117A48:
 	.4byte 0x005C005D
 	.4byte 0x005E005F
 	.4byte 0x00600061
+.endif
 
 .global lbl_80117A58
 lbl_80117A58:

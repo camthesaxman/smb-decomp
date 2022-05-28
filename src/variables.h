@@ -262,10 +262,10 @@ extern float unknownTrigTable[];
 // extern ? lbl_801BDF60;
 // extern ? pilotBananaInfo;
 // extern ? lbl_801BE048;
-// extern ? lbl_801BE130;
-// extern ? lbl_801BE160;
-// extern ? lbl_801BE190;
-// extern ? lbl_801BE1C0;
+// extern ? stobjInitFuncs;
+// extern ? stobjMainFuncs;
+// extern ? stobjDrawFuncs;
+// extern ? stobjCollisionFuncs;
 // extern ? lbl_801BE1F0;
 // extern ? lbl_801BE394;
 // extern ? lbl_801BE420;
@@ -601,7 +601,7 @@ extern struct
 // extern ? lbl_8027CE24;
 
 // extern ? lbl_80285A58;
-extern struct StageObject lbl_80285AB0[128];
+extern struct Stobj_ lbl_80285AB0[128];
 extern struct Struct8028C0B0 lbl_8028C0B0;
 // extern ? lbl_8028C0D8;
 // extern ? lbl_8028CD98;
