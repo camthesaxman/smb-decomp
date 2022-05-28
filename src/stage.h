@@ -337,18 +337,20 @@ struct StageBanana
 
 struct StageBumper
 {
-    Point3d pos;
-    s16 rotX;
-    s16 rotY;
-    s16 rotZ;
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x12*/ u8 filler12[0x20-0x12];
 };
 
 struct StageJamabar
 {
-    Vec pos;
-    s16 rotX;
-    s16 rotY;
-    s16 rotZ;
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x12*/ u8 filler12[0x20-0x12];
 };
 
 struct StageAnimGroup
