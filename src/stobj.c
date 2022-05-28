@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <dolphin.h>
 
@@ -15,18 +16,19 @@ void func_8006AD3C(Vec *, Vec *, Vec *, float, float);
 extern u32 func_8006AAEC(Point3d *, Point3d *, Point3d *, Point3d *, float,  float);
 void do_object_collision(void);
 
-struct Struct80285AB0
+struct StageObject
 {
     s16 unk0;
     s16 unk2;
     s16 unk4;
     u8 filler6[2];
     u32 unk8;
-    u8 fillerC[0x1C-0xC];
+    u8 fillerC[4];
+    Vec unk10;
     Vec unk1C;
     Vec unk28;
     float unk34;
-    void (*unk38)(struct Struct80285AB0 *, struct PhysicsBall *);
+    void (*unk38)(struct StageObject *, struct PhysicsBall *);
     u8 filler3C[0x58-0x3C];
     Vec unk58;
     u8 filler64[0x70-0x64];
@@ -45,7 +47,7 @@ struct Struct80285AB0
     u8 fillerA1[0xCC-0xA1];
 };  // size = 0xCC
 
-struct Struct80285AB0 lbl_80285AB0[128];
+struct StageObject lbl_80285AB0[128];
 
 void ev_obj_collision_init(void) {}
 
@@ -79,7 +81,7 @@ void do_object_collision(void)
             {
                 int j;
                 s8 *phi_r30 = spritePoolInfo.unk2C;
-                struct Struct80285AB0 *phi_r31 = lbl_80285AB0;
+                struct StageObject *phi_r31 = lbl_80285AB0;
 
                 for (j = spritePoolInfo.unk28; j > 0; j--, phi_r31++, phi_r30++)
                 {
@@ -295,12 +297,12 @@ asm void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, 
 #pragma peephole on
 #endif
 
-extern u16 lbl_802F1FF8;
+extern s16 lbl_802F1FF8;
 
 void ev_stobj_init(void)
 {
     int i;
-    struct Struct80285AB0 *ptr;
+    struct StageObject *ptr;
 
     lbl_802F1FF8 = 0;
     memset(lbl_80285AB0, 0, sizeof(lbl_80285AB0));
@@ -334,7 +336,7 @@ char *asdfasdf[] =
 };
 #pragma force_active reset
 
-void (*lbl_801BE130[])(struct Struct80285AB0 *) =
+void (*lbl_801BE130[])(struct StageObject *) =
 {
     func_8006BAB8,
     func_8006C40C,
@@ -350,7 +352,7 @@ void (*lbl_801BE130[])(struct Struct80285AB0 *) =
     NULL,
 };
 
-void (*lbl_801BE160[])(struct Struct80285AB0 *) =
+void (*lbl_801BE160[])(struct StageObject *) =
 {
     sot_main_bumper,
     func_8006C494,
@@ -366,7 +368,7 @@ void (*lbl_801BE160[])(struct Struct80285AB0 *) =
     NULL,
 };
 
-void (*lbl_801BE190[])(struct Struct80285AB0 *) =
+void (*lbl_801BE190[])(struct StageObject *) =
 {
     sot_disp_bumper,
     func_8006C5F4,
@@ -382,12 +384,88 @@ void (*lbl_801BE190[])(struct Struct80285AB0 *) =
     NULL,
 };
 
-extern void (*lbl_801BE1F0[])(struct Struct80285AB0 *);
+void (*lbl_801BE1C0[])(struct StageObject *, struct PhysicsBall *) =
+{
+    sot_coli_bumper,
+    func_8006C69C,
+    func_8006DA04,
+    sot_coli_goalbag,
+    func_8006F408,
+    func_8006C7B0,
+    func_8006C7B0,
+    func_8006C7B0,
+    func_8006C7B0,
+    func_8006C3E4,
+    func_800AFA1C,
+    NULL,
+};
+
+void (*lbl_801BE1F0[])(struct StageObject *) =
+{
+    func_8006C13C,
+    func_8006C6C8,
+    func_8006DD98,
+    func_8006F3A0,
+    func_8006F428,
+    func_8006C7B4,
+    func_8006C7B4,
+    func_8006C7B4,
+    func_8006C7B4,
+    func_8006C404,
+    func_800AFC14,
+    NULL,
+};
+
+void (*lbl_801BE220[])(struct StageObject *) =
+{
+    func_8006C140,
+    func_8006C6CC,
+    func_8006DD9C,
+    func_8006F3A4,
+    func_8006F42C,
+    func_8006C7B8,
+    func_8006C7B8,
+    func_8006C7B8,
+    func_8006C7B8,
+    func_8006C408,
+    func_800AFC18,
+    NULL,
+};
+
+#pragma force_active on
+
+char string_STATUS___s_n_2[] = "STATUS: %s\n";
+char wtfisthis2[] =
+{
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x16,
+    0x16, 0x16, 0x16, 0x0A,
+    0x00
+};
+char string_TYPE___s_n_2[] = "TYPE: %s\n";
+char string_PART_ID___d_n[] = "PART ID: %d\n";
+char string_POS__X__7_3f_n_2[] = "POS: X,%7.3f\n";
+char string______Y__7_3f_n_2[] = "     Y,%7.3f\n";
+char string______Z__7_3f_n_2[] = "     Z,%7.3f\n";
+char string_SPD__X__7_3f_n_2[] = "SPD: X,%7.3f\n";
+char string_ROT__X_0x_04X_n_2[] = "ROT: X,0x%04X\n";
+char string______Y_0x_04X_n_2[] = "     Y,0x%04X\n";
+char string______Z_0x_04X_n_2[] = "     Z,0x%04X\n";
+char string_ROTSPD__X_0x_04X_n_2[] = "ROTSPD: X,0x%04X\n";
+char string_________Y_0x_04X_n_2[] = "        Y,0x%04X\n";
+char string_________Z_0x_04X_n_2[] = "        Z,0x%04X\n";
+char string_COLI_RAD___7_3f_n_2[] = "COLI RAD: %7.3f\n";
+char string_Flag__0x_08X_n_2[] = "Flag: 0x%08X\n";
+
+#pragma force_active reset
 
 void ev_stobj_main(void)
 {
     int i;
-    struct Struct80285AB0 *phi_r28;
+    struct StageObject *phi_r28;
     s8 *phi_r27;
 
     if (gamePauseStatus & 0xA)
@@ -447,7 +525,7 @@ void ev_stobj_main(void)
 void ev_stobj_dest(void)
 {
     int i;
-    struct Struct80285AB0 *phi_r28;
+    struct StageObject *phi_r28;
     s8 *phi_r27;
 
     phi_r27 = spritePoolInfo.unk2C;
@@ -465,7 +543,7 @@ void ev_stobj_dest(void)
 void stobj_draw(void)
 {
     s32 i;
-    struct Struct80285AB0 *phi_r30;
+    struct StageObject *phi_r30;
     s8 *phi_r29;
     BallEnvFunc func;
     int phi_r25;
@@ -496,4 +574,248 @@ void stobj_draw(void)
     mathutil_mtx_copy(mtx, mathutilData->mtxB);
     if (func != NULL)
         g_avdisp_set_some_func_1(NULL);
+}
+
+s16 func_8006B2C0(struct StageObject *arg0)
+{
+    int temp_r3;
+    struct StageObject *temp_r31;
+
+    temp_r3 = pool_alloc(spritePoolInfo.unk20, 1);
+    if (temp_r3 < 0)
+        return -1;
+
+    temp_r31 = &lbl_80285AB0[temp_r3];
+    memcpy(temp_r31, arg0, sizeof(*temp_r31));
+    temp_r31->unk0 = temp_r3;
+    lbl_801BE130[temp_r31->unk4](temp_r31);
+    temp_r31->unk7C = temp_r31->unk58;
+    func_8006B518(temp_r31);
+    temp_r31->unk28 = temp_r31->unk1C;
+    temp_r31->unk38 = lbl_801BE1C0[temp_r31->unk4];
+    temp_r31->unk2 = lbl_802F1FF8;
+    lbl_802F1FF8++;
+    if (lbl_802F1FF8 < 0)
+        lbl_802F1FF8 = 0;
+    return temp_r31->unk2;
+}
+
+struct StageObjectFuncs
+{
+    void (*unk0)(struct StageObject *);
+    void (*unk4)(struct StageObject *);
+    void (*unk8)(struct StageObject *);
+    void (*unkC)(struct StageObject *, struct PhysicsBall *);
+    void (*unk10)(struct StageObject *);
+    void (*unk14)(struct StageObject *);
+};
+
+struct StageObjectFuncs lbl_801BE364 =
+{
+    func_8006C7A4,
+    func_8006C7A8,
+    func_8006C7AC,
+    func_8006C7B0,
+    func_8006C7B4,
+    func_8006C7B8,
+};
+
+#pragma force_active on
+void func_8006B3E8(s32 arg0, struct StageObjectFuncs *arg1)
+{
+    struct StageObjectFuncs sp10;
+
+    if (arg1 == NULL)
+        sp10 = lbl_801BE364;
+    else
+    {
+        sp10 = *arg1;
+        if (sp10.unk0 == NULL)
+            sp10.unk0 = lbl_801BE364.unk0;
+        if (sp10.unk4 == NULL)
+            sp10.unk4 = lbl_801BE364.unk4;
+        if (sp10.unk8 == NULL)
+            sp10.unk8 = lbl_801BE364.unk8;
+        if (sp10.unkC == NULL)
+            sp10.unkC = lbl_801BE364.unkC;
+        if (sp10.unk10 == NULL)
+            sp10.unk10 = lbl_801BE364.unk10;
+        if (sp10.unk14 == NULL)
+            sp10.unk14 = lbl_801BE364.unk14;
+    }
+
+    lbl_801BE130[arg0] = sp10.unk0;
+    lbl_801BE160[arg0] = sp10.unk4;
+    lbl_801BE190[arg0] = sp10.unk8;
+    lbl_801BE1C0[arg0] = sp10.unkC;
+    lbl_801BE1F0[arg0] = sp10.unk10;
+    lbl_801BE220[arg0] = sp10.unk14;
+}
+#pragma force_active reset
+
+void func_8006B518(struct StageObject *arg0)
+{
+    mathutil_mtxA_from_translate(&arg0->unk58);
+    if (arg0->unk8 & 0x10)
+    {
+        mathutil_mtxA_rotate_y(arg0->unk72);
+        mathutil_mtxA_rotate_x(arg0->unk70);
+        mathutil_mtxA_rotate_z(arg0->unk74);
+    }
+    else
+    {
+        mathutil_mtxA_rotate_z(arg0->unk74);
+        mathutil_mtxA_rotate_y(arg0->unk72);
+        mathutil_mtxA_rotate_x(arg0->unk70);
+    }
+    mathutil_mtxA_tf_point(&arg0->unk10, &arg0->unk1C);
+}
+
+char lbl_802F0B40[2] = "\n";
+
+struct
+{
+    float unk0[4];
+    u32 unk10;
+    struct GMAModel *unk14[4];
+} lbl_8028C0B0;
+
+struct GMA **lbl_801BE37C[] = { &decodedStageGmaPtr, &decodedBgGma, NULL };
+
+static inline void func_8006B594_inline(void)
+{
+    struct GMAModel **r7;
+    struct GMAModel **r6;
+    struct GMAModel **r8;
+    int r4;
+    int r3;
+    int i;
+    int j;
+
+    r6 = r8 = lbl_8028C0B0.unk14;
+    for (i = 0, r7 = r6; i < 4; i++, r7++)
+    {
+        if (*r7 == NULL)
+        {
+            r8 = r7;
+            for (j = i; j < 3; j++, r8++)
+                r8[0] = r8[1];
+            *r8 = NULL;
+        }
+    }
+
+    r4 = 0;
+
+    for (r3 = 4; r3 > 0 && *r6 != NULL; r3--, r6++)
+        r4++;
+    lbl_8028C0B0.unk10 = r4;
+}
+
+void func_8006B594(void)
+{
+    int i;
+    int numModels;
+    struct GMA ***gmaIter;
+    struct GMAModelEntry *entry;
+    int found;
+    struct GMA *gma;
+
+    memset(&lbl_8028C0B0, 0, sizeof(lbl_8028C0B0));
+    switch (backgroundInfo.bgId)
+    {
+    case 21:
+    case 10:
+        lbl_8028C0B0.unk0[0] = 0.095f;
+        lbl_8028C0B0.unk0[1] = 0.0565f;
+        lbl_8028C0B0.unk0[2] = 0.00565f;
+        lbl_8028C0B0.unk0[3] = 0.00056f;
+        break;
+    case 20:
+        lbl_8028C0B0.unk0[0] = 0.103f;
+        lbl_8028C0B0.unk0[1] = 0.085f;
+        lbl_8028C0B0.unk0[2] = 0.0085f;
+        lbl_8028C0B0.unk0[3] = 0.00085f;
+        break;
+    case 19:
+        lbl_8028C0B0.unk0[0] = 0.028f;
+        lbl_8028C0B0.unk0[1] = 0.0075f;
+        lbl_8028C0B0.unk0[2] = 0.00075f;
+        lbl_8028C0B0.unk0[3] = 0.000075f;
+        break;
+    default:
+        lbl_8028C0B0.unk0[0] = 0.075f;
+        lbl_8028C0B0.unk0[1] = 0.0075f;
+        lbl_8028C0B0.unk0[2] = 0.00075f;
+        lbl_8028C0B0.unk0[3] = 0.000075f;
+        break;
+    }
+
+    found = FALSE;
+    for (gmaIter = lbl_801BE37C; *gmaIter != NULL; gmaIter++)
+    {
+        gma = **gmaIter;
+        if (gma != NULL)
+        {
+            for (i = 0; i < 4; i++)
+            {
+                if (lbl_8028C0B0.unk14[i] == 0)
+                {
+                    char name[32];
+
+                    sprintf(name, "BUMPER_L%d", i + 1);
+                    entry = gma->modelEntries;
+                    numModels = gma->numModels;
+                    while (numModels > 0)
+                    {
+                        if (strcmp(entry->name + 4, name) == 0)
+                        {
+                            lbl_8028C0B0.unk14[i] = entry->modelOffset;
+                            found = TRUE;
+                        }
+                        numModels--;
+                        entry++;
+                    }
+                }
+            }
+        }
+    }
+
+    if (found)
+    {
+        func_8006B594_inline();
+    }
+    else
+    {
+        lbl_8028C0B0.unk14[0] = commonGma->modelEntries[0x51].modelOffset;
+        lbl_8028C0B0.unk14[1] = commonGma->modelEntries[0x52].modelOffset;
+        lbl_8028C0B0.unk10 = 2;
+    }
+
+    memset(&lbl_802F1FFC, 0, sizeof(lbl_802F1FFC));  //! why not just set it to NULL?
+
+    found = FALSE;
+    for (gmaIter = lbl_801BE37C; *gmaIter != NULL; gmaIter++)
+    {
+        gma = **gmaIter;
+        if (gma != NULL)
+        {
+            entry = gma->modelEntries;
+            numModels = gma->numModels;
+            while (numModels > 0)
+            {
+                if (strcmp(entry->name + 4, "JAMABAR") == 0)
+                {
+                    lbl_802F1FFC = entry->modelOffset;
+                    found = TRUE;
+                    break;
+                }
+                numModels--;
+                entry++;
+            }
+            if (found)
+                break;
+        }
+    }
+    if (!found)
+        lbl_802F1FFC = commonGma->modelEntries[0x53].modelOffset;
 }

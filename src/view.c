@@ -601,8 +601,6 @@ extern struct
     struct GMAModel *unk14;
 } lbl_8028C0B0;
 
-extern struct GMAModel *lbl_802F1FFC;
-
 void draw_stage_objects(void)
 {
     Mtx mtx;

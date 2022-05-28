@@ -1313,7 +1313,7 @@ extern s32 lbl_802F1FF0;
 // extern ? lbl_802F1FF4;
 extern s16 lbl_802F1FF6;
 // extern ? lbl_802F1FF8;
-// extern ? lbl_802F1FFC;
+extern struct GMAModel *lbl_802F1FFC;
 extern u32 lbl_802F2000;
 extern float lbl_802F2008;
 extern float lbl_802F200C;

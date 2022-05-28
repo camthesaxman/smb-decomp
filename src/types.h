@@ -1077,6 +1077,6 @@ struct Struct8008CF00
 	u32 unk1C;
 };
 
-struct Struct80285AB0;
+struct StageObject;
 
 #endif

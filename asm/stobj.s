@@ -890,7 +890,7 @@ lbl_8006B2AC:
 /* 8006B2B4 000671D4  38 21 00 58 */	addi r1, r1, 0x58
 /* 8006B2B8 000671D8  7C 08 03 A6 */	mtlr r0
 /* 8006B2BC 000671DC  4E 80 00 20 */	blr
-.endif
+
 .global func_8006B2C0
 func_8006B2C0:
 /* 8006B2C0 000671E0  7C 08 02 A6 */	mflr r0
@@ -1340,7 +1340,7 @@ lbl_8006B8D0:
 /* 8006B8D8 000677F8  38 21 00 50 */	addi r1, r1, 0x50
 /* 8006B8DC 000677FC  7C 08 03 A6 */	mtlr r0
 /* 8006B8E0 00067800  4E 80 00 20 */	blr
-
+.endif
 .global func_8006B8E4
 func_8006B8E4:
 /* 8006B8E4 00067804  7C 08 02 A6 */	mflr r0
@@ -6104,7 +6104,7 @@ glabel lbl_80285A80
 .global lbl_80285AB0
 lbl_80285AB0:
 	.skip 0x6600
-.endif
+
 .global lbl_8028C0B0
 lbl_8028C0B0:
 	.skip 0x4
@@ -6114,6 +6114,8 @@ glabel lbl_8028C0B8
 	.skip 0x4
 glabel lbl_8028C0BC
 	.skip 0x1C
+.endif
+	.balign 8
 .global lbl_8028C0D8
 lbl_8028C0D8:
 	.skip 0xCC0
@@ -6222,7 +6224,6 @@ lbl_801BE190:
 	.4byte func_8006C1EC  ;# ptr
 	.4byte func_800AF85C  ;# ptr
 	.4byte 0
-.endif
 
 .global lbl_801BE1C0
 lbl_801BE1C0:
@@ -6267,6 +6268,7 @@ lbl_801BE1F0:
 	.4byte func_8006C408  ;# ptr
 	.4byte func_800AFC18  ;# ptr
 	.4byte 0
+
 glabel string_STATUS___s_n_2
 	.asciz "STATUS: %s\n"
 	.4byte 0x16161616
@@ -6317,19 +6319,24 @@ glabel string_COLI_RAD___7_3f_n_2
 	.balign 4
 glabel string_Flag__0x_08X_n_2
 	.asciz "Flag: 0x%08X\n"
+
 	.balign 4
+glabel lbl_801BE364
 	.4byte func_8006C7A4  ;# ptr
 	.4byte func_8006C7A8  ;# ptr
 	.4byte func_8006C7AC  ;# ptr
 	.4byte func_8006C7B0  ;# ptr
 	.4byte func_8006C7B4  ;# ptr
 	.4byte func_8006C7B8  ;# ptr
+
+glabel lbl_801BE37C
 	.4byte decodedStageGmaPtr  ;# ptr
 	.4byte decodedBgGma  ;# ptr
 	.4byte 0
 glabel string_BUMPER_L_d
 	.asciz "BUMPER_L%d"
 	.balign 4
+.endif
 
 .global lbl_801BE394
 lbl_801BE394:
@@ -6406,7 +6413,6 @@ lbl_802F4810:
 	# ROM: 0x1EE230
 	.4byte 0x40000000
 	.4byte 0
-.endif
 
 .global lbl_802F4818
 lbl_802F4818:
@@ -6472,6 +6478,7 @@ lbl_802F4844:
 lbl_802F4848:
 	# ROM: 0x1EE268
 	.4byte 0x3D99999A
+.endif
 
 .global lbl_802F484C
 lbl_802F484C:
@@ -6947,7 +6954,7 @@ lbl_802F4A6C:
 	.4byte 0x3F400000
 
 .section .sdata
-
+.if 0
 .global lbl_802F0B40
 lbl_802F0B40:
 	# ROM: 0x1EB280
@@ -6959,6 +6966,7 @@ lbl_802F0B44:
 glabel string_JAMABAR
 	.asciz "JAMABAR"
 	.4byte 0
+.endif
 
 .section .rodata
 
