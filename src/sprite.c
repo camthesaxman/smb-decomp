@@ -180,10 +180,10 @@ void func_800700D8(int a)
     r30 = r5->unk8;
     while ((r31_ = r30->unk0) != NULL)
     {
-        q_something_with_sprites(r31_);
+        u_something_with_sprites(r31_);
         while (r31_->next != 0)
         {
-            q_something_with_sprites(r31_->next);
+            u_something_with_sprites(r31_->next);
             r31_ = r31_->next;
         }
         r30 = r30->unk8;
@@ -214,10 +214,10 @@ void func_800702C8(struct Sprite *sprite)
 {
     if (spritePoolInfo.statusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
-        q_something_with_sprites(sprite);
+        u_something_with_sprites(sprite);
         while (sprite->next != NULL)
         {
-            q_something_with_sprites(sprite->next);
+            u_something_with_sprites(sprite->next);
             sprite = sprite->next;
         }
     }
@@ -839,7 +839,7 @@ struct DoubleKanjiGlyph doubleKanjiGlyphs[] =
     {"DMY",            -1,     -1},
 };
 
-void q_something_with_sprites(struct Sprite *sprite)
+void u_something_with_sprites(struct Sprite *sprite)
 {
     u32 r29;
     u32 r26;
@@ -858,7 +858,7 @@ void q_something_with_sprites(struct Sprite *sprite)
     switch (sprite->type)
     {
     case SPRITE_TYPE_TEXT:
-        q_draw_text_sprite(sprite);
+        u_draw_text_sprite(sprite);
         break;
     case SPRITE_TYPE_BITMAP:
         if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
@@ -1043,7 +1043,7 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
             height = fontParams->lineHeight;
             if (sprite->fontId > FONT_JAP_TAG)  // Japanese font
             {
-                width = q_get_jpn_text_width(sprite->fontId, sprite->text);
+                width = u_get_jpn_text_width(sprite->fontId, sprite->text);
             }
             else  // ASCII font
             {
@@ -1052,7 +1052,7 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
                 {
                     float f1;
                     width += get_char_width(chr, sprite->fontId, fontParams) - fontParams->spaceWidth;
-                    f1 = q_get_char_ratio(chr, sprite->fontId);
+                    f1 = u_get_char_ratio(chr, sprite->fontId);
                     if (f1 != 1.0)
                         width += f1 * fontParams->spaceWidth - fontParams->spaceWidth;
                     chr++;
@@ -1205,7 +1205,7 @@ int get_char_width(char *chr, int fontId, struct FontParams *params)
     return params->spaceWidth;
 }
 
-float q_get_char_ratio(char *chr, int fontId)
+float u_get_char_ratio(char *chr, int fontId)
 {
     switch (fontId)
     {
@@ -2632,7 +2632,7 @@ void set_text_pos(float x, float y)
     textDrawInfo.y = y;
 }
 
-void q_draw_char(char chr)
+void u_draw_char(char chr)
 {
     struct NaomiSpriteParams params;
     struct FontParams *font = &fontInfo[textDrawInfo.fontId];
@@ -2684,7 +2684,7 @@ static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *f
     }
 }
 
-void q_draw_text(char *str)
+void u_draw_text(char *str)
 {
     struct TextDrawInfo *drawInfo = &textDrawInfo;
     int fontIdBackup;
@@ -2733,7 +2733,7 @@ void q_draw_text(char *str)
         else
             r23 = get_char_width(str, drawInfo->fontId, font);
         f17 = font->unk10 * (0.5 * (font->spaceWidth - r23) / (font->spaceWidth));
-        f16 = q_get_char_ratio(str, drawInfo->fontId);
+        f16 = u_get_char_ratio(str, drawInfo->fontId);
         if (*str == '\n')
         {
             drawInfo->x = drawInfo->startX;
@@ -2854,7 +2854,7 @@ void q_draw_text(char *str)
     drawInfo->scaleX = f31;
 }
 
-float q_get_text_width(char *str)
+float u_get_text_width(char *str)
 {
     struct TextDrawInfo *drawInfo = &textDrawInfo;
     int fontIdBackup;
@@ -2895,7 +2895,7 @@ float q_get_text_width(char *str)
             r23 = func_80071E58_inline(*str, drawInfo->fontId, font);
         else
             r23 = get_char_width(str, drawInfo->fontId, font);
-        f1 = q_get_char_ratio(str, drawInfo->fontId);
+        f1 = u_get_char_ratio(str, drawInfo->fontId);
         if (*str == '\n')
             continue;
         if (*str == ' ' || *str < font->firstChar || *str > font->lastChar)
@@ -2987,10 +2987,10 @@ void func_80072AC0(char *str, ...)
     va_start(args, str);
     vsprintf(buf, str, args);
     va_end(args);
-    q_draw_text(buf);
+    u_draw_text(buf);
 }
 
-void q_draw_text_sprite(struct Sprite *sprite)
+void u_draw_text_sprite(struct Sprite *sprite)
 {
     textDrawInfo.startX = sprite->left;
     textDrawInfo.x = sprite->left;
@@ -3004,7 +3004,7 @@ void q_draw_text_sprite(struct Sprite *sprite)
     textDrawInfo.scaleY = sprite->scaleY;
     textDrawInfo.opacity = sprite->opacity;
     textDrawInfo.unk2C = sprite->flags;
-    q_draw_text(sprite->text);
+    u_draw_text(sprite->text);
 }
 
 void draw_bitmap_sprite(struct Sprite *sprite)
@@ -3120,17 +3120,17 @@ float func_80072DA8(int fontId, char *str, int c)
         return parseState.unkC;
 }
 
-float q_get_ascii_text_width(char *str)
+float u_get_ascii_text_width(char *str)
 {
     return func_80072DA8(FONT_ASCII, str, 0);
 }
 
-int q_get_jpn_text_width(int fontId, char *str)
+int u_get_jpn_text_width(int fontId, char *str)
 {
     return func_80072DA8(fontId, str, 1);
 }
 
-void q_draw_screen_fade_mask(void)
+void u_draw_screen_fade_mask(void)
 {
     struct NaomiSpriteParams params;
 

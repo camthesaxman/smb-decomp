@@ -455,8 +455,8 @@ shadowerase_main:
 /* 80092B90 0008EAB0  90 6D 9F 70 */	stw r3, lbl_802F2150@sda21(r13)
 /* 80092B94 0008EAB4  4E 80 00 20 */	blr
 
-.global q_init_shadow_stuff_probably
-q_init_shadow_stuff_probably:
+.global u_init_shadow_stuff_probably
+u_init_shadow_stuff_probably:
 /* 80092B98 0008EAB8  7C 08 02 A6 */	mflr r0
 /* 80092B9C 0008EABC  90 01 00 04 */	stw r0, 4(r1)
 /* 80092BA0 0008EAC0  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -570,8 +570,8 @@ func_80092D34:
 /* 80092D34 0008EC54  80 6D 9F 70 */	lwz r3, lbl_802F2150@sda21(r13)
 /* 80092D38 0008EC58  4E 80 00 20 */	blr
 
-.global q_draw_ball_shadow
-q_draw_ball_shadow:
+.global u_draw_ball_shadow
+u_draw_ball_shadow:
 /* 80092D3C 0008EC5C  7C 08 02 A6 */	mflr r0
 /* 80092D40 0008EC60  3C 60 80 2B */	lis r3, lbl_802B57A0@ha
 /* 80092D44 0008EC64  90 01 00 04 */	stw r0, 4(r1)
@@ -753,7 +753,7 @@ func_80092F90:
 /* 80092FD8 0008EEF8  41 80 00 14 */	blt lbl_80092FEC
 /* 80092FDC 0008EEFC  3C 60 80 09 */	lis r3, lbl_80093A0C@ha
 /* 80092FE0 0008EF00  38 63 3A 0C */	addi r3, r3, lbl_80093A0C@l
-/* 80092FE4 0008EF04  4B FF B6 05 */	bl q_avdisp_set_some_func_2
+/* 80092FE4 0008EF04  4B FF B6 05 */	bl u_avdisp_set_some_func_2
 /* 80092FE8 0008EF08  7C 7A 1B 78 */	mr r26, r3
 lbl_80092FEC:
 /* 80092FEC 0008EF0C  A0 01 00 62 */	lhz r0, 0x62(r1)
@@ -1001,11 +1001,11 @@ lbl_80093370:
 lbl_80093394:
 /* 80093394 0008F2B4  80 61 00 64 */	lwz r3, 0x64(r1)
 /* 80093398 0008F2B8  7F 24 CB 78 */	mr r4, r25
-/* 8009339C 0008F2BC  4B FA 0C B1 */	bl q_draw_naomi_model_with_mesh_func
+/* 8009339C 0008F2BC  4B FA 0C B1 */	bl u_draw_naomi_model_with_mesh_func
 /* 800933A0 0008F2C0  48 00 00 18 */	b lbl_800933B8
 lbl_800933A4:
 /* 800933A4 0008F2C4  80 61 00 64 */	lwz r3, 0x64(r1)
-/* 800933A8 0008F2C8  4B FF BB 19 */	bl q_avdisp_draw_model_4
+/* 800933A8 0008F2C8  4B FF BB 19 */	bl u_avdisp_draw_model_4
 /* 800933AC 0008F2CC  48 00 00 0C */	b lbl_800933B8
 lbl_800933B0:
 /* 800933B0 0008F2D0  80 61 00 64 */	lwz r3, 0x64(r1)
@@ -1055,11 +1055,11 @@ lbl_80093448:
 /* 80093448 0008F368  3C 80 80 09 */	lis r4, lbl_800939F0@ha
 /* 8009344C 0008F36C  80 61 00 64 */	lwz r3, 0x64(r1)
 /* 80093450 0008F370  38 84 39 F0 */	addi r4, r4, lbl_800939F0@l
-/* 80093454 0008F374  4B FA 0B F9 */	bl q_draw_naomi_model_with_mesh_func
+/* 80093454 0008F374  4B FA 0B F9 */	bl u_draw_naomi_model_with_mesh_func
 /* 80093458 0008F378  48 00 00 18 */	b lbl_80093470
 lbl_8009345C:
 /* 8009345C 0008F37C  80 61 00 64 */	lwz r3, 0x64(r1)
-/* 80093460 0008F380  4B FF BA 61 */	bl q_avdisp_draw_model_4
+/* 80093460 0008F380  4B FF BA 61 */	bl u_avdisp_draw_model_4
 /* 80093464 0008F384  48 00 00 0C */	b lbl_80093470
 lbl_80093468:
 /* 80093468 0008F388  80 61 00 64 */	lwz r3, 0x64(r1)
@@ -1069,7 +1069,7 @@ lbl_80093470:
 /* 80093474 0008F394  28 00 00 03 */	cmplwi r0, 3
 /* 80093478 0008F398  41 80 00 0C */	blt lbl_80093484
 /* 8009347C 0008F39C  7F 43 D3 78 */	mr r3, r26
-/* 80093480 0008F3A0  4B FF B1 69 */	bl q_avdisp_set_some_func_2
+/* 80093480 0008F3A0  4B FF B1 69 */	bl u_avdisp_set_some_func_2
 lbl_80093484:
 /* 80093484 0008F3A4  48 00 04 9D */	bl func_80093920
 lbl_80093488:

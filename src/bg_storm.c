@@ -28,7 +28,7 @@ void bg_storm_init(void)
 
     bg_e3_init();
     if (work->unk0 == 0)
-        q_search_bg_models(stormModelFind, storm_model_find_proc);
+        u_search_bg_models(stormModelFind, storm_model_find_proc);
     work->unk10.x = ((rand() / 32767.0f) - 0.5f) * 6.0f;
     work->unk10.y = ((rand() / 32767.0f) - 0.5f) * 9.0f;
     work->unk10.z = ((rand() / 32767.0f) - 0.5f) * 6.0f;
@@ -96,7 +96,7 @@ void bg_storm_main(void)
         mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
         sp8.unk50 = rand() & 0x7FFF;
         sp8.unk30 = work->rain02Model;
-        q_spawn_effect_object(&sp8);
+        u_spawn_effect_object(&sp8);
         return;
     }
     camera = cameraInfo;
@@ -118,7 +118,7 @@ void bg_storm_main(void)
                 mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
                 sp8.unk50 = rand() & 0x7FFF;
                 sp8.unk30 = work->rain02Model;
-                q_spawn_effect_object(&sp8);
+                u_spawn_effect_object(&sp8);
             }
         }
     }

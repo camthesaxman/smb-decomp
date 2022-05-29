@@ -12,7 +12,7 @@
 #include "mathutil.h"
 #include "sprite.h"
 
-struct TPL *q_unkBitmapTPL;
+struct TPL *u_unkBitmapTPL;
 s32 lbl_802F1D04;
 s32 spriteParamsBufCount;
 u16 lbl_802F1CFC;
@@ -86,7 +86,7 @@ void bitmap_draw(struct Bitmap *a);
 void bitmap_init(void)
 {
     bitmap_load_group(BMP_COM);
-    q_bitmap_set_some_tpl(0);
+    u_bitmap_set_some_tpl(0);
     currString = prevString = OSAlloc(0x800);
     if (prevString == NULL)
         OSPanic("bitmap.c", 120, "cannot OSAlloc");
@@ -240,12 +240,12 @@ void bitmap_free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void q_bitmap_set_some_tpl(enum BitmapGroupID grpId)
+void u_bitmap_set_some_tpl(enum BitmapGroupID grpId)
 {
-    q_unkBitmapTPL = bitmapGroups[grpId].tpl;
+    u_unkBitmapTPL = bitmapGroups[grpId].tpl;
 }
 
-void q_bitmap_frame_reset(void)
+void u_bitmap_frame_reset(void)
 {
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 0;
@@ -360,7 +360,7 @@ void bitmap_main(void)
 
     bitmap_draw_string();
     lbl_802F1D04 = 2;
-    q_draw_all_naomi_sprites();
+    u_draw_all_naomi_sprites();
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
@@ -368,16 +368,16 @@ void bitmap_main(void)
     if (eventInfo[EVENT_MOUSE].state == EV_STATE_RUNNING)
         func_80095024();
     lbl_802F1D04 = 3;
-    q_draw_screen_fade_mask();
+    u_draw_screen_fade_mask();
     lbl_802F1D04 = 2;
-    q_draw_all_naomi_sprites();  // again?
+    u_draw_all_naomi_sprites();  // again?
 
     GXSetZMode_cached(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
     if (eventInfo[EVENT_MEMCARD].state == EV_STATE_RUNNING)
         memcard_draw_ui();
     GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
-    q_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
+    u_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
     func_8002F0E4();
     m[0][0] = projParams[1];
     m[0][3] = projParams[2];
@@ -625,7 +625,7 @@ void bitmap_draw_string(void)
     prevString = currString;
 }
 
-void q_draw_all_naomi_sprites(void)
+void u_draw_all_naomi_sprites(void)
 {
     int i;
     struct NaomiSpriteParams *params = &spriteParamsBuf[0];

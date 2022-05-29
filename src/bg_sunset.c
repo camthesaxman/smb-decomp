@@ -31,12 +31,12 @@ void bg_sunset_init(void)
 
     // find models
     work->bgModelsCount = 0;
-    q_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         sunsetModelFind,
         sunset_model_find_proc);
-    q_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->fgModels,
         decodedStageLzPtr->fgModelCount,
         sunsetModelFind,

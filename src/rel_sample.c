@@ -48,6 +48,6 @@ static void increment_counter(void)
 
 static void print_counter(void)
 {
-    q_debug_set_cursor_pos(0, 10);
-    q_debug_printf("SAMPLE: %d\n", counter);
+    u_debug_set_cursor_pos(0, 10);
+    u_debug_printf("SAMPLE: %d\n", counter);
 }

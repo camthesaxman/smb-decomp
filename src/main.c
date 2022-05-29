@@ -77,10 +77,10 @@ void main(void)
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
     mot_ape_init();
     func_800AD38C();
-    q_initialize_stage_dyn_part_info();
+    u_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;
     lbl_802F1F40 = 1;
-    q_reset_gamedata();
+    u_reset_gamedata();
     func_80065C58();
     globalFrameCounter++;
     srand(OSGetTime());
@@ -91,7 +91,7 @@ void main(void)
             PERFEventStart(0);
 
         perf_start_timer(4);
-        q_bitmap_frame_reset();
+        u_bitmap_frame_reset();
         beginframe_main();
         perfInfo.unk0 = perf_stop_timer(4);
 

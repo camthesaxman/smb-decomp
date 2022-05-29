@@ -28,7 +28,7 @@ submode_mini_ranking_init_func:
 /* 800A7580 000A34A0  98 05 00 01 */	stb r0, 1(r5)
 /* 800A7584 000A34A4  98 05 00 02 */	stb r0, 2(r5)
 /* 800A7588 000A34A8  98 05 00 03 */	stb r0, 3(r5)
-/* 800A758C 000A34AC  4B F8 59 AD */	bl q_play_music
+/* 800A758C 000A34AC  4B F8 59 AD */	bl u_play_music
 /* 800A7590 000A34B0  3C 60 80 0A */	lis r3, lbl_800A7A6C@ha
 /* 800A7594 000A34B4  38 63 7A 6C */	addi r3, r3, lbl_800A7A6C@l
 /* 800A7598 000A34B8  38 00 00 A5 */	li r0, 0xa5
@@ -53,10 +53,10 @@ submode_mini_ranking_main_func:
 /* 800A75DC 000A34FC  38 80 00 01 */	li r4, 1
 /* 800A75E0 000A3500  93 A1 00 6C */	stw r29, 0x6c(r1)
 /* 800A75E4 000A3504  93 81 00 68 */	stw r28, 0x68(r1)
-/* 800A75E8 000A3508  4B F8 86 99 */	bl q_debug_set_cursor_pos
+/* 800A75E8 000A3508  4B F8 86 99 */	bl u_debug_set_cursor_pos
 /* 800A75EC 000A350C  38 7E 00 30 */	addi r3, r30, 0x30
 /* 800A75F0 000A3510  4C C6 31 82 */	crclr 6
-/* 800A75F4 000A3514  4B F8 8B B9 */	bl q_debug_printf
+/* 800A75F4 000A3514  4B F8 8B B9 */	bl u_debug_printf
 /* 800A75F8 000A3518  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800A75FC 000A351C  4C C6 31 82 */	crclr 6
 /* 800A7600 000A3520  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -64,7 +64,7 @@ submode_mini_ranking_main_func:
 /* 800A7608 000A3528  80 83 00 10 */	lwz r4, 0x10(r3)
 /* 800A760C 000A352C  38 7E 00 3C */	addi r3, r30, 0x3c
 /* 800A7610 000A3530  38 A0 00 0C */	li r5, 0xc
-/* 800A7614 000A3534  4B F8 8B 99 */	bl q_debug_printf
+/* 800A7614 000A3534  4B F8 8B 99 */	bl u_debug_printf
 /* 800A7618 000A3538  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 800A761C 000A353C  70 00 00 0A */	andi. r0, r0, 0xa
 /* 800A7620 000A3540  40 82 04 2C */	bne lbl_800A7A4C
@@ -729,7 +729,7 @@ lbl_800A7F7C:
 /* 800A7F80 000A3EA0  7C 19 00 00 */	cmpw r25, r0
 /* 800A7F84 000A3EA4  41 82 00 0C */	beq lbl_800A7F90
 /* 800A7F88 000A3EA8  38 60 00 6C */	li r3, 0x6c
-/* 800A7F8C 000A3EAC  4B F8 36 19 */	bl q_play_sound
+/* 800A7F8C 000A3EAC  4B F8 36 19 */	bl u_play_sound
 lbl_800A7F90:
 /* 800A7F90 000A3EB0  7F 20 07 74 */	extsb r0, r25
 /* 800A7F94 000A3EB4  98 1C 00 00 */	stb r0, 0(r28)
@@ -779,7 +779,7 @@ lbl_800A802C:
 /* 800A8030 000A3F50  7C 19 00 00 */	cmpw r25, r0
 /* 800A8034 000A3F54  41 82 00 0C */	beq lbl_800A8040
 /* 800A8038 000A3F58  38 60 00 6C */	li r3, 0x6c
-/* 800A803C 000A3F5C  4B F8 35 69 */	bl q_play_sound
+/* 800A803C 000A3F5C  4B F8 35 69 */	bl u_play_sound
 lbl_800A8040:
 /* 800A8040 000A3F60  7F 20 07 74 */	extsb r0, r25
 /* 800A8044 000A3F64  98 1C 00 00 */	stb r0, 0(r28)
@@ -823,7 +823,7 @@ lbl_800A80C8:
 /* 800A80CC 000A3FEC  38 60 00 66 */	li r3, 0x66
 /* 800A80D0 000A3FF0  38 04 FF FF */	addi r0, r4, -1
 /* 800A80D4 000A3FF4  98 1B 00 00 */	stb r0, 0(r27)
-/* 800A80D8 000A3FF8  4B F8 34 CD */	bl q_play_sound
+/* 800A80D8 000A3FF8  4B F8 34 CD */	bl u_play_sound
 /* 800A80DC 000A3FFC  48 00 01 28 */	b lbl_800A8204
 lbl_800A80E0:
 /* 800A80E0 000A4000  3A C0 00 00 */	li r22, 0
@@ -851,7 +851,7 @@ lbl_800A8120:
 lbl_800A8130:
 /* 800A8130 000A4050  4B FF FA 4D */	bl func_800A7B7C
 /* 800A8134 000A4054  38 60 00 6A */	li r3, 0x6a
-/* 800A8138 000A4058  4B F8 34 6D */	bl q_play_sound
+/* 800A8138 000A4058  4B F8 34 6D */	bl u_play_sound
 /* 800A813C 000A405C  48 00 00 C8 */	b lbl_800A8204
 lbl_800A8140:
 /* 800A8140 000A4060  38 00 00 20 */	li r0, 0x20
@@ -905,11 +905,11 @@ lbl_800A81E0:
 /* 800A81E8 000A4108  2C 00 00 04 */	cmpwi r0, 4
 /* 800A81EC 000A410C  40 80 00 10 */	bge lbl_800A81FC
 /* 800A81F0 000A4110  38 60 00 65 */	li r3, 0x65
-/* 800A81F4 000A4114  4B F8 33 B1 */	bl q_play_sound
+/* 800A81F4 000A4114  4B F8 33 B1 */	bl u_play_sound
 /* 800A81F8 000A4118  48 00 00 0C */	b lbl_800A8204
 lbl_800A81FC:
 /* 800A81FC 000A411C  38 60 00 6A */	li r3, 0x6a
-/* 800A8200 000A4120  4B F8 33 A5 */	bl q_play_sound
+/* 800A8200 000A4120  4B F8 33 A5 */	bl u_play_sound
 lbl_800A8204:
 /* 800A8204 000A4124  A0 1C 00 00 */	lhz r0, 0(r28)
 /* 800A8208 000A4128  54 00 05 AD */	rlwinm. r0, r0, 0, 0x16, 0x16
@@ -936,7 +936,7 @@ lbl_800A8240:
 /* 800A8258 000A4178  7C 9F 02 14 */	add r4, r31, r0
 /* 800A825C 000A417C  88 04 00 11 */	lbz r0, 0x11(r4)
 /* 800A8260 000A4180  98 1F 00 10 */	stb r0, 0x10(r31)
-/* 800A8264 000A4184  4B F8 33 41 */	bl q_play_sound
+/* 800A8264 000A4184  4B F8 33 41 */	bl u_play_sound
 lbl_800A8268:
 /* 800A8268 000A4188  80 1F 00 00 */	lwz r0, 0(r31)
 /* 800A826C 000A418C  54 00 07 BD */	rlwinm. r0, r0, 0, 0x1e, 0x1e
@@ -1805,7 +1805,7 @@ lbl_800A8E34:
 /* 800A8EC0 000A4DE0  FC 20 08 18 */	frsp f1, f1
 /* 800A8EC4 000A4DE4  4B FC 8C 9D */	bl set_text_pos
 /* 800A8EC8 000A4DE8  38 6D 95 04 */	addi r3, r13, lbl_802F16E4@sda21
-/* 800A8ECC 000A4DEC  4B FC 8F 8D */	bl q_draw_text
+/* 800A8ECC 000A4DEC  4B FC 8F 8D */	bl u_draw_text
 /* 800A8ED0 000A4DF0  C0 22 B4 D4 */	lfs f1, lbl_802F5CD4@sda21(r2)
 /* 800A8ED4 000A4DF4  4B FC 8C 49 */	bl func_80071B1C
 /* 800A8ED8 000A4DF8  3B 1E 00 0A */	addi r24, r30, 0xa
@@ -1828,7 +1828,7 @@ lbl_800A8F04:
 /* 800A8F14 000A4E34  FC 40 D8 18 */	frsp f2, f27
 /* 800A8F18 000A4E38  4B FC 8C 49 */	bl set_text_pos
 /* 800A8F1C 000A4E3C  38 6D 95 04 */	addi r3, r13, lbl_802F16E4@sda21
-/* 800A8F20 000A4E40  4B FC 8F 39 */	bl q_draw_text
+/* 800A8F20 000A4E40  4B FC 8F 39 */	bl u_draw_text
 /* 800A8F24 000A4E44  C0 22 B5 18 */	lfs f1, lbl_802F5D18@sda21(r2)
 /* 800A8F28 000A4E48  4B FC 8B F5 */	bl func_80071B1C
 /* 800A8F2C 000A4E4C  3C 60 FF 00 */	lis r3, 0xff00
@@ -1843,7 +1843,7 @@ lbl_800A8F04:
 /* 800A8F50 000A4E70  FC 20 08 18 */	frsp f1, f1
 /* 800A8F54 000A4E74  4B FC 8C 0D */	bl set_text_pos
 /* 800A8F58 000A4E78  38 6D 95 08 */	addi r3, r13, lbl_802F16E8@sda21
-/* 800A8F5C 000A4E7C  4B FC 8E FD */	bl q_draw_text
+/* 800A8F5C 000A4E7C  4B FC 8E FD */	bl u_draw_text
 /* 800A8F60 000A4E80  C0 22 B4 D4 */	lfs f1, lbl_802F5CD4@sda21(r2)
 /* 800A8F64 000A4E84  4B FC 8B B9 */	bl func_80071B1C
 /* 800A8F68 000A4E88  88 18 00 00 */	lbz r0, 0(r24)
@@ -1862,7 +1862,7 @@ lbl_800A8F8C:
 /* 800A8F94 000A4EB4  FC 40 D8 18 */	frsp f2, f27
 /* 800A8F98 000A4EB8  4B FC 8B C9 */	bl set_text_pos
 /* 800A8F9C 000A4EBC  38 6D 95 08 */	addi r3, r13, lbl_802F16E8@sda21
-/* 800A8FA0 000A4EC0  4B FC 8E B9 */	bl q_draw_text
+/* 800A8FA0 000A4EC0  4B FC 8E B9 */	bl u_draw_text
 /* 800A8FA4 000A4EC4  BA E1 00 1C */	lmw r23, 0x1c(r1)
 /* 800A8FA8 000A4EC8  80 01 00 6C */	lwz r0, 0x6c(r1)
 /* 800A8FAC 000A4ECC  CB E1 00 60 */	lfd f31, 0x60(r1)
@@ -2020,7 +2020,7 @@ func_800A916C:
 /* 800A91DC 000A50FC  FC 40 10 18 */	frsp f2, f2
 /* 800A91E0 000A5100  4B FC 89 81 */	bl set_text_pos
 /* 800A91E4 000A5104  38 7F 00 8C */	addi r3, r31, 0x8c
-/* 800A91E8 000A5108  4B FC 8C 71 */	bl q_draw_text
+/* 800A91E8 000A5108  4B FC 8C 71 */	bl u_draw_text
 /* 800A91EC 000A510C  C0 3F 00 4C */	lfs f1, 0x4c(r31)
 /* 800A91F0 000A5110  4B FC 89 2D */	bl func_80071B1C
 /* 800A91F4 000A5114  88 1F 00 0D */	lbz r0, 0xd(r31)
@@ -2041,7 +2041,7 @@ func_800A916C:
 /* 800A9230 000A5150  C0 5F 00 08 */	lfs f2, 8(r31)
 /* 800A9234 000A5154  4B FC 89 2D */	bl set_text_pos
 /* 800A9238 000A5158  38 7F 00 8C */	addi r3, r31, 0x8c
-/* 800A923C 000A515C  4B FC 8C 1D */	bl q_draw_text
+/* 800A923C 000A515C  4B FC 8C 1D */	bl u_draw_text
 /* 800A9240 000A5160  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800A9244 000A5164  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800A9248 000A5168  38 21 00 18 */	addi r1, r1, 0x18
@@ -2122,7 +2122,7 @@ lbl_800A9254:
 /* 800A9370 000A5290  7C 83 03 78 */	or r3, r4, r0
 /* 800A9374 000A5294  4B FC 87 85 */	bl set_text_add_color
 /* 800A9378 000A5298  7F A3 EB 78 */	mr r3, r29
-/* 800A937C 000A529C  4B FC 93 2D */	bl q_get_text_width
+/* 800A937C 000A529C  4B FC 93 2D */	bl u_get_text_width
 /* 800A9380 000A52A0  C8 02 B4 F8 */	lfd f0, lbl_802F5CF8@sda21(r2)
 /* 800A9384 000A52A4  C8 42 B5 70 */	lfd f2, lbl_802F5D70@sda21(r2)
 /* 800A9388 000A52A8  FC 00 00 72 */	fmul f0, f0, f1
@@ -2157,7 +2157,7 @@ lbl_800A9254:
 /* 800A93FC 000A531C  FC 40 10 18 */	frsp f2, f2
 /* 800A9400 000A5320  4B FC 87 61 */	bl set_text_pos
 /* 800A9404 000A5324  7F A3 EB 78 */	mr r3, r29
-/* 800A9408 000A5328  4B FC 8A 51 */	bl q_draw_text
+/* 800A9408 000A5328  4B FC 8A 51 */	bl u_draw_text
 /* 800A940C 000A532C  C0 21 00 6C */	lfs f1, 0x6c(r1)
 /* 800A9410 000A5330  4B FC 87 0D */	bl func_80071B1C
 /* 800A9414 000A5334  88 01 00 2D */	lbz r0, 0x2d(r1)
@@ -2178,7 +2178,7 @@ lbl_800A9254:
 /* 800A9450 000A5370  C0 41 00 28 */	lfs f2, 0x28(r1)
 /* 800A9454 000A5374  4B FC 87 0D */	bl set_text_pos
 /* 800A9458 000A5378  7F A3 EB 78 */	mr r3, r29
-/* 800A945C 000A537C  4B FC 89 FD */	bl q_draw_text
+/* 800A945C 000A537C  4B FC 89 FD */	bl u_draw_text
 /* 800A9460 000A5380  38 7E 04 2C */	addi r3, r30, 0x42c
 /* 800A9464 000A5384  4B FC A3 C5 */	bl draw_naomi_sprite
 /* 800A9468 000A5388  38 7E 04 7C */	addi r3, r30, 0x47c
@@ -2545,7 +2545,7 @@ lbl_800A98A0:
 /* 800A99D0 000A58F0  7C 83 03 78 */	or r3, r4, r0
 /* 800A99D4 000A58F4  4B FC 81 25 */	bl set_text_add_color
 /* 800A99D8 000A58F8  7E 83 A3 78 */	mr r3, r20
-/* 800A99DC 000A58FC  4B FC 8C CD */	bl q_get_text_width
+/* 800A99DC 000A58FC  4B FC 8C CD */	bl u_get_text_width
 /* 800A99E0 000A5900  C8 02 B4 F8 */	lfd f0, lbl_802F5CF8@sda21(r2)
 /* 800A99E4 000A5904  C8 42 B5 D8 */	lfd f2, lbl_802F5DD8@sda21(r2)
 /* 800A99E8 000A5908  FC 00 00 72 */	fmul f0, f0, f1
@@ -2580,7 +2580,7 @@ lbl_800A98A0:
 /* 800A9A5C 000A597C  FC 40 10 18 */	frsp f2, f2
 /* 800A9A60 000A5980  4B FC 81 01 */	bl set_text_pos
 /* 800A9A64 000A5984  7E 83 A3 78 */	mr r3, r20
-/* 800A9A68 000A5988  4B FC 83 F1 */	bl q_draw_text
+/* 800A9A68 000A5988  4B FC 83 F1 */	bl u_draw_text
 /* 800A9A6C 000A598C  C0 21 00 6C */	lfs f1, 0x6c(r1)
 /* 800A9A70 000A5990  4B FC 80 AD */	bl func_80071B1C
 /* 800A9A74 000A5994  88 01 00 2D */	lbz r0, 0x2d(r1)
@@ -2601,7 +2601,7 @@ lbl_800A98A0:
 /* 800A9AB0 000A59D0  C0 41 00 28 */	lfs f2, 0x28(r1)
 /* 800A9AB4 000A59D4  4B FC 80 AD */	bl set_text_pos
 /* 800A9AB8 000A59D8  7E 83 A3 78 */	mr r3, r20
-/* 800A9ABC 000A59DC  4B FC 83 9D */	bl q_draw_text
+/* 800A9ABC 000A59DC  4B FC 83 9D */	bl u_draw_text
 /* 800A9AC0 000A59E0  38 7B 04 2C */	addi r3, r27, 0x42c
 /* 800A9AC4 000A59E4  4B FC 9D 65 */	bl draw_naomi_sprite
 /* 800A9AC8 000A59E8  38 7B 04 7C */	addi r3, r27, 0x47c
@@ -4290,7 +4290,7 @@ func_800AB2A0:
 /* 800AB2D0 000A71F0  41 82 00 10 */	beq lbl_800AB2E0
 /* 800AB2D4 000A71F4  38 60 00 42 */	li r3, 0x42
 /* 800AB2D8 000A71F8  38 80 00 00 */	li r4, 0
-/* 800AB2DC 000A71FC  4B F8 1C 5D */	bl q_play_music
+/* 800AB2DC 000A71FC  4B F8 1C 5D */	bl u_play_music
 lbl_800AB2E0:
 /* 800AB2E0 000A7200  38 60 00 65 */	li r3, 0x65
 /* 800AB2E4 000A7204  4B FC 54 6D */	bl destroy_sprite_with_tag
@@ -4314,7 +4314,7 @@ lbl_800AB2E0:
 /* 800AB32C 000A724C  39 00 00 0E */	li r8, 0xe
 /* 800AB330 000A7250  48 00 1B FD */	bl preview_create
 /* 800AB334 000A7254  7F E3 FB 78 */	mr r3, r31
-/* 800AB338 000A7258  48 00 1D 39 */	bl q_preview_wait_then_do_something
+/* 800AB338 000A7258  48 00 1D 39 */	bl u_preview_wait_then_do_something
 /* 800AB33C 000A725C  80 01 00 24 */	lwz r0, 0x24(r1)
 /* 800AB340 000A7260  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 800AB344 000A7264  83 C1 00 18 */	lwz r30, 0x18(r1)
@@ -4365,7 +4365,7 @@ glabel func_800AB358
 /* 800AB3F0 000A7310  39 00 00 0E */	li r8, 0xe
 /* 800AB3F4 000A7314  48 00 1B 39 */	bl preview_create
 /* 800AB3F8 000A7318  7F A3 EB 78 */	mr r3, r29
-/* 800AB3FC 000A731C  48 00 1C 75 */	bl q_preview_wait_then_do_something
+/* 800AB3FC 000A731C  48 00 1C 75 */	bl u_preview_wait_then_do_something
 lbl_800AB400:
 /* 800AB400 000A7320  BB 21 00 14 */	lmw r25, 0x14(r1)
 /* 800AB404 000A7324  80 01 00 34 */	lwz r0, 0x34(r1)
@@ -5804,7 +5804,7 @@ func_800AC718:
 lbl_800AC834:
 /* 800AC834 000A8754  80 7D 00 00 */	lwz r3, 0(r29)
 /* 800AC838 000A8758  7C 63 E0 2E */	lwzx r3, r3, r28
-/* 800AC83C 000A875C  4B FC 5E 6D */	bl q_get_text_width
+/* 800AC83C 000A875C  4B FC 5E 6D */	bl u_get_text_width
 /* 800AC840 000A8760  80 7D 00 04 */	lwz r3, 4(r29)
 /* 800AC844 000A8764  6F C0 80 00 */	xoris r0, r30, 0x8000
 /* 800AC848 000A8768  90 01 00 74 */	stw r0, 0x74(r1)
@@ -6063,8 +6063,8 @@ lbl_800ACBB0:
 /* 800ACBB4 000A8AD4  90 0D A0 20 */	stw r0, lbl_802F2200@sda21(r13)
 /* 800ACBB8 000A8AD8  4E 80 00 20 */	blr
 
-.global q_read_dvd_file
-q_read_dvd_file:
+.global u_read_dvd_file
+u_read_dvd_file:
 /* 800ACBBC 000A8ADC  7C 08 02 A6 */	mflr r0
 /* 800ACBC0 000A8AE0  3C E0 80 0B */	lis r7, lbl_800ACBA0@ha
 /* 800ACBC4 000A8AE4  90 01 00 04 */	stw r0, 4(r1)
@@ -6174,7 +6174,7 @@ init_loading_gct:
 /* 800ACD14 000A8C34  39 00 00 0E */	li r8, 0xe
 /* 800ACD18 000A8C38  48 00 02 15 */	bl preview_create
 /* 800ACD1C 000A8C3C  38 61 00 48 */	addi r3, r1, 0x48
-/* 800ACD20 000A8C40  48 00 03 51 */	bl q_preview_wait_then_do_something
+/* 800ACD20 000A8C40  48 00 03 51 */	bl u_preview_wait_then_do_something
 /* 800ACD24 000A8C44  3B E0 00 00 */	li r31, 0
 lbl_800ACD28:
 /* 800ACD28 000A8C48  4B F7 5F 8D */	bl beginframe_main

@@ -246,7 +246,7 @@ void item_pilot_draw(struct Item *item)
         scale = 1.0f;
     else
         scale = (f30 / model->boundSphereRadius) * 1.5;
-    if (q_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
+    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
      && (item->subtype == 4 || item->subtype == 3))
@@ -287,13 +287,13 @@ void item_pilot_draw(struct Item *item)
                 r30_ = 0x85;
             }
             avdisp_set_bound_sphere_scale(scale);
-            q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[r30_].modelOffset);
         }
         else
         {
             avdisp_set_bound_sphere_scale(scale);
-            q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             if (f30 < 1.0f)
             {
                 if (f30 < 0.5)
@@ -335,7 +335,7 @@ void item_pilot_draw(struct Item *item)
             avdisp_set_post_multiply_color(f1, f2, f3, 1.0f);
             mathutil_mtxA_sq_from_identity();
             mathutil_mtxA_scale_s(f30);
-            q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_unculled_sort_translucent(minigameGma->modelEntries[0x77].modelOffset);
             avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
         }
@@ -381,7 +381,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
             sp178.unk24.y = sp178.unk24.x;
             sp178.unk24.z = sp178.unk24.y;
-            q_spawn_effect_object(&sp178);
+            u_spawn_effect_object(&sp178);
         }
     }
     else if (item->subtype == 3)
@@ -392,8 +392,8 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         lbl_802F1FD0 |= 0x42;
         if (lbl_802F1FF6 == 14)
             lbl_802F1FF4 = 15;
-        q_play_sound(0x10B);
-        q_play_sound(0x1C);
+        u_play_sound(0x10B);
+        u_play_sound(0x1C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         b->unk1C.y += 0.92592592592592582;
         lbl_802F1FE0 = 0x78;
@@ -405,7 +405,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         spCC.unk34.y = r31->pos.y - 1.0;
         spCC.unk34.z = r31->pos.z;
         spCC.unk24 = (Vec){3.5, 4.5, 3.5};
-        q_spawn_effect_object(&spCC);
+        u_spawn_effect_object(&spCC);
     }
     else if (item->subtype == 4)
     {
@@ -414,10 +414,10 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         int i;
 
         lbl_802F1FD0 |= 0x82;
-        q_play_sound(0x2F);
-        q_play_sound(0x1C);
+        u_play_sound(0x2F);
+        u_play_sound(0x1C);
         if (lbl_802F1FF6 == 14)
-            q_play_sound(0x16C);
+            u_play_sound(0x16C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         b->unk1C.y += 0.1388888888888889;
         b->unk1C.x += (rand() / 32767.0f) * 0.64814814814814814;
@@ -433,22 +433,22 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             sp20.unk40.x = b->unk1C.x + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.y = b->unk1C.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
             sp20.unk40.z = b->unk1C.z + ((rand() / 32767.0f) * 0.2 - 0.1);
-            q_spawn_effect_object(&sp20);
+            u_spawn_effect_object(&sp20);
         }
     }
     if (gameSubmode == 2)
         return;
     if (item->subtype == 2)
     {
-        q_play_sound(0x39);
+        u_play_sound(0x39);
         if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
-            q_play_sound(0x2820);
+            u_play_sound(0x2820);
     }
     else if (item->subtype == 0 || item->subtype == 1)
     {
-        q_play_sound(3);
+        u_play_sound(3);
         if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
-            q_play_sound(0x281F);
+            u_play_sound(0x281F);
     }
 }
 

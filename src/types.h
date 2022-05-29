@@ -502,7 +502,7 @@ typedef void (*Struct80206DEC_Func)(void);
 struct Struct80206DEC
 {
     s32 unk0;
-    float q_stageTimer;
+    float u_stageTimer;
     Struct80206DEC_Func unk8;
     u32 unkC;
     float unk10[3];
@@ -931,7 +931,7 @@ struct Struct80061BC4_sub
     u32 unk0;
     u32 unk4;
     u32 unk8;
-    GXTexMapID q_texMapId;
+    GXTexMapID u_texMapId;
     u8 filler10[4];
     u32 unk14;
     u8 filler18[0x2C-0x18];
@@ -964,12 +964,12 @@ enum
 struct Stobj
 { /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
     s32 id;
-    s16 q_some_id;
+    s16 u_some_id;
     u16 type;
-    u32 q_some_bitflag;
-    s16 q_mode;
-    s16 q_counter;
-    Point3d q_model_origin;
+    u32 u_some_bitflag;
+    s16 u_mode;
+    s16 u_counter;
+    Point3d u_model_origin;
     Point3d position;
     Point3d position_2; /* Copy of position? */
     float bounding_sphere_radius; /* Has something to do w/ collision */
@@ -979,22 +979,22 @@ struct Stobj
     float unk4c;
     float unk50;
     struct GmaModelHeader *model;
-    Point3d q_some_pos; /* Has something to do w/ position */
+    Point3d u_some_pos; /* Has something to do w/ position */
     Vec vel;
     S16Vec rot;
     short unk76;
     short unk78;
-    Point3d q_prev_pos;
-    S16Vec q_prev_rot;
+    Point3d u_prev_pos;
+    S16Vec u_prev_rot;
     float unk90;
     float unk94;
     float unk98;
     float unk9c;
     s8 animGroupId;
     void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
-    Point3d q_some_pos2;
-    Point3d q_local_pos;
-    Vec q_local_vel;
+    Point3d u_some_pos2;
+    Point3d u_local_pos;
+    Vec u_local_vel;
 };
 
 struct BgLightInfo
@@ -1061,7 +1061,7 @@ struct Struct802F1C10
 struct GBilLightGroup
 {
     char *name;
-    s8 q_bgLightGroupId;
+    s8 u_bgLightGroupId;
 };
 
 enum

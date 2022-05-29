@@ -2059,7 +2059,7 @@ void func_80036720(struct Struct8003699C_child_sub *arg0)
     float f1 = arg0->unkA + arg0->unk14;
     u32 r6 = arg0->unk0 & (1 << 2);
 
-    q_interpolate_joint_motion(temp_r31, r4, r5, f1, r6);
+    u_interpolate_joint_motion(temp_r31, r4, r5, f1, r6);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(temp_r31->unk168);
     mathutil_mtxA_get_translate_alt2(&temp_r31->unk1CC);

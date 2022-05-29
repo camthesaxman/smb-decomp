@@ -24,8 +24,8 @@ struct Preview
 void preview_create_with_alloc_img(struct Preview *preview, char *filename, int index, u32 width, u32 height, u32 format);
 void preview_create(struct Preview *preview, char *filename, int index, u32 width, u32 height, u32 format);
 void start_preview_image_read(struct Preview *preview, int index);
-void q_preview_wait_then_do_something(struct Preview *preview);
-void q_preview_maybe_invalidate_tex_cache(struct Preview *preview);
+void u_preview_wait_then_do_something(struct Preview *preview);
+void u_preview_maybe_invalidate_tex_cache(struct Preview *preview);
 void preview_free();
 
 #endif

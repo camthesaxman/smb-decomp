@@ -36,7 +36,7 @@ void relocation_load_module(char *name, struct RelModule *rel)
         if (rel->info == NULL)
             OSPanic("relocation.c", 64, "cannot OSAlloc\n");
 
-        if (q_read_dvd_file(&file, rel->info, size, 0) != 0)
+        if (u_read_dvd_file(&file, rel->info, size, 0) != 0)
         {
             rel->bss = OSAlloc(rel->info->bssSize != 0 ? rel->info->bssSize : 32);
             if (rel->bss == NULL)

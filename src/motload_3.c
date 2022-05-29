@@ -132,7 +132,7 @@ void func_80035648(struct Struct8003699C_child *a)
     float f1 = a->unk38 + a->unk40;
     u32 r6 = a->unk0 & (1 << 2);
 
-    q_interpolate_joint_motion(r31, r4, r5, f1, r6);
+    u_interpolate_joint_motion(r31, r4, r5, f1, r6);
 
     r30 = r31;
     mathutil_mtxA_from_mtx(a->unk54);

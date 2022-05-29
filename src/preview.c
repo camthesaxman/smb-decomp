@@ -98,14 +98,14 @@ void start_preview_image_read(struct Preview *preview, int index)
     }
 }
 
-void q_preview_wait_then_do_something(struct Preview *preview)
+void u_preview_wait_then_do_something(struct Preview *preview)
 {
     while (preview->isLoading)
         func_800ACA40();
-    q_preview_maybe_invalidate_tex_cache(preview);
+    u_preview_maybe_invalidate_tex_cache(preview);
 }
 
-void q_preview_maybe_invalidate_tex_cache(struct Preview *preview)
+void u_preview_maybe_invalidate_tex_cache(struct Preview *preview)
 {
     switch (preview->state)
     {

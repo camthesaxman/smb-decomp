@@ -216,7 +216,7 @@ struct BitmapGroup
 
 extern s32 spriteParamsBufCount;
 extern s32 lbl_802F1D04;
-extern struct TPL *q_unkBitmapTPL;
+extern struct TPL *u_unkBitmapTPL;
 
 extern struct BitmapGroup bitmapGroups[];
 extern char **bitmapNames[];
@@ -228,8 +228,8 @@ void bitmap_load_group(enum BitmapGroupID grpId);
 void bitmap_free_group(enum BitmapGroupID grpId);
 int bitmap_is_group_loaded(enum BitmapGroupID grpId);
 void bitmap_free_tpl(struct TPL *tpl);
-void q_bitmap_set_some_tpl(enum BitmapGroupID grpId);
-void q_bitmap_frame_reset(void);
+void u_bitmap_set_some_tpl(enum BitmapGroupID grpId);
+void u_bitmap_frame_reset(void);
 void bitmap_init_tev(void);
 void bitmap_main(void);
 // ? func_8002687C();
@@ -237,6 +237,6 @@ void bitmap_main(void);
 // ? bitmap_draw_normal_char();
 // ? bitmap_draw_char();
 void bitmap_draw_string(void);
-void q_draw_all_naomi_sprites(void);
+void u_draw_all_naomi_sprites(void);
 
 #endif

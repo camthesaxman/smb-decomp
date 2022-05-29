@@ -44,8 +44,8 @@ void mode_adv_func(void)
 {
     if (!(gameSubmode > SMD_ADV_TOP && gameSubmode < SMD_ADV_BOTTOM))
     {
-        q_debug_set_cursor_pos(10, 10);
-        q_debug_printf("sub_mode: error %d in Adv", gameSubmode);
+        u_debug_set_cursor_pos(10, 10);
+        u_debug_printf("sub_mode: error %d in Adv", gameSubmode);
         return;
     }
 
@@ -126,8 +126,8 @@ void submode_adv_logo_init_func(void)
     camera_set_state(27);
     unload_stage();
     call_bitmap_load_group(BMP_ADV);
-    q_logo_plus_sprite_something();
-    q_play_sound(0x21);
+    u_logo_plus_sprite_something();
+    u_play_sound(0x21);
     preload_stage_files(ST_001_PLAIN);
     light_init(0);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
@@ -196,7 +196,7 @@ static void update_av_logo(void)
         advLogoInfo.rollTimer++;
     update_av_logo_pos_and_sound();
     if (advLogoInfo.timer == 460)
-        q_play_sound(0x3B1F4);
+        u_play_sound(0x3B1F4);
     if (advLogoInfo.timer == 240)
         func_8002BFCC(0x51F2, 0x51F3);
 
@@ -240,7 +240,7 @@ void submode_adv_logo_main_func(void)
      && ANY_CONTROLLER_PRESSED(PAD_BUTTON_START))
     {
         func_8000FEC8(30);
-        q_play_music(2, 0);
+        u_play_music(2, 0);
     }
 
     if (modeCtrl.levelSetFlags & (1 << 13))
@@ -325,7 +325,7 @@ void submode_adv_demo_init_func(void)
     call_bitmap_load_group(BMP_ADV);
     hud_show_press_start_textbox(0);
     hud_show_adv_copyright_info(0);
-    q_play_music(2, 0);
+    u_play_music(2, 0);
     gameSubmodeRequest = SMD_ADV_DEMO_MAIN;
 }
 
@@ -497,7 +497,7 @@ static void banana_textbox_callback(struct TextBox *tbox)
     static float lbl_801741CC[] = { -125, -70, -10 };
 
     mathutil_mtxA_from_mtxB();
-    q_math_unk15(&ballInfo[tbox->id - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
+    u_math_unk15(&ballInfo[tbox->id - 1].ape->unk30, &spC, currentCameraStructPtr->sub28.unk38);
     tbox->x = spC.x;
     tbox->y = spC.y + lbl_801741CC[tbox->id - 1];
 }
@@ -526,7 +526,7 @@ void run_cutscene_script(void)
             if (!(modeCtrl.levelSetFlags & (1 << 13)))
             {
                 mathutil_mtxA_from_mtxB();
-                q_math_unk15(&ballInfo[cmd->param].ape->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
+                u_math_unk15(&ballInfo[cmd->param].ape->unk30, &sp3C, currentCameraStructPtr->sub28.unk38);
                 memset(&tbox, 0, sizeof(tbox));
                 tbox.x = sp3C.x;
                 tbox.y = sp3C.y;
@@ -664,7 +664,7 @@ void run_cutscene_script(void)
             func_8001898C(0, cmd->param, &sp8);
             break;
         case 28:
-            q_show_eieipu_sprite(cmd->param);
+            u_show_eieipu_sprite(cmd->param);
             break;
         case 29:
             sprite = find_sprite_with_tag(SPRITE_TAG_EIEIPU);
@@ -997,7 +997,7 @@ void lbl_8000F790(struct Ape *ape, int b)
     switch (b)
     {
     case 3:
-        q_ape_free(ape);
+        u_ape_free(ape);
         return;
     }
     if (advDemoInfo.flags & (1 << 5))
@@ -1033,8 +1033,8 @@ void lbl_8000F790(struct Ape *ape, int b)
             f31 = mathutil_vec_len(&ball->vel);
         func_80036EB8(ape);
         mathutil_mtxA_to_quat(&ape->unk60);
-        q_choose_ape_anim(ape, f31);
-        q_do_ape_anim(ape);
+        u_choose_ape_anim(ape, f31);
+        u_do_ape_anim(ape);
         if (!(ape->flags & (1 << 3)))
             func_8003765C(ape);
         if (advDemoInfo.unk8 >= 0x682 && advDemoInfo.unk8 < 0x6CC)
@@ -1118,9 +1118,9 @@ void lbl_8000F790(struct Ape *ape, int b)
                 break;
             }
         }
-        q_set_ape_anim(ape, r4, r5, r6, 0.0f);
+        u_set_ape_anim(ape, r4, r5, r6, 0.0f);
         ape->unk3C = (Vec){ 0.0f, -0.12f, 0.0f };
-        q_do_ape_anim(ape);
+        u_do_ape_anim(ape);
         if (advDemoInfo.flags & (1 << 9))
         {
             s16 sp30[] = { 0x2E00, 0xE100, 0x1500, 0x0000 };
@@ -1200,9 +1200,9 @@ static void func_8000FEC8(int a)
         sprite->userVar = 1;
 
     hud_show_title_banner(a);
-    q_play_sound(0xA022);
+    u_play_sound(0xA022);
     if (lbl_802014E0.unk0 != 2)
-        q_play_music(3, 0);
+        u_play_music(3, 0);
     modeCtrl.levelSetFlags |= (1 << 13);
     lbl_802F1BA8 = a;
 }
@@ -1280,8 +1280,8 @@ void submode_adv_title_reinit_func(void)
     }
     load_stage(ST_150_TUTORIAL);
     light_init(0);
-    q_play_sound(0xA022);
-    q_play_music(3, 0);
+    u_play_sound(0xA022);
+    u_play_music(3, 0);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
 }
@@ -1346,7 +1346,7 @@ void submode_adv_title_main_func(void)
     {
         start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
         textbox_set_properties(0, 20, NULL);
-        q_play_music(modeCtrl.submodeTimer, 2);
+        u_play_music(modeCtrl.submodeTimer, 2);
     }
     if (--modeCtrl.submodeTimer <= 0)
     {
@@ -1421,7 +1421,7 @@ void submode_adv_info_init_func(void)
     advTutorialInfo.stickXRot = 0;
     advTutorialInfo.stickZRot = 0;
     advTutorialInfo.transitionValue = 0.0f;
-    q_play_music(0xFFF60014, 0);
+    u_play_music(0xFFF60014, 0);
     gameSubmodeRequest = SMD_ADV_INFO_MAIN;
 }
 
@@ -1546,7 +1546,7 @@ void submode_adv_info_main_func(void)
     {
         infoWork.flags &= ~INFO_FLAG_FALLOUT;
         camera_set_state(4);
-        q_play_sound(29);
+        u_play_sound(29);
     }
     if (modeCtrl.submodeTimer == 583)
     {
@@ -1627,7 +1627,7 @@ void submode_adv_info_main_func(void)
             advTutorialInfo.state = cmd->param;
             break;
         case INFOCMD_PLAY_SOUND:
-            q_play_sound(cmd->param);
+            u_play_sound(cmd->param);
             break;
         }
     }
@@ -1644,7 +1644,7 @@ void submode_adv_info_main_func(void)
         textbox_set_properties(0, 20, NULL);
         textbox_set_properties(1, 20, NULL);
         textbox_set_properties(2, 20, NULL);
-        q_play_music(modeCtrl.submodeTimer, 2);
+        u_play_music(modeCtrl.submodeTimer, 2);
         sprite = find_sprite_with_tag(17);
         if (sprite != NULL)
             sprite->userVar = 1;
@@ -1681,7 +1681,7 @@ void submode_adv_game_ready_init_func(void)
         return;
     }
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    q_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
+    u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
     currStageId = sp8.stageId;
     event_finish_all();
     call_bitmap_load_group(BMP_RNK);
@@ -1718,7 +1718,7 @@ void submode_adv_game_ready_init_func(void)
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
     camera_set_state(10);
-    q_show_adv_ready_hud();
+    u_show_adv_ready_hud();
     func_800885EC();
     func_80088E90();
     hud_show_press_start_textbox(0);
@@ -1728,7 +1728,7 @@ void submode_adv_game_ready_init_func(void)
     lbl_802F1BAC = 0;
     r4 = backgroundSongs[backgroundInfo.bgId];
     if (r4 != -1 && r4 != lbl_802014E0.unk0 && r4 + 1 != lbl_802014E0.unk0)
-        q_play_music(0xFFF60000 | r4, 0);
+        u_play_music(0xFFF60000 | r4, 0);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_ADV_GAME_READY_MAIN;
 }
@@ -1757,7 +1757,7 @@ void submode_adv_game_ready_main_func(void)
     {
         struct ReplayInfo sp8;
 
-        q_get_replay_info(func_80011A84(), &sp8);
+        u_get_replay_info(func_80011A84(), &sp8);
         if (gamePauseStatus & (1 << 2))
             printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
         preload_stage_files(sp8.stageId);
@@ -1890,7 +1890,7 @@ void submode_adv_ranking_main_func(void)
     {
         struct ReplayInfo sp50;
 
-        q_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
+        u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
         if (sp50.flags & (1 << 7))
         {
             r31->state = 5;
@@ -1922,7 +1922,7 @@ void submode_adv_ranking_main_func(void)
             event_finish(EVENT_BALL);
             event_finish(EVENT_SOUND);
             lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80011B98();
-            q_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
+            u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
             infoWork.flags |= INFO_FLAG_04;
@@ -1963,7 +1963,7 @@ void submode_adv_ranking_main_func(void)
                 f1 = (int)((float)modeCtrl.submodeTimer * 0.5);
             lbl_80250A68.unk10 = f1;
             animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
-            q_get_replay_info(func_80011A84(), &sp8);
+            u_get_replay_info(func_80011A84(), &sp8);
             if (gamePauseStatus & (1 << 2))
                 printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
             preload_stage_files(sp8.stageId);
@@ -1989,7 +1989,7 @@ void submode_adv_ranking_main_func(void)
     {
         start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), 30);
         textbox_set_properties(0, 20, NULL);
-        q_play_music(modeCtrl.submodeTimer, 2);
+        u_play_music(modeCtrl.submodeTimer, 2);
     }
 
     r30 = currentBallStructPtr;
@@ -2004,7 +2004,7 @@ void submode_adv_ranking_main_func(void)
             {
                 r29->flags &= ~0x500;
                 r29->flags |= 0x200;
-                q_play_sound(0x126);
+                u_play_sound(0x126);
             }
         }
     }
@@ -2029,7 +2029,7 @@ static int func_800119C0(void)
 
     for (i = lbl_802F02EC + 1; i < 7; i++)
     {
-        q_get_replay_info(i, &sp8);
+        u_get_replay_info(i, &sp8);
         if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
             break;
     }
@@ -2037,13 +2037,13 @@ static int func_800119C0(void)
     {
         for (i = 0; i < lbl_802F02EC; i++)
         {
-            q_get_replay_info(i, &sp8);
+            u_get_replay_info(i, &sp8);
             if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
                 break;
         }
     }
     lbl_802F02EC = i;
-    q_get_replay_info(lbl_802F02EC, &sp8);
+    u_get_replay_info(lbl_802F02EC, &sp8);
     if (sp8.stageId == 0)
         sp8.stageId = 1;  // pointless
     return lbl_802F02EC;
@@ -2058,7 +2058,7 @@ static int func_80011A84(void)
     {
         if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
             continue;
-        q_get_replay_info(i, &sp8);
+        u_get_replay_info(i, &sp8);
         if (sp8.flags & 0x83)
             break;
     }
@@ -2068,7 +2068,7 @@ static int func_80011A84(void)
         {
             if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
                 continue;
-            q_get_replay_info(i, &sp8);
+            u_get_replay_info(i, &sp8);
             if (sp8.flags & 0x83)
                 break;
         }
@@ -2076,7 +2076,7 @@ static int func_80011A84(void)
             i = lbl_802F02EC;
     }
     lbl_802F02F0 = i;
-    q_get_replay_info(lbl_802F02F0, &sp8);
+    u_get_replay_info(lbl_802F02F0, &sp8);
     if (sp8.stageId == ST_000_DUMMY)
         sp8.stageId = ST_001_PLAIN;  // pointless
     lbl_802F1BC4 = 1;
@@ -2117,7 +2117,7 @@ void submode_adv_start_init_func(void)
     textbox_set_properties(1, 20, NULL);
     textbox_set_properties(2, 20, NULL);
     textbox_set_properties(3, 20, NULL);
-    q_play_music(modeCtrl.submodeTimer, 2);
+    u_play_music(modeCtrl.submodeTimer, 2);
     if (find_sprite_with_tag(17) != NULL
      && find_sprite_with_tag(17)->userVar == 0)
         find_sprite_with_tag(17)->userVar = 1;

@@ -56,7 +56,7 @@ void gxutil_set_vtx_attrs(u32 attrs)
 void gxutil_dummy(void) {}
 
 #ifdef __MWERKS__
-asm void q_gxutil_upload_some_mtx(Mtx a, int b)
+asm void u_gxutil_upload_some_mtx(Mtx a, int b)
 {
     nofralloc
     mr r5, r4
@@ -109,7 +109,7 @@ const struct FogParams bgFogParamsTable[] =
 
 struct FogInfo fogInfo;
 
-void q_init_bg_fog_params(void)
+void u_init_bg_fog_params(void)
 {
     const struct FogParams *params = bgFogParamsTable;
 
@@ -147,7 +147,7 @@ void func_8009AB5C(void)
         avdisp_set_fog_params(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
         avdisp_set_fog_color(fogInfo.r, fogInfo.g, fogInfo.b);
         func_80033B58(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
-        q_nl2ngc_set_some_other_color(fogInfo.r, fogInfo.g, fogInfo.b);
+        u_nl2ngc_set_some_other_color(fogInfo.r, fogInfo.g, fogInfo.b);
     }
 }
 
@@ -194,7 +194,7 @@ void gxutil_set_line_width(int width)
     lineInfo.lineWidth = width;
 }
 
-void q_gxutil_set_some_line_params(int a, int b, int c, int d)
+void u_gxutil_set_some_line_params(int a, int b, int c, int d)
 {
     lineInfo.blendMode = a;
     lineInfo.blendSrcFactor = b;

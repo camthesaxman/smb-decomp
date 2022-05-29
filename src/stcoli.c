@@ -88,7 +88,7 @@ void collide_ball_with_stage(struct PhysicsBall *ball, struct Stage *stage)
     if (ball->animGroupId != 0)
         tf_physball_to_anim_group_space(ball, 0);
     if (dynamicStageParts != NULL)
-        q_collide_ball_with_dynstageparts(ball, dynamicStageParts);
+        u_collide_ball_with_dynstageparts(ball, dynamicStageParts);
 }
 
 s16 *coligrid_lookup(struct StageAnimGroup *stageAg, f32 x, f32 z)
@@ -1061,7 +1061,7 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
     struct ColiRect *coliRect;
     s32 i;
 
-    mathutil_mtxA_from_translate(&stobj->q_some_pos);
+    mathutil_mtxA_from_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_x(stobj->rot.x);
     mathutil_mtxA_rotate_y(stobj->rot.y);
     mathutil_mtxA_rotate_z(stobj->rot.z);
@@ -1073,15 +1073,15 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
         collide_ball_with_rect(ball, coliRect);
 
     temp_f1 = 0.75 * (ball->pos.z - ballPos.z);
-    stobj->q_local_pos.z -= temp_f1;
+    stobj->u_local_pos.z -= temp_f1;
     ball->pos.z += temp_f1;
-    temp_f2 = stobj->q_local_vel.z;
+    temp_f2 = stobj->u_local_vel.z;
     if ((temp_f1 * temp_f2) > 0.0)
     {
-        stobj->q_local_vel.z *= 0.5;
-        ball->vel.z = ball->vel.z + (2.5 * (temp_f2 - stobj->q_local_vel.z));
+        stobj->u_local_vel.z *= 0.5;
+        ball->vel.z = ball->vel.z + (2.5 * (temp_f2 - stobj->u_local_vel.z));
     }
-    mathutil_mtxA_from_translate(&stobj->q_some_pos);
+    mathutil_mtxA_from_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_x(stobj->rot.x);
     mathutil_mtxA_rotate_y(stobj->rot.y);
     mathutil_mtxA_rotate_z(stobj->rot.z);
@@ -1792,7 +1792,7 @@ void draw_dynamic_stage_collision(struct DynamicStagePart *dynStageParts);
 void draw_collision_triangle(struct StageColiTri *tri);
 void stcoli_sub29(struct StageColiTri *tri, Point3d *arg1, Point3d *arg2, Point3d *arg3);
 
-void q_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicStagePart *dynStageParts)
+void u_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicStagePart *dynStageParts)
 {
     u32 (*raycastDown)(Point3d *, Point3d *, Vec *) = dynStageParts[0].raycastDownFunc;
     struct StageColiTri *tri;
@@ -1884,7 +1884,7 @@ void q_collide_ball_with_dynstageparts(struct PhysicsBall *ball, struct DynamicS
     }
 }
 
-void q_draw_stage_collision(void)
+void u_draw_stage_collision(void)
 {
     Mtx sp24;
     Vec sp18;
@@ -1944,7 +1944,7 @@ void q_draw_stage_collision(void)
             mathutil_mtxA_scale(&cone->scale);
             scale = MAX(cone->scale.x, cone->scale.y);
             scale = MAX(scale, cone->scale.z);
-            q_nl2ngc_set_scale(scale);
+            u_nl2ngc_set_scale(scale);
             nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_CONE));
         }
 
@@ -1954,7 +1954,7 @@ void q_draw_stage_collision(void)
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             mathutil_mtxA_translate(&sphere->pos);
             mathutil_mtxA_scale_xyz(sphere->radius, sphere->radius, sphere->radius);
-            q_nl2ngc_set_scale(sphere->radius);
+            u_nl2ngc_set_scale(sphere->radius);
             nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_SPHERE));
         }
 
@@ -1967,7 +1967,7 @@ void q_draw_stage_collision(void)
             mathutil_mtxA_rotate_y(cylinder->rot.y);
             mathutil_mtxA_rotate_x(cylinder->rot.x);
             mathutil_mtxA_scale_xyz(cylinder->radius, cylinder->height, cylinder->radius);
-            q_nl2ngc_set_scale(MAX(cylinder->radius, cylinder->height));
+            u_nl2ngc_set_scale(MAX(cylinder->radius, cylinder->height));
             nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_CYLIN));
         }
     }
@@ -2055,7 +2055,7 @@ void draw_collision_triangle(struct StageColiTri *tri)
     f1 = mathutil_sum_of_sq_2(tri->vert3.x, tri->vert3.y);
     if (f0 > f1)
         f1 = f0;
-    q_nl2ngc_set_scale(f1);
+    u_nl2ngc_set_scale(f1);
     nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
 }
 
