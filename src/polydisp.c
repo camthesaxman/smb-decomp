@@ -39,7 +39,7 @@ FORCE_BSS_ORDER(lbl_801EEC90)
 
 void polydisp_init(void)
 {
-    g_init_bg_fog_params();
+    q_init_bg_fog_params();
 }
 
 static inline void show_loading_msg(void)
@@ -48,17 +48,17 @@ static inline void show_loading_msg(void)
     int chr;
     int asterisks;
 
-    g_debug_set_cursor_pos(14, 15);
+    q_debug_set_cursor_pos(14, 15);
     chr = throbber[(unpausedFrameCounter/2) % 4];
-    g_debug_printf("%c", chr);
-    g_debug_print("NOW LOADING");
-    g_debug_printf("%c", chr);
-    g_debug_set_cursor_pos(15, 16);
-    g_debug_print("LEFT: ");
+    q_debug_printf("%c", chr);
+    q_debug_print("NOW LOADING");
+    q_debug_printf("%c", chr);
+    q_debug_set_cursor_pos(15, 16);
+    q_debug_print("LEFT: ");
     asterisks = get_load_queue_count();
     while (asterisks > 0)
     {
-        g_debug_print("*");
+        q_debug_print("*");
         asterisks--;
     }
 }
@@ -105,7 +105,7 @@ void polydisp_main(void)
 void draw_3d_scene(void)
 {
     ord_tbl_reset();
-    g_draw_naomi_ball();
+    q_draw_naomi_ball();
     switch (gameMode)
     {
     default:
@@ -230,7 +230,7 @@ void draw_adv_3d_scene(void)
         break;
     case SMD_ADV_INFO_MAIN:
         draw_normal_game_scene();
-        g_draw_tutorial_button_and_joystick();
+        q_draw_tutorial_button_and_joystick();
         break;
     case SMD_ADV_RANKING_INIT:
     case SMD_ADV_RANKING_MAIN:
@@ -265,12 +265,12 @@ void draw_intro_av_logo(void)
     mathutil_mtxA_translate(&advLogoInfo.pos);
     mathutil_mtxA_rotate_x(advLogoInfo.xrot);
     mathutil_mtxA_rotate_z(advLogoInfo.zrot);
-    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_av_ball));
+    q_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_av_ball));
 }
 
 void draw_adv_demo_scene(void)
 {
-    g_draw_ball_shadow();
+    q_draw_ball_shadow();
     func_80054FF0();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
@@ -308,7 +308,7 @@ void draw_adv_demo_scene(void)
             ballInfo[0].ape->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
-        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
+        q_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
     }
 
     // Draws old arcade ball. Leftover from Monkey Ball?
@@ -323,7 +323,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_translate(&r27->pos);
             mathutil_mtxA_rotate_y(r27->yrot);
             mathutil_mtxA_rotate_x(r27->xrot);
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, r27->modelId));
+            q_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, r27->modelId));
         }
     }
 
@@ -358,17 +358,17 @@ void draw_adv_demo_scene(void)
     }
     draw_monkey();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
-        g_something_with_lens_flare_1(0);
+        q_something_with_lens_flare_1(0);
     draw_test_camera_target();
     ord_tbl_draw_nodes();
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
-        g_something_with_lens_flare_2(0);
+        q_something_with_lens_flare_2(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(8);
     func_80017FCC();
 }
 
-void g_draw_tutorial_button_and_joystick(void)
+void q_draw_tutorial_button_and_joystick(void)
 {
     Vec sp48;
     u8 filler[16];
@@ -402,7 +402,7 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_translate(&sp48);
     mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - advTutorialInfo.transitionValue));
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
-    g_nl2ngc_set_scale(baseScale);
+    q_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].modelOffset);
@@ -443,7 +443,7 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_x(CLAMP(stickXRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_rotate_z(CLAMP(stickZRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_scale_s(0.99f);
-    g_nl2ngc_set_scale(0.99f);
+    q_nl2ngc_set_scale(0.99f);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
@@ -455,7 +455,7 @@ void g_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * advTutorialInfo.transitionValue));
     mathutil_mtxA_translate_xyz(0.0f, 0.00058f, 0.0f);
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
-    g_nl2ngc_set_scale(baseScale);
+    q_nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].modelOffset);
@@ -464,7 +464,7 @@ void g_draw_tutorial_button_and_joystick(void)
     if (advTutorialInfo.state == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
-        g_nl2ngc_set_scale(1.0f);
+        q_nl2ngc_set_scale(1.0f);
     }
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -552,7 +552,7 @@ void func_8000C388(void)
         v3 *= 0.2;
         advTutorialInfo.stickXRot = advTutorialInfo.stickXRot + 0.2 * ((float)r30 - (float)advTutorialInfo.stickXRot);
         advTutorialInfo.stickZRot = advTutorialInfo.stickZRot + 0.2 * ((float)v3 - (float)advTutorialInfo.stickZRot);
-        g_draw_tutorial_button_and_joystick();
+        q_draw_tutorial_button_and_joystick();
     }
 }
 
@@ -572,10 +572,10 @@ void draw_normal_game_scene(void)
                     continue;
             }
             currentBallStructPtr = &ballInfo[i];
-            g_call_camera_apply_viewport(i);
-            g_draw_ball_shadow();
+            q_call_camera_apply_viewport(i);
+            q_draw_ball_shadow();
             func_80054FF0();
-            g_reset_light_group_stack(i);
+            q_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
             draw_monkey();
@@ -603,11 +603,11 @@ void draw_normal_game_scene(void)
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
                 ball_draw();
             if (backgroundInfo.unk8 & 1)
-                g_something_with_lens_flare_1(i);
+                q_something_with_lens_flare_1(i);
             draw_test_camera_target();
             ord_tbl_draw_nodes();
             if (backgroundInfo.unk8 & 1)
-                g_something_with_lens_flare_2(i);
+                q_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(8);
         }
@@ -628,8 +628,8 @@ void func_8000C7A4(void)
          && (cameraInfo[i].flags & (1 << 6)))
         {
             currentBallStructPtr = &ballInfo[i];
-            g_call_camera_apply_viewport(i);
-            g_reset_light_group_stack(i);
+            q_call_camera_apply_viewport(i);
+            q_reset_light_group_stack(i);
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
                 stage_draw();
@@ -681,7 +681,7 @@ void func_8000C8D4(void)
         mathutil_mtxA_get_translate_alt(&sp8);
         if (sp8.z < -4.0 * f27)
             mathutil_mtxA_scale_s(sp8.z / (-4.0 * f27));
-        g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+        q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lbl_802F02E0[i]].modelOffset);
     }
 }
@@ -696,27 +696,27 @@ void draw_continue_scene(void)
     Mtx sp2C;
 
     lbl_801EEC90.unk0 |= 1;
-    g_call_camera_apply_viewport(modeCtrl.currPlayer);
-    g_draw_ball_shadow();
+    q_call_camera_apply_viewport(modeCtrl.currPlayer);
+    q_draw_ball_shadow();
     func_80054FF0();
-    g_reset_light_group_stack(modeCtrl.currPlayer);
+    q_reset_light_group_stack(modeCtrl.currPlayer);
     draw_monkey();
 
-    if (g_stageBoxModel != NULL)
+    if (q_stageBoxModel != NULL)
     {
         r31 = (void *)backgroundInfo.unk8C;
         if (r31 != NULL)
-            r30 = g_avdisp_set_some_func_1(r31);
+            r30 = q_avdisp_set_some_func_1(r31);
         mathutil_mtxA_from_mtxB();
-        g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        avdisp_draw_model_unculled_sort_translucent(g_stageBoxModel);
+        q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+        avdisp_draw_model_unculled_sort_translucent(q_stageBoxModel);
         if (r31 != NULL)
-            g_avdisp_set_some_func_1(r30);
+            q_avdisp_set_some_func_1(r30);
     }
     else
     {
         mathutil_mtxA_from_mtxB();
-        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BOX));
+        q_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BOX));
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -757,15 +757,15 @@ void draw_continue_scene(void)
         f26 = 0.9f;
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
-        g_nl2ngc_set_scale(MAX(f26, f27));
-        g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
+        q_nl2ngc_set_scale(MAX(f26, f27));
+        q_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
         func_80030BB8(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
-        g_nl2ngc_set_scale(0.25f);
-        g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+        q_nl2ngc_set_scale(0.25f);
+        q_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
     }
     else
     {
@@ -807,8 +807,8 @@ void draw_continue_scene(void)
             sp2C[2][3] = sp14.z;
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
-            g_nl2ngc_set_scale(4.6f);
-            g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
+            q_nl2ngc_set_scale(4.6f);
+            q_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             func_80030BB8(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
@@ -817,8 +817,8 @@ void draw_continue_scene(void)
             mathutil_mtxA_rotate_y(mathutil_atan2(sp8.x, sp8.z) - 32768);
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
-            g_nl2ngc_set_scale(0.25f);
-            g_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+            q_nl2ngc_set_scale(0.25f);
+            q_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         }
     }
 
@@ -827,8 +827,8 @@ void draw_continue_scene(void)
 
 void draw_extra_scene(void)
 {
-    g_call_camera_apply_viewport(modeCtrl.currPlayer);
-    g_draw_ball_shadow();
+    q_call_camera_apply_viewport(modeCtrl.currPlayer);
+    q_draw_ball_shadow();
     func_80054FF0();
     draw_monkey();
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -856,10 +856,10 @@ void draw_results_scene(void)
             if (cameraInfo[i].flags & (1 << 6))
                 lbl_801EEC90.unk0 |= 8;
             currentBallStructPtr = &ballInfo[i];
-            g_call_camera_apply_viewport(i);
-            g_draw_ball_shadow();
+            q_call_camera_apply_viewport(i);
+            q_draw_ball_shadow();
             func_80054FF0();
-            g_reset_light_group_stack(i);
+            q_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(4);
             draw_monkey();
@@ -884,11 +884,11 @@ void draw_results_scene(void)
             if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
                 ball_draw();
             if (backgroundInfo.unk8 & 1)
-                g_something_with_lens_flare_1(i);
+                q_something_with_lens_flare_1(i);
             draw_test_camera_target();
             ord_tbl_draw_nodes();
             if (backgroundInfo.unk8 & 1)
-                g_something_with_lens_flare_2(i);
+                q_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
                 func_80095398(8);
             if (cameraInfo[i].flags & (1 << 6))
@@ -1221,7 +1221,7 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_translate_xyz(0.00094f, 0.00519f, -0.01f);
     scale = 0.0007f;
     mathutil_mtxA_scale_s(scale);
-    g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+    q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     avdisp_set_bound_sphere_scale(scale);
     avdisp_enable_custom_tex_mtx(1);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[BOMB_FUSE].modelOffset);
@@ -1342,7 +1342,7 @@ void draw_monkey(void)
 void func_8000E134(void)
 {
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
-        g_ball_shadow_something_1();
+        q_ball_shadow_something_1();
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         item_draw_shadows();
 }

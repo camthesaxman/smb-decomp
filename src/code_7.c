@@ -64,7 +64,7 @@ void func_800249D4(void)
 }
 
 #pragma force_active on
-int g_load_minigame_graphics(int index)
+int q_load_minigame_graphics(int index)
 {
     struct GfxFileInfo *gfx;
     int success = FALSE;
@@ -74,7 +74,7 @@ int g_load_minigame_graphics(int index)
     else if (index > ARRAY_COUNT(minigameGfxFiles) - 1)
         index = ARRAY_COUNT(minigameGfxFiles) - 1;
     gfx = &minigameGfxFiles[index];
-    g_free_minigame_graphics();
+    q_free_minigame_graphics();
     if (gfx->tplName != NULL)
         minigameTpl = load_tpl(gfx->tplName);
     if (gfx->gmaName != NULL)
@@ -85,7 +85,7 @@ int g_load_minigame_graphics(int index)
 }
 #pragma force_active reset
 
-void g_free_minigame_graphics(void)
+void q_free_minigame_graphics(void)
 {
     if (minigameTpl != NULL || minigameGma != NULL)
     {

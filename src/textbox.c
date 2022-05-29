@@ -99,15 +99,15 @@ static void update_textbox(int id, struct TextBox *tbox)
                     break;
                 if (tbox->numRows == 1)
                 {
-                    numColumns = g_get_ascii_text_width(line->text);
-                    f30 = g_get_jpn_text_width(FONT_JAP_24x24_2P, line->text);
+                    numColumns = q_get_ascii_text_width(line->text);
+                    f30 = q_get_jpn_text_width(FONT_JAP_24x24_2P, line->text);
                 }
                 else
                 {
                     float f0;
-                    if (numColumns < g_get_ascii_text_width(line->text))
-                        numColumns = g_get_ascii_text_width(line->text);
-                    f0 = g_get_jpn_text_width(FONT_JAP_24x24_2P, line->text);
+                    if (numColumns < q_get_ascii_text_width(line->text))
+                        numColumns = q_get_ascii_text_width(line->text);
+                    f0 = q_get_jpn_text_width(FONT_JAP_24x24_2P, line->text);
                     if (f30 < f0)
                         f30 = f0;
                 }
@@ -201,7 +201,7 @@ static void update_textbox(int id, struct TextBox *tbox)
             if (i < tbox->numRows
              && (i == 0 || textBoxLines[id][i - 1].unk0 != 2))
                 line->unk82 += 2;
-            if (line->unk82 >= g_get_ascii_text_width(line->text))
+            if (line->unk82 >= q_get_ascii_text_width(line->text))
                 line->unk0 = 1;
         }
     }
@@ -316,20 +316,20 @@ static void draw_textbox(int a, struct TextBox *tbox)
             if (col == -1)  // left border
             {
                 if (row == -1)
-                    g_draw_text("\x01");  // draw top left corner
+                    q_draw_text("\x01");  // draw top left corner
                 else if (row == numRows)
-                    g_draw_text("\x0B");  // draw bottom left corner
+                    q_draw_text("\x0B");  // draw bottom left corner
                 else
-                    g_draw_text("\x06");  // draw left border
+                    q_draw_text("\x06");  // draw left border
             }
             else if (col == numColumns)  // right border
             {
                 if (row == -1)
-                    g_draw_text("\x03");  // draw top right corner
+                    q_draw_text("\x03");  // draw top right corner
                 else if (row == numRows)
-                    g_draw_text("\x0D");  // draw bottom right corner
+                    q_draw_text("\x0D");  // draw bottom right corner
                 else
-                    g_draw_text("\x08");  // draw right border
+                    q_draw_text("\x08");  // draw right border
 
             }
             else if (tbox->style == TEXTBOX_STYLE_SPIKY
@@ -340,11 +340,11 @@ static void draw_textbox(int a, struct TextBox *tbox)
                 {
                     set_text_scale((tbox->unk10 / f1 / 24.0f) * f26, f25);
                     if (row == -1)
-                        g_draw_text("\x02");  // draw top border
+                        q_draw_text("\x02");  // draw top border
                     else if (row == numRows)
-                        g_draw_text("\x0C");  // draw bottom border
+                        q_draw_text("\x0C");  // draw bottom border
                     else
-                        g_draw_text("\x07");  // draw inside background
+                        q_draw_text("\x07");  // draw inside background
                     set_text_scale(f26, f25);
                 }
             }
@@ -352,15 +352,15 @@ static void draw_textbox(int a, struct TextBox *tbox)
             {
                 set_text_scale(f26 * tbox->unk10 / 24.0f, f25);
                 if (row == -1)
-                    g_draw_text("\x02");  // draw top border
+                    q_draw_text("\x02");  // draw top border
                 else if (row == numRows)
-                    g_draw_text("\x0C");  // draw bottom border
+                    q_draw_text("\x0C");  // draw bottom border
                 else
-                    g_draw_text("\x07");  // draw inside background
+                    q_draw_text("\x07");  // draw inside background
                 set_text_scale(f26, f25);
             }
         }
-        g_draw_text("\n");
+        q_draw_text("\n");
     }
 
     func_80071B1C(a * 0.01f + 0.05);
@@ -379,54 +379,54 @@ static void draw_textbox(int a, struct TextBox *tbox)
         float zero;
     case TEXTBOX_STYLE_TOP_LEFT:
         set_text_pos(sp24 - 24, sp20);
-        g_draw_text("\x04");  // left arrow
+        q_draw_text("\x04");  // left arrow
         break;
     case TEXTBOX_STYLE_CENTER_LEFT:
         set_text_pos(sp24 - 24, sp20 + ((tbox->numRows - 1) * 24) * 0.5f);
-        g_draw_text("\x04");  // left arrow
+        q_draw_text("\x04");  // left arrow
         break;
     case TEXTBOX_STYLE_BOTTOM_LEFT:
         set_text_pos(sp24 - 24, sp20 + (tbox->numRows - 1) * 24);
-        g_draw_text("\x04");  // left arrow
+        q_draw_text("\x04");  // left arrow
         break;
     case TEXTBOX_STYLE_TOP_RIGHT:
         set_text_pos(sp24 + tbox->unk10, sp20);
-        g_draw_text("\x05");  // right arrow
+        q_draw_text("\x05");  // right arrow
         break;
     case TEXTBOX_STYLE_CENTER_RIGHT:
         set_text_pos(sp24 + tbox->unk10, sp20 + ((tbox->numRows - 1) * 24) * 0.5f);
-        g_draw_text("\x05");  // right arrow
+        q_draw_text("\x05");  // right arrow
         break;
     case TEXTBOX_STYLE_BOTTOM_RIGHT:
         set_text_pos(sp24 + tbox->unk10, sp20 + (tbox->numRows - 1) * 24);
-        g_draw_text("\x05");  // right arrow
+        q_draw_text("\x05");  // right arrow
         break;
     case TEXTBOX_STYLE_LEFT_UP:
         zero = 0.0f;
         set_text_pos((sp24 + zero) + 14.0f, sp20 - 24);
-        g_draw_text("\x10");  // up arrow
+        q_draw_text("\x10");  // up arrow
         break;
     case TEXTBOX_STYLE_CENTER_UP:
         set_text_pos(sp24 + tbox->unk10 * 0.5f - 10.0f, sp20 - 24);
-        g_draw_text("\x10");  // up arrow
+        q_draw_text("\x10");  // up arrow
         break;
     case TEXTBOX_STYLE_RIGHT_UP:
         set_text_pos(sp24 + tbox->unk10 - 34.0f, sp20 - 24);
-        g_draw_text("\x10");  // up arrow
+        q_draw_text("\x10");  // up arrow
         break;
     case TEXTBOX_STYLE_LEFT_DOWN:
         zero = 0.0f;
         set_text_pos((sp24 + zero) + 14.0f, sp20 + (tbox->numRows * 24));
-        g_draw_text("\x15");  // down arrow
+        q_draw_text("\x15");  // down arrow
         break;
     case TEXTBOX_STYLE_CENTER_DOWN:
     case TEXTBOX_STYLE_SPIKY:
         set_text_pos(sp24 + tbox->unk10 * 0.5f - 10.0f, sp20 + (tbox->numRows * 24));
-        g_draw_text("\x15");  // down arrow
+        q_draw_text("\x15");  // down arrow
         break;
     case TEXTBOX_STYLE_RIGHT_DOWN:
         set_text_pos(sp24 + tbox->unk10 - 34.0f, sp20 + (tbox->numRows * 24));
-        g_draw_text("\x15");  // down arrow
+        q_draw_text("\x15");  // down arrow
         break;
     }
 
@@ -459,7 +459,7 @@ static void draw_textbox(int a, struct TextBox *tbox)
         if (line->unk0 == 0)
             break;
         lbl_802F200C = line->unk82;
-        lbl_802F2008 = g_get_ascii_text_width(line->text);
+        lbl_802F2008 = q_get_ascii_text_width(line->text);
         if (tbox->state == 11)  // scrolling
         {
             if (row == 0)
@@ -470,14 +470,14 @@ static void draw_textbox(int a, struct TextBox *tbox)
         set_text_opacity(opacity);
         if (tbox->unk10 > 0.0)
         {
-            float f0 = MIN(tbox->unk10 / g_get_jpn_text_width(FONT_JAP_24x24_2P, line->text), 1.0);
+            float f0 = MIN(tbox->unk10 / q_get_jpn_text_width(FONT_JAP_24x24_2P, line->text), 1.0);
             set_text_scale(f0, 1.0f);
         }
         else
             set_text_scale(1.0f, 1.0f);
         calc_textbox_text_pos(tbox, &textX, &textY);
         set_text_pos(textX, textY + row * 24 + scrollOffset);
-        g_draw_text(line->text);
+        q_draw_text(line->text);
     }
     lbl_802F200C = -1.0f;
     reset_text_draw_settings();

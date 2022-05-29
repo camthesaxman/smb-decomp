@@ -38,10 +38,10 @@ struct ControllerInfo
 extern struct ControllerInfo controllerInfo[4];
 extern struct ControllerInfo lbl_801F3C60[4];
 extern u16 analogButtonInfo[][5];
-//extern struct Struct801F3D88 g_unkInputArr1;
-extern u16 g_unkInputArr1[6];
-//extern struct Struct801F3D94 g_unkInputArr2;
-extern u16 g_unkInputArr2[6];
+//extern struct Struct801F3D88 q_unkInputArr1;
+extern u16 q_unkInputArr1[6];
+//extern struct Struct801F3D94 q_unkInputArr2;
+extern u16 q_unkInputArr2[6];
 
 void input_init(void);
 void input_main(void);

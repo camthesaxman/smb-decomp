@@ -273,7 +273,7 @@ lbl_80057E90:
 /* 80057EBC 00053DDC  90 01 00 40 */	stw r0, 0x40(r1)
 /* 80057EC0 00053DE0  80 05 00 10 */	lwz r0, 0x10(r5)
 /* 80057EC4 00053DE4  90 01 00 44 */	stw r0, 0x44(r1)
-/* 80057EC8 00053DE8  4B FF 50 41 */	bl g_spawn_effect_object
+/* 80057EC8 00053DE8  4B FF 50 41 */	bl q_spawn_effect_object
 /* 80057ECC 00053DEC  80 01 00 18 */	lwz r0, 0x18(r1)
 /* 80057ED0 00053DF0  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 80057ED4 00053DF4  90 01 00 BC */	stw r0, 0xbc(r1)
@@ -298,7 +298,7 @@ lbl_80057EFC:
 /* 80057F18 00053E38  38 00 00 10 */	li r0, 0x10
 /* 80057F1C 00053E3C  B0 01 00 10 */	sth r0, 0x10(r1)
 /* 80057F20 00053E40  38 61 00 08 */	addi r3, r1, 8
-/* 80057F24 00053E44  4B FF 4F E5 */	bl g_spawn_effect_object
+/* 80057F24 00053E44  4B FF 4F E5 */	bl q_spawn_effect_object
 /* 80057F28 00053E48  38 61 00 08 */	addi r3, r1, 8
 /* 80057F2C 00053E4C  38 80 00 00 */	li r4, 0
 /* 80057F30 00053E50  38 A0 00 AC */	li r5, 0xac
@@ -331,7 +331,7 @@ lbl_80057F74:
 /* 80057F94 00053EB4  90 01 00 94 */	stw r0, 0x94(r1)
 /* 80057F98 00053EB8  80 05 00 10 */	lwz r0, 0x10(r5)
 /* 80057F9C 00053EBC  90 01 00 98 */	stw r0, 0x98(r1)
-/* 80057FA0 00053EC0  4B FF 4F 69 */	bl g_spawn_effect_object
+/* 80057FA0 00053EC0  4B FF 4F 69 */	bl q_spawn_effect_object
 lbl_80057FA4:
 /* 80057FA4 00053EC4  3B BD 00 04 */	addi r29, r29, 4
 /* 80057FA8 00053EC8  3B 5A 00 01 */	addi r26, r26, 1
@@ -371,7 +371,7 @@ lbl_80057FF4:
 /* 8005801C 00053F3C  90 01 00 94 */	stw r0, 0x94(r1)
 /* 80058020 00053F40  80 05 00 10 */	lwz r0, 0x10(r5)
 /* 80058024 00053F44  90 01 00 98 */	stw r0, 0x98(r1)
-/* 80058028 00053F48  4B FF 4E E1 */	bl g_spawn_effect_object
+/* 80058028 00053F48  4B FF 4E E1 */	bl q_spawn_effect_object
 lbl_8005802C:
 /* 8005802C 00053F4C  3B 5A 00 01 */	addi r26, r26, 1
 /* 80058030 00053F50  3B 9C 00 0C */	addi r28, r28, 0xc
@@ -536,7 +536,7 @@ bg_old_extramaster_draw:
 /* 8005826C 0005418C  4B FA F6 45 */	bl mathutil_mtxA_from_mtx
 /* 80058270 00054190  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058274 00054194  80 63 00 A4 */	lwz r3, 0xa4(r3)
-/* 80058278 00054198  4B FD B8 5D */	bl g_call_draw_naomi_model_and_do_other_stuff
+/* 80058278 00054198  4B FD B8 5D */	bl q_call_draw_naomi_model_and_do_other_stuff
 /* 8005827C 0005419C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80058280 000541A0  38 21 00 08 */	addi r1, r1, 8
 /* 80058284 000541A4  7C 08 03 A6 */	mtlr r0
@@ -677,7 +677,7 @@ lbl_800582B8:
 /* 80058494 000543B4  54 60 04 7E */	clrlwi r0, r3, 0x11
 /* 80058498 000543B8  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 8005849C 000543BC  38 61 00 18 */	addi r3, r1, 0x18
-/* 800584A0 000543C0  4B FF 4A 69 */	bl g_spawn_effect_object
+/* 800584A0 000543C0  4B FF 4A 69 */	bl q_spawn_effect_object
 lbl_800584A4:
 /* 800584A4 000543C4  80 01 01 04 */	lwz r0, 0x104(r1)
 /* 800584A8 000543C8  CB E1 00 F8 */	lfd f31, 0xf8(r1)

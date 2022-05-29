@@ -17,11 +17,11 @@ float fogEndZ;
 float fogStartZ;
 GXColor fogColor;
 GXFogType fogType;
-s32 g_fogEnabled;
+s32 q_fogEnabled;
 u32 nlObjLightMask;
 
-struct Color3f g_someAmbColor;
-FORCE_BSS_ORDER(g_someAmbColor)
+struct Color3f q_someAmbColor;
+FORCE_BSS_ORDER(q_someAmbColor)
 
 struct
 {
@@ -35,7 +35,7 @@ struct
     u8 unkA;
     u8 fillerB[1];
     GXTexObj *unkC;
-    GXTexMapID g_texMapId;
+    GXTexMapID q_texMapId;
     GXColor matColor;
     GXColor ambColor;
     float alpha;
@@ -74,7 +74,7 @@ void nl2ngc_set_line_width(float a)
 
 void func_80030AF8(int a /*unknown*/, int b /*unknown*/)
 {
-    g_gxutil_set_some_line_params(1, a, b, 0);
+    q_gxutil_set_some_line_params(1, a, b, 0);
 }
 
 void nl2ngc_draw_line(Point3d *start, Point3d *end, u32 c)
@@ -100,7 +100,7 @@ void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 c)
     gxutil_draw_line_deferred(start, end, &color);
 }
 
-void g_nl2ngc_set_scale(float x)
+void q_nl2ngc_set_scale(float x)
 {
     lbl_801B7978.unk18 = x;
 }
@@ -183,7 +183,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
     pmodel = (*pobj)->modelPtrs;
     while (*pmodel != NULL)
     {
-        g_init_naomi_model_textures(*pmodel, *ptpl);
+        q_init_naomi_model_textures(*pmodel, *ptpl);
         pmodel++;
     }
     return TRUE;
@@ -294,7 +294,7 @@ static void init_model_flags(struct NaomiModel *model)
     }
 }
 
-void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
+void q_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
 {
     u8 unused[8];
 
@@ -392,12 +392,12 @@ void nl2ngc_draw_model_sorted(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (q_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (q_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -406,7 +406,7 @@ void nl2ngc_draw_model_sorted(struct NaomiModel *model)
         }
         temp = &model->flags;
         if (model->flags & (1 << 9))
-            g_draw_naomi_model_3(model);
+            q_draw_naomi_model_3(model);
         if (*temp & (1 << 8))
         {
             struct UnkStruct18 *r29;
@@ -419,10 +419,10 @@ void nl2ngc_draw_model_sorted(struct NaomiModel *model)
             r29->unk3C.g = lbl_801B7978.unk0.g;
             r29->unk3C.b = lbl_801B7978.unk0.b;
             r29->unk48 = peek_light_group();
-            r29->unk4C.r = g_someAmbColor.r;
-            r29->unk4C.g = g_someAmbColor.g;
-            r29->unk4C.b = g_someAmbColor.b;
-            r29->unk58 = g_fogEnabled;
+            r29->unk4C.r = q_someAmbColor.r;
+            r29->unk4C.g = q_someAmbColor.g;
+            r29->unk4C.b = q_someAmbColor.b;
+            r29->unk58 = q_fogEnabled;
             mathutil_mtxA_to_mtx(r29->unkC);
             ord_tbl_insert_node(list, &r29->node);
         }
@@ -445,12 +445,12 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (q_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (q_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -492,10 +492,10 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
             case -2:
                 break;
             case -3:
-                g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
+                q_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
-                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
+                q_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
             mesh = next;
@@ -530,12 +530,12 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (q_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (q_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -553,10 +553,10 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
         node->unk3C.g = lbl_801B7978.unk0.g;
         node->unk3C.b = lbl_801B7978.unk0.b;
         node->unk4C = peek_light_group();
-        node->ambColor.r = g_someAmbColor.r;
-        node->ambColor.g = g_someAmbColor.g;
-        node->ambColor.b = g_someAmbColor.b;
-        node->unk5C = g_fogEnabled;
+        node->ambColor.r = q_someAmbColor.r;
+        node->ambColor.g = q_someAmbColor.g;
+        node->ambColor.b = q_someAmbColor.b;
+        node->unk5C = q_fogEnabled;
         mathutil_mtxA_to_mtx(node->unkC);
         ord_tbl_insert_node(entry, &node->node);
     }
@@ -571,12 +571,12 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (q_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (q_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -619,10 +619,10 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
             case -2:
                 break;
             case -3:
-                g_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
+                q_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
                 break;
             default:
-                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
+                q_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
             mesh = next;
@@ -636,7 +636,7 @@ void func_80031764(struct NaomiModel *model)
     nl2ngc_draw_model_sorted(model);
 }
 
-void g_call_draw_naomi_model_1(struct NaomiModel *model)
+void q_call_draw_naomi_model_1(struct NaomiModel *model)
 {
     nl2ngc_draw_model_unsorted(model);
 }
@@ -669,7 +669,7 @@ GXCompare naomiToGCCompare[] =
     GX_LEQUAL,
     GX_ALWAYS
 };
-GXCullMode g_naomiToGXCullModes[] = { GX_CULL_ALL, GX_CULL_NONE, GX_CULL_BACK, GX_CULL_FRONT, GX_CULL_NONE };
+GXCullMode q_naomiToGXCullModes[] = { GX_CULL_ALL, GX_CULL_NONE, GX_CULL_BACK, GX_CULL_FRONT, GX_CULL_NONE };
 
 static void prep_some_stuff_before_drawing(void)
 {
@@ -687,15 +687,15 @@ static void prep_some_stuff_before_drawing(void)
 
     GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
 
-    if (g_fogEnabled != 0)
+    if (q_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
-    GXSetCullMode_cached(g_naomiToGXCullModes[2]);
+    GXSetCullMode_cached(q_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
-    lbl_80205DAC.g_texMapId = 0;
+    lbl_80205DAC.q_texMapId = 0;
 
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
@@ -769,7 +769,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         lbl_80205DAC.unk8 = r26;
     }
 
-    if (g_fogEnabled != 0)
+    if (q_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
@@ -781,17 +781,17 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     }
     else
     {
-        GXTexMapID g_texMapId = lbl_80205DAC.g_texMapId;
+        GXTexMapID q_texMapId = lbl_80205DAC.q_texMapId;
 
         if (lbl_80205DAC.unkC != mesh.texObj)
         {
             lbl_80205DAC.unkC = mesh.texObj;
-            if (--g_texMapId < 0)
-                g_texMapId = 7;
-            lbl_80205DAC.g_texMapId = g_texMapId;
-            GXLoadTexObj_cached(mesh.texObj, g_texMapId);
+            if (--q_texMapId < 0)
+                q_texMapId = 7;
+            lbl_80205DAC.q_texMapId = q_texMapId;
+            GXLoadTexObj_cached(mesh.texObj, q_texMapId);
         }
-        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, g_texMapId, GX_COLOR0A0);
+        GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, q_texMapId, GX_COLOR0A0);
         switch ((mesh.unk8 >> 6) & 3)
         {
         case 0:
@@ -831,9 +831,9 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         lbl_80205DAC.matColor = color;
     }
 
-    color.r = mesh.unk28 * g_someAmbColor.r * 255.0f;
-    color.g = mesh.unk28 * g_someAmbColor.g * 255.0f;
-    color.b = mesh.unk28 * g_someAmbColor.b * 255.0f;
+    color.r = mesh.unk28 * q_someAmbColor.r * 255.0f;
+    color.g = mesh.unk28 * q_someAmbColor.g * 255.0f;
+    color.b = mesh.unk28 * q_someAmbColor.b * 255.0f;
     color.a = lbl_80205DAC.matColor.a;
     if (lbl_80205DAC.ambColor.r != color.r
      || lbl_80205DAC.ambColor.g != color.g
@@ -884,7 +884,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     }
 }
 
-void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
+void q_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
@@ -906,7 +906,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
+            GXSetCullMode_cached(q_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -994,7 +994,7 @@ void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
     }
 }
 
-void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
+void q_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
@@ -1016,7 +1016,7 @@ void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
+            GXSetCullMode_cached(q_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1158,15 +1158,15 @@ static void prep_some_stuff_before_drawing_2(void)
 
     GXSetZMode_cached(GX_ENABLE, naomiToGCCompare[lbl_80205DAC.unk7], (!lbl_80205DAC.unk8));
 
-    if (g_fogEnabled != 0)
+    if (q_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
-    GXSetCullMode_cached(g_naomiToGXCullModes[2]);
+    GXSetCullMode_cached(q_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
-    lbl_80205DAC.g_texMapId = 0;
+    lbl_80205DAC.q_texMapId = 0;
 
     lbl_80205DAC.matColor.r = lbl_801B7978.unk0.r * 255.0f;
     lbl_80205DAC.matColor.g = lbl_801B7978.unk0.g * 255.0f;
@@ -1240,7 +1240,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         lbl_80205DAC.unk8 = r26;
     }
 
-    if (g_fogEnabled != 0)
+    if (q_fogEnabled != 0)
         GXSetFog_cached(fogType, fogStartZ, fogEndZ, 0.1f, 20000.0f, fogColor);
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
@@ -1252,14 +1252,14 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     }
     else
     {
-        int r25 = lbl_80205DAC.g_texMapId;
+        int r25 = lbl_80205DAC.q_texMapId;
 
         if (lbl_80205DAC.unkC != mesh.texObj)
         {
             lbl_80205DAC.unkC = mesh.texObj;
             if (--r25 < 0)
                 r25 = 7;
-            lbl_80205DAC.g_texMapId = r25;
+            lbl_80205DAC.q_texMapId = r25;
             GXLoadTexObj_cached(mesh.texObj, r25);
         }
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);
@@ -1305,9 +1305,9 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         lbl_80205DAC.matColor = color;
     }
 
-    color.r = mesh.unk28 * g_someAmbColor.r * 255.0f;
-    color.g = mesh.unk28 * g_someAmbColor.g * 255.0f;
-    color.b = mesh.unk28 * g_someAmbColor.b * 255.0f;
+    color.r = mesh.unk28 * q_someAmbColor.r * 255.0f;
+    color.g = mesh.unk28 * q_someAmbColor.g * 255.0f;
+    color.b = mesh.unk28 * q_someAmbColor.b * 255.0f;
     color.a = lbl_80205DAC.matColor.a;
     if (lbl_80205DAC.ambColor.r != color.r
      || lbl_80205DAC.ambColor.g != color.g
@@ -1371,7 +1371,7 @@ static inline void handle_color_vtx(struct NaomiVtxWithColor *vtx)
     GXTexCoord2f32(vtx->s, vtx->t);
 }
 
-void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
+void q_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs(
         (1 << GX_VA_POS)
@@ -1393,7 +1393,7 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(g_naomiToGXCullModes[r4]);
+            GXSetCullMode_cached(q_naomiToGXCullModes[r4]);
         }
 
         if (dl->unk0 & (1 << 4))
@@ -1469,17 +1469,17 @@ void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
     }
 }
 
-void g_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
+void q_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
 {
     nl2ngc_draw_model_sorted(model);
 }
 
-void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
+void q_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
 {
     nl2ngc_draw_model_unsorted(model);
 }
 
-void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b)
+void q_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b)
 {
     nl2ngc_draw_model_alpha_sorted(model, b);
 }
@@ -1491,14 +1491,14 @@ void nl2ngc_set_light_mask(u32 lightMask)
 
 void nl2ngc_set_ambient(float r, float g, float b)
 {
-    g_someAmbColor.r = r;
-    g_someAmbColor.g = g;
-    g_someAmbColor.b = b;
+    q_someAmbColor.r = r;
+    q_someAmbColor.g = g;
+    q_someAmbColor.b = b;
 }
 
 void func_80033B50(int a)
 {
-    g_fogEnabled = a;
+    q_fogEnabled = a;
 }
 
 void func_80033B58(u32 a, float b, float c)
@@ -1508,14 +1508,14 @@ void func_80033B58(u32 a, float b, float c)
     fogEndZ = c;
 }
 
-void g_nl2ngc_set_some_other_color(int r, int g, int b)
+void q_nl2ngc_set_some_other_color(int r, int g, int b)
 {
     fogColor.r = r;
     fogColor.g = g;
     fogColor.b = b;
 }
 
-void g_draw_naomi_model_3(struct NaomiModel *model)
+void q_draw_naomi_model_3(struct NaomiModel *model)
 {
     struct NaomiMesh *mesh;
 
@@ -1559,10 +1559,10 @@ void g_draw_naomi_model_3(struct NaomiModel *model)
             case -2:
                 break;
             case -3:
-                g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
+                q_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
-                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
+                q_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
             mesh = next;
@@ -1589,15 +1589,15 @@ static void lbl_80033C8C(struct UnkStruct18 *a)
         load_light_group_cached(a->unk48);
         nl2ngc_set_ambient(a->unk4C.r, a->unk4C.g, a->unk4C.b);
     }
-    g_fogEnabled = a->unk58;
-    g_draw_naomi_model_4(a->model);
+    q_fogEnabled = a->unk58;
+    q_draw_naomi_model_4(a->model);
 
     lbl_801B7978.unk0.r = f31;
     lbl_801B7978.unk0.g = f30;
     lbl_801B7978.unk0.b = f29;
 }
 
-void g_draw_naomi_model_4(struct NaomiModel *model)
+void q_draw_naomi_model_4(struct NaomiModel *model)
 {
     struct NaomiMesh *mesh;
 
@@ -1641,10 +1641,10 @@ void g_draw_naomi_model_4(struct NaomiModel *model)
             case -2:
                 break;
             case -3:
-                g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
+                q_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
-                g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
+                q_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                 break;
             }
             mesh = next;
@@ -1672,15 +1672,15 @@ void lbl_80033E6C(struct UnkStruct19 *a)
         load_light_group_cached(a->unk4C);
         nl2ngc_set_ambient(a->ambColor.r, a->ambColor.g, a->ambColor.b);
     }
-    g_fogEnabled = a->unk5C;
-    g_draw_naomi_model_5(a->model);
+    q_fogEnabled = a->unk5C;
+    q_draw_naomi_model_5(a->model);
 
     lbl_801B7978.unk0.r = f31;
     lbl_801B7978.unk0.g = f30;
     lbl_801B7978.unk0.b = f29;
 }
 
-void g_draw_naomi_model_5(struct NaomiModel *model)
+void q_draw_naomi_model_5(struct NaomiModel *model)
 {
     struct NaomiMesh *mesh;
 
@@ -1723,10 +1723,10 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
         case -2:
             break;
         case -3:
-            g_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
+            q_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
             break;
         default:
-            g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
+            q_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
             break;
         }
         mesh = next;
@@ -1734,7 +1734,7 @@ void g_draw_naomi_model_5(struct NaomiModel *model)
     func_800341B8();
 }
 
-void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
+void q_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
 {
     struct NaomiMesh *mesh;
 
@@ -1743,12 +1743,12 @@ void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         lbl_801B7978.unk1C = lbl_801B7978.unk18;
         if (lbl_801B7978.unk18 == 1.0f)
         {
-            if (g_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (q_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
+            if (q_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
             {
                 lbl_801B7978.unk18 = 1.0f;
                 return;
@@ -1788,10 +1788,10 @@ void g_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
                 case -2:
                     break;
                 case -3:
-                    g_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
+                    q_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                     break;
                 default:
-                    g_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
+                    q_draw_naomi_disp_list_pos_nrm_tex(dlstart, next);
                     break;
                 }
                 mesh = next;

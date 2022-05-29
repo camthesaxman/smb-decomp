@@ -89,14 +89,14 @@ u8 unused802B4B20[0x2D0];
 GXTexObj *lbl_802B4DF0[8];
 
 u32 *motLabel;
-s32 g_motAnimCount;
+s32 q_motAnimCount;
 struct MotSkeleton *motSkeleton;
 struct MotInfo *motInfo;
 u8 lbl_802F209C[8];
 u8 lbl_802F2094[8];
 int lbl_802F2090;
 u8 lbl_802F208C;
-Mtx **g_animTransformMatrices;
+Mtx **q_animTransformMatrices;
 struct NaomiObj *apeFaceObj;
 struct TPL *apeFaceTpl;
 s32 lbl_802F207C;
@@ -312,7 +312,7 @@ void func_80089A04(struct ApeGfxFileInfo *a, int b, struct Struct80089A04 *c)
     c->unk30[b] = -1;
 }
 
-struct Struct8003699C_child *g_create_joints_probably(struct MotSkeletonEntry1 *skel)
+struct Struct8003699C_child *q_create_joints_probably(struct MotSkeletonEntry1 *skel)
 {
     struct Struct8003699C_child *r30;
 
@@ -809,7 +809,7 @@ void func_8008A7F0(struct Ape *ape, struct Struct8003699C_child *b)
     func_800355FC(b);
 }
 
-void g_free_character_graphics(int chara, int lod)
+void q_free_character_graphics(int chara, int lod)
 {
     int index = chara * 2;
     OSHeapHandle oldHeap;
@@ -865,7 +865,7 @@ void g_free_character_graphics(int chara, int lod)
 
 struct GMAShape *next_shape(struct GMAShape *mesh);
 
-void *g_find_some_mesh_with_red(struct GMAModel *model)
+void *q_find_some_mesh_with_red(struct GMAModel *model)
 {
     struct GMAShape *mesh;
     int i;
@@ -880,7 +880,7 @@ void *g_find_some_mesh_with_red(struct GMAModel *model)
     return NULL;
 }
 
-void g_load_character_graphics(int chara, int lod)
+void q_load_character_graphics(int chara, int lod)
 {
     OSHeapHandle oldHeap;
     int index = chara * 2;
@@ -934,7 +934,7 @@ void g_load_character_graphics(int chara, int lod)
         for (i = 0; i < 2; i++)
         {
             model = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[i]].modelOffset;
-            lbl_802B47F0[lod * 2 + i] = g_find_some_mesh_with_red(model);
+            lbl_802B47F0[lod * 2 + i] = q_find_some_mesh_with_red(model);
         }
         lbl_802B4800[index + 0] = NULL;
         lbl_802B4800[index + 1] = NULL;
@@ -992,7 +992,7 @@ void mot_ape_init(void)
     lbl_802F206C = 1;
     lbl_802F2078 = 1.0f;
     load_character_resources();
-    g_animTransformMatrices = g_avdisp_alloc_matrix_lists(30);
+    q_animTransformMatrices = q_avdisp_alloc_matrix_lists(30);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_z(0x2FA4);
@@ -1033,7 +1033,7 @@ void func_8008B0AC(void)
     }
 }
 
-void g_ape_free(struct Ape *ape)
+void q_ape_free(struct Ape *ape)
 {
     func_8008D29C(ape->unk5C);
     if (lbl_802F2074 == 2)
@@ -1053,13 +1053,13 @@ void g_ape_free(struct Ape *ape)
     }
     OSFreeToHeap(subHeap, ape->unk98);
     apeStructPtrs[--nextApeIndex] = ape;
-    g_free_character_graphics(ape->charaId, (ape->unk90 >= 2));
+    q_free_character_graphics(ape->charaId, (ape->unk90 >= 2));
 }
 
 u8 lbl_802F12D8[8] = {0, 0, 2, 4, 6, 0, 0, 0};
 u8 lbl_802F12E0[8] = {1, 1, 3, 5, 7, 0, 0, 0};
 
-void g_make_ape_inline(struct Ape *ape)
+void q_make_ape_inline(struct Ape *ape)
 {
     int i;
     int j;
@@ -1120,7 +1120,7 @@ static void find_motskl_entry(char *skelName, struct MotSkeletonEntry1 **r27)
     }
 }
 
-struct Ape *g_make_ape_sub(char *skelName, char *modelName /*unused*/)
+struct Ape *q_make_ape_sub(char *skelName, char *modelName /*unused*/)
 {
     struct Ape *ape;
     struct Struct8003699C_child *r24;
@@ -1137,8 +1137,8 @@ struct Ape *g_make_ape_sub(char *skelName, char *modelName /*unused*/)
 
     find_motskl_entry(skelName, &skel);
 
-    r24 = g_create_joints_probably(skel);
-    r31 = g_create_joints_probably(skel);
+    r24 = q_create_joints_probably(skel);
+    r31 = q_create_joints_probably(skel);
 
     ape->unk94 = 5;
     ape->unk98 = OSAllocFromHeap(subHeap, ape->unk94 * sizeof(*ape->unk98));
@@ -1185,7 +1185,7 @@ struct Ape *g_make_ape_sub(char *skelName, char *modelName /*unused*/)
 
     {u8 stackpad[0x10];}
 
-    g_make_ape_inline(ape);
+    q_make_ape_inline(ape);
     r23 = find_motskl_entry_idx(skelName);
     func_8008B3B8_inline_3(r23, ape->unk0);
     r23++;r23--;
@@ -1214,20 +1214,20 @@ struct MotInfo2
 float force_lbl_802F56D4() { return 60.0f; }
 const double lbl_802F56D8 = 0.0000000099999999392252903;
 
-struct Ape *g_make_ape(int charaId)
+struct Ape *q_make_ape(int charaId)
 {
     struct Ape *ape;
     struct JointBoneThing *r5;
 
-    ape = g_make_ape_sub(motInfo[charaId].skelName, motInfo[charaId].modelName);
+    ape = q_make_ape_sub(motInfo[charaId].skelName, motInfo[charaId].modelName);
     ape->charaId = charaId & 3;
     ape->unk20 = &((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180;
     ape->unk28 = 1;
 
-    g_make_ape_inline(ape);
+    q_make_ape_inline(ape);
 
     ape->unkB0 = 0;
-    g_load_character_graphics(charaId, lbl_802F207C >> 1);
+    q_load_character_graphics(charaId, lbl_802F207C >> 1);
     func_80089CF4(ape, ((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180.unk10);
     func_800355FC(ape->unk0);
 
@@ -1294,7 +1294,7 @@ void func_8008BAA8(int *a, int *b)
 }
 #pragma force_active reset
 
-void g_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
+void q_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
 {
     struct MotInfo *r30;
     struct Struct8003699C_child *r7;
@@ -1402,7 +1402,7 @@ void func_8008BEF8(int a)
     lbl_802F207C = a;
 }
 
-void g_switch_ape_character_lod_maybe(struct Ape *ape, int b)
+void q_switch_ape_character_lod_maybe(struct Ape *ape, int b)
 {
     int unk;
 
@@ -1412,14 +1412,14 @@ void g_switch_ape_character_lod_maybe(struct Ape *ape, int b)
     if (unk >= 2 && b <= 1)
     {
         lbl_802F2090 = 0;
-        g_free_character_graphics(ape->charaId, 1);
-        g_load_character_graphics(ape->charaId, 0);
+        q_free_character_graphics(ape->charaId, 1);
+        q_load_character_graphics(ape->charaId, 0);
     }
     else if (b >= 2 && unk <= 1)
     {
         lbl_802F2090 = 0;
-        g_free_character_graphics(ape->charaId, 0);
-        g_load_character_graphics(ape->charaId, 1);
+        q_free_character_graphics(ape->charaId, 0);
+        q_load_character_graphics(ape->charaId, 1);
     }
     ape->unk90 = b;
 }
@@ -1562,7 +1562,7 @@ void func_8008C4A0(float a)
     lbl_802F2078 = a;
 }
 
-void g_do_ape_anim(struct Ape *ape)
+void q_do_ape_anim(struct Ape *ape)
 {
     struct Struct8003699C_child *r31 = ape->unk0;
     struct Struct8003699C_child *r29;
@@ -1612,7 +1612,7 @@ void g_do_ape_anim(struct Ape *ape)
     func_80036064(r31);
 }
 
-void g_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
+void q_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
 {
     int i;
     u32 index = (ape->unk90 >> 1) + (ape->charaId * 2);
@@ -1647,7 +1647,7 @@ void g_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
             mathutil_mtxA_push();
             mathutil_mtxA_mult_right(r22->transformMtx);
             mathutil_mtxA_translate(&r29->unk4);
-            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            q_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             if (r29->unk10 != NULL)
                 r29->unk10(ape, r29, *ptr);
             else
@@ -1672,10 +1672,10 @@ void g_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
                 mathutil_mtxA_to_mtx(lbl_802B4850[i]);
                 mathutil_mtxA_pop();
             }
-            g_animTransformMatrices[i] = &lbl_802B4850[i];
+            q_animTransformMatrices[i] = &lbl_802B4850[i];
         }
         else
-            g_animTransformMatrices[i] = &r4->transformMtx;
+            q_animTransformMatrices[i] = &r4->transformMtx;
     }
 
     model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].modelOffset;
@@ -1749,16 +1749,16 @@ void func_8008CAAC(struct Ape *ape, float b)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&ape->unk30);
     mathutil_mtxA_scale_xyz(ape->modelScale, ape->modelScale, ape->modelScale);
-    g_nl2ngc_set_scale(ape->modelScale);
+    q_nl2ngc_set_scale(ape->modelScale);
     mathutil_mtxA_translate(&ape->unk3C);
     mathutil_mtxA_mult_right(lbl_802B39C0);
     sp10.x = ape->unk0->unk81A8[0].transformMtx[0][3];
     sp10.y = ape->unk0->unk81A8[0].transformMtx[1][3];
     sp10.z = ape->unk0->unk81A8[0].transformMtx[2][3];
-    if (g_test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
+    if (q_test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
     {
         apeDummyFuncs[r30](ape);
-        g_draw_ape_transformed(ape, r29);
+        q_draw_ape_transformed(ape, r29);
     }
     func_8000E3BC();
 }

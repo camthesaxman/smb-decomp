@@ -40,10 +40,10 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
         case -2:
             break;
         case -3:
-            g_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800482A4);
+            q_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800482A4);
             break;
         default:
-            g_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800481A0);
+            q_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800481A0);
             break;
         }
         mesh->unk0 &= 0xF8FFFFFE;
@@ -156,10 +156,10 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
         case -2:
             break;
         case -3:
-            g_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004863C);
+            q_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004863C);
             break;
         default:
-            g_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004853C);
+            q_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004853C);
             break;
         }
         mesh->unk0 &= 0xF8FFFFFE;

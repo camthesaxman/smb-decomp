@@ -4,14 +4,14 @@
 void hud_show_pause_menu(void);
 void func_80075E1C(int, struct Sprite *);
 void hud_show_press_start_textbox(int);
-void g_logo_plus_sprite_something(void);
+void q_logo_plus_sprite_something(void);
 void hud_show_adv_copyright_info(int);
 void hud_show_title_banner(int);
 void hud_show_title_menu(void);
 void hud_show_title_screen_monkey_sprite(void);
-void g_show_adv_ready_hud(void);
+void q_show_adv_ready_hud(void);
 void hud_create_adv_demo_banana_sprite(int);
-void g_show_eieipu_sprite(int);
+void q_show_eieipu_sprite(int);
 void hud_show_stage_name_banner(void);
 void hud_show_ready_banner(int);
 void hud_show_normal_mode_info(void);
@@ -32,7 +32,7 @@ void func_8007EB2C(int);
 void func_8007ECB8(void);
 void func_8007EF50(struct Ball *);
 void hud_show_goal_score_info(int clearScore, int floorScore, u32 arg2);
-void g_show_practice_mode_score_info(int);
+void q_show_practice_mode_score_info(int);
 void hud_show_bomb(float, float);
 
 #endif

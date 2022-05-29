@@ -103,7 +103,7 @@ BOOL func_80020DB4(Vec *a, float b)
     return TRUE;
 }
 
-BOOL g_test_sphere_in_frustum(Point3d *p, float radius)
+BOOL q_test_sphere_in_frustum(Point3d *p, float radius)
 {
     Vec sp10;
     float x, y, z;
@@ -124,7 +124,7 @@ BOOL g_test_sphere_in_frustum(Point3d *p, float radius)
     return TRUE;
 }
 
-BOOL g_test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale)
+BOOL q_test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale)
 {
     Vec sp10;
     float x, y, z;

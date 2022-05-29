@@ -31,14 +31,14 @@
 #include "../data/common.nlobj.h"
 
 s32 s_currLightGroup;
-s32 g_lightToPrint;
+s32 q_lightToPrint;
 u32 lbl_802F1C90;
 s32 lbl_802F1C8C;
-s32 g_printLight;
+s32 q_printLight;
 s32 lbl_802F1C84;
 s32 lbl_802F1C80;
 s32 lightingStageId;
-s32 s_g_lightGroupsInitialized;
+s32 s_q_lightGroupsInitialized;
 
 u8 lbl_802F1C75;
 u8 lbl_802F1C74;
@@ -55,10 +55,10 @@ s32 lbl_802F1C68;
 s32 lbl_802F1C64;
 s32 lbl_802F1C60;
 s32 s_numLightObjsLoaded;
-s32 s_g_lightPerfTimer;
-float g_minimap_light_ref_dist_scale;
+s32 s_q_lightPerfTimer;
+float q_minimap_light_ref_dist_scale;
 s8 s_lightGroupStackPos;
-s32 g_someLGIdx;
+s32 q_someLGIdx;
 s32 s_lightPoolSize;
 
 #define LIGHTGROUP_STACK_MAX 3
@@ -140,12 +140,12 @@ struct Light s_perStageLights[512] =  // lots of empty space at the end
 // clang-format on
 
 // Light groups refer to lights by index in here
-struct Light s_g_lightPool[32];
+struct Light s_q_lightPool[32];
 
 void print_light(struct Light *light)
 {
     printf("\x7B\t\n");
-    printf("\t%d,\tLID_%s,\t%d,\n", light->valid, s_lightIdNames[light->g_id], g_lightToPrint);
+    printf("\t%d,\tLID_%s,\t%d,\n", light->valid, s_lightIdNames[light->q_id], q_lightToPrint);
     printf("\tLTP_%s,\t%d,\t%d,\n", lightTypeNames[light->type], light->spotFn, currStageId);
     printf("\t{ %f, %f, %f },\n", light->red, light->green, light->blue);
     printf("\t{ %f, %f, %f },\n", light->pos.x, light->pos.y, light->pos.z);
@@ -157,7 +157,7 @@ void print_light(struct Light *light)
 }
 
 #pragma dont_inline on
-void g_alloc_stage_lights(int stageId)
+void q_alloc_stage_lights(int stageId)
 {
     u8 dummy[8];
     struct Light *light = s_perStageLights;
@@ -172,19 +172,19 @@ void g_alloc_stage_lights(int stageId)
 #pragma dont_inline reset
 
 // Allocate a light in the light pool to use, or return a light that already exists (preferred)
-s8 alloc_pool_light_idx(BOOL findExisting, int g_id, int g_inst)
+s8 alloc_pool_light_idx(BOOL findExisting, int q_id, int q_inst)
 {
     int i;
     struct Light *light;
 
-    for (light = s_g_lightPool, i = 0; i < s_lightPoolSize; i++, light++)
+    for (light = s_q_lightPool, i = 0; i < s_lightPoolSize; i++, light++)
     {
-        if (light->g_id == g_id && light->g_inst == g_inst)
+        if (light->q_id == q_id && light->q_inst == q_inst)
             return i;
     }
     if (findExisting == 1)
         return -1;
-    for (light = s_g_lightPool, i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
+    for (light = s_q_lightPool, i = 0; i < ARRAY_COUNT(s_q_lightPool); i++, light++)
     {
         if (light->valid == 0)
             return i;
@@ -211,7 +211,7 @@ void init_light_dir(struct Light *light)
     case LIGHT_TYPE_SPOT_POW:
     case LIGHT_TYPE_SPOT_DARKPOW:
     case LIGHT_TYPE_SPOT_DARK:
-        if (light->g_id != LIGHT_ID_BG_PILLAR)
+        if (light->q_id != LIGHT_ID_BG_PILLAR)
         {
             light->dir.x = light->dir.y = 0.0f;
             light->dir.z = -1.0f;
@@ -272,7 +272,7 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
 
     f3 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP)
              ? light->refDist
-             : light->refDist * g_minimap_light_ref_dist_scale;
+             : light->refDist * q_minimap_light_ref_dist_scale;
     switch (light->type)
     {
     case LIGHT_TYPE_INFINITE:
@@ -304,7 +304,7 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
 
     f0 = (s_currLightGroup != LIGHT_GROUP_DEF_MINIMAP)
              ? 0.0
-             : 2.05f * ((1.0f / g_minimap_light_ref_dist_scale) - 1.0f);
+             : 2.05f * ((1.0f / q_minimap_light_ref_dist_scale) - 1.0f);
     tempVec.x = light->pos.x;
     tempVec.y = light->pos.y + f0;
     tempVec.z = light->pos.z;
@@ -383,8 +383,8 @@ void init_bg_lighting(int stageId)
         }
     }
     memset(&light, 0, sizeof(light));
-    light.g_id = LIGHT_ID_STAGE;
-    light.g_inst = 0;
+    light.q_id = LIGHT_ID_STAGE;
+    light.q_inst = 0;
     light.type = LIGHT_TYPE_INFINITE;
     light.red = s_bgLightInfo.infLightColor.r;
     light.green = s_bgLightInfo.infLightColor.g;
@@ -396,13 +396,13 @@ void init_bg_lighting(int stageId)
 
 struct LightGroupInfo
 {
-    s32 g_someLGIdxToCopy; // Copy this light group to groups 2-5 inclusive
+    s32 q_someLGIdxToCopy; // Copy this light group to groups 2-5 inclusive
     u32 flags;
 };
 
 // Oner per light group
 // clang-format off
-const struct LightGroupInfo s_g_lightGroupSomethings[] = {
+const struct LightGroupInfo s_q_lightGroupSomethings[] = {
     {LIGHT_GROUP_DEFAULT, 3},
     {LIGHT_GROUP_SINGLE, 3},        
     {LIGHT_GROUP_SINGLE, 1},        
@@ -449,13 +449,13 @@ void init_light_groups(void)
 
     // Associate some lights in the pool with this light group. This includes the infinite light
     // defined by the current bg's BgLightInfo (it's a LIGHT_ID_STAGE)
-    light = s_g_lightPool;
+    light = s_q_lightPool;
     lightInGroupIdx = 0;
     lightGrp = &s_lightGroups[LIGHT_GROUP_DEFAULT];
-    for (i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
+    for (i = 0; i < ARRAY_COUNT(s_q_lightPool); i++, light++)
     {
-        if (light->valid != 0 && (light->g_id == LIGHT_ID_STAGE || light->g_id == LIGHT_ID_TEST ||
-                                  light->g_id == LIGHT_ID_AUTO))
+        if (light->valid != 0 && (light->q_id == LIGHT_ID_STAGE || light->q_id == LIGHT_ID_TEST ||
+                                  light->q_id == LIGHT_ID_AUTO))
         {
             lightGrp->lightPoolIdxs[lightInGroupIdx] = i;
             if (++lightInGroupIdx == 8)
@@ -463,13 +463,13 @@ void init_light_groups(void)
         }
     }
 
-    if (s_g_lightPool[0].valid != 0)
+    if (s_q_lightPool[0].valid != 0)
         s_lightGroups[LIGHT_GROUP_SINGLE].lightPoolIdxs[0] = 0;
 
     // Init the other non-BG light groups by copying from an existing light group
-    lgInfo = &(s_g_lightGroupSomethings[LIGHT_GROUP_SINGLE_UNIT]);
+    lgInfo = &(s_q_lightGroupSomethings[LIGHT_GROUP_SINGLE_UNIT]);
     for (i = 2; i < 6; i++, lgInfo++)
-        memcpy(&s_lightGroups[i], &s_lightGroups[lgInfo->g_someLGIdxToCopy],
+        memcpy(&s_lightGroups[i], &s_lightGroups[lgInfo->q_someLGIdxToCopy],
                sizeof(s_lightGroups[i]));
 
     if (s_bgLightInfo.bgLightGroups == NULL)
@@ -503,8 +503,8 @@ void set_avdisp_inf_light(struct LightGroup *lightGrp)
         hasInfLight = FALSE;
     else
     {
-        if (s_g_lightPool[lightGrp->lightPoolIdxs[0]].valid == 0 ||
-            s_g_lightPool[lightGrp->lightPoolIdxs[0]].type != LIGHT_TYPE_INFINITE)
+        if (s_q_lightPool[lightGrp->lightPoolIdxs[0]].valid == 0 ||
+            s_q_lightPool[lightGrp->lightPoolIdxs[0]].type != LIGHT_TYPE_INFINITE)
             hasInfLight = FALSE;
     }
 
@@ -540,13 +540,13 @@ void light_init(int stageId)
     struct Light *light;
 
     // Reset light pool
-    light = s_g_lightPool;
-    for (i = 0; i < ARRAY_COUNT(s_g_lightPool); i++, light++)
+    light = s_q_lightPool;
+    for (i = 0; i < ARRAY_COUNT(s_q_lightPool); i++, light++)
     {
         memset(light, 0, sizeof(*light));
         light->valid = 0;
-        light->g_id = LIGHT_ID_TEST;
-        light->g_inst = 0;
+        light->q_id = LIGHT_ID_TEST;
+        light->q_inst = 0;
         light->type = LIGHT_TYPE_POINT;
         light->refDist = 2.0f;
         light->k0 = 1.0f;
@@ -576,12 +576,12 @@ void light_main(void)
     int i;
     struct Light *light;
 
-    s_g_lightPerfTimer = 0;
+    s_q_lightPerfTimer = 0;
     func_8000E428(s_bgLightInfo.unk14, s_bgLightInfo.unk18, s_bgLightInfo.unk1C);
     func_8000E3BC();
     s_lightPoolSize = 0;
 
-    light = s_g_lightPool;
+    light = s_q_lightPool;
     for (i = 0; i < 32; i++, light++)
     {
         if (light->valid != 0)
@@ -591,32 +591,32 @@ void light_main(void)
         }
     }
     s_currLightGroup = -1;
-    g_someLGIdx = -1;
+    q_someLGIdx = -1;
     lightGroupStack[0] = -1;
     lightGroupStack[1] = -1;
     lightGroupStack[2] = -1;
     s_lightGroupStackPos = 0;
-    g_minimap_light_ref_dist_scale = 1.0f;
+    q_minimap_light_ref_dist_scale = 1.0f;
     lbl_802F1C68 = 0;
     lbl_802F1C64 = 0;
     lbl_802F1C60 = 0;
     s_numLightObjsLoaded = 0;
-    if (s_g_lightGroupsInitialized == 0)
+    if (s_q_lightGroupsInitialized == 0)
         init_light_groups();
     mathutil_mtxA_from_mtxB();
     load_light_group_uncached(LIGHT_GROUP_DEFAULT);
-    if (g_printLight != 0)
+    if (q_printLight != 0)
     {
-        print_light(&s_g_lightPool[g_lightToPrint]);
-        g_printLight = 0;
+        print_light(&s_q_lightPool[q_lightToPrint]);
+        q_printLight = 0;
     }
     if (lbl_802F1C84 != 0)
     {
         if (lightingStageId == currStageId)
-            memcpy(&s_g_lightPool[g_lightToPrint], &s_g_lightPool[lbl_802F1C80],
-                   sizeof(s_g_lightPool[g_lightToPrint]));
+            memcpy(&s_q_lightPool[q_lightToPrint], &s_q_lightPool[lbl_802F1C80],
+                   sizeof(s_q_lightPool[q_lightToPrint]));
         else
-            g_alloc_stage_lights(lightingStageId);
+            q_alloc_stage_lights(lightingStageId);
         lbl_802F1C84 = 0;
     }
 }
@@ -625,12 +625,12 @@ void light_main(void)
 // Returns false if no free light slot exists
 BOOL add_light_to_pool(struct Light *light)
 {
-    int idx = alloc_pool_light_idx(FALSE, light->g_id, light->g_inst);
+    int idx = alloc_pool_light_idx(FALSE, light->q_id, light->q_inst);
     struct Light *poolLight;
 
     if (idx == -1)
         return FALSE;
-    poolLight = &s_g_lightPool[idx];
+    poolLight = &s_q_lightPool[idx];
     memcpy(poolLight, light, sizeof(*poolLight));
     poolLight->valid = 1;
     poolLight->k0 = (light->k0 == 0.0f) ? 1.0f : light->k0;
@@ -644,7 +644,7 @@ BOOL add_light_to_pool(struct Light *light)
 struct Light *alloc_pool_light(int a, int b)
 {
     a = alloc_pool_light_idx(TRUE, a, b);
-    return (a == -1) ? NULL : &s_g_lightPool[a];
+    return (a == -1) ? NULL : &s_q_lightPool[a];
 }
 #pragma force_active reset
 
@@ -660,16 +660,16 @@ void load_light_group_uncached(int lightGrpId)
     s_currLightGroup = lightGrpId;
     lbl_802F1C68++;
     lightGrp = &s_lightGroups[lightGrpId];
-    r31 = &s_g_lightGroupSomethings[lightGrpId];
+    r31 = &s_q_lightGroupSomethings[lightGrpId];
     mathutil_mtxA_to_mtx(lightGrp->viewFromWorld);
-    if (r31->g_someLGIdxToCopy != g_someLGIdx || (r31->flags & 1) != 0)
+    if (r31->q_someLGIdxToCopy != q_someLGIdx || (r31->flags & 1) != 0)
     {
         lightGrp->lightMask = 0;
         for (i = 0; i < 8; i++)
         {
             if (lightGrp->lightPoolIdxs[i] != -1)
             {
-                struct Light *light = &s_g_lightPool[lightGrp->lightPoolIdxs[i]];
+                struct Light *light = &s_q_lightPool[lightGrp->lightPoolIdxs[i]];
 
                 if (light->valid != 0)
                 {
@@ -682,11 +682,11 @@ void load_light_group_uncached(int lightGrpId)
         nl2ngc_set_light_mask(lightGrp->lightMask);
         avdisp_set_light_mask(lightGrp->lightMask);
     }
-    if (r31->g_someLGIdxToCopy != g_someLGIdx || (r31->flags & 2) != 0)
+    if (r31->q_someLGIdxToCopy != q_someLGIdx || (r31->flags & 2) != 0)
         set_render_ambient(lightGrp->ambient.r, lightGrp->ambient.g, lightGrp->ambient.b);
     set_avdisp_inf_light(lightGrp);
-    g_someLGIdx = r31->g_someLGIdxToCopy;
-    s_g_lightPerfTimer += perf_stop_timer(0);
+    q_someLGIdx = r31->q_someLGIdxToCopy;
+    s_q_lightPerfTimer += perf_stop_timer(0);
 }
 
 int peek_light_group(void)
@@ -705,8 +705,8 @@ void load_light_group_cached(int lightGrpId)
     s_currLightGroup = lightGrpId;
     lbl_802F1C60++;
     lightGrp = &s_lightGroups[lightGrpId];
-    r29 = &s_g_lightGroupSomethings[lightGrpId];
-    if (r29->g_someLGIdxToCopy != g_someLGIdx || (r29->flags & 1) != 0)
+    r29 = &s_q_lightGroupSomethings[lightGrpId];
+    if (r29->q_someLGIdxToCopy != q_someLGIdx || (r29->flags & 1) != 0)
     {
         for (i = 0; i < ARRAY_COUNT(lightGrp->lightObjs); i++)
         {
@@ -720,8 +720,8 @@ void load_light_group_cached(int lightGrpId)
         avdisp_set_light_mask(lightGrp->lightMask);
     }
     set_avdisp_inf_light(lightGrp);
-    g_someLGIdx = r29->g_someLGIdxToCopy;
-    s_g_lightPerfTimer += perf_stop_timer(0);
+    q_someLGIdx = r29->q_someLGIdxToCopy;
+    s_q_lightPerfTimer += perf_stop_timer(0);
 }
 
 void push_light_group(void)
@@ -749,17 +749,17 @@ void pop_light_group(void)
     }
 }
 
-void g_reset_light_group_stack(int a)
+void q_reset_light_group_stack(int a)
 {
     s_currLightGroup = -1;
-    g_someLGIdx = -1;
+    q_someLGIdx = -1;
     mathutil_mtxA_from_mtxB();
     load_light_group_uncached(LIGHT_GROUP_DEFAULT);
 }
 
-void g_set_some_minimap_light_param(float a)
+void q_set_some_minimap_light_param(float a)
 {
-    g_minimap_light_ref_dist_scale = a;
+    q_minimap_light_ref_dist_scale = a;
 }
 
 void set_bg_ambient(float r, float g, float b)
@@ -788,7 +788,7 @@ void apply_curr_light_group_ambient(void)
     avdisp_set_ambient(ambient->r, ambient->g, ambient->b);
 }
 
-void g_draw_naomi_ball(void)
+void q_draw_naomi_ball(void)
 {
     u8 dummy[24];
     struct Light *r31;
@@ -796,7 +796,7 @@ void g_draw_naomi_ball(void)
 
     if (lbl_802F1C8C == 0)
         return;
-    r31 = &s_g_lightPool[g_lightToPrint];
+    r31 = &s_q_lightPool[q_lightToPrint];
     switch (r31->type)
     {
     case LIGHT_TYPE_POINT:
@@ -810,7 +810,7 @@ void g_draw_naomi_ball(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
-        g_nl2ngc_set_scale(r31->refDist * 2.0);
+        q_nl2ngc_set_scale(r31->refDist * 2.0);
         nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
@@ -835,7 +835,7 @@ void g_draw_naomi_ball(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
-        g_nl2ngc_set_scale(r31->refDist * 2.0);
+        q_nl2ngc_set_scale(r31->refDist * 2.0);
         nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
@@ -854,7 +854,7 @@ struct
     float unkC;
 } lbl_801F39EC;
 
-void g_smth_with_lights_smd_continue(int stageId)
+void q_smth_with_lights_smd_continue(int stageId)
 {
     init_bg_lighting(stageId);
     lbl_801F39EC.unk0 = s_bgLightInfo.unk10;
@@ -867,7 +867,7 @@ void g_smth_with_lights_smd_continue(int stageId)
     s_bgLightInfo.unk1C = 0.7f;
 }
 
-void g_smth_with_lights_smd_extra(int stageId)
+void q_smth_with_lights_smd_extra(int stageId)
 {
     init_bg_lighting(stageId);
     lbl_801F39EC.unk0 = s_bgLightInfo.unk10;

@@ -30,10 +30,10 @@ struct Struct802F1C28
     float unk38;
 };
 
-s32 g_cameraId1;
+s32 q_cameraId1;
 struct Camera *currentCameraStructPtr;
 void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
-s32 g_cameraId2;
+s32 q_cameraId2;
 s8 lbl_802F1C32;
 s16 lbl_802F1C30 ATTRIBUTE_ALIGN(8);  // there is padding before this variable for some reason
 struct Struct802F1C28 *lbl_802F1C28;
@@ -46,8 +46,8 @@ void camera_init(void)
     struct Camera *camera;
 
     currentCameraStructPtr = &cameraInfo[0];
-    g_cameraId1 = -1;
-    g_cameraId2 = -1;
+    q_cameraId1 = -1;
+    q_cameraId2 = -1;
 
     for (i = 0, camera = &cameraInfo[0]; i < 5; i++, camera++)
     {
@@ -370,8 +370,8 @@ void func_80017FCC(void)
     Mtx sp1C;
 
     currentCameraStructPtr = &cameraInfo[0];
-    g_cameraId1 = 4;
-    g_cameraId2 = 4;
+    q_cameraId1 = 4;
+    q_cameraId2 = 4;
     mathutil_mtx_copy(cameraInfo[0].unk144, mathutilData->mtxB);
     mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
     mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C->matrices[3]);
@@ -405,7 +405,7 @@ void setup_camera_viewport(int cameraId, float left, float top, float width, flo
             camera->sub28.fov = camera->sub28.unk32;
         }
     }
-    if (g_cameraId1 == cameraId)
+    if (q_cameraId1 == cameraId)
         camera_apply_viewport(cameraId);
 }
 
@@ -482,8 +482,8 @@ void camera_apply_viewport(int cameraId)
     struct Camera *camera = &cameraInfo[cameraId];
     Mtx projMtx;
 
-    g_cameraId1 = cameraId;
-    g_cameraId2 = cameraId;
+    q_cameraId1 = cameraId;
+    q_cameraId2 = cameraId;
     currentCameraStructPtr = camera;
     mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
     mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
@@ -535,9 +535,9 @@ void camera_apply_viewport(int cameraId)
         camera->sub28.unk2C);
 }
 
-void g_call_camera_apply_viewport(int cameraId)
+void q_call_camera_apply_viewport(int cameraId)
 {
-    if (g_cameraId1 != cameraId || g_cameraId2 != cameraId)
+    if (q_cameraId1 != cameraId || q_cameraId2 != cameraId)
         camera_apply_viewport(cameraId);
 }
 
@@ -548,7 +548,7 @@ void camera_apply_viewport_2(int cameraId)
     struct Camera *camera = &cameraInfo[cameraId];
     Mtx projMtx;
 
-    g_cameraId1 = cameraId;
+    q_cameraId1 = cameraId;
     currentCameraStructPtr = camera;
     mathutil_mtx_copy(camera->unk144, mathutilData->mtxB);
     mathutil_mtx_copy(mathutilData->mtxB, lbl_802F1B3C->matrices[2]);
@@ -591,7 +591,7 @@ void camera_apply_viewport_2(int cameraId)
 
 void func_800188A8(int cameraId)
 {
-    if (g_cameraId1 != cameraId)
+    if (q_cameraId1 != cameraId)
         camera_apply_viewport_2(cameraId);
 }
 
@@ -658,7 +658,7 @@ void camera_set_or_clear_flags(int flags, int set)
     }
 }
 
-static inline void g_clear_child_camera(struct Camera *child)
+static inline void q_clear_child_camera(struct Camera *child)
 {
     child->unkEC = 0;
     child->unkF0 = 0;
@@ -695,7 +695,7 @@ void camera_clear(struct Camera *camera)
     camera->sub28.fov = camera->sub28.unk32;
     camera->unk20 = 1.0f;
 
-    g_clear_child_camera(&cameraInfo[camera->unk204]);
+    q_clear_child_camera(&cameraInfo[camera->unk204]);
 }
 
 void func_80018C58(struct Camera *camera)
@@ -726,7 +726,7 @@ void func_80018C58(struct Camera *camera)
         {
             camera->unkF0--;
             if (camera->unkF0 == 0)
-                g_clear_child_camera(&cameraInfo[camera->unk204]);
+                q_clear_child_camera(&cameraInfo[camera->unk204]);
         }
     }
 }
@@ -1237,7 +1237,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (infoWork.unk1E == 1 && (g_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
+            if (infoWork.unk1E == 1 && (q_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
                 camera->timerCurr--;
         }
 
@@ -1857,7 +1857,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     camera->flags |= 4;
 
     if ((controllerInfo[lbl_80206BD0[ball->playerId]].unk0[0].button & PAD_BUTTON_A)
-     && (g_unkInputArr1[0] & PAD_BUTTON_A))
+     && (q_unkInputArr1[0] & PAD_BUTTON_A))
     {
         camera->state = 48;
         cameraFuncs[camera->state](camera, ball);
@@ -2721,7 +2721,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp10);
 
-    if (g_unkInputArr1[0] & PAD_BUTTON_A)
+    if (q_unkInputArr1[0] & PAD_BUTTON_A)
         camera->timerCurr += 2;
     else
         camera->timerCurr += 1;
@@ -2755,7 +2755,7 @@ void camera_func_44(struct Camera *camera, struct Ball *ball)
     camera->timerCurr = 0;
     r30 = &lbl_801EFB94[camera->unk204];
     f31 = func_8004964C(lbl_80250A68.unk0[ball->playerId]);
-    g_get_replay_info(lbl_80250A68.unk0[ball->playerId], &r30->unk8);
+    q_get_replay_info(lbl_80250A68.unk0[ball->playerId], &r30->unk8);
 
     statesLen = 0;
     states[statesLen] = 5;
@@ -2974,7 +2974,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
     camera->flags |= 4;
-    g_get_replay_info(lbl_80250A68.unk0[ball->playerId], &sp34);
+    q_get_replay_info(lbl_80250A68.unk0[ball->playerId], &sp34);
 
     if (!(sp34.flags & 1)
      || infoWork.goalEntered >= decodedStageLzPtr->goalsCount

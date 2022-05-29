@@ -219,7 +219,7 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
     params.mulColor = RGBA(255, 255, 255, (int)(sprite->opacity * 255.0f));
     draw_naomi_sprite(&params);
 
-    params.bmpId = g_get_monkey_bitmap_id(0, 0, playerCharacterSelection[pauseMenuState.playerId]);
+    params.bmpId = q_get_monkey_bitmap_id(0, 0, playerCharacterSelection[pauseMenuState.playerId]);
     params.x = sprite->x - 110.0f;
     params.y = sprite->y + sprite->scaleY + 12.0f;
     params.z = sprite->unk4C;
@@ -262,11 +262,11 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
         set_text_pos(3.0f + x, 3.0f + y);
         set_text_mul_color(RGBA(32, 32, 0, 0));
         set_text_add_color(RGBA(0, 0, 0, 0));
-        g_draw_text(text);
+        q_draw_text(text);
         set_text_pos(x, y);
         set_text_mul_color((i == pauseMenuState.selection) ? RGBA(255, 255, 0, 0) : RGBA(128, 128, 0, 0));
         set_text_add_color((((pauseMenuState.unk4) & 1) && i == pauseMenuState.selection) ? temp_r16 : 0);
-        g_draw_text(text);
+        q_draw_text(text);
 
         // Display billiards guide toggle
         if (menuType == PAUSEMENU_CONT_GUIDE_HOW_EXIT && i == 1)
@@ -279,7 +279,7 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
             set_text_pos(3.0f + x, 3.0f + y);
             set_text_mul_color(RGBA(32, 32, 0,0));
             set_text_add_color(RGBA(0, 0, 0, 0));
-            g_draw_text(text);
+            q_draw_text(text);
             set_text_pos(x, y);
             if (pauseMenuState.unk4 & 8)
                 set_text_mul_color(RGBA(192, 192, 0, 0));
@@ -289,14 +289,14 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
                 set_text_add_color(flashColor);
             else
                 set_text_add_color(RGBA(0, 0, 0, 0));
-            g_draw_text(text);
+            q_draw_text(text);
 
             strcpy(text, "OFF");
             x += 50.0f;
             set_text_pos(3.0f + x, 3.0f + y);
             set_text_mul_color(RGBA(32, 32, 0,0));
             set_text_add_color(RGBA(0, 0, 0, 0));
-            g_draw_text(text);
+            q_draw_text(text);
             set_text_pos(x, y);
             if (!(pauseMenuState.unk4 & 8))
                 set_text_mul_color(RGBA(192, 192, 0, 0));
@@ -306,7 +306,7 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
                 set_text_add_color(flashColor);
             else
                 set_text_add_color(RGBA(0, 0, 0, 0));
-            g_draw_text(text);
+            q_draw_text(text);
         }
         if (i == pauseMenuState.selection)
             sprite->scaleX = phi_f22;
@@ -365,7 +365,7 @@ static void lbl_80076710(struct Sprite *sprite)
 
 static void sega_logo_sprite_main(s8 *a, struct Sprite *sprite);
 
-void g_logo_plus_sprite_something(void)
+void q_logo_plus_sprite_something(void)
 {
     struct Sprite *sprite;
 
@@ -964,7 +964,7 @@ static void normal_timer_100th_seconds_sprite_main(s8 *, struct Sprite *);
 static void banana_count_sprite_draw(struct Sprite *);
 static void bananas_left_sprite_main(s8 *, struct Sprite *);
 
-void g_show_adv_ready_hud(void)
+void q_show_adv_ready_hud(void)
 {
     struct Sprite *sprite;
     struct Ball *ball;
@@ -1129,7 +1129,7 @@ static void adv_demo_banana_sprite_main(s8 *arg0, struct Sprite *sprite)
 static void eieipu_sprite_main(s8 *, struct Sprite *);
 static void eieipu_sprite_draw(struct Sprite *);
 
-void g_show_eieipu_sprite(int arg0)
+void q_show_eieipu_sprite(int arg0)
 {
     struct Sprite *sprite;
 
@@ -1428,7 +1428,7 @@ static void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
     else
         sprite->opacity = 1.0f;
     sprite->counter++;
-    if (g_unkInputArr1[0] & PAD_BUTTON_A)
+    if (q_unkInputArr1[0] & PAD_BUTTON_A)
         sprite->counter++;
     if (sprite->userVar != 0)
     {
@@ -1503,7 +1503,7 @@ static void floor_intro_sprite_draw(struct Sprite *sprite)
             set_text_opacity(MIN(0.0625 * (sprite->counter - 30 - ((i - 1) * 16)), sprite->opacity));
         else if (i == 0 && sprite->userVar > 0)
             set_text_opacity(sprite->opacity);
-        g_draw_char(text[i]);
+        q_draw_char(text[i]);
     }
     reset_text_draw_settings();
 }
@@ -1569,7 +1569,7 @@ void hud_show_ready_banner(int duration)
         sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "READY");
     }
-    g_play_sound(4);
+    q_play_sound(4);
 }
 
 static void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
@@ -1602,7 +1602,7 @@ static void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
     if (--sprite->counter <= 0)
     {
-        g_play_sound(5);
+        q_play_sound(5);
         *arg0 = 0;
     }
 }
@@ -1846,7 +1846,7 @@ void hud_show_normal_mode_info(void)
     lbl_80292C60.unk8 = 0;
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && lbl_802F1CAC > 0)
-        g_show_practice_mode_score_info(0);
+        q_show_practice_mode_score_info(0);
 
     if (modeCtrl.playerCount > 1)
     {
@@ -1997,7 +1997,7 @@ static void show_competition_player_hud(int playerId)
         else
             sprite->x = right - 28.0f;
         sprite->y = top + 22.0f;
-        sprite->bmpId = g_get_monkey_bitmap_id(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[playerId]);
+        sprite->bmpId = q_get_monkey_bitmap_id(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[playerId]);
         sprite->textAlign = ALIGN_CC;
         sprite->scaleX = 0.375f;
         sprite->scaleY = 0.24374999f;
@@ -2367,7 +2367,7 @@ static void banana_count_sprite_draw(struct Sprite *sprite)
     set_text_pos(sprite->x - 70.0f, sprite->y - 10.0f);
     set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, sprite->mulB, 0));
     set_text_add_color(RGBA(sprite->addR, sprite->addG, sprite->addB, 0));
-    g_draw_text("    100");
+    q_draw_text("    100");
 
     r22 = lbl_80292C00_alias;
     for (i = 0; i < 3; i++, r22++)
@@ -2427,7 +2427,7 @@ static void lbl_8007ADF4(struct Sprite *sprite)
             y = sprite->y - 10.0f;
             set_text_pos(x, y);
             set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, 0, 0));
-            g_draw_text("?");
+            q_draw_text("?");
             continue;
         }
 
@@ -2518,14 +2518,14 @@ static void score_value_sprite_main(s8 *arg0, struct Sprite *sprite)
     {
         r31->unk0 += r31->unk8;
         if (gameSubmode == SMD_GAME_GOAL_REPLAY_MAIN && r31->unk4 % 4 == 0)
-            g_play_sound(0x2E);
+            q_play_sound(0x2E);
     }
     sprintf(sprite->text, "%d", r31->unk0);
 }
 
 static void lbl_8007B490(s8 *arg0, struct Sprite *sprite)
 {
-    sprite->bmpId = g_get_monkey_bitmap_id(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[sprite->userVar]);
+    sprite->bmpId = q_get_monkey_bitmap_id(lbl_80292D18.unk0, lbl_80292D18.unk8, playerCharacterSelection[sprite->userVar]);
 }
 
 static void normal_ball_speed_sprite_main(s8 *arg0, struct Sprite *sprite)
@@ -2719,7 +2719,7 @@ static void final_floor_sprite_draw(struct Sprite *sprite)
         set_text_pos(sprite->x - 0.5 * w, sprite->y - 0.5 * h);
         set_text_scale(sprite->scaleX, sprite->scaleY);
         set_text_opacity(sprite->opacity);
-        g_draw_text(sprite->text);
+        q_draw_text(sprite->text);
     }
     else
     {
@@ -2756,7 +2756,7 @@ static void final_floor_sprite_draw(struct Sprite *sprite)
             set_text_scale(sprite->scaleX * temp_f20, sprite->scaleY * temp_f19);
             set_text_opacity(sprite->opacity * temp_f18);
             if (text[i] != ' ')
-                g_draw_char(text[i]);
+                q_draw_char(text[i]);
         }
     }
     reset_text_draw_settings();
@@ -2889,7 +2889,7 @@ static void go_sprite_draw(struct Sprite *sprite)
         set_text_pos(
             (sprite->x + phi_f29) - temp_r23 + ((i == 0) ? -temp_r23 : temp_r23),
             (sprite->y + phi_f2) - temp_r3);
-        g_draw_char((i == 0) ? 0x47 : 0x4F);
+        q_draw_char((i == 0) ? 0x47 : 0x4F);
     }
 }
 
@@ -3139,7 +3139,7 @@ static void fall_out_sprite_main(s8 *arg0, struct Sprite *sprite)
     t = sprite->userVar - sprite->counter;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET && t == 90)
-        g_play_sound(0xC);
+        q_play_sound(0xC);
 
     if (t < 30)
     {
@@ -3302,7 +3302,7 @@ static void bonus_finish_sprite_main(s8 *arg0, struct Sprite *sprite)
 
     sprite->scaleY = sprite->scaleX = temp_f3 * 0.8 + (1.0 - temp_f3) * 5.0;
     if (sprite->counter == 29)
-        g_play_sound((sprite->userVar != 0) ? 0x48 : 0x45);
+        q_play_sound((sprite->userVar != 0) ? 0x48 : 0x45);
     if (sprite->counter < 30)
         sprite->counter++;
 }
@@ -3410,7 +3410,7 @@ static void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
     if (sprite->userVar == 0)
     {
-        g_play_sound(0x47);
+        q_play_sound(0x47);
         sprite->userVar = 1;
     }
     sprite->opacity += 0.1 * (1.0 - sprite->opacity);
@@ -3913,7 +3913,7 @@ void hud_show_name_entry_banner(int arg0)
         sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "ENTRY");
     }
-    g_play_sound(4);
+    q_play_sound(4);
 }
 
 // Unused credits-related data. Possibly left over from arcade version?
@@ -4363,12 +4363,12 @@ static void clear_score_sprite_draw(struct Sprite *sprite)
     if (func_8007F61C(sprite, t, f31))
     {
         set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, sprite->mulB, 0));
-        g_draw_text("CLEAR SCORE : ");
+        q_draw_text("CLEAR SCORE : ");
     }
     if (lbl_8007F754_inline2(sprite, t, f31))
     {
         set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, sprite->mulB, 0));
-        g_draw_text(sprite->text);
+        q_draw_text(sprite->text);
     }
     reset_text_draw_settings();
 }
@@ -4385,12 +4385,12 @@ static void warp_bonus_sprite_draw(struct Sprite *sprite)
     if (func_8007F61C(sprite, t, f31))
     {
         set_text_mul_color(RGBA(0, 192, 255, 0));
-        g_draw_text(" WARP BONUS   ");
+        q_draw_text(" WARP BONUS   ");
     }
     if (lbl_8007F754_inline2(sprite, t, f31))
     {
         set_text_mul_color(RGBA(0, 192, 255, 0));
-        g_draw_text(sprite->text);
+        q_draw_text(sprite->text);
     }
     reset_text_draw_settings();
 }
@@ -4407,12 +4407,12 @@ static void time_bonus_sprite_draw(struct Sprite *sprite)
     if (func_8007F61C(sprite, t, f31))
     {
         set_text_mul_color(RGBA(255, 255, 0, 0));
-        g_draw_text(" TIME BONUS   ");
+        q_draw_text(" TIME BONUS   ");
     }
     if (lbl_8007F754_inline2(sprite, t, f31))
     {
         set_text_mul_color(RGBA(255, 255, 0, 0));
-        g_draw_text(sprite->text);
+        q_draw_text(sprite->text);
     }
     reset_text_draw_settings();
 }
@@ -4432,13 +4432,13 @@ static void floor_score_sprite_draw(struct Sprite *sprite)
     {
         set_text_mul_color(RGBA(255, 128, 0, 0));
         set_text_add_color(RGBA(r31, r31, r31, 0));
-        g_draw_text("FLOOR SCORE : ");
+        q_draw_text("FLOOR SCORE : ");
     }
     if (lbl_8007F754_inline2(sprite, t, f31))
     {
         set_text_mul_color(RGBA(255, 128, 0, 0));
         set_text_add_color(RGBA(r31, r31, r31, 0));
-        g_draw_text(sprite->text);
+        q_draw_text(sprite->text);
     }
     reset_text_draw_settings();
 }
@@ -4453,7 +4453,7 @@ static void best_score_sprite_main(s8 *, struct Sprite *);
 static void best_score_sprite_draw(struct Sprite *);
 static void lbl_800800D4(struct Sprite *);
 
-void g_show_practice_mode_score_info(int arg0)
+void q_show_practice_mode_score_info(int arg0)
 {
     struct Sprite *sprite;
 
@@ -4505,7 +4505,7 @@ static void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
     {
     case 1:
         SoundPitch(func_8002B610(0xA11D), 0);
-        g_play_music(0x1E, 8);
+        q_play_music(0x1E, 8);
         sprite->userVar = 2;
         sprite->counter = 120;
         break;
@@ -4513,7 +4513,7 @@ static void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
         if (--sprite->counter == 0)
         {
             sprite->userVar = 3;
-            g_play_music(0x64, 8);
+            q_play_music(0x64, 8);
         }
         break;
     }
@@ -4535,7 +4535,7 @@ static void best_score_sprite_draw(struct Sprite *sprite)
 
         set_text_mul_color(phi_r4 ? RGBA(255, 0, 0, 0) : r28);
         set_text_pos(sprite->x + 20.0 * i * sprite->scaleX + ((i > 4) ? -8 : 0), sprite->y);
-        g_draw_char(sprite->text[i]);
+        q_draw_char(sprite->text[i]);
     }
 }
 
@@ -4556,7 +4556,7 @@ static void lbl_800800D4(struct Sprite *sprite)
     sprite->drawFunc = drawFunc;
 
     set_text_pos(sprite->left, sprite->top);
-    g_draw_text(sprite->text);
+    q_draw_text(sprite->text);
 
     temp_r3 = find_sprite_with_tag(8);
     if (temp_r3 != NULL && temp_r3->userVar > 0)
@@ -4708,7 +4708,7 @@ static void bomb_sprite_main(s8 *arg0, struct Sprite *sprite)
         temp_f30 = sprite->scaleX;
         temp_f29 = sprite->scaleY;
         *arg0 = 0;
-        g_debug_set_cursor_pos(5, 5);
+        q_debug_set_cursor_pos(5, 5);
         for (i = 0; i < 10; i++)
         {
             fragSprite = create_sprite();

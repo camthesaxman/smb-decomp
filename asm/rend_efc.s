@@ -118,7 +118,7 @@ func_80095398:
 /* 800953C0 000912E0  3B A5 00 00 */	addi r29, r5, 0
 /* 800953C4 000912E4  93 81 00 10 */	stw r28, 0x10(r1)
 /* 800953C8 000912E8  3B 83 00 00 */	addi r28, r3, 0
-/* 800953CC 000912EC  80 0D 9A 60 */	lwz r0, g_cameraId1@sda21(r13)
+/* 800953CC 000912EC  80 0D 9A 60 */	lwz r0, q_cameraId1@sda21(r13)
 /* 800953D0 000912F0  7C 80 00 30 */	slw r0, r4, r0
 /* 800953D4 000912F4  54 1F 04 3E */	clrlwi r31, r0, 0x10
 lbl_800953D8:
@@ -1011,7 +1011,7 @@ lbl_800960E0:
 /* 80096108 00092028  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 8009610C 0009202C  98 83 00 08 */	stb r4, 8(r3)
 lbl_80096110:
-/* 80096110 00092030  80 6D 9A 60 */	lwz r3, g_cameraId1@sda21(r13)
+/* 80096110 00092030  80 6D 9A 60 */	lwz r3, q_cameraId1@sda21(r13)
 /* 80096114 00092034  4B F8 22 1D */	bl camera_apply_viewport
 /* 80096118 00092038  80 01 00 8C */	lwz r0, 0x8c(r1)
 /* 8009611C 0009203C  CB E1 00 80 */	lfd f31, 0x80(r1)
@@ -1208,7 +1208,7 @@ func_800963AC:
 /* 800963E8 00092308  88 06 00 26 */	lbz r0, 0x26(r6)
 /* 800963EC 0009230C  2C 00 00 05 */	cmpwi r0, 5
 /* 800963F0 00092310  40 82 06 14 */	bne lbl_80096A04
-/* 800963F4 00092314  80 0D 9A 60 */	lwz r0, g_cameraId1@sda21(r13)
+/* 800963F4 00092314  80 0D 9A 60 */	lwz r0, q_cameraId1@sda21(r13)
 /* 800963F8 00092318  C0 02 B0 6C */	lfs f0, lbl_802F586C@sda21(r2)
 /* 800963FC 0009231C  54 00 20 36 */	slwi r0, r0, 4
 /* 80096400 00092320  7C 7D 02 14 */	add r3, r29, r0
@@ -2182,7 +2182,7 @@ lbl_8009726C:
 /* 80097294 000931B4  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 80097298 000931B8  98 83 00 08 */	stb r4, 8(r3)
 lbl_8009729C:
-/* 8009729C 000931BC  80 6D 9A 60 */	lwz r3, g_cameraId1@sda21(r13)
+/* 8009729C 000931BC  80 6D 9A 60 */	lwz r3, q_cameraId1@sda21(r13)
 /* 800972A0 000931C0  4B F8 10 91 */	bl camera_apply_viewport
 /* 800972A4 000931C4  80 01 00 9C */	lwz r0, 0x9c(r1)
 /* 800972A8 000931C8  CB E1 00 90 */	lfd f31, 0x90(r1)
@@ -2757,7 +2757,7 @@ lbl_80097814:
 /* 80097ABC 000939DC  4B F6 FD BD */	bl mathutil_mtxA_to_mtx
 /* 80097AC0 000939E0  38 7D 01 D4 */	addi r3, r29, 0x1d4
 /* 80097AC4 000939E4  4B F6 FD B5 */	bl mathutil_mtxA_to_mtx
-/* 80097AC8 000939E8  80 6D 9A 60 */	lwz r3, g_cameraId1@sda21(r13)
+/* 80097AC8 000939E8  80 6D 9A 60 */	lwz r3, q_cameraId1@sda21(r13)
 /* 80097ACC 000939EC  4B F8 08 65 */	bl camera_apply_viewport
 /* 80097AD0 000939F0  A8 1D 00 30 */	lha r0, 0x30(r29)
 /* 80097AD4 000939F4  3F E0 43 30 */	lis r31, 0x4330
@@ -3206,7 +3206,7 @@ lbl_80098170:
 /* 80098170 00094090  48 00 2B 1D */	bl func_8009AC8C
 /* 80098174 00094094  3C 60 80 0A */	lis r3, lbl_8009825C@ha
 /* 80098178 00094098  38 63 82 5C */	addi r3, r3, lbl_8009825C@l
-/* 8009817C 0009409C  4B FF 64 6D */	bl g_avdisp_set_some_func_2
+/* 8009817C 0009409C  4B FF 64 6D */	bl q_avdisp_set_some_func_2
 /* 80098180 000940A0  3C 80 80 20 */	lis r4, animGroups@ha
 /* 80098184 000940A4  38 04 6E 48 */	addi r0, r4, animGroups@l
 /* 80098188 000940A8  3B 83 00 00 */	addi r28, r3, 0
@@ -3262,7 +3262,7 @@ lbl_80098234:
 /* 80098238 00094158  7C 1B 00 00 */	cmpw r27, r0
 /* 8009823C 0009415C  41 80 FF 60 */	blt lbl_8009819C
 /* 80098240 00094160  7F 83 E3 78 */	mr r3, r28
-/* 80098244 00094164  4B FF 63 A5 */	bl g_avdisp_set_some_func_2
+/* 80098244 00094164  4B FF 63 A5 */	bl q_avdisp_set_some_func_2
 /* 80098248 00094168  BB 41 00 D8 */	lmw r26, 0xd8(r1)
 /* 8009824C 0009416C  80 01 00 F4 */	lwz r0, 0xf4(r1)
 /* 80098250 00094170  38 21 00 F0 */	addi r1, r1, 0xf0
@@ -4022,7 +4022,7 @@ lbl_80098D54:
 /* 80098D70 00094C90  38 80 00 00 */	li r4, 0
 /* 80098D74 00094C94  48 04 B8 0D */	bl GXLoadPosMtxImm
 /* 80098D78 00094C98  C0 22 B0 DC */	lfs f1, lbl_802F58DC@sda21(r2)
-/* 80098D7C 00094C9C  4B F9 7E 2D */	bl g_nl2ngc_set_scale
+/* 80098D7C 00094C9C  4B F9 7E 2D */	bl q_nl2ngc_set_scale
 /* 80098D80 00094CA0  3C 60 80 0A */	lis r3, lbl_80098264@ha
 /* 80098D84 00094CA4  83 AD 9D 64 */	lwz r29, dynamicStageParts@sda21(r13)
 /* 80098D88 00094CA8  3B C3 82 64 */	addi r30, r3, lbl_80098264@l
@@ -4030,7 +4030,7 @@ lbl_80098D54:
 lbl_80098D90:
 /* 80098D90 00094CB0  80 7D 00 14 */	lwz r3, 0x14(r29)
 /* 80098D94 00094CB4  7F C4 F3 78 */	mr r4, r30
-/* 80098D98 00094CB8  4B F9 B2 B5 */	bl g_draw_naomi_model_with_mesh_func
+/* 80098D98 00094CB8  4B F9 B2 B5 */	bl q_draw_naomi_model_with_mesh_func
 /* 80098D9C 00094CBC  3B BD 00 18 */	addi r29, r29, 0x18
 lbl_80098DA0:
 /* 80098DA0 00094CC0  80 1D 00 00 */	lwz r0, 0(r29)
@@ -4423,7 +4423,7 @@ lbl_80099344:
 lbl_80099374:
 /* 80099374 00095294  80 7E 00 14 */	lwz r3, 0x14(r30)
 /* 80099378 00095298  7F E4 FB 78 */	mr r4, r31
-/* 8009937C 0009529C  4B F9 AC D1 */	bl g_draw_naomi_model_with_mesh_func
+/* 8009937C 0009529C  4B F9 AC D1 */	bl q_draw_naomi_model_with_mesh_func
 /* 80099380 000952A0  3B DE 00 18 */	addi r30, r30, 0x18
 lbl_80099384:
 /* 80099384 000952A4  80 1E 00 00 */	lwz r0, 0(r30)
@@ -5090,7 +5090,7 @@ lbl_80099ABC:
 /* 80099D64 00095C84  4B F6 DB 15 */	bl mathutil_mtxA_to_mtx
 /* 80099D68 00095C88  38 7D 01 D4 */	addi r3, r29, 0x1d4
 /* 80099D6C 00095C8C  4B F6 DB 0D */	bl mathutil_mtxA_to_mtx
-/* 80099D70 00095C90  80 6D 9A 60 */	lwz r3, g_cameraId1@sda21(r13)
+/* 80099D70 00095C90  80 6D 9A 60 */	lwz r3, q_cameraId1@sda21(r13)
 /* 80099D74 00095C94  4B F7 E5 BD */	bl camera_apply_viewport
 /* 80099D78 00095C98  A8 1D 00 30 */	lha r0, 0x30(r29)
 /* 80099D7C 00095C9C  3F 80 43 30 */	lis r28, 0x4330
@@ -5461,13 +5461,13 @@ func_8009A2A4:
 /* 8009A2DC 000961FC  48 04 A2 A5 */	bl GXLoadPosMtxImm
 /* 8009A2E0 00096200  3C 60 80 0A */	lis r3, lbl_8009A31C@ha
 /* 8009A2E4 00096204  38 63 A3 1C */	addi r3, r3, lbl_8009A31C@l
-/* 8009A2E8 00096208  4B FF 42 F1 */	bl g_avdisp_set_some_func_1
+/* 8009A2E8 00096208  4B FF 42 F1 */	bl q_avdisp_set_some_func_1
 /* 8009A2EC 0009620C  7C 60 1B 78 */	mr r0, r3
 /* 8009A2F0 00096210  80 7E 00 24 */	lwz r3, 0x24(r30)
 /* 8009A2F4 00096214  7C 1E 03 78 */	mr r30, r0
 /* 8009A2F8 00096218  4B FF 41 A5 */	bl avdisp_draw_model_culled_sort_none
 /* 8009A2FC 0009621C  7F C3 F3 78 */	mr r3, r30
-/* 8009A300 00096220  4B FF 42 D9 */	bl g_avdisp_set_some_func_1
+/* 8009A300 00096220  4B FF 42 D9 */	bl q_avdisp_set_some_func_1
 /* 8009A304 00096224  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8009A308 00096228  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 8009A30C 0009622C  83 C1 00 10 */	lwz r30, 0x10(r1)

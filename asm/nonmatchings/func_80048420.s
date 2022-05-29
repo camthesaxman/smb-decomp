@@ -39,13 +39,13 @@ lbl_800484B0:
 /* 800484B0 000443D0  38 99 00 00 */	addi r4, r25, 0
 /* 800484B4 000443D4  38 BA 00 00 */	addi r5, r26, 0
 /* 800484B8 000443D8  38 7F 00 50 */	addi r3, r31, 0x50
-/* 800484BC 000443DC  4B FF FA F1 */	bl g_apply_func_to_naomi_dl_pos_color_tex
+/* 800484BC 000443DC  4B FF FA F1 */	bl q_apply_func_to_naomi_dl_pos_color_tex
 /* 800484C0 000443E0  48 00 00 14 */	b lbl_800484D4
 lbl_800484C4:
 /* 800484C4 000443E4  38 99 00 00 */	addi r4, r25, 0
 /* 800484C8 000443E8  38 BB 00 00 */	addi r5, r27, 0
 /* 800484CC 000443EC  38 7F 00 50 */	addi r3, r31, 0x50
-/* 800484D0 000443F0  4B FF FA 05 */	bl g_apply_func_to_naomi_dl_pos_nrm_tex
+/* 800484D0 000443F0  4B FF FA 05 */	bl q_apply_func_to_naomi_dl_pos_nrm_tex
 lbl_800484D4:
 /* 800484D4 000443F4  80 7F 00 00 */	lwz r3, 0(r31)
 /* 800484D8 000443F8  38 00 FF FD */	li r0, -3
