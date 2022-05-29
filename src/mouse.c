@@ -7,7 +7,6 @@
 #include "sprite.h"
 #include "input.h"
 
-// sizeis all "short"
 struct Mouse {
     s16 posHorizontal;
     s16 posVertical;
@@ -22,11 +21,13 @@ struct Mouse mouse;
 extern s8 lbl_802F1360[8];
 extern s32 lbl_802F1EA8;
 
-extern float lbl_802F5848; // = 0.1
+extern f64 lbl_802F5848; // = 0.1
 
 extern float lbl_802F5858;// = 0.01f
 extern float lbl_802F585C;// = 1.0f
 extern float lbl_802F5860;// = 0.0f
+
+#define INVALID_SPRITE_INDEX -1;
 
 # define HORIZONTAL_DEFAULT 0x140;
 # define VERTICAL_DEFAULT 0xf0;
@@ -34,7 +35,7 @@ void ev_mouse_init(void)
 {
     mouse.posHorizontal = HORIZONTAL_DEFAULT;
     mouse.posVertical = VERTICAL_DEFAULT;
-    mouse.spriteIdx = -1;
+    mouse.spriteIdx = INVALID_SPRITE_INDEX;
     return;
 }
 
@@ -45,16 +46,12 @@ void ev_mouse_init(void)
 
 void ev_mouse_main(void)
 {
-    s8 *_statusList;
-    s16 _spriteIdx;
+    struct Sprite *_spriteInfo;
     int phi_r8;
-    s32 phi_r9;
+    s8 *_statusList;
     u16 _button;
-
     int i;
     
-    
-    struct Sprite *_spriteInfo;
     if (
         (lbl_802F1EA8 == 0U)
         && ((dipSwitches & DIP_TEST_CAM) == 0)
@@ -105,24 +102,23 @@ void ev_mouse_main(void)
             mouse.posVertical = VERTICAL_MAX;
         }
 
-        
-        // 0x1b4
         mouse.unk08 = mouse.posHorizontal - mouse.unk04;
-        // 0x1d0
         mouse.unk0a = mouse.posVertical - mouse.unk06;
 
         if ( (controllerInfo[0].unk0[2].button & PAD_BUTTON_A) != 0 ) {
             // if press "A button"
             
             if ( mouse.spriteIdx >= 0 ) {
-                mouse.spriteIdx = -1;
+                mouse.spriteIdx = INVALID_SPRITE_INDEX;
             } else {
-                mouse.spriteIdx = -1;
+                mouse.spriteIdx = INVALID_SPRITE_INDEX;
                 _spriteInfo = &spriteInfo[0];
                 _statusList = spritePoolInfo.statusList;
-
-                phi_r9 = 0;
-                for (i = spritePoolInfo.unk38; i > 0; i--) {
+                for (
+                    i = 0;
+                    i < spritePoolInfo.unk38;
+                    i++, _spriteInfo++, _statusList++
+                    ) {
                     if (
                         *_statusList != 0
                         && mouse.posHorizontal >= _spriteInfo->left
@@ -130,23 +126,18 @@ void ev_mouse_main(void)
                         && mouse.posVertical >= _spriteInfo->top
                         && mouse.posVertical <= _spriteInfo->bottom
                     ) {
-                        mouse.spriteIdx = phi_r9;
+                        mouse.spriteIdx = i;
                         break;
                     }
-                    phi_r9++;
-                    _spriteInfo++;
-                    _statusList++;
                 }
             }
         }
         
-        _spriteIdx = mouse.spriteIdx;
-        if (_spriteIdx >= 0) {
-            _spriteInfo = &spriteInfo[_spriteIdx];
+        if (mouse.spriteIdx >= 0) {
+            _spriteInfo = &spriteInfo[mouse.spriteIdx];
             while(_spriteInfo->unk50 != NULL) {
                 _spriteInfo = _spriteInfo->unk50;
             }
-
             _spriteInfo->x = _spriteInfo->x + mouse.unk08;
             _spriteInfo->y = _spriteInfo->y + mouse.unk0a;
         }
