@@ -46,17 +46,17 @@ void do_object_collision(void)
             {
                 int j;
                 s8 *phi_r30 = spritePoolInfo.unk2C;
-                struct Stobj_ *phi_r31 = lbl_80285AB0;
+                struct Stobj_ *stobj = lbl_80285AB0;
 
-                for (j = spritePoolInfo.unk28; j > 0; j--, phi_r31++, phi_r30++)
+                for (j = spritePoolInfo.unk28; j > 0; j--, stobj++, phi_r30++)
                 {
-                    if (*phi_r30 && (phi_r31->unk8 & 2))
+                    if (*phi_r30 && (stobj->unk8 & 2))
                     {
-                        s8 temp_r4 = phi_r31->unkA0;
+                        s8 temp_r4 = stobj->animGroupId;
                         if (physBall.animGroupId != temp_r4)
                             tf_physball_to_anim_group_space(&physBall, temp_r4);
-                        if (func_8006A9B8(&physBall.prevPos, &physBall.pos, &phi_r31->position_2, &phi_r31->position, physBall.radius, phi_r31->unk34) != 0U)
-                            phi_r31->unk38(phi_r31, &physBall);
+                        if (func_8006A9B8(&physBall.prevPos, &physBall.pos, &stobj->position_2, &stobj->position, physBall.radius, stobj->boundSphereRadius) != 0)
+                            stobj->coliFunc(stobj, &physBall);
                     }
                 }
             }

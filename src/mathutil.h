@@ -364,6 +364,30 @@ static inline float mathutil_vec_dot_prod_alt(register Vec *a, register Vec *b)
 #endif
 }
 
+// another register swapped variant
+static inline float mathutil_vec_dot_prod_alt2(register Vec *a, register Vec *b)
+{
+#ifdef MATHUTIL_C_ONLY
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+#else
+    register float x1, y1, z1, x2, y2, z2;
+
+    asm
+    {
+        lfs x1, a->x
+        lfs x2, b->x
+        lfs y1, a->y
+        lfs y2, b->y
+        lfs z1, a->z
+        lfs z2, b->z
+        fmuls x1, x1, x2
+        fmadds x1, y1, y2, x1
+        fmadds x1, z1, z2, x1
+    }
+    return x1;
+#endif
+}
+
 extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
 {
 #ifdef MATHUTIL_C_ONLY

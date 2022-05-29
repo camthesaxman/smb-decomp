@@ -1001,18 +1001,18 @@ struct Stobj_
     /*0x10*/ Vec g_model_origin;
     /*0x1C*/ Vec position;
     /*0x28*/ Vec position_2;
-    float unk34;
-    void (*unk38)(struct Stobj_ *, struct PhysicsBall *);
+    /*0x34*/ float boundSphereRadius;
+    /*0x38*/ void (*coliFunc)(struct Stobj_ *, struct PhysicsBall *);
     Vec unk3C;  // unknown type
     float unk48;
     float unk4C;
     float unk50;
     /*0x54*/ struct GMAModel *model;
-    Vec unk58;
+    Vec unk58;  // position within anim group?
     Vec unk64;
-    s16 unk70;
-    s16 unk72;
-    s16 unk74;
+    /*0x70*/ s16 rotX;
+    /*0x72*/ s16 rotY;
+    /*0x74*/ s16 rotZ;
     s16 unk76;
     s16 unk78;
     u8 filler7A[0x7C-0x7A];
@@ -1021,9 +1021,9 @@ struct Stobj_
     s16 unk8A;
     s16 unk8C;
     u8 filler8E[2];
-    Vec unk90;
+    Vec unk90;  // yet another position?
     float unk9C;
-    s8 unkA0;
+    /*0xA0*/ s8 animGroupId;
     u8 fillerA1[3];
     void *unkA4;
     Vec unkA8;

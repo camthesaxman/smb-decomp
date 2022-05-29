@@ -165,12 +165,12 @@ lbl_8006CB38:
 /* 8006CCA0 00068BC0  38 E7 00 C0 */	addi r7, r7, 0xc0
 /* 8006CCA4 00068BC4  42 00 FE 94 */	bdnz lbl_8006CB38
 /* 8006CCA8 00068BC8  80 1F 00 40 */	lwz r0, 0x40(r31)
-/* 8006CCAC 00068BCC  3C 60 80 1C */	lis r3, lbl_801BE420@ha
-/* 8006CCB0 00068BD0  38 A3 E4 20 */	addi r5, r3, lbl_801BE420@l
+/* 8006CCAC 00068BCC  3C 60 80 1C */	lis r3, smallLCDModelIDs@ha
+/* 8006CCB0 00068BD0  38 A3 E4 20 */	addi r5, r3, smallLCDModelIDs@l
 /* 8006CCB4 00068BD4  54 00 07 FA */	rlwinm r0, r0, 0, 0x1f, 0x1d
 /* 8006CCB8 00068BD8  90 1F 00 40 */	stw r0, 0x40(r31)
-/* 8006CCBC 00068BDC  3C 60 80 29 */	lis r3, lbl_8028CED8@ha
-/* 8006CCC0 00068BE0  38 83 CE D8 */	addi r4, r3, lbl_8028CED8@l
+/* 8006CCBC 00068BDC  3C 60 80 29 */	lis r3, smallLCDModels@ha
+/* 8006CCC0 00068BE0  38 83 CE D8 */	addi r4, r3, smallLCDModels@l
 /* 8006CCC4 00068BE4  80 1F 00 40 */	lwz r0, 0x40(r31)
 /* 8006CCC8 00068BE8  60 00 00 01 */	ori r0, r0, 1
 /* 8006CCCC 00068BEC  90 1F 00 40 */	stw r0, 0x40(r31)
@@ -242,15 +242,15 @@ lbl_8006CB38:
 /* 8006CDD4 00068CF4  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDD8 00068CF8  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CDDC 00068CFC  90 04 00 24 */	stw r0, 0x24(r4)
-/* 8006CDE0 00068D00  3C 80 80 1C */	lis r4, lbl_801BE434@ha
+/* 8006CDE0 00068D00  3C 80 80 1C */	lis r4, largeLCDModelIDs@ha
 /* 8006CDE4 00068D04  80 6D 99 24 */	lwz r3, naomiCommonObj  // (r13)
-/* 8006CDE8 00068D08  38 A4 E4 34 */	addi r5, r4, lbl_801BE434@l
+/* 8006CDE8 00068D08  38 A4 E4 34 */	addi r5, r4, largeLCDModelIDs@l
 /* 8006CDEC 00068D0C  A8 05 00 00 */	lha r0, 0(r5)
-/* 8006CDF0 00068D10  3C 80 80 29 */	lis r4, lbl_8028CF00@ha
+/* 8006CDF0 00068D10  3C 80 80 29 */	lis r4, largeLCDModels@ha
 /* 8006CDF4 00068D14  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CDF8 00068D18  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDFC 00068D1C  80 03 00 04 */	lwz r0, 4(r3)
-/* 8006CE00 00068D20  94 04 CF 00 */	stwu r0, lbl_8028CF00@l(r4)
+/* 8006CE00 00068D20  94 04 CF 00 */	stwu r0, largeLCDModels@l(r4)
 /* 8006CE04 00068D24  AC 05 00 02 */	lhau r0, 2(r5)
 /* 8006CE08 00068D28  80 6D 99 24 */	lwz r3, naomiCommonObj  // (r13)
 /* 8006CE0C 00068D2C  54 00 10 3A */	slwi r0, r0, 2

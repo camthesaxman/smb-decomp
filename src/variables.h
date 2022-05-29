@@ -268,8 +268,8 @@ extern float unknownTrigTable[];
 // extern ? stobjCollisionFuncs;
 // extern ? lbl_801BE1F0;
 // extern ? lbl_801BE394;
-// extern ? lbl_801BE420;
-// extern ? lbl_801BE434;
+// extern ? smallLCDModelIDs;
+// extern ? largeLCDModelIDs;
 // extern ? lbl_801BE448;
 // extern ? spriteTileOffsets;
 
@@ -603,10 +603,10 @@ extern struct
 // extern ? lbl_80285A58;
 extern struct Stobj_ lbl_80285AB0[128];
 extern struct Struct8028C0B0 lbl_8028C0B0;
-// extern ? lbl_8028C0D8;
-// extern ? lbl_8028CD98;
-// extern ? lbl_8028CED8;
-// extern ? lbl_8028CF00;
+// extern ? goalTapes;
+// extern ? partyBalls;
+// extern ? smallLCDModels;
+// extern ? largeLCDModels;
 // extern ? textDrawInfo;
 // extern ? spriteInfo;
 extern struct ScreenFadeInfo screenFadeInfo;

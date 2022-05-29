@@ -2388,11 +2388,11 @@ func_8006C7B8:
 .global func_8006C7BC
 func_8006C7BC:
 /* 8006C7BC 000686DC  7C 08 02 A6 */	mflr r0
-/* 8006C7C0 000686E0  3C A0 80 29 */	lis r5, lbl_8028C0D8@ha
+/* 8006C7C0 000686E0  3C A0 80 29 */	lis r5, goalTapes@ha
 /* 8006C7C4 000686E4  90 01 00 04 */	stw r0, 4(r1)
 /* 8006C7C8 000686E8  94 21 FE E8 */	stwu r1, -0x118(r1)
 /* 8006C7CC 000686EC  BE A1 00 EC */	stmw r21, 0xec(r1)
-/* 8006C7D0 000686F0  3B C5 C0 D8 */	addi r30, r5, lbl_8028C0D8@l
+/* 8006C7D0 000686F0  3B C5 C0 D8 */	addi r30, r5, goalTapes@l
 /* 8006C7D4 000686F4  3A C3 00 00 */	addi r22, r3, 0
 /* 8006C7D8 000686F8  3A E4 00 00 */	addi r23, r4, 0
 /* 8006C7DC 000686FC  38 7E 00 00 */	addi r3, r30, 0
@@ -2721,12 +2721,12 @@ lbl_8006CB38:
 /* 8006CCA0 00068BC0  38 E7 00 C0 */	addi r7, r7, 0xc0
 /* 8006CCA4 00068BC4  42 00 FE 94 */	bdnz lbl_8006CB38
 /* 8006CCA8 00068BC8  80 1F 00 40 */	lwz r0, 0x40(r31)
-/* 8006CCAC 00068BCC  3C 60 80 1C */	lis r3, lbl_801BE420@ha
-/* 8006CCB0 00068BD0  38 A3 E4 20 */	addi r5, r3, lbl_801BE420@l
+/* 8006CCAC 00068BCC  3C 60 80 1C */	lis r3, smallLCDModelIDs@ha
+/* 8006CCB0 00068BD0  38 A3 E4 20 */	addi r5, r3, smallLCDModelIDs@l
 /* 8006CCB4 00068BD4  54 00 07 FA */	rlwinm r0, r0, 0, 0x1f, 0x1d
 /* 8006CCB8 00068BD8  90 1F 00 40 */	stw r0, 0x40(r31)
-/* 8006CCBC 00068BDC  3C 60 80 29 */	lis r3, lbl_8028CED8@ha
-/* 8006CCC0 00068BE0  38 83 CE D8 */	addi r4, r3, lbl_8028CED8@l
+/* 8006CCBC 00068BDC  3C 60 80 29 */	lis r3, smallLCDModels@ha
+/* 8006CCC0 00068BE0  38 83 CE D8 */	addi r4, r3, smallLCDModels@l
 /* 8006CCC4 00068BE4  80 1F 00 40 */	lwz r0, 0x40(r31)
 /* 8006CCC8 00068BE8  60 00 00 01 */	ori r0, r0, 1
 /* 8006CCCC 00068BEC  90 1F 00 40 */	stw r0, 0x40(r31)
@@ -2798,15 +2798,15 @@ lbl_8006CB38:
 /* 8006CDD4 00068CF4  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDD8 00068CF8  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CDDC 00068CFC  90 04 00 24 */	stw r0, 0x24(r4)
-/* 8006CDE0 00068D00  3C 80 80 1C */	lis r4, lbl_801BE434@ha
+/* 8006CDE0 00068D00  3C 80 80 1C */	lis r4, largeLCDModelIDs@ha
 /* 8006CDE4 00068D04  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
-/* 8006CDE8 00068D08  38 A4 E4 34 */	addi r5, r4, lbl_801BE434@l
+/* 8006CDE8 00068D08  38 A4 E4 34 */	addi r5, r4, largeLCDModelIDs@l
 /* 8006CDEC 00068D0C  A8 05 00 00 */	lha r0, 0(r5)
-/* 8006CDF0 00068D10  3C 80 80 29 */	lis r4, lbl_8028CF00@ha
+/* 8006CDF0 00068D10  3C 80 80 29 */	lis r4, largeLCDModels@ha
 /* 8006CDF4 00068D14  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CDF8 00068D18  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDFC 00068D1C  80 03 00 04 */	lwz r0, 4(r3)
-/* 8006CE00 00068D20  94 04 CF 00 */	stwu r0, lbl_8028CF00@l(r4)
+/* 8006CE00 00068D20  94 04 CF 00 */	stwu r0, largeLCDModels@l(r4)
 /* 8006CE04 00068D24  AC 05 00 02 */	lhau r0, 2(r5)
 /* 8006CE08 00068D28  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8006CE0C 00068D2C  54 00 10 3A */	slwi r0, r0, 2
@@ -2867,7 +2867,7 @@ lbl_8006CB38:
 /* 8006CEE8 00068E08  7C 08 03 A6 */	mtlr r0
 /* 8006CEEC 00068E0C  38 21 00 48 */	addi r1, r1, 0x48
 /* 8006CEF0 00068E10  4E 80 00 20 */	blr
-.endif
+
 .global stobj_goaltape_main
 stobj_goaltape_main:
 /* 8006CEF4 00068E14  7C 08 02 A6 */	mflr r0
@@ -3418,15 +3418,16 @@ lbl_8006D6EC:
 /* 8006D718 00069638  CB 41 00 68 */	lfd f26, 0x68(r1)
 /* 8006D71C 0006963C  38 21 00 98 */	addi r1, r1, 0x98
 /* 8006D720 00069640  4E 80 00 20 */	blr
+
 .global stobj_goaltape_draw
 stobj_goaltape_draw:
 /* 8006D724 00069644  7C 08 02 A6 */	mflr r0
-/* 8006D728 00069648  3C 80 80 29 */	lis r4, lbl_8028C0D8@ha
+/* 8006D728 00069648  3C 80 80 29 */	lis r4, goalTapes@ha
 /* 8006D72C 0006964C  90 01 00 04 */	stw r0, 4(r1)
 /* 8006D730 00069650  94 21 FF C0 */	stwu r1, -0x40(r1)
 /* 8006D734 00069654  BF 41 00 28 */	stmw r26, 0x28(r1)
 /* 8006D738 00069658  3B 43 00 00 */	addi r26, r3, 0
-/* 8006D73C 0006965C  3B C4 C0 D8 */	addi r30, r4, lbl_8028C0D8@l
+/* 8006D73C 0006965C  3B C4 C0 D8 */	addi r30, r4, goalTapes@l
 /* 8006D740 00069660  4B F9 A2 6D */	bl mathutil_mtxA_from_mtxB
 /* 8006D744 00069664  38 7A 00 58 */	addi r3, r26, 0x58
 /* 8006D748 00069668  4B F9 A5 D9 */	bl mathutil_mtxA_translate
@@ -3613,6 +3614,7 @@ lbl_8006D8B0:
 /* 8006D9F8 00069918  38 21 00 40 */	addi r1, r1, 0x40
 /* 8006D9FC 0006991C  7C 08 03 A6 */	mtlr r0
 /* 8006DA00 00069920  4E 80 00 20 */	blr
+
 .global stobj_goaltape_coli
 stobj_goaltape_coli:
 /* 8006DA04 00069924  7C 08 02 A6 */	mflr r0
@@ -3854,7 +3856,7 @@ func_8006DD98:
 .global func_8006DD9C
 func_8006DD9C:
 /* 8006DD9C 00069CBC  4E 80 00 20 */	blr
-
+.endif
 .global func_8006DDA0
 func_8006DDA0:
 /* 8006DDA0 00069CC0  7C 08 02 A6 */	mflr r0
@@ -5383,8 +5385,8 @@ g_break_goal_tape:
 /* 8006F450 0006B370  2C 1B 00 08 */	cmpwi r27, 8
 /* 8006F454 0006B374  40 80 01 84 */	bge lbl_8006F5D8
 /* 8006F458 0006B378  1C 9B 01 98 */	mulli r4, r27, 0x198
-/* 8006F45C 0006B37C  3C 60 80 29 */	lis r3, lbl_8028C0D8@ha
-/* 8006F460 0006B380  38 03 C0 D8 */	addi r0, r3, lbl_8028C0D8@l
+/* 8006F45C 0006B37C  3C 60 80 29 */	lis r3, goalTapes@ha
+/* 8006F460 0006B380  38 03 C0 D8 */	addi r0, r3, goalTapes@l
 /* 8006F464 0006B384  7F C0 22 14 */	add r30, r0, r4
 /* 8006F468 0006B388  80 1E 00 00 */	lwz r0, 0(r30)
 /* 8006F46C 0006B38C  28 00 00 00 */	cmplwi r0, 0
@@ -5504,9 +5506,9 @@ func_8006F5F0:
 /* 8006F618 0006B538  BF 41 00 20 */	stmw r26, 0x20(r1)
 /* 8006F61C 0006B53C  7C 7F 1B 78 */	mr r31, r3
 /* 8006F620 0006B540  48 00 05 01 */	bl func_8006FB20
-/* 8006F624 0006B544  3C 60 80 29 */	lis r3, lbl_8028C0D8@ha
+/* 8006F624 0006B544  3C 60 80 29 */	lis r3, goalTapes@ha
 /* 8006F628 0006B548  CB 82 A1 08 */	lfd f28, lbl_802F4908-_SDA2_BASE_(r2)
-/* 8006F62C 0006B54C  38 03 C0 D8 */	addi r0, r3, lbl_8028C0D8@l
+/* 8006F62C 0006B54C  38 03 C0 D8 */	addi r0, r3, goalTapes@l
 /* 8006F630 0006B550  CB A2 A1 20 */	lfd f29, lbl_802F4920-_SDA2_BASE_(r2)
 /* 8006F634 0006B554  C3 C2 A1 04 */	lfs f30, lbl_802F4904-_SDA2_BASE_(r2)
 /* 8006F638 0006B558  7C 1B 03 78 */	mr r27, r0
@@ -5605,8 +5607,8 @@ func_8006F760:
 /* 8006F794 0006B6B4  93 81 00 E8 */	stw r28, 0xe8(r1)
 /* 8006F798 0006B6B8  40 80 03 54 */	bge lbl_8006FAEC
 /* 8006F79C 0006B6BC  1C 83 00 28 */	mulli r4, r3, 0x28
-/* 8006F7A0 0006B6C0  3C 60 80 29 */	lis r3, lbl_8028CD98@ha
-/* 8006F7A4 0006B6C4  38 03 CD 98 */	addi r0, r3, lbl_8028CD98@l
+/* 8006F7A0 0006B6C0  3C 60 80 29 */	lis r3, partyBalls@ha
+/* 8006F7A4 0006B6C4  38 03 CD 98 */	addi r0, r3, partyBalls@l
 /* 8006F7A8 0006B6C8  7F 80 22 14 */	add r28, r0, r4
 /* 8006F7AC 0006B6CC  80 1C 00 00 */	lwz r0, 0(r28)
 /* 8006F7B0 0006B6D0  83 FC 00 0C */	lwz r31, 0xc(r28)
@@ -5845,10 +5847,10 @@ lbl_8006FAEC:
 
 .global func_8006FB20
 func_8006FB20:
-/* 8006FB20 0006BA40  3C 80 80 29 */	lis r4, lbl_8028CD98@ha
+/* 8006FB20 0006BA40  3C 80 80 29 */	lis r4, partyBalls@ha
 /* 8006FB24 0006BA44  C0 22 A0 E8 */	lfs f1, lbl_802F48E8-_SDA2_BASE_(r2)
 /* 8006FB28 0006BA48  38 00 00 02 */	li r0, 2
-/* 8006FB2C 0006BA4C  38 84 CD 98 */	addi r4, r4, lbl_8028CD98@l
+/* 8006FB2C 0006BA4C  38 84 CD 98 */	addi r4, r4, partyBalls@l
 /* 8006FB30 0006BA50  7C 09 03 A6 */	mtctr r0
 /* 8006FB34 0006BA54  39 04 00 00 */	addi r8, r4, 0
 /* 8006FB38 0006BA58  38 E0 00 08 */	li r7, 8
@@ -6120,19 +6122,19 @@ glabel lbl_8028C0BC
 	.skip 0x1C
 
 	.balign 8
-.global lbl_8028C0D8
-lbl_8028C0D8:
+.global goalTapes
+goalTapes:
 	.skip 0xCC0
-.global lbl_8028CD98
-lbl_8028CD98:
+.global partyBalls
+partyBalls:
 	.skip 0x140
+.global smallLCDModels
+smallLCDModels:
+	.skip 0x28
+.global largeLCDModels
+largeLCDModels:
+	.skip 0x28
 .endif
-.global lbl_8028CED8
-lbl_8028CED8:
-	.skip 0x28
-.global lbl_8028CF00
-lbl_8028CF00:
-	.skip 0x28
 
 .section .data
 
@@ -6375,8 +6377,8 @@ glabel string__________Z__7_3f_n
 	.asciz "         Z,%7.3f\n"
 	.balign 4
 
-.global lbl_801BE420
-lbl_801BE420:
+.global smallLCDModelIDs
+smallLCDModelIDs:
 	# ROM: 0x1BB420
 	.4byte 0x001D001E
 	.4byte 0x001F0020
@@ -6384,8 +6386,8 @@ lbl_801BE420:
 	.4byte 0x00230024
 	.4byte 0x00250026
 
-.global lbl_801BE434
-lbl_801BE434:
+.global largeLCDModelIDs
+largeLCDModelIDs:
 	# ROM: 0x1BB434
 	.4byte 0x00130014
 	.4byte 0x00150016
@@ -6684,7 +6686,7 @@ lbl_802F4920:
 	# ROM: 0x1EE340
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
+
 .global lbl_802F4928
 lbl_802F4928:
 	# ROM: 0x1EE348
@@ -6802,6 +6804,7 @@ lbl_802F49B8:
 	# ROM: 0x1EE3D8
 	.4byte 0x3FC00000
 	.4byte 0
+.endif
 
 .global lbl_802F49C0
 lbl_802F49C0:

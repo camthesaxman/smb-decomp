@@ -449,7 +449,7 @@ void ev_stobj_init(void);
 void ev_stobj_main(void);
 void ev_stobj_dest(void);
 void stobj_draw(void);
-// ? func_8006B2C0();
+s16 func_8006B2C0(struct Stobj_ *arg0);
 void func_8006B518(struct Stobj_ *);
 void func_8006B594(void);
 void func_8006B8E4(struct StageAnimGroup *, int);

@@ -203,9 +203,9 @@ void ev_stobj_main(void)
             else
             {
                 stobj->unk7C = stobj->unk58;
-                stobj->unk88 = stobj->unk70;
-                stobj->unk8A = stobj->unk72;
-                stobj->unk8C = stobj->unk74;
+                stobj->unk88 = stobj->rotX;
+                stobj->unk8A = stobj->rotY;
+                stobj->unk8C = stobj->rotZ;
                 stobjMainFuncs[stobj->type](stobj);
                 stobj->position_2 = stobj->position;
                 func_8006B518(stobj);
@@ -213,24 +213,24 @@ void ev_stobj_main(void)
                 {
                     Point3d sp8;
 
-                    if (stobj->unkA0 != 0)
+                    if (stobj->animGroupId != 0)
                     {
-                        mathutil_mtxA_from_mtx(animGroups[stobj->unkA0].transform);
+                        mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
                         mathutil_mtxA_translate(&stobj->unk58);
                     }
                     else
                         mathutil_mtxA_from_translate(&stobj->unk58);
                     if (stobj->unk8 & 0x10)
                     {
-                        mathutil_mtxA_rotate_y(stobj->unk72);
-                        mathutil_mtxA_rotate_x(stobj->unk70);
-                        mathutil_mtxA_rotate_z(stobj->unk74);
+                        mathutil_mtxA_rotate_y(stobj->rotY);
+                        mathutil_mtxA_rotate_x(stobj->rotX);
+                        mathutil_mtxA_rotate_z(stobj->rotZ);
                     }
                     else
                     {
-                        mathutil_mtxA_rotate_z(stobj->unk74);
-                        mathutil_mtxA_rotate_y(stobj->unk72);
-                        mathutil_mtxA_rotate_x(stobj->unk70);
+                        mathutil_mtxA_rotate_z(stobj->rotZ);
+                        mathutil_mtxA_rotate_y(stobj->rotY);
+                        mathutil_mtxA_rotate_x(stobj->rotX);
                     }
                     mathutil_mtxA_tf_point(&stobj->unk90, &sp8);
                     func_800390C8(5, &sp8, stobj->unk9C);
@@ -279,12 +279,12 @@ void stobj_draw(void)
     {
         if (*phi_r29 != 0)
         {
-            if (phi_r25 != stobj->unkA0)
+            if (phi_r25 != stobj->animGroupId)
             {
                 mathutil_mtxA_from_mtx(mtx);
-                mathutil_mtxA_mult_right(animGroups[stobj->unkA0].transform);
+                mathutil_mtxA_mult_right(animGroups[stobj->animGroupId].transform);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
-                phi_r25 = stobj->unkA0;
+                phi_r25 = stobj->animGroupId;
             }
             stobjDrawFuncs[stobj->type](stobj);
         }
@@ -310,7 +310,7 @@ s16 func_8006B2C0(struct Stobj_ *arg0)
     temp_r31->unk7C = temp_r31->unk58;
     func_8006B518(temp_r31);
     temp_r31->position_2 = temp_r31->position;
-    temp_r31->unk38 = stobjCollisionFuncs[temp_r31->type];
+    temp_r31->coliFunc = stobjCollisionFuncs[temp_r31->type];
     temp_r31->unk2 = lbl_802F1FF8;
     lbl_802F1FF8++;
     if (lbl_802F1FF8 < 0)
@@ -376,15 +376,15 @@ void func_8006B518(struct Stobj_ *stobj)
     mathutil_mtxA_from_translate(&stobj->unk58);
     if (stobj->unk8 & 0x10)
     {
-        mathutil_mtxA_rotate_y(stobj->unk72);
-        mathutil_mtxA_rotate_x(stobj->unk70);
-        mathutil_mtxA_rotate_z(stobj->unk74);
+        mathutil_mtxA_rotate_y(stobj->rotY);
+        mathutil_mtxA_rotate_x(stobj->rotX);
+        mathutil_mtxA_rotate_z(stobj->rotZ);
     }
     else
     {
-        mathutil_mtxA_rotate_z(stobj->unk74);
-        mathutil_mtxA_rotate_y(stobj->unk72);
-        mathutil_mtxA_rotate_x(stobj->unk70);
+        mathutil_mtxA_rotate_z(stobj->rotZ);
+        mathutil_mtxA_rotate_y(stobj->rotY);
+        mathutil_mtxA_rotate_x(stobj->rotX);
     }
     mathutil_mtxA_tf_point(&stobj->g_model_origin, &stobj->position);
 }
@@ -557,11 +557,11 @@ void func_8006B8E4(struct StageAnimGroup *arg0, int arg1)
         for (j = 0; j < arg0->bumperCount; j++, bumper++)
         {
             stobj.unk58 = bumper->pos;
-            stobj.unk70 = bumper->rotX;
-            stobj.unk72 = bumper->rotY;
-            stobj.unk74 = bumper->rotZ;
+            stobj.rotX = bumper->rotX;
+            stobj.rotY = bumper->rotY;
+            stobj.rotZ = bumper->rotZ;
             stobj.unk3C = bumper->unk14;
-            stobj.unkA0 = i;
+            stobj.animGroupId = i;
             func_8006B2C0(&stobj);
         }
     }
@@ -582,11 +582,11 @@ void func_8006B9E4(struct StageAnimGroup *arg0, int arg1)
         for (j = 0; j < arg0->jamabarCount; j++, jamabar++)
         {
             stobj.unkA8 = jamabar->pos;
-            stobj.unk70 = jamabar->rotX;
-            stobj.unk72 = jamabar->rotY;
-            stobj.unk74 = jamabar->rotZ;
+            stobj.rotX = jamabar->rotX;
+            stobj.rotY = jamabar->rotY;
+            stobj.rotZ = jamabar->rotZ;
             stobj.unk3C = jamabar->unk14;
-            stobj.unkA0 = i;
+            stobj.animGroupId = i;
             func_8006B2C0(&stobj);
         }
     }
@@ -597,7 +597,7 @@ void stobj_bumper_init(struct Stobj_ *stobj)
     stobj->unkC = 0;
     stobj->unk8 |= 0xA;
     stobj->model = lbl_8028C0B0.unk14[0];
-    stobj->unk34 = 0.75f * stobj->model->boundSphereRadius;
+    stobj->boundSphereRadius = 0.75f * stobj->model->boundSphereRadius;
     stobj->g_model_origin = stobj->model->boundSphereCenter;
     stobj->unk48 = 1.0f;
     stobj->unk4C = 1.0f;
@@ -646,9 +646,9 @@ void stobj_bumper_draw(struct Stobj_ *stobj)
 
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&stobj->unk58);
-    mathutil_mtxA_rotate_z(stobj->unk74);
-    mathutil_mtxA_rotate_y(stobj->unk72);
-    mathutil_mtxA_rotate_x(stobj->unk70);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_x(stobj->rotX);
     mathutil_mtxA_rotate_y(stobj->unk76);
     spC.x = stobj->unk48 * stobj->unk3C.x;
     spC.y = stobj->unk3C.y;
@@ -695,9 +695,9 @@ void stobj_bumper_draw(struct Stobj_ *stobj)
 
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(stobj->unk58.x, 0.05f + stobj->unk58.y, stobj->unk58.z);
-        mathutil_mtxA_rotate_z(stobj->unk74);
-        mathutil_mtxA_rotate_y(stobj->unk72);
-        mathutil_mtxA_rotate_x(stobj->unk70 - 0x4000);
+        mathutil_mtxA_rotate_z(stobj->rotZ);
+        mathutil_mtxA_rotate_y(stobj->rotY);
+        mathutil_mtxA_rotate_x(stobj->rotX - 0x4000);
         temp_f31_2 = 2.0f * spC.x;
         phi_f30 = 2.0f * (spC.x - 1.0f);
         if (phi_f30 > 1.0f)
@@ -738,7 +738,7 @@ void stobj_bumper_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1)
     arg1->vel.x += 0.05 * sp24.x;
     arg1->vel.y += 0.05 * sp24.y;
     arg1->vel.z += 0.05 * sp24.z;
-    temp_f1 = stobj->unk34 + arg1->radius + 0.01;
+    temp_f1 = stobj->boundSphereRadius + arg1->radius + 0.01;
     sp24.x *= temp_f1;
     sp24.y *= temp_f1;
     sp24.z *= temp_f1;
@@ -780,7 +780,7 @@ void stobj_bumper_bgspecial_init(struct Stobj_ *arg0)
     arg0->unkC = 0;
     arg0->unk8 |= 0xA;
     arg0->model = lbl_8028C0B0.unk14[0];
-    arg0->unk34 = 0.75f * arg0->model->boundSphereRadius;
+    arg0->boundSphereRadius = 0.75f * arg0->model->boundSphereRadius;
     arg0->g_model_origin = arg0->model->boundSphereCenter;
     arg0->unk48 = 1.0f;
     arg0->unk4C = 1.0f;
@@ -836,9 +836,9 @@ void stobj_bumper_bgspecial_draw(struct Stobj_ *arg0)
                 var_f1 = 1.0f;
             temp_f31 = arg0->model->boundSphereRadius + arg0->model->boundSphereRadius * mathutil_sin(16384.0f * var_f1);
             mathutil_mtxA_from_mtxB_translate(&arg0->unk58);
-            mathutil_mtxA_rotate_z(arg0->unk74);
-            mathutil_mtxA_rotate_y(arg0->unk72);
-            mathutil_mtxA_rotate_x(arg0->unk70);
+            mathutil_mtxA_rotate_z(arg0->rotZ);
+            mathutil_mtxA_rotate_y(arg0->rotY);
+            mathutil_mtxA_rotate_x(arg0->rotX);
             mathutil_mtxA_rotate_y(arg0->unk0 << 11);
             mathutil_mtxA_translate_xyz(0.0f, temp_f31, 0.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -880,7 +880,7 @@ void stobj_jamabar_init(struct Stobj_ *arg0)
     arg0->unkC = 0;
     arg0->unk8 |= 0xA;
     arg0->model = lbl_802F1FFC;
-    arg0->unk34 = arg0->model->boundSphereRadius * arg0->unk3C.x;
+    arg0->boundSphereRadius = arg0->model->boundSphereRadius * arg0->unk3C.x;
     arg0->g_model_origin = arg0->model->boundSphereCenter;
     arg0->unk58 = arg0->unkA8;
     arg0->unk90.x = 0.0f;
@@ -889,55 +889,55 @@ void stobj_jamabar_init(struct Stobj_ *arg0)
     arg0->unk9C = 1.0f;
 }
 
-void stobj_jamabar_main(struct Stobj_ *arg0)
+void stobj_jamabar_main(struct Stobj_ *stobj)
 {
     Vec spC;
 
-    mathutil_mtxA_from_translate(&arg0->unkA8);
-    mathutil_mtxA_rotate_z((s32) arg0->unk74);
-    mathutil_mtxA_rotate_y((s32) arg0->unk72);
-    mathutil_mtxA_rotate_x((s32) arg0->unk70);
+    mathutil_mtxA_from_translate(&stobj->unkA8);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_x(stobj->rotX);
     mathutil_mtxA_push();
-    mathutil_mtxA_mult_left(animGroups[arg0->unkA0].transform);
+    mathutil_mtxA_mult_left(animGroups[stobj->animGroupId].transform);
     mathutil_mtxA_rigid_inv_tf_vec(&lbl_80206CF0, &spC);
     mathutil_mtxA_pop();
     spC.z *= 0.016;
-    arg0->unkC0.z += spC.z;
-    arg0->unkC0.z *= 0.97;
-    arg0->unkB4.z += arg0->unkC0.z;
-    if (arg0->unkB4.z < -2.5)
+    stobj->unkC0.z += spC.z;
+    stobj->unkC0.z *= 0.97;
+    stobj->unkB4.z += stobj->unkC0.z;
+    if (stobj->unkB4.z < -2.5)
     {
-        arg0->unkB4.z = -2.5f;
-        if (arg0->unkC0.z < 0.0)
-            arg0->unkC0.z = -arg0->unkC0.z;
+        stobj->unkB4.z = -2.5f;
+        if (stobj->unkC0.z < 0.0)
+            stobj->unkC0.z = -stobj->unkC0.z;
     }
-    else if (arg0->unkB4.z > 0.0)
+    else if (stobj->unkB4.z > 0.0)
     {
-        arg0->unkB4.z = 0.0f;
-        if (arg0->unkC0.z > 0.0)
-            arg0->unkC0.z = -arg0->unkC0.z;
+        stobj->unkB4.z = 0.0f;
+        if (stobj->unkC0.z > 0.0)
+            stobj->unkC0.z = -stobj->unkC0.z;
     }
-    mathutil_mtxA_tf_point(&arg0->unkB4, &arg0->unk58);
-    arg0->unk64.x = arg0->unk58.x - arg0->unk7C.x;
-    arg0->unk64.y = arg0->unk58.y - arg0->unk7C.y;
-    arg0->unk64.z = arg0->unk58.z - arg0->unk7C.z;
+    mathutil_mtxA_tf_point(&stobj->unkB4, &stobj->unk58);
+    stobj->unk64.x = stobj->unk58.x - stobj->unk7C.x;
+    stobj->unk64.y = stobj->unk58.y - stobj->unk7C.y;
+    stobj->unk64.z = stobj->unk58.z - stobj->unk7C.z;
 }
 
-void stobj_jamabar_draw(struct Stobj_ *arg0)
+void stobj_jamabar_draw(struct Stobj_ *stobj)
 {
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&arg0->unk58);
-    mathutil_mtxA_rotate_z(arg0->unk74);
-    mathutil_mtxA_rotate_y(arg0->unk72);
-    mathutil_mtxA_rotate_x(arg0->unk70);
-    spC = arg0->unk3C;
+    mathutil_mtxA_translate(&stobj->unk58);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_x(stobj->rotX);
+    spC = stobj->unk3C;
     mathutil_mtxA_scale_xyz(spC.x, spC.y, spC.z);
     avdisp_set_bound_sphere_scale(spC.z);
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-    avdisp_draw_model_culled_sort_translucent(arg0->model);
+    avdisp_draw_model_culled_sort_translucent(stobj->model);
 }
 
 void stobj_jamabar_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1)
@@ -952,16 +952,16 @@ char string_OFS_SPD__X__7_3f_n[] = "OFS SPD: X,%7.3f\n";
 char string__________Y__7_3f_n[] = "         Y,%7.3f\n";
 char string__________Z__7_3f_n[] = "         Z,%7.3f\n";
 
-void func_8006C6CC(struct Stobj_ *arg0)
+void func_8006C6CC(struct Stobj_ *stobj)
 {
     func_8002FCC0(2, lbl_801BE25C);
-    func_8002FCC0(2, string_OFS__X__7_3f_n, arg0->unkB4.x);
-    func_8002FCC0(2, string______Y__7_3f_n_2, arg0->unkB4.y);
-    func_8002FCC0(2, string______Z__7_3f_n_2, arg0->unkB4.z);
+    func_8002FCC0(2, string_OFS__X__7_3f_n, stobj->unkB4.x);
+    func_8002FCC0(2, string______Y__7_3f_n_2, stobj->unkB4.y);
+    func_8002FCC0(2, string______Z__7_3f_n_2, stobj->unkB4.z);
     func_8002FD68(2, lbl_802F0B40);
-    func_8002FCC0(2, string_OFS_SPD__X__7_3f_n, arg0->unkC0.x);
-    func_8002FCC0(2, string__________Y__7_3f_n, arg0->unkC0.y);
-    func_8002FCC0(2, string__________Z__7_3f_n, arg0->unkC0.z);
+    func_8002FCC0(2, string_OFS_SPD__X__7_3f_n, stobj->unkC0.x);
+    func_8002FCC0(2, string__________Y__7_3f_n, stobj->unkC0.y);
+    func_8002FCC0(2, string__________Z__7_3f_n, stobj->unkC0.z);
     func_8002FD68(2, lbl_802F0B40);
 }
 
