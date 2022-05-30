@@ -35,9 +35,9 @@ void collide_ball_with_goal(struct PhysicsBall *ball, struct StageGoal *goal);
 // ? stcoli_sub22();
 // ? stcoli_sub23();
 // ? stcoli_sub24();
-void g_collide_ball_with_dynstageparts(struct PhysicsBall *,
+void u_collide_ball_with_dynstageparts(struct PhysicsBall *,
                                        struct DynamicStagePart *dynStageParts);
-void g_draw_stage_collision(void);
+void u_draw_stage_collision(void);
 // ? draw_dynamic_stage_collision();
 // ? draw_collision_triangle();
 // ? stcoli_sub29();

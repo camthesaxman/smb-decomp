@@ -19,7 +19,7 @@
 /* 8009056C 0008C48C  38 60 00 49 */	li r3, 0x49
 /* 80090570 0008C490  38 00 00 04 */	li r0, 4
 /* 80090574 0008C494  90 E1 00 8C */	stw r7, 0x8c(r1)
-/* 80090578 0008C498  3B 5C 00 84 */	addi r26, r28, 0x84  // 802B4EE4 g_tevCache.unk18
+/* 80090578 0008C498  3B 5C 00 84 */	addi r26, r28, 0x84  // 802B4EE4 u_tevCache.unk18
 /* 8009057C 0008C49C  3A A0 00 00 */	li r21, 0
 /* 80090580 0008C4A0  90 C1 00 90 */	stw r6, 0x90(r1)
 /* 80090584 0008C4A4  39 C0 00 00 */	li r14, 0
@@ -511,10 +511,10 @@ lbl_80090C30:
 lbl_80090C78:
 /* 80090C78 0008CB98  88 01 00 20 */	lbz r0, 0x20(r1)
 /* 80090C7C 0008CB9C  7F 64 DB 78 */	mr r4, r27
-/* 80090C80 0008CBA0  C0 2D 9F 14 */	lfs f1, g_someColorScaleR
+/* 80090C80 0008CBA0  C0 2D 9F 14 */	lfs f1, u_someColorScaleR
 /* 80090C84 0008CBA4  38 60 00 01 */	li r3, 1
 /* 80090C88 0008CBA8  90 01 00 CC */	stw r0, 0xcc(r1)
-/* 80090C8C 0008CBAC  C0 0D 9F 18 */	lfs f0, g_someColorScaleG
+/* 80090C8C 0008CBAC  C0 0D 9F 18 */	lfs f0, u_someColorScaleG
 /* 80090C90 0008CBB0  93 A1 00 C8 */	stw r29, 0xc8(r1)
 /* 80090C94 0008CBB4  C8 41 00 C8 */	lfd f2, 0xc8(r1)
 /* 80090C98 0008CBB8  EC 42 F8 28 */	fsubs f2, f2, f31
@@ -534,7 +534,7 @@ lbl_80090C78:
 /* 80090CD0 0008CBF0  80 01 00 BC */	lwz r0, 0xbc(r1)
 /* 80090CD4 0008CBF4  98 01 00 21 */	stb r0, 0x21(r1)
 /* 80090CD8 0008CBF8  88 01 00 22 */	lbz r0, 0x22(r1)
-/* 80090CDC 0008CBFC  C0 0D 9F 1C */	lfs f0, g_someColorScaleB
+/* 80090CDC 0008CBFC  C0 0D 9F 1C */	lfs f0, u_someColorScaleB
 /* 80090CE0 0008CC00  90 01 00 B4 */	stw r0, 0xb4(r1)
 /* 80090CE4 0008CC04  93 A1 00 B0 */	stw r29, 0xb0(r1)
 /* 80090CE8 0008CC08  C8 21 00 B0 */	lfd f1, 0xb0(r1)
@@ -700,10 +700,10 @@ lbl_80090EE4:
 lbl_80090F2C:
 /* 80090F2C 0008CE4C  88 01 00 10 */	lbz r0, 0x10(r1)
 /* 80090F30 0008CE50  7E A4 AB 78 */	mr r4, r21
-/* 80090F34 0008CE54  C0 2D 9F 14 */	lfs f1, g_someColorScaleR
+/* 80090F34 0008CE54  C0 2D 9F 14 */	lfs f1, u_someColorScaleR
 /* 80090F38 0008CE58  38 60 00 01 */	li r3, 1
 /* 80090F3C 0008CE5C  90 01 00 AC */	stw r0, 0xac(r1)
-/* 80090F40 0008CE60  C0 0D 9F 18 */	lfs f0, g_someColorScaleG
+/* 80090F40 0008CE60  C0 0D 9F 18 */	lfs f0, u_someColorScaleG
 /* 80090F44 0008CE64  91 C1 00 A8 */	stw r14, 0xa8(r1)
 /* 80090F48 0008CE68  C8 41 00 A8 */	lfd f2, 0xa8(r1)
 /* 80090F4C 0008CE6C  EC 42 F8 28 */	fsubs f2, f2, f31
@@ -723,7 +723,7 @@ lbl_80090F2C:
 /* 80090F84 0008CEA4  80 01 00 C4 */	lwz r0, 0xc4(r1)
 /* 80090F88 0008CEA8  98 01 00 11 */	stb r0, 0x11(r1)
 /* 80090F8C 0008CEAC  88 01 00 12 */	lbz r0, 0x12(r1)
-/* 80090F90 0008CEB0  C0 0D 9F 1C */	lfs f0, g_someColorScaleB
+/* 80090F90 0008CEB0  C0 0D 9F 1C */	lfs f0, u_someColorScaleB
 /* 80090F94 0008CEB4  90 01 00 CC */	stw r0, 0xcc(r1)
 /* 80090F98 0008CEB8  91 C1 00 C8 */	stw r14, 0xc8(r1)
 /* 80090F9C 0008CEBC  C8 21 00 C8 */	lfd f1, 0xc8(r1)

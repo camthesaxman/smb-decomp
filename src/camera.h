@@ -114,10 +114,10 @@ struct Camera
 
 extern s16 lbl_802F1C30;
 //extern s8 lbl_802F1C32;
-extern s32 g_cameraId2;
+extern s32 u_cameraId2;
 extern void (*minigameRelCameraCallback)(struct Camera *, struct Ball *);
 extern struct Camera *currentCameraStructPtr;
-extern s32 g_cameraId1;
+extern s32 u_cameraId1;
 
 extern struct Camera cameraInfo[5];
 // extern ? lbl_801EFB94;
@@ -131,7 +131,7 @@ void setup_camera_viewport(int cameraId, float left, float top, float width, flo
 void camera_setup_splitscreen_viewports(int playerCount);
 void camera_setup_singleplayer_viewport(void);
 void camera_apply_viewport(int);
-void g_call_camera_apply_viewport();
+void u_call_camera_apply_viewport();
 // ? camera_apply_viewport_2();
 // ? func_800188A8();
 void func_800188D4(void);

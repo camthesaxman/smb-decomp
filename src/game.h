@@ -44,13 +44,13 @@ void submode_game_result_main_func(void);
 void submode_game_result_menu_func(void);
 void submode_game_intr_sel_init_func(void);
 void submode_game_intr_sel_main_func(void);
-int g_get_next_stage_id(void);
+int u_get_next_stage_id(void);
 int func_80017004(void);
 u32 lose_life(void);
 void func_80017140(void);
 // ? get_next_player();
-void g_init_player_data_1(void);
-void g_init_player_data_2(void);
+void u_init_player_data_1(void);
+void u_init_player_data_2(void);
 void mark_player_finished(int);
 BOOL are_all_players_finished(void);
 

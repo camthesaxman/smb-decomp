@@ -704,7 +704,7 @@ void init_gamedata_file(void)
         OSPanic("memcard.c", 927, "cannot OSAlloc");
     if (DVDOpen("banner_and_icon.bin", &file) == 0)
         OSPanic("memcard.c", 931, "cannot open banner_and_icon.bin");
-    if (g_read_dvd_file(&file, buffer, sizeof(memcardGameData->bannerAndIcon), 0) == 0)
+    if (u_read_dvd_file(&file, buffer, sizeof(memcardGameData->bannerAndIcon), 0) == 0)
         OSPanic("memcard.c", 935, "cannot read banner_and_icon.bin");
     memcpy(memcardGameData->bannerAndIcon, buffer, sizeof(memcardGameData->bannerAndIcon));
     OSFree(buffer);
@@ -765,12 +765,12 @@ void init_replay_file_data(void)
     void *buffer = OSAlloc(0x1800);
     if (buffer == NULL)
         OSPanic("memcard.c", 1014, "cannot OSAlloc");
-    g_get_replay_info(11, &sp88);
+    u_get_replay_info(11, &sp88);
 
     // copy banner image
     if (DVDOpen("preview/96x32.tpl", &file) == 0)
         OSPanic("memcard.c", 1026, "cannot open replay banner image");
-    if (g_read_dvd_file(&file, buffer, 0x1800, (sp88.stageId - 1) * 0x1800) == 0)
+    if (u_read_dvd_file(&file, buffer, 0x1800, (sp88.stageId - 1) * 0x1800) == 0)
         OSPanic("memcard.c", 1029, "cannot read replay banner image");
     memcpy(memcardReplayData->bannerImg, buffer, 0x1800);
     DVDClose(&file);
@@ -778,7 +778,7 @@ void init_replay_file_data(void)
     // copy replay icon
     if (DVDOpen("replay_icon.bin", &file) == 0)
         OSPanic("memcard.c", 1040, "cannot open replay_icon.bin");
-    if (g_read_dvd_file(&file, buffer, 0x800, 0) == 0)
+    if (u_read_dvd_file(&file, buffer, 0x800, 0) == 0)
         OSPanic("memcard.c", 1043, "cannot read replay_icon.bin");
     memcpy(memcardReplayData->replayIcon, buffer, 0x800);
     DVDClose(&file);
@@ -2575,7 +2575,7 @@ void load_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((g_unkInputArr1[2] & PAD_BUTTON_A)
+        if ((u_unkInputArr1[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2648,7 +2648,7 @@ void save_sequence(void)
     switch (memcardInfo.state)
     {
     case MC_STATE_UNK1:
-        if ((g_unkInputArr1[2] & PAD_BUTTON_A)
+        if ((u_unkInputArr1[2] & PAD_BUTTON_A)
          || !(memcardInfo.statusFlags & (1 << 7)))
         {
             memcardInfo.unk40 = 0x3C;
@@ -2701,21 +2701,21 @@ void save_sequence(void)
         open_memcard_file();
         break;
     case 9:
-        if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
-         || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
+        if ((u_unkInputArr1[2] & PAD_BUTTON_LEFT)
+         || (u_unkInputArr2[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
-         || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
+        if ((u_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+         || (u_unkInputArr2[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (g_unkInputArr1[2] & PAD_BUTTON_A)
+        if (u_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2744,21 +2744,21 @@ void save_sequence(void)
     case 0xD:
         if (memcardInfo.statusFlags & (1 << 10))
         {
-            if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
-             || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
+            if ((u_unkInputArr1[2] & PAD_BUTTON_LEFT)
+             || (u_unkInputArr2[2] & PAD_BUTTON_LEFT))
             {
                 if (lbl_802F21B1 == 0)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 1;
             }
-            if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
-             || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
+            if ((u_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+             || (u_unkInputArr2[2] & PAD_BUTTON_RIGHT))
             {
                 if (lbl_802F21B1 == 1)
                     func_8002B5C8(0x6C);
                 lbl_802F21B1 = 0;
             }
-            if (!(g_unkInputArr1[2] & PAD_BUTTON_A))
+            if (!(u_unkInputArr1[2] & PAD_BUTTON_A))
                 break;
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2834,7 +2834,7 @@ void replay_save_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (g_unkInputArr1[2] & PAD_BUTTON_A)
+        if (u_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -2860,21 +2860,21 @@ void replay_save_sequence(void)
         check_verify_filesystem_result();
         break;
     case 9:
-        if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT)
-         || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
+        if ((u_unkInputArr1[2] & PAD_BUTTON_LEFT)
+         || (u_unkInputArr2[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 1;
         }
-        if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT)
-         || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
+        if ((u_unkInputArr1[2] & PAD_BUTTON_RIGHT)
+         || (u_unkInputArr2[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
                 func_8002B5C8(0x6C);
             lbl_802F21B1 = 0;
         }
-        if (g_unkInputArr1[2] & PAD_BUTTON_A)
+        if (u_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
@@ -2950,7 +2950,7 @@ void replay_list_sequence(void)
     switch (memcardInfo.state)
     {
     case 1:
-        if (g_unkInputArr1[2] & PAD_BUTTON_A)
+        if (u_unkInputArr1[2] & PAD_BUTTON_A)
         {
             func_8002B5C8(0x6A);
             memcardInfo.unk40 = 0x3C;
@@ -3124,14 +3124,14 @@ void ev_memcard_init(void)
         memcardGameData = NULL;
     }
     if (!(memcardInfo.statusFlags & (1 << 6)))
-        g_unkInputArr1[2] = 0;
+        u_unkInputArr1[2] = 0;
 }
 
 void ev_memcard_main(void)
 {
     if ((memcardInfo.statusFlags & (1 << 7))
      && memcardInfo.state == 1
-     && (g_unkInputArr1[2] & PAD_BUTTON_B))
+     && (u_unkInputArr1[2] & PAD_BUTTON_B))
     {
         func_8002B5C8(0x6B);
         memcardInfo.state = MC_STATE_ERROR;
@@ -3146,12 +3146,12 @@ void ev_memcard_main(void)
     if (memcardInfo.statusFlags & MC_STATUS_ERROR)
     {
         memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | MC_STATUS_WRITE_IN_PROGRESS);
-        if (g_unkInputArr1[2] & PAD_BUTTON_B)
+        if (u_unkInputArr1[2] & PAD_BUTTON_B)
         {
             func_8002B5C8(0x6B);
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
-            g_unkInputArr1[2] = 0;
+            u_unkInputArr1[2] = 0;
         }
         else
         {
@@ -3281,7 +3281,7 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
 
     for (i = 0, f30 = 0.0f, r27 = msg->numLines; i < msg->numLines; i++)
     {
-        float lineWidth = g_get_text_width(msg->lines[i].str);
+        float lineWidth = u_get_text_width(msg->lines[i].str);
         if (lineWidth > f30)
             f30 = lineWidth;
     }
@@ -3307,11 +3307,11 @@ void draw_memcard_msg(struct MemCardMessage *msg, float x, float y)
     draw_naomi_sprite(&lbl_801D5724);
     for (i = 0; i < msg->numLines; i++)
     {
-        float param1 = x - 0.5 * g_get_text_width(msg->lines[i].str);
+        float param1 = x - 0.5 * u_get_text_width(msg->lines[i].str);
         float param2 = 0.800000011920929 * (32.0 * i)
             + ((y - 9.600000143051147) - 0.800000011920929 * (16.0 * (msg->numLines - 1)));
         set_text_pos(param1, param2);
-        g_draw_text(msg->lines[i].str);
+        u_draw_text(msg->lines[i].str);
     }
 }
 
@@ -3406,7 +3406,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(0, 0, 0, 0));
             set_text_add_color(color);
         }
-        g_draw_text("Yes ");
+        u_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             set_text_mul_color(RGBA(0, 0, 0, 0));
@@ -3417,7 +3417,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(0, 0, 0, 0));
             set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        g_draw_text("No");
+        u_draw_text("No");
         set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
@@ -3429,7 +3429,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(255, 255, 255, 0));
             set_text_add_color(color);
         }
-        g_draw_text("Yes ");
+        u_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             set_text_mul_color(RGBA(255, 255, 255, 0));
@@ -3440,7 +3440,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(127, 127, 127, 0));
             set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        g_draw_text("No");
+        u_draw_text("No");
     }
     if (memcardInfo.state == 10)
         draw_memcard_msg(&msgFormatProgress, 320.0f, 240.0f);
@@ -3463,7 +3463,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(0, 0, 0, 0));
             set_text_add_color(color);
         }
-        g_draw_text("Yes ");
+        u_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             set_text_mul_color(RGBA(0, 0, 0, 0));
@@ -3474,7 +3474,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(0, 0, 0, 0));
             set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        g_draw_text("No");
+        u_draw_text("No");
         set_text_pos(240.0f, lbl_802F1EB0 + 0xFF);
         if (lbl_802F21B1 == 0)
         {
@@ -3486,7 +3486,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(255, 255, 255, 0));
             set_text_add_color(color);
         }
-        g_draw_text("Yes ");
+        u_draw_text("Yes ");
         if (lbl_802F21B1 == 0)
         {
             set_text_mul_color(RGBA(255, 255, 255, 0));
@@ -3497,7 +3497,7 @@ void memcard_draw_ui(void)
             set_text_mul_color(RGBA(127, 127, 127, 0));
             set_text_add_color(RGBA(0, 0, 0, 0));
         }
-        g_draw_text("No");
+        u_draw_text("No");
     }
     if (memcardInfo.statusFlags & (1 << 15))
     {
@@ -3573,7 +3573,7 @@ void func_800A4E70(void)
 {
     memcardGameData->unk5844.unk4E = lbl_802F21A8;
     func_80025E5C(memcardGameData);
-    g_store_gamedata(memcardGameData);
+    u_store_gamedata(memcardGameData);
     func_8002DB10(memcardGameData);
     func_80067FD0(memcardGameData);
     memcardGameData->unk5844.unkAC = modeCtrl.splitscreenMode;
@@ -3587,7 +3587,7 @@ void func_800A4F04(void)
 {
     lbl_802F21A8 = memcardGameData->unk5844.unk4E;
     func_80025E8C(memcardGameData);
-    g_load_gamedata(memcardGameData);
+    u_load_gamedata(memcardGameData);
     func_8002DB24(memcardGameData);
     func_8006800C(memcardGameData);
     modeCtrl.splitscreenMode = memcardGameData->unk5844.unkAC;

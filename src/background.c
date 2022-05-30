@@ -626,7 +626,7 @@ void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float ti
             continue;
         timeSecondsLooped = timeSeconds;
         if (bgModels->flags & (1 << 6))
-            timeSecondsLooped = lbl_80206DEC.g_stageTimer / 60.0;
+            timeSecondsLooped = lbl_80206DEC.u_stageTimer / 60.0;
         timeSecondsLooped += anim->loopStartSeconds;
         loopDurationSeconds = (float)(anim->loopEndSeconds - anim->loopStartSeconds);
         timeSecondsLooped -=
@@ -725,7 +725,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         if ((lbl_801EEC90.unk0 & (1 << 2))
          && func_8000E444(&model->boundSphereCenter) < -(f29 * model->boundSphereRadius))
             continue;
-        if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
+        if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
         customLightGroup = bgModels->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -736,7 +736,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
             load_light_group_uncached(customLightGroup + LIGHT_GROUP_BG_0);
         }
         if (backgroundInfo.unk90 != 0 && (bgModels->flags & (1 << 24)))
-            g_avdisp_set_some_func_1(backgroundInfo.unk90);
+            u_avdisp_set_some_func_1(backgroundInfo.unk90);
         avdisp_set_bound_sphere_scale(f29);
         if (bgModels->translucency < FLT_EPSILON)
             avdisp_draw_model_unculled_sort_translucent(model);
@@ -747,7 +747,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         }
         if (bgModels->unk34 != 0)
             func_80055C6C(viewFromWorld, bgModels->unk34);
-        g_avdisp_set_some_func_1(0);
+        u_avdisp_set_some_func_1(0);
         if (customLightGroup > 0)
             pop_light_group();
     }
@@ -1031,7 +1031,7 @@ void bg_billiards_init(void)
     {
         struct GBilLightGroup *r27 = s_bilLightGroupNames;
 
-        while (r27->g_bgLightGroupId != -1)
+        while (r27->u_bgLightGroupId != -1)
         {
             int len1 = strlen(r27->name);
             int len2 = strlen(r29->name) - 1;
@@ -1049,7 +1049,7 @@ void bg_billiards_init(void)
             }
             if (matched)
             {
-                r29->flags |= r27->g_bgLightGroupId << 28;
+                r29->flags |= r27->u_bgLightGroupId << 28;
                 break;
             }
             r27++;
@@ -1169,7 +1169,7 @@ int func_80056610(u32 **a, void *b)
     return 1;
 }
 
-void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struct GMAModelEntry *))
+void u_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struct GMAModelEntry *))
 {
     int i;
     int j;
@@ -1229,7 +1229,7 @@ void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struc
     }
 }
 
-void g_search_bg_models_from_list(struct StageBgModel *bgModels, int count, struct BGModelSearch *searchList, Func800567DC func)
+void u_search_bg_models_from_list(struct StageBgModel *bgModels, int count, struct BGModelSearch *searchList, Func800567DC func)
 {
     int i;
     int j;
