@@ -35,7 +35,7 @@ struct GMA *minigameGma;
 
 int load_common_graphics(void)
 {
-    int success = load_nlobj(&naomiCommonObj, &naomiCommonTpl, "init/common_p.lz", "init/common.lz");
+    int success = load_naomi_archive(&naomiCommonObj, &naomiCommonTpl, "init/common_p.lz", "init/common.lz");
 
     DVDChangeDir("init");
     commonTpl = load_tpl("common.tpl.lz");
@@ -60,7 +60,7 @@ int load_common_graphics(void)
 
 void func_800249D4(void)
 {
-    free_nlobj(&lbl_802F1AF8, &lbl_802F1AE4);
+    free_naomi_archive(&lbl_802F1AF8, &lbl_802F1AE4);
 }
 
 #pragma force_active on
@@ -80,7 +80,7 @@ int u_load_minigame_graphics(int index)
     if (gfx->gmaName != NULL)
         minigameGma = load_gma(gfx->gmaName, minigameTpl);
     if (gfx->naomiTplName != NULL && gfx->naomiObjName != NULL)
-        success = load_nlobj(&minigameNaomiObj, &minigameNaomiTpl, gfx->naomiObjName, gfx->naomiTplName);
+        success = load_naomi_archive(&minigameNaomiObj, &minigameNaomiTpl, gfx->naomiObjName, gfx->naomiTplName);
     return success;
 }
 #pragma force_active reset
@@ -102,7 +102,7 @@ void u_free_minigame_graphics(void)
         free_gma(minigameGma);
         minigameGma = NULL;
     }
-    free_nlobj(&minigameNaomiObj, &minigameNaomiTpl);
+    free_naomi_archive(&minigameNaomiObj, &minigameNaomiTpl);
 }
 
 #pragma force_active on

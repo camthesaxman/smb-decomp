@@ -2700,7 +2700,7 @@ lbl_000026F8:
 /* 00002710 7FC3F378 */ mr r3, r30
 /* 00002714 80C40008 */ lwz r6, 8(r4)
 /* 00002718 7FA4EB78 */ mr r4, r29
-/* 0000271C 4BFFDA41 */ bl load_nlobj
+/* 0000271C 4BFFDA41 */ bl load_naomi_archive
 /* 00002720 4BFFDA3D */ bl event_finish_all
 /* 00002724 3860000F */ li r3, 0xf
 /* 00002728 4BFFDA35 */ bl event_start
@@ -2725,7 +2725,7 @@ lbl_00002760:
 /* 00002770 38640008 */ addi r3, r4, 8
 /* 00002774 9421FFF8 */ stwu r1, -8(r1)
 /* 00002778 3884000C */ addi r4, r4, 0xc
-/* 0000277C 4BFFD9E1 */ bl free_nlobj
+/* 0000277C 4BFFD9E1 */ bl free_naomi_archive
 /* 00002780 8001000C */ lwz r0, 0xc(r1)
 /* 00002784 38210008 */ addi r1, r1, 8
 /* 00002788 7C0803A6 */ mtlr r0
@@ -2766,7 +2766,7 @@ lbl_000027F0:
 /* 00002808 90BA0000 */ stw r5, 0(r26)
 /* 0000280C 387D0000 */ addi r3, r29, 0
 /* 00002810 389E0000 */ addi r4, r30, 0
-/* 00002814 4BFFD949 */ bl free_nlobj
+/* 00002814 4BFFD949 */ bl free_naomi_archive
 /* 00002818 807E0000 */ lwz r3, 0(r30)
 /* 0000281C 28030000 */ cmplwi r3, 0
 /* 00002820 4182000C */ beq lbl_0000282C
@@ -2821,7 +2821,7 @@ lbl_000028D0:
 /* 000028D4 7FA3EB78 */ mr r3, r29
 /* 000028D8 80DB0008 */ lwz r6, 8(r27)
 /* 000028DC 7FC4F378 */ mr r4, r30
-/* 000028E0 4BFFD87D */ bl load_nlobj
+/* 000028E0 4BFFD87D */ bl load_naomi_archive
 lbl_000028E4:
 /* 000028E4 A0BC0000 */ lhz r5, 0(r28)
 /* 000028E8 54A007FF */ clrlwi. r0, r5, 0x1f

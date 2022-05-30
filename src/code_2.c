@@ -182,8 +182,8 @@ void func_8008D3A8(struct NaomiModel *arg0, u32 arg1, u32 arg2)
 
 	while ((u32)r6->flags != 0)
 	{
-		r6->unk8 &= arg1;
-		r6->unk8 |= arg2;
+		r6->texFlags &= arg1;
+		r6->texFlags |= arg2;
 		r6 = (struct NaomiMesh *)(r6->dispListStart + r6->dispListSize);
 	}
 }

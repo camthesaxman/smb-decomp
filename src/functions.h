@@ -72,8 +72,8 @@ void func_800125A4(void);
 
 void func_80020AB8(Vec *, S16Vec *, float, float, float, float);
 // ? func_80020DB4();
-BOOL u_test_sphere_in_frustum(Point3d *p, float radius);
-BOOL u_test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale);
+BOOL test_sphere_in_frustum(Point3d *p, float radius);
+BOOL test_scaled_sphere_in_frustum(Point3d *p, float radius, float scale);
 
 void init_wait_vblank(void);
 void beginframe_main(void);
@@ -675,7 +675,6 @@ void init_tev_material_cache(struct GMAModel *model, struct GMAShape *b);
 // ? u_compute_texmtx0();
 // ? u_compute_texmtx1and2();
 void init_some_texture(void);
-void build_tev_material(struct GMAShape *a, struct GMATevLayer *b);
 void build_post_multiply_tev_stage(GXTevStageID a);
 void build_post_add_tev_stage(GXTevStageID a);
 void build_diffuse_layer_uncached(struct TevStageInfo *a, GXTevColorArg colorArg, GXTevAlphaArg alphaArg, GXTexGenSrc texGenSrc);

@@ -41,13 +41,13 @@ long charaHeapSize;
 
 struct NaomiArchive *naomiCommonObj;
 struct NaomiArchive *naomiStageObj;
-struct NaomiArchive *naomiBackgroundObj;
+struct NaomiArchive *naomiBgArchive;
 struct NaomiArchive *lbl_802F1AF8;
 struct NaomiArchive *minigameNaomiObj;
 
 struct TPL *naomiCommonTpl;
 struct TPL *naomiStageTpl;
-struct TPL *naomiBackgroundTpl;
+struct TPL *naomiBgTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *minigameNaomiTpl;
 

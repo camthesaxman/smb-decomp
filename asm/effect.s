@@ -1778,7 +1778,7 @@ lbl_8004E3F8:
 /* 8004E4D0 0004A3F0  EC 25 00 72 */	fmuls f1, f5, f1
 /* 8004E4D4 0004A3F4  D0 41 00 10 */	stfs f2, 0x10(r1)
 /* 8004E4D8 0004A3F8  D0 01 00 14 */	stfs f0, 0x14(r1)
-/* 8004E4DC 0004A3FC  4B FD 29 D9 */	bl u_test_sphere_in_frustum
+/* 8004E4DC 0004A3FC  4B FD 29 D9 */	bl test_sphere_in_frustum
 /* 8004E4E0 0004A400  2C 03 00 00 */	cmpwi r3, 0
 /* 8004E4E4 0004A404  41 82 01 28 */	beq lbl_8004E60C
 /* 8004E4E8 0004A408  C0 A2 91 EC */	lfs f5, lbl_802F39EC@sda21(r2)
@@ -3330,7 +3330,7 @@ func_8004FB24:
 /* 8004FB98 0004BAB8  4B FB 83 F1 */	bl mathutil_mtxA_rotate_x
 /* 8004FB9C 0004BABC  A8 7E 00 50 */	lha r3, 0x50(r30)
 /* 8004FBA0 0004BAC0  4B FB 84 E9 */	bl mathutil_mtxA_rotate_z
-/* 8004FBA4 0004BAC4  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
+/* 8004FBA4 0004BAC4  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 8004FBA8 0004BAC8  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
 /* 8004FBAC 0004BACC  80 63 00 9C */	lwz r3, 0x9c(r3)
 /* 8004FBB0 0004BAD0  4B FE 3F 65 */	bl u_call_draw_model_with_alpha_deferred
@@ -3374,7 +3374,7 @@ func_8004FB24:
 /* 8004FC48 0004BB68  FC 40 08 90 */	fmr f2, f1
 /* 8004FC4C 0004BB6C  FC 60 08 90 */	fmr f3, f1
 /* 8004FC50 0004BB70  4B FE 0F 69 */	bl u_nl2ngc_set_post_mult_color
-/* 8004FC54 0004BB74  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
+/* 8004FC54 0004BB74  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 8004FC58 0004BB78  80 63 00 08 */	lwz r3, 8(r3)
 /* 8004FC5C 0004BB7C  4B FE 3E 79 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8004FC60 0004BB80  4B FB E7 5D */	bl u_reset_post_mult_color
@@ -3778,7 +3778,7 @@ func_80050138:
 /* 80050248 0004C168  EC 20 07 F2 */	fmuls f1, f0, f31
 /* 8005024C 0004C16C  C0 62 90 E8 */	lfs f3, lbl_802F38E8@sda21(r2)
 /* 80050250 0004C170  4B FB 7B 89 */	bl mathutil_mtxA_scale_xyz
-/* 80050254 0004C174  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
+/* 80050254 0004C174  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 80050258 0004C178  80 63 00 18 */	lwz r3, 0x18(r3)
 /* 8005025C 0004C17C  4B FE 38 79 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80050260 0004C180  4B FB E1 5D */	bl u_reset_post_mult_color
@@ -4488,7 +4488,7 @@ func_80050C38:
 /* 80050CD0 0004CBF0  4B FB 71 09 */	bl mathutil_mtxA_scale_xyz
 /* 80050CD4 0004CBF4  FC 20 F8 90 */	fmr f1, f31
 /* 80050CD8 0004CBF8  4B FD FE D1 */	bl u_nl2ngc_set_scale
-/* 80050CDC 0004CBFC  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
+/* 80050CDC 0004CBFC  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 80050CE0 0004CC00  80 63 00 08 */	lwz r3, 8(r3)
 /* 80050CE4 0004CC04  4B FE 2D F1 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80050CE8 0004CC08  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
@@ -5985,7 +5985,7 @@ func_800522EC:
 /* 80052358 0004E278  C0 5E 00 24 */	lfs f2, 0x24(r30)
 /* 8005235C 0004E27C  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80052360 0004E280  38 7F 00 08 */	addi r3, r31, 8
-/* 80052364 0004E284  4B FC EC 6D */	bl u_test_scaled_sphere_in_frustum
+/* 80052364 0004E284  4B FC EC 6D */	bl test_scaled_sphere_in_frustum
 /* 80052368 0004E288  2C 03 00 00 */	cmpwi r3, 0
 /* 8005236C 0004E28C  41 82 00 6C */	beq lbl_800523D8
 /* 80052370 0004E290  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
@@ -6408,7 +6408,7 @@ lbl_80052964:
 /* 80052994 0004E8B4  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80052998 0004E8B8  38 7F 00 08 */	addi r3, r31, 8
 /* 8005299C 0004E8BC  C0 5E 00 24 */	lfs f2, 0x24(r30)
-/* 800529A0 0004E8C0  4B FC E6 31 */	bl u_test_scaled_sphere_in_frustum
+/* 800529A0 0004E8C0  4B FC E6 31 */	bl test_scaled_sphere_in_frustum
 /* 800529A4 0004E8C4  2C 03 00 00 */	cmpwi r3, 0
 /* 800529A8 0004E8C8  41 82 00 4C */	beq lbl_800529F4
 /* 800529AC 0004E8CC  C0 3E 00 24 */	lfs f1, 0x24(r30)
@@ -6500,7 +6500,7 @@ func_80052A90:
 /* 80052ADC 0004E9FC  C0 5E 00 24 */	lfs f2, 0x24(r30)
 /* 80052AE0 0004EA00  C0 3F 00 14 */	lfs f1, 0x14(r31)
 /* 80052AE4 0004EA04  38 7F 00 08 */	addi r3, r31, 8
-/* 80052AE8 0004EA08  4B FC E4 E9 */	bl u_test_scaled_sphere_in_frustum
+/* 80052AE8 0004EA08  4B FC E4 E9 */	bl test_scaled_sphere_in_frustum
 /* 80052AEC 0004EA0C  2C 03 00 00 */	cmpwi r3, 0
 /* 80052AF0 0004EA10  41 82 00 2C */	beq lbl_80052B1C
 /* 80052AF4 0004EA14  C0 3E 00 24 */	lfs f1, 0x24(r30)

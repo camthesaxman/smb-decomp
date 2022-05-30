@@ -1635,7 +1635,7 @@ sot_disp_bumper:
 /* 8006BD04 00067C24  C3 FE 00 14 */	lfs f31, 0x14(r30)
 /* 8006BD08 00067C28  38 7E 00 08 */	addi r3, r30, 8
 /* 8006BD0C 00067C2C  FC 20 F8 90 */	fmr f1, f31
-/* 8006BD10 00067C30  4B FB 52 C1 */	bl u_test_scaled_sphere_in_frustum
+/* 8006BD10 00067C30  4B FB 52 C1 */	bl test_scaled_sphere_in_frustum
 /* 8006BD14 00067C34  2C 03 00 00 */	cmpwi r3, 0
 /* 8006BD18 00067C38  41 82 00 A4 */	beq lbl_8006BDBC
 /* 8006BD1C 00067C3C  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)

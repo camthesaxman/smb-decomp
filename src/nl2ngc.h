@@ -25,20 +25,36 @@ struct NaomiVtxWithColor
 
 struct NaomiDispList
 {
-    u32 unk0;
+    u32 flags;
     u32 faceCount;
     u8 vtxData[];  // array of NaomiVtxWithNormal or NaomiVtxWithColor structs
+};
+
+enum
+{
+    // 13-14 are min/mag filter: if either set it's near for all, else linear
+    NAOMI_TEX_FLAG_T_CLAMP = 1 << 15,
+    NAOMI_TEX_FLAG_S_CLAMP = 1 << 16,
+    NAOMI_TEX_FLAG_T_MIRROR = 1 << 17,
+    NAOMI_TEX_FLAG_S_MIRROR = 1 << 18,
+};
+
+enum
+{
+    NAOMI_DLIST_FLAG_QUADS = 1 << 2,
+    NAOMI_DLIST_FLAG_TRIANGLES = 1 << 3,
+    NAOMI_DLIST_FLAG_TRIANGLESTRIP = 1 << 4,
 };
 
 struct NaomiMesh
 {
     /*0x00*/ s32 flags;
     /*0x04*/ u32 unk4;
-    /*0x08*/ u32 unk8;
+    /*0x08*/ u32 texFlags;
     /*0x0C*/ GXTexObj *texObj;
     /*0x10*/ u32 unk10;
     /*0x14*/ u8 filler14[0x20-0x14];
-    /*0x20*/ s32 unk20;
+    /*0x20*/ s32 tplTexIdx;
     /*0x24*/ s32 type;
     /*0x28*/ float unk28;
     /*0x2C*/ float unk2C;
@@ -106,9 +122,9 @@ struct NaomiArchive
 // ? nl2ngc_draw_line_deferred();
 void u_nl2ngc_set_scale(float);
 void u_nl2ngc_set_post_mult_color(float r, float g, float b);
-BOOL load_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, char *texName);
-BOOL free_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl);
-void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
+BOOL load_naomi_archive(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, char *texName);
+BOOL free_naomi_archive(struct NaomiArchive **pobj, struct TPL **ptpl);
+void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
 void nl2ngc_draw_model_sorted(struct NaomiModel *);
 void nl2ngc_draw_model_unsorted(struct NaomiModel *model);
 void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha);

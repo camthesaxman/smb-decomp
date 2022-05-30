@@ -246,7 +246,7 @@ void item_pilot_draw(struct Item *item)
         scale = 1.0f;
     else
         scale = (f30 / model->boundSphereRadius) * 1.5;
-    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
+    if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (lbl_802F1FF6 == 6
      && (item->subType == 4 || item->subType == 3))

@@ -202,7 +202,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B7998;
 // extern ? lbl_801B79A4;
 // extern ? textureMatrix;
-// extern ? u_naomiToGXCullModes;
+// extern ? s_naomiToGXCullModes;
 // extern ? lbl_801B7B28;
 // extern ? ballPhysicsParams;
 // extern ? clearHemisphereOutsideParts;
@@ -1103,12 +1103,12 @@ extern struct
 // .sbss section
 extern struct TPL *minigameNaomiTpl;
 extern struct TPL *lbl_802F1AE4;
-extern struct TPL *naomiBackgroundTpl;
+extern struct TPL *naomiBgTpl;
 extern struct TPL *naomiStageTpl;
 extern struct TPL *naomiCommonTpl;
 extern struct NaomiArchive *minigameNaomiObj;
 extern struct NaomiArchive *lbl_802F1AF8;
-extern struct NaomiArchive *naomiBackgroundObj;
+extern struct NaomiArchive *naomiBgArchive;
 extern struct NaomiArchive *naomiStageObj;
 extern struct NaomiArchive *naomiCommonObj;
 extern long charaHeapSize;

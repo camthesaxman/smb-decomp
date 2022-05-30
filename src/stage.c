@@ -512,7 +512,7 @@ void load_stage(int stageId)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_nlobj(&naomiStageObj, &naomiStageTpl);
+        free_naomi_archive(&naomiStageObj, &naomiStageTpl);
         free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
@@ -567,7 +567,7 @@ void unload_stage(void)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_nlobj(&naomiStageObj, &naomiStageTpl);
+        free_naomi_archive(&naomiStageObj, &naomiStageTpl);
         free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
@@ -678,7 +678,7 @@ void load_stage_files(int stageId)
         {
             sprintf(gmaName, "st%03d_p.lz", stageId);
             sprintf(tplName, "st%03d.lz", stageId);
-            load_nlobj(&naomiStageObj, &naomiStageTpl, gmaName, tplName);
+            load_naomi_archive(&naomiStageObj, &naomiStageTpl, gmaName, tplName);
         }
         OSSetCurrentHeap(oldHeap);
         DVDChangeDir("/test");
@@ -2397,7 +2397,7 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
         int faceCount;
         u8 *vtxData;
 
-        flags = dl->unk0;
+        flags = dl->flags;
         vtxData = dl->vtxData;
         faceCount = dl->faceCount;
         if (flags & (1 << 4)) // triangle strip
@@ -2447,7 +2447,7 @@ void u_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
         int faceCount;
         u8 *vtxData;
 
-        flags = dl->unk0;
+        flags = dl->flags;
         vtxData = dl->vtxData;
         faceCount = dl->faceCount;
         if (flags & (1 << 4)) // triangle strip

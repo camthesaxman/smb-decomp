@@ -55,14 +55,14 @@ struct
     float unkC;
     float unk10;
     float unk14;
-    float unk18;
-    float unk1C;
+    float u_scale;
+    float u_scaleCopy;
 } lbl_801B7978 = { { 1.0f, 1.0f, 1.0f }, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-static BOOL adjust_pointers(struct NaomiArchive *obj);
+static BOOL naomi_archive_offsets_to_pointers(struct NaomiArchive *obj);
 static void init_model_flags(struct NaomiModel *model);
 static void prep_some_stuff_before_drawing(void);
-static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh);
+static void build_tev_material(struct NaomiMesh *pmesh);
 static void prep_some_stuff_before_drawing_2(void);
 void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh);
 
@@ -102,7 +102,7 @@ void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 c)
 
 void u_nl2ngc_set_scale(float x)
 {
-    lbl_801B7978.unk18 = x;
+    lbl_801B7978.u_scale = x;
 }
 
 void u_nl2ngc_set_post_mult_color(float r, float g, float b)
@@ -112,7 +112,7 @@ void u_nl2ngc_set_post_mult_color(float r, float g, float b)
     lbl_801B7978.unk0.b = b;
 }
 
-BOOL load_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, char *texName)
+BOOL load_naomi_archive(struct NaomiArchive **archive, struct TPL **tpl, char *archivePath, char *tplPath)
 {
     int len;
     struct NaomiModel **pmodel;
@@ -120,15 +120,15 @@ BOOL load_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, 
     struct File file;
 
     // Free object if it's already loaded
-    if (*pobj != NULL)
+    if (*archive != NULL)
     {
-        OSFree(*pobj);
-        *pobj = NULL;
+        OSFree(*archive);
+        *archive = NULL;
     }
-    if (!file_open(modelName, &file))
+    if (!file_open(archivePath, &file))
         return FALSE;
-    len = strlen(modelName);
-    if (len >= 3 && strcmp(modelName + (len - 3), ".lz") == 0)
+    len = strlen(archivePath);
+    if (len >= 3 && strcmp(archivePath + (len - 3), ".lz") == 0)
     {
         u32 uncompSize;
         void *compressed;
@@ -159,56 +159,56 @@ BOOL load_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, 
         // Decompress data
         lzs_decompress(compressed, uncompressed);
         OSFreeToHeap(mainHeap, compressed);
-        *pobj = uncompressed;
-        if (*pobj == NULL)
+        *archive = uncompressed;
+        if (*archive == NULL)
             return FALSE;
     }
     else
     {
         size = OSRoundUp32B(file_size(&file));
-        *pobj = OSAlloc(size);
-        if (*pobj == NULL)
+        *archive = OSAlloc(size);
+        if (*archive == NULL)
             OSPanic("nl2ngc.c", 476, "cannot OSAlloc");
-        file_read(&file, *pobj, size, 0);
+        file_read(&file, *archive, size, 0);
         file_close(&file);
     }
 
-    adjust_pointers(*pobj);
-    if (*ptpl != NULL)
-        bitmap_free_tpl(*ptpl);
-    *ptpl = bitmap_load_tpl(texName);
-    if (*ptpl == NULL)
+    naomi_archive_offsets_to_pointers(*archive);
+    if (*tpl != NULL)
+        bitmap_free_tpl(*tpl);
+    *tpl = bitmap_load_tpl(tplPath);
+    if (*tpl == NULL)
         return FALSE;
 
-    pmodel = (*pobj)->models;
+    pmodel = (*archive)->models;
     while (*pmodel != NULL)
     {
-        u_init_naomi_model_textures(*pmodel, *ptpl);
+        init_naomi_model_textures(*pmodel, *tpl);
         pmodel++;
     }
     return TRUE;
 }
 
-BOOL free_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl)
+BOOL free_naomi_archive(struct NaomiArchive **archive, struct TPL **tpl)
 {
     u8 unused[8];
 
-    if (*pobj != NULL)
+    if (*archive != NULL)
     {
-        OSFree(*pobj);
-        *pobj = NULL;
+        OSFree(*archive);
+        *archive = NULL;
     }
-    if (*ptpl != NULL)
+    if (*tpl != NULL)
     {
-        bitmap_free_tpl(*ptpl);
-        *ptpl = NULL;
+        bitmap_free_tpl(*tpl);
+        *tpl = NULL;
     }
     return TRUE;
 }
 
 // This function converts file all file offsets in the struct into memory pointers
 // Featuring some insane pointer arithmetic.
-static BOOL adjust_pointers(struct NaomiArchive *obj)
+static BOOL naomi_archive_offsets_to_pointers(struct NaomiArchive *obj)
 {
     struct NaomiModel *volatile *pmodel = obj->models;
     struct NaomiObj_UnkChild *volatile *unkptr;
@@ -294,7 +294,7 @@ static void init_model_flags(struct NaomiModel *model)
     }
 }
 
-void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
+void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
 {
     u8 unused[8];
 
@@ -304,48 +304,48 @@ void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
 
         while (mesh->flags != 0)
         {
-            if (mesh->unk20 >= 0)
+            if (mesh->tplTexIdx >= 0)
             {
-                u32 flags = mesh->unk8;
-                GXTexObj *tobj = &tpl->texObjs[mesh->unk20];
+                u32 flags = mesh->texFlags;
+                GXTexObj *texObj = &tpl->texObjs[mesh->tplTexIdx];
                 GXTexWrapMode wrapS, wrapT;
                 GXTexFilter minFilt, magFilt;
 
-                if (flags & (1 << 16))
-                    wrapS = GXGetTexObjWrapS(tobj);
-                else if (flags & (1 << 18))
+                if (flags & (NAOMI_TEX_FLAG_S_CLAMP))
+                    wrapS = GXGetTexObjWrapS(texObj);
+                else if (flags & (NAOMI_TEX_FLAG_S_MIRROR))
                     wrapS = GX_MIRROR;
                 else
                     wrapS = GX_REPEAT;
 
-                if (flags & (1 << 15))
-                    wrapT = GXGetTexObjWrapT(tobj);
-                else if (flags & (1 << 17))
+                if (flags & (NAOMI_TEX_FLAG_T_CLAMP))
+                    wrapT = GXGetTexObjWrapT(texObj);
+                else if (flags & (NAOMI_TEX_FLAG_T_MIRROR))
                     wrapT = GX_MIRROR;
                 else
                     wrapT = GX_REPEAT;
 
                 GXInitTexObj(
-                    tobj,  // obj
-                    GXGetTexObjData(tobj),  // image_ptr
-                    GXGetTexObjWidth(tobj),  // width
-                    GXGetTexObjHeight(tobj),  // height
-                    GXGetTexObjFmt(tobj),  // format
+                    texObj,  // obj
+                    GXGetTexObjData(texObj),  // image_ptr
+                    GXGetTexObjWidth(texObj),  // width
+                    GXGetTexObjHeight(texObj),  // height
+                    GXGetTexObjFmt(texObj),  // format
                     wrapS,  // wrap_s
                     wrapT,  // wrap_t
-                    tpl->texHeaders[mesh->unk20].unkC);  // mipmap
+                    tpl->texHeaders[mesh->tplTexIdx].unkC);  // mipmap
 
                 switch (((flags >> 13) & 0x3))
                 {
                 case 0:
-                    if (GXGetTexObjMipMap(tobj))
+                    if (GXGetTexObjMipMap(texObj))
                         minFilt = GX_LIN_MIP_NEAR;
                     else
                         minFilt = GX_NEAR;
                     magFilt = GX_NEAR;
                     break;
                 default:
-                    if (GXGetTexObjMipMap(tobj))
+                    if (GXGetTexObjMipMap(texObj))
                         minFilt = GX_LIN_MIP_LIN;
                     else
                         minFilt = GX_LINEAR;
@@ -354,7 +354,7 @@ void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
                 }
 
                 GXInitTexObjLOD(
-                    tobj,         // obj
+                    texObj,         // obj
                     minFilt,      // min_filt
                     magFilt,      // mag_filt
                     0.0f,         // min_lod
@@ -363,7 +363,7 @@ void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
                     GX_FALSE,     // bias_clamp
                     GX_FALSE,     // do_edge_lod
                     GX_ANISO_1);  // max_aniso
-                mesh->texObj = tobj;
+                mesh->texObj = texObj;
             }
             mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
@@ -385,29 +385,29 @@ static void lbl_80033C8C(struct UnkStruct18 *);
 
 void nl2ngc_draw_model_sorted(struct NaomiModel *model)
 {
-    u32 *temp;
+    u32 *modelFlags;
 
     if (model->unk0 != -1)
     {
-        lbl_801B7978.unk1C = lbl_801B7978.unk18;
-        if (lbl_801B7978.unk18 == 1.0f)
+        lbl_801B7978.u_scaleCopy = lbl_801B7978.u_scale;
+        if (lbl_801B7978.u_scale == 1.0f)
         {
-            if (u_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.u_scale) == 0)
             {
-                lbl_801B7978.unk18 = 1.0f;
+                lbl_801B7978.u_scale = 1.0f;
                 return;
             }
-            lbl_801B7978.unk18 = 1.0f;
+            lbl_801B7978.u_scale = 1.0f;
         }
-        temp = &model->flags;
+        modelFlags = &model->flags;
         if (model->flags & (1 << 9))
             u_draw_naomi_model_3(model);
-        if (*temp & (1 << 8))
+        if (*modelFlags & (1 << 8))
         {
             struct UnkStruct18 *r29;
             struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
@@ -442,17 +442,17 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
 
     if (model->unk0 != -1)
     {
-        lbl_801B7978.unk1C = lbl_801B7978.unk18;
-        if (lbl_801B7978.unk18 == 1.0f)
+        lbl_801B7978.u_scaleCopy = lbl_801B7978.u_scale;
+        if (lbl_801B7978.u_scale == 1.0f)
         {
-            if (u_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.u_scale) == 0)
             {
-                lbl_801B7978.unk18 = 1.0f;
+                lbl_801B7978.u_scale = 1.0f;
                 return;
             }
         }
@@ -484,7 +484,7 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next;
 
-            do_some_stuff_with_mesh_colors(mesh);
+            build_tev_material(mesh);
             dlstart = (void *)(mesh->dispListStart);
             next    = (void *)(mesh->dispListStart + mesh->dispListSize);
             switch (mesh->type)
@@ -527,20 +527,20 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
 
     if (model->unk0 != -1)
     {
-        lbl_801B7978.unk1C = lbl_801B7978.unk18;
-        if (lbl_801B7978.unk18 == 1.0f)
+        lbl_801B7978.u_scaleCopy = lbl_801B7978.u_scale;
+        if (lbl_801B7978.u_scale == 1.0f)
         {
-            if (u_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.u_scale) == 0)
             {
-                lbl_801B7978.unk18 = 1.0f;
+                lbl_801B7978.u_scale = 1.0f;
                 return;
             }
-            lbl_801B7978.unk18 = 1.0f;
+            lbl_801B7978.u_scale = 1.0f;
         }
 
         entry = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
@@ -568,17 +568,17 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
 
     if (model->unk0 != -1)
     {
-        lbl_801B7978.unk1C = lbl_801B7978.unk18;
-        if (lbl_801B7978.unk18 == 1.0f)
+        lbl_801B7978.u_scaleCopy = lbl_801B7978.u_scale;
+        if (lbl_801B7978.u_scale == 1.0f)
         {
-            if (u_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk18) == 0)
+            if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.u_scale) == 0)
             {
-                lbl_801B7978.unk18 = 1.0f;
+                lbl_801B7978.u_scale = 1.0f;
                 return;
             }
         }
@@ -669,7 +669,7 @@ GXCompare naomiToGCCompare[] =
     GX_LEQUAL,
     GX_ALWAYS
 };
-GXCullMode u_naomiToGXCullModes[] = { GX_CULL_ALL, GX_CULL_NONE, GX_CULL_BACK, GX_CULL_FRONT, GX_CULL_NONE };
+GXCullMode s_naomiToGXCullModes[] = { GX_CULL_ALL, GX_CULL_NONE, GX_CULL_BACK, GX_CULL_FRONT };
 
 static void prep_some_stuff_before_drawing(void)
 {
@@ -693,7 +693,7 @@ static void prep_some_stuff_before_drawing(void)
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
-    GXSetCullMode_cached(u_naomiToGXCullModes[2]);
+    GXSetCullMode_cached(s_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.u_texMapId = 0;
 
@@ -727,7 +727,7 @@ static void prep_some_stuff_before_drawing(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
+static void build_tev_material(struct NaomiMesh *pmesh)
 {
     struct NaomiMesh mesh = *pmesh;
     GXColor color;
@@ -748,8 +748,8 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
         }
         break;
     default:
-        r25 = mesh.unk8 >> 29;
-        r27 = (mesh.unk8 >> 26) & 7;
+        r25 = mesh.texFlags >> 29;
+        r27 = (mesh.texFlags >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
             GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[r25], lbl_801B7AD4[r27], GX_LO_CLEAR);
@@ -774,7 +774,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
-    if (mesh.unk20 < 0)
+    if (mesh.tplTexIdx < 0)
     {
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
@@ -792,7 +792,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
             GXLoadTexObj_cached(mesh.texObj, u_texMapId);
         }
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, u_texMapId, GX_COLOR0A0);
-        switch ((mesh.unk8 >> 6) & 3)
+        switch ((mesh.texFlags >> 6) & 3)
         {
         case 0:
             GXSetTevOp_cached(GX_TEVSTAGE0, GX_REPLACE);
@@ -900,16 +900,16 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
         int i;
         u8 *vtxData = dl->vtxData;
         struct NaomiVtxWithNormal *vtx;
-        u8 r4 = dl->unk0 & 3;
+        u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(u_naomiToGXCullModes[r4]);
+            GXSetCullMode_cached(s_naomiToGXCullModes[r4]);
         }
 
-        if (dl->unk0 & (1 << 4))
+        if (dl->flags & (NAOMI_DLIST_FLAG_TRIANGLESTRIP))
         {
             GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
             while (faceCount > 0)
@@ -934,7 +934,7 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->unk0 & (1 << 3))
+        else if (dl->flags & (NAOMI_DLIST_FLAG_TRIANGLES))
         {
             GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
             while (faceCount > 0)
@@ -962,7 +962,7 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->unk0 & (1 << 2))
+        else if (dl->flags & (NAOMI_DLIST_FLAG_QUADS))
         {
             GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
             while (faceCount > 0)
@@ -1010,16 +1010,16 @@ void u_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
         int i;
         u8 *vtxData = dl->vtxData;
         struct NaomiVtxWithColor *vtx;
-        u8 r4 = dl->unk0 & 3;
+        u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(u_naomiToGXCullModes[r4]);
+            GXSetCullMode_cached(s_naomiToGXCullModes[r4]);
         }
 
-        if (dl->unk0 & (1 << 4))
+        if (dl->flags & (1 << 4))
         {
             GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
             while (faceCount > 0)
@@ -1056,7 +1056,7 @@ void u_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->unk0 & (1 << 3))
+        else if (dl->flags & (1 << 3))
         {
             GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
             while (faceCount > 0)
@@ -1096,7 +1096,7 @@ void u_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->unk0 & (1 << 2))
+        else if (dl->flags & (1 << 2))
         {
             GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
             while (faceCount > 0)
@@ -1164,7 +1164,7 @@ static void prep_some_stuff_before_drawing_2(void)
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
     lbl_80205DAC.unkA = 2;
-    GXSetCullMode_cached(u_naomiToGXCullModes[2]);
+    GXSetCullMode_cached(s_naomiToGXCullModes[2]);
     lbl_80205DAC.unkC = 0;
     lbl_80205DAC.u_texMapId = 0;
 
@@ -1219,8 +1219,8 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         }
         break;
     default:
-        r25 = mesh.unk8 >> 29;
-        r27 = (mesh.unk8 >> 26) & 7;
+        r25 = mesh.texFlags >> 29;
+        r27 = (mesh.texFlags >> 26) & 7;
         if (lbl_80205DAC.unk4 != 2 || lbl_80205DAC.unk5 != r25 || lbl_80205DAC.unk6 != r27)
         {
             GXSetBlendMode_cached(GX_BM_BLEND, lbl_801B7AB4[r25], lbl_801B7AD4[r27], GX_LO_CLEAR);
@@ -1245,7 +1245,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     else
         GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, fogColor);
 
-    if (mesh.unk20 < 0)
+    if (mesh.tplTexIdx < 0)
     {
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
         GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
@@ -1263,7 +1263,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
             GXLoadTexObj_cached(mesh.texObj, r25);
         }
         GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, r25, GX_COLOR0A0);
-        switch ((mesh.unk8 >> 6) & 3)
+        switch ((mesh.texFlags >> 6) & 3)
         {
         case 0:
             GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
@@ -1387,16 +1387,16 @@ void u_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
         int i;
         u8 *vtxData = dl->vtxData;
         struct NaomiVtxWithColor *vtx;
-        u8 r4 = dl->unk0 & 3;
+        u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
         if (lbl_80205DAC.unkA != r4)
         {
             lbl_80205DAC.unkA = r4;
-            GXSetCullMode_cached(u_naomiToGXCullModes[r4]);
+            GXSetCullMode_cached(s_naomiToGXCullModes[r4]);
         }
 
-        if (dl->unk0 & (1 << 4))
+        if (dl->flags & (1 << 4))
         {
             GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
             while (faceCount > 0)
@@ -1417,7 +1417,7 @@ void u_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->unk0 & (1 << 3))
+        else if (dl->flags & (1 << 3))
         {
             GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
             while (faceCount > 0)
@@ -1441,7 +1441,7 @@ void u_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->unk0 & (1 << 2))
+        else if (dl->flags & (1 << 2))
         {
             GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
             while (faceCount > 0)
@@ -1547,7 +1547,7 @@ void u_draw_naomi_model_3(struct NaomiModel *model)
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
-        do_some_stuff_with_mesh_colors(mesh);
+        build_tev_material(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
         if (((mesh->flags >> 24) & 7) != 0)
             mesh = next;
@@ -1629,7 +1629,7 @@ void u_draw_naomi_model_4(struct NaomiModel *model)
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
-        do_some_stuff_with_mesh_colors(mesh);
+        build_tev_material(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
         if (((mesh->flags >> 24) & 7) == 0)
             mesh = next;
@@ -1740,17 +1740,17 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
 
     if (model->unk0 != -1)
     {
-        lbl_801B7978.unk1C = lbl_801B7978.unk18;
-        if (lbl_801B7978.unk18 == 1.0f)
+        lbl_801B7978.u_scaleCopy = lbl_801B7978.u_scale;
+        if (lbl_801B7978.u_scale == 1.0f)
         {
-            if (u_test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
+            if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
         }
         else
         {
-            if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.unk1C) == 0)
+            if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, lbl_801B7978.u_scaleCopy) == 0)
             {
-                lbl_801B7978.unk18 = 1.0f;
+                lbl_801B7978.u_scale = 1.0f;
                 return;
             }
         }

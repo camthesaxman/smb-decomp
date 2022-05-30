@@ -387,7 +387,7 @@ void func_8005507C(void)
             free_gma(decodedBgGma);
             decodedBgGma = NULL;
         }
-        free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
+        free_naomi_archive(&naomiBgArchive, &naomiBgTpl);
 
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = -1;
@@ -510,7 +510,7 @@ void load_bg_files(int bgId)
             }
 
             // free old NAOMI resources
-            free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
+            free_naomi_archive(&naomiBgArchive, &naomiBgTpl);
         }
         if (bgId > 0)
         {
@@ -535,7 +535,7 @@ void load_bg_files(int bgId)
                 DVDChangeDir(bgDir);
                 sprintf(gmaFileName, "%s_p.lz", bgName);
                 sprintf(tplFileName, "%s.lz", bgName);
-                load_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl, gmaFileName, tplFileName);
+                load_naomi_archive(&naomiBgArchive, &naomiBgTpl, gmaFileName, tplFileName);
                 DVDChangeDir("/test");
             }
 
@@ -725,7 +725,7 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
         if ((lbl_801EEC90.unk0 & (1 << 2))
          && func_8000E444(&model->boundSphereCenter) < -(f29 * model->boundSphereRadius))
             continue;
-        if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
+        if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, f29) == 0)
             continue;
         customLightGroup = bgModels->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);

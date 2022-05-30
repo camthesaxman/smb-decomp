@@ -106,6 +106,8 @@ FORCE_BSS_ORDER(filler_802B4F50)
 FORCE_BSS_ORDER(lzssHeader)
 FORCE_BSS_ORDER(unknownTexImg)
 
+static void build_tev_material(struct GMAShape *a, struct GMATevLayer *b);
+
 #ifdef __MWERKS__
 asm void func_8008D6BC(register u32 arg)
 {
@@ -614,7 +616,7 @@ void avdisp_set_ambient(float red, float green, float blue)
 // Draw opaque shapes immediately and depth-sort translucent shapes, a reasonable default
 void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 {
-    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
+    if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
         s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -628,7 +630,7 @@ void avdisp_draw_model_culled_sort_translucent(struct GMAModel *model)
 // translucent shapes in a specific order instead of using the ord table?
 void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 {
-    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
+    if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
         s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -642,7 +644,7 @@ void avdisp_draw_model_culled_sort_none(struct GMAModel *model)
 // e.g. by calling avdisp_set_alpha() ?
 void avdisp_draw_model_culled_sort_all(struct GMAModel *model)
 {
-    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
+    if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, s_boundSphereScale) == 0)
     {
         s_boundSphereScale = 1.0f;
         GXSetCurrentMtx(GX_PNMTX0);
@@ -1758,7 +1760,7 @@ static inline void material_set_num_ind_stages(s8 c)
 //#if 1
 // stack differences
 // DOL: 0x8C444
-void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLayers)
+static void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLayers)
 {
     struct TevStageInfo tevStageInfo;  // correct
     GXColor materialColor;  // correct
@@ -2280,7 +2282,7 @@ void build_tev_material(struct GMAShape *shape, struct GMATevLayer *modelTevLaye
         s_materialCache.tevStageCount = shape->tevLayerCount;
 }
 #else
-asm void build_tev_material(struct GMAShape *a, struct GMATevLayer *b)
+static asm void build_tev_material(struct GMAShape *a, struct GMATevLayer *b)
 {
 #define _SDA_BASE_ 0
 #define _SDA2_BASE_ 0

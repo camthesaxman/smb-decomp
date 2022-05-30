@@ -999,7 +999,7 @@ void mot_ape_init(void)
     mathutil_mtxA_to_mtx(lbl_802B4820);
     mathutil_mtxA_pop();
     func_8008B0AC();
-    load_nlobj(&apeFaceObj, &apeFaceTpl, "ape/face_p.lz", "ape/face.lz");
+    load_naomi_archive(&apeFaceObj, &apeFaceTpl, "ape/face_p.lz", "ape/face.lz");
 }
 
 void func_8008B0AC(void)
@@ -1755,7 +1755,7 @@ void func_8008CAAC(struct Ape *ape, float b)
     sp10.x = ape->unk0->unk81A8[0].transformMtx[0][3];
     sp10.y = ape->unk0->unk81A8[0].transformMtx[1][3];
     sp10.z = ape->unk0->unk81A8[0].transformMtx[2][3];
-    if (u_test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
+    if (test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
     {
         apeDummyFuncs[r30](ape);
         u_draw_ape_transformed(ape, r29);

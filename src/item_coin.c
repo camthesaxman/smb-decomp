@@ -156,7 +156,7 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_z(item->rotZ);
     model = get_lod(item->modelLODs);
     scale = (f30 / model->boundSphereRadius) * 1.5;
-    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
+    if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);

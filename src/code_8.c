@@ -50,7 +50,7 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
         mesh->flags |= 0x02000008;
         mesh->unk4 &= 0xFFBFFFFF;
         mesh->unk4 |= 0x02000000;
-        mesh->unk8 = r30;
+        mesh->texFlags = r30;
         mesh->texObj = r29;
         mesh->type = -3;
         mesh = next;
@@ -166,7 +166,7 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
         mesh->flags |= 0x02000008;
         mesh->unk4 &= 0xFFBFFFFF;
         mesh->unk4 |= 0x02000000;
-        mesh->unk8 = r30;
+        mesh->texFlags = r30;
         mesh->texObj = r29;
         mesh->type = -3;
         mesh = next;
