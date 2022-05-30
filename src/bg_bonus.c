@@ -51,15 +51,15 @@ void bg_bonus_init(void)
     if (work->unk0 == 0)
     {
         work->startpointCount = 0;
-        g_search_bg_models(bonusMiscFind, bonus_misc_find_proc);
+        u_search_bg_models(bonusMiscFind, bonus_misc_find_proc);
         work->unk0 = 1;
     }
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         bonusMainFind,
         bonus_main_find_proc);
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->fgModels,
         decodedStageLzPtr->fgModelCount,
         bonusMainFind,
@@ -153,14 +153,14 @@ void bg_bonus_draw(void)
 
         if (lbl_801EEC90.unk0 & (1 << 2))
         {
-            sp14.x = starpoint->g_pos.x * mainModelScale.x;
-            sp14.y = starpoint->g_pos.y * mainModelScale.y;
-            sp14.z = starpoint->g_pos.z * mainModelScale.z;
+            sp14.x = starpoint->u_pos.x * mainModelScale.x;
+            sp14.y = starpoint->u_pos.y * mainModelScale.y;
+            sp14.z = starpoint->u_pos.z * mainModelScale.z;
             if (func_8000E53C(&sp14) < -(starlightModel->boundSphereRadius * f30))
                 continue;
         }
         mathutil_mtxA_push();
-        mathutil_mtxA_translate(&starpoint->g_pos);
+        mathutil_mtxA_translate(&starpoint->u_pos);
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_get_translate_alt(&sp14);
         if (sp14.z < -30.0f)
@@ -175,7 +175,7 @@ void bg_bonus_draw(void)
             mathutil_mtxA_scale_s(f30);
             avdisp_set_post_mult_color(starpoint->red, starpoint->green, starpoint->blue, 1.0f);
             avdisp_draw_model_culled_sort_translucent(starlightModel);
-            g_reset_post_mult_color();
+            u_reset_post_mult_color();
         }
         mathutil_mtxA_pop();
     }
@@ -238,14 +238,14 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
 
     GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
     func_8009AC8C();
-    GXLoadTexObj_cached(work->lightmapTexObjs, spC.g_texMapId);
+    GXLoadTexObj_cached(work->lightmapTexObjs, spC.u_texMapId);
     mathutil_mtxA_push();
     mathutil_mtxA_mult_left(work->unk7AC);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXSetTexCoordGen(spC.unk4, GX_TG_MTX2x4, GX_TG_POS, spC.unk8);
     GXSetTevDirect(spC.unk0);
-    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.g_texMapId, GX_COLOR_NULL);
+    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.u_texMapId, GX_COLOR_NULL);
     GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
     GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVREG1);
     GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
@@ -253,17 +253,17 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     spC.unk0++;
     spC.unk4++;
     spC.unk8 += 3;
-    spC.g_texMapId++;
+    spC.u_texMapId++;
     mathutil_mtxA_push();
     mathutil_mtxA_mult_left(work->unk7DC);
     mathutil_mtxA_set_translate_xyz(0.0f, 0.0f, 0.0f);
     GXLoadTexMtxImm(mathutilData->mtxA, spC.unk8, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXLoadTexMtxImm(work->unk77C, spC.unk14, GX_MTX3x4);
-    GXLoadTexObj_cached(work->lightmapATexObjs, spC.g_texMapId);
+    GXLoadTexObj_cached(work->lightmapATexObjs, spC.u_texMapId);
     GXSetTexCoordGen2(spC.unk4, GX_TG_MTX3x4, GX_TG_NRM, spC.unk8, GX_TRUE, spC.unk14);
     GXSetTevDirect(spC.unk0);
-    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.g_texMapId, GX_COLOR_NULL);
+    GXSetTevOrder_cached(spC.unk0, spC.unk4, spC.u_texMapId, GX_COLOR_NULL);
     GXSetTevColorIn_cached(spC.unk0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_C1, GX_CC_ZERO);
     GXSetTevColorOp_cached(spC.unk0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(spC.unk0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_APREV);
@@ -272,7 +272,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     spC.unk4++;
     spC.unk8 += 3;
     spC.unk14 += 3;
-    spC.g_texMapId++;
+    spC.u_texMapId++;
     a->unkC = spC;
 }
 
@@ -299,7 +299,7 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
         {
             struct BGBonusStarpoint *starpoint = &work->starpoints[work->startpointCount];
 
-            starpoint->g_pos = entry->model->boundSphereCenter;
+            starpoint->u_pos = entry->model->boundSphereCenter;
             work->startpointCount++;
         }
         break;

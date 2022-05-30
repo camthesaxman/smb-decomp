@@ -39,11 +39,11 @@ lbl_8005E198:
 /* 8005E1B4 0005A0D4  40 82 00 28 */	bne lbl_8005E1DC
 /* 8005E1B8 0005A0D8  38 60 00 04 */	li r3, 4
 /* 8005E1BC 0005A0DC  38 80 00 04 */	li r4, 4
-/* 8005E1C0 0005A0E0  4B FD 1A C1 */	bl g_debug_set_cursor_pos
+/* 8005E1C0 0005A0E0  4B FD 1A C1 */	bl u_debug_set_cursor_pos
 /* 8005E1C4 0005A0E4  3C 60 80 06 */	lis r3, lbl_8005F88C@ha
 /* 8005E1C8 0005A0E8  38 83 F8 8C */	addi r4, r3, lbl_8005F88C@l
 /* 8005E1CC 0005A0EC  38 7F 00 8C */	addi r3, r31, 0x8c
-/* 8005E1D0 0005A0F0  4B FF 84 B5 */	bl g_search_bg_models
+/* 8005E1D0 0005A0F0  4B FF 84 B5 */	bl u_search_bg_models
 /* 8005E1D4 0005A0F4  38 00 00 01 */	li r0, 1
 /* 8005E1D8 0005A0F8  90 1E 00 00 */	stw r0, 0(r30)
 lbl_8005E1DC:
@@ -57,13 +57,13 @@ lbl_8005E1DC:
 /* 8005E1F8 0005A118  38 BF 01 20 */	addi r5, r31, 0x120
 /* 8005E1FC 0005A11C  80 64 00 6C */	lwz r3, 0x6c(r4)
 /* 8005E200 0005A120  80 84 00 68 */	lwz r4, 0x68(r4)
-/* 8005E204 0005A124  4B FF 85 D9 */	bl g_search_bg_models_from_list
+/* 8005E204 0005A124  4B FF 85 D9 */	bl u_search_bg_models_from_list
 /* 8005E208 0005A128  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8005E20C 0005A12C  7F A6 EB 78 */	mr r6, r29
 /* 8005E210 0005A130  38 BF 01 20 */	addi r5, r31, 0x120
 /* 8005E214 0005A134  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 8005E218 0005A138  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 8005E21C 0005A13C  4B FF 85 C1 */	bl g_search_bg_models_from_list
+/* 8005E21C 0005A13C  4B FF 85 C1 */	bl u_search_bg_models_from_list
 /* 8005E220 0005A140  48 0A 86 45 */	bl rand
 /* 8005E224 0005A144  6C 60 80 00 */	xoris r0, r3, 0x8000
 /* 8005E228 0005A148  C8 62 9A E0 */	lfd f3, lbl_802F42E0@sda21(r2)
@@ -507,11 +507,11 @@ lbl_8005E8C0:
 /* 8005E8D4 0005A7F4  48 08 5C E9 */	bl GXLoadNrmMtxImm
 /* 8005E8D8 0005A7F8  3C 60 80 06 */	lis r3, lbl_8005F520@ha
 /* 8005E8DC 0005A7FC  38 63 F5 20 */	addi r3, r3, lbl_8005F520@l
-/* 8005E8E0 0005A800  48 02 FC F9 */	bl g_avdisp_set_some_func_1
+/* 8005E8E0 0005A800  48 02 FC F9 */	bl u_avdisp_set_some_func_1
 /* 8005E8E4 0005A804  80 7E 00 24 */	lwz r3, 0x24(r30)
 /* 8005E8E8 0005A808  48 02 FB B5 */	bl avdisp_draw_model_culled_sort_none
 /* 8005E8EC 0005A80C  38 60 00 00 */	li r3, 0
-/* 8005E8F0 0005A810  48 02 FC E9 */	bl g_avdisp_set_some_func_1
+/* 8005E8F0 0005A810  48 02 FC E9 */	bl u_avdisp_set_some_func_1
 /* 8005E8F4 0005A814  4B FF 6C 65 */	bl bg_e3_draw
 /* 8005E8F8 0005A818  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 8005E8FC 0005A81C  83 E1 00 0C */	lwz r31, 0xc(r1)

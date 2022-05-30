@@ -536,7 +536,7 @@ bg_old_extramaster_draw:
 /* 8005826C 0005418C  4B FA F6 45 */	bl mathutil_mtxA_from_mtx
 /* 80058270 00054190  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80058274 00054194  80 63 00 A4 */	lwz r3, 0xa4(r3)
-/* 80058278 00054198  4B FD B8 5D */	bl g_call_draw_naomi_model_and_do_other_stuff
+/* 80058278 00054198  4B FD B8 5D */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8005827C 0005419C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80058280 000541A0  38 21 00 08 */	addi r1, r1, 8
 /* 80058284 000541A4  7C 08 03 A6 */	mtlr r0

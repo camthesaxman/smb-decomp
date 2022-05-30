@@ -683,7 +683,7 @@ lbl_800572F0:
 /* 80057314 00053234  38 A3 79 40 */	addi r5, r3, lbl_80057940@l
 /* 80057318 00053238  80 64 00 30 */	lwz r3, 0x30(r4)
 /* 8005731C 0005323C  38 80 00 00 */	li r4, 0
-/* 80057320 00053240  4B FF 0A F9 */	bl g_apply_func_to_naomi_model_vertices
+/* 80057320 00053240  4B FF 0A F9 */	bl u_apply_func_to_naomi_model_vertices
 lbl_80057324:
 /* 80057324 00053244  80 01 01 0C */	lwz r0, 0x10c(r1)
 /* 80057328 00053248  CB E1 01 00 */	lfd f31, 0x100(r1)
@@ -714,7 +714,7 @@ bg_old_bluesky_draw:
 /* 80057374 00053294  4B FB 05 3D */	bl mathutil_mtxA_from_mtx
 /* 80057378 00053298  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 8005737C 0005329C  80 63 00 14 */	lwz r3, 0x14(r3)
-/* 80057380 000532A0  4B FD C7 55 */	bl g_call_draw_naomi_model_and_do_other_stuff
+/* 80057380 000532A0  4B FD C7 55 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80057384 000532A4  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
 /* 80057388 000532A8  80 63 00 30 */	lwz r3, 0x30(r3)
 /* 8005738C 000532AC  4B FD A3 D9 */	bl func_80031764
@@ -1095,7 +1095,7 @@ func_800578D0:
 /* 80057910 00053830  A8 7F 00 50 */	lha r3, 0x50(r31)
 /* 80057914 00053834  4B FB 07 75 */	bl mathutil_mtxA_rotate_z
 /* 80057918 00053838  80 7F 00 30 */	lwz r3, 0x30(r31)
-/* 8005791C 0005383C  4B FD C1 B9 */	bl g_call_draw_naomi_model_and_do_other_stuff
+/* 8005791C 0005383C  4B FD C1 B9 */	bl u_call_draw_naomi_model_and_do_other_stuff
 lbl_80057920:
 /* 80057920 00053840  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80057924 00053844  83 E1 00 14 */	lwz r31, 0x14(r1)

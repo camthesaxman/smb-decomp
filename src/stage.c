@@ -34,7 +34,7 @@ struct DynamicStagePart *dynamicStageParts;
 u16 lbl_802F1F40;
 struct TPL *decodedStageTplPtr;
 struct GMA *decodedStageGmaPtr;
-struct GMAModel *g_stageBoxModel;
+struct GMAModel *u_stageBoxModel;
 struct Stage *decodedStageLzPtr;
 struct GMAModel *blurBridgeAccordion;
 int previewLoaded;
@@ -75,8 +75,8 @@ char *goalModelNames[] =
     "GOAL_R",
 };
 
-void g_bonus_wave_warp_callback_1();
-void g_bonus_wave_warp_callback_2();
+void u_bonus_wave_warp_callback_1();
+void u_bonus_wave_warp_callback_2();
 u32 bonus_wave_raycast_down();
 
 void ev_stage_init(void)
@@ -102,7 +102,7 @@ void ev_stage_init(void)
             {
                 preview_create_with_alloc_img(&stagePreview, "preview/140x140.tpl", r5 - 1, 140,
                                               140, GX_TF_RGB5A3);
-                g_preview_wait_then_do_something(&stagePreview);
+                u_preview_wait_then_do_something(&stagePreview);
                 previewLoaded = TRUE;
             }
         }
@@ -123,20 +123,20 @@ void ev_stage_main(void)
     if (infoWork.flags & INFO_FLAG_08)
     {
         if (modeCtrl.submodeTimer > 120)
-            lbl_80206DEC.g_stageTimer = 0.0f;
+            lbl_80206DEC.u_stageTimer = 0.0f;
         else
-            lbl_80206DEC.g_stageTimer = 120 - modeCtrl.submodeTimer;
+            lbl_80206DEC.u_stageTimer = 120 - modeCtrl.submodeTimer;
         lbl_80206DEC.unk0 = 0x77;
     }
     else if (infoWork.flags & INFO_FLAG_04)
     {
-        lbl_80206DEC.g_stageTimer =
+        lbl_80206DEC.u_stageTimer =
             func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
-        lbl_80206DEC.unk0 = lbl_80206DEC.g_stageTimer;
+        lbl_80206DEC.unk0 = lbl_80206DEC.u_stageTimer;
     }
     else
-        lbl_80206DEC.g_stageTimer = lbl_80206DEC.unk0;
-    f31 = lbl_80206DEC.g_stageTimer / 60.0;
+        lbl_80206DEC.u_stageTimer = lbl_80206DEC.unk0;
+    f31 = lbl_80206DEC.u_stageTimer / 60.0;
     f31 += decodedStageLzPtr->loopStartSeconds;
     f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     f31 -= f3 * mathutil_floor(f31 / f3);
@@ -249,7 +249,7 @@ void ev_stage_main(void)
         {
             memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
             // responsible for warping vertices in the Bonus Wave model
-            g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc,
+            u_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc,
                                                  dyn->posColorTexFunc);
             dyn++;
         }
@@ -299,7 +299,7 @@ void draw_blur_bridge_accordions(void)
 
     if (blurBridgeAccordion == NULL2)
         return;
-    loopedTime = lbl_80206DEC.g_stageTimer / 60.0;
+    loopedTime = lbl_80206DEC.u_stageTimer / 60.0;
     loopedTime += (float)decodedStageLzPtr->loopStartSeconds;
     temp = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     loopedTime -= temp * mathutil_floor(loopedTime / temp);
@@ -361,9 +361,9 @@ void animate_anim_groups(float a)
 
     if (gamePauseStatus & 0xA)
         return;
-    lbl_80206DEC.g_stageTimer = a;
+    lbl_80206DEC.u_stageTimer = a;
     lbl_80206DEC.unk0 = a;
-    timeSeconds = lbl_80206DEC.g_stageTimer / 60.0;
+    timeSeconds = lbl_80206DEC.u_stageTimer / 60.0;
     timeSeconds += decodedStageLzPtr->loopStartSeconds;
     f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
     timeSeconds -= f3 * mathutil_floor(timeSeconds / f3);
@@ -424,7 +424,7 @@ void animate_anim_groups(float a)
     }
 }
 
-void g_initialize_stage_dyn_part_info(void)
+void u_initialize_stage_dyn_part_info(void)
 {
     struct DynamicStagePart *dyn;
     struct
@@ -439,8 +439,8 @@ void g_initialize_stage_dyn_part_info(void)
     // for Bonus Wave
     dyn = &lbl_80206D00[useless.unk5C];
     dyn->modelName = "SHAPE_STAGE134";
-    dyn->posNrmTexFunc = g_bonus_wave_warp_callback_1;
-    dyn->posColorTexFunc = g_bonus_wave_warp_callback_2;
+    dyn->posNrmTexFunc = u_bonus_wave_warp_callback_1;
+    dyn->posColorTexFunc = u_bonus_wave_warp_callback_2;
     dyn->raycastDownFunc = bonus_wave_raycast_down;
     useless.unk5C++;
 
@@ -481,7 +481,7 @@ void func_80044920(void)
 {
 }
 
-struct NaomiModel *g_mapModels[0x48];
+struct NaomiModel *u_mapModels[0x48];
 
 void load_stage(int stageId)
 {
@@ -532,13 +532,13 @@ void load_stage(int stageId)
             printf("========== st%03d ============\n", stageId);
         func_80044E18();
         func_80045194();
-        func_80084794(g_mapModels);
-        g_initialize_stuff_for_dynamic_stage_parts(stageId);
+        func_80084794(u_mapModels);
+        u_initialize_stuff_for_dynamic_stage_parts(stageId);
         compute_stage_bounding_sphere();
         loadedStageId = stageId;
     }
     light_init(stageId);
-    g_init_bg_fog_params();
+    u_init_bg_fog_params();
     currStageId = stageId;
     if (stageEvState != EV_STATE_INACTIVE)
         event_start(EVENT_STAGE);
@@ -755,7 +755,7 @@ void func_80044E18(void)
     u8 dummy[8];
 
     r17 = lbl_80209488;
-    r30 = g_mapModels;
+    r30 = u_mapModels;
     r29 = lbl_802095A8;
     r19 = 0;
     lbl_802F1F50 = 0;
@@ -995,7 +995,7 @@ void func_80045194(void)
     }
 
     len = strlen("BOX") - 1;
-    g_stageBoxModel = find_model_in_gma_list_2("BOX", 4, len);
+    u_stageBoxModel = find_model_in_gma_list_2("BOX", 4, len);
 }
 
 struct GMAModel *find_stage_or_bg_model(char *name)
@@ -1003,7 +1003,7 @@ struct GMAModel *find_stage_or_bg_model(char *name)
     return find_model_in_gma_list(name);
 }
 
-void g_initialize_stuff_for_dynamic_stage_parts(int stageId)
+void u_initialize_stuff_for_dynamic_stage_parts(int stageId)
 {
     int r5;
     struct Struct802F0990 *r6;
@@ -1081,7 +1081,7 @@ static int string_match_len(char *a, char *b)
 
 // Called for each vertex in the Bonus Wave floor model.
 // Modifies the y coordinate and normal vector
-void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
+void u_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
 {
     struct NaomiVtxWithNormal vtx = *vtxp;
     float dstFromOrigin;
@@ -1094,7 +1094,7 @@ void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
     dstFromOrigin = mathutil_sqrt(vtx.x * vtx.x + vtx.z * vtx.z);
     amplitude = 0.5 + -0.030833333333333333 * dstFromOrigin;
     f2 = -1092.0f;
-    f2 *= (lbl_80206DEC.g_stageTimer - 30.0f);
+    f2 *= (lbl_80206DEC.u_stageTimer - 30.0f);
     angle = 16384.0 * dstFromOrigin;
     angle = f2 + angle;
     if (angle > 0)
@@ -1118,8 +1118,8 @@ void g_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
     *vtxp = vtx;
 }
 
-// does the same as g_bonus_wave_warp_callback_1, but doesn't calculate normals
-void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
+// does the same as u_bonus_wave_warp_callback_1, but doesn't calculate normals
+void u_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
 {
     struct NaomiVtxWithColor vtx = *vtxp;
     float dstFromOrigin;
@@ -1131,7 +1131,7 @@ void g_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
     dstFromOrigin = mathutil_sqrt(vtx.x * vtx.x + vtx.z * vtx.z);
     amplitude = 0.5 + -0.030833333333333333 * dstFromOrigin;
     f2 = -1092.0f;
-    f2 *= (lbl_80206DEC.g_stageTimer - 30.0f);
+    f2 *= (lbl_80206DEC.u_stageTimer - 30.0f);
     angle = 16384.0 * dstFromOrigin;
     angle = f2 + angle;
     if (angle > 0)
@@ -1157,7 +1157,7 @@ u32 bonus_wave_raycast_down(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitN
     f1 = mathutil_sqrt(rayOrigin->x * rayOrigin->x + rayOrigin->z * rayOrigin->z);
     f31 = 0.5 + -0.030833333333333333 * f1;
     f2 = -1092.0f;
-    f2 *= (lbl_80206DEC.g_stageTimer - 30.0f);
+    f2 *= (lbl_80206DEC.u_stageTimer - 30.0f);
     r3 = 16384.0 * f1;
     angle = f2 + r3;
     if (angle > 0)
@@ -1611,20 +1611,20 @@ struct
 } lbl_8020ADE4;
 FORCE_BSS_ORDER(lbl_8020ADE4)
 
-extern void g_some_stage_vtx_callback_1();
-extern void g_some_stage_vtx_callback_2();
+extern void u_some_stage_vtx_callback_1();
+extern void u_some_stage_vtx_callback_2();
 
 float func_80046884(struct NaomiModel *model)
 {
     lbl_8020ADE4.unk0 = model->boundSphereCenter;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
-    g_apply_func_to_naomi_model_vertices(model, g_some_stage_vtx_callback_1,
-                                         g_some_stage_vtx_callback_2);
+    u_apply_func_to_naomi_model_vertices(model, u_some_stage_vtx_callback_1,
+                                         u_some_stage_vtx_callback_2);
     return lbl_8020ADE4.unk10;
 }
 
-void g_some_stage_vtx_callback_1(Point3d *vtx)
+void u_some_stage_vtx_callback_1(Point3d *vtx)
 {
     Vec spC;
     float f1;
@@ -1639,7 +1639,7 @@ void g_some_stage_vtx_callback_1(Point3d *vtx)
     lbl_8020ADE4.unk10 = mathutil_sqrt(f1);
 }
 
-void g_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of g_some_stage_vtx_callback_1
+void u_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of u_some_stage_vtx_callback_1
 {
     Vec spC;
     float f1;
@@ -2009,7 +2009,7 @@ void stage_draw(void)
     r31 = func_80092D34();
     r25 = backgroundInfo.unk78;
     if (backgroundInfo.unk8C != 0)
-        g_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
+        u_avdisp_set_some_func_1((void *)backgroundInfo.unk8C);
     sp7C.unk0 = 32;
 
     // draw goals
@@ -2058,7 +2058,7 @@ void stage_draw(void)
                 }
                 else
                 {
-                    g_call_draw_naomi_model_and_do_other_stuff(
+                    u_call_draw_naomi_model_and_do_other_stuff(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01));
                     sp7C.unk2 = 0;
                     sp7C.unk4 = NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_GOAL_01);
@@ -2069,7 +2069,7 @@ void stage_draw(void)
         }
     }
 
-    g_reset_post_mult_color();
+    u_reset_post_mult_color();
     sp7C.unk0 = 2;
 
     if (dipSwitches & DIP_TRIANGLE)
@@ -2078,14 +2078,14 @@ void stage_draw(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
-        g_nl2ngc_set_scale(10.0f);
-        g_call_draw_naomi_model_and_do_other_stuff(
+        u_nl2ngc_set_scale(10.0f);
+        u_call_draw_naomi_model_and_do_other_stuff(
             NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
     {
         // draw collision mesh
-        g_draw_stage_collision();
+        u_draw_stage_collision();
     }
     else
     {
@@ -2147,7 +2147,7 @@ void stage_draw(void)
                 for (j = 0; j < r23->unk8; j++)
                 {
                     model = (void *)r23->unk0[j];
-                    g_call_draw_naomi_model_and_do_other_stuff(model);
+                    u_call_draw_naomi_model_and_do_other_stuff(model);
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
@@ -2155,7 +2155,7 @@ void stage_draw(void)
                         if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
-                            g_call_draw_naomi_model_1(lbl_802F1B4C);
+                            u_call_draw_naomi_model_1(lbl_802F1B4C);
                         }
                         else
                             mathutil_mtxA_pop();
@@ -2207,7 +2207,7 @@ void stage_draw(void)
                             }
                             if (model != NULL)
                             {
-                                g_call_draw_naomi_model_and_do_other_stuff(model);
+                                u_call_draw_naomi_model_and_do_other_stuff(model);
                                 if (r31 != 0)
                                 {
                                     sp7C.unk2 = 0;
@@ -2221,7 +2221,7 @@ void stage_draw(void)
                                     if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
-                                        g_call_draw_naomi_model_1(lbl_802F1B4C);
+                                        u_call_draw_naomi_model_1(lbl_802F1B4C);
                                     }
                                     else
                                         mathutil_mtxA_pop();
@@ -2241,7 +2241,7 @@ void stage_draw(void)
             dyn = dynamicStageParts;
             while (dyn->modelName != NULL)
             {
-                g_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
+                u_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
                 if (r31 != 0)
                 {
                     sp7C.unk2 = 0;
@@ -2258,7 +2258,7 @@ void stage_draw(void)
         // draw starting position marker
         if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << 1)))
         {
-            g_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+            u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
             if (lbl_801EEC90.unk0 & (1 << 3))
             {
                 mathutil_mtxA_from_identity();
@@ -2279,11 +2279,11 @@ void stage_draw(void)
             if (infoWork.unk1E == 1)
             {
                 if (modeCtrl.submodeTimer > 120)
-                    g_call_draw_naomi_model_and_do_other_stuff(
+                    u_call_draw_naomi_model_and_do_other_stuff(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 60)
                 {
-                    g_call_draw_model_with_alpha_deferred(
+                    u_call_draw_model_with_alpha_deferred(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.submodeTimer - 60) / 60.0f);
                 }
@@ -2291,20 +2291,20 @@ void stage_draw(void)
             else
             {
                 if (modeCtrl.submodeTimer > 75)
-                    g_call_draw_naomi_model_and_do_other_stuff(
+                    u_call_draw_naomi_model_and_do_other_stuff(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 45)
                 {
-                    g_call_draw_model_with_alpha_deferred(
+                    u_call_draw_model_with_alpha_deferred(
                         NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.submodeTimer - 45) / 30.0f);
                 }
             }
-            g_reset_post_mult_color();
+            u_reset_post_mult_color();
         }
     }
     if (backgroundInfo.unk8C != 0)
-        g_avdisp_set_some_func_1(NULL);
+        u_avdisp_set_some_func_1(NULL);
     if (dipSwitches & DIP_FALL_DISP)
     {
         struct AnimGroupInfo *animGroup;
@@ -2333,8 +2333,8 @@ void stage_draw(void)
                 mathutil_mtxA_scale(&r25->unkC);
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
-                g_nl2ngc_set_scale(f1);
-                g_call_draw_model_with_alpha_deferred(
+                u_nl2ngc_set_scale(f1);
+                u_call_draw_model_with_alpha_deferred(
                     NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
             }
         }
@@ -2357,7 +2357,7 @@ void draw_stage_preview(void)
     }
 }
 
-void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
+void u_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
                                           void (*b)(struct NaomiVtxWithNormal *),
                                           void (*c)(struct NaomiVtxWithColor *))
 {
@@ -2375,18 +2375,18 @@ void g_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
             break;
         case -3: // display list has pos, color, tex
             if (c != NULL)
-                g_apply_func_to_naomi_dl_pos_color_tex((void *)r6->dispListStart, r31, c);
+                u_apply_func_to_naomi_dl_pos_color_tex((void *)r6->dispListStart, r31, c);
             break;
         default: // display list has pos, normal, tex
             if (b != NULL)
-                g_apply_func_to_naomi_dl_pos_nrm_tex((void *)r6->dispListStart, r31, b);
+                u_apply_func_to_naomi_dl_pos_nrm_tex((void *)r6->dispListStart, r31, b);
             break;
         }
         r6 = r31;
     }
 }
 
-void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
+void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
                                           void (*func)(struct NaomiVtxWithNormal *))
 {
     int i;
@@ -2435,8 +2435,8 @@ void g_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
     }
 }
 
-// duplicate of g_apply_func_to_naomi_dl_pos_nrm_tex
-void g_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
+// duplicate of u_apply_func_to_naomi_dl_pos_nrm_tex
+void u_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
                                             void (*func)(struct NaomiVtxWithColor *))
 {
     int i;

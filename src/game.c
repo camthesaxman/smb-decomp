@@ -37,8 +37,8 @@ void mode_game_func(void)
 {
     if (!(gameSubmode > SMD_GAME_TOP && gameSubmode < SMD_GAME_BOTTOM))
     {
-        g_debug_set_cursor_pos(10, 10);
-        g_debug_printf("sub_mode: error %d in Game", gameSubmode);
+        u_debug_set_cursor_pos(10, 10);
+        u_debug_printf("sub_mode: error %d in Game", gameSubmode);
         return;
     }
 
@@ -170,9 +170,9 @@ void submode_game_ready_init_func(void)
     {
     case GAMETYPE_MAIN_NORMAL:
         if (!(modeCtrl.levelSetFlags & (1 << 8)))
-            g_init_player_data_1();
+            u_init_player_data_1();
         else
-            g_init_player_data_2();
+            u_init_player_data_2();
         level_num_to_stage_id(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags);
         break;
     }
@@ -236,12 +236,12 @@ void submode_game_ready_init_func(void)
     {
         if (r30 == lbl_802F1C20)
         {
-            g_play_music(r30 + 1, 0);
+            u_play_music(r30 + 1, 0);
             lbl_802F1C20 = -1;
         }
         else
         {
-            g_play_music(r30, 0);
+            u_play_music(r30, 0);
             if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
                 lbl_802F1C20 = r30;
         }
@@ -249,9 +249,9 @@ void submode_game_ready_init_func(void)
     else
     {
         if (lbl_802014E0.unk0 == -1)
-            g_play_music(1, 3);
+            u_play_music(1, 3);
         else if (r30 == -1)
-            g_play_music(0, 1);
+            u_play_music(0, 1);
     }
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
@@ -260,7 +260,7 @@ void submode_game_ready_init_func(void)
 
         if (lbl_802F1FB0 == infoWork.unk20)
             soundId = 0x184;
-        g_play_sound(soundId);
+        u_play_sound(soundId);
     }
     lbl_802F1F80 = ballInfo[modeCtrl.currPlayer].unk7C;
     gameSubmodeRequest = SMD_GAME_READY_MAIN;
@@ -271,7 +271,7 @@ void submode_game_ready_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (infoWork.unk1E == 1 && (g_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
+    if (infoWork.unk1E == 1 && (u_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
         modeCtrl.submodeTimer--;
     if (modeCtrl.submodeTimer == 120)
     {
@@ -283,7 +283,7 @@ void submode_game_ready_main_func(void)
     }
     if (modeCtrl.submodeTimer == 24.0)
         BALL_FOREACH( ball->state = 3; )
-    if (g_unkInputArr1[2] & PAD_BUTTON_A)
+    if (u_unkInputArr1[2] & PAD_BUTTON_A)
         minimap_change_size();
     if (--modeCtrl.submodeTimer <= 0)
         gameSubmodeRequest = SMD_GAME_PLAY_INIT;
@@ -337,22 +337,22 @@ void submode_game_play_main_func(void)
         if (infoWork.timerCurr <= 10 * 60)
         {
             // countdown
-            g_play_sound(6);
-            g_play_sound(countdownSounds[infoWork.timerCurr / 60]);
+            u_play_sound(6);
+            u_play_sound(countdownSounds[infoWork.timerCurr / 60]);
         }
         else
-            g_play_sound(0x3D806);
+            u_play_sound(0x3D806);
         if (infoWork.timerCurr / 60 == 10)
         {
-            g_play_sound(7);  // hurry up?
+            u_play_sound(7);  // hurry up?
             hud_show_hurry_up_banner();
         }
     }
     if (infoWork.timerCurr <= 5 * 60 && infoWork.timerCurr % 60 == 43)
-        g_play_sound(6);
+        u_play_sound(6);
     if (infoWork.timerCurr <= 10 * 60 && infoWork.timerCurr % 60 == 51)
-        g_play_sound(6);
-    if (g_unkInputArr1[2] & PAD_BUTTON_A)
+        u_play_sound(6);
+    if (u_unkInputArr1[2] & PAD_BUTTON_A)
         minimap_change_size();
     if (infoWork.flags & INFO_FLAG_GOAL)
     {
@@ -396,8 +396,8 @@ void submode_game_goal_init_func(void)
     {
         modeCtrl.submodeTimer = 120;
         modeCtrl.levelSetFlags &= ~(1 << 10);
-        g_play_sound(11);
-        g_play_sound(0x128);
+        u_play_sound(11);
+        u_play_sound(0x128);
     }
     modeCtrl.unk3C = modeCtrl.submodeTimer;
     r31 = func_80017004();
@@ -413,7 +413,7 @@ void submode_game_goal_init_func(void)
     else
         hud_show_time_over_banner(120);
     if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
-        g_give_points(3, 0);
+        u_give_points(3, 0);
     if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
         func_8004B65C();
     gameSubmodeRequest = SMD_GAME_GOAL_MAIN;
@@ -428,7 +428,7 @@ void submode_game_goal_main_func(void)
 
     r31 = (infoWork.flags & INFO_FLAG_13) != 0;
     if (!r31 && modeCtrl.submodeTimer == 330)
-        g_play_sound(8);
+        u_play_sound(8);
     if (modeCtrl.submodeTimer == modeCtrl.unk3C - 60)
         func_80049158();
     if (!r31)
@@ -437,7 +437,7 @@ void submode_game_goal_main_func(void)
             if (!(ball->flags & BALL_FLAG_09) && (ball->ape->flags & (1 << 14)))
             {
                 modeCtrl.levelSetFlags |= 0x400;
-                g_play_sound(0x126);
+                u_play_sound(0x126);
             }
         )
     }
@@ -483,7 +483,7 @@ void submode_game_goal_replay_init_func(void)
     func_8006F5F0(r31);
     show_replay_text(modeCtrl.submodeTimer);
     if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
-        g_give_points(2, 0);
+        u_give_points(2, 0);
     func_8004B65C();
     gameSubmodeRequest = SMD_GAME_GOAL_REPLAY_MAIN;
 }
@@ -504,7 +504,7 @@ void submode_game_goal_replay_main_func(void)
             ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
             ball->flags |= BALL_FLAG_09;
             modeCtrl.levelSetFlags |= 0x400;
-            g_play_sound(0x126);
+            u_play_sound(0x126);
         }
     )
 
@@ -527,18 +527,18 @@ void submode_game_goal_replay_main_func(void)
             }
         )
         if (r3)
-            g_play_sound(0x67);
+            u_play_sound(0x67);
     }
     modeCtrl.unk18--;
-    nextStage = g_get_next_stage_id();
+    nextStage = u_get_next_stage_id();
     if (!is_load_queue_not_empty()
-     && (g_unkInputArr1[2] & PAD_BUTTON_A)
+     && (u_unkInputArr1[2] & PAD_BUTTON_A)
      && modeCtrl.unk18 < 0 && nextStage > 0)
         modeCtrl.submodeTimer = 0;
     if (nextStage < 0 && modeCtrl.submodeTimer == 60)
     {
         start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 61);
-        g_play_music(60, 2);
+        u_play_music(60, 2);
     }
     if (--modeCtrl.submodeTimer > 0)
         return;
@@ -590,7 +590,7 @@ void submode_game_goal_replay_main_func(void)
         if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         {
             infoWork.unk1E++;
-            g_play_music(100, 8);
+            u_play_music(100, 8);
         }
         else
             infoWork.unk1E = 1;
@@ -630,7 +630,7 @@ void submode_game_continue_init_func(void)
     }
     else
         hud_show_continue_interface();
-    g_smth_with_lights_smd_continue(currStageId);
+    u_smth_with_lights_smd_continue(currStageId);
 
     BALL_FOREACH( ball->state = 18; )
     BALL_FOREACH(
@@ -645,7 +645,7 @@ void submode_game_continue_init_func(void)
         func_8006677C(1, 0x140, 0x198);
     }
     lbl_802F1C20 = lbl_802014E0.unk0;
-    g_play_music(40, 0);
+    u_play_music(40, 0);
     gameSubmodeRequest = SMD_GAME_CONTINUE_MAIN;
 }
 
@@ -662,19 +662,19 @@ void submode_game_continue_main_func(void)
         {
             int r29 = modeCtrl.unk10;
 
-            if ((g_unkInputArr1[2] & PAD_BUTTON_LEFT) || (g_unkInputArr2[2] & PAD_BUTTON_LEFT))
+            if ((u_unkInputArr1[2] & PAD_BUTTON_LEFT) || (u_unkInputArr2[2] & PAD_BUTTON_LEFT))
                 r29 = 1;
-            if ((g_unkInputArr1[2] & PAD_BUTTON_RIGHT) || (g_unkInputArr2[2] & PAD_BUTTON_RIGHT))
+            if ((u_unkInputArr1[2] & PAD_BUTTON_RIGHT) || (u_unkInputArr2[2] & PAD_BUTTON_RIGHT))
                 r29 = 0;
             if (r29 != modeCtrl.unk10)
             {
-                g_play_sound(9);
+                u_play_sound(9);
                 modeCtrl.unk10 = r29;
             }
         }
         if (!normalSinglePlayer || func_80066868() != 0)
         {
-            if (g_unkInputArr1[2] & PAD_BUTTON_A)
+            if (u_unkInputArr1[2] & PAD_BUTTON_A)
             {
                 currentBallStructPtr->ape->flags &= ~(1 << 8);
                 if (modeCtrl.unk10 == 1)
@@ -683,8 +683,8 @@ void submode_game_continue_main_func(void)
                     infoWork.unk1E = 1;
                     currentBallStructPtr->ape->flags |= 0x800;
                     textbox_set_properties(0, 20, NULL);
-                    g_play_sound(10);
-                    g_play_sound(80);
+                    u_play_sound(10);
+                    u_play_sound(80);
                     modeCtrl.submodeTimer = 60;
                     modeCtrl.levelSetFlags |= (1 << 2);
                     textbox_set_properties(1, 20, NULL);
@@ -692,7 +692,7 @@ void submode_game_continue_main_func(void)
                 else
                 {
                     textbox_set_properties(0, 20, NULL);
-                    g_play_sound(48);
+                    u_play_sound(48);
                     currentBallStructPtr->ape->flags |= 0x40000;
                     modeCtrl.submodeTimer = 60;
                     modeCtrl.levelSetFlags |= (1 << 2);
@@ -703,7 +703,7 @@ void submode_game_continue_main_func(void)
     else
     {
         if (normalSinglePlayer && modeCtrl.unk10 == 0 && modeCtrl.submodeTimer > 180
-         && func_80066868() != 0 && (g_unkInputArr1[2] & PAD_BUTTON_A))
+         && func_80066868() != 0 && (u_unkInputArr1[2] & PAD_BUTTON_A))
             modeCtrl.submodeTimer = 180;
         if (modeCtrl.unk10 == 0 && modeCtrl.submodeTimer == 60)
         {
@@ -745,8 +745,8 @@ void submode_game_timeover_init_func(void)
     BALL_FOREACH( ball->state = 0; )
     func_800846B0(1);
     if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE))
-        g_play_sound(11);
-    g_play_sound(0x128);
+        u_play_sound(11);
+    u_play_sound(0x128);
     camera_set_state(21);
     for (i = 0; i < 4; i++)
     {
@@ -759,7 +759,7 @@ void submode_game_timeover_init_func(void)
     }
     func_80049158();
     hud_show_time_over_banner(modeCtrl.submodeTimer);
-    BALL_FOREACH( g_play_sound(28); )
+    BALL_FOREACH( u_play_sound(28); )
     gameSubmodeRequest = SMD_GAME_TIMEOVER_MAIN;
 }
 
@@ -770,11 +770,11 @@ void submode_game_timeover_main_func(void)
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
-        loadingStageId = g_get_next_stage_id();
+        loadingStageId = u_get_next_stage_id();
         if (loadingStageId < 0 && modeCtrl.submodeTimer == 60)
         {
             start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 61);
-            g_play_music(60, 2);
+            u_play_music(60, 2);
         }
     }
     if (--modeCtrl.submodeTimer > 0)
@@ -784,7 +784,7 @@ void submode_game_timeover_main_func(void)
         // still has lives
         if ((infoWork.flags & INFO_FLAG_BONUS_STAGE) || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
         {
-            loadingStageId = g_get_next_stage_id();
+            loadingStageId = u_get_next_stage_id();
             infoWork.unk1E = (modeCtrl.gameType != GAMETYPE_MAIN_PRACTICE) ? 1 : infoWork.unk1E + 1;
         }
         else
@@ -818,8 +818,8 @@ void submode_game_ringout_init_func(void)
     modeCtrl.submodeTimer = 270;
     modeCtrl.unk18 = 60;
     func_800846B0(1);
-    g_play_sound((currentBallStructPtr->lives == 1) ? 81 : 29);
-    g_play_sound(21);
+    u_play_sound((currentBallStructPtr->lives == 1) ? 81 : 29);
+    u_play_sound(21);
     lbl_802F1C1C = -1;
     hud_show_fallout_banner(modeCtrl.submodeTimer);
     gameSubmodeRequest = SMD_GAME_RINGOUT_MAIN;
@@ -867,7 +867,7 @@ void submode_game_ringout_main_func(void)
         }
     }
     modeCtrl.unk18--;
-    if ((g_unkInputArr1[2] & PAD_BUTTON_A) && modeCtrl.unk18 < 0
+    if ((u_unkInputArr1[2] & PAD_BUTTON_A) && modeCtrl.unk18 < 0
      && !(infoWork.flags & (INFO_FLAG_BONUS_STAGE|INFO_FLAG_09)) && currentBallStructPtr->lives > 1)
     {
         func_80049158();
@@ -877,8 +877,8 @@ void submode_game_ringout_main_func(void)
         lbl_802F1C1C--;
     if (lbl_802F1C1C == 0 && currentBallStructPtr->vel.y < -0.2)
     {
-        g_play_sound((currentBallStructPtr->lives == 1) ? 81 : 29);
-        g_play_sound(21);
+        u_play_sound((currentBallStructPtr->lives == 1) ? 81 : 29);
+        u_play_sound(21);
         lbl_802F1C1C = -1;
     }
     if (--modeCtrl.submodeTimer > 0)
@@ -891,7 +891,7 @@ void submode_game_ringout_main_func(void)
         // still has lives
         if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
         {
-            loadingStageId = g_get_next_stage_id();
+            loadingStageId = u_get_next_stage_id();
             infoWork.unk1E = (modeCtrl.gameType != GAMETYPE_MAIN_PRACTICE) ? 1 : infoWork.unk1E + 1;
         }
         else
@@ -951,17 +951,17 @@ void submode_game_bonus_clear_main_func(void)
             ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
             ball->flags |= BALL_FLAG_09;
             modeCtrl.levelSetFlags |= (1 << 10);
-            g_play_sound(0x126);
+            u_play_sound(0x126);
         }
     )
     if ((modeCtrl.levelSetFlags & (1 << 10))
      && modeCtrl.submodeTimer > 60 && modeCtrl.submodeTimer < 240)
         modeCtrl.submodeTimer = 60;
-    loadingStageId = g_get_next_stage_id();
+    loadingStageId = u_get_next_stage_id();
     if (loadingStageId < 0 && modeCtrl.submodeTimer == 60)
     {
         start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 61);
-        g_play_music(60, 2);
+        u_play_music(60, 2);
     }
     if (--modeCtrl.submodeTimer > 0)
         return;
@@ -986,7 +986,7 @@ void submode_game_over_init_func(void)
     event_start(EVENT_SOUND);
     modeCtrl.submodeTimer = 120;
     if (!(modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))))
-        BALL_FOREACH( g_play_sound(0x22C); )
+        BALL_FOREACH( u_play_sound(0x22C); )
     hud_show_game_over_banner(120);
     if (screenFadeInfo.timer == 0)
     {
@@ -995,7 +995,7 @@ void submode_game_over_init_func(void)
         else
             start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), 120);
     }
-    g_play_music(0x2A, 0);
+    u_play_music(0x2A, 0);
     gameSubmodeRequest = SMD_GAME_OVER_MAIN;
 }
 
@@ -1005,7 +1005,7 @@ void submode_game_over_main_func(void)
         return;
 
     if (modeCtrl.submodeTimer == 90)
-        g_play_sound(0x240);
+        u_play_sound(0x240);
     if (--modeCtrl.submodeTimer > 0)
         return;
     if (modeCtrl.playerCount == 1
@@ -1035,7 +1035,7 @@ void submode_game_over_point_init_func(void)
     event_start(EVENT_SOUND);
     func_8006677C(2, 0x140, 0x168);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 15);
-    g_play_music(0x3E, 0);
+    u_play_music(0x3E, 0);
     gameSubmodeRequest = SMD_GAME_OVER_POINT_MAIN;
 }
 
@@ -1044,7 +1044,7 @@ void submode_game_over_point_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (func_80066868() != 0 && modeCtrl.submodeTimer > 30 && (g_unkInputArr1[2] & PAD_BUTTON_A))
+    if (func_80066868() != 0 && modeCtrl.submodeTimer > 30 && (u_unkInputArr1[2] & PAD_BUTTON_A))
         modeCtrl.submodeTimer = 30;
     if (modeCtrl.submodeTimer == 30)
         textbox_set_properties(1, 20, NULL);
@@ -1176,7 +1176,7 @@ void submode_game_nameentry_ready_init_func(void)
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), 30);
     BALL_FOREACH( ball->state = 15; )
     camera_set_state(31);
-    g_play_music(66, 0);
+    u_play_music(66, 0);
     gameSubmodeRequest = SMD_GAME_NAMEENTRY_READY_MAIN;
 }
 
@@ -1226,13 +1226,13 @@ void submode_game_nameentry_main_func(void)
     {
         if (infoWork.timerCurr <= 600)
         {
-            g_play_sound(6);
-            g_play_sound(countdownSounds[infoWork.timerCurr / 60]);
+            u_play_sound(6);
+            u_play_sound(countdownSounds[infoWork.timerCurr / 60]);
         }
         else
-            g_play_sound(6);
+            u_play_sound(6);
         if (infoWork.timerCurr / 60 == 10)
-            g_play_sound(7);
+            u_play_sound(7);
     }
     if (func_800AE894() != 0)
     {
@@ -1253,8 +1253,8 @@ void submode_game_ending_init_func(void)
      && !(modeCtrl.levelSetFlags & (1 << 20)))
         func_800662E0();
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
-    g_play_music(68, 0);
-    g_play_sound(0x46);
+    u_play_music(68, 0);
+    u_play_sound(0x46);
     gameSubmodeRequest = SMD_GAME_ENDING_MAIN;
 }
 
@@ -1474,7 +1474,7 @@ void submode_game_extra_init_func(void)
     if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
         modeCtrl.levelSetFlags |= LVLSET_FLAG_MASTER;
     modeCtrl.levelSetFlags |= LVLSET_FLAG_EXTRA;
-    g_smth_with_lights_smd_extra(currStageId);
+    u_smth_with_lights_smd_extra(currStageId);
     event_finish(EVENT_CAMERA);
     event_finish(EVENT_SPRITE);
     event_start(EVENT_CAMERA);
@@ -1483,8 +1483,8 @@ void submode_game_extra_init_func(void)
     camera_set_state(51);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 120);
     if (backgroundSongs[backgroundInfo.bgId] != -1)
-        g_play_music(0xFFEC0000 | (backgroundSongs[backgroundInfo.bgId] + 1), 6);
-    g_play_music(120, 3);
+        u_play_music(0xFFEC0000 | (backgroundSongs[backgroundInfo.bgId] + 1), 6);
+    u_play_music(120, 3);
     gameSubmodeRequest = SMD_GAME_EXTRA_WAIT;
 }
 
@@ -1493,7 +1493,7 @@ void submode_game_extra_wait_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (modeCtrl.submodeTimer > 60 && modeCtrl.submodeTimer < 480 && (g_unkInputArr1[2] & PAD_BUTTON_A))
+    if (modeCtrl.submodeTimer > 60 && modeCtrl.submodeTimer < 480 && (u_unkInputArr1[2] & PAD_BUTTON_A))
         modeCtrl.submodeTimer = 60;
     if (modeCtrl.submodeTimer == 540)
     {
@@ -1553,7 +1553,7 @@ void submode_game_extra_wait_func(void)
     {
         textbox_set_properties(1, 20, NULL);
         start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 60);
-        g_play_music(60, 2);
+        u_play_music(60, 2);
     }
     if ((600 - modeCtrl.submodeTimer) % 120 == 0)
         func_8007EB2C((600 - modeCtrl.submodeTimer) / 120);
@@ -1621,9 +1621,9 @@ void submode_game_result_init_func(void)
 
     func_8007ECB8();
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 60);
-    g_play_music(62, 0);
-    g_play_music(60, 3);
-    g_play_sound(0x1E0);
+    u_play_music(62, 0);
+    u_play_music(60, 3);
+    u_play_sound(0x1E0);
     gameSubmodeRequest = SMD_GAME_RESULT_MAIN;
 }
 
@@ -1679,7 +1679,7 @@ FORCE_BSS_ORDER(lbl_801EEEC0)
 
 struct Struct801EEEC0 lbl_801EEECC[4];
 
-inline void g_something_with_rankings(struct Ball *ball)
+inline void u_something_with_rankings(struct Ball *ball)
 {
     int j;
     int k;
@@ -1725,7 +1725,7 @@ void submode_game_result_main_func(void)
             lbl_801EEECC[i].unk8 = 0;
         }
 
-        BALL_FOREACH( g_something_with_rankings(ball); )
+        BALL_FOREACH( u_something_with_rankings(ball); )
 
         {
             int i;
@@ -1789,11 +1789,11 @@ void submode_game_result_main_func(void)
                 }
             }
             func_8007EF50(ball);
-            g_play_sound(0x68);
+            u_play_sound(0x68);
             if (ball->rank == 1)
-                g_play_sound(0x1B);
+                u_play_sound(0x1B);
             else if (ball->rank == 4)
-                g_play_sound(0x3E);
+                u_play_sound(0x3E);
             if (ball->rank == 1)
             {
                 lbl_802F1C25 = lbl_801761F0[ball->playerId];
@@ -1801,7 +1801,7 @@ void submode_game_result_main_func(void)
             }
         )
         if (r28)
-            g_play_sound(0x67);
+            u_play_sound(0x67);
     }
     if (++modeCtrl.submodeTimer < 240)
         return;
@@ -1814,9 +1814,9 @@ void submode_game_result_main_func(void)
     if (r3)
     {
         if (lbl_802F1C24 == 1)
-            g_play_sound(lbl_802F1C25);
+            u_play_sound(lbl_802F1C25);
         else
-            g_play_sound(0x1D1);
+            u_play_sound(0x1D1);
         modeCtrl.submodeTimer = 600;
         gameSubmodeRequest = SMD_GAME_RESULT_MENU;
     }
@@ -1834,15 +1834,15 @@ void submode_game_result_menu_func(void)
                 func_800165C0(ball);
         )
     }
-    if (modeCtrl.submodeTimer > 60 && ((g_unkInputArr1[2] & PAD_BUTTON_A) || (g_unkInputArr1[2] & PAD_BUTTON_START)))
+    if (modeCtrl.submodeTimer > 60 && ((u_unkInputArr1[2] & PAD_BUTTON_A) || (u_unkInputArr1[2] & PAD_BUTTON_START)))
     {
         modeCtrl.submodeTimer = 60;
-        g_play_sound(0xD1);
+        u_play_sound(0xD1);
     }
     if (modeCtrl.submodeTimer == 60)
     {
         start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), 60);
-        g_play_music(60, 2);
+        u_play_music(60, 2);
     }
     if (--modeCtrl.submodeTimer == 0)
         func_80012434(modeCtrl.gameType);
@@ -1861,7 +1861,7 @@ void submode_game_intr_sel_init_func(void)
     func_8006677C(0, 0x140, 0x168);
     start_screen_fade(FADE_UNK2|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 1);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 15);
-    g_play_music(0x3E, 0);
+    u_play_music(0x3E, 0);
     gameSubmodeRequest = SMD_GAME_INTR_SEL_MAIN;
 }
 
@@ -1869,7 +1869,7 @@ void submode_game_intr_sel_main_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
-    if (func_80066868() != 0 && modeCtrl.submodeTimer > 30 && (g_unkInputArr1[2] & PAD_BUTTON_A))
+    if (func_80066868() != 0 && modeCtrl.submodeTimer > 30 && (u_unkInputArr1[2] & PAD_BUTTON_A))
         modeCtrl.submodeTimer = 30;
     if (modeCtrl.submodeTimer == 30)
         textbox_set_properties(1, 20, NULL);
@@ -1879,7 +1879,7 @@ void submode_game_intr_sel_main_func(void)
         func_80012434(-1);
 }
 
-int g_get_next_stage_id(void)
+int u_get_next_stage_id(void)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         return currStageId;
@@ -1939,7 +1939,7 @@ int get_next_player(void)
     return nextPlayer;
 }
 
-void g_init_player_data_1(void)
+void u_init_player_data_1(void)
 {
     int i;
 
@@ -1962,7 +1962,7 @@ void g_init_player_data_1(void)
     }
 }
 
-void g_init_player_data_2(void)
+void u_init_player_data_2(void)
 {
     u32 r0;
 
@@ -1977,7 +1977,7 @@ void g_init_player_data_2(void)
         modeCtrl.currPlayer = r0;
         infoWork = playerInfos[modeCtrl.currPlayer];
         modeCtrl.levelSetFlags = lbl_801F3A8C[modeCtrl.currPlayer];
-        loadingStageId = g_get_next_stage_id();
+        loadingStageId = u_get_next_stage_id();
     }
 }
 

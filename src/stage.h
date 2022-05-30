@@ -330,18 +330,20 @@ struct StageBanana
 
 struct StageBumper
 {
-    Point3d pos;
-    s16 rotX;
-    s16 rotY;
-    s16 rotZ;
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x12*/ u8 filler12[0x20-0x12];
 };
 
 struct StageJamabar
 {
-    Vec pos;
-    s16 rotX;
-    s16 rotY;
-    s16 rotZ;
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x12*/ u8 filler12[0x20-0x12];
 };
 
 struct StageAnimGroup
@@ -508,7 +510,7 @@ void ev_stage_dest(void);
 void find_blur_bridge_accordion(void);
 void draw_blur_bridge_accordions(void);
 void animate_anim_groups(float);
-void g_initialize_stage_dyn_part_info(void);
+void u_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);
 void func_80044920(void);
 void load_stage(int);
@@ -518,7 +520,7 @@ void load_stage_files(int stageId);
 void func_80044E18(void);
 void func_80045194(void);
 // ? find_stage_or_bg_model();
-void g_initialize_stuff_for_dynamic_stage_parts(int stageId);
+void u_initialize_stuff_for_dynamic_stage_parts(int stageId);
 int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);
 void compute_stage_bounding_sphere(void);

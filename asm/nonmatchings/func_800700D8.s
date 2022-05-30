@@ -95,10 +95,10 @@ lbl_8007021C:
 /* 8007022C 0006C14C  48 00 00 28 */	b lbl_80070254
 lbl_80070230:
 /* 80070230 0006C150  7F E3 FB 78 */	mr r3, r31
-/* 80070234 0006C154  48 00 01 09 */	bl g_something_with_sprites
+/* 80070234 0006C154  48 00 01 09 */	bl u_something_with_sprites
 /* 80070238 0006C158  48 00 00 0C */	b lbl_80070244
 lbl_8007023C:
-/* 8007023C 0006C15C  48 00 01 01 */	bl g_something_with_sprites
+/* 8007023C 0006C15C  48 00 01 01 */	bl u_something_with_sprites
 /* 80070240 0006C160  83 FF 00 54 */	lwz r31, 0x54(r31)
 lbl_80070244:
 /* 80070244 0006C164  80 7F 00 54 */	lwz r3, 0x54(r31)

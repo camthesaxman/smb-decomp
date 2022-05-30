@@ -54,15 +54,15 @@ void bg_end_init(void)
     bg_e3_init();
     if (work->unk0 == 0)
     {
-        g_search_bg_models(bgEndFind1, lbl_80065B8C);
+        u_search_bg_models(bgEndFind1, lbl_80065B8C);
         work->unk0 = 1;
     }
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         bgEndFind2,
         lbl_80065BFC);
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->fgModels,
         decodedStageLzPtr->fgModelCount,
         bgEndFind2,

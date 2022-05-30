@@ -156,7 +156,7 @@ void item_coin_draw(struct Item *item)
     mathutil_mtxA_rotate_z(item->rotZ);
     model = get_lod(item->modelLODs);
     scale = (f30 / model->boundSphereRadius) * 1.5;
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
+    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
         return;
     if (scale != 1.0)
         mathutil_mtxA_scale_xyz(scale, scale, scale);
@@ -196,7 +196,7 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
 
         item->unk5E = infoWork.timerCurr;
         give_bananas(s_bananaInfos[item->subType].bananaValue);
-        g_give_points(s_bananaInfos[item->subType].unkA, s_bananaInfos[item->subType].pointValue);
+        u_give_points(s_bananaInfos[item->subType].unkA, s_bananaInfos[item->subType].pointValue);
         item->state = 0;
         item->flags |= ITEM_FLAG_INVISIBLE;
         item->flags &= ~(1 << 1);
@@ -221,16 +221,16 @@ void item_coin_collect(struct Item *item, struct Struct800690DC *b)
         return;
     if (item->subType == 1)
     {
-        g_play_sound(0x39);
+        u_play_sound(0x39);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
-            g_play_sound(0x2820);
+            u_play_sound(0x2820);
         background_interact(1);
     }
     else
     {
-        g_play_sound(3);
+        u_play_sound(3);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
-            g_play_sound(0x281F);
+            u_play_sound(0x281F);
         background_interact(0);
     }
 }

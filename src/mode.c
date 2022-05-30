@@ -486,9 +486,9 @@ void gm_init(void)
 void gm_main(void)
 {
     if (dipSwitches & DIP_DEBUG)
-        g_menu_input_debug();
+        u_menu_input_debug();
     else
-        g_menu_input_notdebug();
+        u_menu_input_notdebug();
 
     if ((modeCtrl.levelSetFlags & (1 << 9))
      && gameModeRequest != -1 && gameModeRequest != gameMode)
@@ -615,37 +615,37 @@ int title_screen_debug_menu(void)
             modeCtrl.unk1C = 0;
     }
 
-    g_debug_set_cursor_pos(15, 15);
+    u_debug_set_cursor_pos(15, 15);
     for (i = 0; i < 5; i++)
     {
         if (i == modeCtrl.menuSel)
-            g_debug_set_text_color(2);
-        g_debug_printf("%s\n", items[i]);
+            u_debug_set_text_color(2);
+        u_debug_printf("%s\n", items[i]);
         if (i == modeCtrl.menuSel)
-            g_debug_set_text_color(0);
+            u_debug_set_text_color(0);
     }
-    g_debug_set_cursor_pos(13, 15 + modeCtrl.menuSel);
-    g_debug_print("*");
-    g_debug_set_cursor_pos(11, 13);
-    g_debug_print("\x18");
+    u_debug_set_cursor_pos(13, 15 + modeCtrl.menuSel);
+    u_debug_print("*");
+    u_debug_set_cursor_pos(11, 13);
+    u_debug_print("\x18");
     for (i = 0; i < 16; i++)
-        g_debug_print("\x16");
-    g_debug_print("\x19");
-    g_debug_set_cursor_pos(11, 14);
+        u_debug_print("\x16");
+    u_debug_print("\x19");
+    u_debug_set_cursor_pos(11, 14);
     for (i = 0; i < 7; i++)
-        g_debug_print("\x17\n");
-    g_debug_set_cursor_pos(28, 14);
+        u_debug_print("\x17\n");
+    u_debug_set_cursor_pos(28, 14);
     for (i = 0; i < 7; i++)
-        g_debug_print("\x17\n");
-    g_debug_set_cursor_pos(11, 21);
-    g_debug_print("\x1A");
+        u_debug_print("\x17\n");
+    u_debug_set_cursor_pos(11, 21);
+    u_debug_print("\x1A");
     for (i = 0; i < 16; i++)
-        g_debug_print("\x16");
-    g_debug_print("\x1B");
+        u_debug_print("\x16");
+    u_debug_print("\x1B");
     return 0;
 }
 
-void g_menu_input_debug(void)
+void u_menu_input_debug(void)
 {
     int bvar = FALSE;
     int i;
@@ -663,7 +663,7 @@ void g_menu_input_debug(void)
         if ((gameMode == MD_GAME && (modeCtrl.levelSetFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
-            if (!(g_unkInputArr1[0] & PAD_TRIGGER_Z))
+            if (!(u_unkInputArr1[0] & PAD_TRIGGER_Z))
                 bvar = FALSE;
         }
 
@@ -743,14 +743,14 @@ void g_menu_input_debug(void)
         break;
     case MD_GAME:
     case MD_MINI:
-        g_menu_input_game_notdebug();
+        u_menu_input_game_notdebug();
         if (modeCtrl.unk1C != 0)
             modeCtrl.unk1C = 0;
         break;
     }
 }
 
-void g_menu_input_notdebug(void)
+void u_menu_input_notdebug(void)
 {
     switch (gameMode)
     {
@@ -782,7 +782,7 @@ void g_menu_input_notdebug(void)
         break;
     case MD_GAME:
     case MD_MINI:
-        g_menu_input_game_notdebug();
+        u_menu_input_game_notdebug();
         break;
     case MD_SEL:
     case MD_TEST:

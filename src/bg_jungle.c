@@ -34,12 +34,12 @@ void bg_jungle_init(void)
 
     // find models
     work->cloudModelCount = 0;
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         jungleModelFind,
         jungle_model_find_proc);
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->fgModels,
         decodedStageLzPtr->fgModelCount,
         jungleModelFind,
@@ -173,7 +173,7 @@ void bg_jungle_draw(void)
      || gameSubmode == SMD_GAME_NAMEENTRY_READY_INIT
      || gameSubmode == SMD_GAME_OVER_INIT
      || gameSubmode == SMD_GAME_OVER_MAIN)
-        g_reset_post_mult_color();
+        u_reset_post_mult_color();
 }
 
 void bg_jungle_interact(int a) {}
