@@ -10214,7 +10214,7 @@ lbl_00009254:
 /* 000092A8 5400103A */ slwi r0, r0, 2
 /* 000092AC 7C630214 */ add r3, r3, r0
 /* 000092B0 80630004 */ lwz r3, 4(r3)
-/* 000092B4 4BFF6EA9 */ bl nl2ngc_draw_model_sorted
+/* 000092B4 4BFF6EA9 */ bl u_nl2ngc_draw_model_sort_translucent
 /* 000092B8 4BFF6EA5 */ bl draw_test_camera_target
 /* 000092BC 48000068 */ b lbl_00009324
 lbl_000092C0:

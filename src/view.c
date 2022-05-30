@@ -548,7 +548,7 @@ void draw_stage_geometry(void)
     struct Struct8020A348_child *r26;
     u32 dummy;
 
-    u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+    nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 9);
@@ -654,7 +654,7 @@ void draw_stage_objects(void)
                 u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                 avdisp_draw_model_culled_sort_translucent(goalModel);
             }
-            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 14));
+            u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(naomiCommonObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);

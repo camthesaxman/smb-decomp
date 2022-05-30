@@ -717,7 +717,7 @@ bg_old_bluesky_draw:
 /* 80057380 000532A0  4B FD C7 55 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80057384 000532A4  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 80057388 000532A8  80 63 00 30 */	lwz r3, 0x30(r3)
-/* 8005738C 000532AC  4B FD A3 D9 */	bl func_80031764
+/* 8005738C 000532AC  4B FD A3 D9 */	bl u_nl2ngc_draw_model_sort_translucent_alt
 /* 80057390 000532B0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80057394 000532B4  38 21 00 08 */	addi r1, r1, 8
 /* 80057398 000532B8  7C 08 03 A6 */	mtlr r0

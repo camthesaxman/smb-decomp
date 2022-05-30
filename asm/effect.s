@@ -1853,7 +1853,7 @@ lbl_8004E5D4:
 /* 8004E5F0 0004A510  38 80 00 01 */	li r4, 1
 /* 8004E5F4 0004A514  38 A0 00 01 */	li r5, 1
 /* 8004E5F8 0004A518  38 C0 00 00 */	li r6, 0
-/* 8004E5FC 0004A51C  48 04 C7 35 */	bl u_gxutil_set_some_line_params
+/* 8004E5FC 0004A51C  48 04 C7 35 */	bl gxutil_set_line_blend_params
 /* 8004E600 0004A520  38 61 00 18 */	addi r3, r1, 0x18
 /* 8004E604 0004A524  38 81 00 28 */	addi r4, r1, 0x28
 /* 8004E608 0004A528  48 04 CF 31 */	bl gxutil_draw_line_multicolor_deferred
@@ -2168,7 +2168,7 @@ func_8004E96C:
 /* 8004EA78 0004A998  4B FB 8A ED */	bl mathutil_mtxA_from_identity
 /* 8004EA7C 0004A99C  38 60 00 01 */	li r3, 1
 /* 8004EA80 0004A9A0  38 80 00 01 */	li r4, 1
-/* 8004EA84 0004A9A4  4B FE 20 75 */	bl func_80030AF8
+/* 8004EA84 0004A9A4  4B FE 20 75 */	bl nl2ngc_set_line_blend_params
 /* 8004EA88 0004A9A8  38 BE 00 00 */	addi r5, r30, 0
 /* 8004EA8C 0004A9AC  38 61 00 18 */	addi r3, r1, 0x18
 /* 8004EA90 0004A9B0  38 81 00 24 */	addi r4, r1, 0x24
@@ -3045,7 +3045,7 @@ func_8004F648:
 /* 8004F754 0004B674  C0 3E 00 18 */	lfs f1, 0x18(r30)
 /* 8004F758 0004B678  C0 5E 00 1C */	lfs f2, 0x1c(r30)
 /* 8004F75C 0004B67C  C0 7E 00 20 */	lfs f3, 0x20(r30)
-/* 8004F760 0004B680  4B FE 14 59 */	bl u_nl2ngc_set_post_mult_color
+/* 8004F760 0004B680  4B FE 14 59 */	bl nl2ngc_set_material_color
 /* 8004F764 0004B684  80 7E 00 30 */	lwz r3, 0x30(r30)
 /* 8004F768 0004B688  4B FE 43 6D */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8004F76C 0004B68C  4B FB EC 51 */	bl u_reset_post_mult_color
@@ -3373,7 +3373,7 @@ func_8004FB24:
 /* 8004FC44 0004BB64  FC 20 08 18 */	frsp f1, f1
 /* 8004FC48 0004BB68  FC 40 08 90 */	fmr f2, f1
 /* 8004FC4C 0004BB6C  FC 60 08 90 */	fmr f3, f1
-/* 8004FC50 0004BB70  4B FE 0F 69 */	bl u_nl2ngc_set_post_mult_color
+/* 8004FC50 0004BB70  4B FE 0F 69 */	bl nl2ngc_set_material_color
 /* 8004FC54 0004BB74  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 8004FC58 0004BB78  80 63 00 08 */	lwz r3, 8(r3)
 /* 8004FC5C 0004BB7C  4B FE 3E 79 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -3527,7 +3527,7 @@ func_8004FDCC:
 /* 8004FE84 0004BDA4  C0 22 90 E8 */	lfs f1, lbl_802F38E8@sda21(r2)
 /* 8004FE88 0004BDA8  FC 40 08 90 */	fmr f2, f1
 /* 8004FE8C 0004BDAC  FC 60 08 90 */	fmr f3, f1
-/* 8004FE90 0004BDB0  4B FE 0D 29 */	bl u_nl2ngc_set_post_mult_color
+/* 8004FE90 0004BDB0  4B FE 0D 29 */	bl nl2ngc_set_material_color
 /* 8004FE94 0004BDB4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8004FE98 0004BDB8  80 63 00 D8 */	lwz r3, 0xd8(r3)
 /* 8004FE9C 0004BDBC  4B FE 3C 39 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -3772,7 +3772,7 @@ func_80050138:
 /* 80050230 0004C150  C0 3E 00 18 */	lfs f1, 0x18(r30)
 /* 80050234 0004C154  C0 5E 00 1C */	lfs f2, 0x1c(r30)
 /* 80050238 0004C158  C0 7E 00 20 */	lfs f3, 0x20(r30)
-/* 8005023C 0004C15C  4B FE 09 7D */	bl u_nl2ngc_set_post_mult_color
+/* 8005023C 0004C15C  4B FE 09 7D */	bl nl2ngc_set_material_color
 /* 80050240 0004C160  C0 1E 00 24 */	lfs f0, 0x24(r30)
 /* 80050244 0004C164  C0 5E 00 28 */	lfs f2, 0x28(r30)
 /* 80050248 0004C168  EC 20 07 F2 */	fmuls f1, f0, f31
@@ -4075,7 +4075,7 @@ lbl_80050668:
 /* 800506BC 0004C5DC  EC 21 07 F2 */	fmuls f1, f1, f31
 /* 800506C0 0004C5E0  EC 42 07 F2 */	fmuls f2, f2, f31
 /* 800506C4 0004C5E4  EC 60 07 F2 */	fmuls f3, f0, f31
-/* 800506C8 0004C5E8  4B FE 04 F1 */	bl u_nl2ngc_set_post_mult_color
+/* 800506C8 0004C5E8  4B FE 04 F1 */	bl nl2ngc_set_material_color
 /* 800506CC 0004C5EC  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 800506D0 0004C5F0  4B FE 34 05 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 800506D4 0004C5F4  4B FB DC E9 */	bl u_reset_post_mult_color
@@ -4184,7 +4184,7 @@ func_80050788:
 /* 80050848 0004C768  C0 22 90 E8 */	lfs f1, lbl_802F38E8@sda21(r2)
 /* 8005084C 0004C76C  FC 40 08 90 */	fmr f2, f1
 /* 80050850 0004C770  FC 60 08 90 */	fmr f3, f1
-/* 80050854 0004C774  4B FE 03 65 */	bl u_nl2ngc_set_post_mult_color
+/* 80050854 0004C774  4B FE 03 65 */	bl nl2ngc_set_material_color
 /* 80050858 0004C778  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 8005085C 0004C77C  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 80050860 0004C780  4B FE 32 75 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -4475,7 +4475,7 @@ func_80050C38:
 /* 80050C9C 0004CBBC  C0 22 90 E8 */	lfs f1, lbl_802F38E8@sda21(r2)
 /* 80050CA0 0004CBC0  FC 40 08 90 */	fmr f2, f1
 /* 80050CA4 0004CBC4  FC 60 08 90 */	fmr f3, f1
-/* 80050CA8 0004CBC8  4B FD FF 11 */	bl u_nl2ngc_set_post_mult_color
+/* 80050CA8 0004CBC8  4B FD FF 11 */	bl nl2ngc_set_material_color
 /* 80050CAC 0004CBCC  C8 22 93 98 */	lfd f1, lbl_802F3B98@sda21(r2)
 /* 80050CB0 0004CBD0  C0 1E 00 A8 */	lfs f0, 0xa8(r30)
 /* 80050CB4 0004CBD4  C8 42 93 90 */	lfd f2, lbl_802F3B90@sda21(r2)
@@ -4494,7 +4494,7 @@ func_80050C38:
 /* 80050CE8 0004CC08  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
 /* 80050CEC 0004CC0C  FC 40 08 90 */	fmr f2, f1
 /* 80050CF0 0004CC10  FC 60 08 90 */	fmr f3, f1
-/* 80050CF4 0004CC14  4B FD FE C5 */	bl u_nl2ngc_set_post_mult_color
+/* 80050CF4 0004CC14  4B FD FE C5 */	bl nl2ngc_set_material_color
 /* 80050CF8 0004CC18  C0 21 00 14 */	lfs f1, 0x14(r1)
 /* 80050CFC 0004CC1C  C8 02 93 68 */	lfd f0, lbl_802F3B68@sda21(r2)
 /* 80050D00 0004CC20  FC 01 00 40 */	fcmpo cr0, f1, f0
@@ -4669,7 +4669,7 @@ func_80050ED4:
 /* 80050F78 0004CE98  C0 22 90 E8 */	lfs f1, lbl_802F38E8@sda21(r2)
 /* 80050F7C 0004CE9C  FC 40 08 90 */	fmr f2, f1
 /* 80050F80 0004CEA0  FC 60 08 90 */	fmr f3, f1
-/* 80050F84 0004CEA4  4B FD FC 35 */	bl u_nl2ngc_set_post_mult_color
+/* 80050F84 0004CEA4  4B FD FC 35 */	bl nl2ngc_set_material_color
 /* 80050F88 0004CEA8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80050F8C 0004CEAC  80 63 00 D8 */	lwz r3, 0xd8(r3)
 /* 80050F90 0004CEB0  4B FE 2B 45 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -7259,7 +7259,7 @@ lbl_8005359C:
 /* 80053618 0004F538  7C 03 07 34 */	extsh r3, r0
 /* 8005361C 0004F53C  4B FB 4A 6D */	bl mathutil_mtxA_rotate_z
 /* 80053620 0004F540  7F E3 FB 78 */	mr r3, r31
-/* 80053624 0004F544  4B FD DB ED */	bl nl2ngc_draw_model_sorted
+/* 80053624 0004F544  4B FD DB ED */	bl u_nl2ngc_draw_model_sort_translucent
 lbl_80053628:
 /* 80053628 0004F548  80 01 00 34 */	lwz r0, 0x34(r1)
 /* 8005362C 0004F54C  CB E1 00 28 */	lfd f31, 0x28(r1)

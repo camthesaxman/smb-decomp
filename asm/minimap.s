@@ -743,7 +743,7 @@ lbl_80084B1C:
 /* 80084D04 00080C24  C0 22 AB 88 */	lfs f1, lbl_802F5388@sda21(r2)
 /* 80084D08 00080C28  FC 40 08 90 */	fmr f2, f1
 /* 80084D0C 00080C2C  FC 60 08 90 */	fmr f3, f1
-/* 80084D10 00080C30  4B FA BE A9 */	bl u_nl2ngc_set_post_mult_color
+/* 80084D10 00080C30  4B FA BE A9 */	bl nl2ngc_set_material_color
 /* 80084D14 00080C34  A8 1E 00 34 */	lha r0, 0x34(r30)
 /* 80084D18 00080C38  C0 22 AB 78 */	lfs f1, lbl_802F5378@sda21(r2)
 /* 80084D1C 00080C3C  6C 00 80 00 */	xoris r0, r0, 0x8000
@@ -1105,7 +1105,7 @@ lbl_8008514C:
 /* 800852A0 000811C0  4B FA B9 09 */	bl u_nl2ngc_set_scale
 /* 800852A4 000811C4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800852A8 000811C8  80 63 00 1C */	lwz r3, 0x1c(r3)
-/* 800852AC 000811CC  4B FA BF 65 */	bl nl2ngc_draw_model_sorted
+/* 800852AC 000811CC  4B FA BF 65 */	bl u_nl2ngc_draw_model_sort_translucent
 lbl_800852B0:
 /* 800852B0 000811D0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800852B4 000811D4  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -1226,7 +1226,7 @@ lbl_800853E4:
 /* 80085470 00081390  4B FA B7 39 */	bl u_nl2ngc_set_scale
 /* 80085474 00081394  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80085478 00081398  80 63 00 30 */	lwz r3, 0x30(r3)
-/* 8008547C 0008139C  4B FA C2 E9 */	bl func_80031764
+/* 8008547C 0008139C  4B FA C2 E9 */	bl u_nl2ngc_draw_model_sort_translucent_alt
 lbl_80085480:
 /* 80085480 000813A0  48 00 04 4D */	bl ord_tbl_draw_nodes
 /* 80085484 000813A4  38 61 00 A4 */	addi r3, r1, 0xa4

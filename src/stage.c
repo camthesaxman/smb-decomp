@@ -2155,7 +2155,7 @@ void stage_draw(void)
                         if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
-                            u_call_draw_naomi_model_1(lbl_802F1B4C);
+                            nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
                         }
                         else
                             mathutil_mtxA_pop();
@@ -2221,7 +2221,7 @@ void stage_draw(void)
                                     if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
-                                        u_call_draw_naomi_model_1(lbl_802F1B4C);
+                                        nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
                                     }
                                     else
                                         mathutil_mtxA_pop();
@@ -2258,7 +2258,7 @@ void stage_draw(void)
         // draw starting position marker
         if (gameSubmode == SMD_GAME_READY_MAIN && !(lbl_801EEC90.unk0 & (1 << 1)))
         {
-            u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+            nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             if (lbl_801EEC90.unk0 & (1 << 3))
             {
                 mathutil_mtxA_from_identity();

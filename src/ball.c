@@ -1143,7 +1143,7 @@ void ball_draw(void)
             if (func(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
-                u_call_draw_naomi_model_1(lbl_802F1B4C);
+                nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
             }
             else
                 mathutil_mtxA_pop();
@@ -3113,7 +3113,7 @@ void ball_draw_callback(struct BallDrawNode *node)
             mathutil_mtxA_pop();
             mathutil_mtxA_push();
             mathutil_mtxA_scale_s(1.01f);
-            u_call_draw_naomi_model_1(lbl_802F1B4C);
+            nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
             mathutil_mtxA_pop();
         }
         else

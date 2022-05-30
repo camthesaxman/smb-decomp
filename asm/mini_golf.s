@@ -11006,7 +11006,7 @@ lbl_0000A194:
 /* 0000A1F4 38800004 */ li r4, 4
 /* 0000A1F8 38A00005 */ li r5, 5
 /* 0000A1FC 38C00000 */ li r6, 0
-/* 0000A200 4BFF5FD1 */ bl u_gxutil_set_some_line_params
+/* 0000A200 4BFF5FD1 */ bl gxutil_set_line_blend_params
 /* 0000A204 801D002C */ lwz r0, 0x2c(r29)
 /* 0000A208 1C000284 */ mulli r0, r0, 0x284
 /* 0000A20C 7C790214 */ add r3, r25, r0
@@ -11387,7 +11387,7 @@ lbl_0000A7B8:
 /* 0000A7C8 38800001 */ li r4, 1
 /* 0000A7CC 38A00000 */ li r5, 0
 /* 0000A7D0 38C00000 */ li r6, 0
-/* 0000A7D4 4BFF59FD */ bl u_gxutil_set_some_line_params
+/* 0000A7D4 4BFF59FD */ bl gxutil_set_line_blend_params
 lbl_0000A7D8:
 /* 0000A7D8 801D002C */ lwz r0, 0x2c(r29)
 /* 0000A7DC 1C000284 */ mulli r0, r0, 0x284
@@ -18109,7 +18109,7 @@ lbl_00010BA4:
 /* 00010BE0 41820014 */ beq lbl_00010BF4
 /* 00010BE4 4BFEF5ED */ bl mathutil_mtxA_pop
 /* 00010BE8 80760000 */ lwz r3, 0(r22)
-/* 00010BEC 4BFEF5E5 */ bl u_call_draw_naomi_model_1
+/* 00010BEC 4BFEF5E5 */ bl nl2ngc_draw_model_unsorted_alt
 /* 00010BF0 48000008 */ b lbl_00010BF8
 lbl_00010BF4:
 /* 00010BF4 4BFEF5DD */ bl mathutil_mtxA_pop
@@ -18223,7 +18223,7 @@ lbl_00010D4C:
 /* 00010D78 41820014 */ beq lbl_00010D8C
 /* 00010D7C 4BFEF455 */ bl mathutil_mtxA_pop
 /* 00010D80 80750000 */ lwz r3, 0(r21)
-/* 00010D84 4BFEF44D */ bl u_call_draw_naomi_model_1
+/* 00010D84 4BFEF44D */ bl nl2ngc_draw_model_unsorted_alt
 /* 00010D88 48000008 */ b lbl_00010D90
 lbl_00010D8C:
 /* 00010D8C 4BFEF445 */ bl mathutil_mtxA_pop

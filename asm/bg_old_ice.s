@@ -760,7 +760,7 @@ lbl_80059728:
 /* 80059734 00055654  C0 3F 00 A8 */	lfs f1, 0xa8(r31)
 /* 80059738 00055658  FC 40 08 90 */	fmr f2, f1
 /* 8005973C 0005565C  FC 60 08 90 */	fmr f3, f1
-/* 80059740 00055660  4B FD 74 79 */	bl u_nl2ngc_set_post_mult_color
+/* 80059740 00055660  4B FD 74 79 */	bl nl2ngc_set_material_color
 /* 80059744 00055664  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 80059748 00055668  4B FD A3 8D */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8005974C 0005566C  4B FB 4C 71 */	bl u_reset_post_mult_color

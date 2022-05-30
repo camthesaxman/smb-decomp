@@ -748,7 +748,7 @@ void draw_continue_scene(void)
         else
             f1 = 1.0f;
 
-        u_nl2ngc_set_post_mult_color(f1, f1, f1);
+        nl2ngc_set_material_color(f1, f1, f1);
         mathutil_mtxA_from_mtxB();
         sp5C.x = currentBallStructPtr->pos.x;
         sp5C.y = currentBallStructPtr->pos.y - currentBallStructPtr->currRadius + 0.01;
@@ -759,7 +759,7 @@ void draw_continue_scene(void)
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         u_nl2ngc_set_scale(MAX(f26, f27));
         u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
-        u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+        nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
@@ -794,7 +794,7 @@ void draw_continue_scene(void)
             f26 = mathutil_sin(r30);
             f27 = mathutil_cos(r30);
 
-            u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+            nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             sp20.x = 3.5 * f26;
             sp20.y = 4.6f;
             sp20.z = 3.5 * f27;
@@ -809,7 +809,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             u_nl2ngc_set_scale(4.6f);
             u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
-            u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+            nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
             sp8.y = sp14.y - sp20.y;
@@ -1211,7 +1211,7 @@ void draw_timer_bomb_fuse(void)
     if (!(gamePauseStatus & 0xA))
         lbl_801EEC90.unk54 += lbl_801EEC90.unk58;
 
-    u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+    nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
     avdisp_set_post_mult_color(1.0f, t, 0.0f, 1.0f);
     mathutil_mtxA_from_translate_xyz(0.0f, (1.0 - t) - 0.5, 0.0f);
     avdisp_set_custom_tex_mtx(0, mathutilData->mtxA);
@@ -1359,7 +1359,7 @@ void func_8000E1A4(float a)
     {
     case SMD_GAME_CONTINUE_INIT:
     case SMD_GAME_CONTINUE_MAIN:
-        u_nl2ngc_set_post_mult_color(0.8f, 0.8f, 0.8f);
+        nl2ngc_set_material_color(0.8f, 0.8f, 0.8f);
         avdisp_set_post_mult_color(0.8f, 0.8f, 0.8f, a);
         break;
     case SMD_GAME_OVER_INIT:
@@ -1367,24 +1367,24 @@ void func_8000E1A4(float a)
     case SMD_GAME_NAMEENTRY_READY_INIT:
         if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
-            u_nl2ngc_set_post_mult_color(0.8f, 0.8f, 0.8f);
+            nl2ngc_set_material_color(0.8f, 0.8f, 0.8f);
             avdisp_set_post_mult_color(0.8f, 0.8f, 0.8f, a);
         }
         else
         {
-            u_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+            nl2ngc_set_material_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
             avdisp_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
     default:
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
-            u_nl2ngc_set_post_mult_color(1.0f, 1.0f, 1.0f);
+            nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, a);
         }
         else
         {
-            u_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+            nl2ngc_set_material_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
             avdisp_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, a);
         }
         break;
@@ -1413,12 +1413,12 @@ void func_8000E338(int a)
         f5 = 1.0f;
         break;
     }
-    u_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4 * f3, lbl_801EEC80.unk8 * f4, lbl_801EEC80.unkC * f5);
+    nl2ngc_set_material_color(lbl_801EEC80.unk4 * f3, lbl_801EEC80.unk8 * f4, lbl_801EEC80.unkC * f5);
 }
 
 void u_reset_post_mult_color(void)
 {
-    u_nl2ngc_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
+    nl2ngc_set_material_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC);
     avdisp_set_post_mult_color(lbl_801EEC80.unk4, lbl_801EEC80.unk8, lbl_801EEC80.unkC, 1.0f);
 }
 

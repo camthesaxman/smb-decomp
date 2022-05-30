@@ -194,12 +194,12 @@ void gxutil_set_line_width(int width)
     lineInfo.lineWidth = width;
 }
 
-void u_gxutil_set_some_line_params(int a, int b, int c, int d)
+void gxutil_set_line_blend_params(GXBlendMode mode, GXBlendFactor srcFactor, GXBlendFactor dstFactor, GXLogicOp logicOp)
 {
-    lineInfo.blendMode = a;
-    lineInfo.blendSrcFactor = b;
-    lineInfo.blendDstFactor = c;
-    lineInfo.blendLogicOp = d;
+    lineInfo.blendMode = mode;
+    lineInfo.blendSrcFactor = srcFactor;
+    lineInfo.blendDstFactor = dstFactor;
+    lineInfo.blendLogicOp = logicOp;
 }
 
 void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)

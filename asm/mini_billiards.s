@@ -16656,7 +16656,7 @@ lbl_0000F44C:
 /* 0000F4B8 3AA30000 */ addi r21, r3, naomiCommonObj@l
 /* 0000F4BC 80750000 */ lwz r3, 0(r21)
 /* 0000F4C0 806300A8 */ lwz r3, 0xa8(r3)
-/* 0000F4C4 4BFF0C71 */ bl nl2ngc_draw_model_sorted
+/* 0000F4C4 4BFF0C71 */ bl u_nl2ngc_draw_model_sort_translucent
 /* 0000F4C8 C03F37B8 */ lfs f1, 0x37b8(r31)
 /* 0000F4CC 4BFF0C69 */ bl nl2ngc_set_line_width
 /* 0000F4D0 C01F3778 */ lfs f0, 0x3778(r31)
@@ -16739,7 +16739,7 @@ lbl_0000F4FC:
 /* 0000F600 4BFF0B35 */ bl nl2ngc_draw_line
 /* 0000F604 80750000 */ lwz r3, 0(r21)
 /* 0000F608 806300A8 */ lwz r3, 0xa8(r3)
-/* 0000F60C 4BFF0B29 */ bl nl2ngc_draw_model_sorted
+/* 0000F60C 4BFF0B29 */ bl u_nl2ngc_draw_model_sort_translucent
 /* 0000F610 3A100001 */ addi r16, r16, 1
 /* 0000F614 2C100034 */ cmpwi r16, 0x34
 /* 0000F618 39EF0028 */ addi r15, r15, 0x28
@@ -16858,9 +16858,9 @@ lbl_0000F77C:
 /* 0000F7B4 C03F37BC */ lfs f1, 0x37bc(r31)
 /* 0000F7B8 4BFF097D */ bl mathutil_mtxA_scale_s
 /* 0000F7BC 7FE3FB78 */ mr r3, r31
-/* 0000F7C0 4BFF0975 */ bl u_draw_naomi_model_3
+/* 0000F7C0 4BFF0975 */ bl u_draw_opaque_model
 /* 0000F7C4 387F1AA8 */ addi r3, r31, 0x1aa8
-/* 0000F7C8 4BFF096D */ bl u_draw_naomi_model_3
+/* 0000F7C8 4BFF096D */ bl u_draw_opaque_model
 /* 0000F7CC 48000064 */ b lbl_0000F830
 lbl_0000F7D0:
 /* 0000F7D0 806F0000 */ lwz r3, 0(r15)

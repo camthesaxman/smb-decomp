@@ -12370,7 +12370,7 @@ lbl_0000B624:
 /* 0000B6E0 38800002 */ li r4, 2
 /* 0000B6E4 38A00001 */ li r5, 1
 /* 0000B6E8 38C0000F */ li r6, 0xf
-/* 0000B6EC 4BFF4A61 */ bl u_gxutil_set_some_line_params
+/* 0000B6EC 4BFF4A61 */ bl gxutil_set_line_blend_params
 /* 0000B6F0 3C600000 */ lis r3, gamePauseStatus@ha
 /* 0000B6F4 3BC30000 */ addi r30, r3, gamePauseStatus@l
 /* 0000B6F8 3B800000 */ li r28, 0

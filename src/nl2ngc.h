@@ -46,6 +46,12 @@ enum
     NAOMI_DLIST_FLAG_TRIANGLESTRIP = 1 << 4,
 };
 
+enum
+{
+    NAOMI_MODEL_FLAG_TRANSLUCENT = 1 << 8,
+    NAOMI_MODEL_FLAG_OPAQUE = 1 << 9,
+};
+
 struct NaomiMesh
 {
     /*0x00*/ s32 flags;
@@ -121,16 +127,16 @@ struct NaomiArchive
 // ? func_80030AF8();
 // ? nl2ngc_draw_line_deferred();
 void u_nl2ngc_set_scale(float);
-void u_nl2ngc_set_post_mult_color(float r, float g, float b);
+void nl2ngc_set_material_color(float r, float g, float b);
 BOOL load_naomi_archive(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, char *texName);
 BOOL free_naomi_archive(struct NaomiArchive **pobj, struct TPL **ptpl);
 void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
-void nl2ngc_draw_model_sorted(struct NaomiModel *);
+void u_nl2ngc_draw_model_sort_translucent(struct NaomiModel *);
 void nl2ngc_draw_model_unsorted(struct NaomiModel *model);
 void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha);
 void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float b);
-void func_80031764(struct NaomiModel *a);
-void u_call_draw_naomi_model_1(struct NaomiModel *a);
+void u_nl2ngc_draw_model_sort_translucent_alt(struct NaomiModel *a);
+void nl2ngc_draw_model_unsorted_alt(struct NaomiModel *a);
 void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end);
 void u_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end);
 void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *);
@@ -143,7 +149,7 @@ void nl2ngc_set_ambient(float r, float g, float b);
 void func_80033B50(int);
 void func_80033B58(u32 a, float b, float c);
 void u_nl2ngc_set_some_other_color(int r, int g, int b);
-void u_draw_naomi_model_3(struct NaomiModel *);
+void u_draw_opaque_model(struct NaomiModel *);
 void u_draw_naomi_model_4(struct NaomiModel *);
 void u_draw_naomi_model_5(struct NaomiModel *);
 void u_draw_naomi_model_with_mesh_func(struct NaomiModel *a, int (*func)());

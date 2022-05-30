@@ -439,7 +439,7 @@ lbl_000006B4:
 /* 000006C4 FC20F090 */ fmr f1, f30
 /* 000006C8 FC40F090 */ fmr f2, f30
 /* 000006CC FC60F090 */ fmr f3, f30
-/* 000006D0 4BFFFA95 */ bl u_nl2ngc_set_post_mult_color
+/* 000006D0 4BFFFA95 */ bl nl2ngc_set_material_color
 /* 000006D4 3C600000 */ lis r3, naomiCommonObj@ha
 /* 000006D8 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 000006DC 80630000 */ lwz r3, 0(r3)
@@ -909,7 +909,7 @@ lbl_00000DD0:
 /* 00000DD4 C03D000C */ lfs f1, 0xc(r29)
 /* 00000DD8 C05D0070 */ lfs f2, 0x70(r29)
 /* 00000DDC C07D0074 */ lfs f3, 0x74(r29)
-/* 00000DE0 4BFFF385 */ bl u_nl2ngc_set_post_mult_color
+/* 00000DE0 4BFFF385 */ bl nl2ngc_set_material_color
 /* 00000DE4 4BFFF381 */ bl mathutil_mtxA_push
 /* 00000DE8 A81F0076 */ lha r0, 0x76(r31)
 /* 00000DEC 54032036 */ slwi r3, r0, 4
@@ -10530,14 +10530,14 @@ lbl_00009ED0:
 /* 00009F20 C03F0018 */ lfs f1, 0x18(r31)
 /* 00009F24 C05F001C */ lfs f2, 0x1c(r31)
 /* 00009F28 C07F0020 */ lfs f3, 0x20(r31)
-/* 00009F2C 4BFF6239 */ bl u_nl2ngc_set_post_mult_color
+/* 00009F2C 4BFF6239 */ bl nl2ngc_set_material_color
 /* 00009F30 C03F0024 */ lfs f1, 0x24(r31)
 /* 00009F34 4BFF6231 */ bl u_nl2ngc_set_scale
 /* 00009F38 3C600000 */ lis r3, naomiCommonObj@ha
 /* 00009F3C 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00009F40 80630000 */ lwz r3, 0(r3)
 /* 00009F44 806300D8 */ lwz r3, 0xd8(r3)
-/* 00009F48 4BFF621D */ bl nl2ngc_draw_model_sorted
+/* 00009F48 4BFF621D */ bl u_nl2ngc_draw_model_sort_translucent
 /* 00009F4C 4BFF6219 */ bl u_reset_post_mult_color
 lbl_00009F50:
 /* 00009F50 80010024 */ lwz r0, 0x24(r1)
@@ -15769,7 +15769,7 @@ lbl_0000EA74:
 /* 0000EB9C C0210008 */ lfs f1, 8(r1)
 /* 0000EBA0 C041000C */ lfs f2, 0xc(r1)
 /* 0000EBA4 C0610010 */ lfs f3, 0x10(r1)
-/* 0000EBA8 4BFF15BD */ bl u_nl2ngc_set_post_mult_color
+/* 0000EBA8 4BFF15BD */ bl nl2ngc_set_material_color
 /* 0000EBAC FC20F890 */ fmr f1, f31
 /* 0000EBB0 4BFF15B5 */ bl u_nl2ngc_set_scale
 /* 0000EBB4 7F43D378 */ mr r3, r26
