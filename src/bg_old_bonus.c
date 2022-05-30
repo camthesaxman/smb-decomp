@@ -29,7 +29,7 @@ void bg_old_bonus_init(void)
     sp8.unk30 = (void *)NLOBJ_MODEL(naomiBackgroundObj, 1);
     sp8.unk10 = 0;
     r28 = strlen("obj_STARPOINT_");
-    r29 = naomiBackgroundObj->modelPtrs;
+    r29 = naomiBackgroundObj->models;
     while (*r29 != NULL)
     {
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)

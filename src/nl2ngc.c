@@ -59,7 +59,7 @@ struct
     float unk1C;
 } lbl_801B7978 = { { 1.0f, 1.0f, 1.0f }, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-static BOOL adjust_pointers(struct NaomiObj *obj);
+static BOOL adjust_pointers(struct NaomiArchive *obj);
 static void init_model_flags(struct NaomiModel *model);
 static void prep_some_stuff_before_drawing(void);
 static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh);
@@ -112,7 +112,7 @@ void u_nl2ngc_set_post_mult_color(float r, float g, float b)
     lbl_801B7978.unk0.b = b;
 }
 
-BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName)
+BOOL load_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, char *texName)
 {
     int len;
     struct NaomiModel **pmodel;
@@ -180,7 +180,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
     if (*ptpl == NULL)
         return FALSE;
 
-    pmodel = (*pobj)->modelPtrs;
+    pmodel = (*pobj)->models;
     while (*pmodel != NULL)
     {
         u_init_naomi_model_textures(*pmodel, *ptpl);
@@ -189,7 +189,7 @@ BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char
     return TRUE;
 }
 
-BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl)
+BOOL free_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl)
 {
     u8 unused[8];
 
@@ -208,9 +208,9 @@ BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl)
 
 // This function converts file all file offsets in the struct into memory pointers
 // Featuring some insane pointer arithmetic.
-static BOOL adjust_pointers(struct NaomiObj *obj)
+static BOOL adjust_pointers(struct NaomiArchive *obj)
 {
-    struct NaomiModel *volatile *pmodel = obj->modelPtrs;
+    struct NaomiModel *volatile *pmodel = obj->models;
     struct NaomiObj_UnkChild *volatile *unkptr;
     struct NaomiObj_UnkChild_Child *unkchild;
 
@@ -267,9 +267,9 @@ static void init_model_flags(struct NaomiModel *model)
         BOOL r8 = TRUE;
         BOOL r9 = TRUE;
 
-        while (mesh->unk0 != 0)
+        while (mesh->flags != 0)
         {
-            if (((mesh->unk0 >> 24) & 7) != 0)
+            if (((mesh->flags >> 24) & 7) != 0)
             {
                 r6 = TRUE;
                 if (r8 && (mesh->type != -1 || mesh->type != -3))
@@ -302,7 +302,7 @@ void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
     {
         struct NaomiMesh *mesh = (struct NaomiMesh *)model->meshStart;
 
-        while (mesh->unk0 != 0)
+        while (mesh->flags != 0)
         {
             if (mesh->unk20 >= 0)
             {
@@ -479,7 +479,7 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
         mesh = (struct NaomiMesh *)model->meshStart;
-        while (mesh->unk0 != 0)
+        while (mesh->flags != 0)
         {
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next;
@@ -606,7 +606,7 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
         mesh = (struct NaomiMesh *)model->meshStart;
-        while (mesh->unk0 != 0)
+        while (mesh->flags != 0)
         {
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next;
@@ -736,7 +736,7 @@ static void do_some_stuff_with_mesh_colors(struct NaomiMesh *pmesh)
     u32 r26;
     u32 r27;
 
-    switch ((mesh.unk0 >> 24) & 7)
+    switch ((mesh.flags >> 24) & 7)
     {
     case 0:
         if (lbl_80205DAC.unk4 != 0)
@@ -1207,7 +1207,7 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
     u32 r26;
     u32 r27;
 
-    switch ((mesh.unk0 >> 24) & 7)
+    switch ((mesh.flags >> 24) & 7)
     {
     case 0:
         if (lbl_80205DAC.unk4 != 0)
@@ -1542,14 +1542,14 @@ void u_draw_naomi_model_3(struct NaomiModel *model)
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
     mesh = (struct NaomiMesh *)model->meshStart;
-    while (mesh->unk0 != 0)
+    while (mesh->flags != 0)
     {
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
         do_some_stuff_with_mesh_colors(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
-        if (((mesh->unk0 >> 24) & 7) != 0)
+        if (((mesh->flags >> 24) & 7) != 0)
             mesh = next;
         else
         {
@@ -1624,14 +1624,14 @@ void u_draw_naomi_model_4(struct NaomiModel *model)
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
     mesh = (struct NaomiMesh *)model->meshStart;
-    while (mesh->unk0 != 0)
+    while (mesh->flags != 0)
     {
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
         do_some_stuff_with_mesh_colors(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
-        if (((mesh->unk0 >> 24) & 7) == 0)
+        if (((mesh->flags >> 24) & 7) == 0)
             mesh = next;
         else
         {
@@ -1710,7 +1710,7 @@ void u_draw_naomi_model_5(struct NaomiModel *model)
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
     mesh = (struct NaomiMesh *)model->meshStart;
-    while (mesh->unk0 != 0)
+    while (mesh->flags != 0)
     {
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
@@ -1773,7 +1773,7 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         lbl_80205DAC.alpha = 1.0f;
 
         mesh = (struct NaomiMesh *)model->meshStart;
-        while (mesh->unk0 != 0)
+        while (mesh->flags != 0)
         {
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next = (void *)(mesh->dispListStart + mesh->dispListSize);

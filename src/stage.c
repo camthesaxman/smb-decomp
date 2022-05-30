@@ -711,7 +711,7 @@ FORCE_BSS_ORDER(lbl_80209488)
 FORCE_BSS_ORDER(lbl_802095A8)
 FORCE_BSS_ORDER(lbl_802099E8)
 
-static struct NaomiObj **naomiObjList[] = {&naomiStageObj, &naomiCommonObj, NULL};
+static struct NaomiArchive **naomiObjList[] = {&naomiStageObj, &naomiCommonObj, NULL};
 
 void func_80044E18_inline(struct Struct8020A348 *r7)
 {
@@ -742,11 +742,11 @@ void func_80044E18(void)
     int r19;
     struct NaomiModel *model1;
     struct NaomiModel **r17;
-    struct NaomiObj ***objIter;
+    struct NaomiArchive ***objIter;
     struct Struct80209D48 *r17_;
     int r30_;
     struct AnimGroupModel *r18_;
-    struct NaomiModel **modelPtrs;
+    struct NaomiModel **models;
     struct NaomiModel *model2;
     struct NaomiModel **r30;
     struct NaomiModel **r29;
@@ -780,12 +780,12 @@ void func_80044E18(void)
             {
                 if (**objIter != NULL)
                 {
-                    modelPtrs = (**objIter)->modelPtrs;
-                    for (j = 0; modelPtrs[j] != NULL; j++)
+                    models = (**objIter)->models;
+                    for (j = 0; models[j] != NULL; j++)
                     {
-                        if (strcmp(*nameIter, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0->name)) == 0)
+                        if (strcmp(*nameIter, (void *)(NLMODEL_HEADER(models[j])->unk0->name)) == 0)
                         {
-                            model1 = modelPtrs[j];
+                            model1 = models[j];
                             break;
                         }
                     }
@@ -798,12 +798,12 @@ void func_80044E18(void)
             {
                 if (**objIter != NULL)
                 {
-                    modelPtrs = (**objIter)->modelPtrs;
-                    for (j = 0; modelPtrs[j] != NULL; j++)
+                    models = (**objIter)->models;
+                    for (j = 0; models[j] != NULL; j++)
                     {
-                        if (strcmp(mapObjName, (void *)(NLMODEL_HEADER(modelPtrs[j])->unk0->name)) == 0)
+                        if (strcmp(mapObjName, (void *)(NLMODEL_HEADER(models[j])->unk0->name)) == 0)
                         {
-                            model2 = modelPtrs[j];
+                            model2 = models[j];
                             break;
                         }
                     }
@@ -852,14 +852,14 @@ void func_80044E18(void)
         {
             if (**objIter != NULL)
             {
-                modelPtrs = (**objIter)->modelPtrs;
-                for (j = 0; modelPtrs[j] != NULL; j++)
+                models = (**objIter)->models;
+                for (j = 0; models[j] != NULL; j++)
                 {
-                    int len = string_match_len((void *)r18_->name, NLMODEL_HEADER(modelPtrs[j])->unk0->name);
+                    int len = string_match_len((void *)r18_->name, NLMODEL_HEADER(models[j])->unk0->name);
                     if (len > r19_)
                     {
                         r19_ = len;
-                        model2 = modelPtrs[j];
+                        model2 = models[j];
                     }
                 }
             }
@@ -1031,25 +1031,25 @@ void u_initialize_stuff_for_dynamic_stage_parts(int stageId)
     {
         int r27;
         struct NaomiModel *model;
-        struct NaomiObj ***objIter;
+        struct NaomiArchive ***objIter;
 
         model = NULL;
         r27 = 0;
         objIter = &naomiObjList[0];
         while (*objIter != NULL)
         {
-            struct NaomiObj *nobj = **objIter;
+            struct NaomiArchive *nobj = **objIter;
             if (nobj != NULL)
             {
-                struct NaomiModel **modelPtrs = nobj->modelPtrs;
-                for (i = 0; modelPtrs[i] != NULL; i++)
+                struct NaomiModel **models = nobj->models;
+                for (i = 0; models[i] != NULL; i++)
                 {
                     int var =
-                        string_match_len(dyn->modelName, NLMODEL_HEADER(modelPtrs[i])->unk0->name);
+                        string_match_len(dyn->modelName, NLMODEL_HEADER(models[i])->unk0->name);
                     if (var > r27)
                     {
                         r27 = var;
-                        model = modelPtrs[i];
+                        model = models[i];
                     }
                 }
                 dyn->origModel = model;
@@ -2366,7 +2366,7 @@ void u_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
     if (model->unk0 == -1)
         return;
     r6 = (void *)model->meshStart;
-    while (r6->unk0 != 0)
+    while (r6->flags != 0)
     {
         struct NaomiMesh *r31 = (void *)(r6->dispListStart + r6->dispListSize);
         switch (r6->type)

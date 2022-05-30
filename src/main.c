@@ -39,11 +39,11 @@ long stageHeapSize;
 long backgroundHeapSize;
 long charaHeapSize;
 
-struct NaomiObj *naomiCommonObj;
-struct NaomiObj *naomiStageObj;
-struct NaomiObj *naomiBackgroundObj;
-struct NaomiObj *lbl_802F1AF8;
-struct NaomiObj *minigameNaomiObj;
+struct NaomiArchive *naomiCommonObj;
+struct NaomiArchive *naomiStageObj;
+struct NaomiArchive *naomiBackgroundObj;
+struct NaomiArchive *lbl_802F1AF8;
+struct NaomiArchive *minigameNaomiObj;
 
 struct TPL *naomiCommonTpl;
 struct TPL *naomiStageTpl;

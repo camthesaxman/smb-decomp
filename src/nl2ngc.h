@@ -5,6 +5,7 @@
 #include <dolphin/mtx.h>
 #include <dolphin/GXStruct.h>
 
+// Lit vertex?
 struct NaomiVtxWithNormal
 {
     /*0x00*/ float x, y, z;
@@ -12,6 +13,7 @@ struct NaomiVtxWithNormal
     /*0x18*/ float s, t;
 };
 
+// Unlit vertex?
 struct NaomiVtxWithColor
 {
     /*0x00*/ float x, y, z;
@@ -30,7 +32,7 @@ struct NaomiDispList
 
 struct NaomiMesh
 {
-    /*0x00*/ s32 unk0;
+    /*0x00*/ s32 flags;
     /*0x04*/ u32 unk4;
     /*0x08*/ u32 unk8;
     /*0x0C*/ GXTexObj *texObj;
@@ -90,21 +92,22 @@ struct NaomiObj_UnkChild
     struct NaomiObj_UnkChild_Child *childStructs;
 };
 
-struct NaomiObj
+// Model container like GMA
+struct NaomiArchive
 {
     struct NaomiObj_UnkChild **unk0;  // points to an array of UnkStruct ptrs
                                       // doesn't seem to be actually used for anything
-    struct NaomiModel *modelPtrs[];  // array of pointers to the models
+    struct NaomiModel *models[];  // array of pointers to the models
 };
 
-#define NLOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
+#define NLOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->models)[index])
 
 // ? func_80030AF8();
 // ? nl2ngc_draw_line_deferred();
 void u_nl2ngc_set_scale(float);
 void u_nl2ngc_set_post_mult_color(float r, float g, float b);
-BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
-BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl);
+BOOL load_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl, char *modelName, char *texName);
+BOOL free_nlobj(struct NaomiArchive **pobj, struct TPL **ptpl);
 void u_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
 void nl2ngc_draw_model_sorted(struct NaomiModel *);
 void nl2ngc_draw_model_unsorted(struct NaomiModel *model);

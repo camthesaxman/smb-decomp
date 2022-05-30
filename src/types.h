@@ -388,7 +388,7 @@ typedef void (*CameraCallback)(struct Camera *, struct Ball *);
 typedef void (*BallCallback)(struct Ball *);
 
 struct NaomiModel;
-struct NaomiObj;
+struct NaomiArchive;
 
 struct Struct80092B98
 {

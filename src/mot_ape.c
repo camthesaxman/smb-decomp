@@ -97,7 +97,7 @@ u8 lbl_802F2094[8];
 int lbl_802F2090;
 u8 lbl_802F208C;
 Mtx **u_animTransformMatrices;
-struct NaomiObj *apeFaceObj;
+struct NaomiArchive *apeFaceObj;
 struct TPL *apeFaceTpl;
 s32 lbl_802F207C;
 float lbl_802F2078;

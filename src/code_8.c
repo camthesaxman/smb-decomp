@@ -32,7 +32,7 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
     r30 = arg1->unk20;
     r29 = arg1->unk24;
     mesh = (struct NaomiMesh *)arg0->meshStart;
-    while (mesh->unk0 != 0)
+    while (mesh->flags != 0)
     {
         next = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         switch (mesh->type)
@@ -46,8 +46,8 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
             u_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800481A0);
             break;
         }
-        mesh->unk0 &= 0xF8FFFFFE;
-        mesh->unk0 |= 0x02000008;
+        mesh->flags &= 0xF8FFFFFE;
+        mesh->flags |= 0x02000008;
         mesh->unk4 &= 0xFFBFFFFF;
         mesh->unk4 |= 0x02000000;
         mesh->unk8 = r30;
@@ -148,7 +148,7 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
     r30 = arg1->unk20;
     r29 = arg1->unk24;
     mesh = (struct NaomiMesh *)arg0->meshStart;
-    while (mesh->unk0 != 0)
+    while (mesh->flags != 0)
     {
         next = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         switch (mesh->type)
@@ -162,8 +162,8 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
             u_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004853C);
             break;
         }
-        mesh->unk0 &= 0xF8FFFFFE;
-        mesh->unk0 |= 0x02000008;
+        mesh->flags &= 0xF8FFFFFE;
+        mesh->flags |= 0x02000008;
         mesh->unk4 &= 0xFFBFFFFF;
         mesh->unk4 |= 0x02000000;
         mesh->unk8 = r30;
