@@ -35,7 +35,7 @@ void bg_old_bonus_init(void)
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
         {
             sp8.unk34 = (*r29)->boundSphereCenter;
-            g_spawn_effect_object(&sp8);
+            u_spawn_effect_object(&sp8);
             sp8.unk10 += 30.0;
         }
         r29++;
@@ -53,7 +53,7 @@ void bg_old_bonus_finish(void) {}
 void bg_old_bonus_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBackgroundObj, 0));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBackgroundObj, 0));
 }
 
 void bg_old_bonus_interact(int a)
@@ -84,7 +84,7 @@ void bg_old_bonus_interact(int a)
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
         mathutil_ray_to_euler_xy(&spC, &sp18.unk34, &sp18.unk4C, &sp18.unk4E);
         sp18.unk50 = rand() & 0x7FFF;
-        g_spawn_effect_object(&sp18);
+        u_spawn_effect_object(&sp18);
         break;
     }
 }

@@ -279,7 +279,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     return 2;
 }
 
-void g_choose_ape_anim(struct Ape *ape, float b)
+void u_choose_ape_anim(struct Ape *ape, float b)
 {
     struct Ball *ball = &ballInfo[ape->ballId];
     float f31 = b;
@@ -315,7 +315,7 @@ void g_choose_ape_anim(struct Ape *ape, float b)
         {
             r29 = 1;
             r27 = 6;
-            g_switch_ape_character_lod_maybe(ape, 0);
+            u_switch_ape_character_lod_maybe(ape, 0);
         }
         else if (ape->flags & (1 << 11))
         {
@@ -398,7 +398,7 @@ void g_choose_ape_anim(struct Ape *ape, float b)
     }
     if (r29 != 1 || gameSubmode == SMD_GAME_READY_MAIN)
         ape->unk54 = 0;
-    g_set_ape_anim(ape, r29, r28, r27, f31);
+    u_set_ape_anim(ape, r29, r28, r27, f31);
 }
 
 void func_8003765C(struct Ape *ape)
@@ -452,7 +452,7 @@ void lbl_8003781C(struct Ape *ape, int b)
     switch (b)
     {
     case 3:
-        g_ape_free(ape);
+        u_ape_free(ape);
         return;
     }
 
@@ -487,8 +487,8 @@ void lbl_8003781C(struct Ape *ape, int b)
 
     func_80036EB8(ape);
     mathutil_mtxA_to_quat(&ape->unk60);
-    g_choose_ape_anim(ape, f31);
-    g_do_ape_anim(ape);
+    u_choose_ape_anim(ape, f31);
+    u_do_ape_anim(ape);
     if (!(ape->flags & (1 << 3)))
         func_8003765C(ape);
     func_8008C090(ape, &r29->unk104);
@@ -563,12 +563,12 @@ void ev_ball_init(void)
 
         currentBallStructPtr = ball;
         ball->playerId = i;
-        g_ball_init_2(ball);
+        u_ball_init_2(ball);
         ball->unk0 = 2;
         ball->state = 0;
         func_8004C754();
         func_8008BA24(1);
-        ape = g_make_ape(playerCharacterSelection[i]);
+        ape = u_make_ape(playerCharacterSelection[i]);
         ball->ape = ape;
         ape->unk74 = 0;
         if (!(advDemoInfo.flags & (1 << 8)) && modeCtrl.unk30 > 1)
@@ -618,17 +618,17 @@ void ev_ball_init(void)
         case GAMETYPE_MINI_FIGHT:
             if (advDemoInfo.flags & (1 << 8))
             {
-                g_switch_ape_character_lod_maybe(ape, 0);
+                u_switch_ape_character_lod_maybe(ape, 0);
                 lbl_802F1F0C |= 1 << (ape->charaId * 2);
             }
             else if (modeCtrl.playerCount > 2)
             {
-                g_switch_ape_character_lod_maybe(ape, 2);
+                u_switch_ape_character_lod_maybe(ape, 2);
                 lbl_802F1F0C |= 1 << (ape->charaId * 2 + 1);
             }
             else
             {
-                g_switch_ape_character_lod_maybe(ape, 1);
+                u_switch_ape_character_lod_maybe(ape, 1);
                 lbl_802F1F0C |= 1 << (ape->charaId * 2);
             }
             break;
@@ -636,20 +636,20 @@ void ev_ball_init(void)
             switch (modeCtrl.playerCount)
             {
             case 1:
-                g_switch_ape_character_lod_maybe(ape, 1);
+                u_switch_ape_character_lod_maybe(ape, 1);
                 lbl_802F1F0C |= 1 << (ape->charaId * 2);
                 break;
             case 2:
             case 3:
             case 4:
             default:
-                g_switch_ape_character_lod_maybe(ape, 2);
+                u_switch_ape_character_lod_maybe(ape, 2);
                 lbl_802F1F0C |= 1 << (ape->charaId * 2 + 1);
                 break;
             }
             break;
         default:
-            g_switch_ape_character_lod_maybe(ape, 0);
+            u_switch_ape_character_lod_maybe(ape, 0);
             lbl_802F1F0C |= 1 << (ape->charaId * 2);
             break;
         }
@@ -670,13 +670,13 @@ void ev_ball_init(void)
 
 struct Ape *func_800380A8(int a, int character, void (*c)(struct Ape *, int))
 {
-    struct Ape *ape = g_make_ape(character);
+    struct Ape *ape = u_make_ape(character);
 
     ape->unk74 = 0;
     mathutil_mtxA_from_identity();
     mathutil_mtxA_rotate_y(0x8000);
     lbl_80206B80[a] = func_8008D1DC(c, ape, 5);
-    g_switch_ape_character_lod_maybe(ape, 0);
+    u_switch_ape_character_lod_maybe(ape, 0);
     mathutil_mtxA_to_quat(&ape->unk60);
     lbl_802F1F08 = 0;
     return ape;
@@ -1125,15 +1125,15 @@ void ball_draw(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_mult_right(ball->unk30);
         mathutil_mtxA_scale_s(ball->modelScale);
-        g_nl2ngc_set_scale(ball->modelScale);
+        u_nl2ngc_set_scale(ball->modelScale);
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            g_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
+            u_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
         }
         else
         {
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId));
         }
 
         if (func != NULL)
@@ -1143,7 +1143,7 @@ void ball_draw(void)
             if (func(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
-                g_call_draw_naomi_model_1(lbl_802F1B4C);
+                u_call_draw_naomi_model_1(lbl_802F1B4C);
             }
             else
                 mathutil_mtxA_pop();
@@ -1152,17 +1152,17 @@ void ball_draw(void)
         envFunc = backgroundInfo.ballEnvFunc;
         if (envFunc != NULL)
         {
-            g_avdisp_set_some_func_1(envFunc);
-            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_avdisp_set_some_func_1(envFunc);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
-            g_avdisp_set_some_func_1(NULL);
+            u_avdisp_set_some_func_1(NULL);
         }
 
         mathutil_mtxA_push();
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
-        g_nl2ngc_set_scale(ball->modelScale);
-        g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
+        u_nl2ngc_set_scale(ball->modelScale);
+        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 
         func_8000E3BC();
@@ -1172,7 +1172,7 @@ void ball_draw(void)
 u8 lbl_801B7EC0[] = {1, 0, 0, 0};  // + 0x348
 GXTexObj lbl_801B7EC4 = {0};  // + 0x34C
 
-void g_ball_shadow_something_1(void)
+void u_ball_shadow_something_1(void)
 {
     struct Struct80092B98 sp18;
     Vec spC;
@@ -1187,7 +1187,7 @@ void g_ball_shadow_something_1(void)
     r29 = advDemoInfo.flags & (1 << 8);
     if (r29 != 0 && (advDemoInfo.flags & (1 << 11)))
     {
-        g_ball_shadow_something_2();
+        u_ball_shadow_something_2();
         return;
     }
 
@@ -1198,7 +1198,7 @@ void g_ball_shadow_something_1(void)
         {
             if (modeCtrl.playerCount > 3)
             {
-                g_ball_shadow_something_2();
+                u_ball_shadow_something_2();
                 return;
             }
         }
@@ -1208,7 +1208,7 @@ void g_ball_shadow_something_1(void)
     default:
         if (modeCtrl.unk30 > 2)
         {
-            g_ball_shadow_something_2();
+            u_ball_shadow_something_2();
             return;
         }
         break;
@@ -1283,11 +1283,11 @@ void g_ball_shadow_something_1(void)
                 break;
             }
         }
-        g_init_shadow_stuff_probably(&sp18);
+        u_init_shadow_stuff_probably(&sp18);
     }
 }
 
-void g_ball_shadow_something_2(void)
+void u_ball_shadow_something_2(void)
 {
     struct Struct8009492C sp30;
     struct RaycastHit hit;
@@ -1345,7 +1345,7 @@ void give_bananas(int bananas)
             ball->lives++;
             ball->bananas -= 100;
             hud_show_1up_banner(0x78);
-            g_play_sound(0x2852);  // play 1-up sound?
+            u_play_sound(0x2852);  // play 1-up sound?
         }
         break;
     case GAMETYPE_MAIN_COMPETITION:
@@ -1493,7 +1493,7 @@ void unref_func_800393F8(struct Ball *ball)
 
 #pragma force_active off
 
-void g_ball_init_1(struct Ball *ball)
+void u_ball_init_1(struct Ball *ball)
 {
     struct Ball backup;
 
@@ -1525,7 +1525,7 @@ void g_ball_init_1(struct Ball *ball)
     ball->unk128 = 0;
 }
 
-void g_ball_init_2(struct Ball *ball)
+void u_ball_init_2(struct Ball *ball)
 {
     struct Ball backup;
 
@@ -1585,13 +1585,13 @@ void ball_func_0(struct Ball *ball)
 
 void ball_func_1(struct Ball *ball)
 {
-    g_ball_init_1(ball);
+    u_ball_init_1(ball);
     ball_func_ready_main(ball);
 }
 
 void ball_func_ready_main(struct Ball *ball)
 {
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     ball->pos.x = decodedStageLzPtr->startPos->pos.x;
     ball->pos.y = decodedStageLzPtr->startPos->pos.y + ((ball->accel * 24.0) * 24.0) * 0.5;
@@ -1647,7 +1647,7 @@ void ball_func_3(struct Ball *ball)
     ball->flags |= BALL_FLAG_14;
     if (ball->ape != NULL)
         ball->ape->flags &= ~(1 << 5);
-    g_play_sound(0x1E);
+    u_play_sound(0x1E);
     ball->state = 4;
     ball->unkC4 = 0.0f;
     ball->unkF8 = 0.0f;
@@ -1690,7 +1690,7 @@ void ball_func_goal_main(struct Ball *ball)
     {
         ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
         ball->flags |= BALL_FLAG_09;
-        g_play_sound(0x126);
+        u_play_sound(0x126);
     }
 
     handle_ball_linear_kinematics(ball, &physBall, 1);
@@ -1788,7 +1788,7 @@ void ball_func_replay_main(struct Ball *ball)
 
 void ball_func_11(struct Ball *ball)
 {
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     ball->pos.x = decodedStageLzPtr->startPos->pos.x;
     ball->pos.y = decodedStageLzPtr->startPos->pos.y;
@@ -1824,7 +1824,7 @@ void ball_func_12(struct Ball *ball) {}
 
 void ball_func_13(struct Ball *ball)
 {
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     ball->pos.x = decodedStageLzPtr->startPos->pos.x;
     ball->pos.y = decodedStageLzPtr->startPos->pos.y + 10.0;
@@ -1864,7 +1864,7 @@ void ball_func_15(struct Ball *ball)
 {
     Vec sp28;
 
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     ball->pos.x = decodedStageLzPtr->startPos->pos.x;
     ball->pos.y = decodedStageLzPtr->startPos->pos.y + 10.0;
@@ -1934,7 +1934,7 @@ void ball_func_17(struct Ball *ball)
 
 void ball_func_16(struct Ball *ball)
 {
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     if (modeCtrl.submodeTimer == 0x111C)
     {
@@ -1977,7 +1977,7 @@ void ball_func_16(struct Ball *ball)
 
 void ball_func_18(struct Ball *ball)
 {
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     ball->pos.y = ball->prevPos.y = ball->currRadius;
 
@@ -2012,8 +2012,8 @@ void ball_func_19(struct Ball *ball)
     ball->unk124 = 60;
     worldInfo[ball->playerId].unk20 = 0x5A;
     cameraInfo[ball->playerId].state = 4;
-    g_play_sound(ball->lives == 1 ? 0x51 : 0x1D);
-    g_play_sound(0x15);
+    u_play_sound(ball->lives == 1 ? 0x51 : 0x1D);
+    u_play_sound(0x15);
     ball->state = 20;
 }
 
@@ -2063,7 +2063,7 @@ void lbl_8000F790(struct Ape *, int);
 
 void ball_func_demo_init(struct Ball *ball)
 {
-    g_ball_init_2(ball);
+    u_ball_init_2(ball);
 
     ball->colorId = 3;
 
@@ -2196,7 +2196,7 @@ void ball_func_27(struct Ball *ball)
     {
         ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
         ball->flags |= BALL_FLAG_09;
-        g_play_sound(0x126);
+        u_play_sound(0x126);
     }
 
     func_8003B0F4_inline(ball);
@@ -2210,7 +2210,7 @@ void ball_func_28(struct Ball *ball)
     {
         ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
         ball->flags |= BALL_FLAG_09;
-        g_play_sound(0x126);
+        u_play_sound(0x126);
     }
 
     handle_ball_linear_kinematics_ignore_collision(ball, &physBall, 1);
@@ -2686,7 +2686,7 @@ void func_8003C550(struct Ball *ball)
     sp30.unk34 = spC;
     sp30.unk88 = sp24;
     sp30.unkA8 = ball->unk130;
-    g_spawn_effect_object(&sp30);
+    u_spawn_effect_object(&sp30);
 
     memset(&sp30, 0, sizeof(sp30));
 
@@ -2705,7 +2705,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        g_spawn_effect_object(&sp30);
+        u_spawn_effect_object(&sp30);
     }
     r30 -= r30 >> 1;
 
@@ -2729,7 +2729,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        g_spawn_effect_object(&sp30);
+        u_spawn_effect_object(&sp30);
     }
 }
 
@@ -2834,7 +2834,7 @@ void func_8003CCB0(void)
         sp8.unk8 = 10;
         sp8.unk14 = ball->playerId;
         sp8.unk34 = ball->pos;
-        g_spawn_effect_object(&sp8);
+        u_spawn_effect_object(&sp8);
     }
 }
 
@@ -2853,7 +2853,7 @@ static inline void func_8003CDC0_sub(struct Ball *ball)
         lbl_80206BE0[ball->playerId] = 0;
 
     if ((lbl_80206BE0[ball->playerId] % 30) == 1)
-        g_play_sound(lbl_801179D4[(rand() >> 12) & 7]);
+        u_play_sound(lbl_801179D4[(rand() >> 12) & 7]);
 }
 
 void func_8003CDC0(struct Ball *ball)
@@ -2898,22 +2898,22 @@ void func_8003CDC0(struct Ball *ball)
     {
         float f1 = (lbl_80205E20[ball->playerId] * 216000.0) / 1000.0;
         if (f1 >= 35.0f)
-            g_play_sound(0x1A);
+            u_play_sound(0x1A);
         else if (f1 >= 20.0f)
-            g_play_sound(0x18);
+            u_play_sound(0x18);
         else
-            g_play_sound(0x17);
+            u_play_sound(0x17);
     }
     if (ball->flags & BALL_FLAG_27)
-        g_play_sound(0x69);
+        u_play_sound(0x69);
     else if (ball->flags & BALL_FLAG_28)
-        g_play_sound(0x2F);
+        u_play_sound(0x2F);
     else if (ball->flags & BALL_FLAG_29)
-        g_play_sound(0x14);
+        u_play_sound(0x14);
     else if (ball->flags & BALL_FLAG_30)
-        g_play_sound(0x13);
+        u_play_sound(0x13);
     else if (ball->flags & BALL_FLAG_31)
-        g_play_sound(0x12);
+        u_play_sound(0x12);
 
     if (gameSubmode == SMD_GAME_ROLL_MAIN)
         return;
@@ -3005,7 +3005,7 @@ void func_8003D3C4(struct Ball *ball)
             sp18.unk40.y = (spC.y + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.y;
             sp18.unk40.z = (spC.z + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.z;
 
-            g_spawn_effect_object(&sp18);
+            u_spawn_effect_object(&sp18);
         }
     }
 }
@@ -3100,7 +3100,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(ball->unk30);
     mathutil_mtxA_scale_s(ball->modelScale);
-    g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+    u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
 
     draw_ball_hemispheres(ball, node->ballId);
 
@@ -3113,7 +3113,7 @@ void ball_draw_callback(struct BallDrawNode *node)
             mathutil_mtxA_pop();
             mathutil_mtxA_push();
             mathutil_mtxA_scale_s(1.01f);
-            g_call_draw_naomi_model_1(lbl_802F1B4C);
+            u_call_draw_naomi_model_1(lbl_802F1B4C);
             mathutil_mtxA_pop();
         }
         else
@@ -3123,9 +3123,9 @@ void ball_draw_callback(struct BallDrawNode *node)
     envFunc = backgroundInfo.ballEnvFunc;
     if (envFunc != NULL)
     {
-        g_avdisp_set_some_func_1(envFunc);
-        g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+        u_avdisp_set_some_func_1(envFunc);
+        u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
         avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
-        g_avdisp_set_some_func_1(NULL);
+        u_avdisp_set_some_func_1(NULL);
     }
 }

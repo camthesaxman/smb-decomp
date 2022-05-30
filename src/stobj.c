@@ -35,7 +35,7 @@ void ev_stobj_init(void)
     find_jamabar_and_bumper_models();
     spawn_bumpers(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
     spawn_jamabars(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
-    g_spawn_goal_stobjs(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
+    u_spawn_goal_stobjs(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
 }
 
 #pragma force_active on
@@ -202,7 +202,7 @@ void ev_stobj_main(void)
             }
             else
             {
-                stobj->unk7C = stobj->g_some_pos;
+                stobj->unk7C = stobj->u_some_pos;
                 stobj->unk88 = stobj->rotX;
                 stobj->unk8A = stobj->rotY;
                 stobj->unk8C = stobj->rotZ;
@@ -216,10 +216,10 @@ void ev_stobj_main(void)
                     if (stobj->animGroupId != 0)
                     {
                         mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
-                        mathutil_mtxA_translate(&stobj->g_some_pos);
+                        mathutil_mtxA_translate(&stobj->u_some_pos);
                     }
                     else
-                        mathutil_mtxA_from_translate(&stobj->g_some_pos);
+                        mathutil_mtxA_from_translate(&stobj->u_some_pos);
                     if (stobj->unk8 & 0x10)
                     {
                         mathutil_mtxA_rotate_y(stobj->rotY);
@@ -269,7 +269,7 @@ void stobj_draw(void)
 
     func = backgroundInfo.unk8C;
     if (func != 0)
-        g_avdisp_set_some_func_1(func);
+        u_avdisp_set_some_func_1(func);
     mathutil_mtx_copy(mathutilData->mtxB, mtx);
 
     phi_r29 = spritePoolInfo.unk2C;
@@ -291,7 +291,7 @@ void stobj_draw(void)
     }
     mathutil_mtx_copy(mtx, mathutilData->mtxB);
     if (func != NULL)
-        g_avdisp_set_some_func_1(NULL);
+        u_avdisp_set_some_func_1(NULL);
 }
 
 s16 spawn_stobj(struct Stobj *arg0)
@@ -307,7 +307,7 @@ s16 spawn_stobj(struct Stobj *arg0)
     memcpy(temp_r31, arg0, sizeof(*temp_r31));
     temp_r31->id = temp_r3;
     stobjInitFuncs[temp_r31->type](temp_r31);
-    temp_r31->unk7C = temp_r31->g_some_pos;
+    temp_r31->unk7C = temp_r31->u_some_pos;
     func_8006B518(temp_r31);
     temp_r31->position_2 = temp_r31->position;
     temp_r31->coliFunc = stobjCollisionFuncs[temp_r31->type];
@@ -373,7 +373,7 @@ void func_8006B3E8(s32 arg0, struct StobjFuncs *arg1)
 
 void func_8006B518(struct Stobj *stobj)
 {
-    mathutil_mtxA_from_translate(&stobj->g_some_pos);
+    mathutil_mtxA_from_translate(&stobj->u_some_pos);
     if (stobj->unk8 & 0x10)
     {
         mathutil_mtxA_rotate_y(stobj->rotY);
@@ -386,7 +386,7 @@ void func_8006B518(struct Stobj *stobj)
         mathutil_mtxA_rotate_y(stobj->rotY);
         mathutil_mtxA_rotate_x(stobj->rotX);
     }
-    mathutil_mtxA_tf_point(&stobj->g_model_origin, &stobj->position);
+    mathutil_mtxA_tf_point(&stobj->u_model_origin, &stobj->position);
 }
 
 char lbl_802F0B40[2] = "\n";
@@ -556,7 +556,7 @@ void spawn_bumpers(struct StageAnimGroup *arg0, int arg1)
 
         for (j = 0; j < arg0->bumperCount; j++, bumper++)
         {
-            stobj.g_some_pos = bumper->pos;
+            stobj.u_some_pos = bumper->pos;
             stobj.rotX = bumper->rotX;
             stobj.rotY = bumper->rotY;
             stobj.rotZ = bumper->rotZ;
@@ -598,13 +598,13 @@ void stobj_bumper_init(struct Stobj *stobj)
     stobj->unk8 |= 0xA;
     stobj->model = lbl_8028C0B0.unk14[0];
     stobj->boundSphereRadius = 0.75f * stobj->model->boundSphereRadius;
-    stobj->g_model_origin = stobj->model->boundSphereCenter;
+    stobj->u_model_origin = stobj->model->boundSphereCenter;
     stobj->unk48 = 1.0f;
     stobj->unk4C = 1.0f;
     stobj->unk50 = 1.0f;
     stobj->unk76 = 0;
     stobj->unk9C = 0.75f;
-    stobj->unk90 = stobj->g_model_origin;
+    stobj->unk90 = stobj->u_model_origin;
 }
 
 void stobj_bumper_main(struct Stobj *stobj)
@@ -645,7 +645,7 @@ void stobj_bumper_draw(struct Stobj *stobj)
     float radius;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&stobj->g_some_pos);
+    mathutil_mtxA_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -660,7 +660,7 @@ void stobj_bumper_draw(struct Stobj *stobj)
 
     model = stobj->model;
     radius = model->boundSphereRadius;
-    if (g_test_scaled_sphere_in_frustum(&model->boundSphereCenter, radius, spC.x) != 0)
+    if (u_test_scaled_sphere_in_frustum(&model->boundSphereCenter, radius, spC.x) != 0)
     {
         float temp_f1;
         int temp_r0;
@@ -683,9 +683,9 @@ void stobj_bumper_draw(struct Stobj *stobj)
             avdisp_draw_model_unculled_sort_translucent(model);
         else
         {
-            BallEnvFunc temp_r31 = g_avdisp_set_some_func_1(NULL);
+            BallEnvFunc temp_r31 = u_avdisp_set_some_func_1(NULL);
             avdisp_draw_model_unculled_sort_translucent(model);
-            g_avdisp_set_some_func_1(temp_r31);
+            u_avdisp_set_some_func_1(temp_r31);
         }
     }
     if (stobj->unk48 > 1.0f)
@@ -694,7 +694,7 @@ void stobj_bumper_draw(struct Stobj *stobj)
         float phi_f30;
 
         mathutil_mtxA_from_mtxB();
-        mathutil_mtxA_translate_xyz(stobj->g_some_pos.x, 0.05f + stobj->g_some_pos.y, stobj->g_some_pos.z);
+        mathutil_mtxA_translate_xyz(stobj->u_some_pos.x, 0.05f + stobj->u_some_pos.y, stobj->u_some_pos.z);
         mathutil_mtxA_rotate_z(stobj->rotZ);
         mathutil_mtxA_rotate_y(stobj->rotY);
         mathutil_mtxA_rotate_x(stobj->rotX - 0x4000);
@@ -703,7 +703,7 @@ void stobj_bumper_draw(struct Stobj *stobj)
         if (phi_f30 > 1.0f)
             phi_f30 = 1.0f;
         mathutil_mtxA_scale_s(temp_f31_2);
-        g_nl2ngc_set_scale(temp_f31_2);
+        u_nl2ngc_set_scale(temp_f31_2);
         func_80030BB8(phi_f30, phi_f30, phi_f30);
         nl2ngc_draw_model_unsorted(naomiCommonObj->modelPtrs[0x2B]);
         func_8000E3BC();
@@ -745,7 +745,7 @@ void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
     arg1->pos.x = stobj->position.x + sp24.x;
     arg1->pos.y = stobj->position.y + sp24.y;
     arg1->pos.z = stobj->position.z + sp24.z;
-    g_play_sound(0x5011);
+    u_play_sound(0x5011);
     temp_r31->flags |= 0x20;
 
     {
@@ -759,7 +759,7 @@ void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
         u8 dummy[4];
 
         lbl_802F1DFC = temp_r31->ape->charaId;
-        g_play_sound(sp14[unpausedFrameCounter & 7]);
+        u_play_sound(sp14[unpausedFrameCounter & 7]);
         phi_r4 = 1;
         if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
         {
@@ -781,13 +781,13 @@ void stobj_bumper_bgspecial_init(struct Stobj *arg0)
     arg0->unk8 |= 0xA;
     arg0->model = lbl_8028C0B0.unk14[0];
     arg0->boundSphereRadius = 0.75f * arg0->model->boundSphereRadius;
-    arg0->g_model_origin = arg0->model->boundSphereCenter;
+    arg0->u_model_origin = arg0->model->boundSphereCenter;
     arg0->unk48 = 1.0f;
     arg0->unk4C = 1.0f;
     arg0->unk50 = 1.0f;
     arg0->unk76 = 0;
     arg0->unk9C = 0.75f;
-    arg0->unk90 = arg0->g_model_origin;
+    arg0->unk90 = arg0->u_model_origin;
 }
 
 void stobj_bumper_bgspecial_main(struct Stobj *stobj)
@@ -835,7 +835,7 @@ void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
             if (var_f1 > 1.0f)
                 var_f1 = 1.0f;
             temp_f31 = stobj->model->boundSphereRadius + stobj->model->boundSphereRadius * mathutil_sin(16384.0f * var_f1);
-            mathutil_mtxA_from_mtxB_translate(&stobj->g_some_pos);
+            mathutil_mtxA_from_mtxB_translate(&stobj->u_some_pos);
             mathutil_mtxA_rotate_z(stobj->rotZ);
             mathutil_mtxA_rotate_y(stobj->rotY);
             mathutil_mtxA_rotate_x(stobj->rotX);
@@ -849,7 +849,7 @@ void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
     case BG_TYPE_STM:
         modelId = lbl_801BE394[unpausedFrameCounter & 0x1F];
         temp_r30 = decodedBgGma->modelEntries[modelId].modelOffset;
-        mathutil_mtxA_from_mtxB_translate(&stobj->g_some_pos);
+        mathutil_mtxA_from_mtxB_translate(&stobj->u_some_pos);
         mathutil_mtxA_get_translate_alt(&spC);
         temp_f31_2 = spC.z + (8.0f * currentCameraStructPtr->sub28.unk3C * currentCameraStructPtr->sub28.vp.height);
         if (temp_f31_2 > 0.0f)
@@ -881,8 +881,8 @@ void stobj_jamabar_init(struct Stobj *stobj)
     stobj->unk8 |= 0xA;
     stobj->model = jamabarModel;
     stobj->boundSphereRadius = stobj->model->boundSphereRadius * stobj->unk3C.x;
-    stobj->g_model_origin = stobj->model->boundSphereCenter;
-    stobj->g_some_pos = stobj->unkA8;
+    stobj->u_model_origin = stobj->model->boundSphereCenter;
+    stobj->u_some_pos = stobj->unkA8;
     stobj->unk90.x = 0.0f;
     stobj->unk90.y = 0.5f;
     stobj->unk90.z = 1.75f;
@@ -902,25 +902,25 @@ void stobj_jamabar_main(struct Stobj *stobj)
     mathutil_mtxA_rigid_inv_tf_vec(&lbl_80206CF0, &spC);
     mathutil_mtxA_pop();
     spC.z *= 0.016;
-    stobj->g_local_vel.z += spC.z;
-    stobj->g_local_vel.z *= 0.97;
-    stobj->g_local_pos.z += stobj->g_local_vel.z;
-    if (stobj->g_local_pos.z < -2.5)
+    stobj->u_local_vel.z += spC.z;
+    stobj->u_local_vel.z *= 0.97;
+    stobj->u_local_pos.z += stobj->u_local_vel.z;
+    if (stobj->u_local_pos.z < -2.5)
     {
-        stobj->g_local_pos.z = -2.5f;
-        if (stobj->g_local_vel.z < 0.0)
-            stobj->g_local_vel.z = -stobj->g_local_vel.z;
+        stobj->u_local_pos.z = -2.5f;
+        if (stobj->u_local_vel.z < 0.0)
+            stobj->u_local_vel.z = -stobj->u_local_vel.z;
     }
-    else if (stobj->g_local_pos.z > 0.0)
+    else if (stobj->u_local_pos.z > 0.0)
     {
-        stobj->g_local_pos.z = 0.0f;
-        if (stobj->g_local_vel.z > 0.0)
-            stobj->g_local_vel.z = -stobj->g_local_vel.z;
+        stobj->u_local_pos.z = 0.0f;
+        if (stobj->u_local_vel.z > 0.0)
+            stobj->u_local_vel.z = -stobj->u_local_vel.z;
     }
-    mathutil_mtxA_tf_point(&stobj->g_local_pos, &stobj->g_some_pos);
-    stobj->unk64.x = stobj->g_some_pos.x - stobj->unk7C.x;
-    stobj->unk64.y = stobj->g_some_pos.y - stobj->unk7C.y;
-    stobj->unk64.z = stobj->g_some_pos.z - stobj->unk7C.z;
+    mathutil_mtxA_tf_point(&stobj->u_local_pos, &stobj->u_some_pos);
+    stobj->unk64.x = stobj->u_some_pos.x - stobj->unk7C.x;
+    stobj->unk64.y = stobj->u_some_pos.y - stobj->unk7C.y;
+    stobj->unk64.z = stobj->u_some_pos.z - stobj->unk7C.z;
 }
 
 void stobj_jamabar_draw(struct Stobj *stobj)
@@ -928,7 +928,7 @@ void stobj_jamabar_draw(struct Stobj *stobj)
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&stobj->g_some_pos);
+    mathutil_mtxA_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -950,13 +950,13 @@ void stobj_jamabar_destroy(struct Stobj *stobj) {}
 void func_8006C6CC(struct Stobj *stobj)
 {
     func_8002FCC0(2, lbl_801BE25C);
-    func_8002FCC0(2, "OFS: X,%7.3f\n", stobj->g_local_pos.x);
-    func_8002FCC0(2, string______Y__7_3f_n_2, stobj->g_local_pos.y);
-    func_8002FCC0(2, string______Z__7_3f_n_2, stobj->g_local_pos.z);
+    func_8002FCC0(2, "OFS: X,%7.3f\n", stobj->u_local_pos.x);
+    func_8002FCC0(2, string______Y__7_3f_n_2, stobj->u_local_pos.y);
+    func_8002FCC0(2, string______Z__7_3f_n_2, stobj->u_local_pos.z);
     func_8002FD68(2, lbl_802F0B40);
-    func_8002FCC0(2, "OFS SPD: X,%7.3f\n", stobj->g_local_vel.x);
-    func_8002FCC0(2, "         Y,%7.3f\n", stobj->g_local_vel.y);
-    func_8002FCC0(2, "         Z,%7.3f\n", stobj->g_local_vel.z);
+    func_8002FCC0(2, "OFS SPD: X,%7.3f\n", stobj->u_local_vel.x);
+    func_8002FCC0(2, "         Y,%7.3f\n", stobj->u_local_vel.y);
+    func_8002FCC0(2, "         Z,%7.3f\n", stobj->u_local_vel.z);
     func_8002FD68(2, lbl_802F0B40);
 }
 
@@ -971,4 +971,3 @@ void stobj_dummy_coli(struct Stobj *stobj, struct PhysicsBall *arg1) {}
 void stobj_dummy_destroy(struct Stobj *stobj) {}
 
 void func_8006C7B8(struct Stobj *stobj) {}
-

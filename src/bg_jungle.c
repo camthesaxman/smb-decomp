@@ -34,12 +34,12 @@ void bg_jungle_init(void)
 
     // find models
     work->cloudModelCount = 0;
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         jungleModelFind,
         jungle_model_find_proc);
-    g_search_bg_models_from_list(
+    u_search_bg_models_from_list(
         decodedStageLzPtr->fgModels,
         decodedStageLzPtr->fgModelCount,
         jungleModelFind,

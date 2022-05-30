@@ -7,8 +7,8 @@
 struct Light
 {
     s8 valid;   // 1 if valid, -1 for end of list
-    s8 g_id;    // ID (a sort of category)?
-    s16 g_inst; // Instance of ID?
+    s8 u_id;    // ID (a sort of category)?
+    s16 u_inst; // Instance of ID?
     s8 type;
     s16 spotFn;
     u8 stageId;
@@ -60,21 +60,21 @@ enum
 };
 
 extern s32 s_lightPoolSize;
-extern s32 g_someLGIdx;
+extern s32 u_someLGIdx;
 extern s8 s_lightGroupStackPos;
-extern float g_minimap_light_ref_dist_scale;
-extern s32 s_g_lightPerfTimer;
+extern float u_minimap_light_ref_dist_scale;
+extern s32 s_u_lightPerfTimer;
 extern s32 s_numLightObjsLoaded;
 extern s32 lbl_802F1C60;
 extern s32 lbl_802F1C64;
 extern s32 lbl_802F1C68;
-extern s32 s_g_lightGroupsInitialized;
+extern s32 s_u_lightGroupsInitialized;
 extern s32 lightingStageId;
 extern s32 lbl_802F1C80;
 extern s32 lbl_802F1C84;
-extern s32 g_printLight;
+extern s32 u_printLight;
 extern s32 lbl_802F1C8C;
-extern s32 g_lightToPrint;
+extern s32 u_lightToPrint;
 
 void light_init();
 void light_main();
@@ -84,14 +84,14 @@ int peek_light_group(void);
 void load_light_group_cached();
 void push_light_group(void);
 void pop_light_group(void);
-void g_reset_light_group_stack(int a);
-// ? g_set_some_minimap_light_param();
+void u_reset_light_group_stack(int a);
+// ? u_set_some_minimap_light_param();
 void set_bg_ambient(float, float, float);
 void set_render_ambient(float r, float g, float b);
 // ? get_curr_light_group_ambient();
 void apply_curr_light_group_ambient(void);
-void g_draw_naomi_ball(void);
-void g_smth_with_lights_smd_continue(int stageId);
-void g_smth_with_lights_smd_extra(int stageId);
+void u_draw_naomi_ball(void);
+void u_smth_with_lights_smd_continue(int stageId);
+void u_smth_with_lights_smd_extra(int stageId);
 
 #endif

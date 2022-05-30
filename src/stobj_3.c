@@ -77,7 +77,7 @@ s16 largeLCDModelIDs[] =
     NLMODEL_common_L_LCD_9,
 };
 
-void g_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
+void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
 {
     struct Stobj stobj;
     struct StageAnimGroup *stageAg;
@@ -105,11 +105,11 @@ void g_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
         {
             if (totalGoals >= 8)
             {
-                g_debug_set_cursor_pos(16, 16);
-                g_debug_printf("Warning!!! Goal Tape Max(%d) Over!!!\n", 8);
+                u_debug_set_cursor_pos(16, 16);
+                u_debug_printf("Warning!!! Goal Tape Max(%d) Over!!!\n", 8);
                 break;
             }
-            stobj.g_some_pos = goal->pos;
+            stobj.u_some_pos = goal->pos;
             stobj.rotX = goal->rotX;
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
@@ -186,15 +186,15 @@ void stobj_goaltape_init(struct Stobj *arg0)
     arg0->unk8 |= 2;
     arg0->model = (struct GMAModel *)naomiCommonObj->modelPtrs[NLMODEL_common_GOAL_TAPE];
     arg0->boundSphereRadius = 1.3125f;
-    arg0->g_model_origin = arg0->model->boundSphereCenter;
+    arg0->u_model_origin = arg0->model->boundSphereCenter;
     temp_r31 = arg0->unkA4;
     temp_r31->unk14 = arg0;
     temp_r31->unk10 = -1;
-    mathutil_mtxA_from_translate(&arg0->g_some_pos);
+    mathutil_mtxA_from_translate(&arg0->u_some_pos);
     mathutil_mtxA_rotate_z(arg0->rotZ);
     mathutil_mtxA_rotate_y(arg0->rotY);
     mathutil_mtxA_rotate_x(arg0->rotX);
-    mathutil_mtxA_tf_point(&arg0->g_model_origin, &sp28);
+    mathutil_mtxA_tf_point(&arg0->u_model_origin, &sp28);
     mathutil_mtxA_push();
     raycast_stage_down(&sp28, &spC, NULL);
     mathutil_mtxA_pop();
@@ -205,7 +205,7 @@ void stobj_goaltape_init(struct Stobj *arg0)
     }
     else
         temp_r31->unk4 = 0.002f;
-    temp_f11 = arg0->g_model_origin.y;
+    temp_f11 = arg0->u_model_origin.y;
     var_r7 = temp_r31->unk18;
     for (i = 8; i > 0; i--, var_r7++)
     {
@@ -327,7 +327,7 @@ void stobj_goaltape_main(struct Stobj *stobj)
     case 5:
         stobj->unkC = 0;
         tape->unk8 = -0.25f;
-        tape->unkC = stobj->g_model_origin.y;
+        tape->unkC = stobj->u_model_origin.y;
         func_8006FD44(stobj->unkA4);
         break;
     }
@@ -339,9 +339,9 @@ void stobj_goaltape_main(struct Stobj *stobj)
         temp_r27 = &animGroups[stobj->animGroupId];
         var_r30 = 1;
         mathutil_mtxA_from_mtx(temp_r27->prevTransform);
-        mathutil_mtxA_tf_point(&stobj->g_some_pos, &spC);
+        mathutil_mtxA_tf_point(&stobj->u_some_pos, &spC);
         mathutil_mtxA_from_mtx(temp_r27->transform);
-        mathutil_mtxA_tf_point(&stobj->g_some_pos, &sp30);
+        mathutil_mtxA_tf_point(&stobj->u_some_pos, &sp30);
         spC.x -= sp30.x;
         spC.y -= sp30.y;
         spC.z -= sp30.z;
@@ -351,7 +351,7 @@ void stobj_goaltape_main(struct Stobj *stobj)
         mathutil_mtxA_rigid_inv_tf_vec(&spC, &spC);
     }
     mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
-    mathutil_mtxA_translate(&stobj->g_some_pos);
+    mathutil_mtxA_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -503,7 +503,7 @@ void stobj_goaltape_draw(struct Stobj *stobj)
     int digit;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&stobj->g_some_pos);
+    mathutil_mtxA_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -525,7 +525,7 @@ void stobj_goaltape_draw(struct Stobj *stobj)
             mathutil_mtxA_push();
             func_8006DDA0(temp_r28, var_r27, stobj->model, lbl_802F1B4C);
             mathutil_mtxA_pop();
-            g_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
+            u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
         }
     }
     apply_curr_light_group_ambient();
@@ -551,13 +551,13 @@ void stobj_goaltape_draw(struct Stobj *stobj)
 
     digit = time % 10;
     time /= 10;
-    g_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
+    u_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    g_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
+    u_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
 
     mathutil_mtxA_pop();
 
@@ -565,19 +565,19 @@ void stobj_goaltape_draw(struct Stobj *stobj)
 
     digit = time % 10;
     time /= 10;
-    g_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    g_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    g_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
 
     func_8000E3BC();
 }
@@ -601,7 +601,7 @@ void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     sp1C.y = 0.0f;
     sp1C.z = 0.0f;
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_translate(&stobj->g_some_pos);
+    mathutil_mtxA_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);

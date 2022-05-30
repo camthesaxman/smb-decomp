@@ -32,28 +32,28 @@ void bg_old_storm_init(void)
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 = -((rand() & 0x3F) + 16);
     sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[1];
-    g_spawn_effect_object(&sp8);
+    u_spawn_effect_object(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
     sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[2];
-    g_spawn_effect_object(&sp8);
+    u_spawn_effect_object(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
     sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[5];
-    g_spawn_effect_object(&sp8);
+    u_spawn_effect_object(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
     sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[6];
-    g_spawn_effect_object(&sp8);
+    u_spawn_effect_object(&sp8);
 }
 
 void bg_old_storm_main(void)
@@ -97,7 +97,7 @@ void bg_old_storm_main(void)
 	sp24.unk18 = 0.2f;
 	sp24.unk1C = 0.35f;
 	sp24.unk20 = 0.4f;
-	g_spawn_effect_object(&sp24);
+	u_spawn_effect_object(&sp24);
 	mathutil_mtxA_from_mtxB();
 	spD0.x = 0.0f;
 	spD0.y = 0.0f;
@@ -126,7 +126,7 @@ void bg_old_storm_main(void)
 		mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
 		sp24.unk50 = rand() & 0x7FFF;
 		sp24.unk30 = (void *)naomiBackgroundObj->modelPtrs[8];
-		g_spawn_effect_object(&sp24);
+		u_spawn_effect_object(&sp24);
 	}
 	else if ((u32)raycast_stage_down(&spD0, &sp8, &spDC) != 0)
 	{
@@ -144,7 +144,7 @@ void bg_old_storm_main(void)
 		mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
 		sp24.unk50 = rand() & 0x7FFF;
 		sp24.unk30 = (void *)naomiBackgroundObj->modelPtrs[8];
-		g_spawn_effect_object(&sp24);
+		u_spawn_effect_object(&sp24);
 	}
 
 }
@@ -154,8 +154,8 @@ void bg_old_storm_finish(void) {}
 void bg_old_storm_draw(void)
 {
 	mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-	g_call_draw_naomi_model_and_do_other_stuff(naomiBackgroundObj->modelPtrs[0]);
-	g_call_draw_naomi_model_and_do_other_stuff(naomiBackgroundObj->modelPtrs[3]);
+	u_call_draw_naomi_model_and_do_other_stuff(naomiBackgroundObj->modelPtrs[0]);
+	u_call_draw_naomi_model_and_do_other_stuff(naomiBackgroundObj->modelPtrs[3]);
 }
 
 void bg_old_storm_interact(int arg0) {}

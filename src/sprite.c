@@ -117,26 +117,21 @@ void ev_sprite_dest(void)
     textbox_destroy_all();
 }
 
-#ifdef NONMATCHING
-// Functionally equivalent. Has a few register swaps and ordering issues.
 void func_800700D8(int a)
 {
     struct Sprite *r31_;
     struct Struct8028FE58 *r30;
-    struct Sprite *r8;
-    struct Struct8028FE58 *r9;
     struct Struct8028FE58 *r10;
+    struct Struct8028FE58 *r9;
     s8 *r11;
     int r12;
-    struct Sprite *r6;
     struct Struct8028FE58 *r5;
-    int i;  // r30
-    int r31 = (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING);
+    int i;
+    int viewStage = (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING);
 
     r12 = 0;
     r5 = &lbl_8028FE58[r12++];
     r9 = &lbl_8028FE58[r12++];
-    r8 = spriteInfo;
     r5->unk0 = NULL;
     r5->unk4 = NULL;
     r5->unk8 = r9;
@@ -145,45 +140,50 @@ void func_800700D8(int a)
     r9->unk8 = NULL;
 
     r11 = spritePoolInfo.statusList;
-    for (i = 0; i < spritePoolInfo.unk38; r8++, i++, r11++)
+    for (i = 0; i < spritePoolInfo.unk38; i++, r11++)
     {
-        if (*r11 != 0 && (!r31 || r8->tag == 100))
+        struct Sprite *r8;
+
+        if (*r11 == 0)
+            continue;
+        if (viewStage && spriteInfo[i].tag != 100)
+            continue;
+        if (a == 0)
         {
-            if (a == 0)
-            {
-                if ((r8->flags & (1<<18)) == 0)
-                    continue;
-            }
-            else
-            {
-                if ((r8->flags & (1<<18)) != 0)
-                    continue;
-            }
-            if (r8->unk50 != NULL)
+            if ((spriteInfo[i].flags & (1<<18)) == 0)
                 continue;
-            r10 = r5->unk8;
-            while ((r6 = r10->unk0) != NULL)
-            {
-                if (r8->unk4C > r6->unk4C)
-                    break;
-                r10 = r10->unk8;
-            }
-            r9 = &lbl_8028FE58[r12++];
-            r9->unk0 = r8;
-            r9->unk4 = r10->unk4;
-            r9->unk8 = r10;
-            r10->unk4->unk8 = r9;
-            r10->unk4 = r9;
         }
+        else
+        {
+            if ((spriteInfo[i].flags & (1<<18)) != 0)
+                continue;
+        }
+        if (spriteInfo[i].unk50 != NULL)
+            continue;
+
+        r10 = r5->unk8;
+        r8 = &spriteInfo[i];
+        while (r10->unk0 != NULL)
+        {
+            if (r8->unk4C > r10->unk0->unk4C)
+                break;
+            r10 = r10->unk8;
+        }
+        r9 = &lbl_8028FE58[r12++];
+        r9->unk0 = &spriteInfo[i];
+        r9->unk4 = r10->unk4;
+        r9->unk8 = r10;
+        r10->unk4->unk8 = r9;
+        r10->unk4 = r9;
     }
 
     r30 = r5->unk8;
     while ((r31_ = r30->unk0) != NULL)
     {
-        g_something_with_sprites(r31_);
+        u_something_with_sprites(r31_);
         while (r31_->next != 0)
         {
-            g_something_with_sprites(r31_->next);
+            u_something_with_sprites(r31_->next);
             r31_ = r31_->next;
         }
         r30 = r30->unk8;
@@ -208,24 +208,16 @@ void func_800700D8(int a)
     }
     textbox_draw_all();
 }
-#else
-asm void func_800700D8(int a)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_800700D8.s"
-}
-#pragma peephole on
-#endif
 
 //arcade: FUN_0c048ea0
 void func_800702C8(struct Sprite *sprite)
 {
     if (spritePoolInfo.statusList[sprite->unk2] != 0 && sprite->unk50 == NULL)
     {
-        g_something_with_sprites(sprite);
+        u_something_with_sprites(sprite);
         while (sprite->next != NULL)
         {
-            g_something_with_sprites(sprite->next);
+            u_something_with_sprites(sprite->next);
             sprite = sprite->next;
         }
     }
@@ -847,7 +839,7 @@ struct DoubleKanjiGlyph doubleKanjiGlyphs[] =
     {"DMY",            -1,     -1},
 };
 
-void g_something_with_sprites(struct Sprite *sprite)
+void u_something_with_sprites(struct Sprite *sprite)
 {
     u32 r29;
     u32 r26;
@@ -866,7 +858,7 @@ void g_something_with_sprites(struct Sprite *sprite)
     switch (sprite->type)
     {
     case SPRITE_TYPE_TEXT:
-        g_draw_text_sprite(sprite);
+        u_draw_text_sprite(sprite);
         break;
     case SPRITE_TYPE_BITMAP:
         if (!bitmapGroups[(sprite->bmpId & 0xFF00) >> 8].isLoaded)
@@ -1051,7 +1043,7 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
             height = fontParams->lineHeight;
             if (sprite->fontId > FONT_JAP_TAG)  // Japanese font
             {
-                width = g_get_jpn_text_width(sprite->fontId, sprite->text);
+                width = u_get_jpn_text_width(sprite->fontId, sprite->text);
             }
             else  // ASCII font
             {
@@ -1060,7 +1052,7 @@ void calc_sprite_bounds(struct Sprite *sprite, s32 *left, s32 *top, s32 *right, 
                 {
                     float f1;
                     width += get_char_width(chr, sprite->fontId, fontParams) - fontParams->spaceWidth;
-                    f1 = g_get_char_ratio(chr, sprite->fontId);
+                    f1 = u_get_char_ratio(chr, sprite->fontId);
                     if (f1 != 1.0)
                         width += f1 * fontParams->spaceWidth - fontParams->spaceWidth;
                     chr++;
@@ -1213,7 +1205,7 @@ int get_char_width(char *chr, int fontId, struct FontParams *params)
     return params->spaceWidth;
 }
 
-float g_get_char_ratio(char *chr, int fontId)
+float u_get_char_ratio(char *chr, int fontId)
 {
     switch (fontId)
     {
@@ -2640,31 +2632,30 @@ void set_text_pos(float x, float y)
     textDrawInfo.y = y;
 }
 
-#ifdef NONMATCHING
-void g_draw_char(char chr)
+void u_draw_char(char chr)
 {
-    struct NaomiSpriteParams params;  // sp + 0x10
-    struct FontParams *font = &fontInfo[textDrawInfo.fontId];  // r5
-    int r6 = chr - font->firstChar;
-    int div = r6 / font->unkC;
-    int mod = r6 % font->unkC;
+    struct NaomiSpriteParams params;
+    struct FontParams *font = &fontInfo[textDrawInfo.fontId];
+    int glyphIndex = chr - font->firstChar;
+    int div = glyphIndex / font->unkC;
+    int mod = glyphIndex % font->unkC;
     float f4;
     float f5;
-    //float f0;
 
     params.bmpId = font->bmpId;
-    params.x = textDrawInfo.x + font->unk18 * font->unk20 /*0xC4*/;
-    params.y = textDrawInfo.y + font->unk1C * font->unk22 /*0xBC*/;
+    params.x = textDrawInfo.x + font->unk18 * font->unk20;
+    params.y = textDrawInfo.y + font->unk1C * font->unk22;
     params.z = textDrawInfo.unk1C;
     f4 = font->unk10 * mod;
-    f5 = font->unk14 * div;  /*0xAC*/
+    f5 = font->unk14 * div;
     params.u1 = f4 + font->unk18 * font->unk20;
     params.v1 = f5 + font->unk1C * font->unk22;
     params.u2 = font->unk10 + (f4 - font->unk18 * font->unk21);
     params.v2 = font->unk14 + (f5 - font->unk1C * font->unk23);
-    params.scaleX = textDrawInfo.scaleX * ((font->unk10 - font->unk18 * font->unk20) - font->unk18 * font->unk21);
-    //f0 = font->unk18 * font->unk23;
-    params.scaleY = textDrawInfo.scaleY * ((font->unk14 - font->unk1C * font->unk22) - font->unk18 * font->unk23);
+    params.scaleX = textDrawInfo.scaleX * (font->unk10 - font->unk18 * font->unk20 - font->unk18 * font->unk21);
+    params.scaleY = textDrawInfo.scaleY * (font->unk14 - font->unk1C * font->unk22 - font->unk18 * font->unk23);
+
+    !font->unk22;  // needed to match
 
     params.rotation = textDrawInfo.unk18;
     params.opacity = textDrawInfo.opacity;
@@ -2674,14 +2665,6 @@ void g_draw_char(char chr)
     params.addColor = textDrawInfo.addColor;
     draw_naomi_sprite(&params);
 }
-#else
-asm void g_draw_char(char chr)
-{
-    nofralloc
-#include "../asm/nonmatchings/g_draw_char.s"
-}
-#pragma peephole on
-#endif
 
 static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *font)
 {
@@ -2701,7 +2684,7 @@ static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *f
     }
 }
 
-void g_draw_text(char *str)
+void u_draw_text(char *str)
 {
     struct TextDrawInfo *drawInfo = &textDrawInfo;
     int fontIdBackup;
@@ -2750,7 +2733,7 @@ void g_draw_text(char *str)
         else
             r23 = get_char_width(str, drawInfo->fontId, font);
         f17 = font->unk10 * (0.5 * (font->spaceWidth - r23) / (font->spaceWidth));
-        f16 = g_get_char_ratio(str, drawInfo->fontId);
+        f16 = u_get_char_ratio(str, drawInfo->fontId);
         if (*str == '\n')
         {
             drawInfo->x = drawInfo->startX;
@@ -2871,7 +2854,7 @@ void g_draw_text(char *str)
     drawInfo->scaleX = f31;
 }
 
-float g_get_text_width(char *str)
+float u_get_text_width(char *str)
 {
     struct TextDrawInfo *drawInfo = &textDrawInfo;
     int fontIdBackup;
@@ -2912,7 +2895,7 @@ float g_get_text_width(char *str)
             r23 = func_80071E58_inline(*str, drawInfo->fontId, font);
         else
             r23 = get_char_width(str, drawInfo->fontId, font);
-        f1 = g_get_char_ratio(str, drawInfo->fontId);
+        f1 = u_get_char_ratio(str, drawInfo->fontId);
         if (*str == '\n')
             continue;
         if (*str == ' ' || *str < font->firstChar || *str > font->lastChar)
@@ -3004,10 +2987,10 @@ void func_80072AC0(char *str, ...)
     va_start(args, str);
     vsprintf(buf, str, args);
     va_end(args);
-    g_draw_text(buf);
+    u_draw_text(buf);
 }
 
-void g_draw_text_sprite(struct Sprite *sprite)
+void u_draw_text_sprite(struct Sprite *sprite)
 {
     textDrawInfo.startX = sprite->left;
     textDrawInfo.x = sprite->left;
@@ -3021,7 +3004,7 @@ void g_draw_text_sprite(struct Sprite *sprite)
     textDrawInfo.scaleY = sprite->scaleY;
     textDrawInfo.opacity = sprite->opacity;
     textDrawInfo.unk2C = sprite->flags;
-    g_draw_text(sprite->text);
+    u_draw_text(sprite->text);
 }
 
 void draw_bitmap_sprite(struct Sprite *sprite)
@@ -3137,17 +3120,17 @@ float func_80072DA8(int fontId, char *str, int c)
         return parseState.unkC;
 }
 
-float g_get_ascii_text_width(char *str)
+float u_get_ascii_text_width(char *str)
 {
     return func_80072DA8(FONT_ASCII, str, 0);
 }
 
-int g_get_jpn_text_width(int fontId, char *str)
+int u_get_jpn_text_width(int fontId, char *str)
 {
     return func_80072DA8(fontId, str, 1);
 }
 
-void g_draw_screen_fade_mask(void)
+void u_draw_screen_fade_mask(void)
 {
     struct NaomiSpriteParams params;
 

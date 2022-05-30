@@ -504,7 +504,7 @@ typedef void (*Struct80206DEC_Func)(void);
 struct Struct80206DEC
 {
     s32 unk0;
-    float g_stageTimer;
+    float u_stageTimer;
     Struct80206DEC_Func unk8;
     u32 unkC;
     float unk10[3];
@@ -923,7 +923,7 @@ struct Struct80061BC4_sub
     u32 unk0;
     u32 unk4;
     u32 unk8;
-    GXTexMapID g_texMapId;
+    GXTexMapID u_texMapId;
     u8 filler10[4];
     u32 unk14;
     u8 filler18[0x2C-0x18];
@@ -962,7 +962,7 @@ struct Stobj
     u32 unk8;
     s16 unkC;
     s16 unkE;
-    /*0x10*/ Vec g_model_origin;
+    /*0x10*/ Vec u_model_origin;
     /*0x1C*/ Vec position;
     /*0x28*/ Vec position_2;
     /*0x34*/ float boundSphereRadius;
@@ -972,7 +972,7 @@ struct Stobj
     float unk4C;
     float unk50;
     /*0x54*/ struct GMAModel *model;  // sometimes also a NaomiModel
-    /*0x58*/ Vec g_some_pos;  // position within anim group?
+    /*0x58*/ Vec u_some_pos;  // position within anim group?
     Vec unk64;
     /*0x70*/ s16 rotX;
     /*0x72*/ s16 rotY;
@@ -991,8 +991,8 @@ struct Stobj
     u8 fillerA1[3];
     void *unkA4;
     Vec unkA8;
-    /*0xB4*/ Vec g_local_pos;  // OFS
-    /*0xC0*/ Vec g_local_vel;  // OFS SPD
+    /*0xB4*/ Vec u_local_pos;  // OFS
+    /*0xC0*/ Vec u_local_vel;  // OFS SPD
 };  // size = 0xCC
 
 struct BgLightInfo
@@ -1059,7 +1059,7 @@ struct Struct802F1C10
 struct GBilLightGroup
 {
     char *name;
-    s8 g_bgLightGroupId;
+    s8 u_bgLightGroupId;
 };
 
 enum
